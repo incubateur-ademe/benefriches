@@ -69,10 +69,20 @@ export type OpenState = IsClosedState | IsOpenedState;
 
 export type OpenImpactModalDescriptionArgs = OpenState;
 
+export type ControlButtonProps = {
+  "data-fr-opened": boolean;
+  "aria-controls": string;
+  onClick: () => void;
+  onKeyUp: (e: React.KeyboardEvent<HTMLElement>) => void;
+};
+
 type Context = {
   openState: OpenState;
   openImpactModalDescription: (args: OpenImpactModalDescriptionArgs) => void;
+  getControlButtonProps: (args: OpenImpactModalDescriptionArgs) => ControlButtonProps;
   resetOpenState: () => void;
+  dialogId: string;
+  dialogTitleId: string;
 };
 
 export const INITIAL_OPEN_STATE = {
@@ -84,5 +94,13 @@ export const INITIAL_OPEN_STATE = {
 export const ImpactModalDescriptionContext = createContext<Context>({
   openState: INITIAL_OPEN_STATE,
   openImpactModalDescription: () => {},
+  getControlButtonProps: () => ({
+    "data-fr-opened": false,
+    "aria-controls": "",
+    onClick: () => {},
+    onKeyUp: () => {},
+  }),
   resetOpenState: () => {},
+  dialogId: "",
+  dialogTitleId: "",
 });

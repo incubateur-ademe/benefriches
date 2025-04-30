@@ -1,16 +1,17 @@
 import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
 
+import { ControlButtonProps } from "../../impact-description-modals/ImpactModalDescriptionContext";
 import KeyImpactIndicatorCard from "../KeyImpactIndicatorCard";
 
 type Props = {
   value: number;
-  onClick?: () => void;
+  buttonProps: ControlButtonProps;
   noDescription?: boolean;
 };
 
 const ImpactSummaryHouseholdsPoweredByRenewableEnergy = ({
   value,
-  onClick,
+  buttonProps,
   noDescription,
 }: Props) => {
   return (
@@ -20,7 +21,7 @@ const ImpactSummaryHouseholdsPoweredByRenewableEnergy = ({
         noDescription ? undefined : `${formatNumberFr(value)} nouveaux foyers alimentés en EnR`
       }
       title="+ d’énergies renouvelables&nbsp;⚡"
-      onClick={onClick}
+      buttonProps={buttonProps}
     />
   );
 };

@@ -4,7 +4,6 @@ import classNames from "@/shared/views/clsx";
 
 import { ViewMode } from "../../application/projectImpacts.reducer";
 import ImpactsChartsView from "../project-page/impacts/charts-view";
-import ImpactModalDescriptionProviderContainer from "../project-page/impacts/impact-description-modals";
 import ImpactsListViewContainer from "../project-page/impacts/list-view";
 import ImpactsSummaryViewContainer from "../project-page/impacts/summary-view";
 import ImpactsActionBar from "../shared/actions/ActionBar";
@@ -52,11 +51,9 @@ export default function QuickImpactsEmbedView({
         onViewModeClick={onCurrentViewModeChange}
         selectedViewMode={currentViewMode}
       />
-      <ImpactModalDescriptionProviderContainer>
-        {currentViewMode === "summary" && <ImpactsSummaryViewContainer />}
-        {currentViewMode === "list" && <ImpactsListViewContainer />}
-        {currentViewMode === "charts" && <ImpactsChartsView />}
-      </ImpactModalDescriptionProviderContainer>
+      {currentViewMode === "summary" && <ImpactsSummaryViewContainer />}
+      {currentViewMode === "list" && <ImpactsListViewContainer />}
+      {currentViewMode === "charts" && <ImpactsChartsView />}
     </div>
   );
 }

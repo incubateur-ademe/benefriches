@@ -1,9 +1,10 @@
+import { ControlButtonProps } from "../../impact-description-modals/ImpactModalDescriptionContext";
 import KeyImpactIndicatorCard from "../KeyImpactIndicatorCard";
 
 type Props = {
   isSuccess: boolean;
   isAgriculturalFriche: boolean;
-  onClick?: () => void;
+  buttonProps: ControlButtonProps;
   noDescription?: boolean;
 };
 

@@ -1,12 +1,13 @@
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 
+import { ControlButtonProps } from "../../impact-description-modals/ImpactModalDescriptionContext";
 import KeyImpactIndicatorCard from "../KeyImpactIndicatorCard";
 
 type Props = {
   economicBalanceTotal: number;
   socioEconomicMonetaryImpactsTotal: number;
   isSuccess: boolean;
-  onClick?: () => void;
+  buttonProps: ControlButtonProps;
   noDescription?: boolean;
 };
 
@@ -15,7 +16,7 @@ const ImpactSummaryProjectBalance = ({
   economicBalanceTotal,
   isSuccess,
   noDescription,
-  onClick,
+  buttonProps,
 }: Props) => {
   return (
     <KeyImpactIndicatorCard
@@ -30,7 +31,7 @@ const ImpactSummaryProjectBalance = ({
           ? "Les impacts compensent le déficit de l'opération\u00a0💰"
           : "Les impacts ne compensent pas le déficit de l'opération\u00a0💸"
       }
-      onClick={onClick}
+      buttonProps={buttonProps}
     />
   );
 };

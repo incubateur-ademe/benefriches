@@ -1,5 +1,3 @@
-import { useContext } from "react";
-
 import { SocioEconomicImpactByCategory } from "@/features/projects/domain/projectImpactsSocioEconomic";
 import { getActorLabel } from "@/features/projects/views/shared/socioEconomicLabels";
 
@@ -16,6 +14,7 @@ type Props = SocioEconomicImpactByCategory & {
     | "environmental_monetary";
   initialShowSectionContent?: boolean;
   noMarginBottom?: boolean;
+  inDialog?: boolean;
 };
 
 const getSectionTitle = (sectionName: Props["sectionName"]) => {
@@ -30,58 +29,72 @@ const getSectionTitle = (sectionName: Props["sectionName"]) => {
       return "Impacts environnementaux monétarisés";
   }
 };
-const SocioEconomicImpactSection = ({ impacts, total, sectionName, ...props }: Props) => {
-  const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
-
+const SocioEconomicImpactSection = ({
+  impacts,
+  total,
+  sectionName,
+  inDialog = false,
+  ...props
+}: Props) => {
   if (impacts.length === 0) {
     return null;
   }
 
   return (
-    <ImpactSection
-      title={getSectionTitle(sectionName)}
-      total={total}
-      {...props}
-      onTitleClick={() => {
-        openImpactModalDescription({
-          sectionName: "socio_economic",
-          subSectionName: sectionName,
-        });
-      }}
-    >
-      {impacts.map(({ name, actors }) => (
-        <ImpactActorsItem
-          key={name}
-          label={getSocioEconomicImpactLabel(name)}
-          actors={actors.map(({ name: actorLabel, value: actorValue, details: actorDetails }) => ({
-            label: getActorLabel(actorLabel),
-            value: actorValue,
-            details: actorDetails
-              ? actorDetails.map(({ name: detailsName, value: detailsValue }) => ({
-                  label: getSocioEconomicImpactLabel(detailsName),
-                  value: detailsValue,
-                  onClick: () => {
-                    openImpactModalDescription({
-                      sectionName: "socio_economic",
-                      subSectionName: sectionName,
-                      impactName: name,
-                      impactDetailsName: detailsName,
-                    });
-                  },
-                }))
-              : undefined,
-          }))}
-          onClick={() => {
+    <ImpactModalDescriptionContext.Consumer>
+      {({ openImpactModalDescription, dialogId }) => (
+        <ImpactSection
+          title={getSectionTitle(sectionName)}
+          total={total}
+          {...props}
+          onTitleClick={() => {
+            if (!inDialog) document.getElementById(`${dialogId}-controlButton`)?.click();
             openImpactModalDescription({
               sectionName: "socio_economic",
               subSectionName: sectionName,
-              impactName: name,
             });
           }}
-          type="monetary"
-        />
-      ))}
-    </ImpactSection>
+        >
+          {impacts.map(({ name, actors }) => (
+            <ImpactActorsItem
+              key={name}
+              label={getSocioEconomicImpactLabel(name)}
+              actors={actors.map(
+                ({ name: actorLabel, value: actorValue, details: actorDetails }) => ({
+                  label: getActorLabel(actorLabel),
+                  value: actorValue,
+                  details: actorDetails
+                    ? actorDetails.map(({ name: detailsName, value: detailsValue }) => ({
+                        label: getSocioEconomicImpactLabel(detailsName),
+                        value: detailsValue,
+                        onClick: () => {
+                          if (!inDialog)
+                            document.getElementById(`${dialogId}-controlButton`)?.click();
+                          openImpactModalDescription({
+                            sectionName: "socio_economic",
+                            subSectionName: sectionName,
+                            impactName: name,
+                            impactDetailsName: detailsName,
+                          });
+                        },
+                      }))
+                    : undefined,
+                }),
+              )}
+              onClick={() => {
+                if (!inDialog) document.getElementById(`${dialogId}-controlButton`)?.click();
+                openImpactModalDescription({
+                  sectionName: "socio_economic",
+                  subSectionName: sectionName,
+                  impactName: name,
+                });
+              }}
+              type="monetary"
+            />
+          ))}
+        </ImpactSection>
+      )}
+    </ImpactModalDescriptionContext.Consumer>
   );
 };
 

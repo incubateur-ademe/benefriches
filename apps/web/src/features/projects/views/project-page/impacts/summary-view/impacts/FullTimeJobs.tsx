@@ -1,12 +1,13 @@
 import { formatNumberFr, formatPercentage } from "@/shared/core/format-number/formatNumber";
 
+import { ControlButtonProps } from "../../impact-description-modals/ImpactModalDescriptionContext";
 import KeyImpactIndicatorCard from "../KeyImpactIndicatorCard";
 
 type Props = {
   percentageEvolution: number;
   difference: number;
   isSuccess: boolean;
-  onClick?: () => void;
+  buttonProps: ControlButtonProps;
   noDescription?: boolean;
 };
 
@@ -14,7 +15,7 @@ const ImpactSummaryFullTimeJobs = ({
   percentageEvolution,
   difference,
   isSuccess,
-  onClick,
+  buttonProps,
   noDescription,
 }: Props) => {
   if (isSuccess) {
@@ -27,7 +28,7 @@ const ImpactSummaryFullTimeJobs = ({
             : `${formatNumberFr(difference)} emploi équivalent temps plein créé ou maintenu (soit ${formatPercentage(percentageEvolution)})`
         }
         title="+ d’emplois&nbsp;👷"
-        onClick={onClick}
+        buttonProps={buttonProps}
       />
     );
   }
@@ -41,7 +42,7 @@ const ImpactSummaryFullTimeJobs = ({
           : `${formatNumberFr(difference)} emploi équivalent temps plein perdu (soit ${formatPercentage(percentageEvolution)})`
       }
       title="- d’emplois&nbsp;👷"
-      onClick={onClick}
+      buttonProps={buttonProps}
     />
   );
 };

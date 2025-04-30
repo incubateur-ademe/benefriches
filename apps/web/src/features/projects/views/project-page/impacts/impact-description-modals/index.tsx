@@ -6,9 +6,13 @@ import ImpactModalDescriptionProvider from "./ImpactModalDescriptionProvider";
 
 type ModalDescriptionProviderProps = {
   children: ReactNode;
+  dialogId: string;
 };
 
-function ImpactModalDescriptionProviderContainer({ children }: ModalDescriptionProviderProps) {
+function ImpactModalDescriptionProviderContainer({
+  children,
+  dialogId,
+}: ModalDescriptionProviderProps) {
   const { projectData, relatedSiteData, impactsData } = useAppSelector(
     (state) => state.projectImpacts,
   );
@@ -18,6 +22,7 @@ function ImpactModalDescriptionProviderContainer({ children }: ModalDescriptionP
       projectData={projectData!}
       siteData={relatedSiteData!}
       impactsData={impactsData!}
+      dialogId={dialogId}
     >
       {children}
     </ImpactModalDescriptionProvider>

@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import { roundTo2Digits } from "shared";
 
 import {
@@ -8,8 +7,7 @@ import {
 import ImpactColumnChart from "@/features/projects/views/project-page/impacts/charts-view/ImpactChartCard/ImpactColumnChart";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 
-import { ImpactModalDescriptionContext } from "../../../impact-description-modals/ImpactModalDescriptionContext";
-import ImpactsChartsSection from "../../ImpactsChartsSection";
+import ImpactColumnChartCard from "../../ImpactChartCard/ImpactColumnChartCard";
 
 type Props = {
   economicBalance: EconomicBalance["economicBalance"];
@@ -65,15 +63,12 @@ const getEconomicBalanceImpactLabel = (name: EconomicBalanceMainName): string =>
 };
 
 function EconomicBalanceChartCard({ economicBalance, bearer = "l'aménageur" }: Props) {
-  const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
-
   return (
-    <ImpactsChartsSection
+    <ImpactColumnChartCard
       title="Bilan de l'opération"
       subtitle={`Pour ${bearer}`}
-      onClick={() => {
-        openImpactModalDescription({ sectionName: "economic_balance" });
-      }}
+      dialogId="economic-balance-chart"
+      onOpenDialogArgs={{ sectionName: "economic_balance" }}
     >
       {economicBalance.length === 0 ? (
         <div>Vous n'avez pas renseigné de dépenses ni de recettes pour ce projet.</div>
@@ -104,7 +99,7 @@ function EconomicBalanceChartCard({ economicBalance, bearer = "l'aménageur" }: 
           ]}
         />
       )}
-    </ImpactsChartsSection>
+    </ImpactColumnChartCard>
   );
 }
 

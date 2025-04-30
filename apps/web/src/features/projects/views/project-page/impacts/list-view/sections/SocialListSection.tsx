@@ -1,8 +1,9 @@
-import { useContext } from "react";
+import { fr } from "@codegouvfr/react-dsfr";
 
 import { SocialImpact } from "@/features/projects/domain/projectImpactsSocial";
 
 import { getSocialImpactLabel } from "../../getImpactLabel";
+import ImpactModalDescriptionProviderContainer from "../../impact-description-modals";
 import { ImpactModalDescriptionContext } from "../../impact-description-modals/ImpactModalDescriptionContext";
 import ImpactItemDetails from "../ImpactItemDetails";
 import ImpactItemGroup from "../ImpactItemGroup";
@@ -25,148 +26,177 @@ const SocialListSection = ({ impacts }: Props) => {
     SOCIAL_SECTIONS.french_society.includes(name),
   );
 
-  const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
-
   return (
-    <ImpactSection
-      title="Impacts sociaux"
-      isMain
-      onTitleClick={() => {
-        openImpactModalDescription({ sectionName: "social" });
-      }}
-    >
-      {jobsImpacts.length > 0 && (
-        <ImpactSection
-          title="Impacts sur l'emploi"
-          onTitleClick={() => {
-            openImpactModalDescription({
-              sectionName: "social",
-              subSectionName: "jobs",
-            });
-          }}
-        >
-          {jobsImpacts.map(({ name, impact, type }) => (
-            <ImpactItemGroup key={name} isClickable>
-              <ImpactItemDetails
-                label={getSocialImpactLabel(name)}
-                value={impact.difference}
-                onClick={() => {
-                  openImpactModalDescription({
-                    sectionName: "social",
-                    subSectionName: "jobs",
-                    impactName: name,
-                  });
-                }}
-                data={
-                  impact.details
-                    ? impact.details.map(({ name: detailsName, impact: detailsImpact }) => ({
-                        label: getSocialImpactLabel(detailsName),
-                        value: detailsImpact.difference,
-                        onClick: () => {
+    <ImpactModalDescriptionProviderContainer dialogId={`social_list`}>
+      <ImpactModalDescriptionContext.Consumer>
+        {({ openImpactModalDescription, dialogId }) => (
+          <>
+            <button
+              aria-hidden="true"
+              className={fr.cx("fr-hidden")}
+              id={`${dialogId}-controlButton`}
+              aria-controls={dialogId}
+              data-fr-opened="false"
+            ></button>
+            <ImpactSection
+              title="Impacts sociaux"
+              isMain
+              onTitleClick={() => {
+                document.getElementById(`${dialogId}-controlButton`)?.click();
+                openImpactModalDescription({ sectionName: "social" });
+              }}
+            >
+              {jobsImpacts.length > 0 && (
+                <ImpactSection
+                  title="Impacts sur l'emploi"
+                  onTitleClick={() => {
+                    document.getElementById(`${dialogId}-controlButton`)?.click();
+                    openImpactModalDescription({
+                      sectionName: "social",
+                      subSectionName: "jobs",
+                    });
+                  }}
+                >
+                  {jobsImpacts.map(({ name, impact, type }) => (
+                    <ImpactItemGroup key={name} isClickable>
+                      <ImpactItemDetails
+                        label={getSocialImpactLabel(name)}
+                        value={impact.difference}
+                        onClick={() => {
+                          document.getElementById(`${dialogId}-controlButton`)?.click();
                           openImpactModalDescription({
                             sectionName: "social",
+                            subSectionName: "jobs",
                             impactName: name,
-                            impactDetailsName: detailsName,
                           });
-                        },
-                      }))
-                    : undefined
-                }
-                type={type}
-              />
-            </ImpactItemGroup>
-          ))}
-        </ImpactSection>
-      )}
+                        }}
+                        data={
+                          impact.details
+                            ? impact.details.map(
+                                ({ name: detailsName, impact: detailsImpact }) => ({
+                                  label: getSocialImpactLabel(detailsName),
+                                  value: detailsImpact.difference,
+                                  onClick: () => {
+                                    document.getElementById(`${dialogId}-controlButton`)?.click();
+                                    openImpactModalDescription({
+                                      sectionName: "social",
+                                      impactName: name,
+                                      impactDetailsName: detailsName,
+                                    });
+                                  },
+                                }),
+                              )
+                            : undefined
+                        }
+                        type={type}
+                      />
+                    </ImpactItemGroup>
+                  ))}
+                </ImpactSection>
+              )}
 
-      {residentsImpacts.length > 0 && (
-        <ImpactSection
-          title="Impacts sur la population locale"
-          onTitleClick={() => {
-            openImpactModalDescription({
-              sectionName: "social",
-              subSectionName: "local_people",
-            });
-          }}
-        >
-          {residentsImpacts.map(({ name, impact, type }) => (
-            <ImpactItemGroup key={name} isClickable>
-              <ImpactItemDetails
-                label={getSocialImpactLabel(name)}
-                value={impact.difference}
-                onClick={() => {
-                  openImpactModalDescription({
-                    sectionName: "social",
-                    subSectionName: "local_people",
-                    impactName: name,
-                  });
-                }}
-                data={
-                  impact.details
-                    ? impact.details.map(({ name: detailsName, impact: detailsImpact }) => ({
-                        label: getSocialImpactLabel(detailsName),
-                        value: detailsImpact.difference,
-                        onClick: () => {
+              {residentsImpacts.length > 0 && (
+                <ImpactSection
+                  title="Impacts sur la population locale"
+                  onTitleClick={() => {
+                    document.getElementById(`${dialogId}-controlButton`)?.click();
+                    openImpactModalDescription({
+                      sectionName: "social",
+                      subSectionName: "local_people",
+                    });
+                  }}
+                >
+                  {residentsImpacts.map(({ name, impact, type }) => (
+                    <ImpactItemGroup key={name} isClickable>
+                      <ImpactItemDetails
+                        label={getSocialImpactLabel(name)}
+                        value={impact.difference}
+                        onClick={() => {
+                          document.getElementById(`${dialogId}-controlButton`)?.click();
                           openImpactModalDescription({
                             sectionName: "social",
+                            subSectionName: "local_people",
                             impactName: name,
-                            impactDetailsName: detailsName,
                           });
-                        },
-                      }))
-                    : undefined
-                }
-                type={type}
-              />
-            </ImpactItemGroup>
-          ))}
-        </ImpactSection>
-      )}
+                        }}
+                        data={
+                          impact.details
+                            ? impact.details.map(
+                                ({ name: detailsName, impact: detailsImpact }) => ({
+                                  label: getSocialImpactLabel(detailsName),
+                                  value: detailsImpact.difference,
+                                  onClick: () => {
+                                    document.getElementById(`${dialogId}-controlButton`)?.click();
+                                    openImpactModalDescription({
+                                      sectionName: "social",
+                                      impactName: name,
+                                      impactDetailsName: detailsName,
+                                    });
+                                  },
+                                }),
+                              )
+                            : undefined
+                        }
+                        type={type}
+                      />
+                    </ImpactItemGroup>
+                  ))}
+                </ImpactSection>
+              )}
 
-      {frenchSocietyImpacts.length > 0 && (
-        <ImpactSection
-          title="Impacts sur la société française"
-          onTitleClick={() => {
-            openImpactModalDescription({
-              sectionName: "social",
-              subSectionName: "french_society",
-            });
-          }}
-        >
-          {frenchSocietyImpacts.map(({ name, impact, type }) => (
-            <ImpactItemGroup key={name} isClickable>
-              <ImpactItemDetails
-                label={getSocialImpactLabel(name)}
-                value={impact.difference}
-                onClick={() => {
-                  openImpactModalDescription({
-                    sectionName: "social",
-                    subSectionName: "french_society",
-                    impactName: name,
-                  });
-                }}
-                data={
-                  impact.details
-                    ? impact.details.map(({ name: detailsName, impact: detailsImpact }) => ({
-                        label: getSocialImpactLabel(detailsName),
-                        value: detailsImpact.difference,
-                        onClick: () => {
+              {frenchSocietyImpacts.length > 0 && (
+                <ImpactSection
+                  title="Impacts sur la société française"
+                  onTitleClick={() => {
+                    document.getElementById(`${dialogId}-controlButton`)?.click();
+                    openImpactModalDescription({
+                      sectionName: "social",
+                      subSectionName: "french_society",
+                    });
+                  }}
+                >
+                  {frenchSocietyImpacts.map(({ name, impact, type }) => (
+                    <ImpactItemGroup key={name} isClickable>
+                      <ImpactItemDetails
+                        label={getSocialImpactLabel(name)}
+                        value={impact.difference}
+                        onClick={() => {
+                          document.getElementById(`${dialogId}-controlButton`)?.click();
                           openImpactModalDescription({
                             sectionName: "social",
+                            subSectionName: "french_society",
                             impactName: name,
-                            impactDetailsName: detailsName,
                           });
-                        },
-                      }))
-                    : undefined
-                }
-                type={type}
-              />
-            </ImpactItemGroup>
-          ))}
-        </ImpactSection>
-      )}
-    </ImpactSection>
+                        }}
+                        data={
+                          impact.details
+                            ? impact.details.map(
+                                ({ name: detailsName, impact: detailsImpact }) => ({
+                                  label: getSocialImpactLabel(detailsName),
+                                  value: detailsImpact.difference,
+                                  onClick: () => {
+                                    document.getElementById(`${dialogId}-controlButton`)?.click();
+                                    openImpactModalDescription({
+                                      sectionName: "social",
+                                      impactName: name,
+                                      impactDetailsName: detailsName,
+                                    });
+                                  },
+                                }),
+                              )
+                            : undefined
+                        }
+                        type={type}
+                      />
+                    </ImpactItemGroup>
+                  ))}
+                </ImpactSection>
+              )}
+            </ImpactSection>
+          </>
+        )}
+      </ImpactModalDescriptionContext.Consumer>
+    </ImpactModalDescriptionProviderContainer>
   );
 };
 

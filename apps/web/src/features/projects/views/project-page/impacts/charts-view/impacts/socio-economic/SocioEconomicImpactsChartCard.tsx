@@ -1,5 +1,3 @@
-import { useContext } from "react";
-
 import {
   SocioEconomicImpactByActor,
   SocioEconomicMainImpactName,
@@ -7,9 +5,8 @@ import {
 import { getActorLabel } from "@/features/projects/views/shared/socioEconomicLabels";
 
 import { getSocioEconomicImpactColor } from "../../../getImpactColor";
-import { ImpactModalDescriptionContext } from "../../../impact-description-modals/ImpactModalDescriptionContext";
 import ImpactColumnChart from "../../ImpactChartCard/ImpactColumnChart";
-import ImpactsChartsSection from "../../ImpactsChartsSection";
+import ImpactColumnChartCard from "../../ImpactChartCard/ImpactColumnChartCard";
 
 type Props = {
   socioEconomicImpacts: SocioEconomicImpactByActor;
@@ -58,15 +55,12 @@ const getSocioEconomicImpactLabel = (name: SocioEconomicMainImpactName) => {
 };
 
 function SocioEconomicChartCard({ socioEconomicImpacts }: Props) {
-  const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
-
   return (
-    <ImpactsChartsSection
-      onClick={() => {
-        openImpactModalDescription({ sectionName: "socio_economic" });
-      }}
+    <ImpactColumnChartCard
+      onOpenDialogArgs={{ sectionName: "socio_economic" }}
       title="Impacts socio-économiques"
       subtitle="Par bénéficiaires"
+      dialogId="socio-economic-chart"
     >
       <ImpactColumnChart
         data={socioEconomicImpacts.map(({ name, impacts }) => ({
@@ -78,7 +72,7 @@ function SocioEconomicChartCard({ socioEconomicImpacts }: Props) {
           })),
         }))}
       />
-    </ImpactsChartsSection>
+    </ImpactColumnChartCard>
   );
 }
 

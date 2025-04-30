@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import { SoilType } from "shared";
 
 import {
@@ -8,7 +7,6 @@ import {
 import { getLabelForSoilType } from "@/shared/core/label-mapping/soilTypeLabelMapping";
 import { getColorForSoilType } from "@/shared/core/soils";
 
-import { ImpactModalDescriptionContext } from "../../../impact-description-modals/ImpactModalDescriptionContext";
 import ImpactAreaChartCard from "../../ImpactChartCard/ImpactAreaChartCard";
 
 type Props = {
@@ -20,8 +18,6 @@ const ImpactAreaChartsSection = ({
   environmentalAreaChartImpactsData,
   socialAreaChartImpactsData,
 }: Props) => {
-  const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
-
   const { fullTimeJobs, householdsPoweredByRenewableEnergy } = socialAreaChartImpactsData;
   const {
     nonContaminatedSurfaceArea,
@@ -34,6 +30,7 @@ const ImpactAreaChartsSection = ({
     <div className="tw-grid tw-gap-10 tw-grid-cols-1 md:tw-grid-cols-2 lg:tw-grid-cols-3 tw-mb-8">
       {fullTimeJobs && (
         <ImpactAreaChartCard
+          dialogId="etp_chart"
           type="etp"
           impact={{
             impactLabel: "🧑‍🔧️ Emplois équivalent temps plein",
@@ -51,25 +48,22 @@ const ImpactAreaChartsSection = ({
               },
             ],
           }}
-          onClick={() => {
-            openImpactModalDescription({ sectionName: "social", impactName: "full_time_jobs" });
-          }}
+          onOpenDialogArgs={{ sectionName: "social", impactName: "full_time_jobs" }}
         />
       )}
 
       {householdsPoweredByRenewableEnergy && (
         <ImpactAreaChartCard
+          dialogId="households-powered-by-renewable-energy_chart"
           type="default"
           impact={{
             impactLabel: "🏠 Foyers alimentés par les énergies renouvelables",
             color: "#E3CFA9",
             ...householdsPoweredByRenewableEnergy,
           }}
-          onClick={() => {
-            openImpactModalDescription({
-              sectionName: "social",
-              impactName: "households_powered_by_renewable_energy",
-            });
+          onOpenDialogArgs={{
+            sectionName: "social",
+            impactName: "households_powered_by_renewable_energy",
           }}
         />
       )}
@@ -81,6 +75,7 @@ const ImpactAreaChartsSection = ({
         const { base, forecast, difference, ...details } = soilsCarbonStorage;
         return (
           <ImpactAreaChartCard
+            dialogId="soils-carbon-storage_chart"
             type="co2"
             impact={{
               impactLabel: "🍂️ Carbone stocké dans les sols",
@@ -93,11 +88,9 @@ const ImpactAreaChartsSection = ({
                 color: getColorForSoilType(type as SoilType),
               })),
             }}
-            onClick={() => {
-              openImpactModalDescription({
-                sectionName: "charts",
-                impactName: "soils_carbon_storage",
-              });
+            onOpenDialogArgs={{
+              sectionName: "charts",
+              impactName: "soils_carbon_storage",
             }}
           />
         );
@@ -105,6 +98,7 @@ const ImpactAreaChartsSection = ({
 
       {avoidedCo2eqEmissions && (
         <ImpactAreaChartCard
+          dialogId="avoided-co2-emissions_chart"
           type="co2"
           impact={{
             impactLabel: "☁️ CO2 eq stocké ou évité",
@@ -132,14 +126,13 @@ const ImpactAreaChartsSection = ({
               },
             ],
           }}
-          onClick={() => {
-            openImpactModalDescription({ sectionName: "environmental", impactName: "co2_benefit" });
-          }}
+          onOpenDialogArgs={{ sectionName: "environmental", impactName: "co2_benefit" }}
         />
       )}
 
       {permeableSurfaceArea && (
         <ImpactAreaChartCard
+          dialogId="permeable-surface_chart"
           type="surfaceArea"
           impact={{
             impactLabel: "🌧 Surface perméable",
@@ -157,28 +150,25 @@ const ImpactAreaChartsSection = ({
               },
             ],
           }}
-          onClick={() => {
-            openImpactModalDescription({
-              sectionName: "environmental",
-              impactName: "permeable_surface_area",
-            });
+          onOpenDialogArgs={{
+            sectionName: "environmental",
+            impactName: "permeable_surface_area",
           }}
         />
       )}
 
       {nonContaminatedSurfaceArea && (
         <ImpactAreaChartCard
+          dialogId="non-contaminated-surface_chart"
           type="surfaceArea"
           impact={{
             impactLabel: "✨ Surface non polluée",
             color: "#FCDF3B",
             ...nonContaminatedSurfaceArea,
           }}
-          onClick={() => {
-            openImpactModalDescription({
-              sectionName: "environmental",
-              impactName: "non_contaminated_surface_area",
-            });
+          onOpenDialogArgs={{
+            sectionName: "environmental",
+            impactName: "non_contaminated_surface_area",
           }}
         />
       )}

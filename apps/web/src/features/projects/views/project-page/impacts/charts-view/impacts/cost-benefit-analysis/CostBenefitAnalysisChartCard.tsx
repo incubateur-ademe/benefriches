@@ -1,12 +1,10 @@
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { useContext } from "react";
 
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { withDefaultBarChartOptions } from "@/shared/views/charts";
 
-import { ImpactModalDescriptionContext } from "../../../impact-description-modals/ImpactModalDescriptionContext";
-import ImpactsChartsSection from "../../ImpactsChartsSection";
+import ImpactColumnChartCard from "../../ImpactChartCard/ImpactColumnChartCard";
 
 type Props = {
   economicBalanceTotal: number;
@@ -36,16 +34,13 @@ function CostBenefitAnalysisChartCard({ economicBalanceTotal, socioEconomicTotal
     ],
   });
 
-  const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
-
   return (
-    <ImpactsChartsSection
+    <ImpactColumnChartCard
       title="Analyse coûts/bénéfices"
-      onClick={() => {
-        openImpactModalDescription({
-          sectionName: "charts",
-          impactName: "cost_benefit_analysis",
-        });
+      dialogId="cost_benefit_analysis-chart"
+      onOpenDialogArgs={{
+        sectionName: "charts",
+        impactName: "cost_benefit_analysis",
       }}
     >
       <HighchartsReact
@@ -53,7 +48,7 @@ function CostBenefitAnalysisChartCard({ economicBalanceTotal, socioEconomicTotal
         highcharts={Highcharts}
         options={barChartOptions}
       />
-    </ImpactsChartsSection>
+    </ImpactColumnChartCard>
   );
 }
 

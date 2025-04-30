@@ -61,24 +61,28 @@ const SocioEconomicDescription = ({ impactsData }: Props) => {
               {...economicDirect}
               initialShowSectionContent={false}
               noMarginBottom
+              inDialog
             />
             <SocioEconomicImpactSection
               sectionName="economic_indirect"
               {...economicIndirect}
               initialShowSectionContent={false}
               noMarginBottom
+              inDialog
             />
             <SocioEconomicImpactSection
               sectionName="social_monetary"
               {...socialMonetary}
               initialShowSectionContent={false}
               noMarginBottom
+              inDialog
             />
             <SocioEconomicImpactSection
               sectionName="environmental_monetary"
               {...environmentalMonetary}
               initialShowSectionContent={false}
               noMarginBottom
+              inDialog
             />
           </div>
         </ModalData>

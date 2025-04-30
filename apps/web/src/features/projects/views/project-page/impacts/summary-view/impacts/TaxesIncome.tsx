@@ -1,11 +1,12 @@
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 
+import { ControlButtonProps } from "../../impact-description-modals/ImpactModalDescriptionContext";
 import KeyImpactIndicatorCard from "../KeyImpactIndicatorCard";
 
 type Props = {
   value: number;
   isSuccess: boolean;
-  onClick?: () => void;
+  buttonProps: ControlButtonProps;
   noDescription?: boolean;
 };
 

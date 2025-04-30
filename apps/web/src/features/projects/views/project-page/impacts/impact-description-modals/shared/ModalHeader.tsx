@@ -1,9 +1,9 @@
 import { fr } from "@codegouvfr/react-dsfr";
-import { ReactNode } from "react";
+import { ReactNode, useContext } from "react";
 
 import classNames from "@/shared/views/clsx";
 
-import { MODAL_DESCRIPTION_ID, MODAL_TITLE_ID } from "../ImpactModalDescriptionProvider";
+import { ImpactModalDescriptionContext } from "../ImpactModalDescriptionContext";
 import ModalBreadcrumb, { BreadcrumbProps } from "./ModalBreadcrumb";
 
 type Props = {
@@ -18,6 +18,7 @@ type Props = {
 };
 
 const ModalHeader = ({ title, subtitle, breadcrumbSegments, value }: Props) => {
+  const { dialogId, dialogTitleId } = useContext(ImpactModalDescriptionContext);
   return (
     <div
       className={classNames(
@@ -35,13 +36,13 @@ const ModalHeader = ({ title, subtitle, breadcrumbSegments, value }: Props) => {
         <button
           className={fr.cx("fr-btn--close", "fr-btn")}
           title="Fermer"
-          aria-controls={MODAL_DESCRIPTION_ID}
+          aria-controls={dialogId}
           type="button"
         >
           Fermer
         </button>
       </div>
-      <h1 id={MODAL_TITLE_ID} className={classNames(fr.cx("fr-modal__title"), "tw-mb-2")}>
+      <h1 id={dialogTitleId} className={classNames(fr.cx("fr-modal__title"), "tw-mb-2")}>
         {title}
       </h1>
 

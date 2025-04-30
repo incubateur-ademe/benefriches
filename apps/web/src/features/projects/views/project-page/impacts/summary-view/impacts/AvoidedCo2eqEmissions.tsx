@@ -2,19 +2,20 @@ import { formatPerFrenchPersonAnnualEquivalent } from "@/features/create-project
 import { formatCO2Impact } from "@/features/projects/views/shared/formatImpactValue";
 import { getCo2EqEmissionsTonsInAverageFrenchAnnualEmissionsPerPerson } from "@/shared/core/carbonEmissions";
 
+import { ControlButtonProps } from "../../impact-description-modals/ImpactModalDescriptionContext";
 import KeyImpactIndicatorCard from "../KeyImpactIndicatorCard";
 
 type Props = {
   value: number;
   isSuccess: boolean;
-  onClick?: () => void;
+  buttonProps: ControlButtonProps;
   noDescription?: boolean;
 };
 
 const ImpactSummaryAvoidedCo2eqEmissions = ({
   value,
   isSuccess,
-  onClick,
+  buttonProps,
   noDescription,
 }: Props) => {
   const co2eqValue = Math.abs(value);
@@ -36,7 +37,7 @@ const ImpactSummaryAvoidedCo2eqEmissions = ({
             : `${co2eqValueText} de CO2-éq évitées, soit les émissions de ${frenchPersonAnnualEquivalentText} français pendant 1 an`
         }
         title="- d’émissions de CO2&nbsp;☁️"
-        onClick={onClick}
+        buttonProps={buttonProps}
       />
     );
   }
@@ -50,7 +51,7 @@ const ImpactSummaryAvoidedCo2eqEmissions = ({
           : `${co2eqValueText} de CO2-éq émises, soit les émissions de ${frenchPersonAnnualEquivalentText} français pendant 1 an`
       }
       title="+ d’émissions de CO2&nbsp;☁️"
-      onClick={onClick}
+      buttonProps={buttonProps}
     />
   );
 };

@@ -1,12 +1,13 @@
 import { formatPercentage, formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 
+import { ControlButtonProps } from "../../impact-description-modals/ImpactModalDescriptionContext";
 import KeyImpactIndicatorCard from "../KeyImpactIndicatorCard";
 
 type Props = {
   percentageEvolution: number;
   difference: number;
   isSuccess: boolean;
-  onClick?: () => void;
+  buttonProps: ControlButtonProps;
   noDescription?: boolean;
 };
 
@@ -15,7 +16,7 @@ const ImpactSummaryPermeableSurfaceArea = ({
   percentageEvolution,
   isSuccess,
   noDescription,
-  onClick,
+  buttonProps,
 }: Props) => {
   return isSuccess ? (
     <KeyImpactIndicatorCard
@@ -26,7 +27,7 @@ const ImpactSummaryPermeableSurfaceArea = ({
           : `${formatSurfaceArea(difference)} (soit ${formatPercentage(percentageEvolution)}) de sols désimperméabilisés`
       }
       title="+ de sols perméables&nbsp;☔️"
-      onClick={onClick}
+      buttonProps={buttonProps}
     />
   ) : (
     <KeyImpactIndicatorCard
@@ -37,7 +38,7 @@ const ImpactSummaryPermeableSurfaceArea = ({
           : `${formatSurfaceArea(difference)} (soit ${formatPercentage(percentageEvolution)}) de sols imperméabilisés`
       }
       title="- de sols perméables&nbsp;☔️"
-      onClick={onClick}
+      buttonProps={buttonProps}
     />
   );
 };

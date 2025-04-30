@@ -75,6 +75,7 @@ function DemoProjectImpacts({ projectData, siteData, impactsData: impactsDataFor
         />
 
         <ImpactModalDescriptionProvider
+          dialogId="demo-impacts"
           projectData={{
             soilsDistribution: projectData.soilsDistribution,
             contaminatedSoilSurface:

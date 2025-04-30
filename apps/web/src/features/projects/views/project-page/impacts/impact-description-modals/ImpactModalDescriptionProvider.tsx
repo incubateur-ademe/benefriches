@@ -1,5 +1,3 @@
-import { fr } from "@codegouvfr/react-dsfr";
-import Button from "@codegouvfr/react-dsfr/Button";
 import { useIsModalOpen } from "@codegouvfr/react-dsfr/Modal/useIsModalOpen";
 import { ReactNode, useLayoutEffect, useState } from "react";
 import { BuildingsUseDistribution, ReconversionProjectImpacts, SoilsDistribution } from "shared";
@@ -48,70 +46,71 @@ type ModalDescriptionProviderProps = {
   projectData: ProjectData;
   siteData: SiteData;
   impactsData: ImpactsData;
+  dialogId: string;
 };
 
-export const MODAL_DESCRIPTION_ID = "modal-impacts-description";
-export const MODAL_TITLE_ID = `fr-modal-title-${MODAL_DESCRIPTION_ID}`;
-const HIDDEN_CONTROL_BUTTON_ID = `${MODAL_DESCRIPTION_ID}-control-button`;
 function ImpactModalDescriptionProvider({
   children,
   projectData,
   siteData,
   impactsData,
+  dialogId,
 }: ModalDescriptionProviderProps) {
+  const dialogTitleId = `fr-modal-title-${dialogId}`;
+
   const [openState, setOpenState] = useState<OpenState>(INITIAL_OPEN_STATE);
 
   const resetOpenState = () => {
     setOpenState(INITIAL_OPEN_STATE);
   };
 
-  const isOpen = useIsModalOpen(
-    { id: MODAL_DESCRIPTION_ID, isOpenedByDefault: false },
+  useIsModalOpen(
+    { id: dialogId, isOpenedByDefault: false },
     {
       onConceal: resetOpenState,
     },
   );
 
   const openImpactModalDescription = (args: OpenImpactModalDescriptionArgs) => {
-    if (!isOpen) {
-      document.getElementById(HIDDEN_CONTROL_BUTTON_ID)?.click();
-    }
     setOpenState(args);
   };
 
+  const getControlButtonProps = (onOpenDialogArgs: OpenImpactModalDescriptionArgs) => {
+    return {
+      "data-fr-opened": false,
+      "aria-controls": dialogId,
+      onClick: () => {
+        openImpactModalDescription(onOpenDialogArgs);
+      },
+      onKeyUp: (e: React.KeyboardEvent<HTMLElement>) => {
+        if (e.key === "Enter") {
+          openImpactModalDescription(onOpenDialogArgs);
+        }
+      },
+    };
+  };
+
   useLayoutEffect(() => {
-    const domModalBody = document.querySelector(`#${MODAL_DESCRIPTION_ID} .fr-modal__body`);
+    const domModalBody = document.querySelector(`#${dialogId} .fr-modal__body`);
     if (domModalBody) {
       domModalBody.scrollTo({ top: 0, left: 0, behavior: "instant" });
     }
-  }, [openState]);
+  }, [dialogId, openState]);
 
   return (
     <ImpactModalDescriptionContext.Provider
       value={{
         openState,
         openImpactModalDescription,
+        getControlButtonProps,
         resetOpenState,
+        dialogTitleId,
+        dialogId,
       }}
     >
-      {children}
-
-      <Button
-        nativeButtonProps={{
-          id: HIDDEN_CONTROL_BUTTON_ID,
-          "aria-controls": MODAL_DESCRIPTION_ID,
-          "data-fr-opened": false,
-          type: "button",
-          tabIndex: -1,
-          "aria-hidden": true,
-        }}
-        className={fr.cx("fr-hidden")}
-      >
-        {" "}
-      </Button>
       <dialog
-        aria-labelledby={MODAL_TITLE_ID}
-        id={MODAL_DESCRIPTION_ID}
+        aria-labelledby={dialogTitleId}
+        id={dialogId}
         className="fr-modal"
         data-fr-concealing-backdrop={true}
       >
@@ -181,6 +180,7 @@ function ImpactModalDescriptionProvider({
           }
         })()}
       </dialog>
+      {children}
     </ImpactModalDescriptionContext.Provider>
   );
 }
