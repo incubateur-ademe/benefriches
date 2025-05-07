@@ -3,10 +3,6 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
 import { JwtModule, JwtService } from "@nestjs/jwt";
 
 import { ACCESS_TOKEN_SERVICE } from "./AccessTokenService";
-import {
-  getProConnectOidcConfig,
-  PRO_CONNECT_CLIENT_CONFIG as PRO_CONNECT_OIDC_CONFIG,
-} from "./ProConnectOidcConfig";
 import { AuthController } from "./auth.controller";
 
 @Module({
@@ -27,19 +23,6 @@ import { AuthController } from "./auth.controller";
   ],
   controllers: [AuthController],
   providers: [
-    {
-      provide: PRO_CONNECT_OIDC_CONFIG,
-      useFactory: async (configService: ConfigService) => {
-        const proConnectOidcConfig = await getProConnectOidcConfig({
-          providerDomain: configService.getOrThrow<string>("PRO_CONNECT_PROVIDER_DOMAIN"),
-          clientId: configService.getOrThrow<string>("PRO_CONNECT_CLIENT_ID"),
-          clientSecret: configService.getOrThrow<string>("PRO_CONNECT_CLIENT_SECRET"),
-        });
-
-        return proConnectOidcConfig;
-      },
-      inject: [ConfigService],
-    },
     {
       provide: ACCESS_TOKEN_SERVICE,
       useExisting: JwtService,
