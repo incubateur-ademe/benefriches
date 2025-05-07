@@ -36,7 +36,7 @@ const EconomicBalanceListSection = ({ impact, modalData }: Props) => {
         {economicBalance.map(({ name, value, details = [] }) => (
           <>
             <ImpactModalDescription
-              dialogId={`fr-modal-impacts-economic_balance-${name}_List`}
+              dialogId={`fr-modal-impacts-economic_balance-${name}-List`}
               initialState={{ sectionName: "economic_balance", impactName: name }}
               {...modalData}
             />

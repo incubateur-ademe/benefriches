@@ -27,7 +27,7 @@ const SocioEconomicImpactsListSection = ({ socioEconomicImpacts, modalData }: Pr
         isMain
         total={total}
         initialShowSectionContent={false}
-        dialogId={`fr-dialog-impacts-socio_economic-List`}
+        dialogId={`fr-modal-impacts-socio_economic-List`}
       >
         <SocioEconomicImpactSection
           sectionName="economic_direct"
