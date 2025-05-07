@@ -1,7 +1,5 @@
 import * as client from "openid-client";
 
-export const PRO_CONNECT_CLIENT_CONFIG = Symbol("ProConnectClientConfig");
-
 type BuildProConnectClientProps = {
   providerDomain: string;
   clientId: string;

@@ -14,7 +14,7 @@ import * as oidcClient from "openid-client";
 
 import { ACCESS_TOKEN_SERVICE, AccessTokenService } from "./AccessTokenService";
 import { JwtAuthGuard } from "./JwtAuthGuard";
-import { PRO_CONNECT_CLIENT_CONFIG } from "./ProConnectOidcConfig";
+import { getProConnectOidcConfig } from "./ProConnectOidcConfig";
 import { ACCESS_TOKEN_COOKIE_KEY } from "./accessTokenCookie";
 
 declare module "express-session" {
@@ -27,15 +27,19 @@ declare module "express-session" {
 @Controller("auth")
 export class AuthController {
   constructor(
-    @Inject(PRO_CONNECT_CLIENT_CONFIG)
-    private readonly proConnectOidcConfig: oidcClient.Configuration,
     @Inject(ACCESS_TOKEN_SERVICE)
     private readonly accessTokenService: AccessTokenService,
     private readonly configService: ConfigService,
   ) {}
 
   @Get("/login/pro-connect")
-  login(@Req() req: Request, @Res() res: Response) {
+  async login(@Req() req: Request, @Res() res: Response) {
+    const proConnectOidcConfig = await getProConnectOidcConfig({
+      providerDomain: this.configService.getOrThrow<string>("PRO_CONNECT_PROVIDER_DOMAIN"),
+      clientId: this.configService.getOrThrow<string>("PRO_CONNECT_CLIENT_ID"),
+      clientSecret: this.configService.getOrThrow<string>("PRO_CONNECT_CLIENT_SECRET"),
+    });
+
     const nonce = oidcClient.randomNonce();
     const state = oidcClient.randomState();
 
@@ -43,7 +47,7 @@ export class AuthController {
     req.session.state = state;
 
     const redirectUrl = oidcClient.buildAuthorizationUrl(
-      this.proConnectOidcConfig,
+      proConnectOidcConfig,
       new URLSearchParams({
         nonce,
         state,
@@ -59,6 +63,12 @@ export class AuthController {
 
   @Get("/login-callback/pro-connect")
   async proConnectLoginCallback(@Req() req: Request, @Res() res: Response) {
+    const proConnectOidcConfig = await getProConnectOidcConfig({
+      providerDomain: this.configService.getOrThrow<string>("PRO_CONNECT_PROVIDER_DOMAIN"),
+      clientId: this.configService.getOrThrow<string>("PRO_CONNECT_CLIENT_ID"),
+      clientSecret: this.configService.getOrThrow<string>("PRO_CONNECT_CLIENT_SECRET"),
+    });
+
     const expectedState = req.session.state;
     const expectedNonce = req.session.nonce;
 
@@ -68,7 +78,7 @@ export class AuthController {
     const currentUrl = new URL(`${req.protocol}://${req.get("host")}${req.originalUrl}`);
 
     // exchange received authorization code for tokens
-    const tokens = await oidcClient.authorizationCodeGrant(this.proConnectOidcConfig, currentUrl, {
+    const tokens = await oidcClient.authorizationCodeGrant(proConnectOidcConfig, currentUrl, {
       expectedState,
       expectedNonce,
     });
@@ -81,7 +91,7 @@ export class AuthController {
     if (!claims) throw new BadRequestException("Missing claims");
 
     const userInfo = await oidcClient.fetchUserInfo(
-      this.proConnectOidcConfig,
+      proConnectOidcConfig,
       tokens.access_token,
       claims.sub,
     );
