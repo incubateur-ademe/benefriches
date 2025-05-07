@@ -11,7 +11,7 @@ import ModalTitleTwo from "../../shared/ModalTitleTwo";
 import { mainBreadcrumbSection, jobsBreadcrumbSection } from "../breadcrumbSections";
 
 const FullTimeJobsDescription = () => {
-  const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
+  const { updateModalContent } = useContext(ImpactModalDescriptionContext);
 
   return (
     <ModalBody>
@@ -44,7 +44,7 @@ const FullTimeJobsDescription = () => {
         <div className="tw-flex tw-flex-col">
           <Button
             onClick={() => {
-              openImpactModalDescription({
+              updateModalContent({
                 sectionName: "social",
                 impactName: "full_time_jobs",
                 impactDetailsName: "conversion_full_time_jobs",
@@ -56,7 +56,7 @@ const FullTimeJobsDescription = () => {
           </Button>{" "}
           <Button
             onClick={() => {
-              openImpactModalDescription({
+              updateModalContent({
                 sectionName: "social",
                 impactName: "full_time_jobs",
                 impactDetailsName: "operations_full_time_jobs",

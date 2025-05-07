@@ -4,12 +4,12 @@ import { useContext } from "react";
 import { ImpactModalDescriptionContext } from "../../ImpactModalDescriptionContext";
 
 const LinkToAvoidedKilometersImpact = () => {
-  const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
+  const { updateModalContent } = useContext(ImpactModalDescriptionContext);
 
   return (
     <Button
       onClick={() => {
-        openImpactModalDescription({
+        updateModalContent({
           sectionName: "social",
           impactName: "avoided_vehicule_kilometers",
         });

@@ -17,7 +17,7 @@ type Props = {
 
 const SummaryLocalPropertyValueIncreaseDescription = ({ impactData }: Props) => {
   const { value } = impactData;
-  const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
+  const { updateModalContent } = useContext(ImpactModalDescriptionContext);
 
   return (
     <ModalBody>
@@ -46,7 +46,7 @@ const SummaryLocalPropertyValueIncreaseDescription = ({ impactData }: Props) => 
             labelProps={{
               onClick: (e) => {
                 e.stopPropagation();
-                openImpactModalDescription({
+                updateModalContent({
                   sectionName: "socio_economic",
                   impactName: "local_property_value_increase",
                 });

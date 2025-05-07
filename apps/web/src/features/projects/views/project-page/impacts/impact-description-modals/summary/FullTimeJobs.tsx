@@ -23,7 +23,7 @@ const SummaryFullTimeJobsDescription = ({ impactData }: Props) => {
   const { isSuccess, value } = impactData;
   const { difference, percentageEvolution } = value;
 
-  const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
+  const { updateModalContent } = useContext(ImpactModalDescriptionContext);
 
   const title = isSuccess ? `+ d’emplois\u00a0👷` : `- d’emplois\u00a0👷`;
 
@@ -61,7 +61,7 @@ const SummaryFullTimeJobsDescription = ({ impactData }: Props) => {
             labelProps={{
               onClick: (e) => {
                 e.stopPropagation();
-                openImpactModalDescription({
+                updateModalContent({
                   sectionName: "social",
                   impactName: "full_time_jobs",
                 });

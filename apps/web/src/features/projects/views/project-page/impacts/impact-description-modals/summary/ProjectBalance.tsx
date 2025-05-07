@@ -23,7 +23,7 @@ type Props = {
 const SummaryProjectBalanceDescription = ({ impactData }: Props) => {
   const { value, isSuccess } = impactData;
 
-  const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
+  const { updateModalContent } = useContext(ImpactModalDescriptionContext);
 
   const { socioEconomicMonetaryImpactsTotal, economicBalanceTotal } = value;
 
@@ -84,7 +84,7 @@ const SummaryProjectBalanceDescription = ({ impactData }: Props) => {
             labelProps={{
               onClick: (e) => {
                 e.stopPropagation();
-                openImpactModalDescription({
+                updateModalContent({
                   sectionName: "economic_balance",
                 });
               },
@@ -100,7 +100,7 @@ const SummaryProjectBalanceDescription = ({ impactData }: Props) => {
             labelProps={{
               onClick: (e) => {
                 e.stopPropagation();
-                openImpactModalDescription({
+                updateModalContent({
                   sectionName: "socio_economic",
                 });
               },

@@ -1,4 +1,4 @@
 export const breadcrumbSection = {
   label: "Bilan de l'opération",
-  openState: { sectionName: "economic_balance" },
+  contentState: { sectionName: "economic_balance" },
 } as const;

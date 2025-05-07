@@ -460,7 +460,7 @@ export function SocioEconomicModalWizard({
             const impactNameSegments = impactDetailsName && [
               {
                 label: getSocioEconomicImpactLabel(impactName),
-                openState: {
+                contentState: {
                   sectionName: "socio_economic" as const,
                   subSectionName: impactSubSectionName,
                   impactName,

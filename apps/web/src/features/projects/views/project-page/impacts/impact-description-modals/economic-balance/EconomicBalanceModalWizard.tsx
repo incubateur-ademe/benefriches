@@ -71,7 +71,7 @@ export function EconomicBalanceModalWizard({
                   segments: impactDetailsName && [
                     {
                       label: getEconomicBalanceImpactLabel(impactName),
-                      openState: { sectionName: "economic_balance", impactName },
+                      contentState: { sectionName: "economic_balance", impactName },
                     },
                   ],
                 }}

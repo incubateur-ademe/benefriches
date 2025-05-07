@@ -65,28 +65,26 @@ type IsOpenedState =
       impactName: "cost_benefit_analysis" | "soils_carbon_storage";
     };
 
-export type OpenState = IsClosedState | IsOpenedState;
+export type ContentState = IsClosedState | IsOpenedState;
 
-export type OpenImpactModalDescriptionArgs = OpenState;
+export type UpdateModalContentArgs = ContentState;
 
 type Context = {
-  openState: OpenState;
-  openImpactModalDescription: (args: OpenImpactModalDescriptionArgs) => void;
-  resetOpenState: () => void;
+  contentState: ContentState;
+  updateModalContent: (args: UpdateModalContentArgs) => void;
   dialogId: string;
   dialogTitleId: string;
 };
 
-export const INITIAL_OPEN_STATE = {
+export const INITIAL_CONTENT_STATE = {
   sectionName: undefined,
   impactName: undefined,
   impactDetailsName: undefined,
 };
 
 export const ImpactModalDescriptionContext = createContext<Context>({
-  openState: INITIAL_OPEN_STATE,
-  openImpactModalDescription: () => {},
-  resetOpenState: () => {},
+  contentState: INITIAL_CONTENT_STATE,
+  updateModalContent: () => {},
   dialogId: "",
   dialogTitleId: "",
 });

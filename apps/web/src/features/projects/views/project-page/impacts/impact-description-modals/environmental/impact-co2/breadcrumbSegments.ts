@@ -6,8 +6,8 @@ export const breadcrumbSegments: BreadcrumbProps["segments"] = [
   co2BreadcrumbSection,
   {
     label: "CO2-eq stocké ou évité",
-    openState: {
-      sectionName: mainBreadcrumbSection.openState.sectionName,
+    contentState: {
+      sectionName: mainBreadcrumbSection.contentState.sectionName,
       impactName: "co2_benefit",
     },
   },

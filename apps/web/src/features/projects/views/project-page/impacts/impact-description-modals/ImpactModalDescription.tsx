@@ -7,9 +7,9 @@ import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import "./ImpactDescriptionModal.css";
 import {
   ImpactModalDescriptionContext,
-  INITIAL_OPEN_STATE,
-  OpenImpactModalDescriptionArgs,
-  OpenState,
+  INITIAL_CONTENT_STATE,
+  UpdateModalContentArgs,
+  ContentState,
 } from "./ImpactModalDescriptionContext";
 import { EconomicBalanceModalWizard } from "./economic-balance/EconomicBalanceModalWizard";
 import { EnvironmentalModalWizard } from "./environmental/EnvironmentalModalWizard";
@@ -50,7 +50,7 @@ export type ModalDataProps = {
 
 type ModalDescriptionProviderProps = ModalDataProps & {
   dialogId: string;
-  initialState: OpenState;
+  initialState: ContentState;
 };
 
 function ImpactModalDescription({
@@ -58,26 +58,26 @@ function ImpactModalDescription({
   siteData,
   impactsData,
   dialogId,
-  initialState = INITIAL_OPEN_STATE,
+  initialState = INITIAL_CONTENT_STATE,
 }: ModalDescriptionProviderProps) {
   const dialogTitleId = `${dialogId}-title`;
 
-  const [openState, setOpenState] = useState<OpenState>(INITIAL_OPEN_STATE);
+  const [contentState, setContentState] = useState<ContentState>(INITIAL_CONTENT_STATE);
 
-  const resetOpenState = () => {
-    setOpenState(initialState);
+  const resetContentState = () => {
+    setContentState(initialState);
   };
 
   const isOpen = useIsModalOpen(
     { id: dialogId, isOpenedByDefault: false },
     {
-      onConceal: resetOpenState,
-      onDisclose: resetOpenState,
+      onConceal: resetContentState,
+      onDisclose: resetContentState,
     },
   );
 
-  const openImpactModalDescription = (args: OpenImpactModalDescriptionArgs) => {
-    setOpenState(args);
+  const updateModalContent = (args: UpdateModalContentArgs) => {
+    setContentState(args);
   };
 
   useLayoutEffect(() => {
@@ -85,7 +85,7 @@ function ImpactModalDescription({
     if (domModalBody) {
       domModalBody.scrollTo({ top: 0, left: 0, behavior: "instant" });
     }
-  }, [dialogId, openState]);
+  }, [dialogId, contentState]);
 
   return (
     <dialog
@@ -96,9 +96,8 @@ function ImpactModalDescription({
     >
       <ImpactModalDescriptionContext.Provider
         value={{
-          openState,
-          openImpactModalDescription,
-          resetOpenState,
+          contentState,
+          updateModalContent,
           dialogTitleId,
           dialogId,
         }}
@@ -108,14 +107,14 @@ function ImpactModalDescription({
             if (!isOpen) {
               return null;
             }
-            switch (openState.sectionName) {
+            switch (contentState.sectionName) {
               case "economic_balance":
                 return (
                   <EconomicBalanceModalWizard
                     projectData={projectData}
                     impactsData={impactsData}
-                    impactName={openState.impactName}
-                    impactDetailsName={openState.impactDetailsName}
+                    impactName={contentState.impactName}
+                    impactDetailsName={contentState.impactDetailsName}
                   />
                 );
               case "socio_economic":
@@ -124,9 +123,9 @@ function ImpactModalDescription({
                     projectData={projectData}
                     siteData={siteData}
                     impactsData={impactsData}
-                    impactSubSectionName={openState.subSectionName}
-                    impactName={openState.impactName}
-                    impactDetailsName={openState.impactDetailsName}
+                    impactSubSectionName={contentState.subSectionName}
+                    impactName={contentState.impactName}
+                    impactDetailsName={contentState.impactDetailsName}
                   />
                 );
 
@@ -136,9 +135,9 @@ function ImpactModalDescription({
                     projectData={projectData}
                     siteData={siteData}
                     impactsData={impactsData}
-                    impactSubSectionName={openState.subSectionName}
-                    impactName={openState.impactName}
-                    impactDetailsName={openState.impactDetailsName}
+                    impactSubSectionName={contentState.subSectionName}
+                    impactName={contentState.impactName}
+                    impactDetailsName={contentState.impactDetailsName}
                   />
                 );
               case "environmental":
@@ -147,15 +146,15 @@ function ImpactModalDescription({
                     projectData={projectData}
                     siteData={siteData}
                     impactsData={impactsData}
-                    impactSubSectionName={openState.subSectionName}
-                    impactName={openState.impactName}
-                    impactDetailsName={openState.impactDetailsName}
+                    impactSubSectionName={contentState.subSectionName}
+                    impactName={contentState.impactName}
+                    impactDetailsName={contentState.impactDetailsName}
                   />
                 );
               case "summary":
-                return <SummaryModalWizard impactData={openState.impactData} />;
+                return <SummaryModalWizard impactData={contentState.impactData} />;
               case "charts":
-                switch (openState.impactName) {
+                switch (contentState.impactName) {
                   case "cost_benefit_analysis":
                     return <CostBenefitAnalysisDescription impactsData={impactsData} />;
                   case "soils_carbon_storage":

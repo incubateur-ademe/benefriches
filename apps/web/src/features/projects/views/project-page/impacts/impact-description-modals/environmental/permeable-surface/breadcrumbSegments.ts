@@ -6,8 +6,8 @@ export const breadcrumbSegments: BreadcrumbProps["segments"] = [
   soilsBreadcrumbSection,
   {
     label: "Surface perméable",
-    openState: {
-      sectionName: mainBreadcrumbSection.openState.sectionName,
+    contentState: {
+      sectionName: mainBreadcrumbSection.contentState.sectionName,
       impactName: "permeable_surface_area",
     },
   },

@@ -3,11 +3,11 @@ import { useContext, useId } from "react";
 
 import classNames from "@/shared/views/clsx";
 
-import { ImpactModalDescriptionContext, OpenState } from "../ImpactModalDescriptionContext";
+import { ImpactModalDescriptionContext, ContentState } from "../ImpactModalDescriptionContext";
 
 export type BreadcrumbSegment = {
   label: string;
-  openState?: OpenState;
+  contentState?: ContentState;
 };
 export type BreadcrumbProps = {
   segments: [BreadcrumbSegment, ...BreadcrumbSegment[]];
@@ -18,7 +18,7 @@ const ModalBreadcrumb = ({ segments }: BreadcrumbProps) => {
   const breadcrumbId = `breadcrumb-${id}`;
   const lastIndex = segments.length - 1;
 
-  const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
+  const { updateModalContent } = useContext(ImpactModalDescriptionContext);
 
   return (
     <nav role="navigation" className={classNames(fr.cx("fr-breadcrumb"), "tw-m-0", "tw-py-1")}>
@@ -27,13 +27,13 @@ const ModalBreadcrumb = ({ segments }: BreadcrumbProps) => {
       </button>
       <div className="fr-collapse" id={breadcrumbId}>
         <ol className="fr-breadcrumb__list">
-          {segments.map(({ label, openState }, index) => (
+          {segments.map(({ label, contentState }, index) => (
             <li key={label}>
-              {openState ? (
+              {contentState ? (
                 <button
                   className="fr-breadcrumb__link"
                   onClick={() => {
-                    openImpactModalDescription(openState);
+                    updateModalContent(contentState);
                   }}
                   aria-current={lastIndex === index ? "page" : "false"}
                 >

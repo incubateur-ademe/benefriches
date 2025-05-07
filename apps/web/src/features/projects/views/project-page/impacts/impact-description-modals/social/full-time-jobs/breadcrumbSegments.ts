@@ -6,8 +6,8 @@ export const breadcrumbSegments: BreadcrumbProps["segments"] = [
   jobsBreadcrumbSection,
   {
     label: "Emplois équivalent temps plein",
-    openState: {
-      sectionName: mainBreadcrumbSection.openState.sectionName,
+    contentState: {
+      sectionName: mainBreadcrumbSection.contentState.sectionName,
       impactName: "full_time_jobs",
     },
   },

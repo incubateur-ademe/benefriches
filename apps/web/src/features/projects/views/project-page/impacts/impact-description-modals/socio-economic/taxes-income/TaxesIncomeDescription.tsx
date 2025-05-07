@@ -37,7 +37,7 @@ const getChartColor = (impactName: TaxesIncomeImpact["details"][number]["impact"
 };
 
 const TaxesIncomeDescription = ({ developmentPlan, impactData }: Props) => {
-  const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
+  const { updateModalContent } = useContext(ImpactModalDescriptionContext);
   return (
     <ModalBody size="large">
       <ModalHeader
@@ -79,7 +79,7 @@ const TaxesIncomeDescription = ({ developmentPlan, impactData }: Props) => {
                   onClick: (e) => {
                     e.stopPropagation();
 
-                    openImpactModalDescription({
+                    updateModalContent({
                       sectionName: "socio_economic",
                       impactName: "taxes_income",
                       impactDetailsName: impact,

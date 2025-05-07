@@ -22,7 +22,7 @@ type Props = {
 const SocioEconomicDescription = ({ impactsData }: Props) => {
   const { economicDirect, economicIndirect, environmentalMonetary, socialMonetary, total } =
     impactsData;
-  const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
+  const { updateModalContent } = useContext(ImpactModalDescriptionContext);
 
   return (
     <ModalBody size="large">
@@ -80,7 +80,7 @@ const SocioEconomicDescription = ({ impactsData }: Props) => {
                   "aria-level": 3,
                   className: "tw-text-base",
                   onClick: () => {
-                    openImpactModalDescription({
+                    updateModalContent({
                       sectionName: "socio_economic",
                       subSectionName: "economic_direct",
                     });
@@ -110,7 +110,7 @@ const SocioEconomicDescription = ({ impactsData }: Props) => {
                   "aria-level": 3,
                   className: "tw-text-base",
                   onClick: () => {
-                    openImpactModalDescription({
+                    updateModalContent({
                       sectionName: "socio_economic",
                       subSectionName: "economic_indirect",
                     });
@@ -140,7 +140,7 @@ const SocioEconomicDescription = ({ impactsData }: Props) => {
                   "aria-level": 3,
                   className: "tw-text-base",
                   onClick: () => {
-                    openImpactModalDescription({
+                    updateModalContent({
                       sectionName: "socio_economic",
                       subSectionName: "social_monetary",
                     });
@@ -170,7 +170,7 @@ const SocioEconomicDescription = ({ impactsData }: Props) => {
                   "aria-level": 3,
                   className: "tw-text-base",
                   onClick: () => {
-                    openImpactModalDescription({
+                    updateModalContent({
                       sectionName: "socio_economic",
                       subSectionName: "environmental_monetary",
                     });

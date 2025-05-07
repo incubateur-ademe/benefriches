@@ -41,7 +41,7 @@ const Co2BenefitDescription = ({ impactsData }: Props) => {
 
   const co2Benefit = environmentalImpacts.find(({ name }) => "co2_benefit" === name);
 
-  const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
+  const { updateModalContent } = useContext(ImpactModalDescriptionContext);
 
   const total = co2Benefit?.impact.difference ?? 0;
   const details = co2Benefit?.impact.details ?? [];
@@ -80,7 +80,7 @@ const Co2BenefitDescription = ({ impactsData }: Props) => {
                 labelProps={{
                   onClick: (e) => {
                     e.stopPropagation();
-                    openImpactModalDescription({
+                    updateModalContent({
                       sectionName: "environmental",
                       impactName: "co2_benefit",
                       impactDetailsName: name,

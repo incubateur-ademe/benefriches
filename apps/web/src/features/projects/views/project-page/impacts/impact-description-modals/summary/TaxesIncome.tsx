@@ -18,7 +18,7 @@ type Props = {
 
 const SummaryTaxesIncomeDescription = ({ impactData }: Props) => {
   const { isSuccess, value } = impactData;
-  const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
+  const { updateModalContent } = useContext(ImpactModalDescriptionContext);
 
   const title = isSuccess ? `+ de recettes fiscales\u00a0💰` : `- de recettes fiscales\u00a0💸`;
 
@@ -49,7 +49,7 @@ const SummaryTaxesIncomeDescription = ({ impactData }: Props) => {
             labelProps={{
               onClick: (e) => {
                 e.stopPropagation();
-                openImpactModalDescription({
+                updateModalContent({
                   sectionName: "socio_economic",
                   impactName: "taxes_income",
                 });

@@ -35,7 +35,7 @@ const SocioEconomicSubSectionDescription = ({
   children,
   valueDescription = "répartis entre plusieurs bénéficiaires",
 }: Props) => {
-  const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
+  const { updateModalContent } = useContext(ImpactModalDescriptionContext);
 
   const { impacts, total } = impactsData;
 
@@ -74,7 +74,7 @@ const SocioEconomicSubSectionDescription = ({
                         value: detailsValue,
                         labelProps: {
                           onClick: () => {
-                            openImpactModalDescription({
+                            updateModalContent({
                               sectionName: "socio_economic",
                               subSectionName,
                               impactName: name,
@@ -88,7 +88,7 @@ const SocioEconomicSubSectionDescription = ({
               )}
               labelProps={{
                 onClick: () => {
-                  openImpactModalDescription({
+                  updateModalContent({
                     sectionName: "socio_economic",
                     subSectionName,
                     impactName: name,

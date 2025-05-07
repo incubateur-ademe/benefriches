@@ -9,8 +9,8 @@ export const breadcrumbSegments: BreadcrumbProps["segments"] = [
   environmentalMonetaryBreadcrumbSection,
   {
     label: "Valeur monétaire de la décarbonation ",
-    openState: {
-      sectionName: mainBreadcrumbSection.openState.sectionName,
+    contentState: {
+      sectionName: mainBreadcrumbSection.contentState.sectionName,
       impactName: "avoided_co2_eq_emissions",
     },
   },

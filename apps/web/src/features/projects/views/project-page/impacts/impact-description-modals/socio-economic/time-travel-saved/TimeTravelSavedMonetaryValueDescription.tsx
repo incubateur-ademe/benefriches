@@ -20,12 +20,12 @@ type Props = {
 };
 
 const LinkToTimeTravelSavedSocialImpact = () => {
-  const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
+  const { updateModalContent } = useContext(ImpactModalDescriptionContext);
 
   return (
     <Button
       onClick={() => {
-        openImpactModalDescription({
+        updateModalContent({
           sectionName: "social",
           impactName: "travel_time_saved",
         });

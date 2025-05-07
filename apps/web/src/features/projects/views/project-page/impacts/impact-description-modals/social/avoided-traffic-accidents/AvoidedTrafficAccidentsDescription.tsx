@@ -22,7 +22,7 @@ type Props = {
 };
 
 const AvoidedTrafficAccidentsDescription = ({ impactData }: Props) => {
-  const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
+  const { updateModalContent } = useContext(ImpactModalDescriptionContext);
   return (
     <ModalBody size="large">
       <ModalHeader
@@ -65,7 +65,7 @@ const AvoidedTrafficAccidentsDescription = ({ impactData }: Props) => {
               labelProps={{
                 onClick: (e) => {
                   e.stopPropagation();
-                  openImpactModalDescription({
+                  updateModalContent({
                     sectionName: "social",
                     impactName: "avoided_traffic_accidents",
                     impactDetailsName: "avoided_traffic_minor_injuries",
@@ -81,7 +81,7 @@ const AvoidedTrafficAccidentsDescription = ({ impactData }: Props) => {
                 onClick: (e) => {
                   e.stopPropagation();
 
-                  openImpactModalDescription({
+                  updateModalContent({
                     sectionName: "social",
                     impactName: "avoided_traffic_accidents",
                     impactDetailsName: "avoided_traffic_severe_injuries",
@@ -97,7 +97,7 @@ const AvoidedTrafficAccidentsDescription = ({ impactData }: Props) => {
                 onClick: (e) => {
                   e.stopPropagation();
 
-                  openImpactModalDescription({
+                  updateModalContent({
                     sectionName: "social",
                     impactName: "avoided_traffic_accidents",
                     impactDetailsName: "avoided_traffic_deaths",

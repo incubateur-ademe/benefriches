@@ -42,7 +42,7 @@ const getChartColor = (impactName: ReinstatementExpensePurpose) => {
 };
 
 const SiteReinstatementDescription = ({ impactData, bearer = "l'aménageur" }: Props) => {
-  const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
+  const { updateModalContent } = useContext(ImpactModalDescriptionContext);
 
   return (
     <ModalBody size="large">
@@ -81,7 +81,7 @@ const SiteReinstatementDescription = ({ impactData, bearer = "l'aménageur" }: P
                 labelProps={{
                   onClick: (e) => {
                     e.stopPropagation();
-                    openImpactModalDescription({
+                    updateModalContent({
                       sectionName: "economic_balance",
                       impactName: "site_reinstatement",
                       impactDetailsName: purpose,

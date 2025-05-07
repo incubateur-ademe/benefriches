@@ -74,7 +74,7 @@ const EcosystemServicesDescription = ({ impactsData }: Props) => {
     (impact): impact is EcosystemServicesImpact => impact.impact === "ecosystem_services",
   );
 
-  const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
+  const { updateModalContent } = useContext(ImpactModalDescriptionContext);
 
   return (
     <ModalBody size="large">
@@ -118,7 +118,7 @@ const EcosystemServicesDescription = ({ impactsData }: Props) => {
                 labelProps={{
                   onClick: (e) => {
                     e.stopPropagation();
-                    openImpactModalDescription({
+                    updateModalContent({
                       sectionName: "socio_economic",
                       impactName: "ecosystem_services",
                       impactDetailsName: impact,

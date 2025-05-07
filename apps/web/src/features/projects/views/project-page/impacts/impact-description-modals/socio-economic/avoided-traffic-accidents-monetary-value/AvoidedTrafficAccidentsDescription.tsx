@@ -34,7 +34,7 @@ const getChartColor = (impactName: AvoidedTrafficAccidentsImpact["details"][numb
 };
 
 const AvoidedTrafficAccidentsMonetaryValueDescription = ({ impactData }: Props) => {
-  const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
+  const { updateModalContent } = useContext(ImpactModalDescriptionContext);
   return (
     <ModalBody size="large">
       <ModalHeader
@@ -76,7 +76,7 @@ const AvoidedTrafficAccidentsMonetaryValueDescription = ({ impactData }: Props) 
                   onClick: (e) => {
                     e.stopPropagation();
 
-                    openImpactModalDescription({
+                    updateModalContent({
                       sectionName: "socio_economic",
                       impactName: "avoided_traffic_accidents",
                       impactDetailsName: impact,

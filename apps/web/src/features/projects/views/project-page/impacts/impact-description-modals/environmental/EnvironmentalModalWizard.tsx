@@ -133,7 +133,7 @@ export function EnvironmentalModalWizard({
             const impactNameSegments = impactDetailsName && [
               {
                 label: getEnvironmentalImpactLabel(impactName),
-                openState: {
+                contentState: {
                   sectionName: "environmental" as const,
                   subSectionName: impactSubSectionName,
                   impactName,

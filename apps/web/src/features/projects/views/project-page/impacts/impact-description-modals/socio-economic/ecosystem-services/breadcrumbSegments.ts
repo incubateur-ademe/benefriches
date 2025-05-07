@@ -9,8 +9,8 @@ export const breadcrumbSegments: BreadcrumbProps["segments"] = [
   environmentalMonetaryBreadcrumbSection,
   {
     label: "Valeur monétaire des services écosystémiques",
-    openState: {
-      sectionName: mainBreadcrumbSection.openState.sectionName,
+    contentState: {
+      sectionName: mainBreadcrumbSection.contentState.sectionName,
       impactName: "ecosystem_services",
     },
   },

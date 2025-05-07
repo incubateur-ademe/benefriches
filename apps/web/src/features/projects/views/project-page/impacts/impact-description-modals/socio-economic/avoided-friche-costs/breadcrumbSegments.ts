@@ -6,8 +6,8 @@ export const breadcrumbSegments: BreadcrumbProps["segments"] = [
   economicDirectBreadcrumbSection,
   {
     label: "Dépenses friche évitées",
-    openState: {
-      sectionName: mainBreadcrumbSection.openState.sectionName,
+    contentState: {
+      sectionName: mainBreadcrumbSection.contentState.sectionName,
       impactName: "avoided_friche_costs",
     },
   },

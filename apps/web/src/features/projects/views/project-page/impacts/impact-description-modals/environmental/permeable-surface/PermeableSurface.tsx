@@ -8,7 +8,7 @@ import ModalHeader from "../../shared/ModalHeader";
 import { mainBreadcrumbSection, soilsBreadcrumbSection } from "../breadcrumbSections";
 
 const PermeableSurfaceDescription = () => {
-  const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
+  const { updateModalContent } = useContext(ImpactModalDescriptionContext);
   return (
     <ModalBody size="small">
       <ModalHeader
@@ -25,7 +25,7 @@ const PermeableSurfaceDescription = () => {
           l'eau de pluie sur la parcelle. La surface perméable peut être{" "}
           <Button
             onClick={() => {
-              openImpactModalDescription({
+              updateModalContent({
                 sectionName: "environmental",
                 impactName: "permeable_surface_area",
                 impactDetailsName: "mineral_soil",
@@ -38,7 +38,7 @@ const PermeableSurfaceDescription = () => {
           ou{" "}
           <Button
             onClick={() => {
-              openImpactModalDescription({
+              updateModalContent({
                 sectionName: "environmental",
                 impactName: "permeable_surface_area",
                 impactDetailsName: "green_soil",

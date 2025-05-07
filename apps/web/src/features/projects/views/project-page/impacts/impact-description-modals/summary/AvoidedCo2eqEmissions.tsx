@@ -29,7 +29,7 @@ const SummaryAvoidedCo2eqEmissionsDescription = ({ impactData }: Props) => {
     frenchPersonAnnualEquivalent,
   );
 
-  const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
+  const { updateModalContent } = useContext(ImpactModalDescriptionContext);
   const title = isSuccess ? "- d’émissions de CO2\u00a0☁️" : "+ d’émissions de CO2\u00a0☁️";
 
   return (
@@ -73,7 +73,7 @@ const SummaryAvoidedCo2eqEmissionsDescription = ({ impactData }: Props) => {
                 onClick: (e) => {
                   e.stopPropagation();
 
-                  openImpactModalDescription({
+                  updateModalContent({
                     sectionName: "environmental",
                     impactName: "co2_benefit",
                   });

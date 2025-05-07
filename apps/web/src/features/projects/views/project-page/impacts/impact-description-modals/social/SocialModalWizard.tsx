@@ -177,7 +177,7 @@ export function SocialModalWizard({
             const impactNameSegments = impactDetailsName && [
               {
                 label: getSocialImpactLabel(impactName),
-                openState: {
+                contentState: {
                   sectionName: "social" as const,
                   subSectionName: impactSubSectionName,
                   impactName,

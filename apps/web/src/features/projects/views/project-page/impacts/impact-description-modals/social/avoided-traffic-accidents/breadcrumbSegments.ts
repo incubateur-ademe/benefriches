@@ -6,8 +6,8 @@ export const breadcrumbSegments: BreadcrumbProps["segments"] = [
   localPeopleBreadcrumbSection,
   {
     label: "Personnes préservées des accidents de la route",
-    openState: {
-      sectionName: mainBreadcrumbSection.openState.sectionName,
+    contentState: {
+      sectionName: mainBreadcrumbSection.contentState.sectionName,
       impactName: "avoided_traffic_accidents",
     },
   },

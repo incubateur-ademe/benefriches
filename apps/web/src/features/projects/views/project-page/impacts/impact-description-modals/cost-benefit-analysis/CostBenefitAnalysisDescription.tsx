@@ -24,7 +24,7 @@ type Props = {
 const title = "Analyse coûts bénéfices";
 
 const CostBenefitAnalysisDescription = ({ impactsData }: Props) => {
-  const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
+  const { updateModalContent } = useContext(ImpactModalDescriptionContext);
 
   const { economicBalance, socioeconomic } = impactsData;
 
@@ -71,7 +71,7 @@ const CostBenefitAnalysisDescription = ({ impactsData }: Props) => {
               labelProps={{
                 onClick: (e) => {
                   e.stopPropagation();
-                  openImpactModalDescription({
+                  updateModalContent({
                     sectionName: "economic_balance",
                   });
                 },
@@ -87,7 +87,7 @@ const CostBenefitAnalysisDescription = ({ impactsData }: Props) => {
               labelProps={{
                 onClick: (e) => {
                   e.stopPropagation();
-                  openImpactModalDescription({
+                  updateModalContent({
                     sectionName: "socio_economic",
                   });
                 },

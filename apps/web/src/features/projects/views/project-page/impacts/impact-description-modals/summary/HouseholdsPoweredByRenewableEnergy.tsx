@@ -17,7 +17,7 @@ type Props = {
 
 const SummaryHouseholdsPoweredByRenewableEnergyDescription = ({ impactData }: Props) => {
   const { value } = impactData;
-  const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
+  const { updateModalContent } = useContext(ImpactModalDescriptionContext);
 
   return (
     <ModalBody>
@@ -44,7 +44,7 @@ const SummaryHouseholdsPoweredByRenewableEnergyDescription = ({ impactData }: Pr
             labelProps={{
               onClick: (e) => {
                 e.stopPropagation();
-                openImpactModalDescription({
+                updateModalContent({
                   sectionName: "social",
                   impactName: "households_powered_by_renewable_energy",
                 });

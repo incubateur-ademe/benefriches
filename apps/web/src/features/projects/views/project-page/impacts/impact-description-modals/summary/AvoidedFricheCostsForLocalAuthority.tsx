@@ -23,7 +23,7 @@ const SummaryAvoidedFricheCostsForLocalAuthorityDescription = ({ impactData }: P
   const { value, isSuccess } = impactData;
   const { amount, actorName } = value;
 
-  const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
+  const { updateModalContent } = useContext(ImpactModalDescriptionContext);
 
   const title = isSuccess
     ? "- de dépenses de sécurisation\u00a0💰"
@@ -82,7 +82,7 @@ const SummaryAvoidedFricheCostsForLocalAuthorityDescription = ({ impactData }: P
               onClick: (e) => {
                 e.stopPropagation();
 
-                openImpactModalDescription({
+                updateModalContent({
                   sectionName: "socio_economic",
                   impactName: "avoided_friche_costs",
                 });

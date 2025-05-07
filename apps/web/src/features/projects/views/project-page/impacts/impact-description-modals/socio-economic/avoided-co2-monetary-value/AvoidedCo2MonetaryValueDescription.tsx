@@ -38,7 +38,7 @@ const AvoidedCo2MonetaryValueDescription = ({ impactsData }: Props) => {
   const impactData = impactsData.socioeconomic.impacts.find(
     (impact): impact is AvoidedCO2EqEmissions => impact.impact === "avoided_co2_eq_emissions",
   );
-  const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
+  const { updateModalContent } = useContext(ImpactModalDescriptionContext);
 
   return (
     <ModalBody size="large">
@@ -81,7 +81,7 @@ const AvoidedCo2MonetaryValueDescription = ({ impactsData }: Props) => {
                   onClick: (e) => {
                     e.stopPropagation();
 
-                    openImpactModalDescription({
+                    updateModalContent({
                       sectionName: "socio_economic",
                       impactName: "avoided_co2_eq_emissions",
                       impactDetailsName: impact,

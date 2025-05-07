@@ -37,7 +37,7 @@ const getChartColor = (impactName: AvoidedFricheCostsImpact["details"][number]["
 const AvoidedFricheExpensesDescription = ({ impactData = [] }: Props) => {
   const total = sumListWithKey(impactData, "amount");
 
-  const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
+  const { updateModalContent } = useContext(ImpactModalDescriptionContext);
   return (
     <ModalBody size="large">
       <ModalHeader
@@ -80,7 +80,7 @@ const AvoidedFricheExpensesDescription = ({ impactData = [] }: Props) => {
                 labelProps={{
                   onClick: (e) => {
                     e.stopPropagation();
-                    openImpactModalDescription({
+                    updateModalContent({
                       sectionName: "socio_economic",
                       subSectionName: "economic_direct",
                       impactName: "avoided_friche_costs",

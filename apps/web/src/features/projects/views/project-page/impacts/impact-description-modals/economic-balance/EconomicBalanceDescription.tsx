@@ -56,7 +56,7 @@ const EconomicBalanceDescription = ({ impactsData, projectData }: Props) => {
     projectData.developmentPlan.type,
     impactsData,
   );
-  const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
+  const { updateModalContent } = useContext(ImpactModalDescriptionContext);
 
   return (
     <ModalBody size="large">
@@ -91,7 +91,7 @@ const EconomicBalanceDescription = ({ impactsData, projectData }: Props) => {
                 labelProps={{
                   onClick: (e) => {
                     e.stopPropagation();
-                    openImpactModalDescription({
+                    updateModalContent({
                       sectionName: "economic_balance",
                       impactName: name,
                     });
@@ -104,7 +104,7 @@ const EconomicBalanceDescription = ({ impactsData, projectData }: Props) => {
                     onClick: (e) => {
                       e.stopPropagation();
 
-                      openImpactModalDescription({
+                      updateModalContent({
                         sectionName: "economic_balance",
                         impactName: name,
                         impactDetailsName: detailsName,
