@@ -6,8 +6,6 @@ import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImp
 import { withDefaultBarChartOptions } from "@/shared/views/charts";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
-import ImpactItemDetails from "../../list-view/ImpactItemDetails";
-import ImpactItemGroup from "../../list-view/ImpactItemGroup";
 import { ModalDataProps } from "../ImpactModalDescription";
 import { ImpactModalDescriptionContext } from "../ImpactModalDescriptionContext";
 import ModalBody from "../shared/ModalBody";
@@ -15,6 +13,7 @@ import ModalContent from "../shared/ModalContent";
 import ModalData from "../shared/ModalData";
 import ModalGrid from "../shared/ModalGrid";
 import ModalHeader from "../shared/ModalHeader";
+import ModalTable from "../shared/ModalTable";
 import ModalTitleTwo from "../shared/ModalTitleTwo";
 
 type Props = {
@@ -62,38 +61,29 @@ const CostBenefitAnalysisDescription = ({ impactsData }: Props) => {
             />
           </div>
 
-          <ImpactItemGroup isClickable>
-            <ImpactItemDetails
-              impactRowValueProps={{ buttonInfoAlwaysDisplayed: true }}
-              value={economicBalance.total}
-              label="📉 Bilan de l'opération"
-              type="monetary"
-              labelProps={{
-                onClick: (e) => {
-                  e.stopPropagation();
+          <ModalTable
+            caption="Bilan de l'opération et impacts socio-économiques"
+            data={[
+              {
+                label: "📉 Bilan de l'opération",
+                value: economicBalance.total,
+                onClick: () => {
                   updateModalContent({
                     sectionName: "economic_balance",
                   });
                 },
-              }}
-            />
-          </ImpactItemGroup>
-          <ImpactItemGroup isClickable>
-            <ImpactItemDetails
-              impactRowValueProps={{ buttonInfoAlwaysDisplayed: true }}
-              value={socioeconomic.total}
-              label="🌍 Impacts socio-économiques"
-              type="monetary"
-              labelProps={{
-                onClick: (e) => {
-                  e.stopPropagation();
+              },
+              {
+                label: "🌍 Impacts socio-économiques",
+                value: socioeconomic.total,
+                onClick: () => {
                   updateModalContent({
                     sectionName: "socio_economic",
                   });
                 },
-              }}
-            />
-          </ImpactItemGroup>
+              },
+            ]}
+          />
         </ModalData>
         <ModalContent>
           <p>

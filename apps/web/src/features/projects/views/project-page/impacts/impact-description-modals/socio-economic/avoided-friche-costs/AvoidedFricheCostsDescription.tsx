@@ -2,17 +2,16 @@ import { useContext } from "react";
 import { AvoidedFricheCostsImpact, sumListWithKey } from "shared";
 
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
-import { getActorLabel } from "@/features/projects/views/shared/socioEconomicLabels";
 
 import { getSocioEconomicImpactLabel } from "../../../getImpactLabel";
-import ImpactActorsItem from "../../../list-view/ImpactActorsItem";
 import { ImpactModalDescriptionContext } from "../../ImpactModalDescriptionContext";
-import ModalBarColoredChart from "../../shared/ModalBarColoredChart";
 import ModalBody from "../../shared/ModalBody";
 import ModalContent from "../../shared/ModalContent";
 import ModalData from "../../shared/ModalData";
 import ModalGrid from "../../shared/ModalGrid";
 import ModalHeader from "../../shared/ModalHeader";
+import ModalTable from "../../shared/ModalTable";
+import ModalColumnPointChart from "../../shared/modal-charts/ModalColumnPointChart";
 import { mainBreadcrumbSection, economicDirectBreadcrumbSection } from "../breadcrumbSections";
 
 type Props = {
@@ -38,6 +37,19 @@ const AvoidedFricheExpensesDescription = ({ impactData = [] }: Props) => {
   const total = sumListWithKey(impactData, "amount");
 
   const { updateModalContent } = useContext(ImpactModalDescriptionContext);
+
+  const data = impactData
+    .map(({ details, actor }) =>
+      details.map(({ impact, amount }) => ({
+        label: getSocioEconomicImpactLabel(impact),
+        color: getChartColor(impact),
+        value: amount,
+        name: impact,
+        actor,
+      })),
+    )
+    .flat();
+
   return (
     <ModalBody size="large">
       <ModalHeader
@@ -56,42 +68,24 @@ const AvoidedFricheExpensesDescription = ({ impactData = [] }: Props) => {
       />
       <ModalGrid>
         <ModalData>
-          <ModalBarColoredChart
-            data={impactData
-              .map(({ details }) => details)
-              .flat()
-              .map(({ impact, amount }) => ({
-                label: getSocioEconomicImpactLabel(impact),
-                color: getChartColor(impact),
-                value: amount,
-              }))}
+          <ModalColumnPointChart format="monetary" data={data} />
+          <ModalTable
+            caption="Liste des dépenses de gestion et de sécurisation de la friche évitées"
+            data={data.map(({ label, value, color, name, actor }) => ({
+              label,
+              value,
+              color,
+              actor,
+              onClick: () => {
+                updateModalContent({
+                  sectionName: "socio_economic",
+                  subSectionName: "economic_direct",
+                  impactName: "avoided_friche_costs",
+                  impactDetailsName: name,
+                });
+              },
+            }))}
           />
-          {impactData.map(({ actor, details }) =>
-            details.map(({ amount, impact }) => (
-              <ImpactActorsItem
-                key={impact}
-                label={getSocioEconomicImpactLabel(impact)}
-                actors={[
-                  {
-                    label: getActorLabel(actor),
-                    value: amount,
-                  },
-                ]}
-                labelProps={{
-                  onClick: (e) => {
-                    e.stopPropagation();
-                    updateModalContent({
-                      sectionName: "socio_economic",
-                      subSectionName: "economic_direct",
-                      impactName: "avoided_friche_costs",
-                      impactDetailsName: impact,
-                    });
-                  },
-                }}
-                type="monetary"
-              />
-            )),
-          )}
         </ModalData>
 
         <ModalContent>

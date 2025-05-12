@@ -2,20 +2,20 @@ import { useContext } from "react";
 import { EcosystemServicesImpact } from "shared";
 
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
+import { getActorLabel } from "@/features/projects/views/shared/socioEconomicLabels";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
-import ImpactItemDetails from "../../../list-view/ImpactItemDetails";
-import ImpactItemGroup from "../../../list-view/ImpactItemGroup";
 import { ModalDataProps } from "../../ImpactModalDescription";
 import { ImpactModalDescriptionContext } from "../../ImpactModalDescriptionContext";
-import ModalBarColoredChart from "../../shared/ModalBarColoredChart";
 import ModalBody from "../../shared/ModalBody";
 import ModalContent from "../../shared/ModalContent";
 import ModalData from "../../shared/ModalData";
 import ModalGrid from "../../shared/ModalGrid";
 import ModalHeader from "../../shared/ModalHeader";
+import ModalTable from "../../shared/ModalTable";
 import ModalTitleThree from "../../shared/ModalTitleThree";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
+import ModalColumnPointChart from "../../shared/modal-charts/ModalColumnPointChart";
 import {
   mainBreadcrumbSection,
   environmentalMonetaryBreadcrumbSection,
@@ -76,6 +76,14 @@ const EcosystemServicesDescription = ({ impactsData }: Props) => {
 
   const { updateModalContent } = useContext(ImpactModalDescriptionContext);
 
+  const data =
+    ecosystemServicesImpact?.details.map(({ amount, impact }) => ({
+      label: getEcosystemServiceDetailsTitle(impact),
+      color: getChartColor(impact),
+      value: amount,
+      name: impact,
+    })) ?? [];
+
   return (
     <ModalBody size="large">
       <ModalHeader
@@ -99,35 +107,24 @@ const EcosystemServicesDescription = ({ impactsData }: Props) => {
       />
       <ModalGrid>
         <ModalData>
-          <ModalBarColoredChart
-            data={
-              ecosystemServicesImpact?.details.map(({ amount, impact }) => ({
-                label: getEcosystemServiceDetailsTitle(impact),
-                color: getChartColor(impact),
-                value: amount,
-              })) ?? []
-            }
-          />
+          <ModalColumnPointChart format="monetary" data={data} />
 
-          {(ecosystemServicesImpact?.details ?? []).map(({ impact, amount }) => (
-            <ImpactItemGroup isClickable key={impact}>
-              <ImpactItemDetails
-                value={amount}
-                label={getEcosystemServiceDetailsTitle(impact)}
-                type="monetary"
-                labelProps={{
-                  onClick: (e) => {
-                    e.stopPropagation();
-                    updateModalContent({
-                      sectionName: "socio_economic",
-                      impactName: "ecosystem_services",
-                      impactDetailsName: impact,
-                    });
-                  },
-                }}
-              />
-            </ImpactItemGroup>
-          ))}
+          <ModalTable
+            caption="Liste des valeurs monétaire des services écosystémiques"
+            data={data.map(({ label, value, color, name }) => ({
+              label,
+              value,
+              color,
+              actor: getActorLabel(ecosystemServicesImpact?.actor ?? "humanity"),
+              onClick: () => {
+                updateModalContent({
+                  sectionName: "socio_economic",
+                  impactName: "ecosystem_services",
+                  impactDetailsName: name,
+                });
+              },
+            }))}
+          />
         </ModalData>
 
         <ModalContent>

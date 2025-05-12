@@ -4,16 +4,15 @@ import { AvoidedTrafficAccidentsImpact } from "shared";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 
 import { getSocialImpactLabel } from "../../../getImpactLabel";
-import ImpactItemDetails from "../../../list-view/ImpactItemDetails";
-import ImpactItemGroup from "../../../list-view/ImpactItemGroup";
 import { ImpactModalDescriptionContext } from "../../ImpactModalDescriptionContext";
-import ModalBarColoredChart from "../../shared/ModalBarColoredChart";
 import ModalBody from "../../shared/ModalBody";
 import ModalContent from "../../shared/ModalContent";
 import ModalData from "../../shared/ModalData";
 import ModalGrid from "../../shared/ModalGrid";
 import ModalHeader from "../../shared/ModalHeader";
+import ModalTable from "../../shared/ModalTable";
 import AvoidedTrafficAccidentsContent from "../../shared/avoided-traffic-accidents/AvoidedTrafficAccidentsContent";
+import ModalColumnPointChart from "../../shared/modal-charts/ModalColumnPointChart";
 import { mainBreadcrumbSection, socialMonetaryBreadcrumbSection } from "../breadcrumbSections";
 
 const TITLE = "Dépenses de santé évitées grâce à la diminution des accidents de la route";
@@ -35,6 +34,15 @@ const getChartColor = (impactName: AvoidedTrafficAccidentsImpact["details"][numb
 
 const AvoidedTrafficAccidentsMonetaryValueDescription = ({ impactData }: Props) => {
   const { updateModalContent } = useContext(ImpactModalDescriptionContext);
+
+  const data =
+    impactData?.details.map(({ amount, impact }) => ({
+      label: getSocialImpactLabel(impact),
+      color: getChartColor(impact),
+      value: amount,
+      name: impact,
+    })) ?? [];
+
   return (
     <ModalBody size="large">
       <ModalHeader
@@ -56,36 +64,23 @@ const AvoidedTrafficAccidentsMonetaryValueDescription = ({ impactData }: Props) 
       />
       <ModalGrid>
         <ModalData>
-          <ModalBarColoredChart
-            data={
-              impactData?.details.map(({ amount, impact }) => ({
-                label: getSocialImpactLabel(impact),
-                color: getChartColor(impact),
-                value: amount,
-              })) ?? []
-            }
+          <ModalColumnPointChart format="monetary" data={data} />
+          <ModalTable
+            caption="Liste des dépenses de santé évitées grâce aux accidents évités"
+            data={data.map(({ label, value, color, name }) => ({
+              label,
+              value,
+              color,
+              actor: "Société française",
+              onClick: () => {
+                updateModalContent({
+                  sectionName: "socio_economic",
+                  impactName: "avoided_traffic_accidents",
+                  impactDetailsName: name,
+                });
+              },
+            }))}
           />
-          <ImpactItemGroup isClickable>
-            {impactData?.details.map(({ impact, amount }) => (
-              <ImpactItemDetails
-                key={impact}
-                value={amount}
-                label={getSocialImpactLabel(impact)}
-                type="monetary"
-                labelProps={{
-                  onClick: (e) => {
-                    e.stopPropagation();
-
-                    updateModalContent({
-                      sectionName: "socio_economic",
-                      impactName: "avoided_traffic_accidents",
-                      impactDetailsName: impact,
-                    });
-                  },
-                }}
-              />
-            ))}
-          </ImpactItemGroup>
         </ModalData>
 
         <ModalContent>

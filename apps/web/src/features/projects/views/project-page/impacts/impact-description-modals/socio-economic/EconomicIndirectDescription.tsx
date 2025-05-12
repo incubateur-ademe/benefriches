@@ -1,9 +1,9 @@
-import { SocioEconomicDetailedImpact } from "@/features/projects/domain/projectImpactsSocioEconomic";
+import { SocioEconomicImpact } from "shared";
 
 import ImpactSubSectionDescription from "./SocioEconomicSubSectionDescription";
 
 type Props = {
-  impactsData: SocioEconomicDetailedImpact["economicIndirect"];
+  impactsData: SocioEconomicImpact[];
 };
 
 const EconomicIndirectDescription = ({ impactsData }: Props) => {

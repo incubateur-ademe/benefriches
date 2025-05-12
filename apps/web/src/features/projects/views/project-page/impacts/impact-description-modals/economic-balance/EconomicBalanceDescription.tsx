@@ -1,54 +1,26 @@
 import { useContext } from "react";
+import { roundTo2Digits } from "shared";
 
-import {
-  EconomicBalanceMainName,
-  getEconomicBalanceProjectImpacts,
-} from "@/features/projects/domain/projectImpactsEconomicBalance";
+import { getEconomicBalanceProjectImpacts } from "@/features/projects/domain/projectImpactsEconomicBalance";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
-import {
-  getEconomicBalanceDetailsImpactLabel,
-  getEconomicBalanceImpactLabel,
-} from "../../getImpactLabel";
-import ImpactItemDetails from "../../list-view/ImpactItemDetails";
-import ImpactItemGroup from "../../list-view/ImpactItemGroup";
+import { getEconomicBalanceImpactColor } from "../../getImpactColor";
+import { getEconomicBalanceImpactLabel } from "../../getImpactLabel";
 import { ModalDataProps } from "../ImpactModalDescription";
 import { ImpactModalDescriptionContext } from "../ImpactModalDescriptionContext";
-import ModalBarColoredChart from "../shared/ModalBarColoredChart";
 import ModalBody from "../shared/ModalBody";
 import ModalContent from "../shared/ModalContent";
 import ModalData from "../shared/ModalData";
 import ModalGrid from "../shared/ModalGrid";
 import ModalHeader from "../shared/ModalHeader";
+import ModalTable from "../shared/ModalTable";
 import ModalTitleTwo from "../shared/ModalTitleTwo";
+import ModalColumnSeriesChart from "../shared/modal-charts/ModalColumnSeriesChart";
 
 type Props = {
   impactsData: ModalDataProps["impactsData"];
   projectData: ModalDataProps["projectData"];
-};
-
-const getChartColor = (impactName: EconomicBalanceMainName): string => {
-  switch (impactName) {
-    case "site_reinstatement":
-      return "#F4C00A";
-    case "site_purchase":
-      return "#F3F511";
-    case "development_plan_installation":
-    case "urban_project_development_plan_installation":
-      return "#F57F0A";
-    case "photovoltaic_development_plan_installation":
-      return "#EF410F";
-    case "site_resale":
-    case "buildings_resale":
-      return "#72D98D";
-    case "financial_assistance":
-      return "#14EA81";
-    case "operations_costs":
-      return "#C535A4";
-    case "operations_revenues":
-      return "#37C95D";
-  }
 };
 
 const EconomicBalanceDescription = ({ impactsData, projectData }: Props) => {
@@ -57,6 +29,13 @@ const EconomicBalanceDescription = ({ impactsData, projectData }: Props) => {
     impactsData,
   );
   const { updateModalContent } = useContext(ImpactModalDescriptionContext);
+
+  const impactList = economicBalance.map(({ value, name }) => ({
+    label: getEconomicBalanceImpactLabel(name),
+    color: getEconomicBalanceImpactColor(name),
+    value: roundTo2Digits(value),
+    name,
+  }));
 
   return (
     <ModalBody size="large">
@@ -75,46 +54,36 @@ const EconomicBalanceDescription = ({ impactsData, projectData }: Props) => {
       />
       <ModalGrid>
         <ModalData>
-          <ModalBarColoredChart
-            data={economicBalance.map(({ name, value }) => ({
-              label: getEconomicBalanceImpactLabel(name),
-              color: getChartColor(name),
+          <ModalColumnSeriesChart
+            format="monetary"
+            noDataText="Vous n'avez pas renseigné de dépenses ni de recettes pour ce projet."
+            data={[
+              {
+                label: "Recettes",
+                values: impactList.filter(({ value }) => value > 0),
+              },
+              {
+                label: "Dépenses",
+                values: impactList.filter(({ value }) => value < 0),
+              },
+            ]}
+          />
+
+          <ModalTable
+            caption="Liste des dépenses et recettes liées au projet et au site"
+            data={impactList.map(({ label, value, color, name }) => ({
+              label,
               value,
+              color,
+              actor: bearer ?? "Aménageur",
+              onClick: () => {
+                updateModalContent({
+                  sectionName: "economic_balance",
+                  impactName: name,
+                });
+              },
             }))}
           />
-          {economicBalance.map(({ name, value, details = [] }) => (
-            <ImpactItemGroup isClickable key={name}>
-              <ImpactItemDetails
-                value={value}
-                label={getEconomicBalanceImpactLabel(name)}
-                type="monetary"
-                labelProps={{
-                  onClick: (e) => {
-                    e.stopPropagation();
-                    updateModalContent({
-                      sectionName: "economic_balance",
-                      impactName: name,
-                    });
-                  },
-                }}
-                data={details.map(({ name: detailsName, value: detailsValue }) => ({
-                  label: getEconomicBalanceDetailsImpactLabel(name, detailsName),
-                  value: detailsValue,
-                  labelProps: {
-                    onClick: (e) => {
-                      e.stopPropagation();
-
-                      updateModalContent({
-                        sectionName: "economic_balance",
-                        impactName: name,
-                        impactDetailsName: detailsName,
-                      });
-                    },
-                  },
-                }))}
-              />
-            </ImpactItemGroup>
-          ))}
         </ModalData>
         <ModalContent>
           <p>

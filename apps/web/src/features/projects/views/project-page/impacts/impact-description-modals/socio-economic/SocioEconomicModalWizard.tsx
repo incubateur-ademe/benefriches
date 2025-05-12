@@ -2,7 +2,6 @@ import { lazy, Suspense, useMemo } from "react";
 import { sumListWithKey } from "shared";
 
 import {
-  getDetailedSocioEconomicProjectImpacts,
   SocioEconomicDetailsName,
   SocioEconomicImpactName,
   SocioEconomicMainImpactName,
@@ -177,25 +176,41 @@ export function SocioEconomicModalWizard({
     <Suspense fallback={<LoadingSpinner classes={{ text: "tw-text-grey-light" }} />}>
       {(() => {
         if (!impactName) {
-          const impactsByCategory = getDetailedSocioEconomicProjectImpacts(impactsData);
-
           switch (impactSubSectionName) {
             case "economic_direct":
-              return <EconomicDirectDescription impactsData={impactsByCategory.economicDirect} />;
+              return (
+                <EconomicDirectDescription
+                  impactsData={impactsData.socioeconomic.impacts.filter(
+                    ({ impactCategory }) => impactCategory === "economic_direct",
+                  )}
+                />
+              );
             case "economic_indirect":
               return (
-                <EconomicIndirectDescription impactsData={impactsByCategory.economicIndirect} />
+                <EconomicIndirectDescription
+                  impactsData={impactsData.socioeconomic.impacts.filter(
+                    ({ impactCategory }) => impactCategory === "economic_indirect",
+                  )}
+                />
               );
             case "social_monetary":
-              return <SocialMonetaryDescription impactsData={impactsByCategory.socialMonetary} />;
+              return (
+                <SocialMonetaryDescription
+                  impactsData={impactsData.socioeconomic.impacts.filter(
+                    ({ impactCategory }) => impactCategory === "social_monetary",
+                  )}
+                />
+              );
             case "environmental_monetary":
               return (
                 <EnvironmentalMonetaryDescription
-                  impactsData={impactsByCategory.environmentalMonetary}
+                  impactsData={impactsData.socioeconomic.impacts.filter(
+                    ({ impactCategory }) => impactCategory === "environmental_monetary",
+                  )}
                 />
               );
             case undefined:
-              return <SocioEconomicDescription impactsData={impactsByCategory} />;
+              return <SocioEconomicDescription impactsData={impactsData} />;
           }
         }
 

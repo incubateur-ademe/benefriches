@@ -7,16 +7,15 @@ import {
 import { formatCO2Impact } from "@/features/projects/views/shared/formatImpactValue";
 
 import { getEnvironmentalDetailsImpactLabel } from "../../../getImpactLabel";
-import ImpactItemDetails from "../../../list-view/ImpactItemDetails";
-import ImpactItemGroup from "../../../list-view/ImpactItemGroup";
 import { ModalDataProps } from "../../ImpactModalDescription";
 import { ImpactModalDescriptionContext } from "../../ImpactModalDescriptionContext";
-import ModalBarColoredChart from "../../shared/ModalBarColoredChart";
 import ModalBody from "../../shared/ModalBody";
 import ModalContent from "../../shared/ModalContent";
 import ModalData from "../../shared/ModalData";
 import ModalGrid from "../../shared/ModalGrid";
 import ModalHeader from "../../shared/ModalHeader";
+import ModalTable from "../../shared/ModalTable";
+import ModalColumnPointChart from "../../shared/modal-charts/ModalColumnPointChart";
 import { co2BreadcrumbSection, mainBreadcrumbSection } from "../breadcrumbSections";
 
 type Props = {
@@ -46,6 +45,13 @@ const Co2BenefitDescription = ({ impactsData }: Props) => {
   const total = co2Benefit?.impact.difference ?? 0;
   const details = co2Benefit?.impact.details ?? [];
 
+  const impactList = details.map(({ impact, name }) => ({
+    label: getEnvironmentalDetailsImpactLabel("co2_benefit", name),
+    color: getChartColor(name as CO2BenefitDetails),
+    value: impact.difference,
+    name,
+  }));
+
   return (
     <ModalBody size="large">
       <ModalHeader
@@ -62,34 +68,24 @@ const Co2BenefitDescription = ({ impactsData }: Props) => {
       />
       <ModalGrid>
         <ModalData>
-          <ModalBarColoredChart
+          <ModalColumnPointChart format="co2" data={impactList} />
+
+          <ModalTable
             formatFn={formatCO2Impact}
-            data={details.map(({ impact, name }) => ({
-              label: getEnvironmentalDetailsImpactLabel("co2_benefit", name),
-              color: getChartColor(name as CO2BenefitDetails),
-              value: impact.difference,
+            caption="Détails des tonnes d'émissions de CO2 émises ou évitées"
+            data={impactList.map(({ label, value, color, name }) => ({
+              label,
+              value,
+              color,
+              onClick: () => {
+                updateModalContent({
+                  sectionName: "environmental",
+                  impactName: "co2_benefit",
+                  impactDetailsName: name,
+                });
+              },
             }))}
           />
-
-          {details.map(({ impact, name }) => (
-            <ImpactItemGroup isClickable key={name}>
-              <ImpactItemDetails
-                value={impact.difference}
-                label={getEnvironmentalDetailsImpactLabel("co2_benefit", name)}
-                type="co2"
-                labelProps={{
-                  onClick: (e) => {
-                    e.stopPropagation();
-                    updateModalContent({
-                      sectionName: "environmental",
-                      impactName: "co2_benefit",
-                      impactDetailsName: name,
-                    });
-                  },
-                }}
-              />
-            </ImpactItemGroup>
-          ))}
         </ModalData>
 
         <ModalContent>

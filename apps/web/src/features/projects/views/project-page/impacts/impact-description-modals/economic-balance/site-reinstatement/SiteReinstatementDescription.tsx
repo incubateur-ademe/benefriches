@@ -5,16 +5,15 @@ import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImp
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
 import { getEconomicBalanceDetailsImpactLabel } from "../../../getImpactLabel";
-import ImpactItemDetails from "../../../list-view/ImpactItemDetails";
-import ImpactItemGroup from "../../../list-view/ImpactItemGroup";
 import { ImpactModalDescriptionContext } from "../../ImpactModalDescriptionContext";
-import ModalBarColoredChart from "../../shared/ModalBarColoredChart";
 import ModalBody from "../../shared/ModalBody";
 import ModalContent from "../../shared/ModalContent";
 import ModalData from "../../shared/ModalData";
 import ModalGrid from "../../shared/ModalGrid";
 import ModalHeader from "../../shared/ModalHeader";
+import ModalTable from "../../shared/ModalTable";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
+import ModalColumnPointChart from "../../shared/modal-charts/ModalColumnPointChart";
 import { breadcrumbSection } from "../breadcrumbSection";
 
 type Props = {
@@ -44,6 +43,14 @@ const getChartColor = (impactName: ReinstatementExpensePurpose) => {
 const SiteReinstatementDescription = ({ impactData, bearer = "l'aménageur" }: Props) => {
   const { updateModalContent } = useContext(ImpactModalDescriptionContext);
 
+  const impactList =
+    impactData?.costs.map(({ amount, purpose }) => ({
+      label: getEconomicBalanceDetailsImpactLabel("site_reinstatement", purpose),
+      color: getChartColor(purpose),
+      value: -amount,
+      name: purpose,
+    })) ?? [];
+
   return (
     <ModalBody size="large">
       <ModalHeader
@@ -61,36 +68,24 @@ const SiteReinstatementDescription = ({ impactData, bearer = "l'aménageur" }: P
       />
       <ModalGrid>
         <ModalData>
-          <ModalBarColoredChart
-            data={
-              impactData?.costs.map(({ amount, purpose }) => ({
-                label: getEconomicBalanceDetailsImpactLabel("site_reinstatement", purpose),
-                color: getChartColor(purpose),
-                value: -amount,
-              })) ?? []
-            }
-          />
+          <ModalColumnPointChart format="monetary" data={impactList} />
 
-          {impactData?.costs.map(({ purpose, amount }) => (
-            <ImpactItemGroup isClickable key={purpose}>
-              <ImpactItemDetails
-                value={-amount}
-                label={getEconomicBalanceDetailsImpactLabel("site_reinstatement", purpose)}
-                type="monetary"
-                impactRowValueProps={{ buttonInfoAlwaysDisplayed: true }}
-                labelProps={{
-                  onClick: (e) => {
-                    e.stopPropagation();
-                    updateModalContent({
-                      sectionName: "economic_balance",
-                      impactName: "site_reinstatement",
-                      impactDetailsName: purpose,
-                    });
-                  },
-                }}
-              />
-            </ImpactItemGroup>
-          ))}
+          <ModalTable
+            caption="Liste des dépenses et recettes de remise en état"
+            data={impactList.map(({ label, value, color, name }) => ({
+              label,
+              value,
+              color,
+              actor: bearer,
+              onClick: () => {
+                updateModalContent({
+                  sectionName: "economic_balance",
+                  impactName: "site_reinstatement",
+                  impactDetailsName: name,
+                });
+              },
+            }))}
+          />
         </ModalData>
         <ModalContent>
           <p>

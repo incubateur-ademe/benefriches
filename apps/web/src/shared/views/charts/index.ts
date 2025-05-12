@@ -2,8 +2,10 @@ import "highcharts";
 import { Options } from "highcharts/highcharts";
 // import modules here so it's loaded once for every chart
 import "highcharts/modules/accessibility";
+import "highcharts/modules/data";
 import "highcharts/modules/export-data";
 import "highcharts/modules/exporting";
+import "highcharts/modules/no-data-to-display";
 import "highcharts/modules/offline-exporting";
 
 export function withDefaultChartOptions(options: Options): Options {
@@ -15,6 +17,7 @@ export function withDefaultChartOptions(options: Options): Options {
       exportData: {
         categoryHeader: "",
       },
+      noData: "Aucune donnée disponible",
     },
     exporting: {
       fallbackToExportServer: false,
@@ -42,12 +45,17 @@ export function withDefaultChartOptions(options: Options): Options {
   };
 }
 
-export function withDefaultBarChartOptions({ plotOptions = {}, ...options }: Options): Options {
+export function withDefaultBarChartOptions({
+  plotOptions = {},
+  chart = {},
+  ...options
+}: Options): Options {
   return withDefaultChartOptions({
     chart: {
       type: "column",
       height: "275px",
       styledMode: true,
+      ...chart,
     },
     yAxis: {
       labels: {

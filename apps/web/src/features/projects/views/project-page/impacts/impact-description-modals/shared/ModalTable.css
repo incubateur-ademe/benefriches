@@ -1,0 +1,43 @@
+.fr-table.impact-modal-table table {
+  font-size: 0.75rem;
+  border: none;
+}
+
+.fr-table.impact-modal-table thead th {
+  text-transform: uppercase;
+  background-color: var(--background-contrast-grey);
+  border-bottom: 1px solid #757575;
+}
+
+.fr-table.impact-modal-table thead th,
+.fr-table.impact-modal-table tbody td {
+  padding: 0.75rem;
+}
+
+.fr-table.impact-modal-table tbody tr td:first-child {
+  font-weight: bold;
+}
+
+.fr-table.impact-modal-table-3col th:first-child,
+.fr-table.impact-modal-table-3col td:first-child {
+  width: 45%;
+}
+
+.fr-table.impact-modal-table-3col th:nth-child(2),
+.fr-table.impact-modal-table-3col td:nth-child(2) {
+  width: 20%;
+}
+
+.fr-table.impact-modal-table-3col th:nth-child(3),
+.fr-table.impact-modal-table-3col td:nth-child(3) {
+  width: 15%;
+}
+
+.fr-table.impact-modal-table tbody {
+  background-color: var(--background-alt-grey);
+}
+
+.fr-table.impact-modal-table > table thead::after,
+.fr-table.impact-modal-table > table tbody::after {
+  background-image: none;
+}

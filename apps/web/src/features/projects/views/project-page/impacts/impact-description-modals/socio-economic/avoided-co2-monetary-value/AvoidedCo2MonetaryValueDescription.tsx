@@ -4,16 +4,15 @@ import { AvoidedCO2EqEmissions } from "shared";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 
 import { getSocioEconomicImpactLabel } from "../../../getImpactLabel";
-import ImpactItemDetails from "../../../list-view/ImpactItemDetails";
-import ImpactItemGroup from "../../../list-view/ImpactItemGroup";
 import { ModalDataProps } from "../../ImpactModalDescription";
 import { ImpactModalDescriptionContext } from "../../ImpactModalDescriptionContext";
-import ModalBarColoredChart from "../../shared/ModalBarColoredChart";
 import ModalBody from "../../shared/ModalBody";
 import ModalContent from "../../shared/ModalContent";
 import ModalData from "../../shared/ModalData";
 import ModalGrid from "../../shared/ModalGrid";
 import ModalHeader from "../../shared/ModalHeader";
+import ModalTable from "../../shared/ModalTable";
+import ModalColumnPointChart from "../../shared/modal-charts/ModalColumnPointChart";
 import {
   environmentalMonetaryBreadcrumbSection,
   mainBreadcrumbSection,
@@ -40,6 +39,14 @@ const AvoidedCo2MonetaryValueDescription = ({ impactsData }: Props) => {
   );
   const { updateModalContent } = useContext(ImpactModalDescriptionContext);
 
+  const data =
+    impactData?.details.map(({ amount, impact }) => ({
+      label: getSocioEconomicImpactLabel(impact),
+      color: getChartColor(impact),
+      value: amount,
+      name: impact,
+    })) ?? [];
+
   return (
     <ModalBody size="large">
       <ModalHeader
@@ -61,36 +68,24 @@ const AvoidedCo2MonetaryValueDescription = ({ impactsData }: Props) => {
       />
       <ModalGrid>
         <ModalData>
-          <ModalBarColoredChart
-            data={
-              impactData?.details.map(({ amount, impact }) => ({
-                label: getSocioEconomicImpactLabel(impact),
-                color: getChartColor(impact),
-                value: amount,
-              })) ?? []
-            }
+          <ModalColumnPointChart format="monetary" data={data} />
+
+          <ModalTable
+            caption="Liste des impacts liés à la valeur monétaire de la décarbonation"
+            data={data.map(({ label, value, color, name }) => ({
+              label,
+              value,
+              color,
+              actor: "Humanité",
+              onClick: () => {
+                updateModalContent({
+                  sectionName: "socio_economic",
+                  impactName: "avoided_co2_eq_emissions",
+                  impactDetailsName: name,
+                });
+              },
+            }))}
           />
-
-          {impactData?.details.map(({ impact, amount }) => (
-            <ImpactItemGroup isClickable key={impact}>
-              <ImpactItemDetails
-                value={amount}
-                label={getSocioEconomicImpactLabel(impact)}
-                type="monetary"
-                labelProps={{
-                  onClick: (e) => {
-                    e.stopPropagation();
-
-                    updateModalContent({
-                      sectionName: "socio_economic",
-                      impactName: "avoided_co2_eq_emissions",
-                      impactDetailsName: impact,
-                    });
-                  },
-                }}
-              />
-            </ImpactItemGroup>
-          ))}
         </ModalData>
 
         <ModalContent>

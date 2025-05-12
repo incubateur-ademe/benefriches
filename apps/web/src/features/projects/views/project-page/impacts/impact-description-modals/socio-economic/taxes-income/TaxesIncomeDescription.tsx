@@ -2,22 +2,22 @@ import { useContext } from "react";
 import { TaxesIncomeImpact } from "shared";
 
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
+import { getActorLabel } from "@/features/projects/views/shared/socioEconomicLabels";
 import { formatNumberFr, formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
 import { getSocioEconomicImpactLabel } from "../../../getImpactLabel";
-import ImpactItemDetails from "../../../list-view/ImpactItemDetails";
-import ImpactItemGroup from "../../../list-view/ImpactItemGroup";
 import { ModalDataProps } from "../../ImpactModalDescription";
 import { ImpactModalDescriptionContext } from "../../ImpactModalDescriptionContext";
-import ModalBarColoredChart from "../../shared/ModalBarColoredChart";
 import ModalBody from "../../shared/ModalBody";
 import ModalContent from "../../shared/ModalContent";
 import ModalData from "../../shared/ModalData";
 import ModalGrid from "../../shared/ModalGrid";
 import ModalHeader from "../../shared/ModalHeader";
+import ModalTable from "../../shared/ModalTable";
 import ModalTitleThree from "../../shared/ModalTitleThree";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
+import ModalColumnPointChart from "../../shared/modal-charts/ModalColumnPointChart";
 import { mainBreadcrumbSection, economicDirectBreadcrumbSection } from "../breadcrumbSections";
 
 type Props = {
@@ -38,6 +38,15 @@ const getChartColor = (impactName: TaxesIncomeImpact["details"][number]["impact"
 
 const TaxesIncomeDescription = ({ developmentPlan, impactData }: Props) => {
   const { updateModalContent } = useContext(ImpactModalDescriptionContext);
+
+  const data =
+    impactData?.details.map(({ amount, impact }) => ({
+      label: getSocioEconomicImpactLabel(impact),
+      color: getChartColor(impact),
+      value: amount,
+      name: impact,
+    })) ?? [];
+
   return (
     <ModalBody size="large">
       <ModalHeader
@@ -59,36 +68,24 @@ const TaxesIncomeDescription = ({ developmentPlan, impactData }: Props) => {
       />
       <ModalGrid>
         <ModalData>
-          <ModalBarColoredChart
-            data={
-              impactData?.details.map(({ amount, impact }) => ({
-                label: getSocioEconomicImpactLabel(impact),
-                color: getChartColor(impact),
-                value: amount,
-              })) ?? []
-            }
-          />
-          <ImpactItemGroup isClickable>
-            {impactData?.details.map(({ impact, amount }) => (
-              <ImpactItemDetails
-                key={impact}
-                value={amount}
-                label={getSocioEconomicImpactLabel(impact)}
-                type="monetary"
-                labelProps={{
-                  onClick: (e) => {
-                    e.stopPropagation();
+          <ModalColumnPointChart format="monetary" data={data} />
 
-                    updateModalContent({
-                      sectionName: "socio_economic",
-                      impactName: "taxes_income",
-                      impactDetailsName: impact,
-                    });
-                  },
-                }}
-              />
-            ))}
-          </ImpactItemGroup>
+          <ModalTable
+            caption="Liste des recettes fiscales"
+            data={data.map(({ label, value, color, name }) => ({
+              label,
+              value,
+              color,
+              actor: getActorLabel(impactData?.actor ?? "community"),
+              onClick: () => {
+                updateModalContent({
+                  sectionName: "socio_economic",
+                  impactName: "taxes_income",
+                  impactDetailsName: name,
+                });
+              },
+            }))}
+          />
         </ModalData>
 
         <ModalContent>
