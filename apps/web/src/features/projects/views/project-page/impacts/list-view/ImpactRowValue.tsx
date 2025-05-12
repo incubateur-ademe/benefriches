@@ -4,6 +4,7 @@ import { useWindowInnerSize } from "@codegouvfr/react-dsfr/tools/useWindowInnerS
 import { useBreakpointsValuesPx } from "@codegouvfr/react-dsfr/useBreakpointsValuesPx";
 import { HtmlHTMLAttributes, MouseEvent } from "react";
 
+import { getPositiveNegativeTextClassesFromValue } from "@/shared/views/classes/positiveNegativeTextClasses";
 import classNames from "@/shared/views/clsx";
 
 import {
@@ -131,9 +132,7 @@ const ImpactRowValue = ({
             className={classNames(
               "tw-py-1",
               isTotal && "tw-font-bold",
-              value === 0 && "tw-text-impacts-neutral-main dark:tw-text-impacts-neutral-light",
-              value > 0 && "tw-text-impacts-positive-main dark:tw-text-impacts-positive-light",
-              value < 0 && "tw-text-impacts-negative-main dark:tw-text-impacts-negative-light",
+              getPositiveNegativeTextClassesFromValue(value),
             )}
           >
             {impactTypeFormatterMap[type](value)}

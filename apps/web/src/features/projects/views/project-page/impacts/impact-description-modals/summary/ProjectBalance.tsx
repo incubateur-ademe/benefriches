@@ -1,6 +1,7 @@
 import { useContext } from "react";
 
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
+import { getPositiveNegativeTextClassesFromValue } from "@/shared/views/classes/positiveNegativeTextClasses";
 import classNames from "@/shared/views/clsx";
 
 import ImpactItemDetails from "../../list-view/ImpactItemDetails";
@@ -40,10 +41,7 @@ const SummaryProjectBalanceDescription = ({ impactData }: Props) => {
             <span
               className={classNames(
                 "tw-font-bold",
-                socioEconomicMonetaryImpactsTotal > 0 &&
-                  "tw-text-impacts-positive-main dark:tw-text-impacts-positive-light",
-                socioEconomicMonetaryImpactsTotal < 0 &&
-                  "tw-text-impacts-negative-main dark:tw-text-impacts-negative-light",
+                getPositiveNegativeTextClassesFromValue(socioEconomicMonetaryImpactsTotal),
               )}
             >
               {formatMonetaryImpact(socioEconomicMonetaryImpactsTotal)}
@@ -52,10 +50,7 @@ const SummaryProjectBalanceDescription = ({ impactData }: Props) => {
             <span
               className={classNames(
                 "tw-font-bold",
-                economicBalanceTotal > 0 &&
-                  "tw-text-impacts-positive-main dark:tw-text-impacts-positive-light",
-                economicBalanceTotal < 0 &&
-                  "tw-text-impacts-negative-main dark:tw-text-impacts-negative-light",
+                getPositiveNegativeTextClassesFromValue(economicBalanceTotal),
               )}
             >
               {formatMonetaryImpact(economicBalanceTotal)}
