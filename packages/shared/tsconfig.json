@@ -1,6 +1,5 @@
 {
   "extends": "../../.tooling/tsconfig.base.json",
-  "exclude": ["jest.config.ts"],
   "compilerOptions": {
     /* Language and Environment */
     "target": "ES2022",

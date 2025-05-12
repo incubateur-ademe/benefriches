@@ -6,7 +6,7 @@
   "scripts": {
     "build": "rimraf dist && tsc",
     "postinstall": "pnpm run build",
-    "test": "jest",
+    "test": "vitest --globals=true",
     "typecheck": "tsc --noEmit",
     "lint": "eslint --max-warnings 0 .",
     "format": "prettier --write --cache \"./**/*.{js,ts,md,json}\" src/",
@@ -27,12 +27,10 @@
     "@types/uuid": "~10.0.0",
     "eslint": "~9.24.0",
     "eslint-plugin-jest": "~28.11.0",
-    "jest": "~29.7.0",
     "prettier": "~3.5.3",
     "rimraf": "~6.0.1",
-    "ts-jest": "~29.3.1",
-    "ts-node": "~10.9.2",
     "typescript": "~5.8.3",
-    "typescript-eslint": "~8.29.1"
+    "typescript-eslint": "~8.29.1",
+    "vitest": "~3.1.1"
   }
 }
