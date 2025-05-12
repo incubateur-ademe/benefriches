@@ -78,12 +78,17 @@ export class AuthController {
       throw new BadRequestException("Missing expected state or nonce");
 
     const currentUrl = new URL(`${req.protocol}://${req.get("host")}${req.originalUrl}`);
+    console.log("currentUrl", currentUrl.toString());
 
     // exchange received authorization code for tokens
-    const tokens = await oidcClient.authorizationCodeGrant(proConnectOidcConfig, currentUrl, {
-      expectedState,
-      expectedNonce,
-    });
+    const tokens = await oidcClient.authorizationCodeGrant(
+      proConnectOidcConfig,
+      new URL(this.configService.getOrThrow<string>("PRO_CONNECT_LOGIN_CALLBACK_URL")),
+      {
+        expectedState,
+        expectedNonce,
+      },
+    );
 
     req.session.nonce = undefined;
     req.session.state = undefined;
