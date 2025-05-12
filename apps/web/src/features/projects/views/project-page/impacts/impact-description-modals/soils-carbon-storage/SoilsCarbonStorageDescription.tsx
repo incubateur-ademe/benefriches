@@ -2,7 +2,7 @@ import Table from "@codegouvfr/react-dsfr/Table";
 import { convertSquareMetersToHectares, SoilType } from "shared";
 
 import { formatCO2Impact } from "@/features/projects/views/shared/formatImpactValue";
-import { formatNumberFr, formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
+import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
 import { getLabelForSoilType } from "@/shared/core/label-mapping/soilTypeLabelMapping";
 import { getColorForSoilType } from "@/shared/core/soils";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
@@ -77,7 +77,7 @@ const SoilsCarbonStorageDescription = ({
             headers={["Type de sol", "Carbone stocké"]}
             data={details.map(({ label, difference, color }) => [
               <BagdeLabel key={label} label={label} color={color} />,
-              <Value key={`${label}-value`} value={difference} formatFn={formatSurfaceArea} />,
+              <Value key={`${label}-value`} value={difference} formatFn={formatCO2Impact} />,
             ])}
           />
         </ModalData>

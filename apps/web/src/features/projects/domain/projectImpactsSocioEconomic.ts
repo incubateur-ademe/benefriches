@@ -157,13 +157,8 @@ export type SocioEconomicImpactByActor = {
   impacts: { name: SocioEconomicMainImpactName; value: number }[];
 }[];
 export const getSocioEconomicProjectImpactsByActor = (
-  impactsData?: ReconversionProjectImpactsResult["impacts"],
+  socioEconomicImpacts: ReconversionProjectImpactsResult["impacts"]["socioeconomic"]["impacts"] = [],
 ): SocioEconomicImpactByActor => {
-  const { impacts: socioEconomicImpacts } = impactsData?.socioeconomic ?? {
-    total: 0,
-    impacts: [],
-  };
-
   const mergedActors = socioEconomicImpacts.map((impact) => ({
     ...impact,
     actor: ["local_people", "local_companies"].includes(impact.actor)

@@ -1,7 +1,4 @@
 import Tooltip from "@codegouvfr/react-dsfr/Tooltip";
-import * as Highcharts from "highcharts";
-import HighchartsReact from "highcharts-react-official";
-import { useId } from "react";
 
 import {
   formatCO2Impact,
@@ -9,9 +6,9 @@ import {
   formatETPImpact,
   formatSurfaceAreaImpact,
 } from "@/features/projects/views/shared/formatImpactValue";
-import { withDefaultAreaChartOptions } from "@/shared/views/charts";
-import { useChartCustomSerieColors } from "@/shared/views/charts/useChartCustomColors";
 import { getPositiveNegativeTextClassesFromValue } from "@/shared/views/classes/positiveNegativeTextClasses";
+
+import ImpactAreaChart from "../../../charts-view/ImpactChartCard/ImpactAreaChart";
 
 type Props = {
   title: string;
@@ -23,68 +20,16 @@ type Props = {
   type?: "co2" | "surfaceArea" | "etp" | "default";
 };
 
-const barAreaChartOptions: Highcharts.Options = withDefaultAreaChartOptions({
-  chart: {
-    type: "area",
-    height: 300,
-    marginLeft: 0,
-    marginRight: 0,
-    styledMode: true,
-  },
-  xAxis: {
-    labels: { enabled: true },
-    categories: [],
-  },
-  tooltip: {
-    enabled: false,
-  },
-  plotOptions: {
-    area: {
-      stacking: "normal",
-      marker: { enabled: false, states: { hover: { enabled: false } } },
-      lineWidth: 0,
-    },
-    series: {
-      enableMouseTracking: false,
-    },
-  },
-  legend: { enabled: false },
-});
-
-const impactTypeFormatterMap = {
-  co2: {
-    formatFn: formatCO2Impact,
-    unitSuffix: "",
-  },
-  surfaceArea: {
-    formatFn: formatSurfaceAreaImpact,
-    unitSuffix: "",
-  },
-  etp: {
-    formatFn: formatETPImpact,
-    unitSuffix: "ETP",
-  },
-  default: {
-    formatFn: formatDefaultImpact,
-    unitSuffix: "",
-  },
+const impactTypeFormatterFn = {
+  co2: formatCO2Impact,
+  surfaceArea: formatSurfaceAreaImpact,
+  etp: formatETPImpact,
+  default: formatDefaultImpact,
 } as const;
 
-const ModalAreaChart = ({
-  base,
-  forecast,
-  difference,
-  color,
-  details,
-  title,
-  type = "default",
-}: Props) => {
-  const chartContainerId = useId();
-
-  const { formatFn, unitSuffix } = impactTypeFormatterMap[type];
-
-  const baseValueText = `${formatFn(base, { withSignPrefix: false })} ${unitSuffix}`;
-  const forecastValueText = `${formatFn(forecast, { withSignPrefix: false })} ${unitSuffix}`;
+const ModalAreaChart = (props: Props) => {
+  const { base, forecast, difference, color, details, title, type = "default" } = props;
+  const formatFn = impactTypeFormatterFn[type];
 
   const data = details?.filter(({ difference }) => difference !== 0) ?? [
     {
@@ -95,11 +40,6 @@ const ModalAreaChart = ({
       color,
     },
   ];
-
-  useChartCustomSerieColors(
-    chartContainerId,
-    data.map(({ color }) => color),
-  );
 
   return (
     <Tooltip
@@ -120,37 +60,14 @@ const ModalAreaChart = ({
               </div>
 
               <span className={getPositiveNegativeTextClassesFromValue(difference)}>
-                {`${formatFn(difference)} ${unitSuffix}`}
+                {formatFn(difference)}
               </span>
             </div>
           ))}
         </div>
       }
     >
-      <HighchartsReact
-        highcharts={Highcharts}
-        containerProps={{ id: chartContainerId }}
-        options={
-          {
-            ...barAreaChartOptions,
-            xAxis: {
-              categories: ["Sans le projet", "Avec le projet"],
-              labels: {
-                useHTML: true,
-                formatter: function () {
-                  return `<strong>${this.value}</strong><br>${this.isFirst ? baseValueText : forecastValueText}`;
-                },
-              },
-            },
-            series: data.map(({ label, base, forecast, color }) => ({
-              name: label,
-              type: "area",
-              color,
-              data: [base, forecast],
-            })) as Array<Highcharts.SeriesOptionsType>,
-          } as Highcharts.Options
-        }
-      />
+      <ImpactAreaChart height={300} {...props} />
     </Tooltip>
   );
 };

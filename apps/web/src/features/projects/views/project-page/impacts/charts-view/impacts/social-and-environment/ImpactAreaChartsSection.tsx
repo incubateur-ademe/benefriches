@@ -4,7 +4,6 @@ import {
   EnvironmentalAreaChartImpactsData,
   SocialAreaChartImpactsData,
 } from "@/features/projects/domain/projectImpactsAreaChartsData";
-import { getLabelForSoilType } from "@/shared/core/label-mapping/soilTypeLabelMapping";
 import { getColorForSoilType } from "@/shared/core/soils";
 
 import ImpactModalDescription, {
@@ -16,6 +15,20 @@ type Props = {
   environmentalAreaChartImpactsData: EnvironmentalAreaChartImpactsData;
   socialAreaChartImpactsData: SocialAreaChartImpactsData;
   modalData: ModalDataProps;
+};
+
+const getMaxColor = (
+  impacts: {
+    color: string;
+    value: number;
+  }[],
+) => {
+  const max = impacts.sort((a, b) => Math.abs(b.value) - Math.abs(a.value))[0];
+
+  if (max) {
+    return max.color;
+  }
+  return undefined;
 };
 
 const ImpactAreaChartsSection = ({
@@ -46,22 +59,20 @@ const ImpactAreaChartsSection = ({
           <ImpactAreaChartCard
             dialogId="fr-modal-impacts-etp-Chart"
             type="etp"
-            impact={{
-              impactLabel: "🧑‍🔧️ Emplois équivalent temps plein",
-              ...fullTimeJobs,
-              details: [
-                {
-                  ...fullTimeJobs.operations,
-                  impactLabel: "Exploitation du site",
-                  color: "#C4D3DE",
-                },
-                {
-                  ...fullTimeJobs.conversion,
-                  impactLabel: "Reconversion du site",
-                  color: "#D6BB1D",
-                },
-              ],
-            }}
+            title="🧑‍🔧️ Emplois équivalent temps plein"
+            color={getMaxColor([
+              {
+                value: fullTimeJobs.operations.difference,
+                color: "#C4D3DE",
+              },
+              {
+                value: fullTimeJobs.conversion.difference,
+                color: "#D6BB1D",
+              },
+            ])}
+            base={fullTimeJobs.base}
+            forecast={fullTimeJobs.forecast}
+            difference={fullTimeJobs.difference}
           />
         </>
       )}
@@ -79,11 +90,11 @@ const ImpactAreaChartsSection = ({
           <ImpactAreaChartCard
             dialogId="fr-modal-impacts-households_powered_by_renewable_energy-Chart"
             type="default"
-            impact={{
-              impactLabel: "🏠 Foyers alimentés par les énergies renouvelables",
-              color: "#E3CFA9",
-              ...householdsPoweredByRenewableEnergy,
-            }}
+            title="🏠 Foyers alimentés par les énergies renouvelables"
+            color="#E3CFA9"
+            base={householdsPoweredByRenewableEnergy.base}
+            forecast={householdsPoweredByRenewableEnergy.forecast}
+            difference={householdsPoweredByRenewableEnergy.difference}
           />
         </>
       )}
@@ -98,17 +109,16 @@ const ImpactAreaChartsSection = ({
             <ImpactAreaChartCard
               dialogId="fr-modal-impacts-soils_carbon_storage-Chart"
               type="co2"
-              impact={{
-                impactLabel: "🍂️ Carbone stocké dans les sols",
-                base,
-                forecast,
-                difference,
-                details: Object.entries(details).map(([type, value]) => ({
-                  ...value,
-                  impactLabel: getLabelForSoilType(type as SoilType),
+              title="🍂️ Carbone stocké dans les sols"
+              base={base}
+              forecast={forecast}
+              difference={difference}
+              color={getMaxColor(
+                Object.entries(details).map(([type, value]) => ({
+                  value: value.difference,
                   color: getColorForSoilType(type as SoilType),
                 })),
-              }}
+              )}
             />
             <ImpactModalDescription
               dialogId="fr-modal-impacts-soils_carbon_storage-Chart"
@@ -127,32 +137,36 @@ const ImpactAreaChartsSection = ({
           <ImpactAreaChartCard
             dialogId="fr-modal-impacts-avoided_co2_emissions-Chart"
             type="co2"
-            impact={{
-              impactLabel: "☁️ CO2 eq stocké ou évité",
-              ...avoidedCo2eqEmissions,
-              details: [
-                {
-                  ...avoidedCo2eqEmissions.soilsCo2eqStorage,
-                  impactLabel: "CO2-eq stocké dans les sols",
-                  color: "#E6EA14",
-                },
-                {
-                  ...avoidedCo2eqEmissions.withAirConditioningDiminution,
-                  impactLabel: "Evitées grâce à l'utilisation réduite de de la climatisation",
-                  color: "#14C3EA",
-                },
-                {
-                  ...avoidedCo2eqEmissions.withCarTrafficDiminution,
-                  impactLabel: "Evitées grâce aux déplacements en voiture évités",
-                  color: "#14EA81",
-                },
-                {
-                  ...avoidedCo2eqEmissions.withRenewableEnergyProduction,
-                  impactLabel: "Évitées grâce à la production d'EnR",
-                  color: "#149FEA",
-                },
-              ],
-            }}
+            title="☁️ CO2 eq stocké ou évité"
+            base={avoidedCo2eqEmissions.base}
+            forecast={avoidedCo2eqEmissions.forecast}
+            difference={avoidedCo2eqEmissions.difference}
+            color={getMaxColor([
+              {
+                value:
+                  avoidedCo2eqEmissions.soilsCo2eqStorage.forecast -
+                  avoidedCo2eqEmissions.soilsCo2eqStorage.base,
+                color: "#E6EA14",
+              },
+              {
+                value:
+                  avoidedCo2eqEmissions.withAirConditioningDiminution.forecast -
+                  avoidedCo2eqEmissions.withAirConditioningDiminution.base,
+                color: "#14C3EA",
+              },
+              {
+                value:
+                  avoidedCo2eqEmissions.withCarTrafficDiminution.forecast -
+                  avoidedCo2eqEmissions.withCarTrafficDiminution.base,
+                color: "#14EA81",
+              },
+              {
+                value:
+                  avoidedCo2eqEmissions.withRenewableEnergyProduction.forecast -
+                  avoidedCo2eqEmissions.withRenewableEnergyProduction.base,
+                color: "#149FEA",
+              },
+            ])}
           />
           <ImpactModalDescription
             dialogId="fr-modal-impacts-avoided_co2_emissions-Chart"
@@ -170,22 +184,20 @@ const ImpactAreaChartsSection = ({
           <ImpactAreaChartCard
             dialogId="fr-modal-impacts-permeable_surface-Chart"
             type="surfaceArea"
-            impact={{
-              impactLabel: "🌧 Surface perméable",
-              ...permeableSurfaceArea,
-              details: [
-                {
-                  ...permeableSurfaceArea.greenSoil,
-                  impactLabel: "Surface perméable végétalisée",
-                  color: "#7ACA17",
-                },
-                {
-                  ...permeableSurfaceArea.mineralSoil,
-                  impactLabel: "Surface perméable minérale",
-                  color: "#70706A",
-                },
-              ],
-            }}
+            base={permeableSurfaceArea.base}
+            forecast={permeableSurfaceArea.forecast}
+            difference={permeableSurfaceArea.difference}
+            title="🌧 Surface perméable"
+            color={getMaxColor([
+              {
+                value: permeableSurfaceArea.greenSoil.difference,
+                color: "#7ACA17",
+              },
+              {
+                value: permeableSurfaceArea.mineralSoil.difference,
+                color: "#70706A",
+              },
+            ])}
           />
           <ImpactModalDescription
             dialogId="fr-modal-impacts-permeable_surface-Chart"
@@ -203,11 +215,11 @@ const ImpactAreaChartsSection = ({
           <ImpactAreaChartCard
             dialogId="fr-modal-impacts-non_contaminated_surface-Chart"
             type="surfaceArea"
-            impact={{
-              impactLabel: "✨ Surface non polluée",
-              color: "#FCDF3B",
-              ...nonContaminatedSurfaceArea,
-            }}
+            title="✨ Surface non polluée"
+            color="#FCDF3B"
+            base={nonContaminatedSurfaceArea.base}
+            forecast={nonContaminatedSurfaceArea.forecast}
+            difference={nonContaminatedSurfaceArea.difference}
           />
           <ImpactModalDescription
             dialogId="fr-modal-impacts-non_contaminated_surface-Chart"

@@ -28,6 +28,6 @@ export const selectTotalSocioEconomicImpact = createSelector(
 );
 
 export const selectSocioEconomicProjectImpactsByActor = createSelector(
-  selectImpactsData,
+  (state: RootState) => state.projectImpacts.impactsData?.socioeconomic.impacts,
   getSocioEconomicProjectImpactsByActor,
 );

@@ -78,7 +78,7 @@ export function withDefaultBarChartOptions({
   });
 }
 
-export function withDefaultAreaChartOptions(options: Options): Options {
+export function withDefaultAreaChartOptions({ chart = {}, ...options }: Options): Options {
   return withDefaultChartOptions({
     chart: {
       type: "area",
@@ -86,12 +86,27 @@ export function withDefaultAreaChartOptions(options: Options): Options {
       marginLeft: 0,
       marginRight: 0,
       styledMode: true,
+      ...chart,
     },
     yAxis: {
       visible: false,
       tickLength: 0,
       maxPadding: 0,
     },
+    tooltip: {
+      enabled: false,
+    },
+    plotOptions: {
+      area: {
+        stacking: "normal",
+        marker: { enabled: false, states: { hover: { enabled: false } } },
+        lineWidth: 0,
+      },
+      series: {
+        enableMouseTracking: false,
+      },
+    },
+    legend: { enabled: false },
     ...options,
   });
 }

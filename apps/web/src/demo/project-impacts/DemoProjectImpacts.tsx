@@ -114,7 +114,9 @@ function DemoProjectImpacts({ projectData, siteData, impactsData: impactsDataFor
               siteContaminatedSurfaceArea: 0,
               impactsData,
             })}
-            socioEconomicImpactsByActor={getSocioEconomicProjectImpactsByActor(impactsData)}
+            socioEconomicImpactsByActor={getSocioEconomicProjectImpactsByActor(
+              impactsData.socioeconomic.impacts,
+            )}
             socioEconomicTotalImpact={impactsData.socioeconomic.total}
           />
         )}
