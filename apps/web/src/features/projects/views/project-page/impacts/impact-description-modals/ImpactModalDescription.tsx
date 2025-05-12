@@ -4,7 +4,6 @@ import { BuildingsUseDistribution, ReconversionProjectImpacts, SoilsDistribution
 
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
-import "./ImpactDescriptionModal.css";
 import {
   ImpactModalDescriptionContext,
   INITIAL_CONTENT_STATE,
