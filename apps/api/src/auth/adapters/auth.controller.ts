@@ -69,6 +69,8 @@ export class AuthController {
       clientSecret: this.configService.getOrThrow<string>("PRO_CONNECT_CLIENT_SECRET"),
     });
 
+    console.log("SESSION", req.session);
+
     const expectedState = req.session.state;
     const expectedNonce = req.session.nonce;
 
