@@ -159,7 +159,7 @@ function ImpactModalDescription({
                   case "soils_carbon_storage":
                     return (
                       <SoilsCarbonStorageDescription
-                        impactData={impactsData.environmental.soilsCarbonStorage?.difference}
+                        impactData={impactsData.environmental.soilsCarbonStorage!}
                         baseSoilsDistribution={siteData.soilsDistribution}
                         forecastSoilsDistribution={projectData.soilsDistribution}
                       />

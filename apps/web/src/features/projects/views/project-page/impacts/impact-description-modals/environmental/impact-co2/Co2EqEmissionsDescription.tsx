@@ -15,7 +15,7 @@ import ModalData from "../../shared/ModalData";
 import ModalGrid from "../../shared/ModalGrid";
 import ModalHeader from "../../shared/ModalHeader";
 import ModalTable from "../../shared/ModalTable";
-import ModalColumnPointChart from "../../shared/modal-charts/ModalColumnPointChart";
+import ModalAreaChart from "../../shared/modal-charts/ModalAreaChart";
 import { co2BreadcrumbSection, mainBreadcrumbSection } from "../breadcrumbSections";
 
 type Props = {
@@ -49,6 +49,7 @@ const Co2BenefitDescription = ({ impactsData }: Props) => {
     label: getEnvironmentalDetailsImpactLabel("co2_benefit", name),
     color: getChartColor(name as CO2BenefitDetails),
     value: impact.difference,
+    ...impact,
     name,
   }));
 
@@ -68,7 +69,14 @@ const Co2BenefitDescription = ({ impactsData }: Props) => {
       />
       <ModalGrid>
         <ModalData>
-          <ModalColumnPointChart format="co2" data={impactList} />
+          <ModalAreaChart
+            type="co2"
+            base={co2Benefit?.impact.base ?? 0}
+            forecast={co2Benefit?.impact.forecast ?? 0}
+            difference={co2Benefit?.impact.difference ?? 0}
+            title="CO2-eq stocké ou évité"
+            details={impactList}
+          />
 
           <ModalTable
             formatFn={formatCO2Impact}

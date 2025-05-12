@@ -20,7 +20,7 @@ type Props = {
   formatFn?: (value: number) => string;
 };
 
-const BagdeLabel = ({ label, color }: { label: string; color: string }) => (
+export const BagdeLabel = ({ label, color }: { label: string; color: string }) => (
   <span className="tw-flex tw-items-center tw-gap-1" key={label}>
     <span
       className={classNames("tw-mr-2", "tw-inline-flex", "tw-min-h-5", "tw-min-w-5", "tw-rounded")}
@@ -35,7 +35,13 @@ const BagdeLabel = ({ label, color }: { label: string; color: string }) => (
   </span>
 );
 
-const Value = ({ value, formatFn }: { value: number; formatFn: (value: number) => string }) => (
+export const Value = ({
+  value,
+  formatFn,
+}: {
+  value: number;
+  formatFn: (value: number) => string;
+}) => (
   <span className={classNames(getPositiveNegativeTextClassesFromValue(value), "tw-font-bold")}>
     {formatFn(value)}
   </span>

@@ -115,10 +115,18 @@ export function EnvironmentalModalWizard({
               />
             );
           case "non_contaminated_surface_area":
-            return <NonContaminatedSurfaceDescription />;
+            return (
+              <NonContaminatedSurfaceDescription
+                impactData={impactsData.environmental.nonContaminatedSurfaceArea!}
+              />
+            );
 
           case "permeable_surface_area":
-            return <PermeableSurfaceDescription />;
+            return (
+              <PermeableSurfaceDescription
+                impactData={impactsData.environmental.permeableSurfaceArea}
+              />
+            );
 
           case "mineral_soil":
             return <PermeableMineraleSurfaceDescription />;

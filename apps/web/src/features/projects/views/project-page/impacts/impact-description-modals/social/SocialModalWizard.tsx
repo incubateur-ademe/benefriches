@@ -100,7 +100,7 @@ export function SocialModalWizard({
 
         switch (impactDetailsName ?? impactName) {
           case "full_time_jobs":
-            return <FullTimeJobsDescription />;
+            return <FullTimeJobsDescription impactData={impactsData.social.fullTimeJobs} />;
           case "conversion_full_time_jobs":
             return (
               <ReconversionFullTimeJobsDescription
@@ -133,6 +133,7 @@ export function SocialModalWizard({
                     ? projectData.developmentPlan.surfaceArea
                     : undefined
                 }
+                impactData={impactsData.social.householdsPoweredByRenewableEnergy!}
               />
             );
 
