@@ -69,26 +69,24 @@ export class AuthController {
       clientSecret: this.configService.getOrThrow<string>("PRO_CONNECT_CLIENT_SECRET"),
     });
 
-    console.log("SESSION", req.session);
-
     const expectedState = req.session.state;
     const expectedNonce = req.session.nonce;
 
     if (!expectedState || !expectedNonce)
       throw new BadRequestException("Missing expected state or nonce");
 
-    const currentUrl = new URL(`${req.protocol}://${req.get("host")}${req.originalUrl}`);
+    const callbackUrl = new URL(
+      this.configService.getOrThrow<string>("PRO_CONNECT_LOGIN_CALLBACK_URL"),
+    );
+    // we use the origin defined in config because current url may be different due to reverse proxy
+    const currentUrl = new URL(`${callbackUrl.origin}${req.originalUrl}`);
     console.log("currentUrl", currentUrl.toString());
 
     // exchange received authorization code for tokens
-    const tokens = await oidcClient.authorizationCodeGrant(
-      proConnectOidcConfig,
-      new URL(this.configService.getOrThrow<string>("PRO_CONNECT_LOGIN_CALLBACK_URL")),
-      {
-        expectedState,
-        expectedNonce,
-      },
-    );
+    const tokens = await oidcClient.authorizationCodeGrant(proConnectOidcConfig, currentUrl, {
+      expectedState,
+      expectedNonce,
+    });
 
     req.session.nonce = undefined;
     req.session.state = undefined;
