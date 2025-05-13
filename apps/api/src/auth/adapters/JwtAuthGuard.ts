@@ -8,8 +8,8 @@ import {
 import { ConfigService } from "@nestjs/config";
 import { Request } from "express";
 
-import { ACCESS_TOKEN_SERVICE, AccessTokenService } from "./AccessTokenService";
-import { ACCESS_TOKEN_COOKIE_KEY } from "./accessTokenCookie";
+import { ACCESS_TOKEN_SERVICE, AccessTokenService } from "./access-token/AccessTokenService";
+import { ACCESS_TOKEN_COOKIE_KEY } from "./access-token/accessTokenCookie";
 
 declare module "express" {
   interface Request {
