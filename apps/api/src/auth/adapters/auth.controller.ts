@@ -10,12 +10,18 @@ import {
 } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { Request, Response } from "express";
-import * as oidcClient from "openid-client";
 
-import { ACCESS_TOKEN_SERVICE, AccessTokenService } from "./AccessTokenService";
 import { JwtAuthGuard } from "./JwtAuthGuard";
-import { getProConnectOidcConfig } from "./ProConnectOidcConfig";
-import { ACCESS_TOKEN_COOKIE_KEY } from "./accessTokenCookie";
+import { ACCESS_TOKEN_SERVICE, AccessTokenService } from "./access-token/AccessTokenService";
+import { ACCESS_TOKEN_COOKIE_KEY } from "./access-token/accessTokenCookie";
+import {
+  AUTH_USER_REPOSITORY_TOKEN,
+  AuthUserRepository,
+} from "./auth-user-repository/AuthUsersRepository";
+import {
+  PRO_CONNECT_CLIENT_INJECTION_TOKEN,
+  ProConnectClient,
+} from "./pro-connect/ProConnectClient";
 
 declare module "express-session" {
   interface SessionData {
@@ -30,45 +36,26 @@ export class AuthController {
     @Inject(ACCESS_TOKEN_SERVICE)
     private readonly accessTokenService: AccessTokenService,
     private readonly configService: ConfigService,
+    @Inject(AUTH_USER_REPOSITORY_TOKEN)
+    private readonly usersRepository: AuthUserRepository,
+    @Inject(PRO_CONNECT_CLIENT_INJECTION_TOKEN)
+    private readonly oidcLogin: ProConnectClient,
   ) {}
 
   @Get("/login/pro-connect")
   async login(@Req() req: Request, @Res() res: Response) {
-    const proConnectOidcConfig = await getProConnectOidcConfig({
-      providerDomain: this.configService.getOrThrow<string>("PRO_CONNECT_PROVIDER_DOMAIN"),
-      clientId: this.configService.getOrThrow<string>("PRO_CONNECT_CLIENT_ID"),
-      clientSecret: this.configService.getOrThrow<string>("PRO_CONNECT_CLIENT_SECRET"),
-    });
-
-    const nonce = oidcClient.randomNonce();
-    const state = oidcClient.randomState();
+    const { authorizationUrl, nonce, state } = await this.oidcLogin.getAuthorizationUrl(
+      this.configService.getOrThrow<string>("PRO_CONNECT_LOGIN_CALLBACK_URL"),
+    );
 
     req.session.nonce = nonce;
     req.session.state = state;
 
-    const redirectUrl = oidcClient.buildAuthorizationUrl(
-      proConnectOidcConfig,
-      new URLSearchParams({
-        nonce,
-        state,
-        response_type: "code",
-        redirect_uri: this.configService.getOrThrow<string>("PRO_CONNECT_LOGIN_CALLBACK_URL"),
-        scope: "openid uid given_name usual_name email siret",
-        acr_values: "eidas1",
-      }),
-    );
-
-    res.redirect(redirectUrl.toString());
+    res.redirect(authorizationUrl.toString());
   }
 
   @Get("/login-callback/pro-connect")
   async proConnectLoginCallback(@Req() req: Request, @Res() res: Response) {
-    const proConnectOidcConfig = await getProConnectOidcConfig({
-      providerDomain: this.configService.getOrThrow<string>("PRO_CONNECT_PROVIDER_DOMAIN"),
-      clientId: this.configService.getOrThrow<string>("PRO_CONNECT_CLIENT_ID"),
-      clientSecret: this.configService.getOrThrow<string>("PRO_CONNECT_CLIENT_SECRET"),
-    });
-
     const expectedState = req.session.state;
     const expectedNonce = req.session.nonce;
 
@@ -80,29 +67,22 @@ export class AuthController {
     );
     // we use the origin defined in config because current url may be different due to reverse proxy
     const currentUrl = new URL(`${callbackUrl.origin}${req.originalUrl}`);
-    console.log("currentUrl", currentUrl.toString());
-
-    // exchange received authorization code for tokens
-    const tokens = await oidcClient.authorizationCodeGrant(proConnectOidcConfig, currentUrl, {
-      expectedState,
-      expectedNonce,
-    });
 
     req.session.nonce = undefined;
     req.session.state = undefined;
 
-    const claims = tokens.claims();
-
-    if (!claims) throw new BadRequestException("Missing claims");
-
-    const userInfo = await oidcClient.fetchUserInfo(
-      proConnectOidcConfig,
-      tokens.access_token,
-      claims.sub,
-    );
+    const userIdentity = await this.oidcLogin.fetchUserIdentity({
+      expectedState,
+      expectedNonce,
+      currentUrl,
+    });
 
     // TODO
     // if user email exists in database
+    if (await this.usersRepository.existsWithEmail(userIdentity.email)) {
+      console.log("exists in DB");
+    }
+    console.log({ userIdentity });
     //     if no record of user id in federated_credentials table, create one {userId, provider: "pro-connect", subject: claims.sub}
     // else
     //    fetch user collectivité or company information
@@ -110,8 +90,8 @@ export class AuthController {
     //    create federated_credentials entry in db {userId, provider: "pro-connect", subject: claims.sub}
 
     const accessToken = await this.accessTokenService.signAsync({
-      sub: userInfo.sub,
-      email: userInfo.email,
+      sub: userIdentity.id,
+      email: userIdentity.email,
     });
 
     const decodedAccessToken = this.accessTokenService.decode<{
