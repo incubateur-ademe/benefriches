@@ -23,7 +23,7 @@ const ProjectFeaturesModalContainer = ({ projectId }: Props) => {
     if (isOpen) {
       void dispatch(fetchProjectFeatures({ projectId }));
     }
-  }, [dispatch, isOpen, projectFeatures, projectId]);
+  }, [dispatch, isOpen, projectId]);
 
   return <ProjectFeaturesModal projectFeaturesData={projectFeatures} isOpen={isOpen} />;
 };
