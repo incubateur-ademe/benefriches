@@ -10,7 +10,7 @@ type Props = {
 };
 const AvoidedOtherSecuringCostsDescription = ({ impactData }: Props) => {
   return (
-    <ModalBody size="large">
+    <ModalBody size="medium">
       <ModalHeader
         title="🛡 Autres dépenses de sécurisation"
         value={
@@ -24,7 +24,7 @@ const AvoidedOtherSecuringCostsDescription = ({ impactData }: Props) => {
         }
         breadcrumbSegments={[...breadcrumbSegments, { label: "Autres dépenses de sécurisation" }]}
       />
-      <ModalContent fullWidth>
+      <ModalContent>
         <p>
           En plus des dépenses d’entretien, de débarras de dépôts sauvages ou de gardiennage,
           d’autres dépenses peuvent être nécessaires, par exemple pour la réparation de dommages non

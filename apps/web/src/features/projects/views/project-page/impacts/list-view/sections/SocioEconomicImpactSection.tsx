@@ -97,7 +97,7 @@ const SocioEconomicImpactSection = ({
               details.map(({ name: detailsName }) => (
                 <ImpactModalDescription
                   key={detailsName}
-                  dialogId={`fr-modal-impacts-socio_economic-${sectionName}-${name}-${detailsName}-List`}
+                  dialogId={`fr-modal-impacts-socioeconomic-${sectionName}-${name}-${detailsName}-List`}
                   initialState={{
                     sectionName: "socio_economic",
                     impactName: name,
