@@ -1,8 +1,9 @@
 import Button, { ButtonProps } from "@codegouvfr/react-dsfr/Button";
-import { Menu, MenuButton, MenuItem, MenuItems, MenuItemsProps } from "@headlessui/react";
+import { Menu, MenuButton, MenuItems, MenuItemsProps } from "@headlessui/react";
 import { Fragment } from "react/jsx-runtime";
 
 import classNames, { ClassValue } from "../../clsx";
+import MenuItemButton from "./MenuItemButton";
 
 type DropdownMenuProps = {
   classes?: Partial<Record<"root" | "menu" | "list", ClassValue>>;
@@ -44,14 +45,7 @@ function DropdownMenu({
         )}
       >
         {options.map((option, index) => (
-          <MenuItem key={`menu-btn-${index}`}>
-            <Button
-              size="small"
-              className="tw-w-full tw-py-2"
-              priority="tertiary no outline"
-              {...option}
-            />
-          </MenuItem>
+          <MenuItemButton key={`menu-btn-${index}`} {...option} />
         ))}
       </MenuItems>
     </Menu>
