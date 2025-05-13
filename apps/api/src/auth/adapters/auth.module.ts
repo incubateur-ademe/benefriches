@@ -2,8 +2,12 @@ import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { JwtModule, JwtService } from "@nestjs/jwt";
 
-import { ACCESS_TOKEN_SERVICE } from "./AccessTokenService";
+import { ACCESS_TOKEN_SERVICE } from "./access-token/AccessTokenService";
+import { AUTH_USER_REPOSITORY_TOKEN } from "./auth-user-repository/AuthUsersRepository";
+import { SqlAuthUserRepository } from "./auth-user-repository/SqlAuthUsersRepository";
 import { AuthController } from "./auth.controller";
+import { HttpProConnectClient } from "./pro-connect/HttpProConnectClient";
+import { PRO_CONNECT_CLIENT_INJECTION_TOKEN } from "./pro-connect/ProConnectClient";
 
 @Module({
   imports: [
@@ -26,6 +30,21 @@ import { AuthController } from "./auth.controller";
     {
       provide: ACCESS_TOKEN_SERVICE,
       useExisting: JwtService,
+    },
+    {
+      provide: AUTH_USER_REPOSITORY_TOKEN,
+      useClass: SqlAuthUserRepository,
+    },
+    {
+      provide: PRO_CONNECT_CLIENT_INJECTION_TOKEN,
+      inject: [ConfigService],
+      useFactory(configService: ConfigService) {
+        return new HttpProConnectClient(
+          configService.getOrThrow<string>("PRO_CONNECT_CLIENT_ID"),
+          configService.getOrThrow<string>("PRO_CONNECT_CLIENT_SECRET"),
+          configService.getOrThrow<string>("PRO_CONNECT_PROVIDER_DOMAIN"),
+        );
+      },
     },
   ],
   exports: [
