@@ -1,3 +1,5 @@
+import React from "react";
+
 import { KeyImpactIndicatorData } from "@/features/projects/application/projectKeyImpactIndicators.selectors";
 
 import ImpactModalDescription, {
@@ -41,13 +43,12 @@ const ImpactSummaryView = ({ keyImpactIndicatorsList, modalData }: Props) => {
           ({ name: aName }, { name: bName }) =>
             PRIORITY_ORDER.indexOf(aName) - PRIORITY_ORDER.indexOf(bName),
         )
-        .map(({ name, value, isSuccess }, index) => {
+        .map(({ name, value, isSuccess }) => {
           switch (name) {
             case "zanCompliance":
               return (
-                <>
+                <React.Fragment key={name}>
                   <ImpactSummaryZanCompliance
-                    key={index}
                     {...value}
                     isSuccess={isSuccess}
                     noDescription
@@ -61,14 +62,13 @@ const ImpactSummaryView = ({ keyImpactIndicatorsList, modalData }: Props) => {
                     }}
                     {...modalData}
                   />
-                </>
+                </React.Fragment>
               );
 
             case "projectImpactBalance":
               return (
-                <>
+                <React.Fragment key={name}>
                   <ImpactSummaryProjectBalance
-                    key={index}
                     isSuccess={isSuccess}
                     {...value}
                     noDescription
@@ -82,14 +82,13 @@ const ImpactSummaryView = ({ keyImpactIndicatorsList, modalData }: Props) => {
                     }}
                     {...modalData}
                   />
-                </>
+                </React.Fragment>
               );
 
             case "avoidedFricheCostsForLocalAuthority":
               return (
-                <>
+                <React.Fragment key={name}>
                   <ImpactSummaryAvoidedFricheCostsForLocalAuthority
-                    key={index}
                     isSuccess={isSuccess}
                     {...value}
                     noDescription
@@ -103,13 +102,12 @@ const ImpactSummaryView = ({ keyImpactIndicatorsList, modalData }: Props) => {
                     }}
                     {...modalData}
                   />
-                </>
+                </React.Fragment>
               );
             case "taxesIncomesImpact":
               return (
-                <>
+                <React.Fragment key={name}>
                   <ImpactSummaryTaxesIncome
-                    key={index}
                     isSuccess={isSuccess}
                     value={value}
                     noDescription
@@ -123,13 +121,12 @@ const ImpactSummaryView = ({ keyImpactIndicatorsList, modalData }: Props) => {
                     }}
                     {...modalData}
                   />
-                </>
+                </React.Fragment>
               );
             case "fullTimeJobs":
               return (
-                <>
+                <React.Fragment key={name}>
                   <ImpactSummaryFullTimeJobs
-                    key={index}
                     isSuccess={isSuccess}
                     {...value}
                     noDescription
@@ -143,13 +140,12 @@ const ImpactSummaryView = ({ keyImpactIndicatorsList, modalData }: Props) => {
                     }}
                     {...modalData}
                   />
-                </>
+                </React.Fragment>
               );
             case "avoidedCo2eqEmissions":
               return (
-                <>
+                <React.Fragment key={name}>
                   <ImpactSummaryAvoidedCo2eqEmissions
-                    key={index}
                     isSuccess={isSuccess}
                     value={value}
                     noDescription
@@ -163,13 +159,12 @@ const ImpactSummaryView = ({ keyImpactIndicatorsList, modalData }: Props) => {
                     }}
                     {...modalData}
                   />
-                </>
+                </React.Fragment>
               );
             case "nonContaminatedSurfaceArea":
               return (
-                <>
+                <React.Fragment key={name}>
                   <ImpactSummaryNonContaminatedSurfaceArea
-                    key={index}
                     isSuccess={isSuccess}
                     {...value}
                     noDescription
@@ -183,13 +178,12 @@ const ImpactSummaryView = ({ keyImpactIndicatorsList, modalData }: Props) => {
                     }}
                     {...modalData}
                   />
-                </>
+                </React.Fragment>
               );
             case "permeableSurfaceArea":
               return (
-                <>
+                <React.Fragment key={name}>
                   <ImpactSummaryPermeableSurfaceArea
-                    key={index}
                     isSuccess={isSuccess}
                     {...value}
                     noDescription
@@ -203,13 +197,12 @@ const ImpactSummaryView = ({ keyImpactIndicatorsList, modalData }: Props) => {
                     }}
                     {...modalData}
                   />
-                </>
+                </React.Fragment>
               );
             case "householdsPoweredByRenewableEnergy":
               return (
-                <>
+                <React.Fragment key={name}>
                   <ImpactSummaryHouseholdsPoweredByRenewableEnergy
-                    key={index}
                     value={value}
                     noDescription
                     buttonProps={getDialogControlButtonProps(`fr-modal-impacts_${name}-Summary`)}
@@ -222,13 +215,12 @@ const ImpactSummaryView = ({ keyImpactIndicatorsList, modalData }: Props) => {
                     }}
                     {...modalData}
                   />
-                </>
+                </React.Fragment>
               );
             case "localPropertyValueIncrease":
               return (
-                <>
+                <React.Fragment key={name}>
                   <ImpactSummaryLocalPropertyValueIncrease
-                    key={index}
                     value={value}
                     noDescription
                     buttonProps={getDialogControlButtonProps(`fr-modal-impacts_${name}-Summary`)}
@@ -241,7 +233,7 @@ const ImpactSummaryView = ({ keyImpactIndicatorsList, modalData }: Props) => {
                     }}
                     {...modalData}
                   />
-                </>
+                </React.Fragment>
               );
           }
         })}
