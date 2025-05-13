@@ -26,6 +26,7 @@ export type FormValues = {
 } & StructureFormValues;
 
 type Props = {
+  predefinedValues?: Partial<FormValues>;
   createUserLoadingState: "idle" | "loading" | "success" | "error";
   onSubmit: (data: FormValues) => void;
   administrativeDivisionService: AdministrativeDivisionService;
@@ -35,8 +36,11 @@ function CreateUserForm({
   onSubmit,
   createUserLoadingState,
   administrativeDivisionService,
+  predefinedValues,
 }: Props) {
-  const formContext = useForm<FormValues>();
+  const formContext = useForm<FormValues>({
+    defaultValues: predefinedValues,
+  });
   const { register, handleSubmit, formState } = formContext;
 
   return (
@@ -51,6 +55,7 @@ function CreateUserForm({
             stateRelatedMessage={
               formState.errors.email ? formState.errors.email.message : undefined
             }
+            disabled={predefinedValues?.email !== undefined}
             nativeInputProps={{
               placeholder: "utilisateur@ademe.fr",
               ...register("email", {
@@ -65,10 +70,12 @@ function CreateUserForm({
           <Input
             label="Prénom"
             nativeInputProps={{ ...register("firstname"), placeholder: "Laurent" }}
+            disabled={predefinedValues?.firstname !== undefined}
           />
           <Input
             label="Nom"
             nativeInputProps={{ ...register("lastname"), placeholder: "Chateau" }}
+            disabled={predefinedValues?.lastname !== undefined}
           />
           <UserStructureForm
             administrativeDivisionService={administrativeDivisionService}

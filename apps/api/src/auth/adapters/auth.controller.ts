@@ -48,6 +48,8 @@ export class AuthController {
       this.configService.getOrThrow<string>("PRO_CONNECT_LOGIN_CALLBACK_URL"),
     );
 
+    authorizationUrl.searchParams.set("prompt", "none");
+
     req.session.nonce = nonce;
     req.session.state = state;
 
@@ -71,27 +73,27 @@ export class AuthController {
     req.session.nonce = undefined;
     req.session.state = undefined;
 
-    const userIdentity = await this.oidcLogin.fetchUserIdentity({
+    const oidcIdentity = await this.oidcLogin.fetchUserIdentity({
       expectedState,
       expectedNonce,
       currentUrl,
     });
 
-    // TODO
-    // if user email exists in database
-    if (await this.usersRepository.existsWithEmail(userIdentity.email)) {
-      console.log("exists in DB");
+    // if user email does not exist in database
+    if (!(await this.usersRepository.existsWithEmail(oidcIdentity.email))) {
+      const createAccountUrl = new URL(
+        this.configService.getOrThrow<string>("AUTH_CREATE_USER_ACCOUNT_URL"),
+      );
+      createAccountUrl.searchParams.set("hintEmail", oidcIdentity.email);
+      createAccountUrl.searchParams.set("hintFirstName", oidcIdentity.firstName);
+      createAccountUrl.searchParams.set("hintLastName", oidcIdentity.lastName);
+      res.redirect(createAccountUrl.toString());
+      return;
     }
-    console.log({ userIdentity });
-    //     if no record of user id in federated_credentials table, create one {userId, provider: "pro-connect", subject: claims.sub}
-    // else
-    //    fetch user collectivité or company information
-    //    create user in database
-    //    create federated_credentials entry in db {userId, provider: "pro-connect", subject: claims.sub}
 
     const accessToken = await this.accessTokenService.signAsync({
-      sub: userIdentity.id,
-      email: userIdentity.email,
+      sub: oidcIdentity.id,
+      email: oidcIdentity.email,
     });
 
     const decodedAccessToken = this.accessTokenService.decode<{
