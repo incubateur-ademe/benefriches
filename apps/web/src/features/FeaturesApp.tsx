@@ -3,7 +3,7 @@ import { createGroup } from "type-route";
 
 import { initCurrentUser } from "@/features/onboarding/core/initCurrentUser.action";
 import NotFoundScreen from "@/shared/views/components/NotFound/NotFound";
-import RequireRegisteredUser from "@/shared/views/components/RequireRegisteredUser/RequireRegisteredUser";
+import RequireAuthenticatedUser from "@/shared/views/components/RequireAuthenticatedUser/RequireAuthenticatedUser";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 import HeaderFooterLayout from "@/shared/views/layout/HeaderFooterLayout/HeaderFooterLayout";
@@ -51,7 +51,7 @@ function FeaturesApp() {
     return (
       <SidebarContainerLayout>
         <Suspense fallback={<LoadingSpinner />}>
-          <RequireRegisteredUser>
+          <RequireAuthenticatedUser>
             {(() => {
               switch (route.name) {
                 case routes.createSiteFoncier.name:
@@ -60,7 +60,7 @@ function FeaturesApp() {
                   return <CreateProjectPage route={route} />;
               }
             })()}
-          </RequireRegisteredUser>
+          </RequireAuthenticatedUser>
         </Suspense>
       </SidebarContainerLayout>
     );
@@ -70,9 +70,9 @@ function FeaturesApp() {
     return (
       <HeaderFooterLayout>
         <Suspense fallback={<LoadingSpinner />}>
-          <RequireRegisteredUser>
+          <RequireAuthenticatedUser>
             <OnBoardingIntroductionPages route={route} />
-          </RequireRegisteredUser>
+          </RequireAuthenticatedUser>
         </Suspense>
       </HeaderFooterLayout>
     );
@@ -90,28 +90,28 @@ function FeaturesApp() {
             // protected pages
             case routes.createUser.name:
               return (
-                <RequireRegisteredUser>
+                <RequireAuthenticatedUser>
                   <CreateUserPage />
-                </RequireRegisteredUser>
+                </RequireAuthenticatedUser>
               );
             case routes.myProjects.name:
               return (
-                <RequireRegisteredUser>
+                <RequireAuthenticatedUser>
                   <MyProjectsPage />
-                </RequireRegisteredUser>
+                </RequireAuthenticatedUser>
               );
             case routes.projectImpacts.name:
               return (
-                <RequireRegisteredUser>
+                <RequireAuthenticatedUser>
                   <ProjectImpactsPage projectId={route.params.projectId} />
-                </RequireRegisteredUser>
+                </RequireAuthenticatedUser>
               );
 
             case routes.projectImpactsOnboarding.name:
               return (
-                <RequireRegisteredUser>
+                <RequireAuthenticatedUser>
                   <ProjectImpactsOnboardingPage projectId={route.params.projectId} route={route} />
-                </RequireRegisteredUser>
+                </RequireAuthenticatedUser>
               );
             case routes.urbanSprawlImpactsComparison.name:
               return (
@@ -121,9 +121,9 @@ function FeaturesApp() {
               );
             case routes.siteFeatures.name:
               return (
-                <RequireRegisteredUser>
+                <RequireAuthenticatedUser>
                   <SiteFeaturesPage siteId={route.params.siteId} />
-                </RequireRegisteredUser>
+                </RequireAuthenticatedUser>
               );
             // 404
             default:
