@@ -1,44 +1,49 @@
-import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createReducer, createSelector, PayloadAction } from "@reduxjs/toolkit";
 
 import { RootState } from "@/shared/core/store-config/store";
 
 import { createUser } from "./createUser.action";
 import { initCurrentUser } from "./initCurrentUser.action";
-import { User, UserStructure } from "./user";
+import { AuthenticatedUser, UserStructure } from "./user";
 
 type State = {
-  currentUser: User | null;
-  currentUserLoaded: boolean;
+  currentUser: AuthenticatedUser | null;
+  currentUserState: "idle" | "loading" | "authenticated" | "unauthenticated";
   createUserState: "idle" | "loading" | "success" | "error";
 };
 
 export const initialState: State = {
   currentUser: null,
-  currentUserLoaded: false,
+  currentUserState: "idle",
   createUserState: "idle",
 };
 
-const userSlice = createSlice({
-  name: "currentUser",
-  initialState,
-  reducers: {},
-  extraReducers(builder) {
-    builder.addCase(initCurrentUser.fulfilled, (state, action: PayloadAction<User | undefined>) => {
-      state.currentUserLoaded = true;
+export const currentUserReducer = createReducer(initialState, (builder) => {
+  builder.addCase(
+    initCurrentUser.fulfilled,
+    (state, action: PayloadAction<AuthenticatedUser | undefined>) => {
+      state.currentUserState = "authenticated";
 
       if (action.payload) state.currentUser = action.payload;
-    });
-    builder.addCase(createUser.pending, (state) => {
-      state.createUserState = "loading";
-    });
-    builder.addCase(createUser.fulfilled, (state, action: PayloadAction<User>) => {
-      state.currentUser = action.payload;
-      state.createUserState = "success";
-    });
-    builder.addCase(createUser.rejected, (state) => {
-      state.createUserState = "error";
-    });
-  },
+    },
+  );
+  builder.addCase(initCurrentUser.pending, (state) => {
+    state.currentUserState = "loading";
+  });
+  builder.addCase(initCurrentUser.rejected, (state) => {
+    state.currentUserState = "unauthenticated";
+    state.currentUser = null;
+  });
+
+  builder.addCase(createUser.pending, (state) => {
+    state.createUserState = "loading";
+  });
+  builder.addCase(createUser.fulfilled, (state) => {
+    state.createUserState = "success";
+  });
+  builder.addCase(createUser.rejected, (state) => {
+    state.createUserState = "error";
+  });
 });
 
 export const selectCurrentUserStructure = createSelector(
@@ -51,13 +56,6 @@ export const selectCurrentUserStructure = createSelector(
           name: state.currentUser.structureName,
         }
       : undefined;
-  },
-);
-
-export const isCurrentUserLoaded = createSelector(
-  [(state: RootState) => state.currentUser],
-  (state) => {
-    return state.currentUserLoaded;
   },
 );
 
@@ -81,5 +79,3 @@ export const selectCurrentUserEmail = createSelector(
     return state.currentUser?.email;
   },
 );
-
-export default userSlice.reducer;
