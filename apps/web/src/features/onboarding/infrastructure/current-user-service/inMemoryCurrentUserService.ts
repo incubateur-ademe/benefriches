@@ -1,5 +1,5 @@
 import { CurrentUserGateway } from "../../core/initCurrentUser.action";
-import { User } from "../../core/user";
+import { AuthenticatedUser } from "../../core/user";
 
 export class InMemoryCurrentUserService implements CurrentUserGateway {
   constructor(private readonly shouldFail: boolean = false) {}
@@ -13,13 +13,6 @@ export class InMemoryCurrentUserService implements CurrentUserGateway {
       structureType: "company",
       structureActivity: "urban_planner",
       structureName: "User company",
-      personalDataStorageConsented: true,
-      personalDataAnalyticsUseConsented: true,
-      personalDataCommunicationUseConsented: true,
-    } as User);
-  }
-
-  save(): Promise<void> {
-    return Promise.resolve();
+    } as AuthenticatedUser);
   }
 }

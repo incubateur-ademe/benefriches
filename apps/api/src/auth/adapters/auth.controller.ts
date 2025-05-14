@@ -48,7 +48,7 @@ export class AuthController {
       this.configService.getOrThrow<string>("PRO_CONNECT_LOGIN_CALLBACK_URL"),
     );
 
-    authorizationUrl.searchParams.set("prompt", "none");
+    // authorizationUrl.searchParams.set("prompt", "none");
 
     req.session.nonce = nonce;
     req.session.state = state;
@@ -80,7 +80,8 @@ export class AuthController {
     });
 
     // if user email does not exist in database
-    if (!(await this.usersRepository.existsWithEmail(oidcIdentity.email))) {
+    const userInDb = await this.usersRepository.getWithEmail(oidcIdentity.email);
+    if (!userInDb) {
       const createAccountUrl = new URL(
         this.configService.getOrThrow<string>("AUTH_CREATE_USER_ACCOUNT_URL"),
       );
@@ -92,8 +93,8 @@ export class AuthController {
     }
 
     const accessToken = await this.accessTokenService.signAsync({
-      sub: oidcIdentity.id,
-      email: oidcIdentity.email,
+      sub: userInDb.id,
+      email: userInDb.email,
     });
 
     const decodedAccessToken = this.accessTokenService.decode<{
@@ -110,10 +111,22 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Get("me")
-  me(@Req() req: Request, @Res() res: Response) {
-    const { authenticatedUser } = req;
+  async me(@Req() req: Request, @Res() res: Response) {
+    const { authenticatedUser: userInJwt } = req;
+    if (!userInJwt) throw new UnauthorizedException();
+
+    const authenticatedUser = await this.usersRepository.getWithId(userInJwt.id);
+
     if (!authenticatedUser) throw new UnauthorizedException();
 
-    res.json({ id: authenticatedUser.id, email: authenticatedUser.email });
+    res.json({
+      id: authenticatedUser.id,
+      email: authenticatedUser.email,
+      firstName: authenticatedUser.firstName,
+      lastName: authenticatedUser.lastName,
+      structureType: authenticatedUser.structureType,
+      structureActivity: authenticatedUser.structureActivity,
+      structureName: authenticatedUser.structureName,
+    });
   }
 }

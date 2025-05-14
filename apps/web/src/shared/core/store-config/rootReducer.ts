@@ -5,7 +5,7 @@ import projectCreation from "@/features/create-project/core/createProject.reduce
 import siteCreation from "@/features/create-site/core/createSite.reducer";
 import siteMunicipalityData from "@/features/create-site/core/siteMunicipalityData.reducer";
 import siteCarbonStorage from "@/features/create-site/core/siteSoilsCarbonStorage.reducer";
-import currentUser from "@/features/onboarding/core/user.reducer";
+import { currentUserReducer } from "@/features/onboarding/core/user.reducer";
 import { projectFeaturesReducer } from "@/features/projects/application/project-features/projectFeatures.reducer";
 import projectImpacts from "@/features/projects/application/projectImpacts.reducer";
 import reconversionProjectsList from "@/features/projects/application/projectsList.reducer";
@@ -19,7 +19,7 @@ export const rootReducer = combineReducers({
   projectCreation,
   siteCarbonStorage,
   reconversionProjectsList,
-  currentUser,
+  currentUser: currentUserReducer,
   userFeatureAlert,
   projectImpacts,
   projectFeatures: projectFeaturesReducer,

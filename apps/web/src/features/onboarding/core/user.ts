@@ -40,3 +40,13 @@ export type UserStructure = {
   activity: UserStructureActivity;
   name?: string;
 };
+
+export type AuthenticatedUser = {
+  id: string;
+  email: string;
+  firstname: string;
+  lastname: string;
+  structureType: UserStructureType;
+  structureActivity: UserStructureActivity;
+  structureName?: string;
+};
