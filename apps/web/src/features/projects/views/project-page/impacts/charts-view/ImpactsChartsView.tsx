@@ -34,7 +34,7 @@ const ImpactsChartsView = ({
     <div>
       {(displayEconomicBalance || socioEconomicImpactsByActor.length > 0) && (
         <>
-          <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-8 tw-mb-8">
+          <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-8">
             {displayEconomicBalance && (
               <CostBenefitAnalysisChartCard
                 economicBalanceTotal={economicBalance.total}
