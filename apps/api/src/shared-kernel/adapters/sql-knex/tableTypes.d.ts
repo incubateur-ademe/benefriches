@@ -1,8 +1,8 @@
 export type SqlUser = {
   id: string;
   email: string;
-  firstname?: string;
-  lastname?: string;
+  firstname: string;
+  lastname: string;
   structure_name?: string;
   structure_type?: string;
   structure_activity?: string;
