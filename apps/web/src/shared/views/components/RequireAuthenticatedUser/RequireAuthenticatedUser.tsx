@@ -1,16 +1,19 @@
 import { useEffect } from "react";
 
-import { routes } from "@/shared/views/router";
+import { routes, useRoute } from "@/shared/views/router";
 
 import { useAppSelector } from "../../hooks/store.hooks";
 
 export default function RequireAuthenticatedUser({ children }: { children: React.ReactNode }) {
+  const currentRoute = useRoute();
   const currentUserState = useAppSelector((state) => state.currentUser.currentUserState);
 
   useEffect(() => {
     if (currentUserState === "unauthenticated") {
-      routes.login().replace();
+      const redirectTo = `${window.location.origin}${currentRoute.href}`;
+      routes.login({ redirectTo }).replace();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUserState]);
 
   if (currentUserState === "authenticated") return children;

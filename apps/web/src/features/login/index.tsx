@@ -1,7 +1,16 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import { ProConnectButton } from "@codegouvfr/react-dsfr/ProConnectButton";
 
+import { useRoute } from "@/shared/views/router";
+
 function LoginPage() {
+  const currentRoute = useRoute();
+
+  let loginUrl = "/api/auth/login/pro-connect";
+  if (currentRoute.name === "login" && currentRoute.params.redirectTo) {
+    loginUrl += `?redirectTo=${currentRoute.params.redirectTo}`;
+  }
+
   return (
     <section className={fr.cx("fr-container", "fr-py-4w")}>
       <h1>Se connecter</h1>
@@ -14,7 +23,7 @@ function LoginPage() {
           Pour vous connecter avec ProConnect, il vous suffit de renseigner votre adresse
           professionnelle.
         </div>
-        <ProConnectButton url="/api/auth/login/pro-connect" />
+        <ProConnectButton url={loginUrl} />
       </div>
     </section>
   );
