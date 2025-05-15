@@ -38,7 +38,7 @@ const { RouteProvider, useRoute, routes } = createRouter({
   ),
   onBoardingIntroductionWhy: onBoarding.extend("/pourquoi-benefriches"),
   onBoardingIntroductionHow: onBoarding.extend("/comment-ca-marche"),
-  login: defineRoute("/se-connecter"),
+  login: defineRoute({ redirectTo: param.query.optional.string }, () => "/se-connecter"),
   createUser: defineRoute("/creer-un-compte"),
   // FORMS
   createSiteFoncier: defineRoute(
