@@ -31,6 +31,7 @@ declare module "express-session" {
   interface SessionData {
     nonce?: string;
     state?: string;
+    postLoginRedirectUrl?: string;
   }
 }
 
@@ -54,10 +55,16 @@ export class AuthController {
       this.configService.getOrThrow<string>("PRO_CONNECT_LOGIN_CALLBACK_URL"),
     );
 
-    // authorizationUrl.searchParams.set("prompt", "none");
+    // in case of a silent login, for instance after account creation
+    if (req.query.noPrompt) {
+      authorizationUrl.searchParams.set("prompt", "none");
+    }
 
     req.session.nonce = nonce;
     req.session.state = state;
+    if (req.query.redirectTo) {
+      req.session.postLoginRedirectUrl = req.query.redirectTo as string;
+    }
 
     res.redirect(authorizationUrl.toString());
   }
@@ -126,7 +133,10 @@ export class AuthController {
       secure: this.configService.get("NODE_ENV") === "production",
       expires: new Date((decodedAccessToken?.exp ?? 0) * 1000),
     });
-    res.redirect(this.configService.getOrThrow<string>("WEBAPP_URL"));
+
+    const redirectTo =
+      req.session.postLoginRedirectUrl ?? this.configService.getOrThrow<string>("WEBAPP_URL");
+    res.redirect(redirectTo);
   }
 
   @UseGuards(JwtAuthGuard)
