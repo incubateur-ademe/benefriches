@@ -24,7 +24,7 @@ describe("renewableEnergy.reducer.spec reducer", () => {
         currentUser: {
           currentUser: buildUser(),
           createUserState: "idle",
-          currentUserLoaded: true,
+          currentUserState: "authenticated",
         },
       });
       await store.dispatch(saveReconversionProject());
@@ -55,7 +55,7 @@ describe("renewableEnergy.reducer.spec reducer", () => {
         currentUser: {
           currentUser: null,
           createUserState: "idle",
-          currentUserLoaded: true,
+          currentUserState: "authenticated",
         },
       });
       await store.dispatch(saveReconversionProject());
@@ -87,7 +87,7 @@ describe("renewableEnergy.reducer.spec reducer", () => {
         currentUser: {
           currentUser: null,
           createUserState: "idle",
-          currentUserLoaded: true,
+          currentUserState: "authenticated",
         },
       });
       await store.dispatch(saveReconversionProject());
@@ -211,7 +211,7 @@ describe("renewableEnergy.reducer.spec reducer", () => {
           currentUser: {
             currentUser: buildUser(),
             createUserState: "idle",
-            currentUserLoaded: true,
+            currentUserState: "authenticated",
           },
         });
         const actionResult = await store.dispatch(saveReconversionProject());
@@ -251,7 +251,7 @@ describe("renewableEnergy.reducer.spec reducer", () => {
           currentUser: {
             currentUser: buildUser(),
             createUserState: "idle",
-            currentUserLoaded: true,
+            currentUserState: "authenticated",
           },
         },
       );
@@ -286,7 +286,7 @@ describe("renewableEnergy.reducer.spec reducer", () => {
         currentUser: {
           currentUser: buildUser(),
           createUserState: "idle",
-          currentUserLoaded: true,
+          currentUserState: "authenticated",
         },
       });
       await store.dispatch(saveReconversionProject());
