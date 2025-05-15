@@ -6,6 +6,8 @@ import { ACCESS_TOKEN_SERVICE } from "./access-token/AccessTokenService";
 import { AUTH_USER_REPOSITORY_TOKEN } from "./auth-user-repository/AuthUsersRepository";
 import { SqlAuthUserRepository } from "./auth-user-repository/SqlAuthUsersRepository";
 import { AuthController } from "./auth.controller";
+import { EXTERNAL_USER_IDENTITIES_REPOSITORY_INJECTION_TOKEN } from "./external-user-identities-repository/ExternalUserIdentitiesRepository";
+import { SqlExternalUserIdentitiesRepository } from "./external-user-identities-repository/SqlExternalUserIdentitiesRepository";
 import { HttpProConnectClient } from "./pro-connect/HttpProConnectClient";
 import { PRO_CONNECT_CLIENT_INJECTION_TOKEN } from "./pro-connect/ProConnectClient";
 
@@ -45,6 +47,10 @@ import { PRO_CONNECT_CLIENT_INJECTION_TOKEN } from "./pro-connect/ProConnectClie
           configService.getOrThrow<string>("PRO_CONNECT_PROVIDER_DOMAIN"),
         );
       },
+    },
+    {
+      provide: EXTERNAL_USER_IDENTITIES_REPOSITORY_INJECTION_TOKEN,
+      useClass: SqlExternalUserIdentitiesRepository,
     },
   ],
   exports: [
