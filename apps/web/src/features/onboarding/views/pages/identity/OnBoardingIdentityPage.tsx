@@ -7,7 +7,9 @@ function OnBoardingIdentityPage() {
     <CreateUserFormContainer
       createdFrom="features_app"
       onSuccess={() => {
-        routes.onBoardingIntroductionWhy().push();
+        const redirectTo = `${window.location.origin}${routes.onBoardingIntroductionWhy().href}`;
+
+        window.location.href = `/api/auth/login/pro-connect?noPrompt=true&redirectTo=${redirectTo}`;
       }}
     />
   );
