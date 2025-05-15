@@ -187,5 +187,14 @@ declare module "knex/types/tables" {
     // users
     users: SqlUser;
     users_feature_alerts: SqlUserFeatureAlert;
+
+    // auth
+    auth_external_user_identities: {
+      id: string;
+      user_id: string;
+      provider: string;
+      provider_user_id: string;
+      created_at: Date;
+    };
   }
 }

@@ -19,6 +19,10 @@ import {
   AuthUserRepository,
 } from "./auth-user-repository/AuthUsersRepository";
 import {
+  EXTERNAL_USER_IDENTITIES_REPOSITORY_INJECTION_TOKEN,
+  ExternalUserIdentityRepository,
+} from "./external-user-identities-repository/ExternalUserIdentitiesRepository";
+import {
   PRO_CONNECT_CLIENT_INJECTION_TOKEN,
   ProConnectClient,
 } from "./pro-connect/ProConnectClient";
@@ -40,6 +44,8 @@ export class AuthController {
     private readonly usersRepository: AuthUserRepository,
     @Inject(PRO_CONNECT_CLIENT_INJECTION_TOKEN)
     private readonly oidcLogin: ProConnectClient,
+    @Inject(EXTERNAL_USER_IDENTITIES_REPOSITORY_INJECTION_TOKEN)
+    private readonly externalUserIdentitiesRepository: ExternalUserIdentityRepository,
   ) {}
 
   @Get("/login/pro-connect")
@@ -79,7 +85,7 @@ export class AuthController {
       currentUrl,
     });
 
-    // if user email does not exist in database
+    // redirect new users to account creation page
     const userInDb = await this.usersRepository.getWithEmail(oidcIdentity.email);
     if (!userInDb) {
       const createAccountUrl = new URL(
@@ -90,6 +96,20 @@ export class AuthController {
       createAccountUrl.searchParams.set("hintLastName", oidcIdentity.lastName);
       res.redirect(createAccountUrl.toString());
       return;
+    }
+    const shouldCreateProConnectUserIdentity =
+      !(await this.externalUserIdentitiesRepository.findByProviderUserId(
+        "pro-connect",
+        oidcIdentity.id,
+      ));
+    if (shouldCreateProConnectUserIdentity) {
+      await this.externalUserIdentitiesRepository.save({
+        id: oidcIdentity.id,
+        userId: userInDb.id,
+        provider: "pro-connect",
+        providerUserId: oidcIdentity.id,
+        createdAt: new Date(),
+      });
     }
 
     const accessToken = await this.accessTokenService.signAsync({
