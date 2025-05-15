@@ -82,7 +82,7 @@ export class StoreBuilder {
     this.preloadedRootState.currentUser = {
       ...this.preloadedRootState.currentUser,
       currentUser: user,
-      currentUserLoaded: true,
+      currentUserState: "authenticated",
     };
     return this;
   }
