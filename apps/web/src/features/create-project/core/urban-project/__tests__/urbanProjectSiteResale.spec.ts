@@ -101,7 +101,7 @@ describe("Urban project creation : site resale steps", () => {
           .withCreationData({
             livingAndActivitySpacesDistribution: {
               BUILDINGS: 1000,
-              PAVED_ALLEY_OR_PARKING_LOT: 3400,
+              IMPERMEABLE_SURFACE: 3400,
             },
           })
           .build();

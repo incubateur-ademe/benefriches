@@ -1,8 +1,8 @@
 import { typedObjectEntries } from "../../../object-entries";
 import { SoilsDistribution, SoilType } from "../../../soils";
-import { SpacesDistribution, UrbanProjectSpace } from "../urbanProject";
+import { LEGACY_SpacesDistribution, LEGACY_UrbanProjectSpace } from "../urbanProject";
 
-const getSoilTypeForSpace = (space: UrbanProjectSpace): SoilType => {
+const getSoilTypeForSpace = (space: LEGACY_UrbanProjectSpace): SoilType => {
   switch (space) {
     case "BUILDINGS_FOOTPRINT":
       return "BUILDINGS";
@@ -17,13 +17,11 @@ const getSoilTypeForSpace = (space: UrbanProjectSpace): SoilType => {
     case "PRIVATE_GRAVEL_ALLEY_OR_PARKING_LOT":
     case "PUBLIC_GRAVEL_ROAD_OR_SQUARES_OR_SIDEWALKS":
       return "MINERAL_SOIL";
-    case "PRIVATE_TREE_FILLED_GARDEN_AND_ALLEYS":
-      return "ARTIFICIAL_TREE_FILLED";
   }
 };
 
 export const computeSoilsDistributionFromSpaces = (
-  spacesDistribution: SpacesDistribution,
+  spacesDistribution: LEGACY_SpacesDistribution,
 ): SoilsDistribution => {
   const soilsDistribution: SoilsDistribution = {};
   typedObjectEntries(spacesDistribution).forEach(([space, surfaceArea]) => {

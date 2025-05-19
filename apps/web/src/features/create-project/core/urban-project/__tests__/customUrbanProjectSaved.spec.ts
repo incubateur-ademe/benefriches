@@ -17,8 +17,8 @@ const mock = {
   },
   livingAndActivitySpacesDistribution: {
     BUILDINGS: 250,
-    PAVED_ALLEY_OR_PARKING_LOT: 250,
-    GRAVEL_ALLEY_OR_PARKING_LOT: 250,
+    IMPERMEABLE_SURFACE: 250,
+    PERMEABLE_SURFACE: 250,
   },
   publicSpacesDistribution: {
     IMPERMEABLE_SURFACE: 1000,

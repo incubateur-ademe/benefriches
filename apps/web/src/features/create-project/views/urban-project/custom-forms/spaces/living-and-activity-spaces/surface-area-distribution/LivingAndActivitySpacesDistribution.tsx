@@ -6,6 +6,7 @@ import {
 
 import {
   getColorForUrbanLivingAndActivitySpace,
+  getDescriptionForLivingAndActivitySpace,
   getLabelForLivingAndActivitySpace,
   getPictogramUrlForUrbanLivingAndActivitySpace,
 } from "@/features/create-project/core/urban-project/urbanProject";
@@ -45,6 +46,7 @@ function LivingAndActivitySpacesDistribution({
       surfaces={livingAndActivitySpace.options.map((space) => ({
         name: space,
         label: getLabelForLivingAndActivitySpace(space),
+        hintText: getDescriptionForLivingAndActivitySpace(space),
         imgSrc: getPictogramUrlForUrbanLivingAndActivitySpace(space),
         color: getColorForUrbanLivingAndActivitySpace(space),
       }))}

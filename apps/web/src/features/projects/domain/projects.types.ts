@@ -7,7 +7,7 @@ import {
   RecurringRevenue,
   ReinstatementExpense,
   SoilsDistribution,
-  UrbanProjectSpace,
+  LEGACY_UrbanProjectSpace,
   BuildingsUseDistribution,
   SiteNature,
 } from "shared";
@@ -45,7 +45,7 @@ export type UrbanProjectFeatures = {
   developerName?: string;
   installationCosts: UrbanProjectDevelopmentExpense[];
   installationSchedule?: Schedule;
-  spaces: Partial<Record<UrbanProjectSpace, number>>;
+  spaces: Partial<Record<LEGACY_UrbanProjectSpace, number>>;
   buildingsFloorArea: BuildingsUseDistribution;
 };
 export type ProjectFeatures = {

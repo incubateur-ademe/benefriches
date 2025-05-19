@@ -113,14 +113,27 @@ export const getLabelForLivingAndActivitySpace = (
   switch (livingAndActivitySpace) {
     case "BUILDINGS":
       return "Bâtiments";
-    case "PAVED_ALLEY_OR_PARKING_LOT":
-      return "Allée ou parking bitumé";
-    case "GRAVEL_ALLEY_OR_PARKING_LOT":
-      return "Allée ou parking en gravier";
-    case "GARDEN_AND_GRASS_ALLEYS":
-      return "Jardin ou allée enherbée";
-    case "TREE_FILLED_GARDEN_OR_ALLEY":
-      return "Jardin ou allée arborée";
+    case "IMPERMEABLE_SURFACE":
+      return "Espaces en revêtement imperméable";
+    case "PERMEABLE_SURFACE":
+      return "Espaces en revêtement perméable";
+    case "PRIVATE_GREEN_SPACES":
+      return "Espaces verts privés";
+  }
+};
+
+export const getDescriptionForLivingAndActivitySpace = (
+  livingAndActivitySpace: UrbanLivingAndActivitySpace,
+): string => {
+  switch (livingAndActivitySpace) {
+    case "BUILDINGS":
+      return "";
+    case "IMPERMEABLE_SURFACE":
+      return "Allée ou parking en bitume, pavés...";
+    case "PERMEABLE_SURFACE":
+      return "Allée ou parking en gravier, dalles alvéolées...";
+    case "PRIVATE_GREEN_SPACES":
+      return "Pelouse, haies...";
   }
 };
 

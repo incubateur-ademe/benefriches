@@ -13,7 +13,7 @@ import {
   ReinstatementExpensePurpose,
   SiteNature,
   SoilsDistribution,
-  SpacesDistribution,
+  LEGACY_SpacesDistribution,
   typedObjectEntries,
 } from "shared";
 
@@ -54,7 +54,7 @@ export class UrbanProjectExpressCreationService {
     this.developmentType = "URBAN_PROJECT" as const;
   }
 
-  get spacesDistribution(): SpacesDistribution {
+  get spacesDistribution(): LEGACY_SpacesDistribution {
     return {};
   }
 

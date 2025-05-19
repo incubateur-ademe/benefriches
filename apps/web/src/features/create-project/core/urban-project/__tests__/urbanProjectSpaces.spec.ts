@@ -417,7 +417,7 @@ describe("Urban project creation : introduction and spaces steps", () => {
         store.dispatch(
           livingAndActivitySpacesDistributionCompleted({
             BUILDINGS: 5000,
-            GRAVEL_ALLEY_OR_PARKING_LOT: 3000,
+            IMPERMEABLE_SURFACE: 3000,
           }),
         );
 
@@ -428,7 +428,7 @@ describe("Urban project creation : introduction and spaces steps", () => {
           creationDataDiff: {
             livingAndActivitySpacesDistribution: {
               BUILDINGS: 5000,
-              GRAVEL_ALLEY_OR_PARKING_LOT: 3000,
+              IMPERMEABLE_SURFACE: 3000,
             },
           },
         });
@@ -449,7 +449,7 @@ describe("Urban project creation : introduction and spaces steps", () => {
         store.dispatch(
           livingAndActivitySpacesDistributionCompleted({
             BUILDINGS: 5000,
-            GRAVEL_ALLEY_OR_PARKING_LOT: 3000,
+            IMPERMEABLE_SURFACE: 3000,
           }),
         );
 
@@ -459,7 +459,7 @@ describe("Urban project creation : introduction and spaces steps", () => {
           creationDataDiff: {
             livingAndActivitySpacesDistribution: {
               BUILDINGS: 5000,
-              GRAVEL_ALLEY_OR_PARKING_LOT: 3000,
+              IMPERMEABLE_SURFACE: 3000,
             },
           },
         });
@@ -475,8 +475,8 @@ describe("Urban project creation : introduction and spaces steps", () => {
             spacesCategoriesDistribution: { GREEN_SPACES: 2000, LIVING_AND_ACTIVITY_SPACES: 8000 },
             livingAndActivitySpacesDistribution: {
               BUILDINGS: 2000,
-              PAVED_ALLEY_OR_PARKING_LOT: 3000,
-              GARDEN_AND_GRASS_ALLEYS: 3000,
+              IMPERMEABLE_SURFACE: 3000,
+              PRIVATE_GREEN_SPACES: 3000,
             },
           })
           .build();

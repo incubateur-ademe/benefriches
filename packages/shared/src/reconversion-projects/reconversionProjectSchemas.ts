@@ -2,7 +2,7 @@ import z from "zod";
 
 import { soilTypeSchema } from "../soils";
 import { buildingsUseDistributionSchema } from "./urban-project";
-import { urbanProjectsSpaceSchema } from "./urban-project/urbanProject";
+import { LEGACY_urbanProjectsSpaceSchema } from "./urban-project/urbanProject";
 
 export const photovoltaicPowerStationFeaturesSchema = z.object({
   surfaceArea: z.number().nonnegative(),
@@ -12,7 +12,7 @@ export const photovoltaicPowerStationFeaturesSchema = z.object({
 });
 
 export const urbanProjectsFeaturesSchema = z.object({
-  spacesDistribution: urbanProjectsSpaceSchema,
+  spacesDistribution: LEGACY_urbanProjectsSpaceSchema,
   buildingsFloorAreaDistribution: buildingsUseDistributionSchema,
 });
 

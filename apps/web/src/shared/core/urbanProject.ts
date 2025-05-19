@@ -1,6 +1,6 @@
-import { BuildingsUse, UrbanProjectDevelopmentExpense, UrbanProjectSpace } from "shared";
+import { BuildingsUse, UrbanProjectDevelopmentExpense, LEGACY_UrbanProjectSpace } from "shared";
 
-export const getLabelForUrbanProjectSpace = (space: UrbanProjectSpace): string => {
+export const getLabelForUrbanProjectSpace = (space: LEGACY_UrbanProjectSpace): string => {
   switch (space) {
     case "BUILDINGS_FOOTPRINT":
       return "Emprise au sol bâti";
@@ -9,7 +9,7 @@ export const getLabelForUrbanProjectSpace = (space: UrbanProjectSpace): string =
     case "PRIVATE_GRAVEL_ALLEY_OR_PARKING_LOT":
       return "Allée ou parking privé en gravier";
     case "PRIVATE_GARDEN_AND_GRASS_ALLEYS":
-      return "Jardins et allées enherbées privées";
+      return "Espaces verts privés";
     case "PUBLIC_GREEN_SPACES":
       return "Espaces verts publics";
     case "PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS":
@@ -20,8 +20,6 @@ export const getLabelForUrbanProjectSpace = (space: UrbanProjectSpace): string =
       return "Voies, places, trottoirs enherbés";
     case "PUBLIC_PARKING_LOT":
       return "Parking public";
-    case "PRIVATE_TREE_FILLED_GARDEN_AND_ALLEYS":
-      return "Jardins ou allées arborés privés";
   }
 };
 

@@ -2,7 +2,7 @@ import {
   BuildingsUseDistribution,
   roundTo2Digits,
   SocioEconomicImpact,
-  SpacesDistribution,
+  LEGACY_SpacesDistribution,
 } from "shared";
 
 import { SumOnEvolutionPeriodService } from "../SumOnEvolutionPeriodService";
@@ -13,7 +13,7 @@ type Props = {
   citySquareMetersSurfaceArea: number;
   cityPopulation: number;
   buildingsFloorAreaDistribution: BuildingsUseDistribution;
-  spacesDistribution: SpacesDistribution;
+  spacesDistribution: LEGACY_SpacesDistribution;
   sumOnEvolutionPeriodService: SumOnEvolutionPeriodService;
 };
 

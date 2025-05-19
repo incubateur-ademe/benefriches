@@ -183,38 +183,32 @@ export const getUrbanProjectSpaceDistribution = createSelector(
   selectCreationData,
   (creationData) => {
     const {
-      IMPERMEABLE_SURFACE = 0,
-      PERMEABLE_SURFACE = 0,
-      GRASS_COVERED_SURFACE = 0,
-    } = creationData.publicSpacesDistribution ?? {};
-    const {
-      URBAN_POND_OR_LAKE = 0,
-      LAWNS_AND_BUSHES = 0,
-      TREE_FILLED_SPACE = 0,
-      PAVED_ALLEY = 0,
-      GRAVEL_ALLEY = 0,
-    } = creationData.greenSpacesDistribution ?? {};
-    const publicGreenSpaces = URBAN_POND_OR_LAKE + LAWNS_AND_BUSHES + TREE_FILLED_SPACE;
-    const {
-      BUILDINGS = 0,
-      PAVED_ALLEY_OR_PARKING_LOT = 0,
-      GRAVEL_ALLEY_OR_PARKING_LOT = 0,
-      GARDEN_AND_GRASS_ALLEYS = 0,
-      TREE_FILLED_GARDEN_OR_ALLEY = 0,
-    } = creationData.livingAndActivitySpacesDistribution ?? {};
+      livingAndActivitySpacesDistribution,
+      publicSpacesDistribution,
+      greenSpacesDistribution,
+    } = creationData;
+
+    const publicGreenSpaces =
+      (greenSpacesDistribution?.URBAN_POND_OR_LAKE ?? 0) +
+      (greenSpacesDistribution?.LAWNS_AND_BUSHES ?? 0) +
+      (greenSpacesDistribution?.TREE_FILLED_SPACE ?? 0);
 
     return filterObject(
       {
-        BUILDINGS_FOOTPRINT: BUILDINGS,
-        PRIVATE_PAVED_ALLEY_OR_PARKING_LOT: PAVED_ALLEY_OR_PARKING_LOT,
-        PRIVATE_GRAVEL_ALLEY_OR_PARKING_LOT: GRAVEL_ALLEY_OR_PARKING_LOT,
-        PRIVATE_GARDEN_AND_GRASS_ALLEYS: GARDEN_AND_GRASS_ALLEYS,
-        PRIVATE_TREE_FILLED_GARDEN_AND_ALLEYS: TREE_FILLED_GARDEN_OR_ALLEY,
+        BUILDINGS_FOOTPRINT: livingAndActivitySpacesDistribution?.BUILDINGS,
+        PRIVATE_PAVED_ALLEY_OR_PARKING_LOT:
+          livingAndActivitySpacesDistribution?.IMPERMEABLE_SURFACE,
+        PRIVATE_GRAVEL_ALLEY_OR_PARKING_LOT: livingAndActivitySpacesDistribution?.PERMEABLE_SURFACE,
+        PRIVATE_GARDEN_AND_GRASS_ALLEYS: livingAndActivitySpacesDistribution?.PRIVATE_GREEN_SPACES,
         // public spaces
         PUBLIC_GREEN_SPACES: publicGreenSpaces,
-        PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS: IMPERMEABLE_SURFACE + PAVED_ALLEY,
-        PUBLIC_GRAVEL_ROAD_OR_SQUARES_OR_SIDEWALKS: PERMEABLE_SURFACE + GRAVEL_ALLEY,
-        PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS: GRASS_COVERED_SURFACE,
+        PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS:
+          (publicSpacesDistribution?.IMPERMEABLE_SURFACE ?? 0) +
+          (greenSpacesDistribution?.PAVED_ALLEY ?? 0),
+        PUBLIC_GRAVEL_ROAD_OR_SQUARES_OR_SIDEWALKS:
+          (publicSpacesDistribution?.PERMEABLE_SURFACE ?? 0) +
+          (greenSpacesDistribution?.GRAVEL_ALLEY ?? 0),
+        PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS: publicSpacesDistribution?.GRASS_COVERED_SURFACE,
       },
       ([, value]) => !!value && value > 0,
     );

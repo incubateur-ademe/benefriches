@@ -1,4 +1,4 @@
-import { SoilsDistribution, UrbanProjectSpace } from "shared";
+import { SoilsDistribution, LEGACY_UrbanProjectSpace } from "shared";
 
 import { UrbanProjectCreationData } from "@/features/create-project/core/urban-project/creationData";
 import ProjectFeaturesView from "@/features/projects/views/project-page/features/ProjectFeaturesView";
@@ -9,7 +9,7 @@ type Props = {
   projectId: string;
   projectData: UrbanProjectCreationData;
   projectSoilsDistribution: SoilsDistribution;
-  projectSpaces: Partial<Record<UrbanProjectSpace, number>>;
+  projectSpaces: Partial<Record<LEGACY_UrbanProjectSpace, number>>;
   onNext: () => void;
   onBack: () => void;
 };

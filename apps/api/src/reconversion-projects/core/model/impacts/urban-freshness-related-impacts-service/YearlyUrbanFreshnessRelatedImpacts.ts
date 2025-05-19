@@ -2,7 +2,7 @@ import {
   BuildingsUseDistribution,
   BUILDINGS_ECONOMIC_ACTIVITY_USE,
   filterObjectWithKeys,
-  SpacesDistribution,
+  LEGACY_SpacesDistribution,
   sumObjectValues,
 } from "shared";
 
@@ -19,7 +19,7 @@ type Props = {
   citySquareMetersSurfaceArea: number;
   cityPopulation: number;
   buildingsFloorAreaDistribution: BuildingsUseDistribution;
-  spacesDistribution: SpacesDistribution;
+  spacesDistribution: LEGACY_SpacesDistribution;
 };
 
 export class YearlyUrbanFreshnessRelatedImpacts extends InfluenceAreaService {
