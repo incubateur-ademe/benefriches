@@ -52,10 +52,6 @@ function SiteCreationResult({ siteId, siteName, loadingState, onBack }: Props) {
               <SiteFeaturesModalView siteId={siteId} />
             </div>
           </EditorialPageText>
-          <EditorialPageText>
-            Vous pouvez maintenant renseigner un projet sur ce site, en mode express ou en mode
-            personnalisé.
-          </EditorialPageText>
           <Button size="large" linkProps={routes.createProject({ siteId }).link}>
             Renseigner mon projet sur ce site
           </Button>

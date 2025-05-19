@@ -5,7 +5,6 @@ import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import {
   EditorialPageIcon,
   EditorialPageLayout,
-  EditorialPageText,
   EditorialPageTitle,
 } from "@/shared/views/layout/EditorialPageLayout";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
@@ -45,10 +44,6 @@ function SiteCreationResult({ siteId, siteName, loadingState, onBack }: Props) {
         <EditorialPageLayout>
           <EditorialPageIcon>✅</EditorialPageIcon>
           <EditorialPageTitle>Le site « {siteName} » est créé !</EditorialPageTitle>
-          <EditorialPageText>
-            Vous pouvez maintenant renseigner un projet sur ce site avant de pouvoir calculer les
-            impacts qui lui sont associés.
-          </EditorialPageText>
           <Button size="large" linkProps={routes.createProject({ siteId }).link}>
             Renseigner mon projet sur ce site
           </Button>
