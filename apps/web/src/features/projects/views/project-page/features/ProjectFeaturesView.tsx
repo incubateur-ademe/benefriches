@@ -216,7 +216,7 @@ export default function ProjectFeaturesView({ projectData }: Props) {
         )}
         {projectData.developmentPlan.installationSchedule && (
           <DataLine
-            label={<strong>Travaux d'aménagement</strong>}
+            label={<strong>Aménagement du site</strong>}
             value={
               <ScheduleDates
                 startDateString={projectData.developmentPlan.installationSchedule.startDate}

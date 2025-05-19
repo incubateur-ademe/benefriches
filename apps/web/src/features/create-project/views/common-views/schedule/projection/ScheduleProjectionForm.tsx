@@ -91,7 +91,7 @@ function ScheduleProjectionForm({
           <ScheduleField
             control={control}
             scheduleName="reinstatementSchedule"
-            label="Remise en état de la friche"
+            label="🚧 Remise en état de la friche"
             onStartDateChange={() => {
               setValue("reinstatementSchedule.endDate", "");
             }}
@@ -107,8 +107,11 @@ function ScheduleProjectionForm({
           }}
         />
 
+        <h6>🎉 Mise en service du site</h6>
         <Input
-          label={<RequiredLabel label="Mise en service du site" />}
+          // 50% width minus half the right arrow width and half the gap between inputs
+          className="sm:tw-w-[calc(50%-28px)]"
+          label={<RequiredLabel label="Année de mise en service" />}
           nativeInputProps={register("firstYearOfOperation", {
             valueAsNumber: true,
             required:

@@ -29,7 +29,6 @@ function ScheduleField({ label, scheduleName, control, onStartDateChange }: Prop
 
   return (
     <Fieldset
-      legend={label}
       state={hasError ? "error" : "default"}
       stateRelatedMessage={
         hasError ? (
@@ -40,45 +39,57 @@ function ScheduleField({ label, scheduleName, control, onStartDateChange }: Prop
         ) : undefined
       }
     >
-      <div className="tw-grid tw-gap-4 sm:tw-grid-cols-2">
-        <Controller
-          name={`${scheduleName}.startDate`}
-          control={control}
-          render={({ field }) => (
-            <Input
-              label="Début des travaux"
-              nativeInputProps={{
-                ...field,
-                onChange: (ev) => {
-                  field.onChange(ev);
-                  onStartDateChange();
-                },
-                type: "date",
-              }}
-            />
-          )}
-        />
-        <Controller
-          name={`${scheduleName}.endDate`}
-          control={control}
-          render={({ field }) => (
-            <Input
-              label="Fin des travaux"
-              nativeInputProps={{
-                ...field,
-                type: "date",
-                min: startDateValue,
-              }}
-            />
-          )}
-        />
+      <div className="tw-mb-4">
+        <h6>{label}</h6>
+        <div className="sm:tw-gap-4 sm:tw-flex">
+          <Controller
+            name={`${scheduleName}.startDate`}
+            control={control}
+            render={({ field }) => (
+              <Input
+                label="Début des travaux"
+                className="tw-w-full"
+                nativeInputProps={{
+                  ...field,
+                  onChange: (ev) => {
+                    field.onChange(ev);
+                    onStartDateChange();
+                  },
+                  type: "date",
+                }}
+              />
+            )}
+          />
+          <span
+            className="fr-icon-arrow-right-line tw-hidden sm:tw-inline tw-m-auto"
+            aria-hidden="true"
+          />
+          <Controller
+            name={`${scheduleName}.endDate`}
+            control={control}
+            render={({ field }) => (
+              <Input
+                label="Fin des travaux"
+                className="tw-w-full"
+                nativeInputProps={{
+                  ...field,
+                  type: "date",
+                  min: startDateValue,
+                }}
+              />
+            )}
+          />
+        </div>
+        {startDateValue && endDateValue ? (
+          <p>
+            Soit{" "}
+            <strong>
+              {getFormattedDuration(new Date(startDateValue), new Date(endDateValue))}
+            </strong>
+            .
+          </p>
+        ) : null}
       </div>
-      {startDateValue && endDateValue ? (
-        <p>
-          Soit{" "}
-          <strong>{getFormattedDuration(new Date(startDateValue), new Date(endDateValue))}</strong>.
-        </p>
-      ) : null}
     </Fieldset>
   );
 }

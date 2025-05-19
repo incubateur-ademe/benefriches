@@ -12,7 +12,7 @@ function ScheduleProjectionFormContainer() {
   return (
     <ScheduleProjectionForm
       initialValues={initialValues}
-      installationScheduleLabel="Installation de la centrale photovoltaïque"
+      installationScheduleLabel="⚡️ Installation de la centrale photovoltaïque"
       onBack={() => {
         dispatch(stepRevertAttempted());
       }}
