@@ -66,7 +66,7 @@ export default function Step3({ onNextClick, onBackClick, skipStepByStepAnimatio
             <EmojiListItem emoji="🏘️" emojiClassName={EMOJI_CLASSNAME}>
               La population locale <span>→</span>{" "}
               <span className="tw-font-normal">
-                Concernées, par exemple, par la valeur patrimoniale des bâtiments
+                Concernée, par exemple, par la valeur patrimoniale des bâtiments
               </span>
             </EmojiListItem>
             <EmojiListItem emoji="🏬" emojiClassName={EMOJI_CLASSNAME}>
