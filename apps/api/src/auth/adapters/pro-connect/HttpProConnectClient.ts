@@ -3,6 +3,7 @@ import * as oidcHttpClient from "openid-client";
 import {
   FetchUserIdentityParams,
   FetchUserIdentityResult,
+  GetLogoutUrlParams,
   ProConnectClient,
 } from "./ProConnectClient";
 
@@ -66,6 +67,16 @@ export class HttpProConnectClient implements ProConnectClient {
       lastName: userInfo.usual_name as string,
       siret: userInfo.siret as string,
     };
+  }
+
+  async getLogoutUrl(params: GetLogoutUrlParams): Promise<URL> {
+    const config = await this.discoverConfig();
+
+    return oidcHttpClient.buildEndSessionUrl(config, {
+      id_token_hint: params.idToken,
+      post_logout_redirect_uri: params.postLogoutRedirectUri,
+      state: params.state,
+    });
   }
 
   private async discoverConfig(): Promise<oidcHttpClient.Configuration> {

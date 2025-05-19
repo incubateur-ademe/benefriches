@@ -15,10 +15,18 @@ export type FetchUserIdentityResult = {
   siret: string;
 };
 
+export type GetLogoutUrlParams = {
+  idToken: string;
+  state: string;
+  postLogoutRedirectUri: string;
+};
+
 export interface ProConnectClient {
   getAuthorizationUrl(
     loginCallbackUrl: string,
   ): Promise<{ authorizationUrl: URL; state: string; nonce: string }>;
+
+  getLogoutUrl(params: GetLogoutUrlParams): Promise<URL>;
 
   fetchUserIdentity(params: FetchUserIdentityParams): Promise<FetchUserIdentityResult>;
 }
