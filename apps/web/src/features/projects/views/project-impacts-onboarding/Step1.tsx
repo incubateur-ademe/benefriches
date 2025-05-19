@@ -40,21 +40,21 @@ export default function Step1({ onNextClick, skipStepByStepAnimation }: Props) {
           Des impacts monétaires :
           <ul className="tw-text-base tw-list-none">
             <EmojiListItem emoji="💰" emojiClassName={EMOJI_CLASSNAME}>
-              Impact économiques directs <span>→</span>{" "}
+              Impacts économiques directs <span>→</span>{" "}
               <span className="tw-font-normal">
                 Exemple : dépenses de sécurisation de la friche évitées
               </span>
             </EmojiListItem>
             <EmojiListItem emoji="🏦" emojiClassName={EMOJI_CLASSNAME}>
-              Impact économiques indirects <span>→</span>{" "}
+              Impacts économiques indirects <span>→</span>{" "}
               <span className="tw-font-normal">Exemple : recettes fiscales</span>
             </EmojiListItem>
             <EmojiListItem emoji="💰👩🏻" small emojiClassName={EMOJI_CLASSNAME}>
-              Impact sociaux monétarisés <span>→</span>{" "}
+              Impacts sociaux monétarisés <span>→</span>{" "}
               <span className="tw-font-normal">Exemple : dépenses de santé évitées</span>
             </EmojiListItem>
             <EmojiListItem emoji="💰🌳" small emojiClassName={EMOJI_CLASSNAME}>
-              Impact environnementaux monétarisés <span>→</span>{" "}
+              Impacts environnementaux monétarisés <span>→</span>{" "}
               <span className="tw-font-normal">Exemple : valeur monétaire de la décarbonation</span>
             </EmojiListItem>
           </ul>
@@ -70,11 +70,11 @@ export default function Step1({ onNextClick, skipStepByStepAnimation }: Props) {
           Des impacts non-monétaires :
           <ul className="tw-text-base tw-list-none">
             <EmojiListItem emoji="🏘️" emojiClassName={EMOJI_CLASSNAME}>
-              Impact sociaux <span>→</span>{" "}
+              Impacts sociaux <span>→</span>{" "}
               <span className="tw-font-normal">Exemple : nombre d’emplois</span>
             </EmojiListItem>
-            <EmojiListItem emoji="🏬" emojiClassName={EMOJI_CLASSNAME}>
-              Impact environnementaux <span>→</span>{" "}
+            <EmojiListItem emoji="🌳" emojiClassName={EMOJI_CLASSNAME}>
+              Impacts environnementaux <span>→</span>{" "}
               <span className="tw-font-normal">Exemple : émissions de CO2-eq évitées </span>
             </EmojiListItem>
           </ul>
