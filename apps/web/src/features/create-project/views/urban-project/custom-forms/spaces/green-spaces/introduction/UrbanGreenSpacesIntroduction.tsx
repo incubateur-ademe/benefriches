@@ -17,10 +17,10 @@ const UrbanGreenSpacesIntroduction = ({ greenSpacesSurfaceArea, onNext, onBack }
   return (
     <EditorialPageLayout>
       <EditorialPageIcon>🌳</EditorialPageIcon>
-      <EditorialPageTitle>Parlons des espaces verts.</EditorialPageTitle>
+      <EditorialPageTitle>Parlons des espaces verts publics.</EditorialPageTitle>
       <EditorialPageText>
         Vous envisagez d’aménager <strong>{formatSurfaceArea(greenSpacesSurfaceArea)}</strong>{" "}
-        d’espaces verts.
+        d’espaces verts publics.
       </EditorialPageText>
       <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
     </EditorialPageLayout>

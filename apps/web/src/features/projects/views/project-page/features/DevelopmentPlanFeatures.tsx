@@ -90,11 +90,14 @@ const DevelopmentPlanFeatures = ({
                 value={formatSurfaceArea(totalLivingAndActivitiesSpaces)}
               />
             )}
-            {totalGreenPublicSpaces > 0 && (
-              <DataLine label="Espaces verts" value={formatSurfaceArea(totalGreenPublicSpaces)} />
-            )}
             {totalPublicSpaces > 0 && (
               <DataLine label="Espaces publics" value={formatSurfaceArea(totalPublicSpaces)} />
+            )}
+            {totalGreenPublicSpaces > 0 && (
+              <DataLine
+                label="Espaces verts publics"
+                value={formatSurfaceArea(totalGreenPublicSpaces)}
+              />
             )}
           </Section>
           {decontaminatedSoilSurface ? (
@@ -135,7 +138,7 @@ const DevelopmentPlanFeatures = ({
                 <DataLine
                   className="tw-pt-2"
                   noBorder
-                  label={<strong>Espaces verts</strong>}
+                  label={<strong>Espaces verts publics</strong>}
                   value={<strong>{formatSurfaceArea(totalGreenPublicSpaces)}</strong>}
                 />
                 {typedObjectEntries(greenPublicSpaces)

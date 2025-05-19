@@ -19,7 +19,7 @@ export const getLabelForSpaceCategory = (spaceCategory: UrbanSpaceCategory): str
     case "PUBLIC_SPACES":
       return "Espaces publics";
     case "GREEN_SPACES":
-      return "Espaces verts";
+      return "Espaces verts publics";
     case "URBAN_FARM":
       return "Ferme urbaine";
     case "RENEWABLE_ENERGY_PRODUCTION_PLANT":

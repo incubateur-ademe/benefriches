@@ -28,17 +28,17 @@ function UrbanGreenSpacesDistribution({
   return (
     <SurfaceAreaDistributionForm
       initialValues={initialValues}
-      title="Quelle est la part de chaque espace à aménager sur les espaces verts ?"
+      title="Quelle est la part de chaque espace à aménager sur les espaces verts publics ?"
       instructions={
         <FormInfo>
           Votre projet comporte <strong>{formatSurfaceArea(totalSurfaceArea)}</strong> de futurs
-          espaces verts.
+          espaces verts publics.
         </FormInfo>
       }
       onBack={onBack}
       onSubmit={onSubmit}
       totalSurfaceArea={totalSurfaceArea}
-      maxErrorMessage="La superficie ne peut pas être supérieure à la superficie totale des espaces verts"
+      maxErrorMessage="La superficie ne peut pas être supérieure à la superficie totale des espaces verts publics"
       surfaces={urbanGreenSpaces.options.map((space) => ({
         name: space,
         label: getLabelForUrbanGreenSpace(space),
