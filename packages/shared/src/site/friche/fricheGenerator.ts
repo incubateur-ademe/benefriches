@@ -95,7 +95,7 @@ export class FricheGenerator implements SiteGenerator<FricheGenerationProps> {
       },
       yearlyExpenses,
       fricheActivity,
-      name: generateSiteName({ cityName: address.city, nature: "FRICHE" }),
+      name: generateSiteName({ cityName: address.city, nature: "FRICHE", fricheActivity }),
     });
 
     if (!result.success) {

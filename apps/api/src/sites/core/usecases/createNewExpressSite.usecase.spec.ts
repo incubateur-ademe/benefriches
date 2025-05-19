@@ -111,7 +111,7 @@ describe("CreateNewExpressSite Use case", () => {
           id: siteProps.id,
           address: siteProps.address,
           surfaceArea: siteProps.surfaceArea,
-          name: "Espace agricole de Montrouge",
+          name: "Exploitation agricole de Montrouge",
           createdAt: fakeNow,
           createdBy: "user-id-123",
           creationMode: "express",

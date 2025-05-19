@@ -55,7 +55,7 @@ export class NaturalAreaGenerator implements SiteGenerator<NaturalAreaGeneration
       },
       yearlyExpenses: [],
       yearlyIncomes: [],
-      name: generateSiteName({ cityName: address.city, nature: "NATURAL_AREA" }),
+      name: generateSiteName({ cityName: address.city, nature: "NATURAL_AREA", naturalAreaType }),
       description: getLabelForNaturalAreaType(naturalAreaType),
     });
 
