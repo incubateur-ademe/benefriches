@@ -35,7 +35,7 @@ export const getLabelForRecurringRevenueSource = (
     case "other":
       return "Autres recettes";
     case "rent":
-      return "Loyer";
+      return "Revenu locatif";
   }
 };
 

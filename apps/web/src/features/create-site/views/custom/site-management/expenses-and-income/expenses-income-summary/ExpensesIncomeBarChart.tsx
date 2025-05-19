@@ -67,7 +67,7 @@ const getLabelForOperationsRevenueSource = (source: SiteYearlyIncome["source"]):
     case "other":
       return "Autres recettes";
     case "rent":
-      return "Loyer (propriétaire)";
+      return "Revenu locatif";
   }
 };
 

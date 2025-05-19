@@ -258,7 +258,7 @@ const getEconomicBalanceYearlyRevenueSourceLabel = (source: RecurringRevenue["so
     case "other":
       return "💶 Recettes secondaires";
     case "rent":
-      return "🔑 Loyer";
+      return "🔑 Revenu locatif";
   }
 };
 

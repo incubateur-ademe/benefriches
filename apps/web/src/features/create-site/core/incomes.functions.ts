@@ -11,6 +11,6 @@ export const getLabelForIncomeSource = (source: SiteYearlyIncome["source"]): str
     case "subsidies":
       return "Subventions";
     case "rent":
-      return "Loyer";
+      return "Revenu locatif";
   }
 };
