@@ -50,7 +50,11 @@ const SocioEconomicDescription = ({ impactsData }: Props) => {
       />
       <ModalGrid>
         <ModalData>
-          <ModalColumnSeriesChart format="monetary" data={impactList} />
+          <ModalColumnSeriesChart
+            format="monetary"
+            data={impactList}
+            exportTitle="🌍 Impacts socio-économiques"
+          />
 
           <ModalTable
             caption="Liste des impacts socio-économiques"

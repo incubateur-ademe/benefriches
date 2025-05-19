@@ -1,32 +1,40 @@
-import { getPercentageDifference } from "@/shared/core/percentage/percentage";
+import useImpactAreaChartProps from "@/features/projects/views/shared/charts/useImpactAreaChartProps";
 
-import ImpactAreaChart, { ImpactAreaChartProps } from "./ImpactAreaChart";
-import ImpactsChartCard, { ChartCardProps } from "./ImpactChartCard";
-import ImpactPercentageVariation from "./ImpactPercentageVariation";
+import ImpactChartCard from "./ImpactChartCard";
 
 type Props = {
   title: string;
   base: number;
   forecast: number;
   difference: number;
-} & ChartCardProps &
-  ImpactAreaChartProps;
+  dialogId: string;
 
-function ImpactAreaChartCard({ title, dialogId, ...rest }: Props) {
-  const percentageVariation = getPercentageDifference(rest.base, rest.forecast);
+  color?: string;
+  details?: { label: string; base: number; forecast: number; difference: number; color?: string }[];
+  type?: "co2" | "surfaceArea" | "etp" | "default";
+  height?: number;
+};
+
+function ImpactAreaChartCard({ title, dialogId, ...props }: Props) {
+  const { options, colors, chartContainerId } = useImpactAreaChartProps({
+    height: 250,
+    title,
+    ...props,
+  });
 
   return (
-    <ImpactsChartCard dialogId={dialogId}>
-      <div className="tw-flex tw-justify-between tw-items-start">
-        <h4 className="tw-text-xl tw-mb-1">{title}</h4>
-        {rest.base !== 0 && (
-          <ImpactPercentageVariation
-            percentage={percentageVariation > 10000 ? 9999 : percentageVariation}
-          />
-        )}
-      </div>
-      <ImpactAreaChart title={title} {...rest} />
-    </ImpactsChartCard>
+    <ImpactChartCard
+      dialogId={dialogId}
+      exportingOptions={{ colors, colorBySeries: true }}
+      containerProps={{
+        id: chartContainerId,
+        className: ["area-chart"],
+      }}
+      options={{
+        ...options,
+        title: { text: title, align: "left", minScale: 1 },
+      }}
+    />
   );
 }
 

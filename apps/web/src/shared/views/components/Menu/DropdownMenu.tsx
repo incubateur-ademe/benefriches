@@ -4,6 +4,7 @@ import { Fragment } from "react/jsx-runtime";
 
 import classNames, { ClassValue } from "../../clsx";
 import MenuItemButton from "./MenuItemButton";
+import { MENU_ITEMS_CLASSES } from "./classes";
 
 type DropdownMenuProps = {
   classes?: Partial<Record<"root" | "menu" | "list", ClassValue>>;
@@ -29,18 +30,11 @@ function DropdownMenu({
         anchor={anchor}
         transition
         className={classNames(
-          "tw-absolute",
-          "tw-right-0",
           "tw-z-40",
           size === "small" && "tw-w-44",
           size === "medium" && "tw-w-72",
           size === "large" && "tw-w-80",
-          "tw-mt-2",
-          "tw-rounded-md",
-          "tw-bg-white dark:!tw-bg-dsfr-contrastGrey",
-          "tw-shadow-lg",
-          "tw-ring-1 tw-ring-black/5",
-          "tw-py-1",
+          MENU_ITEMS_CLASSES,
           classes?.menu,
         )}
       >

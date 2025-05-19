@@ -68,7 +68,11 @@ const AvoidedCo2MonetaryValueDescription = ({ impactsData }: Props) => {
       />
       <ModalGrid>
         <ModalData>
-          <ModalColumnPointChart format="monetary" data={data} />
+          <ModalColumnPointChart
+            format="monetary"
+            data={data}
+            exportTitle="☁️ Valeur monétaire de la décarbonation"
+          />
 
           <ModalTable
             caption="Liste des impacts liés à la valeur monétaire de la décarbonation"

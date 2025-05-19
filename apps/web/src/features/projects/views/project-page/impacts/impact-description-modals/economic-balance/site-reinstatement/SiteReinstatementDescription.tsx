@@ -68,7 +68,11 @@ const SiteReinstatementDescription = ({ impactData, bearer = "l'aménageur" }: P
       />
       <ModalGrid>
         <ModalData>
-          <ModalColumnPointChart format="monetary" data={impactList} />
+          <ModalColumnPointChart
+            format="monetary"
+            data={impactList}
+            exportTitle="🚧 Remise en état de la friche"
+          />
 
           <ModalTable
             caption="Liste des dépenses et recettes de remise en état"

@@ -1,45 +1,18 @@
 import Tooltip from "@codegouvfr/react-dsfr/Tooltip";
 
-import {
-  formatCO2Impact,
-  formatDefaultImpact,
-  formatETPImpact,
-  formatSurfaceAreaImpact,
-} from "@/features/projects/views/shared/formatImpactValue";
+import useImpactAreaChartProps, {
+  ImpactAreaChartProps,
+} from "@/features/projects/views/shared/charts/useImpactAreaChartProps";
 import { getPositiveNegativeTextClassesFromValue } from "@/shared/views/classes/positiveNegativeTextClasses";
+import ExportableChart from "@/shared/views/components/Charts/ExportableChart";
 
-import ImpactAreaChart from "../../../charts-view/ImpactChartCard/ImpactAreaChart";
-
-type Props = {
-  title: string;
-  base: number;
-  forecast: number;
-  difference: number;
-  color?: string;
-  details?: { label: string; base: number; forecast: number; difference: number; color?: string }[];
-  type?: "co2" | "surfaceArea" | "etp" | "default";
-};
-
-const impactTypeFormatterFn = {
-  co2: formatCO2Impact,
-  surfaceArea: formatSurfaceAreaImpact,
-  etp: formatETPImpact,
-  default: formatDefaultImpact,
-} as const;
+type Props = ImpactAreaChartProps;
 
 const ModalAreaChart = (props: Props) => {
-  const { base, forecast, difference, color, details, title, type = "default" } = props;
-  const formatFn = impactTypeFormatterFn[type];
-
-  const data = details?.filter(({ difference }) => difference !== 0) ?? [
-    {
-      label: title,
-      base,
-      forecast,
-      difference,
-      color,
-    },
-  ];
+  const { options, data, formatFn, chartContainerId } = useImpactAreaChartProps({
+    height: 300,
+    ...props,
+  });
 
   return (
     <Tooltip
@@ -67,7 +40,15 @@ const ModalAreaChart = (props: Props) => {
         </div>
       }
     >
-      <ImpactAreaChart height={300} {...props} />
+      <ExportableChart
+        containerProps={{ id: chartContainerId }}
+        exportingOptions={{
+          title: props.title,
+          colors: data.map(({ color }) => color),
+          colorBySeries: true,
+        }}
+        options={options}
+      />
     </Tooltip>
   );
 };

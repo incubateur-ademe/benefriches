@@ -107,7 +107,11 @@ const EcosystemServicesDescription = ({ impactsData }: Props) => {
       />
       <ModalGrid>
         <ModalData>
-          <ModalColumnPointChart format="monetary" data={data} />
+          <ModalColumnPointChart
+            format="monetary"
+            data={data}
+            exportTitle="🌱 Valeur monétaire des services écosystémiques"
+          />
 
           <ModalTable
             caption="Liste des valeurs monétaire des services écosystémiques"

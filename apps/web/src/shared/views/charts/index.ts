@@ -53,7 +53,7 @@ export function withDefaultBarChartOptions({
   return withDefaultChartOptions({
     chart: {
       type: "column",
-      height: "275px",
+      height: 350,
       styledMode: true,
       ...chart,
     },
@@ -82,10 +82,14 @@ export function withDefaultAreaChartOptions({ chart = {}, ...options }: Options)
   return withDefaultChartOptions({
     chart: {
       type: "area",
-      height: "220px",
+      height: 250,
       marginLeft: 0,
       marginRight: 0,
       styledMode: true,
+      spacingBottom: 0,
+      spacingLeft: 0,
+      spacingRight: 0,
+      spacingTop: 0,
       ...chart,
     },
     yAxis: {

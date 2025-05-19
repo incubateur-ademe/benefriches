@@ -64,7 +64,7 @@ const SocioEconomicSubSectionDescription = ({
       />
       <ModalGrid>
         <ModalData>
-          <ModalColumnSeriesChart format="monetary" data={impactList} />
+          <ModalColumnSeriesChart format="monetary" data={impactList} exportTitle={title} />
 
           <ModalTable
             caption="Liste des impacts socio-économiques"

@@ -68,7 +68,12 @@ const AvoidedFricheExpensesDescription = ({ impactData = [] }: Props) => {
       />
       <ModalGrid>
         <ModalData>
-          <ModalColumnPointChart format="monetary" data={data} />
+          <ModalColumnPointChart
+            format="monetary"
+            data={data}
+            exportTitle="🏚 Dépenses de gestion et de sécurisation de la friche évitées"
+            exportSubtitle="Grâce à la reconversion de la friche"
+          />
           <ModalTable
             caption="Liste des dépenses de gestion et de sécurisation de la friche évitées"
             data={data.map(({ label, value, color, name, actor }) => ({

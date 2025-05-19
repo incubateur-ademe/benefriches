@@ -56,7 +56,8 @@ const EconomicBalanceDescription = ({ impactsData, projectData }: Props) => {
         <ModalData>
           <ModalColumnSeriesChart
             format="monetary"
-            noDataText="Vous n'avez pas renseigné de dépenses ni de recettes pour ce projet."
+            exportTitle="📉 Bilan de l'opération"
+            exportSubtitle={`pour ${bearer}`}
             data={[
               {
                 label: "Recettes",

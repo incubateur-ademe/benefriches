@@ -1,9 +1,9 @@
-import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { HTMLAttributes, useId, useRef } from "react";
 
 import { useChartCustomPointColors } from "@/shared/views/charts/useChartCustomColors";
 import classNames from "@/shared/views/clsx";
+import ExportableChart from "@/shared/views/components/Charts/ExportableChart";
 
 import ModalColumnChartTooltip from "./ModalColumnChartTooltip";
 import { getBarChartOptions } from "./modalBarChartOptions";
@@ -17,9 +17,11 @@ type Props = {
     value: number;
     color?: string;
   }[];
+  exportTitle: string;
+  exportSubtitle?: string;
 } & HTMLAttributes<HTMLDivElement>;
 
-const ModalColumnPointChart = ({ data, format, ...props }: Props) => {
+const ModalColumnPointChart = ({ data, format, exportTitle, exportSubtitle, ...props }: Props) => {
   const chartContainerId = useId();
 
   useChartCustomPointColors(
@@ -42,17 +44,22 @@ const ModalColumnPointChart = ({ data, format, ...props }: Props) => {
       : undefined;
 
   return (
-    <div
-      className={classNames("tw-mb-6", "tw-relative", props.className)}
-      onMouseLeave={onMouseLeave}
-      onMouseMove={onMouseMove}
-      {...props}
-    >
+    <div className={classNames("tw-mb-6", "tw-relative", props.className)} {...props}>
       <ModalColumnChartTooltip position={position} rows={tooltipRows} />
-      <HighchartsReact
-        highcharts={Highcharts}
+      <ExportableChart
         ref={chartRef}
-        containerProps={{ id: chartContainerId, className: "highcharts-no-xaxis" }}
+        exportingOptions={{
+          title: exportTitle,
+          subtitle: exportSubtitle,
+          colors: data.map(({ color }) => color),
+          chartOptions: { xAxis: { lineWidth: 0 } },
+        }}
+        containerProps={{
+          id: chartContainerId,
+          onMouseLeave,
+          onMouseMove,
+          className: "highcharts-no-xaxis",
+        }}
         options={getBarChartOptions({
           nbColumns: data.length,
           colorByPoint: true,

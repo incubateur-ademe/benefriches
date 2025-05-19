@@ -8,7 +8,6 @@ import { getSocioEconomicImpactColor } from "../../../getImpactColor";
 import ImpactModalDescription, {
   ModalDataProps,
 } from "../../../impact-description-modals/ImpactModalDescription";
-import ImpactColumnChart from "../../ImpactChartCard/ImpactColumnChart";
 import ImpactColumnChartCard from "../../ImpactChartCard/ImpactColumnChartCard";
 
 type Props = {
@@ -41,15 +40,12 @@ function SocioEconomicChartCard({ socioEconomicImpacts, modalData }: Props) {
         title="Impacts socio-économiques"
         subtitle="Par bénéficiaires"
         dialogId="fr-modal-impacts-socio_economic-Chart"
-      >
-        <ImpactColumnChart
-          data={socioEconomicImpacts.map(({ name, total, impacts }) => ({
-            value: total,
-            label: getActorLabel(name),
-            color: getMaxColor(impacts),
-          }))}
-        />
-      </ImpactColumnChartCard>
+        data={socioEconomicImpacts.map(({ name, total, impacts }) => ({
+          value: total,
+          label: getActorLabel(name),
+          color: getMaxColor(impacts),
+        }))}
+      />
     </>
   );
 }

@@ -64,7 +64,12 @@ const AvoidedTrafficAccidentsMonetaryValueDescription = ({ impactData }: Props) 
       />
       <ModalGrid>
         <ModalData>
-          <ModalColumnPointChart format="monetary" data={data} />
+          <ModalColumnPointChart
+            format="monetary"
+            data={data}
+            exportTitle={`🚘 ${TITLE}`}
+            exportSubtitle="Grâce aux déplacements évités"
+          />
           <ModalTable
             caption="Liste des dépenses de santé évitées grâce aux accidents évités"
             data={data.map(({ label, value, color, name }) => ({

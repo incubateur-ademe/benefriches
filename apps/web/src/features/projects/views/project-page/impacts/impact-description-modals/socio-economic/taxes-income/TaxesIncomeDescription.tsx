@@ -68,7 +68,7 @@ const TaxesIncomeDescription = ({ developmentPlan, impactData }: Props) => {
       />
       <ModalGrid>
         <ModalData>
-          <ModalColumnPointChart format="monetary" data={data} />
+          <ModalColumnPointChart format="monetary" data={data} exportTitle="🏛 Recettes fiscales" />
 
           <ModalTable
             caption="Liste des recettes fiscales"

@@ -1,7 +1,6 @@
 import { sumListWithKey } from "shared";
 
 import { EconomicBalance } from "@/features/projects/domain/projectImpactsEconomicBalance";
-import ImpactColumnChart from "@/features/projects/views/project-page/impacts/charts-view/ImpactChartCard/ImpactColumnChart";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 
 import { getEconomicBalanceImpactColor } from "../../../getImpactColor";
@@ -36,24 +35,20 @@ function EconomicBalanceChartCard({ economicBalance, bearer = "l'aménageur", mo
         title="Bilan de l'opération"
         subtitle={`Pour ${bearer}`}
         dialogId={DIALOG_ID}
-      >
-        <ImpactColumnChart
-          formatFn={formatMonetaryImpact}
-          noDataText="Vous n'avez pas renseigné de dépenses ni de recettes pour ce projet."
-          data={[
-            {
-              label: "Recettes",
-              color: maxRevenue ? getEconomicBalanceImpactColor(maxRevenue) : undefined,
-              value: sumListWithKey(revenuesList, "value"),
-            },
-            {
-              label: "Dépenses",
-              color: maxCost ? getEconomicBalanceImpactColor(maxCost) : undefined,
-              value: sumListWithKey(costsList, "value"),
-            },
-          ]}
-        />
-      </ImpactColumnChartCard>
+        formatFn={formatMonetaryImpact}
+        data={[
+          {
+            label: "Recettes",
+            color: maxRevenue ? getEconomicBalanceImpactColor(maxRevenue) : undefined,
+            value: sumListWithKey(revenuesList, "value"),
+          },
+          {
+            label: "Dépenses",
+            color: maxCost ? getEconomicBalanceImpactColor(maxCost) : undefined,
+            value: sumListWithKey(costsList, "value"),
+          },
+        ]}
+      />
     </>
   );
 }

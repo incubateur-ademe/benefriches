@@ -63,7 +63,12 @@ const AvoidedTrafficAccidentsDescription = ({ impactData }: Props) => {
       />
       <ModalGrid>
         <ModalData>
-          <ModalColumnPointChart format="default" data={data} />
+          <ModalColumnPointChart
+            format="default"
+            data={data}
+            exportTitle={`🚘 ${TITLE}`}
+            exportSubtitle="Grâce aux déplacements évités"
+          />
           <ModalTable
             formatFn={formatDefaultImpact}
             caption="Détails des blessés et décès évités"
