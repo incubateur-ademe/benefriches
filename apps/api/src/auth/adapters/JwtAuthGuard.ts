@@ -13,7 +13,12 @@ import { ACCESS_TOKEN_COOKIE_KEY } from "./access-token/accessTokenCookie";
 
 declare module "express" {
   interface Request {
-    authenticatedUser?: { id: string; email: string };
+    accessTokenPayload?: {
+      userId: string;
+      userEmail: string;
+      authProvider: string;
+      authProviderTokenId: string | undefined;
+    };
   }
 }
 
@@ -33,13 +38,19 @@ export class JwtAuthGuard implements CanActivate {
     if (!token) throw new UnauthorizedException();
 
     try {
-      const payload = await this.accessTokenService.verifyAsync<{ sub: string; email: string }>(
-        token,
-        { secret: this.configService.getOrThrow<string>("AUTH_JWT_SECRET") },
-      );
-      request.authenticatedUser = {
-        id: payload.sub,
-        email: payload.email,
+      const jwtSecret = this.configService.getOrThrow<string>("AUTH_JWT_SECRET");
+      const payload = await this.accessTokenService.verifyAsync<{
+        sub: string;
+        email: string;
+        authProvider: string;
+        authProviderIdToken?: string;
+      }>(token, { secret: jwtSecret });
+
+      request.accessTokenPayload = {
+        userId: payload.sub,
+        userEmail: payload.email,
+        authProvider: payload.authProvider,
+        authProviderTokenId: payload.authProviderIdToken,
       };
     } catch {
       throw new UnauthorizedException();
