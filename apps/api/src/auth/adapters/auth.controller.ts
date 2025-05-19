@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 import {
   BadRequestException,
   Controller,
@@ -9,6 +10,7 @@ import {
   UseGuards,
 } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
+import { randomUUID } from "crypto";
 import { Request, Response } from "express";
 
 import { JwtAuthGuard } from "./JwtAuthGuard";
@@ -122,6 +124,8 @@ export class AuthController {
     const accessToken = await this.accessTokenService.signAsync({
       sub: userInDb.id,
       email: userInDb.email,
+      authProvider: "pro-connect",
+      authProviderIdToken: oidcIdentity.idToken,
     });
 
     const decodedAccessToken = this.accessTokenService.decode<{
@@ -142,10 +146,10 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Get("me")
   async me(@Req() req: Request, @Res() res: Response) {
-    const { authenticatedUser: userInJwt } = req;
-    if (!userInJwt) throw new UnauthorizedException();
+    const { accessTokenPayload } = req;
+    if (!accessTokenPayload) throw new UnauthorizedException();
 
-    const authenticatedUser = await this.usersRepository.getWithId(userInJwt.id);
+    const authenticatedUser = await this.usersRepository.getWithId(accessTokenPayload.userId);
 
     if (!authenticatedUser) throw new UnauthorizedException();
 
@@ -158,5 +162,40 @@ export class AuthController {
       structureActivity: authenticatedUser.structureActivity,
       structureName: authenticatedUser.structureName,
     });
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get("logout")
+  async logout(@Req() req: Request, @Res() res: Response) {
+    const { accessTokenPayload } = req;
+    if (!accessTokenPayload) throw new UnauthorizedException();
+
+    switch (accessTokenPayload.authProvider) {
+      case "pro-connect":
+        const state = randomUUID();
+        req.session.state = state;
+        const providerIdToken = accessTokenPayload.authProviderTokenId;
+        const providerLogoutUrl = await this.oidcLogin.getLogoutUrl({
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          idToken: providerIdToken!,
+          postLogoutRedirectUri: this.configService.getOrThrow<string>("AUTH_LOGOUT_CALLBACK_URL"),
+          state,
+        });
+        res.redirect(providerLogoutUrl.toString());
+        break;
+      default:
+        res.redirect(this.configService.getOrThrow<string>("AUTH_LOGOUT_CALLBACK_URL"));
+        break;
+    }
+  }
+
+  @Get("logout-callback")
+  logoutCallback(@Req() req: Request, @Res() res: Response) {
+    if (req.query.state && req.query.state !== req.session.state) {
+      throw new BadRequestException("Invalid state");
+    }
+
+    res.clearCookie(ACCESS_TOKEN_COOKIE_KEY);
+    res.redirect(this.configService.getOrThrow<string>("WEBAPP_URL"));
   }
 }
