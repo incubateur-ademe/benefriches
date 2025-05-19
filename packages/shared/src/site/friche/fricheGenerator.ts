@@ -10,7 +10,7 @@ import {
 } from "..";
 import { computeEstimatedPropertyTaxesAmount } from "../../financial";
 import { formatMunicipalityName } from "../../local-authority";
-import { createSoilSurfaceAreaDistribution, SoilType } from "../../soils";
+import { createSoilSurfaceAreaDistribution } from "../../soils";
 import { getSoilsDistributionForFricheActivity } from "../friche/spaces";
 import { createFriche, Friche } from "../site";
 import {
@@ -95,11 +95,7 @@ export class FricheGenerator implements SiteGenerator<FricheGenerationProps> {
       },
       yearlyExpenses,
       fricheActivity,
-      name: generateSiteName({
-        cityName: address.city,
-        isFriche: true,
-        soils: Object.keys(soilsDistribution) as SoilType[],
-      }),
+      name: generateSiteName({ cityName: address.city, nature: "FRICHE" }),
     });
 
     if (!result.success) {

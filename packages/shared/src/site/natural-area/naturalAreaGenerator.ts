@@ -1,5 +1,5 @@
 import { formatMunicipalityName } from "../../local-authority";
-import { createSoilSurfaceAreaDistribution, SoilsDistribution, SoilType } from "../../soils";
+import { createSoilSurfaceAreaDistribution, SoilsDistribution } from "../../soils";
 import { generateSiteName } from "../name";
 import { getLabelForNaturalAreaType } from "../natural-area/naturalAreaType";
 import { AgriculturalOrNaturalSite, createAgriculturalOrNaturalSite } from "../site";
@@ -55,11 +55,7 @@ export class NaturalAreaGenerator implements SiteGenerator<NaturalAreaGeneration
       },
       yearlyExpenses: [],
       yearlyIncomes: [],
-      name: generateSiteName({
-        cityName: address.city,
-        isFriche: false,
-        soils: Object.keys(soilsDistribution) as SoilType[],
-      }),
+      name: generateSiteName({ cityName: address.city, nature: "NATURAL_AREA" }),
       description: getLabelForNaturalAreaType(naturalAreaType),
     });
 

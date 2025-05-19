@@ -6,7 +6,7 @@ import {
   SiteGenerator,
 } from "..";
 import { formatMunicipalityName } from "../../local-authority";
-import { createSoilSurfaceAreaDistribution, SoilsDistribution, SoilType } from "../../soils";
+import { createSoilSurfaceAreaDistribution, SoilsDistribution } from "../../soils";
 import {
   AgriculturalOperationActivity,
   getLabelForAgriculturalOperationActivity,
@@ -102,11 +102,7 @@ export class AgriculturalOperationGenerator
         props.operationActivity,
         props.surfaceArea,
       ),
-      name: generateSiteName({
-        cityName: address.city,
-        isFriche: false,
-        soils: Object.keys(soilsDistribution) as SoilType[],
-      }),
+      name: generateSiteName({ cityName: address.city, nature: "AGRICULTURAL_OPERATION" }),
       description: getLabelForAgriculturalOperationActivity(operationActivity),
     });
 

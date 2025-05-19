@@ -1,41 +1,28 @@
 import { formatCityWithPlacePreposition } from "../local-authority";
-import { isForest, isPrairie, isSoilAgricultural, SoilType } from "../soils";
 import { FricheActivity, getFricheActivityLabel } from "./friche/fricheActivity";
+import { getLabelForNaturalAreaType, NaturalAreaType } from "./natural-area";
+import { SiteNature } from "./site";
 
-const isSoilTypeArtificial = (soilType: SoilType) => {
-  return [
-    "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
-    "ARTIFICIAL_TREE_FILLED",
-    "MINERAL_SOIL",
-    "BUILDINGS",
-  ].includes(soilType);
-};
-
-const isSoilTypeNatural = (soilType: SoilType) => {
-  return (
-    isPrairie(soilType) || isForest(soilType) || soilType === "WATER" || soilType === "WET_LAND"
-  );
-};
 type SiteData = {
-  isFriche: boolean;
   fricheActivity?: FricheActivity;
-  soils: SoilType[];
+  naturalAreaType?: NaturalAreaType;
+  nature: SiteNature;
   cityName: string;
 };
 
-export const generateSiteDesignation = (siteData: SiteData) => {
-  if (siteData.isFriche)
-    return siteData.fricheActivity ? getFricheActivityLabel(siteData.fricheActivity) : "friche";
-
-  const { soils = [] } = siteData;
-
-  const nonArtificialSoils = soils.filter((soilType) => !isSoilTypeArtificial(soilType));
-  if (nonArtificialSoils.length === 0) return "espace";
-  if (nonArtificialSoils.every(isPrairie)) return "prairie";
-  if (nonArtificialSoils.every(isForest)) return "forêt";
-  if (nonArtificialSoils.every(isSoilAgricultural)) return "espace agricole";
-  if (nonArtificialSoils.every(isSoilTypeNatural)) return "espace naturel";
-  return "espace naturel et agricole";
+const generateSiteDesignation = (siteData: SiteData) => {
+  switch (siteData.nature) {
+    case "AGRICULTURAL_OPERATION":
+      return "exploitation agricole";
+    case "NATURAL_AREA":
+      return siteData.naturalAreaType
+        ? getLabelForNaturalAreaType(siteData.naturalAreaType)
+        : "espace naturel";
+    case "FRICHE":
+      return siteData.fricheActivity ? getFricheActivityLabel(siteData.fricheActivity) : "friche";
+    default:
+      return "site";
+  }
 };
 
 export const generateSiteName = (siteData: SiteData): string => {

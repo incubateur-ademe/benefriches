@@ -95,9 +95,5 @@ export const isPermeableSurfaceWithoutPermanentVegetation = (soilType: SoilType)
   ].includes(soilType);
 };
 
-export const isSoilAgricultural = (soilType: SoilType): boolean => {
-  return ["VINEYARD", "ORCHARD", "CULTIVATION"].includes(soilType);
-};
-
 export * from "./soilDistribution";
 export * from "./soilsDistributionObjToArray";
