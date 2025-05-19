@@ -138,7 +138,7 @@ export default function SiteFeaturesList(siteFeatures: Props) {
             case "AGRICULTURAL_OPERATION":
               return "⚙️ Exploitation du site";
             case "FRICHE":
-              return "⚙️ Gestion de la friche";
+              return "⚙️ Gestion et sécurisation de la friche";
             case "NATURAL_AREA":
               return "⚙️ Gestion du site";
           }
