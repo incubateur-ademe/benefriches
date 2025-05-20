@@ -4,6 +4,7 @@ import { useId, useRef } from "react";
 import { sumListWithKey } from "shared";
 
 import { useChartCustomPointColors } from "@/shared/views/charts/useChartCustomColors";
+import classNames from "@/shared/views/clsx";
 import ExportableChart from "@/shared/views/components/Charts/ExportableChart";
 
 import ModalColumnChartTooltip from "./ModalColumnChartTooltip";
@@ -32,7 +33,8 @@ const ModalColumnSeriesChart = ({ data, format, exportTitle, exportSubtitle, ...
     data.map(({ values }) => values.map(({ color }) => color)).flat(),
   );
 
-  const { onMouseLeave, onMouseMove, position, colIndex } = useBarChartCustomTooltip(chartRef);
+  const { onMouseLeave, onMouseMove, onChartReady, isChartReady, position, colIndex } =
+    useBarChartCustomTooltip(chartRef);
 
   const tooltipRows =
     colIndex !== undefined
@@ -70,7 +72,7 @@ const ModalColumnSeriesChart = ({ data, format, exportTitle, exportSubtitle, ...
         }}
         containerProps={{
           id: chartContainerId,
-          className: "highcharts-no-xaxis",
+          className: classNames("highcharts-no-xaxis", !isChartReady && "tw-cursor-wait"),
           onMouseLeave,
           onMouseMove,
         }}
@@ -82,6 +84,7 @@ const ModalColumnSeriesChart = ({ data, format, exportTitle, exportSubtitle, ...
             total: sumListWithKey(values, "value"),
           })),
           series: series as Array<SeriesOptionsType>,
+          onChartReady,
         })}
         {...props}
       />

@@ -11,6 +11,7 @@ type Props = {
   colorByPoint?: boolean;
   categories: { label: string; total: number }[];
   series: Array<SeriesOptionsType>;
+  onChartReady: () => void;
 };
 
 const labelFormatter = ({
@@ -45,6 +46,7 @@ export const getBarChartOptions = ({
   categories,
   valueFormat,
   series,
+  onChartReady,
 }: Props): Options =>
   withDefaultBarChartOptions({
     xAxis: {
@@ -78,6 +80,11 @@ export const getBarChartOptions = ({
       },
       series: {
         enableMouseTracking: false,
+        animation: {
+          complete: function () {
+            onChartReady();
+          },
+        },
       },
     },
     legend: {

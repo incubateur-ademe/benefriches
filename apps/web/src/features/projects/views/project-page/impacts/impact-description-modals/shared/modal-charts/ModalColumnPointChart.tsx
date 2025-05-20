@@ -31,7 +31,8 @@ const ModalColumnPointChart = ({ data, format, exportTitle, exportSubtitle, ...p
 
   const chartRef = useRef<HighchartsReact.RefObject>(null);
 
-  const { onMouseLeave, onMouseMove, position, colIndex } = useBarChartCustomTooltip(chartRef);
+  const { onMouseLeave, onMouseMove, onChartReady, isChartReady, position, colIndex } =
+    useBarChartCustomTooltip(chartRef);
 
   const tooltipRows =
     colIndex !== undefined && data[colIndex]
@@ -58,7 +59,7 @@ const ModalColumnPointChart = ({ data, format, exportTitle, exportSubtitle, ...p
           id: chartContainerId,
           onMouseLeave,
           onMouseMove,
-          className: "highcharts-no-xaxis",
+          className: classNames("highcharts-no-xaxis", !isChartReady && "tw-cursor-wait"),
         }}
         options={getBarChartOptions({
           nbColumns: data.length,
@@ -66,6 +67,7 @@ const ModalColumnPointChart = ({ data, format, exportTitle, exportSubtitle, ...p
           categories: data.map(({ label, value }) => ({ label, total: value })),
           valueFormat: format,
           noTooltip: true,
+          onChartReady,
           series: [
             {
               type: "column",

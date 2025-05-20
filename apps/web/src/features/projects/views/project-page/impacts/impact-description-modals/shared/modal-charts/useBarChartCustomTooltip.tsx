@@ -17,6 +17,11 @@ export const useBarChartCustomTooltip = (
   chartRef: React.RefObject<HighchartsReact.RefObject | null>,
 ) => {
   const [config, setConfig] = useState<TooltipConfig>();
+  const [isChartReady, setIsChartReady] = useState(false);
+
+  const onChartReady = () => {
+    setIsChartReady(true);
+  };
 
   const onMouseLeave = useCallback(() => {
     setConfig(undefined);
@@ -70,7 +75,9 @@ export const useBarChartCustomTooltip = (
         }
       : undefined,
     colIndex: config?.columnIndex,
-    onMouseMove,
-    onMouseLeave,
+    onMouseMove: isChartReady ? onMouseMove : undefined,
+    onMouseLeave: isChartReady ? onMouseLeave : undefined,
+    onChartReady,
+    isChartReady,
   };
 };
