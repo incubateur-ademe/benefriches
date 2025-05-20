@@ -3,6 +3,7 @@ import { Controller, useForm } from "react-hook-form";
 import { SiteNature } from "shared";
 
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
+import Badge from "@/shared/views/components/Badge/Badge";
 import CheckableTile from "@/shared/views/components/CheckableTile/CheckableTile";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
@@ -17,10 +18,11 @@ export type FormValues = {
 };
 
 type Option = {
-  value: SiteNature;
+  value: SiteNature | "ECONOMIC_ACTIVITY_ZONE" | "RESIDENTIAL_AREA";
   title: string;
   description: string;
   imgSrc: string;
+  disabled: boolean;
 };
 
 const options: Option[] = [
@@ -29,12 +31,28 @@ const options: Option[] = [
     title: "Exploitation agricole",
     description: "Culture, élevage...",
     imgSrc: "/img/pictograms/site-nature/agricultural-operation.svg",
+    disabled: false,
   },
   {
     value: "NATURAL_AREA",
     title: "Espace naturel",
     description: "Forêt, prairie, zone humide...",
     imgSrc: "/img/pictograms/site-nature/natural-area.svg",
+    disabled: false,
+  },
+  {
+    value: "ECONOMIC_ACTIVITY_ZONE",
+    title: "Zone d'activité économique",
+    description: "Commerciale, industrielle, bureaux...",
+    imgSrc: "/img/pictograms/site-nature/economic-activity-zone.svg",
+    disabled: true,
+  },
+  {
+    value: "RESIDENTIAL_AREA",
+    title: "Zone d'habitation",
+    description: "Parc résidentiel, îlots anciens dégradés...",
+    imgSrc: "/img/pictograms/site-nature/residential-area.svg",
+    disabled: true,
   },
 ] as const satisfies Option[];
 
@@ -61,12 +79,24 @@ function SiteNatureForm({ onSubmit, onBack, initialValues }: Props) {
                     return (
                       <CheckableTile
                         title={option.title}
-                        description={option.description}
+                        description={
+                          option.disabled ? (
+                            <div>
+                              <div>{option.description}</div>
+                              <Badge small style="disabled" className="tw-mt-2">
+                                Bientôt disponible
+                              </Badge>
+                            </div>
+                          ) : (
+                            option.description
+                          )
+                        }
                         checked={isSelected}
                         onChange={() => {
                           field.onChange(option.value);
                         }}
                         imgSrc={option.imgSrc}
+                        disabled={option.disabled}
                       />
                     );
                   }}
