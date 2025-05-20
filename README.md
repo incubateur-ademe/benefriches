@@ -8,7 +8,7 @@ L'outil est actuellement en *phase de construction*.
 
 [Fiche produit](https://beta.gouv.fr/startups/benefriches.html)
 
-[Version démo de l'application](https://benefriches-staging.osc-fr1.scalingo.io)
+[Version démo de l'application](https://benefriches.incubateur.ademe.dev/)
 
 ## Installation et développement
 
