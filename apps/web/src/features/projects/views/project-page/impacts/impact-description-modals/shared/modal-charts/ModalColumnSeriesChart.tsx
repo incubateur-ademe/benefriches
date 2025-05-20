@@ -36,15 +36,14 @@ const ModalColumnSeriesChart = ({ data, format, exportTitle, exportSubtitle, ...
   const { onMouseLeave, onMouseMove, onChartReady, isChartReady, position, colIndex } =
     useBarChartCustomTooltip(chartRef);
 
-  const tooltipRows =
-    colIndex !== undefined
-      ? data[colIndex]?.values.map(({ label, color, value }) => ({
-          label,
-          value: value,
-          valueText: formatModalBarChartValue(value, format),
-          color,
-        }))
-      : undefined;
+  const itemHovered = colIndex !== undefined ? data[colIndex] : undefined;
+
+  const tooltipRows = itemHovered?.values.map(({ label, color, value }) => ({
+    label,
+    value: value,
+    valueText: formatModalBarChartValue(value, format),
+    color,
+  }));
 
   const series = data
     .map(({ values }, colIndex) =>
@@ -61,7 +60,11 @@ const ModalColumnSeriesChart = ({ data, format, exportTitle, exportSubtitle, ...
 
   return (
     <div className="tw-relative">
-      <ModalColumnChartTooltip position={position} rows={tooltipRows} />
+      <ModalColumnChartTooltip
+        position={position}
+        rows={tooltipRows}
+        category={itemHovered?.label}
+      />
       <ExportableChart
         ref={chartRef}
         exportingOptions={{

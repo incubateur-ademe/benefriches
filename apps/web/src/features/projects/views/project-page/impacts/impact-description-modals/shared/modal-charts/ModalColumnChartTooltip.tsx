@@ -11,6 +11,7 @@ type Props = {
     width: number;
     adjustArrowX: number;
   };
+  category?: string;
   rows?: {
     label: string;
     value: number;
@@ -19,7 +20,7 @@ type Props = {
   }[];
 };
 
-function ModalColumnChartTooltip({ rows, position }: Props) {
+function ModalColumnChartTooltip({ rows, position, category }: Props) {
   if (!position || !rows || rows.length === 0) {
     return null;
   }
@@ -38,6 +39,7 @@ function ModalColumnChartTooltip({ rows, position }: Props) {
         } as CSSProperties
       }
     >
+      {category && <strong className="tw-text-sm">{category}</strong>}
       <div className="!tw-text-xs">
         {rows.map((row) => (
           <div
