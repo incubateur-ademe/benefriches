@@ -17,23 +17,20 @@ type Props = {
 
 function ImpactAreaChartCard({ title, dialogId, ...props }: Props) {
   const { options, colors, chartContainerId } = useImpactAreaChartProps({
-    height: 250,
     title,
     ...props,
   });
 
   return (
     <ImpactChartCard
+      title={title}
       dialogId={dialogId}
       exportingOptions={{ colors, colorBySeries: true }}
       containerProps={{
         id: chartContainerId,
-        className: ["area-chart"],
       }}
-      options={{
-        ...options,
-        title: { text: title, align: "left", minScale: 1 },
-      }}
+      options={options}
+      classes={{ title: "tw-text-xl" }}
     />
   );
 }

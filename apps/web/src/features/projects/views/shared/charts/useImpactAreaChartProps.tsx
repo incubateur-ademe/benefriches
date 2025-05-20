@@ -50,7 +50,7 @@ const useImpactAreaChartProps = ({
   title,
   difference,
   color,
-  height,
+  height = 200,
 }: ImpactAreaChartProps) => {
   const chartContainerId = useId();
 

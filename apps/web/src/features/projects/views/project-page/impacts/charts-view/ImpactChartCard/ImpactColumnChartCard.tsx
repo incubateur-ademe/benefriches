@@ -64,13 +64,13 @@ const ImpactColumnChartCard = ({
       dialogId={dialogId}
       containerProps={{
         id: chartContainerId,
-        className: ["highcharts-no-xaxis", "column-chart"],
+        className: "highcharts-no-xaxis",
       }}
+      title={title}
+      subtitle={subtitle}
       options={
         {
           ...barChartOptions,
-          title: { text: title, align: "left", useHTML: true },
-          subtitle: { text: subtitle, align: "left", useHTML: true },
           xAxis: {
             categories: data.map(({ label }) => label),
             labels: {

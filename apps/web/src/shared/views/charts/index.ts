@@ -53,7 +53,7 @@ export function withDefaultBarChartOptions({
   return withDefaultChartOptions({
     chart: {
       type: "column",
-      height: 350,
+      height: 275,
       styledMode: true,
       ...chart,
     },
@@ -82,7 +82,7 @@ export function withDefaultAreaChartOptions({ chart = {}, ...options }: Options)
   return withDefaultChartOptions({
     chart: {
       type: "area",
-      height: 250,
+      height: 200,
       marginLeft: 0,
       marginRight: 0,
       styledMode: true,
