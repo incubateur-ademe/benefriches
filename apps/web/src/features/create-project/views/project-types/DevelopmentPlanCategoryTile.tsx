@@ -1,3 +1,5 @@
+import Tooltip from "@codegouvfr/react-dsfr/Tooltip";
+import { useId } from "react";
 import { DevelopmentPlanCategory } from "shared";
 
 import Badge from "@/shared/views/components/Badge/Badge";
@@ -25,7 +27,9 @@ export default function DevelopmentPlanCategoryTile({
   const title = getLabelForDevelopmentPlanCategory(developmentPlanCategory);
   const description = getDescriptionForDevelopmentPlanCategory(developmentPlanCategory);
   const imgSrc = `/img/pictograms/development-plans/${getPictogramForDevelopmentPlanCategory(developmentPlanCategory)}`;
-  return (
+  const tooltipId = useId();
+
+  const tile = (
     <CheckableTile
       title={title}
       description={
@@ -45,5 +49,17 @@ export default function DevelopmentPlanCategoryTile({
       checked={isSelected}
       imgSrc={imgSrc}
     />
+  );
+
+  return disabled ? (
+    <Tooltip
+      kind="hover"
+      title="Fonctionnalité en cours de développement, sera disponible courant 2025."
+      id={tooltipId}
+    >
+      {tile}
+    </Tooltip>
+  ) : (
+    tile
   );
 }
