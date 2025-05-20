@@ -7,7 +7,6 @@ import { withDefaultBarChartOptions } from "@/shared/views/charts";
 import { useChartCustomPointColors } from "@/shared/views/charts/useChartCustomColors";
 
 import ImpactChartCard from "./ImpactChartCard";
-import "./ImpactChartCard.css";
 
 type Props = {
   title: string;
