@@ -161,7 +161,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
           {siteData.soilsCarbonStorage && projectData.soilsCarbonStorage ? (
             <>
               <DataLine
-                label={<strong>Stockage du carbone dans les sols après transformation</strong>}
+                label={<strong>Stockage du carbone dans les sols après aménagement</strong>}
                 value={
                   <strong>
                     {formatCarbonStorage(
@@ -189,7 +189,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
                     mode="plain"
                     customHeight="250px"
                     exportConfig={{
-                      title: "Stockage du carbone par les sols avant transformation",
+                      title: "Stockage du carbone par les sols avant aménagement",
                       subtitle: siteData.name,
                       caption: `${formatCarbonStorage(siteData.soilsCarbonStorage.totalCarbonStorage)} T de carbone stocké`,
                     }}
@@ -203,7 +203,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
                     mode="plain"
                     customHeight="250px"
                     exportConfig={{
-                      title: "Stockage du carbone par les sols après transformation",
+                      title: "Stockage du carbone par les sols après aménagement",
                       subtitle: `${projectData.name} sur ${siteData.name}`,
                       caption: `${formatCarbonStorage(projectData.soilsCarbonStorage.totalCarbonStorage)} T de carbone stocké`,
                     }}

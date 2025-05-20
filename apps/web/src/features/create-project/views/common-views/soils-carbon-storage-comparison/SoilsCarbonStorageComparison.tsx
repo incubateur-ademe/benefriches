@@ -40,7 +40,7 @@ const SoilsCarbonStorageComparison = ({
       : 0;
   return (
     <>
-      <h2>Stockage du carbone par les sols après transformation</h2>
+      <h2>Stockage du carbone par les sols après aménagement</h2>
       <CarbonStorageDifferenceSection carbonStorageDifference={carbonStorageDifference} />
       <div className="tw-grid tw-grid-cols-1 lg:tw-grid-cols-2 tw-gap-6 tw-pb-10">
         <div className="tw-border tw-border-solid tw-border-borderGrey tw-p-8">
@@ -52,7 +52,7 @@ const SoilsCarbonStorageComparison = ({
           <SoilsCarbonStorageChart
             soilsCarbonStorage={currentCarbonStorage.soilsStorage}
             exportConfig={{
-              title: "Stockage du carbone par les sols avant transformation",
+              title: "Stockage du carbone par les sols avant aménagement",
               caption: `${formatCarbonStorage(currentCarbonStorage.totalCarbonStorage)} t de carbone stockés`,
             }}
           />
@@ -67,7 +67,7 @@ const SoilsCarbonStorageComparison = ({
           <SoilsCarbonStorageChart
             soilsCarbonStorage={projectedCarbonStorage.soilsStorage}
             exportConfig={{
-              title: "Stockage du carbone par les sols après transformation",
+              title: "Stockage du carbone par les sols après aménagement",
               caption: `${formatCarbonStorage(projectedCarbonStorage.totalCarbonStorage)} t de carbone stockés ${differenceInPercentage ? `(${differenceInPercentage})` : ""}`,
             }}
           />
