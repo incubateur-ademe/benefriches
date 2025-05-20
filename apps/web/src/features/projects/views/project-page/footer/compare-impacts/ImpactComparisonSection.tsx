@@ -177,7 +177,6 @@ function ImpactComparisonSection({
             <div className={fr.cx("fr-modal__header")}>
               <button
                 className={fr.cx("fr-btn--close", "fr-btn")}
-                title="Fermer"
                 aria-controls={DIALOG_ID}
                 type="button"
               >
@@ -185,7 +184,7 @@ function ImpactComparisonSection({
               </button>
             </div>
             <div className={fr.cx("fr-modal__content")}>
-              <h1 className={fr.cx("fr-modal__title")}>
+              <h1 className={fr.cx("fr-modal__title")} id={`${DIALOG_ID}-title`}>
                 {isSuccess ? (
                   <i className="fr-icon--xl fr-icon-success-fill tw-pr-2 tw-text-impacts-positive-border"></i>
                 ) : (

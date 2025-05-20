@@ -33,12 +33,7 @@ const ModalHeader = ({ title, subtitle, breadcrumbSegments, value }: Props) => {
     >
       <div className="tw-flex tw-justify-around tw-items-start tw-w-full">
         <ModalBreadcrumb segments={breadcrumbSegments} />
-        <button
-          className={fr.cx("fr-btn--close", "fr-btn")}
-          title="Fermer"
-          aria-controls={dialogId}
-          type="button"
-        >
+        <button className={fr.cx("fr-btn--close", "fr-btn")} aria-controls={dialogId} type="button">
           Fermer
         </button>
       </div>

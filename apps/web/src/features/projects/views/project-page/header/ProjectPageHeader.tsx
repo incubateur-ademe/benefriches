@@ -1,7 +1,7 @@
 import { fr } from "@codegouvfr/react-dsfr";
 
 import { ProjectDevelopmentPlanType } from "@/features/projects/domain/projects.types";
-import classNames from "@/shared/views/clsx";
+import classNames, { ClassValue } from "@/shared/views/clsx";
 import DropdownMenu from "@/shared/views/components/Menu/DropdownMenu";
 import { useIsSmallScreen } from "@/shared/views/hooks/useIsSmallScreen";
 
@@ -18,6 +18,7 @@ export type HeaderProps = {
   onGoToImpactsOnBoarding: () => void;
   isExpressProject: boolean;
   size?: "small" | "medium";
+  className?: ClassValue;
 };
 
 const ProjectPageHeader = ({
@@ -28,12 +29,13 @@ const ProjectPageHeader = ({
   projectType,
   isExpressProject,
   size: propsSize,
+  className,
 }: HeaderProps) => {
   const isSmallScreen = useIsSmallScreen();
   const size = propsSize ?? (isSmallScreen ? "small" : "medium");
   const isSmallSize = size === "small";
   return (
-    <div className={fr.cx("fr-container")}>
+    <div className={classNames(fr.cx("fr-container"), className)}>
       <div
         className={classNames(
           "tw-grid",
@@ -89,7 +91,6 @@ const ProjectPageHeader = ({
           <DropdownMenu
             size="large"
             buttonProps={{
-              size: size,
               priority: "secondary",
               iconId: "fr-icon-more-fill",
               title: "Voir plus de fonctionnalités",

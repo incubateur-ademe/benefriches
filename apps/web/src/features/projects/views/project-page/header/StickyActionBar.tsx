@@ -42,7 +42,7 @@ function ProjectImpactsStickyActionBar({
           "tw-items-center",
         )}
       >
-        <ProjectsImpactsPageHeader size="small" {...headerProps} />
+        <ProjectsImpactsPageHeader size="small" className="tw-px-0" {...headerProps} />
         {!isSmScreen && (
           <ImpactEvaluationPeriodSelect
             onChange={onEvaluationPeriodChange}
