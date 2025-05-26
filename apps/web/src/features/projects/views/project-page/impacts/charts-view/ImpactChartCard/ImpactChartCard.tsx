@@ -78,7 +78,7 @@ const ImpactChartCard = ({
           <Button
             title="Menu"
             priority="tertiary no outline"
-            iconId="fr-icon-question-line"
+            iconId="fr-icon-information-line"
             className="tw-text-text-light"
             aria-controls={dialogId}
             data-fr-opened="false"
