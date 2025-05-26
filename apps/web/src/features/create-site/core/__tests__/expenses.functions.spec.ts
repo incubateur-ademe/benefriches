@@ -37,8 +37,7 @@ describe("Expenses functions", () => {
     it("returns expenses config when operated by owner", () => {
       const input = { isOperated: true, isOperatedByOwner: true };
       expect(getAgriculturalOperationExpensesConfig(input)).toEqual([
-        { purpose: "propertyTaxes", fixedBearer: "owner" },
-        { purpose: "operationsTaxes", fixedBearer: "owner" },
+        { purpose: "taxes", fixedBearer: "owner" },
         { purpose: "otherOperationsCosts", fixedBearer: "owner" },
       ]);
     });
@@ -47,9 +46,8 @@ describe("Expenses functions", () => {
       const input = { isOperated: true, isOperatedByOwner: false };
       expect(getAgriculturalOperationExpensesConfig(input)).toEqual([
         { purpose: "rent", fixedBearer: "tenant" },
-        { purpose: "operationsTaxes", fixedBearer: "tenant" },
+        { purpose: "taxes", fixedBearer: "tenant" },
         { purpose: "otherOperationsCosts", fixedBearer: "tenant" },
-        { purpose: "propertyTaxes", fixedBearer: "owner" },
       ]);
     });
   });

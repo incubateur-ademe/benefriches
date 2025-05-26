@@ -82,9 +82,7 @@ export const selectEstimatedYearlyExpensesForSite = createSelector(
           otherOperationsCosts: operationsExpenses.find(
             ({ purpose }) => purpose === "otherOperationsCosts",
           )?.amount,
-          operationsTaxes: operationsExpenses.find(({ purpose }) => purpose === "operationsTaxes")
-            ?.amount,
-          propertyTaxes: propertyTaxesAmount,
+          taxes: operationsExpenses.find(({ purpose }) => purpose === "taxes")?.amount,
         };
       }
       default:

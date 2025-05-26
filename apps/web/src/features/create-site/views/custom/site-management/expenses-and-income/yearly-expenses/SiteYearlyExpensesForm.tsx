@@ -36,6 +36,7 @@ const getLabelForExpense = (purpose: SiteYearlyExpensePurpose): NonNullable<Reac
   switch (purpose) {
     case "propertyTaxes":
     case "operationsTaxes":
+    case "taxes":
     case "rent":
     case "accidentsCost":
     case "otherOperationsCosts":

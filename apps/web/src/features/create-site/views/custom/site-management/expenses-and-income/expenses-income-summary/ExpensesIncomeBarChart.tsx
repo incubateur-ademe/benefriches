@@ -31,6 +31,7 @@ const getColorForPurpose = (purpose: SiteYearlyExpensePurpose) => {
       return "#5C42F0";
     case "operationsTaxes":
     case "propertyTaxes":
+    case "taxes":
       return "#4262F0";
     case "otherManagementCosts":
       return "#9542F0";

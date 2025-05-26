@@ -33,6 +33,7 @@ export default function SiteFeaturesManagementSection(siteFeatures: Props) {
     "rent",
     "propertyTaxes",
     "operationsTaxes",
+    "taxes",
     "otherManagementCosts",
     "otherOperationsCosts",
   ]
@@ -192,10 +193,10 @@ export default function SiteFeaturesManagementSection(siteFeatures: Props) {
                   return EXPENSES_EURO_PER_HECTARE_PER_YEAR[
                     siteFeatures.agriculturalOperationActivity
                   ].rent;
-                case "operationsTaxes":
+                case "taxes":
                   return EXPENSES_EURO_PER_HECTARE_PER_YEAR[
                     siteFeatures.agriculturalOperationActivity
-                  ].operationsTaxes;
+                  ].taxes;
               }
             })();
             return (

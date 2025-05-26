@@ -4,6 +4,11 @@ const siteManagementYearlyExpensePurpose = z.enum([
   "rent",
   "propertyTaxes",
   "operationsTaxes",
+  // utilisé pour les exploitations agricoles, car on n'a
+  // qu'une valeur estimée pour la totalité des taxes et impôts
+  // et pas de calculs séparés pour la taxe foncière et les charges
+  // fiscales d'exploitation
+  "taxes",
   "maintenance",
   "otherOperationsCosts",
   "otherManagementCosts",

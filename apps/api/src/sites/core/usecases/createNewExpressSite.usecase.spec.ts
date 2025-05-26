@@ -133,7 +133,7 @@ describe("CreateNewExpressSite Use case", () => {
             {
               amount: 12,
               bearer: "owner",
-              purpose: "operationsTaxes",
+              purpose: "taxes",
             },
             {
               amount: 724,

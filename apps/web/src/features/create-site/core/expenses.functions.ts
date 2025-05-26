@@ -6,6 +6,8 @@ import {
 
 export const getLabelForExpensePurpose = (expensePurpose: SiteYearlyExpense["purpose"]): string => {
   switch (expensePurpose) {
+    case "taxes":
+      return "Taxes et impôts";
     case "propertyTaxes":
       return "Taxe foncière";
     case "operationsTaxes":
@@ -94,16 +96,14 @@ export const getAgriculturalOperationExpensesConfig = ({
 
   if (isOperatedByOwner) {
     return [
-      { purpose: "propertyTaxes", fixedBearer: "owner" },
-      { purpose: "operationsTaxes", fixedBearer: "owner" },
+      { purpose: "taxes", fixedBearer: "owner" },
       { purpose: "otherOperationsCosts", fixedBearer: "owner" },
     ];
   }
 
   return [
     { purpose: "rent", fixedBearer: "tenant" },
-    { purpose: "operationsTaxes", fixedBearer: "tenant" },
+    { purpose: "taxes", fixedBearer: "tenant" },
     { purpose: "otherOperationsCosts", fixedBearer: "tenant" },
-    { purpose: "propertyTaxes", fixedBearer: "owner" },
   ];
 };
