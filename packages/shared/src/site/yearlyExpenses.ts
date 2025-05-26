@@ -31,11 +31,11 @@ export const siteYearlyExpenseSchema = z.object({
 
 export type SiteYearlyExpense = z.infer<typeof siteYearlyExpenseSchema>;
 
-const SECURITY_COST_BY_HECTARE_PER_YEAR = 22000;
-const MAINTENANCE_COST_BY_BUILDING_SQUARE_METER_PER_YEAR = 7;
-const ILLEGAL_DUMPING_COST_PER_TON = 900;
-const ILLEGAL_DUMPING_TON_PER_INHABITANT_PER_YEAR = 0.0047;
-const ILLEGAL_DUMPING_ESTIMATED_RATIO = 1 / 100;
+export const SECURITY_COST_BY_HECTARE_PER_YEAR = 22000;
+export const MAINTENANCE_COST_BY_BUILDING_SQUARE_METER_PER_YEAR = 7;
+export const ILLEGAL_DUMPING_COST_PER_TON = 900;
+export const ILLEGAL_DUMPING_TON_PER_INHABITANT_PER_YEAR = 0.0047;
+export const ILLEGAL_DUMPING_ESTIMATED_RATIO = 1 / 100;
 
 export const computeIllegalDumpingDefaultCost = (population: number) => {
   return Math.round(

@@ -1,5 +1,7 @@
 import {
+  AgriculturalOperationActivity,
   FricheActivity,
+  NaturalAreaType,
   SiteNature,
   SiteYearlyExpense,
   SiteYearlyIncome,
@@ -30,6 +32,8 @@ type Props = {
     name: string;
     description?: string;
     nature: SiteNature;
+    agriculturalOperationActivity?: AgriculturalOperationActivity;
+    naturalAreaType?: NaturalAreaType;
   };
   onNext: () => void;
   onBack: () => void;
@@ -57,6 +61,8 @@ function SiteDataSummary({ siteData, onNext, onBack }: Props) {
         fricheActivity={siteData.fricheActivity}
         name={siteData.name}
         description={siteData.description}
+        agriculturalOperationActivity={siteData.agriculturalOperationActivity}
+        naturalAreaType={siteData.naturalAreaType}
       />
       <div className="tw-mt-8">
         <BackNextButtonsGroup onBack={onBack} onNext={onNext} />

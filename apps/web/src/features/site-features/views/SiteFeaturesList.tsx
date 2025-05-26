@@ -1,13 +1,13 @@
 import {
-  sumListWithKey,
   typedObjectEntries,
   sumObjectValues,
   getFricheActivityLabel,
+  getLabelForNaturalAreaType,
+  getLabelForAgriculturalOperationActivity,
+  getContaminatedPercentageFromFricheActivity,
 } from "shared";
 
-import { getLabelForExpensePurpose } from "@/features/create-site/core/expenses.functions";
-import { getLabelForIncomeSource } from "@/features/create-site/core/incomes.functions";
-import { formatNumberFr, formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
+import { formatPercentage, formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 import classNames from "@/shared/views/clsx";
 import SurfaceAreaPieChart from "@/shared/views/components/Charts/SurfaceAreaPieChart";
 import DataLine from "@/shared/views/components/FeaturesList/FeaturesListDataLine";
@@ -15,29 +15,20 @@ import Section from "@/shared/views/components/FeaturesList/FeaturesListSection"
 import SoilTypeLabelWithColorSquare from "@/shared/views/components/FeaturesList/FeaturesListSoilTypeLabel";
 
 import { SiteFeatures } from "../core/siteFeatures";
+import SiteFeaturesManagementSection from "./SiteFeaturesManagementSection";
 
 type Props = SiteFeatures;
 
 export default function SiteFeaturesList(siteFeatures: Props) {
-  const siteManagementExpenses = siteFeatures.expenses.filter((e) =>
-    [
-      "maintenance",
-      "rent",
-      "propertyTaxes",
-      "operationsTaxes",
-      "otherManagementCosts",
-      "otherOperationsCosts",
-    ].includes(e.purpose),
-  );
-  const fricheSpecificExpenses = siteFeatures.expenses.filter((e) =>
-    ["security", "illegalDumpingCost", "otherSecuringCosts"].includes(e.purpose),
-  );
   return (
     <>
       <Section title="📍 Localisation">
         <DataLine label={<strong>Adresse du site</strong>} value={siteFeatures.address} />
       </Section>
-      <Section title="🌾️ Sols">
+      <Section
+        title="🌾️ Sols"
+        tooltip="L’occupation des sols conditionne la capacité d’infiltration des eaux, la capacité de stockage de carbone dans les sols, etc."
+      >
         <DataLine
           noBorder
           label={<strong>Superficie totale du site</strong>}
@@ -81,6 +72,19 @@ export default function SiteFeaturesList(siteFeatures: Props) {
             )}
           >
             {typedObjectEntries(siteFeatures.soilsDistribution).map(([soilType, surfaceArea]) => {
+              const valueTooltip = (() => {
+                if (!siteFeatures.isExpressSite) {
+                  return undefined;
+                }
+                switch (siteFeatures.nature) {
+                  case "FRICHE":
+                    return `Occupation des sols représentative des friches ${siteFeatures.fricheActivity ? `de type « ${getFricheActivityLabel(siteFeatures.fricheActivity)} »` : "de ce type"} dont l’ADEME a pu accompagner la reconversion.`;
+                  case "AGRICULTURAL_OPERATION":
+                    return `Occupation représentative des exploitations agricoles ${siteFeatures.agriculturalOperationActivity ? `de type « ${getLabelForAgriculturalOperationActivity(siteFeatures.agriculturalOperationActivity)} »` : "de ce type"}, d’après DRAAF Pays-de-la-Loire et web-agri.com.`;
+                  case "NATURAL_AREA":
+                    return `Occupation représentative des espaces naturels de type « ${getLabelForNaturalAreaType(siteFeatures.naturalAreaType ?? "MIXED_NATURAL_AREA")} ».`;
+                }
+              })();
               return (
                 <DataLine
                   noBorder
@@ -88,6 +92,7 @@ export default function SiteFeaturesList(siteFeatures: Props) {
                   value={formatSurfaceArea(surfaceArea ?? 0)}
                   key={soilType}
                   className="md:tw-grid-cols-[5fr_4fr]"
+                  valueTooltip={valueTooltip}
                 />
               );
             })}
@@ -99,6 +104,13 @@ export default function SiteFeaturesList(siteFeatures: Props) {
           <Section title="☣️ Pollution">
             <DataLine
               label={<strong>Superficie polluée</strong>}
+              labelTooltip="Les activités antérieures exercées sur un site en friche, qu’elles soient industrielles, de service, ferroviaire, etc. peuvent être à l’origine de pollution des sols.
+La pollution à l’amiante des bâtiments n’est pas considérée ici."
+              valueTooltip={
+                siteFeatures.isExpressSite && siteFeatures.fricheActivity
+                  ? `On considère ici que ${formatPercentage(getContaminatedPercentageFromFricheActivity(siteFeatures.fricheActivity) * 100)} de la surface de la friche est polluée. Il s’agit d’une valeur couramment rencontrée sur les friches de type « ${getFricheActivityLabel(siteFeatures.fricheActivity)} ». Cela n’implique pas systématiquement que toute cette surface sera à dépolluer.`
+                  : undefined
+              }
               value={
                 siteFeatures.contaminatedSurfaceArea
                   ? formatSurfaceArea(siteFeatures.contaminatedSurfaceArea)
@@ -110,7 +122,13 @@ export default function SiteFeaturesList(siteFeatures: Props) {
             <>
               <DataLine
                 label={<strong>Accidents survenus sur le site depuis 5 ans</strong>}
+                labelTooltip="Les friches, en tant que lieux laissés à l’abandon, font fréquemment l’objet d’intrusion. La présence de zones dangereuses et l’état potentiellement délabrées (ex : toitures, passerelles) deviennent sources d’accident."
                 value={<strong>{sumObjectValues(siteFeatures.accidents) || "Aucun"}</strong>}
+                valueTooltip={
+                  siteFeatures.isExpressSite
+                    ? "En l’absence de moyennes chiffrées, on considère ici que la friche n’a pas été concernée par des accidents."
+                    : undefined
+                }
               />
               {sumObjectValues(siteFeatures.accidents) > 0 && (
                 <div className="tw-ml-4">
@@ -132,107 +150,26 @@ export default function SiteFeaturesList(siteFeatures: Props) {
           </Section>
         </>
       )}
-      <Section
-        title={(() => {
-          switch (siteFeatures.nature) {
-            case "AGRICULTURAL_OPERATION":
-              return "⚙️ Exploitation du site";
-            case "FRICHE":
-              return "⚙️ Gestion et sécurisation de la friche";
-            case "NATURAL_AREA":
-              return "⚙️ Gestion du site";
-          }
-        })()}
-      >
-        <>
-          <DataLine label={<strong>Propriétaire actuel</strong>} value={siteFeatures.ownerName} />
-          {siteFeatures.tenantName && (
-            <DataLine
-              label={
-                <strong>
-                  {siteFeatures.nature === "FRICHE" ? "Locataire actuel" : "Exploitant actuel"}
-                </strong>
-              }
-              value={siteFeatures.tenantName}
-            />
-          )}
-        </>
-        <>
-          {siteFeatures.expenses.length > 0 && (
-            <DataLine
-              noBorder
-              label={
-                <strong>
-                  Dépenses annuelles {siteFeatures.nature === "FRICHE" ? "de la friche" : "du site"}
-                </strong>
-              }
-              value={
-                <strong>{formatNumberFr(sumListWithKey(siteFeatures.expenses, "amount"))} €</strong>
-              }
-            />
-          )}
-          {siteManagementExpenses.length > 0 && (
-            <>
-              {fricheSpecificExpenses.length > 0 && (
-                <DataLine isDetails label={<strong>Gestion du site</strong>} value="" />
-              )}
-              {siteManagementExpenses.map(({ purpose, amount }) => {
-                return (
-                  <DataLine
-                    label={getLabelForExpensePurpose(purpose)}
-                    value={`${formatNumberFr(amount)} €`}
-                    isDetails
-                    key={purpose}
-                  />
-                );
-              })}
-            </>
-          )}
-          {fricheSpecificExpenses.length > 0 && (
-            <>
-              <DataLine isDetails label={<strong>Sécurisation du site</strong>} value="" />
-              {fricheSpecificExpenses.map(({ amount, purpose }) => {
-                return (
-                  <DataLine
-                    label={getLabelForExpensePurpose(purpose)}
-                    value={`${formatNumberFr(amount)} €`}
-                    isDetails
-                    key={purpose}
-                  />
-                );
-              })}
-            </>
-          )}
-          {siteFeatures.incomes.length > 0 && (
-            <>
-              <DataLine
-                noBorder
-                label={<strong>Recettes annuelles du site</strong>}
-                value={
-                  <strong>
-                    {formatNumberFr(sumListWithKey(siteFeatures.incomes, "amount"))} €
-                  </strong>
-                }
-              />
-              {siteFeatures.incomes.map(({ source, amount }) => {
-                return (
-                  <DataLine
-                    label={getLabelForIncomeSource(source)}
-                    value={`${formatNumberFr(amount)} €`}
-                    isDetails
-                    key={source}
-                  />
-                );
-              })}
-            </>
-          )}
-        </>
-      </Section>
+      <SiteFeaturesManagementSection {...siteFeatures} />
       <Section title="✍ Dénomination">
         {siteFeatures.fricheActivity ? (
           <DataLine
             label={<strong>Type de friche</strong>}
             value={getFricheActivityLabel(siteFeatures.fricheActivity)}
+          />
+        ) : null}
+        {siteFeatures.agriculturalOperationActivity ? (
+          <DataLine
+            label={<strong>Type d'exploitation</strong>}
+            value={getLabelForAgriculturalOperationActivity(
+              siteFeatures.agriculturalOperationActivity,
+            )}
+          />
+        ) : null}
+        {siteFeatures.naturalAreaType ? (
+          <DataLine
+            label={<strong>Nature du site</strong>}
+            value={getLabelForNaturalAreaType(siteFeatures.naturalAreaType)}
           />
         ) : null}
         <DataLine label={<strong>Nom du site</strong>} value={siteFeatures.name} />

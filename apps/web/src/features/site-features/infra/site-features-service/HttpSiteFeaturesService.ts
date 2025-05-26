@@ -1,6 +1,8 @@
 import {
   Address,
+  AgriculturalOperationActivity,
   FricheActivity,
+  NaturalAreaType,
   SiteNature,
   SiteYearlyExpensePurpose,
   SiteYearlyIncome,
@@ -34,6 +36,8 @@ type SiteFromApi = {
   yearlyExpenses: { amount: number; purpose: string }[];
   yearlyIncomes: { amount: number; source: string }[];
   fricheActivity?: string;
+  agriculturalOperationActivity?: string;
+  naturalAreaType?: string;
   description?: string;
 };
 
@@ -73,6 +77,10 @@ export class HttpSiteFeaturesService implements SiteFeaturesGateway {
       soilsDistribution: jsonResponse.soilsDistribution,
       contaminatedSurfaceArea: jsonResponse.contaminatedSoilSurface,
       fricheActivity: jsonResponse.fricheActivity as FricheActivity | undefined,
+      agriculturalOperationActivity: jsonResponse.agriculturalOperationActivity as
+        | AgriculturalOperationActivity
+        | undefined,
+      naturalAreaType: jsonResponse.naturalAreaType as NaturalAreaType | undefined,
       name: jsonResponse.name,
       description: jsonResponse.description || "",
     };

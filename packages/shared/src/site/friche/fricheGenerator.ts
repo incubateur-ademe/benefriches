@@ -23,26 +23,30 @@ type FricheGenerationProps = SiteGenerationProps & {
   fricheActivity: FricheActivity;
 };
 
-function getContaminatedSoilSurfaceFromFricheActivity(
-  surfaceArea: number,
-  fricheActivity: FricheActivity,
-) {
+export const getContaminatedPercentageFromFricheActivity = (fricheActivity: FricheActivity) => {
   switch (fricheActivity) {
     case "INDUSTRY":
-      return 0.5 * surfaceArea;
+      return 0.5;
     case "MILITARY":
-      return 0.05 * surfaceArea;
+      return 0.05;
     case "RAILWAY":
-      return 0.1 * surfaceArea;
+      return 0.1;
     case "PORT":
-      return 0.15 * surfaceArea;
+      return 0.15;
     case "TIP_OR_RECYCLING_SITE":
-      return 0.05 * surfaceArea;
+      return 0.05;
     case "AGRICULTURE":
     case "BUILDING":
     case "OTHER":
       return 0;
   }
+};
+
+function getContaminatedSoilSurfaceFromFricheActivity(
+  surfaceArea: number,
+  fricheActivity: FricheActivity,
+) {
+  return getContaminatedPercentageFromFricheActivity(fricheActivity) * surfaceArea;
 }
 
 export class FricheGenerator implements SiteGenerator<FricheGenerationProps> {

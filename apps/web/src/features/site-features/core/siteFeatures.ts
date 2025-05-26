@@ -1,5 +1,7 @@
 import {
+  AgriculturalOperationActivity,
   FricheActivity,
+  NaturalAreaType,
   SiteNature,
   SiteYearlyExpensePurpose,
   SiteYearlyIncome,
@@ -23,7 +25,9 @@ export type SiteFeatures = {
   surfaceArea: number;
   soilsDistribution: SoilsDistribution;
   contaminatedSurfaceArea?: number;
-  fricheActivity?: FricheActivity;
   name: string;
   description?: string;
+  fricheActivity?: FricheActivity;
+  agriculturalOperationActivity?: AgriculturalOperationActivity;
+  naturalAreaType?: NaturalAreaType;
 };

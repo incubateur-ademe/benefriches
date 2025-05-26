@@ -3,7 +3,7 @@ import { convertSquareMetersToHectares } from "../../surface-area";
 import { SiteYearlyIncome } from "../yearlyIncome";
 import { AgriculturalOperationActivity } from "./operationActivity";
 
-const INCOMES_EURO_PER_HECTARE_PER_YEAR = {
+export const INCOMES_EURO_PER_HECTARE_PER_YEAR = {
   CATTLE_FARMING: {
     subsidies: 410,
     productSales: 2040,

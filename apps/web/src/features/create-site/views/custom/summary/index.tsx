@@ -39,6 +39,8 @@ function SiteDataSummaryContainer() {
         name: siteData.name ?? "",
         description: siteData.description,
         fricheActivity: siteData.fricheActivity,
+        agriculturalOperationActivity: siteData.agriculturalOperationActivity,
+        naturalAreaType: siteData.naturalAreaType,
       }}
       onNext={onNext}
       onBack={onBack}
