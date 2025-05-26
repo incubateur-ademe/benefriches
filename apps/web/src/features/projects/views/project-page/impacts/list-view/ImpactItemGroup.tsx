@@ -4,7 +4,6 @@ import classNames from "@/shared/views/clsx";
 
 type Props = {
   children: ReactNode;
-  onClick?: () => void;
   isClickable?: boolean;
 };
 
