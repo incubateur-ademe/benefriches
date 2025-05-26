@@ -116,6 +116,7 @@ describe("CreateNewExpressSite Use case", () => {
           createdBy: "user-id-123",
           creationMode: "express",
           nature: "AGRICULTURAL_OPERATION",
+          agriculturalOperationActivity: siteProps.activity,
           description: "Viticulture",
           isFriche: false,
           soilsDistribution: createSoilSurfaceAreaDistribution({
@@ -189,6 +190,7 @@ describe("CreateNewExpressSite Use case", () => {
           createdBy: "user-id-123",
           creationMode: "express",
           nature: "NATURAL_AREA",
+          naturalAreaType: siteProps.type,
           isFriche: false,
           soilsDistribution: createSoilSurfaceAreaDistribution({
             FOREST_MIXED: 1000,

@@ -32,6 +32,8 @@ export type SiteViewModel = {
   yearlyExpenses: { amount: number; purpose: string }[];
   yearlyIncomes: { amount: number; source: string }[];
   fricheActivity?: string;
+  agriculturalOperationActivity?: string;
+  naturalAreaType?: string;
   description?: string;
 };
 

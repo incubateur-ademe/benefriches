@@ -36,14 +36,34 @@ const fricheCustomDtoSchema = baseSchema.extend({
   accidentsDeaths: z.number().optional(),
 });
 
-const agriculturaOrNaturalCustomSiteDtoSchema = baseSchema.extend({
+const agriculturalCustomSiteDtoSchema = baseSchema.extend({
   isFriche: z.literal(false),
-  nature: siteNatureSchema.exclude(["FRICHE"]),
+  nature: siteNatureSchema.extract(["AGRICULTURAL_OPERATION"]),
+  agriculturalOperationActivity: z.enum([
+    "CEREALS_AND_OILSEEDS_CULTIVATION",
+    "LARGE_VEGETABLE_CULTIVATION",
+    "MARKET_GARDENING",
+    "FLOWERS_AND_HORTICULTURE",
+    "VITICULTURE",
+    "FRUITS_AND_OTHER_PERMANENT_CROPS",
+    "CATTLE_FARMING",
+    "PIG_FARMING",
+    "POULTRY_FARMING",
+    "SHEEP_AND_GOAT_FARMING",
+    "POLYCULTURE_AND_LIVESTOCK",
+  ]),
 });
 
-const createCustomSiteDtoSchema = z.discriminatedUnion("isFriche", [
+const naturalCustomSiteDtoSchema = baseSchema.extend({
+  isFriche: z.literal(false),
+  nature: siteNatureSchema.extract(["NATURAL_AREA"]),
+  naturalAreaType: z.enum(["PRAIRIE", "FOREST", "WET_LAND", "MIXED_NATURAL_AREA"]),
+});
+
+const createCustomSiteDtoSchema = z.discriminatedUnion("nature", [
   fricheCustomDtoSchema,
-  agriculturaOrNaturalCustomSiteDtoSchema,
+  agriculturalCustomSiteDtoSchema,
+  naturalCustomSiteDtoSchema,
 ]);
 
 export const createCustomSite = {

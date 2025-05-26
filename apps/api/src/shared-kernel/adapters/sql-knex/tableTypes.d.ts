@@ -44,6 +44,9 @@ type SqlSite = {
   friche_accidents_minor_injuries: number | null;
   friche_accidents_severe_injuries: number | null;
   friche_accidents_deaths: number | null;
+  // nature related
+  agricultural_operation_activity: string | null;
+  natural_area_type: string | null;
   // dates
   created_at: Date;
 };

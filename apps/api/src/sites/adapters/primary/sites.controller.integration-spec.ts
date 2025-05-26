@@ -253,7 +253,7 @@ describe("Sites controller", () => {
           isFriche: false,
           nature: "AGRICULTURAL_OPERATION",
           owner: { name: "Owner name", structureType: "company" },
-          name: "Friche industrielle",
+          name: "Exploitation agricole",
           address: {
             lat: 2.347,
             long: 48.859,
@@ -269,6 +269,7 @@ describe("Sites controller", () => {
           },
           yearlyExpenses: [],
           yearlyIncomes: [],
+          agriculturalOperationActivity: "CATTLE_FARMING",
         };
         // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
         delete requestBody[mandatoryField];
@@ -292,6 +293,7 @@ describe("Sites controller", () => {
         createdBy: "74ac340f-0654-4887-9449-3dbb43ce35b5",
         isFriche: false,
         nature: "AGRICULTURAL_OPERATION",
+        agriculturalOperationActivity: "CATTLE_FARMING",
         name: "Exploitation agricole",
         description: "Description of site",
         owner: { name: "Owner name", structureType: "company" },
@@ -339,6 +341,8 @@ describe("Sites controller", () => {
         description: "Description of site",
         name: "Exploitation agricole",
         nature: "AGRICULTURAL_OPERATION",
+        agricultural_operation_activity: "CATTLE_FARMING",
+        natural_area_type: null,
         surface_area: 2900.0,
         creation_mode: "custom",
         owner_name: "Owner name",
@@ -387,6 +391,81 @@ describe("Sites controller", () => {
       const incomesInDb = await sqlConnection("site_incomes").select("amount", "source", "site_id");
       expect(incomesInDb).toEqual([
         { amount: 200.0, source: "other", site_id: agriculturalOperationDto.id },
+      ]);
+    });
+
+    it("can create a natural area site", async () => {
+      const naturalAreaDto: CreateCustomSiteDto = {
+        id: "03a53ffd-4f71-419e-8d04-041311eefa23",
+        createdBy: "74ac340f-0654-4887-9449-3dbb43ce35b5",
+        isFriche: false,
+        nature: "NATURAL_AREA",
+        naturalAreaType: "FOREST",
+        name: "Forêt",
+        description: "Description of site",
+        owner: { name: "Owner name", structureType: "company" },
+        address: {
+          lat: 2.347,
+          long: 48.859,
+          city: "Paris",
+          banId: "75110_7043",
+          cityCode: "75110",
+          postCode: "75010",
+          value: "Rue de Paradis 75010 Paris",
+        },
+        soilsDistribution: {
+          PRAIRIE_GRASS: 1400,
+          FOREST_POPLAR: 1500,
+        },
+        yearlyExpenses: [],
+        yearlyIncomes: [],
+      };
+      const response = await supertest(app.getHttpServer())
+        .post("/api/sites/create-custom")
+        .send(naturalAreaDto);
+
+      expect(response.status).toEqual(201);
+
+      const sitesInDb = await sqlConnection("sites").select("*");
+      expect(sitesInDb.length).toEqual(1);
+      expect(sitesInDb[0]).toEqual<SqlSite>({
+        id: "03a53ffd-4f71-419e-8d04-041311eefa23",
+        created_by: "74ac340f-0654-4887-9449-3dbb43ce35b5",
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        created_at: expect.any(Date),
+        description: "Description of site",
+        name: "Forêt",
+        nature: "NATURAL_AREA",
+        agricultural_operation_activity: null,
+        natural_area_type: "FOREST",
+        surface_area: 2900.0,
+        creation_mode: "custom",
+        owner_name: "Owner name",
+        owner_structure_type: "company",
+        is_friche: false,
+        tenant_name: null,
+        tenant_structure_type: null,
+        friche_accidents_deaths: null,
+        friche_accidents_severe_injuries: null,
+        friche_accidents_minor_injuries: null,
+        friche_activity: null,
+        friche_contaminated_soil_surface_area: null,
+        friche_has_contaminated_soils: null,
+      });
+
+      const siteAddressInDb = await sqlConnection("addresses").select("value", "site_id");
+      expect(siteAddressInDb).toEqual([
+        { value: naturalAreaDto.address.value, site_id: naturalAreaDto.id },
+      ]);
+
+      const soilsDistributionInDb = await sqlConnection("site_soils_distributions").select(
+        "surface_area",
+        "soil_type",
+        "site_id",
+      );
+      expect(soilsDistributionInDb).toEqual([
+        { soil_type: "PRAIRIE_GRASS", surface_area: 1400.0, site_id: naturalAreaDto.id },
+        { soil_type: "FOREST_POPLAR", surface_area: 1500.0, site_id: naturalAreaDto.id },
       ]);
     });
 
@@ -458,6 +537,8 @@ describe("Sites controller", () => {
         friche_accidents_deaths: 0,
         friche_accidents_severe_injuries: 2,
         friche_accidents_minor_injuries: 1,
+        agricultural_operation_activity: null,
+        natural_area_type: null,
       });
 
       const siteAddressInDb = await sqlConnection("addresses").select("value", "site_id");
@@ -585,13 +666,14 @@ describe("Sites controller", () => {
       });
     });
 
-    it("gets a 200 response when site exists with incomes", async () => {
+    it("gets a 200 response and returns agricultural site with incomes", async () => {
       const siteId = uuid();
       await sqlConnection("sites").insert({
         id: siteId,
         created_by: "74ac340f-0654-4887-9449-3dbb43ce35b5",
         name: "Viticulture Amiens",
         nature: "AGRICULTURAL_OPERATIONS",
+        agricultural_operation_activity: "CATTLE_FARMING",
         description: "Description of site",
         surface_area: 14000,
         owner_name: "Owner name",
@@ -646,6 +728,7 @@ describe("Sites controller", () => {
         id: siteId,
         name: "Viticulture Amiens",
         nature: "AGRICULTURAL_OPERATIONS",
+        agriculturalOperationActivity: "CATTLE_FARMING",
         isExpressSite: false,
         surfaceArea: 14000,
         owner: { name: "Owner name", structureType: "company" },
@@ -668,6 +751,71 @@ describe("Sites controller", () => {
         description: "Description of site",
         yearlyExpenses: [{ amount: 3300, purpose: "operationCosts" }],
         yearlyIncomes: [{ amount: 5000, source: "subsidies" }],
+      });
+    });
+
+    it("gets a 200 response and returns natural area site with type", async () => {
+      const siteId = uuid();
+      await sqlConnection("sites").insert({
+        id: siteId,
+        created_by: "74ac340f-0654-4887-9449-3dbb43ce35b5",
+        name: "Prairie Amiens",
+        nature: "NATURAL_AREA",
+        natural_area_type: "PRAIRIE",
+        description: "Description of site",
+        surface_area: 15000,
+        owner_name: "Owner name",
+        owner_structure_type: "company",
+        created_at: new Date(),
+        is_friche: false,
+      });
+
+      await sqlConnection("addresses").insert({
+        id: uuid(),
+        site_id: siteId,
+        value: "8 Boulevard du Port 80000 Amiens",
+        street_number: "8",
+        street_name: "Boulevard du Port",
+        city_code: "80021",
+        post_code: "80000",
+        city: "Amiens",
+        ban_id: "80021_6590_00008",
+        long: 49.897443,
+        lat: 2.290084,
+      });
+
+      await sqlConnection("site_soils_distributions").insert([
+        { id: uuid(), site_id: siteId, soil_type: "PRAIRIE_GRASS", surface_area: 15000 },
+      ]);
+
+      const response = await supertest(app.getHttpServer()).get(`/api/sites/${siteId}`).send();
+
+      expect(response.status).toEqual(200);
+      expect(response.body).toEqual({
+        id: siteId,
+        nature: "NATURAL_AREA",
+        name: "Prairie Amiens",
+        naturalAreaType: "PRAIRIE",
+        isExpressSite: false,
+        surfaceArea: 15000,
+        owner: { name: "Owner name", structureType: "company" },
+        address: {
+          value: "8 Boulevard du Port 80000 Amiens",
+          streetNumber: "8",
+          streetName: "Boulevard du Port",
+          banId: "80021_6590_00008",
+          postCode: "80000",
+          cityCode: "80021",
+          city: "Amiens",
+          long: 49.897443,
+          lat: 2.290084,
+        },
+        soilsDistribution: {
+          PRAIRIE_GRASS: 15000,
+        },
+        description: "Description of site",
+        yearlyExpenses: [],
+        yearlyIncomes: [],
       });
     });
   });

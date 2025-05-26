@@ -19,6 +19,28 @@ export class SqlSiteRepository implements SitesRepository {
 
   async save(site: SiteEntity): Promise<void> {
     await this.sqlConnection.transaction(async (trx) => {
+      const natureRelatedRows = (() => {
+        switch (site.nature) {
+          case "FRICHE":
+            return {
+              friche_activity: site.fricheActivity,
+              friche_accidents_deaths: site.accidentsDeaths,
+              friche_accidents_severe_injuries: site.accidentsSevereInjuries,
+              friche_accidents_minor_injuries: site.accidentsMinorInjuries,
+              friche_contaminated_soil_surface_area: site.contaminatedSoilSurface,
+              friche_has_contaminated_soils: site.hasContaminatedSoils,
+            };
+          case "AGRICULTURAL_OPERATION":
+            return {
+              agricultural_operation_activity: site.agriculturalOperationActivity,
+            };
+
+          case "NATURAL_AREA":
+            return {
+              natural_area_type: site.naturalAreaType,
+            };
+        }
+      })();
       const [insertedSite] = await trx<SqlSite>("sites").insert(
         {
           id: site.id,
@@ -34,16 +56,7 @@ export class SqlSiteRepository implements SitesRepository {
           tenant_name: site.tenant?.name,
           tenant_structure_type: site.tenant?.structureType,
           created_at: site.createdAt,
-          ...(site.isFriche
-            ? {
-                friche_activity: site.fricheActivity,
-                friche_accidents_deaths: site.accidentsDeaths,
-                friche_accidents_severe_injuries: site.accidentsSevereInjuries,
-                friche_accidents_minor_injuries: site.accidentsMinorInjuries,
-                friche_contaminated_soil_surface_area: site.contaminatedSoilSurface,
-                friche_has_contaminated_soils: site.hasContaminatedSoils,
-              }
-            : {}),
+          ...natureRelatedRows,
         },
         "id",
       );

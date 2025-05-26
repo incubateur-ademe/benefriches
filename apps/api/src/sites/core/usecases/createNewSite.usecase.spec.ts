@@ -5,7 +5,7 @@ import { InMemorySitesRepository } from "src/sites/adapters/secondary/site-repos
 
 import {
   buildAgriculturalOrNaturalSite,
-  buildAgriculturalOrNaturalSiteProps,
+  buildAgriculturalOperationSiteProps,
   buildFriche,
   buildFricheProps,
 } from "../models/site.mock";
@@ -64,7 +64,7 @@ describe("CreateNewSite Use Case", () => {
   });
   describe("Agricultural or natura site", () => {
     it("Can create a new agricultural/natural site with minimal data", async () => {
-      const siteProps = buildAgriculturalOrNaturalSiteProps();
+      const siteProps = buildAgriculturalOperationSiteProps();
 
       const usecase = new CreateNewCustomSiteUseCase(siteRepository, dateProvider);
 
@@ -89,7 +89,7 @@ describe("CreateNewSite Use Case", () => {
     });
 
     it("Can create a new agricultural/natural site with complete data", async () => {
-      const siteProps = buildAgriculturalOrNaturalSiteProps({
+      const siteProps = buildAgriculturalOperationSiteProps({
         description: "Description of site",
         tenant: {
           structureType: "company",

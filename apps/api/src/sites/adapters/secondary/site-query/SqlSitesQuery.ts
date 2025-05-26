@@ -33,6 +33,8 @@ export class SqlSitesQuery implements SitesQuery {
         "sites.nature",
         "sites.creation_mode",
         "sites.friche_activity",
+        "sites.agricultural_operation_activity",
+        "sites.natural_area_type",
         "sites.description",
         "sites.owner_name",
         "sites.owner_structure_type",
@@ -87,6 +89,8 @@ export class SqlSitesQuery implements SitesQuery {
           creation_mode: SqlSite["creation_mode"];
           description: SqlSite["description"];
           friche_activity: SqlSite["friche_activity"];
+          agricultural_operation_activity: SqlSite["agricultural_operation_activity"];
+          natural_area_type: SqlSite["natural_area_type"];
           surface_area: SqlSite["surface_area"];
           owner_name: SqlSite["owner_name"];
           owner_structure_type: SqlSite["owner_structure_type"];
@@ -121,6 +125,8 @@ export class SqlSitesQuery implements SitesQuery {
       isExpressSite: sqlSite.creation_mode === "express",
       description: sqlSite.description ?? undefined,
       fricheActivity: sqlSite.friche_activity ?? undefined,
+      agriculturalOperationActivity: sqlSite.agricultural_operation_activity ?? undefined,
+      naturalAreaType: sqlSite.natural_area_type ?? undefined,
       owner: {
         name: sqlSite.owner_name ?? undefined,
         structureType: sqlSite.owner_structure_type,

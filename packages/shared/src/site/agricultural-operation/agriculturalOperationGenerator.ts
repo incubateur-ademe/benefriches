@@ -88,6 +88,7 @@ export class AgriculturalOperationGenerator
       id,
       address,
       nature: "AGRICULTURAL_OPERATION",
+      agriculturalOperationActivity: operationActivity,
       soilsDistribution: createSoilSurfaceAreaDistribution(soilsDistribution),
       owner: {
         structureType: "municipality",
@@ -107,7 +108,7 @@ export class AgriculturalOperationGenerator
     });
 
     if (!result.success) {
-      throw new Error(`Failed to create friche, ${result.error}`);
+      throw new Error(`Failed to create site, ${result.error}`);
     }
     return result.site;
   }

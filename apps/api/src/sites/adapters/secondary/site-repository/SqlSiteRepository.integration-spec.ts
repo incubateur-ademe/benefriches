@@ -113,6 +113,8 @@ describe("SqlSiteRepository integration", () => {
           friche_has_contaminated_soils: null,
           tenant_name: null,
           tenant_structure_type: null,
+          agricultural_operation_activity: "FLOWERS_AND_HORTICULTURE",
+          natural_area_type: null,
         },
       ]);
     });
@@ -158,6 +160,8 @@ describe("SqlSiteRepository integration", () => {
           friche_has_contaminated_soils: null,
           tenant_name: "Tenant SARL",
           tenant_structure_type: "company",
+          agricultural_operation_activity: "FLOWERS_AND_HORTICULTURE",
+          natural_area_type: null,
         },
       ]);
     });
@@ -206,6 +210,8 @@ describe("SqlSiteRepository integration", () => {
           tenant_structure_type: null,
           created_at: now,
           creation_mode: "custom",
+          agricultural_operation_activity: null,
+          natural_area_type: null,
         },
       ]);
     });

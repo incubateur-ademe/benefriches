@@ -2,7 +2,9 @@ import { z } from "zod";
 
 import { SoilType } from "../soils";
 import { SurfaceAreaDistribution } from "../surface-area";
+import { AgriculturalOperationActivity } from "./agricultural-operation";
 import { FricheActivity, fricheActivitySchema } from "./friche/fricheActivity";
+import { NaturalAreaType } from "./natural-area";
 import { SiteYearlyExpense, siteYearlyExpenseSchema } from "./yearlyExpenses";
 import { SiteYearlyIncome } from "./yearlyIncome";
 
@@ -51,6 +53,16 @@ const baseSiteSchema = z.object({
     .optional(),
 });
 
+export const naturalAreaSchema = baseSiteSchema.extend({
+  nature: z.literal("NATURAL_AREA"),
+  naturalAreaType: z.string(),
+});
+
+export const agriculturalOperationSchema = baseSiteSchema.extend({
+  nature: z.literal("AGRICULTURAL_OPERATION"),
+  agriculturalOperationActivity: z.string(),
+});
+
 export const fricheSchema = baseSiteSchema.extend({
   isFriche: z.literal(true),
   nature: z.literal("FRICHE"),
@@ -93,11 +105,21 @@ export interface Friche extends BaseSite {
   accidentsDeaths?: number;
 }
 
-export interface AgriculturalOrNaturalSite extends BaseSite {
+export interface AgriculturalOperationSite extends BaseSite {
   isFriche: false;
-  nature: "AGRICULTURAL_OPERATION" | "NATURAL_AREA";
+  nature: "AGRICULTURAL_OPERATION";
   yearlyIncomes: SiteYearlyIncome[];
+  agriculturalOperationActivity: AgriculturalOperationActivity;
 }
+
+export interface NaturalAreaSite extends BaseSite {
+  isFriche: false;
+  nature: "NATURAL_AREA";
+  yearlyIncomes: SiteYearlyIncome[];
+  naturalAreaType: NaturalAreaType;
+}
+
+export type AgriculturalOrNaturalSite = AgriculturalOperationSite | NaturalAreaSite;
 
 function formatZodError(error: z.ZodError): string {
   let errorMessage = "Validation error:";
@@ -113,9 +135,18 @@ function formatZodError(error: z.ZodError): string {
 
 type SiteCreationResult<TSite> = { success: true; site: TSite } | { success: false; error: string };
 
-export type CreateAgriculturalOrNaturalSiteProps = {
+type CreateNaturalAreaSiteProps = {
+  nature: "NATURAL_AREA";
+  naturalAreaType: NaturalAreaType;
+} & CreateAgriculturalOrNaturalSiteCommonProps;
+
+type CreateAgriculturalOperationSiteProps = {
+  nature: "AGRICULTURAL_OPERATION";
+  agriculturalOperationActivity: AgriculturalOperationActivity;
+} & CreateAgriculturalOrNaturalSiteCommonProps;
+
+type CreateAgriculturalOrNaturalSiteCommonProps = {
   id: string;
-  nature: Extract<SiteNature, "AGRICULTURAL_OPERATION" | "NATURAL_AREA">;
   name: string;
   description?: string;
   address: Address;
@@ -125,6 +156,10 @@ export type CreateAgriculturalOrNaturalSiteProps = {
   yearlyExpenses: SiteYearlyExpense[];
   yearlyIncomes: SiteYearlyIncome[];
 };
+
+export type CreateAgriculturalOrNaturalSiteProps =
+  | CreateNaturalAreaSiteProps
+  | CreateAgriculturalOperationSiteProps;
 
 export function createAgriculturalOrNaturalSite(
   props: CreateAgriculturalOrNaturalSiteProps,
@@ -147,7 +182,16 @@ export function createAgriculturalOrNaturalSite(
     isFriche: false,
   };
 
-  const result = baseSiteSchema.safeParse(candidate);
+  const result =
+    props.nature === "AGRICULTURAL_OPERATION"
+      ? agriculturalOperationSchema.safeParse({
+          ...candidate,
+          agriculturalOperationActivity: props.agriculturalOperationActivity,
+        })
+      : naturalAreaSchema.safeParse({
+          ...candidate,
+          naturalAreaType: props.naturalAreaType,
+        });
 
   return result.success
     ? {
@@ -215,4 +259,4 @@ export function createFriche(props: CreateFricheProps): SiteCreationResult<Frich
       };
 }
 
-export type Site = Friche | AgriculturalOrNaturalSite;
+export type Site = Friche | AgriculturalOperationSite | NaturalAreaSite;

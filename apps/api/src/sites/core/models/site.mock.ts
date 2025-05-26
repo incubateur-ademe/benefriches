@@ -8,12 +8,11 @@ import {
   Friche,
 } from "shared";
 
-export const buildAgriculturalOrNaturalSiteProps = (
+export const buildAgriculturalOperationSiteProps = (
   propsOverride?: Partial<CreateAgriculturalOrNaturalSiteProps>,
 ): CreateAgriculturalOrNaturalSiteProps => {
   return {
     id: "e869d8db-3d63-4fd5-93ab-7728c1c19a1e",
-    nature: "AGRICULTURAL_OPERATION",
     name: "Unit test friche",
     yearlyExpenses: [],
     yearlyIncomes: [],
@@ -37,6 +36,8 @@ export const buildAgriculturalOrNaturalSiteProps = (
       streetName: "rue de Londres",
     },
     ...propsOverride,
+    nature: "AGRICULTURAL_OPERATION",
+    agriculturalOperationActivity: "FLOWERS_AND_HORTICULTURE",
   };
 };
 
@@ -81,7 +82,7 @@ export const buildAgriculturalOrNaturalSite = (
   propsOverride?: Partial<CreateAgriculturalOrNaturalSiteProps>,
 ): AgriculturalOrNaturalSite => {
   const result = createAgriculturalOrNaturalSite(
-    buildAgriculturalOrNaturalSiteProps(propsOverride),
+    buildAgriculturalOperationSiteProps(propsOverride),
   );
   if (!result.success) {
     throw new Error("Failed to create agricultural/natural site in mock");

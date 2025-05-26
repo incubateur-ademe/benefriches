@@ -85,7 +85,9 @@ describe("SqlSitesQuery integration", () => {
 
       const result = await sitesQuery.getById(siteId);
 
-      const expectedResult: Required<SiteViewModel> = {
+      const expectedResult: Required<
+        Omit<SiteViewModel, "agriculturalOperationActivity" | "naturalAreaType">
+      > = {
         id: siteId,
         name: "Site 123",
         nature: "FRICHE",
@@ -137,6 +139,7 @@ describe("SqlSitesQuery integration", () => {
         created_at: now,
         is_friche: false,
         creation_mode: "express",
+        agricultural_operation_activity: "CATTLE_FARMING",
       });
 
       await sqlConnection("addresses").insert({
@@ -199,6 +202,7 @@ describe("SqlSitesQuery integration", () => {
           FOREST_MIXED: 1200,
           PRAIRIE_GRASS: 12800,
         },
+        agriculturalOperationActivity: "CATTLE_FARMING",
       };
 
       expect(result).toEqual(expectedResult);

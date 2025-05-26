@@ -117,6 +117,8 @@ describe("Save created site", () => {
             accidentsSevereInjuries: (siteData as SiteCreationData).accidentsSevereInjuries,
             accidentsDeaths: (siteData as SiteCreationData).accidentsDeaths,
             createdBy: user.id,
+            agriculturalOperationActivity: (siteData as SiteCreationData)
+              .agriculturalOperationActivity,
           },
         ]);
       },

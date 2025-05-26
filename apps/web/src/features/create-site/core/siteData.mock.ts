@@ -101,6 +101,7 @@ export const siteWithMinimalData = {
   yearlyIncomes: [],
   isFriche: false,
   nature: "AGRICULTURAL_OPERATION",
+  agriculturalOperationActivity: "CATTLE_FARMING",
   isSiteOperated: false,
   hasRecentAccidents: false,
   hasContaminatedSoils: false,
@@ -121,6 +122,7 @@ export const fricheWithMinimalData = {
   isFriche: true,
   nature: "FRICHE",
   fricheActivity: "RAILWAY",
+  agriculturalOperationActivity: undefined,
 } as const satisfies SiteCreationData;
 
 export const expressFricheCreationData = {

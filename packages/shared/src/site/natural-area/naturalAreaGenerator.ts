@@ -48,6 +48,7 @@ export class NaturalAreaGenerator implements SiteGenerator<NaturalAreaGeneration
       id,
       address,
       nature: "NATURAL_AREA",
+      naturalAreaType,
       soilsDistribution: createSoilSurfaceAreaDistribution(soilsDistribution),
       owner: {
         structureType: "municipality",
@@ -60,7 +61,7 @@ export class NaturalAreaGenerator implements SiteGenerator<NaturalAreaGeneration
     });
 
     if (!result.success) {
-      throw new Error(`Failed to create friche, ${result.error}`);
+      throw new Error(`Failed to create site, ${result.error}`);
     }
     return result.site;
   }
