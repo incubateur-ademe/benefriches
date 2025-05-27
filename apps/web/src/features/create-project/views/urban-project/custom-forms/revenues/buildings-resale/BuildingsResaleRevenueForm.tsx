@@ -28,7 +28,7 @@ const BuildingsResaleRevenueForm = ({ initialValues, onSubmit, onBack }: Props) 
 
   return (
     <WizardFormLayout
-      title="Montants de la vente des bâtiments"
+      title="Montant de la vente des bâtiments"
       instructions={
         <>
           <FormInfo>

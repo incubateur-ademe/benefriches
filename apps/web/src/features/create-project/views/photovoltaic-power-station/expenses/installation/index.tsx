@@ -30,7 +30,7 @@ function PhotovoltaicPanelsInstallationExpensesFormContainer() {
         <FormInfo>
           <p>
             Les montants pré-remplis le sont d'après la puissance d'installation que vous avez
-            renseignée (exprimée en kWc) et les dépenses moyennes observées.
+            renseignées (exprimée en kWc) et les dépenses moyennes observées.
           </p>
           <p>
             <strong>Source&nbsp;: </strong>

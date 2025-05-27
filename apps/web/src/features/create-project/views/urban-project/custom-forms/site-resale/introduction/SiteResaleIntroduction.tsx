@@ -17,9 +17,8 @@ const SiteResaleIntroduction = ({ onNext, onBack }: Props) => {
       <EditorialPageIcon>💰</EditorialPageIcon>
       <EditorialPageTitle>Le terrain peut faire l'objet d'une cession foncière.</EditorialPageTitle>
       <EditorialPageText>
-        Tout ou partie du foncier peut-être cédé à une ou plusieurs organisations tierces
-        (promoteur, bailleur social, collectivité...).
-        <br />
+        Tout ou partie du foncier peut être cédé à un ou plusieurs acteurs ou opérateurs (promoteur,
+        bailleur social, collectivité...). <br />
         Voyons si cela fait partie de vos projets et dans quelle mesure.
       </EditorialPageText>
       <BackNextButtonsGroup onBack={onBack} onNext={onNext} />

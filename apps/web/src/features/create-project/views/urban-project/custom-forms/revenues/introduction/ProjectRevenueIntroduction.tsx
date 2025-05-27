@@ -17,8 +17,8 @@ const ProjectRevenueIntroduction = ({ onNext, onBack }: Props) => {
       <EditorialPageIcon>💰</EditorialPageIcon>
       <EditorialPageTitle>Votre projet peut aussi engendrer des recettes</EditorialPageTitle>
       <EditorialPageText>
-        Les aides aux travaux et l’exploitation des bâtiments peuvent générer des recettes
-        financières.{" "}
+        La cession de foncier aménagé, voire de bâtiments peuvent notamment générer des recettes
+        financières.
       </EditorialPageText>
       <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
     </EditorialPageLayout>

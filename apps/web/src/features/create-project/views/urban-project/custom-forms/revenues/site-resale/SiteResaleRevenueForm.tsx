@@ -28,7 +28,7 @@ const SiteResaleRevenueForm = ({ initialValues, onSubmit, onBack }: Props) => {
 
   return (
     <WizardFormLayout
-      title="Montants de la vente du foncier aménagé"
+      title="Montant de la vente du foncier aménagé"
       instructions={
         <>
           <FormInfo>

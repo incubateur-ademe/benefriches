@@ -62,7 +62,7 @@ const ProjectFinancialAssistanceRevenueForm = ({ initialValues, onSubmit, onBack
         <RowDecimalsNumericInput
           className="!tw-pt-4"
           addonText="€"
-          label="Subvention publiques"
+          label="Subventions publiques"
           nativeInputProps={register("publicSubsidiesAmount", optionalNumericFieldRegisterOptions)}
         />
 

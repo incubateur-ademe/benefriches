@@ -15,6 +15,11 @@ type Props = {
   onBack: () => void;
   title: ReactNode;
   instructions?: ReactNode;
+  labels?: {
+    worksAmount?: string;
+    technicalStudyAmount?: string;
+    otherAmount?: string;
+  };
 };
 
 export type FormValues = {
@@ -29,6 +34,7 @@ const InstallationExpensesForm = ({
   initialValues,
   title,
   instructions,
+  labels,
 }: Props) => {
   const { handleSubmit, register, watch } = useForm<FormValues>({
     defaultValues: initialValues,
@@ -45,19 +51,19 @@ const InstallationExpensesForm = ({
         <RowDecimalsNumericInput
           addonText="€"
           className="!tw-pt-4"
-          label="Travaux d'installation"
+          label={labels?.worksAmount ?? "Travaux d'installation"}
           nativeInputProps={register("worksAmount", optionalNumericFieldRegisterOptions)}
         />
         <RowDecimalsNumericInput
           addonText="€"
           className="!tw-pt-4"
-          label="Études et honoraires techniques"
+          label={labels?.technicalStudyAmount ?? "Études et honoraires techniques"}
           nativeInputProps={register("technicalStudyAmount", optionalNumericFieldRegisterOptions)}
         />
         <RowDecimalsNumericInput
           addonText="€"
           className="!tw-pt-4"
-          label="Autres dépenses d'installation"
+          label={labels?.otherAmount ?? "Autres dépenses d'installation"}
           nativeInputProps={register("otherAmount", optionalNumericFieldRegisterOptions)}
         />
 

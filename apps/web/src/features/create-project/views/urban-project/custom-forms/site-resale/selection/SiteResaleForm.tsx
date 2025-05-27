@@ -23,7 +23,16 @@ function SiteResaleForm({ initialValues, onSubmit, onBack }: Props) {
     <WizardFormLayout
       title="Y aura-t-il une cession foncière suite à l'aménagement du site ?"
       instructions={
-        "La question du prix de la cession foncière vous sera posée dans une étape ultérieure."
+        <>
+          <p>
+            Si c’est un ou plusieurs acteurs ou opérateurs (promoteur, bailleur social,
+            collectivité...) qui se chargent entièrement ou en partie de la
+            construction-réhabilitation, ceux-ci devront acheter les terrains viabilisés.
+          </p>
+          <p>
+            La question du prix de la cession foncière vous sera posée dans une étape ultérieure.
+          </p>
+        </>
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -31,7 +40,7 @@ function SiteResaleForm({ initialValues, onSubmit, onBack }: Props) {
           {...register("siteResalePlanned", { required: true })}
           options={[
             {
-              label: "Oui, une ou plusieurs organisations tierces acquièreront entièrement le site",
+              label: "Oui, un ou plusieurs acteurs ou opérateurs acquerront entièrement le site",
               value: "yes",
             },
             {
