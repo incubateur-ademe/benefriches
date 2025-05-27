@@ -119,6 +119,7 @@ export const siteWithMinimalData = {
 
 export const fricheWithMinimalData = {
   ...siteWithMinimalData,
+  isSiteOperated: undefined,
   isFriche: true,
   nature: "FRICHE",
   fricheActivity: "RAILWAY",

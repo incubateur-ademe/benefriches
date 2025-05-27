@@ -35,6 +35,7 @@ export const buildAgriculturalOperationSiteProps = (
       value: "1 rue de Londres, 75009 Paris",
       streetName: "rue de Londres",
     },
+    isSiteOperated: false,
     ...propsOverride,
     nature: "AGRICULTURAL_OPERATION",
     agriculturalOperationActivity: "FLOWERS_AND_HORTICULTURE",

@@ -61,6 +61,7 @@ export const naturalAreaSchema = baseSiteSchema.extend({
 export const agriculturalOperationSchema = baseSiteSchema.extend({
   nature: z.literal("AGRICULTURAL_OPERATION"),
   agriculturalOperationActivity: z.string(),
+  isSiteOperated: z.boolean(),
 });
 
 export const fricheSchema = baseSiteSchema.extend({
@@ -110,6 +111,7 @@ export interface AgriculturalOperationSite extends BaseSite {
   nature: "AGRICULTURAL_OPERATION";
   yearlyIncomes: SiteYearlyIncome[];
   agriculturalOperationActivity: AgriculturalOperationActivity;
+  isSiteOperated: boolean;
 }
 
 export interface NaturalAreaSite extends BaseSite {
@@ -143,6 +145,7 @@ type CreateNaturalAreaSiteProps = {
 type CreateAgriculturalOperationSiteProps = {
   nature: "AGRICULTURAL_OPERATION";
   agriculturalOperationActivity: AgriculturalOperationActivity;
+  isSiteOperated: boolean;
 } & CreateAgriculturalOrNaturalSiteCommonProps;
 
 type CreateAgriculturalOrNaturalSiteCommonProps = {
@@ -186,6 +189,7 @@ export function createAgriculturalOrNaturalSite(
     props.nature === "AGRICULTURAL_OPERATION"
       ? agriculturalOperationSchema.safeParse({
           ...candidate,
+          isSiteOperated: props.isSiteOperated,
           agriculturalOperationActivity: props.agriculturalOperationActivity,
         })
       : naturalAreaSchema.safeParse({

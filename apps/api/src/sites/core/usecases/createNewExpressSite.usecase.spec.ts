@@ -117,6 +117,7 @@ describe("CreateNewExpressSite Use case", () => {
           creationMode: "express",
           nature: "AGRICULTURAL_OPERATION",
           agriculturalOperationActivity: siteProps.activity,
+          isSiteOperated: true,
           description: "Viticulture",
           isFriche: false,
           soilsDistribution: createSoilSurfaceAreaDistribution({

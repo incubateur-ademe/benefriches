@@ -187,6 +187,7 @@ describe("Site core logic", () => {
       name: "Unit test agricultural operation",
       nature: "AGRICULTURAL_OPERATION",
       agriculturalOperationActivity: "CEREALS_AND_OILSEEDS_CULTIVATION",
+      isSiteOperated: false,
       address: {
         city: "Paris",
         cityCode: "75000",
@@ -259,6 +260,7 @@ describe("Site core logic", () => {
         name: "My agricultural operation",
         nature: "AGRICULTURAL_OPERATION",
         agriculturalOperationActivity: "LARGE_VEGETABLE_CULTIVATION",
+        isSiteOperated: true,
         description: "Description of the site",
         id: "28b53918-a6f6-43f2-9554-7b5434428f8b",
         owner: {
@@ -290,6 +292,7 @@ describe("Site core logic", () => {
         name: "My agricultural operation",
         nature: "AGRICULTURAL_OPERATION",
         agriculturalOperationActivity: "LARGE_VEGETABLE_CULTIVATION",
+        isSiteOperated: true,
         description: "Description of the site",
         id: "28b53918-a6f6-43f2-9554-7b5434428f8b",
         owner: {

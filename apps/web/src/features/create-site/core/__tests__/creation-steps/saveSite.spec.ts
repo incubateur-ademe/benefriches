@@ -119,6 +119,7 @@ describe("Save created site", () => {
             createdBy: user.id,
             agriculturalOperationActivity: (siteData as SiteCreationData)
               .agriculturalOperationActivity,
+            isSiteOperated: siteData.isSiteOperated,
           },
         ]);
       },

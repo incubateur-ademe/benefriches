@@ -85,6 +85,7 @@ describe("SqlSiteRepository integration", () => {
             name: "Le département Doubs",
             structureType: "department",
           },
+          isSiteOperated: true,
         }),
         creationMode: "express",
       };
@@ -114,6 +115,7 @@ describe("SqlSiteRepository integration", () => {
           tenant_name: null,
           tenant_structure_type: null,
           agricultural_operation_activity: "FLOWERS_AND_HORTICULTURE",
+          is_operated: true,
           natural_area_type: null,
         },
       ]);
@@ -161,6 +163,7 @@ describe("SqlSiteRepository integration", () => {
           tenant_name: "Tenant SARL",
           tenant_structure_type: "company",
           agricultural_operation_activity: "FLOWERS_AND_HORTICULTURE",
+          is_operated: false,
           natural_area_type: null,
         },
       ]);
@@ -212,6 +215,7 @@ describe("SqlSiteRepository integration", () => {
           creation_mode: "custom",
           agricultural_operation_activity: null,
           natural_area_type: null,
+          is_operated: null,
         },
       ]);
     });

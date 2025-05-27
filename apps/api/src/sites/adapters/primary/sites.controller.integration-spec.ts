@@ -252,6 +252,7 @@ describe("Sites controller", () => {
           createdBy: "dadf207d-f0c1-4e38-8fe9-9ae5b0e123c4",
           isFriche: false,
           nature: "AGRICULTURAL_OPERATION",
+          isSiteOperated: false,
           owner: { name: "Owner name", structureType: "company" },
           name: "Exploitation agricole",
           address: {
@@ -294,6 +295,7 @@ describe("Sites controller", () => {
         isFriche: false,
         nature: "AGRICULTURAL_OPERATION",
         agriculturalOperationActivity: "CATTLE_FARMING",
+        isSiteOperated: true,
         name: "Exploitation agricole",
         description: "Description of site",
         owner: { name: "Owner name", structureType: "company" },
@@ -348,6 +350,7 @@ describe("Sites controller", () => {
         owner_name: "Owner name",
         owner_structure_type: "company",
         is_friche: false,
+        is_operated: true,
         tenant_name: "Tenant name",
         tenant_structure_type: "private_individual",
         friche_accidents_deaths: null,
@@ -451,6 +454,7 @@ describe("Sites controller", () => {
         friche_activity: null,
         friche_contaminated_soil_surface_area: null,
         friche_has_contaminated_soils: null,
+        is_operated: null,
       });
 
       const siteAddressInDb = await sqlConnection("addresses").select("value", "site_id");
@@ -539,6 +543,7 @@ describe("Sites controller", () => {
         friche_accidents_minor_injuries: 1,
         agricultural_operation_activity: null,
         natural_area_type: null,
+        is_operated: null,
       });
 
       const siteAddressInDb = await sqlConnection("addresses").select("value", "site_id");

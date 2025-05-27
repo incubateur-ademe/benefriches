@@ -33,6 +33,7 @@ export class SqlSiteRepository implements SitesRepository {
           case "AGRICULTURAL_OPERATION":
             return {
               agricultural_operation_activity: site.agriculturalOperationActivity,
+              is_operated: site.isSiteOperated,
             };
 
           case "NATURAL_AREA":

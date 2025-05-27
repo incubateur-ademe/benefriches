@@ -52,6 +52,7 @@ const agriculturalCustomSiteDtoSchema = baseSchema.extend({
     "SHEEP_AND_GOAT_FARMING",
     "POLYCULTURE_AND_LIVESTOCK",
   ]),
+  isSiteOperated: z.boolean(),
 });
 
 const naturalCustomSiteDtoSchema = baseSchema.extend({

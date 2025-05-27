@@ -89,6 +89,7 @@ export class AgriculturalOperationGenerator
       address,
       nature: "AGRICULTURAL_OPERATION",
       agriculturalOperationActivity: operationActivity,
+      isSiteOperated: true,
       soilsDistribution: createSoilSurfaceAreaDistribution(soilsDistribution),
       owner: {
         structureType: "municipality",
