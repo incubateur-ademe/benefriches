@@ -28,11 +28,11 @@ type Props = {
 const getChartColor = (impactName: TaxesIncomeImpact["details"][number]["impact"]) => {
   switch (impactName) {
     case "project_new_company_taxation_income":
-      return "#41DEF0";
+      return "#1D5DA2";
     case "project_new_houses_taxes_income":
-      return "#41A4F0";
+      return "#C649CA";
     case "project_photovoltaic_taxes_income":
-      return "#4169F0";
+      return "#FF9700";
   }
 };
 

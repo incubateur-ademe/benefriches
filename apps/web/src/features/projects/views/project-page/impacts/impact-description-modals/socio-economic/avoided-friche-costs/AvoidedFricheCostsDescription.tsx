@@ -21,15 +21,15 @@ type Props = {
 const getChartColor = (impactName: AvoidedFricheCostsImpact["details"][number]["impact"]) => {
   switch (impactName) {
     case "avoided_accidents_costs":
-      return "#9542F0";
+      return "#E73518";
     case "avoided_illegal_dumping_costs":
-      return "#F042D6";
+      return "#AD6524";
     case "avoided_maintenance_costs":
-      return "#5C42F0";
+      return "#9E89CC";
     case "avoided_other_securing_costs":
-      return "#F0427F";
+      return "#C4C5C6";
     case "avoided_security_costs":
-      return "#D042F0";
+      return "#AFF6FF";
   }
 };
 

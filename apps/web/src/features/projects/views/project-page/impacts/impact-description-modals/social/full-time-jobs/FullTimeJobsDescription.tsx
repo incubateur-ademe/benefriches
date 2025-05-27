@@ -5,6 +5,7 @@ import { SocialImpactDetailsName } from "@/features/projects/domain/projectImpac
 import { formatETPImpact } from "@/features/projects/views/shared/formatImpactValue";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
+import { getFullTimeJobsDetailsColor } from "../../../getImpactColor";
 import { ModalDataProps } from "../../ImpactModalDescription";
 import { ImpactModalDescriptionContext } from "../../ImpactModalDescriptionContext";
 import ModalBody from "../../shared/ModalBody";
@@ -30,13 +31,13 @@ const FullTimeJobsDescription = ({ impactData }: Props) => {
           {
             ...impactData.operations,
             label: "Exploitation du site",
-            color: "#C4D3DE",
+            color: getFullTimeJobsDetailsColor("operations_full_time_jobs"),
             name: "operations_full_time_jobs" as SocialImpactDetailsName,
           },
           {
             ...impactData.conversion,
             label: "Reconversion du site",
-            color: "#D6BB1D",
+            color: getFullTimeJobsDetailsColor("conversion_full_time_jobs"),
             name: "conversion_full_time_jobs" as SocialImpactDetailsName,
           },
         ]

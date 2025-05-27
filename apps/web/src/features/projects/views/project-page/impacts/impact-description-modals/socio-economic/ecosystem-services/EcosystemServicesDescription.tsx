@@ -51,21 +51,21 @@ const getEcosystemServiceDetailsTitle = (
 const getChartColor = (impactName: EcosystemServicesImpact["details"][number]["impact"]) => {
   switch (impactName) {
     case "soils_co2_eq_storage":
-      return "#C56E11";
+      return "#FF8910";
     case "soil_erosion":
-      return "#C58C11";
+      return "#C3D869";
     case "forest_related_product":
-      return "#C5AA11";
+      return "#A27C61";
     case "nature_related_wellness_and_leisure":
-      return "#A4C511";
+      return "#75399D";
     case "pollination":
-      return "#68C511";
+      return "#F6E900";
     case "invasive_species_regulation":
-      return "#11A4C5";
+      return "#2D163C";
     case "nitrogen_cycle":
-      return "#1186C5";
+      return "#F83A31";
     case "water_cycle":
-      return "#1168C5";
+      return "#1F60FB";
   }
 };
 

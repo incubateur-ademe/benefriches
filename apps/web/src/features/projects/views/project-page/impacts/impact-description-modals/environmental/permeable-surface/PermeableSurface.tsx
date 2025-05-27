@@ -4,6 +4,7 @@ import { useContext } from "react";
 import { EnvironmentalImpactDetailsName } from "@/features/projects/domain/projectImpactsEnvironmental";
 import { formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 
+import { getPermeableSurfaceDetailsColor } from "../../../getImpactColor";
 import { ModalDataProps } from "../../ImpactModalDescription";
 import { ImpactModalDescriptionContext } from "../../ImpactModalDescriptionContext";
 import ModalBody from "../../shared/ModalBody";
@@ -26,13 +27,13 @@ const PermeableSurfaceDescription = ({ impactData }: Props) => {
     {
       ...impactData.greenSoil,
       label: "Surface perméable végétalisée",
-      color: "#7ACA17",
+      color: getPermeableSurfaceDetailsColor("green_soil"),
       name: "green_soil" as EnvironmentalImpactDetailsName,
     },
     {
       ...impactData.mineralSoil,
       label: "Surface perméable minérale",
-      color: "#70706A",
+      color: getPermeableSurfaceDetailsColor("mineral_soil"),
       name: "mineral_soil" as EnvironmentalImpactDetailsName,
     },
   ].filter(({ difference }) => difference !== 0);

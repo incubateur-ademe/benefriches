@@ -6,6 +6,11 @@ import {
 } from "@/features/projects/domain/projectImpactsAreaChartsData";
 import { getColorForSoilType } from "@/shared/core/soils";
 
+import {
+  getAvoidedCo2eqEmissionsDetailsColor,
+  getFullTimeJobsDetailsColor,
+  getPermeableSurfaceDetailsColor,
+} from "../../../getImpactColor";
 import ImpactModalDescription, {
   ModalDataProps,
 } from "../../../impact-description-modals/ImpactModalDescription";
@@ -63,11 +68,11 @@ const ImpactAreaChartsSection = ({
             color={getMaxColor([
               {
                 value: fullTimeJobs.operations.difference,
-                color: "#C4D3DE",
+                color: getFullTimeJobsDetailsColor("operations_full_time_jobs"),
               },
               {
                 value: fullTimeJobs.conversion.difference,
-                color: "#D6BB1D",
+                color: getFullTimeJobsDetailsColor("conversion_full_time_jobs"),
               },
             ])}
             base={fullTimeJobs.base}
@@ -146,25 +151,29 @@ const ImpactAreaChartsSection = ({
                 value:
                   avoidedCo2eqEmissions.soilsCo2eqStorage.forecast -
                   avoidedCo2eqEmissions.soilsCo2eqStorage.base,
-                color: "#E6EA14",
+                color: getAvoidedCo2eqEmissionsDetailsColor("stored_co2_eq"),
               },
               {
                 value:
                   avoidedCo2eqEmissions.withAirConditioningDiminution.forecast -
                   avoidedCo2eqEmissions.withAirConditioningDiminution.base,
-                color: "#14C3EA",
+                color: getAvoidedCo2eqEmissionsDetailsColor(
+                  "avoided_air_conditioning_co2_eq_emissions",
+                ),
               },
               {
                 value:
                   avoidedCo2eqEmissions.withCarTrafficDiminution.forecast -
                   avoidedCo2eqEmissions.withCarTrafficDiminution.base,
-                color: "#14EA81",
+                color: getAvoidedCo2eqEmissionsDetailsColor("avoided_car_traffic_co2_eq_emissions"),
               },
               {
                 value:
                   avoidedCo2eqEmissions.withRenewableEnergyProduction.forecast -
                   avoidedCo2eqEmissions.withRenewableEnergyProduction.base,
-                color: "#149FEA",
+                color: getAvoidedCo2eqEmissionsDetailsColor(
+                  "avoided_co2_eq_emissions_with_production",
+                ),
               },
             ])}
           />
@@ -191,11 +200,11 @@ const ImpactAreaChartsSection = ({
             color={getMaxColor([
               {
                 value: permeableSurfaceArea.greenSoil.difference,
-                color: "#7ACA17",
+                color: getPermeableSurfaceDetailsColor("green_soil"),
               },
               {
                 value: permeableSurfaceArea.mineralSoil.difference,
-                color: "#70706A",
+                color: getPermeableSurfaceDetailsColor("mineral_soil"),
               },
             ])}
           />

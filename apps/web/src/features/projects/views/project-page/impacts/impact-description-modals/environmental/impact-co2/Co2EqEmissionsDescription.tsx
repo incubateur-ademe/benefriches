@@ -6,6 +6,7 @@ import {
 } from "@/features/projects/domain/projectImpactsEnvironmental";
 import { formatCO2Impact } from "@/features/projects/views/shared/formatImpactValue";
 
+import { getAvoidedCo2eqEmissionsDetailsColor } from "../../../getImpactColor";
 import { getEnvironmentalDetailsImpactLabel } from "../../../getImpactLabel";
 import { ModalDataProps } from "../../ImpactModalDescription";
 import { ImpactModalDescriptionContext } from "../../ImpactModalDescriptionContext";
@@ -22,19 +23,6 @@ type Props = {
   impactsData: ModalDataProps["impactsData"];
 };
 
-const getChartColor = (impactName: CO2BenefitDetails) => {
-  switch (impactName) {
-    case "avoided_co2_eq_emissions_with_production":
-      return "#149FEA";
-    case "avoided_air_conditioning_co2_eq_emissions":
-      return "#14C3EA";
-    case "avoided_car_traffic_co2_eq_emissions":
-      return "#14EA81";
-    case "stored_co2_eq":
-      return "#E6EA14";
-  }
-};
-
 const Co2BenefitDescription = ({ impactsData }: Props) => {
   const environmentalImpacts = getEnvironmentalProjectImpacts(impactsData);
 
@@ -47,7 +35,7 @@ const Co2BenefitDescription = ({ impactsData }: Props) => {
 
   const impactList = details.map(({ impact, name }) => ({
     label: getEnvironmentalDetailsImpactLabel("co2_benefit", name),
-    color: getChartColor(name as CO2BenefitDetails),
+    color: getAvoidedCo2eqEmissionsDetailsColor(name as CO2BenefitDetails),
     value: impact.difference,
     ...impact,
     name,

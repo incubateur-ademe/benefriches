@@ -25,11 +25,11 @@ type Props = {
 const getChartColor = (impactName: AvoidedCO2EqEmissions["details"][number]["impact"]) => {
   switch (impactName) {
     case "avoided_co2_eq_with_enr":
-      return "#149FEA";
+      return "#F6E900";
     case "avoided_air_conditioning_co2_eq_emissions":
-      return "#14C3EA";
+      return "#1F60FB";
     case "avoided_traffic_co2_eq_emissions":
-      return "#14EA81";
+      return "#C750CA";
   }
 };
 

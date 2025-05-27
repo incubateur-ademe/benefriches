@@ -1,9 +1,10 @@
 import { useContext } from "react";
-import { EconomicBalanceImpactResult, ReinstatementExpensePurpose } from "shared";
+import { EconomicBalanceImpactResult } from "shared";
 
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
+import { getSiteReinstatementDetailsColor } from "../../../getImpactColor";
 import { getEconomicBalanceDetailsImpactLabel } from "../../../getImpactLabel";
 import { ImpactModalDescriptionContext } from "../../ImpactModalDescriptionContext";
 import ModalBody from "../../shared/ModalBody";
@@ -21,32 +22,13 @@ type Props = {
   bearer?: string;
 };
 
-const getChartColor = (impactName: ReinstatementExpensePurpose) => {
-  switch (impactName) {
-    case "asbestos_removal":
-      return "#F4C00A";
-    case "deimpermeabilization":
-      return "#F8D354";
-    case "demolition":
-      return "#DCAD09";
-    case "other_reinstatement":
-      return "#AB8707";
-    case "remediation":
-      return "#F4C00A";
-    case "sustainable_soils_reinstatement":
-      return "#FBE69D";
-    case "waste_collection":
-      return "#C49A08";
-  }
-};
-
 const SiteReinstatementDescription = ({ impactData, bearer = "l'aménageur" }: Props) => {
   const { updateModalContent } = useContext(ImpactModalDescriptionContext);
 
   const impactList =
     impactData?.costs.map(({ amount, purpose }) => ({
       label: getEconomicBalanceDetailsImpactLabel("site_reinstatement", purpose),
-      color: getChartColor(purpose),
+      color: getSiteReinstatementDetailsColor(purpose),
       value: -amount,
       name: purpose,
     })) ?? [];

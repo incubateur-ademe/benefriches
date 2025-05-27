@@ -24,11 +24,11 @@ type Props = {
 const getChartColor = (impactName: AvoidedTrafficAccidentsImpact["details"][number]["impact"]) => {
   switch (impactName) {
     case "avoided_traffic_deaths":
-      return "#1371EC";
+      return "#F6DB1F";
     case "avoided_traffic_minor_injuries":
-      return "#13ECD6";
+      return "#E73518";
     case "avoided_traffic_severe_injuries":
-      return "#13BAEC";
+      return "#2D163C";
   }
 };
 

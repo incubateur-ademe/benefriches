@@ -29,19 +29,19 @@ const AvoidedTrafficAccidentsDescription = ({ impactData }: Props) => {
   const data = [
     {
       label: "🤕 Blessés légers évités",
-      color: "#13ECD6",
+      color: "#F6DB1F",
       value: impactData?.minorInjuries ?? 0,
       name: "avoided_traffic_minor_injuries",
     },
     {
       label: "🚑 Blessés graves évités",
-      color: "#13BAEC",
+      color: "#E73518",
       value: impactData?.severeInjuries ?? 0,
       name: "avoided_traffic_severe_injuries",
     },
     {
       label: "🪦 Décès évités",
-      color: "#1371EC",
+      color: "#2D163C",
       value: impactData?.deaths ?? 0,
       name: "avoided_traffic_deaths",
     },
