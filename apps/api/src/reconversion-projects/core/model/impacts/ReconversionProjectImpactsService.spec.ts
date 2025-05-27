@@ -3,8 +3,8 @@ import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/Deter
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 
 import {
+  InputFricheData,
   InputReconversionProjectData,
-  InputSiteData,
   ReconversionProjectImpactsService,
 } from "./ReconversionProjectImpactsService";
 
@@ -55,7 +55,7 @@ const reconversionProjectImpactDataView = {
 
 const site = {
   contaminatedSoilSurface: 5000,
-  isFriche: true,
+  nature: "FRICHE",
   surfaceArea: 20000,
   soilsDistribution: {
     PRAIRIE_TREES: 0,
@@ -79,7 +79,7 @@ const site = {
     ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 21,
     ARTIFICIAL_TREE_FILLED: 4,
   },
-} as const satisfies Required<InputSiteData>;
+} as const satisfies Required<InputFricheData>;
 
 describe("ReconversionProjectImpactsService: computes common impacts for all kind of project", () => {
   let dateProvider: DateProvider;
@@ -93,7 +93,12 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
     it("returns no impact when no current or future rental income", () => {
       const projectImpactsService = new ReconversionProjectImpactsService({
         reconversionProject: { ...reconversionProjectImpactDataView, yearlyProjectedExpenses: [] },
-        relatedSite: { ...site, yearlyExpenses: [], ownerName: "Current owner", isFriche: false },
+        relatedSite: {
+          ...site,
+          yearlyExpenses: [],
+          ownerName: "Current owner",
+          nature: "AGRICULTURAL_OPERATION",
+        },
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
       });
@@ -107,7 +112,12 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
           yearlyProjectedExpenses: [{ amount: 30000, purpose: "rent" }],
           futureSiteOwnerName: "Mairie de Paris",
         },
-        relatedSite: { ...site, yearlyExpenses: [], ownerName: "Current owner", isFriche: false },
+        relatedSite: {
+          ...site,
+          yearlyExpenses: [],
+          ownerName: "Current owner",
+          nature: "AGRICULTURAL_OPERATION",
+        },
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
       });
@@ -128,7 +138,7 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
           ...site,
           yearlyExpenses: [{ amount: 20000, purpose: "rent", bearer: "tenant" }],
           ownerName: "Current owner",
-          isFriche: false,
+          nature: "AGRICULTURAL_OPERATION",
         },
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
@@ -152,7 +162,7 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
         relatedSite: {
           ...site,
           yearlyExpenses: [{ amount: 5000, purpose: "rent", bearer: "tenant" }],
-          isFriche: false,
+          nature: "AGRICULTURAL_OPERATION",
         },
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
@@ -178,7 +188,7 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
           ...site,
           yearlyExpenses: [{ amount: 5000, purpose: "rent", bearer: "owner" }],
           ownerName: "Current owner",
-          isFriche: false,
+          nature: "AGRICULTURAL_OPERATION",
         },
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
@@ -204,7 +214,12 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
     it("returns no impact when no current friche costs", () => {
       const projectImpactsService = new ReconversionProjectImpactsService({
         reconversionProject: { ...reconversionProjectImpactDataView, yearlyProjectedExpenses: [] },
-        relatedSite: { ...site, yearlyExpenses: [], ownerName: "Current owner", isFriche: false },
+        relatedSite: {
+          ...site,
+          yearlyExpenses: [],
+          ownerName: "Current owner",
+          nature: "AGRICULTURAL_OPERATION",
+        },
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
       });
@@ -250,7 +265,7 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
           ],
           ownerName: "Current owner",
           tenantName: "Current tenant",
-          isFriche: true,
+          nature: "FRICHE",
         },
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
@@ -296,7 +311,7 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
           ],
           ownerName: "Current owner",
           tenantName: undefined,
-          isFriche: true,
+          nature: "FRICHE",
         },
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
@@ -329,7 +344,7 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
           ],
           ownerName: "Current owner",
           tenantName: undefined,
-          isFriche: false,
+          nature: "AGRICULTURAL_OPERATION",
         },
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
@@ -412,7 +427,7 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
         relatedSite: {
           ...site,
           yearlyExpenses: [],
-          isFriche: false,
+          nature: "AGRICULTURAL_OPERATION",
         },
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
@@ -429,7 +444,7 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
         relatedSite: {
           ...site,
           yearlyExpenses: [],
-          isFriche: false,
+          nature: "AGRICULTURAL_OPERATION",
         },
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,

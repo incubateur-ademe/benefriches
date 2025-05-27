@@ -111,7 +111,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
     });
   });
 
-  describe("Success cases", () => {
+  describe("Success cases: Project on friche", () => {
     const reconversionProjectImpactDataView = {
       id: uuid(),
       name: "Project with big impacts",
@@ -163,7 +163,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       id: reconversionProjectImpactDataView.relatedSiteId,
       contaminatedSoilSurface: 20000,
       name: "My base site",
-      isFriche: true,
+      nature: "FRICHE",
       fricheActivity: "AGRICULTURAL",
       surfaceArea: 50000,
       soilsDistribution: {
@@ -187,7 +187,9 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         { amount: 1500, bearer: "tenant", purpose: "illegalDumpingCost" },
         { amount: 500, bearer: "owner", purpose: "propertyTaxes" },
       ],
-    } as const satisfies Required<SiteImpactsDataView>;
+    } as const satisfies Required<
+      Omit<SiteImpactsDataView, "agriculturalOperationActivity" | "isSiteOperated">
+    >;
 
     it("returns impacts over 10 years for a reconversion project dedicated to renewable energy production on friche with contaminated soil", async () => {
       const evaluationPeriodInYears = 10;
@@ -475,7 +477,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       });
     });
 
-    it("returns impacts when soils carbon storage cannbot be computed", async () => {
+    it("returns impacts when soils carbon storage cannot be computed", async () => {
       const evaluationPeriodInYears = 10;
       const projectQuery = new InMemoryReconversionProjectImpactsQuery();
       projectQuery._setData(reconversionProjectImpactDataView);
@@ -497,6 +499,132 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       });
       expect(result.id).toEqual(reconversionProjectImpactDataView.id);
       expect(result.impacts.environmental.soilsCo2eqStorage).toEqual(undefined);
+    });
+  });
+
+  describe("Success cases: Project on Agricultural operation site", () => {
+    const reconversionProjectImpactDataView = {
+      id: uuid(),
+      name: "Project with big impacts",
+      relatedSiteId: uuid(),
+      isExpressProject: false,
+      soilsDistribution: {
+        ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 10000,
+        PRAIRIE_TREES: 20000,
+        BUILDINGS: 20000,
+        MINERAL_SOIL: 20000,
+        IMPERMEABLE_SOILS: 30000,
+      },
+      conversionSchedule: {
+        startDate: new Date("2025-07-01"),
+        endDate: new Date("2026-07-01"),
+      },
+      reinstatementSchedule: {
+        startDate: new Date("2025-01-01"),
+        endDate: new Date("2026-01-01"),
+      },
+      futureOperatorName: "Mairie de Blajan",
+      futureSiteOwnerName: "Mairie de Blajan",
+      reinstatementContractOwnerName: "Mairie de Blajan",
+      sitePurchaseTotalAmount: 150000,
+      reinstatementExpenses: [{ amount: 500000, purpose: "demolition" }],
+      developmentPlanInstallationExpenses: [{ amount: 200000, purpose: "installation_works" }],
+      developmentPlanFeatures: {
+        electricalPowerKWc: 258,
+        surfaceArea: 20000,
+        contractDuration: 30,
+        expectedAnnualProduction: 4679,
+      },
+      developmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
+      developmentPlanDeveloperName: "Mairie de Blajan",
+      financialAssistanceRevenues: [{ amount: 150000, source: "public_subsidies" }],
+      yearlyProjectedExpenses: [
+        { amount: 1000, purpose: "taxes" },
+        { amount: 10000, purpose: "maintenance" },
+      ],
+      yearlyProjectedRevenues: [
+        { amount: 10000, source: "rent" },
+        { amount: 1000, source: "other" },
+      ],
+      sitePurchasePropertyTransferDutiesAmount: 5432,
+      operationsFirstYear: 2025,
+      decontaminatedSoilSurface: 20000,
+    } as const satisfies ReconversionProjectImpactsDataView;
+
+    const site: SiteImpactsDataView = {
+      id: reconversionProjectImpactDataView.relatedSiteId,
+      contaminatedSoilSurface: 20000,
+      name: "My base site",
+      nature: "AGRICULTURAL_OPERATION",
+      agriculturalOperationActivity: "CATTLE_FARMING",
+      isSiteOperated: true,
+      surfaceArea: 50000,
+      soilsDistribution: {
+        ...reconversionProjectImpactDataView.soilsDistribution,
+        PRAIRIE_TREES: 0,
+        IMPERMEABLE_SOILS: 10000,
+        ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 40000,
+      },
+      addressCityCode: "23456",
+      addressLabel: "Blajan",
+      ownerName: "Current owner",
+      ownerStructureType: "company",
+      tenantName: "Current tenant",
+      hasAccidents: false,
+      yearlyExpenses: [
+        { amount: 54000, bearer: "tenant", purpose: "rent" },
+        { amount: 11600, bearer: "tenant", purpose: "otherOperationsCosts" },
+        { amount: 500, bearer: "tenant", purpose: "taxes" },
+      ],
+    } as const;
+
+    it("returns impacts over 10 years for a reconversion project on site still operated", async () => {
+      const evaluationPeriodInYears = 10;
+      const projectQuery = new InMemoryReconversionProjectImpactsQuery();
+      projectQuery._setData(reconversionProjectImpactDataView);
+      const siteQuery = new InMemorySiteImpactsQuery();
+      siteQuery._setData(site);
+
+      const usecase = new ComputeReconversionProjectImpactsUseCase(
+        projectQuery,
+        siteQuery,
+        new FakeGetSoilsCarbonStorageService(),
+        dateProvider,
+        new GetCityRelatedDataService(new MockCityDataService(), new MockDV3FApiService()),
+      );
+      const result = await usecase.execute({
+        reconversionProjectId: reconversionProjectImpactDataView.id,
+        evaluationPeriodInYears,
+      });
+      expect(result.impacts.social.fullTimeJobs?.operations.base).not.toEqual(0);
+      expect(result.impacts.environmental.nonContaminatedSurfaceArea).toEqual(undefined);
+      expect(result.impacts.social.accidents).toEqual(undefined);
+      expect(result.impacts.socioeconomic.impacts.length).not.toEqual(0);
+      expect(
+        result.impacts.socioeconomic.impacts.find(
+          ({ impact }) => impact === "avoided_friche_costs",
+        ),
+      ).toEqual(undefined);
+    });
+    it("returns no base operation fullTimeJobs over 10 years for a reconversion project on site not operated", async () => {
+      const evaluationPeriodInYears = 10;
+      const projectQuery = new InMemoryReconversionProjectImpactsQuery();
+      projectQuery._setData(reconversionProjectImpactDataView);
+      const siteQuery = new InMemorySiteImpactsQuery();
+      siteQuery._setData({ ...site, isSiteOperated: false });
+
+      const usecase = new ComputeReconversionProjectImpactsUseCase(
+        projectQuery,
+        siteQuery,
+        new FakeGetSoilsCarbonStorageService(),
+        dateProvider,
+        new GetCityRelatedDataService(new MockCityDataService(), new MockDV3FApiService()),
+      );
+      const result = await usecase.execute({
+        reconversionProjectId: reconversionProjectImpactDataView.id,
+        evaluationPeriodInYears,
+      });
+      expect(result.impacts.social.fullTimeJobs?.operations.base).toEqual(0);
     });
   });
 });

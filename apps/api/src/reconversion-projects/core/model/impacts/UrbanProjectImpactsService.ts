@@ -71,7 +71,7 @@ export class UrbanProjectImpactsService
 
   protected get roadsAndUtilitiesExpensesImpacts(): SocioEconomicImpact[] {
     const amount = getRoadsAndUtilitiesExpensesImpacts({
-      isFriche: this.relatedSite.isFriche,
+      isFriche: this.relatedSite.nature === "FRICHE",
       surfaceArea: this.relatedSite.surfaceArea,
       sumOnEvolutionPeriodService: this.sumOnEvolutionPeriodService,
     });

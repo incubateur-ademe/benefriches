@@ -1,10 +1,12 @@
 import {
+  AgriculturalOperationActivity,
   DevelopmentPlanInstallationExpenses,
   FinancialAssistanceRevenue,
   ReconversionProjectImpacts,
   RecurringExpense,
   RecurringRevenue,
   ReinstatementExpense,
+  SiteNature,
   SiteYearlyExpense,
   SoilsDistribution,
 } from "shared";
@@ -25,8 +27,10 @@ import { DevelopmentPlan, Schedule } from "../model/reconversionProject";
 export type SiteImpactsDataView = {
   id: string;
   name: string;
-  isFriche: boolean;
+  nature: SiteNature;
   fricheActivity?: string;
+  agriculturalOperationActivity?: AgriculturalOperationActivity;
+  isSiteOperated?: boolean;
   addressCityCode: string;
   addressLabel: string;
   contaminatedSoilSurface?: number;
@@ -178,7 +182,7 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
         contaminatedSoilSurface: relatedSite.contaminatedSoilSurface ?? 0,
         soilsDistribution: relatedSite.soilsDistribution,
         surfaceArea: relatedSite.surfaceArea,
-        isFriche: relatedSite.isFriche,
+        isFriche: relatedSite.nature === "FRICHE",
         fricheActivity: relatedSite.fricheActivity,
         owner: {
           name: relatedSite.ownerName,
@@ -197,20 +201,40 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
         soilsDistribution: reconversionProject.soilsDistribution,
       });
 
-    const siteData: InputSiteData = {
-      isFriche: relatedSite.isFriche,
-      contaminatedSoilSurface: relatedSite.contaminatedSoilSurface,
-      accidentsDeaths: relatedSite.accidentsDeaths,
-      accidentsMinorInjuries: relatedSite.accidentsMinorInjuries,
-      accidentsSevereInjuries: relatedSite.accidentsSevereInjuries,
-      addressCityCode: relatedSite.addressCityCode,
-      soilsDistribution: relatedSite.soilsDistribution,
-      surfaceArea: relatedSite.surfaceArea,
-      ownerName: relatedSite.ownerName,
-      yearlyExpenses: relatedSite.yearlyExpenses,
-      tenantName: relatedSite.tenantName,
-      soilsCarbonStorage: siteSoilsCarbonStorage,
-    };
+    const siteData: InputSiteData = (() => {
+      const commonData = {
+        addressCityCode: relatedSite.addressCityCode,
+        soilsDistribution: relatedSite.soilsDistribution,
+        surfaceArea: relatedSite.surfaceArea,
+        ownerName: relatedSite.ownerName,
+        yearlyExpenses: relatedSite.yearlyExpenses,
+        tenantName: relatedSite.tenantName,
+        soilsCarbonStorage: siteSoilsCarbonStorage,
+      };
+      switch (relatedSite.nature) {
+        case "AGRICULTURAL_OPERATION":
+          return {
+            ...commonData,
+            nature: "AGRICULTURAL_OPERATION",
+            agriculturalOperationActivity: relatedSite.agriculturalOperationActivity,
+            isSiteOperated: relatedSite.isSiteOperated,
+          };
+        case "FRICHE":
+          return {
+            ...commonData,
+            nature: "FRICHE",
+            contaminatedSoilSurface: relatedSite.contaminatedSoilSurface,
+            accidentsDeaths: relatedSite.accidentsDeaths,
+            accidentsMinorInjuries: relatedSite.accidentsMinorInjuries,
+            accidentsSevereInjuries: relatedSite.accidentsSevereInjuries,
+          };
+        case "NATURAL_AREA":
+          return {
+            ...commonData,
+            nature: "NATURAL_AREA",
+          };
+      }
+    })();
 
     const reconversionProjectData: InputReconversionProjectData = {
       developmentPlanInstallationExpenses: reconversionProject.developmentPlanInstallationExpenses,
@@ -262,22 +286,23 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
           relatedSite: siteData,
           evaluationPeriodInYears,
           dateProvider: this.dateProvider,
-          siteCityData: relatedSite.isFriche
-            ? {
-                siteIsFriche: true,
-                citySquareMetersSurfaceArea: squareMetersSurfaceArea,
-                cityPopulation: population,
-                cityPropertyValuePerSquareMeter: (
-                  await this.getCityRelatedDataService.getPropertyValuePerSquareMeter(
-                    relatedSite.addressCityCode,
-                  )
-                ).medianPricePerSquareMeters,
-              }
-            : {
-                siteIsFriche: false,
-                citySquareMetersSurfaceArea: squareMetersSurfaceArea,
-                cityPopulation: population,
-              },
+          siteCityData:
+            relatedSite.nature === "FRICHE"
+              ? {
+                  siteIsFriche: true,
+                  citySquareMetersSurfaceArea: squareMetersSurfaceArea,
+                  cityPopulation: population,
+                  cityPropertyValuePerSquareMeter: (
+                    await this.getCityRelatedDataService.getPropertyValuePerSquareMeter(
+                      relatedSite.addressCityCode,
+                    )
+                  ).medianPricePerSquareMeters,
+                }
+              : {
+                  siteIsFriche: false,
+                  citySquareMetersSurfaceArea: squareMetersSurfaceArea,
+                  cityPopulation: population,
+                },
         });
 
         return {

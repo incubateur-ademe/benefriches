@@ -14,6 +14,7 @@ import {
   EcosystemServicesImpact,
   SoilType,
   SoilsCarbonStorageImpact,
+  AgriculturalOperationActivity,
 } from "shared";
 
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
@@ -47,8 +48,10 @@ type FricheCostPurpose =
 
 const RENT_PURPOSE_KEY = "rent";
 
-export type InputSiteData = {
-  isFriche: boolean;
+export type InputSiteData = InputFricheData | InputAgriculturalOperationData | InputNaturalAreaData;
+
+export type InputFricheData = {
+  nature: "FRICHE";
   yearlyExpenses: SiteYearlyExpense[];
   ownerName: string;
   tenantName?: string;
@@ -59,6 +62,30 @@ export type InputSiteData = {
   accidentsDeaths?: number;
   accidentsSevereInjuries?: number;
   accidentsMinorInjuries?: number;
+  soilsCarbonStorage?: SoilsCarbonStorage;
+};
+
+type InputAgriculturalOperationData = {
+  nature: "AGRICULTURAL_OPERATION";
+  agriculturalOperationActivity?: AgriculturalOperationActivity;
+  isSiteOperated?: boolean;
+  yearlyExpenses: SiteYearlyExpense[];
+  ownerName: string;
+  tenantName?: string;
+  addressCityCode: string;
+  soilsDistribution: SoilsDistribution;
+  surfaceArea: number;
+  soilsCarbonStorage?: SoilsCarbonStorage;
+};
+
+type InputNaturalAreaData = {
+  nature: "NATURAL_AREA";
+  yearlyExpenses: SiteYearlyExpense[];
+  ownerName: string;
+  tenantName?: string;
+  addressCityCode: string;
+  soilsDistribution: SoilsDistribution;
+  surfaceArea: number;
   soilsCarbonStorage?: SoilsCarbonStorage;
 };
 
@@ -137,6 +164,15 @@ export class ReconversionProjectImpactsService implements ImpactsServiceInterfac
 
   protected get fullTimeJobsImpact() {
     const fullTimeJobsImpactService = new FullTimeJobsImpactService({
+      siteData:
+        this.relatedSite.nature === "AGRICULTURAL_OPERATION"
+          ? {
+              surfaceArea: this.relatedSite.surfaceArea,
+              nature: this.relatedSite.nature,
+              agriculturalOperationActivity: this.relatedSite.agriculturalOperationActivity,
+              isSiteOperated: this.relatedSite.isSiteOperated,
+            }
+          : undefined,
       developmentPlan: {
         type: this.reconversionProject.developmentPlanType,
         features: this.reconversionProject.developmentPlanFeatures,
@@ -151,6 +187,9 @@ export class ReconversionProjectImpactsService implements ImpactsServiceInterfac
   }
 
   protected get accidentsImpact() {
+    if (this.relatedSite.nature !== "FRICHE") {
+      return undefined;
+    }
     const currentAccidents =
       (this.relatedSite.accidentsDeaths ?? 0) +
       (this.relatedSite.accidentsSevereInjuries ?? 0) +
@@ -175,7 +214,7 @@ export class ReconversionProjectImpactsService implements ImpactsServiceInterfac
   }
 
   protected get avoidedFricheCosts(): AvoidedFricheCostsImpact[] {
-    if (!this.relatedSite.isFriche) {
+    if (this.relatedSite.nature !== "FRICHE") {
       return [];
     }
 
@@ -314,6 +353,9 @@ export class ReconversionProjectImpactsService implements ImpactsServiceInterfac
   }
 
   protected get nonContaminatedSurfaceArea() {
+    if (this.relatedSite.nature !== "FRICHE") {
+      return undefined;
+    }
     return getNonContaminatedSurfaceAreaImpact({
       siteTotalSurfaceArea: this.relatedSite.surfaceArea,
       contaminatedSurface: this.relatedSite.contaminatedSoilSurface,

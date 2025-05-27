@@ -3,7 +3,7 @@ import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/Deter
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 
 import { PhotovoltaicProjectImpactsService } from "./PhotovoltaicProjectImpactsService";
-import { InputReconversionProjectData, InputSiteData } from "./ReconversionProjectImpactsService";
+import { InputFricheData, InputReconversionProjectData } from "./ReconversionProjectImpactsService";
 
 const reconversionProjectImpactDataView: InputReconversionProjectData = {
   soilsDistribution: {
@@ -52,7 +52,7 @@ const reconversionProjectImpactDataView: InputReconversionProjectData = {
 
 const site = {
   contaminatedSoilSurface: 5000,
-  isFriche: true,
+  nature: "FRICHE",
   surfaceArea: 20000,
   soilsDistribution: {
     PRAIRIE_TREES: 0,
@@ -76,7 +76,7 @@ const site = {
     ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 10,
     ARTIFICIAL_TREE_FILLED: 15,
   },
-} as const satisfies Required<InputSiteData>;
+} as const satisfies Required<InputFricheData>;
 
 describe("Photovoltaic power plant specific impacts: Avoided CO2 eq emissions with EnR production", () => {
   let dateProvider: DateProvider;

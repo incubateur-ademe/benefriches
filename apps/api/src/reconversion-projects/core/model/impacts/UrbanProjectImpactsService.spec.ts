@@ -4,7 +4,7 @@ import { AvoidedCO2EqEmissions } from "shared";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 
-import { InputReconversionProjectData, InputSiteData } from "./ReconversionProjectImpactsService";
+import { InputFricheData, InputReconversionProjectData } from "./ReconversionProjectImpactsService";
 import { UrbanProjectImpactsService } from "./UrbanProjectImpactsService";
 
 const reconversionProjectImpactDataView = {
@@ -52,7 +52,7 @@ const reconversionProjectImpactDataView = {
 
 const site = {
   contaminatedSoilSurface: 5000,
-  isFriche: true,
+  nature: "FRICHE",
   surfaceArea: 15000,
   soilsDistribution: {
     PRAIRIE_TREES: 0,
@@ -76,7 +76,7 @@ const site = {
     ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 10,
     ARTIFICIAL_TREE_FILLED: 15,
   },
-} as const satisfies Required<InputSiteData>;
+} as const satisfies Required<InputFricheData>;
 
 const commonSocioEconomicImpacts = [
   "rental_income",
@@ -143,7 +143,7 @@ describe("UrbanProjectImpactsService", () => {
   it("returns no impacts related to local property value increase for non friche", () => {
     const urbanProjectImpactsService = new UrbanProjectImpactsService({
       reconversionProject: reconversionProjectImpactDataView,
-      relatedSite: { ...site, isFriche: false },
+      relatedSite: { ...site, nature: "AGRICULTURAL_OPERATION" },
       evaluationPeriodInYears: 10,
       dateProvider: dateProvider,
       siteCityData: {

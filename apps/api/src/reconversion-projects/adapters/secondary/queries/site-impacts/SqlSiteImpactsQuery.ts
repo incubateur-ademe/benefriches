@@ -1,6 +1,6 @@
 import { Inject } from "@nestjs/common";
 import { Knex } from "knex";
-import { SiteYearlyExpense } from "shared";
+import { AgriculturalOperationActivity, SiteNature, SiteYearlyExpense } from "shared";
 
 import {
   SiteImpactsDataView,
@@ -16,8 +16,10 @@ export class SqlSiteImpactsQuery implements SiteImpactsQuery {
       .select(
         "id",
         "name",
-        "is_friche",
+        "nature",
         "friche_activity",
+        "agricultural_operation_activity",
+        "is_operated",
         "surface_area",
         "friche_contaminated_soil_surface_area",
         "friche_accidents_minor_injuries",
@@ -48,8 +50,11 @@ export class SqlSiteImpactsQuery implements SiteImpactsQuery {
     return {
       id: sqlSite.id,
       name: sqlSite.name,
-      isFriche: sqlSite.is_friche,
+      nature: sqlSite.nature as SiteNature,
       fricheActivity: sqlSite.friche_activity ?? undefined,
+      agriculturalOperationActivity: (sqlSite.agricultural_operation_activity ??
+        undefined) as AgriculturalOperationActivity,
+      isSiteOperated: sqlSite.is_operated ?? undefined,
       addressCityCode: sqlAddress?.city_code ?? "",
       addressLabel: sqlAddress?.value ?? "",
       surfaceArea: sqlSite.surface_area,

@@ -1,5 +1,7 @@
 import { differenceInDays } from "date-fns";
 import {
+  AgriculturalOperationActivity,
+  computeAgriculturalOperationEtpFromSurface,
   computeDefaultOperationsFullTimeJobsFromBuildingsAreaDistribution,
   computeDefaultPhotovoltaicConversionFullTimeJobs,
   computeDefaultPhotovoltaicOperationsFullTimeJobs,
@@ -7,6 +9,7 @@ import {
   ReinstatementExpense,
   roundTo1Digit,
   roundTo2Digits,
+  SiteNature,
 } from "shared";
 
 import { PhotovoltaicPowerStationFeatures, Schedule } from "../../reconversionProject";
@@ -42,6 +45,12 @@ type DevelopmentPlan =
     };
 
 type FullTimeJobsImpactServiceProps = {
+  siteData?: {
+    nature: SiteNature;
+    surfaceArea: number;
+    agriculturalOperationActivity?: AgriculturalOperationActivity;
+    isSiteOperated?: boolean;
+  };
   developmentPlan: DevelopmentPlan;
   conversionSchedule?: Schedule;
   reinstatementSchedule?: Schedule;
@@ -51,6 +60,7 @@ type FullTimeJobsImpactServiceProps = {
 
 export class FullTimeJobsImpactService {
   private readonly developmentPlan: FullTimeJobsImpactServiceProps["developmentPlan"];
+  private readonly siteData: FullTimeJobsImpactServiceProps["siteData"];
 
   private readonly conversionSchedule: Schedule | undefined;
   private readonly reinstatementSchedule: Schedule | undefined;
@@ -58,9 +68,8 @@ export class FullTimeJobsImpactService {
 
   private readonly reinstatementExpenses: ReinstatementExpense[];
 
-  private readonly statuQuoOperationsFullTimeJobs = 0;
-
   constructor({
+    siteData,
     developmentPlan,
     conversionSchedule,
     reinstatementSchedule,
@@ -68,12 +77,23 @@ export class FullTimeJobsImpactService {
     evaluationPeriodInYears,
   }: FullTimeJobsImpactServiceProps) {
     this.developmentPlan = developmentPlan;
+    this.siteData = siteData;
 
     this.conversionSchedule = conversionSchedule;
     this.reinstatementSchedule = reinstatementSchedule;
     this.evaluationPeriodInYears = evaluationPeriodInYears;
 
     this.reinstatementExpenses = reinstatementExpenses;
+  }
+
+  private get statuQuoOperationsFullTimeJobs() {
+    if (this.siteData?.agriculturalOperationActivity && this.siteData.isSiteOperated) {
+      return computeAgriculturalOperationEtpFromSurface({
+        operationActivity: this.siteData.agriculturalOperationActivity,
+        surfaceArea: this.siteData.surfaceArea,
+      });
+    }
+    return 0;
   }
 
   private get reinstatementFullTimeJobs() {

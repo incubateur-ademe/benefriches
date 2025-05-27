@@ -37,6 +37,7 @@ describe("SqlSiteImpactsQuery integration", () => {
         tenant_structure_type: "company",
         created_at: new Date(),
         is_friche: true,
+        nature: "FRICHE",
         friche_activity: "BUILDING",
         friche_has_contaminated_soils: true,
         friche_contaminated_soil_surface_area: 230,
@@ -72,10 +73,12 @@ describe("SqlSiteImpactsQuery integration", () => {
 
       const result = await siteQuery.getById(siteId);
 
-      expect(result).toEqual<Required<SiteImpactsDataView>>({
+      expect(result).toEqual<
+        Required<Omit<SiteImpactsDataView, "agriculturalOperationActivity" | "isSiteOperated">>
+      >({
         id: siteId,
         name: "Site 123",
-        isFriche: true,
+        nature: "FRICHE",
         fricheActivity: "BUILDING",
         addressCityCode: "01234",
         addressLabel: "1 rue de la paix",
@@ -106,6 +109,9 @@ describe("SqlSiteImpactsQuery integration", () => {
         owner_name: "Owner name",
         owner_structure_type: "company",
         created_at: new Date(),
+        nature: "AGRICULTURAL_OPERATION",
+        agricultural_operation_activity: "CATTLE_FARMING",
+        is_operated: true,
         is_friche: false,
       });
 
@@ -129,7 +135,7 @@ describe("SqlSiteImpactsQuery integration", () => {
       expect(result).toEqual<SiteImpactsDataView>({
         id: siteId,
         name: "Site 123",
-        isFriche: false,
+        nature: "AGRICULTURAL_OPERATION",
         addressCityCode: "01234",
         addressLabel: "1 rue de la paix",
         surfaceArea: 14000,
@@ -141,6 +147,8 @@ describe("SqlSiteImpactsQuery integration", () => {
         ownerStructureType: "company",
         hasAccidents: false,
         yearlyExpenses: [],
+        agriculturalOperationActivity: "CATTLE_FARMING",
+        isSiteOperated: true,
       });
     });
   });

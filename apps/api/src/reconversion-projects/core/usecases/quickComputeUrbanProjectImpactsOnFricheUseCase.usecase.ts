@@ -7,6 +7,7 @@ import {
   RecurringRevenue,
   ReinstatementExpense,
   Site,
+  SiteNature,
   SoilsDistribution,
 } from "shared";
 import { v4 as uuid } from "uuid";
@@ -36,7 +37,7 @@ interface SiteGenerationService {
 export type SiteImpactsDataView = {
   id: string;
   name: string;
-  isFriche: boolean;
+  nature: SiteNature;
   fricheActivity?: string;
   addressCityCode: string;
   addressLabel: string;
@@ -135,7 +136,7 @@ export class QuickComputeUrbanProjectImpactsOnFricheUseCase implements UseCase<R
     });
 
     const siteData: InputSiteData = {
-      isFriche: site.isFriche,
+      nature: site.nature,
       addressCityCode: site.address.cityCode,
       tenantName: site.tenant?.name,
       ownerName: site.owner.name,
@@ -175,22 +176,16 @@ export class QuickComputeUrbanProjectImpactsOnFricheUseCase implements UseCase<R
       });
 
     const impacts = new UrbanProjectImpactsService({
-      siteCityData: siteData.isFriche
-        ? {
-            siteIsFriche: true,
-            citySquareMetersSurfaceArea: city.surfaceArea,
-            cityPopulation: city.population,
-            cityPropertyValuePerSquareMeter: (
-              await this.getCityRelatedDataService.getPropertyValuePerSquareMeter(
-                siteData.addressCityCode,
-              )
-            ).medianPricePerSquareMeters,
-          }
-        : {
-            siteIsFriche: false,
-            citySquareMetersSurfaceArea: city.surfaceArea,
-            cityPopulation: city.population,
-          },
+      siteCityData: {
+        siteIsFriche: true,
+        citySquareMetersSurfaceArea: city.surfaceArea,
+        cityPopulation: city.population,
+        cityPropertyValuePerSquareMeter: (
+          await this.getCityRelatedDataService.getPropertyValuePerSquareMeter(
+            siteData.addressCityCode,
+          )
+        ).medianPricePerSquareMeters,
+      },
       relatedSite: siteData,
       evaluationPeriodInYears: EVALUATION_PERIOD_IN_YEARS,
       dateProvider: this.dateProvider,
