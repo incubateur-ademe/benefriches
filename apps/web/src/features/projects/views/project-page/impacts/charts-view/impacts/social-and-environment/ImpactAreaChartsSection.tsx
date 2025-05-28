@@ -192,7 +192,7 @@ const ImpactAreaChartsSection = ({
         <>
           <ImpactAreaChartCard
             dialogId="fr-modal-impacts-permeable_surface-Chart"
-            type="surfaceArea"
+            type="surface_area"
             base={permeableSurfaceArea.base}
             forecast={permeableSurfaceArea.forecast}
             difference={permeableSurfaceArea.difference}
@@ -223,7 +223,7 @@ const ImpactAreaChartsSection = ({
         <>
           <ImpactAreaChartCard
             dialogId="fr-modal-impacts-non_contaminated_surface-Chart"
-            type="surfaceArea"
+            type="surface_area"
             title="✨ Surface non polluée"
             color="#FCDF3B"
             base={nonContaminatedSurfaceArea.base}

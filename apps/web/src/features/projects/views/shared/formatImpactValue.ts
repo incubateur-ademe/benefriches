@@ -8,7 +8,7 @@ import {
 
 const NO_BREAK_SPACE = "\u00A0";
 
-type ImpactFormatType = "monetary" | "co2" | "surface_area" | "etp" | "time" | "default";
+export type ImpactFormatType = "monetary" | "co2" | "surface_area" | "etp" | "time" | "default";
 
 type ImpactFormatConfig = Record<
   ImpactFormatType,
@@ -18,7 +18,7 @@ type ImpactFormatConfig = Record<
   }
 >;
 
-const impactFormatConfig: ImpactFormatConfig = {
+const impactFormatConfig = {
   monetary: {
     roundFn: roundToInteger,
     unitSuffix: `${NO_BREAK_SPACE}€`,
@@ -43,7 +43,7 @@ const impactFormatConfig: ImpactFormatConfig = {
     roundFn: roundToInteger,
     unitSuffix: "",
   },
-} as const;
+} as const satisfies ImpactFormatConfig;
 
 const getSignPrefix = (value: number) => {
   return value > 0 ? "+" : "";

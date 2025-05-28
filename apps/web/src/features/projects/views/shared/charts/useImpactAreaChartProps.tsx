@@ -19,7 +19,7 @@ export type ImpactAreaChartProps = {
   difference: number;
   color?: string;
   details?: { label: string; base: number; forecast: number; difference: number; color?: string }[];
-  type?: "co2" | "surfaceArea" | "etp" | "default";
+  type?: "co2" | "surface_area" | "etp" | "default";
   height?: number;
 };
 
@@ -28,7 +28,7 @@ const impactTypeFormatterMap = {
     formatFn: formatCO2Impact,
     unitSuffix: "",
   },
-  surfaceArea: {
+  surface_area: {
     formatFn: formatSurfaceAreaImpact,
     unitSuffix: "",
   },

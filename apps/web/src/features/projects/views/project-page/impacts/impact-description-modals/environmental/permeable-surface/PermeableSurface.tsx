@@ -52,7 +52,7 @@ const PermeableSurfaceDescription = ({ impactData }: Props) => {
       <ModalGrid>
         <ModalData>
           <ModalAreaChart
-            type="surfaceArea"
+            type="surface_area"
             base={impactData.base}
             forecast={impactData.forecast}
             difference={impactData.difference}

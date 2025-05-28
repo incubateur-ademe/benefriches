@@ -2,6 +2,7 @@ import { MouseEvent, useState } from "react";
 
 import classNames from "@/shared/views/clsx";
 
+import { ImpactFormatType } from "../../../shared/formatImpactValue";
 import ImpactRowValue, { ImpactRowValueProps } from "./ImpactRowValue";
 
 export type ImpactItemDetailsProps = {
@@ -9,7 +10,7 @@ export type ImpactItemDetailsProps = {
   actor?: string;
   value: number;
   data?: { label: string; value: number; labelProps: ImpactRowValueProps["labelProps"] }[];
-  type?: "surfaceArea" | "monetary" | "co2" | "default" | "etp" | "time" | undefined;
+  type: ImpactFormatType | undefined;
   impactRowValueProps?: Partial<ImpactRowValueProps>;
   labelProps: ImpactRowValueProps["labelProps"];
 };

@@ -28,7 +28,7 @@ export type EnvironmentalImpactDetailsName = CO2BenefitDetails | PermeableSoilsD
 
 export type EnvironmentalImpact = {
   name: EnvironmentalMainImpactName;
-  type: "surfaceArea" | "co2" | "default";
+  type: "surface_area" | "co2" | "default";
   impact: ImpactValue & {
     details?: {
       name: EnvironmentalImpactDetailsName;
@@ -53,7 +53,7 @@ export const getEnvironmentalProjectImpacts = (
   if (nonContaminatedSurfaceArea && nonContaminatedSurfaceArea.difference !== 0) {
     impacts.push({
       name: "non_contaminated_surface_area",
-      type: "surfaceArea",
+      type: "surface_area",
       impact: {
         base: nonContaminatedSurfaceArea.base,
         forecast: nonContaminatedSurfaceArea.forecast,
@@ -128,7 +128,7 @@ export const getEnvironmentalProjectImpacts = (
 
   impacts.push({
     name: "permeable_surface_area",
-    type: "surfaceArea",
+    type: "surface_area",
     impact: {
       base,
       forecast,

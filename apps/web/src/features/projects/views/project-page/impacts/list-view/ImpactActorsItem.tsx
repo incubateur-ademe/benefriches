@@ -1,3 +1,4 @@
+import { ImpactFormatType } from "../../../shared/formatImpactValue";
 import ImpactItemDetails, { ImpactItemDetailsProps } from "./ImpactItemDetails";
 import ImpactItemGroup from "./ImpactItemGroup";
 import { ImpactRowValueProps } from "./ImpactRowValue";
@@ -10,7 +11,7 @@ type Props = {
     value: number;
     details?: ImpactItemDetailsProps["data"];
   }[];
-  type?: "surfaceArea" | "monetary" | "co2" | "default" | "etp" | "time" | undefined;
+  type: ImpactFormatType | undefined;
 };
 
 const ImpactActorsItem = ({ label, actors, type, labelProps }: Props) => {

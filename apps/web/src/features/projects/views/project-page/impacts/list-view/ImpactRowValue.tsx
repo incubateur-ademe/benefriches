@@ -14,6 +14,7 @@ import {
   formatMonetaryImpact,
   formatSurfaceAreaImpact,
   formatTimeImpact,
+  ImpactFormatType,
 } from "../../../shared/formatImpactValue";
 
 export type ImpactRowValueProps = {
@@ -24,14 +25,14 @@ export type ImpactRowValueProps = {
   onToggleAccordion?: (e?: MouseEvent<HTMLElement>) => void;
   isAccordionOpened?: boolean;
   buttonInfoAlwaysDisplayed?: boolean;
-  type?: "surfaceArea" | "monetary" | "co2" | "default" | "etp" | "time";
+  type: ImpactFormatType | undefined;
   labelProps: HtmlHTMLAttributes<HTMLButtonElement> & { "data-fr-opened"?: boolean };
 };
 
 const impactTypeFormatterMap = {
   co2: formatCO2Impact,
   monetary: formatMonetaryImpact,
-  surfaceArea: formatSurfaceAreaImpact,
+  surface_area: formatSurfaceAreaImpact,
   etp: formatETPImpact,
   time: formatTimeImpact,
   default: formatDefaultImpact,

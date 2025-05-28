@@ -28,7 +28,7 @@ const NonContaminatedSurfaceDescription = ({ impactData }: Props) => {
       <ModalGrid>
         <ModalData>
           <ModalAreaChart
-            type="surfaceArea"
+            type="surface_area"
             color="#FCDF3B"
             base={impactData.base}
             forecast={impactData.forecast}

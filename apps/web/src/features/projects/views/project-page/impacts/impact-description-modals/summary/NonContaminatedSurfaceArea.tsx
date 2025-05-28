@@ -58,7 +58,7 @@ const SummaryNonContaminatedSurfaceAreaDescription = ({ impactData }: Props) => 
                 impactRowValueProps={{ buttonInfoAlwaysDisplayed: true }}
                 value={decontaminatedSurfaceArea}
                 label="✨ Surface non polluée"
-                type="surfaceArea"
+                type="surface_area"
                 labelProps={{
                   onClick: (e) => {
                     e.stopPropagation();
