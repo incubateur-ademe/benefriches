@@ -130,7 +130,7 @@ const SocioEconomicSubSectionDescription = ({
                   });
                 }}
               >
-                🚶‍♀️ les impacts sociaux monétarisés
+                🚶 les impacts sociaux monétarisés
               </Button>
             </li>
             <li>

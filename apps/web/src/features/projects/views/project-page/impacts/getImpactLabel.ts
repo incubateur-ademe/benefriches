@@ -51,7 +51,7 @@ const getCO2BenefitDetailsImpactLabel = (name: CO2BenefitDetails) => {
     case "avoided_co2_eq_emissions_with_production":
       return "⚡️ Émissions de CO2-eq évitées grâce à la production d'EnR";
     case "avoided_car_traffic_co2_eq_emissions":
-      return "🚶‍♀️ Evitées grâce aux déplacements en voiture évités";
+      return "🚶 Evitées grâce aux déplacements en voiture évités";
     case "avoided_air_conditioning_co2_eq_emissions":
       return "❄️ Evitées grâce à l'utilisation réduite de de la climatisation";
   }
