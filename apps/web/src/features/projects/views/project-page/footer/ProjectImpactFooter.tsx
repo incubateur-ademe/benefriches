@@ -3,12 +3,12 @@ import Button from "@codegouvfr/react-dsfr/Button";
 import TileLink from "@/shared/views/components/TileLink/TileLink";
 import { routes } from "@/shared/views/router";
 
+import { exportImpactsModal } from "../export-impacts/createExportModal";
 import { aboutImpactsModal } from "../impacts/about-impacts-modal";
 import { projectFeaturesModal } from "../impacts/project-features-modal/createProjectFeaturesModal";
 import { siteFeaturesModal } from "../impacts/site-features-modal/createSiteFeaturesModal";
 import ImpactComparisonSection from "./compare-impacts";
 import TileDuplicateProject from "./duplicate-impacts";
-import TileExportImpacts from "./export-impacts";
 
 type Props = {
   siteId: string;
@@ -21,12 +21,18 @@ function ProjectImpactFooter({ siteId }: Props) {
 
       <p className="tw-text-lg tw-font-bold">Aller plus loin avec ce projet :</p>
       <div className="tw-grid md:tw-grid-cols-3 tw-gap-3 md:tw-gap-6 tw-pb-6">
-        <TileExportImpacts />
+        <TileLink
+          title="Exporter les impacts du projet"
+          iconId="fr-icon-file-download-line"
+          onClick={exportImpactsModal.open}
+        />
         <TileDuplicateProject />
         <TileLink
           title="Créer un nouveau projet sur ce site"
           iconId="fr-icon-add-line"
-          linkProps={routes.createProject({ siteId }).link}
+          onClick={() => {
+            routes.createProject({ siteId }).push();
+          }}
         />
       </div>
 

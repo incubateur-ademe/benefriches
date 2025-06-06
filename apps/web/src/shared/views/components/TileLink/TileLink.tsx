@@ -13,60 +13,53 @@ type Props = {
   title: ReactNode;
   badgeText?: string;
   iconId?: FrCxArg;
-  disabled?: boolean;
   button?: ButtonProps;
+  onClick?: () => void;
 };
 
-const TileLink = ({ linkProps, title, badgeText, iconId, disabled, button }: Props) => {
+const TileLink = ({ title, badgeText, iconId, onClick, button }: Props) => {
+  const innerContentClasses = classNames(
+    "tw-h-full",
+    "tw-flex",
+    "tw-flex-col",
+    "tw-items-center",
+    "tw-justify-center",
+    "tw-text-center",
+    "lg:tw-text-lg",
+    "tw-font-medium",
+    "tw-bg-none",
+    "tw-gap-4",
+    "!tw-text-dsfr-titleBlue",
+  );
   return (
-    <div
+    <button
       className={classNames(
-        "tw-flex",
-        "tw-flex-col",
-        "tw-items-center",
-        "tw-border-solid",
-        "tw-border",
+        "tw-flex tw-flex-col tw-items-center",
+        "tw-border-solid tw-border-dsfr-borderBlue tw-border",
         "tw-rounded-lg",
         "tw-p-6",
         "tw-h-[264px]",
         "tw-bg-white dark:tw-bg-black",
-        disabled ? "tw-border-dsfr-greyDisabled" : "tw-border-dsfr-borderBlue",
-        !disabled && "hover:tw-bg-dsfr-altBlue hover:dark:tw-bg-grey-dark",
+        "hover:tw-bg-dsfr-altBlue",
       )}
+      onClick={onClick ?? (() => {})}
+      disabled={onClick === undefined}
     >
-      <a
-        {...(disabled ? {} : linkProps)}
-        className={classNames(
-          "tw-w-full",
-          "tw-h-full",
-          "tw-flex",
-          "tw-flex-col",
-          "tw-items-center",
-          button ? "tw-justify-around" : "tw-justify-center",
-          "tw-text-center",
-          "lg:tw-text-lg",
-          "tw-font-medium",
-          "tw-bg-none",
-          "tw-gap-4",
-          disabled
-            ? ["tw-text-text-light", "dark:tw-text-dsfr-greyDisabled"]
-            : ["!tw-text-dsfr-titleBlue"],
-        )}
-      >
+      <div className={innerContentClasses}>
         {iconId && <span aria-hidden="true" className={classNames("fr-icon--xl", iconId)} />}
         {title}
         {badgeText && (
-          <Badge small style={disabled ? "disabled" : "green-tilleul"}>
+          <Badge small style="green-tilleul">
             {badgeText}
           </Badge>
         )}
-      </a>
+      </div>
       {button && (
         <Button className={button.className} {...button}>
           {button.children}
         </Button>
       )}
-    </div>
+    </button>
   );
 };
 

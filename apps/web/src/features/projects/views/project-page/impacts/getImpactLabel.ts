@@ -115,7 +115,7 @@ export const getSocioEconomicImpactLabel = (name: SocioEconomicImpactName) => {
     case "avoided_other_securing_costs":
       return "🛡 Autres dépenses de sécurisation";
     case "avoided_security_costs":
-      return "👮‍♀️ Gardiennage";
+      return "👮 Gardiennage";
     // Économique indirects
     case "taxes_income":
       return "🏛 Recettes fiscales";
@@ -173,7 +173,7 @@ export const getSocioEconomicImpactLabel = (name: SocioEconomicImpactName) => {
     case "invasive_species_regulation":
       return "🦔 Régulation des espèces invasives";
     case "nature_related_wellness_and_leisure":
-      return "🚵‍♂️ Bien-être et loisirs liés à la nature";
+      return "🚵 Bien-être et loisirs liés à la nature";
     case "nitrogen_cycle":
       return "🍄 Cycle de l'azote";
     case "pollination":

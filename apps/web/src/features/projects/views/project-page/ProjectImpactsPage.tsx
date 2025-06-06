@@ -7,6 +7,7 @@ import { routes } from "@/shared/views/router.ts";
 
 import { ProjectImpactsState, ViewMode } from "../../application/projectImpacts.reducer";
 import { ProjectDevelopmentPlanType } from "../../domain/projects.types";
+import ExportImpactsModal from "./export-impacts/ExportModal";
 import ProjectImpactFooter from "./footer/ProjectImpactFooter";
 import ProjectImpactsActionBar from "./header/ProjectImpactsActionBar";
 import ProjectsImpactsPageHeader from "./header/ProjectPageHeader";
@@ -88,6 +89,7 @@ function ProjectPage({
       <AboutImpactsModal />
       <ProjectFeaturesModal projectId={projectId} />
       <SiteFeaturesModal siteId={projectContext.siteId} />
+      <ExportImpactsModal projectId={projectId} siteId={projectContext.siteId} />
       <HelpButton />
     </div>
   );

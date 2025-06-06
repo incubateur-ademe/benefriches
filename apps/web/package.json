@@ -29,6 +29,7 @@
   "dependencies": {
     "@codegouvfr/react-dsfr": "~1.22.3",
     "@headlessui/react": "^2.2.3",
+    "@react-pdf/renderer": "^4.3.0",
     "@reactour/tour": "~3.7.0",
     "@reduxjs/toolkit": "~2.6.1",
     "clsx": "~2.1.1",
@@ -38,6 +39,7 @@
     "react": "~19.1.0",
     "react-dom": "~19.1.0",
     "react-hook-form": "~7.55.0",
+    "react-pdf-tailwind": "^2.3.0",
     "react-redux": "~9.2.0",
     "reduce-reducers": "~1.0.4",
     "shared": "workspace:*",

@@ -1,4 +1,5 @@
 import { fr } from "@codegouvfr/react-dsfr";
+import Button from "@codegouvfr/react-dsfr/Button";
 
 import { ProjectDevelopmentPlanType } from "@/features/projects/domain/projects.types";
 import classNames, { ClassValue } from "@/shared/views/clsx";
@@ -6,6 +7,7 @@ import DropdownMenu from "@/shared/views/components/Menu/DropdownMenu";
 import { useIsSmallScreen } from "@/shared/views/hooks/useIsSmallScreen";
 
 import { getScenarioPictoUrl } from "../../shared/scenarioType";
+import { exportImpactsModal } from "../export-impacts/createExportModal";
 import { aboutImpactsModal } from "../impacts/about-impacts-modal";
 import { projectFeaturesModal } from "../impacts/project-features-modal/createProjectFeaturesModal";
 import ExpressProjectTooltipBadge from "./../ExpressProjectBadge";
@@ -39,8 +41,8 @@ const ProjectPageHeader = ({
       <div
         className={classNames(
           "tw-grid",
-          "tw-grid-cols-[60px_1fr_32px]",
-          "md:tw-grid-cols-[72px_1fr_40px]",
+          "tw-grid-cols-[60px_1fr_120px]",
+          "md:tw-grid-cols-[72px_1fr_180px]",
           "tw-gap-x-2 md:tw-gap-x-3",
           "tw-items-center",
           "tw-justify-center",
@@ -87,7 +89,17 @@ const ProjectPageHeader = ({
             {siteName}
           </a>
         </div>
-        <div className="tw-col-start-3 sm:tw-row-span-2">
+        <div className="tw-col-start-3 sm:tw-row-span-2 tw-flex tw-items-center tw-justify-end tw-gap-3">
+          <Button
+            priority="primary"
+            iconId="fr-icon-file-download-line"
+            size={size}
+            onClick={() => {
+              exportImpactsModal.open();
+            }}
+          >
+            Exporter
+          </Button>
           <DropdownMenu
             size="large"
             buttonProps={{

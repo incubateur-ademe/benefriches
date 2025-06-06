@@ -37,7 +37,7 @@ const NatureRelatedWellnessAndLeisureDescription = ({
   return (
     <ModalBody size="large">
       <ModalHeader
-        title="🚵‍♂️ Loisirs et bien-être liés à la nature"
+        title="🚵 Loisirs et bien-être liés à la nature"
         value={
           impactData
             ? {

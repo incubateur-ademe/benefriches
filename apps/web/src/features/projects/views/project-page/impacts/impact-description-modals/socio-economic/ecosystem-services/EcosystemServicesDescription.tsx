@@ -32,7 +32,7 @@ const getEcosystemServiceDetailsTitle = (
     case "soils_co2_eq_storage":
       return "🍂️ Carbone stocké dans les sols";
     case "nature_related_wellness_and_leisure":
-      return "🚵‍♂️ Loisirs et bien-être liés à la nature";
+      return "🚵 Loisirs et bien-être liés à la nature";
     case "forest_related_product":
       return "🪵 Produits issus de la forêt";
     case "invasive_species_regulation":
