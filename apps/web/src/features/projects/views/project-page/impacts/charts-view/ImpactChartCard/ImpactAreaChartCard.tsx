@@ -11,7 +11,7 @@ type Props = {
 
   color?: string;
   details?: { label: string; base: number; forecast: number; difference: number; color?: string }[];
-  type?: "co2" | "surfaceArea" | "etp" | "default";
+  type?: "co2" | "surface_area" | "etp" | "default";
   height?: number;
 };
 
