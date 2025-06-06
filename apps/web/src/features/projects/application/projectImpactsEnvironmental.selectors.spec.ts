@@ -34,7 +34,7 @@ describe("projectImpactsEnvironmental selectors", () => {
       expect(impacts).toContainEqual(
         expect.objectContaining({
           name: "non_contaminated_surface_area",
-          type: "surfaceArea",
+          type: "surface_area",
           impact: {
             base: 30000,
             forecast: 50000,
@@ -68,7 +68,7 @@ describe("projectImpactsEnvironmental selectors", () => {
       expect(impacts).toContainEqual(
         expect.objectContaining({
           name: "permeable_surface_area",
-          type: "surfaceArea",
+          type: "surface_area",
           impact: {
             base: 60000,
             forecast: 50000,
