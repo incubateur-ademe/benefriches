@@ -1,3 +1,5 @@
+import React from "react";
+
 import { SocioEconomicImpactByCategory } from "@/features/projects/domain/projectImpactsSocioEconomic";
 import { getActorLabel } from "@/features/projects/views/shared/socioEconomicLabels";
 
@@ -60,7 +62,7 @@ const SocioEconomicImpactSection = ({
         dialogId={`fr-modal-impacts-socioeconomic-${sectionName}-List`}
       >
         {impacts.map(({ name, actors }) => (
-          <>
+          <React.Fragment key={name}>
             <ImpactModalDescription
               dialogId={`fr-modal-impacts-socioeconomic-${sectionName}-${name}-List`}
               initialState={{
@@ -71,7 +73,6 @@ const SocioEconomicImpactSection = ({
               {...modalData}
             />
             <ImpactActorsItem
-              key={name}
               type="monetary"
               label={getSocioEconomicImpactLabel(name)}
               labelProps={getDialogControlButtonProps(
@@ -107,7 +108,7 @@ const SocioEconomicImpactSection = ({
                 />
               )),
             )}
-          </>
+          </React.Fragment>
         ))}
       </ImpactSection>
     </>
