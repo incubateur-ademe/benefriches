@@ -77,9 +77,7 @@ export default function MentionsLegalesPage() {
 
       <p>
         Le formulaire "Être tenu informé" est hébergé par{" "}
-        <ExternalLink href="https://tally.so">Tally</ExternalLink>. Les cartes intéractives sont
-        fournies par{" "}
-        <ExternalLink href="https://www.openstreetmap.org">OpenStreet Maps</ExternalLink>
+        <ExternalLink href="https://tally.so">Tally</ExternalLink>.
       </p>
 
       <h2>2. Acceptation des conditions d’utilisation du site et des services proposés</h2>
