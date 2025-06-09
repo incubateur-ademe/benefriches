@@ -36,6 +36,7 @@ export class SqlReconversionProjectQuery implements ReconversionProjectQueryGate
     const sqlResult = (await this.sqlConnection("reconversion_projects")
       .select(
         "id",
+        "creation_mode",
         "name",
         "description",
         "friche_decontaminated_soil_surface_area",
@@ -113,6 +114,7 @@ export class SqlReconversionProjectQuery implements ReconversionProjectQueryGate
       | {
           id: string;
           name: string;
+          creation_mode: string;
           description: string | null;
           friche_decontaminated_soil_surface_area: number | null;
           operations_first_year: number | null;
@@ -185,6 +187,7 @@ export class SqlReconversionProjectQuery implements ReconversionProjectQueryGate
       id: sqlResult.id,
       name: sqlResult.name,
       description: sqlResult.description ?? undefined,
+      isExpress: sqlResult.creation_mode === "express",
       decontaminatedSoilSurface: sqlResult.friche_decontaminated_soil_surface_area ?? undefined,
       firstYearOfOperation: sqlResult.operations_first_year ?? undefined,
       futureOwner: sqlResult.future_site_owner_name ?? undefined,

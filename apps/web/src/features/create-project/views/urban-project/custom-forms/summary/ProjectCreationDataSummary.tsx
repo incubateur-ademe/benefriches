@@ -35,6 +35,7 @@ function ProjectCreationDataSummary({
         projectData={{
           id: projectId,
           name: projectData.name ?? "",
+          isExpress: false,
           description: projectData.description,
           developmentPlan: {
             type: "URBAN_PROJECT",

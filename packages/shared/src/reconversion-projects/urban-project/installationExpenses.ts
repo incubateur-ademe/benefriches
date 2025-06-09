@@ -10,6 +10,9 @@ export type ComputedInstallationExpenses = {
   other: number;
 };
 
+export const URBAN_PROJECT_EURO_PER_SQUARE_METERS_FOR_TECHNICAL_STUDIES = 6;
+export const URBAN_PROJECT_EURO_PER_SQUARE_METERS_FOR_DEVELOPMENT_WORKS = 54;
+
 export const computeDefaultInstallationExpensesFromSiteSurfaceArea = (
   surfaceArea: number,
 ): ComputedInstallationExpenses => {

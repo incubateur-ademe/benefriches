@@ -30,7 +30,7 @@ export const getRecommendedPhotovoltaicPanelsFoundationsSurfaceArea = (
   return photovoltaicInstallationElectricalPowerKWc * RECOMMENDED_M2_PER_KWC_FOR_FOUNDATIONS;
 };
 
-const PHOTOVOLTAIC_POWER_PLANT_ECONOMICAL_RATIO_EURO_PER_KWC = {
+export const PHOTOVOLTAIC_POWER_PLANT_ECONOMICAL_RATIO_EURO_PER_KWC = {
   works: 740,
   technicalStudyAmount: 35,
   other: 75,

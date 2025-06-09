@@ -23,6 +23,12 @@ export type ComputedReinstatementExpenses = {
   asbestosRemoval?: number;
 };
 
+export const EURO_PER_SQUARE_METERS_FOR_DEIMPERMEABILIZATION = 10;
+export const EURO_PER_SQUARE_METERS_FOR_SUSTAINABLE_SOILS_REINSTATEMENT = 45;
+export const EURO_PER_SQUARE_METERS_FOR_REMEDIATION = 66;
+export const EURO_PER_SQUARE_METERS_FOR_DEMOLITION = 75;
+export const EURO_PER_SQUARE_METERS_FOR_ASBESTOS_REMOVAL = 75;
+
 export const computeProjectReinstatementExpenses = (
   siteSoilsDistribution: SoilsDistribution,
   projectSoilsDistribution: SoilsDistribution,
@@ -38,15 +44,22 @@ export const computeProjectReinstatementExpenses = (
 
   return {
     deimpermeabilization:
-      impermeableSoilsDelta < 0 ? Math.abs(impermeableSoilsDelta) * 10 : undefined,
+      impermeableSoilsDelta < 0
+        ? Math.abs(impermeableSoilsDelta) * EURO_PER_SQUARE_METERS_FOR_DEIMPERMEABILIZATION
+        : undefined,
     sustainableSoilsReinstatement:
       impermeableSoilsDelta < 0 && artificialGreenSoilsDelta > 0
-        ? artificialGreenSoilsDelta * 45
+        ? artificialGreenSoilsDelta * EURO_PER_SQUARE_METERS_FOR_SUSTAINABLE_SOILS_REINSTATEMENT
         : undefined,
-    remediation: decontaminatedSoilSurface > 0 ? decontaminatedSoilSurface * 66 : undefined,
-    demolition: siteSoilsDistribution.BUILDINGS ? siteSoilsDistribution.BUILDINGS * 75 : undefined,
+    remediation:
+      decontaminatedSoilSurface > 0
+        ? decontaminatedSoilSurface * EURO_PER_SQUARE_METERS_FOR_REMEDIATION
+        : undefined,
+    demolition: siteSoilsDistribution.BUILDINGS
+      ? siteSoilsDistribution.BUILDINGS * EURO_PER_SQUARE_METERS_FOR_DEMOLITION
+      : undefined,
     asbestosRemoval: siteSoilsDistribution.BUILDINGS
-      ? siteSoilsDistribution.BUILDINGS * 75
+      ? siteSoilsDistribution.BUILDINGS * EURO_PER_SQUARE_METERS_FOR_ASBESTOS_REMOVAL
       : undefined,
   };
 };

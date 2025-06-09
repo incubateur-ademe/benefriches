@@ -52,6 +52,7 @@ export type ProjectFeatures = {
   id: string;
   name: string;
   description?: string;
+  isExpress: boolean;
   developmentPlan: PhotovoltaicPowerPlantFeatures | UrbanProjectFeatures;
   soilsDistribution: SoilsDistribution;
   futureOwner?: string;

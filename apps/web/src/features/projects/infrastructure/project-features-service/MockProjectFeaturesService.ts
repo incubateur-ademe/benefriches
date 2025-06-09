@@ -6,6 +6,7 @@ export class MockProjectFeaturesService implements ProjectFeaturesGateway {
     id: "189038dd-3a6a-43af-bc8d-c4999d8d82ca",
     name: "Mocked project name",
     description: "Mocked project description",
+    isExpress: false,
     developmentPlan: {
       type: "PHOTOVOLTAIC_POWER_PLANT",
       developerName: "ADEME",

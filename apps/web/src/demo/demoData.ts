@@ -37,6 +37,7 @@ export const DEMO_PROJECT = {
   name: "Projet urbain",
   decontaminatedSoilSurface: 7500,
   firstYearOfOperation: 2028,
+  isExpress: false,
   developmentPlan: {
     installationCosts: [
       { amount: 300000, purpose: "technical_studies" },

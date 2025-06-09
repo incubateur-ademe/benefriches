@@ -1,6 +1,9 @@
 import { createSoilSurfaceAreaDistribution, typedObjectEntries } from "shared";
 
-import { ProjectFeatures } from "@/features/projects/domain/projects.types";
+import {
+  ProjectDevelopmentPlanType,
+  ProjectFeatures,
+} from "@/features/projects/domain/projects.types";
 import { formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 import classNames from "@/shared/views/clsx";
 import SurfaceAreaPieChart from "@/shared/views/components/Charts/SurfaceAreaPieChart";
@@ -9,9 +12,15 @@ import SoilTypeLabelWithColorSquare from "@/shared/views/components/FeaturesList
 
 type Props = {
   soilsDistribution: ProjectFeatures["soilsDistribution"];
+  isExpressProject: boolean;
+  projectType: ProjectDevelopmentPlanType;
 };
 
-export default function SoilsDistribution({ soilsDistribution }: Props) {
+export default function SoilsDistribution({
+  projectType,
+  soilsDistribution,
+  isExpressProject,
+}: Props) {
   return (
     <>
       <DataLine
@@ -64,6 +73,11 @@ export default function SoilsDistribution({ soilsDistribution }: Props) {
                 value={formatSurfaceArea(surfaceArea ?? 0)}
                 key={soilType}
                 className="md:tw-grid-cols-[5fr_4fr]"
+                valueTooltip={
+                  isExpressProject && projectType === "URBAN_PROJECT"
+                    ? "Répartition représentative de l’aménagement des espaces pour ce type de projet urbain. L’occupation des sols conditionne la capacité d’infiltration des eaux, la capacité de stockage de carbone dans les sols, etc."
+                    : undefined
+                }
               />
             );
           })}

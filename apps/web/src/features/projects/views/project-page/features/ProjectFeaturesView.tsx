@@ -1,4 +1,13 @@
-import { sumListWithKey } from "shared";
+import {
+  sumListWithKey,
+  EURO_PER_SQUARE_METERS_FOR_REMEDIATION,
+  EURO_PER_SQUARE_METERS_FOR_DEMOLITION,
+  EURO_PER_SQUARE_METERS_FOR_DEIMPERMEABILIZATION,
+  EURO_PER_SQUARE_METERS_FOR_ASBESTOS_REMOVAL,
+  EURO_PER_SQUARE_METERS_FOR_SUSTAINABLE_SOILS_REINSTATEMENT,
+  roundToInteger,
+  sumObjectValues,
+} from "shared";
 
 import {
   getLabelForDevelopmentPlanCategory,
@@ -44,13 +53,22 @@ export default function ProjectFeaturesView({ projectData }: Props) {
       </Section>
       <DevelopmentPlanFeatures {...projectData} />
 
-      <Section title="👱 Acteurs">
+      <Section
+        title="👱 Acteurs"
+        tooltip="Il s’agit des entités ou personnes impliquées dans la réalisation du projet."
+      >
         <DataLine
           label={<strong>Aménageur du site</strong>}
           value={projectData.developmentPlan.developerName ?? "Non renseigné"}
+          valueTooltip={
+            projectData.isExpress
+              ? "On considère que l’aménageur est la collectivité, actuel propriétaire du site."
+              : undefined
+          }
         />
         <DataLine
           label={<strong>Futur propriétaire du site</strong>}
+          labelTooltip="Le futur propriétaire est l’acteur à qui l’aménageur cèdera le terrain pour la réalisation du projet."
           value={projectData.futureOwner ?? "Pas de changement de propriétaire"}
         />
         {projectData.futureOperator && (
@@ -60,6 +78,11 @@ export default function ProjectFeaturesView({ projectData }: Props) {
           <DataLine
             label={<strong>Maître d'ouvrage des travaux de remise en état de la friche</strong>}
             value={projectData.reinstatementContractOwner}
+            valueTooltip={
+              projectData.isExpress
+                ? "Bénéfriches considère que le maître d'ouvrage des travaux de remise en état de la friche est l’aménageur."
+                : undefined
+            }
           />
         )}
       </Section>
@@ -75,6 +98,7 @@ export default function ProjectFeaturesView({ projectData }: Props) {
             <DataLine
               noBorder
               label={<strong>Dépenses de remise en état de la friche</strong>}
+              labelTooltip="Le recyclage foncier impose une phase de remise en état, avant aménagement : déconstruction, désamiantage, désimperméabilisation des sols, dépollution des milieux (sols, eaux souterraines, …),  restauration écologique des sols, etc. Cette phase génère des dépenses parfois importantes."
               value={
                 <strong>
                   {formatNumberFr(sumListWithKey(projectData.reinstatementCosts, "amount"))} €
@@ -88,6 +112,26 @@ export default function ProjectFeaturesView({ projectData }: Props) {
                   value={`${formatNumberFr(amount)} €`}
                   isDetails
                   key={purpose}
+                  labelTooltip={(() => {
+                    switch (purpose) {
+                      case "sustainable_soils_reinstatement":
+                        return "La restauration écologique des sols consiste en la restauration des fonctionnalités écologiques des sols comme l’accueil de la biodiversité, le bon fonctionnement des cycles du carbone ou de l’eau.";
+                    }
+                  })()}
+                  valueTooltip={(() => {
+                    switch (purpose) {
+                      case "sustainable_soils_reinstatement":
+                        return `On considère que pour permettre la renaturation, il y a besoin de restauration écologique des sols qui coûte ${EURO_PER_SQUARE_METERS_FOR_SUSTAINABLE_SOILS_REINSTATEMENT} € / m² de surface de sol enherbé arbustif et sol arboré du projet. Cette valeur est issue du retour d’expérience ADEME.`;
+                      case "deimpermeabilization":
+                        return `On considère que la réduction de la surface imperméabilisée coûte ${EURO_PER_SQUARE_METERS_FOR_DEIMPERMEABILIZATION} € / m² surface désimperméabilisée. Cette valeur est issue du retour d’expérience ADEME.`;
+                      case "remediation":
+                        return `Le coût moyen de dépollution est estimé à ${EURO_PER_SQUARE_METERS_FOR_REMEDIATION} €/m². Cette valeur est issue du retour d’expérience ADEME.`;
+                      case "demolition":
+                        return `Le coût moyen de déconstruction est estimé à ${EURO_PER_SQUARE_METERS_FOR_DEMOLITION} €/m² de bâtiment. Cette valeur est issue du retour d’expérience ADEME.`;
+                      case "asbestos_removal":
+                        return `Le coût moyen de désamiantage est estimé à ${EURO_PER_SQUARE_METERS_FOR_ASBESTOS_REMOVAL} €/m² de bâtiment. Cette valeur est issue du retour d’expérience ADEME.`;
+                    }
+                  })()}
                 />
               );
             })}
@@ -100,12 +144,34 @@ export default function ProjectFeaturesView({ projectData }: Props) {
           />
         )}
 
-        {projectData.siteResaleSellingPrice ? (
-          <DataLine
-            label={<strong>Prix de revente du site</strong>}
-            value={<strong>{formatNumberFr(projectData.siteResaleSellingPrice)} €</strong>}
-          />
-        ) : undefined}
+        {projectData.siteResaleSellingPrice
+          ? (() => {
+              if (projectData.isExpress && projectData.developmentPlan.type === "URBAN_PROJECT") {
+                const buildingsTotalSurfaceArea = sumObjectValues(
+                  projectData.developmentPlan.buildingsFloorArea,
+                );
+
+                return (
+                  <DataLine
+                    label={<strong>Prix de revente du site</strong>}
+                    value={<strong>{formatNumberFr(projectData.siteResaleSellingPrice)} €</strong>}
+                    valueTooltip={
+                      buildingsTotalSurfaceArea
+                        ? `Le prix de revente du site est calculé sur la base de charges foncières estimées à ${roundToInteger(projectData.siteResaleSellingPrice / buildingsTotalSurfaceArea)} €/m²SDP de bâtiment. Cette valeur est issue du retour d’expérience ADEME.`
+                        : undefined
+                    }
+                  />
+                );
+              }
+
+              return (
+                <DataLine
+                  label={<strong>Prix de revente du site</strong>}
+                  value={<strong>{formatNumberFr(projectData.siteResaleSellingPrice)} €</strong>}
+                />
+              );
+            })()
+          : undefined}
         {projectData.buildingsResaleSellingPrice ? (
           <DataLine
             label={<strong>Prix de revente des bâtiments</strong>}
@@ -206,6 +272,11 @@ export default function ProjectFeaturesView({ projectData }: Props) {
         {projectData.reinstatementSchedule && (
           <DataLine
             label={<strong>Travaux de remise en état de la friche</strong>}
+            valueTooltip={
+              projectData.isExpress
+                ? `Bénéfriches considère que les travaux de remise en état de la friche démarrent dans 1 an et durent 1 an.`
+                : undefined
+            }
             value={
               <ScheduleDates
                 startDateString={projectData.reinstatementSchedule.startDate}
@@ -223,11 +294,21 @@ export default function ProjectFeaturesView({ projectData }: Props) {
                 endDateString={projectData.developmentPlan.installationSchedule.endDate}
               />
             }
+            valueTooltip={
+              projectData.isExpress
+                ? "Bénéfriches considère que les travaux d'aménagement  démarrent à l’issue des travaux de remise en état de la friche et durent 1 an."
+                : undefined
+            }
           />
         )}
         <DataLine
           label={<strong>Mise en service du site</strong>}
           value={projectData.firstYearOfOperation ?? "Non renseigné"}
+          valueTooltip={
+            projectData.isExpress
+              ? "Bénéfriches considère que la mise en service du site intervient l’année suivant la fin de l’aménagement."
+              : undefined
+          }
         />
       </Section>
       <Section title="✍️ Dénomination">

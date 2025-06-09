@@ -8,6 +8,7 @@ export type ReconversionProjectFeaturesView = {
   id: string;
   name: string;
   description?: string;
+  isExpress: boolean;
   developmentPlan:
     | {
         type: "PHOTOVOLTAIC_POWER_PLANT";
