@@ -1,6 +1,16 @@
+set $CSP_DEFAULT "default-src 'self'";
+set $CSP_SCRIPT "script-src 'self' 'wasm-unsafe-eval' https://tally.so/widgets/embed.js https://stats.beta.gouv.fr";
+set $CSP_CONNECT "connect-src 'self' data: https://stats.beta.gouv.fr/matomo.php https://api-adresse.data.gouv.fr/search/ https://geo.api.gouv.fr/communes/ https://cdnjs.cloudflare.com/ajax/libs/twemoji/";
+set $CSP_STYLE "style-src 'self' 'unsafe-inline'";
+set $CSP_FONT "font-src 'self'";
+set $CSP_IMG "img-src 'self' blob: data: https://a.tile.openstreetmap.org https://b.tile.openstreetmap.org https://c.tile.openstreetmap.org";
+set $CSP_FRAME "frame-ancestors 'none'";
+set $CSP_FRAME_SRC "frame-src https://tally.so https://benefriches-metabase.osc-secnum-fr1.scalingo.io";
+
+
 location / {
   root /app/dist;
-  add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'wasm-unsafe-eval' https://tally.so/widgets/embed.js https://stats.beta.gouv.fr ;connect-src 'self' data: https://stats.beta.gouv.fr/matomo.php https://api-adresse.data.gouv.fr/search/ https://geo.api.gouv.fr/communes/ https://cdnjs.cloudflare.com/ajax/libs/twemoji/;font-src 'self';img-src 'self' blob: data: https://a.tile.openstreetmap.org https://b.tile.openstreetmap.org https://c.tile.openstreetmap.org;frame-ancestors 'none';style-src 'self' 'unsafe-inline'; frame-src https://tally.so https://benefriches-metabase.osc-secnum-fr1.scalingo.io;";
+  add_header Content-Security-Policy "$CSP_DEFAULT; $CSP_SCRIPT; $CSP_CONNECT; $CSP_STYLE; $CSP_FONT; $CSP_IMG; $CSP_FRAME; $CSP_FRAME_SRC;";
   add_header X-Content-Type-Options "nosniff";
   add_header X-Frame-Options "DENY";
   try_files $uri $uri/ /index.html =404;
