@@ -6,7 +6,6 @@ import { useAppSelector } from "../../hooks/store.hooks";
 
 export default function HelpButton() {
   const currentUserEmail = useAppSelector(selectCurrentUserEmail);
-  const state = useAppSelector((state) => state);
 
   return (
     currentUserEmail && (
@@ -19,7 +18,6 @@ export default function HelpButton() {
         data-tally-auto-close="0"
         data-email={currentUserEmail}
         data-url={window.location.href}
-        data-client-state={btoa(JSON.stringify(state))} // base-64 encode the client state
         size="medium"
         priority="secondary"
       >
