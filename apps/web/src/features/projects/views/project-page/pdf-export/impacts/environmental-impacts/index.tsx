@@ -29,7 +29,7 @@ export default function EnvironmentalImpactsPage({ impacts }: Props) {
   const soilsImpacts = impacts.filter(({ name }) => ENVIRONMENTAL_SECTIONS.soils.includes(name));
 
   return (
-    <PdfPage id={pageIds["impacts-social"]}>
+    <PdfPage id={pageIds["impacts-environment"]}>
       <PdfPageSubtitle>1.4 Impacts environnementaux</PdfPageSubtitle>
       <View style={tw("mb-4")}>
         <Text>Les impacts environnementaux se décompose en différents types d'indicateurs :</Text>
