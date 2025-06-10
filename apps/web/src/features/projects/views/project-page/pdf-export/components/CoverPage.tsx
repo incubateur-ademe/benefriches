@@ -22,8 +22,13 @@ export default function ProjectPdfExportCoverPage() {
           <Image src="/img/logos/logo-ademe.png" style={tw("h-20")} />
           <Image src="/img/logos/logo-benefriches.png" style={tw("h-8")} />
         </View>
-        <Text style={tw("text-4xl font-bold text-center mt-8")}>Projet « {projectName} »</Text>
-        <Text style={tw("text-xl text-center")}>{siteName}</Text>
+        <Text style={tw("text-2xl leading-none font-bold text-center mt-8")}>
+          Impacts du projet
+        </Text>
+        <Text style={tw("text-4xl leading-none font-bold text-center my-6")}>
+          « {projectName} »
+        </Text>
+        <Text style={tw("text-xl text-center mt-2")}>{siteName}</Text>
         <Text style={tw("text-sm text-center mt-2 text-gray-500")}>
           Exporté le {new Date().toLocaleDateString()}
         </Text>
