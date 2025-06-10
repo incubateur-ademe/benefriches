@@ -19,9 +19,8 @@ type Props = {
 
 export default function PdfExportDownloadButton({ projectId, siteId }: Props) {
   const dispatch = useAppDispatch();
-  const { loadingState, projectFeatures, siteFeatures, impacts } =
+  const { loadingState, evaluationPeriodInYears, projectFeatures, siteFeatures, impacts } =
     useAppSelector(selectExportImpactsView);
-
   useEffect(() => {
     void dispatch(fetchProjectFeatures({ projectId }));
     void dispatch(fetchSiteFeatures({ siteId }));
@@ -29,7 +28,7 @@ export default function PdfExportDownloadButton({ projectId, siteId }: Props) {
 
   if (loadingState === "error") return "Erreur lors de la génération du document.";
 
-  if (loadingState === "idle" || loadingState === "loading") return "Génération du document...";
+  if (loadingState === "idle" || loadingState === "loading") return "Chargement des données...";
 
   if (!projectFeatures || !siteFeatures) {
     return "Erreur lors de la génération du document.";
@@ -42,6 +41,7 @@ export default function PdfExportDownloadButton({ projectId, siteId }: Props) {
           siteFeatures={siteFeatures}
           projectFeatures={projectFeatures}
           impacts={impacts}
+          evaluationPeriodInYears={evaluationPeriodInYears}
         />
       }
       onClick={() => {

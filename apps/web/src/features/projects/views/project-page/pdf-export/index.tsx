@@ -16,6 +16,7 @@ import SiteFeaturesPdfPage from "./site-features/SiteFeaturesPdfPage";
 type Props = {
   siteFeatures: SiteFeatures;
   projectFeatures: ProjectFeatures;
+  evaluationPeriodInYears: number;
   impacts: {
     economicBalance: EconomicBalance;
     environment: EnvironmentalImpact[];
@@ -24,7 +25,12 @@ type Props = {
   };
 };
 
-export default function ProjectPdfExport({ siteFeatures, projectFeatures, impacts }: Props) {
+export default function ProjectPdfExport({
+  siteFeatures,
+  projectFeatures,
+  evaluationPeriodInYears,
+  impacts,
+}: Props) {
   return (
     <ExportImpactsContext.Provider
       value={{ projectName: projectFeatures.name, siteName: siteFeatures.name }}
@@ -35,7 +41,10 @@ export default function ProjectPdfExport({ siteFeatures, projectFeatures, impact
         language="fr"
       >
         <ProjectPdfExportCoverPage />
-        <ProjectImpactsPdfPage impacts={impacts} />
+        <ProjectImpactsPdfPage
+          impacts={impacts}
+          evaluationPeriodInYears={evaluationPeriodInYears}
+        />
         <ProjectFeaturesPdfPage projectFeatures={projectFeatures} />
         <SiteFeaturesPdfPage siteFeatures={siteFeatures} />
       </Document>

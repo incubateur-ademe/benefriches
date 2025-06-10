@@ -19,6 +19,7 @@ export type ExportImpactsView = {
   loadingState: LoadingState;
   projectFeatures: ProjectFeatures | undefined;
   siteFeatures: SiteFeatures | undefined;
+  evaluationPeriodInYears: number;
   impacts: {
     economicBalance: EconomicBalance;
     environment: EnvironmentalImpact[];
@@ -47,6 +48,7 @@ export const selectExportImpactsView = createSelector(
   [
     (state: RootState) => state.projectFeatures,
     (state: RootState) => state.siteFeatures,
+    (state: RootState) => state.projectImpacts.evaluationPeriod,
     selectEconomicBalanceProjectImpacts,
     selectDetailedSocioEconomicProjectImpacts,
     selectEnvironmentalProjectImpacts,
@@ -55,6 +57,7 @@ export const selectExportImpactsView = createSelector(
   (
     projectFeaturesState,
     siteFeaturesState,
+    evaluationPeriod,
     economicBalance,
     socioEconomicImpacts,
     environmentImpacts,
@@ -72,6 +75,7 @@ export const selectExportImpactsView = createSelector(
       ),
       projectFeatures,
       siteFeatures,
+      evaluationPeriodInYears: evaluationPeriod,
       impacts: {
         economicBalance,
         socioEconomic: socioEconomicImpacts,

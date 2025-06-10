@@ -15,12 +15,16 @@ type Props = {
     socioEconomic: SocioEconomicDetailedImpact;
     social: SocialImpact[];
   };
+  evaluationPeriodInYears: number;
 };
 
-export default function ProjectImpactsPdfPages({ impacts }: Props) {
+export default function ProjectImpactsPdfPages({ impacts, evaluationPeriodInYears }: Props) {
   return (
     <>
-      <EconomicBalancePages impact={impacts.economicBalance} />
+      <EconomicBalancePages
+        impact={impacts.economicBalance}
+        evaluationPeriodInYears={evaluationPeriodInYears}
+      />
       <SocioEconomicImpactsPages impacts={impacts.socioEconomic} />
       <SocialImpactsPage impacts={impacts.social} />
       <EnvironmentalImpactsPage impacts={impacts.environment} />
