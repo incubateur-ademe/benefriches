@@ -18,19 +18,19 @@
   "dependencies": {
     "date-fns": "~4.1.0",
     "uuid": "~11.1.0",
-    "zod": "~3.24.2"
+    "zod": "~3.25.57"
   },
   "devDependencies": {
-    "@eslint/js": "~9.24.0",
-    "@trivago/prettier-plugin-sort-imports": "~5.2.1",
+    "@eslint/js": "~9.28.0",
+    "@trivago/prettier-plugin-sort-imports": "~5.2.2",
     "@types/jest": "~29.5.14",
     "@types/uuid": "~10.0.0",
-    "eslint": "~9.24.0",
-    "eslint-plugin-jest": "~28.11.0",
+    "eslint": "~9.28.0",
+    "eslint-plugin-jest": "~28.13.0",
     "prettier": "~3.5.3",
     "rimraf": "~6.0.1",
     "typescript": "~5.8.3",
-    "typescript-eslint": "~8.29.1",
-    "vitest": "~3.1.1"
+    "typescript-eslint": "~8.34.0",
+    "vitest": "~3.2.3"
   }
 }
