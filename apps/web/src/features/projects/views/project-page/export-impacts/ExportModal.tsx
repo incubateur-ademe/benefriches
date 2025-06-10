@@ -13,7 +13,7 @@ function UnavailableExportOption({ label }: { label: string }) {
   return (
     <span>
       <span>{label}</span>
-      <Badge small className="tw-ml-3" style="green-emeraude">
+      <Badge small className="tw-ml-3" style="green-tilleul">
         Bientôt disponible
       </Badge>
     </span>
