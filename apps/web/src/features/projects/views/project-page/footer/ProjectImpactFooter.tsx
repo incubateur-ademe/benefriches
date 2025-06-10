@@ -1,5 +1,6 @@
 import Button from "@codegouvfr/react-dsfr/Button";
 
+import { impactsExportModalOpened, trackEvent } from "@/shared/views/analytics";
 import TileLink from "@/shared/views/components/TileLink/TileLink";
 import { routes } from "@/shared/views/router";
 
@@ -24,7 +25,10 @@ function ProjectImpactFooter({ siteId }: Props) {
         <TileLink
           title="Exporter les impacts du projet"
           iconId="fr-icon-file-download-line"
-          onClick={exportImpactsModal.open}
+          onClick={() => {
+            trackEvent(impactsExportModalOpened());
+            exportImpactsModal.open();
+          }}
         />
         <TileDuplicateProject />
         <TileLink

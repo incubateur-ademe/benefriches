@@ -2,11 +2,9 @@ import { lazy, Suspense, useEffect } from "react";
 import { createGroup } from "type-route";
 
 import { initCurrentUser } from "@/features/onboarding/core/initCurrentUser.action";
-import MatomoContainer from "@/shared/views/MatomoContainer";
 import NotFoundScreen from "@/shared/views/components/NotFound/NotFound";
 import RequireRegisteredUser from "@/shared/views/components/RequireRegisteredUser/RequireRegisteredUser";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
-import { BENEFRICHES_ENV } from "@/shared/views/envVars";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 import HeaderFooterLayout from "@/shared/views/layout/HeaderFooterLayout/HeaderFooterLayout";
 import SidebarContainerLayout from "@/shared/views/layout/SidebarLayout/SidebarContainerLayout";
@@ -59,12 +57,6 @@ function FeaturesApp() {
                   return <CreateProjectPage route={route} />;
               }
             })()}
-            {BENEFRICHES_ENV.matomoTrackingEnabled && (
-              <MatomoContainer
-                siteId={BENEFRICHES_ENV.matomoSiteId}
-                matomoUrl={BENEFRICHES_ENV.matomoUrl}
-              />
-            )}
           </RequireRegisteredUser>
         </Suspense>
       </SidebarContainerLayout>

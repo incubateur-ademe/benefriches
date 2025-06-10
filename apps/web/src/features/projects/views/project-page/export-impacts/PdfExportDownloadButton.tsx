@@ -5,6 +5,7 @@ import { selectExportImpactsView } from "@/features/projects/application/exportI
 import { fetchProjectFeatures } from "@/features/projects/application/project-features/projectFeatures.actions";
 import { fetchSiteFeatures } from "@/features/site-features/core/fetchSiteFeatures.action";
 import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
+import { impactsExportDownloaded, trackEvent } from "@/shared/views/analytics";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import PdfExportDocument from "../pdf-export";
@@ -43,6 +44,9 @@ export default function PdfExportDownloadButton({ projectId, siteId }: Props) {
           impacts={impacts}
         />
       }
+      onClick={() => {
+        trackEvent(impactsExportDownloaded("pdf"));
+      }}
       fileName={`Export Bénéfriches ${new Date().toLocaleDateString()} - Projet ${projectFeatures.name}.pdf`}
     >
       {({ blob, loading }) =>
