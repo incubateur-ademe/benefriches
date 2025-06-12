@@ -4,8 +4,8 @@ import { useEffect } from "react";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import { fetchQuickImpactsForUrbanProjectOnFriche } from "../../application/fetchQuickImpactsForUrbanProjectOnFriche.action";
-import { setViewMode, ViewMode } from "../../application/projectImpacts.reducer";
+import { fetchQuickImpactsForUrbanProjectOnFriche } from "../../application/project-impacts/fetchQuickImpactsForUrbanProjectOnFriche.action";
+import { setViewMode, ViewMode } from "../../application/project-impacts/projectImpacts.reducer";
 import EmbedImpactsView from "./EmbedImpactsView";
 
 type Props = {

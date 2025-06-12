@@ -1,4 +1,4 @@
-import { ReconversionProjectsListGateway } from "../../application/projectsList.actions";
+import { ReconversionProjectsListGateway } from "../../application/projects-list/projectsList.actions";
 import { ReconversionProjectsGroupedBySite } from "../../domain/projects.types";
 
 export class HttpReconversionProjectsListApi implements ReconversionProjectsListGateway {

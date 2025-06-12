@@ -2,8 +2,8 @@ import { createSelector } from "@reduxjs/toolkit";
 
 import { RootState } from "@/shared/core/store-config/store";
 
-import { getEconomicBalanceProjectImpacts } from "../domain/projectImpactsEconomicBalance";
-import { ProjectDevelopmentPlanType } from "../domain/projects.types";
+import { getEconomicBalanceProjectImpacts } from "../../domain/projectImpactsEconomicBalance";
+import { ProjectDevelopmentPlanType } from "../../domain/projects.types";
 import { ProjectImpactsState } from "./projectImpacts.reducer";
 
 const selectSelf = (state: RootState) => state.projectImpacts;

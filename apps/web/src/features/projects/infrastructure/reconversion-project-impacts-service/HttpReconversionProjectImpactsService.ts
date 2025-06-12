@@ -1,7 +1,7 @@
 import {
   ReconversionProjectImpactsGateway,
   ReconversionProjectImpactsResult,
-} from "../../application/fetchImpactsForReconversionProject.action";
+} from "../../application/project-impacts/fetchImpactsForReconversionProject.action";
 
 export class HttpReconversionProjectImpactsApi implements ReconversionProjectImpactsGateway {
   async getReconversionProjectImpacts(

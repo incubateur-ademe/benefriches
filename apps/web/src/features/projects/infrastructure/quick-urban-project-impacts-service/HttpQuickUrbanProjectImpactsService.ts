@@ -1,7 +1,7 @@
 import {
   ReconversionProjectImpactsResult,
   QuickUrbanProjectImpactsGateway,
-} from "../../application/fetchQuickImpactsForUrbanProjectOnFriche.action";
+} from "../../application/project-impacts/fetchQuickImpactsForUrbanProjectOnFriche.action";
 
 type Input = {
   siteSurfaceArea: number;

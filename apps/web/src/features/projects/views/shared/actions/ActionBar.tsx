@@ -1,6 +1,6 @@
 import { SegmentedControl } from "@codegouvfr/react-dsfr/SegmentedControl";
 
-import { ViewMode } from "@/features/projects/application/projectImpacts.reducer";
+import { ViewMode } from "@/features/projects/application/project-impacts/projectImpacts.reducer";
 import { useIsSmallScreen } from "@/shared/views/hooks/useIsSmallScreen";
 
 import ImpactEvaluationPeriodSelect from "./ImpactEvaluationPeriodSelect";

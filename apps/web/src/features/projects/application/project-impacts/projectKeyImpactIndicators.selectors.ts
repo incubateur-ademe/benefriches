@@ -7,7 +7,7 @@ import {
   getMainKeyImpactIndicators,
   getProjectOverallImpact,
   ProjectOverallImpact,
-} from "../domain/projectKeyImpactIndicators";
+} from "../../domain/projectKeyImpactIndicators";
 
 const selectSelf = (state: RootState) => state.projectImpacts;
 

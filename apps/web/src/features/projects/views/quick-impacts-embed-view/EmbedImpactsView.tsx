@@ -2,7 +2,7 @@ import { useIsDark } from "@codegouvfr/react-dsfr/useIsDark";
 
 import classNames from "@/shared/views/clsx";
 
-import { ViewMode } from "../../application/projectImpacts.reducer";
+import { ViewMode } from "../../application/project-impacts/projectImpacts.reducer";
 import ImpactsChartsView from "../project-page/impacts/charts-view";
 import ImpactsListViewContainer from "../project-page/impacts/list-view";
 import ImpactsSummaryViewContainer from "../project-page/impacts/summary-view";

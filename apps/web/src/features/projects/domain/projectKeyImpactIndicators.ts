@@ -2,7 +2,7 @@ import { isLocalAuthority, sumListWithKey } from "shared";
 
 import { getPercentageDifference } from "@/shared/core/percentage/percentage";
 
-import { ReconversionProjectImpactsResult } from "../application/fetchImpactsForReconversionProject.action";
+import { ReconversionProjectImpactsResult } from "../application/project-impacts/fetchImpactsForReconversionProject.action";
 
 export type ProjectOverallImpact = "strong_negative" | "negative" | "positive" | "strong_positive";
 

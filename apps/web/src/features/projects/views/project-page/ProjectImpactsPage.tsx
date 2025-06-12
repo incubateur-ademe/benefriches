@@ -5,7 +5,10 @@ import HelpButton from "@/shared/views/components/HelpButton/HelpButton.tsx";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import { routes } from "@/shared/views/router.ts";
 
-import { ProjectImpactsState, ViewMode } from "../../application/projectImpacts.reducer";
+import {
+  ProjectImpactsState,
+  ViewMode,
+} from "../../application/project-impacts/projectImpacts.reducer.ts";
 import { ProjectDevelopmentPlanType } from "../../domain/projects.types";
 import ExportImpactsModal from "./export-impacts/ExportModal";
 import ProjectImpactFooter from "./footer/ProjectImpactFooter";

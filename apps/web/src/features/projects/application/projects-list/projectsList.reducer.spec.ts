@@ -3,8 +3,8 @@ import { v4 as uuid } from "uuid";
 import { createStore } from "@/shared/core/store-config/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
-import { ReconversionProjectsGroupedBySite } from "../domain/projects.types";
-import { InMemoryReconversionProjectsListService } from "../infrastructure/projects-list-service/InMemoryProjectsListService";
+import { ReconversionProjectsGroupedBySite } from "../../domain/projects.types";
+import { InMemoryReconversionProjectsListService } from "../../infrastructure/projects-list-service/InMemoryProjectsListService";
 import { fetchReconversionProjects } from "./projectsList.actions";
 import { selectComparableProjects, selectReconversionProjectById } from "./projectsList.reducer";
 

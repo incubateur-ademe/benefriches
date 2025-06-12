@@ -3,11 +3,11 @@ import { createSelector } from "@reduxjs/toolkit";
 import { SiteFeatures } from "@/features/site-features/core/siteFeatures";
 import { RootState } from "@/shared/core/store-config/store";
 
-import { EconomicBalance } from "../domain/projectImpactsEconomicBalance";
-import { EnvironmentalImpact } from "../domain/projectImpactsEnvironmental";
-import { SocialImpact } from "../domain/projectImpactsSocial";
-import { SocioEconomicDetailedImpact } from "../domain/projectImpactsSocioEconomic";
-import { ProjectFeatures } from "../domain/projects.types";
+import { EconomicBalance } from "../../domain/projectImpactsEconomicBalance";
+import { EnvironmentalImpact } from "../../domain/projectImpactsEnvironmental";
+import { SocialImpact } from "../../domain/projectImpactsSocial";
+import { SocioEconomicDetailedImpact } from "../../domain/projectImpactsSocioEconomic";
+import { ProjectFeatures } from "../../domain/projects.types";
 import { selectEconomicBalanceProjectImpacts } from "./projectImpactsEconomicBalance.selectors";
 import { selectEnvironmentalProjectImpacts } from "./projectImpactsEnvironmental.selectors";
 import { selectSocialProjectImpacts } from "./projectImpactsSocial.selectors";

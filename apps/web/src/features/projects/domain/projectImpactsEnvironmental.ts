@@ -1,4 +1,4 @@
-import { ReconversionProjectImpactsResult } from "../application/fetchImpactsForReconversionProject.action";
+import { ReconversionProjectImpactsResult } from "../application/project-impacts/fetchImpactsForReconversionProject.action";
 
 type ImpactValue = {
   base: number;

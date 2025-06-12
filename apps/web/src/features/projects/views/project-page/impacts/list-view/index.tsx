@@ -1,8 +1,8 @@
-import { selectModalData } from "@/features/projects/application/projectImpacts.reducer";
-import { selectEconomicBalanceProjectImpacts } from "@/features/projects/application/projectImpactsEconomicBalance.selectors";
-import { selectEnvironmentalProjectImpacts } from "@/features/projects/application/projectImpactsEnvironmental.selectors";
-import { selectSocialProjectImpacts } from "@/features/projects/application/projectImpactsSocial.selectors";
-import { selectDetailedSocioEconomicProjectImpacts } from "@/features/projects/application/projectImpactsSocioEconomic.selectors";
+import { selectModalData } from "@/features/projects/application/project-impacts/projectImpacts.reducer";
+import { selectEconomicBalanceProjectImpacts } from "@/features/projects/application/project-impacts/projectImpactsEconomicBalance.selectors";
+import { selectEnvironmentalProjectImpacts } from "@/features/projects/application/project-impacts/projectImpactsEnvironmental.selectors";
+import { selectSocialProjectImpacts } from "@/features/projects/application/project-impacts/projectImpactsSocial.selectors";
+import { selectDetailedSocioEconomicProjectImpacts } from "@/features/projects/application/project-impacts/projectImpactsSocioEconomic.selectors";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import ImpactsListView from "./ImpactsListView";

@@ -1,4 +1,4 @@
-import { ViewMode } from "../../../application/projectImpacts.reducer";
+import { ViewMode } from "../../../application/project-impacts/projectImpacts.reducer";
 import ImpactsChartsView from "./charts-view";
 import ImpactsListViewContainer from "./list-view";
 import ImpactsSummaryViewContainer from "./summary-view";

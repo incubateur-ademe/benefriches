@@ -1,5 +1,5 @@
-import { selectModalData } from "@/features/projects/application/projectImpacts.reducer";
-import { getKeyImpactIndicatorsListSelector } from "@/features/projects/application/projectKeyImpactIndicators.selectors";
+import { selectModalData } from "@/features/projects/application/project-impacts/projectImpacts.reducer";
+import { getKeyImpactIndicatorsListSelector } from "@/features/projects/application/project-impacts/projectKeyImpactIndicators.selectors";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import ImpactSummaryView from "./ImpactSummaryView";

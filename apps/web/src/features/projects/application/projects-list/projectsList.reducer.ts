@@ -5,7 +5,7 @@ import { RootState } from "@/shared/core/store-config/store";
 import {
   ProjectDevelopmentPlanType,
   ReconversionProjectsGroupedBySite,
-} from "../domain/projects.types";
+} from "../../domain/projects.types";
 import { fetchReconversionProjects } from "./projectsList.actions";
 
 type LoadingState = "idle" | "loading" | "success" | "error";

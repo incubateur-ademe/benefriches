@@ -1,16 +1,16 @@
 import {
   selectModalData,
   selectProjectName,
-} from "@/features/projects/application/projectImpacts.reducer";
+} from "@/features/projects/application/project-impacts/projectImpacts.reducer";
 import {
   selectEnvironmentalAreaChartImpactsData,
   selectSocialAreaChartImpactsData,
-} from "@/features/projects/application/projectImpactsAreaChartsData";
-import { selectEconomicBalanceProjectImpacts } from "@/features/projects/application/projectImpactsEconomicBalance.selectors";
+} from "@/features/projects/application/project-impacts/projectImpactsAreaChartsData";
+import { selectEconomicBalanceProjectImpacts } from "@/features/projects/application/project-impacts/projectImpactsEconomicBalance.selectors";
 import {
   selectSocioEconomicProjectImpactsByActor,
   selectTotalSocioEconomicImpact,
-} from "@/features/projects/application/projectImpactsSocioEconomic.selectors";
+} from "@/features/projects/application/project-impacts/projectImpactsSocioEconomic.selectors";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import ImpactsChartsView from "./ImpactsChartsView";

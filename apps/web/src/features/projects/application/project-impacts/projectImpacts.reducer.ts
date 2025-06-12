@@ -3,8 +3,8 @@ import { FricheActivity, SoilsDistribution } from "shared";
 
 import { RootState } from "@/shared/core/store-config/store";
 
-import { ProjectDevelopmentPlanType } from "../domain/projects.types";
-import { ModalDataProps } from "../views/project-page/impacts/impact-description-modals/ImpactModalDescription";
+import { ProjectDevelopmentPlanType } from "../../domain/projects.types";
+import { ModalDataProps } from "../../views/project-page/impacts/impact-description-modals/ImpactModalDescription";
 import {
   fetchImpactsForReconversionProject,
   ReconversionProjectImpactsResult,

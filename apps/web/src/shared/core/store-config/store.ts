@@ -10,15 +10,15 @@ import { CreateSiteGateway } from "@/features/create-site/core/actions/finalStep
 import { SiteMunicipalityDataGateway as CreateSiteMunicipalityDataGateway } from "@/features/create-site/core/actions/siteMunicipalityData.actions";
 import { CreateUserGateway } from "@/features/onboarding/core/createUser.action";
 import { CurrentUserGateway } from "@/features/onboarding/core/initCurrentUser.action";
-import { ReconversionProjectImpactsGateway } from "@/features/projects/application/fetchImpactsForReconversionProject.action";
-import { QuickUrbanProjectImpactsGateway } from "@/features/projects/application/fetchQuickImpactsForUrbanProjectOnFriche.action";
 import { ProjectFeaturesGateway } from "@/features/projects/application/project-features/projectFeatures.actions";
+import { ReconversionProjectImpactsGateway } from "@/features/projects/application/project-impacts/fetchImpactsForReconversionProject.action";
+import { QuickUrbanProjectImpactsGateway } from "@/features/projects/application/project-impacts/fetchQuickImpactsForUrbanProjectOnFriche.action";
 import { SiteFeaturesGateway } from "@/features/site-features/core/fetchSiteFeatures.action";
 import { CreateFeatureAlertGateway } from "@/features/user-feature-alerts/core/CreateFeatureAlertGateway";
 
 import { SoilsCarbonStorageGateway as ProjectSoilsCarbonStorageGateway } from "../../../features/create-project/core/actions/soilsCarbonStorage.action";
 import { SoilsCarbonStorageGateway as SiteSoilsCarbonStorageGateway } from "../../../features/create-site/core/actions/siteSoilsCarbonStorage.actions";
-import { ReconversionProjectsListGateway } from "../../../features/projects/application/projectsList.actions";
+import { ReconversionProjectsListGateway } from "../../../features/projects/application/projects-list/projectsList.actions";
 import { getListener, setupAllListeners } from "./listenerMiddleware";
 import { rootReducer } from "./rootReducer";
 

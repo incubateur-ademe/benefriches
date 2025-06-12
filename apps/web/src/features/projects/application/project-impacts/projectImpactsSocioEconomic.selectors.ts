@@ -5,7 +5,7 @@ import { RootState } from "@/shared/core/store-config/store";
 import {
   getDetailedSocioEconomicProjectImpacts,
   getSocioEconomicProjectImpactsByActor,
-} from "../domain/projectImpactsSocioEconomic";
+} from "../../domain/projectImpactsSocioEconomic";
 import { ProjectImpactsState } from "./projectImpacts.reducer";
 
 const selectSelf = (state: RootState) => state.projectImpacts;

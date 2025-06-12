@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { selectCurrentUserId } from "@/features/onboarding/core/user.reducer";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import { fetchReconversionProjects } from "../../application/projectsList.actions";
+import { fetchReconversionProjects } from "../../application/projects-list/projectsList.actions";
 import MyProjectsPage from "./MyProjectsPage";
 
 function MyProjectsPageContainer() {

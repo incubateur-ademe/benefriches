@@ -5,7 +5,7 @@ import { RootState } from "@/shared/core/store-config/store";
 import {
   getEnvironmentalAreaChartImpactsData,
   getSocialAreaChartImpactsData,
-} from "../domain/projectImpactsAreaChartsData";
+} from "../../domain/projectImpactsAreaChartsData";
 
 export const selectSocialAreaChartImpactsData = createSelector(
   (state: RootState) => state.projectImpacts.impactsData,

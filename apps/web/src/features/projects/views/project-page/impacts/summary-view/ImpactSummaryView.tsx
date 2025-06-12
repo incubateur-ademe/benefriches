@@ -1,6 +1,6 @@
 import React from "react";
 
-import { KeyImpactIndicatorData } from "@/features/projects/application/projectKeyImpactIndicators.selectors";
+import { KeyImpactIndicatorData } from "@/features/projects/application/project-impacts/projectKeyImpactIndicators.selectors";
 
 import ImpactModalDescription, {
   ModalDataProps,

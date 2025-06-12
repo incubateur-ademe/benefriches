@@ -7,8 +7,8 @@ import siteMunicipalityData from "@/features/create-site/core/siteMunicipalityDa
 import siteCarbonStorage from "@/features/create-site/core/siteSoilsCarbonStorage.reducer";
 import currentUser from "@/features/onboarding/core/user.reducer";
 import { projectFeaturesReducer } from "@/features/projects/application/project-features/projectFeatures.reducer";
-import projectImpacts from "@/features/projects/application/projectImpacts.reducer";
-import reconversionProjectsList from "@/features/projects/application/projectsList.reducer";
+import projectImpacts from "@/features/projects/application/project-impacts/projectImpacts.reducer";
+import reconversionProjectsList from "@/features/projects/application/projects-list/projectsList.reducer";
 import siteFeatures from "@/features/site-features/core/siteFeatures.reducer";
 import userFeatureAlert from "@/features/user-feature-alerts/core/userFeatureAlert.reducer";
 
