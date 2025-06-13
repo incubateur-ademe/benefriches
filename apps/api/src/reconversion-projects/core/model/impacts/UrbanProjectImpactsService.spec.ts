@@ -316,22 +316,57 @@ describe("UrbanProjectImpactsService", () => {
       });
     });
 
-    it("returns urban project environmental impacts", () => {
+    it("returns urban project environmental impacts on friche", () => {
       const result = urbanProjectImpactsService.formatImpacts();
 
       expect(result.environmental.nonContaminatedSurfaceArea).toBeDefined();
       expect(result.environmental.permeableSurfaceArea).toBeDefined();
       expect(result.environmental.soilsCo2eqStorage).toBeDefined();
       expect(result.environmental.soilsCarbonStorage).toBeDefined();
-      expect(result.environmental.avoidedCo2eqEmissions.withCarTrafficDiminution).toEqual(
+      expect(result.environmental.avoidedCo2eqEmissions?.withCarTrafficDiminution).toEqual(
         urbanProjectImpactsService["travelRelatedImpactsService"].getAvoidedTrafficCO2Emissions()
           ?.inTons,
       );
-      expect(result.environmental.avoidedCo2eqEmissions.withAirConditioningDiminution).toEqual(
+      expect(result.environmental.avoidedCo2eqEmissions?.withAirConditioningDiminution).toEqual(
         urbanProjectImpactsService[
           "urbanFreshnessImpactsService"
         ].getAvoidedAirConditioningCo2Emissions()?.inTons,
       );
+    });
+
+    it("returns urban project environmental impacts on agricultural site", () => {
+      const result = new UrbanProjectImpactsService({
+        reconversionProject: {
+          ...reconversionProjectImpactDataView,
+          developmentPlanFeatures: {
+            buildingsFloorAreaDistribution: {
+              RESIDENTIAL: 160000000,
+              LOCAL_STORE: 1000,
+              OFFICES: 1000,
+              CULTURAL_PLACE: 500,
+              SPORTS_FACILITIES: 1000,
+            },
+            spacesDistribution: {
+              BUILDINGS_FOOTPRINT: 10000,
+              PUBLIC_GREEN_SPACES: 65100,
+            },
+          },
+        },
+        relatedSite: { ...site, nature: "AGRICULTURAL_OPERATION" },
+        evaluationPeriodInYears: 10,
+        dateProvider: dateProvider,
+        siteCityData: {
+          siteIsFriche: false,
+          cityPopulation: 300000,
+          citySquareMetersSurfaceArea: 6000000000,
+        },
+      }).formatImpacts();
+
+      expect(result.environmental.nonContaminatedSurfaceArea).toBeUndefined();
+      expect(result.environmental.permeableSurfaceArea).toBeDefined();
+      expect(result.environmental.soilsCo2eqStorage).toBeDefined();
+      expect(result.environmental.soilsCarbonStorage).toBeDefined();
+      expect(result.environmental.avoidedCo2eqEmissions).toBeUndefined();
     });
   });
 });

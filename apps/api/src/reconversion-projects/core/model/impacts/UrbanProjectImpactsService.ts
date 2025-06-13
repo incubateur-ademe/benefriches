@@ -197,34 +197,52 @@ export class UrbanProjectImpactsService
 
   override formatImpacts() {
     const { economicBalance, environmental, social, socioeconomic } = super.formatImpacts();
+
+    if (this.relatedSite.nature === "FRICHE") {
+      const urbanProjectSocioEconomic = [
+        ...socioeconomic.impacts,
+        ...this.taxesIncomeImpact,
+        ...this.avoidedCo2EqEmissionsMonetaryValue,
+        ...this.urbanFreshnessImpactsService.getSocioEconomicList(),
+        ...this.travelRelatedImpactsService.getSocioEconomicList(),
+        ...this.localPropertyIncreaseImpacts,
+        ...this.roadsAndUtilitiesExpensesImpacts,
+      ];
+
+      return {
+        economicBalance: economicBalance,
+        social: {
+          ...social,
+          avoidedVehiculeKilometers:
+            this.travelRelatedImpactsService.getAvoidedKilometersPerVehicule(),
+          travelTimeSaved: this.travelRelatedImpactsService.getTravelTimeSavedPerTraveler(),
+          avoidedTrafficAccidents: this.travelRelatedImpactsService.getAvoidedTrafficAccidents(),
+        },
+        environmental: {
+          ...environmental,
+          avoidedCo2eqEmissions: {
+            withCarTrafficDiminution:
+              this.travelRelatedImpactsService.getAvoidedTrafficCO2Emissions()?.inTons,
+            withAirConditioningDiminution:
+              this.urbanFreshnessImpactsService.getAvoidedAirConditioningCo2Emissions()?.inTons,
+          },
+        },
+        socioeconomic: {
+          impacts: urbanProjectSocioEconomic,
+          total: sumListWithKey(urbanProjectSocioEconomic, "amount"),
+        },
+      };
+    }
+
     const urbanProjectSocioEconomic = [
       ...socioeconomic.impacts,
       ...this.taxesIncomeImpact,
-      ...this.avoidedCo2EqEmissionsMonetaryValue,
-      ...this.urbanFreshnessImpactsService.getSocioEconomicList(),
-      ...this.travelRelatedImpactsService.getSocioEconomicList(),
-      ...this.localPropertyIncreaseImpacts,
       ...this.roadsAndUtilitiesExpensesImpacts,
     ];
-
     return {
       economicBalance: economicBalance,
-      social: {
-        ...social,
-        avoidedVehiculeKilometers:
-          this.travelRelatedImpactsService.getAvoidedKilometersPerVehicule(),
-        travelTimeSaved: this.travelRelatedImpactsService.getTravelTimeSavedPerTraveler(),
-        avoidedTrafficAccidents: this.travelRelatedImpactsService.getAvoidedTrafficAccidents(),
-      },
-      environmental: {
-        ...environmental,
-        avoidedCo2eqEmissions: {
-          withCarTrafficDiminution:
-            this.travelRelatedImpactsService.getAvoidedTrafficCO2Emissions()?.inTons,
-          withAirConditioningDiminution:
-            this.urbanFreshnessImpactsService.getAvoidedAirConditioningCo2Emissions()?.inTons,
-        },
-      },
+      social,
+      environmental: { ...environmental, avoidedCo2eqEmissions: undefined },
       socioeconomic: {
         impacts: urbanProjectSocioEconomic,
         total: sumListWithKey(urbanProjectSocioEconomic, "amount"),
