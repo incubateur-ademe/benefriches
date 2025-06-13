@@ -4,15 +4,14 @@ import { ReactNode, useState } from "react";
 import classNames from "../../clsx";
 import InfoTooltip from "../InfoTooltip/InfoTooltip";
 
-export default function Section({
-  children,
-  title,
-  tooltip,
-}: {
+type Props = {
   title: ReactNode;
+  onTitleClick?: () => void;
   children: ReactNode;
   tooltip?: string;
-}) {
+};
+
+export default function Section({ children, title, tooltip, onTitleClick }: Props) {
   const [displaySectionContent, setDisplaySectionContent] = useState(true);
   const onToggleSection = () => {
     setDisplaySectionContent((displaySectionContent) => !displaySectionContent);
@@ -23,6 +22,16 @@ export default function Section({
         <div className="tw-flex tw-items-center tw-mb-2">
           <h3 className="tw-text-lg  tw-mb-0">{title}</h3>
           {tooltip && <InfoTooltip title={tooltip} />}
+          {onTitleClick && (
+            <Button
+              className="tw-ml-2"
+              size="small"
+              iconId="fr-icon-edit-box-line"
+              onClick={onTitleClick}
+            >
+              Modifier
+            </Button>
+          )}
         </div>
 
         <Button

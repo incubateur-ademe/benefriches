@@ -17,11 +17,17 @@ type UpdatedStateAssertionInput = {
   creationDataDiff?: Partial<UrbanProjectCreationData>;
   currentStep: UrbanProjectCreationStep;
   spacesCategoriesToComplete?: RootState["projectCreation"]["urbanProject"]["spacesCategoriesToComplete"];
+  isReviewing?: boolean;
 };
 export const expectUpdatedState = (
   initialState: RootState,
   updatedState: RootState,
-  { creationDataDiff = {}, spacesCategoriesToComplete, currentStep }: UpdatedStateAssertionInput,
+  {
+    creationDataDiff = {},
+    spacesCategoriesToComplete,
+    currentStep,
+    isReviewing,
+  }: UpdatedStateAssertionInput,
 ) => {
   const initialUrbanProjectState = initialState.projectCreation.urbanProject;
   const updatedUrbanProjectState = updatedState.projectCreation.urbanProject;
@@ -33,6 +39,7 @@ export const expectUpdatedState = (
     ...initialUrbanProjectState,
     spacesCategoriesToComplete:
       spacesCategoriesToComplete ?? initialUrbanProjectState.spacesCategoriesToComplete,
+    isReviewing: isReviewing ?? initialUrbanProjectState.isReviewing,
     creationData: {
       ...initialUrbanProjectState.creationData,
       ...creationDataDiff,
@@ -101,6 +108,14 @@ export class StoreBuilder {
     this.preloadedRootState.projectCreation.urbanProject = {
       ...this.preloadedRootState.projectCreation.urbanProject,
       creationData,
+    };
+    return this;
+  }
+
+  withReviewMode() {
+    this.preloadedRootState.projectCreation.urbanProject = {
+      ...this.preloadedRootState.projectCreation.urbanProject,
+      isReviewing: true,
     };
     return this;
   }

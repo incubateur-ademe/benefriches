@@ -302,6 +302,27 @@ describe("Urban project creation : revenues steps", () => {
           },
         });
       });
+      it("sets financialAssistanceRevenues, unsets review mode and goes to URBAN_PROJECT_FINAL_SUMMARY when completed and user was reviewing", () => {
+        const store = new StoreBuilder()
+          .withReviewMode()
+          .withStepsHistory([
+            "URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES",
+            "URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE",
+          ])
+          .build();
+        const initialRootState = store.getState();
+
+        store.dispatch(financialAssistanceRevenuesCompleted([{ source: "other", amount: 1 }]));
+
+        const newState = store.getState();
+        expectUpdatedState(initialRootState, newState, {
+          currentStep: "URBAN_PROJECT_FINAL_SUMMARY",
+          creationDataDiff: {
+            financialAssistanceRevenues: [{ source: "other", amount: 1 }],
+          },
+          isReviewing: false,
+        });
+      });
       it("goes to previous step and unset financialAssistanceRevenues when step is reverted", () => {
         const store = new StoreBuilder()
           .withStepsHistory([

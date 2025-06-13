@@ -11,6 +11,7 @@ import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormL
 
 type Props = {
   initialValues?: FormValues;
+  submitLabel?: string;
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
 };
@@ -21,7 +22,12 @@ export type FormValues = {
   otherAmount?: number;
 };
 
-const ProjectFinancialAssistanceRevenueForm = ({ initialValues, onSubmit, onBack }: Props) => {
+const ProjectFinancialAssistanceRevenueForm = ({
+  initialValues,
+  onSubmit,
+  onBack,
+  submitLabel,
+}: Props) => {
   const { handleSubmit, register, watch } = useForm<FormValues>({
     defaultValues: initialValues,
   });
@@ -83,7 +89,7 @@ const ProjectFinancialAssistanceRevenueForm = ({ initialValues, onSubmit, onBack
 
         <BackNextButtonsGroup
           onBack={onBack}
-          nextLabel={hasNoValuesFilled ? "Passer" : "Valider"}
+          nextLabel={submitLabel ?? (hasNoValuesFilled ? "Passer" : "Valider")}
         />
       </form>
     </WizardFormLayout>

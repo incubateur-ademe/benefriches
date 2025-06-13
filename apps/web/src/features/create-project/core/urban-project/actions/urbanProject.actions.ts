@@ -178,3 +178,7 @@ export const namingCompleted = createUrbanProjectCreationAction<{
   name: string;
   description?: string;
 }>("namingCompleted");
+
+export const expensesAndRevenuesEditInitiated = createUrbanProjectCreationAction(
+  "expensesAndRevenuesEditInitiated",
+);

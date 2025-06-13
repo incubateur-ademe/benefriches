@@ -33,6 +33,7 @@ type Props = {
     publicSubsidies: number;
     other: number;
   };
+  submitLabel?: string;
   onSubmit: (data: FinancialAssistanceRevenue[]) => void;
   onBack: () => void;
 };
@@ -41,9 +42,11 @@ function ProjectFinancialAssistanceRevenueFormContainer({
   initialValues,
   onBack,
   onSubmit,
+  submitLabel,
 }: Props) {
   return (
     <ProjectFinancialAssistanceRevenueForm
+      submitLabel={submitLabel}
       initialValues={
         initialValues && {
           localOrRegionalAuthorityAmount: initialValues.localOrRegionalAuthority,

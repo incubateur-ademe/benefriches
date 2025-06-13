@@ -9,6 +9,7 @@ import {
   sumObjectValues,
 } from "shared";
 
+import { expensesAndRevenuesEditInitiated } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
 import {
   getLabelForDevelopmentPlanCategory,
   getLabelForRenewableEnergyProductionType,
@@ -24,6 +25,7 @@ import {
 import DataLine from "@/shared/views/components/FeaturesList/FeaturesListDataLine";
 import ScheduleDates from "@/shared/views/components/FeaturesList/FeaturesListScheduleDates";
 import Section from "@/shared/views/components/FeaturesList/FeaturesListSection";
+import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 import DevelopmentPlanFeatures from "./DevelopmentPlanFeatures";
 import DevelopmentPlanInstallationExpenses from "./DevelopmentPlanInstallationExpenses";
@@ -33,6 +35,7 @@ type Props = {
 };
 
 export default function ProjectFeaturesView({ projectData }: Props) {
+  const dispatch = useAppDispatch();
   return (
     <>
       <Section title="🏗 Type de projet">
@@ -86,7 +89,12 @@ export default function ProjectFeaturesView({ projectData }: Props) {
           />
         )}
       </Section>
-      <Section title="💰 Dépenses et recettes du projet">
+      <Section
+        title="💰 Dépenses et recettes du projet"
+        onTitleClick={() => {
+          dispatch(expensesAndRevenuesEditInitiated());
+        }}
+      >
         {projectData.sitePurchaseTotalAmount ? (
           <DataLine
             label={<strong>Prix d'achat du site et droits de mutation</strong>}

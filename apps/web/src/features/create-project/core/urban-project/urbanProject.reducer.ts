@@ -50,6 +50,7 @@ import {
   buildingsOperationsExpensesCompleted,
   buildingsResaleRevenueCompleted,
   buildingsUseSurfaceAreasCompleted,
+  expensesAndRevenuesEditInitiated,
 } from "./actions/urbanProject.actions";
 import { UrbanProjectCreationData } from "./creationData";
 import { UrbanProjectCustomCreationStep } from "./creationSteps";
@@ -80,6 +81,7 @@ export type UrbanProjectState = {
   spacesCategoriesToComplete: UrbanSpaceCategory[];
   creationData: UrbanProjectCreationData;
   soilsCarbonStorage: SoilsCarbonStorageState;
+  isReviewing: boolean;
 };
 
 export const initialState: UrbanProjectState = {
@@ -90,6 +92,7 @@ export const initialState: UrbanProjectState = {
   },
   creationData: {},
   saveState: "idle",
+  isReviewing: false,
   spacesCategoriesToComplete: [],
   soilsCarbonStorage: { loadingState: "idle", current: undefined, projected: undefined },
 };
@@ -110,8 +113,6 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
   builder.addCase(stepRevertConfirmed, (state, action) => {
     switch (action.payload.revertedStep) {
       case "URBAN_PROJECT_CREATE_MODE_SELECTION":
-        state.urbanProject.createMode = undefined;
-        break;
       case "URBAN_PROJECT_EXPRESS_CATEGORY_SELECTION":
       case "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION":
         state.urbanProject.createMode = undefined;
@@ -495,7 +496,13 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
   });
   builder.addCase(financialAssistanceRevenuesCompleted, (state, action) => {
     state.urbanProject.creationData.financialAssistanceRevenues = action.payload;
-    state.stepsHistory.push("URBAN_PROJECT_SCHEDULE_INTRODUCTION");
+
+    if (state.urbanProject.isReviewing) {
+      state.urbanProject.isReviewing = false;
+      state.stepsHistory.push("URBAN_PROJECT_FINAL_SUMMARY");
+    } else {
+      state.stepsHistory.push("URBAN_PROJECT_SCHEDULE_INTRODUCTION");
+    }
   });
   builder.addCase(scheduleIntroductionCompleted, (state) => {
     state.stepsHistory.push("URBAN_PROJECT_SCHEDULE_PROJECTION");
@@ -531,6 +538,10 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
   builder.addCase(customUrbanProjectSaved.rejected, (state) => {
     state.urbanProject.saveState = "error";
     state.stepsHistory.push("URBAN_PROJECT_CREATION_RESULT");
+  });
+  builder.addCase(expensesAndRevenuesEditInitiated, (state) => {
+    state.stepsHistory.push("URBAN_PROJECT_EXPENSES_INTRODUCTION");
+    state.urbanProject.isReviewing = true;
   });
 });
 
