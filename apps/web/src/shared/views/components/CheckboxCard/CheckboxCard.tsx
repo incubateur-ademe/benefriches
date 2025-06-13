@@ -58,7 +58,7 @@ export default function CheckboxCard({
       className={classNames(
         "tw-relative tw-border tw-border-solid",
         checked || hasFocus ? "tw-border-dsfr-borderBlue" : "tw-border-borderGrey",
-        checked && hasFocus && "tw-border-2",
+        checked && hasFocus && "tw-ring-2",
         className,
       )}
       role={checkType}
