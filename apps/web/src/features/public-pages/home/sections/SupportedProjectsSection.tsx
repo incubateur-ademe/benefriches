@@ -46,12 +46,12 @@ function SupportedProjectCard({
           </Button>
         }
         desc={
-          <div>
-            <div className={fr.cx("fr-text--md")}>
+          <span>
+            <span className={fr.cx("fr-text--md")}>
               <span aria-hidden="true" className={fr.cx("fr-icon-map-pin-2-line", "fr-icon--sm")} />{" "}
               {projectLocation}
-            </div>
-            <div className="tw-flex tw-justify-between">
+            </span>
+            <span className="tw-flex tw-justify-between">
               <span className={fr.cx("fr-text--sm", "fr-m-0")}>Bilan de l'opération :</span>
               <span
                 className={classNames(
@@ -65,8 +65,8 @@ function SupportedProjectCard({
                 &nbsp;
                 {formatNumberFr(economicBalanceInMillionEuros)}&nbsp;M&nbsp;€
               </span>
-            </div>
-            <div className="tw-flex tw-justify-between">
+            </span>
+            <span className="tw-flex tw-justify-between">
               <span className={fr.cx("fr-text--sm", "fr-m-0")}>Impacts socio-économiques :</span>
               <span
                 className={classNames(
@@ -80,8 +80,8 @@ function SupportedProjectCard({
                 &nbsp;
                 {formatNumberFr(socioEconomicImpactAmountInMillionEuros)}&nbsp;M&nbsp;€
               </span>
-            </div>
-          </div>
+            </span>
+          </span>
         }
         imageAlt={`Illustration du projet à ${projectLocation} (${formerActivity})`}
         imageUrl={imgUrl}
