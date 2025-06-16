@@ -110,7 +110,6 @@ describe("Save created site", () => {
             yearlyExpenses: siteData.yearlyExpenses,
             yearlyIncomes: siteData.yearlyIncomes,
             nature: siteData.nature,
-            isFriche: siteData.isFriche,
             fricheActivity: (siteData as SiteCreationData).fricheActivity,
             contaminatedSoilSurface: (siteData as SiteCreationData).contaminatedSoilSurface,
             accidentsMinorInjuries: (siteData as SiteCreationData).accidentsMinorInjuries,

@@ -31,7 +31,6 @@ describe("SqlReconversionProjectImpactsQuery integration", () => {
         created_by: "9b3a4906-1db2-441d-97d5-7be287add907",
         name: "Site name",
         surface_area: 14000,
-        is_friche: false,
         owner_structure_type: "company",
         created_at: new Date(),
       });
@@ -199,7 +198,6 @@ describe("SqlReconversionProjectImpactsQuery integration", () => {
         created_by: "9b3a4906-1db2-441d-97d5-7be287add907",
         name: "Site name",
         surface_area: 14000,
-        is_friche: false,
         owner_structure_type: "company",
         created_at: new Date(),
       });

@@ -236,7 +236,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
             ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 40000,
           },
           surfaceArea: 50000,
-          isFriche: true,
+          nature: "FRICHE",
           fricheActivity: "AGRICULTURAL",
           owner: {
             structureType: "company",

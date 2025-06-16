@@ -176,7 +176,6 @@ describe("Sites controller", () => {
         "id",
         "created_by",
         "nature",
-        "is_friche",
         "surface_area",
       );
       expect(sitesInDb.length).toEqual(1);
@@ -184,7 +183,6 @@ describe("Sites controller", () => {
         id: agriculturalOperationDto.id,
         nature: "AGRICULTURAL_OPERATION",
         created_by: agriculturalOperationDto.createdBy,
-        is_friche: false,
         surface_area: 12000,
       });
     });
@@ -217,7 +215,6 @@ describe("Sites controller", () => {
         "id",
         "nature",
         "created_by",
-        "is_friche",
         "surface_area",
         "friche_activity",
       );
@@ -226,7 +223,6 @@ describe("Sites controller", () => {
         id: frichDto.id,
         nature: "FRICHE",
         created_by: frichDto.createdBy,
-        is_friche: true,
         surface_area: 134000,
         friche_activity: "INDUSTRY",
       });
@@ -236,7 +232,6 @@ describe("Sites controller", () => {
   describe("POST /sites/create-custom", () => {
     it.each([
       "id",
-      "isFriche",
       "nature",
       "createdBy",
       "name",
@@ -250,7 +245,6 @@ describe("Sites controller", () => {
         const requestBody = {
           id: "03a53ffd-4f71-419e-8d04-041311eefa23",
           createdBy: "dadf207d-f0c1-4e38-8fe9-9ae5b0e123c4",
-          isFriche: false,
           nature: "AGRICULTURAL_OPERATION",
           isSiteOperated: false,
           owner: { name: "Owner name", structureType: "company" },
@@ -292,7 +286,6 @@ describe("Sites controller", () => {
       const agriculturalOperationDto: CreateCustomSiteDto = {
         id: "03a53ffd-4f71-419e-8d04-041311eefa23",
         createdBy: "74ac340f-0654-4887-9449-3dbb43ce35b5",
-        isFriche: false,
         nature: "AGRICULTURAL_OPERATION",
         agriculturalOperationActivity: "CATTLE_FARMING",
         isSiteOperated: true,
@@ -349,7 +342,6 @@ describe("Sites controller", () => {
         creation_mode: "custom",
         owner_name: "Owner name",
         owner_structure_type: "company",
-        is_friche: false,
         is_operated: true,
         tenant_name: "Tenant name",
         tenant_structure_type: "private_individual",
@@ -401,7 +393,6 @@ describe("Sites controller", () => {
       const naturalAreaDto: CreateCustomSiteDto = {
         id: "03a53ffd-4f71-419e-8d04-041311eefa23",
         createdBy: "74ac340f-0654-4887-9449-3dbb43ce35b5",
-        isFriche: false,
         nature: "NATURAL_AREA",
         naturalAreaType: "FOREST",
         name: "Forêt",
@@ -445,7 +436,6 @@ describe("Sites controller", () => {
         creation_mode: "custom",
         owner_name: "Owner name",
         owner_structure_type: "company",
-        is_friche: false,
         tenant_name: null,
         tenant_structure_type: null,
         friche_accidents_deaths: null,
@@ -480,7 +470,6 @@ describe("Sites controller", () => {
         createdBy: "74ac340f-0654-4887-9449-3dbb43ce35b5",
         name: "Ancienne gare de Bercy",
         description: "Description of site",
-        isFriche: true,
         fricheActivity: "RAILWAY",
         owner: { structureType: "department", name: "Le département Paris" },
         tenant: { structureType: "company", name: "Tenant SARL" },
@@ -536,7 +525,6 @@ describe("Sites controller", () => {
         created_at: expect.any(Date),
         description: "Description of site",
         friche_activity: "RAILWAY",
-        is_friche: true,
         nature: "FRICHE",
         friche_accidents_deaths: 0,
         friche_accidents_severe_injuries: 2,
@@ -596,7 +584,6 @@ describe("Sites controller", () => {
         owner_structure_type: "company",
         tenant_structure_type: "company",
         created_at: new Date(),
-        is_friche: true,
         friche_activity: "INDUSTRY",
         friche_has_contaminated_soils: true,
         friche_contaminated_soil_surface_area: 230,
@@ -685,7 +672,6 @@ describe("Sites controller", () => {
         owner_structure_type: "company",
         tenant_structure_type: "company",
         created_at: new Date(),
-        is_friche: false,
       });
 
       await sqlConnection("addresses").insert({
@@ -772,7 +758,6 @@ describe("Sites controller", () => {
         owner_name: "Owner name",
         owner_structure_type: "company",
         created_at: new Date(),
-        is_friche: false,
       });
 
       await sqlConnection("addresses").insert({

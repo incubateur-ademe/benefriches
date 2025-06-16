@@ -12,7 +12,7 @@ import { SitesRepository } from "../gateways/SitesRepository";
 import { SiteEntity } from "../models/siteEntity";
 
 type Request = {
-  siteProps: { isFriche: boolean } & (CreateFricheProps | CreateAgriculturalOrNaturalSiteProps);
+  siteProps: CreateAgriculturalOrNaturalSiteProps | (CreateFricheProps & { nature: "FRICHE" });
   createdBy: string;
 };
 
@@ -23,9 +23,11 @@ export class CreateNewCustomSiteUseCase implements UseCase<Request, void> {
   ) {}
 
   async execute({ siteProps, createdBy }: Request): Promise<void> {
-    const result = siteProps.isFriche
-      ? createFriche(siteProps as CreateFricheProps)
-      : createAgriculturalOrNaturalSite(siteProps as CreateAgriculturalOrNaturalSiteProps);
+    const result =
+      siteProps.nature === "FRICHE"
+        ? createFriche(siteProps)
+        : createAgriculturalOrNaturalSite(siteProps);
+
     if (!result.success) {
       throw new Error(result.error);
     }

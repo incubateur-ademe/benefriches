@@ -32,7 +32,6 @@ export type Address = z.infer<typeof addressSchema>;
 
 const baseSiteSchema = z.object({
   id: z.string().uuid(),
-  isFriche: z.boolean(),
   nature: siteNatureSchema,
   name: z.string(),
   description: z.string().optional(),
@@ -65,7 +64,6 @@ export const agriculturalOperationSchema = baseSiteSchema.extend({
 });
 
 export const fricheSchema = baseSiteSchema.extend({
-  isFriche: z.literal(true),
   nature: z.literal("FRICHE"),
   fricheActivity: fricheActivitySchema,
   hasContaminatedSoils: z.boolean().optional(),
@@ -77,7 +75,6 @@ export const fricheSchema = baseSiteSchema.extend({
 
 interface BaseSite {
   id: string;
-  isFriche: boolean;
   address: Address;
   soilsDistribution: SurfaceAreaDistribution<SoilType>;
   owner: {
@@ -96,7 +93,6 @@ interface BaseSite {
 }
 
 export interface Friche extends BaseSite {
-  isFriche: true;
   nature: "FRICHE";
   hasContaminatedSoils: boolean;
   contaminatedSoilSurface?: number;
@@ -107,7 +103,6 @@ export interface Friche extends BaseSite {
 }
 
 export interface AgriculturalOperationSite extends BaseSite {
-  isFriche: false;
   nature: "AGRICULTURAL_OPERATION";
   yearlyIncomes: SiteYearlyIncome[];
   agriculturalOperationActivity: AgriculturalOperationActivity;
@@ -115,7 +110,6 @@ export interface AgriculturalOperationSite extends BaseSite {
 }
 
 export interface NaturalAreaSite extends BaseSite {
-  isFriche: false;
   nature: "NATURAL_AREA";
   yearlyIncomes: SiteYearlyIncome[];
   naturalAreaType: NaturalAreaType;
@@ -182,7 +176,6 @@ export function createAgriculturalOrNaturalSite(
     yearlyExpenses: props.yearlyExpenses,
     yearlyIncomes: props.yearlyIncomes,
     surfaceArea,
-    isFriche: false,
   };
 
   const result =
@@ -241,7 +234,6 @@ export function createFriche(props: CreateFricheProps): SiteCreationResult<Frich
     yearlyExpenses: props.yearlyExpenses,
     yearlyIncomes: [],
     surfaceArea,
-    isFriche: true,
     fricheActivity,
     hasContaminatedSoils,
     contaminatedSoilSurface: props.contaminatedSoilSurface,

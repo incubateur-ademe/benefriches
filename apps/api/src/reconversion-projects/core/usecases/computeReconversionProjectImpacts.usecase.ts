@@ -104,7 +104,7 @@ export type Result = {
     contaminatedSoilSurface: number;
     soilsDistribution: SoilsDistribution;
     surfaceArea: number;
-    isFriche: boolean;
+    nature: SiteNature;
     fricheActivity?: string;
     owner: {
       structureType: string;
@@ -182,7 +182,7 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
         contaminatedSoilSurface: relatedSite.contaminatedSoilSurface ?? 0,
         soilsDistribution: relatedSite.soilsDistribution,
         surfaceArea: relatedSite.surfaceArea,
-        isFriche: relatedSite.nature === "FRICHE",
+        nature: relatedSite.nature,
         fricheActivity: relatedSite.fricheActivity,
         owner: {
           name: relatedSite.ownerName,

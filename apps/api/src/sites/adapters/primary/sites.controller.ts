@@ -42,7 +42,7 @@ export class SitesController {
     const siteProps = {
       ...jsonSiteProps,
       soilsDistribution: createSoilSurfaceAreaDistribution(jsonSiteProps.soilsDistribution),
-    };
+    } as const;
     await this.createNewSiteUseCase.execute({ siteProps, createdBy });
   }
 

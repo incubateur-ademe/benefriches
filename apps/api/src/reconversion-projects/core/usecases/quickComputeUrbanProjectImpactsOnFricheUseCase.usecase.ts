@@ -104,7 +104,7 @@ type Result = {
     contaminatedSoilSurface: number;
     soilsDistribution: SoilsDistribution;
     surfaceArea: number;
-    isFriche: boolean;
+    nature: SiteNature;
     fricheActivity?: string;
     owner: {
       structureType: string;
@@ -240,7 +240,7 @@ export class QuickComputeUrbanProjectImpactsOnFricheUseCase implements UseCase<R
         contaminatedSoilSurface: site.contaminatedSoilSurface ?? 0,
         soilsDistribution: site.soilsDistribution.toJSON(),
         surfaceArea: site.surfaceArea,
-        isFriche: site.isFriche,
+        nature: site.nature,
         fricheActivity: site.fricheActivity,
         owner: {
           name: site.owner.name,

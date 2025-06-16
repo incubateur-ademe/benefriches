@@ -119,7 +119,6 @@ describe("CreateNewExpressSite Use case", () => {
           agriculturalOperationActivity: siteProps.activity,
           isSiteOperated: true,
           description: "Viticulture",
-          isFriche: false,
           soilsDistribution: createSoilSurfaceAreaDistribution({
             VINEYARD: 950,
             BUILDINGS: 50,
@@ -192,7 +191,6 @@ describe("CreateNewExpressSite Use case", () => {
           creationMode: "express",
           nature: "NATURAL_AREA",
           naturalAreaType: siteProps.type,
-          isFriche: false,
           soilsDistribution: createSoilSurfaceAreaDistribution({
             FOREST_MIXED: 1000,
           }),
@@ -231,7 +229,6 @@ describe("CreateNewExpressSite Use case", () => {
           createdAt: fakeNow,
           createdBy: "user-id-123",
           creationMode: "express",
-          isFriche: true,
           nature: "FRICHE",
           name: "Friche de Montrouge",
           description: undefined,

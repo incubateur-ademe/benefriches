@@ -32,7 +32,6 @@ type SqlSite = {
   nature: string;
   description: string | null;
   surface_area: number;
-  is_friche: boolean;
   owner_structure_type: string;
   owner_name: string | null;
   tenant_structure_type: string | null;

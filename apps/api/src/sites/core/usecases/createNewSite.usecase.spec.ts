@@ -24,13 +24,13 @@ describe("CreateNewSite Use Case", () => {
 
   it("Cannot create a new friche with invalid props", async () => {
     // @ts-expect-error invalid name
-    const siteProps = buildFricheProps({ name: 123 });
+    const fricheProps = buildFricheProps({ name: 123 });
 
     const usecase = new CreateNewCustomSiteUseCase(siteRepository, dateProvider);
     expect.assertions(1);
     try {
       await usecase.execute({
-        siteProps: { ...siteProps, isFriche: true },
+        siteProps: { ...fricheProps, nature: "FRICHE" },
         createdBy: "user-123",
       });
     } catch (err) {
@@ -42,6 +42,7 @@ describe("CreateNewSite Use Case", () => {
 
   it("Cannot create a site when already exists", async () => {
     const fricheProps = buildFricheProps();
+    const siteProps = { nature: "FRICHE", ...fricheProps } as const;
 
     siteRepository._setSites([
       {
@@ -55,7 +56,7 @@ describe("CreateNewSite Use Case", () => {
     const usecase = new CreateNewCustomSiteUseCase(siteRepository, dateProvider);
     await expect(
       usecase.execute({
-        siteProps: { ...fricheProps, isFriche: true },
+        siteProps,
         createdBy: "blabla",
       }),
     ).rejects.toThrow(`Site with id ${fricheProps.id} already exists`);
@@ -63,24 +64,20 @@ describe("CreateNewSite Use Case", () => {
     expect(siteRepository._getSites().length).toEqual(1);
   });
   describe("Agricultural or natura site", () => {
-    it("Can create a new agricultural/natural site with minimal data", async () => {
-      const siteProps = buildAgriculturalOperationSiteProps();
-
+    it("Can create a new agricultural site with minimal data", async () => {
+      const agriculturalOperationProps = buildAgriculturalOperationSiteProps();
       const usecase = new CreateNewCustomSiteUseCase(siteRepository, dateProvider);
 
       await usecase.execute({
+        siteProps: agriculturalOperationProps,
         createdBy: "user-id-123",
-        siteProps: {
-          ...siteProps,
-          isFriche: false,
-        },
       });
 
       const savedSites = siteRepository._getSites();
 
       expect(savedSites).toEqual<SiteEntity[]>([
         {
-          ...buildAgriculturalOrNaturalSite(siteProps),
+          ...buildAgriculturalOrNaturalSite(agriculturalOperationProps),
           createdAt: fakeNow,
           createdBy: "user-id-123",
           creationMode: "custom",
@@ -88,7 +85,7 @@ describe("CreateNewSite Use Case", () => {
       ]);
     });
 
-    it("Can create a new agricultural/natural site with complete data", async () => {
+    it("Can create a new agricultural site with complete data", async () => {
       const siteProps = buildAgriculturalOperationSiteProps({
         description: "Description of site",
         tenant: {
@@ -106,10 +103,7 @@ describe("CreateNewSite Use Case", () => {
 
       await usecase.execute({
         createdBy: "user-id-123",
-        siteProps: {
-          ...siteProps,
-          isFriche: false,
-        },
+        siteProps,
       });
 
       const savedSites = siteRepository._getSites();
@@ -128,15 +122,13 @@ describe("CreateNewSite Use Case", () => {
   describe("Friche", () => {
     it("Can create a new friche with minimal data", async () => {
       const fricheProps = buildFricheProps();
+      const siteProps = { nature: "FRICHE", ...fricheProps } as const;
 
       const usecase = new CreateNewCustomSiteUseCase(siteRepository, dateProvider);
 
       await usecase.execute({
         createdBy: "user-id-123",
-        siteProps: {
-          ...fricheProps,
-          isFriche: true,
-        },
+        siteProps,
       });
 
       const savedSites = siteRepository._getSites();
@@ -165,15 +157,13 @@ describe("CreateNewSite Use Case", () => {
         accidentsSevereInjuries: 2,
         accidentsDeaths: 2,
       });
+      const siteProps = { nature: "FRICHE", ...fricheProps } as const;
 
       const usecase = new CreateNewCustomSiteUseCase(siteRepository, dateProvider);
 
       await usecase.execute({
         createdBy: "user-id-123",
-        siteProps: {
-          ...fricheProps,
-          isFriche: true,
-        },
+        siteProps,
       });
 
       const savedSites = siteRepository._getSites();

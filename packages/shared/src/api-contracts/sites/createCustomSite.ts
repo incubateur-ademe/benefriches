@@ -5,6 +5,7 @@ import {
   fricheActivitySchema,
   siteNatureSchema,
   siteYearlyExpenseSchema,
+  siteYearlyIncomeSchema,
 } from "../../site";
 import { RouteDef } from "../routeDef";
 
@@ -18,16 +19,10 @@ const baseSchema = z.object({
   owner: z.object({ structureType: z.string(), name: z.string() }).optional(),
   tenant: z.object({ structureType: z.string(), name: z.string() }).optional(),
   yearlyExpenses: siteYearlyExpenseSchema.array(),
-  yearlyIncomes: z
-    .object({
-      source: z.string(),
-      amount: z.number().nonnegative(),
-    })
-    .array(),
+  yearlyIncomes: siteYearlyIncomeSchema.array(),
 });
 
 const fricheCustomDtoSchema = baseSchema.extend({
-  isFriche: z.literal(true),
   nature: siteNatureSchema.extract(["FRICHE"]),
   fricheActivity: fricheActivitySchema.optional(),
   contaminatedSoilSurface: z.number().optional(),
@@ -37,7 +32,6 @@ const fricheCustomDtoSchema = baseSchema.extend({
 });
 
 const agriculturalCustomSiteDtoSchema = baseSchema.extend({
-  isFriche: z.literal(false),
   nature: siteNatureSchema.extract(["AGRICULTURAL_OPERATION"]),
   agriculturalOperationActivity: z.enum([
     "CEREALS_AND_OILSEEDS_CULTIVATION",
@@ -56,7 +50,6 @@ const agriculturalCustomSiteDtoSchema = baseSchema.extend({
 });
 
 const naturalCustomSiteDtoSchema = baseSchema.extend({
-  isFriche: z.literal(false),
   nature: siteNatureSchema.extract(["NATURAL_AREA"]),
   naturalAreaType: z.enum(["PRAIRIE", "FOREST", "WET_LAND", "MIXED_NATURAL_AREA"]),
 });

@@ -43,7 +43,7 @@ describe("ReconversionProjectsListQuery integration", () => {
         tenant_name: "Tenant name",
         tenant_structure_type: "company",
         created_at: new Date(),
-        is_friche: true,
+        nature: "FRICHE",
         friche_activity: "BUILDING",
         friche_has_contaminated_soils: true,
         friche_contaminated_soil_surface_area: 230,
@@ -69,7 +69,6 @@ describe("ReconversionProjectsListQuery integration", () => {
         tenant_structure_type: "company",
         created_at: new Date(),
         nature: "FRICHE",
-        is_friche: true,
         friche_activity: "BUILDING",
         friche_has_contaminated_soils: true,
         friche_contaminated_soil_surface_area: 230,
@@ -103,7 +102,6 @@ describe("ReconversionProjectsListQuery integration", () => {
         tenant_name: "Tenant name",
         tenant_structure_type: "company",
         created_at: new Date("2024-02-01"),
-        is_friche: false,
         nature: "AGRICULTURAL_OPERATION",
       } as const;
       const siteInDb2 = {
@@ -117,7 +115,6 @@ describe("ReconversionProjectsListQuery integration", () => {
         tenant_name: "Tenant name",
         tenant_structure_type: "company",
         created_at: new Date("2024-02-20"),
-        is_friche: false,
         nature: "NATURAL_AREA",
         creation_mode: "express",
       } as const;

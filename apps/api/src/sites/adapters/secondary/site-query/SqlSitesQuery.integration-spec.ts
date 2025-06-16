@@ -38,7 +38,6 @@ describe("SqlSitesQuery integration", () => {
         tenant_name: "Tenant name",
         tenant_structure_type: "company",
         created_at: now,
-        is_friche: true,
         friche_activity: "INDUSTRIAL",
         friche_has_contaminated_soils: true,
         friche_contaminated_soil_surface_area: 1200,
@@ -137,7 +136,6 @@ describe("SqlSitesQuery integration", () => {
         surface_area: 14000,
         owner_structure_type: "company",
         created_at: now,
-        is_friche: false,
         creation_mode: "express",
         agricultural_operation_activity: "CATTLE_FARMING",
       });
@@ -217,7 +215,6 @@ describe("SqlSitesQuery integration", () => {
         surface_area: 14000,
         owner_structure_type: "company",
         created_at: now,
-        is_friche: false,
       });
 
       const result = await sitesQuery.getById(siteId);
@@ -242,7 +239,6 @@ describe("SqlSitesQuery integration", () => {
         tenant_name: "Tenant name",
         tenant_structure_type: "company",
         created_at: now,
-        is_friche: true,
         friche_activity: "BUILDING",
         friche_has_contaminated_soils: true,
         friche_contaminated_soil_surface_area: 230,

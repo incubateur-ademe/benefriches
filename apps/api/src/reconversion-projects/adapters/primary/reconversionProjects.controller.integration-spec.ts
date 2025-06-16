@@ -74,7 +74,6 @@ describe("ReconversionProjects controller", () => {
         id: requestBody.relatedSiteId,
         name: "Site name",
         surface_area: 14000,
-        is_friche: false,
         owner_structure_type: "company",
         created_at: new Date(),
       });
@@ -107,7 +106,6 @@ describe("ReconversionProjects controller", () => {
         id: siteId,
         name: "Site name",
         surface_area: 14000,
-        is_friche: false,
         owner_structure_type: "company",
         created_at: new Date(),
       });
@@ -206,7 +204,6 @@ describe("ReconversionProjects controller", () => {
         tenant_name: "Tenant name",
         tenant_structure_type: "company",
         created_at: new Date("2024-02-10"),
-        is_friche: false,
         creation_mode: "express",
       };
       const siteInDb2 = {
@@ -220,7 +217,6 @@ describe("ReconversionProjects controller", () => {
         tenant_name: "Tenant name",
         tenant_structure_type: "company",
         created_at: new Date("2024-02-01"),
-        is_friche: false,
         nature: "NATURAL_AREA",
       };
       const projectInDb1 = {
@@ -250,7 +246,6 @@ describe("ReconversionProjects controller", () => {
         tenant_name: "Tenant name",
         tenant_structure_type: "company",
         created_at: new Date("2024-02-15"),
-        is_friche: false,
       };
 
       await sqlConnection("sites").insert([siteInDb1, siteInDb2, siteOfAnotherUser]);

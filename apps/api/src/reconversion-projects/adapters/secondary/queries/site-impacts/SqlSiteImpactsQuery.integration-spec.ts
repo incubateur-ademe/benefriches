@@ -36,7 +36,6 @@ describe("SqlSiteImpactsQuery integration", () => {
         tenant_name: "Current tenant",
         tenant_structure_type: "company",
         created_at: new Date(),
-        is_friche: true,
         nature: "FRICHE",
         friche_activity: "BUILDING",
         friche_has_contaminated_soils: true,
@@ -112,7 +111,6 @@ describe("SqlSiteImpactsQuery integration", () => {
         nature: "AGRICULTURAL_OPERATION",
         agricultural_operation_activity: "CATTLE_FARMING",
         is_operated: true,
-        is_friche: false,
       });
 
       await sqlConnection("site_soils_distributions").insert([

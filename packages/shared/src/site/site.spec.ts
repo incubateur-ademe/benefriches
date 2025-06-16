@@ -138,7 +138,6 @@ describe("Site core logic", () => {
       expect(result.site).toEqual<Friche>({
         name: "My friche",
         nature: "FRICHE",
-        isFriche: true,
         description: "Description of the site",
         id: "28b53918-a6f6-43f2-9554-7b5434428f8b",
         owner: {
@@ -312,7 +311,6 @@ describe("Site core logic", () => {
           long: 67160.14,
           value: "Hazebrouck",
         },
-        isFriche: false,
         tenant: {
           structureType: "company",
           name: "Tenant SARL",
