@@ -24,7 +24,6 @@ type Option = {
   description: string;
   imgSrc: string;
   badgeText: string;
-  disabled: boolean;
 };
 
 const options: Option[] = [
@@ -34,7 +33,6 @@ const options: Option[] = [
     description:
       "Un projet d'aménagement urbain sera créé automatiquement. Bénéfriches affectera des données par défaut sur l'aménagement des espaces, les bâtiments, les dépenses et recettes, les emplois mobilisés, etc.",
     badgeText: "Le plus rapide",
-    disabled: false,
     imgSrc: "/img/pictograms/creation-mode/express-creation.svg",
   },
   {
@@ -43,7 +41,6 @@ const options: Option[] = [
     description:
       "Renseignez les informations dont vous disposez : aménagement des espaces, bâtiments, dépenses et recettes, emplois mobilisés, etc. Si certaines infos vous manquent, Bénéfriches vous proposera des données automatiques.",
     badgeText: "Le plus précis",
-    disabled: false,
     imgSrc: "/img/pictograms/creation-mode/custom-creation.svg",
   },
 ] as const;
@@ -71,10 +68,7 @@ function CreateModeSelectionForm({ onSubmit, onBack }: Props) {
                         description={
                           <>
                             <div>{option.description}</div>
-                            <Badge
-                              className="tw-mt-3"
-                              style={option.disabled ? "disabled" : "green-tilleul"}
-                            >
+                            <Badge className="tw-mt-3" style="green-tilleul">
                               {option.badgeText}
                             </Badge>
                           </>
@@ -83,7 +77,6 @@ function CreateModeSelectionForm({ onSubmit, onBack }: Props) {
                         onChange={() => {
                           field.onChange(option.value);
                         }}
-                        disabled={option.disabled}
                         imgSrc={option.imgSrc}
                       />
                     );

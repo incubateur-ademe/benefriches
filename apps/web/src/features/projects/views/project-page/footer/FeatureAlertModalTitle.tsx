@@ -26,7 +26,7 @@ function FeatureAlertModalTitle({ title, iconId, isSuccess }: Props) {
       {!isSuccess && (
         <>
           {title}
-          <Badge small style="disabled" className="tw-ml-2">
+          <Badge small style="green-tilleul" className="tw-ml-2">
             Bientôt disponible
           </Badge>
         </>

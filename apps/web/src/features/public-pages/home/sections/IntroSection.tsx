@@ -23,8 +23,8 @@ export default function IntroSection() {
             className={classNames("tw-relative tw-pt-10", "lg:tw-flex-[5] lg:tw-pl-12 lg:tw-pt-0")}
           >
             <img
-              src="/img/home-intro.svg"
-              className="tw-w-full lg:tw-w-auto lg:tw-absolute"
+              src="/img/home-hero.png"
+              className="tw-w-full lg:tw-absolute"
               alt="Capture d'écran de Bénéfriches : page impacts d'un projet d'aménagement"
             />
           </div>

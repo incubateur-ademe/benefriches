@@ -83,7 +83,7 @@ function SiteNatureForm({ onSubmit, onBack, initialValues }: Props) {
                           option.disabled ? (
                             <div>
                               <div>{option.description}</div>
-                              <Badge small style="disabled" className="tw-mt-2">
+                              <Badge small style="green-tilleul" className="tw-mt-2">
                                 Bientôt disponible
                               </Badge>
                             </div>

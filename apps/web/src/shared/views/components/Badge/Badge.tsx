@@ -7,16 +7,7 @@ type Props = {
   className?: ClassValue;
   small?: boolean;
   onClick?: () => void;
-  style?:
-    | "default"
-    | "green-emeraude"
-    | "green-tilleul"
-    | "blue"
-    | "disabled"
-    // we might need to create a separate component to avoid piling up styles
-    | "success"
-    | "error"
-    | "neutral";
+  style?: keyof typeof badgeStyleClasses;
 };
 
 const badgeStyleClasses = {
@@ -24,11 +15,10 @@ const badgeStyleClasses = {
   ["green-emeraude"]: "tw-bg-[#E3FDEB] tw-text-[#297254]",
   ["green-tilleul"]: "tw-bg-[#FEF7DA] tw-text-[#66673D]",
   ["blue"]: "tw-bg-[#DEE5FD] tw-text-[#2F4077]",
-  ["disabled"]: "tw-bg-[#E5E5E5] tw-text-[#929292] dark:tw-bg-[#929292] dark:tw-text-[#E5E5E5]",
   ["success"]: "tw-bg-impacts-positive-light",
   ["error"]: "tw-bg-impacts-negative-light",
   ["neutral"]: "tw-bg-impacts-neutral-main dark:tw-bg-impacts-neutral-light",
-} as const satisfies Record<Exclude<Props["style"], undefined>, string>;
+} as const;
 
 export default function Badge({ children, className, small = false, style, onClick }: Props) {
   return (
