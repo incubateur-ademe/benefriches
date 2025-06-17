@@ -117,7 +117,7 @@ const DevelopmentPlanFeatures = ({
             </FeaturesSection>
           ) : undefined}
 
-          <FeaturesSection title="🏘 Aménagement des espaces">
+          <FeaturesSection title="🌾 Aménagement des espaces">
             {totalLivingAndActivitiesSpaces > 0 && (
               <>
                 <DataLine
@@ -187,7 +187,7 @@ const DevelopmentPlanFeatures = ({
           </FeaturesSection>
           <SoilsDistributionPdf soilsDistribution={soilsDistribution} />
 
-          <FeaturesSection title="🏘 Bâtiments">
+          <FeaturesSection title="🏢 Bâtiments">
             <DataLine
               label="Surface de plancher des bâtiments"
               labelClassName="font-bold"

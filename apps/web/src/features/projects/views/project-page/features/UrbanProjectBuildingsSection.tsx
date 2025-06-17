@@ -24,7 +24,7 @@ const UrbanProjectBuildingsSection = ({
   const totalBuildingsSurfaceArea = sumObjectValues(buildingsFloorArea);
   return (
     <Section
-      title="🏘 Bâtiments"
+      title="🏢 Bâtiments"
       tooltip={
         isExpress
           ? "Répartition représentative de l’aménagement des espaces pour ce type de projet urbain. L’occupation des sols conditionne la capacité d’infiltration des eaux, la capacité de stockage de carbone dans les sols, etc."

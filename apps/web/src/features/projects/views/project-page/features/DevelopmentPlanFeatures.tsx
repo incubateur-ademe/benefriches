@@ -162,7 +162,7 @@ const DevelopmentPlanFeatures = ({
             </Section>
           ) : undefined}
 
-          <Section title="🏘 Aménagement des espaces">
+          <Section title="🌾 Aménagement des espaces">
             {totalLivingAndActivitiesSpaces > 0 && (
               <>
                 <DataLine
