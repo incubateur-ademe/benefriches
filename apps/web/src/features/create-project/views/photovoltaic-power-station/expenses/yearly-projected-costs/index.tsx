@@ -20,6 +20,9 @@ function YearlyProjectedExpensesFormContainer() {
       instructions={
         <FormInfo>
           <p>
+            Les montants sont exprimés en <strong>€ HT</strong>.
+          </p>
+          <p>
             Les montants pré-remplis le sont d'après la puissance d'installation que vous avez
             renseigné (exprimée en kWc) et les dépenses moyennes observées.
           </p>

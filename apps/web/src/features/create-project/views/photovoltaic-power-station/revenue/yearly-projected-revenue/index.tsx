@@ -29,6 +29,9 @@ function YearlyProjectedRevenueFormContainer() {
       instructions={
         <FormInfo>
           <p>
+            Les montants sont exprimés en <strong>€ HT</strong>.
+          </p>
+          <p>
             Les montants pré-remplis le sont d'après la production annuelle attendue de la centrale
             que vous avez renseigné ({formatNumberFr(photovoltaicExpectedAnnualProduction ?? 0)} en
             MWh/an) et les dépenses moyennes observées.

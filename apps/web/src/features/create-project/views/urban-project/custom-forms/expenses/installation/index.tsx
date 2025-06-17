@@ -21,7 +21,7 @@ function InstallationExpensesFormContainer() {
 
   return (
     <InstallationExpensesForm
-      title="Dépenses d’aménagement du site"
+      title="Dépenses d'aménagement du site"
       labels={{
         worksAmount: "Travaux d'aménagement",
         otherAmount: "Autres dépenses d'aménagement",
@@ -29,7 +29,10 @@ function InstallationExpensesFormContainer() {
       instructions={
         <FormInfo>
           <p>
-            Montants calculés d’après les informations que vous avez renseignées et les dépenses
+            Les montants sont exprimés en <strong>€ HT</strong>.
+          </p>
+          <p>
+            Montants calculés d'après les informations que vous avez renseignées et les dépenses
             financiers moyens en France de chaque poste de dépense.
           </p>
 

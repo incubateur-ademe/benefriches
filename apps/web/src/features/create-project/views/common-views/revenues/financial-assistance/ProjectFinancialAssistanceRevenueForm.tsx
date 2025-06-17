@@ -42,14 +42,17 @@ const ProjectFinancialAssistanceRevenueForm = ({
       title="Aides financières"
       instructions={
         <FormDefinition hideDivider>
-          <p>Les aides financières de l’opération peuvent avoir différentes origines&nbsp;:</p>
+          <p>
+            Les montants sont exprimés en <strong>€ HT</strong>.
+          </p>
+          <p>Les aides financières de l'opération peuvent avoir différentes origines&nbsp;:</p>
           <ul>
             <li>
               Les subventions publiques (État, Région, ADEME, etc.) attribuées pour financer
               certaines dépenses (remise en état) ou pour soutenir le financement participatif,
             </li>
 
-            <li>D’autres ressources le cas échéant.</li>
+            <li>D'autres ressources le cas échéant.</li>
           </ul>
         </FormDefinition>
       }

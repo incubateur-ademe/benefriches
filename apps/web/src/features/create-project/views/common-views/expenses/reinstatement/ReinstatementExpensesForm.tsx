@@ -130,10 +130,12 @@ const ReinstatementsExpensesForm = ({
       instructions={
         <FormInfo>
           <p>
-            Les montants pré-remplis le sont d’après les informations de surface que vous avez
-            renseigné et les coûts moyens observés.
+            Les montants sont exprimés en <strong>€ HT</strong>.
           </p>
-          <p>Ils sont exprimés en € HT. Vous pouvez modifier ces montants.</p>
+          <p>
+            Les montants pré-remplis le sont d'après les informations de surface que vous avez
+            renseigné et les dépenses moyens observés. Vous pouvez modifier ces montants.
+          </p>
           <ReinstatementExpensesFormExplanation
             hasProjectedDecontamination={hasProjectedDecontamination}
             hasImpermeableSurface={hasImpermeableSurface}
