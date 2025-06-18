@@ -1,21 +1,21 @@
 import { fr } from "@codegouvfr/react-dsfr";
+import { ReactNode } from "react";
 
 import classNames from "@/shared/views/clsx";
 import { useIsSmallScreen } from "@/shared/views/hooks/useIsSmallScreen";
 
-import ImpactEvaluationPeriodSelect from "../../shared/actions/ImpactEvaluationPeriodSelect";
-import ProjectsImpactsPageHeader, { HeaderProps } from "./ProjectPageHeader";
+import ImpactEvaluationPeriodSelect from "./ImpactEvaluationPeriodSelect";
 
 type Props = {
   evaluationPeriod: number;
   onEvaluationPeriodChange: (n: number) => void;
-  headerProps: HeaderProps;
+  header: ReactNode;
 };
 
 function ProjectImpactsStickyActionBar({
   evaluationPeriod,
   onEvaluationPeriodChange,
-  headerProps,
+  header,
 }: Props) {
   const isSmScreen = useIsSmallScreen();
 
@@ -34,15 +34,16 @@ function ProjectImpactsStickyActionBar({
     >
       <div
         className={classNames(
-          fr.cx("fr-container-md"),
+          fr.cx("fr-container"),
           "tw-flex",
           "tw-flex-col",
           "md:tw-flex-row",
           "tw-justify-between",
-          "tw-items-center",
+          "tw-items-end",
+          "md:tw-items-center",
         )}
       >
-        <ProjectsImpactsPageHeader size="small" className="tw-px-0" {...headerProps} />
+        {header}
         {!isSmScreen && (
           <ImpactEvaluationPeriodSelect
             onChange={onEvaluationPeriodChange}

@@ -7,6 +7,7 @@ import siteMunicipalityData from "@/features/create-site/core/siteMunicipalityDa
 import siteCarbonStorage from "@/features/create-site/core/siteSoilsCarbonStorage.reducer";
 import currentUser from "@/features/onboarding/core/user.reducer";
 import { projectFeaturesReducer } from "@/features/projects/application/project-features/projectFeatures.reducer";
+import urbanSprawlComparison from "@/features/projects/application/project-impacts-urban-sprawl-comparison/urbanSprawlComparison.reducer";
 import projectImpacts from "@/features/projects/application/project-impacts/projectImpacts.reducer";
 import reconversionProjectsList from "@/features/projects/application/projects-list/projectsList.reducer";
 import siteFeatures from "@/features/site-features/core/siteFeatures.reducer";
@@ -22,6 +23,7 @@ export const rootReducer = combineReducers({
   currentUser,
   userFeatureAlert,
   projectImpacts,
+  urbanSprawlComparison,
   projectFeatures: projectFeaturesReducer,
   siteMunicipalityData,
 });

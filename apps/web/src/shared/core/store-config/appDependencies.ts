@@ -10,6 +10,7 @@ import { HttpProjectFeaturesService } from "@/features/projects/infrastructure/p
 import { HttpReconversionProjectsListApi } from "@/features/projects/infrastructure/projects-list-service/HttpProjectsListApi";
 import { HttpQuickUrbanProjectImpactsService } from "@/features/projects/infrastructure/quick-urban-project-impacts-service/HttpQuickUrbanProjectImpactsService";
 import { HttpReconversionProjectImpactsApi } from "@/features/projects/infrastructure/reconversion-project-impacts-service/HttpReconversionProjectImpactsService";
+import { MockUrbanSprawlImpactsComparisonService } from "@/features/projects/infrastructure/urban-sprawl-impacts-comparison-service/MockUrbanSprawlImpactsComparisonService";
 import { HttpSiteFeaturesService } from "@/features/site-features/infra/site-features-service/HttpSiteFeaturesService";
 import { CreateFeatureAlertService } from "@/features/user-feature-alerts/infrastructure/create-feature-alert-service/CreateFeatureAlertService";
 import { AdministrativeDivisionGeoApi } from "@/shared/infrastructure/administrative-division-service/administrativeDivisionGeoApi";
@@ -34,4 +35,5 @@ export const appDependencies: AppDependencies = {
   siteFeaturesService: new HttpSiteFeaturesService(),
   projectFeaturesService: new HttpProjectFeaturesService(),
   quickUrbanProjectImpactsService: new HttpQuickUrbanProjectImpactsService(),
+  urbanSprawlImpactsComparisonService: new MockUrbanSprawlImpactsComparisonService(),
 };

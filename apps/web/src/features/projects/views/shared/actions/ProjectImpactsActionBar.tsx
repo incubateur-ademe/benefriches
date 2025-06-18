@@ -1,9 +1,8 @@
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 
 import { ViewMode } from "@/features/projects/application/project-impacts/projectImpacts.reducer";
 
-import ImpactsActionBar from "../../shared/actions/ActionBar";
-import { HeaderProps } from "./ProjectPageHeader";
+import ImpactsActionBar from "./ActionBar";
 import StickyActionBar from "./StickyActionBar";
 
 type Props = {
@@ -11,7 +10,7 @@ type Props = {
   evaluationPeriod: number;
   onViewModeClick: (viewMode: ViewMode) => void;
   onEvaluationPeriodChange: (n: number) => void;
-  headerProps: HeaderProps;
+  header: ReactNode;
 };
 
 function ProjectImpactsActionBar({
@@ -19,7 +18,7 @@ function ProjectImpactsActionBar({
   selectedViewMode,
   evaluationPeriod,
   onEvaluationPeriodChange,
-  headerProps,
+  header,
 }: Props) {
   const [isActionBarInViewport, setIsActionBarInViewPort] = useState(false);
 
@@ -39,7 +38,7 @@ function ProjectImpactsActionBar({
     <>
       {!isActionBarInViewport && (
         <StickyActionBar
-          headerProps={headerProps}
+          header={header}
           evaluationPeriod={evaluationPeriod}
           onEvaluationPeriodChange={onEvaluationPeriodChange}
         />

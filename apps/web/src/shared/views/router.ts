@@ -51,6 +51,10 @@ const { RouteProvider, useRoute, routes } = createRouter({
     { projectId: param.path.string, etape: param.query.optional.string },
     (params) => `/mes-projets/${params.projectId}/onboarding-impacts`,
   ),
+  urbanSprawlImpactsComparison: defineRoute(
+    { projectId: param.path.string },
+    (params) => `/mes-projets/${params.projectId}/comparaison-extension-urbaine`,
+  ),
   // MES PROJETS
   myProjects: defineRoute("/mes-projets"),
   siteFeatures: defineRoute(

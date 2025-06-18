@@ -10,9 +10,9 @@ import {
   ViewMode,
 } from "../../application/project-impacts/projectImpacts.reducer.ts";
 import { ProjectDevelopmentPlanType } from "../../domain/projects.types";
+import ProjectImpactsActionBar from "../shared/actions/ProjectImpactsActionBar.tsx";
 import ExportImpactsModal from "./export-impacts/ExportModal";
 import ProjectImpactFooter from "./footer/ProjectImpactFooter";
-import ProjectImpactsActionBar from "./header/ProjectImpactsActionBar";
 import ProjectsImpactsPageHeader from "./header/ProjectPageHeader";
 import ProjectImpactsPage from "./impacts/ProjectImpactsView";
 import AboutImpactsModal from "./impacts/about-impacts-modal/AboutImpactsModal.tsx";
@@ -70,7 +70,7 @@ function ProjectPage({
           evaluationPeriod={evaluationPeriod}
           onViewModeClick={onCurrentViewModeChange}
           onEvaluationPeriodChange={onEvaluationPeriodChange}
-          headerProps={headerProps}
+          header={<ProjectsImpactsPageHeader {...headerProps} />}
         />
         {dataLoadingState === "error" && (
           <Alert

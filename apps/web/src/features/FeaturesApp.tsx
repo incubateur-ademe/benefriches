@@ -25,6 +25,9 @@ const OnBoardingIntroductionPages = lazy(
 );
 const MyProjectsPage = lazy(() => import("@/features/projects/views/my-projects-page"));
 const ProjectImpactsPage = lazy(() => import("@/features/projects/views/project-page"));
+const UrbanSprawlImpactsComparisonPage = lazy(
+  () => import("@/features/projects/views/project-impacts-urban-sprawl-comparison"),
+);
 const SiteFeaturesPage = lazy(() => import("@/features/site-features/views"));
 const ProjectImpactsOnboardingPage = lazy(
   () => import("@/features/projects/views/project-impacts-onboarding"),
@@ -108,6 +111,12 @@ function FeaturesApp() {
               return (
                 <RequireRegisteredUser>
                   <ProjectImpactsOnboardingPage projectId={route.params.projectId} route={route} />
+                </RequireRegisteredUser>
+              );
+            case routes.urbanSprawlImpactsComparison.name:
+              return (
+                <RequireRegisteredUser>
+                  <UrbanSprawlImpactsComparisonPage projectId={route.params.projectId} />
                 </RequireRegisteredUser>
               );
             case routes.siteFeatures.name:
