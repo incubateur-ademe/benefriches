@@ -1,10 +1,11 @@
-import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { FricheActivity, SiteNature, SoilsDistribution } from "shared";
+import { createReducer, createSelector, PayloadAction } from "@reduxjs/toolkit";
+import { FricheActivity, SoilsDistribution } from "shared";
 
 import { RootState } from "@/shared/core/store-config/store";
 
 import { ProjectDevelopmentPlanType } from "../../domain/projects.types";
 import { ModalDataProps } from "../../views/project-page/impacts/impact-description-modals/ImpactModalDescription";
+import { evaluationPeriodUpdated, viewModeUpdated } from "./actions";
 import {
   fetchImpactsForReconversionProject,
   ReconversionProjectImpactsResult,
@@ -60,7 +61,7 @@ export type ProjectImpactsState = {
   currentViewMode: ViewMode;
 };
 
-const getInitialState = (): ProjectImpactsState => {
+export const getInitialState = (): ProjectImpactsState => {
   return {
     impactsData: undefined,
     projectData: undefined,
@@ -71,66 +72,58 @@ const getInitialState = (): ProjectImpactsState => {
   };
 };
 
-const projectImpactsSlice = createSlice({
-  name: "projectImpacts",
-  initialState: getInitialState(),
-  reducers: {
-    setEvaluationPeriod: (state, action: PayloadAction<number>) => {
-      state.evaluationPeriod = action.payload;
-    },
-    setViewMode: (state, action: PayloadAction<ViewMode>) => {
-      state.currentViewMode = action.payload;
-    },
-  },
-  extraReducers(builder) {
-    /* fetch reconversion project impacts */
-    builder.addCase(fetchImpactsForReconversionProject.pending, (state) => {
-      state.dataLoadingState = "loading";
-    });
-    builder.addCase(fetchImpactsForReconversionProject.fulfilled, (state, action) => {
-      state.dataLoadingState = "success";
-      state.impactsData = action.payload.impacts;
-      state.projectData = {
-        id: action.payload.id,
-        name: action.payload.name,
-        ...action.payload.projectData,
-      };
-      state.relatedSiteData = {
-        id: action.payload.relatedSiteId,
-        name: action.payload.relatedSiteName,
-        isExpressSite: action.payload.isExpressSite,
-        ...action.payload.siteData,
-      };
-    });
-    builder.addCase(fetchImpactsForReconversionProject.rejected, (state) => {
-      state.dataLoadingState = "error";
-    });
-    /* fetch quick impacts for urban project on friche */
-    builder.addCase(fetchQuickImpactsForUrbanProjectOnFriche.pending, (state) => {
-      state.dataLoadingState = "loading";
-    });
-    builder.addCase(fetchQuickImpactsForUrbanProjectOnFriche.fulfilled, (state, action) => {
-      state.dataLoadingState = "success";
-      state.impactsData = action.payload.impacts;
-      state.projectData = {
-        id: action.payload.id,
-        name: action.payload.name,
-        ...action.payload.projectData,
-      };
-      state.relatedSiteData = {
-        id: action.payload.relatedSiteId,
-        name: action.payload.relatedSiteName,
-        isExpressSite: action.payload.isExpressSite,
-        ...action.payload.siteData,
-      };
-    });
-    builder.addCase(fetchQuickImpactsForUrbanProjectOnFriche.rejected, (state) => {
-      state.dataLoadingState = "error";
-    });
-  },
+export const projectImpactsReducer = createReducer(getInitialState(), (builder) => {
+  builder.addCase(evaluationPeriodUpdated, (state, action: PayloadAction<number>) => {
+    state.evaluationPeriod = action.payload;
+  });
+  builder.addCase(viewModeUpdated, (state, action: PayloadAction<ViewMode>) => {
+    state.currentViewMode = action.payload;
+  });
+  /* fetch reconversion project impacts */
+  builder.addCase(fetchImpactsForReconversionProject.pending, (state) => {
+    state.dataLoadingState = "loading";
+  });
+  builder.addCase(fetchImpactsForReconversionProject.fulfilled, (state, action) => {
+    state.dataLoadingState = "success";
+    state.impactsData = action.payload.impacts;
+    state.projectData = {
+      id: action.payload.id,
+      name: action.payload.name,
+      ...action.payload.projectData,
+    };
+    state.relatedSiteData = {
+      id: action.payload.relatedSiteId,
+      name: action.payload.relatedSiteName,
+      isExpressSite: action.payload.isExpressSite,
+      ...action.payload.siteData,
+    };
+  });
+  builder.addCase(fetchImpactsForReconversionProject.rejected, (state) => {
+    state.dataLoadingState = "error";
+  });
+  /* fetch quick impacts for urban project on friche */
+  builder.addCase(fetchQuickImpactsForUrbanProjectOnFriche.pending, (state) => {
+    state.dataLoadingState = "loading";
+  });
+  builder.addCase(fetchQuickImpactsForUrbanProjectOnFriche.fulfilled, (state, action) => {
+    state.dataLoadingState = "success";
+    state.impactsData = action.payload.impacts;
+    state.projectData = {
+      id: action.payload.id,
+      name: action.payload.name,
+      ...action.payload.projectData,
+    };
+    state.relatedSiteData = {
+      id: action.payload.relatedSiteId,
+      name: action.payload.relatedSiteName,
+      isExpressSite: action.payload.isExpressSite,
+      ...action.payload.siteData,
+    };
+  });
+  builder.addCase(fetchQuickImpactsForUrbanProjectOnFriche.rejected, (state) => {
+    state.dataLoadingState = "error";
+  });
 });
-
-export const { setEvaluationPeriod, setViewMode } = projectImpactsSlice.actions;
 
 const selectSelf = (state: RootState) => state.projectImpacts;
 
@@ -165,5 +158,3 @@ export const selectModalData = createSelector(
     impactsData: state.impactsData!,
   }),
 );
-
-export default projectImpactsSlice.reducer;

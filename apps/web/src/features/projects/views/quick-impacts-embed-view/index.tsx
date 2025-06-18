@@ -4,8 +4,9 @@ import { useEffect } from "react";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
+import { viewModeUpdated } from "../../application/project-impacts/actions";
 import { fetchQuickImpactsForUrbanProjectOnFriche } from "../../application/project-impacts/fetchQuickImpactsForUrbanProjectOnFriche.action";
-import { setViewMode, ViewMode } from "../../application/project-impacts/projectImpacts.reducer";
+import { ViewMode } from "../../application/project-impacts/projectImpacts.reducer";
 import EmbedImpactsView from "./EmbedImpactsView";
 
 type Props = {
@@ -35,7 +36,7 @@ export default function EmbedImpactsViewContainer({ siteCityCode, siteSurfaceAre
       <EmbedImpactsView
         evaluationPeriod={evaluationPeriod}
         currentViewMode={currentViewMode}
-        onCurrentViewModeChange={(viewMode: ViewMode) => dispatch(setViewMode(viewMode))}
+        onCurrentViewModeChange={(viewMode: ViewMode) => dispatch(viewModeUpdated(viewMode))}
         siteCity={relatedSiteData.addressLabel}
         siteSurfaceArea={relatedSiteData.surfaceArea}
       />

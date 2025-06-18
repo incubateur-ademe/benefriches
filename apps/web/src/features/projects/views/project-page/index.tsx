@@ -3,11 +3,13 @@ import { useEffect } from "react";
 import { loadFeatureAlerts } from "@/features/user-feature-alerts/core/loadFeatureAlerts.action";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
+import {
+  evaluationPeriodUpdated,
+  viewModeUpdated,
+} from "../../application/project-impacts/actions";
 import { fetchImpactsForReconversionProject } from "../../application/project-impacts/fetchImpactsForReconversionProject.action";
 import {
   selectProjectContext,
-  setEvaluationPeriod,
-  setViewMode,
   ViewMode,
 } from "../../application/project-impacts/projectImpacts.reducer";
 import ProjectPage from "./ProjectImpactsPage";
@@ -41,9 +43,9 @@ function ProjectPageContainer({ projectId }: Props) {
       evaluationPeriod={evaluationPeriod}
       currentViewMode={currentViewMode}
       onEvaluationPeriodChange={(evaluationPeriod: number) =>
-        dispatch(setEvaluationPeriod(evaluationPeriod))
+        dispatch(evaluationPeriodUpdated(evaluationPeriod))
       }
-      onCurrentViewModeChange={(viewMode: ViewMode) => dispatch(setViewMode(viewMode))}
+      onCurrentViewModeChange={(viewMode: ViewMode) => dispatch(viewModeUpdated(viewMode))}
     />
   );
 }
