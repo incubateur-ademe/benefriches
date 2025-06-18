@@ -1,4 +1,4 @@
-import { FricheActivity, ReconversionProjectImpacts, SoilsDistribution } from "shared";
+import { FricheActivity, ReconversionProjectImpacts, SiteNature, SoilsDistribution } from "shared";
 
 import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
 
@@ -38,7 +38,7 @@ export type ReconversionProjectImpactsResult = {
     contaminatedSoilSurface: number;
     soilsDistribution: SoilsDistribution;
     surfaceArea: number;
-    isFriche: boolean;
+    nature: SiteNature;
     fricheActivity: FricheActivity;
     owner: {
       structureType: string;

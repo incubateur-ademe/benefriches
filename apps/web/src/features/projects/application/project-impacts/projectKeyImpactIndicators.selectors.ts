@@ -2,12 +2,7 @@ import { createSelector } from "@reduxjs/toolkit";
 
 import { RootState } from "@/shared/core/store-config/store";
 
-import {
-  getKeyImpactIndicatorsList,
-  getMainKeyImpactIndicators,
-  getProjectOverallImpact,
-  ProjectOverallImpact,
-} from "../../domain/projectKeyImpactIndicators";
+import { getKeyImpactIndicatorsList } from "../../domain/projectKeyImpactIndicators";
 
 const selectSelf = (state: RootState) => state.projectImpacts;
 
@@ -58,19 +53,7 @@ export type KeyImpactIndicatorData =
     };
 
 export const getKeyImpactIndicatorsListSelector = createSelector(selectSelf, (state) =>
-  getKeyImpactIndicatorsList(state.impactsData, state.relatedSiteData),
-);
-
-export const selectMainKeyImpactIndicators = createSelector(
-  getKeyImpactIndicatorsListSelector,
-  (keyImpactIndicators) => {
-    return getMainKeyImpactIndicators(keyImpactIndicators);
-  },
-);
-
-export const selectProjectOverallImpact = createSelector(
-  getKeyImpactIndicatorsListSelector,
-  (keyImpactIndicators): ProjectOverallImpact => {
-    return getProjectOverallImpact(keyImpactIndicators);
-  },
+  state.impactsData && state.relatedSiteData
+    ? getKeyImpactIndicatorsList(state.impactsData, state.relatedSiteData)
+    : [],
 );

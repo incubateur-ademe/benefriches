@@ -141,7 +141,7 @@ export const IMPACTS_DATA = {
       ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 5000,
     },
     surfaceArea: 50000,
-    isFriche: true,
+    nature: "FRICHE",
     fricheActivity: "INDUSTRY",
     owner: { name: "Mairie de Mauges-sur-Loire", structureType: "municipality" },
   },

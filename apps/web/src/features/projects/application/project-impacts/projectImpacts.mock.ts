@@ -4,7 +4,7 @@ const siteData = {
   owner: { name: "Mairie de Blajan", structureType: "municipality" },
   surfaceArea: 90000,
   fricheActivity: "INDUSTRY",
-  isFriche: true,
+  nature: "FRICHE",
   addressLabel: "Blajan",
   contaminatedSoilSurface: 20000,
   soilsDistribution: {

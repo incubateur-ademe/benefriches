@@ -1,4 +1,4 @@
-import { isLocalAuthority, sumListWithKey } from "shared";
+import { FricheActivity, isLocalAuthority, SiteNature, sumListWithKey } from "shared";
 
 import { getPercentageDifference } from "@/shared/core/percentage/percentage";
 
@@ -6,84 +6,11 @@ import { ReconversionProjectImpactsResult } from "../application/project-impacts
 
 export type ProjectOverallImpact = "strong_negative" | "negative" | "positive" | "strong_positive";
 
-const isProjectOverallImpactPositive = (projectOverallImpact: ProjectOverallImpact): boolean => {
-  return projectOverallImpact === "positive" || projectOverallImpact === "strong_positive";
-};
-
-const isKeyIndicatorPositive = (keyIndicator: KeyImpactIndicatorData): boolean =>
-  keyIndicator.isSuccess;
-
-export const getProjectOverallImpact = (
-  projectKeyImpactIndicators: KeyImpactIndicatorData[],
-): ProjectOverallImpact => {
-  const projectOverallMonetaryBalance = projectKeyImpactIndicators.find((keyIndicator) => {
-    return keyIndicator.name === "projectImpactBalance";
-  });
-  const hasPositiveOverallMonetaryBalance = !!projectOverallMonetaryBalance?.isSuccess;
-
-  const positiveKeyImpactIndicators = projectKeyImpactIndicators.filter(isKeyIndicatorPositive);
-  const negativeKeyImpactIndicators = projectKeyImpactIndicators.filter(
-    (keyIndicator) => !isKeyIndicatorPositive(keyIndicator),
-  );
-
-  if (hasPositiveOverallMonetaryBalance) {
-    if (positiveKeyImpactIndicators.length < 5) {
-      return "positive";
-    }
-    return "strong_positive";
-  }
-
-  return negativeKeyImpactIndicators.length < 5 ? "negative" : "strong_negative";
-};
-
-const MAIN_KEY_IMPACT_INDICATORS_COUNT = 3;
-const DEFAULT_KEY_INDICATORS_ORDER_PRIORITY = [
-  "taxesIncomesImpact",
-  "fullTimeJobs",
-  "avoidedCo2eqEmissions",
-  "zanCompliance",
-  "projectImpactBalance",
-  "avoidedFricheCostsForLocalAuthority",
-  "nonContaminatedSurfaceArea",
-  "permeableSurfaceArea",
-  "householdsPoweredByRenewableEnergy",
-  "localPropertyValueIncrease",
-] as const;
-const STRONG_POSITIVE_ORDER_PRIORITY = [
-  "zanCompliance",
-  "projectImpactBalance",
-  "avoidedFricheCostsForLocalAuthority",
-  "taxesIncomesImpact",
-  "fullTimeJobs",
-  "avoidedCo2eqEmissions",
-  "nonContaminatedSurfaceArea",
-  "permeableSurfaceArea",
-  "householdsPoweredByRenewableEnergy",
-  "localPropertyValueIncrease",
-] as const;
-
-export const getMainKeyImpactIndicators = (
-  projectKeyImpactIndicators: KeyImpactIndicatorData[],
-): KeyImpactIndicatorData[] => {
-  const overallImpact = getProjectOverallImpact(projectKeyImpactIndicators);
-  const keyIndicatorsToSort = isProjectOverallImpactPositive(overallImpact)
-    ? projectKeyImpactIndicators.filter(isKeyIndicatorPositive)
-    : projectKeyImpactIndicators.filter((keyIndicator) => !isKeyIndicatorPositive(keyIndicator));
-  const orderPriority =
-    overallImpact === "strong_positive"
-      ? STRONG_POSITIVE_ORDER_PRIORITY
-      : DEFAULT_KEY_INDICATORS_ORDER_PRIORITY;
-
-  return keyIndicatorsToSort
-    .sort((a, b) => orderPriority.indexOf(a.name) - orderPriority.indexOf(b.name))
-    .slice(0, MAIN_KEY_IMPACT_INDICATORS_COUNT);
-};
-
 const getRelatedSiteInfos = (
-  relatedSiteData?: ReconversionProjectImpactsResult["siteData"],
+  siteData: SiteData,
 ): { isFriche: boolean; isAgriculturalFriche: boolean } => ({
-  isAgriculturalFriche: relatedSiteData?.fricheActivity === "AGRICULTURE",
-  isFriche: !!relatedSiteData?.isFriche,
+  isAgriculturalFriche: siteData.fricheActivity === "AGRICULTURE",
+  isFriche: siteData.nature === "FRICHE",
 });
 
 const getProjectImpactBalance = (impactsData?: ReconversionProjectImpactsResult["impacts"]) => {
@@ -98,14 +25,14 @@ const getProjectImpactBalance = (impactsData?: ReconversionProjectImpactsResult[
 };
 
 const getAvoidedFricheCostsForLocalAuthority = (
-  impactsData?: ReconversionProjectImpactsResult["impacts"],
-  relatedSiteData?: ReconversionProjectImpactsResult["siteData"],
+  impactsData: ReconversionProjectImpactsResult["impacts"],
+  relatedSiteData: SiteData,
 ) => {
-  const avoidedFricheCosts = impactsData?.socioeconomic.impacts.find(
+  const avoidedFricheCosts = impactsData.socioeconomic.impacts.find(
     ({ impact }) => impact === "avoided_friche_costs",
   );
 
-  const siteOwner = relatedSiteData?.owner.structureType ?? "";
+  const siteOwner = relatedSiteData.owner?.structureType ?? "";
   const isOwnerLocalAuthority = isLocalAuthority(siteOwner);
 
   if (!avoidedFricheCosts || !isOwnerLocalAuthority) {
@@ -113,7 +40,7 @@ const getAvoidedFricheCostsForLocalAuthority = (
   }
 
   return {
-    actorName: relatedSiteData?.owner.name ?? "",
+    actorName: relatedSiteData.owner?.name ?? "",
     amount: avoidedFricheCosts.amount,
   };
 };
@@ -186,12 +113,12 @@ const getPermeableSurfaceArea = (impactsData?: ReconversionProjectImpactsResult[
 };
 
 const getNonContaminatedSurfaceArea = (
-  impactsData?: ReconversionProjectImpactsResult["impacts"],
-  relatedSiteData?: ReconversionProjectImpactsResult["siteData"],
+  impactsData: ReconversionProjectImpactsResult["impacts"],
+  relatedSiteData: SiteData,
 ) => {
-  const siteContaminatedSurfaceArea = relatedSiteData?.contaminatedSoilSurface ?? 0;
-  const siteSurfaceArea = relatedSiteData?.surfaceArea ?? 0;
-  const nonContaminatedSurfaceAreaImpact = impactsData?.environmental.nonContaminatedSurfaceArea;
+  const siteContaminatedSurfaceArea = relatedSiteData.contaminatedSoilSurface ?? 0;
+  const siteSurfaceArea = relatedSiteData.surfaceArea;
+  const nonContaminatedSurfaceAreaImpact = impactsData.environmental.nonContaminatedSurfaceArea;
 
   if (!nonContaminatedSurfaceAreaImpact || !siteContaminatedSurfaceArea) {
     return undefined;
@@ -261,9 +188,20 @@ export type KeyImpactIndicatorData =
       };
     };
 
+type SiteData = {
+  fricheActivity?: FricheActivity;
+  nature: SiteNature;
+  owner?: {
+    structureType: string;
+    name?: string;
+  };
+  contaminatedSoilSurface?: number;
+  surfaceArea: number;
+};
+
 export const getKeyImpactIndicatorsList = (
-  impactsData?: ReconversionProjectImpactsResult["impacts"],
-  relatedSiteData?: ReconversionProjectImpactsResult["siteData"],
+  impactsData: ReconversionProjectImpactsResult["impacts"],
+  relatedSiteData: SiteData,
 ) => {
   const { isFriche, isAgriculturalFriche } = getRelatedSiteInfos(relatedSiteData);
   const projectImpactBalance = getProjectImpactBalance(impactsData);

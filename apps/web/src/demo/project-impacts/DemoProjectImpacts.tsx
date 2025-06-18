@@ -15,7 +15,6 @@ import {
 } from "@/features/projects/domain/projectImpactsSocioEconomic";
 import { getKeyImpactIndicatorsList } from "@/features/projects/domain/projectKeyImpactIndicators";
 import { ProjectFeatures, UrbanProjectFeatures } from "@/features/projects/domain/projects.types";
-import ProjectImpactsActionBar from "@/features/projects/views/project-page/header/ProjectImpactsActionBar";
 import ProjectPageHeader from "@/features/projects/views/project-page/header/ProjectPageHeader";
 import AboutImpactsModal from "@/features/projects/views/project-page/impacts/about-impacts-modal/AboutImpactsModal";
 import ImpactsChartsView from "@/features/projects/views/project-page/impacts/charts-view/ImpactsChartsView";
@@ -23,6 +22,7 @@ import { ModalDataProps } from "@/features/projects/views/project-page/impacts/i
 import ImpactsListView from "@/features/projects/views/project-page/impacts/list-view/ImpactsListView";
 import ProjectFeaturesModal from "@/features/projects/views/project-page/impacts/project-features-modal/ProjectFeaturesModal";
 import ImpactSummaryView from "@/features/projects/views/project-page/impacts/summary-view/ImpactSummaryView";
+import ProjectImpactsActionBar from "@/features/projects/views/shared/actions/ProjectImpactsActionBar";
 import classNames from "@/shared/views/clsx";
 import { routes } from "@/shared/views/router";
 
@@ -85,7 +85,7 @@ function DemoProjectImpacts({ projectData, siteData, impactsData: impactsDataFor
           onEvaluationPeriodChange={(newEvaluationPeriod: number) => {
             setEvaluationPeriod(newEvaluationPeriod);
           }}
-          headerProps={headerProps}
+          header={<ProjectPageHeader {...headerProps} />}
         />
 
         {currentViewMode === "summary" && (
