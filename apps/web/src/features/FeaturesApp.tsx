@@ -108,9 +108,9 @@ function FeaturesApp() {
               );
             case routes.urbanSprawlImpactsComparison.name:
               return (
-                <RequireRegisteredUser>
+                <RequireAuthenticatedUser>
                   <UrbanSprawlImpactsComparisonPage route={route} />
-                </RequireRegisteredUser>
+                </RequireAuthenticatedUser>
               );
             case routes.siteFeatures.name:
               return (
