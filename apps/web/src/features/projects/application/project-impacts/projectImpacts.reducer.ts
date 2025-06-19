@@ -1,5 +1,5 @@
 import { createReducer, createSelector, isAnyOf, PayloadAction } from "@reduxjs/toolkit";
-import { FricheActivity, SoilsDistribution } from "shared";
+import { FricheActivity, SiteNature, SoilsDistribution } from "shared";
 
 import { RootState } from "@/shared/core/store-config/store";
 

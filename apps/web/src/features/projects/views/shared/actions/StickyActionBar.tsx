@@ -44,7 +44,7 @@ function ProjectImpactsStickyActionBar({
         )}
       >
         {header}
-        {!isSmScreen && evaluationPeriod !== undefined && && (
+        {!isSmScreen && evaluationPeriod !== undefined && (
           <ImpactEvaluationPeriodSelect
             onChange={onEvaluationPeriodChange}
             value={evaluationPeriod}
