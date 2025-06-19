@@ -1,3 +1,4 @@
+import { SiteImpactsDataView } from "shared";
 import { v4 as uuid } from "uuid";
 
 import { MockDV3FApiService } from "src/location-features/adapters/secondary/city-dv3f-provider/DV3FApiService.mock";
@@ -10,10 +11,9 @@ import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 
 import { FakeGetSoilsCarbonStorageService } from "../gateways/FakeGetSoilsCarbonStorageService";
 import {
+  ApiReconversionProjectImpactsDataView,
   ComputeReconversionProjectImpactsUseCase,
-  ReconversionProjectImpactsDataView,
   Result,
-  SiteImpactsDataView,
 } from "./computeReconversionProjectImpacts.usecase";
 
 describe("ComputeReconversionProjectImpactsUseCase", () => {
@@ -56,7 +56,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         soilsDistribution: {},
         sitePurchaseTotalAmount: 0,
         reinstatementExpenses: [],
-        developmentPlanInstallationExpenses: [],
+        developmentPlan: undefined,
         financialAssistanceRevenues: [],
         yearlyProjectedExpenses: [],
         yearlyProjectedRevenues: [],
@@ -85,18 +85,20 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         id: reconversionProjectId,
         isExpressProject: false,
         name: "Test reconversion project",
-        developmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
+        developmentPlan: {
+          type: "PHOTOVOLTAIC_POWER_PLANT",
+          installationCosts: [],
+          features: {
+            contractDuration: 20,
+            electricalPowerKWc: 100,
+            expectedAnnualProduction: 1000,
+            surfaceArea: 1000,
+          },
+        },
         relatedSiteId: siteId,
         soilsDistribution: {},
         sitePurchaseTotalAmount: 0,
         reinstatementExpenses: [],
-        developmentPlanInstallationExpenses: [],
-        developmentPlanFeatures: {
-          contractDuration: 20,
-          electricalPowerKWc: 100,
-          expectedAnnualProduction: 1000,
-          surfaceArea: 1000,
-        },
         financialAssistanceRevenues: [],
         yearlyProjectedExpenses: [],
         yearlyProjectedRevenues: [],
@@ -143,15 +145,17 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       reinstatementContractOwnerName: "Mairie de Blajan",
       sitePurchaseTotalAmount: 150000,
       reinstatementExpenses: [{ amount: 500000, purpose: "demolition" }],
-      developmentPlanInstallationExpenses: [{ amount: 200000, purpose: "installation_works" }],
-      developmentPlanFeatures: {
-        electricalPowerKWc: 258,
-        surfaceArea: 20000,
-        contractDuration: 30,
-        expectedAnnualProduction: 4679,
+      developmentPlan: {
+        installationCosts: [{ amount: 200000, purpose: "installation_works" }],
+        features: {
+          electricalPowerKWc: 258,
+          surfaceArea: 20000,
+          contractDuration: 30,
+          expectedAnnualProduction: 4679,
+        },
+        type: "PHOTOVOLTAIC_POWER_PLANT",
+        developerName: "Mairie de Blajan",
       },
-      developmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
-      developmentPlanDeveloperName: "Mairie de Blajan",
       financialAssistanceRevenues: [{ amount: 150000, source: "public_subsidies" }],
       yearlyProjectedExpenses: [
         { amount: 1000, purpose: "taxes" },
@@ -164,13 +168,14 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       sitePurchasePropertyTransferDutiesAmount: 5432,
       operationsFirstYear: 2025,
       decontaminatedSoilSurface: 20000,
-    } as const satisfies ReconversionProjectImpactsDataView;
+    } as const satisfies ApiReconversionProjectImpactsDataView;
     const site = {
       id: reconversionProjectImpactDataView.relatedSiteId,
+      description: "Description",
       contaminatedSoilSurface: 20000,
       name: "My base site",
       nature: "FRICHE",
-      fricheActivity: "AGRICULTURAL",
+      fricheActivity: "AGRICULTURE",
       surfaceArea: 50000,
       soilsDistribution: {
         ...reconversionProjectImpactDataView.soilsDistribution,
@@ -178,12 +183,20 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         IMPERMEABLE_SOILS: 10000,
         ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 40000,
       },
-      addressCityCode: "23456",
-      addressLabel: "Blajan",
+      address: {
+        cityCode: "23456",
+        value: "Blajan",
+        banId: "",
+        city: "Blajan",
+        postCode: "23456",
+        long: 0,
+        lat: 0,
+      },
+      isExpressSite: false,
+      yearlyIncomes: [],
       ownerName: "Current owner",
       ownerStructureType: "company",
       tenantName: "Current tenant",
-      hasAccidents: true,
       accidentsDeaths: 0,
       accidentsMinorInjuries: 1,
       accidentsSevereInjuries: 2,
@@ -244,7 +257,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
           },
           surfaceArea: 50000,
           nature: "FRICHE",
-          fricheActivity: "AGRICULTURAL",
+          fricheActivity: "AGRICULTURE",
           owner: {
             structureType: "company",
             name: "Current owner",
@@ -502,7 +515,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       });
       expect(result.id).toEqual(reconversionProjectImpactDataView.id);
       expect(result.evaluationPeriodInYears).toEqual(
-        reconversionProjectImpactDataView.developmentPlanFeatures.contractDuration,
+        reconversionProjectImpactDataView.developmentPlan.features.contractDuration,
       );
     });
 
@@ -557,15 +570,17 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       reinstatementContractOwnerName: "Mairie de Blajan",
       sitePurchaseTotalAmount: 150000,
       reinstatementExpenses: [{ amount: 500000, purpose: "demolition" }],
-      developmentPlanInstallationExpenses: [{ amount: 200000, purpose: "installation_works" }],
-      developmentPlanFeatures: {
-        electricalPowerKWc: 258,
-        surfaceArea: 20000,
-        contractDuration: 30,
-        expectedAnnualProduction: 4679,
+      developmentPlan: {
+        developerName: "Mairie de Blajan",
+        type: "PHOTOVOLTAIC_POWER_PLANT",
+        features: {
+          electricalPowerKWc: 258,
+          surfaceArea: 20000,
+          contractDuration: 30,
+          expectedAnnualProduction: 4679,
+        },
+        installationCosts: [{ amount: 200000, purpose: "installation_works" }],
       },
-      developmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
-      developmentPlanDeveloperName: "Mairie de Blajan",
       financialAssistanceRevenues: [{ amount: 150000, source: "public_subsidies" }],
       yearlyProjectedExpenses: [
         { amount: 1000, purpose: "taxes" },
@@ -578,7 +593,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       sitePurchasePropertyTransferDutiesAmount: 5432,
       operationsFirstYear: 2025,
       decontaminatedSoilSurface: 20000,
-    } as const satisfies ReconversionProjectImpactsDataView;
+    } as const satisfies ApiReconversionProjectImpactsDataView;
 
     const site: SiteImpactsDataView = {
       id: reconversionProjectImpactDataView.relatedSiteId,
@@ -594,17 +609,25 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         IMPERMEABLE_SOILS: 10000,
         ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 40000,
       },
-      addressCityCode: "23456",
-      addressLabel: "Blajan",
+      address: {
+        cityCode: "23456",
+        value: "Blajan",
+        banId: "",
+        city: "Blajan",
+        postCode: "23456",
+        long: 0,
+        lat: 0,
+      },
       ownerName: "Current owner",
       ownerStructureType: "company",
       tenantName: "Current tenant",
-      hasAccidents: false,
       yearlyExpenses: [
         { amount: 54000, bearer: "tenant", purpose: "rent" },
         { amount: 11600, bearer: "tenant", purpose: "otherOperationsCosts" },
         { amount: 500, bearer: "tenant", purpose: "taxes" },
       ],
+      yearlyIncomes: [],
+      isExpressSite: false,
     } as const;
 
     it("returns impacts over 10 years for a reconversion project on site still operated", async () => {

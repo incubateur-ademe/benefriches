@@ -3,7 +3,7 @@ import { Knex } from "knex";
 
 import { DevelopmentPlan } from "src/reconversion-projects/core/model/reconversionProject";
 import {
-  ReconversionProjectImpactsDataView,
+  ApiReconversionProjectImpactsDataView,
   ReconversionProjectImpactsQuery,
 } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
@@ -16,12 +16,21 @@ const sumIfNotNullish = (
   return b ? a + b : a;
 };
 
+export type ReconversionProjectImpactsQueryResult = Omit<
+  ApiReconversionProjectImpactsDataView,
+  "developmentPlan"
+> & {
+  developmentPlan?: {
+    installationCosts: ApiReconversionProjectImpactsDataView["developmentPlan"]["installationCosts"];
+  } & Partial<Omit<ApiReconversionProjectImpactsDataView["developmentPlan"], "installationCosts">>;
+};
+
 export class SqlReconversionProjectImpactsQuery implements ReconversionProjectImpactsQuery {
   constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}
 
   async getById(
     reconversionProjectId: string,
-  ): Promise<ReconversionProjectImpactsDataView | undefined> {
+  ): Promise<ReconversionProjectImpactsQueryResult | undefined> {
     const reconversionProject = await this.sqlConnection("reconversion_projects")
       .select(
         "id",
@@ -56,11 +65,11 @@ export class SqlReconversionProjectImpactsQuery implements ReconversionProjectIm
     const sqlDevelopmentPlanResult: {
       id: string;
       developer_structure_type: string;
-      developer_name: string;
+      developer_name?: string;
       type: DevelopmentPlan["type"];
       schedule_start_date?: Date;
       schedule_end_date?: Date;
-      features: DevelopmentPlan["features"];
+      features?: DevelopmentPlan["features"];
       costs: { amount: number; purpose: string }[];
     }[] = await this.sqlConnection("reconversion_project_development_plans as dp")
       .where("dp.reconversion_project_id", reconversionProjectId)
@@ -91,7 +100,7 @@ export class SqlReconversionProjectImpactsQuery implements ReconversionProjectIm
       | undefined;
 
     const sqlDevelopmentPlanFeatures =
-      !sqlDevelopmentPlan || Object.keys(sqlDevelopmentPlan.features).length === 0
+      !sqlDevelopmentPlan || Object.keys(sqlDevelopmentPlan.features ?? {}).length === 0
         ? undefined
         : sqlDevelopmentPlan.features;
 
@@ -160,16 +169,26 @@ export class SqlReconversionProjectImpactsQuery implements ReconversionProjectIm
       financialAssistanceRevenues: sqlFinancialAssistanceRevenues,
       yearlyProjectedExpenses: sqlExpenses,
       yearlyProjectedRevenues: sqlRevenues,
-      developmentPlanType: sqlDevelopmentPlan?.type ?? undefined,
-      developmentPlanFeatures: sqlDevelopmentPlanFeatures,
-      developmentPlanDeveloperName: sqlDevelopmentPlan?.developer_name ?? undefined,
-      developmentPlanInstallationExpenses: sqlDevelopmentPlan?.costs ?? [],
+      developmentPlan: sqlDevelopmentPlan
+        ? {
+            type: sqlDevelopmentPlan.type,
+            features: sqlDevelopmentPlanFeatures ?? undefined,
+            developerName: sqlDevelopmentPlan.developer_name ?? undefined,
+            installationCosts: sqlDevelopmentPlan.costs,
+            installationSchedule: sqlDevelopmentPlan.schedule_start_date
+              ? {
+                  startDate: sqlDevelopmentPlan.schedule_start_date,
+                  endDate: sqlDevelopmentPlan.schedule_end_date,
+                }
+              : undefined,
+          }
+        : undefined,
       operationsFirstYear: reconversionProject.operations_first_year ?? undefined,
       siteResaleSellingPrice: reconversionProject.site_resale_expected_selling_price ?? undefined,
       buildingsResaleSellingPrice:
         reconversionProject.buildings_resale_expected_selling_price ?? undefined,
       decontaminatedSoilSurface:
         reconversionProject.friche_decontaminated_soil_surface_area ?? undefined,
-    } as ReconversionProjectImpactsDataView;
+    } as ReconversionProjectImpactsQueryResult;
   }
 }

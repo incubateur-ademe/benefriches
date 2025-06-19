@@ -1,7 +1,7 @@
 import knex, { Knex } from "knex";
+import { SiteImpactsDataView } from "shared";
 import { v4 as uuid } from "uuid";
 
-import { SiteImpactsDataView } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
 
 import { SqlSiteImpactsQuery } from "./SqlSiteImpactsQuery";
@@ -78,16 +78,23 @@ describe("SqlSiteImpactsQuery integration", () => {
         id: siteId,
         name: "Site 123",
         nature: "FRICHE",
+        description: "Description of site",
         fricheActivity: "BUILDING",
-        addressCityCode: "01234",
-        addressLabel: "1 rue de la paix",
+        address: {
+          cityCode: "01234",
+          value: "1 rue de la paix",
+          banId: "123456",
+          city: "City name",
+          postCode: "1234",
+          long: 0,
+          lat: 0,
+        },
         contaminatedSoilSurface: 230,
         surfaceArea: 14000,
         soilsDistribution: {
           FOREST_MIXED: 1200,
           PRAIRIE_GRASS: 12800,
         },
-        hasAccidents: true,
         accidentsDeaths: 1,
         accidentsMinorInjuries: 2,
         accidentsSevereInjuries: 0,
@@ -95,6 +102,8 @@ describe("SqlSiteImpactsQuery integration", () => {
         ownerName: "Current site owner",
         tenantName: "Current tenant",
         yearlyExpenses: [{ amount: 100, bearer: "tenant", purpose: "rent" }],
+        yearlyIncomes: [],
+        isExpressSite: false,
       });
     });
     it("gets site with data needed for impact computation when no accidents and no contaminated surface", async () => {
@@ -134,8 +143,17 @@ describe("SqlSiteImpactsQuery integration", () => {
         id: siteId,
         name: "Site 123",
         nature: "AGRICULTURAL_OPERATION",
-        addressCityCode: "01234",
-        addressLabel: "1 rue de la paix",
+        description: "Description of site",
+        address: {
+          cityCode: "01234",
+          value: "1 rue de la paix",
+          banId: "123456",
+          city: "City name",
+          postCode: "1234",
+          long: 0,
+          lat: 0,
+        },
+        isExpressSite: false,
         surfaceArea: 14000,
         soilsDistribution: {
           FOREST_MIXED: 1200,
@@ -143,8 +161,8 @@ describe("SqlSiteImpactsQuery integration", () => {
         },
         ownerName: "Owner name",
         ownerStructureType: "company",
-        hasAccidents: false,
         yearlyExpenses: [],
+        yearlyIncomes: [],
         agriculturalOperationActivity: "CATTLE_FARMING",
         isSiteOperated: true,
       });

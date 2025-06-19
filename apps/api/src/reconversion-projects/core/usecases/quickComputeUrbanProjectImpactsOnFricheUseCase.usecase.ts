@@ -48,7 +48,6 @@ export type SiteImpactsDataView = {
   tenantName?: string;
   surfaceArea: number;
   soilsDistribution: SoilsDistribution;
-  hasAccidents: boolean;
   accidentsDeaths?: number;
   accidentsMinorInjuries?: number;
   accidentsSevereInjuries?: number;

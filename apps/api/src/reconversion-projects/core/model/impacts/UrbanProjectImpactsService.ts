@@ -17,7 +17,7 @@ import { getRoadsAndUtilitiesExpensesImpacts } from "./roads-and-utilities-expen
 import { TravelRelatedImpactsService } from "./travel-related-impacts-service/TravelRelatedImpactsService";
 import { UrbanFreshnessRelatedImpactsService } from "./urban-freshness-related-impacts-service/UrbanFreshnessRelatedImpactsService";
 
-type SiteCityDataProps =
+export type SiteCityDataProps =
   | {
       siteIsFriche: true;
       citySquareMetersSurfaceArea: number;

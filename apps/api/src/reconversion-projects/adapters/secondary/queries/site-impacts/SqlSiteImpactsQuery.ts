@@ -1,11 +1,15 @@
 import { Inject } from "@nestjs/common";
 import { Knex } from "knex";
-import { AgriculturalOperationActivity, SiteNature, SiteYearlyExpense } from "shared";
-
 import {
+  AgriculturalOperationActivity,
+  FricheActivity,
   SiteImpactsDataView,
-  SiteImpactsQuery,
-} from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
+  SiteNature,
+  SiteYearlyExpense,
+  SiteYearlyIncome,
+} from "shared";
+
+import { SiteImpactsQuery } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 
 export class SqlSiteImpactsQuery implements SiteImpactsQuery {
@@ -15,8 +19,10 @@ export class SqlSiteImpactsQuery implements SiteImpactsQuery {
     const sqlSite = await this.sqlConnection("sites")
       .select(
         "id",
+        "description",
         "name",
         "nature",
+        "creation_mode",
         "friche_activity",
         "agricultural_operation_activity",
         "is_operated",
@@ -42,21 +48,33 @@ export class SqlSiteImpactsQuery implements SiteImpactsQuery {
       .select("amount", "purpose", "bearer")
       .where("site_id", siteId);
 
+    const sqlYearlyIncomes = await this.sqlConnection("site_incomes")
+      .select("amount", "source")
+      .where("site_id", siteId);
+
     const sqlAddress = await this.sqlConnection("addresses")
-      .select("city_code", "value")
+      .select("city_code", "value", "city", "ban_id", "post_code", "lat", "long")
       .where("site_id", siteId)
       .first();
 
     return {
       id: sqlSite.id,
       name: sqlSite.name,
+      description: sqlSite.description ?? undefined,
       nature: sqlSite.nature as SiteNature,
-      fricheActivity: sqlSite.friche_activity ?? undefined,
+      fricheActivity: (sqlSite.friche_activity ?? undefined) as FricheActivity,
       agriculturalOperationActivity: (sqlSite.agricultural_operation_activity ??
         undefined) as AgriculturalOperationActivity,
       isSiteOperated: sqlSite.is_operated ?? undefined,
-      addressCityCode: sqlAddress?.city_code ?? "",
-      addressLabel: sqlAddress?.value ?? "",
+      address: {
+        value: sqlAddress?.value ?? "",
+        cityCode: sqlAddress?.city_code ?? "",
+        city: sqlAddress?.city ?? "",
+        banId: sqlAddress?.ban_id ?? "",
+        postCode: sqlAddress?.post_code ?? "",
+        lat: sqlAddress?.lat ?? 0,
+        long: sqlAddress?.long ?? 0,
+      },
       surfaceArea: sqlSite.surface_area,
       contaminatedSoilSurface: sqlSite.friche_contaminated_soil_surface_area ?? undefined,
       soilsDistribution: sqlSoilDistributions.reduce((acc, { soil_type, surface_area }) => {
@@ -65,10 +83,6 @@ export class SqlSiteImpactsQuery implements SiteImpactsQuery {
           [soil_type]: surface_area,
         };
       }, {}),
-      hasAccidents:
-        Boolean(sqlSite.friche_accidents_deaths) ||
-        Boolean(sqlSite.friche_accidents_minor_injuries) ||
-        Boolean(sqlSite.friche_accidents_severe_injuries),
       accidentsDeaths: sqlSite.friche_accidents_deaths ?? undefined,
       accidentsSevereInjuries: sqlSite.friche_accidents_severe_injuries ?? undefined,
       accidentsMinorInjuries: sqlSite.friche_accidents_minor_injuries ?? undefined,
@@ -76,6 +90,8 @@ export class SqlSiteImpactsQuery implements SiteImpactsQuery {
       ownerStructureType: sqlSite.owner_structure_type,
       tenantName: sqlSite.tenant_name ?? undefined,
       yearlyExpenses: sqlYearlyExpenses as SiteYearlyExpense[],
+      yearlyIncomes: sqlYearlyIncomes as SiteYearlyIncome[],
+      isExpressSite: sqlSite.creation_mode === "express",
     };
   }
 }

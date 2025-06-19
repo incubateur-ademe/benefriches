@@ -1,8 +1,10 @@
 import { Body, Controller, Get, Param, Post, Query } from "@nestjs/common";
 import { createZodDto } from "nestjs-zod";
+import { API_ROUTES } from "shared";
 import { z } from "zod";
 
 import { reconversionProjectPropsSchema } from "src/reconversion-projects/core/model/reconversionProject";
+import { ComputeProjectUrbanSprawlImpactsComparisonUseCase } from "src/reconversion-projects/core/usecases/computeProjectUrbanSprawlImpactsComparison.usecase";
 import { ComputeReconversionProjectImpactsUseCase } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
 import { CreateExpressReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/createExpressReconversionProject.usecase";
 import { CreateReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/createReconversionProject.usecase";
@@ -38,6 +40,10 @@ class GetReconversionProjectImpactsQueryDto extends createZodDto(
   z.object({ evaluationPeriodInYears: z.coerce.number().nonnegative().optional() }),
 ) {}
 
+class UrbanSprawlComparisonQueryDto extends createZodDto(
+  API_ROUTES.URBAN_SPRAWL_IMPACTS_COMPARISON.GET.querySchema,
+) {}
+
 @Controller("reconversion-projects")
 export class ReconversionProjectController {
   constructor(
@@ -47,6 +53,7 @@ export class ReconversionProjectController {
     private readonly createExpressReconversionProjectUseCase: CreateExpressReconversionProjectUseCase,
     private readonly getReconversionProjectFeaturesUseCase: GetReconversionProjectFeaturesUseCase,
     private readonly quickComputeUrbanProjectImpactsOnFricheUseCase: QuickComputeUrbanProjectImpactsOnFricheUseCase,
+    private readonly getProjectUrbanSprawlImpactsComparisonUseCase: ComputeProjectUrbanSprawlImpactsComparisonUseCase,
   ) {}
 
   @Post()
@@ -103,6 +110,19 @@ export class ReconversionProjectController {
     const result = await this.quickComputeUrbanProjectImpactsOnFricheUseCase.execute({
       siteCityCode,
       siteSurfaceArea: Number(siteSurfaceArea),
+    });
+    return result;
+  }
+
+  @Get(API_ROUTES.URBAN_SPRAWL_IMPACTS_COMPARISON.GET.path.replace("/reconversion-projects/", ""))
+  async getUrbanSprawlImpactsComparison(
+    @Param("reconversionProjectId") reconversionProjectId: string,
+    @Query() urbanSprawlComparisonQueryDto: UrbanSprawlComparisonQueryDto,
+  ) {
+    const result = await this.getProjectUrbanSprawlImpactsComparisonUseCase.execute({
+      reconversionProjectId,
+      evaluationPeriodInYears: urbanSprawlComparisonQueryDto.evaluationPeriodInYears,
+      comparisonSiteNature: urbanSprawlComparisonQueryDto.comparisonSiteNature,
     });
     return result;
   }

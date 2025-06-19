@@ -1,10 +1,12 @@
 import knex, { Knex } from "knex";
 import { v4 as uuid } from "uuid";
 
-import { ReconversionProjectImpactsDataView } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
 
-import { SqlReconversionProjectImpactsQuery } from "./SqlReconversionProjectImpactsQuery";
+import {
+  ReconversionProjectImpactsQueryResult,
+  SqlReconversionProjectImpactsQuery,
+} from "./SqlReconversionProjectImpactsQuery";
 
 describe("SqlReconversionProjectImpactsQuery integration", () => {
   let sqlConnection: Knex;
@@ -134,7 +136,7 @@ describe("SqlReconversionProjectImpactsQuery integration", () => {
 
       const result = await repository.getById(reconversionProjectId);
 
-      expect(result).toEqual<Required<ReconversionProjectImpactsDataView>>({
+      expect(result).toEqual<Required<ReconversionProjectImpactsQueryResult>>({
         id: reconversionProjectId,
         name: "Big project",
         isExpressProject: true,
@@ -160,31 +162,38 @@ describe("SqlReconversionProjectImpactsQuery integration", () => {
         reinstatementContractOwnerName: "Mairie de Blajan",
         sitePurchaseTotalAmount: 108000,
         sitePurchasePropertyTransferDutiesAmount: 8000,
-        developmentPlanInstallationExpenses: [
-          {
-            amount: 35000,
-            purpose: "technical_studies",
+        developmentPlan: {
+          developerName: "Terre cuite d’occitanie",
+          type: "PHOTOVOLTAIC_POWER_PLANT",
+          features: {
+            expectedAnnualProduction: 10,
+            surfaceArea: 2000,
+            electricalPowerKWc: 300,
+            contractDuration: 30,
           },
-          {
-            amount: 125000,
-            purpose: "installation_works",
+          installationSchedule: {
+            endDate: new Date("2025-05-15"),
+            startDate: new Date("2025-01-01"),
           },
-        ],
+          installationCosts: [
+            {
+              amount: 35000,
+              purpose: "technical_studies",
+            },
+            {
+              amount: 125000,
+              purpose: "installation_works",
+            },
+          ],
+        },
         financialAssistanceRevenues: [
           { amount: 45000, source: "public_subsidies" },
           { amount: 5000, source: "other" },
         ],
         yearlyProjectedExpenses: [],
         yearlyProjectedRevenues: [],
-        developmentPlanFeatures: {
-          expectedAnnualProduction: 10,
-          surfaceArea: 2000,
-          electricalPowerKWc: 300,
-          contractDuration: 30,
-        },
+
         operationsFirstYear: 2025,
-        developmentPlanDeveloperName: "Terre cuite d’occitanie",
-        developmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
         siteResaleSellingPrice: 125000,
         buildingsResaleSellingPrice: 140000,
         decontaminatedSoilSurface: 1000,
@@ -234,7 +243,7 @@ describe("SqlReconversionProjectImpactsQuery integration", () => {
 
       const result = await repository.getById(reconversionProjectId);
 
-      expect(result).toEqual<ReconversionProjectImpactsDataView>({
+      expect(result).toEqual<ReconversionProjectImpactsQueryResult>({
         id: reconversionProjectId,
         name: "Big project",
         isExpressProject: false,
@@ -246,10 +255,13 @@ describe("SqlReconversionProjectImpactsQuery integration", () => {
         yearlyProjectedExpenses: [],
         yearlyProjectedRevenues: [],
         conversionSchedule: undefined,
-        developmentPlanInstallationExpenses: [],
-        developmentPlanDeveloperName: undefined,
-        developmentPlanFeatures: undefined,
-        developmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
+        developmentPlan: {
+          developerName: undefined,
+          features: undefined,
+          installationCosts: [],
+          installationSchedule: undefined,
+          type: "PHOTOVOLTAIC_POWER_PLANT",
+        },
         futureOperatorName: undefined,
         futureSiteOwnerName: undefined,
         sitePurchaseTotalAmount: undefined,

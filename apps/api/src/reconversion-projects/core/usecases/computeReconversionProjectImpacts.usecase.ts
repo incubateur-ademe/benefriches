@@ -1,14 +1,9 @@
 import {
-  AgriculturalOperationActivity,
-  DevelopmentPlanInstallationExpenses,
-  FinancialAssistanceRevenue,
   ReconversionProjectImpacts,
-  RecurringExpense,
-  RecurringRevenue,
-  ReinstatementExpense,
   SiteNature,
-  SiteYearlyExpense,
   SoilsDistribution,
+  ReconversionProjectImpactsDataView,
+  SiteImpactsDataView,
 } from "shared";
 
 import { GetCityRelatedDataService } from "src/location-features/core/services/getCityRelatedData";
@@ -25,61 +20,25 @@ import { UrbanProjectImpactsService } from "../model/impacts/UrbanProjectImpacts
 import { getDefaultImpactsEvaluationPeriod } from "../model/impacts/impactsEvaluationPeriod";
 import { DevelopmentPlan, Schedule } from "../model/reconversionProject";
 
-export type SiteImpactsDataView = {
-  id: string;
-  name: string;
-  nature: SiteNature;
-  fricheActivity?: string;
-  agriculturalOperationActivity?: AgriculturalOperationActivity;
-  isSiteOperated?: boolean;
-  addressCityCode: string;
-  addressLabel: string;
-  contaminatedSoilSurface?: number;
-  ownerStructureType: string;
-  ownerName: string;
-  tenantName?: string;
-  surfaceArea: number;
-  soilsDistribution: SoilsDistribution;
-  hasAccidents: boolean;
-  accidentsDeaths?: number;
-  accidentsMinorInjuries?: number;
-  accidentsSevereInjuries?: number;
-  yearlyExpenses: SiteYearlyExpense[];
-};
-
 export interface SiteImpactsQuery {
   getById(siteId: string): Promise<SiteImpactsDataView | undefined>;
 }
 
-export type ReconversionProjectImpactsDataView = {
-  id: string;
-  name: string;
-  relatedSiteId: string;
-  soilsDistribution: SoilsDistribution;
-  isExpressProject: boolean;
-  conversionSchedule?: Schedule;
-  reinstatementSchedule?: Schedule;
-  futureOperatorName?: string;
-  futureSiteOwnerName?: string;
-  reinstatementContractOwnerName?: string;
-  sitePurchaseTotalAmount?: number;
-  sitePurchasePropertyTransferDutiesAmount?: number;
-  reinstatementExpenses: ReinstatementExpense[];
-  developmentPlanInstallationExpenses: DevelopmentPlanInstallationExpenses[];
-  financialAssistanceRevenues: FinancialAssistanceRevenue[];
-  yearlyProjectedExpenses: RecurringExpense[];
-  yearlyProjectedRevenues: RecurringRevenue[];
-  developmentPlanType?: DevelopmentPlan["type"];
-  developmentPlanDeveloperName?: string;
-  developmentPlanFeatures?: DevelopmentPlan["features"];
-  operationsFirstYear?: number;
-  siteResaleSellingPrice?: number;
-  buildingsResaleSellingPrice?: number;
-  decontaminatedSoilSurface?: number;
+export type ApiReconversionProjectImpactsDataView = ReconversionProjectImpactsDataView<Schedule>;
+
+type ReconversionProjectImpactsQueryResult = Omit<
+  ApiReconversionProjectImpactsDataView,
+  "developmentPlan"
+> & {
+  developmentPlan?: {
+    installationCosts: ApiReconversionProjectImpactsDataView["developmentPlan"]["installationCosts"];
+  } & Partial<Omit<ApiReconversionProjectImpactsDataView["developmentPlan"], "installationCosts">>;
 };
 
 export interface ReconversionProjectImpactsQuery {
-  getById(reconversionProjectId: string): Promise<ReconversionProjectImpactsDataView | undefined>;
+  getById(
+    reconversionProjectId: string,
+  ): Promise<ReconversionProjectImpactsQueryResult | undefined>;
 }
 
 type Request = {
@@ -157,15 +116,19 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
     const reconversionProject = await this.reconversionProjectQuery.getById(reconversionProjectId);
     if (!reconversionProject) throw new ReconversionProjectNotFound(reconversionProjectId);
 
-    if (!reconversionProject.developmentPlanType || !reconversionProject.developmentPlanFeatures) {
+    if (
+      !reconversionProject.developmentPlan ||
+      !reconversionProject.developmentPlan.type ||
+      !reconversionProject.developmentPlan.features
+    ) {
       throw new NoDevelopmentPlanType(reconversionProjectId);
     }
 
     const evaluationPeriodInYears =
       inputEvaluationPeriodInYears ??
       getDefaultImpactsEvaluationPeriod(
-        reconversionProject.developmentPlanType,
-        reconversionProject.developmentPlanFeatures,
+        reconversionProject.developmentPlan.type,
+        reconversionProject.developmentPlan.features,
       );
 
     const relatedSite = await this.siteRepository.getById(reconversionProject.relatedSiteId);
@@ -185,12 +148,12 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
           (reconversionProject.decontaminatedSoilSurface ?? 0),
         isExpressProject: reconversionProject.isExpressProject,
         developmentPlan: {
-          ...reconversionProject.developmentPlanFeatures,
-          type: reconversionProject.developmentPlanType,
+          ...reconversionProject.developmentPlan.features,
+          type: reconversionProject.developmentPlan.type,
         },
       },
       siteData: {
-        addressLabel: relatedSite.addressLabel,
+        addressLabel: relatedSite.address.value,
         contaminatedSoilSurface: relatedSite.contaminatedSoilSurface ?? 0,
         soilsDistribution: relatedSite.soilsDistribution,
         surfaceArea: relatedSite.surfaceArea,
@@ -204,18 +167,18 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
     };
 
     const siteSoilsCarbonStorage = await this.getCarbonStorageFromSoilDistributionService.execute({
-      cityCode: relatedSite.addressCityCode,
+      cityCode: relatedSite.address.cityCode,
       soilsDistribution: relatedSite.soilsDistribution,
     });
     const projectSoilsCarbonStorage =
       await this.getCarbonStorageFromSoilDistributionService.execute({
-        cityCode: relatedSite.addressCityCode,
+        cityCode: relatedSite.address.cityCode,
         soilsDistribution: reconversionProject.soilsDistribution,
       });
 
     const siteData: InputSiteData = (() => {
       const commonData = {
-        addressCityCode: relatedSite.addressCityCode,
+        addressCityCode: relatedSite.address.cityCode,
         soilsDistribution: relatedSite.soilsDistribution,
         surfaceArea: relatedSite.surfaceArea,
         ownerName: relatedSite.ownerName,
@@ -249,31 +212,15 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
     })();
 
     const reconversionProjectData: InputReconversionProjectData = {
-      developmentPlanInstallationExpenses: reconversionProject.developmentPlanInstallationExpenses,
-      developmentPlanType: reconversionProject.developmentPlanType,
-      developmentPlanFeatures: reconversionProject.developmentPlanFeatures,
-      developmentPlanDeveloperName: reconversionProject.developmentPlanDeveloperName,
-      soilsDistribution: reconversionProject.soilsDistribution,
-      financialAssistanceRevenues: reconversionProject.financialAssistanceRevenues,
-      futureSiteOwnerName: reconversionProject.futureSiteOwnerName,
-      futureOperatorName: reconversionProject.futureOperatorName,
-      reinstatementContractOwnerName: reconversionProject.reinstatementContractOwnerName,
-      yearlyProjectedExpenses: reconversionProject.yearlyProjectedExpenses,
-      yearlyProjectedRevenues: reconversionProject.yearlyProjectedRevenues,
-      decontaminatedSoilSurface: reconversionProject.decontaminatedSoilSurface,
-      operationsFirstYear: reconversionProject.operationsFirstYear,
-      sitePurchaseTotalAmount: reconversionProject.sitePurchaseTotalAmount,
-      sitePurchasePropertyTransferDutiesAmount:
-        reconversionProject.sitePurchasePropertyTransferDutiesAmount,
-      reinstatementSchedule: reconversionProject.reinstatementSchedule,
-      reinstatementExpenses: reconversionProject.reinstatementExpenses,
-      conversionSchedule: reconversionProject.conversionSchedule,
-      siteResaleSellingPrice: reconversionProject.siteResaleSellingPrice,
-      buildingsResaleSellingPrice: reconversionProject.buildingsResaleSellingPrice,
+      ...reconversionProject,
+      developmentPlanInstallationExpenses: reconversionProject.developmentPlan.installationCosts,
+      developmentPlanType: reconversionProject.developmentPlan.type,
+      developmentPlanDeveloperName: reconversionProject.developmentPlan.developerName,
+      developmentPlanFeatures: reconversionProject.developmentPlan.features,
       soilsCarbonStorage: projectSoilsCarbonStorage,
     };
 
-    switch (reconversionProject.developmentPlanType) {
+    switch (reconversionProject.developmentPlan.type) {
       case "PHOTOVOLTAIC_POWER_PLANT": {
         const photovoltaicProjectImpactsService = new PhotovoltaicProjectImpactsService({
           reconversionProject: reconversionProjectData,
@@ -290,7 +237,7 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
       case "URBAN_PROJECT": {
         const { squareMetersSurfaceArea, population } =
           await this.getCityRelatedDataService.getCityPopulationAndSurfaceArea(
-            relatedSite.addressCityCode,
+            relatedSite.address.cityCode,
           );
 
         const urbanProjectImpactsService = new UrbanProjectImpactsService({
@@ -306,7 +253,7 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
                   cityPopulation: population,
                   cityPropertyValuePerSquareMeter: (
                     await this.getCityRelatedDataService.getPropertyValuePerSquareMeter(
-                      relatedSite.addressCityCode,
+                      relatedSite.address.cityCode,
                     )
                   ).medianPricePerSquareMeters,
                 }

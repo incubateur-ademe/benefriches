@@ -1,19 +1,23 @@
 import Button from "@codegouvfr/react-dsfr/Button";
 import { NonUndefined } from "react-hook-form";
-import { SiteNature } from "shared";
+import {
+  PhotovoltaicInstallationExpense,
+  SiteNature,
+  UrbanProjectDevelopmentExpense,
+} from "shared";
 
 import { SiteFeatures } from "@/features/site-features/core/siteFeatures";
 import SiteFeaturesList from "@/features/site-features/views/SiteFeaturesList";
 import Dialog from "@/shared/views/components/Dialog/Dialog";
 
-import { SiteData } from "../../application/project-impacts-urban-sprawl-comparison/fetchUrbanSprawlImpactsComparison.action";
+import { UrbanSprawlImpactsComparisonObj } from "../../application/project-impacts-urban-sprawl-comparison/fetchUrbanSprawlImpactsComparison.action";
 import { UrbanSprawlImpactsComparisonState } from "../../application/project-impacts-urban-sprawl-comparison/urbanSprawlComparison.reducer";
 import ProjectFeaturesView from "../project-page/features/ProjectFeaturesView";
-import AboutImpactsContcnt from "../shared/impacts/AboutImpactsContent";
+import AboutImpactsContent from "../shared/impacts/AboutImpactsContent";
 
 type Props = {
-  baseCaseSiteData: SiteData;
-  comparisonCaseSiteData: SiteData;
+  baseCaseSiteData: UrbanSprawlImpactsComparisonObj["baseCase"]["siteData"];
+  comparisonCaseSiteData: UrbanSprawlImpactsComparisonObj["comparisonCase"]["siteData"];
   projectData: NonUndefined<UrbanSprawlImpactsComparisonState["projectData"]>;
 };
 
@@ -22,14 +26,10 @@ const COMPARISON_SITE_FEATURES_DIALOG_ID = "fr-dialog-comparaison-other-site-fea
 const PROJECT_FEATURES_DIALOG_ID = "fr-dialog-comparison-project-features";
 const ABOUT_IMPACTS_DIALOG_ID = "fr-dialog-comparaison-about-impacts";
 
-const formatSiteDataAsFeatures = (siteData: SiteData) => {
+const formatSiteDataAsFeatures = (siteData: Props["baseCaseSiteData"]) => {
   return {
-    id: siteData.id,
-    nature: siteData.nature,
-    isExpressSite: siteData.isExpressSite,
+    ...siteData,
     address: siteData.address.value,
-    ownerName: siteData.owner.name || "",
-    tenantName: siteData.tenant?.name || "",
     accidents: {
       minorInjuries: siteData.accidentsMinorInjuries || 0,
       severyInjuries: siteData.accidentsSevereInjuries || 0,
@@ -37,13 +37,6 @@ const formatSiteDataAsFeatures = (siteData: SiteData) => {
     },
     expenses: siteData.yearlyExpenses,
     incomes: siteData.yearlyIncomes,
-    surfaceArea: siteData.surfaceArea,
-    soilsDistribution: siteData.soilsDistribution,
-    contaminatedSurfaceArea: siteData.contaminatedSoilSurface,
-    fricheActivity: siteData.fricheActivity,
-    agriculturalOperationActivity: siteData.agriculturalOperationActivity,
-    naturalAreaType: siteData.naturalAreaType,
-    name: siteData.name,
     description: siteData.description || "",
   } as SiteFeatures;
 };
@@ -139,11 +132,33 @@ function ImpactsComparisonFooter({ baseCaseSiteData, comparisonCaseSiteData, pro
       </Dialog>
 
       <Dialog dialogId={PROJECT_FEATURES_DIALOG_ID} title="Caractéristiques du projet">
-        <ProjectFeaturesView projectData={projectData} />
+        <ProjectFeaturesView
+          projectData={{
+            ...projectData,
+            isExpress: projectData.isExpressProject,
+            developmentPlan:
+              projectData.developmentPlan.type === "URBAN_PROJECT"
+                ? {
+                    ...projectData.developmentPlan,
+                    installationCosts: projectData.developmentPlan
+                      .installationCosts as UrbanProjectDevelopmentExpense[],
+                    spaces: projectData.developmentPlan.features.spacesDistribution,
+                    buildingsFloorArea:
+                      projectData.developmentPlan.features.buildingsFloorAreaDistribution,
+                  }
+                : {
+                    ...projectData.developmentPlan,
+                    installationCosts: projectData.developmentPlan
+                      .installationCosts as PhotovoltaicInstallationExpense[],
+
+                    ...projectData.developmentPlan.features,
+                  },
+          }}
+        />
       </Dialog>
 
       <Dialog dialogId={ABOUT_IMPACTS_DIALOG_ID} title="Questions fréquentes">
-        <AboutImpactsContcnt />
+        <AboutImpactsContent />
       </Dialog>
     </>
   );

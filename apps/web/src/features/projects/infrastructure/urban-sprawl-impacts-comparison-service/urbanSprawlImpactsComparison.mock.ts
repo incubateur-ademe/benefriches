@@ -1,12 +1,11 @@
-import { UrbanSprawlImpactsComparisonResult } from "../../application/project-impacts-urban-sprawl-comparison/fetchUrbanSprawlImpactsComparison.action";
-import { ProjectFeatures } from "../../domain/projects.types";
+import { UrbanSprawlImpactsComparisonObj } from "../../application/project-impacts-urban-sprawl-comparison/fetchUrbanSprawlImpactsComparison.action";
 
-const projectData = {
+const projectData: UrbanSprawlImpactsComparisonObj["projectData"] = {
   id: "bf8a7d1d-a9d2-4a66-b2bc-3b8d682f9932",
   name: "Centralité urbaine",
-  isExpress: true,
+  isExpressProject: true,
   decontaminatedSoilSurface: 0,
-  firstYearOfOperation: 2027,
+  operationsFirstYear: 2027,
   developmentPlan: {
     installationCosts: [
       { amount: 90000, purpose: "technical_studies" },
@@ -19,24 +18,26 @@ const projectData = {
       endDate: "2026-06-17T07:39:38.123Z",
     },
     type: "URBAN_PROJECT",
-    spaces: {
-      BUILDINGS_FOOTPRINT: 4387.5,
-      PRIVATE_PAVED_ALLEY_OR_PARKING_LOT: 487.5,
-      PRIVATE_GRAVEL_ALLEY_OR_PARKING_LOT: 487.5,
-      PRIVATE_GARDEN_AND_GRASS_ALLEYS: 4387.5,
-      PUBLIC_GREEN_SPACES: 2250,
-      PUBLIC_PARKING_LOT: 1350,
-      PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS: 150,
-      PUBLIC_GRAVEL_ROAD_OR_SQUARES_OR_SIDEWALKS: 750,
-      PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS: 750,
-    },
-    buildingsFloorArea: {
-      RESIDENTIAL: 7440,
-      LOCAL_STORE: 240,
-      OFFICES: 480,
-      LOCAL_SERVICES: 960,
-      ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES: 240,
-      PUBLIC_FACILITIES: 240,
+    features: {
+      spacesDistribution: {
+        BUILDINGS_FOOTPRINT: 4387.5,
+        PRIVATE_PAVED_ALLEY_OR_PARKING_LOT: 487.5,
+        PRIVATE_GRAVEL_ALLEY_OR_PARKING_LOT: 487.5,
+        PRIVATE_GARDEN_AND_GRASS_ALLEYS: 4387.5,
+        PUBLIC_GREEN_SPACES: 2250,
+        PUBLIC_PARKING_LOT: 1350,
+        PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS: 150,
+        PUBLIC_GRAVEL_ROAD_OR_SQUARES_OR_SIDEWALKS: 750,
+        PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS: 750,
+      },
+      buildingsFloorAreaDistribution: {
+        RESIDENTIAL: 7440,
+        LOCAL_STORE: 240,
+        OFFICES: 480,
+        LOCAL_SERVICES: 960,
+        ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES: 240,
+        PUBLIC_FACILITIES: 240,
+      },
     },
   },
   soilsDistribution: {
@@ -47,18 +48,22 @@ const projectData = {
   },
   yearlyProjectedExpenses: [],
   yearlyProjectedRevenues: [],
-  siteResaleSellingPrice: 1817400,
-} as ProjectFeatures;
+  sitePurchaseTotalAmount: 1800000,
+  sitePurchasePropertyTransferDutiesAmount: 17400,
+  relatedSiteId: "",
+  reinstatementExpenses: [],
+  financialAssistanceRevenues: [],
+};
 
-const baseCase: UrbanSprawlImpactsComparisonResult["baseCase"] = {
+const baseCase: UrbanSprawlImpactsComparisonObj["baseCase"] = {
   siteData: {
     id: "e3f34bca-0be0-4896-a559-41d977cff70f",
     name: "Friche industrielle de Blajan",
     nature: "FRICHE",
     isExpressSite: true,
     fricheActivity: "INDUSTRY",
-    owner: { name: "Mairie de Blajan", structureType: "municipality" },
-    hasContaminatedSoils: true,
+    ownerName: "Mairie de Blajan",
+    ownerStructureType: "municipality",
     contaminatedSoilSurface: 7500,
     surfaceArea: 15000,
     address: {
@@ -76,10 +81,10 @@ const baseCase: UrbanSprawlImpactsComparisonResult["baseCase"] = {
       IMPERMEABLE_SOILS: 6000,
     },
     yearlyExpenses: [
-      { amount: 18, purpose: "illegalDumpingCost" },
-      { amount: 16960, purpose: "propertyTaxes" },
-      { amount: 33000, purpose: "security" },
-      { amount: 42000, purpose: "maintenance" },
+      { amount: 18, purpose: "illegalDumpingCost", bearer: "owner" },
+      { amount: 16960, purpose: "propertyTaxes", bearer: "owner" },
+      { amount: 33000, purpose: "security", bearer: "owner" },
+      { amount: 42000, purpose: "maintenance", bearer: "owner" },
     ],
     yearlyIncomes: [],
   },
@@ -236,7 +241,7 @@ const baseCase: UrbanSprawlImpactsComparisonResult["baseCase"] = {
   },
 };
 
-const comparisonCase: UrbanSprawlImpactsComparisonResult["baseCase"] = {
+const comparisonCase: UrbanSprawlImpactsComparisonObj["baseCase"] = {
   siteData: {
     id: "2ee6f27d-5c59-4a25-a571-f156333f3858",
     name: "Exploitation agricole de Blajan",
@@ -244,7 +249,8 @@ const comparisonCase: UrbanSprawlImpactsComparisonResult["baseCase"] = {
     isExpressSite: true,
     description: "Grandes cultures légumières",
     agriculturalOperationActivity: "LARGE_VEGETABLE_CULTIVATION",
-    owner: { name: "Mairie de Blajan", structureType: "municipality" },
+    ownerName: "Mairie de Blajan",
+    ownerStructureType: "municipality",
     surfaceArea: 15000,
     address: {
       banId: "31070",
@@ -257,9 +263,9 @@ const comparisonCase: UrbanSprawlImpactsComparisonResult["baseCase"] = {
     },
     soilsDistribution: { BUILDINGS: 750, CULTIVATION: 14250 },
     yearlyExpenses: [
-      { amount: 45, purpose: "taxes" },
-      { amount: 330, purpose: "rent" },
-      { amount: 3945, purpose: "otherOperationsCosts" },
+      { amount: 45, purpose: "taxes", bearer: "tenant" },
+      { amount: 330, purpose: "rent", bearer: "tenant" },
+      { amount: 3945, purpose: "otherOperationsCosts", bearer: "tenant" },
     ],
     yearlyIncomes: [
       { amount: 345, source: "other" },
@@ -391,4 +397,4 @@ export const comparisonResultMock = {
     siteData: comparisonCase.siteData,
     impacts: comparisonCase.impacts,
   },
-} as const satisfies UrbanSprawlImpactsComparisonResult;
+} as const satisfies UrbanSprawlImpactsComparisonObj;

@@ -1,10 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ReconversionProjectImpacts } from "shared";
 
-import { ProjectFeatures } from "../../domain/projects.types";
 import {
   fetchUrbanSprawlImpactsComparison,
-  SiteData,
+  UrbanSprawlImpactsComparisonObj,
 } from "./fetchUrbanSprawlImpactsComparison.action";
 
 type LoadingState = "idle" | "loading" | "success" | "error";
@@ -14,19 +12,11 @@ const DEFAULT_VIEW_MODE = "summary";
 
 export type ViewMode = "charts" | "list" | "summary";
 
-type ProjectData = ProjectFeatures;
-
 export type UrbanSprawlImpactsComparisonState = {
   dataLoadingState: LoadingState;
-  projectData?: ProjectData;
-  baseCase?: {
-    siteData: SiteData;
-    impacts: ReconversionProjectImpacts;
-  };
-  comparisonCase?: {
-    siteData: SiteData;
-    impacts: ReconversionProjectImpacts;
-  };
+  projectData?: UrbanSprawlImpactsComparisonObj["projectData"];
+  baseCase?: UrbanSprawlImpactsComparisonObj["baseCase"];
+  comparisonCase?: UrbanSprawlImpactsComparisonObj["comparisonCase"];
   evaluationPeriod: number;
   currentViewMode: ViewMode;
 };

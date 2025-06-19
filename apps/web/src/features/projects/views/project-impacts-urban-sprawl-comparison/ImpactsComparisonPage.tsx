@@ -38,12 +38,17 @@ function ImpactsComparisonPage({
     <div className={classNames("tw-bg-grey-light dark:tw-bg-grey-dark", "tw-h-full", "tw-pb-14")}>
       <div className="fr-container">
         {dataLoadingState === "error" && (
-          <Alert
-            description="Une erreur s'est produite lors du chargement des données, veuillez réessayer."
-            severity="error"
-            title="Impossible de charger la comparaison des impacts du projet"
-            className="tw-my-7"
-          />
+          <div className="tw-py-6">
+            <h1 className="tw-text-sm tw-uppercase tw-font-normal tw-mb-1">
+              Comparaison des impacts
+            </h1>
+            <Alert
+              description="Une erreur s'est produite lors du chargement des données, veuillez réessayer."
+              severity="error"
+              title="Impossible de charger la comparaison des impacts du projet"
+              className="tw-my-7"
+            />
+          </div>
         )}
         {dataLoadingState === "loading" && <LoadingSpinner />}
         {dataLoadingState === "success" && (

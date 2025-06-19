@@ -30,7 +30,7 @@ export type ProjectsGroup = {
 
 export type ReconversionProjectsGroupedBySite = ProjectsGroup[];
 
-type PhotovoltaicPowerPlantFeatures = {
+export type PhotovoltaicPowerPlantFeatures = {
   type: "PHOTOVOLTAIC_POWER_PLANT";
   developerName?: string;
   installationCosts: PhotovoltaicInstallationExpense[];
