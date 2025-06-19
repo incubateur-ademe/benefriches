@@ -159,7 +159,7 @@ function ImpactComparisonSection({
       <dialog
         aria-labelledby={`${DIALOG_ID}-title`}
         id={DIALOG_ID}
-        className={classNames(fr.cx("fr-modal", "fr-modal--opened"), "tw-overflow-auto", "tw-z-40")}
+        className={classNames(fr.cx("fr-modal"), "tw-overflow-auto", "tw-z-40")}
       >
         <div
           className={classNames(
