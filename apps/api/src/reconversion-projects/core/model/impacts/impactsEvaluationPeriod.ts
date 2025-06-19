@@ -12,6 +12,6 @@ export const getDefaultImpactsEvaluationPeriod = (
     case "PHOTOVOLTAIC_POWER_PLANT":
       return (developmentPlanFeatures as PhotovoltaicPowerStationFeatures).contractDuration;
     case "URBAN_PROJECT":
-      return 30;
+      return 50;
   }
 };
