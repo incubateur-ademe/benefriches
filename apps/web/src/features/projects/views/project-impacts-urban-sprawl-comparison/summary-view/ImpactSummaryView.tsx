@@ -1,6 +1,6 @@
 import { fr } from "@codegouvfr/react-dsfr";
 
-import { KeyImpactIndicatorData } from "@/features/projects/application/project-impacts/projectKeyImpactIndicators.selectors";
+import { KeyImpactIndicatorData } from "@/features/projects/domain/projectKeyImpactIndicators";
 import classNames from "@/shared/views/clsx";
 
 type Props = {

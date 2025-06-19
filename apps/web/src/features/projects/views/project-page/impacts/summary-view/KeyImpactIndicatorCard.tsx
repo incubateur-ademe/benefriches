@@ -5,7 +5,6 @@ import classNames from "@/shared/views/clsx";
 type Props = {
   title: string;
   type: "success" | "error";
-  description?: string;
   buttonProps: {
     "data-fr-opened": boolean;
     "aria-controls": string;
@@ -23,7 +22,7 @@ const NEGATIVE_CLASSES = [
   "hover:tw-border-impacts-negative-border",
 ];
 
-const KeyImpactIndicatorCard = ({ title, type, description, buttonProps }: Props) => {
+const KeyImpactIndicatorCard = ({ title, type, buttonProps }: Props) => {
   return (
     <button
       {...buttonProps}
@@ -47,10 +46,7 @@ const KeyImpactIndicatorCard = ({ title, type, description, buttonProps }: Props
         )}
         aria-hidden="true"
       ></span>
-      <div>
-        <h3 className="tw-text-lg tw-font-bold tw-mb-0">{title}</h3>
-        {description && <p className="tw-pt-2 tw-m-0 dark:tw-text-grey-light">{description}</p>}
-      </div>
+      <h3 className="tw-text-lg tw-font-bold tw-mb-0">{title}</h3>
     </button>
   );
 };

@@ -184,7 +184,8 @@ export type KeyImpactIndicatorData =
       name: "zanCompliance";
       isSuccess: boolean;
       value: {
-        isAgriculturalFriche: boolean;
+        isAgriculturalFriche?: boolean;
+        permeableSurfaceAreaDifference?: number;
       };
     };
 
@@ -227,21 +228,23 @@ export const getKeyImpactIndicatorsList = (
         isAgriculturalFriche,
       },
     });
-  } else if (permeableSurfaceArea && permeableSurfaceArea.difference < 0) {
+  } else {
     impacts.push({
       name: "zanCompliance",
       isSuccess: false,
       value: {
-        isAgriculturalFriche,
+        permeableSurfaceAreaDifference: permeableSurfaceArea?.difference,
       },
     });
   }
 
-  impacts.push({
-    name: "projectImpactBalance",
-    isSuccess: projectImpactBalance.projectBalance > 0,
-    value: projectImpactBalance,
-  });
+  if (projectImpactBalance.economicBalanceTotal < 0) {
+    impacts.push({
+      name: "projectImpactBalance",
+      isSuccess: projectImpactBalance.projectBalance > 0,
+      value: projectImpactBalance,
+    });
+  }
 
   if (avoidedFricheCostsForLocalAuthority) {
     impacts.push({
