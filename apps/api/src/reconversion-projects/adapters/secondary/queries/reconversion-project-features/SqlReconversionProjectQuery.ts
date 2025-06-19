@@ -12,7 +12,7 @@ import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection
 import {
   ReconversionProjectFeaturesView,
   ReconversionProjectQueryGateway,
-} from "../../../core/usecases/getReconversionProjectFeatures.usecase";
+} from "../../../../core/usecases/getReconversionProjectFeatures.usecase";
 
 const mapSqlSchedule = (startDate: string | null, endDate: string | null): Schedule | undefined => {
   return startDate && endDate
@@ -56,9 +56,15 @@ export class SqlReconversionProjectQuery implements ReconversionProjectQueryGate
           .where("reconversion_project_id", reconversionProjectId)
           .as("soils_distribution"),
         this.sqlConnection
-          .select(this.sqlConnection.raw("json_agg(row_to_json(financial_assistance_rows))"))
-          .from({ financial_assistance_rows: "reconversion_project_financial_assistance_revenues" })
-          .where("reconversion_project_id", reconversionProjectId)
+          .select(
+            this.sqlConnection.raw("json_agg(row_to_json(financial_assistance_revenues_rows))"),
+          )
+          .from(
+            this.sqlConnection("reconversion_project_financial_assistance_revenues")
+              .select("amount", "source")
+              .where("reconversion_project_id", reconversionProjectId)
+              .as("financial_assistance_revenues_rows"),
+          )
           .as("financial_assistance_revenues"),
         this.sqlConnection
           .select(this.sqlConnection.raw("json_agg(row_to_json(reinstatement_costs_rows))"))
@@ -134,7 +140,7 @@ export class SqlReconversionProjectQuery implements ReconversionProjectQueryGate
           buildings_resale_expected_selling_price: number | null;
           development_plan: {
             type: string;
-            costs: { amount: number; purpose: string }[];
+            costs: { amount: number; purpose: string }[] | null;
             developer_name: string;
             schedule_start_date: string | null;
             schedule_end_date: string | null;
@@ -152,7 +158,7 @@ export class SqlReconversionProjectQuery implements ReconversionProjectQueryGate
         const { contractDuration, electricalPowerKWc, surfaceArea, expectedAnnualProduction } =
           sqlResult.development_plan.features as PhotovoltaicPowerStationFeatures;
         return {
-          installationCosts: sqlResult.development_plan.costs,
+          installationCosts: sqlResult.development_plan.costs ?? [],
           developerName: sqlResult.development_plan.developer_name,
           installationSchedule: mapSqlSchedule(
             sqlResult.development_plan.schedule_start_date,
@@ -169,7 +175,7 @@ export class SqlReconversionProjectQuery implements ReconversionProjectQueryGate
         const { spacesDistribution, buildingsFloorAreaDistribution } = sqlResult.development_plan
           .features as UrbanProjectFeatures;
         return {
-          installationCosts: sqlResult.development_plan.costs,
+          installationCosts: sqlResult.development_plan.costs ?? [],
           developerName: sqlResult.development_plan.developer_name,
           installationSchedule: mapSqlSchedule(
             sqlResult.development_plan.schedule_start_date,

@@ -32,7 +32,7 @@ import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvid
 import { SqlSitesQuery } from "src/sites/adapters/secondary/site-query/SqlSitesQuery";
 import { SqlSiteRepository } from "src/sites/adapters/secondary/site-repository/SqlSiteRepository";
 
-import { SqlReconversionProjectQuery } from "../secondary/queries/SqlReconversionProjectQuery";
+import { SqlReconversionProjectQuery } from "../secondary/queries/reconversion-project-features/SqlReconversionProjectQuery";
 import { SqlReconversionProjectImpactsQuery } from "../secondary/queries/reconversion-project-impacts/SqlReconversionProjectImpactsQuery";
 import { SqlReconversionProjectsListQuery } from "../secondary/queries/reconversion-project-list/SqlReconversionProjectsListQuery";
 import { SqlSiteImpactsQuery } from "../secondary/queries/site-impacts/SqlSiteImpactsQuery";
