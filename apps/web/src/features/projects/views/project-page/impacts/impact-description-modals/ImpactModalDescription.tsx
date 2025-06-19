@@ -88,7 +88,7 @@ function ImpactModalDescription({
 
   return (
     <dialog
-      aria-labelledby={isOpen ? dialogTitleId : undefined}
+      aria-labelledby={isOpen ? dialogTitleId : ""}
       id={dialogId}
       className="fr-modal"
       data-fr-concealing-backdrop={true}
