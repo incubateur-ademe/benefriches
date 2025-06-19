@@ -7,7 +7,7 @@ import { useIsSmallScreen } from "@/shared/views/hooks/useIsSmallScreen";
 import ImpactEvaluationPeriodSelect from "./ImpactEvaluationPeriodSelect";
 
 type Props = {
-  evaluationPeriod: number;
+  evaluationPeriod: number | undefined;
   onEvaluationPeriodChange: (n: number) => void;
   header: ReactNode;
 };
@@ -44,7 +44,7 @@ function ProjectImpactsStickyActionBar({
         )}
       >
         {header}
-        {!isSmScreen && (
+        {!isSmScreen && evaluationPeriod !== undefined && && (
           <ImpactEvaluationPeriodSelect
             onChange={onEvaluationPeriodChange}
             value={evaluationPeriod}

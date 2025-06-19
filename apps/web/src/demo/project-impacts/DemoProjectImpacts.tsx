@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { ReconversionProjectImpactsResult } from "@/features/projects/application/project-impacts/fetchImpactsForReconversionProject.action";
+import { ReconversionProjectImpactsResult } from "@/features/projects/application/project-impacts/actions";
 import { ViewMode } from "@/features/projects/application/project-impacts/projectImpacts.reducer";
 import {
   getEnvironmentalAreaChartImpactsData,

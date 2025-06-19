@@ -1,7 +1,7 @@
 import {
   ReconversionProjectImpactsGateway,
   ReconversionProjectImpactsResult,
-} from "../../application/project-impacts/fetchImpactsForReconversionProject.action";
+} from "../../application/project-impacts/actions";
 
 export class MockReconversionProjectImpactsApi implements ReconversionProjectImpactsGateway {
   data: ReconversionProjectImpactsResult | undefined = undefined;

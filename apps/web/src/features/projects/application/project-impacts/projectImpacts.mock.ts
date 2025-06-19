@@ -1,4 +1,4 @@
-import { ReconversionProjectImpactsResult } from "./fetchImpactsForReconversionProject.action";
+import { ReconversionProjectImpactsResult } from "./actions";
 
 const siteData = {
   owner: { name: "Mairie de Blajan", structureType: "municipality" },
@@ -188,6 +188,7 @@ const baseImpacts = {
 export const photovoltaicProjectImpactMock = {
   name: "Project photovoltaïque",
   id: "1b521325-ee61-40fb-8462-e01669ac767b",
+  evaluationPeriodInYears: 20,
   relatedSiteId: "68382abb-3a81-45e6-8af4-913767a28141",
   relatedSiteName: "Friche agricole de Blajan",
   siteData,
@@ -268,6 +269,7 @@ export const photovoltaicProjectImpactMock = {
 export const urbanProjectImpactMock = {
   name: "Projet urbain",
   id: "5bd1c7cd-22e6-4c1c-8d50-41bca284ce05",
+  evaluationPeriodInYears: 30,
   relatedSiteId: "13958ec7-0468-4ecb-8217-0cc80a82b633",
   relatedSiteName: "Friche agricole de Blajan",
   siteData,

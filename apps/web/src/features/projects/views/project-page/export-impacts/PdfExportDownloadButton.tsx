@@ -41,7 +41,7 @@ export default function PdfExportDownloadButton({ projectId, siteId }: Props) {
           siteFeatures={siteFeatures}
           projectFeatures={projectFeatures}
           impacts={impacts}
-          evaluationPeriodInYears={evaluationPeriodInYears}
+          evaluationPeriodInYears={evaluationPeriodInYears as number} // evaluationPeriodInYears is defined if loadingState is "success"
         />
       }
       onClick={() => {

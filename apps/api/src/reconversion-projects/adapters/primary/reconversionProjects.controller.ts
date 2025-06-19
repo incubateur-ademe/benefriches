@@ -35,7 +35,7 @@ class GetListGroupedBySiteQueryDto extends createZodDto(
 ) {}
 
 class GetReconversionProjectImpactsQueryDto extends createZodDto(
-  z.object({ evaluationPeriodInYears: z.coerce.number().nonnegative() }),
+  z.object({ evaluationPeriodInYears: z.coerce.number().nonnegative().optional() }),
 ) {}
 
 @Controller("reconversion-projects")

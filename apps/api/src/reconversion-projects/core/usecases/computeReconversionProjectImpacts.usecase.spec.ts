@@ -91,6 +91,12 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         sitePurchaseTotalAmount: 0,
         reinstatementExpenses: [],
         developmentPlanInstallationExpenses: [],
+        developmentPlanFeatures: {
+          contractDuration: 20,
+          electricalPowerKWc: 100,
+          expectedAnnualProduction: 1000,
+          surfaceArea: 1000,
+        },
         financialAssistanceRevenues: [],
         yearlyProjectedExpenses: [],
         yearlyProjectedRevenues: [],
@@ -212,6 +218,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       expect(result).toEqual<Result>({
         id: reconversionProjectImpactDataView.id,
         name: reconversionProjectImpactDataView.name,
+        evaluationPeriodInYears: 10,
         relatedSiteId: site.id,
         relatedSiteName: site.name,
         projectData: {
@@ -475,6 +482,28 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
           },
         },
       });
+    });
+
+    it("returns impacts with contract duration as evaluation period when not provided", async () => {
+      const projectQuery = new InMemoryReconversionProjectImpactsQuery();
+      projectQuery._setData(reconversionProjectImpactDataView);
+      const siteQuery = new InMemorySiteImpactsQuery();
+      siteQuery._setData(site);
+
+      const usecase = new ComputeReconversionProjectImpactsUseCase(
+        projectQuery,
+        siteQuery,
+        new FakeGetSoilsCarbonStorageService(),
+        dateProvider,
+        new GetCityRelatedDataService(new MockCityDataService(), new MockDV3FApiService()),
+      );
+      const result = await usecase.execute({
+        reconversionProjectId: reconversionProjectImpactDataView.id,
+      });
+      expect(result.id).toEqual(reconversionProjectImpactDataView.id);
+      expect(result.evaluationPeriodInYears).toEqual(
+        reconversionProjectImpactDataView.developmentPlanFeatures.contractDuration,
+      );
     });
 
     it("returns impacts when soils carbon storage cannot be computed", async () => {

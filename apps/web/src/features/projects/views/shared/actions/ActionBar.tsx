@@ -7,7 +7,7 @@ import ImpactEvaluationPeriodSelect from "./ImpactEvaluationPeriodSelect";
 
 type Props = {
   selectedViewMode: ViewMode;
-  evaluationPeriod: number;
+  evaluationPeriod: number | undefined;
   onViewModeClick: (viewMode: ViewMode) => void;
   onEvaluationPeriodChange: (n: number) => void;
   small?: boolean;
@@ -56,10 +56,12 @@ function ImpactsActionBar({
         ]}
       />
       <div className="tw-mt-4 tw-w-full md:tw-mt-0 md:tw-w-auto">
-        <ImpactEvaluationPeriodSelect
-          onChange={onEvaluationPeriodChange}
-          value={evaluationPeriod}
-        />
+        {evaluationPeriod !== undefined && (
+          <ImpactEvaluationPeriodSelect
+            onChange={onEvaluationPeriodChange}
+            value={evaluationPeriod}
+          />
+        )}
       </div>
     </section>
   );

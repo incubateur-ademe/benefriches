@@ -19,7 +19,7 @@ export type ExportImpactsView = {
   loadingState: LoadingState;
   projectFeatures: ProjectFeatures | undefined;
   siteFeatures: SiteFeatures | undefined;
-  evaluationPeriodInYears: number;
+  evaluationPeriodInYears: number | undefined;
   impacts: {
     economicBalance: EconomicBalance;
     environment: EnvironmentalImpact[];

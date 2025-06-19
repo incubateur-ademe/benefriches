@@ -2,7 +2,6 @@ import {
   DevelopmentPlanInstallationExpenses,
   FinancialAssistanceRevenue,
   Friche,
-  ReconversionProjectImpacts,
   RecurringExpense,
   RecurringRevenue,
   ReinstatementExpense,
@@ -21,7 +20,9 @@ import { GetCarbonStorageFromSoilDistributionService } from "../gateways/SoilsCa
 import { NewUrbanCenterProjectExpressCreationService } from "../model/create-from-site-services/NewUrbanCenterProjectExpressCreationService";
 import { InputSiteData } from "../model/impacts/ReconversionProjectImpactsService";
 import { UrbanProjectImpactsService } from "../model/impacts/UrbanProjectImpactsService";
+import { getDefaultImpactsEvaluationPeriod } from "../model/impacts/impactsEvaluationPeriod";
 import { DevelopmentPlan, Schedule } from "../model/reconversionProject";
+import { Result } from "./computeReconversionProjectImpacts.usecase";
 
 export type City = {
   name: string;
@@ -86,36 +87,6 @@ type Request = {
   siteCityCode: string;
 };
 
-type Result = {
-  id: string;
-  name: string;
-  relatedSiteId: string;
-  relatedSiteName: string;
-  projectData: {
-    soilsDistribution: SoilsDistribution;
-    contaminatedSoilSurface: number;
-    isExpressProject: boolean;
-    developmentPlan: {
-      type?: DevelopmentPlan["type"];
-    } & Partial<DevelopmentPlan["features"]>;
-  };
-  siteData: {
-    addressLabel: string;
-    contaminatedSoilSurface: number;
-    soilsDistribution: SoilsDistribution;
-    surfaceArea: number;
-    nature: SiteNature;
-    fricheActivity?: string;
-    owner: {
-      structureType: string;
-      name: string;
-    };
-  };
-  impacts: ReconversionProjectImpacts;
-};
-
-const EVALUATION_PERIOD_IN_YEARS = 30;
-
 export class QuickComputeUrbanProjectImpactsOnFricheUseCase implements UseCase<Request, Result> {
   constructor(
     private readonly cityCodeService: CityDataProvider,
@@ -175,6 +146,11 @@ export class QuickComputeUrbanProjectImpactsOnFricheUseCase implements UseCase<R
         soilsDistribution: reconversionProject.soilsDistribution,
       });
 
+    const evaluationPeriodInYears = getDefaultImpactsEvaluationPeriod(
+      reconversionProject.developmentPlan.type,
+      reconversionProject.developmentPlan.features,
+    );
+
     const impacts = new UrbanProjectImpactsService({
       siteCityData: {
         siteIsFriche: true,
@@ -187,7 +163,7 @@ export class QuickComputeUrbanProjectImpactsOnFricheUseCase implements UseCase<R
         ).medianPricePerSquareMeters,
       },
       relatedSite: siteData,
-      evaluationPeriodInYears: EVALUATION_PERIOD_IN_YEARS,
+      evaluationPeriodInYears,
       dateProvider: this.dateProvider,
       reconversionProject: {
         developmentPlanInstallationExpenses: reconversionProject.developmentPlan
@@ -224,6 +200,7 @@ export class QuickComputeUrbanProjectImpactsOnFricheUseCase implements UseCase<R
       name: reconversionProject.name,
       relatedSiteId: site.id,
       relatedSiteName: site.name,
+      evaluationPeriodInYears,
       projectData: {
         soilsDistribution: reconversionProject.soilsDistribution,
         contaminatedSoilSurface:

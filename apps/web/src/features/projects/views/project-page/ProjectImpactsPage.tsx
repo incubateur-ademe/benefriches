@@ -30,7 +30,7 @@ type Props = {
     isExpressProject: boolean;
   };
   onEvaluationPeriodChange: (n: number) => void;
-  evaluationPeriod: number;
+  evaluationPeriod: number | undefined;
   onCurrentViewModeChange: (n: ViewMode) => void;
   currentViewMode: ViewMode;
 };

@@ -4,7 +4,7 @@ import {
   AvoidedFricheCostsImpact,
 } from "shared";
 
-import { ReconversionProjectImpactsResult } from "@/features/projects/application/project-impacts/fetchImpactsForReconversionProject.action";
+import { ReconversionProjectImpactsResult } from "@/features/projects/application/project-impacts/actions";
 import { ProjectFeatures, UrbanProjectFeatures } from "@/features/projects/domain/projects.types";
 import { SiteFeatures } from "@/features/site-features/core/siteFeatures";
 
@@ -98,6 +98,7 @@ export const IMPACTS_DATA = {
   name: "Projet urbain",
   relatedSiteId: "690b9489-b2a2-47b3-9e91-a27c998b7f55",
   relatedSiteName: "Friche industrielle de Mauges-sur-Loire",
+  evaluationPeriodInYears: 15,
   isExpressSite: false,
   projectData: {
     soilsDistribution: {

@@ -1,15 +1,18 @@
 import {
   ReconversionProjectImpactsGateway,
   ReconversionProjectImpactsResult,
-} from "../../application/project-impacts/fetchImpactsForReconversionProject.action";
+} from "../../application/project-impacts/actions";
 
 export class HttpReconversionProjectImpactsApi implements ReconversionProjectImpactsGateway {
   async getReconversionProjectImpacts(
     reconversionProjectId: string,
-    evaluationPeriodInYears: number,
+    evaluationPeriodInYears?: number,
   ): Promise<ReconversionProjectImpactsResult> {
+    const url = `/api/reconversion-projects/${reconversionProjectId}/impacts`;
     const response = await fetch(
-      `/api/reconversion-projects/${reconversionProjectId}/impacts?evaluationPeriodInYears=${evaluationPeriodInYears}`,
+      evaluationPeriodInYears === undefined
+        ? url
+        : `${url}?evaluationPeriodInYears=${evaluationPeriodInYears}`,
     );
 
     if (!response.ok) throw new Error(`Error while fetching reconversion projects`);

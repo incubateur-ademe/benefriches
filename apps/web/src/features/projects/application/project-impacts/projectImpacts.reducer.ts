@@ -1,20 +1,20 @@
-import { createReducer, createSelector, PayloadAction } from "@reduxjs/toolkit";
+import { createReducer, createSelector, isAnyOf, PayloadAction } from "@reduxjs/toolkit";
 import { FricheActivity, SoilsDistribution } from "shared";
 
 import { RootState } from "@/shared/core/store-config/store";
 
 import { ProjectDevelopmentPlanType } from "../../domain/projects.types";
 import { ModalDataProps } from "../../views/project-page/impacts/impact-description-modals/ImpactModalDescription";
-import { evaluationPeriodUpdated, viewModeUpdated } from "./actions";
+import { viewModeUpdated } from "./actions";
 import {
-  fetchImpactsForReconversionProject,
+  evaluationPeriodUpdated,
+  reconversionProjectImpactsRequested,
   ReconversionProjectImpactsResult,
-} from "./fetchImpactsForReconversionProject.action";
+} from "./actions";
 import { fetchQuickImpactsForUrbanProjectOnFriche } from "./fetchQuickImpactsForUrbanProjectOnFriche.action";
 
 type LoadingState = "idle" | "loading" | "success" | "error";
 
-const DEFAULT_EVALUATION_PERIOD_IN_YEARS = 20;
 const DEFAULT_VIEW_MODE = "summary";
 
 export type ViewMode = "charts" | "list" | "summary";
@@ -57,7 +57,7 @@ export type ProjectImpactsState = {
     };
   };
   impactsData?: ReconversionProjectImpactsResult["impacts"];
-  evaluationPeriod: number;
+  evaluationPeriod: number | undefined;
   currentViewMode: ViewMode;
 };
 
@@ -67,38 +67,24 @@ export const getInitialState = (): ProjectImpactsState => {
     projectData: undefined,
     relatedSiteData: undefined,
     dataLoadingState: "idle",
-    evaluationPeriod: DEFAULT_EVALUATION_PERIOD_IN_YEARS,
+    evaluationPeriod: undefined,
     currentViewMode: DEFAULT_VIEW_MODE,
   };
 };
 
 export const projectImpactsReducer = createReducer(getInitialState(), (builder) => {
-  builder.addCase(evaluationPeriodUpdated, (state, action: PayloadAction<number>) => {
-    state.evaluationPeriod = action.payload;
-  });
   builder.addCase(viewModeUpdated, (state, action: PayloadAction<ViewMode>) => {
     state.currentViewMode = action.payload;
   });
-  /* fetch reconversion project impacts */
-  builder.addCase(fetchImpactsForReconversionProject.pending, (state) => {
+  builder.addCase(evaluationPeriodUpdated.pending, (state, action) => {
+    state.evaluationPeriod = action.meta.arg.evaluationPeriodInYears;
     state.dataLoadingState = "loading";
   });
-  builder.addCase(fetchImpactsForReconversionProject.fulfilled, (state, action) => {
-    state.dataLoadingState = "success";
-    state.impactsData = action.payload.impacts;
-    state.projectData = {
-      id: action.payload.id,
-      name: action.payload.name,
-      ...action.payload.projectData,
-    };
-    state.relatedSiteData = {
-      id: action.payload.relatedSiteId,
-      name: action.payload.relatedSiteName,
-      isExpressSite: action.payload.isExpressSite,
-      ...action.payload.siteData,
-    };
+  /* fetch reconversion project impacts */
+  builder.addCase(reconversionProjectImpactsRequested.pending, (state) => {
+    state.dataLoadingState = "loading";
   });
-  builder.addCase(fetchImpactsForReconversionProject.rejected, (state) => {
+  builder.addCase(reconversionProjectImpactsRequested.rejected, (state) => {
     state.dataLoadingState = "error";
   });
   /* fetch quick impacts for urban project on friche */
@@ -123,6 +109,25 @@ export const projectImpactsReducer = createReducer(getInitialState(), (builder) 
   builder.addCase(fetchQuickImpactsForUrbanProjectOnFriche.rejected, (state) => {
     state.dataLoadingState = "error";
   });
+  builder.addMatcher(
+    isAnyOf(evaluationPeriodUpdated.fulfilled, reconversionProjectImpactsRequested.fulfilled),
+    (state, action) => {
+      state.dataLoadingState = "success";
+      state.impactsData = action.payload.impacts;
+      state.evaluationPeriod = action.payload.evaluationPeriodInYears;
+      state.projectData = {
+        id: action.payload.id,
+        name: action.payload.name,
+        ...action.payload.projectData,
+      };
+      state.relatedSiteData = {
+        id: action.payload.relatedSiteId,
+        name: action.payload.relatedSiteName,
+        isExpressSite: action.payload.isExpressSite,
+        ...action.payload.siteData,
+      };
+    },
+  );
 });
 
 const selectSelf = (state: RootState) => state.projectImpacts;

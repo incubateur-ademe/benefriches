@@ -2,7 +2,7 @@ import { FricheActivity, isLocalAuthority, SiteNature, sumListWithKey } from "sh
 
 import { getPercentageDifference } from "@/shared/core/percentage/percentage";
 
-import { ReconversionProjectImpactsResult } from "../application/project-impacts/fetchImpactsForReconversionProject.action";
+import { ReconversionProjectImpactsResult } from "../application/project-impacts/actions";
 
 export type ProjectOverallImpact = "strong_negative" | "negative" | "positive" | "strong_positive";
 

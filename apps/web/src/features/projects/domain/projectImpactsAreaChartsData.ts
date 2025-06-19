@@ -1,6 +1,6 @@
 import { ReconversionProjectImpacts } from "shared";
 
-import { ReconversionProjectImpactsResult } from "../application/project-impacts/fetchImpactsForReconversionProject.action";
+import { ReconversionProjectImpactsResult } from "../application/project-impacts/actions";
 
 export type SocialAreaChartImpactsData = {
   fullTimeJobs: ReconversionProjectImpacts["social"]["fullTimeJobs"];

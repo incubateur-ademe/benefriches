@@ -2,6 +2,7 @@ import { fr } from "@codegouvfr/react-dsfr";
 import Button from "@codegouvfr/react-dsfr/Button";
 import { Range } from "@codegouvfr/react-dsfr/Range";
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
+import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 import classNames from "@/shared/views/clsx";
@@ -19,15 +20,19 @@ type FormValues = {
 };
 
 function ImpactEvaluationPeriodSelect({ value, onChange }: Props) {
-  const { control, handleSubmit, watch } = useForm<FormValues>({
+  const { control, handleSubmit, watch, reset } = useForm<FormValues>({
     defaultValues: { evaluationPeriodInYears: value },
   });
+
+  useEffect(() => {
+    reset({ evaluationPeriodInYears: value });
+  }, [value, reset]);
 
   const formEvaluationPeriod = watch("evaluationPeriodInYears");
 
   return (
     <Popover className="relative">
-      <PopoverButton>
+      <PopoverButton as="div">
         <Button
           className="tw-min-w-[165px] tw-bg-white dark:tw-bg-black"
           iconId="fr-icon-arrow-down-s-line"

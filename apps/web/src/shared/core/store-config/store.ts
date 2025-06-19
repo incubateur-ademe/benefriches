@@ -12,7 +12,7 @@ import { CreateUserGateway } from "@/features/onboarding/core/createUser.action"
 import { CurrentUserGateway } from "@/features/onboarding/core/initCurrentUser.action";
 import { ProjectFeaturesGateway } from "@/features/projects/application/project-features/projectFeatures.actions";
 import { UrbanSprawlImpactsComparisonGateway } from "@/features/projects/application/project-impacts-urban-sprawl-comparison/fetchUrbanSprawlImpactsComparison.action";
-import { ReconversionProjectImpactsGateway } from "@/features/projects/application/project-impacts/fetchImpactsForReconversionProject.action";
+import { ReconversionProjectImpactsGateway } from "@/features/projects/application/project-impacts/actions";
 import { QuickUrbanProjectImpactsGateway } from "@/features/projects/application/project-impacts/fetchQuickImpactsForUrbanProjectOnFriche.action";
 import { SiteFeaturesGateway } from "@/features/site-features/core/fetchSiteFeatures.action";
 import { CreateFeatureAlertGateway } from "@/features/user-feature-alerts/core/CreateFeatureAlertGateway";

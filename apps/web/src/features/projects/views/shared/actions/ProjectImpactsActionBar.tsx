@@ -7,7 +7,7 @@ import StickyActionBar from "./StickyActionBar";
 
 type Props = {
   selectedViewMode: ViewMode;
-  evaluationPeriod: number;
+  evaluationPeriod: number | undefined;
   onViewModeClick: (viewMode: ViewMode) => void;
   onEvaluationPeriodChange: (n: number) => void;
   header: ReactNode;

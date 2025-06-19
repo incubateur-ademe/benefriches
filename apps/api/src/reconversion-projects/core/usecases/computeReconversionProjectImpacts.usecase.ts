@@ -22,6 +22,7 @@ import {
   InputSiteData,
 } from "../model/impacts/ReconversionProjectImpactsService";
 import { UrbanProjectImpactsService } from "../model/impacts/UrbanProjectImpactsService";
+import { getDefaultImpactsEvaluationPeriod } from "../model/impacts/impactsEvaluationPeriod";
 import { DevelopmentPlan, Schedule } from "../model/reconversionProject";
 
 export type SiteImpactsDataView = {
@@ -83,12 +84,13 @@ export interface ReconversionProjectImpactsQuery {
 
 type Request = {
   reconversionProjectId: string;
-  evaluationPeriodInYears: number;
+  evaluationPeriodInYears?: number;
 };
 
 export type Result = {
   id: string;
   name: string;
+  evaluationPeriodInYears: number;
   relatedSiteId: string;
   relatedSiteName: string;
   projectData: {
@@ -148,14 +150,23 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
     private readonly getCityRelatedDataService: GetCityRelatedDataService,
   ) {}
 
-  async execute({ reconversionProjectId, evaluationPeriodInYears }: Request): Promise<Result> {
+  async execute({
+    reconversionProjectId,
+    evaluationPeriodInYears: inputEvaluationPeriodInYears,
+  }: Request): Promise<Result> {
     const reconversionProject = await this.reconversionProjectQuery.getById(reconversionProjectId);
-
     if (!reconversionProject) throw new ReconversionProjectNotFound(reconversionProjectId);
 
-    if (!reconversionProject.developmentPlanType) {
+    if (!reconversionProject.developmentPlanType || !reconversionProject.developmentPlanFeatures) {
       throw new NoDevelopmentPlanType(reconversionProjectId);
     }
+
+    const evaluationPeriodInYears =
+      inputEvaluationPeriodInYears ??
+      getDefaultImpactsEvaluationPeriod(
+        reconversionProject.developmentPlanType,
+        reconversionProject.developmentPlanFeatures,
+      );
 
     const relatedSite = await this.siteRepository.getById(reconversionProject.relatedSiteId);
 
@@ -166,6 +177,7 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
       name: reconversionProject.name,
       relatedSiteId: reconversionProject.relatedSiteId,
       relatedSiteName: relatedSite.name,
+      evaluationPeriodInYears,
       projectData: {
         soilsDistribution: reconversionProject.soilsDistribution,
         contaminatedSoilSurface:
