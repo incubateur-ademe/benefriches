@@ -13,7 +13,7 @@ import ProjectImpactsPdfPage from "./impacts/ProjectImpactsPdfPage";
 import ProjectFeaturesPdfPage from "./project-features/ProjectFeaturesPdfPage";
 import SiteFeaturesPdfPage from "./site-features/SiteFeaturesPdfPage";
 
-type Props = {
+export type Props = {
   siteFeatures: SiteFeatures;
   projectFeatures: ProjectFeatures;
   evaluationPeriodInYears: number;

@@ -1,11 +1,12 @@
+import "@codegouvfr/react-dsfr/Modal";
 import { useIsModalOpen } from "@codegouvfr/react-dsfr/Modal/useIsModalOpen";
 import RadioButtons from "@codegouvfr/react-dsfr/RadioButtons";
 import { useState } from "react";
 
 import Badge from "@/shared/views/components/Badge/Badge";
 
-import PdfExportDownloadButton from "./PdfExportDownloadButton";
 import { exportImpactsModal } from "./createExportModal";
+import PdfExportDownload from "./pdf-export";
 
 type ExportOption = "pdf" | "sharing_link" | "excel";
 
@@ -26,9 +27,12 @@ type Props = {
 };
 
 export default function ExportImpactsModal({ projectId, siteId }: Props) {
+  const [isDownloadAvailable, setIsDownloadAvailable] = useState(false);
   const [exportOption, setExportOption] = useState<ExportOption | undefined>(undefined);
+
   const resetSelectedOption = () => {
     setExportOption(undefined);
+    setIsDownloadAvailable(false);
   };
 
   useIsModalOpen(exportImpactsModal, {
@@ -45,17 +49,27 @@ export default function ExportImpactsModal({ projectId, siteId }: Props) {
           doClosesModal: true,
           type: "button",
         },
-        {
-          children:
-            exportOption === "pdf" ? (
-              <PdfExportDownloadButton projectId={projectId} siteId={siteId} />
-            ) : (
-              "Exporter"
-            ),
-          disabled: exportOption == undefined,
-          doClosesModal: true,
-          type: "submit",
-        },
+        exportOption === "pdf"
+          ? {
+              children: (
+                <PdfExportDownload
+                  projectId={projectId}
+                  siteId={siteId}
+                  onDownloadAvailable={() => {
+                    setIsDownloadAvailable(true);
+                  }}
+                />
+              ),
+              doClosesModal: false,
+              disabled: !isDownloadAvailable,
+              type: "submit",
+            }
+          : {
+              children: "Exporter",
+              doClosesModal: false,
+              disabled: exportOption == undefined,
+              type: "submit",
+            },
       ]}
     >
       <RadioButtons
