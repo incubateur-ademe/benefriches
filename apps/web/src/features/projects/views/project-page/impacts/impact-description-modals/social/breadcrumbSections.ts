@@ -1,4 +1,4 @@
-import { SocialSubSectionName } from "../ImpactModalDescriptionContext";
+import { SocialSubSectionName } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
 
 export const mainBreadcrumbSection = {
   label: "Impacts sociaux",

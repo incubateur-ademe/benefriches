@@ -4,6 +4,7 @@ import {
   EnvironmentalImpactDetailsName,
   EnvironmentalMainImpactName,
 } from "@/features/projects/domain/projectImpactsEnvironmental";
+import { EnvironmentSubSectionName } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
 import {
@@ -11,10 +12,11 @@ import {
   getEnvironmentalImpactLabel,
 } from "../../getImpactLabel";
 import { ModalDataProps } from "../ImpactModalDescription";
-import { EnvironmentSubSectionName } from "../ImpactModalDescriptionContext";
 import { getSubSectionBreadcrumb, mainBreadcrumbSection } from "./breadcrumbSections";
 
-const ImpactInProgressDescriptionModal = lazy(() => import("../ImpactInProgressDescriptionModal"));
+const ImpactInProgressDescriptionModal = lazy(
+  () => import("@/features/projects/views/shared/impacts/modals/ImpactInProgressDescriptionModal"),
+);
 const Co2SubSectionDescription = lazy(() => import("./Co2SubSectionDescription"));
 const EnvironmentalMainDescription = lazy(() => import("./EnvironmentalMainDescription"));
 const SoilsSubSectionDescription = lazy(() => import("./SoilsSubSectionDescription"));

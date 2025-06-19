@@ -2,14 +2,14 @@ import { useContext } from "react";
 import { AvoidedFricheCostsImpact, sumListWithKey } from "shared";
 
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
+import { ImpactModalDescriptionContext } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
+import ModalBody from "@/features/projects/views/shared/impacts/modals/ModalBody";
+import ModalContent from "@/features/projects/views/shared/impacts/modals/ModalContent";
+import ModalData from "@/features/projects/views/shared/impacts/modals/ModalData";
+import ModalGrid from "@/features/projects/views/shared/impacts/modals/ModalGrid";
+import ModalHeader from "@/features/projects/views/shared/impacts/modals/ModalHeader";
 
 import { getSocioEconomicImpactLabel } from "../../../getImpactLabel";
-import { ImpactModalDescriptionContext } from "../../ImpactModalDescriptionContext";
-import ModalBody from "../../shared/ModalBody";
-import ModalContent from "../../shared/ModalContent";
-import ModalData from "../../shared/ModalData";
-import ModalGrid from "../../shared/ModalGrid";
-import ModalHeader from "../../shared/ModalHeader";
 import ModalTable from "../../shared/ModalTable";
 import ModalColumnPointChart from "../../shared/modal-charts/ModalColumnPointChart";
 import { mainBreadcrumbSection, economicDirectBreadcrumbSection } from "../breadcrumbSections";

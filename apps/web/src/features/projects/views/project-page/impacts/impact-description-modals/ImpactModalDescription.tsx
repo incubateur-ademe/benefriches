@@ -9,7 +9,7 @@ import {
   INITIAL_CONTENT_STATE,
   UpdateModalContentArgs,
   ContentState,
-} from "./ImpactModalDescriptionContext";
+} from "../../../shared/impacts/modals/ImpactModalDescriptionContext";
 import { EconomicBalanceModalWizard } from "./economic-balance/EconomicBalanceModalWizard";
 import { EnvironmentalModalWizard } from "./environmental/EnvironmentalModalWizard";
 import { SocialModalWizard } from "./social/SocialModalWizard";

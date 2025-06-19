@@ -6,12 +6,12 @@ import {
   SocioEconomicImpactName,
   SocioEconomicMainImpactName,
 } from "@/features/projects/domain/projectImpactsSocioEconomic";
+import ImpactInProgressDescriptionModal from "@/features/projects/views/shared/impacts/modals/ImpactInProgressDescriptionModal";
+import { SocioEconomicSubSectionName } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
 import { getSocioEconomicImpactLabel } from "../../getImpactLabel";
-import ImpactInProgressDescriptionModal from "../ImpactInProgressDescriptionModal";
 import { ModalDataProps } from "../ImpactModalDescription";
-import { SocioEconomicSubSectionName } from "../ImpactModalDescriptionContext";
 import { getSubSectionBreadcrumb, mainBreadcrumbSection } from "./breadcrumbSections";
 
 const SocioEconomicDescription = lazy(() => import("./SocioEconomicDescription"));

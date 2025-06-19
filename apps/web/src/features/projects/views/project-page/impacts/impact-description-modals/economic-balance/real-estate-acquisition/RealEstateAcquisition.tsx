@@ -1,8 +1,8 @@
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
+import ModalBody from "@/features/projects/views/shared/impacts/modals/ModalBody";
+import ModalContent from "@/features/projects/views/shared/impacts/modals/ModalContent";
+import ModalHeader from "@/features/projects/views/shared/impacts/modals/ModalHeader";
 
-import ModalBody from "../../shared/ModalBody";
-import ModalContent from "../../shared/ModalContent";
-import ModalHeader from "../../shared/ModalHeader";
 import { breadcrumbSection } from "../breadcrumbSection";
 
 type Props = {

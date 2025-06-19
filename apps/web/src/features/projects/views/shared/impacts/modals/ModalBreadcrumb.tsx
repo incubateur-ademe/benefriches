@@ -3,7 +3,7 @@ import { useContext, useId } from "react";
 
 import classNames from "@/shared/views/clsx";
 
-import { ImpactModalDescriptionContext, ContentState } from "../ImpactModalDescriptionContext";
+import { ImpactModalDescriptionContext, ContentState } from "./ImpactModalDescriptionContext";
 
 export type BreadcrumbSegment = {
   label: string;

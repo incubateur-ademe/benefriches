@@ -1,10 +1,10 @@
 import { SoilsDistribution } from "shared";
 
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
+import ModalBody from "@/features/projects/views/shared/impacts/modals/ModalBody";
+import ModalContent from "@/features/projects/views/shared/impacts/modals/ModalContent";
+import ModalHeader from "@/features/projects/views/shared/impacts/modals/ModalHeader";
 
-import ModalBody from "../../shared/ModalBody";
-import ModalContent from "../../shared/ModalContent";
-import ModalHeader from "../../shared/ModalHeader";
 import SoilsStorageRelatedCo2Content from "../../shared/co2-emissions/SoilsStorageRelatedCo2Content";
 import { breadcrumbSegments } from "./breadcrumbSegments";
 

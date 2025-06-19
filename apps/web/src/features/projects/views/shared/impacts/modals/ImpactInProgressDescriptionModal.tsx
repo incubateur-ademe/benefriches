@@ -1,7 +1,7 @@
-import ModalBody from "./shared/ModalBody";
-import { BreadcrumbProps, BreadcrumbSegment } from "./shared/ModalBreadcrumb";
-import ModalContent from "./shared/ModalContent";
-import ModalHeader from "./shared/ModalHeader";
+import ModalBody from "./ModalBody";
+import { BreadcrumbProps, BreadcrumbSegment } from "./ModalBreadcrumb";
+import ModalContent from "./ModalContent";
+import ModalHeader from "./ModalHeader";
 
 type Props = {
   title: string;

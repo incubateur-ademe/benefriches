@@ -4,19 +4,19 @@ import { SocioEconomicImpact, sumListWithKey } from "shared";
 
 import { getSocioEconomicProjectImpactsByActor } from "@/features/projects/domain/projectImpactsSocioEconomic";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
+import {
+  ImpactModalDescriptionContext,
+  SocioEconomicSubSectionName,
+} from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
+import ModalBody from "@/features/projects/views/shared/impacts/modals/ModalBody";
+import ModalContent from "@/features/projects/views/shared/impacts/modals/ModalContent";
+import ModalData from "@/features/projects/views/shared/impacts/modals/ModalData";
+import ModalGrid from "@/features/projects/views/shared/impacts/modals/ModalGrid";
+import ModalHeader from "@/features/projects/views/shared/impacts/modals/ModalHeader";
 import { getActorLabel } from "@/features/projects/views/shared/socioEconomicLabels";
 
 import { getSocioEconomicImpactColor } from "../../getImpactColor";
 import { getSocioEconomicImpactLabel } from "../../getImpactLabel";
-import {
-  ImpactModalDescriptionContext,
-  SocioEconomicSubSectionName,
-} from "../ImpactModalDescriptionContext";
-import ModalBody from "../shared/ModalBody";
-import ModalContent from "../shared/ModalContent";
-import ModalData from "../shared/ModalData";
-import ModalGrid from "../shared/ModalGrid";
-import ModalHeader from "../shared/ModalHeader";
 import ModalTable from "../shared/ModalTable";
 import ModalColumnSeriesChart from "../shared/modal-charts/ModalColumnSeriesChart";
 import { mainBreadcrumbSection } from "./breadcrumbSections";

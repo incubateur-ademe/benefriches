@@ -1,7 +1,7 @@
 import Button from "@codegouvfr/react-dsfr/Button";
 import { useContext } from "react";
 
-import { ImpactModalDescriptionContext } from "../../ImpactModalDescriptionContext";
+import { ImpactModalDescriptionContext } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
 
 const LinkToAvoidedKilometersImpact = () => {
   const { updateModalContent } = useContext(ImpactModalDescriptionContext);

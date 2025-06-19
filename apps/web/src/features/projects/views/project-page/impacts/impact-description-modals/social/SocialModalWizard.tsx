@@ -4,11 +4,11 @@ import {
   SocialImpactDetailsName,
   SocialMainImpactName,
 } from "@/features/projects/domain/projectImpactsSocial";
+import { SocialSubSectionName } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
 import { getSocialImpactLabel } from "../../getImpactLabel";
 import { ModalDataProps } from "../ImpactModalDescription";
-import { SocialSubSectionName } from "../ImpactModalDescriptionContext";
 import {
   frenchSocietyBreadcrumbSection,
   getSubSectionBreadcrumb,
@@ -16,7 +16,9 @@ import {
   mainBreadcrumbSection,
 } from "./breadcrumbSections";
 
-const ImpactInProgressDescriptionModal = lazy(() => import("../ImpactInProgressDescriptionModal"));
+const ImpactInProgressDescriptionModal = lazy(
+  () => import("@/features/projects/views/shared/impacts/modals/ImpactInProgressDescriptionModal"),
+);
 const JobsSubSectionDescription = lazy(() => import("./JobsSubSectionDescription"));
 const SocialMainDescription = lazy(() => import("./SocialMainDescription"));
 const AvoidedTrafficAccidentsDeathsDescription = lazy(

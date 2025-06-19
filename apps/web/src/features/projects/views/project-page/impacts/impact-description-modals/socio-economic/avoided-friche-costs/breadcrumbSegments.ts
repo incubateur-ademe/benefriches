@@ -1,4 +1,5 @@
-import { BreadcrumbProps } from "../../shared/ModalBreadcrumb";
+import { BreadcrumbProps } from "@/features/projects/views/shared/impacts/modals/ModalBreadcrumb";
+
 import { mainBreadcrumbSection, economicDirectBreadcrumbSection } from "../breadcrumbSections";
 
 export const breadcrumbSegments: BreadcrumbProps["segments"] = [

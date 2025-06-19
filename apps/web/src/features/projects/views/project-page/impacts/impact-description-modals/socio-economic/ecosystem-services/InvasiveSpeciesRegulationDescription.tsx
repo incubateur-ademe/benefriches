@@ -6,15 +6,15 @@ import {
 import { SoilsDistribution } from "shared";
 
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
+import ModalBody from "@/features/projects/views/shared/impacts/modals/ModalBody";
+import ModalContent from "@/features/projects/views/shared/impacts/modals/ModalContent";
+import ModalHeader from "@/features/projects/views/shared/impacts/modals/ModalHeader";
+import ModalTitleThree from "@/features/projects/views/shared/impacts/modals/ModalTitleThree";
+import ModalTitleTwo from "@/features/projects/views/shared/impacts/modals/ModalTitleTwo";
 import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
 import { getLabelForSoilType } from "@/shared/core/label-mapping/soilTypeLabelMapping";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
-import ModalBody from "../../shared/ModalBody";
-import ModalContent from "../../shared/ModalContent";
-import ModalHeader from "../../shared/ModalHeader";
-import ModalTitleThree from "../../shared/ModalTitleThree";
-import ModalTitleTwo from "../../shared/ModalTitleTwo";
 import { breadcrumbSegments } from "./breadcrumbSegments";
 
 type Props = {

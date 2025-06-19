@@ -3,19 +3,19 @@ import { roundTo2Digits } from "shared";
 
 import { getEconomicBalanceProjectImpacts } from "@/features/projects/domain/projectImpactsEconomicBalance";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
+import { ImpactModalDescriptionContext } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
+import ModalBody from "@/features/projects/views/shared/impacts/modals/ModalBody";
+import ModalContent from "@/features/projects/views/shared/impacts/modals/ModalContent";
+import ModalData from "@/features/projects/views/shared/impacts/modals/ModalData";
+import ModalGrid from "@/features/projects/views/shared/impacts/modals/ModalGrid";
+import ModalHeader from "@/features/projects/views/shared/impacts/modals/ModalHeader";
+import ModalTitleTwo from "@/features/projects/views/shared/impacts/modals/ModalTitleTwo";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
 import { getEconomicBalanceImpactColor } from "../../getImpactColor";
 import { getEconomicBalanceImpactLabel } from "../../getImpactLabel";
 import { ModalDataProps } from "../ImpactModalDescription";
-import { ImpactModalDescriptionContext } from "../ImpactModalDescriptionContext";
-import ModalBody from "../shared/ModalBody";
-import ModalContent from "../shared/ModalContent";
-import ModalData from "../shared/ModalData";
-import ModalGrid from "../shared/ModalGrid";
-import ModalHeader from "../shared/ModalHeader";
 import ModalTable from "../shared/ModalTable";
-import ModalTitleTwo from "../shared/ModalTitleTwo";
 import ModalColumnSeriesChart from "../shared/modal-charts/ModalColumnSeriesChart";
 
 type Props = {

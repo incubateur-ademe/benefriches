@@ -3,7 +3,7 @@ import { ReactNode, useContext } from "react";
 
 import classNames from "@/shared/views/clsx";
 
-import { ImpactModalDescriptionContext } from "../ImpactModalDescriptionContext";
+import { ImpactModalDescriptionContext } from "./ImpactModalDescriptionContext";
 import ModalBreadcrumb, { BreadcrumbProps } from "./ModalBreadcrumb";
 
 type Props = {

@@ -1,15 +1,15 @@
 import { useContext } from "react";
 
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
+import { ImpactModalDescriptionContext } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
+import ModalBody from "@/features/projects/views/shared/impacts/modals/ModalBody";
+import ModalContent from "@/features/projects/views/shared/impacts/modals/ModalContent";
+import ModalHeader from "@/features/projects/views/shared/impacts/modals/ModalHeader";
 import { getPositiveNegativeTextClassesFromValue } from "@/shared/views/classes/positiveNegativeTextClasses";
 import classNames from "@/shared/views/clsx";
 
 import ImpactItemDetails from "../../list-view/ImpactItemDetails";
 import ImpactItemGroup from "../../list-view/ImpactItemGroup";
-import { ImpactModalDescriptionContext } from "../ImpactModalDescriptionContext";
-import ModalBody from "../shared/ModalBody";
-import ModalContent from "../shared/ModalContent";
-import ModalHeader from "../shared/ModalHeader";
 
 type Props = {
   impactData: {

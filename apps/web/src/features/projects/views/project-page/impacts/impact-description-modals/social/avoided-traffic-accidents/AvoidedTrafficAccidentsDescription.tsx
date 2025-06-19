@@ -1,17 +1,17 @@
 import { useContext } from "react";
 
 import { formatDefaultImpact } from "@/features/projects/views/shared/formatImpactValue";
-
-import { ModalDataProps } from "../../ImpactModalDescription";
 import {
   ImpactModalDescriptionContext,
   UpdateModalContentArgs,
-} from "../../ImpactModalDescriptionContext";
-import ModalBody from "../../shared/ModalBody";
-import ModalContent from "../../shared/ModalContent";
-import ModalData from "../../shared/ModalData";
-import ModalGrid from "../../shared/ModalGrid";
-import ModalHeader from "../../shared/ModalHeader";
+} from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
+import ModalBody from "@/features/projects/views/shared/impacts/modals/ModalBody";
+import ModalContent from "@/features/projects/views/shared/impacts/modals/ModalContent";
+import ModalData from "@/features/projects/views/shared/impacts/modals/ModalData";
+import ModalGrid from "@/features/projects/views/shared/impacts/modals/ModalGrid";
+import ModalHeader from "@/features/projects/views/shared/impacts/modals/ModalHeader";
+
+import { ModalDataProps } from "../../ImpactModalDescription";
 import ModalTable from "../../shared/ModalTable";
 import AvoidedTrafficAccidentsContent from "../../shared/avoided-traffic-accidents/AvoidedTrafficAccidentsContent";
 import ModalColumnPointChart from "../../shared/modal-charts/ModalColumnPointChart";

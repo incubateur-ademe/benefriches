@@ -1,7 +1,7 @@
+import ModalTitleThree from "@/features/projects/views/shared/impacts/modals/ModalTitleThree";
+import ModalTitleTwo from "@/features/projects/views/shared/impacts/modals/ModalTitleTwo";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
-import ModalTitleThree from "../ModalTitleThree";
-import ModalTitleTwo from "../ModalTitleTwo";
 import LinkToAvoidedKilometersImpact from "../avoided-kilometers-social-impact-link/AvoidedKilometersSocialImpactLink";
 import TravelRelatedImpactsIntroduction from "../travel-related-impacts-introduction/TravelRelatedImpactsIntroduction";
 

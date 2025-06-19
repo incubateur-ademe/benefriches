@@ -1,14 +1,14 @@
+import ModalBody from "@/features/projects/views/shared/impacts/modals/ModalBody";
+import ModalContent from "@/features/projects/views/shared/impacts/modals/ModalContent";
+import ModalData from "@/features/projects/views/shared/impacts/modals/ModalData";
+import ModalGrid from "@/features/projects/views/shared/impacts/modals/ModalGrid";
+import ModalHeader from "@/features/projects/views/shared/impacts/modals/ModalHeader";
+import ModalTitleThree from "@/features/projects/views/shared/impacts/modals/ModalTitleThree";
+import ModalTitleTwo from "@/features/projects/views/shared/impacts/modals/ModalTitleTwo";
 import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
 import { ModalDataProps } from "../../ImpactModalDescription";
-import ModalBody from "../../shared/ModalBody";
-import ModalContent from "../../shared/ModalContent";
-import ModalData from "../../shared/ModalData";
-import ModalGrid from "../../shared/ModalGrid";
-import ModalHeader from "../../shared/ModalHeader";
-import ModalTitleThree from "../../shared/ModalTitleThree";
-import ModalTitleTwo from "../../shared/ModalTitleTwo";
 import ModalAreaChart from "../../shared/modal-charts/ModalAreaChart";
 import { mainBreadcrumbSection, frenchSocietyBreadcrumbSection } from "../breadcrumbSections";
 

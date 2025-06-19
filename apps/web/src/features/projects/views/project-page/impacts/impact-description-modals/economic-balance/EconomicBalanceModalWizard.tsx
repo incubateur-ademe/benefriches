@@ -13,7 +13,9 @@ import {
 import { ModalDataProps } from "../ImpactModalDescription";
 import { breadcrumbSection as economicBalanceBreadcrumbSection } from "./breadcrumbSection";
 
-const ImpactInProgressDescriptionModal = lazy(() => import("../ImpactInProgressDescriptionModal"));
+const ImpactInProgressDescriptionModal = lazy(
+  () => import("@/features/projects/views/shared/impacts/modals/ImpactInProgressDescriptionModal"),
+);
 const EconomicBalanceDescription = lazy(() => import("./EconomicBalanceDescription"));
 const RealEstateAcquisitionDescription = lazy(
   () => import("./real-estate-acquisition/RealEstateAcquisition"),

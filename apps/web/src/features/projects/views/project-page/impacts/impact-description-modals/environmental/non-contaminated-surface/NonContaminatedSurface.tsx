@@ -1,9 +1,10 @@
+import ModalBody from "@/features/projects/views/shared/impacts/modals/ModalBody";
+import ModalContent from "@/features/projects/views/shared/impacts/modals/ModalContent";
+import ModalData from "@/features/projects/views/shared/impacts/modals/ModalData";
+import ModalGrid from "@/features/projects/views/shared/impacts/modals/ModalGrid";
+import ModalHeader from "@/features/projects/views/shared/impacts/modals/ModalHeader";
+
 import { ModalDataProps } from "../../ImpactModalDescription";
-import ModalBody from "../../shared/ModalBody";
-import ModalContent from "../../shared/ModalContent";
-import ModalData from "../../shared/ModalData";
-import ModalGrid from "../../shared/ModalGrid";
-import ModalHeader from "../../shared/ModalHeader";
 import ModalAreaChart from "../../shared/modal-charts/ModalAreaChart";
 import { mainBreadcrumbSection, soilsBreadcrumbSection } from "../breadcrumbSections";
 

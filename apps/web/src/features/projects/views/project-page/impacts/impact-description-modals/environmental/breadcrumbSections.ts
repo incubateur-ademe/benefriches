@@ -1,4 +1,4 @@
-import { EnvironmentSubSectionName } from "../ImpactModalDescriptionContext";
+import { EnvironmentSubSectionName } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
 
 export const mainBreadcrumbSection = {
   label: "Impacts environnementaux",
