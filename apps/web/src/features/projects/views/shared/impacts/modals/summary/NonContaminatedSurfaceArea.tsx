@@ -6,8 +6,8 @@ import ModalContent from "@/features/projects/views/shared/impacts/modals/ModalC
 import ModalHeader from "@/features/projects/views/shared/impacts/modals/ModalHeader";
 import { formatPercentage, formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 
-import ImpactItemDetails from "../../list-view/ImpactItemDetails";
-import ImpactItemGroup from "../../list-view/ImpactItemGroup";
+import ImpactItemDetails from "../../../../project-page/impacts/list-view/ImpactItemDetails";
+import ImpactItemGroup from "../../../../project-page/impacts/list-view/ImpactItemGroup";
 
 type Props = {
   impactData: {

@@ -10,11 +10,11 @@ import {
   UpdateModalContentArgs,
   ContentState,
 } from "../../../shared/impacts/modals/ImpactModalDescriptionContext";
+import { SummaryModalWizard } from "../../../shared/impacts/modals/summary/SummaryModalWizard";
 import { EconomicBalanceModalWizard } from "./economic-balance/EconomicBalanceModalWizard";
 import { EnvironmentalModalWizard } from "./environmental/EnvironmentalModalWizard";
 import { SocialModalWizard } from "./social/SocialModalWizard";
 import { SocioEconomicModalWizard } from "./socio-economic/SocioEconomicModalWizard";
-import { SummaryModalWizard } from "./summary/SummaryModalWizard";
 
 const SoilsCarbonStorageDescription = lazy(
   () => import("./soils-carbon-storage/SoilsCarbonStorageDescription"),

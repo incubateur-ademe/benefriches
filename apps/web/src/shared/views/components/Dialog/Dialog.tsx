@@ -1,4 +1,5 @@
 import { fr } from "@codegouvfr/react-dsfr";
+import { useIsModalOpen } from "@codegouvfr/react-dsfr/Modal/useIsModalOpen";
 import { ReactNode } from "react";
 
 type Props = {
@@ -7,6 +8,7 @@ type Props = {
   children: ReactNode;
 };
 const Dialog = ({ dialogId, title, children }: Props) => {
+  const isOpen = useIsModalOpen({ id: dialogId, isOpenedByDefault: false });
   return (
     <dialog aria-labelledby={`${dialogId}-title`} id={dialogId} className={fr.cx("fr-modal")}>
       <div className={fr.cx("fr-container", "fr-container--fluid", "fr-container-md")}>
@@ -24,7 +26,7 @@ const Dialog = ({ dialogId, title, children }: Props) => {
             <h2 className={fr.cx("fr-modal__title")} id={`${dialogId}-title`}>
               {title}
             </h2>
-            {children}
+            {isOpen && children}
           </div>
         </div>
       </div>

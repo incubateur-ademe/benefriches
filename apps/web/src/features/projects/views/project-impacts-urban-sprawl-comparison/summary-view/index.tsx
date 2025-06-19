@@ -5,8 +5,18 @@ import ImpactSummaryView from "./ImpactSummaryView";
 
 const ImpactsSummaryViewContainer = () => {
   const keyImpactIndicators = useAppSelector(getSummaryIndicatorsComparison);
+  const comparisonState = useAppSelector((state) => state.urbanSprawlComparison);
 
-  return <ImpactSummaryView {...keyImpactIndicators} />;
+  return (
+    <ImpactSummaryView
+      {...keyImpactIndicators}
+      modalData={{
+        baseCase: comparisonState.baseCase!,
+        comparisonCase: comparisonState.comparisonCase!,
+        projectData: comparisonState.projectData!,
+      }}
+    />
+  );
 };
 
 export default ImpactsSummaryViewContainer;

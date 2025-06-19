@@ -6,52 +6,49 @@ import ModalBody from "@/features/projects/views/shared/impacts/modals/ModalBody
 import ModalContent from "@/features/projects/views/shared/impacts/modals/ModalContent";
 import ModalHeader from "@/features/projects/views/shared/impacts/modals/ModalHeader";
 
-import ImpactItemDetails from "../../list-view/ImpactItemDetails";
-import ImpactItemGroup from "../../list-view/ImpactItemGroup";
+import ImpactItemDetails from "../../../../project-page/impacts/list-view/ImpactItemDetails";
+import ImpactItemGroup from "../../../../project-page/impacts/list-view/ImpactItemGroup";
 
 type Props = {
   impactData: {
     value: number;
-    isSuccess: boolean;
   };
 };
 
-const SummaryTaxesIncomeDescription = ({ impactData }: Props) => {
-  const { isSuccess, value } = impactData;
+const SummaryLocalPropertyValueIncreaseDescription = ({ impactData }: Props) => {
+  const { value } = impactData;
   const { updateModalContent } = useContext(ImpactModalDescriptionContext);
-
-  const title = isSuccess ? `+ de recettes fiscales\u00a0💰` : `- de recettes fiscales\u00a0💸`;
 
   return (
     <ModalBody>
       <ModalHeader
-        title={title}
+        title="Un cadre de vie amélioré&nbsp;🏡"
         value={{
           text: formatMonetaryImpact(value),
-          state: isSuccess ? "success" : "error",
-          description: isSuccess
-            ? `à venir au profit notamment de la collectivité`
-            : `en moins pour, notamment, la collectivité`,
+          state: "success",
+          description: `de valeur patrimoniale attendue par la reconversion de la friche`,
         }}
-        breadcrumbSegments={[{ label: "Synthèse" }, { label: title }]}
+        breadcrumbSegments={[{ label: "Synthèse" }, { label: "Un cadre de vie amélioré" }]}
       />
       <ModalContent noTitle>
         <p>
-          La concrétisation du projet va générer des recettes fiscales pour la collectivité
-          (exemples : taxe foncière sur les propriétés bâties, cotisation foncière des entreprises).
+          La reconversion d’une friche urbaine, du fait de la transformation d’un espace plus ou
+          moins ancien et dégradé, se traduit par une amélioration du cadre de vie des riverains du
+          projet. La bibliographie met en évidence un effet positif de la suppression d’une friche
+          sur la valeur patrimoniale des biens immobiliers pour les riverains.
         </p>
         <ImpactItemGroup isClickable>
           <ImpactItemDetails
             impactRowValueProps={{ buttonInfoAlwaysDisplayed: true }}
             value={value}
-            label="🏛 Recettes fiscales"
+            label="🏡 Valeur patrimoniale des bâtiments alentour"
             type="monetary"
             labelProps={{
               onClick: (e) => {
                 e.stopPropagation();
                 updateModalContent({
                   sectionName: "socio_economic",
-                  impactName: "taxes_income",
+                  impactName: "local_property_value_increase",
                 });
               },
             }}
@@ -62,4 +59,4 @@ const SummaryTaxesIncomeDescription = ({ impactData }: Props) => {
   );
 };
 
-export default SummaryTaxesIncomeDescription;
+export default SummaryLocalPropertyValueIncreaseDescription;
