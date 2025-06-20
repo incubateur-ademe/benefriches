@@ -81,7 +81,7 @@ export default function Step1({ onNextClick, skipStepByStepAnimation }: Props) {
         </li>
       </ul>
 
-      <div className="tw-mt-5">
+      <div className="tw-mt-8">
         <ButtonsGroup
           inlineLayoutWhen="always"
           alignment="between"

@@ -17,7 +17,7 @@ const INVISIBLE_CLASSES = ["md:tw-opacity-0", "md:tw-invisible"] as const;
 
 const EMOJI_CLASSNAME = "tw-bg-[#FCEEAC]";
 
-export default function Step3({ onNextClick, onBackClick, skipStepByStepAnimation }: Props) {
+export default function Step2({ onNextClick, onBackClick, skipStepByStepAnimation }: Props) {
   const [innerStep, setInnerStep] = useState(skipStepByStepAnimation ? 2 : 0);
 
   const onNextInnerStep = () => {
@@ -91,7 +91,7 @@ export default function Step3({ onNextClick, onBackClick, skipStepByStepAnimatio
         </li>
       </ul>
 
-      <div className="tw-mt-5">
+      <div className="tw-mt-8">
         <ButtonsGroup
           inlineLayoutWhen="always"
           alignment="between"
