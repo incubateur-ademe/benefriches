@@ -4,6 +4,8 @@ import {
   getSoilsDistributionForFricheActivity,
   getSoilsDistributionForNaturalAreaType,
   SoilsDistribution,
+  SoilType,
+  SurfaceAreaDistribution,
 } from "shared";
 import { v4 as uuid } from "uuid";
 
@@ -242,8 +244,19 @@ const siteCreationReducer = createReducer(getInitialState(), (builder) => {
       }
     })
     .addCase(soilsSelectionStepCompleted, (state, action) => {
-      state.siteData.soils = action.payload.soils;
-      state.stepsHistory.push("SPACES_SURFACE_AREAS_DISTRIBUTION_KNOWLEDGE");
+      const { soils } = action.payload;
+      state.siteData.soils = soils;
+
+      if (soils.length === 1) {
+        const totalSurface = state.siteData.surfaceArea ?? 0;
+        const soilsDistribution = new SurfaceAreaDistribution();
+        soilsDistribution.addSurface(soils[0] as SoilType, totalSurface);
+
+        state.siteData.soilsDistribution = soilsDistribution.toJSON();
+        state.stepsHistory.push("SOILS_CARBON_STORAGE");
+      } else {
+        state.stepsHistory.push("SPACES_SURFACE_AREAS_DISTRIBUTION_KNOWLEDGE");
+      }
     })
     .addCase(spacesSurfaceAreaDistributionKnowledgeCompleted, (state, action) => {
       const { knowsSurfaceAreas } = action.payload;

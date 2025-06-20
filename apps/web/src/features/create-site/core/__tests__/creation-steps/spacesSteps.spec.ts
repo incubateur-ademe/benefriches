@@ -180,6 +180,22 @@ describe("Site creation: spaces steps", () => {
           "SPACES_SURFACE_AREAS_DISTRIBUTION_KNOWLEDGE",
         );
       });
+      it("sets whole site surface area to selected soil and goes to SOILS_CARBON_STORAGE step when only one type of space is selected", () => {
+        const store = new StoreBuilder()
+          .withCreationData({ surfaceArea: 145 })
+          .withStepsHistory(["SPACES_SELECTION"])
+          .build();
+        const initialRootState = store.getState();
+
+        store.dispatch(soilsSelectionStepCompleted({ soils: ["PRAIRIE_GRASS"] }));
+
+        const newState = store.getState();
+        expectSiteDataDiff(initialRootState, newState, {
+          soils: ["PRAIRIE_GRASS"],
+          soilsDistribution: { PRAIRIE_GRASS: 145 },
+        });
+        expectNewCurrentStep(initialRootState, newState, "SOILS_CARBON_STORAGE");
+      });
     });
     describe("revert", () => {
       it("goes to previous step and unset soils data", () => {
