@@ -12,7 +12,11 @@ import {
 
 import { SoilsCarbonStorageResult } from "@/features/create-project/core/actions/soilsCarbonStorage.action";
 import { Schedule } from "@/features/create-project/core/project.types";
-import { formatNumberFr, formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
+import {
+  formatMoney,
+  formatNumberFr,
+  formatSurfaceArea,
+} from "@/shared/core/format-number/formatNumber";
 import {
   getLabelForFinancialAssistanceRevenueSource,
   getLabelForPhotovoltaicInstallationExpensePurpose,
@@ -239,7 +243,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
           {projectData.sitePurchaseTotalCost ? (
             <DataLine
               label={<strong>Prix de vente du site et droits de mutation</strong>}
-              value={<strong>{formatNumberFr(projectData.sitePurchaseTotalCost)} €</strong>}
+              value={<strong>{formatMoney(projectData.sitePurchaseTotalCost)}</strong>}
             />
           ) : undefined}
           {!!projectData.reinstatementExpenses && (
@@ -249,7 +253,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
                 label={<strong>Dépenses de remise en état de la friche</strong>}
                 value={
                   <strong>
-                    {formatNumberFr(sumListWithKey(projectData.reinstatementExpenses, "amount"))} €
+                    {formatMoney(sumListWithKey(projectData.reinstatementExpenses, "amount"))}
                   </strong>
                 }
               />
@@ -257,7 +261,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
                 return (
                   <DataLine
                     label={getLabelForReinstatementExpensePurpose(purpose)}
-                    value={`${formatNumberFr(amount)} €`}
+                    value={formatMoney(amount)}
                     isDetails
                     key={purpose}
                   />
@@ -273,20 +277,19 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
                   label={<strong>Dépenses d'installation de la centrale photovoltaïque</strong>}
                   value={
                     <strong>
-                      {formatNumberFr(
+                      {formatMoney(
                         sumListWithKey(
                           projectData.photovoltaicPanelsInstallationExpenses,
                           "amount",
                         ),
-                      )}{" "}
-                      €
+                      )}
                     </strong>
                   }
                 />
                 {projectData.photovoltaicPanelsInstallationExpenses.map(({ amount, purpose }) => (
                   <DataLine
                     label={getLabelForPhotovoltaicInstallationExpensePurpose(purpose)}
-                    value={`${formatNumberFr(amount)} €`}
+                    value={formatMoney(amount)}
                     isDetails
                     key={purpose}
                   />
@@ -298,7 +301,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
             label={<strong>Dépenses annuelles</strong>}
             value={
               <strong>
-                {formatNumberFr(sumListWithKey(projectData.yearlyProjectedExpenses, "amount"))} €
+                {formatMoney(sumListWithKey(projectData.yearlyProjectedExpenses, "amount"))}
               </strong>
             }
           />
@@ -306,7 +309,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
             return (
               <DataLine
                 label={getLabelForRecurringExpense(purpose)}
-                value={`${formatNumberFr(amount)} €`}
+                value={formatMoney(amount)}
                 isDetails
                 key={purpose}
               />
@@ -319,10 +322,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
                 label={<strong>Aides financières</strong>}
                 value={
                   <strong>
-                    {formatNumberFr(
-                      sumListWithKey(projectData.financialAssistanceRevenues, "amount"),
-                    )}{" "}
-                    €
+                    {formatMoney(sumListWithKey(projectData.financialAssistanceRevenues, "amount"))}
                   </strong>
                 }
               />
@@ -330,7 +330,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
                 return (
                   <DataLine
                     label={getLabelForFinancialAssistanceRevenueSource(source)}
-                    value={`${formatNumberFr(amount)} €`}
+                    value={formatMoney(amount)}
                     isDetails
                     key={source}
                   />
@@ -348,7 +348,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
             value={
               <div>
                 <strong>
-                  {formatNumberFr(sumListWithKey(projectData.yearlyProjectedRevenues, "amount"))} €
+                  {formatMoney(sumListWithKey(projectData.yearlyProjectedRevenues, "amount"))}
                 </strong>
               </div>
             }
@@ -357,7 +357,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
             return (
               <DataLine
                 label={getLabelForRecurringRevenueSource(source)}
-                value={`${formatNumberFr(amount)} €`}
+                value={formatMoney(amount)}
                 isDetails
                 key={source}
               />

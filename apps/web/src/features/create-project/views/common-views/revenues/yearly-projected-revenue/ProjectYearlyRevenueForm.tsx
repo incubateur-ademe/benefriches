@@ -3,7 +3,7 @@ import { DefaultValues, Path, useForm } from "react-hook-form";
 import { typedObjectEntries } from "shared";
 import { sumObjectValues } from "shared";
 
-import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
+import { formatMoney } from "@/shared/core/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RowDecimalsNumericInput from "@/shared/views/components/form/NumericInput/RowDecimalsNumericInput";
 import { optionalNumericFieldRegisterOptions } from "@/shared/views/components/form/NumericInput/registerOptions";
@@ -62,7 +62,7 @@ export default function ProjectYearlyRevenuesForm<Fields extends readonly string
         {!hasNoValuesFilled && (
           <p>
             <strong>
-              Total des recettes annuelles : {formatNumberFr(sumObjectValues(allRevenues))} €
+              Total des recettes annuelles : {formatMoney(sumObjectValues(allRevenues))}
             </strong>
           </p>
         )}

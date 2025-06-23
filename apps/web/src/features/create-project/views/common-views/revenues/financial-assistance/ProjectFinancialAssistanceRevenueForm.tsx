@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { typedObjectEntries } from "shared";
 import { sumObjectValues } from "shared";
 
-import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
+import { formatMoney } from "@/shared/core/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RowDecimalsNumericInput from "@/shared/views/components/form/NumericInput/RowDecimalsNumericInput";
 import { optionalNumericFieldRegisterOptions } from "@/shared/views/components/form/NumericInput/registerOptions";
@@ -85,7 +85,7 @@ const ProjectFinancialAssistanceRevenueForm = ({
         {!hasNoValuesFilled && (
           <p>
             <strong>
-              Total des aides aux travaux : {formatNumberFr(sumObjectValues(allRevenues))} €
+              Total des aides aux travaux : {formatMoney(sumObjectValues(allRevenues))}
             </strong>
           </p>
         )}

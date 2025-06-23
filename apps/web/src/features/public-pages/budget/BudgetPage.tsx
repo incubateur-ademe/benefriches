@@ -1,6 +1,6 @@
 import { fr } from "@codegouvfr/react-dsfr";
 
-import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
+import { formatMoney } from "@/shared/core/format-number/formatNumber";
 import classNames from "@/shared/views/clsx";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
@@ -19,7 +19,7 @@ const data = [
 ];
 
 const formatBudget = (value: number) => {
-  return value ? `${formatNumberFr(value)} €` : "-";
+  return value ? formatMoney(value) : "-";
 };
 
 const columns = ["", "S1 2023", "S2 2023", "S1 2024", "S2 2024"];
