@@ -1,32 +1,14 @@
 import {
-  sumListWithKey,
-  EURO_PER_SQUARE_METERS_FOR_REMEDIATION,
-  EURO_PER_SQUARE_METERS_FOR_DEMOLITION,
-  EURO_PER_SQUARE_METERS_FOR_DEIMPERMEABILIZATION,
-  EURO_PER_SQUARE_METERS_FOR_ASBESTOS_REMOVAL,
-  EURO_PER_SQUARE_METERS_FOR_SUSTAINABLE_SOILS_REINSTATEMENT,
-  roundToInteger,
-  sumObjectValues,
-} from "shared";
-
-import {
   getLabelForDevelopmentPlanCategory,
   getLabelForRenewableEnergyProductionType,
 } from "@/features/create-project/views/projectTypeLabelMapping";
 import { ProjectFeatures } from "@/features/projects/domain/projects.types";
-import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
-import {
-  getLabelForFinancialAssistanceRevenueSource,
-  getLabelForRecurringExpense,
-  getLabelForRecurringRevenueSource,
-  getLabelForReinstatementExpensePurpose,
-} from "@/shared/core/reconversionProject";
 import DataLine from "@/shared/views/components/FeaturesList/FeaturesListDataLine";
 import ScheduleDates from "@/shared/views/components/FeaturesList/FeaturesListScheduleDates";
 import Section from "@/shared/views/components/FeaturesList/FeaturesListSection";
 
 import DevelopmentPlanFeatures from "./DevelopmentPlanFeatures";
-import DevelopmentPlanInstallationExpenses from "./DevelopmentPlanInstallationExpenses";
+import ExpensesAndRevenuesSection from "./ExpensesAndRevenues";
 
 type Props = {
   projectData: ProjectFeatures;
@@ -90,191 +72,24 @@ export default function ProjectFeaturesView({
           />
         )}
       </Section>
-      <Section
-        title="💰 Dépenses et recettes du projet"
+      <ExpensesAndRevenuesSection
+        developmentPlanType={projectData.developmentPlan.type}
+        installationCosts={projectData.developmentPlan.installationCosts}
+        yearlyProjectedExpenses={projectData.yearlyProjectedExpenses}
+        yearlyProjectedRevenues={projectData.yearlyProjectedRevenues}
+        sitePurchaseTotalAmount={projectData.sitePurchaseTotalAmount}
+        siteResaleSellingPrice={projectData.siteResaleSellingPrice}
+        buildingsResaleSellingPrice={projectData.buildingsResaleSellingPrice}
+        financialAssistanceRevenues={projectData.financialAssistanceRevenues}
+        reinstatementCosts={projectData.reinstatementCosts}
         onTitleClick={onExpensesAndRevenuesTitleClick}
-      >
-        {projectData.sitePurchaseTotalAmount ? (
-          <DataLine
-            label={<strong>Prix d'achat du site et droits de mutation</strong>}
-            value={<strong>{formatNumberFr(projectData.sitePurchaseTotalAmount)} €</strong>}
-          />
-        ) : undefined}
-        {!!projectData.reinstatementCosts && (
-          <>
-            <DataLine
-              noBorder
-              label={<strong>Dépenses de remise en état de la friche</strong>}
-              labelTooltip="Le recyclage foncier impose une phase de remise en état, avant aménagement : déconstruction, désamiantage, désimperméabilisation des sols, dépollution des milieux (sols, eaux souterraines, …),  restauration écologique des sols, etc. Cette phase génère des dépenses parfois importantes."
-              value={
-                <strong>
-                  {formatNumberFr(sumListWithKey(projectData.reinstatementCosts, "amount"))} €
-                </strong>
-              }
-            />
-            {projectData.reinstatementCosts.map(({ amount, purpose }) => {
-              return (
-                <DataLine
-                  label={getLabelForReinstatementExpensePurpose(purpose)}
-                  value={`${formatNumberFr(amount)} €`}
-                  isDetails
-                  key={purpose}
-                  labelTooltip={(() => {
-                    switch (purpose) {
-                      case "sustainable_soils_reinstatement":
-                        return "La restauration écologique des sols consiste en la restauration des fonctionnalités écologiques des sols comme l’accueil de la biodiversité, le bon fonctionnement des cycles du carbone ou de l’eau.";
-                    }
-                  })()}
-                  valueTooltip={(() => {
-                    switch (purpose) {
-                      case "sustainable_soils_reinstatement":
-                        return `On considère que pour permettre la renaturation, il y a besoin de restauration écologique des sols qui coûte ${EURO_PER_SQUARE_METERS_FOR_SUSTAINABLE_SOILS_REINSTATEMENT} € / m² de surface de sol enherbé arbustif et sol arboré du projet. Cette valeur est issue du retour d’expérience ADEME.`;
-                      case "deimpermeabilization":
-                        return `On considère que la réduction de la surface imperméabilisée coûte ${EURO_PER_SQUARE_METERS_FOR_DEIMPERMEABILIZATION} € / m² surface désimperméabilisée. Cette valeur est issue du retour d’expérience ADEME.`;
-                      case "remediation":
-                        return `Le coût moyen de dépollution est estimé à ${EURO_PER_SQUARE_METERS_FOR_REMEDIATION} €/m². Cette valeur est issue du retour d’expérience ADEME.`;
-                      case "demolition":
-                        return `Le coût moyen de déconstruction est estimé à ${EURO_PER_SQUARE_METERS_FOR_DEMOLITION} €/m² de bâtiment. Cette valeur est issue du retour d’expérience ADEME.`;
-                      case "asbestos_removal":
-                        return `Le coût moyen de désamiantage est estimé à ${EURO_PER_SQUARE_METERS_FOR_ASBESTOS_REMOVAL} €/m² de bâtiment. Cette valeur est issue du retour d’expérience ADEME.`;
-                    }
-                  })()}
-                />
-              );
-            })}
-          </>
-        )}
-        {projectData.developmentPlan.installationCosts.length > 0 && (
-          <DevelopmentPlanInstallationExpenses
-            developmentPlanType={projectData.developmentPlan.type}
-            installationCosts={projectData.developmentPlan.installationCosts}
-          />
-        )}
-
-        {projectData.siteResaleSellingPrice
-          ? (() => {
-              if (projectData.isExpress && projectData.developmentPlan.type === "URBAN_PROJECT") {
-                const buildingsTotalSurfaceArea = sumObjectValues(
-                  projectData.developmentPlan.buildingsFloorArea,
-                );
-
-                return (
-                  <DataLine
-                    label={<strong>Prix de revente du site</strong>}
-                    value={<strong>{formatNumberFr(projectData.siteResaleSellingPrice)} €</strong>}
-                    valueTooltip={
-                      buildingsTotalSurfaceArea
-                        ? `Le prix de revente du site est calculé sur la base de charges foncières estimées à ${roundToInteger(projectData.siteResaleSellingPrice / buildingsTotalSurfaceArea)} €/m²SDP de bâtiment. Cette valeur est issue du retour d’expérience ADEME.`
-                        : undefined
-                    }
-                  />
-                );
-              }
-
-              return (
-                <DataLine
-                  label={<strong>Prix de revente du site</strong>}
-                  value={<strong>{formatNumberFr(projectData.siteResaleSellingPrice)} €</strong>}
-                />
-              );
-            })()
-          : undefined}
-        {projectData.buildingsResaleSellingPrice ? (
-          <DataLine
-            label={<strong>Prix de revente des bâtiments</strong>}
-            value={<strong>{formatNumberFr(projectData.buildingsResaleSellingPrice)} €</strong>}
-          />
-        ) : undefined}
-        {projectData.yearlyProjectedExpenses.length > 0 && (
-          <>
-            <DataLine
-              noBorder
-              label={
-                <strong>
-                  {projectData.developmentPlan.type === "URBAN_PROJECT"
-                    ? "Dépenses annuelles d'exploitation des bâtiments"
-                    : "Dépenses annuelles"}
-                </strong>
-              }
-              value={
-                <div>
-                  <strong>
-                    {formatNumberFr(sumListWithKey(projectData.yearlyProjectedExpenses, "amount"))}{" "}
-                    €
-                  </strong>
-                </div>
-              }
-            />
-            {projectData.yearlyProjectedExpenses.map(({ amount, purpose }) => {
-              return (
-                <DataLine
-                  label={getLabelForRecurringExpense(purpose)}
-                  value={`${formatNumberFr(amount)} €`}
-                  isDetails
-                  key={purpose}
-                />
-              );
-            })}
-          </>
-        )}
-
-        {!!projectData.financialAssistanceRevenues && (
-          <>
-            <DataLine
-              noBorder
-              label={<strong>Aides financières</strong>}
-              value={
-                <strong>
-                  {formatNumberFr(
-                    sumListWithKey(projectData.financialAssistanceRevenues, "amount"),
-                  )}{" "}
-                  €
-                </strong>
-              }
-            />
-            {projectData.financialAssistanceRevenues.map(({ amount, source }) => {
-              return (
-                <DataLine
-                  label={getLabelForFinancialAssistanceRevenueSource(source)}
-                  value={`${formatNumberFr(amount)} €`}
-                  isDetails
-                  key={source}
-                />
-              );
-            })}
-          </>
-        )}
-        {projectData.yearlyProjectedRevenues.length > 0 && (
-          <>
-            <DataLine
-              noBorder
-              label={
-                <div>
-                  <strong>Recettes annuelles</strong>
-                </div>
-              }
-              value={
-                <div>
-                  <strong>
-                    {formatNumberFr(sumListWithKey(projectData.yearlyProjectedRevenues, "amount"))}{" "}
-                    €
-                  </strong>
-                </div>
-              }
-            />
-            {projectData.yearlyProjectedRevenues.map(({ amount, source }) => {
-              return (
-                <DataLine
-                  label={getLabelForRecurringRevenueSource(source)}
-                  value={`${formatNumberFr(amount)} €`}
-                  isDetails
-                  key={source}
-                />
-              );
-            })}
-          </>
-        )}
-      </Section>
+        isExpress={projectData.isExpress}
+        buildingsFloorArea={
+          projectData.developmentPlan.type === "URBAN_PROJECT"
+            ? projectData.developmentPlan.buildingsFloorArea
+            : undefined
+        }
+      />
       <Section title="📆 Calendrier">
         {projectData.reinstatementSchedule && (
           <DataLine

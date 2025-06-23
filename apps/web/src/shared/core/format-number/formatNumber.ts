@@ -21,3 +21,7 @@ export function formatPercentage(percentage: number): string {
 
   return `${formatNumberFr(roundedValue)}%`;
 }
+
+export function formatMoney(amount: number): string {
+  return `${formatNumberFr(amount)} €`;
+}
