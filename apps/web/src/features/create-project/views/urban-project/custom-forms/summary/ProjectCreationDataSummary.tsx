@@ -12,6 +12,7 @@ type Props = {
   projectSpaces: Partial<Record<LEGACY_UrbanProjectSpace, number>>;
   onNext: () => void;
   onBack: () => void;
+  onExpensesAndRevenuesTitleClick: () => void;
 };
 
 function ProjectCreationDataSummary({
@@ -19,6 +20,7 @@ function ProjectCreationDataSummary({
   projectData,
   projectSpaces,
   projectSoilsDistribution,
+  onExpensesAndRevenuesTitleClick,
   onNext,
   onBack,
 }: Props) {
@@ -60,6 +62,7 @@ function ProjectCreationDataSummary({
           buildingsResaleSellingPrice: projectData.buildingsResaleSellingPrice,
           decontaminatedSoilSurface: projectData.decontaminatedSurfaceArea,
         }}
+        onExpensesAndRevenuesTitleClick={onExpensesAndRevenuesTitleClick}
       />
 
       <div className="tw-mt-8">
