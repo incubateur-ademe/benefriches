@@ -5,7 +5,7 @@ import {
   LEGACY_SpacesDistribution,
 } from "shared";
 
-import { SumOnEvolutionPeriodService } from "../SumOnEvolutionPeriodService";
+import { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import { YearlyUrbanFreshnessRelatedImpacts } from "./YearlyUrbanFreshnessRelatedImpacts";
 
 type Props = {

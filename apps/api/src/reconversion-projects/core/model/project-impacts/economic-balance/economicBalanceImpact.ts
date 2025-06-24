@@ -9,7 +9,7 @@ import {
   sumListWithKey,
 } from "shared";
 
-import { SumOnEvolutionPeriodService } from "../SumOnEvolutionPeriodService";
+import { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 
 type ProjectProps = {
   financialAssistanceRevenues?: FinancialAssistanceRevenue[];

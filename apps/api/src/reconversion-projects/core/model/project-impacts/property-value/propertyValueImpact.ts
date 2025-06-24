@@ -1,6 +1,6 @@
 import { TRANSFER_TAX_PERCENT_PER_TRANSACTION } from "shared";
 
-import { SumOnEvolutionPeriodService } from "../SumOnEvolutionPeriodService";
+import { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import { InfluenceAreaService } from "../influence-area-service/InfluenceAreaService";
 
 const FRICHE_REMOVAL_PRICE_RISES = [

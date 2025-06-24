@@ -1,4 +1,4 @@
-import { SumOnEvolutionPeriodService } from "../SumOnEvolutionPeriodService";
+import { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import { computePropertyValueImpact } from "./propertyValueImpact";
 
 describe("LocalPropertyValueIncrease impact", () => {

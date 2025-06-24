@@ -23,8 +23,8 @@ import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 
 import { SoilsCarbonStorage } from "../../gateways/SoilsCarbonStorageService";
 import { DevelopmentPlan, Schedule } from "../../model/reconversionProject";
+import { SumOnEvolutionPeriodService } from "../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import { ImpactsServiceInterface } from "./ReconversionProjectImpactsServiceInterface";
-import { SumOnEvolutionPeriodService } from "./SumOnEvolutionPeriodService";
 import { computeEconomicBalanceImpact } from "./economic-balance/economicBalanceImpact";
 import { FullTimeJobsImpactService } from "./full-time-jobs/fullTimeJobsImpactService";
 import { Impact } from "./impact";

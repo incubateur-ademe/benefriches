@@ -18,9 +18,9 @@ import { UseCase } from "src/shared-kernel/usecase";
 import { CityDataProvider } from "../gateways/CityDataProvider";
 import { GetCarbonStorageFromSoilDistributionService } from "../gateways/SoilsCarbonStorageService";
 import { NewUrbanCenterProjectExpressCreationService } from "../model/create-from-site-services/NewUrbanCenterProjectExpressCreationService";
-import { InputSiteData } from "../model/impacts/ReconversionProjectImpactsService";
-import { UrbanProjectImpactsService } from "../model/impacts/UrbanProjectImpactsService";
-import { getDefaultImpactsEvaluationPeriod } from "../model/impacts/impactsEvaluationPeriod";
+import { InputSiteData } from "../model/project-impacts/ReconversionProjectImpactsService";
+import { UrbanProjectImpactsService } from "../model/project-impacts/UrbanProjectImpactsService";
+import { getDefaultImpactsEvaluationPeriod } from "../model/project-impacts/impactsEvaluationPeriod";
 import { DevelopmentPlan, Schedule } from "../model/reconversionProject";
 import { Result } from "./computeReconversionProjectImpacts.usecase";
 

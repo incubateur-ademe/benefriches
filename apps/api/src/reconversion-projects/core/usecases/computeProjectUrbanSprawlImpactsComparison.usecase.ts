@@ -18,15 +18,15 @@ import {
   GetCarbonStorageFromSoilDistributionService,
   SoilsCarbonStorage,
 } from "../gateways/SoilsCarbonStorageService";
-import { PhotovoltaicProjectImpactsService } from "../model/impacts/PhotovoltaicProjectImpactsService";
+import { PhotovoltaicProjectImpactsService } from "../model/project-impacts/PhotovoltaicProjectImpactsService";
 import {
   InputReconversionProjectData,
   InputSiteData,
-} from "../model/impacts/ReconversionProjectImpactsService";
+} from "../model/project-impacts/ReconversionProjectImpactsService";
 import {
   SiteCityDataProps,
   UrbanProjectImpactsService,
-} from "../model/impacts/UrbanProjectImpactsService";
+} from "../model/project-impacts/UrbanProjectImpactsService";
 import { Schedule } from "../model/reconversionProject";
 
 export interface SiteImpactsQuery {

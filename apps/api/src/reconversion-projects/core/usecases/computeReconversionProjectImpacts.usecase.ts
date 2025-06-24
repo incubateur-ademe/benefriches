@@ -11,13 +11,13 @@ import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { UseCase } from "src/shared-kernel/usecase";
 
 import { GetCarbonStorageFromSoilDistributionService } from "../gateways/SoilsCarbonStorageService";
-import { PhotovoltaicProjectImpactsService } from "../model/impacts/PhotovoltaicProjectImpactsService";
+import { PhotovoltaicProjectImpactsService } from "../model/project-impacts/PhotovoltaicProjectImpactsService";
 import {
   InputReconversionProjectData,
   InputSiteData,
-} from "../model/impacts/ReconversionProjectImpactsService";
-import { UrbanProjectImpactsService } from "../model/impacts/UrbanProjectImpactsService";
-import { getDefaultImpactsEvaluationPeriod } from "../model/impacts/impactsEvaluationPeriod";
+} from "../model/project-impacts/ReconversionProjectImpactsService";
+import { UrbanProjectImpactsService } from "../model/project-impacts/UrbanProjectImpactsService";
+import { getDefaultImpactsEvaluationPeriod } from "../model/project-impacts/impactsEvaluationPeriod";
 import { DevelopmentPlan, Schedule } from "../model/reconversionProject";
 
 export interface SiteImpactsQuery {

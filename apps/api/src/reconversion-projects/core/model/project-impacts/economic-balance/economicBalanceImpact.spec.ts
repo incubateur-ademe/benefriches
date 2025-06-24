@@ -1,6 +1,6 @@
 import { EconomicBalanceImpactResult } from "shared";
 
-import { SumOnEvolutionPeriodService } from "../SumOnEvolutionPeriodService";
+import { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import {
   computeEconomicBalanceImpact,
   getEconomicResultsOfProjectExploitationForDuration,

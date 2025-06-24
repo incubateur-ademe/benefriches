@@ -1,4 +1,4 @@
-import { SumOnEvolutionPeriodService } from "../SumOnEvolutionPeriodService";
+import { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import {
   computeYearlyRoadsAndUtilitiesMaintenanceExpenses,
   getRoadsAndUtilitiesExpensesImpacts,
