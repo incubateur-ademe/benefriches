@@ -15,6 +15,8 @@ import {
   SoilType,
   SoilsCarbonStorageImpact,
   AgriculturalOperationActivity,
+  SiteYearlyIncome,
+  SiteOperationBenefitsLoss,
 } from "shared";
 
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
@@ -70,6 +72,7 @@ type InputAgriculturalOperationData = {
   agriculturalOperationActivity?: AgriculturalOperationActivity;
   isSiteOperated?: boolean;
   yearlyExpenses: SiteYearlyExpense[];
+  yearlyIncomes: SiteYearlyIncome[];
   ownerName: string;
   tenantName?: string;
   addressCityCode: string;
@@ -81,6 +84,7 @@ type InputAgriculturalOperationData = {
 type InputNaturalAreaData = {
   nature: "NATURAL_AREA";
   yearlyExpenses: SiteYearlyExpense[];
+  yearlyIncomes: SiteYearlyIncome[];
   ownerName: string;
   tenantName?: string;
   addressCityCode: string;
@@ -313,6 +317,30 @@ export class ReconversionProjectImpactsService implements ImpactsServiceInterfac
     return impacts;
   }
 
+  protected get operationBenefitLoss(): SiteOperationBenefitsLoss | undefined {
+    switch (this.relatedSite.nature) {
+      case "AGRICULTURAL_OPERATION": {
+        if (!this.relatedSite.isSiteOperated) {
+          return undefined;
+        }
+        return {
+          amount:
+            -1 *
+            this.sumOnEvolutionPeriodService.sumWithDiscountFactor(
+              sumListWithKey(this.relatedSite.yearlyIncomes, "amount") -
+                sumListWithKey(this.relatedSite.yearlyExpenses, "amount"),
+            ),
+          impact: "site_operation_benefits_loss",
+          actor: this.relatedSite.tenantName ?? this.relatedSite.ownerName,
+          impactCategory: "economic_indirect",
+        };
+      }
+      case "FRICHE":
+      case "NATURAL_AREA":
+        return undefined;
+    }
+  }
+
   protected get soilsCo2eqStorage() {
     return computeSoilsCo2eqStorageImpact(
       this.relatedSite.soilsCarbonStorage?.total,
@@ -445,6 +473,10 @@ export class ReconversionProjectImpactsService implements ImpactsServiceInterfac
       ...this.propertyTransferDutiesIncome,
       ...this.natureConservationSocioEconomicImpacts,
     ];
+
+    if (this.operationBenefitLoss) {
+      socioEconomicList.push(this.operationBenefitLoss);
+    }
 
     return {
       economicBalance: this.economicBalance,

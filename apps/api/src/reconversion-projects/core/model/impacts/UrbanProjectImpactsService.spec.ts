@@ -143,7 +143,11 @@ describe("UrbanProjectImpactsService", () => {
   it("returns no impacts related to local property value increase for non friche", () => {
     const urbanProjectImpactsService = new UrbanProjectImpactsService({
       reconversionProject: reconversionProjectImpactDataView,
-      relatedSite: { ...site, nature: "AGRICULTURAL_OPERATION" },
+      relatedSite: {
+        ...site,
+        nature: "AGRICULTURAL_OPERATION",
+        yearlyIncomes: [{ source: "operations", amount: 10000 }],
+      },
       evaluationPeriodInYears: 10,
       dateProvider: dateProvider,
       siteCityData: {
@@ -352,7 +356,11 @@ describe("UrbanProjectImpactsService", () => {
             },
           },
         },
-        relatedSite: { ...site, nature: "AGRICULTURAL_OPERATION" },
+        relatedSite: {
+          ...site,
+          nature: "AGRICULTURAL_OPERATION",
+          yearlyIncomes: [{ source: "operations", amount: 10000 }],
+        },
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
         siteCityData: {

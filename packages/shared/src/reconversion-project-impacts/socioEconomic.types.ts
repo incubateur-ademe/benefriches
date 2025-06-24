@@ -68,6 +68,11 @@ type RoadsAndUtilitiesMaintenanceExpensesImpact = BaseEconomicImpact & {
   actor: "community";
 };
 
+export type SiteOperationBenefitsLoss = BaseEconomicImpact & {
+  impact: "site_operation_benefits_loss";
+  impactCategory: "economic_indirect";
+};
+
 export type DirectAndIndirectEconomicImpact =
   | RentalIncomeImpact
   | AvoidedFricheCostsImpact
@@ -75,7 +80,8 @@ export type DirectAndIndirectEconomicImpact =
   | PropertyTransferDutiesIncomeImpact
   | AvoidedCarRelatedExpensesImpact
   | AvoidedAirConditioningExpensesImpact
-  | RoadsAndUtilitiesMaintenanceExpensesImpact;
+  | RoadsAndUtilitiesMaintenanceExpensesImpact
+  | SiteOperationBenefitsLoss;
 
 export type TravelTimeSavedImpact = BaseEconomicImpact & {
   impact: "travel_time_saved";

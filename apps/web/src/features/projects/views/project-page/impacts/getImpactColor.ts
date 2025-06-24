@@ -38,6 +38,8 @@ export const getSocioEconomicImpactColor = (impactName: SocioEconomicMainImpactN
       return "#7ACE14";
     case "water_regulation":
       return "#038FDD";
+    case "site_operation_benefits_loss":
+      return "#E9DABE";
   }
 };
 

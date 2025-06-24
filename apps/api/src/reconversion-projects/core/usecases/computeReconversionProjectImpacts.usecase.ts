@@ -183,6 +183,7 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
         surfaceArea: relatedSite.surfaceArea,
         ownerName: relatedSite.ownerName,
         yearlyExpenses: relatedSite.yearlyExpenses,
+        yearlyIncomes: relatedSite.yearlyIncomes,
         tenantName: relatedSite.tenantName,
         soilsCarbonStorage: siteSoilsCarbonStorage,
       };

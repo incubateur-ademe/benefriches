@@ -131,6 +131,8 @@ export const getSocioEconomicImpactLabel = (name: SocioEconomicImpactName) => {
       return "🏠 Taxe foncière sur les habitations créées";
     case "project_photovoltaic_taxes_income":
       return "⚡️ Taxes et impôts sur la centrale EnR";
+    case "site_operation_benefits_loss":
+      return "👨‍🌾 Perte de revenus agricoles";
     /// Projet urbain
     case "avoided_property_damages_expenses":
       return "🚙 Dépenses d’entretien et réparation évitées";

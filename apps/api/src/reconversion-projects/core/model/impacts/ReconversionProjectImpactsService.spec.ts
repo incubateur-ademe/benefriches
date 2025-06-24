@@ -96,6 +96,7 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
         relatedSite: {
           ...site,
           yearlyExpenses: [],
+          yearlyIncomes: [],
           ownerName: "Current owner",
           nature: "AGRICULTURAL_OPERATION",
         },
@@ -115,6 +116,7 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
         relatedSite: {
           ...site,
           yearlyExpenses: [],
+          yearlyIncomes: [],
           ownerName: "Current owner",
           nature: "AGRICULTURAL_OPERATION",
         },
@@ -137,6 +139,7 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
         relatedSite: {
           ...site,
           yearlyExpenses: [{ amount: 20000, purpose: "rent", bearer: "tenant" }],
+          yearlyIncomes: [],
           ownerName: "Current owner",
           nature: "AGRICULTURAL_OPERATION",
         },
@@ -162,6 +165,7 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
         relatedSite: {
           ...site,
           yearlyExpenses: [{ amount: 5000, purpose: "rent", bearer: "tenant" }],
+          yearlyIncomes: [],
           nature: "AGRICULTURAL_OPERATION",
         },
         evaluationPeriodInYears: 10,
@@ -187,6 +191,7 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
         relatedSite: {
           ...site,
           yearlyExpenses: [{ amount: 5000, purpose: "rent", bearer: "owner" }],
+          yearlyIncomes: [],
           ownerName: "Current owner",
           nature: "AGRICULTURAL_OPERATION",
         },
@@ -217,6 +222,7 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
         relatedSite: {
           ...site,
           yearlyExpenses: [],
+          yearlyIncomes: [],
           ownerName: "Current owner",
           nature: "AGRICULTURAL_OPERATION",
         },
@@ -342,6 +348,7 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
               bearer: "owner",
             },
           ],
+          yearlyIncomes: [],
           ownerName: "Current owner",
           tenantName: undefined,
           nature: "AGRICULTURAL_OPERATION",
@@ -427,6 +434,7 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
         relatedSite: {
           ...site,
           yearlyExpenses: [],
+          yearlyIncomes: [],
           nature: "AGRICULTURAL_OPERATION",
         },
         evaluationPeriodInYears: 10,
@@ -444,6 +452,7 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
         relatedSite: {
           ...site,
           yearlyExpenses: [],
+          yearlyIncomes: [],
           nature: "AGRICULTURAL_OPERATION",
         },
         evaluationPeriodInYears: 10,
@@ -492,62 +501,161 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
     });
   });
 
-  it("computes accidents impact", () => {
-    const projectImpactsService = new ReconversionProjectImpactsService({
-      reconversionProject: reconversionProjectImpactDataView,
-      relatedSite: site,
-      evaluationPeriodInYears: 10,
-      dateProvider: dateProvider,
+  describe("Site operation benefits loss", () => {
+    it("returns no impact when site is friche", () => {
+      const projectImpactsService = new ReconversionProjectImpactsService({
+        reconversionProject: { ...reconversionProjectImpactDataView, yearlyProjectedExpenses: [] },
+        relatedSite: site,
+        evaluationPeriodInYears: 10,
+        dateProvider: dateProvider,
+      });
+      expect(projectImpactsService["operationBenefitLoss"]).toBeUndefined();
     });
 
-    expect(projectImpactsService["accidentsImpact"]).toEqual({
-      base: 3,
-      forecast: 0,
-      difference: -3,
-      deaths: {
-        base: 0,
+    it("returns no impact when site is natural area", () => {
+      const projectImpactsService = new ReconversionProjectImpactsService({
+        reconversionProject: { ...reconversionProjectImpactDataView, yearlyProjectedExpenses: [] },
+        relatedSite: {
+          ...site,
+          yearlyExpenses: [],
+          yearlyIncomes: [],
+          nature: "NATURAL_AREA",
+        },
+        evaluationPeriodInYears: 10,
+        dateProvider: dateProvider,
+      });
+      expect(projectImpactsService["operationBenefitLoss"]).toBeUndefined();
+    });
+
+    it("returns benefit loss for agricultural operated site for current tenant", () => {
+      const projectImpactsService = new ReconversionProjectImpactsService({
+        reconversionProject: {
+          ...reconversionProjectImpactDataView,
+          yearlyProjectedExpenses: [{ amount: 30000, purpose: "rent" }],
+          futureSiteOwnerName: "Mairie de Paris",
+        },
+        relatedSite: {
+          ...site,
+          yearlyExpenses: [{ purpose: "otherOperationsCosts", amount: 10000, bearer: "tenant" }],
+          yearlyIncomes: [{ source: "product-sales", amount: 15000 }],
+          isSiteOperated: true,
+          ownerName: "Current owner",
+          tenantName: "Current tenant",
+          nature: "AGRICULTURAL_OPERATION",
+        },
+        evaluationPeriodInYears: 10,
+        dateProvider: dateProvider,
+      });
+      expect(projectImpactsService["operationBenefitLoss"]).toEqual({
+        actor: "Current tenant",
+        amount: -41344,
+        impact: "site_operation_benefits_loss",
+        impactCategory: "economic_indirect",
+      });
+    });
+
+    it("returns benefit loss for agricultural operated site for current owner", () => {
+      const projectImpactsService = new ReconversionProjectImpactsService({
+        reconversionProject: {
+          ...reconversionProjectImpactDataView,
+          yearlyProjectedExpenses: [{ amount: 30000, purpose: "rent" }],
+          futureSiteOwnerName: "Mairie de Paris",
+        },
+        relatedSite: {
+          ...site,
+          yearlyExpenses: [{ purpose: "otherOperationsCosts", amount: 10000, bearer: "tenant" }],
+          yearlyIncomes: [{ source: "product-sales", amount: 15000 }],
+          isSiteOperated: true,
+          ownerName: "Current owner",
+          tenantName: undefined,
+          nature: "AGRICULTURAL_OPERATION",
+        },
+        evaluationPeriodInYears: 10,
+        dateProvider: dateProvider,
+      });
+      expect(projectImpactsService["operationBenefitLoss"]).toEqual({
+        actor: "Current owner",
+        amount: -41344,
+        impact: "site_operation_benefits_loss",
+        impactCategory: "economic_indirect",
+      });
+    });
+
+    it("returns no benefit loss for agricultural operated site if site was not operated", () => {
+      const projectImpactsService = new ReconversionProjectImpactsService({
+        reconversionProject: { ...reconversionProjectImpactDataView, yearlyProjectedExpenses: [] },
+        relatedSite: {
+          ...site,
+          yearlyExpenses: [],
+          yearlyIncomes: [],
+          isSiteOperated: false,
+          ownerName: "Current owner",
+          tenantName: "Current tenant",
+          nature: "AGRICULTURAL_OPERATION",
+        },
+        evaluationPeriodInYears: 10,
+        dateProvider: dateProvider,
+      });
+      expect(projectImpactsService["operationBenefitLoss"]).toBeUndefined();
+    });
+
+    it("computes accidents impact", () => {
+      const projectImpactsService = new ReconversionProjectImpactsService({
+        reconversionProject: reconversionProjectImpactDataView,
+        relatedSite: site,
+        evaluationPeriodInYears: 10,
+        dateProvider: dateProvider,
+      });
+
+      expect(projectImpactsService["accidentsImpact"]).toEqual({
+        base: 3,
         forecast: 0,
-        difference: 0,
-      },
-      severeInjuries: {
-        base: 2,
-        forecast: 0,
-        difference: -2,
-      },
-      minorInjuries: {
-        base: 1,
-        forecast: 0,
-        difference: -1,
-      },
-    });
-  });
-
-  it("format impacts as ReconversionProjectImpacts object", () => {
-    const projectImpactsService = new ReconversionProjectImpactsService({
-      reconversionProject: reconversionProjectImpactDataView,
-      relatedSite: site,
-      evaluationPeriodInYears: 10,
-      dateProvider: dateProvider,
+        difference: -3,
+        deaths: {
+          base: 0,
+          forecast: 0,
+          difference: 0,
+        },
+        severeInjuries: {
+          base: 2,
+          forecast: 0,
+          difference: -2,
+        },
+        minorInjuries: {
+          base: 1,
+          forecast: 0,
+          difference: -1,
+        },
+      });
     });
 
-    const result = projectImpactsService.formatImpacts();
+    it("format impacts as ReconversionProjectImpacts object", () => {
+      const projectImpactsService = new ReconversionProjectImpactsService({
+        reconversionProject: reconversionProjectImpactDataView,
+        relatedSite: site,
+        evaluationPeriodInYears: 10,
+        dateProvider: dateProvider,
+      });
 
-    expect(result.socioeconomic.impacts).toEqual([
-      ...projectImpactsService["rentImpacts"],
-      ...projectImpactsService["avoidedFricheCosts"],
-      ...projectImpactsService["propertyTransferDutiesIncome"],
-      ...projectImpactsService["natureConservationSocioEconomicImpacts"],
-    ]);
-    expect(result.social).toEqual({
-      fullTimeJobs: projectImpactsService["fullTimeJobsImpact"],
-      accidents: projectImpactsService["accidentsImpact"],
+      const result = projectImpactsService.formatImpacts();
+
+      expect(result.socioeconomic.impacts).toEqual([
+        ...projectImpactsService["rentImpacts"],
+        ...projectImpactsService["avoidedFricheCosts"],
+        ...projectImpactsService["propertyTransferDutiesIncome"],
+        ...projectImpactsService["natureConservationSocioEconomicImpacts"],
+      ]);
+      expect(result.social).toEqual({
+        fullTimeJobs: projectImpactsService["fullTimeJobsImpact"],
+        accidents: projectImpactsService["accidentsImpact"],
+      });
+      expect(result.environmental).toEqual({
+        nonContaminatedSurfaceArea: projectImpactsService["nonContaminatedSurfaceArea"],
+        permeableSurfaceArea: projectImpactsService["permeableSurfaceArea"],
+        soilsCo2eqStorage: projectImpactsService["soilsCo2eqStorage"],
+        soilsCarbonStorage: projectImpactsService["soilsCarbonStorage"],
+      });
+      expect(result.economicBalance).toEqual(projectImpactsService["economicBalance"]);
     });
-    expect(result.environmental).toEqual({
-      nonContaminatedSurfaceArea: projectImpactsService["nonContaminatedSurfaceArea"],
-      permeableSurfaceArea: projectImpactsService["permeableSurfaceArea"],
-      soilsCo2eqStorage: projectImpactsService["soilsCo2eqStorage"],
-      soilsCarbonStorage: projectImpactsService["soilsCarbonStorage"],
-    });
-    expect(result.economicBalance).toEqual(projectImpactsService["economicBalance"]);
   });
 });
