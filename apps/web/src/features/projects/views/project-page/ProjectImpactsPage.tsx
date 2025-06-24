@@ -1,7 +1,6 @@
 import Alert from "@codegouvfr/react-dsfr/Alert";
 
 import classNames from "@/shared/views/clsx";
-import HelpButton from "@/shared/views/components/HelpButton/HelpButton.tsx";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import { routes } from "@/shared/views/router.ts";
 
@@ -93,7 +92,6 @@ function ProjectPage({
       <ProjectFeaturesModal projectId={projectId} />
       <SiteFeaturesModal siteId={projectContext.siteId} />
       <ExportImpactsModal projectId={projectId} siteId={projectContext.siteId} />
-      <HelpButton />
     </div>
   );
 }

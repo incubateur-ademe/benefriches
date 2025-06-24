@@ -1,4 +1,3 @@
-import HelpButton from "@/shared/views/components/HelpButton/HelpButton";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 import FormStepper from "@/shared/views/layout/WizardFormLayout/FormStepper";
@@ -55,7 +54,6 @@ function SiteCreationWizard() {
   return (
     <>
       <StepRevertConfirmationModal />
-      <HelpButton />
       <SidebarLayout
         mainChildren={getMainChildren(currentStep, createMode)}
         title="Renseignement du site"

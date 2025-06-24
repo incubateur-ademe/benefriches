@@ -6,6 +6,7 @@ import { ReactNode, useState } from "react";
 import classNames from "@/shared/views/clsx";
 import { routes } from "@/shared/views/router";
 
+import HelpButton from "../../components/HelpButton/HelpButton";
 import { SidebarLayoutContext } from "./SidebarLayoutContext";
 
 type SidebarLayoutProps = {
@@ -22,13 +23,13 @@ function SidebarLayout({ mainChildren, title, sidebarChildren }: SidebarLayoutPr
 
   return (
     <SidebarLayoutContext.Provider value={{ isOpen }}>
-      <div className={classNames("tw-flex", "tw-w-full", "tw-h-full")}>
+      <div className={classNames("tw-flex", "tw-w-full", "tw-h-[100vh]")}>
         <div
           className={classNames(
             "tw-bg-grey-light dark:tw-bg-dsfr-contrastGrey",
             "tw-border-r",
-            "tw-h-full",
             "tw-z-10",
+            "tw-flex tw-flex-col",
             isOpen ? "tw-w-80 lg:tw-relative tw-absolute" : "tw-w-20",
           )}
         >
@@ -61,7 +62,12 @@ function SidebarLayout({ mainChildren, title, sidebarChildren }: SidebarLayoutPr
               title={isOpen ? "Réduire le menu" : "Ouvrir le menu"}
             />
           </div>
-          {sidebarChildren}
+          <div className="tw-flex-1 tw-flex tw-flex-col tw-justify-between">
+            {sidebarChildren}
+            <div className="tw-py-4 tw-text-center">
+              <HelpButton small={!isOpen} />
+            </div>
+          </div>
         </div>
 
         <div className={classNames("tw-overflow-auto", "tw-w-full")}>
