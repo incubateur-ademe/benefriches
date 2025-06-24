@@ -207,7 +207,10 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         { amount: 500, bearer: "owner", purpose: "propertyTaxes" },
       ],
     } as const satisfies Required<
-      Omit<SiteImpactsDataView, "agriculturalOperationActivity" | "isSiteOperated">
+      Omit<
+        SiteImpactsDataView,
+        "agriculturalOperationActivity" | "isSiteOperated" | "naturalAreaType"
+      >
     >;
 
     it("returns impacts over 10 years for a reconversion project dedicated to renewable energy production on friche with contaminated soil", async () => {

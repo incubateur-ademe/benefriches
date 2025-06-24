@@ -6,7 +6,6 @@ import {
   UrbanProjectDevelopmentExpense,
 } from "shared";
 
-import { SiteFeatures } from "@/features/site-features/core/siteFeatures";
 import SiteFeaturesList from "@/features/site-features/views/SiteFeaturesList";
 import Dialog from "@/shared/views/components/Dialog/Dialog";
 
@@ -14,6 +13,7 @@ import { UrbanSprawlImpactsComparisonObj } from "../../application/project-impac
 import { UrbanSprawlImpactsComparisonState } from "../../application/project-impacts-urban-sprawl-comparison/urbanSprawlComparison.reducer";
 import ProjectFeaturesView from "../project-page/features/ProjectFeaturesView";
 import AboutImpactsContent from "../shared/impacts/AboutImpactsContent";
+import { formatSiteDataAsFeatures } from "./formatSiteData";
 
 type Props = {
   baseCaseSiteData: UrbanSprawlImpactsComparisonObj["baseCase"]["siteData"];
@@ -25,21 +25,6 @@ const BASE_SITE_FEATURES_DIALOG_ID = "fr-dialog-comparaison-base-site-features";
 const COMPARISON_SITE_FEATURES_DIALOG_ID = "fr-dialog-comparaison-other-site-features";
 const PROJECT_FEATURES_DIALOG_ID = "fr-dialog-comparison-project-features";
 const ABOUT_IMPACTS_DIALOG_ID = "fr-dialog-comparaison-about-impacts";
-
-const formatSiteDataAsFeatures = (siteData: Props["baseCaseSiteData"]) => {
-  return {
-    ...siteData,
-    address: siteData.address.value,
-    accidents: {
-      minorInjuries: siteData.accidentsMinorInjuries || 0,
-      severyInjuries: siteData.accidentsSevereInjuries || 0,
-      accidentsDeaths: siteData.accidentsDeaths || 0,
-    },
-    expenses: siteData.yearlyExpenses,
-    incomes: siteData.yearlyIncomes,
-    description: siteData.description || "",
-  } as SiteFeatures;
-};
 
 const getSiteDesignationFromNature = (nature: SiteNature) => {
   switch (nature) {

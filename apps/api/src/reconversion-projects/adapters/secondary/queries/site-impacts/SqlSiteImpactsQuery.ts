@@ -3,6 +3,7 @@ import { Knex } from "knex";
 import {
   AgriculturalOperationActivity,
   FricheActivity,
+  NaturalAreaType,
   SiteImpactsDataView,
   SiteNature,
   SiteYearlyExpense,
@@ -25,6 +26,7 @@ export class SqlSiteImpactsQuery implements SiteImpactsQuery {
         "creation_mode",
         "friche_activity",
         "agricultural_operation_activity",
+        "natural_area_type",
         "is_operated",
         "surface_area",
         "friche_contaminated_soil_surface_area",
@@ -65,6 +67,7 @@ export class SqlSiteImpactsQuery implements SiteImpactsQuery {
       fricheActivity: (sqlSite.friche_activity ?? undefined) as FricheActivity,
       agriculturalOperationActivity: (sqlSite.agricultural_operation_activity ??
         undefined) as AgriculturalOperationActivity,
+      naturalAreaType: (sqlSite.natural_area_type ?? undefined) as NaturalAreaType,
       isSiteOperated: sqlSite.is_operated ?? undefined,
       address: {
         value: sqlAddress?.value ?? "",

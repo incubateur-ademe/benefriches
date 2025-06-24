@@ -52,7 +52,11 @@ const { RouteProvider, useRoute, routes } = createRouter({
     (params) => `/mes-projets/${params.projectId}/onboarding-impacts`,
   ),
   urbanSprawlImpactsComparison: defineRoute(
-    { projectId: param.path.string },
+    {
+      projectId: param.path.string,
+      page: param.query.optional.string,
+      etape: param.query.optional.string,
+    },
     (params) => `/mes-projets/${params.projectId}/comparaison-extension-urbaine`,
   ),
   // MES PROJETS

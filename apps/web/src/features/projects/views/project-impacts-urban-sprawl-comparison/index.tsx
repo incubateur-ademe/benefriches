@@ -1,6 +1,8 @@
 import { useEffect } from "react";
+import { Route } from "type-route";
 
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { routes } from "@/shared/views/router";
 
 import { fetchUrbanSprawlImpactsComparison } from "../../application/project-impacts-urban-sprawl-comparison/fetchUrbanSprawlImpactsComparison.action";
 import {
@@ -9,12 +11,13 @@ import {
   ViewMode,
 } from "../../application/project-impacts-urban-sprawl-comparison/urbanSprawlComparison.reducer";
 import ImpactsComparisonPage from "./ImpactsComparisonPage";
+import UrbanSprawlImpactsComparisonIntroduction from "./introduction/Introduction";
 
 type Props = {
-  projectId: string;
+  route: Route<typeof routes.urbanSprawlImpactsComparison>;
 };
 
-function ImpactsComparisonPageContainer({ projectId }: Props) {
+function ImpactsComparisonPageContainer({ route }: Props) {
   const dispatch = useAppDispatch();
 
   const comparisonState = useAppSelector((state) => state.urbanSprawlComparison);
@@ -22,16 +25,49 @@ function ImpactsComparisonPageContainer({ projectId }: Props) {
   useEffect(() => {
     void dispatch(
       fetchUrbanSprawlImpactsComparison({
-        projectId,
+        projectId: route.params.projectId,
         evaluationPeriod: comparisonState.evaluationPeriod,
         comparisonSiteNature: "AGRICULTURAL_OPERATION",
       }),
     );
-  }, [projectId, dispatch, comparisonState.evaluationPeriod]);
+  }, [dispatch, comparisonState.evaluationPeriod, route.params.projectId]);
+
+  if (route.params.page === "introduction") {
+    return (
+      <UrbanSprawlImpactsComparisonIntroduction
+        routeStep={route.params.etape}
+        onNextToStep={(step: string) => {
+          routes
+            .urbanSprawlImpactsComparison({
+              projectId: route.params.projectId,
+              page: "introduction",
+              etape: step,
+            })
+            .push();
+        }}
+        onBackToStep={(step: string) => {
+          routes
+            .urbanSprawlImpactsComparison({
+              projectId: route.params.projectId,
+              page: "introduction",
+              etape: step,
+            })
+            .replace();
+        }}
+        onFinalNext={() => {
+          routes.urbanSprawlImpactsComparison({ projectId: route.params.projectId }).push();
+        }}
+        dataLoadingState={comparisonState.dataLoadingState}
+        projectName={comparisonState.projectData?.name}
+        baseSiteData={comparisonState.baseCase?.siteData}
+        comparisonSiteData={comparisonState.comparisonCase?.siteData}
+      />
+    );
+  }
 
   return (
     <ImpactsComparisonPage
-      projectId={projectId}
+      projectId={route.params.projectId}
       {...comparisonState}
       onEvaluationPeriodChange={(evaluationPeriod: number) =>
         dispatch(setEvaluationPeriod(evaluationPeriod))

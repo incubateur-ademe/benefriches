@@ -2,6 +2,7 @@ import {
   Address,
   AgriculturalOperationActivity,
   FricheActivity,
+  NaturalAreaType,
   SiteNature,
   SiteYearlyExpense,
   SiteYearlyIncome,
@@ -16,6 +17,7 @@ export type SiteImpactsDataView = {
   isExpressSite: boolean;
   fricheActivity?: FricheActivity;
   agriculturalOperationActivity?: AgriculturalOperationActivity;
+  naturalAreaType?: NaturalAreaType;
   isSiteOperated?: boolean;
   address: Address;
   contaminatedSoilSurface?: number;

@@ -116,7 +116,7 @@ function FeaturesApp() {
             case routes.urbanSprawlImpactsComparison.name:
               return (
                 <RequireRegisteredUser>
-                  <UrbanSprawlImpactsComparisonPage projectId={route.params.projectId} />
+                  <UrbanSprawlImpactsComparisonPage route={route} />
                 </RequireRegisteredUser>
               );
             case routes.siteFeatures.name:

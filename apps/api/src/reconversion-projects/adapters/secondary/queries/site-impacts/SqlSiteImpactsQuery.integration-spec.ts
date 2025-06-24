@@ -73,7 +73,12 @@ describe("SqlSiteImpactsQuery integration", () => {
       const result = await siteQuery.getById(siteId);
 
       expect(result).toEqual<
-        Required<Omit<SiteImpactsDataView, "agriculturalOperationActivity" | "isSiteOperated">>
+        Required<
+          Omit<
+            SiteImpactsDataView,
+            "agriculturalOperationActivity" | "isSiteOperated" | "naturalAreaType"
+          >
+        >
       >({
         id: siteId,
         name: "Site 123",
