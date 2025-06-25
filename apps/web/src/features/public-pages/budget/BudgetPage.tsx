@@ -71,7 +71,7 @@ function BudgetPage() {
         <h2>Budget consommé</h2>
         <table className="tw-table-auto tw-border-collapse">
           <thead>
-            <tr className="tw-bg-blue-100">
+            <tr className="tw-bg-blue-100 dark:tw-bg-dsfr-openBlue">
               {columns.map((col, index) => (
                 <th key={index} className="tw-px-6 tw-py-3 tw-font-medium">
                   {col}
