@@ -18,7 +18,7 @@ export type FormValues = {
 };
 
 type Option = {
-  value: SiteNature | "ECONOMIC_ACTIVITY_ZONE" | "RESIDENTIAL_AREA";
+  value: SiteNature | "URBAN_ZONE";
   title: string;
   description: string;
   imgSrc: string;
@@ -41,17 +41,10 @@ const options: Option[] = [
     disabled: false,
   },
   {
-    value: "ECONOMIC_ACTIVITY_ZONE",
-    title: "Zone d'activité économique",
-    description: "Commerciale, industrielle, bureaux...",
-    imgSrc: "/img/pictograms/site-nature/economic-activity-zone.svg",
-    disabled: true,
-  },
-  {
-    value: "RESIDENTIAL_AREA",
-    title: "Zone d'habitation",
-    description: "Parc résidentiel, îlots anciens dégradés...",
-    imgSrc: "/img/pictograms/site-nature/residential-area.svg",
+    value: "URBAN_ZONE",
+    title: "Zone urbaine",
+    description: "Zone d'activité économique, d'habitation, espace public ou mixte",
+    imgSrc: "/img/pictograms/site-nature/urban-zone.svg",
     disabled: true,
   },
 ] as const satisfies Option[];
