@@ -6,3 +6,4 @@ export * from "./site-generation";
 export * from "./friche";
 export * from "./agricultural-operation";
 export * from "./natural-area";
+export * from "./statu-quo-impacts/impacts.types";

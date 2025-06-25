@@ -2,7 +2,7 @@ import { createSelector } from "@reduxjs/toolkit";
 
 import { RootState } from "@/shared/core/store-config/store";
 
-import { getKeyImpactIndicatorsList } from "../../domain/projectKeyImpactIndicators";
+import { getUrbanSprawlComparisonImpactIndicatorsList } from "../../domain/projectKeyImpactIndicators";
 
 const selectSelf = (state: RootState) => state.urbanSprawlComparison;
 
@@ -10,15 +10,12 @@ export const getSummaryIndicatorsComparison = createSelector(selectSelf, (state)
   state.baseCase && state.comparisonCase
     ? {
         baseCase: {
-          siteName: state.baseCase.siteData.name,
-          indicators: getKeyImpactIndicatorsList(state.baseCase.impacts, state.baseCase.siteData),
+          siteName: state.baseCase.conversionSiteData.name,
+          indicators: getUrbanSprawlComparisonImpactIndicatorsList(state.baseCase),
         },
         comparisonCase: {
-          siteName: state.comparisonCase.siteData.name,
-          indicators: getKeyImpactIndicatorsList(
-            state.comparisonCase.impacts,
-            state.comparisonCase.siteData,
-          ),
+          siteName: state.comparisonCase.conversionSiteData.name,
+          indicators: getUrbanSprawlComparisonImpactIndicatorsList(state.comparisonCase),
         },
       }
     : {

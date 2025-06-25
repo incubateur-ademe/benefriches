@@ -2,14 +2,14 @@ import {
   UrbanSprawlImpactsComparisonGateway,
   UrbanSprawlImpactsComparisonObj,
 } from "../../application/project-impacts-urban-sprawl-comparison/fetchUrbanSprawlImpactsComparison.action";
-import { comparisonResultMock } from "./urbanSprawlImpactsComparison.mock";
 
 export class MockUrbanSprawlImpactsComparisonService
   implements UrbanSprawlImpactsComparisonGateway
 {
-  data: UrbanSprawlImpactsComparisonObj = comparisonResultMock;
+  data: UrbanSprawlImpactsComparisonObj | undefined = undefined;
 
   async getImpactsUrbanSprawlComparison(): Promise<UrbanSprawlImpactsComparisonObj> {
+    if (!this.data) throw new Error("MockUrbanSprawlImpactsComparisonService error: no data");
     return Promise.resolve(this.data);
   }
 

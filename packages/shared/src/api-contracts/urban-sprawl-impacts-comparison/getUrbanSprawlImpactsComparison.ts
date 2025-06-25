@@ -5,18 +5,23 @@ import {
   SiteImpactsDataView,
 } from "../../reconversion-project-impacts";
 import { ReconversionProjectImpactsDataView } from "../../reconversion-project-impacts/projectImpactsDataView.types";
-import { siteNatureSchema } from "../../site";
+import { siteNatureSchema, StatuQuoSiteImpacts } from "../../site";
+import { UrbanSprawlComparisonImpacts } from "../../urban-sprawl-impacts-comparison/types";
 import { RouteDef } from "../routeDef";
 
 export type UrbanSprawlImpactsComparisonResult<TSchedule> = {
   projectData: ReconversionProjectImpactsDataView<TSchedule>;
   baseCase: {
-    siteData: SiteImpactsDataView;
-    impacts: ReconversionProjectImpacts;
+    statuQuoSiteImpacts: StatuQuoSiteImpacts;
+    conversionSiteData: SiteImpactsDataView;
+    projectImpacts: ReconversionProjectImpacts;
+    comparisonImpacts: UrbanSprawlComparisonImpacts;
   };
   comparisonCase: {
-    siteData: SiteImpactsDataView;
-    impacts: ReconversionProjectImpacts;
+    statuQuoSiteImpacts: StatuQuoSiteImpacts;
+    conversionSiteData: SiteImpactsDataView;
+    projectImpacts: ReconversionProjectImpacts;
+    comparisonImpacts: UrbanSprawlComparisonImpacts;
   };
 };
 

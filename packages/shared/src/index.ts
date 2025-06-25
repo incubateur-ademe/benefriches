@@ -9,3 +9,4 @@ export * from "./financial";
 export * from "./local-authority";
 export * from "./co2eq";
 export * from "./api-contracts";
+export * from "./urban-sprawl-impacts-comparison";

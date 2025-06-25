@@ -14,7 +14,7 @@ export type SocioEconomicImpact =
 type BaseEconomicImpact = { actor: string; amount: number };
 
 /* ECONOMIC DIRECT */
-type RentalIncomeImpact = BaseEconomicImpact & {
+export type RentalIncomeImpact = BaseEconomicImpact & {
   impact: "rental_income";
   impactCategory: "economic_direct";
 };
@@ -45,7 +45,7 @@ export type TaxesIncomeImpact = BaseEconomicImpact & {
     amount: number;
   }[];
 };
-type PropertyTransferDutiesIncomeImpact = BaseEconomicImpact & {
+export type PropertyTransferDutiesIncomeImpact = BaseEconomicImpact & {
   impact: "property_transfer_duties_income";
   impactCategory: "economic_direct";
   actor: "community";
@@ -62,7 +62,7 @@ export type AvoidedAirConditioningExpensesImpact = BaseEconomicImpact & {
   actor: "local_people" | "local_companies";
 };
 
-type RoadsAndUtilitiesMaintenanceExpensesImpact = BaseEconomicImpact & {
+export type RoadsAndUtilitiesMaintenanceExpensesImpact = BaseEconomicImpact & {
   impact: "roads_and_utilities_maintenance_expenses";
   impactCategory: "economic_direct";
   actor: "community";

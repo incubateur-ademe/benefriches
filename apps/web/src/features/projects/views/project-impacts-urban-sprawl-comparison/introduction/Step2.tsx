@@ -6,8 +6,14 @@ import { UrbanSprawlImpactsComparisonState } from "@/features/projects/applicati
 type Props = {
   onNextClick: () => void;
   onBackClick: () => void;
-  baseSiteData: Exclude<UrbanSprawlImpactsComparisonState["baseCase"], undefined>["siteData"];
-  comparisonSiteData: Exclude<UrbanSprawlImpactsComparisonState["baseCase"], undefined>["siteData"];
+  baseSiteData: Exclude<
+    UrbanSprawlImpactsComparisonState["baseCase"],
+    undefined
+  >["conversionSiteData"];
+  comparisonSiteData: Exclude<
+    UrbanSprawlImpactsComparisonState["baseCase"],
+    undefined
+  >["conversionSiteData"];
 };
 
 const getTextFromSiteNature = (nature: SiteNature) => {

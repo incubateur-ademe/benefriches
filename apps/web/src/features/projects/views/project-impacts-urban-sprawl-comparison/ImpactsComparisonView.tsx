@@ -26,8 +26,8 @@ const ImpactsComparisonView = ({
   const headerProps = {
     projectType: projectData.developmentPlan.type,
     projectName: projectData.name,
-    baseSiteName: baseCase.siteData.name,
-    comparisonSiteName: comparisonCase.siteData.name,
+    baseSiteName: baseCase.conversionSiteData.name,
+    comparisonSiteName: comparisonCase.conversionSiteData.name,
   };
 
   return (
@@ -47,8 +47,8 @@ const ImpactsComparisonView = ({
         {currentViewMode === "list" && <h2 className="tw-py-10">🏗️ Bientôt disponible...</h2>}
         {currentViewMode === "charts" && <h2 className="tw-py-10"> 🏗️ Bientôt disponible...</h2>}
         <ImpactsComparisonFooter
-          baseCaseSiteData={baseCase.siteData}
-          comparisonCaseSiteData={comparisonCase.siteData}
+          baseCaseSiteData={baseCase.conversionSiteData}
+          comparisonCaseSiteData={comparisonCase.conversionSiteData}
           projectData={projectData}
         />
       </div>

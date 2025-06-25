@@ -1,11 +1,18 @@
 import {
   AgriculturalOperationGenerator,
   FricheGenerator,
+  Impact,
   NaturalAreaGenerator,
+  ReconversionProjectImpacts,
   ReconversionProjectImpactsDataView,
+  roundTo2Digits,
+  roundToInteger,
   SiteImpactsDataView,
   SiteNature,
-  SoilsDistribution,
+  StatuQuoSiteImpacts,
+  sumListWithKey,
+  typedObjectEntries,
+  UrbanSprawlComparisonImpacts,
   UrbanSprawlImpactsComparisonResult,
 } from "shared";
 import { v4 as uuid } from "uuid";
@@ -28,6 +35,7 @@ import {
   UrbanProjectImpactsService,
 } from "../model/project-impacts/UrbanProjectImpactsService";
 import { Schedule } from "../model/reconversionProject";
+import { SiteStatuQuoImpactsService } from "../model/site-statu-quo-impacts/SiteStatuQuoImpactsService";
 
 export interface SiteImpactsQuery {
   getById(siteId: string): Promise<SiteImpactsDataView | undefined>;
@@ -43,7 +51,7 @@ type ReconversionProjectImpactsQueryResult = Omit<
     installationCosts: ApiReconversionProjectImpactsDataView["developmentPlan"]["installationCosts"];
   } & Partial<Omit<ApiReconversionProjectImpactsDataView["developmentPlan"], "installationCosts">>;
 };
-type ApiUrbanSprawlImpactsComparisonResult = UrbanSprawlImpactsComparisonResult<Schedule>;
+export type ApiUrbanSprawlImpactsComparisonResult = UrbanSprawlImpactsComparisonResult<Schedule>;
 
 export interface ReconversionProjectImpactsQuery {
   getById(
@@ -158,6 +166,323 @@ const computeReconversionProjectImpactsOnSite = ({
   }
 };
 
+const sumImpact = (projectImpact?: Impact, siteImpact = 0) => {
+  const { base = 0, forecast = 0, difference = 0 } = projectImpact ?? {};
+  return {
+    base: roundTo2Digits(base + siteImpact),
+    forecast: roundTo2Digits(forecast + siteImpact),
+    difference: roundTo2Digits(difference),
+  };
+};
+
+const mergeSocioEconomicImpacts = (
+  projectImpacts: ReconversionProjectImpacts["socioeconomic"]["impacts"],
+  statuQuoSiteImpacts: StatuQuoSiteImpacts["socioEconomic"],
+): UrbanSprawlComparisonImpacts["socioeconomic"]["impacts"] => {
+  const projectRentalIncome = projectImpacts.find(({ impact }) => impact === "rental_income");
+  const projectWaterRegulation = projectImpacts.find(({ impact }) => impact === "water_regulation");
+  const projectTaxesIncomesImpact = projectImpacts.find(({ impact }) => impact === "taxes_income");
+
+  const shouldMergeRentalIncome =
+    projectRentalIncome &&
+    statuQuoSiteImpacts.direct.rentalIncome &&
+    statuQuoSiteImpacts.direct.rentalIncome.actor === projectRentalIncome.actor;
+  console.log("shouldMergeRentalIncome", shouldMergeRentalIncome);
+
+  const impacts: UrbanSprawlComparisonImpacts["socioeconomic"]["impacts"] = projectImpacts.map(
+    (projectImpact) => {
+      if (projectImpact.impact === "rental_income") {
+        if (shouldMergeRentalIncome) {
+          return {
+            ...projectImpact,
+            amount: projectImpact.amount + (statuQuoSiteImpacts.direct.rentalIncome?.amount ?? 0),
+            details: [
+              { amount: projectImpact.amount, impact: "project_rental_income" },
+              {
+                amount: statuQuoSiteImpacts.direct.rentalIncome?.amount ?? 0,
+                impact: "site_statu_quo_rental_income",
+              },
+            ],
+          };
+        }
+        return {
+          ...projectImpact,
+          amount: projectImpact.amount,
+          details: [{ amount: projectImpact.amount, impact: "project_rental_income" }],
+        };
+      }
+      if (projectImpact.impact === "taxes_income") {
+        return {
+          ...projectImpact,
+          amount: projectImpact.amount + (statuQuoSiteImpacts.indirect.taxesIncomes?.amount ?? 0),
+          details: [
+            ...projectImpact.details,
+            ...(statuQuoSiteImpacts.indirect.taxesIncomes?.details ?? []),
+          ],
+        };
+      }
+
+      if (projectImpact.impact === "water_regulation") {
+        return {
+          ...projectImpact,
+          amount:
+            projectImpact.amount + (statuQuoSiteImpacts.environmentalMonetary.waterRegulation ?? 0),
+        };
+      }
+      if (projectImpact.impact === "ecosystem_services") {
+        const details = projectImpact.details.map((element) => {
+          switch (element.impact) {
+            case "nature_related_wellness_and_leisure":
+              return {
+                impact: element.impact,
+                amount: roundToInteger(
+                  element.amount +
+                    statuQuoSiteImpacts.environmentalMonetary.ecosystemServices
+                      .natureRelatedWelnessAndLeisure,
+                ),
+              };
+            case "forest_related_product":
+              return {
+                impact: element.impact,
+                amount: roundToInteger(
+                  element.amount +
+                    statuQuoSiteImpacts.environmentalMonetary.ecosystemServices
+                      .forestRelatedProduct,
+                ),
+              };
+
+            case "pollination":
+              return {
+                impact: element.impact,
+                amount: roundToInteger(
+                  element.amount +
+                    statuQuoSiteImpacts.environmentalMonetary.ecosystemServices.pollination,
+                ),
+              };
+
+            case "invasive_species_regulation":
+              return {
+                impact: element.impact,
+                amount: roundToInteger(
+                  element.amount +
+                    statuQuoSiteImpacts.environmentalMonetary.ecosystemServices
+                      .invasiveSpeciesRegulation,
+                ),
+              };
+
+            case "water_cycle":
+              return {
+                impact: element.impact,
+                amount: roundToInteger(
+                  element.amount +
+                    statuQuoSiteImpacts.environmentalMonetary.ecosystemServices.waterCycle,
+                ),
+              };
+
+            case "nitrogen_cycle":
+              return {
+                impact: element.impact,
+                amount: roundToInteger(
+                  element.amount +
+                    statuQuoSiteImpacts.environmentalMonetary.ecosystemServices.nitrogenCycle,
+                ),
+              };
+
+            case "soil_erosion":
+              return {
+                impact: element.impact,
+                amount: roundToInteger(
+                  element.amount +
+                    statuQuoSiteImpacts.environmentalMonetary.ecosystemServices.soilErosion,
+                ),
+              };
+
+            case "soils_co2_eq_storage":
+              return {
+                impact: element.impact,
+                amount: roundToInteger(
+                  element.amount +
+                    (statuQuoSiteImpacts.environmentalMonetary.ecosystemServices.storedCo2Eq ?? 0),
+                ),
+              };
+          }
+        });
+        return {
+          ...projectImpact,
+          details,
+          amount: sumListWithKey(details, "amount"),
+        };
+      }
+      return projectImpact;
+    },
+  );
+
+  if (statuQuoSiteImpacts.direct.rentalIncome && !shouldMergeRentalIncome) {
+    impacts.push({
+      impact: "rental_income",
+      actor: statuQuoSiteImpacts.direct.rentalIncome.actor,
+      impactCategory: "economic_direct",
+      amount: statuQuoSiteImpacts.direct.rentalIncome.amount,
+      details: [
+        {
+          amount: statuQuoSiteImpacts.direct.rentalIncome.amount,
+          impact: "site_statu_quo_rental_income",
+        },
+      ],
+    });
+  }
+
+  if (statuQuoSiteImpacts.environmentalMonetary.waterRegulation && !projectWaterRegulation) {
+    impacts.push({
+      amount: statuQuoSiteImpacts.environmentalMonetary.waterRegulation,
+      impact: "water_regulation",
+      impactCategory: "environmental_monetary",
+      actor: "community",
+    });
+  }
+
+  if (statuQuoSiteImpacts.indirect.taxesIncomes && !projectTaxesIncomesImpact) {
+    impacts.push({
+      impact: "taxes_income",
+      details: statuQuoSiteImpacts.indirect.taxesIncomes.details,
+      amount: statuQuoSiteImpacts.indirect.taxesIncomes.amount,
+      actor: "community",
+      impactCategory: "economic_indirect",
+    });
+  }
+
+  return statuQuoSiteImpacts.direct.fricheCosts
+    ? impacts.concat(
+        statuQuoSiteImpacts.direct.fricheCosts.map((impact) => ({
+          ...impact,
+          impactCategory: "economic_direct",
+          impact: "statu_quo_friche_costs",
+        })),
+      )
+    : impacts;
+};
+
+const mergeCarbonStorage = (
+  projectSoilsCarbonStorage: ReconversionProjectImpacts["environmental"]["soilsCarbonStorage"],
+  statuQuoSiteSoilsCarbonStorage: StatuQuoSiteImpacts["environmental"]["soilsCarbonStorage"],
+) => {
+  if (!projectSoilsCarbonStorage || !statuQuoSiteSoilsCarbonStorage) {
+    return undefined;
+  }
+  const { base, forecast, difference, ...detailsCarbonStorage } = projectSoilsCarbonStorage;
+
+  const mergedDetailsEntries = typedObjectEntries(detailsCarbonStorage).map(([key, impact]) => [
+    key,
+    sumImpact(impact, statuQuoSiteSoilsCarbonStorage[key]),
+  ]);
+
+  return {
+    ...sumImpact({ base, forecast, difference }, statuQuoSiteSoilsCarbonStorage.total),
+    ...Object.fromEntries(mergedDetailsEntries),
+  } as ReconversionProjectImpacts["environmental"]["soilsCarbonStorage"];
+};
+
+const mergeProjectImpactsWithStatuQuoSiteImpacts = (
+  projectImpacts: ReconversionProjectImpacts,
+  statuQuoSiteImpacts: StatuQuoSiteImpacts,
+): UrbanSprawlComparisonImpacts => {
+  const mergedSocioEconomicImpacts = mergeSocioEconomicImpacts(
+    projectImpacts.socioeconomic.impacts,
+    statuQuoSiteImpacts.socioEconomic,
+  );
+
+  return {
+    economicBalance: projectImpacts.economicBalance,
+    socioeconomic: {
+      impacts: mergedSocioEconomicImpacts,
+      total: sumListWithKey(mergedSocioEconomicImpacts, "amount"),
+    },
+    social: {
+      fullTimeJobs: projectImpacts.social.fullTimeJobs
+        ? {
+            ...sumImpact(
+              projectImpacts.social.fullTimeJobs,
+              statuQuoSiteImpacts.social.fullTimeJobs,
+            ),
+            conversion: projectImpacts.social.fullTimeJobs.conversion,
+            operations: sumImpact(
+              projectImpacts.social.fullTimeJobs.operations,
+              statuQuoSiteImpacts.social.fullTimeJobs,
+            ),
+          }
+        : statuQuoSiteImpacts.social.fullTimeJobs
+          ? {
+              base: statuQuoSiteImpacts.social.fullTimeJobs,
+              forecast: statuQuoSiteImpacts.social.fullTimeJobs,
+              difference: 0,
+              conversion: { base: 0, forecast: 0, difference: 0 },
+              operations: {
+                base: statuQuoSiteImpacts.social.fullTimeJobs,
+                forecast: statuQuoSiteImpacts.social.fullTimeJobs,
+                difference: 0,
+              },
+            }
+          : undefined,
+      accidents:
+        projectImpacts.social.accidents || statuQuoSiteImpacts.social.accidents
+          ? {
+              ...sumImpact(
+                projectImpacts.social.accidents,
+                statuQuoSiteImpacts.social.accidents?.total,
+              ),
+              severeInjuries: sumImpact(
+                projectImpacts.social.accidents?.severeInjuries,
+                statuQuoSiteImpacts.social.accidents?.severeInjuries,
+              ),
+              minorInjuries: sumImpact(
+                projectImpacts.social.accidents?.minorInjuries,
+                statuQuoSiteImpacts.social.accidents?.minorInjuries,
+              ),
+              deaths: sumImpact(
+                projectImpacts.social.accidents?.deaths,
+                statuQuoSiteImpacts.social.accidents?.deaths,
+              ),
+            }
+          : undefined,
+      avoidedVehiculeKilometers: projectImpacts.social.avoidedVehiculeKilometers,
+      travelTimeSaved: projectImpacts.social.travelTimeSaved,
+      avoidedTrafficAccidents: projectImpacts.social.avoidedTrafficAccidents,
+      householdsPoweredByRenewableEnergy: projectImpacts.social.householdsPoweredByRenewableEnergy,
+    },
+    environmental: {
+      nonContaminatedSurfaceArea: sumImpact(
+        projectImpacts.environmental.nonContaminatedSurfaceArea,
+        -1 * (statuQuoSiteImpacts.environmental.contaminatedSurfaceArea ?? 0),
+      ),
+      permeableSurfaceArea: {
+        ...sumImpact(
+          projectImpacts.environmental.permeableSurfaceArea,
+          statuQuoSiteImpacts.environmental.permeableSurfaceArea.total,
+        ),
+        mineralSoil: sumImpact(
+          projectImpacts.environmental.permeableSurfaceArea.mineralSoil,
+          statuQuoSiteImpacts.environmental.permeableSurfaceArea.mineralSoil,
+        ),
+        greenSoil: sumImpact(
+          projectImpacts.environmental.permeableSurfaceArea.greenSoil,
+          statuQuoSiteImpacts.environmental.permeableSurfaceArea.greenSoil,
+        ),
+      },
+      soilsCo2eqStorage: projectImpacts.environmental.soilsCo2eqStorage
+        ? sumImpact(
+            projectImpacts.environmental.soilsCo2eqStorage,
+            statuQuoSiteImpacts.environmental.soilsCo2eqStorage,
+          )
+        : undefined,
+      avoidedCo2eqEmissions: projectImpacts.environmental.avoidedCo2eqEmissions,
+      soilsCarbonStorage: mergeCarbonStorage(
+        projectImpacts.environmental.soilsCarbonStorage,
+        statuQuoSiteImpacts.environmental.soilsCarbonStorage,
+      ),
+    },
+  };
+};
+
 export class ComputeProjectUrbanSprawlImpactsComparisonUseCase
   implements UseCase<Request, ApiUrbanSprawlImpactsComparisonResult>
 {
@@ -211,7 +536,7 @@ export class ComputeProjectUrbanSprawlImpactsComparisonUseCase
             id: uuid(),
             address: relatedSite.address,
             cityPopulation: population,
-            operationActivity: "FLOWERS_AND_HORTICULTURE",
+            operationActivity: "POLYCULTURE_AND_LIVESTOCK",
           });
         case "NATURAL_AREA":
           return new NaturalAreaGenerator().fromSurfaceAreaAndLocalInformation({
@@ -229,7 +554,7 @@ export class ComputeProjectUrbanSprawlImpactsComparisonUseCase
       isExpressSite: true,
       ownerName: comparisonSite.owner.name,
       ownerStructureType: comparisonSite.owner.structureType,
-      soilsDistribution: comparisonSite.soilsDistribution as SoilsDistribution,
+      soilsDistribution: comparisonSite.soilsDistribution.toJSON(),
     };
 
     const baseSiteSoilsCarbonStorage =
@@ -303,26 +628,52 @@ export class ComputeProjectUrbanSprawlImpactsComparisonUseCase
       return { siteIsFriche: false, ...siteCityData };
     })();
 
+    const baseSiteImpacts = new SiteStatuQuoImpactsService({
+      siteData: { ...relatedSite, soilsCarbonStorage: baseSiteSoilsCarbonStorage },
+      evaluationPeriodInYears,
+      dateProvider: this.dateProvider,
+    }).formatImpacts();
+
+    const comparisonSiteImpacts = new SiteStatuQuoImpactsService({
+      siteData: { ...comparisonSiteData, soilsCarbonStorage: comparisonSiteSoilsCarbonStorage },
+      evaluationPeriodInYears,
+      dateProvider: this.dateProvider,
+    }).formatImpacts();
+
+    const baseProjectImpacts = computeReconversionProjectImpactsOnSite({
+      siteCityData: baseSiteCityData,
+      dateProvider: this.dateProvider,
+      inputSiteData: baseInputSiteData,
+      inputReconversionProject: inputReconversionProjectData,
+      evaluationPeriodInYears,
+    });
+
+    const comparisonProjectImpacts = computeReconversionProjectImpactsOnSite({
+      siteCityData: comparisonSiteCityData,
+      dateProvider: this.dateProvider,
+      inputSiteData: comparisonInputSiteData,
+      inputReconversionProject: inputReconversionProjectData,
+      evaluationPeriodInYears,
+    });
+
     return {
       baseCase: {
-        siteData: relatedSite,
-        impacts: computeReconversionProjectImpactsOnSite({
-          siteCityData: baseSiteCityData,
-          dateProvider: this.dateProvider,
-          inputSiteData: baseInputSiteData,
-          inputReconversionProject: inputReconversionProjectData,
-          evaluationPeriodInYears,
-        }),
+        statuQuoSiteImpacts: comparisonSiteImpacts,
+        conversionSiteData: relatedSite,
+        projectImpacts: baseProjectImpacts,
+        comparisonImpacts: mergeProjectImpactsWithStatuQuoSiteImpacts(
+          baseProjectImpacts,
+          comparisonSiteImpacts,
+        ),
       },
       comparisonCase: {
-        siteData: comparisonSiteData,
-        impacts: computeReconversionProjectImpactsOnSite({
-          siteCityData: comparisonSiteCityData,
-          dateProvider: this.dateProvider,
-          inputSiteData: comparisonInputSiteData,
-          inputReconversionProject: inputReconversionProjectData,
-          evaluationPeriodInYears,
-        }),
+        statuQuoSiteImpacts: baseSiteImpacts,
+        conversionSiteData: comparisonSiteData,
+        projectImpacts: comparisonProjectImpacts,
+        comparisonImpacts: mergeProjectImpactsWithStatuQuoSiteImpacts(
+          comparisonProjectImpacts,
+          baseSiteImpacts,
+        ),
       },
       projectData: reconversionProject as ApiReconversionProjectImpactsDataView,
     };

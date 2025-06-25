@@ -59,8 +59,8 @@ function ImpactsComparisonPageContainer({ route }: Props) {
         }}
         dataLoadingState={comparisonState.dataLoadingState}
         projectName={comparisonState.projectData?.name}
-        baseSiteData={comparisonState.baseCase?.siteData}
-        comparisonSiteData={comparisonState.comparisonCase?.siteData}
+        baseSiteData={comparisonState.baseCase?.conversionSiteData}
+        comparisonSiteData={comparisonState.comparisonCase?.conversionSiteData}
       />
     );
   }

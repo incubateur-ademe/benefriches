@@ -19,11 +19,14 @@ type Props = {
   routeStep?: string;
   dataLoadingState: UrbanSprawlImpactsComparisonState["dataLoadingState"];
   projectName?: string;
-  baseSiteData?: Exclude<UrbanSprawlImpactsComparisonState["baseCase"], undefined>["siteData"];
+  baseSiteData?: Exclude<
+    UrbanSprawlImpactsComparisonState["baseCase"],
+    undefined
+  >["conversionSiteData"];
   comparisonSiteData?: Exclude<
     UrbanSprawlImpactsComparisonState["baseCase"],
     undefined
-  >["siteData"];
+  >["conversionSiteData"];
 };
 
 const DEFAULT_STEP = STEPS[1];

@@ -16,8 +16,14 @@ import { formatSiteDataAsFeatures } from "../formatSiteData";
 type Props = {
   onNextClick: () => void;
   projectName: string;
-  baseSiteData: Exclude<UrbanSprawlImpactsComparisonState["baseCase"], undefined>["siteData"];
-  comparisonSiteData: Exclude<UrbanSprawlImpactsComparisonState["baseCase"], undefined>["siteData"];
+  baseSiteData: Exclude<
+    UrbanSprawlImpactsComparisonState["baseCase"],
+    undefined
+  >["conversionSiteData"];
+  comparisonSiteData: Exclude<
+    UrbanSprawlImpactsComparisonState["baseCase"],
+    undefined
+  >["conversionSiteData"];
 };
 
 export default function Step1({

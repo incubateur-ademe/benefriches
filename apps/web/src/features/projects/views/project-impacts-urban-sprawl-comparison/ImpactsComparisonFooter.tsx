@@ -16,8 +16,8 @@ import AboutImpactsContent from "../shared/impacts/AboutImpactsContent";
 import { formatSiteDataAsFeatures } from "./formatSiteData";
 
 type Props = {
-  baseCaseSiteData: UrbanSprawlImpactsComparisonObj["baseCase"]["siteData"];
-  comparisonCaseSiteData: UrbanSprawlImpactsComparisonObj["comparisonCase"]["siteData"];
+  baseCaseSiteData: UrbanSprawlImpactsComparisonObj["baseCase"]["conversionSiteData"];
+  comparisonCaseSiteData: UrbanSprawlImpactsComparisonObj["comparisonCase"]["conversionSiteData"];
   projectData: NonUndefined<UrbanSprawlImpactsComparisonState["projectData"]>;
 };
 
