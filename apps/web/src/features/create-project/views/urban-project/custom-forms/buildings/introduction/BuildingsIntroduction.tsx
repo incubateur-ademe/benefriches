@@ -18,10 +18,11 @@ const BuildingsIntroduction = ({ onNext, onBack, buildingsFootprintSurfaceArea }
     <EditorialPageLayout>
       <EditorialPageIcon>🏢</EditorialPageIcon>
       <EditorialPageTitle>
-        Nous allons maintenant parler des bâtiments qui composeront les lieux de vie et d'activité.
+        Nous allons maintenant parler des bâtiments qui composeront les lieux d'habitation et
+        d'activité.
       </EditorialPageTitle>
       <EditorialPageText>
-        Vous avez indiqué que les lieux de vie et d'activité comporteront{" "}
+        Vous avez indiqué que les lieux d'habitation et d'activité comporteront{" "}
         <strong>{formatSurfaceArea(buildingsFootprintSurfaceArea)}</strong> de surface au sol de
         bâtiments.
       </EditorialPageText>

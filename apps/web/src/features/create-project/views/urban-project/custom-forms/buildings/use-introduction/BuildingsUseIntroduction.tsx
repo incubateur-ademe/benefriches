@@ -19,7 +19,7 @@ const BuildingsUseIntroduction = ({ onNext, onBack }: Props) => {
         Continuons sur les bâtiments et voyons maintenant quels seront leurs usages.
       </EditorialPageTitle>
       <EditorialPageText>
-        Les lieux de vie et d'activité peuvent comporter des habitations, des lieux d'activité
+        Les lieux d'habitation et d'activité peuvent comporter des habitations, des lieux d'activité
         économique, des établissements éducatifs, des espaces de santé, des établissements
         médico-sociaux, mais aussi des lieux socio-culturels, des équipements sportifs, des
         bâtiments publics ou encore des parkings silo.

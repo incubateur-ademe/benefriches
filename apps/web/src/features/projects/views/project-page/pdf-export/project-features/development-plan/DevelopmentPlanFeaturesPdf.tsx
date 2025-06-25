@@ -92,7 +92,7 @@ const DevelopmentPlanFeatures = ({
             />
             {totalLivingAndActivitiesSpaces > 0 && (
               <DataLine
-                label="Lieux de vie et d'activités"
+                label="Lieux d'habitation et d'activités"
                 value={formatSurfaceAreaPdf(totalLivingAndActivitiesSpaces)}
               />
             )}
@@ -121,7 +121,7 @@ const DevelopmentPlanFeatures = ({
             {totalLivingAndActivitiesSpaces > 0 && (
               <>
                 <DataLine
-                  label="Lieux de vie et d'activités"
+                  label="Lieux d'habitation et d'activités"
                   value={formatSurfaceAreaPdf(totalLivingAndActivitiesSpaces)}
                   bold
                   noBorder

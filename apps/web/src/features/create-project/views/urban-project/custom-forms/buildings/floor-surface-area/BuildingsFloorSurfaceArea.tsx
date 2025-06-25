@@ -48,7 +48,7 @@ function BuildingsFloorSurfaceArea({
       instructions={
         <FormInfo>
           <p>
-            Pour rappel, votre projet d'aménagement des lieux de vie et d'activités comporte{" "}
+            Pour rappel, votre projet d'aménagement des lieux d'habitation et d'activités comporte{" "}
             <strong>{formatSurfaceArea(buildingsFootprintSurfaceArea)}</strong> de surface au sol de
             bâtiments.
           </p>

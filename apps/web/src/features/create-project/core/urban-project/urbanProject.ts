@@ -15,7 +15,7 @@ import { getColorForSoilType } from "@/shared/core/soils";
 export const getLabelForSpaceCategory = (spaceCategory: UrbanSpaceCategory): string => {
   switch (spaceCategory) {
     case "LIVING_AND_ACTIVITY_SPACES":
-      return "Lieux de vie et d'activité";
+      return "Lieux d'habitation et d'activité";
     case "PUBLIC_SPACES":
       return "Espaces publics";
     case "GREEN_SPACES":

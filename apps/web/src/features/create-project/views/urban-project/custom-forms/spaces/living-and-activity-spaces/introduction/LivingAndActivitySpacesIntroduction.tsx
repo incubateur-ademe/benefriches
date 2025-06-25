@@ -21,11 +21,11 @@ const LivingAndActivitySpacesIntroduction = ({
   return (
     <EditorialPageLayout>
       <EditorialPageIcon>🏢</EditorialPageIcon>
-      <EditorialPageTitle>Parlons des lieux de vie et d'activité.</EditorialPageTitle>
+      <EditorialPageTitle>Parlons des lieux d'habitation et d'activité.</EditorialPageTitle>
       <EditorialPageText>
         Votre projet d'aménagement comporte{" "}
         <strong>{formatSurfaceArea(livingAndActivitySpacesSurfaceArea)}</strong> de surface au sol
-        de lieux de vie et d'activité.
+        de lieux d'habitation et d'activité.
         <br />
         Ces lieux peuvent contenir des bâtiments, mais aussi des des allées privées, des parkings
         privés ou encore des jardins privatifs ou partagés.
