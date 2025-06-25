@@ -10,6 +10,7 @@ const STEP_CATEGORIES = [
   "Aménagement des espaces",
   "Dépollution des sols",
   "Bâtiments",
+  "Usage des lieux d'habitation et d'activité",
   "Acteurs",
   "Cession foncière",
   "Dépenses et recettes",
@@ -29,8 +30,8 @@ const getCategoryForStep = (step: UrbanProjectCustomCreationStep): StepCategory 
     case "URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION":
     case "URBAN_PROJECT_GREEN_SPACES_INTRODUCTION":
     case "URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION":
-    case "URBAN_PROJECT_LIVING_AND_ACTIVITY_SPACES_INTRODUCTION":
-    case "URBAN_PROJECT_LIVING_AND_ACTIVITY_SPACES_DISTRIBUTION":
+    case "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_INTRODUCTION":
+    case "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION":
     case "URBAN_PROJECT_PUBLIC_SPACES_INTRODUCTION":
     case "URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION":
     case "URBAN_PROJECT_SPACES_SOILS_SUMMARY":
@@ -42,11 +43,10 @@ const getCategoryForStep = (step: UrbanProjectCustomCreationStep): StepCategory 
       return "Dépollution des sols";
     case "URBAN_PROJECT_BUILDINGS_INTRODUCTION":
     case "URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA":
+      return "Bâtiments";
     case "URBAN_PROJECT_BUILDINGS_USE_INTRODUCTION":
     case "URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION":
-    case "URBAN_PROJECT_BUILDINGS_EQUIPMENT_INTRODUCTION":
-    case "URBAN_PROJECT_BUILDINGS_EQUIPMENT_SELECTION":
-      return "Bâtiments";
+      return "Usage des lieux d'habitation et d'activité";
     case "URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION":
     case "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER":
     case "URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER":
@@ -88,7 +88,9 @@ function UrbanProjectCustomSteps({ step }: Props) {
 
   const stepCategories = displayBuildingsSection
     ? STEP_CATEGORIES
-    : STEP_CATEGORIES.filter((step) => step !== "Bâtiments");
+    : STEP_CATEGORIES.filter(
+        (step) => !["Bâtiments", "Usage des lieux d'habitation et d'activité"].includes(step),
+      );
   const currentStepIndex = stepCategories.findIndex((step) => step === currentStepCategory);
 
   return (

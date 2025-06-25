@@ -200,7 +200,7 @@ describe("Urban project creation : introduction and spaces steps", () => {
           spacesCategoriesToComplete: ["LIVING_AND_ACTIVITY_SPACES"],
         });
       });
-      it("goes to URBAN_PROJECT_LIVING_AND_ACTIVITY_SPACES_INTRODUCTION when step is completed and project has living and activity spaces first in list", () => {
+      it("goes to URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_INTRODUCTION when step is completed and project has living and activity spaces first in list", () => {
         const store = new StoreBuilder()
           .withStepsHistory([
             "URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA",
@@ -218,7 +218,7 @@ describe("Urban project creation : introduction and spaces steps", () => {
 
         const newState = store.getState();
         expectUpdatedState(initialRootState, newState, {
-          currentStep: "URBAN_PROJECT_LIVING_AND_ACTIVITY_SPACES_INTRODUCTION",
+          currentStep: "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_INTRODUCTION",
           spacesCategoriesToComplete: ["PUBLIC_SPACES"],
         });
       });
@@ -226,7 +226,7 @@ describe("Urban project creation : introduction and spaces steps", () => {
         const store = new StoreBuilder()
           .withStepsHistory([
             "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION",
-            "URBAN_PROJECT_LIVING_AND_ACTIVITY_SPACES_INTRODUCTION",
+            "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_INTRODUCTION",
           ])
           .build();
         const initialRootState = store.getState();
@@ -301,7 +301,7 @@ describe("Urban project creation : introduction and spaces steps", () => {
 
         const newState = store.getState();
         expectUpdatedState(initialRootState, newState, {
-          currentStep: "URBAN_PROJECT_LIVING_AND_ACTIVITY_SPACES_INTRODUCTION",
+          currentStep: "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_INTRODUCTION",
           spacesCategoriesToComplete: [],
           creationDataDiff: {
             greenSpacesDistribution: { LAWNS_AND_BUSHES: 1400, TREE_FILLED_SPACE: 600 },
@@ -359,10 +359,10 @@ describe("Urban project creation : introduction and spaces steps", () => {
         });
       });
     });
-    describe("URBAN_PROJECT_LIVING_AND_ACTIVITY_SPACES_INTRODUCTION step", () => {
+    describe("URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_INTRODUCTION step", () => {
       it("goes to URBAN_PROJECT_LIVING_AND_ACTIVITY_SPACES_SELECTION when step is completed", () => {
         const store = new StoreBuilder()
-          .withStepsHistory(["URBAN_PROJECT_LIVING_AND_ACTIVITY_SPACES_INTRODUCTION"])
+          .withStepsHistory(["URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_INTRODUCTION"])
           .withCreationData({
             spacesCategories: ["LIVING_AND_ACTIVITY_SPACES", "GREEN_SPACES"],
             spacesCategoriesDistribution: { GREEN_SPACES: 2000, LIVING_AND_ACTIVITY_SPACES: 8000 },
@@ -374,14 +374,14 @@ describe("Urban project creation : introduction and spaces steps", () => {
 
         const newState = store.getState();
         expectUpdatedState(initialRootState, newState, {
-          currentStep: "URBAN_PROJECT_LIVING_AND_ACTIVITY_SPACES_DISTRIBUTION",
+          currentStep: "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
         });
       });
       it("goes to previous step and add LIVING_AND_ACTIVITY_SPACES to space categories to complete when step is reverted", () => {
         const store = new StoreBuilder()
           .withStepsHistory([
             "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION",
-            "URBAN_PROJECT_LIVING_AND_ACTIVITY_SPACES_INTRODUCTION",
+            "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_INTRODUCTION",
           ])
           .withSpacesCategoriesToComplete(["GREEN_SPACES"])
           .build();
@@ -395,12 +395,12 @@ describe("Urban project creation : introduction and spaces steps", () => {
         });
       });
     });
-    describe("URBAN_PROJECT_LIVING_AND_ACTIVITY_SPACES_DISTRIBUTION step", () => {
+    describe("URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION step", () => {
       it("sets living/activity spaces surface areas and goes to next spaces category introduction step when step is completed", () => {
         const store = new StoreBuilder()
           .withStepsHistory([
-            "URBAN_PROJECT_LIVING_AND_ACTIVITY_SPACES_INTRODUCTION",
-            "URBAN_PROJECT_LIVING_AND_ACTIVITY_SPACES_DISTRIBUTION",
+            "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_INTRODUCTION",
+            "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
           ])
           .withSpacesCategoriesToComplete(["PUBLIC_SPACES", "GREEN_SPACES"])
           .withCreationData({
@@ -436,8 +436,8 @@ describe("Urban project creation : introduction and spaces steps", () => {
       it("sets living/activity spaces surface areas and goes to spaces summary step when step is completed and no more space category to complete", () => {
         const store = new StoreBuilder()
           .withStepsHistory([
-            "URBAN_PROJECT_LIVING_AND_ACTIVITY_SPACES_INTRODUCTION",
-            "URBAN_PROJECT_LIVING_AND_ACTIVITY_SPACES_DISTRIBUTION",
+            "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_INTRODUCTION",
+            "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
           ])
           .withCreationData({
             spacesCategories: ["LIVING_AND_ACTIVITY_SPACES"],
@@ -467,8 +467,8 @@ describe("Urban project creation : introduction and spaces steps", () => {
       it("goes to previous step and unset green spaces step is reverted", () => {
         const store = new StoreBuilder()
           .withStepsHistory([
-            "URBAN_PROJECT_LIVING_AND_ACTIVITY_SPACES_INTRODUCTION",
-            "URBAN_PROJECT_LIVING_AND_ACTIVITY_SPACES_DISTRIBUTION",
+            "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_INTRODUCTION",
+            "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
           ])
           .withCreationData({
             spacesCategories: ["LIVING_AND_ACTIVITY_SPACES", "GREEN_SPACES"],

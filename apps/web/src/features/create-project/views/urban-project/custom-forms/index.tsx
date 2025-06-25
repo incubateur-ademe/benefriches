@@ -66,9 +66,9 @@ const getCurrentStepView = (
       return <GreenSpacesIntroduction />;
     case "URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION":
       return <UrbanGreenSpacesDistribution />;
-    case "URBAN_PROJECT_LIVING_AND_ACTIVITY_SPACES_INTRODUCTION":
+    case "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_INTRODUCTION":
       return <LivingAndActivitySpacesIntroduction />;
-    case "URBAN_PROJECT_LIVING_AND_ACTIVITY_SPACES_DISTRIBUTION":
+    case "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION":
       return <LivingAndActivitySpacesDistribution />;
     case "URBAN_PROJECT_PUBLIC_SPACES_INTRODUCTION":
       return <PublicSpacesIntroduction />;
@@ -92,10 +92,6 @@ const getCurrentStepView = (
       return <BuildingsUseIntroduction />;
     case "URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION":
       return <BuildingsUseSurfaceAreas />;
-    case "URBAN_PROJECT_BUILDINGS_EQUIPMENT_INTRODUCTION":
-      return <div>BUILDINGS_EQUIPMENT_INTRODUCTION</div>;
-    case "URBAN_PROJECT_BUILDINGS_EQUIPMENT_SELECTION":
-      return <div>BUILDINGS_EQUIPMENT_SELECTION</div>;
     case "URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION":
       return <ProjectStakeholdersIntroduction />;
     case "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER":

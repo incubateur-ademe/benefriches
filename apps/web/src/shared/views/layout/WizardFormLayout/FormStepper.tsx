@@ -55,7 +55,7 @@ const Step = ({ title, index, currentStepIndex, isDone }: StepProps) => {
                 "tw-text-white",
                 "tw-rounded-full",
                 "tw-leading-6",
-                "tw-w-6",
+                "tw-min-w-6",
                 "tw-h-6",
                 "tw-text-center",
                 isCurrent ? "tw-bg-blue-main" : "tw-bg-grey-main dark:tw-bg-grey-dark",
