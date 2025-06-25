@@ -9,8 +9,10 @@ export const URBAN_PROJECT_CREATION_STEP_QUERY_STRING_MAP = {
   URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION: "introduction-amenagement-des-espaces",
   URBAN_PROJECT_GREEN_SPACES_INTRODUCTION: "espaces-verts-introduction",
   URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION: "espaces-verts-surfaces",
-  URBAN_PROJECT_LIVING_AND_ACTIVITY_SPACES_INTRODUCTION: "espaces-de-vie-et-activites-introduction",
-  URBAN_PROJECT_LIVING_AND_ACTIVITY_SPACES_DISTRIBUTION: "espaces-de-vie-et-activites-surfaces",
+  URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_INTRODUCTION:
+    "espaces-de-vie-et-activites-introduction",
+  URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION:
+    "espaces-de-vie-et-activites-surfaces",
   URBAN_PROJECT_PUBLIC_SPACES_INTRODUCTION: "espaces-publics-introduction",
   URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION: "espaces-publics-surfaces",
   URBAN_PROJECT_SPACES_SOILS_SUMMARY: "recapitulatif-sols-amenagement-des-espaces",
@@ -22,8 +24,6 @@ export const URBAN_PROJECT_CREATION_STEP_QUERY_STRING_MAP = {
   URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA: "surface-plancher-batiments",
   URBAN_PROJECT_BUILDINGS_USE_INTRODUCTION: "introduction-usages-batiments",
   URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION: "surfaces-usages-batiments",
-  URBAN_PROJECT_BUILDINGS_EQUIPMENT_INTRODUCTION: "introduction-equipements",
-  URBAN_PROJECT_BUILDINGS_EQUIPMENT_SELECTION: "selection-equipements",
   URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION: "acteurs-introduction",
   URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER: "acteurs-amenageur",
   URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER: "acteurs-maitre-ouvrage-remise-en-etat",

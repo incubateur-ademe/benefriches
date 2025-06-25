@@ -59,7 +59,7 @@ import soilsCarbonStorageReducer, {
 
 const urbanSpaceCategoryIntroductionMap = {
   GREEN_SPACES: "URBAN_PROJECT_GREEN_SPACES_INTRODUCTION",
-  LIVING_AND_ACTIVITY_SPACES: "URBAN_PROJECT_LIVING_AND_ACTIVITY_SPACES_INTRODUCTION",
+  LIVING_AND_ACTIVITY_SPACES: "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_INTRODUCTION",
   PUBLIC_SPACES: "URBAN_PROJECT_PUBLIC_SPACES_INTRODUCTION",
   URBAN_FARM: undefined,
   RENEWABLE_ENERGY_PRODUCTION_PLANT: undefined,
@@ -129,10 +129,10 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
       case "URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION":
         state.urbanProject.creationData.greenSpacesDistribution = undefined;
         break;
-      case "URBAN_PROJECT_LIVING_AND_ACTIVITY_SPACES_INTRODUCTION":
+      case "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_INTRODUCTION":
         state.urbanProject.spacesCategoriesToComplete.unshift("LIVING_AND_ACTIVITY_SPACES");
         break;
-      case "URBAN_PROJECT_LIVING_AND_ACTIVITY_SPACES_DISTRIBUTION":
+      case "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION":
         state.urbanProject.creationData.livingAndActivitySpacesDistribution = undefined;
         break;
       case "URBAN_PROJECT_PUBLIC_SPACES_INTRODUCTION":
@@ -280,7 +280,7 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
     }
   });
   builder.addCase(livingAndActivitySpacesIntroductionCompleted, (state) => {
-    state.stepsHistory.push("URBAN_PROJECT_LIVING_AND_ACTIVITY_SPACES_DISTRIBUTION");
+    state.stepsHistory.push("URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION");
   });
   builder.addCase(livingAndActivitySpacesDistributionCompleted, (state, action) => {
     state.urbanProject.creationData.livingAndActivitySpacesDistribution = action.payload;
