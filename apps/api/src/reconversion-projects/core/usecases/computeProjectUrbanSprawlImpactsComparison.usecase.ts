@@ -1,5 +1,7 @@
 import {
   AgriculturalOperationGenerator,
+  ComparisonRoadAndUtilitiesConstructionImpact,
+  ComparisonRoadAndUtilitiesMaintenanceImpact,
   FricheGenerator,
   Impact,
   NaturalAreaGenerator,
@@ -36,6 +38,9 @@ import {
 } from "../model/project-impacts/UrbanProjectImpactsService";
 import { Schedule } from "../model/reconversionProject";
 import { SiteStatuQuoImpactsService } from "../model/site-statu-quo-impacts/SiteStatuQuoImpactsService";
+import { SumOnEvolutionPeriodService } from "../model/sum-on-evolution-period/SumOnEvolutionPeriodService";
+import { computeAvoidedRoadsAndUtilitiesExpenses } from "../model/urban-sprawl-impacts-comparison/roadAndUtilitiesMaintenance";
+import { computeAvoidedRoadsAndUtilitiesConstruction } from "../model/urban-sprawl-impacts-comparison/roadsAndUtilitiesContruction";
 
 export interface SiteImpactsQuery {
   getById(siteId: string): Promise<SiteImpactsDataView | undefined>;
@@ -178,19 +183,28 @@ const sumImpact = (projectImpact?: Impact, siteImpact = 0) => {
 const mergeSocioEconomicImpacts = (
   projectImpacts: ReconversionProjectImpacts["socioeconomic"]["impacts"],
   statuQuoSiteImpacts: StatuQuoSiteImpacts["socioEconomic"],
+  roadAndUtilitiesImpacts: {
+    maintenance: ComparisonRoadAndUtilitiesMaintenanceImpact;
+    construction: ComparisonRoadAndUtilitiesConstructionImpact;
+  },
 ): UrbanSprawlComparisonImpacts["socioeconomic"]["impacts"] => {
   const projectRentalIncome = projectImpacts.find(({ impact }) => impact === "rental_income");
   const projectWaterRegulation = projectImpacts.find(({ impact }) => impact === "water_regulation");
   const projectTaxesIncomesImpact = projectImpacts.find(({ impact }) => impact === "taxes_income");
+  const projectRoadsAndUtilitiesExpenses = projectImpacts.find(
+    ({ impact }) => impact === "roads_and_utilities_maintenance_expenses",
+  );
 
   const shouldMergeRentalIncome =
     projectRentalIncome &&
     statuQuoSiteImpacts.direct.rentalIncome &&
     statuQuoSiteImpacts.direct.rentalIncome.actor === projectRentalIncome.actor;
-  console.log("shouldMergeRentalIncome", shouldMergeRentalIncome);
 
   const impacts: UrbanSprawlComparisonImpacts["socioeconomic"]["impacts"] = projectImpacts.map(
     (projectImpact) => {
+      if (projectImpact.impact === "roads_and_utilities_maintenance_expenses") {
+        return roadAndUtilitiesImpacts.maintenance;
+      }
       if (projectImpact.impact === "rental_income") {
         if (shouldMergeRentalIncome) {
           return {
@@ -317,6 +331,12 @@ const mergeSocioEconomicImpacts = (
     },
   );
 
+  impacts.push(roadAndUtilitiesImpacts.construction);
+
+  if (!projectRoadsAndUtilitiesExpenses) {
+    impacts.push(roadAndUtilitiesImpacts.maintenance);
+  }
+
   if (statuQuoSiteImpacts.direct.rentalIncome && !shouldMergeRentalIncome) {
     impacts.push({
       impact: "rental_income",
@@ -382,20 +402,74 @@ const mergeCarbonStorage = (
   } as ReconversionProjectImpacts["environmental"]["soilsCarbonStorage"];
 };
 
-const mergeProjectImpactsWithStatuQuoSiteImpacts = (
-  projectImpacts: ReconversionProjectImpacts,
-  statuQuoSiteImpacts: StatuQuoSiteImpacts,
-): UrbanSprawlComparisonImpacts => {
-  const mergedSocioEconomicImpacts = mergeSocioEconomicImpacts(
+type Props = {
+  projectImpacts: ReconversionProjectImpacts;
+  statuQuoSiteImpacts: StatuQuoSiteImpacts;
+  conversionSiteIsFriche: boolean;
+  conversionSiteSurfaceArea: number;
+  projectDeveloperName?: string;
+  evaluationPeriodInYears: number;
+  operationsFirstYear: number;
+};
+const computeUrbanSprawlComparisonImpacts = ({
+  projectImpacts,
+  statuQuoSiteImpacts,
+  conversionSiteIsFriche,
+  conversionSiteSurfaceArea,
+  projectDeveloperName = "Aménageur",
+  evaluationPeriodInYears,
+  operationsFirstYear,
+}: Props): UrbanSprawlComparisonImpacts => {
+  const avoidedRoadsAndUtilitiesConstruction =
+    computeAvoidedRoadsAndUtilitiesConstruction(conversionSiteSurfaceArea);
+  const avoidedRoadsAndUtilitiesMaintenance = computeAvoidedRoadsAndUtilitiesExpenses({
+    surfaceArea: conversionSiteSurfaceArea,
+    sumOnEvolutionPeriodService: new SumOnEvolutionPeriodService({
+      evaluationPeriodInYears,
+      operationsFirstYear,
+    }),
+  });
+
+  const roadAndUtilitiesImpacts = conversionSiteIsFriche
+    ? {
+        construction: {
+          amount: avoidedRoadsAndUtilitiesConstruction,
+          impact: "avoided_roads_and_utilities_construction_expenses",
+          impactCategory: "economic_direct",
+          actor: projectDeveloperName,
+        } as ComparisonRoadAndUtilitiesConstructionImpact,
+        maintenance: {
+          amount: avoidedRoadsAndUtilitiesMaintenance,
+          impact: "avoided_roads_and_utilities_maintenance_expenses",
+          impactCategory: "economic_indirect",
+          actor: "community",
+        } as ComparisonRoadAndUtilitiesMaintenanceImpact,
+      }
+    : {
+        construction: {
+          amount: -1 * avoidedRoadsAndUtilitiesConstruction,
+          impact: "roads_and_utilities_construction_expenses",
+          impactCategory: "economic_direct",
+          actor: projectDeveloperName,
+        } as ComparisonRoadAndUtilitiesConstructionImpact,
+        maintenance: {
+          amount: -1 * avoidedRoadsAndUtilitiesMaintenance,
+          impact: "roads_and_utilities_maintenance_expenses",
+          impactCategory: "economic_indirect",
+          actor: "community",
+        } as ComparisonRoadAndUtilitiesMaintenanceImpact,
+      };
+  const socioEconomicList = mergeSocioEconomicImpacts(
     projectImpacts.socioeconomic.impacts,
     statuQuoSiteImpacts.socioEconomic,
+    roadAndUtilitiesImpacts,
   );
 
   return {
     economicBalance: projectImpacts.economicBalance,
     socioeconomic: {
-      impacts: mergedSocioEconomicImpacts,
-      total: sumListWithKey(mergedSocioEconomicImpacts, "amount"),
+      impacts: socioEconomicList,
+      total: sumListWithKey(socioEconomicList, "amount"),
     },
     social: {
       fullTimeJobs: projectImpacts.social.fullTimeJobs
@@ -656,24 +730,36 @@ export class ComputeProjectUrbanSprawlImpactsComparisonUseCase
       evaluationPeriodInYears,
     });
 
+    const operationsFirstYear = this.dateProvider.now().getFullYear();
+
     return {
       baseCase: {
         statuQuoSiteImpacts: comparisonSiteImpacts,
         conversionSiteData: relatedSite,
         projectImpacts: baseProjectImpacts,
-        comparisonImpacts: mergeProjectImpactsWithStatuQuoSiteImpacts(
-          baseProjectImpacts,
-          comparisonSiteImpacts,
-        ),
+        comparisonImpacts: computeUrbanSprawlComparisonImpacts({
+          projectImpacts: baseProjectImpacts,
+          statuQuoSiteImpacts: comparisonSiteImpacts,
+          conversionSiteIsFriche: relatedSite.nature === "FRICHE",
+          conversionSiteSurfaceArea: relatedSite.surfaceArea,
+          projectDeveloperName: reconversionProject.developmentPlan.developerName,
+          evaluationPeriodInYears,
+          operationsFirstYear,
+        }),
       },
       comparisonCase: {
         statuQuoSiteImpacts: baseSiteImpacts,
         conversionSiteData: comparisonSiteData,
         projectImpacts: comparisonProjectImpacts,
-        comparisonImpacts: mergeProjectImpactsWithStatuQuoSiteImpacts(
-          comparisonProjectImpacts,
-          baseSiteImpacts,
-        ),
+        comparisonImpacts: computeUrbanSprawlComparisonImpacts({
+          projectImpacts: comparisonProjectImpacts,
+          statuQuoSiteImpacts: baseSiteImpacts,
+          conversionSiteIsFriche: comparisonSiteData.nature === "FRICHE",
+          conversionSiteSurfaceArea: comparisonSiteData.surfaceArea,
+          projectDeveloperName: reconversionProject.developmentPlan.developerName,
+          evaluationPeriodInYears,
+          operationsFirstYear,
+        }),
       },
       projectData: reconversionProject as ApiReconversionProjectImpactsDataView,
     };

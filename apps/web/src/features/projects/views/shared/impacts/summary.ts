@@ -4,6 +4,7 @@ export const PRIORITY_ORDER = [
   "zanCompliance",
   "projectImpactBalance",
   "avoidedFricheCostsForLocalAuthority",
+  "avoidedMaintenanceCostsForLocalAuthority",
   "taxesIncomesImpact",
   "localPropertyValueIncrease",
   "fullTimeJobs",
@@ -47,5 +48,9 @@ export const getSummaryIndicatorTitle = ({
         : "Les impacts ne compensent pas le déficit de l'opération\u00a0💸";
     case "zanCompliance":
       return isSuccess ? `Projet favorable au ZAN\u00a0🌾` : `Projet defavorable au ZAN\u00a0🌾`;
+    case "avoidedMaintenanceCostsForLocalAuthority":
+      return isSuccess
+        ? "Des dépenses de fonctionnement à la charge de la collectivité réduites\u00a0✅"
+        : "Des dépenses de fonctionnement à la charge de la collectivité maintenues\u00a0🚨";
   }
 };

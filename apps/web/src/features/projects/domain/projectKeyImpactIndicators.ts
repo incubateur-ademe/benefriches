@@ -4,6 +4,7 @@ import {
   ReconversionProjectImpacts,
   SiteNature,
   sumListWithKey,
+  UrbanSprawlComparisonImpacts,
 } from "shared";
 
 import { getPercentageDifference } from "@/shared/core/percentage/percentage";
@@ -200,6 +201,11 @@ export type KeyImpactIndicatorData =
         isAgriculturalFriche?: boolean;
         permeableSurfaceAreaDifference?: number;
       };
+    }
+  | {
+      name: "avoidedMaintenanceCostsForLocalAuthority";
+      isSuccess: boolean;
+      value: number;
     };
 
 type SiteData = {
@@ -336,26 +342,55 @@ export const getKeyImpactIndicatorsList = (
   return impacts;
 };
 
-// const getAvoidedMaintenanceCostsForLocalAuthority = (
-//   socioEconomicList: (SiteSocioEconomicImpact | ReconversionProjectImpacts["socioeconomic"]["impacts"])[],
-//   siteOwner: SiteData["owner"],
-// ) => {
-//   const avoidedFricheCosts = socioEconomicList.find(
-//     ({ impact }) => impact === "fricheCosts",
-//   );
+const getAvoidedMaintenanceCostsForLocalAuthority = (
+  socioEconomicList: UrbanSprawlComparisonImpacts["socioeconomic"]["impacts"],
+  conversionSiteIsFriche: boolean,
+  siteOwner: SiteData["owner"],
+) => {
+  const siteOwnerStructureType = siteOwner?.structureType ?? "";
+  const isOwnerLocalAuthority = isLocalAuthority(siteOwnerStructureType);
 
-//   const siteOwnerStructureType = siteOwner?.structureType ?? "";
-//   const isOwnerLocalAuthority = isLocalAuthority(siteOwnerStructureType);
+  if (conversionSiteIsFriche) {
+    const avoidedFricheCosts = socioEconomicList.find(
+      ({ impact }) => impact === "avoided_friche_costs",
+    );
 
-//   if (!avoidedFricheCosts || !isOwnerLocalAuthority) {
-//     return undefined;
-//   }
+    const avoidedRoadAndUtilitiesMaintenance =
+      socioEconomicList.find(
+        ({ impact }) => impact === "avoided_roads_and_utilities_maintenance_expenses",
+      )?.amount ?? 0;
 
-//   return {
-//     actorName: siteOwner?.name ?? "",
-//     amount: avoidedFricheCosts.amount,
-//   };
-// };
+    if (!avoidedRoadAndUtilitiesMaintenance && (!avoidedFricheCosts || !isOwnerLocalAuthority)) {
+      return undefined;
+    }
+    const fricheCosts = isOwnerLocalAuthority ? (avoidedFricheCosts?.amount ?? 0) : 0;
+
+    return {
+      amount: avoidedRoadAndUtilitiesMaintenance + fricheCosts,
+      avoidedRoadAndUtilitiesMaintenance: avoidedRoadAndUtilitiesMaintenance,
+      avoidedFricheCosts: fricheCosts,
+    };
+  }
+  const statuQuoFricheCosts = socioEconomicList.find(
+    ({ impact }) => impact === "statu_quo_friche_costs",
+  );
+
+  const roadAndUtilitiesMaintenance =
+    socioEconomicList.find(({ impact }) => impact === "roads_and_utilities_maintenance_expenses")
+      ?.amount ?? 0;
+
+  if (roadAndUtilitiesMaintenance && (!statuQuoFricheCosts || !isOwnerLocalAuthority)) {
+    return undefined;
+  }
+
+  const fricheCosts = isOwnerLocalAuthority ? (statuQuoFricheCosts?.amount ?? 0) : 0;
+
+  return {
+    amount: roadAndUtilitiesMaintenance + fricheCosts,
+    roadAndUtilitiesMaintenance: roadAndUtilitiesMaintenance,
+    fricheCosts,
+  };
+};
 
 export const getUrbanSprawlComparisonImpactIndicatorsList = (
   data:
@@ -371,10 +406,14 @@ export const getUrbanSprawlComparisonImpactIndicatorsList = (
     economicBalanceTotal: impactsData.economicBalance.total,
     socioEconomicMonetaryImpactsTotal: impactsData.socioeconomic.total,
   });
-  // const avoidedFricheCostsForLocalAuthority = getAvoidedFricheCostsForLocalAuthority(
-  //   impactsData?.socioeconomic.impacts ?? [],
-  //   data?.siteData.ownerName,
-  // );
+  const avoidedMaintenanceCostsForLocalAuthority = getAvoidedMaintenanceCostsForLocalAuthority(
+    impactsData.socioeconomic.impacts,
+    data.conversionSiteData.nature === "FRICHE",
+    {
+      name: data.conversionSiteData.ownerName,
+      structureType: data.conversionSiteData.ownerStructureType,
+    },
+  );
   const taxesIncomesList = impactsData.socioeconomic.impacts.filter(
     ({ impact }) =>
       impact === "taxes_income" ||
@@ -426,13 +465,13 @@ export const getUrbanSprawlComparisonImpactIndicatorsList = (
     });
   }
 
-  // if (avoidedFricheCostsForLocalAuthority) {
-  //   impacts.push({
-  //     name: "avoidedFricheCostsForLocalAuthority",
-  //     isSuccess: avoidedFricheCostsForLocalAuthority.amount > 0,
-  //     value: avoidedFricheCostsForLocalAuthority,
-  //   });
-  // }
+  if (avoidedMaintenanceCostsForLocalAuthority) {
+    impacts.push({
+      name: "avoidedMaintenanceCostsForLocalAuthority",
+      isSuccess: avoidedMaintenanceCostsForLocalAuthority.amount > 0,
+      value: avoidedMaintenanceCostsForLocalAuthority.amount,
+    });
+  }
 
   if (taxesIncomesImpact) {
     impacts.push({

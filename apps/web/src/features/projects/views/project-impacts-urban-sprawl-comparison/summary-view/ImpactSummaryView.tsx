@@ -254,6 +254,26 @@ const ImpactSummaryView = ({ baseCase, comparisonCase, modalData }: Props) => {
                         />
                       </React.Fragment>
                     );
+                  case "avoidedMaintenanceCostsForLocalAuthority":
+                    return (
+                      <React.Fragment key={name}>
+                        <KeyImpactIndicatorCard
+                          title={getSummaryIndicatorTitle({ name, isSuccess })}
+                          type={isSuccess ? "success" : "error"}
+                          buttonProps={getDialogControlButtonProps(
+                            `fr-modal-${modalPrefix}-impacts_${name}-Summary`,
+                          )}
+                        />
+                        <ImpactComparisonModalDescription
+                          dialogId={`fr-modal-${modalPrefix}-impacts_${name}-Summary`}
+                          initialState={{
+                            sectionName: "summary",
+                            impactData: { value, isSuccess, name },
+                          }}
+                          {...modalData}
+                        />
+                      </React.Fragment>
+                    );
                 }
               })}
           </div>

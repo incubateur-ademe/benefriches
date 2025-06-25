@@ -576,6 +576,80 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
         ({ impact }) => impact === "ecosystem_services",
       )?.amount ?? 0,
     );
+
+    expect(
+      result.baseCase.comparisonImpacts.socioeconomic.impacts.filter(
+        ({ impact }) => impact === "avoided_roads_and_utilities_construction_expenses",
+      ),
+    ).toEqual([
+      {
+        actor: "Mairie de Blajan",
+        amount: 120805,
+        impact: "avoided_roads_and_utilities_construction_expenses",
+        impactCategory: "economic_direct",
+      },
+    ]);
+
+    expect(
+      result.baseCase.comparisonImpacts.socioeconomic.impacts.filter(
+        ({ impact }) => impact === "avoided_roads_and_utilities_maintenance_expenses",
+      ),
+    ).toEqual([
+      {
+        actor: "community",
+        amount: 203038,
+        impact: "avoided_roads_and_utilities_maintenance_expenses",
+        impactCategory: "economic_indirect",
+      },
+    ]);
+
+    expect(
+      result.baseCase.comparisonImpacts.socioeconomic.impacts.filter(
+        ({ impact }) => impact === "roads_and_utilities_construction_expenses",
+      ),
+    ).toEqual([]);
+    expect(
+      result.baseCase.comparisonImpacts.socioeconomic.impacts.filter(
+        ({ impact }) => impact === "roads_and_utilities_maintenance_expenses",
+      ),
+    ).toEqual([]);
+
+    expect(
+      result.comparisonCase.comparisonImpacts.socioeconomic.impacts.filter(
+        ({ impact }) => impact === "roads_and_utilities_construction_expenses",
+      ),
+    ).toEqual([
+      {
+        actor: "Mairie de Blajan",
+        amount: -120805,
+        impact: "roads_and_utilities_construction_expenses",
+        impactCategory: "economic_direct",
+      },
+    ]);
+
+    expect(
+      result.comparisonCase.comparisonImpacts.socioeconomic.impacts.filter(
+        ({ impact }) => impact === "roads_and_utilities_maintenance_expenses",
+      ),
+    ).toEqual([
+      {
+        actor: "community",
+        amount: -203038,
+        impact: "roads_and_utilities_maintenance_expenses",
+        impactCategory: "economic_indirect",
+      },
+    ]);
+
+    expect(
+      result.comparisonCase.comparisonImpacts.socioeconomic.impacts.filter(
+        ({ impact }) => impact === "avoided_roads_and_utilities_construction_expenses",
+      ),
+    ).toEqual([]);
+    expect(
+      result.comparisonCase.comparisonImpacts.socioeconomic.impacts.filter(
+        ({ impact }) => impact === "avoided_roads_and_utilities_maintenance_expenses",
+      ),
+    ).toEqual([]);
   });
 
   it("returns impacts with no errors when soils carbon storage cannot be computed", async () => {
@@ -711,9 +785,44 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
       evaluationPeriodInYears,
       comparisonSiteNature: "FRICHE",
     });
-    expect(result.baseCase.comparisonImpacts.economicBalance).toEqual(
-      result.baseCase.projectImpacts.economicBalance,
-    );
+
+    expect(
+      result.baseCase.comparisonImpacts.socioeconomic.impacts.filter(
+        ({ impact }) => impact === "roads_and_utilities_construction_expenses",
+      ),
+    ).toEqual([
+      {
+        actor: "Mairie de Blajan",
+        amount: -431445,
+        impact: "roads_and_utilities_construction_expenses",
+        impactCategory: "economic_direct",
+      },
+    ]);
+
+    expect(
+      result.baseCase.comparisonImpacts.socioeconomic.impacts.filter(
+        ({ impact }) => impact === "roads_and_utilities_maintenance_expenses",
+      ),
+    ).toEqual([
+      {
+        actor: "community",
+        amount: -725135,
+        impact: "roads_and_utilities_maintenance_expenses",
+        impactCategory: "economic_indirect",
+      },
+    ]);
+
+    expect(
+      result.baseCase.comparisonImpacts.socioeconomic.impacts.filter(
+        ({ impact }) => impact === "avoided_roads_and_utilities_construction_expenses",
+      ),
+    ).toEqual([]);
+    expect(
+      result.baseCase.comparisonImpacts.socioeconomic.impacts.filter(
+        ({ impact }) => impact === "avoided_roads_and_utilities_maintenance_expenses",
+      ),
+    ).toEqual([]);
+
     expect(
       result.baseCase.comparisonImpacts.socioeconomic.impacts.filter(
         ({ impact }) => impact === "rental_income",

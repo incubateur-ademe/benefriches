@@ -11,7 +11,6 @@ import {
   RentalIncomeImpact,
   AvoidedFricheCostsImpact,
   PropertyTransferDutiesIncomeImpact,
-  RoadsAndUtilitiesMaintenanceExpensesImpact,
   SiteOperationBenefitsLoss,
   LocalHousingPropertyValueIncreaseImpact,
   EcosystemServicesImpact,
@@ -50,6 +49,25 @@ type ComparisonSiteFricheCostsImpact = {
   actor: string;
   details: SiteFricheCostsImpact["details"];
 };
+
+export type ComparisonRoadAndUtilitiesConstructionImpact = {
+  amount: number;
+  impact:
+    | "avoided_roads_and_utilities_construction_expenses"
+    | "roads_and_utilities_construction_expenses";
+  impactCategory: "economic_direct";
+  actor: string;
+};
+
+export type ComparisonRoadAndUtilitiesMaintenanceImpact = {
+  amount: number;
+  impact:
+    | "avoided_roads_and_utilities_maintenance_expenses"
+    | "roads_and_utilities_maintenance_expenses";
+  impactCategory: "economic_indirect";
+  actor: "community";
+};
+
 type UrbanSprawlComparisonSocioEconomicImpacts =
   // merged impacts
   | ComparisonRentalIncomeImpact
@@ -61,7 +79,6 @@ type UrbanSprawlComparisonSocioEconomicImpacts =
   | PropertyTransferDutiesIncomeImpact
   | AvoidedCarRelatedExpensesImpact
   | AvoidedAirConditioningExpensesImpact
-  | RoadsAndUtilitiesMaintenanceExpensesImpact
   | SiteOperationBenefitsLoss
   | TravelTimeSavedImpact
   | AvoidedCO2EqEmissions
@@ -71,7 +88,9 @@ type UrbanSprawlComparisonSocioEconomicImpacts =
   | LocalHousingPropertyValueIncreaseImpact
   | LocalTransferDutiesIncreaseImpact
   // comparison specific impacts
-  | ComparisonSiteFricheCostsImpact;
+  | ComparisonSiteFricheCostsImpact
+  | ComparisonRoadAndUtilitiesConstructionImpact
+  | ComparisonRoadAndUtilitiesMaintenanceImpact;
 
 export type UrbanSprawlComparisonImpacts = {
   economicBalance: ReconversionProjectImpacts["economicBalance"];
