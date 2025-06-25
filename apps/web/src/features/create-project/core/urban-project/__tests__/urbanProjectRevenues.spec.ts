@@ -304,24 +304,28 @@ describe("Urban project creation : revenues steps", () => {
       });
       it("sets financialAssistanceRevenues, unsets review mode and goes to URBAN_PROJECT_FINAL_SUMMARY when completed and user was reviewing", () => {
         const store = new StoreBuilder()
-          .withReviewMode()
           .withStepsHistory([
+            "URBAN_PROJECT_NAMING",
+            "URBAN_PROJECT_FINAL_SUMMARY",
             "URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES",
             "URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE",
           ])
+          .withReviewMode({ startedAtStepIndex: 1 })
           .build();
         const initialRootState = store.getState();
 
         store.dispatch(financialAssistanceRevenuesCompleted([{ source: "other", amount: 1 }]));
 
         const newState = store.getState();
-        expectUpdatedState(initialRootState, newState, {
-          currentStep: "URBAN_PROJECT_FINAL_SUMMARY",
-          creationDataDiff: {
-            financialAssistanceRevenues: [{ source: "other", amount: 1 }],
-          },
-          isReviewing: false,
+        expect(newState.projectCreation.urbanProject.creationData).toEqual({
+          ...initialRootState.projectCreation.urbanProject.creationData,
+          financialAssistanceRevenues: [{ source: "other", amount: 1 }],
         });
+        expect(newState.projectCreation.stepsHistory).toEqual([
+          "URBAN_PROJECT_NAMING",
+          "URBAN_PROJECT_FINAL_SUMMARY",
+        ]);
+        expect(newState.projectCreation.isReviewing).toBe(false);
       });
       it("goes to previous step and unset financialAssistanceRevenues when step is reverted", () => {
         const store = new StoreBuilder()

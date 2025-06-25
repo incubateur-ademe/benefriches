@@ -1,7 +1,7 @@
 import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
 import { selectProjectId } from "@/features/create-project/core/createProject.selectors";
+import { reviewModeInitiated } from "@/features/create-project/core/reviewMode.reducer";
 import { customUrbanProjectSaved } from "@/features/create-project/core/urban-project/actions/customUrbanProjectSaved.action";
-import { expensesAndRevenuesEditInitiated } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
 import {
   getUrbanProjectSpaceDistribution,
   selectCreationData,
@@ -29,7 +29,11 @@ function ProjectionCreationDataSummaryContainer() {
   };
 
   const onExpensesAndRevenuesTitleClick = () => {
-    dispatch(expensesAndRevenuesEditInitiated());
+    dispatch(
+      reviewModeInitiated({
+        sectionToReview: "urbanProjectExpensesAndRevenues",
+      }),
+    );
   };
 
   return (

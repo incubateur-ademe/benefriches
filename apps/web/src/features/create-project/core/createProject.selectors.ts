@@ -22,6 +22,8 @@ export const selectProjectId = createSelector(selectSelf, (state): string => {
   return state.projectId;
 });
 
+export const selectIsReviewing = createSelector(selectSelf, (state) => state.isReviewing);
+
 export const selectProjectDevelopmentPlanCategory = createSelector(
   selectSelf,
   (state): DevelopmentPlanCategory | undefined => state.developmentPlanCategory,

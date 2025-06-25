@@ -50,7 +50,6 @@ import {
   buildingsOperationsExpensesCompleted,
   buildingsResaleRevenueCompleted,
   buildingsUseSurfaceAreasCompleted,
-  expensesAndRevenuesEditInitiated,
 } from "./actions/urbanProject.actions";
 import { UrbanProjectCreationData } from "./creationData";
 import { UrbanProjectCustomCreationStep } from "./creationSteps";
@@ -81,7 +80,6 @@ export type UrbanProjectState = {
   spacesCategoriesToComplete: UrbanSpaceCategory[];
   creationData: UrbanProjectCreationData;
   soilsCarbonStorage: SoilsCarbonStorageState;
-  isReviewing: boolean;
 };
 
 export const initialState: UrbanProjectState = {
@@ -92,7 +90,6 @@ export const initialState: UrbanProjectState = {
   },
   creationData: {},
   saveState: "idle",
-  isReviewing: false,
   spacesCategoriesToComplete: [],
   soilsCarbonStorage: { loadingState: "idle", current: undefined, projected: undefined },
 };
@@ -497,10 +494,7 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
   builder.addCase(financialAssistanceRevenuesCompleted, (state, action) => {
     state.urbanProject.creationData.financialAssistanceRevenues = action.payload;
 
-    if (state.urbanProject.isReviewing) {
-      state.urbanProject.isReviewing = false;
-      state.stepsHistory.push("URBAN_PROJECT_FINAL_SUMMARY");
-    } else {
+    if (!state.isReviewing) {
       state.stepsHistory.push("URBAN_PROJECT_SCHEDULE_INTRODUCTION");
     }
   });
@@ -538,10 +532,6 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
   builder.addCase(customUrbanProjectSaved.rejected, (state) => {
     state.urbanProject.saveState = "error";
     state.stepsHistory.push("URBAN_PROJECT_CREATION_RESULT");
-  });
-  builder.addCase(expensesAndRevenuesEditInitiated, (state) => {
-    state.stepsHistory.push("URBAN_PROJECT_EXPENSES_INTRODUCTION");
-    state.urbanProject.isReviewing = true;
   });
 });
 

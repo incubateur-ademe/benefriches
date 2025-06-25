@@ -10,7 +10,7 @@ import { UrbanProjectCreationData } from "../creationData";
 import { UrbanProjectCreationStep } from "../creationSteps";
 
 export const expectCurrentStep = (state: RootState, step: UrbanProjectCreationStep) => {
-  expect(state.projectCreation.stepsHistory).toEqual([step]);
+  expect(state.projectCreation.stepsHistory.at(-1)).toEqual(step);
 };
 
 type UpdatedStateAssertionInput = {
@@ -22,12 +22,7 @@ type UpdatedStateAssertionInput = {
 export const expectUpdatedState = (
   initialState: RootState,
   updatedState: RootState,
-  {
-    creationDataDiff = {},
-    spacesCategoriesToComplete,
-    currentStep,
-    isReviewing,
-  }: UpdatedStateAssertionInput,
+  { creationDataDiff = {}, spacesCategoriesToComplete, currentStep }: UpdatedStateAssertionInput,
 ) => {
   const initialUrbanProjectState = initialState.projectCreation.urbanProject;
   const updatedUrbanProjectState = updatedState.projectCreation.urbanProject;
@@ -39,7 +34,6 @@ export const expectUpdatedState = (
     ...initialUrbanProjectState,
     spacesCategoriesToComplete:
       spacesCategoriesToComplete ?? initialUrbanProjectState.spacesCategoriesToComplete,
-    isReviewing: isReviewing ?? initialUrbanProjectState.isReviewing,
     creationData: {
       ...initialUrbanProjectState.creationData,
       ...creationDataDiff,
@@ -112,10 +106,11 @@ export class StoreBuilder {
     return this;
   }
 
-  withReviewMode() {
-    this.preloadedRootState.projectCreation.urbanProject = {
-      ...this.preloadedRootState.projectCreation.urbanProject,
+  withReviewMode({ startedAtStepIndex }: { startedAtStepIndex: number }) {
+    this.preloadedRootState.projectCreation = {
+      ...this.preloadedRootState.projectCreation,
       isReviewing: true,
+      reviewModeStartIndex: startedAtStepIndex,
     };
     return this;
   }

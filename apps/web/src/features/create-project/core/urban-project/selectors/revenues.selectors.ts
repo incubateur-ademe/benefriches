@@ -1,7 +1,8 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { getRevenueAmountByPurpose } from "shared";
 
-import { selectCreationData, selectIsReviewing } from "./urbanProject.selectors";
+import { selectIsReviewing } from "../../createProject.selectors";
+import { selectCreationData } from "./urbanProject.selectors";
 
 type UrbanProjectFinancialAssistanceRevenueView = {
   values: {

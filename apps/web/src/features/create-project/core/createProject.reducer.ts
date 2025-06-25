@@ -22,6 +22,7 @@ import {
   INITIAL_STATE as renenewableEnergyProjectInitialState,
   renewableEnergyProjectReducer,
 } from "./renewable-energy/renewableEnergy.reducer";
+import { projectCreationReviewModeReducer } from "./reviewMode.reducer";
 import { UrbanProjectCreationStep } from "./urban-project/creationSteps";
 import urbanProjectReducer, {
   initialState as urbanProjectInitialState,
@@ -32,6 +33,8 @@ type LoadingState = "idle" | "loading" | "success" | "error";
 
 export type ProjectCreationState = {
   stepsHistory: ProjectCreationStep[];
+  reviewModeStartIndex?: number;
+  isReviewing: boolean;
   projectId: string;
   developmentPlanCategory?: DevelopmentPlanCategory;
   siteData?: ProjectSite;
@@ -69,6 +72,8 @@ export type ProjectCreationStep =
 export const getInitialState = (): ProjectCreationState => {
   return {
     stepsHistory: ["INTRODUCTION"],
+    isReviewing: false,
+    reviewModeStartIndex: undefined,
     projectId: uuid(),
     developmentPlanCategory: undefined,
     siteData: undefined,
@@ -145,6 +150,7 @@ const projectCreationRootReducer = reduceReducers<ProjectCreationState>(
   projectCreationReducer,
   urbanProjectReducer,
   renewableEnergyProjectReducer,
+  projectCreationReviewModeReducer,
 );
 
 export default projectCreationRootReducer;

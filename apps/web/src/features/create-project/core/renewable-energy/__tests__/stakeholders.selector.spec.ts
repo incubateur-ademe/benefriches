@@ -64,7 +64,6 @@ const MOCK_STATES = {
       createMode: undefined,
       expressData: {},
       saveState: "idle",
-      isReviewing: false,
       creationData: {},
       spacesCategoriesToComplete: [],
       soilsCarbonStorage: { loadingState: "idle", current: undefined, projected: undefined },
