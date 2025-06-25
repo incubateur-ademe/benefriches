@@ -11,6 +11,7 @@ type Props = {
   onViewModeClick: (viewMode: ViewMode) => void;
   onEvaluationPeriodChange: (n: number) => void;
   header: ReactNode;
+  disabledSegments?: ViewMode[];
 };
 
 function ProjectImpactsActionBar({
@@ -19,6 +20,7 @@ function ProjectImpactsActionBar({
   evaluationPeriod,
   onEvaluationPeriodChange,
   header,
+  disabledSegments,
 }: Props) {
   const [isActionBarInViewport, setIsActionBarInViewPort] = useState(false);
 
@@ -49,6 +51,7 @@ function ProjectImpactsActionBar({
         evaluationPeriod={evaluationPeriod}
         onViewModeClick={onViewModeClick}
         onEvaluationPeriodChange={onEvaluationPeriodChange}
+        disabledSegments={disabledSegments}
       />
     </>
   );

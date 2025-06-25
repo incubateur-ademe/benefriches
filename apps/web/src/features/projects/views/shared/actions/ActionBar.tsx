@@ -12,6 +12,7 @@ type Props = {
   onEvaluationPeriodChange: (n: number) => void;
   small?: boolean;
   ref?: React.Ref<HTMLElement>;
+  disabledSegments?: ViewMode[];
 };
 
 function ImpactsActionBar({
@@ -20,10 +21,12 @@ function ImpactsActionBar({
   evaluationPeriod,
   onEvaluationPeriodChange,
   ref,
+  disabledSegments,
 }: Props) {
   const isSmScreen = useIsSmallScreen();
   const getViewSegmentInputProps = (value: ViewMode) => {
     return {
+      disabled: disabledSegments?.includes(value),
       checked: selectedViewMode === value,
       onChange: () => {
         onViewModeClick(value);

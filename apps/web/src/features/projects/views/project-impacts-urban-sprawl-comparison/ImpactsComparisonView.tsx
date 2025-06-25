@@ -41,6 +41,7 @@ const ImpactsComparisonView = ({
           onViewModeClick={onCurrentViewModeChange}
           onEvaluationPeriodChange={onEvaluationPeriodChange}
           header={<ImpactsComparisonHeader {...headerProps} />}
+          disabledSegments={["list", "charts"]}
         />
 
         {currentViewMode === "summary" && <ImpactsSummaryViewContainer />}
