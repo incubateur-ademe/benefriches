@@ -35,8 +35,6 @@ export const selectCreationData = createSelector(
   (state): UrbanProjectCreationData => state.creationData,
 );
 
-export const selectIsReviewing = createSelector(selectSelf, (state) => state.isReviewing);
-
 export const selectProjectName = createSelector(
   selectCreationData,
   (creationData): string => creationData.name ?? "",
