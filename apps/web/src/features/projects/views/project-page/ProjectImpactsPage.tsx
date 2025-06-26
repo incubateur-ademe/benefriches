@@ -83,7 +83,11 @@ function ProjectPage({
         {dataLoadingState === "success" && (
           <>
             <ProjectImpactsPage currentViewMode={currentViewMode} />
-            <ProjectImpactFooter siteId={projectContext.siteId} />
+            <ProjectImpactFooter
+              siteId={projectContext.siteId}
+              projectId={projectId}
+              evaluationPeriod={evaluationPeriod}
+            />
           </>
         )}
       </div>

@@ -27,10 +27,15 @@ function ImpactsComparisonPageContainer({ route }: Props) {
       fetchUrbanSprawlImpactsComparison({
         projectId: route.params.projectId,
         evaluationPeriod: comparisonState.evaluationPeriod,
-        comparisonSiteNature: "AGRICULTURAL_OPERATION",
+        comparisonSiteNature: comparisonState.comparisonSiteNature,
       }),
     );
-  }, [dispatch, comparisonState.evaluationPeriod, route.params.projectId]);
+  }, [
+    dispatch,
+    route.params.projectId,
+    comparisonState.evaluationPeriod,
+    comparisonState.comparisonSiteNature,
+  ]);
 
   if (route.params.page === "introduction") {
     return (

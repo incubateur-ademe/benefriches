@@ -13,12 +13,14 @@ import TileDuplicateProject from "./duplicate-impacts";
 
 type Props = {
   siteId: string;
+  projectId: string;
+  evaluationPeriod?: number;
 };
 
-function ProjectImpactFooter({ siteId }: Props) {
+function ProjectImpactFooter({ siteId, projectId, evaluationPeriod }: Props) {
   return (
     <>
-      <ImpactComparisonSection />
+      <ImpactComparisonSection projectId={projectId} evaluationPeriod={evaluationPeriod} />
 
       <p className="tw-text-lg tw-font-bold">Aller plus loin avec ce projet :</p>
       <div className="tw-grid md:tw-grid-cols-3 tw-gap-3 md:tw-gap-6 tw-pb-6">

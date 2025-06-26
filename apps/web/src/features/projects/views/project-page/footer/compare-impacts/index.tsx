@@ -1,34 +1,25 @@
-import { selectCurrentUserEmail } from "@/features/onboarding/core/user.reducer";
-import { createFeatureAlert } from "@/features/user-feature-alerts/core/createFeatureAlert.action";
+import { setInitialParams } from "@/features/projects/application/project-impacts-urban-sprawl-comparison/urbanSprawlComparison.reducer";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { routes } from "@/shared/views/router";
 
 import ImpactComparisonSection from "./ImpactComparisonSection";
 
-const ImpactComparisonSectionContainer = () => {
-  const { compareImpactsAlert, createUserFeatureAlertState } = useAppSelector(
-    (state) => state.userFeatureAlert,
-  );
-
-  const siteIsFriche = useAppSelector(
-    (state) => state.projectImpacts.relatedSiteData?.nature === "FRICHE",
-  );
-
-  const userEmail = useAppSelector(selectCurrentUserEmail);
+type Props = {
+  projectId: string;
+  evaluationPeriod?: number;
+};
+const ImpactComparisonSectionContainer = ({ projectId, evaluationPeriod }: Props) => {
+  const siteNature = useAppSelector((state) => state.projectImpacts.relatedSiteData?.nature);
 
   const dispatch = useAppDispatch();
 
-  if (!siteIsFriche) {
-    return null;
-  }
-
   return (
     <ImpactComparisonSection
-      onSubmit={({ email, options }) => {
-        void dispatch(createFeatureAlert({ email, feature: { type: "compare_impacts", options } }));
+      siteNature={siteNature!}
+      onSelectOption={(comparisonSiteNature) => {
+        dispatch(setInitialParams({ evaluationPeriod, comparisonSiteNature }));
+        routes.urbanSprawlImpactsComparison({ projectId, page: "introduction" }).push();
       }}
-      userCompareImpactsAlerts={compareImpactsAlert?.options}
-      onSaveLoadingState={createUserFeatureAlertState.compareImpacts}
-      userEmail={userEmail}
     />
   );
 };

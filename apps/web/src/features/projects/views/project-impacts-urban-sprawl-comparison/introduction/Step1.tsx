@@ -39,8 +39,9 @@ export default function Step1({
       </div>
 
       <h2 className="tw-font-normal tw-text-3xl">
-        Vous allez comparer les impacts de votre projet «&nbsp;{projectName}&nbsp;» sur l’ancienne
-        carrière Misery avec le même projet sur{" "}
+        Vous allez comparer les impacts de votre projet{" "}
+        <strong>«&nbsp;{projectName.replace(/ /g, "\u00a0")}&nbsp;»</strong> sur le site{" "}
+        <strong>«&nbsp;{baseSiteData.name}&nbsp;»</strong> avec le même projet sur{" "}
         <strong>
           {(() => {
             switch (comparisonSiteData.nature) {
@@ -83,7 +84,7 @@ export default function Step1({
             }
           })()}
         </li>
-        <li>Implanté sur la même intercommunalité (Nantes Métropole)</li>
+        <li>Implanté sur la même commune ({baseSiteData.address.city})</li>
         <li>
           Ayant la même superficie que{" "}
           {(() => {

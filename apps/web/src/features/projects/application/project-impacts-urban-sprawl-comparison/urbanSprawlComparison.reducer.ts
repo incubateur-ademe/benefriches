@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { SiteNature } from "shared";
 
 import {
   fetchUrbanSprawlImpactsComparison,
@@ -19,6 +20,7 @@ export type UrbanSprawlImpactsComparisonState = {
   comparisonCase?: UrbanSprawlImpactsComparisonObj["comparisonCase"];
   evaluationPeriod: number;
   currentViewMode: ViewMode;
+  comparisonSiteNature: SiteNature;
 };
 
 const getInitialState = (): UrbanSprawlImpactsComparisonState => {
@@ -29,6 +31,7 @@ const getInitialState = (): UrbanSprawlImpactsComparisonState => {
     dataLoadingState: "idle",
     evaluationPeriod: DEFAULT_EVALUATION_PERIOD_IN_YEARS,
     currentViewMode: DEFAULT_VIEW_MODE,
+    comparisonSiteNature: "AGRICULTURAL_OPERATION",
   };
 };
 
@@ -41,6 +44,15 @@ const urbanSprawlImpactsComparisonSlice = createSlice({
     },
     setViewMode: (state, action: PayloadAction<ViewMode>) => {
       state.currentViewMode = action.payload;
+    },
+    setInitialParams: (
+      state,
+      action: PayloadAction<{ comparisonSiteNature: SiteNature; evaluationPeriod?: number }>,
+    ) => {
+      state.comparisonSiteNature = action.payload.comparisonSiteNature;
+      if (action.payload.evaluationPeriod) {
+        state.evaluationPeriod = action.payload.evaluationPeriod;
+      }
     },
   },
   extraReducers(builder) {
@@ -59,6 +71,7 @@ const urbanSprawlImpactsComparisonSlice = createSlice({
   },
 });
 
-export const { setEvaluationPeriod, setViewMode } = urbanSprawlImpactsComparisonSlice.actions;
+export const { setEvaluationPeriod, setViewMode, setInitialParams } =
+  urbanSprawlImpactsComparisonSlice.actions;
 
 export default urbanSprawlImpactsComparisonSlice.reducer;

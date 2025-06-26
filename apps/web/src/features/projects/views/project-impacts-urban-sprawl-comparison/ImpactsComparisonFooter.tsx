@@ -64,7 +64,7 @@ function ImpactsComparisonFooter({ baseCaseSiteData, comparisonCaseSiteData, pro
           >
             Comprendre les calculs
           </Button>
-          <div className="tw-flex tw-flex-col md:tw-flex-row  md:tw-gap-2">
+          <div className="tw-flex tw-flex-col md:tw-flex-row tw-flex-wrap md:tw-gap-2">
             <Button
               size="small"
               iconId="fr-icon-map-pin-2-line"
@@ -85,7 +85,7 @@ function ImpactsComparisonFooter({ baseCaseSiteData, comparisonCaseSiteData, pro
                 "aria-controls": COMPARISON_SITE_FEATURES_DIALOG_ID,
               }}
             >
-              Revoir les données du {comparisonSiteDesignation}
+              Revoir les données {comparisonSiteDesignation}
             </Button>
 
             <Button

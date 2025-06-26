@@ -4,6 +4,7 @@ import Button from "@codegouvfr/react-dsfr/Button";
 import { ProjectDevelopmentPlanType } from "@/features/projects/domain/projects.types";
 import classNames, { ClassValue } from "@/shared/views/clsx";
 
+import WithTooltip from "../my-projects-page/ScenariiList/ScenarioTile/ScenarioTileTooltip";
 import { getScenarioPictoUrl } from "../shared/scenarioType";
 
 export type HeaderProps = {
@@ -67,16 +68,18 @@ const ImpactsComparisonHeader = ({
           </div>
         </div>
 
-        <Button
-          priority="primary"
-          iconId="fr-icon-file-download-line"
-          disabled
-          onClick={() => {
-            //exportImpactsModal.open();
-          }}
-        >
-          Exporter
-        </Button>
+        <WithTooltip tooltipText="Bientôt disponible ⌛">
+          <Button
+            priority="primary"
+            iconId="fr-icon-file-download-line"
+            disabled
+            onClick={() => {
+              //exportImpactsModal.open();
+            }}
+          >
+            Exporter
+          </Button>
+        </WithTooltip>
       </div>
     </div>
   );
