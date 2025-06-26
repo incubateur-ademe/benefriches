@@ -62,30 +62,24 @@ const SummaryAvoidedCo2eqEmissionsDescription = ({ impactData }: Props) => {
           </li>
           <li>de la création de capacités de production d’énergies renouvelables.</li>
         </ul>
-        {isSuccess ? (
-          <ImpactItemGroup isClickable>
-            <ImpactItemDetails
-              impactRowValueProps={{ buttonInfoAlwaysDisplayed: true }}
-              value={co2eqValue}
-              label="☁️ CO2-eq stocké ou évité"
-              type="co2"
-              labelProps={{
-                onClick: (e) => {
-                  e.stopPropagation();
+        <ImpactItemGroup isClickable>
+          <ImpactItemDetails
+            impactRowValueProps={{ buttonInfoAlwaysDisplayed: true }}
+            value={value}
+            label="☁️ CO2-eq stocké ou évité"
+            type="co2"
+            labelProps={{
+              onClick: (e) => {
+                e.stopPropagation();
 
-                  updateModalContent({
-                    sectionName: "environmental",
-                    impactName: "co2_benefit",
-                  });
-                },
-              }}
-            />
-          </ImpactItemGroup>
-        ) : (
-          <p>
-            <i>En cours de rédaction...</i>
-          </p>
-        )}
+                updateModalContent({
+                  sectionName: "environmental",
+                  impactName: "co2_benefit",
+                });
+              },
+            }}
+          />
+        </ImpactItemGroup>
       </ModalContent>
     </ModalBody>
   );

@@ -205,7 +205,21 @@ export type KeyImpactIndicatorData =
   | {
       name: "avoidedMaintenanceCostsForLocalAuthority";
       isSuccess: boolean;
-      value: number;
+      value:
+        | {
+            amount: number;
+            avoidedRoadAndUtilitiesMaintenance: number;
+            avoidedFricheCosts: number;
+            roadAndUtilitiesMaintenance?: undefined;
+            fricheCosts?: undefined;
+          }
+        | {
+            amount: number;
+            roadAndUtilitiesMaintenance: number;
+            fricheCosts: number;
+            avoidedRoadAndUtilitiesMaintenance?: undefined;
+            avoidedFricheCosts?: undefined;
+          };
     };
 
 type SiteData = {
@@ -469,7 +483,7 @@ export const getUrbanSprawlComparisonImpactIndicatorsList = (
     impacts.push({
       name: "avoidedMaintenanceCostsForLocalAuthority",
       isSuccess: avoidedMaintenanceCostsForLocalAuthority.amount > 0,
-      value: avoidedMaintenanceCostsForLocalAuthority.amount,
+      value: avoidedMaintenanceCostsForLocalAuthority,
     });
   }
 

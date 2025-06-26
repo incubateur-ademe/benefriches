@@ -1,12 +1,32 @@
+import { useContext } from "react";
+
+import ImpactItemDetails from "@/features/projects/views/project-page/impacts/list-view/ImpactItemDetails";
+import ImpactItemGroup from "@/features/projects/views/project-page/impacts/list-view/ImpactItemGroup";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import ModalBody from "@/features/projects/views/shared/impacts/modals/ModalBody";
 import ModalContent from "@/features/projects/views/shared/impacts/modals/ModalContent";
 import ModalHeader from "@/features/projects/views/shared/impacts/modals/ModalHeader";
 
+import { ImpactModalDescriptionContext } from "../ImpactModalDescriptionContext";
+
 type Props = {
   impactData: {
     isSuccess: boolean;
-    value: number;
+    value:
+      | {
+          amount: number;
+          avoidedRoadAndUtilitiesMaintenance: number;
+          avoidedFricheCosts: number;
+          roadAndUtilitiesMaintenance?: undefined;
+          fricheCosts?: undefined;
+        }
+      | {
+          amount: number;
+          roadAndUtilitiesMaintenance: number;
+          fricheCosts: number;
+          avoidedRoadAndUtilitiesMaintenance?: undefined;
+          avoidedFricheCosts?: undefined;
+        };
   };
 };
 
@@ -17,12 +37,14 @@ const SummaryAvoidedMaintenanceCostsForLocalAuthorityDescription = ({ impactData
     ? "✅ Des dépenses de fonctionnement à la charge de la collectivité réduites"
     : "🚨 Des dépenses de fonctionnement à la charge de la collectivité maintenues ";
 
+  const { updateModalContent } = useContext(ImpactModalDescriptionContext);
+
   return (
     <ModalBody>
       <ModalHeader
         title={title}
         value={{
-          text: formatMonetaryImpact(value),
+          text: formatMonetaryImpact(value.amount),
           state: isSuccess ? "success" : "error",
           description: isSuccess
             ? `économisés par la collectivité grâce à la reconversion de la friche`
@@ -65,6 +87,81 @@ const SummaryAvoidedMaintenanceCostsForLocalAuthorityDescription = ({ impactData
             </p>
             <p>Ainsi, conserver un site en friche maintient ces dépenses&nbsp;!</p>
           </>
+        )}
+
+        {impactData.value.avoidedFricheCosts && (
+          <ImpactItemGroup>
+            <ImpactItemDetails
+              impactRowValueProps={{ buttonInfoAlwaysDisplayed: true }}
+              value={impactData.value.avoidedFricheCosts}
+              label="🏚 Dépenses de sécurisation de la friche évitées"
+              type="monetary"
+              labelProps={{
+                onClick: (e) => {
+                  e.stopPropagation();
+                  updateModalContent({
+                    sectionName: "socio_economic",
+                    impactName: "avoided_friche_costs",
+                  });
+                },
+              }}
+            />
+          </ImpactItemGroup>
+        )}
+        {impactData.value.avoidedRoadAndUtilitiesMaintenance && (
+          <ImpactItemGroup>
+            <ImpactItemDetails
+              impactRowValueProps={{ buttonInfoAlwaysDisplayed: true }}
+              value={impactData.value.avoidedRoadAndUtilitiesMaintenance}
+              label="🅿️ Dépenses d’entretien des VRD évités"
+              type="monetary"
+              labelProps={{
+                onClick: (e) => {
+                  e.stopPropagation();
+                  updateModalContent({
+                    sectionName: "socio_economic",
+                    impactName: "roads_and_utilities_maintenance_expenses",
+                  });
+                },
+              }}
+            />
+          </ImpactItemGroup>
+        )}
+        {impactData.value.fricheCosts && (
+          <ImpactItemGroup>
+            <ImpactItemDetails
+              value={impactData.value.fricheCosts}
+              label="🏚 Dépenses de gestion et sécurisation de la friche"
+              type="monetary"
+              labelProps={{
+                onClick: (e) => {
+                  e.stopPropagation();
+                  updateModalContent({
+                    sectionName: "socio_economic",
+                    impactName: "avoided_friche_costs",
+                  });
+                },
+              }}
+            />
+          </ImpactItemGroup>
+        )}
+        {impactData.value.roadAndUtilitiesMaintenance && (
+          <ImpactItemGroup>
+            <ImpactItemDetails
+              value={impactData.value.roadAndUtilitiesMaintenance}
+              label="🅿️ Dépenses d’entretien des VRD supplémentaires"
+              type="monetary"
+              labelProps={{
+                onClick: (e) => {
+                  e.stopPropagation();
+                  updateModalContent({
+                    sectionName: "socio_economic",
+                    impactName: "roads_and_utilities_maintenance_expenses",
+                  });
+                },
+              }}
+            />
+          </ImpactItemGroup>
         )}
       </ModalContent>
     </ModalBody>
