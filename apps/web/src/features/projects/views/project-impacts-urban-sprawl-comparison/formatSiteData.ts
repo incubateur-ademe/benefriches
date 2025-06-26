@@ -14,5 +14,6 @@ export const formatSiteDataAsFeatures = (siteData: SiteImpactsDataView) => {
     expenses: siteData.yearlyExpenses,
     incomes: siteData.yearlyIncomes,
     description: siteData.description || "",
+    contaminatedSurfaceArea: siteData.contaminatedSoilSurface,
   } as SiteFeatures;
 };
