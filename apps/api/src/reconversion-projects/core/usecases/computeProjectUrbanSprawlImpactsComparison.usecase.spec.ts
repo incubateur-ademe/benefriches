@@ -65,8 +65,9 @@ const projectData: ReconversionProjectImpactsDataView<Schedule> = {
   sitePurchaseTotalAmount: 1800000,
   sitePurchasePropertyTransferDutiesAmount: 17400,
   relatedSiteId: "",
-  reinstatementExpenses: [],
+  reinstatementExpenses: [{ purpose: "asbestos_removal", amount: 10000 }],
   financialAssistanceRevenues: [],
+  reinstatementContractOwnerName: "Mairie de Blajan",
 };
 
 const friche = {
@@ -258,6 +259,11 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
       result.comparisonCase.projectImpacts.economicBalance,
     );
 
+    expect(result.baseCase.comparisonImpacts.economicBalance.costs.siteReinstatement).toBeDefined();
+    expect(
+      result.comparisonCase.comparisonImpacts.economicBalance.costs.siteReinstatement,
+    ).toBeUndefined();
+
     // SOCIAL
     expect(result.baseCase.comparisonImpacts.social.accidents).toEqual(
       result.baseCase.projectImpacts.social.accidents,
@@ -355,6 +361,7 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
     ).toBeLessThan(
       result.comparisonCase.projectImpacts.environmental.nonContaminatedSurfaceArea?.forecast ?? 0,
     );
+
     expect(result.comparisonCase.comparisonImpacts.environmental.avoidedCo2eqEmissions).toEqual(
       result.comparisonCase.projectImpacts.environmental.avoidedCo2eqEmissions,
     );
@@ -396,7 +403,6 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
     ).toBeGreaterThan(
       result.comparisonCase.projectImpacts.environmental.soilsCo2eqStorage?.forecast ?? 0,
     );
-
     // SOCIO ECONOMIC
     expect(result.baseCase.comparisonImpacts.socioeconomic.impacts.length).toBeGreaterThanOrEqual(
       result.comparisonCase.projectImpacts.socioeconomic.impacts.length,
@@ -769,7 +775,7 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
     } as const;
 
     const projectQuery = new InMemoryReconversionProjectImpactsQuery();
-    projectQuery._setData(reconversionProjectImpactDataView);
+    projectQuery._setData({ ...reconversionProjectImpactDataView, reinstatementExpenses: [] });
     const siteQuery = new InMemorySiteImpactsQuery();
     siteQuery._setData(site);
 
@@ -785,6 +791,13 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
       evaluationPeriodInYears,
       comparisonSiteNature: "FRICHE",
     });
+
+    expect(
+      result.baseCase.comparisonImpacts.economicBalance.costs.siteReinstatement,
+    ).toBeUndefined();
+    expect(
+      result.comparisonCase.comparisonImpacts.economicBalance.costs.siteReinstatement,
+    ).toBeDefined();
 
     expect(
       result.baseCase.comparisonImpacts.socioeconomic.impacts.filter(

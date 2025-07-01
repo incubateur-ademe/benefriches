@@ -2,11 +2,13 @@ import {
   AgriculturalOperationGenerator,
   ComparisonRoadAndUtilitiesConstructionImpact,
   ComparisonRoadAndUtilitiesMaintenanceImpact,
+  computeProjectReinstatementExpenses,
   FricheGenerator,
   Impact,
   NaturalAreaGenerator,
   ReconversionProjectImpacts,
   ReconversionProjectImpactsDataView,
+  ReinstatementExpensePurpose,
   roundTo2Digits,
   roundToInteger,
   SiteImpactsDataView,
@@ -658,7 +660,7 @@ export class ComputeProjectUrbanSprawlImpactsComparisonUseCase
       siteSoilsCarbonStorage: comparisonSiteSoilsCarbonStorage,
     });
 
-    const inputReconversionProjectData: InputReconversionProjectData = {
+    const baseInputReconversionProjectData: InputReconversionProjectData = {
       ...reconversionProject,
       developmentPlanInstallationExpenses: reconversionProject.developmentPlan.installationCosts,
       developmentPlanType: reconversionProject.developmentPlan.type,
@@ -666,6 +668,48 @@ export class ComputeProjectUrbanSprawlImpactsComparisonUseCase
       developmentPlanFeatures: reconversionProject.developmentPlan.features,
       soilsCarbonStorage: projectSoilsCarbonStorage,
     };
+
+    const comparisonInputReconversionProjectData: InputReconversionProjectData = (() => {
+      switch (comparisonSiteData.nature) {
+        case "FRICHE": {
+          return {
+            ...baseInputReconversionProjectData,
+            reinstatementExpenses: typedObjectEntries(
+              computeProjectReinstatementExpenses(
+                comparisonInputSiteData.soilsDistribution,
+                baseInputReconversionProjectData.soilsDistribution,
+                0.75 * (comparisonSiteData.contaminatedSoilSurface ?? 0),
+              ),
+            )
+              .filter(([, amount]) => amount && amount > 0)
+              .map(([purpose, amount]) => {
+                switch (purpose) {
+                  case "deimpermeabilization":
+                  case "remediation":
+                  case "demolition":
+                    return { amount, purpose };
+                  case "sustainableSoilsReinstatement":
+                    return { amount, purpose: "sustainable_soils_reinstatement" };
+                  case "asbestosRemoval":
+                    return { amount, purpose: "asbestos_removal" };
+                }
+              }) as { amount: number; purpose: ReinstatementExpensePurpose }[],
+            reinstatementContractOwnerName:
+              baseInputReconversionProjectData.developmentPlanDeveloperName,
+            decontaminatedSoilSurface: 0.75 * (comparisonSiteData.contaminatedSoilSurface ?? 0),
+          };
+        }
+        case "AGRICULTURAL_OPERATION":
+        case "NATURAL_AREA":
+          return {
+            ...baseInputReconversionProjectData,
+            reinstatementExpenses: [],
+            reinstatementContractOwnerName: undefined,
+            reinstatementSchedule: undefined,
+            decontaminatedSoilSurface: undefined,
+          };
+      }
+    })();
 
     const siteCityData = {
       citySquareMetersSurfaceArea: squareMetersSurfaceArea,
@@ -718,7 +762,7 @@ export class ComputeProjectUrbanSprawlImpactsComparisonUseCase
       siteCityData: baseSiteCityData,
       dateProvider: this.dateProvider,
       inputSiteData: baseInputSiteData,
-      inputReconversionProject: inputReconversionProjectData,
+      inputReconversionProject: baseInputReconversionProjectData,
       evaluationPeriodInYears,
     });
 
@@ -726,7 +770,7 @@ export class ComputeProjectUrbanSprawlImpactsComparisonUseCase
       siteCityData: comparisonSiteCityData,
       dateProvider: this.dateProvider,
       inputSiteData: comparisonInputSiteData,
-      inputReconversionProject: inputReconversionProjectData,
+      inputReconversionProject: comparisonInputReconversionProjectData,
       evaluationPeriodInYears,
     });
 
