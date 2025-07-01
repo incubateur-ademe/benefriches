@@ -51,7 +51,7 @@ const formatBudget = (value: number) => {
   return value ? formatMoney(value) : "-";
 };
 
-const columns = ["", "S1 2023", "S2 2023", "S1 2024", "S2 2024"];
+const columns = ["", "S1 2023", "S2 2023", "S1 2024", "S2 2024", "S1 2025"];
 
 function BudgetPage() {
   return (
@@ -123,6 +123,7 @@ function BudgetPage() {
                 <td className="tw-text-right tw-px-6 tw-py-3">{formatBudget(row.S2_2023)}</td>
                 <td className="tw-text-right tw-px-6 tw-py-3">{formatBudget(row.S1_2024)}</td>
                 <td className="tw-text-right tw-px-6 tw-py-3">{formatBudget(row.S2_2024)}</td>
+                <td className="tw-text-right tw-px-6 tw-py-3">{formatBudget(row.S1_2025)}</td>
               </tr>
             ))}
           </tbody>
