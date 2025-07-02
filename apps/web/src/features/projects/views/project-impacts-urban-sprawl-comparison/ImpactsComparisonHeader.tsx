@@ -39,7 +39,7 @@ const ImpactsComparisonHeader = ({
               "tw-mb-1",
             )}
           >
-            <span className="tw-text-[#243C83]">
+            <span className="tw-text-[#806922] dark:tw-text-[#F6F1E1]">
               <span
                 className={fr.cx("fr-icon--sm", "fr-icon-map-pin-2-line", "fr-pr-1w")}
                 aria-hidden="true"
@@ -47,7 +47,7 @@ const ImpactsComparisonHeader = ({
               {baseSiteName}
             </span>
             <span className="tw-text-3xl tw-px-4">/</span>
-            <span className="tw-text-[#7F236B]">
+            <span className="tw-text-[#7F236B] dark:tw-text-[#F6E1F1]">
               <span
                 className={fr.cx("fr-icon--sm", "fr-icon-map-pin-2-line", "fr-pr-1w")}
                 aria-hidden="true"

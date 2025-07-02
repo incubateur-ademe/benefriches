@@ -1,4 +1,4 @@
-import { roundTo1Digit, roundTo2Digits, roundToInteger } from "shared";
+import { roundToInteger } from "shared";
 
 import {
   formatNumberFr,
@@ -14,33 +14,33 @@ type ImpactFormatConfig = Record<
   ImpactFormatType,
   {
     unitSuffix: string;
-    roundFn: typeof roundTo1Digit | typeof roundTo2Digits;
+    maximumFractionDigits: number;
   }
 >;
 
 const impactFormatConfig = {
   monetary: {
-    roundFn: roundToInteger,
+    maximumFractionDigits: 0,
     unitSuffix: `${NO_BREAK_SPACE}€`,
   },
   co2: {
-    roundFn: roundTo1Digit,
+    maximumFractionDigits: 1,
     unitSuffix: `${NO_BREAK_SPACE}t`,
   },
   surface_area: {
-    roundFn: roundTo1Digit,
+    maximumFractionDigits: 1,
     unitSuffix: `${NO_BREAK_SPACE}${SQUARE_METERS_HTML_SYMBOL}`,
   },
   etp: {
-    roundFn: roundTo1Digit,
+    maximumFractionDigits: 1,
     unitSuffix: "",
   },
   time: {
-    roundFn: roundToInteger,
+    maximumFractionDigits: 0,
     unitSuffix: `${NO_BREAK_SPACE}h`,
   },
   default: {
-    roundFn: roundToInteger,
+    maximumFractionDigits: 0,
     unitSuffix: "",
   },
 } as const satisfies ImpactFormatConfig;
@@ -52,12 +52,12 @@ const getSignPrefix = (value: number) => {
 const formatImpactValue =
   (formatType: ImpactFormatType) =>
   (impactValue: number, { withSignPrefix } = { withSignPrefix: true }) => {
-    const { roundFn, unitSuffix } = impactFormatConfig[formatType];
+    const { maximumFractionDigits, unitSuffix } = impactFormatConfig[formatType];
 
-    const roundedValue = roundFn(impactValue);
-    const prefix = withSignPrefix ? getSignPrefix(impactValue) : "";
-
-    return `${prefix}${formatNumberFr(roundedValue)}${unitSuffix}`;
+    return `${formatNumberFr(impactValue, {
+      signDisplay: withSignPrefix ? "exceptZero" : "never",
+      maximumFractionDigits,
+    })}${unitSuffix}`;
   };
 
 export const formatDefaultImpact = formatImpactValue("default");

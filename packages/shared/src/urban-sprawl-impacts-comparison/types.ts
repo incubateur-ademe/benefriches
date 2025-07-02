@@ -18,14 +18,14 @@ import {
 } from "../reconversion-project-impacts";
 import { SiteFricheCostsImpact } from "../site";
 
-type ComparisonRentalIncomeImpact = RentalIncomeImpact & {
+export type ComparisonRentalIncomeImpact = RentalIncomeImpact & {
   details: {
     impact: "project_rental_income" | "site_statu_quo_rental_income";
     amount: number;
   }[];
 };
 
-type ComparisonTaxesIncomesImpact = {
+export type ComparisonTaxesIncomesImpact = {
   amount: number;
   impact: "taxes_income";
   impactCategory: "economic_indirect";
@@ -42,7 +42,7 @@ type ComparisonTaxesIncomesImpact = {
   }[];
 };
 
-type ComparisonSiteFricheCostsImpact = {
+export type ComparisonSiteFricheCostsImpact = {
   amount: number;
   impact: "statu_quo_friche_costs";
   impactCategory: "economic_direct";
@@ -68,7 +68,7 @@ export type ComparisonRoadAndUtilitiesMaintenanceImpact = {
   actor: "community";
 };
 
-type UrbanSprawlComparisonSocioEconomicImpacts =
+export type UrbanSprawlComparisonSocioEconomicImpacts =
   // merged impacts
   | ComparisonRentalIncomeImpact
   | ComparisonTaxesIncomesImpact

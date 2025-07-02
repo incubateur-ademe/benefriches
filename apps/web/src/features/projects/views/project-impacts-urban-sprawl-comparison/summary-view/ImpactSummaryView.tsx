@@ -35,7 +35,9 @@ const ImpactSummaryView = ({ baseCase, comparisonCase, modalData }: Props) => {
           >
             <h3
               className={classNames(
-                index === 0 ? "tw-text-[#243C83]" : "tw-text-[#7F236B]",
+                index === 0
+                  ? "tw-text-[#806922] dark:tw-text-[#F6F1E1]"
+                  : "tw-text-[#7F236B] dark:tw-text-[#F6E1F1]",
                 "tw-text-2xl",
               )}
             >

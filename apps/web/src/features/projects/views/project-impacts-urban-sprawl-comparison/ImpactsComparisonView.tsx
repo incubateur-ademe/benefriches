@@ -3,6 +3,7 @@ import { ViewMode } from "../../application/project-impacts/projectImpacts.reduc
 import ProjectImpactsActionBar from "../shared/actions/ProjectImpactsActionBar";
 import ImpactsComparisonFooter from "./ImpactsComparisonFooter";
 import ImpactsComparisonHeader from "./ImpactsComparisonHeader";
+import ImpactComparisonListView from "./list-view/ImpactsComparisonListView";
 import ImpactsSummaryViewContainer from "./summary-view";
 
 type Props = {
@@ -41,11 +42,23 @@ const ImpactsComparisonView = ({
           onViewModeClick={onCurrentViewModeChange}
           onEvaluationPeriodChange={onEvaluationPeriodChange}
           header={<ImpactsComparisonHeader {...headerProps} />}
-          disabledSegments={["list", "charts"]}
+          disabledSegments={["charts"]}
         />
 
         {currentViewMode === "summary" && <ImpactsSummaryViewContainer />}
-        {currentViewMode === "list" && <h2 className="tw-py-10">🏗️ Bientôt disponible...</h2>}
+        {currentViewMode === "list" && (
+          <ImpactComparisonListView
+            projectType={projectData.developmentPlan.type}
+            baseCase={{
+              siteName: baseCase.conversionSiteData.name,
+              impacts: baseCase.comparisonImpacts,
+            }}
+            comparisonCase={{
+              siteName: comparisonCase.conversionSiteData.name,
+              impacts: comparisonCase.comparisonImpacts,
+            }}
+          />
+        )}
         {currentViewMode === "charts" && <h2 className="tw-py-10"> 🏗️ Bientôt disponible...</h2>}
         <ImpactsComparisonFooter
           baseCaseSiteData={baseCase.conversionSiteData}
