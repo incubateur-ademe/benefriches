@@ -41,12 +41,12 @@ export default function ProjectPdfExport({
         language="fr"
       >
         <ProjectPdfExportCoverPage />
+        <SiteFeaturesPdfPage siteFeatures={siteFeatures} />
+        <ProjectFeaturesPdfPage projectFeatures={projectFeatures} />
         <ProjectImpactsPdfPage
           impacts={impacts}
           evaluationPeriodInYears={evaluationPeriodInYears}
         />
-        <ProjectFeaturesPdfPage projectFeatures={projectFeatures} />
-        <SiteFeaturesPdfPage siteFeatures={siteFeatures} />
       </Document>
     </ExportImpactsContext.Provider>
   );
