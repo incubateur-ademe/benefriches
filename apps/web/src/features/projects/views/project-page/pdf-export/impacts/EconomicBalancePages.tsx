@@ -24,10 +24,10 @@ export default function EconomicBalanceSection({ impact, evaluationPeriodInYears
   const { total, economicBalance, bearer } = impact;
   return (
     <PdfPage id={pageIds["impacts-economic-balance"]}>
-      <PdfPageTitle>1 Impacts du projet</PdfPageTitle>
+      <PdfPageTitle>3. Impacts du projet</PdfPageTitle>
       <Text style={tw("text-lg text-[#000091] font-bold")}>Sur {evaluationPeriodInYears} ans</Text>
       <Text style={tw("text-sm mb-4")}>(durée à partir de la mise en service du projet)</Text>
-      <PdfPageSubtitle>1.1 Bilan de l'opération</PdfPageSubtitle>
+      <PdfPageSubtitle>3.1 Bilan de l'opération</PdfPageSubtitle>
       <View style={tw("mb-4")}>
         <Text>
           Le bilan d'opération regroupe l'ensemble des recettes et des dépenses d'une opération

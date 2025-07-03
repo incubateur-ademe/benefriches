@@ -34,7 +34,7 @@ export default function SiteFeaturesPdfPage({ siteFeatures }: Props) {
   return (
     <>
       <PdfPage id={pageIds["site-features"]}>
-        <PdfPageTitle>3. Caractéristiques du site</PdfPageTitle>
+        <PdfPageTitle>1. Caractéristiques du site</PdfPageTitle>
         <FeaturesSection title="📍 Localisation">
           <DataLine
             label="Adresse du site"

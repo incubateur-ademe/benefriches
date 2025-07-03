@@ -30,7 +30,7 @@ export default function EnvironmentalImpactsPage({ impacts }: Props) {
 
   return (
     <PdfPage id={pageIds["impacts-environment"]}>
-      <PdfPageSubtitle>1.4 Impacts environnementaux</PdfPageSubtitle>
+      <PdfPageSubtitle>3.4 Impacts environnementaux</PdfPageSubtitle>
       <View style={tw("mb-4")}>
         <Text>Les impacts environnementaux se décompose en différents types d'indicateurs :</Text>
         <View style={tw("py-2")}>

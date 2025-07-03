@@ -31,7 +31,7 @@ const SocialImpactsPage = ({ impacts }: Props) => {
 
   return (
     <PdfPage id={pageIds["impacts-social"]}>
-      <PdfPageSubtitle>1.3 Impacts sociaux</PdfPageSubtitle>
+      <PdfPageSubtitle>3.3 Impacts sociaux</PdfPageSubtitle>
       <View style={tw("mb-4")}>
         <Text>La catégorie des impacts sociaux regroupe les impacts :</Text>
         <View style={tw("py-2")}>

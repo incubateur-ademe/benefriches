@@ -34,18 +34,18 @@ export default function ProjectPdfExportCoverPage() {
         </Text>
         <View style={tw("mt-16 ml-16 text-lg")}>
           <TableOfContentsItem
+            link={getPageLinkForId(pageIds["site-features"])}
+            label="1. Caractéristiques du site"
+          />
+          <TableOfContentsItem
+            link={getPageLinkForId(pageIds["project-features"])}
+            label="2. Caractéristiques du projet"
+          />
+          <TableOfContentsItem
             link={getPageLinkForId(pageIds["impacts-economic-balance"])}
-            label="1. Impacts du projet"
+            label="3. Impacts du projet"
           />
           <View style={tw("ml-6")}>
-            <TableOfContentsItem
-              link={getPageLinkForId(pageIds["site-features"])}
-              label="1. Caractéristiques du site"
-            />
-            <TableOfContentsItem
-              link={getPageLinkForId(pageIds["project-features"])}
-              label="2. Caractéristiques du projet"
-            />
             <TableOfContentsItem
               link={getPageLinkForId(pageIds["impacts-economic-balance"])}
               label="3.1 Bilan de l'opération"

@@ -9,7 +9,7 @@ import { tw } from "../../styles";
 export default function SocioEconomicImpactsIntroductionPage() {
   return (
     <PdfPage id={pageIds["impacts-socio-economic"]}>
-      <PdfPageSubtitle>1.2 Impacts socio-économiques</PdfPageSubtitle>
+      <PdfPageSubtitle>3.2 Impacts socio-économiques</PdfPageSubtitle>
       <Text style={tw("mb-2")}>
         L'évaluation socio-économique a pour objet d'apprécier l'intérêt d'un projet ou d'un
         investissement pour la collectivité.
