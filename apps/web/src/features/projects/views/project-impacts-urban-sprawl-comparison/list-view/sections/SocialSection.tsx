@@ -27,7 +27,7 @@ const ImpactComparisonListSocialSection = ({ baseCase, comparisonCase }: Props) 
     <ImpactComparisonTableSectionRow label="Impacts sociaux">
       {(() => {
         const base = baseCase.impacts.social.fullTimeJobs;
-        const comparison = baseCase.impacts.social.fullTimeJobs;
+        const comparison = comparisonCase.impacts.social.fullTimeJobs;
 
         if (!base?.difference && !comparison?.difference) {
           return null;
