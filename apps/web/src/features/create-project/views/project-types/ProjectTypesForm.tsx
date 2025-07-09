@@ -8,6 +8,7 @@ import TileFormFieldsWrapper from "@/shared/views/layout/TileFormWrapper/TileFor
 import TileFormFooterWrapper from "@/shared/views/layout/TileFormWrapper/TileFormFooterWrapper";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
+import { getLabelForDevelopmentPlanCategory } from "../projectTypeLabelMapping";
 import DevelopmentPlanCategoryTile from "./DevelopmentPlanCategoryTile";
 
 type Props = {
@@ -26,18 +27,21 @@ function ProjectTypesForm({ onSubmit, initialValues, allowedDevelopmentPlanCateg
   });
   const validationError = formState.errors.developmentPlanCategory;
 
-  const options = developmentPlanCategorySchema.options.map((option) => {
-    return {
-      value: option,
-      disabled: !allowedDevelopmentPlanCategories.includes(option),
-    };
-  });
+  const options = developmentPlanCategorySchema.options
+    .filter((option) => allowedDevelopmentPlanCategories.includes(option))
+    .map((option) => {
+      return {
+        value: option,
+        label:
+          option === "URBAN_PROJECT" ? "Autre projet" : getLabelForDevelopmentPlanCategory(option),
+      };
+    });
 
   return (
     <WizardFormLayout title="Que souhaitez-vous aménager sur ce site ?" fullScreen>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <TileFormFieldsWrapper small>
-          {options.map(({ value, disabled }) => {
+        <TileFormFieldsWrapper>
+          {options.map(({ value, label }) => {
             return (
               <TileFormFieldWrapper key={value}>
                 <Controller
@@ -49,7 +53,7 @@ function ProjectTypesForm({ onSubmit, initialValues, allowedDevelopmentPlanCateg
                     return (
                       <DevelopmentPlanCategoryTile
                         developmentPlanCategory={value}
-                        disabled={disabled}
+                        title={label}
                         isSelected={isSelected}
                         onSelect={() => {
                           field.onChange(value);

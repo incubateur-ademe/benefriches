@@ -7,7 +7,6 @@ import CheckableTile from "@/shared/views/components/CheckableTile/CheckableTile
 
 import {
   getDescriptionForDevelopmentPlanCategory,
-  getLabelForDevelopmentPlanCategory,
   getPictogramForDevelopmentPlanCategory,
 } from "../projectTypeLabelMapping";
 
@@ -15,16 +14,17 @@ type Props = {
   developmentPlanCategory: DevelopmentPlanCategory;
   isSelected: boolean;
   onSelect: () => void;
-  disabled: boolean;
+  disabled?: boolean;
+  title: string;
 };
 
 export default function DevelopmentPlanCategoryTile({
   developmentPlanCategory,
   isSelected,
   disabled,
+  title,
   onSelect,
 }: Props) {
-  const title = getLabelForDevelopmentPlanCategory(developmentPlanCategory);
   const description = getDescriptionForDevelopmentPlanCategory(developmentPlanCategory);
   const imgSrc = `/img/pictograms/development-plans/${getPictogramForDevelopmentPlanCategory(developmentPlanCategory)}`;
   const tooltipId = useId();
