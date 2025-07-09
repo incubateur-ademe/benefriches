@@ -118,8 +118,10 @@ const RowNumericInput = ({
             )}
             disabled={disabled}
             aria-describedby={messageId}
-            type="number"
+            type="text"
             id={inputId}
+            inputMode="numeric"
+            pattern="[0-9]*[.,]?[0-9]+"
           />
         </WithAddon>
         {hintInputText && <span className="fr-hint-text !tw-mt-1">{hintInputText}</span>}
