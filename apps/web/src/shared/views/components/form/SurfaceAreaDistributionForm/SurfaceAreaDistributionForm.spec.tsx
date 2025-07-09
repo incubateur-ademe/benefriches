@@ -85,8 +85,8 @@ describe("SurfaceAreaDistributionForm", () => {
         />,
         { preloadedState: squareMetersInputModePreloadedState },
       );
-      const input1 = await screen.findByRole("spinbutton", { name: /field1/i });
-      const input2 = await screen.findByRole("spinbutton", { name: /field2/i });
+      const input1 = await screen.findByRole("textbox", { name: /field1/i });
+      const input2 = await screen.findByRole("textbox", { name: /field2/i });
       const controlInput = await screen.findByText("Total de toutes les surfaces");
       const submitButton = await screen.findByRole("button", { name: /valider/i });
 
@@ -122,20 +122,20 @@ describe("SurfaceAreaDistributionForm", () => {
         { preloadedState: percentageInputModePreloadedState },
       );
       const submitButton = await screen.findByRole("button", { name: /valider/i });
-      const input1 = await screen.findByRole("spinbutton", { name: /field1/i });
-      const input2 = await screen.findByRole("spinbutton", { name: /field2/i });
-      const input3 = await screen.findByRole("spinbutton", { name: /field3/i });
-      const input4 = await screen.findByRole("spinbutton", { name: /field4/i });
+      const input1 = await screen.findByRole("textbox", { name: /field1/i });
+      const input2 = await screen.findByRole("textbox", { name: /field2/i });
+      const input3 = await screen.findByRole("textbox", { name: /field3/i });
+      const input4 = await screen.findByRole("textbox", { name: /field4/i });
 
       fireEvent.input(input1, { target: { value: 70 } });
       fireEvent.input(input2, { target: { value: undefined } });
       fireEvent.input(input3, { target: { value: 0 } });
       fireEvent.input(input4, { target: { value: 30 } });
 
-      expect(input1).toHaveValue(70);
-      expect(input2).toHaveValue(null);
-      expect(input3).toHaveValue(0);
-      expect(input4).toHaveValue(30);
+      expect(input1).toHaveDisplayValue("70");
+      expect(input2).toHaveDisplayValue("");
+      expect(input3).toHaveDisplayValue("0");
+      expect(input4).toHaveDisplayValue("30");
 
       expect(screen.getByRole("button", { name: "Valider" })).not.toBeDisabled();
 
@@ -162,8 +162,8 @@ describe("SurfaceAreaDistributionForm", () => {
         { preloadedState: squareMetersInputModePreloadedState },
       );
 
-      const input1 = await screen.findByRole("spinbutton", { name: /Area 1/i });
-      const input2 = await screen.findByRole("spinbutton", { name: /Area 2/i });
+      const input1 = await screen.findByRole("textbox", { name: /Area 1/i });
+      const input2 = await screen.findByRole("textbox", { name: /Area 2/i });
 
       // enter surface areas in square meters
       fireEvent.input(input1, { target: { value: 30 } });
@@ -189,8 +189,8 @@ describe("SurfaceAreaDistributionForm", () => {
         />,
         { preloadedState: squareMetersInputModePreloadedState },
       );
-      const input1 = await screen.findByRole("spinbutton", { name: /field1/i });
-      const input2 = await screen.findByRole("spinbutton", { name: /field2/i });
+      const input1 = await screen.findByRole("textbox", { name: /field1/i });
+      const input2 = await screen.findByRole("textbox", { name: /field2/i });
       const percentageModeButton = await screen.findByLabelText("%");
 
       // enter surface areas in square meters
@@ -199,8 +199,8 @@ describe("SurfaceAreaDistributionForm", () => {
 
       // switch from square meters to percentage
       fireEvent.click(percentageModeButton);
-      expect(input1).toHaveValue(70);
-      expect(input2).toHaveValue(30);
+      expect(input1).toHaveDisplayValue("70");
+      expect(input2).toHaveDisplayValue("30");
     });
   });
 
@@ -250,16 +250,16 @@ describe("SurfaceAreaDistributionForm", () => {
         { preloadedState: percentageInputModePreloadedState },
       );
       const submitButton = await screen.findByRole("button", { name: /valider/i });
-      const input1 = await screen.findByRole("spinbutton", { name: /field1/i });
-      const input2 = await screen.findByRole("spinbutton", { name: /field2/i });
+      const input1 = await screen.findByRole("textbox", { name: /field1/i });
+      const input2 = await screen.findByRole("textbox", { name: /field2/i });
       const controlInput = await screen.findByText("Total de toutes les surfaces");
 
       expect(controlInput).toHaveTextContent("100% manquants");
       fireEvent.input(input1, { target: { value: 70 } });
       fireEvent.input(input2, { target: { value: 30 } });
 
-      expect(input1).toHaveValue(70);
-      expect(input2).toHaveValue(30);
+      expect(input1).toHaveDisplayValue("70");
+      expect(input2).toHaveDisplayValue("30");
       expect(controlInput).toHaveTextContent("Le compte est bon");
       expect(screen.getByRole("button", { name: "Valider" })).not.toBeDisabled();
 
@@ -288,20 +288,20 @@ describe("SurfaceAreaDistributionForm", () => {
         { preloadedState: percentageInputModePreloadedState },
       );
       const submitButton = await screen.findByRole("button", { name: /valider/i });
-      const input1 = await screen.findByRole("spinbutton", { name: /field1/i });
-      const input2 = await screen.findByRole("spinbutton", { name: /field2/i });
-      const input3 = await screen.findByRole("spinbutton", { name: /field3/i });
-      const input4 = await screen.findByRole("spinbutton", { name: /field4/i });
+      const input1 = await screen.findByRole("textbox", { name: /field1/i });
+      const input2 = await screen.findByRole("textbox", { name: /field2/i });
+      const input3 = await screen.findByRole("textbox", { name: /field3/i });
+      const input4 = await screen.findByRole("textbox", { name: /field4/i });
 
       fireEvent.input(input1, { target: { value: 70 } });
       fireEvent.input(input2, { target: { value: undefined } });
       fireEvent.input(input3, { target: { value: 0 } });
       fireEvent.input(input4, { target: { value: 30 } });
 
-      expect(input1).toHaveValue(70);
-      expect(input2).toHaveValue(null);
-      expect(input3).toHaveValue(0);
-      expect(input4).toHaveValue(30);
+      expect(input1).toHaveDisplayValue("70");
+      expect(input2).toHaveDisplayValue("");
+      expect(input3).toHaveDisplayValue("0");
+      expect(input4).toHaveDisplayValue("30");
 
       expect(screen.getByRole("button", { name: "Valider" })).not.toBeDisabled();
 
@@ -327,7 +327,7 @@ describe("SurfaceAreaDistributionForm", () => {
         { preloadedState: percentageInputModePreloadedState },
       );
 
-      const input1 = await screen.findByRole("spinbutton", { name: /Area 1/i });
+      const input1 = await screen.findByRole("textbox", { name: /Area 1/i });
 
       // enter surface areas in percentage
       fireEvent.input(input1, { target: { value: 50 } });
@@ -351,8 +351,8 @@ describe("SurfaceAreaDistributionForm", () => {
         />,
         { preloadedState: percentageInputModePreloadedState },
       );
-      const input1 = await screen.findByRole("spinbutton", { name: /field1/i });
-      const input2 = await screen.findByRole("spinbutton", { name: /field2/i });
+      const input1 = await screen.findByRole("textbox", { name: /field1/i });
+      const input2 = await screen.findByRole("textbox", { name: /field2/i });
       const squareMetersButton = await screen.findByLabelText(SQUARE_METERS_HTML_SYMBOL);
 
       // enter surface areas in percentage
@@ -361,8 +361,8 @@ describe("SurfaceAreaDistributionForm", () => {
 
       // switch from percentage to square meters
       fireEvent.click(squareMetersButton);
-      expect(input1).toHaveValue(15);
-      expect(input2).toHaveValue(35);
+      expect(input1).toHaveDisplayValue("15");
+      expect(input2).toHaveDisplayValue("35");
     });
   });
 });
