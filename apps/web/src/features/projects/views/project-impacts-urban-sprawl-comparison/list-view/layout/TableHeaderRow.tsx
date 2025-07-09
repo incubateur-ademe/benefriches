@@ -3,9 +3,7 @@ type Props = { baseCaseSiteName: string; comparisonCaseSiteName: string };
 const TableHeaderRow = ({ baseCaseSiteName, comparisonCaseSiteName }: Props) => {
   return (
     <tr>
-      <th scope="col" className="tw-p-2 tw-w-8"></th>
-      <th scope="col" className="tw-p-2"></th>
-      <th scope="col" className="tw-p-2"></th>
+      <td colSpan={3} className="tw-p-2"></td>
       <th scope="col" className="tw-p-2 tw-text-center tw-bg-[#F6F1E1] tw-text-[#806922]">
         <span className="tw-line-clamp-1" title={baseCaseSiteName}>
           {baseCaseSiteName}
