@@ -20,10 +20,10 @@ const UrbanSpacesDevelopmentPlanIntroduction = ({ onNext, onBack }: Props) => {
       </EditorialPageTitle>
       <EditorialPageText>
         Les différentes fonctions urbaines et l'implantation de votre projet peuvent avoir des
-        conséquences sur l'usage des sols du sites.
+        conséquences sur l'usage des sols du site.
         <br />
-        Cela aura un impact direct sur la capacité d'absorption de l'eau et sur le pouvoir de
-        stockage du carbone, il est donc important de bien renseigner cette partie.
+        Cela aura un impact direct, notamment sur la capacité d'absorption de l'eau et sur le
+        pouvoir de stockage du carbone, il est donc important de bien renseigner cette partie.
       </EditorialPageText>
       <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
     </EditorialPageLayout>
