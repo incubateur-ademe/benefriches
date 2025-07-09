@@ -1,25 +1,27 @@
+import { z } from "zod";
+
+import { IDateProvider } from "../../../adapters/IDateProvider";
+import { computePropertyTransferDutiesFromSellingPrice } from "../../../financial";
+import { formatMunicipalityName } from "../../../local-authority";
+import { typedObjectEntries } from "../../../object-entries";
+import { SiteNature } from "../../../site";
+import { SoilsDistribution } from "../../../soils";
 import {
-  BuildingsUseDistribution,
-  computeDefaultInstallationExpensesFromSiteSurfaceArea,
-  computeDefaultInstallationSchedule,
-  computeDefaultOperationsFirstYear,
-  computeDefaultReinstatementSchedule,
   computeDefaultSitePurchaseFromSiteSurfaceArea,
-  computeExpectedPostDevelopmentResaleSellingPriceFromSurfaces,
   computeProjectReinstatementExpenses,
-  computePropertyTransferDutiesFromSellingPrice,
-  computeSoilsDistributionFromSpaces,
-  formatMunicipalityName,
   ReinstatementExpensePurpose,
-  SiteNature,
-  SoilsDistribution,
-  LEGACY_SpacesDistribution,
-  typedObjectEntries,
-} from "shared";
-
-import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
-
-import { ReconversionProject, reconversionProjectSchema } from "../reconversionProject";
+} from "../../_common";
+import { reconversionProjectSchema } from "../../reconversionProjectSchemas";
+import { computeExpectedPostDevelopmentResaleSellingPriceFromSurfaces } from "../expectedPostDevelopmentResale";
+import { computeDefaultInstallationExpensesFromSiteSurfaceArea } from "../installationExpenses";
+import { computeDefaultOperationsFirstYear } from "../schedule/operationFirstYear";
+import {
+  computeDefaultInstallationSchedule,
+  computeDefaultReinstatementSchedule,
+} from "../schedule/worksSchedule";
+import { BuildingsUseDistribution } from "../spaces/living-and-activity-spaces/buildingsUse";
+import { computeSoilsDistributionFromSpaces } from "../spaces/soilsDistributionFromSpaces";
+import { LEGACY_SpacesDistribution } from "../urbanProject";
 
 type SiteData = {
   id: string;
@@ -35,17 +37,18 @@ type SiteData = {
     name?: string;
   };
 };
+type ReconversionProject = z.infer<typeof reconversionProjectSchema>;
 
 function willProjectIncludeReinstatement(siteData: SiteData) {
   return siteData.nature === "FRICHE";
 }
 
-export class UrbanProjectExpressCreationService {
+export class UrbanProjectGenerator {
   name;
   developmentType;
 
   constructor(
-    private readonly dateProvider: DateProvider,
+    private readonly dateProvider: IDateProvider,
     private readonly reconversionProjectId: string,
     private readonly createdBy: string,
     readonly siteData: SiteData,

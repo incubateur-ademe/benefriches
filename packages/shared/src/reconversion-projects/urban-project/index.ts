@@ -13,4 +13,6 @@ export * from "./spaces/soilsDistributionFromSpaces";
 export * from "./projectPhase";
 export * from "./revenues";
 
+export * from "./project-generator";
+
 export * from "./urbanProject";

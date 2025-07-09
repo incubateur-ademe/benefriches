@@ -1,8 +1,7 @@
-import { roundTo2Digits } from "shared";
+import { roundTo2Digits } from "../../../services";
+import { UrbanProjectGenerator } from "./UrbanProjectGenerator";
 
-import { UrbanProjectExpressCreationService } from "./UrbanProjectExpressCreationService";
-
-export class ResidentialProjectExpressCreationService extends UrbanProjectExpressCreationService {
+export class ResidentialProjectGenerator extends UrbanProjectGenerator {
   override name = "Résidentiel secteur détendu";
 
   override get spacesDistribution() {

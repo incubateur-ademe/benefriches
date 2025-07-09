@@ -1,13 +1,14 @@
-import { roundTo2Digits, typedObjectEntries, DEFAULT_RESALE_RATIO_PER_SQUARE_METERS } from "shared";
-
-import { UrbanProjectExpressCreationService } from "./UrbanProjectExpressCreationService";
+import { typedObjectEntries } from "../../../object-entries";
+import { roundTo2Digits } from "../../../services";
+import { DEFAULT_RESALE_RATIO_PER_SQUARE_METERS } from "../expectedPostDevelopmentResale";
+import { UrbanProjectGenerator } from "./UrbanProjectGenerator";
 
 const RESALE_RATIO_PER_SQUARE_METERS = {
   ...DEFAULT_RESALE_RATIO_PER_SQUARE_METERS,
   RESIDENTIAL: 220,
 };
 
-export class NewUrbanCenterProjectExpressCreationService extends UrbanProjectExpressCreationService {
+export class NewUrbanCenterProjectGenerator extends UrbanProjectGenerator {
   override name = "Centralité urbaine";
 
   override get spacesDistribution() {

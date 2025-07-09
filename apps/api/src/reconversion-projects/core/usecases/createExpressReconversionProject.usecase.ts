@@ -1,12 +1,16 @@
-import { Address, SiteNature, SoilsDistribution } from "shared";
+import {
+  Address,
+  SiteNature,
+  SoilsDistribution,
+  NewUrbanCenterProjectGenerator,
+  ResidentialTenseAreaProjectGenerator,
+  ResidentialProjectGenerator,
+  PublicFacilitiesProjectGenerator,
+} from "shared";
 
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { UseCase } from "src/shared-kernel/usecase";
 
-import { NewUrbanCenterProjectExpressCreationService } from "../model/create-from-site-services/NewUrbanCenterProjectExpressCreationService";
-import { PublicFacilitiesProjectExpressCreationService } from "../model/create-from-site-services/PublicFacilitiesProjectExpressCreationService";
-import { ResidentialProjectExpressCreationService } from "../model/create-from-site-services/ResidentialProjectExpressCreationService";
-import { ResidentialTenseAreaProjectExpressCreationService } from "../model/create-from-site-services/ResidentialTenseAreaProjectExpressCreationService";
 import { ReconversionProject } from "../model/reconversionProject";
 
 type SiteView = {
@@ -49,15 +53,15 @@ type Response = {
 const getCreationServiceClass = (category: Request["category"]) => {
   switch (category) {
     case "NEW_URBAN_CENTER":
-      return NewUrbanCenterProjectExpressCreationService;
+      return NewUrbanCenterProjectGenerator;
     case "RESIDENTIAL_TENSE_AREA":
-      return ResidentialTenseAreaProjectExpressCreationService;
+      return ResidentialTenseAreaProjectGenerator;
     case "RESIDENTIAL_NORMAL_AREA":
-      return ResidentialProjectExpressCreationService;
+      return ResidentialProjectGenerator;
     case "PUBLIC_FACILITIES":
-      return PublicFacilitiesProjectExpressCreationService;
+      return PublicFacilitiesProjectGenerator;
     default:
-      return ResidentialProjectExpressCreationService;
+      return ResidentialProjectGenerator;
   }
 };
 
@@ -74,9 +78,9 @@ export class CreateExpressReconversionProjectUseCase implements UseCase<Request,
       throw new Error(`Site with id ${props.siteId} does not exist`);
     }
 
-    const ProjectExpressCreationServiceClass = getCreationServiceClass(props.category);
+    const ProjectGeneratorClass = getCreationServiceClass(props.category);
 
-    const creationService = new ProjectExpressCreationServiceClass(
+    const creationService = new ProjectGeneratorClass(
       this.dateProvider,
       props.reconversionProjectId,
       props.createdBy,

@@ -1,11 +1,8 @@
-import {
-  computeExpectedPostDevelopmentResaleSellingPriceFromSurfacesInTenseArea,
-  roundTo2Digits,
-} from "shared";
+import { roundTo2Digits } from "../../../services";
+import { computeExpectedPostDevelopmentResaleSellingPriceFromSurfacesInTenseArea } from "../expectedPostDevelopmentResale";
+import { UrbanProjectGenerator } from "./UrbanProjectGenerator";
 
-import { UrbanProjectExpressCreationService } from "./UrbanProjectExpressCreationService";
-
-export class ResidentialTenseAreaProjectExpressCreationService extends UrbanProjectExpressCreationService {
+export class ResidentialTenseAreaProjectGenerator extends UrbanProjectGenerator {
   override name = "Résidentiel secteur tendu";
 
   override get spacesDistribution() {

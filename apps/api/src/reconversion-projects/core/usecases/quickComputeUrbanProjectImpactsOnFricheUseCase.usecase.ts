@@ -2,6 +2,7 @@ import {
   DevelopmentPlanInstallationExpenses,
   FinancialAssistanceRevenue,
   Friche,
+  NewUrbanCenterProjectGenerator,
   RecurringExpense,
   RecurringRevenue,
   ReinstatementExpense,
@@ -17,7 +18,6 @@ import { UseCase } from "src/shared-kernel/usecase";
 
 import { CityDataProvider } from "../gateways/CityDataProvider";
 import { GetCarbonStorageFromSoilDistributionService } from "../gateways/SoilsCarbonStorageService";
-import { NewUrbanCenterProjectExpressCreationService } from "../model/create-from-site-services/NewUrbanCenterProjectExpressCreationService";
 import { InputSiteData } from "../model/project-impacts/ReconversionProjectImpactsService";
 import { UrbanProjectImpactsService } from "../model/project-impacts/UrbanProjectImpactsService";
 import { getDefaultImpactsEvaluationPeriod } from "../model/project-impacts/impactsEvaluationPeriod";
@@ -123,7 +123,7 @@ export class QuickComputeUrbanProjectImpactsOnFricheUseCase implements UseCase<R
     // we don't care for reconversion project and creator id since it won't be saved in DB
     const projectId = uuid();
     const creatorId = uuid();
-    const reconversionProjectCreationService = new NewUrbanCenterProjectExpressCreationService(
+    const reconversionProjectCreationService = new NewUrbanCenterProjectGenerator(
       this.dateProvider,
       projectId,
       creatorId,
