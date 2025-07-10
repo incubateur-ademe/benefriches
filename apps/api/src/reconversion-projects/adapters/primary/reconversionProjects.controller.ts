@@ -26,6 +26,7 @@ class CreateExpressReconversionProjectBodyDto extends createZodDto(
       "RESIDENTIAL_TENSE_AREA",
       "RESIDENTIAL_NORMAL_AREA",
       "NEW_URBAN_CENTER",
+      "PHOTOVOLTAIC_POWER_PLANT",
     ]),
   }),
 ) {}

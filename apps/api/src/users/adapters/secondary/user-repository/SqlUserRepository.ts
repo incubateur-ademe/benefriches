@@ -2,8 +2,8 @@ import { Inject } from "@nestjs/common";
 import { Knex } from "knex";
 
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
+import { UserRepository } from "src/users/core/gateways/UserRepository";
 import { User } from "src/users/core/model/user";
-import { UserRepository } from "src/users/core/usecases/createUser.usecase";
 
 export class SqlUserRepository implements UserRepository {
   constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}

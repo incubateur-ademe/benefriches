@@ -1,11 +1,14 @@
 import { sumObjectValues } from "shared";
 import { v4 as uuid } from "uuid";
 
+import { MockPhotovoltaicGeoInfoSystemApi } from "src/location-features/adapters/secondary/photovoltaic-data-provider/PhotovoltaicGeoInfoSystemApi.mock";
+import { PhotovoltaicDataProvider } from "src/location-features/core/gateways/PhotovoltaicDataProvider";
 import { InMemoryReconversionProjectRepository } from "src/reconversion-projects/adapters/secondary/repositories/reconversion-project/InMemoryReconversionProjectRepository";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { InMemorySitesQuery } from "src/sites/adapters/secondary/site-query/InMemorySitesQuery";
 import { SiteViewModel } from "src/sites/core/usecases/getSiteById.usecase";
+import { InMemoryUserQuery } from "src/users/adapters/secondary/user-query/InMemoryUserQuery";
 
 import { ReconversionProject } from "../model/reconversionProject";
 import { UrbanProjectFeatures } from "../model/urbanProjects";
@@ -16,18 +19,30 @@ const EXPRESS_CATEGORIES = [
   "RESIDENTIAL_TENSE_AREA",
   "RESIDENTIAL_NORMAL_AREA",
   "NEW_URBAN_CENTER",
+  "PHOTOVOLTAIC_POWER_PLANT",
+] as const;
+
+const EXPRESS_URBAN_PROJECT_CATEGORIES = [
+  "PUBLIC_FACILITIES",
+  "RESIDENTIAL_TENSE_AREA",
+  "RESIDENTIAL_NORMAL_AREA",
+  "NEW_URBAN_CENTER",
 ] as const;
 
 describe("CreateReconversionProject Use Case", () => {
   let dateProvider: DateProvider;
   let sitesQuery: InMemorySitesQuery;
   let reconversionProjectRepository: InMemoryReconversionProjectRepository;
+  let photovoltaicPerformanceService: PhotovoltaicDataProvider;
+  let userQuery: InMemoryUserQuery;
   const fakeNow = new Date("2024-01-05T13:00:00");
 
   beforeEach(() => {
     dateProvider = new DeterministicDateProvider(fakeNow);
     sitesQuery = new InMemorySitesQuery();
     reconversionProjectRepository = new InMemoryReconversionProjectRepository();
+    photovoltaicPerformanceService = new MockPhotovoltaicGeoInfoSystemApi();
+    userQuery = new InMemoryUserQuery();
   });
 
   describe("Error cases", () => {
@@ -38,6 +53,8 @@ describe("CreateReconversionProject Use Case", () => {
           dateProvider,
           sitesQuery,
           reconversionProjectRepository,
+          photovoltaicPerformanceService,
+          userQuery,
         );
 
         const siteId = uuid();
@@ -96,6 +113,8 @@ describe("CreateReconversionProject Use Case", () => {
           dateProvider,
           sitesQuery,
           reconversionProjectRepository,
+          photovoltaicPerformanceService,
+          userQuery,
         );
 
         const reconversionProjectId = uuid();
@@ -114,6 +133,8 @@ describe("CreateReconversionProject Use Case", () => {
           expectedName = "Équipement public";
         } else if (expressCategory === "RESIDENTIAL_TENSE_AREA") {
           expectedName = "Résidentiel secteur tendu";
+        } else if (expressCategory === "PHOTOVOLTAIC_POWER_PLANT") {
+          expectedName = "Centrale photovoltaïque";
         } else {
           expectedName = "Résidentiel secteur détendu";
         }
@@ -139,6 +160,8 @@ describe("CreateReconversionProject Use Case", () => {
           dateProvider,
           sitesQuery,
           reconversionProjectRepository,
+          photovoltaicPerformanceService,
+          userQuery,
         );
 
         const reconversionProjectId = uuid();
@@ -166,13 +189,324 @@ describe("CreateReconversionProject Use Case", () => {
       },
     );
 
-    test.each(EXPRESS_CATEGORIES)(
-      "should create a %s project with site city as developer, reinstatement contract owner and no site owner",
-      async (expressCategory) => {
+    describe("Urban projects", () => {
+      test.each(EXPRESS_URBAN_PROJECT_CATEGORIES)(
+        "should create a %s project with site city as developer, reinstatement contract owner and no site owner",
+        async (expressCategory) => {
+          const usecase = new CreateExpressReconversionProjectUseCase(
+            dateProvider,
+            sitesQuery,
+            reconversionProjectRepository,
+            photovoltaicPerformanceService,
+            userQuery,
+          );
+
+          const reconversionProjectId = uuid();
+          const creatorId = uuid();
+          await usecase.execute({
+            reconversionProjectId,
+            siteId: site.id,
+            createdBy: creatorId,
+            category: expressCategory,
+          });
+
+          const createdReconversionProjects: ReconversionProject[] =
+            reconversionProjectRepository._getReconversionProjects();
+          expect(createdReconversionProjects).toHaveLength(1);
+          const createdReconversionProject = createdReconversionProjects[0];
+          expect(createdReconversionProject?.futureSiteOwner).toEqual(undefined);
+          expect(createdReconversionProject?.developmentPlan.developer).toEqual({
+            structureType: "municipality",
+            name: "Mairie de Montrouge",
+          });
+          expect(createdReconversionProject?.reinstatementContractOwner).toEqual({
+            structureType: "municipality",
+            name: "Mairie de Montrouge",
+          });
+        },
+      );
+      test.each(EXPRESS_URBAN_PROJECT_CATEGORIES)(
+        "should create a %s project with expected sale after development relative to buildings floor surface area",
+        async (expressCategory) => {
+          const usecase = new CreateExpressReconversionProjectUseCase(
+            dateProvider,
+            sitesQuery,
+            reconversionProjectRepository,
+            photovoltaicPerformanceService,
+            userQuery,
+          );
+
+          const reconversionProjectId = uuid();
+          const creatorId = uuid();
+          await usecase.execute({
+            reconversionProjectId,
+            siteId: site.id,
+            createdBy: creatorId,
+            category: expressCategory,
+          });
+
+          const createdReconversionProjects: ReconversionProject[] =
+            reconversionProjectRepository._getReconversionProjects();
+          expect(createdReconversionProjects).toHaveLength(1);
+          const createdReconversionProject = createdReconversionProjects[0];
+
+          let expectedResalePrice;
+
+          switch (expressCategory) {
+            case "RESIDENTIAL_TENSE_AREA":
+              expectedResalePrice = 2772500;
+              break;
+            case "NEW_URBAN_CENTER":
+              expectedResalePrice = 1211600;
+              break;
+            case "PUBLIC_FACILITIES":
+              expectedResalePrice = 80000;
+              break;
+            default:
+              expectedResalePrice = 570000;
+          }
+
+          expect(createdReconversionProject?.siteResaleExpectedSellingPrice).toEqual(
+            expectedResalePrice,
+          );
+          expect(
+            Math.round(createdReconversionProject?.siteResaleExpectedPropertyTransferDuties ?? 0),
+          ).toEqual(Math.round(expectedResalePrice * 0.0581));
+        },
+      );
+
+      test.each(EXPRESS_URBAN_PROJECT_CATEGORIES)(
+        "should create a %s project with right spaces, buildings floor area and soils distribution",
+        async (expressCategory) => {
+          const usecase = new CreateExpressReconversionProjectUseCase(
+            dateProvider,
+            sitesQuery,
+            reconversionProjectRepository,
+            photovoltaicPerformanceService,
+            userQuery,
+          );
+
+          const reconversionProjectId = uuid();
+          const creatorId = uuid();
+          await usecase.execute({
+            reconversionProjectId,
+            siteId: site.id,
+            createdBy: creatorId,
+            category: expressCategory,
+          });
+
+          let expectedBuildingsFloorAreaDistribution;
+          let expectedSpacesDistribution;
+
+          if (expressCategory === "RESIDENTIAL_TENSE_AREA") {
+            expectedSpacesDistribution = {
+              BUILDINGS_FOOTPRINT: 4200,
+              PRIVATE_PAVED_ALLEY_OR_PARKING_LOT: 350,
+              PRIVATE_GRAVEL_ALLEY_OR_PARKING_LOT: 350,
+              PRIVATE_GARDEN_AND_GRASS_ALLEYS: 2100,
+              PUBLIC_GREEN_SPACES: 1500,
+              PUBLIC_PARKING_LOT: 500,
+              PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS: 200,
+              PUBLIC_GRAVEL_ROAD_OR_SQUARES_OR_SIDEWALKS: 400,
+              PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS: 400,
+            };
+            expectedBuildingsFloorAreaDistribution = {
+              RESIDENTIAL: 8500,
+              LOCAL_STORE: 400,
+              OFFICES: 500,
+              LOCAL_SERVICES: 600,
+            };
+          } else if (expressCategory === "NEW_URBAN_CENTER") {
+            expectedSpacesDistribution = {
+              BUILDINGS_FOOTPRINT: 2925,
+              PRIVATE_PAVED_ALLEY_OR_PARKING_LOT: 325,
+              PRIVATE_GRAVEL_ALLEY_OR_PARKING_LOT: 325,
+              PRIVATE_GARDEN_AND_GRASS_ALLEYS: 2925,
+              PUBLIC_GREEN_SPACES: 1500,
+              PUBLIC_PARKING_LOT: 900,
+              PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS: 100,
+              PUBLIC_GRAVEL_ROAD_OR_SQUARES_OR_SIDEWALKS: 500,
+              PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS: 500,
+            };
+            expectedBuildingsFloorAreaDistribution = {
+              RESIDENTIAL: 4960,
+              LOCAL_STORE: 160,
+              OFFICES: 320,
+              LOCAL_SERVICES: 640,
+              ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES: 160,
+              PUBLIC_FACILITIES: 160,
+            };
+          } else if (expressCategory === "PUBLIC_FACILITIES") {
+            expectedSpacesDistribution = {
+              BUILDINGS_FOOTPRINT: 4100,
+              PUBLIC_GREEN_SPACES: 3800,
+              PUBLIC_PARKING_LOT: 1000,
+              PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS: 1100,
+            };
+            expectedBuildingsFloorAreaDistribution = {
+              PUBLIC_FACILITIES: 2000,
+            };
+          } else {
+            expectedSpacesDistribution = {
+              BUILDINGS_FOOTPRINT: 2000,
+              PRIVATE_PAVED_ALLEY_OR_PARKING_LOT: 700,
+              PRIVATE_GRAVEL_ALLEY_OR_PARKING_LOT: 200,
+              PRIVATE_GARDEN_AND_GRASS_ALLEYS: 3700,
+              PUBLIC_GREEN_SPACES: 1900,
+              PUBLIC_PARKING_LOT: 500,
+              PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS: 400,
+              PUBLIC_GRAVEL_ROAD_OR_SQUARES_OR_SIDEWALKS: 200,
+              PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS: 400,
+            };
+            expectedBuildingsFloorAreaDistribution = {
+              RESIDENTIAL: 3800,
+            };
+          }
+
+          const expectedMineralSoils =
+            (expectedSpacesDistribution.PRIVATE_GRAVEL_ALLEY_OR_PARKING_LOT ?? 0) +
+            (expectedSpacesDistribution.PUBLIC_GRAVEL_ROAD_OR_SQUARES_OR_SIDEWALKS ?? 0);
+
+          const expectedImpermeableSoils =
+            expectedSpacesDistribution.PUBLIC_PARKING_LOT +
+            (expectedSpacesDistribution.PRIVATE_PAVED_ALLEY_OR_PARKING_LOT ?? 0) +
+            expectedSpacesDistribution.PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS;
+
+          const expectedArtifitialGrassOrBushesSoils =
+            (expectedSpacesDistribution.PRIVATE_GARDEN_AND_GRASS_ALLEYS ?? 0) +
+            (expectedSpacesDistribution.PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS ?? 0) +
+            expectedSpacesDistribution.PUBLIC_GREEN_SPACES;
+
+          const expectedSoilsDistribution = {
+            BUILDINGS: expectedSpacesDistribution.BUILDINGS_FOOTPRINT,
+            ARTIFICIAL_GRASS_OR_BUSHES_FILLED:
+              expectedArtifitialGrassOrBushesSoils > 0
+                ? expectedArtifitialGrassOrBushesSoils
+                : undefined,
+            IMPERMEABLE_SOILS: expectedImpermeableSoils > 0 ? expectedImpermeableSoils : undefined,
+            MINERAL_SOIL: expectedMineralSoils > 0 ? expectedMineralSoils : undefined,
+          };
+
+          const createdReconversionProjects: ReconversionProject[] =
+            reconversionProjectRepository._getReconversionProjects();
+          expect(createdReconversionProjects).toHaveLength(1);
+
+          const { developmentPlan, soilsDistribution } = createdReconversionProjects[0] ?? {};
+          const { buildingsFloorAreaDistribution, spacesDistribution } =
+            developmentPlan?.features as UrbanProjectFeatures;
+
+          expect(developmentPlan?.type).toEqual("URBAN_PROJECT");
+
+          expect(spacesDistribution).toEqual(expectedSpacesDistribution);
+          expect(sumObjectValues(spacesDistribution)).toEqual(site.surfaceArea);
+          expect(buildingsFloorAreaDistribution).toEqual(expectedBuildingsFloorAreaDistribution);
+          expect(soilsDistribution).toEqual(expectedSoilsDistribution);
+          expect(sumObjectValues(soilsDistribution as Record<string, number>)).toEqual(
+            site.surfaceArea,
+          );
+        },
+      );
+    });
+    describe("PHOTOVOLTAIC_POWER_PLANT", () => {
+      it("should create a PHOTOVOLTAIC_POWER_PLANT project with user company as developer, reinstatement contract owner and site operator", async () => {
+        const reconversionProjectId = uuid();
+        const creatorId = uuid();
+        userQuery._setUsers([
+          {
+            id: creatorId,
+            structure: {
+              activity: "photovoltaic_plants_developer",
+              type: "company",
+              name: "My company",
+            },
+          },
+        ]);
         const usecase = new CreateExpressReconversionProjectUseCase(
           dateProvider,
           sitesQuery,
           reconversionProjectRepository,
+          photovoltaicPerformanceService,
+          userQuery,
+        );
+
+        await usecase.execute({
+          reconversionProjectId,
+          siteId: site.id,
+          createdBy: creatorId,
+          category: "PHOTOVOLTAIC_POWER_PLANT",
+        });
+
+        const createdReconversionProjects: ReconversionProject[] =
+          reconversionProjectRepository._getReconversionProjects();
+        expect(createdReconversionProjects).toHaveLength(1);
+        const createdReconversionProject = createdReconversionProjects[0];
+        expect(createdReconversionProject?.futureSiteOwner).toEqual(undefined);
+        expect(createdReconversionProject?.futureOperator).toEqual({
+          structureType: "company",
+          name: "My company",
+        });
+        expect(createdReconversionProject?.developmentPlan.developer).toEqual({
+          structureType: "company",
+          name: "My company",
+        });
+        expect(createdReconversionProject?.reinstatementContractOwner).toEqual({
+          structureType: "company",
+          name: "My company",
+        });
+      });
+      it("should create a PHOTOVOLTAIC_POWER_PLANT project with user municipality as developer, reinstatement contract owner and site operator", async () => {
+        const reconversionProjectId = uuid();
+        const creatorId = uuid();
+        userQuery._setUsers([
+          {
+            id: creatorId,
+            structure: {
+              activity: "municipality",
+              type: "local_authority",
+              name: "Mairie de Blajan",
+            },
+          },
+        ]);
+        const usecase = new CreateExpressReconversionProjectUseCase(
+          dateProvider,
+          sitesQuery,
+          reconversionProjectRepository,
+          photovoltaicPerformanceService,
+          userQuery,
+        );
+
+        await usecase.execute({
+          reconversionProjectId,
+          siteId: site.id,
+          createdBy: creatorId,
+          category: "PHOTOVOLTAIC_POWER_PLANT",
+        });
+
+        const createdReconversionProjects: ReconversionProject[] =
+          reconversionProjectRepository._getReconversionProjects();
+        expect(createdReconversionProjects).toHaveLength(1);
+        const createdReconversionProject = createdReconversionProjects[0];
+        expect(createdReconversionProject?.futureSiteOwner).toEqual(undefined);
+        expect(createdReconversionProject?.futureOperator).toEqual({
+          structureType: "municipality",
+          name: "Mairie de Blajan",
+        });
+        expect(createdReconversionProject?.developmentPlan.developer).toEqual({
+          structureType: "municipality",
+          name: "Mairie de Blajan",
+        });
+        expect(createdReconversionProject?.reinstatementContractOwner).toEqual({
+          structureType: "municipality",
+          name: "Mairie de Blajan",
+        });
+      });
+      it("should create a PHOTOVOLTAIC_POWER_PLANT project with site owner as developer, reinstatement contract owner and site operator", async () => {
+        const usecase = new CreateExpressReconversionProjectUseCase(
+          dateProvider,
+          sitesQuery,
+          reconversionProjectRepository,
+          photovoltaicPerformanceService,
+          userQuery,
         );
 
         const reconversionProjectId = uuid();
@@ -181,7 +515,7 @@ describe("CreateReconversionProject Use Case", () => {
           reconversionProjectId,
           siteId: site.id,
           createdBy: creatorId,
-          category: expressCategory,
+          category: "PHOTOVOLTAIC_POWER_PLANT",
         });
 
         const createdReconversionProjects: ReconversionProject[] =
@@ -189,6 +523,10 @@ describe("CreateReconversionProject Use Case", () => {
         expect(createdReconversionProjects).toHaveLength(1);
         const createdReconversionProject = createdReconversionProjects[0];
         expect(createdReconversionProject?.futureSiteOwner).toEqual(undefined);
+        expect(createdReconversionProject?.futureOperator).toEqual({
+          structureType: "municipality",
+          name: "Mairie de Montrouge",
+        });
         expect(createdReconversionProject?.developmentPlan.developer).toEqual({
           structureType: "municipality",
           name: "Mairie de Montrouge",
@@ -197,186 +535,8 @@ describe("CreateReconversionProject Use Case", () => {
           structureType: "municipality",
           name: "Mairie de Montrouge",
         });
-      },
-    );
-
-    test.each(EXPRESS_CATEGORIES)(
-      "should create a %s project with right spaces, buildings floor area and soils distribution",
-      async (expressCategory) => {
-        const usecase = new CreateExpressReconversionProjectUseCase(
-          dateProvider,
-          sitesQuery,
-          reconversionProjectRepository,
-        );
-
-        const reconversionProjectId = uuid();
-        const creatorId = uuid();
-        await usecase.execute({
-          reconversionProjectId,
-          siteId: site.id,
-          createdBy: creatorId,
-          category: expressCategory,
-        });
-
-        let expectedBuildingsFloorAreaDistribution;
-        let expectedSpacesDistribution;
-
-        if (expressCategory === "RESIDENTIAL_TENSE_AREA") {
-          expectedSpacesDistribution = {
-            BUILDINGS_FOOTPRINT: 4200,
-            PRIVATE_PAVED_ALLEY_OR_PARKING_LOT: 350,
-            PRIVATE_GRAVEL_ALLEY_OR_PARKING_LOT: 350,
-            PRIVATE_GARDEN_AND_GRASS_ALLEYS: 2100,
-            PUBLIC_GREEN_SPACES: 1500,
-            PUBLIC_PARKING_LOT: 500,
-            PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS: 200,
-            PUBLIC_GRAVEL_ROAD_OR_SQUARES_OR_SIDEWALKS: 400,
-            PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS: 400,
-          };
-          expectedBuildingsFloorAreaDistribution = {
-            RESIDENTIAL: 8500,
-            LOCAL_STORE: 400,
-            OFFICES: 500,
-            LOCAL_SERVICES: 600,
-          };
-        } else if (expressCategory === "NEW_URBAN_CENTER") {
-          expectedSpacesDistribution = {
-            BUILDINGS_FOOTPRINT: 2925,
-            PRIVATE_PAVED_ALLEY_OR_PARKING_LOT: 325,
-            PRIVATE_GRAVEL_ALLEY_OR_PARKING_LOT: 325,
-            PRIVATE_GARDEN_AND_GRASS_ALLEYS: 2925,
-            PUBLIC_GREEN_SPACES: 1500,
-            PUBLIC_PARKING_LOT: 900,
-            PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS: 100,
-            PUBLIC_GRAVEL_ROAD_OR_SQUARES_OR_SIDEWALKS: 500,
-            PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS: 500,
-          };
-          expectedBuildingsFloorAreaDistribution = {
-            RESIDENTIAL: 4960,
-            LOCAL_STORE: 160,
-            OFFICES: 320,
-            LOCAL_SERVICES: 640,
-            ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES: 160,
-            PUBLIC_FACILITIES: 160,
-          };
-        } else if (expressCategory === "PUBLIC_FACILITIES") {
-          expectedSpacesDistribution = {
-            BUILDINGS_FOOTPRINT: 4100,
-            PUBLIC_GREEN_SPACES: 3800,
-            PUBLIC_PARKING_LOT: 1000,
-            PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS: 1100,
-          };
-          expectedBuildingsFloorAreaDistribution = {
-            PUBLIC_FACILITIES: 2000,
-          };
-        } else {
-          expectedSpacesDistribution = {
-            BUILDINGS_FOOTPRINT: 2000,
-            PRIVATE_PAVED_ALLEY_OR_PARKING_LOT: 700,
-            PRIVATE_GRAVEL_ALLEY_OR_PARKING_LOT: 200,
-            PRIVATE_GARDEN_AND_GRASS_ALLEYS: 3700,
-            PUBLIC_GREEN_SPACES: 1900,
-            PUBLIC_PARKING_LOT: 500,
-            PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS: 400,
-            PUBLIC_GRAVEL_ROAD_OR_SQUARES_OR_SIDEWALKS: 200,
-            PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS: 400,
-          };
-          expectedBuildingsFloorAreaDistribution = {
-            RESIDENTIAL: 3800,
-          };
-        }
-
-        const expectedMineralSoils =
-          (expectedSpacesDistribution.PRIVATE_GRAVEL_ALLEY_OR_PARKING_LOT ?? 0) +
-          (expectedSpacesDistribution.PUBLIC_GRAVEL_ROAD_OR_SQUARES_OR_SIDEWALKS ?? 0);
-
-        const expectedImpermeableSoils =
-          expectedSpacesDistribution.PUBLIC_PARKING_LOT +
-          (expectedSpacesDistribution.PRIVATE_PAVED_ALLEY_OR_PARKING_LOT ?? 0) +
-          expectedSpacesDistribution.PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS;
-
-        const expectedArtifitialGrassOrBushesSoils =
-          (expectedSpacesDistribution.PRIVATE_GARDEN_AND_GRASS_ALLEYS ?? 0) +
-          (expectedSpacesDistribution.PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS ?? 0) +
-          expectedSpacesDistribution.PUBLIC_GREEN_SPACES;
-
-        const expectedSoilsDistribution = {
-          BUILDINGS: expectedSpacesDistribution.BUILDINGS_FOOTPRINT,
-          ARTIFICIAL_GRASS_OR_BUSHES_FILLED:
-            expectedArtifitialGrassOrBushesSoils > 0
-              ? expectedArtifitialGrassOrBushesSoils
-              : undefined,
-          IMPERMEABLE_SOILS: expectedImpermeableSoils > 0 ? expectedImpermeableSoils : undefined,
-          MINERAL_SOIL: expectedMineralSoils > 0 ? expectedMineralSoils : undefined,
-        };
-
-        const createdReconversionProjects: ReconversionProject[] =
-          reconversionProjectRepository._getReconversionProjects();
-        expect(createdReconversionProjects).toHaveLength(1);
-
-        const { developmentPlan, soilsDistribution } = createdReconversionProjects[0] ?? {};
-        const { buildingsFloorAreaDistribution, spacesDistribution } =
-          developmentPlan?.features as UrbanProjectFeatures;
-
-        expect(developmentPlan?.type).toEqual("URBAN_PROJECT");
-
-        expect(spacesDistribution).toEqual(expectedSpacesDistribution);
-        expect(sumObjectValues(spacesDistribution)).toEqual(site.surfaceArea);
-        expect(buildingsFloorAreaDistribution).toEqual(expectedBuildingsFloorAreaDistribution);
-        expect(soilsDistribution).toEqual(expectedSoilsDistribution);
-        expect(sumObjectValues(soilsDistribution as Record<string, number>)).toEqual(
-          site.surfaceArea,
-        );
-      },
-    );
-
-    test.each(EXPRESS_CATEGORIES)(
-      "should create a %s project with expected sale after development relative to buildings floor surface area",
-      async (expressCategory) => {
-        const usecase = new CreateExpressReconversionProjectUseCase(
-          dateProvider,
-          sitesQuery,
-          reconversionProjectRepository,
-        );
-
-        const reconversionProjectId = uuid();
-        const creatorId = uuid();
-        await usecase.execute({
-          reconversionProjectId,
-          siteId: site.id,
-          createdBy: creatorId,
-          category: expressCategory,
-        });
-
-        const createdReconversionProjects: ReconversionProject[] =
-          reconversionProjectRepository._getReconversionProjects();
-        expect(createdReconversionProjects).toHaveLength(1);
-        const createdReconversionProject = createdReconversionProjects[0];
-
-        let expectedResalePrice;
-
-        switch (expressCategory) {
-          case "RESIDENTIAL_TENSE_AREA":
-            expectedResalePrice = 2772500;
-            break;
-          case "NEW_URBAN_CENTER":
-            expectedResalePrice = 1211600;
-            break;
-          case "PUBLIC_FACILITIES":
-            expectedResalePrice = 80000;
-            break;
-          default:
-            expectedResalePrice = 570000;
-        }
-
-        expect(createdReconversionProject?.siteResaleExpectedSellingPrice).toEqual(
-          expectedResalePrice,
-        );
-        expect(
-          Math.round(createdReconversionProject?.siteResaleExpectedPropertyTransferDuties ?? 0),
-        ).toEqual(Math.round(expectedResalePrice * 0.0581));
-      },
-    );
+      });
+    });
 
     describe("with non-polluted soils and no buildings", () => {
       const nonPollutedFricheWithNoBuildings = {
@@ -394,6 +554,8 @@ describe("CreateReconversionProject Use Case", () => {
           dateProvider,
           sitesQuery,
           reconversionProjectRepository,
+          photovoltaicPerformanceService,
+          userQuery,
         );
 
         const reconversionProjectId = uuid();
@@ -446,6 +608,8 @@ describe("CreateReconversionProject Use Case", () => {
           dateProvider,
           sitesQuery,
           reconversionProjectRepository,
+          photovoltaicPerformanceService,
+          userQuery,
         );
 
         const reconversionProjectId = uuid();
@@ -503,6 +667,8 @@ describe("CreateReconversionProject Use Case", () => {
           dateProvider,
           sitesQuery,
           reconversionProjectRepository,
+          photovoltaicPerformanceService,
+          userQuery,
         );
 
         const reconversionProjectId = uuid();
@@ -571,7 +737,7 @@ describe("CreateReconversionProject Use Case", () => {
       },
     } as const satisfies SiteViewModel;
     describe("with site purchase", () => {
-      test.each(EXPRESS_CATEGORIES)(
+      test.each(EXPRESS_URBAN_PROJECT_CATEGORIES)(
         "should create a %s with real estate sale transaction and development installation costs based on site",
         async (expressCategory) => {
           sitesQuery._setSites([site]);
@@ -579,6 +745,8 @@ describe("CreateReconversionProject Use Case", () => {
             dateProvider,
             sitesQuery,
             reconversionProjectRepository,
+            photovoltaicPerformanceService,
+            userQuery,
           );
 
           const reconversionProjectId = uuid();
@@ -614,7 +782,7 @@ describe("CreateReconversionProject Use Case", () => {
     });
 
     describe("without site purchase", () => {
-      test.each(EXPRESS_CATEGORIES)(
+      test.each(EXPRESS_URBAN_PROJECT_CATEGORIES)(
         "should create a %s without real estate sale transaction and future site owner",
         async (expressCategory) => {
           const siteOwner = {
@@ -626,6 +794,8 @@ describe("CreateReconversionProject Use Case", () => {
             dateProvider,
             sitesQuery,
             reconversionProjectRepository,
+            photovoltaicPerformanceService,
+            userQuery,
           );
 
           const reconversionProjectId = uuid();

@@ -7,7 +7,9 @@ import { SqlCarbonStorageQuery } from "src/carbon-storage/adapters/secondary/car
 import { GetCarbonStorageFromSoilDistributionService } from "src/carbon-storage/core/services/getCarbonStorageFromSoilDistribution";
 import { LocationFeaturesModule } from "src/location-features/adapters/primary/locationFeatures.module";
 import { DV3FApiGouvService } from "src/location-features/adapters/secondary/city-dv3f-provider/DV3FApiService";
+import { PhotovoltaicGeoInfoSystemApi } from "src/location-features/adapters/secondary/photovoltaic-data-provider/PhotovoltaicGeoInfoSystemApi";
 import { CityPropertyValueProvider } from "src/location-features/core/gateways/CityPropertyValueProvider";
+import { PhotovoltaicDataProvider } from "src/location-features/core/gateways/PhotovoltaicDataProvider";
 import { GetCityRelatedDataService } from "src/location-features/core/services/getCityRelatedData";
 import { CityDataProvider } from "src/reconversion-projects/core/gateways/CityDataProvider";
 import { ComputeProjectUrbanSprawlImpactsComparisonUseCase } from "src/reconversion-projects/core/usecases/computeProjectUrbanSprawlImpactsComparison.usecase";
@@ -31,6 +33,8 @@ import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
 import { SqlSitesQuery } from "src/sites/adapters/secondary/site-query/SqlSitesQuery";
 import { SqlSiteRepository } from "src/sites/adapters/secondary/site-repository/SqlSiteRepository";
+import { SqlUserQuery } from "src/users/adapters/secondary/user-query/SqlUserQuery";
+import { UserQuery } from "src/users/core/gateways/UserQuery";
 
 import { SqlReconversionProjectQuery } from "../secondary/queries/reconversion-project-features/SqlReconversionProjectQuery";
 import { SqlReconversionProjectImpactsQuery } from "../secondary/queries/reconversion-project-impacts/SqlReconversionProjectImpactsQuery";
@@ -64,13 +68,23 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
         dateProvider: DateProvider,
         siteRepository: SiteQuery,
         reconversionProjectRepository: ReconversionProjectRepository,
+        photovoltaicPerformanceService: PhotovoltaicDataProvider,
+        userQuery: UserQuery,
       ) =>
         new CreateExpressReconversionProjectUseCase(
           dateProvider,
           siteRepository,
           reconversionProjectRepository,
+          photovoltaicPerformanceService,
+          userQuery,
         ),
-      inject: [RealDateProvider, SqlSitesQuery, SqlReconversionProjectRepository],
+      inject: [
+        RealDateProvider,
+        SqlSitesQuery,
+        SqlReconversionProjectRepository,
+        PhotovoltaicGeoInfoSystemApi,
+        SqlUserQuery,
+      ],
     },
     {
       provide: GetUserReconversionProjectsBySiteUseCase,
@@ -173,10 +187,12 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
     SqlSitesQuery,
     SqlReconversionProjectImpactsQuery,
     SqlSiteImpactsQuery,
+    SqlUserQuery,
     RealDateProvider,
     SqlCarbonStorageQuery,
     GeoApiGouvService,
     DV3FApiGouvService,
+    PhotovoltaicGeoInfoSystemApi,
   ],
 })
 export class ReconversionProjectsModule {}

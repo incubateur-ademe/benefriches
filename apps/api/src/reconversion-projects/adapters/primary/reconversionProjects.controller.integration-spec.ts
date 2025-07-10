@@ -118,6 +118,13 @@ describe("ReconversionProjects controller", () => {
         post_code: "38000",
         site_id: siteId,
       });
+
+      await sqlConnection("site_soils_distributions").insert({
+        soil_type: "BUILDINGS",
+        surface_area: 14000,
+        site_id: siteId,
+        id: uuid(),
+      });
     });
 
     it("can't create a reconversion project without category", async () => {
@@ -142,6 +149,7 @@ describe("ReconversionProjects controller", () => {
       "RESIDENTIAL_TENSE_AREA",
       "RESIDENTIAL_NORMAL_AREA",
       "NEW_URBAN_CENTER",
+      "PHOTOVOLTAIC_POWER_PLANT",
     ])(
       "get a 201 response and reconversion project is created with category %s",
       async (category) => {

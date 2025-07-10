@@ -5,6 +5,10 @@ import { Test } from "@nestjs/testing";
 
 import { AppModule } from "src/app.module";
 import { configureServer } from "src/httpServer";
+import { DV3FApiGouvService } from "src/location-features/adapters/secondary/city-dv3f-provider/DV3FApiService";
+import { MockDV3FApiService } from "src/location-features/adapters/secondary/city-dv3f-provider/DV3FApiService.mock";
+import { PhotovoltaicGeoInfoSystemApi } from "src/location-features/adapters/secondary/photovoltaic-data-provider/PhotovoltaicGeoInfoSystemApi";
+import { MockPhotovoltaicGeoInfoSystemApi } from "src/location-features/adapters/secondary/photovoltaic-data-provider/PhotovoltaicGeoInfoSystemApi.mock";
 import { GeoApiGouvService } from "src/reconversion-projects/adapters/secondary/services/city-service/GeoApiGouvService";
 import { MockCityDataService } from "src/reconversion-projects/adapters/secondary/services/city-service/MockCityDataService";
 
@@ -39,6 +43,10 @@ export async function createTestApp() {
     .useValue(ERROR_HTTP_SERVICE)
     .overrideProvider(GeoApiGouvService)
     .useClass(MockCityDataService)
+    .overrideProvider(DV3FApiGouvService)
+    .useClass(MockDV3FApiService)
+    .overrideProvider(PhotovoltaicGeoInfoSystemApi)
+    .useClass(MockPhotovoltaicGeoInfoSystemApi)
     .compile();
 
   const testApp = moduleRef.createNestApplication<NestExpressApplication>();

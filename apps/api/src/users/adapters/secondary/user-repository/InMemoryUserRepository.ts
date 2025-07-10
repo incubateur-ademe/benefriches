@@ -1,5 +1,5 @@
+import { UserRepository } from "src/users/core/gateways/UserRepository";
 import { User } from "src/users/core/model/user";
-import { UserRepository } from "src/users/core/usecases/createUser.usecase";
 
 export class InMemoryUserRepository implements UserRepository {
   private users: User[] = [];
