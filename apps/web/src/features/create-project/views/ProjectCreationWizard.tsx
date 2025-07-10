@@ -13,8 +13,8 @@ import { isUrbanProjectCreationStep } from "../core/urban-project/creationSteps"
 import Stepper from "./Stepper";
 import StepRevertConfirmationModal from "./common-views/step-revert-confirmation-modal";
 import ProjectCreationIntroduction from "./introduction";
-import PhotovoltaicPowerStationCreationWizard from "./photovoltaic-power-station";
-import { RENEWABLE_ENERGY_PROJECT_CREATION_STEP_QUERY_STRING_MAP } from "./photovoltaic-power-station/creationStepQueryStringMap";
+import PhotovoltaicPowerStationCreationWizard from "./photovoltaic-power-station/custom-form";
+import { RENEWABLE_ENERGY_PROJECT_CREATION_STEP_QUERY_STRING_MAP } from "./photovoltaic-power-station/custom-form/creationStepQueryStringMap";
 import ProjectTypesForm from "./project-types";
 import UrbanProjectCreationWizard from "./urban-project/UrbanProjectCreationWizard";
 import { URBAN_PROJECT_CREATION_STEP_QUERY_STRING_MAP } from "./urban-project/creationStepQueryStringMap";
