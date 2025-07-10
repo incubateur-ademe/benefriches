@@ -214,7 +214,7 @@ describe("PhotovoltaicPowerPlantProjectGenerator", () => {
             },
             {
               amount: 1110000,
-              purpose: "development_works",
+              purpose: "installation_works",
             },
             {
               amount: 112500,
@@ -314,7 +314,7 @@ describe("PhotovoltaicPowerPlantProjectGenerator", () => {
             },
             {
               amount: 1110000,
-              purpose: "development_works",
+              purpose: "installation_works",
             },
             {
               amount: 112500,

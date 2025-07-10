@@ -136,7 +136,7 @@ export class PhotovoltaicPowerPlantProjectGenerator extends DefaultProjectGenera
       );
     return [
       { amount: technicalStudy, purpose: "technical_studies" },
-      { amount: works, purpose: "development_works" },
+      { amount: works, purpose: "installation_works" },
       { amount: other, purpose: "other" },
     ];
   }
