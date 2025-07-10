@@ -5,7 +5,7 @@ import { getTestAppDependencies } from "@/test/testAppDependencies";
 import { InMemorySaveReconversionProjectService } from "../../../infrastructure/save-project-service/InMemorySaveReconversionProjectService";
 import { relatedSiteData } from "../../__tests__/siteData.mock";
 import { getInitialState } from "../../createProject.reducer";
-import { saveReconversionProject } from "../actions/saveReconversionProject.action";
+import { saveReconversionProject } from "../actions/customProjectSaved.action";
 import { projectWithExhaustiveData, projectWithMinimalData } from "./projectData.mock";
 
 describe("renewableEnergy.reducer.spec reducer", () => {

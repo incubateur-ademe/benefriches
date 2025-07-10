@@ -1,8 +1,6 @@
 import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
-import {
-  customCreateModeSelected,
-  expressCreateModeSelected,
-} from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
+import { expressPhotovoltaicProjectSaved } from "@/features/create-project/core/renewable-energy/actions/expressProjectSaved.action";
+import { customCreateModeSelected } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 import CreateModeSelectionForm, {
@@ -14,7 +12,7 @@ const options = [
     value: "express" as const,
     title: "Mode express",
     description:
-      "Un projet d'aménagement urbain sera créé automatiquement. Bénéfriches affectera des données par défaut sur l'aménagement des espaces, les bâtiments, les dépenses et recettes, les emplois mobilisés, etc.",
+      "Un projet de centrale photovoltaïque sera créé automatiquement. Bénéfriches affectera des données par défaut sur la puissance et la surface de l'installation, les dépenses et recettes, les emplois mobilisés, etc.",
     badgeText: "Le plus rapide",
     imgSrc: "/img/pictograms/creation-mode/express-creation.svg",
   },
@@ -22,7 +20,7 @@ const options = [
     value: "custom" as const,
     title: "Mode personnalisé",
     description:
-      "Renseignez les informations dont vous disposez : aménagement des espaces, bâtiments, dépenses et recettes, emplois mobilisés, etc. Si certaines infos vous manquent, Bénéfriches vous proposera des données automatiques.",
+      "Renseignez les informations dont vous disposez : puissance ou surface de l'installation, dépenses et recettes, emplois mobilisés, etc. Si certaines infos vous manquent, Bénéfriches vous proposera des données automatiques.",
     badgeText: "Le plus précis",
     imgSrc: "/img/pictograms/creation-mode/custom-creation.svg",
   },
@@ -33,7 +31,7 @@ export default function CreateModeSelectionFormContainer() {
 
   const onSubmit = (data: FormValues) => {
     if (data.createMode === "express") {
-      void dispatch(expressCreateModeSelected());
+      void dispatch(expressPhotovoltaicProjectSaved());
     }
     if (data.createMode === "custom") {
       void dispatch(customCreateModeSelected());

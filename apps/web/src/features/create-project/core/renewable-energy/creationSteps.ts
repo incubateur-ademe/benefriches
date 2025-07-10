@@ -1,7 +1,6 @@
 import { z } from "zod";
 
 const renewableEnergyCustomCreationSteps = z.enum([
-  "RENEWABLE_ENERGY_TYPES",
   "RENEWABLE_ENERGY_PHOTOVOLTAIC_KEY_PARAMETER",
   "RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER",
   "RENEWABLE_ENERGY_PHOTOVOLTAIC_SURFACE",
@@ -42,10 +41,34 @@ const renewableEnergyCustomCreationSteps = z.enum([
   "RENEWABLE_ENERGY_CREATION_RESULT",
 ]);
 
-export const isRenewableEnergyCreationStep = (
+export type RenewableEnergyCustomCreationStep = z.infer<typeof renewableEnergyCustomCreationSteps>;
+
+const isRenewableEnergyCustomCreationStep = (
   step: string,
-): step is RenewableEnergyCreationStep => {
+): step is RenewableEnergyCustomCreationStep => {
   return renewableEnergyCustomCreationSteps.safeParse(step).success;
 };
 
-export type RenewableEnergyCreationStep = z.infer<typeof renewableEnergyCustomCreationSteps>;
+const renewableEnergyExpressCreationStep = z.enum(["RENEWABLE_ENERGY_CREATION_RESULT"]);
+
+export type RenewableEnergyExpressCreationStep = z.infer<typeof renewableEnergyExpressCreationStep>;
+
+const isRenewableEnergyExpressCreationStep = (
+  step: string,
+): step is RenewableEnergyExpressCreationStep => {
+  return renewableEnergyExpressCreationStep.safeParse(step).success;
+};
+
+export const isRenewableEnergyCreationStep = (step: string) => {
+  return (
+    step === "RENEWABLE_ENERGY_CREATE_MODE_SELECTION" ||
+    step === "RENEWABLE_ENERGY_TYPES" ||
+    isRenewableEnergyCustomCreationStep(step) ||
+    isRenewableEnergyExpressCreationStep(step)
+  );
+};
+export type RenewableEnergyCreationStep =
+  | "RENEWABLE_ENERGY_CREATE_MODE_SELECTION"
+  | "RENEWABLE_ENERGY_TYPES"
+  | RenewableEnergyExpressCreationStep
+  | RenewableEnergyCustomCreationStep;

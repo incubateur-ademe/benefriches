@@ -2,6 +2,7 @@ import { RenewableEnergyCreationStep } from "../../../core/renewable-energy/crea
 
 export const RENEWABLE_ENERGY_PROJECT_CREATION_STEP_QUERY_STRING_MAP = {
   RENEWABLE_ENERGY_TYPES: "type-systeme-energie-renouvelable",
+  RENEWABLE_ENERGY_CREATE_MODE_SELECTION: "mode-creation",
   RENEWABLE_ENERGY_PHOTOVOLTAIC_KEY_PARAMETER: "parametre-centrale-photovoltaique",
   RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER: "puissance-photovoltaique",
   RENEWABLE_ENERGY_PHOTOVOLTAIC_SURFACE: "surface-photovoltaique",

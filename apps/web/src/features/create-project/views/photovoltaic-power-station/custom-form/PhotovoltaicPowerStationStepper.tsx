@@ -1,9 +1,10 @@
 import FormStepper from "@/shared/views/layout/WizardFormLayout/FormStepper";
 
-import { RenewableEnergyCreationStep } from "../../../core/renewable-energy/creationSteps";
+import { RenewableEnergyCustomCreationStep } from "../../../core/renewable-energy/creationSteps";
 
 const stepCategories = [
   "Type de projet",
+  "Mode de création",
   "Paramètres du projet",
   "Transformation des sols",
   "Acteurs",
@@ -15,9 +16,8 @@ const stepCategories = [
 
 type StepCategory = (typeof stepCategories)[number];
 
-const getCategoryForStep = (step: RenewableEnergyCreationStep): StepCategory => {
+const getCategoryForStep = (step: RenewableEnergyCustomCreationStep): StepCategory => {
   switch (step) {
-    case "RENEWABLE_ENERGY_TYPES":
     case "RENEWABLE_ENERGY_PHOTOVOLTAIC_KEY_PARAMETER":
     case "RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER":
     case "RENEWABLE_ENERGY_PHOTOVOLTAIC_SURFACE":
@@ -67,7 +67,7 @@ const getCategoryForStep = (step: RenewableEnergyCreationStep): StepCategory => 
 };
 
 type Props = {
-  step: RenewableEnergyCreationStep;
+  step: RenewableEnergyCustomCreationStep;
 };
 
 function PhotovoltaicPowerStationStepper({ step }: Props) {

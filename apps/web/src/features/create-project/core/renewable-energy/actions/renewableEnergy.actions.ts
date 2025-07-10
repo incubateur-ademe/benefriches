@@ -28,6 +28,8 @@ export const makeRenewableEnergyProjectCreationActionType = (actionName: string)
 const createRenewableEnergyAction = <TPayload = void>(actionName: string) =>
   createAction<TPayload>(makeRenewableEnergyProjectCreationActionType(actionName));
 
+export const customCreateModeSelected = createRenewableEnergyAction("customCreateModeSelected");
+
 export const completeRenewableEnergyType =
   createRenewableEnergyAction<RenewableEnergyDevelopmentPlanType>("completeRenewableEnergyType");
 export const completeSoilsTransformationIntroductionStep = createRenewableEnergyAction(

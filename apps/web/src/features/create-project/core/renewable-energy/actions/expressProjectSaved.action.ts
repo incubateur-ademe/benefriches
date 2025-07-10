@@ -1,23 +1,19 @@
 import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
 
 import {
-  ExpressReconversionProjectPayload,
   ReconversionProject,
   saveExpressProjectSchema,
 } from "../../actions/expressProjectSavedGateway";
-import { makeUrbanProjectCreationActionType } from "./urbanProject.actions";
+import { makeRenewableEnergyProjectCreationActionType } from "./renewableEnergy.actions";
 
-export const expressUrbanProjectSaved = createAppAsyncThunk<
-  ReconversionProject,
-  ExpressReconversionProjectPayload["category"]
->(
-  makeUrbanProjectCreationActionType("expressUrbanProjectSaved"),
-  async (expressCategory, { getState, extra }) => {
+export const expressPhotovoltaicProjectSaved = createAppAsyncThunk<ReconversionProject>(
+  makeRenewableEnergyProjectCreationActionType("expressPhotovoltaicProjectSaved"),
+  async (_, { getState, extra }) => {
     const { projectCreation, currentUser } = getState();
     const expressProjectPayload = await saveExpressProjectSchema.parseAsync({
       reconversionProjectId: projectCreation.projectId,
       siteId: projectCreation.siteData?.id,
-      category: expressCategory,
+      category: "PHOTOVOLTAIC_POWER_PLANT",
       createdBy: currentUser.currentUser?.id,
     });
 

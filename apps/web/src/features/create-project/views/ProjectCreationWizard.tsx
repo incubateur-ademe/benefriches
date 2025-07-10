@@ -13,9 +13,10 @@ import { isUrbanProjectCreationStep } from "../core/urban-project/creationSteps"
 import Stepper from "./Stepper";
 import StepRevertConfirmationModal from "./common-views/step-revert-confirmation-modal";
 import ProjectCreationIntroduction from "./introduction";
-import PhotovoltaicPowerStationCreationWizard from "./photovoltaic-power-station/custom-form";
+import PhotovoltaicPowerStationCreationWizard from "./photovoltaic-power-station/PhotovoltaicPowerStationCreationWizard";
 import { RENEWABLE_ENERGY_PROJECT_CREATION_STEP_QUERY_STRING_MAP } from "./photovoltaic-power-station/custom-form/creationStepQueryStringMap";
 import ProjectTypesForm from "./project-types";
+import RenewableEnergyTypesForm from "./renewable-energy-types";
 import UrbanProjectCreationWizard from "./urban-project/UrbanProjectCreationWizard";
 import { URBAN_PROJECT_CREATION_STEP_QUERY_STRING_MAP } from "./urban-project/creationStepQueryStringMap";
 import { useSyncCreationStepWithRouteQuery } from "./useSyncCreationStepWithRouteQuery";
@@ -76,7 +77,15 @@ function ProjectCreationWizard({ route }: Props) {
     return (
       <>
         <StepRevertConfirmationModal />
-        <PhotovoltaicPowerStationCreationWizard currentStep={currentStep} />
+        {currentStep === "RENEWABLE_ENERGY_TYPES" ? (
+          <SidebarLayout
+            mainChildren={<RenewableEnergyTypesForm />}
+            title="Renseignement du projet"
+            sidebarChildren={<Stepper />}
+          />
+        ) : (
+          <PhotovoltaicPowerStationCreationWizard currentStep={currentStep} />
+        )}
       </>
     );
   }

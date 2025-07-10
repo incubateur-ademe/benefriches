@@ -1,4 +1,7 @@
-import { SaveExpressReconversionProjectGateway } from "../../core/urban-project/actions/expressUrbanProjectSaved.action";
+import {
+  ReconversionProject,
+  SaveExpressReconversionProjectGateway,
+} from "../../core/actions/expressProjectSavedGateway";
 
 export type SaveExpressReconversionProjectPayload = {
   reconversionProjectId: string;
@@ -20,7 +23,7 @@ export default class HttpSaveExpressReconversionProjectService
 
     if (!response.ok) throw new Error("Error while saving express reconversion project");
 
-    const jsonResponse = (await response.json()) as { id: string; name: string };
+    const jsonResponse = (await response.json()) as ReconversionProject;
     return jsonResponse;
   }
 }

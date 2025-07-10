@@ -54,10 +54,7 @@ type Request = {
     | "PHOTOVOLTAIC_POWER_PLANT";
 };
 
-type Response = {
-  id: string;
-  name: string;
-};
+type Response = ReconversionProject;
 
 const getCreationServiceClass = (category: Request["category"]) => {
   switch (category) {
@@ -122,6 +119,6 @@ export class CreateExpressReconversionProjectUseCase implements UseCase<Request,
 
     await this.reconversionProjectRepository.save(reconversionProject);
 
-    return { id: reconversionProject.id, name: reconversionProject.name };
+    return reconversionProject;
   }
 }

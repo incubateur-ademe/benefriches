@@ -13,8 +13,11 @@ import {
 import { ReconversionProjectCreationData } from "@/features/create-project/core/project.types";
 
 import { stepRevertConfirmed } from "../actions/actionsUtils";
+import { ReconversionProject } from "../actions/expressProjectSavedGateway";
 import { SoilsCarbonStorageResult } from "../actions/soilsCarbonStorage.action";
 import { ProjectCreationState } from "../createProject.reducer";
+import { saveReconversionProject } from "./actions/customProjectSaved.action";
+import { expressPhotovoltaicProjectSaved } from "./actions/expressProjectSaved.action";
 import { fetchPhotovoltaicExpectedAnnulPowerPerformanceForLocation } from "./actions/getPhotovoltaicExpectedPerformance.action";
 import {
   completeNonSuitableSoilsNoticeStep,
@@ -54,13 +57,15 @@ import {
   completeSoilsDecontaminationSelection,
   completeSoilsDecontaminationSurfaceArea,
   completeSoilsTransformationIntroductionStep,
+  customCreateModeSelected,
 } from "./actions/renewableEnergy.actions";
-import { saveReconversionProject } from "./actions/saveReconversionProject.action";
 import { fetchCurrentAndProjectedSoilsCarbonStorage } from "./actions/soilsCarbonStorage.actions";
 
 export type RenewableEneryProjectState = {
+  createMode: "express" | "custom" | undefined;
   saveState: "idle" | "loading" | "success" | "error";
   creationData: Partial<ReconversionProjectCreationData>;
+  expressData?: { projectData?: ReconversionProject };
   soilsCarbonStorage:
     | {
         loadingState: "idle" | "loading" | "error";
@@ -79,9 +84,13 @@ export type RenewableEneryProjectState = {
 };
 
 export const INITIAL_STATE: RenewableEneryProjectState = {
+  createMode: undefined,
   creationData: {
     yearlyProjectedExpenses: [],
     yearlyProjectedRevenues: [],
+  },
+  expressData: {
+    projectData: undefined,
   },
   saveState: "idle",
   soilsCarbonStorage: {
@@ -100,8 +109,24 @@ const willSiteNeedReinstatement = (state: ProjectCreationState) => {
 };
 
 const addCompleteStepActionCases = (builder: ActionReducerMapBuilder<ProjectCreationState>) => {
+  builder.addCase(expressPhotovoltaicProjectSaved.pending, (state) => {
+    state.renewableEnergyProject.createMode = "express";
+    state.renewableEnergyProject.saveState = "loading";
+    state.stepsHistory.push("RENEWABLE_ENERGY_CREATION_RESULT");
+  });
+  builder.addCase(expressPhotovoltaicProjectSaved.rejected, (state) => {
+    state.renewableEnergyProject.saveState = "error";
+  });
+  builder.addCase(expressPhotovoltaicProjectSaved.fulfilled, (state, action) => {
+    state.renewableEnergyProject.saveState = "success";
+    state.renewableEnergyProject.expressData = { projectData: action.payload };
+  });
   builder.addCase(completeRenewableEnergyType, (state, action) => {
     state.renewableEnergyProject.creationData.renewableEnergyType = action.payload;
+    state.stepsHistory.push("RENEWABLE_ENERGY_CREATE_MODE_SELECTION");
+  });
+  builder.addCase(customCreateModeSelected, (state) => {
+    state.renewableEnergyProject.createMode = "custom";
     state.stepsHistory.push("RENEWABLE_ENERGY_PHOTOVOLTAIC_KEY_PARAMETER");
   });
   builder.addCase(completeSoilsDecontaminationIntroduction, (state) => {
@@ -499,6 +524,7 @@ const addRevertStepActionCases = (builder: ActionReducerMapBuilder<ProjectCreati
         state.renewableEnergyProject.creationData.description = undefined;
         break;
       case "RENEWABLE_ENERGY_PHOTOVOLTAIC_KEY_PARAMETER":
+        state.renewableEnergyProject.createMode = undefined;
         state.renewableEnergyProject.creationData.photovoltaicKeyParameter = undefined;
         break;
       case "RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER":

@@ -1,7 +1,9 @@
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
-import { RenewableEnergyCreationStep } from "../../../core/renewable-energy/creationSteps";
-import RenewableEnergyTypesForm from "../../renewable-energy-types";
+import {
+  RenewableEnergyCreationStep,
+  RenewableEnergyCustomCreationStep,
+} from "../../../core/renewable-energy/creationSteps";
 import PhotovoltaicPowerStationStepper from "./PhotovoltaicPowerStationStepper";
 import PhotovoltaicPanelsInstallationExpensesForm from "./expenses/installation";
 import ProjectExpensesIntroduction from "./expenses/introduction";
@@ -44,8 +46,6 @@ import ProjectionCreationDataSummaryContainer from "./summary";
 
 const getCurrentStepView = (currentStep: RenewableEnergyCreationStep) => {
   switch (currentStep) {
-    case "RENEWABLE_ENERGY_TYPES":
-      return <RenewableEnergyTypesForm />;
     case "RENEWABLE_ENERGY_STAKEHOLDERS_INTRODUCTION":
       return <ProjectStakeholdersIntroduction />;
     case "RENEWABLE_ENERGY_STAKEHOLDERS_PROJECT_DEVELOPER":
@@ -126,10 +126,10 @@ const getCurrentStepView = (currentStep: RenewableEnergyCreationStep) => {
 };
 
 type Props = {
-  currentStep: RenewableEnergyCreationStep;
+  currentStep: RenewableEnergyCustomCreationStep;
 };
 
-function PhotovoltaicPowerStationCreationWizard({ currentStep }: Props) {
+function PhotovoltaicPowerStationCustomCreationWizard({ currentStep }: Props) {
   return (
     <SidebarLayout
       mainChildren={getCurrentStepView(currentStep)}
@@ -139,4 +139,4 @@ function PhotovoltaicPowerStationCreationWizard({ currentStep }: Props) {
   );
 }
 
-export default PhotovoltaicPowerStationCreationWizard;
+export default PhotovoltaicPowerStationCustomCreationWizard;

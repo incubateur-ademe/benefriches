@@ -2,6 +2,7 @@ import { createReducer, UnknownAction } from "@reduxjs/toolkit";
 import { UrbanSpaceCategory, typedObjectKeys } from "shared";
 
 import { stepRevertConfirmed } from "../actions/actionsUtils";
+import { ReconversionProject } from "../actions/expressProjectSavedGateway";
 import { ProjectCreationState } from "../createProject.reducer";
 import { getFutureOperator, getFutureSiteOwner } from "../stakeholders";
 import { customUrbanProjectSaved } from "./actions/customUrbanProjectSaved.action";
@@ -67,7 +68,7 @@ const urbanSpaceCategoryIntroductionMap = {
 export type UrbanProjectState = {
   createMode: "express" | "custom" | undefined;
   expressData: {
-    name?: string;
+    projectData?: ReconversionProject;
     category?:
       | "PUBLIC_FACILITIES"
       | "RESIDENTIAL_TENSE_AREA"
@@ -83,7 +84,7 @@ export type UrbanProjectState = {
 export const initialState: UrbanProjectState = {
   createMode: undefined,
   expressData: {
-    name: undefined,
+    projectData: undefined,
     category: undefined,
   },
   creationData: {},
@@ -222,7 +223,7 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
   });
   builder.addCase(expressUrbanProjectSaved.fulfilled, (state, action) => {
     state.urbanProject.saveState = "success";
-    state.urbanProject.expressData.name = action.payload.name;
+    state.urbanProject.expressData.projectData = action.payload;
   });
   builder.addCase(customCreateModeSelected, (state) => {
     state.urbanProject.createMode = "custom";
