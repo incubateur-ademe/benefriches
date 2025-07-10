@@ -1,10 +1,10 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { TExpense } from "shared";
-
 import {
   computePhotovoltaicPowerStationInstallationExpensesFromElectricalPower,
   computePhotovoltaicPowerStationYearlyExpensesFromElectricalPower,
-} from "../photovoltaic";
+} from "shared";
+
 import { selectCreationData } from "./renewableEnergy.selector";
 
 const getExpenseAmountByPurpose = <TExpenses extends TExpense<string>[]>(

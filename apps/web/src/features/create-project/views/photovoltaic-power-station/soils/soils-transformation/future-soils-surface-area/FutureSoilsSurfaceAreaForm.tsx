@@ -1,7 +1,11 @@
 import { useForm } from "react-hook-form";
-import { createSoilSurfaceAreaDistribution, SoilsDistribution, SoilType } from "shared";
+import {
+  createSoilSurfaceAreaDistribution,
+  SoilsDistribution,
+  SoilType,
+  getSuitableSurfaceAreaForPhotovoltaicPanels,
+} from "shared";
 
-import { getSuitableSurfaceAreaForPhotovoltaicPanels } from "@/features/create-project/core/renewable-energy/soilsTransformation";
 import {
   formatSurfaceArea,
   SQUARE_METERS_HTML_SYMBOL,

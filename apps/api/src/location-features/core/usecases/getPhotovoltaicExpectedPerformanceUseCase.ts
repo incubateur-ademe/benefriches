@@ -1,5 +1,3 @@
-import { lastValueFrom } from "rxjs";
-
 import { UseCase } from "../../../shared-kernel/usecase";
 import { PhotovoltaicDataProvider } from "../gateways/PhotovoltaicDataProvider";
 
@@ -27,10 +25,11 @@ export class GetPhotovoltaicExpectedPerformanceUseCase implements UseCase<Reques
   constructor(private readonly photovoltaicDataProvider: PhotovoltaicDataProvider) {}
 
   async execute({ lat, long, peakPower }: Request): Promise<Response> {
-    const result = await lastValueFrom(
-      this.photovoltaicDataProvider.getPhotovoltaicPerformance({ lat, long, peakPower }),
-    );
-
+    const result = await this.photovoltaicDataProvider.getPhotovoltaicPerformance({
+      lat,
+      long,
+      peakPower,
+    });
     return {
       expectedPerformance: result.expectedPerformance,
     };

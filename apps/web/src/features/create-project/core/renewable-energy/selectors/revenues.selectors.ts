@@ -1,7 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { getRevenueAmountByPurpose } from "shared";
+import { computeDefaultPhotovoltaicYearlyRecurringRevenueAmount } from "shared";
 
-import { computeDefaultPhotovoltaicYearlyRecurringRevenueAmount } from "../photovoltaic";
 import { selectCreationData } from "./renewableEnergy.selector";
 
 export const selectPhotovoltaicPowerStationYearlyRevenueInitialValues = createSelector(

@@ -1,10 +1,10 @@
 import { createSelector } from "@reduxjs/toolkit";
-
-import { selectSiteSurfaceArea } from "../../createProject.selectors";
 import {
   getRecommendedPhotovoltaicPanelsSurfaceAreaFromElectricalPower,
   getRecommendedPowerKWcFromPhotovoltaicPanelsSurfaceArea,
-} from "../photovoltaic";
+} from "shared";
+
+import { selectSiteSurfaceArea } from "../../createProject.selectors";
 import { selectCreationData } from "./renewableEnergy.selector";
 
 export const selectPhotovoltaicPanelsSurfaceArea = createSelector(

@@ -1,5 +1,14 @@
 import { ActionReducerMapBuilder, createReducer, PayloadAction } from "@reduxjs/toolkit";
 import { SoilsDistribution, stripEmptySurfaces } from "shared";
+import {
+  getRecommendedPhotovoltaicPanelsAccessPathSurfaceArea,
+  getRecommendedPhotovoltaicPanelsFoundationsSurfaceArea,
+  canSiteAccomodatePhotovoltaicPanels,
+  hasSiteSignificantBiodiversityAndClimateSensibleSoils,
+  preserveCurrentSoils,
+  transformNonSuitableSoils,
+  transformSoilsForRenaturation,
+} from "shared";
 
 import { ReconversionProjectCreationData } from "@/features/create-project/core/project.types";
 
@@ -48,17 +57,6 @@ import {
 } from "./actions/renewableEnergy.actions";
 import { saveReconversionProject } from "./actions/saveReconversionProject.action";
 import { fetchCurrentAndProjectedSoilsCarbonStorage } from "./actions/soilsCarbonStorage.actions";
-import {
-  getRecommendedPhotovoltaicPanelsAccessPathSurfaceArea,
-  getRecommendedPhotovoltaicPanelsFoundationsSurfaceArea,
-} from "./photovoltaic";
-import {
-  canSiteAccomodatePhotovoltaicPanels,
-  hasSiteSignificantBiodiversityAndClimateSensibleSoils,
-  preserveCurrentSoils,
-  transformNonSuitableSoils,
-  transformSoilsForRenaturation,
-} from "./soilsTransformation";
 
 export type RenewableEneryProjectState = {
   saveState: "idle" | "loading" | "success" | "error";

@@ -6,6 +6,7 @@ import {
   RenewableEnergyProjectPhase,
   SoilsDistribution,
   SoilType,
+  SoilsTransformationProject,
 } from "shared";
 
 import { RenewableEnergyDevelopmentPlanType } from "@/shared/core/reconversionProject";
@@ -17,7 +18,6 @@ import {
   ReconversionProjectCreationData,
   Schedule,
 } from "../../project.types";
-import { SoilsTransformationProject } from "../soilsTransformation";
 
 const RENEWABLE_ENERGY = "renewableEnergy";
 

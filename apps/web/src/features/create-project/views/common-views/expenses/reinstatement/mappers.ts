@@ -2,9 +2,8 @@ import {
   ReinstatementExpense,
   ReinstatementExpensePurpose,
   ComputedReinstatementExpenses,
+  typedObjectKeys,
 } from "shared";
-
-import { typedObjectKeys } from "@/shared/core/object-keys/objectKeys";
 
 import { FormValues } from "./ReinstatementExpensesForm";
 

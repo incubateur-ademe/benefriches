@@ -1,5 +1,3 @@
-import { Observable } from "rxjs";
-
 type PerformanceParams = {
   lat: number;
   long: number;
@@ -48,5 +46,5 @@ export type PerformanceResult = {
 };
 
 export interface PhotovoltaicDataProvider {
-  getPhotovoltaicPerformance(params: PerformanceParams): Observable<PerformanceResult>;
+  getPhotovoltaicPerformance(params: PerformanceParams): Promise<PerformanceResult>;
 }

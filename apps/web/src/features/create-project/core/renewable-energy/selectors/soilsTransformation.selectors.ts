@@ -1,13 +1,4 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { SoilsDistribution, SoilType, sumSoilsSurfaceAreasWhere } from "shared";
-
-import { typedObjectKeys } from "@/shared/core/object-keys/objectKeys";
-
-import {
-  selectSiteData,
-  selectSiteSoilsDistribution,
-  selectSiteSurfaceArea,
-} from "../../createProject.selectors";
 import {
   getNonSuitableSoilsForPhotovoltaicPanels,
   getSuitableSoilsForTransformation,
@@ -16,7 +7,17 @@ import {
   willTransformationNoticeablyImpactBiodiversityAndClimate,
   getBioversityAndClimateSensitiveSoilsSurfaceAreaDestroyed,
   REQUIRED_SOILS_FOR_PHOTOVOLTAIC_PANELS,
-} from "../soilsTransformation";
+  SoilsDistribution,
+  SoilType,
+  sumSoilsSurfaceAreasWhere,
+  typedObjectKeys,
+} from "shared";
+
+import {
+  selectSiteData,
+  selectSiteSoilsDistribution,
+  selectSiteSurfaceArea,
+} from "../../createProject.selectors";
 import { selectPhotovoltaicPanelsSurfaceArea } from "./photovoltaicPowerStation.selectors";
 import { selectCreationData, selectProjectSoilsDistribution } from "./renewableEnergy.selector";
 

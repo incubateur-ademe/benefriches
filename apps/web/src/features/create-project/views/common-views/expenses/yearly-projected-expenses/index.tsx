@@ -1,7 +1,5 @@
 import { ReactNode } from "react";
-import { RecurringExpense } from "shared";
-
-import { typedObjectKeys } from "@/shared/core/object-keys/objectKeys";
+import { RecurringExpense, typedObjectKeys } from "shared";
 
 import YearlyProjectedsExpensesForm, { FormValues } from "./YearlyProjectedExpensesForm";
 

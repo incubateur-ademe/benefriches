@@ -1,5 +1,4 @@
-import { createSoilSurfaceAreaDistribution, SoilsDistribution, SoilType } from "shared";
-
+import { createSoilSurfaceAreaDistribution, SoilsDistribution, SoilType } from "../../soils";
 import {
   allocateRecommendedSoilSurfaceArea,
   canSiteAccomodatePhotovoltaicPanels,

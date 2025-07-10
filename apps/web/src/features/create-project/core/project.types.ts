@@ -9,13 +9,12 @@ import {
   SiteNature,
   SoilsDistribution,
   SoilType,
+  SoilsTransformationProject,
 } from "shared";
 
 import { UserStructureType } from "@/features/onboarding/core/user";
 import { RenewableEnergyDevelopmentPlanType } from "@/shared/core/reconversionProject";
 import { OwnerStructureType, TenantStructureType } from "@/shared/core/stakeholder";
-
-import { SoilsTransformationProject } from "./renewable-energy/soilsTransformation";
 
 export type PhotovoltaicKeyParameter = "POWER" | "SURFACE";
 

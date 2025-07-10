@@ -1,7 +1,6 @@
 import { Controller, useForm } from "react-hook-form";
-import { SoilsDistribution, SoilType } from "shared";
+import { SoilsDistribution, SoilType, REQUIRED_SOILS_FOR_PHOTOVOLTAIC_PANELS } from "shared";
 
-import { REQUIRED_SOILS_FOR_PHOTOVOLTAIC_PANELS } from "@/features/create-project/core/renewable-energy/soilsTransformation";
 import { formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 import {
   getLabelForSoilType,

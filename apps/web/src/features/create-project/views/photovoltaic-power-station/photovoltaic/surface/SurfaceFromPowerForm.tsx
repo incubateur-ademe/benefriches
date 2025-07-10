@@ -1,7 +1,6 @@
 import { useForm } from "react-hook-form";
-import { convertSquareMetersToHectares } from "shared";
+import { convertSquareMetersToHectares, PHOTOVOLTAIC_RATIO_M2_PER_KWC } from "shared";
 
-import { PHOTOVOLTAIC_RATIO_M2_PER_KWC } from "@/features/create-project/core/renewable-energy/photovoltaic";
 import {
   formatNumberFr,
   formatSurfaceArea,

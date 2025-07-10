@@ -1,58 +1,27 @@
-import { z } from "zod";
-
 import { IDateProvider } from "../../../adapters/IDateProvider";
 import { computePropertyTransferDutiesFromSellingPrice } from "../../../financial";
 import { formatMunicipalityName } from "../../../local-authority";
-import { typedObjectEntries } from "../../../object-entries";
-import { SiteNature } from "../../../site";
-import { SoilsDistribution } from "../../../soils";
-import {
-  computeDefaultSitePurchaseFromSiteSurfaceArea,
-  computeProjectReinstatementExpenses,
-  ReinstatementExpensePurpose,
-} from "../../_common";
+import { computeDefaultSitePurchaseFromSiteSurfaceArea } from "../../_common";
+import { DefaultProjectGenerator } from "../../_common/project-generator/DefaultProjectGenerator";
+import { ReconversionProject, SiteData } from "../../_common/project-generator/types";
 import { reconversionProjectSchema } from "../../reconversionProjectSchemas";
 import { computeExpectedPostDevelopmentResaleSellingPriceFromSurfaces } from "../expectedPostDevelopmentResale";
 import { computeDefaultInstallationExpensesFromSiteSurfaceArea } from "../installationExpenses";
-import { computeDefaultOperationsFirstYear } from "../schedule/operationFirstYear";
-import {
-  computeDefaultInstallationSchedule,
-  computeDefaultReinstatementSchedule,
-} from "../schedule/worksSchedule";
 import { BuildingsUseDistribution } from "../spaces/living-and-activity-spaces/buildingsUse";
 import { computeSoilsDistributionFromSpaces } from "../spaces/soilsDistributionFromSpaces";
 import { LEGACY_SpacesDistribution } from "../urbanProject";
 
-type SiteData = {
-  id: string;
-  nature: SiteNature;
-  surfaceArea: number;
-  soilsDistribution: SoilsDistribution;
-  contaminatedSoilSurface?: number;
-  address: {
-    city: string;
-  };
-  owner: {
-    structureType: string;
-    name?: string;
-  };
-};
-type ReconversionProject = z.infer<typeof reconversionProjectSchema>;
-
-function willProjectIncludeReinstatement(siteData: SiteData) {
-  return siteData.nature === "FRICHE";
-}
-
-export class UrbanProjectGenerator {
+export class UrbanProjectGenerator extends DefaultProjectGenerator {
   name;
   developmentType;
 
   constructor(
-    private readonly dateProvider: IDateProvider,
+    dateProvider: IDateProvider,
     private readonly reconversionProjectId: string,
     private readonly createdBy: string,
-    readonly siteData: SiteData,
+    override readonly siteData: SiteData & { address: { city: string } },
   ) {
+    super(dateProvider, siteData);
     this.name = "";
     this.developmentType = "URBAN_PROJECT" as const;
   }
@@ -65,27 +34,15 @@ export class UrbanProjectGenerator {
     return {};
   }
 
-  get projectSoilsDistribution() {
+  override get projectSoilsDistribution() {
     return computeSoilsDistributionFromSpaces(this.spacesDistribution);
   }
 
-  get developer() {
+  override get developer() {
     return {
       name: formatMunicipalityName(this.siteData.address.city),
       structureType: "municipality",
     };
-  }
-
-  get reinstatementContractOwner() {
-    if (willProjectIncludeReinstatement(this.siteData)) {
-      return this.developer;
-    }
-    return undefined;
-  }
-
-  // spaces and soils
-  get decontaminatedSoilSurface() {
-    return 0.75 * (this.siteData.contaminatedSoilSurface ?? 0);
   }
 
   // expenses and incomes
@@ -97,32 +54,6 @@ export class UrbanProjectGenerator {
       { amount: developmentWorks, purpose: "development_works" },
       { amount: other, purpose: "other" },
     ];
-  }
-
-  get reinstatementCosts() {
-    if (!willProjectIncludeReinstatement(this.siteData)) {
-      return undefined;
-    }
-    return typedObjectEntries(
-      computeProjectReinstatementExpenses(
-        this.siteData.soilsDistribution,
-        this.projectSoilsDistribution,
-        this.decontaminatedSoilSurface,
-      ),
-    )
-      .filter(([, amount]) => amount && amount > 0)
-      .map(([purpose, amount]) => {
-        switch (purpose) {
-          case "deimpermeabilization":
-          case "remediation":
-          case "demolition":
-            return { amount, purpose };
-          case "sustainableSoilsReinstatement":
-            return { amount, purpose: "sustainable_soils_reinstatement" };
-          case "asbestosRemoval":
-            return { amount, purpose: "asbestos_removal" };
-        }
-      }) as { amount: number; purpose: ReinstatementExpensePurpose }[];
   }
 
   get hasPurchaseTransaction() {
@@ -146,20 +77,6 @@ export class UrbanProjectGenerator {
     return { sellingPrice: undefined, propertyTransactionDuties: undefined };
   }
 
-  // schedules
-  get reinstatementSchedule() {
-    if (willProjectIncludeReinstatement(this.siteData)) {
-      return computeDefaultReinstatementSchedule(this.dateProvider);
-    }
-    return undefined;
-  }
-
-  get installationSchedule() {
-    return computeDefaultInstallationSchedule(this.dateProvider)(
-      this.reinstatementSchedule?.endDate,
-    );
-  }
-
   // expected resale
   get siteResaleExpectedSellingPrice() {
     return computeExpectedPostDevelopmentResaleSellingPriceFromSurfaces(
@@ -169,10 +86,6 @@ export class UrbanProjectGenerator {
 
   get siteResaleExpectedPropertyTransferDuties() {
     return computePropertyTransferDutiesFromSellingPrice(this.siteResaleExpectedSellingPrice);
-  }
-
-  get operationsFirstYear() {
-    return computeDefaultOperationsFirstYear(this.installationSchedule.endDate);
   }
 
   getReconversionProject(): ReconversionProject {

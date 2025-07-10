@@ -1,14 +1,15 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { z } from "zod";
+
+import { typedObjectEntries } from "../../object-entries";
+import { typedObjectKeys } from "../../object-keys";
 import {
   isForest,
   isWetLand,
   SoilsDistribution,
   SoilType,
   sumSoilsSurfaceAreasWhere,
-  typedObjectEntries,
-} from "shared";
-import { z } from "zod";
-
-import { typedObjectKeys } from "@/shared/core/object-keys/objectKeys";
+} from "../../soils";
 
 export const REQUIRED_SOILS_FOR_PHOTOVOLTAIC_PANELS: SoilType[] = [
   "IMPERMEABLE_SOILS",
@@ -23,7 +24,6 @@ const isSoilSuitableForPhotovoltaicPanels = (soilType: SoilType): boolean => {
     "PRAIRIE_BUSHES",
     "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
     "CULTIVATION",
-    "ORCHARD",
     "VINEYARD",
   ].includes(soilType);
 };
@@ -64,6 +64,7 @@ const getSoilsTransformationResultingSoilType = (soilType: SoilType): SoilType =
     case "FOREST_MIXED":
     case "FOREST_POPLAR":
     case "PRAIRIE_TREES":
+    case "ORCHARD":
       return "PRAIRIE_GRASS";
     case "BUILDINGS":
     case "WET_LAND":
@@ -145,10 +146,7 @@ export const allocateRecommendedSoilSurfaceArea =
       if (newSoilsDistributionMineralSoilSurfaceArea >= recommendedSoilSurfaceAreaNeeded) return;
 
       const availableSurfaceArea = soilsDistribution[soilType];
-      const surfaceAreaToTransform = Math.min(
-        missingMineralSoilSurfaceArea,
-        availableSurfaceArea as number,
-      );
+      const surfaceAreaToTransform = Math.min(missingMineralSoilSurfaceArea, availableSurfaceArea!);
       newSoilsDistribution[soilType]! -= surfaceAreaToTransform;
       newSoilsDistribution[soilTypeToAllocate] =
         (newSoilsDistribution[soilTypeToAllocate] ?? 0) + surfaceAreaToTransform;

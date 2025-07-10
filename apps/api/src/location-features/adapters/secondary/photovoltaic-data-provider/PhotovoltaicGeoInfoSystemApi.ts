@@ -1,7 +1,7 @@
 import { HttpService } from "@nestjs/axios";
 import { Injectable } from "@nestjs/common";
 import { AxiosError } from "axios";
-import { catchError, map } from "rxjs";
+import { catchError, lastValueFrom, map } from "rxjs";
 
 import { PhotovoltaicDataProvider } from "src/location-features/core/gateways/PhotovoltaicDataProvider";
 
@@ -66,67 +66,69 @@ export class PhotovoltaicGeoInfoSystemApi implements PhotovoltaicDataProvider {
     angle?: number;
     loss?: number;
   }) {
-    return this.httpService
-      .get(`${API_URL}&lat=${lat}&lon=${long}&peakpower=${peakPower}&loss=${loss}&angle=${angle}`)
-      .pipe(
-        map(({ data }: { data: PVGISResult }) => {
-          const { outputs, inputs } = data;
-          const { totals } = outputs;
-          const { location, meteo_data, mounting_system } = inputs;
-          return {
-            context: {
-              location: {
-                lat: Number(location.latitude),
-                long: Number(location.longitude),
-                elevation: Number(location.elevation),
-              },
-              meteoData: {
-                radiationDb: meteo_data.radiation_db,
-                meteoDb: meteo_data.meteo_db,
-                yearMin: meteo_data.year_min,
-                yearMax: meteo_data.year_max,
-                useHorizon: meteo_data.use_horizon,
-                horizonDb: meteo_data.horizon_db,
-              },
-              mountingSystem: {
-                slope: {
-                  value: Number(mounting_system.fixed.slope.value),
-                  optimal: Boolean(mounting_system.fixed.slope.optimal),
+    return lastValueFrom(
+      this.httpService
+        .get(`${API_URL}&lat=${lat}&lon=${long}&peakpower=${peakPower}&loss=${loss}&angle=${angle}`)
+        .pipe(
+          map(({ data }: { data: PVGISResult }) => {
+            const { outputs, inputs } = data;
+            const { totals } = outputs;
+            const { location, meteo_data, mounting_system } = inputs;
+            return {
+              context: {
+                location: {
+                  lat: Number(location.latitude),
+                  long: Number(location.longitude),
+                  elevation: Number(location.elevation),
                 },
-                azimuth: {
-                  value: Number(mounting_system.fixed.azimuth.value),
-                  optimal: Boolean(mounting_system.fixed.azimuth.optimal),
+                meteoData: {
+                  radiationDb: meteo_data.radiation_db,
+                  meteoDb: meteo_data.meteo_db,
+                  yearMin: meteo_data.year_min,
+                  yearMax: meteo_data.year_max,
+                  useHorizon: meteo_data.use_horizon,
+                  horizonDb: meteo_data.horizon_db,
                 },
-                type: inputs.mounting_system.fixed.type,
+                mountingSystem: {
+                  slope: {
+                    value: Number(mounting_system.fixed.slope.value),
+                    optimal: Boolean(mounting_system.fixed.slope.optimal),
+                  },
+                  azimuth: {
+                    value: Number(mounting_system.fixed.azimuth.value),
+                    optimal: Boolean(mounting_system.fixed.azimuth.optimal),
+                  },
+                  type: inputs.mounting_system.fixed.type,
+                },
+                pvModule: {
+                  technology: inputs.pv_module.technology,
+                  peakPower: Number(inputs.pv_module.peak_power),
+                  systemLoss: Number(inputs.pv_module.system_loss),
+                },
               },
-              pvModule: {
-                technology: inputs.pv_module.technology,
-                peakPower: Number(inputs.pv_module.peak_power),
-                systemLoss: Number(inputs.pv_module.system_loss),
+              expectedPerformance: {
+                kwhPerDay: Number(totals.fixed.E_d),
+                kwhPerMonth: Number(totals.fixed.E_m),
+                kwhPerYear: Number(totals.fixed.E_y),
+                lossPercents: {
+                  angleIncidence: Number(totals.fixed.l_aoi),
+                  spectralIncidence: Number(totals.fixed.l_spec),
+                  tempAndIrradiance: Number(totals.fixed.l_tg),
+                  total: Number(totals.fixed.l_total),
+                },
               },
-            },
-            expectedPerformance: {
-              kwhPerDay: Number(totals.fixed.E_d),
-              kwhPerMonth: Number(totals.fixed.E_m),
-              kwhPerYear: Number(totals.fixed.E_y),
-              lossPercents: {
-                angleIncidence: Number(totals.fixed.l_aoi),
-                spectralIncidence: Number(totals.fixed.l_spec),
-                tempAndIrradiance: Number(totals.fixed.l_tg),
-                total: Number(totals.fixed.l_total),
-              },
-            },
-          };
-        }),
-      )
-      .pipe(
-        catchError((axiosError: AxiosError) => {
-          const err = new Error(`Error response from GeoApiGouv API: ${axiosError.message}`);
-          if (axiosError.response?.data) {
-            err.message.concat(` - ${axiosError.response.data as string}`);
-          }
-          throw err;
-        }),
-      );
+            };
+          }),
+        )
+        .pipe(
+          catchError((axiosError: AxiosError) => {
+            const err = new Error(`Error response from GeoApiGouv API: ${axiosError.message}`);
+            if (axiosError.response?.data) {
+              err.message.concat(` - ${axiosError.response.data as string}`);
+            }
+            throw err;
+          }),
+        ),
+    );
   }
 }

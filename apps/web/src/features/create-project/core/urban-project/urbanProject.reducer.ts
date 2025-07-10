@@ -1,7 +1,5 @@
 import { createReducer, UnknownAction } from "@reduxjs/toolkit";
-import { UrbanSpaceCategory } from "shared";
-
-import { typedObjectKeys } from "@/shared/core/object-keys/objectKeys";
+import { UrbanSpaceCategory, typedObjectKeys } from "shared";
 
 import { stepRevertConfirmed } from "../actions/actionsUtils";
 import { ProjectCreationState } from "../createProject.reducer";

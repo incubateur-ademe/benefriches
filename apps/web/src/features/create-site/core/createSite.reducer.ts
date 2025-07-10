@@ -6,11 +6,11 @@ import {
   SoilsDistribution,
   SoilType,
   SurfaceAreaDistribution,
+  typedObjectKeys,
 } from "shared";
 import { v4 as uuid } from "uuid";
 
 import { SiteCreationData } from "@/features/create-site/core/siteFoncier.types";
-import { typedObjectKeys } from "@/shared/core/object-keys/objectKeys";
 import { splitEvenly } from "@/shared/core/split-number/splitNumber";
 import { RootState } from "@/shared/core/store-config/store";
 

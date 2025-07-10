@@ -4,9 +4,9 @@ import {
   sumListWithKey,
   URBAN_PROJECT_EURO_PER_SQUARE_METERS_FOR_TECHNICAL_STUDIES,
   URBAN_PROJECT_EURO_PER_SQUARE_METERS_FOR_DEVELOPMENT_WORKS,
+  PHOTOVOLTAIC_POWER_PLANT_ECONOMICAL_RATIO_EURO_PER_KWC,
 } from "shared";
 
-import { PHOTOVOLTAIC_POWER_PLANT_ECONOMICAL_RATIO_EURO_PER_KWC } from "@/features/create-project/core/renewable-energy/photovoltaic";
 import {
   ProjectDevelopmentPlanType,
   ProjectFeatures,
