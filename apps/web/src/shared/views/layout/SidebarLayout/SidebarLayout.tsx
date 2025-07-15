@@ -24,7 +24,7 @@ function SidebarLayout({ mainChildren, title, sidebarChildren }: SidebarLayoutPr
   return (
     <SidebarLayoutContext.Provider value={{ isOpen }}>
       <div className={classNames("tw-flex", "tw-w-full", "tw-h-[100vh]")}>
-        <div
+        <aside
           className={classNames(
             "tw-bg-grey-light dark:tw-bg-dsfr-contrastGrey",
             "tw-border-r",
@@ -68,10 +68,10 @@ function SidebarLayout({ mainChildren, title, sidebarChildren }: SidebarLayoutPr
               <HelpButton small={!isOpen} />
             </div>
           </div>
-        </div>
+        </aside>
 
         <div className={classNames("tw-overflow-auto", "tw-w-full")}>
-          <div
+          <header
             className={classNames(
               "tw-flex",
               "tw-justify-between",
@@ -91,9 +91,9 @@ function SidebarLayout({ mainChildren, title, sidebarChildren }: SidebarLayoutPr
             >
               Retour à mes projets
             </Button>
-          </div>
+          </header>
 
-          <div className="tw-p-6 tw-container">{mainChildren}</div>
+          <main className="tw-p-6 tw-container">{mainChildren}</main>
         </div>
       </div>
     </SidebarLayoutContext.Provider>
