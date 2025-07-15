@@ -119,7 +119,7 @@ function ImpactComparisonSection({ onSelectOption, siteNature }: Props) {
         width="80"
         height="80"
         aria-hidden="true"
-        alt={`Icône Friche`}
+        alt=""
         className={classNames("tw-mb-2", "tw-w-40 tw-h-40")}
       />
       <div>

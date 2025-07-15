@@ -15,7 +15,7 @@ export default function ImpactComparisonCardContent({ title, imgSrc, description
           width="80px"
           height="80px"
           aria-hidden="true"
-          alt={`Icône ${title}`}
+          alt=""
           className={classNames("tw-mb-2", "tw-w-14 tw-h-14")}
         />
         {title}

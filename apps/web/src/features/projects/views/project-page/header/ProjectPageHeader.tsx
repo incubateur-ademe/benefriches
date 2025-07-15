@@ -58,7 +58,7 @@ const ProjectPageHeader = ({
             )}
             src={getScenarioPictoUrl(projectType)}
             aria-hidden={true}
-            alt="Icône du type de scénario"
+            alt=""
             width="60"
             height="60"
           />

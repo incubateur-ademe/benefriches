@@ -6,36 +6,30 @@ export default function DataSourcesSection() {
       <div className="md:tw-flex md:tw-gap-4">
         <div className="md:tw-pr-12 tw-m-auto tw-order-last md:tw-order-first">
           <div className="tw-mb-10 tw-hidden md:tw-flex tw-justify-between tw-items-center">
-            <img src="/img/logos/logo-ademe.svg" alt="Logo de l'ADEME" height="80px" />
-            <img src="/img/logos/logo-aldo.svg" alt="Logo de l'outil Aldo" height="50px" />
-            <img src="/img/logos/logo-insee.svg" alt="Logo de l'INSEE" height="80px" />
+            <img src="/img/logos/logo-ademe.svg" aria-hidden="true" alt="" height="80px" />
+            <img src="/img/logos/logo-aldo.svg" aria-hidden="true" alt="" height="50px" />
+            <img src="/img/logos/logo-insee.svg" aria-hidden="true" alt="" height="80px" />
           </div>
           <div className="tw-hidden md:tw-flex tw-justify-between">
-            <img src="/img/logos/logo-brgm.svg" alt="Logo du BRGM" height="80px" />
-            <img
-              src="/img/logos/logo-shift-project.svg"
-              alt="Logo du Shift Project"
-              height="80px"
-            />
+            <img src="/img/logos/logo-brgm.svg" aria-hidden="true" alt="" height="80px" />
+            <img src="/img/logos/logo-shift-project.svg" aria-hidden="true" alt="" height="80px" />
             <img
               src="/img/logos/logo-france-strategie.svg"
-              alt="Logo de France Stratégie"
+              aria-hidden="true"
+              alt=""
               height="80px"
             />
           </div>
           <div className="tw-flex md:tw-hidden tw-gap-8 tw-flex-wrap tw-justify-center">
-            <img src="/img/logos/logo-ademe.svg" alt="Logo de l'ADEME" height="60px" />
-            <img src="/img/logos/logo-aldo.svg" alt="Logo de l'outil Aldo" height="40px" />
-            <img src="/img/logos/logo-insee.svg" alt="Logo de l'INSEE" height="60px" />
-            <img src="/img/logos/logo-brgm.svg" alt="Logo du BRGM" height="60px" />
-            <img
-              src="/img/logos/logo-shift-project.svg"
-              alt="Logo du Shift Project"
-              height="60px"
-            />
+            <img src="/img/logos/logo-ademe.svg" aria-hidden="true" alt="" height="60px" />
+            <img src="/img/logos/logo-aldo.svg" aria-hidden="true" alt="" height="40px" />
+            <img src="/img/logos/logo-insee.svg" aria-hidden="true" alt="" height="60px" />
+            <img src="/img/logos/logo-brgm.svg" aria-hidden="true" alt="" height="60px" />
+            <img src="/img/logos/logo-shift-project.svg" aria-hidden="true" alt="" height="60px" />
             <img
               src="/img/logos/logo-france-strategie.svg"
-              alt="Logo de France Stratégie"
+              aria-hidden="true"
+              alt=""
               height="60px"
             />
           </div>

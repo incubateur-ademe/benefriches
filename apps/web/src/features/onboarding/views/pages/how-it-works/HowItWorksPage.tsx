@@ -96,9 +96,9 @@ const OnBoardingIntroductionHow = ({ nextButtonProps, backLinkProps }: Props) =>
           ]}
         >
           <div className="tw-flex tw-gap-4 tw-items-center">
-            <img src="/img/logos/logo-ademe.svg" alt="Logo de l'ADEME" height="40px" />
-            <img src="/img/logos/logo-insee.svg" alt="Logo de l'INSEE" height="40px" />
-            <img src="/img/logos/logo-aldo.svg" alt="Logo d'Aldo" height="24px" />
+            <img src="/img/logos/logo-ademe.svg" alt="ADEME" height="40px" />
+            <img src="/img/logos/logo-insee.svg" alt="INSEE" height="40px" />
+            <img src="/img/logos/logo-aldo.svg" alt="Aldo" height="24px" />
           </div>
         </IllustrationCard>
         <IllustrationCard

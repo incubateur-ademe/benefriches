@@ -45,7 +45,7 @@ function ImpactsComparisonFooter({ baseCaseSiteData, comparisonCaseSiteData, pro
       <div className="tw-p-6 tw-bg-white dark:tw-bg-black tw-border tw-border-solid tw-border-borderGrey tw-flex tw-flex-col md:tw-flex-row tw-gap-6">
         <img
           src="/img/pictograms/calculatrice-illustration.svg"
-          alt="illustration calcul"
+          alt=""
           aria-hidden="true"
           className="tw-w-36"
         />

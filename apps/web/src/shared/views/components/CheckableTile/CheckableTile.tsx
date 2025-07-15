@@ -22,7 +22,8 @@ export default function CheckableTile({ title, description, imgSrc, disabled, ..
               src={imgSrc}
               width="80px"
               height="80px"
-              alt={`Illustration pour la tuile "${title}"`}
+              alt=""
+              aria-hidden="true"
               className={disabled ? "tw-filter tw-grayscale tw-opacity-50 tw-mb-2" : "tw-mb-2"}
             />
           )}

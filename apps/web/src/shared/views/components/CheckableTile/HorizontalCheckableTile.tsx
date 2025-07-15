@@ -70,7 +70,8 @@ export default function HorizontalCheckableTile({
               src={imgSrc}
               width="80px"
               height="80px"
-              alt={`Illustration pour la tuile "${title}"`}
+              alt=""
+              aria-hidden="true"
               className={classNames("tw-mr-4", disabled && "tw-filter tw-grayscale tw-opacity-50")}
             />
           )}

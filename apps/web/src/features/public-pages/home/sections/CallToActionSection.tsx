@@ -32,14 +32,14 @@ export default function CallToActionSection() {
               src="/img/pictograms/development-plans/urban-project.svg"
               width="100px"
               aria-hidden="true"
-              alt="icône projet d’aménagement urbain"
+              alt=""
               className="tw-mb-6"
             />
             <img
               src="/img/pictograms/renewable-energy/photovoltaic.svg"
               width="100px"
               aria-hidden="true"
-              alt="icône projet d’aménagement photovoltaïque"
+              alt=""
               className="tw-mb-6"
             />
 
@@ -58,14 +58,14 @@ export default function CallToActionSection() {
               src="/img/pictograms/development-plans/commercial-activity-area.svg"
               width="100px"
               aria-hidden="true"
-              alt="icône projet zone d’activités économiques"
+              alt=""
               className="tw-mb-6"
             />
             <img
               src="/img/pictograms/development-plans/natural-urban-space.svg"
               width="100px"
               aria-hidden="true"
-              alt="icône projet de renaturation"
+              alt=""
               className="tw-mb-6"
             />
             <h2>Vous êtes porteur d’un autre type de projet&nbsp;?</h2>

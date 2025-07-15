@@ -149,7 +149,8 @@ const EcosystemServicesDescription = ({ impactsData }: Props) => {
             <img
               className="tw-max-w-full"
               src="/img/modals/services-ecosystemiques.png"
-              alt="Schéma illustratif des services écosystémiques"
+              aria-hidden="true"
+              alt=""
             />
           </div>
           <ModalTitleTwo>Le principe de monétarisation</ModalTitleTwo>

@@ -60,7 +60,7 @@ const ImpactsComparisonHeader = ({
               className={classNames("tw-w-7 tw-h-7")}
               src={getScenarioPictoUrl(projectType)}
               aria-hidden={true}
-              alt="Icône du type de scénario"
+              alt=""
               width="60"
               height="60"
             />

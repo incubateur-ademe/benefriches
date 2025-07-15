@@ -10,7 +10,7 @@ const ScenarioTileImage = ({ imageUrl }: Props) => {
           className="fr-responsive-img"
           src={imageUrl}
           aria-hidden={true}
-          alt="Icône du type de scénario"
+          alt=""
           width="80px"
           height="80px"
         />

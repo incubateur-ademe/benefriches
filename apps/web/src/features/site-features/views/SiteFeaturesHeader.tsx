@@ -36,7 +36,7 @@ export default function SiteFeaturesHeader({
             className="tw-mr-3"
             src={getPictogramUrlForSiteNature(siteNature)}
             aria-hidden={true}
-            alt="Icône friche"
+            alt=""
             width={76}
             height={76}
           />

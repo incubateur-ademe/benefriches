@@ -29,7 +29,7 @@ export default function QuickImpactsEmbedViewTitle({ siteCity }: Props) {
         )}
         src={getScenarioPictoUrl("URBAN_PROJECT")}
         aria-hidden={true}
-        alt="Icône du type de scénario"
+        alt=""
         width="60"
         height="60"
       />

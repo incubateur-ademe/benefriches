@@ -26,7 +26,7 @@ function OnBoardingIntroductionWhyBenefriches({ nextLinkProps, backLinkProps }: 
         <img
           className="tw-max-w-full"
           src="/img/balance-illustration.svg"
-          alt="Balance économique du projet"
+          alt=""
           aria-hidden="true"
         />
       </div>

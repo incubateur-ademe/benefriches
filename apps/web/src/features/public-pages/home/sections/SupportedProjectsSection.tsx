@@ -40,7 +40,12 @@ function SupportedProjectCard({
         footer={
           <Button
             priority="primary"
-            linkProps={{ href: reportUrl, rel: "noopener noreferrer", target: "_blank" }}
+            linkProps={{
+              href: reportUrl,
+              rel: "noopener noreferrer",
+              target: "_blank",
+              "aria-label": `Télécharger le cas d'étude du projet à ${projectLocation} (${formerActivity})`,
+            }}
           >
             Télécharger le cas d'étude
           </Button>
@@ -83,7 +88,7 @@ function SupportedProjectCard({
             </span>
           </span>
         }
-        imageAlt={`Illustration du projet à ${projectLocation} (${formerActivity})`}
+        imageAlt={`${formerActivity} à ${projectLocation}`}
         imageUrl={imgUrl}
         size="small"
         title={projectType}

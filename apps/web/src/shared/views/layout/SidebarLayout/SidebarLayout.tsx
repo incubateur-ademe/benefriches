@@ -47,7 +47,7 @@ function SidebarLayout({ mainChildren, title, sidebarChildren }: SidebarLayoutPr
                 className="tw-bg-none"
                 aria-description="Retour à mes projets"
               >
-                <img src="/img/logos/logo-benefriches-simple.svg" alt="Logo de Bénéfriches" />
+                <img src="/img/logos/logo-benefriches-simple.svg" alt="Bénéfriches" />
               </a>
             )}
             <Button

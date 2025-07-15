@@ -20,11 +20,7 @@ export default function IntroSection() {
             </Button>
           </div>
           <div className="lg:tw-flex-[5]">
-            <img
-              src="/img/home-hero.png"
-              className="tw-w-full"
-              alt="Capture d'écran de Bénéfriches : page impacts d'un projet d'aménagement"
-            />
+            <img src="/img/home-hero.png" className="tw-w-full" aria-hidden="true" alt="" />
           </div>
         </div>
       </section>

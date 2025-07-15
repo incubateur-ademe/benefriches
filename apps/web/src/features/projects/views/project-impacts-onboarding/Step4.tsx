@@ -39,7 +39,7 @@ export default function Step4({ onNextClick, onBackClick, skipStepByStepAnimatio
           <img
             src="/img/pictograms/project-impacts-onboarding/step4-my-projects.svg"
             aria-hidden="true"
-            alt='Illustration accès à "Mes projets"'
+            alt=""
           />
         </div>
         <div
