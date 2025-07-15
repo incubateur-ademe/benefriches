@@ -44,6 +44,7 @@ function SupportedProjectCard({
               href: reportUrl,
               rel: "noopener noreferrer",
               target: "_blank",
+              title: `Télécharger le cas d'étude du projet à ${projectLocation} (${formerActivity})`,
               "aria-label": `Télécharger le cas d'étude du projet à ${projectLocation} (${formerActivity})`,
             }}
           >

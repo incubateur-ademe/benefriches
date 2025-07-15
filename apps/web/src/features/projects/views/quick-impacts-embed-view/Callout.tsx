@@ -17,7 +17,11 @@ export default function QuickImpactsCallout({
     <CallOut
       buttonProps={{
         children: "En découvrir plus sur Bénéfriches",
-        linkProps: { href: "https://benefriches.ademe.fr", target: "_blank" },
+        linkProps: {
+          href: "https://benefriches.ademe.fr",
+          target: "_blank",
+          title: "En découvrir plus sur Bénéfriches - ouvre une nouvelle fenêtre",
+        },
       }}
     >
       Bénéfriches a calculé les <strong>impacts à {evaluationPeriod} ans</strong> d'un projet de

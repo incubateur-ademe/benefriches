@@ -114,18 +114,18 @@ const CostBenefitAnalysisDescription = ({ impactsData }: Props) => {
           <ul>
             <li>
               <ExternalLink href="https://www.strategie.gouv.fr/levaluation-socioeconomique-investir-pour-la-collectivite">
-                Infographie sur l’évaluation socio-économique, France Stratégie{" "}
+                Infographie sur l’évaluation socio-économique, France Stratégie
               </ExternalLink>
             </li>
 
             <li>
               <ExternalLink href="https://www.strategie.gouv.fr/taux-dactualisation-un-beta-sensible">
-                Infographie sur la notion d’actualisation, France Stratégie{" "}
+                Infographie sur la notion d’actualisation, France Stratégie
               </ExternalLink>
             </li>
             <li>
               <ExternalLink href="https://www.ecologie.gouv.fr/sites/default/files/AMC%20-%20Guide%20m%C3%A9thodologique%20ABC.pdf">
-                Analyse coût bénéfices, Ministère de la transition écologique{" "}
+                Analyse coût bénéfices, Ministère de la transition écologique
               </ExternalLink>
             </li>
             <li>

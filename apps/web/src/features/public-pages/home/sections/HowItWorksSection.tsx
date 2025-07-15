@@ -7,13 +7,14 @@ export default function HowItWorksSection() {
   return (
     <section className="tw-py-20 tw-bg-grey-light dark:tw-bg-grey-dark">
       <div className="fr-container tw-grid tw-grid-cols-12 tw-gap-8">
-        <div
+        <aside
           className={classNames(
             "tw-col-span-12 tw-row-start-2",
             "md:tw-row-start-1 md:tw-col-span-4",
             "tw-grid tw-grid-rows-3 tw-gap-10",
             "tw-px-14",
           )}
+          aria-hidden="true"
         >
           <div className="tw-relative">
             <IllustrationCard
@@ -63,7 +64,7 @@ export default function HowItWorksSection() {
               🌱 Environnement, 👷 Emploi, 🤕 Sécurité, 💰 Finances publiques...
             </span>
           </IllustrationCard>
-        </div>
+        </aside>
 
         <div className="tw-col-span-12 md:tw-col-span-8">
           <h2>Bénéfriches, comment ça marche&nbsp;?</h2>

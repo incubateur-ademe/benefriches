@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { computePropertyTransferDutiesFromSellingPrice } from "shared";
 
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
+import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import RowDecimalsNumericInput from "@/shared/views/components/form/NumericInput/RowDecimalsNumericInput";
 import { optionalNumericFieldRegisterOptions } from "@/shared/views/components/form/NumericInput/registerOptions";
 import FormDefinition from "@/shared/views/layout/WizardFormLayout/FormDefinition";
@@ -43,14 +44,9 @@ const SitePurchaseAmountsForm = ({ initialValues, onSubmit, onBack }: Props) => 
               d'estimer le prix du terrain en consultant les transactions immobilières récentes à
               proximité de votre site.
             </p>
-            <a
-              title="Explorateur de données de valeurs foncières - ouvre une nouvelle fenêtre"
-              target="_blank"
-              rel="noopener noreferrer external"
-              href="https://explore.data.gouv.fr/fr/immobilier?onglet=carte&filtre=tous"
-            >
+            <ExternalLink href="https://explore.data.gouv.fr/fr/immobilier?onglet=carte&filtre=tous">
               Explorateur de données de valeurs foncières
-            </a>
+            </ExternalLink>
           </FormInfo>
           <FormDefinition>
             <p>

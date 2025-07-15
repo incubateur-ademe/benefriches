@@ -6,6 +6,7 @@ import { getCarbonTonsInAverageFrenchAnnualEmissionsPerPerson } from "@/shared/c
 import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import SoilsCarbonStorageChart from "@/shared/views/components/Charts/SoilsCarbonStorageChart";
+import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import FormDefinition from "@/shared/views/layout/WizardFormLayout/FormDefinition";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
@@ -64,36 +65,27 @@ const SiteSoilsCarbonStorage = ({
           <ul>
             <li>
               Stocks de carbone&nbsp;:{" "}
-              <a
+              <ExternalLink
                 title="Documentation d'ALDO - ouvre une nouvelle fenêtre"
-                target="_blank"
-                rel="noopener noreferrer external"
                 href="https://aldo-carbone.ademe.fr/"
               >
                 ALDO
-              </a>
+              </ExternalLink>
             </li>
             <li>
               Notions de stock, flux et paramètre d'influence&nbsp;:{" "}
-              <a
-                title="Définitions d'ALDO - ouvre une nouvelle fenêtre"
-                target="_blank"
-                rel="noopener noreferrer external"
-                href="https://docs.datagir.ademe.fr/documentation-aldo/introduction/definitions"
-              >
+              <ExternalLink href="https://docs.datagir.ademe.fr/documentation-aldo/introduction/definitions">
                 Définitions ALDO
-              </a>
+              </ExternalLink>
             </li>
             <li>
               Empreinte carbone moyenne annuelle d'un.e français.e&nbsp;:{" "}
-              <a
+              <ExternalLink
                 title="L'empreinte carbone de la France de 1995 à 2022 sur statistiques.developpement-durable.gouv.fr - ouvre une nouvelle fenêtre"
-                target="_blank"
-                rel="noopener noreferrer external"
                 href="https://www.statistiques.developpement-durable.gouv.fr/lempreinte-carbone-de-la-france-de-1995-2022"
               >
                 9,2 tCO2eq
-              </a>
+              </ExternalLink>
             </li>
           </ul>
         </FormDefinition>

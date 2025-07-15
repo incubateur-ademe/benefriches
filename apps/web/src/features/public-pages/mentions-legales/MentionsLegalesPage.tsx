@@ -28,7 +28,7 @@ export default function MentionsLegalesPage() {
         49004 Angers Cedex 01
         <br />
         Tél :{" "}
-        <a target="_blank" href="tel:+33241204120" rel="noopener noreferrer">
+        <a target="_blank" href="tel:+33241204120" rel="noopener noreferrer" title="">
           02 41 20 41 20
         </a>
       </address>
@@ -173,13 +173,12 @@ export default function MentionsLegalesPage() {
 
       <p>
         Sauf mention contraire précisée sur le fichier{" "}
-        <a
-          target="_blank"
-          rel="noreferrer noopener nofollow"
+        <ExternalLink
+          noFollow
           href="https://github.com/incubateur-ademe/benefriches/blob/main/LICENSE"
         >
           https://github.com/incubateur-ademe/benefriches/blob/main/LICENSE
-        </a>
+        </ExternalLink>
         , l’ADEME est propriétaire des droits de propriété intellectuelle ou détient les droits
         d’usage sur tous les éléments accessibles sur le site, notamment les textes, images,
         graphismes, logos, icônes, sons, logiciels et marques déposées.
@@ -265,13 +264,12 @@ export default function MentionsLegalesPage() {
 
       <p>
         Pour en savoir plus sur la politique d’accessibilité numérique de l’État:{" "}
-        <a
+        <ExternalLink
           href="http://references.modernisation.gouv.fr/accessibilite-numerique"
-          target="_blank"
-          rel="nofollow noopener noreferrer"
+          noFollow
         >
           http://references.modernisation.gouv.fr/accessibilite-numerique
-        </a>
+        </ExternalLink>
       </p>
 
       <h2>10. Sécurité</h2>

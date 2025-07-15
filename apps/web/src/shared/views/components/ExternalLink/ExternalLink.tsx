@@ -1,13 +1,23 @@
-import { ReactNode } from "react";
-
 type ExternalLinkProps = {
   href: string;
-  children: ReactNode;
+  children: string;
+  title?: string;
+  noFollow?: boolean;
 };
 
-export default function ExternalLink({ href, children }: ExternalLinkProps) {
+export default function ExternalLink({
+  href,
+  children,
+  title,
+  noFollow = false,
+}: ExternalLinkProps) {
   return (
-    <a href={href} rel="noopener noreferrer" target="_blank">
+    <a
+      href={href}
+      rel={noFollow ? "noopener noreferrer external nofollow" : "noopener noreferrer external"}
+      target="_blank"
+      title={title ?? `${children} - ouvre une nouvelle fenêtre`}
+    >
       {children}
     </a>
   );

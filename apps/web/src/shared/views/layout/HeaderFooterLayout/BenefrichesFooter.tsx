@@ -3,6 +3,8 @@ import { Footer } from "@codegouvfr/react-dsfr/Footer";
 
 import { routes } from "@/shared/views/router";
 
+import ExternalLink from "../../components/ExternalLink/ExternalLink";
+
 function BenefrichesFooter() {
   return (
     <Footer
@@ -13,25 +15,17 @@ function BenefrichesFooter() {
           transition écologique, l'incubateur interne de l'ADEME.
           <br />
           Son code est ouvert et accessible à tous{" "}
-          <a
-            href="https://github.com/incubateur-ademe/benefriches"
-            target="_blank"
-            rel="noreferrer"
-          >
+          <ExternalLink href="https://github.com/incubateur-ademe/benefriches">
             Voir le code source
-          </a>
+          </ExternalLink>
         </>
       }
       license={
         <>
           Sauf mention contraire, tous les contenus de ce site sont sous{" "}
-          <a
-            href="https://github.com/incubateur-ademe/benefriches/blob/main/LICENSE"
-            target="_blank"
-            rel="noreferrer"
-          >
+          <ExternalLink href="https://github.com/incubateur-ademe/benefriches/blob/main/LICENSE">
             licence MIT
-          </a>
+          </ExternalLink>
         </>
       }
       accessibilityLinkProps={{ ...routes.accessibilite().link }}
@@ -39,7 +33,14 @@ function BenefrichesFooter() {
       bottomItems={[
         { text: "Politique de confidentialité", linkProps: routes.politiqueConfidentialite().link },
         { text: "Statistiques", linkProps: routes.stats().link },
-        { text: "Contact", linkProps: { href: "https://tally.so/r/wvAdk8", target: "_blank" } },
+        {
+          text: "Contact",
+          linkProps: {
+            href: "https://tally.so/r/wvAdk8",
+            target: "_blank",
+            title: "Contact - ouvre une nouvelle fenêtre",
+          },
+        },
         headerFooterDisplayItem,
       ]}
     />

@@ -46,7 +46,7 @@ const OnBoardingIntroductionHow = ({ nextButtonProps, backLinkProps }: Props) =>
     <section
       className={classNames(fr.cx("fr-container"), "tw-py-20", "tw-grid tw-grid-cols-12 tw-gap-2")}
     >
-      <div
+      <aside
         className={classNames(
           "tw-col-span-12",
           "tw-row-start-2",
@@ -57,6 +57,7 @@ const OnBoardingIntroductionHow = ({ nextButtonProps, backLinkProps }: Props) =>
           "tw-gap-12",
           "tw-px-14",
         )}
+        aria-hidden="true"
       >
         <div className={classNames("tw-relative")}>
           <IllustrationCard
@@ -121,7 +122,7 @@ const OnBoardingIntroductionHow = ({ nextButtonProps, backLinkProps }: Props) =>
             🌱 Environnement, 👷 Emploi, 🤕 Sécurité, 💰 Finances publiques...
           </span>
         </IllustrationCard>
-      </div>
+      </aside>
 
       <div className="tw-col-span-12 md:tw-col-span-8">
         <h2>Bénéfriches, comment ça marche&nbsp;?</h2>
