@@ -1,10 +1,12 @@
 import { fr } from "@codegouvfr/react-dsfr";
 
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
+import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 
 function AccessibilitePage() {
   return (
     <section className={fr.cx("fr-container", "fr-py-4w")}>
+      <HtmlTitle>Accessibilité</HtmlTitle>
       <h1>Déclaration d'accessibilité</h1>
       <p>
         Établie le <em>5 février 2024</em>.

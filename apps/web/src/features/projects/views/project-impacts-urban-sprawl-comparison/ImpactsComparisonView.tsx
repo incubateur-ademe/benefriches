@@ -1,3 +1,5 @@
+import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
+
 import { UrbanSprawlImpactsComparisonState } from "../../application/project-impacts-urban-sprawl-comparison/urbanSprawlComparison.reducer";
 import { ViewMode } from "../../application/project-impacts/projectImpacts.reducer";
 import ProjectImpactsActionBar from "../shared/actions/ProjectImpactsActionBar";
@@ -45,19 +47,27 @@ const ImpactsComparisonView = ({
           disabledSegments={["charts"]}
         />
 
-        {currentViewMode === "summary" && <ImpactsSummaryViewContainer />}
+        {currentViewMode === "summary" && (
+          <>
+            <HtmlTitle>{`Synthèse - ${projectData.name} - Comparaison des impacts`}</HtmlTitle>
+            <ImpactsSummaryViewContainer />
+          </>
+        )}
         {currentViewMode === "list" && (
-          <ImpactComparisonListView
-            projectType={projectData.developmentPlan.type}
-            baseCase={{
-              siteName: baseCase.conversionSiteData.name,
-              impacts: baseCase.comparisonImpacts,
-            }}
-            comparisonCase={{
-              siteName: comparisonCase.conversionSiteData.name,
-              impacts: comparisonCase.comparisonImpacts,
-            }}
-          />
+          <>
+            <HtmlTitle>{`Liste - ${projectData.name} - Comparaison des impacts`}</HtmlTitle>
+            <ImpactComparisonListView
+              projectType={projectData.developmentPlan.type}
+              baseCase={{
+                siteName: baseCase.conversionSiteData.name,
+                impacts: baseCase.comparisonImpacts,
+              }}
+              comparisonCase={{
+                siteName: comparisonCase.conversionSiteData.name,
+                impacts: comparisonCase.comparisonImpacts,
+              }}
+            />
+          </>
         )}
         {currentViewMode === "charts" && <h2 className="tw-py-10"> 🏗️ Bientôt disponible...</h2>}
         <ImpactsComparisonFooter

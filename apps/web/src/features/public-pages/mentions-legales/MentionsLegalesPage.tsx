@@ -1,11 +1,13 @@
 import { fr } from "@codegouvfr/react-dsfr";
 
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
+import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import { routes } from "@/shared/views/router";
 
 export default function MentionsLegalesPage() {
   return (
     <section className={fr.cx("fr-container", "fr-py-4w")}>
+      <HtmlTitle>Mentions légales</HtmlTitle>
       <h1>Mentions légales</h1>
       <p>
         <strong>Mis à jour le 01/07/2024.</strong>

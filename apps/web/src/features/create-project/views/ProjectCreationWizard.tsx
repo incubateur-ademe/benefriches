@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Route } from "type-route";
 
+import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 import { routes } from "@/shared/views/router";
@@ -13,6 +14,7 @@ import { isUrbanProjectCreationStep } from "../core/urban-project/creationSteps"
 import Stepper from "./Stepper";
 import StepRevertConfirmationModal from "./common-views/step-revert-confirmation-modal";
 import ProjectCreationIntroduction from "./introduction";
+import { HTML_MAIN_TITLE } from "./mainHtmlTitle";
 import PhotovoltaicPowerStationCreationWizard from "./photovoltaic-power-station/PhotovoltaicPowerStationCreationWizard";
 import { RENEWABLE_ENERGY_PROJECT_CREATION_STEP_QUERY_STRING_MAP } from "./photovoltaic-power-station/custom-form/creationStepQueryStringMap";
 import ProjectTypesForm from "./project-types";
@@ -78,11 +80,14 @@ function ProjectCreationWizard({ route }: Props) {
       <>
         <StepRevertConfirmationModal />
         {currentStep === "RENEWABLE_ENERGY_TYPES" ? (
-          <SidebarLayout
-            mainChildren={<RenewableEnergyTypesForm />}
-            title="Renseignement du projet"
-            sidebarChildren={<Stepper />}
-          />
+          <>
+            <HtmlTitle>{`Système d'EnR - Type de projet - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+            <SidebarLayout
+              mainChildren={<RenewableEnergyTypesForm />}
+              title="Renseignement du projet"
+              sidebarChildren={<Stepper />}
+            />
+          </>
         ) : (
           <PhotovoltaicPowerStationCreationWizard currentStep={currentStep} />
         )}
@@ -92,6 +97,7 @@ function ProjectCreationWizard({ route }: Props) {
 
   return (
     <>
+      <HtmlTitle>{`Introduction - ${HTML_MAIN_TITLE}`}</HtmlTitle>
       <StepRevertConfirmationModal />
       <ProjectCreationIntroductionWizard currentStep={currentStep} />
     </>

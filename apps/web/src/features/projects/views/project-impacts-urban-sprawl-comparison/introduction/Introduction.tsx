@@ -2,6 +2,7 @@ import Alert from "@codegouvfr/react-dsfr/Alert";
 import { useEffect, useLayoutEffect } from "react";
 
 import { UrbanSprawlImpactsComparisonState } from "@/features/projects/application/project-impacts-urban-sprawl-comparison/urbanSprawlComparison.reducer";
+import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
 import Step1 from "./Step1";
@@ -64,6 +65,7 @@ export default function UrbanSprawlImpactsComparisonIntroduction({
           if (dataLoadingState === "error") {
             return (
               <div className="tw-py-6">
+                <HtmlTitle>{`Erreur - Introduction - Comparaison des impacts`}</HtmlTitle>
                 <h1 className="tw-text-sm tw-uppercase tw-font-normal tw-mb-1">
                   Comparaison des impacts
                 </h1>
@@ -76,32 +78,43 @@ export default function UrbanSprawlImpactsComparisonIntroduction({
               </div>
             );
           } else if (dataLoadingState === "loading") {
-            return <LoadingSpinner />;
+            return (
+              <>
+                <HtmlTitle>{`Chargement... - Introduction - Comparaison des impacts`}</HtmlTitle>
+                <LoadingSpinner />
+              </>
+            );
           } else if (dataLoadingState === "success") {
             switch (currentStep) {
               case STEPS[1]:
                 return (
-                  <Step1
-                    onNextClick={() => {
-                      onNextToStep(STEPS[2]);
-                    }}
-                    projectName={projectName!}
-                    baseSiteData={baseSiteData!}
-                    comparisonSiteData={comparisonSiteData!}
-                  />
+                  <>
+                    <HtmlTitle>{`Caractéristiques du site fictif - Introduction - Comparaison des impacts`}</HtmlTitle>
+                    <Step1
+                      onNextClick={() => {
+                        onNextToStep(STEPS[2]);
+                      }}
+                      projectName={projectName!}
+                      baseSiteData={baseSiteData!}
+                      comparisonSiteData={comparisonSiteData!}
+                    />
+                  </>
                 );
               case STEPS[2]:
                 return (
-                  <Step2
-                    onNextClick={() => {
-                      onFinalNext();
-                    }}
-                    onBackClick={() => {
-                      onBackToStep(STEPS[1]);
-                    }}
-                    baseSiteData={baseSiteData!}
-                    comparisonSiteData={comparisonSiteData!}
-                  />
+                  <>
+                    <HtmlTitle>{`Détails des situations - Introduction - Comparaison des impacts`}</HtmlTitle>
+                    <Step2
+                      onNextClick={() => {
+                        onFinalNext();
+                      }}
+                      onBackClick={() => {
+                        onBackToStep(STEPS[1]);
+                      }}
+                      baseSiteData={baseSiteData!}
+                      comparisonSiteData={comparisonSiteData!}
+                    />
+                  </>
                 );
             }
           }

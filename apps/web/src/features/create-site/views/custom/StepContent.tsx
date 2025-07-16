@@ -1,6 +1,8 @@
+import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import { selectCurrentStep } from "../../core/createSite.reducer";
+import { HTML_MAIN_TITLE } from "../SiteCreationWizard";
 import AgriculturalOperationActivityForm from "../common-views/agricultural-operation-activity";
 import NaturalAreaTypeForm from "../common-views/natural-area-type";
 import FricheAccidentsForm from "./accidents/accidents-count";
@@ -37,65 +39,215 @@ function SiteCreationCustomStepContent() {
 
   switch (currentStep) {
     case "FRICHE_ACTIVITY":
-      return <FricheActivityForm />;
+      return (
+        <>
+          <HtmlTitle>{`Ancienne activité - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <FricheActivityForm />
+        </>
+      );
     case "AGRICULTURAL_OPERATION_ACTIVITY":
-      return <AgriculturalOperationActivityForm />;
+      return (
+        <>
+          <HtmlTitle>{`Type d'exploitation - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <AgriculturalOperationActivityForm />
+        </>
+      );
     case "NATURAL_AREA_TYPE":
-      return <NaturalAreaTypeForm />;
+      return (
+        <>
+          <HtmlTitle>{`Type d'espace naturel - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <NaturalAreaTypeForm />
+        </>
+      );
     case "ADDRESS":
-      return <AddressForm />;
+      return (
+        <>
+          <HtmlTitle>{`Adresse - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <AddressForm />
+        </>
+      );
     case "SPACES_INTRODUCTION":
-      return <SiteSpacesIntroduction />;
+      return (
+        <>
+          <HtmlTitle>{`Introduction - Espaces - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <SiteSpacesIntroduction />
+        </>
+      );
     case "SURFACE_AREA":
-      return <SiteSurfaceAreaForm />;
+      return (
+        <>
+          <HtmlTitle>{`Surface - Espaces - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <SiteSurfaceAreaForm />
+        </>
+      );
     case "SPACES_KNOWLEDGE":
-      return <SpacesKnowledgeForm />;
+      return (
+        <>
+          <HtmlTitle>{`Type de saisie - Espaces - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <SpacesKnowledgeForm />
+        </>
+      );
     case "SPACES_SELECTION":
-      return <SiteSpacesSelectionForm />;
+      return (
+        <>
+          <HtmlTitle>{`Sélection - Espaces - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <SiteSpacesSelectionForm />
+        </>
+      );
     case "SPACES_SURFACE_AREAS_DISTRIBUTION_KNOWLEDGE":
-      return <SiteSpacesDistributionKnowledge />;
+      return (
+        <>
+          <HtmlTitle>{`Type de saisie pour la distribution des surfaces - Espaces - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <SiteSpacesDistributionKnowledge />
+        </>
+      );
     case "SPACES_SURFACE_AREA_DISTRIBUTION":
-      return <SiteSpacesDistribution />;
+      return (
+        <>
+          <HtmlTitle>{`Distribution des surfaces - Espaces - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <SiteSpacesDistribution />
+        </>
+      );
     case "SOILS_SUMMARY":
-      return <SiteSoilsSummary />;
+      return (
+        <>
+          <HtmlTitle>{`Récapitulatif des surfaces - Espaces - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <SiteSoilsSummary />
+        </>
+      );
     case "SOILS_CARBON_STORAGE":
-      return <SiteSoilsCarbonStorage />;
+      return (
+        <>
+          <HtmlTitle>{`Stockage du carbone - Espaces - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <SiteSoilsCarbonStorage />
+        </>
+      );
     case "SOILS_CONTAMINATION_INTRODUCTION":
-      return <SoilContaminationIntroduction />;
+      return (
+        <>
+          <HtmlTitle>{`Introduction - Pollution - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <SoilContaminationIntroduction />
+        </>
+      );
     case "SOILS_CONTAMINATION":
-      return <SoilContaminationForm />;
+      return (
+        <>
+          <HtmlTitle>{`Surface - Pollution - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <SoilContaminationForm />
+        </>
+      );
     case "FRICHE_ACCIDENTS_INTRODUCTION":
-      return <FricheAccidentsIntroduction />;
+      return (
+        <>
+          <HtmlTitle>{`Introduction - Accidents - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <FricheAccidentsIntroduction />
+        </>
+      );
     case "FRICHE_ACCIDENTS":
-      return <FricheAccidentsForm />;
+      return (
+        <>
+          <HtmlTitle>{`Nombre - Accidents - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <FricheAccidentsForm />
+        </>
+      );
     case "MANAGEMENT_INTRODUCTION":
-      return <SiteManagementIntroduction />;
+      return (
+        <>
+          <HtmlTitle>{`Introduction - Gestion - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <SiteManagementIntroduction />
+        </>
+      );
     case "OWNER":
-      return <SiteOwnerForm />;
+      return (
+        <>
+          <HtmlTitle>{`Propriétaire - Gestion - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <SiteOwnerForm />
+        </>
+      );
     case "IS_FRICHE_LEASED":
-      return <IsFricheLeasedForm />;
+      return (
+        <>
+          <HtmlTitle>{`Location - Gestion - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <IsFricheLeasedForm />
+        </>
+      );
     case "IS_SITE_OPERATED":
-      return <IsSiteOperatedForm />;
+      return (
+        <>
+          <HtmlTitle>{`Exploitation - Gestion - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <IsSiteOperatedForm />
+        </>
+      );
     case "OPERATOR":
-      return <SiteOperatorForm />;
+      return (
+        <>
+          <HtmlTitle>{`Exploitant - Gestion - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <SiteOperatorForm />
+        </>
+      );
     case "TENANT":
-      return <SiteTenantForm />;
+      return (
+        <>
+          <HtmlTitle>{`Locataire - Gestion - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <SiteTenantForm />
+        </>
+      );
     case "YEARLY_EXPENSES_AND_INCOME_INTRODUCTION":
-      return <SiteExpensesAndIncomeIntroduction />;
+      return (
+        <>
+          <HtmlTitle>{`Introduction - Dépenses et revenus - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <SiteExpensesAndIncomeIntroduction />
+        </>
+      );
     case "YEARLY_EXPENSES":
-      return <SiteYearlyExpensesForm />;
+      return (
+        <>
+          <HtmlTitle>{`Dépenses annuelles - Dépenses et revenus - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <SiteYearlyExpensesForm />
+        </>
+      );
     case "YEARLY_INCOME":
-      return <SiteYearlyIncomeForm />;
+      return (
+        <>
+          <HtmlTitle>{`Revenus annuels - Dépenses et revenus - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <SiteYearlyIncomeForm />
+        </>
+      );
     case "YEARLY_EXPENSES_SUMMARY":
-      return <SiteExpensesIncomeSummary />;
+      return (
+        <>
+          <HtmlTitle>{`Récapitulatif - Dépenses et revenus - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <SiteExpensesIncomeSummary />
+        </>
+      );
     case "NAMING_INTRODUCTION":
-      return <SiteNamingIntroduction />;
+      return (
+        <>
+          <HtmlTitle>{`Introduction - Dénomination - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <SiteNamingIntroduction />
+        </>
+      );
     case "NAMING":
-      return <SiteNameAndDescriptionForm />;
+      return (
+        <>
+          <HtmlTitle>{`Nom et description - Dénomination - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <SiteNameAndDescriptionForm />
+        </>
+      );
     case "FINAL_SUMMARY":
-      return <SiteDataSummary />;
+      return (
+        <>
+          <HtmlTitle>{`Récapitulatif - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <SiteDataSummary />
+        </>
+      );
     case "CREATION_RESULT":
-      return <SiteCreationResult />;
+      return (
+        <>
+          <HtmlTitle>{`Résultat - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <SiteCreationResult />
+        </>
+      );
   }
 }
 

@@ -1,6 +1,8 @@
+import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import { selectCurrentStep } from "../../core/createSite.reducer";
+import { HTML_MAIN_TITLE } from "../SiteCreationWizard";
 import AgriculturalOperationActivityForm from "../common-views/agricultural-operation-activity";
 import NaturalAreaTypeForm from "../common-views/natural-area-type";
 import FricheActivityForm from "../custom/friche-activity";
@@ -13,17 +15,47 @@ function SiteCreationExpressStepContent() {
 
   switch (currentStep) {
     case "ADDRESS":
-      return <AddressForm />;
+      return (
+        <>
+          <HtmlTitle>{`Adresse - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <AddressForm />
+        </>
+      );
     case "SURFACE_AREA":
-      return <SiteSurfaceAreaForm />;
+      return (
+        <>
+          <HtmlTitle>{`Surface du site - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <SiteSurfaceAreaForm />
+        </>
+      );
     case "FRICHE_ACTIVITY":
-      return <FricheActivityForm />;
+      return (
+        <>
+          <HtmlTitle>{`Ancienne activité - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <FricheActivityForm />
+        </>
+      );
     case "AGRICULTURAL_OPERATION_ACTIVITY":
-      return <AgriculturalOperationActivityForm />;
+      return (
+        <>
+          <HtmlTitle>{`Activité de l'exploitation - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <AgriculturalOperationActivityForm />
+        </>
+      );
     case "NATURAL_AREA_TYPE":
-      return <NaturalAreaTypeForm />;
+      return (
+        <>
+          <HtmlTitle>{`Type de surface de nature - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <NaturalAreaTypeForm />
+        </>
+      );
     case "CREATION_RESULT":
-      return <SiteCreationResult />;
+      return (
+        <>
+          <HtmlTitle>{`Résultat - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <SiteCreationResult />
+        </>
+      );
   }
 }
 

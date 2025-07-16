@@ -3,6 +3,7 @@ import { fr } from "@codegouvfr/react-dsfr";
 import { formatMoney } from "@/shared/core/format-number/formatNumber";
 import classNames from "@/shared/views/clsx";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
+import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 
 const data = [
   {
@@ -56,6 +57,7 @@ const columns = ["", "S1 2023", "S2 2023", "S1 2024", "S2 2024", "S1 2025"];
 function BudgetPage() {
   return (
     <section className={fr.cx("fr-container", "fr-py-4w")}>
+      <HtmlTitle>Budget</HtmlTitle>
       <h1>Budget</h1>
       <p>
         <strong>Bénéfriches</strong> est un service public numérique, c'est pourquoi nous sommes

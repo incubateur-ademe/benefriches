@@ -82,7 +82,10 @@ function ProjectPage({
         {dataLoadingState === "loading" && <LoadingSpinner />}
         {dataLoadingState === "success" && (
           <>
-            <ProjectImpactsPage currentViewMode={currentViewMode} />
+            <ProjectImpactsPage
+              currentViewMode={currentViewMode}
+              projectName={projectContext.name}
+            />
             <ProjectImpactFooter
               siteId={projectContext.siteId}
               projectId={projectId}

@@ -1,3 +1,4 @@
+import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 import FormStepper from "@/shared/views/layout/WizardFormLayout/FormStepper";
@@ -20,19 +21,41 @@ import SiteNatureForm from "./site-nature";
 import StepRevertConfirmationModal from "./step-revert-confirmation-modal";
 import { useSyncCreationStepWithRouteQuery } from "./useSyncCreationStepWithRouteQuery";
 
+export const HTML_MAIN_TITLE = "Renseignement du site";
+
 const getMainChildren = (
   currentStep: SiteCreationStep,
   createMode: SiteCreationState["createMode"],
 ) => {
   switch (currentStep) {
     case "INTRODUCTION":
-      return <SiteCreationIntroduction />;
+      return (
+        <>
+          <HtmlTitle>{`Introduction - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <SiteCreationIntroduction />
+        </>
+      );
     case "IS_FRICHE":
-      return <IsFricheForm />;
+      return (
+        <>
+          <HtmlTitle>{`Type de site - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <IsFricheForm />
+        </>
+      );
     case "SITE_NATURE":
-      return <SiteNatureForm />;
+      return (
+        <>
+          <HtmlTitle>{`Catégorie du site - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <SiteNatureForm />
+        </>
+      );
     case "CREATE_MODE_SELECTION":
-      return <CreateModeSelectionForm />;
+      return (
+        <>
+          <HtmlTitle>{`Mode de création - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <CreateModeSelectionForm />
+        </>
+      );
     default:
       switch (createMode) {
         case "express":

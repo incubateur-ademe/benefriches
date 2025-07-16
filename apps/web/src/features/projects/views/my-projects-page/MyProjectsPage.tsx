@@ -1,6 +1,7 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import Alert from "@codegouvfr/react-dsfr/Alert";
 
+import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
 import { ReconversionProjectsGroupedBySite } from "../../domain/projects.types";
@@ -17,6 +18,7 @@ function MyProjectsPage({ loadingState, projectsList }: Props) {
   if (loadingState === "loading")
     return (
       <section className={fr.cx("fr-container", "fr-py-4w")}>
+        <HtmlTitle>Chargement... - Mes projets</HtmlTitle>
         <MyProjectsPageHeader />
         <LoadingSpinner />
       </section>
@@ -25,6 +27,7 @@ function MyProjectsPage({ loadingState, projectsList }: Props) {
   if (loadingState === "error")
     return (
       <section className={fr.cx("fr-container", "fr-py-4w")}>
+        <HtmlTitle>Erreur - Mes projets</HtmlTitle>
         <MyProjectsPageHeader />
         <Alert
           description="Une erreur est survenue lors du chargement de vos projets. Veuillez recharger la page."
@@ -38,6 +41,7 @@ function MyProjectsPage({ loadingState, projectsList }: Props) {
   if (loadingState === "success") {
     return (
       <section className={fr.cx("fr-container", "fr-py-4w")}>
+        <HtmlTitle>Mes projets</HtmlTitle>
         <MyProjectsTourGuide projectsList={projectsList}>
           <MyProjectsPageHeader />
           {projectsList.length === 0 ? (

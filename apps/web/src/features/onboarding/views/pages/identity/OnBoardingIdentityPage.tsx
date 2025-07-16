@@ -1,15 +1,19 @@
+import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import { routes } from "@/shared/views/router";
 
 import CreateUserFormContainer from "./CreateUserForm";
 
 function OnBoardingIdentityPage() {
   return (
-    <CreateUserFormContainer
-      createdFrom="features_app"
-      onSuccess={() => {
-        routes.onBoardingIntroductionWhy().push();
-      }}
-    />
+    <>
+      <HtmlTitle>{`Identité - Introduction`}</HtmlTitle>
+      <CreateUserFormContainer
+        createdFrom="features_app"
+        onSuccess={() => {
+          routes.onBoardingIntroductionWhy().push();
+        }}
+      />
+    </>
   );
 }
 
