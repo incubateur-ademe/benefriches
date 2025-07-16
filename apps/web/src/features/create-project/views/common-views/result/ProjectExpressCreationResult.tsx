@@ -11,11 +11,11 @@ import {
 
 import { ReconversionProject } from "@/features/create-project/core/actions/expressProjectSavedGateway";
 import ProjectFeaturesView from "@/features/projects/views/project-page/features/ProjectFeaturesView";
+import classNames from "@/shared/views/clsx";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import {
   EditorialPageIcon,
   EditorialPageLayout,
-  EditorialPageText,
   EditorialPageTitle,
 } from "@/shared/views/layout/EditorialPageLayout";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
@@ -64,72 +64,78 @@ function ProjectExpressCreationResult({
         <EditorialPageLayout>
           <EditorialPageIcon>✅</EditorialPageIcon>
           <EditorialPageTitle>Le projet "{projectData?.name}" est créé !</EditorialPageTitle>
-          <EditorialPageText>
+          <div
+            className={classNames(
+              "tw-border-borderGrey",
+              "tw-border-solid",
+              "tw-border",
+              "tw-shadow-md",
+              "tw-rounded-lg",
+              "tw-p-4",
+            )}
+          >
             💡 Bénéfriches a affecté des données par défaut pour créer le projet sur "{siteName}".
             <br />
             Ces données sont basées sur les moyennes observées pour ce type de site.
             <br />
             <br />
-            {projectData && (
-              <div className="tw-text-base">
-                <ProjectFeaturesView
-                  projectData={{
-                    id: projectData.id,
-                    name: projectData.name,
-                    description: projectData.description,
-                    isExpress: true,
-                    soilsDistribution: projectData.soilsDistribution,
-                    futureOperator: projectData.futureOperator?.name,
-                    futureOwner: projectData.futureSiteOwner?.name,
-                    reinstatementContractOwner: projectData.reinstatementContractOwner?.name,
+          </div>
+          {projectData && (
+            <ProjectFeaturesView
+              projectData={{
+                id: projectData.id,
+                name: projectData.name,
+                description: projectData.description,
+                isExpress: true,
+                soilsDistribution: projectData.soilsDistribution,
+                futureOperator: projectData.futureOperator?.name,
+                futureOwner: projectData.futureSiteOwner?.name,
+                reinstatementContractOwner: projectData.reinstatementContractOwner?.name,
 
-                    financialAssistanceRevenues:
-                      projectData.financialAssistanceRevenues as FinancialAssistanceRevenue[],
-                    reinstatementCosts: projectData.reinstatementCosts as ReinstatementExpense[],
-                    yearlyProjectedExpenses: projectData.yearlyProjectedCosts as RecurringExpense[],
-                    yearlyProjectedRevenues:
-                      projectData.yearlyProjectedRevenues as RecurringRevenue[],
+                financialAssistanceRevenues:
+                  projectData.financialAssistanceRevenues as FinancialAssistanceRevenue[],
+                reinstatementCosts: projectData.reinstatementCosts as ReinstatementExpense[],
+                yearlyProjectedExpenses: projectData.yearlyProjectedCosts as RecurringExpense[],
+                yearlyProjectedRevenues: projectData.yearlyProjectedRevenues as RecurringRevenue[],
 
-                    reinstatementSchedule: projectData.reinstatementSchedule,
-                    firstYearOfOperation: projectData.operationsFirstYear,
-                    sitePurchaseTotalAmount: sumIfNotNull(
-                      projectData.sitePurchaseSellingPrice,
-                      projectData.sitePurchasePropertyTransferDuties,
-                    ),
-                    siteResaleSellingPrice: sumIfNotNull(
-                      projectData.siteResaleExpectedSellingPrice,
-                      projectData.siteResaleExpectedPropertyTransferDuties,
-                    ),
-                    buildingsResaleSellingPrice: sumIfNotNull(
-                      projectData.buildingsResaleExpectedSellingPrice,
-                      projectData.buildingsResaleExpectedPropertyTransferDuties,
-                    ),
-                    decontaminatedSoilSurface: projectData.decontaminatedSoilSurface,
+                reinstatementSchedule: projectData.reinstatementSchedule,
+                firstYearOfOperation: projectData.operationsFirstYear,
+                sitePurchaseTotalAmount: sumIfNotNull(
+                  projectData.sitePurchaseSellingPrice,
+                  projectData.sitePurchasePropertyTransferDuties,
+                ),
+                siteResaleSellingPrice: sumIfNotNull(
+                  projectData.siteResaleExpectedSellingPrice,
+                  projectData.siteResaleExpectedPropertyTransferDuties,
+                ),
+                buildingsResaleSellingPrice: sumIfNotNull(
+                  projectData.buildingsResaleExpectedSellingPrice,
+                  projectData.buildingsResaleExpectedPropertyTransferDuties,
+                ),
+                decontaminatedSoilSurface: projectData.decontaminatedSoilSurface,
 
-                    developmentPlan:
-                      projectData.developmentPlan.type === "URBAN_PROJECT"
-                        ? {
-                            ...projectData.developmentPlan,
-                            developerName: projectData.developmentPlan.developer.name,
-                            installationCosts: projectData.developmentPlan
-                              .costs as UrbanProjectDevelopmentExpense[],
-                            spaces: projectData.developmentPlan.features.spacesDistribution,
-                            buildingsFloorArea:
-                              projectData.developmentPlan.features.buildingsFloorAreaDistribution,
-                          }
-                        : {
-                            ...projectData.developmentPlan,
-                            developerName: projectData.developmentPlan.developer.name,
-                            installationCosts: projectData.developmentPlan
-                              .costs as PhotovoltaicInstallationExpense[],
+                developmentPlan:
+                  projectData.developmentPlan.type === "URBAN_PROJECT"
+                    ? {
+                        ...projectData.developmentPlan,
+                        developerName: projectData.developmentPlan.developer.name,
+                        installationCosts: projectData.developmentPlan
+                          .costs as UrbanProjectDevelopmentExpense[],
+                        spaces: projectData.developmentPlan.features.spacesDistribution,
+                        buildingsFloorArea:
+                          projectData.developmentPlan.features.buildingsFloorAreaDistribution,
+                      }
+                    : {
+                        ...projectData.developmentPlan,
+                        developerName: projectData.developmentPlan.developer.name,
+                        installationCosts: projectData.developmentPlan
+                          .costs as PhotovoltaicInstallationExpense[],
 
-                            ...projectData.developmentPlan.features,
-                          },
-                  }}
-                />
-              </div>
-            )}
-          </EditorialPageText>
+                        ...projectData.developmentPlan.features,
+                      },
+              }}
+            />
+          )}
           <Button size="large" linkProps={routes.projectImpactsOnboarding({ projectId }).link}>
             Consulter les impacts
           </Button>

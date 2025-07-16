@@ -1,11 +1,11 @@
 import Alert from "@codegouvfr/react-dsfr/Alert";
 import Button from "@codegouvfr/react-dsfr/Button";
 
+import classNames from "@/shared/views/clsx";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import {
   EditorialPageIcon,
   EditorialPageLayout,
-  EditorialPageText,
   EditorialPageTitle,
 } from "@/shared/views/layout/EditorialPageLayout";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
@@ -45,13 +45,22 @@ function SiteCreationResult({ siteId, siteName, loadingState, onBack }: Props) {
         <EditorialPageLayout>
           <EditorialPageIcon>✅</EditorialPageIcon>
           <EditorialPageTitle>Le site « {siteName} » est créé !</EditorialPageTitle>
-          <EditorialPageText>
+          <div
+            className={classNames(
+              "tw-border-borderGrey",
+              "tw-border-solid",
+              "tw-border",
+              "tw-shadow-md",
+              "tw-rounded-lg",
+              "tw-p-4",
+              "tw-mb-8",
+            )}
+          >
             💡 Bénéfriches a affecté des données par défaut, notamment pour la répartition des sols
             et les dépenses de gestion.
-            <div className="tw-text-base tw-mt-8">
-              <SiteFeaturesModalView siteId={siteId} />
-            </div>
-          </EditorialPageText>
+          </div>
+
+          <SiteFeaturesModalView siteId={siteId} />
           <Button size="large" linkProps={routes.createProject({ siteId }).link}>
             Renseigner mon projet sur ce site
           </Button>
