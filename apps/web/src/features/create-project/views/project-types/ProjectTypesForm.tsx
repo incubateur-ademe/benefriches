@@ -32,8 +32,7 @@ function ProjectTypesForm({ onSubmit, initialValues, allowedDevelopmentPlanCateg
     .map((option) => {
       return {
         value: option,
-        label:
-          option === "URBAN_PROJECT" ? "Autre projet" : getLabelForDevelopmentPlanCategory(option),
+        label: getLabelForDevelopmentPlanCategory(option),
       };
     });
 

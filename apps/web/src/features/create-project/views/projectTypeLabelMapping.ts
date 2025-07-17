@@ -5,7 +5,7 @@ import { RenewableEnergyDevelopmentPlanType } from "@/shared/core/reconversionPr
 export const getLabelForDevelopmentPlanCategory = (value: DevelopmentPlanCategory): string => {
   switch (value) {
     case "URBAN_PROJECT":
-      return "Projet urbain";
+      return "Autre projet d'aménagement";
     case "NATURAL_URBAN_SPACES":
       return "Espace de nature";
     case "URBAN_AGRICULTURE":
@@ -22,7 +22,7 @@ export const getDescriptionForDevelopmentPlanCategory = (
 ): string => {
   switch (value) {
     case "URBAN_PROJECT":
-      return "Logements, lieux d'activités économiques, équipements publics, espaces verts...";
+      return "Projet urbain, zone d’activités économiques, espace de nature...";
     case "NATURAL_URBAN_SPACES":
       return "Parc ou espaces verts urbains, renaturation...";
     case "URBAN_AGRICULTURE":
