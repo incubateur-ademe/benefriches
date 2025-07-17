@@ -39,7 +39,26 @@ function SiteSpacesDistributionKnowledgeForm({ onSubmit, onBack, siteNature }: P
   return (
     <WizardFormLayout
       title={getTitle(siteNature)}
-      instructions="Les types d'espaces serviront à définir la composition des sols."
+      instructions={
+        <>
+          <p>Les types d'espaces serviront à définir la composition des sols.</p>3 modes de saisie
+          des surfaces vous sont proposés selon votre niveau de connaissance du site:
+          <ul>
+            <li>
+              Le premier vous permet de saisir des valeurs de surface en m² (l’adverbe “précisément”
+              n’impose pas une connaissance au m² près des surfaces),
+            </li>
+            <li>
+              Le deuxième vous permet de positionner les différentes surfaces en termes de
+              proportions via une saisie en %,
+            </li>
+            <li>
+              La dernière vous permet d’avancer même si vous n’avez pas d’estimation des proportions
+              entre les différentes surfaces du site.
+            </li>
+          </ul>
+        </>
+      }
     >
       <form onSubmit={_onSubmit}>
         <RadioButtons

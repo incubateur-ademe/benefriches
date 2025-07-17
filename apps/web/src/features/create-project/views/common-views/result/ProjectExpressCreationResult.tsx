@@ -64,7 +64,7 @@ function ProjectExpressCreationResult({
         <EditorialPageLayout>
           <EditorialPageIcon>✅</EditorialPageIcon>
           <EditorialPageTitle>Le projet "{projectData?.name}" est créé !</EditorialPageTitle>
-          <div
+          <p
             className={classNames(
               "tw-border-borderGrey",
               "tw-border-solid",
@@ -77,9 +77,7 @@ function ProjectExpressCreationResult({
             💡 Bénéfriches a affecté des données par défaut pour créer le projet sur "{siteName}".
             <br />
             Ces données sont basées sur les moyennes observées pour ce type de site.
-            <br />
-            <br />
-          </div>
+          </p>
           {projectData && (
             <ProjectFeaturesView
               projectData={{
