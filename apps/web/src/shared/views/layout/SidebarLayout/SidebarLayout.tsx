@@ -1,7 +1,7 @@
 import Button from "@codegouvfr/react-dsfr/Button";
 import { useWindowInnerSize } from "@codegouvfr/react-dsfr/tools/useWindowInnerSize";
 import { useBreakpointsValuesPx } from "@codegouvfr/react-dsfr/useBreakpointsValuesPx";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useMemo, useState } from "react";
 
 import classNames from "@/shared/views/clsx";
 import { routes } from "@/shared/views/router";
@@ -19,7 +19,16 @@ function SidebarLayout({ mainChildren, title, sidebarChildren }: SidebarLayoutPr
   const { breakpointsValues } = useBreakpointsValuesPx();
   const { windowInnerWidth } = useWindowInnerSize();
 
-  const [isOpen, setOpen] = useState(windowInnerWidth < breakpointsValues.lg ? false : true);
+  const isLessThanLg = useMemo(
+    () => windowInnerWidth < breakpointsValues.lg,
+    [breakpointsValues.lg, windowInnerWidth],
+  );
+
+  const [isOpen, setOpen] = useState(false);
+
+  useEffect(() => {
+    setOpen(isLessThanLg ? false : true);
+  }, [isLessThanLg]);
 
   return (
     <SidebarLayoutContext.Provider value={{ isOpen }}>
@@ -31,6 +40,8 @@ function SidebarLayout({ mainChildren, title, sidebarChildren }: SidebarLayoutPr
             "tw-z-10",
             "tw-flex tw-flex-col",
             isOpen ? "tw-w-80 lg:tw-relative tw-absolute" : "tw-w-20",
+            isOpen && isLessThanLg && "tw-drop-shadow-[0_3px_9px_var(--shadow-color)]",
+            "tw-h-full",
           )}
         >
           <div
@@ -71,6 +82,18 @@ function SidebarLayout({ mainChildren, title, sidebarChildren }: SidebarLayoutPr
         </aside>
 
         <div className={classNames("tw-overflow-auto", "tw-w-full")}>
+          {isLessThanLg && (
+            <div
+              aria-hidden="true"
+              className={classNames(
+                "tw-transition",
+                "tw-absolute tw-top-0 tw-left-0 tw-w-screen tw-h-screen",
+                "tw-bg-[#161616a3] tw-z-[5]",
+
+                isOpen ? "tw-opacity-1" : "tw-opacity-0",
+              )}
+            ></div>
+          )}
           <header
             className={classNames(
               "tw-flex",
