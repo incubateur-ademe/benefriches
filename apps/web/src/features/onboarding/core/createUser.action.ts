@@ -12,7 +12,7 @@ export interface CreateUserGateway {
 }
 
 export const createUser = createAppAsyncThunk<User, CreateUserProps>(
-  "user/createUser",
+  "user/registerUser",
   async (createUserProps, { extra, dispatch }) => {
     const user = userSchema.parse({ ...createUserProps, id: uuid() });
 

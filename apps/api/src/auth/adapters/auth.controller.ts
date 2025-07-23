@@ -5,8 +5,12 @@ import {
   ConflictException,
   Controller,
   Get,
+  HttpException,
+  HttpStatus,
   Inject,
+  InternalServerErrorException,
   Post,
+  Query,
   Req,
   Res,
   UnauthorizedException,
@@ -20,6 +24,8 @@ import { z } from "zod";
 
 import { CreateUserUseCase } from "src/auth/core/createUser.usecase";
 
+import { AuthenticateWithTokenUseCase } from "../core/authenticateWithToken.usecase";
+import { SendAuthLinkUseCase } from "../core/sendAuthLink.usecase";
 import { JwtAuthGuard } from "./JwtAuthGuard";
 import { ACCESS_TOKEN_SERVICE, AccessTokenService } from "./access-token/AccessTokenService";
 import { ACCESS_TOKEN_COOKIE_KEY } from "./access-token/accessTokenCookie";
@@ -69,6 +75,8 @@ export class RegisterUserBodyDto extends createZodDto(registerUserBodySchema) {}
 export class AuthController {
   constructor(
     private readonly createUserUseCase: CreateUserUseCase,
+    private readonly sendAuthLinkUseCase: SendAuthLinkUseCase,
+    private readonly authenticateWithTokenUseCase: AuthenticateWithTokenUseCase,
     @Inject(ACCESS_TOKEN_SERVICE)
     private readonly accessTokenService: AccessTokenService,
     private readonly configService: ConfigService,
@@ -193,6 +201,7 @@ export class AuthController {
         userId: userInDb.id,
         provider: "pro-connect",
         providerUserId: oidcIdentity.id,
+        providerInfo: oidcIdentity,
         createdAt: new Date(),
       });
     }
@@ -222,6 +231,72 @@ export class AuthController {
     const redirectTo =
       req.session.postLoginRedirectUrl ?? this.configService.getOrThrow<string>("WEBAPP_URL");
     res.redirect(redirectTo);
+  }
+
+  @Post("send-auth-link")
+  async sendAuthLink(@Body() body: { email: string }, @Res() response: Response) {
+    const result = await this.sendAuthLinkUseCase.execute({ email: body.email });
+
+    if (result.success) {
+      response.status(200).send();
+      return;
+    }
+
+    switch (result.error) {
+      case "UserDoesNotExist":
+        // Don't reveal if user exists - return success anyway
+        return response.status(200).send();
+      case "TooManyRequests":
+        throw new HttpException(
+          {
+            message: "Please wait 2 minutes before requesting another authentication link",
+            code: "TOO_MANY_REQUESTS",
+          },
+          HttpStatus.TOO_MANY_REQUESTS,
+        );
+      default:
+        throw new BadRequestException("Failed to send auth link");
+    }
+  }
+
+  @Get("login/token")
+  async loginWithToken(@Query("token") token: string, @Res() response: Response) {
+    const authenticationResult = await this.authenticateWithTokenUseCase.execute({ token });
+
+    if (!authenticationResult.success) {
+      switch (authenticationResult.error) {
+        case "TokenNotFound":
+          throw new BadRequestException("Invalid token");
+        case "AuthenticationAttemptExpired":
+        case "TokenAlreadyUsed":
+          throw new UnauthorizedException();
+        default:
+          throw new InternalServerErrorException("Failed to authenticate");
+      }
+    }
+
+    const authenticatedUser = authenticationResult.user;
+    const isEmailVerified = await this.verifiedEmailRepository.isVerified(authenticatedUser.email);
+    if (!isEmailVerified) {
+      await this.verifiedEmailRepository.save(authenticatedUser.email, new Date());
+    }
+
+    const accessToken = await this.accessTokenService.signAsync({
+      sub: authenticatedUser.id,
+      email: authenticatedUser.email,
+      authProvider: "benefriches",
+    });
+
+    const decodedAccessToken = this.accessTokenService.decode<{
+      exp: number;
+    }>(accessToken);
+
+    response.cookie(ACCESS_TOKEN_COOKIE_KEY, accessToken, {
+      httpOnly: true,
+      secure: this.configService.get("NODE_ENV") === "production",
+      expires: new Date((decodedAccessToken?.exp ?? 0) * 1000),
+    });
+    response.status(200).send();
   }
 
   @UseGuards(JwtAuthGuard)

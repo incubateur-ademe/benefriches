@@ -7,6 +7,7 @@ export async function up(knex: Knex): Promise<void> {
     table.string("provider").notNullable();
     table.string("provider_user_id").notNullable();
     table.timestamp("created_at").notNullable();
+    table.jsonb("provider_info");
   });
 }
 
