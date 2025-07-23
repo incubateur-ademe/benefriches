@@ -4,6 +4,7 @@ import HttpSaveExpressReconversionProjectService from "@/features/create-project
 import { HttpSaveReconversionProjectService } from "@/features/create-project/infrastructure/save-project-service/HttpSaveReconversionProjectService";
 import { HttpSitesService } from "@/features/create-project/infrastructure/sites-service/HttpSiteService";
 import { HttpCreateSiteApi } from "@/features/create-site/infrastructure/create-site-service/HttpCreateSiteApi";
+import { HttpAuthService } from "@/features/onboarding/infrastructure/auth-service/HttpAuthService";
 import { HttpCreateUserService } from "@/features/onboarding/infrastructure/create-user-service/HttpCreateUserService";
 import { HttpCurrentUserService } from "@/features/onboarding/infrastructure/current-user-service/HttpCurrentUserService";
 import { HttpProjectFeaturesService } from "@/features/projects/infrastructure/project-features-service/HttpProjectFeaturesService";
@@ -20,6 +21,7 @@ import { AppDependencies } from "./store";
 
 export const appDependencies: AppDependencies = {
   appSettingsService: new LocalStorageAppSettings(),
+  authService: new HttpAuthService(),
   soilsCarbonStorageService: new SoilsCarbonStorageApi(),
   createSiteService: new HttpCreateSiteApi(),
   getSiteByIdService: new HttpSitesService(),

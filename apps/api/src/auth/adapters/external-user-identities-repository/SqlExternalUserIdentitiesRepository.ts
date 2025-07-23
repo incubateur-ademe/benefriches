@@ -18,6 +18,7 @@ export class SqlExternalUserIdentitiesRepository implements ExternalUserIdentity
       user_id: userIdentity.userId,
       provider: userIdentity.provider,
       provider_user_id: userIdentity.providerUserId,
+      provider_info: userIdentity.providerInfo ?? null,
       created_at: userIdentity.createdAt,
     });
   }

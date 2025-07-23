@@ -8,14 +8,23 @@ import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
 import { SqlUserFeatureAlertRepository } from "src/users/adapters/secondary/user-feature-alert-repository/SqlUserFeatureAlertRepository";
 
+import { TokenAuthenticationAttemptRepository } from "../core/TokenAuthenticationAttemptRepository";
+import { AuthenticateWithTokenUseCase } from "../core/authenticateWithToken.usecase";
+import { SendAuthLinkUseCase, TokenGenerator, AuthLinkMailer } from "../core/sendAuthLink.usecase";
 import { ACCESS_TOKEN_SERVICE } from "./access-token/AccessTokenService";
-import { AUTH_USER_REPOSITORY_TOKEN } from "./auth-user-repository/AuthUsersRepository";
+import { SmtpAuthLinkMailer } from "./auth-link-mailer/SmtpAuthLinkMailer";
+import { SqlTokenAuthenticationAttemptRepository } from "./auth-token-repository/SqlTokenAuthenticationAttemptRepository";
+import {
+  AUTH_USER_REPOSITORY_TOKEN,
+  AuthUserRepository,
+} from "./auth-user-repository/AuthUsersRepository";
 import { SqlAuthUserRepository } from "./auth-user-repository/SqlAuthUsersRepository";
 import { AuthController } from "./auth.controller";
 import { EXTERNAL_USER_IDENTITIES_REPOSITORY_INJECTION_TOKEN } from "./external-user-identities-repository/ExternalUserIdentitiesRepository";
 import { SqlExternalUserIdentitiesRepository } from "./external-user-identities-repository/SqlExternalUserIdentitiesRepository";
 import { HttpProConnectClient } from "./pro-connect/HttpProConnectClient";
 import { PRO_CONNECT_CLIENT_INJECTION_TOKEN } from "./pro-connect/ProConnectClient";
+import { RandomTokenGenerator } from "./token-generator/RandomTokenGenerator";
 import { SqlVerifiedEmailRepository } from "./verified-email-repository/SqlVerifiedEmailRepository";
 import { VERIFIED_EMAIL_REPOSITORY_TOKEN } from "./verified-email-repository/VerifiedEmailRepository";
 
@@ -70,14 +79,54 @@ import { VERIFIED_EMAIL_REPOSITORY_TOKEN } from "./verified-email-repository/Ver
         new CreateUserUseCase(userRepository, dateProvider),
       inject: [SqlUserRepository, RealDateProvider],
     },
+    {
+      provide: SendAuthLinkUseCase,
+      useFactory: (
+        userRepository: AuthUserRepository,
+        tokenGenerator: TokenGenerator,
+        tokenAuthAttemptRepository: TokenAuthenticationAttemptRepository,
+        authLinkMailer: AuthLinkMailer,
+        dateProvider: DateProvider,
+        configService: ConfigService,
+      ) =>
+        new SendAuthLinkUseCase(
+          userRepository,
+          tokenGenerator,
+          tokenAuthAttemptRepository,
+          authLinkMailer,
+          dateProvider,
+          configService,
+        ),
+      inject: [
+        SqlAuthUserRepository,
+        RandomTokenGenerator,
+        SqlTokenAuthenticationAttemptRepository,
+        SmtpAuthLinkMailer,
+        RealDateProvider,
+        ConfigService,
+      ],
+    },
+    {
+      provide: AuthenticateWithTokenUseCase,
+      useFactory: (
+        tokenAuthAttemptRepository: TokenAuthenticationAttemptRepository,
+        userRepository: AuthUserRepository,
+        dateProvider: DateProvider,
+      ) =>
+        new AuthenticateWithTokenUseCase(tokenAuthAttemptRepository, userRepository, dateProvider),
+      inject: [SqlTokenAuthenticationAttemptRepository, SqlAuthUserRepository, RealDateProvider],
+    },
     SqlUserRepository,
+    SqlAuthUserRepository,
+    SqlTokenAuthenticationAttemptRepository,
     SqlUserFeatureAlertRepository,
+    ConfigService,
+    SmtpAuthLinkMailer,
     RealDateProvider,
+    RandomTokenGenerator,
   ],
-  exports: [
-    // Guards are not providers and cannot be exported as is, they need all their dependencies to be exported to be used in other modules
-    // see https://github.com/nestjs/nest/issues/3856
-    ACCESS_TOKEN_SERVICE,
-  ],
+  // Guards are not providers and cannot be exported as is, they need all their dependencies to be exported to be used in other modules
+  // see https://github.com/nestjs/nest/issues/3856
+  exports: [ACCESS_TOKEN_SERVICE],
 })
 export class AuthModule {}

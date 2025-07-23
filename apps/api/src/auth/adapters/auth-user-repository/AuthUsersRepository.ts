@@ -2,8 +2,8 @@ export const AUTH_USER_REPOSITORY_TOKEN = Symbol("AuthUserRepository");
 
 export type AuthenticatedUser = {
   id: string;
-  firstName: string;
-  lastName: string;
+  firstName: string | undefined;
+  lastName: string | undefined;
   email: string;
   structureType?: string;
   structureActivity?: string;
