@@ -10,16 +10,16 @@ const composeFilePath = path.resolve(process.cwd(), "../..");
 const composeFile = "docker-compose.db.yml";
 const envFilePath = path.resolve(process.cwd(), ".env.test");
 
-let dockerPostgresInstance: StartedDockerComposeEnvironment;
+let dockerComposeInstance: StartedDockerComposeEnvironment;
 
-const spawnPostgresDb = async () => {
-  dockerPostgresInstance = await new DockerComposeEnvironment(composeFilePath, composeFile)
+const spawnInfrastructure = async () => {
+  dockerComposeInstance = await new DockerComposeEnvironment(composeFilePath, composeFile)
     .withEnvironmentFile(envFilePath)
     .up();
 };
 
-const stopPostresDb = async () => {
-  await dockerPostgresInstance.down();
+const stopInfrastructure = async () => {
+  await dockerComposeInstance.down();
 };
 
 export const setup = async () => {
@@ -28,8 +28,8 @@ export const setup = async () => {
 
   const sqlConnection: Knex = knex(knexConfig);
   try {
-    console.log("Starting Postgres Docker testcontainer");
-    await spawnPostgresDb();
+    console.log("Starting infrastructure Docker testcontainer (Postgres, Mailcatcher)...");
+    await spawnInfrastructure();
     console.log("Running migrations...");
     await new Promise((resolve, reject) => {
       // we spawn a process to run migrations instead of using knex's migrate API because it does not work well with TS/ESM migration files
@@ -49,18 +49,17 @@ export const setup = async () => {
     await sqlConnection.destroy();
   } catch (error) {
     console.error(error);
-    console.error("Error while spawning Postgres testcontainer");
+    console.error("Error while spawning infrastructure testcontainer");
     await sqlConnection.destroy();
-    await stopPostresDb();
+    await stopInfrastructure();
   }
 };
 
 export const teardown = async () => {
-  console.log("removing DB instance");
   try {
-    console.log("Stopping Postgres Docker testcontainer");
-    await stopPostresDb();
+    console.log("Stopping infrastructure Docker testcontainer");
+    await stopInfrastructure();
   } catch {
-    console.log("Failed to stop Postgres Docker testcontainer");
+    console.log("Failed to stop infrastructure Docker testcontainer");
   }
 };

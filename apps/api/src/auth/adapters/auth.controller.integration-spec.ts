@@ -10,6 +10,7 @@ import { z } from "zod";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import { UserBuilder } from "src/users/core/model/user.mock";
 
+import { TokenAuthenticationAttempt } from "../core/tokenAuthenticationAttempt";
 import { AccessTokenPayload } from "./JwtAuthGuard";
 import { ACCESS_TOKEN_COOKIE_KEY } from "./access-token/accessTokenCookie";
 import { registerUserBodySchema, RegisterUserBodyDto } from "./auth.controller";
@@ -178,7 +179,7 @@ describe("Auth integration tests", () => {
       });
     });
 
-    it("sets email as verified and redirects to given redirectTo URL with access token when user exists and Pro Connect authentication is successful", async () => {
+    it("sets email as verified, saves pro connect identity and redirects to given redirectTo URL with access token when user exists and Pro Connect authentication is successful", async () => {
       const redirectTo = "http://some-website.fr";
       const userEmail = "jean.doe@example.fr";
       const proConnectClient: FakeProConnectClient = app.get(PRO_CONNECT_CLIENT_INJECTION_TOKEN);
@@ -217,7 +218,24 @@ describe("Auth integration tests", () => {
 
       // is email set as verified?
       const verifiedEmails = await sqlConnection("verified_emails").select("*");
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       expect(verifiedEmails).toEqual([{ email: userEmail, verified_at: expect.any(Date) }]);
+
+      // is Pro Connect identity saved?
+      const externalUserIdentities = await sqlConnection("auth_external_user_identities").select(
+        "*",
+      );
+      expect(externalUserIdentities).toEqual([
+        {
+          id: proConnectClient.mockUserIdentity.id,
+          user_id: user.id,
+          provider: "pro-connect",
+          provider_user_id: proConnectClient.mockUserIdentity.id,
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          created_at: expect.any(Date),
+          provider_info: proConnectClient.mockUserIdentity,
+        },
+      ]);
     });
 
     it("redirects to account creation URL with email, first name and last name as hints when Pro Connect authentication is successful but returned email does not match any user", async () => {
@@ -256,6 +274,96 @@ describe("Auth integration tests", () => {
         ACCESS_TOKEN_COOKIE_KEY,
       );
       expect(accessTokenCookie).toBeUndefined();
+    });
+  });
+
+  describe("POST /auth/send-auth-link", () => {
+    it("sends a time-limited auth link to given user email when user exists", async () => {
+      const userEmail = "magic.john@example.fr";
+
+      const user = new UserBuilder().asUrbanPlanner().withEmail(userEmail).build();
+      await sqlConnection("users").insert(mapUserToSqlRow(user));
+
+      const agent = request.agent(app.getHttpServer());
+      const response = await agent.post("/api/auth/send-auth-link").send({ email: userEmail });
+
+      expect(response.status).toBe(200);
+
+      const authTokens = await sqlConnection("token_authentication_attempts").select("*");
+      expect(authTokens).toHaveLength(1);
+    });
+  });
+
+  describe("GET /auth/login/token", () => {
+    it("authenticates user and sends access token in cookie when provided auth token", async () => {
+      const user = new UserBuilder().asUrbanPlanner().withEmail("magic.john@example.fr").build();
+      await sqlConnection("users").insert(mapUserToSqlRow(user));
+
+      const tokenAuthenticationAttempt: TokenAuthenticationAttempt = {
+        token: "random-token",
+        userId: user.id,
+        email: user.email,
+        createdAt: new Date(),
+        expiresAt: new Date(Date.now() + 1000 * 60 * 10), // 10 minutes
+        completedAt: null,
+      };
+      await sqlConnection("token_authentication_attempts").insert({
+        token: tokenAuthenticationAttempt.token,
+        user_id: tokenAuthenticationAttempt.userId,
+        email: tokenAuthenticationAttempt.email,
+        created_at: tokenAuthenticationAttempt.createdAt,
+        expires_at: tokenAuthenticationAttempt.expiresAt,
+        used_at: tokenAuthenticationAttempt.completedAt,
+      });
+
+      const agent = request.agent(app.getHttpServer());
+      const response = await agent
+        .get("/api/auth/login/token")
+        .query({ token: tokenAuthenticationAttempt.token });
+
+      // valid access token in response cookie?
+      expect(response.status).toBe(200);
+      const accessTokenCookie = extractCookieFromResponseHeaders(
+        response.headers,
+        ACCESS_TOKEN_COOKIE_KEY,
+      );
+      const jwtValue = accessTokenCookie?.access_token ?? "";
+      const jwtPayload = app.get(JwtService).verify<AccessTokenPayload>(jwtValue);
+      expect(jwtPayload.sub).toBe(user.id);
+      expect(jwtPayload.email).toBe(user.email);
+      expect(jwtPayload.authProvider).toBe("benefriches");
+    });
+
+    it("verifies user email when provided with auth token", async () => {
+      const user = new UserBuilder().asUrbanPlanner().withEmail("magic.john@example.fr").build();
+      await sqlConnection("users").insert(mapUserToSqlRow(user));
+
+      const tokenAuthenticationAttempt: TokenAuthenticationAttempt = {
+        token: "random-token",
+        userId: user.id,
+        email: user.email,
+        createdAt: new Date(),
+        expiresAt: new Date(Date.now() + 1000 * 60 * 10), // 10 minutes
+        completedAt: null,
+      };
+      await sqlConnection("token_authentication_attempts").insert({
+        token: tokenAuthenticationAttempt.token,
+        user_id: tokenAuthenticationAttempt.userId,
+        email: tokenAuthenticationAttempt.email,
+        created_at: tokenAuthenticationAttempt.createdAt,
+        expires_at: tokenAuthenticationAttempt.expiresAt,
+        used_at: tokenAuthenticationAttempt.completedAt,
+      });
+
+      const agent = request.agent(app.getHttpServer());
+      const response = await agent
+        .get("/api/auth/login/token")
+        .query({ token: tokenAuthenticationAttempt.token });
+
+      expect(response.status).toBe(200);
+      const verifiedEmails = await sqlConnection("verified_emails").select("*");
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      expect(verifiedEmails).toEqual([{ email: user.email, verified_at: expect.any(Date) }]);
     });
   });
 });

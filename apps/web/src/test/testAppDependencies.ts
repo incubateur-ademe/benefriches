@@ -7,6 +7,7 @@ import { InMemorySaveExpressReconversionProjectService } from "@/features/create
 import { InMemorySaveReconversionProjectService } from "@/features/create-project/infrastructure/save-project-service/InMemorySaveReconversionProjectService";
 import { SitesServiceMock } from "@/features/create-project/infrastructure/sites-service/SitesServiceMock";
 import { InMemoryCreateSiteService } from "@/features/create-site/infrastructure/create-site-service/inMemoryCreateSiteApi";
+import FakeAuthService from "@/features/onboarding/infrastructure/auth-service/FakeAuthService";
 import { InMemoryCreateUserService } from "@/features/onboarding/infrastructure/create-user-service/inMemoryCreateUserService";
 import { InMemoryCurrentUserService } from "@/features/onboarding/infrastructure/current-user-service/inMemoryCurrentUserService";
 import { MockProjectFeaturesService } from "@/features/projects/infrastructure/project-features-service/MockProjectFeaturesService";
@@ -25,6 +26,7 @@ export const getTestAppDependencies = (
 ): AppDependencies => {
   return {
     appSettingsService: new InMemoryAppSettings(),
+    authService: new FakeAuthService(),
     soilsCarbonStorageService: new SoilsCarbonStorageMock({
       soilsStorage: [],
       totalCarbonStorage: 0,

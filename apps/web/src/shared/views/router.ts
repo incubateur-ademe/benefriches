@@ -23,6 +23,8 @@ const { RouteProvider, useRoute, routes } = createRouter({
     () => "/acceder-a-benefriches",
   ),
   createUser: defineRoute("/creer-un-compte"),
+  // AUTHENTIFICATION
+  authWithToken: defineRoute({ token: param.query.string }, () => "/authentification/token"),
   // FORMS
   createSiteFoncier: defineRoute(
     { etape: param.query.optional.string },

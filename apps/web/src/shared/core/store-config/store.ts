@@ -8,6 +8,7 @@ import { GetSitesByIdGateway } from "@/features/create-project/core/actions/urba
 import { PhotovoltaicPerformanceGateway } from "@/features/create-project/core/renewable-energy/actions/getPhotovoltaicExpectedPerformance.action";
 import { CreateSiteGateway } from "@/features/create-site/core/actions/finalStep.actions";
 import { SiteMunicipalityDataGateway as CreateSiteMunicipalityDataGateway } from "@/features/create-site/core/actions/siteMunicipalityData.actions";
+import { AuthenticationGateway } from "@/features/onboarding/core/AuthenticationGateway";
 import { CreateUserGateway } from "@/features/onboarding/core/createUser.action";
 import { CurrentUserGateway } from "@/features/onboarding/core/initCurrentUser.action";
 import { ProjectFeaturesGateway } from "@/features/projects/application/project-features/projectFeatures.actions";
@@ -25,6 +26,7 @@ import { rootReducer } from "./rootReducer";
 
 export type AppDependencies = {
   appSettingsService: AppSettingsGateway;
+  authService: AuthenticationGateway;
   soilsCarbonStorageService: SiteSoilsCarbonStorageGateway | ProjectSoilsCarbonStorageGateway;
   createSiteService: CreateSiteGateway;
   saveReconversionProjectService: SaveReconversionProjectGateway;

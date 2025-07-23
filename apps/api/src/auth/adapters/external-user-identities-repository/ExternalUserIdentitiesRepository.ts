@@ -8,6 +8,7 @@ export type ExternalUserIdentity = {
   provider: string;
   providerUserId: string;
   createdAt: Date;
+  providerInfo?: Record<string, unknown>;
 };
 
 export interface ExternalUserIdentityRepository {
