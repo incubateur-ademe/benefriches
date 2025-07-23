@@ -1,12 +1,10 @@
 import Badge from "@codegouvfr/react-dsfr/Badge";
 import { Suspense, useEffect } from "react";
 
-import { initCurrentUser } from "@/features/onboarding/core/initCurrentUser.action";
-import { isCurrentUserLoaded, selectCurrentUserId } from "@/features/onboarding/core/user.reducer";
 import OnBoardingIntroductionHow from "@/features/onboarding/views/pages/how-it-works/HowItWorksPage";
 import OnBoardingIntroductionWhyBenefriches from "@/features/onboarding/views/pages/why-benefriches/WhyBenefrichesPage";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 import HeaderFooterLayout from "@/shared/views/layout/HeaderFooterLayout/HeaderFooterLayout";
 import { routes, useRoute } from "@/shared/views/router";
 
@@ -19,20 +17,13 @@ import DemoSiteFeatures from "./site-features/DemoSiteFeatures";
 
 function DemoApp() {
   const route = useRoute();
-  const dispatch = useAppDispatch();
+  const currentUserState = useAppSelector((state) => state.currentUser.currentUserState);
 
   useEffect(() => {
-    void dispatch(initCurrentUser());
-  }, [dispatch]);
-
-  const currentUserLoaded = useAppSelector(isCurrentUserLoaded);
-  const currentUserId = useAppSelector(selectCurrentUserId);
-
-  useEffect(() => {
-    if (currentUserLoaded && !currentUserId) {
+    if (currentUserState === "unauthenticated") {
       routes.demoIdentity().replace();
     }
-  }, [currentUserLoaded, currentUserId]);
+  }, [currentUserState]);
 
   useEffect(() => {
     if (route.name === routes.demo().name) {

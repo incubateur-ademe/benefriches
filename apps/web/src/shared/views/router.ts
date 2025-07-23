@@ -28,11 +28,23 @@ const { RouteProvider, useRoute, routes } = createRouter({
   demoOnBoardingIntroductionHow: demo.extend("/comment-ca-marche"),
 
   // ONBOARDING GLOBAL
-  onBoardingIdentity: onBoarding.extend("/identite"),
+  onBoardingIdentity: onBoarding.extend(
+    {
+      hintEmail: param.query.optional.string,
+      hintFirstName: param.query.optional.string,
+      hintLastName: param.query.optional.string,
+    },
+    () => "/identite",
+  ),
   onBoardingIntroductionWhy: onBoarding.extend("/pourquoi-benefriches"),
   onBoardingIntroductionHow: onBoarding.extend("/comment-ca-marche"),
-  login: defineRoute("/se-connecter"),
+  accessBenefriches: defineRoute(
+    { redirectTo: param.query.optional.string },
+    () => "/acceder-a-benefriches",
+  ),
   createUser: defineRoute("/creer-un-compte"),
+  // AUTHENTIFICATION
+  authWithToken: defineRoute({ token: param.query.string }, () => "/authentification/token"),
   // FORMS
   createSiteFoncier: defineRoute(
     { etape: param.query.optional.string },

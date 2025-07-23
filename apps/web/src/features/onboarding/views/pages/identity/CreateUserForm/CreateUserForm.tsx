@@ -1,5 +1,4 @@
 import { fr } from "@codegouvfr/react-dsfr";
-import Alert from "@codegouvfr/react-dsfr/Alert";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import Checkbox from "@codegouvfr/react-dsfr/Checkbox";
 import { Input } from "@codegouvfr/react-dsfr/Input";
@@ -11,6 +10,8 @@ import RequiredLabel from "@/shared/views/components/form/RequiredLabel/Required
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 import { AdministrativeDivisionService } from ".";
+import AuthLinkModal from "../../access-benefriches/AuthLinkModal";
+import CreateUserErrorMessage from "./CreateUserErrorMessage";
 import UserStructureForm, { StructureFormValues } from "./CreateUserStructureForm";
 
 const modal = createModal({
@@ -26,6 +27,7 @@ export type FormValues = {
 } & StructureFormValues;
 
 type Props = {
+  predefinedValues?: Partial<FormValues>;
   createUserLoadingState: "idle" | "loading" | "success" | "error";
   onSubmit: (data: FormValues) => void;
   administrativeDivisionService: AdministrativeDivisionService;
@@ -35,8 +37,11 @@ function CreateUserForm({
   onSubmit,
   createUserLoadingState,
   administrativeDivisionService,
+  predefinedValues,
 }: Props) {
-  const formContext = useForm<FormValues>();
+  const formContext = useForm<FormValues>({
+    defaultValues: predefinedValues,
+  });
   const { register, handleSubmit, formState } = formContext;
 
   return (
@@ -51,6 +56,7 @@ function CreateUserForm({
             stateRelatedMessage={
               formState.errors.email ? formState.errors.email.message : undefined
             }
+            disabled={predefinedValues?.email !== undefined}
             nativeInputProps={{
               placeholder: "utilisateur@ademe.fr",
               ...register("email", {
@@ -65,17 +71,19 @@ function CreateUserForm({
           <Input
             label="Prénom"
             nativeInputProps={{ ...register("firstname"), placeholder: "Laurent" }}
+            disabled={predefinedValues?.firstname !== undefined}
           />
           <Input
             label="Nom"
             nativeInputProps={{ ...register("lastname"), placeholder: "Chateau" }}
+            disabled={predefinedValues?.lastname !== undefined}
           />
           <UserStructureForm
             administrativeDivisionService={administrativeDivisionService}
             formContext={formContext}
           />
           <Checkbox
-            className="tw-mt-5"
+            className="tw-mb-5"
             state={formState.errors.personnalDataUseConsentment ? "error" : "default"}
             stateRelatedMessage={
               formState.errors.personnalDataUseConsentment
@@ -95,12 +103,9 @@ function CreateUserForm({
             ]}
           />
           {createUserLoadingState === "error" && (
-            <Alert
-              description="Une erreur s'est produite lors de la sauvegarde des données... Veuillez réessayer."
-              severity="error"
-              title="Échec de l'enregistrement"
-              className="tw-my-7"
-            />
+            <div className="tw-mb-5">
+              <CreateUserErrorMessage errorKind="EMAIL_ALREADY_EXISTS" />
+            </div>
           )}
 
           <ButtonsGroup
@@ -123,6 +128,7 @@ function CreateUserForm({
           />
         </form>
 
+        <AuthLinkModal />
         <modal.Component
           size="large"
           title="Politique de confidentialité"

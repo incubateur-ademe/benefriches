@@ -21,6 +21,9 @@ global.afterEach(async () => {
     "sites",
     "users_feature_alerts",
     "users",
+    "token_authentication_attempts",
+    "auth_external_user_identities",
+    "verified_emails",
   ] as const;
 
   try {
