@@ -29,7 +29,7 @@ type Props = {
 function CreateUserFormContainer({ onSuccess }: Props) {
   const currentRoute = useRoute();
   const dispatch = useAppDispatch();
-  const createUserLoadingState = useAppSelector((state) => state.currentUser.createUserState);
+  const { createUserState, createUserError } = useAppSelector((state) => state.currentUser);
 
   const administrativeDivisionService: AdministrativeDivisionService = useMemo(
     () => new AdministrativeDivisionGeoApi(),
@@ -65,16 +65,17 @@ function CreateUserFormContainer({ onSuccess }: Props) {
   };
 
   useEffect(() => {
-    if (createUserLoadingState === "success") {
+    if (createUserState === "success") {
       onSuccess();
     }
-  }, [createUserLoadingState, onSuccess]);
+  }, [createUserState, onSuccess]);
 
   return (
     <CreateUserForm
       predefinedValues={initialValues}
       onSubmit={onSubmit}
-      createUserLoadingState={createUserLoadingState}
+      createUserLoadingState={createUserState}
+      createUserError={createUserError}
       administrativeDivisionService={administrativeDivisionService}
     />
   );
