@@ -29,6 +29,7 @@ export type FormValues = {
 type Props = {
   predefinedValues?: Partial<FormValues>;
   createUserLoadingState: "idle" | "loading" | "success" | "error";
+  createUserError?: string;
   onSubmit: (data: FormValues) => void;
   administrativeDivisionService: AdministrativeDivisionService;
 };
@@ -36,6 +37,7 @@ type Props = {
 function CreateUserForm({
   onSubmit,
   createUserLoadingState,
+  createUserError,
   administrativeDivisionService,
   predefinedValues,
 }: Props) {
@@ -105,7 +107,7 @@ function CreateUserForm({
           />
           {createUserLoadingState === "error" && (
             <div className="mb-5">
-              <CreateUserErrorMessage errorKind="EMAIL_ALREADY_EXISTS" />
+              <CreateUserErrorMessage errorKind={createUserError ?? ""} />
             </div>
           )}
 
