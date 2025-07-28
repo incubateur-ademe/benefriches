@@ -1,7 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { Knex } from "knex";
 
-import { TokenAuthenticationAttemptRepository } from "src/auth/core/TokenAuthenticationAttemptRepository";
+import { TokenAuthenticationAttemptRepository } from "src/auth/core/gateways/TokenAuthenticationAttemptRepository";
 import { TokenAuthenticationAttempt } from "src/auth/core/tokenAuthenticationAttempt";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 

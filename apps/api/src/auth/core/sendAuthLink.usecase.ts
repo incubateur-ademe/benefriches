@@ -4,8 +4,8 @@ import { addMinutes, subMinutes } from "date-fns";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { UseCase } from "src/shared-kernel/usecase";
 
-import { AuthUserRepository } from "../adapters/auth-user-repository/AuthUsersRepository";
-import { TokenAuthenticationAttemptRepository } from "./TokenAuthenticationAttemptRepository";
+import { TokenAuthenticationAttemptRepository } from "./gateways/TokenAuthenticationAttemptRepository";
+import { UserRepository } from "./gateways/UsersRepository";
 
 export interface TokenGenerator {
   generate(): string;
@@ -25,7 +25,7 @@ type SendAuthLinkResult = { success: true } | { success: false; error: SendAuthL
 
 export class SendAuthLinkUseCase implements UseCase<Request, SendAuthLinkResult> {
   constructor(
-    private readonly userRepository: AuthUserRepository,
+    private readonly userRepository: UserRepository,
     private readonly tokenGenerator: TokenGenerator,
     private readonly authByTokenRequestRepository: TokenAuthenticationAttemptRepository,
     private readonly mailService: AuthLinkMailer,

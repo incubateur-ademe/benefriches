@@ -1,8 +1,8 @@
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { UseCase } from "src/shared-kernel/usecase";
 
-import { AuthUserRepository } from "../adapters/auth-user-repository/AuthUsersRepository";
-import { TokenAuthenticationAttemptRepository } from "./TokenAuthenticationAttemptRepository";
+import { TokenAuthenticationAttemptRepository } from "./gateways/TokenAuthenticationAttemptRepository";
+import { UserRepository } from "./gateways/UsersRepository";
 
 type Request = {
   token: string;
@@ -26,7 +26,7 @@ type Result =
 export class AuthenticateWithTokenUseCase implements UseCase<Request, Result> {
   constructor(
     private readonly authByTokenRequestRepository: TokenAuthenticationAttemptRepository,
-    private readonly userRepository: AuthUserRepository,
+    private readonly userRepository: UserRepository,
     private readonly dateProvider: DateProvider,
   ) {}
 

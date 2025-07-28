@@ -12,6 +12,8 @@ export const buildMinimalUserProps = (): UserProps => {
     personalDataAnalyticsUseConsented: false,
     personalDataCommunicationUseConsented: false,
     personalDataStorageConsented: true,
+    firstName: "John",
+    lastName: "Doe",
   };
 };
 
@@ -19,8 +21,8 @@ export const buildExhaustiveUserProps = (): Required<UserProps> => {
   return {
     id: uuid(),
     email: "user@collectivite.fr",
-    firstname: "Jane",
-    lastname: "Doe",
+    firstName: "Jane",
+    lastName: "Doe",
     structureType: "municipality",
     structureActivity: "local_authority",
     structureName: "Mairie de Blajan",
@@ -30,7 +32,7 @@ export const buildExhaustiveUserProps = (): Required<UserProps> => {
   };
 };
 
-export const buildUser = (props?: Partial<User>): User => {
+const buildUser = (props?: Partial<User>): User => {
   return {
     ...buildMinimalUserProps(),
     createdAt: new Date(),
@@ -56,13 +58,13 @@ export class UserBuilder {
     return this;
   }
 
-  withFirstname(firstname: string): this {
-    this.props.firstname = firstname;
+  withFirstName(firstName: string | undefined): this {
+    this.props.firstName = firstName;
     return this;
   }
 
-  withLastname(lastname: string): this {
-    this.props.lastname = lastname;
+  withLastName(lastName: string | undefined): this {
+    this.props.lastName = lastName;
     return this;
   }
 

@@ -1,33 +1,20 @@
 import { addMinutes } from "date-fns";
 
 import { InMemoryTokenAuthenticationAttemptRepository } from "src/auth/adapters/auth-token-repository/InMemoryTokenAuthenticationAttemptRepository";
-import { InMemoryAuthUserRepository } from "src/auth/adapters/auth-user-repository/InMemoryAuthUserRepository";
+import { InMemoryUserRepository } from "src/auth/adapters/user-repository/InMemoryAuthUserRepository";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { UserBuilder } from "src/users/core/model/user.mock";
 
-import { AuthenticatedUser } from "../adapters/auth-user-repository/AuthUsersRepository";
 import { AuthenticateWithTokenUseCase } from "./authenticateWithToken.usecase";
 import { TokenAuthenticationAttempt } from "./tokenAuthenticationAttempt";
 
 describe("AuthenticateWithToken Use Case", () => {
   let dateProvider: DateProvider;
-  let userRepository: InMemoryAuthUserRepository;
+  let userRepository: InMemoryUserRepository;
   let tokenAuthAttemptRepository: InMemoryTokenAuthenticationAttemptRepository;
 
   const fakeNow = new Date("2025-01-01T14:00:00Z");
-
-  const buildAuthenticatedUser = (
-    overrides: Partial<AuthenticatedUser> = {},
-  ): AuthenticatedUser => ({
-    id: "user-123",
-    firstName: "John",
-    lastName: "Doe",
-    email: "user@example.com",
-    structureType: "company",
-    structureActivity: "urban_planner",
-    structureName: "My Company",
-    ...overrides,
-  });
 
   const buildTokenAuthAttempt = (
     overrides: Partial<TokenAuthenticationAttempt> = {},
@@ -43,7 +30,7 @@ describe("AuthenticateWithToken Use Case", () => {
 
   beforeEach(() => {
     dateProvider = new DeterministicDateProvider(fakeNow);
-    userRepository = new InMemoryAuthUserRepository();
+    userRepository = new InMemoryUserRepository();
     tokenAuthAttemptRepository = new InMemoryTokenAuthenticationAttemptRepository();
   });
 
@@ -110,10 +97,8 @@ describe("AuthenticateWithToken Use Case", () => {
 
   describe("Success cases", () => {
     it("authenticates user and sets authentication attempt as completed", async () => {
-      const user = buildAuthenticatedUser({
-        email: "test@example.com",
-      });
-      const validToken = buildTokenAuthAttempt();
+      const user = new UserBuilder().withEmail("test@example.com").build();
+      const validToken = buildTokenAuthAttempt({ userId: user.id, email: user.email });
 
       const fakeNow = new Date("2025-01-01T14:00:00Z");
       dateProvider = new DeterministicDateProvider(fakeNow);

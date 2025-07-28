@@ -3,16 +3,12 @@ import { z } from "zod";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { UseCase } from "src/shared-kernel/usecase";
 
-import { User, userSchema } from "./user";
+import { UserRepository } from "./gateways/UsersRepository";
+import { userSchema } from "./user";
 
 type CreateUserFailureReason = "UserEmailAlreadyExists" | "PersonalDataStorageNotConsented";
 
 type CreateUserResult = { success: true } | { success: false; error: CreateUserFailureReason };
-
-export interface UserRepository {
-  save(user: User): Promise<void>;
-  existsWithEmail(email: string): Promise<boolean>;
-}
 
 export const userPropsSchema = userSchema
   .omit({

@@ -22,17 +22,14 @@ import { Request, Response } from "express";
 import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
 
-import { CreateUserUseCase } from "src/auth/core/createUser.usecase";
+import { CreateUserUseCase, UserProps } from "src/auth/core/createUser.usecase";
 
 import { AuthenticateWithTokenUseCase } from "../core/authenticateWithToken.usecase";
+import { AUTH_USER_REPOSITORY_TOKEN, UserRepository } from "../core/gateways/UsersRepository";
 import { SendAuthLinkUseCase } from "../core/sendAuthLink.usecase";
 import { JwtAuthGuard } from "./JwtAuthGuard";
 import { ACCESS_TOKEN_SERVICE, AccessTokenService } from "./access-token/AccessTokenService";
 import { ACCESS_TOKEN_COOKIE_KEY } from "./access-token/accessTokenCookie";
-import {
-  AUTH_USER_REPOSITORY_TOKEN,
-  AuthUserRepository,
-} from "./auth-user-repository/AuthUsersRepository";
 import {
   EXTERNAL_USER_IDENTITIES_REPOSITORY_INJECTION_TOKEN,
   ExternalUserIdentityRepository,
@@ -81,7 +78,7 @@ export class AuthController {
     private readonly accessTokenService: AccessTokenService,
     private readonly configService: ConfigService,
     @Inject(AUTH_USER_REPOSITORY_TOKEN)
-    private readonly usersRepository: AuthUserRepository,
+    private readonly usersRepository: UserRepository,
     @Inject(PRO_CONNECT_CLIENT_INJECTION_TOKEN)
     private readonly oidcLogin: ProConnectClient,
     @Inject(EXTERNAL_USER_IDENTITIES_REPOSITORY_INJECTION_TOKEN)
@@ -92,8 +89,21 @@ export class AuthController {
 
   @Post("/register")
   async createUser(@Body() createUserDto: RegisterUserBodyDto, @Res() response: Response) {
+    const userProps: UserProps = {
+      id: createUserDto.id,
+      email: createUserDto.email,
+      structureType: createUserDto.structureType,
+      structureActivity: createUserDto.structureActivity,
+      structureName: createUserDto.structureName,
+      createdFrom: createUserDto.createdFrom,
+      firstName: createUserDto.firstname,
+      lastName: createUserDto.lastname,
+      personalDataAnalyticsUseConsented: createUserDto.personalDataAnalyticsUseConsented,
+      personalDataCommunicationUseConsented: createUserDto.personalDataCommunicationUseConsented,
+      personalDataStorageConsented: createUserDto.personalDataStorageConsented,
+    };
     const result = await this.createUserUseCase.execute({
-      user: createUserDto,
+      user: userProps,
     });
 
     if (!result.success) {

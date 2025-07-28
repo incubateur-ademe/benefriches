@@ -1,15 +1,15 @@
 /* eslint-disable jest/no-conditional-expect */
 import { ZodError } from "zod";
 
-import { InMemoryUserRepository } from "src/auth/adapters/user-repository/InMemoryUserRepository";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 
 import {
   buildExhaustiveUserProps,
   buildMinimalUserProps,
-  buildUser,
+  UserBuilder,
 } from "../../users/core/model/user.mock";
+import { InMemoryUserRepository } from "../adapters/user-repository/InMemoryAuthUserRepository";
 import { CreateUserUseCase } from "./createUser.usecase";
 import { User } from "./user";
 
@@ -70,11 +70,7 @@ describe("CreateUser Use Case", () => {
         const email = "user@benefriches.ademe.fr";
         const userProps = { ...buildExhaustiveUserProps(), email };
 
-        userRepository._setUsers([
-          buildUser({
-            email,
-          }),
-        ]);
+        userRepository._setUsers([new UserBuilder().withEmail(email).build()]);
 
         const usecase = new CreateUserUseCase(userRepository, dateProvider);
 
@@ -104,8 +100,8 @@ describe("CreateUser Use Case", () => {
         {
           id: props.id,
           email: props.email,
-          firstname: props.firstname,
-          lastname: props.lastname,
+          firstName: props.firstName,
+          lastName: props.lastName,
           structureType: props.structureType,
           structureName: props.structureName,
           structureActivity: props.structureActivity,

@@ -16,7 +16,7 @@ import { ACCESS_TOKEN_COOKIE_KEY } from "./access-token/accessTokenCookie";
 import { registerUserBodySchema, RegisterUserBodyDto } from "./auth.controller";
 import { FakeProConnectClient } from "./pro-connect/FakeProConnectClient";
 import { PRO_CONNECT_CLIENT_INJECTION_TOKEN } from "./pro-connect/ProConnectClient";
-import { mapUserToSqlRow } from "./user-repository/SqlUserRepository";
+import { mapUserToSqlRow } from "./user-repository/SqlUsersRepository";
 
 type BadRequestResponseBody = {
   errors: { path: string[] }[];
@@ -74,8 +74,6 @@ describe("Auth integration tests", () => {
     it.each([
       "id",
       "email",
-      "firstname",
-      "lastname",
       "structureType",
       "structureActivity",
       "personalDataStorageConsented",
