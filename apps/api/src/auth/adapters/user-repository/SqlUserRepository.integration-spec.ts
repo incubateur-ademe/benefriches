@@ -1,9 +1,9 @@
 import knex, { Knex } from "knex";
 
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
-import { buildExhaustiveUserProps, buildUser } from "src/users/core/model/user.mock";
+import { UserBuilder } from "src/users/core/model/user.mock";
 
-import { SqlUserRepository } from "./SqlUserRepository";
+import { SqlUserRepository } from "./SqlUsersRepository";
 
 describe("SqlSiteRepository integration", () => {
   let sqlConnection: Knex;
@@ -22,7 +22,7 @@ describe("SqlSiteRepository integration", () => {
   });
 
   it("Saves user with minimal required props", async () => {
-    const user = buildUser();
+    const user = new UserBuilder().withFirstName(undefined).withLastName(undefined).build();
 
     await userRepository.save(user);
 
@@ -43,7 +43,7 @@ describe("SqlSiteRepository integration", () => {
   });
 
   it("Saves user with full props", async () => {
-    const user = buildUser(buildExhaustiveUserProps());
+    const user = new UserBuilder().withEmail("test@example.com").asUrbanPlanner().build();
 
     await userRepository.save(user);
 
@@ -52,8 +52,8 @@ describe("SqlSiteRepository integration", () => {
       id: user.id,
       email: user.email,
       personal_data_storage_consented_at: user.personalDataStorageConsentedAt,
-      firstname: user.firstname,
-      lastname: user.lastname,
+      firstname: user.firstName,
+      lastname: user.lastName,
       created_at: user.createdAt,
       structure_name: user.structureName,
       structure_type: user.structureType,

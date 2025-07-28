@@ -2,29 +2,25 @@ import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { JwtModule, JwtService } from "@nestjs/jwt";
 
-import { SqlUserRepository } from "src/auth/adapters/user-repository/SqlUserRepository";
-import { CreateUserUseCase, UserRepository } from "src/auth/core/createUser.usecase";
+import { CreateUserUseCase } from "src/auth/core/createUser.usecase";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
 import { SqlUserFeatureAlertRepository } from "src/users/adapters/secondary/user-feature-alert-repository/SqlUserFeatureAlertRepository";
 
-import { TokenAuthenticationAttemptRepository } from "../core/TokenAuthenticationAttemptRepository";
 import { AuthenticateWithTokenUseCase } from "../core/authenticateWithToken.usecase";
+import { TokenAuthenticationAttemptRepository } from "../core/gateways/TokenAuthenticationAttemptRepository";
+import { AUTH_USER_REPOSITORY_TOKEN, UserRepository } from "../core/gateways/UsersRepository";
 import { SendAuthLinkUseCase, TokenGenerator, AuthLinkMailer } from "../core/sendAuthLink.usecase";
 import { ACCESS_TOKEN_SERVICE } from "./access-token/AccessTokenService";
 import { SmtpAuthLinkMailer } from "./auth-link-mailer/SmtpAuthLinkMailer";
 import { SqlTokenAuthenticationAttemptRepository } from "./auth-token-repository/SqlTokenAuthenticationAttemptRepository";
-import {
-  AUTH_USER_REPOSITORY_TOKEN,
-  AuthUserRepository,
-} from "./auth-user-repository/AuthUsersRepository";
-import { SqlAuthUserRepository } from "./auth-user-repository/SqlAuthUsersRepository";
 import { AuthController } from "./auth.controller";
 import { EXTERNAL_USER_IDENTITIES_REPOSITORY_INJECTION_TOKEN } from "./external-user-identities-repository/ExternalUserIdentitiesRepository";
 import { SqlExternalUserIdentitiesRepository } from "./external-user-identities-repository/SqlExternalUserIdentitiesRepository";
 import { HttpProConnectClient } from "./pro-connect/HttpProConnectClient";
 import { PRO_CONNECT_CLIENT_INJECTION_TOKEN } from "./pro-connect/ProConnectClient";
 import { RandomTokenGenerator } from "./token-generator/RandomTokenGenerator";
+import { SqlUserRepository } from "./user-repository/SqlUsersRepository";
 import { SqlVerifiedEmailRepository } from "./verified-email-repository/SqlVerifiedEmailRepository";
 import { VERIFIED_EMAIL_REPOSITORY_TOKEN } from "./verified-email-repository/VerifiedEmailRepository";
 
@@ -52,7 +48,7 @@ import { VERIFIED_EMAIL_REPOSITORY_TOKEN } from "./verified-email-repository/Ver
     },
     {
       provide: AUTH_USER_REPOSITORY_TOKEN,
-      useClass: SqlAuthUserRepository,
+      useClass: SqlUserRepository,
     },
     {
       provide: PRO_CONNECT_CLIENT_INJECTION_TOKEN,
@@ -82,7 +78,7 @@ import { VERIFIED_EMAIL_REPOSITORY_TOKEN } from "./verified-email-repository/Ver
     {
       provide: SendAuthLinkUseCase,
       useFactory: (
-        userRepository: AuthUserRepository,
+        userRepository: UserRepository,
         tokenGenerator: TokenGenerator,
         tokenAuthAttemptRepository: TokenAuthenticationAttemptRepository,
         authLinkMailer: AuthLinkMailer,
@@ -98,7 +94,7 @@ import { VERIFIED_EMAIL_REPOSITORY_TOKEN } from "./verified-email-repository/Ver
           configService,
         ),
       inject: [
-        SqlAuthUserRepository,
+        SqlUserRepository,
         RandomTokenGenerator,
         SqlTokenAuthenticationAttemptRepository,
         SmtpAuthLinkMailer,
@@ -110,14 +106,14 @@ import { VERIFIED_EMAIL_REPOSITORY_TOKEN } from "./verified-email-repository/Ver
       provide: AuthenticateWithTokenUseCase,
       useFactory: (
         tokenAuthAttemptRepository: TokenAuthenticationAttemptRepository,
-        userRepository: AuthUserRepository,
+        userRepository: UserRepository,
         dateProvider: DateProvider,
       ) =>
         new AuthenticateWithTokenUseCase(tokenAuthAttemptRepository, userRepository, dateProvider),
-      inject: [SqlTokenAuthenticationAttemptRepository, SqlAuthUserRepository, RealDateProvider],
+      inject: [SqlTokenAuthenticationAttemptRepository, SqlUserRepository, RealDateProvider],
     },
     SqlUserRepository,
-    SqlAuthUserRepository,
+    SqlUserRepository,
     SqlTokenAuthenticationAttemptRepository,
     SqlUserFeatureAlertRepository,
     ConfigService,

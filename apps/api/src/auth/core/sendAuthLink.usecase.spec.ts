@@ -3,18 +3,18 @@ import { Test } from "@nestjs/testing";
 
 import { FakeAuthLinkMailer } from "src/auth/adapters/auth-link-mailer/FakeAuthLinkMailer";
 import { InMemoryTokenAuthenticationAttemptRepository } from "src/auth/adapters/auth-token-repository/InMemoryTokenAuthenticationAttemptRepository";
-import { InMemoryAuthUserRepository } from "src/auth/adapters/auth-user-repository/InMemoryAuthUserRepository";
 import { DeterministicTokenGenerator } from "src/auth/adapters/token-generator/DeterministicTokenGenerator";
+import { InMemoryUserRepository } from "src/auth/adapters/user-repository/InMemoryAuthUserRepository";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 
-import { AuthenticatedUser } from "../adapters/auth-user-repository/AuthUsersRepository";
 import { SendAuthLinkUseCase } from "./sendAuthLink.usecase";
 import { TokenAuthenticationAttempt } from "./tokenAuthenticationAttempt";
+import { User } from "./user";
 
 describe("SendAuthLink Use Case", () => {
   let dateProvider: DateProvider;
-  let userRepository: InMemoryAuthUserRepository;
+  let userRepository: InMemoryUserRepository;
   let tokenAuthAttemptRepository: InMemoryTokenAuthenticationAttemptRepository;
   let authLinkMailer: FakeAuthLinkMailer;
   let tokenGenerator: DeterministicTokenGenerator;
@@ -23,9 +23,7 @@ describe("SendAuthLink Use Case", () => {
   const fakeNow = new Date("2024-01-05T13:00:00Z");
   const fakeToken = "fake-token-123";
 
-  const buildAuthenticatedUser = (
-    overrides: Partial<AuthenticatedUser> = {},
-  ): AuthenticatedUser => ({
+  const buildAuthenticatedUser = (overrides: Partial<User> = {}): User => ({
     id: "user-123",
     firstName: "John",
     lastName: "Doe",
@@ -33,12 +31,17 @@ describe("SendAuthLink Use Case", () => {
     structureType: "company",
     structureActivity: "urban_planner",
     structureName: "My Company",
+    createdAt: new Date("2024-01-05T12:00:00Z"),
+    personalDataAnalyticsUseConsentedAt: new Date("2024-01-05T12:00:00Z"),
+    personalDataCommunicationUseConsentedAt: new Date("2024-01-05T12:00:00Z"),
+    personalDataStorageConsentedAt: new Date("2024-01-05T12:00:00Z"),
+    createdFrom: "features_app",
     ...overrides,
   });
 
   beforeEach(async () => {
     dateProvider = new DeterministicDateProvider(fakeNow);
-    userRepository = new InMemoryAuthUserRepository();
+    userRepository = new InMemoryUserRepository();
     tokenAuthAttemptRepository = new InMemoryTokenAuthenticationAttemptRepository();
     authLinkMailer = new FakeAuthLinkMailer();
     tokenGenerator = new DeterministicTokenGenerator(fakeToken);

@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 
-import { TokenAuthenticationAttemptRepository } from "src/auth/core/TokenAuthenticationAttemptRepository";
+import { TokenAuthenticationAttemptRepository } from "src/auth/core/gateways/TokenAuthenticationAttemptRepository";
 import { TokenAuthenticationAttempt } from "src/auth/core/tokenAuthenticationAttempt";
 
 @Injectable()

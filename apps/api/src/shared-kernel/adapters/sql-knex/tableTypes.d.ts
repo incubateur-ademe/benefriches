@@ -4,8 +4,8 @@ export type SqlUser = {
   firstname?: string;
   lastname?: string;
   structure_name?: string;
-  structure_type?: string;
-  structure_activity?: string;
+  structure_type: string;
+  structure_activity: string;
   created_at: Date;
   personal_data_storage_consented_at: Date;
   personal_data_analytics_use_consented_at?: Date;
