@@ -62,8 +62,6 @@ export const registerUserBodySchema = z.object({
   personalDataStorageConsented: z.literal(true),
   personalDataAnalyticsUseConsented: z.boolean(),
   personalDataCommunicationUseConsented: z.boolean(),
-  // todo: delete when the demo app is removed
-  createdFrom: z.enum(["demo_app", "features_app"]),
 });
 
 export class RegisterUserBodyDto extends createZodDto(registerUserBodySchema) {}
@@ -95,7 +93,6 @@ export class AuthController {
       structureType: createUserDto.structureType,
       structureActivity: createUserDto.structureActivity,
       structureName: createUserDto.structureName,
-      createdFrom: createUserDto.createdFrom,
       firstName: createUserDto.firstname,
       lastName: createUserDto.lastname,
       personalDataAnalyticsUseConsented: createUserDto.personalDataAnalyticsUseConsented,

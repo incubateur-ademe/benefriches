@@ -16,7 +16,6 @@ const mapSqlUserToAuthenticatedUser = (userRow: SqlUser): User => ({
   personalDataStorageConsentedAt: userRow.personal_data_storage_consented_at,
   personalDataAnalyticsUseConsentedAt: userRow.personal_data_analytics_use_consented_at,
   personalDataCommunicationUseConsentedAt: userRow.personal_data_communication_use_consented_at,
-  createdFrom: userRow.created_from,
   structureName: userRow.structure_name,
   structureType: userRow.structure_type,
   structureActivity: userRow.structure_activity,
@@ -34,7 +33,6 @@ export const mapUserToSqlRow = (user: User): SqlUser => ({
   personal_data_storage_consented_at: user.personalDataStorageConsentedAt,
   personal_data_analytics_use_consented_at: user.personalDataAnalyticsUseConsentedAt,
   personal_data_communication_use_consented_at: user.personalDataCommunicationUseConsentedAt,
-  created_from: user.createdFrom,
 });
 
 // todo: merge with SqlUserRepository

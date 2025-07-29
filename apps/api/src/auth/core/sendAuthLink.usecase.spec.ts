@@ -35,7 +35,6 @@ describe("SendAuthLink Use Case", () => {
     personalDataAnalyticsUseConsentedAt: new Date("2024-01-05T12:00:00Z"),
     personalDataCommunicationUseConsentedAt: new Date("2024-01-05T12:00:00Z"),
     personalDataStorageConsentedAt: new Date("2024-01-05T12:00:00Z"),
-    createdFrom: "features_app",
     ...overrides,
   });
 

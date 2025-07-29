@@ -68,7 +68,6 @@ describe("Auth integration tests", () => {
       personalDataAnalyticsUseConsented: false,
       personalDataCommunicationUseConsented: false,
       personalDataStorageConsented: true,
-      createdFrom: "features_app",
     });
 
     it.each([
@@ -111,7 +110,6 @@ describe("Auth integration tests", () => {
         personal_data_communication_use_consented_at: new Date(),
         structure_name: "Mairie de Blajan",
         personal_data_storage_consented_at: new Date(),
-        created_from: "demo_app",
         created_at: new Date(),
       });
 
