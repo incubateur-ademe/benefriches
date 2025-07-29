@@ -1,24 +1,28 @@
-import { UserProps } from "../usecases/createUser.usecase";
-import { User } from "./user";
+import { v4 as uuid } from "uuid";
+
+import { UserProps } from "../../../auth/core/createUser.usecase";
+import { User } from "../../../auth/core/user";
 
 export const buildMinimalUserProps = (): UserProps => {
   return {
-    id: "ecf6d4b1-d394-48c8-8208-fad936afe6ca",
+    id: uuid(),
     email: "user@collectivite.fr",
     structureActivity: "urban_planner",
     structureType: "company",
     personalDataAnalyticsUseConsented: false,
     personalDataCommunicationUseConsented: false,
     personalDataStorageConsented: true,
+    firstName: "John",
+    lastName: "Doe",
   };
 };
 
 export const buildExhaustiveUserProps = (): Required<UserProps> => {
   return {
-    id: "2096a04d-4876-4e1e-b071-d5355fd0ee4c",
+    id: uuid(),
     email: "user@collectivite.fr",
-    firstname: "Jane",
-    lastname: "Doe",
+    firstName: "Jane",
+    lastName: "Doe",
     structureType: "municipality",
     structureActivity: "local_authority",
     structureName: "Mairie de Blajan",
@@ -28,7 +32,7 @@ export const buildExhaustiveUserProps = (): Required<UserProps> => {
   };
 };
 
-export const buildUser = (props?: Partial<User>): User => {
+const buildUser = (props?: Partial<User>): User => {
   return {
     ...buildMinimalUserProps(),
     createdAt: new Date(),
@@ -36,3 +40,64 @@ export const buildUser = (props?: Partial<User>): User => {
     ...props,
   };
 };
+
+export class UserBuilder {
+  private readonly props: UserProps;
+
+  constructor() {
+    this.props = buildMinimalUserProps();
+  }
+
+  withId(id: string): this {
+    this.props.id = id;
+    return this;
+  }
+
+  withEmail(email: string): this {
+    this.props.email = email;
+    return this;
+  }
+
+  withFirstName(firstName: string | undefined): this {
+    this.props.firstName = firstName;
+    return this;
+  }
+
+  withLastName(lastName: string | undefined): this {
+    this.props.lastName = lastName;
+    return this;
+  }
+
+  asUrbanPlanner(): this {
+    this.props.structureActivity = "urban_planner";
+    this.props.structureType = "company";
+    this.props.structureName = "UrbanPlanning Inc.";
+    return this;
+  }
+
+  asLocalAuthority(): this {
+    this.props.structureActivity = "local_authority";
+    this.props.structureType = "municipality";
+    this.props.structureName = "Mairie de Blajan";
+    return this;
+  }
+
+  withStructure({
+    structureName,
+    structureType,
+    structureActivity,
+  }: {
+    structureName: string;
+    structureType: string;
+    structureActivity: string;
+  }): this {
+    this.props.structureName = structureName;
+    this.props.structureType = structureType;
+    this.props.structureActivity = structureActivity;
+    return this;
+  }
+
+  build(): User {
+    return buildUser(this.props);
+  }
+}

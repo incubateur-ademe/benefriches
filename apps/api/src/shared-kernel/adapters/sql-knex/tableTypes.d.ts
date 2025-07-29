@@ -4,8 +4,8 @@ export type SqlUser = {
   firstname?: string;
   lastname?: string;
   structure_name?: string;
-  structure_type?: string;
-  structure_activity?: string;
+  structure_type: string;
+  structure_activity: string;
   created_at: Date;
   personal_data_storage_consented_at: Date;
   personal_data_analytics_use_consented_at?: Date;
@@ -210,5 +210,26 @@ declare module "knex/types/tables" {
     users_feature_alerts: SqlUserFeatureAlert;
 
     city_stats: CityStats;
+    // auth
+    auth_external_user_identities: {
+      id: string;
+      user_id: string;
+      provider: string;
+      provider_user_id: string;
+      provider_info: Record<string, unknown> | null;
+      created_at: Date;
+    };
+    verified_emails: {
+      email: string;
+      verified_at: Date;
+    };
+    token_authentication_attempts: {
+      user_id: string;
+      token: string;
+      email: string;
+      created_at: Date;
+      expires_at: Date;
+      used_at: Date | null;
+    };
   }
 }

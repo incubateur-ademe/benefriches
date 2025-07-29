@@ -18,6 +18,16 @@ erDiagram
         long numeric "null"
     }
 
+    auth_external_user_identities {
+        id uuid PK "not null"
+        provider character_varying "not null"
+        provider_user_id character_varying "not null"
+        created_at timestamp_with_time_zone "not null"
+        id uuid "not null"
+        user_id uuid "not null"
+        provider_info jsonb "null"
+    }
+
     carbon_storage {
         id integer PK "not null"
         localisation_category character_varying "not null"
@@ -128,6 +138,8 @@ erDiagram
         reinstatement_contract_owner_name character_varying "null"
         reinstatement_contract_owner_structure_type character_varying "null"
         operations_first_year integer "null"
+        buildings_resale_expected_property_transfer_duties numeric "null"
+        buildings_resale_expected_selling_price numeric "null"
         financial_assistance_revenues numeric "null"
         friche_decontaminated_soil_surface_area numeric "null"
         site_purchase_property_transfer_duties numeric "null"
@@ -167,15 +179,18 @@ erDiagram
 
     sites {
         id uuid PK "not null"
-        is_friche boolean "not null"
         name character_varying "not null"
         owner_structure_type character_varying "not null"
         surface_area numeric "not null"
         created_at timestamp_with_time_zone "not null"
         id uuid "not null"
         friche_has_contaminated_soils boolean "null"
+        is_operated boolean "null"
+        agricultural_operation_activity character_varying "null"
         creation_mode character_varying "null"
         friche_activity character_varying "null"
+        natural_area_type character_varying "null"
+        nature character_varying "null"
         owner_name character_varying "null"
         tenant_name character_varying "null"
         tenant_structure_type character_varying "null"
@@ -185,6 +200,16 @@ erDiagram
         friche_contaminated_soil_surface_area numeric "null"
         description text "null"
         created_by uuid "null"
+    }
+
+    token_authentication_attempts {
+        token character_varying PK "not null"
+        email character_varying "not null"
+        token character_varying "not null"
+        created_at timestamp_with_time_zone "not null"
+        expires_at timestamp_with_time_zone "not null"
+        user_id uuid "not null"
+        used_at timestamp_with_time_zone "null"
     }
 
     users {
@@ -216,6 +241,21 @@ erDiagram
         personal_data_communication_use_consented_at timestamp_with_time_zone "null"
     }
 
+    users_feature_alerts {
+        id uuid PK "not null"
+        user_id uuid FK "null"
+        email character_varying "not null"
+        feature_type character_varying "not null"
+        created_at timestamp_with_time_zone "not null"
+        id uuid "not null"
+        feature_options json "null"
+    }
+
+    verified_emails {
+        email character_varying PK "not null"
+        verified_at timestamp_with_time_zone "null"
+    }
+
     reconversion_project_development_plans ||--o{ reconversion_project_development_plan_costs : "reconversion_project_development_plan_costs(development_plan_id) -> reconversion_project_development_plans(id)"
     reconversion_projects ||--o{ reconversion_project_development_plans : "reconversion_project_development_plans(reconversion_project_id) -> reconversion_projects(id)"
     reconversion_projects ||--o{ reconversion_project_financial_assistance_revenues : "reconversion_project_financial_assistance_revenues(reconversion_project_id) -> reconversion_projects(id)"
@@ -228,6 +268,7 @@ erDiagram
     sites ||--o{ site_expenses : "site_expenses(site_id) -> sites(id)"
     sites ||--o{ site_incomes : "site_incomes(site_id) -> sites(id)"
     sites ||--o{ site_soils_distributions : "site_soils_distributions(site_id) -> sites(id)"
+    users ||--o{ users_feature_alerts : "users_feature_alerts(user_id) -> users(id)"
 ```
 
 ## Indexes
@@ -236,6 +277,11 @@ erDiagram
 
 - `addresses_id_unique`
 - `addresses_pkey`
+
+### `auth_external_user_identities`
+
+- `auth_external_user_identities_id_unique`
+- `auth_external_user_identities_pkey`
 
 ### `carbon_storage`
 
@@ -313,6 +359,20 @@ erDiagram
 - `sites_id_unique`
 - `sites_pkey`
 
+### `token_authentication_attempts`
+
+- `token_authentication_attempts_pkey`
+- `token_authentication_attempts_token_unique`
+
 ### `users`
 
 - `users_pkey`
+
+### `users_feature_alerts`
+
+- `users_feature_alerts_id_unique`
+- `users_feature_alerts_pkey`
+
+### `verified_emails`
+
+- `verified_emails_pkey`

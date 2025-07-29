@@ -6,7 +6,7 @@ import CreateUserFormContainer from "./CreateUserForm";
 function OnBoardingIdentityPage() {
   return (
     <>
-      <HtmlTitle>{`Identité - Introduction`}</HtmlTitle>
+      <HtmlTitle>Identité - Introduction</HtmlTitle>
       <CreateUserFormContainer
         onSuccess={() => {
           routes.onBoardingIntroductionWhy().push();

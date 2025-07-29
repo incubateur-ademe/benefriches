@@ -3,11 +3,15 @@ import { ZodError } from "zod";
 
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
-import { InMemoryUserRepository } from "src/users/adapters/secondary/user-repository/InMemoryUserRepository";
 
-import { User } from "../model/user";
-import { buildExhaustiveUserProps, buildMinimalUserProps } from "../model/user.mock";
+import {
+  buildExhaustiveUserProps,
+  buildMinimalUserProps,
+  UserBuilder,
+} from "../../users/core/model/user.mock";
+import { InMemoryUserRepository } from "../adapters/user-repository/InMemoryAuthUserRepository";
 import { CreateUserUseCase } from "./createUser.usecase";
+import { User } from "./user";
 
 describe("CreateUser Use Case", () => {
   let dateProvider: DateProvider;
@@ -52,11 +56,32 @@ describe("CreateUser Use Case", () => {
 
         const usecase = new CreateUserUseCase(userRepository, dateProvider);
 
-        await expect(async () =>
-          usecase.execute({
-            user: { ...userProps, personalDataStorageConsented: false },
-          }),
-        ).rejects.toThrow("Personal data storage consented field should be true");
+        const result = await usecase.execute({
+          user: { ...userProps, personalDataStorageConsented: false },
+        });
+
+        expect(result).toEqual({
+          success: false,
+          error: "PersonalDataStorageNotConsented",
+        });
+      });
+
+      it("Cannot create an user when email is already taken", async () => {
+        const email = "user@benefriches.ademe.fr";
+        const userProps = { ...buildExhaustiveUserProps(), email };
+
+        userRepository._setUsers([new UserBuilder().withEmail(email).build()]);
+
+        const usecase = new CreateUserUseCase(userRepository, dateProvider);
+
+        const result = await usecase.execute({
+          user: userProps,
+        });
+
+        expect(result).toEqual({
+          success: false,
+          error: "UserEmailAlreadyExists",
+        });
       });
     });
   });
@@ -75,8 +100,8 @@ describe("CreateUser Use Case", () => {
         {
           id: props.id,
           email: props.email,
-          firstname: props.firstname,
-          lastname: props.lastname,
+          firstName: props.firstName,
+          lastName: props.lastName,
           structureType: props.structureType,
           structureName: props.structureName,
           structureActivity: props.structureActivity,

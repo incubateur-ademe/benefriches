@@ -4,6 +4,7 @@ import { LocalAuthority } from "shared";
 import { createUser } from "@/features/onboarding/core/createUser.action";
 import { AdministrativeDivisionGeoApi } from "@/shared/infrastructure/administrative-division-service/administrativeDivisionGeoApi";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { routes, useRoute } from "@/shared/views/router";
 
 import CreateUserForm, { FormValues } from "./CreateUserForm";
 
@@ -26,13 +27,23 @@ type Props = {
 };
 
 function CreateUserFormContainer({ onSuccess }: Props) {
+  const currentRoute = useRoute();
   const dispatch = useAppDispatch();
-  const createUserLoadingState = useAppSelector((state) => state.currentUser.createUserState);
+  const { createUserState, createUserError } = useAppSelector((state) => state.currentUser);
 
   const administrativeDivisionService: AdministrativeDivisionService = useMemo(
     () => new AdministrativeDivisionGeoApi(),
     [],
   );
+
+  const initialValues =
+    currentRoute.name === routes.onBoardingIdentity.name
+      ? {
+          email: currentRoute.params.hintEmail,
+          firstname: currentRoute.params.hintFirstName,
+          lastname: currentRoute.params.hintLastName,
+        }
+      : {};
 
   const onSubmit = (data: FormValues) => {
     void dispatch(
@@ -54,15 +65,17 @@ function CreateUserFormContainer({ onSuccess }: Props) {
   };
 
   useEffect(() => {
-    if (createUserLoadingState === "success") {
+    if (createUserState === "success") {
       onSuccess();
     }
-  }, [createUserLoadingState, onSuccess]);
+  }, [createUserState, onSuccess]);
 
   return (
     <CreateUserForm
+      predefinedValues={initialValues}
       onSubmit={onSubmit}
-      createUserLoadingState={createUserLoadingState}
+      createUserLoadingState={createUserState}
+      createUserError={createUserError}
       administrativeDivisionService={administrativeDivisionService}
     />
   );
