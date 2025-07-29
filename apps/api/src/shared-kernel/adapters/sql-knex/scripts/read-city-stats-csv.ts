@@ -7,7 +7,7 @@ import { CityStats } from "../tableTypes";
 export const readCityStatsCsvData = async () => {
   const dataPath = path.resolve(__dirname, "./../../../../../data/dvf/cityStats.csv");
   const HEADER =
-    "cityCode;da_name;da_population;da_surface_ha;dvf_nbtrans_cod111;dvf_pxm2_median_cod111;dvf_nbtrans_cod121;dvf_pxm2_median_cod121;dvf_surface_median_cod111;dvf_surface_median_cod121";
+    "city_code;da_name;da_population;da_surface_ha;dvf_nbtrans;dvf_pxm2_median;dvf_surface_median;dvf_nbtrans_cod111;dvf_pxm2_median_cod111;dvf_nbtrans_cod121;dvf_pxm2_median_cod121;dvf_surface_median_cod111;dvf_surface_median_cod121";
 
   return new Promise<CityStats[]>((resolve, reject) => {
     const readStream = fs.createReadStream(dataPath, "utf-8");
