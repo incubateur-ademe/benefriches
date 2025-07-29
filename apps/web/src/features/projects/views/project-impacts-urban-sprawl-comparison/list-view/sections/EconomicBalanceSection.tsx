@@ -129,7 +129,7 @@ const ImpactComparisonListEconomicBalanceSection = ({
             <TableAccordionRow
               label={
                 projectType === "PHOTOVOLTAIC_POWER_PLANT"
-                  ? "⚡️ Installation de la centrale $EnR"
+                  ? "⚡️ Installation de la centrale photovoltaïque"
                   : "🏘 Aménagement du site"
               }
               actor={baseCase.impacts.economicBalance.bearer}
