@@ -20,8 +20,8 @@ const structureTypeSchema = z.enum(["local_authority", "company"]);
 export type UserStructureType = z.infer<typeof structureTypeSchema>;
 
 export const userSchema = z.object({
-  id: z.string().uuid(),
-  email: z.string().email(),
+  id: z.uuid(),
+  email: z.email(),
   firstname: z.string().optional(),
   lastname: z.string().optional(),
   structureType: structureTypeSchema,

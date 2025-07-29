@@ -13,9 +13,9 @@ export interface DateProvider {
 export type UserFeatureAlert = z.infer<typeof createFeatureAlertSchema>;
 
 const baseFeatureAlertSchema = z.object({
-  id: z.string().uuid(),
-  userId: z.string().uuid(),
-  email: z.string().email(),
+  id: z.uuid(),
+  userId: z.uuid(),
+  email: z.email(),
   createdAt: z.date(),
 });
 

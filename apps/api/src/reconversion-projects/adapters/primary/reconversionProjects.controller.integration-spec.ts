@@ -194,7 +194,7 @@ describe("ReconversionProjects controller", () => {
       expect(validationErrors).toHaveLength(1);
       expect(validationErrors[0]).toMatchObject({
         path: ["userId"],
-        message: "Required",
+        message: "Invalid input: expected string, received undefined",
       });
     });
 

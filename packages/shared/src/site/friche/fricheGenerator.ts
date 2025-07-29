@@ -103,7 +103,7 @@ export class FricheGenerator implements SiteGenerator<FricheGenerationProps> {
     });
 
     if (!result.success) {
-      throw new Error(`Failed to create friche, ${result.error}`);
+      throw new Error(`Failed to create friche`);
     }
     return result.site;
   }

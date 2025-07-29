@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { $ZodFlattenedError } from "zod/v4/core";
 
 import { SoilType } from "../soils";
 import { SurfaceAreaDistribution } from "../surface-area";
@@ -31,7 +32,7 @@ export const addressSchema = z.object({
 export type Address = z.infer<typeof addressSchema>;
 
 const baseSiteSchema = z.object({
-  id: z.string().uuid(),
+  id: z.uuid(),
   nature: siteNatureSchema,
   name: z.string(),
   description: z.string().optional(),
@@ -117,19 +118,12 @@ export interface NaturalAreaSite extends BaseSite {
 
 export type AgriculturalOrNaturalSite = AgriculturalOperationSite | NaturalAreaSite;
 
-function formatZodError(error: z.ZodError): string {
-  let errorMessage = "Validation error:";
-
-  error.errors.forEach((error) => {
-    const path = error.path.join(".");
-    const message = error.message;
-    errorMessage += ` ${path} (${message}),`;
-  });
-
-  return errorMessage;
-}
-
-type SiteCreationResult<TSite> = { success: true; site: TSite } | { success: false; error: string };
+type AgriculturalOperationCreationResult =
+  | { success: true; site: AgriculturalOperationSite }
+  | { success: false; error: $ZodFlattenedError<z.infer<typeof agriculturalOperationSchema>> };
+type NaturalAreaCreationResult =
+  | { success: true; site: NaturalAreaSite }
+  | { success: false; error: $ZodFlattenedError<z.infer<typeof naturalAreaSchema>> };
 
 type CreateNaturalAreaSiteProps = {
   nature: "NATURAL_AREA";
@@ -160,7 +154,7 @@ export type CreateAgriculturalOrNaturalSiteProps =
 
 export function createAgriculturalOrNaturalSite(
   props: CreateAgriculturalOrNaturalSiteProps,
-): SiteCreationResult<AgriculturalOrNaturalSite> {
+): AgriculturalOperationCreationResult | NaturalAreaCreationResult {
   const owner = props.owner ?? { name: "Propriétaire inconnu", structureType: "unknown" };
   const surfaceArea = props.soilsDistribution.getTotalSurfaceArea();
 
@@ -178,26 +172,37 @@ export function createAgriculturalOrNaturalSite(
     surfaceArea,
   };
 
-  const result =
-    props.nature === "AGRICULTURAL_OPERATION"
-      ? agriculturalOperationSchema.safeParse({
-          ...candidate,
-          isSiteOperated: props.isSiteOperated,
-          agriculturalOperationActivity: props.agriculturalOperationActivity,
-        })
-      : naturalAreaSchema.safeParse({
-          ...candidate,
-          naturalAreaType: props.naturalAreaType,
-        });
+  if (props.nature === "AGRICULTURAL_OPERATION") {
+    const result = agriculturalOperationSchema.safeParse({
+      ...candidate,
+      isSiteOperated: props.isSiteOperated,
+      agriculturalOperationActivity: props.agriculturalOperationActivity,
+    });
+
+    return result.success
+      ? {
+          success: true,
+          site: result.data as AgriculturalOperationSite,
+        }
+      : {
+          success: false,
+          error: z.flattenError(result.error),
+        };
+  }
+
+  const result = naturalAreaSchema.safeParse({
+    ...candidate,
+    naturalAreaType: props.naturalAreaType,
+  });
 
   return result.success
     ? {
         success: true,
-        site: result.data as unknown as AgriculturalOrNaturalSite,
+        site: result.data as NaturalAreaSite,
       }
     : {
         success: false,
-        error: formatZodError(result.error),
+        error: z.flattenError(result.error),
       };
 }
 
@@ -216,7 +221,12 @@ export type CreateFricheProps = {
   accidentsSevereInjuries?: number;
   accidentsDeaths?: number;
 };
-export function createFriche(props: CreateFricheProps): SiteCreationResult<Friche> {
+
+type FricheCreationResult =
+  | { success: true; site: Friche }
+  | { success: false; error: $ZodFlattenedError<z.infer<typeof fricheSchema>> };
+
+export function createFriche(props: CreateFricheProps): FricheCreationResult {
   const fricheActivity = props.fricheActivity ?? "OTHER";
   const owner = props.owner ?? { name: "Propriétaire inconnu", structureType: "unknown" };
   const surfaceArea = props.soilsDistribution.getTotalSurfaceArea();
@@ -251,7 +261,7 @@ export function createFriche(props: CreateFricheProps): SiteCreationResult<Frich
       }
     : {
         success: false,
-        error: formatZodError(result.error),
+        error: z.flattenError(result.error),
       };
 }
 

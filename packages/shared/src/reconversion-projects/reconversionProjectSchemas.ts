@@ -45,13 +45,13 @@ export const developmentPlanSchema = z.discriminatedUnion("type", [
 ]);
 
 export const reconversionProjectSchema = z.object({
-  id: z.string().uuid(),
-  createdBy: z.string().uuid(),
+  id: z.uuid(),
+  createdBy: z.uuid(),
   createdAt: z.date(),
   creationMode: z.enum(["express", "custom"]),
   name: z.string(),
   description: z.string().optional(),
-  relatedSiteId: z.string().uuid(),
+  relatedSiteId: z.uuid(),
   developmentPlan: developmentPlanSchema,
   decontaminatedSoilSurface: z.number().nonnegative().optional(),
   futureOperator: z.object({ name: z.string(), structureType: z.string() }).optional(),
@@ -63,7 +63,7 @@ export const reconversionProjectSchema = z.object({
   financialAssistanceRevenues: z.array(revenueSchema).optional(),
   yearlyProjectedCosts: z.array(expenseSchema),
   yearlyProjectedRevenues: z.array(revenueSchema),
-  soilsDistribution: z.record(soilTypeSchema, z.number().nonnegative()),
+  soilsDistribution: z.partialRecord(soilTypeSchema, z.number().nonnegative()),
   reinstatementSchedule: scheduleSchema.optional(),
   operationsFirstYear: z.number().int().min(2000).optional(),
   projectPhase: z.string(),

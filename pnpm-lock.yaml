@@ -42,8 +42,8 @@ importers:
         specifier: ~3.1.0
         version: 3.1.0(pg@8.16.0)
       nestjs-zod:
-        specifier: ~4.3.1
-        version: 4.3.1(@nestjs/common@11.1.3(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.3)(zod@3.25.57)
+        specifier: 5.0.0-beta.20250719T005107
+        version: 5.0.0-beta.20250719T005107(@nestjs/common@11.1.3(reflect-metadata@0.2.2)(rxjs@7.8.2))(zod@4.0.13)
       pg:
         specifier: ~8.16.0
         version: 8.16.0
@@ -60,8 +60,8 @@ importers:
         specifier: ~11.1.0
         version: 11.1.0
       zod:
-        specifier: ~3.25.57
-        version: 3.25.57
+        specifier: ~4.0.13
+        version: 4.0.13
     devDependencies:
       '@eslint/js':
         specifier: ~9.28.0
@@ -199,8 +199,8 @@ importers:
         specifier: ~11.1.0
         version: 11.1.0
       zod:
-        specifier: ~3.25.57
-        version: 3.25.57
+        specifier: ~4.0.13
+        version: 4.0.13
     devDependencies:
       '@eslint/js':
         specifier: ~9.28.0
@@ -287,8 +287,8 @@ importers:
         specifier: ~11.1.0
         version: 11.1.0
       zod:
-        specifier: ~3.25.57
-        version: 3.25.57
+        specifier: ~4.0.13
+        version: 4.0.13
     devDependencies:
       '@eslint/js':
         specifier: ~9.28.0
@@ -1079,21 +1079,6 @@ packages:
   '@lukeed/csprng@1.1.0':
     resolution: {integrity: sha512-Z7C/xXCiGWsg0KuKsHTKJxbWhpI3Vs5GwLfOean7MGyVFGqdRgBbAjOCh6u4bbjPc/8MJ2pZmK/0DLdCbivLDA==}
     engines: {node: '>=8'}
-
-  '@nest-zod/z@2.0.0':
-    resolution: {integrity: sha512-OqmJUZlpcx9ECzPYSIjaR/q/xLKrm9FkV+0FIWLEb9MVc9YeP21GmnQJBxE1dPRlLJ1kybNFBlt4D/PB8YAPkA==}
-    peerDependencies:
-      '@nestjs/common': ^10.0.0 || ^11.0.0
-      '@nestjs/core': ^10.0.0 || ^11.0.0
-      '@nestjs/swagger': ^7.4.2 || ^8.0.0 || ^11.0.0
-      zod: '>= 3.14.3'
-    peerDependenciesMeta:
-      '@nestjs/common':
-        optional: true
-      '@nestjs/core':
-        optional: true
-      '@nestjs/swagger':
-        optional: true
 
   '@nestjs/axios@4.0.0':
     resolution: {integrity: sha512-1cB+Jyltu/uUPNQrpUimRHEQHrnQrpLzVj6dU3dgn6iDDDdahr10TgHFGTmw5VuJ9GzKZsCLDL78VSwJAs/9JQ==}
@@ -4015,17 +4000,14 @@ packages:
   neo-async@2.6.2:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
 
-  nestjs-zod@4.3.1:
-    resolution: {integrity: sha512-gl10NOf/AhWt4HLcnMI1J0WUlBCKyteJBftD6SwNyX71/vzAorr5MJQWiDJoPPkou9QL2CRHHBtyjr55o7++Xw==}
+  nestjs-zod@5.0.0-beta.20250719T005107:
+    resolution: {integrity: sha512-0sNOAdUpFba4QGnG+A7KRm+SB1je9Wbb/Oclpu+jU7EbCtKa7Ny3CKlIWFzfhFASxK8L1QFBFySpdcnqqIaMXw==}
     peerDependencies:
       '@nestjs/common': ^10.0.0 || ^11.0.0
-      '@nestjs/core': ^10.0.0 || ^11.0.0
       '@nestjs/swagger': ^7.4.2 || ^8.0.0 || ^11.0.0
-      zod: '>= 3.14.3'
+      zod: ^3.25.0 || ^4.0.0
     peerDependenciesMeta:
       '@nestjs/common':
-        optional: true
-      '@nestjs/core':
         optional: true
       '@nestjs/swagger':
         optional: true
@@ -4915,6 +4897,7 @@ packages:
   supertest@7.1.1:
     resolution: {integrity: sha512-aI59HBTlG9e2wTjxGJV+DygfNLgnWbGdZxiA/sgrnNNikIW8lbDvCtF6RnhZoJ82nU7qv7ZLjrvWqCEm52fAmw==}
     engines: {node: '>=14.18.0'}
+    deprecated: Please upgrade to supertest v7.1.3+, see release notes at https://github.com/forwardemail/supertest/releases/tag/v7.1.3 - maintenance is supported by Forward Email @ https://forwardemail.net
 
   supports-color@7.2.0:
     resolution: {integrity: sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw==}
@@ -5529,8 +5512,8 @@ packages:
     resolution: {integrity: sha512-zK7YHHz4ZXpW89AHXUPbQVGKI7uvkd3hzusTdotCg1UxyaVtg0zFJSTfW/Dq5f7OBBVnq6cZIaC8Ti4hb6dtCA==}
     engines: {node: '>= 14'}
 
-  zod@3.25.57:
-    resolution: {integrity: sha512-6tgzLuwVST5oLUxXTmBqoinKMd3JeesgbgseXeFasKKj8Q1FCZrHnbqJOyiEvr4cVAlbug+CgIsmJ8cl/pU5FA==}
+  zod@4.0.13:
+    resolution: {integrity: sha512-jv+zRxuZQxTrFHzxZ46ezL2FtnE+M4HIJHJEwLsZ7UjrXHltdG6HrxvqM0twoVCWxJiYf8WqKjAcjztegpkB+Q==}
 
 snapshots:
 
@@ -6392,13 +6375,6 @@ snapshots:
   '@js-sdsl/ordered-map@4.4.2': {}
 
   '@lukeed/csprng@1.1.0': {}
-
-  '@nest-zod/z@2.0.0(@nestjs/common@11.1.3(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.3)(zod@3.25.57)':
-    dependencies:
-      zod: 3.25.57
-    optionalDependencies:
-      '@nestjs/common': 11.1.3(reflect-metadata@0.2.2)(rxjs@7.8.2)
-      '@nestjs/core': 11.1.3(@nestjs/common@11.1.3(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@11.1.3)(reflect-metadata@0.2.2)(rxjs@7.8.2)
 
   '@nestjs/axios@4.0.0(@nestjs/common@11.1.3(reflect-metadata@0.2.2)(rxjs@7.8.2))(axios@1.9.0)(rxjs@7.8.2)':
     dependencies:
@@ -9934,14 +9910,12 @@ snapshots:
 
   neo-async@2.6.2: {}
 
-  nestjs-zod@4.3.1(@nestjs/common@11.1.3(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.3)(zod@3.25.57):
+  nestjs-zod@5.0.0-beta.20250719T005107(@nestjs/common@11.1.3(reflect-metadata@0.2.2)(rxjs@7.8.2))(zod@4.0.13):
     dependencies:
-      '@nest-zod/z': 2.0.0(@nestjs/common@11.1.3(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.3)(zod@3.25.57)
       deepmerge: 4.3.1
-      zod: 3.25.57
+      zod: 4.0.13
     optionalDependencies:
       '@nestjs/common': 11.1.3(reflect-metadata@0.2.2)(rxjs@7.8.2)
-      '@nestjs/core': 11.1.3(@nestjs/common@11.1.3(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@11.1.3)(reflect-metadata@0.2.2)(rxjs@7.8.2)
 
   node-abort-controller@3.1.1: {}
 
@@ -11623,4 +11597,4 @@ snapshots:
       compress-commons: 6.0.2
       readable-stream: 4.7.0
 
-  zod@3.25.57: {}
+  zod@4.0.13: {}

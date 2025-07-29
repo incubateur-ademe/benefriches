@@ -61,7 +61,7 @@ export class NaturalAreaGenerator implements SiteGenerator<NaturalAreaGeneration
     });
 
     if (!result.success) {
-      throw new Error(`Failed to create site, ${result.error}`);
+      throw new Error(`Failed to create site`);
     }
     return result.site;
   }

@@ -16,6 +16,15 @@ type Request = {
   createdBy: string;
 };
 
+export class ValidationError extends Error {
+  issues: Record<string, string[]>;
+
+  constructor(message: string, issues: Record<string, string[]>) {
+    super(message);
+    this.issues = issues;
+  }
+}
+
 export class CreateNewCustomSiteUseCase implements UseCase<Request, void> {
   constructor(
     private readonly sitesRepository: SitesRepository,
@@ -29,7 +38,7 @@ export class CreateNewCustomSiteUseCase implements UseCase<Request, void> {
         : createAgriculturalOrNaturalSite(siteProps);
 
     if (!result.success) {
-      throw new Error(result.error);
+      throw new ValidationError("Validation error", result.error.fieldErrors);
     }
 
     if (await this.sitesRepository.existsWithId(result.site.id)) {

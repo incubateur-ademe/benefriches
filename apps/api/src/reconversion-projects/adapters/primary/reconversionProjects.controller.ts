@@ -33,7 +33,7 @@ class CreateExpressReconversionProjectBodyDto extends createZodDto(
 
 class GetListGroupedBySiteQueryDto extends createZodDto(
   z.object({
-    userId: z.string().uuid(),
+    userId: z.uuid(),
   }),
 ) {}
 

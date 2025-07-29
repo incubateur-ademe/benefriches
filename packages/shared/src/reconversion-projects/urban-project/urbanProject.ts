@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const LEGACY_urbanProjectsSpaceSchema = z.record(
+export const LEGACY_urbanProjectsSpaceSchema = z.partialRecord(
   z.enum([
     // private spaces
     "BUILDINGS_FOOTPRINT", // emprise au sol bâti = surface occupée au sol par les bâtiments

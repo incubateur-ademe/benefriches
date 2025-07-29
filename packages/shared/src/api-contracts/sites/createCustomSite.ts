@@ -15,7 +15,7 @@ const baseSchema = z.object({
   name: z.string(),
   description: z.string().optional(),
   address: addressSchema,
-  soilsDistribution: z.record(z.string(), z.number().nonnegative()),
+  soilsDistribution: z.partialRecord(z.string(), z.number().nonnegative()),
   owner: z.object({ structureType: z.string(), name: z.string() }).optional(),
   tenant: z.object({ structureType: z.string(), name: z.string() }).optional(),
   yearlyExpenses: siteYearlyExpenseSchema.array(),

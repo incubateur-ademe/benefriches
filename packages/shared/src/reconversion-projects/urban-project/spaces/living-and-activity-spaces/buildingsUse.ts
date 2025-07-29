@@ -21,7 +21,7 @@ export type BuildingsUse = z.infer<typeof buildingsUseSchema>;
 
 export type BuildingsUseDistribution = SurfaceAreaDistributionJson<BuildingsUse>;
 
-export const buildingsUseDistributionSchema = z.record(
+export const buildingsUseDistributionSchema = z.partialRecord(
   buildingsUseSchema,
   z.number().nonnegative(),
 );

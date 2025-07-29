@@ -35,8 +35,8 @@ describe("Site core logic", () => {
         fricheActivity: "incorrect",
       }) as FricheErrorResult;
       expect(result.success).toBe(false);
-      expect(result.error).toContain("Validation error");
-      expect(result.error).toContain("fricheActivity (Invalid enum value");
+      expect(result.error.fieldErrors.fricheActivity).toHaveLength(1);
+      expect(result.error.fieldErrors.fricheActivity?.[0]).toContain("Invalid option");
     });
 
     it("will assign 'OTHER' activity when none provided", () => {
@@ -82,7 +82,8 @@ describe("Site core logic", () => {
     it("cannot create friche with non-uuid id", () => {
       const result = createFriche({ ...minimalProps, id: "not-a-uuid" }) as FricheErrorResult;
       expect(result.success).toBe(false);
-      expect(result.error).toContain("Validation error: id (Invalid uuid)");
+      expect(result.error.fieldErrors.id).toHaveLength(1);
+      expect(result.error.fieldErrors.id?.[0]).toContain("Invalid UUID");
     });
 
     it("cannot create friche with negative expenses amount", () => {
@@ -91,9 +92,8 @@ describe("Site core logic", () => {
         yearlyExpenses: [{ purpose: "maintenance", bearer: "owner", amount: -1 }],
       }) as FricheErrorResult;
       expect(result.success).toBe(false);
-      expect(result.error).toContain(
-        "yearlyExpenses.0.amount (Number must be greater than or equal to 0)",
-      );
+      expect(result.error.fieldErrors.yearlyExpenses).toHaveLength(1);
+      expect(result.error.fieldErrors.yearlyExpenses?.[0]).toContain("expected number to be >=0");
     });
 
     it("set empty yearly incomes", () => {
@@ -229,7 +229,8 @@ describe("Site core logic", () => {
         id: "not-a-uuid",
       }) as AgriculturalOperationErrorResult;
       expect(result.success).toBe(false);
-      expect(result.error).toContain("Validation error: id (Invalid uuid)");
+      expect(result.error.fieldErrors.id).toHaveLength(1);
+      expect(result.error.fieldErrors.id?.[0]).toContain("Invalid UUID");
     });
 
     it("cannot create agricultural operation with negative expenses amount", () => {
@@ -238,9 +239,8 @@ describe("Site core logic", () => {
         yearlyExpenses: [{ purpose: "maintenance", bearer: "owner", amount: -1 }],
       }) as AgriculturalOperationErrorResult;
       expect(result.success).toBe(false);
-      expect(result.error).toContain(
-        "yearlyExpenses.0.amount (Number must be greater than or equal to 0)",
-      );
+      expect(result.error.fieldErrors.yearlyExpenses).toHaveLength(1);
+      expect(result.error.fieldErrors.yearlyExpenses?.[0]).toContain("expected number to be >=0");
     });
 
     it("cannot create agricultural operation with negative income amount", () => {
@@ -249,9 +249,8 @@ describe("Site core logic", () => {
         yearlyIncomes: [{ source: "other", amount: -1 }],
       }) as AgriculturalOperationErrorResult;
       expect(result.success).toBe(false);
-      expect(result.error).toContain(
-        "yearlyIncomes.0.amount (Number must be greater than or equal to 0)",
-      );
+      expect(result.error.fieldErrors.yearlyIncomes).toHaveLength(1);
+      expect(result.error.fieldErrors.yearlyIncomes?.[0]).toContain("expected number to be >=0");
     });
 
     it("creates agricultural operation with complete data", () => {

@@ -109,7 +109,7 @@ export class AgriculturalOperationGenerator
     });
 
     if (!result.success) {
-      throw new Error(`Failed to create site, ${result.error}`);
+      throw new Error(`Failed to create site`);
     }
     return result.site;
   }

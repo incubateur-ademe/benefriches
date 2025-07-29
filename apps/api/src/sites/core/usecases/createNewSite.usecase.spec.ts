@@ -10,7 +10,7 @@ import {
   buildFricheProps,
 } from "../models/site.mock";
 import { SiteEntity } from "../models/siteEntity";
-import { CreateNewCustomSiteUseCase } from "./createNewSite.usecase";
+import { CreateNewCustomSiteUseCase, ValidationError } from "./createNewSite.usecase";
 
 describe("CreateNewSite Use Case", () => {
   let siteRepository: InMemorySitesRepository;
@@ -27,16 +27,17 @@ describe("CreateNewSite Use Case", () => {
     const fricheProps = buildFricheProps({ name: 123 });
 
     const usecase = new CreateNewCustomSiteUseCase(siteRepository, dateProvider);
-    expect.assertions(1);
+    expect.assertions(2);
     try {
       await usecase.execute({
         siteProps: { ...fricheProps, nature: "FRICHE" },
         createdBy: "user-123",
       });
     } catch (err) {
-      expect((err as Error).message).toContain(
-        "Validation error: name (Expected string, received number)",
-      );
+      expect((err as ValidationError).message).toEqual("Validation error");
+      expect((err as ValidationError).issues).toEqual({
+        name: ["Invalid input: expected string, received number"],
+      });
     }
   });
 

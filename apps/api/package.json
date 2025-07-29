@@ -64,12 +64,12 @@
     "axios": "~1.9.0",
     "date-fns": "~4.1.0",
     "knex": "~3.1.0",
-    "nestjs-zod": "~4.3.1",
+    "nestjs-zod": "5.0.0-beta.20250719T005107",
     "pg": "~8.16.0",
     "reflect-metadata": "~0.2.2",
     "rxjs": "~7.8.2",
     "shared": "workspace:^",
     "uuid": "~11.1.0",
-    "zod": "~3.25.57"
+    "zod": "~4.0.13"
   }
 }
