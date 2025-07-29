@@ -8,7 +8,7 @@ import {
   CarbonStorageProps,
 } from "./../../../../carbon-storage/core/models/carbonStorage";
 
-const dataPath = path.resolve(__dirname, "./../../../../../data/carbonStorage.csv");
+const dataPath = path.resolve(__dirname, "./../../../../../data/aldo/carbonStorage.csv");
 const HEADER = "reservoir,soil_category,stock_tC_by_ha,localisation_category,localisation_code";
 
 const readCsvData = async () => {

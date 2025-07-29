@@ -9,7 +9,7 @@ import { City, CityProps } from "./../../../../carbon-storage/core/models/city";
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-const dataPath = path.resolve(__dirname, "./../../../../../data/cities.csv");
+const dataPath = path.resolve(__dirname, "./../../../../../data/aldo/cities.csv");
 
 const HEADER =
   "insee;name;department;region;epci;zpc;code_greco;code_groupeser;code_ser;code_bassin_populicole";

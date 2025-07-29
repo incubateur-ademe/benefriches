@@ -168,6 +168,25 @@ type SqlReinstatementCost = {
   reconversion_project_id: string;
 };
 
+type CityStats = {
+  city_code: string;
+  // API Découpage administratif
+  da_name: string;
+  da_population: number;
+  da_surface_ha: number;
+  // Données DVF
+  dvf_nbtrans?: number;
+  dvf_pxm2_median?: number;
+  dvf_surface_median?: number;
+  dvf_nbtrans_cod111?: number;
+  dvf_pxm2_median_cod111?: number;
+  dvf_surface_median_cod111?: number;
+  dvf_nbtrans_cod121?: number;
+  dvf_pxm2_median_cod121?: number;
+  dvf_surface_median_cod121?: number;
+  updated_at: Date;
+};
+
 declare module "knex/types/tables" {
   interface Tables {
     // reconversion projects
@@ -189,5 +208,7 @@ declare module "knex/types/tables" {
     // users
     users: SqlUser;
     users_feature_alerts: SqlUserFeatureAlert;
+
+    city_stats: CityStats;
   }
 }
