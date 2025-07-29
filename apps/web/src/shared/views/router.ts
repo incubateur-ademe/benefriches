@@ -1,32 +1,9 @@
 import { createRouter, defineRoute, param } from "type-route";
 
 const onBoarding = defineRoute("/premiers-pas");
-const demo = defineRoute("/demo");
-const demoProject = demo.extend(
-  { projectId: param.path.string },
-  (params) => `/mes-projets/${params.projectId}`,
-);
 
 const { RouteProvider, useRoute, routes } = createRouter({
   home: defineRoute("/"),
-  // DEMO
-  demo: demo,
-  demoMyProjects: demo.extend("/mes-projets"),
-  demoIdentity: demo.extend("/identity"),
-  demoSiteFeatures: demo.extend(
-    {
-      siteId: param.path.string,
-    },
-    (params) => `/sites/${params.siteId}/caracteristiques`,
-  ),
-  demoProjectImpacts: demoProject.extend(`/impacts`),
-  demoProjectImpactsOnboarding: demoProject.extend(
-    { etape: param.query.optional.string },
-    () => `/onboarding-impacts`,
-  ),
-  demoOnBoardingIntroductionWhy: demo.extend("/pourquoi-benefriches"),
-  demoOnBoardingIntroductionHow: demo.extend("/comment-ca-marche"),
-
   // ONBOARDING GLOBAL
   onBoardingIdentity: onBoarding.extend("/identite"),
   onBoardingIntroductionWhy: onBoarding.extend("/pourquoi-benefriches"),

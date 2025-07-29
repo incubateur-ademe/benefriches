@@ -81,7 +81,6 @@ describe("CreateUser Use Case", () => {
           structureName: props.structureName,
           structureActivity: props.structureActivity,
           createdAt: fakeNow,
-          createdFrom: props.createdFrom,
           personalDataStorageConsentedAt: fakeNow,
           personalDataAnalyticsUseConsentedAt: props.personalDataAnalyticsUseConsented
             ? fakeNow

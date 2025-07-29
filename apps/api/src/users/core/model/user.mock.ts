@@ -10,7 +10,6 @@ export const buildMinimalUserProps = (): UserProps => {
     personalDataAnalyticsUseConsented: false,
     personalDataCommunicationUseConsented: false,
     personalDataStorageConsented: true,
-    createdFrom: "features_app",
   };
 };
 
@@ -26,7 +25,6 @@ export const buildExhaustiveUserProps = (): Required<UserProps> => {
     personalDataAnalyticsUseConsented: false,
     personalDataCommunicationUseConsented: true,
     personalDataStorageConsented: true,
-    createdFrom: "demo_app",
   };
 };
 

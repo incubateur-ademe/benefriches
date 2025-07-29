@@ -19,7 +19,6 @@ export const createUserBodychema = z.object({
   personalDataStorageConsented: z.literal(true),
   personalDataAnalyticsUseConsented: z.boolean(),
   personalDataCommunicationUseConsented: z.boolean(),
-  createdFrom: z.enum(["demo_app", "features_app"]),
 });
 
 class CreateUserBodyDto extends createZodDto(createUserBodychema) {}

@@ -30,7 +30,6 @@ export const userSchema = z.object({
   personalDataStorageConsented: z.boolean(),
   personalDataAnalyticsUseConsented: z.boolean(),
   personalDataCommunicationUseConsented: z.boolean(),
-  createdFrom: z.enum(["demo_app", "features_app"]),
 });
 
 export type User = z.infer<typeof userSchema>;

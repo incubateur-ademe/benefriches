@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { createGroup } from "type-route";
 
-import DemoApp from "@/demo/DemoApp";
 import FeaturesApp from "@/features/FeaturesApp";
 
 import PublicApp from "../../features/public-pages/PublicApp";
@@ -19,16 +18,6 @@ const groups = {
     routes.accessibilite,
     routes.politiqueConfidentialite,
   ]),
-  demo: createGroup([
-    routes.demo,
-    routes.demoIdentity,
-    routes.demoMyProjects,
-    routes.demoProjectImpacts,
-    routes.demoSiteFeatures,
-    routes.demoProjectImpactsOnboarding,
-    routes.demoOnBoardingIntroductionHow,
-    routes.demoOnBoardingIntroductionWhy,
-  ]),
 };
 
 function App() {
@@ -43,10 +32,6 @@ function App() {
       {(() => {
         if (groups.public.has(route)) {
           return <PublicApp />;
-        }
-
-        if (groups.demo.has(route)) {
-          return <DemoApp />;
         }
 
         return <FeaturesApp />;

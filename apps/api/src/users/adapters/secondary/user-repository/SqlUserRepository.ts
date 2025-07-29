@@ -24,7 +24,6 @@ export class SqlUserRepository implements UserRepository {
           personal_data_analytics_use_consented_at: user.personalDataAnalyticsUseConsentedAt,
           personal_data_communication_use_consented_at:
             user.personalDataCommunicationUseConsentedAt,
-          created_from: user.createdFrom,
         },
         "id",
       );

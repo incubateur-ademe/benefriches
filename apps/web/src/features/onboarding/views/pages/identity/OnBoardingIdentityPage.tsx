@@ -8,7 +8,6 @@ function OnBoardingIdentityPage() {
     <>
       <HtmlTitle>{`Identité - Introduction`}</HtmlTitle>
       <CreateUserFormContainer
-        createdFrom="features_app"
         onSuccess={() => {
           routes.onBoardingIntroductionWhy().push();
         }}

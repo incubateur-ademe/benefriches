@@ -23,10 +23,9 @@ export interface AdministrativeDivisionService {
 
 type Props = {
   onSuccess: () => void;
-  createdFrom: "features_app" | "demo_app";
 };
 
-function CreateUserFormContainer({ onSuccess, createdFrom }: Props) {
+function CreateUserFormContainer({ onSuccess }: Props) {
   const dispatch = useAppDispatch();
   const createUserLoadingState = useAppSelector((state) => state.currentUser.createUserState);
 
@@ -50,7 +49,6 @@ function CreateUserFormContainer({ onSuccess, createdFrom }: Props) {
         personalDataStorageConsented: true,
         personalDataAnalyticsUseConsented: true,
         personalDataCommunicationUseConsented: true,
-        createdFrom: createdFrom,
       }),
     );
   };
