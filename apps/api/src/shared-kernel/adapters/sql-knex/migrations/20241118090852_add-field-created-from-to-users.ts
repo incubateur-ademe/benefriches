@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/prefer-ts-expect-error */
 import type { Knex } from "knex";
 
 export async function up(knex: Knex): Promise<void> {
@@ -6,7 +7,8 @@ export async function up(knex: Knex): Promise<void> {
       table.string("created_from");
     });
     // init existing projects with created_from "features_app"
-    // @ts-expect-error created_from has been removed
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore created_from has been removed
     await trx("users").update({ created_from: "features_app" });
   });
 }
