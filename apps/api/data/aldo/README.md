@@ -90,7 +90,6 @@ On regroupe les données de ces différents fichiers sous la forme d'une table u
 - `reservoir`: Le type de réservoir de carbone
 
   Valeurs possibles :
-
   - "soil" (valeurs tirées du fichier [stocks-zpc.csv](https://github.com/incubateur-ademe/aldo/blob/main/data/dataByCommune/stocks-zpc.csv))
   - "non_forest_biomass" (valeurs tirées du fichier [biomass-hors-forets.csv](https://github.com/incubateur-ademe/aldo/blob/main/data/dataByCommune/biomass-hors-forets.csv))
   - "dead_forest_biomass" (valeurs tirées du fichier [bilan-carbone-foret-par-localisation.csv](https://github.com/incubateur-ademe/aldo/blob/main/data/dataByEpci/bilan-carbone-foret-par-localisation.csv))
@@ -99,7 +98,6 @@ On regroupe les données de ces différents fichiers sous la forme d'une table u
 - `soil_category`: le type de sol concerné
 
   Valeurs possibles :
-
   - "buildings"
   - "impermeable_soils"
   - "mineral_soil"
@@ -122,7 +120,6 @@ On regroupe les données de ces différents fichiers sous la forme d'une table u
 - `localisation_category`: le type de code de localisation.
 
   Valeurs possibles :
-
   - "zpc": Zone pédoclimatiques
   - "region": [Code région](https://www.insee.fr/fr/statistiques/fichier/6051727/region_2022.csv)
   - "groupeser"
@@ -133,7 +130,6 @@ On regroupe les données de ces différents fichiers sous la forme d'une table u
 - `localisation_code`: Le code de localisation associé au type de localisation.
 
   Valeurs possibles pour `localisation_code` =
-
   - "zpc" : "1_1", "1_2" , "1_3", "2_1", "2_2", "2_3", "3_1", "3_2", "3_3", "4_1", "4_2", "4_3", "5_1", "5_3
   - "region" : 1, 2, 3, 4, 6, 11, 24, 27, 28, 32, 44, 52, 53, 75, 76, 84, 93, 94
   - "groupeser" : A1, AX, B3, B4, B5, B6, B7, B8, B9, BX, C1, C2, C3, C4, C5, D1, E1, E2, F1, F2, F3, F4, F5, G1, G2, G3, G4, G5, G6, G7, G8, G9, H1, H2, H3, H4, I1, I2, JX, K1
@@ -209,13 +205,11 @@ On ne récupère que les lignes dont la colonne `composition` vaut "Peupleraie",
 Pour chaque ligne valide, on ajoute deux entrées dans `carbon_storage` au format :
 
 - localisation_category
-
   - À partir de la colonne `type_localisation`.
   - Les valeurs possibles sont `greco`, `groupeser`, `bassin_populicole`, `France` et `rad13`.
   - On transforme `France` en `pays` et `rad13` en `region`.
 
 - localisation_code
-
   - À partir de la colonne `code_localisation`.
   - On transforme les valeurs de type `rad13` du format `HDF`, `IDF`... en leur associant le code région correspondant.
 
