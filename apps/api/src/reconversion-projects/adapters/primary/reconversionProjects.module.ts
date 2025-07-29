@@ -6,12 +6,8 @@ import { CarbonStorageModule } from "src/carbon-storage/adapters/primary/carbonS
 import { SqlCarbonStorageQuery } from "src/carbon-storage/adapters/secondary/carbon-storage-query/SqlCarbonStorageQuery";
 import { GetCarbonStorageFromSoilDistributionService } from "src/carbon-storage/core/services/getCarbonStorageFromSoilDistribution";
 import { LocationFeaturesModule } from "src/location-features/adapters/primary/locationFeatures.module";
-import { DV3FApiGouvService } from "src/location-features/adapters/secondary/city-dv3f-provider/DV3FApiService";
 import { PhotovoltaicGeoInfoSystemApi } from "src/location-features/adapters/secondary/photovoltaic-data-provider/PhotovoltaicGeoInfoSystemApi";
-import { CityPropertyValueProvider } from "src/location-features/core/gateways/CityPropertyValueProvider";
 import { PhotovoltaicDataProvider } from "src/location-features/core/gateways/PhotovoltaicDataProvider";
-import { GetCityRelatedDataService } from "src/location-features/core/services/getCityRelatedData";
-import { CityDataProvider } from "src/reconversion-projects/core/gateways/CityDataProvider";
 import { ComputeProjectUrbanSprawlImpactsComparisonUseCase } from "src/reconversion-projects/core/usecases/computeProjectUrbanSprawlImpactsComparison.usecase";
 import { ComputeReconversionProjectImpactsUseCase } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
 import {
@@ -36,12 +32,12 @@ import { SqlSiteRepository } from "src/sites/adapters/secondary/site-repository/
 import { SqlUserQuery } from "src/users/adapters/secondary/user-query/SqlUserQuery";
 import { UserQuery } from "src/users/core/gateways/UserQuery";
 
+import { SqlCityStatsQuery } from "../secondary/queries/city-stats/SqlCityStatsQuery";
 import { SqlReconversionProjectQuery } from "../secondary/queries/reconversion-project-features/SqlReconversionProjectQuery";
 import { SqlReconversionProjectImpactsQuery } from "../secondary/queries/reconversion-project-impacts/SqlReconversionProjectImpactsQuery";
 import { SqlReconversionProjectsListQuery } from "../secondary/queries/reconversion-project-list/SqlReconversionProjectsListQuery";
 import { SqlSiteImpactsQuery } from "../secondary/queries/site-impacts/SqlSiteImpactsQuery";
 import { SqlReconversionProjectRepository } from "../secondary/repositories/reconversion-project/SqlReconversionProjectRepository";
-import { GeoApiGouvService } from "../secondary/services/city-service/GeoApiGouvService";
 import { ReconversionProjectController } from "./reconversionProjects.controller";
 
 @Module({
@@ -93,60 +89,45 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
       inject: [SqlReconversionProjectsListQuery],
     },
     {
-      provide: GetCityRelatedDataService,
-      useFactory: (
-        cityDataProvider: CityDataProvider,
-        cityPropertyValueProvider: CityPropertyValueProvider,
-      ) => new GetCityRelatedDataService(cityDataProvider, cityPropertyValueProvider),
-      inject: [GeoApiGouvService, DV3FApiGouvService],
-    },
-    {
       provide: ComputeReconversionProjectImpactsUseCase,
       useFactory(
         reconversionProjectRepo: SqlReconversionProjectImpactsQuery,
         siteRepo: SqlSiteImpactsQuery,
+        cityStatsRepo: SqlCityStatsQuery,
         getCarbonStorageFromSoilDistribution: GetCarbonStorageFromSoilDistributionService,
         dateProvider: DateProvider,
-        getCityRelatedDataService: GetCityRelatedDataService,
       ) {
         return new ComputeReconversionProjectImpactsUseCase(
           reconversionProjectRepo,
           siteRepo,
+          cityStatsRepo,
           getCarbonStorageFromSoilDistribution,
           dateProvider,
-          getCityRelatedDataService,
         );
       },
       inject: [
         SqlReconversionProjectImpactsQuery,
         SqlSiteImpactsQuery,
+        SqlCityStatsQuery,
         GetCarbonStorageFromSoilDistributionService,
         RealDateProvider,
-        GetCityRelatedDataService,
       ],
     },
     {
       provide: QuickComputeUrbanProjectImpactsOnFricheUseCase,
       useFactory(
-        cityCodeService: GeoApiGouvService,
+        cityStatsRepo: SqlCityStatsQuery,
         getCarbonStorageFromSoilDistribution: GetCarbonStorageFromSoilDistributionService,
         dateProvider: DateProvider,
-        getCityRelatedDataService: GetCityRelatedDataService,
       ) {
         return new QuickComputeUrbanProjectImpactsOnFricheUseCase(
-          cityCodeService,
+          cityStatsRepo,
           new FricheGenerator(),
           dateProvider,
           getCarbonStorageFromSoilDistribution,
-          getCityRelatedDataService,
         );
       },
-      inject: [
-        GeoApiGouvService,
-        GetCarbonStorageFromSoilDistributionService,
-        RealDateProvider,
-        GetCityRelatedDataService,
-      ],
+      inject: [SqlCityStatsQuery, GetCarbonStorageFromSoilDistributionService, RealDateProvider],
     },
     {
       provide: GetReconversionProjectFeaturesUseCase,
@@ -160,24 +141,24 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
       useFactory(
         reconversionProjectRepo: SqlReconversionProjectImpactsQuery,
         siteRepo: SqlSiteImpactsQuery,
+        cityStatsRepo: SqlCityStatsQuery,
         getCarbonStorageFromSoilDistribution: GetCarbonStorageFromSoilDistributionService,
         dateProvider: DateProvider,
-        getCityRelatedDataService: GetCityRelatedDataService,
       ) {
         return new ComputeProjectUrbanSprawlImpactsComparisonUseCase(
           reconversionProjectRepo,
           siteRepo,
+          cityStatsRepo,
           getCarbonStorageFromSoilDistribution,
           dateProvider,
-          getCityRelatedDataService,
         );
       },
       inject: [
         SqlReconversionProjectImpactsQuery,
         SqlSiteImpactsQuery,
+        SqlCityStatsQuery,
         GetCarbonStorageFromSoilDistributionService,
         RealDateProvider,
-        GetCityRelatedDataService,
       ],
     },
     SqlReconversionProjectRepository,
@@ -190,8 +171,7 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
     SqlUserQuery,
     RealDateProvider,
     SqlCarbonStorageQuery,
-    GeoApiGouvService,
-    DV3FApiGouvService,
+    SqlCityStatsQuery,
     PhotovoltaicGeoInfoSystemApi,
   ],
 })

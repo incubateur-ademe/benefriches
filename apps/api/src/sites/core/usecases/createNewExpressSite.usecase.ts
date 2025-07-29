@@ -9,7 +9,7 @@ import {
   Site,
 } from "shared";
 
-import { CityDataProvider } from "src/reconversion-projects/core/gateways/CityDataProvider";
+import { CityStatsProvider } from "src/reconversion-projects/core/gateways/CityStatsProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { UseCase } from "src/shared-kernel/usecase";
 
@@ -52,15 +52,13 @@ export class CreateNewExpressSiteUseCase implements UseCase<Request, void> {
   constructor(
     private readonly sitesRepository: SitesRepository,
     private readonly dateProvider: DateProvider,
-    private readonly cityDataProvider: CityDataProvider,
+    private readonly cityStatsQuery: CityStatsProvider,
   ) {}
 
   async execute({ siteProps, createdBy }: Request): Promise<void> {
     let siteCityPopulation = 0;
     try {
-      const { population } = await this.cityDataProvider.getCitySurfaceAreaAndPopulation(
-        siteProps.address.cityCode,
-      );
+      const { population } = await this.cityStatsQuery.getCityStats(siteProps.address.cityCode);
       siteCityPopulation = population;
     } catch (error) {
       console.error(error);

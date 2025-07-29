@@ -12,11 +12,10 @@ import {
 } from "shared";
 import { v4 as uuid } from "uuid";
 
-import { GetCityRelatedDataService } from "src/location-features/core/services/getCityRelatedData";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { UseCase } from "src/shared-kernel/usecase";
 
-import { CityDataProvider } from "../gateways/CityDataProvider";
+import { CityStatsProvider } from "../gateways/CityStatsProvider";
 import { GetCarbonStorageFromSoilDistributionService } from "../gateways/SoilsCarbonStorageService";
 import { InputSiteData } from "../model/project-impacts/ReconversionProjectImpactsService";
 import { UrbanProjectImpactsService } from "../model/project-impacts/UrbanProjectImpactsService";
@@ -88,15 +87,22 @@ type Request = {
 
 export class QuickComputeUrbanProjectImpactsOnFricheUseCase implements UseCase<Request, Result> {
   constructor(
-    private readonly cityCodeService: CityDataProvider,
+    private readonly cityStatsQuery: CityStatsProvider,
     private readonly siteGenerationService: SiteGenerationService,
     private readonly dateProvider: DateProvider,
     private readonly getCarbonStorageFromSoilDistributionService: GetCarbonStorageFromSoilDistributionService,
-    private readonly getCityRelatedDataService: GetCityRelatedDataService,
   ) {}
 
   async execute({ siteCityCode, siteSurfaceArea }: Request): Promise<Result> {
-    const city = await this.cityCodeService.getCitySurfaceAreaAndPopulation(siteCityCode);
+    const { name, surfaceAreaSquareMeters, population, propertyValueMedianPricePerSquareMeters } =
+      await this.cityStatsQuery.getCityStats(siteCityCode);
+
+    const city = {
+      name: name,
+      surfaceArea: surfaceAreaSquareMeters,
+      cityCode: siteCityCode,
+      population: population,
+    };
 
     const site = this.siteGenerationService.fromSurfaceAreaAndCity(siteSurfaceArea, city) as Friche;
 
@@ -155,11 +161,7 @@ export class QuickComputeUrbanProjectImpactsOnFricheUseCase implements UseCase<R
         siteIsFriche: true,
         citySquareMetersSurfaceArea: city.surfaceArea,
         cityPopulation: city.population,
-        cityPropertyValuePerSquareMeter: (
-          await this.getCityRelatedDataService.getPropertyValuePerSquareMeter(
-            siteData.addressCityCode,
-          )
-        ).medianPricePerSquareMeters,
+        cityPropertyValuePerSquareMeter: propertyValueMedianPricePerSquareMeters,
       },
       relatedSite: siteData,
       evaluationPeriodInYears,

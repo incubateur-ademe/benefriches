@@ -8,7 +8,6 @@ import { AppModule } from "src/app.module";
 import { configureServer } from "src/httpServer";
 import { GetPhotovoltaicExpectedPerformanceUseCase } from "src/location-features/core/usecases/getPhotovoltaicExpectedPerformanceUseCase";
 
-import { MockCityDataService } from "../../../reconversion-projects/adapters/secondary/services/city-service/MockCityDataService";
 import { MockPhotovoltaicGeoInfoSystemApi } from "../secondary/photovoltaic-data-provider/PhotovoltaicGeoInfoSystemApi.mock";
 import { LocationFeaturesController } from "./locationFeatures.controller";
 
@@ -21,10 +20,6 @@ describe("LocationFeatures controller", () => {
 
       controllers: [LocationFeaturesController],
       providers: [
-        {
-          provide: "CityDataProvider",
-          useClass: MockCityDataService,
-        },
         {
           provide: "PhotovoltaicDataProvider",
           useClass: MockPhotovoltaicGeoInfoSystemApi,

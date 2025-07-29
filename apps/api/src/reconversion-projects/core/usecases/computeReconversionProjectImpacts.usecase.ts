@@ -6,10 +6,10 @@ import {
   SiteImpactsDataView,
 } from "shared";
 
-import { GetCityRelatedDataService } from "src/location-features/core/services/getCityRelatedData";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { UseCase } from "src/shared-kernel/usecase";
 
+import { CityStats, CityStatsProvider } from "../gateways/CityStatsProvider";
 import { GetCarbonStorageFromSoilDistributionService } from "../gateways/SoilsCarbonStorageService";
 import { PhotovoltaicProjectImpactsService } from "../model/project-impacts/PhotovoltaicProjectImpactsService";
 import {
@@ -71,6 +71,7 @@ export type Result = {
       structureType: string;
       name: string;
     };
+    cityStats?: CityStats;
   };
   impacts: ReconversionProjectImpacts;
 };
@@ -104,9 +105,9 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
   constructor(
     private readonly reconversionProjectQuery: ReconversionProjectImpactsQuery,
     private readonly siteRepository: SiteImpactsQuery,
+    private readonly cityStatsQuery: CityStatsProvider,
     private readonly getCarbonStorageFromSoilDistributionService: GetCarbonStorageFromSoilDistributionService,
     private readonly dateProvider: DateProvider,
-    private readonly getCityRelatedDataService: GetCityRelatedDataService,
   ) {}
 
   async execute({
@@ -236,10 +237,7 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
         };
       }
       case "URBAN_PROJECT": {
-        const { squareMetersSurfaceArea, population } =
-          await this.getCityRelatedDataService.getCityPopulationAndSurfaceArea(
-            relatedSite.address.cityCode,
-          );
+        const cityStats = await this.cityStatsQuery.getCityStats(relatedSite.address.cityCode);
 
         const urbanProjectImpactsService = new UrbanProjectImpactsService({
           reconversionProject: reconversionProjectData,
@@ -250,23 +248,24 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
             relatedSite.nature === "FRICHE"
               ? {
                   siteIsFriche: true,
-                  citySquareMetersSurfaceArea: squareMetersSurfaceArea,
-                  cityPopulation: population,
-                  cityPropertyValuePerSquareMeter: (
-                    await this.getCityRelatedDataService.getPropertyValuePerSquareMeter(
-                      relatedSite.address.cityCode,
-                    )
-                  ).medianPricePerSquareMeters,
+                  citySquareMetersSurfaceArea: cityStats.surfaceAreaSquareMeters,
+                  cityPopulation: cityStats.population,
+                  cityPropertyValuePerSquareMeter:
+                    cityStats.propertyValueMedianPricePerSquareMeters,
                 }
               : {
                   siteIsFriche: false,
-                  citySquareMetersSurfaceArea: squareMetersSurfaceArea,
-                  cityPopulation: population,
+                  citySquareMetersSurfaceArea: cityStats.surfaceAreaSquareMeters,
+                  cityPopulation: cityStats.population,
                 },
         });
 
         return {
           ...result,
+          siteData: {
+            ...result.siteData,
+            cityStats,
+          },
           impacts: urbanProjectImpactsService.formatImpacts(),
         };
       }

@@ -1,6 +1,6 @@
 import { Address, createSoilSurfaceAreaDistribution } from "shared";
 
-import { MockCityDataService } from "src/reconversion-projects/adapters/secondary/services/city-service/MockCityDataService";
+import { InMemoryCityStatsQuery } from "src/reconversion-projects/adapters/secondary/queries/city-stats/InMemoryCityStatsQuery";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { InMemorySitesRepository } from "src/sites/adapters/secondary/site-repository/InMemorySiteRepository";
@@ -27,13 +27,13 @@ const buildAddress = (propsOverride?: Partial<Address>): Address => {
 describe("CreateNewExpressSite Use case", () => {
   let siteRepository: InMemorySitesRepository;
   let dateProvider: DateProvider;
-  let cityDataProvider: MockCityDataService;
+  let cityStatsQuery: InMemoryCityStatsQuery;
   const fakeNow = new Date("2024-01-03T13:50:45");
 
   beforeEach(() => {
     siteRepository = new InMemorySitesRepository();
     dateProvider = new DeterministicDateProvider(fakeNow);
-    cityDataProvider = new MockCityDataService();
+    cityStatsQuery = new InMemoryCityStatsQuery();
   });
 
   it("Cannot create a site when already exists", async () => {
@@ -48,7 +48,7 @@ describe("CreateNewExpressSite Use case", () => {
       },
     ]);
 
-    const usecase = new CreateNewExpressSiteUseCase(siteRepository, dateProvider, cityDataProvider);
+    const usecase = new CreateNewExpressSiteUseCase(siteRepository, dateProvider, cityStatsQuery);
     await expect(
       usecase.execute({
         siteProps: {
@@ -66,7 +66,7 @@ describe("CreateNewExpressSite Use case", () => {
   });
 
   it("Can create a site when CityDataService fails to get city population", async () => {
-    const failingCityDataProvider = new MockCityDataService();
+    const failingCityDataProvider = new InMemoryCityStatsQuery();
     failingCityDataProvider.shouldFail();
     const usecase = new CreateNewExpressSiteUseCase(
       siteRepository,
@@ -89,11 +89,7 @@ describe("CreateNewExpressSite Use case", () => {
 
   describe("Agricultural", () => {
     it("creates a new express agricultural operation from given props", async () => {
-      const usecase = new CreateNewExpressSiteUseCase(
-        siteRepository,
-        dateProvider,
-        cityDataProvider,
-      );
+      const usecase = new CreateNewExpressSiteUseCase(siteRepository, dateProvider, cityStatsQuery);
 
       const siteProps = {
         id: "e869d8db-3d63-4fd5-93ab-7728c1c19a1e",
@@ -162,11 +158,7 @@ describe("CreateNewExpressSite Use case", () => {
 
   describe("Natural area", () => {
     it("creates a new natural area operation from given props", async () => {
-      const usecase = new CreateNewExpressSiteUseCase(
-        siteRepository,
-        dateProvider,
-        cityDataProvider,
-      );
+      const usecase = new CreateNewExpressSiteUseCase(siteRepository, dateProvider, cityStatsQuery);
 
       const siteProps = {
         id: "e869d8db-3d63-4fd5-93ab-7728c1c19a1e",
@@ -204,11 +196,7 @@ describe("CreateNewExpressSite Use case", () => {
 
   describe("Friche", () => {
     it("creates a new express friche from given props", async () => {
-      const usecase = new CreateNewExpressSiteUseCase(
-        siteRepository,
-        dateProvider,
-        cityDataProvider,
-      );
+      const usecase = new CreateNewExpressSiteUseCase(siteRepository, dateProvider, cityStatsQuery);
 
       const fricheProps = {
         id: "e869d8db-3d63-4fd5-93ab-7728c1c19a1e",
@@ -241,7 +229,7 @@ describe("CreateNewExpressSite Use case", () => {
           }),
           owner: { structureType: "municipality", name: "Mairie de Montrouge" },
           yearlyExpenses: [
-            { purpose: "illegalDumpingCost", amount: 0, bearer: "owner" },
+            { purpose: "illegalDumpingCost", amount: 76, bearer: "owner" },
             { purpose: "security", amount: 5588, bearer: "owner" },
             { purpose: "maintenance", amount: 5334, bearer: "owner" },
             { purpose: "propertyTaxes", amount: 2154, bearer: "owner" },

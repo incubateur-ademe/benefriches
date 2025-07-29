@@ -11,6 +11,7 @@ import {
   buildMinimalReconversionProjectProps,
   buildUrbanProjectReconversionProjectProps,
 } from "src/reconversion-projects/core/model/reconversionProject.mock";
+import { Result } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 
 import { createReconversionProjectInputSchema } from "./reconversionProjects.controller";
@@ -307,6 +308,75 @@ describe("ReconversionProjects controller", () => {
           reconversionProjects: [],
         },
       ]);
+    });
+  });
+
+  describe("GET /reconversion-projects/:reconversionProjectId/impacts", () => {
+    it("gets a 200 with list of reconversion project impacts", async () => {
+      const userId = "71eeda1d-9688-455a-981a-1aca18fe00b0";
+      const siteInDb = {
+        id: uuid(),
+        created_by: userId,
+        nature: "FRICHE",
+        name: "Site A",
+        description: "Description of site",
+        surface_area: 14000,
+        owner_name: "Owner name",
+        owner_structure_type: "company",
+        tenant_name: "Tenant name",
+        tenant_structure_type: "company",
+        created_at: new Date("2024-02-10"),
+        creation_mode: "express",
+      };
+      const projectInDb = {
+        id: uuid(),
+        created_by: userId,
+        name: "Projet urbain",
+        related_site_id: siteInDb.id,
+        created_at: new Date(),
+        creation_mode: "custom",
+      };
+
+      const address = {
+        id: uuid(),
+        ban_id: "40192",
+        value: "Mont-de-Marsan",
+        city: "Mont-de-Marsan",
+        city_code: "40192",
+        post_code: "40000",
+        lat: 43.891274,
+        long: -0.50031,
+        site_id: siteInDb.id,
+      };
+
+      await sqlConnection("sites").insert(siteInDb);
+      await sqlConnection("addresses").insert(address);
+      await sqlConnection("reconversion_projects").insert(projectInDb);
+      await sqlConnection("reconversion_project_development_plans").insert({
+        id: uuid(),
+        reconversion_project_id: projectInDb.id,
+        type: "URBAN_PROJECT",
+        features: {
+          spacesDistribution: { BUILDING: 1000 },
+          buildingsFloorAreaDistribution: { RESIDENTIAL: 1000 },
+        },
+      });
+
+      const response = await supertest(app.getHttpServer())
+        .get(`/api/reconversion-projects/${projectInDb.id}/impacts`)
+        .send();
+
+      expect(response.status).toEqual(200);
+      expect(response.body).toBeDefined();
+      const result = response.body as Result;
+      expect(result.impacts).toBeDefined();
+      expect(result.projectData).toBeDefined();
+      expect(result.siteData.cityStats).toEqual({
+        name: "Mont-de-Marsan",
+        population: 31455,
+        propertyValueMedianPricePerSquareMeters: 2179,
+        surfaceAreaSquareMeters: 36595400,
+      });
     });
   });
 });

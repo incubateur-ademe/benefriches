@@ -21,10 +21,10 @@ import {
 } from "shared";
 import { v4 as uuid } from "uuid";
 
-import { GetCityRelatedDataService } from "src/location-features/core/services/getCityRelatedData";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { UseCase } from "src/shared-kernel/usecase";
 
+import { CityStatsProvider } from "../gateways/CityStatsProvider";
 import {
   GetCarbonStorageFromSoilDistributionService,
   SoilsCarbonStorage,
@@ -565,9 +565,9 @@ export class ComputeProjectUrbanSprawlImpactsComparisonUseCase
   constructor(
     private readonly reconversionProjectQuery: ReconversionProjectImpactsQuery,
     private readonly siteRepository: SiteImpactsQuery,
+    private readonly cityStatsQuery: CityStatsProvider,
     private readonly getCarbonStorageFromSoilDistributionService: GetCarbonStorageFromSoilDistributionService,
     private readonly dateProvider: DateProvider,
-    private readonly getCityRelatedDataService: GetCityRelatedDataService,
   ) {}
 
   async execute({
@@ -591,10 +591,8 @@ export class ComputeProjectUrbanSprawlImpactsComparisonUseCase
 
     if (!relatedSite) throw new SiteNotFound(reconversionProject.relatedSiteId);
 
-    const { squareMetersSurfaceArea, population } =
-      await this.getCityRelatedDataService.getCityPopulationAndSurfaceArea(
-        relatedSite.address.cityCode,
-      );
+    const { surfaceAreaSquareMeters, population, propertyValueMedianPricePerSquareMeters } =
+      await this.cityStatsQuery.getCityStats(relatedSite.address.cityCode);
 
     const comparisonSite = (() => {
       switch (comparisonSiteNature) {
@@ -712,35 +710,26 @@ export class ComputeProjectUrbanSprawlImpactsComparisonUseCase
     })();
 
     const siteCityData = {
-      citySquareMetersSurfaceArea: squareMetersSurfaceArea,
+      citySquareMetersSurfaceArea: surfaceAreaSquareMeters,
       cityPopulation: population,
+      cityPropertyValuePerSquareMeter: propertyValueMedianPricePerSquareMeters,
     };
 
-    const baseSiteCityData: SiteCityDataProps = await (async () => {
+    const baseSiteCityData: SiteCityDataProps = (() => {
       if (relatedSite.nature === "FRICHE") {
         return {
           ...siteCityData,
           siteIsFriche: true,
-          cityPropertyValuePerSquareMeter: (
-            await this.getCityRelatedDataService.getPropertyValuePerSquareMeter(
-              relatedSite.address.cityCode,
-            )
-          ).medianPricePerSquareMeters,
         };
       }
       return { siteIsFriche: false, ...siteCityData };
     })();
 
-    const comparisonSiteCityData: SiteCityDataProps = await (async () => {
+    const comparisonSiteCityData: SiteCityDataProps = (() => {
       if (comparisonSite.nature === "FRICHE") {
         return {
           ...siteCityData,
           siteIsFriche: true,
-          cityPropertyValuePerSquareMeter: (
-            await this.getCityRelatedDataService.getPropertyValuePerSquareMeter(
-              relatedSite.address.cityCode,
-            )
-          ).medianPricePerSquareMeters,
         };
       }
       return { siteIsFriche: false, ...siteCityData };
