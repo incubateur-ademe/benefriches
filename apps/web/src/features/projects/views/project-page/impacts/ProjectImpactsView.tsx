@@ -21,7 +21,7 @@ const ProjectImpactsView = ({ currentViewMode, projectName }: Props) => {
       )}
       {currentViewMode === "list" && (
         <>
-          <HtmlTitle>{`Liste - $projectName} - Impacts`}</HtmlTitle>
+          <HtmlTitle>{`Liste - ${projectName} - Impacts`}</HtmlTitle>
           <ImpactsListViewContainer />
         </>
       )}
