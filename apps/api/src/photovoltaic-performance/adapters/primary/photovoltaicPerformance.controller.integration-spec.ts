@@ -6,19 +6,19 @@ import supertest from "supertest";
 
 import { AppModule } from "src/app.module";
 import { configureServer } from "src/httpServer";
-import { GetPhotovoltaicExpectedPerformanceUseCase } from "src/location-features/core/usecases/getPhotovoltaicExpectedPerformanceUseCase";
+import { GetPhotovoltaicExpectedPerformanceUseCase } from "src/photovoltaic-performance/core/usecases/getPhotovoltaicExpectedPerformanceUseCase";
 
 import { MockPhotovoltaicGeoInfoSystemApi } from "../secondary/photovoltaic-data-provider/PhotovoltaicGeoInfoSystemApi.mock";
-import { LocationFeaturesController } from "./locationFeatures.controller";
+import { PhotovoltaicPerformanceController } from "./photovoltaicPerformance.controller";
 
-describe("LocationFeatures controller", () => {
+describe("PhotovoltaicPerformance controller", () => {
   let app: INestApplication<Server>;
 
   beforeAll(async () => {
     const moduleRef = await NestTest.createTestingModule({
       imports: [AppModule],
 
-      controllers: [LocationFeaturesController],
+      controllers: [PhotovoltaicPerformanceController],
       providers: [
         {
           provide: "PhotovoltaicDataProvider",
@@ -42,18 +42,16 @@ describe("LocationFeatures controller", () => {
     await app.close();
   });
 
-  describe("Get /location-features/pv-expected-performance", () => {
+  describe("Get /photovoltaic-performance", () => {
     it("can't return information if there is no required parameters", async () => {
-      const response = await supertest(app.getHttpServer()).get(
-        "/api/location-features/pv-expected-performance",
-      );
+      const response = await supertest(app.getHttpServer()).get("/api/photovoltaic-performance");
 
       expect(response.status).toEqual(400);
     });
 
     it("must return error if latitude or longitude parameters are wrong", async () => {
       const wrongLat = await supertest(app.getHttpServer()).get(
-        "/api/location-features/pv-expected-performance?long=200&lat=2000&peakPower=3",
+        "/api/photovoltaic-performance?long=200&lat=2000&peakPower=3",
       );
 
       expect(wrongLat.status).toEqual(400);
@@ -61,13 +59,13 @@ describe("LocationFeatures controller", () => {
 
     it("must return error if peakPower is the wrong format", async () => {
       const wrongPeakPower = await supertest(app.getHttpServer()).get(
-        "/api/location-features/pv-expected-performance?long=2.347&lat=48.859&peakPower=test",
+        "/api/photovoltaic-performance?long=2.347&lat=48.859&peakPower=test",
       );
 
       expect(wrongPeakPower.status).toEqual(400);
 
       const wrongFormat = await supertest(app.getHttpServer()).get(
-        "/api/location-features/pv-expected-performance?long=2.347&lat=48.859&peakPower=-15",
+        "/api/photovoltaic-performance?long=2.347&lat=48.859&peakPower=-15",
       );
 
       expect(wrongFormat.status).toEqual(400);
@@ -75,7 +73,7 @@ describe("LocationFeatures controller", () => {
 
     it("returns the expected power performance for a location and a peak power", async () => {
       const response = await supertest(app.getHttpServer()).get(
-        "/api/location-features/pv-expected-performance?long=2.347&lat=48.859&peakPower=3.0",
+        "/api/photovoltaic-performance?long=2.347&lat=48.859&peakPower=3.0",
       );
 
       expect(response.status).toEqual(200);

@@ -5,9 +5,9 @@ import { FricheGenerator } from "shared";
 import { CarbonStorageModule } from "src/carbon-storage/adapters/primary/carbonStorage.module";
 import { SqlCarbonStorageQuery } from "src/carbon-storage/adapters/secondary/carbon-storage-query/SqlCarbonStorageQuery";
 import { GetCarbonStorageFromSoilDistributionService } from "src/carbon-storage/core/services/getCarbonStorageFromSoilDistribution";
-import { LocationFeaturesModule } from "src/location-features/adapters/primary/locationFeatures.module";
-import { PhotovoltaicGeoInfoSystemApi } from "src/location-features/adapters/secondary/photovoltaic-data-provider/PhotovoltaicGeoInfoSystemApi";
-import { PhotovoltaicDataProvider } from "src/location-features/core/gateways/PhotovoltaicDataProvider";
+import { PhotovoltaicPerformanceModule } from "src/photovoltaic-performance/adapters/primary/photovoltaicPerformance.module";
+import { PhotovoltaicGeoInfoSystemApi } from "src/photovoltaic-performance/adapters/secondary/photovoltaic-data-provider/PhotovoltaicGeoInfoSystemApi";
+import { PhotovoltaicDataProvider } from "src/photovoltaic-performance/core/gateways/PhotovoltaicDataProvider";
 import { ComputeProjectUrbanSprawlImpactsComparisonUseCase } from "src/reconversion-projects/core/usecases/computeProjectUrbanSprawlImpactsComparison.usecase";
 import { ComputeReconversionProjectImpactsUseCase } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
 import {
@@ -42,7 +42,7 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
 
 @Module({
   controllers: [ReconversionProjectController],
-  imports: [CarbonStorageModule, HttpModule, LocationFeaturesModule],
+  imports: [CarbonStorageModule, HttpModule, PhotovoltaicPerformanceModule],
   providers: [
     {
       provide: CreateReconversionProjectUseCase,

@@ -1,4 +1,4 @@
-import { MockPhotovoltaicGeoInfoSystemApi } from "src/location-features/adapters/secondary/photovoltaic-data-provider/PhotovoltaicGeoInfoSystemApi.mock";
+import { MockPhotovoltaicGeoInfoSystemApi } from "src/photovoltaic-performance/adapters/secondary/photovoltaic-data-provider/PhotovoltaicGeoInfoSystemApi.mock";
 
 import { GetPhotovoltaicExpectedPerformanceUseCase } from "./getPhotovoltaicExpectedPerformanceUseCase";
 

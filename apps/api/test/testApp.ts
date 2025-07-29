@@ -5,8 +5,8 @@ import { Test } from "@nestjs/testing";
 
 import { AppModule } from "src/app.module";
 import { configureServer } from "src/httpServer";
-import { PhotovoltaicGeoInfoSystemApi } from "src/location-features/adapters/secondary/photovoltaic-data-provider/PhotovoltaicGeoInfoSystemApi";
-import { MockPhotovoltaicGeoInfoSystemApi } from "src/location-features/adapters/secondary/photovoltaic-data-provider/PhotovoltaicGeoInfoSystemApi.mock";
+import { PhotovoltaicGeoInfoSystemApi } from "src/photovoltaic-performance/adapters/secondary/photovoltaic-data-provider/PhotovoltaicGeoInfoSystemApi";
+import { MockPhotovoltaicGeoInfoSystemApi } from "src/photovoltaic-performance/adapters/secondary/photovoltaic-data-provider/PhotovoltaicGeoInfoSystemApi.mock";
 
 const ERROR_HTTP_SERVICE = {
   get: () => {

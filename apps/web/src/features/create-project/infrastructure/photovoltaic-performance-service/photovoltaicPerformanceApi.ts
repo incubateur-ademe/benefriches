@@ -12,7 +12,7 @@ export class ExpectedPhotovoltaicPerformanceApi implements PhotovoltaicPerforman
     peakPower,
   }: PhotovoltaicPerformanceApiPayload) {
     const queryString = objectToQueryParams({ lat, long, peakPower });
-    const response = await fetch(`/api/location-features/pv-expected-performance?${queryString}`);
+    const response = await fetch(`/api/photovoltaic-performance?${queryString}`);
 
     if (!response.ok) throw new Error("Error while getting expected PV performance");
 

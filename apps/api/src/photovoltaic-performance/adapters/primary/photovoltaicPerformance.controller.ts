@@ -2,7 +2,7 @@ import { Controller, Get, Query } from "@nestjs/common";
 import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
 
-import { GetPhotovoltaicExpectedPerformanceUseCase } from "src/location-features/core/usecases/getPhotovoltaicExpectedPerformanceUseCase";
+import { GetPhotovoltaicExpectedPerformanceUseCase } from "src/photovoltaic-performance/core/usecases/getPhotovoltaicExpectedPerformanceUseCase";
 
 const GetPhotovoltaicExpectedPerformanceDtoSchema = z.object({
   lat: z.coerce.number().min(-90).max(90),
@@ -14,13 +14,13 @@ class GetPhotovoltaicExpectedPerformanceDto extends createZodDto(
   GetPhotovoltaicExpectedPerformanceDtoSchema,
 ) {}
 
-@Controller("location-features")
-export class LocationFeaturesController {
+@Controller("photovoltaic-performance")
+export class PhotovoltaicPerformanceController {
   constructor(
     private readonly getPhotovoltaicExpectedPerformanceUseCase: GetPhotovoltaicExpectedPerformanceUseCase,
   ) {}
 
-  @Get("pv-expected-performance")
+  @Get()
   async getPhotovoltaicExpectedPerformance(@Query() query: GetPhotovoltaicExpectedPerformanceDto) {
     const { lat, long, peakPower } = query;
 

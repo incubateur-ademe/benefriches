@@ -1,7 +1,7 @@
 import {
   PerformanceResult,
   PhotovoltaicDataProvider,
-} from "src/location-features/core/gateways/PhotovoltaicDataProvider";
+} from "src/photovoltaic-performance/core/gateways/PhotovoltaicDataProvider";
 
 export class MockPhotovoltaicGeoInfoSystemApi implements PhotovoltaicDataProvider {
   getPhotovoltaicPerformance(): Promise<PerformanceResult> {

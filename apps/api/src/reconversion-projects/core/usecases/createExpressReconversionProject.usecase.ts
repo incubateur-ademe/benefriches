@@ -9,7 +9,7 @@ import {
   PhotovoltaicPowerPlantProjectGenerator,
 } from "shared";
 
-import { PhotovoltaicDataProvider } from "src/location-features/core/gateways/PhotovoltaicDataProvider";
+import { PhotovoltaicDataProvider } from "src/photovoltaic-performance/core/gateways/PhotovoltaicDataProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { UseCase } from "src/shared-kernel/usecase";
 

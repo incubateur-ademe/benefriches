@@ -3,7 +3,7 @@ import { Injectable } from "@nestjs/common";
 import { AxiosError } from "axios";
 import { catchError, lastValueFrom, map } from "rxjs";
 
-import { PhotovoltaicDataProvider } from "src/location-features/core/gateways/PhotovoltaicDataProvider";
+import { PhotovoltaicDataProvider } from "src/photovoltaic-performance/core/gateways/PhotovoltaicDataProvider";
 
 const API_VERSION = "v5_2";
 const TOOL_NAME = "PVcalc";
