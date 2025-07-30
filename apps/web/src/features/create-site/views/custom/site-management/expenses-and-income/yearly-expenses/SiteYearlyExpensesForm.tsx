@@ -47,7 +47,7 @@ const getLabelForExpense = (purpose: SiteYearlyExpensePurpose): NonNullable<Reac
           {getLabelForExpensePurpose("maintenance")}
           <Tooltip
             kind="click"
-            title="Sauf en cas de défaillance de l'exploitant (faillite, liquidation judiciaire, etc.) les
+            title="L’entretien peut consister en la tonte d’espaces verts ou la taille de haies, la réparation d’actes de vandalisme ou parfois le maintien hors gel de bâtiments. Sauf en cas de défaillance de l'exploitant (faillite, liquidation judiciaire, etc.) les
       dépenses d'entretien sont à la charge de ce dernier."
             id="maintenance-expenses-info"
           />
