@@ -35,7 +35,7 @@ function ImpactsActionBar({
   };
 
   return (
-    <section ref={ref} className="md:tw-flex tw-py-4 tw-mb-2 tw-justify-between">
+    <section ref={ref} className="md:tw-flex tw-mt-4 tw-justify-between">
       <SegmentedControl
         small={isSmScreen}
         legend="Filtres"

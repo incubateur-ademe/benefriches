@@ -31,7 +31,7 @@ const ImpactsChartsView = ({
 }: Props) => {
   const displayEconomicBalance = economicBalance.economicBalance.length > 0;
   return (
-    <div>
+    <section className="tw-mt-10 tw-flex tw-flex-col tw-gap-8">
       {(displayEconomicBalance || socioEconomicImpactsByActor.length > 0) && (
         <>
           <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-8">
@@ -62,7 +62,7 @@ const ImpactsChartsView = ({
         environmentalAreaChartImpactsData={environmentalAreaChartImpactsData}
         socialAreaChartImpactsData={socialAreaChartImpactsData}
       />
-    </div>
+    </section>
   );
 };
 

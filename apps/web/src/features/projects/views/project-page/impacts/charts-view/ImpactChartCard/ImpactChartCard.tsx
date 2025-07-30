@@ -43,9 +43,8 @@ const ImpactChartCard = ({
   return (
     <div
       className={classNames(
-        "tw-relative tw-mb-8",
+        "tw-relative",
         "tw-p-6",
-        "tw-m-0",
         "tw-rounded-2xl",
         "tw-flex",
         "tw-flex-col",

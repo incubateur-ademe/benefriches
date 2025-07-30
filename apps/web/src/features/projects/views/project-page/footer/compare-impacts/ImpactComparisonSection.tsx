@@ -78,7 +78,7 @@ const COMPARE_SITE_OPTIONS: { option: SiteNature; bgClassName: ClassValue; conte
 function ImpactComparisonSection({ onSelectOption, siteNature }: Props) {
   if (siteNature === "FRICHE") {
     return (
-      <div className="tw-mb-8 tw-py-4 tw-grid tw-grid-flow-col tw-grid-cols-[75%_repeat(3,373px)] sm:tw-grid-cols-[25%_repeat(3,373px)] tw-gap-10 tw-overflow-x-scroll">
+      <section className="tw-mt-10 tw-rounded-lg tw-grid tw-grid-flow-col tw-grid-cols-[75%_repeat(3,373px)] sm:tw-grid-cols-[25%_repeat(3,373px)] tw-gap-10 tw-overflow-x-scroll">
         <div className="tw-bg-impacts-dark dark:tw-bg-black tw-p-6 tw-rounded-2xl tw-justify-center tw-flex tw-flex-col tw-gap-4 tw-font-bold">
           <span className="tw-text-3xl">Le saviez-vous ?</span>
           <span className="tw-text-xl">
@@ -108,12 +108,12 @@ function ImpactComparisonSection({ onSelectOption, siteNature }: Props) {
             </Button>
           </div>
         ))}
-      </div>
+      </section>
     );
   }
 
   return (
-    <div className="tw-flex tw-gap-6 tw-px-6 tw-py-10 tw-my-6 tw-bg-white dark:tw-bg-black tw-border tw-border-solid tw-border-borderGrey">
+    <section className="tw-flex tw-rounded-lg tw-gap-6 tw-px-6 tw-py-10 tw-mt-10 tw-bg-white dark:tw-bg-black tw-border tw-border-solid tw-border-borderGrey">
       <img
         src="/img/pictograms/site-nature/friche.svg"
         width="80"
@@ -156,7 +156,7 @@ function ImpactComparisonSection({ onSelectOption, siteNature }: Props) {
           Comparer
         </Button>
       </div>
-    </div>
+    </section>
   );
 }
 

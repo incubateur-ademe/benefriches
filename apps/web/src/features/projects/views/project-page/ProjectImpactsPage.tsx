@@ -59,7 +59,7 @@ function ProjectPage({
       id="project-impacts-page"
       className={classNames("tw-bg-grey-light dark:tw-bg-grey-dark", "tw-h-full")}
     >
-      <div className="tw-pt-8 tw-pb-8">
+      <div className="tw-py-8">
         <ProjectsImpactsPageHeader {...headerProps} />
       </div>
 

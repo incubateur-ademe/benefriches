@@ -25,7 +25,7 @@ const ImpactsListView = ({
   ...rest
 }: Props) => {
   return (
-    <div className="tw-max-w-4xl tw-mx-auto tw-pb-8">
+    <section className="tw-max-w-4xl tw-mx-auto tw-mt-10">
       {economicBalance.economicBalance.length !== 0 && (
         <EconomicBalanceListSection impact={economicBalance} {...rest} />
       )}
@@ -39,7 +39,7 @@ const ImpactsListView = ({
       )}
 
       {socialImpacts.length > 0 && <SocialListSection impacts={socialImpacts} {...rest} />}
-    </div>
+    </section>
   );
 };
 
