@@ -97,6 +97,7 @@ export type SiteCreationCustomStep =
   | "CREATION_RESULT";
 
 export type SiteCreationExpressStep =
+  | "FRICHE_ACTIVITY"
   | "AGRICULTURAL_OPERATION_ACTIVITY"
   | "NATURAL_AREA_TYPE"
   | "ADDRESS"

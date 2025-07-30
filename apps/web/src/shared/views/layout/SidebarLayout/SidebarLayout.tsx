@@ -39,6 +39,7 @@ function SidebarLayout({ mainChildren, title, sidebarChildren }: SidebarLayoutPr
             "tw-border-r",
             "tw-z-10",
             "tw-flex tw-flex-col",
+            !isLessThanLg && "tw-transition-[width]",
             isOpen ? "tw-w-80 lg:tw-relative tw-absolute" : "tw-w-20",
             isOpen && isLessThanLg && "tw-drop-shadow-[0_3px_9px_var(--shadow-color)]",
             "tw-h-full",
@@ -81,15 +82,22 @@ function SidebarLayout({ mainChildren, title, sidebarChildren }: SidebarLayoutPr
           </div>
         </aside>
 
-        <div className={classNames("tw-overflow-auto", "tw-w-full")}>
+        <div
+          className={classNames("tw-overflow-auto", "tw-w-full")}
+          onClick={() => {
+            if (isOpen && isLessThanLg) {
+              setOpen(false);
+            }
+          }}
+        >
           {isLessThanLg && (
             <div
               aria-hidden="true"
               className={classNames(
-                "tw-transition",
+                "tw-transition-opacity",
                 "tw-absolute tw-top-0 tw-left-0 tw-w-screen tw-h-screen",
-                "tw-bg-[#161616a3] tw-z-[5]",
-
+                "tw-bg-[#161616a3]",
+                isOpen ? "tw-z-[5]" : "tw-z-[-1]",
                 isOpen ? "tw-opacity-1" : "tw-opacity-0",
               )}
             ></div>
