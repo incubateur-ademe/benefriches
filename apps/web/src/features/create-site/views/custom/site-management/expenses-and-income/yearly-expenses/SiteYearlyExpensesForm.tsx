@@ -86,6 +86,9 @@ const getLabelForExpense = (purpose: SiteYearlyExpensePurpose): NonNullable<Reac
             kind="click"
             title={
               <span>
+                Le dépot sauvage est l’abandon de déchets par des personnes (particuliers ou
+                entreprises), soit sur un terrain privé sans l’accord de son propriétaire, soit dans
+                l’espace public en dehors des endroits autorisés. <br />
                 L'enquête menée en 2019 par l'ADEME indique un ratio moyen de 4,7 kg/hab/an et un
                 coût moyen de 900 €/tonne (Nb&nbsp;: bien qu'on relève une occurrence non
                 négligeable de dépenses plus élevées (500 à 1000 €/tonne voire supérieurs à 1000

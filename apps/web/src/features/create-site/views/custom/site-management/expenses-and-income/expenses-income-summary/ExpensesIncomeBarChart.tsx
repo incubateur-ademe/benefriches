@@ -136,6 +136,7 @@ const ExpensesIncomeBarChart = ({
     },
 
     tooltip: {
+      headerFormat: "",
       valueSuffix: " € / an",
     },
     plotOptions: {
