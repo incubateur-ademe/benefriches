@@ -1,5 +1,5 @@
 import { INestApplication } from "@nestjs/common";
-import { Server } from "net";
+import { Server } from "node:net";
 import supertest from "supertest";
 import { createTestApp } from "test/testApp";
 

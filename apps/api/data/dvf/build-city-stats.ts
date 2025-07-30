@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { createReadStream, createWriteStream } from "fs";
-import * as https from "https";
+import { createReadStream, createWriteStream } from "node:fs";
 import * as fs from "node:fs";
-import * as path from "path";
-import { pipeline } from "stream";
-import { promisify } from "util";
-import * as zlib from "zlib";
+import * as https from "node:https";
+import * as path from "node:path";
+import { pipeline } from "node:stream";
+import { promisify } from "node:util";
+import * as zlib from "node:zlib";
 
 promisify(pipeline);
 

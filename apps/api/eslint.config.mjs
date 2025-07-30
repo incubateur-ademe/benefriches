@@ -1,6 +1,7 @@
 import eslint from "@eslint/js";
 import eslintConfigPrettier from "eslint-config-prettier";
 import jestPlugin from "eslint-plugin-jest";
+import nodePlugin from "eslint-plugin-n";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 
@@ -12,10 +13,16 @@ export default tseslint.config(
   {
     plugins: {
       ["@typescript-eslint"]: tseslint.plugin,
+      ["eslint-plugin-n"]: nodePlugin,
       ["jest"]: jestPlugin,
     },
   },
   { ignores: ["node_modules/", "dist/"] },
+  {
+    rules: {
+      "eslint-plugin-n/prefer-node-protocol": ["error"],
+    },
+  },
   {
     languageOptions: {
       parser: tseslint.parser,

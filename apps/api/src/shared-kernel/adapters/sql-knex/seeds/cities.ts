@@ -1,7 +1,7 @@
-import fs from "fs";
 import { Knex } from "knex";
-import path from "path";
-import readline from "readline";
+import fs from "node:fs";
+import path from "node:path";
+import readline from "node:readline";
 
 import { City, CityProps } from "./../../../../carbon-storage/core/models/city";
 

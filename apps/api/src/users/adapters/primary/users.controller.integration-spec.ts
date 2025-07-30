@@ -1,6 +1,6 @@
 import { INestApplication } from "@nestjs/common";
 import { Knex } from "knex";
-import { Server } from "net";
+import { Server } from "node:net";
 import supertest from "supertest";
 import { createTestApp } from "test/testApp";
 import z from "zod";

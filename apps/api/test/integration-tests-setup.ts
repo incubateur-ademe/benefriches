@@ -1,7 +1,7 @@
-import { spawn } from "child_process";
 import dotenv from "dotenv";
 import knex, { Knex } from "knex";
-import path from "path";
+import { spawn } from "node:child_process";
+import path from "node:path";
 import { DockerComposeEnvironment, StartedDockerComposeEnvironment } from "testcontainers";
 
 import knexConfig from "../src/shared-kernel/adapters/sql-knex/knexConfig";

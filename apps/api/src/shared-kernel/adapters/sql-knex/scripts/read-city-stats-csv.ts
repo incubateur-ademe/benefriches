@@ -1,6 +1,6 @@
-import fs from "fs";
+import fs from "node:fs";
 import path from "node:path";
-import readline from "readline";
+import readline from "node:readline";
 
 import { CityStats } from "../tableTypes";
 

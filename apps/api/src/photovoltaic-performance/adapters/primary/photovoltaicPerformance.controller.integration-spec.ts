@@ -1,7 +1,7 @@
 import { INestApplication } from "@nestjs/common";
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { Test as NestTest } from "@nestjs/testing";
-import { Server } from "net";
+import { Server } from "node:net";
 import supertest from "supertest";
 
 import { AppModule } from "src/app.module";

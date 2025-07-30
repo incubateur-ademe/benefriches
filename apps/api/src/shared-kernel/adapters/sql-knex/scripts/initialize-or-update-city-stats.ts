@@ -1,8 +1,8 @@
 import { configDotenv } from "dotenv";
-import fs from "fs";
 import knex, { Knex } from "knex";
+import fs from "node:fs";
 import path from "node:path";
-import readline from "readline";
+import readline from "node:readline";
 
 import knexConfig from "../../sql-knex/knexConfig";
 import { CityStats } from "../tableTypes";
