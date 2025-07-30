@@ -49,9 +49,6 @@ function ProjectPage({
     siteName: projectContext.siteName,
     isExpressProject: projectContext.isExpressProject,
     siteFeaturesHref: routes.siteFeatures({ siteId: projectContext.siteId }).href,
-    onGoToImpactsOnBoarding: () => {
-      routes.projectImpactsOnboarding({ projectId }).push();
-    },
   };
 
   return (

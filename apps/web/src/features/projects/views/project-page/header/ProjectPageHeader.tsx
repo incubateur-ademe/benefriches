@@ -3,13 +3,10 @@ import Button from "@codegouvfr/react-dsfr/Button";
 
 import { ProjectDevelopmentPlanType } from "@/features/projects/domain/projects.types";
 import classNames, { ClassValue } from "@/shared/views/clsx";
-import DropdownMenu from "@/shared/views/components/Menu/DropdownMenu";
 import { useIsSmallScreen } from "@/shared/views/hooks/useIsSmallScreen";
 
 import { getScenarioPictoUrl } from "../../shared/scenarioType";
 import { exportImpactsModal } from "../export-impacts/createExportModal";
-import { aboutImpactsModal } from "../impacts/about-impacts-modal";
-import { projectFeaturesModal } from "../impacts/project-features-modal/createProjectFeaturesModal";
 import ExpressProjectTooltipBadge from "./../ExpressProjectBadge";
 
 export type HeaderProps = {
@@ -17,7 +14,6 @@ export type HeaderProps = {
   siteFeaturesHref: string;
   siteName: string;
   projectType?: ProjectDevelopmentPlanType;
-  onGoToImpactsOnBoarding: () => void;
   isExpressProject: boolean;
   size?: "small" | "medium";
   className?: ClassValue;
@@ -27,7 +23,6 @@ const ProjectPageHeader = ({
   projectName,
   siteName,
   siteFeaturesHref,
-  onGoToImpactsOnBoarding,
   projectType,
   isExpressProject,
   size: propsSize,
@@ -40,12 +35,8 @@ const ProjectPageHeader = ({
     <div className={classNames(fr.cx("fr-container"), className)}>
       <div
         className={classNames(
-          "md:tw-grid",
-          "tw-grid-cols-[60px_1fr_200px]",
-          "md:tw-grid-cols-[72px_1fr_280px]",
-          "tw-gap-x-2 md:tw-gap-x-3",
-          "tw-items-center",
-          "tw-justify-center",
+          "tw-flex tw-flex-col tw-gap-2",
+          "md:tw-grid md:tw-grid-cols-[72px_1fr_240px] md:tw-gap-x-3",
         )}
       >
         {projectType && (
@@ -89,7 +80,7 @@ const ProjectPageHeader = ({
             {siteName}
           </a>
         </div>
-        <div className="md:tw-col-start-3 md:tw-row-span-3 tw-flex tw-items-center md:tw-justify-end tw-gap-3">
+        <div className="md:tw-col-start-3 md:tw-row-span-3 tw-flex tw-items-center md:tw-justify-end">
           <Button
             priority="primary"
             iconId="fr-icon-external-link-line"
@@ -100,37 +91,6 @@ const ProjectPageHeader = ({
           >
             Exporter les impacts
           </Button>
-          <DropdownMenu
-            size="large"
-            buttonProps={{
-              priority: "secondary",
-              iconId: "fr-icon-more-fill",
-              title: "Voir plus de fonctionnalités",
-            }}
-            options={[
-              {
-                children: "Consulter les caractéristiques du projet",
-                iconId: "fr-icon-file-text-line",
-                onClick: () => {
-                  projectFeaturesModal.open();
-                },
-              },
-              {
-                children: "Comprendre les impacts",
-                iconId: "fr-icon-information-line",
-                onClick: () => {
-                  aboutImpactsModal.open();
-                },
-              },
-              {
-                children: "Revoir l'introduction",
-                iconId: "fr-icon-arrow-go-back-line",
-                onClick: () => {
-                  onGoToImpactsOnBoarding();
-                },
-              },
-            ]}
-          />
         </div>
       </div>
     </div>
