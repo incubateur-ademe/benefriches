@@ -14,7 +14,7 @@ const ExpressProjectTooltipBadge = () => {
         projectFeaturesModal.open();
       }}
     >
-      <span className="tw-mr-1">Projet express</span>
+      <span className="tw-mr-1 tw-whitespace-nowrap">Projet express</span>
       <span aria-hidden="true" className={fr.cx("fr-icon--sm", "fr-icon-information-line")} />
     </Badge>
   );

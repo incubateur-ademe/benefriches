@@ -40,9 +40,9 @@ const ProjectPageHeader = ({
     <div className={classNames(fr.cx("fr-container"), className)}>
       <div
         className={classNames(
-          "tw-grid",
-          "tw-grid-cols-[60px_1fr_120px]",
-          "md:tw-grid-cols-[72px_1fr_180px]",
+          "md:tw-grid",
+          "tw-grid-cols-[60px_1fr_200px]",
+          "md:tw-grid-cols-[72px_1fr_280px]",
           "tw-gap-x-2 md:tw-gap-x-3",
           "tw-items-center",
           "tw-justify-center",
@@ -89,16 +89,16 @@ const ProjectPageHeader = ({
             {siteName}
           </a>
         </div>
-        <div className="tw-col-start-3 sm:tw-row-span-2 tw-flex tw-items-center tw-justify-end tw-gap-3">
+        <div className="md:tw-col-start-3 md:tw-row-span-3 tw-flex tw-items-center md:tw-justify-end tw-gap-3">
           <Button
             priority="primary"
-            iconId="fr-icon-file-download-line"
+            iconId="fr-icon-external-link-line"
             size={size}
             onClick={() => {
               exportImpactsModal.open();
             }}
           >
-            Exporter
+            Exporter les impacts
           </Button>
           <DropdownMenu
             size="large"
