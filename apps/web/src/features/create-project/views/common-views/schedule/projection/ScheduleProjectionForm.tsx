@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { ProjectSchedule } from "shared";
 
 import { Schedule } from "@/features/create-project/core/project.types";
+import { stringToNumber } from "@/shared/core/number-conversion/numberConversion";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
@@ -112,19 +113,26 @@ function ScheduleProjectionForm({
           // 50% width minus half the right arrow width and half the gap between inputs
           className="sm:tw-w-[calc(50%-28px)]"
           label={<RequiredLabel label="Année de mise en service" />}
-          nativeInputProps={register("firstYearOfOperation", {
-            valueAsNumber: true,
-            required:
-              "L'année de mise en service est nécessaire pour pouvoir calculer les impacts de votre projet.",
-            min: {
-              value: 2000,
-              message: "Veuillez entrer une année valide",
-            },
-            max: {
-              value: 2100,
-              message: "Veuillez entrer une année valide",
-            },
-          })}
+          nativeInputProps={{
+            inputMode: "numeric",
+            ...register("firstYearOfOperation", {
+              setValueAs: (v?: string) => (v ? stringToNumber(v) : undefined),
+              pattern: {
+                value: /^(19|20|21)[\d]{2,2}$/,
+                message: "Veuillez entrer une année valide",
+              },
+              required:
+                "L'année de mise en service est nécessaire pour pouvoir calculer les impacts de votre projet.",
+              min: {
+                value: 2000,
+                message: "Veuillez entrer une année valide",
+              },
+              max: {
+                value: 2100,
+                message: "Veuillez entrer une année valide",
+              },
+            }),
+          }}
         />
         <BackNextButtonsGroup onBack={onBack} nextLabel="Valider" disabled={!formState.isValid} />
       </form>
