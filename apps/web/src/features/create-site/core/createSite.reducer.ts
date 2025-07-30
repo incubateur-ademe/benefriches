@@ -63,6 +63,8 @@ import {
 
 export type SiteCreationCustomStep =
   | "FRICHE_ACTIVITY"
+  | "AGRICULTURAL_OPERATION_ACTIVITY"
+  | "NATURAL_AREA_TYPE"
   | "ADDRESS"
   // soils
   | "SPACES_INTRODUCTION"
@@ -410,12 +412,15 @@ const siteCreationReducer = createReducer(getInitialState(), (builder) => {
           state.siteData.nature = undefined;
           break;
         case "FRICHE_ACTIVITY":
+          state.createMode = undefined;
           state.siteData.fricheActivity = undefined;
           break;
         case "AGRICULTURAL_OPERATION_ACTIVITY":
+          state.createMode = undefined;
           state.siteData.agriculturalOperationActivity = undefined;
           break;
         case "NATURAL_AREA_TYPE":
+          state.createMode = undefined;
           state.siteData.naturalAreaType = undefined;
           break;
         case "ADDRESS":

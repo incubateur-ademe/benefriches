@@ -24,7 +24,7 @@ function SidebarLayout({ mainChildren, title, sidebarChildren }: SidebarLayoutPr
     [breakpointsValues.lg, windowInnerWidth],
   );
 
-  const [isOpen, setOpen] = useState(false);
+  const [isOpen, setOpen] = useState(isLessThanLg ? false : true);
 
   useEffect(() => {
     setOpen(isLessThanLg ? false : true);

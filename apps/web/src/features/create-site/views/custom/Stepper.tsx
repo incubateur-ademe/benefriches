@@ -20,6 +20,8 @@ type StepCategory = (typeof fricheStepsCategories)[number];
 const getCurrentStepCategory = (step: SiteCreationCustomStep): StepCategory => {
   switch (step) {
     case "FRICHE_ACTIVITY":
+    case "AGRICULTURAL_OPERATION_ACTIVITY":
+    case "NATURAL_AREA_TYPE":
       return "Introduction";
     case "ADDRESS":
       return "Adresse";
