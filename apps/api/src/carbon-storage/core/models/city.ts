@@ -1,6 +1,6 @@
 export type CityProps = {
   name: string;
-  insee: string;
+  city_code: string;
   department: string;
   region: string;
   zpc: string;
@@ -14,7 +14,7 @@ export type CityProps = {
 
 export class City {
   private constructor(
-    readonly insee: string,
+    readonly cityCode: string,
     readonly name: string,
     readonly department: string,
     readonly region: string,
@@ -28,7 +28,7 @@ export class City {
 
   static create({
     name,
-    insee,
+    city_code,
     department,
     region,
     zpc,
@@ -39,7 +39,7 @@ export class City {
     code_bassin_populicole,
   }: CityProps): City {
     return new City(
-      insee,
+      city_code,
       name,
       department,
       region,
@@ -52,9 +52,9 @@ export class City {
     );
   }
 
-  toDatabaseFormat() {
+  toDatabaseFormat(): CityProps {
     return {
-      insee: this.insee,
+      city_code: this.cityCode,
       name: this.name,
       department: this.department,
       region: this.region,

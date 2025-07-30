@@ -13,6 +13,7 @@ Le script combine les données de **Demandes de Valeurs Foncières (DVF)** avec 
 ### Sources de données
 
 1. **[API Géo](https://geo.api.gouv.fr/communes)**
+
    - Nom des communes
    - Population
    - Surface en hectares

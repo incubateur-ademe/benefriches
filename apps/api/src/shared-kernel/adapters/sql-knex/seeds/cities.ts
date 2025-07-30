@@ -12,7 +12,7 @@ import { City, CityProps } from "./../../../../carbon-storage/core/models/city";
 const dataPath = path.resolve(__dirname, "./../../../../../data/aldo/cities.csv");
 
 const HEADER =
-  "insee;name;department;region;epci;zpc;code_greco;code_groupeser;code_ser;code_bassin_populicole";
+  "city_code;name;department;region;epci;zpc;code_greco;code_groupeser;code_ser;code_bassin_populicole";
 
 const readCsvData = async () => {
   return new Promise((resolve, reject) => {
@@ -25,7 +25,7 @@ const readCsvData = async () => {
         return;
       }
       const [
-        insee,
+        cityCode,
         name,
         department,
         region,
@@ -48,7 +48,7 @@ const readCsvData = async () => {
         string,
       ];
       const city = City.create({
-        insee,
+        city_code: cityCode,
         name,
         department,
         region,
@@ -75,11 +75,11 @@ const readCsvData = async () => {
 exports.seed = async function (knex: Knex): Promise<void> {
   await knex("cities").del();
   try {
-    const data = (await readCsvData()) as City[];
+    const data = (await readCsvData()) as CityProps[];
 
     await knex
       .batchInsert("cities", data, 1000)
-      .returning("insee")
+      .returning("city_code")
       .then(function (ids) {
         console.log(`${ids.length} cities inserted`);
       })

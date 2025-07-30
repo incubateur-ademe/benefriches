@@ -79,7 +79,7 @@ export class SqlCarbonStorageQuery implements CarbonStorageQuery {
     // Get zpc, region, code_groupeser...
     const sqlCity = await this.sqlConnection<CityProps>("cities")
       .select()
-      .where({ insee: cityCode })
+      .where({ city_code: cityCode })
       .first();
 
     if (!sqlCity) {

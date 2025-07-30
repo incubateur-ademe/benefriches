@@ -1,4 +1,4 @@
-insee;name;department;region;epci;zpc;code_greco;code_groupeser;code_ser;code_bassin_populicole
+city_code;name;department;region;epci;zpc;code_greco;code_groupeser;code_ser;code_bassin_populicole
 01001;L'Abergement-Clémenciat;1;84;200069193;2_1;C;C5;C51;Sud
 01002;L'Abergement-de-Varey;1;84;240100883;3_3;E;E1;E10;Sud
 01004;Ambérieu-en-Bugey;1;84;240100883;3_3;C,E;C5,E1;C52,E10;Sud

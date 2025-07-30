@@ -274,11 +274,13 @@ const CITIES = {
 
 export class LocalCarbonStorageQuery implements CarbonStorageQuery {
   async getCarbonStorageForCity(
-    cityCode: "01026" | "01027",
+    cityCode: string,
     soils: RepositorySoilCategoryType[],
   ): Promise<CarbonStorage[]> {
+    if (cityCode !== "01026" && cityCode !== "01027") {
+      throw new Error(`City with code ${cityCode} not found`);
+    }
     const city = CITIES[cityCode] as CarbonStorage[];
-
     const result = await Promise.resolve(
       city.filter((entry) => soils.includes(entry.soilCategory)),
     );
