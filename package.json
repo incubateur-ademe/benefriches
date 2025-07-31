@@ -2,11 +2,11 @@
   "name": "benefriches-root",
   "license": "MIT",
   "engines": {
-    "node": "22",
-    "pnpm": "9.13.0"
+    "node": "24",
+    "pnpm": "10.13.1"
   },
   "version": "1.0.0",
-  "packageManager": "pnpm@9.13.0",
+  "packageManager": "pnpm@10.13.1",
   "scripts": {
     "prepare": "husky",
     "lint": "pnpm run -r lint",
