@@ -15,8 +15,7 @@ import ProjectImpactFooter from "./footer/ProjectImpactFooter";
 import ProjectsImpactsPageHeader from "./header/ProjectPageHeader";
 import ProjectImpactsPage from "./impacts/ProjectImpactsView";
 import AboutImpactsModal from "./impacts/about-impacts-modal/AboutImpactsModal.tsx";
-import ProjectFeaturesModal from "./impacts/project-features-modal";
-import SiteFeaturesModal from "./impacts/site-features-modal";
+import ProjectFeaturesModal from "./impacts/project-and-site-features-modal/index.tsx";
 
 type Props = {
   projectId: string;
@@ -93,8 +92,7 @@ function ProjectPage({
       </div>
 
       <AboutImpactsModal />
-      <ProjectFeaturesModal projectId={projectId} />
-      <SiteFeaturesModal siteId={projectContext.siteId} />
+      <ProjectFeaturesModal projectId={projectId} siteId={projectContext.siteId} />
       <ExportImpactsModal projectId={projectId} siteId={projectContext.siteId} />
     </div>
   );

@@ -5,8 +5,7 @@ import { routes } from "@/shared/views/router";
 
 import { exportImpactsModal } from "../export-impacts/createExportModal";
 import { aboutImpactsModal } from "../impacts/about-impacts-modal";
-import { projectFeaturesModal } from "../impacts/project-features-modal/createProjectFeaturesModal";
-import { siteFeaturesModal } from "../impacts/site-features-modal/createSiteFeaturesModal";
+import { projectAndSiteFeaturesModal } from "../impacts/project-and-site-features-modal/createProjectAndSiteFeaturesModal";
 
 export default function FurtherActionsSection({ siteId }: { siteId: string }) {
   return (
@@ -47,23 +46,13 @@ export default function FurtherActionsSection({ siteId }: { siteId: string }) {
           </Button>
           <Button
             size="small"
-            iconId="fr-icon-map-pin-2-line"
+            iconId="fr-icon-file-text-line"
             priority="tertiary no outline"
             onClick={() => {
-              siteFeaturesModal.open();
+              projectAndSiteFeaturesModal.open();
             }}
           >
-            Revoir les données du site
-          </Button>
-          <Button
-            size="small"
-            iconId="fr-icon-briefcase-line"
-            priority="tertiary no outline"
-            onClick={() => {
-              projectFeaturesModal.open();
-            }}
-          >
-            Revoir les données du projet
+            Revoir les données du site et du projet
           </Button>
           <Button
             size="small"
