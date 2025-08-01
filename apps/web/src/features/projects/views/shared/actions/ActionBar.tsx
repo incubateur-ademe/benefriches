@@ -1,6 +1,7 @@
 import { SegmentedControl } from "@codegouvfr/react-dsfr/SegmentedControl";
 
 import { ViewMode } from "@/features/projects/application/project-impacts/projectImpacts.reducer";
+import classNames, { ClassValue } from "@/shared/views/clsx";
 import { useIsSmallScreen } from "@/shared/views/hooks/useIsSmallScreen";
 
 import ImpactEvaluationPeriodSelect from "./ImpactEvaluationPeriodSelect";
@@ -13,6 +14,7 @@ type Props = {
   small?: boolean;
   ref?: React.Ref<HTMLElement>;
   disabledSegments?: ViewMode[];
+  className?: ClassValue;
 };
 
 function ImpactsActionBar({
@@ -22,6 +24,7 @@ function ImpactsActionBar({
   onEvaluationPeriodChange,
   ref,
   disabledSegments,
+  className,
 }: Props) {
   const isSmScreen = useIsSmallScreen();
   const getViewSegmentInputProps = (value: ViewMode) => {
@@ -35,7 +38,7 @@ function ImpactsActionBar({
   };
 
   return (
-    <section ref={ref} className="md:tw-flex tw-mt-4 tw-justify-between">
+    <section ref={ref} className={classNames("md:tw-flex", "tw-justify-between", className)}>
       <SegmentedControl
         small={isSmScreen}
         legend="Filtres"
@@ -58,7 +61,7 @@ function ImpactsActionBar({
           },
         ]}
       />
-      <div className="tw-mt-4 tw-w-full md:tw-mt-0 md:tw-w-auto">
+      <div className="tw-w-full md:tw-w-auto">
         {evaluationPeriod !== undefined && (
           <ImpactEvaluationPeriodSelect
             onChange={onEvaluationPeriodChange}

@@ -25,7 +25,7 @@ type Props = {
 
 const ImpactSummaryView = ({ baseCase, comparisonCase, modalData }: Props) => {
   return (
-    <div className="tw-grid md:tw-grid-cols-2 tw-gap-6 tw-mb-8 ">
+    <div className="tw-grid md:tw-grid-cols-2 tw-gap-6 tw-mb-8">
       {[baseCase, comparisonCase].map(({ siteName, indicators }, index) => {
         const modalPrefix = index === 0 ? "base" : "comparison";
         return (

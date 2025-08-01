@@ -45,6 +45,7 @@ const ImpactsComparisonView = ({
           onEvaluationPeriodChange={onEvaluationPeriodChange}
           header={<ImpactsComparisonHeader {...headerProps} />}
           disabledSegments={["charts"]}
+          className="tw-py-4 tw-mb-2"
         />
 
         {currentViewMode === "summary" && (
