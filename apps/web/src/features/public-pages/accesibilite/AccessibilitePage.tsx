@@ -9,42 +9,93 @@ function AccessibilitePage() {
       <HtmlTitle>Accessibilité</HtmlTitle>
       <h1>Déclaration d'accessibilité</h1>
       <p>
-        Établie le <em>5 février 2024</em>.
+        Établie le <em>19 août 2025</em>.
       </p>
       <p>
-        <strong>L'ADEME</strong> s'engage à rendre son service accessible, conformément à l'article
-        47 de la loi n° 2005-102 du 11 février 2005.
+        <strong>L'ADEME</strong> s’engage à rendre ses sites internet, intranet, extranet et ses
+        applications mobiles, etc. accessibles conformément à l’article 47 de la loi n° 2005-102 du
+        11 février 2005.
       </p>
+      <p>A cette fin, il met en œuvre la stratégie et les actions suivantes&nbsp;:</p>
+      <ul>
+        <li>
+          <ExternalLink href="https://librairie.ademe.fr/institutionnel/6794-schema-pluriannuel-de-mise-en-accessibilite-des-sites-web-de-l-ademe-2024-2026.html">
+            Schéma pluriannuel en cours
+          </ExternalLink>
+        </li>
+        <li>
+          <ExternalLink href="https://librairie.ademe.fr/institutionnel/6823-plan-annuel-de-mise-en-accessibilite-des-sites-web-de-l-ademe.html">
+            Plan d’action de l’année en cours
+          </ExternalLink>
+        </li>
+      </ul>
       <p>
-        Cette déclaration d'accessibilité s'applique à <strong>Bénéfriches</strong>{" "}
+        Cette déclaration d'accessibilité s'applique au site
         <a href="https://benefriches.ademe.fr">(https://benefriches.ademe.fr)</a>.
       </p>
       <h2>État de conformité</h2>
       <p>
-        <strong>Bénéfriches</strong> est <strong>non conforme</strong> avec le{" "}
-        <abbr title="Référentiel général d'amélioration de l'accessibilité">RGAA</abbr>.{" "}
-        <span>Le site n'a encore pas été audité.</span>
+        En l’absence d’audit et dans l’attente de celui-ci, le site{" "}
+        <a href="https://benefriches.ademe.fr">(https://benefriches.ademe.fr)</a> n’est pas en
+        conformité avec le référentiel général d’amélioration de l’accessibilité. Les
+        non-conformités et/ou les dérogations sont énumérées ci-dessous.
       </p>
       <h2>Contenus non accessibles</h2>
-      <p>Non applicable</p>
-      <h2>Amélioration et contact</h2>
+      <p>Les contenus listés ci-dessous ne sont pas accessibles pour les raisons suivantes.</p>
+
+      <h3>Non-conformité</h3>
+
+      <p>Néant</p>
+
+      <h3>Dérogations pour charge disproportionnée</h3>
+
+      <p>Néant</p>
+
+      <h3>Contenus non soumis à l’obligation d’accessibilité</h3>
+
+      <p>Néant</p>
+
+      <h2>Établissement de cette déclaration d'accessibilité</h2>
+
+      <p>Cette déclaration a été établie le 19/08/2025.</p>
+
+      <ul>
+        <li>
+          Technologies utilisées pour la réalisation du site web&nbsp;:
+          <ul>
+            <li>Infrastructure langage&nbsp;: React.</li>
+            <li>Infrastructure CMS&nbsp;: Néant.</li>
+          </ul>
+        </li>
+        <li>
+          Agents utilisateurs, technologies d’assistance et outils utilisés pour vérifier
+          l’accessibilité
+          <ul>
+            <li>
+              Les tests des pages web ont été effectués avec les combinaisons de navigateurs web et
+              lecteurs d’écran suivants&nbsp;: Néant
+            </li>
+            <li>Les outils suivants ont été utilisés lors de l’évaluation&nbsp;: Néant</li>
+            <li>Pages du site ayant fait l’objet de la vérification de conformité&nbsp;: Néant</li>
+          </ul>
+        </li>
+      </ul>
+
+      <h2>Retour d'information et contact</h2>
       <p>
         Si vous n'arrivez pas à accéder à un contenu ou à un service, vous pouvez contacter le
-        responsable de <strong>Bénéfriches</strong> pour être orienté vers une alternative
-        accessible ou obtenir le contenu sous une autre forme.
+        responsable du site internet pour être orienté vers une alternative accessible ou obtenir le
+        contenu sous une autre forme.
       </p>
       <ul className="basic-information feedback h-card">
         <li>
           <ExternalLink href="https://tally.so/r/wvAdk8">
-            Formulaire de contact Bénéfriches
+            Envoyer un message au référent accessibilité de l'ADEME
           </ExternalLink>
         </li>
         <li>
-          Téléphone&nbsp;: <ExternalLink href="tel:+33147652000">01 47 65 20 00</ExternalLink>
-        </li>
-
-        <li>
-          Adresse&nbsp;: <address>155 bis Av. Pierre Brossolette 92240 Montrouge</address>
+          Contacter Estelle Ribot, ADEME, DEMTE — 20 avenue du Grésillé BP 90 406 – 49 004 Angers
+          Cedex 01
         </li>
       </ul>
       <h2>Voie de recours</h2>
@@ -77,13 +128,6 @@ function AccessibilitePage() {
         </li>
       </ul>
       <hr></hr>
-      <p>
-        Cette déclaration d'accessibilité a été créé le <span>5 février 2024</span> grâce au{" "}
-        <ExternalLink href="https://betagouv.github.io/a11y-generateur-declaration/#create">
-          Générateur de Déclaration d'Accessibilité de BetaGouv
-        </ExternalLink>
-        .
-      </p>
     </section>
   );
 }
