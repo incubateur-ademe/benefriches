@@ -7,7 +7,7 @@ import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 import ScheduleProjectionForm from "./ScheduleProjectionForm";
 
 type Props = {
-  initialValues: ProjectSchedule;
+  initialValues?: ProjectSchedule;
   onSubmit: (data: {
     firstYearOfOperation: number;
     installationSchedule?: Schedule;

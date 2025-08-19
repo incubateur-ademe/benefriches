@@ -12,6 +12,7 @@ import RequiredLabel from "@/shared/views/components/form/RequiredLabel/Required
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
+  initialValues?: FormValues;
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
   title: ReactNode;
@@ -57,9 +58,11 @@ function StakeholderForm({
   instructions,
   availableStakeholdersList,
   availableLocalAuthoritiesStakeholders,
+  initialValues,
 }: Props) {
   const { register, handleSubmit, formState, watch } = useForm<FormValues>({
     shouldUnregister: true,
+    defaultValues: initialValues,
   });
 
   const selectedStakeholder = watch("stakeholder");
@@ -89,7 +92,8 @@ function StakeholderForm({
             />
           )}
 
-          {selectedStakeholder === "local_or_regional_authority" && (
+          {(selectedStakeholder === "local_or_regional_authority" ||
+            initialValues?.stakeholder === "local_or_regional_authority") && (
             <Select
               options={availableLocalAuthoritiesStakeholders.map(({ type, name }) => ({
                 label: name,
@@ -110,7 +114,8 @@ function StakeholderForm({
             value="other_structure"
             {...register("stakeholder")}
           />
-          {selectedStakeholder === "other_structure" && (
+          {(selectedStakeholder === "other_structure" ||
+            initialValues?.stakeholder === "other_structure") && (
             <Input
               label={<RequiredLabel label="Nom de la structure" />}
               state={formState.errors.otherStructureName ? "error" : "default"}

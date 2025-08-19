@@ -16,7 +16,11 @@ const { RouteProvider, useRoute, routes } = createRouter({
     () => "/creer-site-foncier",
   ),
   createProject: defineRoute(
-    { etape: param.query.optional.string, siteId: param.query.string },
+    {
+      etape: param.query.optional.string,
+      siteId: param.query.string,
+      beta: param.query.optional.boolean,
+    },
     () => "/creer-projet",
   ),
   // PROJECT IMPACTS

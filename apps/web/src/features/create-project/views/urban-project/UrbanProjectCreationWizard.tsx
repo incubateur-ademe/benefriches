@@ -7,21 +7,22 @@ import { selectCreateMode } from "@/features/create-project/core/urban-project/s
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
+import { routes, useRoute } from "@/shared/views/router";
 
-import { HTML_MAIN_TITLE } from "../mainHtmlTitle";
 import UrbanProjectCreationStepper from "./Stepper";
 import CreateModeSelectionForm from "./create-mode-selection";
 import UrbanProjectCustomCreationStepWizard from "./custom-forms";
+import UrbanProjectCustomCreationStepWizardBeta from "./custom-forms-beta/index";
 import UrbanProjectExpressCreationStepWizard from "./express-forms";
+import { HTML_URBAN_PROJECT_FORM_MAIN_TITLE } from "./htmlTitle";
 
 type Props = {
   currentStep: UrbanProjectCreationStep;
 };
 
-export const HTML_URBAN_PROJECT_FORM_MAIN_TITLE = `Projet urbain - ${HTML_MAIN_TITLE}`;
-
 function UrbanProjectCreationWizard({ currentStep }: Props) {
   const createMode = useAppSelector(selectCreateMode);
+  const route = useRoute();
 
   switch (createMode) {
     case undefined:
@@ -42,7 +43,9 @@ function UrbanProjectCreationWizard({ currentStep }: Props) {
         />
       );
     case "custom":
-      return (
+      return route.name === routes.createProject.name && route.params.beta === true ? (
+        <UrbanProjectCustomCreationStepWizardBeta />
+      ) : (
         <UrbanProjectCustomCreationStepWizard
           currentStep={currentStep as UrbanProjectCustomCreationStep}
         />

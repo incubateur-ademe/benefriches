@@ -38,14 +38,20 @@ export const mapFormValuesToReinstatementExpenses = (
     }));
 };
 
+export const mapReinstatementExpensesToFormValues = (
+  values: ReinstatementExpense[],
+): FormValues => {
+  return values.reduce<FormValues>((acc, cur) => {
+    return { ...acc, [expensesToFormValuesMap[cur.purpose]]: cur.amount };
+  }, {});
+};
+
 export const mapInitialValues = (
   preEnteredData: ReinstatementExpense[] | undefined,
   defaultReinstatementExpenses: ComputedReinstatementExpenses,
 ): FormValues => {
   if (preEnteredData) {
-    return preEnteredData.reduce<FormValues>((acc, cur) => {
-      return { ...acc, [expensesToFormValuesMap[cur.purpose]]: cur.amount };
-    }, {});
+    return mapReinstatementExpensesToFormValues(preEnteredData);
   }
 
   const {
