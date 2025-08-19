@@ -23,6 +23,7 @@ import {
 } from "@/features/create-project/core/urban-project-event-sourcing/urbanProject.selectors";
 import { customUrbanProjectSaved } from "@/features/create-project/core/urban-project-event-sourcing/urbanProjectSave.action";
 import { InformationalStep } from "@/features/create-project/core/urban-project-event-sourcing/urbanProjectSteps";
+import { UrbanProjectCustomCreationStep } from "@/features/create-project/core/urban-project/creationSteps";
 import { RootState } from "@/shared/core/store-config/store";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
@@ -223,8 +224,14 @@ const ProjectCreationDataSummaryWrapper = ({ onNext, onBack }: StepComponentProp
       projectSoilsDistribution={projectSoilsDistribution}
       projectId={projectId}
       projectSpaces={projectSpaces}
-      onExpensesAndRevenuesTitleClick={() => {
-        dispatch(navigateToStep({ stepId: "URBAN_PROJECT_EXPENSES_INTRODUCTION" }));
+      getSectionButtonProps={(stepId: UrbanProjectCustomCreationStep) => {
+        return {
+          iconId: "fr-icon-pencil-line",
+          children: "Modifier",
+          onClick: () => {
+            dispatch(navigateToStep({ stepId }));
+          },
+        };
       }}
     />
   );

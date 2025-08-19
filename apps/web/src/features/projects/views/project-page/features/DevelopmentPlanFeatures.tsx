@@ -1,5 +1,7 @@
+import { ButtonProps } from "@codegouvfr/react-dsfr/Button";
 import { sumObjectValues, typedObjectEntries } from "shared";
 
+import { UrbanProjectCustomCreationStep } from "@/features/create-project/core/urban-project/creationSteps";
 import { ProjectFeatures } from "@/features/projects/domain/projects.types";
 import {
   formatNumberFr,
@@ -18,13 +20,16 @@ import {
 import SoilsDistribution from "./SoilsDistribution";
 import UrbanProjectBuildingsSection from "./UrbanProjectBuildingsSection";
 
-type Props = ProjectFeatures;
+type Props = ProjectFeatures & {
+  getSectionButtonProps?: (stepId: UrbanProjectCustomCreationStep) => ButtonProps | undefined;
+};
 
 const DevelopmentPlanFeatures = ({
   developmentPlan,
   decontaminatedSoilSurface,
   soilsDistribution,
   isExpress,
+  getSectionButtonProps,
 }: Props) => {
   switch (developmentPlan.type) {
     case "PHOTOVOLTAIC_POWER_PLANT":
@@ -102,7 +107,14 @@ const DevelopmentPlanFeatures = ({
 
       return (
         <>
-          <Section title="🏘 Espaces">
+          <Section
+            title="🏘 Espaces"
+            buttonProps={
+              getSectionButtonProps
+                ? getSectionButtonProps("URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION")
+                : undefined
+            }
+          >
             <DataLine
               label={<strong>Superficie du site</strong>}
               value={<strong>{formatSurfaceArea(sumObjectValues(developmentPlan.spaces))}</strong>}
@@ -145,6 +157,11 @@ const DevelopmentPlanFeatures = ({
           </Section>
           {decontaminatedSoilSurface ? (
             <Section
+              buttonProps={
+                getSectionButtonProps
+                  ? getSectionButtonProps("URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION")
+                  : undefined
+              }
               title="✨ Dépollution"
               tooltip="Les sols de la friche nécessitent une dépollution pour permettre la réalisation du projet. La pollution à l’amiante des bâtiments n’est pas considérée ici."
             >
@@ -162,7 +179,14 @@ const DevelopmentPlanFeatures = ({
             </Section>
           ) : undefined}
 
-          <Section title="🌾 Aménagement des espaces">
+          <Section
+            title="🌾 Aménagement des espaces"
+            buttonProps={
+              getSectionButtonProps
+                ? getSectionButtonProps("URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION")
+                : undefined
+            }
+          >
             {totalLivingAndActivitiesSpaces > 0 && (
               <>
                 <DataLine
@@ -281,12 +305,19 @@ const DevelopmentPlanFeatures = ({
             />
           </Section>
 
-          <UrbanProjectBuildingsSection
-            isExpress={isExpress}
-            totalSurfaceArea={totalSurfaceArea}
-            buildingsFloorArea={developmentPlan.buildingsFloorArea}
-            urbanProjectCategoryLabel={urbanProjectCategoryLabel}
-          />
+          {livingAndActivitiesSpaces.BUILDINGS_FOOTPRINT > 0 && (
+            <UrbanProjectBuildingsSection
+              buttonProps={
+                getSectionButtonProps
+                  ? getSectionButtonProps("URBAN_PROJECT_BUILDINGS_INTRODUCTION")
+                  : undefined
+              }
+              isExpress={isExpress}
+              totalSurfaceArea={totalSurfaceArea}
+              buildingsFloorArea={developmentPlan.buildingsFloorArea}
+              urbanProjectCategoryLabel={urbanProjectCategoryLabel}
+            />
+          )}
         </>
       );
     }

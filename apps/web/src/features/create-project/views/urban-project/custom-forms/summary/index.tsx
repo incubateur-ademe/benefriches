@@ -2,6 +2,7 @@ import { stepRevertAttempted } from "@/features/create-project/core/actions/acti
 import { selectProjectId } from "@/features/create-project/core/createProject.selectors";
 import { reviewModeInitiated } from "@/features/create-project/core/reviewMode.reducer";
 import { customUrbanProjectSaved } from "@/features/create-project/core/urban-project/actions/customUrbanProjectSaved.action";
+import { UrbanProjectCustomCreationStep } from "@/features/create-project/core/urban-project/creationSteps";
 import {
   getUrbanProjectSpaceDistribution,
   selectCreationData,
@@ -44,7 +45,18 @@ function ProjectionCreationDataSummaryContainer() {
       projectData={projectData}
       projectSoilsDistribution={projectSoilsDistribution}
       projectSpaces={spaceDistribution}
-      onExpensesAndRevenuesTitleClick={onExpensesAndRevenuesTitleClick}
+      getSectionButtonProps={(step: UrbanProjectCustomCreationStep) => {
+        if (step === "URBAN_PROJECT_EXPENSES_INTRODUCTION") {
+          return {
+            iconId: "fr-icon-edit-box-line",
+            children: "Modifier",
+            onClick: () => {
+              onExpensesAndRevenuesTitleClick();
+            },
+          };
+        }
+        return undefined;
+      }}
     />
   );
 }

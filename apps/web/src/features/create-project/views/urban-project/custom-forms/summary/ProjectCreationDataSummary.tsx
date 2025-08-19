@@ -1,6 +1,8 @@
+import { ButtonProps } from "@codegouvfr/react-dsfr/Button";
 import { SoilsDistribution, LEGACY_UrbanProjectSpace } from "shared";
 
 import { UrbanProjectCreationData } from "@/features/create-project/core/urban-project/creationData";
+import { UrbanProjectCustomCreationStep } from "@/features/create-project/core/urban-project/creationSteps";
 import ProjectFeaturesView from "@/features/projects/views/project-page/features/ProjectFeaturesView";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
@@ -12,7 +14,7 @@ type Props = {
   projectSpaces: Partial<Record<LEGACY_UrbanProjectSpace, number>>;
   onNext: () => void;
   onBack: () => void;
-  onExpensesAndRevenuesTitleClick: () => void;
+  getSectionButtonProps: (stepId: UrbanProjectCustomCreationStep) => ButtonProps | undefined;
 };
 
 function ProjectCreationDataSummary({
@@ -20,7 +22,7 @@ function ProjectCreationDataSummary({
   projectData,
   projectSpaces,
   projectSoilsDistribution,
-  onExpensesAndRevenuesTitleClick,
+  getSectionButtonProps,
   onNext,
   onBack,
 }: Props) {
@@ -62,7 +64,7 @@ function ProjectCreationDataSummary({
           buildingsResaleSellingPrice: projectData.buildingsResaleSellingPrice,
           decontaminatedSoilSurface: projectData.decontaminatedSurfaceArea,
         }}
-        onExpensesAndRevenuesTitleClick={onExpensesAndRevenuesTitleClick}
+        getSectionButtonProps={getSectionButtonProps}
       />
 
       <div className="tw-mt-8">

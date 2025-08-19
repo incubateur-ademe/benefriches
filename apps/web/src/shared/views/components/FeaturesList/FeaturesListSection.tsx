@@ -1,4 +1,4 @@
-import Button from "@codegouvfr/react-dsfr/Button";
+import Button, { ButtonProps } from "@codegouvfr/react-dsfr/Button";
 import { ReactNode, useState } from "react";
 
 import classNames from "../../clsx";
@@ -6,12 +6,12 @@ import InfoTooltip from "../InfoTooltip/InfoTooltip";
 
 type Props = {
   title: ReactNode;
-  onTitleClick?: () => void;
+  buttonProps?: ButtonProps;
   children: ReactNode;
   tooltip?: string;
 };
 
-export default function Section({ children, title, tooltip, onTitleClick }: Props) {
+export default function Section({ children, title, tooltip, buttonProps }: Props) {
   const [displaySectionContent, setDisplaySectionContent] = useState(true);
   const onToggleSection = () => {
     setDisplaySectionContent((displaySectionContent) => !displaySectionContent);
@@ -19,19 +19,13 @@ export default function Section({ children, title, tooltip, onTitleClick }: Prop
   return (
     <section className="tw-mb-10">
       <div className="tw-flex tw-justify-between tw-items-center">
-        <div className="tw-flex tw-items-center tw-mb-2">
-          <h3 className="tw-text-lg  tw-mb-0">{title}</h3>
-          {tooltip && <InfoTooltip title={tooltip} />}
-          {onTitleClick && (
-            <Button
-              className="tw-ml-2"
-              size="small"
-              iconId="fr-icon-edit-box-line"
-              onClick={onTitleClick}
-            >
-              Modifier
-            </Button>
-          )}
+        <div className="tw-flex tw-items-center tw-justify-between tw-flex-grow">
+          <span className="tw-flex tw-items-center">
+            <h3 className="tw-text-lg tw-mb-0">{title}</h3>
+            {tooltip && <InfoTooltip title={tooltip} />}
+          </span>
+
+          {buttonProps && <Button className="tw-mx-2" size="small" {...buttonProps} />}
         </div>
 
         <Button
