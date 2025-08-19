@@ -29,7 +29,7 @@ export const mapFormValuesToExpenses = (
     }));
 };
 
-const mapExpensesToFormValues = (expenses: UrbanProjectDevelopmentExpense[]): FormValues => {
+export const mapExpensesToFormValues = (expenses: UrbanProjectDevelopmentExpense[]): FormValues => {
   return expenses.reduce<FormValues>((acc, cur) => {
     return { ...acc, [expensesToFormValuesMap[cur.purpose]]: cur.amount };
   }, {});

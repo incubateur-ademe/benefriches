@@ -4,7 +4,7 @@ import { UrbanProjectCustomCreationStep } from "@/features/create-project/core/u
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
-import { HTML_URBAN_PROJECT_FORM_MAIN_TITLE } from "../UrbanProjectCreationWizard";
+import { HTML_URBAN_PROJECT_FORM_MAIN_TITLE } from "../htmlTitle";
 import UrbanProjectCustomSteps from "./UrbanProjectCustomSteps";
 import BuildingsFloorSurfaceArea from "./buildings/floor-surface-area";
 import BuildingsIntroduction from "./buildings/introduction";

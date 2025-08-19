@@ -14,6 +14,8 @@ import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 import StakeholderForm, { FormValues } from "./StakeholderForm";
 
+const DEFAULT_UNKNOWN_NAME = "Aménageur";
+
 const convertFormValuesForStore = (
   data: FormValues,
   stakeholdersList: AvailableProjectStakeholder[],
@@ -51,13 +53,64 @@ const convertFormValuesForStore = (
     case "unknown":
     case null:
       return {
-        name: "Aménageur",
+        name: DEFAULT_UNKNOWN_NAME,
         structureType: "unknown",
       };
   }
 };
 
+const convertInitialValueForForm = (
+  stakeholder: { name: string; structureType: ProjectStakeholderStructure } | undefined,
+  availableStakeholdersList: AvailableProjectStakeholder[],
+): FormValues | undefined => {
+  if (!stakeholder) {
+    return undefined;
+  }
+
+  const role = availableStakeholdersList.find(
+    ({ name, structureType }) =>
+      stakeholder.name === name && stakeholder.structureType === structureType,
+  )?.role;
+
+  if (role) {
+    return {
+      stakeholder: role,
+      localAuthority: undefined,
+      otherStructureName: undefined,
+    };
+  }
+
+  if (stakeholder.structureType === "unknown") {
+    if (stakeholder.name !== DEFAULT_UNKNOWN_NAME) {
+      return {
+        stakeholder: "other_structure",
+        otherStructureName: stakeholder.name,
+        localAuthority: undefined,
+      };
+    }
+    return {
+      stakeholder: "unknown",
+      localAuthority: undefined,
+      otherStructureName: undefined,
+    };
+  }
+
+  if (
+    stakeholder.structureType === "department" ||
+    stakeholder.structureType === "municipality" ||
+    stakeholder.structureType === "epci" ||
+    stakeholder.structureType === "region"
+  ) {
+    return {
+      stakeholder: "local_or_regional_authority",
+      localAuthority: stakeholder.structureType,
+      otherStructureName: undefined,
+    };
+  }
+};
+
 type Props = {
+  initialValues?: { name: string; structureType: ProjectStakeholderStructure };
   onSubmit: (data: { name: string; structureType: ProjectStakeholderStructure }) => void;
   onBack: () => void;
   title: ReactNode;
@@ -70,6 +123,7 @@ type Props = {
 };
 
 function StakeholderFormContainer({
+  initialValues,
   onSubmit,
   onBack,
   title,
@@ -99,6 +153,7 @@ function StakeholderFormContainer({
       onBack={onBack}
       availableStakeholdersList={availableStakeholdersList}
       availableLocalAuthoritiesStakeholders={availableLocalAuthoritiesStakeholders}
+      initialValues={convertInitialValueForForm(initialValues, availableStakeholdersList)}
     />
   );
 }

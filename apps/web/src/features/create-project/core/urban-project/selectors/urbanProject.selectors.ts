@@ -51,7 +51,7 @@ type SurfaceAreaDistributionWithUnit<TSurface extends string> = {
   unit: "percentage" | "squareMeters";
   value: SurfaceAreaDistributionJson<TSurface>;
 };
-const getSurfaceAreaDistributionWithUnit = <TSurface extends string>(
+export const getSurfaceAreaDistributionWithUnit = <TSurface extends string>(
   surfaceAreaDistributionInSquareMeters: SurfaceAreaDistributionJson<TSurface>,
   outputUnit: "percentage" | "squareMeters",
 ): SurfaceAreaDistributionWithUnit<TSurface> => {

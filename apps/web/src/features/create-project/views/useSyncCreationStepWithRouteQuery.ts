@@ -10,7 +10,7 @@ export const useSyncCreationStepWithRouteQuery = (projectCreationStepQueryString
 
     routes
       .createProject({
-        siteId: currentRoute.params.siteId,
+        ...currentRoute.params,
         etape: projectCreationStepQueryString,
       })
       .push();
