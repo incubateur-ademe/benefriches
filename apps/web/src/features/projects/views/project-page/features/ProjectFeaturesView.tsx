@@ -1,3 +1,6 @@
+import { ButtonProps } from "@codegouvfr/react-dsfr/Button";
+
+import { UrbanProjectCustomCreationStep } from "@/features/create-project/core/urban-project/creationSteps";
 import {
   getLabelForDevelopmentPlanCategory,
   getLabelForRenewableEnergyProductionType,
@@ -12,13 +15,10 @@ import ExpensesAndRevenuesSection from "./ExpensesAndRevenues";
 
 type Props = {
   projectData: ProjectFeatures;
-  onExpensesAndRevenuesTitleClick?: () => void;
+  getSectionButtonProps?: (stepId: UrbanProjectCustomCreationStep) => ButtonProps | undefined;
 };
 
-export default function ProjectFeaturesView({
-  projectData,
-  onExpensesAndRevenuesTitleClick,
-}: Props) {
+export default function ProjectFeaturesView({ projectData, getSectionButtonProps }: Props) {
   return (
     <>
       <Section title="🏗 Type de projet">
@@ -37,11 +37,16 @@ export default function ProjectFeaturesView({
           />
         )}
       </Section>
-      <DevelopmentPlanFeatures {...projectData} />
+      <DevelopmentPlanFeatures {...projectData} getSectionButtonProps={getSectionButtonProps} />
 
       <Section
         title="👱 Acteurs"
         tooltip="Il s’agit des entités ou personnes impliquées dans la réalisation du projet."
+        buttonProps={
+          getSectionButtonProps
+            ? getSectionButtonProps("URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION")
+            : undefined
+        }
       >
         <DataLine
           label={<strong>Aménageur du site</strong>}
@@ -82,7 +87,11 @@ export default function ProjectFeaturesView({
         buildingsResaleSellingPrice={projectData.buildingsResaleSellingPrice}
         financialAssistanceRevenues={projectData.financialAssistanceRevenues}
         reinstatementCosts={projectData.reinstatementCosts}
-        onTitleClick={onExpensesAndRevenuesTitleClick}
+        buttonProps={
+          getSectionButtonProps
+            ? getSectionButtonProps("URBAN_PROJECT_EXPENSES_INTRODUCTION")
+            : undefined
+        }
         isExpress={projectData.isExpress}
         buildingsFloorArea={
           projectData.developmentPlan.type === "URBAN_PROJECT"
@@ -90,7 +99,14 @@ export default function ProjectFeaturesView({
             : undefined
         }
       />
-      <Section title="📆 Calendrier">
+      <Section
+        title="📆 Calendrier"
+        buttonProps={
+          getSectionButtonProps
+            ? getSectionButtonProps("URBAN_PROJECT_SCHEDULE_INTRODUCTION")
+            : undefined
+        }
+      >
         {projectData.reinstatementSchedule && (
           <DataLine
             label={<strong>Travaux de remise en état de la friche</strong>}
@@ -133,7 +149,12 @@ export default function ProjectFeaturesView({
           }
         />
       </Section>
-      <Section title="✍️ Dénomination">
+      <Section
+        title="✍️ Dénomination"
+        buttonProps={
+          getSectionButtonProps ? getSectionButtonProps("URBAN_PROJECT_NAMING") : undefined
+        }
+      >
         <DataLine label={<strong>Nom du projet</strong>} value={projectData.name} />
         {projectData.description && (
           <DataLine label={<strong>Description</strong>} value={projectData.description} />
