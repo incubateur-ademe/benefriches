@@ -14,4 +14,6 @@ export const BENEFRICHES_ENV = {
   matomoUrl: windowEnv.WEBAPP_MATOMO_URL ?? "",
   allowedDevelopmentPlanCategories:
     windowEnv.WEBAPP_ALLOWED_DEVELOPMENT_PLAN_CATEGORIES?.split(",") ?? [],
+  hasEventSourcingUrbanFormFeature:
+    windowEnv.WEBAPP_HAS_EVENT_SOURCING_URBAN_FORM_FEATURE === "YES",
 };

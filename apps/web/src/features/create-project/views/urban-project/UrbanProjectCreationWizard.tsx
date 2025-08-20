@@ -43,8 +43,8 @@ function UrbanProjectCreationWizard({ currentStep }: Props) {
         />
       );
     case "custom":
-      return route.name === routes.createProject.name && route.params.beta === true ? (
-        <UrbanProjectCustomCreationStepWizardBeta />
+      return route.name === routes.createProject.name && route.params.beta ? (
+        <UrbanProjectCustomCreationStepWizardBeta route={route} />
       ) : (
         <UrbanProjectCustomCreationStepWizard
           currentStep={currentStep as UrbanProjectCustomCreationStep}

@@ -1,5 +1,7 @@
 import { createRouter, defineRoute, param } from "type-route";
 
+import { BENEFRICHES_ENV } from "./envVars";
+
 const onBoarding = defineRoute("/premiers-pas");
 
 const { RouteProvider, useRoute, routes } = createRouter({
@@ -19,7 +21,9 @@ const { RouteProvider, useRoute, routes } = createRouter({
     {
       etape: param.query.optional.string,
       siteId: param.query.string,
-      beta: param.query.optional.boolean,
+      beta: param.query.optional.boolean.default(
+        BENEFRICHES_ENV.hasEventSourcingUrbanFormFeature ? true : false,
+      ),
     },
     () => "/creer-projet",
   ),
