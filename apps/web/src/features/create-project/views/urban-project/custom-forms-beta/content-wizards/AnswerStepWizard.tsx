@@ -1,4 +1,5 @@
 import { lazy, Suspense, useEffect } from "react";
+import { useSelector } from "react-redux";
 import {
   getLabelForYearlyBuildingsOperationsRevenues,
   URBAN_PROJECT_PHASE_VALUES,
@@ -32,6 +33,7 @@ import {
   getLabelForUrbanProjectPhase,
   getPictogramForProjectPhase,
 } from "@/shared/core/projectPhase";
+import { RootState } from "@/shared/core/store-config/store";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
@@ -1041,6 +1043,10 @@ type Props = {
 export default function AnswerStepWizard({ currentStep }: Props) {
   const dispatch = useAppDispatch();
 
+  const isStepLoading = useSelector(
+    (state: RootState) => state.projectCreation.urbanProjectEventSourcing.isStepLoading,
+  );
+
   useEffect(() => {
     dispatch(loadStep({ stepId: currentStep }));
   }, [currentStep, dispatch]);
@@ -1048,6 +1054,10 @@ export default function AnswerStepWizard({ currentStep }: Props) {
   const onBack = () => {
     dispatch(navigateToPrevious({ stepId: currentStep }));
   };
+
+  if (isStepLoading) {
+    return <LoadingSpinner />;
+  }
 
   const stepConfig = STEP_CONFIGS[currentStep];
   const { htmlTitle, Component } = stepConfig;
