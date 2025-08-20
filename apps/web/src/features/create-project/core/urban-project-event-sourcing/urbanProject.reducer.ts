@@ -20,6 +20,7 @@ import { AnswerStepId, isInformationalStep } from "./urbanProjectSteps";
 export type UrbanProjectState = {
   events: FormEvent[];
   currentStep: UrbanProjectCustomCreationStep;
+  isStepLoading: boolean;
   saveState: "idle" | "loading" | "success" | "error";
   soilsCarbonStorage: SoilsCarbonStorageState;
 };
@@ -27,14 +28,17 @@ export type UrbanProjectState = {
 export const initialState: UrbanProjectState = {
   events: [],
   currentStep: "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION",
+  isStepLoading: false,
   saveState: "idle",
   soilsCarbonStorage: { loadingState: "idle", current: undefined, projected: undefined },
 };
 
 export const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) => {
   builder.addCase(loadStep, (state, action) => {
+    state.urbanProjectEventSourcing.isStepLoading = true;
     const handler = stepHandlerRegistry.getAnswerStepHandler(action.payload.stepId);
     handler.load(state);
+    state.urbanProjectEventSourcing.isStepLoading = false;
   });
 
   builder.addCase(completeStep, (state, action) => {
