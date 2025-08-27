@@ -77,7 +77,7 @@ const ImpactsComparisonHeader = ({
               //exportImpactsModal.open();
             }}
           >
-            Exporter
+            Télécharger
           </Button>
         </WithTooltip>
       </div>

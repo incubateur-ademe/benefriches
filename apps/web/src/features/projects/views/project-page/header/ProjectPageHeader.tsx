@@ -83,13 +83,13 @@ const ProjectPageHeader = ({
         <div className="md:tw-col-start-3 md:tw-row-span-3 tw-flex tw-items-center md:tw-justify-end">
           <Button
             priority="primary"
-            iconId="fr-icon-external-link-line"
+            iconId="fr-icon-file-download-line"
             size={size}
             onClick={() => {
               exportImpactsModal.open();
             }}
           >
-            Exporter les impacts
+            Télécharger les impacts
           </Button>
         </div>
       </div>

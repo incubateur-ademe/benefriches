@@ -21,13 +21,13 @@ export default function FurtherActionsSection({ siteId }: { siteId: string }) {
         <div className="tw-flex tw-flex-col md:tw-flex-row tw-gap-4 tw-mt-4">
           <Button
             priority="primary"
-            iconId="fr-icon-external-link-line"
+            iconId="fr-icon-file-download-line"
             onClick={() => {
               trackEvent(impactsExportModalOpened());
               exportImpactsModal.open();
             }}
           >
-            Exporter les impacts
+            Télécharger les impacts
           </Button>
           <Button priority="secondary" iconId="fr-icon-edit-fill" disabled>
             Modifier les informations

@@ -41,7 +41,7 @@ export default function ExportImpactsModal({ projectId, siteId }: Props) {
 
   return (
     <exportImpactsModal.Component
-      title="Exporter les impacts du projet"
+      title="Télécharges les impacts du projet"
       iconId="fr-icon-file-download-line"
       buttons={[
         {
@@ -65,7 +65,7 @@ export default function ExportImpactsModal({ projectId, siteId }: Props) {
               type: "submit",
             }
           : {
-              children: "Exporter",
+              children: "Télécharger",
               doClosesModal: false,
               disabled: exportOption == undefined,
               type: "submit",
@@ -73,7 +73,7 @@ export default function ExportImpactsModal({ projectId, siteId }: Props) {
       ]}
     >
       <RadioButtons
-        legend="Dans quel format souhaitez-vous exporter les impacts du projet ?"
+        legend="Dans quel format souhaitez-vous télécharger les impacts du projet ?"
         options={[
           {
             label: "PDF",
