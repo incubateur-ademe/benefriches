@@ -1,32 +1,26 @@
 import { FormState } from "../../form-state/formState";
-import { AnswerStepId } from "../../urbanProjectSteps";
-import { BaseAnswerStepHandler } from "../answerStep.handler";
-import { StepContext } from "../step.handler";
+import { AnswerStepHandler } from "../stepHandler.type";
 
-export class RevenueExpectedSiteResaleHandler extends BaseAnswerStepHandler {
-  protected override stepId: AnswerStepId = "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE";
+export const RevenueExpectedSiteResaleHandler: AnswerStepHandler<"URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE"> =
+  {
+    stepId: "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE",
 
-  setDefaultAnswers(): void {}
-  handleUpdateSideEffects(): void {}
+    getPreviousStepId() {
+      return "URBAN_PROJECT_REVENUE_INTRODUCTION";
+    },
 
-  previous(context: StepContext): void {
-    this.navigateTo(context, "URBAN_PROJECT_REVENUE_INTRODUCTION");
-  }
-
-  next(context: StepContext): void {
-    if (FormState.hasBuildings(context.urbanProjectEventSourcing.events)) {
-      if (
-        FormState.hasBuildingsResalePlannedAfterDevelopment(
-          context.urbanProjectEventSourcing.events,
-        )
-      ) {
-        this.navigateTo(context, "URBAN_PROJECT_REVENUE_BUILDINGS_RESALE");
-        return;
+    getNextStepId(context) {
+      if (FormState.hasBuildings(context.urbanProjectEventSourcing.events)) {
+        if (
+          FormState.hasBuildingsResalePlannedAfterDevelopment(
+            context.urbanProjectEventSourcing.events,
+          )
+        ) {
+          return "URBAN_PROJECT_REVENUE_BUILDINGS_RESALE";
+        }
+        return "URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES";
       }
-      this.navigateTo(context, "URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES");
-      return;
-    }
 
-    this.navigateTo(context, "URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE");
-  }
-}
+      return "URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE";
+    },
+  };

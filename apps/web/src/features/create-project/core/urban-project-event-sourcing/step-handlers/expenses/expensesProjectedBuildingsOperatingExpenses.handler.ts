@@ -1,19 +1,14 @@
-import { AnswerStepId } from "../../urbanProjectSteps";
-import { BaseAnswerStepHandler } from "../answerStep.handler";
-import { StepContext } from "../step.handler";
+import { AnswerStepHandler } from "../stepHandler.type";
 
-export class ExpensesProjectedBuildingsOperatingExpensesHandler extends BaseAnswerStepHandler {
-  protected override stepId: AnswerStepId =
-    "URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES";
+export const ExpensesProjectedBuildingsOperatingExpensesHandler: AnswerStepHandler<"URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES"> =
+  {
+    stepId: "URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES",
 
-  setDefaultAnswers(): void {}
-  handleUpdateSideEffects(): void {}
+    getPreviousStepId() {
+      return "URBAN_PROJECT_EXPENSES_INSTALLATION";
+    },
 
-  previous(context: StepContext): void {
-    this.navigateTo(context, "URBAN_PROJECT_EXPENSES_INSTALLATION");
-  }
-
-  next(context: StepContext): void {
-    this.navigateTo(context, "URBAN_PROJECT_REVENUE_INTRODUCTION");
-  }
-}
+    getNextStepId() {
+      return "URBAN_PROJECT_REVENUE_INTRODUCTION";
+    },
+  };

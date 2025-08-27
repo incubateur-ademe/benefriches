@@ -1,31 +1,27 @@
-import { UrbanProjectCustomCreationStep } from "../../../urban-project/creationSteps";
 import { FormState } from "../../form-state/formState";
-import { BaseStepHandler, StepContext } from "../step.handler";
+import { InfoStepHandler } from "../stepHandler.type";
 
-export class BuildingsIntroductionHandler extends BaseStepHandler {
-  protected override readonly stepId: UrbanProjectCustomCreationStep =
-    "URBAN_PROJECT_BUILDINGS_INTRODUCTION";
+export const BuildingsIntroductionHandler: InfoStepHandler = {
+  stepId: "URBAN_PROJECT_BUILDINGS_INTRODUCTION",
 
-  previous(context: StepContext): void {
+  getPreviousStepId(context) {
     const decontaminationPlan = FormState.getStepAnswers(
       context.urbanProjectEventSourcing.events,
       "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
     )?.decontaminationPlan;
 
     if (decontaminationPlan === "partial") {
-      this.navigateTo(context, "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA");
-      return;
+      return "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA";
     }
 
     if (context.siteData?.hasContaminatedSoils) {
-      this.navigateTo(context, "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION");
-      return;
+      return "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION";
     }
 
-    this.navigateTo(context, "URBAN_PROJECT_SOILS_CARBON_SUMMARY");
-  }
+    return "URBAN_PROJECT_SOILS_CARBON_SUMMARY";
+  },
 
-  next(context: StepContext): void {
-    this.navigateTo(context, "URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA");
-  }
-}
+  getNextStepId() {
+    return "URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA";
+  },
+};

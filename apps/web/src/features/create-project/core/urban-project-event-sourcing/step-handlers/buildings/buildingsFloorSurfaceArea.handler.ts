@@ -1,18 +1,14 @@
-import { AnswerStepId } from "../../urbanProjectSteps";
-import { BaseAnswerStepHandler } from "../answerStep.handler";
-import { StepContext } from "../step.handler";
+import { AnswerStepHandler } from "../stepHandler.type";
 
-export class BuildingsFloorSurfaceAreaHandler extends BaseAnswerStepHandler {
-  protected override stepId: AnswerStepId = "URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA";
+export const BuildingsFloorSurfaceAreaHandler: AnswerStepHandler<"URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA"> =
+  {
+    stepId: "URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA",
 
-  setDefaultAnswers(): void {}
-  handleUpdateSideEffects(): void {}
+    getPreviousStepId() {
+      return "URBAN_PROJECT_BUILDINGS_INTRODUCTION";
+    },
 
-  previous(context: StepContext): void {
-    this.navigateTo(context, "URBAN_PROJECT_BUILDINGS_INTRODUCTION");
-  }
-
-  next(context: StepContext): void {
-    this.navigateTo(context, "URBAN_PROJECT_BUILDINGS_USE_INTRODUCTION");
-  }
-}
+    getNextStepId() {
+      return "URBAN_PROJECT_BUILDINGS_USE_INTRODUCTION";
+    },
+  };

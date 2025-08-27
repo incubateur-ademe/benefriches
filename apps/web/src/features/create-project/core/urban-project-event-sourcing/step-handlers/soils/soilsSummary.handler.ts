@@ -1,36 +1,31 @@
-import { UrbanProjectCustomCreationStep } from "../../../urban-project/creationSteps";
 import { FormState } from "../../form-state/formState";
-import { BaseStepHandler, StepContext } from "../step.handler";
+import { InfoStepHandler } from "../stepHandler.type";
 
-export class SoilsSummaryHandler extends BaseStepHandler {
-  protected override readonly stepId: UrbanProjectCustomCreationStep =
-    "URBAN_PROJECT_SPACES_SOILS_SUMMARY";
+export const SoilsSummaryHandler: InfoStepHandler = {
+  stepId: "URBAN_PROJECT_SPACES_SOILS_SUMMARY",
 
-  previous(context: StepContext): void {
+  getPreviousStepId(context) {
     const spacesCategoriesDistribution = FormState.getStepAnswers(
       context.urbanProjectEventSourcing.events,
       "URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA",
     )?.spacesCategoriesDistribution;
 
     if (spacesCategoriesDistribution?.GREEN_SPACES) {
-      this.navigateTo(context, "URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION");
-      return;
+      return "URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION";
     }
 
     if (spacesCategoriesDistribution?.PUBLIC_SPACES) {
-      this.navigateTo(context, "URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION");
-      return;
+      return "URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION";
     }
 
     if (spacesCategoriesDistribution?.LIVING_AND_ACTIVITY_SPACES) {
-      this.navigateTo(context, "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION");
-      return;
+      return "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION";
     }
 
-    this.navigateTo(context, "URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION");
-  }
+    return "URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION";
+  },
 
-  next(context: StepContext): void {
-    this.navigateTo(context, "URBAN_PROJECT_SOILS_CARBON_SUMMARY");
-  }
-}
+  getNextStepId() {
+    return "URBAN_PROJECT_SOILS_CARBON_SUMMARY";
+  },
+};

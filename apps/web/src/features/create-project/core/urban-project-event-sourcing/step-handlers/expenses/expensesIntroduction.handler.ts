@@ -1,28 +1,17 @@
-import { UrbanProjectCustomCreationStep } from "../../../urban-project/creationSteps";
 import { FormState } from "../../form-state/formState";
-import { BaseStepHandler, StepContext } from "../step.handler";
+import { InfoStepHandler } from "../stepHandler.type";
 
-export class ExpensesIntroductionHandler extends BaseStepHandler {
-  protected override readonly stepId: UrbanProjectCustomCreationStep =
-    "URBAN_PROJECT_EXPENSES_INTRODUCTION";
+export const ExpensesIntroductionHandler: InfoStepHandler = {
+  stepId: "URBAN_PROJECT_EXPENSES_INTRODUCTION",
 
-  previous(context: StepContext): void {
-    const livingAndActivitySpacesDistribution = FormState.getStepAnswers(
-      context.urbanProjectEventSourcing.events,
-      "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
-    )?.livingAndActivitySpacesDistribution;
+  getNextStepId() {
+    return "URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS";
+  },
 
-    if (
-      livingAndActivitySpacesDistribution?.BUILDINGS &&
-      livingAndActivitySpacesDistribution.BUILDINGS > 0
-    ) {
-      this.navigateTo(context, "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION");
-      return;
+  getPreviousStepId(context) {
+    if (FormState.hasBuildings(context.urbanProjectEventSourcing.events)) {
+      return "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION";
     }
-    this.navigateTo(context, "URBAN_PROJECT_SITE_RESALE_SELECTION");
-  }
-
-  next(context: StepContext): void {
-    this.navigateTo(context, "URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS");
-  }
-}
+    return "URBAN_PROJECT_SITE_RESALE_SELECTION";
+  },
+} as const;

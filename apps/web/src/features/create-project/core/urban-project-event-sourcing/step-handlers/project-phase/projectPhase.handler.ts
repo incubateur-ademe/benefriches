@@ -1,18 +1,13 @@
-import { AnswerStepId } from "../../urbanProjectSteps";
-import { BaseAnswerStepHandler } from "../answerStep.handler";
-import { StepContext } from "../step.handler";
+import { AnswerStepHandler } from "../stepHandler.type";
 
-export class ProjectPhaseHandler extends BaseAnswerStepHandler {
-  protected override stepId: AnswerStepId = "URBAN_PROJECT_PROJECT_PHASE";
+export const ProjectPhaseHandler: AnswerStepHandler<"URBAN_PROJECT_PROJECT_PHASE"> = {
+  stepId: "URBAN_PROJECT_PROJECT_PHASE",
 
-  setDefaultAnswers(): void {}
-  handleUpdateSideEffects(): void {}
+  getPreviousStepId() {
+    return "URBAN_PROJECT_SCHEDULE_PROJECTION";
+  },
 
-  previous(context: StepContext): void {
-    this.navigateTo(context, "URBAN_PROJECT_SCHEDULE_PROJECTION");
-  }
-
-  next(context: StepContext): void {
-    this.navigateTo(context, "URBAN_PROJECT_NAMING");
-  }
-}
+  getNextStepId() {
+    return "URBAN_PROJECT_NAMING";
+  },
+};

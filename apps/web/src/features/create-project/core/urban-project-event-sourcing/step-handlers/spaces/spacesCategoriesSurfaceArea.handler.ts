@@ -1,31 +1,21 @@
 import { FormState } from "../../form-state/formState";
-import { BUILDINGS_STEPS, AnswersByStep } from "../../urbanProjectSteps";
-import { BaseAnswerStepHandler } from "../answerStep.handler";
-import { StepContext } from "../step.handler";
+import { BUILDINGS_STEPS, AnswerStepId } from "../../urbanProjectSteps";
+import { AnswerStepHandler } from "../stepHandler.type";
 
 const STEP_ID = "URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA" as const;
 
-export class UrbanProjectSpacesCategoriesSurfaceAreaHandler extends BaseAnswerStepHandler<
-  typeof STEP_ID
-> {
-  protected override stepId = STEP_ID;
+export const UrbanProjectSpacesCategoriesSurfaceAreaHandler: AnswerStepHandler<typeof STEP_ID> = {
+  stepId: STEP_ID,
 
-  setDefaultAnswers(): void {}
+  getStepsToInvalidate(context, previousAnswers, newAnswers) {
+    const steps: AnswerStepId[] = [];
 
-  handleUpdateSideEffects(
-    context: StepContext,
-    previousAnswers: AnswersByStep[typeof STEP_ID],
-    newAnswers: AnswersByStep[typeof STEP_ID],
-  ) {
     if (
       previousAnswers.spacesCategoriesDistribution?.GREEN_SPACES !==
       newAnswers.spacesCategoriesDistribution?.GREEN_SPACES
     ) {
       if (!newAnswers.spacesCategoriesDistribution?.GREEN_SPACES) {
-        BaseAnswerStepHandler.addAnswerDeletionEvent(
-          context,
-          "URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION",
-        );
+        steps.push("URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION");
       }
     }
 
@@ -34,10 +24,7 @@ export class UrbanProjectSpacesCategoriesSurfaceAreaHandler extends BaseAnswerSt
       newAnswers.spacesCategoriesDistribution?.PUBLIC_SPACES
     ) {
       if (!newAnswers.spacesCategoriesDistribution?.PUBLIC_SPACES) {
-        BaseAnswerStepHandler.addAnswerDeletionEvent(
-          context,
-          "URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION",
-        );
+        steps.push("URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION");
       }
     }
 
@@ -47,13 +34,10 @@ export class UrbanProjectSpacesCategoriesSurfaceAreaHandler extends BaseAnswerSt
     ) {
       if (!newAnswers.spacesCategoriesDistribution?.LIVING_AND_ACTIVITY_SPACES) {
         const hasBuilding = FormState.hasBuildings(context.urbanProjectEventSourcing.events);
-        BaseAnswerStepHandler.addAnswerDeletionEvent(
-          context,
-          "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
-        );
+        steps.push("URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION");
         if (hasBuilding) {
           BUILDINGS_STEPS.forEach((stepId) => {
-            BaseAnswerStepHandler.addAnswerDeletionEvent(context, stepId);
+            steps.push(stepId);
           });
         }
       }
@@ -65,15 +49,17 @@ export class UrbanProjectSpacesCategoriesSurfaceAreaHandler extends BaseAnswerSt
         "URBAN_PROJECT_EXPENSES_REINSTATEMENT",
       )
     ) {
-      BaseAnswerStepHandler.addAnswerDeletionEvent(context, "URBAN_PROJECT_EXPENSES_REINSTATEMENT");
+      steps.push("URBAN_PROJECT_EXPENSES_REINSTATEMENT");
     }
-  }
 
-  previous(context: StepContext): void {
-    this.navigateTo(context, "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION");
-  }
+    return steps;
+  },
 
-  next(context: StepContext): void {
-    this.navigateTo(context, "URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION");
-  }
-}
+  getPreviousStepId() {
+    return "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION";
+  },
+
+  getNextStepId() {
+    return "URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION";
+  },
+};

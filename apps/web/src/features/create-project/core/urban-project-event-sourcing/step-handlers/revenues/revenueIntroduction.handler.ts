@@ -1,31 +1,27 @@
-import { UrbanProjectCustomCreationStep } from "../../../urban-project/creationSteps";
 import { FormState } from "../../form-state/formState";
-import { BaseStepHandler, StepContext } from "../step.handler";
+import { InfoStepHandler } from "../stepHandler.type";
 
-export class RevenueIntroductionHandler extends BaseStepHandler {
-  protected override readonly stepId: UrbanProjectCustomCreationStep =
-    "URBAN_PROJECT_REVENUE_INTRODUCTION";
+export const RevenueIntroductionHandler: InfoStepHandler = {
+  stepId: "URBAN_PROJECT_REVENUE_INTRODUCTION",
 
-  previous(context: StepContext): void {
+  getPreviousStepId(context) {
     if (
       FormState.hasBuildings(context.urbanProjectEventSourcing.events) &&
       !FormState.hasBuildingsResalePlannedAfterDevelopment(context.urbanProjectEventSourcing.events)
     ) {
-      this.navigateTo(context, "URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES");
-      return;
+      return "URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES";
     }
-    this.navigateTo(context, "URBAN_PROJECT_EXPENSES_INSTALLATION");
-  }
+    return "URBAN_PROJECT_EXPENSES_INSTALLATION";
+  },
 
-  next(context: StepContext): void {
+  getNextStepId(context) {
     const siteResalePlannedAfterDevelopment = FormState.getStepAnswers(
       context.urbanProjectEventSourcing.events,
       "URBAN_PROJECT_SITE_RESALE_SELECTION",
     )?.siteResalePlannedAfterDevelopment;
 
     if (siteResalePlannedAfterDevelopment) {
-      this.navigateTo(context, "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE");
-      return;
+      return "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE";
     }
 
     if (FormState.hasBuildings(context.urbanProjectEventSourcing.events)) {
@@ -34,13 +30,11 @@ export class RevenueIntroductionHandler extends BaseStepHandler {
           context.urbanProjectEventSourcing.events,
         )
       ) {
-        this.navigateTo(context, "URBAN_PROJECT_REVENUE_BUILDINGS_RESALE");
-        return;
+        return "URBAN_PROJECT_REVENUE_BUILDINGS_RESALE";
       }
-      this.navigateTo(context, "URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES");
-      return;
+      return "URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES";
     }
 
-    this.navigateTo(context, "URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE");
-  }
-}
+    return "URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE";
+  },
+};

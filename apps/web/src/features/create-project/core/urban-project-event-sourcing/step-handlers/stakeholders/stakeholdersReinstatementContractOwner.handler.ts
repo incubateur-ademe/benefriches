@@ -1,19 +1,14 @@
-import { AnswerStepId } from "../../urbanProjectSteps";
-import { BaseAnswerStepHandler } from "../answerStep.handler";
-import { StepContext } from "../step.handler";
+import { AnswerStepHandler } from "../stepHandler.type";
 
-export class StakeholdersReinstatementContractOwnerHandler extends BaseAnswerStepHandler {
-  protected override stepId: AnswerStepId =
-    "URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER";
+export const StakeholdersReinstatementContractOwnerHandler: AnswerStepHandler<"URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER"> =
+  {
+    stepId: "URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER",
 
-  setDefaultAnswers(): void {}
-  handleUpdateSideEffects(): void {}
+    getPreviousStepId() {
+      return "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER";
+    },
 
-  previous(context: StepContext): void {
-    this.navigateTo(context, "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER");
-  }
-
-  next(context: StepContext): void {
-    this.navigateTo(context, "URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
-  }
-}
+    getNextStepId() {
+      return "URBAN_PROJECT_SITE_RESALE_INTRODUCTION";
+    },
+  };

@@ -1,24 +1,19 @@
 import { getDefaultScheduleForProject } from "shared";
 
-import { AnswerStepId } from "../../urbanProjectSteps";
-import { BaseAnswerStepHandler } from "../answerStep.handler";
-import { StepContext } from "../step.handler";
+import { AnswerStepHandler } from "../stepHandler.type";
 
-export class UrbanProjectScheduleProjectionHandler extends BaseAnswerStepHandler {
-  protected override stepId: AnswerStepId = "URBAN_PROJECT_SCHEDULE_PROJECTION";
+export const UrbanProjectScheduleProjectionHandler: AnswerStepHandler<"URBAN_PROJECT_SCHEDULE_PROJECTION"> =
+  {
+    stepId: "URBAN_PROJECT_SCHEDULE_PROJECTION",
 
-  handleUpdateSideEffects(): void {}
+    getDefaultAnswers(context) {
+      const { installation, reinstatement, firstYearOfOperations } = getDefaultScheduleForProject({
+        now: () => new Date(),
+      })({
+        hasReinstatement: context.siteData?.nature === "FRICHE",
+      });
 
-  setDefaultAnswers(context: StepContext): void {
-    const { installation, reinstatement, firstYearOfOperations } = getDefaultScheduleForProject({
-      now: () => new Date(),
-    })({
-      hasReinstatement: context.siteData?.nature === "FRICHE",
-    });
-
-    this.updateAnswers(
-      context,
-      {
+      return {
         reinstatementSchedule: reinstatement
           ? {
               startDate: reinstatement.startDate.toDateString(),
@@ -30,16 +25,14 @@ export class UrbanProjectScheduleProjectionHandler extends BaseAnswerStepHandler
           endDate: installation.endDate.toDateString(),
         },
         firstYearOfOperation: firstYearOfOperations,
-      },
-      "system",
-    );
-  }
+      };
+    },
 
-  previous(context: StepContext): void {
-    this.navigateTo(context, "URBAN_PROJECT_SCHEDULE_INTRODUCTION");
-  }
+    getPreviousStepId() {
+      return "URBAN_PROJECT_SCHEDULE_INTRODUCTION";
+    },
 
-  next(context: StepContext): void {
-    this.navigateTo(context, "URBAN_PROJECT_PROJECT_PHASE");
-  }
-}
+    getNextStepId() {
+      return "URBAN_PROJECT_PROJECT_PHASE";
+    },
+  };

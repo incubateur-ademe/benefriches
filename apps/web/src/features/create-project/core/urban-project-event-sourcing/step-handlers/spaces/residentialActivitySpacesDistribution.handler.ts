@@ -1,27 +1,42 @@
 import { FormState } from "../../form-state/formState";
-import { BUILDINGS_STEPS, AnswersByStep } from "../../urbanProjectSteps";
-import { BaseAnswerStepHandler } from "../answerStep.handler";
-import { StepContext } from "../step.handler";
+import { BUILDINGS_STEPS, AnswerStepId } from "../../urbanProjectSteps";
+import { AnswerStepHandler } from "../stepHandler.type";
 
 const STEP_ID = "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION" as const;
 
-export class ResidentialAndActivitySpacesDistributionHandler extends BaseAnswerStepHandler {
-  protected override stepId = STEP_ID;
+export const ResidentialAndActivitySpacesDistributionHandler: AnswerStepHandler<typeof STEP_ID> = {
+  stepId: STEP_ID,
 
-  setDefaultAnswers(): void {}
+  getNextStepId(context) {
+    const spacesCategoriesDistribution = FormState.getStepAnswers(
+      context.urbanProjectEventSourcing.events,
+      "URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA",
+    )?.spacesCategoriesDistribution;
 
-  handleUpdateSideEffects(
-    context: StepContext,
-    previousAnswers: AnswersByStep[typeof STEP_ID],
-    newAnswers: AnswersByStep[typeof STEP_ID],
-  ) {
+    if (spacesCategoriesDistribution?.PUBLIC_SPACES) {
+      return "URBAN_PROJECT_PUBLIC_SPACES_INTRODUCTION";
+    }
+
+    if (spacesCategoriesDistribution?.GREEN_SPACES) {
+      return "URBAN_PROJECT_GREEN_SPACES_INTRODUCTION";
+    }
+
+    return "URBAN_PROJECT_SPACES_SOILS_SUMMARY";
+  },
+
+  getPreviousStepId() {
+    return "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_INTRODUCTION";
+  },
+
+  getStepsToInvalidate(context, previousAnswers, newAnswers) {
+    const steps: AnswerStepId[] = [];
     if (
       previousAnswers.livingAndActivitySpacesDistribution?.BUILDINGS !==
       newAnswers.livingAndActivitySpacesDistribution?.BUILDINGS
     ) {
       if (!newAnswers.livingAndActivitySpacesDistribution?.BUILDINGS) {
         BUILDINGS_STEPS.forEach((stepId) => {
-          BaseAnswerStepHandler.addAnswerDeletionEvent(context, stepId);
+          steps.push(stepId);
         });
       }
     }
@@ -32,30 +47,8 @@ export class ResidentialAndActivitySpacesDistributionHandler extends BaseAnswerS
         "URBAN_PROJECT_EXPENSES_REINSTATEMENT",
       )
     ) {
-      BaseAnswerStepHandler.addAnswerDeletionEvent(context, "URBAN_PROJECT_EXPENSES_REINSTATEMENT");
+      steps.push("URBAN_PROJECT_EXPENSES_REINSTATEMENT");
     }
-  }
-
-  previous(context: StepContext): void {
-    this.navigateTo(context, "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_INTRODUCTION");
-  }
-
-  next(context: StepContext): void {
-    const spacesCategoriesDistribution = FormState.getStepAnswers(
-      context.urbanProjectEventSourcing.events,
-      "URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA",
-    )?.spacesCategoriesDistribution;
-
-    if (spacesCategoriesDistribution?.PUBLIC_SPACES) {
-      this.navigateTo(context, "URBAN_PROJECT_PUBLIC_SPACES_INTRODUCTION");
-      return;
-    }
-
-    if (spacesCategoriesDistribution?.GREEN_SPACES) {
-      this.navigateTo(context, "URBAN_PROJECT_GREEN_SPACES_INTRODUCTION");
-      return;
-    }
-
-    this.navigateTo(context, "URBAN_PROJECT_SPACES_SOILS_SUMMARY");
-  }
-}
+    return steps;
+  },
+} as const;

@@ -37,37 +37,50 @@ La réponse actuelle d'une étape est déterminée par **le dernier événement 
 
 ## Architecture des Handlers
 
-### BaseAnswerStepHandler
+### AnswerStepHandler
 
-Classe abstraite pour les étapes nécessitant des réponses utilisateur :
+Interface implémentée par chaque objet spécifique à une étape nécessitant des réponses utilisateur :
 
 ```typescript
-abstract class BaseAnswerStepHandler<T extends keyof StepAnswers> {
-  // Méthodes abstraites à implémenter
-  abstract setDefaultAnswers(context: StepContext): void;
-  abstract handleUpdateSideEffects(context: StepContext, previous: T, new: T): void;
-
-  // Méthodes communes
-  load(context: StepContext): void;
-  complete(context: StepContext, answers: T): void;
-  getAnswers(context: StepContext): T | undefined;
+interface AnswerStepHandler<T extends AnswerStepId> extends StepHandler {
+  readonly stepId: T;
+  getNextStepId(context: StepContext): UrbanProjectCustomCreationStep;
+  getPreviousStepId(context: StepContext): UrbanProjectCustomCreationStep;
+  getDefaultAnswers?(context: StepContext): AnswersByStep[T] | undefined;
+  getStepsToInvalidate?(
+    context: StepContext,
+    previous: AnswersByStep[T],
+    current: AnswersByStep[T],
+  ): AnswerStepId[];
+  getShortcut?(
+    context: StepContext,
+    answers: AnswersByStep[T],
+    hasChanged?: boolean,
+  ): ShortcutResult | undefined;
+  updateAnswersMiddleware?(context: StepContext, answers: AnswersByStep[T]): AnswersByStep[T];
 }
 ```
 
 **Responsabilités principales :**
 
-- **`setDefaultAnswers`** : Calcule et applique les réponses par défaut lors du premier chargement
-- **`handleUpdateSideEffects`** : Gère les effets de bord quand une réponse change (invalidation d'autres étapes)
-- **`complete`** : Valide et enregistre les réponses, puis navigue vers l'étape suivante
+- **`getDefaultAnswers`** : utilisée dans l'action redux loadStep, calcule les réponses par défaut de l'étape
+- **`getStepsToInvalidate`** : utilisée dans l'action redux completeStep, si la réponse est une modification
+- **`getShortcut`** : utilisée dans l'action redux completeStep, par exemple pour les étapes de sélection du mode de saisie, qui peuvent permettre de sauter un écran
+- **`updateAnswersMiddleware`** : peut être utilisée dans l'action redux completeStep, pour modifier le payload de réponse, par exemple dans le cas du choix de revente d'un site, on peut assigner un `futureSiteOwner` selon la réponse
 
-### BaseStepHandler
+### InfoStepHandler
 
-Classe abstraite pour les étapes informatives (sans réponses) :
+Objet plus simple pour les étapes informatives (sans réponses) :
 
 ```typescript
-abstract class BaseStepHandler {
-  abstract previous(context: StepContext): void;
-  abstract next(context: StepContext): void;
+export interface StepHandler {
+  readonly stepId: UrbanProjectCustomCreationStep;
+  getNextStepId?(context: StepContext): UrbanProjectCustomCreationStep;
+  getPreviousStepId?(context: StepContext): UrbanProjectCustomCreationStep;
+}
+
+export interface InfoStepHandler extends StepHandler {
+  readonly stepId: InformationalStep;
 }
 ```
 
@@ -110,13 +123,11 @@ navigateToNext({ stepId });
 Quand une réponse change, le système invalide automatiquement les étapes dépendantes :
 
 ```typescript
-handleUpdateSideEffects(context, previousAnswers, newAnswers) {
+getStepsToInvalidate(context, previousAnswers, newAnswers) {
   // Si les bâtiments sont supprimés
   if (previousAnswers.buildings && !newAnswers.buildings) {
     // Invalider toutes les étapes liées aux bâtiments
-    BUILDINGS_STEPS.forEach(stepId => {
-      BaseAnswerStepHandler.addAnswerDeletionEvent(context, stepId);
-    });
+    return BUILDINGS_STEPS;
   }
 }
 ```

@@ -1,55 +1,37 @@
-import { UrbanSpaceCategory } from "shared";
-
 import { FormState } from "../../form-state/formState";
-import { BUILDINGS_STEPS, AnswersByStep } from "../../urbanProjectSteps";
-import { BaseAnswerStepHandler } from "../answerStep.handler";
-import { StepContext } from "../step.handler";
+import { BUILDINGS_STEPS, AnswerStepId } from "../../urbanProjectSteps";
+import { AnswerStepHandler } from "../stepHandler.type";
 
 const STEP_ID = "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION" as const;
 
-export class UrbanProjectSpacesCategoriesSelectionHandler extends BaseAnswerStepHandler<
-  typeof STEP_ID
-> {
-  protected override stepId = STEP_ID;
+export const UrbanProjectSpacesCategoriesSelectionHandler: AnswerStepHandler<typeof STEP_ID> = {
+  stepId: STEP_ID,
 
-  setDefaultAnswers(): void {}
+  getPreviousStepId() {
+    return "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION";
+  },
 
-  previous(context: StepContext): void {
-    this.navigateTo(context, "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION");
-  }
+  getNextStepId() {
+    return "URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA";
+  },
 
-  next(context: StepContext): void {
-    this.navigateTo(context, "URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA");
-  }
+  getStepsToInvalidate(context, previousAnswers, newAnswers) {
+    const steps: AnswerStepId[] = [];
 
-  handleUpdateSideEffects(
-    context: StepContext,
-    previousAnswers: AnswersByStep[typeof STEP_ID],
-    newAnswers: AnswersByStep[typeof STEP_ID],
-  ) {
-    BaseAnswerStepHandler.addAnswerDeletionEvent(
-      context,
-      "URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA",
-    );
+    steps.push("URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA");
 
     if (
       previousAnswers.spacesCategories?.includes("GREEN_SPACES") &&
       !newAnswers.spacesCategories?.includes("GREEN_SPACES")
     ) {
-      BaseAnswerStepHandler.addAnswerDeletionEvent(
-        context,
-        "URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION",
-      );
+      steps.push("URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION");
     }
 
     if (
       previousAnswers.spacesCategories?.includes("PUBLIC_SPACES") &&
       !newAnswers.spacesCategories?.includes("PUBLIC_SPACES")
     ) {
-      BaseAnswerStepHandler.addAnswerDeletionEvent(
-        context,
-        "URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION",
-      );
+      steps.push("URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION");
     }
 
     if (
@@ -57,14 +39,11 @@ export class UrbanProjectSpacesCategoriesSelectionHandler extends BaseAnswerStep
       !newAnswers.spacesCategories?.includes("LIVING_AND_ACTIVITY_SPACES")
     ) {
       const hasBuilding = FormState.hasBuildings(context.urbanProjectEventSourcing.events);
-      BaseAnswerStepHandler.addAnswerDeletionEvent(
-        context,
-        "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
-      );
+      steps.push("URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION");
 
       if (hasBuilding) {
         BUILDINGS_STEPS.forEach((stepId) => {
-          BaseAnswerStepHandler.addAnswerDeletionEvent(context, stepId);
+          steps.push(stepId);
         });
       }
     }
@@ -75,43 +54,47 @@ export class UrbanProjectSpacesCategoriesSelectionHandler extends BaseAnswerStep
         "URBAN_PROJECT_EXPENSES_REINSTATEMENT",
       )
     ) {
-      BaseAnswerStepHandler.addAnswerDeletionEvent(context, "URBAN_PROJECT_EXPENSES_REINSTATEMENT");
-    }
-  }
-
-  override complete(context: StepContext, answers: AnswersByStep[typeof STEP_ID]): void {
-    const previousAnswers = this.getAnswers(context);
-
-    const hasChanged = !previousAnswers || !this.isSameAnswers(previousAnswers, answers);
-
-    if (hasChanged) {
-      this.updateAnswers(context, answers);
-
-      if (previousAnswers) this.handleUpdateSideEffects(context, previousAnswers, answers);
+      steps.push("URBAN_PROJECT_EXPENSES_REINSTATEMENT");
     }
 
+    return steps;
+  },
+
+  getShortcut(context, answers, hasChanged) {
     if (answers.spacesCategories?.length === 1 && answers.spacesCategories[0]) {
-      this.handleSingleCategoryShortcut(context, answers.spacesCategories[0]);
-      return;
+      const invalidSteps: AnswerStepId[] =
+        answers.spacesCategories[0] === "LIVING_AND_ACTIVITY_SPACES"
+          ? ["URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION"]
+          : answers.spacesCategories[0] === "PUBLIC_SPACES"
+            ? ["URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION"]
+            : answers.spacesCategories[0] === "GREEN_SPACES"
+              ? ["URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION"]
+              : [];
+
+      const shouldInvalidateBuildings =
+        answers.spacesCategories[0] === "LIVING_AND_ACTIVITY_SPACES" &&
+        FormState.hasBuildings(context.urbanProjectEventSourcing.events);
+
+      if (shouldInvalidateBuildings) {
+        invalidSteps.push(...BUILDINGS_STEPS);
+      }
+
+      return {
+        complete: [
+          {
+            stepId: "URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA",
+            payload: {
+              spacesCategoriesDistribution: {
+                [answers.spacesCategories[0]]: context.siteData?.surfaceArea,
+              },
+            },
+            invalidSteps: hasChanged ? invalidSteps : [],
+          },
+        ],
+        next: "URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION",
+      };
     }
 
-    this.next(context);
-  }
-
-  private handleSingleCategoryShortcut(
-    context: StepContext,
-    spaceCategory: UrbanSpaceCategory,
-  ): void {
-    BaseAnswerStepHandler.addAnswerEvent(
-      context,
-      "URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA",
-      {
-        spacesCategoriesDistribution: {
-          [spaceCategory]: context.siteData?.surfaceArea,
-        },
-      },
-      "system",
-    );
-    this.navigateTo(context, "URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION");
-  }
-}
+    return undefined;
+  },
+} as const;

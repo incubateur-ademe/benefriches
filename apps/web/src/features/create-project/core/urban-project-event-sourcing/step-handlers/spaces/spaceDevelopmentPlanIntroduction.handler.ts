@@ -1,45 +1,37 @@
-import { UrbanProjectCustomCreationStep } from "../../../urban-project/creationSteps";
 import { FormState } from "../../form-state/formState";
-import { BaseStepHandler, StepContext } from "../step.handler";
+import { InfoStepHandler } from "../stepHandler.type";
 
-export class SpaceDevelopmentPlanIntroductionHandler extends BaseStepHandler {
-  protected override readonly stepId: UrbanProjectCustomCreationStep =
-    "URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION";
+export const SpaceDevelopmentPlanIntroductionHandler: InfoStepHandler = {
+  stepId: "URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION",
 
-  override previous(context: StepContext): void {
+  getPreviousStepId(context) {
     const spaceCategories = FormState.getStepAnswers(
       context.urbanProjectEventSourcing.events,
       "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION",
     )?.spacesCategories;
-    this.navigateTo(
-      context,
-      spaceCategories && spaceCategories.length === 1
-        ? "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION"
-        : "URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA",
-    );
-  }
+    return spaceCategories && spaceCategories.length === 1
+      ? "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION"
+      : "URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA";
+  },
 
-  override next(context: StepContext): void {
+  getNextStepId(context) {
     const spacesCategoriesDistribution = FormState.getStepAnswers(
       context.urbanProjectEventSourcing.events,
       "URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA",
     )?.spacesCategoriesDistribution;
 
     if (spacesCategoriesDistribution?.LIVING_AND_ACTIVITY_SPACES) {
-      this.navigateTo(context, "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_INTRODUCTION");
-      return;
+      return "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_INTRODUCTION";
     }
 
     if (spacesCategoriesDistribution?.PUBLIC_SPACES) {
-      this.navigateTo(context, "URBAN_PROJECT_PUBLIC_SPACES_INTRODUCTION");
-      return;
+      return "URBAN_PROJECT_PUBLIC_SPACES_INTRODUCTION";
     }
 
     if (spacesCategoriesDistribution?.GREEN_SPACES) {
-      this.navigateTo(context, "URBAN_PROJECT_GREEN_SPACES_INTRODUCTION");
-      return;
+      return "URBAN_PROJECT_GREEN_SPACES_INTRODUCTION";
     }
 
-    this.navigateTo(context, "URBAN_PROJECT_SPACES_SOILS_SUMMARY");
-  }
-}
+    return "URBAN_PROJECT_SPACES_SOILS_SUMMARY";
+  },
+};

@@ -1,19 +1,16 @@
-import { UrbanProjectCustomCreationStep } from "../../../urban-project/creationSteps";
 import { FormState } from "../../form-state/formState";
-import { BaseStepHandler, StepContext } from "../step.handler";
+import { InfoStepHandler } from "../stepHandler.type";
 
-export class SoilsCarbonSummaryHandler extends BaseStepHandler {
-  protected override readonly stepId: UrbanProjectCustomCreationStep =
-    "URBAN_PROJECT_SOILS_CARBON_SUMMARY";
+export const SoilsCarbonSummaryHandler: InfoStepHandler = {
+  stepId: "URBAN_PROJECT_SOILS_CARBON_SUMMARY",
 
-  previous(context: StepContext): void {
-    this.navigateTo(context, "URBAN_PROJECT_SPACES_SOILS_SUMMARY");
-  }
+  getPreviousStepId() {
+    return "URBAN_PROJECT_SPACES_SOILS_SUMMARY";
+  },
 
-  next(context: StepContext): void {
+  getNextStepId(context) {
     if (context.siteData?.hasContaminatedSoils) {
-      this.navigateTo(context, "URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION");
-      return;
+      return "URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION";
     }
 
     const livingAndActivitySpacesDistribution = FormState.getStepAnswers(
@@ -25,10 +22,9 @@ export class SoilsCarbonSummaryHandler extends BaseStepHandler {
       livingAndActivitySpacesDistribution?.BUILDINGS &&
       livingAndActivitySpacesDistribution.BUILDINGS > 0
     ) {
-      this.navigateTo(context, "URBAN_PROJECT_BUILDINGS_INTRODUCTION");
-      return;
+      return "URBAN_PROJECT_BUILDINGS_INTRODUCTION";
     }
 
-    this.navigateTo(context, "URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION");
-  }
-}
+    return "URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION";
+  },
+};

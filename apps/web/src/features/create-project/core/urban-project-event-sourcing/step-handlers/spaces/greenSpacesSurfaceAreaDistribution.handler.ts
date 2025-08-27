@@ -1,29 +1,27 @@
 import { FormState } from "../../form-state/formState";
-import { AnswerStepId } from "../../urbanProjectSteps";
-import { BaseAnswerStepHandler } from "../answerStep.handler";
-import { StepContext } from "../step.handler";
+import { AnswerStepHandler } from "../stepHandler.type";
 
-export class GreenSpacesSurfaceAreaDistributionHandler extends BaseAnswerStepHandler {
-  protected override stepId: AnswerStepId = "URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION";
+export const GreenSpacesSurfaceAreaDistributionHandler: AnswerStepHandler<"URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION"> =
+  {
+    stepId: "URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION",
 
-  setDefaultAnswers(): void {}
+    getStepsToInvalidate(context) {
+      if (
+        FormState.hasLastAnswerFromSystem(
+          context.urbanProjectEventSourcing.events,
+          "URBAN_PROJECT_EXPENSES_REINSTATEMENT",
+        )
+      ) {
+        return ["URBAN_PROJECT_EXPENSES_REINSTATEMENT"];
+      }
+      return [];
+    },
 
-  handleUpdateSideEffects(context: StepContext): void {
-    if (
-      FormState.hasLastAnswerFromSystem(
-        context.urbanProjectEventSourcing.events,
-        "URBAN_PROJECT_EXPENSES_REINSTATEMENT",
-      )
-    ) {
-      BaseAnswerStepHandler.addAnswerDeletionEvent(context, "URBAN_PROJECT_EXPENSES_REINSTATEMENT");
-    }
-  }
+    getPreviousStepId() {
+      return "URBAN_PROJECT_GREEN_SPACES_INTRODUCTION";
+    },
 
-  previous(context: StepContext): void {
-    this.navigateTo(context, "URBAN_PROJECT_GREEN_SPACES_INTRODUCTION");
-  }
-
-  next(context: StepContext): void {
-    this.navigateTo(context, "URBAN_PROJECT_SPACES_SOILS_SUMMARY");
-  }
-}
+    getNextStepId() {
+      return "URBAN_PROJECT_SPACES_SOILS_SUMMARY";
+    },
+  };

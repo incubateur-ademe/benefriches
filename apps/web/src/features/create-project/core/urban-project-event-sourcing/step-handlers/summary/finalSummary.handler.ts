@@ -1,13 +1,13 @@
-import { BaseStepHandler, StepContext } from "../step.handler";
+import { InfoStepHandler } from "../stepHandler.type";
 
-export class FinalSummaryHandler extends BaseStepHandler {
-  protected override readonly stepId = "URBAN_PROJECT_FINAL_SUMMARY";
+export const FinalSummaryHandler: InfoStepHandler = {
+  stepId: "URBAN_PROJECT_FINAL_SUMMARY",
 
-  previous(context: StepContext): void {
-    this.navigateTo(context, "URBAN_PROJECT_NAMING");
-  }
+  getNextStepId() {
+    return "URBAN_PROJECT_CREATION_RESULT";
+  },
 
-  next(context: StepContext): void {
-    this.navigateTo(context, "URBAN_PROJECT_CREATION_RESULT");
-  }
-}
+  getPreviousStepId() {
+    return "URBAN_PROJECT_NAMING";
+  },
+} as const;

@@ -1,20 +1,17 @@
-import { UrbanProjectCustomCreationStep } from "../../../urban-project/creationSteps";
-import { BaseStepHandler, StepContext } from "../step.handler";
+import { InfoStepHandler } from "../stepHandler.type";
 
-export class SiteResaleIntroductionHandler extends BaseStepHandler {
-  protected override readonly stepId: UrbanProjectCustomCreationStep =
-    "URBAN_PROJECT_SITE_RESALE_INTRODUCTION";
+export const SiteResaleIntroductionHandler: InfoStepHandler = {
+  stepId: "URBAN_PROJECT_SITE_RESALE_INTRODUCTION",
 
-  previous(context: StepContext): void {
+  getPreviousStepId(context) {
     if (context.siteData?.nature === "FRICHE") {
-      this.navigateTo(context, "URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER");
-      return;
+      return "URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER";
     }
 
-    this.navigateTo(context, "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER");
-  }
+    return "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER";
+  },
 
-  next(context: StepContext): void {
-    this.navigateTo(context, "URBAN_PROJECT_SITE_RESALE_SELECTION");
-  }
-}
+  getNextStepId() {
+    return "URBAN_PROJECT_SITE_RESALE_SELECTION";
+  },
+};

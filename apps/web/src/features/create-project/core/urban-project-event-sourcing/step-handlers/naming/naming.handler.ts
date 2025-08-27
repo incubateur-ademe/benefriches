@@ -1,28 +1,20 @@
 import { generateUrbanProjectName } from "../../../projectName";
-import { AnswerStepId } from "../../urbanProjectSteps";
-import { BaseAnswerStepHandler } from "../answerStep.handler";
-import { StepContext } from "../step.handler";
+import { AnswerStepHandler } from "../stepHandler.type";
 
-export class UrbanProjectNamingHandler extends BaseAnswerStepHandler {
-  protected override stepId: AnswerStepId = "URBAN_PROJECT_NAMING";
+export const UrbanProjectNamingHandler: AnswerStepHandler<"URBAN_PROJECT_NAMING"> = {
+  stepId: "URBAN_PROJECT_NAMING",
 
-  handleUpdateSideEffects(): void {}
+  getDefaultAnswers() {
+    return {
+      name: generateUrbanProjectName(),
+    };
+  },
 
-  setDefaultAnswers(context: StepContext): void {
-    this.updateAnswers(
-      context,
-      {
-        name: generateUrbanProjectName(),
-      },
-      "system",
-    );
-  }
+  getPreviousStepId() {
+    return "URBAN_PROJECT_PROJECT_PHASE";
+  },
 
-  previous(context: StepContext): void {
-    this.navigateTo(context, "URBAN_PROJECT_PROJECT_PHASE");
-  }
-
-  next(context: StepContext): void {
-    this.navigateTo(context, "URBAN_PROJECT_FINAL_SUMMARY");
-  }
-}
+  getNextStepId() {
+    return "URBAN_PROJECT_FINAL_SUMMARY";
+  },
+};

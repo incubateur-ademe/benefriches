@@ -1,15 +1,13 @@
-import { UrbanProjectCustomCreationStep } from "../../../urban-project/creationSteps";
-import { BaseStepHandler, StepContext } from "../step.handler";
+import { InfoStepHandler } from "../stepHandler.type";
 
-export class SoilsDecontaminationIntroductionHandler extends BaseStepHandler {
-  protected override readonly stepId: UrbanProjectCustomCreationStep =
-    "URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION";
+export const SoilsDecontaminationIntroductionHandler: InfoStepHandler = {
+  stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION",
 
-  previous(context: StepContext): void {
-    this.navigateTo(context, "URBAN_PROJECT_SOILS_CARBON_SUMMARY");
-  }
+  getPreviousStepId() {
+    return "URBAN_PROJECT_SOILS_CARBON_SUMMARY";
+  },
 
-  next(context: StepContext): void {
-    this.navigateTo(context, "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION");
-  }
-}
+  getNextStepId() {
+    return "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION";
+  },
+};
