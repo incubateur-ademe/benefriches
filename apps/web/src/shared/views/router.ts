@@ -55,7 +55,7 @@ const { RouteProvider, useRoute, routes } = createRouter({
   ),
   // PAGES
   budget: defineRoute("/budget"),
-  stats: defineRoute("/statistiques"),
+  stats: defineRoute("/stats"),
   mentionsLegales: defineRoute("/mentions-legales"),
   accessibilite: defineRoute("/accessibilite"),
   politiqueConfidentialite: defineRoute("/politique-de-confidentialite"),
