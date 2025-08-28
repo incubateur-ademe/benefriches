@@ -17,19 +17,21 @@ export default function UserLogosSection() {
   const userLogoIndexes = useMemo(() => getRandomNumbers(7, LOGOS_COUNT), []);
 
   return (
-    <section className="fr-container tw-pb-20">
-      <p className="tw-font-bold tw-text-sm tw-uppercase">
-        Plus de 700 collectivités et entreprises l'ont déjà testé
-      </p>
-      <div className="tw-grid tw-grid-cols-7 tw-mt-10 tw-gap-2">
-        {userLogoIndexes.map((index) => (
-          <img
-            key={index}
-            src={`/img/logos/users/user-${index}.jpg`}
-            alt=""
-            className="tw-object-contain tw-h-12 tw-w-full"
-          />
-        ))}
+    <section className="tw-pb-20 tw-bg-white dark:tw-bg-grey-dark">
+      <div className="fr-container">
+        <p className="tw-font-bold tw-text-sm tw-uppercase">
+          Plus de 700 collectivités et entreprises l'ont déjà testé
+        </p>
+        <div className="tw-grid tw-grid-cols-7 tw-mt-10 tw-gap-2">
+          {userLogoIndexes.map((index) => (
+            <img
+              key={index}
+              src={`/img/logos/users/user-${index}.jpg`}
+              alt=""
+              className="tw-object-contain tw-h-12 tw-w-full"
+            />
+          ))}
+        </div>
       </div>
     </section>
   );

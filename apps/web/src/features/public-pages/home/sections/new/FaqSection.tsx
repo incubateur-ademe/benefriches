@@ -99,7 +99,7 @@ const faqData: FaqItem[] = [
 
 export default function FaqSection() {
   return (
-    <section className="tw-py-20">
+    <section className="tw-py-20 tw-bg-grey-light dark:tw-bg-grey-dark">
       <div className="fr-container mx-auto">
         <SectionTitle>Questions fréquentes</SectionTitle>
         <div className="tw-space-y-6">

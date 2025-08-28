@@ -8,7 +8,7 @@ type UrbanPlanningProfessionCardProps = {
 
 function UrbanPlanningProfessionCard({ title, text, imgSrc }: UrbanPlanningProfessionCardProps) {
   return (
-    <article className="tw-flex tw-rounded-xl tw-bg-white">
+    <article className="tw-flex tw-rounded-xl tw-bg-white dark:tw-bg-grey-dark dark:tw-border-grey-light dark:tw-border-solid dark:tw-border">
       <img src={imgSrc} alt="" className="tw-rounded-s-xl" height={160} />
       <div className="tw-p-6">
         <h3 className="tw-text-xl tw-mb-1">{title}</h3>

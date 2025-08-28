@@ -12,7 +12,7 @@ const ListItem = ({ children }: { children: React.ReactNode }) => (
 
 export default function SituationSection() {
   return (
-    <section className="tw-bg-white tw-py-20" id="votre-projet-d-amenagement">
+    <section className="tw-bg-white dark:tw-bg-grey-dark tw-py-20" id="votre-projet-d-amenagement">
       <div className="fr-container">
         <SectionTitle>Où en êtes-vous de votre projet d'aménagement ?</SectionTitle>
         <div className="md:tw-grid md:tw-grid-cols-2 tw-gap-6 tw-mt-[60px]">

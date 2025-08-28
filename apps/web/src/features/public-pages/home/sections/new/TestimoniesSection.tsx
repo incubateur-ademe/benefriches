@@ -1,4 +1,3 @@
-// import { ChevronLeft, ChevronRight } from "lucide-react";
 import { fr } from "@codegouvfr/react-dsfr";
 import Button from "@codegouvfr/react-dsfr/Button";
 import { useState, useRef } from "react";
@@ -65,9 +64,8 @@ type TestimonyCardProps = {
 function TestimonyCard({ testimony, className }: TestimonyCardProps) {
   return (
     <div
-      className={`tw-bg-white tw-rounded-2xl tw-shadow-sm tw-p-8 tw-flex tw-gap-8 tw-min-w-[700px] tw-h-auto ${className || ""}`}
+      className={`tw-bg-white dark:tw-bg-grey-dark tw-rounded-2xl tw-shadow-sm tw-p-8 tw-flex tw-gap-8 tw-min-w-[700px] tw-h-auto ${className || ""}`}
     >
-      {/* Logo column */}
       <div className="tw-flex-shrink-0 tw-flex tw-items-center tw-justify-center tw-w-32">
         <img src={testimony.imgSrc} alt="" className="tw-max-w-full tw-object-contain" />
       </div>
@@ -137,20 +135,22 @@ export default function TestimoniesSection() {
         <div className="tw-flex tw-items-center tw-justify-between tw-mb-[60px]">
           <SectionTitle className="tw-m-0">Ils sont convaincus par Bénéfriches</SectionTitle>
           <div>
-            <button
+            <Button
               aria-label="Témoignage précédent"
-              className="tw-border tw-border-solid tw-border-[#000091] tw-rounded-lg tw-p-2 tw-mr-4"
+              priority="secondary"
+              className="tw-mr-4 tw-px-2"
               onClick={goToPrevious}
             >
               <span className={fr.cx("fr-icon-arrow-left-s-line")} aria-hidden="true"></span>
-            </button>
-            <button
+            </Button>
+            <Button
+              priority="secondary"
               aria-label="Témoignage suivant"
-              className="tw-border tw-border-solid tw-border-[#000091] tw-rounded-lg tw-p-2"
+              className="tw-p-2"
               onClick={goToNext}
             >
               <span className={fr.cx("fr-icon-arrow-right-s-line")} aria-hidden="true"></span>
-            </button>
+            </Button>
           </div>
         </div>
 
