@@ -12,6 +12,7 @@ const AccessibilitePage = lazy(
 );
 const BudgetPage = lazy(() => import("@/features/public-pages/budget/BudgetPage"));
 const HomePage = lazy(() => import("@/features/public-pages/home/HomePage"));
+const NewHomePage = lazy(() => import("@/features/public-pages/home/NewHomePage"));
 const MentionsLegalesPage = lazy(
   () => import("@/features/public-pages/mentions-legales/MentionsLegalesPage"),
 );
@@ -29,6 +30,8 @@ function PublicApp() {
           switch (route.name) {
             case routes.home.name:
               return <HomePage />;
+            case routes.newHome.name:
+              return <NewHomePage />;
             case routes.budget.name:
               return <BudgetPage />;
             case routes.stats.name:

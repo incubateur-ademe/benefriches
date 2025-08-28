@@ -1,12 +1,12 @@
 import { fr } from "@codegouvfr/react-dsfr";
 
 import CallToActionSection from "./sections/CallToActionSection";
-import DataSourcesSection from "./sections/DataSourcesSection";
-import HowItWorksSection from "./sections/HowItWorksSection";
 import IntroSection from "./sections/IntroSection";
 import MilestonesSection from "./sections/MilestonesSection";
 import SupportedProjectsSection from "./sections/SupportedProjectsSection";
 import TargetsSection from "./sections/TargetsSection";
+import DataSourcesSection from "./sections/new/DataSourcesSection";
+import HowItWorksSection from "./sections/new/HowItWorksSection";
 
 function HomePage() {
   return (
