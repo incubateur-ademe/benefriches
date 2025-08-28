@@ -4,9 +4,9 @@ export default function GetNotifiedSection() {
   return (
     <section className="tw-bg-[#64C7ED] tw-py-20">
       <div className="fr-container">
-        <div className="tw-flex  tw-items-center tw-justify-between">
-          <img src="/img/pictograms/newsletter.svg" alt="" className="tw-mr-16" />
-          <div className="tw-mr-12">
+        <div className="tw-flex tw-flex-col md:tw-flex-row tw-gap-6 tw-items-center md:tw-justify-between">
+          <img src="/img/pictograms/newsletter.svg" alt="" className="md:tw-mr-16" />
+          <div className="md:tw-mr-12">
             <h2 className="dark:tw-text-grey-dark">
               Bénéfriches, un produit de l'ADEME qui évolue chaque jour
             </h2>

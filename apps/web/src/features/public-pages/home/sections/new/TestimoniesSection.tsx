@@ -64,13 +64,13 @@ type TestimonyCardProps = {
 function TestimonyCard({ testimony, className }: TestimonyCardProps) {
   return (
     <div
-      className={`tw-bg-white dark:tw-bg-grey-dark tw-rounded-2xl tw-shadow-sm tw-p-8 tw-flex tw-gap-8 tw-min-w-[700px] tw-h-auto ${className || ""}`}
+      className={`tw-bg-white dark:tw-bg-grey-dark tw-rounded-2xl tw-p-8 md:tw-flex tw-gap-8 tw-min-w-[700px] tw-h-auto ${className || ""}`}
     >
-      <div className="tw-flex-shrink-0 tw-flex tw-items-center tw-justify-center tw-w-32">
+      <div className="tw-flex-shrink-0 tw-my-auto tw-w-32">
         <img src={testimony.imgSrc} alt="" className="tw-max-w-full tw-object-contain" />
       </div>
 
-      <div className="tw-w-px tw-bg-gray-200 tw-flex-shrink-0"></div>
+      <div className="tw-hidden md:tw-block tw-w-px tw-bg-gray-200 tw-flex-shrink-0" />
 
       <div className="tw-flex tw-flex-col tw-flex-1 tw-min-h-[200px]">
         <div className="tw-mb-6">

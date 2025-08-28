@@ -56,7 +56,7 @@ export default function HowItWorksSection() {
           ]}
         />
         {userSituation === "has-site-and-project" ? (
-          <div className="tw-grid tw-grid-cols-5 tw-gap-6">
+          <div className="tw-grid tw-grid-cols-2 md:tw-grid-cols-5 tw-gap-6">
             <Step emoji="📍" title="Je décris mon site">
               Type de site, sols, pollution, gestion du site... avec un maximum de données
               pré-remplies par l'outil.
@@ -79,7 +79,7 @@ export default function HowItWorksSection() {
             </Step>
           </div>
         ) : (
-          <div className="tw-grid tw-grid-cols-4 tw-gap-6">
+          <div className="tw-grid tw-grid-cols-2 md:tw-grid-cols-5 tw-gap-6">
             <Step emoji="✍️" title="Je décris ma friche">
               Adresse, terrain, bâtiments, environnement... avec un maximum de données pré-remplies
               par l'outil.
