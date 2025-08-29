@@ -79,7 +79,7 @@ export default function HowItWorksSection() {
             </Step>
           </div>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             <Step emoji="✍️" title="Je décris ma friche">
               Adresse, terrain, bâtiments, environnement... avec un maximum de données pré-remplies
               par l'outil.
