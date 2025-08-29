@@ -91,7 +91,7 @@ function NonSuitableSoilsSurfaceToTransformForm({
           );
         })}
         <RowNumericInput
-          className="tw-pb-5"
+          className="pb-5"
           label="Total des sols à aplanir ou remblayer"
           addonText={SQUARE_METERS_HTML_SYMBOL}
           nativeInputProps={{

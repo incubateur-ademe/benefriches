@@ -67,7 +67,7 @@ function ProjectCreationDataSummary({
         getSectionButtonProps={getSectionButtonProps}
       />
 
-      <div className="tw-mt-8">
+      <div className="mt-8">
         <BackNextButtonsGroup onBack={onBack} onNext={onNext} nextLabel="Valider" />
       </div>
     </WizardFormLayout>

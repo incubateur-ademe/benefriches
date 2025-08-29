@@ -15,9 +15,9 @@ function MyProjectsPageHeader() {
   const dispatch = useAppDispatch();
 
   return (
-    <div className={classNames("tw-flex", "tw-justify-between", "tw-items-center")}>
+    <div className={classNames("flex", "justify-between", "items-center")}>
       <h2>Mes projets</h2>
-      <div className={classNames("tw-flex", "tw-gap-2", "tw-mb-6")}>
+      <div className={classNames("flex", "gap-2", "mb-6")}>
         <div className="tour-guide-step-create-new-site">
           <Button
             size={isSmScreen ? "small" : "medium"}

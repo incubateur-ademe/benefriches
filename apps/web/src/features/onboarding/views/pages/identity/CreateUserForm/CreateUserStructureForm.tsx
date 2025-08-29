@@ -183,7 +183,7 @@ function UserStructureForm({ administrativeDivisionService, formContext }: Props
       {structureCategory === "local_authority" ? (
         <>
           <Autocomplete
-            className="tw-mb-6"
+            className="mb-6"
             value={selectedStructureMunicipality}
             options={suggestions}
             onSelect={(value: string) => {
@@ -233,7 +233,7 @@ function UserStructureForm({ administrativeDivisionService, formContext }: Props
           {externalServiceError && (
             <>
               <Alert
-                className="tw-mb-4"
+                className="mb-4"
                 small
                 severity="warning"
                 title="Erreur de récupération des données"

@@ -59,21 +59,19 @@ export default function UrbanSprawlImpactsComparisonIntroduction({
   }, [currentStep, onBackToStep, routeStep]);
 
   return (
-    <div className="fr-container tw-my-8 md:tw-my-20">
-      <div className="md:tw-w-3/4 tw-mx-auto">
+    <div className="fr-container my-8 md:my-20">
+      <div className="md:w-3/4 mx-auto">
         {(() => {
           if (dataLoadingState === "error") {
             return (
-              <div className="tw-py-6">
+              <div className="py-6">
                 <HtmlTitle>{`Erreur - Introduction - Comparaison des impacts`}</HtmlTitle>
-                <h1 className="tw-text-sm tw-uppercase tw-font-normal tw-mb-1">
-                  Comparaison des impacts
-                </h1>
+                <h1 className="text-sm uppercase font-normal mb-1">Comparaison des impacts</h1>
                 <Alert
                   description="Une erreur s'est produite lors du chargement des données, veuillez réessayer."
                   severity="error"
                   title="Impossible de charger la comparaison des impacts du projet"
-                  className="tw-my-7"
+                  className="my-7"
                 />
               </div>
             );

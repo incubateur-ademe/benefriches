@@ -21,15 +21,15 @@ const labelFormatter = ({
   valueFormat,
 }: Pick<Props, "nbColumns" | "valueFormat"> & Props["categories"][number]) => {
   if (nbColumns < 5) {
-    return `<strong class="tw-line-clamp-1">${label}</strong><br>${formatModalBarChartValue(total, valueFormat)}`;
+    return `<strong class="line-clamp-1">${label}</strong><br>${formatModalBarChartValue(total, valueFormat)}`;
   }
 
   const emoji = extractEmoji(label);
 
   if (nbColumns < 7) {
     const spanLabel = emoji
-      ? `<span class="tw-text-xl">${emoji}</span>`
-      : `<strong class="tw-line-clamp-1">${label}</strong>`;
+      ? `<span class="text-xl">${emoji}</span>`
+      : `<strong class="line-clamp-1">${label}</strong>`;
 
     return `${spanLabel}<br>${formatModalBarChartValue(total, valueFormat, {
       notation: "compact",
@@ -37,7 +37,7 @@ const labelFormatter = ({
     })}`;
   }
 
-  return `<span class="tw-text-xl">${emoji}</span>`;
+  return `<span class="text-xl">${emoji}</span>`;
 };
 
 export const getBarChartOptions = ({

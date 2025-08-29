@@ -46,7 +46,7 @@ const ImpactItemDetails = ({
   return (
     <div
       onClick={hasData ? onToggleAccordion : undefined}
-      className={classNames(hasData && "tw-cursor-pointer")}
+      className={classNames(hasData && "cursor-pointer")}
     >
       <ImpactRowValue
         label={label}
@@ -60,7 +60,7 @@ const ImpactItemDetails = ({
         labelProps={labelProps}
       />
       {hasData && displayDetails && (
-        <div className={classNames("tw-pl-4")}>
+        <div className={classNames("pl-4")}>
           {data.map(({ label: detailsLabel, value: detailsValue, ...rest }) => (
             <ImpactRowValue
               value={detailsValue}

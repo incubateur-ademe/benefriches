@@ -8,7 +8,7 @@ type Props = {
 
 const ScenarioTileTitle = ({ children }: Props) => {
   return (
-    <h3 className={classNames(fr.cx("fr-tile__title"), "before:tw-content-none", "tw-text-lg")}>
+    <h3 className={classNames(fr.cx("fr-tile__title"), "before:content-none", "text-lg")}>
       {children}
     </h3>
   );

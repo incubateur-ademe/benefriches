@@ -14,12 +14,12 @@ const WithAddon = ({ state, children, addon }: WithAddonProps) => {
       {children}
       <div
         className={classNames(
-          "tw-px-2 tw-pt-[8px]",
-          "tw-bg-dsfr-contrastGrey",
-          "tw-text-nowrap",
-          "tw-border-solid tw-border-0 tw-border-b-2 tw-border-[#000091]",
-          state === "error" && "tw-border-dsfr-red",
-          state === "success" && "tw-border-dsfr-borderSuccess",
+          "px-2 pt-[8px]",
+          "bg-dsfr-contrastGrey",
+          "text-nowrap",
+          "border-solid border-0 border-b-2 border-[#000091]",
+          state === "error" && "border-dsfr-red",
+          state === "success" && "border-dsfr-borderSuccess",
         )}
       >
         {addon}
@@ -64,8 +64,8 @@ const RowNumericInput = ({
   return (
     <div
       className={classNames(
-        "tw-flex tw-flex-col md:tw-flex-row tw-justify-between tw-items-start",
-        "tw-mb-0 tw-pt-7",
+        "flex flex-col md:flex-row justify-between items-start",
+        "mb-0 pt-7",
         "fr-input-group",
         fr.cx(
           disabled && "fr-input-group--disabled",
@@ -77,7 +77,7 @@ const RowNumericInput = ({
       )}
       id={id}
     >
-      <div className="tw-flex tw-gap-2 tw-items-start tw-mb-2 md:tw-mb-0">
+      <div className="flex gap-2 items-start mb-2 md:mb-0">
         {imgSrc && (
           <img
             src={imgSrc}
@@ -85,17 +85,17 @@ const RowNumericInput = ({
             height="60px"
             aria-hidden="true"
             alt=""
-            className={classNames(disabled && "tw-filter tw-grayscale")}
+            className={classNames(disabled && "filter grayscale")}
           />
         )}
-        <label className={classNames("tw-text-lg", fr.cx("fr-label"))} htmlFor={inputId}>
+        <label className={classNames("text-lg", fr.cx("fr-label"))} htmlFor={inputId}>
           {label}
-          {hintText && <span className="fr-hint-text tw-text-sm tw-font-normal">{hintText}</span>}
+          {hintText && <span className="fr-hint-text text-sm font-normal">{hintText}</span>}
           {state !== "default" && (
             <p
               id={messageId}
               className={classNames(
-                "tw-mt-0",
+                "mt-0",
                 fr.cx(state === "error" && "fr-error-text", state === "success" && "fr-valid-text"),
                 state === "warning" && "fr-info-text fr-warning-text",
               )}
@@ -106,7 +106,7 @@ const RowNumericInput = ({
         </label>
       </div>
 
-      <div className="tw-w-full md:tw-w-44">
+      <div className="w-full md:w-44">
         <WithAddon state={state} addon={addonText}>
           <input
             {...nativeInputProps}
@@ -124,7 +124,7 @@ const RowNumericInput = ({
             pattern="[0-9]*[.,]?[0-9]+"
           />
         </WithAddon>
-        {hintInputText && <span className="fr-hint-text !tw-mt-1">{hintInputText}</span>}
+        {hintInputText && <span className="fr-hint-text !mt-1">{hintInputText}</span>}
       </div>
     </div>
   );

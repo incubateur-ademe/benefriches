@@ -15,12 +15,12 @@ const ModalContent = ({ children, fullWidth = false, noTitle = false }: Props) =
   return (
     <div
       className={classNames(
-        fullWidth ? "tw-px-6 md:tw-px-[204px]" : "tw-px-6 md:tw-px-10",
-        noTitle ? "tw-pt-8" : "tw-pt-4",
-        "tw-pb-10",
-        "tw-mb-0",
+        fullWidth ? "px-6 md:px-[204px]" : "px-6 md:px-10",
+        noTitle ? "pt-8" : "pt-4",
+        "pb-10",
+        "mb-0",
         fr.cx("fr-modal__content"),
-        "tw-bg-[var(--background-alt-grey)]",
+        "bg-[var(--background-alt-grey)]",
       )}
     >
       {!noTitle && <ModalTitleTwo>Qu'est-ce que c'est ?</ModalTitleTwo>}

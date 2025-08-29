@@ -3,5 +3,5 @@ type Props = {
 };
 
 export default function EditorialPageText({ children }: Props) {
-  return <p className="tw-text-xl tw-mb-10">{children}</p>;
+  return <p className="text-xl mb-10">{children}</p>;
 }

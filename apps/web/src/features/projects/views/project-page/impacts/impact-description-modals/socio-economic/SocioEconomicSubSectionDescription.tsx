@@ -93,7 +93,7 @@ const SocioEconomicSubSectionDescription = ({
           <ul>
             <li>
               <Button
-                className="tw-px-1"
+                className="px-1"
                 priority="tertiary no outline"
                 onClick={() => {
                   updateModalContent({
@@ -107,7 +107,7 @@ const SocioEconomicSubSectionDescription = ({
             </li>
             <li>
               <Button
-                className="tw-px-1"
+                className="px-1"
                 priority="tertiary no outline"
                 onClick={() => {
                   updateModalContent({
@@ -121,7 +121,7 @@ const SocioEconomicSubSectionDescription = ({
             </li>
             <li>
               <Button
-                className="tw-px-1"
+                className="px-1"
                 priority="tertiary no outline"
                 onClick={() => {
                   updateModalContent({
@@ -135,7 +135,7 @@ const SocioEconomicSubSectionDescription = ({
             </li>
             <li>
               <Button
-                className="tw-px-1"
+                className="px-1"
                 priority="tertiary no outline"
                 onClick={() => {
                   updateModalContent({

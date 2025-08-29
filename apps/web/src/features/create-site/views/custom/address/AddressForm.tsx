@@ -56,7 +56,7 @@ function SiteAddressForm({ initialValues, onSubmit, siteNature, onBack }: Props)
             Si vous ne connaissez pas l'adresse exacte, entrez simplement le nom de la commune ou
             son code postal.
           </p>
-          <p className="tw-text-sm tw-m-0">
+          <p className="text-sm m-0">
             L'adresse sert à positionner le site dans son environnement local, ce qui est utile
             pour&nbsp;:
           </p>
@@ -111,7 +111,7 @@ function SiteAddressForm({ initialValues, onSubmit, siteNature, onBack }: Props)
             />
           )}
         />
-        <div className="tw-mt-4">
+        <div className="mt-4">
           <BackNextButtonsGroup onBack={onBack} disabled={!selectedAddress} nextLabel="Valider" />
         </div>
       </form>

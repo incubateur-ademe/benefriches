@@ -46,14 +46,14 @@ function SiteExpensesIncomeSummary({
       ) : (
         <div
           className={classNames(
-            "tw-flex",
-            "tw-justify-around",
-            "tw-border",
-            "tw-border-solid",
-            "tw-border-borderGrey",
-            "tw-my-8",
-            "tw-p-4",
-            "tw-pt-6",
+            "flex",
+            "justify-around",
+            "border",
+            "border-solid",
+            "border-borderGrey",
+            "my-8",
+            "p-4",
+            "pt-6",
           )}
         >
           <ExpensesIncomeBarChart

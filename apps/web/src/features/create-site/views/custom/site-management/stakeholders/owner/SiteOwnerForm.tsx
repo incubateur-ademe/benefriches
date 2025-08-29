@@ -138,7 +138,7 @@ function SiteOwnerForm({
 
           <RadioButton
             label={
-              <span className="tw-flex tw-items-center">
+              <span className="flex items-center">
                 {currentUserStructure?.type === "local_authority"
                   ? `Une entreprise`
                   : "Une autre entreprise"}

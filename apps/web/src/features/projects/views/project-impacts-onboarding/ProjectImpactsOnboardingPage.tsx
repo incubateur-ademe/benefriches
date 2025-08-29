@@ -54,8 +54,8 @@ export default function ProjectImpactsOnboardingPage({
   const shouldDisableStepByStepAnimation = windowInnerWidth < breakpointsValues.md;
 
   return (
-    <div className="fr-container tw-my-8 md:tw-my-20">
-      <div className="md:tw-w-3/4 tw-mx-auto">
+    <div className="fr-container my-8 md:my-20">
+      <div className="md:w-3/4 mx-auto">
         {(() => {
           switch (currentStep) {
             case STEPS[1]:

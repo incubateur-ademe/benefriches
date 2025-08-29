@@ -16,7 +16,7 @@ type Props = {
 
 const ImpactSummaryView = ({ keyImpactIndicatorsList, modalData }: Props) => {
   return (
-    <section className="tw-mt-10 tw-grid tw-grid-rows-1 lg:tw-grid-cols-3 tw-gap-6">
+    <section className="mt-10 grid grid-rows-1 lg:grid-cols-3 gap-6">
       {keyImpactIndicatorsList
         .sort(
           ({ name: aName }, { name: bName }) =>

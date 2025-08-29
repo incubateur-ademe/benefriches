@@ -10,17 +10,17 @@ type Props = {
 };
 
 const EmojiListItem = ({ emoji, children, small = false, emojiClassName }: Props) => (
-  <li className="tw-relative tw-p-3">
+  <li className="relative p-3">
     <span
       className={classNames(
-        "tw-absolute",
-        "tw-w-10 tw-h-10",
-        "-tw-left-10 tw-top-[calc(50%-20px)]",
-        "tw-rounded-full",
-        "tw-flex",
-        "tw-justify-center",
-        "tw-items-center",
-        small ? "tw-text-base" : "tw-text-2xl",
+        "absolute",
+        "w-10 h-10",
+        "-left-10 top-[calc(50%-20px)]",
+        "rounded-full",
+        "flex",
+        "justify-center",
+        "items-center",
+        small ? "text-base" : "text-2xl",
         emojiClassName,
       )}
       aria-hidden="true"

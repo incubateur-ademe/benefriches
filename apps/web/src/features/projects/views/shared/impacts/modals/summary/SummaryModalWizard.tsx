@@ -31,7 +31,7 @@ type Props = {
 
 export function SummaryModalWizard({ impactData }: Props) {
   return (
-    <Suspense fallback={<LoadingSpinner classes={{ text: "tw-text-grey-light" }} />}>
+    <Suspense fallback={<LoadingSpinner classes={{ text: "text-grey-light" }} />}>
       {(() => {
         switch (impactData.name) {
           case "zanCompliance":

@@ -66,7 +66,7 @@ export default function SiteFeaturesPdfPage({ siteFeatures }: Props) {
                   labelClassName="font-bold"
                 />
                 {sumObjectValues(siteFeatures.accidents) > 0 && (
-                  <div className="tw-ml-4">
+                  <div className="ml-4">
                     <DataLine
                       label="Blessés légers"
                       value={siteFeatures.accidents.minorInjuries ?? "Non renseigné"}

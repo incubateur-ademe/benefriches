@@ -31,10 +31,10 @@ const ImpactsChartsView = ({
 }: Props) => {
   const displayEconomicBalance = economicBalance.economicBalance.length > 0;
   return (
-    <section className="tw-mt-10 tw-flex tw-flex-col tw-gap-8">
+    <section className="mt-10 flex flex-col gap-8">
       {(displayEconomicBalance || socioEconomicImpactsByActor.length > 0) && (
         <>
-          <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {displayEconomicBalance && (
               <CostBenefitAnalysisChartCard
                 economicBalanceTotal={economicBalance.total}

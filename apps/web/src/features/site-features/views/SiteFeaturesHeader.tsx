@@ -29,11 +29,11 @@ export default function SiteFeaturesHeader({
   isExpressSite,
 }: Props) {
   return (
-    <section className={classNames("tw-py-8", "tw-bg-impacts-main", "dark:tw-bg-grey-dark")}>
+    <section className={classNames("py-8", "bg-impacts-main", "dark:bg-grey-dark")}>
       <div className={fr.cx("fr-container")}>
-        <div className="tw-flex tw-items-center">
+        <div className="flex items-center">
           <img
-            className="tw-mr-3"
+            className="mr-3"
             src={getPictogramUrlForSiteNature(siteNature)}
             aria-hidden={true}
             alt=""
@@ -41,10 +41,10 @@ export default function SiteFeaturesHeader({
             height={76}
           />
           <div>
-            <div className="md:tw-inline-flex md:tw-items-center">
-              <h2 className="tw-my-0">{siteName}</h2>
+            <div className="md:inline-flex md:items-center">
+              <h2 className="my-0">{siteName}</h2>
               {isExpressSite && (
-                <Badge small className="tw-my-2 md:tw-mx-3" style="blue">
+                <Badge small className="my-2 md:mx-3" style="blue">
                   Site express
                 </Badge>
               )}

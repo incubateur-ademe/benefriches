@@ -19,7 +19,7 @@ const ModalBody = ({ children, size = "medium" }: Props) => {
             size === "small" && ["fr-col-12", "fr-col-md-8", "fr-col-lg-6"],
           )}
         >
-          <div className={classNames(fr.cx("fr-modal__body"), "tw-mb-24")}>{children}</div>
+          <div className={classNames(fr.cx("fr-modal__body"), "mb-24")}>{children}</div>
         </div>
       </div>
     </div>

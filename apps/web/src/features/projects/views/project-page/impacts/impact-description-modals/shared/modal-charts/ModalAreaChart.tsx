@@ -18,15 +18,12 @@ const ModalAreaChart = (props: Props) => {
     <Tooltip
       kind="hover"
       title={
-        <div className="!tw-text-xs">
+        <div className="!text-xs">
           {data.map(({ label, difference, color }) => (
-            <div
-              key={label}
-              className="tw-py-1 tw-flex tw-justify-between tw-items-center tw-gap-2"
-            >
-              <div className="tw-flex tw-items-center tw-gap-2">
+            <div key={label} className="py-1 flex justify-between items-center gap-2">
+              <div className="flex items-center gap-2">
                 <span
-                  className="tw-min-h-3 tw-min-w-3 tw-rounded"
+                  className="min-h-3 min-w-3 rounded"
                   style={color ? { backgroundColor: color } : {}}
                 ></span>
                 <span>{label}</span>

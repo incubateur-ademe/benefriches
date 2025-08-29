@@ -34,7 +34,7 @@ function ImpactEvaluationPeriodSelect({ value, onChange }: Props) {
     <Popover className="relative">
       <PopoverButton as="div">
         <Button
-          className="tw-min-w-[165px] tw-bg-white dark:tw-bg-black"
+          className="min-w-[165px] bg-white dark:bg-black"
           iconId="fr-icon-arrow-down-s-line"
           iconPosition="right"
           priority="secondary"
@@ -45,19 +45,19 @@ function ImpactEvaluationPeriodSelect({ value, onChange }: Props) {
       <PopoverPanel
         anchor="bottom end"
         className={classNames(
-          "tw-w-96",
-          "tw-mt-2",
-          "tw-rounded-md",
-          "tw-bg-white dark:!tw-bg-dsfr-contrastGrey",
-          "tw-shadow-lg",
-          "tw-ring-1 tw-ring-black/5",
-          "tw-p-4",
-          "tw-z-40",
+          "w-96",
+          "mt-2",
+          "rounded-md",
+          "bg-white dark:!bg-dsfr-contrastGrey",
+          "shadow-lg",
+          "ring-1 ring-black/5",
+          "p-4",
+          "z-40",
         )}
       >
         {({ close }) => (
           <form
-            className="tw-flex tw-flex-col"
+            className="flex flex-col"
             onSubmit={handleSubmit((formData) => {
               onChange(formData.evaluationPeriodInYears);
               close();
@@ -81,13 +81,13 @@ function ImpactEvaluationPeriodSelect({ value, onChange }: Props) {
               )}
             />
 
-            <div className="tw-text-xs tw-py-4 tw-text-[var(--text-default-info)]">
+            <div className="text-xs py-4 text-[var(--text-default-info)]">
               <i className={fr.cx("fr-icon--xs", "fr-icon-info-fill")}></i> Durée à partir de la
               mise en service du projet
             </div>
 
             <Button
-              className="tw-self-end"
+              className="self-end"
               size="small"
               type="submit"
               disabled={value === formEvaluationPeriod}

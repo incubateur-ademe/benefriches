@@ -46,11 +46,11 @@ function ScenarioTile({
     <div
       className={classNames(
         fr.cx("fr-tile", "fr-tile--no-border"),
-        "tw-border",
-        "tw-border-solid",
-        "tw-rounded-lg",
-        isSelected ? "tw-border-dsfr-borderBlue" : "tw-border-borderGrey",
-        isHovered ? "tw-bg-grey-light dark:tw-bg-grey-dark" : "tw-bg-none",
+        "border",
+        "border-solid",
+        "rounded-lg",
+        isSelected ? "border-dsfr-borderBlue" : "border-borderGrey",
+        isHovered ? "bg-grey-light dark:bg-grey-dark" : "bg-none",
         className,
       )}
       {...rest}
@@ -58,24 +58,24 @@ function ScenarioTile({
       <WithTooltip tooltipText={tooltipText}>
         <div className="fr-tile__body">
           <div className="fr-tile__content">
-            <a {...linkProps} className="tw-bg-none">
+            <a {...linkProps} className="bg-none">
               {pictogramUrl && <ScenarioTileImage imageUrl={pictogramUrl} />}
               <ScenarioTileTitle>{title}</ScenarioTileTitle>
-              <div className="fr-tile__details tw-grow">
-                <p className="fr-tile__desc tw-text-sm dark:tw-text-grey-main">{details}</p>
+              <div className="fr-tile__details grow">
+                <p className="fr-tile__desc text-sm dark:text-grey-main">{details}</p>
               </div>
               {badgeText && (
-                <Badge small className="tw-mt-2" style="blue">
+                <Badge small className="mt-2" style="blue">
                   {badgeText}
                 </Badge>
               )}
             </a>
             <Checkbox
               className={classNames(
-                "tw-mt-3",
+                "mt-3",
                 // Scenarii comparison is not released yet
-                "tw-hidden",
-                shouldDisplayCheckbox ? "tw-visible" : "tw-invisible",
+                "hidden",
+                shouldDisplayCheckbox ? "visible" : "invisible",
               )}
               options={[
                 {

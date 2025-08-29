@@ -20,37 +20,37 @@ type Props = {
 };
 
 const commonTdClasses = [
-  "tw-px-2",
-  "tw-py-1",
-  "tw-border-0",
-  "tw-border-solid",
-  "tw-border-borderGrey",
-  "dark:tw-border-grey-dark",
+  "px-2",
+  "py-1",
+  "border-0",
+  "border-solid",
+  "border-borderGrey",
+  "dark:border-grey-dark",
 ];
 
 const columnClasses = {
-  firstColumn: [...commonTdClasses, "tw-w-8", "tw-bg-white", "dark:tw-bg-black", "tw-border-l"],
+  firstColumn: [...commonTdClasses, "w-8", "bg-white", "dark:bg-black", "border-l"],
 
-  contentColumns: [...commonTdClasses, "tw-bg-white", "dark:tw-bg-black"],
+  contentColumns: [...commonTdClasses, "bg-white", "dark:bg-black"],
 
-  valueColumns: [...commonTdClasses, "tw-text-center", "tw-w-44"],
+  valueColumns: [...commonTdClasses, "text-center", "w-44"],
 
-  baseCaseColumn: [...commonTdClasses, "tw-bg-[#F9F6EB] dark:tw-bg-[#806922]"],
+  baseCaseColumn: [...commonTdClasses, "bg-[#F9F6EB] dark:bg-[#806922]"],
 
-  comparisonColumn: [...commonTdClasses, "tw-bg-[#F9EBF6] dark:tw-bg-[#7F236B]", "tw-border-r"],
+  comparisonColumn: [...commonTdClasses, "bg-[#F9EBF6] dark:bg-[#7F236B]", "border-r"],
 };
 
 const borderClasses = {
   firstRow: {
-    all: ["tw-border-t"],
-    firstCol: ["tw-border-t", "tw-border-l", "tw-rounded-tl"],
-    lastCol: ["tw-border-t", "tw-border-r", "tw-rounded-tr"],
+    all: ["border-t"],
+    firstCol: ["border-t", "border-l", "rounded-tl"],
+    lastCol: ["border-t", "border-r", "rounded-tr"],
   },
 
   lastRow: {
-    firstCol: ["tw-border-l", "tw-rounded-bl"],
-    all: ["tw-border-b"],
-    lastCol: ["tw-rounded-br", "tw-border-r"],
+    firstCol: ["border-l", "rounded-bl"],
+    all: ["border-b"],
+    lastCol: ["rounded-br", "border-r"],
   },
 };
 
@@ -69,14 +69,14 @@ const ImpactComparisonTableRow = ({
       <td
         className={classNames([
           columnClasses.firstColumn,
-          accordion && "!tw-pb-1 !tw-pt-1",
+          accordion && "!pb-1 !pt-1",
           isFirst && [borderClasses.firstRow.all, borderClasses.firstRow.firstCol],
           isLast && [borderClasses.lastRow.all, borderClasses.lastRow.firstCol],
         ])}
       >
         {accordion ? (
           <Button
-            className={classNames("tw-text-black dark:tw-text-white", "tw-text-xl")}
+            className={classNames("text-black dark:text-white", "text-xl")}
             iconId={accordion.isOpened ? "fr-icon-arrow-up-s-fill" : "fr-icon-arrow-down-s-fill"}
             onClick={accordion.onToggleAccordion}
             size="small"
@@ -87,8 +87,8 @@ const ImpactComparisonTableRow = ({
       </td>
       <td
         className={classNames([
-          isFirst && "tw-font-bold tw-py-2",
-          isLast && "tw-pb-2",
+          isFirst && "font-bold py-2",
+          isLast && "pb-2",
           columnClasses.contentColumns,
           isFirst && borderClasses.firstRow.all,
           isLast && borderClasses.lastRow.all,
@@ -101,9 +101,9 @@ const ImpactComparisonTableRow = ({
           columnClasses.contentColumns,
           isFirst && borderClasses.firstRow.all,
           isLast && borderClasses.lastRow.all,
-          "tw-text-left",
-          "tw-min-w-48",
-          "tw-pr-6",
+          "text-left",
+          "min-w-48",
+          "pr-6",
         ])}
       >
         {actor}
@@ -115,7 +115,7 @@ const ImpactComparisonTableRow = ({
           isFirst && borderClasses.firstRow.all,
           isLast && borderClasses.lastRow.all,
           getPositiveNegativeTextClassesFromValue(baseValue),
-          isFirst && "tw-font-bold",
+          isFirst && "font-bold",
         ])}
       >
         {baseValue ? formatValueFn(baseValue) : "-"}
@@ -127,7 +127,7 @@ const ImpactComparisonTableRow = ({
           isFirst && [borderClasses.firstRow.all, borderClasses.firstRow.lastCol],
           isLast && [borderClasses.lastRow.all, borderClasses.lastRow.lastCol],
           getPositiveNegativeTextClassesFromValue(comparisonValue),
-          isFirst && "tw-font-bold",
+          isFirst && "font-bold",
         ])}
       >
         {comparisonValue ? formatValueFn(comparisonValue) : "-"}

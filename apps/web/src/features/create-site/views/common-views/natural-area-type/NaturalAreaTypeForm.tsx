@@ -61,8 +61,8 @@ function NaturalAreaTypeForm({ initialValues, onSubmit, onBack }: Props) {
   return (
     <WizardFormLayout title="De quel type d'espace naturel s'agit-il ?">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="tw-my-10">
-          <div className="tw-grid sm:tw-grid-cols-2 tw-gap-4">
+        <div className="my-10">
+          <div className="grid sm:grid-cols-2 gap-4">
             {options.map((option) => {
               return (
                 <Controller

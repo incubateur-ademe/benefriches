@@ -173,7 +173,7 @@ const ExpensesIncomeBarChart = ({
 
   return (
     <div
-      className="tw-w-full"
+      className="w-full"
       style={{
         ...expenses.reduce(
           (style, { color }, index) => ({

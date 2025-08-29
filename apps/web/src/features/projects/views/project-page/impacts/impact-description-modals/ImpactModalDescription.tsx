@@ -101,7 +101,7 @@ function ImpactModalDescription({
           dialogId,
         }}
       >
-        <Suspense fallback={<LoadingSpinner classes={{ text: "tw-text-grey-light" }} />}>
+        <Suspense fallback={<LoadingSpinner classes={{ text: "text-grey-light" }} />}>
           {(() => {
             if (!isOpen) {
               return null;

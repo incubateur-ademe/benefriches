@@ -31,11 +31,11 @@ const BetaBadgeMenu = ({ route }: { route: Props["route"] }) => {
           className={classNames(
             "fr-badge fr-badge--new",
             "fr-badge--sm",
-            "tw-cursor-pointer",
-            "hover:tw-border-2 hover:tw-border-[var(--text-action-high-yellow-moutarde)] hover:tw-border-solid",
-            "focus:tw-border-2 focus:tw-border-[var(--text-action-high-yellow-moutarde)] focus:tw-border-solid",
-            "tw-mx-3",
-            "tw-text-bold",
+            "cursor-pointer",
+            "hover:border-2 hover:border-[var(--text-action-high-yellow-moutarde)] hover:border-solid",
+            "focus:border-2 focus:border-[var(--text-action-high-yellow-moutarde)] focus:border-solid",
+            "mx-3",
+            "text-bold",
           )}
         >
           Bêta
@@ -44,7 +44,7 @@ const BetaBadgeMenu = ({ route }: { route: Props["route"] }) => {
       <MenuItems
         anchor="bottom start"
         transition
-        className={classNames("tw-z-40", "tw-w-36", MENU_ITEMS_CLASSES)}
+        className={classNames("z-40", "w-36", MENU_ITEMS_CLASSES)}
       >
         <MenuItemButton
           iconId="fr-icon-close-line"

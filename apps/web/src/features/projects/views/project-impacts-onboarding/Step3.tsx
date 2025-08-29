@@ -9,9 +9,9 @@ type Props = {
   skipStepByStepAnimation?: boolean;
 };
 
-const TRANSITION_CLASSES = ["tw-transition", "tw-ease-in-out", "tw-duration-1000"] as const;
-const VISIBLE_CLASSES = ["tw-opacity-100", "tw-visible"] as const;
-const INVISIBLE_CLASSES = ["md:tw-opacity-0", "md:tw-invisible"] as const;
+const TRANSITION_CLASSES = ["transition", "ease-in-out", "duration-1000"] as const;
+const VISIBLE_CLASSES = ["opacity-100", "visible"] as const;
+const INVISIBLE_CLASSES = ["md:opacity-0", "md:invisible"] as const;
 
 export default function Step3({ onNextClick, onBackClick, skipStepByStepAnimation }: Props) {
   const [innerStep, setInnerStep] = useState(skipStepByStepAnimation ? 2 : 0);
@@ -21,21 +21,19 @@ export default function Step3({ onNextClick, onBackClick, skipStepByStepAnimatio
   };
   return (
     <>
-      <h1 className="tw-text-[32px]">
+      <h1 className="text-[32px]">
         Vous avez accès au{" "}
-        <span className="tw-bg-[#96ECFF] dark:tw-text-black">calcul de tous les impacts</span>.
+        <span className="bg-[#96ECFF] dark:text-black">calcul de tous les impacts</span>.
       </h1>
 
-      <div className="tw-flex tw-justify-between tw-gap-6">
+      <div className="flex justify-between gap-6">
         <div
           className={classNames(
             TRANSITION_CLASSES,
             innerStep > 0 ? VISIBLE_CLASSES : INVISIBLE_CLASSES,
           )}
         >
-          <p className="tw-text-xl tw-font-bold tw-max-w-72">
-            Les indicateurs d’impact sont cliquables.
-          </p>
+          <p className="text-xl font-bold max-w-72">Les indicateurs d’impact sont cliquables.</p>
           <img
             src="/img/pictograms/project-impacts-onboarding/step3-indicateur.svg"
             aria-hidden="true"
@@ -47,7 +45,7 @@ export default function Step3({ onNextClick, onBackClick, skipStepByStepAnimatio
           className={classNames(
             TRANSITION_CLASSES,
             innerStep > 1 ? VISIBLE_CLASSES : INVISIBLE_CLASSES,
-            "dark:tw-invert",
+            "dark:invert",
           )}
           src="/img/pictograms/project-impacts-onboarding/step3-arrows.svg"
           aria-hidden="true"
@@ -56,12 +54,12 @@ export default function Step3({ onNextClick, onBackClick, skipStepByStepAnimatio
 
         <div
           className={classNames(
-            "tw-my-auto",
+            "my-auto",
             TRANSITION_CLASSES,
             innerStep > 1 ? VISIBLE_CLASSES : INVISIBLE_CLASSES,
           )}
         >
-          <p className="tw-max-w-96 tw-mx-auto">
+          <p className="max-w-96 mx-auto">
             Ils ouvrent une fenêtre qui contient toutes les informations sur l’impact : définition,
             données utilisées, mode de calcul, sources, etc.
           </p>{" "}
@@ -73,7 +71,7 @@ export default function Step3({ onNextClick, onBackClick, skipStepByStepAnimatio
         </div>
       </div>
 
-      <div className="tw-mt-8">
+      <div className="mt-8">
         <ButtonsGroup
           inlineLayoutWhen="always"
           alignment="between"

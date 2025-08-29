@@ -30,7 +30,7 @@ const LinkToTimeTravelSavedSocialImpact = () => {
           impactName: "travel_time_saved",
         });
       }}
-      className="tw-px-1"
+      className="px-1"
       priority="tertiary no outline"
     >
       «&nbsp;⏱ Temps passé en moins dans les transports&nbsp;»

@@ -22,25 +22,25 @@ function ProjectImpactsStickyActionBar({
   return (
     <div
       className={classNames(
-        "tw-bg-dsfr-grey",
-        "tw-shadow-md",
-        "tw-left-0",
-        "tw-z-30",
-        "tw-w-full",
-        "tw-fixed",
-        "tw-top-0",
-        "tw-py-4 md:tw-p-4",
+        "bg-dsfr-grey",
+        "shadow-md",
+        "left-0",
+        "z-30",
+        "w-full",
+        "fixed",
+        "top-0",
+        "py-4 md:p-4",
       )}
     >
       <div
         className={classNames(
           fr.cx("fr-container"),
-          "tw-flex",
-          "tw-flex-col",
-          "md:tw-flex-row",
-          "tw-justify-between",
-          "tw-items-end",
-          "md:tw-items-center",
+          "flex",
+          "flex-col",
+          "md:flex-row",
+          "justify-between",
+          "items-end",
+          "md:items-center",
         )}
       >
         {header}

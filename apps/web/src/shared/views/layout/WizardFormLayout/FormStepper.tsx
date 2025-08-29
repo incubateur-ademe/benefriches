@@ -27,47 +27,47 @@ const Step = ({ title, index, currentStepIndex, isDone }: StepProps) => {
   return (
     <li
       className={classNames(
-        "tw-flex",
-        "tw-items-center",
-        "tw-p-2",
-        "marker:tw-content-none",
-        "tw-text-sm",
-        !isExtended && "tw-justify-center",
-        isCompleted && "tw-text-green-main",
+        "flex",
+        "items-center",
+        "p-2",
+        "marker:content-none",
+        "text-sm",
+        !isExtended && "justify-center",
+        isCompleted && "text-green-main",
         isCurrent
           ? [
-              "tw-bg-blue-ultralight dark:tw-bg-blue-ultradark",
-              "tw-text-blue-ultradark dark:tw-text-blue-ultralight",
+              "bg-blue-ultralight dark:bg-blue-ultradark",
+              "text-blue-ultradark dark:text-blue-ultralight",
             ]
-          : "tw-text-dsfr-greyDisabled",
+          : "text-dsfr-greyDisabled",
       )}
       key={title}
     >
       <span
         className={classNames(
-          isExtended ? "tw-mx-4" : "tw-mx-0",
+          isExtended ? "mx-4" : "mx-0",
           isCompleted
-            ? "fr-icon-success-line tw-text-green-light"
+            ? "fr-icon-success-line text-green-light"
             : [
-                "before:tw-content-[counter(li-counter)]",
-                "tw-font-bold",
-                "tw-text-xs",
-                "tw-text-white",
-                "tw-rounded-full",
-                "tw-leading-6",
-                "tw-min-w-6",
-                "tw-h-6",
-                "tw-text-center",
-                isCurrent ? "tw-bg-blue-main" : "tw-bg-grey-main dark:tw-bg-grey-dark",
+                "before:content-[counter(li-counter)]",
+                "font-bold",
+                "text-xs",
+                "text-white",
+                "rounded-full",
+                "leading-6",
+                "min-w-6",
+                "h-6",
+                "text-center",
+                isCurrent ? "bg-blue-main" : "bg-grey-main dark:bg-grey-dark",
               ],
         )}
         aria-hidden="true"
       />
       {isExtended && (
         <>
-          <span className={isCurrent ? "tw-font-medium" : ""}>{title}</span>
+          <span className={isCurrent ? "font-medium" : ""}>{title}</span>
           {isCurrent && (
-            <span className="fr-icon-arrow-right-s-line tw-ml-auto" aria-hidden="true"></span>
+            <span className="fr-icon-arrow-right-s-line ml-auto" aria-hidden="true"></span>
           )}
         </>
       )}
@@ -77,7 +77,7 @@ const Step = ({ title, index, currentStepIndex, isDone }: StepProps) => {
 
 function FormStepper({ steps, currentStepIndex, isDone = false }: Props) {
   return (
-    <ol role="list" className={classNames("tw-list-none", "tw-list-inside", "tw-p-0")}>
+    <ol role="list" className={classNames("list-none", "list-inside", "p-0")}>
       {steps.map((title, index) => (
         <Step
           key={title}

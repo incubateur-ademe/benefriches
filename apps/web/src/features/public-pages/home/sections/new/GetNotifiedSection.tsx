@@ -2,15 +2,15 @@ import Button from "@codegouvfr/react-dsfr/Button";
 
 export default function GetNotifiedSection() {
   return (
-    <section className="tw-bg-[#64C7ED] tw-py-20">
+    <section className="bg-[#64C7ED] py-20">
       <div className="fr-container">
-        <div className="tw-flex tw-flex-col md:tw-flex-row tw-gap-6 tw-items-center md:tw-justify-between">
-          <img src="/img/pictograms/newsletter.svg" alt="" className="md:tw-mr-16" />
-          <div className="md:tw-mr-12">
-            <h2 className="dark:tw-text-grey-dark">
+        <div className="flex flex-col md:flex-row gap-6 items-center md:justify-between">
+          <img src="/img/pictograms/newsletter.svg" alt="" className="md:mr-16" />
+          <div className="md:mr-12">
+            <h2 className="dark:text-grey-dark">
               Bénéfriches, un produit de l'ADEME qui évolue chaque jour
             </h2>
-            <p className="dark:tw-text-grey-dark">
+            <p className="dark:text-grey-dark">
               Soyez informé·e de la sortie des prochaines fonctionnalités de l'outil !
             </p>
           </div>
@@ -18,7 +18,7 @@ export default function GetNotifiedSection() {
             priority="primary"
             data-tally-open="npKkaE"
             data-tally-width="450"
-            className="tw-whitespace-nowrap"
+            className="whitespace-nowrap"
           >
             Être tenu informé·e
           </Button>

@@ -21,16 +21,16 @@ function HeaderFooterLayout({ children, headerProps = {} }: HeaderFooterLayoutPr
   return (
     <div
       className={classNames(
-        "tw-flex",
-        "tw-flex-col",
-        "tw-h-screen",
+        "flex",
+        "flex-col",
+        "h-screen",
         // Force highchart à suivre la config dsfr pour le dark mode,
         // sinon la lib suit la config du navigateur "prefers-color-scheme"
         isDark ? "highcharts-dark" : "highcharts-light",
       )}
     >
       <BenefrichesHeader {...headerProps} />
-      <main className="tw-grow">{children}</main>
+      <main className="grow">{children}</main>
       <BenefrichesFooter />
     </div>
   );

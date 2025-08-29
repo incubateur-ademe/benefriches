@@ -78,7 +78,7 @@ export default {
         step3: "#919CB3",
         step4: "#F80338",
       },
-      // can be used with classes tw-soils-buildings, tw-soils-impermeable-soils...
+      // can be used with classes soils-buildings, soils-impermeable-soils...
       soils: soilColors,
     },
   },

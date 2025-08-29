@@ -53,13 +53,13 @@ function ProjectPage({
   return (
     <div
       id="project-impacts-page"
-      className={classNames("tw-bg-grey-light dark:tw-bg-grey-dark", "tw-h-full")}
+      className={classNames("bg-grey-light dark:bg-grey-dark", "h-full")}
     >
-      <div className="tw-py-8">
+      <div className="py-8">
         <ProjectsImpactsPageHeader {...headerProps} />
       </div>
 
-      <div className="fr-container tw-pb-14">
+      <div className="fr-container pb-14">
         <ProjectImpactsActionBar
           selectedViewMode={currentViewMode}
           evaluationPeriod={evaluationPeriod}
@@ -72,7 +72,7 @@ function ProjectPage({
             description="Une erreur s'est produite lors du chargement des données, veuillez réessayer."
             severity="error"
             title="Impossible de charger les impacts et caractéristiques du projet"
-            className="tw-my-7"
+            className="my-7"
           />
         )}
         {dataLoadingState === "loading" && <LoadingSpinner />}

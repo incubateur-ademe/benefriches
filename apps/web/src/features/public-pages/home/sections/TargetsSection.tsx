@@ -8,10 +8,10 @@ type TargetItemProps = {
 function TargetItem({ title, text, imgUrl }: TargetItemProps) {
   return (
     <li>
-      <div className="tw-h-[100px]">
+      <div className="h-[100px]">
         <img src={imgUrl} alt="" aria-hidden="true" />
       </div>
-      <h3 className="tw-text-xl tw-mb-2">{title}</h3>
+      <h3 className="text-xl mb-2">{title}</h3>
       <p className={fr.cx("fr-text--sm")}>{text}</p>
     </li>
   );
@@ -19,10 +19,10 @@ function TargetItem({ title, text, imgUrl }: TargetItemProps) {
 
 export default function TargetsSection() {
   return (
-    <section className="tw-py-20 tw-bg-grey-light dark:tw-bg-grey-dark">
+    <section className="py-20 bg-grey-light dark:bg-grey-dark">
       <div className={fr.cx("fr-container")}>
         <h2>Un service pour tous les projets d'aménagement</h2>
-        <ul className="tw-grid tw-grid-cols-1 sm:tw-grid-cols-3 tw-gap-10 tw-list-none">
+        <ul className="grid grid-cols-1 sm:grid-cols-3 gap-10 list-none">
           <TargetItem
             title="Tous les métiers"
             text="Chargés d'opération en collectivité, aménageurs urbains, promoteurs,  bailleurs sociaux,  développeurs de centrales photovoltaïques ou industriels, Bénéfriches prend en compte les besoins liés à votre métier."

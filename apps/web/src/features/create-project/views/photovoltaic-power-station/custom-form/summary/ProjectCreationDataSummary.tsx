@@ -136,9 +136,9 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
                 />
               );
             })}
-          <div className="tw-flex tw-gap-4 tw-justify-between tw-items-center tw-py-4">
-            <div className="tw-border tw-border-solid tw-border-borderGrey tw-p-4 tw-w-[50%]">
-              <h3 className="tw-uppercase tw-text-base tw-text-text-light">Site existant</h3>
+          <div className="flex gap-4 justify-between items-center py-4">
+            <div className="border border-solid border-borderGrey p-4 w-[50%]">
+              <h3 className="uppercase text-base text-text-light">Site existant</h3>
               <SurfaceAreaPieChart
                 soilsDistribution={siteData.soilsDistribution}
                 mode="plain"
@@ -148,9 +148,9 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
                 }}
               />
             </div>
-            <span className="tw-text-3xl">➔</span>
-            <div className="tw-border tw-border-solid tw-border-grey-dark tw-p-4 tw-w-[50%]">
-              <h3 className="tw-uppercase tw-text-base">Site avec projet</h3>
+            <span className="text-3xl">➔</span>
+            <div className="border border-solid border-grey-dark p-4 w-[50%]">
+              <h3 className="uppercase text-base">Site avec projet</h3>
               <SurfaceAreaPieChart
                 soilsDistribution={projectData.soilsDistribution}
                 mode="plain"
@@ -185,9 +185,9 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
                   />
                 );
               })}
-              <div className="tw-flex tw-gap-4 tw-justify-between tw-items-center tw-py-4">
-                <div className="tw-border tw-border-solid tw-border-borderGrey tw-p-4 tw-w-[50%]">
-                  <h3 className="tw-uppercase tw-text-base tw-text-text-light">Site existant</h3>
+              <div className="flex gap-4 justify-between items-center py-4">
+                <div className="border border-solid border-borderGrey p-4 w-[50%]">
+                  <h3 className="uppercase text-base text-text-light">Site existant</h3>
                   <SoilsCarbonStorageChart
                     soilsCarbonStorage={siteData.soilsCarbonStorage.soilsStorage}
                     mode="plain"
@@ -199,9 +199,9 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
                     }}
                   />
                 </div>
-                <span className="tw-text-3xl">➔</span>
-                <div className="tw-border tw-border-solid tw-border-grey-dark tw-p-4 tw-w-[50%]">
-                  <h3 className="tw-uppercase tw-text-base">Site avec projet</h3>
+                <span className="text-3xl">➔</span>
+                <div className="border border-solid border-grey-dark p-4 w-[50%]">
+                  <h3 className="uppercase text-base">Site avec projet</h3>
                   <SoilsCarbonStorageChart
                     soilsCarbonStorage={projectData.soilsCarbonStorage.soilsStorage}
                     mode="plain"
@@ -399,7 +399,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
           )}
         </Section>
       </>
-      <div className="tw-mt-8">
+      <div className="mt-8">
         <BackNextButtonsGroup onBack={onBack} onNext={onNext} nextLabel="Valider" />
       </div>
     </WizardFormLayout>

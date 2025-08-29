@@ -5,11 +5,11 @@ const TableSeparatorRow = ({ size = "small" }: Props) => {
       className={(() => {
         switch (size) {
           case "large":
-            return "tw-h-6";
+            return "h-6";
           case "middle":
-            return "tw-h-4";
+            return "h-4";
           case "small":
-            return "tw-h-2";
+            return "h-2";
         }
       })()}
     >

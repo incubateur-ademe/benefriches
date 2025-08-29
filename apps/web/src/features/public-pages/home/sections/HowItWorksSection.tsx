@@ -5,44 +5,44 @@ import classNames from "@/shared/views/clsx";
 
 export default function HowItWorksSection() {
   return (
-    <section className="tw-py-20 tw-bg-grey-light dark:tw-bg-grey-dark">
-      <div className="fr-container tw-grid tw-grid-cols-12 tw-gap-8">
+    <section className="py-20 bg-grey-light dark:bg-grey-dark">
+      <div className="fr-container grid grid-cols-12 gap-8">
         <aside
           className={classNames(
-            "tw-col-span-12 tw-row-start-2",
-            "md:tw-row-start-1 md:tw-col-span-4",
-            "tw-grid tw-grid-rows-3 tw-gap-10",
-            "tw-px-14",
+            "col-span-12 row-start-2",
+            "md:row-start-1 md:col-span-4",
+            "grid grid-rows-3 gap-10",
+            "px-14",
           )}
           aria-hidden="true"
         >
-          <div className="tw-relative">
+          <div className="relative">
             <IllustrationCard
               title="Votre site"
               iconId="fr-icon-map-pin-2-fill"
               stepNumber={1}
-              className="tw-w-[60%]"
+              className="w-[60%]"
             />
             <IllustrationCard
               title="Votre projet"
               iconId="fr-icon-briefcase-fill"
               stepNumber={2}
-              className={["tw-w-[60%]", "tw-absolute", "tw-right-0", "tw-bottom-4", "tw-z-10"]}
+              className={["w-[60%]", "absolute", "right-0", "bottom-4", "z-10"]}
             />
           </div>
-          <div className="tw-flex tw-flex-col tw-justify-center">
+          <div className="flex flex-col justify-center">
             <IllustrationCard
               title="Données Bénéfriches"
               iconId="fr-icon-database-fill"
               stepNumber={3}
               className={[
-                "tw-translate-y-0",
-                "before:tw-content-['x']",
-                "before:tw-absolute",
-                "before:tw-top-[-3.5rem]",
-                "before:tw-left-[50%]",
-                "before:tw-text-3xl",
-                "before:tw-font-bold",
+                "translate-y-0",
+                "before:content-['x']",
+                "before:absolute",
+                "before:top-[-3.5rem]",
+                "before:left-[50%]",
+                "before:text-3xl",
+                "before:font-bold",
               ]}
             />
           </div>
@@ -51,22 +51,22 @@ export default function HowItWorksSection() {
             iconId="fr-icon-bar-chart-box-fill"
             stepNumber={4}
             className={[
-              "tw-translate-y-0",
-              "before:tw-content-['=']",
-              "before:tw-absolute",
-              "before:tw-top-[-3.5rem]",
-              "before:tw-left-[50%]",
-              "before:tw-text-3xl",
-              "before:tw-font-bold",
+              "translate-y-0",
+              "before:content-['=']",
+              "before:absolute",
+              "before:top-[-3.5rem]",
+              "before:left-[50%]",
+              "before:text-3xl",
+              "before:font-bold",
             ]}
           >
-            <span className="tw-text-sm">
+            <span className="text-sm">
               🌱 Environnement, 👷 Emploi, 🤕 Sécurité, 💰 Finances publiques...
             </span>
           </IllustrationCard>
         </aside>
 
-        <div className="tw-col-span-12 md:tw-col-span-8">
+        <div className="col-span-12 md:col-span-8">
           <h2>Bénéfriches, comment ça marche&nbsp;?</h2>
           <OnBoardingIntroductionStep
             stepNumber={1}

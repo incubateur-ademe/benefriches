@@ -9,12 +9,7 @@ function MenuItemButton(buttonProps: ButtonProps) {
       {({ focus }) => (
         <Button
           size="small"
-          className={classNames(
-            "tw-w-full",
-            "tw-font-normal",
-            "tw-py-2",
-            focus && "tw-bg-[var(--hover-tint)]",
-          )}
+          className={classNames("w-full", "font-normal", "py-2", focus && "bg-[var(--hover-tint)]")}
           priority="tertiary no outline"
           {...buttonProps}
         />

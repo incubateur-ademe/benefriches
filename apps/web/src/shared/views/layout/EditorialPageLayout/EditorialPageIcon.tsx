@@ -5,5 +5,5 @@ type Props = {
 };
 
 export default function EditorialPageIcon({ children }: Props) {
-  return <div className="tw-text-[80px] tw-mb-10 tw-leading-none">{children}</div>;
+  return <div className="text-[80px] mb-10 leading-none">{children}</div>;
 }

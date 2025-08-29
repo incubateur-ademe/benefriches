@@ -11,22 +11,18 @@ type Props = {
 
 function FeatureAlertModalTitle({ title, iconId, isSuccess }: Props) {
   return (
-    <div
-      className={classNames(
-        isSuccess ? "tw-text-impacts-positive-border" : "tw-text-dsfr-titleBlue",
-      )}
-    >
+    <div className={classNames(isSuccess ? "text-impacts-positive-border" : "text-dsfr-titleBlue")}>
       <i
         className={classNames(
           "fr-icon--xl",
           fr.cx(isSuccess ? "fr-icon-success-fill" : iconId),
-          "tw-pr-2",
+          "pr-2",
         )}
       ></i>
       {!isSuccess && (
         <>
           {title}
-          <Badge small style="green-tilleul" className="tw-ml-2">
+          <Badge small style="green-tilleul" className="ml-2">
             Bientôt disponible
           </Badge>
         </>

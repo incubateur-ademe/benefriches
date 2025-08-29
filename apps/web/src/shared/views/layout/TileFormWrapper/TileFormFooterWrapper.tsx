@@ -10,7 +10,7 @@ type Props = {
 function TileFormFooterWrapper({ children, tileCount }: Props) {
   return (
     <div
-      className={classNames("tw-col-start-1", "tw-col-end-[-1]", "tw-mt-6")}
+      className={classNames("col-start-1", "col-end-[-1]", "mt-6")}
       style={{ gridRowStart: tileCount + 1 }}
     >
       {children}

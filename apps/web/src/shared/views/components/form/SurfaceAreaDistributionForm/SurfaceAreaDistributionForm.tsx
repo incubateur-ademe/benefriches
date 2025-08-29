@@ -56,7 +56,7 @@ const TotalAllocatedSurfaceAreaInput = ({
 
   return (
     <RowNumericInput
-      className="tw-pb-5"
+      className="pb-5"
       label="Total de toutes les surfaces"
       addonText={addonText}
       nativeInputProps={{

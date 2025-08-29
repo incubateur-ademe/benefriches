@@ -75,7 +75,7 @@ function CreateUserForm({
             formContext={formContext}
           />
           <Checkbox
-            className="tw-mt-5"
+            className="mt-5"
             state={formState.errors.personnalDataUseConsentment ? "error" : "default"}
             stateRelatedMessage={
               formState.errors.personnalDataUseConsentment
@@ -99,7 +99,7 @@ function CreateUserForm({
               description="Une erreur s'est produite lors de la sauvegarde des données... Veuillez réessayer."
               severity="error"
               title="Échec de l'enregistrement"
-              className="tw-my-7"
+              className="my-7"
             />
           )}
 

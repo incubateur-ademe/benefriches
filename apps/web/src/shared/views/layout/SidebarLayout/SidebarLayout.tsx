@@ -32,38 +32,38 @@ function SidebarLayout({ mainChildren, title, sidebarChildren }: SidebarLayoutPr
 
   return (
     <SidebarLayoutContext.Provider value={{ isOpen }}>
-      <div className={classNames("tw-flex", "tw-w-full", "tw-h-[100vh]")}>
+      <div className={classNames("flex", "w-full", "h-[100vh]")}>
         <aside
           className={classNames(
-            "tw-bg-grey-light dark:tw-bg-dsfr-contrastGrey",
-            "tw-border-r",
-            "tw-z-10",
-            "tw-flex tw-flex-col",
-            !isLessThanLg && "tw-transition-[width]",
-            isOpen ? "tw-w-80 lg:tw-relative tw-absolute" : "tw-w-20",
-            isOpen && isLessThanLg && "tw-drop-shadow-[0_3px_9px_var(--shadow-color)]",
-            "tw-h-full",
+            "bg-grey-light dark:bg-dsfr-contrastGrey",
+            "border-r",
+            "z-10",
+            "flex flex-col",
+            !isLessThanLg && "transition-[width]",
+            isOpen ? "w-80 lg:relative absolute" : "w-20",
+            isOpen && isLessThanLg && "drop-shadow-[0_3px_9px_var(--shadow-color)]",
+            "h-full",
           )}
         >
           <div
             className={classNames(
-              "tw-flex",
-              "tw-py-6",
-              "tw-items-center",
-              isOpen ? "tw-px-6 tw-justify-between" : "tw-justify-center",
+              "flex",
+              "py-6",
+              "items-center",
+              isOpen ? "px-6 justify-between" : "justify-center",
             )}
           >
             {isOpen && (
               <a
                 {...routes.myProjects().link}
-                className="tw-bg-none"
+                className="bg-none"
                 aria-description="Retour à mes projets"
               >
                 <img src="/img/logos/logo-benefriches-simple.svg" alt="Bénéfriches" />
               </a>
             )}
             <Button
-              className="tw-text-grey-dark"
+              className="text-grey-dark"
               iconId={
                 isOpen ? "fr-icon-arrow-left-s-line-double" : "fr-icon-arrow-right-s-line-double"
               }
@@ -74,16 +74,16 @@ function SidebarLayout({ mainChildren, title, sidebarChildren }: SidebarLayoutPr
               title={isOpen ? "Réduire le menu" : "Ouvrir le menu"}
             />
           </div>
-          <div className="tw-flex-1 tw-flex tw-flex-col tw-justify-between">
+          <div className="flex-1 flex flex-col justify-between">
             {sidebarChildren}
-            <div className="tw-py-4 tw-text-center">
+            <div className="py-4 text-center">
               <HelpButton small={!isOpen} />
             </div>
           </div>
         </aside>
 
         <div
-          className={classNames("tw-overflow-auto", "tw-w-full")}
+          className={classNames("overflow-auto", "w-full")}
           onClick={() => {
             if (isOpen && isLessThanLg) {
               setOpen(false);
@@ -94,27 +94,27 @@ function SidebarLayout({ mainChildren, title, sidebarChildren }: SidebarLayoutPr
             <div
               aria-hidden="true"
               className={classNames(
-                "tw-transition-opacity",
-                "tw-absolute tw-top-0 tw-left-0 tw-w-screen tw-h-screen",
-                "tw-bg-[#161616a3]",
-                isOpen ? "tw-z-[5]" : "tw-z-[-1]",
-                isOpen ? "tw-opacity-1" : "tw-opacity-0",
+                "transition-opacity",
+                "absolute top-0 left-0 w-screen h-screen",
+                "bg-[#161616a3]",
+                isOpen ? "z-[5]" : "z-[-1]",
+                isOpen ? "opacity-1" : "opacity-0",
               )}
             ></div>
           )}
           <header
             className={classNames(
-              "tw-flex",
-              "tw-justify-between",
-              "tw-items-center",
-              "tw-p-6",
-              "tw-border-solid",
-              "tw-border-borderGrey",
-              "tw-border-0",
-              "tw-border-b",
+              "flex",
+              "justify-between",
+              "items-center",
+              "p-6",
+              "border-solid",
+              "border-borderGrey",
+              "border-0",
+              "border-b",
             )}
           >
-            <div className="tw-text-xl tw-font-bold">{title}</div>
+            <div className="text-xl font-bold">{title}</div>
             <Button
               priority="tertiary no outline"
               linkProps={routes.myProjects().link}
@@ -124,7 +124,7 @@ function SidebarLayout({ mainChildren, title, sidebarChildren }: SidebarLayoutPr
             </Button>
           </header>
 
-          <main className="tw-p-6 tw-container">{mainChildren}</main>
+          <main className="p-6 container">{mainChildren}</main>
         </div>
       </div>
     </SidebarLayoutContext.Provider>

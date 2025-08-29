@@ -11,15 +11,15 @@ const ImpactItemGroup = ({ children, isClickable = false }: Props) => {
   return (
     <div
       className={classNames(
-        "tw-bg-white dark:tw-bg-black",
-        "tw-border tw-border-solid tw-border-borderGrey dark:tw-border-grey-dark",
-        "tw-py-2 tw-px-4",
-        "tw-mb-2",
-        "tw-rounded",
-        "tw-transition",
+        "bg-white dark:bg-black",
+        "border border-solid border-borderGrey dark:border-grey-dark",
+        "py-2 px-4",
+        "mb-2",
+        "rounded",
+        "transition",
         isClickable && [
-          "tw-transition tw-ease-in-out tw-duration-500",
-          "hover:tw-border-grey-dark hover:dark:tw-border-white",
+          "transition ease-in-out duration-500",
+          "hover:border-grey-dark hover:dark:border-white",
         ],
       )}
     >

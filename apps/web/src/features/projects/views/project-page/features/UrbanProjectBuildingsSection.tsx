@@ -45,7 +45,7 @@ const UrbanProjectBuildingsSection = ({
             : undefined
         }
       />
-      <h4 className="tw-text-base tw-pb-2 tw-pt-4 tw-mb-0">
+      <h4 className="text-base pb-2 pt-4 mb-0">
         Usage des bâtiments{" "}
         <InfoTooltip title="L’usage des bâtiments correspond à leur destination (logements, services de proximité, bureaux, équipements publics, etc.)" />
       </h4>

@@ -50,7 +50,7 @@ const ImpactAreaChartsSection = ({
   } = environmentalAreaChartImpactsData;
 
   return (
-    <div className="tw-grid tw-gap-8 tw-grid-cols-1 md:tw-grid-cols-2 lg:tw-grid-cols-3">
+    <div className="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
       {fullTimeJobs && (
         <>
           <ImpactModalDescription

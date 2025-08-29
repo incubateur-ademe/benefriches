@@ -49,7 +49,7 @@ export default function EmbedImpactsViewContainer({ siteCityCode, siteSurfaceAre
         description="Une erreur s'est produite lors du calcul des données, veuillez réessayer."
         severity="error"
         title="Impossible de calculer les impacts pour cette friche"
-        className="tw-m-7"
+        className="m-7"
       />
     );
   }

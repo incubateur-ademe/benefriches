@@ -73,7 +73,7 @@ function FutureOperatorForm({
             />
             {structureOption === "other_structure" && (
               <Input
-                className="tw-ml-8"
+                className="ml-8"
                 label={<RequiredLabel label="Nom de la structure" />}
                 state={formState.errors.otherStructureName ? "error" : "default"}
                 stateRelatedMessage={formState.errors.otherStructureName?.message}

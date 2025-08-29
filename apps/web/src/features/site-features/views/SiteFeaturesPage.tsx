@@ -38,7 +38,7 @@ function SiteFeaturesPage({ onPageLoad, siteData, loadingState }: Props) {
           description="Une erreur s'est produite lors du chargement des caractéristiques du site... Veuillez réessayer."
           severity="error"
           title="Échec du chargement des caractéristiques du site"
-          className="tw-my-7"
+          className="my-7"
         />
       </div>
     );
@@ -53,7 +53,7 @@ function SiteFeaturesPage({ onPageLoad, siteData, loadingState }: Props) {
         isExpressSite={siteData.isExpressSite}
         address={siteData.address}
       />
-      <section className={classNames(fr.cx("fr-container"), "lg:tw-px-24", "tw-py-6")}>
+      <section className={classNames(fr.cx("fr-container"), "lg:px-24", "py-6")}>
         <SiteFeaturesList {...siteData} />
       </section>
     </>

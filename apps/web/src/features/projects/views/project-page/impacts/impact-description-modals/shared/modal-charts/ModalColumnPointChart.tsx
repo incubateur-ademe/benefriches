@@ -45,7 +45,7 @@ const ModalColumnPointChart = ({ data, format, exportTitle, exportSubtitle, ...p
       : undefined;
 
   return (
-    <div className={classNames("tw-mb-6", "tw-relative", props.className)} {...props}>
+    <div className={classNames("mb-6", "relative", props.className)} {...props}>
       <ModalColumnChartTooltip position={position} rows={tooltipRows} />
       <ExportableChart
         ref={chartRef}
@@ -59,7 +59,7 @@ const ModalColumnPointChart = ({ data, format, exportTitle, exportSubtitle, ...p
           id: chartContainerId,
           onMouseLeave,
           onMouseMove,
-          className: classNames("highcharts-no-xaxis", !isChartReady && "tw-cursor-wait"),
+          className: classNames("highcharts-no-xaxis", !isChartReady && "cursor-wait"),
         }}
         options={getBarChartOptions({
           nbColumns: data.length,

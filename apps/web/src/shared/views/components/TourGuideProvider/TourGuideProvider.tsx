@@ -17,7 +17,7 @@ type Props = {
 const mapStep = ({ selector, description, title }: Props["steps"][number]): StepType => {
   const content = (
     <>
-      <h4 className="tw-text-base tw-font-medium tw-mb-2">{title}</h4>
+      <h4 className="text-base font-medium mb-2">{title}</h4>
       {description && <span>{description}</span>}
     </>
   );
@@ -46,11 +46,11 @@ const mapStep = ({ selector, description, title }: Props["steps"][number]): Step
 };
 
 const preventBodyOverflow = () => {
-  document.body.classList.add("tw-overflow-hidden");
+  document.body.classList.add("overflow-hidden");
 };
 
 const allowBodyOverflow = () => {
-  document.body.classList.remove("tw-overflow-hidden");
+  document.body.classList.remove("overflow-hidden");
 };
 
 function TourGuideProvider({
@@ -63,7 +63,7 @@ function TourGuideProvider({
 
   return (
     <TourProvider
-      className="tw-rounded-lg tw-p-4 tw-max-w-[calc(100%-16px)]  sm:!tw-max-w-96"
+      className="rounded-lg p-4 max-w-[calc(100%-16px)]  sm:!max-w-96"
       afterOpen={preventBodyOverflow}
       beforeClose={allowBodyOverflow}
       onClickMask={({ setIsOpen, setCurrentStep }) => {
@@ -110,12 +110,12 @@ function TourGuideProvider({
         return (
           <>
             {!isIntro && (
-              <span className="tw-text-xs">
+              <span className="text-xs">
                 {currentStepLabel} / {totalStepsLabel}
               </span>
             )}
-            <div className="tw-py-2">{stepContent as ReactNode}</div>
-            <div className="tw-flex tw-justify-between tw-mt-2">
+            <div className="py-2">{stepContent as ReactNode}</div>
+            <div className="flex justify-between mt-2">
               <Button priority="primary" onClick={onNext}>
                 {isIntro ? "C’est parti" : isLast ? "C’est compris" : "Suivant"}
               </Button>

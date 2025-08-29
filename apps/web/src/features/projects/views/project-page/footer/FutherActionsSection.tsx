@@ -9,16 +9,11 @@ import { projectAndSiteFeaturesModal } from "../impacts/project-and-site-feature
 
 export default function FurtherActionsSection({ siteId }: { siteId: string }) {
   return (
-    <section className="tw-rounded-lg tw-mt-10 tw-p-6 tw-bg-white dark:tw-bg-black tw-border tw-border-solid tw-border-borderGrey tw-flex tw-flex-col md:tw-flex-row tw-gap-6">
-      <img
-        src="/img/pictograms/further-actions.svg"
-        alt=""
-        aria-hidden="true"
-        className="tw-w-36"
-      />
-      <div className="tw-flex tw-flex-col tw-justify-center">
-        <h3 className="tw-mb-0">Aller plus loin avec ce projet</h3>
-        <div className="tw-flex tw-flex-col md:tw-flex-row tw-gap-4 tw-mt-4">
+    <section className="rounded-lg mt-10 p-6 bg-white dark:bg-black border border-solid border-borderGrey flex flex-col md:flex-row gap-6">
+      <img src="/img/pictograms/further-actions.svg" alt="" aria-hidden="true" className="w-36" />
+      <div className="flex flex-col justify-center">
+        <h3 className="mb-0">Aller plus loin avec ce projet</h3>
+        <div className="flex flex-col md:flex-row gap-4 mt-4">
           <Button
             priority="primary"
             iconId="fr-icon-file-download-line"
@@ -33,7 +28,7 @@ export default function FurtherActionsSection({ siteId }: { siteId: string }) {
             Modifier les informations
           </Button>
         </div>
-        <div className="md:tw-flex tw-gap-2 tw-mt-4">
+        <div className="md:flex gap-2 mt-4">
           <Button
             size="small"
             iconId="fr-icon-file-add-line"

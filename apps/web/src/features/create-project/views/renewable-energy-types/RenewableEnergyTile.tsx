@@ -31,7 +31,7 @@ export default function RenewableEnergyTile({
         disabled ? (
           <div>
             <div>{description}</div>
-            <Badge style="green-tilleul" small className="tw-mt-2">
+            <Badge style="green-tilleul" small className="mt-2">
               Bientôt disponible
             </Badge>
           </div>

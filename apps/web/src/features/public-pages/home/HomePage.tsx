@@ -16,7 +16,7 @@ function HomePage() {
       <DataSourcesSection />
       <HowItWorksSection />
       <section className={fr.cx("fr-container", "fr-py-10w")}>
-        <div className="tw-grid md:tw-grid-cols-2">
+        <div className="grid md:grid-cols-2">
           <div>
             <h2>Bénéfriches aide les collectivités à préserver les sols</h2>
             <p>
@@ -48,7 +48,7 @@ function HomePage() {
               <strong>en prennent conscience et les utilisent dans la prise de décision</strong>.
             </p>
           </div>
-          <div className="tw-my-auto md:tw-pl-20">
+          <div className="my-auto md:pl-20">
             <img
               src="/img/project-illustration.jpeg"
               className={fr.cx("fr-responsive-img")}

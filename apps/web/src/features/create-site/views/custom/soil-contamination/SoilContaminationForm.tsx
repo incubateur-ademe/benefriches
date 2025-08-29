@@ -70,7 +70,7 @@ function SoilContaminationForm({ initialValues, onSubmit, onBack, siteSurfaceAre
         >
           <RadioButton label="Oui" value="yes" {...register("hasContaminatedSoils")} />
           {hasContaminatedSoils && (
-            <div className="tw-pb-7">
+            <div className="pb-7">
               <RowDecimalsNumericInput
                 label={<RequiredLabel label="Superficie polluée" />}
                 addonText={SQUARE_METERS_HTML_SYMBOL}

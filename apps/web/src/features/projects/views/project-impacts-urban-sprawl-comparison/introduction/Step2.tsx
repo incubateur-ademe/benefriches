@@ -47,11 +47,11 @@ export default function Step1({
 }: Props) {
   return (
     <>
-      <div aria-hidden="true" className="tw-text-7xl tw-mb-4">
+      <div aria-hidden="true" className="text-7xl mb-4">
         ⚖️{" "}
       </div>
 
-      <h2 className="tw-font-normal tw-text-3xl">
+      <h2 className="font-normal text-3xl">
         Vous allez comparer <strong>2 situations</strong> qui incluent chacune les{" "}
         <strong>2 sites</strong>&nbsp;:
       </h2>
@@ -72,7 +72,7 @@ export default function Step1({
 
       <p>Pour chaque situation, Bénéfriches additionnera les impacts des 2 sites.</p>
 
-      <div className="tw-mt-10">
+      <div className="mt-10">
         <ButtonsGroup
           inlineLayoutWhen="always"
           alignment="between"

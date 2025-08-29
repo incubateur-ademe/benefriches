@@ -5,7 +5,7 @@ type Props = {
 };
 
 function TileFormFieldWrapper({ children }: Props) {
-  return <div className="tw-mb-4">{children}</div>;
+  return <div className="mb-4">{children}</div>;
 }
 
 export default TileFormFieldWrapper;

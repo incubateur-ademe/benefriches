@@ -5,7 +5,7 @@ type Props = {
 };
 
 const ModalTitleTwo = ({ children }: Props) => {
-  return <h2 className="tw-text-lg tw-my-4">{children}</h2>;
+  return <h2 className="text-lg my-4">{children}</h2>;
 };
 
 export default ModalTitleTwo;

@@ -33,7 +33,7 @@ const CostBenefitAnalysisDescription = ({ impactsData }: Props) => {
 
       <ModalGrid>
         <ModalData>
-          <div className="tw-mb-10">
+          <div className="mb-10">
             <HighchartsReact
               containerProps={{ className: "highcharts-no-xaxis" }}
               highcharts={Highcharts}

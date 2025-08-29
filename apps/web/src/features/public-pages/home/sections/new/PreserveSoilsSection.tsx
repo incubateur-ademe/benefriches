@@ -2,8 +2,8 @@ import SectionTitle from "./SectionTitle";
 
 export default function PreserveSoilsSection() {
   return (
-    <section className="tw-bg-white dark:tw-bg-grey-dark fr-py-10w">
-      <div className="fr-container tw-grid md:tw-grid-cols-2">
+    <section className="bg-white dark:bg-grey-dark fr-py-10w">
+      <div className="fr-container grid md:grid-cols-2">
         <div>
           <SectionTitle>Bénéfriches aide les collectivités à préserver les sols</SectionTitle>
           <p>
@@ -33,7 +33,7 @@ export default function PreserveSoilsSection() {
             <strong>en prennent conscience et les utilisent dans la prise de décision</strong>.
           </p>
         </div>
-        <div className="tw-my-auto md:tw-pl-20">
+        <div className="my-auto md:pl-20">
           <img
             src="/img/project-illustration.svg"
             className="fr-responsive-img"

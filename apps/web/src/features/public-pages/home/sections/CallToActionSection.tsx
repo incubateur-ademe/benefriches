@@ -13,19 +13,16 @@ import {
 
 export default function CallToActionSection() {
   return (
-    <section
-      className={classNames("tw-py-20", "tw-bg-grey-light", "dark:tw-bg-grey-dark")}
-      id="cta-section"
-    >
+    <section className={classNames("py-20", "bg-grey-light", "dark:bg-grey-dark")} id="cta-section">
       <div className={fr.cx("fr-container")}>
-        <div className="md:tw-flex">
+        <div className="md:flex">
           <div
             className={classNames(
-              "tw-pb-12",
-              "md:tw-flex-[5]",
-              "md:tw-pr-16 md:tw-pb-0",
-              "tw-border-0 tw-border-b tw-border-solid tw-border-borderGrey",
-              "md:tw-border-b-0 md:tw-border-r",
+              "pb-12",
+              "md:flex-[5]",
+              "md:pr-16 md:pb-0",
+              "border-0 border-b border-solid border-borderGrey",
+              "md:border-b-0 md:border-r",
             )}
           >
             <img
@@ -33,14 +30,14 @@ export default function CallToActionSection() {
               width="100px"
               aria-hidden="true"
               alt=""
-              className="tw-mb-6"
+              className="mb-6"
             />
             <img
               src="/img/pictograms/renewable-energy/photovoltaic.svg"
               width="100px"
               aria-hidden="true"
               alt=""
-              className="tw-mb-6"
+              className="mb-6"
             />
 
             <h2>Vous avez un projet d'aménagement urbain ou un projet photovoltaïque&nbsp;?</h2>
@@ -53,20 +50,20 @@ export default function CallToActionSection() {
             </Button>
           </div>
           <hr />
-          <div className={classNames("tw-pt-6 md:tw-flex-[7] md:tw-pl-16 md:tw-pt-0")}>
+          <div className={classNames("pt-6 md:flex-[7] md:pl-16 md:pt-0")}>
             <img
               src="/img/pictograms/development-plans/commercial-activity-area.svg"
               width="100px"
               aria-hidden="true"
               alt=""
-              className="tw-mb-6"
+              className="mb-6"
             />
             <img
               src="/img/pictograms/development-plans/natural-urban-space.svg"
               width="100px"
               aria-hidden="true"
               alt=""
-              className="tw-mb-6"
+              className="mb-6"
             />
             <h2>Vous êtes porteur d’un autre type de projet&nbsp;?</h2>
             <p className={fr.cx("fr-text--xl", "fr-text--bold")}>

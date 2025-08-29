@@ -1,15 +1,15 @@
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
 const SectionTitle = ({ children }: { children: string }) => {
-  return <h3 className="tw-text-base tw-mb-1">{children}</h3>;
+  return <h3 className="text-base mb-1">{children}</h3>;
 };
 
 function AboutImpactsContcnt() {
   return (
     <>
-      <section className="tw-mb-4">
+      <section className="mb-4">
         <SectionTitle>⚙️&nbsp;Comment fonctionne Bénéfriches&nbsp;?</SectionTitle>
-        <p className="tw-mb-2">
+        <p className="mb-2">
           Bénéfriches repose sur les principes de l’analyse coûts-bénéfices, qui a pour objet
           d’apprécier l’intérêt d’une opération (projet ou investissement), sur une période donnée.
           Elle est réalisée en analysant les impacts du projet sur les différents types d’acteurs
@@ -25,7 +25,7 @@ function AboutImpactsContcnt() {
           d’impacts en valeurs monétaires. On parle alors de «&nbsp;monétarisation&nbsp;».
         </p>
       </section>
-      <section className="tw-mb-4">
+      <section className="mb-4">
         <SectionTitle>📊&nbsp;Quels sont les impacts calculés par Bénéfriches&nbsp;?</SectionTitle>
         <p>
           Bénéfriches calcule tous les impacts de votre projet, regroupés au sein de 6 familles, sur
@@ -61,7 +61,7 @@ function AboutImpactsContcnt() {
           (sociaux et environnementaux).
         </p>
       </section>
-      <section className="tw-mb-4">
+      <section className="mb-4">
         <SectionTitle>🧮&nbsp;Comment sont calculés les indicateurs d’impacts&nbsp;?</SectionTitle>
         <p>
           Les indicateurs d'impacts sont généralement calculés simplement en multipliant une donnée

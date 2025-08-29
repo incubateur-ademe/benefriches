@@ -50,7 +50,7 @@ function CreateModeSelectionForm({ onSubmit, onBack, options }: Props) {
                         description={
                           <>
                             <div>{option.description}</div>
-                            <Badge className="tw-mt-3" style="green-tilleul">
+                            <Badge className="mt-3" style="green-tilleul">
                               {option.badgeText}
                             </Badge>
                           </>

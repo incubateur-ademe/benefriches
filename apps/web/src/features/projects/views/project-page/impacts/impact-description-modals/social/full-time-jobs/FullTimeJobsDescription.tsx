@@ -101,7 +101,7 @@ const FullTimeJobsDescription = ({ impactData }: Props) => {
             <li>1 salarié à mi-temps sur 12 mois = 0,5 ETP</li>
             <li>1 salarié à temps plein sur 12 mois = 1 ETP</li>
           </ul>
-          <div className="tw-flex tw-flex-col">
+          <div className="flex flex-col">
             <Button
               onClick={() => {
                 updateModalContent({

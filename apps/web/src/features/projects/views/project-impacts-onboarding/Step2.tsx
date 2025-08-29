@@ -11,11 +11,11 @@ type Props = {
   skipStepByStepAnimation?: boolean;
 };
 
-const TRANSITION_CLASSES = ["tw-transition", "tw-ease-in-out", "tw-duration-1000"] as const;
-const VISIBLE_CLASSES = ["tw-opacity-100", "tw-visible"] as const;
-const INVISIBLE_CLASSES = ["md:tw-opacity-0", "md:tw-invisible"] as const;
+const TRANSITION_CLASSES = ["transition", "ease-in-out", "duration-1000"] as const;
+const VISIBLE_CLASSES = ["opacity-100", "visible"] as const;
+const INVISIBLE_CLASSES = ["md:opacity-0", "md:invisible"] as const;
 
-const EMOJI_CLASSNAME = "tw-bg-[#FCEEAC]";
+const EMOJI_CLASSNAME = "bg-[#FCEEAC]";
 
 export default function Step2({ onNextClick, onBackClick, skipStepByStepAnimation }: Props) {
   const [innerStep, setInnerStep] = useState(skipStepByStepAnimation ? 2 : 0);
@@ -26,19 +26,19 @@ export default function Step2({ onNextClick, onBackClick, skipStepByStepAnimatio
 
   return (
     <>
-      <h1 className="tw-text-[32px]">
-        Bénéfriches prend en compte <span className="tw-bg-[#FFC72780]">plusieurs entités</span>.
+      <h1 className="text-[32px]">
+        Bénéfriches prend en compte <span className="bg-[#FFC72780]">plusieurs entités</span>.
       </h1>
-      <ul className="tw-font-bold">
+      <ul className="font-bold">
         <li
           className={classNames(
-            "tw-text-xl",
+            "text-xl",
             TRANSITION_CLASSES,
             innerStep > 0 ? VISIBLE_CLASSES : INVISIBLE_CLASSES,
           )}
         >
           Les acteurs liés au projet d’aménagement :
-          <ul className="tw-text-base tw-list-none">
+          <ul className="text-base list-none">
             <EmojiListItem emoji="👨‍🌾" emojiClassName={EMOJI_CLASSNAME}>
               L’actuel propriétaire et/ou exploitant du site
             </EmojiListItem>
@@ -56,34 +56,34 @@ export default function Step2({ onNextClick, onBackClick, skipStepByStepAnimatio
 
         <li
           className={classNames(
-            "tw-text-xl",
+            "text-xl",
             TRANSITION_CLASSES,
             innerStep > 1 ? VISIBLE_CLASSES : INVISIBLE_CLASSES,
           )}
         >
           Les groupes de population pouvant être concernés par le projet ou ses retombées :
-          <ul className="tw-text-base tw-list-none">
+          <ul className="text-base list-none">
             <EmojiListItem emoji="🏘️" emojiClassName={EMOJI_CLASSNAME}>
               La population locale <span>→</span>{" "}
-              <span className="tw-font-normal">
+              <span className="font-normal">
                 Concernée, par exemple, par la valeur patrimoniale des bâtiments
               </span>
             </EmojiListItem>
             <EmojiListItem emoji="🏬" emojiClassName={EMOJI_CLASSNAME}>
               Les structures locales <span>→</span>{" "}
-              <span className="tw-font-normal">
+              <span className="font-normal">
                 Concernées, par exemple, par les dépenses de climatisation évitées
               </span>
             </EmojiListItem>
             <EmojiListItem emoji="🇫🇷" emojiClassName={EMOJI_CLASSNAME}>
               La société française <span>→</span>{" "}
-              <span className="tw-font-normal">
+              <span className="font-normal">
                 Concernée, par exemple, par les dépenses de santé évitées
               </span>
             </EmojiListItem>
             <EmojiListItem emoji="🌍" emojiClassName={EMOJI_CLASSNAME}>
               La société humaine <span>→</span>{" "}
-              <span className="tw-font-normal">
+              <span className="font-normal">
                 Concernée, par exemple, par les services écosystémiques
               </span>
             </EmojiListItem>
@@ -91,7 +91,7 @@ export default function Step2({ onNextClick, onBackClick, skipStepByStepAnimatio
         </li>
       </ul>
 
-      <div className="tw-mt-8">
+      <div className="mt-8">
         <ButtonsGroup
           inlineLayoutWhen="always"
           alignment="between"

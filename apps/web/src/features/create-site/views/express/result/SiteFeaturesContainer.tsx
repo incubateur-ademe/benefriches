@@ -33,7 +33,7 @@ export default function SiteFeaturesContainer({ siteId }: Props) {
         description="Une erreur s'est produite lors du chargement des caractéristiques du site... Veuillez réessayer."
         severity="error"
         title="Échec du chargement des caractéristiques du site"
-        className="tw-my-7"
+        className="my-7"
       />
     );
   }

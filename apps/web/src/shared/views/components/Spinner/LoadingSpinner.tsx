@@ -7,21 +7,19 @@ type Props = {
 
 const LoadingSpinner = ({ loadingText = "Chargement", classes }: Props) => {
   return (
-    <div className="tw-flex tw-flex-col tw-items-center tw-py-8">
+    <div className="flex flex-col items-center py-8">
       <div
         aria-label="Chargement..."
         role="status"
-        className="tw-flex tw-justify-center tw-items-center tw-h-16"
+        className="flex justify-center items-center h-16"
       >
-        <div className="tw-relative tw-inline-flex">
-          <div className="tw-w-8 tw-h-8 tw-bg-blue-main tw-rounded-full"></div>
-          <div className="tw-w-8 tw-h-8 tw-bg-blue-main tw-rounded-full tw-absolute tw-top-0 tw-left-0 tw-animate-ping"></div>
-          <div className="tw-w-8 tw-h-8 tw-bg-blue-main tw-rounded-full tw-absolute tw-top-0 tw-left-0 tw-animate-pulse"></div>
+        <div className="relative inline-flex">
+          <div className="w-8 h-8 bg-blue-main rounded-full"></div>
+          <div className="w-8 h-8 bg-blue-main rounded-full absolute top-0 left-0 animate-ping"></div>
+          <div className="w-8 h-8 bg-blue-main rounded-full absolute top-0 left-0 animate-pulse"></div>
         </div>
       </div>
-      <span className={classNames("tw-font-bold", "tw-uppercase", classes?.text)}>
-        {loadingText}
-      </span>
+      <span className={classNames("font-bold", "uppercase", classes?.text)}>{loadingText}</span>
     </div>
   );
 };

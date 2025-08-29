@@ -1,9 +1,9 @@
 export const MENU_ITEMS_CLASSES = [
-  "tw-w-72",
-  "tw-mt-2",
-  "tw-rounded-md",
-  "tw-bg-white dark:!tw-bg-dsfr-contrastGrey",
-  "tw-shadow-lg",
-  "tw-ring-1 tw-ring-black/5",
-  "tw-py-1",
+  "w-72",
+  "mt-2",
+  "rounded-md",
+  "bg-white dark:!bg-dsfr-contrastGrey",
+  "shadow-lg",
+  "ring-1 ring-black/5",
+  "py-1",
 ];

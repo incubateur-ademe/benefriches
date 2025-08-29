@@ -24,10 +24,7 @@ type CheckIconProps = {
 function CheckIcon({ checkType, checked, disabled = false }: CheckIconProps) {
   return (
     <div
-      className={classNames(
-        "tw-min-w-6 tw-h-6 tw-mr-4",
-        disabled && "tw-filter tw-grayscale tw-opacity-50",
-      )}
+      className={classNames("min-w-6 h-6 mr-4", disabled && "filter grayscale opacity-50")}
       style={
         checkType === "radio" ? getCustomRadioButtonStyle(checked) : getCustomCheckboxStyle(checked)
       }
@@ -48,22 +45,22 @@ export default function HorizontalCheckableTile({
   return (
     <div
       className={classNames(
-        "tw-relative tw-border tw-border-solid tw-rounded-lg tw-h-full",
-        checked ? "tw-border-dsfr-borderBlue" : "tw-border-borderGrey",
+        "relative border border-solid rounded-lg h-full",
+        checked ? "border-dsfr-borderBlue" : "border-borderGrey",
       )}
       role={checkType}
     >
       <input
         type={checkType}
-        className="!tw-opacity-0 tw-h-6 tw-w-6 tw-absolute tw-top-[19px] tw-right-[19px]"
+        className="!opacity-0 h-6 w-6 absolute top-[19px] right-[19px]"
         id={id}
         value={id}
         checked={checked}
         disabled={disabled}
         onChange={onChange}
       />
-      <label htmlFor={id} className="tw-w-full">
-        <div className="tw-p-4 tw-flex tw-items-center">
+      <label htmlFor={id} className="w-full">
+        <div className="p-4 flex items-center">
           <CheckIcon checkType={checkType} checked={checked} disabled={disabled} />
           {imgSrc && (
             <img
@@ -72,13 +69,13 @@ export default function HorizontalCheckableTile({
               height="80px"
               alt=""
               aria-hidden="true"
-              className={classNames("tw-mr-4", disabled && "tw-filter tw-grayscale tw-opacity-50")}
+              className={classNames("mr-4", disabled && "filter grayscale opacity-50")}
             />
           )}
           <div>
             <div
               className={classNames(
-                description ? "tw-mb-1" : "tw-mb-0",
+                description ? "mb-1" : "mb-0",
                 fr.cx("fr-text--lg", "fr-text--bold"),
               )}
             >

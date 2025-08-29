@@ -14,9 +14,9 @@ type Props = Omit<CheckboxCardProps, "children"> & {
 
 export default function CheckableTile({ title, description, imgSrc, disabled, ...props }: Props) {
   return (
-    <CheckboxCard className="tw-rounded-lg tw-h-full" disabled={disabled} {...props}>
-      <div className="tw-p-6">
-        <div className="tw-text-center">
+    <CheckboxCard className="rounded-lg h-full" disabled={disabled} {...props}>
+      <div className="p-6">
+        <div className="text-center">
           {imgSrc && (
             <img
               src={imgSrc}
@@ -24,15 +24,11 @@ export default function CheckableTile({ title, description, imgSrc, disabled, ..
               height="80px"
               alt=""
               aria-hidden="true"
-              className={disabled ? "tw-filter tw-grayscale tw-opacity-50 tw-mb-2" : "tw-mb-2"}
+              className={disabled ? "filter grayscale opacity-50 mb-2" : "mb-2"}
             />
           )}
           <div
-            className={classNames(
-              "tw-mb-2",
-              !imgSrc && "tw-mt-6",
-              fr.cx("fr-text--lg", "fr-text--bold"),
-            )}
+            className={classNames("mb-2", !imgSrc && "mt-6", fr.cx("fr-text--lg", "fr-text--bold"))}
           >
             {title}
           </div>

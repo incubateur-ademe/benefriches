@@ -59,7 +59,7 @@ const ProjectFinancialAssistanceRevenueForm = ({
     >
       <form onSubmit={handleSubmit(onSubmit)}>
         <RowDecimalsNumericInput
-          className="!tw-pt-4"
+          className="!pt-4"
           addonText="€"
           label="Participation des collectivités"
           nativeInputProps={register(
@@ -69,14 +69,14 @@ const ProjectFinancialAssistanceRevenueForm = ({
         />
 
         <RowDecimalsNumericInput
-          className="!tw-pt-4"
+          className="!pt-4"
           addonText="€"
           label="Subventions publiques"
           nativeInputProps={register("publicSubsidiesAmount", optionalNumericFieldRegisterOptions)}
         />
 
         <RowDecimalsNumericInput
-          className="!tw-pt-4"
+          className="!pt-4"
           addonText="€"
           label="Autres ressources"
           nativeInputProps={register("otherAmount", optionalNumericFieldRegisterOptions)}

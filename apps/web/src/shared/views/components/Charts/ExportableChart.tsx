@@ -21,7 +21,7 @@ const ExportableChart = ({ ref, exportingOptions, options, ...props }: Props) =>
   const exportConfig = useExportConfig(exportingOptions);
 
   return (
-    <div className="tw-flex tw-flex-col">
+    <div className="flex flex-col">
       <Menu>
         <MenuButton as={Fragment}>
           <Button
@@ -31,14 +31,14 @@ const ExportableChart = ({ ref, exportingOptions, options, ...props }: Props) =>
             onClick={(event) => {
               event.stopPropagation();
             }}
-            className="tw-text-text-light tw-self-end"
+            className="text-text-light self-end"
           />
         </MenuButton>
         <MenuItems
           anchor="bottom end"
           transition
           className={classNames(
-            "tw-z-[2000]", // pour s'afficher correctement dans une Dialog (z-index 1750)
+            "z-[2000]", // pour s'afficher correctement dans une Dialog (z-index 1750)
             MENU_ITEMS_CLASSES,
           )}
         >

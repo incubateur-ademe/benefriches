@@ -21,7 +21,7 @@ const ModalBreadcrumb = ({ segments }: BreadcrumbProps) => {
   const { updateModalContent } = useContext(ImpactModalDescriptionContext);
 
   return (
-    <nav role="navigation" className={classNames(fr.cx("fr-breadcrumb"), "tw-m-0", "tw-py-1")}>
+    <nav role="navigation" className={classNames(fr.cx("fr-breadcrumb"), "m-0", "py-1")}>
       <button className="fr-breadcrumb__button" aria-expanded="false" aria-controls={breadcrumbId}>
         Voir le fil d'Ariane
       </button>
@@ -40,7 +40,7 @@ const ModalBreadcrumb = ({ segments }: BreadcrumbProps) => {
                   {label}
                 </button>
               ) : (
-                <span className="tw-leading-5 tw-align-top">{label}</span>
+                <span className="leading-5 align-top">{label}</span>
               )}
             </li>
           ))}

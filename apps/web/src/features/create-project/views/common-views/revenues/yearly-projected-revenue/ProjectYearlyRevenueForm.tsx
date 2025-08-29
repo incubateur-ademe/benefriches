@@ -47,7 +47,7 @@ export default function ProjectYearlyRevenuesForm<Fields extends readonly string
         {fields.map((field) => {
           return (
             <RowDecimalsNumericInput
-              className="!tw-pt-4"
+              className="!pt-4"
               addonText="€ / an"
               label={getFieldLabel(field)}
               nativeInputProps={register(

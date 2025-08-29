@@ -13,9 +13,9 @@ import IllustrationCard from "./IllustrationCard";
 import OnBoardingIntroductionStep from "./Step";
 import { HOW_IT_WORKS_CONTENT } from "./content";
 
-const TRANSITION_CLASSES = ["tw-transition", "tw-ease-in-out", "tw-duration-1000"] as const;
-const VISIBLE_CLASSES = ["tw-opacity-100", "tw-visible", "tw-translate-y-0"] as const;
-const INVISIBLE_CLASSES = ["md:tw-opacity-0", "md:tw-invisible", "md:tw-translate-y-44"] as const;
+const TRANSITION_CLASSES = ["transition", "ease-in-out", "duration-1000"] as const;
+const VISIBLE_CLASSES = ["opacity-100", "visible", "translate-y-0"] as const;
+const INVISIBLE_CLASSES = ["md:opacity-0", "md:invisible", "md:translate-y-44"] as const;
 
 type Props = {
   nextButtonProps: Partial<ButtonProps>;
@@ -46,45 +46,39 @@ const OnBoardingIntroductionHow = ({ nextButtonProps, backLinkProps }: Props) =>
   return (
     <>
       <HtmlTitle>{`Comment ça marche - Introduction`}</HtmlTitle>
-      <section
-        className={classNames(
-          fr.cx("fr-container"),
-          "tw-py-20",
-          "tw-grid tw-grid-cols-12 tw-gap-2",
-        )}
-      >
+      <section className={classNames(fr.cx("fr-container"), "py-20", "grid grid-cols-12 gap-2")}>
         <aside
           className={classNames(
-            "tw-col-span-12",
-            "tw-row-start-2",
-            "md:tw-row-start-1",
-            "md:tw-col-span-4",
-            "tw-grid",
-            "tw-grid-rows-3",
-            "tw-gap-12",
-            "tw-px-14",
+            "col-span-12",
+            "row-start-2",
+            "md:row-start-1",
+            "md:col-span-4",
+            "grid",
+            "grid-rows-3",
+            "gap-12",
+            "px-14",
           )}
           aria-hidden="true"
         >
-          <div className={classNames("tw-relative")}>
+          <div className={classNames("relative")}>
             <IllustrationCard
               title="Votre site"
               iconId="fr-icon-map-pin-2-fill"
               stepNumber={1}
-              className={["tw-w-[60%]", TRANSITION_CLASSES, step1Classes]}
+              className={["w-[60%]", TRANSITION_CLASSES, step1Classes]}
             />
             <IllustrationCard
               title="Votre projet"
               iconId="fr-icon-briefcase-fill"
               stepNumber={2}
               className={[
-                "tw-w-[60%]",
+                "w-[60%]",
                 TRANSITION_CLASSES,
                 step2Classes,
-                "tw-absolute",
-                "tw-right-0",
-                "tw-bottom-4",
-                "tw-z-10",
+                "absolute",
+                "right-0",
+                "bottom-4",
+                "z-10",
               ]}
             />
           </div>
@@ -95,15 +89,15 @@ const OnBoardingIntroductionHow = ({ nextButtonProps, backLinkProps }: Props) =>
             className={[
               TRANSITION_CLASSES,
               step3Classes,
-              "before:tw-content-['x']",
-              "before:tw-absolute",
-              "before:tw-top-[-3rem]",
-              "before:tw-left-[50%]",
-              "before:tw-text-3xl",
-              "before:tw-font-bold",
+              "before:content-['x']",
+              "before:absolute",
+              "before:top-[-3rem]",
+              "before:left-[50%]",
+              "before:text-3xl",
+              "before:font-bold",
             ]}
           >
-            <div className="tw-flex tw-gap-4 tw-items-center">
+            <div className="flex gap-4 items-center">
               <img src="/img/logos/logo-ademe.svg" alt="ADEME" height="40px" />
               <img src="/img/logos/logo-insee.svg" alt="INSEE" height="40px" />
               <img src="/img/logos/logo-aldo.svg" alt="Aldo" height="24px" />
@@ -116,22 +110,22 @@ const OnBoardingIntroductionHow = ({ nextButtonProps, backLinkProps }: Props) =>
             className={[
               TRANSITION_CLASSES,
               step4Classes,
-              "tw-mt-2",
-              "before:tw-content-['=']",
-              "before:tw-absolute",
-              "before:tw-top-[-3rem]",
-              "before:tw-left-[50%]",
-              "before:tw-text-3xl",
-              "before:tw-font-bold",
+              "mt-2",
+              "before:content-['=']",
+              "before:absolute",
+              "before:top-[-3rem]",
+              "before:left-[50%]",
+              "before:text-3xl",
+              "before:font-bold",
             ]}
           >
-            <span className="tw-text-sm">
+            <span className="text-sm">
               🌱 Environnement, 👷 Emploi, 🤕 Sécurité, 💰 Finances publiques...
             </span>
           </IllustrationCard>
         </aside>
 
-        <div className="tw-col-span-12 md:tw-col-span-8">
+        <div className="col-span-12 md:col-span-8">
           <h2>Bénéfriches, comment ça marche&nbsp;?</h2>
           <OnBoardingIntroductionStep
             stepNumber={1}
@@ -164,7 +158,7 @@ const OnBoardingIntroductionHow = ({ nextButtonProps, backLinkProps }: Props) =>
           <ButtonsGroup
             inlineLayoutWhen="always"
             alignment="between"
-            className="tw-mt-8"
+            className="mt-8"
             buttons={[
               {
                 children: "Retour",

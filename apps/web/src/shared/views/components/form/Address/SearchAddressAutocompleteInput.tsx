@@ -88,7 +88,7 @@ const SearchAddressAutocompleteInput = ({
 
   return (
     <Autocomplete
-      className="tw-mb-4 tw-pb-4"
+      className="mb-4 pb-4"
       value={autocompleteValue}
       options={options}
       onSelect={_onSelect}

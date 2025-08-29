@@ -57,7 +57,7 @@ function ProjectPhaseForm<TProjectPhase extends string>({
       <form onSubmit={handleSubmit(onSubmit)}>
         {projectPhaseOptions.map((option) => {
           return (
-            <div key={option.value} className="tw-mb-4">
+            <div key={option.value} className="mb-4">
               <Controller
                 control={control}
                 name="phase"

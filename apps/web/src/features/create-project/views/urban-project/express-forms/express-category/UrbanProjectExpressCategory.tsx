@@ -39,7 +39,7 @@ const options: Option[] = [
     description: "Habitat individuel + petit collectif",
     imgSrc: "/img/pictograms/express-urban-categories/residentiel-secteur-detendu.svg",
     badgeText: "40 logements / ha",
-    badgeClassName: "tw-bg-[#ECF2FF] tw-text-[#5371AC]",
+    badgeClassName: "bg-[#ECF2FF] text-[#5371AC]",
   },
   {
     value: "RESIDENTIAL_TENSE_AREA",
@@ -47,7 +47,7 @@ const options: Option[] = [
     description: "Habitat collectif, commerces, tertiaires, services et équipements de proximité",
     imgSrc: "/img/pictograms/express-urban-categories/residentiel-secteur-tendu.svg",
     badgeText: "200 logements / ha",
-    badgeClassName: "tw-bg-[#C2D5FF] tw-text-[#212D45]",
+    badgeClassName: "bg-[#C2D5FF] text-[#212D45]",
   },
 
   {
@@ -56,7 +56,7 @@ const options: Option[] = [
     description: "Forte mixité fonctionnelle",
     imgSrc: "/img/pictograms/express-urban-categories/nouvelle-centralite.svg",
     badgeText: "115 logements / ha",
-    badgeClassName: "tw-bg-[#D6E3FF] tw-text-[#3A4F79]",
+    badgeClassName: "bg-[#D6E3FF] text-[#3A4F79]",
   },
   {
     value: "PUBLIC_FACILITIES",
@@ -91,7 +91,7 @@ function UrbanProjectExpressCategory({ onSubmit, onBack }: Props) {
                             <>
                               <div>{option.description}</div>
 
-                              <Badge small className={["tw-mt-2", option.badgeClassName]}>
+                              <Badge small className={["mt-2", option.badgeClassName]}>
                                 {option.badgeText}
                               </Badge>
                             </>

@@ -22,7 +22,7 @@ type Props = {
 const ImpactComparisonListView = ({ baseCase, comparisonCase, projectType }: Props) => {
   return (
     <div>
-      <table className="tw-w-full" cellSpacing="0" cellPadding="0">
+      <table className="w-full" cellSpacing="0" cellPadding="0">
         <thead>
           <TableHeaderRow
             baseCaseSiteName={baseCase.siteName}

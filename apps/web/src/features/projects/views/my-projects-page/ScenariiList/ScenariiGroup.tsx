@@ -34,7 +34,7 @@ function ScenarioGroupTitle({
     <h4 className="tour-guide-step-created-site">
       <a {...routes.siteFeatures({ siteId }).link}>{siteName}</a>
       {isExpressSite && (
-        <Badge small className="tw-ml-3" style="blue">
+        <Badge small className="ml-3" style="blue">
           Site express
         </Badge>
       )}
@@ -55,14 +55,14 @@ function ScenariiGroup({
   onChangeSelectedProject,
 }: Props) {
   return (
-    <div className="tw-mb-10">
+    <div className="mb-10">
       <ScenarioGroupTitle siteName={siteName} siteId={siteId} isExpressSite={isExpressSite} />
       {reconversionProjects.length > 0 ? (
         <p>{reconversionProjects.length + 1} scenarii possibles pour ce site :</p>
       ) : (
         <p>1 scenario possible pour ce site :</p>
       )}
-      <div className="tw-grid sm:tw-grid-cols-2 md:tw-grid-cols-4 tw-gap-6">
+      <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-6">
         <StatuQuoScenarioTile
           siteNature={siteNature}
           fricheActivity={fricheActivity}

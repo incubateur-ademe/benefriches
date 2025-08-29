@@ -21,9 +21,9 @@ type Props = {
 };
 
 export const BagdeLabel = ({ label, color }: { label: string; color: string }) => (
-  <span className="tw-flex tw-items-center tw-gap-1" key={label}>
+  <span className="flex items-center gap-1" key={label}>
     <span
-      className={classNames("tw-mr-2", "tw-inline-flex", "tw-min-h-5", "tw-min-w-5", "tw-rounded")}
+      className={classNames("mr-2", "inline-flex", "min-h-5", "min-w-5", "rounded")}
       aria-hidden="true"
       style={
         {
@@ -42,7 +42,7 @@ export const Value = ({
   value: number;
   formatFn: (value: number) => string;
 }) => (
-  <span className={classNames(getPositiveNegativeTextClassesFromValue(value), "tw-font-bold")}>
+  <span className={classNames(getPositiveNegativeTextClassesFromValue(value), "font-bold")}>
     {formatFn(value)}
   </span>
 );

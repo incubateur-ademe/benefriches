@@ -14,7 +14,7 @@ export default function ImpactPercentageVariation({ percentage }: Props) {
     <Badge
       small
       style={percentage === 0 ? "neutral" : percentage > 0 ? "success" : "error"}
-      className="tw-ml-2"
+      className="ml-2"
     >
       {formatEvolutionPercentage(percentage)}
     </Badge>

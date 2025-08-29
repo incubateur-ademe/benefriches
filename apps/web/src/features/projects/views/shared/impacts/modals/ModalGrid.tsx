@@ -5,7 +5,7 @@ type Props = {
 };
 
 const ModalGrid = ({ children }: Props) => {
-  return <div className="tw-grid tw-grid-cols-1 lg:tw-grid-cols-2">{children}</div>;
+  return <div className="grid grid-cols-1 lg:grid-cols-2">{children}</div>;
 };
 
 export default ModalGrid;

@@ -12,10 +12,10 @@ type IllustrationCardProps = {
 };
 
 const iconColorsVariants = {
-  1: `tw-text-onboarding-step1`,
-  2: `tw-text-onboarding-step2`,
-  3: `tw-text-onboarding-step3`,
-  4: `tw-text-onboarding-step4`,
+  1: `text-onboarding-step1`,
+  2: `text-onboarding-step2`,
+  3: `text-onboarding-step3`,
+  4: `text-onboarding-step4`,
 } as const;
 
 const IllustrationCard = ({
@@ -28,20 +28,20 @@ const IllustrationCard = ({
   return (
     <div
       className={classNames(
-        "tw-bg-[var(--background-default-grey)]",
-        "tw-rounded-2xl",
-        "tw-shadow-[0_6px_18px_0px_#00001229]",
-        "tw-flex",
-        "tw-flex-col",
-        "tw-justify-between",
-        "tw-p-4",
-        "tw-pb-6",
-        "tw-gap-4",
+        "bg-[var(--background-default-grey)]",
+        "rounded-2xl",
+        "shadow-[0_6px_18px_0px_#00001229]",
+        "flex",
+        "flex-col",
+        "justify-between",
+        "p-4",
+        "pb-6",
+        "gap-4",
         className,
       )}
     >
       <i className={classNames(fr.cx(iconId, "fr-icon--lg"), iconColorsVariants[stepNumber])}></i>
-      <span className="tw-font-medium">{title}</span>
+      <span className="font-medium">{title}</span>
       {children}
     </div>
   );

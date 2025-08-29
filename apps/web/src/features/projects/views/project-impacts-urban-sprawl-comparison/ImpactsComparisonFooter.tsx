@@ -42,21 +42,21 @@ function ImpactsComparisonFooter({ baseCaseSiteData, comparisonCaseSiteData, pro
   const comparisonSiteDesignation = getSiteDesignationFromNature(comparisonCaseSiteData.nature);
   return (
     <>
-      <div className="tw-p-6 tw-bg-white dark:tw-bg-black tw-border tw-border-solid tw-border-borderGrey tw-flex tw-flex-col md:tw-flex-row tw-gap-6">
+      <div className="p-6 bg-white dark:bg-black border border-solid border-borderGrey flex flex-col md:flex-row gap-6">
         <img
           src="/img/pictograms/calculatrice-illustration.svg"
           alt=""
           aria-hidden="true"
-          className="tw-w-36"
+          className="w-36"
         />
-        <div className="tw-flex tw-flex-col tw-justify-center">
-          <h3 className="tw-mb-0">
+        <div className="flex flex-col justify-center">
+          <h3 className="mb-0">
             Les réponses à vos questions concernant la comparaison des impacts
           </h3>
 
           <Button
             priority="primary"
-            className="tw-my-4"
+            className="my-4"
             nativeButtonProps={{
               "data-fr-opened": false,
               "aria-controls": ABOUT_IMPACTS_DIALOG_ID,
@@ -64,7 +64,7 @@ function ImpactsComparisonFooter({ baseCaseSiteData, comparisonCaseSiteData, pro
           >
             Comprendre les calculs
           </Button>
-          <div className="tw-flex tw-flex-col md:tw-flex-row tw-flex-wrap md:tw-gap-2">
+          <div className="flex flex-col md:flex-row flex-wrap md:gap-2">
             <Button
               size="small"
               iconId="fr-icon-map-pin-2-line"

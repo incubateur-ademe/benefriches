@@ -35,17 +35,17 @@ const ProjectPageHeader = ({
     <div className={classNames(fr.cx("fr-container"), className)}>
       <div
         className={classNames(
-          "tw-flex tw-flex-col tw-gap-2",
-          "md:tw-grid md:tw-grid-cols-[72px_1fr_240px] md:tw-gap-x-3",
+          "flex flex-col gap-2",
+          "md:grid md:grid-cols-[72px_1fr_240px] md:gap-x-3",
         )}
       >
         {projectType && (
           <img
             className={classNames(
-              "tw-col-start-1",
-              "sm:tw-row-start-1",
-              "sm:tw-row-span-2",
-              isSmallSize ? "tw-w-[60px] tw-h-[60px]" : "md:tw-w-[72px] md:tw-h-[72px]",
+              "col-start-1",
+              "sm:row-start-1",
+              "sm:row-span-2",
+              isSmallSize ? "w-[60px] h-[60px]" : "md:w-[72px] md:h-[72px]",
             )}
             src={getScenarioPictoUrl(projectType)}
             aria-hidden={true}
@@ -55,15 +55,15 @@ const ProjectPageHeader = ({
           />
         )}
 
-        <div className="tw-col-start-2 sm:tw-inline-flex tw-items-center">
-          <h2 className={classNames("tw-my-0", isSmallSize && "tw-text-2xl")}>{projectName}</h2>
+        <div className="col-start-2 sm:inline-flex items-center">
+          <h2 className={classNames("my-0", isSmallSize && "text-2xl")}>{projectName}</h2>
           {isExpressProject && !isSmallScreen && <ExpressProjectTooltipBadge />}
         </div>
         <div
           className={classNames(
-            "tw-row-start-2",
-            "tw-col-start-1 sm:tw-col-start-2",
-            "tw-col-span-3 sm:tw-col-span-1",
+            "row-start-2",
+            "col-start-1 sm:col-start-2",
+            "col-span-3 sm:col-span-1",
           )}
         >
           <span
@@ -76,11 +76,11 @@ const ProjectPageHeader = ({
             )}
             aria-hidden="true"
           ></span>
-          <a href={siteFeaturesHref} className="tw-text-base">
+          <a href={siteFeaturesHref} className="text-base">
             {siteName}
           </a>
         </div>
-        <div className="md:tw-col-start-3 md:tw-row-span-3 tw-flex tw-items-center md:tw-justify-end">
+        <div className="md:col-start-3 md:row-span-3 flex items-center md:justify-end">
           <Button
             priority="primary"
             iconId="fr-icon-file-download-line"

@@ -75,7 +75,7 @@ export default function ClimateAndBiodiversityImpactNotice({
         l'azote, etc.&nbsp;
         <span
           role="button"
-          className="tw-cursor-pointer tw-underline"
+          className="cursor-pointer underline"
           onClick={() => {
             open();
           }}

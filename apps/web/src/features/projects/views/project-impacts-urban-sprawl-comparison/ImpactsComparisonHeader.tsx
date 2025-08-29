@@ -24,30 +24,28 @@ const ImpactsComparisonHeader = ({
 }: HeaderProps) => {
   return (
     <div className={classNames(fr.cx("fr-container"), className)}>
-      <div className={classNames("tw-flex", "tw-justify-between", "tw-items-center")}>
+      <div className={classNames("flex", "justify-between", "items-center")}>
         <div>
-          <h1 className="tw-text-sm tw-uppercase tw-font-normal tw-mb-1">
-            Comparaison des impacts
-          </h1>
+          <h1 className="text-sm uppercase font-normal mb-1">Comparaison des impacts</h1>
 
           <h2
             className={classNames(
               fr.cx("fr-grid-row"),
-              "tw-justify-start",
-              "tw-items-end",
-              "tw-text-2xl",
-              "tw-mb-1",
+              "justify-start",
+              "items-end",
+              "text-2xl",
+              "mb-1",
             )}
           >
-            <span className="tw-text-[#806922] dark:tw-text-[#F6F1E1]">
+            <span className="text-[#806922] dark:text-[#F6F1E1]">
               <span
                 className={fr.cx("fr-icon--sm", "fr-icon-map-pin-2-line", "fr-pr-1w")}
                 aria-hidden="true"
               ></span>
               {baseSiteName}
             </span>
-            <span className="tw-text-3xl tw-px-4">/</span>
-            <span className="tw-text-[#7F236B] dark:tw-text-[#F6E1F1]">
+            <span className="text-3xl px-4">/</span>
+            <span className="text-[#7F236B] dark:text-[#F6E1F1]">
               <span
                 className={fr.cx("fr-icon--sm", "fr-icon-map-pin-2-line", "fr-pr-1w")}
                 aria-hidden="true"
@@ -55,16 +53,16 @@ const ImpactsComparisonHeader = ({
               {comparisonSiteName}
             </span>
           </h2>
-          <div className="tw-flex tw-gap-2">
+          <div className="flex gap-2">
             <img
-              className={classNames("tw-w-7 tw-h-7")}
+              className={classNames("w-7 h-7")}
               src={getScenarioPictoUrl(projectType)}
               aria-hidden={true}
               alt=""
               width="60"
               height="60"
             />
-            <h3 className={classNames("tw-my-0", "tw-text-lg", "tw-font-normal")}>{projectName}</h3>
+            <h3 className={classNames("my-0", "text-lg", "font-normal")}>{projectName}</h3>
           </div>
         </div>
 

@@ -30,7 +30,7 @@ const options = [
         les sols perméables minéraux enherbés au maximum. S'il reste un espace enherbé en-dehors de
         la zone des panneaux, vous pourrez choisir d'y planter des arbres.
         <br />
-        <Badge small className="tw-mt-2" style="green-emeraude">
+        <Badge small className="mt-2" style="green-emeraude">
           🌱 Le plus écologique
         </Badge>
       </>
@@ -47,7 +47,7 @@ const options = [
         remplacement des espaces de nature non-arborés existant. Si des bâtiments existent sur le
         site, ceux-ci seront rémployés.
         <br />
-        <Badge small className="tw-mt-2" style="green-tilleul">
+        <Badge small className="mt-2" style="green-tilleul">
           💰 Le plus économique
         </Badge>
       </>
@@ -117,7 +117,7 @@ function SoilsTransformationProjectForm({ initialValues, onSubmit, onBack }: Pro
                 rules={{ required: true }}
                 render={({ field }) => {
                   return (
-                    <div className="tw-mb-4">
+                    <div className="mb-4">
                       <HorizontalCheckableTile
                         checked={field.value === option.value}
                         title={option.title}

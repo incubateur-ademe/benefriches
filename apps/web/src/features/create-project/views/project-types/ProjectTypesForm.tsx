@@ -68,7 +68,7 @@ function ProjectTypesForm({ onSubmit, initialValues, allowedDevelopmentPlanCateg
           <TileFormFooterWrapper tileCount={options.length}>
             {validationError && <p className={fr.cx("fr-error-text")}>{validationError.message}</p>}
             <Button
-              className="tw-float-right"
+              className="float-right"
               nativeButtonProps={{ type: "submit", disabled: !formState.isValid }}
             >
               Valider

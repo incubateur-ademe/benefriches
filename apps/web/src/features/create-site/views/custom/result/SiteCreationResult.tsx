@@ -32,7 +32,7 @@ function SiteCreationResult({ siteId, siteName, loadingState, onBack }: Props) {
             description={`Une erreur est survenue lors de la création du site « ${siteName} », veuillez réessayer.`}
             severity="error"
             title="Le site n'a pas pu être enregistré"
-            className="tw-my-7"
+            className="my-7"
           />
           <Button onClick={onBack} priority="secondary">
             Précédent

@@ -25,20 +25,20 @@ type Props = {
 
 const ImpactSummaryView = ({ baseCase, comparisonCase, modalData }: Props) => {
   return (
-    <div className="tw-grid md:tw-grid-cols-2 tw-gap-6 tw-mb-8">
+    <div className="grid md:grid-cols-2 gap-6 mb-8">
       {[baseCase, comparisonCase].map(({ siteName, indicators }, index) => {
         const modalPrefix = index === 0 ? "base" : "comparison";
         return (
           <div
             key={index}
-            className="tw-flex tw-flex-col tw-gap-6 tw-p-6 tw-bg-[var(--background-raised-grey)] tw-rounded-2xl"
+            className="flex flex-col gap-6 p-6 bg-[var(--background-raised-grey)] rounded-2xl"
           >
             <h3
               className={classNames(
                 index === 0
-                  ? "tw-text-[#806922] dark:tw-text-[#F6F1E1]"
-                  : "tw-text-[#7F236B] dark:tw-text-[#F6E1F1]",
-                "tw-text-2xl",
+                  ? "text-[#806922] dark:text-[#F6F1E1]"
+                  : "text-[#7F236B] dark:text-[#F6E1F1]",
+                "text-2xl",
               )}
             >
               <span

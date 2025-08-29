@@ -72,7 +72,7 @@ function BudgetPage() {
           </ExternalLink>{" "}
           dont nous rappelons les principes ici&nbsp;:
         </p>
-        <blockquote className="tw-italic">
+        <blockquote className="italic">
           <ul>
             <li>
               Les besoins des utilisateurs sont prioritaires sur les besoins de l'administration
@@ -100,11 +100,11 @@ function BudgetPage() {
       </section>
       <section>
         <h2>Budget consommé</h2>
-        <table className="tw-table-auto tw-border-collapse">
+        <table className="table-auto border-collapse">
           <thead>
-            <tr className="tw-bg-blue-100 dark:tw-bg-dsfr-openBlue">
+            <tr className="bg-blue-100 dark:bg-dsfr-openBlue">
               {columns.map((col, index) => (
-                <th key={index} className="tw-px-6 tw-py-3 tw-font-medium">
+                <th key={index} className="px-6 py-3 font-medium">
                   {col}
                 </th>
               ))}
@@ -114,18 +114,18 @@ function BudgetPage() {
             {data.map((row) => (
               <tr
                 key={row.category}
-                className={classNames(row.category === "Total" ? "tw-font-bold" : "")}
+                className={classNames(row.category === "Total" ? "font-bold" : "")}
               >
                 <td
-                  className={`tw-px-6 tw-py-3 ${row.category === "Total" ? "tw-font-bold" : "tw-font-medium"}`}
+                  className={`px-6 py-3 ${row.category === "Total" ? "font-bold" : "font-medium"}`}
                 >
                   {row.category}
                 </td>
-                <td className="tw-text-right tw-px-6 tw-py-3">{formatBudget(row.S1_2023)}</td>
-                <td className="tw-text-right tw-px-6 tw-py-3">{formatBudget(row.S2_2023)}</td>
-                <td className="tw-text-right tw-px-6 tw-py-3">{formatBudget(row.S1_2024)}</td>
-                <td className="tw-text-right tw-px-6 tw-py-3">{formatBudget(row.S2_2024)}</td>
-                <td className="tw-text-right tw-px-6 tw-py-3">{formatBudget(row.S1_2025)}</td>
+                <td className="text-right px-6 py-3">{formatBudget(row.S1_2023)}</td>
+                <td className="text-right px-6 py-3">{formatBudget(row.S2_2023)}</td>
+                <td className="text-right px-6 py-3">{formatBudget(row.S1_2024)}</td>
+                <td className="text-right px-6 py-3">{formatBudget(row.S2_2024)}</td>
+                <td className="text-right px-6 py-3">{formatBudget(row.S1_2025)}</td>
               </tr>
             ))}
           </tbody>

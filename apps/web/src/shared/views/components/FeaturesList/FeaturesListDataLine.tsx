@@ -35,36 +35,36 @@ export default function DataLine({
   style,
 }: DataLineProps) {
   const bordersClasses = isDetails
-    ? ["tw-border-l-black", "tw-border-l"]
-    : ["tw-border-b", "tw-border-borderGrey"];
+    ? ["border-l-black", "border-l"]
+    : ["border-b", "border-borderGrey"];
   const classes = classNames(
-    "tw-grid",
-    "tw-grid-cols-[8fr_4fr]",
-    "tw-px-0",
-    "tw-border-0",
-    "tw-border-solid",
+    "grid",
+    "grid-cols-[8fr_4fr]",
+    "px-0",
+    "border-0",
+    "border-solid",
     !noBorder && bordersClasses,
     className,
   );
   return (
     <dl className={classes}>
-      <dd className={classNames("tw-ml-0", "tw-px-0", "tw-py-2", isDetails && "tw-pl-4")}>
+      <dd className={classNames("ml-0", "px-0", "py-2", isDetails && "pl-4")}>
         {label}
         {labelTooltip && <InfoTooltip title={labelTooltip} />}
       </dd>
       <dt
         className={classNames(
-          "tw-p-2",
+          "p-2",
 
-          "sm:tw-text-right",
-          "tw-bg-grey-light",
-          "dark:tw-bg-grey-dark",
+          "sm:text-right",
+          "bg-grey-light",
+          "dark:bg-grey-dark",
         )}
       >
         <span
           className={classNames(
             style === "monetary" && getPositiveNegativeTextClassesFromValue(value),
-            style === "monetary" && !isDetails && "tw-font-bold",
+            style === "monetary" && !isDetails && "font-bold",
           )}
         >
           {style === "monetary"

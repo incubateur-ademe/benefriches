@@ -34,15 +34,15 @@ export default function SoilsDistribution({
           </strong>
         }
       />
-      <div className="tw-grid tw-grid-cols-12">
+      <div className="grid grid-cols-12">
         <div
           className={classNames(
-            "tw-col-span-12",
-            "md:tw-col-span-3",
-            "tw-border-0",
-            "tw-border-solid",
-            "tw-border-l-black",
-            "tw-border-l",
+            "col-span-12",
+            "md:col-span-3",
+            "border-0",
+            "border-solid",
+            "border-l-black",
+            "border-l",
           )}
         >
           <SurfaceAreaPieChart
@@ -54,15 +54,15 @@ export default function SoilsDistribution({
 
         <div
           className={classNames(
-            "tw-col-span-12",
-            "md:tw-col-span-9",
-            "tw-border-0",
-            "tw-border-solid",
-            "tw-border-l-black",
-            "tw-border-l",
-            "md:tw-border-0",
-            "tw-pl-2",
-            "md:tw-pl-0",
+            "col-span-12",
+            "md:col-span-9",
+            "border-0",
+            "border-solid",
+            "border-l-black",
+            "border-l",
+            "md:border-0",
+            "pl-2",
+            "md:pl-0",
           )}
         >
           {typedObjectEntries(soilsDistribution).map(([soilType, surfaceArea]) => {
@@ -72,7 +72,7 @@ export default function SoilsDistribution({
                 label={<SoilTypeLabelWithColorSquare soilType={soilType} />}
                 value={formatSurfaceArea(surfaceArea ?? 0)}
                 key={soilType}
-                className="md:tw-grid-cols-[5fr_4fr]"
+                className="md:grid-cols-[5fr_4fr]"
                 valueTooltip={
                   isExpressProject && projectType === "URBAN_PROJECT"
                     ? "Répartition représentative de l’aménagement des espaces pour ce type de projet urbain. L’occupation des sols conditionne la capacité d’infiltration des eaux, la capacité de stockage de carbone dans les sols, etc."

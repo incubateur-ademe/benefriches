@@ -68,10 +68,10 @@ function DuplicateProjectModal({ onSubmit, onSaveLoadingState, userEmail }: Prop
               description="Une erreur s'est produite lors de la sauvegarde des données... Veuillez réessayer."
               severity="error"
               title="Échec de l'enregistrement"
-              className="tw-my-7"
+              className="my-7"
             />
           )}
-          <div className="tw-flex tw-justify-end">
+          <div className="flex justify-end">
             <Button
               type="submit"
               disabled={onSaveLoadingState === "loading" || !formState.isValid}

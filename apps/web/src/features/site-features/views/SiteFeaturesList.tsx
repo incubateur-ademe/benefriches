@@ -35,15 +35,15 @@ export default function SiteFeaturesList(siteFeatures: Props) {
           value={<strong>{formatSurfaceArea(siteFeatures.surfaceArea)}</strong>}
         />
 
-        <div className="tw-grid tw-grid-cols-12">
+        <div className="grid grid-cols-12">
           <div
             className={classNames(
-              "tw-col-span-12",
-              "md:tw-col-span-3",
-              "tw-border-0",
-              "tw-border-solid",
-              "tw-border-l-black",
-              "tw-border-l",
+              "col-span-12",
+              "md:col-span-3",
+              "border-0",
+              "border-solid",
+              "border-l-black",
+              "border-l",
             )}
           >
             <SurfaceAreaPieChart
@@ -60,15 +60,15 @@ export default function SiteFeaturesList(siteFeatures: Props) {
 
           <div
             className={classNames(
-              "tw-col-span-12",
-              "md:tw-col-span-9",
-              "tw-border-0",
-              "tw-border-solid",
-              "tw-border-l-black",
-              "tw-border-l",
-              "md:tw-border-0",
-              "tw-pl-2",
-              "md:tw-pl-0",
+              "col-span-12",
+              "md:col-span-9",
+              "border-0",
+              "border-solid",
+              "border-l-black",
+              "border-l",
+              "md:border-0",
+              "pl-2",
+              "md:pl-0",
             )}
           >
             {typedObjectEntries(siteFeatures.soilsDistribution).map(([soilType, surfaceArea]) => {
@@ -91,7 +91,7 @@ export default function SiteFeaturesList(siteFeatures: Props) {
                   label={<SoilTypeLabelWithColorSquare soilType={soilType} />}
                   value={formatSurfaceArea(surfaceArea ?? 0)}
                   key={soilType}
-                  className="md:tw-grid-cols-[5fr_4fr]"
+                  className="md:grid-cols-[5fr_4fr]"
                   valueTooltip={valueTooltip}
                 />
               );
@@ -131,7 +131,7 @@ La pollution à l’amiante des bâtiments n’est pas considérée ici."
                 }
               />
               {sumObjectValues(siteFeatures.accidents) > 0 && (
-                <div className="tw-ml-4">
+                <div className="ml-4">
                   <DataLine
                     label="Blessés légers"
                     value={siteFeatures.accidents.minorInjuries ?? "Non renseigné"}

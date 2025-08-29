@@ -11,12 +11,12 @@ const SoilTypeLabelWithColorSquare = ({ soilType }: { soilType: SoilType }) => {
     <>
       <span
         className={classNames(
-          "tw-mr-2",
-          "tw-inline-flex",
-          `tw-bg-[var(--soil-legend-bg-color)]`,
-          "tw-h-4",
-          "tw-w-4",
-          "tw-rounded",
+          "mr-2",
+          "inline-flex",
+          `bg-[var(--soil-legend-bg-color)]`,
+          "h-4",
+          "w-4",
+          "rounded",
         )}
         aria-hidden="true"
         style={

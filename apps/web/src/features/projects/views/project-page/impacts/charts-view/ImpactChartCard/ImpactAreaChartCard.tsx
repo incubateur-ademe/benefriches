@@ -30,7 +30,7 @@ function ImpactAreaChartCard({ title, dialogId, ...props }: Props) {
         id: chartContainerId,
       }}
       options={options}
-      classes={{ title: "tw-text-xl" }}
+      classes={{ title: "text-xl" }}
     />
   );
 }

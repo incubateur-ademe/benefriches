@@ -43,42 +43,40 @@ const ImpactChartCard = ({
   return (
     <div
       className={classNames(
-        "tw-relative",
-        "tw-p-6",
-        "tw-rounded-2xl",
-        "tw-flex",
-        "tw-flex-col",
-        "tw-justify-between",
-        "tw-bg-white",
-        "dark:tw-bg-black",
-        "tw-border",
-        "tw-border-solid",
-        "tw-border-transparent",
-        "tw-cursor-pointer",
-        "hover:tw-border-current focus:tw-border-current",
-        "tw-transition tw-ease-in-out tw-duration-500",
+        "relative",
+        "p-6",
+        "rounded-2xl",
+        "flex",
+        "flex-col",
+        "justify-between",
+        "bg-white",
+        "dark:bg-black",
+        "border",
+        "border-solid",
+        "border-transparent",
+        "cursor-pointer",
+        "hover:border-current focus:border-current",
+        "transition ease-in-out duration-500",
         containerProps?.className,
       )}
       onClick={() => {
         buttonControlsDialogRef.current?.click();
       }}
     >
-      <div className="tw-flex tw-justify-between tw-mb-2">
-        <div className="tw-flex tw-flex-col tw-justify-center">
-          <h3
-            className={classNames("tw-text-2xl", subtitle ? "tw-mb-2" : "tw-mb-0", classes?.title)}
-          >
+      <div className="flex justify-between mb-2">
+        <div className="flex flex-col justify-center">
+          <h3 className={classNames("text-2xl", subtitle ? "mb-2" : "mb-0", classes?.title)}>
             {title}
           </h3>
-          {subtitle && <h4 className="tw-text-sm tw-font-normal tw-mb-2">{subtitle}</h4>}
+          {subtitle && <h4 className="text-sm font-normal mb-2">{subtitle}</h4>}
         </div>
 
-        <div className="tw-flex">
+        <div className="flex">
           <Button
             title="Menu"
             priority="tertiary no outline"
             iconId="fr-icon-information-line"
-            className="tw-text-text-light"
+            className="text-text-light"
             aria-controls={dialogId}
             data-fr-opened="false"
             ref={buttonControlsDialogRef}
@@ -92,7 +90,7 @@ const ImpactChartCard = ({
                 title="Menu"
                 priority="tertiary no outline"
                 iconId="ri-download-2-line"
-                className="tw-text-text-light"
+                className="text-text-light"
                 onClick={(e) => {
                   e.stopPropagation();
                   e.preventDefault();

@@ -174,7 +174,7 @@ export default function SiteYearlyExpensesForm({
     <WizardFormLayout title={title} instructions={<SiteYearlyExpensesFormInstructions />}>
       <form onSubmit={handleSubmit(onSubmit)}>
         {siteSecurityExpensesConfig.length > 0 && (
-          <h3 className="!tw-mb-0">
+          <h3 className="!mb-0">
             {siteNature === "AGRICULTURAL_OPERATION" ? "Exploitation du site" : "Gestion du site"}
           </h3>
         )}
@@ -212,7 +212,7 @@ export default function SiteYearlyExpensesForm({
 
         {siteSecurityExpensesConfig.length > 0 && (
           <>
-            <h3 className="!tw-mb-0 tw-mt-6">Sécurisation du site</h3>
+            <h3 className="!mb-0 mt-6">Sécurisation du site</h3>
             {siteSecurityExpensesConfig.map(({ purpose, fixedBearer }) => {
               const amountEntered = !!formValues[purpose]?.amount;
               const askForBearer = fixedBearer === null && amountEntered;

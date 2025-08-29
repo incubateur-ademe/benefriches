@@ -113,7 +113,7 @@ function ScheduleProjectionForm({
         <h6>🎉 Mise en service du site</h6>
         <Input
           // 50% width minus half the right arrow width and half the gap between inputs
-          className="sm:tw-w-[calc(50%-28px)]"
+          className="sm:w-[calc(50%-28px)]"
           label={<RequiredLabel label="Année de mise en service" />}
           nativeInputProps={{
             inputMode: "numeric",

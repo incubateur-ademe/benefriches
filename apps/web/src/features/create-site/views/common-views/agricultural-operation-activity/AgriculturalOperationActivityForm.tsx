@@ -36,7 +36,7 @@ function AgriculturalOperationActivityForm({ initialValues, onSubmit, onBack }: 
   return (
     <WizardFormLayout title="De quel type d'exploitation agricole s'agit-il&nbsp;?">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="tw-mb-6">
+        <div className="mb-6">
           <h4>Culture</h4>
           <RadioButtons
             {...register("activity", { required: requiredMessage })}

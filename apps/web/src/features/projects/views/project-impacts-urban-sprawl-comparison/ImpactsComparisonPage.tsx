@@ -35,18 +35,16 @@ function ImpactsComparisonPage({
   onEvaluationPeriodChange,
 }: Props) {
   return (
-    <div className={classNames("tw-bg-grey-light dark:tw-bg-grey-dark", "tw-h-full", "tw-pb-14")}>
+    <div className={classNames("bg-grey-light dark:bg-grey-dark", "h-full", "pb-14")}>
       <div className="fr-container">
         {dataLoadingState === "error" && (
-          <div className="tw-py-6">
-            <h1 className="tw-text-sm tw-uppercase tw-font-normal tw-mb-1">
-              Comparaison des impacts
-            </h1>
+          <div className="py-6">
+            <h1 className="text-sm uppercase font-normal mb-1">Comparaison des impacts</h1>
             <Alert
               description="Une erreur s'est produite lors du chargement des données, veuillez réessayer."
               severity="error"
               title="Impossible de charger la comparaison des impacts du projet"
-              className="tw-my-7"
+              className="my-7"
             />
           </div>
         )}

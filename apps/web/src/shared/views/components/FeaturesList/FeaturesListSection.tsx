@@ -17,27 +17,27 @@ export default function Section({ children, title, tooltip, buttonProps }: Props
     setDisplaySectionContent((displaySectionContent) => !displaySectionContent);
   };
   return (
-    <section className="tw-mb-10">
-      <div className="tw-flex tw-justify-between tw-items-center">
-        <div className="tw-flex tw-items-center tw-justify-between tw-flex-grow">
-          <span className="tw-flex tw-items-center">
-            <h3 className="tw-text-lg tw-mb-0">{title}</h3>
+    <section className="mb-10">
+      <div className="flex justify-between items-center">
+        <div className="flex items-center justify-between flex-grow">
+          <span className="flex items-center">
+            <h3 className="text-lg mb-0">{title}</h3>
             {tooltip && <InfoTooltip title={tooltip} />}
           </span>
 
-          {buttonProps && <Button className="tw-mx-2" size="small" {...buttonProps} />}
+          {buttonProps && <Button className="mx-2" size="small" {...buttonProps} />}
         </div>
 
         <Button
           className={classNames(
-            "tw-my-2",
-            "tw-border tw-border-solid tw-border-borderGrey",
-            "tw-bg-white",
-            "tw-text-black",
-            "tw-rounded-sm",
-            "tw-shadow-none",
-            "dark:tw-bg-grey-dark",
-            "dark:tw-text-white",
+            "my-2",
+            "border border-solid border-borderGrey",
+            "bg-white",
+            "text-black",
+            "rounded-sm",
+            "shadow-none",
+            "dark:bg-grey-dark",
+            "dark:text-white",
           )}
           size="small"
           iconId={displaySectionContent ? "fr-icon-arrow-up-s-line" : "fr-icon-arrow-down-s-line"}

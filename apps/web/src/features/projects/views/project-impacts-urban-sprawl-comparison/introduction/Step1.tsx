@@ -34,11 +34,11 @@ export default function Step1({
 }: Props) {
   return (
     <>
-      <div aria-hidden="true" className="tw-text-7xl tw-mb-4">
+      <div aria-hidden="true" className="text-7xl mb-4">
         ⚖️{" "}
       </div>
 
-      <h2 className="tw-font-normal tw-text-3xl">
+      <h2 className="font-normal text-3xl">
         Vous allez comparer les impacts de votre projet{" "}
         <strong>«&nbsp;{projectName.replace(/ /g, "\u00a0")}&nbsp;»</strong> sur le site{" "}
         <strong>«&nbsp;{baseSiteData.name}&nbsp;»</strong> avec le même projet sur{" "}
@@ -55,7 +55,7 @@ export default function Step1({
           })()}
         </strong>
       </h2>
-      <p className="tw-mb-0">
+      <p className="mb-0">
         Bénéfriches va pour cela créer{" "}
         <strong>
           {(() => {
@@ -71,7 +71,7 @@ export default function Step1({
         </strong>{" "}
         ayant les caractéristiques suivantes :
       </p>
-      <ul className="tw-mb-6 tw-mt-2">
+      <ul className="mb-6 mt-2">
         <li>
           {(() => {
             switch (comparisonSiteData.nature) {
@@ -105,7 +105,7 @@ export default function Step1({
         <SiteFeaturesList {...formatSiteDataAsFeatures(comparisonSiteData)} />
       </Accordion>
 
-      <div className="tw-mt-10 tw-flex tw-justify-end">
+      <div className="mt-10 flex justify-end">
         <Button priority="primary" onClick={onNextClick}>
           Suivant
         </Button>

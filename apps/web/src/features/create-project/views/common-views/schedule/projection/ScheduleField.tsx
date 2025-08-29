@@ -32,23 +32,23 @@ function ScheduleField({ label, scheduleName, control, onStartDateChange }: Prop
       state={hasError ? "error" : "default"}
       stateRelatedMessage={
         hasError ? (
-          <ul className="tw-m-0">
+          <ul className="m-0">
             {errorStartDate && <li>{errorStartDate.message ?? ""}</li>}
             {errorEndDate && <li>{errorEndDate.message ?? ""}</li>}
           </ul>
         ) : undefined
       }
     >
-      <div className="tw-mb-4">
+      <div className="mb-4">
         <h6>{label}</h6>
-        <div className="sm:tw-gap-4 sm:tw-flex">
+        <div className="sm:gap-4 sm:flex">
           <Controller
             name={`${scheduleName}.startDate`}
             control={control}
             render={({ field }) => (
               <Input
                 label="Début des travaux"
-                className="tw-w-full"
+                className="w-full"
                 nativeInputProps={{
                   ...field,
                   onChange: (ev) => {
@@ -60,17 +60,14 @@ function ScheduleField({ label, scheduleName, control, onStartDateChange }: Prop
               />
             )}
           />
-          <span
-            className="fr-icon-arrow-right-line tw-hidden sm:tw-inline tw-m-auto"
-            aria-hidden="true"
-          />
+          <span className="fr-icon-arrow-right-line hidden sm:inline m-auto" aria-hidden="true" />
           <Controller
             name={`${scheduleName}.endDate`}
             control={control}
             render={({ field }) => (
               <Input
                 label="Fin des travaux"
-                className="tw-w-full"
+                className="w-full"
                 nativeInputProps={{
                   ...field,
                   type: "date",

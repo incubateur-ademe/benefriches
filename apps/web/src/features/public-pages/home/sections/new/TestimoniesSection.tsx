@@ -64,27 +64,25 @@ type TestimonyCardProps = {
 function TestimonyCard({ testimony, className }: TestimonyCardProps) {
   return (
     <div
-      className={`tw-bg-white dark:tw-bg-grey-dark tw-rounded-2xl tw-p-8 md:tw-flex tw-gap-8 tw-min-w-[700px] tw-h-auto ${className || ""}`}
+      className={`bg-white dark:bg-grey-dark rounded-2xl p-8 md:flex gap-8 min-w-[700px] h-auto ${className || ""}`}
     >
-      <div className="tw-flex-shrink-0 tw-my-auto tw-w-32">
-        <img src={testimony.imgSrc} alt="" className="tw-max-w-full tw-object-contain" />
+      <div className="flex-shrink-0 my-auto w-32">
+        <img src={testimony.imgSrc} alt="" className="max-w-full object-contain" />
       </div>
 
-      <div className="tw-hidden md:tw-block tw-w-px tw-bg-gray-200 tw-flex-shrink-0" />
+      <div className="hidden md:block w-px bg-gray-200 flex-shrink-0" />
 
-      <div className="tw-flex tw-flex-col tw-flex-1 tw-min-h-[200px]">
-        <div className="tw-mb-6">
+      <div className="flex flex-col flex-1 min-h-[200px]">
+        <div className="mb-6">
           <Badge style="blue">{testimony.projectType}</Badge>
         </div>
 
-        <blockquote className="tw-mb-6 tw-m-0 tw-font-medium tw-text-lg">
-          "{testimony.testimony}"
-        </blockquote>
+        <blockquote className="mb-6 m-0 font-medium text-lg">"{testimony.testimony}"</blockquote>
 
-        <div className="tw-text-sm">{testimony.author}</div>
+        <div className="text-sm">{testimony.author}</div>
         {testimony.fileUrl && (
           <Button
-            className="tw-mt-6"
+            className="mt-6"
             priority="secondary"
             linkProps={{
               href: testimony.fileUrl,
@@ -130,15 +128,15 @@ export default function TestimoniesSection() {
   };
 
   return (
-    <section className="tw-bg-[#64C7ED] tw-py-20">
+    <section className="bg-[#64C7ED] py-20">
       <div className="fr-container">
-        <div className="tw-flex tw-items-center tw-justify-between tw-mb-[60px]">
-          <SectionTitle className="tw-m-0">Ils sont convaincus par Bénéfriches</SectionTitle>
+        <div className="flex items-center justify-between mb-[60px]">
+          <SectionTitle className="m-0">Ils sont convaincus par Bénéfriches</SectionTitle>
           <div>
             <Button
               aria-label="Témoignage précédent"
               priority="secondary"
-              className="tw-mr-4 tw-px-2"
+              className="mr-4 px-2"
               onClick={goToPrevious}
             >
               <span className={fr.cx("fr-icon-arrow-left-s-line")} aria-hidden="true"></span>
@@ -146,7 +144,7 @@ export default function TestimoniesSection() {
             <Button
               priority="secondary"
               aria-label="Témoignage suivant"
-              className="tw-p-2"
+              className="p-2"
               onClick={goToNext}
             >
               <span className={fr.cx("fr-icon-arrow-right-s-line")} aria-hidden="true"></span>
@@ -156,27 +154,27 @@ export default function TestimoniesSection() {
 
         <div
           ref={scrollContainerRef}
-          className="tw-flex tw-gap-6 tw-overflow-x-auto tw-scrollbar-hide tw-scroll-smooth"
+          className="flex gap-6 overflow-x-auto scrollbar-hide scroll-smooth"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           {testimonies.map((testimony, index) => (
             <TestimonyCard
               key={testimony.author}
               testimony={testimony}
-              className={index === 0 ? "tw-ml-0" : ""}
+              className={index === 0 ? "ml-0" : ""}
             />
           ))}
         </div>
 
-        <div className="tw-flex tw-mt-[60px] tw-gap-2">
+        <div className="flex mt-[60px] gap-2">
           {testimonies.map((_, index) => (
             <button
               key={index}
               onClick={() => {
                 scrollToIndex(index);
               }}
-              className={`tw-w-3 tw-h-3 tw-rounded-full tw-transition-colors ${
-                index === currentIndex ? "tw-bg-black" : "tw-bg-[#00000040] hover:tw-bg-gray-400"
+              className={`w-3 h-3 rounded-full transition-colors ${
+                index === currentIndex ? "bg-black" : "bg-[#00000040] hover:bg-gray-400"
               }`}
               aria-label={`Aller au témoignage ${index + 1}`}
             />

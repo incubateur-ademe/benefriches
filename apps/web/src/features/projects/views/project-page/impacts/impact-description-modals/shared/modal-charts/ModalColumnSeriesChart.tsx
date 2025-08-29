@@ -59,7 +59,7 @@ const ModalColumnSeriesChart = ({ data, format, exportTitle, exportSubtitle, ...
     .flat();
 
   return (
-    <div className="tw-relative">
+    <div className="relative">
       <ModalColumnChartTooltip
         position={position}
         rows={tooltipRows}
@@ -75,7 +75,7 @@ const ModalColumnSeriesChart = ({ data, format, exportTitle, exportSubtitle, ...
         }}
         containerProps={{
           id: chartContainerId,
-          className: classNames("highcharts-no-xaxis", !isChartReady && "tw-cursor-wait"),
+          className: classNames("highcharts-no-xaxis", !isChartReady && "cursor-wait"),
           onMouseLeave,
           onMouseMove,
         }}

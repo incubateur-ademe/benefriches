@@ -94,17 +94,17 @@ function FutureSoilsSurfaceAreaForm({
               label={getLabelForSoilType(soilType)}
               hintText={hintText}
               addonText={SQUARE_METERS_HTML_SYMBOL}
-              className="tw-w-full"
+              className="w-full"
             />
           );
         })}
-        <div className="tw-mt-6">
+        <div className="mt-6">
           <SuitableSurfaceAreaControlInput
             allocatedSuitableSurfaceArea={allocatedSuitableSurfaceAreaForPhotovoltaicPanels}
             minSuitableSurfaceAreaToAllocate={photovoltaicPanelsSurfaceArea}
           />
         </div>
-        <div className="tw-my-6">
+        <div className="my-6">
           <AllocatedSurfaceAreaControlInput
             allocatedSurfaceArea={totalAllocatedSurface}
             availableSurfaceArea={siteSurfaceArea}

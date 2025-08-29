@@ -57,22 +57,22 @@ const ImpactRowValue = ({
   return (
     <div
       className={classNames(
-        "tw-grid",
-        `tw-grid-cols-[2rem_1fr_3rem]`,
-        `md:tw-grid-cols-[2rem_1fr_9rem_8rem]`,
-        "tw-relative",
-        "tw-items-center",
-        "tw-group",
+        "grid",
+        `grid-cols-[2rem_1fr_3rem]`,
+        `md:grid-cols-[2rem_1fr_9rem_8rem]`,
+        "relative",
+        "items-center",
+        "group",
       )}
     >
       {onToggleAccordion && (
         <Button
           className={classNames(
-            "tw-col-start-1",
-            "tw-text-black dark:tw-text-white",
-            "tw-text-xl",
-            "tw-absolute",
-            "tw-left-[-0.5rem]",
+            "col-start-1",
+            "text-black dark:text-white",
+            "text-xl",
+            "absolute",
+            "left-[-0.5rem]",
           )}
           iconId={isAccordionOpened ? "fr-icon-arrow-up-s-fill" : "fr-icon-arrow-down-s-fill"}
           onClick={onToggleAccordion}
@@ -83,15 +83,15 @@ const ImpactRowValue = ({
       )}
       <button
         className={classNames(
-          "tw-col-start-2",
-          !actor && "md:tw-col-end-4",
-          isTotal && "tw-font-bold",
-          "tw-text-left",
-          "group-hover:tw-font-bold",
-          "group-focus:tw-font-bold",
-          "group-hover:!tw-bg-inherit",
-          "group-focus:!tw-bg-inherit",
-          "tw-group",
+          "col-start-2",
+          !actor && "md:col-end-4",
+          isTotal && "font-bold",
+          "text-left",
+          "group-hover:font-bold",
+          "group-focus:font-bold",
+          "group-hover:!bg-inherit",
+          "group-focus:!bg-inherit",
+          "group",
           labelClassNames,
         )}
         {...labelPropsRest}
@@ -101,16 +101,16 @@ const ImpactRowValue = ({
           className={classNames(
             "fr-link",
             "fr-link--sm",
-            "md:tw-ml-2",
-            "tw-px-2",
-            "tw-transition-opacity",
-            "tw-ease-in",
-            "tw-duration-50",
-            "tw-font-normal",
+            "md:ml-2",
+            "px-2",
+            "transition-opacity",
+            "ease-in",
+            "duration-50",
+            "font-normal",
             !buttonInfoAlwaysDisplayed && [
-              "group-hover:tw-visible group-hover:tw-opacity-100",
-              "group-focus:tw-visible group-focus:tw-opacity-100",
-              "md:tw-opacity-0 md:tw-invisible tw-duration-0",
+              "group-hover:visible group-hover:opacity-100",
+              "group-focus:visible group-focus:opacity-100",
+              "md:opacity-0 md:invisible duration-0",
             ],
           )}
         >
@@ -122,17 +122,17 @@ const ImpactRowValue = ({
         </span>
       </button>
 
-      {actor && <span className="tw-col-start-2 md:tw-col-start-3 tw-pl-3">{actor}</span>}
+      {actor && <span className="col-start-2 md:col-start-3 pl-3">{actor}</span>}
 
       <div
         aria-hidden={value === undefined}
-        className={classNames("tw-flex", "tw-items-center", "tw-justify-end", "tw-col-start-4")}
+        className={classNames("flex", "items-center", "justify-end", "col-start-4")}
       >
         {value !== undefined && (
           <div
             className={classNames(
-              "tw-py-1",
-              isTotal && "tw-font-bold",
+              "py-1",
+              isTotal && "font-bold",
               getPositiveNegativeTextClassesFromValue(value),
             )}
           >

@@ -9,9 +9,9 @@ type Props = {
   skipStepByStepAnimation?: boolean;
 };
 
-const TRANSITION_CLASSES = ["tw-transition", "tw-ease-in-out", "tw-duration-1000"] as const;
-const VISIBLE_CLASSES = ["tw-opacity-100", "tw-visible"] as const;
-const INVISIBLE_CLASSES = ["md:tw-opacity-0", "md:tw-invisible"] as const;
+const TRANSITION_CLASSES = ["transition", "ease-in-out", "duration-1000"] as const;
+const VISIBLE_CLASSES = ["opacity-100", "visible"] as const;
+const INVISIBLE_CLASSES = ["md:opacity-0", "md:invisible"] as const;
 
 export default function Step4({ onNextClick, onBackClick, skipStepByStepAnimation }: Props) {
   const [innerStep, setInnerStep] = useState(skipStepByStepAnimation ? 1 : 0);
@@ -22,20 +22,20 @@ export default function Step4({ onNextClick, onBackClick, skipStepByStepAnimatio
 
   return (
     <>
-      <h1 className="tw-text-[32px] tw-mb-14">
+      <h1 className="text-[32px] mb-14">
         Votre site et votre projet sont{" "}
-        <span className="tw-bg-[#FBB8F6] dark:tw-text-black">sauvegardés automatiquement</span>.
+        <span className="bg-[#FBB8F6] dark:text-black">sauvegardés automatiquement</span>.
       </h1>
 
-      <div className="tw-flex tw-flex-col md:tw-flex-row tw-gap-8">
+      <div className="flex flex-col md:flex-row gap-8">
         <div
           className={classNames(
-            "tw-flex-2",
+            "flex-2",
             TRANSITION_CLASSES,
             innerStep > 0 ? VISIBLE_CLASSES : INVISIBLE_CLASSES,
           )}
         >
-          <p className="tw-text-xl tw-font-bold">Ils se trouvent dans "Mes projets".</p>
+          <p className="text-xl font-bold">Ils se trouvent dans "Mes projets".</p>
           <img
             src="/img/pictograms/project-impacts-onboarding/step4-my-projects.svg"
             aria-hidden="true"
@@ -44,7 +44,7 @@ export default function Step4({ onNextClick, onBackClick, skipStepByStepAnimatio
         </div>
         <div
           className={classNames(
-            "tw-my-auto",
+            "my-auto",
             TRANSITION_CLASSES,
             innerStep > 1 ? VISIBLE_CLASSES : INVISIBLE_CLASSES,
           )}
@@ -55,7 +55,7 @@ export default function Step4({ onNextClick, onBackClick, skipStepByStepAnimatio
           </p>
         </div>
       </div>
-      <div className="tw-mt-8">
+      <div className="mt-8">
         <ButtonsGroup
           inlineLayoutWhen="always"
           alignment="between"

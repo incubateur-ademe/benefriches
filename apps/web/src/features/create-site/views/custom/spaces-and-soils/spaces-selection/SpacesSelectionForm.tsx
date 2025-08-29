@@ -203,15 +203,15 @@ function SiteSpacesSelectionForm({ initialValues, onSubmit, onBack, siteNature }
       <form onSubmit={handleSubmit(onSubmit)}>
         {optionsByCategory.map(({ category, options, defaultOpen }) => {
           return (
-            <section key={category} className="tw-mb-10">
+            <section key={category} className="mb-10">
               <Accordion label={category} titleAs="h4" defaultExpanded={defaultOpen}>
                 <div
                   className={classNames(
-                    "tw-grid",
-                    "tw-grid-cols-1",
-                    "sm:tw-grid-cols-2",
-                    "lg:tw-grid-cols-3",
-                    "tw-gap-4",
+                    "grid",
+                    "grid-cols-1",
+                    "sm:grid-cols-2",
+                    "lg:grid-cols-3",
+                    "gap-4",
                   )}
                 >
                   {options.map((option) => {

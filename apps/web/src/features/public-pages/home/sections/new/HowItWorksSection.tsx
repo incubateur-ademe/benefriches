@@ -11,12 +11,12 @@ type StepProps = {
 
 function Step({ emoji, title, children }: StepProps) {
   return (
-    <article className="tw-flex tw-flex-col tw-gap-2">
-      <span className="tw-text-4xl" aria-hidden="true">
+    <article className="flex flex-col gap-2">
+      <span className="text-4xl" aria-hidden="true">
         {emoji}
       </span>
-      <h3 className="tw-m-0 tw-text-xl">{title}</h3>
-      <p className="tw-m-0 tw-text-sm">{children}</p>
+      <h3 className="m-0 text-xl">{title}</h3>
+      <p className="m-0 text-sm">{children}</p>
     </article>
   );
 }
@@ -27,13 +27,13 @@ export default function HowItWorksSection() {
   const [userSituation, setUserSituation] = useState<UserSituation>("has-site-and-project");
 
   return (
-    <section className="tw-py-20 tw-bg-grey-light dark:tw-bg-grey-dark">
+    <section className="py-20 bg-grey-light dark:bg-grey-dark">
       <div className="fr-container">
         <SectionTitle>Bénéfriches, comment ça marche ?</SectionTitle>
         <SegmentedControl
           legend="Connaissance du projet d'aménagement"
           hideLegend
-          className="tw-mb-10 tw-mt-5"
+          className="mb-10 mt-5"
           segments={[
             {
               label: "J'ai un site et un projet",
@@ -56,7 +56,7 @@ export default function HowItWorksSection() {
           ]}
         />
         {userSituation === "has-site-and-project" ? (
-          <div className="tw-grid tw-grid-cols-2 md:tw-grid-cols-5 tw-gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
             <Step emoji="📍" title="Je décris mon site">
               Type de site, sols, pollution, gestion du site... avec un maximum de données
               pré-remplies par l'outil.
@@ -79,7 +79,7 @@ export default function HowItWorksSection() {
             </Step>
           </div>
         ) : (
-          <div className="tw-grid tw-grid-cols-2 md:tw-grid-cols-5 tw-gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
             <Step emoji="✍️" title="Je décris ma friche">
               Adresse, terrain, bâtiments, environnement... avec un maximum de données pré-remplies
               par l'outil.

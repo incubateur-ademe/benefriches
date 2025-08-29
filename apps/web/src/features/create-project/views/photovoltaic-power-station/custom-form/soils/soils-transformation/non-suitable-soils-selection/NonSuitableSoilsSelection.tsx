@@ -89,12 +89,12 @@ function NonSuitableSoilsSelection({
       <form onSubmit={handleSubmit(onSubmit)}>
         <div
           className={classNames(
-            "tw-grid",
-            "tw-grid-cols-1",
-            "sm:tw-grid-cols-2",
-            "lg:tw-grid-cols-3",
-            "tw-gap-4",
-            "tw-mb-10",
+            "grid",
+            "grid-cols-1",
+            "sm:grid-cols-2",
+            "lg:grid-cols-3",
+            "gap-4",
+            "mb-10",
           )}
         >
           {typedObjectEntries(nonSuitableSoils).map(([soilType, surfaceArea]) => {

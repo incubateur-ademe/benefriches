@@ -145,9 +145,9 @@ const EcosystemServicesDescription = ({ impactsData }: Props) => {
             convention, Bénéfriches considère comme bénéficiaire l’Humanité et non la Société
             française.
           </p>
-          <div className="tw-text-center">
+          <div className="text-center">
             <img
-              className="tw-max-w-full"
+              className="max-w-full"
               src="/img/modals/services-ecosystemiques.png"
               aria-hidden="true"
               alt=""
@@ -164,9 +164,9 @@ const EcosystemServicesDescription = ({ impactsData }: Props) => {
             valeur.
           </p>
           <p>Différentes méthodes générales existent pour les évaluer&nbsp;:</p>
-          <div className="tw-text-center">
+          <div className="text-center">
             <img
-              className="tw-max-w-full"
+              className="max-w-full"
               src="/img/modals/valeurs-usage-services-ecosystemiques.png"
               alt="Valeurs d'usage direct, valeurs d'usage indirect, valeur d'option, valeur de legs, valeur d'existence"
             />

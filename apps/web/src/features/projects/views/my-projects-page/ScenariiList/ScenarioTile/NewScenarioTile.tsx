@@ -13,25 +13,25 @@ function NewScenarioTile({ linkProps }: Props) {
     <div
       className={classNames(
         "tour-guide-step-create-new-project",
-        "tw-border-dashed",
-        "tw-border",
-        "tw-rounded-lg",
-        "hover:tw-bg-grey-light hover:dark:tw-bg-grey-dark",
+        "border-dashed",
+        "border",
+        "rounded-lg",
+        "hover:bg-grey-light hover:dark:bg-grey-dark",
       )}
     >
       <a
         {...linkProps}
         className={classNames(
-          "tw-w-full",
-          "tw-h-full",
-          "tw-flex",
-          "tw-flex-col",
-          "tw-items-center",
-          "tw-justify-center",
-          "tw-min-h-64",
-          "tw-text-dsfr-titleBlue",
-          "tw-text-lg",
-          "tw-bg-none",
+          "w-full",
+          "h-full",
+          "flex",
+          "flex-col",
+          "items-center",
+          "justify-center",
+          "min-h-64",
+          "text-dsfr-titleBlue",
+          "text-lg",
+          "bg-none",
         )}
       >
         <span aria-hidden="true" className={fr.cx("fr-icon--lg", "fr-icon-add-line")} />

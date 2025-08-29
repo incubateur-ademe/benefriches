@@ -19,9 +19,9 @@ const SiteSoilsSummary = ({
   return (
     <>
       <h2>Récapitulatif de l'occupation des sols</h2>
-      <div className="tw-grid tw-grid-cols-1 lg:tw-grid-cols-2 tw-gap-6 tw-pb-10">
-        <div className="tw-border tw-border-solid tw-border-borderGrey tw-p-8">
-          <h3 className="tw-uppercase tw-text-base">Site existant</h3>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 pb-10">
+        <div className="border border-solid border-borderGrey p-8">
+          <h3 className="uppercase text-base">Site existant</h3>
           <SurfaceAreaPieChart
             soilsDistribution={siteSoilsDistribution}
             exportConfig={{
@@ -30,8 +30,8 @@ const SiteSoilsSummary = ({
             }}
           />
         </div>
-        <div className="tw-border tw-border-solid tw-border-borderGrey tw-p-8">
-          <h3 className="tw-uppercase tw-text-base">Site avec projet</h3>
+        <div className="border border-solid border-borderGrey p-8">
+          <h3 className="uppercase text-base">Site avec projet</h3>
           <SurfaceAreaPieChart
             soilsDistribution={projectSoilsDistribution}
             exportConfig={{

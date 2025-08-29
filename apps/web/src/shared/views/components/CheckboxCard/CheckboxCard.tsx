@@ -22,8 +22,8 @@ function RadioInputIcon({ checked, disabled = false }: CheckIconProps) {
   return (
     <div
       className={classNames(
-        "tw-absolute tw-top-0 tw-right-0 tw-w-full tw-h-12",
-        disabled && "tw-filter tw-grayscale tw-opacity-50",
+        "absolute top-0 right-0 w-full h-12",
+        disabled && "filter grayscale opacity-50",
       )}
       style={{ ...getCustomRadioButtonStyle(checked), backgroundPosition: "right 16px top 16px" }}
     />
@@ -34,8 +34,8 @@ function CheckboxInputIcon({ checked, disabled = false }: CheckIconProps) {
   return (
     <div
       className={classNames(
-        "tw-absolute tw-top-0 tw-right-0 tw-w-full tw-h-12 tw-m-4",
-        disabled && "tw-filter tw-grayscale tw-opacity-50",
+        "absolute top-0 right-0 w-full h-12 m-4",
+        disabled && "filter grayscale opacity-50",
       )}
       style={getCustomCheckboxStyle(checked)}
     />
@@ -56,16 +56,16 @@ export default function CheckboxCard({
   return (
     <div
       className={classNames(
-        "tw-relative tw-border tw-border-solid",
-        checked || hasFocus ? "tw-border-dsfr-borderBlue" : "tw-border-borderGrey",
-        checked && hasFocus && "tw-ring-2",
+        "relative border border-solid",
+        checked || hasFocus ? "border-dsfr-borderBlue" : "border-borderGrey",
+        checked && hasFocus && "ring-2",
         className,
       )}
       role={checkType}
     >
       <input
         type={checkType}
-        className="!tw-opacity-0 tw-h-6 tw-w-6 tw-absolute tw-top-[19px] tw-right-[19px]"
+        className="!opacity-0 h-6 w-6 absolute top-[19px] right-[19px]"
         id={id}
         value={id}
         checked={checked}
@@ -78,7 +78,7 @@ export default function CheckboxCard({
           setHasFocus(true);
         }}
       />
-      <label htmlFor={id} className="tw-w-full">
+      <label htmlFor={id} className="w-full">
         {children}
         {checkType === "radio" ? (
           <RadioInputIcon checked={checked} disabled={disabled} />

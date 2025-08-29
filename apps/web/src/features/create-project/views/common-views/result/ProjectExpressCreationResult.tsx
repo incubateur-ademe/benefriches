@@ -52,7 +52,7 @@ function ProjectExpressCreationResult({
             description={`Une erreur est survenue lors de la création du projet, veuillez réessayer.`}
             severity="error"
             title="Le projet n'a pas pu être créé"
-            className="tw-my-7"
+            className="my-7"
           />
           <Button onClick={onBack} priority="secondary">
             Précédent
@@ -66,12 +66,12 @@ function ProjectExpressCreationResult({
           <EditorialPageTitle>Le projet "{projectData?.name}" est créé !</EditorialPageTitle>
           <p
             className={classNames(
-              "tw-border-borderGrey",
-              "tw-border-solid",
-              "tw-border",
-              "tw-shadow-md",
-              "tw-rounded-lg",
-              "tw-p-4",
+              "border-borderGrey",
+              "border-solid",
+              "border",
+              "shadow-md",
+              "rounded-lg",
+              "p-4",
             )}
           >
             💡 Bénéfriches a affecté des données par défaut pour créer le projet sur "{siteName}".

@@ -108,7 +108,7 @@ const SocioEconomicDescription = ({ impactsData }: Props) => {
           <ul>
             <li>
               <Button
-                className="tw-px-1"
+                className="px-1"
                 priority="tertiary no outline"
                 onClick={() => {
                   updateModalContent({
@@ -122,7 +122,7 @@ const SocioEconomicDescription = ({ impactsData }: Props) => {
             </li>
             <li>
               <Button
-                className="tw-px-1"
+                className="px-1"
                 priority="tertiary no outline"
                 onClick={() => {
                   updateModalContent({
@@ -136,7 +136,7 @@ const SocioEconomicDescription = ({ impactsData }: Props) => {
             </li>
             <li>
               <Button
-                className="tw-px-1"
+                className="px-1"
                 priority="tertiary no outline"
                 onClick={() => {
                   updateModalContent({
@@ -150,7 +150,7 @@ const SocioEconomicDescription = ({ impactsData }: Props) => {
             </li>
             <li>
               <Button
-                className="tw-px-1"
+                className="px-1"
                 priority="tertiary no outline"
                 onClick={() => {
                   updateModalContent({

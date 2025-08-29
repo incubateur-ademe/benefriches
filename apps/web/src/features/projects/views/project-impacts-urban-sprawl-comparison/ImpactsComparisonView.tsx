@@ -35,9 +35,9 @@ const ImpactsComparisonView = ({
 
   return (
     <>
-      <ImpactsComparisonHeader {...headerProps} className="tw-py-8" />
+      <ImpactsComparisonHeader {...headerProps} className="py-8" />
 
-      <div className="fr-container tw-pb-14">
+      <div className="fr-container pb-14">
         <ProjectImpactsActionBar
           selectedViewMode={currentViewMode}
           evaluationPeriod={evaluationPeriod}
@@ -45,7 +45,7 @@ const ImpactsComparisonView = ({
           onEvaluationPeriodChange={onEvaluationPeriodChange}
           header={<ImpactsComparisonHeader {...headerProps} />}
           disabledSegments={["charts"]}
-          className="tw-py-4 tw-mb-2"
+          className="py-4 mb-2"
         />
 
         {currentViewMode === "summary" && (
@@ -70,7 +70,7 @@ const ImpactsComparisonView = ({
             />
           </>
         )}
-        {currentViewMode === "charts" && <h2 className="tw-py-10"> 🏗️ Bientôt disponible...</h2>}
+        {currentViewMode === "charts" && <h2 className="py-10"> 🏗️ Bientôt disponible...</h2>}
         <ImpactsComparisonFooter
           baseCaseSiteData={baseCase.conversionSiteData}
           comparisonCaseSiteData={comparisonCase.conversionSiteData}

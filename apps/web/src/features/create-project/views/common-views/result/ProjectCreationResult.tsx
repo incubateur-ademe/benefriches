@@ -35,7 +35,7 @@ function ProjectCreationResult({ projectId, projectName, loadingState, onBack }:
             description={`Une erreur est survenue lors de la création du projet « ${projectName} », veuillez réessayer.`}
             severity="error"
             title="Le projet n'a pas pu être enregistré"
-            className="tw-my-7"
+            className="my-7"
           />
           <Button onClick={onBack} priority="secondary">
             Précédent

@@ -30,21 +30,21 @@ function SiteYearlyIncomeForm({ onSubmit, onBack, initialValues }: Props) {
         <RowDecimalsNumericInput
           addonText="€ / an"
           label="Vente de produits"
-          className="!tw-pt-4"
+          className="!pt-4"
           nativeInputProps={register("product-sales", optionalNumericFieldRegisterOptions)}
         />
 
         <RowDecimalsNumericInput
           addonText="€ / an"
           label="Subventions"
-          className="!tw-pt-4"
+          className="!pt-4"
           nativeInputProps={register("subsidies", optionalNumericFieldRegisterOptions)}
         />
 
         <RowDecimalsNumericInput
           addonText="€ / an"
           label="Autres recettes"
-          className="!tw-pt-4"
+          className="!pt-4"
           nativeInputProps={register("other", optionalNumericFieldRegisterOptions)}
         />
 

@@ -39,16 +39,13 @@ function ModalColumnChartTooltip({ rows, position, category }: Props) {
         } as CSSProperties
       }
     >
-      {category && <strong className="tw-text-sm">{category}</strong>}
-      <div className="!tw-text-xs">
+      {category && <strong className="text-sm">{category}</strong>}
+      <div className="!text-xs">
         {rows.map((row) => (
-          <div
-            key={row.label}
-            className="tw-py-1 tw-flex tw-justify-between tw-items-center tw-gap-2"
-          >
-            <div className="tw-flex tw-items-center tw-gap-2">
+          <div key={row.label} className="py-1 flex justify-between items-center gap-2">
+            <div className="flex items-center gap-2">
               <span
-                className="tw-min-h-3 tw-min-w-3 tw-rounded"
+                className="min-h-3 min-w-3 rounded"
                 style={row.color ? { backgroundColor: row.color } : {}}
               ></span>
               <span>{row.label}</span>

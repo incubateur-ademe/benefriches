@@ -68,8 +68,8 @@ function CreateModeSelectionForm({ siteNature, onSubmit, onBack }: Props) {
   return (
     <WizardFormLayout title={getTitle(siteNature)}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="tw-mb-10">
-          <div className="tw-grid sm:tw-grid-cols-2 tw-gap-4">
+        <div className="mb-10">
+          <div className="grid sm:grid-cols-2 gap-4">
             {getOptions(siteNature).map((option) => {
               return (
                 <Controller
@@ -85,7 +85,7 @@ function CreateModeSelectionForm({ siteNature, onSubmit, onBack }: Props) {
                         description={
                           <>
                             <div>{option.description}</div>
-                            <Badge className="tw-mt-3" style={option.badgeColor}>
+                            <Badge className="mt-3" style={option.badgeColor}>
                               {option.badgeText}
                             </Badge>
                           </>

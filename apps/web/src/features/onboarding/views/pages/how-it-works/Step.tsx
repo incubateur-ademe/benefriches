@@ -11,25 +11,25 @@ type StepProps = {
 };
 
 const numberBgVariants = {
-  1: `tw-bg-onboarding-step1`,
-  2: `tw-bg-onboarding-step2`,
-  3: `tw-bg-onboarding-step3`,
-  4: `tw-bg-onboarding-step4`,
+  1: `bg-onboarding-step1`,
+  2: `bg-onboarding-step2`,
+  3: `bg-onboarding-step3`,
+  4: `bg-onboarding-step4`,
 } as const;
 
 const OnBoardingIntroductionStep = ({ stepNumber, title, text, className }: StepProps) => {
   return (
-    <div className={classNames("tw-grid", "tw-grid-cols-[2rem_1fr]", "tw-gap-4", className)}>
+    <div className={classNames("grid", "grid-cols-[2rem_1fr]", "gap-4", className)}>
       <div
         className={classNames(
-          "tw-flex",
-          "tw-items-center",
-          "tw-justify-center",
-          "tw-rounded-full",
-          "tw-h-8",
-          "tw-w-8",
-          "tw-font-bold",
-          "tw-text-white",
+          "flex",
+          "items-center",
+          "justify-center",
+          "rounded-full",
+          "h-8",
+          "w-8",
+          "font-bold",
+          "text-white",
           numberBgVariants[stepNumber],
         )}
       >

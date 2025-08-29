@@ -13,12 +13,12 @@ type Props = {
 };
 
 const SCROLLBAR_CLASSES = [
-  "tw-overflow-auto",
-  "[&::-webkit-scrollbar]:tw-w-1",
-  "[&::-webkit-scrollbar-track]:tw-bg-gray-100",
-  "[&::-webkit-scrollbar-thumb]:tw-bg-gray-300",
-  "dark:[&::-webkit-scrollbar-track]:tw-bg-neutral-700",
-  "dark:[&::-webkit-scrollbar-thumb]:tw-bg-neutral-500",
+  "overflow-auto",
+  "[&::-webkit-scrollbar]:w-1",
+  "[&::-webkit-scrollbar-track]:bg-gray-100",
+  "[&::-webkit-scrollbar-thumb]:bg-gray-300",
+  "dark:[&::-webkit-scrollbar-track]:bg-neutral-700",
+  "dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500",
 ];
 
 function Autocomplete({ options, value, onSelect, className, children }: Props) {
@@ -30,18 +30,18 @@ function Autocomplete({ options, value, onSelect, className, children }: Props) 
           <ul
             className={classNames(
               fr.cx("fr-menu__list"),
-              "tw-max-h-72",
+              "max-h-72",
               ...SCROLLBAR_CLASSES,
-              "tw-w-[var(--input-width)]",
-              "empty:tw-invisible",
-              "tw-my-1 tw-py-1",
-              "tw-rounded-md",
-              "tw-shadow-lg",
-              "tw-border-gray-200",
-              "tw-border",
-              "tw-border-solid",
-              "tw-ring-1 tw-ring-black/5",
-              "tw-bg-[var(--background-overlap-grey)]",
+              "w-[var(--input-width)]",
+              "empty:invisible",
+              "my-1 py-1",
+              "rounded-md",
+              "shadow-lg",
+              "border-gray-200",
+              "border",
+              "border-solid",
+              "ring-1 ring-black/5",
+              "bg-[var(--background-overlap-grey)]",
             )}
           >
             {options.map((option) => (
@@ -50,12 +50,12 @@ function Autocomplete({ options, value, onSelect, className, children }: Props) 
                   <li
                     className={classNames(
                       fr.cx("fr-nav__link"),
-                      focus && "tw-bg-dsfr-altBlue",
-                      selected && "tw-bg-dsfr-openBlue",
-                      "tw-cursor-pointer",
+                      focus && "bg-dsfr-altBlue",
+                      selected && "bg-dsfr-openBlue",
+                      "cursor-pointer",
                     )}
                   >
-                    {selected && <i className="tw-size-5"></i>}
+                    {selected && <i className="size-5"></i>}
                     {option.label}
                   </li>
                 )}

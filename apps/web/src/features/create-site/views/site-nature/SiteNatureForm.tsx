@@ -58,8 +58,8 @@ function SiteNatureForm({ onSubmit, onBack, initialValues }: Props) {
   return (
     <WizardFormLayout title="Quelle est la nature du site ?">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="tw-mb-10">
-          <div className="tw-grid sm:tw-grid-cols-2 tw-gap-4">
+        <div className="mb-10">
+          <div className="grid sm:grid-cols-2 gap-4">
             {options.map((option) => {
               return (
                 <Controller
@@ -76,7 +76,7 @@ function SiteNatureForm({ onSubmit, onBack, initialValues }: Props) {
                           option.disabled ? (
                             <div>
                               <div>{option.description}</div>
-                              <Badge small style="green-tilleul" className="tw-mt-2">
+                              <Badge small style="green-tilleul" className="mt-2">
                                 Bientôt disponible
                               </Badge>
                             </div>

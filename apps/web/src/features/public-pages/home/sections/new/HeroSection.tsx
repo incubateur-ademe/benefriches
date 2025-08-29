@@ -2,16 +2,16 @@ import Button from "@codegouvfr/react-dsfr/Button";
 
 export default function HeroSection() {
   return (
-    <section className="tw-bg-[#007EAF]">
-      <div className="fr-container tw-py-10 md:tw-py-0 tw-text-white tw-flex tw-flex-col md:tw-flex-row md:tw-items-center tw-gap-8">
-        <div className="tw-py-5">
-          <h1 className="tw-text-5xl tw-font-bold tw-text-white">
+    <section className="bg-[#007EAF]">
+      <div className="fr-container py-10 md:py-0 text-white flex flex-col md:flex-row md:items-center gap-8">
+        <div className="py-5">
+          <h1 className="text-5xl font-bold text-white">
             Calculez les impacts socio-économiques de votre projet d'aménagement.
           </h1>
-          <p className="tw-text-sm">+ de 400 projets évalués</p>
+          <p className="text-sm">+ de 400 projets évalués</p>
           <Button
             size="large"
-            className="tw-bg-white tw-text-[#000091] hover:!tw-bg-slate-200 focus:tw-bg-slate-200"
+            className="bg-white text-[#000091] hover:!bg-slate-200 focus:bg-slate-200"
             linkProps={{ href: "#votre-projet-d-amenagement" }}
           >
             Commencer
@@ -20,7 +20,7 @@ export default function HeroSection() {
         <div>
           <img
             src="/img/new-homepage-hero.svg"
-            className="lg:tw-h-full lg:tw-w-[400px] tw-w-full"
+            className="lg:h-full lg:w-[400px] w-full"
             aria-hidden="true"
             alt=""
           />

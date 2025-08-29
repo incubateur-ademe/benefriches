@@ -64,7 +64,7 @@ function SiteDataSummary({ siteData, onNext, onBack }: Props) {
         agriculturalOperationActivity={siteData.agriculturalOperationActivity}
         naturalAreaType={siteData.naturalAreaType}
       />
-      <div className="tw-mt-8">
+      <div className="mt-8">
         <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
       </div>
     </WizardFormLayout>

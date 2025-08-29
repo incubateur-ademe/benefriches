@@ -30,7 +30,7 @@ function SupportedProjectCard({
     <div>
       <Card
         background
-        classes={{ root: "tw-w-96" }}
+        classes={{ root: "w-96" }}
         badge={
           <Badge small style="default">
             {formerActivity}
@@ -57,14 +57,14 @@ function SupportedProjectCard({
               <span aria-hidden="true" className={fr.cx("fr-icon-map-pin-2-line", "fr-icon--sm")} />{" "}
               {projectLocation}
             </span>
-            <span className="tw-flex tw-justify-between">
+            <span className="flex justify-between">
               <span className={fr.cx("fr-text--sm", "fr-m-0")}>Bilan de l'opération :</span>
               <span
                 className={classNames(
                   fr.cx("fr-text--sm", "fr-m-0", "fr-text--bold"),
                   economicBalanceInMillionEuros > 0
-                    ? "tw-text-impacts-positive-main dark:tw-text-impacts-positive-light"
-                    : "tw-text-impacts-negative-main dark:tw-text-impacts-negative-light",
+                    ? "text-impacts-positive-main dark:text-impacts-positive-light"
+                    : "text-impacts-negative-main dark:text-impacts-negative-light",
                 )}
               >
                 {economicBalanceInMillionEuros > 0 ? "+" : ""}
@@ -72,14 +72,14 @@ function SupportedProjectCard({
                 {formatNumberFr(economicBalanceInMillionEuros)}&nbsp;M&nbsp;€
               </span>
             </span>
-            <span className="tw-flex tw-justify-between">
+            <span className="flex justify-between">
               <span className={fr.cx("fr-text--sm", "fr-m-0")}>Impacts socio-économiques :</span>
               <span
                 className={classNames(
                   fr.cx("fr-text--sm", "fr-m-0", "fr-text--bold"),
                   socioEconomicImpactAmountInMillionEuros > 0
-                    ? "tw-text-impacts-positive-main dark:tw-text-impacts-positive-light"
-                    : "tw-text-impacts-negative-main dark:tw-text-impacts-negative-light",
+                    ? "text-impacts-positive-main dark:text-impacts-positive-light"
+                    : "text-impacts-negative-main dark:text-impacts-negative-light",
                 )}
               >
                 {socioEconomicImpactAmountInMillionEuros > 0 ? "+" : ""}
@@ -94,7 +94,7 @@ function SupportedProjectCard({
         size="small"
         title={projectType}
         titleAs="h3"
-        className="tw-mr-6"
+        className="mr-6"
       />
     </div>
   );
@@ -102,10 +102,10 @@ function SupportedProjectCard({
 
 export default function SupportedProjectsSection() {
   return (
-    <section className={classNames("tw-py-20", "tw-bg-grey-light", "dark:tw-bg-grey-dark")}>
+    <section className={classNames("py-20", "bg-grey-light", "dark:bg-grey-dark")}>
       <div className={fr.cx("fr-container")}>
         <h2>Les projets accompagnés par Bénéfriches</h2>
-        <div className={classNames("tw-flex", "tw-overflow-x-scroll", "tw-mt-10")}>
+        <div className={classNames("flex", "overflow-x-scroll", "mt-10")}>
           <SupportedProjectCard
             projectType="Voirie, parking relais, espaces paysagers et ZMEL"
             projectLocation="Balaruc-les-Bains (34)"
@@ -118,7 +118,7 @@ export default function SupportedProjectsSection() {
           <SupportedProjectCard
             projectType={
               // this style makes sure the title takes as much height as other cards which are longer
-              <span className="tw-block tw-mb-[28px]">Zone d'activité économique</span>
+              <span className="block mb-[28px]">Zone d'activité économique</span>
             }
             projectLocation="Melun Val de Seine (77)"
             formerActivity="Friche partielle"

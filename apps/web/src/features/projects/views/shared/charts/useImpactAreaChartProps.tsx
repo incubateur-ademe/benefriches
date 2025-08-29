@@ -92,9 +92,9 @@ const useImpactAreaChartProps = ({
               const percentageVariation = getPercentageDifference(base, forecast);
               const className =
                 percentageVariation > 0
-                  ? "tw-bg-impacts-positive-light dark:tw-text-black"
-                  : "tw-bg-impacts-negative-light dark:tw-text-black";
-              const percentage = `<span class="fr-badge tw-normal-case tw-font-normal tw-rounded-xl tw-px-2 fr-badge--sm ${className}">${formatEvolutionPercentage(getPercentageDifference(base, forecast))}</span>`;
+                  ? "bg-impacts-positive-light dark:text-black"
+                  : "bg-impacts-negative-light dark:text-black";
+              const percentage = `<span class="fr-badge normal-case font-normal rounded-xl px-2 fr-badge--sm ${className}">${formatEvolutionPercentage(getPercentageDifference(base, forecast))}</span>`;
               return `<strong>${this.value}</strong><br>${valueText} ${percentage}`;
             }
             return `<strong>${this.value}</strong><br>${valueText}`;

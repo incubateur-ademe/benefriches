@@ -21,27 +21,27 @@ function Accordion({ label, children }: AccordionProps) {
     <div>
       <div
         className={classNames(
-          "tw-py-2 tw-px-4 tw-mb-4",
-          "tw-rounded tw-border tw-border-solid tw-border-transparent",
-          "tw-bg-impacts-main dark:tw-bg-black",
-          "tw-cursor-pointer",
-          "tw-transition tw-ease-in-out tw-duration-500",
-          "hover:tw-border-grey-dark hover:dark:tw-border-white",
-          "tw-flex tw-items-center tw-gap-2",
+          "py-2 px-4 mb-4",
+          "rounded border border-solid border-transparent",
+          "bg-impacts-main dark:bg-black",
+          "cursor-pointer",
+          "transition ease-in-out duration-500",
+          "hover:border-grey-dark hover:dark:border-white",
+          "flex items-center gap-2",
         )}
         onClick={toggle}
       >
         <Button
-          className={classNames("tw-text-black dark:tw-text-white")}
+          className={classNames("text-black dark:text-white")}
           iconId={isOpen ? "fr-icon-arrow-up-s-fill" : "fr-icon-arrow-down-s-fill"}
           onClick={toggle}
           size="small"
           priority="tertiary no outline"
           title={isOpen ? "Fermer la section" : "Afficher la section"}
         />
-        <h2 className="tw-text-lg tw-mb-0">{label}</h2>
+        <h2 className="text-lg mb-0">{label}</h2>
       </div>
-      {isOpen && <div className="tw-px-4">{children}</div>}
+      {isOpen && <div className="px-4">{children}</div>}
     </div>
   );
 }
@@ -99,10 +99,10 @@ const faqData: FaqItem[] = [
 
 export default function FaqSection() {
   return (
-    <section className="tw-py-20 tw-bg-grey-light dark:tw-bg-grey-dark">
+    <section className="py-20 bg-grey-light dark:bg-grey-dark">
       <div className="fr-container mx-auto">
         <SectionTitle>Questions fréquentes</SectionTitle>
-        <div className="tw-space-y-6">
+        <div className="space-y-6">
           {faqData.map((item, index) => (
             <Accordion key={index} label={item.question}>
               {item.answer}

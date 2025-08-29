@@ -60,17 +60,17 @@ const COMPARE_SITE_OPTIONS: { option: SiteNature; bgClassName: ClassValue; conte
   [
     // {
     //   option: "statu_quo_scenario",
-    //   bgClassName: "tw-bg-[#E4D8E4] dark:tw-bg-[#3a283b]",
+    //   bgClassName: "bg-[#E4D8E4] dark:bg-[#3a283b]",
     //   content: <StatuQuoContent />,
     // },
     {
       option: "AGRICULTURAL_OPERATION",
-      bgClassName: "tw-bg-[#E4E4D7] dark:tw-bg-[#4a4b2e]",
+      bgClassName: "bg-[#E4E4D7] dark:bg-[#4a4b2e]",
       content: <ProjectOnAgriculturalOperation />,
     },
     {
       option: "NATURAL_AREA",
-      bgClassName: "tw-bg-[#D9E7DA] dark:tw-bg-[#355737]",
+      bgClassName: "bg-[#D9E7DA] dark:bg-[#355737]",
       content: <ProjectOnNaturalArea />,
     },
   ] as const;
@@ -78,10 +78,10 @@ const COMPARE_SITE_OPTIONS: { option: SiteNature; bgClassName: ClassValue; conte
 function ImpactComparisonSection({ onSelectOption, siteNature }: Props) {
   if (siteNature === "FRICHE") {
     return (
-      <section className="tw-mt-10 tw-rounded-lg tw-grid tw-grid-flow-col tw-grid-cols-[75%_repeat(3,373px)] sm:tw-grid-cols-[25%_repeat(3,373px)] tw-gap-10 tw-overflow-x-scroll">
-        <div className="tw-bg-impacts-dark dark:tw-bg-black tw-p-6 tw-rounded-2xl tw-justify-center tw-flex tw-flex-col tw-gap-4 tw-font-bold">
-          <span className="tw-text-3xl">Le saviez-vous ?</span>
-          <span className="tw-text-xl">
+      <section className="mt-10 rounded-lg grid grid-flow-col grid-cols-[75%_repeat(3,373px)] sm:grid-cols-[25%_repeat(3,373px)] gap-10 overflow-x-scroll">
+        <div className="bg-impacts-dark dark:bg-black p-6 rounded-2xl justify-center flex flex-col gap-4 font-bold">
+          <span className="text-3xl">Le saviez-vous ?</span>
+          <span className="text-xl">
             Ce projet sur cette friche aura des impacts socio-économiques bien meilleurs que...
           </span>
         </div>
@@ -90,9 +90,9 @@ function ImpactComparisonSection({ onSelectOption, siteNature }: Props) {
             key={option}
             className={classNames(
               bgClassName,
-              "tw-p-6",
-              "tw-rounded-2xl",
-              "tw-flex tw-flex-col tw-justify-around",
+              "p-6",
+              "rounded-2xl",
+              "flex flex-col justify-around",
             )}
           >
             {content}
@@ -113,37 +113,35 @@ function ImpactComparisonSection({ onSelectOption, siteNature }: Props) {
   }
 
   return (
-    <section className="tw-flex tw-rounded-lg tw-gap-6 tw-px-6 tw-py-10 tw-mt-10 tw-bg-white dark:tw-bg-black tw-border tw-border-solid tw-border-borderGrey">
+    <section className="flex rounded-lg gap-6 px-6 py-10 mt-10 bg-white dark:bg-black border border-solid border-borderGrey">
       <img
         src="/img/pictograms/site-nature/friche.svg"
         width="80"
         height="80"
         aria-hidden="true"
         alt=""
-        className={classNames("tw-mb-2", "tw-w-40 tw-h-40")}
+        className={classNames("mb-2", "w-40 h-40")}
       />
       <div>
         <h3>Et si vous réalisiez ce projet sur une friche ?</h3>
-        <h4
-          className={classNames("tw-flex tw-items-center tw-gap-4", "tw-text-xl", "tw-font-bold")}
-        >
+        <h4 className={classNames("flex items-center gap-4", "text-xl", "font-bold")}>
           Ce projet sur une friche, c’est :
         </h4>
         {siteNature === "AGRICULTURAL_OPERATION" ? (
-          <ul className="tw-text-base tw-list-none tw-p-0 tw-m-0">
-            <li className="tw-pb-4">✅ Des emplois agricoles préservés</li>
-            <li className="tw-pb-4">✅ Des sols qui absorberaient plus d’eau et plus de carbone</li>
-            <li className="tw-pb-4">✅ Des dépenses de construction et de VRD moindres</li>
-            <li className="tw-pb-4">Et pleins d’autres impacts.</li>
+          <ul className="text-base list-none p-0 m-0">
+            <li className="pb-4">✅ Des emplois agricoles préservés</li>
+            <li className="pb-4">✅ Des sols qui absorberaient plus d’eau et plus de carbone</li>
+            <li className="pb-4">✅ Des dépenses de construction et de VRD moindres</li>
+            <li className="pb-4">Et pleins d’autres impacts.</li>
           </ul>
         ) : (
-          <ul className="tw-text-base tw-list-none tw-p-0 tw-m-0">
-            <li className="tw-pb-4">✅ Des sols qui absorberaient plus d’eau et plus de carbone</li>
-            <li className="tw-pb-4">✅ Des dépenses de construction et de VRD moindres</li>
-            <li className="tw-pb-4">
+          <ul className="text-base list-none p-0 m-0">
+            <li className="pb-4">✅ Des sols qui absorberaient plus d’eau et plus de carbone</li>
+            <li className="pb-4">✅ Des dépenses de construction et de VRD moindres</li>
+            <li className="pb-4">
               ✅ Un cadre de vie autour de la friche plus agréable pour les riverains
             </li>
-            <li className="tw-pb-4">Et pleins d’autres impacts.</li>
+            <li className="pb-4">Et pleins d’autres impacts.</li>
           </ul>
         )}
 

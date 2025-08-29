@@ -5,8 +5,8 @@ import SectionTitle from "./SectionTitle";
 export default function DataSourcesSection() {
   return (
     <section className={fr.cx("fr-container", "fr-py-10w")}>
-      <div className="md:tw-flex md:tw-gap-4">
-        <div className="md:tw-pr-6 tw-pt-8 md:tw-pt-0">
+      <div className="md:flex md:gap-4">
+        <div className="md:pr-6 pt-8 md:pt-0">
           <SectionTitle>Des données de haute qualité</SectionTitle>
           <p className={fr.cx("fr-text--xl")}>
             <strong>
@@ -22,13 +22,13 @@ export default function DataSourcesSection() {
             ce sont plus de 50 sources qui sont utilisées par l'outil.
           </p>
         </div>
-        <div className="md:tw-pl-6 tw-m-auto">
-          <div className="tw-mb-10 tw-hidden md:tw-flex tw-justify-between tw-items-center">
+        <div className="md:pl-6 m-auto">
+          <div className="mb-10 hidden md:flex justify-between items-center">
             <img src="/img/logos/logo-ademe.svg" aria-hidden="true" alt="" height="80px" />
             <img src="/img/logos/logo-aldo.svg" aria-hidden="true" alt="" height="50px" />
             <img src="/img/logos/logo-insee.svg" aria-hidden="true" alt="" height="80px" />
           </div>
-          <div className="tw-hidden md:tw-flex tw-justify-between tw-gap-6">
+          <div className="hidden md:flex justify-between gap-6">
             <img src="/img/logos/logo-brgm.svg" aria-hidden="true" alt="" height="80px" />
             <img src="/img/logos/logo-shift-project.svg" aria-hidden="true" alt="" height="80px" />
             <img
@@ -38,7 +38,7 @@ export default function DataSourcesSection() {
               height="80px"
             />
           </div>
-          <div className="tw-flex md:tw-hidden tw-gap-8 tw-flex-wrap tw-justify-center">
+          <div className="flex md:hidden gap-8 flex-wrap justify-center">
             <img src="/img/logos/logo-ademe.svg" aria-hidden="true" alt="" height="60px" />
             <img src="/img/logos/logo-aldo.svg" aria-hidden="true" alt="" height="40px" />
             <img src="/img/logos/logo-insee.svg" aria-hidden="true" alt="" height="60px" />

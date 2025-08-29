@@ -33,7 +33,7 @@ function SiteCreationResult({ siteId, siteName, loadingState, onBack }: Props) {
             description={`Une erreur est survenue lors de la création du site, veuillez réessayer.`}
             severity="error"
             title="Le site n'a pas pu être enregistré"
-            className="tw-my-7"
+            className="my-7"
           />
           <Button onClick={onBack} priority="secondary">
             Précédent
@@ -47,13 +47,13 @@ function SiteCreationResult({ siteId, siteName, loadingState, onBack }: Props) {
           <EditorialPageTitle>Le site « {siteName} » est créé !</EditorialPageTitle>
           <div
             className={classNames(
-              "tw-border-borderGrey",
-              "tw-border-solid",
-              "tw-border",
-              "tw-shadow-md",
-              "tw-rounded-lg",
-              "tw-p-4",
-              "tw-mb-8",
+              "border-borderGrey",
+              "border-solid",
+              "border",
+              "shadow-md",
+              "rounded-lg",
+              "p-4",
+              "mb-8",
             )}
           >
             💡 Bénéfriches a affecté des données par défaut, notamment pour la répartition des sols
@@ -64,7 +64,7 @@ function SiteCreationResult({ siteId, siteName, loadingState, onBack }: Props) {
           <Button size="large" linkProps={routes.createProject({ siteId }).link}>
             Renseigner mon projet sur ce site
           </Button>
-          <p className="tw-text-sm tw-mt-5">
+          <p className="text-sm mt-5">
             Attention, le site ayant été créé en mode "express", c'est-à-dire avec des données
             moyennes, les impacts du projet que vous allez renseigner peuvent ne pas refléter la
             réalité.

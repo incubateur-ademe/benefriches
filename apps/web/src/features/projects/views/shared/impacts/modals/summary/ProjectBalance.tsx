@@ -40,7 +40,7 @@ const SummaryProjectBalanceDescription = ({ impactData }: Props) => {
           <>
             <span
               className={classNames(
-                "tw-font-bold",
+                "font-bold",
                 getPositiveNegativeTextClassesFromValue(socioEconomicMonetaryImpactsTotal),
               )}
             >
@@ -49,7 +49,7 @@ const SummaryProjectBalanceDescription = ({ impactData }: Props) => {
             d'impacts socio-économiques contre{" "}
             <span
               className={classNames(
-                "tw-font-bold",
+                "font-bold",
                 getPositiveNegativeTextClassesFromValue(economicBalanceTotal),
               )}
             >

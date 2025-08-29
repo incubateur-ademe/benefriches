@@ -38,18 +38,18 @@ const ImpactSection = ({
   };
 
   return (
-    <section className={classNames(!noMarginBottom && "tw-mb-10")}>
+    <section className={classNames(!noMarginBottom && "mb-10")}>
       <div
         className={classNames(
-          "tw-py-2 tw-px-4",
-          "tw-w-full",
-          "tw-rounded tw-border tw-border-solid tw-border-transparent",
+          "py-2 px-4",
+          "w-full",
+          "rounded border border-solid border-transparent",
           isMain
-            ? ["tw-bg-impacts-dark", "dark:tw-bg-black", "tw-mb-6"]
-            : ["tw-bg-impacts-main", "dark:tw-bg-black", "tw-mb-2"],
-          "tw-cursor-pointer",
-          "tw-transition tw-ease-in-out tw-duration-500",
-          "hover:tw-border-grey-dark hover:dark:tw-border-white",
+            ? ["bg-impacts-dark", "dark:bg-black", "mb-6"]
+            : ["bg-impacts-main", "dark:bg-black", "mb-2"],
+          "cursor-pointer",
+          "transition ease-in-out duration-500",
+          "hover:border-grey-dark hover:dark:border-white",
         )}
         onClick={toggleDisplaySectionContent}
       >
@@ -58,7 +58,7 @@ const ImpactSection = ({
           labelProps={{
             role: "heading",
             "aria-level": isMain ? 3 : 4,
-            className: isMain ? "tw-text-xl" : "tw-text-base",
+            className: isMain ? "text-xl" : "text-base",
             ...getDialogControlButtonProps(dialogId),
           }}
           value={total}
@@ -68,7 +68,7 @@ const ImpactSection = ({
           onToggleAccordion={onToggleAccordionFromChild}
         />
       </div>
-      {displaySectionContent && <div className="tw-text-sm">{children}</div>}
+      {displaySectionContent && <div className="text-sm">{children}</div>}
     </section>
   );
 };

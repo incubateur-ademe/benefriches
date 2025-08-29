@@ -17,7 +17,7 @@ function CreateSiteIntroductionPage({ onNext }: Props) {
       <EditorialPageLayout>
         <EditorialPageIcon>
           {/* we use a negative margin-left to compensate the emoji's left padding */}
-          <span className="tw-ml-[-18px]">📍</span>
+          <span className="ml-[-18px]">📍</span>
         </EditorialPageIcon>
         <EditorialPageTitle>Tout commence sur un site.</EditorialPageTitle>
         <EditorialPageText>

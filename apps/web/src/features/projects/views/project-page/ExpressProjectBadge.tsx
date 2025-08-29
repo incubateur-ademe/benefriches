@@ -8,13 +8,13 @@ const ExpressProjectTooltipBadge = () => {
   return (
     <Badge
       small
-      className="tw-my-2 tw-shrink-1 sm:tw-ml-3 tw-py-0.5 tw-border-[#DEE5FD] hover:tw-border-[#99B3F9] tw-border-1 tw-border-solid hover:tw-cursor-pointer"
+      className="my-2 shrink-1 sm:ml-3 py-0.5 border-[#DEE5FD] hover:border-[#99B3F9] border-1 border-solid hover:cursor-pointer"
       style="blue"
       onClick={() => {
         projectAndSiteFeaturesModal.open();
       }}
     >
-      <span className="tw-mr-1 tw-whitespace-nowrap">Projet express</span>
+      <span className="mr-1 whitespace-nowrap">Projet express</span>
       <span aria-hidden="true" className={fr.cx("fr-icon--sm", "fr-icon-information-line")} />
     </Badge>
   );

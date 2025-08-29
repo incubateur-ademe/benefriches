@@ -30,9 +30,9 @@ export default function QuickImpactsEmbedView({
   return (
     <div
       className={classNames(
-        "tw-px-4 tw-py-6",
-        "tw-bg-grey-light dark:tw-bg-grey-dark",
-        "tw-h-full",
+        "px-4 py-6",
+        "bg-grey-light dark:bg-grey-dark",
+        "h-full",
         // Force highchart à suivre la config dsfr pour le dark mode,
         // sinon la lib suit la config du navigateur "prefers-color-scheme"
         isDark ? "highcharts-dark" : "highcharts-light",

@@ -17,47 +17,37 @@ type Props = {
 };
 
 const commonTdClasses = [
-  "tw-py-1",
-  "tw-px-2",
-  "tw-border-0",
-  "tw-border-solid",
-  "tw-border-borderGrey",
-  "dark:tw-border-grey-dark",
-  "tw-border-t",
-  "tw-border-b",
+  "py-1",
+  "px-2",
+  "border-0",
+  "border-solid",
+  "border-borderGrey",
+  "dark:border-grey-dark",
+  "border-t",
+  "border-b",
 ];
 
 const getColumnClasses = (hasValue: boolean, isSubSection: boolean) => {
   const bgColor = isSubSection
-    ? "tw-bg-[var(--background-contrast-grey)]"
-    : "tw-bg-[var(--background-disabled-grey)]";
+    ? "bg-[var(--background-contrast-grey)]"
+    : "bg-[var(--background-disabled-grey)]";
 
   return {
-    firstColumn: [
-      ...commonTdClasses,
-      "tw-w-8",
-      bgColor,
-      "tw-rounded-tl",
-      "tw-border-l",
-      "tw-rounded-bl",
-    ],
+    firstColumn: [...commonTdClasses, "w-8", bgColor, "rounded-tl", "border-l", "rounded-bl"],
 
     contentColumns: [...commonTdClasses, bgColor],
 
-    valueColumns: [...commonTdClasses, "tw-text-center", "tw-w-44"],
+    valueColumns: [...commonTdClasses, "text-center", "w-44"],
 
-    baseCaseColumn: [
-      ...commonTdClasses,
-      hasValue ? "tw-bg-[#F6F1E1] dark:tw-bg-[#806922]" : bgColor,
-    ],
+    baseCaseColumn: [...commonTdClasses, hasValue ? "bg-[#F6F1E1] dark:bg-[#806922]" : bgColor],
 
     // Dernière colonne
     comparisonColumn: [
       ...commonTdClasses,
-      hasValue ? "tw-bg-[#F6E1F1] dark:tw-bg-[#7F236B]" : bgColor,
-      "tw-rounded-br",
-      "tw-border-r",
-      "tw-rounded-tr",
+      hasValue ? "bg-[#F6E1F1] dark:bg-[#7F236B]" : bgColor,
+      "rounded-br",
+      "border-r",
+      "rounded-tr",
     ],
   };
 };
@@ -85,7 +75,7 @@ const TableSectionRow = ({
       <tr>
         <td className={classNames(columnClasses.firstColumn)}>
           <Button
-            className={classNames("tw-text-black dark:tw-text-white")}
+            className={classNames("text-black dark:text-white")}
             iconId={isAccordionOpened ? "fr-icon-arrow-up-s-fill" : "fr-icon-arrow-down-s-fill"}
             onClick={onToggleAccordion}
             size="small"
@@ -95,8 +85,8 @@ const TableSectionRow = ({
         </td>
         <td
           className={classNames([
-            "tw-font-bold",
-            !subSection && "tw-text-lg",
+            "font-bold",
+            !subSection && "text-lg",
             columnClasses.contentColumns,
           ])}
         >
@@ -108,7 +98,7 @@ const TableSectionRow = ({
             columnClasses.valueColumns,
             columnClasses.baseCaseColumn,
             baseValue && getPositiveNegativeTextClassesFromValue(baseValue),
-            "tw-font-bold",
+            "font-bold",
           ])}
         >
           {baseValue ? formatValueFn(baseValue) : baseValue === 0 ? "-" : undefined}
@@ -118,7 +108,7 @@ const TableSectionRow = ({
             columnClasses.valueColumns,
             columnClasses.comparisonColumn,
             comparisonValue && getPositiveNegativeTextClassesFromValue(comparisonValue),
-            "tw-font-bold",
+            "font-bold",
           ])}
         >
           {comparisonValue

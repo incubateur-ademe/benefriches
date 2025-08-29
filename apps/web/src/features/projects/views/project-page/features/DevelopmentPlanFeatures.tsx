@@ -227,7 +227,7 @@ const DevelopmentPlanFeatures = ({
             {totalGreenPublicSpaces > 0 && (
               <>
                 <DataLine
-                  className="tw-pt-2"
+                  className="pt-2"
                   noBorder
                   label={<strong>Espaces verts publics</strong>}
                   value={<strong>{formatSurfaceArea(totalGreenPublicSpaces)}</strong>}
@@ -261,7 +261,7 @@ const DevelopmentPlanFeatures = ({
             {totalPublicSpaces > 0 && (
               <>
                 <DataLine
-                  className="tw-pt-2"
+                  className="pt-2"
                   noBorder
                   label={<strong>Espaces publics</strong>}
                   labelTooltip="Les espaces publics sont comptabilisés hors espaces verts."
@@ -296,7 +296,7 @@ const DevelopmentPlanFeatures = ({
               </>
             )}
 
-            <h4 className="tw-text-base tw-pb-2 tw-pt-4 tw-mb-0">Répartition des sols</h4>
+            <h4 className="text-base pb-2 pt-4 mb-0">Répartition des sols</h4>
 
             <SoilsDistribution
               isExpressProject={isExpress}

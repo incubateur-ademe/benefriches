@@ -8,8 +8,8 @@ type Props = {
 function FormDefinition({ children, hideDivider = false }: Props) {
   return (
     <>
-      {!hideDivider && <hr className="tw-pb-4 tw-mt-4" />}
-      <div className="*:tw-text-sm tw-text-text-light">{children}</div>
+      {!hideDivider && <hr className="pb-4 mt-4" />}
+      <div className="*:text-sm text-text-light">{children}</div>
     </>
   );
 }

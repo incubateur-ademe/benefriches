@@ -30,10 +30,10 @@ function DropdownMenu({
         anchor={anchor}
         transition
         className={classNames(
-          "tw-z-40",
-          size === "small" && "tw-w-44",
-          size === "medium" && "tw-w-72",
-          size === "large" && "tw-w-80",
+          "z-40",
+          size === "small" && "w-44",
+          size === "medium" && "w-72",
+          size === "large" && "w-80",
           MENU_ITEMS_CLASSES,
           classes?.menu,
         )}

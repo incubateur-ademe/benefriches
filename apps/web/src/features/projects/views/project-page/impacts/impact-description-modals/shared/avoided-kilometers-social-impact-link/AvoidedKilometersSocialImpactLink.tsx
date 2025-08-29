@@ -14,7 +14,7 @@ const LinkToAvoidedKilometersImpact = () => {
           impactName: "avoided_vehicule_kilometers",
         });
       }}
-      className="tw-px-1"
+      className="px-1"
       priority="tertiary no outline"
     >
       «&nbsp;🚙 Kilomètres évités&nbsp;»

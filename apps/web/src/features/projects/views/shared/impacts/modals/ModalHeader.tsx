@@ -22,43 +22,41 @@ const ModalHeader = ({ title, subtitle, breadcrumbSegments, value }: Props) => {
   return (
     <div
       className={classNames(
-        "tw-border-0",
-        "tw-border-solid",
-        "tw-border-b",
-        "tw-border-borderGrey",
-        "tw-bg-white dark:tw-bg-black",
-        "tw-p-6",
-        "tw-flex-col",
+        "border-0",
+        "border-solid",
+        "border-b",
+        "border-borderGrey",
+        "bg-white dark:bg-black",
+        "p-6",
+        "flex-col",
       )}
     >
-      <div className="tw-flex tw-justify-around tw-items-start tw-w-full">
+      <div className="flex justify-around items-start w-full">
         <ModalBreadcrumb segments={breadcrumbSegments} />
         <button className={fr.cx("fr-btn--close", "fr-btn")} aria-controls={dialogId} type="button">
           Fermer
         </button>
       </div>
-      <h1 id={dialogTitleId} className={classNames(fr.cx("fr-modal__title"), "tw-mb-2")}>
+      <h1 id={dialogTitleId} className={classNames(fr.cx("fr-modal__title"), "mb-2")}>
         {title}
       </h1>
 
-      {subtitle && <div className="tw-font-bold tw-mb-2">{subtitle}</div>}
+      {subtitle && <div className="font-bold mb-2">{subtitle}</div>}
       {value && (
         <div>
           <span
             className={classNames(
-              "tw-text-2xl",
-              "tw-font-bold",
+              "text-2xl",
+              "font-bold",
               value.state === "success"
-                ? "tw-text-impacts-positive-main dark:tw-text-impacts-positive-light"
-                : "tw-text-impacts-negative-main dark:tw-text-impacts-negative-light",
+                ? "text-impacts-positive-main dark:text-impacts-positive-light"
+                : "text-impacts-negative-main dark:text-impacts-negative-light",
             )}
           >
             {value.text}
           </span>
 
-          {value.description && (
-            <span className="tw-text-text-light">{` ${value.description}`}</span>
-          )}
+          {value.description && <span className="text-text-light">{` ${value.description}`}</span>}
         </div>
       )}
     </div>
