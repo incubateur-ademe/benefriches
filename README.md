@@ -2,7 +2,7 @@
 
 **Bénéfriches** est un outil numérique développé au sein de [l'incubateur de l'ADEME](https://beta.gouv.fr/incubateurs/ademe.html).
 
-Son object est de fournir une solution de calcul des impacts positifs de la reconversion de friches aux chargés d’opération d’aménagement pour favoriser la prise de décision (pour tout type de projet d’aménagement) et augmenter le nombre de reconversions.
+Son objectif est de fournir une solution de calcul des impacts positifs de la reconversion de friches aux chargés d’opération d’aménagement pour favoriser la prise de décision (pour tout type de projet d’aménagement) et augmenter le nombre de reconversions.
 
 L'outil est actuellement en *phase de construction*.
 
