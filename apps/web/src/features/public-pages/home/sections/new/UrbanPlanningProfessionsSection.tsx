@@ -44,7 +44,7 @@ export default function UrbanPlanningProfessionsSection() {
 
           <UrbanPlanningProfessionCard
             title="Promoteurs"
-            text="Intégrez l'impact environnemental dans vos études de faisabilité. Valorisez les bénéfices de la reconversion de friches auprès des investisseurs et futurs acquéreurs."
+            text="Intégrez l'impact environnemental dans vos études de faisabilité. Valorisez les bénéfices de la reconversion de friches auprès des investisseurs, élus et futurs acquéreurs."
             imgSrc="/img/pictograms/urban-planning-professions/real-estate-developer.svg"
           />
 
@@ -56,7 +56,7 @@ export default function UrbanPlanningProfessionsSection() {
 
           <UrbanPlanningProfessionCard
             title="Industriels"
-            text="Transformez vos friches industrielles en opportunités durables. Évaluez les différentes options de reconversion pour valoriser au mieux vos actifs fonciers délaissés."
+            text="Transformez vos friches industrielles en opportunités durables. Évaluez les intérêts extra-financiers à implanter votre activité sur une friche et valorisez les informations auprès des investisseurs, élus et clients."
             imgSrc="/img/pictograms/urban-planning-professions/industry.svg"
           />
         </div>

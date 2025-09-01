@@ -85,7 +85,7 @@ export default function HowItWorksSection() {
               par l'outil.
             </Step>
             <Step emoji="🔍" title="L'outil analyse ma friche">
-              Et me propose des projets d'aménagement compatibles, classés par pertinence.
+              Et me propose des projets d'aménagement les + adaptés, classés par pertinence.
             </Step>
             <Step emoji="📊" title="L'outil calcule les impacts d'un projet sur ma friche">
               Pour certains projets, l'outil peut calculer les impacts sur l'environnement,
