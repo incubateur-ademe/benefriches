@@ -15,7 +15,7 @@ export default function CreateUserErrorMessage({ errorKind }: Props) {
         title="Impossible de créer le compte"
         description={
           <div>
-            <p className="tw-mb-4">
+            <p className="mb-4">
               L'adresse e-mail fournie est déjà utilisée. Veuillez vous connecter avec Pro Connect.
             </p>
             <ProConnectButton url="/api/auth/login/pro-connect" />
@@ -26,7 +26,7 @@ export default function CreateUserErrorMessage({ errorKind }: Props) {
                 onClick={() => {
                   authLinkModal.open();
                 }}
-                className="tw-text-sm"
+                className="text-sm"
               >
                 Vous n'avez pas de compte Pro Connect ? Recevez un lien de connexion par mail.
               </a>
@@ -42,7 +42,7 @@ export default function CreateUserErrorMessage({ errorKind }: Props) {
       description="Une erreur s'est produite lors de la création de votre compte... Veuillez réessayer."
       severity="error"
       title="Échec de l'enregistrement"
-      className="tw-my-7"
+      className="my-7"
     />
   );
 }

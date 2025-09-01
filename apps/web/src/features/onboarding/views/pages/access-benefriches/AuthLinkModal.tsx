@@ -14,14 +14,14 @@ function RequestResult() {
   const { authLinkRequestState, authLinkRequestError } = useAppSelector((state) => state.auth);
   switch (authLinkRequestState) {
     case "loading":
-      return <p className="tw-mt-2">Envoi du lien de connexion en cours...</p>;
+      return <p className="mt-2">Envoi du lien de connexion en cours...</p>;
     case "success":
       return (
         <Alert
           severity="success"
           title="Un lien de connexion a été envoyé"
           description="Cliquez sur le lien dans l'email pour vous connecter à Bénéfriches."
-          className="tw-mt-4"
+          className="mt-4"
           small
         />
       );
@@ -31,7 +31,7 @@ function RequestResult() {
           severity="error"
           title="Une erreur est survenue lors de l'envoi du lien"
           description={authLinkRequestError ?? ""}
-          className="tw-mt-4"
+          className="mt-4"
           small
         />
       );
@@ -60,7 +60,7 @@ export default function AuthLinkModal() {
           label="Adresse e-mail"
           nativeInputProps={{ type: "email", ...register("email", { required: true }) }}
         />
-        <div className="tw-text-right">
+        <div className="text-right">
           <Button type="submit" priority="primary">
             Recevoir un lien de connexion
           </Button>

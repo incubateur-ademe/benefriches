@@ -21,11 +21,11 @@ export default function AccessBenefrichesPage() {
     <section className={fr.cx("fr-container", "fr-py-4w")}>
       <h1>Accéder à Bénéfriches</h1>
 
-      <div className="tw-flex tw-flex-col lg:tw-flex-row tw-gap-8">
-        <div className="tw-flex-1">
-          <div className="tw-rounded-2xl tw-bg-grey-light dark:tw-bg-grey-dark tw-px-12 tw-py-9 tw-h-full tw-flex tw-flex-col tw-justify-center">
-            <h2 className="tw-text-xl">Première fois sur Bénéfriches ?</h2>
-            <div className="tw-mb-8">
+      <div className="flex flex-col lg:flex-row gap-8">
+        <div className="flex-1">
+          <div className="rounded-2xl bg-grey-light dark:bg-grey-dark px-12 py-9 h-full flex flex-col justify-center">
+            <h2 className="text-xl">Première fois sur Bénéfriches ?</h2>
+            <div className="mb-8">
               Découvrez Bénéfriches en quelques minutes et évaluez votre premier projet.
             </div>
             <Button linkProps={{ ...routes.onBoardingIdentity().link }}>Commencer</Button>
@@ -33,17 +33,17 @@ export default function AccessBenefrichesPage() {
         </div>
 
         {/* Separator */}
-        <div className="tw-flex tw-items-center tw-justify-center lg:tw-flex-col">
-          <span className="tw-font-medium tw-px-4 tw-py-2 tw-rounded-full tw-border tw-border-dsfr-border-default-grey">
+        <div className="flex items-center justify-center lg:flex-col">
+          <span className="font-medium px-4 py-2 rounded-full border border-dsfr-border-default-grey">
             ou
           </span>
         </div>
 
         {/* Login section */}
-        <div className="tw-flex-1">
-          <div className="tw-rounded-2xl tw-bg-grey-light dark:tw-bg-grey-dark tw-px-12 tw-py-9 tw-h-full tw-flex tw-flex-col tw-justify-center">
-            <h2 className="tw-text-xl tw-font-bold tw-mb-3">Vous avez déjà un compte ?</h2>
-            <p className="tw-text-sm">
+        <div className="flex-1">
+          <div className="rounded-2xl bg-grey-light dark:bg-grey-dark px-12 py-9 h-full flex flex-col justify-center">
+            <h2 className="text-xl font-bold mb-3">Vous avez déjà un compte ?</h2>
+            <p className="text-sm">
               Connectez-vous avec votre compte Pro Connect (anciennement Agent Connect).
             </p>
             <ProConnectButton url={loginUrl} />
@@ -54,7 +54,7 @@ export default function AccessBenefrichesPage() {
                 onClick={() => {
                   authLinkModal.open();
                 }}
-                className="tw-text-sm"
+                className="text-sm"
               >
                 Vous n'avez pas de compte Pro Connect ? Recevez un lien de connexion par mail.
               </a>
