@@ -2,7 +2,7 @@ import { INestApplication } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import cookie from "cookie";
 import { Knex } from "knex";
-import { Server } from "net";
+import { Server } from "node:net";
 import request from "supertest";
 import { createTestApp } from "test/testApp";
 import { z } from "zod";

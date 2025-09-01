@@ -17,9 +17,9 @@ import {
   UseGuards,
 } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { randomUUID } from "crypto";
 import { Request, Response } from "express";
 import { createZodDto } from "nestjs-zod";
+import { randomUUID } from "node:crypto";
 import { z } from "zod";
 
 import { CreateUserUseCase, UserProps } from "src/auth/core/createUser.usecase";
