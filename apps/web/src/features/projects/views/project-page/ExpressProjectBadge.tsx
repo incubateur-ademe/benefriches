@@ -8,7 +8,7 @@ const ExpressProjectTooltipBadge = () => {
   return (
     <Badge
       small
-      className="my-2 shrink-1 sm:ml-3 py-0.5 border-[#DEE5FD] hover:border-[#99B3F9] border-1 border-solid hover:cursor-pointer"
+      className="my-2 shrink-1 sm:ml-3 py-0.5 border-[#DEE5FD] hover:border-[#99B3F9] border border-solid hover:cursor-pointer"
       style="blue"
       onClick={() => {
         projectAndSiteFeaturesModal.open();

@@ -66,11 +66,11 @@ function TestimonyCard({ testimony, className }: TestimonyCardProps) {
     <div
       className={`bg-white dark:bg-grey-dark rounded-2xl p-8 md:flex gap-8 min-w-[700px] h-auto ${className || ""}`}
     >
-      <div className="flex-shrink-0 my-auto w-32">
+      <div className="shrink-0 my-auto w-32">
         <img src={testimony.imgSrc} alt="" className="max-w-full object-contain" />
       </div>
 
-      <div className="hidden md:block w-px bg-gray-200 flex-shrink-0" />
+      <div className="hidden md:block w-px bg-gray-200 shrink-0" />
 
       <div className="flex flex-col flex-1 min-h-[200px]">
         <div className="mb-6">

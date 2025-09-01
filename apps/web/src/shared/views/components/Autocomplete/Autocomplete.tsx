@@ -32,7 +32,7 @@ function Autocomplete({ options, value, onSelect, className, children }: Props) 
               fr.cx("fr-menu__list"),
               "max-h-72",
               ...SCROLLBAR_CLASSES,
-              "w-[var(--input-width)]",
+              "w-(--input-width)",
               "empty:invisible",
               "my-1 py-1",
               "rounded-md",
@@ -41,7 +41,7 @@ function Autocomplete({ options, value, onSelect, className, children }: Props) 
               "border",
               "border-solid",
               "ring-1 ring-black/5",
-              "bg-[var(--background-overlap-grey)]",
+              "bg-(--background-overlap-grey)",
             )}
           >
             {options.map((option) => (
@@ -50,8 +50,8 @@ function Autocomplete({ options, value, onSelect, className, children }: Props) 
                   <li
                     className={classNames(
                       fr.cx("fr-nav__link"),
-                      focus && "bg-dsfr-altBlue",
-                      selected && "bg-dsfr-openBlue",
+                      focus && "bg-dsfr-alt-blue",
+                      selected && "bg-dsfr-open-blue",
                       "cursor-pointer",
                     )}
                   >

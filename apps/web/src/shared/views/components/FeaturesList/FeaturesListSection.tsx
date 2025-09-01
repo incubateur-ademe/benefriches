@@ -19,7 +19,7 @@ export default function Section({ children, title, tooltip, buttonProps }: Props
   return (
     <section className="mb-10">
       <div className="flex justify-between items-center">
-        <div className="flex items-center justify-between flex-grow">
+        <div className="flex items-center justify-between grow">
           <span className="flex items-center">
             <h3 className="text-lg mb-0">{title}</h3>
             {tooltip && <InfoTooltip title={tooltip} />}
@@ -31,10 +31,10 @@ export default function Section({ children, title, tooltip, buttonProps }: Props
         <Button
           className={classNames(
             "my-2",
-            "border border-solid border-borderGrey",
+            "border border-solid border-border-grey",
             "bg-white",
             "text-black",
-            "rounded-sm",
+            "rounded-xs",
             "shadow-none",
             "dark:bg-grey-dark",
             "dark:text-white",

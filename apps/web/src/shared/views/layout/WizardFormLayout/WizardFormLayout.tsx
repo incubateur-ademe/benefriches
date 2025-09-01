@@ -30,7 +30,7 @@ function WizardFormLayout({ title, children, instructions = null, fullScreen = f
         <section className={classNames("md:grid-start-8", "col-span-12", "md:col-span-4")}>
           <div
             className={classNames(
-              "border-borderGrey",
+              "border-border-grey",
               "border-solid",
               "border",
               "shadow-md",

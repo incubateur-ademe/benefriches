@@ -32,10 +32,10 @@ function SidebarLayout({ mainChildren, title, sidebarChildren }: SidebarLayoutPr
 
   return (
     <SidebarLayoutContext.Provider value={{ isOpen }}>
-      <div className={classNames("flex", "w-full", "h-[100vh]")}>
+      <div className={classNames("flex", "w-full", "h-screen")}>
         <aside
           className={classNames(
-            "bg-grey-light dark:bg-dsfr-contrastGrey",
+            "bg-grey-light dark:bg-dsfr-contrast-grey",
             "border-r",
             "z-10",
             "flex flex-col",
@@ -97,7 +97,7 @@ function SidebarLayout({ mainChildren, title, sidebarChildren }: SidebarLayoutPr
                 "transition-opacity",
                 "absolute top-0 left-0 w-screen h-screen",
                 "bg-[#161616a3]",
-                isOpen ? "z-[5]" : "z-[-1]",
+                isOpen ? "z-5" : "z-[-1]",
                 isOpen ? "opacity-1" : "opacity-0",
               )}
             ></div>
@@ -109,7 +109,7 @@ function SidebarLayout({ mainChildren, title, sidebarChildren }: SidebarLayoutPr
               "items-center",
               "p-6",
               "border-solid",
-              "border-borderGrey",
+              "border-border-grey",
               "border-0",
               "border-b",
             )}

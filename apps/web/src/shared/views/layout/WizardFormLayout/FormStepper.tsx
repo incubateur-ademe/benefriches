@@ -39,7 +39,7 @@ const Step = ({ title, index, currentStepIndex, isDone }: StepProps) => {
               "bg-blue-ultralight dark:bg-blue-ultradark",
               "text-blue-ultradark dark:text-blue-ultralight",
             ]
-          : "text-dsfr-greyDisabled",
+          : "text-dsfr-grey-disabled",
       )}
       key={title}
     >

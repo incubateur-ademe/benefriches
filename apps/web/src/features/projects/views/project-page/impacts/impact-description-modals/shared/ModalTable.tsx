@@ -23,7 +23,7 @@ type Props = {
 export const BagdeLabel = ({ label, color }: { label: string; color: string }) => (
   <span className="flex items-center gap-1" key={label}>
     <span
-      className={classNames("mr-2", "inline-flex", "min-h-5", "min-w-5", "rounded")}
+      className={classNames("mr-2", "inline-flex", "min-h-5", "min-w-5", "rounded-sm")}
       aria-hidden="true"
       style={
         {

@@ -28,7 +28,8 @@ const IllustrationCard = ({
   return (
     <div
       className={classNames(
-        "bg-[var(--background-default-grey)]",
+        "bg-(--background-default-grey)",
+        "dark:bg-grey-dark",
         "rounded-2xl",
         "shadow-[0_6px_18px_0px_#00001229]",
         "flex",

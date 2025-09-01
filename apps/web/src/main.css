@@ -1,8 +1,102 @@
-@import "highcharts/css/highcharts";
+@layer theme, base, components, utilities;
+@import "highcharts/css/highcharts" layer(base);
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss/theme.css" layer(theme);
+/*
+    Tailwind classes should take precedence over global styles, see https://github.com/tailwindlabs/tailwindcss/discussions/15866
+    Trick found in: https://github.com/betagouv/complements-alimentaires/blob/staging/frontend/src/styles/index.css
+    That's why we use important
+*/
+@import "tailwindcss/utilities.css" layer(utilities) important;
+
+@custom-variant dark (&:where([data-fr-theme="dark"], [data-fr-theme="dark"] *));
+
+@theme {
+  --color-dsfr-red: var(--text-label-red-marianne);
+  --color-dsfr-open-blue: var(--background-open-blue-france);
+  --color-dsfr-alt-blue: var(--background-alt-blue-france);
+  --color-dsfr-title-blue: var(--text-title-blue-france);
+  --color-dsfr-border-blue: var(--border-plain-blue-france);
+  --color-dsfr-border-success: var(--border-plain-success);
+  --color-dsfr-grey: var(--background-default-grey);
+  --color-dsfr-contrast-grey: var(--background-contrast-grey);
+  --color-dsfr-grey-disabled: var(--text-disabled-grey);
+
+  --color-text-dark: #161616;
+  --color-text-light: #757575;
+
+  --color-blue-ultralight: #daf2fb;
+  --color-blue-light: #d1eefa;
+  --color-blue-main: #22afe5;
+  --color-blue-dark: #116e92;
+  --color-blue-ultradark: #0d536e;
+
+  --color-green-main: #32762e;
+
+  --color-border-grey: #dddddd;
+
+  --color-grey-main: #b2b2b2;
+  --color-grey-light: #f6f6f6;
+  --color-grey-dark: #333;
+  --color-grey-disabled: #e5e5e5;
+
+  --color-warning: #b34000;
+
+  --color-impacts-main: #eeeeee;
+  --color-impacts-dark: #e5e5e5;
+
+  --color-impacts-positive-border: #34eb7b;
+  --color-impacts-positive-main: #18753c;
+  --color-impacts-positive-light: #b8fec9;
+
+  --color-impacts-neutral-main: #161616;
+  --color-impacts-neutral-light: #f6f6f6;
+
+  --color-impacts-negative-border: #ffafaf;
+  --color-impacts-negative-main: #ce0500;
+  --color-impacts-negative-light: #ffe9e9;
+
+  --color-onboarding-step1: #59c939;
+  --color-onboarding-step2: #137feb;
+  --color-onboarding-step3: #919cb3;
+  --color-onboarding-step4: #f80338;
+
+  --color-soils-buildings: #eb13be;
+  --color-soils-impermeable-soils: #b713eb;
+  --color-soils-mineral-soils: #aaaaaa;
+  --color-soils-artificial-grass-or-bushes-filled: #b8ec13;
+  --color-soils-artificial-tree-filled: #59c939;
+  --color-soils-forest-conifer: #35c6a3;
+  --color-soils-forest-deciduous: #639e74;
+  --color-soils-forest-poplar: #8b9b61;
+  --color-soils-forest-mixed: #12eb46;
+  --color-soils-prairie-grass: #fdca05;
+  --color-soils-prairie-bushes: #c5a235;
+  --color-soils-prairie-trees: #9d7465;
+  --color-soils-wet-land: #13bcec;
+  --color-soils-cultivation: #fdfe10;
+  --color-soils-orchard: #f97f05;
+  --color-soils-vineyard: #f80338;
+  --color-soils-water: #1243eb;
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
 
 /* Highcharts CSS override - pour les graphes avec le paramètre "styledMode": true */
 

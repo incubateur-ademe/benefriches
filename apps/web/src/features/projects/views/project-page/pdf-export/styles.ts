@@ -1,8 +1,6 @@
 import { Font, StyleSheet } from "@react-pdf/renderer";
 import { createTw } from "react-pdf-tailwind";
 
-import theme from "@/shared/views/theme";
-
 Font.registerEmojiSource({
   format: "png",
   url: "https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/",
@@ -23,7 +21,12 @@ export const styles = StyleSheet.create({
   },
 });
 
-export const tw = createTw({ theme });
+export const tw = createTw({
+  colors: {
+    ["border-grey"]: "#DDDDDD",
+    ["grey-light"]: "#F6F6F6",
+  },
+});
 
 export const concatClassNames = (...classNames: string[]) => {
   let result = "";

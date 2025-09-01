@@ -38,7 +38,7 @@ const ExportableChart = ({ ref, exportingOptions, options, ...props }: Props) =>
           anchor="bottom end"
           transition
           className={classNames(
-            "z-[2000]", // pour s'afficher correctement dans une Dialog (z-index 1750)
+            "z-2000", // pour s'afficher correctement dans une Dialog (z-index 1750)
             MENU_ITEMS_CLASSES,
           )}
         >

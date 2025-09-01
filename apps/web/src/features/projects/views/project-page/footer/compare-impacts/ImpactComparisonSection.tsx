@@ -113,7 +113,7 @@ function ImpactComparisonSection({ onSelectOption, siteNature }: Props) {
   }
 
   return (
-    <section className="flex rounded-lg gap-6 px-6 py-10 mt-10 bg-white dark:bg-black border border-solid border-borderGrey">
+    <section className="flex rounded-lg gap-6 px-6 py-10 mt-10 bg-white dark:bg-black border border-solid border-border-grey">
       <img
         src="/img/pictograms/site-nature/friche.svg"
         width="80"

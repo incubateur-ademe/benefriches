@@ -3,7 +3,6 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { Provider as ReduxProvider } from "react-redux";
 
-import "./main.css";
 import { appDependencies } from "./shared/core/store-config/appDependencies.ts";
 import { createStore } from "./shared/core/store-config/store.ts";
 import App from "./shared/views/App.tsx";

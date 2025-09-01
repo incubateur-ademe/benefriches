@@ -36,7 +36,7 @@ export default function DataLine({
 }: DataLineProps) {
   const bordersClasses = isDetails
     ? ["border-l-black", "border-l"]
-    : ["border-b", "border-borderGrey"];
+    : ["border-b", "border-border-grey"];
   const classes = classNames(
     "grid",
     "grid-cols-[8fr_4fr]",

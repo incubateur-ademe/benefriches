@@ -31,7 +31,7 @@ const ImpactSummaryView = ({ baseCase, comparisonCase, modalData }: Props) => {
         return (
           <div
             key={index}
-            className="flex flex-col gap-6 p-6 bg-[var(--background-raised-grey)] rounded-2xl"
+            className="flex flex-col gap-6 p-6 bg-(--background-raised-grey) rounded-2xl"
           >
             <h3
               className={classNames(

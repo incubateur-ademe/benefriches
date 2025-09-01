@@ -12,13 +12,13 @@ type Props = {
 };
 
 const POSITIVE_CLASSES = [
-  "bg-impacts-positive-light hover:!bg-impacts-positive-light",
-  "dark:bg-impacts-positive-main dark:hover:!bg-impacts-positive-main",
+  "bg-impacts-positive-light hover:bg-impacts-positive-light!",
+  "dark:bg-impacts-positive-main dark:hover:bg-impacts-positive-main!",
   "hover:border-impacts-positive-border",
 ];
 const NEGATIVE_CLASSES = [
-  "bg-impacts-negative-light hover:!bg-impacts-negative-light",
-  "dark:bg-impacts-negative-main dark:hover:!bg-impacts-negative-main",
+  "bg-impacts-negative-light hover:bg-impacts-negative-light!",
+  "dark:bg-impacts-negative-main dark:hover:bg-impacts-negative-main!",
   "hover:border-impacts-negative-border",
 ];
 

@@ -11,7 +11,9 @@ type Props = {
 
 function FeatureAlertModalTitle({ title, iconId, isSuccess }: Props) {
   return (
-    <div className={classNames(isSuccess ? "text-impacts-positive-border" : "text-dsfr-titleBlue")}>
+    <div
+      className={classNames(isSuccess ? "text-impacts-positive-border" : "text-dsfr-title-blue")}
+    >
       <i
         className={classNames(
           "fr-icon--xl",

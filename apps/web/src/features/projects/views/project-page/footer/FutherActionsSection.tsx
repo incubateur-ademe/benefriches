@@ -9,7 +9,7 @@ import { projectAndSiteFeaturesModal } from "../impacts/project-and-site-feature
 
 export default function FurtherActionsSection({ siteId }: { siteId: string }) {
   return (
-    <section className="rounded-lg mt-10 p-6 bg-white dark:bg-black border border-solid border-borderGrey flex flex-col md:flex-row gap-6">
+    <section className="rounded-lg mt-10 p-6 bg-white dark:bg-black border border-solid border-border-grey flex flex-col md:flex-row gap-6">
       <img src="/img/pictograms/further-actions.svg" alt="" aria-hidden="true" className="w-36" />
       <div className="flex flex-col justify-center">
         <h3 className="mb-0">Aller plus loin avec ce projet</h3>

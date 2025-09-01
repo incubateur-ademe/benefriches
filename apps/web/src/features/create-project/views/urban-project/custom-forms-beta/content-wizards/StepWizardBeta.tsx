@@ -32,8 +32,8 @@ const BetaBadgeMenu = ({ route }: { route: Props["route"] }) => {
             "fr-badge fr-badge--new",
             "fr-badge--sm",
             "cursor-pointer",
-            "hover:border-2 hover:border-[var(--text-action-high-yellow-moutarde)] hover:border-solid",
-            "focus:border-2 focus:border-[var(--text-action-high-yellow-moutarde)] focus:border-solid",
+            "hover:border-2 hover:border-(--text-action-high-yellow-moutarde) hover:border-solid",
+            "focus:border-2 focus:border-(--text-action-high-yellow-moutarde) focus:border-solid",
             "mx-3",
             "text-bold",
           )}

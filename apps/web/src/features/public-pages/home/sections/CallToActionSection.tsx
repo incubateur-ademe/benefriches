@@ -19,9 +19,9 @@ export default function CallToActionSection() {
           <div
             className={classNames(
               "pb-12",
-              "md:flex-[5]",
+              "md:flex-5",
               "md:pr-16 md:pb-0",
-              "border-0 border-b border-solid border-borderGrey",
+              "border-0 border-b border-solid border-border-grey",
               "md:border-b-0 md:border-r",
             )}
           >
@@ -50,7 +50,7 @@ export default function CallToActionSection() {
             </Button>
           </div>
           <hr />
-          <div className={classNames("pt-6 md:flex-[7] md:pl-16 md:pt-0")}>
+          <div className={classNames("pt-6 md:flex-7 md:pl-16 md:pt-0")}>
             <img
               src="/img/pictograms/development-plans/commercial-activity-area.svg"
               width="100px"

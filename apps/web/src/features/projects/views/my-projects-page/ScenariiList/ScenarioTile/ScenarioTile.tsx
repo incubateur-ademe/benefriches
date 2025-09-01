@@ -49,7 +49,7 @@ function ScenarioTile({
         "border",
         "border-solid",
         "rounded-lg",
-        isSelected ? "border-dsfr-borderBlue" : "border-borderGrey",
+        isSelected ? "border-dsfr-border-blue" : "border-border-grey",
         isHovered ? "bg-grey-light dark:bg-grey-dark" : "bg-none",
         className,
       )}

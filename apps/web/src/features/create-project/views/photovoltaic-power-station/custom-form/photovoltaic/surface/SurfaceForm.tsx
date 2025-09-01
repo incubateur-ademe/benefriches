@@ -69,7 +69,6 @@ function PhotovoltaicSurfaceForm({ initialValues, onSubmit, siteSurfaceArea, onB
     >
       <form onSubmit={handleSubmit(onSubmit)}>
         <RowDecimalsNumericInput
-          className="!pt-4 pb-6"
           addonText={SQUARE_METERS_HTML_SYMBOL}
           hintText={hintText}
           hintInputText={

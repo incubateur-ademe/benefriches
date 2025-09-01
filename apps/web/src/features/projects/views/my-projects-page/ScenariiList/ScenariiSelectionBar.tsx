@@ -70,7 +70,7 @@ function ScenariiSelectionBar({ baseScenario, withScenario, onCancel }: Props) {
         "left-0",
         "w-full",
         "z-10",
-        "bg-dsfr-openBlue",
+        "bg-dsfr-open-blue",
         "py-5",
       )}
     >

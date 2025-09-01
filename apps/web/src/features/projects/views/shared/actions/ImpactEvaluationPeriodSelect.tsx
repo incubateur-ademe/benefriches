@@ -48,7 +48,7 @@ function ImpactEvaluationPeriodSelect({ value, onChange }: Props) {
           "w-96",
           "mt-2",
           "rounded-md",
-          "bg-white dark:!bg-dsfr-contrastGrey",
+          "bg-white dark:bg-dsfr-contrast-grey!",
           "shadow-lg",
           "ring-1 ring-black/5",
           "p-4",
@@ -81,7 +81,7 @@ function ImpactEvaluationPeriodSelect({ value, onChange }: Props) {
               )}
             />
 
-            <div className="text-xs py-4 text-[var(--text-default-info)]">
+            <div className="text-xs py-4 text-(--text-default-info)">
               <i className={fr.cx("fr-icon--xs", "fr-icon-info-fill")}></i> Durée à partir de la
               mise en service du projet
             </div>

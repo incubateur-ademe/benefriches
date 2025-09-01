@@ -20,7 +20,7 @@ const UrbanProjectSoilsSummary = ({
     <>
       <h2>Récapitulatif de l'occupation des sols</h2>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 pb-10">
-        <div className="border border-solid border-borderGrey p-8">
+        <div className="border border-solid border-border-grey p-8">
           <h3 className="uppercase text-base">Site existant</h3>
           <SurfaceAreaPieChart
             soilsDistribution={siteSoilsDistribution}
@@ -30,7 +30,7 @@ const UrbanProjectSoilsSummary = ({
             }}
           />
         </div>
-        <div className="border border-solid border-borderGrey p-8">
+        <div className="border border-solid border-border-grey p-8">
           <h3 className="uppercase text-base">Site avec projet</h3>
           <SurfaceAreaPieChart
             soilsDistribution={projectSoilsDistribution}

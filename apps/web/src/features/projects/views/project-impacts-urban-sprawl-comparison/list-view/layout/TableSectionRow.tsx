@@ -21,7 +21,7 @@ const commonTdClasses = [
   "px-2",
   "border-0",
   "border-solid",
-  "border-borderGrey",
+  "border-border-grey",
   "dark:border-grey-dark",
   "border-t",
   "border-b",
@@ -29,8 +29,8 @@ const commonTdClasses = [
 
 const getColumnClasses = (hasValue: boolean, isSubSection: boolean) => {
   const bgColor = isSubSection
-    ? "bg-[var(--background-contrast-grey)]"
-    : "bg-[var(--background-disabled-grey)]";
+    ? "bg-(--background-contrast-grey)"
+    : "bg-(--background-disabled-grey)";
 
   return {
     firstColumn: [...commonTdClasses, "w-8", bgColor, "rounded-tl", "border-l", "rounded-bl"],

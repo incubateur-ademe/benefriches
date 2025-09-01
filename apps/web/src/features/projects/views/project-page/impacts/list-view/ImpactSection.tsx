@@ -43,13 +43,13 @@ const ImpactSection = ({
         className={classNames(
           "py-2 px-4",
           "w-full",
-          "rounded border border-solid border-transparent",
+          "rounded-sm border border-solid border-transparent",
           isMain
             ? ["bg-impacts-dark", "dark:bg-black", "mb-6"]
             : ["bg-impacts-main", "dark:bg-black", "mb-2"],
           "cursor-pointer",
           "transition ease-in-out duration-500",
-          "hover:border-grey-dark hover:dark:border-white",
+          "hover:border-grey-dark dark:hover:border-white",
         )}
         onClick={toggleDisplaySectionContent}
       >

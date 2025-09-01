@@ -15,11 +15,11 @@ const WithAddon = ({ state, children, addon }: WithAddonProps) => {
       <div
         className={classNames(
           "px-2 pt-[8px]",
-          "bg-dsfr-contrastGrey",
+          "bg-dsfr-contrast-grey",
           "text-nowrap",
           "border-solid border-0 border-b-2 border-[#000091]",
           state === "error" && "border-dsfr-red",
-          state === "success" && "border-dsfr-borderSuccess",
+          state === "success" && "border-dsfr-border-success",
         )}
       >
         {addon}
@@ -65,7 +65,7 @@ const RowNumericInput = ({
     <div
       className={classNames(
         "flex flex-col md:flex-row justify-between items-start",
-        "mb-0 pt-7",
+        "pt-4",
         "fr-input-group",
         fr.cx(
           disabled && "fr-input-group--disabled",
@@ -124,7 +124,7 @@ const RowNumericInput = ({
             pattern="[0-9]*[.,]?[0-9]+"
           />
         </WithAddon>
-        {hintInputText && <span className="fr-hint-text !mt-1">{hintInputText}</span>}
+        {hintInputText && <span className="fr-hint-text mt-1!">{hintInputText}</span>}
       </div>
     </div>
   );

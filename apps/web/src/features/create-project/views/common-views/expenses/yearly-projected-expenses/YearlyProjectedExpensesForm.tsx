@@ -44,26 +44,26 @@ const YearlyProjectedExpensesForm = ({
     <WizardFormLayout title={title} instructions={instructions}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <RowDecimalsNumericInput
-          className="!pt-4"
+          className="pt-4!"
           addonText="€ / an"
           label="Loyer"
           nativeInputProps={register("rentAmount", optionalNumericFieldRegisterOptions)}
         />
         <RowDecimalsNumericInput
-          className="!pt-4"
+          className="pt-4!"
           addonText="€ / an"
           label="Maintenance"
           nativeInputProps={register("maintenanceAmount", optionalNumericFieldRegisterOptions)}
         />
         <RowDecimalsNumericInput
-          className="!pt-4"
+          className="pt-4!"
           addonText="€ / an"
           label="Taxes et impôts"
           nativeInputProps={register("taxesAmount", optionalNumericFieldRegisterOptions)}
         />
 
         <RowDecimalsNumericInput
-          className="!pt-4"
+          className="pt-4!"
           addonText="€ / an"
           label="Autres dépenses"
           nativeInputProps={register("otherAmount", optionalNumericFieldRegisterOptions)}

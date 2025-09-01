@@ -50,19 +50,19 @@ const InstallationExpensesForm = ({
       <form onSubmit={handleSubmit(onSubmit)}>
         <RowDecimalsNumericInput
           addonText="€"
-          className="!pt-4"
+          className="pt-4!"
           label={labels?.worksAmount ?? "Travaux d'installation"}
           nativeInputProps={register("worksAmount", optionalNumericFieldRegisterOptions)}
         />
         <RowDecimalsNumericInput
           addonText="€"
-          className="!pt-4"
+          className="pt-4!"
           label={labels?.technicalStudyAmount ?? "Études et honoraires techniques"}
           nativeInputProps={register("technicalStudyAmount", optionalNumericFieldRegisterOptions)}
         />
         <RowDecimalsNumericInput
           addonText="€"
-          className="!pt-4"
+          className="pt-4!"
           label={labels?.otherAmount ?? "Autres dépenses d'installation"}
           nativeInputProps={register("otherAmount", optionalNumericFieldRegisterOptions)}
         />

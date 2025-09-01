@@ -72,7 +72,7 @@ const ImpactRowValue = ({
             "text-black dark:text-white",
             "text-xl",
             "absolute",
-            "left-[-0.5rem]",
+            "-left-2",
           )}
           iconId={isAccordionOpened ? "fr-icon-arrow-up-s-fill" : "fr-icon-arrow-down-s-fill"}
           onClick={onToggleAccordion}

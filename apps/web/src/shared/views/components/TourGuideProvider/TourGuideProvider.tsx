@@ -63,7 +63,7 @@ function TourGuideProvider({
 
   return (
     <TourProvider
-      className="rounded-lg p-4 max-w-[calc(100%-16px)]  sm:!max-w-96"
+      className="rounded-lg p-4 max-w-[calc(100%-16px)]  sm:max-w-96!"
       afterOpen={preventBodyOverflow}
       beforeClose={allowBodyOverflow}
       onClickMask={({ setIsOpen, setCurrentStep }) => {

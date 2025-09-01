@@ -37,19 +37,19 @@ const BuildingsOperationsExpensesForm = ({ onSubmit, onBack, initialValues }: Pr
     <WizardFormLayout title="Dépenses annuelles d'exploitation des bâtiments">
       <form onSubmit={handleSubmit(onSubmit)}>
         <RowDecimalsNumericInput
-          className="!pt-4"
+          className="pt-4!"
           addonText="€ / an"
           label="Entretien et maintenance"
           nativeInputProps={register("maintenance", optionalNumericFieldRegisterOptions)}
         />
         <RowDecimalsNumericInput
-          className="!pt-4"
+          className="pt-4!"
           addonText="€ / an"
           label="Taxes et impôts"
           nativeInputProps={register("taxes", optionalNumericFieldRegisterOptions)}
         />
         <RowDecimalsNumericInput
-          className="!pt-4"
+          className="pt-4!"
           addonText="€ / an"
           label="Autres charges d'exploitation"
           nativeInputProps={register("other", optionalNumericFieldRegisterOptions)}

@@ -11,7 +11,7 @@ export default function HeroSection() {
           <p className="text-sm">+ de 400 projets évalués</p>
           <Button
             size="large"
-            className="bg-white text-[#000091] hover:!bg-slate-200 focus:bg-slate-200"
+            className="bg-white text-[#000091] hover:bg-slate-200! focus:bg-slate-200"
             linkProps={{ href: "#votre-projet-d-amenagement" }}
           >
             Commencer

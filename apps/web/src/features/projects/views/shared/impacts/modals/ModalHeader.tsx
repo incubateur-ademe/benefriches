@@ -25,7 +25,7 @@ const ModalHeader = ({ title, subtitle, breadcrumbSegments, value }: Props) => {
         "border-0",
         "border-solid",
         "border-b",
-        "border-borderGrey",
+        "border-border-grey",
         "bg-white dark:bg-black",
         "p-6",
         "flex-col",

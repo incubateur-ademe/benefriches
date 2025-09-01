@@ -137,7 +137,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
               );
             })}
           <div className="flex gap-4 justify-between items-center py-4">
-            <div className="border border-solid border-borderGrey p-4 w-[50%]">
+            <div className="border border-solid border-border-grey p-4 w-[50%]">
               <h3 className="uppercase text-base text-text-light">Site existant</h3>
               <SurfaceAreaPieChart
                 soilsDistribution={siteData.soilsDistribution}
@@ -186,7 +186,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
                 );
               })}
               <div className="flex gap-4 justify-between items-center py-4">
-                <div className="border border-solid border-borderGrey p-4 w-[50%]">
+                <div className="border border-solid border-border-grey p-4 w-[50%]">
                   <h3 className="uppercase text-base text-text-light">Site existant</h3>
                   <SoilsCarbonStorageChart
                     soilsCarbonStorage={siteData.soilsCarbonStorage.soilsStorage}

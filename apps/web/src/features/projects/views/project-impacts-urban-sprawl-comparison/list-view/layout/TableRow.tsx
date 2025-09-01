@@ -24,7 +24,7 @@ const commonTdClasses = [
   "py-1",
   "border-0",
   "border-solid",
-  "border-borderGrey",
+  "border-border-grey",
   "dark:border-grey-dark",
 ];
 
@@ -69,7 +69,7 @@ const ImpactComparisonTableRow = ({
       <td
         className={classNames([
           columnClasses.firstColumn,
-          accordion && "!pb-1 !pt-1",
+          accordion && "pb-1! pt-1!",
           isFirst && [borderClasses.firstRow.all, borderClasses.firstRow.firstCol],
           isLast && [borderClasses.lastRow.all, borderClasses.lastRow.firstCol],
         ])}

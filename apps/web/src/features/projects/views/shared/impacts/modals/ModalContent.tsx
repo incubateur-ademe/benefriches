@@ -20,7 +20,7 @@ const ModalContent = ({ children, fullWidth = false, noTitle = false }: Props) =
         "pb-10",
         "mb-0",
         fr.cx("fr-modal__content"),
-        "bg-[var(--background-alt-grey)]",
+        "bg-(--background-alt-grey)",
       )}
     >
       {!noTitle && <ModalTitleTwo>Qu'est-ce que c'est ?</ModalTitleTwo>}

@@ -56,7 +56,7 @@ const SiteResaleRevenueForm = ({ initialValues, onSubmit, onBack }: Props) => {
     >
       <form onSubmit={handleSubmit(onSubmit)}>
         <RowDecimalsNumericInput
-          className="!pt-4"
+          className="pt-4!"
           addonText="€"
           label="Prix de vente"
           nativeInputProps={(() => {
@@ -78,7 +78,7 @@ const SiteResaleRevenueForm = ({ initialValues, onSubmit, onBack }: Props) => {
         />
 
         <RowDecimalsNumericInput
-          className="!pt-4"
+          className="pt-4!"
           addonText="€"
           label="Droit de mutation"
           nativeInputProps={register("propertyTransferDuties", optionalNumericFieldRegisterOptions)}

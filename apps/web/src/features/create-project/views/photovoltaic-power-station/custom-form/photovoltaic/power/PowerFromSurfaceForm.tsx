@@ -57,7 +57,6 @@ function PhotovoltaicPowerFromSurfaceForm({
     >
       <form onSubmit={handleSubmit(onSubmit)}>
         <RowNumericInput
-          className="!pt-4 pb-6"
           addonText="kWc"
           hintText={hintText}
           label={<RequiredLabel label="Puissance de l'installation" />}

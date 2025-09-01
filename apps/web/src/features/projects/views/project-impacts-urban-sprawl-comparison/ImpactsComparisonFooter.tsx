@@ -42,7 +42,7 @@ function ImpactsComparisonFooter({ baseCaseSiteData, comparisonCaseSiteData, pro
   const comparisonSiteDesignation = getSiteDesignationFromNature(comparisonCaseSiteData.nature);
   return (
     <>
-      <div className="p-6 bg-white dark:bg-black border border-solid border-borderGrey flex flex-col md:flex-row gap-6">
+      <div className="p-6 bg-white dark:bg-black border border-solid border-border-grey flex flex-col md:flex-row gap-6">
         <img
           src="/img/pictograms/calculatrice-illustration.svg"
           alt=""

@@ -45,7 +45,7 @@ const OnBoardingIntroductionHow = ({ nextButtonProps, backLinkProps }: Props) =>
 
   return (
     <>
-      <HtmlTitle>{`Comment ça marche - Introduction`}</HtmlTitle>
+      <HtmlTitle>Comment ça marche - Introduction</HtmlTitle>
       <section className={classNames(fr.cx("fr-container"), "py-20", "grid grid-cols-12 gap-2")}>
         <aside
           className={classNames(
@@ -91,16 +91,16 @@ const OnBoardingIntroductionHow = ({ nextButtonProps, backLinkProps }: Props) =>
               step3Classes,
               "before:content-['x']",
               "before:absolute",
-              "before:top-[-3rem]",
+              "before:-top-12",
               "before:left-[50%]",
               "before:text-3xl",
               "before:font-bold",
             ]}
           >
             <div className="flex gap-4 items-center">
-              <img src="/img/logos/logo-ademe.svg" alt="ADEME" height="40px" />
-              <img src="/img/logos/logo-insee.svg" alt="INSEE" height="40px" />
-              <img src="/img/logos/logo-aldo.svg" alt="Aldo" height="24px" />
+              <img src="/img/logos/logo-ademe.svg" alt="ADEME" className="h-10" />
+              <img src="/img/logos/logo-insee.svg" alt="INSEE" className="h-10" />
+              <img src="/img/logos/logo-aldo.svg" alt="Aldo" className="h-6" />
             </div>
           </IllustrationCard>
           <IllustrationCard
@@ -113,7 +113,7 @@ const OnBoardingIntroductionHow = ({ nextButtonProps, backLinkProps }: Props) =>
               "mt-2",
               "before:content-['=']",
               "before:absolute",
-              "before:top-[-3rem]",
+              "before:-top-12",
               "before:left-[50%]",
               "before:text-3xl",
               "before:font-bold",

@@ -40,12 +40,12 @@ function ModalColumnChartTooltip({ rows, position, category }: Props) {
       }
     >
       {category && <strong className="text-sm">{category}</strong>}
-      <div className="!text-xs">
+      <div className="text-xs!">
         {rows.map((row) => (
           <div key={row.label} className="py-1 flex justify-between items-center gap-2">
             <div className="flex items-center gap-2">
               <span
-                className="min-h-3 min-w-3 rounded"
+                className="min-h-3 min-w-3 rounded-sm"
                 style={row.color ? { backgroundColor: row.color } : {}}
               ></span>
               <span>{row.label}</span>

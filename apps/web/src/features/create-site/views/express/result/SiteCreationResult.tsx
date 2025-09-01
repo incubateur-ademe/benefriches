@@ -47,7 +47,7 @@ function SiteCreationResult({ siteId, siteName, loadingState, onBack }: Props) {
           <EditorialPageTitle>Le site « {siteName} » est créé !</EditorialPageTitle>
           <div
             className={classNames(
-              "border-borderGrey",
+              "border-border-grey",
               "border-solid",
               "border",
               "shadow-md",

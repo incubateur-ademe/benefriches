@@ -1,3 +1,4 @@
+import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { resolve } from "node:path";
 import { defineConfig, loadEnv } from "vite";
@@ -31,7 +32,7 @@ export default defineConfig(({ mode }) => {
 
   return {
     base: "/", // make sure all assets are fetched from '/', even when route path is overwritten (like /embed/* routes)
-    plugins: [react(), interceptEmbedRouting()],
+    plugins: [tailwindcss(), react(), interceptEmbedRouting()],
 
     // Vite expects local dependencies to be exported as ES Modules but shared is built as CommonJS
     // https://vitejs.dev/guide/dep-pre-bundling#monorepos-and-linked-dependencies

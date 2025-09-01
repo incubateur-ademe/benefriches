@@ -43,7 +43,7 @@ const SoilsCarbonStorageComparison = ({
       <h2>Stockage du carbone par les sols après aménagement</h2>
       <CarbonStorageDifferenceSection carbonStorageDifference={carbonStorageDifference} />
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 pb-10">
-        <div className="border border-solid border-borderGrey p-8">
+        <div className="border border-solid border-border-grey p-8">
           <h3 className="uppercase text-base">Site existant :</h3>
           <p>
             <strong>{formatCarbonStorage(currentCarbonStorage.totalCarbonStorage)} t</strong> de
@@ -58,7 +58,7 @@ const SoilsCarbonStorageComparison = ({
           />
         </div>
 
-        <div className="border border-solid border-borderGrey p-8">
+        <div className="border border-solid border-border-grey p-8">
           <h3 className="uppercase text-base">Site avec projet :</h3>
           <p>
             <strong>{formatCarbonStorage(projectedCarbonStorage.totalCarbonStorage)} t</strong> de

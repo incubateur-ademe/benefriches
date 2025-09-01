@@ -20,7 +20,7 @@ export default function DataLine({
   noBorder = false,
   labelClassName = "",
 }: DataLineProps) {
-  const borderStyle = isDetails ? "border-l-black border-l" : "border-b border-borderGrey";
+  const borderStyle = isDetails ? "border-l-black border-l" : "border-b border-border-grey";
   const styles = concatClassNames(
     "flex flex-row justify-between",
     bold ? "font-bold" : "",

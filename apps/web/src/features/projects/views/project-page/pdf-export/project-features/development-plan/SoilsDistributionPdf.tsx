@@ -34,7 +34,7 @@ export default function SoilsDistributionPdf({ soilsDistribution }: Props) {
                   <View style={tw("flex flex-row items-center")}>
                     <View
                       style={[
-                        tw("mx-2 h-4 w-4 rounded"),
+                        tw("mx-2 h-4 w-4 rounded-sm"),
                         { backgroundColor: getColorForSoilType(soilType) },
                       ]}
                     ></View>

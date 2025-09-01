@@ -16,7 +16,7 @@ function NewScenarioTile({ linkProps }: Props) {
         "border-dashed",
         "border",
         "rounded-lg",
-        "hover:bg-grey-light hover:dark:bg-grey-dark",
+        "hover:bg-grey-light dark:hover:bg-grey-dark",
       )}
     >
       <a
@@ -29,7 +29,7 @@ function NewScenarioTile({ linkProps }: Props) {
           "items-center",
           "justify-center",
           "min-h-64",
-          "text-dsfr-titleBlue",
+          "text-dsfr-title-blue",
           "text-lg",
           "bg-none",
         )}

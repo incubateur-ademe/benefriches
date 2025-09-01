@@ -23,7 +23,7 @@ function Accordion({ onClick, isOpen, label, children }: AccordionProps) {
       <div
         className={classNames(
           "py-2 px-4 mb-4",
-          "rounded border border-solid border-transparent",
+          "rounded-sm border border-solid border-transparent",
           "bg-impacts-main dark:bg-black",
           "cursor-pointer",
           "transition ease-in-out duration-500",

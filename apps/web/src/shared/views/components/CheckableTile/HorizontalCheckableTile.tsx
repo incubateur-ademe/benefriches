@@ -46,13 +46,13 @@ export default function HorizontalCheckableTile({
     <div
       className={classNames(
         "relative border border-solid rounded-lg h-full",
-        checked ? "border-dsfr-borderBlue" : "border-borderGrey",
+        checked ? "border-dsfr-border-blue" : "border-border-grey",
       )}
       role={checkType}
     >
       <input
         type={checkType}
-        className="!opacity-0 h-6 w-6 absolute top-[19px] right-[19px]"
+        className="opacity-0! h-6 w-6 absolute top-[19px] right-[19px]"
         id={id}
         value={id}
         checked={checked}

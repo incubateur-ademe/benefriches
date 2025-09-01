@@ -66,7 +66,7 @@ function ProjectExpressCreationResult({
           <EditorialPageTitle>Le projet "{projectData?.name}" est créé !</EditorialPageTitle>
           <p
             className={classNames(
-              "border-borderGrey",
+              "border-border-grey",
               "border-solid",
               "border",
               "shadow-md",
