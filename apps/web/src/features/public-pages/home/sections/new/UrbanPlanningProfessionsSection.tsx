@@ -12,7 +12,7 @@ function UrbanPlanningProfessionCard({ title, text, imgSrc }: UrbanPlanningProfe
       <img src={imgSrc} alt="" className="rounded-s-xl" height={160} />
       <div className="p-6">
         <h3 className="text-xl mb-1">{title}</h3>
-        <p className="text-sm mb-0">{text}</p>
+        <p className="text-sm leading-6 mb-0">{text}</p>
       </div>
     </article>
   );
@@ -56,7 +56,7 @@ export default function UrbanPlanningProfessionsSection() {
 
           <UrbanPlanningProfessionCard
             title="Industriels"
-            text="Transformez vos friches industrielles en opportunités durables. Évaluez les intérêts extra-financiers à implanter votre activité sur une friche et valorisez les informations auprès des investisseurs, élus et clients."
+            text="Evaluez les intérêts extra-financiers à implanter votre activité sur une friche et valorisez les informations auprès des investisseurs, élus et clients"
             imgSrc="/img/pictograms/urban-planning-professions/industry.svg"
           />
         </div>

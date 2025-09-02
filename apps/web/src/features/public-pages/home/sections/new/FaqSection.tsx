@@ -183,6 +183,22 @@ export default function FaqSection() {
             </Accordion>
           ))}
         </div>
+        <div className="flex mt-6 gap-2 items-center">
+          <p className="my-0 text-sm font-medium">D'autres questions ? </p>
+          <Button
+            data-tally-open="mOVXLY"
+            data-tally-width="400"
+            data-tally-emoji-text="👋"
+            data-tally-emoji-animation="wave"
+            data-tally-auto-close="0"
+            data-url={window.location.href}
+            size="small"
+            priority="tertiary"
+            aria-label="Besoin d'aide ?"
+          >
+            Contactez l'équipe Bénéfriches
+          </Button>
+        </div>
       </div>
     </section>
   );

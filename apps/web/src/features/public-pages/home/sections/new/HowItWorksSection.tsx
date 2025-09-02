@@ -56,7 +56,7 @@ export default function HowItWorksSection() {
           ]}
         />
         {userSituation === "has-site-and-project" ? (
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             <Step emoji="📍" title="Je décris mon site">
               Type de site, sols, pollution, gestion du site... avec un maximum de données
               pré-remplies par l'outil.
@@ -64,10 +64,6 @@ export default function HowItWorksSection() {
             <Step emoji="🏗️" title="Je décris mon projet">
               Type de projet, dépenses et recettes... avec là aussi un maximum de données
               pré-remplies.
-            </Step>
-            <Step emoji="🗂️" title="L'outil croise vos données avec les siennes">
-              Instructions du gouvernement, enquêtes et statistiques, rapports institutionnels
-              scientifiques...
             </Step>
             <Step emoji="📊" title="L'outil calcule les impacts du projet">
               Impact sur l'environnement, l'emploi, le cadre de vie des riverains, les finances
@@ -85,7 +81,7 @@ export default function HowItWorksSection() {
               par l'outil.
             </Step>
             <Step emoji="🔍" title="L'outil analyse ma friche">
-              Et me propose des projets d'aménagement les + adaptés, classés par pertinence.
+              Et me propose les projets d'aménagement les plus adaptés, classés par pertinence.
             </Step>
             <Step emoji="📊" title="L'outil calcule les impacts d'un projet sur ma friche">
               Pour certains projets, l'outil peut calculer les impacts sur l'environnement,

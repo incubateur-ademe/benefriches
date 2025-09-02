@@ -106,7 +106,7 @@ export default function TestimoniesSection() {
 
   const scrollToIndex = (index: number) => {
     if (scrollContainerRef.current) {
-      const cardWidth = 600 + 24; // card width + gap
+      const cardWidth = 660 + 24 + 24; // card width + gap + container horizontal padding
       scrollContainerRef.current.scrollTo({
         left: index * cardWidth,
         behavior: "smooth",
@@ -129,57 +129,55 @@ export default function TestimoniesSection() {
 
   return (
     <section className="bg-[#64C7ED] py-20">
-      <div className="fr-container">
-        <div className="flex items-center justify-between mb-[60px]">
-          <SectionTitle className="m-0">Ils sont convaincus par Bénéfriches</SectionTitle>
-          <div>
-            <Button
-              aria-label="Témoignage précédent"
-              priority="secondary"
-              className="mr-4 px-2"
-              onClick={goToPrevious}
-            >
-              <span className={fr.cx("fr-icon-arrow-left-s-line")} aria-hidden="true"></span>
-            </Button>
-            <Button
-              priority="secondary"
-              aria-label="Témoignage suivant"
-              className="p-2"
-              onClick={goToNext}
-            >
-              <span className={fr.cx("fr-icon-arrow-right-s-line")} aria-hidden="true"></span>
-            </Button>
-          </div>
+      <div className="fr-container flex items-center justify-between mb-[60px]">
+        <SectionTitle className="m-0">Ils sont convaincus par Bénéfriches</SectionTitle>
+        <div>
+          <Button
+            aria-label="Témoignage précédent"
+            priority="secondary"
+            className="mr-4 px-2"
+            onClick={goToPrevious}
+          >
+            <span className={fr.cx("fr-icon-arrow-left-s-line")} aria-hidden="true"></span>
+          </Button>
+          <Button
+            priority="secondary"
+            aria-label="Témoignage suivant"
+            className="p-2"
+            onClick={goToNext}
+          >
+            <span className={fr.cx("fr-icon-arrow-right-s-line")} aria-hidden="true"></span>
+          </Button>
         </div>
+      </div>
 
-        <div
-          ref={scrollContainerRef}
-          className="flex gap-6 overflow-x-auto scrollbar-hide scroll-smooth"
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-        >
-          {testimonies.map((testimony, index) => (
-            <TestimonyCard
-              key={testimony.author}
-              testimony={testimony}
-              className={index === 0 ? "ml-0" : ""}
-            />
-          ))}
-        </div>
+      <div
+        ref={scrollContainerRef}
+        className="flex px-6 gap-6 overflow-x-auto scrollbar-hide scroll-smooth"
+        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+      >
+        {testimonies.map((testimony, index) => (
+          <TestimonyCard
+            key={testimony.author}
+            testimony={testimony}
+            className={index === 0 ? "ml-0" : ""}
+          />
+        ))}
+      </div>
 
-        <div className="flex mt-[60px] gap-2">
-          {testimonies.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => {
-                scrollToIndex(index);
-              }}
-              className={`w-3 h-3 rounded-full transition-colors ${
-                index === currentIndex ? "bg-black" : "bg-[#00000040] hover:bg-gray-400"
-              }`}
-              aria-label={`Aller au témoignage ${index + 1}`}
-            />
-          ))}
-        </div>
+      <div className="flex mt-[60px] gap-2 fr-container">
+        {testimonies.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => {
+              scrollToIndex(index);
+            }}
+            className={`w-3 h-3 rounded-full transition-colors ${
+              index === currentIndex ? "bg-black" : "bg-[#00000040] hover:bg-gray-400"
+            }`}
+            aria-label={`Aller au témoignage ${index + 1}`}
+          />
+        ))}
       </div>
     </section>
   );

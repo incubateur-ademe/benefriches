@@ -3,8 +3,8 @@ import SectionTitle from "./SectionTitle";
 export default function PreserveSoilsSection() {
   return (
     <section className="bg-white dark:bg-grey-dark fr-py-10w">
-      <div className="fr-container grid md:grid-cols-2">
-        <div>
+      <div className="fr-container md:grid md:grid-cols-12 md:gap-14 gap-8">
+        <div className="md:col-span-7">
           <SectionTitle>Bénéfriches aide les collectivités à préserver les sols</SectionTitle>
           <p>
             La reconquête des friches est une opportunité pour atteindre les objectifs de{" "}
@@ -33,7 +33,7 @@ export default function PreserveSoilsSection() {
             <strong>en prennent conscience et les utilisent dans la prise de décision</strong>.
           </p>
         </div>
-        <div className="my-auto md:pl-20">
+        <div className="md:col-span-5 my-auto">
           <img
             src="/img/project-illustration.svg"
             className="fr-responsive-img"
