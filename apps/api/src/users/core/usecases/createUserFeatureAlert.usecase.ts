@@ -14,7 +14,7 @@ export type UserFeatureAlert = z.infer<typeof createFeatureAlertSchema>;
 
 const baseFeatureAlertSchema = z.object({
   id: z.uuid(),
-  userId: z.uuid(),
+  userId: z.uuid().optional(),
   email: z.email(),
   createdAt: z.date(),
 });
@@ -39,6 +39,9 @@ const createFeatureAlertSchema = z.discriminatedUnion("featureType", [
   baseFeatureAlertSchema.extend({
     featureType: z.literal("duplicate_project"),
   }),
+  baseFeatureAlertSchema.extend({
+    featureType: z.literal("mutafriches_availability"),
+  }),
 ]);
 
 export const createFeatureAlertProps = baseFeatureAlertSchema.omit({ createdAt: true }).extend({
@@ -49,6 +52,9 @@ export const createFeatureAlertProps = baseFeatureAlertSchema.omit({ createdAt: 
     }),
     z.object({
       type: z.literal("duplicate_project"),
+    }),
+    z.object({
+      type: z.literal("mutafriches_availability"),
     }),
     z.object({
       type: z.literal("compare_impacts"),
@@ -79,14 +85,14 @@ const convertArrayOptionsToObject = (feature: Request["feature"]) => {
         statu_quo_scenario:
           feature.options?.some((option) => option === "statu_quo_scenario") ?? false,
       };
-    case "duplicate_project":
-      return undefined;
     case "export_impacts":
       return {
         pdf: feature.options?.some((option) => option === "pdf") ?? false,
         excel: feature.options?.some((option) => option === "excel") ?? false,
         sharing_link: feature.options?.some((option) => option === "sharing_link") ?? false,
       };
+    default:
+      return undefined;
   }
 };
 

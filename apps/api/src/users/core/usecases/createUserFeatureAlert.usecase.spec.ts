@@ -125,4 +125,27 @@ describe("CreateUserFeatureAlert Use Case", () => {
       },
     ]);
   });
+
+  it("creates a feature alert for 'mutafriches_availability' without user id", async () => {
+    const usecase = new CreateUserFeatureAlertUseCase(repository, dateProvider);
+    await usecase.execute({
+      id: "2096a04d-4876-4e1e-b071-d5355fd0ee4c",
+      email: "user@ademe.fr",
+      feature: {
+        type: "mutafriches_availability",
+      },
+    });
+
+    const savedAlerts = repository._getUsersFeatureAlerts();
+
+    expect(savedAlerts).toEqual<UserFeatureAlert[]>([
+      {
+        id: "2096a04d-4876-4e1e-b071-d5355fd0ee4c",
+        userId: undefined,
+        email: "user@ademe.fr",
+        createdAt: fakeNow,
+        featureType: "mutafriches_availability",
+      },
+    ]);
+  });
 });

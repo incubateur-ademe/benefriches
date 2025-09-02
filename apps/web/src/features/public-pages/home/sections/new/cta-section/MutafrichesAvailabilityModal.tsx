@@ -1,40 +1,34 @@
 import Alert from "@codegouvfr/react-dsfr/Alert";
 import Button from "@codegouvfr/react-dsfr/Button";
 import Input from "@codegouvfr/react-dsfr/Input";
-import { createModal } from "@codegouvfr/react-dsfr/Modal";
 import { useForm } from "react-hook-form";
 
+import FeatureAlertModalTitle from "@/features/projects/views/project-page/footer/FeatureAlertModalTitle";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
 
-import FeatureAlertModalTitle from "../footer/FeatureAlertModalTitle";
+import { mutafrichesAvailabilityModal } from "./mutafrichesModal";
 
 type Props = {
-  hasDuplicateProjectAlert: boolean;
   onSaveLoadingState: "idle" | "loading" | "error" | "success";
-  onSubmit: (formData: FormValues) => void;
+  onSubmit: (email: string) => void;
   userEmail?: string;
 };
-
-const duplicateImpactsFeatureAlertModal = createModal({
-  id: "duplicate-project-feature-alert-modal",
-  isOpenedByDefault: false,
-});
 
 type FormValues = {
   email: string;
 };
 
-function DuplicateProjectModal({ onSubmit, onSaveLoadingState, userEmail }: Props) {
+function MutafrichesAvailabilityModal({ onSubmit, onSaveLoadingState, userEmail }: Props) {
   const { handleSubmit, register, formState } = useForm<FormValues>({
     defaultValues: { email: userEmail },
   });
   const isSuccess = onSaveLoadingState === "success";
 
   return (
-    <duplicateImpactsFeatureAlertModal.Component
+    <mutafrichesAvailabilityModal.Component
       title={
         <FeatureAlertModalTitle
-          title="Dupliquer ce projet sur un autre site"
+          title="Analyser la compatibilité de ma friche"
           iconId="ri-file-copy-line"
         />
       }
@@ -43,7 +37,11 @@ function DuplicateProjectModal({ onSubmit, onSaveLoadingState, userEmail }: Prop
       {isSuccess ? (
         <>Votre demande a bien été prise en compte&nbsp;!</>
       ) : (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form
+          onSubmit={handleSubmit((formData) => {
+            onSubmit(formData.email);
+          })}
+        >
           <p>Recevez un mail lorsque cette fonctionnalité sera disponible :</p>
           <Input
             label={<RequiredLabel label="Votre adresse mail" />}
@@ -52,7 +50,7 @@ function DuplicateProjectModal({ onSubmit, onSaveLoadingState, userEmail }: Prop
               formState.errors.email ? formState.errors.email.message : undefined
             }
             nativeInputProps={{
-              placeholder: "utilisateur@ademe.fr",
+              placeholder: "exemple@mail.fr",
               ...register("email", {
                 required: "Vous devez renseigner votre e-mail pour continuer.",
                 pattern: {
@@ -81,8 +79,8 @@ function DuplicateProjectModal({ onSubmit, onSaveLoadingState, userEmail }: Prop
           </div>
         </form>
       )}
-    </duplicateImpactsFeatureAlertModal.Component>
+    </mutafrichesAvailabilityModal.Component>
   );
 }
 
-export default DuplicateProjectModal;
+export default MutafrichesAvailabilityModal;

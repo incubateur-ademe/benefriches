@@ -14,9 +14,17 @@ export type ExportImpactsFeatureAlert = {
 
 type DuplicateProjectFeatureAlert = { type: "duplicate_project" };
 
+export type MutafrichesAvailabilityAlert = {
+  type: "mutafriches_availability";
+};
+
 export type UserFeatureAlert = {
   id: string;
-  userId: string;
+  userId: string | undefined;
   email: string;
-  feature: ExportImpactsFeatureAlert | CompareImpactsFeatureAlert | DuplicateProjectFeatureAlert;
+  feature:
+    | ExportImpactsFeatureAlert
+    | CompareImpactsFeatureAlert
+    | DuplicateProjectFeatureAlert
+    | MutafrichesAvailabilityAlert;
 };

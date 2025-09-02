@@ -4,10 +4,10 @@ import GetNotifiedSection from "./sections/new/GetNotifiedSection";
 import HeroSection from "./sections/new/HeroSection";
 import HowItWorksSection from "./sections/new/HowItWorksSection";
 import PreserveSoilsSection from "./sections/new/PreserveSoilsSection";
-import SituationSection from "./sections/new/SituationSection";
 import TestimoniesSection from "./sections/new/TestimoniesSection";
 import UrbanPlanningProfessionsSection from "./sections/new/UrbanPlanningProfessionsSection";
 import UserLogosSection from "./sections/new/UsersLogosSection";
+import SituationSection from "./sections/new/cta-section/SituationSection";
 
 function HomePage() {
   return (

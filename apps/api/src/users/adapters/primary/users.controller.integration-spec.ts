@@ -65,7 +65,7 @@ describe("Users controller", () => {
   });
 
   describe("POST /users/feature-alert", () => {
-    it.each(["id", "userId", "email", "feature"] as ("id" | "userId" | "email" | "feature")[])(
+    it.each(["id", "email", "feature"] as const)(
       "can't create a feature alert without mandatory field %s",
       async (mandatoryField) => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -93,6 +93,7 @@ describe("Users controller", () => {
     it.each([
       { type: "export_impacts", options: ["pdf", "excel", "sharing_link"] },
       { type: "duplicate_project" },
+      { type: "mutafriches_availability" },
       { type: "compare_impacts", options: ["same_project_on_prairie"] },
     ])("get a 201 response and user is created $type", async ({ type, options }) => {
       await sqlConnection("users").insert({
@@ -124,7 +125,9 @@ describe("Users controller", () => {
       expect(result[0]?.id).toEqual("2096a04d-4876-4e1e-b071-d5355fd0ee4c");
       expect(result[0]?.email).toEqual("user@ademe.fr");
       expect(result[0]?.feature_type).toEqual(type);
-      expect(result[0]?.feature_options === null).toBe(type === "duplicate_project");
+      expect(result[0]?.feature_options === null).toBe(
+        type === "duplicate_project" || type === "mutafriches_availability",
+      );
     });
   });
 });

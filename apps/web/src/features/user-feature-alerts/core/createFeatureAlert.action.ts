@@ -4,14 +4,14 @@ import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
 
 import { UserFeatureAlert } from "./userFeatureAlert";
 
-export const createFeatureAlert = createAppAsyncThunk<
+export const featureAlertSubscribed = createAppAsyncThunk<
   UserFeatureAlert,
   Omit<UserFeatureAlert, "id" | "userId">
->("user/createFeatureAlert", async (createUserProps, { extra, getState }) => {
+>("user/featureAlertSubscribed", async (featureAlertProps, { extra, getState }) => {
   const featureAlert = {
-    ...createUserProps,
+    ...featureAlertProps,
     id: uuid(),
-    userId: getState().currentUser.currentUser?.id ?? "",
+    userId: getState().currentUser.currentUser?.id ?? undefined,
   };
 
   await extra.createUserFeatureAlertService.save(featureAlert);

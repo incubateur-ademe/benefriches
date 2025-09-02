@@ -14,7 +14,7 @@ export type SqlUser = {
 
 type SqlUserFeatureAlert = {
   id: string;
-  user_id: string;
+  user_id: string | null;
   email: string;
   feature_type: string;
   feature_options: Record<string, boolean> | null;

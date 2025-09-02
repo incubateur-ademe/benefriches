@@ -1,6 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { createFeatureAlert } from "./createFeatureAlert.action";
+import { RootState } from "@/shared/core/store-config/store";
+
+import { featureAlertSubscribed } from "./createFeatureAlert.action";
 import { loadFeatureAlerts } from "./loadFeatureAlerts.action";
 import {
   CompareImpactsFeatureAlert,
@@ -21,10 +23,14 @@ type State = {
     hasAlert: boolean;
     options?: ExportImpactsFeatureAlert["options"];
   };
+  mutafrichesAvailabilityAlert?: {
+    hasAlert: boolean;
+  };
   createUserFeatureAlertState: {
     compareImpacts: Status;
     duplicateProject: Status;
     exportImpacts: Status;
+    mutafrichesAvailability: Status;
   };
 };
 
@@ -33,6 +39,7 @@ const initialState: State = {
     compareImpacts: "idle",
     duplicateProject: "idle",
     exportImpacts: "idle",
+    mutafrichesAvailability: "idle",
   },
 };
 
@@ -41,7 +48,7 @@ const userFeatureAlertSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers(builder) {
-    builder.addCase(createFeatureAlert.pending, (state, action) => {
+    builder.addCase(featureAlertSubscribed.pending, (state, action) => {
       const type = action.meta.arg.feature.type;
       switch (type) {
         case "compare_impacts":
@@ -53,10 +60,13 @@ const userFeatureAlertSlice = createSlice({
         case "export_impacts":
           state.createUserFeatureAlertState.exportImpacts = "loading";
           break;
+        case "mutafriches_availability":
+          state.createUserFeatureAlertState.mutafrichesAvailability = "loading";
+          break;
       }
     });
     builder.addCase(
-      createFeatureAlert.fulfilled,
+      featureAlertSubscribed.fulfilled,
       (state, action: PayloadAction<UserFeatureAlert>) => {
         const { feature } = action.payload;
         switch (feature.type) {
@@ -75,10 +85,14 @@ const userFeatureAlertSlice = createSlice({
             state.exportImpactsAlert = { hasAlert: true, options: feature.options };
             state.createUserFeatureAlertState.exportImpacts = "success";
             break;
+          case "mutafriches_availability":
+            state.mutafrichesAvailabilityAlert = { hasAlert: true };
+            state.createUserFeatureAlertState.mutafrichesAvailability = "success";
+            break;
         }
       },
     );
-    builder.addCase(createFeatureAlert.rejected, (state, action) => {
+    builder.addCase(featureAlertSubscribed.rejected, (state, action) => {
       const type = action.meta.arg.feature.type;
       switch (type) {
         case "compare_impacts":
@@ -90,6 +104,9 @@ const userFeatureAlertSlice = createSlice({
         case "export_impacts":
           state.createUserFeatureAlertState.exportImpacts = "error";
           break;
+        case "mutafriches_availability":
+          state.createUserFeatureAlertState.mutafrichesAvailability = "error";
+          break;
       }
     });
 
@@ -99,9 +116,12 @@ const userFeatureAlertSlice = createSlice({
         state.exportImpactsAlert = action.payload.exportImpactsAlert;
         state.duplicateProjectAlert = action.payload.duplicateProjectAlert;
         state.compareImpactsAlert = action.payload.compareImpactsAlert;
+        state.mutafrichesAvailabilityAlert = action.payload.mutafrichesAvailabilityAlert;
       },
     );
   },
 });
+
+export const selectUserFeaturesAlerts = (state: RootState) => state.userFeatureAlert;
 
 export default userFeatureAlertSlice.reducer;
