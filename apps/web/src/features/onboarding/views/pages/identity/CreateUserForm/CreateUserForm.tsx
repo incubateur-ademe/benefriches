@@ -84,7 +84,8 @@ function CreateUserForm({
             }
             options={[
               {
-                label: "J'ai lu et j'accepte la politique de confidentialité de Bénéfriches",
+                label:
+                  "J'ai lu et j'accepte que l'ADEME collecte mes données afin de garantir la bonne utilisation des services offerts par la plateforme Bénéfriches et je reconnais avoir pris connaissance de sa politique de protection des données personnelles.",
                 nativeInputProps: {
                   value: "agreed",
                   ...register("personnalDataUseConsentment", {
