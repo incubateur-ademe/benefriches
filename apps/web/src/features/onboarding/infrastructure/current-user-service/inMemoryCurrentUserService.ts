@@ -15,4 +15,8 @@ export class InMemoryCurrentUserService implements CurrentUserGateway {
       structureName: "User company",
     } as AuthenticatedUser);
   }
+
+  async save(): Promise<void> {
+    return Promise.resolve();
+  }
 }

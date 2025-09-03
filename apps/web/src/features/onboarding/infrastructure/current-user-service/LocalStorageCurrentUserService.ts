@@ -1,0 +1,20 @@
+import { CurrentUserGateway } from "../../core/initCurrentUser.action";
+import { AuthenticatedUser, User } from "../../core/user";
+
+export const CURRENT_USER_STORAGE_KEY = "benefriches/current-user/v0";
+
+export class LocalStorageCurrentUserService implements CurrentUserGateway {
+  get(): Promise<AuthenticatedUser | undefined> {
+    const fromLocalStorage = localStorage.getItem(CURRENT_USER_STORAGE_KEY);
+
+    if (!fromLocalStorage) throw new Error("No user in local storage");
+
+    const user = JSON.parse(fromLocalStorage) as User;
+    return Promise.resolve(user);
+  }
+
+  save(user: User): Promise<void> {
+    localStorage.setItem(CURRENT_USER_STORAGE_KEY, JSON.stringify(user));
+    return Promise.resolve();
+  }
+}

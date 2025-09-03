@@ -40,11 +40,11 @@ function BenefrichesHeader({
                 linkProps: myProjectsLink,
                 text: "Mes projets",
               },
-              {
-                iconId: "fr-icon-logout-box-r-line",
-                linkProps: { href: "api/auth/logout" },
-                text: "Se déconnecter",
-              },
+              // {
+              //   iconId: "fr-icon-logout-box-r-line",
+              //   linkProps: { href: "api/auth/logout" },
+              //   text: "Se déconnecter",
+              // },
             ]
           : [
               {

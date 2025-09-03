@@ -17,6 +17,8 @@ export const createUser = createAppAsyncThunk<User, CreateUserProps>(
     const user = userSchema.parse({ ...createUserProps, id: uuid() });
 
     await extra.createUserService.save(user);
+    // todo: remove when real auth released production
+    await extra.currentUserService.save(user);
 
     await dispatch(initCurrentUser());
     return user;

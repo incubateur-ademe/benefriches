@@ -6,7 +6,7 @@ import { HttpSitesService } from "@/features/create-project/infrastructure/sites
 import { HttpCreateSiteApi } from "@/features/create-site/infrastructure/create-site-service/HttpCreateSiteApi";
 import { HttpAuthService } from "@/features/onboarding/infrastructure/auth-service/HttpAuthService";
 import { HttpCreateUserService } from "@/features/onboarding/infrastructure/create-user-service/HttpCreateUserService";
-import { HttpCurrentUserService } from "@/features/onboarding/infrastructure/current-user-service/HttpCurrentUserService";
+import { LocalStorageCurrentUserService } from "@/features/onboarding/infrastructure/current-user-service/LocalStorageCurrentUserService";
 import { HttpProjectFeaturesService } from "@/features/projects/infrastructure/project-features-service/HttpProjectFeaturesService";
 import { HttpReconversionProjectsListApi } from "@/features/projects/infrastructure/projects-list-service/HttpProjectsListApi";
 import { HttpQuickUrbanProjectImpactsService } from "@/features/projects/infrastructure/quick-urban-project-impacts-service/HttpQuickUrbanProjectImpactsService";
@@ -31,7 +31,7 @@ export const appDependencies: AppDependencies = {
   reconversionProjectImpacts: new HttpReconversionProjectImpactsApi(),
   photovoltaicPerformanceService: new ExpectedPhotovoltaicPerformanceApi(),
   municipalityDataService: new AdministrativeDivisionGeoApi(),
-  currentUserService: new HttpCurrentUserService(),
+  currentUserService: new LocalStorageCurrentUserService(),
   createUserService: new HttpCreateUserService(),
   createUserFeatureAlertService: new CreateFeatureAlertService(),
   siteFeaturesService: new HttpSiteFeaturesService(),

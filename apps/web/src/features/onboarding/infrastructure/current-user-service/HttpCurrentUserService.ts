@@ -10,4 +10,8 @@ export class HttpCurrentUserService implements CurrentUserGateway {
     const jsonResponse = (await response.json()) as AuthenticatedUser;
     return jsonResponse;
   }
+
+  async save(): Promise<void> {
+    return Promise.resolve();
+  }
 }
