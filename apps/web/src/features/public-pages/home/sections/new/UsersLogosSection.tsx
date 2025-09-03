@@ -17,7 +17,7 @@ export default function UserLogosSection() {
   const userLogoIndexes = useMemo(() => getRandomNumbers(7, LOGOS_COUNT), []);
 
   return (
-    <section className="pb-20 bg-white dark:bg-grey-dark">
+    <section className="pb-20 bg-white dark:bg-blue-dark">
       <div className="fr-container">
         <p className="font-bold text-sm uppercase">
           Plus de 700 collectivités et entreprises l'ont déjà testé

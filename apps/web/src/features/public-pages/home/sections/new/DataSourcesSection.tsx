@@ -1,11 +1,13 @@
 import { fr } from "@codegouvfr/react-dsfr";
 
+import classNames from "@/shared/views/clsx";
+
 import SectionTitle from "./SectionTitle";
 
 export default function DataSourcesSection() {
   return (
-    <section className={fr.cx("fr-container", "fr-py-10w")}>
-      <div className="md:flex md:gap-4">
+    <section className={classNames(fr.cx("fr-py-10w"), "bg-white dark:bg-blue-dark")}>
+      <div className="fr-container md:flex md:gap-4">
         <div className="md:pr-6 pt-8 md:pt-0">
           <SectionTitle>Des données de haute qualité</SectionTitle>
           <p className={fr.cx("fr-text--xl")}>

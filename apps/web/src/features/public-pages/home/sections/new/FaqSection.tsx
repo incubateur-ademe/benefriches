@@ -23,7 +23,7 @@ function Accordion({ label, children }: AccordionProps) {
         className={classNames(
           "py-2 px-4 mb-4",
           "rounded-sm border border-solid border-transparent",
-          "bg-impacts-main dark:bg-black",
+          "bg-impacts-main dark:bg-blue-dark",
           "cursor-pointer",
           "transition ease-in-out duration-500",
           "hover:border-grey-dark hover:dark:border-white",
@@ -173,7 +173,7 @@ const faqData: FaqItem[] = [
 
 export default function FaqSection() {
   return (
-    <section className="py-20 bg-grey-light dark:bg-grey-dark">
+    <section className="py-20 bg-grey-light dark:bg-blue-ultradark">
       <div className="fr-container mx-auto">
         <SectionTitle>Questions fréquentes</SectionTitle>
         <div className="space-y-6">
@@ -193,7 +193,7 @@ export default function FaqSection() {
             data-tally-auto-close="0"
             data-url={window.location.href}
             size="small"
-            priority="tertiary"
+            priority="tertiary no outline"
             aria-label="Besoin d'aide ?"
           >
             Contactez l'équipe Bénéfriches
