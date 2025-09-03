@@ -1,4 +1,3 @@
-import { fr } from "@codegouvfr/react-dsfr";
 import Button from "@codegouvfr/react-dsfr/Button";
 import ProConnectButton from "@codegouvfr/react-dsfr/ProConnectButton";
 
@@ -10,56 +9,60 @@ import { authLinkModal } from "./createAuthLinkModal";
 export default function AccessBenefrichesPage() {
   const currentRoute = useRoute();
 
-  let loginUrl = "/api/auth/login/pro-connect";
-  if (currentRoute.name === "accessBenefriches" && currentRoute.params.redirectTo) {
-    loginUrl += `?redirectTo=${currentRoute.params.redirectTo}`;
-  } else {
-    loginUrl += `?redirectTo=${routes.myProjects().href}`;
-  }
+  const postLoginRedirectTo =
+    currentRoute.name === "accessBenefriches" && currentRoute.params.redirectTo
+      ? currentRoute.params.redirectTo
+      : routes.myProjects().href;
+  const loginUrl = `/api/auth/login/pro-connect?redirectTo=${postLoginRedirectTo}`;
 
   return (
-    <section className={fr.cx("fr-container", "fr-py-4w")}>
-      <h1>Accéder à Bénéfriches</h1>
+    <section className="relative h-full">
+      {/* Background layers - full width */}
+      <div className="hidden absolute inset-0 md:grid md:grid-cols-2">
+        <div className="bg-blue-light"></div>
+        <div className="bg-blue-medium"></div>
+      </div>
 
-      <div className="flex flex-col lg:flex-row gap-8">
-        <div className="flex-1">
-          <div className="rounded-2xl bg-grey-light dark:bg-grey-dark px-12 py-9 h-full flex flex-col justify-center">
-            <h2 className="text-xl">Première fois sur Bénéfriches ?</h2>
-            <div className="mb-8">
-              Découvrez Bénéfriches en quelques minutes et évaluez votre premier projet.
-            </div>
-            <Button linkProps={{ ...routes.onBoardingIdentity().link }}>Commencer</Button>
-          </div>
-        </div>
-
-        {/* Separator */}
-        <div className="flex items-center justify-center lg:flex-col">
-          <span className="font-medium px-4 py-2 rounded-full border border-dsfr-border-default-grey">
-            ou
-          </span>
-        </div>
-
-        {/* Login section */}
-        <div className="flex-1">
-          <div className="rounded-2xl bg-grey-light dark:bg-grey-dark px-12 py-9 h-full flex flex-col justify-center">
-            <h2 className="text-xl font-bold mb-3">Vous avez déjà un compte ?</h2>
-            <p className="text-sm">
-              Connectez-vous avec votre compte Pro Connect (anciennement Agent Connect).
-            </p>
+      <div className="relative h-full lg:min-h-[680px] fr-container grow md:grid md:grid-cols-16">
+        <div className="col-span-10 flex flex-col gap-8 justify-center px-8 lg:pr-20 lg:pl-0 py-20 bg-blue-light">
+          <h1 className="leading-14 text-5xl mb-0">
+            Connectez-vous à Bénéfriches pour évaluer les impacts de votre projet.
+          </h1>
+          <div className="flex gap-4 items-start">
             <ProConnectButton url={loginUrl} />
-            <span>
-              <a
-                href="#"
-                role="button"
-                onClick={() => {
-                  authLinkModal.open();
-                }}
-                className="text-sm"
-              >
-                Vous n'avez pas de compte Pro Connect ? Recevez un lien de connexion par mail.
-              </a>
-            </span>
+            <Button
+              className="mt-2"
+              priority="secondary"
+              onClick={() => {
+                authLinkModal.open();
+              }}
+            >
+              Continuer avec mon adresse e-mail
+            </Button>
           </div>
+          <div className="flex gap-2 items-start">
+            <p className="text-sm font-medium m-0">Nouveau sur Bénéfriches ?</p>
+            <a className="text-sm font-medium" {...routes.onBoardingIdentity().link}>
+              Créer un compte
+            </a>
+          </div>
+        </div>
+
+        <div className="col-span-6 flex gap-8 flex-col justify-center items-start px-8 lg:pl-20 pr-6 lg:pr-0 py-10 bg-blue-medium">
+          <img src="/img/logos/logo-proconnect.svg" height="90" alt="" />
+          <h2 className="text-[28px] leading-9 mb-0">Pourquoi se connecter avec ProConnect ?</h2>
+          <ul className="text-sm font-medium space-y-3 list-none p-0 m-0">
+            <li className="relative pl-6 before:content-['✔️'] before:absolute before:left-0">
+              La fusion de MonComptePro et AgentConnect
+            </li>
+            <li className="relative pl-6 before:content-['✔️'] before:absolute before:left-0">
+              Un identifiant créé à partir de votre adresse mail professionnelle (entreprise ou
+              collectivité)
+            </li>
+            <li className="relative pl-6 before:content-['✔️'] before:absolute before:left-0">
+              + de 120 services numériques accessibles en seulement un clic
+            </li>
+          </ul>
         </div>
       </div>
       <AuthLinkModal />

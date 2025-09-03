@@ -8,18 +8,12 @@ import HeaderFooterLayout from "@/shared/views/layout/HeaderFooterLayout/HeaderF
 import SidebarContainerLayout from "@/shared/views/layout/SidebarLayout/SidebarContainerLayout";
 import { routes, useRoute } from "@/shared/views/router";
 
-import AccessBenefrichesPage from "./onboarding/views/pages/access-benefriches";
-import AuthWithToken from "./onboarding/views/pages/auth-with-token/AuthWithToken";
-
 /* Lazy-loaded pages */
 const CreateUserPage = lazy(() => import("@/features/onboarding/views"));
 const CreateProjectPage = lazy(
   () => import("@/features/create-project/views/ProjectCreationWizard"),
 );
 const CreateSiteFoncierPage = lazy(() => import("@/features/create-site/views/SiteCreationWizard"));
-const OnBoardingIdentityPage = lazy(
-  () => import("@/features/onboarding/views/pages/identity/OnBoardingIdentityPage"),
-);
 const OnBoardingIntroductionPages = lazy(
   () => import("@/features/onboarding/views/OnBoardingIntroductionPages"),
 );
@@ -78,12 +72,6 @@ function FeaturesApp() {
       <Suspense fallback={<LoadingSpinner />}>
         {(() => {
           switch (route.name) {
-            case routes.accessBenefriches.name:
-              return <AccessBenefrichesPage />;
-            case routes.authWithToken.name:
-              return <AuthWithToken />;
-            case routes.onBoardingIdentity.name:
-              return <OnBoardingIdentityPage />;
             // protected pages
             case routes.createUser.name:
               return (

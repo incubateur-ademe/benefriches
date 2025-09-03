@@ -5,6 +5,9 @@ import HeaderFooterLayout from "@/shared/views/layout/HeaderFooterLayout/HeaderF
 
 import NotFoundScreen from "../../shared/views/components/NotFound/NotFound";
 import { routes, useRoute } from "../../shared/views/router";
+import AccessBenefrichesPage from "../onboarding/views/pages/access-benefriches";
+import AuthWithToken from "../onboarding/views/pages/auth-with-token/AuthWithToken";
+import OnBoardingIdentityPage from "../onboarding/views/pages/identity/OnBoardingIdentityPage";
 
 /* Lazy-loaded pages */
 const AccessibilitePage = lazy(
@@ -42,6 +45,12 @@ function PublicApp() {
               return <AccessibilitePage />;
             case routes.politiqueConfidentialite.name:
               return <PolitiqueConfidentialitePage />;
+            case routes.accessBenefriches.name:
+              return <AccessBenefrichesPage />;
+            case routes.authWithToken.name:
+              return <AuthWithToken />;
+            case routes.onBoardingIdentity.name:
+              return <OnBoardingIdentityPage />;
             // 404
             default:
               return <NotFoundScreen />;

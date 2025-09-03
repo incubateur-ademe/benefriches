@@ -20,6 +20,9 @@ const groups = {
     routes.mentionsLegales,
     routes.accessibilite,
     routes.politiqueConfidentialite,
+    routes.accessBenefriches,
+    routes.authWithToken,
+    routes.onBoardingIdentity,
   ]),
 };
 
