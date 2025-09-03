@@ -45,7 +45,7 @@ export default function CallToActionSection() {
               Calculez les impacts d'un projet d’aménagement urbain (logements, quartier mixte) ou
               photovoltaïque sur une friche ou sur un autre site grâce à Bénéfriches&nbsp;!
             </p>
-            <Button priority="primary" linkProps={routes.onBoardingIntroductionWhy().link}>
+            <Button priority="primary" linkProps={routes.onBoardingIdentity().link}>
               Accéder à Bénéfriches
             </Button>
           </div>

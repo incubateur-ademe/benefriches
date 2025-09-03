@@ -49,7 +49,7 @@ function BenefrichesHeader({
           : [
               {
                 iconId: "fr-icon-logout-box-r-line",
-                linkProps: routes.accessBenefriches().link,
+                linkProps: routes.onBoardingIdentity().link,
                 text: "Accéder à Bénéfriches",
               },
             ]
