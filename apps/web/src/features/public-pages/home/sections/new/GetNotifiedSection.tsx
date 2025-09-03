@@ -2,7 +2,7 @@ import Button from "@codegouvfr/react-dsfr/Button";
 
 export default function GetNotifiedSection() {
   return (
-    <section className="bg-[#64C7ED] py-20">
+    <section className="bg-blue-light py-20">
       <div className="fr-container">
         <div className="flex flex-col md:flex-row gap-6 items-center md:justify-between">
           <img src="/img/pictograms/newsletter.svg" alt="" className="md:mr-16" />

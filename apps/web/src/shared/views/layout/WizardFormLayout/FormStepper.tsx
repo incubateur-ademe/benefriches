@@ -58,7 +58,7 @@ const Step = ({ title, index, currentStepIndex, isDone }: StepProps) => {
                 "min-w-6",
                 "h-6",
                 "text-center",
-                isCurrent ? "bg-blue-main" : "bg-grey-main dark:bg-grey-dark",
+                isCurrent ? "bg-blue-medium" : "bg-grey-main dark:bg-grey-dark",
               ],
         )}
         aria-hidden="true"

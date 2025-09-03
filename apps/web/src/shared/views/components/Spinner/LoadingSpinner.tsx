@@ -14,9 +14,9 @@ const LoadingSpinner = ({ loadingText = "Chargement", classes }: Props) => {
         className="flex justify-center items-center h-16"
       >
         <div className="relative inline-flex">
-          <div className="w-8 h-8 bg-blue-main rounded-full"></div>
-          <div className="w-8 h-8 bg-blue-main rounded-full absolute top-0 left-0 animate-ping"></div>
-          <div className="w-8 h-8 bg-blue-main rounded-full absolute top-0 left-0 animate-pulse"></div>
+          <div className="w-8 h-8 bg-blue-medium rounded-full"></div>
+          <div className="w-8 h-8 bg-blue-medium rounded-full absolute top-0 left-0 animate-ping"></div>
+          <div className="w-8 h-8 bg-blue-medium rounded-full absolute top-0 left-0 animate-pulse"></div>
         </div>
       </div>
       <span className={classNames("font-bold", "uppercase", classes?.text)}>{loadingText}</span>

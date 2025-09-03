@@ -128,7 +128,7 @@ export default function TestimoniesSection() {
   };
 
   return (
-    <section className="bg-[#64C7ED] py-20">
+    <section className="bg-blue-light py-20">
       <div className="fr-container flex items-center justify-between mb-[60px]">
         <SectionTitle className="m-0">Ils sont convaincus par Bénéfriches</SectionTitle>
         <div>
