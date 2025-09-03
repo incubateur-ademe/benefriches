@@ -19,12 +19,12 @@ export default function AccessBenefrichesPage() {
     <section className="relative h-full">
       {/* Background layers - full width */}
       <div className="hidden absolute inset-0 md:grid md:grid-cols-2">
-        <div className="bg-blue-light"></div>
-        <div className="bg-blue-medium"></div>
+        <div className="bg-blue-light dark:bg-grey-dark"></div>
+        <div className="bg-blue-medium dark:bg-blue-ultradark"></div>
       </div>
 
       <div className="relative h-full lg:min-h-[680px] fr-container grow md:grid md:grid-cols-16">
-        <div className="col-span-10 flex flex-col gap-8 justify-center px-8 lg:pr-20 lg:pl-0 py-20 bg-blue-light">
+        <div className="col-span-10 flex flex-col gap-8 justify-center px-8 lg:pr-20 lg:pl-0 py-20 bg-blue-light dark:bg-grey-dark">
           <h1 className="leading-14 text-5xl mb-0">
             Connectez-vous à Bénéfriches pour évaluer les impacts de votre projet.
           </h1>
@@ -48,7 +48,7 @@ export default function AccessBenefrichesPage() {
           </div>
         </div>
 
-        <div className="col-span-6 flex gap-8 flex-col justify-center items-start px-8 lg:pl-20 pr-6 lg:pr-0 py-10 bg-blue-medium">
+        <div className="col-span-6 flex gap-8 flex-col justify-center items-start px-8 lg:pl-20 pr-6 lg:pr-0 py-10 bg-blue-medium dark:bg-blue-ultradark">
           <img src="/img/logos/logo-proconnect.svg" height="90" alt="" />
           <h2 className="text-[28px] leading-9 mb-0">Pourquoi se connecter avec ProConnect ?</h2>
           <ul className="text-sm font-medium space-y-3 list-none p-0 m-0">
