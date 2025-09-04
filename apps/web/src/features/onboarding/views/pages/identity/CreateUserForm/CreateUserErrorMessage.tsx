@@ -1,7 +1,7 @@
 import Alert from "@codegouvfr/react-dsfr/Alert";
-import ProConnectButton from "@codegouvfr/react-dsfr/ProConnectButton";
 
-import { authLinkModal } from "../../access-benefriches/createAuthLinkModal";
+import { BENEFRICHES_ENV } from "@/shared/views/envVars";
+import { routes } from "@/shared/views/router";
 
 type Props = {
   errorKind: string;
@@ -16,21 +16,17 @@ export default function CreateUserErrorMessage({ errorKind }: Props) {
         description={
           <div>
             <p className="mb-4">
-              L'adresse e-mail fournie est déjà utilisée. Veuillez vous connecter avec Pro Connect.
+              L'adresse e-mail fournie est déjà utilisée.{" "}
+              {BENEFRICHES_ENV.authEnabled && (
+                <span>
+                  Veuillez{" "}
+                  <a className="text-sm font-medium" {...routes.accessBenefriches().link}>
+                    vous identifier via Pro Connect ou votre email
+                  </a>
+                  .
+                </span>
+              )}
             </p>
-            <ProConnectButton url="/api/auth/login/pro-connect" />
-            <span>
-              <a
-                href="#"
-                role="button"
-                onClick={() => {
-                  authLinkModal.open();
-                }}
-                className="text-sm"
-              >
-                Vous n'avez pas de compte Pro Connect ? Recevez un lien de connexion par mail.
-              </a>
-            </span>
           </div>
         }
       />
