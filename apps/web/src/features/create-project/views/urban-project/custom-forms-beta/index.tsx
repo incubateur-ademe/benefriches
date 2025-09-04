@@ -1,6 +1,6 @@
 import { Route } from "type-route";
 
-import { selectCurrentStep } from "@/features/create-project/core/urban-project-event-sourcing/urbanProject.selectors";
+import { selectCurrentStep } from "@/features/create-project/core/urban-project-beta/urbanProject.selectors";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { routes } from "@/shared/views/router";
 

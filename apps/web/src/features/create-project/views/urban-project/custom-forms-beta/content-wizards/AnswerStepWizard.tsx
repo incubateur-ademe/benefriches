@@ -15,17 +15,17 @@ import {
 import {
   getUrbanProjectAvailableStakeholders,
   getUrbanProjectAvailableLocalAuthoritiesStakeholders,
-} from "@/features/create-project/core/urban-project-event-sourcing/stakeholders.selectors";
+} from "@/features/create-project/core/urban-project-beta/stakeholders.selectors";
 import {
   completeStep,
   loadStep,
   navigateToPrevious,
-} from "@/features/create-project/core/urban-project-event-sourcing/urbanProject.actions";
-import { selectStepAnswers } from "@/features/create-project/core/urban-project-event-sourcing/urbanProject.selectors";
+} from "@/features/create-project/core/urban-project-beta/urbanProject.actions";
+import { selectStepAnswers } from "@/features/create-project/core/urban-project-beta/urbanProject.selectors";
 import {
   AnswersByStep,
   AnswerStepId,
-} from "@/features/create-project/core/urban-project-event-sourcing/urbanProjectSteps";
+} from "@/features/create-project/core/urban-project-beta/urbanProjectSteps";
 import { getSurfaceAreaDistributionWithUnit } from "@/features/create-project/core/urban-project/selectors/urbanProject.selectors";
 import { computePercentage } from "@/shared/core/percentage/percentage";
 import {
@@ -1044,7 +1044,7 @@ export default function AnswerStepWizard({ currentStep }: Props) {
   const dispatch = useAppDispatch();
 
   const isStepLoading = useSelector(
-    (state: RootState) => state.projectCreation.urbanProjectEventSourcing.isStepLoading,
+    (state: RootState) => state.projectCreation.urbanProjectBeta.isStepLoading,
   );
 
   useEffect(() => {

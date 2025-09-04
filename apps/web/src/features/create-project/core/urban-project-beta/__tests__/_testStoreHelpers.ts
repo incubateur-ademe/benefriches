@@ -4,21 +4,21 @@ import { getTestAppDependencies } from "@/test/testAppDependencies";
 import { getInitialState, ProjectCreationState } from "../../createProject.reducer";
 import { UrbanProjectCustomCreationStep } from "../../urban-project/creationSteps";
 import { initialState as urbanProjectInitialState } from "../../urban-project/urbanProject.reducer";
-import { initialState as urbanProjectEventSourcingInitialState } from "../urbanProject.reducer";
+import { initialState as urbanProjectBetaInitialState } from "../urbanProject.reducer";
 import { mockSiteData } from "./_siteData.mock";
 
 const createTestState = (
   options: {
     siteData?: ProjectCreationState["siteData"];
-    steps?: ProjectCreationState["urbanProjectEventSourcing"]["steps"];
+    steps?: ProjectCreationState["urbanProjectBeta"]["steps"];
     currentStep?: UrbanProjectCustomCreationStep;
   } = {},
 ): ProjectCreationState => ({
   ...getInitialState(),
-  urbanProjectEventSourcing: {
-    ...urbanProjectEventSourcingInitialState,
+  urbanProjectBeta: {
+    ...urbanProjectBetaInitialState,
     steps: options.steps || {},
-    currentStep: options.currentStep || urbanProjectEventSourcingInitialState.currentStep,
+    currentStep: options.currentStep || urbanProjectBetaInitialState.currentStep,
   },
   siteData: options.siteData || mockSiteData,
   urbanProject: urbanProjectInitialState,
@@ -27,7 +27,7 @@ const createTestState = (
 export const createTestStore = (
   options: {
     siteData?: ProjectCreationState["siteData"];
-    steps?: ProjectCreationState["urbanProjectEventSourcing"]["steps"];
+    steps?: ProjectCreationState["urbanProjectBeta"]["steps"];
     currentStep?: UrbanProjectCustomCreationStep;
   } = {},
 ) => {

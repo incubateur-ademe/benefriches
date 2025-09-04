@@ -54,34 +54,34 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
       return;
     }
 
-    state.urbanProjectEventSourcing.isStepLoading = true;
+    state.urbanProjectBeta.isStepLoading = true;
 
     // Ne pas recalculer si des réponses existent déjà
-    if (state.urbanProjectEventSourcing.steps[stepId]?.defaultValues) {
-      state.urbanProjectEventSourcing.isStepLoading = false;
+    if (state.urbanProjectBeta.steps[stepId]?.defaultValues) {
+      state.urbanProjectBeta.isStepLoading = false;
       return;
     }
 
     const defaults = handler.getDefaultAnswers({
       siteData: state.siteData,
-      stepsState: state.urbanProjectEventSourcing.steps,
+      stepsState: state.urbanProjectBeta.steps,
     });
     if (defaults) {
       MutateStateHelper.setDefaultValues<typeof stepId>(state, stepId, defaults);
     }
 
-    state.urbanProjectEventSourcing.isStepLoading = false;
+    state.urbanProjectBeta.isStepLoading = false;
   });
 
   builder.addCase(completeStep, (state, action) => {
     const stepId = action.payload.stepId;
     const handler = stepHandlerRegistry[action.payload.stepId];
 
-    const previousAnswers = state.urbanProjectEventSourcing.steps[stepId]?.payload;
+    const previousAnswers = state.urbanProjectBeta.steps[stepId]?.payload;
 
     const newAnswers = handler.updateAnswersMiddleware
       ? handler.updateAnswersMiddleware(
-          { siteData: state.siteData, stepsState: state.urbanProjectEventSourcing.steps },
+          { siteData: state.siteData, stepsState: state.urbanProjectBeta.steps },
           action.payload.answers,
         )
       : action.payload.answers;
@@ -95,7 +95,7 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
       if (handler.getStepsToInvalidate) {
         handler
           .getStepsToInvalidate(
-            { siteData: state.siteData, stepsState: state.urbanProjectEventSourcing.steps },
+            { siteData: state.siteData, stepsState: state.urbanProjectBeta.steps },
             previousAnswers,
             newAnswers,
           )
@@ -107,7 +107,7 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
 
     if (handler.getShortcut) {
       const shortcut = handler.getShortcut(
-        { siteData: state.siteData, stepsState: state.urbanProjectEventSourcing.steps },
+        { siteData: state.siteData, stepsState: state.urbanProjectBeta.steps },
         newAnswers,
         hasChanged,
       );
@@ -131,7 +131,7 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
       state,
       handler.getNextStepId({
         siteData: state.siteData,
-        stepsState: state.urbanProjectEventSourcing.steps,
+        stepsState: state.urbanProjectBeta.steps,
       }),
     );
   });
@@ -149,7 +149,7 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
         state,
         handler.getPreviousStepId({
           siteData: state.siteData,
-          stepsState: state.urbanProjectEventSourcing.steps,
+          stepsState: state.urbanProjectBeta.steps,
         }),
       );
     }
@@ -159,12 +159,12 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
     const stepId = action.payload.stepId;
     const handler = stepHandlerRegistry[stepId];
 
-    if (!state.urbanProjectEventSourcing.steps[stepId]) {
-      state.urbanProjectEventSourcing.steps[stepId] = {
+    if (!state.urbanProjectBeta.steps[stepId]) {
+      state.urbanProjectBeta.steps[stepId] = {
         completed: true,
       };
     } else {
-      state.urbanProjectEventSourcing.steps[stepId].completed = true;
+      state.urbanProjectBeta.steps[stepId].completed = true;
     }
 
     if (handler.getNextStepId) {
@@ -172,7 +172,7 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
         state,
         handler.getNextStepId({
           siteData: state.siteData,
-          stepsState: state.urbanProjectEventSourcing.steps,
+          stepsState: state.urbanProjectBeta.steps,
         }),
       );
     }
@@ -182,14 +182,14 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
     MutateStateHelper.navigateToStep(state, action.payload.stepId);
   });
   builder.addCase(customUrbanProjectSaved.pending, (state) => {
-    state.urbanProjectEventSourcing.saveState = "loading";
+    state.urbanProjectBeta.saveState = "loading";
   });
   builder.addCase(customUrbanProjectSaved.fulfilled, (state) => {
-    state.urbanProjectEventSourcing.saveState = "success";
+    state.urbanProjectBeta.saveState = "success";
     MutateStateHelper.navigateToStep(state, "URBAN_PROJECT_CREATION_RESULT");
   });
   builder.addCase(customUrbanProjectSaved.rejected, (state) => {
-    state.urbanProjectEventSourcing.saveState = "error";
+    state.urbanProjectBeta.saveState = "error";
     MutateStateHelper.navigateToStep(state, "URBAN_PROJECT_CREATION_RESULT");
   });
 });
@@ -198,10 +198,10 @@ export default (state: ProjectCreationState, action: UnknownAction): ProjectCrea
   const s = urbanProjectReducer(state, action);
   return {
     ...s,
-    urbanProjectEventSourcing: {
-      ...s.urbanProjectEventSourcing,
+    urbanProjectBeta: {
+      ...s.urbanProjectBeta,
       soilsCarbonStorage: soilsCarbonStorageReducer(
-        state.urbanProjectEventSourcing.soilsCarbonStorage,
+        state.urbanProjectBeta.soilsCarbonStorage,
         action,
       ),
     },

@@ -35,7 +35,7 @@ const { RouteProvider, useRoute, routes } = createRouter({
       etape: param.query.optional.string,
       siteId: param.query.string,
       beta: param.query.optional.boolean.default(
-        BENEFRICHES_ENV.hasEventSourcingUrbanFormFeature ? true : false,
+        BENEFRICHES_ENV.hasUrbanFormBetaFeature ? true : false,
       ),
     },
     () => "/creer-projet",

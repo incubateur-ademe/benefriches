@@ -2,7 +2,7 @@ import { createSelector } from "@reduxjs/toolkit";
 
 import { RootState } from "@/shared/core/store-config/store";
 
-const selectSelf = (state: RootState) => state.projectCreation.urbanProjectEventSourcing;
+const selectSelf = (state: RootState) => state.projectCreation.urbanProjectBeta;
 
 export const selectLoadingState = createSelector(
   [selectSelf],

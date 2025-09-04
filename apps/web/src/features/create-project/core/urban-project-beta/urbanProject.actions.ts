@@ -4,7 +4,7 @@ import { makeProjectCreationActionType } from "../actions/actionsUtils";
 import { UrbanProjectCustomCreationStep } from "../urban-project/creationSteps";
 import { AnswerStepId, AnswersByStep } from "./urbanProjectSteps";
 
-const URBAN_PROJECT_CREATION_PREFIX = "urbanProjectEventSourcing";
+const URBAN_PROJECT_CREATION_PREFIX = "urbanProjectBeta";
 
 export const makeUrbanProjectCreationActionType = (actionName: string) => {
   return makeProjectCreationActionType(`${URBAN_PROJECT_CREATION_PREFIX}/${actionName}`);

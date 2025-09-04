@@ -5,8 +5,7 @@ import { RootState } from "@/shared/core/store-config/store";
 import { ReadStateHelper } from "./urbanProject.helpers";
 import { isInformationalStep, AnswerStepId } from "./urbanProjectSteps";
 
-export const selectStepState = (state: RootState) =>
-  state.projectCreation.urbanProjectEventSourcing.steps;
+export const selectStepState = (state: RootState) => state.projectCreation.urbanProjectBeta.steps;
 
 export const selectProjectSoilDistribution = createSelector(selectStepState, (state) =>
   ReadStateHelper.getProjectSoilDistribution(state),
@@ -40,6 +39,6 @@ export const selectFormAnswers = createSelector([selectStepState], (steps) =>
 );
 
 export const selectCurrentStep = createSelector(
-  [(state: RootState) => state.projectCreation.urbanProjectEventSourcing],
+  [(state: RootState) => state.projectCreation.urbanProjectBeta],
   (state) => state.currentStep,
 );

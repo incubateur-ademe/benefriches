@@ -70,7 +70,7 @@ const MOCK_STATES = {
       spacesCategoriesToComplete: [],
       soilsCarbonStorage: { loadingState: "idle", current: undefined, projected: undefined },
     },
-    urbanProjectEventSourcing: {
+    urbanProjectBeta: {
       steps: {},
       saveState: "idle",
       currentStep: "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION",
