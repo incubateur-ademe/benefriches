@@ -16,8 +16,13 @@ import { HttpSiteFeaturesService } from "@/features/site-features/infra/site-fea
 import { CreateFeatureAlertService } from "@/features/user-feature-alerts/infrastructure/create-feature-alert-service/CreateFeatureAlertService";
 import { AdministrativeDivisionGeoApi } from "@/shared/infrastructure/administrative-division-service/administrativeDivisionGeoApi";
 import { SoilsCarbonStorageApi } from "@/shared/infrastructure/soils-carbon-storage-service/soilsCarbonStorageApi";
+import { BENEFRICHES_ENV } from "@/shared/views/envVars";
 
 import { AppDependencies } from "./store";
+
+const createUserService = BENEFRICHES_ENV.authEnabled
+  ? new HttpCreateUserService()
+  : new LocalStorageCurrentUserService();
 
 export const appDependencies: AppDependencies = {
   appSettingsService: new LocalStorageAppSettings(),
@@ -32,7 +37,7 @@ export const appDependencies: AppDependencies = {
   photovoltaicPerformanceService: new ExpectedPhotovoltaicPerformanceApi(),
   municipalityDataService: new AdministrativeDivisionGeoApi(),
   currentUserService: new LocalStorageCurrentUserService(),
-  createUserService: new HttpCreateUserService(),
+  createUserService: createUserService,
   createUserFeatureAlertService: new CreateFeatureAlertService(),
   siteFeaturesService: new HttpSiteFeaturesService(),
   projectFeaturesService: new HttpProjectFeaturesService(),

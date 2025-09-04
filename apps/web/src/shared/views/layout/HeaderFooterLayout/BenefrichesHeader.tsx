@@ -3,6 +3,7 @@ import { Link } from "type-route";
 
 import { routes } from "@/shared/views/router";
 
+import { BENEFRICHES_ENV } from "../../envVars";
 import { useAppSelector } from "../../hooks/store.hooks";
 
 function BenefrichesHeader({
@@ -13,6 +14,32 @@ function BenefrichesHeader({
   const isUserLoggedIn = useAppSelector(
     (state) => state.currentUser.currentUserState === "authenticated",
   );
+
+  const quickAccessItems: HeaderProps.QuickAccessItem[] = [];
+
+  if (isUserLoggedIn) {
+    quickAccessItems.push({
+      iconId: "fr-icon-briefcase-fill",
+      linkProps: myProjectsLink,
+      text: "Mes projets",
+    });
+
+    if (BENEFRICHES_ENV.authEnabled) {
+      quickAccessItems.push({
+        iconId: "fr-icon-logout-box-r-line",
+        linkProps: { href: "api/auth/logout" },
+        text: "Se déconnecter",
+      });
+    }
+  } else {
+    quickAccessItems.push({
+      iconId: "fr-icon-logout-box-r-line",
+      linkProps: BENEFRICHES_ENV.authEnabled
+        ? routes.accessBenefriches().link
+        : routes.onBoardingIdentity().link,
+      text: "Accéder à Bénéfriches",
+    });
+  }
 
   return (
     <Header
@@ -32,28 +59,7 @@ function BenefrichesHeader({
         imgUrl: "/img/logos/logo-benefriches-simple.svg",
         orientation: "horizontal",
       }}
-      quickAccessItems={
-        isUserLoggedIn
-          ? [
-              {
-                iconId: "fr-icon-briefcase-fill",
-                linkProps: myProjectsLink,
-                text: "Mes projets",
-              },
-              // {
-              //   iconId: "fr-icon-logout-box-r-line",
-              //   linkProps: { href: "api/auth/logout" },
-              //   text: "Se déconnecter",
-              // },
-            ]
-          : [
-              {
-                iconId: "fr-icon-logout-box-r-line",
-                linkProps: routes.onBoardingIdentity().link,
-                text: "Accéder à Bénéfriches",
-              },
-            ]
-      }
+      quickAccessItems={quickAccessItems}
       {...props}
     />
   );

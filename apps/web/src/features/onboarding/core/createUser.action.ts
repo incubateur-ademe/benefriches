@@ -1,6 +1,7 @@
 import { v4 as uuid } from "uuid";
 
 import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
+import { BENEFRICHES_ENV } from "@/shared/views/envVars";
 
 import { initCurrentUser } from "./initCurrentUser.action";
 import { User, userSchema } from "./user";
@@ -17,8 +18,9 @@ export const createUser = createAppAsyncThunk<User, CreateUserProps>(
     const user = userSchema.parse({ ...createUserProps, id: uuid() });
 
     await extra.createUserService.save(user);
+
     // todo: remove when real auth released production
-    await extra.currentUserService.save(user);
+    if (!BENEFRICHES_ENV.authEnabled) await extra.currentUserService.save(user);
 
     await dispatch(initCurrentUser());
     return user;
