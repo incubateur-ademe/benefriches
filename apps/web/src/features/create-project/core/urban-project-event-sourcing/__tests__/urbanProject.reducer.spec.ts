@@ -1,54 +1,53 @@
 import { describe, it, expect } from "vitest";
 
-import { FormEvent, SerializedAnswerSetEvent } from "../form-events/FormEvent.type";
+import { ProjectCreationState } from "../../createProject.reducer";
 import { completeStep } from "../urbanProject.actions";
-import { AnswersByStep, AnswerStepId } from "../urbanProjectSteps";
 import { mockSiteData } from "./_siteData.mock";
 import { createTestStore } from "./_testStoreHelpers";
 
-const createAnswerEvent = <T extends AnswerStepId>(
-  stepId: T,
-  payload: AnswersByStep[T],
-  timestamp: number = Date.now(),
-  source: "user" | "system" = "user",
-): SerializedAnswerSetEvent<T> => ({
-  stepId,
-  type: "ANSWER_SET",
-  payload,
-  timestamp,
-  source,
-});
-
 describe("urbanProject.reducer - completeStep action", () => {
-  describe("ANSWER_DELETED events generation", () => {
+  describe("Changes answers to step already completed", () => {
     describe("Space categories selection changes", () => {
       it("should delete dependent answers when removing LIVING_AND_ACTIVITY_SPACES category", () => {
-        const initialEvents: FormEvent[] = [
-          createAnswerEvent("URBAN_PROJECT_SPACES_CATEGORIES_SELECTION", {
-            spacesCategories: ["LIVING_AND_ACTIVITY_SPACES", "GREEN_SPACES"],
-          }),
-          createAnswerEvent("URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA", {
-            spacesCategoriesDistribution: {
-              LIVING_AND_ACTIVITY_SPACES: 5000,
-              GREEN_SPACES: 3000,
+        const initialSteps = {
+          URBAN_PROJECT_SPACES_CATEGORIES_SELECTION: {
+            completed: true,
+            payload: { spacesCategories: ["LIVING_AND_ACTIVITY_SPACES", "GREEN_SPACES"] },
+          },
+          URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA: {
+            completed: true,
+            payload: {
+              spacesCategoriesDistribution: {
+                LIVING_AND_ACTIVITY_SPACES: 5000,
+                GREEN_SPACES: 3000,
+              },
             },
-          }),
-          createAnswerEvent("URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION", {
-            livingAndActivitySpacesDistribution: {
-              BUILDINGS: 2000,
-              PRIVATE_GREEN_SPACES: 3000,
+          },
+          URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION: {
+            completed: true,
+            payload: {
+              livingAndActivitySpacesDistribution: {
+                BUILDINGS: 2000,
+                PRIVATE_GREEN_SPACES: 3000,
+              },
             },
-          }),
-          createAnswerEvent("URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA", {
-            buildingsFloorSurfaceArea: 4000,
-          }),
-          createAnswerEvent("URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION", {
-            buildingsUsesDistribution: { RESIDENTIAL: 3000, LOCAL_STORE: 1000 },
-          }),
-        ];
+          },
+          URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA: {
+            completed: true,
+            payload: {
+              buildingsFloorSurfaceArea: 4000,
+            },
+          },
+          URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION: {
+            completed: true,
+            payload: {
+              buildingsUsesDistribution: { RESIDENTIAL: 3000, LOCAL_STORE: 1000 },
+            },
+          },
+        } satisfies ProjectCreationState["urbanProjectEventSourcing"]["steps"];
 
         const store = createTestStore({
-          events: initialEvents,
+          steps: initialSteps,
           currentStep: "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION",
         });
 
@@ -60,39 +59,46 @@ describe("urbanProject.reducer - completeStep action", () => {
           }),
         );
 
-        const deletionEvents = store
-          .getState()
-          .projectCreation.urbanProjectEventSourcing.events.filter(
-            (event) => event.type === "ANSWER_DELETED",
-          );
+        const stepsState = store.getState().projectCreation.urbanProjectEventSourcing.steps;
 
-        expect(deletionEvents).toHaveLength(4);
-        expect(deletionEvents.map((e) => e.stepId)).toContain(
-          "URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA",
-        );
-        expect(deletionEvents.map((e) => e.stepId)).toContain(
-          "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
-        );
-        expect(deletionEvents.map((e) => e.stepId)).toContain(
-          "URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA",
-        );
-        expect(deletionEvents.map((e) => e.stepId)).toContain(
-          "URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION",
-        );
+        expect(stepsState.URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA).toEqual({
+          completed: true,
+          payload: {
+            spacesCategoriesDistribution: {
+              GREEN_SPACES: store.getState().projectCreation.siteData?.surfaceArea,
+            },
+          },
+        });
+        expect(stepsState.URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION).toEqual({
+          completed: false,
+          payload: undefined,
+        });
+        expect(stepsState.URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA).toEqual({
+          completed: false,
+          payload: undefined,
+        });
+        expect(stepsState.URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION).toEqual({
+          completed: false,
+          payload: undefined,
+        });
       });
 
       it("should delete green spaces answers when removing GREEN_SPACES category", () => {
-        const initialEvents: FormEvent[] = [
-          createAnswerEvent("URBAN_PROJECT_SPACES_CATEGORIES_SELECTION", {
-            spacesCategories: ["LIVING_AND_ACTIVITY_SPACES", "GREEN_SPACES"],
-          }),
-          createAnswerEvent("URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION", {
-            greenSpacesDistribution: { LAWNS_AND_BUSHES: 2000, TREE_FILLED_SPACE: 1000 },
-          }),
-        ];
+        const initialSteps = {
+          URBAN_PROJECT_SPACES_CATEGORIES_SELECTION: {
+            completed: true,
+            payload: { spacesCategories: ["LIVING_AND_ACTIVITY_SPACES", "GREEN_SPACES"] },
+          },
+          URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION: {
+            completed: true,
+            payload: {
+              greenSpacesDistribution: { LAWNS_AND_BUSHES: 2000, TREE_FILLED_SPACE: 1000 },
+            },
+          },
+        } satisfies ProjectCreationState["urbanProjectEventSourcing"]["steps"];
 
         const store = createTestStore({
-          events: initialEvents,
+          steps: initialSteps,
           currentStep: "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION",
         });
 
@@ -103,41 +109,48 @@ describe("urbanProject.reducer - completeStep action", () => {
           }),
         );
 
-        const deletionEvents = store
-          .getState()
-          .projectCreation.urbanProjectEventSourcing.events.filter(
-            (event) => event.type === "ANSWER_DELETED",
-          );
+        const stepsState = store.getState().projectCreation.urbanProjectEventSourcing.steps;
 
-        expect(
-          deletionEvents.some(
-            (e) => e.stepId === "URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION",
-          ),
-        ).toBe(true);
+        expect(stepsState.URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION).toEqual({
+          completed: false,
+          payload: undefined,
+        });
       });
     });
 
     describe("Buildings-related changes", () => {
       it("should delete building steps when removing buildings from residential spaces", () => {
-        const initialEvents: FormEvent[] = [
-          createAnswerEvent("URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION", {
-            livingAndActivitySpacesDistribution: {
-              BUILDINGS: 2000,
-              PRIVATE_GREEN_SPACES: 3000,
+        const initialSteps = {
+          URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION: {
+            completed: true,
+            payload: {
+              livingAndActivitySpacesDistribution: {
+                BUILDINGS: 2000,
+                PRIVATE_GREEN_SPACES: 3000,
+              },
             },
-          }),
-          createAnswerEvent("URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA", {
-            buildingsFloorSurfaceArea: 4000,
-          }),
-          createAnswerEvent("URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION", {
-            buildingsUsesDistribution: { RESIDENTIAL: 3000, LOCAL_STORE: 1000 },
-          }),
-          createAnswerEvent("URBAN_PROJECT_BUILDINGS_RESALE_SELECTION", {
-            buildingsResalePlannedAfterDevelopment: false,
-          }),
-        ];
+          },
+          URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA: {
+            completed: true,
+            payload: {
+              buildingsFloorSurfaceArea: 4000,
+            },
+          },
+          URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION: {
+            completed: true,
+            payload: {
+              buildingsUsesDistribution: { RESIDENTIAL: 3000, LOCAL_STORE: 1000 },
+            },
+          },
+          URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
+            completed: true,
+            payload: {
+              buildingsResalePlannedAfterDevelopment: false,
+            },
+          },
+        } satisfies ProjectCreationState["urbanProjectEventSourcing"]["steps"];
 
-        const store = createTestStore({ events: initialEvents });
+        const store = createTestStore({ steps: initialSteps });
 
         store.dispatch(
           completeStep({
@@ -149,37 +162,43 @@ describe("urbanProject.reducer - completeStep action", () => {
             },
           }),
         );
+        const stepsState = store.getState().projectCreation.urbanProjectEventSourcing.steps;
 
-        const deletionEvents = store
-          .getState()
-          .projectCreation.urbanProjectEventSourcing.events.filter(
-            (event) => event.type === "ANSWER_DELETED",
-          );
+        expect(stepsState.URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA).toEqual({
+          completed: false,
+          payload: undefined,
+        });
 
-        expect(
-          deletionEvents.some((e) => e.stepId === "URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA"),
-        ).toBe(true);
-        expect(
-          deletionEvents.some(
-            (e) => e.stepId === "URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION",
-          ),
-        ).toBe(true);
-        expect(
-          deletionEvents.some((e) => e.stepId === "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION"),
-        ).toBe(true);
+        expect(stepsState.URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION).toEqual({
+          completed: false,
+          payload: undefined,
+        });
+
+        expect(stepsState.URBAN_PROJECT_BUILDINGS_RESALE_SELECTION).toEqual({
+          completed: false,
+          payload: undefined,
+        });
       });
 
       it("should delete operating expenses when changing buildings resale to true", () => {
-        const initialEvents: FormEvent[] = [
-          createAnswerEvent("URBAN_PROJECT_BUILDINGS_RESALE_SELECTION", {
-            buildingsResalePlannedAfterDevelopment: false,
-          }),
-          createAnswerEvent("URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES", {
-            yearlyProjectedBuildingsOperationsExpenses: [{ purpose: "maintenance", amount: 50000 }],
-          }),
-        ];
+        const initialSteps = {
+          URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
+            completed: true,
+            payload: {
+              buildingsResalePlannedAfterDevelopment: false,
+            },
+          },
+          URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES: {
+            completed: true,
+            payload: {
+              yearlyProjectedBuildingsOperationsExpenses: [
+                { purpose: "maintenance", amount: 50000 },
+              ],
+            },
+          },
+        } satisfies ProjectCreationState["urbanProjectEventSourcing"]["steps"];
 
-        const store = createTestStore({ events: initialEvents });
+        const store = createTestStore({ steps: initialSteps });
 
         store.dispatch(
           completeStep({
@@ -188,34 +207,35 @@ describe("urbanProject.reducer - completeStep action", () => {
           }),
         );
 
-        const deletionEvents = store
-          .getState()
-          .projectCreation.urbanProjectEventSourcing.events.filter(
-            (event) => event.type === "ANSWER_DELETED",
-          );
+        const stepsState = store.getState().projectCreation.urbanProjectEventSourcing.steps;
 
-        expect(
-          deletionEvents.some(
-            (e) => e.stepId === "URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES",
-          ),
-        ).toBe(true);
+        expect(stepsState.URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES).toEqual({
+          completed: false,
+          payload: undefined,
+        });
       });
     });
 
     describe("Site resale changes", () => {
       it("should delete site resale revenue when changing resale plan to false", () => {
-        const initialEvents: FormEvent[] = [
-          createAnswerEvent("URBAN_PROJECT_SITE_RESALE_SELECTION", {
-            siteResalePlannedAfterDevelopment: true,
-          }),
-          createAnswerEvent("URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE", {
-            siteResaleExpectedSellingPrice: 100000,
-            siteResaleExpectedPropertyTransferDuties: 5000,
-          }),
-        ];
+        const initialSteps = {
+          URBAN_PROJECT_SITE_RESALE_SELECTION: {
+            completed: true,
+            payload: {
+              siteResalePlannedAfterDevelopment: true,
+            },
+          },
+          URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE: {
+            completed: true,
+            payload: {
+              siteResaleExpectedSellingPrice: 100000,
+              siteResaleExpectedPropertyTransferDuties: 5000,
+            },
+          },
+        } satisfies ProjectCreationState["urbanProjectEventSourcing"]["steps"];
 
         const store = createTestStore({
-          events: initialEvents,
+          steps: initialSteps,
           currentStep: "URBAN_PROJECT_SITE_RESALE_SELECTION",
         });
 
@@ -225,39 +245,37 @@ describe("urbanProject.reducer - completeStep action", () => {
             answers: { siteResalePlannedAfterDevelopment: false },
           }),
         );
+        const stepsState = store.getState().projectCreation.urbanProjectEventSourcing.steps;
 
-        const deletionEvents = store
-          .getState()
-          .projectCreation.urbanProjectEventSourcing.events.filter(
-            (event) => event.type === "ANSWER_DELETED",
-          );
-
-        expect(
-          deletionEvents.some((e) => e.stepId === "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE"),
-        ).toBe(true);
+        expect(stepsState.URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE).toEqual({
+          completed: false,
+          payload: undefined,
+        });
       });
     });
 
     describe("Decontamination changes", () => {
       it("should delete reinstatement expenses when changing decontamination settings", () => {
-        const initialEvents: FormEvent[] = [
-          createAnswerEvent(
-            "URBAN_PROJECT_EXPENSES_REINSTATEMENT",
-            {
+        const initialSteps = {
+          URBAN_PROJECT_EXPENSES_REINSTATEMENT: {
+            completed: true,
+            payload: {
               reinstatementExpenses: [{ purpose: "remediation", amount: 100000 }],
             },
-            Date.now(),
-            "system",
-          ),
-          createAnswerEvent("URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION", {
-            decontaminationPlan: "partial",
-          }),
-        ];
+            defaultValues: {
+              reinstatementExpenses: [{ purpose: "remediation", amount: 100000 }],
+            },
+          },
+          URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION: {
+            completed: true,
+            payload: {
+              decontaminationPlan: "partial",
+            },
+          },
+        } satisfies ProjectCreationState["urbanProjectEventSourcing"]["steps"];
 
         const store = createTestStore({
-          events: initialEvents,
-          currentStep: "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
-          siteData: { ...mockSiteData, hasContaminatedSoils: true },
+          steps: initialSteps,
         });
 
         store.dispatch(
@@ -267,15 +285,13 @@ describe("urbanProject.reducer - completeStep action", () => {
           }),
         );
 
-        const deletionEvents = store
-          .getState()
-          .projectCreation.urbanProjectEventSourcing.events.filter(
-            (event) => event.type === "ANSWER_DELETED",
-          );
+        const stepsState = store.getState().projectCreation.urbanProjectEventSourcing.steps;
 
-        expect(
-          deletionEvents.some((e) => e.stepId === "URBAN_PROJECT_EXPENSES_REINSTATEMENT"),
-        ).toBe(true);
+        expect(stepsState.URBAN_PROJECT_EXPENSES_REINSTATEMENT).toEqual({
+          completed: false,
+          payload: undefined,
+          defaultValue: undefined,
+        });
       });
 
       it('should automatically set decontamination surface area for "none" plan', () => {
@@ -290,17 +306,12 @@ describe("urbanProject.reducer - completeStep action", () => {
             answers: { decontaminationPlan: "none" },
           }),
         );
+        const stepsState = store.getState().projectCreation.urbanProjectEventSourcing.steps;
 
-        const surfaceAreaEvent = store
-          .getState()
-          .projectCreation.urbanProjectEventSourcing.events.find(
-            (event) =>
-              event.type === "ANSWER_SET" &&
-              event.stepId === "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA",
-          ) as SerializedAnswerSetEvent<"URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA">;
-
-        expect(surfaceAreaEvent).toBeDefined();
-        expect(surfaceAreaEvent.payload.decontaminatedSurfaceArea).toBe(0);
+        expect(stepsState.URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA).toEqual({
+          completed: true,
+          payload: { decontaminatedSurfaceArea: 0 },
+        });
       });
 
       it('should automatically set decontamination surface area for "unknown" plan', () => {
@@ -321,48 +332,43 @@ describe("urbanProject.reducer - completeStep action", () => {
           }),
         );
 
-        const surfaceAreaEvent = store
-          .getState()
-          .projectCreation.urbanProjectEventSourcing.events.find(
-            (event) =>
-              event.type === "ANSWER_SET" &&
-              event.stepId === "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA",
-          ) as SerializedAnswerSetEvent<"URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA">;
+        const stepsState = store.getState().projectCreation.urbanProjectEventSourcing.steps;
 
-        expect(surfaceAreaEvent).toBeDefined();
-        expect(surfaceAreaEvent.payload.decontaminatedSurfaceArea).toBe(
-          contaminatedSoilSurface * 0.25,
-        );
+        expect(stepsState.URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA).toEqual({
+          completed: true,
+          payload: { decontaminatedSurfaceArea: contaminatedSoilSurface * 0.25 },
+        });
       });
     });
 
     describe("Surface area distribution changes", () => {
       it("should delete system-generated reinstatement expenses when surface areas change", () => {
-        const initialEvents: FormEvent[] = [
-          createAnswerEvent(
-            "URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION",
-            {
+        const initialSteps = {
+          URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION: {
+            completed: true,
+            payload: {
               greenSpacesDistribution: { LAWNS_AND_BUSHES: 5000 },
             },
-            Date.now(),
-            "system",
-          ),
-          createAnswerEvent(
-            "URBAN_PROJECT_EXPENSES_REINSTATEMENT",
-            {
+          },
+          URBAN_PROJECT_EXPENSES_REINSTATEMENT: {
+            completed: true,
+            payload: {
               reinstatementExpenses: [{ purpose: "remediation", amount: 100000 }],
             },
-            Date.now(),
-            "system",
-          ),
-          createAnswerEvent("URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA", {
-            spacesCategoriesDistribution: { GREEN_SPACES: 5000 },
-          }),
-        ];
+            defaultValues: {
+              reinstatementExpenses: [{ purpose: "remediation", amount: 100000 }],
+            },
+          },
+          URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA: {
+            completed: true,
+            payload: {
+              spacesCategoriesDistribution: { GREEN_SPACES: 5000 },
+            },
+          },
+        } satisfies ProjectCreationState["urbanProjectEventSourcing"]["steps"];
 
         const store = createTestStore({
-          events: initialEvents,
-          currentStep: "URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION",
+          steps: initialSteps,
         });
 
         store.dispatch(
@@ -374,15 +380,57 @@ describe("urbanProject.reducer - completeStep action", () => {
           }),
         );
 
-        const deletionEvents = store
-          .getState()
-          .projectCreation.urbanProjectEventSourcing.events.filter(
-            (event) => event.type === "ANSWER_DELETED",
-          );
+        const stepsState = store.getState().projectCreation.urbanProjectEventSourcing.steps;
 
-        expect(
-          deletionEvents.some((e) => e.stepId === "URBAN_PROJECT_EXPENSES_REINSTATEMENT"),
-        ).toBe(true);
+        expect(stepsState.URBAN_PROJECT_EXPENSES_REINSTATEMENT).toEqual({
+          completed: false,
+          payload: undefined,
+        });
+      });
+
+      it("should not delete user answer reinstatement expenses when surface areas change", () => {
+        const initialSteps = {
+          URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION: {
+            completed: true,
+            payload: {
+              greenSpacesDistribution: { LAWNS_AND_BUSHES: 5000 },
+            },
+          },
+          URBAN_PROJECT_EXPENSES_REINSTATEMENT: {
+            completed: true,
+            payload: {
+              reinstatementExpenses: [{ purpose: "remediation", amount: 100000 }],
+            },
+            defaultValues: {
+              reinstatementExpenses: [{ purpose: "remediation", amount: 50000 }],
+            },
+          },
+          URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA: {
+            completed: true,
+            payload: {
+              spacesCategoriesDistribution: { GREEN_SPACES: 5000 },
+            },
+          },
+        } satisfies ProjectCreationState["urbanProjectEventSourcing"]["steps"];
+
+        const store = createTestStore({
+          steps: initialSteps,
+        });
+
+        store.dispatch(
+          completeStep({
+            stepId: "URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION",
+            answers: {
+              greenSpacesDistribution: { LAWNS_AND_BUSHES: 3000, TREE_FILLED_SPACE: 2000 },
+            },
+          }),
+        );
+
+        const stepsState = store.getState().projectCreation.urbanProjectEventSourcing.steps;
+
+        expect(stepsState.URBAN_PROJECT_EXPENSES_REINSTATEMENT).toEqual(
+          initialSteps.URBAN_PROJECT_EXPENSES_REINSTATEMENT,
+        );
       });
     });
 
@@ -403,58 +451,17 @@ describe("urbanProject.reducer - completeStep action", () => {
         );
 
         // Vérifier qu'un événement système a été créé pour la surface
-        const surfaceEvent = store
-          .getState()
-          .projectCreation.urbanProjectEventSourcing.events.find(
-            (event) =>
-              event.type === "ANSWER_SET" &&
-              event.stepId === "URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA" &&
-              event.source === "system",
-          ) as SerializedAnswerSetEvent<"URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA">;
+        const stepsState = store.getState().projectCreation.urbanProjectEventSourcing.steps;
 
-        expect(surfaceEvent).toBeDefined();
-        expect(surfaceEvent.payload.spacesCategoriesDistribution?.GREEN_SPACES).toBe(surfaceArea);
+        expect(stepsState.URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA).toEqual({
+          completed: true,
+          payload: { spacesCategoriesDistribution: { GREEN_SPACES: surfaceArea } },
+        });
 
         expect(store.getState().projectCreation.urbanProjectEventSourcing.currentStep).toBe(
           "URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION",
         );
       });
-    });
-  });
-
-  describe("Event ordering and timestamps", () => {
-    it("should maintain event order with proper timestamps", () => {
-      const initialEvents: FormEvent[] = [
-        createAnswerEvent(
-          "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION",
-          {
-            spacesCategories: ["LIVING_AND_ACTIVITY_SPACES"],
-          },
-          1000,
-        ),
-      ];
-
-      const store = createTestStore({
-        events: initialEvents,
-        currentStep: "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION",
-      });
-
-      store.dispatch(
-        completeStep({
-          stepId: "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION",
-          answers: { spacesCategories: ["GREEN_SPACES"] },
-        }),
-      );
-
-      const newEvents = store
-        .getState()
-        .projectCreation.urbanProjectEventSourcing.events.filter((e) => e.timestamp > 1000);
-      expect(newEvents.length).toBeGreaterThan(0);
-
-      const timestamps = store
-        .getState()
-        .projectCreation.urbanProjectEventSourcing.events.map((e) => e.timestamp);
-      expect(timestamps).toEqual([...timestamps].sort());
     });
   });
 });

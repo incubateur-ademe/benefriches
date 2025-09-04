@@ -1,12 +1,12 @@
-import { FormState } from "../../form-state/formState";
+import { ReadStateHelper } from "../../urbanProject.helpers";
 import { InfoStepHandler } from "../stepHandler.type";
 
 export const SpaceDevelopmentPlanIntroductionHandler: InfoStepHandler = {
   stepId: "URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION",
 
   getPreviousStepId(context) {
-    const spaceCategories = FormState.getStepAnswers(
-      context.urbanProjectEventSourcing.events,
+    const spaceCategories = ReadStateHelper.getStepAnswers(
+      context.stepsState,
       "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION",
     )?.spacesCategories;
     return spaceCategories && spaceCategories.length === 1
@@ -15,8 +15,8 @@ export const SpaceDevelopmentPlanIntroductionHandler: InfoStepHandler = {
   },
 
   getNextStepId(context) {
-    const spacesCategoriesDistribution = FormState.getStepAnswers(
-      context.urbanProjectEventSourcing.events,
+    const spacesCategoriesDistribution = ReadStateHelper.getStepAnswers(
+      context.stepsState,
       "URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA",
     )?.spacesCategoriesDistribution;
 

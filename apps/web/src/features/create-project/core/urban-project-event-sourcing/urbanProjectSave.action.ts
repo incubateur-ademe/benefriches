@@ -1,8 +1,8 @@
 import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
 
 import { saveProjectSchema } from "../actions/saveReconversionProject.action";
-import { FormState } from "./form-state/formState";
 import { makeUrbanProjectCreationActionType } from "./urbanProject.actions";
+import { ReadStateHelper } from "./urbanProject.helpers";
 
 export const customUrbanProjectSaved = createAppAsyncThunk(
   makeUrbanProjectCreationActionType("customProjectSaved"),
@@ -10,7 +10,7 @@ export const customUrbanProjectSaved = createAppAsyncThunk(
     const { projectCreation, currentUser } = getState();
     const { urbanProjectEventSourcing, siteData, projectId } = projectCreation;
 
-    const creationData = FormState.getProjectData(urbanProjectEventSourcing.events);
+    const creationData = ReadStateHelper.getProjectData(urbanProjectEventSourcing.steps);
 
     const mappedProjectData = {
       id: projectId,

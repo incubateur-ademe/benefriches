@@ -1,4 +1,4 @@
-import { FormState } from "../../form-state/formState";
+import { ReadStateHelper } from "../../urbanProject.helpers";
 import { AnswerStepHandler } from "../stepHandler.type";
 
 export const SoilsDecontaminationSurfaceAreaHandler: AnswerStepHandler<"URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA"> =
@@ -7,8 +7,8 @@ export const SoilsDecontaminationSurfaceAreaHandler: AnswerStepHandler<"URBAN_PR
 
     getStepsToInvalidate(context) {
       if (
-        FormState.hasLastAnswerFromSystem(
-          context.urbanProjectEventSourcing.events,
+        ReadStateHelper.hasLastAnswerFromSystem(
+          context.stepsState,
           "URBAN_PROJECT_EXPENSES_REINSTATEMENT",
         )
       ) {
@@ -22,7 +22,7 @@ export const SoilsDecontaminationSurfaceAreaHandler: AnswerStepHandler<"URBAN_PR
     },
 
     getNextStepId(context) {
-      if (FormState.hasBuildings(context.urbanProjectEventSourcing.events)) {
+      if (ReadStateHelper.hasBuildings(context.stepsState)) {
         return "URBAN_PROJECT_BUILDINGS_INTRODUCTION";
       }
 

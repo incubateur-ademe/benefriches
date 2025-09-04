@@ -4,9 +4,7 @@ import { AnswersByStep, AnswerStepId, InformationalStep } from "../urbanProjectS
 
 type StepContext = {
   siteData?: ProjectCreationState["siteData"];
-  urbanProjectEventSourcing: {
-    events: ProjectCreationState["urbanProjectEventSourcing"]["events"];
-  };
+  stepsState: ProjectCreationState["urbanProjectEventSourcing"]["steps"];
 };
 
 export interface StepHandler {

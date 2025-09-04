@@ -1,39 +1,4 @@
-# Event Sourcing Reducer
-
-Ce système modélise le formulaire de création de projet urbain en utilisant le pattern **Event Sourcing**.
-
-Au lieu de stocker directement l'état des réponses, le système maintient un historique d'événements qui permettent de reconstruire l'état actuel du formulaire.
-
-## Architecture Event Sourcing
-
-### Types d'événements
-
-Le système utilise deux types d'événements principaux :
-
-```typescript
-type FormEvent =
-  | SerializedAnswerSetEvent<keyof StepAnswers>
-  | SerializedAnswerDeletionEvent<keyof StepAnswers>;
-```
-
-#### ANSWER_SET
-
-- **Usage** : Ajouter ou mettre à jour une réponse pour une étape
-- **Source** : `"user"` (saisie utilisateur) ou `"system"` (valeur par défaut calculée)
-- **Payload** : Les données de la réponse selon le type de l'étape
-
-#### ANSWER_DELETED
-
-- **Usage** : Invalider une réponse devenue incohérente suite à un changement
-- **Déclenchement** : Automatique lors de la détection de dépendances brisées
-- **Effet** : La réponse de l'étape devient `undefined`
-
-### Résolution d'état
-
-La réponse actuelle d'une étape est déterminée par **le dernier événement chronologique** :
-
-- Si c'est un `ANSWER_SET` → la réponse est le payload de cet événement
-- Si c'est un `ANSWER_DELETED` → aucune réponse (`undefined`)
+# State Reducer
 
 ## Architecture des Handlers
 
@@ -137,19 +102,32 @@ getStepsToInvalidate(context, previousAnswers, newAnswers) {
 Les réponses système sont automatiquement recalculées quand leurs dépendances changent :
 
 ```typescript
-if (FormState.hasLastAnswerFromSystem(events, "REINSTATEMENT_EXPENSES")) {
+if (ReadStateHelper.hasLastAnswerFromSystem(events, "REINSTATEMENT_EXPENSES")) {
   // Supprimer l'ancienne valeur calculée
-  BaseAnswerStepHandler.addAnswerDeletionEvent(context, "REINSTATEMENT_EXPENSES");
+  return ["REINSTATEMENT_EXPENSES"];
   // Elle sera recalculée au prochain load()
 }
 ```
 
-## FormState : Interface de lecture
+## ReadStateHelper : Interface avec helpers de lecture
 
-La classe `FormState` fournit une API pour interroger l'état actuel :
+Pour éviter d'avoir à changer les appels dans les handlers à chaque changement de format du state
+
+La classe `ReadStateHelper` fournit une API pour interroger l'état actuel :
 
 ```typescript
-FormState.getStepAnswers(events, stepId); // Obtenir la réponse d'une étape
-FormState.hasBuildings(events); // Vérifier les conditions métier
-FormState.getProjectData(events); // Construire les données finales
+ReadStateHelper.getStepAnswers(steps, stepId); // Obtenir la réponse d'une étape
+ReadStateHelper.hasBuildings(steps); // Vérifier les conditions métier
+ReadStateHelper.getProjectData(steps); // Construire les données finales
+```
+
+## MutateStateHelper : Interface avec helpers de mutation du state
+
+La classe `MutateStateHelper` fournit une API pour modifier l'état actuel :
+
+```typescript
+MutateStateHelper.navigateToStep(state, stepId);
+MutateStateHelper.setDefaultValues(state, stepId, answers);
+MutateStateHelper.completeStep(state, stepId, answers);
+MutateStateHelper.deleteStepAnswer(state, stepId);
 ```

@@ -1,14 +1,12 @@
-import { FormState } from "../../form-state/formState";
 import { InfoStepHandler } from "../stepHandler.type";
 
 export const BuildingsIntroductionHandler: InfoStepHandler = {
   stepId: "URBAN_PROJECT_BUILDINGS_INTRODUCTION",
 
   getPreviousStepId(context) {
-    const decontaminationPlan = FormState.getStepAnswers(
-      context.urbanProjectEventSourcing.events,
-      "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
-    )?.decontaminationPlan;
+    const decontaminationPlan =
+      context.stepsState["URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION"]?.payload
+        ?.decontaminationPlan;
 
     if (decontaminationPlan === "partial") {
       return "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA";

@@ -1,4 +1,4 @@
-import { FormState } from "../../form-state/formState";
+import { ReadStateHelper } from "../../urbanProject.helpers";
 import { AnswerStepHandler } from "../stepHandler.type";
 
 export const SoilsDecontaminationSelectionHandler: AnswerStepHandler<"URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION"> =
@@ -7,8 +7,8 @@ export const SoilsDecontaminationSelectionHandler: AnswerStepHandler<"URBAN_PROJ
 
     getStepsToInvalidate(context) {
       if (
-        FormState.hasLastAnswerFromSystem(
-          context.urbanProjectEventSourcing.events,
+        ReadStateHelper.hasLastAnswerFromSystem(
+          context.stepsState,
           "URBAN_PROJECT_EXPENSES_REINSTATEMENT",
         )
       ) {
@@ -26,12 +26,12 @@ export const SoilsDecontaminationSelectionHandler: AnswerStepHandler<"URBAN_PROJ
     },
 
     getShortcut(context, answers, hasChanged) {
-      const nextStep = FormState.hasBuildings(context.urbanProjectEventSourcing.events)
+      const nextStep = ReadStateHelper.hasBuildings(context.stepsState)
         ? "URBAN_PROJECT_BUILDINGS_INTRODUCTION"
         : "URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION";
 
-      const shouldInvalidateReinstatementExpenses = FormState.hasLastAnswerFromSystem(
-        context.urbanProjectEventSourcing.events,
+      const shouldInvalidateReinstatementExpenses = ReadStateHelper.hasLastAnswerFromSystem(
+        context.stepsState,
         "URBAN_PROJECT_EXPENSES_REINSTATEMENT",
       );
 

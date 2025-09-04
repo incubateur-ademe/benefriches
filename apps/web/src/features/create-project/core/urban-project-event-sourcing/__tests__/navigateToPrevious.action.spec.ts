@@ -70,43 +70,28 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
     it("should handle conditional navigation for buildings introduction", () => {
       const storeWithBuildings = createTestStore({
         siteData: testScenarios.withBuildingsAndContamination,
-        events: [
-          {
-            type: "ANSWER_SET",
-            stepId: "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION",
+        steps: {
+          URBAN_PROJECT_SPACES_CATEGORIES_SELECTION: {
+            completed: true,
             payload: { spacesCategories: ["LIVING_AND_ACTIVITY_SPACES"] },
-            timestamp: Date.now(),
-            source: "user",
           },
-          {
-            type: "ANSWER_SET",
-            stepId: "URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA",
+          URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA: {
+            completed: true,
             payload: { spacesCategoriesDistribution: { LIVING_AND_ACTIVITY_SPACES: 10000 } },
-            timestamp: Date.now(),
-            source: "system",
           },
-          {
-            type: "ANSWER_SET",
-            stepId: "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
+          URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION: {
+            completed: true,
             payload: { livingAndActivitySpacesDistribution: { BUILDINGS: 2000 } },
-            timestamp: Date.now(),
-            source: "user",
           },
-          {
-            type: "ANSWER_SET",
-            stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
+          URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION: {
+            completed: true,
             payload: { decontaminationPlan: "partial" },
-            timestamp: Date.now(),
-            source: "user",
           },
-          {
-            type: "ANSWER_SET",
-            stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA",
+          URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA: {
+            completed: true,
             payload: { decontaminatedSurfaceArea: 1500 },
-            timestamp: Date.now(),
-            source: "user",
           },
-        ],
+        },
         currentStep: "URBAN_PROJECT_BUILDINGS_INTRODUCTION",
       });
 
@@ -119,15 +104,12 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
 
       const storeWithoutContamination = createTestStore({
         siteData: testScenarios.withoutContamination,
-        events: [
-          {
-            type: "ANSWER_SET",
-            stepId: "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
+        steps: {
+          URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION: {
+            completed: true,
             payload: { livingAndActivitySpacesDistribution: { BUILDINGS: 2000 } },
-            timestamp: Date.now(),
-            source: "user",
           },
-        ],
+        },
         currentStep: "URBAN_PROJECT_SOILS_CARBON_SUMMARY",
       });
 
@@ -149,15 +131,12 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
     it("should handle stakeholders navigation based on site nature", () => {
       const storeFriche = createTestStore({
         siteData: testScenarios.withBuildingsAndContamination,
-        events: [
-          {
-            type: "ANSWER_SET",
-            stepId: "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
+        steps: {
+          URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION: {
+            completed: true,
             payload: { livingAndActivitySpacesDistribution: { BUILDINGS: 2000 } },
-            timestamp: Date.now(),
-            source: "user",
           },
-        ],
+        },
         currentStep: "URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION",
       });
 
@@ -185,15 +164,12 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
 
       const storeNonFriche = createTestStore({
         siteData: testScenarios.nonFriche,
-        events: [
-          {
-            type: "ANSWER_SET",
-            stepId: "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
+        steps: {
+          URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION: {
+            completed: true,
             payload: { livingAndActivitySpacesDistribution: { BUILDINGS: 0 } },
-            timestamp: Date.now(),
-            source: "user",
           },
-        ],
+        },
         currentStep: "URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION",
       });
 
@@ -215,36 +191,24 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
     it("should handle expenses navigation based on site nature", () => {
       const storeFriche = createTestStore({
         siteData: testScenarios.withBuildingsAndContamination,
-        events: [
-          {
-            type: "ANSWER_SET",
-            stepId: "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER",
+        steps: {
+          URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER: {
+            completed: true,
             payload: { projectDeveloper: { name: "Test", structureType: "company" } },
-            timestamp: Date.now(),
-            source: "user",
           },
-          {
-            type: "ANSWER_SET",
-            stepId: "URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER",
+          URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER: {
+            completed: true,
             payload: { reinstatementContractOwner: { name: "Test2", structureType: "company" } },
-            timestamp: Date.now(),
-            source: "user",
           },
-          {
-            type: "ANSWER_SET",
-            stepId: "URBAN_PROJECT_SITE_RESALE_SELECTION",
+          URBAN_PROJECT_SITE_RESALE_SELECTION: {
+            completed: true,
             payload: { siteResalePlannedAfterDevelopment: true },
-            timestamp: Date.now(),
-            source: "user",
           },
-          {
-            type: "ANSWER_SET",
-            stepId: "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION",
+          URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
+            completed: true,
             payload: { buildingsResalePlannedAfterDevelopment: false },
-            timestamp: Date.now(),
-            source: "user",
           },
-        ],
+        },
         currentStep: "URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS",
       });
 
@@ -283,29 +247,20 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
 
     it("should handle revenue navigation based on building and site resale decisions", () => {
       const store = createTestStore({
-        events: [
-          {
-            type: "ANSWER_SET",
-            stepId: "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
+        steps: {
+          URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION: {
+            completed: true,
             payload: { livingAndActivitySpacesDistribution: { BUILDINGS: 2000 } },
-            timestamp: Date.now(),
-            source: "user",
           },
-          {
-            type: "ANSWER_SET",
-            stepId: "URBAN_PROJECT_SITE_RESALE_SELECTION",
+          URBAN_PROJECT_SITE_RESALE_SELECTION: {
             payload: { siteResalePlannedAfterDevelopment: true },
-            timestamp: Date.now(),
-            source: "user",
+            completed: true,
           },
-          {
-            type: "ANSWER_SET",
-            stepId: "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION",
+          URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
             payload: { buildingsResalePlannedAfterDevelopment: false },
-            timestamp: Date.now(),
-            source: "user",
+            completed: true,
           },
-        ],
+        },
         currentStep: "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE",
       });
 
@@ -332,34 +287,25 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
 
     it("should handle complex conditional navigation for green spaces", () => {
       const store = createTestStore({
-        events: [
-          {
-            type: "ANSWER_SET",
-            stepId: "URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA",
+        steps: {
+          URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA: {
+            completed: true,
             payload: {
               spacesCategoriesDistribution: {
                 LIVING_AND_ACTIVITY_SPACES: 5000,
                 PUBLIC_SPACES: 5000,
               },
             },
-            timestamp: Date.now(),
-            source: "user",
           },
-          {
-            type: "ANSWER_SET",
-            stepId: "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
+          URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION: {
+            completed: true,
             payload: { livingAndActivitySpacesDistribution: { BUILDINGS: 2000 } },
-            timestamp: Date.now(),
-            source: "user",
           },
-          {
-            type: "ANSWER_SET",
-            stepId: "URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION",
+          URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION: {
+            completed: true,
             payload: { publicSpacesDistribution: { IMPERMEABLE_SURFACE: 2000 } },
-            timestamp: Date.now(),
-            source: "user",
           },
-        ],
+        },
         currentStep: "URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION",
       });
 
@@ -522,24 +468,19 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
       );
     });
 
-    it("should handle navigation with pre-existing events correctly", () => {
+    it("should handle navigation with pre-existing answers correctly", () => {
       const store = createTestStore({
-        events: [
-          {
-            type: "ANSWER_SET",
-            stepId: "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION",
+        steps: {
+          URBAN_PROJECT_SPACES_CATEGORIES_SELECTION: {
+            completed: true,
             payload: { spacesCategories: ["LIVING_AND_ACTIVITY_SPACES"] },
-            timestamp: Date.now(),
-            source: "user",
           },
-          {
-            type: "ANSWER_SET",
-            stepId: "URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA",
+          URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA: {
+            completed: true,
             payload: { spacesCategoriesDistribution: { LIVING_AND_ACTIVITY_SPACES: 10000 } },
-            timestamp: Date.now(),
-            source: "system",
           },
-        ],
+        },
+
         currentStep: "URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION",
       });
 
@@ -558,36 +499,25 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
       expect(store.getState().projectCreation.urbanProjectEventSourcing.currentStep).toBe(
         "URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION",
       );
-
-      expect(store.getState().projectCreation.urbanProjectEventSourcing.events).toHaveLength(2);
     });
 
     it("should handle decontamination navigation edge cases", () => {
       const storeNone = createTestStore({
         siteData: testScenarios.withBuildingsAndContamination,
-        events: [
-          {
-            type: "ANSWER_SET",
-            stepId: "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
+        steps: {
+          URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION: {
+            completed: true,
             payload: { livingAndActivitySpacesDistribution: { BUILDINGS: 2000 } },
-            timestamp: Date.now(),
-            source: "user",
           },
-          {
-            type: "ANSWER_SET",
-            stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
+          URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION: {
+            completed: true,
             payload: { decontaminationPlan: "none" },
-            timestamp: Date.now(),
-            source: "user",
           },
-          {
-            type: "ANSWER_SET",
-            stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA",
+          URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA: {
+            completed: true,
             payload: { decontaminatedSurfaceArea: 0 },
-            timestamp: Date.now(),
-            source: "system",
           },
-        ],
+        },
         currentStep: "URBAN_PROJECT_BUILDINGS_INTRODUCTION",
       });
 
@@ -598,29 +528,21 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
 
       const storeUnknown = createTestStore({
         siteData: testScenarios.withBuildingsAndContamination,
-        events: [
-          {
-            type: "ANSWER_SET",
-            stepId: "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
+        steps: {
+          URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION: {
+            completed: true,
             payload: { livingAndActivitySpacesDistribution: { BUILDINGS: 2000 } },
-            timestamp: Date.now(),
-            source: "user",
           },
-          {
-            type: "ANSWER_SET",
-            stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
+          URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION: {
+            completed: true,
             payload: { decontaminationPlan: "unknown" },
-            timestamp: Date.now(),
-            source: "user",
           },
-          {
-            type: "ANSWER_SET",
-            stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA",
+          URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA: {
+            completed: true,
+
             payload: { decontaminatedSurfaceArea: 500 },
-            timestamp: Date.now(),
-            source: "system",
           },
-        ],
+        },
         currentStep: "URBAN_PROJECT_BUILDINGS_INTRODUCTION",
       });
 

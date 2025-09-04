@@ -1,6 +1,6 @@
 import { computeProjectReinstatementExpenses } from "shared";
 
-import { FormState } from "../../form-state/formState";
+import { ReadStateHelper } from "../../urbanProject.helpers";
 import { AnswerStepHandler } from "../stepHandler.type";
 
 export const UrbanProjectReinstatementExpensesHandler: AnswerStepHandler<"URBAN_PROJECT_EXPENSES_REINSTATEMENT"> =
@@ -8,12 +8,10 @@ export const UrbanProjectReinstatementExpensesHandler: AnswerStepHandler<"URBAN_
     stepId: "URBAN_PROJECT_EXPENSES_REINSTATEMENT",
 
     getDefaultAnswers(context) {
-      const soilsDistribution = FormState.getProjectSoilDistribution(
-        context.urbanProjectEventSourcing.events,
-      );
+      const soilsDistribution = ReadStateHelper.getProjectSoilDistribution(context.stepsState);
       const decontaminatedSurface =
-        FormState.getStepAnswers<"URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA">(
-          context.urbanProjectEventSourcing.events,
+        ReadStateHelper.getStepAnswers<"URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA">(
+          context.stepsState,
           "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA",
         )?.decontaminatedSurfaceArea;
 

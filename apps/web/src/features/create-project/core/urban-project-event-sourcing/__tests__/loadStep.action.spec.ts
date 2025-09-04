@@ -7,8 +7,6 @@ import {
 import { describe, it, expect, beforeEach } from "vitest";
 
 import { Schedule } from "../../project.types";
-import { AnswerSetEvent } from "../form-events/AnswerSetEvent";
-import { FormEvent, SerializedAnswerSetEvent } from "../form-events/FormEvent.type";
 import { completeStep, loadStep } from "../urbanProject.actions";
 import { mockSiteData } from "./_siteData.mock";
 import { createTestStore } from "./_testStoreHelpers";
@@ -22,40 +20,35 @@ describe("loadStep action", () => {
 
   describe("Basic loadStep functionality", () => {
     it("should not add events when loading step without existing answers", () => {
-      const initialEvents = store.getState().projectCreation.urbanProjectEventSourcing.events;
-      expect(initialEvents).toHaveLength(0);
+      const initialSteps = store.getState().projectCreation.urbanProjectEventSourcing.steps;
+      expect(Object.keys(initialSteps)).toHaveLength(0);
 
       // étape qui n'a pas de valeurs par défaut
       store.dispatch(loadStep({ stepId: "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION" }));
 
-      const afterLoadEvents = store.getState().projectCreation.urbanProjectEventSourcing.events;
-      expect(afterLoadEvents).toHaveLength(0);
+      expect(
+        store.getState().projectCreation.urbanProjectEventSourcing.steps
+          .URBAN_PROJECT_SPACES_CATEGORIES_SELECTION,
+      ).toBeUndefined();
     });
 
     it("should generate default answers for steps that have them", () => {
       // étape qui génère des valeurs par défaut
       store.dispatch(loadStep({ stepId: "URBAN_PROJECT_NAMING" }));
 
-      const events = store.getState().projectCreation.urbanProjectEventSourcing.events;
-      expect(events).toHaveLength(1);
-      const event = events[0] as SerializedAnswerSetEvent<"URBAN_PROJECT_NAMING">;
-      expect(event.stepId).toEqual("URBAN_PROJECT_NAMING");
-      expect(event.source).toEqual("system");
-      expect(event.type).toEqual("ANSWER_SET");
-      expect(event.payload).toEqual({ name: expect.any(String) as string });
+      const step =
+        store.getState().projectCreation.urbanProjectEventSourcing.steps.URBAN_PROJECT_NAMING;
+      expect(step?.defaultValues).toEqual({ name: expect.any(String) as string });
     });
 
     it("should generate default expenses for installation step", () => {
       store.dispatch(loadStep({ stepId: "URBAN_PROJECT_EXPENSES_INSTALLATION" }));
 
-      const events = store.getState().projectCreation.urbanProjectEventSourcing.events;
-      expect(events).toHaveLength(1);
-      const event = events[0] as SerializedAnswerSetEvent<"URBAN_PROJECT_EXPENSES_INSTALLATION">;
-
-      expect(event.stepId).toEqual("URBAN_PROJECT_EXPENSES_INSTALLATION");
-      expect(event.source).toEqual("system");
-      expect(event.type).toEqual("ANSWER_SET");
-      expect(event.payload).toMatchObject({
+      const steps = store.getState().projectCreation.urbanProjectEventSourcing.steps;
+      expect(steps.URBAN_PROJECT_EXPENSES_INSTALLATION).toBeDefined();
+      expect(steps.URBAN_PROJECT_EXPENSES_INSTALLATION?.completed).toEqual(false);
+      expect(steps.URBAN_PROJECT_EXPENSES_INSTALLATION?.payload).toBeUndefined();
+      expect(steps.URBAN_PROJECT_EXPENSES_INSTALLATION?.defaultValues).toMatchObject({
         installationExpenses: expect.arrayContaining([
           expect.objectContaining({
             purpose: "development_works",
@@ -76,13 +69,11 @@ describe("loadStep action", () => {
     it("should generate default schedule when loading schedule projection", () => {
       store.dispatch(loadStep({ stepId: "URBAN_PROJECT_SCHEDULE_PROJECTION" }));
 
-      const events = store.getState().projectCreation.urbanProjectEventSourcing.events;
-      expect(events).toHaveLength(1);
-      expect(events[0]).toMatchObject({
-        type: "ANSWER_SET",
-        stepId: "URBAN_PROJECT_SCHEDULE_PROJECTION",
-        source: "system",
-        payload: {
+      const steps = store.getState().projectCreation.urbanProjectEventSourcing.steps;
+      expect(steps.URBAN_PROJECT_SCHEDULE_PROJECTION).toEqual({
+        completed: false,
+        payload: undefined,
+        defaultValues: {
           installationSchedule: expect.objectContaining({
             startDate: expect.any(String) as string,
             endDate: expect.any(String) as string,
@@ -104,30 +95,36 @@ describe("loadStep action", () => {
 
       storeNonFriche.dispatch(loadStep({ stepId: "URBAN_PROJECT_SCHEDULE_PROJECTION" }));
 
-      const events = storeNonFriche.getState().projectCreation.urbanProjectEventSourcing.events;
-      const event = events[0] as SerializedAnswerSetEvent<"URBAN_PROJECT_SCHEDULE_PROJECTION">;
-      expect(event.payload.reinstatementSchedule).toBeUndefined();
-      expect(event.payload.installationSchedule).toBeDefined();
+      const steps = storeNonFriche.getState().projectCreation.urbanProjectEventSourcing.steps;
+      expect(
+        steps.URBAN_PROJECT_SCHEDULE_PROJECTION?.payload?.reinstatementSchedule,
+      ).toBeUndefined();
+      expect(
+        steps.URBAN_PROJECT_SCHEDULE_PROJECTION?.defaultValues?.installationSchedule,
+      ).toBeDefined();
     });
 
     it("should not generate defaults when answers already exist", () => {
       const storeWithExistingAnswer = createTestStore({
-        events: [AnswerSetEvent.new("URBAN_PROJECT_NAMING", { name: "Nom existant" }) as FormEvent],
+        steps: {
+          URBAN_PROJECT_NAMING: {
+            completed: true,
+            payload: { name: "Nom existant" },
+            defaultValues: { name: "Projet PV" },
+          },
+        },
       });
-
-      const initialEvents =
-        storeWithExistingAnswer.getState().projectCreation.urbanProjectEventSourcing.events;
-      expect(initialEvents).toHaveLength(1);
 
       storeWithExistingAnswer.dispatch(loadStep({ stepId: "URBAN_PROJECT_NAMING" }));
 
-      const afterLoadEvents =
-        storeWithExistingAnswer.getState().projectCreation.urbanProjectEventSourcing.events;
+      const steps =
+        storeWithExistingAnswer.getState().projectCreation.urbanProjectEventSourcing.steps;
 
-      expect(afterLoadEvents).toHaveLength(1);
-
-      const event = afterLoadEvents[0] as SerializedAnswerSetEvent<"URBAN_PROJECT_NAMING">;
-      expect(event.payload.name).toBe("Nom existant");
+      expect(steps.URBAN_PROJECT_NAMING).toEqual({
+        completed: true,
+        payload: { name: "Nom existant" },
+        defaultValues: { name: "Projet PV" },
+      });
     });
   });
 
@@ -135,10 +132,9 @@ describe("loadStep action", () => {
     it("should not add duplicate event when completing with same default values for naming", () => {
       store.dispatch(loadStep({ stepId: "URBAN_PROJECT_NAMING" }));
 
-      const afterLoadEvents = store.getState().projectCreation.urbanProjectEventSourcing.events;
-      expect(afterLoadEvents).toHaveLength(1);
-      const event = afterLoadEvents[0] as SerializedAnswerSetEvent<"URBAN_PROJECT_NAMING">;
-      const defaultName = event.payload.name;
+      const steps = store.getState().projectCreation.urbanProjectEventSourcing.steps;
+
+      const defaultName = steps.URBAN_PROJECT_NAMING?.defaultValues?.name;
 
       // complete with same values
       store.dispatch(
@@ -148,16 +144,21 @@ describe("loadStep action", () => {
         }),
       );
 
-      const afterCompleteEvents = store.getState().projectCreation.urbanProjectEventSourcing.events;
-      expect(afterCompleteEvents).toHaveLength(1);
-      expect(afterCompleteEvents).toBe(afterLoadEvents);
+      const afterCompleteStep =
+        store.getState().projectCreation.urbanProjectEventSourcing.steps.URBAN_PROJECT_NAMING;
+      expect(afterCompleteStep).toEqual({
+        completed: true,
+        defaultValues: { name: defaultName },
+        payload: { name: defaultName },
+      });
     });
 
     it("should add event when completing with different values from defaults", () => {
       store.dispatch(loadStep({ stepId: "URBAN_PROJECT_NAMING" }));
 
-      const afterLoadEvents = store.getState().projectCreation.urbanProjectEventSourcing.events;
-      expect(afterLoadEvents).toHaveLength(1);
+      const afterLoadStep =
+        store.getState().projectCreation.urbanProjectEventSourcing.steps.URBAN_PROJECT_NAMING;
+      expect(afterLoadStep).toBeDefined();
 
       store.dispatch(
         completeStep({
@@ -169,12 +170,13 @@ describe("loadStep action", () => {
         }),
       );
 
-      const afterCompleteEvents = store.getState().projectCreation.urbanProjectEventSourcing.events;
-      expect(afterCompleteEvents).toHaveLength(2);
-      expect(afterCompleteEvents[1]).toMatchObject({
-        type: "ANSWER_SET",
-        stepId: "URBAN_PROJECT_NAMING",
-        source: "user",
+      const afterCompleteStep = store.getState().projectCreation.urbanProjectEventSourcing.steps;
+      expect(afterCompleteStep).toBeDefined();
+      expect(afterCompleteStep.URBAN_PROJECT_NAMING).toEqual({
+        completed: true,
+        defaultValues: {
+          name: afterLoadStep?.defaultValues?.name,
+        },
         payload: {
           name: "Nom personnalisé",
           description: "Description personnalisée",
@@ -185,11 +187,10 @@ describe("loadStep action", () => {
     it("should handle complex default values correctly for installation expenses", () => {
       store.dispatch(loadStep({ stepId: "URBAN_PROJECT_EXPENSES_INSTALLATION" }));
 
-      const afterLoadEvents = store.getState().projectCreation.urbanProjectEventSourcing.events;
-      expect(afterLoadEvents).toHaveLength(1);
-      const firstEvent =
-        afterLoadEvents[0] as SerializedAnswerSetEvent<"URBAN_PROJECT_EXPENSES_INSTALLATION">;
-      const defaultExpenses = firstEvent.payload.installationExpenses;
+      const afterLoadStep =
+        store.getState().projectCreation.urbanProjectEventSourcing.steps
+          .URBAN_PROJECT_EXPENSES_INSTALLATION;
+      const defaultExpenses = afterLoadStep?.defaultValues?.installationExpenses;
 
       // same values than default
       store.dispatch(
@@ -199,29 +200,30 @@ describe("loadStep action", () => {
         }),
       );
 
-      const afterCompleteEvents = store.getState().projectCreation.urbanProjectEventSourcing.events;
-      expect(afterCompleteEvents).toHaveLength(1);
-      expect(afterCompleteEvents).toEqual(afterLoadEvents);
+      const afterCompleteStep =
+        store.getState().projectCreation.urbanProjectEventSourcing.steps
+          .URBAN_PROJECT_EXPENSES_INSTALLATION;
+      expect(afterCompleteStep).toEqual({
+        completed: true,
+        payload: { installationExpenses: defaultExpenses },
+        defaultValues: { installationExpenses: defaultExpenses },
+      });
     });
 
     it("should handle reinstatement expenses with soil distribution context", () => {
       const storeWithContext = createTestStore({
-        events: [
-          {
-            type: "ANSWER_SET",
-            stepId: "URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA",
+        steps: {
+          URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA: {
+            completed: true,
             payload: {
               spacesCategoriesDistribution: {
                 LIVING_AND_ACTIVITY_SPACES: 5000,
                 PUBLIC_SPACES: 5000,
               },
             },
-            timestamp: Date.now() - 3000,
-            source: "user",
           },
-          {
-            type: "ANSWER_SET",
-            stepId: "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
+          URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION: {
+            completed: true,
             payload: {
               livingAndActivitySpacesDistribution: {
                 BUILDINGS: 2000,
@@ -230,12 +232,9 @@ describe("loadStep action", () => {
                 PRIVATE_GREEN_SPACES: 500,
               },
             },
-            timestamp: Date.now() - 2000,
-            source: "user",
           },
-          {
-            type: "ANSWER_SET",
-            stepId: "URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION",
+          URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION: {
+            completed: true,
             payload: {
               publicSpacesDistribution: {
                 IMPERMEABLE_SURFACE: 2500,
@@ -243,25 +242,19 @@ describe("loadStep action", () => {
                 GRASS_COVERED_SURFACE: 1000,
               },
             },
-            timestamp: Date.now() - 1000,
-            source: "user",
           },
-        ],
+        },
       });
 
       storeWithContext.dispatch(loadStep({ stepId: "URBAN_PROJECT_EXPENSES_REINSTATEMENT" }));
 
-      const afterLoadEvents =
-        storeWithContext.getState().projectCreation.urbanProjectEventSourcing.events;
-      expect(afterLoadEvents).toHaveLength(4);
+      const afterLoadSteps =
+        storeWithContext.getState().projectCreation.urbanProjectEventSourcing.steps;
 
-      const reinstatementEvent =
-        afterLoadEvents[3] as SerializedAnswerSetEvent<"URBAN_PROJECT_EXPENSES_REINSTATEMENT">;
-      expect(reinstatementEvent).toMatchObject({
-        type: "ANSWER_SET",
-        stepId: "URBAN_PROJECT_EXPENSES_REINSTATEMENT",
-        source: "system",
-        payload: {
+      expect(afterLoadSteps.URBAN_PROJECT_EXPENSES_REINSTATEMENT).toEqual({
+        payload: undefined,
+        completed: false,
+        defaultValues: {
           reinstatementExpenses: expect.arrayContaining([
             expect.objectContaining({
               purpose: expect.any(String) as ReinstatementExpensePurpose,
@@ -270,7 +263,9 @@ describe("loadStep action", () => {
           ]) as ReinstatementExpense[],
         },
       });
-      const expenses = reinstatementEvent.payload.reinstatementExpenses ?? [];
+      const expenses =
+        afterLoadSteps.URBAN_PROJECT_EXPENSES_REINSTATEMENT?.defaultValues?.reinstatementExpenses ??
+        [];
       expect(sumListWithKey(expenses, "amount")).toBeGreaterThan(0);
     });
   });
@@ -288,23 +283,9 @@ describe("loadStep action", () => {
         const testStore = createTestStore();
         testStore.dispatch(loadStep({ stepId: stepId }));
 
-        const events = testStore.getState().projectCreation.urbanProjectEventSourcing.events;
-        expect(events).toHaveLength(0);
+        const steps = testStore.getState().projectCreation.urbanProjectEventSourcing.steps;
+        expect(steps[stepId]).toBeUndefined();
       });
-    });
-
-    it("should handle multiple loadStep calls on same step", () => {
-      // Premier chargement - génère les valeurs par défaut
-      store.dispatch(loadStep({ stepId: "URBAN_PROJECT_NAMING" }));
-      expect(store.getState().projectCreation.urbanProjectEventSourcing.events).toHaveLength(1);
-
-      // Deuxième chargement - ne devrait pas ajouter d'événement
-      store.dispatch(loadStep({ stepId: "URBAN_PROJECT_NAMING" }));
-      expect(store.getState().projectCreation.urbanProjectEventSourcing.events).toHaveLength(1);
-
-      // Troisième chargement - ne devrait toujours pas ajouter d'événement
-      store.dispatch(loadStep({ stepId: "URBAN_PROJECT_NAMING" }));
-      expect(store.getState().projectCreation.urbanProjectEventSourcing.events).toHaveLength(1);
     });
   });
 });

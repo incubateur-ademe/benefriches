@@ -1,4 +1,4 @@
-import { FormState } from "../../form-state/formState";
+import { ReadStateHelper } from "../../urbanProject.helpers";
 import { BUILDINGS_STEPS, AnswerStepId } from "../../urbanProjectSteps";
 import { AnswerStepHandler } from "../stepHandler.type";
 
@@ -33,7 +33,7 @@ export const UrbanProjectSpacesCategoriesSurfaceAreaHandler: AnswerStepHandler<t
       newAnswers.spacesCategoriesDistribution?.LIVING_AND_ACTIVITY_SPACES
     ) {
       if (!newAnswers.spacesCategoriesDistribution?.LIVING_AND_ACTIVITY_SPACES) {
-        const hasBuilding = FormState.hasBuildings(context.urbanProjectEventSourcing.events);
+        const hasBuilding = ReadStateHelper.hasBuildings(context.stepsState);
         steps.push("URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION");
         if (hasBuilding) {
           BUILDINGS_STEPS.forEach((stepId) => {
@@ -44,8 +44,8 @@ export const UrbanProjectSpacesCategoriesSurfaceAreaHandler: AnswerStepHandler<t
     }
 
     if (
-      FormState.hasLastAnswerFromSystem(
-        context.urbanProjectEventSourcing.events,
+      ReadStateHelper.hasLastAnswerFromSystem(
+        context.stepsState,
         "URBAN_PROJECT_EXPENSES_REINSTATEMENT",
       )
     ) {

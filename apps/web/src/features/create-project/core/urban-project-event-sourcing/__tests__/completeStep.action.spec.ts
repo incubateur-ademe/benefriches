@@ -1,6 +1,5 @@
 import { describe, it, expect, beforeEach } from "vitest";
 
-import { SerializedAnswerSetEvent } from "../form-events/FormEvent.type";
 import { completeStep, navigateToNext } from "../urbanProject.actions";
 import { createTestStore } from "./_testStoreHelpers";
 
@@ -36,11 +35,19 @@ describe("urbanProject.reducer", () => {
       );
 
       let currentState = store.getState().projectCreation;
-      expect(currentState.urbanProjectEventSourcing.events).toHaveLength(1);
-      expect(currentState.urbanProjectEventSourcing.events[0]?.type).toBe("ANSWER_SET");
-      expect(currentState.urbanProjectEventSourcing.events[0]?.stepId).toBe(
-        "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION",
-      );
+      expect(
+        currentState.urbanProjectEventSourcing.steps.URBAN_PROJECT_SPACES_CATEGORIES_SELECTION,
+      ).toBeDefined();
+      expect(
+        currentState.urbanProjectEventSourcing.steps.URBAN_PROJECT_SPACES_CATEGORIES_SELECTION
+          ?.completed,
+      ).toBe(true);
+      expect(
+        currentState.urbanProjectEventSourcing.steps.URBAN_PROJECT_SPACES_CATEGORIES_SELECTION
+          ?.payload,
+      ).toEqual({
+        spacesCategories: ["LIVING_AND_ACTIVITY_SPACES", "PUBLIC_SPACES", "GREEN_SPACES"],
+      });
       expect(currentState.urbanProjectEventSourcing.currentStep).toBe(
         "URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA",
       );
@@ -60,7 +67,10 @@ describe("urbanProject.reducer", () => {
       );
 
       currentState = store.getState().projectCreation;
-      expect(currentState.urbanProjectEventSourcing.events).toHaveLength(2);
+      expect(
+        currentState.urbanProjectEventSourcing.steps.URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA
+          ?.completed,
+      ).toBe(true);
       expect(currentState.urbanProjectEventSourcing.currentStep).toBe(
         "URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION",
       );
@@ -97,7 +107,10 @@ describe("urbanProject.reducer", () => {
       );
 
       currentState = store.getState().projectCreation;
-      expect(currentState.urbanProjectEventSourcing.events).toHaveLength(3);
+      expect(
+        currentState.urbanProjectEventSourcing.steps
+          .URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION?.completed,
+      ).toEqual(true);
       expect(currentState.urbanProjectEventSourcing.currentStep).toBe(
         "URBAN_PROJECT_PUBLIC_SPACES_INTRODUCTION",
       );
@@ -505,7 +518,7 @@ describe("urbanProject.reducer", () => {
         "URBAN_PROJECT_CREATION_RESULT",
       );
 
-      expect(currentState.urbanProjectEventSourcing.events.length).toEqual(22);
+      expect(Object.keys(currentState.urbanProjectEventSourcing.steps).length).toEqual(38);
     });
 
     it("should handle single category shortcut correctly", () => {
@@ -526,10 +539,18 @@ describe("urbanProject.reducer", () => {
         "URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION",
       );
 
-      expect(currentState.urbanProjectEventSourcing.events).toHaveLength(2);
-      expect(currentState.urbanProjectEventSourcing.events[1]?.stepId).toBe(
-        "URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA",
-      );
+      expect(
+        currentState.urbanProjectEventSourcing.steps.URBAN_PROJECT_SPACES_CATEGORIES_SELECTION
+          ?.completed,
+      ).toEqual(true);
+      expect(
+        currentState.urbanProjectEventSourcing.steps.URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA
+          ?.payload,
+      ).toEqual({
+        spacesCategoriesDistribution: {
+          LIVING_AND_ACTIVITY_SPACES: currentState.siteData?.surfaceArea,
+        },
+      });
     });
 
     it('should handle decontamination plan "none" correctly', () => {
@@ -579,48 +600,14 @@ describe("urbanProject.reducer", () => {
         "URBAN_PROJECT_BUILDINGS_INTRODUCTION",
       );
 
-      const decontaminationSurfaceEvent = currentState.urbanProjectEventSourcing.events.find(
-        (
-          event,
-        ): event is SerializedAnswerSetEvent<"URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA"> =>
-          event.stepId === "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA" &&
-          event.type === "ANSWER_SET",
-      );
-      expect(decontaminationSurfaceEvent).toBeDefined();
-      expect(decontaminationSurfaceEvent?.payload.decontaminatedSurfaceArea).toBe(0);
-    });
-  });
-
-  describe("Edge cases and error handling", () => {
-    it("should preserve existing events when adding new ones", () => {
-      store.dispatch(navigateToNext({ stepId: "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION" }));
-      store.dispatch(
-        completeStep({
-          stepId: "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION",
-          answers: { spacesCategories: ["LIVING_AND_ACTIVITY_SPACES"] },
-        }),
-      );
-
-      const firstState = store.getState().projectCreation;
-      const firstEventTimestamp = firstState.urbanProjectEventSourcing.events[0]?.timestamp;
-
-      store.dispatch(
-        navigateToNext({ stepId: "URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION" }),
-      );
-      store.dispatch(
-        navigateToNext({ stepId: "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_INTRODUCTION" }),
-      );
-      store.dispatch(
-        completeStep({
-          stepId: "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
-          answers: { livingAndActivitySpacesDistribution: { BUILDINGS: 1000 } },
-        }),
-      );
-
-      const secondState = store.getState().projectCreation;
-
-      expect(secondState.urbanProjectEventSourcing.events).toHaveLength(3); // 2 du shortcut + 1 nouveau
-      expect(secondState.urbanProjectEventSourcing.events[0]?.timestamp).toBe(firstEventTimestamp);
+      expect(
+        currentState.urbanProjectEventSourcing.steps
+          .URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA,
+      ).toBeDefined();
+      expect(
+        currentState.urbanProjectEventSourcing.steps
+          .URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA?.payload?.decontaminatedSurfaceArea,
+      ).toBe(0);
     });
   });
 });

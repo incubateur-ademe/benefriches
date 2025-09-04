@@ -1,4 +1,4 @@
-import { FormState } from "../../form-state/formState";
+import { ReadStateHelper } from "../../urbanProject.helpers";
 import { AnswerStepHandler } from "../stepHandler.type";
 
 export const GreenSpacesSurfaceAreaDistributionHandler: AnswerStepHandler<"URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION"> =
@@ -7,8 +7,8 @@ export const GreenSpacesSurfaceAreaDistributionHandler: AnswerStepHandler<"URBAN
 
     getStepsToInvalidate(context) {
       if (
-        FormState.hasLastAnswerFromSystem(
-          context.urbanProjectEventSourcing.events,
+        ReadStateHelper.hasLastAnswerFromSystem(
+          context.stepsState,
           "URBAN_PROJECT_EXPENSES_REINSTATEMENT",
         )
       ) {

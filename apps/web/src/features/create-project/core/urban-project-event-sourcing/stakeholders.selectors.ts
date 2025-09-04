@@ -1,25 +1,21 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import { RootState } from "@/shared/core/store-config/store";
-
 import {
   AvailableProjectStakeholder,
   getAvailableLocalAuthoritiesStakeholders,
   getProjectAvailableStakeholders,
   hasStakeholder,
 } from "../stakeholders.selectors";
-import { FormState } from "./form-state/formState";
+import { ReadStateHelper } from "./urbanProject.helpers";
+import { selectStepState } from "./urbanProject.selectors";
 
 export const getUrbanProjectAvailableStakeholders = createSelector(
-  [
-    getProjectAvailableStakeholders,
-    (state: RootState) => state.projectCreation.urbanProjectEventSourcing.events,
-  ],
-  (projectAvailableStakeholders, events) => {
+  [getProjectAvailableStakeholders, selectStepState],
+  (projectAvailableStakeholders, steps) => {
     const stakeholders: AvailableProjectStakeholder[] = projectAvailableStakeholders.slice();
 
-    const projectDeveloper = FormState.getStepAnswers(
-      events,
+    const projectDeveloper = ReadStateHelper.getStepAnswers(
+      steps,
       "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER",
     )?.projectDeveloper;
 
@@ -31,8 +27,8 @@ export const getUrbanProjectAvailableStakeholders = createSelector(
       });
     }
 
-    const reinstatementContractOwner = FormState.getStepAnswers(
-      events,
+    const reinstatementContractOwner = ReadStateHelper.getStepAnswers(
+      steps,
       "URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER",
     )?.reinstatementContractOwner;
 
@@ -49,18 +45,15 @@ export const getUrbanProjectAvailableStakeholders = createSelector(
 );
 
 export const getUrbanProjectAvailableLocalAuthoritiesStakeholders = createSelector(
-  [
-    getAvailableLocalAuthoritiesStakeholders,
-    (state: RootState) => state.projectCreation.urbanProjectEventSourcing.events,
-  ],
-  (availableLocalAuthoritiesStakeholders, events) => {
-    const projectDeveloper = FormState.getStepAnswers(
-      events,
+  [getAvailableLocalAuthoritiesStakeholders, selectStepState],
+  (availableLocalAuthoritiesStakeholders, steps) => {
+    const projectDeveloper = ReadStateHelper.getStepAnswers(
+      steps,
       "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER",
     )?.projectDeveloper;
 
-    const reinstatementContractOwner = FormState.getStepAnswers(
-      events,
+    const reinstatementContractOwner = ReadStateHelper.getStepAnswers(
+      steps,
       "URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER",
     )?.reinstatementContractOwner;
 

@@ -1,4 +1,4 @@
-import { FormState } from "../../form-state/formState";
+import { ReadStateHelper } from "../../urbanProject.helpers";
 import { AnswerStepHandler } from "../stepHandler.type";
 
 export const RevenueExpectedSiteResaleHandler: AnswerStepHandler<"URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE"> =
@@ -10,12 +10,8 @@ export const RevenueExpectedSiteResaleHandler: AnswerStepHandler<"URBAN_PROJECT_
     },
 
     getNextStepId(context) {
-      if (FormState.hasBuildings(context.urbanProjectEventSourcing.events)) {
-        if (
-          FormState.hasBuildingsResalePlannedAfterDevelopment(
-            context.urbanProjectEventSourcing.events,
-          )
-        ) {
+      if (ReadStateHelper.hasBuildings(context.stepsState)) {
+        if (ReadStateHelper.hasBuildingsResalePlannedAfterDevelopment(context.stepsState)) {
           return "URBAN_PROJECT_REVENUE_BUILDINGS_RESALE";
         }
         return "URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES";
