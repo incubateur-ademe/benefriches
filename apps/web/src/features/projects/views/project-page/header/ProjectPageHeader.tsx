@@ -43,8 +43,7 @@ const ProjectPageHeader = ({
           <img
             className={classNames(
               "col-start-1",
-              "sm:row-start-1",
-              "sm:row-span-2",
+              "sm:row-start-1 sm:row-span-2",
               isSmallSize ? "w-[60px] h-[60px]" : "md:w-[72px] md:h-[72px]",
             )}
             src={getScenarioPictoUrl(projectType)}
@@ -61,19 +60,16 @@ const ProjectPageHeader = ({
         </div>
         <div
           className={classNames(
-            "row-start-2",
-            "col-start-1 sm:col-start-2",
-            "col-span-3 sm:col-span-1",
+            "sm:col-start-2 sm:col-span-1",
+            "row-start-2 col-start-1 col-span-3",
           )}
         >
           <span
-            className={
-              fr.cx(
-                "fr-icon-map-pin-2-line",
-                "fr-icon--sm",
-                isSmallSize ? "fr-mr-1w" : "fr-mr-0-5v",
-              ),
-            }
+            className={fr.cx(
+              "fr-icon-map-pin-2-line",
+              "fr-icon--sm",
+              isSmallSize ? "fr-mr-1w" : "fr-mr-0-5v",
+            )}
             aria-hidden="true"
           ></span>
           <a
