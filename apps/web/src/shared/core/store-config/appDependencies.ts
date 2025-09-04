@@ -6,6 +6,7 @@ import { HttpSitesService } from "@/features/create-project/infrastructure/sites
 import { HttpCreateSiteApi } from "@/features/create-site/infrastructure/create-site-service/HttpCreateSiteApi";
 import { HttpAuthService } from "@/features/onboarding/infrastructure/auth-service/HttpAuthService";
 import { HttpCreateUserService } from "@/features/onboarding/infrastructure/create-user-service/HttpCreateUserService";
+import { HttpCurrentUserService } from "@/features/onboarding/infrastructure/current-user-service/HttpCurrentUserService";
 import { LocalStorageCurrentUserService } from "@/features/onboarding/infrastructure/current-user-service/LocalStorageCurrentUserService";
 import { HttpProjectFeaturesService } from "@/features/projects/infrastructure/project-features-service/HttpProjectFeaturesService";
 import { HttpReconversionProjectsListApi } from "@/features/projects/infrastructure/projects-list-service/HttpProjectsListApi";
@@ -20,8 +21,8 @@ import { BENEFRICHES_ENV } from "@/shared/views/envVars";
 
 import { AppDependencies } from "./store";
 
-const createUserService = BENEFRICHES_ENV.authEnabled
-  ? new HttpCreateUserService()
+const currentUserService = BENEFRICHES_ENV.authEnabled
+  ? new HttpCurrentUserService()
   : new LocalStorageCurrentUserService();
 
 export const appDependencies: AppDependencies = {
@@ -36,8 +37,8 @@ export const appDependencies: AppDependencies = {
   reconversionProjectImpacts: new HttpReconversionProjectImpactsApi(),
   photovoltaicPerformanceService: new ExpectedPhotovoltaicPerformanceApi(),
   municipalityDataService: new AdministrativeDivisionGeoApi(),
-  currentUserService: new LocalStorageCurrentUserService(),
-  createUserService: createUserService,
+  currentUserService,
+  createUserService: new HttpCreateUserService(),
   createUserFeatureAlertService: new CreateFeatureAlertService(),
   siteFeaturesService: new HttpSiteFeaturesService(),
   projectFeaturesService: new HttpProjectFeaturesService(),
