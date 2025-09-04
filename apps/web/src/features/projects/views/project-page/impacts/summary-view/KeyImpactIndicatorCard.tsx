@@ -46,7 +46,7 @@ const KeyImpactIndicatorCard = ({ title, type, buttonProps }: Props) => {
         )}
         aria-hidden="true"
       ></span>
-      <h3 className="text-lg font-bold mb-0">{title}</h3>
+      <h4 className="text-lg font-bold mb-0">{title}</h4>
     </button>
   );
 };
