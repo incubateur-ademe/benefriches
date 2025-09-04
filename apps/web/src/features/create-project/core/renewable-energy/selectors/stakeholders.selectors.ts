@@ -1,5 +1,8 @@
 import { createSelector } from "@reduxjs/toolkit";
 
+import { selectCurrentUserStructure } from "@/features/onboarding/core/user.reducer";
+
+import { selectSiteData } from "../../createProject.selectors";
 import { ProjectStakeholder } from "../../project.types";
 import {
   AvailableProjectStakeholder,
@@ -83,5 +86,34 @@ export const getRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders = cr
             currentLocalAuthority.name === addressLocalAuthority.name,
         ),
     );
+  },
+);
+
+type SitePurchasedViewData = {
+  isCurrentUserSiteOwner: boolean;
+  initialValues:
+    | {
+        willSiteBePurchased: boolean;
+      }
+    | undefined;
+  siteOwnerName: string | undefined;
+};
+
+export const selectSitePurchasedViewData = createSelector(
+  [selectCreationData, selectSiteData, selectCurrentUserStructure],
+  (creationData, siteData, currentUserStructure): SitePurchasedViewData => {
+    const isCurrentUserSiteOwner =
+      siteData !== undefined &&
+      currentUserStructure !== undefined &&
+      siteData.owner.name === currentUserStructure.name &&
+      siteData.owner.structureType === currentUserStructure.type;
+
+    return {
+      isCurrentUserSiteOwner,
+      initialValues: creationData.willSiteBePurchased
+        ? { willSiteBePurchased: creationData.willSiteBePurchased }
+        : undefined,
+      siteOwnerName: siteData ? siteData.owner.name : undefined,
+    };
   },
 );

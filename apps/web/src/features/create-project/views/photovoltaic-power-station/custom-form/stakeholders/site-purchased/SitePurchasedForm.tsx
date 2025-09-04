@@ -7,6 +7,7 @@ import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormL
 type Props = {
   initialValues?: FormValues;
   currentOwnerName?: string;
+  isCurrentUserSiteOwner: boolean;
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
 };
@@ -15,15 +16,23 @@ export type FormValues = {
   willSiteBePurchased: "yes" | "no" | null;
 };
 
-function SitePurchasedForm({ initialValues, onSubmit, onBack, currentOwnerName }: Props) {
+function SitePurchasedForm({
+  initialValues,
+  onSubmit,
+  onBack,
+  currentOwnerName,
+  isCurrentUserSiteOwner,
+}: Props) {
   const { register, handleSubmit, formState, watch } = useForm<FormValues>({
     defaultValues: initialValues,
   });
 
+  const title = isCurrentUserSiteOwner
+    ? "Allez-vous revendre le site ?"
+    : `Le site sera-t-il racheté ${currentOwnerName ? `à ${currentOwnerName}` : "au propriétaire"} ?`;
+
   return (
-    <WizardFormLayout
-      title={`Le site sera-t-il racheté ${currentOwnerName ? `à ${currentOwnerName}` : "au propriétaire"} ?`}
-    >
+    <WizardFormLayout title={title}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <RadioButtons
           {...register("willSiteBePurchased")}

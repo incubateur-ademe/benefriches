@@ -1,14 +1,14 @@
 import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
 import { completeSitePurchase } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
+import { selectSitePurchasedViewData } from "@/features/create-project/core/renewable-energy/selectors/stakeholders.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import SitePurchasedForm, { FormValues } from "./SitePurchasedForm";
 
 function SitePurchasedFormContainer() {
   const dispatch = useAppDispatch();
-  const siteOwner = useAppSelector((state) => state.projectCreation.siteData?.owner);
-  const initialValue = useAppSelector(
-    (state) => state.projectCreation.renewableEnergyProject.creationData.willSiteBePurchased,
+  const { isCurrentUserSiteOwner, initialValues, siteOwnerName } = useAppSelector(
+    selectSitePurchasedViewData,
   );
 
   const onSubmit = (data: FormValues) => {
@@ -23,13 +23,14 @@ function SitePurchasedFormContainer() {
   return (
     <SitePurchasedForm
       initialValues={
-        initialValue === undefined
-          ? undefined
-          : { willSiteBePurchased: initialValue ? "yes" : "no" }
+        initialValues
+          ? { willSiteBePurchased: initialValues.willSiteBePurchased ? "yes" : "no" }
+          : undefined
       }
       onSubmit={onSubmit}
       onBack={onBack}
-      currentOwnerName={siteOwner?.name}
+      currentOwnerName={siteOwnerName}
+      isCurrentUserSiteOwner={isCurrentUserSiteOwner}
     />
   );
 }
