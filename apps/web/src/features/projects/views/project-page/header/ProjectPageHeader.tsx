@@ -67,16 +67,20 @@ const ProjectPageHeader = ({
           )}
         >
           <span
-            className={classNames(
+            className={
               fr.cx(
                 "fr-icon-map-pin-2-line",
                 "fr-icon--sm",
                 isSmallSize ? "fr-mr-1w" : "fr-mr-0-5v",
               ),
-            )}
+            }
             aria-hidden="true"
           ></span>
-          <a href={siteFeaturesHref} className="text-base">
+          <a
+            href={siteFeaturesHref}
+            className="text-base hover:underline"
+            style={{ backgroundImage: "none" }} // DSFR applies a background image for underline style by default
+          >
             {siteName}
           </a>
         </div>
