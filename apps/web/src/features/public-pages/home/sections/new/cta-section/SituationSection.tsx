@@ -4,6 +4,7 @@ import { selectCurrentUserEmail } from "@/features/onboarding/core/user.reducer"
 import { featureAlertSubscribed } from "@/features/user-feature-alerts/core/createFeatureAlert.action";
 import { selectUserFeaturesAlerts } from "@/features/user-feature-alerts/core/userFeatureAlert.reducer";
 import { mutafrichesHomepageModalOpened, trackEvent } from "@/shared/views/analytics";
+import { BENEFRICHES_ENV } from "@/shared/views/envVars";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { routes } from "@/shared/views/router";
 
@@ -62,7 +63,13 @@ export default function SituationSection() {
             <h3 className="text-2xl">
               J'ai un projet sur un site et je souhaite savoir quelles seraient ses retombées.
             </h3>
-            <Button linkProps={{ ...routes.onBoardingIntroductionWhy().link }}>
+            <Button
+              linkProps={{
+                ...(BENEFRICHES_ENV.authEnabled
+                  ? routes.accessBenefriches().link
+                  : routes.onBoardingIdentity().link),
+              }}
+            >
               Évaluer les impacts de mon projet
             </Button>
             <p className="mt-6 mb-2 font-bold">POINTS FORTS :</p>
