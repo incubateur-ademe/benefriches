@@ -1,4 +1,4 @@
-import { FormState } from "../../form-state/formState";
+import { ReadStateHelper } from "../../urbanProject.helpers";
 import { BUILDINGS_STEPS, AnswerStepId } from "../../urbanProjectSteps";
 import { AnswerStepHandler } from "../stepHandler.type";
 
@@ -38,7 +38,7 @@ export const UrbanProjectSpacesCategoriesSelectionHandler: AnswerStepHandler<typ
       previousAnswers.spacesCategories?.includes("LIVING_AND_ACTIVITY_SPACES") &&
       !newAnswers.spacesCategories?.includes("LIVING_AND_ACTIVITY_SPACES")
     ) {
-      const hasBuilding = FormState.hasBuildings(context.urbanProjectEventSourcing.events);
+      const hasBuilding = ReadStateHelper.hasBuildings(context.stepsState);
       steps.push("URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION");
 
       if (hasBuilding) {
@@ -49,8 +49,8 @@ export const UrbanProjectSpacesCategoriesSelectionHandler: AnswerStepHandler<typ
     }
 
     if (
-      FormState.hasLastAnswerFromSystem(
-        context.urbanProjectEventSourcing.events,
+      ReadStateHelper.hasLastAnswerFromSystem(
+        context.stepsState,
         "URBAN_PROJECT_EXPENSES_REINSTATEMENT",
       )
     ) {
@@ -73,7 +73,7 @@ export const UrbanProjectSpacesCategoriesSelectionHandler: AnswerStepHandler<typ
 
       const shouldInvalidateBuildings =
         answers.spacesCategories[0] === "LIVING_AND_ACTIVITY_SPACES" &&
-        FormState.hasBuildings(context.urbanProjectEventSourcing.events);
+        ReadStateHelper.hasBuildings(context.stepsState);
 
       if (shouldInvalidateBuildings) {
         invalidSteps.push(...BUILDINGS_STEPS);

@@ -1,5 +1,5 @@
 import { getFutureSiteOwner } from "../../../stakeholders";
-import { FormState } from "../../form-state/formState";
+import { ReadStateHelper } from "../../urbanProject.helpers";
 import { AnswerStepHandler } from "../stepHandler.type";
 
 const STEP_ID = "URBAN_PROJECT_SITE_RESALE_SELECTION" as const;
@@ -8,7 +8,7 @@ export const SiteResaleSelectionHandler: AnswerStepHandler<typeof STEP_ID> = {
   stepId: STEP_ID,
 
   getNextStepId(context) {
-    if (FormState.hasBuildings(context.urbanProjectEventSourcing.events)) {
+    if (ReadStateHelper.hasBuildings(context.stepsState)) {
       return "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION";
     }
 

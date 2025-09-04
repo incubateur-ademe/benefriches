@@ -1,6 +1,6 @@
 import { computeDefaultInstallationExpensesFromSiteSurfaceArea } from "shared";
 
-import { FormState } from "../../form-state/formState";
+import { ReadStateHelper } from "../../urbanProject.helpers";
 import { AnswerStepHandler } from "../stepHandler.type";
 
 export const UrbanProjectInstallationExpensesHandler: AnswerStepHandler<"URBAN_PROJECT_EXPENSES_INSTALLATION"> =
@@ -9,10 +9,8 @@ export const UrbanProjectInstallationExpensesHandler: AnswerStepHandler<"URBAN_P
 
     getNextStepId(context) {
       if (
-        FormState.hasBuildings(context.urbanProjectEventSourcing.events) &&
-        !FormState.hasBuildingsResalePlannedAfterDevelopment(
-          context.urbanProjectEventSourcing.events,
-        )
+        ReadStateHelper.hasBuildings(context.stepsState) &&
+        !ReadStateHelper.hasBuildingsResalePlannedAfterDevelopment(context.stepsState)
       ) {
         return "URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES";
       }

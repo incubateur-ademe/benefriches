@@ -1,4 +1,4 @@
-import { FormState } from "../../form-state/formState";
+import { ReadStateHelper } from "../../urbanProject.helpers";
 import { AnswerStepHandler } from "../stepHandler.type";
 
 export const PublicSpacesDistributionHandler: AnswerStepHandler<"URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION"> =
@@ -7,8 +7,8 @@ export const PublicSpacesDistributionHandler: AnswerStepHandler<"URBAN_PROJECT_P
 
     getStepsToInvalidate(context) {
       if (
-        FormState.hasLastAnswerFromSystem(
-          context.urbanProjectEventSourcing.events,
+        ReadStateHelper.hasLastAnswerFromSystem(
+          context.stepsState,
           "URBAN_PROJECT_EXPENSES_REINSTATEMENT",
         )
       ) {
@@ -22,8 +22,8 @@ export const PublicSpacesDistributionHandler: AnswerStepHandler<"URBAN_PROJECT_P
     },
 
     getNextStepId(context) {
-      const spacesCategoriesDistribution = FormState.getStepAnswers(
-        context.urbanProjectEventSourcing.events,
+      const spacesCategoriesDistribution = ReadStateHelper.getStepAnswers(
+        context.stepsState,
         "URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA",
       )?.spacesCategoriesDistribution;
 

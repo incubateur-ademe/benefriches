@@ -1,4 +1,4 @@
-import { FormState } from "../../form-state/formState";
+import { ReadStateHelper } from "../../urbanProject.helpers";
 import { InfoStepHandler } from "../stepHandler.type";
 
 export const SoilsCarbonSummaryHandler: InfoStepHandler = {
@@ -13,8 +13,8 @@ export const SoilsCarbonSummaryHandler: InfoStepHandler = {
       return "URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION";
     }
 
-    const livingAndActivitySpacesDistribution = FormState.getStepAnswers(
-      context.urbanProjectEventSourcing.events,
+    const livingAndActivitySpacesDistribution = ReadStateHelper.getStepAnswers(
+      context.stepsState,
       "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
     )?.livingAndActivitySpacesDistribution;
 

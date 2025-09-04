@@ -71,7 +71,7 @@ const MOCK_STATES = {
       soilsCarbonStorage: { loadingState: "idle", current: undefined, projected: undefined },
     },
     urbanProjectEventSourcing: {
-      events: [],
+      steps: {},
       saveState: "idle",
       currentStep: "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION",
       isStepLoading: false,

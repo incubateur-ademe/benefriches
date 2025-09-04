@@ -1,4 +1,4 @@
-import { FormState } from "../../form-state/formState";
+import { ReadStateHelper } from "../../urbanProject.helpers";
 import { AnswerStepHandler } from "../stepHandler.type";
 
 export const RevenueBuildingsResaleHandler: AnswerStepHandler<"URBAN_PROJECT_REVENUE_BUILDINGS_RESALE"> =
@@ -6,8 +6,8 @@ export const RevenueBuildingsResaleHandler: AnswerStepHandler<"URBAN_PROJECT_REV
     stepId: "URBAN_PROJECT_REVENUE_BUILDINGS_RESALE",
 
     getPreviousStepId(context) {
-      const siteResalePlannedAfterDevelopment = FormState.getStepAnswers(
-        context.urbanProjectEventSourcing.events,
+      const siteResalePlannedAfterDevelopment = ReadStateHelper.getStepAnswers(
+        context.stepsState,
         "URBAN_PROJECT_SITE_RESALE_SELECTION",
       )?.siteResalePlannedAfterDevelopment;
 

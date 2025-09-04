@@ -1,12 +1,12 @@
-import { FormState } from "../../form-state/formState";
+import { ReadStateHelper } from "../../urbanProject.helpers";
 import { InfoStepHandler } from "../stepHandler.type";
 
 export const PublicSpacesIntroductionHandler: InfoStepHandler = {
   stepId: "URBAN_PROJECT_PUBLIC_SPACES_INTRODUCTION",
 
   getPreviousStepId(context) {
-    const spacesCategoriesDistribution = FormState.getStepAnswers(
-      context.urbanProjectEventSourcing.events,
+    const spacesCategoriesDistribution = ReadStateHelper.getStepAnswers(
+      context.stepsState,
       "URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA",
     )?.spacesCategoriesDistribution;
 

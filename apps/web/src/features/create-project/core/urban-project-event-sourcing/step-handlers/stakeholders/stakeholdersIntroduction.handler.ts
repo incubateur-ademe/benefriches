@@ -1,4 +1,4 @@
-import { FormState } from "../../form-state/formState";
+import { ReadStateHelper } from "../../urbanProject.helpers";
 import { InfoStepHandler } from "../stepHandler.type";
 
 export const StakeholdersIntroductionHandler: InfoStepHandler = {
@@ -9,12 +9,12 @@ export const StakeholdersIntroductionHandler: InfoStepHandler = {
   },
 
   getPreviousStepId(context) {
-    if (FormState.hasBuildings(context.urbanProjectEventSourcing.events)) {
+    if (ReadStateHelper.hasBuildings(context.stepsState)) {
       return "URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION";
     }
 
-    const decontaminationPlan = FormState.getStepAnswers(
-      context.urbanProjectEventSourcing.events,
+    const decontaminationPlan = ReadStateHelper.getStepAnswers(
+      context.stepsState,
       "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
     )?.decontaminationPlan;
 

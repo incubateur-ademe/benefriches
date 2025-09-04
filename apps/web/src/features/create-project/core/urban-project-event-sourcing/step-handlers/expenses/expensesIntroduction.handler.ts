@@ -1,4 +1,4 @@
-import { FormState } from "../../form-state/formState";
+import { ReadStateHelper } from "../../urbanProject.helpers";
 import { InfoStepHandler } from "../stepHandler.type";
 
 export const ExpensesIntroductionHandler: InfoStepHandler = {
@@ -9,7 +9,7 @@ export const ExpensesIntroductionHandler: InfoStepHandler = {
   },
 
   getPreviousStepId(context) {
-    if (FormState.hasBuildings(context.urbanProjectEventSourcing.events)) {
+    if (ReadStateHelper.hasBuildings(context.stepsState)) {
       return "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION";
     }
     return "URBAN_PROJECT_SITE_RESALE_SELECTION";
