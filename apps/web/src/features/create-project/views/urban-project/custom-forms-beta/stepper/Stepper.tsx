@@ -1,4 +1,4 @@
-import { selectHasBuildings } from "@/features/create-project/core/urban-project-event-sourcing/urbanProject.selectors";
+import { selectHasBuildings } from "@/features/create-project/core/urban-project-beta/urbanProject.selectors";
 import { UrbanProjectCustomCreationStep } from "@/features/create-project/core/urban-project/creationSteps";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 import FormStepper from "@/shared/views/layout/WizardFormLayout/FormStepper";
@@ -82,7 +82,7 @@ type Props = {
   step: UrbanProjectCustomCreationStep;
 };
 
-function UrbanProjectCustomSteps({ step }: Props) {
+function UrbanProjectCustomStepper({ step }: Props) {
   const currentStepCategory = getCategoryForStep(step);
   const displayBuildingsSection = useAppSelector(selectHasBuildings);
 
@@ -102,4 +102,4 @@ function UrbanProjectCustomSteps({ step }: Props) {
   );
 }
 
-export default UrbanProjectCustomSteps;
+export default UrbanProjectCustomStepper;

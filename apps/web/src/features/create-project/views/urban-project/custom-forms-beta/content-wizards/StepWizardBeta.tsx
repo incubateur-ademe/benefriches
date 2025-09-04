@@ -3,9 +3,9 @@ import { Fragment } from "react/jsx-runtime";
 import { Route } from "type-route";
 
 import {
-  isAnwersStep,
+  isAnswersStep,
   isInformationalStep,
-} from "@/features/create-project/core/urban-project-event-sourcing/urbanProjectSteps";
+} from "@/features/create-project/core/urban-project-beta/urbanProjectSteps";
 import { UrbanProjectCustomCreationStep } from "@/features/create-project/core/urban-project/creationSteps";
 import classNames from "@/shared/views/clsx";
 import MenuItemButton from "@/shared/views/components/Menu/MenuItemButton";
@@ -13,7 +13,7 @@ import { MENU_ITEMS_CLASSES } from "@/shared/views/components/Menu/classes";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 import { routes } from "@/shared/views/router";
 
-import UrbanProjectCustomSteps from "../stepper/Stepper";
+import UrbanProjectCustomStepper from "../stepper/Stepper";
 import AnswerStepsWizard from "./AnswerStepWizard";
 import InformationalStepWizard from "./InformationalStepWizard";
 
@@ -68,9 +68,9 @@ const UrbanProjectCustomCreationStepWizardBeta = ({ currentStep, route }: Props)
           <BetaBadgeMenu route={route} />
         </>
       }
-      sidebarChildren={<UrbanProjectCustomSteps step={currentStep} />}
+      sidebarChildren={<UrbanProjectCustomStepper step={currentStep} />}
       mainChildren={(() => {
-        if (isAnwersStep(currentStep)) {
+        if (isAnswersStep(currentStep)) {
           return <AnswerStepsWizard currentStep={currentStep} />;
         }
 

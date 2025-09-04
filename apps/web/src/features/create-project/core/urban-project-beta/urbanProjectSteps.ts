@@ -16,7 +16,7 @@ import {
 import { ProjectStakeholder } from "../project.types";
 import { UrbanProjectCustomCreationStep } from "../urban-project/creationSteps";
 
-const INFORMATIONAL_STEPS = [
+export const INFORMATIONAL_STEPS = [
   "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION",
   "URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION",
   "URBAN_PROJECT_GREEN_SPACES_INTRODUCTION",
@@ -75,7 +75,7 @@ export const ANSWER_STEPS: AnswerStepId[] = [
 export type AnswerStepId = keyof AnswersByStep;
 
 const ANSWER_STEPS_SET = new Set<AnswerStepId>(ANSWER_STEPS);
-export const isAnwersStep = (stepId: UrbanProjectCustomCreationStep): stepId is AnswerStepId => {
+export const isAnswersStep = (stepId: UrbanProjectCustomCreationStep): stepId is AnswerStepId => {
   return ANSWER_STEPS_SET.has(stepId as AnswerStepId);
 };
 

@@ -8,9 +8,9 @@ export const customUrbanProjectSaved = createAppAsyncThunk(
   makeUrbanProjectCreationActionType("customProjectSaved"),
   async (_, { getState, extra }) => {
     const { projectCreation, currentUser } = getState();
-    const { urbanProjectEventSourcing, siteData, projectId } = projectCreation;
+    const { urbanProjectBeta, siteData, projectId } = projectCreation;
 
-    const creationData = ReadStateHelper.getProjectData(urbanProjectEventSourcing.steps);
+    const creationData = ReadStateHelper.getProjectData(urbanProjectBeta.steps);
 
     const mappedProjectData = {
       id: projectId,

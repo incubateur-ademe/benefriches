@@ -12,21 +12,21 @@ import { ANSWER_STEPS, AnswersByStep, AnswerStepId, FormAnswers } from "./urbanP
 
 export const ReadStateHelper = {
   getStepAnswers<K extends AnswerStepId>(
-    steps: ProjectCreationState["urbanProjectEventSourcing"]["steps"],
+    steps: ProjectCreationState["urbanProjectBeta"]["steps"],
     stepId: K,
   ) {
     return steps[stepId]?.payload as AnswersByStep[K] | undefined;
   },
 
   getDefaultAnswers<K extends AnswerStepId>(
-    steps: ProjectCreationState["urbanProjectEventSourcing"]["steps"],
+    steps: ProjectCreationState["urbanProjectBeta"]["steps"],
     stepId: K,
   ) {
     return steps[stepId]?.defaultValues as AnswersByStep[K] | undefined;
   },
 
   hasLastAnswerFromSystem(
-    steps: ProjectCreationState["urbanProjectEventSourcing"]["steps"],
+    steps: ProjectCreationState["urbanProjectBeta"]["steps"],
     stepId: AnswerStepId,
   ) {
     return (
@@ -36,7 +36,7 @@ export const ReadStateHelper = {
     );
   },
 
-  hasBuildings(steps: ProjectCreationState["urbanProjectEventSourcing"]["steps"]) {
+  hasBuildings(steps: ProjectCreationState["urbanProjectBeta"]["steps"]) {
     const livingAndActivitySpacesDistribution = this.getStepAnswers(
       steps,
       "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
@@ -49,7 +49,7 @@ export const ReadStateHelper = {
   },
 
   hasBuildingsResalePlannedAfterDevelopment(
-    steps: ProjectCreationState["urbanProjectEventSourcing"]["steps"],
+    steps: ProjectCreationState["urbanProjectBeta"]["steps"],
   ) {
     const buildingsResalePlannedAfterDevelopment = this.getStepAnswers(
       steps,
@@ -58,7 +58,7 @@ export const ReadStateHelper = {
     return buildingsResalePlannedAfterDevelopment;
   },
 
-  getProjectSoilDistribution(steps: ProjectCreationState["urbanProjectEventSourcing"]["steps"]) {
+  getProjectSoilDistribution(steps: ProjectCreationState["urbanProjectBeta"]["steps"]) {
     const spacesCategoriesDistribution = this.getStepAnswers(
       steps,
       "URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA",
@@ -114,7 +114,7 @@ export const ReadStateHelper = {
     return soilsDistribution.toJSON();
   },
 
-  getSpacesDistribution(steps: ProjectCreationState["urbanProjectEventSourcing"]["steps"]) {
+  getSpacesDistribution(steps: ProjectCreationState["urbanProjectBeta"]["steps"]) {
     const publicSpacesDistribution = this.getStepAnswers(
       steps,
       "URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION",
@@ -155,7 +155,7 @@ export const ReadStateHelper = {
     );
   },
 
-  getProjectData(steps: ProjectCreationState["urbanProjectEventSourcing"]["steps"]) {
+  getProjectData(steps: ProjectCreationState["urbanProjectBeta"]["steps"]) {
     const formAnswers = this.getAllFormAnswers(steps);
 
     const mappedProjectData = {
@@ -193,7 +193,7 @@ export const ReadStateHelper = {
     return mappedProjectData;
   },
 
-  getAllFormAnswers(steps: ProjectCreationState["urbanProjectEventSourcing"]["steps"]) {
+  getAllFormAnswers(steps: ProjectCreationState["urbanProjectBeta"]["steps"]) {
     return Array.from(ANSWER_STEPS).reduce<FormAnswers>(
       (acc, stepId) => ({
         ...acc,
@@ -206,44 +206,44 @@ export const ReadStateHelper = {
 
 export const MutateStateHelper = {
   navigateToStep: (state: ProjectCreationState, stepId: UrbanProjectCustomCreationStep) => {
-    state.urbanProjectEventSourcing.currentStep = stepId;
+    state.urbanProjectBeta.currentStep = stepId;
   },
   setDefaultValues<K extends AnswerStepId>(
     state: ProjectCreationState,
     stepId: K,
     answers: AnswersByStep[K],
   ) {
-    if (!state.urbanProjectEventSourcing.steps[stepId]) {
-      state.urbanProjectEventSourcing.steps[stepId] = {
+    if (!state.urbanProjectBeta.steps[stepId]) {
+      state.urbanProjectBeta.steps[stepId] = {
         completed: false,
       };
     }
-    state.urbanProjectEventSourcing.steps[stepId].defaultValues = answers;
+    state.urbanProjectBeta.steps[stepId].defaultValues = answers;
   },
   completeStep<K extends AnswerStepId>(
     state: ProjectCreationState,
     stepId: K,
     answers: AnswersByStep[K],
   ) {
-    if (!state.urbanProjectEventSourcing.steps[stepId]) {
-      state.urbanProjectEventSourcing.steps[stepId] = {
+    if (!state.urbanProjectBeta.steps[stepId]) {
+      state.urbanProjectBeta.steps[stepId] = {
         completed: true,
       };
     } else {
-      state.urbanProjectEventSourcing.steps[stepId].completed = true;
+      state.urbanProjectBeta.steps[stepId].completed = true;
     }
 
-    state.urbanProjectEventSourcing.steps[stepId].payload = answers;
+    state.urbanProjectBeta.steps[stepId].payload = answers;
   },
   deleteStepAnswer(state: ProjectCreationState, stepId: AnswerStepId) {
-    if (!state.urbanProjectEventSourcing.steps[stepId]) {
-      state.urbanProjectEventSourcing.steps[stepId] = {
+    if (!state.urbanProjectBeta.steps[stepId]) {
+      state.urbanProjectBeta.steps[stepId] = {
         completed: false,
       };
     } else {
-      state.urbanProjectEventSourcing.steps[stepId].completed = false;
+      state.urbanProjectBeta.steps[stepId].completed = false;
     }
-    state.urbanProjectEventSourcing.steps[stepId].defaultValues = undefined;
-    state.urbanProjectEventSourcing.steps[stepId].payload = undefined;
+    state.urbanProjectBeta.steps[stepId].defaultValues = undefined;
+    state.urbanProjectBeta.steps[stepId].payload = undefined;
   },
 };

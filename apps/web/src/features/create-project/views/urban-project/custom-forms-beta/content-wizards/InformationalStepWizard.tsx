@@ -5,24 +5,24 @@ import {
   selectSiteContaminatedSurfaceArea,
   selectSiteSoilsDistribution,
 } from "@/features/create-project/core/createProject.selectors";
-import { fetchCurrentAndProjectedSoilsCarbonStorage } from "@/features/create-project/core/urban-project-event-sourcing/soils-carbon-storage/soilsCarbonStorage.action";
+import { fetchCurrentAndProjectedSoilsCarbonStorage } from "@/features/create-project/core/urban-project-beta/soils-carbon-storage/soilsCarbonStorage.action";
 import {
   selectCurrentAndProjectedSoilsCarbonStorage,
   selectLoadingState,
-} from "@/features/create-project/core/urban-project-event-sourcing/soils-carbon-storage/soilsCarbonStorage.selectors";
+} from "@/features/create-project/core/urban-project-beta/soils-carbon-storage/soilsCarbonStorage.selectors";
 import {
   navigateToNext,
   navigateToPrevious,
   navigateToStep,
-} from "@/features/create-project/core/urban-project-event-sourcing/urbanProject.actions";
+} from "@/features/create-project/core/urban-project-beta/urbanProject.actions";
 import {
   selectFormAnswers,
   selectProjectSoilDistribution,
   selectProjectSpaces,
   selectStepAnswers,
-} from "@/features/create-project/core/urban-project-event-sourcing/urbanProject.selectors";
-import { customUrbanProjectSaved } from "@/features/create-project/core/urban-project-event-sourcing/urbanProjectSave.action";
-import { InformationalStep } from "@/features/create-project/core/urban-project-event-sourcing/urbanProjectSteps";
+} from "@/features/create-project/core/urban-project-beta/urbanProject.selectors";
+import { customUrbanProjectSaved } from "@/features/create-project/core/urban-project-beta/urbanProjectSave.action";
+import { InformationalStep } from "@/features/create-project/core/urban-project-beta/urbanProjectSteps";
 import { UrbanProjectCustomCreationStep } from "@/features/create-project/core/urban-project/creationSteps";
 import { RootState } from "@/shared/core/store-config/store";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
@@ -239,7 +239,7 @@ const ProjectCreationDataSummaryWrapper = ({ onNext, onBack }: StepComponentProp
 
 const ProjectCreationResultContainer = ({ onBack }: StepComponentProps) => {
   const { saveState, projectId } = useAppSelector((state: RootState) => ({
-    saveState: state.projectCreation.urbanProjectEventSourcing.saveState,
+    saveState: state.projectCreation.urbanProjectBeta.saveState,
     projectId: state.projectCreation.projectId,
   }));
   const { name: projectName } = useAppSelector(selectStepAnswers("URBAN_PROJECT_NAMING")) ?? {};
