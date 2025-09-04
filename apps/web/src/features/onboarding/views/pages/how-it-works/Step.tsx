@@ -36,7 +36,7 @@ const OnBoardingIntroductionStep = ({ stepNumber, title, text, className }: Step
         {stepNumber}
       </div>
       <div>
-        <h3 className={classNames(fr.cx("fr-text--xl", "fr-text--bold", "fr-mb-2v"))}>{title}</h3>
+        <h3 className={fr.cx("fr-text--xl", "fr-text--bold", "fr-mb-2v")}>{title}</h3>
         <p className={fr.cx("fr-text--md", "fr-mt-1w")}>{text}</p>
       </div>
     </div>
