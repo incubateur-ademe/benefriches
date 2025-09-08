@@ -31,7 +31,8 @@ function App() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    trackPageView(route.href);
+    const pathWillQueryParams = window.location.pathname + window.location.search;
+    trackPageView(pathWillQueryParams);
   }, [route]);
 
   useEffect(() => {

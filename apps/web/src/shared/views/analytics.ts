@@ -8,8 +8,6 @@ declare global {
 }
 export const trackPageView = (url: string) => {
   if (!window._paq) return;
-  // eslint-disable-next-line no-console
-  console.log("Tracking", url);
   window._paq.push(["setCustomUrl", url]);
   window._paq.push(["trackPageView"]);
   window._paq.push(["enableLinkTracking"]);
