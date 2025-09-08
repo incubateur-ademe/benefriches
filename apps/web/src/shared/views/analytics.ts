@@ -2,12 +2,17 @@ declare global {
   interface Window {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     _paq?: any[];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    _mtm?: any[];
   }
 }
 export const trackPageView = (url: string) => {
   if (!window._paq) return;
+  // eslint-disable-next-line no-console
+  console.log("Tracking", url);
   window._paq.push(["setCustomUrl", url]);
   window._paq.push(["trackPageView"]);
+  window._paq.push(["enableLinkTracking"]);
 };
 
 type AnalyticsEvent = {
