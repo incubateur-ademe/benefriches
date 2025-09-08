@@ -1,5 +1,4 @@
 import Button from "@codegouvfr/react-dsfr/Button";
-import { useTour } from "@reactour/tour";
 
 import { siteCreationInitiated } from "@/features/create-site/core/actions/introduction.actions";
 import classNames from "@/shared/views/clsx";
@@ -9,7 +8,6 @@ import { useIsSmallScreen } from "@/shared/views/hooks/useIsSmallScreen";
 import { routes } from "@/shared/views/router";
 
 function MyProjectsPageHeader() {
-  const { setIsOpen: setIsTourGuideOpen } = useTour();
   const isSmScreen = useIsSmallScreen();
 
   const dispatch = useAppDispatch();
@@ -44,9 +42,6 @@ function MyProjectsPageHeader() {
             {
               children: "Revoir le tutoriel",
               iconId: "fr-icon-lightbulb-line",
-              onClick: () => {
-                setIsTourGuideOpen(true);
-              },
             },
           ]}
         />

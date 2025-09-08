@@ -3,13 +3,11 @@ import { createAction, createReducer } from "@reduxjs/toolkit";
 import { RootState } from "@/shared/core/store-config/store";
 
 export type AppSettings = {
-  shouldDisplayMyProjectTourGuide: boolean;
   surfaceAreaInputMode: "percentage" | "squareMeters";
   askForConfirmationOnStepRevert: boolean;
 };
 
 export const DEFAULT_APP_SETTINGS: AppSettings = {
-  shouldDisplayMyProjectTourGuide: true,
   surfaceAreaInputMode: "percentage",
   askForConfirmationOnStepRevert: true,
 };

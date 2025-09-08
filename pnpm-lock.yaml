@@ -189,9 +189,6 @@ importers:
       '@react-pdf/renderer':
         specifier: ^4.3.0
         version: 4.3.0(react@19.1.1)
-      '@reactour/tour':
-        specifier: ~3.8.0
-        version: 3.8.0(react@19.1.1)
       '@reduxjs/toolkit':
         specifier: ~2.8.2
         version: 2.8.2(react-redux@9.2.0(@types/react@19.1.9)(react@19.1.1)(redux@5.0.1))(react@19.1.1)
@@ -276,7 +273,7 @@ importers:
         version: 10.1.8(eslint@9.32.0(jiti@2.5.1))
       eslint-plugin-jest:
         specifier: ^29.0.1
-        version: 29.0.1(@typescript-eslint/eslint-plugin@8.38.0(@typescript-eslint/parser@8.38.0(eslint@9.32.0(jiti@2.5.1))(typescript@5.8.3))(eslint@9.32.0(jiti@2.5.1))(typescript@5.8.3))(eslint@9.32.0(jiti@2.5.1))(jest@29.7.0(@types/node@24.1.0))(typescript@5.8.3)
+        version: 29.0.1(@typescript-eslint/eslint-plugin@8.38.0(@typescript-eslint/parser@8.38.0(eslint@9.32.0(jiti@2.5.1))(typescript@5.8.3))(eslint@9.32.0(jiti@2.5.1))(typescript@5.8.3))(eslint@9.32.0(jiti@2.5.1))(jest@29.7.0(@types/node@24.1.0)(ts-node@10.9.2(@swc/core@1.13.3)(@types/node@24.1.0)(typescript@5.8.3)))(typescript@5.8.3)
       eslint-plugin-react:
         specifier: ~7.37.5
         version: 7.37.5(eslint@9.32.0(jiti@2.5.1))
@@ -1374,26 +1371,6 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
 
-  '@reactour/mask@1.1.0':
-    resolution: {integrity: sha512-GkJMLuTs3vTsm4Ryq2uXcE4sMzRP1p4xSd6juSOMqbHa7IVD/UiLCLqJWHR9xGSQPbYhpZAZAORUG5cS0U5tBA==}
-    peerDependencies:
-      react: 16.x || 17.x || 18.x
-
-  '@reactour/popover@1.2.0':
-    resolution: {integrity: sha512-1JMykZ+MmDmRlEVC5+DwlvK1exwV5bFHtiSFwVXnoPZmsSfwId6SLyjo9H6bybeuNtNEzviKdsF/ZBC1UQbDqg==}
-    peerDependencies:
-      react: 16.x || 17.x || 18.x
-
-  '@reactour/tour@3.8.0':
-    resolution: {integrity: sha512-KZTFi1pAvoTVKKRdBN5+XCYxXBp4k4Ql/acZcXyPvec8VU24fkMSEeV+v8krfYQpoVcewxIu3gM6xWZZLjxi7w==}
-    peerDependencies:
-      react: 16.x || 17.x || 18.x || 19.x
-
-  '@reactour/utils@0.5.0':
-    resolution: {integrity: sha512-yQs5Nm/Dg1xRM7d/S/UILBV5OInrTgrjGzgc81/RP5khqdO5KnpOaC46yF83kDtCalte8X3RCwp+F2YA509k1w==}
-    peerDependencies:
-      react: 16.x || 17.x || 18.x
-
   '@reduxjs/toolkit@2.8.2':
     resolution: {integrity: sha512-MYlOhQ0sLdw4ud48FoC5w0dH9VfWQjtCjreKwYTT3l+r427qYC5Y8PihNutepr8XrNaBUDQo9khWUwQxZaqt5A==}
     peerDependencies:
@@ -1516,11 +1493,6 @@ packages:
     resolution: {integrity: sha512-7GVB4luhFmGUNXXJhH2jJwZCFB3pIOixv2E3s17GQHBFUOQaISlt7aGcQgqvCaDSxTZJUzlK/QJ1FN8S94MrzQ==}
     cpu: [x64]
     os: [win32]
-
-  '@rooks/use-mutation-observer@4.11.2':
-    resolution: {integrity: sha512-vpsdrZdr6TkB1zZJcHx+fR1YC/pHs2BaqcuYiEGjBVbwY5xcC49+h0hAUtQKHth3oJqXfIX/Ng8S7s5HFHdM/A==}
-    peerDependencies:
-      react: '>=16.8.0'
 
   '@sinclair/typebox@0.27.8':
     resolution: {integrity: sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==}
@@ -4807,9 +4779,6 @@ packages:
   reselect@5.1.1:
     resolution: {integrity: sha512-K/BG6eIky/SBpzfHZv/dd+9JBFiS4SWV7FIujVyJRux6e45+73RaUHXLmIR1f7WOMaQ0U1km6qwklRQxpJJY0w==}
 
-  resize-observer-polyfill@1.5.1:
-    resolution: {integrity: sha512-LwZrotdHOo12nQuZlHEmtuXdqGoOD0OhaxopaNFxWzInpEgaLWoVuAMbTzixuosCx2nEG58ngzW3vxdWoxIgdg==}
-
   resolve-cwd@3.0.0:
     resolution: {integrity: sha512-OrZaX2Mb+rJCpH/6CpSqt9xFVpN++x01XnN2ie9g6P5/3xelLAkXWVADpdz1IHD/KFfEXyE6V0U01OQ3UO2rEg==}
     engines: {node: '>=8'}
@@ -6971,29 +6940,6 @@ snapshots:
     dependencies:
       react: 19.1.1
 
-  '@reactour/mask@1.1.0(react@19.1.1)':
-    dependencies:
-      '@reactour/utils': 0.5.0(react@19.1.1)
-      react: 19.1.1
-
-  '@reactour/popover@1.2.0(react@19.1.1)':
-    dependencies:
-      '@reactour/utils': 0.5.0(react@19.1.1)
-      react: 19.1.1
-
-  '@reactour/tour@3.8.0(react@19.1.1)':
-    dependencies:
-      '@reactour/mask': 1.1.0(react@19.1.1)
-      '@reactour/popover': 1.2.0(react@19.1.1)
-      '@reactour/utils': 0.5.0(react@19.1.1)
-      react: 19.1.1
-
-  '@reactour/utils@0.5.0(react@19.1.1)':
-    dependencies:
-      '@rooks/use-mutation-observer': 4.11.2(react@19.1.1)
-      react: 19.1.1
-      resize-observer-polyfill: 1.5.1
-
   '@reduxjs/toolkit@2.8.2(react-redux@9.2.0(@types/react@19.1.9)(react@19.1.1)(redux@5.0.1))(react@19.1.1)':
     dependencies:
       '@standard-schema/spec': 1.0.0
@@ -7075,10 +7021,6 @@ snapshots:
 
   '@rollup/rollup-win32-x64-msvc@4.46.1':
     optional: true
-
-  '@rooks/use-mutation-observer@4.11.2(react@19.1.1)':
-    dependencies:
-      react: 19.1.1
 
   '@sinclair/typebox@0.27.8':
     optional: true
@@ -8701,6 +8643,17 @@ snapshots:
       '@eslint-community/regexpp': 4.12.1
       eslint: 9.32.0(jiti@2.5.1)
       eslint-compat-utils: 0.5.1(eslint@9.32.0(jiti@2.5.1))
+
+  eslint-plugin-jest@29.0.1(@typescript-eslint/eslint-plugin@8.38.0(@typescript-eslint/parser@8.38.0(eslint@9.32.0(jiti@2.5.1))(typescript@5.8.3))(eslint@9.32.0(jiti@2.5.1))(typescript@5.8.3))(eslint@9.32.0(jiti@2.5.1))(jest@29.7.0(@types/node@24.1.0)(ts-node@10.9.2(@swc/core@1.13.3)(@types/node@24.1.0)(typescript@5.8.3)))(typescript@5.8.3):
+    dependencies:
+      '@typescript-eslint/utils': 8.38.0(eslint@9.32.0(jiti@2.5.1))(typescript@5.8.3)
+      eslint: 9.32.0(jiti@2.5.1)
+    optionalDependencies:
+      '@typescript-eslint/eslint-plugin': 8.38.0(@typescript-eslint/parser@8.38.0(eslint@9.32.0(jiti@2.5.1))(typescript@5.8.3))(eslint@9.32.0(jiti@2.5.1))(typescript@5.8.3)
+      jest: 29.7.0(@types/node@24.1.0)(ts-node@10.9.2(@swc/core@1.13.3)(@types/node@24.1.0)(typescript@5.8.3))
+    transitivePeerDependencies:
+      - supports-color
+      - typescript
 
   eslint-plugin-jest@29.0.1(@typescript-eslint/eslint-plugin@8.38.0(@typescript-eslint/parser@8.38.0(eslint@9.32.0(jiti@2.5.1))(typescript@5.8.3))(eslint@9.32.0(jiti@2.5.1))(typescript@5.8.3))(eslint@9.32.0(jiti@2.5.1))(jest@29.7.0(@types/node@24.1.0))(typescript@5.8.3):
     dependencies:
@@ -10862,8 +10815,6 @@ snapshots:
   require-from-string@2.0.2: {}
 
   reselect@5.1.1: {}
-
-  resize-observer-polyfill@1.5.1: {}
 
   resolve-cwd@3.0.0:
     dependencies:

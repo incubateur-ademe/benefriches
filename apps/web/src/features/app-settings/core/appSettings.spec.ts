@@ -14,7 +14,6 @@ describe("App settings", () => {
   it("should get persisted app settings", () => {
     const appSettingsService = new InMemoryAppSettings();
     appSettingsService.persist({
-      shouldDisplayMyProjectTourGuide: true,
       surfaceAreaInputMode: "squareMeters",
       askForConfirmationOnStepRevert: true,
     });
@@ -25,7 +24,6 @@ describe("App settings", () => {
     );
     const rootState = store.getState();
     expect(selectAppSettings(rootState)).toEqual({
-      shouldDisplayMyProjectTourGuide: true,
       surfaceAreaInputMode: "squareMeters",
       askForConfirmationOnStepRevert: true,
     });

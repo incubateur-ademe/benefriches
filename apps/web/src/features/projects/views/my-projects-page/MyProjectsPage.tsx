@@ -5,7 +5,6 @@ import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
 import { ReconversionProjectsGroupedBySite } from "../../domain/projects.types";
-import MyProjectsTourGuide from "./MyProjectTourGuide";
 import MyProjectsPageHeader from "./MyProjectsPageHeader";
 import ScenariiList from "./ScenariiList";
 
@@ -42,17 +41,15 @@ function MyProjectsPage({ loadingState, projectsList }: Props) {
     return (
       <section className={fr.cx("fr-container", "fr-py-4w")}>
         <HtmlTitle>Mes projets</HtmlTitle>
-        <MyProjectsTourGuide projectsList={projectsList}>
-          <MyProjectsPageHeader />
-          {projectsList.length === 0 ? (
-            <>
-              <p>Vous n'avez pas encore de projets.</p>
-              <p>Pour démarrer, créez le site sur lequel vous prévoyez votre projet.</p>
-            </>
-          ) : (
-            <ScenariiList projectsList={projectsList} />
-          )}
-        </MyProjectsTourGuide>
+        <MyProjectsPageHeader />
+        {projectsList.length === 0 ? (
+          <>
+            <p>Vous n'avez pas encore de projets.</p>
+            <p>Pour démarrer, créez le site sur lequel vous prévoyez votre projet.</p>
+          </>
+        ) : (
+          <ScenariiList projectsList={projectsList} />
+        )}
       </section>
     );
   }

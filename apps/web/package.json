@@ -30,7 +30,6 @@
     "@codegouvfr/react-dsfr": "~1.26.0",
     "@headlessui/react": "^2.2.6",
     "@react-pdf/renderer": "^4.3.0",
-    "@reactour/tour": "~3.8.0",
     "@reduxjs/toolkit": "~2.8.2",
     "clsx": "~2.1.1",
     "date-fns": "~4.1.0",
