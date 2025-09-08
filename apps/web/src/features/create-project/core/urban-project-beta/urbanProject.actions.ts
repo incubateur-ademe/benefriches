@@ -26,10 +26,6 @@ export const confirmStepCompletion = createUrbanProjectCreationAction("confirmSt
 
 export const cancelStepCompletion = createUrbanProjectCreationAction("cancelStepCompletion");
 
-export const loadStep = createUrbanProjectCreationAction<{
-  stepId: AnswerStepId;
-}>("loadStep");
-
 export const navigateToPrevious = createUrbanProjectCreationAction<{
   stepId: UrbanProjectCustomCreationStep;
 }>("navigateToPrevious");

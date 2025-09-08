@@ -4,12 +4,12 @@ import { ProjectCreationState } from "../createProject.reducer";
 import { UrbanProjectCustomCreationStep } from "../urban-project/creationSteps";
 import { applyStepChanges, computeStepChanges, StepUpdateResult } from "./helpers/completeStep";
 import { MutateStateHelper } from "./helpers/mutateState";
+import { navigateToAndLoadStep } from "./helpers/navigateToStep";
 import soilsCarbonStorageReducer, {
   State as SoilsCarbonStorageState,
 } from "./soils-carbon-storage/soilsCarbonStorage.reducer";
 import { stepHandlerRegistry } from "./step-handlers/stepHandlerRegistry";
 import {
-  loadStep,
   requestStepCompletion,
   confirmStepCompletion,
   cancelStepCompletion,
@@ -22,7 +22,6 @@ import { AnswersByStep, AnswerStepId } from "./urbanProjectSteps";
 
 export type UrbanProjectState = {
   currentStep: UrbanProjectCustomCreationStep;
-  isStepLoading: boolean;
   saveState: "idle" | "loading" | "success" | "error";
   soilsCarbonStorage: SoilsCarbonStorageState;
   pendingStepCompletion?: {
@@ -44,7 +43,6 @@ export type UrbanProjectState = {
 
 export const initialState: UrbanProjectState = {
   currentStep: "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION",
-  isStepLoading: false,
   saveState: "idle",
   soilsCarbonStorage: { loadingState: "idle", current: undefined, projected: undefined },
   steps: {},
@@ -52,32 +50,6 @@ export const initialState: UrbanProjectState = {
 };
 
 const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) => {
-  builder.addCase(loadStep, (state, action) => {
-    const stepId = action.payload.stepId;
-    const handler = stepHandlerRegistry[stepId];
-
-    if (!handler.getDefaultAnswers) {
-      return;
-    }
-
-    state.urbanProjectBeta.isStepLoading = true;
-
-    if (state.urbanProjectBeta.steps[stepId]?.defaultValues) {
-      state.urbanProjectBeta.isStepLoading = false;
-      return;
-    }
-
-    const defaults = handler.getDefaultAnswers({
-      siteData: state.siteData,
-      stepsState: state.urbanProjectBeta.steps,
-    });
-    if (defaults) {
-      MutateStateHelper.setDefaultValues<typeof stepId>(state, stepId, defaults);
-    }
-
-    state.urbanProjectBeta.isStepLoading = false;
-  });
-
   builder.addCase(requestStepCompletion, (state, action) => {
     const changes = computeStepChanges(state, action.payload);
 
@@ -112,7 +84,7 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
     }
 
     if (handler.getPreviousStepId) {
-      MutateStateHelper.navigateToStep(
+      navigateToAndLoadStep(
         state,
         handler.getPreviousStepId({
           siteData: state.siteData,
@@ -135,7 +107,7 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
     }
 
     if (handler.getNextStepId) {
-      MutateStateHelper.navigateToStep(
+      navigateToAndLoadStep(
         state,
         handler.getNextStepId({
           siteData: state.siteData,
@@ -146,7 +118,7 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
   });
 
   builder.addCase(navigateToStep, (state, action) => {
-    MutateStateHelper.navigateToStep(state, action.payload.stepId);
+    navigateToAndLoadStep(state, action.payload.stepId);
   });
   builder.addCase(customUrbanProjectSaved.pending, (state) => {
     state.urbanProjectBeta.saveState = "loading";

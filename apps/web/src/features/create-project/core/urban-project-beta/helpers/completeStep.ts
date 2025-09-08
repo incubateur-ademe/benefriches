@@ -5,6 +5,7 @@ import { stepHandlerRegistry } from "../step-handlers/stepHandlerRegistry";
 import { StepCompletionPayload } from "../urbanProject.actions";
 import { AnswerStepId } from "../urbanProjectSteps";
 import { MutateStateHelper } from "./mutateState";
+import { navigateToAndLoadStep } from "./navigateToStep";
 
 export type StepUpdateResult<T extends AnswerStepId> = {
   payload: StepCompletionPayload<T>;
@@ -89,6 +90,17 @@ function formatCascadingChanges(invalidations: {
     : undefined;
 }
 
+/**
+ * La validation d'une étape entraîne plusieurs conséquences :
+ * - On utilise la méthode updateAnswersMiddleware si elle existe pour enrichir automatiquement la réponse
+ *   (ex: si buildingsResalePlannedAfterDevelopment = true, on peut initialiser une valeur pour futureOperator)
+ * - On récupère les potentielles étapes impactées par le changement (s'il s'agit d'une modif de réponse)
+ * - On récupère les éventuels raccourcis liés à la réponse (ex: sélection d'un seul type d'espace, on peut remplir
+ *   automatiquement l'étape des surfaces en assignant le total)
+ * - On récupère les potentielles étapes impactées par le changement des shortcuts et on supprime les étapes complétées par le shortcut
+ *   des étapes à invalider
+ * - On navigue vers l'étape suivante
+ */
 export function computeStepChanges<T extends AnswerStepId>(
   state: ProjectCreationState,
   payload: StepCompletionPayload<T>,
@@ -168,6 +180,6 @@ export function applyStepChanges<T extends AnswerStepId>(
   });
 
   if (changes.navigationTarget) {
-    MutateStateHelper.navigateToStep(state, changes.navigationTarget);
+    navigateToAndLoadStep(state, changes.navigationTarget);
   }
 }
