@@ -31,7 +31,7 @@ const selectSitePopulation = createSelector(
 );
 
 type EstimatedSiteYearlyExpensesAmounts = Partial<Record<SiteYearlyExpensePurpose, number>>;
-export const selectEstimatedYearlyExpensesForSite = createSelector(
+const selectEstimatedYearlyExpensesForSite = createSelector(
   [selectSiteData, selectSitePopulation],
   (siteData, population): EstimatedSiteYearlyExpensesAmounts => {
     const {

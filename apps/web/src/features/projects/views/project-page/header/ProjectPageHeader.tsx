@@ -9,7 +9,7 @@ import { getScenarioPictoUrl } from "../../shared/scenarioType";
 import { exportImpactsModal } from "../export-impacts/createExportModal";
 import ExpressProjectTooltipBadge from "./../ExpressProjectBadge";
 
-export type HeaderProps = {
+type HeaderProps = {
   projectName: string;
   siteFeaturesHref: string;
   siteName: string;

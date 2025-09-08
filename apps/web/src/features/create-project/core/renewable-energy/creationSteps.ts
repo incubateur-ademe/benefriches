@@ -51,7 +51,7 @@ const isRenewableEnergyCustomCreationStep = (
 
 const renewableEnergyExpressCreationStep = z.enum(["RENEWABLE_ENERGY_CREATION_RESULT"]);
 
-export type RenewableEnergyExpressCreationStep = z.infer<typeof renewableEnergyExpressCreationStep>;
+type RenewableEnergyExpressCreationStep = z.infer<typeof renewableEnergyExpressCreationStep>;
 
 const isRenewableEnergyExpressCreationStep = (
   step: string,

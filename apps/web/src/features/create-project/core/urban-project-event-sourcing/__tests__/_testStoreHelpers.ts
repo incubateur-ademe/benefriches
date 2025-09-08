@@ -8,7 +8,7 @@ import { FormEvent } from "../form-events/FormEvent.type";
 import { initialState as urbanProjectEventSourcingInitialState } from "../urbanProject.reducer";
 import { mockSiteData } from "./_siteData.mock";
 
-export const createTestState = (
+const createTestState = (
   options: {
     siteData?: ProjectCreationState["siteData"];
     events?: FormEvent[];

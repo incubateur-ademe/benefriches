@@ -65,7 +65,7 @@ const MutateStateHelper = {
   },
 };
 
-export const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) => {
+const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) => {
   builder.addCase(loadStep, (state, action) => {
     const stepId = action.payload.stepId;
     const handler = stepHandlerRegistry[stepId];

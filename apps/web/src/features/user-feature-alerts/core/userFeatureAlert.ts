@@ -14,7 +14,7 @@ export type ExportImpactsFeatureAlert = {
 
 type DuplicateProjectFeatureAlert = { type: "duplicate_project" };
 
-export type MutafrichesAvailabilityAlert = {
+type MutafrichesAvailabilityAlert = {
   type: "mutafriches_availability";
 };
 

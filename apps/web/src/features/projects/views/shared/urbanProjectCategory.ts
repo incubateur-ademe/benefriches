@@ -12,7 +12,7 @@ const PUBLIC_FACILITIES = [
   "SPORTS_FACILITIES",
 ] as const satisfies BuildingsUse[];
 
-export type UrbanProjectCategory =
+type UrbanProjectCategory =
   | "PUBLIC_FACILITIES"
   | "RESIDENTIAL_TENSE_AREA"
   | "RESIDENTIAL_NORMAL_AREA"

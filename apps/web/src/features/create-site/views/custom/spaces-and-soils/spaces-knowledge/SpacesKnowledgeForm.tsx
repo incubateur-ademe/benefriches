@@ -11,7 +11,7 @@ type Props = {
   siteNature?: SiteNature;
 };
 
-export type FormValues = {
+type FormValues = {
   knowsSpaces: "yes" | "no";
 };
 

@@ -7,7 +7,7 @@ import classNames, { ClassValue } from "@/shared/views/clsx";
 import WithTooltip from "../my-projects-page/ScenariiList/ScenarioTile/ScenarioTileTooltip";
 import { getScenarioPictoUrl } from "../shared/scenarioType";
 
-export type HeaderProps = {
+type HeaderProps = {
   projectName: string;
   baseSiteName: string;
   comparisonSiteName: string;

@@ -15,7 +15,7 @@ import { selectDetailedSocioEconomicProjectImpacts } from "./projectImpactsSocio
 
 type LoadingState = "idle" | "loading" | "success" | "error";
 
-export type ExportImpactsView = {
+type ExportImpactsView = {
   loadingState: LoadingState;
   projectFeatures: ProjectFeatures | undefined;
   siteFeatures: SiteFeatures | undefined;

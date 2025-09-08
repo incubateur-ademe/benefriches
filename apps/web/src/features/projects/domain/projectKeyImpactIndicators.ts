@@ -11,8 +11,6 @@ import { getPercentageDifference } from "@/shared/core/percentage/percentage";
 
 import { UrbanSprawlImpactsComparisonState } from "../application/project-impacts-urban-sprawl-comparison/urbanSprawlComparison.reducer";
 
-export type ProjectOverallImpact = "strong_negative" | "negative" | "positive" | "strong_positive";
-
 const getRelatedSiteInfos = (
   siteData: SiteData,
 ): { isFriche: boolean; isAgriculturalFriche: boolean } => ({

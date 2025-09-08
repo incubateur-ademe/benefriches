@@ -10,7 +10,7 @@ type State = {
   authenticationWithTokenState: "idle" | "loading" | "success" | "error";
 };
 
-export const initialState: State = {
+const initialState: State = {
   authLinkRequestState: "idle",
   authLinkRequestError: undefined,
   authenticationWithTokenState: "idle",
