@@ -155,7 +155,7 @@ function UrbanProjectCustomStepper({ step: currentStep }: Props) {
       <FormStepperStep title="Mode de création" state="completed" />
 
       {categories.map(({ targetStepId, labelKey, subCategories, state, disabled }) => (
-        <>
+        <div key={labelKey}>
           <FormStepperStep
             counterId="main"
             key={labelKey}
@@ -191,7 +191,7 @@ function UrbanProjectCustomStepper({ step: currentStep }: Props) {
               ))}
             </ol>
           )}
-        </>
+        </div>
       ))}
     </ol>
   );

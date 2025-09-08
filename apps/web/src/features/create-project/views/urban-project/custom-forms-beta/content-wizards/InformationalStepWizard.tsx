@@ -161,11 +161,13 @@ const UrbanProjectSoilsCarbonStorageWrapper = ({ onNext, onBack }: StepComponent
     void dispatch(fetchCurrentAndProjectedSoilsCarbonStorage());
   }, [dispatch]);
 
-  if (loadingState === "error") {
-    onNext();
-  }
+  useEffect(() => {
+    if (loadingState === "error") {
+      onNext();
+    }
+  }, [loadingState, onNext]);
 
-  if (loadingState === "loading" || loadingState === "idle") {
+  if (loadingState !== "success") {
     return <LoadingSpinner />;
   }
 
