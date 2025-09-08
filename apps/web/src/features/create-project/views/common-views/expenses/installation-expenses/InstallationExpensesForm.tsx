@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import { typedObjectEntries } from "shared";
 import { sumObjectValues } from "shared";
 
-import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RowDecimalsNumericInput from "@/shared/views/components/form/NumericInput/RowDecimalsNumericInput";
 import { optionalNumericFieldRegisterOptions } from "@/shared/views/components/form/NumericInput/registerOptions";
@@ -67,13 +66,14 @@ const InstallationExpensesForm = ({
           nativeInputProps={register("otherAmount", optionalNumericFieldRegisterOptions)}
         />
 
-        {!hasNoValuesFilled && (
-          <p>
-            <strong>
-              Total des dépenses d'installation : {formatNumberFr(sumObjectValues(allExpenses))} €
-            </strong>
-          </p>
-        )}
+        <RowDecimalsNumericInput
+          label={<span className="font-medium text-dsfr-text-label-grey">Total</span>}
+          addonText="€"
+          nativeInputProps={{
+            value: sumObjectValues(allExpenses),
+          }}
+          disabled
+        />
 
         <BackNextButtonsGroup
           onBack={onBack}

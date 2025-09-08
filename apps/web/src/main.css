@@ -21,6 +21,7 @@
   --color-dsfr-grey: var(--background-default-grey);
   --color-dsfr-contrast-grey: var(--background-contrast-grey);
   --color-dsfr-grey-disabled: var(--text-disabled-grey);
+  --color-dsfr-text-label-grey: var(--text-label-grey);
 
   --color-text-dark: #161616;
   --color-text-light: #757575;

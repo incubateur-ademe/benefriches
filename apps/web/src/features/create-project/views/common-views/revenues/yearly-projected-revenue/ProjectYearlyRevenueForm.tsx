@@ -3,7 +3,6 @@ import { DefaultValues, Path, useForm } from "react-hook-form";
 import { typedObjectEntries } from "shared";
 import { sumObjectValues } from "shared";
 
-import { formatMoney } from "@/shared/core/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RowDecimalsNumericInput from "@/shared/views/components/form/NumericInput/RowDecimalsNumericInput";
 import { optionalNumericFieldRegisterOptions } from "@/shared/views/components/form/NumericInput/registerOptions";
@@ -59,13 +58,14 @@ export default function ProjectYearlyRevenuesForm<Fields extends readonly string
           );
         })}
 
-        {!hasNoValuesFilled && (
-          <p>
-            <strong>
-              Total des recettes annuelles : {formatMoney(sumObjectValues(allRevenues))}
-            </strong>
-          </p>
-        )}
+        <RowDecimalsNumericInput
+          label={<span className="font-medium text-dsfr-text-label-grey">Total</span>}
+          addonText="€"
+          nativeInputProps={{
+            value: sumObjectValues(allRevenues),
+          }}
+          disabled
+        />
 
         <BackNextButtonsGroup
           onBack={onBack}
