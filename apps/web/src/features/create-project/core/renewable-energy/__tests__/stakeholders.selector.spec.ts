@@ -74,7 +74,6 @@ const MOCK_STATES = {
       steps: {},
       saveState: "idle",
       currentStep: "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION",
-      isStepLoading: false,
       soilsCarbonStorage: { loadingState: "idle", current: undefined, projected: undefined },
     },
   } satisfies RootState["projectCreation"],
