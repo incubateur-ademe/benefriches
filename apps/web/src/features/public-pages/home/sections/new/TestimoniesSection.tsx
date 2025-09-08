@@ -70,7 +70,7 @@ function TestimonyCard({ testimony, className }: TestimonyCardProps) {
         <img src={testimony.imgSrc} alt="" className="max-w-full object-contain" />
       </div>
 
-      <div className="hidden md:block w-px bg-gray-200 shrink-0" />
+      <div className="hidden md:block w-px bg-blue-ultradark shrink-0" />
 
       <div className="flex flex-col flex-1 min-h-[200px]">
         <div className="mb-6">
