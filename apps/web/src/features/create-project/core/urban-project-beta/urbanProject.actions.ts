@@ -13,13 +13,18 @@ export const makeUrbanProjectCreationActionType = (actionName: string) => {
 const createUrbanProjectCreationAction = <TPayload = void>(actionName: string) =>
   createAction<TPayload>(makeUrbanProjectCreationActionType(actionName));
 
-type StepPayload<K extends AnswerStepId = AnswerStepId> = {
+export type StepCompletionPayload<K extends AnswerStepId = AnswerStepId> = {
   [P in K]: {
     stepId: P;
     answers: AnswersByStep[P];
   };
 }[K];
-export const completeStep = createUrbanProjectCreationAction<StepPayload>("completeStep");
+export const requestStepCompletion =
+  createUrbanProjectCreationAction<StepCompletionPayload>("requestStepCompletion");
+
+export const confirmStepCompletion = createUrbanProjectCreationAction("confirmStepCompletion");
+
+export const cancelStepCompletion = createUrbanProjectCreationAction("cancelStepCompletion");
 
 export const loadStep = createUrbanProjectCreationAction<{
   stepId: AnswerStepId;

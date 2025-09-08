@@ -2,13 +2,12 @@ import { filterObject } from "shared";
 
 import deepEqual from "@/shared/core/deep-equal/deepEqual";
 
-import { ProjectCreationState } from "../createProject.reducer";
-import { UrbanProjectCustomCreationStep } from "../urban-project/creationSteps";
+import { ProjectCreationState } from "../../createProject.reducer";
 import {
   getUrbanProjectSoilsDistributionFromSpaces,
   UrbanSpacesByCategory,
-} from "../urban-project/urbanProjectSoils";
-import { ANSWER_STEPS, AnswersByStep, AnswerStepId, FormAnswers } from "./urbanProjectSteps";
+} from "../../urban-project/urbanProjectSoils";
+import { ANSWER_STEPS, AnswersByStep, AnswerStepId, FormAnswers } from "../urbanProjectSteps";
 
 export const ReadStateHelper = {
   getStepAnswers<K extends AnswerStepId>(
@@ -203,47 +202,3 @@ export const ReadStateHelper = {
     );
   },
 } as const;
-
-export const MutateStateHelper = {
-  navigateToStep: (state: ProjectCreationState, stepId: UrbanProjectCustomCreationStep) => {
-    state.urbanProjectBeta.currentStep = stepId;
-  },
-  setDefaultValues<K extends AnswerStepId>(
-    state: ProjectCreationState,
-    stepId: K,
-    answers: AnswersByStep[K],
-  ) {
-    if (!state.urbanProjectBeta.steps[stepId]) {
-      state.urbanProjectBeta.steps[stepId] = {
-        completed: false,
-      };
-    }
-    state.urbanProjectBeta.steps[stepId].defaultValues = answers;
-  },
-  completeStep<K extends AnswerStepId>(
-    state: ProjectCreationState,
-    stepId: K,
-    answers: AnswersByStep[K],
-  ) {
-    if (!state.urbanProjectBeta.steps[stepId]) {
-      state.urbanProjectBeta.steps[stepId] = {
-        completed: true,
-      };
-    } else {
-      state.urbanProjectBeta.steps[stepId].completed = true;
-    }
-
-    state.urbanProjectBeta.steps[stepId].payload = answers;
-  },
-  deleteStepAnswer(state: ProjectCreationState, stepId: AnswerStepId) {
-    if (!state.urbanProjectBeta.steps[stepId]) {
-      state.urbanProjectBeta.steps[stepId] = {
-        completed: false,
-      };
-    } else {
-      state.urbanProjectBeta.steps[stepId].completed = false;
-    }
-    state.urbanProjectBeta.steps[stepId].defaultValues = undefined;
-    state.urbanProjectBeta.steps[stepId].payload = undefined;
-  },
-};

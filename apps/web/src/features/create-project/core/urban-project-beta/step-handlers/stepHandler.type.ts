@@ -24,25 +24,21 @@ export interface AnswerStepHandler<T extends AnswerStepId> extends StepHandler {
   getDefaultAnswers?(context: StepContext): AnswersByStep[T] | undefined;
   getStepsToInvalidate?(
     context: StepContext,
-    previous: AnswersByStep[T],
-    current: AnswersByStep[T],
-  ): AnswerStepId[];
-  getShortcut?(
-    context: StepContext,
     answers: AnswersByStep[T],
-    hasChanged?: boolean,
-  ): ShortcutResult | undefined;
+  ):
+    | { deleted?: AnswerStepId[]; invalid?: AnswerStepId[]; recomputed?: AnswerStepId[] }
+    | undefined;
+  getShortcut?(context: StepContext, answers: AnswersByStep[T]): ShortcutResult | undefined;
   updateAnswersMiddleware?(context: StepContext, answers: AnswersByStep[T]): AnswersByStep[T];
 }
 
-type AnswerPayload<K extends AnswerStepId = AnswerStepId> = {
+type StepAnswerPayload<K extends AnswerStepId = AnswerStepId> = {
   [P in K]: {
     stepId: P;
-    payload: AnswersByStep[P];
-    invalidSteps: AnswerStepId[];
+    answers: AnswersByStep[P];
   };
 }[K];
-type ShortcutResult = {
-  complete: AnswerPayload[];
+export type ShortcutResult = {
+  complete: StepAnswerPayload[];
   next: UrbanProjectCustomCreationStep;
 };

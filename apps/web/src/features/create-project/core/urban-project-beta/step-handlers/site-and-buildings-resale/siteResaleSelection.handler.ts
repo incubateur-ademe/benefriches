@@ -1,5 +1,5 @@
 import { getFutureSiteOwner } from "../../../stakeholders";
-import { ReadStateHelper } from "../../urbanProject.helpers";
+import { ReadStateHelper } from "../../helpers/readState";
 import { AnswerStepHandler } from "../stepHandler.type";
 
 const STEP_ID = "URBAN_PROJECT_SITE_RESALE_SELECTION" as const;
@@ -19,16 +19,13 @@ export const SiteResaleSelectionHandler: AnswerStepHandler<typeof STEP_ID> = {
     return "URBAN_PROJECT_SITE_RESALE_INTRODUCTION";
   },
 
-  getStepsToInvalidate(_, previousAnswers, newAnswers) {
-    if (
-      previousAnswers.siteResalePlannedAfterDevelopment !==
-      newAnswers.siteResalePlannedAfterDevelopment
-    ) {
+  getStepsToInvalidate(state, newAnswers) {
+    if (state.stepsState.URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE) {
       if (!newAnswers.siteResalePlannedAfterDevelopment) {
-        return ["URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE"];
+        return { deleted: ["URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE"] };
       }
     }
-    return [];
+    return undefined;
   },
 
   updateAnswersMiddleware(context, answers) {

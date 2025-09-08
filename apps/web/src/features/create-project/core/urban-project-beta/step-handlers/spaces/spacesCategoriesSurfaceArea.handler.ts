@@ -1,4 +1,4 @@
-import { ReadStateHelper } from "../../urbanProject.helpers";
+import { ReadStateHelper } from "../../helpers/readState";
 import { BUILDINGS_STEPS, AnswerStepId } from "../../urbanProjectSteps";
 import { AnswerStepHandler } from "../stepHandler.type";
 
@@ -7,39 +7,50 @@ const STEP_ID = "URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA" as const;
 export const UrbanProjectSpacesCategoriesSurfaceAreaHandler: AnswerStepHandler<typeof STEP_ID> = {
   stepId: STEP_ID,
 
-  getStepsToInvalidate(context, previousAnswers, newAnswers) {
-    const steps: AnswerStepId[] = [];
+  getStepsToInvalidate(context, newAnswers) {
+    const stepsToDelete: AnswerStepId[] = [];
+    const stepsToInvalidate: AnswerStepId[] = [];
+    const stepsToRecompute: AnswerStepId[] = [];
 
-    if (
-      previousAnswers.spacesCategoriesDistribution?.GREEN_SPACES !==
-      newAnswers.spacesCategoriesDistribution?.GREEN_SPACES
-    ) {
-      if (!newAnswers.spacesCategoriesDistribution?.GREEN_SPACES) {
-        steps.push("URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION");
+    const previousDistribution = context.stepsState[STEP_ID]?.payload?.spacesCategoriesDistribution;
+    const newDistribution = newAnswers.spacesCategoriesDistribution;
+
+    if (context.stepsState.URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION) {
+      if (!newDistribution?.GREEN_SPACES) {
+        stepsToDelete.push("URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION");
+      } else if (
+        previousDistribution?.GREEN_SPACES &&
+        previousDistribution.GREEN_SPACES !== newDistribution.GREEN_SPACES
+      ) {
+        stepsToInvalidate.push("URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION");
       }
     }
 
-    if (
-      previousAnswers.spacesCategoriesDistribution?.PUBLIC_SPACES !==
-      newAnswers.spacesCategoriesDistribution?.PUBLIC_SPACES
-    ) {
-      if (!newAnswers.spacesCategoriesDistribution?.PUBLIC_SPACES) {
-        steps.push("URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION");
+    if (context.stepsState.URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION) {
+      if (!newDistribution?.PUBLIC_SPACES) {
+        stepsToDelete.push("URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION");
+      } else if (
+        previousDistribution?.PUBLIC_SPACES &&
+        previousDistribution.PUBLIC_SPACES !== newDistribution.PUBLIC_SPACES
+      ) {
+        stepsToInvalidate.push("URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION");
       }
     }
 
-    if (
-      previousAnswers.spacesCategoriesDistribution?.LIVING_AND_ACTIVITY_SPACES !==
-      newAnswers.spacesCategoriesDistribution?.LIVING_AND_ACTIVITY_SPACES
-    ) {
-      if (!newAnswers.spacesCategoriesDistribution?.LIVING_AND_ACTIVITY_SPACES) {
-        const hasBuilding = ReadStateHelper.hasBuildings(context.stepsState);
-        steps.push("URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION");
-        if (hasBuilding) {
-          BUILDINGS_STEPS.forEach((stepId) => {
-            steps.push(stepId);
-          });
-        }
+    if (context.stepsState.URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION) {
+      if (!newDistribution?.LIVING_AND_ACTIVITY_SPACES) {
+        stepsToDelete.push("URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION");
+        BUILDINGS_STEPS.forEach((stepId) => {
+          if (context.stepsState[stepId]) {
+            stepsToDelete.push(stepId);
+          }
+        });
+      } else if (
+        previousDistribution?.LIVING_AND_ACTIVITY_SPACES &&
+        previousDistribution.LIVING_AND_ACTIVITY_SPACES !==
+          newDistribution.LIVING_AND_ACTIVITY_SPACES
+      ) {
+        stepsToInvalidate.push("URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION");
       }
     }
 
@@ -49,10 +60,10 @@ export const UrbanProjectSpacesCategoriesSurfaceAreaHandler: AnswerStepHandler<t
         "URBAN_PROJECT_EXPENSES_REINSTATEMENT",
       )
     ) {
-      steps.push("URBAN_PROJECT_EXPENSES_REINSTATEMENT");
+      stepsToRecompute.push("URBAN_PROJECT_EXPENSES_REINSTATEMENT");
     }
 
-    return steps;
+    return { deleted: stepsToDelete, invalid: stepsToInvalidate, recomputed: stepsToRecompute };
   },
 
   getPreviousStepId() {

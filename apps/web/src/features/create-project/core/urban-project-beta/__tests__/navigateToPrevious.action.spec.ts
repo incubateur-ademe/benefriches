@@ -2,7 +2,7 @@ import { SiteNature } from "shared";
 import { describe, it, expect } from "vitest";
 
 import { UrbanProjectCustomCreationStep } from "../../urban-project/creationSteps";
-import { completeStep, navigateToNext, navigateToPrevious } from "../urbanProject.actions";
+import { requestStepCompletion, navigateToNext, navigateToPrevious } from "../urbanProject.actions";
 import { mockSiteData } from "./_siteData.mock";
 import { createTestStore } from "./_testStoreHelpers";
 
@@ -49,7 +49,7 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
 
       store.dispatch(navigateToNext({ stepId: "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION" }));
       store.dispatch(
-        completeStep({
+        requestStepCompletion({
           stepId: "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION",
           answers: { spacesCategories: ["LIVING_AND_ACTIVITY_SPACES", "PUBLIC_SPACES"] },
         }),
@@ -146,7 +146,7 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
       );
 
       storeFriche.dispatch(
-        completeStep({
+        requestStepCompletion({
           stepId: "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER",
           answers: { projectDeveloper: { name: "Test", structureType: "company" } },
         }),
@@ -177,7 +177,7 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
         navigateToNext({ stepId: "URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION" }),
       );
       storeNonFriche.dispatch(
-        completeStep({
+        requestStepCompletion({
           stepId: "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER",
           answers: { projectDeveloper: { name: "Test", structureType: "company" } },
         }),
@@ -213,7 +213,7 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
       });
 
       storeFriche.dispatch(
-        completeStep({
+        requestStepCompletion({
           stepId: "URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS",
           answers: { sitePurchaseSellingPrice: 500000, sitePurchasePropertyTransferDuties: 50000 },
         }),
@@ -234,7 +234,7 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
       });
 
       storeNonFriche.dispatch(
-        completeStep({
+        requestStepCompletion({
           stepId: "URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS",
           answers: { sitePurchaseSellingPrice: 500000 },
         }),
@@ -265,7 +265,7 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
       });
 
       store.dispatch(
-        completeStep({
+        requestStepCompletion({
           stepId: "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE",
           answers: { siteResaleExpectedSellingPrice: 1000000 },
         }),
@@ -310,7 +310,7 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
       });
 
       store.dispatch(
-        completeStep({
+        requestStepCompletion({
           stepId: "URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION",
           answers: {
             publicSpacesDistribution: { IMPERMEABLE_SURFACE: 3000, PERMEABLE_SURFACE: 2000 },
@@ -390,7 +390,7 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
               break;
             case "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION":
               store.dispatch(
-                completeStep({
+                requestStepCompletion({
                   stepId: "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION",
                   answers: { spacesCategories: ["LIVING_AND_ACTIVITY_SPACES"] },
                 }),
@@ -398,7 +398,7 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
               break;
             case "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION":
               store.dispatch(
-                completeStep({
+                requestStepCompletion({
                   stepId: "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
                   answers: { livingAndActivitySpacesDistribution: { BUILDINGS: 500 } },
                 }),
@@ -407,7 +407,7 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
 
             case "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION":
               store.dispatch(
-                completeStep({
+                requestStepCompletion({
                   stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
                   answers: { decontaminationPlan: "none" },
                 }),
@@ -416,7 +416,7 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
 
             case "URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA":
               store.dispatch(
-                completeStep({
+                requestStepCompletion({
                   stepId: "URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA",
                   answers: {
                     buildingsFloorSurfaceArea: 1000,
@@ -426,7 +426,7 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
               break;
             case "URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION":
               store.dispatch(
-                completeStep({
+                requestStepCompletion({
                   stepId: "URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION",
                   answers: {
                     buildingsUsesDistribution: { RESIDENTIAL: 1000 },

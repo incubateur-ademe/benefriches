@@ -7,7 +7,7 @@ import {
 import { describe, it, expect, beforeEach } from "vitest";
 
 import { Schedule } from "../../project.types";
-import { completeStep, loadStep } from "../urbanProject.actions";
+import { requestStepCompletion, loadStep } from "../urbanProject.actions";
 import { mockSiteData } from "./_siteData.mock";
 import { createTestStore } from "./_testStoreHelpers";
 
@@ -19,7 +19,7 @@ describe("loadStep action", () => {
   });
 
   describe("Basic loadStep functionality", () => {
-    it("should not add events when loading step without existing answers", () => {
+    it("should not change state when loaded step without existing answers", () => {
       const initialSteps = store.getState().projectCreation.urbanProjectBeta.steps;
       expect(Object.keys(initialSteps)).toHaveLength(0);
 
@@ -103,7 +103,7 @@ describe("loadStep action", () => {
       ).toBeDefined();
     });
 
-    it("should not generate defaults when answers already exist", () => {
+    it("should not generate defaults when default answers already exist", () => {
       const storeWithExistingAnswer = createTestStore({
         steps: {
           URBAN_PROJECT_NAMING: {
@@ -124,63 +124,6 @@ describe("loadStep action", () => {
         defaultValues: { name: "Projet PV" },
       });
     });
-  });
-
-  describe("Complete step with same default values", () => {
-    it("should not add duplicate event when completing with same default values for naming", () => {
-      store.dispatch(loadStep({ stepId: "URBAN_PROJECT_NAMING" }));
-
-      const steps = store.getState().projectCreation.urbanProjectBeta.steps;
-
-      const defaultName = steps.URBAN_PROJECT_NAMING?.defaultValues?.name;
-
-      // complete with same values
-      store.dispatch(
-        completeStep({
-          stepId: "URBAN_PROJECT_NAMING",
-          answers: { name: defaultName },
-        }),
-      );
-
-      const afterCompleteStep =
-        store.getState().projectCreation.urbanProjectBeta.steps.URBAN_PROJECT_NAMING;
-      expect(afterCompleteStep).toEqual({
-        completed: true,
-        defaultValues: { name: defaultName },
-        payload: { name: defaultName },
-      });
-    });
-
-    it("should add event when completing with different values from defaults", () => {
-      store.dispatch(loadStep({ stepId: "URBAN_PROJECT_NAMING" }));
-
-      const afterLoadStep =
-        store.getState().projectCreation.urbanProjectBeta.steps.URBAN_PROJECT_NAMING;
-      expect(afterLoadStep).toBeDefined();
-
-      store.dispatch(
-        completeStep({
-          stepId: "URBAN_PROJECT_NAMING",
-          answers: {
-            name: "Nom personnalisé",
-            description: "Description personnalisée",
-          },
-        }),
-      );
-
-      const afterCompleteStep = store.getState().projectCreation.urbanProjectBeta.steps;
-      expect(afterCompleteStep).toBeDefined();
-      expect(afterCompleteStep.URBAN_PROJECT_NAMING).toEqual({
-        completed: true,
-        defaultValues: {
-          name: afterLoadStep?.defaultValues?.name,
-        },
-        payload: {
-          name: "Nom personnalisé",
-          description: "Description personnalisée",
-        },
-      });
-    });
 
     it("should handle complex default values correctly for installation expenses", () => {
       store.dispatch(loadStep({ stepId: "URBAN_PROJECT_EXPENSES_INSTALLATION" }));
@@ -191,7 +134,7 @@ describe("loadStep action", () => {
 
       // same values than default
       store.dispatch(
-        completeStep({
+        requestStepCompletion({
           stepId: "URBAN_PROJECT_EXPENSES_INSTALLATION",
           answers: { installationExpenses: defaultExpenses },
         }),
