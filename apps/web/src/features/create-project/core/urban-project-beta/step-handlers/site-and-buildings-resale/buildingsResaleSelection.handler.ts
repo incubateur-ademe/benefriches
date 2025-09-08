@@ -1,5 +1,5 @@
 import { getFutureOperator } from "../../../stakeholders";
-import { ReadStateHelper } from "../../urbanProject.helpers";
+import { ReadStateHelper } from "../../helpers/readState";
 import { AnswerStepId } from "../../urbanProjectSteps";
 import { AnswerStepHandler } from "../stepHandler.type";
 
@@ -16,22 +16,23 @@ export const BuildingsResaleSelectionHandler: AnswerStepHandler<typeof STEP_ID> 
     return "URBAN_PROJECT_SITE_RESALE_SELECTION";
   },
 
-  getStepsToInvalidate(_, previousAnswers, newAnswers) {
+  getStepsToInvalidate(state, newAnswers) {
     const steps: AnswerStepId[] = [];
-    if (
-      previousAnswers.buildingsResalePlannedAfterDevelopment !==
-      newAnswers.buildingsResalePlannedAfterDevelopment
-    ) {
+    if (state.stepsState.URBAN_PROJECT_REVENUE_BUILDINGS_RESALE) {
       if (!newAnswers.buildingsResalePlannedAfterDevelopment) {
         steps.push("URBAN_PROJECT_REVENUE_BUILDINGS_RESALE");
       }
+    }
 
-      if (newAnswers.buildingsResalePlannedAfterDevelopment) {
+    if (newAnswers.buildingsResalePlannedAfterDevelopment) {
+      if (state.stepsState.URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES) {
         steps.push("URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES");
+      }
+      if (state.stepsState.URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES) {
         steps.push("URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES");
       }
     }
-    return steps;
+    return { deleted: steps };
   },
 
   updateAnswersMiddleware(context, answers) {

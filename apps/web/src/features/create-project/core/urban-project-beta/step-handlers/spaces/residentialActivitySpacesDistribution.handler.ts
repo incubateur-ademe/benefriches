@@ -1,4 +1,4 @@
-import { ReadStateHelper } from "../../urbanProject.helpers";
+import { ReadStateHelper } from "../../helpers/readState";
 import { BUILDINGS_STEPS, AnswerStepId } from "../../urbanProjectSteps";
 import { AnswerStepHandler } from "../stepHandler.type";
 
@@ -28,16 +28,27 @@ export const ResidentialAndActivitySpacesDistributionHandler: AnswerStepHandler<
     return "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_INTRODUCTION";
   },
 
-  getStepsToInvalidate(context, previousAnswers, newAnswers) {
-    const steps: AnswerStepId[] = [];
-    if (
-      previousAnswers.livingAndActivitySpacesDistribution?.BUILDINGS !==
-      newAnswers.livingAndActivitySpacesDistribution?.BUILDINGS
-    ) {
-      if (!newAnswers.livingAndActivitySpacesDistribution?.BUILDINGS) {
+  getStepsToInvalidate(context, newAnswers) {
+    const stepsToDelete: AnswerStepId[] = [];
+    const stepsToInvalidate: AnswerStepId[] = [];
+    const stepsToRecompute: AnswerStepId[] = [];
+
+    const previousDistribution =
+      context.stepsState.URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION?.payload
+        ?.livingAndActivitySpacesDistribution;
+    const newDistribution = newAnswers.livingAndActivitySpacesDistribution;
+
+    if (previousDistribution?.BUILDINGS) {
+      if (!newDistribution?.BUILDINGS) {
         BUILDINGS_STEPS.forEach((stepId) => {
-          steps.push(stepId);
+          if (context.stepsState[stepId]) {
+            stepsToDelete.push(stepId);
+          }
         });
+      } else if (previousDistribution.BUILDINGS !== newDistribution.BUILDINGS) {
+        if (context.stepsState.URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA) {
+          stepsToInvalidate.push("URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA");
+        }
       }
     }
 
@@ -47,8 +58,9 @@ export const ResidentialAndActivitySpacesDistributionHandler: AnswerStepHandler<
         "URBAN_PROJECT_EXPENSES_REINSTATEMENT",
       )
     ) {
-      steps.push("URBAN_PROJECT_EXPENSES_REINSTATEMENT");
+      stepsToRecompute.push("URBAN_PROJECT_EXPENSES_REINSTATEMENT");
     }
-    return steps;
+
+    return { deleted: stepsToDelete, invalid: stepsToInvalidate, recomputed: stepsToRecompute };
   },
 } as const;

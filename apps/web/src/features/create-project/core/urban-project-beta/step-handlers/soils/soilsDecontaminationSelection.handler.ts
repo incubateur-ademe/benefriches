@@ -1,4 +1,4 @@
-import { ReadStateHelper } from "../../urbanProject.helpers";
+import { ReadStateHelper } from "../../helpers/readState";
 import { AnswerStepHandler } from "../stepHandler.type";
 
 export const SoilsDecontaminationSelectionHandler: AnswerStepHandler<"URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION"> =
@@ -12,9 +12,9 @@ export const SoilsDecontaminationSelectionHandler: AnswerStepHandler<"URBAN_PROJ
           "URBAN_PROJECT_EXPENSES_REINSTATEMENT",
         )
       ) {
-        return ["URBAN_PROJECT_EXPENSES_REINSTATEMENT"];
+        return { recomputed: ["URBAN_PROJECT_EXPENSES_REINSTATEMENT"] };
       }
-      return [];
+      return undefined;
     },
 
     getPreviousStepId() {
@@ -25,25 +25,21 @@ export const SoilsDecontaminationSelectionHandler: AnswerStepHandler<"URBAN_PROJ
       return "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA";
     },
 
-    getShortcut(context, answers, hasChanged) {
+    getShortcut(context, answers) {
       const nextStep = ReadStateHelper.hasBuildings(context.stepsState)
         ? "URBAN_PROJECT_BUILDINGS_INTRODUCTION"
         : "URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION";
 
-      const shouldInvalidateReinstatementExpenses = ReadStateHelper.hasLastAnswerFromSystem(
-        context.stepsState,
-        "URBAN_PROJECT_EXPENSES_REINSTATEMENT",
-      );
+      const hasChanged =
+        context.stepsState.URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION?.payload
+          ?.decontaminationPlan !== answers.decontaminationPlan;
 
       if (answers.decontaminationPlan === "none" && hasChanged) {
         return {
           complete: [
             {
               stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA",
-              payload: { decontaminatedSurfaceArea: 0 },
-              invalidSteps: shouldInvalidateReinstatementExpenses
-                ? ["URBAN_PROJECT_EXPENSES_REINSTATEMENT"]
-                : [],
+              answers: { decontaminatedSurfaceArea: 0 },
             },
           ],
           next: nextStep,
@@ -56,10 +52,7 @@ export const SoilsDecontaminationSelectionHandler: AnswerStepHandler<"URBAN_PROJ
           complete: [
             {
               stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA",
-              payload: { decontaminatedSurfaceArea: contaminatedSoilSurface * 0.25 },
-              invalidSteps: shouldInvalidateReinstatementExpenses
-                ? ["URBAN_PROJECT_EXPENSES_REINSTATEMENT"]
-                : [],
+              answers: { decontaminatedSurfaceArea: contaminatedSoilSurface * 0.25 },
             },
           ],
           next: nextStep,

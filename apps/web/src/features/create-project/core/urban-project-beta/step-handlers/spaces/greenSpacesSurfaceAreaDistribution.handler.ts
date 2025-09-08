@@ -1,4 +1,4 @@
-import { ReadStateHelper } from "../../urbanProject.helpers";
+import { ReadStateHelper } from "../../helpers/readState";
 import { AnswerStepHandler } from "../stepHandler.type";
 
 export const GreenSpacesSurfaceAreaDistributionHandler: AnswerStepHandler<"URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION"> =
@@ -12,9 +12,9 @@ export const GreenSpacesSurfaceAreaDistributionHandler: AnswerStepHandler<"URBAN
           "URBAN_PROJECT_EXPENSES_REINSTATEMENT",
         )
       ) {
-        return ["URBAN_PROJECT_EXPENSES_REINSTATEMENT"];
+        return { recomputed: ["URBAN_PROJECT_EXPENSES_REINSTATEMENT"] };
       }
-      return [];
+      return undefined;
     },
 
     getPreviousStepId() {

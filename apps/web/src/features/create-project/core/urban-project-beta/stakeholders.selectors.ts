@@ -6,7 +6,7 @@ import {
   getProjectAvailableStakeholders,
   hasStakeholder,
 } from "../stakeholders.selectors";
-import { ReadStateHelper } from "./urbanProject.helpers";
+import { ReadStateHelper } from "./helpers/readState";
 import { selectStepState } from "./urbanProject.selectors";
 
 export const getUrbanProjectAvailableStakeholders = createSelector(

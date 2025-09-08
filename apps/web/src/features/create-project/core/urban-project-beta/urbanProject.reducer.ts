@@ -1,21 +1,22 @@
 import { createReducer, UnknownAction } from "@reduxjs/toolkit";
 
-import deepEqual from "@/shared/core/deep-equal/deepEqual";
-
 import { ProjectCreationState } from "../createProject.reducer";
 import { UrbanProjectCustomCreationStep } from "../urban-project/creationSteps";
+import { applyStepChanges, computeStepChanges, StepUpdateResult } from "./helpers/completeStep";
+import { MutateStateHelper } from "./helpers/mutateState";
 import soilsCarbonStorageReducer, {
   State as SoilsCarbonStorageState,
 } from "./soils-carbon-storage/soilsCarbonStorage.reducer";
 import { stepHandlerRegistry } from "./step-handlers/stepHandlerRegistry";
 import {
   loadStep,
-  completeStep,
+  requestStepCompletion,
+  confirmStepCompletion,
+  cancelStepCompletion,
   navigateToPrevious,
   navigateToNext,
   navigateToStep,
 } from "./urbanProject.actions";
-import { MutateStateHelper } from "./urbanProject.helpers";
 import { customUrbanProjectSaved } from "./urbanProjectSave.action";
 import { AnswersByStep, AnswerStepId } from "./urbanProjectSteps";
 
@@ -24,6 +25,10 @@ export type UrbanProjectState = {
   isStepLoading: boolean;
   saveState: "idle" | "loading" | "success" | "error";
   soilsCarbonStorage: SoilsCarbonStorageState;
+  pendingStepCompletion?: {
+    changes: StepUpdateResult<AnswerStepId>;
+    showAlert: boolean;
+  };
   steps: Partial<{
     [K in UrbanProjectCustomCreationStep]: K extends AnswerStepId
       ? {
@@ -43,6 +48,7 @@ export const initialState: UrbanProjectState = {
   saveState: "idle",
   soilsCarbonStorage: { loadingState: "idle", current: undefined, projected: undefined },
   steps: {},
+  pendingStepCompletion: undefined,
 };
 
 const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) => {
@@ -56,7 +62,6 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
 
     state.urbanProjectBeta.isStepLoading = true;
 
-    // Ne pas recalculer si des réponses existent déjà
     if (state.urbanProjectBeta.steps[stepId]?.defaultValues) {
       state.urbanProjectBeta.isStepLoading = false;
       return;
@@ -73,67 +78,29 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
     state.urbanProjectBeta.isStepLoading = false;
   });
 
-  builder.addCase(completeStep, (state, action) => {
-    const stepId = action.payload.stepId;
-    const handler = stepHandlerRegistry[action.payload.stepId];
+  builder.addCase(requestStepCompletion, (state, action) => {
+    const changes = computeStepChanges(state, action.payload);
 
-    const previousAnswers = state.urbanProjectBeta.steps[stepId]?.payload;
-
-    const newAnswers = handler.updateAnswersMiddleware
-      ? handler.updateAnswersMiddleware(
-          { siteData: state.siteData, stepsState: state.urbanProjectBeta.steps },
-          action.payload.answers,
-        )
-      : action.payload.answers;
-
-    const hasChanged = !previousAnswers || !deepEqual(previousAnswers, newAnswers);
-
-    MutateStateHelper.completeStep<typeof stepId>(state, stepId, newAnswers);
-
-    if (hasChanged && previousAnswers) {
-      // handle side effects
-      if (handler.getStepsToInvalidate) {
-        handler
-          .getStepsToInvalidate(
-            { siteData: state.siteData, stepsState: state.urbanProjectBeta.steps },
-            previousAnswers,
-            newAnswers,
-          )
-          .forEach((stepId) => {
-            MutateStateHelper.deleteStepAnswer(state, stepId);
-          });
-      }
+    if (changes.cascadingChanges) {
+      state.urbanProjectBeta.pendingStepCompletion = {
+        changes,
+        showAlert: true,
+      };
+    } else {
+      applyStepChanges(state, changes);
     }
+  });
 
-    if (handler.getShortcut) {
-      const shortcut = handler.getShortcut(
-        { siteData: state.siteData, stepsState: state.urbanProjectBeta.steps },
-        newAnswers,
-        hasChanged,
-      );
-      if (shortcut) {
-        for (const stepShortcut of shortcut.complete) {
-          MutateStateHelper.completeStep<typeof stepId>(
-            state,
-            stepShortcut.stepId,
-            stepShortcut.payload,
-          );
-          for (const invalidStep of stepShortcut.invalidSteps) {
-            MutateStateHelper.deleteStepAnswer(state, invalidStep);
-          }
-        }
-        MutateStateHelper.navigateToStep(state, shortcut.next);
-        return;
-      }
+  builder.addCase(confirmStepCompletion, (state) => {
+    const pending = state.urbanProjectBeta.pendingStepCompletion;
+    if (pending) {
+      applyStepChanges(state, pending.changes);
+      state.urbanProjectBeta.pendingStepCompletion = undefined;
     }
+  });
 
-    MutateStateHelper.navigateToStep(
-      state,
-      handler.getNextStepId({
-        siteData: state.siteData,
-        stepsState: state.urbanProjectBeta.steps,
-      }),
-    );
+  builder.addCase(cancelStepCompletion, (state) => {
+    state.urbanProjectBeta.pendingStepCompletion = undefined;
   });
 
   builder.addCase(navigateToPrevious, (state, action) => {

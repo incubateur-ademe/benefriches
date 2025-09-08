@@ -17,6 +17,7 @@ import {
 } from "@/features/create-project/core/urban-project-beta/urbanProject.actions";
 import {
   selectFormAnswers,
+  selectIsFormStatusValid,
   selectProjectSoilDistribution,
   selectProjectSpaces,
   selectStepAnswers,
@@ -212,9 +213,23 @@ const ProjectCreationDataSummaryWrapper = ({ onNext, onBack }: StepComponentProp
   const projectSpaces = useAppSelector(selectProjectSpaces);
   const projectId = useAppSelector(selectProjectId);
   const dispatch = useAppDispatch();
+  const isFormValid = useAppSelector(selectIsFormStatusValid);
 
   return (
     <ProjectCreationDataSummary
+      nextDisabled={!isFormValid}
+      instructions={
+        !isFormValid ? (
+          <>
+            <div className="text-3xl py-2">⚠️</div>
+            <strong className="*:mb-4">
+              Le formulaire n'est pas complet ! <br />
+              Pour valider votre projet, veuillez remplir les étapes manquantes en naviguant via
+              l'étapier.
+            </strong>
+          </>
+        ) : undefined
+      }
       onNext={() => {
         void dispatch(customUrbanProjectSaved());
         onNext();

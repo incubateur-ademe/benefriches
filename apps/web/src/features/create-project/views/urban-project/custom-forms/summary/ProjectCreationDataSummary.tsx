@@ -1,4 +1,5 @@
 import { ButtonProps } from "@codegouvfr/react-dsfr/Button";
+import { ReactNode } from "react";
 import { SoilsDistribution, LEGACY_UrbanProjectSpace } from "shared";
 
 import { UrbanProjectCreationData } from "@/features/create-project/core/urban-project/creationData";
@@ -15,6 +16,8 @@ type Props = {
   onNext: () => void;
   onBack: () => void;
   getSectionButtonProps: (stepId: UrbanProjectCustomCreationStep) => ButtonProps | undefined;
+  nextDisabled?: boolean;
+  instructions?: ReactNode;
 };
 
 function ProjectCreationDataSummary({
@@ -25,16 +28,15 @@ function ProjectCreationDataSummary({
   getSectionButtonProps,
   onNext,
   onBack,
+  nextDisabled,
+  instructions = "Si des données sont erronées, vous pouvez revenir en arrière pour les modifier.",
 }: Props) {
   const sitePurchaseTotalAmount = projectData.sitePurchaseSellingPrice
     ? projectData.sitePurchaseSellingPrice + (projectData.sitePurchasePropertyTransferDuties ?? 0)
     : undefined;
 
   return (
-    <WizardFormLayout
-      title="Récapitulatif du projet"
-      instructions="Si des données sont erronées, vous pouvez revenir en arrière pour les modifier."
-    >
+    <WizardFormLayout title="Récapitulatif du projet" instructions={instructions}>
       <ProjectFeaturesView
         projectData={{
           id: projectId,
@@ -68,7 +70,12 @@ function ProjectCreationDataSummary({
       />
 
       <div className="mt-8">
-        <BackNextButtonsGroup onBack={onBack} onNext={onNext} nextLabel="Valider" />
+        <BackNextButtonsGroup
+          onBack={onBack}
+          onNext={onNext}
+          nextLabel="Valider"
+          disabled={nextDisabled}
+        />
       </div>
     </WizardFormLayout>
   );

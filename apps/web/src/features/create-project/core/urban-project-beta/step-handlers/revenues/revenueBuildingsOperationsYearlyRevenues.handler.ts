@@ -1,4 +1,4 @@
-import { ReadStateHelper } from "../../urbanProject.helpers";
+import { ReadStateHelper } from "../../helpers/readState";
 import { AnswerStepHandler } from "../stepHandler.type";
 
 export const RevenueBuildingsOperationsYearlyRevenuesHandler: AnswerStepHandler<"URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES"> =

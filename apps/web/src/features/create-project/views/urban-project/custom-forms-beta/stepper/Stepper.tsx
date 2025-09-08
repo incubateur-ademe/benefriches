@@ -1,104 +1,199 @@
-import { selectHasBuildings } from "@/features/create-project/core/urban-project-beta/urbanProject.selectors";
+import { useMemo, useCallback } from "react";
+
+import { navigateToStep } from "@/features/create-project/core/urban-project-beta/urbanProject.actions";
+import { selectAvailableStepsState } from "@/features/create-project/core/urban-project-beta/urbanProject.selectors";
+import { isAnswersStep } from "@/features/create-project/core/urban-project-beta/urbanProjectSteps";
 import { UrbanProjectCustomCreationStep } from "@/features/create-project/core/urban-project/creationSteps";
-import { useAppSelector } from "@/shared/views/hooks/store.hooks";
-import FormStepper from "@/shared/views/layout/WizardFormLayout/FormStepper";
+import classNames from "@/shared/views/clsx";
+import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+import FormStepperStep from "@/shared/views/layout/WizardFormLayout/FormStepperStep";
 
-const STEP_CATEGORIES = [
-  "Type de projet",
-  "Mode de création",
-  "Espaces",
-  "Aménagement des espaces",
-  "Dépollution des sols",
-  "Bâtiments",
-  "Usage des lieux d'habitation et d'activité",
-  "Acteurs",
-  "Cession foncière",
-  "Dépenses et recettes",
-  "Calendrier et avancement",
-  "Dénomination",
-  "Récapitulatif",
-] as const;
+import {
+  STEP_CATEGORIES,
+  STEP_LABELS,
+  STEP_TO_CATEGORY_MAPPING,
+  CategoryDefinition,
+  SubCategoryDefinition,
+} from "./stepperConfig";
 
-type StepCategory = (typeof STEP_CATEGORIES)[number];
+const STEPPER_CLASSES = classNames("list-none", "p-0");
+const SUB_STEPPER_CLASSES = classNames("list-none", "[&>*]:pl-6", "my-0", "p-0");
 
-const getCategoryForStep = (step: UrbanProjectCustomCreationStep): StepCategory => {
-  switch (step) {
-    case "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION":
-    case "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION":
-    case "URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA":
-      return "Espaces";
-    case "URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION":
-    case "URBAN_PROJECT_GREEN_SPACES_INTRODUCTION":
-    case "URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION":
-    case "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_INTRODUCTION":
-    case "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION":
-    case "URBAN_PROJECT_PUBLIC_SPACES_INTRODUCTION":
-    case "URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION":
-    case "URBAN_PROJECT_SPACES_SOILS_SUMMARY":
-    case "URBAN_PROJECT_SOILS_CARBON_SUMMARY":
-      return "Aménagement des espaces";
-    case "URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION":
-    case "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION":
-    case "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA":
-      return "Dépollution des sols";
-    case "URBAN_PROJECT_BUILDINGS_INTRODUCTION":
-    case "URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA":
-      return "Bâtiments";
-    case "URBAN_PROJECT_BUILDINGS_USE_INTRODUCTION":
-    case "URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION":
-      return "Usage des lieux d'habitation et d'activité";
-    case "URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION":
-    case "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER":
-    case "URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER":
-      return "Acteurs";
-    case "URBAN_PROJECT_SITE_RESALE_INTRODUCTION":
-    case "URBAN_PROJECT_SITE_RESALE_SELECTION":
-    case "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION":
-      return "Cession foncière";
-    case "URBAN_PROJECT_EXPENSES_INTRODUCTION":
-    case "URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS":
-    case "URBAN_PROJECT_EXPENSES_REINSTATEMENT":
-    case "URBAN_PROJECT_EXPENSES_INSTALLATION":
-    case "URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES":
-    case "URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE":
-    case "URBAN_PROJECT_REVENUE_INTRODUCTION":
-    case "URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES":
-    case "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE":
-    case "URBAN_PROJECT_REVENUE_BUILDINGS_RESALE":
-      return "Dépenses et recettes";
-    case "URBAN_PROJECT_SCHEDULE_INTRODUCTION":
-    case "URBAN_PROJECT_SCHEDULE_PROJECTION":
-    case "URBAN_PROJECT_PROJECT_PHASE":
-      return "Calendrier et avancement";
-    case "URBAN_PROJECT_NAMING":
-      return "Dénomination";
-    case "URBAN_PROJECT_FINAL_SUMMARY":
-    case "URBAN_PROJECT_CREATION_RESULT":
-      return "Récapitulatif";
-  }
+type CategoryState = "current" | "completed" | "pending" | "empty";
+type SubCategory = Pick<SubCategoryDefinition, "labelKey" | "targetStepId"> & {
+  state: CategoryState;
+  order: number;
+};
+type Category = Pick<CategoryDefinition, "labelKey" | "targetStepId"> & {
+  subCategories?: SubCategory[];
+  state: CategoryState;
+  order: number;
+  disabled?: boolean;
+};
+
+type AvailableStepState = Partial<
+  Record<
+    UrbanProjectCustomCreationStep,
+    {
+      order: number;
+      status: "empty" | "completed";
+    }
+  >
+>;
+
+const getNextAvailableCategoryOrSubCategory = (categories: Category[]) => {
+  const nextStep = categories.find(
+    ({ state, subCategories }) =>
+      state === "empty" || subCategories?.some((sc) => sc.state === "empty"),
+  );
+
+  if (!nextStep) return { categories, nextAvailableCategory: undefined };
+
+  return {
+    category: nextStep.labelKey,
+    subCategory:
+      nextStep.state !== "empty"
+        ? nextStep.subCategories?.find((sc) => sc.state === "empty")?.labelKey
+        : undefined,
+  };
+};
+
+const useMapStepListToCategoryList = (
+  availableStepsState: AvailableStepState,
+  currentStep: UrbanProjectCustomCreationStep,
+) => {
+  return useMemo(() => {
+    const { categoryKey: currentCategory, subCategoryKey: currentSubCategory } =
+      STEP_TO_CATEGORY_MAPPING[currentStep];
+
+    const categories = STEP_CATEGORIES.reduce<Category[]>((categories, category) => {
+      const categoryState = availableStepsState[category.targetStepId];
+
+      if (!categoryState) return categories;
+
+      const isCurrentCategory = currentCategory === category.labelKey;
+
+      if (currentStep === "URBAN_PROJECT_CREATION_RESULT") {
+        return [
+          ...categories,
+          {
+            ...category,
+            ...categoryState,
+            subCategories: [],
+            state: "completed",
+            disabled: true,
+          },
+        ];
+      }
+
+      const subCategories = category.subCategories
+        ?.reduce<SubCategory[]>((subCategoryList, subCategory) => {
+          const subCategoryState = availableStepsState[subCategory.targetStepId];
+          if (!subCategoryState) {
+            return subCategoryList;
+          }
+          const isCurrentStep = isCurrentCategory && subCategory.labelKey === currentSubCategory;
+          return subCategoryList.concat({
+            ...subCategory,
+            ...subCategoryState,
+            state: isCurrentStep ? "current" : subCategoryState.status,
+          });
+        }, [])
+        .sort((a, b) => a.order - b.order);
+
+      const completedStatus =
+        subCategories && !subCategories.every((sc) => sc.state === "completed")
+          ? "empty"
+          : categoryState.status;
+
+      const currentStatus = currentSubCategory ? "pending" : "current";
+
+      return [
+        ...categories,
+        {
+          ...category,
+          ...categoryState,
+          subCategories,
+          state: isCurrentCategory ? currentStatus : completedStatus,
+        },
+      ];
+    }, []).sort((a, b) => a.order - b.order);
+
+    return {
+      categories,
+      nextAvailableCategory:
+        isAnswersStep(currentStep) && availableStepsState[currentStep]?.status === "empty"
+          ? undefined
+          : getNextAvailableCategoryOrSubCategory(categories),
+    };
+  }, [availableStepsState, currentStep]);
 };
 
 type Props = {
   step: UrbanProjectCustomCreationStep;
 };
 
-function UrbanProjectCustomStepper({ step }: Props) {
-  const currentStepCategory = getCategoryForStep(step);
-  const displayBuildingsSection = useAppSelector(selectHasBuildings);
+function UrbanProjectCustomStepper({ step: currentStep }: Props) {
+  const availableStepsState = useAppSelector(selectAvailableStepsState);
+  const dispatch = useAppDispatch();
 
-  const stepCategories = displayBuildingsSection
-    ? STEP_CATEGORIES
-    : STEP_CATEGORIES.filter(
-        (step) => !["Bâtiments", "Usage des lieux d'habitation et d'activité"].includes(step),
-      );
-  const currentStepIndex = stepCategories.findIndex((step) => step === currentStepCategory);
+  const onNavigateToStep = useCallback(
+    (stepId: UrbanProjectCustomCreationStep) => {
+      dispatch(navigateToStep({ stepId }));
+    },
+    [dispatch],
+  );
+
+  const { categories, nextAvailableCategory } = useMapStepListToCategoryList(
+    availableStepsState,
+    currentStep,
+  );
 
   return (
-    <FormStepper
-      currentStepIndex={currentStepIndex}
-      steps={stepCategories.map((step) => step)}
-      isDone={step === "URBAN_PROJECT_CREATION_RESULT"}
-    />
+    <ol role="list" className={STEPPER_CLASSES}>
+      <FormStepperStep title="Type de projet" state="completed" />
+      <FormStepperStep title="Mode de création" state="completed" />
+
+      {categories.map(({ targetStepId, labelKey, subCategories, state, disabled }) => (
+        <>
+          <FormStepperStep
+            counterId="main"
+            key={labelKey}
+            title={STEP_LABELS[labelKey]}
+            state={state}
+            role="button"
+            onClick={() => {
+              onNavigateToStep(targetStepId);
+            }}
+            disabled={
+              disabled ?? !(state === "completed" || nextAvailableCategory?.category === labelKey)
+            }
+          />
+          {subCategories && (state === "pending" || state === "current") && (
+            <ol className={SUB_STEPPER_CLASSES}>
+              {subCategories.map((subStep) => (
+                <FormStepperStep
+                  counterId="sub"
+                  key={subStep.targetStepId}
+                  title={STEP_LABELS[subStep.labelKey]}
+                  state={subStep.state}
+                  onClick={() => {
+                    onNavigateToStep(subStep.targetStepId);
+                  }}
+                  role="button"
+                  disabled={
+                    !(
+                      subStep.state === "completed" ||
+                      nextAvailableCategory?.subCategory === subStep.labelKey
+                    )
+                  }
+                />
+              ))}
+            </ol>
+          )}
+        </>
+      ))}
+    </ol>
   );
 }
 

@@ -1,4 +1,6 @@
-import { ReadStateHelper } from "../../urbanProject.helpers";
+import deepEqual from "@/shared/core/deep-equal/deepEqual";
+
+import { ReadStateHelper } from "../../helpers/readState";
 import { BUILDINGS_STEPS, AnswerStepId } from "../../urbanProjectSteps";
 import { AnswerStepHandler } from "../stepHandler.type";
 
@@ -15,35 +17,45 @@ export const UrbanProjectSpacesCategoriesSelectionHandler: AnswerStepHandler<typ
     return "URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA";
   },
 
-  getStepsToInvalidate(context, previousAnswers, newAnswers) {
-    const steps: AnswerStepId[] = [];
+  getStepsToInvalidate(context, newAnswers) {
+    const stepsToDelete: AnswerStepId[] = [];
+    const stepsToInvalidate: AnswerStepId[] = [];
+    const stepsToRecompute: AnswerStepId[] = [];
 
-    steps.push("URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA");
+    const newCategories = newAnswers.spacesCategories;
 
     if (
-      previousAnswers.spacesCategories?.includes("GREEN_SPACES") &&
-      !newAnswers.spacesCategories?.includes("GREEN_SPACES")
+      deepEqual(
+        context.stepsState.URBAN_PROJECT_SPACES_CATEGORIES_SELECTION?.payload?.spacesCategories,
+        newAnswers.spacesCategories,
+      )
     ) {
-      steps.push("URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION");
+      return undefined;
     }
 
-    if (
-      previousAnswers.spacesCategories?.includes("PUBLIC_SPACES") &&
-      !newAnswers.spacesCategories?.includes("PUBLIC_SPACES")
-    ) {
-      steps.push("URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION");
+    if (context.stepsState.URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA) {
+      stepsToDelete.push("URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA");
     }
 
-    if (
-      previousAnswers.spacesCategories?.includes("LIVING_AND_ACTIVITY_SPACES") &&
-      !newAnswers.spacesCategories?.includes("LIVING_AND_ACTIVITY_SPACES")
-    ) {
-      const hasBuilding = ReadStateHelper.hasBuildings(context.stepsState);
-      steps.push("URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION");
+    if (context.stepsState.URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION) {
+      if (!newCategories?.includes("GREEN_SPACES")) {
+        stepsToDelete.push("URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION");
+      }
+    }
 
-      if (hasBuilding) {
+    if (context.stepsState.URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION) {
+      if (!newCategories?.includes("PUBLIC_SPACES")) {
+        stepsToDelete.push("URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION");
+      }
+    }
+
+    if (context.stepsState.URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION) {
+      if (!newCategories?.includes("LIVING_AND_ACTIVITY_SPACES")) {
+        stepsToDelete.push("URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION");
         BUILDINGS_STEPS.forEach((stepId) => {
-          steps.push(stepId);
+          if (context.stepsState[stepId]) {
+            stepsToDelete.push(stepId);
+          }
         });
       }
     }
@@ -54,41 +66,23 @@ export const UrbanProjectSpacesCategoriesSelectionHandler: AnswerStepHandler<typ
         "URBAN_PROJECT_EXPENSES_REINSTATEMENT",
       )
     ) {
-      steps.push("URBAN_PROJECT_EXPENSES_REINSTATEMENT");
+      stepsToRecompute.push("URBAN_PROJECT_EXPENSES_REINSTATEMENT");
     }
 
-    return steps;
+    return { deleted: stepsToDelete, invalid: stepsToInvalidate, recomputed: stepsToRecompute };
   },
 
-  getShortcut(context, answers, hasChanged) {
+  getShortcut(context, answers) {
     if (answers.spacesCategories?.length === 1 && answers.spacesCategories[0]) {
-      const invalidSteps: AnswerStepId[] =
-        answers.spacesCategories[0] === "LIVING_AND_ACTIVITY_SPACES"
-          ? ["URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION"]
-          : answers.spacesCategories[0] === "PUBLIC_SPACES"
-            ? ["URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION"]
-            : answers.spacesCategories[0] === "GREEN_SPACES"
-              ? ["URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION"]
-              : [];
-
-      const shouldInvalidateBuildings =
-        answers.spacesCategories[0] === "LIVING_AND_ACTIVITY_SPACES" &&
-        ReadStateHelper.hasBuildings(context.stepsState);
-
-      if (shouldInvalidateBuildings) {
-        invalidSteps.push(...BUILDINGS_STEPS);
-      }
-
       return {
         complete: [
           {
             stepId: "URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA",
-            payload: {
+            answers: {
               spacesCategoriesDistribution: {
                 [answers.spacesCategories[0]]: context.siteData?.surfaceArea,
               },
             },
-            invalidSteps: hasChanged ? invalidSteps : [],
           },
         ],
         next: "URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION",

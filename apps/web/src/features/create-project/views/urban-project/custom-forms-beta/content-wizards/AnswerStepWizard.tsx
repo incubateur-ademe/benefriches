@@ -17,9 +17,9 @@ import {
   getUrbanProjectAvailableLocalAuthoritiesStakeholders,
 } from "@/features/create-project/core/urban-project-beta/stakeholders.selectors";
 import {
-  completeStep,
   loadStep,
   navigateToPrevious,
+  requestStepCompletion,
 } from "@/features/create-project/core/urban-project-beta/urbanProject.actions";
 import { selectStepAnswers } from "@/features/create-project/core/urban-project-beta/urbanProject.selectors";
 import {
@@ -48,6 +48,7 @@ import {
   mapFormValuesToExpenses,
 } from "../../custom-forms/expenses/installation/mappers";
 import { HTML_URBAN_PROJECT_FORM_MAIN_TITLE } from "../../htmlTitle";
+import AnswerCascadingUpdateDialog from "./AnswerCascadingUpdateDialog";
 
 const BuildingsFloorSurfaceArea = lazy(
   () => import("../../custom-forms/buildings/floor-surface-area/BuildingsFloorSurfaceArea"),
@@ -157,7 +158,7 @@ const SpacesCategoriesSelectionWrapper = ({ onBack }: StepComponentProps) => {
     <SpacesCategoriesSelection
       onSubmit={(formData) => {
         dispatch(
-          completeStep({
+          requestStepCompletion({
             stepId: "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION",
             answers: { spacesCategories: formData.spaceCategories },
           }),
@@ -189,7 +190,7 @@ const SpacesCategoriesSurfaceAreaWrapper = ({ onBack }: StepComponentProps) => {
     <UrbanProjectSpaceCategoriesSurfaceAreaDistribution
       onSubmit={(formData) => {
         dispatch(
-          completeStep({
+          requestStepCompletion({
             stepId: "URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA",
             answers: { spacesCategoriesDistribution: formData },
           }),
@@ -221,7 +222,7 @@ const GreenSpacesDistributionWrapper = ({ onBack }: StepComponentProps) => {
     <UrbanGreenSpacesDistribution
       onSubmit={(formData) => {
         dispatch(
-          completeStep({
+          requestStepCompletion({
             stepId: "URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION",
             answers: { greenSpacesDistribution: formData },
           }),
@@ -254,7 +255,7 @@ const LivingAndActivitySpacesDistributionWrapper = ({ onBack }: StepComponentPro
     <LivingAndActivitySpacesDistribution
       onSubmit={(formData) => {
         dispatch(
-          completeStep({
+          requestStepCompletion({
             stepId: "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
             answers: { livingAndActivitySpacesDistribution: formData },
           }),
@@ -285,7 +286,7 @@ const PublicSpacesDistributionWrapper = ({ onBack }: StepComponentProps) => {
     <PublicSpacesDistribution
       onSubmit={(formData) => {
         dispatch(
-          completeStep({
+          requestStepCompletion({
             stepId: "URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION",
             answers: { publicSpacesDistribution: formData },
           }),
@@ -307,7 +308,7 @@ const SoilsDecontaminationSelectionWrapper = ({ onBack }: StepComponentProps) =>
     <SoilsDecontaminationSelection
       onSubmit={(formData) => {
         dispatch(
-          completeStep({
+          requestStepCompletion({
             stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
             answers: {
               decontaminationPlan: formData.decontaminationSelection ?? "unknown",
@@ -335,7 +336,7 @@ const SoilsDecontaminationSurfaceAreaWrapper = ({ onBack }: StepComponentProps) 
       contaminatedSoilSurface={siteContaminatedSurfaceArea}
       onSubmit={(formData) => {
         dispatch(
-          completeStep({
+          requestStepCompletion({
             stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA",
             answers: { decontaminatedSurfaceArea: formData },
           }),
@@ -369,7 +370,7 @@ const BuildingsFloorSurfaceAreaWrapper = ({ onBack }: StepComponentProps) => {
     <BuildingsFloorSurfaceArea
       onSubmit={(formData) => {
         dispatch(
-          completeStep({
+          requestStepCompletion({
             stepId: "URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA",
             answers: { buildingsFloorSurfaceArea: formData.surfaceArea },
           }),
@@ -404,7 +405,7 @@ const BuildingsUseSurfaceAreasWrapper = ({ onBack }: StepComponentProps) => {
     <BuildingsUseSurfaceAreas
       onSubmit={(formData) => {
         dispatch(
-          completeStep({
+          requestStepCompletion({
             stepId: "URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION",
             answers: { buildingsUsesDistribution: formData },
           }),
@@ -443,7 +444,7 @@ const ProjectDeveloperStakeholderWrapper = ({ onBack }: StepComponentProps) => {
       availableLocalAuthoritiesStakeholders={availableLocalAuthoritiesStakeholders}
       onSubmit={(formData) => {
         dispatch(
-          completeStep({
+          requestStepCompletion({
             stepId: "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER",
             answers: { projectDeveloper: formData },
           }),
@@ -471,7 +472,7 @@ const ReinstatementContractOwnerStakeholderWrapper = ({ onBack }: StepComponentP
       initialValues={stepAnswers?.reinstatementContractOwner}
       onSubmit={(formData) => {
         dispatch(
-          completeStep({
+          requestStepCompletion({
             stepId: "URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER",
             answers: { reinstatementContractOwner: formData },
           }),
@@ -502,7 +503,7 @@ const SiteResaleSelectionWrapper = ({ onBack }: StepComponentProps) => {
     <SiteResaleForm
       onSubmit={(formData) => {
         dispatch(
-          completeStep({
+          requestStepCompletion({
             stepId: "URBAN_PROJECT_SITE_RESALE_SELECTION",
             answers: {
               siteResalePlannedAfterDevelopment: formData.siteResalePlanned === "yes",
@@ -529,7 +530,7 @@ const BuildingsResaleSelectionWrapper = ({ onBack }: StepComponentProps) => {
     <BuildingsResaleForm
       onSubmit={(formData) => {
         dispatch(
-          completeStep({
+          requestStepCompletion({
             stepId: "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION",
             answers: {
               buildingsResalePlannedAfterDevelopment: formData.buildingsResalePlanned === "yes",
@@ -557,7 +558,7 @@ const SitePurchaseAmountsWrapper = ({ onBack }: StepComponentProps) => {
     <SitePurchaseAmounts
       onSubmit={(formData) => {
         dispatch(
-          completeStep({
+          requestStepCompletion({
             stepId: "URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS",
             answers: {
               sitePurchasePropertyTransferDuties: formData.propertyTransferDuties,
@@ -600,7 +601,7 @@ const InstallationExpensesWrapper = ({ onBack }: StepComponentProps) => {
       }
       onSubmit={(formData) => {
         dispatch(
-          completeStep({
+          requestStepCompletion({
             stepId: "URBAN_PROJECT_EXPENSES_INSTALLATION",
             answers: {
               installationExpenses: mapFormValuesToExpenses(formData),
@@ -642,7 +643,7 @@ const ProjectedBuildingsOperatingExpensesWrapper = ({ onBack }: StepComponentPro
           ] as const
         ).filter(({ amount }) => amount > 0);
         dispatch(
-          completeStep({
+          requestStepCompletion({
             stepId: "URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES",
             answers: {
               yearlyProjectedBuildingsOperationsExpenses: expenses,
@@ -668,7 +669,7 @@ const ReinstatementExpensesWrapper = ({ onBack }: StepComponentProps) => {
       onBack={onBack}
       onSubmit={(data) => {
         dispatch(
-          completeStep({
+          requestStepCompletion({
             stepId: "URBAN_PROJECT_EXPENSES_REINSTATEMENT",
             answers: {
               reinstatementExpenses: mapFormValuesToReinstatementExpenses(data),
@@ -704,7 +705,7 @@ const FinancialAssistanceRevenueWrapper = ({ onBack }: StepComponentProps) => {
     <ProjectFinancialAssistanceRevenueForm
       onSubmit={(formData) => {
         dispatch(
-          completeStep({
+          requestStepCompletion({
             stepId: "URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE",
             answers: {
               financialAssistanceRevenues: formData,
@@ -758,7 +759,7 @@ const YearlyRevenuesWrapper = ({ onBack }: StepComponentProps) => {
           }
         }
         dispatch(
-          completeStep({
+          requestStepCompletion({
             stepId: "URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES",
             answers: {
               yearlyProjectedRevenues: revenues,
@@ -789,7 +790,7 @@ const SiteResaleRevenueWrapper = ({ onBack }: StepComponentProps) => {
     <SiteResaleRevenueForm
       onSubmit={(formData) => {
         dispatch(
-          completeStep({
+          requestStepCompletion({
             stepId: "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE",
             answers: {
               siteResaleExpectedSellingPrice: formData.sellingPrice,
@@ -815,7 +816,7 @@ const BuildingsResaleRevenueWrapper = ({ onBack }: StepComponentProps) => {
     <BuildingsResaleRevenueForm
       onSubmit={(formData) => {
         dispatch(
-          completeStep({
+          requestStepCompletion({
             stepId: "URBAN_PROJECT_REVENUE_BUILDINGS_RESALE",
             answers: {
               buildingsResaleSellingPrice: formData.sellingPrice,
@@ -841,7 +842,7 @@ const ScheduleProjectionWrapper = ({ onBack }: StepComponentProps) => {
     <ScheduleProjectionForm
       onSubmit={(formData) => {
         dispatch(
-          completeStep({
+          requestStepCompletion({
             stepId: "URBAN_PROJECT_SCHEDULE_PROJECTION",
             answers: {
               installationSchedule: formData.installationSchedule,
@@ -887,7 +888,7 @@ const ProjectPhaseWrapper = ({ onBack }: StepComponentProps) => {
       }))}
       onSubmit={(formData) => {
         dispatch(
-          completeStep({
+          requestStepCompletion({
             stepId: "URBAN_PROJECT_PROJECT_PHASE",
             answers: {
               projectPhase:
@@ -910,7 +911,7 @@ const ProjectNamingWrapper = ({ onBack }: StepComponentProps) => {
     <ProjectNameAndDescriptionForm
       onSubmit={(formData) => {
         dispatch(
-          completeStep({
+          requestStepCompletion({
             stepId: "URBAN_PROJECT_NAMING",
             answers: {
               name: formData.name,
@@ -1066,6 +1067,7 @@ export default function AnswerStepWizard({ currentStep }: Props) {
     <Suspense fallback={<LoadingSpinner />}>
       <HtmlTitle>{htmlTitle}</HtmlTitle>
       <Component onBack={onBack} />
+      <AnswerCascadingUpdateDialog />
     </Suspense>
   );
 }

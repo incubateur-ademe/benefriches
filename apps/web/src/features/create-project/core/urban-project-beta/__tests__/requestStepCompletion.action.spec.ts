@@ -1,9 +1,9 @@
 import { describe, it, expect, beforeEach } from "vitest";
 
-import { completeStep, navigateToNext } from "../urbanProject.actions";
+import { requestStepCompletion, navigateToNext } from "../urbanProject.actions";
 import { createTestStore } from "./_testStoreHelpers";
 
-describe("urbanProject.reducer", () => {
+describe("urbanProject.reducer - requestStepCompletion without validation", () => {
   let store: ReturnType<typeof createTestStore>;
 
   beforeEach(() => {
@@ -26,7 +26,7 @@ describe("urbanProject.reducer", () => {
 
       // Étape ----
       store.dispatch(
-        completeStep({
+        requestStepCompletion({
           stepId: "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION",
           answers: {
             spacesCategories: ["LIVING_AND_ACTIVITY_SPACES", "PUBLIC_SPACES", "GREEN_SPACES"],
@@ -52,7 +52,7 @@ describe("urbanProject.reducer", () => {
 
       // Étape ----
       store.dispatch(
-        completeStep({
+        requestStepCompletion({
           stepId: "URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA",
           answers: {
             spacesCategoriesDistribution: {
@@ -90,7 +90,7 @@ describe("urbanProject.reducer", () => {
 
       // Étape ----
       store.dispatch(
-        completeStep({
+        requestStepCompletion({
           stepId: "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
           answers: {
             livingAndActivitySpacesDistribution: {
@@ -120,7 +120,7 @@ describe("urbanProject.reducer", () => {
 
       // Étape ----
       store.dispatch(
-        completeStep({
+        requestStepCompletion({
           stepId: "URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION",
           answers: {
             publicSpacesDistribution: {
@@ -145,7 +145,7 @@ describe("urbanProject.reducer", () => {
 
       // Étape ----
       store.dispatch(
-        completeStep({
+        requestStepCompletion({
           stepId: "URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION",
           answers: {
             greenSpacesDistribution: {
@@ -183,7 +183,7 @@ describe("urbanProject.reducer", () => {
 
       // Étape ----
       store.dispatch(
-        completeStep({
+        requestStepCompletion({
           stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
           answers: {
             decontaminationPlan: "partial",
@@ -198,7 +198,7 @@ describe("urbanProject.reducer", () => {
 
       // Étape ----
       store.dispatch(
-        completeStep({
+        requestStepCompletion({
           stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA",
           answers: {
             decontaminatedSurfaceArea: 1500,
@@ -219,7 +219,7 @@ describe("urbanProject.reducer", () => {
 
       // Étape ----
       store.dispatch(
-        completeStep({
+        requestStepCompletion({
           stepId: "URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA",
           answers: {
             buildingsFloorSurfaceArea: 4000,
@@ -240,7 +240,7 @@ describe("urbanProject.reducer", () => {
 
       // Étape ----
       store.dispatch(
-        completeStep({
+        requestStepCompletion({
           stepId: "URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION",
           answers: {
             buildingsUsesDistribution: {
@@ -265,7 +265,7 @@ describe("urbanProject.reducer", () => {
 
       // Étape ----
       store.dispatch(
-        completeStep({
+        requestStepCompletion({
           stepId: "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER",
           answers: {
             projectDeveloper: {
@@ -283,7 +283,7 @@ describe("urbanProject.reducer", () => {
 
       // Étape ----
       store.dispatch(
-        completeStep({
+        requestStepCompletion({
           stepId: "URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER",
           answers: {
             reinstatementContractOwner: {
@@ -307,7 +307,7 @@ describe("urbanProject.reducer", () => {
 
       // Étape ----
       store.dispatch(
-        completeStep({
+        requestStepCompletion({
           stepId: "URBAN_PROJECT_SITE_RESALE_SELECTION",
           answers: {
             siteResalePlannedAfterDevelopment: true,
@@ -322,7 +322,7 @@ describe("urbanProject.reducer", () => {
 
       // Étape ----
       store.dispatch(
-        completeStep({
+        requestStepCompletion({
           stepId: "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION",
           answers: {
             buildingsResalePlannedAfterDevelopment: true,
@@ -341,7 +341,7 @@ describe("urbanProject.reducer", () => {
 
       // Étape ----
       store.dispatch(
-        completeStep({
+        requestStepCompletion({
           stepId: "URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS",
           answers: {
             sitePurchaseSellingPrice: 500000,
@@ -357,7 +357,7 @@ describe("urbanProject.reducer", () => {
 
       // Étape ----
       store.dispatch(
-        completeStep({
+        requestStepCompletion({
           stepId: "URBAN_PROJECT_EXPENSES_REINSTATEMENT",
           answers: {
             reinstatementExpenses: [
@@ -373,7 +373,7 @@ describe("urbanProject.reducer", () => {
 
       // Étape ----
       store.dispatch(
-        completeStep({
+        requestStepCompletion({
           stepId: "URBAN_PROJECT_EXPENSES_INSTALLATION",
           answers: {
             installationExpenses: [
@@ -395,7 +395,7 @@ describe("urbanProject.reducer", () => {
 
       // Étape ----
       store.dispatch(
-        completeStep({
+        requestStepCompletion({
           stepId: "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE",
           answers: {
             siteResaleExpectedSellingPrice: 1000000,
@@ -411,7 +411,7 @@ describe("urbanProject.reducer", () => {
 
       // Étape ----
       store.dispatch(
-        completeStep({
+        requestStepCompletion({
           stepId: "URBAN_PROJECT_REVENUE_BUILDINGS_RESALE",
           answers: {
             buildingsResaleSellingPrice: 2000000,
@@ -427,7 +427,7 @@ describe("urbanProject.reducer", () => {
 
       // Étape ----
       store.dispatch(
-        completeStep({
+        requestStepCompletion({
           stepId: "URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE",
           answers: {
             financialAssistanceRevenues: [{ source: "public_subsidies", amount: 200000 }],
@@ -446,7 +446,7 @@ describe("urbanProject.reducer", () => {
 
       // Étape ----
       store.dispatch(
-        completeStep({
+        requestStepCompletion({
           stepId: "URBAN_PROJECT_SCHEDULE_PROJECTION",
           answers: {
             reinstatementSchedule: {
@@ -467,7 +467,7 @@ describe("urbanProject.reducer", () => {
 
       // Étape ----
       store.dispatch(
-        completeStep({
+        requestStepCompletion({
           stepId: "URBAN_PROJECT_PROJECT_PHASE",
           answers: {
             projectPhase: "planning",
@@ -480,7 +480,7 @@ describe("urbanProject.reducer", () => {
 
       // Étape ----
       store.dispatch(
-        completeStep({
+        requestStepCompletion({
           stepId: "URBAN_PROJECT_NAMING",
           answers: {
             name: "Projet Urbain Test",
@@ -506,7 +506,7 @@ describe("urbanProject.reducer", () => {
       store.dispatch(navigateToNext({ stepId: "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION" }));
 
       store.dispatch(
-        completeStep({
+        requestStepCompletion({
           stepId: "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION",
           answers: {
             spacesCategories: ["LIVING_AND_ACTIVITY_SPACES"],
@@ -536,7 +536,7 @@ describe("urbanProject.reducer", () => {
       store.dispatch(navigateToNext({ stepId: "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION" }));
 
       store.dispatch(
-        completeStep({
+        requestStepCompletion({
           stepId: "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION",
           answers: { spacesCategories: ["LIVING_AND_ACTIVITY_SPACES"] },
         }),
@@ -550,7 +550,7 @@ describe("urbanProject.reducer", () => {
       );
 
       store.dispatch(
-        completeStep({
+        requestStepCompletion({
           stepId: "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
           answers: {
             livingAndActivitySpacesDistribution: { BUILDINGS: 2000 },
@@ -565,7 +565,7 @@ describe("urbanProject.reducer", () => {
       );
 
       store.dispatch(
-        completeStep({
+        requestStepCompletion({
           stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
           answers: {
             decontaminationPlan: "none",
