@@ -26,12 +26,7 @@ function MutafrichesAvailabilityModal({ onSubmit, onSaveLoadingState, userEmail 
 
   return (
     <mutafrichesAvailabilityModal.Component
-      title={
-        <FeatureAlertModalTitle
-          title="Analyser la compatibilité de ma friche"
-          iconId="ri-file-copy-line"
-        />
-      }
+      title={<FeatureAlertModalTitle title="Analyser la compatibilité de ma friche" />}
       size={isSuccess ? "small" : "large"}
     >
       {isSuccess ? (

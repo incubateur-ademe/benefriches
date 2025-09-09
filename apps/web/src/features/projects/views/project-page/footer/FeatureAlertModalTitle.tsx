@@ -5,13 +5,13 @@ import Badge from "@/shared/views/components/Badge/Badge";
 
 type Props = {
   title?: string;
-  iconId: FrCxArg;
+  iconId?: FrCxArg;
 };
 
 function FeatureAlertModalTitle({ title, iconId }: Props) {
   return (
     <div className="text-dsfr-title-blue">
-      <i className={classNames("fr-icon--xl pr-2", iconId)}></i>
+      {iconId && <i className={classNames("fr-icon--xl pr-2", iconId)}></i>}
       {title}
       <Badge small style="green-tilleul" className="ml-2">
         Bientôt disponible

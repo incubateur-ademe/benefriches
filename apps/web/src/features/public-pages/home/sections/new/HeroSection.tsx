@@ -1,18 +1,8 @@
 import Button from "@codegouvfr/react-dsfr/Button";
-import React from "react";
-
-const headerHeight = 116; // px - only matters for larger screens
 
 export default function HeroSection() {
   return (
-    <section
-      className="bg-[#007EAF] lg:h-[var(--hero-height)] lg:min-h-[600px]"
-      style={
-        {
-          "--hero-height": `calc(100vh - ${headerHeight}px)`,
-        } as React.CSSProperties
-      }
-    >
+    <section className="bg-[#007EAF] lg:h-[680px]">
       <div className="fr-container text-white h-full">
         <div className="flex flex-col lg:grid lg:grid-cols-2 lg:gap-8 lg:items-center h-full">
           <div className="flex flex-col justify-center py-10 lg:py-0">
