@@ -34,7 +34,9 @@ function Accordion({ label, children }: AccordionProps) {
         <Button
           className={classNames("text-black dark:text-white")}
           iconId={isOpen ? "fr-icon-arrow-up-s-fill" : "fr-icon-arrow-down-s-fill"}
-          onClick={toggle}
+          onClick={(e) => {
+            e.preventDefault();
+          }}
           size="small"
           priority="tertiary no outline"
           title={isOpen ? "Fermer la section" : "Afficher la section"}
