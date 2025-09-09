@@ -1,6 +1,7 @@
 import Button from "@codegouvfr/react-dsfr/Button";
 import ProConnectButton from "@codegouvfr/react-dsfr/ProConnectButton";
 
+import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import { routes, useRoute } from "@/shared/views/router";
 
 import AuthLinkModal from "./AuthLinkModal";
@@ -28,10 +29,11 @@ export default function AccessBenefrichesPage() {
           <h1 className="leading-14 text-5xl mb-0">
             Connectez-vous à Bénéfriches pour évaluer les impacts de votre projet.
           </h1>
-          <div className="flex gap-4 items-start">
-            <ProConnectButton url={loginUrl} />
+          <div className="flex gap-4 items-center">
+            <div className="[&_.fr-connect-group_p]:hidden [&_.fr-connect]:mb-0">
+              <ProConnectButton url={loginUrl} />
+            </div>
             <Button
-              className="mt-2"
               priority="secondary"
               onClick={() => {
                 authLinkModal.open();
@@ -63,6 +65,9 @@ export default function AccessBenefrichesPage() {
               + de 120 services numériques accessibles en seulement un clic
             </li>
           </ul>
+          <ExternalLink href="https://www.proconnect.gouv.fr/" className="text-sm">
+            En savoir plus sur ProConnect
+          </ExternalLink>
         </div>
       </div>
       <AuthLinkModal />
