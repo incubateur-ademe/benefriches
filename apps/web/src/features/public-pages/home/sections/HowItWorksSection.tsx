@@ -1,97 +1,98 @@
-import IllustrationCard from "@/features/onboarding/views/pages/how-it-works/IllustrationCard";
-import OnBoardingIntroductionStep from "@/features/onboarding/views/pages/how-it-works/Step";
-import { HOW_IT_WORKS_CONTENT } from "@/features/onboarding/views/pages/how-it-works/content";
-import classNames from "@/shared/views/clsx";
+import { SegmentedControl } from "@codegouvfr/react-dsfr/SegmentedControl";
+import { useState } from "react";
+
+import SectionTitle from "./SectionTitle";
+
+type StepProps = {
+  emoji: string;
+  title: string;
+  children: React.ReactNode;
+};
+
+function Step({ emoji, title, children }: StepProps) {
+  return (
+    <article className="flex flex-col gap-2">
+      <span className="text-4xl" aria-hidden="true">
+        {emoji}
+      </span>
+      <h3 className="m-0 text-xl">{title}</h3>
+      <p className="m-0 text-sm">{children}</p>
+    </article>
+  );
+}
+
+type UserSituation = "has-site-and-project" | "has-only-site";
 
 export default function HowItWorksSection() {
+  const [userSituation, setUserSituation] = useState<UserSituation>("has-site-and-project");
+
   return (
     <section className="py-20 bg-grey-light dark:bg-grey-dark">
-      <div className="fr-container grid grid-cols-12 gap-8">
-        <aside
-          className={classNames(
-            "col-span-12 row-start-2",
-            "md:row-start-1 md:col-span-4",
-            "grid grid-rows-3 gap-10",
-            "px-14",
-          )}
-          aria-hidden="true"
-        >
-          <div className="relative">
-            <IllustrationCard
-              title="Votre site"
-              iconId="fr-icon-map-pin-2-fill"
-              stepNumber={1}
-              className="w-[60%]"
-            />
-            <IllustrationCard
-              title="Votre projet"
-              iconId="fr-icon-briefcase-fill"
-              stepNumber={2}
-              className={["w-[60%]", "absolute", "right-0", "bottom-4", "z-10"]}
-            />
+      <div className="fr-container">
+        <SectionTitle>Bénéfriches, comment ça marche ?</SectionTitle>
+        <SegmentedControl
+          legend="Connaissance du projet d'aménagement"
+          hideLegend
+          className="mb-10 mt-5"
+          segments={[
+            {
+              label: "J'ai un site et un projet",
+              nativeInputProps: {
+                checked: userSituation === "has-site-and-project",
+                onChange: () => {
+                  setUserSituation("has-site-and-project");
+                },
+              },
+            },
+            {
+              label: "J'ai juste une friche",
+              nativeInputProps: {
+                checked: userSituation === "has-only-site",
+                onChange: () => {
+                  setUserSituation("has-only-site");
+                },
+              },
+            },
+          ]}
+        />
+        {userSituation === "has-site-and-project" ? (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <Step emoji="📍" title="Je décris mon site">
+              Type de site, sols, pollution, gestion du site... avec un maximum de données
+              pré-remplies par l'outil.
+            </Step>
+            <Step emoji="🏗️" title="Je décris mon projet">
+              Type de projet, dépenses et recettes... avec là aussi un maximum de données
+              pré-remplies.
+            </Step>
+            <Step emoji="📊" title="L'outil calcule les impacts du projet">
+              Impact sur l'environnement, l'emploi, le cadre de vie des riverains, les finances
+              publiques...
+            </Step>
+            <Step emoji="📥" title="Je m'approprie les impacts">
+              Après avoir consulté les impacts, je peux les exporter en PDF et les comparer avec les
+              impacts d'un autre projet.
+            </Step>
           </div>
-          <div className="flex flex-col justify-center">
-            <IllustrationCard
-              title="Données Bénéfriches"
-              iconId="fr-icon-database-fill"
-              stepNumber={3}
-              className={[
-                "translate-y-0",
-                "before:content-['x']",
-                "before:absolute",
-                "before:-top-14",
-                "before:left-[50%]",
-                "before:text-3xl",
-                "before:font-bold",
-              ]}
-            />
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <Step emoji="✍️" title="Je décris ma friche">
+              Adresse, terrain, bâtiments, environnement... avec un maximum de données pré-remplies
+              par l'outil.
+            </Step>
+            <Step emoji="🔍" title="L'outil analyse ma friche">
+              Et me propose les projets d'aménagement les plus adaptés, classés par pertinence.
+            </Step>
+            <Step emoji="📊" title="L'outil calcule les impacts d'un projet sur ma friche">
+              Pour certains projets, l'outil peut calculer les impacts sur l'environnement,
+              l'emploi, les finances publiques...
+            </Step>
+            <Step emoji="💡" title="Je découvre les solutions pour reconvertir ma friche">
+              Outils, subventions disponibles, mise en relation avec un conseiller ou avec des
+              porteurs de projets...
+            </Step>
           </div>
-          <IllustrationCard
-            title="Impacts de votre projet"
-            iconId="fr-icon-bar-chart-box-fill"
-            stepNumber={4}
-            className={[
-              "translate-y-0",
-              "before:content-['=']",
-              "before:absolute",
-              "before:-top-14",
-              "before:left-[50%]",
-              "before:text-3xl",
-              "before:font-bold",
-            ]}
-          >
-            <span className="text-sm">
-              🌱 Environnement, 👷 Emploi, 🤕 Sécurité, 💰 Finances publiques...
-            </span>
-          </IllustrationCard>
-        </aside>
-
-        <div className="col-span-12 md:col-span-8">
-          <h2>Bénéfriches, comment ça marche&nbsp;?</h2>
-          <OnBoardingIntroductionStep
-            stepNumber={1}
-            title={HOW_IT_WORKS_CONTENT.DESCRIBE_SITE_TITLE}
-            text={HOW_IT_WORKS_CONTENT.DESCRIBE_SITE_TEXT}
-          />
-
-          <OnBoardingIntroductionStep
-            stepNumber={2}
-            title={HOW_IT_WORKS_CONTENT.DESCRIBE_PROJECT_TITLE}
-            text={HOW_IT_WORKS_CONTENT.DESCRIBE_PROJECT_TEXT}
-          />
-
-          <OnBoardingIntroductionStep
-            stepNumber={3}
-            title={HOW_IT_WORKS_CONTENT.BENEFRICHES_COMPUTING_TITLE}
-            text={HOW_IT_WORKS_CONTENT.BENEFRICHES_COMPUTING_TEXT}
-          />
-
-          <OnBoardingIntroductionStep
-            stepNumber={4}
-            title={HOW_IT_WORKS_CONTENT.VIEW_IMPACTS_TITLE}
-            text={HOW_IT_WORKS_CONTENT.VIEW_IMPACTS_TEXT}
-          />
-        </div>
+        )}
       </div>
     </section>
   );

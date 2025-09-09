@@ -14,7 +14,6 @@ import { routes, useRoute } from "./router";
 const groups = {
   public: createGroup([
     routes.home,
-    routes.newHome,
     routes.budget,
     routes.stats,
     routes.mentionsLegales,

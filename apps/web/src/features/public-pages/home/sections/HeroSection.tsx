@@ -21,7 +21,7 @@ export default function HeroSection() {
 
           <div className="lg:h-full text-center overflow-hidden">
             <img
-              src="/img/new-homepage-hero.svg"
+              src="/img/homepage-hero.svg"
               className="w-full lg:h-full"
               aria-hidden="true"
               alt=""
