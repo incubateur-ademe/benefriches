@@ -315,11 +315,11 @@ const STEP_CONFIGS: Record<InformationalStep, StepConfig> = {
     Component: SoilsDecontaminationIntroductionWrapper,
   },
   URBAN_PROJECT_BUILDINGS_INTRODUCTION: {
-    htmlTitle: `Introduction - BÃ¢timents - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`,
+    htmlTitle: `Introduction - Bâtiments - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`,
     Component: BuildingsIntroductionWrapper,
   },
   URBAN_PROJECT_BUILDINGS_USE_INTRODUCTION: {
-    htmlTitle: `Introduction - Usages - BÃ¢timents - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`,
+    htmlTitle: `Introduction - Usages - Bâtiments - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`,
     Component: BuildingsUseIntroduction,
   },
   URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION: {

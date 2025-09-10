@@ -248,7 +248,7 @@ const DevelopmentPlanFeatures = ({
                                   case "PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS":
                                     return "les espaces verts publics";
                                   case "PUBLIC_GREEN_SPACES":
-                                    return "les jardins et allées enherbées privées";
+                                    return "les jardins et allées enherbées publics";
                                 }
                               })()} occupent ${formatPercentage(computePercentage(surfaceArea, totalSurfaceArea))} de la surface du site des lieux de vie et d’activité ; fonction du type de projet « ${urbanProjectCategoryLabel} ». Cette valeur est issue du retour d’expérience ADEME.`
                             : undefined
