@@ -14,9 +14,8 @@ export class PublicFacilitiesProjectGenerator extends UrbanProjectGenerator {
   }
 
   override get buildingsFloorAreaDistribution() {
-    const buildingsFloorSurfaceArea = this.siteData.surfaceArea * 0.2;
     return {
-      PUBLIC_FACILITIES: roundTo2Digits(buildingsFloorSurfaceArea),
+      PUBLIC_FACILITIES: roundTo2Digits(this.spacesDistribution.BUILDINGS_FOOTPRINT),
     };
   }
 }

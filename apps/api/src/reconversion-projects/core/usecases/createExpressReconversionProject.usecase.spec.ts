@@ -260,7 +260,7 @@ describe("CreateReconversionProject Use Case", () => {
               expectedResalePrice = 1211600;
               break;
             case "PUBLIC_FACILITIES":
-              expectedResalePrice = 80000;
+              expectedResalePrice = 164000;
               break;
             default:
               expectedResalePrice = 570000;
@@ -344,7 +344,7 @@ describe("CreateReconversionProject Use Case", () => {
               PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS: 1100,
             };
             expectedBuildingsFloorAreaDistribution = {
-              PUBLIC_FACILITIES: 2000,
+              PUBLIC_FACILITIES: 4100,
             };
           } else {
             expectedSpacesDistribution = {
