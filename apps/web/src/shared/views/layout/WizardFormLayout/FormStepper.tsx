@@ -1,6 +1,5 @@
-import classNames from "@/shared/views/clsx";
-
 import FormStepperStep from "./FormStepperStep";
+import FormStepperWrapper from "./FormStepperWrapper";
 
 type Props = {
   currentStepIndex: number;
@@ -18,7 +17,7 @@ const getStepState = (stepIndex: number, currentStepIndex: number, formIsDone: b
 
 function FormStepper({ steps, currentStepIndex, isDone = false }: Props) {
   return (
-    <ol role="list" className={classNames("list-none", "list-inside", "p-0")}>
+    <FormStepperWrapper>
       {steps.map((title, index) => (
         <FormStepperStep
           key={title}
@@ -26,7 +25,7 @@ function FormStepper({ steps, currentStepIndex, isDone = false }: Props) {
           state={getStepState(index, currentStepIndex, isDone)}
         />
       ))}
-    </ol>
+    </FormStepperWrapper>
   );
 }
 

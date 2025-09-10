@@ -1,104 +1,100 @@
 import { HTMLAttributes, useContext } from "react";
 
-import classNames from "@/shared/views/clsx";
+import classNames, { ClassValue } from "@/shared/views/clsx";
 
 import { SidebarLayoutContext } from "../SidebarLayout/SidebarLayoutContext";
 
+type StepState = "current" | "active" | "completed" | "empty";
+
 type StepProps = {
   title: string;
-  state: "current" | "pending" | "completed" | "empty";
+  state: StepState;
+  selectable?: boolean;
   disabled?: boolean;
-  counterId?: "main" | "sub";
-} & HTMLAttributes<HTMLLIElement>;
+  className?: ClassValue;
+  as?: React.ElementType;
+} & HTMLAttributes<HTMLElement>;
 
-const ROUNDED_CIRCLE_CLASSES = [
-  "text-white",
-  "rounded-full",
-  "leading-6",
-  "min-w-6",
-  "h-6",
-  "text-center",
-];
+const rootClasses = {
+  layout: ["flex", "items-center", "text-sm", "p-2", "before:mx-4"],
+  marker: {
+    base: ["marker:content-none"],
+    completed: "fr-icon-check-line text-green-light",
+    number: {
+      base: [
+        "before:text-white",
+        "before:rounded-full",
+        "before:leading-6",
+        "before:min-w-6",
+        "before:h-6",
+        "before:text-center",
+        "before:font-bold",
+        "before:text-xs",
+        'before:content-[counters(li-counter,".")]',
+      ],
+      active: "before:bg-blue-medium",
+      inactive: "before:bg-grey-main dark:before:bg-grey-dark",
+    },
+  },
+  colors: {
+    completed: "text-green-main",
+    active: [
+      "bg-blue-ultralight dark:bg-blue-ultradark",
+      "text-blue-ultradark dark:text-blue-ultralight",
+    ],
+    empty: "text-dsfr-greyDisabled",
+    hover: "hover:bg-blue-ultralight hover:dark:bg-blue-ultradark",
+  },
+} as const;
 
-const SUCCESS_ICON_CLASSES = ["fr-icon-success-line text-green-light"];
-const IN_PROGRESS_ICON_CLASSES = [
-  "ri-pencil-line",
-  "fr-icon--sm",
-  "bg-blue-medium",
-  ...ROUNDED_CIRCLE_CLASSES,
-];
-
-const MAIN_COUNTER_INC_CLASS = `[counter-increment:main-counter]` as const;
-const SUB_COUNTER_INC_CLASS = `[counter-increment:sub-counter]` as const;
-
-const MAIN_COUNTER_CONTENT_CLASS = `before:content-[counter(main-counter)]` as const;
-const SUB_COUNTER_CONTENT_CLASS = `before:content-[counter(sub-counter)]` as const;
-
-const NUMBER_CLASSES = ["font-bold", "text-xs", ...ROUNDED_CIRCLE_CLASSES];
-
-const getNumberClasses = (isCurrent: boolean, counterId: StepProps["counterId"]) => {
-  return [
-    counterId === "main" ? MAIN_COUNTER_CONTENT_CLASS : SUB_COUNTER_CONTENT_CLASS,
-    isCurrent ? "bg-blue-medium" : "bg-grey-main dark:bg-grey-dark",
-    ...NUMBER_CLASSES,
-  ];
-};
+const CurrentStepArrow = () => (
+  <span className="fr-icon-arrow-right-s-line ml-auto" aria-hidden="true" />
+);
 
 const FormStepperStep = ({
   title,
   state,
+  selectable,
   disabled,
-  onClick,
-  counterId = "main",
+  className,
+  as: HtmlTag = "li",
   ...props
 }: StepProps) => {
   const { isOpen: isExtended } = useContext(SidebarLayoutContext);
+  const isActive = state === "current" || state === "active";
+  const isCurrent = state === "current";
+  const isCompleted = state === "completed";
 
   return (
-    <li
+    <HtmlTag
+      title={title}
       {...props}
       className={classNames(
-        "flex",
-        "items-center",
-        "p-2",
-        "marker:content-none",
-        "text-sm",
-        !isExtended && "justify-center",
-        state === "completed" && "text-green-main",
-        state === "current" || state === "pending"
-          ? [
-              "bg-blue-ultralight dark:bg-blue-ultradark",
-              "text-blue-ultradark dark:text-blue-ultralight",
-            ]
-          : "text-dsfr-greyDisabled",
-        onClick && [
+        rootClasses.layout,
+        rootClasses.marker.base,
+        isCurrent && "font-medium",
+        isCompleted
+          ? [rootClasses.colors.completed, rootClasses.marker.completed]
+          : [
+              rootClasses.marker.number.base,
+              isActive
+                ? [rootClasses.colors.active, rootClasses.marker.number.active]
+                : [rootClasses.colors.empty, rootClasses.marker.number.inactive],
+            ],
+        selectable && [
+          rootClasses.colors.hover,
           disabled ? "cursor-not-allowed" : "cursor-pointer",
-          "hover:bg-blue-ultralight hover:dark:bg-blue-ultradark",
         ],
-        counterId === "main" ? MAIN_COUNTER_INC_CLASS : SUB_COUNTER_INC_CLASS,
+        className,
       )}
-      onClick={disabled ? undefined : onClick}
     >
-      <span
-        className={classNames(
-          isExtended ? "mx-4" : "mx-0",
-          state === "completed"
-            ? SUCCESS_ICON_CLASSES
-            : state === "pending"
-              ? IN_PROGRESS_ICON_CLASSES
-              : getNumberClasses(state === "current", counterId),
-        )}
-        aria-hidden="true"
-      />
       {isExtended && (
         <>
-          <span className={state === "current" ? "font-medium" : ""}>{title}</span>
-          {state === "current" && (
-            <span className="fr-icon-arrow-right-s-line ml-auto" aria-hidden="true"></span>
-          )}
+          {title}
+          {isCurrent && <CurrentStepArrow />}
         </>
       )}
-    </li>
+    </HtmlTag>
   );
 };
 

@@ -4,10 +4,12 @@ import { navigateToStep } from "@/features/create-project/core/urban-project-bet
 import { selectAvailableStepsState } from "@/features/create-project/core/urban-project-beta/urbanProject.selectors";
 import { isAnswersStep } from "@/features/create-project/core/urban-project-beta/urbanProjectSteps";
 import { UrbanProjectCustomCreationStep } from "@/features/create-project/core/urban-project/creationSteps";
-import classNames from "@/shared/views/clsx";
+import { RootState } from "@/shared/core/store-config/store";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import FormStepperStep from "@/shared/views/layout/WizardFormLayout/FormStepperStep";
+import FormStepperWrapper from "@/shared/views/layout/WizardFormLayout/FormStepperWrapper";
 
+import StepperLiItem from "./StepperItem";
 import {
   STEP_CATEGORIES,
   STEP_LABELS,
@@ -16,10 +18,7 @@ import {
   SubCategoryDefinition,
 } from "./stepperConfig";
 
-const STEPPER_CLASSES = classNames("list-none", "p-0");
-const SUB_STEPPER_CLASSES = classNames("list-none", "[&>*]:pl-6", "my-0", "p-0");
-
-type CategoryState = "current" | "completed" | "pending" | "empty";
+export type CategoryState = "current" | "completed" | "active" | "empty";
 type SubCategory = Pick<SubCategoryDefinition, "labelKey" | "targetStepId"> & {
   state: CategoryState;
   order: number;
@@ -28,7 +27,6 @@ type Category = Pick<CategoryDefinition, "labelKey" | "targetStepId"> & {
   subCategories?: SubCategory[];
   state: CategoryState;
   order: number;
-  disabled?: boolean;
 };
 
 type AvailableStepState = Partial<
@@ -73,19 +71,6 @@ const useMapStepListToCategoryList = (
 
       const isCurrentCategory = currentCategory === category.labelKey;
 
-      if (currentStep === "URBAN_PROJECT_CREATION_RESULT") {
-        return [
-          ...categories,
-          {
-            ...category,
-            ...categoryState,
-            subCategories: [],
-            state: "completed",
-            disabled: true,
-          },
-        ];
-      }
-
       const subCategories = category.subCategories
         ?.reduce<SubCategory[]>((subCategoryList, subCategory) => {
           const subCategoryState = availableStepsState[subCategory.targetStepId];
@@ -106,7 +91,7 @@ const useMapStepListToCategoryList = (
           ? "empty"
           : categoryState.status;
 
-      const currentStatus = currentSubCategory ? "pending" : "current";
+      const currentStatus = currentSubCategory ? "active" : "current";
 
       return [
         ...categories,
@@ -135,6 +120,9 @@ type Props = {
 
 function UrbanProjectCustomStepper({ step: currentStep }: Props) {
   const availableStepsState = useAppSelector(selectAvailableStepsState);
+  const saveState = useAppSelector(
+    (state: RootState) => state.projectCreation.urbanProjectBeta.saveState,
+  );
   const dispatch = useAppDispatch();
 
   const onNavigateToStep = useCallback(
@@ -149,51 +137,43 @@ function UrbanProjectCustomStepper({ step: currentStep }: Props) {
     currentStep,
   );
 
+  const isFormDisabled = saveState === "success";
+
   return (
-    <ol role="list" className={STEPPER_CLASSES}>
+    <FormStepperWrapper>
       <FormStepperStep title="Type de projet" state="completed" />
       <FormStepperStep title="Mode de création" state="completed" />
-
-      {categories.map(({ targetStepId, labelKey, subCategories, state, disabled }) => (
-        <div key={labelKey}>
-          <FormStepperStep
-            counterId="main"
-            key={labelKey}
-            title={STEP_LABELS[labelKey]}
-            state={state}
-            role="button"
-            onClick={() => {
-              onNavigateToStep(targetStepId);
-            }}
-            disabled={
-              disabled ?? !(state === "completed" || nextAvailableCategory?.category === labelKey)
-            }
-          />
-          {subCategories && (state === "pending" || state === "current") && (
-            <ol className={SUB_STEPPER_CLASSES}>
+      {categories.map(({ targetStepId, labelKey, subCategories, state }) => (
+        <StepperLiItem
+          key={labelKey}
+          title={STEP_LABELS[labelKey]}
+          state={state}
+          isFormDisabled={isFormDisabled}
+          isNextAvailable={nextAvailableCategory?.category === labelKey}
+          onClick={() => {
+            onNavigateToStep(targetStepId);
+          }}
+        >
+          {subCategories && (state === "active" || state === "current") && (
+            <FormStepperWrapper className="my-0">
               {subCategories.map((subStep) => (
-                <FormStepperStep
-                  counterId="sub"
-                  key={subStep.targetStepId}
+                <StepperLiItem
+                  key={subStep.labelKey}
                   title={STEP_LABELS[subStep.labelKey]}
                   state={subStep.state}
+                  className="pl-6"
+                  isFormDisabled={isFormDisabled}
+                  isNextAvailable={nextAvailableCategory?.subCategory === subStep.labelKey}
                   onClick={() => {
                     onNavigateToStep(subStep.targetStepId);
                   }}
-                  role="button"
-                  disabled={
-                    !(
-                      subStep.state === "completed" ||
-                      nextAvailableCategory?.subCategory === subStep.labelKey
-                    )
-                  }
                 />
               ))}
-            </ol>
+            </FormStepperWrapper>
           )}
-        </div>
+        </StepperLiItem>
       ))}
-    </ol>
+    </FormStepperWrapper>
   );
 }
 
