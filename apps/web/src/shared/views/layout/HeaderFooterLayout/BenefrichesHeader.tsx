@@ -27,7 +27,7 @@ function BenefrichesHeader({
     if (BENEFRICHES_ENV.authEnabled) {
       quickAccessItems.push({
         iconId: "fr-icon-logout-box-r-line",
-        linkProps: { href: "api/auth/logout" },
+        linkProps: { href: "/api/auth/logout" },
         text: "Se déconnecter",
       });
     }
