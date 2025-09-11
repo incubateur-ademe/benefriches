@@ -1,8 +1,14 @@
 import { z } from "zod";
 
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
 import { UseCase } from "src/shared-kernel/usecase";
 
+import {
+  createUserAccountCreatedEvent,
+  UserAccountCreatedEvent,
+} from "./events/userAccountCreated.event";
+import { UuidGenerator } from "./gateways/IdGenerator";
 import { UserRepository } from "./gateways/UsersRepository";
 import { userSchema } from "./user";
 
@@ -33,6 +39,8 @@ export class CreateUserUseCase implements UseCase<Request, CreateUserResult> {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly dateProvider: DateProvider,
+    private readonly uuidGenerator: UuidGenerator,
+    private readonly eventPublisher: DomainEventPublisher,
   ) {}
 
   async execute({ user: userProps }: Request): Promise<CreateUserResult> {
@@ -63,6 +71,18 @@ export class CreateUserUseCase implements UseCase<Request, CreateUserResult> {
         : undefined,
     });
 
+    await this.publishUserCreatedEvent({
+      userId: user.id,
+      userEmail: user.email,
+      userFirstName: user.firstName,
+      userLastName: user.lastName,
+    });
+
     return { success: true };
+  }
+
+  private async publishUserCreatedEvent(eventPayload: UserAccountCreatedEvent["payload"]) {
+    const event = createUserAccountCreatedEvent(this.uuidGenerator.generate(), eventPayload);
+    await this.eventPublisher.publish(event);
   }
 }

@@ -58,12 +58,12 @@ export class UserBuilder {
     return this;
   }
 
-  withFirstName(firstName: string | undefined): this {
+  withFirstName(firstName: string): this {
     this.props.firstName = firstName;
     return this;
   }
 
-  withLastName(lastName: string | undefined): this {
+  withLastName(lastName: string): this {
     this.props.lastName = lastName;
     return this;
   }

@@ -3,12 +3,14 @@ import { ZodError } from "zod";
 
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { InMemoryEventPublisher } from "src/shared-kernel/adapters/events/InMemoryEventPublisher";
 
 import {
   buildExhaustiveUserProps,
   buildMinimalUserProps,
   UserBuilder,
 } from "../../users/core/model/user.mock";
+import { DeterministicUuidGenerator } from "../adapters/id-generator/DeterministicIdGenerator";
 import { InMemoryUserRepository } from "../adapters/user-repository/InMemoryAuthUserRepository";
 import { CreateUserUseCase } from "./createUser.usecase";
 import { User } from "./user";
@@ -16,6 +18,8 @@ import { User } from "./user";
 describe("CreateUser Use Case", () => {
   let dateProvider: DateProvider;
   let userRepository: InMemoryUserRepository;
+  let uuidGenerator: DeterministicUuidGenerator;
+  let eventPublisher: InMemoryEventPublisher;
   const fakeNow = new Date("2024-01-05T13:00:00");
 
   const getZodIssues = (err: unknown) => {
@@ -26,6 +30,9 @@ describe("CreateUser Use Case", () => {
   beforeEach(() => {
     dateProvider = new DeterministicDateProvider(fakeNow);
     userRepository = new InMemoryUserRepository();
+    uuidGenerator = new DeterministicUuidGenerator();
+    uuidGenerator.nextUuids("a-fixed-uuid");
+    eventPublisher = new InMemoryEventPublisher();
   });
 
   describe("Error cases", () => {
@@ -37,7 +44,12 @@ describe("CreateUser Use Case", () => {
           // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
           delete userProps[mandatoryField];
 
-          const usecase = new CreateUserUseCase(userRepository, dateProvider);
+          const usecase = new CreateUserUseCase(
+            userRepository,
+            dateProvider,
+            uuidGenerator,
+            eventPublisher,
+          );
 
           expect.assertions(4);
           try {
@@ -54,7 +66,12 @@ describe("CreateUser Use Case", () => {
       it("Cannot create an user without providing storage consentment", async () => {
         const userProps = buildMinimalUserProps();
 
-        const usecase = new CreateUserUseCase(userRepository, dateProvider);
+        const usecase = new CreateUserUseCase(
+          userRepository,
+          dateProvider,
+          uuidGenerator,
+          eventPublisher,
+        );
 
         const result = await usecase.execute({
           user: { ...userProps, personalDataStorageConsented: false },
@@ -72,7 +89,12 @@ describe("CreateUser Use Case", () => {
 
         userRepository._setUsers([new UserBuilder().withEmail(email).build()]);
 
-        const usecase = new CreateUserUseCase(userRepository, dateProvider);
+        const usecase = new CreateUserUseCase(
+          userRepository,
+          dateProvider,
+          uuidGenerator,
+          eventPublisher,
+        );
 
         const result = await usecase.execute({
           user: userProps,
@@ -90,8 +112,15 @@ describe("CreateUser Use Case", () => {
     it.each([
       { case: "with minimal data", props: buildMinimalUserProps() },
       { case: "with exhaustive data", props: buildExhaustiveUserProps() },
-    ])("Can create an user $case", async ({ props }) => {
-      const usecase = new CreateUserUseCase(userRepository, dateProvider);
+    ])("creates a user $case and emits an event", async ({ props }) => {
+      uuidGenerator.nextUuids("my-event-uuid");
+
+      const usecase = new CreateUserUseCase(
+        userRepository,
+        dateProvider,
+        uuidGenerator,
+        eventPublisher,
+      );
       await usecase.execute({ user: props });
 
       const savedUser = userRepository._getUsers();
@@ -113,6 +142,18 @@ describe("CreateUser Use Case", () => {
           personalDataCommunicationUseConsentedAt: props.personalDataCommunicationUseConsented
             ? fakeNow
             : undefined,
+        },
+      ]);
+      expect(eventPublisher.events).toEqual([
+        {
+          id: "my-event-uuid",
+          name: "user.account-created",
+          payload: {
+            userId: props.id,
+            userEmail: props.email,
+            userFirstName: props.firstName,
+            userLastName: props.lastName,
+          },
         },
       ]);
     });

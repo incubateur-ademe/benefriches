@@ -9,8 +9,8 @@ import { UserRepository } from "../../core/gateways/UsersRepository";
 
 const mapSqlUserToAuthenticatedUser = (userRow: SqlUser): User => ({
   id: userRow.id,
-  firstName: userRow.firstname,
-  lastName: userRow.lastname,
+  firstName: userRow.firstname ?? "",
+  lastName: userRow.lastname ?? "",
   email: userRow.email,
   createdAt: userRow.created_at,
   personalDataStorageConsentedAt: userRow.personal_data_storage_consented_at,
@@ -35,7 +35,6 @@ export const mapUserToSqlRow = (user: User): SqlUser => ({
   personal_data_communication_use_consented_at: user.personalDataCommunicationUseConsentedAt,
 });
 
-// todo: merge with SqlUserRepository
 @Injectable()
 export class SqlUserRepository implements UserRepository {
   constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}

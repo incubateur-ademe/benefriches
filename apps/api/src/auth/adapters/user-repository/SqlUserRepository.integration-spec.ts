@@ -22,7 +22,7 @@ describe("SqlSiteRepository integration", () => {
   });
 
   it("Saves user with minimal required props", async () => {
-    const user = new UserBuilder().withFirstName(undefined).withLastName(undefined).build();
+    const user = new UserBuilder().build();
 
     await userRepository.save(user);
 
@@ -33,8 +33,8 @@ describe("SqlSiteRepository integration", () => {
     expect(result[0]?.personal_data_storage_consented_at).toEqual(
       user.personalDataStorageConsentedAt,
     );
-    expect(result[0]?.firstname).toEqual(null);
-    expect(result[0]?.lastname).toEqual(null);
+    expect(result[0]?.firstname).toEqual(user.firstName);
+    expect(result[0]?.lastname).toEqual(user.lastName);
     expect(result[0]?.structure_name).toEqual(null);
     expect(result[0]?.structure_type).toEqual(user.structureType);
     expect(result[0]?.structure_activity).toEqual(user.structureActivity);

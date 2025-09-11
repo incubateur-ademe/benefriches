@@ -1,13 +1,19 @@
-import { Module } from "@nestjs/common";
+import { Injectable, Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
+import { EventEmitter2, OnEvent } from "@nestjs/event-emitter";
 import { JwtModule, JwtService } from "@nestjs/jwt";
 
 import { CreateUserUseCase } from "src/auth/core/createUser.usecase";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
+import { RealEventPublisher } from "src/shared-kernel/adapters/events/RealEventPublisher";
+import { DomainEvent } from "src/shared-kernel/domainEvent";
+import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
 import { SqlUserFeatureAlertRepository } from "src/users/adapters/secondary/user-feature-alert-repository/SqlUserFeatureAlertRepository";
 
 import { AuthenticateWithTokenUseCase } from "../core/authenticateWithToken.usecase";
+import { USER_ACCOUNT_CREATED } from "../core/events/userAccountCreated.event";
+import { UuidGenerator } from "../core/gateways/IdGenerator";
 import { TokenAuthenticationAttemptRepository } from "../core/gateways/TokenAuthenticationAttemptRepository";
 import { AUTH_USER_REPOSITORY_TOKEN, UserRepository } from "../core/gateways/UsersRepository";
 import { SendAuthLinkUseCase, TokenGenerator, AuthLinkMailer } from "../core/sendAuthLink.usecase";
@@ -17,12 +23,21 @@ import { SqlTokenAuthenticationAttemptRepository } from "./auth-token-repository
 import { AuthController } from "./auth.controller";
 import { EXTERNAL_USER_IDENTITIES_REPOSITORY_INJECTION_TOKEN } from "./external-user-identities-repository/ExternalUserIdentitiesRepository";
 import { SqlExternalUserIdentitiesRepository } from "./external-user-identities-repository/SqlExternalUserIdentitiesRepository";
+import { RandomUuidGenerator } from "./id-generator/RandomUuidGenerator";
 import { HttpProConnectClient } from "./pro-connect/HttpProConnectClient";
 import { PRO_CONNECT_CLIENT_INJECTION_TOKEN } from "./pro-connect/ProConnectClient";
 import { RandomTokenGenerator } from "./token-generator/RandomTokenGenerator";
 import { SqlUserRepository } from "./user-repository/SqlUsersRepository";
 import { SqlVerifiedEmailRepository } from "./verified-email-repository/SqlVerifiedEmailRepository";
 import { VERIFIED_EMAIL_REPOSITORY_TOKEN } from "./verified-email-repository/VerifiedEmailRepository";
+
+@Injectable()
+export class AllEventsListener {
+  @OnEvent(USER_ACCOUNT_CREATED)
+  handleUserCreated(event: DomainEvent) {
+    console.log("USER_ACCOUNT_CREATED:", event);
+  }
+}
 
 @Module({
   imports: [
@@ -70,10 +85,19 @@ import { VERIFIED_EMAIL_REPOSITORY_TOKEN } from "./verified-email-repository/Ver
       useClass: SqlVerifiedEmailRepository,
     },
     {
+      provide: RealEventPublisher,
+      useFactory: (eventEmitter: EventEmitter2) => new RealEventPublisher(eventEmitter),
+      inject: [EventEmitter2],
+    },
+    {
       provide: CreateUserUseCase,
-      useFactory: (userRepository: UserRepository, dateProvider: DateProvider) =>
-        new CreateUserUseCase(userRepository, dateProvider),
-      inject: [SqlUserRepository, RealDateProvider],
+      useFactory: (
+        userRepository: UserRepository,
+        dateProvider: DateProvider,
+        uuidGenerator: UuidGenerator,
+        eventPublisher: DomainEventPublisher,
+      ) => new CreateUserUseCase(userRepository, dateProvider, uuidGenerator, eventPublisher),
+      inject: [SqlUserRepository, RealDateProvider, RandomUuidGenerator, RealEventPublisher],
     },
     {
       provide: SendAuthLinkUseCase,
@@ -120,6 +144,8 @@ import { VERIFIED_EMAIL_REPOSITORY_TOKEN } from "./verified-email-repository/Ver
     SmtpAuthLinkMailer,
     RealDateProvider,
     RandomTokenGenerator,
+    RandomUuidGenerator,
+    AllEventsListener,
   ],
   // Guards are not providers and cannot be exported as is, they need all their dependencies to be exported to be used in other modules
   // see https://github.com/nestjs/nest/issues/3856

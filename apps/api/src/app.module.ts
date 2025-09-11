@@ -1,6 +1,7 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { APP_PIPE } from "@nestjs/core";
+import { EventEmitterModule } from "@nestjs/event-emitter";
 import { ZodValidationPipe } from "nestjs-zod";
 
 import { AuthModule } from "./auth/adapters/auth.module";
@@ -15,6 +16,10 @@ import { UsersModule } from "./users/adapters/primary/users.module";
 @Module({
   imports: [
     ConfigModule.forRoot(),
+    EventEmitterModule.forRoot({
+      wildcard: true,
+      global: true,
+    }),
     SqlConnectionModule,
     AuthModule,
     HelloModule,
