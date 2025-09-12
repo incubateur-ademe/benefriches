@@ -8,13 +8,15 @@ import { routes, useRoute } from "../../shared/views/router";
 import AccessBenefrichesPage from "../onboarding/views/pages/access-benefriches";
 import AuthWithToken from "../onboarding/views/pages/auth-with-token/AuthWithToken";
 import OnBoardingIdentityPage from "../onboarding/views/pages/identity/OnBoardingIdentityPage";
+import BenefrichesLandingPage from "./landings/BenefrichesLandingPage";
+import MutabiliteLandingPage from "./landings/MutabiliteLandingPage";
 
 /* Lazy-loaded pages */
 const AccessibilitePage = lazy(
   () => import("@/features/public-pages/accesibilite/AccessibilitePage"),
 );
 const BudgetPage = lazy(() => import("@/features/public-pages/budget/BudgetPage"));
-const HomePage = lazy(() => import("@/features/public-pages/home/HomePage"));
+const HomePage = lazy(() => import("@/features/public-pages/landings/HomePage"));
 const MentionsLegalesPage = lazy(
   () => import("@/features/public-pages/mentions-legales/MentionsLegalesPage"),
 );
@@ -32,6 +34,10 @@ function PublicApp() {
           switch (route.name) {
             case routes.home.name:
               return <HomePage />;
+            case routes.landingBenefriches.name:
+              return <BenefrichesLandingPage />;
+            case routes.landingMutabilite.name:
+              return <MutabiliteLandingPage />;
             case routes.budget.name:
               return <BudgetPage />;
             case routes.stats.name:

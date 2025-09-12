@@ -1,20 +1,24 @@
 import DataSourcesSection from "./sections/DataSourcesSection";
 import FaqSection from "./sections/FaqSection";
 import GetNotifiedSection from "./sections/GetNotifiedSection";
-import HeroSection from "./sections/HeroSection";
-import HowItWorksSection from "./sections/HowItWorksSection";
 import PreserveSoilsSection from "./sections/PreserveSoilsSection";
+import SectionTitle from "./sections/SectionTitle";
 import TestimoniesSection from "./sections/TestimoniesSection";
 import UrbanPlanningProfessionsSection from "./sections/UrbanPlanningProfessionsSection";
 import UserLogosSection from "./sections/UsersLogosSection";
-import SituationSection from "./sections/cta-section/SituationSection";
+import BenefrichesLandingHeroSection from "./sections/hero-section/BenefrichesLandingHeroSection";
+import HasSiteAndProjectSteps from "./sections/how-it-works-section/HasSiteAndProjectSteps";
+import HowItWorksSectionWrapper from "./sections/how-it-works-section/HowItWorksSectionWrapper";
 
-function HomePage() {
+function BenefrichesLandingPage() {
   return (
     <>
-      <HeroSection />
-      <HowItWorksSection />
-      <SituationSection />
+      <BenefrichesLandingHeroSection />
+      <HowItWorksSectionWrapper mode="white">
+        <SectionTitle>Comment ça marche ?</SectionTitle>
+
+        <HasSiteAndProjectSteps />
+      </HowItWorksSectionWrapper>
       <UserLogosSection />
       <UrbanPlanningProfessionsSection />
       <DataSourcesSection />
@@ -26,4 +30,4 @@ function HomePage() {
   );
 }
 
-export default HomePage;
+export default BenefrichesLandingPage;

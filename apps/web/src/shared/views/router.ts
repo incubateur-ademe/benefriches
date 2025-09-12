@@ -6,6 +6,8 @@ const onBoarding = defineRoute("/premiers-pas");
 
 const { RouteProvider, useRoute, routes } = createRouter({
   home: defineRoute("/"),
+  landingBenefriches: defineRoute("/commencer-avec-benefriches"),
+  landingMutabilite: defineRoute("/commencer-avec-mutabilite"),
   // ONBOARDING GLOBAL
   onBoardingIdentity: onBoarding.extend(
     {
