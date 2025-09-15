@@ -25,10 +25,16 @@ import { z } from "zod";
 import { CreateUserUseCase, UserProps } from "src/auth/core/createUser.usecase";
 
 import { AuthenticateWithTokenUseCase } from "../core/authenticateWithToken.usecase";
-import { AUTH_USER_REPOSITORY_TOKEN, UserRepository } from "../core/gateways/UsersRepository";
+import {
+  AUTH_USER_REPOSITORY_INJECTION_TOKEN,
+  UserRepository,
+} from "../core/gateways/UsersRepository";
 import { SendAuthLinkUseCase } from "../core/sendAuthLink.usecase";
 import { JwtAuthGuard } from "./JwtAuthGuard";
-import { ACCESS_TOKEN_SERVICE, AccessTokenService } from "./access-token/AccessTokenService";
+import {
+  ACCESS_TOKEN_SERVICE_INJECTION_TOKEN,
+  AccessTokenService,
+} from "./access-token/AccessTokenService";
 import { ACCESS_TOKEN_COOKIE_KEY } from "./access-token/accessTokenCookie";
 import {
   EXTERNAL_USER_IDENTITIES_REPOSITORY_INJECTION_TOKEN,
@@ -39,7 +45,7 @@ import {
   ProConnectClient,
 } from "./pro-connect/ProConnectClient";
 import {
-  VERIFIED_EMAIL_REPOSITORY_TOKEN,
+  VERIFIED_EMAIL_REPOSITORY_INJECTION_TOKEN,
   VerifiedEmailRepository,
 } from "./verified-email-repository/VerifiedEmailRepository";
 
@@ -73,16 +79,16 @@ export class AuthController {
     private readonly createUserUseCase: CreateUserUseCase,
     private readonly sendAuthLinkUseCase: SendAuthLinkUseCase,
     private readonly authenticateWithTokenUseCase: AuthenticateWithTokenUseCase,
-    @Inject(ACCESS_TOKEN_SERVICE)
+    @Inject(ACCESS_TOKEN_SERVICE_INJECTION_TOKEN)
     private readonly accessTokenService: AccessTokenService,
     private readonly configService: ConfigService,
-    @Inject(AUTH_USER_REPOSITORY_TOKEN)
+    @Inject(AUTH_USER_REPOSITORY_INJECTION_TOKEN)
     private readonly usersRepository: UserRepository,
     @Inject(PRO_CONNECT_CLIENT_INJECTION_TOKEN)
     private readonly oidcLogin: ProConnectClient,
     @Inject(EXTERNAL_USER_IDENTITIES_REPOSITORY_INJECTION_TOKEN)
     private readonly externalUserIdentitiesRepository: ExternalUserIdentityRepository,
-    @Inject(VERIFIED_EMAIL_REPOSITORY_TOKEN)
+    @Inject(VERIFIED_EMAIL_REPOSITORY_INJECTION_TOKEN)
     private readonly verifiedEmailRepository: VerifiedEmailRepository,
   ) {}
 

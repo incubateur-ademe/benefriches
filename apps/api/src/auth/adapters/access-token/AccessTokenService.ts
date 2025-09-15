@@ -1,6 +1,6 @@
 import { JwtSignOptions } from "@nestjs/jwt";
 
-export const ACCESS_TOKEN_SERVICE = Symbol("AccessTokenService");
+export const ACCESS_TOKEN_SERVICE_INJECTION_TOKEN = Symbol("AccessTokenService");
 
 export interface AccessTokenService {
   signAsync(payload: object | string, options?: JwtSignOptions): Promise<string>;

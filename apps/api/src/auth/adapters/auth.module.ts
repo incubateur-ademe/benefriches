@@ -13,9 +13,12 @@ import { SqlUserFeatureAlertRepository } from "src/users/adapters/secondary/user
 import { AuthenticateWithTokenUseCase } from "../core/authenticateWithToken.usecase";
 import { UuidGenerator } from "../core/gateways/IdGenerator";
 import { TokenAuthenticationAttemptRepository } from "../core/gateways/TokenAuthenticationAttemptRepository";
-import { AUTH_USER_REPOSITORY_TOKEN, UserRepository } from "../core/gateways/UsersRepository";
+import {
+  AUTH_USER_REPOSITORY_INJECTION_TOKEN,
+  UserRepository,
+} from "../core/gateways/UsersRepository";
 import { SendAuthLinkUseCase, TokenGenerator, AuthLinkMailer } from "../core/sendAuthLink.usecase";
-import { ACCESS_TOKEN_SERVICE } from "./access-token/AccessTokenService";
+import { ACCESS_TOKEN_SERVICE_INJECTION_TOKEN } from "./access-token/AccessTokenService";
 import { SmtpAuthLinkMailer } from "./auth-link-mailer/SmtpAuthLinkMailer";
 import { SqlTokenAuthenticationAttemptRepository } from "./auth-token-repository/SqlTokenAuthenticationAttemptRepository";
 import { AuthController } from "./auth.controller";
@@ -27,7 +30,7 @@ import { PRO_CONNECT_CLIENT_INJECTION_TOKEN } from "./pro-connect/ProConnectClie
 import { RandomTokenGenerator } from "./token-generator/RandomTokenGenerator";
 import { SqlUserRepository } from "./user-repository/SqlUsersRepository";
 import { SqlVerifiedEmailRepository } from "./verified-email-repository/SqlVerifiedEmailRepository";
-import { VERIFIED_EMAIL_REPOSITORY_TOKEN } from "./verified-email-repository/VerifiedEmailRepository";
+import { VERIFIED_EMAIL_REPOSITORY_INJECTION_TOKEN } from "./verified-email-repository/VerifiedEmailRepository";
 
 @Module({
   imports: [
@@ -48,11 +51,11 @@ import { VERIFIED_EMAIL_REPOSITORY_TOKEN } from "./verified-email-repository/Ver
   controllers: [AuthController],
   providers: [
     {
-      provide: ACCESS_TOKEN_SERVICE,
+      provide: ACCESS_TOKEN_SERVICE_INJECTION_TOKEN,
       useExisting: JwtService,
     },
     {
-      provide: AUTH_USER_REPOSITORY_TOKEN,
+      provide: AUTH_USER_REPOSITORY_INJECTION_TOKEN,
       useClass: SqlUserRepository,
     },
     {
@@ -71,7 +74,7 @@ import { VERIFIED_EMAIL_REPOSITORY_TOKEN } from "./verified-email-repository/Ver
       useClass: SqlExternalUserIdentitiesRepository,
     },
     {
-      provide: VERIFIED_EMAIL_REPOSITORY_TOKEN,
+      provide: VERIFIED_EMAIL_REPOSITORY_INJECTION_TOKEN,
       useClass: SqlVerifiedEmailRepository,
     },
     {
@@ -138,6 +141,6 @@ import { VERIFIED_EMAIL_REPOSITORY_TOKEN } from "./verified-email-repository/Ver
   ],
   // Guards are not providers and cannot be exported as is, they need all their dependencies to be exported to be used in other modules
   // see https://github.com/nestjs/nest/issues/3856
-  exports: [ACCESS_TOKEN_SERVICE],
+  exports: [ACCESS_TOKEN_SERVICE_INJECTION_TOKEN],
 })
 export class AuthModule {}

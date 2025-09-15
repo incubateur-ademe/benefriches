@@ -8,7 +8,10 @@ import {
 import { ConfigService } from "@nestjs/config";
 import { Request } from "express";
 
-import { ACCESS_TOKEN_SERVICE, AccessTokenService } from "./access-token/AccessTokenService";
+import {
+  ACCESS_TOKEN_SERVICE_INJECTION_TOKEN,
+  AccessTokenService,
+} from "./access-token/AccessTokenService";
 import { ACCESS_TOKEN_COOKIE_KEY } from "./access-token/accessTokenCookie";
 
 export type AccessTokenPayload = {
@@ -32,7 +35,8 @@ declare module "express" {
 @Injectable()
 export class JwtAuthGuard implements CanActivate {
   constructor(
-    @Inject(ACCESS_TOKEN_SERVICE) private readonly accessTokenService: AccessTokenService,
+    @Inject(ACCESS_TOKEN_SERVICE_INJECTION_TOKEN)
+    private readonly accessTokenService: AccessTokenService,
     private readonly configService: ConfigService,
   ) {}
 
