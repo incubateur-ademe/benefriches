@@ -19,6 +19,7 @@ const mapSqlUserToAuthenticatedUser = (userRow: SqlUser): User => ({
   structureName: userRow.structure_name,
   structureType: userRow.structure_type,
   structureActivity: userRow.structure_activity,
+  subscribedToNewsletter: userRow.subscribed_to_newsletter,
 });
 
 export const mapUserToSqlRow = (user: User): SqlUser => ({
@@ -33,6 +34,7 @@ export const mapUserToSqlRow = (user: User): SqlUser => ({
   personal_data_storage_consented_at: user.personalDataStorageConsentedAt,
   personal_data_analytics_use_consented_at: user.personalDataAnalyticsUseConsentedAt,
   personal_data_communication_use_consented_at: user.personalDataCommunicationUseConsentedAt,
+  subscribed_to_newsletter: user.subscribedToNewsletter,
 });
 
 @Injectable()

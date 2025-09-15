@@ -4,7 +4,7 @@ export type NewContactProps = {
   email: string;
   firstName: string;
   lastName: string;
-  subscribeToNewsletter: boolean;
+  subscribedToNewsletter: boolean;
 };
 
 export interface CRMGateway {

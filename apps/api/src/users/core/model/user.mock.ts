@@ -14,6 +14,7 @@ export const buildMinimalUserProps = (): UserProps => {
     personalDataStorageConsented: true,
     firstName: "John",
     lastName: "Doe",
+    subscribedToNewsletter: false,
   };
 };
 
@@ -29,6 +30,7 @@ export const buildExhaustiveUserProps = (): Required<UserProps> => {
     personalDataAnalyticsUseConsented: false,
     personalDataCommunicationUseConsented: true,
     personalDataStorageConsented: true,
+    subscribedToNewsletter: true,
   };
 };
 
@@ -94,6 +96,11 @@ export class UserBuilder {
     this.props.structureName = structureName;
     this.props.structureType = structureType;
     this.props.structureActivity = structureActivity;
+    return this;
+  }
+
+  withNewsletterSubscription(): this {
+    this.props.subscribedToNewsletter = true;
     return this;
   }
 

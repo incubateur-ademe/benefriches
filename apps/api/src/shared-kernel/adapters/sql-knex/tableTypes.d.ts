@@ -10,6 +10,7 @@ export type SqlUser = {
   personal_data_storage_consented_at: Date;
   personal_data_analytics_use_consented_at?: Date;
   personal_data_communication_use_consented_at?: Date;
+  subscribed_to_newsletter: boolean;
 };
 
 type SqlUserFeatureAlert = {

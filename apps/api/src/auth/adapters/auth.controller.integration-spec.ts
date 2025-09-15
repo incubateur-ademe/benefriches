@@ -68,6 +68,7 @@ describe("Auth integration tests", () => {
       personalDataAnalyticsUseConsented: false,
       personalDataCommunicationUseConsented: false,
       personalDataStorageConsented: true,
+      subscribedToNewsletter: true,
     });
 
     it.each([
@@ -77,6 +78,7 @@ describe("Auth integration tests", () => {
       "structureActivity",
       "personalDataStorageConsented",
       "personalDataAnalyticsUseConsented",
+      "subscribedToNewsletter",
     ] as (keyof z.infer<typeof registerUserBodySchema>)[])(
       "cannot register a user without field '%s'",
       async (mandatoryField) => {
@@ -111,6 +113,7 @@ describe("Auth integration tests", () => {
         structure_name: "Mairie de Blajan",
         personal_data_storage_consented_at: new Date(),
         created_at: new Date(),
+        subscribed_to_newsletter: true,
       });
 
       const response = await request(app.getHttpServer())
@@ -134,7 +137,7 @@ describe("Auth integration tests", () => {
       expect(response.status).toBe(201);
 
       const usersInDb = await sqlConnection("users")
-        .select("id", "email", "firstname", "lastname")
+        .select("id", "email", "firstname", "lastname", "subscribed_to_newsletter")
         .where({ email: registerUserPayload.email });
 
       expect(usersInDb).toHaveLength(1);
@@ -143,6 +146,7 @@ describe("Auth integration tests", () => {
         email: registerUserPayload.email,
         firstname: registerUserPayload.firstname,
         lastname: registerUserPayload.lastname,
+        subscribed_to_newsletter: registerUserPayload.subscribedToNewsletter,
       });
 
       const accessTokenCookie = extractCookieFromResponseHeaders(

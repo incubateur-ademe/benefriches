@@ -142,6 +142,7 @@ describe("CreateUser Use Case", () => {
           personalDataCommunicationUseConsentedAt: props.personalDataCommunicationUseConsented
             ? fakeNow
             : undefined,
+          subscribedToNewsletter: props.subscribedToNewsletter,
         },
       ]);
       expect(eventPublisher.events).toEqual([
@@ -153,6 +154,7 @@ describe("CreateUser Use Case", () => {
             userEmail: props.email,
             userFirstName: props.firstName,
             userLastName: props.lastName,
+            subscribedToNewsletter: props.subscribedToNewsletter,
           },
         },
       ]);

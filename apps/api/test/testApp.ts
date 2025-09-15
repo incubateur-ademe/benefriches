@@ -5,6 +5,8 @@ import { Test } from "@nestjs/testing";
 
 import { AppModule } from "src/app.module";
 import { configureServer } from "src/httpServer";
+import { ConnectCrm } from "src/marketing/adapters/secondary/ConnectCrm";
+import { FakeCrm } from "src/marketing/adapters/secondary/FakeCrm";
 import { PhotovoltaicGeoInfoSystemApi } from "src/photovoltaic-performance/adapters/secondary/photovoltaic-data-provider/PhotovoltaicGeoInfoSystemApi";
 import { MockPhotovoltaicGeoInfoSystemApi } from "src/photovoltaic-performance/adapters/secondary/photovoltaic-data-provider/PhotovoltaicGeoInfoSystemApi.mock";
 
@@ -56,7 +58,9 @@ export async function createTestApp({ providerOverrides }: CreateTestAppInput = 
     .overrideProvider(HttpService)
     .useValue(ERROR_HTTP_SERVICE)
     .overrideProvider(PhotovoltaicGeoInfoSystemApi)
-    .useClass(MockPhotovoltaicGeoInfoSystemApi);
+    .useClass(MockPhotovoltaicGeoInfoSystemApi)
+    .overrideProvider(ConnectCrm)
+    .useClass(FakeCrm);
 
   if (providerOverrides) {
     providerOverrides.forEach((override) => {

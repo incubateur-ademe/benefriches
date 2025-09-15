@@ -11,6 +11,7 @@ export const buildUser = (props?: Partial<User>): User => {
     personalDataStorageConsented: true,
     structureActivity: "photovoltaic_plants_developer",
     structureType: "company",
+    subscribedToNewsletter: true,
     ...props,
   };
 };

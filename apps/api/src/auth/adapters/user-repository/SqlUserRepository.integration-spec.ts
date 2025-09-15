@@ -40,10 +40,15 @@ describe("SqlSiteRepository integration", () => {
     expect(result[0]?.structure_activity).toEqual(user.structureActivity);
     expect(result[0]?.personal_data_analytics_use_consented_at).toEqual(null);
     expect(result[0]?.personal_data_communication_use_consented_at).toEqual(null);
+    expect(result[0]?.subscribed_to_newsletter).toEqual(user.subscribedToNewsletter);
   });
 
   it("Saves user with full props", async () => {
-    const user = new UserBuilder().withEmail("test@example.com").asUrbanPlanner().build();
+    const user = new UserBuilder()
+      .withEmail("test@example.com")
+      .asUrbanPlanner()
+      .withNewsletterSubscription()
+      .build();
 
     await userRepository.save(user);
 
@@ -61,6 +66,7 @@ describe("SqlSiteRepository integration", () => {
       personal_data_analytics_use_consented_at: user.personalDataAnalyticsUseConsentedAt ?? null,
       personal_data_communication_use_consented_at:
         user.personalDataCommunicationUseConsentedAt ?? null,
+      subscribed_to_newsletter: true,
     });
   });
 });

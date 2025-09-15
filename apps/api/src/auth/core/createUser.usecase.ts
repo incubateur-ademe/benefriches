@@ -76,8 +76,7 @@ export class CreateUserUseCase implements UseCase<Request, CreateUserResult> {
       userEmail: user.email,
       userFirstName: user.firstName,
       userLastName: user.lastName,
-      // todo: get this value from props
-      subscribeToNewsletter: false,
+      subscribedToNewsletter: user.subscribedToNewsletter,
     });
 
     return { success: true };

@@ -24,6 +24,7 @@ export type FormValues = {
   firstname: string;
   email: string;
   personnalDataUseConsentment: "agreed";
+  subscribedToNewsletter: "agreed" | undefined;
 } & StructureFormValues;
 
 type Props = {
@@ -85,7 +86,7 @@ function CreateUserForm({
             formContext={formContext}
           />
           <Checkbox
-            className="mb-5"
+            className="mb-6"
             state={formState.errors.personnalDataUseConsentment ? "error" : "default"}
             stateRelatedMessage={
               formState.errors.personnalDataUseConsentment
@@ -105,8 +106,21 @@ function CreateUserForm({
               },
             ]}
           />
+          <Checkbox
+            className="mb-6"
+            options={[
+              {
+                label:
+                  "Je souhaite recevoir la newsletter Bénéfriches, incluant les évolutions produit, cas d'usage et événements",
+                nativeInputProps: {
+                  value: "agreed",
+                  ...register("subscribedToNewsletter"),
+                },
+              },
+            ]}
+          />
           {createUserLoadingState === "error" && (
-            <div className="mb-5">
+            <div className="mb-6">
               <CreateUserErrorMessage errorKind={createUserError ?? ""} />
             </div>
           )}

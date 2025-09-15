@@ -35,7 +35,7 @@ describe("UserAccountCreatedHandler integration test", () => {
       userEmail: "john.doe@example.com",
       userFirstName: "John",
       userLastName: "Doe",
-      subscribeToNewsletter: false,
+      subscribedToNewsletter: false,
     });
 
     await eventPublisher.publish(event);
@@ -45,7 +45,7 @@ describe("UserAccountCreatedHandler integration test", () => {
         email: "john.doe@example.com",
         firstName: "John",
         lastName: "Doe",
-        subscribeToNewsletter: false,
+        subscribedToNewsletter: false,
       },
     ]);
   });

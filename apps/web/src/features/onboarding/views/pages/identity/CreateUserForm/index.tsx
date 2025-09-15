@@ -60,6 +60,7 @@ function CreateUserFormContainer({ onSuccess }: Props) {
         personalDataStorageConsented: true,
         personalDataAnalyticsUseConsented: true,
         personalDataCommunicationUseConsented: true,
+        subscribedToNewsletter: data.subscribedToNewsletter === "agreed",
       }),
     );
   };

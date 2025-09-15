@@ -17,7 +17,7 @@ export class UserAccountCreatedHandler {
       email: event.payload.userEmail,
       firstName: event.payload.userFirstName,
       lastName: event.payload.userLastName,
-      subscribeToNewsletter: event.payload.subscribeToNewsletter,
+      subscribedToNewsletter: event.payload.subscribedToNewsletter,
     });
   }
 }

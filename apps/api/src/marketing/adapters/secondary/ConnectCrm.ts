@@ -16,7 +16,7 @@ export class ConnectCrm implements CRMGateway {
       email: props.email,
       prenom: props.firstName,
       nom: props.lastName,
-      abonnementNewsletter: props.subscribeToNewsletter,
+      abonnementNewsletter: props.subscribedToNewsletter,
       source: "Bénéfriches",
     };
 

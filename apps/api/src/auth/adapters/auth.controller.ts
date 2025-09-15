@@ -62,6 +62,7 @@ export const registerUserBodySchema = z.object({
   personalDataStorageConsented: z.literal(true),
   personalDataAnalyticsUseConsented: z.boolean(),
   personalDataCommunicationUseConsented: z.boolean(),
+  subscribedToNewsletter: z.boolean(),
 });
 
 export class RegisterUserBodyDto extends createZodDto(registerUserBodySchema) {}
@@ -98,6 +99,7 @@ export class AuthController {
       personalDataAnalyticsUseConsented: createUserDto.personalDataAnalyticsUseConsented,
       personalDataCommunicationUseConsented: createUserDto.personalDataCommunicationUseConsented,
       personalDataStorageConsented: createUserDto.personalDataStorageConsented,
+      subscribedToNewsletter: createUserDto.subscribedToNewsletter,
     };
     const result = await this.createUserUseCase.execute({
       user: userProps,
