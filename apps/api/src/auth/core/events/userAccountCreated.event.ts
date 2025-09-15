@@ -7,6 +7,7 @@ export type UserAccountCreatedEvent = DomainEvent<{
   userEmail: string;
   userFirstName: string;
   userLastName: string;
+  subscribeToNewsletter: boolean;
 }>;
 
 export function createUserAccountCreatedEvent(

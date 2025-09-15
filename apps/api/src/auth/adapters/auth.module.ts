@@ -1,18 +1,16 @@
-import { Injectable, Module } from "@nestjs/common";
+import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
-import { EventEmitter2, OnEvent } from "@nestjs/event-emitter";
+import { EventEmitter2 } from "@nestjs/event-emitter";
 import { JwtModule, JwtService } from "@nestjs/jwt";
 
 import { CreateUserUseCase } from "src/auth/core/createUser.usecase";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
 import { RealEventPublisher } from "src/shared-kernel/adapters/events/RealEventPublisher";
-import { DomainEvent } from "src/shared-kernel/domainEvent";
 import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
 import { SqlUserFeatureAlertRepository } from "src/users/adapters/secondary/user-feature-alert-repository/SqlUserFeatureAlertRepository";
 
 import { AuthenticateWithTokenUseCase } from "../core/authenticateWithToken.usecase";
-import { USER_ACCOUNT_CREATED } from "../core/events/userAccountCreated.event";
 import { UuidGenerator } from "../core/gateways/IdGenerator";
 import { TokenAuthenticationAttemptRepository } from "../core/gateways/TokenAuthenticationAttemptRepository";
 import { AUTH_USER_REPOSITORY_TOKEN, UserRepository } from "../core/gateways/UsersRepository";
@@ -30,14 +28,6 @@ import { RandomTokenGenerator } from "./token-generator/RandomTokenGenerator";
 import { SqlUserRepository } from "./user-repository/SqlUsersRepository";
 import { SqlVerifiedEmailRepository } from "./verified-email-repository/SqlVerifiedEmailRepository";
 import { VERIFIED_EMAIL_REPOSITORY_TOKEN } from "./verified-email-repository/VerifiedEmailRepository";
-
-@Injectable()
-export class AllEventsListener {
-  @OnEvent(USER_ACCOUNT_CREATED)
-  handleUserCreated(event: DomainEvent) {
-    console.log("USER_ACCOUNT_CREATED:", event);
-  }
-}
 
 @Module({
   imports: [
@@ -145,7 +135,6 @@ export class AllEventsListener {
     RealDateProvider,
     RandomTokenGenerator,
     RandomUuidGenerator,
-    AllEventsListener,
   ],
   // Guards are not providers and cannot be exported as is, they need all their dependencies to be exported to be used in other modules
   // see https://github.com/nestjs/nest/issues/3856
