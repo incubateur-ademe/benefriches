@@ -1,12 +1,15 @@
 import { INestApplication } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
 import { Knex } from "knex";
 import { Server } from "node:net";
 import supertest from "supertest";
 import { createTestApp } from "test/testApp";
 import { v4 as uuid } from "uuid";
 
+import { ACCESS_TOKEN_COOKIE_KEY } from "src/auth/adapters/access-token/accessTokenCookie";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import { SqlSite } from "src/shared-kernel/adapters/sql-knex/tableTypes";
+import { UserBuilder } from "src/users/core/model/user.mock";
 
 import { CreateCustomSiteDto, CreateExpressSiteDto } from "./sites.controller";
 
@@ -40,6 +43,17 @@ describe("Sites controller", () => {
     await app.close();
     await sqlConnection.destroy();
   });
+
+  async function authenticateUser(userId = uuid()) {
+    const user = new UserBuilder().withId(userId).withEmail("user@example.com").build();
+    const accessTokenService = app.get(JwtService);
+    const accessToken = await accessTokenService.signAsync({
+      sub: user.id,
+      email: user.email,
+      authProvider: "benefriches",
+    });
+    return accessToken;
+  }
 
   describe("POST /sites/create-express", () => {
     // eslint-disable-next-line jest/expect-expect
@@ -564,18 +578,36 @@ describe("Sites controller", () => {
   });
 
   describe("GET /sites/:siteId", () => {
-    it("gets a 404 error when site does not exist", async () => {
+    it("gets a 401 error when no authentication is provided", async () => {
       const siteId = uuid();
-      const response = await supertest(app.getHttpServer()).get(`/sites/${siteId}`).send();
+      const response = await supertest(app.getHttpServer())
+        .get(`/api/sites/${siteId}`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=nope`)
+        .send();
+
+      expect(response.status).toEqual(401);
+    });
+
+    it("gets a 404 error when site does not exist", async () => {
+      const accessToken = await authenticateUser();
+
+      const siteId = uuid();
+      const response = await supertest(app.getHttpServer())
+        .get(`/api/sites/${siteId}`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send();
 
       expect(response.status).toEqual(404);
     });
 
     it("gets a 200 response when site exists", async () => {
+      const userId = uuid();
+      const accessToken = await authenticateUser(userId);
+
       const siteId = uuid();
       await sqlConnection("sites").insert({
         id: siteId,
-        created_by: "74ac340f-0654-4887-9449-3dbb43ce35b5",
+        created_by: userId,
         name: "Friche Amiens",
         nature: "FRICHE",
         description: "Description of site",
@@ -620,7 +652,10 @@ describe("Sites controller", () => {
         },
       ]);
 
-      const response = await supertest(app.getHttpServer()).get(`/api/sites/${siteId}`).send();
+      const response = await supertest(app.getHttpServer())
+        .get(`/api/sites/${siteId}`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send();
 
       expect(response.status).toEqual(200);
       expect(response.body).toEqual({
@@ -660,9 +695,13 @@ describe("Sites controller", () => {
 
     it("gets a 200 response and returns agricultural site with incomes", async () => {
       const siteId = uuid();
+      const userId = uuid();
+
+      const accessToken = await authenticateUser(userId);
+
       await sqlConnection("sites").insert({
         id: siteId,
-        created_by: "74ac340f-0654-4887-9449-3dbb43ce35b5",
+        created_by: userId,
         name: "Viticulture Amiens",
         nature: "AGRICULTURAL_OPERATIONS",
         agricultural_operation_activity: "CATTLE_FARMING",
@@ -712,7 +751,10 @@ describe("Sites controller", () => {
         },
       ]);
 
-      const response = await supertest(app.getHttpServer()).get(`/api/sites/${siteId}`).send();
+      const response = await supertest(app.getHttpServer())
+        .get(`/api/sites/${siteId}`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send();
 
       expect(response.status).toEqual(200);
       expect(response.body).toEqual({
@@ -747,9 +789,13 @@ describe("Sites controller", () => {
 
     it("gets a 200 response and returns natural area site with type", async () => {
       const siteId = uuid();
+      const userId = uuid();
+
+      const accessToken = await authenticateUser(userId);
+
       await sqlConnection("sites").insert({
         id: siteId,
-        created_by: "74ac340f-0654-4887-9449-3dbb43ce35b5",
+        created_by: userId,
         name: "Prairie Amiens",
         nature: "NATURAL_AREA",
         natural_area_type: "PRAIRIE",
@@ -778,7 +824,10 @@ describe("Sites controller", () => {
         { id: uuid(), site_id: siteId, soil_type: "PRAIRIE_GRASS", surface_area: 15000 },
       ]);
 
-      const response = await supertest(app.getHttpServer()).get(`/api/sites/${siteId}`).send();
+      const response = await supertest(app.getHttpServer())
+        .get(`/api/sites/${siteId}`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send();
 
       expect(response.status).toEqual(200);
       expect(response.body).toEqual({

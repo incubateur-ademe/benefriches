@@ -6,11 +6,13 @@ import {
   NotFoundException,
   Param,
   Post,
+  UseGuards,
 } from "@nestjs/common";
 import { ZodValidationPipe } from "nestjs-zod";
 import { API_ROUTES, createSoilSurfaceAreaDistribution } from "shared";
 import { z } from "zod";
 
+import { JwtAuthGuard } from "src/auth/adapters/JwtAuthGuard";
 import {
   CreateNewExpressSiteUseCase,
   ExpressSiteProps,
@@ -57,6 +59,7 @@ export class SitesController {
     });
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get("sites/:siteId")
   async getSiteById(@Param("siteId") siteId: string) {
     try {

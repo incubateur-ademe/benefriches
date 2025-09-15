@@ -1,6 +1,8 @@
 import { HttpModule } from "@nestjs/axios";
 import { Module } from "@nestjs/common";
+import { ConfigModule } from "@nestjs/config";
 
+import { AuthModule } from "src/auth/adapters/auth.module";
 import { SqlCityStatsQuery } from "src/reconversion-projects/adapters/secondary/queries/city-stats/SqlCityStatsQuery";
 import { CityStatsProvider } from "src/reconversion-projects/core/gateways/CityStatsProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
@@ -16,7 +18,7 @@ import { SqlSiteRepository } from "../secondary/site-repository/SqlSiteRepositor
 import { SitesController } from "./sites.controller";
 
 @Module({
-  imports: [HttpModule],
+  imports: [HttpModule, AuthModule, ConfigModule],
   controllers: [SitesController],
   providers: [
     {
