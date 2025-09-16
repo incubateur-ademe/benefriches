@@ -7,11 +7,14 @@ import { CreateUserUseCase } from "src/auth/core/createUser.usecase";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
 import { RealEventPublisher } from "src/shared-kernel/adapters/events/RealEventPublisher";
-import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
+import {
+  DOMAIN_EVENT_PUBLISHER_INJECTION_TOKEN,
+  DomainEventPublisher,
+} from "src/shared-kernel/domainEventPublisher";
 import { SqlUserFeatureAlertRepository } from "src/users/adapters/secondary/user-feature-alert-repository/SqlUserFeatureAlertRepository";
 
 import { AuthenticateWithTokenUseCase } from "../core/authenticateWithToken.usecase";
-import { UuidGenerator } from "../core/gateways/IdGenerator";
+import { UUID_GENERATOR_INJECTION_TOKEN, UuidGenerator } from "../core/gateways/IdGenerator";
 import { TokenAuthenticationAttemptRepository } from "../core/gateways/TokenAuthenticationAttemptRepository";
 import {
   AUTH_USER_REPOSITORY_INJECTION_TOKEN,
@@ -81,6 +84,14 @@ import { VERIFIED_EMAIL_REPOSITORY_INJECTION_TOKEN } from "./verified-email-repo
       provide: RealEventPublisher,
       useFactory: (eventEmitter: EventEmitter2) => new RealEventPublisher(eventEmitter),
       inject: [EventEmitter2],
+    },
+    {
+      provide: UUID_GENERATOR_INJECTION_TOKEN,
+      useClass: RandomUuidGenerator,
+    },
+    {
+      provide: DOMAIN_EVENT_PUBLISHER_INJECTION_TOKEN,
+      useClass: RealEventPublisher,
     },
     {
       provide: CreateUserUseCase,

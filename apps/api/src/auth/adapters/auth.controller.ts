@@ -23,8 +23,15 @@ import { randomUUID } from "node:crypto";
 import { z } from "zod";
 
 import { CreateUserUseCase, UserProps } from "src/auth/core/createUser.usecase";
+import {
+  DOMAIN_EVENT_PUBLISHER_INJECTION_TOKEN,
+  DomainEventPublisher,
+} from "src/shared-kernel/domainEventPublisher";
 
 import { AuthenticateWithTokenUseCase } from "../core/authenticateWithToken.usecase";
+import { createLoginAttemptedEvent } from "../core/events/loginAttempted.event";
+import { createLoginSucceededEvent } from "../core/events/loginSucceeded.event";
+import { UUID_GENERATOR_INJECTION_TOKEN, UuidGenerator } from "../core/gateways/IdGenerator";
 import {
   AUTH_USER_REPOSITORY_INJECTION_TOKEN,
   UserRepository,
@@ -90,6 +97,10 @@ export class AuthController {
     private readonly externalUserIdentitiesRepository: ExternalUserIdentityRepository,
     @Inject(VERIFIED_EMAIL_REPOSITORY_INJECTION_TOKEN)
     private readonly verifiedEmailRepository: VerifiedEmailRepository,
+    @Inject(DOMAIN_EVENT_PUBLISHER_INJECTION_TOKEN)
+    private readonly eventPublisher: DomainEventPublisher,
+    @Inject(UUID_GENERATOR_INJECTION_TOKEN)
+    private readonly uuidGenerator: UuidGenerator,
   ) {}
 
   @Post("/register")
@@ -165,6 +176,12 @@ export class AuthController {
     if (req.query.redirectTo) {
       req.session.postLoginRedirectUrl = req.query.redirectTo as string;
     }
+
+    await this.eventPublisher.publish(
+      createLoginAttemptedEvent(this.uuidGenerator.generate(), {
+        method: "pro-connect",
+      }),
+    );
 
     res.redirect(authorizationUrl.toString());
   }
@@ -243,6 +260,14 @@ export class AuthController {
       expires: new Date((decodedAccessToken?.exp ?? 0) * 1000),
     });
 
+    await this.eventPublisher.publish(
+      createLoginSucceededEvent(this.uuidGenerator.generate(), {
+        userId: userInDb.id,
+        userEmail: userInDb.email,
+        method: "pro-connect",
+      }),
+    );
+
     const redirectTo =
       req.session.postLoginRedirectUrl ?? this.configService.getOrThrow<string>("WEBAPP_URL");
     res.redirect(redirectTo);
@@ -256,6 +281,13 @@ export class AuthController {
       response.status(200).send();
       return;
     }
+
+    await this.eventPublisher.publish(
+      createLoginAttemptedEvent(this.uuidGenerator.generate(), {
+        method: "email-link",
+        userEmail: body.email,
+      }),
+    );
 
     switch (result.error) {
       case "UserDoesNotExist":
@@ -305,6 +337,14 @@ export class AuthController {
     const decodedAccessToken = this.accessTokenService.decode<{
       exp: number;
     }>(accessToken);
+
+    await this.eventPublisher.publish(
+      createLoginSucceededEvent(this.uuidGenerator.generate(), {
+        method: "email-link",
+        userEmail: authenticatedUser.email,
+        userId: authenticatedUser.id,
+      }),
+    );
 
     response.cookie(ACCESS_TOKEN_COOKIE_KEY, accessToken, {
       httpOnly: true,
