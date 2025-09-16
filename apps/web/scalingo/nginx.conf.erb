@@ -5,7 +5,7 @@ set $CSP_STYLE "style-src 'self' 'unsafe-inline'";
 set $CSP_FONT "font-src 'self'";
 set $CSP_IMG "img-src 'self' blob: data:";
 set $CSP_FRAME "frame-ancestors 'none'";
-set $CSP_FRAME_SRC "frame-src https://tally.so https://benefriches-metabase.osc-secnum-fr1.scalingo.io";
+set $CSP_FRAME_SRC "frame-src https://tally.so https://benefriches-metabase.osc-secnum-fr1.scalingo.io <%= ENV['MUTAFRICHES_FRAME_SRC'] %>";
 
 
 location / {

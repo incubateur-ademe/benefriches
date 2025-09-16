@@ -8,6 +8,8 @@ import HeaderFooterLayout from "@/shared/views/layout/HeaderFooterLayout/HeaderF
 import SidebarContainerLayout from "@/shared/views/layout/SidebarLayout/SidebarContainerLayout";
 import { routes, useRoute } from "@/shared/views/router";
 
+import FricheMutabilityPage from "./friche-mutability/views";
+
 /* Lazy-loaded pages */
 const CreateUserPage = lazy(() => import("@/features/onboarding/views"));
 const CreateProjectPage = lazy(
@@ -108,6 +110,12 @@ function FeaturesApp() {
               return (
                 <RequireAuthenticatedUser>
                   <SiteFeaturesPage siteId={route.params.siteId} />
+                </RequireAuthenticatedUser>
+              );
+            case routes.fricheMutability.name:
+              return (
+                <RequireAuthenticatedUser>
+                  <FricheMutabilityPage />
                 </RequireAuthenticatedUser>
               );
             // 404
