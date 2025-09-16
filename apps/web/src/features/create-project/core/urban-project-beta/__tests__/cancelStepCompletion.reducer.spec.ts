@@ -58,15 +58,20 @@ describe("urbanProject.reducer - cancelStepCompletion action", () => {
     const intermediateState = store.getState().projectCreation.urbanProjectBeta;
     expect(intermediateState.pendingStepCompletion?.showAlert).toBe(true);
     expect(intermediateState.pendingStepCompletion?.changes).toEqual({
-      cascadingChanges: {
-        deletedSteps: [
-          "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
-          "URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA",
-          "URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION",
-        ],
-        invalidSteps: [],
-        recomputedSteps: [],
-      },
+      cascadingChanges: [
+        {
+          stepId: "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
+          action: "delete",
+        },
+        {
+          stepId: "URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA",
+          action: "delete",
+        },
+        {
+          stepId: "URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION",
+          action: "delete",
+        },
+      ],
       navigationTarget: "URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION",
       payload: {
         answers: {

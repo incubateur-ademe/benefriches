@@ -53,7 +53,7 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
   builder.addCase(requestStepCompletion, (state, action) => {
     const changes = computeStepChanges(state, action.payload);
 
-    if (changes.cascadingChanges) {
+    if (changes.cascadingChanges && changes.cascadingChanges.length > 0) {
       state.urbanProjectBeta.pendingStepCompletion = {
         changes,
         showAlert: true,

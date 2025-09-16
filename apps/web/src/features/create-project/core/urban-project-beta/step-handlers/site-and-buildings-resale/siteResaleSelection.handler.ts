@@ -19,13 +19,13 @@ export const SiteResaleSelectionHandler: AnswerStepHandler<typeof STEP_ID> = {
     return "URBAN_PROJECT_SITE_RESALE_INTRODUCTION";
   },
 
-  getStepsToInvalidate(state, newAnswers) {
+  getDependencyRules(state, newAnswers) {
     if (state.stepsState.URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE) {
       if (!newAnswers.siteResalePlannedAfterDevelopment) {
-        return { deleted: ["URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE"] };
+        return [{ action: "delete", stepId: "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE" }];
       }
     }
-    return undefined;
+    return [];
   },
 
   updateAnswersMiddleware(context, answers) {

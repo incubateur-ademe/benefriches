@@ -1,7 +1,5 @@
 import { filterObject } from "shared";
 
-import deepEqual from "@/shared/core/deep-equal/deepEqual";
-
 import { ProjectCreationState } from "../../createProject.reducer";
 import {
   getUrbanProjectSoilsDistributionFromSpaces,
@@ -10,29 +8,31 @@ import {
 import { ANSWER_STEPS, AnswersByStep, AnswerStepId, FormAnswers } from "../urbanProjectSteps";
 
 export const ReadStateHelper = {
-  getStepAnswers<K extends AnswerStepId>(
+  getStep<K extends AnswerStepId = AnswerStepId>(
     steps: ProjectCreationState["urbanProjectBeta"]["steps"],
     stepId: K,
   ) {
-    return steps[stepId]?.payload as AnswersByStep[K] | undefined;
+    return steps[stepId] as
+      | {
+          completed: boolean;
+          payload?: AnswersByStep[K];
+          defaultValues?: AnswersByStep[K];
+        }
+      | undefined;
   },
 
-  getDefaultAnswers<K extends AnswerStepId>(
+  getStepAnswers<K extends AnswerStepId = AnswerStepId>(
     steps: ProjectCreationState["urbanProjectBeta"]["steps"],
     stepId: K,
   ) {
-    return steps[stepId]?.defaultValues as AnswersByStep[K] | undefined;
+    return this.getStep(steps, stepId)?.payload;
   },
 
-  hasLastAnswerFromSystem(
+  getDefaultAnswers<K extends AnswerStepId = AnswerStepId>(
     steps: ProjectCreationState["urbanProjectBeta"]["steps"],
-    stepId: AnswerStepId,
+    stepId: K,
   ) {
-    return (
-      steps[stepId]?.payload &&
-      steps[stepId].defaultValues &&
-      deepEqual(steps[stepId].payload, steps[stepId].defaultValues)
-    );
+    return this.getStep(steps, stepId)?.defaultValues;
   },
 
   hasBuildings(steps: ProjectCreationState["urbanProjectBeta"]["steps"]) {
@@ -55,6 +55,13 @@ export const ReadStateHelper = {
       "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION",
     )?.buildingsResalePlannedAfterDevelopment;
     return buildingsResalePlannedAfterDevelopment;
+  },
+
+  isSiteResalePlannedAfterDevelopment(steps: ProjectCreationState["urbanProjectBeta"]["steps"]) {
+    return (
+      ReadStateHelper.getStepAnswers(steps, "URBAN_PROJECT_SITE_RESALE_SELECTION")
+        ?.siteResalePlannedAfterDevelopment === true
+    );
   },
 
   getProjectSoilDistribution(steps: ProjectCreationState["urbanProjectBeta"]["steps"]) {

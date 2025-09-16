@@ -1,6 +1,6 @@
 import { ProjectCreationState } from "../../createProject.reducer";
 import { UrbanProjectCustomCreationStep } from "../../urban-project/creationSteps";
-import { ShortcutResult } from "../step-handlers/stepHandler.type";
+import { ShortcutResult, StepInvalidationRule } from "../step-handlers/stepHandler.type";
 import { stepHandlerRegistry } from "../step-handlers/stepHandlerRegistry";
 import { StepCompletionPayload } from "../urbanProject.actions";
 import { AnswerStepId } from "../urbanProjectSteps";
@@ -10,34 +10,9 @@ import { navigateToAndLoadStep } from "./navigateToStep";
 export type StepUpdateResult<T extends AnswerStepId> = {
   payload: StepCompletionPayload<T>;
   shortcutComplete?: StepCompletionPayload[];
-  cascadingChanges?: StepCascadingChanges;
+  cascadingChanges?: StepInvalidationRule[];
   navigationTarget?: UrbanProjectCustomCreationStep;
 };
-
-type StepCascadingChanges = {
-  deletedSteps?: AnswerStepId[];
-  recomputedSteps?: AnswerStepId[];
-  invalidSteps?: AnswerStepId[];
-};
-
-function collectStepInvalidations(invalidations?: {
-  deleted?: AnswerStepId[];
-  invalid?: AnswerStepId[];
-  recomputed?: AnswerStepId[];
-}) {
-  const deletedSteps = new Set<AnswerStepId>();
-  const recomputedSteps = new Set<AnswerStepId>();
-  const invalidSteps = new Set<AnswerStepId>();
-
-  if (invalidations) {
-    const { deleted, recomputed, invalid } = invalidations;
-
-    deleted?.forEach((step) => deletedSteps.add(step));
-    recomputed?.forEach((step) => recomputedSteps.add(step));
-    invalid?.forEach((step) => invalidSteps.add(step));
-  }
-  return { deletedSteps, recomputedSteps, invalidSteps };
-}
 
 function processShortcutInvalidations(
   handlerContext: {
@@ -45,49 +20,28 @@ function processShortcutInvalidations(
     stepsState: ProjectCreationState["urbanProjectBeta"]["steps"];
   },
   shortcutsComplete: ShortcutResult["complete"],
-  invalidations: {
-    deletedSteps: Set<AnswerStepId>;
-    recomputedSteps: Set<AnswerStepId>;
-    invalidSteps: Set<AnswerStepId>;
-  },
+  dependencyRules: StepInvalidationRule[],
 ) {
-  shortcutsComplete.forEach((completeStepShortcut) => {
-    invalidations.deletedSteps.delete(completeStepShortcut.stepId);
-    invalidations.invalidSteps.delete(completeStepShortcut.stepId);
+  return shortcutsComplete.reduce(
+    (rules, completeStepShortcut) => {
+      // replace or remove current completed step from invalidation rules
+      const newRules = rules.filter((r) => r.stepId !== completeStepShortcut.stepId);
 
-    const shortcutHandler = stepHandlerRegistry[completeStepShortcut.stepId];
-    const shortcutInvalidations = shortcutHandler.getStepsToInvalidate?.(
-      handlerContext,
-      completeStepShortcut.answers,
-    );
+      const shortcutHandler = stepHandlerRegistry[completeStepShortcut.stepId];
+      const shortcutDependencyRules = shortcutHandler.getDependencyRules?.(
+        handlerContext,
+        completeStepShortcut.answers,
+      );
 
-    if (shortcutInvalidations) {
-      shortcutInvalidations.deleted?.forEach((step) => invalidations.deletedSteps.add(step));
-      shortcutInvalidations.recomputed?.forEach((step) => invalidations.recomputedSteps.add(step));
-      shortcutInvalidations.invalid?.forEach((step) => invalidations.invalidSteps.add(step));
-    }
-  });
-
-  return formatCascadingChanges(invalidations);
-}
-
-function formatCascadingChanges(invalidations: {
-  deletedSteps: Set<AnswerStepId>;
-  recomputedSteps: Set<AnswerStepId>;
-  invalidSteps: Set<AnswerStepId>;
-}): StepCascadingChanges | undefined {
-  const hasChanges =
-    invalidations.deletedSteps.size > 0 ||
-    invalidations.recomputedSteps.size > 0 ||
-    invalidations.invalidSteps.size > 0;
-
-  return hasChanges
-    ? {
-        deletedSteps: Array.from(invalidations.deletedSteps),
-        recomputedSteps: Array.from(invalidations.recomputedSteps),
-        invalidSteps: Array.from(invalidations.invalidSteps),
+      if (shortcutDependencyRules) {
+        newRules
+          .filter((r) => !shortcutDependencyRules.find((sdr) => sdr.stepId === r.stepId))
+          .push(...shortcutDependencyRules);
       }
-    : undefined;
+      return newRules;
+    },
+    [...dependencyRules],
+  );
 }
 
 /**
@@ -115,11 +69,9 @@ export function computeStepChanges<T extends AnswerStepId>(
       : payload.answers,
   };
 
-  const { deletedSteps, recomputedSteps, invalidSteps } = collectStepInvalidations(
-    handler.getStepsToInvalidate
-      ? handler.getStepsToInvalidate(handlerContext, newPayload.answers)
-      : undefined,
-  );
+  const dependencyRules = handler.getDependencyRules
+    ? handler.getDependencyRules(handlerContext, newPayload.answers)
+    : [];
 
   if (handler.getShortcut) {
     const shortcut = handler.getShortcut(handlerContext, newPayload.answers);
@@ -128,18 +80,18 @@ export function computeStepChanges<T extends AnswerStepId>(
       return {
         payload: newPayload,
         shortcutComplete: shortcut.complete,
-        cascadingChanges: processShortcutInvalidations(handlerContext, shortcut.complete, {
-          deletedSteps,
-          recomputedSteps,
-          invalidSteps,
-        }),
+        cascadingChanges: processShortcutInvalidations(
+          handlerContext,
+          shortcut.complete,
+          dependencyRules,
+        ),
         navigationTarget: shortcut.next,
       };
     }
   }
   return {
     payload: newPayload,
-    cascadingChanges: formatCascadingChanges({ deletedSteps, recomputedSteps, invalidSteps }),
+    cascadingChanges: dependencyRules,
     navigationTarget: handler.getNextStepId({
       siteData: state.siteData,
       stepsState: state.urbanProjectBeta.steps,
@@ -159,23 +111,25 @@ export function applyStepChanges<T extends AnswerStepId>(
     MutateStateHelper.completeStep(state, stepShortcut.stepId, stepShortcut.answers);
   });
 
-  cascadingChanges?.deletedSteps?.forEach((stepId) => {
-    MutateStateHelper.deleteStep(state, stepId);
-  });
-
-  cascadingChanges?.invalidSteps?.forEach((stepId) => {
-    MutateStateHelper.invalidateStep(state, stepId);
-  });
-
-  cascadingChanges?.recomputedSteps?.forEach((stepId) => {
-    const newValue =
-      stepHandlerRegistry[stepId].getDefaultAnswers &&
-      stepHandlerRegistry[stepId].getDefaultAnswers({
-        siteData: state.siteData,
-        stepsState: state.urbanProjectBeta.steps,
-      });
-    if (newValue) {
-      MutateStateHelper.recomputeStep(state, stepId, newValue);
+  cascadingChanges?.forEach(({ stepId, action }) => {
+    switch (action) {
+      case "delete":
+        MutateStateHelper.deleteStep(state, stepId);
+        break;
+      case "invalidate":
+        MutateStateHelper.invalidateStep(state, stepId);
+        break;
+      case "recompute": {
+        const newValue =
+          stepHandlerRegistry[stepId].getRecomputedStepAnswers &&
+          stepHandlerRegistry[stepId].getRecomputedStepAnswers({
+            siteData: state.siteData,
+            stepsState: state.urbanProjectBeta.steps,
+          });
+        if (newValue) {
+          MutateStateHelper.recomputeStep(state, stepId, newValue);
+        }
+      }
     }
   });
 

@@ -1,20 +1,19 @@
 import { ReadStateHelper } from "../../helpers/readState";
+import { getReinstatementCostsRecomputationRules } from "../spaces/getCommonRules";
 import { AnswerStepHandler } from "../stepHandler.type";
 
 export const SoilsDecontaminationSelectionHandler: AnswerStepHandler<"URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION"> =
   {
     stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
 
-    getStepsToInvalidate(context) {
+    getDependencyRules(context, newAnswers) {
       if (
-        ReadStateHelper.hasLastAnswerFromSystem(
-          context.stepsState,
-          "URBAN_PROJECT_EXPENSES_REINSTATEMENT",
-        )
+        context.stepsState.URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION?.payload
+          ?.decontaminationPlan === newAnswers.decontaminationPlan
       ) {
-        return { recomputed: ["URBAN_PROJECT_EXPENSES_REINSTATEMENT"] };
+        return [];
       }
-      return undefined;
+      return getReinstatementCostsRecomputationRules(context);
     },
 
     getPreviousStepId() {
@@ -31,8 +30,10 @@ export const SoilsDecontaminationSelectionHandler: AnswerStepHandler<"URBAN_PROJ
         : "URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION";
 
       const hasChanged =
-        context.stepsState.URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION?.payload
-          ?.decontaminationPlan !== answers.decontaminationPlan;
+        ReadStateHelper.getStepAnswers(
+          context.stepsState,
+          "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
+        )?.decontaminationPlan !== answers.decontaminationPlan;
 
       if (answers.decontaminationPlan === "none" && hasChanged) {
         return {

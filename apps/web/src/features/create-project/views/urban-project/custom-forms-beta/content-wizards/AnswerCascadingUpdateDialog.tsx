@@ -49,12 +49,10 @@ export default function CascadingChangesAlert() {
 
   const cascadingChanges = pendingStepCompletion.changes.cascadingChanges;
 
-  const deletedOrRecomputedSteps = [
-    ...(cascadingChanges?.deletedSteps ?? []),
-    ...(cascadingChanges?.recomputedSteps ?? []),
-  ];
+  const deletedOrRecomputedSteps =
+    cascadingChanges?.filter(({ action }) => action === "recompute" || action === "delete") ?? [];
 
-  const invalidSteps = cascadingChanges?.invalidSteps ?? [];
+  const invalidSteps = cascadingChanges?.filter(({ action }) => action === "invalidate") ?? [];
 
   return (
     <Dialog open={pendingStepCompletion.showAlert} onClose={onCancel}>
@@ -71,15 +69,14 @@ export default function CascadingChangesAlert() {
             </DialogTitle>
 
             <Description>
-              Cette modification va affecter {invalidSteps.length + deletedOrRecomputedSteps.length}{" "}
-              étape(s) déjà remplies.
+              Cette modification va affecter {cascadingChanges?.length} étape(s) déjà remplies.
             </Description>
 
-            {cascadingChanges?.invalidSteps && cascadingChanges.invalidSteps.length > 0 && (
+            {invalidSteps.length > 0 && (
               <div>
                 <strong>Étapes qui seront réinitialisées et que vous devrez re-compléter :</strong>
                 <ul>
-                  {cascadingChanges.invalidSteps.map((stepId) => (
+                  {invalidSteps.map(({ stepId }) => (
                     <li key={stepId}>{getStepLabel(stepId)}</li>
                   ))}
                 </ul>
@@ -92,7 +89,7 @@ export default function CascadingChangesAlert() {
                   Étapes qui seront automatiquement supprimées, complétées ou recalculées :
                 </strong>
                 <ul>
-                  {deletedOrRecomputedSteps.map((stepId) => (
+                  {deletedOrRecomputedSteps.map(({ stepId }) => (
                     <li key={stepId}>{getStepLabel(stepId)}</li>
                   ))}
                 </ul>

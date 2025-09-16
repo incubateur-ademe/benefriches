@@ -2,7 +2,7 @@ import { ProjectCreationState } from "../../createProject.reducer";
 import { UrbanProjectCustomCreationStep } from "../../urban-project/creationSteps";
 import { AnswersByStep, AnswerStepId, InformationalStep } from "../urbanProjectSteps";
 
-type StepContext = {
+export type StepContext = {
   siteData?: ProjectCreationState["siteData"];
   stepsState: ProjectCreationState["urbanProjectBeta"]["steps"];
 };
@@ -22,12 +22,8 @@ export interface AnswerStepHandler<T extends AnswerStepId> extends StepHandler {
   getNextStepId(context: StepContext): UrbanProjectCustomCreationStep;
   getPreviousStepId(context: StepContext): UrbanProjectCustomCreationStep;
   getDefaultAnswers?(context: StepContext): AnswersByStep[T] | undefined;
-  getStepsToInvalidate?(
-    context: StepContext,
-    answers: AnswersByStep[T],
-  ):
-    | { deleted?: AnswerStepId[]; invalid?: AnswerStepId[]; recomputed?: AnswerStepId[] }
-    | undefined;
+  getRecomputedStepAnswers?(context: StepContext): AnswersByStep[T] | undefined;
+  getDependencyRules?(context: StepContext, answers: AnswersByStep[T]): StepInvalidationRule[];
   getShortcut?(context: StepContext, answers: AnswersByStep[T]): ShortcutResult | undefined;
   updateAnswersMiddleware?(context: StepContext, answers: AnswersByStep[T]): AnswersByStep[T];
 }
@@ -41,4 +37,9 @@ type StepAnswerPayload<K extends AnswerStepId = AnswerStepId> = {
 export type ShortcutResult = {
   complete: StepAnswerPayload[];
   next: UrbanProjectCustomCreationStep;
+};
+
+export type StepInvalidationRule = {
+  action: "delete" | "invalidate" | "recompute";
+  stepId: AnswerStepId;
 };

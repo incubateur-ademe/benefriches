@@ -13,15 +13,7 @@ export const SoilsCarbonSummaryHandler: InfoStepHandler = {
       return "URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION";
     }
 
-    const livingAndActivitySpacesDistribution = ReadStateHelper.getStepAnswers(
-      context.stepsState,
-      "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
-    )?.livingAndActivitySpacesDistribution;
-
-    if (
-      livingAndActivitySpacesDistribution?.BUILDINGS &&
-      livingAndActivitySpacesDistribution.BUILDINGS > 0
-    ) {
+    if (ReadStateHelper.hasBuildings(context.stepsState)) {
       return "URBAN_PROJECT_BUILDINGS_INTRODUCTION";
     }
 

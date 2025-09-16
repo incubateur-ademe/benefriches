@@ -1,69 +1,75 @@
+import { isObjectsEqual } from "@/shared/core/isObjectsEqual/isObjectsEqual";
+
 import { ReadStateHelper } from "../../helpers/readState";
-import { BUILDINGS_STEPS, AnswerStepId } from "../../urbanProjectSteps";
 import { AnswerStepHandler } from "../stepHandler.type";
+import { getDeleteBuildingsRules, getReinstatementCostsRecomputationRules } from "./getCommonRules";
 
 const STEP_ID = "URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA" as const;
 
 export const UrbanProjectSpacesCategoriesSurfaceAreaHandler: AnswerStepHandler<typeof STEP_ID> = {
   stepId: STEP_ID,
+  getDependencyRules(context, newAnswers) {
+    const previousDistribution =
+      ReadStateHelper.getStepAnswers(context.stepsState, STEP_ID)?.spacesCategoriesDistribution ??
+      {};
+    const newDistribution = newAnswers.spacesCategoriesDistribution ?? {};
 
-  getStepsToInvalidate(context, newAnswers) {
-    const stepsToDelete: AnswerStepId[] = [];
-    const stepsToInvalidate: AnswerStepId[] = [];
-    const stepsToRecompute: AnswerStepId[] = [];
-
-    const previousDistribution = context.stepsState[STEP_ID]?.payload?.spacesCategoriesDistribution;
-    const newDistribution = newAnswers.spacesCategoriesDistribution;
-
-    if (context.stepsState.URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION) {
-      if (!newDistribution?.GREEN_SPACES) {
-        stepsToDelete.push("URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION");
-      } else if (
-        previousDistribution?.GREEN_SPACES &&
-        previousDistribution.GREEN_SPACES !== newDistribution.GREEN_SPACES
-      ) {
-        stepsToInvalidate.push("URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION");
-      }
+    if (isObjectsEqual(previousDistribution, newDistribution)) {
+      return [];
     }
 
-    if (context.stepsState.URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION) {
-      if (!newDistribution?.PUBLIC_SPACES) {
-        stepsToDelete.push("URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION");
-      } else if (
-        previousDistribution?.PUBLIC_SPACES &&
-        previousDistribution.PUBLIC_SPACES !== newDistribution.PUBLIC_SPACES
-      ) {
-        stepsToInvalidate.push("URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION");
-      }
-    }
+    const rules = getReinstatementCostsRecomputationRules(context);
 
-    if (context.stepsState.URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION) {
-      if (!newDistribution?.LIVING_AND_ACTIVITY_SPACES) {
-        stepsToDelete.push("URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION");
-        BUILDINGS_STEPS.forEach((stepId) => {
-          if (context.stepsState[stepId]) {
-            stepsToDelete.push(stepId);
-          }
+    if (
+      ReadStateHelper.getStep(
+        context.stepsState,
+        "URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION",
+      )
+    ) {
+      const shouldDelete = !newDistribution.GREEN_SPACES;
+      const shouldInvalidate = previousDistribution.GREEN_SPACES !== newDistribution.GREEN_SPACES;
+      if (shouldDelete || shouldInvalidate) {
+        rules.push({
+          stepId: "URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION",
+          action: shouldDelete ? "delete" : "invalidate",
         });
-      } else if (
-        previousDistribution?.LIVING_AND_ACTIVITY_SPACES &&
-        previousDistribution.LIVING_AND_ACTIVITY_SPACES !==
-          newDistribution.LIVING_AND_ACTIVITY_SPACES
-      ) {
-        stepsToInvalidate.push("URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION");
+      }
+    }
+
+    if (ReadStateHelper.getStep(context.stepsState, "URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION")) {
+      const shouldDelete = !newDistribution.PUBLIC_SPACES;
+      const shouldInvalidate = previousDistribution.PUBLIC_SPACES !== newDistribution.PUBLIC_SPACES;
+      if (shouldDelete || shouldInvalidate) {
+        rules.push({
+          stepId: "URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION",
+          action: shouldDelete ? "delete" : "invalidate",
+        });
       }
     }
 
     if (
-      ReadStateHelper.hasLastAnswerFromSystem(
+      ReadStateHelper.getStep(
         context.stepsState,
-        "URBAN_PROJECT_EXPENSES_REINSTATEMENT",
+        "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
       )
     ) {
-      stepsToRecompute.push("URBAN_PROJECT_EXPENSES_REINSTATEMENT");
-    }
+      const shouldDelete = !newDistribution.LIVING_AND_ACTIVITY_SPACES;
+      const shouldInvalidate =
+        previousDistribution.LIVING_AND_ACTIVITY_SPACES !==
+        newDistribution.LIVING_AND_ACTIVITY_SPACES;
 
-    return { deleted: stepsToDelete, invalid: stepsToInvalidate, recomputed: stepsToRecompute };
+      if (shouldDelete || shouldInvalidate) {
+        rules.push({
+          stepId: "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
+          action: shouldDelete ? "delete" : "invalidate",
+        });
+      }
+
+      if (shouldDelete) {
+        rules.push(...getDeleteBuildingsRules(context));
+      }
+    }
+    return rules;
   },
 
   getPreviousStepId() {

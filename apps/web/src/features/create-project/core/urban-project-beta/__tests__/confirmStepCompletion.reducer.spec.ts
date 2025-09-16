@@ -62,15 +62,21 @@ describe("urbanProject.reducer - confirmStepCompletion action", () => {
         const intermediateState = store.getState().projectCreation.urbanProjectBeta;
         expect(intermediateState.pendingStepCompletion?.showAlert).toBe(true);
         expect(intermediateState.pendingStepCompletion?.changes).toEqual({
-          cascadingChanges: {
-            deletedSteps: [
-              "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
-              "URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA",
-              "URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION",
-            ],
-            invalidSteps: [],
-            recomputedSteps: [],
-          },
+          cascadingChanges: [
+            {
+              stepId: "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
+              action: "delete",
+            },
+            {
+              stepId: "URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA",
+              action: "delete",
+            },
+            {
+              stepId: "URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION",
+              action: "delete",
+            },
+          ],
+
           navigationTarget: "URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION",
           payload: {
             answers: {
@@ -145,6 +151,93 @@ describe("urbanProject.reducer - confirmStepCompletion action", () => {
         const stepsState = store.getState().projectCreation.urbanProjectBeta.steps;
 
         expect(stepsState.URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION).toEqual(undefined);
+      });
+
+      it("should partially recompute user reinstatement expenses when changing soils distribution", () => {
+        const initialSteps = {
+          URBAN_PROJECT_SPACES_CATEGORIES_SELECTION: {
+            completed: true,
+            payload: {
+              spacesCategories: ["LIVING_AND_ACTIVITY_SPACES"],
+            },
+          },
+          URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA: {
+            completed: true,
+            payload: {
+              spacesCategoriesDistribution: {
+                LIVING_AND_ACTIVITY_SPACES: 10000,
+              },
+            },
+          },
+          URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION: {
+            completed: true,
+            payload: {
+              livingAndActivitySpacesDistribution: {
+                IMPERMEABLE_SURFACE: 2000,
+                PERMEABLE_SURFACE: 8000,
+              },
+            },
+          },
+          URBAN_PROJECT_EXPENSES_REINSTATEMENT: {
+            completed: true,
+            payload: {
+              reinstatementExpenses: [
+                { purpose: "remediation", amount: 6600 },
+                { purpose: "asbestos_removal", amount: 10500 },
+                { purpose: "deimpermeabilization", amount: 20000 },
+                { purpose: "demolition", amount: 0 },
+              ],
+            },
+            defaultValues: {
+              reinstatementExpenses: [
+                { purpose: "remediation", amount: 6600 },
+                { purpose: "deimpermeabilization", amount: 20000 },
+                { purpose: "demolition", amount: 0 },
+              ],
+            },
+          },
+          URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION: {
+            completed: true,
+            payload: {
+              decontaminationPlan: "partial",
+            },
+          },
+          URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA: {
+            completed: true,
+            payload: {
+              decontaminatedSurfaceArea: 1000,
+            },
+          },
+        } satisfies ProjectCreationState["urbanProjectBeta"]["steps"];
+
+        const store = createTestStore({
+          steps: initialSteps,
+        });
+
+        store.dispatch(
+          requestStepCompletion({
+            stepId: "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
+            answers: {
+              livingAndActivitySpacesDistribution: {
+                PERMEABLE_SURFACE: 5000,
+                PRIVATE_GREEN_SPACES: 5000,
+              },
+            },
+          }),
+        );
+        store.dispatch(confirmStepCompletion());
+
+        const stepsState = store.getState().projectCreation.urbanProjectBeta.steps;
+
+        expect(stepsState.URBAN_PROJECT_EXPENSES_REINSTATEMENT?.completed).toEqual(true);
+        expect(
+          stepsState.URBAN_PROJECT_EXPENSES_REINSTATEMENT?.payload?.reinstatementExpenses,
+        ).toEqual([
+          { purpose: "remediation", amount: 66000 },
+          { purpose: "asbestos_removal", amount: 10500 },
+          { purpose: "deimpermeabilization", amount: 50000 },
+          { purpose: "demolition", amount: 150000 },
+        ]);
       });
     });
 
@@ -356,6 +449,62 @@ describe("urbanProject.reducer - confirmStepCompletion action", () => {
         expect(stepsState.URBAN_PROJECT_EXPENSES_REINSTATEMENT?.payload).toEqual(
           initialSteps.URBAN_PROJECT_EXPENSES_REINSTATEMENT.payload,
         );
+      });
+
+      it("should partially recompute user reinstatement expenses when changing decontamination settings", () => {
+        const initialSteps = {
+          URBAN_PROJECT_EXPENSES_REINSTATEMENT: {
+            completed: true,
+            payload: {
+              reinstatementExpenses: [
+                { purpose: "remediation", amount: 50000 },
+                { purpose: "asbestos_removal", amount: 10500 },
+                { purpose: "deimpermeabilization", amount: 0 },
+              ],
+            },
+            defaultValues: {
+              reinstatementExpenses: [
+                { purpose: "remediation", amount: 50000 },
+                { purpose: "deimpermeabilization", amount: 10000 },
+              ],
+            },
+          },
+          URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION: {
+            completed: true,
+            payload: {
+              decontaminationPlan: "partial",
+            },
+          },
+          URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA: {
+            completed: true,
+            payload: {
+              decontaminatedSurfaceArea: 1000,
+            },
+          },
+        } satisfies ProjectCreationState["urbanProjectBeta"]["steps"];
+
+        const store = createTestStore({
+          steps: initialSteps,
+        });
+
+        store.dispatch(
+          requestStepCompletion({
+            stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
+            answers: { decontaminationPlan: "none" },
+          }),
+        );
+        store.dispatch(confirmStepCompletion());
+
+        const stepsState = store.getState().projectCreation.urbanProjectBeta.steps;
+
+        expect(stepsState.URBAN_PROJECT_EXPENSES_REINSTATEMENT?.completed).toEqual(true);
+        expect(
+          stepsState.URBAN_PROJECT_EXPENSES_REINSTATEMENT?.payload?.reinstatementExpenses,
+        ).toEqual([
+          { purpose: "remediation", amount: 0 },
+          { purpose: "asbestos_removal", amount: 10500 },
+          { purpose: "deimpermeabilization", amount: 0 },
+        ]);
       });
 
       it('should automatically set decontamination surface area for "none" plan', () => {

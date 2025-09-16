@@ -1,20 +1,26 @@
+import { isObjectsEqual } from "@/shared/core/isObjectsEqual/isObjectsEqual";
+
 import { ReadStateHelper } from "../../helpers/readState";
 import { AnswerStepHandler } from "../stepHandler.type";
+import { getReinstatementCostsRecomputationRules } from "./getCommonRules";
 
 export const PublicSpacesDistributionHandler: AnswerStepHandler<"URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION"> =
   {
     stepId: "URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION",
 
-    getStepsToInvalidate(context) {
-      if (
-        ReadStateHelper.hasLastAnswerFromSystem(
+    getDependencyRules(context, newAnswers) {
+      const previousDistribution =
+        ReadStateHelper.getStepAnswers(
           context.stepsState,
-          "URBAN_PROJECT_EXPENSES_REINSTATEMENT",
-        )
-      ) {
-        return { recomputed: ["URBAN_PROJECT_EXPENSES_REINSTATEMENT"] };
+          "URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION",
+        )?.publicSpacesDistribution ?? {};
+      const newDistribution = newAnswers.publicSpacesDistribution ?? {};
+
+      if (isObjectsEqual(previousDistribution, newDistribution)) {
+        return [];
       }
-      return undefined;
+
+      return getReinstatementCostsRecomputationRules(context);
     },
 
     getPreviousStepId() {

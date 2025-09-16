@@ -1,6 +1,8 @@
+import { isObjectsEqual } from "@/shared/core/isObjectsEqual/isObjectsEqual";
+
 import { ReadStateHelper } from "../../helpers/readState";
-import { BUILDINGS_STEPS, AnswerStepId } from "../../urbanProjectSteps";
 import { AnswerStepHandler } from "../stepHandler.type";
+import { getDeleteBuildingsRules, getReinstatementCostsRecomputationRules } from "./getCommonRules";
 
 const STEP_ID = "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION" as const;
 
@@ -28,39 +30,41 @@ export const ResidentialAndActivitySpacesDistributionHandler: AnswerStepHandler<
     return "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_INTRODUCTION";
   },
 
-  getStepsToInvalidate(context, newAnswers) {
-    const stepsToDelete: AnswerStepId[] = [];
-    const stepsToInvalidate: AnswerStepId[] = [];
-    const stepsToRecompute: AnswerStepId[] = [];
-
+  getDependencyRules(context, newAnswers) {
     const previousDistribution =
-      context.stepsState.URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION?.payload
-        ?.livingAndActivitySpacesDistribution;
-    const newDistribution = newAnswers.livingAndActivitySpacesDistribution;
+      ReadStateHelper.getStepAnswers(
+        context.stepsState,
+        "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
+      )?.livingAndActivitySpacesDistribution ?? {};
 
-    if (previousDistribution?.BUILDINGS) {
-      if (!newDistribution?.BUILDINGS) {
-        BUILDINGS_STEPS.forEach((stepId) => {
-          if (context.stepsState[stepId]) {
-            stepsToDelete.push(stepId);
-          }
-        });
-      } else if (previousDistribution.BUILDINGS !== newDistribution.BUILDINGS) {
-        if (context.stepsState.URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA) {
-          stepsToInvalidate.push("URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA");
-        }
+    const newDistribution = newAnswers.livingAndActivitySpacesDistribution ?? {};
+
+    if (isObjectsEqual(previousDistribution, newDistribution)) {
+      return [];
+    }
+
+    const rules = getReinstatementCostsRecomputationRules(context);
+
+    const previousBuildingsSurface = previousDistribution.BUILDINGS;
+    const newBuildingsSurface = newDistribution.BUILDINGS;
+
+    if (previousBuildingsSurface === newBuildingsSurface) {
+      return rules;
+    }
+
+    if (previousBuildingsSurface) {
+      if (!newBuildingsSurface) {
+        rules.push(...getDeleteBuildingsRules(context));
+        return rules;
+      }
+
+      if (
+        ReadStateHelper.getStep(context.stepsState, "URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA")
+      ) {
+        rules.push({ stepId: "URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA", action: "invalidate" });
       }
     }
 
-    if (
-      ReadStateHelper.hasLastAnswerFromSystem(
-        context.stepsState,
-        "URBAN_PROJECT_EXPENSES_REINSTATEMENT",
-      )
-    ) {
-      stepsToRecompute.push("URBAN_PROJECT_EXPENSES_REINSTATEMENT");
-    }
-
-    return { deleted: stepsToDelete, invalid: stepsToInvalidate, recomputed: stepsToRecompute };
+    return rules;
   },
 } as const;

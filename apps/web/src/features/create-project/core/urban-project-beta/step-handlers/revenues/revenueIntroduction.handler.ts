@@ -15,12 +15,7 @@ export const RevenueIntroductionHandler: InfoStepHandler = {
   },
 
   getNextStepId(context) {
-    const siteResalePlannedAfterDevelopment = ReadStateHelper.getStepAnswers(
-      context.stepsState,
-      "URBAN_PROJECT_SITE_RESALE_SELECTION",
-    )?.siteResalePlannedAfterDevelopment;
-
-    if (siteResalePlannedAfterDevelopment) {
+    if (ReadStateHelper.isSiteResalePlannedAfterDevelopment(context.stepsState)) {
       return "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE";
     }
 
