@@ -8,8 +8,6 @@ import HeaderFooterLayout from "@/shared/views/layout/HeaderFooterLayout/HeaderF
 import SidebarContainerLayout from "@/shared/views/layout/SidebarLayout/SidebarContainerLayout";
 import { routes, useRoute } from "@/shared/views/router";
 
-import FricheMutabilityPage from "./friche-mutability/views";
-
 /* Lazy-loaded pages */
 const CreateUserPage = lazy(() => import("@/features/onboarding/views"));
 const CreateProjectPage = lazy(
@@ -24,6 +22,7 @@ const ProjectImpactsPage = lazy(() => import("@/features/projects/views/project-
 const UrbanSprawlImpactsComparisonPage = lazy(
   () => import("@/features/projects/views/project-impacts-urban-sprawl-comparison"),
 );
+const FricheMutabilityPage = lazy(() => import("@/features/friche-mutability/views"));
 const SiteFeaturesPage = lazy(() => import("@/features/site-features/views"));
 const ProjectImpactsOnboardingPage = lazy(
   () => import("@/features/projects/views/project-impacts-onboarding"),
@@ -71,59 +70,35 @@ function FeaturesApp() {
 
   return (
     <HeaderFooterLayout>
-      <Suspense fallback={<LoadingSpinner />}>
-        {(() => {
-          switch (route.name) {
-            // protected pages
-            case routes.createUser.name:
-              return (
-                <RequireAuthenticatedUser>
-                  <CreateUserPage />
-                </RequireAuthenticatedUser>
-              );
-            case routes.myProjects.name:
-              return (
-                <RequireAuthenticatedUser>
-                  <MyProjectsPage />
-                </RequireAuthenticatedUser>
-              );
-            case routes.projectImpacts.name:
-              return (
-                <RequireAuthenticatedUser>
-                  <ProjectImpactsPage projectId={route.params.projectId} />
-                </RequireAuthenticatedUser>
-              );
+      <RequireAuthenticatedUser>
+        <Suspense fallback={<LoadingSpinner />}>
+          {(() => {
+            switch (route.name) {
+              // protected pages
+              case routes.createUser.name:
+                return <CreateUserPage />;
+              case routes.myProjects.name:
+                return <MyProjectsPage />;
+              case routes.projectImpacts.name:
+                return <ProjectImpactsPage projectId={route.params.projectId} />;
 
-            case routes.projectImpactsOnboarding.name:
-              return (
-                <RequireAuthenticatedUser>
+              case routes.projectImpactsOnboarding.name:
+                return (
                   <ProjectImpactsOnboardingPage projectId={route.params.projectId} route={route} />
-                </RequireAuthenticatedUser>
-              );
-            case routes.urbanSprawlImpactsComparison.name:
-              return (
-                <RequireAuthenticatedUser>
-                  <UrbanSprawlImpactsComparisonPage route={route} />
-                </RequireAuthenticatedUser>
-              );
-            case routes.siteFeatures.name:
-              return (
-                <RequireAuthenticatedUser>
-                  <SiteFeaturesPage siteId={route.params.siteId} />
-                </RequireAuthenticatedUser>
-              );
-            case routes.fricheMutability.name:
-              return (
-                <RequireAuthenticatedUser>
-                  <FricheMutabilityPage />
-                </RequireAuthenticatedUser>
-              );
-            // 404
-            default:
-              return <NotFoundScreen />;
-          }
-        })()}
-      </Suspense>
+                );
+              case routes.urbanSprawlImpactsComparison.name:
+                return <UrbanSprawlImpactsComparisonPage route={route} />;
+              case routes.siteFeatures.name:
+                return <SiteFeaturesPage siteId={route.params.siteId} />;
+              case routes.fricheMutability.name:
+                return <FricheMutabilityPage />;
+              // 404
+              default:
+                return <NotFoundScreen />;
+            }
+          })()}
+        </Suspense>
+      </RequireAuthenticatedUser>
     </HeaderFooterLayout>
   );
 }
