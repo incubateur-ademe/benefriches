@@ -3,7 +3,7 @@ import { Server } from "node:net";
 import { createTestApp } from "test/testApp";
 
 import { createUserAccountCreatedEvent } from "src/auth/core/events/userAccountCreated.event";
-import { RealEventPublisher } from "src/shared-kernel/adapters/events/RealEventPublisher";
+import { RealEventPublisher } from "src/shared-kernel/adapters/events/publisher/RealEventPublisher";
 import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
 
 import { ConnectCrm } from "../secondary/ConnectCrm";

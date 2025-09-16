@@ -6,7 +6,7 @@ import { JwtModule, JwtService } from "@nestjs/jwt";
 import { CreateUserUseCase } from "src/auth/core/createUser.usecase";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
-import { RealEventPublisher } from "src/shared-kernel/adapters/events/RealEventPublisher";
+import { RealEventPublisher } from "src/shared-kernel/adapters/events/publisher/RealEventPublisher";
 import {
   DOMAIN_EVENT_PUBLISHER_INJECTION_TOKEN,
   DomainEventPublisher,

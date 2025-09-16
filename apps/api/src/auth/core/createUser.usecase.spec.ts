@@ -3,7 +3,7 @@ import { ZodError } from "zod";
 
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
-import { InMemoryEventPublisher } from "src/shared-kernel/adapters/events/InMemoryEventPublisher";
+import { InMemoryEventPublisher } from "src/shared-kernel/adapters/events/publisher/InMemoryEventPublisher";
 
 import {
   buildExhaustiveUserProps,

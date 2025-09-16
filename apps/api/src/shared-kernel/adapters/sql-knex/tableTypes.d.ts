@@ -188,6 +188,13 @@ type CityStats = {
   updated_at: Date;
 };
 
+type SqlDomainEvent = {
+  id: string;
+  name: string;
+  payload: Record<string, unknown> | null;
+  created_at: Date;
+};
+
 declare module "knex/types/tables" {
   interface Tables {
     // reconversion projects
@@ -232,5 +239,8 @@ declare module "knex/types/tables" {
       expires_at: Date;
       used_at: Date | null;
     };
+
+    // domain events
+    domain_events: SqlDomainEvent;
   }
 }
