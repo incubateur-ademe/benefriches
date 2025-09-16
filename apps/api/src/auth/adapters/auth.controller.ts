@@ -275,19 +275,19 @@ export class AuthController {
 
   @Post("send-auth-link")
   async sendAuthLink(@Body() body: { email: string }, @Res() response: Response) {
-    const result = await this.sendAuthLinkUseCase.execute({ email: body.email });
-
-    if (result.success) {
-      response.status(200).send();
-      return;
-    }
-
     await this.eventPublisher.publish(
       createLoginAttemptedEvent(this.uuidGenerator.generate(), {
         method: "email-link",
         userEmail: body.email,
       }),
     );
+
+    const result = await this.sendAuthLinkUseCase.execute({ email: body.email });
+
+    if (result.success) {
+      response.status(200).send();
+      return;
+    }
 
     switch (result.error) {
       case "UserDoesNotExist":
