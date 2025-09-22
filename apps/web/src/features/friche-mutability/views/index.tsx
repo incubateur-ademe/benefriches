@@ -2,6 +2,7 @@ import Button from "@codegouvfr/react-dsfr/Button";
 import Tooltip from "@codegouvfr/react-dsfr/Tooltip";
 import { useEffect } from "react";
 
+import { BENEFRICHES_ENV } from "@/shared/views/envVars";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import {
@@ -37,7 +38,7 @@ export default function FricheMutabilityPage() {
   useEffect(() => {
     const handleMessage = (event: MessageEvent<MutafrichesEvaluationEvent>) => {
       // only handle messages from Mutafriches
-      if (event.origin !== "https://mutafriches.beta.gouv.fr") {
+      if (event.origin !== BENEFRICHES_ENV.mutafrichesUrl) {
         // eslint-disable-next-line no-console
         console.warn("Ignored message from:", event.origin);
         return;
@@ -62,6 +63,7 @@ export default function FricheMutabilityPage() {
         default:
           break;
       }
+      window.scrollTo(0, 0);
     };
 
     window.addEventListener("message", handleMessage);
@@ -78,7 +80,7 @@ export default function FricheMutabilityPage() {
         <iframe
           width="100%"
           height="800px"
-          src={`https://mutafriches.beta.gouv.fr?integrator=demo&callbackUrl=${encodeURIComponent(
+          src={`${BENEFRICHES_ENV.mutafrichesUrl}?integrator=${BENEFRICHES_ENV.mutafrichesIntegrator}&callbackUrl=${encodeURIComponent(
             `${window.location.origin}/callback`,
           )}&callbackLabel=${encodeURIComponent("Retour vers Bénéfriches")}`}
           title="Explorer la compatibilité de ma friche"
