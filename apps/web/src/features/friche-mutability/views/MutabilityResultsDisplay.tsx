@@ -7,7 +7,7 @@ import { MutabilityEvaluationResults, MutabilityUsage } from "../core/fricheMuta
 
 type MutabilityResultsDisplayProps = {
   results: MutabilityEvaluationResults["top3Usages"];
-  onCreateProject: (usage: MutabilityUsage) => Promise<void>;
+  onDiscoverImpactsClick: (usage: MutabilityUsage) => Promise<void>;
   isCreatingProject: boolean;
 };
 
@@ -60,7 +60,7 @@ const getMutabilityUsageDisplayName = (usage: MutabilityUsage): string => {
 
 export default function MutabilityResultsDisplay({
   results,
-  onCreateProject,
+  onDiscoverImpactsClick,
   isCreatingProject,
 }: MutabilityResultsDisplayProps) {
   return (
@@ -91,7 +91,7 @@ export default function MutabilityResultsDisplay({
             <div className="text-center">
               <Button
                 priority="primary"
-                onClick={() => onCreateProject(result.usage)}
+                onClick={() => onDiscoverImpactsClick(result.usage)}
                 disabled={isCreatingProject}
               >
                 {isCreatingProject ? (

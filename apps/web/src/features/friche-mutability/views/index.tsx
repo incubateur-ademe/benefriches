@@ -2,12 +2,14 @@ import Button from "@codegouvfr/react-dsfr/Button";
 import Tooltip from "@codegouvfr/react-dsfr/Tooltip";
 import { useEffect } from "react";
 
+import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import { BENEFRICHES_ENV } from "@/shared/views/envVars";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import {
   fricheMutabilityAnalysisReset,
   fricheMutabilityEvaluationCompleted,
+  fricheMutabilityImpactsRequested,
 } from "../core/fricheMutability.actions";
 import { selectFricheMutabilityViewData } from "../core/fricheMutability.selectors";
 import MutabilityResultsDisplay from "./MutabilityResultsDisplay";
@@ -23,12 +25,11 @@ function getTextForReliabilityScore(score: number): string {
 
 export default function FricheMutabilityPage() {
   const dispatch = useAppDispatch();
-
-  // Single selector for all view data
   const viewData = useAppSelector(selectFricheMutabilityViewData);
 
-  const handleCreateProject = async () => {
-    // dispatch(createProjectFromMutabilityUsage({ siteId, mutafrichesUsage }));
+  const handleDiscoverImpactsClick = () => {
+    if (!viewData.evaluationResults) return;
+    void dispatch(fricheMutabilityImpactsRequested({ evaluationId: "TO CHANGE" }));
   };
 
   const handleResetAnalysis = () => {
@@ -71,6 +72,10 @@ export default function FricheMutabilityPage() {
       window.removeEventListener("message", handleMessage);
     };
   }, [dispatch]);
+
+  if (viewData.isCreatingProject) {
+    return <LoadingSpinner loadingText="Évaluation des impacts en cours..." />;
+  }
 
   return (
     <section className="py-10">
@@ -119,7 +124,7 @@ export default function FricheMutabilityPage() {
           {viewData.evaluationResults && (
             <MutabilityResultsDisplay
               results={viewData.evaluationResults.top3MutabilityUsages}
-              onCreateProject={handleCreateProject}
+              onDiscoverImpactsClick={handleDiscoverImpactsClick}
               isCreatingProject={viewData.isCreatingProject}
             />
           )}

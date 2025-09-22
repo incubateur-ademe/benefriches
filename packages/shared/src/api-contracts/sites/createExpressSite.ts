@@ -1,6 +1,6 @@
 import z from "zod";
 
-import { addressSchema, siteNatureSchema } from "../../site";
+import { addressSchema, fricheActivitySchema, siteNatureSchema } from "../../site";
 import { RouteDef } from "../routeDef";
 
 const baseExpressSiteDtoSchema = z.object({
@@ -14,7 +14,7 @@ const baseExpressSiteDtoSchema = z.object({
 const createExpressSiteDtoSchema = z.discriminatedUnion("nature", [
   baseExpressSiteDtoSchema.extend({
     nature: z.literal("FRICHE"),
-    fricheActivity: z.string(),
+    fricheActivity: fricheActivitySchema,
   }),
   baseExpressSiteDtoSchema.extend({
     nature: z.literal("AGRICULTURAL_OPERATION"),

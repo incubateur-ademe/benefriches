@@ -31,7 +31,7 @@ export const selectFricheMutabilityViewData = createSelector(
       : undefined,
     evaluationError: state.evaluationError,
     isAnalysisComplete: state.evaluationResults !== undefined,
-    isCreatingProject: state.isCreatingProject,
+    isCreatingProject: state.projectCreationState === "loading",
     creatingProjectUsage: state.creatingProjectUsage,
     hasError: state.evaluationError !== undefined,
   }),

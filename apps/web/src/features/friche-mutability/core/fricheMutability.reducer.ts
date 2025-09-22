@@ -3,9 +3,7 @@ import { createReducer } from "@reduxjs/toolkit";
 import {
   fricheMutabilityAnalysisReset,
   fricheMutabilityEvaluationCompleted,
-  fricheMutabilityProjectCreationFailed,
-  fricheMutabilityProjectCreationRequested,
-  fricheMutabilityProjectCreationSucceeded,
+  fricheMutabilityImpactsRequested,
 } from "./fricheMutability.actions";
 
 export type MutabilityUsage =
@@ -30,14 +28,18 @@ export type MutabilityEvaluationResults = {
 export type FricheMutabilityState = {
   evaluationResults: MutabilityEvaluationResults | undefined;
   evaluationError: string | undefined;
-  isCreatingProject: boolean;
+  projectCreationState: "idle" | "loading" | "success" | "error";
+  projectCreationStateErrorCode: string | undefined;
+  createdProjectId: string | undefined;
   creatingProjectUsage: MutabilityUsage | undefined;
 };
 
 const initialState: FricheMutabilityState = {
   evaluationResults: undefined,
   evaluationError: undefined,
-  isCreatingProject: false,
+  projectCreationState: "idle",
+  projectCreationStateErrorCode: undefined,
+  createdProjectId: undefined,
   creatingProjectUsage: undefined,
 };
 
@@ -50,19 +52,17 @@ export const fricheMutabilityReducer = createReducer(initialState, (builder) => 
     .addCase(fricheMutabilityAnalysisReset, (state) => {
       state.evaluationResults = undefined;
       state.evaluationError = undefined;
-      state.isCreatingProject = false;
+      state.projectCreationState = "idle";
     })
-    .addCase(fricheMutabilityProjectCreationRequested, (state, action) => {
-      state.isCreatingProject = true;
-      state.creatingProjectUsage = action.payload;
-      state.evaluationError = undefined;
+    .addCase(fricheMutabilityImpactsRequested.pending, (state) => {
+      state.projectCreationState = "loading";
     })
-    .addCase(fricheMutabilityProjectCreationSucceeded, (state) => {
-      state.isCreatingProject = false;
-      state.creatingProjectUsage = undefined;
+    .addCase(fricheMutabilityImpactsRequested.fulfilled, (state, action) => {
+      state.projectCreationState = "success";
+      state.createdProjectId = action.payload.projectId;
     })
-    .addCase(fricheMutabilityProjectCreationFailed, (state) => {
-      state.isCreatingProject = false;
-      state.creatingProjectUsage = undefined;
+    .addCase(fricheMutabilityImpactsRequested.rejected, (state, action) => {
+      state.projectCreationState = "error";
+      state.projectCreationStateErrorCode = action.error.message;
     });
 });
