@@ -72,7 +72,7 @@ const faqData: FaqItem[] = [
   {
     question: "🏭 J'ai une friche mais je ne sais pas quoi en faire. Pouvez-vous me conseiller ?",
     answer:
-      "Tout à fait ! Bénéfriches est capable de calculer la mutabilité de votre friche, c'est-à-dire la pertinence que pourrait avoir chaque projet d'aménagement (projet urbain, renaturation, photovoltaïque...) sur votre friche.",
+      "Tout à fait ! Bénéfriches est capable de calculer la compatibilité de votre friche, c'est-à-dire la pertinence que pourrait avoir chaque projet d'aménagement (projet urbain, renaturation, photovoltaïque...) sur votre friche.",
   },
   {
     question: "🌾 Puis-je évaluer un projet ailleurs que sur une friche ?",
