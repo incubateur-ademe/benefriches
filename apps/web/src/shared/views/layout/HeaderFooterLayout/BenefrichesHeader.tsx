@@ -5,6 +5,7 @@ import { routes } from "@/shared/views/router";
 
 import { BENEFRICHES_ENV } from "../../envVars";
 import { useAppSelector } from "../../hooks/store.hooks";
+import "./BenefrichesHeader.css";
 
 function BenefrichesHeader({
   homeLinkPropsHref = routes.home().href,
@@ -55,8 +56,8 @@ function BenefrichesHeader({
         title: "Accueil - Bénéfriches",
       }}
       operatorLogo={{
-        alt: "Logo de Bénéfriches",
-        imgUrl: "/img/logos/logo-benefriches-simple.svg",
+        alt: "Logo de l'ADEME et de Bénéfriches",
+        imgUrl: "/img/logos/logo-ademe-and-benefriches.png",
         orientation: "horizontal",
       }}
       quickAccessItems={quickAccessItems}
