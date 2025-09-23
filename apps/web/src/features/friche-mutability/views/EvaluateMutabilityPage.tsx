@@ -4,7 +4,6 @@ import { BENEFRICHES_ENV } from "@/shared/views/envVars";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 import { routes } from "@/shared/views/router";
 
-import { fricheMutabilityEvaluationCompleted } from "../core/fricheMutability.actions";
 import { MutafrichesEvaluationEvent } from "./mutafriches.types";
 
 export default function EvaluateMutabilityPage() {
@@ -23,17 +22,6 @@ export default function EvaluateMutabilityPage() {
 
       switch (type) {
         case "mutafriches:completed":
-          // eslint-disable-next-line no-case-declarations
-          const payload = {
-            evaluationId: data.evaluationId,
-            top3Usages: data.top3Usages.map((usage) => ({
-              usage: usage.usage,
-              score: usage.indiceMutabilite,
-              rank: usage.rang,
-            })),
-            reliabilityScore: data.fiabilite.note,
-          };
-          dispatch(fricheMutabilityEvaluationCompleted(payload));
           routes.fricheMutabilityResults({ evaluationId: data.evaluationId }).push();
           break;
         default:

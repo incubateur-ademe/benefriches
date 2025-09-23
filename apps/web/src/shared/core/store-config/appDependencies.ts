@@ -4,6 +4,7 @@ import HttpSaveExpressReconversionProjectService from "@/features/create-project
 import { HttpSaveReconversionProjectService } from "@/features/create-project/infrastructure/save-project-service/HttpSaveReconversionProjectService";
 import { HttpSitesService } from "@/features/create-project/infrastructure/sites-service/HttpSiteService";
 import { HttpCreateSiteApi } from "@/features/create-site/infrastructure/create-site-service/HttpCreateSiteApi";
+import { FakeFricheMutabilityEvaluation } from "@/features/friche-mutability/infra/friche-mutability-evaluation/FakeFricheMutabilityEvaluation";
 import { HttpAuthService } from "@/features/onboarding/infrastructure/auth-service/HttpAuthService";
 import { HttpCreateUserService } from "@/features/onboarding/infrastructure/create-user-service/HttpCreateUserService";
 import { HttpCurrentUserService } from "@/features/onboarding/infrastructure/current-user-service/HttpCurrentUserService";
@@ -44,4 +45,6 @@ export const appDependencies: AppDependencies = {
   projectFeaturesService: new HttpProjectFeaturesService(),
   quickUrbanProjectImpactsService: new HttpQuickUrbanProjectImpactsService(),
   urbanSprawlImpactsComparisonService: new HttpUrbanSprawlImpactsComparisonService(),
+  // todo: use real implementation when Mutafriches have fixed CORS issues
+  fricheMutabilityEvaluationService: new FakeFricheMutabilityEvaluation(),
 };

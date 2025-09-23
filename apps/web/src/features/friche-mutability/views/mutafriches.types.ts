@@ -1,6 +1,6 @@
 import { MutabilityUsage } from "../core/fricheMutability.reducer";
 
-export type MutafrichesEvaluationResults = {
+type EvaluationResults = {
   evaluationId: string;
   fiabilite: {
     note: number;
@@ -16,6 +16,6 @@ export type MutafrichesEvaluationResults = {
 export type MutafrichesEvaluationEvent =
   | {
       type: "mutafriches:completed";
-      data: MutafrichesEvaluationResults;
+      data: EvaluationResults;
     }
   | { type: "unknown"; data: unknown };

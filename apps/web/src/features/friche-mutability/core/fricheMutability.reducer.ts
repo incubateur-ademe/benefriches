@@ -1,8 +1,9 @@
 import { createReducer } from "@reduxjs/toolkit";
 
 import {
+  MutabilityEvaluationResults,
   fricheMutabilityAnalysisReset,
-  fricheMutabilityEvaluationCompleted,
+  fricheMutabilityEvaluationResultsRequested,
   fricheMutabilityImpactsRequested,
 } from "./fricheMutability.actions";
 
@@ -15,19 +16,10 @@ export type MutabilityUsage =
   | "renaturation"
   | "photovoltaique";
 
-export type MutabilityEvaluationResults = {
-  evaluationId: string;
-  top3Usages: {
-    usage: MutabilityUsage;
-    score: number;
-    rank: number;
-  }[];
-  reliabilityScore: number;
-};
-
 export type FricheMutabilityState = {
   evaluationResults: MutabilityEvaluationResults | undefined;
   evaluationError: string | undefined;
+  evaluationResultsLoadingState: "idle" | "loading" | "success" | "error";
   projectCreationState: "idle" | "loading" | "success" | "error";
   projectCreationStateErrorCode: string | undefined;
   createdProjectId: string | undefined;
@@ -37,6 +29,7 @@ export type FricheMutabilityState = {
 const initialState: FricheMutabilityState = {
   evaluationResults: undefined,
   evaluationError: undefined,
+  evaluationResultsLoadingState: "idle",
   projectCreationState: "idle",
   projectCreationStateErrorCode: undefined,
   createdProjectId: undefined,
@@ -45,14 +38,24 @@ const initialState: FricheMutabilityState = {
 
 export const fricheMutabilityReducer = createReducer(initialState, (builder) => {
   builder
-    .addCase(fricheMutabilityEvaluationCompleted, (state, action) => {
-      state.evaluationResults = action.payload;
-      state.evaluationError = undefined;
-    })
     .addCase(fricheMutabilityAnalysisReset, (state) => {
-      state.evaluationResults = undefined;
       state.evaluationError = undefined;
       state.projectCreationState = "idle";
+    })
+    .addCase(fricheMutabilityEvaluationResultsRequested.pending, (state) => {
+      state.evaluationResults = undefined;
+      state.evaluationError = undefined;
+      state.evaluationResultsLoadingState = "loading";
+    })
+    .addCase(fricheMutabilityEvaluationResultsRequested.fulfilled, (state, action) => {
+      state.evaluationResults = action.payload;
+      state.evaluationError = undefined;
+      state.evaluationResultsLoadingState = "success";
+    })
+    .addCase(fricheMutabilityEvaluationResultsRequested.rejected, (state, action) => {
+      state.evaluationResults = undefined;
+      state.evaluationError = action.error.message;
+      state.evaluationResultsLoadingState = "error";
     })
     .addCase(fricheMutabilityImpactsRequested.pending, (state) => {
       state.projectCreationState = "loading";

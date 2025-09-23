@@ -8,6 +8,7 @@ import { GetSitesByIdGateway } from "@/features/create-project/core/actions/urba
 import { PhotovoltaicPerformanceGateway } from "@/features/create-project/core/renewable-energy/actions/getPhotovoltaicExpectedPerformance.action";
 import { CreateSiteGateway } from "@/features/create-site/core/actions/finalStep.actions";
 import { SiteMunicipalityDataGateway as CreateSiteMunicipalityDataGateway } from "@/features/create-site/core/actions/siteMunicipalityData.actions";
+import { FricheMutabilityEvaluationGateway } from "@/features/friche-mutability/core/fricheMutability.actions";
 import { AuthenticationGateway } from "@/features/onboarding/core/AuthenticationGateway";
 import { CreateUserGateway } from "@/features/onboarding/core/createUser.action";
 import { CurrentUserGateway } from "@/features/onboarding/core/initCurrentUser.action";
@@ -43,6 +44,7 @@ export type AppDependencies = {
   projectFeaturesService: ProjectFeaturesGateway;
   quickUrbanProjectImpactsService: QuickUrbanProjectImpactsGateway;
   urbanSprawlImpactsComparisonService: UrbanSprawlImpactsComparisonGateway;
+  fricheMutabilityEvaluationService: FricheMutabilityEvaluationGateway;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

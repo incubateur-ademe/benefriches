@@ -17,6 +17,7 @@ export type FricheMutabilityViewData = {
   isCreatingProject: boolean;
   creatingProjectUsage: string | undefined;
   evaluationError: string | undefined;
+  evaluationResultsLoadingState: "idle" | "loading" | "success" | "error";
   hasError: boolean;
 };
 
@@ -29,6 +30,7 @@ export const selectFricheMutabilityViewData = createSelector(
           reliabilityScore: state.evaluationResults.reliabilityScore,
         }
       : undefined,
+    evaluationResultsLoadingState: state.evaluationResultsLoadingState,
     evaluationError: state.evaluationError,
     isAnalysisComplete: state.evaluationResults !== undefined,
     isCreatingProject: state.projectCreationState === "loading",

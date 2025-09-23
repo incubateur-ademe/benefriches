@@ -7,6 +7,7 @@ import { InMemorySaveExpressReconversionProjectService } from "@/features/create
 import { InMemorySaveReconversionProjectService } from "@/features/create-project/infrastructure/save-project-service/InMemorySaveReconversionProjectService";
 import { SitesServiceMock } from "@/features/create-project/infrastructure/sites-service/SitesServiceMock";
 import { InMemoryCreateSiteService } from "@/features/create-site/infrastructure/create-site-service/inMemoryCreateSiteApi";
+import { FakeFricheMutabilityEvaluation } from "@/features/friche-mutability/infra/friche-mutability-evaluation/FakeFricheMutabilityEvaluation";
 import FakeAuthService from "@/features/onboarding/infrastructure/auth-service/FakeAuthService";
 import { InMemoryCreateUserService } from "@/features/onboarding/infrastructure/create-user-service/inMemoryCreateUserService";
 import { InMemoryCurrentUserService } from "@/features/onboarding/infrastructure/current-user-service/inMemoryCurrentUserService";
@@ -66,6 +67,7 @@ export const getTestAppDependencies = (
     projectFeaturesService: new MockProjectFeaturesService(),
     quickUrbanProjectImpactsService: new MockQuickUrbanProjectImpactsService(),
     urbanSprawlImpactsComparisonService: new MockUrbanSprawlImpactsComparisonService(),
+    fricheMutabilityEvaluationService: new FakeFricheMutabilityEvaluation(),
     ...depsOverride,
   };
 };
