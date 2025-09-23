@@ -1,15 +1,26 @@
 import Button from "@codegouvfr/react-dsfr/Button";
 import Notice from "@codegouvfr/react-dsfr/Notice";
+import Tooltip from "@codegouvfr/react-dsfr/Tooltip";
 
 import Badge from "@/shared/views/components/Badge/Badge";
+import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
+import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { routes } from "@/shared/views/router";
 
-import { MutabilityEvaluationResults, MutabilityUsage } from "../core/fricheMutability.reducer";
+import {
+  fricheMutabilityAnalysisReset,
+  fricheMutabilityImpactsRequested,
+} from "../core/fricheMutability.actions";
+import { MutabilityUsage } from "../core/fricheMutability.reducer";
+import { selectFricheMutabilityViewData } from "../core/fricheMutability.selectors";
 
-type MutabilityResultsDisplayProps = {
-  results: MutabilityEvaluationResults["top3Usages"];
-  onDiscoverImpactsClick: (usage: MutabilityUsage) => Promise<void>;
-  isCreatingProject: boolean;
-};
+function getTextForReliabilityScore(score: number): string {
+  if (score >= 9) return "Très fiable";
+  if (score >= 7) return "Fiable";
+  if (score >= 5) return "Moyennement fiable";
+  if (score >= 3) return "Peu fiable";
+  return "Très peu fiable";
+}
 
 const getUsageIcon = (usage: MutabilityUsage): string => {
   switch (usage) {
@@ -58,15 +69,51 @@ const getMutabilityUsageDisplayName = (usage: MutabilityUsage): string => {
   }[usage];
 };
 
-export default function MutabilityResultsDisplay({
-  results,
-  onDiscoverImpactsClick,
-  isCreatingProject,
-}: MutabilityResultsDisplayProps) {
+export default function MutabilityResultsPage() {
+  const dispatch = useAppDispatch();
+  const viewData = useAppSelector(selectFricheMutabilityViewData);
+
+  const handleResetAnalysis = () => {
+    dispatch(fricheMutabilityAnalysisReset());
+    routes.fricheMutability().push();
+  };
+
+  const handleDiscoverImpactsClick = () => {
+    if (!viewData.evaluationResults) return;
+    void dispatch(fricheMutabilityImpactsRequested({ evaluationId: "TO CHANGE" }));
+  };
+
+  if (viewData.isCreatingProject) {
+    return <LoadingSpinner loadingText="Évaluation des impacts en cours..." />;
+  }
+
   return (
-    <section>
+    <section className="fr-container py-10">
+      <h1>Résultats de la compatibilité de la friche</h1>
+      <div className="flex items-center justify-between mt-8">
+        <h2>🎯 Projets d'aménagement appropriés</h2>
+        <Button
+          priority="tertiary"
+          size="small"
+          iconId="fr-icon-arrow-left-line"
+          onClick={handleResetAnalysis}
+          disabled={viewData.isCreatingProject}
+        >
+          Refaire l'analyse
+        </Button>
+      </div>
+
+      {viewData.evaluationResults?.reliabilityScore && (
+        <p>
+          Classés par score de compatibilité • Indice de fiabilité :{" "}
+          {viewData.evaluationResults.reliabilityScore}/10{" "}
+          <Tooltip
+            title={getTextForReliabilityScore(viewData.evaluationResults.reliabilityScore)}
+          />
+        </p>
+      )}
       <div className="flex flex-col md:flex-row gap-8">
-        {results.map((result) => (
+        {viewData.evaluationResults?.top3MutabilityUsages.map((result) => (
           <article
             key={result.usage}
             className="flex-1 border-1 border-border-grey rounded-xl py-8 px-6"
@@ -91,10 +138,12 @@ export default function MutabilityResultsDisplay({
             <div className="text-center">
               <Button
                 priority="primary"
-                onClick={() => onDiscoverImpactsClick(result.usage)}
-                disabled={isCreatingProject}
+                onClick={() => {
+                  handleDiscoverImpactsClick();
+                }}
+                disabled={viewData.isCreatingProject}
               >
-                {isCreatingProject ? (
+                {viewData.isCreatingProject ? (
                   <>
                     <span
                       className="fr-icon-refresh-line fr-icon--sm animate-spin"
@@ -110,7 +159,6 @@ export default function MutabilityResultsDisplay({
           </article>
         ))}
       </div>
-
       <Notice
         title="Comment interpréter ces résultats ?"
         description=" L'indice de compatibilité évalue la capacité de transformation de votre site selon différents
@@ -119,6 +167,12 @@ export default function MutabilityResultsDisplay({
         severity="info"
         className="mt-8"
       />
+
+      {viewData.hasError && viewData.evaluationError && (
+        <div className="fr-alert fr-alert--error fr-mb-4w">
+          <p className="fr-alert__body fr-mb-0">{viewData.evaluationError}</p>
+        </div>
+      )}
     </section>
   );
 }

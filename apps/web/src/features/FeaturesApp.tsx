@@ -22,7 +22,12 @@ const ProjectImpactsPage = lazy(() => import("@/features/projects/views/project-
 const UrbanSprawlImpactsComparisonPage = lazy(
   () => import("@/features/projects/views/project-impacts-urban-sprawl-comparison"),
 );
-const FricheMutabilityPage = lazy(() => import("@/features/friche-mutability/views"));
+const EvaluateMutabilityPage = lazy(
+  () => import("@/features/friche-mutability/views/EvaluateMutabilityPage"),
+);
+const MutabilityResultsPage = lazy(
+  () => import("@/features/friche-mutability/views/MutabilityResultsPage"),
+);
 const SiteFeaturesPage = lazy(() => import("@/features/site-features/views"));
 const ProjectImpactsOnboardingPage = lazy(
   () => import("@/features/projects/views/project-impacts-onboarding"),
@@ -91,7 +96,9 @@ function FeaturesApp() {
               case routes.siteFeatures.name:
                 return <SiteFeaturesPage siteId={route.params.siteId} />;
               case routes.fricheMutability.name:
-                return <FricheMutabilityPage />;
+                return <EvaluateMutabilityPage />;
+              case routes.fricheMutabilityResults.name:
+                return <MutabilityResultsPage />;
               // 404
               default:
                 return <NotFoundScreen />;

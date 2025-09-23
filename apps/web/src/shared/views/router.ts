@@ -67,7 +67,11 @@ const { RouteProvider, useRoute, routes } = createRouter({
     (params) => `/sites/${params.siteId}/caracteristiques`,
   ),
   // MUTABILITY
-  fricheMutability: defineRoute("/mutabilite-friche"),
+  fricheMutability: defineRoute("/evaluer-compatibilite-friche"),
+  fricheMutabilityResults: defineRoute(
+    { evaluationId: param.query.string },
+    () => `/evaluer-compatibilite-friche/resultats`,
+  ),
   // PAGES
   budget: defineRoute("/budget"),
   stats: defineRoute("/stats"),
