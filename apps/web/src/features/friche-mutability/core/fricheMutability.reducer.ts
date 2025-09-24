@@ -23,7 +23,6 @@ export type FricheMutabilityState = {
   projectCreationState: "idle" | "loading" | "success" | "error";
   projectCreationStateErrorCode: string | undefined;
   createdProjectId: string | undefined;
-  creatingProjectUsage: MutabilityUsage | undefined;
 };
 
 const initialState: FricheMutabilityState = {
@@ -33,7 +32,6 @@ const initialState: FricheMutabilityState = {
   projectCreationState: "idle",
   projectCreationStateErrorCode: undefined,
   createdProjectId: undefined,
-  creatingProjectUsage: undefined,
 };
 
 export const fricheMutabilityReducer = createReducer(initialState, (builder) => {
