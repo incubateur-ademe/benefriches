@@ -5,3 +5,4 @@ packages:
 onlyBuiltDependencies:
   - '@nestjs/core'
   - '@tailwindcss/oxide'
+  - bcrypt
