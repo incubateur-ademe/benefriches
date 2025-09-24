@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post, Query } from "@nestjs/common";
 import { createZodDto } from "nestjs-zod";
-import { API_ROUTES } from "shared";
+import { API_ROUTES, expressProjectCategorySchema } from "shared";
 import { z } from "zod";
 
 import { reconversionProjectPropsSchema } from "src/reconversion-projects/core/model/reconversionProject";
@@ -21,13 +21,7 @@ class CreateExpressReconversionProjectBodyDto extends createZodDto(
     reconversionProjectId: z.string(),
     siteId: z.string(),
     createdBy: z.string(),
-    category: z.enum([
-      "PUBLIC_FACILITIES",
-      "RESIDENTIAL_TENSE_AREA",
-      "RESIDENTIAL_NORMAL_AREA",
-      "NEW_URBAN_CENTER",
-      "PHOTOVOLTAIC_POWER_PLANT",
-    ]),
+    category: expressProjectCategorySchema,
   }),
 ) {}
 

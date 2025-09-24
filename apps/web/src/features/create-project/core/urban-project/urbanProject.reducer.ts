@@ -1,5 +1,5 @@
 import { createReducer, UnknownAction } from "@reduxjs/toolkit";
-import { UrbanSpaceCategory, typedObjectKeys } from "shared";
+import { UrbanSpaceCategory, typedObjectKeys, ExpressProjectCategory } from "shared";
 
 import { stepRevertConfirmed } from "../actions/actionsUtils";
 import { ReconversionProject } from "../actions/expressProjectSavedGateway";
@@ -69,11 +69,7 @@ export type UrbanProjectState = {
   createMode: "express" | "custom" | undefined;
   expressData: {
     projectData?: ReconversionProject;
-    category?:
-      | "PUBLIC_FACILITIES"
-      | "RESIDENTIAL_TENSE_AREA"
-      | "RESIDENTIAL_NORMAL_AREA"
-      | "NEW_URBAN_CENTER";
+    category?: ExpressProjectCategory;
   };
   saveState: "idle" | "loading" | "success" | "error";
   spacesCategoriesToComplete: UrbanSpaceCategory[];

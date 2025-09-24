@@ -1,6 +1,7 @@
 import { INestApplication } from "@nestjs/common";
 import { Knex } from "knex";
 import { Server } from "node:net";
+import { expressProjectCategorySchema } from "shared";
 import supertest from "supertest";
 import { createTestApp } from "test/testApp";
 import { v4 as uuid } from "uuid";
@@ -145,13 +146,7 @@ describe("ReconversionProjects controller", () => {
       expect(responseErrors[0]?.path).toContain("category");
     });
 
-    it.each([
-      "PUBLIC_FACILITIES",
-      "RESIDENTIAL_TENSE_AREA",
-      "RESIDENTIAL_NORMAL_AREA",
-      "NEW_URBAN_CENTER",
-      "PHOTOVOLTAIC_POWER_PLANT",
-    ])(
+    it.each(expressProjectCategorySchema.options)(
       "get a 201 response and reconversion project is created with category %s",
       async (category) => {
         const requestBody = {

@@ -1,6 +1,8 @@
 import { roundTo2Digits } from "../../../services";
 import { UrbanProjectGenerator } from "./UrbanProjectGenerator";
 
+const AVERAGE_OFFICES_FLOOR_COUNT = 3;
+
 export class OfficesProjectGenerator extends UrbanProjectGenerator {
   override name = "Tertiaire";
 
@@ -14,7 +16,8 @@ export class OfficesProjectGenerator extends UrbanProjectGenerator {
   }
 
   override get buildingsFloorAreaDistribution() {
-    const buildingsFloorSurfaceArea = this.spacesDistribution.BUILDINGS_FOOTPRINT * 3;
+    const buildingsFloorSurfaceArea =
+      this.spacesDistribution.BUILDINGS_FOOTPRINT * AVERAGE_OFFICES_FLOOR_COUNT;
     return {
       OFFICES: roundTo2Digits(buildingsFloorSurfaceArea),
     };

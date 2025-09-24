@@ -1,4 +1,10 @@
-import { sumObjectValues } from "shared";
+import {
+  BuildingsUseDistribution,
+  ExpressProjectCategory,
+  expressProjectCategorySchema,
+  SoilsDistribution,
+  sumObjectValues,
+} from "shared";
 import { v4 as uuid } from "uuid";
 
 import { MockPhotovoltaicGeoInfoSystemApi } from "src/photovoltaic-performance/adapters/secondary/photovoltaic-data-provider/PhotovoltaicGeoInfoSystemApi.mock";
@@ -14,20 +20,11 @@ import { ReconversionProject } from "../model/reconversionProject";
 import { UrbanProjectFeatures } from "../model/urbanProjects";
 import { CreateExpressReconversionProjectUseCase } from "./createExpressReconversionProject.usecase";
 
-const EXPRESS_CATEGORIES = [
-  "PUBLIC_FACILITIES",
-  "RESIDENTIAL_TENSE_AREA",
-  "RESIDENTIAL_NORMAL_AREA",
-  "NEW_URBAN_CENTER",
-  "PHOTOVOLTAIC_POWER_PLANT",
-] as const;
+const EXPRESS_CATEGORIES = expressProjectCategorySchema.options;
 
-const EXPRESS_URBAN_PROJECT_CATEGORIES = [
-  "PUBLIC_FACILITIES",
-  "RESIDENTIAL_TENSE_AREA",
-  "RESIDENTIAL_NORMAL_AREA",
-  "NEW_URBAN_CENTER",
-] as const;
+const EXPRESS_URBAN_PROJECT_CATEGORIES = expressProjectCategorySchema.exclude([
+  "PHOTOVOLTAIC_POWER_PLANT",
+]).options;
 
 describe("CreateReconversionProject Use Case", () => {
   let dateProvider: DateProvider;
@@ -126,18 +123,19 @@ describe("CreateReconversionProject Use Case", () => {
           category: expressCategory,
         });
 
-        let expectedName = "";
-        if (expressCategory === "NEW_URBAN_CENTER") {
-          expectedName = "Centralité urbaine";
-        } else if (expressCategory === "PUBLIC_FACILITIES") {
-          expectedName = "Équipement public";
-        } else if (expressCategory === "RESIDENTIAL_TENSE_AREA") {
-          expectedName = "Résidentiel secteur tendu";
-        } else if (expressCategory === "PHOTOVOLTAIC_POWER_PLANT") {
-          expectedName = "Centrale photovoltaïque";
-        } else {
-          expectedName = "Résidentiel secteur détendu";
-        }
+        const expressCategoryNameMap: Record<ExpressProjectCategory, string> = {
+          NEW_URBAN_CENTER: "Centralité urbaine",
+          PUBLIC_FACILITIES: "Équipement public",
+          RESIDENTIAL_TENSE_AREA: "Résidentiel secteur tendu",
+          PHOTOVOLTAIC_POWER_PLANT: "Centrale photovoltaïque",
+          RESIDENTIAL_NORMAL_AREA: "Résidentiel secteur détendu",
+          INDUSTRIAL_FACILITIES: "Industrie",
+          OFFICES: "Tertiaire",
+          RENATURATION: "Renaturation",
+          TOURISM_AND_CULTURAL_FACILITIES: "Centre culturel",
+        };
+
+        const expectedName = expressCategoryNameMap[expressCategory];
 
         const createdReconversionProjects: ReconversionProject[] =
           reconversionProjectRepository._getReconversionProjects();
@@ -254,16 +252,28 @@ describe("CreateReconversionProject Use Case", () => {
 
           switch (expressCategory) {
             case "RESIDENTIAL_TENSE_AREA":
-              expectedResalePrice = 2772500;
+              expectedResalePrice = 2_772_500;
               break;
             case "NEW_URBAN_CENTER":
-              expectedResalePrice = 1211600;
+              expectedResalePrice = 1_211_600;
               break;
             case "PUBLIC_FACILITIES":
-              expectedResalePrice = 164000;
+              expectedResalePrice = 164_000;
+              break;
+            case "INDUSTRIAL_FACILITIES":
+              expectedResalePrice = 435_000;
+              break;
+            case "OFFICES":
+              expectedResalePrice = 2_160_000;
+              break;
+            case "RENATURATION":
+              expectedResalePrice = 0;
+              break;
+            case "TOURISM_AND_CULTURAL_FACILITIES":
+              expectedResalePrice = 0;
               break;
             default:
-              expectedResalePrice = 570000;
+              expectedResalePrice = 570_000;
           }
 
           expect(createdReconversionProject?.siteResaleExpectedSellingPrice).toEqual(
@@ -295,7 +305,7 @@ describe("CreateReconversionProject Use Case", () => {
             category: expressCategory,
           });
 
-          let expectedBuildingsFloorAreaDistribution;
+          let expectedBuildingsFloorAreaDistribution: BuildingsUseDistribution = {};
           let expectedSpacesDistribution;
 
           if (expressCategory === "RESIDENTIAL_TENSE_AREA") {
@@ -346,6 +356,38 @@ describe("CreateReconversionProject Use Case", () => {
             expectedBuildingsFloorAreaDistribution = {
               PUBLIC_FACILITIES: 4100,
             };
+          } else if (expressCategory === "OFFICES") {
+            expectedSpacesDistribution = {
+              BUILDINGS_FOOTPRINT: 8_000,
+              PRIVATE_PAVED_ALLEY_OR_PARKING_LOT: 500,
+              PRIVATE_GRAVEL_ALLEY_OR_PARKING_LOT: 500,
+              PRIVATE_GARDEN_AND_GRASS_ALLEYS: 1_000,
+            };
+            expectedBuildingsFloorAreaDistribution = {
+              OFFICES: 24_000,
+            };
+          } else if (expressCategory === "TOURISM_AND_CULTURAL_FACILITIES") {
+            expectedSpacesDistribution = {
+              BUILDINGS_FOOTPRINT: 6_000,
+              PRIVATE_PAVED_ALLEY_OR_PARKING_LOT: 2_000,
+              PUBLIC_GREEN_SPACES: 2_000,
+            };
+            expectedBuildingsFloorAreaDistribution = {
+              CULTURAL_PLACE: 6_000,
+            };
+          } else if (expressCategory === "INDUSTRIAL_FACILITIES") {
+            expectedSpacesDistribution = {
+              BUILDINGS_FOOTPRINT: 6_000,
+              PRIVATE_PAVED_ALLEY_OR_PARKING_LOT: 3_000,
+              PRIVATE_GARDEN_AND_GRASS_ALLEYS: 1_000,
+            };
+            expectedBuildingsFloorAreaDistribution = {
+              ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES: 6_000,
+            };
+          } else if (expressCategory === "RENATURATION") {
+            expectedSpacesDistribution = {
+              PUBLIC_GREEN_SPACES: site.surfaceArea,
+            };
           } else {
             expectedSpacesDistribution = {
               BUILDINGS_FOOTPRINT: 2000,
@@ -368,14 +410,14 @@ describe("CreateReconversionProject Use Case", () => {
             (expectedSpacesDistribution.PUBLIC_GRAVEL_ROAD_OR_SQUARES_OR_SIDEWALKS ?? 0);
 
           const expectedImpermeableSoils =
-            expectedSpacesDistribution.PUBLIC_PARKING_LOT +
+            (expectedSpacesDistribution.PUBLIC_PARKING_LOT ?? 0) +
             (expectedSpacesDistribution.PRIVATE_PAVED_ALLEY_OR_PARKING_LOT ?? 0) +
-            expectedSpacesDistribution.PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS;
+            (expectedSpacesDistribution.PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS ?? 0);
 
           const expectedArtifitialGrassOrBushesSoils =
             (expectedSpacesDistribution.PRIVATE_GARDEN_AND_GRASS_ALLEYS ?? 0) +
             (expectedSpacesDistribution.PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS ?? 0) +
-            expectedSpacesDistribution.PUBLIC_GREEN_SPACES;
+            (expectedSpacesDistribution.PUBLIC_GREEN_SPACES ?? 0);
 
           const expectedSoilsDistribution = {
             BUILDINGS: expectedSpacesDistribution.BUILDINGS_FOOTPRINT,
@@ -401,9 +443,7 @@ describe("CreateReconversionProject Use Case", () => {
           expect(sumObjectValues(spacesDistribution)).toEqual(site.surfaceArea);
           expect(buildingsFloorAreaDistribution).toEqual(expectedBuildingsFloorAreaDistribution);
           expect(soilsDistribution).toEqual(expectedSoilsDistribution);
-          expect(sumObjectValues(soilsDistribution as Record<string, number>)).toEqual(
-            site.surfaceArea,
-          );
+          expect(sumObjectValues(soilsDistribution as SoilsDistribution)).toEqual(site.surfaceArea);
         },
       );
     });

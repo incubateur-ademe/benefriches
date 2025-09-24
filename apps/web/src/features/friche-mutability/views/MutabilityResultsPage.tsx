@@ -12,6 +12,7 @@ import {
   fricheMutabilityEvaluationResultsRequested,
   fricheMutabilityImpactsRequested,
 } from "../core/fricheMutability.actions";
+import { MutabilityUsage } from "../core/fricheMutability.reducer";
 import { selectFricheMutabilityViewData } from "../core/fricheMutability.selectors";
 import CompatibilityCard from "./CompatibilityCard";
 
@@ -40,9 +41,9 @@ export default function MutabilityResultsPage() {
     routes.fricheMutability().push();
   };
 
-  const handleDiscoverImpactsClick = () => {
+  const handleDiscoverImpactsClick = (usage: MutabilityUsage) => {
     if (!viewData.evaluationResults) return;
-    void dispatch(fricheMutabilityImpactsRequested());
+    void dispatch(fricheMutabilityImpactsRequested({ usage }));
   };
 
   if (viewData.isCreatingProject) {
@@ -84,7 +85,9 @@ export default function MutabilityResultsPage() {
             usage={result.usage}
             score={result.score}
             rank={result.rank}
-            onDiscoverImpactsClick={handleDiscoverImpactsClick}
+            onDiscoverImpactsClick={() => {
+              handleDiscoverImpactsClick(result.usage);
+            }}
             key={result.usage}
           />
         ))}

@@ -8,6 +8,27 @@ import { routes } from "@/shared/views/router";
 
 import { MutabilityUsage } from "./fricheMutability.reducer";
 
+function mapMutabilityUsageToProjectCategory(
+  usage: MutabilityUsage,
+): ExpressReconversionProjectPayload["category"] {
+  switch (usage) {
+    case "residentiel":
+      return "RESIDENTIAL_NORMAL_AREA";
+    case "equipements":
+      return "PUBLIC_FACILITIES";
+    case "culture":
+      return "TOURISM_AND_CULTURAL_FACILITIES";
+    case "tertiaire":
+      return "OFFICES";
+    case "industrie":
+      return "INDUSTRIAL_FACILITIES";
+    case "renaturation":
+      return "RENATURATION";
+    case "photovoltaique":
+      return "PHOTOVOLTAIC_POWER_PLANT";
+  }
+}
+
 const ACTION_PREFIX = "fricheMutability";
 
 export const fricheMutabilityAnalysisReset = createAction(`${ACTION_PREFIX}/analysisReset`);
@@ -45,9 +66,12 @@ export const fricheMutabilityEvaluationResultsRequested = createAppAsyncThunk<
   return results;
 });
 
-export const fricheMutabilityImpactsRequested = createAppAsyncThunk<{
-  projectId: string;
-}>(`${ACTION_PREFIX}/impactsRequested`, async (_, { extra, getState }) => {
+export const fricheMutabilityImpactsRequested = createAppAsyncThunk<
+  {
+    projectId: string;
+  },
+  { usage: MutabilityUsage }
+>(`${ACTION_PREFIX}/impactsRequested`, async (payload, { extra, getState }) => {
   const { currentUser: currentUserState, fricheMutability: fricheMutabilityState } = getState();
   const { evaluationResults } = fricheMutabilityState;
 
@@ -62,11 +86,11 @@ export const fricheMutabilityImpactsRequested = createAppAsyncThunk<{
     surfaceArea: evaluationResults.evaluationInput.surfaceArea,
     builtSurfaceArea: evaluationResults.evaluationInput.buildingsFootprintSurfaceArea,
     address: {
-      banId: "cc7538b3-8293-4490-88c1-8e5e3de5624f", // todo: fetch address from BAN
+      banId: uuid(),
       city: evaluationResults.evaluationInput.city,
-      cityCode: "50147",
+      cityCode: evaluationResults.evaluationInput.cityCode,
       value: evaluationResults.evaluationInput.city,
-      long: -1.445325,
+      long: -1.445325, // todo: get coordinates from mutafriches response
       lat: 49.054264,
       postCode: "50200",
     },
@@ -77,14 +101,14 @@ export const fricheMutabilityImpactsRequested = createAppAsyncThunk<{
 
   const projectToCreate = {
     siteId: siteToCreate.id,
-    category: "PUBLIC_FACILITIES",
+    category: mapMutabilityUsageToProjectCategory(payload.usage),
     createdBy: currentUserState.currentUser.id,
     reconversionProjectId: uuid(),
   } satisfies ExpressReconversionProjectPayload;
 
   await extra.saveExpressReconversionProjectService.save(projectToCreate);
 
-  await new Promise((resolve) => setTimeout(resolve, 1500));
+  await new Promise((resolve) => setTimeout(resolve, 500));
 
   routes.projectImpactsOnboarding({ projectId: projectToCreate.reconversionProjectId }).push();
 

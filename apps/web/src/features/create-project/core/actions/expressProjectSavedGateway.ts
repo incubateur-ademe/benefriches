@@ -1,5 +1,6 @@
 import {
   baseDevelopmentPlanSchema,
+  expressProjectCategorySchema,
   photovoltaicPowerStationFeaturesSchema,
   reconversionProjectPropsSchema,
   urbanProjectsFeaturesSchema,
@@ -10,13 +11,7 @@ export const saveExpressProjectSchema = z.object({
   reconversionProjectId: z.string(),
   siteId: z.string(),
   createdBy: z.string(),
-  category: z.enum([
-    "PUBLIC_FACILITIES",
-    "RESIDENTIAL_TENSE_AREA",
-    "RESIDENTIAL_NORMAL_AREA",
-    "NEW_URBAN_CENTER",
-    "PHOTOVOLTAIC_POWER_PLANT",
-  ]),
+  category: expressProjectCategorySchema,
 });
 const commonDevelopmentPlanSchema = baseDevelopmentPlanSchema
   .omit({ installationSchedule: true })

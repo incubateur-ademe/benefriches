@@ -7,6 +7,11 @@ import {
   ResidentialProjectGenerator,
   PublicFacilitiesProjectGenerator,
   PhotovoltaicPowerPlantProjectGenerator,
+  ManufacturingProjectGenerator,
+  TourismAndCultureProjectGenerator,
+  OfficesProjectGenerator,
+  ExpressProjectCategory,
+  RenaturationProjectGenerator,
 } from "shared";
 
 import { PhotovoltaicDataProvider } from "src/photovoltaic-performance/core/gateways/PhotovoltaicDataProvider";
@@ -46,17 +51,14 @@ type Request = {
   reconversionProjectId: string;
   siteId: string;
   createdBy: string;
-  category?:
-    | "PUBLIC_FACILITIES"
-    | "RESIDENTIAL_TENSE_AREA"
-    | "RESIDENTIAL_NORMAL_AREA"
-    | "NEW_URBAN_CENTER"
-    | "PHOTOVOLTAIC_POWER_PLANT";
+  category?: ExpressProjectCategory;
 };
 
 type Response = ReconversionProject;
 
-const getCreationServiceClass = (category: Request["category"]) => {
+const getCreationServiceClass = (
+  category: Exclude<ExpressProjectCategory, "PHOTOVOLTAIC_POWER_PLANT"> | undefined,
+) => {
   switch (category) {
     case "NEW_URBAN_CENTER":
       return NewUrbanCenterProjectGenerator;
@@ -66,6 +68,14 @@ const getCreationServiceClass = (category: Request["category"]) => {
       return ResidentialProjectGenerator;
     case "PUBLIC_FACILITIES":
       return PublicFacilitiesProjectGenerator;
+    case "INDUSTRIAL_FACILITIES":
+      return ManufacturingProjectGenerator;
+    case "TOURISM_AND_CULTURAL_FACILITIES":
+      return TourismAndCultureProjectGenerator;
+    case "RENATURATION":
+      return RenaturationProjectGenerator;
+    case "OFFICES":
+      return OfficesProjectGenerator;
     default:
       return ResidentialProjectGenerator;
   }
