@@ -11,6 +11,7 @@ export type MutafrichesEvaluationResultResponse = {
   identifiantParcelle: string;
   enrichissement: {
     commune: string;
+    codeInsee: string;
     coordonnees: {
       latitude: number;
       longitude: number;
@@ -48,7 +49,7 @@ export class HttpFricheMutabilityEvaluation implements FricheMutabilityEvaluatio
       evaluationInput: {
         cadastreId: json.enrichissement.identifiantParcelle,
         city: json.enrichissement.commune,
-        cityCode: "", // todo: not yet available from Mutafriches API
+        cityCode: json.enrichissement.codeInsee,
         surfaceArea: json.enrichissement.surfaceSite,
         buildingsFootprintSurfaceArea: json.enrichissement.surfaceBati,
       },

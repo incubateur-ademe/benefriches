@@ -9,6 +9,7 @@ const fakeResponse = {
   identifiantParcelle: "50147000AR0010",
   enrichissement: {
     commune: "Coutances",
+    codeInsee: "50147",
     coordonnees: {
       latitude: 49.0421992,
       longitude: -1.45017951,
@@ -80,7 +81,7 @@ export class FakeFricheMutabilityEvaluation implements FricheMutabilityEvaluatio
       evaluationInput: {
         cadastreId: fakeResponse.enrichissement.identifiantParcelle,
         city: fakeResponse.enrichissement.commune,
-        cityCode: "", // todo: not yet available from Mutafriches API
+        cityCode: fakeResponse.enrichissement.codeInsee,
         surfaceArea: fakeResponse.enrichissement.surfaceSite,
         buildingsFootprintSurfaceArea: fakeResponse.enrichissement.surfaceBati,
       },
