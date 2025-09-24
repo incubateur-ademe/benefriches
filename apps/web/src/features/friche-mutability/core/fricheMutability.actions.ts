@@ -60,6 +60,7 @@ export const fricheMutabilityImpactsRequested = createAppAsyncThunk<{
     fricheActivity: "INDUSTRY",
     createdBy: currentUserState.currentUser.id,
     surfaceArea: evaluationResults.evaluationInput.surfaceArea,
+    builtSurfaceArea: evaluationResults.evaluationInput.buildingsFootprintSurfaceArea,
     address: {
       banId: "cc7538b3-8293-4490-88c1-8e5e3de5624f", // todo: fetch address from BAN
       city: evaluationResults.evaluationInput.city,
