@@ -54,7 +54,7 @@ export default function Step1({ onNextClick, skipStepByStepAnimation }: Props) {
             </EmojiListItem>
             <EmojiListItem emoji="💰🌳" small emojiClassName={EMOJI_CLASSNAME}>
               Impacts environnementaux monétarisés <span>→</span>{" "}
-              <span className="font-normal">Exemple : valeur monétaire de la décarbonation</span>
+              <span className="font-normal">Exemple : dépenses de traitement de l'eau évitées</span>
             </EmojiListItem>
           </ul>
         </li>
