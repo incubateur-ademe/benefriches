@@ -140,18 +140,22 @@ export const getDescriptionForLivingAndActivitySpace = (
 export const getLabelForPublicSpace = (publicSpace: UrbanPublicSpace): string => {
   switch (publicSpace) {
     case "GRASS_COVERED_SURFACE":
-      return "Bandes végétalisées";
+      return "Revêtement végétal";
     case "IMPERMEABLE_SURFACE":
-      return "Bitume, pavé ou ciment";
+      return "Revêtement imperméable";
     case "PERMEABLE_SURFACE":
-      return "Gravier, dalles alvéolées ou enrobé poreux";
+      return "Revêtement perméable";
   }
 };
 
 export const getDescriptionForPublicSpace = (publicSpace: UrbanPublicSpace): string | undefined => {
   switch (publicSpace) {
     case "GRASS_COVERED_SURFACE":
-      return "Engazonnées, à strates végétales basses ou arbustives, alignement d'arbres, noues d'infiltration...";
+      return "Zones enherbées, alignement d'arbres, noue...";
+    case "IMPERMEABLE_SURFACE":
+      return "Bitume, pavé, ciment...";
+    case "PERMEABLE_SURFACE":
+      return "Gravier, dalles alvéolées, enrobé poreux, sol nu...";
     default:
       return undefined;
   }

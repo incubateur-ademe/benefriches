@@ -23,7 +23,7 @@ function PublicSpacesDistribution({ initialValues, totalSurfaceArea, onSubmit, o
   return (
     <SurfaceAreaDistributionForm
       initialValues={initialValues}
-      title="Quelle est la part de chaque espace dans les espaces publics ?"
+      title="Quels seront les revêtements des espaces publics ?"
       instructions={
         <FormInfo>
           Votre projet comporte <strong>{formatSurfaceArea(totalSurfaceArea)}</strong> de futurs
