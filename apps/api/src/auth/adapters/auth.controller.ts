@@ -137,22 +137,14 @@ export class AuthController {
       }
     }
 
-    const accessToken = await this.accessTokenService.signAsync({
-      sub: createUserDto.id,
-      email: createUserDto.email,
-      authProvider: "benefriches",
-    });
+    const { accessToken, decodedAccessToken } = await this.signAccessToken(
+      createUserDto.id,
+      createUserDto.email,
+      "benefriches",
+    );
 
-    const decodedAccessToken = this.accessTokenService.decode<{
-      exp: number;
-    }>(accessToken);
-
-    const accessTokenExpiryInMs = (decodedAccessToken?.exp ?? 0) * 1000;
-    response.cookie(ACCESS_TOKEN_COOKIE_KEY, accessToken, {
-      httpOnly: true,
-      secure: this.configService.get("NODE_ENV") === "production",
-      expires: new Date(accessTokenExpiryInMs),
-    });
+    const accessTokenCookieOptions = this.getAuthCookieOptions(decodedAccessToken?.exp ?? 0);
+    response.cookie(ACCESS_TOKEN_COOKIE_KEY, accessToken, accessTokenCookieOptions);
 
     return response.status(201).json({
       success: true,
@@ -243,22 +235,15 @@ export class AuthController {
       await this.verifiedEmailRepository.save(oidcIdentity.email, new Date());
     }
 
-    const accessToken = await this.accessTokenService.signAsync({
-      sub: userInDb.id,
-      email: userInDb.email,
-      authProvider: "pro-connect",
-      authProviderIdToken: oidcIdentity.idToken,
-    });
+    const { accessToken, decodedAccessToken } = await this.signAccessToken(
+      userInDb.id,
+      userInDb.email,
+      "pro-connect",
+      oidcIdentity.idToken,
+    );
 
-    const decodedAccessToken = this.accessTokenService.decode<{
-      exp: number;
-    }>(accessToken);
-
-    res.cookie(ACCESS_TOKEN_COOKIE_KEY, accessToken, {
-      httpOnly: true,
-      secure: this.configService.get("NODE_ENV") === "production",
-      expires: new Date((decodedAccessToken?.exp ?? 0) * 1000),
-    });
+    const accessTokenCookieOptions = this.getAuthCookieOptions(decodedAccessToken?.exp ?? 0);
+    res.cookie(ACCESS_TOKEN_COOKIE_KEY, accessToken, accessTokenCookieOptions);
 
     await this.eventPublisher.publish(
       createLoginSucceededEvent(this.uuidGenerator.generate(), {
@@ -328,16 +313,6 @@ export class AuthController {
       await this.verifiedEmailRepository.save(authenticatedUser.email, new Date());
     }
 
-    const accessToken = await this.accessTokenService.signAsync({
-      sub: authenticatedUser.id,
-      email: authenticatedUser.email,
-      authProvider: "benefriches",
-    });
-
-    const decodedAccessToken = this.accessTokenService.decode<{
-      exp: number;
-    }>(accessToken);
-
     await this.eventPublisher.publish(
       createLoginSucceededEvent(this.uuidGenerator.generate(), {
         method: "email-link",
@@ -346,11 +321,14 @@ export class AuthController {
       }),
     );
 
-    response.cookie(ACCESS_TOKEN_COOKIE_KEY, accessToken, {
-      httpOnly: true,
-      secure: this.configService.get("NODE_ENV") === "production",
-      expires: new Date((decodedAccessToken?.exp ?? 0) * 1000),
-    });
+    const { accessToken, decodedAccessToken } = await this.signAccessToken(
+      authenticatedUser.id,
+      authenticatedUser.email,
+      "benefriches",
+    );
+
+    const accessTokenCookieOptions = this.getAuthCookieOptions(decodedAccessToken?.exp ?? 0);
+    response.cookie(ACCESS_TOKEN_COOKIE_KEY, accessToken, accessTokenCookieOptions);
     response.status(200).send();
   }
 
@@ -408,5 +386,35 @@ export class AuthController {
 
     res.clearCookie(ACCESS_TOKEN_COOKIE_KEY);
     res.redirect(this.configService.getOrThrow<string>("WEBAPP_URL"));
+  }
+
+  private async signAccessToken(
+    userId: string,
+    email: string,
+    authProvider: string,
+    idToken?: string,
+  ): Promise<{ accessToken: string; decodedAccessToken: { exp: number } | null }> {
+    const accessToken = await this.accessTokenService.signAsync({
+      sub: userId,
+      email,
+      authProvider,
+      authProviderIdToken: idToken,
+    });
+
+    const decodedAccessToken = this.accessTokenService.decode<{
+      exp: number;
+    }>(accessToken);
+
+    return { accessToken, decodedAccessToken };
+  }
+
+  private getAuthCookieOptions(expiryInSeconds: number) {
+    const accessTokenExpiryInMs = expiryInSeconds * 1000;
+
+    return {
+      httpOnly: true,
+      secure: this.configService.get("NODE_ENV") === "production",
+      expires: new Date(accessTokenExpiryInMs),
+    };
   }
 }
