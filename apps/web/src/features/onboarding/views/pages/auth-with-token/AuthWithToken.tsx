@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 
 import { authenticateWithToken } from "@/features/onboarding/core/authenticateWithToken.action";
+import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { routes, useRoute } from "@/shared/views/router";
@@ -36,6 +37,7 @@ export default function AuthWithToken() {
 
   return (
     <section className="fr-container fr-py-4w">
+      <HtmlTitle>Authentification par token</HtmlTitle>
       <h1>Authentification</h1>
       {authenticationWithTokenState === "error" ? (
         <p>Erreur lors de l'authentification.</p>
