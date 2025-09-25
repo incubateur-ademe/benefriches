@@ -26,17 +26,17 @@ const getUsagePictogramSrc = (usage: MutabilityUsage): string => {
 };
 
 const getScoreColor = (score: number): string => {
-  if (score >= 80) return "text-green-700";
+  if (score >= 70) return "text-green-700";
   if (score >= 60) return "text-yellow-600";
-  if (score >= 40) return "text-orange-600";
+  if (score >= 45) return "text-orange-600";
   return "text-red-600";
 };
 
 const getScoreLabel = (score: number): string => {
-  if (score >= 80) return "Excellent";
+  if (score >= 70) return "Très favorable";
   if (score >= 60) return "Favorable";
-  if (score >= 40) return "Modéré";
-  return "Faible";
+  if (score >= 45) return "Correct";
+  return "Défavorable";
 };
 
 const getMutabilityUsageDisplayName = (usage: MutabilityUsage): string => {
