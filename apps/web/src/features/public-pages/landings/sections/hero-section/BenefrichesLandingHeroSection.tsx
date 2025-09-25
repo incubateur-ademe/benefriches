@@ -1,4 +1,4 @@
-import BenefrichesButton from "../cta-section/BenefrichesButton";
+import BenefrichesButton from "../cta-section/AccessBenefrichesButton";
 import BenefrichesHighlights from "../cta-section/BenefrichesHighlights";
 import HeroSection from "./HeroSection";
 import { HERO_CTA_BUTTON_CLASSNAMES } from "./buttonClassNames";

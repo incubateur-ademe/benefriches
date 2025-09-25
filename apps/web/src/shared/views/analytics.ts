@@ -35,14 +35,6 @@ export const impactsExportDownloaded = (exportType: string): AnalyticsEvent => {
   };
 };
 
-export const mutafrichesHomepageModalOpened = (): AnalyticsEvent => {
-  return {
-    category: "mutafriches",
-    action: "modal-opened",
-    name: "mutafriches-homepage-modal-opened",
-  };
-};
-
 export const trackEvent = (event: AnalyticsEvent) => {
   if (!window._paq) return;
   window._paq.push(["trackEvent", event.category, event.action, event.name]);

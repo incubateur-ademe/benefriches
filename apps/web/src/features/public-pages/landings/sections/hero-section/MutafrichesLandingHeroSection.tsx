@@ -1,4 +1,4 @@
-import MutafrichesButton from "../cta-section/MutafrichesButton";
+import MutafrichesButton from "../cta-section/AccessMutafrichesButton";
 import MutafrichesHighlights from "../cta-section/MutafrichesHighlights";
 import HeroSection from "./HeroSection";
 import { HERO_CTA_BUTTON_CLASSNAMES } from "./buttonClassNames";

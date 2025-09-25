@@ -1,7 +1,7 @@
 import SectionTitle from "../SectionTitle";
-import BenefrichesButton from "./BenefrichesButton";
+import BenefrichesButton from "./AccessBenefrichesButton";
+import MutafrichesButton from "./AccessMutafrichesButton";
 import BenefrichesHighlights from "./BenefrichesHighlights";
-import MutafrichesButton from "./MutafrichesButton";
 import MutafrichesHighlights from "./MutafrichesHighlights";
 
 export default function SituationSection() {
