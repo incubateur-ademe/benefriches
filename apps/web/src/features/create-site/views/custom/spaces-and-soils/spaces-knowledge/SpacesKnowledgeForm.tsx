@@ -72,7 +72,7 @@ export function SpacesKnowledgeForm({ onSubmit, onBack, siteNature }: Props) {
               label: "Non, je ne connais pas les types d'espaces",
               value: "no",
               hintText:
-                "Bénéfriches affectera automatiquement des types d'espaces corespondant à la nature de votre site, basée sur les moyennes observées.",
+                "Bénéfriches affectera automatiquement des types d'espaces correspondant à la nature de votre site, basée sur les moyennes observées.",
             },
           ]}
         />

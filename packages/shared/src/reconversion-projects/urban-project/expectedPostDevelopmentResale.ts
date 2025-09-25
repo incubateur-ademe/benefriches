@@ -1,4 +1,5 @@
 import { typedObjectEntries } from "../../object-entries";
+import { roundToInteger } from "../../services";
 import {
   BuildingsUse,
   BuildingsUseDistribution,
@@ -26,7 +27,7 @@ export const computeExpectedPostDevelopmentResaleSellingPriceFromSurfaces = (
     (total, [surfaceName, surfaceArea]) => {
       const pricePerSquareMeter = DEFAULT_RESALE_RATIO_PER_SQUARE_METERS[surfaceName];
       if (pricePerSquareMeter) {
-        return total + pricePerSquareMeter * (surfaceArea ?? 0);
+        return total + roundToInteger(pricePerSquareMeter * (surfaceArea ?? 0));
       }
       return 0;
     },
@@ -54,7 +55,7 @@ export const computeExpectedPostDevelopmentResaleSellingPriceFromSurfacesInTense
     (total, [surfaceName, surfaceArea]) => {
       const pricePerSquareMeter = TENSE_AREA_RESALE_RATIO_PER_SQUARE_METERS[surfaceName];
       if (pricePerSquareMeter) {
-        return total + pricePerSquareMeter * (surfaceArea ?? 0);
+        return total + roundToInteger(pricePerSquareMeter * (surfaceArea ?? 0));
       }
       return 0;
     },

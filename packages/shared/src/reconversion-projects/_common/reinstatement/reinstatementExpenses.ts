@@ -1,4 +1,5 @@
 import { TExpense } from "../../../financial";
+import { roundToInteger } from "../../../services";
 import {
   getGreenArtificalSurfaceArea,
   getImpermeableSurfaceArea,
@@ -45,21 +46,27 @@ export const computeProjectReinstatementExpenses = (
   return {
     deimpermeabilization:
       impermeableSoilsDelta < 0
-        ? Math.abs(impermeableSoilsDelta) * EURO_PER_SQUARE_METERS_FOR_DEIMPERMEABILIZATION
+        ? roundToInteger(
+            Math.abs(impermeableSoilsDelta) * EURO_PER_SQUARE_METERS_FOR_DEIMPERMEABILIZATION,
+          )
         : undefined,
     sustainableSoilsReinstatement:
       impermeableSoilsDelta < 0 && artificialGreenSoilsDelta > 0
-        ? artificialGreenSoilsDelta * EURO_PER_SQUARE_METERS_FOR_SUSTAINABLE_SOILS_REINSTATEMENT
+        ? roundToInteger(
+            artificialGreenSoilsDelta * EURO_PER_SQUARE_METERS_FOR_SUSTAINABLE_SOILS_REINSTATEMENT,
+          )
         : undefined,
     remediation:
       decontaminatedSoilSurface > 0
-        ? decontaminatedSoilSurface * EURO_PER_SQUARE_METERS_FOR_REMEDIATION
+        ? roundToInteger(decontaminatedSoilSurface * EURO_PER_SQUARE_METERS_FOR_REMEDIATION)
         : undefined,
     demolition: siteSoilsDistribution.BUILDINGS
-      ? siteSoilsDistribution.BUILDINGS * EURO_PER_SQUARE_METERS_FOR_DEMOLITION
+      ? roundToInteger(siteSoilsDistribution.BUILDINGS * EURO_PER_SQUARE_METERS_FOR_DEMOLITION)
       : undefined,
     asbestosRemoval: siteSoilsDistribution.BUILDINGS
-      ? siteSoilsDistribution.BUILDINGS * EURO_PER_SQUARE_METERS_FOR_ASBESTOS_REMOVAL
+      ? roundToInteger(
+          siteSoilsDistribution.BUILDINGS * EURO_PER_SQUARE_METERS_FOR_ASBESTOS_REMOVAL,
+        )
       : undefined,
   };
 };

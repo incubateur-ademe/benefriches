@@ -113,7 +113,18 @@ const ReinstatementsExpensesForm = ({
   hasImpermeableSoils,
 }: Props) => {
   const { handleSubmit, register, watch } = useForm<FormValues>({
-    defaultValues: initialValues,
+    defaultValues: initialValues
+      ? {
+          wasteCollectionAmount: initialValues.wasteCollectionAmount ?? 0,
+          asbestosRemovalAmount: initialValues.asbestosRemovalAmount ?? 0,
+          demolitionAmount: initialValues.demolitionAmount ?? 0,
+          remediationAmount: initialValues.remediationAmount ?? 0,
+          deimpermeabilizationAmount: initialValues.deimpermeabilizationAmount ?? 0,
+          sustainableSoilsReinstatementAmount:
+            initialValues.sustainableSoilsReinstatementAmount ?? 0,
+          otherReinstatementExpenseAmount: initialValues.otherReinstatementExpenseAmount ?? 0,
+        }
+      : undefined,
   });
 
   const allExpenses = watch();
