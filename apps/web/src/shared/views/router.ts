@@ -14,6 +14,7 @@ const { RouteProvider, useRoute, routes } = createRouter({
       hintEmail: param.query.optional.string,
       hintFirstName: param.query.optional.string,
       hintLastName: param.query.optional.string,
+      redirectTo: param.query.optional.string,
     },
     () => "/identite",
   ),
@@ -23,7 +24,6 @@ const { RouteProvider, useRoute, routes } = createRouter({
     { redirectTo: param.query.optional.string },
     () => "/acceder-a-benefriches",
   ),
-  createUser: defineRoute("/creer-un-compte"),
   // AUTHENTIFICATION
   authWithToken: defineRoute(
     { token: param.query.string, redirectTo: param.query.optional.string },

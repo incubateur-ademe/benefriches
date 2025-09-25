@@ -1,15 +1,25 @@
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
-import { routes } from "@/shared/views/router";
+import { routes, useRoute } from "@/shared/views/router";
 
 import CreateUserFormContainer from "./CreateUserForm";
 
 function OnBoardingIdentityPage() {
+  const currentRoute = useRoute();
+
+  const redirectToFromUrl =
+    currentRoute.name === routes.onBoardingIdentity.name && currentRoute.params.redirectTo
+      ? currentRoute.params.redirectTo
+      : undefined;
   return (
     <>
       <HtmlTitle>Identité - Introduction</HtmlTitle>
       <CreateUserFormContainer
         onSuccess={() => {
-          routes.onBoardingIntroductionWhy().push();
+          if (redirectToFromUrl) {
+            window.location.href = redirectToFromUrl;
+          } else {
+            routes.onBoardingIntroductionWhy().push();
+          }
         }}
       />
     </>

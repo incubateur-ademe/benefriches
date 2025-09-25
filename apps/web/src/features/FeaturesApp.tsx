@@ -9,7 +9,6 @@ import SidebarContainerLayout from "@/shared/views/layout/SidebarLayout/SidebarC
 import { routes, useRoute } from "@/shared/views/router";
 
 /* Lazy-loaded pages */
-const CreateUserPage = lazy(() => import("@/features/onboarding/views"));
 const CreateProjectPage = lazy(
   () => import("@/features/create-project/views/ProjectCreationWizard"),
 );
@@ -80,8 +79,6 @@ function FeaturesApp() {
           {(() => {
             switch (route.name) {
               // protected pages
-              case routes.createUser.name:
-                return <CreateUserPage />;
               case routes.myProjects.name:
                 return <MyProjectsPage />;
               case routes.projectImpacts.name:

@@ -2,6 +2,7 @@ import Button from "@codegouvfr/react-dsfr/Button";
 import ProConnectButton from "@codegouvfr/react-dsfr/ProConnectButton";
 
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
+import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import { routes, useRoute } from "@/shared/views/router";
 
 import AuthLinkModal from "./AuthLinkModal";
@@ -18,6 +19,7 @@ export default function AccessBenefrichesPage() {
 
   return (
     <section className="relative h-full">
+      <HtmlTitle>Accéder à Bénéfriches</HtmlTitle>
       {/* Background layers - full width */}
       <div className="hidden absolute inset-0 md:grid md:grid-cols-2">
         <div className="bg-blue-light dark:bg-grey-dark"></div>
@@ -44,7 +46,10 @@ export default function AccessBenefrichesPage() {
           </div>
           <div className="flex gap-2 items-start">
             <p className="text-sm font-medium m-0">Nouveau sur Bénéfriches ?</p>
-            <a className="text-sm font-medium" {...routes.onBoardingIdentity().link}>
+            <a
+              className="text-sm font-medium"
+              {...routes.onBoardingIdentity({ redirectTo: postLoginRedirectTo }).link}
+            >
               Créer un compte
             </a>
           </div>
