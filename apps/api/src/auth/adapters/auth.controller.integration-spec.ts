@@ -5,6 +5,7 @@ import { Knex } from "knex";
 import { Server } from "node:net";
 import request from "supertest";
 import { createTestApp } from "test/testApp";
+import { vi } from "vitest";
 import { z } from "zod";
 
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
@@ -13,6 +14,7 @@ import { UserBuilder } from "src/users/core/model/user.mock";
 import { TokenAuthenticationAttempt } from "../core/tokenAuthenticationAttempt";
 import { AccessTokenPayload } from "./JwtAuthGuard";
 import { ACCESS_TOKEN_COOKIE_KEY } from "./access-token/accessTokenCookie";
+import { SmtpAuthLinkMailer } from "./auth-link-mailer/SmtpAuthLinkMailer";
 import { registerUserBodySchema, RegisterUserBodyDto } from "./auth.controller";
 import { FakeProConnectClient } from "./pro-connect/FakeProConnectClient";
 import { PRO_CONNECT_CLIENT_INJECTION_TOKEN } from "./pro-connect/ProConnectClient";
@@ -284,6 +286,9 @@ describe("Auth integration tests", () => {
       const user = new UserBuilder().asUrbanPlanner().withEmail(userEmail).build();
       await sqlConnection("users").insert(mapUserToSqlRow(user));
 
+      const mailer = app.get(SmtpAuthLinkMailer);
+      const mailerSpy = vi.spyOn(mailer, "sendAuthLink");
+
       const agent = request.agent(app.getHttpServer());
       const response = await agent.post("/api/auth/send-auth-link").send({ email: userEmail });
 
@@ -291,6 +296,39 @@ describe("Auth integration tests", () => {
 
       const authTokens = await sqlConnection("token_authentication_attempts").select("*");
       expect(authTokens).toHaveLength(1);
+      const authToken = (authTokens as unknown as [TokenAuthenticationAttempt])[0].token;
+
+      const mailSentTo = mailerSpy.mock.calls[0]?.[0];
+      expect(mailSentTo).toBe(userEmail);
+      const authLinkSent = mailerSpy.mock.calls[0]?.[1];
+      expect(authLinkSent).toContain(`token=${authToken}`);
+    });
+
+    it("handles postLoginRedirectTo url", async () => {
+      const userEmail = "magic.john@example.fr";
+
+      const user = new UserBuilder().asLocalAuthority().withEmail(userEmail).build();
+      await sqlConnection("users").insert(mapUserToSqlRow(user));
+
+      const postLoginRedirectTo = "/some-protected-page";
+
+      const mailer = app.get(SmtpAuthLinkMailer);
+      const mailerSpy = vi.spyOn(mailer, "sendAuthLink");
+      const agent = request.agent(app.getHttpServer());
+      const response = await agent
+        .post("/api/auth/send-auth-link")
+        .send({ email: userEmail, postLoginRedirectTo });
+
+      expect(response.status).toBe(200);
+
+      const authTokens = await sqlConnection("token_authentication_attempts").select("*");
+      const authToken = (authTokens as unknown as [TokenAuthenticationAttempt])[0].token;
+
+      const mailSentTo = mailerSpy.mock.calls[0]?.[0];
+      expect(mailSentTo).toBe(userEmail);
+      const authLinkSent = mailerSpy.mock.calls[0]?.[1];
+      expect(authLinkSent).toContain(`token=${authToken}`);
+      expect(authLinkSent).toContain(`redirectTo=${encodeURIComponent(postLoginRedirectTo)}`);
     });
   });
 

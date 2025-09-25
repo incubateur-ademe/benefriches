@@ -17,6 +17,7 @@ export interface AuthLinkMailer {
 
 type Request = {
   email: string;
+  postLoginRedirectTo?: string;
 };
 
 type SendAuthLinkFailureReason = "UserDoesNotExist" | "TooManyRequests";
@@ -33,7 +34,7 @@ export class SendAuthLinkUseCase implements UseCase<Request, SendAuthLinkResult>
     private readonly configService: ConfigService,
   ) {}
 
-  async execute({ email }: Request): Promise<SendAuthLinkResult> {
+  async execute({ email, postLoginRedirectTo }: Request): Promise<SendAuthLinkResult> {
     const user = await this.userRepository.getWithEmail(email);
     if (!user) return { success: false, error: "UserDoesNotExist" };
 
@@ -58,9 +59,13 @@ export class SendAuthLinkUseCase implements UseCase<Request, SendAuthLinkResult>
     });
 
     const webappUrl = this.configService.getOrThrow<string>("WEBAPP_URL");
-    const authLink = `${webappUrl}/authentification/token?token=${authToken}`;
+    const authLink = new URL(`${webappUrl}/authentification/token`);
+    authLink.searchParams.set("token", authToken);
+    if (postLoginRedirectTo) {
+      authLink.searchParams.set("redirectTo", postLoginRedirectTo);
+    }
 
-    await this.mailService.sendAuthLink(email, authLink);
+    await this.mailService.sendAuthLink(email, authLink.toString());
 
     return { success: true };
   }

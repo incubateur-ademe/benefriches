@@ -40,7 +40,11 @@ function RequestResult() {
   }
 }
 
-export default function AuthLinkModal() {
+type Props = {
+  postLoginRedirectTo: string | undefined;
+};
+
+export default function AuthLinkModal({ postLoginRedirectTo }: Props) {
   const dispatch = useAppDispatch();
   useIsModalOpen(authLinkModal, {
     onConceal: () => {
@@ -53,7 +57,7 @@ export default function AuthLinkModal() {
     <authLinkModal.Component size="medium" title="Demande de lien de connexion">
       <form
         onSubmit={handleSubmit((data) => {
-          void dispatch(authLinkRequested({ email: data.email }));
+          void dispatch(authLinkRequested({ email: data.email, postLoginRedirectTo }));
         })}
       >
         <Input

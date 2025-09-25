@@ -259,7 +259,10 @@ export class AuthController {
   }
 
   @Post("send-auth-link")
-  async sendAuthLink(@Body() body: { email: string }, @Res() response: Response) {
+  async sendAuthLink(
+    @Body() body: { email: string; postLoginRedirectTo: string | undefined },
+    @Res() response: Response,
+  ) {
     await this.eventPublisher.publish(
       createLoginAttemptedEvent(this.uuidGenerator.generate(), {
         method: "email-link",
@@ -267,7 +270,10 @@ export class AuthController {
       }),
     );
 
-    const result = await this.sendAuthLinkUseCase.execute({ email: body.email });
+    const result = await this.sendAuthLinkUseCase.execute({
+      email: body.email,
+      postLoginRedirectTo: body.postLoginRedirectTo,
+    });
 
     if (result.success) {
       response.status(200).send();

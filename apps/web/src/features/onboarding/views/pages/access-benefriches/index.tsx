@@ -70,7 +70,7 @@ export default function AccessBenefrichesPage() {
           </ExternalLink>
         </div>
       </div>
-      <AuthLinkModal />
+      <AuthLinkModal postLoginRedirectTo={postLoginRedirectTo} />
     </section>
   );
 }

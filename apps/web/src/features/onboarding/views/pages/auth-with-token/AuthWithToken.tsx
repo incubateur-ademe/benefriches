@@ -3,11 +3,17 @@ import { useEffect } from "react";
 import { authenticateWithToken } from "@/features/onboarding/core/authenticateWithToken.action";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
-import { routes } from "@/shared/views/router";
+import { routes, useRoute } from "@/shared/views/router";
 
 const DELAY_BEFORE_AUTHENTICATION = 1000; // 1 second
 
 export default function AuthWithToken() {
+  const currentRoute = useRoute();
+
+  const postLoginRedirectTo =
+    currentRoute.name === "authWithToken" && currentRoute.params.redirectTo
+      ? currentRoute.params.redirectTo
+      : routes.myProjects().href;
   const dispatch = useAppDispatch();
   const authenticationWithTokenState = useAppSelector(
     (state) => state.auth.authenticationWithTokenState,
@@ -24,9 +30,9 @@ export default function AuthWithToken() {
 
   useEffect(() => {
     if (authenticationWithTokenState === "success") {
-      window.location.href = routes.myProjects().href;
+      window.location.href = postLoginRedirectTo;
     }
-  }, [authenticationWithTokenState]);
+  }, [authenticationWithTokenState, postLoginRedirectTo]);
 
   return (
     <section className="fr-container fr-py-4w">

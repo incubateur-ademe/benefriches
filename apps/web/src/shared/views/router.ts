@@ -25,7 +25,10 @@ const { RouteProvider, useRoute, routes } = createRouter({
   ),
   createUser: defineRoute("/creer-un-compte"),
   // AUTHENTIFICATION
-  authWithToken: defineRoute({ token: param.query.string }, () => "/authentification/token"),
+  authWithToken: defineRoute(
+    { token: param.query.string, redirectTo: param.query.optional.string },
+    () => "/authentification/token",
+  ),
   // FORMS
   createSiteFoncier: defineRoute(
     { etape: param.query.optional.string },

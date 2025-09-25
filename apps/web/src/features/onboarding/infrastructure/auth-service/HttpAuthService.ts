@@ -1,13 +1,13 @@
 import { AuthenticationGateway } from "../../core/AuthenticationGateway";
 
 export class HttpAuthService implements AuthenticationGateway {
-  async requestLink(email: string): Promise<void> {
+  async requestLink(email: string, postLoginRedirectTo: string | undefined): Promise<void> {
     const response = await fetch("/api/auth/send-auth-link", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email }),
+      body: JSON.stringify({ email, postLoginRedirectTo }),
     });
 
     if (!response.ok) {
