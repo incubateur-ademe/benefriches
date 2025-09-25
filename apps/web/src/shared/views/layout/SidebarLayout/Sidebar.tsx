@@ -17,6 +17,7 @@ function Sidebar({ children, mode, onToggleOpen }: SidebarProps) {
 
   return (
     <aside
+      id="barre-laterale"
       className={classNames(
         "bg-grey-light dark:bg-dsfr-contrast-grey",
         "border-r",

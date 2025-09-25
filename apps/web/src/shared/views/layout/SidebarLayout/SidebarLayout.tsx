@@ -1,4 +1,5 @@
 import Button from "@codegouvfr/react-dsfr/Button";
+import { SkipLinks } from "@codegouvfr/react-dsfr/SkipLinks";
 import { useWindowInnerSize } from "@codegouvfr/react-dsfr/tools/useWindowInnerSize";
 import { useBreakpointsValuesPx } from "@codegouvfr/react-dsfr/useBreakpointsValuesPx";
 import { ReactNode, useEffect, useMemo, useState } from "react";
@@ -34,6 +35,22 @@ function SidebarLayout({ mainChildren, title, sidebarChildren }: SidebarLayoutPr
   return (
     <SidebarLayoutContext.Provider value={{ isOpen }}>
       <div className={classNames("flex", "flex-col", "w-full", "h-screen", "overflow-y-auto")}>
+        <SkipLinks
+          links={[
+            {
+              anchor: "#barre-laterale",
+              label: "Barre latérale",
+            },
+            {
+              anchor: "#contenu",
+              label: "Contenu",
+            },
+            {
+              anchor: "#footer",
+              label: "Pied de page",
+            },
+          ]}
+        />
         <div className={classNames("flex", "w-full", "flex-1")}>
           <Sidebar
             onToggleOpen={() => {
@@ -86,7 +103,9 @@ function SidebarLayout({ mainChildren, title, sidebarChildren }: SidebarLayoutPr
               </Button>
             </header>
 
-            <main className="p-6 container">{mainChildren}</main>
+            <main id="contenu" className="p-6 container">
+              {mainChildren}
+            </main>
           </div>
         </div>
         <SidebarLayoutFooter />

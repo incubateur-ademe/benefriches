@@ -1,4 +1,5 @@
 import { HeaderProps } from "@codegouvfr/react-dsfr/Header";
+import { SkipLinks } from "@codegouvfr/react-dsfr/SkipLinks";
 import { useIsDark } from "@codegouvfr/react-dsfr/useIsDark";
 import { ReactNode } from "react";
 import { Link } from "type-route";
@@ -29,8 +30,22 @@ function HeaderFooterLayout({ children, headerProps = {} }: HeaderFooterLayoutPr
         isDark ? "highcharts-dark" : "highcharts-light",
       )}
     >
+      <SkipLinks
+        links={[
+          {
+            anchor: "#contenu",
+            label: "Contenu",
+          },
+          {
+            anchor: "#footer",
+            label: "Pied de page",
+          },
+        ]}
+      />
       <BenefrichesHeader {...headerProps} />
-      <main className="grow">{children}</main>
+      <main id="contenu" className="grow">
+        {children}
+      </main>
       <BenefrichesFooter />
     </div>
   );

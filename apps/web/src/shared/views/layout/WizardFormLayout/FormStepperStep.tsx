@@ -6,13 +6,13 @@ import { SidebarLayoutContext } from "../SidebarLayout/SidebarLayoutContext";
 
 type StepState = "current" | "active" | "completed" | "empty";
 
-type StepProps = {
+export type StepProps = {
   title: string;
   state: StepState;
   selectable?: boolean;
   disabled?: boolean;
   className?: ClassValue;
-  as?: React.ElementType;
+  as?: keyof HTMLElementTagNameMap;
 } & HTMLAttributes<HTMLElement>;
 
 const rootClasses = {
@@ -67,7 +67,7 @@ const FormStepperStep = ({
 
   return (
     <HtmlTag
-      title={title}
+      title={!isExtended ? title : undefined}
       {...props}
       className={classNames(
         rootClasses.layout,

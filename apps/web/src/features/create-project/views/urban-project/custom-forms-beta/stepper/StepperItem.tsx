@@ -1,6 +1,7 @@
-import { HtmlHTMLAttributes } from "react";
+import { HtmlHTMLAttributes, useMemo } from "react";
 
-import FormStepperStep from "@/shared/views/layout/WizardFormLayout/FormStepperStep";
+import classNames from "@/shared/views/clsx";
+import FormStepperStep, { StepProps } from "@/shared/views/layout/WizardFormLayout/FormStepperStep";
 
 import { CategoryState } from "./Stepper";
 
@@ -21,18 +22,29 @@ const StepperLiItem = ({
   children,
   className,
 }: StepperLiItemProps) => {
-  const isDisabled = isFormDisabled || !(state === "completed" || isNextAvailable);
-  const buttonProps = !isDisabled ? { onClick, role: "button" } : undefined;
+  const isDisabled = useMemo(
+    () => isFormDisabled || !(state === "completed" || isNextAvailable),
+    [isFormDisabled, isNextAvailable, state],
+  );
+
+  const extraProps: Pick<StepProps, "className" | "as" | "onClick"> = useMemo(() => {
+    return !isDisabled
+      ? {
+          onClick,
+          as: "button",
+          className: classNames("text-left w-full", className),
+        }
+      : { className, as: "div" };
+  }, [className, isDisabled, onClick]);
 
   return (
     <li className="p-0">
       <FormStepperStep
         title={title}
         state={state}
-        className={className}
         selectable
         disabled={isDisabled}
-        {...buttonProps}
+        {...extraProps}
       />
       {children}
     </li>

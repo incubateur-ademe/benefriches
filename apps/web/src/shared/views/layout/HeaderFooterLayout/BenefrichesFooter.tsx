@@ -8,6 +8,7 @@ import ExternalLink from "../../components/ExternalLink/ExternalLink";
 function BenefrichesFooter() {
   return (
     <Footer
+      id="footer"
       accessibility="non compliant"
       contentDescription={
         <>

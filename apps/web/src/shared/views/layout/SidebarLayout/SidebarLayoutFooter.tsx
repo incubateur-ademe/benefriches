@@ -51,7 +51,7 @@ function SidebarLayoutFooter() {
   }
 
   return (
-    <footer>
+    <footer id="footer">
       <Display />
       <div className={classNames(fr.cx("fr-footer__bottom"), "m-0")}>
         <ul className={classNames(fr.cx("fr-footer__bottom-list"), "mx-auto w-auto")}>
