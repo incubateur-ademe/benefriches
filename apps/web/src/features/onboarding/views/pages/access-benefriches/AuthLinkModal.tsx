@@ -41,7 +41,7 @@ function RequestResult() {
 }
 
 type Props = {
-  postLoginRedirectTo: string | undefined;
+  postLoginRedirectTo?: string;
 };
 
 export default function AuthLinkModal({ postLoginRedirectTo }: Props) {
