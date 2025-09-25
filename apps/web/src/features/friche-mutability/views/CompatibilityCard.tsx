@@ -4,24 +4,24 @@ import Badge from "@/shared/views/components/Badge/Badge";
 
 import { MutabilityUsage } from "../core/fricheMutability.reducer";
 
-const getUsageIcon = (usage: MutabilityUsage): string => {
+const getUsagePictogramSrc = (usage: MutabilityUsage): string => {
   switch (usage) {
     case "residentiel":
-      return "🏠";
+      return "/img/pictograms/mutability-usages/residential.svg";
     case "equipements":
-      return "🏛️";
+      return "/img/pictograms/mutability-usages/public-facilities.svg";
     case "culture":
-      return "🎭";
+      return "/img/pictograms/mutability-usages/culture-and-tourism.svg";
     case "tertiaire":
-      return "🏢";
+      return "/img/pictograms/mutability-usages/offices.svg";
     case "industrie":
-      return "🏭";
+      return "/img/pictograms/mutability-usages/industry.svg";
     case "renaturation":
-      return "🌳";
+      return "/img/pictograms/mutability-usages/renaturation.svg";
     case "photovoltaique":
-      return "☀️";
+      return "/img/pictograms/mutability-usages/photovoltaic.svg";
     default:
-      return "❓";
+      return "";
   }
 };
 
@@ -41,13 +41,13 @@ const getScoreLabel = (score: number): string => {
 
 const getMutabilityUsageDisplayName = (usage: MutabilityUsage): string => {
   return {
-    culture: "Culture, tourisme",
-    renaturation: "Renaturation",
+    culture: "Lieu culturel ou touristique",
+    renaturation: "Espace de nature",
     equipements: "Équipements publics",
-    tertiaire: "Tertiaire",
-    residentiel: "Résidentiel",
-    photovoltaique: "Photovoltaïque au sol",
-    industrie: "Industrie",
+    tertiaire: "Bureaux",
+    residentiel: "Habitations et commerces",
+    photovoltaique: "Centrale photovoltaïque",
+    industrie: "Zone industrielle ou logistique",
   }[usage];
 };
 
@@ -60,25 +60,29 @@ type Props = {
 
 export default function CompatibilityCard({ usage, score, rank, onDiscoverImpactsClick }: Props) {
   return (
-    <article key={usage} className="flex-1 border-1 border-border-grey rounded-xl py-8 px-6">
-      <span className="text-6xl mb-6 block text-center" aria-hidden="true">
-        {getUsageIcon(usage)}
-      </span>
-      <div className="flex justify-center items-center gap-2 mb-6">
-        <Badge small style="blue">
-          #{rank}
-        </Badge>
-        <h3 className="mb-0">{getMutabilityUsageDisplayName(usage)}</h3>
-      </div>
+    <article
+      key={usage}
+      className="flex-1 flex flex-col justify-between border-1 border-border-grey rounded-xl py-8 px-8"
+    >
+      <div>
+        <div className="mb-4" aria-hidden="true">
+          <img src={getUsagePictogramSrc(usage)} width={100} height={100} alt="" />
+        </div>
+        <div className="flex items-center gap-2 mb-6">
+          <h3 className="mb-0">{getMutabilityUsageDisplayName(usage)}</h3>
+          <Badge small style="blue">
+            #{rank}
+          </Badge>
+        </div>
 
-      <div className="flex justify-center items-center gap-2 mb-6">
-        <h4 className="text-sm text-gray-600 font-normal mb-0">Indice de compatibilité :</h4>
-        <span className={`text-sm font-bold ${getScoreColor(score)}`}>
-          {score.toFixed(0)}% ({getScoreLabel(score)})
-        </span>
+        <div className="flex items-center gap-2 mb-6">
+          <h4 className="text-sm text-gray-600 font-normal mb-0">Indice de compatibilité :</h4>
+          <span className={`text-sm font-bold ${getScoreColor(score)}`}>
+            {score.toFixed(0)}% ({getScoreLabel(score)})
+          </span>
+        </div>
       </div>
-
-      <div className="text-center">
+      <div>
         <Button
           priority="primary"
           onClick={() => {
