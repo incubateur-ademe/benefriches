@@ -4,7 +4,7 @@ const SectionTitle = ({ children }: { children: string }) => {
   return <h3 className="text-base mb-1">{children}</h3>;
 };
 
-function AboutImpactsContcnt() {
+function AboutImpactsContent() {
   return (
     <>
       <section className="mb-4">
@@ -88,12 +88,17 @@ function AboutImpactsContcnt() {
           </li>
           <li>
             les exploitations sont faites à partir de bases de données reconnues voire officielles,
-            accessibles en&nbsp;[opendata](https://www.data.gouv.fr/fr/)&nbsp;(ALDO, dvf, etc.)
+            accessibles en&nbsp;
+            <ExternalLink href="https://www.data.gouv.fr/fr/">opendata</ExternalLink>&nbsp;(ALDO,
+            dvf, etc.)
           </li>
           <li>
             des hypothèses contextualisées (ex : temps de déplacement gagné par les habitants du
-            fait de la création d'une nouvelle centralité à partir des données de l'[Observatoire
-            des territoires](https://www.observatoire-des-territoires.gouv.fr/)).
+            fait de la création d'une nouvelle centralité à partir des données de l'
+            <ExternalLink href="https://www.observatoire-des-territoires.gouv.fr/">
+              Observatoire des territoires
+            </ExternalLink>
+            ).
           </li>
         </ul>
       </section>
@@ -228,4 +233,4 @@ function AboutImpactsContcnt() {
   );
 }
 
-export default AboutImpactsContcnt;
+export default AboutImpactsContent;

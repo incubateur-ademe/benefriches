@@ -41,7 +41,7 @@ export default function ExportImpactsModal({ projectId, siteId }: Props) {
 
   return (
     <exportImpactsModal.Component
-      title="Télécharges les impacts du projet"
+      title="Télécharger les impacts du projet"
       iconId="fr-icon-file-download-line"
       buttons={[
         {

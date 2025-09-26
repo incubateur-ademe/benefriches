@@ -1,65 +1,112 @@
-import Button from "@codegouvfr/react-dsfr/Button";
+import Button, { ButtonProps } from "@codegouvfr/react-dsfr/Button";
 
-import { impactsExportModalOpened, trackEvent } from "@/shared/views/analytics";
+import classNames from "@/shared/views/clsx";
+import Badge from "@/shared/views/components/Badge/Badge";
 import { routes } from "@/shared/views/router";
 
-import { exportImpactsModal } from "../export-impacts/createExportModal";
 import { aboutImpactsModal } from "../impacts/about-impacts-modal";
 import { projectAndSiteFeaturesModal } from "../impacts/project-and-site-features-modal/createProjectAndSiteFeaturesModal";
 
+type Link = {
+  categoryName: string;
+  links: ButtonProps[];
+};
+
 export default function FurtherActionsSection({ siteId }: { siteId: string }) {
+  const links: Link[] = [
+    {
+      categoryName: "Modifier",
+      links: [
+        {
+          iconId: "fr-icon-edit-line",
+          disabled: true,
+          title: "Modifier les infos du projet",
+        },
+        {
+          iconId: "fr-icon-edit-line",
+          disabled: true,
+          title: "Modifier les infos du site",
+        },
+      ],
+    },
+    {
+      categoryName: "Créer",
+      links: [
+        {
+          iconId: "ri-file-copy-line",
+          disabled: true,
+          title: "Créer une variante du projet",
+        },
+        {
+          iconId: "fr-icon-file-add-line",
+          linkProps: routes.createProject({ siteId }).link,
+          title: "Créer un nouveau projet",
+        },
+        {
+          iconId: "fr-icon-add-line",
+          linkProps: routes.createSiteFoncier().link,
+          title: "Créer un nouveau site",
+        },
+      ],
+    },
+    {
+      categoryName: "Comprendre",
+      links: [
+        {
+          iconId: "fr-icon-lightbulb-line",
+          onClick: () => {
+            aboutImpactsModal.open();
+          },
+          title: "Comprendre les calculs de Bénéfriches",
+        },
+        {
+          iconId: "fr-icon-file-text-line",
+          onClick: () => {
+            projectAndSiteFeaturesModal.open();
+          },
+          title: "Revoir les données du site et du projet",
+        },
+        //  { iconId: "ri-folder-2-line", title: "Voir des projets similaires" },
+      ],
+    },
+    // {
+    //   categoryName: "Être accompagné·e",
+    //   links: [
+    //     { iconId: "ri-questionnaire-line", title: "Discuter avec un·e expert·e friche" },
+    //     { iconId: "ri-mail-line", title: "Demander conseil sur la dépollution" },
+    //     { iconId: "ri-money-euro-box-line", title: "Trouver des subventions" },
+    //   ],
+    // },
+  ];
+
   return (
-    <section className="rounded-lg mt-10 p-6 bg-white dark:bg-black border border-solid border-border-grey flex flex-col md:flex-row gap-6">
-      <img src="/img/pictograms/further-actions.svg" alt="" aria-hidden="true" className="w-36" />
-      <div className="flex flex-col justify-center">
-        <h3 className="mb-0">Aller plus loin avec ce projet</h3>
-        <div className="flex flex-col md:flex-row gap-4 mt-4">
-          <Button
-            priority="primary"
-            iconId="fr-icon-file-download-line"
-            onClick={() => {
-              trackEvent(impactsExportModalOpened());
-              exportImpactsModal.open();
-            }}
-          >
-            Télécharger les impacts
-          </Button>
-          <Button priority="secondary" iconId="fr-icon-edit-fill" disabled>
-            Modifier les informations
-          </Button>
-        </div>
-        <div className="md:flex gap-2 mt-4">
-          <Button
-            size="small"
-            iconId="fr-icon-file-add-line"
-            priority="tertiary no outline"
-            onClick={() => {
-              routes.createProject({ siteId }).push();
-            }}
-          >
-            Créer une variante du projet
-          </Button>
-          <Button
-            size="small"
-            iconId="fr-icon-file-text-line"
-            priority="tertiary no outline"
-            onClick={() => {
-              projectAndSiteFeaturesModal.open();
-            }}
-          >
-            Revoir les données du site et du projet
-          </Button>
-          <Button
-            size="small"
-            iconId="fr-icon-lightbulb-line"
-            priority="tertiary no outline"
-            onClick={() => {
-              aboutImpactsModal.open();
-            }}
-          >
-            Comprendre les calculs
-          </Button>
-        </div>
+    <section className="rounded-lg mt-6 p-6 bg-impacts-main dark:bg-black">
+      <h4>Aller plus loin</h4>
+      <div className="grid md:grid-cols-3 gap-4">
+        {links.map(({ categoryName, links }, columnIndex) => (
+          <div key={`link-item-${columnIndex}`}>
+            <h5 className={classNames("text-sm", "uppercase", "mb-4")}>{categoryName}</h5>
+            <ul className={classNames("list-none", "m-0", "p-0")}>
+              {links.map(({ title, ...buttonProps }, linkItemIndex) => (
+                <li key={`li-${linkItemIndex}`} className="pb-4 flex items-center">
+                  <Button
+                    priority="tertiary no outline"
+                    size="small"
+                    className="text-left -ml-2"
+                    {...buttonProps}
+                  >
+                    {title}
+                  </Button>
+                  {buttonProps.disabled && (
+                    <Badge small style="green-tilleul">
+                      Bientôt disponible
+                    </Badge>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
       </div>
     </section>
   );

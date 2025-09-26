@@ -1,4 +1,5 @@
 import Alert from "@codegouvfr/react-dsfr/Alert";
+import { SiteNature } from "shared";
 
 import classNames from "@/shared/views/clsx";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
@@ -23,6 +24,7 @@ type Props = {
   projectContext: {
     name: string;
     siteName: string;
+    siteNature?: SiteNature;
     siteId: string;
     type?: ProjectDevelopmentPlanType;
     isExpressProject: boolean;
@@ -84,6 +86,7 @@ function ProjectPage({
             />
             <ProjectImpactFooter
               siteId={projectContext.siteId}
+              siteNature={projectContext.siteNature!}
               projectId={projectId}
               evaluationPeriod={evaluationPeriod}
             />

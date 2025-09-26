@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
 
-import FeatureAlertModalTitle from "../footer/FeatureAlertModalTitle";
+import FeatureAlertModalTitle from "./FeatureAlertModalTitle";
 
 type Props = {
   hasDuplicateProjectAlert: boolean;
