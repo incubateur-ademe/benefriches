@@ -5,10 +5,10 @@ import { ProjectFeatures } from "@/features/projects/domain/projects.types";
 import { SiteFeatures } from "@/features/site-features/core/siteFeatures";
 import SiteFeaturesList from "@/features/site-features/views/SiteFeaturesList";
 import classNames from "@/shared/views/clsx";
+import Dialog from "@/shared/views/components/Dialog/A11yDialog";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
 import ProjectFeaturesView from "../../features/ProjectFeaturesView";
-import { projectAndSiteFeaturesModal } from "./createProjectAndSiteFeaturesModal";
 
 type AccordionProps = {
   onClick: () => void;
@@ -50,10 +50,14 @@ function Accordion({ onClick, isOpen, label, children }: AccordionProps) {
 type Props = {
   projectFeaturesData?: ProjectFeatures;
   siteFeaturesData?: SiteFeatures;
-  isOpen: boolean;
+  dialogId: string;
 };
 
-const ProjectAndSiteFeaturesModal = ({ projectFeaturesData, siteFeaturesData, isOpen }: Props) => {
+const ProjectAndSiteFeaturesModal = ({
+  projectFeaturesData,
+  siteFeaturesData,
+  dialogId,
+}: Props) => {
   const [isProjectFeaturesOpen, setProjectFeaturesOpen] = useState(true);
   const [isSiteFeaturesOpen, setSiteFeaturesOpen] = useState(true);
 
@@ -65,8 +69,8 @@ const ProjectAndSiteFeaturesModal = ({ projectFeaturesData, siteFeaturesData, is
   };
 
   return (
-    <projectAndSiteFeaturesModal.Component title="Données du site et du projet" size="large">
-      {!isOpen ? null : projectFeaturesData && siteFeaturesData ? (
+    <Dialog dialogId={dialogId} title="Données du site et du projet" size="medium">
+      {projectFeaturesData && siteFeaturesData ? (
         <div>
           <Accordion
             label={`Données du site "${siteFeaturesData.name}"`}
@@ -86,7 +90,7 @@ const ProjectAndSiteFeaturesModal = ({ projectFeaturesData, siteFeaturesData, is
       ) : (
         <LoadingSpinner />
       )}
-    </projectAndSiteFeaturesModal.Component>
+    </Dialog>
   );
 };
 

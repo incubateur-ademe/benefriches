@@ -19,10 +19,9 @@ export class SqlUserFeatureAlertRepository implements UserFeatureAlertRepository
           user_id: props.userId,
           feature_type: props.featureType,
           feature_options:
-            props.featureType === "duplicate_project" ||
-            props.featureType === "mutafriches_availability"
-              ? null
-              : props.featureOptions,
+            props.featureType === "compare_impacts" || props.featureType === "export_impacts"
+              ? props.featureOptions
+              : null,
           created_at: props.createdAt,
         },
         "id",

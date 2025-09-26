@@ -7,7 +7,7 @@ import {
 } from "shared";
 
 import SiteFeaturesList from "@/features/site-features/views/SiteFeaturesList";
-import Dialog from "@/shared/views/components/Dialog/Dialog";
+import Dialog from "@/shared/views/components/Dialog/A11yDialog";
 
 import { UrbanSprawlImpactsComparisonObj } from "../../application/project-impacts-urban-sprawl-comparison/fetchUrbanSprawlImpactsComparison.action";
 import { UrbanSprawlImpactsComparisonState } from "../../application/project-impacts-urban-sprawl-comparison/urbanSprawlComparison.reducer";

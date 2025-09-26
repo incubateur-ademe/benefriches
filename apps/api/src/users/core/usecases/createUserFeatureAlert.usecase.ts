@@ -42,6 +42,12 @@ const createFeatureAlertSchema = z.discriminatedUnion("featureType", [
   baseFeatureAlertSchema.extend({
     featureType: z.literal("mutafriches_availability"),
   }),
+  baseFeatureAlertSchema.extend({
+    featureType: z.literal("update_project"),
+  }),
+  baseFeatureAlertSchema.extend({
+    featureType: z.literal("update_site"),
+  }),
 ]);
 
 export const createFeatureAlertProps = baseFeatureAlertSchema.omit({ createdAt: true }).extend({
@@ -52,6 +58,12 @@ export const createFeatureAlertProps = baseFeatureAlertSchema.omit({ createdAt: 
     }),
     z.object({
       type: z.literal("duplicate_project"),
+    }),
+    z.object({
+      type: z.literal("update_project"),
+    }),
+    z.object({
+      type: z.literal("update_site"),
     }),
     z.object({
       type: z.literal("mutafriches_availability"),

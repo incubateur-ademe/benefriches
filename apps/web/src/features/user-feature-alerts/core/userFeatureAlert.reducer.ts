@@ -26,11 +26,19 @@ type State = {
   mutafrichesAvailabilityAlert?: {
     hasAlert: boolean;
   };
+  updateProjectAlert?: {
+    hasAlert: boolean;
+  };
+  updateSiteAlert?: {
+    hasAlert: boolean;
+  };
   createUserFeatureAlertState: {
     compareImpacts: Status;
     duplicateProject: Status;
     exportImpacts: Status;
     mutafrichesAvailability: Status;
+    updateProject: Status;
+    updateSite: Status;
   };
 };
 
@@ -40,6 +48,8 @@ const initialState: State = {
     duplicateProject: "idle",
     exportImpacts: "idle",
     mutafrichesAvailability: "idle",
+    updateProject: "idle",
+    updateSite: "idle",
   },
 };
 
@@ -62,6 +72,12 @@ const userFeatureAlertSlice = createSlice({
           break;
         case "mutafriches_availability":
           state.createUserFeatureAlertState.mutafrichesAvailability = "loading";
+          break;
+        case "update_project":
+          state.createUserFeatureAlertState.updateProject = "loading";
+          break;
+        case "update_site":
+          state.createUserFeatureAlertState.updateSite = "loading";
           break;
       }
     });
@@ -89,6 +105,14 @@ const userFeatureAlertSlice = createSlice({
             state.mutafrichesAvailabilityAlert = { hasAlert: true };
             state.createUserFeatureAlertState.mutafrichesAvailability = "success";
             break;
+          case "update_project":
+            state.updateProjectAlert = { hasAlert: true };
+            state.createUserFeatureAlertState.updateProject = "success";
+            break;
+          case "update_site":
+            state.updateSiteAlert = { hasAlert: true };
+            state.createUserFeatureAlertState.updateSite = "success";
+            break;
         }
       },
     );
@@ -107,6 +131,12 @@ const userFeatureAlertSlice = createSlice({
         case "mutafriches_availability":
           state.createUserFeatureAlertState.mutafrichesAvailability = "error";
           break;
+        case "update_project":
+          state.createUserFeatureAlertState.updateProject = "error";
+          break;
+        case "update_site":
+          state.createUserFeatureAlertState.updateSite = "error";
+          break;
       }
     });
 
@@ -117,6 +147,8 @@ const userFeatureAlertSlice = createSlice({
         state.duplicateProjectAlert = action.payload.duplicateProjectAlert;
         state.compareImpactsAlert = action.payload.compareImpactsAlert;
         state.mutafrichesAvailabilityAlert = action.payload.mutafrichesAvailabilityAlert;
+        state.updateProjectAlert = action.payload.updateProjectAlert;
+        state.updateSiteAlert = action.payload.updateSiteAlert;
       },
     );
   },

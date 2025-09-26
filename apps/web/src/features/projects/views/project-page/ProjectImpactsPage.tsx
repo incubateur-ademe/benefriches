@@ -11,7 +11,9 @@ import {
 } from "../../application/project-impacts/projectImpacts.reducer.ts";
 import { ProjectDevelopmentPlanType } from "../../domain/projects.types";
 import ProjectImpactsActionBar from "../shared/actions/ProjectImpactsActionBar.tsx";
+import { PROJECT_AND_SITE_FEATURES_BADGE_DIALOG_ID } from "./ExpressProjectBadge.tsx";
 import ExportImpactsModal from "./export-impacts/ExportModal";
+import { PROJECT_AND_SITE_FEATURES_FOOTER_DIALOG_ID } from "./footer/FutherActionsSection.tsx";
 import ProjectImpactFooter from "./footer/ProjectImpactFooter";
 import ProjectsImpactsPageHeader from "./header/ProjectPageHeader";
 import ProjectImpactsPage from "./impacts/ProjectImpactsView";
@@ -95,7 +97,16 @@ function ProjectPage({
       </div>
 
       <AboutImpactsModal />
-      <ProjectFeaturesModal projectId={projectId} siteId={projectContext.siteId} />
+      <ProjectFeaturesModal
+        dialogId={PROJECT_AND_SITE_FEATURES_BADGE_DIALOG_ID}
+        projectId={projectId}
+        siteId={projectContext.siteId}
+      />
+      <ProjectFeaturesModal
+        dialogId={PROJECT_AND_SITE_FEATURES_FOOTER_DIALOG_ID}
+        projectId={projectId}
+        siteId={projectContext.siteId}
+      />
       <ExportImpactsModal projectId={projectId} siteId={projectContext.siteId} />
     </div>
   );

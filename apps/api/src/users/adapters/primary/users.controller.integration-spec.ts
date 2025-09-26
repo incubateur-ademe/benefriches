@@ -53,6 +53,8 @@ describe("Users controller", () => {
 
     it.each([
       { type: "export_impacts", options: ["pdf", "excel", "sharing_link"] },
+      { type: "update_project" },
+      { type: "update_site" },
       { type: "duplicate_project" },
       { type: "mutafriches_availability" },
       { type: "compare_impacts", options: ["same_project_on_prairie"] },
@@ -87,7 +89,10 @@ describe("Users controller", () => {
       expect(result[0]?.email).toEqual("user@ademe.fr");
       expect(result[0]?.feature_type).toEqual(type);
       expect(result[0]?.feature_options === null).toBe(
-        type === "duplicate_project" || type === "mutafriches_availability",
+        type === "duplicate_project" ||
+          type === "mutafriches_availability" ||
+          type === "update_site" ||
+          type === "update_project",
       );
     });
   });

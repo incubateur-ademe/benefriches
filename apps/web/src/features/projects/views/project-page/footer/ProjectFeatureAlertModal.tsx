@@ -1,47 +1,57 @@
 import Alert from "@codegouvfr/react-dsfr/Alert";
 import Button from "@codegouvfr/react-dsfr/Button";
 import Input from "@codegouvfr/react-dsfr/Input";
-import { createModal } from "@codegouvfr/react-dsfr/Modal";
 import { useForm } from "react-hook-form";
 
+import Badge from "@/shared/views/components/Badge/Badge";
+import Dialog from "@/shared/views/components/Dialog/A11yDialog";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
 
-import FeatureAlertModalTitle from "./FeatureAlertModalTitle";
-
 type Props = {
-  hasDuplicateProjectAlert: boolean;
+  hasProjectAlert: boolean;
   onSaveLoadingState: "idle" | "loading" | "error" | "success";
   onSubmit: (formData: FormValues) => void;
   userEmail?: string;
+  title: string;
+  dialogId: string;
 };
-
-const duplicateImpactsFeatureAlertModal = createModal({
-  id: "duplicate-project-feature-alert-modal",
-  isOpenedByDefault: false,
-});
 
 type FormValues = {
   email: string;
 };
 
-function DuplicateProjectModal({ onSubmit, onSaveLoadingState, userEmail }: Props) {
+function ProjectFeatureAlertModal({
+  onSubmit,
+  onSaveLoadingState,
+  userEmail,
+  title,
+  dialogId,
+  hasProjectAlert,
+}: Props) {
   const { handleSubmit, register, formState } = useForm<FormValues>({
     defaultValues: { email: userEmail },
   });
-  const isSuccess = onSaveLoadingState === "success";
 
   return (
-    <duplicateImpactsFeatureAlertModal.Component
+    <Dialog
       title={
-        <FeatureAlertModalTitle
-          title="Dupliquer ce projet sur un autre site"
-          iconId="ri-file-copy-line"
-        />
+        <div className="text-dsfr-title-blue">
+          <i className="fr-icon--xl pr-2 ri-file-copy-line"></i>
+          {title}
+          <Badge small style="green-tilleul" className="ml-2">
+            Bientôt disponible
+          </Badge>
+        </div>
       }
-      size={isSuccess ? "small" : "large"}
+      dialogId={dialogId}
+      size={hasProjectAlert ? "small" : "medium"}
     >
-      {isSuccess ? (
-        <>Votre demande a bien été prise en compte&nbsp;!</>
+      {hasProjectAlert ? (
+        <Alert
+          severity="success"
+          title="Votre demande a bien été prise en compte"
+          description="Vous serez notifié·e par e-mail lorsque la fonctionnalité sera disponible !"
+        />
       ) : (
         <form onSubmit={handleSubmit(onSubmit)}>
           <p>Recevez un mail lorsque cette fonctionnalité sera disponible :</p>
@@ -81,8 +91,8 @@ function DuplicateProjectModal({ onSubmit, onSaveLoadingState, userEmail }: Prop
           </div>
         </form>
       )}
-    </duplicateImpactsFeatureAlertModal.Component>
+    </Dialog>
   );
 }
 
-export default DuplicateProjectModal;
+export default ProjectFeatureAlertModal;

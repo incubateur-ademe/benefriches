@@ -18,6 +18,9 @@ type MutafrichesAvailabilityAlert = {
   type: "mutafriches_availability";
 };
 
+type UpdateProjectFeatureAlert = { type: "update_project" };
+type UpdateSiteFeatureAlert = { type: "update_site" };
+
 export type UserFeatureAlert = {
   id: string;
   userId: string | undefined;
@@ -26,5 +29,7 @@ export type UserFeatureAlert = {
     | ExportImpactsFeatureAlert
     | CompareImpactsFeatureAlert
     | DuplicateProjectFeatureAlert
-    | MutafrichesAvailabilityAlert;
+    | MutafrichesAvailabilityAlert
+    | UpdateSiteFeatureAlert
+    | UpdateProjectFeatureAlert;
 };

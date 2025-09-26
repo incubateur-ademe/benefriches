@@ -22,6 +22,10 @@ export const getNewFeatureAlerts = (
       };
     case "duplicate_project":
       return { ...featureAlerts, duplicateProjectAlert: { hasAlert: true } };
+    case "update_project":
+      return { ...featureAlerts, updateProjectAlert: { hasAlert: true } };
+    case "update_site":
+      return { ...featureAlerts, updateSiteAlert: { hasAlert: true } };
     case "export_impacts":
       return {
         ...featureAlerts,
@@ -30,6 +34,8 @@ export const getNewFeatureAlerts = (
           options: featureAlert.options,
         },
       };
+    default:
+      return featureAlerts;
   }
 };
 
@@ -64,13 +70,23 @@ export class CreateFeatureAlertService implements CreateFeatureAlertGateway {
     const V0fromLocalStorage = localStorage.getItem(LOCAL_STORAGE_KEY_VO);
     const V1fromLocalStorage = localStorage.getItem(LOCAL_STORAGE_KEY_V1);
 
-    const featureAlerts = V1fromLocalStorage
-      ? (JSON.parse(V1fromLocalStorage) as UserFeatureAlertsResult)
-      : V0fromLocalStorage
-        ? loadFromV0ToV1(JSON.parse(V0fromLocalStorage) as UserFeatureAlert["feature"]["type"][])
-        : {};
-
-    return featureAlerts;
+    if (V1fromLocalStorage) {
+      try {
+        return JSON.parse(V1fromLocalStorage) as UserFeatureAlertsResult;
+      } catch (err) {
+        console.error("Fail to parse V1fromLocalStorage", err);
+        if (V0fromLocalStorage) {
+          try {
+            return loadFromV0ToV1(
+              JSON.parse(V0fromLocalStorage) as UserFeatureAlert["feature"]["type"][],
+            );
+          } catch (err) {
+            console.error("Fail to parse V1fromLocalStorage", err);
+          }
+        }
+      }
+    }
+    return {};
   }
 
   persistNewFeatureAlert(featureAlert: UserFeatureAlert["feature"]) {

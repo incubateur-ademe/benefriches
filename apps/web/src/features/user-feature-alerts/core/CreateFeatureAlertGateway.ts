@@ -9,6 +9,12 @@ export type UserFeatureAlertsResult = {
     hasAlert: boolean;
     options?: CompareImpactsFeatureAlert["options"];
   };
+  updateProjectAlert?: {
+    hasAlert: boolean;
+  };
+  updateSiteAlert?: {
+    hasAlert: boolean;
+  };
   duplicateProjectAlert?: {
     hasAlert: boolean;
   };

@@ -8,19 +8,19 @@ import { selectSiteFeatures } from "@/features/site-features/core/siteFeatures.r
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import ProjectAndSiteFeaturesModal from "./ProjectAndSiteFeaturesModal";
-import { projectAndSiteFeaturesModal } from "./createProjectAndSiteFeaturesModal";
 
 type Props = {
   siteId: string;
   projectId: string;
+  dialogId: string;
 };
 
-const ProjectAndSiteFeaturesModalContainer = ({ siteId, projectId }: Props) => {
+const ProjectAndSiteFeaturesModalContainer = ({ siteId, projectId, dialogId }: Props) => {
   const projectFeatures = useAppSelector(selectProjectFeatures);
   const siteFeatures = useAppSelector(selectSiteFeatures);
 
-  const isOpen = useIsModalOpen(projectAndSiteFeaturesModal);
   const dispatch = useAppDispatch();
+  const isOpen = useIsModalOpen({ id: dialogId, isOpenedByDefault: false });
 
   useEffect(() => {
     if (isOpen) {
@@ -33,7 +33,7 @@ const ProjectAndSiteFeaturesModalContainer = ({ siteId, projectId }: Props) => {
     <ProjectAndSiteFeaturesModal
       projectFeaturesData={projectFeatures}
       siteFeaturesData={siteFeatures}
-      isOpen={isOpen}
+      dialogId={dialogId}
     />
   );
 };
