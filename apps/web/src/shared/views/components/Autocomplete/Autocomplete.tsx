@@ -7,7 +7,7 @@ import classNames, { ClassValue } from "../../clsx";
 type Props = {
   options: { label: string; value: string }[];
   value?: string;
-  onSelect: (value: string) => void;
+  onSelect: (value: string | null) => void;
   className?: ClassValue;
   children: ReactNode;
 };
