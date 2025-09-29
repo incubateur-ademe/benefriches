@@ -110,7 +110,12 @@ export const fricheMutabilityImpactsRequested = createAppAsyncThunk<
 
   await new Promise((resolve) => setTimeout(resolve, 500));
 
-  routes.projectImpactsOnboarding({ projectId: projectToCreate.reconversionProjectId }).push();
+  routes
+    .projectImpactsOnboarding({
+      projectId: projectToCreate.reconversionProjectId,
+      canSkipIntroduction: true,
+    })
+    .push();
 
   return { projectId: projectToCreate.reconversionProjectId };
 });

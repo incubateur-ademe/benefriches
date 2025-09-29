@@ -22,6 +22,7 @@ function ProjectImpactsOnboardingPageContainer({ projectId, route }: Props) {
       onFinalNext={() => {
         routes.projectImpacts({ projectId }).push();
       }}
+      canSkipOnboarding={route.params.canSkipIntroduction === true}
     />
   );
 }

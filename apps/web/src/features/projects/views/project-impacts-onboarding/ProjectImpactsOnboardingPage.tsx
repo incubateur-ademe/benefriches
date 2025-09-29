@@ -4,6 +4,7 @@ import { useEffect, useLayoutEffect, useState } from "react";
 
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 
+import SkipOnboardingButtonSection from "./SkipOnboardingButtonSection";
 import Step1 from "./Step1";
 import Step2 from "./Step2";
 import Step3 from "./Step3";
@@ -21,6 +22,7 @@ type Props = {
   onNextToStep: (step: string) => void;
   onBackToStep: (step: string) => void;
   routeStep?: string;
+  canSkipOnboarding: boolean;
 };
 
 const DEFAULT_STEP = STEPS[1];
@@ -33,6 +35,7 @@ export default function ProjectImpactsOnboardingPage({
   onNextToStep,
   onFinalNext,
   routeStep,
+  canSkipOnboarding,
 }: Props) {
   const currentStep = parseRouteStep(routeStep);
 
@@ -124,6 +127,7 @@ export default function ProjectImpactsOnboardingPage({
               );
           }
         })()}
+        {canSkipOnboarding && <SkipOnboardingButtonSection onClick={onFinalNext} />}
       </div>
     </div>
   );
