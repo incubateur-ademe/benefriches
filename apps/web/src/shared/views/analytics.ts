@@ -17,6 +17,7 @@ type AnalyticsEvent = {
   category: string;
   action: string;
   name: string;
+  value?: unknown;
 };
 
 export const impactsExportModalOpened = (): AnalyticsEvent => {
@@ -35,7 +36,20 @@ export const impactsExportDownloaded = (exportType: string): AnalyticsEvent => {
   };
 };
 
+export const mutabilityResultDiscoverImpactsClicked = ({
+  usage,
+}: {
+  usage: string;
+}): AnalyticsEvent => {
+  return {
+    category: "friche-mutability-evaluation",
+    action: "discover-impacts-clicked",
+    name: "friche-mutability-evaluation-discover-impacts-clicked",
+    value: { usage },
+  };
+};
+
 export const trackEvent = (event: AnalyticsEvent) => {
   if (!window._paq) return;
-  window._paq.push(["trackEvent", event.category, event.action, event.name]);
+  window._paq.push(["trackEvent", event.category, event.action, event.name, event.value]);
 };

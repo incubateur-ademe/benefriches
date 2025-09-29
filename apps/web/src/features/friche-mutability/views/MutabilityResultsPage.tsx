@@ -3,6 +3,7 @@ import Notice from "@codegouvfr/react-dsfr/Notice";
 import Tooltip from "@codegouvfr/react-dsfr/Tooltip";
 import { useEffect } from "react";
 
+import { mutabilityResultDiscoverImpactsClicked, trackEvent } from "@/shared/views/analytics";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { routes, useRoute } from "@/shared/views/router";
@@ -43,6 +44,7 @@ export default function MutabilityResultsPage() {
 
   const handleDiscoverImpactsClick = (usage: MutabilityUsage) => {
     if (!viewData.evaluationResults) return;
+    trackEvent(mutabilityResultDiscoverImpactsClicked({ usage }));
     void dispatch(fricheMutabilityImpactsRequested({ usage }));
   };
 
