@@ -74,12 +74,10 @@ const SearchAddressAutocompleteInput = ({
     );
   };
 
-  const _onSelect = (value: string | null) => {
-    if (value) {
-      const properties = suggestions[value]?.properties;
-      if (properties) {
-        onSelect(properties);
-      }
+  const _onSelect = (value: string) => {
+    const properties = suggestions[value]?.properties;
+    if (properties) {
+      onSelect(properties);
     }
   };
 

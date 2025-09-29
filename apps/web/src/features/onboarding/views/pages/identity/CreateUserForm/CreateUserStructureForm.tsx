@@ -186,11 +186,9 @@ function UserStructureForm({ administrativeDivisionService, formContext }: Props
             className="mb-6"
             value={selectedStructureMunicipality}
             options={suggestions}
-            onSelect={(value) => {
-              if (value) {
-                setValue("selectedStructureMunicipality", value, { shouldValidate: true });
-                setValue("structureMunicipalityText", municipalities[value]?.label);
-              }
+            onSelect={(value: string) => {
+              setValue("selectedStructureMunicipality", value, { shouldValidate: true });
+              setValue("structureMunicipalityText", municipalities[value]?.label);
             }}
           >
             <Input
