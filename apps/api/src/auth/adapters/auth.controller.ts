@@ -211,6 +211,8 @@ export class AuthController {
       createAccountUrl.searchParams.set("hintEmail", oidcIdentity.email);
       createAccountUrl.searchParams.set("hintFirstName", oidcIdentity.firstName);
       createAccountUrl.searchParams.set("hintLastName", oidcIdentity.lastName);
+      if (req.session.postLoginRedirectUrl)
+        createAccountUrl.searchParams.set("redirectTo", req.session.postLoginRedirectUrl);
       res.redirect(createAccountUrl.toString());
       return;
     }
