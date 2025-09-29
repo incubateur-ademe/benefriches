@@ -41,7 +41,7 @@ export default function EvaluateMutabilityPage() {
       <h1 className="fr-container">Analyse de la compatibilité de la friche</h1>
       <iframe
         width="100%"
-        height="800px"
+        height="950px"
         src={`${BENEFRICHES_ENV.mutafrichesUrl}?integrator=${BENEFRICHES_ENV.mutafrichesIntegrator}&callbackUrl=${encodeURIComponent(
           `${window.location.origin}/callback`,
         )}&callbackLabel=${encodeURIComponent("Retour vers Bénéfriches")}`}
