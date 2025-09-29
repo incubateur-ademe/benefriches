@@ -61,6 +61,7 @@ describe("SendAuthLink Use Case", () => {
   });
 
   it("Cannot send auth link when user does not exist", async () => {
+    uuidGenerator.nextUuids("failure-event-id", "attempt-event-id");
     const usecase = new SendAuthLinkUseCase(
       userRepository,
       tokenGenerator,
@@ -84,19 +85,18 @@ describe("SendAuthLink Use Case", () => {
     // no email sent
     expect(authLinkMailer.sentEmails).toHaveLength(0);
     // failure event was published
-    expect(eventPublisher.events).toEqual([
-      {
-        id: "a-constant-uuid",
-        name: "auth.link-send-failed",
-        payload: {
-          userEmail: "nonexistent@example.com",
-          error: "UserDoesNotExist",
-        },
+    expect(eventPublisher.events).toContainEqual({
+      id: "failure-event-id",
+      name: "auth.link-send-failed",
+      payload: {
+        userEmail: "nonexistent@example.com",
+        error: "UserDoesNotExist",
       },
-    ]);
+    });
   });
 
   it("prevents requesting new token within 1 minute", async () => {
+    uuidGenerator.nextUuids("failure-event-id", "attempt-event-2", "attempt-event-1");
     const user = buildAuthenticatedUser();
     userRepository._setUsers([user]);
 
@@ -144,19 +144,18 @@ describe("SendAuthLink Use Case", () => {
     expect(authLinkMailer.sentEmails).toHaveLength(1);
 
     // failure event was published
-    expect(eventPublisher.events).toEqual([
-      {
-        id: "a-constant-uuid",
-        name: "auth.link-send-failed",
-        payload: {
-          userEmail: user.email,
-          error: "TooManyRequests",
-        },
+    expect(eventPublisher.events).toContainEqual({
+      id: "failure-event-id",
+      name: "auth.link-send-failed",
+      payload: {
+        userEmail: user.email,
+        error: "TooManyRequests",
       },
-    ]);
+    });
   });
 
   it("Allows new token after 1 minute", async () => {
+    uuidGenerator.nextUuids("attempt-1", "attempt-2");
     const user = buildAuthenticatedUser();
     userRepository._setUsers([user]);
 
