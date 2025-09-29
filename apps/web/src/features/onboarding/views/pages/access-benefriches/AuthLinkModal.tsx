@@ -8,6 +8,7 @@ import { authLinkRequestReset } from "@/features/onboarding/core/authLinkRequest
 import { authLinkRequested } from "@/features/onboarding/core/authLinkRequested.action";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
+import AuthLinkRequestError from "./AuthLinkRequestError";
 import { authLinkModal } from "./createAuthLinkModal";
 
 function RequestResult() {
@@ -20,21 +21,13 @@ function RequestResult() {
         <Alert
           severity="success"
           title="Un lien de connexion a été envoyé"
-          description="Cliquez sur le lien dans l'email pour vous connecter à Bénéfriches."
+          description="Cliquez sur le lien dans l'email pour vous connecter à Bénéfriches. Pensez à vérifier vos spams."
           className="mt-4"
           small
         />
       );
     case "error":
-      return (
-        <Alert
-          severity="error"
-          title="Une erreur est survenue lors de l'envoi du lien"
-          description={authLinkRequestError ?? ""}
-          className="mt-4"
-          small
-        />
-      );
+      return <AuthLinkRequestError errorKind={authLinkRequestError ?? ""} />;
     default:
       return null;
   }

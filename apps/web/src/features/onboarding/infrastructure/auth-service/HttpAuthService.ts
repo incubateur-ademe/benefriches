@@ -12,11 +12,7 @@ export class HttpAuthService implements AuthenticationGateway {
 
     if (!response.ok) {
       const resp = (await response.json()) as { code?: string; message: string };
-      const errorMessage =
-        resp.code === "TOO_MANY_REQUESTS"
-          ? "Veuillez patienter 2 minutes avant de demander un nouveau lien."
-          : "Une erreur est survenue, veuillez réessayer plus tard.";
-      throw new Error(errorMessage);
+      throw new Error(resp.code ?? "UnknownError");
     }
   }
 

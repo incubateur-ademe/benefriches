@@ -9,6 +9,7 @@ import {
   HttpStatus,
   Inject,
   InternalServerErrorException,
+  NotFoundException,
   Post,
   Query,
   Req,
@@ -153,7 +154,7 @@ export class AuthController {
   }
 
   @Get("/login/pro-connect")
-  async login(@Req() req: Request, @Res() res: Response) {
+  async loginWithProConnect(@Req() req: Request, @Res() res: Response) {
     const { authorizationUrl, nonce, state } = await this.oidcLogin.getAuthorizationUrl(
       this.configService.getOrThrow<string>("PRO_CONNECT_LOGIN_CALLBACK_URL"),
     );
@@ -278,12 +279,15 @@ export class AuthController {
     switch (result.error) {
       case "UserDoesNotExist":
         // Don't reveal if user exists - return success anyway
-        return response.status(200).send();
+        throw new NotFoundException({
+          code: "UserDoesNotExist",
+          message: "No user found with this email",
+        });
       case "TooManyRequests":
         throw new HttpException(
           {
             message: "Please wait 2 minutes before requesting another authentication link",
-            code: "TOO_MANY_REQUESTS",
+            code: "TooManyRequests",
           },
           HttpStatus.TOO_MANY_REQUESTS,
         );

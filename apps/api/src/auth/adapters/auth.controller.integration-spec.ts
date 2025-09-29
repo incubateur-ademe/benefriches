@@ -330,6 +330,33 @@ describe("Auth integration tests", () => {
       expect(authLinkSent).toContain(`token=${authToken}`);
       expect(authLinkSent).toContain(`redirectTo=${encodeURIComponent(postLoginRedirectTo)}`);
     });
+
+    it("responds with 404 when user does not exist", async () => {
+      const agent = request.agent(app.getHttpServer());
+      const response = await agent
+        .post("/api/auth/send-auth-link")
+        .send({ email: "non.existant@example.fr" });
+
+      expect(response.status).toBe(404);
+      expect((response.body as { code: string }).code).toEqual("UserDoesNotExist");
+
+      const authTokens = await sqlConnection("token_authentication_attempts").select("*");
+      expect(authTokens).toHaveLength(0);
+    });
+
+    it("responds with 429 when too many attempts", async () => {
+      const userEmail = "magic.john@example.fr";
+
+      const user = new UserBuilder().asLocalAuthority().withEmail(userEmail).build();
+      await sqlConnection("users").insert(mapUserToSqlRow(user));
+
+      const agent = request.agent(app.getHttpServer());
+      await agent.post("/api/auth/send-auth-link").send({ email: userEmail });
+      const response2 = await agent.post("/api/auth/send-auth-link").send({ email: userEmail });
+
+      expect(response2.status).toBe(429);
+      expect((response2.body as { code: string }).code).toEqual("TooManyRequests");
+    });
   });
 
   describe("GET /auth/login/token", () => {
