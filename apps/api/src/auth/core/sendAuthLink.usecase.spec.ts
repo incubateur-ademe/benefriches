@@ -7,7 +7,9 @@ import { DeterministicTokenGenerator } from "src/auth/adapters/token-generator/D
 import { InMemoryUserRepository } from "src/auth/adapters/user-repository/InMemoryAuthUserRepository";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { InMemoryEventPublisher } from "src/shared-kernel/adapters/events/publisher/InMemoryEventPublisher";
 
+import { DeterministicUuidGenerator } from "../adapters/id-generator/DeterministicIdGenerator";
 import { SendAuthLinkUseCase } from "./sendAuthLink.usecase";
 import { TokenAuthenticationAttempt } from "./tokenAuthenticationAttempt";
 import { User } from "./user";
@@ -19,6 +21,8 @@ describe("SendAuthLink Use Case", () => {
   let authLinkMailer: FakeAuthLinkMailer;
   let tokenGenerator: DeterministicTokenGenerator;
   let configService: ConfigService;
+  let uuidGenerator: DeterministicUuidGenerator;
+  let eventPublisher: InMemoryEventPublisher;
 
   const fakeNow = new Date("2024-01-05T13:00:00Z");
   const fakeToken = "fake-token-123";
@@ -45,6 +49,10 @@ describe("SendAuthLink Use Case", () => {
     tokenAuthAttemptRepository = new InMemoryTokenAuthenticationAttemptRepository();
     authLinkMailer = new FakeAuthLinkMailer();
     tokenGenerator = new DeterministicTokenGenerator(fakeToken);
+    uuidGenerator = new DeterministicUuidGenerator();
+    uuidGenerator.nextUuids("a-constant-uuid");
+    eventPublisher = new InMemoryEventPublisher();
+
     const testModule = await Test.createTestingModule({
       imports: [ConfigModule.forRoot({ envFilePath: ".env.test" })],
     }).compile();
@@ -60,6 +68,8 @@ describe("SendAuthLink Use Case", () => {
       authLinkMailer,
       dateProvider,
       configService,
+      uuidGenerator,
+      eventPublisher,
     );
 
     const result = await usecase.execute({ email: "nonexistent@example.com" });
@@ -73,6 +83,17 @@ describe("SendAuthLink Use Case", () => {
     expect(tokenAuthAttemptRepository.tokens).toHaveLength(0);
     // no email sent
     expect(authLinkMailer.sentEmails).toHaveLength(0);
+    // failure event was published
+    expect(eventPublisher.events).toEqual([
+      {
+        id: "a-constant-uuid",
+        name: "auth.link-send-failed",
+        payload: {
+          userEmail: "nonexistent@example.com",
+          error: "UserDoesNotExist",
+        },
+      },
+    ]);
   });
 
   it("prevents requesting new token within 1 minute", async () => {
@@ -89,6 +110,8 @@ describe("SendAuthLink Use Case", () => {
       authLinkMailer,
       firstDateProvider,
       configService,
+      uuidGenerator,
+      eventPublisher,
     );
 
     const firstResult = await firstUsecase.execute({ email: user.email });
@@ -107,6 +130,8 @@ describe("SendAuthLink Use Case", () => {
       authLinkMailer,
       secondDateProvider,
       configService,
+      uuidGenerator,
+      eventPublisher,
     );
 
     const secondResult = await secondUsecase.execute({ email: user.email });
@@ -117,6 +142,18 @@ describe("SendAuthLink Use Case", () => {
 
     expect(tokenAuthAttemptRepository.tokens).toEqual([firstRequestToken]);
     expect(authLinkMailer.sentEmails).toHaveLength(1);
+
+    // failure event was published
+    expect(eventPublisher.events).toEqual([
+      {
+        id: "a-constant-uuid",
+        name: "auth.link-send-failed",
+        payload: {
+          userEmail: user.email,
+          error: "TooManyRequests",
+        },
+      },
+    ]);
   });
 
   it("Allows new token after 1 minute", async () => {
@@ -133,6 +170,8 @@ describe("SendAuthLink Use Case", () => {
       authLinkMailer,
       firstDateProvider,
       configService,
+      uuidGenerator,
+      eventPublisher,
     );
 
     await firstUsecase.execute({ email: user.email });
@@ -147,6 +186,8 @@ describe("SendAuthLink Use Case", () => {
       authLinkMailer,
       secondDateProvider,
       configService,
+      uuidGenerator,
+      eventPublisher,
     );
 
     const secondResult = await secondUsecase.execute({ email: user.email });
@@ -170,6 +211,8 @@ describe("SendAuthLink Use Case", () => {
       authLinkMailer,
       dateProvider,
       configService,
+      uuidGenerator,
+      eventPublisher,
     );
 
     const result = await usecase.execute({ email: "user@example.com" });

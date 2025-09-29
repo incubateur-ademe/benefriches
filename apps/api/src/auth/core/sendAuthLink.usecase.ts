@@ -2,8 +2,11 @@ import { ConfigService } from "@nestjs/config";
 import { addMinutes, subMinutes } from "date-fns";
 
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
 import { UseCase } from "src/shared-kernel/usecase";
 
+import { createAuthLinkSendFailedEvent } from "./events/authLinkSendFailed.event";
+import { UuidGenerator } from "./gateways/IdGenerator";
 import { TokenAuthenticationAttemptRepository } from "./gateways/TokenAuthenticationAttemptRepository";
 import { UserRepository } from "./gateways/UsersRepository";
 
@@ -32,11 +35,17 @@ export class SendAuthLinkUseCase implements UseCase<Request, SendAuthLinkResult>
     private readonly mailService: AuthLinkMailer,
     private readonly dateProvider: DateProvider,
     private readonly configService: ConfigService,
+    private readonly uuidGenerator: UuidGenerator,
+    private readonly eventPublisher: DomainEventPublisher,
   ) {}
 
   async execute({ email, postLoginRedirectTo }: Request): Promise<SendAuthLinkResult> {
     const user = await this.userRepository.getWithEmail(email);
-    if (!user) return { success: false, error: "UserDoesNotExist" };
+    if (!user) {
+      const errorName = "UserDoesNotExist";
+      await this.publishFailureEvent(errorName, email);
+      return { success: false, error: errorName };
+    }
 
     const hasRecentUnusedToken =
       await this.authByTokenRequestRepository.hasRecentUnusedTokenForUser(
@@ -44,7 +53,11 @@ export class SendAuthLinkUseCase implements UseCase<Request, SendAuthLinkResult>
         subMinutes(this.dateProvider.now(), 1),
       );
 
-    if (hasRecentUnusedToken) return { success: false, error: "TooManyRequests" };
+    if (hasRecentUnusedToken) {
+      const errorName = "TooManyRequests";
+      await this.publishFailureEvent(errorName, email);
+      return { success: false, error: errorName };
+    }
 
     const authToken = this.tokenGenerator.generate();
     const expirationDate = addMinutes(this.dateProvider.now(), 15);
@@ -68,5 +81,14 @@ export class SendAuthLinkUseCase implements UseCase<Request, SendAuthLinkResult>
     await this.mailService.sendAuthLink(email, authLink.toString());
 
     return { success: true };
+  }
+
+  private async publishFailureEvent(errorName: SendAuthLinkFailureReason, email: string) {
+    await this.eventPublisher.publish(
+      createAuthLinkSendFailedEvent(this.uuidGenerator.generate(), {
+        userEmail: email,
+        error: errorName,
+      }),
+    );
   }
 }

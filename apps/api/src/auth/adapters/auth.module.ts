@@ -112,6 +112,8 @@ import { VERIFIED_EMAIL_REPOSITORY_INJECTION_TOKEN } from "./verified-email-repo
         authLinkMailer: AuthLinkMailer,
         dateProvider: DateProvider,
         configService: ConfigService,
+        uuidGenerator: UuidGenerator,
+        eventPublisher: DomainEventPublisher,
       ) =>
         new SendAuthLinkUseCase(
           userRepository,
@@ -120,6 +122,8 @@ import { VERIFIED_EMAIL_REPOSITORY_INJECTION_TOKEN } from "./verified-email-repo
           authLinkMailer,
           dateProvider,
           configService,
+          uuidGenerator,
+          eventPublisher,
         ),
       inject: [
         SqlUserRepository,
@@ -128,6 +132,8 @@ import { VERIFIED_EMAIL_REPOSITORY_INJECTION_TOKEN } from "./verified-email-repo
         SmtpAuthLinkMailer,
         RealDateProvider,
         ConfigService,
+        RandomUuidGenerator,
+        RealEventPublisher,
       ],
     },
     {
