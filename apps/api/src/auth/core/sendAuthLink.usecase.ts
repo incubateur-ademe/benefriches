@@ -6,6 +6,7 @@ import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
 import { UseCase } from "src/shared-kernel/usecase";
 
 import { createAuthLinkSendFailedEvent } from "./events/authLinkSendFailed.event";
+import { createLoginAttemptedEvent } from "./events/loginAttempted.event";
 import { UuidGenerator } from "./gateways/IdGenerator";
 import { TokenAuthenticationAttemptRepository } from "./gateways/TokenAuthenticationAttemptRepository";
 import { UserRepository } from "./gateways/UsersRepository";
@@ -40,6 +41,8 @@ export class SendAuthLinkUseCase implements UseCase<Request, SendAuthLinkResult>
   ) {}
 
   async execute({ email, postLoginRedirectTo }: Request): Promise<SendAuthLinkResult> {
+    await this.publishAttemptEvent(email);
+
     const user = await this.userRepository.getWithEmail(email);
     if (!user) {
       const errorName = "UserDoesNotExist";
@@ -81,6 +84,15 @@ export class SendAuthLinkUseCase implements UseCase<Request, SendAuthLinkResult>
     await this.mailService.sendAuthLink(email, authLink.toString());
 
     return { success: true };
+  }
+
+  private async publishAttemptEvent(email: string) {
+    await this.eventPublisher.publish(
+      createLoginAttemptedEvent(this.uuidGenerator.generate(), {
+        userEmail: email,
+        method: "email-link",
+      }),
+    );
   }
 
   private async publishFailureEvent(errorName: SendAuthLinkFailureReason, email: string) {

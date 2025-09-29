@@ -263,13 +263,6 @@ export class AuthController {
     @Body() body: { email: string; postLoginRedirectTo: string | undefined },
     @Res() response: Response,
   ) {
-    await this.eventPublisher.publish(
-      createLoginAttemptedEvent(this.uuidGenerator.generate(), {
-        method: "email-link",
-        userEmail: body.email,
-      }),
-    );
-
     const result = await this.sendAuthLinkUseCase.execute({
       email: body.email,
       postLoginRedirectTo: body.postLoginRedirectTo,
