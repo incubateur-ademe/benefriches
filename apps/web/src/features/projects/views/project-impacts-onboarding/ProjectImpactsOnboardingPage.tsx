@@ -1,6 +1,6 @@
 import { useWindowInnerSize } from "@codegouvfr/react-dsfr/tools/useWindowInnerSize";
 import { useBreakpointsValuesPx } from "@codegouvfr/react-dsfr/useBreakpointsValuesPx";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 
@@ -9,13 +9,7 @@ import Step1 from "./Step1";
 import Step2 from "./Step2";
 import Step3 from "./Step3";
 import Step4 from "./Step4";
-
-const STEPS = {
-  1: "1-types-impacts",
-  2: "2-entites-concernes",
-  3: "3-details-calculs",
-  4: "4-persistence-donnees",
-};
+import { DEFAULT_STEP, STEPS } from "./steps";
 
 type Props = {
   onFinalNext: () => void;
@@ -24,8 +18,6 @@ type Props = {
   routeStep?: string;
   canSkipOnboarding: boolean;
 };
-
-const DEFAULT_STEP = STEPS[1];
 
 const parseRouteStep = (step?: string) =>
   step && Object.values(STEPS).includes(step) ? step : DEFAULT_STEP;
@@ -44,12 +36,6 @@ export default function ProjectImpactsOnboardingPage({
   useLayoutEffect(() => {
     window.scrollTo(0, 0);
   }, [currentStep]);
-
-  useEffect(() => {
-    if (routeStep !== currentStep) {
-      onBackToStep(currentStep);
-    }
-  }, [currentStep, onBackToStep, routeStep]);
 
   const { breakpointsValues } = useBreakpointsValuesPx();
   const { windowInnerWidth } = useWindowInnerSize();
