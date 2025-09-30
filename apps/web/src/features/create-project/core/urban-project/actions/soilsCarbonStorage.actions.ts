@@ -17,11 +17,11 @@ export const fetchCurrentAndProjectedSoilsCarbonStorage =
       if (!siteAddress) throw new Error("Missing site address");
 
       const [current, projected] = await Promise.all([
-        await extra.soilsCarbonStorageService.getForCityCodeAndSoils({
+        extra.soilsCarbonStorageService.getForCityCodeAndSoils({
           cityCode: siteAddress.cityCode,
           soils: siteSoils,
         }),
-        await extra.soilsCarbonStorageService.getForCityCodeAndSoils({
+        extra.soilsCarbonStorageService.getForCityCodeAndSoils({
           soils: projectSoils,
           cityCode: siteAddress.cityCode,
         }),

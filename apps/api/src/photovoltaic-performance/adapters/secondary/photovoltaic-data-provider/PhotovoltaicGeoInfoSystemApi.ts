@@ -41,7 +41,7 @@ interface PVGISResult {
         E_m: number;
         E_y: number; // Average annual energy production from the given system kwh/y
         l_aoi: number; // Angle of incidence loss %
-        l_spec: number; // Spectral loss %
+        l_spec: string; // Spectral loss %
         l_tg: number; // Temperature and irradiance loss %
         l_total: number; // Total loss %
       };
@@ -91,30 +91,30 @@ export class PhotovoltaicGeoInfoSystemApi implements PhotovoltaicDataProvider {
                 },
                 mountingSystem: {
                   slope: {
-                    value: Number(mounting_system.fixed.slope.value),
-                    optimal: Boolean(mounting_system.fixed.slope.optimal),
+                    value: mounting_system.fixed.slope.value,
+                    optimal: mounting_system.fixed.slope.optimal,
                   },
                   azimuth: {
-                    value: Number(mounting_system.fixed.azimuth.value),
-                    optimal: Boolean(mounting_system.fixed.azimuth.optimal),
+                    value: mounting_system.fixed.azimuth.value,
+                    optimal: mounting_system.fixed.azimuth.optimal,
                   },
                   type: inputs.mounting_system.fixed.type,
                 },
                 pvModule: {
                   technology: inputs.pv_module.technology,
-                  peakPower: Number(inputs.pv_module.peak_power),
-                  systemLoss: Number(inputs.pv_module.system_loss),
+                  peakPower: inputs.pv_module.peak_power,
+                  systemLoss: inputs.pv_module.system_loss,
                 },
               },
               expectedPerformance: {
-                kwhPerDay: Number(totals.fixed.E_d),
-                kwhPerMonth: Number(totals.fixed.E_m),
-                kwhPerYear: Number(totals.fixed.E_y),
+                kwhPerDay: totals.fixed.E_d,
+                kwhPerMonth: totals.fixed.E_m,
+                kwhPerYear: totals.fixed.E_y,
                 lossPercents: {
-                  angleIncidence: Number(totals.fixed.l_aoi),
+                  angleIncidence: totals.fixed.l_aoi,
                   spectralIncidence: Number(totals.fixed.l_spec),
-                  tempAndIrradiance: Number(totals.fixed.l_tg),
-                  total: Number(totals.fixed.l_total),
+                  tempAndIrradiance: totals.fixed.l_tg,
+                  total: totals.fixed.l_total,
                 },
               },
             };

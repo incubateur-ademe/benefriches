@@ -4,16 +4,16 @@
     /* Language and Environment */
     "target": "ES2022",
     "module": "NodeNext",
-
     /* Modules */
+    /* cf. https://vitest.dev/config/#globals */
     "typeRoots": [
-      "./node_modules/@types"
+      "./node_modules/@types",
+      "./node_modules"
     ] /* Specify multiple folders that act like './node_modules/@types'. */,
-
+    "types": ["vitest/globals"],
     /* Emit */
     "rootDir": "src",
     "outDir": "dist",
-
     "declaration": true,
     "declarationMap": true,
     "removeComments": true /* Disable emitting comments. */,

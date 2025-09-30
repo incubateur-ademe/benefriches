@@ -56,7 +56,7 @@ describe("Sites controller", () => {
   }
 
   describe("POST /sites/create-express", () => {
-    // eslint-disable-next-line jest/expect-expect
+    // eslint-disable-next-line vitest/expect-expect
     it.each(["id", "nature", "createdBy", "address"] satisfies (keyof CreateExpressSiteDto)[])(
       "can't create a site without mandatory field %s",
       async (mandatoryField) => {
@@ -87,7 +87,7 @@ describe("Sites controller", () => {
       },
     );
 
-    // eslint-disable-next-line jest/expect-expect
+    // eslint-disable-next-line vitest/expect-expect
     it("can't create an express friche without friche activity", async () => {
       const requestBody: Omit<CreateExpressSiteDto, "fricheActivity"> = {
         id: "03a53ffd-4f71-419e-8d04-041311eefa23",
@@ -112,7 +112,7 @@ describe("Sites controller", () => {
       expectBadRequestWithMissingField(response, "fricheActivity");
     });
 
-    // eslint-disable-next-line jest/expect-expect
+    // eslint-disable-next-line vitest/expect-expect
     it("can't create an express agricultral operation without activity", async () => {
       const requestBody: Omit<CreateExpressSiteDto, "activity"> = {
         id: "03a53ffd-4f71-419e-8d04-041311eefa23",
@@ -137,7 +137,7 @@ describe("Sites controller", () => {
       expectBadRequestWithMissingField(response, "activity");
     });
 
-    // eslint-disable-next-line jest/expect-expect
+    // eslint-disable-next-line vitest/expect-expect
     it("can't create an express natural area without activity", async () => {
       const requestBody: Omit<CreateExpressSiteDto, "type"> = {
         id: "03a53ffd-4f71-419e-8d04-041311eefa23",

@@ -6,8 +6,9 @@ import * as reactHooks from "eslint-plugin-react-hooks";
 import reactRefreshPlugin from "eslint-plugin-react-refresh";
 import globals from "globals";
 import tseslint from "typescript-eslint";
+import { defineConfig } from 'eslint/config';
 
-export default tseslint.config(
+export default defineConfig(
   { ignores: ["node_modules/", "dist/", "public/", "vite.config.ts", ".prettierrc.cjs"] },
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
@@ -18,6 +19,7 @@ export default tseslint.config(
     languageOptions: {
       parser: tseslint.parser,
       parserOptions: {
+        tsconfigRootDir: import.meta.dirname, 
         project: ["./tsconfig.json", "./tsconfig.node.json"],
         ecmaFeatures: { jsx: true },
         globals: { ...globals.browser },
