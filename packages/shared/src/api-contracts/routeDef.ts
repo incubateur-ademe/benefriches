@@ -1,7 +1,7 @@
-import { ZodTypeAny } from "zod";
+import z from "zod";
 
 export type RouteDef = {
   path: string;
-  bodySchema?: ZodTypeAny;
-  querySchema?: ZodTypeAny;
+  bodySchema?: z.ZodType;
+  querySchema?: z.ZodType;
 };

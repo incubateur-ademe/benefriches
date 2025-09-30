@@ -841,7 +841,7 @@ class DVFCommuneAnalyzer {
       missingCommunes.forEach((commune) => {
         // Extraire le département du city_code (2 premiers chiffres)
         const cityCode = commune.city_code || "";
-        const dept = cityCode.toString().slice(0, 2);
+        const dept = cityCode.slice(0, 2);
         const deptKey = dept ? dept : "Non défini";
         deptCounts[deptKey] = (deptCounts[deptKey] ?? 0) + 1;
       });
@@ -856,7 +856,7 @@ class DVFCommuneAnalyzer {
         (result, commune) => {
           // Extraire le département du city_code (2 premiers chiffres)
           const cityCode = commune.city_code;
-          const dept = cityCode.toString().slice(0, 2);
+          const dept = cityCode.slice(0, 2);
           if (["57", "68", "67", "97", "98"].includes(dept)) {
             return result;
           }
@@ -932,7 +932,7 @@ class DVFCommuneAnalyzer {
       const deptCounts: Record<string, number> = {};
       missingCommunes.forEach((commune) => {
         const cityCode = commune.city_code;
-        const dept = cityCode.toString().slice(0, 2);
+        const dept = cityCode.slice(0, 2);
         const deptKey = dept ? dept : "Non défini";
         deptCounts[deptKey] = (deptCounts[deptKey] ?? 0) + 1;
       });
@@ -946,7 +946,7 @@ class DVFCommuneAnalyzer {
       // Communes restantes
       const otherMissingCommunes = missingCommunes.filter((commune) => {
         const cityCode = commune.city_code;
-        const dept = cityCode.toString().slice(0, 2);
+        const dept = cityCode.slice(0, 2);
         return !["57", "68", "67", "97", "98"].includes(dept);
       });
 

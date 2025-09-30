@@ -1,9 +1,10 @@
 import eslint from "@eslint/js";
 import eslintConfigPrettier from "eslint-config-prettier";
-import jestPlugin from "eslint-plugin-jest";
 import tseslint from "typescript-eslint";
+import { defineConfig } from 'eslint/config';
+import vitest from 'eslint-plugin-vitest';
 
-export default tseslint.config(
+export default defineConfig(
   eslint.configs.recommended,
   ...tseslint.configs.strictTypeChecked,
   ...tseslint.configs.stylisticTypeChecked,
@@ -11,14 +12,15 @@ export default tseslint.config(
   {
     plugins: {
       ["@typescript-eslint"]: tseslint.plugin,
-      ["jest"]: jestPlugin,
+      ['vitest']: vitest,
     },
   },
-  { ignores: ["node_modules/", "dist/", "jest.config.ts"] },
+  { ignores: ["node_modules/", "dist/"] },
   {
     languageOptions: {
       parser: tseslint.parser,
       parserOptions: {
+        tsconfigRootDir: import.meta.dirname, 
         project: true,
       },
     },
@@ -38,9 +40,21 @@ export default tseslint.config(
     files: ["**/*.{cjs,mjs,js}"],
     extends: [tseslint.configs.disableTypeChecked],
   },
-  // define jest globals and recommended rules for all test files
+  // define vitest globals and recommended rules for all test files
   {
     files: ["**/*spec.ts"],
-    ...jestPlugin.configs["flat/recommended"],
+    rules: {
+      ...vitest.configs.recommended.rules,
+    },
+    languageOptions: {
+      globals: {
+        ...vitest.environments.env.globals,
+      },
+    },
+    settings: {
+      vitest: {
+        typecheck: true,
+      },
+    },
   },
 );

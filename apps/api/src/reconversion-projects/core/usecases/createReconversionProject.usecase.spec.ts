@@ -1,4 +1,3 @@
-/* eslint-disable jest/no-conditional-expect */
 import { ZodError } from "zod";
 
 import { InMemoryReconversionProjectRepository } from "src/reconversion-projects/adapters/secondary/repositories/reconversion-project/InMemoryReconversionProjectRepository";

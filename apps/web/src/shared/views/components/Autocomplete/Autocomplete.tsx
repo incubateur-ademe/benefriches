@@ -24,7 +24,14 @@ const SCROLLBAR_CLASSES = [
 function Autocomplete({ options, value, onSelect, className, children }: Props) {
   return (
     <div className={classNames(className)}>
-      <Combobox value={value} onChange={onSelect}>
+      <Combobox
+        value={value}
+        onChange={(value) => {
+          if (value) {
+            onSelect(value);
+          }
+        }}
+      >
         <ComboboxInput as={Fragment}>{children}</ComboboxInput>
         <ComboboxOptions anchor="bottom start">
           <ul
@@ -46,16 +53,17 @@ function Autocomplete({ options, value, onSelect, className, children }: Props) 
           >
             {options.map((option) => (
               <ComboboxOption as={Fragment} key={option.value} value={option.value}>
-                {({ focus, selected }) => (
+                {({ focus }) => (
                   <li
                     className={classNames(
                       fr.cx("fr-nav__link"),
                       focus && "bg-dsfr-alt-blue",
-                      selected && "bg-dsfr-open-blue",
+                      option.value === value && "bg-dsfr-open-blue",
                       "cursor-pointer",
+                      "justify-start",
                     )}
                   >
-                    {selected && <i className="size-5"></i>}
+                    {option.value === value && <i className="fr-icon-check-line mr-1.5"></i>}
                     {option.label}
                   </li>
                 )}

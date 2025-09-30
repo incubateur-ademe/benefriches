@@ -1,4 +1,3 @@
-/* eslint-disable jest/no-conditional-expect */
 import { ZodError } from "zod";
 
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
