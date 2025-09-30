@@ -1,4 +1,5 @@
 import { INestApplication } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt/dist/jwt.service";
 import { Knex } from "knex";
 import { Server } from "node:net";
 import { expressProjectCategorySchema } from "shared";
@@ -7,6 +8,7 @@ import { createTestApp } from "test/testApp";
 import { v4 as uuid } from "uuid";
 import { z, ZodError } from "zod";
 
+import { ACCESS_TOKEN_COOKIE_KEY } from "src/auth/adapters/access-token/accessTokenCookie";
 import {
   buildExhaustiveReconversionProjectProps,
   buildMinimalReconversionProjectProps,
@@ -14,6 +16,7 @@ import {
 } from "src/reconversion-projects/core/model/reconversionProject.mock";
 import { Result } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
+import { UserBuilder } from "src/users/core/model/user.mock";
 
 import { createReconversionProjectInputSchema } from "./reconversionProjects.controller";
 
@@ -36,44 +39,70 @@ describe("ReconversionProjects controller", () => {
     await sqlConnection.destroy();
   });
 
-  describe("POST /reconversion-projects", () => {
-    it.each([
-      "id",
-      "name",
-      "createdBy",
-      "relatedSiteId",
-      "developmentPlan",
-      "soilsDistribution",
-      "yearlyProjectedCosts",
-      "yearlyProjectedRevenues",
-      "projectPhase",
-    ] satisfies (keyof z.infer<typeof createReconversionProjectInputSchema>)[])(
-      "can't create a reconversion project without mandatory field %s",
-      async (mandatoryField) => {
-        const requestBody = buildMinimalReconversionProjectProps();
-        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-        delete requestBody[mandatoryField];
+  async function authenticateUser(userId = uuid()) {
+    const user = new UserBuilder().withId(userId).withEmail("user@example.com").build();
+    const accessTokenService = app.get(JwtService);
+    const accessToken = await accessTokenService.signAsync({
+      sub: user.id,
+      email: user.email,
+      authProvider: "benefriches",
+    });
+    return accessToken;
+  }
 
+  describe("POST /reconversion-projects", () => {
+    describe("error cases", () => {
+      it("responds with a 401 when no authentication provided", async () => {
         const response = await supertest(app.getHttpServer())
           .post("/api/reconversion-projects")
-          .send(requestBody);
+          .send(buildMinimalReconversionProjectProps());
 
-        expect(response.status).toEqual(400);
-        expect(response.body).toHaveProperty("errors");
+        expect(response.status).toEqual(401);
+      });
 
-        const responseErrors = (response.body as BadRequestResponseBody).errors;
-        expect(responseErrors).toHaveLength(1);
-        expect(responseErrors[0]?.path).toContain(mandatoryField);
-      },
-    );
+      it.each([
+        "id",
+        "name",
+        "createdBy",
+        "relatedSiteId",
+        "developmentPlan",
+        "soilsDistribution",
+        "yearlyProjectedCosts",
+        "yearlyProjectedRevenues",
+        "projectPhase",
+      ] satisfies (keyof z.infer<typeof createReconversionProjectInputSchema>)[])(
+        "can't create a reconversion project without mandatory field %s",
+        async (mandatoryField) => {
+          const requestBody = buildMinimalReconversionProjectProps();
+          const accessToken = await authenticateUser(requestBody.createdBy);
+          // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+          delete requestBody[mandatoryField];
+
+          const response = await supertest(app.getHttpServer())
+            .post("/api/reconversion-projects")
+            .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+            .send(requestBody);
+
+          expect(response.status).toEqual(400);
+          expect(response.body).toHaveProperty("errors");
+
+          const responseErrors = (response.body as BadRequestResponseBody).errors;
+          expect(responseErrors).toHaveLength(1);
+          expect(responseErrors[0]?.path).toContain(mandatoryField);
+        },
+      );
+    });
 
     it.each([
       { case: "with minimal data", requestBody: buildMinimalReconversionProjectProps() },
       { case: "with exhaustive data", requestBody: buildExhaustiveReconversionProjectProps() },
       { case: "with urban project data", requestBody: buildUrbanProjectReconversionProjectProps() },
     ])("get a 201 response and reconversion project is created $case", async ({ requestBody }) => {
+      const accessToken = await authenticateUser(requestBody.createdBy);
+
       await sqlConnection("sites").insert({
         id: requestBody.relatedSiteId,
+        created_by: requestBody.createdBy,
         name: "Site name",
         surface_area: 14000,
         owner_structure_type: "company",
@@ -81,6 +110,7 @@ describe("ReconversionProjects controller", () => {
       });
       const response = await supertest(app.getHttpServer())
         .post("/api/reconversion-projects")
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send(requestBody);
 
       expect(response.status).toEqual(201);
@@ -103,6 +133,7 @@ describe("ReconversionProjects controller", () => {
 
   describe("POST /create-from-site", () => {
     const siteId = "f590f643-cd9a-4187-8973-f90e9f1998c8";
+
     beforeEach(async () => {
       await sqlConnection("sites").insert({
         id: siteId,
@@ -129,14 +160,31 @@ describe("ReconversionProjects controller", () => {
       });
     });
 
-    it("can't create a reconversion project without category", async () => {
+    it("responds with a 401 when no access token is provided", async () => {
       const response = await supertest(app.getHttpServer())
         .post("/api/reconversion-projects/create-from-site")
         .send({
           reconversionProjectId: "64789135-afad-46ea-97a2-f14ba460d485",
           createdBy: "612d16c7-b6e4-4e2c-88a8-0512cc51946c",
           siteId: siteId,
+          category: "PUBLIC_FACILITIES",
         });
+
+      expect(response.status).toEqual(401);
+    });
+
+    it("can't create a reconversion project without category", async () => {
+      const requestBody = {
+        reconversionProjectId: "64789135-afad-46ea-97a2-f14ba460d485",
+        createdBy: "612d16c7-b6e4-4e2c-88a8-0512cc51946c",
+        siteId: siteId,
+      };
+      const accessToken = await authenticateUser(requestBody.createdBy);
+
+      const response = await supertest(app.getHttpServer())
+        .post("/api/reconversion-projects/create-from-site")
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send(requestBody);
 
       expect(response.status).toEqual(400);
       expect(response.body).toHaveProperty("errors");
@@ -155,9 +203,11 @@ describe("ReconversionProjects controller", () => {
           siteId: siteId,
           category,
         };
+        const accessToken = await authenticateUser(requestBody.createdBy);
 
         const response = await supertest(app.getHttpServer())
           .post("/api/reconversion-projects/create-from-site")
+          .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
           .send(requestBody);
         expect(response.status).toEqual(201);
 
@@ -179,9 +229,19 @@ describe("ReconversionProjects controller", () => {
   });
 
   describe("GET /reconversion-projects/list-by-site", () => {
+    it("gets a 401 response when no access token is provided", async () => {
+      const response = await supertest(app.getHttpServer())
+        .get("/api/reconversion-projects/list-by-site?userId=" + uuid())
+        .send();
+
+      expect(response.status).toEqual(401);
+    });
+
     it("gets a 400 response when no userId provided", async () => {
+      const accessToken = await authenticateUser();
       const response = await supertest(app.getHttpServer())
         .get("/api/reconversion-projects/list-by-site")
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send();
 
       expect(response.status).toEqual(400);
@@ -268,9 +328,11 @@ describe("ReconversionProjects controller", () => {
           features: {},
         },
       ]);
+      const accessToken = await authenticateUser(userId);
 
       const response = await supertest(app.getHttpServer())
         .get("/api/reconversion-projects/list-by-site?userId=" + userId)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send();
 
       expect(response.status).toEqual(200);
@@ -307,6 +369,14 @@ describe("ReconversionProjects controller", () => {
   });
 
   describe("GET /reconversion-projects/:reconversionProjectId/impacts", () => {
+    it("gets a 401 when not authenticated", async () => {
+      const response = await supertest(app.getHttpServer())
+        .get(`/api/reconversion-projects/${uuid()}/impacts`)
+        .send();
+
+      expect(response.status).toEqual(401);
+    });
+
     it("gets a 200 with list of reconversion project impacts", async () => {
       const userId = "71eeda1d-9688-455a-981a-1aca18fe00b0";
       const siteInDb = {
@@ -357,8 +427,10 @@ describe("ReconversionProjects controller", () => {
         },
       });
 
+      const accessToken = await authenticateUser(userId);
       const response = await supertest(app.getHttpServer())
         .get(`/api/reconversion-projects/${projectInDb.id}/impacts`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send();
 
       expect(response.status).toEqual(200);

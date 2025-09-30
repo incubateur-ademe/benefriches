@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Param, Post, Query } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Query, UseGuards } from "@nestjs/common";
 import { createZodDto } from "nestjs-zod";
 import { API_ROUTES, expressProjectCategorySchema } from "shared";
 import { z } from "zod";
 
+import { JwtAuthGuard } from "src/auth/adapters/JwtAuthGuard";
 import { reconversionProjectPropsSchema } from "src/reconversion-projects/core/model/reconversionProject";
 import { ComputeProjectUrbanSprawlImpactsComparisonUseCase } from "src/reconversion-projects/core/usecases/computeProjectUrbanSprawlImpactsComparison.usecase";
 import { ComputeReconversionProjectImpactsUseCase } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
@@ -51,6 +52,7 @@ export class ReconversionProjectController {
     private readonly getProjectUrbanSprawlImpactsComparisonUseCase: ComputeProjectUrbanSprawlImpactsComparisonUseCase,
   ) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   async createReconversionProject(
     @Body() createReconversionProjectDto: CreateReconversionProjectBodyDto,
@@ -60,6 +62,7 @@ export class ReconversionProjectController {
     });
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post("create-from-site")
   async createExpressReconversionProject(
     @Body() createReconversionProjectDto: CreateExpressReconversionProjectBodyDto,
@@ -67,12 +70,14 @@ export class ReconversionProjectController {
     return await this.createExpressReconversionProjectUseCase.execute(createReconversionProjectDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get("list-by-site")
   async getListGroupedBySite(@Query() { userId }: GetListGroupedBySiteQueryDto) {
     const result = await this.getReconversionProjectsBySite.execute({ userId });
     return result;
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(":reconversionProjectId/impacts")
   async getProjectImpacts(
     @Param("reconversionProjectId") reconversionProjectId: string,
@@ -86,6 +91,7 @@ export class ReconversionProjectController {
     return result;
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(":reconversionProjectId/features")
   async getReconversionProjectFeatures(
     @Param("reconversionProjectId") reconversionProjectId: string,

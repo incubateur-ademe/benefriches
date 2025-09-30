@@ -1,7 +1,9 @@
 import { HttpModule } from "@nestjs/axios";
 import { Module } from "@nestjs/common";
+import { ConfigModule } from "@nestjs/config";
 import { FricheGenerator } from "shared";
 
+import { AuthModule } from "src/auth/adapters/auth.module";
 import { CarbonStorageModule } from "src/carbon-storage/adapters/primary/carbonStorage.module";
 import { SqlCarbonStorageQuery } from "src/carbon-storage/adapters/secondary/carbon-storage-query/SqlCarbonStorageQuery";
 import { GetCarbonStorageFromSoilDistributionService } from "src/carbon-storage/core/services/getCarbonStorageFromSoilDistribution";
@@ -41,8 +43,14 @@ import { SqlReconversionProjectRepository } from "../secondary/repositories/reco
 import { ReconversionProjectController } from "./reconversionProjects.controller";
 
 @Module({
+  imports: [
+    CarbonStorageModule,
+    ConfigModule,
+    HttpModule,
+    PhotovoltaicPerformanceModule,
+    AuthModule,
+  ],
   controllers: [ReconversionProjectController],
-  imports: [CarbonStorageModule, HttpModule, PhotovoltaicPerformanceModule],
   providers: [
     {
       provide: CreateReconversionProjectUseCase,
