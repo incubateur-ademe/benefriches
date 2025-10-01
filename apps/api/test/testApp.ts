@@ -1,9 +1,15 @@
 import { HttpService } from "@nestjs/axios";
 import { ConfigModule } from "@nestjs/config";
+import { JwtService } from "@nestjs/jwt";
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { Test } from "@nestjs/testing";
 
 import { AppModule } from "src/app.module";
+import {
+  AUTH_USER_REPOSITORY_INJECTION_TOKEN,
+  UserRepository,
+} from "src/auth/core/gateways/UsersRepository";
+import { User } from "src/auth/core/user";
 import { configureServer } from "src/httpServer";
 import { ConnectCrm } from "src/marketing/adapters/secondary/ConnectCrm";
 import { FakeCrm } from "src/marketing/adapters/secondary/FakeCrm";
@@ -77,4 +83,23 @@ export async function createTestApp({ providerOverrides }: CreateTestAppInput = 
   const testApp = moduleRef.createNestApplication<NestExpressApplication>();
   configureServer(testApp);
   return testApp;
+}
+
+export function saveUser(app: NestExpressApplication) {
+  return async (user: User) => {
+    const userRepository = app.get<UserRepository>(AUTH_USER_REPOSITORY_INJECTION_TOKEN);
+    await userRepository.save(user);
+  };
+}
+
+export function authenticateUser(app: NestExpressApplication) {
+  return async (user: User) => {
+    const accessTokenService = app.get(JwtService);
+    const accessToken = await accessTokenService.signAsync({
+      sub: user.id,
+      email: user.email,
+      authProvider: "benefriches",
+    });
+    return { accessToken };
+  };
 }

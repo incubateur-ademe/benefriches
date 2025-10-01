@@ -1,9 +1,8 @@
-import { JwtService } from "@nestjs/jwt/dist/jwt.service";
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { Knex } from "knex";
 import { expressProjectCategorySchema } from "shared";
 import supertest from "supertest";
-import { createTestApp } from "test/testApp";
+import { authenticateUser, createTestApp } from "test/testApp";
 import { v4 as uuid } from "uuid";
 import { z, ZodError } from "zod";
 
@@ -38,17 +37,6 @@ describe("ReconversionProjects controller", () => {
     await sqlConnection.destroy();
   });
 
-  async function authenticateUser(userId = uuid()) {
-    const user = new UserBuilder().withId(userId).withEmail("user@example.com").build();
-    const accessTokenService = app.get(JwtService);
-    const accessToken = await accessTokenService.signAsync({
-      sub: user.id,
-      email: user.email,
-      authProvider: "benefriches",
-    });
-    return accessToken;
-  }
-
   describe("POST /reconversion-projects", () => {
     describe("error cases", () => {
       it("responds with a 401 when no authentication provided", async () => {
@@ -73,7 +61,8 @@ describe("ReconversionProjects controller", () => {
         "can't create a reconversion project without mandatory field %s",
         async (mandatoryField) => {
           const requestBody = buildMinimalReconversionProjectProps();
-          const accessToken = await authenticateUser(requestBody.createdBy);
+          const user = new UserBuilder().withId(requestBody.createdBy).asLocalAuthority().build();
+          const { accessToken } = await authenticateUser(app)(user);
           // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
           delete requestBody[mandatoryField];
 
@@ -97,11 +86,12 @@ describe("ReconversionProjects controller", () => {
       { case: "with exhaustive data", requestBody: buildExhaustiveReconversionProjectProps() },
       { case: "with urban project data", requestBody: buildUrbanProjectReconversionProjectProps() },
     ])("get a 201 response and reconversion project is created $case", async ({ requestBody }) => {
-      const accessToken = await authenticateUser(requestBody.createdBy);
+      const user = new UserBuilder().withId(requestBody.createdBy).asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
 
       await sqlConnection("sites").insert({
         id: requestBody.relatedSiteId,
-        created_by: requestBody.createdBy,
+        created_by: user.id,
         name: "Site name",
         surface_area: 14000,
         owner_structure_type: "company",
@@ -178,7 +168,8 @@ describe("ReconversionProjects controller", () => {
         createdBy: "612d16c7-b6e4-4e2c-88a8-0512cc51946c",
         siteId: siteId,
       };
-      const accessToken = await authenticateUser(requestBody.createdBy);
+      const user = new UserBuilder().withId(requestBody.createdBy).asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
 
       const response = await supertest(app.getHttpServer())
         .post("/api/reconversion-projects/create-from-site")
@@ -202,7 +193,8 @@ describe("ReconversionProjects controller", () => {
           siteId: siteId,
           category,
         };
-        const accessToken = await authenticateUser(requestBody.createdBy);
+        const user = new UserBuilder().withId(requestBody.createdBy).asLocalAuthority().build();
+        const { accessToken } = await authenticateUser(app)(user);
 
         const response = await supertest(app.getHttpServer())
           .post("/api/reconversion-projects/create-from-site")
@@ -237,7 +229,9 @@ describe("ReconversionProjects controller", () => {
     });
 
     it("gets a 400 response when no userId provided", async () => {
-      const accessToken = await authenticateUser();
+      const user = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+
       const response = await supertest(app.getHttpServer())
         .get("/api/reconversion-projects/list-by-site")
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
@@ -327,7 +321,8 @@ describe("ReconversionProjects controller", () => {
           features: {},
         },
       ]);
-      const accessToken = await authenticateUser(userId);
+      const user = new UserBuilder().withId(userId).asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
 
       const response = await supertest(app.getHttpServer())
         .get("/api/reconversion-projects/list-by-site?userId=" + userId)
@@ -426,7 +421,8 @@ describe("ReconversionProjects controller", () => {
         },
       });
 
-      const accessToken = await authenticateUser(userId);
+      const user = new UserBuilder().withId(userId).asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
       const response = await supertest(app.getHttpServer())
         .get(`/api/reconversion-projects/${projectInDb.id}/impacts`)
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)

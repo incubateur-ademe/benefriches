@@ -1,8 +1,7 @@
-import { JwtService } from "@nestjs/jwt";
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { Knex } from "knex";
 import supertest from "supertest";
-import { createTestApp } from "test/testApp";
+import { authenticateUser, createTestApp } from "test/testApp";
 import { v4 as uuid } from "uuid";
 
 import { ACCESS_TOKEN_COOKIE_KEY } from "src/auth/adapters/access-token/accessTokenCookie";
@@ -42,17 +41,6 @@ describe("Sites controller", () => {
     await app.close();
     await sqlConnection.destroy();
   });
-
-  async function authenticateUser(userId = uuid()) {
-    const user = new UserBuilder().withId(userId).withEmail("user@example.com").build();
-    const accessTokenService = app.get(JwtService);
-    const accessToken = await accessTokenService.signAsync({
-      sub: user.id,
-      email: user.email,
-      authProvider: "benefriches",
-    });
-    return accessToken;
-  }
 
   describe("POST /sites/create-express", () => {
     // eslint-disable-next-line vitest/expect-expect
@@ -588,7 +576,8 @@ describe("Sites controller", () => {
     });
 
     it("gets a 404 error when site does not exist", async () => {
-      const accessToken = await authenticateUser();
+      const user = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
 
       const siteId = uuid();
       const response = await supertest(app.getHttpServer())
@@ -600,13 +589,13 @@ describe("Sites controller", () => {
     });
 
     it("gets a 200 response when site exists", async () => {
-      const userId = uuid();
-      const accessToken = await authenticateUser(userId);
+      const user = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
 
       const siteId = uuid();
       await sqlConnection("sites").insert({
         id: siteId,
-        created_by: userId,
+        created_by: user.id,
         name: "Friche Amiens",
         nature: "FRICHE",
         description: "Description of site",
@@ -694,13 +683,13 @@ describe("Sites controller", () => {
 
     it("gets a 200 response and returns agricultural site with incomes", async () => {
       const siteId = uuid();
-      const userId = uuid();
 
-      const accessToken = await authenticateUser(userId);
+      const user = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
 
       await sqlConnection("sites").insert({
         id: siteId,
-        created_by: userId,
+        created_by: user.id,
         name: "Viticulture Amiens",
         nature: "AGRICULTURAL_OPERATIONS",
         agricultural_operation_activity: "CATTLE_FARMING",
@@ -788,13 +777,13 @@ describe("Sites controller", () => {
 
     it("gets a 200 response and returns natural area site with type", async () => {
       const siteId = uuid();
-      const userId = uuid();
 
-      const accessToken = await authenticateUser(userId);
+      const user = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
 
       await sqlConnection("sites").insert({
         id: siteId,
-        created_by: userId,
+        created_by: user.id,
         name: "Prairie Amiens",
         nature: "NATURAL_AREA",
         natural_area_type: "PRAIRIE",
