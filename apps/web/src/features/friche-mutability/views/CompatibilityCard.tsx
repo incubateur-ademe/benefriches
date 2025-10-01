@@ -45,7 +45,7 @@ const getMutabilityUsageDisplayName = (usage: MutabilityUsage): string => {
     renaturation: "Espace de nature",
     equipements: "Équipements publics",
     tertiaire: "Bureaux",
-    residentiel: "Habitations et commerces",
+    residentiel: "Habitations et commerces de proximité",
     photovoltaique: "Centrale photovoltaïque",
     industrie: "Zone industrielle ou logistique",
   }[usage];
