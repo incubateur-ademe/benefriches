@@ -1,13 +1,12 @@
-import { INestApplication } from "@nestjs/common";
+import { NestExpressApplication } from "@nestjs/platform-express/interfaces/nest-express-application.interface";
 import { Knex } from "knex";
-import { Server } from "node:net";
 import supertest from "supertest";
 import { createTestApp } from "test/testApp";
 
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 
 describe("CarbonStorage controller", () => {
-  let app: INestApplication<Server>;
+  let app: NestExpressApplication;
   let sqlConnection: Knex;
 
   beforeAll(async () => {

@@ -1,7 +1,5 @@
-import { INestApplication } from "@nestjs/common";
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { Test as NestTest } from "@nestjs/testing";
-import { Server } from "node:net";
 import supertest from "supertest";
 
 import { AppModule } from "src/app.module";
@@ -12,7 +10,7 @@ import { MockPhotovoltaicGeoInfoSystemApi } from "../secondary/photovoltaic-data
 import { PhotovoltaicPerformanceController } from "./photovoltaicPerformance.controller";
 
 describe("PhotovoltaicPerformance controller", () => {
-  let app: INestApplication<Server>;
+  let app: NestExpressApplication;
 
   beforeAll(async () => {
     const moduleRef = await NestTest.createTestingModule({
@@ -33,8 +31,8 @@ describe("PhotovoltaicPerformance controller", () => {
       ],
     }).compile();
 
-    app = moduleRef.createNestApplication<NestExpressApplication>();
-    configureServer(app as NestExpressApplication);
+    app = moduleRef.createNestApplication();
+    configureServer(app);
     await app.init();
   });
 

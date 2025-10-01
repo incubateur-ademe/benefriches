@@ -1,7 +1,6 @@
-import { INestApplication } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt/dist/jwt.service";
+import { NestExpressApplication } from "@nestjs/platform-express";
 import { Knex } from "knex";
-import { Server } from "node:net";
 import { expressProjectCategorySchema } from "shared";
 import supertest from "supertest";
 import { createTestApp } from "test/testApp";
@@ -25,7 +24,7 @@ type BadRequestResponseBody = {
 };
 
 describe("ReconversionProjects controller", () => {
-  let app: INestApplication<Server>;
+  let app: NestExpressApplication;
   let sqlConnection: Knex;
 
   beforeAll(async () => {

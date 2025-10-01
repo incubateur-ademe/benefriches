@@ -1,7 +1,6 @@
-import { INestApplication } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
+import { NestExpressApplication } from "@nestjs/platform-express";
 import { Knex } from "knex";
-import { Server } from "node:net";
 import supertest from "supertest";
 import { createTestApp } from "test/testApp";
 import { v4 as uuid } from "uuid";
@@ -30,7 +29,7 @@ function expectBadRequestWithMissingField(
 }
 
 describe("Sites controller", () => {
-  let app: INestApplication<Server>;
+  let app: NestExpressApplication;
   let sqlConnection: Knex;
 
   beforeAll(async () => {

@@ -1,5 +1,4 @@
-import { INestApplication } from "@nestjs/common";
-import { Server } from "node:net";
+import { NestExpressApplication } from "@nestjs/platform-express";
 import { createTestApp } from "test/testApp";
 
 import { createUserAccountCreatedEvent } from "src/auth/core/events/userAccountCreated.event";
@@ -10,9 +9,9 @@ import { ConnectCrm } from "../secondary/ConnectCrm";
 import { FakeCrm } from "../secondary/FakeCrm";
 
 describe("UserAccountCreatedHandler integration test", () => {
-  let app: INestApplication<Server>;
   let eventPublisher: DomainEventPublisher;
   let fakeCrm: FakeCrm;
+  let app: NestExpressApplication;
 
   beforeEach(async () => {
     fakeCrm = new FakeCrm();

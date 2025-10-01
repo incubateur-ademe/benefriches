@@ -1,8 +1,7 @@
-import { INestApplication } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
+import { NestExpressApplication } from "@nestjs/platform-express";
 import cookie from "cookie";
 import { Knex } from "knex";
-import { Server } from "node:net";
 import request from "supertest";
 import { createTestApp } from "test/testApp";
 import { vi } from "vitest";
@@ -41,7 +40,7 @@ function extractCookieFromResponseHeaders<TCookieName extends string>(
 }
 
 describe("Auth integration tests", () => {
-  let app: INestApplication<Server>;
+  let app: NestExpressApplication;
   let sqlConnection: Knex;
 
   beforeAll(async () => {
