@@ -36,7 +36,7 @@ export const impactsExportDownloaded = (exportType: string): AnalyticsEvent => {
   };
 };
 
-export const mutabilityResultDiscoverImpactsClicked = ({
+export const compatibilityResultDiscoverImpactsClicked = ({
   usage,
 }: {
   usage: string;

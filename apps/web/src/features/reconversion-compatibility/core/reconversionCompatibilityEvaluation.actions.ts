@@ -6,7 +6,7 @@ import { ExpressSitePayload } from "@/features/create-site/core/actions/finalSte
 import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
 import { routes } from "@/shared/views/router";
 
-import { MutabilityUsage } from "./fricheMutability.reducer";
+import { MutabilityUsage } from "./reconversionCompatibilityEvaluation.reducer";
 
 function mapMutabilityUsageToProjectCategory(
   usage: MutabilityUsage,
@@ -29,11 +29,11 @@ function mapMutabilityUsageToProjectCategory(
   }
 }
 
-const ACTION_PREFIX = "fricheMutability";
+const ACTION_PREFIX = "reconversionCompatibilityEvaluation";
 
-export const fricheMutabilityAnalysisReset = createAction(`${ACTION_PREFIX}/analysisReset`);
+export const reconversionCompatibilityEvaluationReset = createAction(`${ACTION_PREFIX}/reset`);
 
-export type MutabilityEvaluationResults = {
+export type ReconversionCompatibilityEvaluationResults = {
   evaluationId: string;
   reliabilityScore: number;
   top3Usages: {
@@ -50,30 +50,34 @@ export type MutabilityEvaluationResults = {
   };
 };
 
-export interface FricheMutabilityEvaluationGateway {
-  getEvaluationResults: (evaluationId: string) => Promise<MutabilityEvaluationResults | null>;
+export interface ReconversionCompatibilityEvaluationGateway {
+  getEvaluationResults: (
+    evaluationId: string,
+  ) => Promise<ReconversionCompatibilityEvaluationResults | null>;
 }
 
-export const fricheMutabilityEvaluationResultsRequested = createAppAsyncThunk<
-  MutabilityEvaluationResults,
+export const reconversionCompatibilityEvaluationResultsRequested = createAppAsyncThunk<
+  ReconversionCompatibilityEvaluationResults,
   { evaluationId: string }
->(`${ACTION_PREFIX}/evaluationResultsRequested`, async (args, { extra }) => {
+>(`${ACTION_PREFIX}/resultsRequested`, async (args, { extra }) => {
   const { evaluationId } = args;
-  const results = await extra.fricheMutabilityEvaluationService.getEvaluationResults(evaluationId);
+  const results =
+    await extra.reconversionCompatibilityEvaluationService.getEvaluationResults(evaluationId);
 
   if (!results) throw new Error("EVALUATION_NOT_FOUND");
 
   return results;
 });
 
-export const fricheMutabilityImpactsRequested = createAppAsyncThunk<
+export const reconversionCompatibilityResultImpacts = createAppAsyncThunk<
   {
     projectId: string;
   },
   { usage: MutabilityUsage }
 >(`${ACTION_PREFIX}/impactsRequested`, async (payload, { extra, getState }) => {
-  const { currentUser: currentUserState, fricheMutability: fricheMutabilityState } = getState();
-  const { evaluationResults } = fricheMutabilityState;
+  const { currentUser: currentUserState, reconversionCompatibilityEvaluation: compatibilityState } =
+    getState();
+  const { evaluationResults } = compatibilityState;
 
   if (!currentUserState.currentUser) throw new Error("NO_AUTHENTICATED_USER");
   if (!evaluationResults) throw new Error("NO_EVALUATION_RESULTS");

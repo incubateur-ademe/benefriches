@@ -2,11 +2,11 @@ import { createSelector } from "@reduxjs/toolkit";
 
 import { RootState } from "@/shared/core/store-config/store";
 
-import { MutabilityUsage } from "./fricheMutability.reducer";
+import { MutabilityUsage } from "./reconversionCompatibilityEvaluation.reducer";
 
-const selectSelf = (state: RootState) => state.fricheMutability;
+const selectSelf = (state: RootState) => state.reconversionCompatibilityEvaluation;
 
-export type FricheMutabilityViewData = {
+export type ReconversionCompatibilityEvaluationViewData = {
   evaluationResults:
     | {
         top3MutabilityUsages: { usage: MutabilityUsage; score: number; rank: number }[];
@@ -20,9 +20,9 @@ export type FricheMutabilityViewData = {
   hasError: boolean;
 };
 
-export const selectFricheMutabilityViewData = createSelector(
+export const selectReconversionCompatibilityViewData = createSelector(
   selectSelf,
-  (state): FricheMutabilityViewData => ({
+  (state): ReconversionCompatibilityEvaluationViewData => ({
     evaluationResults: state.evaluationResults
       ? {
           top3MutabilityUsages: state.evaluationResults.top3Usages,

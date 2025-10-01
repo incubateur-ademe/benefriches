@@ -1,4 +1,4 @@
-import { MutabilityUsage } from "../core/fricheMutability.reducer";
+import { MutabilityUsage } from "../core/reconversionCompatibilityEvaluation.reducer";
 
 type EvaluationResults = {
   evaluationId: string;

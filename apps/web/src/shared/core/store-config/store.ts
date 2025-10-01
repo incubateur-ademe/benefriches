@@ -8,7 +8,6 @@ import { GetSitesByIdGateway } from "@/features/create-project/core/actions/urba
 import { PhotovoltaicPerformanceGateway } from "@/features/create-project/core/renewable-energy/actions/getPhotovoltaicExpectedPerformance.action";
 import { CreateSiteGateway } from "@/features/create-site/core/actions/finalStep.actions";
 import { SiteMunicipalityDataGateway as CreateSiteMunicipalityDataGateway } from "@/features/create-site/core/actions/siteMunicipalityData.actions";
-import { FricheMutabilityEvaluationGateway } from "@/features/friche-mutability/core/fricheMutability.actions";
 import { AuthenticationGateway } from "@/features/onboarding/core/AuthenticationGateway";
 import { CreateUserGateway } from "@/features/onboarding/core/createUser.action";
 import { CurrentUserGateway } from "@/features/onboarding/core/initCurrentUser.action";
@@ -16,6 +15,7 @@ import { ProjectFeaturesGateway } from "@/features/projects/application/project-
 import { UrbanSprawlImpactsComparisonGateway } from "@/features/projects/application/project-impacts-urban-sprawl-comparison/fetchUrbanSprawlImpactsComparison.action";
 import { ReconversionProjectImpactsGateway } from "@/features/projects/application/project-impacts/actions";
 import { QuickUrbanProjectImpactsGateway } from "@/features/projects/application/project-impacts/fetchQuickImpactsForUrbanProjectOnFriche.action";
+import { ReconversionCompatibilityEvaluationGateway } from "@/features/reconversion-compatibility/core/reconversionCompatibilityEvaluation.actions";
 import { SiteFeaturesGateway } from "@/features/site-features/core/fetchSiteFeatures.action";
 import { CreateFeatureAlertGateway } from "@/features/user-feature-alerts/core/CreateFeatureAlertGateway";
 
@@ -44,7 +44,7 @@ export type AppDependencies = {
   projectFeaturesService: ProjectFeaturesGateway;
   quickUrbanProjectImpactsService: QuickUrbanProjectImpactsGateway;
   urbanSprawlImpactsComparisonService: UrbanSprawlImpactsComparisonGateway;
-  fricheMutabilityEvaluationService: FricheMutabilityEvaluationGateway;
+  reconversionCompatibilityEvaluationService: ReconversionCompatibilityEvaluationGateway;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

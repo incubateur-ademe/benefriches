@@ -7,7 +7,6 @@ import { InMemorySaveExpressReconversionProjectService } from "@/features/create
 import { InMemorySaveReconversionProjectService } from "@/features/create-project/infrastructure/save-project-service/InMemorySaveReconversionProjectService";
 import { SitesServiceMock } from "@/features/create-project/infrastructure/sites-service/SitesServiceMock";
 import { InMemoryCreateSiteService } from "@/features/create-site/infrastructure/create-site-service/inMemoryCreateSiteApi";
-import { FakeFricheMutabilityEvaluation } from "@/features/friche-mutability/infra/friche-mutability-evaluation/FakeFricheMutabilityEvaluation";
 import FakeAuthService from "@/features/onboarding/infrastructure/auth-service/FakeAuthService";
 import { InMemoryCreateUserService } from "@/features/onboarding/infrastructure/create-user-service/inMemoryCreateUserService";
 import { InMemoryCurrentUserService } from "@/features/onboarding/infrastructure/current-user-service/inMemoryCurrentUserService";
@@ -16,6 +15,7 @@ import { InMemoryReconversionProjectsListService } from "@/features/projects/inf
 import { MockQuickUrbanProjectImpactsService } from "@/features/projects/infrastructure/quick-urban-project-impacts-service/MockQuickUrbanProjectImpactsService";
 import { MockReconversionProjectImpactsApi } from "@/features/projects/infrastructure/reconversion-project-impacts-service/MockReconversionProjectImpactsService";
 import { MockUrbanSprawlImpactsComparisonService } from "@/features/projects/infrastructure/urban-sprawl-impacts-comparison-service/MockUrbanSprawlImpactsComparisonService";
+import { FakeReconversionCompatibilityService } from "@/features/reconversion-compatibility/infra/reconversion-compatibility-evaluation/FakeReconversionCompatibilityEvaluation";
 import { MockSiteFeaturesService } from "@/features/site-features/infra/site-features-service/MockSiteFeaturesService";
 import { InMemoryCreateFeatureAlertService } from "@/features/user-feature-alerts/infrastructure/create-feature-alert-service/InMemoryCreateFeatureAlertService";
 import { AppDependencies } from "@/shared/core/store-config/store";
@@ -67,7 +67,7 @@ export const getTestAppDependencies = (
     projectFeaturesService: new MockProjectFeaturesService(),
     quickUrbanProjectImpactsService: new MockQuickUrbanProjectImpactsService(),
     urbanSprawlImpactsComparisonService: new MockUrbanSprawlImpactsComparisonService(),
-    fricheMutabilityEvaluationService: new FakeFricheMutabilityEvaluation(),
+    reconversionCompatibilityEvaluationService: new FakeReconversionCompatibilityService(),
     ...depsOverride,
   };
 };

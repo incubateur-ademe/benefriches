@@ -1,10 +1,10 @@
 import { BENEFRICHES_ENV } from "@/shared/views/envVars";
 
 import {
-  MutabilityEvaluationResults,
-  FricheMutabilityEvaluationGateway,
-} from "../../core/fricheMutability.actions";
-import { MutabilityUsage } from "../../core/fricheMutability.reducer";
+  ReconversionCompatibilityEvaluationResults,
+  ReconversionCompatibilityEvaluationGateway,
+} from "../../core/reconversionCompatibilityEvaluation.actions";
+import { MutabilityUsage } from "../../core/reconversionCompatibilityEvaluation.reducer";
 
 export type MutafrichesEvaluationResultResponse = {
   id: string;
@@ -26,8 +26,12 @@ export type MutafrichesEvaluationResultResponse = {
   };
 };
 
-export class HttpFricheMutabilityEvaluation implements FricheMutabilityEvaluationGateway {
-  async getEvaluationResults(evaluationId: string): Promise<MutabilityEvaluationResults | null> {
+export class HttpReconversionCompatibilityEvaluation
+  implements ReconversionCompatibilityEvaluationGateway
+{
+  async getEvaluationResults(
+    evaluationId: string,
+  ): Promise<ReconversionCompatibilityEvaluationResults | null> {
     const response = await fetch(
       `${BENEFRICHES_ENV.mutafrichesUrl}/friches/evaluations/${evaluationId}`,
     );

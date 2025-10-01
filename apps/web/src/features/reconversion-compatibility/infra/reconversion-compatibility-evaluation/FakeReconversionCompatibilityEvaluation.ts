@@ -1,8 +1,8 @@
 import {
-  MutabilityEvaluationResults,
-  FricheMutabilityEvaluationGateway,
-} from "../../core/fricheMutability.actions";
-import { MutafrichesEvaluationResultResponse } from "./HttpFricheMutabilityEvaluation";
+  ReconversionCompatibilityEvaluationResults,
+  ReconversionCompatibilityEvaluationGateway,
+} from "../../core/reconversionCompatibilityEvaluation.actions";
+import { MutafrichesEvaluationResultResponse } from "./HttpReconversionCompatibilityEvaluation";
 
 const fakeResponse = {
   id: "d507fbf9-1c22-473b-901a-3f1a169a1c02",
@@ -62,8 +62,10 @@ const fakeResponse = {
   },
 } satisfies MutafrichesEvaluationResultResponse;
 
-export class FakeFricheMutabilityEvaluation implements FricheMutabilityEvaluationGateway {
-  async getEvaluationResults(): Promise<MutabilityEvaluationResults> {
+export class FakeReconversionCompatibilityService
+  implements ReconversionCompatibilityEvaluationGateway
+{
+  async getEvaluationResults(): Promise<ReconversionCompatibilityEvaluationResults> {
     // simulate network delay
     await new Promise((resolve) => setTimeout(resolve, 1000));
 

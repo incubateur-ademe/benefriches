@@ -6,7 +6,7 @@ import { routes } from "@/shared/views/router";
 
 import { MutafrichesEvaluationEvent } from "./mutafriches.types";
 
-export default function EvaluateMutabilityPage() {
+export default function EvaluateReconversionCompatibilityPage() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -22,7 +22,7 @@ export default function EvaluateMutabilityPage() {
 
       switch (type) {
         case "mutafriches:completed":
-          routes.fricheMutabilityResults({ evaluationId: data.evaluationId }).push();
+          routes.reconversionCompatibilityResults({ evaluationId: data.evaluationId }).push();
           break;
         default:
           break;

@@ -1,11 +1,11 @@
 import { createReducer } from "@reduxjs/toolkit";
 
 import {
-  MutabilityEvaluationResults,
-  fricheMutabilityAnalysisReset,
-  fricheMutabilityEvaluationResultsRequested,
-  fricheMutabilityImpactsRequested,
-} from "./fricheMutability.actions";
+  ReconversionCompatibilityEvaluationResults,
+  reconversionCompatibilityEvaluationReset,
+  reconversionCompatibilityEvaluationResultsRequested,
+  reconversionCompatibilityResultImpacts,
+} from "./reconversionCompatibilityEvaluation.actions";
 
 export type MutabilityUsage =
   | "residentiel"
@@ -16,8 +16,8 @@ export type MutabilityUsage =
   | "renaturation"
   | "photovoltaique";
 
-export type FricheMutabilityState = {
-  evaluationResults: MutabilityEvaluationResults | undefined;
+export type ReconversionCompatibilityEvaluationState = {
+  evaluationResults: ReconversionCompatibilityEvaluationResults | undefined;
   evaluationError: string | undefined;
   evaluationResultsLoadingState: "idle" | "loading" | "success" | "error";
   projectCreationState: "idle" | "loading" | "success" | "error";
@@ -25,7 +25,7 @@ export type FricheMutabilityState = {
   createdProjectId: string | undefined;
 };
 
-const initialState: FricheMutabilityState = {
+const initialState: ReconversionCompatibilityEvaluationState = {
   evaluationResults: undefined,
   evaluationError: undefined,
   evaluationResultsLoadingState: "idle",
@@ -34,35 +34,35 @@ const initialState: FricheMutabilityState = {
   createdProjectId: undefined,
 };
 
-export const fricheMutabilityReducer = createReducer(initialState, (builder) => {
+export const reconversionCompatibilityEvaluationReducer = createReducer(initialState, (builder) => {
   builder
-    .addCase(fricheMutabilityAnalysisReset, (state) => {
+    .addCase(reconversionCompatibilityEvaluationReset, (state) => {
       state.evaluationError = undefined;
       state.projectCreationState = "idle";
     })
-    .addCase(fricheMutabilityEvaluationResultsRequested.pending, (state) => {
+    .addCase(reconversionCompatibilityEvaluationResultsRequested.pending, (state) => {
       state.evaluationResults = undefined;
       state.evaluationError = undefined;
       state.evaluationResultsLoadingState = "loading";
     })
-    .addCase(fricheMutabilityEvaluationResultsRequested.fulfilled, (state, action) => {
+    .addCase(reconversionCompatibilityEvaluationResultsRequested.fulfilled, (state, action) => {
       state.evaluationResults = action.payload;
       state.evaluationError = undefined;
       state.evaluationResultsLoadingState = "success";
     })
-    .addCase(fricheMutabilityEvaluationResultsRequested.rejected, (state, action) => {
+    .addCase(reconversionCompatibilityEvaluationResultsRequested.rejected, (state, action) => {
       state.evaluationResults = undefined;
       state.evaluationError = action.error.message;
       state.evaluationResultsLoadingState = "error";
     })
-    .addCase(fricheMutabilityImpactsRequested.pending, (state) => {
+    .addCase(reconversionCompatibilityResultImpacts.pending, (state) => {
       state.projectCreationState = "loading";
     })
-    .addCase(fricheMutabilityImpactsRequested.fulfilled, (state, action) => {
+    .addCase(reconversionCompatibilityResultImpacts.fulfilled, (state, action) => {
       state.projectCreationState = "success";
       state.createdProjectId = action.payload.projectId;
     })
-    .addCase(fricheMutabilityImpactsRequested.rejected, (state, action) => {
+    .addCase(reconversionCompatibilityResultImpacts.rejected, (state, action) => {
       state.projectCreationState = "error";
       state.projectCreationStateErrorCode = action.error.message;
     });

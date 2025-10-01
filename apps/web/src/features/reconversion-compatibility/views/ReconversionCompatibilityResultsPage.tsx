@@ -3,18 +3,18 @@ import Notice from "@codegouvfr/react-dsfr/Notice";
 import Tooltip from "@codegouvfr/react-dsfr/Tooltip";
 import { useEffect } from "react";
 
-import { mutabilityResultDiscoverImpactsClicked, trackEvent } from "@/shared/views/analytics";
+import { compatibilityResultDiscoverImpactsClicked, trackEvent } from "@/shared/views/analytics";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { routes, useRoute } from "@/shared/views/router";
 
 import {
-  fricheMutabilityAnalysisReset,
-  fricheMutabilityEvaluationResultsRequested,
-  fricheMutabilityImpactsRequested,
-} from "../core/fricheMutability.actions";
-import { MutabilityUsage } from "../core/fricheMutability.reducer";
-import { selectFricheMutabilityViewData } from "../core/fricheMutability.selectors";
+  reconversionCompatibilityEvaluationReset,
+  reconversionCompatibilityEvaluationResultsRequested,
+  reconversionCompatibilityResultImpacts,
+} from "../core/reconversionCompatibilityEvaluation.actions";
+import { MutabilityUsage } from "../core/reconversionCompatibilityEvaluation.reducer";
+import { selectReconversionCompatibilityViewData } from "../core/reconversionCompatibilityEvaluation.selectors";
 import CompatibilityCard from "./CompatibilityCard";
 
 function getTextForReliabilityScore(score: number): string {
@@ -25,27 +25,29 @@ function getTextForReliabilityScore(score: number): string {
   return "Très peu fiable";
 }
 
-export default function MutabilityResultsPage() {
+export default function ReconversionCompatibilityResultsPage() {
   const { params } = useRoute();
   const queryParams = params as { evaluationId: string };
   const dispatch = useAppDispatch();
-  const viewData = useAppSelector(selectFricheMutabilityViewData);
+  const viewData = useAppSelector(selectReconversionCompatibilityViewData);
 
   useEffect(() => {
     void dispatch(
-      fricheMutabilityEvaluationResultsRequested({ evaluationId: queryParams.evaluationId }),
+      reconversionCompatibilityEvaluationResultsRequested({
+        evaluationId: queryParams.evaluationId,
+      }),
     );
   }, [dispatch, queryParams.evaluationId]);
 
   const handleResetAnalysis = () => {
-    dispatch(fricheMutabilityAnalysisReset());
-    routes.fricheMutability().push();
+    dispatch(reconversionCompatibilityEvaluationReset());
+    routes.evaluateReconversionCompatibility().push();
   };
 
   const handleDiscoverImpactsClick = (usage: MutabilityUsage) => {
     if (!viewData.evaluationResults) return;
-    trackEvent(mutabilityResultDiscoverImpactsClicked({ usage }));
-    void dispatch(fricheMutabilityImpactsRequested({ usage }));
+    trackEvent(compatibilityResultDiscoverImpactsClicked({ usage }));
+    void dispatch(reconversionCompatibilityResultImpacts({ usage }));
   };
 
   if (viewData.isCreatingProject) {

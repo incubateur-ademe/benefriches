@@ -2,7 +2,7 @@ import Button from "@codegouvfr/react-dsfr/Button";
 
 import Badge from "@/shared/views/components/Badge/Badge";
 
-import { MutabilityUsage } from "../core/fricheMutability.reducer";
+import { MutabilityUsage } from "../core/reconversionCompatibilityEvaluation.reducer";
 
 const getUsagePictogramSrc = (usage: MutabilityUsage): string => {
   switch (usage) {
