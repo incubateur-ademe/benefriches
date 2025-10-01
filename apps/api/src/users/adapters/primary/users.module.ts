@@ -1,5 +1,7 @@
 import { Module } from "@nestjs/common";
+import { ConfigModule } from "@nestjs/config";
 
+import { AuthModule } from "src/auth/adapters/auth.module";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
 import {
@@ -11,6 +13,7 @@ import { SqlUserFeatureAlertRepository } from "../secondary/user-feature-alert-r
 import { UsersController } from "./users.controller";
 
 @Module({
+  imports: [AuthModule, ConfigModule],
   controllers: [UsersController],
   providers: [
     {
