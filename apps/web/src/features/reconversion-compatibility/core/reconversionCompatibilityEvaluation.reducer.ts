@@ -4,7 +4,7 @@ import {
   ReconversionCompatibilityEvaluationResults,
   reconversionCompatibilityEvaluationReset,
   reconversionCompatibilityEvaluationResultsRequested,
-  reconversionCompatibilityResultImpacts,
+  reconversionCompatibilityResultImpactsRequested,
 } from "./reconversionCompatibilityEvaluation.actions";
 
 export type MutabilityUsage =
@@ -55,14 +55,14 @@ export const reconversionCompatibilityEvaluationReducer = createReducer(initialS
       state.evaluationError = action.error.message;
       state.evaluationResultsLoadingState = "error";
     })
-    .addCase(reconversionCompatibilityResultImpacts.pending, (state) => {
+    .addCase(reconversionCompatibilityResultImpactsRequested.pending, (state) => {
       state.projectCreationState = "loading";
     })
-    .addCase(reconversionCompatibilityResultImpacts.fulfilled, (state, action) => {
+    .addCase(reconversionCompatibilityResultImpactsRequested.fulfilled, (state, action) => {
       state.projectCreationState = "success";
       state.createdProjectId = action.payload.projectId;
     })
-    .addCase(reconversionCompatibilityResultImpacts.rejected, (state, action) => {
+    .addCase(reconversionCompatibilityResultImpactsRequested.rejected, (state, action) => {
       state.projectCreationState = "error";
       state.projectCreationStateErrorCode = action.error.message;
     });

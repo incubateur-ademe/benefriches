@@ -11,7 +11,7 @@ import { routes, useRoute } from "@/shared/views/router";
 import {
   reconversionCompatibilityEvaluationReset,
   reconversionCompatibilityEvaluationResultsRequested,
-  reconversionCompatibilityResultImpacts,
+  reconversionCompatibilityResultImpactsRequested,
 } from "../core/reconversionCompatibilityEvaluation.actions";
 import { MutabilityUsage } from "../core/reconversionCompatibilityEvaluation.reducer";
 import { selectReconversionCompatibilityViewData } from "../core/reconversionCompatibilityEvaluation.selectors";
@@ -47,7 +47,7 @@ export default function ReconversionCompatibilityResultsPage() {
   const handleDiscoverImpactsClick = (usage: MutabilityUsage) => {
     if (!viewData.evaluationResults) return;
     trackEvent(compatibilityResultDiscoverImpactsClicked({ usage }));
-    void dispatch(reconversionCompatibilityResultImpacts({ usage }));
+    void dispatch(reconversionCompatibilityResultImpactsRequested({ usage }));
   };
 
   if (viewData.isCreatingProject) {

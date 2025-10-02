@@ -69,7 +69,7 @@ export const reconversionCompatibilityEvaluationResultsRequested = createAppAsyn
   return results;
 });
 
-export const reconversionCompatibilityResultImpacts = createAppAsyncThunk<
+export const reconversionCompatibilityResultImpactsRequested = createAppAsyncThunk<
   {
     projectId: string;
   },
