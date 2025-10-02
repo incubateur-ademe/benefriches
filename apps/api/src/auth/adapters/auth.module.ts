@@ -142,9 +142,20 @@ import { VERIFIED_EMAIL_REPOSITORY_INJECTION_TOKEN } from "./verified-email-repo
         tokenAuthAttemptRepository: TokenAuthenticationAttemptRepository,
         userRepository: UserRepository,
         dateProvider: DateProvider,
+        tokenGenerator: TokenGenerator,
       ) =>
-        new AuthenticateWithTokenUseCase(tokenAuthAttemptRepository, userRepository, dateProvider),
-      inject: [SqlTokenAuthenticationAttemptRepository, SqlUserRepository, RealDateProvider],
+        new AuthenticateWithTokenUseCase(
+          tokenAuthAttemptRepository,
+          userRepository,
+          dateProvider,
+          tokenGenerator,
+        ),
+      inject: [
+        SqlTokenAuthenticationAttemptRepository,
+        SqlUserRepository,
+        RealDateProvider,
+        RandomTokenGenerator,
+      ],
     },
     SqlUserRepository,
     SqlUserRepository,

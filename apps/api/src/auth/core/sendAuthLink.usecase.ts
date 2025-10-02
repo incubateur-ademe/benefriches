@@ -12,7 +12,9 @@ import { TokenAuthenticationAttemptRepository } from "./gateways/TokenAuthentica
 import { UserRepository } from "./gateways/UsersRepository";
 
 export interface TokenGenerator {
-  generate(): string;
+  generatePair(): { raw: string; hashed: string };
+
+  hash(raw: string): string;
 }
 
 export interface AuthLinkMailer {
@@ -32,7 +34,7 @@ export class SendAuthLinkUseCase implements UseCase<Request, SendAuthLinkResult>
   constructor(
     private readonly userRepository: UserRepository,
     private readonly tokenGenerator: TokenGenerator,
-    private readonly authByTokenRequestRepository: TokenAuthenticationAttemptRepository,
+    private readonly tokenAuthenticationAttemptRepository: TokenAuthenticationAttemptRepository,
     private readonly mailService: AuthLinkMailer,
     private readonly dateProvider: DateProvider,
     private readonly configService: ConfigService,
@@ -51,7 +53,7 @@ export class SendAuthLinkUseCase implements UseCase<Request, SendAuthLinkResult>
     }
 
     const hasRecentUnusedToken =
-      await this.authByTokenRequestRepository.hasRecentUnusedTokenForUser(
+      await this.tokenAuthenticationAttemptRepository.hasRecentUnusedTokenForUser(
         user.id,
         subMinutes(this.dateProvider.now(), 1),
       );
@@ -62,12 +64,12 @@ export class SendAuthLinkUseCase implements UseCase<Request, SendAuthLinkResult>
       return { success: false, error: errorName };
     }
 
-    const authToken = this.tokenGenerator.generate();
+    const { raw: authToken, hashed: authTokenHashed } = this.tokenGenerator.generatePair();
     const expirationDate = addMinutes(this.dateProvider.now(), 15);
 
-    await this.authByTokenRequestRepository.save({
+    await this.tokenAuthenticationAttemptRepository.save({
       userId: user.id,
-      token: authToken,
+      token: authTokenHashed,
       email: user.email,
       createdAt: this.dateProvider.now(),
       completedAt: null,

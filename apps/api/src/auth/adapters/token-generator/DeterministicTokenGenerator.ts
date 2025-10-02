@@ -5,8 +5,14 @@ export class DeterministicTokenGenerator implements TokenGenerator {
 
   constructor(private readonly token: string) {}
 
-  generate(): string {
+  generatePair(): { raw: string; hashed: string } {
     this.callCount++;
-    return this.callCount > 1 ? `${this.token}-${this.callCount}` : this.token;
+    const rawToken = this.callCount > 1 ? `${this.token}-${this.callCount}` : this.token;
+    const hashedToken = this.hash(rawToken);
+    return { raw: rawToken, hashed: hashedToken };
+  }
+
+  hash(token: string): string {
+    return `${token}-hashed`;
   }
 }

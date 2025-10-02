@@ -3,6 +3,7 @@ import { UseCase } from "src/shared-kernel/usecase";
 
 import { TokenAuthenticationAttemptRepository } from "./gateways/TokenAuthenticationAttemptRepository";
 import { UserRepository } from "./gateways/UsersRepository";
+import { TokenGenerator } from "./sendAuthLink.usecase";
 
 type Request = {
   token: string;
@@ -25,15 +26,18 @@ type Result =
 
 export class AuthenticateWithTokenUseCase implements UseCase<Request, Result> {
   constructor(
-    private readonly authByTokenRequestRepository: TokenAuthenticationAttemptRepository,
+    private readonly tokenAuthenticationAttemptRepository: TokenAuthenticationAttemptRepository,
     private readonly userRepository: UserRepository,
     private readonly dateProvider: DateProvider,
+    private readonly tokenGenerator: TokenGenerator,
   ) {}
 
   async execute(request: Request): Promise<Result> {
     const inputToken = request.token;
 
-    const existingToken = await this.authByTokenRequestRepository.findByToken(inputToken);
+    const hashedToken = this.tokenGenerator.hash(inputToken);
+    const existingToken = await this.tokenAuthenticationAttemptRepository.findByToken(hashedToken);
+
     if (!existingToken) return { success: false, error: "TokenNotFound" };
     if (existingToken.completedAt) return { success: false, error: "TokenAlreadyUsed" };
     if (existingToken.expiresAt < this.dateProvider.now())
@@ -45,7 +49,10 @@ export class AuthenticateWithTokenUseCase implements UseCase<Request, Result> {
       return { success: false, error: "TokenNotFound" };
     }
 
-    await this.authByTokenRequestRepository.markAsComplete(inputToken, this.dateProvider.now());
+    await this.tokenAuthenticationAttemptRepository.markAsComplete(
+      hashedToken,
+      this.dateProvider.now(),
+    );
 
     return { success: true, user: { id: authenticatedUser.id, email: authenticatedUser.email } };
   }

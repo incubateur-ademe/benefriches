@@ -222,7 +222,7 @@ describe("SendAuthLink Use Case", () => {
     expect(tokenAuthAttemptRepository.tokens).toEqual<TokenAuthenticationAttempt[]>([
       {
         userId: user.id,
-        token: fakeToken,
+        token: fakeToken + "-hashed",
         email: user.email,
         createdAt: new Date(new Date("2025-01-01T14:00:00Z")),
         expiresAt: new Date(new Date("2025-01-01T14:15:00Z")),

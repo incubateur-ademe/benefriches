@@ -6,21 +6,26 @@ import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/Deter
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { UserBuilder } from "src/users/core/model/user.mock";
 
+import { DeterministicTokenGenerator } from "../adapters/token-generator/DeterministicTokenGenerator";
 import { AuthenticateWithTokenUseCase } from "./authenticateWithToken.usecase";
+import { TokenGenerator } from "./sendAuthLink.usecase";
 import { TokenAuthenticationAttempt } from "./tokenAuthenticationAttempt";
 
 describe("AuthenticateWithToken Use Case", () => {
   let dateProvider: DateProvider;
   let userRepository: InMemoryUserRepository;
   let tokenAuthAttemptRepository: InMemoryTokenAuthenticationAttemptRepository;
+  let tokenGenerator: TokenGenerator;
 
   const fakeNow = new Date("2025-01-01T14:00:00Z");
+  const fakeToken = "token-123";
+  const fakeTokenHashed = fakeToken + "-hashed";
 
   const buildTokenAuthAttempt = (
     overrides: Partial<TokenAuthenticationAttempt> = {},
   ): TokenAuthenticationAttempt => ({
     userId: "user-123",
-    token: "valid-token-123",
+    token: fakeTokenHashed,
     email: "user@example.com",
     createdAt: fakeNow,
     expiresAt: addMinutes(fakeNow, 15),
@@ -32,6 +37,7 @@ describe("AuthenticateWithToken Use Case", () => {
     dateProvider = new DeterministicDateProvider(fakeNow);
     userRepository = new InMemoryUserRepository();
     tokenAuthAttemptRepository = new InMemoryTokenAuthenticationAttemptRepository();
+    tokenGenerator = new DeterministicTokenGenerator(fakeToken);
   });
 
   describe("Error cases", () => {
@@ -40,6 +46,7 @@ describe("AuthenticateWithToken Use Case", () => {
         tokenAuthAttemptRepository,
         userRepository,
         dateProvider,
+        tokenGenerator,
       );
 
       const result = await usecase.execute({ token: "non-existent-token" });
@@ -63,9 +70,10 @@ describe("AuthenticateWithToken Use Case", () => {
         tokenAuthAttemptRepository,
         userRepository,
         dateProvider,
+        tokenGenerator,
       );
 
-      const result = await usecase.execute({ token: expiredAttempt.token });
+      const result = await usecase.execute({ token: fakeToken });
 
       expect(result).toEqual({
         success: false,
@@ -74,19 +82,20 @@ describe("AuthenticateWithToken Use Case", () => {
     });
 
     it("Cannot authenticate with already used token", async () => {
-      const usedToken = buildTokenAuthAttempt({
+      const usedAttempt = buildTokenAuthAttempt({
         completedAt: new Date("2025-01-01T13:55:00Z"),
       });
 
-      tokenAuthAttemptRepository.tokens = [usedToken];
+      tokenAuthAttemptRepository.tokens = [usedAttempt];
 
       const usecase = new AuthenticateWithTokenUseCase(
         tokenAuthAttemptRepository,
         userRepository,
         dateProvider,
+        tokenGenerator,
       );
 
-      const result = await usecase.execute({ token: usedToken.token });
+      const result = await usecase.execute({ token: fakeToken });
 
       expect(result).toEqual({
         success: false,
@@ -98,20 +107,21 @@ describe("AuthenticateWithToken Use Case", () => {
   describe("Success cases", () => {
     it("authenticates user and sets authentication attempt as completed", async () => {
       const user = new UserBuilder().withEmail("test@example.com").build();
-      const validToken = buildTokenAuthAttempt({ userId: user.id, email: user.email });
+      const validTokenAuthAttempt = buildTokenAuthAttempt({ userId: user.id, email: user.email });
 
       const fakeNow = new Date("2025-01-01T14:00:00Z");
       dateProvider = new DeterministicDateProvider(fakeNow);
       userRepository._setUsers([user]);
-      tokenAuthAttemptRepository.tokens = [validToken];
+      tokenAuthAttemptRepository.tokens = [validTokenAuthAttempt];
 
       const usecase = new AuthenticateWithTokenUseCase(
         tokenAuthAttemptRepository,
         userRepository,
         dateProvider,
+        tokenGenerator,
       );
 
-      const result = await usecase.execute({ token: validToken.token });
+      const result = await usecase.execute({ token: fakeToken });
 
       expect(result).toEqual({
         success: true,
@@ -123,7 +133,7 @@ describe("AuthenticateWithToken Use Case", () => {
 
       // Token should be marked as used
       const updatedToken = tokenAuthAttemptRepository.tokens.find(
-        (t) => t.token === validToken.token,
+        (t) => t.token === validTokenAuthAttempt.token,
       );
       expect(updatedToken?.completedAt).toEqual(fakeNow);
     });

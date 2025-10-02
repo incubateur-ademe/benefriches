@@ -10,6 +10,7 @@ import { z } from "zod";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import { UserBuilder } from "src/users/core/model/user.mock";
 
+import { TokenGenerator } from "../core/sendAuthLink.usecase";
 import { TokenAuthenticationAttempt } from "../core/tokenAuthenticationAttempt";
 import { AccessTokenPayload } from "./JwtAuthGuard";
 import { ACCESS_TOKEN_COOKIE_KEY } from "./access-token/accessTokenCookie";
@@ -17,6 +18,7 @@ import { SmtpAuthLinkMailer } from "./auth-link-mailer/SmtpAuthLinkMailer";
 import { registerUserBodySchema, RegisterUserBodyDto } from "./auth.controller";
 import { FakeProConnectClient } from "./pro-connect/FakeProConnectClient";
 import { PRO_CONNECT_CLIENT_INJECTION_TOKEN } from "./pro-connect/ProConnectClient";
+import { RandomTokenGenerator } from "./token-generator/RandomTokenGenerator";
 import { mapUserToSqlRow } from "./user-repository/SqlUsersRepository";
 
 type BadRequestResponseBody = {
@@ -293,14 +295,21 @@ describe("Auth integration tests", () => {
 
       expect(response.status).toBe(200);
 
-      const authTokens = await sqlConnection("token_authentication_attempts").select("*");
-      expect(authTokens).toHaveLength(1);
-      const authToken = (authTokens as unknown as [TokenAuthenticationAttempt])[0].token;
+      const authTokenAttemptsInDb = await sqlConnection("token_authentication_attempts").select(
+        "*",
+      );
+      expect(authTokenAttemptsInDb).toHaveLength(1);
+      const hashedTokenInDb = (authTokenAttemptsInDb as unknown as [TokenAuthenticationAttempt])[0]
+        .token;
 
       const mailSentTo = mailerSpy.mock.calls[0]?.[0];
       expect(mailSentTo).toBe(userEmail);
-      const authLinkSent = mailerSpy.mock.calls[0]?.[1];
-      expect(authLinkSent).toContain(`token=${authToken}`);
+      const authLinkSent = mailerSpy.mock.calls[0]?.[1] ?? "";
+      const tokenFromEmailLink = new URL(authLinkSent).searchParams.get("token") ?? "";
+      const hashTokenFromEmailLink = app
+        .get<TokenGenerator>(RandomTokenGenerator)
+        .hash(tokenFromEmailLink);
+      expect(hashTokenFromEmailLink).toEqual(hashedTokenInDb);
     });
 
     it("handles postLoginRedirectTo url", async () => {
@@ -320,13 +329,21 @@ describe("Auth integration tests", () => {
 
       expect(response.status).toBe(200);
 
-      const authTokens = await sqlConnection("token_authentication_attempts").select("*");
-      const authToken = (authTokens as unknown as [TokenAuthenticationAttempt])[0].token;
+      const authTokenAttemptsInDb = await sqlConnection("token_authentication_attempts").select(
+        "*",
+      );
+      expect(authTokenAttemptsInDb).toHaveLength(1);
+      const hashedTokenInDb = (authTokenAttemptsInDb as unknown as [TokenAuthenticationAttempt])[0]
+        .token;
 
       const mailSentTo = mailerSpy.mock.calls[0]?.[0];
       expect(mailSentTo).toBe(userEmail);
-      const authLinkSent = mailerSpy.mock.calls[0]?.[1];
-      expect(authLinkSent).toContain(`token=${authToken}`);
+      const authLinkSent = mailerSpy.mock.calls[0]?.[1] ?? "";
+      const tokenFromEmailLink = new URL(authLinkSent).searchParams.get("token") ?? "";
+      const hashTokenFromEmailLink = app
+        .get<TokenGenerator>(RandomTokenGenerator)
+        .hash(tokenFromEmailLink);
+      expect(hashTokenFromEmailLink).toEqual(hashedTokenInDb);
       expect(authLinkSent).toContain(`redirectTo=${encodeURIComponent(postLoginRedirectTo)}`);
     });
 
@@ -363,8 +380,10 @@ describe("Auth integration tests", () => {
       const user = new UserBuilder().asUrbanPlanner().withEmail("magic.john@example.fr").build();
       await sqlConnection("users").insert(mapUserToSqlRow(user));
 
+      const token = "random-token";
+      const hashedToken = app.get<TokenGenerator>(RandomTokenGenerator).hash(token);
       const tokenAuthenticationAttempt: TokenAuthenticationAttempt = {
-        token: "random-token",
+        token: hashedToken,
         userId: user.id,
         email: user.email,
         createdAt: new Date(),
@@ -381,9 +400,7 @@ describe("Auth integration tests", () => {
       });
 
       const agent = request.agent(app.getHttpServer());
-      const response = await agent
-        .get("/api/auth/login/token")
-        .query({ token: tokenAuthenticationAttempt.token });
+      const response = await agent.get("/api/auth/login/token").query({ token });
 
       // valid access token in response cookie?
       expect(response.status).toBe(200);
@@ -402,8 +419,10 @@ describe("Auth integration tests", () => {
       const user = new UserBuilder().asUrbanPlanner().withEmail("magic.john@example.fr").build();
       await sqlConnection("users").insert(mapUserToSqlRow(user));
 
+      const token = "random-token";
+      const hashedToken = app.get<TokenGenerator>(RandomTokenGenerator).hash(token);
       const tokenAuthenticationAttempt: TokenAuthenticationAttempt = {
-        token: "random-token",
+        token: hashedToken,
         userId: user.id,
         email: user.email,
         createdAt: new Date(),
@@ -420,9 +439,7 @@ describe("Auth integration tests", () => {
       });
 
       const agent = request.agent(app.getHttpServer());
-      const response = await agent
-        .get("/api/auth/login/token")
-        .query({ token: tokenAuthenticationAttempt.token });
+      const response = await agent.get("/api/auth/login/token").query({ token });
 
       expect(response.status).toBe(200);
       const verifiedEmails = await sqlConnection("verified_emails").select("*");
