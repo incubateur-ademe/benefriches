@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerator";
 import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
 import { UseCase } from "src/shared-kernel/usecase";
 
@@ -8,7 +9,6 @@ import {
   createUserAccountCreatedEvent,
   UserAccountCreatedEvent,
 } from "./events/userAccountCreated.event";
-import { UuidGenerator } from "./gateways/IdGenerator";
 import { UserRepository } from "./gateways/UsersRepository";
 import { userSchema } from "./user";
 
@@ -39,7 +39,7 @@ export class CreateUserUseCase implements UseCase<Request, CreateUserResult> {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly dateProvider: DateProvider,
-    private readonly uuidGenerator: UuidGenerator,
+    private readonly uuidGenerator: UidGenerator,
     private readonly eventPublisher: DomainEventPublisher,
   ) {}
 

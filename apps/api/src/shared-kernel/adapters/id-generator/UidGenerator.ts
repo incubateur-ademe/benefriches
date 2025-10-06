@@ -1,5 +1,5 @@
 export const UUID_GENERATOR_INJECTION_TOKEN = "UuidGenerator";
 
-export interface UuidGenerator {
+export interface UidGenerator {
   generate(): string;
 }

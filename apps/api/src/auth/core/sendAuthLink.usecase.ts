@@ -2,12 +2,12 @@ import { ConfigService } from "@nestjs/config";
 import { addMinutes, subMinutes } from "date-fns";
 
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerator";
 import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
 import { UseCase } from "src/shared-kernel/usecase";
 
 import { createAuthLinkSendFailedEvent } from "./events/authLinkSendFailed.event";
 import { createLoginAttemptedEvent } from "./events/loginAttempted.event";
-import { UuidGenerator } from "./gateways/IdGenerator";
 import { TokenAuthenticationAttemptRepository } from "./gateways/TokenAuthenticationAttemptRepository";
 import { UserRepository } from "./gateways/UsersRepository";
 
@@ -38,7 +38,7 @@ export class SendAuthLinkUseCase implements UseCase<Request, SendAuthLinkResult>
     private readonly mailService: AuthLinkMailer,
     private readonly dateProvider: DateProvider,
     private readonly configService: ConfigService,
-    private readonly uuidGenerator: UuidGenerator,
+    private readonly uuidGenerator: UidGenerator,
     private readonly eventPublisher: DomainEventPublisher,
   ) {}
 

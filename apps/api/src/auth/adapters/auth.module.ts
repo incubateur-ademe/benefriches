@@ -7,6 +7,11 @@ import { CreateUserUseCase } from "src/auth/core/createUser.usecase";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
 import { RealEventPublisher } from "src/shared-kernel/adapters/events/publisher/RealEventPublisher";
+import { RandomUuidGenerator } from "src/shared-kernel/adapters/id-generator/RandomUuidGenerator";
+import {
+  UidGenerator,
+  UUID_GENERATOR_INJECTION_TOKEN,
+} from "src/shared-kernel/adapters/id-generator/UidGenerator";
 import {
   DOMAIN_EVENT_PUBLISHER_INJECTION_TOKEN,
   DomainEventPublisher,
@@ -14,7 +19,6 @@ import {
 import { SqlUserFeatureAlertRepository } from "src/users/adapters/secondary/user-feature-alert-repository/SqlUserFeatureAlertRepository";
 
 import { AuthenticateWithTokenUseCase } from "../core/authenticateWithToken.usecase";
-import { UUID_GENERATOR_INJECTION_TOKEN, UuidGenerator } from "../core/gateways/IdGenerator";
 import { TokenAuthenticationAttemptRepository } from "../core/gateways/TokenAuthenticationAttemptRepository";
 import {
   AUTH_USER_REPOSITORY_INJECTION_TOKEN,
@@ -27,7 +31,6 @@ import { SqlTokenAuthenticationAttemptRepository } from "./auth-token-repository
 import { AuthController } from "./auth.controller";
 import { EXTERNAL_USER_IDENTITIES_REPOSITORY_INJECTION_TOKEN } from "./external-user-identities-repository/ExternalUserIdentitiesRepository";
 import { SqlExternalUserIdentitiesRepository } from "./external-user-identities-repository/SqlExternalUserIdentitiesRepository";
-import { RandomUuidGenerator } from "./id-generator/RandomUuidGenerator";
 import { HttpProConnectClient } from "./pro-connect/HttpProConnectClient";
 import { PRO_CONNECT_CLIENT_INJECTION_TOKEN } from "./pro-connect/ProConnectClient";
 import { RandomTokenGenerator } from "./token-generator/RandomTokenGenerator";
@@ -98,9 +101,9 @@ import { VERIFIED_EMAIL_REPOSITORY_INJECTION_TOKEN } from "./verified-email-repo
       useFactory: (
         userRepository: UserRepository,
         dateProvider: DateProvider,
-        uuidGenerator: UuidGenerator,
+        uidGenerator: UidGenerator,
         eventPublisher: DomainEventPublisher,
-      ) => new CreateUserUseCase(userRepository, dateProvider, uuidGenerator, eventPublisher),
+      ) => new CreateUserUseCase(userRepository, dateProvider, uidGenerator, eventPublisher),
       inject: [SqlUserRepository, RealDateProvider, RandomUuidGenerator, RealEventPublisher],
     },
     {
@@ -112,7 +115,7 @@ import { VERIFIED_EMAIL_REPOSITORY_INJECTION_TOKEN } from "./verified-email-repo
         authLinkMailer: AuthLinkMailer,
         dateProvider: DateProvider,
         configService: ConfigService,
-        uuidGenerator: UuidGenerator,
+        uidGenerator: UidGenerator,
         eventPublisher: DomainEventPublisher,
       ) =>
         new SendAuthLinkUseCase(
@@ -122,7 +125,7 @@ import { VERIFIED_EMAIL_REPOSITORY_INJECTION_TOKEN } from "./verified-email-repo
           authLinkMailer,
           dateProvider,
           configService,
-          uuidGenerator,
+          uidGenerator,
           eventPublisher,
         ),
       inject: [

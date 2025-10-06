@@ -25,6 +25,10 @@ import { z } from "zod";
 
 import { CreateUserUseCase, UserProps } from "src/auth/core/createUser.usecase";
 import {
+  UidGenerator,
+  UUID_GENERATOR_INJECTION_TOKEN,
+} from "src/shared-kernel/adapters/id-generator/UidGenerator";
+import {
   DOMAIN_EVENT_PUBLISHER_INJECTION_TOKEN,
   DomainEventPublisher,
 } from "src/shared-kernel/domainEventPublisher";
@@ -32,7 +36,6 @@ import {
 import { AuthenticateWithTokenUseCase } from "../core/authenticateWithToken.usecase";
 import { createLoginAttemptedEvent } from "../core/events/loginAttempted.event";
 import { createLoginSucceededEvent } from "../core/events/loginSucceeded.event";
-import { UUID_GENERATOR_INJECTION_TOKEN, UuidGenerator } from "../core/gateways/IdGenerator";
 import {
   AUTH_USER_REPOSITORY_INJECTION_TOKEN,
   UserRepository,
@@ -101,7 +104,7 @@ export class AuthController {
     @Inject(DOMAIN_EVENT_PUBLISHER_INJECTION_TOKEN)
     private readonly eventPublisher: DomainEventPublisher,
     @Inject(UUID_GENERATOR_INJECTION_TOKEN)
-    private readonly uuidGenerator: UuidGenerator,
+    private readonly uidGenerator: UidGenerator,
   ) {}
 
   @Post("/register")
@@ -171,7 +174,7 @@ export class AuthController {
     }
 
     await this.eventPublisher.publish(
-      createLoginAttemptedEvent(this.uuidGenerator.generate(), {
+      createLoginAttemptedEvent(this.uidGenerator.generate(), {
         method: "pro-connect",
       }),
     );
@@ -249,7 +252,7 @@ export class AuthController {
     res.cookie(ACCESS_TOKEN_COOKIE_KEY, accessToken, accessTokenCookieOptions);
 
     await this.eventPublisher.publish(
-      createLoginSucceededEvent(this.uuidGenerator.generate(), {
+      createLoginSucceededEvent(this.uidGenerator.generate(), {
         userId: userInDb.id,
         userEmail: userInDb.email,
         method: "pro-connect",
@@ -319,7 +322,7 @@ export class AuthController {
     }
 
     await this.eventPublisher.publish(
-      createLoginSucceededEvent(this.uuidGenerator.generate(), {
+      createLoginSucceededEvent(this.uidGenerator.generate(), {
         method: "email-link",
         userEmail: authenticatedUser.email,
         userId: authenticatedUser.id,

@@ -4,12 +4,12 @@ import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/Deter
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { InMemoryEventPublisher } from "src/shared-kernel/adapters/events/publisher/InMemoryEventPublisher";
 
+import { DeterministicUuidGenerator } from "../../shared-kernel/adapters/id-generator/DeterministicIdGenerator";
 import {
   buildExhaustiveUserProps,
   buildMinimalUserProps,
   UserBuilder,
 } from "../../users/core/model/user.mock";
-import { DeterministicUuidGenerator } from "../adapters/id-generator/DeterministicIdGenerator";
 import { InMemoryUserRepository } from "../adapters/user-repository/InMemoryAuthUserRepository";
 import { CreateUserUseCase } from "./createUser.usecase";
 import { User } from "./user";

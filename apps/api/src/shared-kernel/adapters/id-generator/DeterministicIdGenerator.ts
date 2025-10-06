@@ -1,6 +1,6 @@
-import { UuidGenerator } from "src/auth/core/gateways/IdGenerator";
+import { UidGenerator } from "./UidGenerator";
 
-export class DeterministicUuidGenerator implements UuidGenerator {
+export class DeterministicUuidGenerator implements UidGenerator {
   private _nextUuids: string[] = [];
 
   generate(): string {

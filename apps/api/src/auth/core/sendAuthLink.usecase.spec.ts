@@ -8,8 +8,8 @@ import { InMemoryUserRepository } from "src/auth/adapters/user-repository/InMemo
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { InMemoryEventPublisher } from "src/shared-kernel/adapters/events/publisher/InMemoryEventPublisher";
+import { DeterministicUuidGenerator } from "src/shared-kernel/adapters/id-generator/DeterministicIdGenerator";
 
-import { DeterministicUuidGenerator } from "../adapters/id-generator/DeterministicIdGenerator";
 import { SendAuthLinkUseCase } from "./sendAuthLink.usecase";
 import { TokenAuthenticationAttempt } from "./tokenAuthenticationAttempt";
 import { User } from "./user";
