@@ -1042,7 +1042,7 @@ export default function AnswerStepWizard({ currentStep }: Props) {
   const dispatch = useAppDispatch();
 
   const onBack = () => {
-    dispatch(navigateToPrevious({ stepId: currentStep }));
+    dispatch(navigateToPrevious());
   };
 
   const stepConfig = STEP_CONFIGS[currentStep];

@@ -75,8 +75,8 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
     state.urbanProjectBeta.pendingStepCompletion = undefined;
   });
 
-  builder.addCase(navigateToPrevious, (state, action) => {
-    const stepId = action.payload.stepId;
+  builder.addCase(navigateToPrevious, (state) => {
+    const stepId = state.urbanProjectBeta.currentStep;
     const handler = stepHandlerRegistry[stepId];
 
     if (stepId === initialState.currentStep) {
@@ -94,8 +94,8 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
     }
   });
 
-  builder.addCase(navigateToNext, (state, action) => {
-    const stepId = action.payload.stepId;
+  builder.addCase(navigateToNext, (state) => {
+    const stepId = state.urbanProjectBeta.currentStep;
     const handler = stepHandlerRegistry[stepId];
 
     if (!state.urbanProjectBeta.steps[stepId]) {

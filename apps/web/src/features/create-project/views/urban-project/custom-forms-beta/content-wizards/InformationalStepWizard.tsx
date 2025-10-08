@@ -360,11 +360,11 @@ export default function InformationalStepWizard({ currentStep }: Props) {
   const dispatch = useAppDispatch();
 
   const onBack = () => {
-    dispatch(navigateToPrevious({ stepId: currentStep }));
+    dispatch(navigateToPrevious());
   };
 
   const onNext = () => {
-    dispatch(navigateToNext({ stepId: currentStep }));
+    dispatch(navigateToNext());
   };
 
   const stepConfig = STEP_CONFIGS[currentStep];

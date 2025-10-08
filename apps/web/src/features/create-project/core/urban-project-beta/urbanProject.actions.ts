@@ -26,13 +26,9 @@ export const confirmStepCompletion = createUrbanProjectCreationAction("confirmSt
 
 export const cancelStepCompletion = createUrbanProjectCreationAction("cancelStepCompletion");
 
-export const navigateToPrevious = createUrbanProjectCreationAction<{
-  stepId: UrbanProjectCustomCreationStep;
-}>("navigateToPrevious");
+export const navigateToPrevious = createUrbanProjectCreationAction("navigateToPrevious");
 
-export const navigateToNext = createUrbanProjectCreationAction<{
-  stepId: UrbanProjectCustomCreationStep;
-}>("navigateToNext");
+export const navigateToNext = createUrbanProjectCreationAction("navigateToNext");
 
 export const navigateToStep = createUrbanProjectCreationAction<{
   stepId: UrbanProjectCustomCreationStep;

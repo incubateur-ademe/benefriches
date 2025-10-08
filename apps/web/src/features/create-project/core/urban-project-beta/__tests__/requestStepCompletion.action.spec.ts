@@ -19,7 +19,7 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
         "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION",
       );
 
-      store.dispatch(navigateToNext({ stepId: "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION" }));
+      store.dispatch(navigateToNext());
       expect(store.getState().projectCreation.urbanProjectBeta.currentStep).toBe(
         "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION",
       );
@@ -73,17 +73,13 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
       );
 
       // Étape ----
-      store.dispatch(
-        navigateToNext({ stepId: "URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION" }),
-      );
+      store.dispatch(navigateToNext());
       expect(store.getState().projectCreation.urbanProjectBeta.currentStep).toBe(
         "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_INTRODUCTION",
       );
 
       // Étape ----
-      store.dispatch(
-        navigateToNext({ stepId: "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_INTRODUCTION" }),
-      );
+      store.dispatch(navigateToNext());
       expect(store.getState().projectCreation.urbanProjectBeta.currentStep).toBe(
         "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
       );
@@ -113,7 +109,7 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
       );
 
       // Étape ----
-      store.dispatch(navigateToNext({ stepId: "URBAN_PROJECT_PUBLIC_SPACES_INTRODUCTION" }));
+      store.dispatch(navigateToNext());
       expect(store.getState().projectCreation.urbanProjectBeta.currentStep).toBe(
         "URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION",
       );
@@ -138,7 +134,7 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
       );
 
       // Étape ----
-      store.dispatch(navigateToNext({ stepId: "URBAN_PROJECT_GREEN_SPACES_INTRODUCTION" }));
+      store.dispatch(navigateToNext());
       expect(store.getState().projectCreation.urbanProjectBeta.currentStep).toBe(
         "URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION",
       );
@@ -162,21 +158,19 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
       expect(currentState.urbanProjectBeta.currentStep).toBe("URBAN_PROJECT_SPACES_SOILS_SUMMARY");
 
       // Étape ----
-      store.dispatch(navigateToNext({ stepId: "URBAN_PROJECT_SPACES_SOILS_SUMMARY" }));
+      store.dispatch(navigateToNext());
       expect(store.getState().projectCreation.urbanProjectBeta.currentStep).toBe(
         "URBAN_PROJECT_SOILS_CARBON_SUMMARY",
       );
 
       // Étape ----
-      store.dispatch(navigateToNext({ stepId: "URBAN_PROJECT_SOILS_CARBON_SUMMARY" }));
+      store.dispatch(navigateToNext());
       expect(store.getState().projectCreation.urbanProjectBeta.currentStep).toBe(
         "URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION",
       );
 
       // Étape ----
-      store.dispatch(
-        navigateToNext({ stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION" }),
-      );
+      store.dispatch(navigateToNext());
       expect(store.getState().projectCreation.urbanProjectBeta.currentStep).toBe(
         "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
       );
@@ -212,7 +206,7 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
       );
 
       // Étape ----
-      store.dispatch(navigateToNext({ stepId: "URBAN_PROJECT_BUILDINGS_INTRODUCTION" }));
+      store.dispatch(navigateToNext());
       expect(store.getState().projectCreation.urbanProjectBeta.currentStep).toBe(
         "URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA",
       );
@@ -233,7 +227,7 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
       );
 
       // Étape ----
-      store.dispatch(navigateToNext({ stepId: "URBAN_PROJECT_BUILDINGS_USE_INTRODUCTION" }));
+      store.dispatch(navigateToNext());
       expect(store.getState().projectCreation.urbanProjectBeta.currentStep).toBe(
         "URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION",
       );
@@ -258,7 +252,7 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
       );
 
       // Étape ----
-      store.dispatch(navigateToNext({ stepId: "URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION" }));
+      store.dispatch(navigateToNext());
       expect(store.getState().projectCreation.urbanProjectBeta.currentStep).toBe(
         "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER",
       );
@@ -300,7 +294,7 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
       );
 
       // Étape ----
-      store.dispatch(navigateToNext({ stepId: "URBAN_PROJECT_SITE_RESALE_INTRODUCTION" }));
+      store.dispatch(navigateToNext());
       expect(store.getState().projectCreation.urbanProjectBeta.currentStep).toBe(
         "URBAN_PROJECT_SITE_RESALE_SELECTION",
       );
@@ -334,7 +328,7 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
       expect(currentState.urbanProjectBeta.currentStep).toBe("URBAN_PROJECT_EXPENSES_INTRODUCTION");
 
       // Étape ----
-      store.dispatch(navigateToNext({ stepId: "URBAN_PROJECT_EXPENSES_INTRODUCTION" }));
+      store.dispatch(navigateToNext());
       expect(store.getState().projectCreation.urbanProjectBeta.currentStep).toBe(
         "URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS",
       );
@@ -388,7 +382,7 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
       expect(currentState.urbanProjectBeta.currentStep).toBe("URBAN_PROJECT_REVENUE_INTRODUCTION");
 
       // Étape ----
-      store.dispatch(navigateToNext({ stepId: "URBAN_PROJECT_REVENUE_INTRODUCTION" }));
+      store.dispatch(navigateToNext());
       expect(store.getState().projectCreation.urbanProjectBeta.currentStep).toBe(
         "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE",
       );
@@ -439,7 +433,7 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
       expect(currentState.urbanProjectBeta.currentStep).toBe("URBAN_PROJECT_SCHEDULE_INTRODUCTION");
 
       // Étape ----
-      store.dispatch(navigateToNext({ stepId: "URBAN_PROJECT_SCHEDULE_INTRODUCTION" }));
+      store.dispatch(navigateToNext());
       expect(store.getState().projectCreation.urbanProjectBeta.currentStep).toBe(
         "URBAN_PROJECT_SCHEDULE_PROJECTION",
       );
@@ -493,7 +487,7 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
       expect(currentState.urbanProjectBeta.currentStep).toBe("URBAN_PROJECT_FINAL_SUMMARY");
 
       // Étape ----
-      store.dispatch(navigateToNext({ stepId: "URBAN_PROJECT_FINAL_SUMMARY" }));
+      store.dispatch(navigateToNext());
 
       // Étape ----
       currentState = store.getState().projectCreation;
@@ -503,7 +497,7 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
     });
 
     it("should handle single category shortcut correctly", () => {
-      store.dispatch(navigateToNext({ stepId: "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION" }));
+      store.dispatch(navigateToNext());
 
       store.dispatch(
         requestStepCompletion({
@@ -533,7 +527,7 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
     });
 
     it('should handle decontamination plan "none" correctly', () => {
-      store.dispatch(navigateToNext({ stepId: "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION" }));
+      store.dispatch(navigateToNext());
 
       store.dispatch(
         requestStepCompletion({
@@ -542,12 +536,8 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
         }),
       );
 
-      store.dispatch(
-        navigateToNext({ stepId: "URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION" }),
-      );
-      store.dispatch(
-        navigateToNext({ stepId: "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_INTRODUCTION" }),
-      );
+      store.dispatch(navigateToNext());
+      store.dispatch(navigateToNext());
 
       store.dispatch(
         requestStepCompletion({
@@ -558,11 +548,9 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
         }),
       );
 
-      store.dispatch(navigateToNext({ stepId: "URBAN_PROJECT_SPACES_SOILS_SUMMARY" }));
-      store.dispatch(navigateToNext({ stepId: "URBAN_PROJECT_SOILS_CARBON_SUMMARY" }));
-      store.dispatch(
-        navigateToNext({ stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION" }),
-      );
+      store.dispatch(navigateToNext());
+      store.dispatch(navigateToNext());
+      store.dispatch(navigateToNext());
 
       store.dispatch(
         requestStepCompletion({
