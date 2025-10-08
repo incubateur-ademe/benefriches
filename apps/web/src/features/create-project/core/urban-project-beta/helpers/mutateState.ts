@@ -1,9 +1,8 @@
 import { ProjectCreationState } from "../../createProject.reducer";
-import { UrbanProjectCustomCreationStep } from "../../urban-project/creationSteps";
-import { AnswersByStep, AnswerStepId } from "../urbanProjectSteps";
+import { AnswersByStep, AnswerStepId, UrbanProjectCreationStep } from "../urbanProjectSteps";
 
 export const MutateStateHelper = {
-  navigateToStep: (state: ProjectCreationState, stepId: UrbanProjectCustomCreationStep) => {
+  navigateToStep: (state: ProjectCreationState, stepId: UrbanProjectCreationStep) => {
     state.urbanProjectBeta.currentStep = stepId;
   },
 

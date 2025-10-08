@@ -2,11 +2,14 @@ import { BuildingsFloorSurfaceAreaHandler } from "./buildings/buildingsFloorSurf
 import { BuildingsIntroductionHandler } from "./buildings/buildingsIntroduction.handler";
 import { BuildingsUseIntroductionHandler } from "./buildings/buildingsUseIntroduction.handler";
 import { BuildingsUseSurfaceAreaDistributionHandler } from "./buildings/buildingsUseSurfaceAreaDistribution.handler";
+import { CreationModeSelectionHandler } from "./creation-mode/creationMode.handler";
 import { UrbanProjectInstallationExpensesHandler } from "./expenses/expensesInstallation.handler";
 import { ExpensesIntroductionHandler } from "./expenses/expensesIntroduction.handler";
 import { ExpensesProjectedBuildingsOperatingExpensesHandler } from "./expenses/expensesProjectedBuildingsOperatingExpenses.handler";
 import { UrbanProjectReinstatementExpensesHandler } from "./expenses/expensesReinstatement.handler";
 import { ExpensesSitePurchaseAmountsHandler } from "./expenses/expensesSitePurchaseAmounts.handler";
+import { ExpressCreationResultHandler } from "./express/creationResult.handler";
+import { ExpressCategoryHandler } from "./express/expressCategory.handler";
 import { UrbanProjectNamingHandler } from "./naming/naming.handler";
 import { ProjectPhaseHandler } from "./project-phase/projectPhase.handler";
 import { CreationResultHandler } from "./result/creationResult.handler";
@@ -41,6 +44,11 @@ import { StakeholdersReinstatementContractOwnerHandler } from "./stakeholders/st
 import { FinalSummaryHandler } from "./summary/finalSummary.handler";
 
 export const stepHandlerRegistry = {
+  URBAN_PROJECT_CREATE_MODE_SELECTION: CreationModeSelectionHandler,
+  // express
+  URBAN_PROJECT_EXPRESS_CATEGORY_SELECTION: ExpressCategoryHandler,
+  URBAN_PROJECT_EXPRESS_CREATION_RESULT: ExpressCreationResultHandler,
+  // custom
   URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION: SpacesCategoriesIntroductionHandler,
   URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION: SpaceDevelopmentPlanIntroductionHandler,
   URBAN_PROJECT_GREEN_SPACES_INTRODUCTION: GreenSpacesIntroductionHandler,
@@ -57,8 +65,6 @@ export const stepHandlerRegistry = {
   URBAN_PROJECT_EXPENSES_INTRODUCTION: ExpensesIntroductionHandler,
   URBAN_PROJECT_REVENUE_INTRODUCTION: RevenueIntroductionHandler,
   URBAN_PROJECT_SCHEDULE_INTRODUCTION: ScheduleIntroductionHandler,
-  URBAN_PROJECT_FINAL_SUMMARY: FinalSummaryHandler,
-  URBAN_PROJECT_CREATION_RESULT: CreationResultHandler,
 
   URBAN_PROJECT_SPACES_CATEGORIES_SELECTION: UrbanProjectSpacesCategoriesSelectionHandler,
   URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA: UrbanProjectSpacesCategoriesSurfaceAreaHandler,
@@ -88,4 +94,7 @@ export const stepHandlerRegistry = {
   URBAN_PROJECT_SCHEDULE_PROJECTION: UrbanProjectScheduleProjectionHandler,
   URBAN_PROJECT_NAMING: UrbanProjectNamingHandler,
   URBAN_PROJECT_PROJECT_PHASE: ProjectPhaseHandler,
+
+  URBAN_PROJECT_FINAL_SUMMARY: FinalSummaryHandler,
+  URBAN_PROJECT_CREATION_RESULT: CreationResultHandler,
 } as const;

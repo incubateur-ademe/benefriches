@@ -2,7 +2,6 @@ import { createSelector } from "@reduxjs/toolkit";
 
 import { RootState } from "@/shared/core/store-config/store";
 
-import { UrbanProjectCustomCreationStep } from "../urban-project/creationSteps";
 import { ReadStateHelper } from "./helpers/readState";
 import { AnswerStepHandler, InfoStepHandler } from "./step-handlers/stepHandler.type";
 import { stepHandlerRegistry } from "./step-handlers/stepHandlerRegistry";
@@ -12,6 +11,7 @@ import {
   ANSWER_STEPS,
   INFORMATIONAL_STEPS,
   isAnswersStep,
+  UrbanProjectCreationStep,
 } from "./urbanProjectSteps";
 
 export const selectStepState = (state: RootState) => state.projectCreation.urbanProjectBeta.steps;
@@ -55,19 +55,40 @@ export const selectCurrentStep = createSelector(
 const selectAvailableStepsStateEntries = createSelector(
   [(state: RootState) => state.projectCreation.siteData, selectStepState],
   (siteData, stepsState) => {
-    const steps: [
-      UrbanProjectCustomCreationStep,
-      { order: number; status: "empty" | "completed" },
-    ][] = [];
+    const creationMode = stepsState.URBAN_PROJECT_CREATE_MODE_SELECTION;
 
-    let currentStep: UrbanProjectCustomCreationStep | undefined =
-      "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION";
+    let currentStep: UrbanProjectCreationStep | undefined = "URBAN_PROJECT_CREATE_MODE_SELECTION";
     let iterationCount = 0;
 
-    while (
-      currentStep !== "URBAN_PROJECT_CREATION_RESULT" &&
-      iterationCount < ANSWER_STEPS.length + INFORMATIONAL_STEPS.length
-    ) {
+    const steps: [UrbanProjectCreationStep, { order: number; status: "empty" | "completed" }][] = [
+      [
+        currentStep,
+        {
+          order: iterationCount,
+          status: creationMode?.completed ? "completed" : "empty",
+        },
+      ],
+    ];
+
+    if (!creationMode?.payload) {
+      return steps;
+    }
+
+    const handler = stepHandlerRegistry[currentStep];
+    currentStep = handler.getNextStepId(
+      {
+        siteData,
+        stepsState,
+      },
+      creationMode.payload,
+    );
+    iterationCount++;
+
+    const isLastStep =
+      currentStep === "URBAN_PROJECT_CREATION_RESULT" ||
+      currentStep === "URBAN_PROJECT_EXPRESS_CREATION_RESULT";
+
+    while (!isLastStep && iterationCount < ANSWER_STEPS.length + INFORMATIONAL_STEPS.length) {
       steps.push([
         currentStep,
         {

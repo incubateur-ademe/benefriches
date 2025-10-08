@@ -1,6 +1,6 @@
 import { ButtonProps } from "@codegouvfr/react-dsfr/Button";
 
-import { UrbanProjectCustomCreationStep } from "@/features/create-project/core/urban-project/creationSteps";
+import { UrbanProjectCreationStep } from "@/features/create-project/core/urban-project-beta/urbanProjectSteps";
 import {
   getLabelForDevelopmentPlanCategory,
   getLabelForRenewableEnergyProductionType,
@@ -15,7 +15,7 @@ import ExpensesAndRevenuesSection from "./ExpensesAndRevenues";
 
 type Props = {
   projectData: ProjectFeatures;
-  getSectionButtonProps?: (stepId: UrbanProjectCustomCreationStep) => ButtonProps | undefined;
+  getSectionButtonProps?: (stepId: UrbanProjectCreationStep) => ButtonProps | undefined;
 };
 
 export default function ProjectFeaturesView({ projectData, getSectionButtonProps }: Props) {

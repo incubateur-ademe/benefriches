@@ -1,5 +1,6 @@
 import {
   BuildingsUse,
+  ExpressProjectCategory,
   FinancialAssistanceRevenue,
   RecurringExpense,
   ReinstatementExpense,
@@ -14,7 +15,6 @@ import {
 } from "shared";
 
 import { ProjectStakeholder } from "../project.types";
-import { UrbanProjectCustomCreationStep } from "../urban-project/creationSteps";
 
 export const INFORMATIONAL_STEPS = [
   "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION",
@@ -34,18 +34,24 @@ export const INFORMATIONAL_STEPS = [
   "URBAN_PROJECT_SCHEDULE_INTRODUCTION",
   "URBAN_PROJECT_FINAL_SUMMARY",
   "URBAN_PROJECT_CREATION_RESULT",
+  "URBAN_PROJECT_EXPRESS_CREATION_RESULT",
 ] as const;
 
 export type InformationalStep = (typeof INFORMATIONAL_STEPS)[number];
 
 const INFORMATIONAL_STEPS_SET = new Set<InformationalStep>(INFORMATIONAL_STEPS);
 export const isInformationalStep = (
-  stepId: UrbanProjectCustomCreationStep,
+  stepId: UrbanProjectCreationStep,
 ): stepId is InformationalStep => {
   return INFORMATIONAL_STEPS_SET.has(stepId as InformationalStep);
 };
 
 export const ANSWER_STEPS: AnswerStepId[] = [
+  // Common
+  "URBAN_PROJECT_CREATE_MODE_SELECTION",
+  // Express
+  "URBAN_PROJECT_EXPRESS_CATEGORY_SELECTION",
+  // Custom
   "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION",
   "URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA",
   "URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION",
@@ -75,11 +81,11 @@ export const ANSWER_STEPS: AnswerStepId[] = [
 export type AnswerStepId = keyof AnswersByStep;
 
 const ANSWER_STEPS_SET = new Set<AnswerStepId>(ANSWER_STEPS);
-export const isAnswersStep = (stepId: UrbanProjectCustomCreationStep): stepId is AnswerStepId => {
+export const isAnswersStep = (stepId: UrbanProjectCreationStep): stepId is AnswerStepId => {
   return ANSWER_STEPS_SET.has(stepId as AnswerStepId);
 };
 
-export type FormAnswers = {
+export type CustomFormAnswers = {
   spacesCategories?: UrbanSpaceCategory[];
   spacesCategoriesDistribution?: Partial<Record<UrbanSpaceCategory, number>>;
   greenSpacesDistribution?: Partial<Record<UrbanGreenSpace, number>>;
@@ -119,67 +125,90 @@ export type FormAnswers = {
   description?: string;
   projectPhase?: UrbanProjectPhase;
 };
+
 export type AnswersByStep = {
-  URBAN_PROJECT_SPACES_CATEGORIES_SELECTION: Pick<FormAnswers, "spacesCategories">;
-  URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA: Pick<FormAnswers, "spacesCategoriesDistribution">;
+  // Common
+  URBAN_PROJECT_CREATE_MODE_SELECTION: { createMode?: "custom" | "express" };
+  // Express
+  URBAN_PROJECT_EXPRESS_CATEGORY_SELECTION: {
+    expressCategory?: Extract<
+      ExpressProjectCategory,
+      | "PUBLIC_FACILITIES"
+      | "RESIDENTIAL_TENSE_AREA"
+      | "RESIDENTIAL_NORMAL_AREA"
+      | "NEW_URBAN_CENTER"
+    >;
+  };
+  // Custom
+  URBAN_PROJECT_SPACES_CATEGORIES_SELECTION: Pick<CustomFormAnswers, "spacesCategories">;
+  URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA: Pick<
+    CustomFormAnswers,
+    "spacesCategoriesDistribution"
+  >;
   URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION: Pick<
-    FormAnswers,
+    CustomFormAnswers,
     "greenSpacesDistribution"
   >;
   URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION: Pick<
-    FormAnswers,
+    CustomFormAnswers,
     "livingAndActivitySpacesDistribution"
   >;
-  URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION: Pick<FormAnswers, "publicSpacesDistribution">;
-  URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION: Pick<FormAnswers, "decontaminationPlan">;
-  URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA: Pick<FormAnswers, "decontaminatedSurfaceArea">;
-  URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA: Pick<FormAnswers, "buildingsFloorSurfaceArea">;
+  URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION: Pick<CustomFormAnswers, "publicSpacesDistribution">;
+  URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION: Pick<CustomFormAnswers, "decontaminationPlan">;
+  URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA: Pick<
+    CustomFormAnswers,
+    "decontaminatedSurfaceArea"
+  >;
+  URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA: Pick<CustomFormAnswers, "buildingsFloorSurfaceArea">;
   URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION: Pick<
-    FormAnswers,
+    CustomFormAnswers,
     "buildingsUsesDistribution"
   >;
-  URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER: Pick<FormAnswers, "projectDeveloper">;
+  URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER: Pick<CustomFormAnswers, "projectDeveloper">;
   URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER: Pick<
-    FormAnswers,
+    CustomFormAnswers,
     "reinstatementContractOwner"
   >;
   URBAN_PROJECT_SITE_RESALE_SELECTION: Pick<
-    FormAnswers,
+    CustomFormAnswers,
     "siteResalePlannedAfterDevelopment" | "futureSiteOwner"
   >;
   URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: Pick<
-    FormAnswers,
+    CustomFormAnswers,
     "buildingsResalePlannedAfterDevelopment" | "futureOperator"
   >;
   URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS: Pick<
-    FormAnswers,
+    CustomFormAnswers,
     "sitePurchaseSellingPrice" | "sitePurchasePropertyTransferDuties"
   >;
-  URBAN_PROJECT_EXPENSES_REINSTATEMENT: Pick<FormAnswers, "reinstatementExpenses">;
-  URBAN_PROJECT_EXPENSES_INSTALLATION: Pick<FormAnswers, "installationExpenses">;
+  URBAN_PROJECT_EXPENSES_REINSTATEMENT: Pick<CustomFormAnswers, "reinstatementExpenses">;
+  URBAN_PROJECT_EXPENSES_INSTALLATION: Pick<CustomFormAnswers, "installationExpenses">;
   URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES: Pick<
-    FormAnswers,
+    CustomFormAnswers,
     "yearlyProjectedBuildingsOperationsExpenses"
   >;
   URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE: Pick<
-    FormAnswers,
+    CustomFormAnswers,
     "siteResaleExpectedSellingPrice" | "siteResaleExpectedPropertyTransferDuties"
   >;
   URBAN_PROJECT_REVENUE_BUILDINGS_RESALE: Pick<
-    FormAnswers,
+    CustomFormAnswers,
     "buildingsResaleSellingPrice" | "buildingsResalePropertyTransferDuties"
   >;
   URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES: Pick<
-    FormAnswers,
+    CustomFormAnswers,
     "yearlyProjectedRevenues"
   >;
-  URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE: Pick<FormAnswers, "financialAssistanceRevenues">;
+  URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE: Pick<
+    CustomFormAnswers,
+    "financialAssistanceRevenues"
+  >;
   URBAN_PROJECT_SCHEDULE_PROJECTION: Pick<
-    FormAnswers,
+    CustomFormAnswers,
     "reinstatementSchedule" | "installationSchedule" | "firstYearOfOperation"
   >;
-  URBAN_PROJECT_NAMING: Pick<FormAnswers, "name" | "description">;
-  URBAN_PROJECT_PROJECT_PHASE: Pick<FormAnswers, "projectPhase">;
+  URBAN_PROJECT_NAMING: Pick<CustomFormAnswers, "name" | "description">;
+  URBAN_PROJECT_PROJECT_PHASE: Pick<CustomFormAnswers, "projectPhase">;
 };
 
 export const BUILDINGS_STEPS = [
@@ -190,3 +219,5 @@ export const BUILDINGS_STEPS = [
   "URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES",
   "URBAN_PROJECT_REVENUE_BUILDINGS_RESALE",
 ] as const;
+
+export type UrbanProjectCreationStep = InformationalStep | AnswerStepId;

@@ -1,8 +1,8 @@
 import { SiteNature } from "shared";
 import { describe, it, expect } from "vitest";
 
-import { UrbanProjectCustomCreationStep } from "../../urban-project/creationSteps";
 import { requestStepCompletion, navigateToNext, navigateToPrevious } from "../urbanProject.actions";
+import { UrbanProjectCreationStep } from "../urbanProjectSteps";
 import { mockSiteData } from "./_siteData.mock";
 import { createTestStore } from "./_testStoreHelpers";
 
@@ -26,7 +26,9 @@ const testScenarios = {
 describe("urbanProject.reducer - Navigation Consistency Tests", () => {
   describe("Previous/Next consistency for each step", () => {
     it("should have consistent navigation for URBAN_PROJECT_SPACES_CATEGORIES_SELECTION", () => {
-      const store = createTestStore();
+      const store = createTestStore({
+        currentStep: "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION",
+      });
 
       store.dispatch(navigateToNext());
       expect(store.getState().projectCreation.urbanProjectBeta.currentStep).toBe(
@@ -352,7 +354,10 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
     ])(
       "should maintain consistency in bidirectional navigation for : $name",
       ({ siteData, steps }) => {
-        const store = createTestStore({ siteData });
+        const store = createTestStore({
+          siteData,
+          currentStep: "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION",
+        });
 
         steps.forEach((currentStep, index) => {
           const nextStep = steps[index + 1];
@@ -423,7 +428,7 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
         });
 
         for (let i = steps.length - 1; i > 0; i--) {
-          const previousStep = steps[i - 1] as UrbanProjectCustomCreationStep;
+          const previousStep = steps[i - 1] as UrbanProjectCreationStep;
 
           store.dispatch(navigateToPrevious());
           expect(store.getState().projectCreation.urbanProjectBeta.currentStep).toBe(previousStep);
@@ -438,12 +443,12 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
 
       store.dispatch(navigateToPrevious());
       expect(store.getState().projectCreation.urbanProjectBeta.currentStep).toBe(
-        "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION",
+        "URBAN_PROJECT_CREATE_MODE_SELECTION",
       );
 
       store.dispatch(navigateToNext());
       expect(store.getState().projectCreation.urbanProjectBeta.currentStep).toBe(
-        "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION",
+        "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION",
       );
     });
 

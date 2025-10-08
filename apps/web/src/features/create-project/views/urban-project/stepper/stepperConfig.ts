@@ -1,7 +1,10 @@
-import { UrbanProjectCustomCreationStep } from "@/features/create-project/core/urban-project/creationSteps";
+import { UrbanProjectCreationStep } from "@/features/create-project/core/urban-project-beta/urbanProjectSteps";
 
 export const STEP_LABELS = {
   // Catégories principales
+  CREATION_MODE: "Mode de création",
+
+  // custom
   SPACES: "Espaces",
   SPACES_DEVELOPMENT: "Aménagement des espaces",
   SOILS_DECONTAMINATION: "Dépollution des sols",
@@ -18,7 +21,7 @@ export const STEP_LABELS = {
   // Sous-catégories
   SELECTION: "Sélection",
   SURFACE: "Surface",
-  RESIDENTIAL_SPACES: "Logements et espaces de vie",
+  RESIDENTIAL_SPACES: "Lieux d'habitation et d'activité",
   GREEN_SPACES: "Espaces verts",
   PUBLIC_SPACES: "Espaces publics",
   SOILS_SUMMARY: "Récapitulatif des sols",
@@ -41,18 +44,23 @@ export const STEP_LABELS = {
 } as const;
 
 export type SubCategoryDefinition = {
-  targetStepId: UrbanProjectCustomCreationStep;
+  targetStepId: UrbanProjectCreationStep;
   labelKey: keyof typeof STEP_LABELS;
 };
 
 export type CategoryDefinition = {
   labelKey: keyof typeof STEP_LABELS;
-  targetStepId: UrbanProjectCustomCreationStep;
+  targetStepId: UrbanProjectCreationStep;
   subCategories?: SubCategoryDefinition[];
 };
 
 // Configuration des étapes affichées dans le Stepper
+// définit l'ordre d'affichage
 export const STEP_CATEGORIES: CategoryDefinition[] = [
+  {
+    labelKey: "CREATION_MODE",
+    targetStepId: "URBAN_PROJECT_CREATE_MODE_SELECTION",
+  },
   {
     labelKey: "SPACES",
     targetStepId: "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION",
@@ -164,15 +172,19 @@ export const STEP_CATEGORIES: CategoryDefinition[] = [
   },
   { labelKey: "NAMING", targetStepId: "URBAN_PROJECT_NAMING" },
   { labelKey: "SUMMARY", targetStepId: "URBAN_PROJECT_FINAL_SUMMARY" },
+  { labelKey: "SUMMARY", targetStepId: "URBAN_PROJECT_EXPRESS_CREATION_RESULT" },
 ];
 
 // Mapping d'une étape (du state) vers la categorie et sous catégorie du Stepper
 // Plusieurs étapes du stepper peuvent renvoyer vers le même couple catégorie / sous catégorie
 // ex: URBAN_PROJECT_GREEN_SPACES_INTRODUCTION et URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION
 export const STEP_TO_CATEGORY_MAPPING: Record<
-  UrbanProjectCustomCreationStep,
+  UrbanProjectCreationStep,
   { categoryKey: keyof typeof STEP_LABELS; subCategoryKey?: keyof typeof STEP_LABELS }
 > = {
+  URBAN_PROJECT_CREATE_MODE_SELECTION: { categoryKey: "CREATION_MODE" },
+  URBAN_PROJECT_EXPRESS_CATEGORY_SELECTION: { categoryKey: "CREATION_MODE" },
+  URBAN_PROJECT_EXPRESS_CREATION_RESULT: { categoryKey: "SUMMARY" },
   // Espaces
   URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION: { categoryKey: "SPACES" },
   URBAN_PROJECT_SPACES_CATEGORIES_SELECTION: { categoryKey: "SPACES", subCategoryKey: "SELECTION" },

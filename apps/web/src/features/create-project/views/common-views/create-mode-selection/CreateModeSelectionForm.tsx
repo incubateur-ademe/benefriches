@@ -13,6 +13,7 @@ type Props = {
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
   options: Option[];
+  initialValues?: FormValues;
 };
 
 export type FormValues = {
@@ -27,8 +28,10 @@ type Option = {
   badgeText: string;
 };
 
-function CreateModeSelectionForm({ onSubmit, onBack, options }: Props) {
-  const { control, handleSubmit, formState } = useForm<FormValues>();
+function CreateModeSelectionForm({ onSubmit, onBack, options, initialValues }: Props) {
+  const { control, handleSubmit, formState } = useForm<FormValues>({
+    defaultValues: initialValues,
+  });
   const validationError = formState.errors.createMode;
 
   return (

@@ -1,8 +1,7 @@
 import { createAction } from "@reduxjs/toolkit";
 
 import { makeProjectCreationActionType } from "../actions/actionsUtils";
-import { UrbanProjectCustomCreationStep } from "../urban-project/creationSteps";
-import { AnswerStepId, AnswersByStep } from "./urbanProjectSteps";
+import { AnswerStepId, AnswersByStep, UrbanProjectCreationStep } from "./urbanProjectSteps";
 
 const URBAN_PROJECT_CREATION_PREFIX = "urbanProjectBeta";
 
@@ -31,5 +30,5 @@ export const navigateToPrevious = createUrbanProjectCreationAction("navigateToPr
 export const navigateToNext = createUrbanProjectCreationAction("navigateToNext");
 
 export const navigateToStep = createUrbanProjectCreationAction<{
-  stepId: UrbanProjectCustomCreationStep;
+  stepId: UrbanProjectCreationStep;
 }>("navigateToStep");

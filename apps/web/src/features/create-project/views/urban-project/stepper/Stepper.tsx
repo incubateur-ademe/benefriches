@@ -2,8 +2,10 @@ import { useMemo, useCallback } from "react";
 
 import { navigateToStep } from "@/features/create-project/core/urban-project-beta/urbanProject.actions";
 import { selectAvailableStepsState } from "@/features/create-project/core/urban-project-beta/urbanProject.selectors";
-import { isAnswersStep } from "@/features/create-project/core/urban-project-beta/urbanProjectSteps";
-import { UrbanProjectCustomCreationStep } from "@/features/create-project/core/urban-project/creationSteps";
+import {
+  isAnswersStep,
+  UrbanProjectCreationStep,
+} from "@/features/create-project/core/urban-project-beta/urbanProjectSteps";
 import { RootState } from "@/shared/core/store-config/store";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import FormStepperStep from "@/shared/views/layout/WizardFormLayout/FormStepperStep";
@@ -31,7 +33,7 @@ type Category = Pick<CategoryDefinition, "labelKey" | "targetStepId"> & {
 
 type AvailableStepState = Partial<
   Record<
-    UrbanProjectCustomCreationStep,
+    UrbanProjectCreationStep,
     {
       order: number;
       status: "empty" | "completed";
@@ -58,7 +60,7 @@ const getNextAvailableCategoryOrSubCategory = (categories: Category[]) => {
 
 const useMapStepListToCategoryList = (
   availableStepsState: AvailableStepState,
-  currentStep: UrbanProjectCustomCreationStep,
+  currentStep: UrbanProjectCreationStep,
 ) => {
   return useMemo(() => {
     const { categoryKey: currentCategory, subCategoryKey: currentSubCategory } =
@@ -115,10 +117,10 @@ const useMapStepListToCategoryList = (
 };
 
 type Props = {
-  step: UrbanProjectCustomCreationStep;
+  step: UrbanProjectCreationStep;
 };
 
-function UrbanProjectCustomStepper({ step: currentStep }: Props) {
+function UrbanProjectStepper({ step: currentStep }: Props) {
   const availableStepsState = useAppSelector(selectAvailableStepsState);
   const saveState = useAppSelector(
     (state: RootState) => state.projectCreation.urbanProjectBeta.saveState,
@@ -126,7 +128,7 @@ function UrbanProjectCustomStepper({ step: currentStep }: Props) {
   const dispatch = useAppDispatch();
 
   const onNavigateToStep = useCallback(
-    (stepId: UrbanProjectCustomCreationStep) => {
+    (stepId: UrbanProjectCreationStep) => {
       dispatch(navigateToStep({ stepId }));
     },
     [dispatch],
@@ -142,7 +144,6 @@ function UrbanProjectCustomStepper({ step: currentStep }: Props) {
   return (
     <FormStepperWrapper>
       <FormStepperStep title="Type de projet" state="completed" />
-      <FormStepperStep title="Mode de création" state="completed" />
       {categories.map(({ targetStepId, labelKey, subCategories, state }) => (
         <StepperLiItem
           key={labelKey}
@@ -177,4 +178,4 @@ function UrbanProjectCustomStepper({ step: currentStep }: Props) {
   );
 }
 
-export default UrbanProjectCustomStepper;
+export default UrbanProjectStepper;

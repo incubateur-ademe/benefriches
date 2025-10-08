@@ -15,7 +15,11 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
       const state = store.getState().projectCreation;
 
       // Étape ----
-      expect(state.urbanProjectBeta.currentStep).toBe(
+      expect(state.urbanProjectBeta.currentStep).toBe("URBAN_PROJECT_CREATE_MODE_SELECTION");
+
+      // Étape ----
+      store.dispatch(navigateToNext());
+      expect(store.getState().projectCreation.urbanProjectBeta.currentStep).toBe(
         "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION",
       );
 
@@ -493,7 +497,7 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
       currentState = store.getState().projectCreation;
       expect(currentState.urbanProjectBeta.currentStep).toBe("URBAN_PROJECT_CREATION_RESULT");
 
-      expect(Object.keys(currentState.urbanProjectBeta.steps).length).toEqual(38);
+      expect(Object.keys(currentState.urbanProjectBeta.steps).length).toEqual(39);
     });
 
     it("should handle single category shortcut correctly", () => {

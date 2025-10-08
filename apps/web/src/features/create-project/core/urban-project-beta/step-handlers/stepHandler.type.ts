@@ -1,6 +1,10 @@
 import { ProjectCreationState } from "../../createProject.reducer";
-import { UrbanProjectCustomCreationStep } from "../../urban-project/creationSteps";
-import { AnswersByStep, AnswerStepId, InformationalStep } from "../urbanProjectSteps";
+import {
+  AnswersByStep,
+  AnswerStepId,
+  InformationalStep,
+  UrbanProjectCreationStep,
+} from "../urbanProjectSteps";
 
 export type StepContext = {
   siteData?: ProjectCreationState["siteData"];
@@ -8,9 +12,9 @@ export type StepContext = {
 };
 
 export interface StepHandler {
-  readonly stepId: UrbanProjectCustomCreationStep;
-  getNextStepId?(context: StepContext): UrbanProjectCustomCreationStep;
-  getPreviousStepId?(context: StepContext): UrbanProjectCustomCreationStep;
+  readonly stepId: UrbanProjectCreationStep;
+  getNextStepId?(context: StepContext): UrbanProjectCreationStep;
+  getPreviousStepId?(context: StepContext): UrbanProjectCreationStep;
 }
 
 export interface InfoStepHandler extends StepHandler {
@@ -19,8 +23,8 @@ export interface InfoStepHandler extends StepHandler {
 
 export interface AnswerStepHandler<T extends AnswerStepId> extends StepHandler {
   readonly stepId: T;
-  getNextStepId(context: StepContext): UrbanProjectCustomCreationStep;
-  getPreviousStepId(context: StepContext): UrbanProjectCustomCreationStep;
+  getNextStepId(context: StepContext, answers?: AnswersByStep[T]): UrbanProjectCreationStep;
+  getPreviousStepId?(context: StepContext): UrbanProjectCreationStep;
   getDefaultAnswers?(context: StepContext): AnswersByStep[T] | undefined;
   getRecomputedStepAnswers?(context: StepContext): AnswersByStep[T] | undefined;
   getDependencyRules?(context: StepContext, answers: AnswersByStep[T]): StepInvalidationRule[];
@@ -36,7 +40,7 @@ type StepAnswerPayload<K extends AnswerStepId = AnswerStepId> = {
 }[K];
 export type ShortcutResult = {
   complete: StepAnswerPayload[];
-  next: UrbanProjectCustomCreationStep;
+  next: UrbanProjectCreationStep;
 };
 
 export type StepInvalidationRule = {

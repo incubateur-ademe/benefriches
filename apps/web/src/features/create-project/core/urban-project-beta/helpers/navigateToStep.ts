@@ -1,12 +1,11 @@
 import { ProjectCreationState } from "../../createProject.reducer";
-import { UrbanProjectCustomCreationStep } from "../../urban-project/creationSteps";
 import { stepHandlerRegistry } from "../step-handlers/stepHandlerRegistry";
-import { isAnswersStep } from "../urbanProjectSteps";
+import { isAnswersStep, UrbanProjectCreationStep } from "../urbanProjectSteps";
 import { MutateStateHelper } from "./mutateState";
 
 export const navigateToAndLoadStep = (
   state: ProjectCreationState,
-  stepId: UrbanProjectCustomCreationStep,
+  stepId: UrbanProjectCreationStep,
 ) => {
   if (isAnswersStep(stepId)) {
     const handler = stepHandlerRegistry[stepId];

@@ -13,6 +13,7 @@ import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormL
 type Props = {
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
+  initialValues?: FormValues;
 };
 
 export type FormValues = {
@@ -66,8 +67,10 @@ const options: Option[] = [
   },
 ] as const;
 
-function UrbanProjectExpressCategory({ onSubmit, onBack }: Props) {
-  const { control, handleSubmit, formState } = useForm<FormValues>();
+function UrbanProjectExpressCategory({ onSubmit, onBack, initialValues }: Props) {
+  const { control, handleSubmit, formState } = useForm<FormValues>({
+    defaultValues: initialValues,
+  });
   const validationError = formState.errors.expressCategory;
 
   return (

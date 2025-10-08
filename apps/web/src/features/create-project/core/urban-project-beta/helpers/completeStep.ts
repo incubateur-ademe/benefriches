@@ -1,9 +1,8 @@
 import { ProjectCreationState } from "../../createProject.reducer";
-import { UrbanProjectCustomCreationStep } from "../../urban-project/creationSteps";
 import { ShortcutResult, StepInvalidationRule } from "../step-handlers/stepHandler.type";
 import { stepHandlerRegistry } from "../step-handlers/stepHandlerRegistry";
 import { StepCompletionPayload } from "../urbanProject.actions";
-import { AnswerStepId } from "../urbanProjectSteps";
+import { AnswerStepId, UrbanProjectCreationStep } from "../urbanProjectSteps";
 import { MutateStateHelper } from "./mutateState";
 import { navigateToAndLoadStep } from "./navigateToStep";
 
@@ -11,7 +10,7 @@ export type StepUpdateResult<T extends AnswerStepId> = {
   payload: StepCompletionPayload<T>;
   shortcutComplete?: StepCompletionPayload[];
   cascadingChanges?: StepInvalidationRule[];
-  navigationTarget?: UrbanProjectCustomCreationStep;
+  navigationTarget?: UrbanProjectCreationStep;
 };
 
 function processShortcutInvalidations(
@@ -92,10 +91,13 @@ export function computeStepChanges<T extends AnswerStepId>(
   return {
     payload: newPayload,
     cascadingChanges: dependencyRules,
-    navigationTarget: handler.getNextStepId({
-      siteData: state.siteData,
-      stepsState: state.urbanProjectBeta.steps,
-    }),
+    navigationTarget: handler.getNextStepId(
+      {
+        siteData: state.siteData,
+        stepsState: state.urbanProjectBeta.steps,
+      },
+      payload.answers,
+    ),
   };
 }
 

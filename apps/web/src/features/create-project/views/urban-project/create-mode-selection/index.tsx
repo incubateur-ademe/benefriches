@@ -1,13 +1,9 @@
-import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
-import {
-  customCreateModeSelected,
-  expressCreateModeSelected,
-} from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
-import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
+import { requestStepCompletion } from "@/features/create-project/core/urban-project-beta/urbanProject.actions";
+import { selectStepAnswers } from "@/features/create-project/core/urban-project-beta/urbanProject.selectors";
+import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import CreateModeSelectionForm, {
-  FormValues,
-} from "../../common-views/create-mode-selection/CreateModeSelectionForm";
+import CreateModeSelectionForm from "../../common-views/create-mode-selection/CreateModeSelectionForm";
+import { useStepBack } from "../custom-forms/useStepBack";
 
 const options = [
   {
@@ -31,18 +27,23 @@ const options = [
 export default function CreateModeSelectionFormContainer() {
   const dispatch = useAppDispatch();
 
-  const onSubmit = (data: FormValues) => {
-    if (data.createMode === "express") {
-      void dispatch(expressCreateModeSelected());
-    }
-    if (data.createMode === "custom") {
-      void dispatch(customCreateModeSelected());
-    }
-  };
+  const onBack = useStepBack();
+  const { createMode } =
+    useAppSelector(selectStepAnswers("URBAN_PROJECT_CREATE_MODE_SELECTION")) ?? {};
 
-  const onBack = () => {
-    dispatch(stepRevertAttempted());
-  };
-
-  return <CreateModeSelectionForm onSubmit={onSubmit} onBack={onBack} options={options} />;
+  return (
+    <CreateModeSelectionForm
+      onSubmit={(formData) => {
+        dispatch(
+          requestStepCompletion({
+            stepId: "URBAN_PROJECT_CREATE_MODE_SELECTION",
+            answers: { createMode: formData.createMode },
+          }),
+        );
+      }}
+      onBack={onBack}
+      initialValues={createMode ? { createMode } : undefined}
+      options={options}
+    />
+  );
 }

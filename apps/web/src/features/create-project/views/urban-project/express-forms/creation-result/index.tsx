@@ -1,25 +1,24 @@
-import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import ProjectExpressCreationResult from "../../../common-views/result/ProjectExpressCreationResult";
+import { useStepBack } from "../../custom-forms/useStepBack";
 
-function UrbanProjectCreationResultContainer() {
-  const dispatch = useAppDispatch();
-  const { urbanProject, siteData, projectId } = useAppSelector((state) => state.projectCreation);
+function UrbanProjectExpressCreationResultContainer() {
+  const { urbanProjectBeta, siteData, projectId } = useAppSelector(
+    (state) => state.projectCreation,
+  );
 
-  const onBack = () => {
-    dispatch(stepRevertAttempted());
-  };
+  const onBack = useStepBack();
 
   return (
     <ProjectExpressCreationResult
       projectId={projectId}
       siteName={siteData?.name ?? ""}
-      loadingState={urbanProject.saveState}
-      projectData={urbanProject.expressData.projectData}
+      loadingState={urbanProjectBeta.saveState}
+      projectData={urbanProjectBeta.steps.URBAN_PROJECT_EXPRESS_CREATION_RESULT?.projectData}
       onBack={onBack}
     />
   );
 }
 
-export default UrbanProjectCreationResultContainer;
+export default UrbanProjectExpressCreationResultContainer;

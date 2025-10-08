@@ -1,9 +1,8 @@
 import { createReducer, UnknownAction } from "@reduxjs/toolkit";
 
+import { ReconversionProject } from "../actions/expressProjectSavedGateway";
 import { ProjectCreationState } from "../createProject.reducer";
-import { UrbanProjectCustomCreationStep } from "../urban-project/creationSteps";
 import { applyStepChanges, computeStepChanges, StepUpdateResult } from "./helpers/completeStep";
-import { MutateStateHelper } from "./helpers/mutateState";
 import { navigateToAndLoadStep } from "./helpers/navigateToStep";
 import soilsCarbonStorageReducer, {
   State as SoilsCarbonStorageState,
@@ -17,11 +16,12 @@ import {
   navigateToNext,
   navigateToStep,
 } from "./urbanProject.actions";
-import { customUrbanProjectSaved } from "./urbanProjectSave.action";
-import { AnswersByStep, AnswerStepId } from "./urbanProjectSteps";
+import { customUrbanProjectSaved } from "./urbanProjectCustomSaved.action";
+import { expressUrbanProjectSaved } from "./urbanProjectExpressSaved.action";
+import { AnswersByStep, AnswerStepId, UrbanProjectCreationStep } from "./urbanProjectSteps";
 
 export type UrbanProjectState = {
-  currentStep: UrbanProjectCustomCreationStep;
+  currentStep: UrbanProjectCreationStep;
   saveState: "idle" | "loading" | "success" | "error";
   soilsCarbonStorage: SoilsCarbonStorageState;
   pendingStepCompletion?: {
@@ -29,20 +29,25 @@ export type UrbanProjectState = {
     showAlert: boolean;
   };
   steps: Partial<{
-    [K in UrbanProjectCustomCreationStep]: K extends AnswerStepId
+    [K in UrbanProjectCreationStep]: K extends "URBAN_PROJECT_EXPRESS_CREATION_RESULT"
       ? {
           completed: boolean;
-          payload?: AnswersByStep[K];
-          defaultValues?: AnswersByStep[K];
+          projectData?: ReconversionProject;
         }
-      : {
-          completed: boolean;
-        };
+      : K extends AnswerStepId
+        ? {
+            completed: boolean;
+            payload?: AnswersByStep[K];
+            defaultValues?: AnswersByStep[K];
+          }
+        : {
+            completed: boolean;
+          };
   }>;
 };
 
 export const initialState: UrbanProjectState = {
-  currentStep: "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION",
+  currentStep: "URBAN_PROJECT_CREATE_MODE_SELECTION",
   saveState: "idle",
   soilsCarbonStorage: { loadingState: "idle", current: undefined, projected: undefined },
   steps: {},
@@ -80,7 +85,9 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
     const handler = stepHandlerRegistry[stepId];
 
     if (stepId === initialState.currentStep) {
-      state.urbanProject.createMode = undefined;
+      state.stepsHistory = state.stepsHistory.filter(
+        (stepId) => stepId !== initialState.currentStep,
+      );
     }
 
     if (handler.getPreviousStepId) {
@@ -125,11 +132,22 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
   });
   builder.addCase(customUrbanProjectSaved.fulfilled, (state) => {
     state.urbanProjectBeta.saveState = "success";
-    MutateStateHelper.navigateToStep(state, "URBAN_PROJECT_CREATION_RESULT");
   });
   builder.addCase(customUrbanProjectSaved.rejected, (state) => {
     state.urbanProjectBeta.saveState = "error";
-    MutateStateHelper.navigateToStep(state, "URBAN_PROJECT_CREATION_RESULT");
+  });
+  builder.addCase(expressUrbanProjectSaved.pending, (state) => {
+    state.urbanProjectBeta.saveState = "loading";
+  });
+  builder.addCase(expressUrbanProjectSaved.rejected, (state) => {
+    state.urbanProjectBeta.saveState = "error";
+  });
+  builder.addCase(expressUrbanProjectSaved.fulfilled, (state, action) => {
+    state.urbanProjectBeta.saveState = "success";
+    state.urbanProjectBeta.steps.URBAN_PROJECT_EXPRESS_CREATION_RESULT = {
+      completed: true,
+      projectData: action.payload,
+    };
   });
 });
 

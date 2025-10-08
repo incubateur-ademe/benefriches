@@ -1,7 +1,7 @@
 import { ButtonProps } from "@codegouvfr/react-dsfr/Button";
 import { sumObjectValues, typedObjectEntries } from "shared";
 
-import { UrbanProjectCustomCreationStep } from "@/features/create-project/core/urban-project/creationSteps";
+import { UrbanProjectCreationStep } from "@/features/create-project/core/urban-project-beta/urbanProjectSteps";
 import { ProjectFeatures } from "@/features/projects/domain/projects.types";
 import {
   formatNumberFr,
@@ -21,7 +21,7 @@ import SoilsDistribution from "./SoilsDistribution";
 import UrbanProjectBuildingsSection from "./UrbanProjectBuildingsSection";
 
 type Props = ProjectFeatures & {
-  getSectionButtonProps?: (stepId: UrbanProjectCustomCreationStep) => ButtonProps | undefined;
+  getSectionButtonProps?: (stepId: UrbanProjectCreationStep) => ButtonProps | undefined;
 };
 
 const DevelopmentPlanFeatures = ({

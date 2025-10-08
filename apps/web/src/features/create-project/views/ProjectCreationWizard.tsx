@@ -70,7 +70,7 @@ function ProjectCreationWizard({ route }: Props) {
     return (
       <>
         <StepRevertConfirmationModal />
-        <UrbanProjectCreationWizard currentStep={currentStep} />
+        <UrbanProjectCreationWizard />
       </>
     );
   }

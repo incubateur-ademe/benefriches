@@ -6,8 +6,8 @@ import {
   selectProjectSoilDistribution,
   selectProjectSpaces,
 } from "@/features/create-project/core/urban-project-beta/urbanProject.selectors";
-import { customUrbanProjectSaved } from "@/features/create-project/core/urban-project-beta/urbanProjectSave.action";
-import { UrbanProjectCustomCreationStep } from "@/features/create-project/core/urban-project/creationSteps";
+import { customUrbanProjectSaved } from "@/features/create-project/core/urban-project-beta/urbanProjectCustomSaved.action";
+import { UrbanProjectCreationStep } from "@/features/create-project/core/urban-project-beta/urbanProjectSteps";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import { useInformationalStepBackNext } from "../useInformationalStepBackNext";
@@ -46,7 +46,7 @@ function ProjectionCreationDataSummaryContainer() {
       projectSoilsDistribution={projectSoilsDistribution}
       projectId={projectId}
       projectSpaces={projectSpaces}
-      getSectionButtonProps={(stepId: UrbanProjectCustomCreationStep) => {
+      getSectionButtonProps={(stepId: UrbanProjectCreationStep) => {
         return {
           iconId: "fr-icon-pencil-line",
           children: "Modifier",

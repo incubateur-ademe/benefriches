@@ -5,7 +5,7 @@ import {
   getUrbanProjectSoilsDistributionFromSpaces,
   UrbanSpacesByCategory,
 } from "../../urban-project/urbanProjectSoils";
-import { ANSWER_STEPS, AnswersByStep, AnswerStepId, FormAnswers } from "../urbanProjectSteps";
+import { ANSWER_STEPS, AnswersByStep, AnswerStepId, CustomFormAnswers } from "../urbanProjectSteps";
 
 export const ReadStateHelper = {
   getStep<K extends AnswerStepId = AnswerStepId>(
@@ -200,7 +200,7 @@ export const ReadStateHelper = {
   },
 
   getAllFormAnswers(steps: ProjectCreationState["urbanProjectBeta"]["steps"]) {
-    return Array.from(ANSWER_STEPS).reduce<FormAnswers>(
+    return Array.from(ANSWER_STEPS).reduce<CustomFormAnswers>(
       (acc, stepId) => ({
         ...acc,
         ...this.getStepAnswers(steps, stepId),

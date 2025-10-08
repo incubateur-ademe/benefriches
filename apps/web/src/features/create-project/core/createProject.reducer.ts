@@ -27,7 +27,7 @@ import urbanProjectBetaReducer, {
   UrbanProjectState as UrbanProjectBetaState,
   initialState as urbanProjectBetaInitialState,
 } from "./urban-project-beta/urbanProject.reducer";
-import { UrbanProjectCreationStep } from "./urban-project/creationSteps";
+import { UrbanProjectCreationStep } from "./urban-project-beta/urbanProjectSteps";
 import urbanProjectReducer, {
   initialState as urbanProjectInitialState,
   UrbanProjectState,

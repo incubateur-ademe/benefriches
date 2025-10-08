@@ -1,4 +1,4 @@
-import { UrbanProjectCreationStep } from "../../core/urban-project/creationSteps";
+import { UrbanProjectCreationStep } from "../../core/urban-project-beta/urbanProjectSteps";
 
 export const URBAN_PROJECT_CREATION_STEP_QUERY_STRING_MAP = {
   URBAN_PROJECT_CREATE_MODE_SELECTION: "mode-creation",
@@ -48,4 +48,5 @@ export const URBAN_PROJECT_CREATION_STEP_QUERY_STRING_MAP = {
   URBAN_PROJECT_PROJECT_PHASE: "avancement-projet",
   URBAN_PROJECT_FINAL_SUMMARY: "recapitulatif-projet-urbain",
   URBAN_PROJECT_CREATION_RESULT: "fin",
+  URBAN_PROJECT_EXPRESS_CREATION_RESULT: "express-fin",
 } as const satisfies Record<UrbanProjectCreationStep, string>;
