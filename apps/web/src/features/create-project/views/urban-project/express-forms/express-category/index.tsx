@@ -1,6 +1,6 @@
-import { requestStepCompletion } from "@/features/create-project/core/urban-project-beta/urbanProject.actions";
-import { selectStepAnswers } from "@/features/create-project/core/urban-project-beta/urbanProject.selectors";
-import { expressUrbanProjectSaved } from "@/features/create-project/core/urban-project-beta/urbanProjectExpressSaved.action";
+import { requestStepCompletion } from "@/features/create-project/core/urban-project/urbanProject.actions";
+import { selectStepAnswers } from "@/features/create-project/core/urban-project/urbanProject.selectors";
+import { expressUrbanProjectSaved } from "@/features/create-project/core/urban-project/urbanProjectExpressSaved.action";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import { useStepBack } from "../../custom-forms/useStepBack";

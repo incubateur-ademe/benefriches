@@ -6,8 +6,8 @@ import { useSelector } from "react-redux";
 import {
   cancelStepCompletion,
   confirmStepCompletion,
-} from "@/features/create-project/core/urban-project-beta/urbanProject.actions";
-import { AnswerStepId } from "@/features/create-project/core/urban-project-beta/urbanProjectSteps";
+} from "@/features/create-project/core/urban-project/urbanProject.actions";
+import { AnswerStepId } from "@/features/create-project/core/urban-project/urbanProjectSteps";
 import { RootState } from "@/shared/core/store-config/store";
 import classNames from "@/shared/views/clsx";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
@@ -32,7 +32,7 @@ const getStepLabel = (stepId: AnswerStepId) => {
 
 export default function CascadingChangesAlert() {
   const pendingStepCompletion = useSelector(
-    (state: RootState) => state.projectCreation.urbanProjectBeta.pendingStepCompletion,
+    (state: RootState) => state.projectCreation.urbanProject.pendingStepCompletion,
   );
 
   const dispatch = useAppDispatch();

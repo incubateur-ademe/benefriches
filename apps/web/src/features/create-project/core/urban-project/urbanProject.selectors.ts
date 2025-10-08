@@ -14,7 +14,7 @@ import {
   UrbanProjectCreationStep,
 } from "./urbanProjectSteps";
 
-export const selectStepState = (state: RootState) => state.projectCreation.urbanProjectBeta.steps;
+export const selectStepState = (state: RootState) => state.projectCreation.urbanProject.steps;
 
 export const selectProjectSoilDistribution = createSelector(selectStepState, (state) =>
   ReadStateHelper.getProjectSoilDistribution(state),
@@ -48,7 +48,7 @@ export const selectFormAnswers = createSelector([selectStepState], (steps) =>
 );
 
 export const selectCurrentStep = createSelector(
-  [(state: RootState) => state.projectCreation.urbanProjectBeta],
+  [(state: RootState) => state.projectCreation.urbanProject],
   (state) => state.currentStep,
 );
 

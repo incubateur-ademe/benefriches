@@ -9,10 +9,10 @@ export const navigateToAndLoadStep = (
 ) => {
   if (isAnswersStep(stepId)) {
     const handler = stepHandlerRegistry[stepId];
-    if (handler.getDefaultAnswers && !state.urbanProjectBeta.steps[stepId]?.defaultValues) {
+    if (handler.getDefaultAnswers && !state.urbanProject.steps[stepId]?.defaultValues) {
       const defaults = handler.getDefaultAnswers({
         siteData: state.siteData,
-        stepsState: state.urbanProjectBeta.steps,
+        stepsState: state.urbanProject.steps,
       });
 
       if (defaults) {

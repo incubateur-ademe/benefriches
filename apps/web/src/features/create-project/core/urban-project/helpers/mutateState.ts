@@ -3,14 +3,14 @@ import { AnswersByStep, AnswerStepId, UrbanProjectCreationStep } from "../urbanP
 
 export const MutateStateHelper = {
   navigateToStep: (state: ProjectCreationState, stepId: UrbanProjectCreationStep) => {
-    state.urbanProjectBeta.currentStep = stepId;
+    state.urbanProject.currentStep = stepId;
   },
 
   ensureStepExists(state: ProjectCreationState, stepId: AnswerStepId, defaultCompleted = false) {
-    if (!state.urbanProjectBeta.steps[stepId]) {
-      state.urbanProjectBeta.steps[stepId] = { completed: defaultCompleted };
+    if (!state.urbanProject.steps[stepId]) {
+      state.urbanProject.steps[stepId] = { completed: defaultCompleted };
     }
-    return state.urbanProjectBeta.steps[stepId];
+    return state.urbanProject.steps[stepId];
   },
 
   setDefaultValues<K extends AnswerStepId>(
@@ -44,7 +44,7 @@ export const MutateStateHelper = {
     stepId: K,
     answers: AnswersByStep[K],
   ) {
-    state.urbanProjectBeta.steps[stepId] = {
+    state.urbanProject.steps[stepId] = {
       completed: true,
       defaultValues: answers,
       payload: answers,
@@ -52,6 +52,6 @@ export const MutateStateHelper = {
   },
 
   deleteStep(state: ProjectCreationState, stepId: AnswerStepId) {
-    state.urbanProjectBeta.steps[stepId] = undefined;
+    state.urbanProject.steps[stepId] = undefined;
   },
 };

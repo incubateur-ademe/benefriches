@@ -3,8 +3,8 @@ import {
   YearlyBuildingsOperationsRevenues,
 } from "shared";
 
-import { requestStepCompletion } from "@/features/create-project/core/urban-project-beta/urbanProject.actions";
-import { selectStepAnswers } from "@/features/create-project/core/urban-project-beta/urbanProject.selectors";
+import { requestStepCompletion } from "@/features/create-project/core/urban-project/urbanProject.actions";
+import { selectStepAnswers } from "@/features/create-project/core/urban-project/urbanProject.selectors";
 import ProjectYearlyRevenuesForm from "@/features/create-project/views/common-views/revenues/yearly-projected-revenue/ProjectYearlyRevenueForm";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 

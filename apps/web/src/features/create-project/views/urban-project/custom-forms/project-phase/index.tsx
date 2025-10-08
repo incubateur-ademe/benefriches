@@ -1,7 +1,7 @@
 import { URBAN_PROJECT_PHASE_VALUES } from "shared";
 
-import { requestStepCompletion } from "@/features/create-project/core/urban-project-beta/urbanProject.actions";
-import { selectStepAnswers } from "@/features/create-project/core/urban-project-beta/urbanProject.selectors";
+import { requestStepCompletion } from "@/features/create-project/core/urban-project/urbanProject.actions";
+import { selectStepAnswers } from "@/features/create-project/core/urban-project/urbanProject.selectors";
 import {
   getHintTextForUrbanProjectPhase,
   getLabelForUrbanProjectPhase,

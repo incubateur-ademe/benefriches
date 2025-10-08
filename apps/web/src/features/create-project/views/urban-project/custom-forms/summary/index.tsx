@@ -1,13 +1,13 @@
 import { selectProjectId } from "@/features/create-project/core/createProject.selectors";
-import { navigateToStep } from "@/features/create-project/core/urban-project-beta/urbanProject.actions";
+import { navigateToStep } from "@/features/create-project/core/urban-project/urbanProject.actions";
 import {
   selectFormAnswers,
   selectIsFormStatusValid,
   selectProjectSoilDistribution,
   selectProjectSpaces,
-} from "@/features/create-project/core/urban-project-beta/urbanProject.selectors";
-import { customUrbanProjectSaved } from "@/features/create-project/core/urban-project-beta/urbanProjectCustomSaved.action";
-import { UrbanProjectCreationStep } from "@/features/create-project/core/urban-project-beta/urbanProjectSteps";
+} from "@/features/create-project/core/urban-project/urbanProject.selectors";
+import { customUrbanProjectSaved } from "@/features/create-project/core/urban-project/urbanProjectCustomSaved.action";
+import { UrbanProjectCreationStep } from "@/features/create-project/core/urban-project/urbanProjectSteps";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import { useInformationalStepBackNext } from "../useInformationalStepBackNext";

@@ -2,15 +2,17 @@ import { ButtonProps } from "@codegouvfr/react-dsfr/Button";
 import { ReactNode } from "react";
 import { SoilsDistribution, LEGACY_UrbanProjectSpace } from "shared";
 
-import { UrbanProjectCreationStep } from "@/features/create-project/core/urban-project-beta/urbanProjectSteps";
-import { UrbanProjectCreationData } from "@/features/create-project/core/urban-project/creationData";
+import {
+  CustomFormAnswers,
+  UrbanProjectCreationStep,
+} from "@/features/create-project/core/urban-project/urbanProjectSteps";
 import ProjectFeaturesView from "@/features/projects/views/project-page/features/ProjectFeaturesView";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   projectId: string;
-  projectData: UrbanProjectCreationData;
+  projectData: CustomFormAnswers;
   projectSoilsDistribution: SoilsDistribution;
   projectSpaces: Partial<Record<LEGACY_UrbanProjectSpace, number>>;
   onNext: () => void;

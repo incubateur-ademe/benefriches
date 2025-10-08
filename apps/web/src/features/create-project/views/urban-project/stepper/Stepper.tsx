@@ -1,11 +1,11 @@
 import { useMemo, useCallback } from "react";
 
-import { navigateToStep } from "@/features/create-project/core/urban-project-beta/urbanProject.actions";
-import { selectAvailableStepsState } from "@/features/create-project/core/urban-project-beta/urbanProject.selectors";
+import { navigateToStep } from "@/features/create-project/core/urban-project/urbanProject.actions";
+import { selectAvailableStepsState } from "@/features/create-project/core/urban-project/urbanProject.selectors";
 import {
   isAnswersStep,
   UrbanProjectCreationStep,
-} from "@/features/create-project/core/urban-project-beta/urbanProjectSteps";
+} from "@/features/create-project/core/urban-project/urbanProjectSteps";
 import { RootState } from "@/shared/core/store-config/store";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import FormStepperStep from "@/shared/views/layout/WizardFormLayout/FormStepperStep";
@@ -123,7 +123,7 @@ type Props = {
 function UrbanProjectStepper({ step: currentStep }: Props) {
   const availableStepsState = useAppSelector(selectAvailableStepsState);
   const saveState = useAppSelector(
-    (state: RootState) => state.projectCreation.urbanProjectBeta.saveState,
+    (state: RootState) => state.projectCreation.urbanProject.saveState,
   );
   const dispatch = useAppDispatch();
 

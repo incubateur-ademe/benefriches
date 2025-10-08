@@ -41,7 +41,7 @@ describe("urbanProject.reducer - cancelStepCompletion action", () => {
           buildingsUsesDistribution: { RESIDENTIAL: 3000, LOCAL_STORE: 1000 },
         },
       },
-    } satisfies ProjectCreationState["urbanProjectBeta"]["steps"];
+    } satisfies ProjectCreationState["urbanProject"]["steps"];
 
     const store = createTestStore({
       steps: initialSteps,
@@ -55,7 +55,7 @@ describe("urbanProject.reducer - cancelStepCompletion action", () => {
         answers: { spacesCategories: ["GREEN_SPACES"] },
       }),
     );
-    const intermediateState = store.getState().projectCreation.urbanProjectBeta;
+    const intermediateState = store.getState().projectCreation.urbanProject;
     expect(intermediateState.pendingStepCompletion?.showAlert).toBe(true);
     expect(intermediateState.pendingStepCompletion?.changes).toEqual({
       cascadingChanges: [
@@ -93,14 +93,12 @@ describe("urbanProject.reducer - cancelStepCompletion action", () => {
 
     store.dispatch(cancelStepCompletion());
 
-    const stepsState = store.getState().projectCreation.urbanProjectBeta.steps;
+    const stepsState = store.getState().projectCreation.urbanProject.steps;
 
-    expect(store.getState().projectCreation.urbanProjectBeta.currentStep).toEqual(
+    expect(store.getState().projectCreation.urbanProject.currentStep).toEqual(
       "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION",
     );
-    expect(store.getState().projectCreation.urbanProjectBeta.pendingStepCompletion).toEqual(
-      undefined,
-    );
+    expect(store.getState().projectCreation.urbanProject.pendingStepCompletion).toEqual(undefined);
 
     expect(stepsState.URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA).toEqual(
       initialSteps.URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA,

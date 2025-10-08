@@ -1,5 +1,5 @@
-import { requestStepCompletion } from "@/features/create-project/core/urban-project-beta/urbanProject.actions";
-import { selectStepAnswers } from "@/features/create-project/core/urban-project-beta/urbanProject.selectors";
+import { requestStepCompletion } from "@/features/create-project/core/urban-project/urbanProject.actions";
+import { selectStepAnswers } from "@/features/create-project/core/urban-project/urbanProject.selectors";
 import InstallationExpensesForm from "@/features/create-project/views/common-views/expenses/installation-expenses/InstallationExpensesForm";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";

@@ -5,8 +5,8 @@ import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
-import { selectCurrentStep } from "../../core/urban-project-beta/urbanProject.selectors";
-import { UrbanProjectCreationStep } from "../../core/urban-project-beta/urbanProjectSteps";
+import { selectCurrentStep } from "../../core/urban-project/urbanProject.selectors";
+import { UrbanProjectCreationStep } from "../../core/urban-project/urbanProjectSteps";
 import { HTML_MAIN_TITLE } from "../mainHtmlTitle";
 import CreateModeSelectionForm from "./create-mode-selection";
 import UrbanProjectStepper from "./stepper/Stepper";

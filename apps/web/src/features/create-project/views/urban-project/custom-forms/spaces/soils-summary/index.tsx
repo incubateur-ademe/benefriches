@@ -1,5 +1,5 @@
 import { selectSiteSoilsDistribution } from "@/features/create-project/core/createProject.selectors";
-import { selectProjectSoilDistribution } from "@/features/create-project/core/urban-project-beta/urbanProject.selectors";
+import { selectProjectSoilDistribution } from "@/features/create-project/core/urban-project/urbanProject.selectors";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import { useInformationalStepBackNext } from "../../useInformationalStepBackNext";

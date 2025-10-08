@@ -63,14 +63,6 @@ const MOCK_STATES = {
       soilsCarbonStorage: { loadingState: "idle", current: undefined, projected: undefined },
     },
     urbanProject: {
-      createMode: undefined,
-      expressData: {},
-      saveState: "idle",
-      creationData: {},
-      spacesCategoriesToComplete: [],
-      soilsCarbonStorage: { loadingState: "idle", current: undefined, projected: undefined },
-    },
-    urbanProjectBeta: {
       steps: {},
       saveState: "idle",
       currentStep: "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION",

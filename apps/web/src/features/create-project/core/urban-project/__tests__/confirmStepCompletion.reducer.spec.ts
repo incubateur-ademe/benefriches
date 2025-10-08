@@ -44,7 +44,7 @@ describe("urbanProject.reducer - confirmStepCompletion action", () => {
               buildingsUsesDistribution: { RESIDENTIAL: 3000, LOCAL_STORE: 1000 },
             },
           },
-        } satisfies ProjectCreationState["urbanProjectBeta"]["steps"];
+        } satisfies ProjectCreationState["urbanProject"]["steps"];
 
         const store = createTestStore({
           steps: initialSteps,
@@ -59,7 +59,7 @@ describe("urbanProject.reducer - confirmStepCompletion action", () => {
           }),
         );
 
-        const intermediateState = store.getState().projectCreation.urbanProjectBeta;
+        const intermediateState = store.getState().projectCreation.urbanProject;
         expect(intermediateState.pendingStepCompletion?.showAlert).toBe(true);
         expect(intermediateState.pendingStepCompletion?.changes).toEqual({
           cascadingChanges: [
@@ -98,12 +98,12 @@ describe("urbanProject.reducer - confirmStepCompletion action", () => {
 
         store.dispatch(confirmStepCompletion());
 
-        const stepsState = store.getState().projectCreation.urbanProjectBeta.steps;
+        const stepsState = store.getState().projectCreation.urbanProject.steps;
 
-        expect(store.getState().projectCreation.urbanProjectBeta.currentStep).toEqual(
+        expect(store.getState().projectCreation.urbanProject.currentStep).toEqual(
           "URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION",
         );
-        expect(store.getState().projectCreation.urbanProjectBeta.pendingStepCompletion).toEqual(
+        expect(store.getState().projectCreation.urbanProject.pendingStepCompletion).toEqual(
           undefined,
         );
 
@@ -134,7 +134,7 @@ describe("urbanProject.reducer - confirmStepCompletion action", () => {
               greenSpacesDistribution: { LAWNS_AND_BUSHES: 2000, TREE_FILLED_SPACE: 1000 },
             },
           },
-        } satisfies ProjectCreationState["urbanProjectBeta"]["steps"];
+        } satisfies ProjectCreationState["urbanProject"]["steps"];
 
         const store = createTestStore({
           steps: initialSteps,
@@ -148,7 +148,7 @@ describe("urbanProject.reducer - confirmStepCompletion action", () => {
           }),
         );
         store.dispatch(confirmStepCompletion());
-        const stepsState = store.getState().projectCreation.urbanProjectBeta.steps;
+        const stepsState = store.getState().projectCreation.urbanProject.steps;
 
         expect(stepsState.URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION).toEqual(undefined);
       });
@@ -208,7 +208,7 @@ describe("urbanProject.reducer - confirmStepCompletion action", () => {
               decontaminatedSurfaceArea: 1000,
             },
           },
-        } satisfies ProjectCreationState["urbanProjectBeta"]["steps"];
+        } satisfies ProjectCreationState["urbanProject"]["steps"];
 
         const store = createTestStore({
           steps: initialSteps,
@@ -227,7 +227,7 @@ describe("urbanProject.reducer - confirmStepCompletion action", () => {
         );
         store.dispatch(confirmStepCompletion());
 
-        const stepsState = store.getState().projectCreation.urbanProjectBeta.steps;
+        const stepsState = store.getState().projectCreation.urbanProject.steps;
 
         expect(stepsState.URBAN_PROJECT_EXPENSES_REINSTATEMENT?.completed).toEqual(true);
         expect(
@@ -271,7 +271,7 @@ describe("urbanProject.reducer - confirmStepCompletion action", () => {
               buildingsResalePlannedAfterDevelopment: false,
             },
           },
-        } satisfies ProjectCreationState["urbanProjectBeta"]["steps"];
+        } satisfies ProjectCreationState["urbanProject"]["steps"];
 
         const store = createTestStore({ steps: initialSteps });
 
@@ -286,7 +286,7 @@ describe("urbanProject.reducer - confirmStepCompletion action", () => {
           }),
         );
         store.dispatch(confirmStepCompletion());
-        const stepsState = store.getState().projectCreation.urbanProjectBeta.steps;
+        const stepsState = store.getState().projectCreation.urbanProject.steps;
 
         expect(stepsState.URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA).toEqual(undefined);
 
@@ -311,7 +311,7 @@ describe("urbanProject.reducer - confirmStepCompletion action", () => {
               ],
             },
           },
-        } satisfies ProjectCreationState["urbanProjectBeta"]["steps"];
+        } satisfies ProjectCreationState["urbanProject"]["steps"];
 
         const store = createTestStore({ steps: initialSteps });
 
@@ -323,7 +323,7 @@ describe("urbanProject.reducer - confirmStepCompletion action", () => {
         );
         store.dispatch(confirmStepCompletion());
 
-        const stepsState = store.getState().projectCreation.urbanProjectBeta.steps;
+        const stepsState = store.getState().projectCreation.urbanProject.steps;
 
         expect(stepsState.URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES).toEqual(
           undefined,
@@ -347,7 +347,7 @@ describe("urbanProject.reducer - confirmStepCompletion action", () => {
               siteResaleExpectedPropertyTransferDuties: 5000,
             },
           },
-        } satisfies ProjectCreationState["urbanProjectBeta"]["steps"];
+        } satisfies ProjectCreationState["urbanProject"]["steps"];
 
         const store = createTestStore({
           steps: initialSteps,
@@ -361,7 +361,7 @@ describe("urbanProject.reducer - confirmStepCompletion action", () => {
           }),
         );
         store.dispatch(confirmStepCompletion());
-        const stepsState = store.getState().projectCreation.urbanProjectBeta.steps;
+        const stepsState = store.getState().projectCreation.urbanProject.steps;
 
         expect(stepsState.URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE).toEqual(undefined);
       });
@@ -385,7 +385,7 @@ describe("urbanProject.reducer - confirmStepCompletion action", () => {
               decontaminationPlan: "partial",
             },
           },
-        } satisfies ProjectCreationState["urbanProjectBeta"]["steps"];
+        } satisfies ProjectCreationState["urbanProject"]["steps"];
 
         const store = createTestStore({
           steps: initialSteps,
@@ -399,7 +399,7 @@ describe("urbanProject.reducer - confirmStepCompletion action", () => {
         );
         store.dispatch(confirmStepCompletion());
 
-        const stepsState = store.getState().projectCreation.urbanProjectBeta.steps;
+        const stepsState = store.getState().projectCreation.urbanProject.steps;
 
         expect(stepsState.URBAN_PROJECT_EXPENSES_REINSTATEMENT?.completed).toEqual(true);
         expect(stepsState.URBAN_PROJECT_EXPENSES_REINSTATEMENT?.payload).toEqual(
@@ -429,7 +429,7 @@ describe("urbanProject.reducer - confirmStepCompletion action", () => {
               decontaminationPlan: "partial",
             },
           },
-        } satisfies ProjectCreationState["urbanProjectBeta"]["steps"];
+        } satisfies ProjectCreationState["urbanProject"]["steps"];
 
         const store = createTestStore({
           steps: initialSteps,
@@ -443,7 +443,7 @@ describe("urbanProject.reducer - confirmStepCompletion action", () => {
         );
         store.dispatch(confirmStepCompletion());
 
-        const stepsState = store.getState().projectCreation.urbanProjectBeta.steps;
+        const stepsState = store.getState().projectCreation.urbanProject.steps;
 
         expect(stepsState.URBAN_PROJECT_EXPENSES_REINSTATEMENT?.completed).toEqual(true);
         expect(stepsState.URBAN_PROJECT_EXPENSES_REINSTATEMENT?.payload).toEqual(
@@ -481,7 +481,7 @@ describe("urbanProject.reducer - confirmStepCompletion action", () => {
               decontaminatedSurfaceArea: 1000,
             },
           },
-        } satisfies ProjectCreationState["urbanProjectBeta"]["steps"];
+        } satisfies ProjectCreationState["urbanProject"]["steps"];
 
         const store = createTestStore({
           steps: initialSteps,
@@ -495,7 +495,7 @@ describe("urbanProject.reducer - confirmStepCompletion action", () => {
         );
         store.dispatch(confirmStepCompletion());
 
-        const stepsState = store.getState().projectCreation.urbanProjectBeta.steps;
+        const stepsState = store.getState().projectCreation.urbanProject.steps;
 
         expect(stepsState.URBAN_PROJECT_EXPENSES_REINSTATEMENT?.completed).toEqual(true);
         expect(
@@ -520,7 +520,7 @@ describe("urbanProject.reducer - confirmStepCompletion action", () => {
           }),
         );
         store.dispatch(confirmStepCompletion());
-        const stepsState = store.getState().projectCreation.urbanProjectBeta.steps;
+        const stepsState = store.getState().projectCreation.urbanProject.steps;
 
         expect(stepsState.URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA).toEqual({
           completed: true,
@@ -547,7 +547,7 @@ describe("urbanProject.reducer - confirmStepCompletion action", () => {
         );
         store.dispatch(confirmStepCompletion());
 
-        const stepsState = store.getState().projectCreation.urbanProjectBeta.steps;
+        const stepsState = store.getState().projectCreation.urbanProject.steps;
 
         expect(stepsState.URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA).toEqual({
           completed: true,
@@ -580,7 +580,7 @@ describe("urbanProject.reducer - confirmStepCompletion action", () => {
               spacesCategoriesDistribution: { GREEN_SPACES: 5000 },
             },
           },
-        } satisfies ProjectCreationState["urbanProjectBeta"]["steps"];
+        } satisfies ProjectCreationState["urbanProject"]["steps"];
 
         const store = createTestStore({
           steps: initialSteps,
@@ -596,7 +596,7 @@ describe("urbanProject.reducer - confirmStepCompletion action", () => {
         );
         store.dispatch(confirmStepCompletion());
 
-        const stepsState = store.getState().projectCreation.urbanProjectBeta.steps;
+        const stepsState = store.getState().projectCreation.urbanProject.steps;
 
         expect(stepsState.URBAN_PROJECT_EXPENSES_REINSTATEMENT?.completed).toEqual(true);
         expect(stepsState.URBAN_PROJECT_EXPENSES_REINSTATEMENT?.payload).toEqual(
@@ -632,7 +632,7 @@ describe("urbanProject.reducer - confirmStepCompletion action", () => {
               spacesCategoriesDistribution: { GREEN_SPACES: 5000 },
             },
           },
-        } satisfies ProjectCreationState["urbanProjectBeta"]["steps"];
+        } satisfies ProjectCreationState["urbanProject"]["steps"];
 
         const store = createTestStore({
           steps: initialSteps,
@@ -648,7 +648,7 @@ describe("urbanProject.reducer - confirmStepCompletion action", () => {
         );
         store.dispatch(confirmStepCompletion());
 
-        const stepsState = store.getState().projectCreation.urbanProjectBeta.steps;
+        const stepsState = store.getState().projectCreation.urbanProject.steps;
 
         expect(stepsState.URBAN_PROJECT_EXPENSES_REINSTATEMENT).toEqual(
           initialSteps.URBAN_PROJECT_EXPENSES_REINSTATEMENT,
@@ -674,14 +674,14 @@ describe("urbanProject.reducer - confirmStepCompletion action", () => {
         store.dispatch(confirmStepCompletion());
 
         // Vérifier qu'un événement système a été créé pour la surface
-        const stepsState = store.getState().projectCreation.urbanProjectBeta.steps;
+        const stepsState = store.getState().projectCreation.urbanProject.steps;
 
         expect(stepsState.URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA).toEqual({
           completed: true,
           payload: { spacesCategoriesDistribution: { GREEN_SPACES: surfaceArea } },
         });
 
-        expect(store.getState().projectCreation.urbanProjectBeta.currentStep).toBe(
+        expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
           "URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION",
         );
       });

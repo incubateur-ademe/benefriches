@@ -4,9 +4,7 @@ import ProjectExpressCreationResult from "../../../common-views/result/ProjectEx
 import { useStepBack } from "../../custom-forms/useStepBack";
 
 function UrbanProjectExpressCreationResultContainer() {
-  const { urbanProjectBeta, siteData, projectId } = useAppSelector(
-    (state) => state.projectCreation,
-  );
+  const { urbanProject, siteData, projectId } = useAppSelector((state) => state.projectCreation);
 
   const onBack = useStepBack();
 
@@ -14,8 +12,8 @@ function UrbanProjectExpressCreationResultContainer() {
     <ProjectExpressCreationResult
       projectId={projectId}
       siteName={siteData?.name ?? ""}
-      loadingState={urbanProjectBeta.saveState}
-      projectData={urbanProjectBeta.steps.URBAN_PROJECT_EXPRESS_CREATION_RESULT?.projectData}
+      loadingState={urbanProject.saveState}
+      projectData={urbanProject.steps.URBAN_PROJECT_EXPRESS_CREATION_RESULT?.projectData}
       onBack={onBack}
     />
   );

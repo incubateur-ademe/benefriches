@@ -1,7 +1,7 @@
 import { ButtonProps } from "@codegouvfr/react-dsfr/Button";
 import { sumObjectValues, typedObjectEntries } from "shared";
 
-import { UrbanProjectCreationStep } from "@/features/create-project/core/urban-project-beta/urbanProjectSteps";
+import { UrbanProjectCreationStep } from "@/features/create-project/core/urban-project/urbanProjectSteps";
 import { ProjectFeatures } from "@/features/projects/domain/projects.types";
 import {
   formatNumberFr,

@@ -31,17 +31,17 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
       });
 
       store.dispatch(navigateToNext());
-      expect(store.getState().projectCreation.urbanProjectBeta.currentStep).toBe(
+      expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
         "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION",
       );
 
       store.dispatch(navigateToPrevious());
-      expect(store.getState().projectCreation.urbanProjectBeta.currentStep).toBe(
+      expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
         "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION",
       );
 
       store.dispatch(navigateToNext());
-      expect(store.getState().projectCreation.urbanProjectBeta.currentStep).toBe(
+      expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
         "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION",
       );
     });
@@ -57,12 +57,12 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
         }),
       );
 
-      expect(store.getState().projectCreation.urbanProjectBeta.currentStep).toBe(
+      expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
         "URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA",
       );
 
       store.dispatch(navigateToPrevious());
-      expect(store.getState().projectCreation.urbanProjectBeta.currentStep).toBe(
+      expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
         "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION",
       );
     });
@@ -96,7 +96,7 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
       });
 
       storeWithBuildings.dispatch(navigateToPrevious());
-      expect(storeWithBuildings.getState().projectCreation.urbanProjectBeta.currentStep).toBe(
+      expect(storeWithBuildings.getState().projectCreation.urbanProject.currentStep).toBe(
         "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA",
       );
 
@@ -112,14 +112,14 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
       });
 
       storeWithoutContamination.dispatch(navigateToNext());
-      expect(
-        storeWithoutContamination.getState().projectCreation.urbanProjectBeta.currentStep,
-      ).toBe("URBAN_PROJECT_BUILDINGS_INTRODUCTION");
+      expect(storeWithoutContamination.getState().projectCreation.urbanProject.currentStep).toBe(
+        "URBAN_PROJECT_BUILDINGS_INTRODUCTION",
+      );
 
       storeWithoutContamination.dispatch(navigateToPrevious());
-      expect(
-        storeWithoutContamination.getState().projectCreation.urbanProjectBeta.currentStep,
-      ).toBe("URBAN_PROJECT_SOILS_CARBON_SUMMARY");
+      expect(storeWithoutContamination.getState().projectCreation.urbanProject.currentStep).toBe(
+        "URBAN_PROJECT_SOILS_CARBON_SUMMARY",
+      );
     });
 
     it("should handle stakeholders navigation based on site nature", () => {
@@ -135,7 +135,7 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
       });
 
       storeFriche.dispatch(navigateToNext());
-      expect(storeFriche.getState().projectCreation.urbanProjectBeta.currentStep).toBe(
+      expect(storeFriche.getState().projectCreation.urbanProject.currentStep).toBe(
         "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER",
       );
 
@@ -145,12 +145,12 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
           answers: { projectDeveloper: { name: "Test", structureType: "company" } },
         }),
       );
-      expect(storeFriche.getState().projectCreation.urbanProjectBeta.currentStep).toBe(
+      expect(storeFriche.getState().projectCreation.urbanProject.currentStep).toBe(
         "URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER",
       );
 
       storeFriche.dispatch(navigateToPrevious());
-      expect(storeFriche.getState().projectCreation.urbanProjectBeta.currentStep).toBe(
+      expect(storeFriche.getState().projectCreation.urbanProject.currentStep).toBe(
         "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER",
       );
 
@@ -173,7 +173,7 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
         }),
       );
 
-      expect(storeNonFriche.getState().projectCreation.urbanProjectBeta.currentStep).toBe(
+      expect(storeNonFriche.getState().projectCreation.urbanProject.currentStep).toBe(
         "URBAN_PROJECT_SITE_RESALE_INTRODUCTION",
       );
     });
@@ -209,12 +209,12 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
         }),
       );
 
-      expect(storeFriche.getState().projectCreation.urbanProjectBeta.currentStep).toBe(
+      expect(storeFriche.getState().projectCreation.urbanProject.currentStep).toBe(
         "URBAN_PROJECT_EXPENSES_REINSTATEMENT",
       );
 
       storeFriche.dispatch(navigateToPrevious());
-      expect(storeFriche.getState().projectCreation.urbanProjectBeta.currentStep).toBe(
+      expect(storeFriche.getState().projectCreation.urbanProject.currentStep).toBe(
         "URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS",
       );
 
@@ -230,7 +230,7 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
         }),
       );
 
-      expect(storeNonFriche.getState().projectCreation.urbanProjectBeta.currentStep).toBe(
+      expect(storeNonFriche.getState().projectCreation.urbanProject.currentStep).toBe(
         "URBAN_PROJECT_EXPENSES_INSTALLATION",
       );
     });
@@ -261,12 +261,12 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
         }),
       );
 
-      expect(store.getState().projectCreation.urbanProjectBeta.currentStep).toBe(
+      expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
         "URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES",
       );
 
       store.dispatch(navigateToPrevious());
-      expect(store.getState().projectCreation.urbanProjectBeta.currentStep).toBe(
+      expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
         "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE",
       );
     });
@@ -304,12 +304,12 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
         }),
       );
 
-      expect(store.getState().projectCreation.urbanProjectBeta.currentStep).toBe(
+      expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
         "URBAN_PROJECT_SPACES_SOILS_SUMMARY",
       );
 
       store.dispatch(navigateToPrevious());
-      expect(store.getState().projectCreation.urbanProjectBeta.currentStep).toBe(
+      expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
         "URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION",
       );
     });
@@ -424,14 +424,14 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
               );
           }
 
-          expect(store.getState().projectCreation.urbanProjectBeta.currentStep).toBe(nextStep);
+          expect(store.getState().projectCreation.urbanProject.currentStep).toBe(nextStep);
         });
 
         for (let i = steps.length - 1; i > 0; i--) {
           const previousStep = steps[i - 1] as UrbanProjectCreationStep;
 
           store.dispatch(navigateToPrevious());
-          expect(store.getState().projectCreation.urbanProjectBeta.currentStep).toBe(previousStep);
+          expect(store.getState().projectCreation.urbanProject.currentStep).toBe(previousStep);
         }
       },
     );
@@ -442,12 +442,12 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
       store.dispatch(navigateToNext());
 
       store.dispatch(navigateToPrevious());
-      expect(store.getState().projectCreation.urbanProjectBeta.currentStep).toBe(
+      expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
         "URBAN_PROJECT_CREATE_MODE_SELECTION",
       );
 
       store.dispatch(navigateToNext());
-      expect(store.getState().projectCreation.urbanProjectBeta.currentStep).toBe(
+      expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
         "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION",
       );
     });
@@ -469,12 +469,12 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
       });
 
       store.dispatch(navigateToNext());
-      expect(store.getState().projectCreation.urbanProjectBeta.currentStep).toBe(
+      expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
         "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_INTRODUCTION",
       );
 
       store.dispatch(navigateToPrevious());
-      expect(store.getState().projectCreation.urbanProjectBeta.currentStep).toBe(
+      expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
         "URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION",
       );
     });
@@ -500,7 +500,7 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
       });
 
       storeNone.dispatch(navigateToPrevious());
-      expect(storeNone.getState().projectCreation.urbanProjectBeta.currentStep).toBe(
+      expect(storeNone.getState().projectCreation.urbanProject.currentStep).toBe(
         "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
       );
 
@@ -525,7 +525,7 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
       });
 
       storeUnknown.dispatch(navigateToPrevious());
-      expect(storeUnknown.getState().projectCreation.urbanProjectBeta.currentStep).toBe(
+      expect(storeUnknown.getState().projectCreation.urbanProject.currentStep).toBe(
         "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
       );
     });

@@ -1,4 +1,4 @@
-import { UrbanProjectCreationStep } from "@/features/create-project/core/urban-project-beta/urbanProjectSteps";
+import { UrbanProjectCreationStep } from "@/features/create-project/core/urban-project/urbanProjectSteps";
 
 export const STEP_LABELS = {
   // Catégories principales

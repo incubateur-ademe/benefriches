@@ -8,7 +8,7 @@ import {
 
 export type StepContext = {
   siteData?: ProjectCreationState["siteData"];
-  stepsState: ProjectCreationState["urbanProjectBeta"]["steps"];
+  stepsState: ProjectCreationState["urbanProject"]["steps"];
 };
 
 export interface StepHandler {

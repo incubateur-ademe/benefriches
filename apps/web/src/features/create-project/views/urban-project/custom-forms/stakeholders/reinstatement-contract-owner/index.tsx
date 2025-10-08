@@ -1,9 +1,9 @@
 import {
   getUrbanProjectAvailableStakeholders,
   getUrbanProjectAvailableLocalAuthoritiesStakeholders,
-} from "@/features/create-project/core/urban-project-beta/stakeholders.selectors";
-import { requestStepCompletion } from "@/features/create-project/core/urban-project-beta/urbanProject.actions";
-import { selectStepAnswers } from "@/features/create-project/core/urban-project-beta/urbanProject.selectors";
+} from "@/features/create-project/core/urban-project/stakeholders.selectors";
+import { requestStepCompletion } from "@/features/create-project/core/urban-project/urbanProject.actions";
+import { selectStepAnswers } from "@/features/create-project/core/urban-project/urbanProject.selectors";
 import StakeholderForm from "@/features/create-project/views/common-views/stakeholder-form";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";

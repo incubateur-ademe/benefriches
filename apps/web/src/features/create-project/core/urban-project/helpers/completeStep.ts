@@ -16,7 +16,7 @@ export type StepUpdateResult<T extends AnswerStepId> = {
 function processShortcutInvalidations(
   handlerContext: {
     siteData: ProjectCreationState["siteData"];
-    stepsState: ProjectCreationState["urbanProjectBeta"]["steps"];
+    stepsState: ProjectCreationState["urbanProject"]["steps"];
   },
   shortcutsComplete: ShortcutResult["complete"],
   dependencyRules: StepInvalidationRule[],
@@ -59,7 +59,7 @@ export function computeStepChanges<T extends AnswerStepId>(
   payload: StepCompletionPayload<T>,
 ): StepUpdateResult<T> {
   const handler = stepHandlerRegistry[payload.stepId];
-  const handlerContext = { siteData: state.siteData, stepsState: state.urbanProjectBeta.steps };
+  const handlerContext = { siteData: state.siteData, stepsState: state.urbanProject.steps };
 
   const newPayload = {
     stepId: payload.stepId,
@@ -94,7 +94,7 @@ export function computeStepChanges<T extends AnswerStepId>(
     navigationTarget: handler.getNextStepId(
       {
         siteData: state.siteData,
-        stepsState: state.urbanProjectBeta.steps,
+        stepsState: state.urbanProject.steps,
       },
       payload.answers,
     ),
@@ -126,7 +126,7 @@ export function applyStepChanges<T extends AnswerStepId>(
           stepHandlerRegistry[stepId].getRecomputedStepAnswers &&
           stepHandlerRegistry[stepId].getRecomputedStepAnswers({
             siteData: state.siteData,
-            stepsState: state.urbanProjectBeta.steps,
+            stepsState: state.urbanProject.steps,
           });
         if (newValue) {
           MutateStateHelper.recomputeStep(state, stepId, newValue);

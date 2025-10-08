@@ -22,16 +22,11 @@ import {
   INITIAL_STATE as renenewableEnergyProjectInitialState,
   renewableEnergyProjectReducer,
 } from "./renewable-energy/renewableEnergy.reducer";
-import { projectCreationReviewModeReducer } from "./reviewMode.reducer";
-import urbanProjectBetaReducer, {
-  UrbanProjectState as UrbanProjectBetaState,
-  initialState as urbanProjectBetaInitialState,
-} from "./urban-project-beta/urbanProject.reducer";
-import { UrbanProjectCreationStep } from "./urban-project-beta/urbanProjectSteps";
 import urbanProjectReducer, {
   initialState as urbanProjectInitialState,
   UrbanProjectState,
 } from "./urban-project/urbanProject.reducer";
+import { UrbanProjectCreationStep } from "./urban-project/urbanProjectSteps";
 
 type LoadingState = "idle" | "loading" | "success" | "error";
 
@@ -44,7 +39,6 @@ export type ProjectCreationState = {
   siteData?: ProjectSite;
   siteDataLoadingState: LoadingState;
   urbanProject: UrbanProjectState;
-  urbanProjectBeta: UrbanProjectBetaState;
   renewableEnergyProject: RenewableEneryProjectState;
   stepRevertAttempted: boolean;
   siteRelatedLocalAuthorities: {
@@ -89,7 +83,6 @@ export const getInitialState = (): ProjectCreationState => {
     stepRevertAttempted: false,
     renewableEnergyProject: renenewableEnergyProjectInitialState,
     urbanProject: urbanProjectInitialState,
-    urbanProjectBeta: urbanProjectBetaInitialState,
   };
 };
 
@@ -156,8 +149,6 @@ const projectCreationRootReducer = reduceReducers<ProjectCreationState>(
   projectCreationReducer,
   urbanProjectReducer,
   renewableEnergyProjectReducer,
-  projectCreationReviewModeReducer,
-  urbanProjectBetaReducer,
 );
 
 export default projectCreationRootReducer;

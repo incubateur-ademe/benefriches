@@ -10,7 +10,7 @@ import { reconversionProjectCreationInitiated } from "../core/actions/urbanProje
 import { ProjectCreationStep } from "../core/createProject.reducer";
 import { selectCurrentStep } from "../core/createProject.selectors";
 import { isRenewableEnergyCreationStep } from "../core/renewable-energy/creationSteps";
-import { isUrbanProjectCreationStep } from "../core/urban-project/creationSteps";
+import { isUrbanProjectCreationStep } from "../core/urban-project/urbanProjectSteps";
 import Stepper from "./Stepper";
 import StepRevertConfirmationModal from "./common-views/step-revert-confirmation-modal";
 import ProjectCreationIntroduction from "./introduction";

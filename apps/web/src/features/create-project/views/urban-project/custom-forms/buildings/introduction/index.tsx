@@ -1,4 +1,4 @@
-import { selectStepAnswers } from "@/features/create-project/core/urban-project-beta/urbanProject.selectors";
+import { selectStepAnswers } from "@/features/create-project/core/urban-project/urbanProject.selectors";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import { useInformationalStepBackNext } from "../../useInformationalStepBackNext";

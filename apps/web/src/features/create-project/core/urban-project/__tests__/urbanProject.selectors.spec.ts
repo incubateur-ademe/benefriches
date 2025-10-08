@@ -15,7 +15,7 @@ describe("urbanProject.selectors", () => {
             spacesCategories: ["LIVING_AND_ACTIVITY_SPACES", "GREEN_SPACES"],
           },
         },
-      } satisfies ProjectCreationState["urbanProjectBeta"]["steps"];
+      } satisfies ProjectCreationState["urbanProject"]["steps"];
 
       const store = createTestStore({
         steps: initialSteps,

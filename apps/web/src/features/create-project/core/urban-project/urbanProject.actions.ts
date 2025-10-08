@@ -3,7 +3,7 @@ import { createAction } from "@reduxjs/toolkit";
 import { makeProjectCreationActionType } from "../actions/actionsUtils";
 import { AnswerStepId, AnswersByStep, UrbanProjectCreationStep } from "./urbanProjectSteps";
 
-const URBAN_PROJECT_CREATION_PREFIX = "urbanProjectBeta";
+const URBAN_PROJECT_CREATION_PREFIX = "urbanProject";
 
 export const makeUrbanProjectCreationActionType = (actionName: string) => {
   return makeProjectCreationActionType(`${URBAN_PROJECT_CREATION_PREFIX}/${actionName}`);

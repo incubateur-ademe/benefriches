@@ -13,6 +13,7 @@ import {
   UrbanSpaceCategory,
   YearlyBuildingsOperationsRevenues,
 } from "shared";
+import z from "zod";
 
 import { ProjectStakeholder } from "../project.types";
 
@@ -221,3 +222,9 @@ export const BUILDINGS_STEPS = [
 ] as const;
 
 export type UrbanProjectCreationStep = InformationalStep | AnswerStepId;
+
+const urbanProjectCreationSteps = z.enum([...INFORMATIONAL_STEPS, ...ANSWER_STEPS]);
+
+export const isUrbanProjectCreationStep = (step: string): step is UrbanProjectCreationStep => {
+  return urbanProjectCreationSteps.safeParse(step).success;
+};

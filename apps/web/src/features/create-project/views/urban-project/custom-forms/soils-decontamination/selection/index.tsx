@@ -1,5 +1,5 @@
-import { requestStepCompletion } from "@/features/create-project/core/urban-project-beta/urbanProject.actions";
-import { selectStepAnswers } from "@/features/create-project/core/urban-project-beta/urbanProject.selectors";
+import { requestStepCompletion } from "@/features/create-project/core/urban-project/urbanProject.actions";
+import { selectStepAnswers } from "@/features/create-project/core/urban-project/urbanProject.selectors";
 import SoilsDecontaminationSelection from "@/features/create-project/views/common-views/soils-decontamination/selection/SoilsDecontaminationSelection";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
