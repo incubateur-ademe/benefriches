@@ -8,6 +8,7 @@ import { AuthModule } from "./auth/adapters/auth.module";
 import { CarbonStorageModule } from "./carbon-storage/adapters/primary/carbonStorage.module";
 import { MarketingModule } from "./marketing/adapters/primary/marketing.module";
 import { PhotovoltaicPerformanceModule } from "./photovoltaic-performance/adapters/primary/photovoltaicPerformance.module";
+import { ReconversionCompatibilityModule } from "./reconversion-compatibility/adapters/primary/reconversionCompatibility.module";
 import { ReconversionProjectsModule } from "./reconversion-projects/adapters/primary/reconversionProjects.module";
 import { DomainEventsRepository } from "./shared-kernel/adapters/events/repository/DomainEventsRepository";
 import { SqlDomainEventsRepository } from "./shared-kernel/adapters/events/repository/SqlDomainEventsRepository";
@@ -40,6 +41,7 @@ export class DomainEventsHandler {
     ReconversionProjectsModule,
     UsersModule,
     MarketingModule,
+    ReconversionCompatibilityModule,
   ],
   providers: [
     { provide: APP_PIPE, useClass: ZodValidationPipe },

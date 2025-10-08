@@ -1,9 +1,11 @@
 import { createReducer } from "@reduxjs/toolkit";
+import { v4 as uuid } from "uuid";
 
 import {
   ReconversionCompatibilityEvaluationResults,
   reconversionCompatibilityEvaluationReset,
   reconversionCompatibilityEvaluationResultsRequested,
+  reconversionCompatibilityEvaluationStarted,
   reconversionCompatibilityResultImpactsRequested,
 } from "./reconversionCompatibilityEvaluation.actions";
 
@@ -17,6 +19,7 @@ export type MutabilityUsage =
   | "photovoltaique";
 
 export type ReconversionCompatibilityEvaluationState = {
+  currentEvaluationId: string | undefined;
   evaluationResults: ReconversionCompatibilityEvaluationResults | undefined;
   evaluationError: string | undefined;
   evaluationResultsLoadingState: "idle" | "loading" | "success" | "error";
@@ -26,6 +29,7 @@ export type ReconversionCompatibilityEvaluationState = {
 };
 
 const initialState: ReconversionCompatibilityEvaluationState = {
+  currentEvaluationId: undefined,
   evaluationResults: undefined,
   evaluationError: undefined,
   evaluationResultsLoadingState: "idle",
@@ -36,9 +40,13 @@ const initialState: ReconversionCompatibilityEvaluationState = {
 
 export const reconversionCompatibilityEvaluationReducer = createReducer(initialState, (builder) => {
   builder
+    .addCase(reconversionCompatibilityEvaluationStarted.fulfilled, (state, action) => {
+      state.currentEvaluationId = action.payload.evaluationId;
+    })
     .addCase(reconversionCompatibilityEvaluationReset, (state) => {
       state.evaluationError = undefined;
       state.projectCreationState = "idle";
+      state.currentEvaluationId = uuid();
     })
     .addCase(reconversionCompatibilityEvaluationResultsRequested.pending, (state) => {
       state.evaluationResults = undefined;

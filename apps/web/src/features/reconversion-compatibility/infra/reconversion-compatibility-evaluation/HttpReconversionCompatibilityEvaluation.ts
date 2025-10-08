@@ -29,18 +29,28 @@ export type MutafrichesEvaluationResultResponse = {
 export class HttpReconversionCompatibilityEvaluation
   implements ReconversionCompatibilityEvaluationGateway
 {
+  async startEvaluation(input: { evaluationId: string }): Promise<void> {
+    await fetch("/api/reconversion-compatibility/start-evaluation", {
+      method: "POST",
+      body: JSON.stringify({ id: input.evaluationId }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
+
   async getEvaluationResults(
-    evaluationId: string,
+    mutafrichesId: string,
   ): Promise<ReconversionCompatibilityEvaluationResults | null> {
     const response = await fetch(
-      `${BENEFRICHES_ENV.mutafrichesUrl}/friches/evaluations/${evaluationId}`,
+      `${BENEFRICHES_ENV.mutafrichesUrl}/friches/evaluations/${mutafrichesId}`,
     );
     if (!response.ok) return null;
 
     const json = (await response.json()) as MutafrichesEvaluationResultResponse;
 
     return {
-      evaluationId: json.id,
+      mutafrichesId: json.id,
       reliabilityScore: json.mutabilite.fiabilite.note,
       top3Usages: json.mutabilite.resultats
         .sort((a, b) => a.rang - b.rang)

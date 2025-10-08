@@ -25,6 +25,7 @@ afterEach(async () => {
     "auth_external_user_identities",
     "verified_emails",
     "domain_events",
+    "reconversion_compatibility_evaluations",
   ] as const;
 
   try {

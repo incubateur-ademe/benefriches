@@ -76,7 +76,7 @@ const { RouteProvider, useRoute, routes } = createRouter({
   // RECONVERSION COMPATIBILITY
   evaluateReconversionCompatibility: defineRoute("/evaluer-compatibilite-friche"),
   reconversionCompatibilityResults: defineRoute(
-    { evaluationId: param.query.string },
+    { mutafrichesId: param.query.string },
     () => `/evaluer-compatibilite-friche/resultats`,
   ),
   // PAGES

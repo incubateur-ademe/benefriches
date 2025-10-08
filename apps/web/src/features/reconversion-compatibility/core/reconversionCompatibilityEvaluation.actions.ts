@@ -34,7 +34,7 @@ const ACTION_PREFIX = "reconversionCompatibilityEvaluation";
 export const reconversionCompatibilityEvaluationReset = createAction(`${ACTION_PREFIX}/reset`);
 
 export type ReconversionCompatibilityEvaluationResults = {
-  evaluationId: string;
+  mutafrichesId: string;
   reliabilityScore: number;
   top3Usages: {
     usage: MutabilityUsage;
@@ -51,18 +51,31 @@ export type ReconversionCompatibilityEvaluationResults = {
 };
 
 export interface ReconversionCompatibilityEvaluationGateway {
-  getEvaluationResults: (
-    evaluationId: string,
-  ) => Promise<ReconversionCompatibilityEvaluationResults | null>;
+  startEvaluation(input: { evaluationId: string }): Promise<void>;
+
+  getEvaluationResults(
+    mutafrichesId: string,
+  ): Promise<ReconversionCompatibilityEvaluationResults | null>;
 }
+
+export const reconversionCompatibilityEvaluationStarted = createAppAsyncThunk(
+  `${ACTION_PREFIX}/started`,
+  async (_, { extra }) => {
+    const evaluationId = uuid();
+
+    await extra.reconversionCompatibilityEvaluationService.startEvaluation({ evaluationId });
+
+    return { evaluationId };
+  },
+);
 
 export const reconversionCompatibilityEvaluationResultsRequested = createAppAsyncThunk<
   ReconversionCompatibilityEvaluationResults,
-  { evaluationId: string }
+  { mutafrichesId: string }
 >(`${ACTION_PREFIX}/resultsRequested`, async (args, { extra }) => {
-  const { evaluationId } = args;
+  const { mutafrichesId } = args;
   const results =
-    await extra.reconversionCompatibilityEvaluationService.getEvaluationResults(evaluationId);
+    await extra.reconversionCompatibilityEvaluationService.getEvaluationResults(mutafrichesId);
 
   if (!results) throw new Error("EVALUATION_NOT_FOUND");
 

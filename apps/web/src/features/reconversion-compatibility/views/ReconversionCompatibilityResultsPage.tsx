@@ -27,17 +27,17 @@ function getTextForReliabilityScore(score: number): string {
 
 export default function ReconversionCompatibilityResultsPage() {
   const { params } = useRoute();
-  const queryParams = params as { evaluationId: string };
+  const queryParams = params as { mutafrichesId: string };
   const dispatch = useAppDispatch();
   const viewData = useAppSelector(selectReconversionCompatibilityViewData);
 
   useEffect(() => {
     void dispatch(
       reconversionCompatibilityEvaluationResultsRequested({
-        evaluationId: queryParams.evaluationId,
+        mutafrichesId: queryParams.mutafrichesId,
       }),
     );
-  }, [dispatch, queryParams.evaluationId]);
+  }, [dispatch, queryParams.mutafrichesId]);
 
   const handleResetAnalysis = () => {
     dispatch(reconversionCompatibilityEvaluationReset());

@@ -4,6 +4,7 @@ import { BENEFRICHES_ENV } from "@/shared/views/envVars";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 import { routes } from "@/shared/views/router";
 
+import { reconversionCompatibilityEvaluationStarted } from "../core/reconversionCompatibilityEvaluation.actions";
 import { MutafrichesEvaluationEvent } from "./mutafriches.types";
 
 export default function EvaluateReconversionCompatibilityPage() {
@@ -22,7 +23,7 @@ export default function EvaluateReconversionCompatibilityPage() {
 
       switch (type) {
         case "mutafriches:completed":
-          routes.reconversionCompatibilityResults({ evaluationId: data.evaluationId }).push();
+          routes.reconversionCompatibilityResults({ mutafrichesId: data.evaluationId }).push();
           break;
         default:
           break;
@@ -31,6 +32,7 @@ export default function EvaluateReconversionCompatibilityPage() {
     };
 
     window.addEventListener("message", handleMessage);
+    void dispatch(reconversionCompatibilityEvaluationStarted());
     return () => {
       window.removeEventListener("message", handleMessage);
     };

@@ -65,12 +65,17 @@ const fakeResponse = {
 export class FakeReconversionCompatibilityService
   implements ReconversionCompatibilityEvaluationGateway
 {
+  async startEvaluation(): Promise<void> {
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    return Promise.resolve();
+  }
+
   async getEvaluationResults(): Promise<ReconversionCompatibilityEvaluationResults> {
     // simulate network delay
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
     return Promise.resolve({
-      evaluationId: fakeResponse.id,
+      mutafrichesId: fakeResponse.id,
       reliabilityScore: fakeResponse.mutabilite.fiabilite.note,
       top3Usages: fakeResponse.mutabilite.resultats
         .sort((a, b) => a.rang - b.rang)

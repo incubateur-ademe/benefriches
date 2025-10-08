@@ -240,6 +240,20 @@ declare module "knex/types/tables" {
       used_at: Date | null;
     };
 
+    // reconversion compatibility evaluations
+    reconversion_compatibility_evaluations: {
+      id: string;
+      created_by: string;
+      status: string | null;
+      mutafriches_evaluation_id: string | null;
+      created_at: Date;
+      completed_at: Date | null;
+      project_creations: {
+        reconversionProjectId: string;
+        createdAt: string; // JSON stores dates as ISO strings
+      }[];
+    };
+
     // domain events
     domain_events: SqlDomainEvent;
   }
