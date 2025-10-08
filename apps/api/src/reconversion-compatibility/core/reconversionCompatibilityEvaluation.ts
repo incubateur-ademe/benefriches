@@ -21,3 +21,19 @@ export function createReconversionCompatibilityEvaluation(
     projectCreations: [],
   };
 }
+
+export function canBeCompleted(evaluation: ReconversionCompatibilityEvaluation): boolean {
+  return evaluation.status === "started";
+}
+
+export function completeReconversionCompatibilityEvaluation(
+  evaluation: ReconversionCompatibilityEvaluation,
+  completionPayload: { mutafrichesId: string; completedAt: Date },
+): ReconversionCompatibilityEvaluation {
+  return {
+    ...evaluation,
+    mutafrichesEvaluationId: completionPayload.mutafrichesId,
+    completedAt: completionPayload.completedAt,
+    status: "completed",
+  };
+}

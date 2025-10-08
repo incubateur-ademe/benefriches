@@ -70,6 +70,11 @@ export class FakeReconversionCompatibilityService
     return Promise.resolve();
   }
 
+  async completeEvaluation(): Promise<void> {
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    return Promise.resolve();
+  }
+
   async getEvaluationResults(): Promise<ReconversionCompatibilityEvaluationResults> {
     // simulate network delay
     await new Promise((resolve) => setTimeout(resolve, 1000));

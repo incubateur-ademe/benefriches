@@ -21,27 +21,6 @@ const mapToEntity = (
   })),
 });
 
-const mapToSqlRow = (
-  evaluation: ReconversionCompatibilityEvaluation,
-): Tables["reconversion_compatibility_evaluations"] => ({
-  id: evaluation.id,
-  created_by: evaluation.createdBy,
-  status: evaluation.status,
-  mutafriches_evaluation_id: evaluation.mutafrichesEvaluationId,
-  created_at: evaluation.createdAt,
-  completed_at: evaluation.completedAt,
-  // we need to convert to string because of how PG works with arrays
-  // see https://knexjs.org/guide/schema-builder.html#json
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  project_creations: JSON.stringify(
-    evaluation.projectCreations.map((pc) => ({
-      reconversionProjectId: pc.reconversionProjectId,
-      createdAt: pc.createdAt.toISOString(),
-    })),
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ) as any,
-});
-
 @Injectable()
 export class SqlReconversionCompatibilityEvaluationRepository
   implements ReconversionCompatibilityEvaluationRepository
@@ -58,19 +37,37 @@ export class SqlReconversionCompatibilityEvaluationRepository
   }
 
   async save(evaluation: ReconversionCompatibilityEvaluation): Promise<void> {
-    await this.sqlConnection("reconversion_compatibility_evaluations")
-      .insert(mapToSqlRow(evaluation))
-      .onConflict("id")
-      .merge();
+    await this.sqlConnection.raw(
+      `INSERT INTO reconversion_compatibility_evaluations 
+     (id, created_by, status, mutafriches_evaluation_id, created_at, completed_at, project_creations) 
+     VALUES (?, ?, ?, ?, ?, ?, ?::jsonb)
+     ON CONFLICT (id) 
+     DO UPDATE SET 
+       created_by = EXCLUDED.created_by,
+       status = EXCLUDED.status,
+       mutafriches_evaluation_id = EXCLUDED.mutafriches_evaluation_id,
+       created_at = EXCLUDED.created_at,
+       completed_at = EXCLUDED.completed_at,
+       project_creations = EXCLUDED.project_creations`,
+      [
+        evaluation.id,
+        evaluation.createdBy,
+        evaluation.status,
+        evaluation.mutafrichesEvaluationId,
+        evaluation.createdAt,
+        evaluation.completedAt,
+        JSON.stringify(evaluation.projectCreations),
+      ],
+    );
   }
 
-  async getById(id: string): Promise<ReconversionCompatibilityEvaluation | undefined> {
+  async getById(id: string): Promise<ReconversionCompatibilityEvaluation | null> {
     const result = await this.sqlConnection("reconversion_compatibility_evaluations")
       .select("*")
       .where({ id })
       .first();
 
-    if (!result) return undefined;
+    if (!result) return null;
 
     return mapToEntity(result);
   }

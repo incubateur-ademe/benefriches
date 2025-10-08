@@ -2,6 +2,7 @@ import { NestExpressApplication } from "@nestjs/platform-express";
 import { Knex } from "knex";
 import supertest from "supertest";
 import { authenticateUser, createTestApp } from "test/testApp";
+import { v4 as uuid } from "uuid";
 
 import { ACCESS_TOKEN_COOKIE_KEY } from "src/auth/adapters/access-token/accessTokenCookie";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
@@ -58,7 +59,7 @@ describe("ReconversionCompatibility controller", () => {
       const user = new UserBuilder().asLocalAuthority().build();
       const { accessToken } = await authenticateUser(app)(user);
 
-      const evaluationId = "f47ac10b-58cc-4372-a567-0e02b2c3d479";
+      const evaluationId = uuid();
 
       const response = await supertest(app.getHttpServer())
         .post("/api/reconversion-compatibility/start-evaluation")
@@ -88,7 +89,7 @@ describe("ReconversionCompatibility controller", () => {
       const user = new UserBuilder().asLocalAuthority().build();
       const { accessToken } = await authenticateUser(app)(user);
 
-      const evaluationId = "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d";
+      const evaluationId = uuid();
 
       await sqlConnection("reconversion_compatibility_evaluations").insert({
         id: evaluationId,
@@ -104,6 +105,94 @@ describe("ReconversionCompatibility controller", () => {
         .post("/api/reconversion-compatibility/start-evaluation")
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send({ id: evaluationId });
+
+      expect(response.status).toEqual(500);
+    });
+  });
+
+  describe("POST /reconversion-compatibility/complete-evaluation", () => {
+    it("responds with 401 if not authenticated", async () => {
+      const response = await supertest(app.getHttpServer())
+        .post("/api/reconversion-compatibility/complete-evaluation")
+        .send({
+          evaluationId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+          mutafrichesEvaluationId: "mutafriches-123",
+        });
+
+      expect(response.status).toEqual(401);
+    });
+
+    it.each(["id", "mutafrichesId"] as const)(
+      "can't complete evaluation without mandatory field '%s'",
+      async (mandatoryField) => {
+        const user = new UserBuilder().asLocalAuthority().build();
+        const { accessToken } = await authenticateUser(app)(user);
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { [mandatoryField]: _, ...body } = {
+          id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+          mutafrichesId: "mutafriches-123",
+        };
+
+        const response = await supertest(app.getHttpServer())
+          .post("/api/reconversion-compatibility/complete-evaluation")
+          .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+          .send(body);
+
+        expect(response.status).toEqual(400);
+        expect(response.body).toHaveProperty("errors");
+
+        const responseErrors = (response.body as BadRequestResponseBody).errors;
+        expect(responseErrors).toHaveLength(1);
+        expect(responseErrors[0]?.path).toContain(mandatoryField);
+      },
+    );
+
+    it("completes a started evaluation and updates it in db", async () => {
+      const user = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+
+      const evaluationId = uuid();
+      const startedAt = new Date("2024-01-10T09:00:00Z");
+
+      // we use raw SQL here because knex does not handle arrays in jsonb well
+      await sqlConnection.raw(
+        `INSERT INTO reconversion_compatibility_evaluations 
+   (id, created_by, status, mutafriches_evaluation_id, created_at, completed_at, project_creations) 
+   VALUES (?, ?, ?, ?, ?, ?, ?::jsonb)`,
+        [evaluationId, user.id, "started", null, startedAt, null, JSON.stringify([])],
+      );
+
+      const response = await supertest(app.getHttpServer())
+        .post("/api/reconversion-compatibility/complete-evaluation")
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send({ id: evaluationId, mutafrichesId: "mutafriches-123" });
+
+      expect(response.status).toEqual(201);
+
+      const evaluationsInDb = await sqlConnection("reconversion_compatibility_evaluations")
+        .select("*")
+        .where({ id: evaluationId });
+
+      expect(evaluationsInDb).toHaveLength(1);
+      expect(evaluationsInDb[0]).toMatchObject({
+        id: evaluationId,
+        created_by: user.id,
+        status: "completed",
+        mutafriches_evaluation_id: "mutafriches-123",
+        created_at: startedAt,
+      });
+      expect(evaluationsInDb[0]?.completed_at).toBeInstanceOf(Date);
+    });
+
+    it("returns an error when trying to complete a non-existent evaluation", async () => {
+      const user = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+
+      const response = await supertest(app.getHttpServer())
+        .post("/api/reconversion-compatibility/complete-evaluation")
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send({ id: uuid(), mutafrichesId: "mutafriches-123" });
 
       expect(response.status).toEqual(500);
     });

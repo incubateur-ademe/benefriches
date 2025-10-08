@@ -50,8 +50,15 @@ export type ReconversionCompatibilityEvaluationResults = {
   };
 };
 
+export type EvaluationCompletedPayload = {
+  id: string;
+  mutafrichesId: string;
+};
+
 export interface ReconversionCompatibilityEvaluationGateway {
   startEvaluation(input: { evaluationId: string }): Promise<void>;
+
+  completeEvaluation(payload: EvaluationCompletedPayload): Promise<void>;
 
   getEvaluationResults(
     mutafrichesId: string,
@@ -68,6 +75,24 @@ export const reconversionCompatibilityEvaluationStarted = createAppAsyncThunk(
     return { evaluationId };
   },
 );
+
+export const reconversionCompatibilityEvaluationCompleted = createAppAsyncThunk<
+  undefined,
+  { mutafrichesId: string }
+>(`${ACTION_PREFIX}/completed`, async (args, { extra, getState }) => {
+  const { reconversionCompatibilityEvaluation } = getState();
+
+  if (!reconversionCompatibilityEvaluation.currentEvaluationId)
+    throw new Error("EVALUATION_NOT_FOUND");
+
+  await extra.reconversionCompatibilityEvaluationService.completeEvaluation({
+    id: reconversionCompatibilityEvaluation.currentEvaluationId,
+    mutafrichesId: args.mutafrichesId,
+  });
+
+  routes.reconversionCompatibilityResults({ mutafrichesId: args.mutafrichesId }).push();
+  return undefined;
+});
 
 export const reconversionCompatibilityEvaluationResultsRequested = createAppAsyncThunk<
   ReconversionCompatibilityEvaluationResults,

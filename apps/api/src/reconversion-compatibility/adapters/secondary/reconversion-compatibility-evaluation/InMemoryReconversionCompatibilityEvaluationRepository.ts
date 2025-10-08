@@ -12,8 +12,19 @@ export class InMemoryReconversionCompatibilityEvaluationRepository
     );
   }
 
+  getById(id: string): Promise<ReconversionCompatibilityEvaluation | null> {
+    const evaluation = this.evaluations.find((evaluation) => evaluation.id === id);
+    return Promise.resolve(evaluation ?? null);
+  }
+
   async save(evaluation: ReconversionCompatibilityEvaluation): Promise<void> {
-    await Promise.resolve(this.evaluations.push(evaluation));
+    const existingIndex = this.evaluations.findIndex((e) => e.id === evaluation.id);
+
+    if (existingIndex > -1) {
+      await Promise.resolve((this.evaluations[existingIndex] = evaluation));
+    } else {
+      await Promise.resolve(this.evaluations.push(evaluation));
+    }
   }
 
   _setEvaluations(evaluations: ReconversionCompatibilityEvaluation[]): void {

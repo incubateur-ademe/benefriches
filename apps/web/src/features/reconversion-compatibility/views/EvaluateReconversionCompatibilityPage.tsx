@@ -2,9 +2,11 @@ import { useEffect } from "react";
 
 import { BENEFRICHES_ENV } from "@/shared/views/envVars";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
-import { routes } from "@/shared/views/router";
 
-import { reconversionCompatibilityEvaluationStarted } from "../core/reconversionCompatibilityEvaluation.actions";
+import {
+  reconversionCompatibilityEvaluationCompleted,
+  reconversionCompatibilityEvaluationStarted,
+} from "../core/reconversionCompatibilityEvaluation.actions";
 import { MutafrichesEvaluationEvent } from "./mutafriches.types";
 
 export default function EvaluateReconversionCompatibilityPage() {
@@ -23,7 +25,9 @@ export default function EvaluateReconversionCompatibilityPage() {
 
       switch (type) {
         case "mutafriches:completed":
-          routes.reconversionCompatibilityResults({ mutafrichesId: data.evaluationId }).push();
+          void dispatch(
+            reconversionCompatibilityEvaluationCompleted({ mutafrichesId: data.evaluationId }),
+          );
           break;
         default:
           break;

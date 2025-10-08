@@ -3,6 +3,7 @@ import { BENEFRICHES_ENV } from "@/shared/views/envVars";
 import {
   ReconversionCompatibilityEvaluationResults,
   ReconversionCompatibilityEvaluationGateway,
+  EvaluationCompletedPayload,
 } from "../../core/reconversionCompatibilityEvaluation.actions";
 import { MutabilityUsage } from "../../core/reconversionCompatibilityEvaluation.reducer";
 
@@ -33,6 +34,16 @@ export class HttpReconversionCompatibilityEvaluation
     await fetch("/api/reconversion-compatibility/start-evaluation", {
       method: "POST",
       body: JSON.stringify({ id: input.evaluationId }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
+
+  async completeEvaluation(payload: EvaluationCompletedPayload): Promise<void> {
+    await fetch("/api/reconversion-compatibility/complete-evaluation", {
+      method: "POST",
+      body: JSON.stringify(payload),
       headers: {
         "Content-Type": "application/json",
       },
