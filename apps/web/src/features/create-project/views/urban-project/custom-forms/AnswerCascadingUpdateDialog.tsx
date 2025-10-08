@@ -12,7 +12,7 @@ import { RootState } from "@/shared/core/store-config/store";
 import classNames from "@/shared/views/clsx";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
-import { STEP_LABELS, STEP_TO_CATEGORY_MAPPING } from "../stepper/stepperConfig";
+import { STEP_LABELS, STEP_TO_CATEGORY_MAPPING } from "./stepper/stepperConfig";
 
 const DIALOG_DSFR_CSS = [
   "fixed inset-0",

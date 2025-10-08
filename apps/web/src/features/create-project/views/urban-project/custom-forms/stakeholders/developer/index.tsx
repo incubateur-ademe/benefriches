@@ -1,13 +1,14 @@
-import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
-import { ProjectStakeholderStructure } from "@/features/create-project/core/project.types";
-import { stakeholderProjectDeveloperCompleted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
 import {
   getUrbanProjectAvailableStakeholders,
   getUrbanProjectAvailableLocalAuthoritiesStakeholders,
-} from "@/features/create-project/core/urban-project/selectors/stakeholders.selectors";
+} from "@/features/create-project/core/urban-project-beta/stakeholders.selectors";
+import { requestStepCompletion } from "@/features/create-project/core/urban-project-beta/urbanProject.actions";
+import { selectStepAnswers } from "@/features/create-project/core/urban-project-beta/urbanProject.selectors";
 import StakeholderForm from "@/features/create-project/views/common-views/stakeholder-form";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
+
+import { useStepBack } from "../../useStepBack";
 
 function DeveloperFormContainer() {
   const dispatch = useAppDispatch();
@@ -15,15 +16,11 @@ function DeveloperFormContainer() {
   const availableLocalAuthoritiesStakeholders = useAppSelector(
     getUrbanProjectAvailableLocalAuthoritiesStakeholders,
   );
+  const stepAnswers = useAppSelector(
+    selectStepAnswers("URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER"),
+  );
 
-  const onSubmit = (data: { structureType: ProjectStakeholderStructure; name: string }) => {
-    dispatch(stakeholderProjectDeveloperCompleted(data));
-  };
-
-  const onBack = () => {
-    dispatch(stepRevertAttempted());
-  };
-
+  const onBack = useStepBack();
   return (
     <StakeholderForm
       title="Qui sera l'aménageur du site ?"
@@ -35,10 +32,18 @@ function DeveloperFormContainer() {
           </p>
         </FormInfo>
       }
-      onSubmit={onSubmit}
-      onBack={onBack}
+      initialValues={stepAnswers?.projectDeveloper}
       availableStakeholdersList={availableStakeholdersList}
       availableLocalAuthoritiesStakeholders={availableLocalAuthoritiesStakeholders}
+      onSubmit={(formData) => {
+        dispatch(
+          requestStepCompletion({
+            stepId: "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER",
+            answers: { projectDeveloper: formData },
+          }),
+        );
+      }}
+      onBack={onBack}
     />
   );
 }

@@ -1,34 +1,34 @@
-import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
-import { siteResaleChoiceCompleted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
-import { selectCreationData } from "@/features/create-project/core/urban-project/selectors/urbanProject.selectors";
+import { requestStepCompletion } from "@/features/create-project/core/urban-project-beta/urbanProject.actions";
+import { selectStepAnswers } from "@/features/create-project/core/urban-project-beta/urbanProject.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
+import { useStepBack } from "../../useStepBack";
 import SiteResaleForm from "./SiteResaleForm";
 
 export default function SiteResaleFormContainer() {
   const dispatch = useAppDispatch();
-  const initialValue = useAppSelector(selectCreationData).siteResalePlannedAfterDevelopment;
-  const hasInitialValue = initialValue !== undefined;
+  const { siteResalePlannedAfterDevelopment } =
+    useAppSelector(selectStepAnswers("URBAN_PROJECT_SITE_RESALE_SELECTION")) ?? {};
 
+  const onBack = useStepBack();
   return (
     <SiteResaleForm
-      initialValues={
-        hasInitialValue
-          ? {
-              siteResalePlanned: initialValue ? "yes" : "no",
-            }
-          : undefined
-      }
       onSubmit={(formData) => {
         dispatch(
-          siteResaleChoiceCompleted({
-            siteResalePlannedAfterDevelopment: formData.siteResalePlanned === "yes",
+          requestStepCompletion({
+            stepId: "URBAN_PROJECT_SITE_RESALE_SELECTION",
+            answers: {
+              siteResalePlannedAfterDevelopment: formData.siteResalePlanned === "yes",
+            },
           }),
         );
       }}
-      onBack={() => {
-        dispatch(stepRevertAttempted());
-      }}
+      onBack={onBack}
+      initialValues={
+        siteResalePlannedAfterDevelopment === undefined
+          ? undefined
+          : { siteResalePlanned: siteResalePlannedAfterDevelopment ? "yes" : "no" }
+      }
     />
   );
 }

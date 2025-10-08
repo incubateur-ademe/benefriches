@@ -15,7 +15,6 @@ export const BENEFRICHES_ENV = {
   allowedDevelopmentPlanCategories:
     windowEnv.WEBAPP_ALLOWED_DEVELOPMENT_PLAN_CATEGORIES?.split(",") ?? [],
   authEnabled: windowEnv.WEBAPP_AUTH_ENABLED === "true",
-  hasUrbanFormBetaFeature: windowEnv.WEBAPP_HAS_URBAN_FORM_BETA_FEATURE === "YES",
   mutafrichesUrl: windowEnv.WEBAPP_MUTAFRICHES_FRAME_SRC ?? "",
   mutafrichesIntegrator: windowEnv.WEBAPP_MUTAFRICHES_INTEGRATOR ?? "",
 };

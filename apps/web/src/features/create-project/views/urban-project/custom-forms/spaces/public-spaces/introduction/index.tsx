@@ -1,25 +1,20 @@
-import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
-import { publicSpacesIntroductionCompleted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
-import { selectSpaceCategorySurfaceArea } from "@/features/create-project/core/urban-project/selectors/urbanProject.selectors";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { selectStepAnswers } from "@/features/create-project/core/urban-project-beta/urbanProject.selectors";
+import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
+import { useInformationalStepBackNext } from "../../../useInformationalStepBackNext";
 import PublicSpacesIntroduction from "./PublicSpacesIntroduction";
 
 export default function PublicSpacesIntroductionContainer() {
-  const dispatch = useAppDispatch();
-  const publicSpacesSurfaceArea = useAppSelector((state) =>
-    selectSpaceCategorySurfaceArea(state, "PUBLIC_SPACES"),
-  );
+  const { spacesCategoriesDistribution } =
+    useAppSelector(selectStepAnswers("URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA")) ?? {};
+
+  const { onNext, onBack } = useInformationalStepBackNext();
 
   return (
     <PublicSpacesIntroduction
-      publicSpacesSurfaceArea={publicSpacesSurfaceArea}
-      onBack={() => {
-        dispatch(stepRevertAttempted());
-      }}
-      onNext={() => {
-        dispatch(publicSpacesIntroductionCompleted());
-      }}
+      onNext={onNext}
+      onBack={onBack}
+      publicSpacesSurfaceArea={spacesCategoriesDistribution?.PUBLIC_SPACES ?? 0}
     />
   );
 }

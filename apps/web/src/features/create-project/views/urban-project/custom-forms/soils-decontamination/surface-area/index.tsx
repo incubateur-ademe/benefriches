@@ -1,27 +1,42 @@
-import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
 import { selectSiteContaminatedSurfaceArea } from "@/features/create-project/core/createProject.selectors";
-import { soilsDecontaminationSurfaceAreaCompleted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
-import { selectContaminatedSurfaceAreaPercentageToDecontaminate } from "@/features/create-project/core/urban-project/selectors/urbanProject.selectors";
+import { requestStepCompletion } from "@/features/create-project/core/urban-project-beta/urbanProject.actions";
+import { selectStepAnswers } from "@/features/create-project/core/urban-project-beta/urbanProject.selectors";
 import SoilsDecontaminationSurfaceArea from "@/features/create-project/views/common-views/soils-decontamination/surface-area/SoilsDecontaminationSurfaceArea";
+import { computePercentage } from "@/shared/core/percentage/percentage";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+
+import { useStepBack } from "../../useStepBack";
 
 function SoilsDecontaminationSurfaceAreaContainer() {
   const dispatch = useAppDispatch();
-  const contaminatedSurfaceArea = useAppSelector(selectSiteContaminatedSurfaceArea);
-  const surfaceAreaToDecontaminateInPercentage = useAppSelector(
-    selectContaminatedSurfaceAreaPercentageToDecontaminate,
+  const stepAnswers = useAppSelector(
+    selectStepAnswers("URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA"),
   );
+  const siteContaminatedSurfaceArea = useAppSelector(selectSiteContaminatedSurfaceArea);
 
+  const onBack = useStepBack();
   return (
     <SoilsDecontaminationSurfaceArea
-      initialValues={{
-        percentSurfaceArea: surfaceAreaToDecontaminateInPercentage,
+      contaminatedSoilSurface={siteContaminatedSurfaceArea}
+      onSubmit={(formData) => {
+        dispatch(
+          requestStepCompletion({
+            stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA",
+            answers: { decontaminatedSurfaceArea: formData },
+          }),
+        );
       }}
-      contaminatedSoilSurface={contaminatedSurfaceArea}
-      onSubmit={(surfaceArea: number) => {
-        dispatch(soilsDecontaminationSurfaceAreaCompleted(surfaceArea));
-      }}
-      onBack={() => dispatch(stepRevertAttempted())}
+      onBack={onBack}
+      initialValues={
+        stepAnswers?.decontaminatedSurfaceArea
+          ? {
+              percentSurfaceArea: computePercentage(
+                stepAnswers.decontaminatedSurfaceArea,
+                siteContaminatedSurfaceArea,
+              ),
+            }
+          : undefined
+      }
     />
   );
 }

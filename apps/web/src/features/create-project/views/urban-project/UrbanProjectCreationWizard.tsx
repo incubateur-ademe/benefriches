@@ -1,18 +1,15 @@
 import {
   UrbanProjectCreationStep,
-  UrbanProjectCustomCreationStep,
   UrbanProjectExpressCreationStep,
 } from "@/features/create-project/core/urban-project/creationSteps";
 import { selectCreateMode } from "@/features/create-project/core/urban-project/selectors/urbanProject.selectors";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
-import { routes, useRoute } from "@/shared/views/router";
 
 import UrbanProjectCreationStepper from "./Stepper";
 import CreateModeSelectionForm from "./create-mode-selection";
-import UrbanProjectCustomCreationStepWizard from "./custom-forms";
-import UrbanProjectCustomCreationStepWizardBeta from "./custom-forms-beta/index";
+import UrbanProjectCustomCreationStepWizardContainer from "./custom-forms";
 import UrbanProjectExpressCreationStepWizard from "./express-forms";
 import { HTML_URBAN_PROJECT_FORM_MAIN_TITLE } from "./htmlTitle";
 
@@ -22,7 +19,6 @@ type Props = {
 
 function UrbanProjectCreationWizard({ currentStep }: Props) {
   const createMode = useAppSelector(selectCreateMode);
-  const route = useRoute();
 
   switch (createMode) {
     case undefined:
@@ -43,13 +39,7 @@ function UrbanProjectCreationWizard({ currentStep }: Props) {
         />
       );
     case "custom":
-      return route.name === routes.createProject.name && route.params.beta ? (
-        <UrbanProjectCustomCreationStepWizardBeta route={route} />
-      ) : (
-        <UrbanProjectCustomCreationStepWizard
-          currentStep={currentStep as UrbanProjectCustomCreationStep}
-        />
-      );
+      return <UrbanProjectCustomCreationStepWizardContainer />;
   }
 }
 

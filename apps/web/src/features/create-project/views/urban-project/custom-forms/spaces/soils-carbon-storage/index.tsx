@@ -1,51 +1,42 @@
 import { useEffect } from "react";
 
-import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
-import { SoilsCarbonStorageResult } from "@/features/create-project/core/actions/soilsCarbonStorage.action";
-import { fetchCurrentAndProjectedSoilsCarbonStorage } from "@/features/create-project/core/urban-project/actions/soilsCarbonStorage.actions";
-import { soilsCarbonStorageCompleted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
+import { fetchCurrentAndProjectedSoilsCarbonStorage } from "@/features/create-project/core/urban-project-beta/soils-carbon-storage/soilsCarbonStorage.action";
 import {
   selectCurrentAndProjectedSoilsCarbonStorage,
   selectLoadingState,
-} from "@/features/create-project/core/urban-project/selectors/soilsCarbonStorage.selectors";
-import SoilsCarbonStorageComparison from "@/features/create-project/views/common-views/soils-carbon-storage-comparison";
+} from "@/features/create-project/core/urban-project-beta/soils-carbon-storage/soilsCarbonStorage.selectors";
+import SoilsCarbonStorageComparison from "@/features/create-project/views/common-views/soils-carbon-storage-comparison/SoilsCarbonStorageComparison";
+import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+
+import { useInformationalStepBackNext } from "../../useInformationalStepBackNext";
 
 export default function UrbanProjectSoilsCarbonStorageContainer() {
   const dispatch = useAppDispatch();
-  const loadingState = useAppSelector(selectLoadingState);
   const { current, projected } = useAppSelector(selectCurrentAndProjectedSoilsCarbonStorage);
+  const { onNext, onBack } = useInformationalStepBackNext();
+  const loadingState = useAppSelector(selectLoadingState);
 
   useEffect(() => {
     void dispatch(fetchCurrentAndProjectedSoilsCarbonStorage());
   }, [dispatch]);
 
-  if (loadingState === "success") {
-    return (
-      <SoilsCarbonStorageComparison
-        loadingState={loadingState}
-        onNext={() => {
-          dispatch(soilsCarbonStorageCompleted());
-        }}
-        onBack={() => {
-          dispatch(stepRevertAttempted());
-        }}
-        currentCarbonStorage={current as SoilsCarbonStorageResult}
-        projectedCarbonStorage={projected as SoilsCarbonStorageResult}
-      />
-    );
+  useEffect(() => {
+    if (loadingState === "error") {
+      onNext();
+    }
+  }, [loadingState, onNext]);
+
+  if (loadingState !== "success") {
+    return <LoadingSpinner />;
   }
+
   return (
     <SoilsCarbonStorageComparison
-      loadingState={loadingState}
-      currentCarbonStorage={undefined}
-      projectedCarbonStorage={undefined}
-      onNext={() => {
-        dispatch(soilsCarbonStorageCompleted());
-      }}
-      onBack={() => {
-        dispatch(stepRevertAttempted());
-      }}
+      onNext={onNext}
+      onBack={onBack}
+      currentCarbonStorage={current!}
+      projectedCarbonStorage={projected!}
     />
   );
 }

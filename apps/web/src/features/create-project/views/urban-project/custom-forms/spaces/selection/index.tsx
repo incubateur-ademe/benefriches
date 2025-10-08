@@ -1,23 +1,28 @@
-import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
-import { spacesSelectionCompleted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
-import { selectSpacesCategories } from "@/features/create-project/core/urban-project/selectors/urbanProject.selectors";
+import { requestStepCompletion } from "@/features/create-project/core/urban-project-beta/urbanProject.actions";
+import { selectStepAnswers } from "@/features/create-project/core/urban-project-beta/urbanProject.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import UrbanProjectSpacesSelection, { FormValues } from "./SpacesCategoriesSelection";
+import { useStepBack } from "../../useStepBack";
+import UrbanProjectSpacesSelection from "./SpacesCategoriesSelection";
 
 export default function UrbanProjectSpacesCategoriesSelectionContainer() {
   const dispatch = useAppDispatch();
-  const selectedSpacesCategories = useAppSelector(selectSpacesCategories);
+  const { spacesCategories } =
+    useAppSelector(selectStepAnswers("URBAN_PROJECT_SPACES_CATEGORIES_SELECTION")) ?? {};
+  const onBack = useStepBack();
 
   return (
     <UrbanProjectSpacesSelection
-      initialValues={selectedSpacesCategories}
-      onBack={() => {
-        dispatch(stepRevertAttempted());
+      onSubmit={(formData) => {
+        dispatch(
+          requestStepCompletion({
+            stepId: "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION",
+            answers: { spacesCategories: formData.spaceCategories },
+          }),
+        );
       }}
-      onSubmit={(data: FormValues) => {
-        dispatch(spacesSelectionCompleted({ spacesCategories: data.spaceCategories }));
-      }}
+      onBack={onBack}
+      initialValues={spacesCategories ?? []}
     />
   );
 }

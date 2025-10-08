@@ -1,8 +1,7 @@
 import { URBAN_PROJECT_PHASE_VALUES } from "shared";
 
-import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
-import { projectPhaseCompleted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
-import { selectProjectPhase } from "@/features/create-project/core/urban-project/selectors/urbanProject.selectors";
+import { requestStepCompletion } from "@/features/create-project/core/urban-project-beta/urbanProject.actions";
+import { selectStepAnswers } from "@/features/create-project/core/urban-project-beta/urbanProject.selectors";
 import {
   getHintTextForUrbanProjectPhase,
   getLabelForUrbanProjectPhase,
@@ -11,10 +10,10 @@ import {
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import ProjectPhaseForm from "../../../common-views/project-phase/ProjectPhaseForm";
+import { useStepBack } from "../useStepBack";
 
 function ProjectPhaseFormContainer() {
   const dispatch = useAppDispatch();
-  const initialValues = useAppSelector(selectProjectPhase);
 
   const options = URBAN_PROJECT_PHASE_VALUES.map((phase) => ({
     value: phase,
@@ -23,16 +22,24 @@ function ProjectPhaseFormContainer() {
     pictogram: getPictogramForProjectPhase(phase),
   }));
 
+  const stepAnswers = useAppSelector(selectStepAnswers("URBAN_PROJECT_PROJECT_PHASE"));
+
+  const onBack = useStepBack();
   return (
     <ProjectPhaseForm
-      initialValues={initialValues && { phase: initialValues }}
       projectPhaseOptions={options}
-      onSubmit={({ phase }) => {
-        dispatch(projectPhaseCompleted(phase ?? "unknown"));
+      onSubmit={(formData) => {
+        dispatch(
+          requestStepCompletion({
+            stepId: "URBAN_PROJECT_PROJECT_PHASE",
+            answers: {
+              projectPhase: formData.phase,
+            },
+          }),
+        );
       }}
-      onBack={() => {
-        dispatch(stepRevertAttempted());
-      }}
+      onBack={onBack}
+      initialValues={{ phase: stepAnswers?.projectPhase }}
     />
   );
 }

@@ -1,18 +1,29 @@
-import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
-import { buildingsOperationsExpensesCompleted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
-import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
+import { requestStepCompletion } from "@/features/create-project/core/urban-project-beta/urbanProject.actions";
+import { selectStepAnswers } from "@/features/create-project/core/urban-project-beta/urbanProject.selectors";
+import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
+import { useStepBack } from "../../useStepBack";
 import BuildingsOperationsExpensesForm from "./BuildingsOperationsExpensesForm";
 
 function YearlyProjectedExpensesFormContainer() {
   const dispatch = useAppDispatch();
+  const stepAnswers = useAppSelector(
+    selectStepAnswers("URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES"),
+  );
+  const onBack = useStepBack();
 
   return (
     <BuildingsOperationsExpensesForm
       initialValues={{
-        maintenance: 0,
-        taxes: 0,
-        other: 0,
+        maintenance: stepAnswers?.yearlyProjectedBuildingsOperationsExpenses?.find(
+          ({ purpose }) => purpose === "maintenance",
+        )?.amount,
+        taxes: stepAnswers?.yearlyProjectedBuildingsOperationsExpenses?.find(
+          ({ purpose }) => purpose === "taxes",
+        )?.amount,
+        other: stepAnswers?.yearlyProjectedBuildingsOperationsExpenses?.find(
+          ({ purpose }) => purpose === "other",
+        )?.amount,
       }}
       onSubmit={(formData) => {
         const expenses = (
@@ -22,11 +33,16 @@ function YearlyProjectedExpensesFormContainer() {
             { purpose: "other", amount: formData.other ?? 0 },
           ] as const
         ).filter(({ amount }) => amount > 0);
-        dispatch(buildingsOperationsExpensesCompleted(expenses));
+        dispatch(
+          requestStepCompletion({
+            stepId: "URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES",
+            answers: {
+              yearlyProjectedBuildingsOperationsExpenses: expenses,
+            },
+          }),
+        );
       }}
-      onBack={() => {
-        dispatch(stepRevertAttempted());
-      }}
+      onBack={onBack}
     />
   );
 }

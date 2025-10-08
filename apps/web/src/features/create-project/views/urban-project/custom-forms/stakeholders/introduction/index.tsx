@@ -1,17 +1,11 @@
-import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
-import { stakeholderIntroductionCompleted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
 import ProjectStakeholdersIntroduction from "@/features/create-project/views/common-views/stakeholder-introduction/StakeholdersIntroduction";
-import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
+
+import { useInformationalStepBackNext } from "../../useInformationalStepBackNext";
 
 function ProjectStakeholdersIntroductionContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onNext } = useInformationalStepBackNext();
 
-  return (
-    <ProjectStakeholdersIntroduction
-      onNext={() => dispatch(stakeholderIntroductionCompleted())}
-      onBack={() => dispatch(stepRevertAttempted())}
-    />
-  );
+  return <ProjectStakeholdersIntroduction onNext={onNext} onBack={onBack} />;
 }
 
 export default ProjectStakeholdersIntroductionContainer;

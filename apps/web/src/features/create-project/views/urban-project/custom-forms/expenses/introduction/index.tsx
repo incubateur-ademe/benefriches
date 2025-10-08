@@ -1,22 +1,10 @@
-import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
-import { expensesIntroductionCompleted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
-import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
-
+import { useInformationalStepBackNext } from "../../useInformationalStepBackNext";
 import ProjectExpensesIntroduction from "./ProjectExpensesIntroduction";
 
 function ProjectExpensesIntroductionContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onNext } = useInformationalStepBackNext();
 
-  return (
-    <ProjectExpensesIntroduction
-      onNext={() => {
-        dispatch(expensesIntroductionCompleted());
-      }}
-      onBack={() => {
-        dispatch(stepRevertAttempted());
-      }}
-    />
-  );
+  return <ProjectExpensesIntroduction onNext={onNext} onBack={onBack} />;
 }
 
 export default ProjectExpensesIntroductionContainer;

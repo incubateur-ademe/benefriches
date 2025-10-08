@@ -1,33 +1,51 @@
-import { ReinstatementExpense } from "shared";
-
-import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
 import { selectSiteSoilsDistribution } from "@/features/create-project/core/createProject.selectors";
-import { selectProjectSoilsDistribution } from "@/features/create-project/core/renewable-energy/selectors/renewableEnergy.selector";
-import { reinstatementExpensesCompleted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
-import { selectCreationData } from "@/features/create-project/core/urban-project/selectors/urbanProject.selectors";
-import ReinstatementsExpensesForm from "@/features/create-project/views/common-views/expenses/reinstatement";
+import { requestStepCompletion } from "@/features/create-project/core/urban-project-beta/urbanProject.actions";
+import { selectStepAnswers } from "@/features/create-project/core/urban-project-beta/urbanProject.selectors";
+import ReinstatementsExpensesForm from "@/features/create-project/views/common-views/expenses/reinstatement/ReinstatementExpensesForm";
+import {
+  mapFormValuesToReinstatementExpenses,
+  mapReinstatementExpensesToFormValues,
+} from "@/features/create-project/views/common-views/expenses/reinstatement/mappers";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+
+import { useStepBack } from "../../useStepBack";
 
 function ReinstatementExpensesFormContainer() {
   const dispatch = useAppDispatch();
-
+  const { reinstatementExpenses } =
+    useAppSelector(selectStepAnswers("URBAN_PROJECT_EXPENSES_REINSTATEMENT")) ?? {};
+  const { decontaminatedSurfaceArea } =
+    useAppSelector(selectStepAnswers("URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA")) ?? {};
   const siteSoilsDistribution = useAppSelector(selectSiteSoilsDistribution);
-  const projectSoilsDistribution = useAppSelector(selectProjectSoilsDistribution);
-  const projectData = useAppSelector(selectCreationData);
-  const preEnteredData = projectData.reinstatementExpenses;
 
+  const onBack = useStepBack();
   return (
     <ReinstatementsExpensesForm
-      preEnteredData={preEnteredData}
-      siteSoilsDistribution={siteSoilsDistribution}
-      projectSoilsDistribution={projectSoilsDistribution}
-      decontaminatedSurfaceArea={projectData.decontaminatedSurfaceArea ?? 0}
-      onBack={() => {
-        dispatch(stepRevertAttempted());
+      onBack={onBack}
+      onSubmit={(data) => {
+        dispatch(
+          requestStepCompletion({
+            stepId: "URBAN_PROJECT_EXPENSES_REINSTATEMENT",
+            answers: {
+              reinstatementExpenses: mapFormValuesToReinstatementExpenses(data),
+            },
+          }),
+        );
       }}
-      onSubmit={(expenses: ReinstatementExpense[]) => {
-        dispatch(reinstatementExpensesCompleted(expenses));
-      }}
+      hasBuildings={Boolean(siteSoilsDistribution.BUILDINGS && siteSoilsDistribution.BUILDINGS > 0)}
+      hasProjectedDecontamination={Boolean(
+        decontaminatedSurfaceArea && decontaminatedSurfaceArea > 0,
+      )}
+      hasImpermeableSoils={
+        Boolean(
+          siteSoilsDistribution.IMPERMEABLE_SOILS && siteSoilsDistribution.IMPERMEABLE_SOILS > 0,
+        ) || Boolean(siteSoilsDistribution.MINERAL_SOIL && siteSoilsDistribution.MINERAL_SOIL > 0)
+      }
+      initialValues={
+        reinstatementExpenses
+          ? mapReinstatementExpensesToFormValues(reinstatementExpenses)
+          : undefined
+      }
     />
   );
 }

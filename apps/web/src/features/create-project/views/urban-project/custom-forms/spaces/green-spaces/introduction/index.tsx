@@ -1,25 +1,19 @@
-import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
-import { greenSpacesIntroductionCompleted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
-import { selectSpaceCategorySurfaceArea } from "@/features/create-project/core/urban-project/selectors/urbanProject.selectors";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { selectStepAnswers } from "@/features/create-project/core/urban-project-beta/urbanProject.selectors";
+import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
+import { useInformationalStepBackNext } from "../../../useInformationalStepBackNext";
 import UrbanGreenSpacesIntroduction from "./UrbanGreenSpacesIntroduction";
 
 export default function UrbanGreenSpacesIntroductionContainer() {
-  const dispatch = useAppDispatch();
-  const greenSpacesSurfaceArea = useAppSelector((state) =>
-    selectSpaceCategorySurfaceArea(state, "GREEN_SPACES"),
-  );
+  const { spacesCategoriesDistribution } =
+    useAppSelector(selectStepAnswers("URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA")) ?? {};
 
+  const { onNext, onBack } = useInformationalStepBackNext();
   return (
     <UrbanGreenSpacesIntroduction
-      greenSpacesSurfaceArea={greenSpacesSurfaceArea}
-      onBack={() => {
-        dispatch(stepRevertAttempted());
-      }}
-      onNext={() => {
-        dispatch(greenSpacesIntroductionCompleted());
-      }}
+      greenSpacesSurfaceArea={spacesCategoriesDistribution?.GREEN_SPACES ?? 0}
+      onBack={onNext}
+      onNext={onBack}
     />
   );
 }

@@ -1,30 +1,41 @@
-import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
-import { greenSpacesDistributionCompleted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
-import {
-  selectGreenSpacesDistribution,
-  selectSpaceCategorySurfaceArea,
-} from "@/features/create-project/core/urban-project/selectors/urbanProject.selectors";
+import { selectAppSettings } from "@/features/app-settings/core/appSettings";
+import { requestStepCompletion } from "@/features/create-project/core/urban-project-beta/urbanProject.actions";
+import { selectStepAnswers } from "@/features/create-project/core/urban-project-beta/urbanProject.selectors";
+import { getSurfaceAreaDistributionWithUnit } from "@/features/create-project/core/urban-project/selectors/urbanProject.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import UrbanGreenSpacesDistribution, { FormValues } from "./UrbanGreenSpacesDistribution";
+import { useStepBack } from "../../../useStepBack";
+import UrbanGreenSpacesDistribution from "./UrbanGreenSpacesDistribution";
 
 export default function UrbanGreenSpacesDistributionContainer() {
   const dispatch = useAppDispatch();
-  const greenSpacesSurfaceArea = useAppSelector((state) =>
-    selectSpaceCategorySurfaceArea(state, "GREEN_SPACES"),
-  );
-  const greenSpacesSurfaceAreaDistribution = useAppSelector(selectGreenSpacesDistribution);
+
+  const { greenSpacesDistribution } =
+    useAppSelector(selectStepAnswers("URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION")) ?? {};
+  const { spacesCategoriesDistribution } =
+    useAppSelector(selectStepAnswers("URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA")) ?? {};
+  const inputMode = useAppSelector(selectAppSettings).surfaceAreaInputMode;
+
+  const initialValues =
+    greenSpacesDistribution && inputMode === "percentage"
+      ? getSurfaceAreaDistributionWithUnit(greenSpacesDistribution, "percentage").value
+      : (greenSpacesDistribution ?? {});
+
+  const onBack = useStepBack();
 
   return (
     <UrbanGreenSpacesDistribution
-      initialValues={greenSpacesSurfaceAreaDistribution.value}
-      totalSurfaceArea={greenSpacesSurfaceArea}
-      onSubmit={(formData: FormValues) => {
-        dispatch(greenSpacesDistributionCompleted({ surfaceAreaDistribution: formData }));
+      onSubmit={(formData) => {
+        dispatch(
+          requestStepCompletion({
+            stepId: "URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION",
+            answers: { greenSpacesDistribution: formData },
+          }),
+        );
       }}
-      onBack={() => {
-        dispatch(stepRevertAttempted());
-      }}
+      onBack={onBack}
+      totalSurfaceArea={spacesCategoriesDistribution?.GREEN_SPACES ?? 0}
+      initialValues={initialValues}
     />
   );
 }

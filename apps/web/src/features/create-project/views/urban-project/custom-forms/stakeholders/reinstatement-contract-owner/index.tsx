@@ -1,13 +1,14 @@
-import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
-import { ProjectStakeholderStructure } from "@/features/create-project/core/project.types";
-import { stakeholderReinstatementContractOwnerCompleted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
 import {
-  getUrbanProjectAvailableLocalAuthoritiesStakeholders,
   getUrbanProjectAvailableStakeholders,
-} from "@/features/create-project/core/urban-project/selectors/stakeholders.selectors";
+  getUrbanProjectAvailableLocalAuthoritiesStakeholders,
+} from "@/features/create-project/core/urban-project-beta/stakeholders.selectors";
+import { requestStepCompletion } from "@/features/create-project/core/urban-project-beta/urbanProject.actions";
+import { selectStepAnswers } from "@/features/create-project/core/urban-project-beta/urbanProject.selectors";
 import StakeholderForm from "@/features/create-project/views/common-views/stakeholder-form";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
+
+import { useStepBack } from "../../useStepBack";
 
 function SiteReinstatementContractOwnerFormContainer() {
   const dispatch = useAppDispatch();
@@ -17,13 +18,11 @@ function SiteReinstatementContractOwnerFormContainer() {
     getUrbanProjectAvailableLocalAuthoritiesStakeholders,
   );
 
-  const onSubmit = (data: { structureType: ProjectStakeholderStructure; name: string }) => {
-    dispatch(stakeholderReinstatementContractOwnerCompleted(data));
-  };
+  const stepAnswers = useAppSelector(
+    selectStepAnswers("URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER"),
+  );
 
-  const onBack = () => {
-    dispatch(stepRevertAttempted());
-  };
+  const onBack = useStepBack();
 
   return (
     <StakeholderForm
@@ -36,7 +35,15 @@ function SiteReinstatementContractOwnerFormContainer() {
           </p>
         </FormInfo>
       }
-      onSubmit={onSubmit}
+      initialValues={stepAnswers?.reinstatementContractOwner}
+      onSubmit={(formData) => {
+        dispatch(
+          requestStepCompletion({
+            stepId: "URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER",
+            answers: { reinstatementContractOwner: formData },
+          }),
+        );
+      }}
       onBack={onBack}
       availableStakeholdersList={availableStakeholdersList}
       availableLocalAuthoritiesStakeholders={availableLocalAuthoritiesStakeholders}

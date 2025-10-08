@@ -1,19 +1,21 @@
-import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
-import { buildingsIntroductionCompleted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
-import { selectBuildingsFootprintSurfaceArea } from "@/features/create-project/core/urban-project/selectors/urbanProject.selectors";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { selectStepAnswers } from "@/features/create-project/core/urban-project-beta/urbanProject.selectors";
+import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
+import { useInformationalStepBackNext } from "../../useInformationalStepBackNext";
 import BuildingsIntroduction from "./BuildingsIntroduction";
 
 export default function BuildingsIntroductionContainer() {
-  const dispatch = useAppDispatch();
-  const buildingsFootprintSurfaceArea = useAppSelector(selectBuildingsFootprintSurfaceArea);
+  const { livingAndActivitySpacesDistribution } =
+    useAppSelector(
+      selectStepAnswers("URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION"),
+    ) ?? {};
+  const { onNext, onBack } = useInformationalStepBackNext();
 
   return (
     <BuildingsIntroduction
-      onNext={() => dispatch(buildingsIntroductionCompleted())}
-      onBack={() => dispatch(stepRevertAttempted())}
-      buildingsFootprintSurfaceArea={buildingsFootprintSurfaceArea}
+      onNext={onNext}
+      onBack={onBack}
+      buildingsFootprintSurfaceArea={livingAndActivitySpacesDistribution?.BUILDINGS ?? 0}
     />
   );
 }

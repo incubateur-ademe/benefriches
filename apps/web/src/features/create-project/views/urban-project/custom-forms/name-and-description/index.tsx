@@ -1,21 +1,32 @@
-import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
-import { namingCompleted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
-import { selectNameAndDescriptionInitialValues } from "@/features/create-project/core/urban-project/selectors/urbanProject.selectors";
+import { requestStepCompletion } from "@/features/create-project/core/urban-project-beta/urbanProject.actions";
+import { selectStepAnswers } from "@/features/create-project/core/urban-project-beta/urbanProject.selectors";
 import ProjectNameAndDescriptionForm from "@/features/create-project/views/common-views/name-and-description/ProjectNameAndDescriptionForm";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
+import { useStepBack } from "../useStepBack";
+
 function ProjectNameAndDescriptionFormContainer() {
   const dispatch = useAppDispatch();
-  const initialValues = useAppSelector(selectNameAndDescriptionInitialValues);
+  const stepAnswers = useAppSelector(selectStepAnswers("URBAN_PROJECT_NAMING"));
 
+  const onBack = useStepBack();
   return (
     <ProjectNameAndDescriptionForm
-      initialValues={initialValues}
-      onBack={() => {
-        dispatch(stepRevertAttempted());
+      onSubmit={(formData) => {
+        dispatch(
+          requestStepCompletion({
+            stepId: "URBAN_PROJECT_NAMING",
+            answers: {
+              name: formData.name,
+              description: formData.description,
+            },
+          }),
+        );
       }}
-      onSubmit={(data) => {
-        dispatch(namingCompleted(data));
+      onBack={onBack}
+      initialValues={{
+        name: stepAnswers?.name ?? "",
+        description: stepAnswers?.description,
       }}
     />
   );

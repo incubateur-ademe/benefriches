@@ -1,23 +1,18 @@
-import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
-import { installationExpensesCompleted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
-import {
-  selectDefaultInstallationCosts,
-  selectInstallationCosts,
-} from "@/features/create-project/core/urban-project/selectors/urbanProject.selectors";
-import InstallationExpensesForm, {
-  FormValues,
-} from "@/features/create-project/views/common-views/expenses/installation-expenses/InstallationExpensesForm";
+import { requestStepCompletion } from "@/features/create-project/core/urban-project-beta/urbanProject.actions";
+import { selectStepAnswers } from "@/features/create-project/core/urban-project-beta/urbanProject.selectors";
+import InstallationExpensesForm from "@/features/create-project/views/common-views/expenses/installation-expenses/InstallationExpensesForm";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 
-import { mapFormValuesToExpenses, mapInitialValues } from "./mappers";
+import { useStepBack } from "../../useStepBack";
+import { mapExpensesToFormValues, mapFormValuesToExpenses } from "./mappers";
 
 function InstallationExpensesFormContainer() {
   const dispatch = useAppDispatch();
-  const preEnteredValues = useAppSelector(selectInstallationCosts);
-  const defaultValues = useAppSelector(selectDefaultInstallationCosts);
+  const stepAnswers = useAppSelector(selectStepAnswers("URBAN_PROJECT_EXPENSES_INSTALLATION"));
 
-  const initialValues = mapInitialValues(preEnteredValues, defaultValues);
+  const initialValues = mapExpensesToFormValues(stepAnswers?.installationExpenses ?? []);
+  const onBack = useStepBack();
 
   return (
     <InstallationExpensesForm
@@ -39,13 +34,18 @@ function InstallationExpensesFormContainer() {
           <p>Vous pouvez modifier ces montants.</p>
         </FormInfo>
       }
+      onSubmit={(formData) => {
+        dispatch(
+          requestStepCompletion({
+            stepId: "URBAN_PROJECT_EXPENSES_INSTALLATION",
+            answers: {
+              installationExpenses: mapFormValuesToExpenses(formData),
+            },
+          }),
+        );
+      }}
+      onBack={onBack}
       initialValues={initialValues}
-      onSubmit={(formData: FormValues) => {
-        dispatch(installationExpensesCompleted(mapFormValuesToExpenses(formData)));
-      }}
-      onBack={() => {
-        dispatch(stepRevertAttempted());
-      }}
     />
   );
 }

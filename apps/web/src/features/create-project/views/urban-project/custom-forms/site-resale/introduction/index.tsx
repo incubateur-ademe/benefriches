@@ -1,22 +1,10 @@
-import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
-import { siteResaleIntroductionCompleted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
-import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
-
+import { useInformationalStepBackNext } from "../../useInformationalStepBackNext";
 import SiteResaleIntroduction from "./SiteResaleIntroduction";
 
 function SiteResaleIntroductionContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onNext } = useInformationalStepBackNext();
 
-  return (
-    <SiteResaleIntroduction
-      onNext={() => {
-        dispatch(siteResaleIntroductionCompleted());
-      }}
-      onBack={() => {
-        dispatch(stepRevertAttempted());
-      }}
-    />
-  );
+  return <SiteResaleIntroduction onNext={onNext} onBack={onBack} />;
 }
 
 export default SiteResaleIntroductionContainer;

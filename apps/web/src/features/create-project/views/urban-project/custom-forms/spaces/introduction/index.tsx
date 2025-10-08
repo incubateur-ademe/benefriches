@@ -1,20 +1,8 @@
-import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
-import { spacesIntroductionCompleted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
-import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
-
+import { useInformationalStepBackNext } from "../../useInformationalStepBackNext";
 import UrbanProjectSpacesIntroduction from "./SpacesIntroduction";
 
 export default function UrbanProjectSpacesIntroductionContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onNext } = useInformationalStepBackNext();
 
-  return (
-    <UrbanProjectSpacesIntroduction
-      onBack={() => {
-        dispatch(stepRevertAttempted());
-      }}
-      onNext={() => {
-        dispatch(spacesIntroductionCompleted());
-      }}
-    />
-  );
+  return <UrbanProjectSpacesIntroduction onNext={onNext} onBack={onBack} />;
 }

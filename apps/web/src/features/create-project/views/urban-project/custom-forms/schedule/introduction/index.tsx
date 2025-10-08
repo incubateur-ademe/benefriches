@@ -1,21 +1,11 @@
-import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
-import { scheduleIntroductionCompleted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
 import ScheduleIntroduction from "@/features/create-project/views/common-views/schedule/introduction/ScheduleIntroduction";
-import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
+
+import { useInformationalStepBackNext } from "../../useInformationalStepBackNext";
 
 function ProjectScheduleIntroductionContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onNext } = useInformationalStepBackNext();
 
-  return (
-    <ScheduleIntroduction
-      onNext={() => {
-        dispatch(scheduleIntroductionCompleted());
-      }}
-      onBack={() => {
-        dispatch(stepRevertAttempted());
-      }}
-    />
-  );
+  return <ScheduleIntroduction onNext={onNext} onBack={onBack} />;
 }
 
 export default ProjectScheduleIntroductionContainer;

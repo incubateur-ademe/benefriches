@@ -1,25 +1,26 @@
-import { useDispatch } from "react-redux";
-
-import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
-import {
-  selectProjectName,
-  selectSaveState,
-} from "@/features/create-project/core/urban-project/selectors/urbanProject.selectors";
+import { selectStepAnswers } from "@/features/create-project/core/urban-project-beta/urbanProject.selectors";
+import { RootState } from "@/shared/core/store-config/store";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import ProjectCreationResult from "../../../common-views/result";
+import ProjectCreationResult from "../../../common-views/result/ProjectCreationResult";
+import { useInformationalStepBackNext } from "../useInformationalStepBackNext";
 
 function ProjectCreationResultContainer() {
-  const saveState = useAppSelector(selectSaveState);
-  const projectName = useAppSelector(selectProjectName);
+  const { saveState, projectId } = useAppSelector((state: RootState) => ({
+    saveState: state.projectCreation.urbanProjectBeta.saveState,
+    projectId: state.projectCreation.projectId,
+  }));
+  const { name: projectName } = useAppSelector(selectStepAnswers("URBAN_PROJECT_NAMING")) ?? {};
+  const { onBack } = useInformationalStepBackNext();
 
-  const dispatch = useDispatch();
-
-  const onBack = () => {
-    dispatch(stepRevertAttempted());
-  };
-
-  return <ProjectCreationResult projectName={projectName} saveState={saveState} onBack={onBack} />;
+  return (
+    <ProjectCreationResult
+      projectId={projectId}
+      projectName={projectName ?? ""}
+      loadingState={saveState}
+      onBack={onBack}
+    />
+  );
 }
 
 export default ProjectCreationResultContainer;
