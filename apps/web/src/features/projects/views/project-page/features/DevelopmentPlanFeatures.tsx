@@ -121,12 +121,12 @@ const DevelopmentPlanFeatures = ({
             />
             {totalLivingAndActivitiesSpaces > 0 && (
               <DataLine
-                label="Lieux de vie et d’activités"
-                labelTooltip="Les lieux de vie et d’activité regroupent les lots dédiés aux logements, aux activités économiques, les emprises des équipements publics, en dehors des espaces verts publics et autres espaces publics de type rues, places, parking…"
+                label="Lieux d'habitation et d’activité"
+                labelTooltip="Les lieux d'habitation et d’activité regroupent les lots dédiés aux logements, aux activités économiques, les emprises des équipements publics, en dehors des espaces verts publics et autres espaces publics de type rues, places, parking…"
                 value={formatSurfaceArea(totalLivingAndActivitiesSpaces)}
                 valueTooltip={
                   isExpress
-                    ? `On considère que les lieux de vie et d’activité occupent ${formatPercentage(computePercentage(totalLivingAndActivitiesSpaces, totalSurfaceArea))} de la surface du site ; fonction du type de projet « ${urbanProjectCategoryLabel} ». Cette valeur est issue du retour d’expérience ADEME.`
+                    ? `On considère que les lieux d'habitation et d’activité occupent ${formatPercentage(computePercentage(totalLivingAndActivitiesSpaces, totalSurfaceArea))} de la surface du site ; fonction du type de projet « ${urbanProjectCategoryLabel} ». Cette valeur est issue du retour d’expérience ADEME.`
                     : undefined
                 }
               />
@@ -191,7 +191,7 @@ const DevelopmentPlanFeatures = ({
               <>
                 <DataLine
                   noBorder
-                  label={<strong>Lieux de vie et d’activités</strong>}
+                  label={<strong>Lieux d’habitation et d’activité</strong>}
                   value={<strong>{formatSurfaceArea(totalLivingAndActivitiesSpaces)}</strong>}
                 />
                 {typedObjectEntries(livingAndActivitiesSpaces)
@@ -216,7 +216,7 @@ const DevelopmentPlanFeatures = ({
                                   case "PRIVATE_PAVED_ALLEY_OR_PARKING_LOT":
                                     return "les allées ou parkings privés bitumés";
                                 }
-                              })()} occupent ${formatPercentage(computePercentage(surfaceArea, totalSurfaceArea))} de la surface du site des lieux de vie et d’activité ; fonction du type de projet « ${urbanProjectCategoryLabel} ». Cette valeur est issue du retour d’expérience ADEME.`
+                              })()} occupent ${formatPercentage(computePercentage(surfaceArea, totalSurfaceArea))} de la surface du site des lieux d’habitation et d’activité ; fonction du type de projet « ${urbanProjectCategoryLabel} ». Cette valeur est issue du retour d’expérience ADEME.`
                             : undefined
                         }
                       />
@@ -250,7 +250,7 @@ const DevelopmentPlanFeatures = ({
                                   case "PUBLIC_GREEN_SPACES":
                                     return "les jardins et allées enherbées publics";
                                 }
-                              })()} occupent ${formatPercentage(computePercentage(surfaceArea, totalSurfaceArea))} de la surface du site des lieux de vie et d’activité ; fonction du type de projet « ${urbanProjectCategoryLabel} ». Cette valeur est issue du retour d’expérience ADEME.`
+                              })()} occupent ${formatPercentage(computePercentage(surfaceArea, totalSurfaceArea))} de la surface du site des lieux d’habitation et d’activité ; fonction du type de projet « ${urbanProjectCategoryLabel} ». Cette valeur est issue du retour d’expérience ADEME.`
                             : undefined
                         }
                       />
@@ -287,7 +287,7 @@ const DevelopmentPlanFeatures = ({
                                   case "PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS":
                                     return "les voies, places, trottoirs bitumés ";
                                 }
-                              })()} occupent ${formatPercentage(computePercentage(surfaceArea, totalSurfaceArea))} de la surface du site des lieux de vie et d’activité ; fonction du type de projet « ${urbanProjectCategoryLabel} ». Cette valeur est issue du retour d’expérience ADEME.`
+                              })()} occupent ${formatPercentage(computePercentage(surfaceArea, totalSurfaceArea))} de la surface du site des lieux d’habitation et d’activité ; fonction du type de projet « ${urbanProjectCategoryLabel} ». Cette valeur est issue du retour d’expérience ADEME.`
                             : undefined
                         }
                       />

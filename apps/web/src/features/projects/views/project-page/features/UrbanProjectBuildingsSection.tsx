@@ -41,7 +41,7 @@ const UrbanProjectBuildingsSection = ({
         value={formatSurfaceArea(totalBuildingsSurfaceArea)}
         valueTooltip={
           isExpress
-            ? `On considère que la surface de plancher des bâtiments est de ${formatPercentage(computePercentage(totalBuildingsSurfaceArea, totalSurfaceArea))} de la surface du site des lieux de vie et d’activité ; fonction du type de projet « ${urbanProjectCategoryLabel} ». Cette valeur est issue du retour d’expérience ADEME.`
+            ? `On considère que la surface de plancher des bâtiments est de ${formatPercentage(computePercentage(totalBuildingsSurfaceArea, totalSurfaceArea))} de la surface du site des lieux d’habitation et d’activité ; fonction du type de projet « ${urbanProjectCategoryLabel} ». Cette valeur est issue du retour d’expérience ADEME.`
             : undefined
         }
       />
@@ -81,7 +81,7 @@ const UrbanProjectBuildingsSection = ({
                       case "OTHER":
                         return "les autres types de bâtiments";
                     }
-                  })()} occupent ${computePercentage(value, totalSurfaceArea)}} de la surface du site des lieux de vie et d’activité ; fonction du type de projet « ${urbanProjectCategoryLabel} ». Cette valeur est issue du retour d’expérience ADEME.`
+                  })()} occupent ${computePercentage(value, totalSurfaceArea)}} de la surface du site des lieux d’habitation et d’activité ; fonction du type de projet « ${urbanProjectCategoryLabel} ». Cette valeur est issue du retour d’expérience ADEME.`
                 : undefined
             }
           />
