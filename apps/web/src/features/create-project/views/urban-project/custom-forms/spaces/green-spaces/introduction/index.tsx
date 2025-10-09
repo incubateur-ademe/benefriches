@@ -12,8 +12,8 @@ export default function UrbanGreenSpacesIntroductionContainer() {
   return (
     <UrbanGreenSpacesIntroduction
       greenSpacesSurfaceArea={spacesCategoriesDistribution?.GREEN_SPACES ?? 0}
-      onBack={onNext}
-      onNext={onBack}
+      onBack={onBack}
+      onNext={onNext}
     />
   );
 }
