@@ -6,7 +6,6 @@ export const urbanProjectSpacesCategories = z.enum([
   "PUBLIC_SPACES",
   "URBAN_FARM",
   "RENEWABLE_ENERGY_PRODUCTION_PLANT",
-  "URBAN_POND_OR_LAKE",
 ]);
 
 export type UrbanSpaceCategory = z.infer<typeof urbanProjectSpacesCategories>;

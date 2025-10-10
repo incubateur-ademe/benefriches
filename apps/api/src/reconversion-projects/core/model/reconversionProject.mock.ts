@@ -1,5 +1,4 @@
-import { ReconversionProjectProps } from "../usecases/createReconversionProject.usecase";
-import { ReconversionProject } from "./reconversionProject";
+import { ReconversionProjectInput, ReconversionProjectInputProps } from "./reconversionProject";
 
 const baseReconversionProjectProps = {
   id: "64789135-afad-46ea-97a2-f14ba460d485",
@@ -21,28 +20,43 @@ const baseReconversionProjectProps = {
     },
   },
 
-  soilsDistribution: {
-    BUILDINGS: 3000,
-    ARTIFICIAL_TREE_FILLED: 5000,
-    FOREST_MIXED: 60000,
-    MINERAL_SOIL: 5000,
-    IMPERMEABLE_SOILS: 1300,
-  },
+  soilsDistribution: [
+    {
+      soilType: "BUILDINGS",
+      surfaceArea: 3000,
+    },
+    {
+      soilType: "ARTIFICIAL_TREE_FILLED",
+      surfaceArea: 5000,
+    },
+    {
+      soilType: "FOREST_MIXED",
+      surfaceArea: 60000,
+    },
+    {
+      soilType: "MINERAL_SOIL",
+      surfaceArea: 5000,
+    },
+    {
+      soilType: "IMPERMEABLE_SOILS",
+      surfaceArea: 1300,
+    },
+  ],
   yearlyProjectedCosts: [{ purpose: "rent", amount: 12000 }],
   yearlyProjectedRevenues: [{ source: "operations", amount: 13000 }],
   projectPhase: "planning",
-} as const satisfies ReconversionProjectProps;
+} as const satisfies ReconversionProjectInputProps;
 
 export const buildMinimalReconversionProjectProps = (
-  propsOverride?: Partial<ReconversionProjectProps>,
-): ReconversionProjectProps => {
+  propsOverride?: Partial<ReconversionProjectInputProps>,
+): ReconversionProjectInputProps => {
   return {
     ...baseReconversionProjectProps,
     ...propsOverride,
   };
 };
 
-export const buildExhaustiveReconversionProjectProps = (): ReconversionProjectProps => {
+export const buildExhaustiveReconversionProjectProps = (): ReconversionProjectInputProps => {
   return {
     ...baseReconversionProjectProps,
     developmentPlan: {
@@ -103,8 +117,8 @@ export const buildExhaustiveReconversionProjectProps = (): ReconversionProjectPr
 };
 
 export const buildReconversionProject = (
-  props?: Partial<ReconversionProject>,
-): ReconversionProject => {
+  props?: Partial<ReconversionProjectInput>,
+): ReconversionProjectInput => {
   return {
     ...buildMinimalReconversionProjectProps(),
     createdAt: new Date(),
@@ -113,7 +127,7 @@ export const buildReconversionProject = (
   };
 };
 
-export const buildUrbanProjectReconversionProjectProps = (): ReconversionProjectProps => {
+export const buildUrbanProjectReconversionProjectProps = (): ReconversionProjectInputProps => {
   return {
     ...baseReconversionProjectProps,
     developmentPlan: {

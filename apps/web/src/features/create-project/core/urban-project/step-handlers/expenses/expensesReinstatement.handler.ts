@@ -5,7 +5,9 @@ import { AnswersByStep } from "../../urbanProjectSteps";
 import { AnswerStepHandler, StepContext } from "../stepHandler.type";
 
 const getDefaultReinstatementExpenses = (context: StepContext) => {
-  const soilsDistribution = ReadStateHelper.getProjectSoilDistribution(context.stepsState);
+  const soilsDistribution = ReadStateHelper.getProjectSoilDistributionBySoilType(
+    context.stepsState,
+  );
   const decontaminatedSurface = ReadStateHelper.getStepAnswers(
     context.stepsState,
     "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA",

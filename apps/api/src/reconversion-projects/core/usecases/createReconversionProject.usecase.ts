@@ -3,20 +3,25 @@ import { z } from "zod";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { UseCase } from "src/shared-kernel/usecase";
 
-import { ReconversionProject, reconversionProjectPropsSchema } from "../model/reconversionProject";
+import {
+  ReconversionProjectInput,
+  ReconversionProjectInputProps,
+  saveReconversionProjectPropsSchema,
+  saveReconversionProjectSchema,
+} from "../model/reconversionProject";
 
 export interface SiteRepository {
   existsWithId(id: string): Promise<boolean>;
 }
 export interface ReconversionProjectRepository {
   existsWithId(id: string): Promise<boolean>;
-  save(reconversionProject: ReconversionProject): Promise<void>;
+  save(reconversionProject: ReconversionProjectInput): Promise<void>;
 }
 
-export type ReconversionProjectProps = z.infer<typeof reconversionProjectPropsSchema>;
+export type ReconversionProjectProps = z.infer<typeof saveReconversionProjectSchema>;
 
 type Request = {
-  reconversionProjectProps: ReconversionProjectProps;
+  reconversionProjectProps: ReconversionProjectInputProps;
 };
 
 export class CreateReconversionProjectUseCase implements UseCase<Request, void> {
@@ -28,7 +33,7 @@ export class CreateReconversionProjectUseCase implements UseCase<Request, void> 
 
   async execute({ reconversionProjectProps }: Request): Promise<void> {
     const parsedReconversionProject =
-      await reconversionProjectPropsSchema.parseAsync(reconversionProjectProps);
+      await saveReconversionProjectPropsSchema.parseAsync(reconversionProjectProps);
 
     const doesRelatedSiteExist = await this.siteRepository.existsWithId(
       parsedReconversionProject.relatedSiteId,

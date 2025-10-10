@@ -18,7 +18,7 @@ import { PhotovoltaicDataProvider } from "src/photovoltaic-performance/core/gate
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { UseCase } from "src/shared-kernel/usecase";
 
-import { ReconversionProject } from "../model/reconversionProject";
+import { ReconversionProjectView, ReconversionProjectInput } from "../model/reconversionProject";
 
 type SiteView = {
   id: string;
@@ -38,7 +38,7 @@ export interface SiteQuery {
 }
 interface ReconversionProjectRepository {
   existsWithId(id: string): Promise<boolean>;
-  save(reconversionProject: ReconversionProject): Promise<void>;
+  save(reconversionProject: ReconversionProjectInput): Promise<void>;
 }
 
 interface UserQuery {
@@ -54,7 +54,7 @@ type Request = {
   category?: ExpressProjectCategory;
 };
 
-type Response = ReconversionProject;
+type Response = ReconversionProjectView;
 
 const getCreationServiceClass = (
   category: Exclude<ExpressProjectCategory, "PHOTOVOLTAIC_POWER_PLANT"> | undefined,
@@ -113,7 +113,10 @@ export class CreateExpressReconversionProjectUseCase implements UseCase<Request,
           siteData,
           photovoltaicPerformanceService: this.photovoltaicPerformanceService,
         });
-        return await creationService.getReconversionProject();
+        return {
+          ...(await creationService.getReconversionProject()),
+          soilsDistributionByType: creationService.projectSoilsDistributionByType,
+        };
       }
 
       const ProjectGeneratorClass = getCreationServiceClass(props.category);
@@ -124,7 +127,10 @@ export class CreateExpressReconversionProjectUseCase implements UseCase<Request,
         props.createdBy,
         siteData,
       );
-      return creationService.getReconversionProject();
+      return {
+        ...creationService.getReconversionProject(),
+        soilsDistributionByType: creationService.projectSoilsDistributionByType,
+      };
     })();
 
     await this.reconversionProjectRepository.save(reconversionProject);

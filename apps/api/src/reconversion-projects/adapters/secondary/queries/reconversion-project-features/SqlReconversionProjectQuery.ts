@@ -8,6 +8,7 @@ import {
 } from "src/reconversion-projects/core/model/reconversionProject";
 import { UrbanProjectFeatures } from "src/reconversion-projects/core/model/urbanProjects";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
+import { SqlReconversionProjectSoilsDistribution } from "src/shared-kernel/adapters/sql-knex/tableTypes";
 
 import {
   ReconversionProjectFeaturesView,
@@ -129,7 +130,7 @@ export class SqlReconversionProjectQuery implements ReconversionProjectQueryGate
           reinstatement_contract_owner_name: string | null;
           reinstatement_schedule_start_date: string | null;
           reinstatement_schedule_end_date: string | null;
-          soils_distribution: { soil_type: string; surface_area: number }[];
+          soils_distribution: SqlReconversionProjectSoilsDistribution[];
           expenses: { amount: number; purpose: string }[] | null;
           revenues: { amount: number; source: string }[] | null;
           financial_assistance_revenues: { amount: number; source: string }[] | null;

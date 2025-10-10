@@ -7,7 +7,6 @@ export * from "./spaces/living-and-activity-spaces/urbanLivingAndActivitySpaces"
 export * from "./spaces/public-spaces/urbanPublicSpaces";
 export * from "./spaces/living-and-activity-spaces/buildingsUse";
 export * from "./spaces/spaceCategories";
-export * from "./spaces/soilsDistributionFromSpaces";
 export * from "./projectPhase";
 export * from "./revenues";
 

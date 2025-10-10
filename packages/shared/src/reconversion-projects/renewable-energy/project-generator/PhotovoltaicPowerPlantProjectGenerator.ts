@@ -1,8 +1,9 @@
 import { IDateProvider } from "../../../adapters/IDateProvider";
+import { typedObjectEntries } from "../../../object-entries";
 import { SoilsDistribution } from "../../../soils";
 import { DefaultProjectGenerator } from "../../_common/project-generator/DefaultProjectGenerator";
 import { ReconversionProject, SiteData } from "../../_common/project-generator/types";
-import { reconversionProjectSchema } from "../../reconversionProjectSchemas";
+import { saveReconversionProjectSchema } from "../../reconversionProjectSchemas";
 import { computePhotovoltaicPowerStationInstallationExpensesFromElectricalPower } from "../installationExpenses";
 import {
   computePhotovoltaicPowerStationYearlyExpensesFromElectricalPower,
@@ -100,7 +101,7 @@ export class PhotovoltaicPowerPlantProjectGenerator extends DefaultProjectGenera
     return this.siteData.soilsDistribution;
   }
 
-  override get projectSoilsDistribution() {
+  override get projectSoilsDistributionByType() {
     const recommendedImpermeableSurfaceArea =
       getRecommendedPhotovoltaicPanelsFoundationsSurfaceArea(this.featuresElectricalPowerKWc);
     const recommendedMineralSurfaceArea = getRecommendedPhotovoltaicPanelsAccessPathSurfaceArea(
@@ -110,6 +111,16 @@ export class PhotovoltaicPowerPlantProjectGenerator extends DefaultProjectGenera
       recommendedImpermeableSurfaceArea,
       recommendedMineralSurfaceArea,
     });
+  }
+
+  override get projectSoilsDistribution() {
+    return typedObjectEntries(this.projectSoilsDistributionByType).map(
+      ([soilType, surfaceArea = 0]) => ({
+        surfaceArea,
+        soilType,
+      }),
+      [],
+    );
   }
 
   override get developer() {
@@ -188,7 +199,7 @@ export class PhotovoltaicPowerPlantProjectGenerator extends DefaultProjectGenera
       featuresExpectedAnnualProduction,
     );
 
-    return reconversionProjectSchema.parse({
+    return saveReconversionProjectSchema.parse({
       id: this.reconversionProjectId,
       createdBy: this.userData.id,
       createdAt: this.dateProvider.now(),

@@ -85,7 +85,7 @@ function ProjectExpressCreationResult({
                 name: projectData.name,
                 description: projectData.description,
                 isExpress: true,
-                soilsDistribution: projectData.soilsDistribution,
+                soilsDistribution: projectData.soilsDistributionByType,
                 futureOperator: projectData.futureOperator?.name,
                 futureOwner: projectData.futureSiteOwner?.name,
                 reinstatementContractOwner: projectData.reinstatementContractOwner?.name,

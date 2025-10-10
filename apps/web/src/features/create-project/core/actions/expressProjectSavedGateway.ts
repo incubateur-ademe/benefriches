@@ -2,7 +2,8 @@ import {
   baseDevelopmentPlanSchema,
   expressProjectCategorySchema,
   photovoltaicPowerStationFeaturesSchema,
-  reconversionProjectPropsSchema,
+  saveReconversionProjectSchema,
+  SoilsDistribution,
   urbanProjectsFeaturesSchema,
 } from "shared";
 import { z } from "zod";
@@ -19,7 +20,7 @@ const commonDevelopmentPlanSchema = baseDevelopmentPlanSchema
     installationSchedule: z.object({ startDate: z.string(), endDate: z.string() }).optional(),
   });
 
-export const saveExpressProjectResultSchema = reconversionProjectPropsSchema
+export const saveExpressProjectResultSchema = saveReconversionProjectSchema
   .omit({ developmentPlan: true, reinstatementSchedule: true })
   .extend({
     reinstatementSchedule: z.object({ startDate: z.string(), endDate: z.string() }).optional(),
@@ -36,7 +37,9 @@ export const saveExpressProjectResultSchema = reconversionProjectPropsSchema
   });
 
 export type ExpressReconversionProjectPayload = z.infer<typeof saveExpressProjectSchema>;
-export type ReconversionProject = z.infer<typeof saveExpressProjectResultSchema>;
+export type ReconversionProject = z.infer<typeof saveExpressProjectResultSchema> & {
+  soilsDistributionByType: SoilsDistribution;
+};
 
 export interface SaveExpressReconversionProjectGateway {
   save(payload: ExpressReconversionProjectPayload): Promise<ReconversionProject>;

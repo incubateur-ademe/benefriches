@@ -1,11 +1,14 @@
-import { filterObject } from "shared";
+import {
+  filterObject,
+  getProjectSoilDistributionByType,
+  getSoilTypeForLivingAndActivitySpace,
+  getSoilTypeForPublicSpace,
+  getSoilTypeForUrbanGreenSpace,
+  typedObjectEntries,
+} from "shared";
 
 import { ProjectCreationState } from "../../createProject.reducer";
 import { ANSWER_STEPS, AnswersByStep, AnswerStepId, CustomFormAnswers } from "../urbanProjectSteps";
-import {
-  getUrbanProjectSoilsDistributionFromSpaces,
-  UrbanSpacesByCategory,
-} from "./urbanProjectSoils";
 
 export const ReadStateHelper = {
   getStep<K extends AnswerStepId = AnswerStepId>(
@@ -63,11 +66,6 @@ export const ReadStateHelper = {
   },
 
   getProjectSoilDistribution(steps: ProjectCreationState["urbanProject"]["steps"]) {
-    const spacesCategoriesDistribution = this.getStepAnswers(
-      steps,
-      "URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA",
-    )?.spacesCategoriesDistribution;
-
     const publicSpacesDistribution = this.getStepAnswers(
       steps,
       "URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION",
@@ -83,39 +81,29 @@ export const ReadStateHelper = {
       "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
     )?.livingAndActivitySpacesDistribution;
 
-    if (!spacesCategoriesDistribution) return {};
+    return [
+      ...typedObjectEntries(publicSpacesDistribution ?? {}).map(([soil, surfaceArea = 0]) => ({
+        surfaceArea,
+        soilType: getSoilTypeForPublicSpace(soil),
+        spaceCategory: "PUBLIC_SPACE" as const,
+      })),
+      ...typedObjectEntries(livingAndActivitySpacesDistribution ?? {}).map(
+        ([soil, surfaceArea = 0]) => ({
+          surfaceArea,
+          soilType: getSoilTypeForLivingAndActivitySpace(soil),
+          spaceCategory: "LIVING_AND_ACTIVITY_SPACE" as const,
+        }),
+      ),
+      ...typedObjectEntries(greenSpacesDistribution ?? {}).map(([soil, surfaceArea = 0]) => ({
+        surfaceArea,
+        soilType: getSoilTypeForUrbanGreenSpace(soil),
+        spaceCategory: "PUBLIC_GREEN_SPACE" as const,
+      })),
+    ];
+  },
 
-    const urbanSpacesByCategory: UrbanSpacesByCategory = [];
-    if (spacesCategoriesDistribution.GREEN_SPACES) {
-      urbanSpacesByCategory.push({
-        category: "GREEN_SPACES",
-        surfaceArea: spacesCategoriesDistribution.GREEN_SPACES,
-        spaces: greenSpacesDistribution ?? {},
-      });
-    }
-    if (spacesCategoriesDistribution.LIVING_AND_ACTIVITY_SPACES) {
-      urbanSpacesByCategory.push({
-        category: "LIVING_AND_ACTIVITY_SPACES",
-        surfaceArea: spacesCategoriesDistribution.LIVING_AND_ACTIVITY_SPACES,
-        spaces: livingAndActivitySpacesDistribution ?? {},
-      });
-    }
-    if (spacesCategoriesDistribution.PUBLIC_SPACES) {
-      urbanSpacesByCategory.push({
-        category: "PUBLIC_SPACES",
-        surfaceArea: spacesCategoriesDistribution.PUBLIC_SPACES,
-        spaces: publicSpacesDistribution ?? {},
-      });
-    }
-    if (spacesCategoriesDistribution.URBAN_POND_OR_LAKE) {
-      urbanSpacesByCategory.push({
-        category: "URBAN_POND_OR_LAKE",
-        surfaceArea: spacesCategoriesDistribution.URBAN_POND_OR_LAKE,
-      });
-    }
-
-    const soilsDistribution = getUrbanProjectSoilsDistributionFromSpaces(urbanSpacesByCategory);
-    return soilsDistribution.toJSON();
+  getProjectSoilDistributionBySoilType(steps: ProjectCreationState["urbanProject"]["steps"]) {
+    return getProjectSoilDistributionByType(this.getProjectSoilDistribution(steps));
   },
 
   getSpacesDistribution(steps: ProjectCreationState["urbanProject"]["steps"]) {

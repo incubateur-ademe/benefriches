@@ -1,3 +1,5 @@
+import { SpaceCategory } from "shared";
+
 export type SqlUser = {
   id: string;
   email: string;
@@ -128,6 +130,7 @@ type SqlReconversionProjectSoilsDistribution = {
   soil_type: SoilType;
   surface_area: number;
   reconversion_project_id: string;
+  space_category?: SpaceCategory;
 };
 
 type SqlDevelopmentPlan = {

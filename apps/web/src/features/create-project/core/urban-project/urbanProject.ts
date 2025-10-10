@@ -24,8 +24,6 @@ export const getLabelForSpaceCategory = (spaceCategory: UrbanSpaceCategory): str
       return "Ferme urbaine";
     case "RENEWABLE_ENERGY_PRODUCTION_PLANT":
       return "Centrale de production d'EnR";
-    case "URBAN_POND_OR_LAKE":
-      return "Plan d'eau";
   }
 };
 
@@ -42,8 +40,6 @@ export const getPictogramForUrbanSpaceCategory = (spaceCategory: UrbanSpaceCateg
       return `${URBAN_SPACE_CATEGORY_PICTOGRAM_URL_BASE}/urban-farm.svg`;
     case "RENEWABLE_ENERGY_PRODUCTION_PLANT":
       return `${URBAN_SPACE_CATEGORY_PICTOGRAM_URL_BASE}/renewable-energy-production-plant.svg`;
-    case "URBAN_POND_OR_LAKE":
-      return `${URBAN_SPACE_CATEGORY_PICTOGRAM_URL_BASE}/urban-pond-or-lake.svg`;
   }
 };
 
@@ -59,8 +55,6 @@ export const getDescriptionForUrbanSpaceCategory = (spaceCategory: UrbanSpaceCat
       return "Cultures de fruits et légumes, horticulture...";
     case "RENEWABLE_ENERGY_PRODUCTION_PLANT":
       return "Géothermique ou biomasse";
-    case "URBAN_POND_OR_LAKE":
-      return "Mare, étang...";
   }
 };
 
@@ -76,8 +70,6 @@ export const getColorForUrbanSpaceCategory = (spaceCategory: UrbanSpaceCategory)
       return "#F2CF5A";
     case "RENEWABLE_ENERGY_PRODUCTION_PLANT":
       return "#F97F05";
-    case "URBAN_POND_OR_LAKE":
-      return "#13BCEC";
   }
 };
 

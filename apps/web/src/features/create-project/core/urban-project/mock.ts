@@ -5,12 +5,7 @@ export const MOCK = {
   URBAN_PROJECT_SPACES_CATEGORIES_SELECTION: {
     completed: true,
     payload: {
-      spacesCategories: [
-        "LIVING_AND_ACTIVITY_SPACES",
-        "GREEN_SPACES",
-        "PUBLIC_SPACES",
-        "URBAN_POND_OR_LAKE",
-      ],
+      spacesCategories: ["LIVING_AND_ACTIVITY_SPACES", "GREEN_SPACES", "PUBLIC_SPACES"],
     },
   },
   URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA: {
@@ -20,7 +15,6 @@ export const MOCK = {
         LIVING_AND_ACTIVITY_SPACES: 3750,
         GREEN_SPACES: 3750,
         PUBLIC_SPACES: 3750,
-        URBAN_POND_OR_LAKE: 3750,
       },
     },
   },

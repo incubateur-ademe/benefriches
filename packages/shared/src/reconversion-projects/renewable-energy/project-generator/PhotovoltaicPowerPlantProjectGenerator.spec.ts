@@ -126,12 +126,24 @@ describe("PhotovoltaicPowerPlantProjectGenerator", () => {
         createdAt: fakeNow,
         creationMode: "express",
         projectPhase: "setup",
-        soilsDistribution: {
-          ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 5000,
-          IMPERMEABLE_SOILS: 2500,
-          MINERAL_SOIL: 2500,
-          PRAIRIE_GRASS: 5000,
-        },
+        soilsDistribution: [
+          {
+            soilType: "IMPERMEABLE_SOILS",
+            surfaceArea: 2500,
+          },
+          {
+            soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+            surfaceArea: 5000,
+          },
+          {
+            soilType: "PRAIRIE_GRASS",
+            surfaceArea: 5000,
+          },
+          {
+            soilType: "MINERAL_SOIL",
+            surfaceArea: 2500,
+          },
+        ],
         decontaminatedSoilSurface: 3750,
         yearlyProjectedCosts: [
           {
@@ -249,12 +261,25 @@ describe("PhotovoltaicPowerPlantProjectGenerator", () => {
         createdAt: fakeNow,
         creationMode: "express",
         projectPhase: "setup",
-        soilsDistribution: {
-          CULTIVATION: 9000,
-          IMPERMEABLE_SOILS: 30,
-          MINERAL_SOIL: 1320,
-          PRAIRIE_GRASS: 4650,
-        },
+        soilsDistribution: [
+          {
+            soilType: "IMPERMEABLE_SOILS",
+            surfaceArea: 30,
+          },
+          {
+            soilType: "MINERAL_SOIL",
+            surfaceArea: 1320,
+          },
+          {
+            soilType: "CULTIVATION",
+            surfaceArea: 9000,
+          },
+          {
+            soilType: "PRAIRIE_GRASS",
+            surfaceArea: 4650,
+          },
+        ],
+
         decontaminatedSoilSurface: undefined,
         yearlyProjectedCosts: [
           {

@@ -17,7 +17,7 @@ import {
 export const selectStepState = (state: RootState) => state.projectCreation.urbanProject.steps;
 
 export const selectProjectSoilDistribution = createSelector(selectStepState, (state) =>
-  ReadStateHelper.getProjectSoilDistribution(state),
+  ReadStateHelper.getProjectSoilDistributionBySoilType(state),
 );
 
 export const selectStepAnswers = <T extends AnswerStepId>(stepId: T) =>

@@ -20,12 +20,12 @@ export class InMemorySaveExpressReconversionProjectService
       createdAt: new Date(),
       creationMode: "express",
       projectPhase: "setup",
-      soilsDistribution: {
-        CULTIVATION: 9000,
-        IMPERMEABLE_SOILS: 30,
-        MINERAL_SOIL: 1320,
-        PRAIRIE_GRASS: 4650,
-      },
+      soilsDistribution: [
+        { soilType: "CULTIVATION", surfaceArea: 9000 },
+        { soilType: "IMPERMEABLE_SOILS", surfaceArea: 30 },
+        { soilType: "MINERAL_SOIL", surfaceArea: 1320 },
+        { soilType: "PRAIRIE_GRASS", surfaceArea: 4650 },
+      ],
       decontaminatedSoilSurface: undefined,
       yearlyProjectedCosts: [
         {

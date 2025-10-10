@@ -1,6 +1,7 @@
+import { saveReconversionProjectPropsSchema, soilsDistributionObjToArray } from "shared";
+
 import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
 
-import { saveProjectSchema } from "../../actions/saveReconversionProject.action";
 import { makeRenewableEnergyProjectCreationActionType } from "./renewableEnergy.actions";
 
 export const saveReconversionProject = createAppAsyncThunk(
@@ -25,7 +26,7 @@ export const saveReconversionProject = createAppAsyncThunk(
       financialAssistanceRevenues: creationData.financialAssistanceRevenues,
       yearlyProjectedCosts: creationData.yearlyProjectedExpenses,
       yearlyProjectedRevenues: creationData.yearlyProjectedRevenues,
-      soilsDistribution: creationData.soilsDistribution,
+      soilsDistribution: soilsDistributionObjToArray(creationData.soilsDistribution ?? {}),
       reinstatementSchedule: creationData.reinstatementSchedule,
       operationsFirstYear: creationData.firstYearOfOperation,
       developmentPlan: {
@@ -44,7 +45,7 @@ export const saveReconversionProject = createAppAsyncThunk(
       decontaminatedSoilSurface: creationData.decontaminatedSurfaceArea,
     };
 
-    const projectToSave = saveProjectSchema.parse(mappedProjectData);
+    const projectToSave = saveReconversionProjectPropsSchema.parse(mappedProjectData);
 
     await extra.saveReconversionProjectService.save(projectToSave);
   },

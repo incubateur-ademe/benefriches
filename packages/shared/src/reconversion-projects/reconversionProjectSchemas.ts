@@ -63,7 +63,7 @@ export const reconversionProjectSchema = z.object({
   financialAssistanceRevenues: z.array(revenueSchema).optional(),
   yearlyProjectedCosts: z.array(expenseSchema),
   yearlyProjectedRevenues: z.array(revenueSchema),
-  soilsDistribution: z.partialRecord(soilTypeSchema, z.number().nonnegative()),
+  soilsDistributionByType: z.partialRecord(soilTypeSchema, z.number().nonnegative()),
   reinstatementSchedule: scheduleSchema.optional(),
   operationsFirstYear: z.number().int().min(2000).optional(),
   projectPhase: z.string(),
@@ -75,7 +75,33 @@ export const reconversionProjectSchema = z.object({
 
 export type DevelopmentPlan = z.infer<typeof reconversionProjectSchema>;
 
-export const reconversionProjectPropsSchema = reconversionProjectSchema.omit({
+export const spaceCategorySchema = z
+  .enum(["PUBLIC_GREEN_SPACE", "PUBLIC_SPACE", "LIVING_AND_ACTIVITY_SPACE"])
+  .optional();
+
+export type SpaceCategory = z.infer<typeof spaceCategorySchema>;
+
+export const reconversionProjectSoilsDistributionSchema = z.array(
+  z.object({
+    soilType: soilTypeSchema,
+    spaceCategory: spaceCategorySchema,
+    surfaceArea: z.number().nonnegative(),
+  }),
+);
+
+export type ReconversionProjectSoilsDistribution = z.infer<
+  typeof reconversionProjectSoilsDistributionSchema
+>;
+
+export const saveReconversionProjectSchema = reconversionProjectSchema
+  .omit({
+    soilsDistributionByType: true,
+  })
+  .extend({
+    soilsDistribution: reconversionProjectSoilsDistributionSchema,
+  });
+
+export const saveReconversionProjectPropsSchema = saveReconversionProjectSchema.omit({
   createdAt: true,
   creationMode: true,
 });

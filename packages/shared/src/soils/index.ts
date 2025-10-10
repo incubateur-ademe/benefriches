@@ -97,3 +97,4 @@ export const isPermeableSurfaceWithoutPermanentVegetation = (soilType: SoilType)
 
 export * from "./soilDistribution";
 export * from "./soilsDistributionObjToArray";
+export * from "./soilDistributionByType";

@@ -1,9 +1,8 @@
 import { Inject } from "@nestjs/common";
 import { Knex } from "knex";
-import { SoilType } from "shared";
 import { v4 as uuid } from "uuid";
 
-import { ReconversionProject } from "src/reconversion-projects/core/model/reconversionProject";
+import { ReconversionProjectInput } from "src/reconversion-projects/core/model/reconversionProject";
 import { ReconversionProjectRepository } from "src/reconversion-projects/core/usecases/createReconversionProject.usecase";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import {
@@ -33,7 +32,7 @@ const mapRevenuesToSqlStruct = (
 export class SqlReconversionProjectRepository implements ReconversionProjectRepository {
   constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}
 
-  async save(reconversionProject: ReconversionProject): Promise<void> {
+  async save(reconversionProject: ReconversionProjectInput): Promise<void> {
     await this.sqlConnection.transaction(async (trx) => {
       const [insertedReconversionProject] = await trx("reconversion_projects").insert(
         {
@@ -73,16 +72,16 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
       if (!insertedReconversionProject) throw new Error("Failed to insert reconversion project");
 
       // soils distribution
-      const soilsDistributionToInsert: SqlReconversionProjectSoilsDistribution[] = Object.entries(
-        reconversionProject.soilsDistribution,
-      ).map(([soilType, surfaceArea]) => {
-        return {
-          id: uuid(),
-          soil_type: soilType as SoilType,
-          surface_area: surfaceArea,
-          reconversion_project_id: insertedReconversionProject.id,
-        };
-      });
+      const soilsDistributionToInsert: SqlReconversionProjectSoilsDistribution[] =
+        reconversionProject.soilsDistribution.map(({ soilType, surfaceArea, spaceCategory }) => {
+          return {
+            id: uuid(),
+            soil_type: soilType,
+            surface_area: surfaceArea,
+            space_category: spaceCategory,
+            reconversion_project_id: insertedReconversionProject.id,
+          };
+        });
       await trx("reconversion_project_soils_distributions").insert(soilsDistributionToInsert);
 
       // development plan

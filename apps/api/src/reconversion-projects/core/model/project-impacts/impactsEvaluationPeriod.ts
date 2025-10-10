@@ -1,12 +1,12 @@
 import {
   DevelopmentPlan,
   PhotovoltaicPowerStationFeatures,
-  ReconversionProject,
+  ReconversionProjectView,
 } from "../reconversionProject";
 
 export const getDefaultImpactsEvaluationPeriod = (
   developmentPlanType: DevelopmentPlan["type"],
-  developmentPlanFeatures: ReconversionProject["developmentPlan"]["features"],
+  developmentPlanFeatures: ReconversionProjectView["developmentPlan"]["features"],
 ): number => {
   switch (developmentPlanType) {
     case "PHOTOVOLTAIC_POWER_PLANT":

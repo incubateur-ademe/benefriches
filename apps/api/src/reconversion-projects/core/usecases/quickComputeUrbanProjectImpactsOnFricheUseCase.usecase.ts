@@ -148,7 +148,7 @@ export class QuickComputeUrbanProjectImpactsOnFricheUseCase implements UseCase<R
     const projectSoilsCarbonStorage =
       await this.getCarbonStorageFromSoilDistributionService.execute({
         cityCode: site.address.cityCode,
-        soilsDistribution: reconversionProject.soilsDistribution,
+        soilsDistribution: reconversionProjectCreationService.projectSoilsDistributionByType,
       });
 
     const evaluationPeriodInYears = getDefaultImpactsEvaluationPeriod(
@@ -172,7 +172,7 @@ export class QuickComputeUrbanProjectImpactsOnFricheUseCase implements UseCase<R
         developmentPlanType: reconversionProject.developmentPlan.type,
         developmentPlanFeatures: reconversionProject.developmentPlan.features,
         developmentPlanDeveloperName: reconversionProject.developmentPlan.developer.name,
-        soilsDistribution: reconversionProject.soilsDistribution,
+        soilsDistribution: reconversionProjectCreationService.projectSoilsDistributionByType,
         financialAssistanceRevenues:
           reconversionProject.financialAssistanceRevenues as FinancialAssistanceRevenue[],
         futureSiteOwnerName: reconversionProject.futureSiteOwner?.name,
@@ -203,7 +203,7 @@ export class QuickComputeUrbanProjectImpactsOnFricheUseCase implements UseCase<R
       relatedSiteName: site.name,
       evaluationPeriodInYears,
       projectData: {
-        soilsDistribution: reconversionProject.soilsDistribution,
+        soilsDistribution: reconversionProjectCreationService.projectSoilsDistributionByType,
         contaminatedSoilSurface:
           (site.contaminatedSoilSurface ?? 0) -
           (reconversionProject.decontaminatedSoilSurface ?? 0),

@@ -1,6 +1,6 @@
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { Knex } from "knex";
-import { expressProjectCategorySchema } from "shared";
+import { expressProjectCategorySchema, saveReconversionProjectPropsSchema } from "shared";
 import supertest from "supertest";
 import { authenticateUser, createTestApp } from "test/testApp";
 import { v4 as uuid } from "uuid";
@@ -15,8 +15,6 @@ import {
 import { Result } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import { UserBuilder } from "src/users/core/model/user.mock";
-
-import { createReconversionProjectInputSchema } from "./reconversionProjects.controller";
 
 type BadRequestResponseBody = {
   errors: { path: string[] }[];
@@ -57,7 +55,7 @@ describe("ReconversionProjects controller", () => {
         "yearlyProjectedCosts",
         "yearlyProjectedRevenues",
         "projectPhase",
-      ] satisfies (keyof z.infer<typeof createReconversionProjectInputSchema>)[])(
+      ] satisfies (keyof z.infer<typeof saveReconversionProjectPropsSchema>)[])(
         "can't create a reconversion project without mandatory field %s",
         async (mandatoryField) => {
           const requestBody = buildMinimalReconversionProjectProps();

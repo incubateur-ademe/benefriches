@@ -1,7 +1,7 @@
 import knex, { Knex } from "knex";
 import { v4 as uuid } from "uuid";
 
-import { ReconversionProject } from "src/reconversion-projects/core/model/reconversionProject";
+import { ReconversionProjectInput } from "src/reconversion-projects/core/model/reconversionProject";
 import {
   buildExhaustiveReconversionProjectProps,
   buildReconversionProject,
@@ -155,7 +155,10 @@ describe("SqlReconversionProjectRepository integration", () => {
             ...buildExhaustiveReconversionProjectProps(),
             createdAt: now,
             relatedSiteId: siteId,
-            soilsDistribution: { ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 1200, PRAIRIE_GRASS: 5000 },
+            soilsDistribution: [
+              { soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED", surfaceArea: 1200 },
+              { soilType: "PRAIRIE_GRASS", surfaceArea: 5000 },
+            ],
           });
           await reconversionProjectRepository.save(reconversionProject);
 
@@ -173,6 +176,47 @@ describe("SqlReconversionProjectRepository integration", () => {
               soil_type: "PRAIRIE_GRASS",
               surface_area: 5000.0,
               reconversion_project_id: reconversionProject.id,
+            },
+          ]);
+        });
+
+        it("Saves data in table reconversion_projects_soils_distributions with space_category", async () => {
+          const siteId = await insertSiteInDb();
+          const reconversionProject = buildReconversionProject({
+            ...buildExhaustiveReconversionProjectProps(),
+            createdAt: now,
+            relatedSiteId: siteId,
+            soilsDistribution: [
+              {
+                soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+                surfaceArea: 5000,
+                spaceCategory: "PUBLIC_SPACE",
+              },
+              {
+                soilType: "BUILDINGS",
+                surfaceArea: 1200,
+                spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+              },
+            ],
+          });
+          await reconversionProjectRepository.save(reconversionProject);
+
+          const soilsDistributionResult = await sqlConnection(
+            "reconversion_project_soils_distributions",
+          ).select("surface_area", "soil_type", "reconversion_project_id", "space_category");
+
+          expect(soilsDistributionResult).toEqual([
+            {
+              soil_type: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+              surface_area: 5000.0,
+              reconversion_project_id: reconversionProject.id,
+              space_category: "PUBLIC_SPACE",
+            },
+            {
+              soil_type: "BUILDINGS",
+              surface_area: 1200.0,
+              reconversion_project_id: reconversionProject.id,
+              space_category: "LIVING_AND_ACTIVITY_SPACE",
             },
           ]);
         });
@@ -228,7 +272,10 @@ describe("SqlReconversionProjectRepository integration", () => {
           const reconversionProject = buildReconversionProject({
             ...buildExhaustiveReconversionProjectProps(),
             relatedSiteId: siteId,
-            soilsDistribution: { ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 1200, PRAIRIE_GRASS: 5000 },
+            soilsDistribution: [
+              { soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED", surfaceArea: 1200 },
+              { soilType: "PRAIRIE_GRASS", surfaceArea: 5000 },
+            ],
           });
 
           await reconversionProjectRepository.save(reconversionProject);
@@ -266,7 +313,7 @@ describe("SqlReconversionProjectRepository integration", () => {
         });
         it("Saves right data in table reconversion_project_reinstatement_costs", async () => {
           const siteId = await insertSiteInDb();
-          const reinstatementCosts: ReconversionProject["reinstatementCosts"] = [
+          const reinstatementCosts: ReconversionProjectInput["reinstatementCosts"] = [
             { amount: 1000, purpose: "waste_collection" },
             { amount: 2000, purpose: "other_reinstatement_costs" },
           ] as const;
@@ -292,10 +339,11 @@ describe("SqlReconversionProjectRepository integration", () => {
 
         it("Saves right data in table reconversion_project_financial_assistance_revenues", async () => {
           const siteId = await insertSiteInDb();
-          const financialAssistanceRevenues: ReconversionProject["financialAssistanceRevenues"] = [
-            { amount: 1000, source: "public_subsidies" },
-            { amount: 2000, source: "other" },
-          ] as const;
+          const financialAssistanceRevenues: ReconversionProjectInput["financialAssistanceRevenues"] =
+            [
+              { amount: 1000, source: "public_subsidies" },
+              { amount: 2000, source: "other" },
+            ] as const;
           const reconversionProject = buildReconversionProject({
             ...buildExhaustiveReconversionProjectProps(),
             relatedSiteId: siteId,
@@ -318,7 +366,7 @@ describe("SqlReconversionProjectRepository integration", () => {
       });
     });
     describe("Urban project development plan", () => {
-      let reconversionProject: ReconversionProject;
+      let reconversionProject: ReconversionProjectInput;
 
       beforeEach(async () => {
         const siteId = await insertSiteInDb();
@@ -356,13 +404,14 @@ describe("SqlReconversionProjectRepository integration", () => {
           reinstatementCosts: undefined,
           yearlyProjectedCosts: [],
           yearlyProjectedRevenues: [],
-          soilsDistribution: {
-            BUILDINGS: 10000,
-            IMPERMEABLE_SOILS: 7000,
-            MINERAL_SOIL: 4500,
-            ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 19000,
-            ARTIFICIAL_TREE_FILLED: 9500,
-          },
+          soilsDistribution: [
+            { soilType: "BUILDINGS", surfaceArea: 10000 },
+            { soilType: "IMPERMEABLE_SOILS", surfaceArea: 7000 },
+            { soilType: "MINERAL_SOIL", surfaceArea: 4500 },
+            { soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED", surfaceArea: 19000 },
+            { soilType: "ARTIFICIAL_TREE_FILLED", surfaceArea: 9500 },
+          ],
+
           reinstatementSchedule: {
             startDate: new Date("2025-01-05T12:00:00.000Z"),
             endDate: new Date("2026-01-05T12:00:00.000Z"),

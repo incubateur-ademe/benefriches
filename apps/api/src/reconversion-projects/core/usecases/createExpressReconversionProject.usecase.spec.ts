@@ -2,7 +2,8 @@ import {
   BuildingsUseDistribution,
   ExpressProjectCategory,
   expressProjectCategorySchema,
-  SoilsDistribution,
+  getProjectSoilDistributionByType,
+  sumListWithKey,
   sumObjectValues,
 } from "shared";
 import { v4 as uuid } from "uuid";
@@ -16,7 +17,7 @@ import { InMemorySitesQuery } from "src/sites/adapters/secondary/site-query/InMe
 import { SiteViewModel } from "src/sites/core/usecases/getSiteById.usecase";
 import { InMemoryUserQuery } from "src/users/adapters/secondary/user-query/InMemoryUserQuery";
 
-import { ReconversionProject } from "../model/reconversionProject";
+import { ReconversionProjectInput } from "../model/reconversionProject";
 import { UrbanProjectFeatures } from "../model/urbanProjects";
 import { CreateExpressReconversionProjectUseCase } from "./createExpressReconversionProject.usecase";
 
@@ -137,7 +138,7 @@ describe("CreateReconversionProject Use Case", () => {
 
         const expectedName = expressCategoryNameMap[expressCategory];
 
-        const createdReconversionProjects: ReconversionProject[] =
+        const createdReconversionProjects: ReconversionProjectInput[] =
           reconversionProjectRepository._getReconversionProjects();
         expect(createdReconversionProjects).toHaveLength(1);
         const createdReconversionProject = createdReconversionProjects[0];
@@ -171,7 +172,7 @@ describe("CreateReconversionProject Use Case", () => {
           category: expressCategory,
         });
 
-        const createdReconversionProjects: ReconversionProject[] =
+        const createdReconversionProjects: ReconversionProjectInput[] =
           reconversionProjectRepository._getReconversionProjects();
         expect(createdReconversionProjects).toHaveLength(1);
         const createdReconversionProject = createdReconversionProjects[0];
@@ -208,7 +209,7 @@ describe("CreateReconversionProject Use Case", () => {
             category: expressCategory,
           });
 
-          const createdReconversionProjects: ReconversionProject[] =
+          const createdReconversionProjects: ReconversionProjectInput[] =
             reconversionProjectRepository._getReconversionProjects();
           expect(createdReconversionProjects).toHaveLength(1);
           const createdReconversionProject = createdReconversionProjects[0];
@@ -243,7 +244,7 @@ describe("CreateReconversionProject Use Case", () => {
             category: expressCategory,
           });
 
-          const createdReconversionProjects: ReconversionProject[] =
+          const createdReconversionProjects: ReconversionProjectInput[] =
             reconversionProjectRepository._getReconversionProjects();
           expect(createdReconversionProjects).toHaveLength(1);
           const createdReconversionProject = createdReconversionProjects[0];
@@ -414,7 +415,7 @@ describe("CreateReconversionProject Use Case", () => {
             (expectedSpacesDistribution.PRIVATE_PAVED_ALLEY_OR_PARKING_LOT ?? 0) +
             (expectedSpacesDistribution.PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS ?? 0);
 
-          const expectedArtifitialGrassOrBushesSoils =
+          const expectedArtificialGrassOrBushesSoils =
             (expectedSpacesDistribution.PRIVATE_GARDEN_AND_GRASS_ALLEYS ?? 0) +
             (expectedSpacesDistribution.PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS ?? 0) +
             (expectedSpacesDistribution.PUBLIC_GREEN_SPACES ?? 0);
@@ -422,18 +423,18 @@ describe("CreateReconversionProject Use Case", () => {
           const expectedSoilsDistribution = {
             BUILDINGS: expectedSpacesDistribution.BUILDINGS_FOOTPRINT,
             ARTIFICIAL_GRASS_OR_BUSHES_FILLED:
-              expectedArtifitialGrassOrBushesSoils > 0
-                ? expectedArtifitialGrassOrBushesSoils
+              expectedArtificialGrassOrBushesSoils > 0
+                ? expectedArtificialGrassOrBushesSoils
                 : undefined,
             IMPERMEABLE_SOILS: expectedImpermeableSoils > 0 ? expectedImpermeableSoils : undefined,
             MINERAL_SOIL: expectedMineralSoils > 0 ? expectedMineralSoils : undefined,
           };
 
-          const createdReconversionProjects: ReconversionProject[] =
+          const createdReconversionProjects: ReconversionProjectInput[] =
             reconversionProjectRepository._getReconversionProjects();
           expect(createdReconversionProjects).toHaveLength(1);
 
-          const { developmentPlan, soilsDistribution } = createdReconversionProjects[0] ?? {};
+          const { developmentPlan, soilsDistribution = [] } = createdReconversionProjects[0] ?? {};
           const { buildingsFloorAreaDistribution, spacesDistribution } =
             developmentPlan?.features as UrbanProjectFeatures;
 
@@ -442,8 +443,10 @@ describe("CreateReconversionProject Use Case", () => {
           expect(spacesDistribution).toEqual(expectedSpacesDistribution);
           expect(sumObjectValues(spacesDistribution)).toEqual(site.surfaceArea);
           expect(buildingsFloorAreaDistribution).toEqual(expectedBuildingsFloorAreaDistribution);
-          expect(soilsDistribution).toEqual(expectedSoilsDistribution);
-          expect(sumObjectValues(soilsDistribution as SoilsDistribution)).toEqual(site.surfaceArea);
+
+          const soilsDistributionByType = getProjectSoilDistributionByType(soilsDistribution);
+          expect(soilsDistributionByType).toEqual(expectedSoilsDistribution);
+          expect(sumListWithKey(soilsDistribution, "surfaceArea")).toEqual(site.surfaceArea);
         },
       );
     });
@@ -476,7 +479,7 @@ describe("CreateReconversionProject Use Case", () => {
           category: "PHOTOVOLTAIC_POWER_PLANT",
         });
 
-        const createdReconversionProjects: ReconversionProject[] =
+        const createdReconversionProjects: ReconversionProjectInput[] =
           reconversionProjectRepository._getReconversionProjects();
         expect(createdReconversionProjects).toHaveLength(1);
         const createdReconversionProject = createdReconversionProjects[0];
@@ -522,7 +525,7 @@ describe("CreateReconversionProject Use Case", () => {
           category: "PHOTOVOLTAIC_POWER_PLANT",
         });
 
-        const createdReconversionProjects: ReconversionProject[] =
+        const createdReconversionProjects: ReconversionProjectInput[] =
           reconversionProjectRepository._getReconversionProjects();
         expect(createdReconversionProjects).toHaveLength(1);
         const createdReconversionProject = createdReconversionProjects[0];
@@ -558,7 +561,7 @@ describe("CreateReconversionProject Use Case", () => {
           category: "PHOTOVOLTAIC_POWER_PLANT",
         });
 
-        const createdReconversionProjects: ReconversionProject[] =
+        const createdReconversionProjects: ReconversionProjectInput[] =
           reconversionProjectRepository._getReconversionProjects();
         expect(createdReconversionProjects).toHaveLength(1);
         const createdReconversionProject = createdReconversionProjects[0];
@@ -607,7 +610,7 @@ describe("CreateReconversionProject Use Case", () => {
           category: "RESIDENTIAL_NORMAL_AREA",
         });
 
-        const createdReconversionProjects: ReconversionProject[] =
+        const createdReconversionProjects: ReconversionProjectInput[] =
           reconversionProjectRepository._getReconversionProjects();
         expect(createdReconversionProjects).toHaveLength(1);
         const createdReconversionProject = createdReconversionProjects[0];
@@ -661,7 +664,7 @@ describe("CreateReconversionProject Use Case", () => {
           category: "RESIDENTIAL_NORMAL_AREA",
         });
 
-        const createdReconversionProjects: ReconversionProject[] =
+        const createdReconversionProjects: ReconversionProjectInput[] =
           reconversionProjectRepository._getReconversionProjects();
         expect(createdReconversionProjects).toHaveLength(1);
         const createdReconversionProject = createdReconversionProjects[0];
@@ -720,7 +723,7 @@ describe("CreateReconversionProject Use Case", () => {
           category: "RESIDENTIAL_NORMAL_AREA",
         });
 
-        const createdReconversionProjects: ReconversionProject[] =
+        const createdReconversionProjects: ReconversionProjectInput[] =
           reconversionProjectRepository._getReconversionProjects();
         expect(createdReconversionProjects).toHaveLength(1);
         const createdReconversionProject = createdReconversionProjects[0];
@@ -798,7 +801,7 @@ describe("CreateReconversionProject Use Case", () => {
             category: expressCategory,
           });
 
-          const createdReconversionProjects: ReconversionProject[] =
+          const createdReconversionProjects: ReconversionProjectInput[] =
             reconversionProjectRepository._getReconversionProjects();
           expect(createdReconversionProjects).toHaveLength(1);
           const createdReconversionProject = createdReconversionProjects[0];
@@ -847,7 +850,7 @@ describe("CreateReconversionProject Use Case", () => {
             category: expressCategory,
           });
 
-          const createdReconversionProjects: ReconversionProject[] =
+          const createdReconversionProjects: ReconversionProjectInput[] =
             reconversionProjectRepository._getReconversionProjects();
           expect(createdReconversionProjects).toHaveLength(1);
           const createdReconversionProject = createdReconversionProjects[0];

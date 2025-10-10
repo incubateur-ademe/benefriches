@@ -1,5 +1,7 @@
 import { IDateProvider } from "../../../adapters/IDateProvider";
 import { typedObjectEntries } from "../../../object-entries";
+import { getProjectSoilDistributionByType } from "../../../soils";
+import { ReconversionProjectSoilsDistribution } from "../../reconversionProjectSchemas";
 import { computeProjectReinstatementExpenses, ReinstatementExpensePurpose } from "../reinstatement";
 import { computeDefaultOperationsFirstYear } from "../schedule/operationFirstYear";
 import {
@@ -14,8 +16,12 @@ export class DefaultProjectGenerator {
     readonly siteData: SiteData,
   ) {}
 
-  get projectSoilsDistribution() {
-    return {};
+  get projectSoilsDistribution(): ReconversionProjectSoilsDistribution {
+    return [];
+  }
+
+  get projectSoilsDistributionByType() {
+    return getProjectSoilDistributionByType(this.projectSoilsDistribution);
   }
 
   get developer() {
@@ -48,7 +54,7 @@ export class DefaultProjectGenerator {
     return typedObjectEntries(
       computeProjectReinstatementExpenses(
         this.siteData.soilsDistribution,
-        this.projectSoilsDistribution,
+        this.projectSoilsDistributionByType,
         this.decontaminatedSoilSurface ?? 0,
       ),
     )

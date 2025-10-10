@@ -161,7 +161,11 @@ describe("renewableEnergy.reducer.spec reducer", () => {
         dataProp: "financialAssistanceRevenues",
         invalidValue: [{ amount: -1, source: "public_subsidies" }],
       },
-      { case: "no soilsDistribution", dataProp: "soilsDistribution", invalidValue: undefined },
+      {
+        case: "invalid soilsDistribution",
+        dataProp: "soilsDistribution",
+        invalidValue: [{ soilType: "unknown" }],
+      },
       {
         case: "negative sitePurchaseSellingPrice",
         dataProp: "sitePurchaseSellingPrice",

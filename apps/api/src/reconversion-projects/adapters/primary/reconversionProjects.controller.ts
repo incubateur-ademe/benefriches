@@ -1,10 +1,13 @@
 import { Body, Controller, Get, Param, Post, Query, UseGuards } from "@nestjs/common";
 import { createZodDto } from "nestjs-zod";
-import { API_ROUTES, expressProjectCategorySchema } from "shared";
+import {
+  API_ROUTES,
+  expressProjectCategorySchema,
+  saveReconversionProjectPropsSchema,
+} from "shared";
 import { z } from "zod";
 
 import { JwtAuthGuard } from "src/auth/adapters/JwtAuthGuard";
-import { reconversionProjectPropsSchema } from "src/reconversion-projects/core/model/reconversionProject";
 import { ComputeProjectUrbanSprawlImpactsComparisonUseCase } from "src/reconversion-projects/core/usecases/computeProjectUrbanSprawlImpactsComparison.usecase";
 import { ComputeReconversionProjectImpactsUseCase } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
 import { CreateExpressReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/createExpressReconversionProject.usecase";
@@ -13,9 +16,7 @@ import { GetReconversionProjectFeaturesUseCase } from "src/reconversion-projects
 import { GetUserReconversionProjectsBySiteUseCase } from "src/reconversion-projects/core/usecases/getUserReconversionProjectsBySite.usecase";
 import { QuickComputeUrbanProjectImpactsOnFricheUseCase } from "src/reconversion-projects/core/usecases/quickComputeUrbanProjectImpactsOnFricheUseCase.usecase";
 
-export const createReconversionProjectInputSchema = reconversionProjectPropsSchema;
-
-class CreateReconversionProjectBodyDto extends createZodDto(createReconversionProjectInputSchema) {}
+class CreateReconversionProjectBodyDto extends createZodDto(saveReconversionProjectPropsSchema) {}
 
 class CreateExpressReconversionProjectBodyDto extends createZodDto(
   z.object({
