@@ -8,6 +8,6 @@ export async function up(knex: Knex): Promise<void> {
 
 export async function down(knex: Knex): Promise<void> {
   await knex.schema.table("reconversion_project_soils_distributions", function (table) {
-    table.string("space_category");
+    table.dropColumn("space_category");
   });
 }
