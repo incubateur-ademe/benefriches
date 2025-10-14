@@ -19,7 +19,7 @@ const rootClasses = {
   layout: ["flex", "items-center", "text-sm", "p-2", "before:mx-4"],
   marker: {
     base: ["marker:content-none"],
-    completed: "fr-icon-check-line text-green-light",
+    completed: "fr-icon-check-line text-success-dark",
     number: {
       base: [
         "before:text-white",
@@ -32,8 +32,8 @@ const rootClasses = {
         "before:text-xs",
         'before:content-[counters(li-counter,".")]',
       ],
-      active: "before:bg-blue-medium",
-      inactive: "before:bg-grey-main dark:before:bg-grey-dark",
+      active: "before:bg-benefriches-dark",
+      inactive: "before:bg-text-medium dark:before:bg-grey-dark",
     },
   },
   colors: {

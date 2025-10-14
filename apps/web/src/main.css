@@ -24,6 +24,7 @@
   --color-dsfr-text-label-grey: var(--text-label-grey);
 
   --color-text-dark: #161616;
+  --color-text-medium: #949494;
   --color-text-light: #757575;
 
   --color-blue-ultralight: #daf2fb;
@@ -32,7 +33,9 @@
   --color-blue-dark: #116e92;
   --color-blue-ultradark: #0d536e;
 
-  --color-green-main: #32762e;
+  --color-benefriches-dark: #1791c0;
+
+  --color-success-dark: #40a839 --color-green-main: #32762e;
 
   --color-border-grey: #dddddd;
 
