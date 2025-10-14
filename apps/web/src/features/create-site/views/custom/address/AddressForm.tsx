@@ -102,7 +102,7 @@ function SiteAddressForm({ initialValues, onSubmit, siteNature, onBack }: Props)
               searchInputProps={{
                 label: <RequiredLabel label="Adresse" />,
                 state: error ? "error" : "default",
-                hintText: "Entrez une adresse complète, le nom d'une commune ou un code postal",
+                hintText: "Entrez le nom de la commune, le code postal ou l'adresse complète",
                 nativeInputProps: {
                   placeholder: "Montrouge, 92120 etc.",
                 },
