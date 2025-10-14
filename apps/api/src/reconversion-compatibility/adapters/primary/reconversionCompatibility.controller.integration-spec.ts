@@ -197,4 +197,102 @@ describe("ReconversionCompatibility controller", () => {
       expect(response.status).toEqual(500);
     });
   });
+
+  describe("POST /reconversion-compatibility/add-project-creation", () => {
+    it("responds with 401 if not authenticated", async () => {
+      const response = await supertest(app.getHttpServer())
+        .post("/api/reconversion-compatibility/add-project-creation")
+        .send({ evaluationId: uuid(), reconversionProjectId: uuid() });
+
+      expect(response.status).toEqual(401);
+    });
+
+    it.each(["evaluationId", "reconversionProjectId"] as const)(
+      "can't add project creation without mandatory field '%s'",
+      async (mandatoryField) => {
+        const user = new UserBuilder().asLocalAuthority().build();
+        const { accessToken } = await authenticateUser(app)(user);
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { [mandatoryField]: _, ...body } = {
+          evaluationId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+          reconversionProjectId: "e717848d-1f24-4c71-b628-98aac33e3a00",
+        };
+
+        const response = await supertest(app.getHttpServer())
+          .post("/api/reconversion-compatibility/add-project-creation")
+          .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+          .send(body);
+
+        expect(response.status).toEqual(400);
+        expect(response.body).toHaveProperty("errors");
+
+        const responseErrors = (response.body as BadRequestResponseBody).errors;
+        expect(responseErrors).toHaveLength(1);
+        expect(responseErrors[0]?.path).toContain(mandatoryField);
+      },
+    );
+
+    it("adds a project creation to a completed evaluation and updates it in database", async () => {
+      const user = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+
+      const evaluationId = "f47ac10b-58cc-4372-a567-0e02b2c3d479";
+      const startedAt = new Date("2024-01-10T09:00:00Z");
+      const completedAt = new Date("2024-01-10T10:00:00Z");
+
+      await sqlConnection.raw(
+        `INSERT INTO reconversion_compatibility_evaluations 
+       (id, created_by, status, mutafriches_evaluation_id, created_at, completed_at, project_creations) 
+       VALUES (?, ?, ?, ?, ?, ?, ?::jsonb)`,
+        [evaluationId, user.id, "completed", "mutafriches-123", startedAt, completedAt, "[]"],
+      );
+
+      const response = await supertest(app.getHttpServer())
+        .post("/api/reconversion-compatibility/add-project-creation")
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send({
+          evaluationId,
+          reconversionProjectId: "fae39a8a-50de-4449-86f3-742a1584d9bd",
+        });
+
+      expect(response.status).toEqual(201);
+
+      const evaluationsInDb = await sqlConnection("reconversion_compatibility_evaluations")
+        .select("*")
+        .where({ id: evaluationId });
+
+      expect(evaluationsInDb).toHaveLength(1);
+      expect(evaluationsInDb[0]).toEqual({
+        id: evaluationId,
+        created_by: user.id,
+        status: "has_projects_created",
+        mutafriches_evaluation_id: "mutafriches-123",
+        created_at: startedAt,
+        completed_at: completedAt,
+        project_creations: [
+          {
+            reconversionProjectId: "fae39a8a-50de-4449-86f3-742a1584d9bd",
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+            createdAt: expect.any(String), // stored as ISO string in JSONB
+          },
+        ],
+      });
+    });
+
+    it("returns an error when trying to add project creation to a non-existent evaluation", async () => {
+      const user = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+
+      const response = await supertest(app.getHttpServer())
+        .post("/api/reconversion-compatibility/add-project-creation")
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send({
+          evaluationId: uuid(),
+          reconversionProjectId: uuid(),
+        });
+
+      expect(response.status).toEqual(500);
+    });
+  });
 });

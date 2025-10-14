@@ -4,6 +4,7 @@ import {
   ReconversionCompatibilityEvaluationResults,
   ReconversionCompatibilityEvaluationGateway,
   EvaluationCompletedPayload,
+  EvaluationProjectCreationAdded,
 } from "../../core/reconversionCompatibilityEvaluation.actions";
 import { MutabilityUsage } from "../../core/reconversionCompatibilityEvaluation.reducer";
 
@@ -44,6 +45,16 @@ export class HttpReconversionCompatibilityEvaluation
     await fetch("/api/reconversion-compatibility/complete-evaluation", {
       method: "POST",
       body: JSON.stringify(payload),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
+
+  async addProjectCreation(input: EvaluationProjectCreationAdded): Promise<void> {
+    await fetch("/api/reconversion-compatibility/add-project-creation", {
+      method: "POST",
+      body: JSON.stringify(input),
       headers: {
         "Content-Type": "application/json",
       },

@@ -37,3 +37,14 @@ export function completeReconversionCompatibilityEvaluation(
     status: "completed",
   };
 }
+
+export function addProjectCreation(
+  evaluation: ReconversionCompatibilityEvaluation,
+  projectCreation: { reconversionProjectId: string; createdAt: Date },
+): ReconversionCompatibilityEvaluation {
+  return {
+    ...evaluation,
+    status: "has_projects_created",
+    projectCreations: [...evaluation.projectCreations, projectCreation],
+  };
+}

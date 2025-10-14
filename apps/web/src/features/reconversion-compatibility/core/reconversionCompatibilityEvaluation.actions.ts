@@ -55,10 +55,17 @@ export type EvaluationCompletedPayload = {
   mutafrichesId: string;
 };
 
+export type EvaluationProjectCreationAdded = {
+  evaluationId: string;
+  reconversionProjectId: string;
+};
+
 export interface ReconversionCompatibilityEvaluationGateway {
   startEvaluation(input: { evaluationId: string }): Promise<void>;
 
   completeEvaluation(payload: EvaluationCompletedPayload): Promise<void>;
+
+  addProjectCreation(payload: EvaluationProjectCreationAdded): Promise<void>;
 
   getEvaluationResults(
     mutafrichesId: string,
@@ -115,10 +122,11 @@ export const reconversionCompatibilityResultImpactsRequested = createAppAsyncThu
 >(`${ACTION_PREFIX}/impactsRequested`, async (payload, { extra, getState }) => {
   const { currentUser: currentUserState, reconversionCompatibilityEvaluation: compatibilityState } =
     getState();
-  const { evaluationResults } = compatibilityState;
+  const { evaluationResults, currentEvaluationId } = compatibilityState;
 
   if (!currentUserState.currentUser) throw new Error("NO_AUTHENTICATED_USER");
   if (!evaluationResults) throw new Error("NO_EVALUATION_RESULTS");
+  if (!currentEvaluationId) throw new Error("NO_CURRENT_EVALUATION_ID");
 
   const siteToCreate: ExpressSitePayload = {
     id: uuid(),
@@ -136,7 +144,6 @@ export const reconversionCompatibilityResultImpactsRequested = createAppAsyncThu
       lat: 49.054264,
       postCode: "50200",
     },
-    // description: "Friche créée à partir de l'analyse de compatibilité",
   };
 
   await extra.createSiteService.saveExpress(siteToCreate);
@@ -150,7 +157,12 @@ export const reconversionCompatibilityResultImpactsRequested = createAppAsyncThu
 
   await extra.saveExpressReconversionProjectService.save(projectToCreate);
 
-  await new Promise((resolve) => setTimeout(resolve, 500));
+  await extra.reconversionCompatibilityEvaluationService.addProjectCreation({
+    evaluationId: currentEvaluationId,
+    reconversionProjectId: projectToCreate.reconversionProjectId,
+  });
+
+  await new Promise((resolve) => setTimeout(resolve, 300));
 
   routes
     .projectImpactsOnboarding({

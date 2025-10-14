@@ -3,6 +3,7 @@ import { ConfigModule } from "@nestjs/config";
 
 import { AuthModule } from "src/auth/adapters/auth.module";
 import { ReconversionCompatibilityEvaluationRepository } from "src/reconversion-compatibility/core/gateways/ReconversionCompatibilityEvaluationRepository";
+import { AddProjectCreationToReconversionCompatibilityEvaluationUseCase } from "src/reconversion-compatibility/core/usecases/addProjectCreationToReconversionCompatibilityEvaluation.usecase";
 import { CompleteReconversionCompatibilityEvaluationUseCase } from "src/reconversion-compatibility/core/usecases/completeReconversionCompatibilityEvaluation.usecase";
 import { StartReconversionCompatibilityEvaluationUseCase } from "src/reconversion-compatibility/core/usecases/startReconversionCompatibilityEvaluation.usecase";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
@@ -49,6 +50,27 @@ import { ReconversionCompatibilityController } from "./reconversionCompatibility
         eventPublisher: DomainEventPublisher,
       ) =>
         new CompleteReconversionCompatibilityEvaluationUseCase(
+          repository,
+          dateProvider,
+          uidGenerator,
+          eventPublisher,
+        ),
+      inject: [
+        SqlReconversionCompatibilityEvaluationRepository,
+        RealDateProvider,
+        RandomUuidGenerator,
+        RealEventPublisher,
+      ],
+    },
+    {
+      provide: AddProjectCreationToReconversionCompatibilityEvaluationUseCase,
+      useFactory: (
+        repository: ReconversionCompatibilityEvaluationRepository,
+        dateProvider: DateProvider,
+        uidGenerator: UidGenerator,
+        eventPublisher: DomainEventPublisher,
+      ) =>
+        new AddProjectCreationToReconversionCompatibilityEvaluationUseCase(
           repository,
           dateProvider,
           uidGenerator,
