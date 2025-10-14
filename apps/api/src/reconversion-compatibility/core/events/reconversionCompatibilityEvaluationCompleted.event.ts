@@ -1,15 +1,21 @@
 import { DomainEvent } from "src/shared-kernel/domainEvent";
 
-export type ReconversionCompatibilityEvaluationCompletedEvent = DomainEvent<{
-  evaluationId: string;
-  mutafrichesId: string;
-}>;
+const RECONVERSION_COMPATIBILITY_EVALUATION_COMPLETED =
+  "reconversion-compatibility-evaluation.completed";
+
+export type ReconversionCompatibilityEvaluationCompletedEvent = DomainEvent<
+  typeof RECONVERSION_COMPATIBILITY_EVALUATION_COMPLETED,
+  {
+    evaluationId: string;
+    mutafrichesId: string;
+  }
+>;
 
 export const createReconversionCompatibilityEvaluationCompletedEvent = (
   id: string,
   payload: ReconversionCompatibilityEvaluationCompletedEvent["payload"],
 ): ReconversionCompatibilityEvaluationCompletedEvent => ({
   id,
-  name: "reconversion-compatibility-evaluation.completed",
+  name: RECONVERSION_COMPATIBILITY_EVALUATION_COMPLETED,
   payload,
 });

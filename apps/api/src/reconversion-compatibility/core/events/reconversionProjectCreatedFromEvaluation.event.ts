@@ -1,15 +1,21 @@
 import { DomainEvent } from "src/shared-kernel/domainEvent";
 
-export type ReconversionProjectCreatedFromEvaluationEvent = DomainEvent<{
-  evaluationId: string;
-  reconversionProjectId: string;
-}>;
+const RECONVERSION_PROJECT_CREATED_FROM_EVALUATION =
+  "reconversion-compatibility-evaluation.project-created";
+
+export type ReconversionProjectCreatedFromEvaluationEvent = DomainEvent<
+  typeof RECONVERSION_PROJECT_CREATED_FROM_EVALUATION,
+  {
+    evaluationId: string;
+    reconversionProjectId: string;
+  }
+>;
 
 export const createReconversionProjectCreatedFromEvaluationEvent = (
   id: string,
   payload: ReconversionProjectCreatedFromEvaluationEvent["payload"],
 ): ReconversionProjectCreatedFromEvaluationEvent => ({
   id,
-  name: "reconversion-compatibility-evaluation.project-created",
+  name: RECONVERSION_PROJECT_CREATED_FROM_EVALUATION,
   payload,
 });

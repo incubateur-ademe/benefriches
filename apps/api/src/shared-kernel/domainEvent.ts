@@ -1,5 +1,5 @@
-export interface DomainEvent<TPayload = Record<string, unknown>> {
+export interface DomainEvent<TName = string, TPayload = Record<string, unknown>> {
   readonly id: string;
-  readonly name: string;
+  readonly name: TName;
   readonly payload: TPayload;
 }
