@@ -11,6 +11,7 @@ import { HTML_MAIN_TITLE } from "../mainHtmlTitle";
 import CreateModeSelectionForm from "./create-mode-selection";
 import UrbanProjectStepper from "./stepper/Stepper";
 
+const ProjectExpressSummary = lazy(() => import("./express-forms/summary"));
 const UrbanProjectExpressCategory = lazy(() => import("./express-forms/express-category/"));
 const UrbanProjectExpressCreationResult = lazy(() => import("./express-forms/creation-result"));
 const AnswerCascadingUpdateDialog = lazy(() => import("./AnswerCascadingUpdateDialog"));
@@ -101,6 +102,13 @@ const getCurrentStepView = (step: UrbanProjectCreationStep): Exclude<ReactNode, 
         <>
           <HtmlTitle>{`Typologie de projet - Projet urbain express - ${HTML_MAIN_TITLE}`}</HtmlTitle>
           <UrbanProjectExpressCategory />
+        </>
+      );
+    case "URBAN_PROJECT_EXPRESS_SUMMARY":
+      return (
+        <>
+          <HtmlTitle>{`Récapitulatif - Projet urbain express - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <ProjectExpressSummary />
         </>
       );
     case "URBAN_PROJECT_EXPRESS_CREATION_RESULT":

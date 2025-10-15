@@ -1,8 +1,14 @@
 import z from "zod";
 
-import { soilTypeSchema } from "../soils";
-import { buildingsUseDistributionSchema } from "./urban-project";
-import { LEGACY_urbanProjectsSpaceSchema } from "./urban-project/urbanProject";
+import { DevelopmentPlanInstallationExpenses } from "../reconversion-project-impacts";
+import { SoilsDistribution, soilTypeSchema } from "../soils";
+import { FinancialAssistanceRevenue, ReinstatementExpense } from "./_common";
+import { RecurringExpense, RecurringRevenue } from "./renewable-energy";
+import { BuildingsUseDistribution, buildingsUseDistributionSchema } from "./urban-project";
+import {
+  LEGACY_SpacesDistribution,
+  LEGACY_urbanProjectsSpaceSchema,
+} from "./urban-project/urbanProject";
 
 export const photovoltaicPowerStationFeaturesSchema = z.object({
   surfaceArea: z.number().nonnegative(),
@@ -73,8 +79,6 @@ export const reconversionProjectSchema = z.object({
   buildingsResaleExpectedPropertyTransferDuties: z.number().nonnegative().optional(),
 });
 
-export type DevelopmentPlan = z.infer<typeof reconversionProjectSchema>;
-
 export const spaceCategorySchema = z
   .enum(["PUBLIC_GREEN_SPACE", "PUBLIC_SPACE", "LIVING_AND_ACTIVITY_SPACE"])
   .optional();
@@ -105,3 +109,47 @@ export const saveReconversionProjectPropsSchema = saveReconversionProjectSchema.
   createdAt: true,
   creationMode: true,
 });
+
+type ScheduleString = {
+  startDate: string;
+  endDate: string;
+};
+export type BaseReconversionProjectFeaturesView<T_Schedule = ScheduleString> = {
+  id: string;
+  name: string;
+  description?: string;
+  isExpress: boolean;
+  developmentPlan:
+    | {
+        type: "PHOTOVOLTAIC_POWER_PLANT";
+        electricalPowerKWc: number;
+        surfaceArea: number;
+        expectedAnnualProduction: number;
+        contractDuration: number;
+        installationCosts: DevelopmentPlanInstallationExpenses[];
+        installationSchedule?: T_Schedule;
+        developerName?: string;
+      }
+    | {
+        type: "URBAN_PROJECT";
+        developerName?: string;
+        spacesDistribution: LEGACY_SpacesDistribution;
+        buildingsFloorAreaDistribution: BuildingsUseDistribution;
+        installationCosts: DevelopmentPlanInstallationExpenses[];
+        installationSchedule?: T_Schedule;
+      };
+  soilsDistribution: SoilsDistribution;
+  futureOwner?: string;
+  futureOperator?: string;
+  reinstatementContractOwner?: string;
+  financialAssistanceRevenues?: FinancialAssistanceRevenue[];
+  reinstatementCosts?: ReinstatementExpense[];
+  yearlyProjectedExpenses: RecurringExpense[];
+  yearlyProjectedRevenues: RecurringRevenue[];
+  reinstatementSchedule?: T_Schedule;
+  firstYearOfOperation?: number;
+  sitePurchaseTotalAmount?: number;
+  siteResaleSellingPrice?: number;
+  buildingsResaleSellingPrice?: number;
+  decontaminatedSoilSurface?: number;
+};

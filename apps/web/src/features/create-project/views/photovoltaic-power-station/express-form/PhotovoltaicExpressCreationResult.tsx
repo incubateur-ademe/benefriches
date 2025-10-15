@@ -1,13 +1,11 @@
 import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import ProjectExpressCreationResult from "../../common-views/result/ProjectExpressCreationResult";
+import ProjectCreationResult from "../../common-views/result/ProjectCreationResult";
 
 function PhotovoltaicExpressCreationResultContainer() {
   const dispatch = useAppDispatch();
-  const { projectId, renewableEnergyProject, siteData } = useAppSelector(
-    (state) => state.projectCreation,
-  );
+  const { projectId, renewableEnergyProject } = useAppSelector((state) => state.projectCreation);
   const { saveState, expressData } = renewableEnergyProject;
 
   const onBack = () => {
@@ -15,11 +13,10 @@ function PhotovoltaicExpressCreationResultContainer() {
   };
 
   return (
-    <ProjectExpressCreationResult
+    <ProjectCreationResult
       projectId={projectId}
-      siteName={siteData?.name ?? ""}
+      projectName={expressData.projectData?.name ?? ""}
       loadingState={saveState}
-      projectData={expressData?.projectData}
       onBack={onBack}
     />
   );

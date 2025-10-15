@@ -4,6 +4,7 @@ import {
   saveReconversionProjectPropsSchema,
   developmentPlanSchema,
   photovoltaicPowerStationFeaturesSchema,
+  BaseReconversionProjectFeaturesView,
 } from "shared";
 import { z } from "zod";
 
@@ -21,6 +22,7 @@ export type Schedule = {
   startDate: Date;
   endDate: Date;
 };
+export type ReconversionProjectFeaturesView = BaseReconversionProjectFeaturesView<Schedule>;
 
 export {
   reconversionProjectSchema,

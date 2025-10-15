@@ -1,9 +1,9 @@
 import { InMemoryAppSettings } from "@/features/app-settings/infrastructure/InMemoryAppSettings";
+import { InMemoryCreateExpressReconversionProjectService } from "@/features/create-project/infrastructure/create-express-project-service/InMemoryCreateExpressReconversionProjectService";
 import {
   ExpectedPhotovoltaicPerformanceMock,
   MOCK_RESULT,
 } from "@/features/create-project/infrastructure/photovoltaic-performance-service/photovoltaicPerformanceMock";
-import { InMemorySaveExpressReconversionProjectService } from "@/features/create-project/infrastructure/save-express-project-service/InMemorySaveExpressReconversionProjectService";
 import { InMemorySaveReconversionProjectService } from "@/features/create-project/infrastructure/save-project-service/InMemorySaveReconversionProjectService";
 import { SitesServiceMock } from "@/features/create-project/infrastructure/sites-service/SitesServiceMock";
 import { InMemoryCreateSiteService } from "@/features/create-site/infrastructure/create-site-service/inMemoryCreateSiteApi";
@@ -63,7 +63,7 @@ export const getTestAppDependencies = (
     createUserService: new InMemoryCreateUserService(),
     createUserFeatureAlertService: new InMemoryCreateFeatureAlertService(),
     siteFeaturesService: new MockSiteFeaturesService(),
-    saveExpressReconversionProjectService: new InMemorySaveExpressReconversionProjectService(),
+    createExpressReconversionProjectService: new InMemoryCreateExpressReconversionProjectService(),
     projectFeaturesService: new MockProjectFeaturesService(),
     quickUrbanProjectImpactsService: new MockQuickUrbanProjectImpactsService(),
     urbanSprawlImpactsComparisonService: new MockUrbanSprawlImpactsComparisonService(),

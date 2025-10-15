@@ -7,6 +7,7 @@ import { v4 as uuid } from "uuid";
 import { z, ZodError } from "zod";
 
 import { ACCESS_TOKEN_COOKIE_KEY } from "src/auth/adapters/access-token/accessTokenCookie";
+import { ReconversionProjectFeaturesView } from "src/reconversion-projects/core/model/reconversionProject";
 import {
   buildExhaustiveReconversionProjectProps,
   buildMinimalReconversionProjectProps,
@@ -116,6 +117,91 @@ describe("ReconversionProjects controller", () => {
         creation_mode: "custom",
       });
     });
+  });
+
+  describe("GET /create-from-site", () => {
+    const siteId = "f590f643-cd9a-4187-8973-f90e9f1998c8";
+
+    beforeEach(async () => {
+      await sqlConnection("sites").insert({
+        id: siteId,
+        name: "Site name",
+        surface_area: 14000,
+        owner_structure_type: "company",
+        created_at: new Date(),
+      });
+      await sqlConnection("addresses").insert({
+        id: "e869d8db-3d63-4fd5-93ab-7728c1c19a1e",
+        ban_id: "e869d8db-3d63-4fd5-93ab-7728c1c19a1e",
+        value: "Grenoble",
+        city: "Grenoble",
+        city_code: "38100",
+        post_code: "38000",
+        site_id: siteId,
+      });
+
+      await sqlConnection("site_soils_distributions").insert({
+        soil_type: "BUILDINGS",
+        surface_area: 14000,
+        site_id: siteId,
+        id: uuid(),
+      });
+    });
+
+    it("responds with a 401 when no access token is provided", async () => {
+      const response = await supertest(app.getHttpServer())
+        .post("/api/reconversion-projects/create-from-site")
+        .send({
+          reconversionProjectId: "64789135-afad-46ea-97a2-f14ba460d485",
+          createdBy: "612d16c7-b6e4-4e2c-88a8-0512cc51946c",
+          siteId: siteId,
+          category: "PUBLIC_FACILITIES",
+        });
+
+      expect(response.status).toEqual(401);
+    });
+
+    it("can't generate a reconversion project without category", async () => {
+      const requestBody = {
+        reconversionProjectId: "64789135-afad-46ea-97a2-f14ba460d485",
+        createdBy: "612d16c7-b6e4-4e2c-88a8-0512cc51946c",
+        siteId: siteId,
+      };
+      const user = new UserBuilder().withId(requestBody.createdBy).asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+
+      const response = await supertest(app.getHttpServer())
+        .post("/api/reconversion-projects/create-from-site")
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send(requestBody);
+
+      expect(response.status).toEqual(400);
+      expect(response.body).toHaveProperty("errors");
+
+      const responseErrors = (response.body as BadRequestResponseBody).errors;
+      expect(responseErrors).toHaveLength(1);
+      expect(responseErrors[0]?.path).toContain("category");
+    });
+
+    it.each(expressProjectCategorySchema.options)(
+      "get a 201 response and reconversion project is returned with category %s",
+      async (category) => {
+        const createdBy = "612d16c7-b6e4-4e2c-88a8-0512cc51946c";
+        const user = new UserBuilder().withId(createdBy).asLocalAuthority().build();
+        const { accessToken } = await authenticateUser(app)(user);
+
+        const response = await supertest(app.getHttpServer())
+          .get(
+            `/api/reconversion-projects/create-from-site?category=${category}&siteId=${siteId}&createdBy=${createdBy}`,
+          )
+          .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+          .send();
+        expect(response.status).toEqual(200);
+        const result = response.body as ReconversionProjectFeaturesView;
+        expect(result.isExpress).toEqual(true);
+        expect(result.name).toBeDefined();
+      },
+    );
   });
 
   describe("POST /create-from-site", () => {

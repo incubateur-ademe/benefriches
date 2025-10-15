@@ -13,14 +13,15 @@ import { PhotovoltaicDataProvider } from "src/photovoltaic-performance/core/gate
 import { ComputeProjectUrbanSprawlImpactsComparisonUseCase } from "src/reconversion-projects/core/usecases/computeProjectUrbanSprawlImpactsComparison.usecase";
 import { ComputeReconversionProjectImpactsUseCase } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
 import {
-  CreateExpressReconversionProjectUseCase,
-  SiteQuery,
-} from "src/reconversion-projects/core/usecases/createExpressReconversionProject.usecase";
-import {
   CreateReconversionProjectUseCase,
   ReconversionProjectRepository,
   SiteRepository,
 } from "src/reconversion-projects/core/usecases/createReconversionProject.usecase";
+import { GenerateAndSaveExpressReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/generateAndSaveExpressReconversionProject.usecase";
+import {
+  GenerateExpressReconversionProjectUseCase,
+  SiteQuery,
+} from "src/reconversion-projects/core/usecases/generateExpressReconversionProject.usecase";
 import { GetReconversionProjectFeaturesUseCase } from "src/reconversion-projects/core/usecases/getReconversionProjectFeatures.usecase";
 import {
   GetUserReconversionProjectsBySiteUseCase,
@@ -67,28 +68,32 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
       inject: [RealDateProvider, SqlSiteRepository, SqlReconversionProjectRepository],
     },
     {
-      provide: CreateExpressReconversionProjectUseCase,
+      provide: GenerateExpressReconversionProjectUseCase,
       useFactory: (
         dateProvider: DateProvider,
         siteRepository: SiteQuery,
-        reconversionProjectRepository: ReconversionProjectRepository,
         photovoltaicPerformanceService: PhotovoltaicDataProvider,
         userQuery: UserQuery,
       ) =>
-        new CreateExpressReconversionProjectUseCase(
+        new GenerateExpressReconversionProjectUseCase(
           dateProvider,
           siteRepository,
-          reconversionProjectRepository,
           photovoltaicPerformanceService,
           userQuery,
         ),
-      inject: [
-        RealDateProvider,
-        SqlSitesQuery,
-        SqlReconversionProjectRepository,
-        PhotovoltaicGeoInfoSystemApi,
-        SqlUserQuery,
-      ],
+      inject: [RealDateProvider, SqlSitesQuery, PhotovoltaicGeoInfoSystemApi, SqlUserQuery],
+    },
+    {
+      provide: GenerateAndSaveExpressReconversionProjectUseCase,
+      useFactory: (
+        generateExpressReconversionProjectUseCase: GenerateExpressReconversionProjectUseCase,
+        reconversionProjectRepository: ReconversionProjectRepository,
+      ) =>
+        new GenerateAndSaveExpressReconversionProjectUseCase(
+          generateExpressReconversionProjectUseCase,
+          reconversionProjectRepository,
+        ),
+      inject: [GenerateExpressReconversionProjectUseCase, SqlReconversionProjectRepository],
     },
     {
       provide: GetUserReconversionProjectsBySiteUseCase,

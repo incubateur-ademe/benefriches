@@ -55,27 +55,28 @@ const DevelopmentPlanFeatures = ({
         </>
       );
     case "URBAN_PROJECT": {
+      const { spacesDistribution, buildingsFloorAreaDistribution } = developmentPlan;
+
       const livingAndActivitiesSpaces = {
-        BUILDINGS_FOOTPRINT: developmentPlan.spaces.BUILDINGS_FOOTPRINT ?? 0,
-        PRIVATE_GARDEN_AND_GRASS_ALLEYS:
-          developmentPlan.spaces.PRIVATE_GARDEN_AND_GRASS_ALLEYS ?? 0,
+        BUILDINGS_FOOTPRINT: spacesDistribution.BUILDINGS_FOOTPRINT ?? 0,
+        PRIVATE_GARDEN_AND_GRASS_ALLEYS: spacesDistribution.PRIVATE_GARDEN_AND_GRASS_ALLEYS ?? 0,
         PRIVATE_PAVED_ALLEY_OR_PARKING_LOT:
-          developmentPlan.spaces.PRIVATE_PAVED_ALLEY_OR_PARKING_LOT ?? 0,
+          spacesDistribution.PRIVATE_PAVED_ALLEY_OR_PARKING_LOT ?? 0,
         PRIVATE_GRAVEL_ALLEY_OR_PARKING_LOT:
-          developmentPlan.spaces.PRIVATE_GRAVEL_ALLEY_OR_PARKING_LOT ?? 0,
+          spacesDistribution.PRIVATE_GRAVEL_ALLEY_OR_PARKING_LOT ?? 0,
       };
       const greenPublicSpaces = {
-        PUBLIC_GREEN_SPACES: developmentPlan.spaces.PUBLIC_GREEN_SPACES ?? 0,
+        PUBLIC_GREEN_SPACES: spacesDistribution.PUBLIC_GREEN_SPACES ?? 0,
         PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS:
-          developmentPlan.spaces.PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS ?? 0,
+          spacesDistribution.PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS ?? 0,
       };
 
       const publicSpaces = {
         PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS:
-          developmentPlan.spaces.PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS ?? 0,
+          spacesDistribution.PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS ?? 0,
         PUBLIC_GRAVEL_ROAD_OR_SQUARES_OR_SIDEWALKS:
-          developmentPlan.spaces.PUBLIC_GRAVEL_ROAD_OR_SQUARES_OR_SIDEWALKS ?? 0,
-        PUBLIC_PARKING_LOT: developmentPlan.spaces.PUBLIC_PARKING_LOT ?? 0,
+          spacesDistribution.PUBLIC_GRAVEL_ROAD_OR_SQUARES_OR_SIDEWALKS ?? 0,
+        PUBLIC_PARKING_LOT: spacesDistribution.PUBLIC_PARKING_LOT ?? 0,
       };
 
       const totalLivingAndActivitiesSpaces = sumObjectValues(livingAndActivitiesSpaces);
@@ -88,7 +89,9 @@ const DevelopmentPlanFeatures = ({
             <DataLine
               label="Superficie du site"
               bold
-              value={formatSurfaceAreaPdf(sumObjectValues(developmentPlan.spaces))}
+              value={formatSurfaceAreaPdf(
+                totalLivingAndActivitiesSpaces + totalPublicSpaces + totalGreenPublicSpaces,
+              )}
             />
             {totalLivingAndActivitiesSpaces > 0 && (
               <DataLine
@@ -191,11 +194,11 @@ const DevelopmentPlanFeatures = ({
             <DataLine
               label="Surface de plancher des bâtiments"
               labelClassName="font-bold"
-              value={formatSurfaceAreaPdf(sumObjectValues(developmentPlan.buildingsFloorArea))}
+              value={formatSurfaceAreaPdf(sumObjectValues(buildingsFloorAreaDistribution))}
               noBorder
             />
             <Text style={tw("pb-2 pt-4 mb-0 font-bold text-sm")}>Usage des bâtiments</Text>
-            {typedObjectEntries(developmentPlan.buildingsFloorArea).map(([use, value]) =>
+            {typedObjectEntries(buildingsFloorAreaDistribution).map(([use, value]) =>
               value ? (
                 <DataLine
                   key={use}

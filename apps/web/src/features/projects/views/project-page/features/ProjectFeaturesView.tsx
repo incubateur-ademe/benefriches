@@ -95,7 +95,7 @@ export default function ProjectFeaturesView({ projectData, getSectionButtonProps
         isExpress={projectData.isExpress}
         buildingsFloorArea={
           projectData.developmentPlan.type === "URBAN_PROJECT"
-            ? projectData.developmentPlan.buildingsFloorArea
+            ? projectData.developmentPlan.buildingsFloorAreaDistribution
             : undefined
         }
       />

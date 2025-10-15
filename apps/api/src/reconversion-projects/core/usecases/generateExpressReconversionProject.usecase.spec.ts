@@ -10,16 +10,14 @@ import { v4 as uuid } from "uuid";
 
 import { MockPhotovoltaicGeoInfoSystemApi } from "src/photovoltaic-performance/adapters/secondary/photovoltaic-data-provider/PhotovoltaicGeoInfoSystemApi.mock";
 import { PhotovoltaicDataProvider } from "src/photovoltaic-performance/core/gateways/PhotovoltaicDataProvider";
-import { InMemoryReconversionProjectRepository } from "src/reconversion-projects/adapters/secondary/repositories/reconversion-project/InMemoryReconversionProjectRepository";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { InMemorySitesQuery } from "src/sites/adapters/secondary/site-query/InMemorySitesQuery";
 import { SiteViewModel } from "src/sites/core/usecases/getSiteById.usecase";
 import { InMemoryUserQuery } from "src/users/adapters/secondary/user-query/InMemoryUserQuery";
 
-import { ReconversionProjectInput } from "../model/reconversionProject";
 import { UrbanProjectFeatures } from "../model/urbanProjects";
-import { CreateExpressReconversionProjectUseCase } from "./createExpressReconversionProject.usecase";
+import { GenerateExpressReconversionProjectUseCase } from "./generateExpressReconversionProject.usecase";
 
 const EXPRESS_CATEGORIES = expressProjectCategorySchema.options;
 
@@ -27,10 +25,9 @@ const EXPRESS_URBAN_PROJECT_CATEGORIES = expressProjectCategorySchema.exclude([
   "PHOTOVOLTAIC_POWER_PLANT",
 ]).options;
 
-describe("CreateReconversionProject Use Case", () => {
+describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
   let dateProvider: DateProvider;
   let sitesQuery: InMemorySitesQuery;
-  let reconversionProjectRepository: InMemoryReconversionProjectRepository;
   let photovoltaicPerformanceService: PhotovoltaicDataProvider;
   let userQuery: InMemoryUserQuery;
   const fakeNow = new Date("2024-01-05T13:00:00");
@@ -38,7 +35,6 @@ describe("CreateReconversionProject Use Case", () => {
   beforeEach(() => {
     dateProvider = new DeterministicDateProvider(fakeNow);
     sitesQuery = new InMemorySitesQuery();
-    reconversionProjectRepository = new InMemoryReconversionProjectRepository();
     photovoltaicPerformanceService = new MockPhotovoltaicGeoInfoSystemApi();
     userQuery = new InMemoryUserQuery();
   });
@@ -47,10 +43,9 @@ describe("CreateReconversionProject Use Case", () => {
     test.each(EXPRESS_CATEGORIES)(
       "cannot create an express %s reconversion project with a non-existing site",
       async (expressCategory) => {
-        const usecase = new CreateExpressReconversionProjectUseCase(
+        const usecase = new GenerateExpressReconversionProjectUseCase(
           dateProvider,
           sitesQuery,
-          reconversionProjectRepository,
           photovoltaicPerformanceService,
           userQuery,
         );
@@ -58,7 +53,6 @@ describe("CreateReconversionProject Use Case", () => {
         const siteId = uuid();
         await expect(
           usecase.execute({
-            reconversionProjectId: uuid(),
             siteId,
             createdBy: uuid(),
             category: expressCategory,
@@ -107,18 +101,15 @@ describe("CreateReconversionProject Use Case", () => {
     test.each(EXPRESS_CATEGORIES)(
       "should create a %s project with default name, given related site id, createdBy, createdAt and creationMode",
       async (expressCategory) => {
-        const usecase = new CreateExpressReconversionProjectUseCase(
+        const usecase = new GenerateExpressReconversionProjectUseCase(
           dateProvider,
           sitesQuery,
-          reconversionProjectRepository,
           photovoltaicPerformanceService,
           userQuery,
         );
 
-        const reconversionProjectId = uuid();
         const creatorId = uuid();
-        await usecase.execute({
-          reconversionProjectId,
+        const result = await usecase.execute({
           siteId: site.id,
           createdBy: creatorId,
           category: expressCategory,
@@ -138,15 +129,11 @@ describe("CreateReconversionProject Use Case", () => {
 
         const expectedName = expressCategoryNameMap[expressCategory];
 
-        const createdReconversionProjects: ReconversionProjectInput[] =
-          reconversionProjectRepository._getReconversionProjects();
-        expect(createdReconversionProjects).toHaveLength(1);
-        const createdReconversionProject = createdReconversionProjects[0];
-        expect(createdReconversionProject?.relatedSiteId).toEqual(site.id);
-        expect(createdReconversionProject?.createdBy).toEqual(creatorId);
-        expect(createdReconversionProject?.createdAt).toEqual(dateProvider.now());
-        expect(createdReconversionProject?.creationMode).toEqual("express");
-        expect(createdReconversionProject?.name).toEqual(expectedName);
+        expect(result.relatedSiteId).toEqual(site.id);
+        expect(result.createdBy).toEqual(creatorId);
+        expect(result.createdAt).toEqual(dateProvider.now());
+        expect(result.creationMode).toEqual("express");
+        expect(result.name).toEqual(expectedName);
       },
     );
 
@@ -155,36 +142,29 @@ describe("CreateReconversionProject Use Case", () => {
       async (expressCategory) => {
         dateProvider = new DeterministicDateProvider(new Date("2024-09-01T13:00:00"));
 
-        const usecase = new CreateExpressReconversionProjectUseCase(
+        const usecase = new GenerateExpressReconversionProjectUseCase(
           dateProvider,
           sitesQuery,
-          reconversionProjectRepository,
           photovoltaicPerformanceService,
           userQuery,
         );
 
-        const reconversionProjectId = uuid();
         const creatorId = uuid();
-        await usecase.execute({
-          reconversionProjectId,
+        const result = await usecase.execute({
           siteId: site.id,
           createdBy: creatorId,
           category: expressCategory,
         });
 
-        const createdReconversionProjects: ReconversionProjectInput[] =
-          reconversionProjectRepository._getReconversionProjects();
-        expect(createdReconversionProjects).toHaveLength(1);
-        const createdReconversionProject = createdReconversionProjects[0];
-        expect(createdReconversionProject?.reinstatementSchedule).toEqual({
+        expect(result.reinstatementSchedule).toEqual({
           startDate: new Date("2025-09-01T13:00:00"),
           endDate: new Date("2026-09-01T13:00:00"),
         });
-        expect(createdReconversionProject?.developmentPlan.installationSchedule).toEqual({
+        expect(result.developmentPlan.installationSchedule).toEqual({
           startDate: new Date("2026-09-02T13:00:00"),
           endDate: new Date("2027-09-02T13:00:00"),
         });
-        expect(createdReconversionProject?.operationsFirstYear).toEqual(2028);
+        expect(result.operationsFirstYear).toEqual(2028);
       },
     );
 
@@ -192,33 +172,26 @@ describe("CreateReconversionProject Use Case", () => {
       test.each(EXPRESS_URBAN_PROJECT_CATEGORIES)(
         "should create a %s project with site city as developer, reinstatement contract owner and no site owner",
         async (expressCategory) => {
-          const usecase = new CreateExpressReconversionProjectUseCase(
+          const usecase = new GenerateExpressReconversionProjectUseCase(
             dateProvider,
             sitesQuery,
-            reconversionProjectRepository,
             photovoltaicPerformanceService,
             userQuery,
           );
 
-          const reconversionProjectId = uuid();
           const creatorId = uuid();
-          await usecase.execute({
-            reconversionProjectId,
+          const result = await usecase.execute({
             siteId: site.id,
             createdBy: creatorId,
             category: expressCategory,
           });
 
-          const createdReconversionProjects: ReconversionProjectInput[] =
-            reconversionProjectRepository._getReconversionProjects();
-          expect(createdReconversionProjects).toHaveLength(1);
-          const createdReconversionProject = createdReconversionProjects[0];
-          expect(createdReconversionProject?.futureSiteOwner).toEqual(undefined);
-          expect(createdReconversionProject?.developmentPlan.developer).toEqual({
+          expect(result.futureSiteOwner).toEqual(undefined);
+          expect(result.developmentPlan.developer).toEqual({
             structureType: "municipality",
             name: "Mairie de Montrouge",
           });
-          expect(createdReconversionProject?.reinstatementContractOwner).toEqual({
+          expect(result.reinstatementContractOwner).toEqual({
             structureType: "municipality",
             name: "Mairie de Montrouge",
           });
@@ -227,27 +200,19 @@ describe("CreateReconversionProject Use Case", () => {
       test.each(EXPRESS_URBAN_PROJECT_CATEGORIES)(
         "should create a %s project with expected sale after development relative to buildings floor surface area",
         async (expressCategory) => {
-          const usecase = new CreateExpressReconversionProjectUseCase(
+          const usecase = new GenerateExpressReconversionProjectUseCase(
             dateProvider,
             sitesQuery,
-            reconversionProjectRepository,
             photovoltaicPerformanceService,
             userQuery,
           );
 
-          const reconversionProjectId = uuid();
           const creatorId = uuid();
-          await usecase.execute({
-            reconversionProjectId,
+          const result = await usecase.execute({
             siteId: site.id,
             createdBy: creatorId,
             category: expressCategory,
           });
-
-          const createdReconversionProjects: ReconversionProjectInput[] =
-            reconversionProjectRepository._getReconversionProjects();
-          expect(createdReconversionProjects).toHaveLength(1);
-          const createdReconversionProject = createdReconversionProjects[0];
 
           let expectedResalePrice;
 
@@ -277,30 +242,25 @@ describe("CreateReconversionProject Use Case", () => {
               expectedResalePrice = 570_000;
           }
 
-          expect(createdReconversionProject?.siteResaleExpectedSellingPrice).toEqual(
-            expectedResalePrice,
+          expect(result.siteResaleExpectedSellingPrice).toEqual(expectedResalePrice);
+          expect(Math.round(result.siteResaleExpectedPropertyTransferDuties ?? 0)).toEqual(
+            Math.round(expectedResalePrice * 0.0581),
           );
-          expect(
-            Math.round(createdReconversionProject?.siteResaleExpectedPropertyTransferDuties ?? 0),
-          ).toEqual(Math.round(expectedResalePrice * 0.0581));
         },
       );
 
       test.each(EXPRESS_URBAN_PROJECT_CATEGORIES)(
         "should create a %s project with right spaces, buildings floor area and soils distribution",
         async (expressCategory) => {
-          const usecase = new CreateExpressReconversionProjectUseCase(
+          const usecase = new GenerateExpressReconversionProjectUseCase(
             dateProvider,
             sitesQuery,
-            reconversionProjectRepository,
             photovoltaicPerformanceService,
             userQuery,
           );
 
-          const reconversionProjectId = uuid();
           const creatorId = uuid();
-          await usecase.execute({
-            reconversionProjectId,
+          const result = await usecase.execute({
             siteId: site.id,
             createdBy: creatorId,
             category: expressCategory,
@@ -430,15 +390,11 @@ describe("CreateReconversionProject Use Case", () => {
             MINERAL_SOIL: expectedMineralSoils > 0 ? expectedMineralSoils : undefined,
           };
 
-          const createdReconversionProjects: ReconversionProjectInput[] =
-            reconversionProjectRepository._getReconversionProjects();
-          expect(createdReconversionProjects).toHaveLength(1);
-
-          const { developmentPlan, soilsDistribution = [] } = createdReconversionProjects[0] ?? {};
+          const { developmentPlan, soilsDistribution = [] } = result;
           const { buildingsFloorAreaDistribution, spacesDistribution } =
-            developmentPlan?.features as UrbanProjectFeatures;
+            developmentPlan.features as UrbanProjectFeatures;
 
-          expect(developmentPlan?.type).toEqual("URBAN_PROJECT");
+          expect(developmentPlan.type).toEqual("URBAN_PROJECT");
 
           expect(spacesDistribution).toEqual(expectedSpacesDistribution);
           expect(sumObjectValues(spacesDistribution)).toEqual(site.surfaceArea);
@@ -452,7 +408,6 @@ describe("CreateReconversionProject Use Case", () => {
     });
     describe("PHOTOVOLTAIC_POWER_PLANT", () => {
       it("should create a PHOTOVOLTAIC_POWER_PLANT project with user company as developer, reinstatement contract owner and site operator", async () => {
-        const reconversionProjectId = uuid();
         const creatorId = uuid();
         userQuery._setUsers([
           {
@@ -464,41 +419,34 @@ describe("CreateReconversionProject Use Case", () => {
             },
           },
         ]);
-        const usecase = new CreateExpressReconversionProjectUseCase(
+        const usecase = new GenerateExpressReconversionProjectUseCase(
           dateProvider,
           sitesQuery,
-          reconversionProjectRepository,
           photovoltaicPerformanceService,
           userQuery,
         );
 
-        await usecase.execute({
-          reconversionProjectId,
+        const result = await usecase.execute({
           siteId: site.id,
           createdBy: creatorId,
           category: "PHOTOVOLTAIC_POWER_PLANT",
         });
 
-        const createdReconversionProjects: ReconversionProjectInput[] =
-          reconversionProjectRepository._getReconversionProjects();
-        expect(createdReconversionProjects).toHaveLength(1);
-        const createdReconversionProject = createdReconversionProjects[0];
-        expect(createdReconversionProject?.futureSiteOwner).toEqual(undefined);
-        expect(createdReconversionProject?.futureOperator).toEqual({
+        expect(result.futureSiteOwner).toEqual(undefined);
+        expect(result.futureOperator).toEqual({
           structureType: "company",
           name: "My company",
         });
-        expect(createdReconversionProject?.developmentPlan.developer).toEqual({
+        expect(result.developmentPlan.developer).toEqual({
           structureType: "company",
           name: "My company",
         });
-        expect(createdReconversionProject?.reinstatementContractOwner).toEqual({
+        expect(result.reinstatementContractOwner).toEqual({
           structureType: "company",
           name: "My company",
         });
       });
       it("should create a PHOTOVOLTAIC_POWER_PLANT project with user municipality as developer, reinstatement contract owner and site operator", async () => {
-        const reconversionProjectId = uuid();
         const creatorId = uuid();
         userQuery._setUsers([
           {
@@ -510,71 +458,58 @@ describe("CreateReconversionProject Use Case", () => {
             },
           },
         ]);
-        const usecase = new CreateExpressReconversionProjectUseCase(
+        const usecase = new GenerateExpressReconversionProjectUseCase(
           dateProvider,
           sitesQuery,
-          reconversionProjectRepository,
           photovoltaicPerformanceService,
           userQuery,
         );
 
-        await usecase.execute({
-          reconversionProjectId,
+        const result = await usecase.execute({
           siteId: site.id,
           createdBy: creatorId,
           category: "PHOTOVOLTAIC_POWER_PLANT",
         });
 
-        const createdReconversionProjects: ReconversionProjectInput[] =
-          reconversionProjectRepository._getReconversionProjects();
-        expect(createdReconversionProjects).toHaveLength(1);
-        const createdReconversionProject = createdReconversionProjects[0];
-        expect(createdReconversionProject?.futureSiteOwner).toEqual(undefined);
-        expect(createdReconversionProject?.futureOperator).toEqual({
+        expect(result.futureSiteOwner).toEqual(undefined);
+        expect(result.futureOperator).toEqual({
           structureType: "municipality",
           name: "Mairie de Blajan",
         });
-        expect(createdReconversionProject?.developmentPlan.developer).toEqual({
+        expect(result.developmentPlan.developer).toEqual({
           structureType: "municipality",
           name: "Mairie de Blajan",
         });
-        expect(createdReconversionProject?.reinstatementContractOwner).toEqual({
+        expect(result.reinstatementContractOwner).toEqual({
           structureType: "municipality",
           name: "Mairie de Blajan",
         });
       });
       it("should create a PHOTOVOLTAIC_POWER_PLANT project with site owner as developer, reinstatement contract owner and site operator", async () => {
-        const usecase = new CreateExpressReconversionProjectUseCase(
+        const usecase = new GenerateExpressReconversionProjectUseCase(
           dateProvider,
           sitesQuery,
-          reconversionProjectRepository,
           photovoltaicPerformanceService,
           userQuery,
         );
 
-        const reconversionProjectId = uuid();
         const creatorId = uuid();
-        await usecase.execute({
-          reconversionProjectId,
+        const result = await usecase.execute({
           siteId: site.id,
           createdBy: creatorId,
           category: "PHOTOVOLTAIC_POWER_PLANT",
         });
 
-        const createdReconversionProjects: ReconversionProjectInput[] =
-          reconversionProjectRepository._getReconversionProjects();
-        expect(createdReconversionProjects).toHaveLength(1);
-        const createdReconversionProject = createdReconversionProjects[0];
-        expect(createdReconversionProject?.futureSiteOwner).toEqual(undefined);
-        expect(createdReconversionProject?.futureOperator).toEqual({
+        expect(result.futureSiteOwner).toEqual(undefined);
+        expect(result.futureOperator).toEqual({
           structureType: "municipality",
           name: "Mairie de Montrouge",
         });
-        expect(createdReconversionProject?.developmentPlan.developer).toEqual({
+        expect(result.developmentPlan.developer).toEqual({
           structureType: "municipality",
           name: "Mairie de Montrouge",
         });
-        expect(createdReconversionProject?.reinstatementContractOwner).toEqual({
+        expect(result.reinstatementContractOwner).toEqual({
           structureType: "municipality",
           name: "Mairie de Montrouge",
         });
@@ -593,38 +528,31 @@ describe("CreateReconversionProject Use Case", () => {
       it("should create a RESIDENTIAL_NORMAL_AREA with reinstatement costs, real estate sale transaction and development installation costs", async () => {
         sitesQuery._setSites([nonPollutedFricheWithNoBuildings]);
 
-        const usecase = new CreateExpressReconversionProjectUseCase(
+        const usecase = new GenerateExpressReconversionProjectUseCase(
           dateProvider,
           sitesQuery,
-          reconversionProjectRepository,
           photovoltaicPerformanceService,
           userQuery,
         );
 
-        const reconversionProjectId = uuid();
         const creatorId = uuid();
-        await usecase.execute({
-          reconversionProjectId,
+        const result = await usecase.execute({
           siteId: nonPollutedFricheWithNoBuildings.id,
           createdBy: creatorId,
           category: "RESIDENTIAL_NORMAL_AREA",
         });
 
-        const createdReconversionProjects: ReconversionProjectInput[] =
-          reconversionProjectRepository._getReconversionProjects();
-        expect(createdReconversionProjects).toHaveLength(1);
-        const createdReconversionProject = createdReconversionProjects[0];
         // real estate sale transaction
-        expect(createdReconversionProject?.sitePurchaseSellingPrice).toEqual(720000);
-        expect(createdReconversionProject?.sitePurchasePropertyTransferDuties).toEqual(41832);
+        expect(result.sitePurchaseSellingPrice).toEqual(720000);
+        expect(result.sitePurchasePropertyTransferDuties).toEqual(41832);
         // development installation cost
-        expect(createdReconversionProject?.developmentPlan.costs).toEqual([
+        expect(result.developmentPlan.costs).toEqual([
           { purpose: "technical_studies", amount: 60000 },
           { purpose: "development_works", amount: 540000 },
           { purpose: "other", amount: 54000 },
         ]);
         // reinstatement costs
-        expect(createdReconversionProject?.reinstatementCosts).toEqual([]);
+        expect(result.reinstatementCosts).toEqual([]);
       });
     });
 
@@ -647,47 +575,40 @@ describe("CreateReconversionProject Use Case", () => {
       it("should create a RESIDENTIAL_NORMAL_AREA should create a %s with reinstatement costs, real estate sale transaction and development installation costs based on site data", async () => {
         sitesQuery._setSites([pollutedFricheWithBuildings]);
 
-        const usecase = new CreateExpressReconversionProjectUseCase(
+        const usecase = new GenerateExpressReconversionProjectUseCase(
           dateProvider,
           sitesQuery,
-          reconversionProjectRepository,
           photovoltaicPerformanceService,
           userQuery,
         );
 
-        const reconversionProjectId = uuid();
         const creatorId = uuid();
-        await usecase.execute({
-          reconversionProjectId,
+        const result = await usecase.execute({
           siteId: pollutedFricheWithBuildings.id,
           createdBy: creatorId,
           category: "RESIDENTIAL_NORMAL_AREA",
         });
 
-        const createdReconversionProjects: ReconversionProjectInput[] =
-          reconversionProjectRepository._getReconversionProjects();
-        expect(createdReconversionProjects).toHaveLength(1);
-        const createdReconversionProject = createdReconversionProjects[0];
         // real estate sale transaction
-        expect(createdReconversionProject?.sitePurchaseSellingPrice).toEqual(7200000);
-        expect(createdReconversionProject?.sitePurchasePropertyTransferDuties).toEqual(418320);
+        expect(result.sitePurchaseSellingPrice).toEqual(7200000);
+        expect(result.sitePurchasePropertyTransferDuties).toEqual(418320);
         // development installation cost
-        expect(createdReconversionProject?.developmentPlan.costs).toEqual([
+        expect(result.developmentPlan.costs).toEqual([
           { purpose: "technical_studies", amount: 600000 },
           { purpose: "development_works", amount: 5400000 },
           { purpose: "other", amount: 540000 },
         ]);
         // reinstatement costs
-        expect(createdReconversionProject?.reinstatementCosts).toHaveLength(3);
-        expect(createdReconversionProject?.reinstatementCosts).toContainEqual({
+        expect(result.reinstatementCosts).toHaveLength(3);
+        expect(result.reinstatementCosts).toContainEqual({
           purpose: "asbestos_removal",
           amount: 75000,
         });
-        expect(createdReconversionProject?.reinstatementCosts).toContainEqual({
+        expect(result.reinstatementCosts).toContainEqual({
           purpose: "demolition",
           amount: 75000,
         });
-        expect(createdReconversionProject?.reinstatementCosts).toContainEqual({
+        expect(result.reinstatementCosts).toContainEqual({
           purpose: "remediation",
           amount: 2475000,
         });
@@ -706,43 +627,32 @@ describe("CreateReconversionProject Use Case", () => {
       it("should create a RESIDENTIAL_NORMAL_AREA with deimpermeabilization and sustainable soils reinstatement expenses", async () => {
         sitesQuery._setSites([allImpermeableFriche]);
 
-        const usecase = new CreateExpressReconversionProjectUseCase(
+        const usecase = new GenerateExpressReconversionProjectUseCase(
           dateProvider,
           sitesQuery,
-          reconversionProjectRepository,
           photovoltaicPerformanceService,
           userQuery,
         );
 
-        const reconversionProjectId = uuid();
         const creatorId = uuid();
-        await usecase.execute({
-          reconversionProjectId,
+        const result = await usecase.execute({
           siteId: allImpermeableFriche.id,
           createdBy: creatorId,
           category: "RESIDENTIAL_NORMAL_AREA",
         });
 
-        const createdReconversionProjects: ReconversionProjectInput[] =
-          reconversionProjectRepository._getReconversionProjects();
-        expect(createdReconversionProjects).toHaveLength(1);
-        const createdReconversionProject = createdReconversionProjects[0];
         // reinstatement costs
-        expect(createdReconversionProject?.reinstatementCosts).toHaveLength(4);
-        expect(createdReconversionProject?.reinstatementCosts?.at(0)).toEqual({
+        expect(result.reinstatementCosts).toHaveLength(4);
+        expect(result.reinstatementCosts?.at(0)).toEqual({
           purpose: "deimpermeabilization",
           amount: 64000,
         });
-        expect(createdReconversionProject?.reinstatementCosts?.at(1)).toEqual({
+        expect(result.reinstatementCosts?.at(1)).toEqual({
           purpose: "sustainable_soils_reinstatement",
           amount: 270000,
         });
-        expect(createdReconversionProject?.reinstatementCosts?.at(2)?.purpose).toEqual(
-          "demolition",
-        );
-        expect(createdReconversionProject?.reinstatementCosts?.at(3)?.purpose).toEqual(
-          "asbestos_removal",
-        );
+        expect(result.reinstatementCosts?.at(2)?.purpose).toEqual("demolition");
+        expect(result.reinstatementCosts?.at(3)?.purpose).toEqual("asbestos_removal");
       });
     });
   });
@@ -784,39 +694,32 @@ describe("CreateReconversionProject Use Case", () => {
         "should create a %s with real estate sale transaction and development installation costs based on site",
         async (expressCategory) => {
           sitesQuery._setSites([site]);
-          const usecase = new CreateExpressReconversionProjectUseCase(
+          const usecase = new GenerateExpressReconversionProjectUseCase(
             dateProvider,
             sitesQuery,
-            reconversionProjectRepository,
             photovoltaicPerformanceService,
             userQuery,
           );
 
-          const reconversionProjectId = uuid();
           const creatorId = uuid();
-          await usecase.execute({
-            reconversionProjectId,
+          const result = await usecase.execute({
             siteId: site.id,
             createdBy: creatorId,
             category: expressCategory,
           });
 
-          const createdReconversionProjects: ReconversionProjectInput[] =
-            reconversionProjectRepository._getReconversionProjects();
-          expect(createdReconversionProjects).toHaveLength(1);
-          const createdReconversionProject = createdReconversionProjects[0];
           // real estate sale transaction
-          expect(createdReconversionProject?.sitePurchaseSellingPrice).toEqual(3600000);
-          expect(createdReconversionProject?.sitePurchasePropertyTransferDuties).toEqual(209160);
+          expect(result.sitePurchaseSellingPrice).toEqual(3600000);
+          expect(result.sitePurchasePropertyTransferDuties).toEqual(209160);
           // development installation cost
-          expect(createdReconversionProject?.developmentPlan.costs).toEqual([
+          expect(result.developmentPlan.costs).toEqual([
             { purpose: "technical_studies", amount: 300000 },
             { purpose: "development_works", amount: 2700000 },
             { purpose: "other", amount: 270000 },
           ]);
           // reinstatement costs
-          expect(createdReconversionProject?.reinstatementCosts).toEqual(undefined);
-          expect(createdReconversionProject?.futureSiteOwner).toEqual({
+          expect(result.reinstatementCosts).toEqual(undefined);
+          expect(result.futureSiteOwner).toEqual({
             structureType: "municipality",
             name: "Mairie de Montrouge",
           });
@@ -833,31 +736,24 @@ describe("CreateReconversionProject Use Case", () => {
             structureType: "municipality",
           };
           sitesQuery._setSites([{ ...site, owner: siteOwner }]);
-          const usecase = new CreateExpressReconversionProjectUseCase(
+          const usecase = new GenerateExpressReconversionProjectUseCase(
             dateProvider,
             sitesQuery,
-            reconversionProjectRepository,
             photovoltaicPerformanceService,
             userQuery,
           );
 
-          const reconversionProjectId = uuid();
           const creatorId = uuid();
-          await usecase.execute({
-            reconversionProjectId,
+          const result = await usecase.execute({
             siteId: site.id,
             createdBy: creatorId,
             category: expressCategory,
           });
 
-          const createdReconversionProjects: ReconversionProjectInput[] =
-            reconversionProjectRepository._getReconversionProjects();
-          expect(createdReconversionProjects).toHaveLength(1);
-          const createdReconversionProject = createdReconversionProjects[0];
           // real estate sale transaction
-          expect(createdReconversionProject?.sitePurchaseSellingPrice).toEqual(undefined);
-          expect(createdReconversionProject?.sitePurchasePropertyTransferDuties).toEqual(undefined);
-          expect(createdReconversionProject?.futureSiteOwner).toEqual(undefined);
+          expect(result.sitePurchaseSellingPrice).toEqual(undefined);
+          expect(result.sitePurchasePropertyTransferDuties).toEqual(undefined);
+          expect(result.futureSiteOwner).toEqual(undefined);
         },
       );
     });

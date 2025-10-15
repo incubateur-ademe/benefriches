@@ -1,7 +1,7 @@
 import knex, { Knex } from "knex";
 import { v4 as uuid } from "uuid";
 
-import { ReconversionProjectFeaturesView } from "src/reconversion-projects/core/usecases/getReconversionProjectFeatures.usecase";
+import { ReconversionProjectFeaturesView } from "src/reconversion-projects/core/model/reconversionProject";
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
 
 import { SqlReconversionProjectQuery } from "./SqlReconversionProjectQuery";
@@ -167,12 +167,12 @@ describe("SqlReconversionProjectQuery integration", () => {
             { amount: 35000, purpose: "other" },
             { amount: 125000, purpose: "development_works" },
           ],
-          spaces: {
+          spacesDistribution: {
             BUILDINGS_FOOTPRINT: 7000,
             PUBLIC_GREEN_SPACES: 10000,
             PRIVATE_GARDEN_AND_GRASS_ALLEYS: 3000,
           },
-          buildingsFloorArea: {
+          buildingsFloorAreaDistribution: {
             RESIDENTIAL: 5000,
             LOCAL_SERVICES: 2000,
           },

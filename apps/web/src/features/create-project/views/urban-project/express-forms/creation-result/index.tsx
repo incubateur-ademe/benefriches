@@ -1,19 +1,22 @@
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import ProjectExpressCreationResult from "../../../common-views/result/ProjectExpressCreationResult";
+import ProjectCreationResult from "../../../common-views/result/ProjectCreationResult";
 import { useStepBack } from "../../custom-forms/useStepBack";
 
 function UrbanProjectExpressCreationResultContainer() {
-  const { urbanProject, siteData, projectId } = useAppSelector((state) => state.projectCreation);
+  const { urbanProject, projectId } = useAppSelector((state) => state.projectCreation);
+
+  const { URBAN_PROJECT_EXPRESS_SUMMARY } = useAppSelector(
+    (state) => state.projectCreation.urbanProject.steps,
+  );
 
   const onBack = useStepBack();
 
   return (
-    <ProjectExpressCreationResult
+    <ProjectCreationResult
       projectId={projectId}
-      siteName={siteData?.name ?? ""}
+      projectName={URBAN_PROJECT_EXPRESS_SUMMARY?.projectData?.name ?? ""}
       loadingState={urbanProject.saveState}
-      projectData={urbanProject.steps.URBAN_PROJECT_EXPRESS_CREATION_RESULT?.projectData}
       onBack={onBack}
     />
   );

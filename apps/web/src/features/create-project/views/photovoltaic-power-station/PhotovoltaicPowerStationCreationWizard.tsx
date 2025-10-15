@@ -12,6 +12,7 @@ import PhotovoltaicPowerStationStepper from "./PhotovoltaicPowerStationStepper";
 import CreateModeSelectionForm from "./create-mode-selection";
 import PhotovoltaicPowerStationCustomCreationWizard from "./custom-form";
 import PhotovoltaicExpressCreationResult from "./express-form/PhotovoltaicExpressCreationResult";
+import ProjectExpressSummary from "./express-form/PhotovoltaicExpressSummary";
 
 type Props = {
   currentStep: RenewableEnergyCreationStep;
@@ -41,7 +42,13 @@ function PhotovoltaicPowerStationCreationWizard({ currentStep }: Props) {
         <>
           <HtmlTitle>{`Résultat - express - ${HTML_PV_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
           <SidebarLayout
-            mainChildren={<PhotovoltaicExpressCreationResult />}
+            mainChildren={
+              currentStep === "RENEWABLE_ENERGY_EXPRESS_FINAL_SUMMARY" ? (
+                <ProjectExpressSummary />
+              ) : (
+                <PhotovoltaicExpressCreationResult />
+              )
+            }
             title="Renseignement du projet"
             sidebarChildren={
               <FormStepper

@@ -1,12 +1,8 @@
-import {
-  DevelopmentPlan,
-  PhotovoltaicPowerStationFeatures,
-  ReconversionProjectView,
-} from "../reconversionProject";
+import { DevelopmentPlan, PhotovoltaicPowerStationFeatures } from "../reconversionProject";
 
 export const getDefaultImpactsEvaluationPeriod = (
   developmentPlanType: DevelopmentPlan["type"],
-  developmentPlanFeatures: ReconversionProjectView["developmentPlan"]["features"],
+  developmentPlanFeatures: DevelopmentPlan["features"],
 ): number => {
   switch (developmentPlanType) {
     case "PHOTOVOLTAIC_POWER_PLANT":

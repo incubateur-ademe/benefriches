@@ -7,17 +7,12 @@ import {
   EURO_PER_SQUARE_METERS_FOR_DEMOLITION,
   EURO_PER_SQUARE_METERS_FOR_REMEDIATION,
   EURO_PER_SQUARE_METERS_FOR_SUSTAINABLE_SOILS_REINSTATEMENT,
-  FinancialAssistanceRevenue,
-  PhotovoltaicInstallationExpense,
-  RecurringExpense,
-  RecurringRevenue,
-  ReinstatementExpense,
   roundToInteger,
   sumListWithKey,
   sumObjectValues,
-  UrbanProjectDevelopmentExpense,
 } from "shared";
 
+import { ProjectFeatures } from "@/features/projects/domain/projects.types";
 import { formatMoney } from "@/shared/core/format-number/formatNumber";
 import {
   getLabelForFinancialAssistanceRevenueSource,
@@ -32,18 +27,20 @@ import DevelopmentPlanInstallationExpenses from "./DevelopmentPlanInstallationEx
 
 type Props = {
   buttonProps?: ButtonProps;
-  yearlyProjectedExpenses: RecurringExpense[];
-  yearlyProjectedRevenues: RecurringRevenue[];
   buildingsFloorArea?: BuildingsUseDistribution;
-  sitePurchaseTotalAmount?: number;
-  siteResaleSellingPrice?: number;
-  buildingsResaleSellingPrice?: number;
-  financialAssistanceRevenues?: FinancialAssistanceRevenue[];
-  reinstatementCosts?: ReinstatementExpense[];
-  installationCosts: PhotovoltaicInstallationExpense[] | UrbanProjectDevelopmentExpense[];
+  installationCosts: ProjectFeatures["developmentPlan"]["installationCosts"];
   developmentPlanType: DevelopmentPlanType;
   isExpress: boolean;
-};
+} & Pick<
+  ProjectFeatures,
+  | "yearlyProjectedExpenses"
+  | "yearlyProjectedRevenues"
+  | "sitePurchaseTotalAmount"
+  | "buildingsResaleSellingPrice"
+  | "financialAssistanceRevenues"
+  | "reinstatementCosts"
+  | "siteResaleSellingPrice"
+>;
 
 export default function ExpensesAndRevenuesSection({
   buttonProps,

@@ -10,7 +10,7 @@ import Section from "@/shared/views/components/FeaturesList/FeaturesListSection"
 import InfoTooltip from "@/shared/views/components/InfoTooltip/InfoTooltip";
 
 type Props = {
-  buildingsFloorArea: UrbanProjectFeatures["buildingsFloorArea"];
+  buildingsFloorAreaDistribution: UrbanProjectFeatures["buildingsFloorAreaDistribution"];
   isExpress: boolean;
   totalSurfaceArea: number;
   urbanProjectCategoryLabel: string;
@@ -18,13 +18,13 @@ type Props = {
 };
 
 const UrbanProjectBuildingsSection = ({
-  buildingsFloorArea,
+  buildingsFloorAreaDistribution,
   isExpress,
   totalSurfaceArea,
   urbanProjectCategoryLabel,
   buttonProps,
 }: Props) => {
-  const totalBuildingsSurfaceArea = sumObjectValues(buildingsFloorArea);
+  const totalBuildingsSurfaceArea = sumObjectValues(buildingsFloorAreaDistribution);
   return (
     <Section
       buttonProps={buttonProps}
@@ -49,7 +49,7 @@ const UrbanProjectBuildingsSection = ({
         Usage des bâtiments{" "}
         <InfoTooltip title="L’usage des bâtiments correspond à leur destination (logements, services de proximité, bureaux, équipements publics, etc.)" />
       </h4>
-      {typedObjectEntries(buildingsFloorArea).map(([use, value]) =>
+      {typedObjectEntries(buildingsFloorAreaDistribution).map(([use, value]) =>
         value ? (
           <DataLine
             key={use}

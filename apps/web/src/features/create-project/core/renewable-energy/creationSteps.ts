@@ -49,7 +49,10 @@ const isRenewableEnergyCustomCreationStep = (
   return renewableEnergyCustomCreationSteps.safeParse(step).success;
 };
 
-const renewableEnergyExpressCreationStep = z.enum(["RENEWABLE_ENERGY_CREATION_RESULT"]);
+const renewableEnergyExpressCreationStep = z.enum([
+  "RENEWABLE_ENERGY_EXPRESS_FINAL_SUMMARY",
+  "RENEWABLE_ENERGY_CREATION_RESULT",
+]);
 
 type RenewableEnergyExpressCreationStep = z.infer<typeof renewableEnergyExpressCreationStep>;
 

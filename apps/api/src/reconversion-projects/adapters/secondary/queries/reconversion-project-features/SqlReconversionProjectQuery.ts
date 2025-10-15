@@ -1,19 +1,25 @@
 import { Inject } from "@nestjs/common";
 import { Knex } from "knex";
+import {
+  DevelopmentPlanInstallationExpenses,
+  FinancialAssistanceRevenue,
+  RecurringExpense,
+  RecurringRevenue,
+  ReinstatementExpense,
+  sumIfNotNil,
+} from "shared";
 
 import {
   Schedule,
   DevelopmentPlan,
   PhotovoltaicPowerStationFeatures,
+  ReconversionProjectFeaturesView,
 } from "src/reconversion-projects/core/model/reconversionProject";
 import { UrbanProjectFeatures } from "src/reconversion-projects/core/model/urbanProjects";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import { SqlReconversionProjectSoilsDistribution } from "src/shared-kernel/adapters/sql-knex/tableTypes";
 
-import {
-  ReconversionProjectFeaturesView,
-  ReconversionProjectQueryGateway,
-} from "../../../../core/usecases/getReconversionProjectFeatures.usecase";
+import { ReconversionProjectQueryGateway } from "../../../../core/usecases/getReconversionProjectFeatures.usecase";
 
 const mapSqlSchedule = (startDate: string | null, endDate: string | null): Schedule | undefined => {
   return startDate && endDate
@@ -24,8 +30,35 @@ const mapSqlSchedule = (startDate: string | null, endDate: string | null): Sched
     : undefined;
 };
 
-const sumIfNotNull = (a: number | null, b: number | null): number | undefined => {
-  return a && b ? a + b : undefined;
+type ReconversionProjectSqlResult = {
+  id: string;
+  name: string;
+  creation_mode: string;
+  description: string | null;
+  friche_decontaminated_soil_surface_area: number | null;
+  operations_first_year: number | null;
+  future_site_owner_name: string | null;
+  future_operator_name: string | null;
+  reinstatement_contract_owner_name: string | null;
+  reinstatement_schedule_start_date: string | null;
+  reinstatement_schedule_end_date: string | null;
+  soils_distribution: SqlReconversionProjectSoilsDistribution[];
+  expenses: RecurringExpense[] | null;
+  revenues: RecurringRevenue[] | null;
+  financial_assistance_revenues: FinancialAssistanceRevenue[] | null;
+  reinstatement_costs: ReinstatementExpense[] | null;
+  site_purchase_selling_price: number | null;
+  site_purchase_property_transfer_duties: number | null;
+  site_resale_expected_selling_price: number | null;
+  buildings_resale_expected_selling_price: number | null;
+  development_plan: {
+    type: string;
+    costs: DevelopmentPlanInstallationExpenses[] | null;
+    developer_name: string;
+    schedule_start_date: string | null;
+    schedule_end_date: string | null;
+    features: DevelopmentPlan["features"];
+  };
 };
 
 export class SqlReconversionProjectQuery implements ReconversionProjectQueryGateway {
@@ -117,38 +150,7 @@ export class SqlReconversionProjectQuery implements ReconversionProjectQueryGate
         ),
       )
       .where("reconversion_projects.id", reconversionProjectId)
-      .first()) as
-      | {
-          id: string;
-          name: string;
-          creation_mode: string;
-          description: string | null;
-          friche_decontaminated_soil_surface_area: number | null;
-          operations_first_year: number | null;
-          future_site_owner_name: string | null;
-          future_operator_name: string | null;
-          reinstatement_contract_owner_name: string | null;
-          reinstatement_schedule_start_date: string | null;
-          reinstatement_schedule_end_date: string | null;
-          soils_distribution: SqlReconversionProjectSoilsDistribution[];
-          expenses: { amount: number; purpose: string }[] | null;
-          revenues: { amount: number; source: string }[] | null;
-          financial_assistance_revenues: { amount: number; source: string }[] | null;
-          reinstatement_costs: { amount: number; purpose: string }[] | null;
-          site_purchase_selling_price: number | null;
-          site_purchase_property_transfer_duties: number | null;
-          site_resale_expected_selling_price: number | null;
-          buildings_resale_expected_selling_price: number | null;
-          development_plan: {
-            type: string;
-            costs: { amount: number; purpose: string }[] | null;
-            developer_name: string;
-            schedule_start_date: string | null;
-            schedule_end_date: string | null;
-            features: DevelopmentPlan["features"];
-          };
-        }
-      | undefined;
+      .first()) as ReconversionProjectSqlResult | undefined;
 
     if (!sqlResult) {
       return undefined;
@@ -183,8 +185,8 @@ export class SqlReconversionProjectQuery implements ReconversionProjectQueryGate
             sqlResult.development_plan.schedule_end_date,
           ),
           type: "URBAN_PROJECT",
-          spaces: spacesDistribution,
-          buildingsFloorArea: buildingsFloorAreaDistribution,
+          spacesDistribution: spacesDistribution,
+          buildingsFloorAreaDistribution: buildingsFloorAreaDistribution,
         };
       }
       throw new Error("Unknown development plan type");
@@ -215,7 +217,7 @@ export class SqlReconversionProjectQuery implements ReconversionProjectQueryGate
       ),
       financialAssistanceRevenues: sqlResult.financial_assistance_revenues ?? undefined,
       reinstatementCosts: sqlResult.reinstatement_costs ?? undefined,
-      sitePurchaseTotalAmount: sumIfNotNull(
+      sitePurchaseTotalAmount: sumIfNotNil(
         sqlResult.site_purchase_selling_price,
         sqlResult.site_purchase_property_transfer_duties,
       ),

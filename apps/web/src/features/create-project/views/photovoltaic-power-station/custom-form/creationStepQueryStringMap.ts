@@ -45,5 +45,6 @@ export const RENEWABLE_ENERGY_PROJECT_CREATION_STEP_QUERY_STRING_MAP = {
   RENEWABLE_ENERGY_NAMING: "denomination",
   RENEWABLE_ENERGY_PROJECT_PHASE: "avancement-projet",
   RENEWABLE_ENERGY_FINAL_SUMMARY: "recapitulatif-final",
+  RENEWABLE_ENERGY_EXPRESS_FINAL_SUMMARY: "recapitulatif-express",
   RENEWABLE_ENERGY_CREATION_RESULT: "fin",
 } as const satisfies Record<RenewableEnergyCreationStep, string>;

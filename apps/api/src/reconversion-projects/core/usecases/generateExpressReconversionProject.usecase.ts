@@ -13,12 +13,13 @@ import {
   ExpressProjectCategory,
   RenaturationProjectGenerator,
 } from "shared";
+import { v4 as uuid } from "uuid";
 
 import { PhotovoltaicDataProvider } from "src/photovoltaic-performance/core/gateways/PhotovoltaicDataProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { UseCase } from "src/shared-kernel/usecase";
 
-import { ReconversionProjectView, ReconversionProjectInput } from "../model/reconversionProject";
+import { ReconversionProjectInput } from "../model/reconversionProject";
 
 type SiteView = {
   id: string;
@@ -36,10 +37,6 @@ type SiteView = {
 export interface SiteQuery {
   getById(id: string): Promise<SiteView | undefined>;
 }
-interface ReconversionProjectRepository {
-  existsWithId(id: string): Promise<boolean>;
-  save(reconversionProject: ReconversionProjectInput): Promise<void>;
-}
 
 interface UserQuery {
   getById(
@@ -48,13 +45,13 @@ interface UserQuery {
 }
 
 type Request = {
-  reconversionProjectId: string;
   siteId: string;
-  createdBy: string;
   category?: ExpressProjectCategory;
+  createdBy: string;
+  reconversionProjectId?: string;
 };
 
-type Response = ReconversionProjectView;
+type Response = ReconversionProjectInput;
 
 const getCreationServiceClass = (
   category: Exclude<ExpressProjectCategory, "PHOTOVOLTAIC_POWER_PLANT"> | undefined,
@@ -81,11 +78,10 @@ const getCreationServiceClass = (
   }
 };
 
-export class CreateExpressReconversionProjectUseCase implements UseCase<Request, Response> {
+export class GenerateExpressReconversionProjectUseCase implements UseCase<Request, Response> {
   constructor(
     private readonly dateProvider: DateProvider,
     private readonly siteQuery: SiteQuery,
-    private readonly reconversionProjectRepository: ReconversionProjectRepository,
     private readonly photovoltaicPerformanceService: PhotovoltaicDataProvider,
     private readonly userQuery: UserQuery,
   ) {}
@@ -96,45 +92,36 @@ export class CreateExpressReconversionProjectUseCase implements UseCase<Request,
       throw new Error(`Site with id ${props.siteId} does not exist`);
     }
 
-    const reconversionProject = await (async () => {
-      if (props.category === "PHOTOVOLTAIC_POWER_PLANT") {
-        const userData = await this.userQuery.getById(props.createdBy);
-        const creationService = new PhotovoltaicPowerPlantProjectGenerator({
-          dateProvider: this.dateProvider,
-          reconversionProjectId: props.reconversionProjectId,
-          userData: {
-            id: props.createdBy,
-            structureType:
-              userData?.structure.type === "local_authority"
-                ? userData.structure.activity
-                : userData?.structure.type,
-            structureName: userData?.structure.name,
-          },
-          siteData,
-          photovoltaicPerformanceService: this.photovoltaicPerformanceService,
-        });
-        return {
-          ...(await creationService.getReconversionProject()),
-          soilsDistributionByType: creationService.projectSoilsDistributionByType,
-        };
-      }
+    const projectId = props.reconversionProjectId ?? uuid();
 
-      const ProjectGeneratorClass = getCreationServiceClass(props.category);
-
-      const creationService = new ProjectGeneratorClass(
-        this.dateProvider,
-        props.reconversionProjectId,
-        props.createdBy,
+    if (props.category === "PHOTOVOLTAIC_POWER_PLANT") {
+      const userData = await this.userQuery.getById(props.createdBy);
+      const creationService = new PhotovoltaicPowerPlantProjectGenerator({
+        dateProvider: this.dateProvider,
+        reconversionProjectId: projectId,
+        userData: {
+          id: props.createdBy,
+          structureType:
+            userData?.structure.type === "local_authority"
+              ? userData.structure.activity
+              : userData?.structure.type,
+          structureName: userData?.structure.name,
+        },
         siteData,
-      );
-      return {
-        ...creationService.getReconversionProject(),
-        soilsDistributionByType: creationService.projectSoilsDistributionByType,
-      };
-    })();
+        photovoltaicPerformanceService: this.photovoltaicPerformanceService,
+      });
+      return await creationService.getReconversionProject();
+    }
 
-    await this.reconversionProjectRepository.save(reconversionProject);
+    const UrbanProjectGeneratorClass = getCreationServiceClass(props.category);
 
-    return reconversionProject;
+    const creationService = new UrbanProjectGeneratorClass(
+      this.dateProvider,
+      projectId,
+      props.createdBy,
+      siteData,
+    );
+
+    return creationService.getReconversionProject();
   }
 }

@@ -1,7 +1,7 @@
 import { configureStore, Reducer } from "@reduxjs/toolkit";
 
 import { AppSettingsGateway } from "@/features/app-settings/core/AppSettingsGateway";
-import { SaveExpressReconversionProjectGateway } from "@/features/create-project/core/actions/expressProjectSavedGateway";
+import { CreateExpressReconversionProjectGateway } from "@/features/create-project/core/actions/expressProjectSavedGateway";
 import { SiteMunicipalityDataGateway as CreateProjectMunicipalityDataGateway } from "@/features/create-project/core/actions/getSiteLocalAuthorities.action";
 import { SaveReconversionProjectGateway } from "@/features/create-project/core/actions/saveReconversionProject.action";
 import { GetSitesByIdGateway } from "@/features/create-project/core/actions/urbanProjectCreationInitiated.action";
@@ -31,7 +31,7 @@ export type AppDependencies = {
   soilsCarbonStorageService: SiteSoilsCarbonStorageGateway | ProjectSoilsCarbonStorageGateway;
   createSiteService: CreateSiteGateway;
   saveReconversionProjectService: SaveReconversionProjectGateway;
-  saveExpressReconversionProjectService: SaveExpressReconversionProjectGateway;
+  createExpressReconversionProjectService: CreateExpressReconversionProjectGateway;
   reconversionProjectsListService: ReconversionProjectsListGateway;
   getSiteByIdService: GetSitesByIdGateway;
   photovoltaicPerformanceService: PhotovoltaicPerformanceGateway;

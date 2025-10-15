@@ -1,12 +1,7 @@
-import {
-  baseDevelopmentPlanSchema,
-  expressProjectCategorySchema,
-  photovoltaicPowerStationFeaturesSchema,
-  saveReconversionProjectSchema,
-  SoilsDistribution,
-  urbanProjectsFeaturesSchema,
-} from "shared";
+import { BaseReconversionProjectFeaturesView, expressProjectCategorySchema } from "shared";
 import { z } from "zod";
+
+import { Schedule } from "../project.types";
 
 export const saveExpressProjectSchema = z.object({
   reconversionProjectId: z.string(),
@@ -14,33 +9,15 @@ export const saveExpressProjectSchema = z.object({
   createdBy: z.string(),
   category: expressProjectCategorySchema,
 });
-const commonDevelopmentPlanSchema = baseDevelopmentPlanSchema
-  .omit({ installationSchedule: true })
-  .extend({
-    installationSchedule: z.object({ startDate: z.string(), endDate: z.string() }).optional(),
-  });
-
-export const saveExpressProjectResultSchema = saveReconversionProjectSchema
-  .omit({ developmentPlan: true, reinstatementSchedule: true })
-  .extend({
-    reinstatementSchedule: z.object({ startDate: z.string(), endDate: z.string() }).optional(),
-    developmentPlan: z.discriminatedUnion("type", [
-      commonDevelopmentPlanSchema.extend({
-        type: z.literal("PHOTOVOLTAIC_POWER_PLANT"),
-        features: photovoltaicPowerStationFeaturesSchema,
-      }),
-      commonDevelopmentPlanSchema.extend({
-        type: z.literal("URBAN_PROJECT"),
-        features: urbanProjectsFeaturesSchema,
-      }),
-    ]),
-  });
 
 export type ExpressReconversionProjectPayload = z.infer<typeof saveExpressProjectSchema>;
-export type ReconversionProject = z.infer<typeof saveExpressProjectResultSchema> & {
-  soilsDistributionByType: SoilsDistribution;
-};
+export type ExpressReconversionProjectResult = BaseReconversionProjectFeaturesView<Schedule>;
 
-export interface SaveExpressReconversionProjectGateway {
-  save(payload: ExpressReconversionProjectPayload): Promise<ReconversionProject>;
+export interface CreateExpressReconversionProjectGateway {
+  get(params: {
+    siteId: string;
+    createdBy: string;
+    category: z.infer<typeof expressProjectCategorySchema>;
+  }): Promise<ExpressReconversionProjectResult>;
+  save(payload: ExpressReconversionProjectPayload): Promise<void>;
 }

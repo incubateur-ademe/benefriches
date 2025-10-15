@@ -1,6 +1,6 @@
 import { LocalStorageAppSettings } from "@/features/app-settings/infrastructure/LocalStorageAppSettings";
+import HttpCreateExpressReconversionProjectService from "@/features/create-project/infrastructure/create-express-project-service/HttpCreateExpressReconversionProjectService";
 import { ExpectedPhotovoltaicPerformanceApi } from "@/features/create-project/infrastructure/photovoltaic-performance-service/photovoltaicPerformanceApi";
-import HttpSaveExpressReconversionProjectService from "@/features/create-project/infrastructure/save-express-project-service/HttpSaveExpressReconversionProjectService";
 import { HttpSaveReconversionProjectService } from "@/features/create-project/infrastructure/save-project-service/HttpSaveReconversionProjectService";
 import { HttpSitesService } from "@/features/create-project/infrastructure/sites-service/HttpSiteService";
 import { HttpCreateSiteApi } from "@/features/create-site/infrastructure/create-site-service/HttpCreateSiteApi";
@@ -34,7 +34,7 @@ export const appDependencies: AppDependencies = {
   getSiteByIdService: new HttpSitesService(),
   reconversionProjectsListService: new HttpReconversionProjectsListApi(),
   saveReconversionProjectService: new HttpSaveReconversionProjectService(),
-  saveExpressReconversionProjectService: new HttpSaveExpressReconversionProjectService(),
+  createExpressReconversionProjectService: new HttpCreateExpressReconversionProjectService(),
   reconversionProjectImpacts: new HttpReconversionProjectImpactsApi(),
   photovoltaicPerformanceService: new ExpectedPhotovoltaicPerformanceApi(),
   municipalityDataService: new AdministrativeDivisionGeoApi(),

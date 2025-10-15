@@ -9,6 +9,6 @@ export const ExpressCategoryHandler: AnswerStepHandler<"URBAN_PROJECT_EXPRESS_CA
     },
 
     getNextStepId() {
-      return "URBAN_PROJECT_EXPRESS_CREATION_RESULT";
+      return "URBAN_PROJECT_EXPRESS_SUMMARY";
     },
   };

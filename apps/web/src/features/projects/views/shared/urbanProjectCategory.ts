@@ -1,10 +1,6 @@
-import {
-  BUILDINGS_ECONOMIC_ACTIVITY_USE,
-  BuildingsUse,
-  BuildingsUseDistribution,
-  LEGACY_SpacesDistribution,
-  typedObjectEntries,
-} from "shared";
+import { BUILDINGS_ECONOMIC_ACTIVITY_USE, BuildingsUse, typedObjectEntries } from "shared";
+
+import { UrbanProjectFeatures } from "../../domain/projects.types";
 
 const PUBLIC_FACILITIES = [
   "PUBLIC_FACILITIES",
@@ -20,8 +16,8 @@ type UrbanProjectCategory =
   | "OTHER";
 
 type Props = {
-  buildingsUseDistribution: BuildingsUseDistribution;
-  spacesDistribution: LEGACY_SpacesDistribution;
+  buildingsUseDistribution: UrbanProjectFeatures["buildingsFloorAreaDistribution"];
+  spacesDistribution: UrbanProjectFeatures["spacesDistribution"];
 };
 
 export const getUrbanProjectCategoryFromFeatures = ({

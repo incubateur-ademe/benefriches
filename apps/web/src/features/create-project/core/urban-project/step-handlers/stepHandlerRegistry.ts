@@ -10,6 +10,7 @@ import { UrbanProjectReinstatementExpensesHandler } from "./expenses/expensesRei
 import { ExpensesSitePurchaseAmountsHandler } from "./expenses/expensesSitePurchaseAmounts.handler";
 import { ExpressCreationResultHandler } from "./express/creationResult.handler";
 import { ExpressCategoryHandler } from "./express/expressCategory.handler";
+import { ExpressSummaryHandler } from "./express/expressSummary.handler";
 import { UrbanProjectNamingHandler } from "./naming/naming.handler";
 import { ProjectPhaseHandler } from "./project-phase/projectPhase.handler";
 import { CreationResultHandler } from "./result/creationResult.handler";
@@ -47,6 +48,7 @@ export const stepHandlerRegistry = {
   URBAN_PROJECT_CREATE_MODE_SELECTION: CreationModeSelectionHandler,
   // express
   URBAN_PROJECT_EXPRESS_CATEGORY_SELECTION: ExpressCategoryHandler,
+  URBAN_PROJECT_EXPRESS_SUMMARY: ExpressSummaryHandler,
   URBAN_PROJECT_EXPRESS_CREATION_RESULT: ExpressCreationResultHandler,
   // custom
   URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION: SpacesCategoriesIntroductionHandler,

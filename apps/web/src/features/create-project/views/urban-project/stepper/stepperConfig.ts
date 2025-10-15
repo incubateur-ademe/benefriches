@@ -172,7 +172,7 @@ export const STEP_CATEGORIES: CategoryDefinition[] = [
   },
   { labelKey: "NAMING", targetStepId: "URBAN_PROJECT_NAMING" },
   { labelKey: "SUMMARY", targetStepId: "URBAN_PROJECT_FINAL_SUMMARY" },
-  { labelKey: "SUMMARY", targetStepId: "URBAN_PROJECT_EXPRESS_CREATION_RESULT" },
+  { labelKey: "SUMMARY", targetStepId: "URBAN_PROJECT_EXPRESS_SUMMARY" },
 ];
 
 // Mapping d'une étape (du state) vers la categorie et sous catégorie du Stepper
@@ -184,6 +184,7 @@ export const STEP_TO_CATEGORY_MAPPING: Record<
 > = {
   URBAN_PROJECT_CREATE_MODE_SELECTION: { categoryKey: "CREATION_MODE" },
   URBAN_PROJECT_EXPRESS_CATEGORY_SELECTION: { categoryKey: "CREATION_MODE" },
+  URBAN_PROJECT_EXPRESS_SUMMARY: { categoryKey: "SUMMARY" },
   URBAN_PROJECT_EXPRESS_CREATION_RESULT: { categoryKey: "SUMMARY" },
   // Espaces
   URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION: { categoryKey: "SPACES" },

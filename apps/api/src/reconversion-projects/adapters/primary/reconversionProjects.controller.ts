@@ -8,17 +8,28 @@ import {
 import { z } from "zod";
 
 import { JwtAuthGuard } from "src/auth/adapters/JwtAuthGuard";
+import { formatReconversionProjectInputToFeatures } from "src/reconversion-projects/core/model/formatProjectInputToFeatures";
+import { ReconversionProjectFeaturesView } from "src/reconversion-projects/core/model/reconversionProject";
 import { ComputeProjectUrbanSprawlImpactsComparisonUseCase } from "src/reconversion-projects/core/usecases/computeProjectUrbanSprawlImpactsComparison.usecase";
 import { ComputeReconversionProjectImpactsUseCase } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
-import { CreateExpressReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/createExpressReconversionProject.usecase";
 import { CreateReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/createReconversionProject.usecase";
+import { GenerateAndSaveExpressReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/generateAndSaveExpressReconversionProject.usecase";
+import { GenerateExpressReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/generateExpressReconversionProject.usecase";
 import { GetReconversionProjectFeaturesUseCase } from "src/reconversion-projects/core/usecases/getReconversionProjectFeatures.usecase";
 import { GetUserReconversionProjectsBySiteUseCase } from "src/reconversion-projects/core/usecases/getUserReconversionProjectsBySite.usecase";
 import { QuickComputeUrbanProjectImpactsOnFricheUseCase } from "src/reconversion-projects/core/usecases/quickComputeUrbanProjectImpactsOnFricheUseCase.usecase";
 
 class CreateReconversionProjectBodyDto extends createZodDto(saveReconversionProjectPropsSchema) {}
 
-class CreateExpressReconversionProjectBodyDto extends createZodDto(
+class GenerateExpressReconversionProjectQueryDto extends createZodDto(
+  z.object({
+    siteId: z.string(),
+    createdBy: z.string(),
+    category: expressProjectCategorySchema,
+  }),
+) {}
+
+class GenerateAndSaveExpressReconversionProjectBodyDto extends createZodDto(
   z.object({
     reconversionProjectId: z.string(),
     siteId: z.string(),
@@ -47,7 +58,8 @@ export class ReconversionProjectController {
     private readonly createReconversionProjectUseCase: CreateReconversionProjectUseCase,
     private readonly getReconversionProjectsBySite: GetUserReconversionProjectsBySiteUseCase,
     private readonly getReconversionProjectImpactsUseCase: ComputeReconversionProjectImpactsUseCase,
-    private readonly createExpressReconversionProjectUseCase: CreateExpressReconversionProjectUseCase,
+    private readonly generateExpressReconversionProjectUseCase: GenerateExpressReconversionProjectUseCase,
+    private readonly generateAndSaveExpressReconversionProjectUseCase: GenerateAndSaveExpressReconversionProjectUseCase,
     private readonly getReconversionProjectFeaturesUseCase: GetReconversionProjectFeaturesUseCase,
     private readonly quickComputeUrbanProjectImpactsOnFricheUseCase: QuickComputeUrbanProjectImpactsOnFricheUseCase,
     private readonly getProjectUrbanSprawlImpactsComparisonUseCase: ComputeProjectUrbanSprawlImpactsComparisonUseCase,
@@ -64,11 +76,24 @@ export class ReconversionProjectController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Get("create-from-site")
+  async getExpressReconversionProject(
+    @Query() getExpressReconversionProjectDto: GenerateExpressReconversionProjectQueryDto,
+  ): Promise<ReconversionProjectFeaturesView> {
+    const reconversionProject = await this.generateExpressReconversionProjectUseCase.execute(
+      getExpressReconversionProjectDto,
+    );
+    return formatReconversionProjectInputToFeatures(reconversionProject);
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Post("create-from-site")
   async createExpressReconversionProject(
-    @Body() createReconversionProjectDto: CreateExpressReconversionProjectBodyDto,
+    @Body() createReconversionProjectDto: GenerateAndSaveExpressReconversionProjectBodyDto,
   ) {
-    return await this.createExpressReconversionProjectUseCase.execute(createReconversionProjectDto);
+    await this.generateAndSaveExpressReconversionProjectUseCase.execute(
+      createReconversionProjectDto,
+    );
   }
 
   @UseGuards(JwtAuthGuard)

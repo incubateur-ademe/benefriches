@@ -1,6 +1,6 @@
 import { createReducer, UnknownAction } from "@reduxjs/toolkit";
 
-import { ReconversionProject } from "../actions/expressProjectSavedGateway";
+import { ExpressReconversionProjectResult } from "../actions/expressProjectSavedGateway";
 import { ProjectCreationState } from "../createProject.reducer";
 import { applyStepChanges, computeStepChanges, StepUpdateResult } from "./helpers/completeStep";
 import { navigateToAndLoadStep } from "./helpers/navigateToStep";
@@ -17,7 +17,10 @@ import {
   navigateToStep,
 } from "./urbanProject.actions";
 import { customUrbanProjectSaved } from "./urbanProjectCustomSaved.action";
-import { expressUrbanProjectSaved } from "./urbanProjectExpressSaved.action";
+import {
+  expressUrbanProjectCreated,
+  expressUrbanProjectSaved,
+} from "./urbanProjectExpressSaved.action";
 import { AnswersByStep, AnswerStepId, UrbanProjectCreationStep } from "./urbanProjectSteps";
 
 export type UrbanProjectState = {
@@ -29,10 +32,11 @@ export type UrbanProjectState = {
     showAlert: boolean;
   };
   steps: Partial<{
-    [K in UrbanProjectCreationStep]: K extends "URBAN_PROJECT_EXPRESS_CREATION_RESULT"
+    [K in UrbanProjectCreationStep]: K extends "URBAN_PROJECT_EXPRESS_SUMMARY"
       ? {
           completed: boolean;
-          projectData?: ReconversionProject;
+          loadingState?: "idle" | "loading" | "success" | "error";
+          projectData?: ExpressReconversionProjectResult;
         }
       : K extends AnswerStepId
         ? {
@@ -142,10 +146,25 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
   builder.addCase(expressUrbanProjectSaved.rejected, (state) => {
     state.urbanProject.saveState = "error";
   });
-  builder.addCase(expressUrbanProjectSaved.fulfilled, (state, action) => {
+  builder.addCase(expressUrbanProjectSaved.fulfilled, (state) => {
     state.urbanProject.saveState = "success";
-    state.urbanProject.steps.URBAN_PROJECT_EXPRESS_CREATION_RESULT = {
-      completed: true,
+  });
+  builder.addCase(expressUrbanProjectCreated.pending, (state) => {
+    state.urbanProject.steps.URBAN_PROJECT_EXPRESS_SUMMARY = {
+      completed: false,
+      loadingState: "loading",
+    };
+  });
+  builder.addCase(expressUrbanProjectCreated.rejected, (state) => {
+    state.urbanProject.steps.URBAN_PROJECT_EXPRESS_SUMMARY = {
+      completed: false,
+      loadingState: "error",
+    };
+  });
+  builder.addCase(expressUrbanProjectCreated.fulfilled, (state, action) => {
+    state.urbanProject.steps.URBAN_PROJECT_EXPRESS_SUMMARY = {
+      completed: false,
+      loadingState: "success",
       projectData: action.payload,
     };
   });

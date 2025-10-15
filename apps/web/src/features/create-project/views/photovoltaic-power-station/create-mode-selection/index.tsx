@@ -1,5 +1,5 @@
 import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
-import { expressPhotovoltaicProjectSaved } from "@/features/create-project/core/renewable-energy/actions/expressProjectSaved.action";
+import { expressPhotovoltaicProjectCreated } from "@/features/create-project/core/renewable-energy/actions/expressProjectSaved.action";
 import { customCreateModeSelected } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
@@ -31,7 +31,7 @@ export default function CreateModeSelectionFormContainer() {
 
   const onSubmit = (data: FormValues) => {
     if (data.createMode === "express") {
-      void dispatch(expressPhotovoltaicProjectSaved());
+      void dispatch(expressPhotovoltaicProjectCreated());
     }
     if (data.createMode === "custom") {
       void dispatch(customCreateModeSelected());

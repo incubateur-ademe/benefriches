@@ -1,16 +1,4 @@
-import {
-  FinancialAssistanceRevenue,
-  FricheActivity,
-  UrbanProjectDevelopmentExpense,
-  PhotovoltaicInstallationExpense,
-  RecurringExpense,
-  RecurringRevenue,
-  ReinstatementExpense,
-  SoilsDistribution,
-  LEGACY_UrbanProjectSpace,
-  BuildingsUseDistribution,
-  SiteNature,
-} from "shared";
+import { BaseReconversionProjectFeaturesView, FricheActivity, SiteNature } from "shared";
 
 type Schedule = { startDate: string; endDate: string };
 
@@ -30,44 +18,10 @@ export type ProjectsGroup = {
 
 export type ReconversionProjectsGroupedBySite = ProjectsGroup[];
 
-type PhotovoltaicPowerPlantFeatures = {
-  type: "PHOTOVOLTAIC_POWER_PLANT";
-  developerName?: string;
-  installationCosts: PhotovoltaicInstallationExpense[];
-  installationSchedule?: Schedule;
-  electricalPowerKWc: number;
-  surfaceArea: number;
-  expectedAnnualProduction: number;
-  contractDuration: number;
-};
-export type UrbanProjectFeatures = {
-  type: "URBAN_PROJECT";
-  developerName?: string;
-  installationCosts: UrbanProjectDevelopmentExpense[];
-  installationSchedule?: Schedule;
-  spaces: Partial<Record<LEGACY_UrbanProjectSpace, number>>;
-  buildingsFloorArea: BuildingsUseDistribution;
-};
-export type ProjectFeatures = {
-  id: string;
-  name: string;
-  description?: string;
-  isExpress: boolean;
-  developmentPlan: PhotovoltaicPowerPlantFeatures | UrbanProjectFeatures;
-  soilsDistribution: SoilsDistribution;
-  futureOwner?: string;
-  futureOperator?: string;
-  reinstatementContractOwner?: string;
-  financialAssistanceRevenues?: FinancialAssistanceRevenue[];
-  reinstatementCosts?: ReinstatementExpense[];
-  yearlyProjectedExpenses: RecurringExpense[];
-  yearlyProjectedRevenues: RecurringRevenue[];
-  reinstatementSchedule?: Schedule;
-  firstYearOfOperation?: number;
-  sitePurchaseTotalAmount?: number;
-  siteResaleSellingPrice?: number;
-  buildingsResaleSellingPrice?: number;
-  decontaminatedSoilSurface?: number;
-};
+export type UrbanProjectFeatures = Extract<
+  ProjectFeatures["developmentPlan"],
+  { type: "URBAN_PROJECT" }
+>;
+export type ProjectFeatures = BaseReconversionProjectFeaturesView<Schedule>;
 
 export type ProjectDevelopmentPlanType = "PHOTOVOLTAIC_POWER_PLANT" | "URBAN_PROJECT";

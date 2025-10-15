@@ -127,9 +127,7 @@ function ImpactsComparisonFooter({ baseCaseSiteData, comparisonCaseSiteData, pro
                     ...projectData.developmentPlan,
                     installationCosts: projectData.developmentPlan
                       .installationCosts as UrbanProjectDevelopmentExpense[],
-                    spaces: projectData.developmentPlan.features.spacesDistribution,
-                    buildingsFloorArea:
-                      projectData.developmentPlan.features.buildingsFloorAreaDistribution,
+                    ...projectData.developmentPlan.features,
                   }
                 : {
                     ...projectData.developmentPlan,
