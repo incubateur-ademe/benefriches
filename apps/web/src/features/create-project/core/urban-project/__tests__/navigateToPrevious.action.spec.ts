@@ -333,6 +333,7 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
           "URBAN_PROJECT_BUILDINGS_INTRODUCTION",
           "URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA",
           "URBAN_PROJECT_BUILDINGS_USE_INTRODUCTION",
+          "URBAN_PROJECT_BUILDINGS_USE_SELECTION",
           "URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION",
           "URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION",
         ] as const,
@@ -413,15 +414,26 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
                 }),
               );
               break;
+            case "URBAN_PROJECT_BUILDINGS_USE_SELECTION":
+              store.dispatch(
+                requestStepCompletion({
+                  stepId: "URBAN_PROJECT_BUILDINGS_USE_SELECTION",
+                  answers: {
+                    buildingsUsesSelection: ["RESIDENTIAL", "OFFICES"],
+                  },
+                }),
+              );
+              break;
             case "URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION":
               store.dispatch(
                 requestStepCompletion({
                   stepId: "URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION",
                   answers: {
-                    buildingsUsesDistribution: { RESIDENTIAL: 1000 },
+                    buildingsUsesDistribution: { RESIDENTIAL: 1000, OFFICES: 500 },
                   },
                 }),
               );
+              break;
           }
 
           expect(store.getState().projectCreation.urbanProject.currentStep).toBe(nextStep);

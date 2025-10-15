@@ -5,7 +5,7 @@ export const BuildingsUseSurfaceAreaDistributionHandler: AnswerStepHandler<"URBA
     stepId: "URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION",
 
     getPreviousStepId() {
-      return "URBAN_PROJECT_BUILDINGS_USE_INTRODUCTION";
+      return "URBAN_PROJECT_BUILDINGS_USE_SELECTION";
     },
 
     getNextStepId() {

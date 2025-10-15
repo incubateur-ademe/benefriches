@@ -38,6 +38,12 @@ describe("urbanProject.reducer - confirmStepCompletion action", () => {
               buildingsFloorSurfaceArea: 4000,
             },
           },
+          URBAN_PROJECT_BUILDINGS_USE_SELECTION: {
+            completed: true,
+            payload: {
+              buildingsUsesSelection: ["RESIDENTIAL", "LOCAL_STORE"],
+            },
+          },
           URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION: {
             completed: true,
             payload: {
@@ -69,6 +75,10 @@ describe("urbanProject.reducer - confirmStepCompletion action", () => {
             },
             {
               stepId: "URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA",
+              action: "delete",
+            },
+            {
+              stepId: "URBAN_PROJECT_BUILDINGS_USE_SELECTION",
               action: "delete",
             },
             {

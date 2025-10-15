@@ -63,6 +63,12 @@ export const MOCK = {
     payload: { buildingsFloorSurfaceArea: 5000 },
   },
   URBAN_PROJECT_BUILDINGS_USE_INTRODUCTION: { completed: true },
+  URBAN_PROJECT_BUILDINGS_USE_SELECTION: {
+    completed: true,
+    payload: {
+      buildingsUsesSelection: ["RESIDENTIAL", "LOCAL_STORE"],
+    },
+  },
   URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION: {
     completed: true,
     payload: {

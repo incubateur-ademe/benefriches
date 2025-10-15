@@ -106,6 +106,10 @@ export const STEP_CATEGORIES: CategoryDefinition[] = [
     targetStepId: "URBAN_PROJECT_BUILDINGS_USE_INTRODUCTION",
     subCategories: [
       {
+        targetStepId: "URBAN_PROJECT_BUILDINGS_USE_SELECTION",
+        labelKey: "SELECTION",
+      },
+      {
         targetStepId: "URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION",
         labelKey: "SURFACE_DISTRIBUTION",
       },
@@ -250,6 +254,10 @@ export const STEP_TO_CATEGORY_MAPPING: Record<
   // Usage des lieux d'habitation et d'activité
   URBAN_PROJECT_BUILDINGS_USE_INTRODUCTION: {
     categoryKey: "BUILDINGS_USE",
+  },
+  URBAN_PROJECT_BUILDINGS_USE_SELECTION: {
+    categoryKey: "BUILDINGS_USE",
+    subCategoryKey: "SELECTION",
   },
   URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION: {
     categoryKey: "BUILDINGS_USE",

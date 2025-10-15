@@ -194,6 +194,17 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
       store.dispatch(navigateToNext());
 
       // Étape ----
+      // expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_USE_SELECTION");
+      store.dispatch(
+        requestStepCompletion({
+          stepId: "URBAN_PROJECT_BUILDINGS_USE_SELECTION",
+          answers: {
+            buildingsUsesSelection: ["RESIDENTIAL", "LOCAL_STORE", "OFFICES"],
+          },
+        }),
+      );
+
+      // Étape ----
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION");
       store.dispatch(
         requestStepCompletion({
@@ -402,7 +413,7 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
       // Étape ----
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_CREATION_RESULT");
 
-      expect(Object.keys(store.getState().projectCreation.urbanProject.steps).length).toEqual(39);
+      expect(Object.keys(store.getState().projectCreation.urbanProject.steps).length).toEqual(40);
     });
 
     it("should handle single category shortcut correctly", () => {

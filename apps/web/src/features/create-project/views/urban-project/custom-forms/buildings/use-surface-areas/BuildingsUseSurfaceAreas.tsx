@@ -1,4 +1,4 @@
-import { BUILDINGS_USE_LIST, BuildingsUse, SurfaceAreaDistributionJson } from "shared";
+import { BuildingsUse, SurfaceAreaDistributionJson } from "shared";
 
 import {
   getDescriptionForBuildingsUse,
@@ -11,6 +11,7 @@ import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 
 type Props = {
   initialValues?: FormValues;
+  options: BuildingsUse[];
   totalSurfaceArea: number;
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
@@ -18,7 +19,13 @@ type Props = {
 
 type FormValues = SurfaceAreaDistributionJson<BuildingsUse>;
 
-function BuildingsUseSurfaceAreas({ initialValues, totalSurfaceArea, onSubmit, onBack }: Props) {
+function BuildingsUseSurfaceAreas({
+  initialValues,
+  totalSurfaceArea,
+  onSubmit,
+  onBack,
+  options,
+}: Props) {
   return (
     <SurfaceAreaDistributionForm
       initialValues={initialValues}
@@ -33,7 +40,7 @@ function BuildingsUseSurfaceAreas({ initialValues, totalSurfaceArea, onSubmit, o
       onSubmit={onSubmit}
       totalSurfaceArea={totalSurfaceArea}
       maxErrorMessage="La superficie ne peut pas être supérieure à la surface de plancher des bâtiments"
-      surfaces={BUILDINGS_USE_LIST.map((use) => ({
+      surfaces={options.map((use) => ({
         name: use,
         label: getLabelForBuildingsUse(use),
         hintText: getDescriptionForBuildingsUse(use),

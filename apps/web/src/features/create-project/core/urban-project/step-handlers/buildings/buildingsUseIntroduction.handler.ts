@@ -7,6 +7,6 @@ export const BuildingsUseIntroductionHandler: InfoStepHandler = {
     return "URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA";
   },
   getNextStepId() {
-    return "URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION";
+    return "URBAN_PROJECT_BUILDINGS_USE_SELECTION";
   },
 };

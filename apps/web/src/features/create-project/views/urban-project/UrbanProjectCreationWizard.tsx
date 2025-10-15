@@ -9,6 +9,7 @@ import { selectCurrentStep } from "../../core/urban-project/urbanProject.selecto
 import { UrbanProjectCreationStep } from "../../core/urban-project/urbanProjectSteps";
 import { HTML_MAIN_TITLE } from "../mainHtmlTitle";
 import CreateModeSelectionForm from "./create-mode-selection";
+import BuildingsUseSelection from "./custom-forms/buildings/use-selection";
 import UrbanProjectStepper from "./stepper/Stepper";
 
 const ProjectExpressSummary = lazy(() => import("./express-forms/summary"));
@@ -242,6 +243,13 @@ const getCurrentStepView = (step: UrbanProjectCreationStep): Exclude<ReactNode, 
         <>
           <HtmlTitle>{`Introduction - Usages - Bâtiments - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
           <BuildingsUseIntroduction />
+        </>
+      );
+    case "URBAN_PROJECT_BUILDINGS_USE_SELECTION":
+      return (
+        <>
+          <HtmlTitle>{`Sélection - Usages - Bâtiments - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
+          <BuildingsUseSelection />
         </>
       );
     case "URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION":

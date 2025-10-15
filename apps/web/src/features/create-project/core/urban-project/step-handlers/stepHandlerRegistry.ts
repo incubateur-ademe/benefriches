@@ -1,6 +1,7 @@
 import { BuildingsFloorSurfaceAreaHandler } from "./buildings/buildingsFloorSurfaceArea.handler";
 import { BuildingsIntroductionHandler } from "./buildings/buildingsIntroduction.handler";
 import { BuildingsUseIntroductionHandler } from "./buildings/buildingsUseIntroduction.handler";
+import { BuildingsUseSelectionHandler } from "./buildings/buildingsUseSelection.handler";
 import { BuildingsUseSurfaceAreaDistributionHandler } from "./buildings/buildingsUseSurfaceAreaDistribution.handler";
 import { CreationModeSelectionHandler } from "./creation-mode/creationMode.handler";
 import { UrbanProjectInstallationExpensesHandler } from "./expenses/expensesInstallation.handler";
@@ -77,6 +78,7 @@ export const stepHandlerRegistry = {
   URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION: SoilsDecontaminationSelectionHandler,
   URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA: SoilsDecontaminationSurfaceAreaHandler,
   URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA: BuildingsFloorSurfaceAreaHandler,
+  URBAN_PROJECT_BUILDINGS_USE_SELECTION: BuildingsUseSelectionHandler,
   URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION: BuildingsUseSurfaceAreaDistributionHandler,
   URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER: StakeholdersProjectDeveloperHandler,
   URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER:

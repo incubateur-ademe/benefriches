@@ -62,6 +62,7 @@ export const ANSWER_STEPS: AnswerStepId[] = [
   "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
   "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA",
   "URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA",
+  "URBAN_PROJECT_BUILDINGS_USE_SELECTION",
   "URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION",
   "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER",
   "URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER",
@@ -96,6 +97,7 @@ export type CustomFormAnswers = {
   decontaminationPlan?: "partial" | "none" | "unknown";
   decontaminatedSurfaceArea?: number;
   buildingsFloorSurfaceArea?: number;
+  buildingsUsesSelection?: BuildingsUse[];
   buildingsUsesDistribution?: SurfaceAreaDistributionJson<BuildingsUse>;
   projectDeveloper?: ProjectStakeholder;
   reinstatementContractOwner?: ProjectStakeholder;
@@ -162,6 +164,7 @@ export type AnswersByStep = {
     "decontaminatedSurfaceArea"
   >;
   URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA: Pick<CustomFormAnswers, "buildingsFloorSurfaceArea">;
+  URBAN_PROJECT_BUILDINGS_USE_SELECTION: Pick<CustomFormAnswers, "buildingsUsesSelection">;
   URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION: Pick<
     CustomFormAnswers,
     "buildingsUsesDistribution"
@@ -215,6 +218,7 @@ export type AnswersByStep = {
 
 export const BUILDINGS_STEPS = [
   "URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA",
+  "URBAN_PROJECT_BUILDINGS_USE_SELECTION",
   "URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION",
   "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION",
   "URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES",

@@ -1,3 +1,5 @@
+import { typedObjectKeys } from "shared";
+
 import { selectAppSettings } from "@/features/app-settings/core/appSettings";
 import { getSurfaceAreaDistributionWithUnit } from "@/features/create-project/core/urban-project/helpers/surfaceAreaDistribution";
 import { requestStepCompletion } from "@/features/create-project/core/urban-project/urbanProject.actions";
@@ -10,6 +12,8 @@ import BuildingsUseSurfaceAreas from "./BuildingsUseSurfaceAreas";
 export default function BuildingsUseSurfaceAreaContainers() {
   const dispatch = useAppDispatch();
 
+  const { buildingsUsesSelection } =
+    useAppSelector(selectStepAnswers("URBAN_PROJECT_BUILDINGS_USE_SELECTION")) ?? {};
   const { buildingsFloorSurfaceArea } =
     useAppSelector(selectStepAnswers("URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA")) ?? {};
 
@@ -17,6 +21,10 @@ export default function BuildingsUseSurfaceAreaContainers() {
     useAppSelector(selectStepAnswers("URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION")) ??
     {};
   const inputMode = useAppSelector(selectAppSettings).surfaceAreaInputMode;
+
+  const buildingsUsesOptions = buildingsUsesDistribution
+    ? typedObjectKeys(buildingsUsesDistribution)
+    : buildingsUsesSelection;
 
   const initialValues =
     buildingsUsesDistribution && inputMode === "percentage"
@@ -36,6 +44,7 @@ export default function BuildingsUseSurfaceAreaContainers() {
         );
       }}
       onBack={onBack}
+      options={buildingsUsesOptions ?? []}
       totalSurfaceArea={buildingsFloorSurfaceArea ?? 0}
       initialValues={initialValues}
     />
