@@ -402,7 +402,7 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
       // Étape ----
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_CREATION_RESULT");
 
-      expect(Object.keys(store.getState().projectCreation.urbanProject.steps).length).toEqual(40);
+      expect(Object.keys(store.getState().projectCreation.urbanProject.steps).length).toEqual(39);
     });
 
     it("should handle single category shortcut correctly", () => {
