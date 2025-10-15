@@ -1,4 +1,4 @@
-import { getFutureOperator } from "../../../stakeholders";
+import { getFutureOperator } from "../../../helpers/stakeholders";
 import { ReadStateHelper } from "../../helpers/readState";
 import { AnswerStepHandler, StepInvalidationRule } from "../stepHandler.type";
 

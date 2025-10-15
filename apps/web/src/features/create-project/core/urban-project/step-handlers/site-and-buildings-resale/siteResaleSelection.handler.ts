@@ -1,4 +1,4 @@
-import { getFutureSiteOwner } from "../../../stakeholders";
+import { getFutureSiteOwner } from "../../../helpers/stakeholders";
 import { ReadStateHelper } from "../../helpers/readState";
 import { AnswerStepHandler } from "../stepHandler.type";
 

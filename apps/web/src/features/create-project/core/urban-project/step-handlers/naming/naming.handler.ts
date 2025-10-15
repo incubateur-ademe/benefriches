@@ -1,4 +1,4 @@
-import { generateUrbanProjectName } from "../../../projectName";
+import { generateUrbanProjectName } from "../../../helpers/projectName";
 import { AnswerStepHandler } from "../stepHandler.type";
 
 export const UrbanProjectNamingHandler: AnswerStepHandler<"URBAN_PROJECT_NAMING"> = {

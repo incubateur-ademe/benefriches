@@ -1,4 +1,4 @@
-import { ProjectStakeholder } from "./project.types";
+import { ProjectStakeholder } from "../project.types";
 
 const DEFAULT_FUTURE_SITE_OWNER = {
   name: "Futur propriétaire inconnu",
