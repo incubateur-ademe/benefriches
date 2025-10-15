@@ -3,6 +3,9 @@ import { describe, it, expect, beforeEach } from "vitest";
 import { requestStepCompletion, navigateToNext } from "../urbanProject.actions";
 import { createTestStore } from "./_testStoreHelpers";
 
+const getCurrentStep = (store: ReturnType<typeof createTestStore>) =>
+  store.getState().projectCreation.urbanProject.currentStep;
+
 describe("urbanProject.reducer - requestStepCompletion without validation", () => {
   let store: ReturnType<typeof createTestStore>;
 
@@ -12,23 +15,16 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
 
   describe("Complete workflow from start to finish", () => {
     it("should navigate through all steps correctly", () => {
-      const state = store.getState().projectCreation;
-
       // Étape ----
-      expect(state.urbanProject.currentStep).toBe("URBAN_PROJECT_CREATE_MODE_SELECTION");
-
-      // Étape ----
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_CREATE_MODE_SELECTION");
       store.dispatch(navigateToNext());
-      expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
-        "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION",
-      );
-
-      store.dispatch(navigateToNext());
-      expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
-        "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION",
-      );
 
       // Étape ----
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION");
+      store.dispatch(navigateToNext());
+
+      // Étape ----
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_CATEGORIES_SELECTION");
       store.dispatch(
         requestStepCompletion({
           stepId: "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION",
@@ -37,8 +33,7 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
           },
         }),
       );
-
-      let currentState = store.getState().projectCreation;
+      const currentState = store.getState().projectCreation;
       expect(
         currentState.urbanProject.steps.URBAN_PROJECT_SPACES_CATEGORIES_SELECTION,
       ).toBeDefined();
@@ -50,11 +45,9 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
       ).toEqual({
         spacesCategories: ["LIVING_AND_ACTIVITY_SPACES", "PUBLIC_SPACES", "GREEN_SPACES"],
       });
-      expect(currentState.urbanProject.currentStep).toBe(
-        "URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA",
-      );
 
       // Étape ----
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA");
       store.dispatch(
         requestStepCompletion({
           stepId: "URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA",
@@ -68,27 +61,25 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
         }),
       );
 
-      currentState = store.getState().projectCreation;
       expect(
-        currentState.urbanProject.steps.URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA?.completed,
+        store.getState().projectCreation.urbanProject.steps
+          .URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA?.completed,
       ).toBe(true);
-      expect(currentState.urbanProject.currentStep).toBe(
-        "URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION",
-      );
 
       // Étape ----
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION");
       store.dispatch(navigateToNext());
-      expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
+
+      // Étape ----
+      expect(getCurrentStep(store)).toBe(
         "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_INTRODUCTION",
       );
+      store.dispatch(navigateToNext());
 
       // Étape ----
-      store.dispatch(navigateToNext());
-      expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
+      expect(getCurrentStep(store)).toBe(
         "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
       );
-
-      // Étape ----
       store.dispatch(
         requestStepCompletion({
           stepId: "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
@@ -103,22 +94,17 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
         }),
       );
 
-      currentState = store.getState().projectCreation;
       expect(
-        currentState.urbanProject.steps.URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION
-          ?.completed,
+        store.getState().projectCreation.urbanProject.steps
+          .URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION?.completed,
       ).toEqual(true);
-      expect(currentState.urbanProject.currentStep).toBe(
-        "URBAN_PROJECT_PUBLIC_SPACES_INTRODUCTION",
-      );
 
       // Étape ----
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_PUBLIC_SPACES_INTRODUCTION");
       store.dispatch(navigateToNext());
-      expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
-        "URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION",
-      );
 
       // Étape ----
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION");
       store.dispatch(
         requestStepCompletion({
           stepId: "URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION",
@@ -132,16 +118,12 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
         }),
       );
 
-      currentState = store.getState().projectCreation;
-      expect(currentState.urbanProject.currentStep).toBe("URBAN_PROJECT_GREEN_SPACES_INTRODUCTION");
-
       // Étape ----
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_GREEN_SPACES_INTRODUCTION");
       store.dispatch(navigateToNext());
-      expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
-        "URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION",
-      );
 
       // Étape ----
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION");
       store.dispatch(
         requestStepCompletion({
           stepId: "URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION",
@@ -156,28 +138,20 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
         }),
       );
 
-      currentState = store.getState().projectCreation;
-      expect(currentState.urbanProject.currentStep).toBe("URBAN_PROJECT_SPACES_SOILS_SUMMARY");
-
       // Étape ----
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_SOILS_SUMMARY");
       store.dispatch(navigateToNext());
-      expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
-        "URBAN_PROJECT_SOILS_CARBON_SUMMARY",
-      );
 
       // Étape ----
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_CARBON_SUMMARY");
       store.dispatch(navigateToNext());
-      expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
-        "URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION",
-      );
 
       // Étape ----
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION");
       store.dispatch(navigateToNext());
-      expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
-        "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
-      );
 
       // Étape ----
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION");
       store.dispatch(
         requestStepCompletion({
           stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
@@ -187,12 +161,8 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
         }),
       );
 
-      currentState = store.getState().projectCreation;
-      expect(currentState.urbanProject.currentStep).toBe(
-        "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA",
-      );
-
       // Étape ----
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA");
       store.dispatch(
         requestStepCompletion({
           stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA",
@@ -202,16 +172,14 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
         }),
       );
 
-      currentState = store.getState().projectCreation;
-      expect(currentState.urbanProject.currentStep).toBe("URBAN_PROJECT_BUILDINGS_INTRODUCTION");
+      // Étape ----
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_INTRODUCTION");
+      store.dispatch(navigateToNext());
 
       // Étape ----
-      store.dispatch(navigateToNext());
       expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
         "URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA",
       );
-
-      // Étape ----
       store.dispatch(
         requestStepCompletion({
           stepId: "URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA",
@@ -221,18 +189,12 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
         }),
       );
 
-      currentState = store.getState().projectCreation;
-      expect(currentState.urbanProject.currentStep).toBe(
-        "URBAN_PROJECT_BUILDINGS_USE_INTRODUCTION",
-      );
-
       // Étape ----
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_USE_INTRODUCTION");
       store.dispatch(navigateToNext());
-      expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
-        "URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION",
-      );
 
       // Étape ----
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION");
       store.dispatch(
         requestStepCompletion({
           stepId: "URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION",
@@ -246,16 +208,12 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
         }),
       );
 
-      currentState = store.getState().projectCreation;
-      expect(currentState.urbanProject.currentStep).toBe("URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION");
-
       // Étape ----
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION");
       store.dispatch(navigateToNext());
-      expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
-        "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER",
-      );
 
       // Étape ----
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER");
       store.dispatch(
         requestStepCompletion({
           stepId: "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER",
@@ -268,12 +226,8 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
         }),
       );
 
-      currentState = store.getState().projectCreation;
-      expect(currentState.urbanProject.currentStep).toBe(
-        "URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER",
-      );
-
       // Étape ----
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER");
       store.dispatch(
         requestStepCompletion({
           stepId: "URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER",
@@ -286,16 +240,12 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
         }),
       );
 
-      currentState = store.getState().projectCreation;
-      expect(currentState.urbanProject.currentStep).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
-
       // Étape ----
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
       store.dispatch(navigateToNext());
-      expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
-        "URBAN_PROJECT_SITE_RESALE_SELECTION",
-      );
 
       // Étape ----
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_SELECTION");
       store.dispatch(
         requestStepCompletion({
           stepId: "URBAN_PROJECT_SITE_RESALE_SELECTION",
@@ -305,12 +255,8 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
         }),
       );
 
-      currentState = store.getState().projectCreation;
-      expect(currentState.urbanProject.currentStep).toBe(
-        "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION",
-      );
-
       // Étape ----
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_RESALE_SELECTION");
       store.dispatch(
         requestStepCompletion({
           stepId: "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION",
@@ -320,16 +266,12 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
         }),
       );
 
-      currentState = store.getState().projectCreation;
-      expect(currentState.urbanProject.currentStep).toBe("URBAN_PROJECT_EXPENSES_INTRODUCTION");
-
       // Étape ----
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_EXPENSES_INTRODUCTION");
       store.dispatch(navigateToNext());
-      expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
-        "URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS",
-      );
 
       // Étape ----
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS");
       store.dispatch(
         requestStepCompletion({
           stepId: "URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS",
@@ -340,10 +282,8 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
         }),
       );
 
-      currentState = store.getState().projectCreation;
-      expect(currentState.urbanProject.currentStep).toBe("URBAN_PROJECT_EXPENSES_REINSTATEMENT");
-
       // Étape ----
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_EXPENSES_REINSTATEMENT");
       store.dispatch(
         requestStepCompletion({
           stepId: "URBAN_PROJECT_EXPENSES_REINSTATEMENT",
@@ -356,10 +296,8 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
         }),
       );
 
-      currentState = store.getState().projectCreation;
-      expect(currentState.urbanProject.currentStep).toBe("URBAN_PROJECT_EXPENSES_INSTALLATION");
-
       // Étape ----
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_EXPENSES_INSTALLATION");
       store.dispatch(
         requestStepCompletion({
           stepId: "URBAN_PROJECT_EXPENSES_INSTALLATION",
@@ -372,16 +310,12 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
         }),
       );
 
-      currentState = store.getState().projectCreation;
-      expect(currentState.urbanProject.currentStep).toBe("URBAN_PROJECT_REVENUE_INTRODUCTION");
-
       // Étape ----
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_REVENUE_INTRODUCTION");
       store.dispatch(navigateToNext());
-      expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
-        "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE",
-      );
 
       // Étape ----
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE");
       store.dispatch(
         requestStepCompletion({
           stepId: "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE",
@@ -392,10 +326,8 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
         }),
       );
 
-      currentState = store.getState().projectCreation;
-      expect(currentState.urbanProject.currentStep).toBe("URBAN_PROJECT_REVENUE_BUILDINGS_RESALE");
-
       // Étape ----
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_REVENUE_BUILDINGS_RESALE");
       store.dispatch(
         requestStepCompletion({
           stepId: "URBAN_PROJECT_REVENUE_BUILDINGS_RESALE",
@@ -406,12 +338,8 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
         }),
       );
 
-      currentState = store.getState().projectCreation;
-      expect(currentState.urbanProject.currentStep).toBe(
-        "URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE",
-      );
-
       // Étape ----
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE");
       store.dispatch(
         requestStepCompletion({
           stepId: "URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE",
@@ -421,16 +349,12 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
         }),
       );
 
-      currentState = store.getState().projectCreation;
-      expect(currentState.urbanProject.currentStep).toBe("URBAN_PROJECT_SCHEDULE_INTRODUCTION");
-
       // Étape ----
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SCHEDULE_INTRODUCTION");
       store.dispatch(navigateToNext());
-      expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
-        "URBAN_PROJECT_SCHEDULE_PROJECTION",
-      );
 
       // Étape ----
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SCHEDULE_PROJECTION");
       store.dispatch(
         requestStepCompletion({
           stepId: "URBAN_PROJECT_SCHEDULE_PROJECTION",
@@ -448,10 +372,8 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
         }),
       );
 
-      currentState = store.getState().projectCreation;
-      expect(currentState.urbanProject.currentStep).toBe("URBAN_PROJECT_PROJECT_PHASE");
-
       // Étape ----
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_PROJECT_PHASE");
       store.dispatch(
         requestStepCompletion({
           stepId: "URBAN_PROJECT_PROJECT_PHASE",
@@ -461,10 +383,8 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
         }),
       );
 
-      currentState = store.getState().projectCreation;
-      expect(currentState.urbanProject.currentStep).toBe("URBAN_PROJECT_NAMING");
-
       // Étape ----
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_NAMING");
       store.dispatch(
         requestStepCompletion({
           stepId: "URBAN_PROJECT_NAMING",
@@ -475,17 +395,14 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
         }),
       );
 
-      currentState = store.getState().projectCreation;
-      expect(currentState.urbanProject.currentStep).toBe("URBAN_PROJECT_FINAL_SUMMARY");
-
       // Étape ----
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_FINAL_SUMMARY");
       store.dispatch(navigateToNext());
 
       // Étape ----
-      currentState = store.getState().projectCreation;
-      expect(currentState.urbanProject.currentStep).toBe("URBAN_PROJECT_CREATION_RESULT");
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_CREATION_RESULT");
 
-      expect(Object.keys(currentState.urbanProject.steps).length).toEqual(39);
+      expect(Object.keys(store.getState().projectCreation.urbanProject.steps).length).toEqual(40);
     });
 
     it("should handle single category shortcut correctly", () => {
@@ -502,9 +419,7 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
 
       const currentState = store.getState().projectCreation;
 
-      expect(currentState.urbanProject.currentStep).toBe(
-        "URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION",
-      );
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION");
 
       expect(
         currentState.urbanProject.steps.URBAN_PROJECT_SPACES_CATEGORIES_SELECTION?.completed,
@@ -555,7 +470,7 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
 
       const currentState = store.getState().projectCreation;
 
-      expect(currentState.urbanProject.currentStep).toBe("URBAN_PROJECT_BUILDINGS_INTRODUCTION");
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_INTRODUCTION");
 
       expect(
         currentState.urbanProject.steps.URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA,
