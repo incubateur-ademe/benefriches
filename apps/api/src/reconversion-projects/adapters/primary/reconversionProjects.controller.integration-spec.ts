@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { Knex } from "knex";
 import { expressProjectCategorySchema, saveReconversionProjectPropsSchema } from "shared";
@@ -650,34 +651,34 @@ describe("ReconversionProjects controller", () => {
         creation_mode: "duplicated",
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         created_at: expect.any(Date),
-        description: sourceUrbanProject.description,
+        description: sourceUrbanProject.description!,
         created_by: authenticatedUser.id,
         related_site_id: siteId,
         project_phase: sourceUrbanProject.projectPhase,
         // stakeholders
-        future_operator_name: sourceUrbanProject.futureOperator?.name,
-        future_operator_structure_type: sourceUrbanProject.futureOperator?.structureType,
-        future_site_owner_name: sourceUrbanProject.futureSiteOwner?.name,
-        future_site_owner_structure_type: sourceUrbanProject.futureSiteOwner?.structureType,
+        future_operator_name: sourceUrbanProject.futureOperator!.name,
+        future_operator_structure_type: sourceUrbanProject.futureOperator!.structureType,
+        future_site_owner_name: sourceUrbanProject.futureSiteOwner!.name,
+        future_site_owner_structure_type: sourceUrbanProject.futureSiteOwner!.structureType,
         // reinstatement
-        reinstatement_contract_owner_name: sourceUrbanProject.reinstatementContractOwner?.name,
+        reinstatement_contract_owner_name: sourceUrbanProject.reinstatementContractOwner!.name,
         reinstatement_contract_owner_structure_type:
-          sourceUrbanProject.reinstatementContractOwner?.structureType,
-        reinstatement_schedule_end_date: sourceUrbanProject.reinstatementSchedule?.endDate,
-        reinstatement_schedule_start_date: sourceUrbanProject.reinstatementSchedule?.startDate,
-        friche_decontaminated_soil_surface_area: sourceUrbanProject.decontaminatedSoilSurface,
-        operations_first_year: sourceUrbanProject.operationsFirstYear,
+          sourceUrbanProject.reinstatementContractOwner!.structureType,
+        reinstatement_schedule_end_date: sourceUrbanProject.reinstatementSchedule!.endDate,
+        reinstatement_schedule_start_date: sourceUrbanProject.reinstatementSchedule!.startDate,
+        friche_decontaminated_soil_surface_area: sourceUrbanProject.decontaminatedSoilSurface!,
+        operations_first_year: sourceUrbanProject.operationsFirstYear!,
         // buildings and site resale
         buildings_resale_expected_property_transfer_duties:
-          sourceUrbanProject.buildingsResaleExpectedPropertyTransferDuties,
+          sourceUrbanProject.buildingsResaleExpectedPropertyTransferDuties!,
         buildings_resale_expected_selling_price:
-          sourceUrbanProject.buildingsResaleExpectedSellingPrice,
-        site_resale_expected_selling_price: sourceUrbanProject.siteResaleExpectedSellingPrice,
+          sourceUrbanProject.buildingsResaleExpectedSellingPrice!,
+        site_resale_expected_selling_price: sourceUrbanProject.siteResaleExpectedSellingPrice!,
         site_resale_expected_property_transfer_duties:
-          sourceUrbanProject.siteResaleExpectedPropertyTransferDuties,
-        site_purchase_selling_price: sourceUrbanProject.sitePurchaseSellingPrice,
+          sourceUrbanProject.siteResaleExpectedPropertyTransferDuties!,
+        site_purchase_selling_price: sourceUrbanProject.sitePurchaseSellingPrice!,
         site_purchase_property_transfer_duties:
-          sourceUrbanProject.sitePurchasePropertyTransferDuties,
+          sourceUrbanProject.sitePurchasePropertyTransferDuties!,
       });
 
       // development plan
@@ -695,8 +696,8 @@ describe("ReconversionProjects controller", () => {
           developer_structure_type: sourceUrbanProject.developmentPlan.developer.structureType,
           reconversion_project_id: newProjectId,
           features: sourceUrbanProject.developmentPlan.features,
-          schedule_end_date: sourceUrbanProject.developmentPlan.installationSchedule?.endDate,
-          schedule_start_date: sourceUrbanProject.developmentPlan.installationSchedule?.startDate,
+          schedule_end_date: sourceUrbanProject.developmentPlan.installationSchedule!.endDate,
+          schedule_start_date: sourceUrbanProject.developmentPlan.installationSchedule!.startDate,
         },
       ]);
       // development plan costs
@@ -852,8 +853,10 @@ describe("ReconversionProjects controller", () => {
           developer_structure_type: sourceUrbanProject.developmentPlan.developer.structureType,
           reconversion_project_id: newProjectId,
           features: sourceUrbanProject.developmentPlan.features,
-          schedule_end_date: sourceUrbanProject.developmentPlan.installationSchedule?.endDate,
-          schedule_start_date: sourceUrbanProject.developmentPlan.installationSchedule?.startDate,
+          schedule_end_date:
+            sourceUrbanProject.developmentPlan.installationSchedule?.endDate ?? null,
+          schedule_start_date:
+            sourceUrbanProject.developmentPlan.installationSchedule?.startDate ?? null,
         },
       ]);
       // development plan costs

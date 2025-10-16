@@ -97,32 +97,32 @@ export type SqlReconversionProject = {
   created_by: string;
   creation_mode: string;
   name: string;
-  description?: string;
+  description: string | null;
   related_site_id: string;
-  future_operator_name?: string;
-  future_operator_structure_type?: string;
-  future_site_owner_name?: string;
-  future_site_owner_structure_type?: string;
-  operations_first_year?: number;
+  future_operator_name: string | null;
+  future_operator_structure_type: string | null;
+  future_site_owner_name: string | null;
+  future_site_owner_structure_type: string | null;
+  operations_first_year: number | null;
   // reinstatement
-  reinstatement_contract_owner_name?: string;
-  reinstatement_contract_owner_structure_type?: string;
-  reinstatement_schedule_start_date?: Date;
-  reinstatement_schedule_end_date?: Date;
+  reinstatement_contract_owner_name: string | null;
+  reinstatement_contract_owner_structure_type: string | null;
+  reinstatement_schedule_start_date: Date | null;
+  reinstatement_schedule_end_date: Date | null;
   // site purchase
-  site_purchase_selling_price?: number;
-  site_purchase_property_transfer_duties?: number;
+  site_purchase_selling_price: number | null;
+  site_purchase_property_transfer_duties: number | null;
   // site resale
-  site_resale_expected_selling_price?: number;
-  site_resale_expected_property_transfer_duties?: number;
+  site_resale_expected_selling_price: number | null;
+  site_resale_expected_property_transfer_duties: number | null;
   // buildings resale
-  buildings_resale_expected_selling_price?: number;
-  buildings_resale_expected_property_transfer_duties?: number;
+  buildings_resale_expected_selling_price: number | null;
+  buildings_resale_expected_property_transfer_duties: number | null;
   // project phase
   project_phase: string;
   // dates
   created_at: Date;
-  friche_decontaminated_soil_surface_area?: number;
+  friche_decontaminated_soil_surface_area: number | null;
 };
 
 type SqlReconversionProjectSoilsDistribution = {
@@ -140,8 +140,8 @@ type SqlDevelopmentPlan = {
   developer_structure_type: string;
   features: unknown;
   reconversion_project_id: string;
-  schedule_start_date?: Date;
-  schedule_end_date?: Date;
+  schedule_start_date: Date | null;
+  schedule_end_date: Date | null;
 };
 
 type SqlDevelopmentPlanCost = {

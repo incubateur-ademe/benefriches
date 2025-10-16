@@ -156,8 +156,10 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
         developer_name: reconversionProject.developmentPlan.developer.name,
         developer_structure_type: reconversionProject.developmentPlan.developer.structureType,
         features: reconversionProject.developmentPlan.features,
-        schedule_start_date: reconversionProject.developmentPlan.installationSchedule?.startDate,
-        schedule_end_date: reconversionProject.developmentPlan.installationSchedule?.endDate,
+        schedule_start_date:
+          reconversionProject.developmentPlan.installationSchedule?.startDate ?? null,
+        schedule_end_date:
+          reconversionProject.developmentPlan.installationSchedule?.endDate ?? null,
         reconversion_project_id: insertedReconversionProject.id,
       };
       await trx("reconversion_project_development_plans").insert(developmentPlanToInsert);

@@ -64,12 +64,12 @@ export class SqlReconversionProjectImpactsQuery implements ReconversionProjectIm
 
     const sqlDevelopmentPlanResult: {
       id: string;
-      developer_structure_type: string;
-      developer_name?: string;
+      developer_structure_type: string | null;
+      developer_name: string | null;
       type: DevelopmentPlan["type"];
-      schedule_start_date?: Date;
-      schedule_end_date?: Date;
-      features?: DevelopmentPlan["features"];
+      schedule_start_date: Date | null;
+      schedule_end_date: Date | null;
+      features: DevelopmentPlan["features"] | null;
       costs: { amount: number; purpose: string }[];
     }[] = await this.sqlConnection("reconversion_project_development_plans as dp")
       .where("dp.reconversion_project_id", reconversionProjectId)
