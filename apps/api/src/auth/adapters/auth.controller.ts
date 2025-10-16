@@ -41,7 +41,7 @@ import {
   UserRepository,
 } from "../core/gateways/UsersRepository";
 import { SendAuthLinkUseCase } from "../core/sendAuthLink.usecase";
-import { JwtAuthGuard } from "./JwtAuthGuard";
+import { JwtAuthGuard, RequestWithAuthenticatedUser } from "./JwtAuthGuard";
 import {
   ACCESS_TOKEN_SERVICE_INJECTION_TOKEN,
   AccessTokenService,
@@ -342,11 +342,8 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Get("me")
-  async me(@Req() req: Request, @Res() res: Response) {
-    const { accessTokenPayload } = req;
-    if (!accessTokenPayload) throw new UnauthorizedException();
-
-    const authenticatedUser = await this.usersRepository.getWithId(accessTokenPayload.userId);
+  async me(@Req() req: RequestWithAuthenticatedUser, @Res() res: Response) {
+    const authenticatedUser = await this.usersRepository.getWithId(req.accessTokenPayload.userId);
 
     if (!authenticatedUser) throw new UnauthorizedException();
 
@@ -363,9 +360,8 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Get("logout")
-  async logout(@Req() req: Request, @Res() res: Response) {
+  async logout(@Req() req: RequestWithAuthenticatedUser, @Res() res: Response) {
     const { accessTokenPayload } = req;
-    if (!accessTokenPayload) throw new UnauthorizedException();
 
     switch (accessTokenPayload.authProvider) {
       case "pro-connect":

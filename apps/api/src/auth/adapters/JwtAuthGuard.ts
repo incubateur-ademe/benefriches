@@ -21,15 +21,13 @@ export type AccessTokenPayload = {
   authProviderIdToken?: string;
 };
 
-declare module "express" {
-  interface Request {
-    accessTokenPayload?: {
-      userId: string;
-      userEmail: string;
-      authProvider: string;
-      authProviderTokenId: string | undefined;
-    };
-  }
+export interface RequestWithAuthenticatedUser extends Request {
+  accessTokenPayload: {
+    userId: string;
+    userEmail: string;
+    authProvider: string;
+    authProviderTokenId: string | undefined;
+  };
 }
 
 @Injectable()
@@ -54,7 +52,7 @@ export class JwtAuthGuard implements CanActivate {
         secret: jwtSecret,
       });
 
-      request.accessTokenPayload = {
+      (request as RequestWithAuthenticatedUser).accessTokenPayload = {
         userId: payload.sub,
         userEmail: payload.email,
         authProvider: payload.authProvider,

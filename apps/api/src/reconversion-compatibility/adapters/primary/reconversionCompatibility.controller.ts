@@ -1,9 +1,8 @@
-import { Body, Controller, Post, Req, UnauthorizedException, UseGuards } from "@nestjs/common";
-import { Request } from "express";
+import { Body, Controller, Post, Req, UseGuards } from "@nestjs/common";
 import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
 
-import { JwtAuthGuard } from "src/auth/adapters/JwtAuthGuard";
+import { JwtAuthGuard, RequestWithAuthenticatedUser } from "src/auth/adapters/JwtAuthGuard";
 import { AddProjectCreationToReconversionCompatibilityEvaluationUseCase } from "src/reconversion-compatibility/core/usecases/addProjectCreationToReconversionCompatibilityEvaluation.usecase";
 import { CompleteReconversionCompatibilityEvaluationUseCase } from "src/reconversion-compatibility/core/usecases/completeReconversionCompatibilityEvaluation.usecase";
 import { StartReconversionCompatibilityEvaluationUseCase } from "src/reconversion-compatibility/core/usecases/startReconversionCompatibilityEvaluation.usecase";
@@ -44,14 +43,11 @@ export class ReconversionCompatibilityController {
   @Post("start-evaluation")
   async startEvaluation(
     @Body() body: StartReconversionCompatibilityEvaluationBodyDto,
-    @Req() request: Request,
+    @Req() request: RequestWithAuthenticatedUser,
   ) {
-    const { accessTokenPayload } = request;
-    if (!accessTokenPayload) throw new UnauthorizedException();
-
     await this.startReconversionCompatibilityEvaluationUseCase.execute({
       id: body.id,
-      createdById: accessTokenPayload.userId,
+      createdById: request.accessTokenPayload.userId,
     });
   }
 
