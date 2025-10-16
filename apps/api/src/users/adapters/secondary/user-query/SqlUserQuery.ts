@@ -20,7 +20,7 @@ export class SqlUserQuery implements UserQuery {
       id: userId,
       structure: {
         activity: result.structure_activity,
-        name: result.structure_name,
+        name: result.structure_name ?? undefined,
         type: result.structure_type,
       },
     };

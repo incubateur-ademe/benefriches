@@ -3,15 +3,15 @@ import { SpaceCategory } from "shared";
 export type SqlUser = {
   id: string;
   email: string;
-  firstname?: string;
-  lastname?: string;
-  structure_name?: string;
+  firstname: string | null;
+  lastname: string | null;
+  structure_name: string | null;
   structure_type: string;
   structure_activity: string;
   created_at: Date;
   personal_data_storage_consented_at: Date;
-  personal_data_analytics_use_consented_at?: Date;
-  personal_data_communication_use_consented_at?: Date;
+  personal_data_analytics_use_consented_at: Date | null;
+  personal_data_communication_use_consented_at: Date | null;
   subscribed_to_newsletter: boolean;
 };
 

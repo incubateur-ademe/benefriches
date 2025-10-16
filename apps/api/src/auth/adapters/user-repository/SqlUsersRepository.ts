@@ -14,9 +14,11 @@ const mapSqlUserToAuthenticatedUser = (userRow: SqlUser): User => ({
   email: userRow.email,
   createdAt: userRow.created_at,
   personalDataStorageConsentedAt: userRow.personal_data_storage_consented_at,
-  personalDataAnalyticsUseConsentedAt: userRow.personal_data_analytics_use_consented_at,
-  personalDataCommunicationUseConsentedAt: userRow.personal_data_communication_use_consented_at,
-  structureName: userRow.structure_name,
+  personalDataAnalyticsUseConsentedAt:
+    userRow.personal_data_analytics_use_consented_at ?? undefined,
+  personalDataCommunicationUseConsentedAt:
+    userRow.personal_data_communication_use_consented_at ?? undefined,
+  structureName: userRow.structure_name ?? undefined,
   structureType: userRow.structure_type,
   structureActivity: userRow.structure_activity,
   subscribedToNewsletter: userRow.subscribed_to_newsletter,
@@ -27,13 +29,14 @@ export const mapUserToSqlRow = (user: User): SqlUser => ({
   email: user.email,
   firstname: user.firstName,
   lastname: user.lastName,
-  structure_name: user.structureName,
+  structure_name: user.structureName ?? null,
   structure_type: user.structureType,
   structure_activity: user.structureActivity,
   created_at: user.createdAt,
   personal_data_storage_consented_at: user.personalDataStorageConsentedAt,
-  personal_data_analytics_use_consented_at: user.personalDataAnalyticsUseConsentedAt,
-  personal_data_communication_use_consented_at: user.personalDataCommunicationUseConsentedAt,
+  personal_data_analytics_use_consented_at: user.personalDataAnalyticsUseConsentedAt ?? null,
+  personal_data_communication_use_consented_at:
+    user.personalDataCommunicationUseConsentedAt ?? null,
   subscribed_to_newsletter: user.subscribedToNewsletter,
 });
 
