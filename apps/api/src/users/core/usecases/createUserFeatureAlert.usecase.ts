@@ -1,13 +1,10 @@
+import { IDateProvider } from "shared/dist/adapters/IDateProvider";
 import { z } from "zod";
 
 import { UseCase } from "src/shared-kernel/usecase";
 
 export interface UserFeatureAlertRepository {
   save(props: UserFeatureAlert): Promise<void>;
-}
-
-export interface DateProvider {
-  now(): Date;
 }
 
 export type UserFeatureAlert = z.infer<typeof createFeatureAlertSchema>;
@@ -83,7 +80,7 @@ export const createFeatureAlertProps = baseFeatureAlertSchema.omit({ createdAt: 
   ]),
 });
 
-export type Request = z.infer<typeof createFeatureAlertProps>;
+type Request = z.infer<typeof createFeatureAlertProps>;
 
 const convertArrayOptionsToObject = (feature: Request["feature"]) => {
   switch (feature.type) {
@@ -111,7 +108,7 @@ const convertArrayOptionsToObject = (feature: Request["feature"]) => {
 export class CreateUserFeatureAlertUseCase implements UseCase<Request, void> {
   constructor(
     private readonly userFeatureAlertRepository: UserFeatureAlertRepository,
-    private readonly dateProvider: DateProvider,
+    private readonly dateProvider: IDateProvider,
   ) {}
 
   async execute(props: Request): Promise<void> {

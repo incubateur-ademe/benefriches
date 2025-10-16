@@ -44,7 +44,7 @@ import { SumOnEvolutionPeriodService } from "../model/sum-on-evolution-period/Su
 import { computeAvoidedRoadsAndUtilitiesExpenses } from "../model/urban-sprawl-impacts-comparison/roadAndUtilitiesMaintenance";
 import { computeAvoidedRoadsAndUtilitiesConstruction } from "../model/urban-sprawl-impacts-comparison/roadsAndUtilitiesContruction";
 
-export interface SiteImpactsQuery {
+interface SiteImpactsQuery {
   getById(siteId: string): Promise<SiteImpactsDataView | undefined>;
 }
 
@@ -58,9 +58,9 @@ type ReconversionProjectImpactsQueryResult = Omit<
     installationCosts: ApiReconversionProjectImpactsDataView["developmentPlan"]["installationCosts"];
   } & Partial<Omit<ApiReconversionProjectImpactsDataView["developmentPlan"], "installationCosts">>;
 };
-export type ApiUrbanSprawlImpactsComparisonResult = UrbanSprawlImpactsComparisonResult<Schedule>;
+type ApiUrbanSprawlImpactsComparisonResult = UrbanSprawlImpactsComparisonResult<Schedule>;
 
-export interface ReconversionProjectImpactsQuery {
+interface ReconversionProjectImpactsQuery {
   getById(
     reconversionProjectId: string,
   ): Promise<ReconversionProjectImpactsQueryResult | undefined>;

@@ -16,7 +16,7 @@ type CreateUserFailureReason = "UserEmailAlreadyExists" | "PersonalDataStorageNo
 
 type CreateUserResult = { success: true } | { success: false; error: CreateUserFailureReason };
 
-export const userPropsSchema = userSchema
+const userPropsSchema = userSchema
   .omit({
     createdAt: true,
     personalDataAnalyticsUseConsentedAt: true,

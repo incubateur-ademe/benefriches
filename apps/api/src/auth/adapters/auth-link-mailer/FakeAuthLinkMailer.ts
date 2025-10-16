@@ -1,6 +1,6 @@
 import { AuthLinkMailer } from "src/auth/core/sendAuthLink.usecase";
 
-export interface SentAuthLinkEmail {
+interface SentAuthLinkEmail {
   email: string;
   authLinkUrl: string;
   sentAt: Date;

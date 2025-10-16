@@ -1,8 +1,8 @@
 import { DomainEvent } from "src/shared-kernel/domainEvent";
 
-export const AUTH_LINK_SEND_FAILED = "auth.link-send-failed";
+const AUTH_LINK_SEND_FAILED = "auth.link-send-failed";
 
-export type AuthLinkSendFailedEvent = DomainEvent<
+type AuthLinkSendFailedEvent = DomainEvent<
   typeof AUTH_LINK_SEND_FAILED,
   {
     userEmail?: string;

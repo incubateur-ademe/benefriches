@@ -2,6 +2,7 @@ import { TExpense } from "../../financial";
 
 export type RecurringExpensePurpose = "rent" | "maintenance" | "taxes" | "other";
 
+// todo: rename to YearlyExpense
 export type RecurringExpense = TExpense<RecurringExpensePurpose>;
 
 const PHOTOVOLTAIC_POWER_PLANT_ECONOMICAL_RATIO_EURO_PER_KWC_PER_YEAR = {

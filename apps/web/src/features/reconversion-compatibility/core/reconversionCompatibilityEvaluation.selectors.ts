@@ -6,7 +6,7 @@ import { MutabilityUsage } from "./reconversionCompatibilityEvaluation.reducer";
 
 const selectSelf = (state: RootState) => state.reconversionCompatibilityEvaluation;
 
-export type ReconversionCompatibilityEvaluationViewData = {
+type ReconversionCompatibilityEvaluationViewData = {
   evaluationResults:
     | {
         top3MutabilityUsages: { usage: MutabilityUsage; score: number; rank: number }[];

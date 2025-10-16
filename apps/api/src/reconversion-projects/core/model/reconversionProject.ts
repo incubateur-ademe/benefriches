@@ -1,5 +1,4 @@
 import {
-  reconversionProjectSchema,
   saveReconversionProjectSchema,
   saveReconversionProjectPropsSchema,
   developmentPlanSchema,
@@ -14,7 +13,6 @@ export type PhotovoltaicPowerStationFeatures = z.infer<
 
 export type DevelopmentPlan = z.infer<typeof developmentPlanSchema>;
 
-export type ReconversionProjectView = z.infer<typeof reconversionProjectSchema>;
 export type ReconversionProjectInput = z.infer<typeof saveReconversionProjectSchema>;
 export type ReconversionProjectInputProps = z.infer<typeof saveReconversionProjectPropsSchema>;
 
@@ -24,8 +22,4 @@ export type Schedule = {
 };
 export type ReconversionProjectFeaturesView = BaseReconversionProjectFeaturesView<Schedule>;
 
-export {
-  reconversionProjectSchema,
-  saveReconversionProjectPropsSchema,
-  saveReconversionProjectSchema,
-};
+export { saveReconversionProjectPropsSchema, saveReconversionProjectSchema };

@@ -12,7 +12,7 @@ type Request = {
   }[];
 };
 
-export type Response = {
+type Response = {
   totalCarbonStorage: number;
   soilsCarbonStorage: {
     surfaceArea: number; // m²

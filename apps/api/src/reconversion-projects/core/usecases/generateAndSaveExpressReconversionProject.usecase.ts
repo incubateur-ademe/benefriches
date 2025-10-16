@@ -4,7 +4,7 @@ import { UseCase } from "src/shared-kernel/usecase";
 
 import { ReconversionProjectInput } from "../model/reconversionProject";
 
-export interface GenerateExpressReconversionProjectUseCase {
+interface GenerateExpressReconversionProjectUseCase {
   execute(id: Request): Promise<ReconversionProjectInput>;
 }
 

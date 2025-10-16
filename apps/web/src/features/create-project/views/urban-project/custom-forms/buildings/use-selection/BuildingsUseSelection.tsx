@@ -12,7 +12,7 @@ import CheckableTile from "@/shared/views/components/CheckableTile/CheckableTile
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
-export type FormValues = {
+type FormValues = {
   buildingsUses: BuildingsUse[];
 };
 

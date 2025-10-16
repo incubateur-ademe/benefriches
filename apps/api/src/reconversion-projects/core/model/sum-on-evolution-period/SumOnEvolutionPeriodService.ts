@@ -1,6 +1,6 @@
 import { roundTo2Digits, roundToInteger, sumList } from "shared";
 
-export type SumOnEvolutionPeriodServiceProps = {
+type SumOnEvolutionPeriodServiceProps = {
   evaluationPeriodInYears: number;
   operationsFirstYear: number;
 };

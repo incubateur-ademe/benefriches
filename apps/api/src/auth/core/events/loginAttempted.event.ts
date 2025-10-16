@@ -1,8 +1,8 @@
 import { DomainEvent } from "src/shared-kernel/domainEvent";
 
-export const LOGIN_ATTEMPTED = "user.login-attempted";
+const LOGIN_ATTEMPTED = "user.login-attempted";
 
-export type LoginAttemptedEvent = DomainEvent<
+type LoginAttemptedEvent = DomainEvent<
   typeof LOGIN_ATTEMPTED,
   {
     userEmail?: string;

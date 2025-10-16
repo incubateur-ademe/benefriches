@@ -3,7 +3,7 @@ import { DomainEvent } from "src/shared-kernel/domainEvent";
 const RECONVERSION_COMPATIBILITY_EVALUATION_COMPLETED =
   "reconversion-compatibility-evaluation.completed";
 
-export type ReconversionCompatibilityEvaluationCompletedEvent = DomainEvent<
+type ReconversionCompatibilityEvaluationCompletedEvent = DomainEvent<
   typeof RECONVERSION_COMPATIBILITY_EVALUATION_COMPLETED,
   {
     evaluationId: string;

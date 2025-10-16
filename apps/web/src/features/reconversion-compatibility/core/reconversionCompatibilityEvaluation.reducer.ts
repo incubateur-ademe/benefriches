@@ -18,7 +18,7 @@ export type MutabilityUsage =
   | "renaturation"
   | "photovoltaique";
 
-export type ReconversionCompatibilityEvaluationState = {
+type ReconversionCompatibilityEvaluationState = {
   currentEvaluationId: string | undefined;
   evaluationResults: ReconversionCompatibilityEvaluationResults | undefined;
   evaluationError: string | undefined;

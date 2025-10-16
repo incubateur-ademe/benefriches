@@ -7,8 +7,6 @@ import {
   RecurringRevenue,
   ReinstatementExpense,
   Site,
-  SiteNature,
-  SoilsDistribution,
 } from "shared";
 import { v4 as uuid } from "uuid";
 
@@ -20,10 +18,9 @@ import { GetCarbonStorageFromSoilDistributionService } from "../gateways/SoilsCa
 import { InputSiteData } from "../model/project-impacts/ReconversionProjectImpactsService";
 import { UrbanProjectImpactsService } from "../model/project-impacts/UrbanProjectImpactsService";
 import { getDefaultImpactsEvaluationPeriod } from "../model/project-impacts/impactsEvaluationPeriod";
-import { DevelopmentPlan, Schedule } from "../model/reconversionProject";
 import { Result } from "./computeReconversionProjectImpacts.usecase";
 
-export type City = {
+type City = {
   name: string;
   cityCode: string;
   population: number;
@@ -33,52 +30,6 @@ export type City = {
 interface SiteGenerationService {
   fromSurfaceAreaAndCity(surfaceArea: number, city: City): Site;
 }
-
-export type SiteImpactsDataView = {
-  id: string;
-  name: string;
-  nature: SiteNature;
-  fricheActivity?: string;
-  addressCityCode: string;
-  addressLabel: string;
-  contaminatedSoilSurface?: number;
-  ownerStructureType: string;
-  ownerName: string;
-  tenantName?: string;
-  surfaceArea: number;
-  soilsDistribution: SoilsDistribution;
-  accidentsDeaths?: number;
-  accidentsMinorInjuries?: number;
-  accidentsSevereInjuries?: number;
-  yearlyCosts: { bearer: string; amount: number; purpose: string }[];
-};
-
-export type ReconversionProjectImpactsDataView = {
-  id: string;
-  name: string;
-  relatedSiteId: string;
-  soilsDistribution: SoilsDistribution;
-  isExpressProject: boolean;
-  conversionSchedule?: Schedule;
-  reinstatementSchedule?: Schedule;
-  futureOperatorName?: string;
-  futureSiteOwnerName?: string;
-  reinstatementContractOwnerName?: string;
-  sitePurchaseTotalAmount?: number;
-  sitePurchasePropertyTransferDutiesAmount?: number;
-  reinstatementCosts: ReinstatementExpense[];
-  developmentPlanInstallationCosts: DevelopmentPlanInstallationExpenses[];
-  financialAssistanceRevenues: FinancialAssistanceRevenue[];
-  yearlyProjectedCosts: RecurringExpense[];
-  yearlyProjectedRevenues: RecurringRevenue[];
-  developmentPlanType?: DevelopmentPlan["type"];
-  developmentPlanDeveloperName?: string;
-  developmentPlanFeatures?: DevelopmentPlan["features"];
-  operationsFirstYear?: number;
-  siteResaleSellingPrice?: number;
-  buildingsResaleSellingPrice?: number;
-  decontaminatedSoilSurface?: number;
-};
 
 type Request = {
   siteSurfaceArea: number;

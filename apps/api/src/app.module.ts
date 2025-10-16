@@ -17,7 +17,7 @@ import { DomainEvent } from "./shared-kernel/domainEvent";
 import { SitesModule } from "./sites/adapters/primary/sites.module";
 import { UsersModule } from "./users/adapters/primary/users.module";
 
-export class DomainEventsHandler {
+class DomainEventsHandler {
   constructor(private readonly domainEventRepository: DomainEventsRepository) {}
 
   @OnEvent("**")

@@ -11,7 +11,7 @@ export type StepContext = {
   stepsState: ProjectCreationState["urbanProject"]["steps"];
 };
 
-export interface StepHandler {
+interface StepHandler {
   readonly stepId: UrbanProjectCreationStep;
   getNextStepId?(context: StepContext): UrbanProjectCreationStep;
   getPreviousStepId?(context: StepContext): UrbanProjectCreationStep;

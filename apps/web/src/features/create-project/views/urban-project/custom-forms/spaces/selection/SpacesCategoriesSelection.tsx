@@ -15,7 +15,7 @@ import TileFormFooterWrapper from "@/shared/views/layout/TileFormWrapper/TileFor
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
-export type FormValues = {
+type FormValues = {
   spaceCategories: UrbanSpaceCategory[];
 };
 

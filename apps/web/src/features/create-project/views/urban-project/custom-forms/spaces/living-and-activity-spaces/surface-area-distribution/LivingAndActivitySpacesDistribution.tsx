@@ -21,7 +21,7 @@ type Props = {
   onBack: () => void;
 };
 
-export type FormValues = SurfaceAreaDistributionJson<UrbanLivingAndActivitySpace>;
+type FormValues = SurfaceAreaDistributionJson<UrbanLivingAndActivitySpace>;
 
 function LivingAndActivitySpacesDistribution({
   initialValues,

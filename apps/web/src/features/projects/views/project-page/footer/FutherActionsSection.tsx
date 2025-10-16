@@ -17,10 +17,9 @@ type Link = {
 };
 
 export const PROJECT_AND_SITE_FEATURES_FOOTER_DIALOG_ID = "project-and-site-features-footer-dialog";
-export const DUPLICATE_PROJECT_FEATURE_ALERT_DIALOG_ID =
-  "duplicate-project-feature-alert-footer-dialog";
-export const UPDATE_PROJECT_FEATURE_ALERT_DIALOG_ID = "update-project-feature-alert-footer-dialog";
-export const UPDATE_SITE_FEATURE_ALERT_DIALOG_ID = "update-site-feature-alert-footer-dialog";
+const DUPLICATE_PROJECT_FEATURE_ALERT_DIALOG_ID = "duplicate-project-feature-alert-footer-dialog";
+const UPDATE_PROJECT_FEATURE_ALERT_DIALOG_ID = "update-project-feature-alert-footer-dialog";
+const UPDATE_SITE_FEATURE_ALERT_DIALOG_ID = "update-site-feature-alert-footer-dialog";
 
 export default function FurtherActionsSection({ siteId }: { siteId: string }) {
   const links: Link[] = [

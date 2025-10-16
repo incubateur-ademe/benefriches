@@ -31,10 +31,6 @@ export const selectStepAnswers = <T extends AnswerStepId>(stepId: T) =>
     );
   });
 
-export const selectHasBuildings = createSelector([selectStepState], (steps) =>
-  ReadStateHelper.hasBuildings(steps),
-);
-
 export const selectProjectData = createSelector([selectStepState], (steps) =>
   ReadStateHelper.getProjectData(steps),
 );

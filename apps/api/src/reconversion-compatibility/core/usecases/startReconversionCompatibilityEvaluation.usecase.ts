@@ -1,3 +1,5 @@
+import { Injectable } from "@nestjs/common";
+
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerator";
 import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
@@ -12,6 +14,7 @@ type Request = {
   createdById: string;
 };
 
+@Injectable()
 export class StartReconversionCompatibilityEvaluationUseCase implements UseCase<Request, void> {
   constructor(
     private readonly repository: ReconversionCompatibilityEvaluationRepository,
