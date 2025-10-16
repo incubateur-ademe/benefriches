@@ -8,7 +8,7 @@ import { RootState } from "@/shared/core/store-config/store";
 import { ProjectCreationState } from "../../createProject.reducer";
 import { selectDefaultSchedule, selectSiteData } from "../../createProject.selectors";
 import { generateRenewableEnergyProjectName } from "../../projectName";
-import { RenewableEneryProjectState } from "../renewableEnergy.reducer";
+import { RenewableEnergyProjectState } from "../renewableEnergy.reducer";
 
 const selectSelf = (state: RootState) => state.projectCreation;
 
@@ -19,7 +19,7 @@ const selectRenewableEnergyData = createSelector(
 
 export const selectCreationData = createSelector(
   selectRenewableEnergyData,
-  (state): RenewableEneryProjectState["creationData"] => state.creationData,
+  (state): RenewableEnergyProjectState["creationData"] => state.creationData,
 );
 
 export const selectRenewableEnergyType = createSelector(

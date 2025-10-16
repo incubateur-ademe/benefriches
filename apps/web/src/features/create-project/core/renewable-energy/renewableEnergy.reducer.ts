@@ -64,7 +64,8 @@ import {
 } from "./actions/renewableEnergy.actions";
 import { fetchCurrentAndProjectedSoilsCarbonStorage } from "./actions/soilsCarbonStorage.actions";
 
-export type RenewableEneryProjectState = {
+// todo: fix typo
+export type RenewableEnergyProjectState = {
   createMode: "express" | "custom" | undefined;
   saveState: "idle" | "loading" | "success" | "error";
   creationData: Partial<ReconversionProjectCreationData>;
@@ -89,7 +90,7 @@ export type RenewableEneryProjectState = {
   };
 };
 
-export const INITIAL_STATE: RenewableEneryProjectState = {
+export const INITIAL_STATE: RenewableEnergyProjectState = {
   createMode: undefined,
   creationData: {
     yearlyProjectedExpenses: [],

@@ -18,7 +18,7 @@ import {
 import { reconversionProjectCreationInitiated } from "./actions/urbanProjectCreationInitiated.action";
 import { RenewableEnergyCreationStep } from "./renewable-energy/creationSteps";
 import {
-  RenewableEneryProjectState,
+  RenewableEnergyProjectState,
   INITIAL_STATE as renenewableEnergyProjectInitialState,
   renewableEnergyProjectReducer,
 } from "./renewable-energy/renewableEnergy.reducer";
@@ -39,7 +39,7 @@ export type ProjectCreationState = {
   siteData?: ProjectSite;
   siteDataLoadingState: LoadingState;
   urbanProject: UrbanProjectState;
-  renewableEnergyProject: RenewableEneryProjectState;
+  renewableEnergyProject: RenewableEnergyProjectState;
   stepRevertAttempted: boolean;
   siteRelatedLocalAuthorities: {
     loadingState: LoadingState;
