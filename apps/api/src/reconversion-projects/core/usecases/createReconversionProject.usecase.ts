@@ -3,8 +3,8 @@ import { z } from "zod";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { UseCase } from "src/shared-kernel/usecase";
 
+import { ReconversionProjectRepository } from "../gateways/ReconversionProjectRepository";
 import {
-  ReconversionProjectInput,
   ReconversionProjectInputProps,
   saveReconversionProjectPropsSchema,
   saveReconversionProjectSchema,
@@ -12,10 +12,6 @@ import {
 
 export interface SiteRepository {
   existsWithId(id: string): Promise<boolean>;
-}
-export interface ReconversionProjectRepository {
-  existsWithId(id: string): Promise<boolean>;
-  save(reconversionProject: ReconversionProjectInput): Promise<void>;
 }
 
 export type ReconversionProjectProps = z.infer<typeof saveReconversionProjectSchema>;

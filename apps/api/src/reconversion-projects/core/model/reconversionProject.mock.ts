@@ -1,4 +1,13 @@
+import {
+  ReconversionProjectSoilsDistribution,
+  RecurringExpense,
+  RecurringRevenue,
+  ReinstatementExpensePurpose,
+} from "shared";
+
+import { ReconversionProjectProps } from "../usecases/createReconversionProject.usecase";
 import { ReconversionProjectInput, ReconversionProjectInputProps } from "./reconversionProject";
+import { UrbanProjectFeatures } from "./urbanProjects";
 
 const baseReconversionProjectProps = {
   id: "64789135-afad-46ea-97a2-f14ba460d485",
@@ -189,3 +198,92 @@ export const buildUrbanProjectReconversionProjectProps = (): ReconversionProject
     decontaminatedSoilSurface: 3000,
   };
 };
+
+export class UrbanProjectBuilder {
+  private readonly props: ReconversionProjectProps;
+
+  constructor() {
+    this.props = {
+      ...buildUrbanProjectReconversionProjectProps(),
+      createdAt: new Date(),
+      creationMode: "custom",
+    };
+  }
+
+  withId(id: string): this {
+    this.props.id = id;
+    return this;
+  }
+
+  withCreatedBy(createdBy: string): this {
+    this.props.createdBy = createdBy;
+    return this;
+  }
+
+  withRelatedSiteId(relatedSiteId: string): this {
+    this.props.relatedSiteId = relatedSiteId;
+    return this;
+  }
+
+  withName(name: string): this {
+    this.props.name = name;
+    return this;
+  }
+
+  withSoilsDistribution(soilsDistribution: ReconversionProjectSoilsDistribution): this {
+    this.props.soilsDistribution = soilsDistribution;
+    return this;
+  }
+
+  withDevelopmentPlan(features: UrbanProjectFeatures): this {
+    this.props.developmentPlan.features = features;
+    return this;
+  }
+
+  withYearlyExpenses(expenses: RecurringExpense[]): this {
+    this.props.yearlyProjectedCosts = expenses;
+    return this;
+  }
+
+  withYearlyRevenues(revenues: RecurringRevenue[]): this {
+    this.props.yearlyProjectedRevenues = revenues;
+    return this;
+  }
+
+  // todo: use shared type for structureType
+  withFutureOperator(name: string, structureType: string): this {
+    this.props.futureOperator = { name, structureType };
+    return this;
+  }
+
+  // todo: use shared type for structureType
+  withDeveloper(name: string, structureType: string): this {
+    this.props.developmentPlan.developer = { name, structureType };
+    return this;
+  }
+
+  // todo: use shared type for structureType
+  withFutureSiteOwner(name: string, structureType: string): this {
+    this.props.futureSiteOwner = { name, structureType };
+    return this;
+  }
+
+  withReinstatement({
+    contractOwner,
+    costs,
+    schedule,
+  }: {
+    contractOwner: { name: string; structureType: string };
+    costs: { amount: number; purpose: ReinstatementExpensePurpose }[];
+    schedule: { startDate: Date; endDate: Date };
+  }): this {
+    this.props.reinstatementContractOwner = contractOwner;
+    this.props.reinstatementCosts = costs;
+    this.props.reinstatementSchedule = schedule;
+    return this;
+  }
+
+  build(): ReconversionProjectProps {
+    return this.props;
+  }
+}

@@ -1,4 +1,14 @@
-import { Body, Controller, Get, Param, Post, Query, UseGuards } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Get,
+  NotFoundException,
+  Param,
+  Post,
+  Query,
+  Req,
+  UseGuards,
+} from "@nestjs/common";
 import { createZodDto } from "nestjs-zod";
 import {
   API_ROUTES,
@@ -7,12 +17,13 @@ import {
 } from "shared";
 import { z } from "zod";
 
-import { JwtAuthGuard } from "src/auth/adapters/JwtAuthGuard";
+import { JwtAuthGuard, RequestWithAuthenticatedUser } from "src/auth/adapters/JwtAuthGuard";
 import { formatReconversionProjectInputToFeatures } from "src/reconversion-projects/core/model/formatProjectInputToFeatures";
 import { ReconversionProjectFeaturesView } from "src/reconversion-projects/core/model/reconversionProject";
 import { ComputeProjectUrbanSprawlImpactsComparisonUseCase } from "src/reconversion-projects/core/usecases/computeProjectUrbanSprawlImpactsComparison.usecase";
 import { ComputeReconversionProjectImpactsUseCase } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
 import { CreateReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/createReconversionProject.usecase";
+import { DuplicateReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/duplicateReconversionProject.usecase";
 import { GenerateAndSaveExpressReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/generateAndSaveExpressReconversionProject.usecase";
 import { GenerateExpressReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/generateExpressReconversionProject.usecase";
 import { GetReconversionProjectFeaturesUseCase } from "src/reconversion-projects/core/usecases/getReconversionProjectFeatures.usecase";
@@ -52,6 +63,12 @@ class UrbanSprawlComparisonQueryDto extends createZodDto(
   API_ROUTES.URBAN_SPRAWL_IMPACTS_COMPARISON.GET.querySchema,
 ) {}
 
+class DuplicateReconversionProjectBodyDto extends createZodDto(
+  z.object({
+    newProjectId: z.uuid(),
+  }),
+) {}
+
 @Controller("reconversion-projects")
 export class ReconversionProjectController {
   constructor(
@@ -63,6 +80,7 @@ export class ReconversionProjectController {
     private readonly getReconversionProjectFeaturesUseCase: GetReconversionProjectFeaturesUseCase,
     private readonly quickComputeUrbanProjectImpactsOnFricheUseCase: QuickComputeUrbanProjectImpactsOnFricheUseCase,
     private readonly getProjectUrbanSprawlImpactsComparisonUseCase: ComputeProjectUrbanSprawlImpactsComparisonUseCase,
+    private readonly duplicateReconversionProjectUseCase: DuplicateReconversionProjectUseCase,
   ) {}
 
   @UseGuards(JwtAuthGuard)
@@ -94,6 +112,32 @@ export class ReconversionProjectController {
     await this.generateAndSaveExpressReconversionProjectUseCase.execute(
       createReconversionProjectDto,
     );
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post(":reconversionProjectId/duplicate")
+  async duplicateReconversionProject(
+    @Param("reconversionProjectId") reconversionProjectId: string,
+    @Body() body: DuplicateReconversionProjectBodyDto,
+    @Req() req: RequestWithAuthenticatedUser,
+  ) {
+    const authenticatedUserId = req.accessTokenPayload.userId;
+
+    const result = await this.duplicateReconversionProjectUseCase.execute({
+      sourceProjectId: reconversionProjectId,
+      newProjectId: body.newProjectId,
+      userId: authenticatedUserId,
+    });
+
+    if (!result.success) {
+      switch (result.error) {
+        case "SOURCE_RECONVERSION_PROJECT_NOT_FOUND":
+        case "USER_NOT_AUTHORIZED":
+          throw new NotFoundException(
+            `Reconversion project with id ${reconversionProjectId} not found`,
+          );
+      }
+    }
   }
 
   @UseGuards(JwtAuthGuard)

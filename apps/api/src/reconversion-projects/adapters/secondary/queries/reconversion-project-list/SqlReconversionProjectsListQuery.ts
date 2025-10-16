@@ -1,6 +1,6 @@
 import { Inject } from "@nestjs/common";
 import { Knex } from "knex";
-import { SiteNature } from "shared";
+import { SiteNature, ReconversionProjectCreationMode } from "shared";
 
 import { DevelopmentPlan } from "src/reconversion-projects/core/model/reconversionProject";
 import {
@@ -52,7 +52,7 @@ export class SqlReconversionProjectsListQuery implements ReconversionProjectsLis
         id: string;
         name: string;
         type: DevelopmentPlan["type"];
-        creationMode: "express" | "custom";
+        creationMode: ReconversionProjectCreationMode;
       }[];
     }[];
 

@@ -10,13 +10,14 @@ import { GetCarbonStorageFromSoilDistributionService } from "src/carbon-storage/
 import { PhotovoltaicPerformanceModule } from "src/photovoltaic-performance/adapters/primary/photovoltaicPerformance.module";
 import { PhotovoltaicGeoInfoSystemApi } from "src/photovoltaic-performance/adapters/secondary/photovoltaic-data-provider/PhotovoltaicGeoInfoSystemApi";
 import { PhotovoltaicDataProvider } from "src/photovoltaic-performance/core/gateways/PhotovoltaicDataProvider";
+import { ReconversionProjectRepository } from "src/reconversion-projects/core/gateways/ReconversionProjectRepository";
 import { ComputeProjectUrbanSprawlImpactsComparisonUseCase } from "src/reconversion-projects/core/usecases/computeProjectUrbanSprawlImpactsComparison.usecase";
 import { ComputeReconversionProjectImpactsUseCase } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
 import {
   CreateReconversionProjectUseCase,
-  ReconversionProjectRepository,
   SiteRepository,
 } from "src/reconversion-projects/core/usecases/createReconversionProject.usecase";
+import { DuplicateReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/duplicateReconversionProject.usecase";
 import { GenerateAndSaveExpressReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/generateAndSaveExpressReconversionProject.usecase";
 import {
   GenerateExpressReconversionProjectUseCase,
@@ -30,6 +31,10 @@ import {
 import { QuickComputeUrbanProjectImpactsOnFricheUseCase } from "src/reconversion-projects/core/usecases/quickComputeUrbanProjectImpactsOnFricheUseCase.usecase";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
+import { RealEventPublisher } from "src/shared-kernel/adapters/events/publisher/RealEventPublisher";
+import { RandomUuidGenerator } from "src/shared-kernel/adapters/id-generator/RandomUuidGenerator";
+import { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerator";
+import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
 import { SqlSitesQuery } from "src/sites/adapters/secondary/site-query/SqlSitesQuery";
 import { SqlSiteRepository } from "src/sites/adapters/secondary/site-repository/SqlSiteRepository";
 import { SqlUserQuery } from "src/users/adapters/secondary/user-query/SqlUserQuery";
@@ -174,6 +179,28 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
         RealDateProvider,
       ],
     },
+    {
+      provide: DuplicateReconversionProjectUseCase,
+      useFactory(
+        repository: ReconversionProjectRepository,
+        dateProvider: DateProvider,
+        uidGenerator: UidGenerator,
+        eventPublisher: DomainEventPublisher,
+      ) {
+        return new DuplicateReconversionProjectUseCase(
+          repository,
+          dateProvider,
+          uidGenerator,
+          eventPublisher,
+        );
+      },
+      inject: [
+        SqlReconversionProjectRepository,
+        RealDateProvider,
+        RandomUuidGenerator,
+        RealEventPublisher,
+      ],
+    },
     SqlReconversionProjectRepository,
     SqlReconversionProjectQuery,
     SqlReconversionProjectsListQuery,
@@ -186,6 +213,8 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
     SqlCarbonStorageQuery,
     SqlCityStatsQuery,
     PhotovoltaicGeoInfoSystemApi,
+    RandomUuidGenerator,
+    RealEventPublisher,
   ],
 })
 export class ReconversionProjectsModule {}

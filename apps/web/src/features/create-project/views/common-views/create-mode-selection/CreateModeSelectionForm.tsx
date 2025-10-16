@@ -1,5 +1,6 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import { Controller, useForm } from "react-hook-form";
+import { ReconversionProjectCreationMode } from "shared";
 
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import Badge from "@/shared/views/components/Badge/Badge";
@@ -17,7 +18,7 @@ type Props = {
 };
 
 export type FormValues = {
-  createMode: "express" | "custom";
+  createMode: Extract<ReconversionProjectCreationMode, "custom" | "express">;
 };
 
 type Option = {

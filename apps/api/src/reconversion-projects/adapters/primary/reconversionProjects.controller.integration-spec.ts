@@ -12,10 +12,18 @@ import {
   buildExhaustiveReconversionProjectProps,
   buildMinimalReconversionProjectProps,
   buildUrbanProjectReconversionProjectProps,
+  UrbanProjectBuilder,
 } from "src/reconversion-projects/core/model/reconversionProject.mock";
 import { Result } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
+import { ReconversionProjectProps } from "src/reconversion-projects/core/usecases/createReconversionProject.usecase";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
+import {
+  SqlDevelopmentPlan,
+  SqlReconversionProject,
+} from "src/shared-kernel/adapters/sql-knex/tableTypes";
 import { UserBuilder } from "src/users/core/model/user.mock";
+
+import { SqlReconversionProjectRepository } from "../secondary/repositories/reconversion-project/SqlReconversionProjectRepository";
 
 type BadRequestResponseBody = {
   errors: { path: string[] }[];
@@ -523,6 +531,366 @@ describe("ReconversionProjects controller", () => {
         propertyValueMedianPricePerSquareMeters: 2179,
         surfaceAreaSquareMeters: 36595400,
       });
+    });
+  });
+
+  describe("POST /reconversion-projects/:reconversionProjectId/duplicate", () => {
+    it("gets a 401 when not authenticated", async () => {
+      const response = await supertest(app.getHttpServer())
+        .post(`/api/reconversion-projects/${uuid()}/duplicate`)
+        .send({ newProjectId: uuid() });
+
+      expect(response.status).toEqual(401);
+    });
+
+    it("gets a 404 when project does not exist", async () => {
+      const userId = uuid();
+      const user = new UserBuilder().withId(userId).asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+
+      const response = await supertest(app.getHttpServer())
+        .post(`/api/reconversion-projects/${uuid()}/duplicate`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send({ newProjectId: uuid() });
+
+      expect(response.status).toEqual(404);
+    });
+
+    it("gets a 404 when user is not the creator of the project", async () => {
+      const siteId = uuid();
+
+      const authenticatedUser = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(authenticatedUser);
+
+      // Create a site
+      await sqlConnection("sites").insert({
+        id: siteId,
+        created_by: authenticatedUser.id,
+        name: "Site name",
+        surface_area: 14000,
+        owner_structure_type: "company",
+        created_at: new Date(),
+      });
+
+      const anotherUserId = uuid();
+      const urbanProject = new UrbanProjectBuilder()
+        .withCreatedBy(anotherUserId)
+        .withRelatedSiteId(siteId)
+        .build();
+      await app.get(SqlReconversionProjectRepository).save(urbanProject);
+
+      const response = await supertest(app.getHttpServer())
+        .post(`/api/reconversion-projects/${urbanProject.id}/duplicate`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send({ newProjectId: uuid() });
+
+      expect(response.status).toEqual(404);
+    });
+
+    it("successfully duplicates a urban project", async () => {
+      const siteId = uuid();
+      const newProjectId = uuid();
+
+      const authenticatedUser = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(authenticatedUser);
+
+      // Create a site
+      await sqlConnection("sites").insert({
+        id: siteId,
+        created_by: authenticatedUser.id,
+        name: "Site name",
+        surface_area: 14000,
+        owner_structure_type: "local_authority",
+        created_at: new Date(),
+      });
+
+      const sourceUrbanProject = new UrbanProjectBuilder()
+        .withCreatedBy(authenticatedUser.id)
+        .withRelatedSiteId(siteId)
+        .withFutureOperator("Big real estate company", "company")
+        .withDeveloper("Big real estate company", "company")
+        .withFutureSiteOwner("Big real estate company", "company")
+        .withYearlyExpenses([{ amount: 34_000, purpose: "maintenance" }])
+        .withYearlyRevenues([{ amount: 50_000, source: "rent" }])
+        .withSoilsDistribution([
+          {
+            soilType: "BUILDINGS",
+            surfaceArea: 14_000,
+            spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+          },
+          {
+            soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+            surfaceArea: 25_000,
+            spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+          },
+        ])
+        .withReinstatement({
+          contractOwner: { name: "City of Paris", structureType: "local_authority" },
+          costs: [{ amount: 95_000, purpose: "demolition" }],
+          schedule: { startDate: new Date("2032-06-01"), endDate: new Date("2032-12-31") },
+        })
+        .build();
+      await app.get(SqlReconversionProjectRepository).save(sourceUrbanProject);
+
+      const response = await supertest(app.getHttpServer())
+        .post(`/api/reconversion-projects/${sourceUrbanProject.id}/duplicate`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send({ newProjectId });
+
+      expect(response.status).toEqual(201);
+
+      const duplicatedProjects = await sqlConnection("reconversion_projects")
+        .where({ id: newProjectId })
+        .select("*");
+
+      expect(duplicatedProjects).toHaveLength(1);
+      expect(duplicatedProjects[0]).toEqual<SqlReconversionProject>({
+        id: newProjectId,
+        name: "Copie de " + sourceUrbanProject.name,
+        creation_mode: "duplicated",
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        created_at: expect.any(Date),
+        description: sourceUrbanProject.description,
+        created_by: authenticatedUser.id,
+        related_site_id: siteId,
+        project_phase: sourceUrbanProject.projectPhase,
+        // stakeholders
+        future_operator_name: sourceUrbanProject.futureOperator?.name,
+        future_operator_structure_type: sourceUrbanProject.futureOperator?.structureType,
+        future_site_owner_name: sourceUrbanProject.futureSiteOwner?.name,
+        future_site_owner_structure_type: sourceUrbanProject.futureSiteOwner?.structureType,
+        // reinstatement
+        reinstatement_contract_owner_name: sourceUrbanProject.reinstatementContractOwner?.name,
+        reinstatement_contract_owner_structure_type:
+          sourceUrbanProject.reinstatementContractOwner?.structureType,
+        reinstatement_schedule_end_date: sourceUrbanProject.reinstatementSchedule?.endDate,
+        reinstatement_schedule_start_date: sourceUrbanProject.reinstatementSchedule?.startDate,
+        friche_decontaminated_soil_surface_area: sourceUrbanProject.decontaminatedSoilSurface,
+        operations_first_year: sourceUrbanProject.operationsFirstYear,
+        // buildings and site resale
+        buildings_resale_expected_property_transfer_duties:
+          sourceUrbanProject.buildingsResaleExpectedPropertyTransferDuties,
+        buildings_resale_expected_selling_price:
+          sourceUrbanProject.buildingsResaleExpectedSellingPrice,
+        site_resale_expected_selling_price: sourceUrbanProject.siteResaleExpectedSellingPrice,
+        site_resale_expected_property_transfer_duties:
+          sourceUrbanProject.siteResaleExpectedPropertyTransferDuties,
+        site_purchase_selling_price: sourceUrbanProject.sitePurchaseSellingPrice,
+        site_purchase_property_transfer_duties:
+          sourceUrbanProject.sitePurchasePropertyTransferDuties,
+      });
+
+      // development plan
+      const duplicatedDevelopmentPlans = await sqlConnection(
+        "reconversion_project_development_plans",
+      )
+        .where({ reconversion_project_id: newProjectId })
+        .select("*");
+      expect(duplicatedDevelopmentPlans).toEqual<SqlDevelopmentPlan[]>([
+        {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          id: expect.any(String),
+          type: "URBAN_PROJECT",
+          developer_name: sourceUrbanProject.developmentPlan.developer.name,
+          developer_structure_type: sourceUrbanProject.developmentPlan.developer.structureType,
+          reconversion_project_id: newProjectId,
+          features: sourceUrbanProject.developmentPlan.features,
+          schedule_end_date: sourceUrbanProject.developmentPlan.installationSchedule?.endDate,
+          schedule_start_date: sourceUrbanProject.developmentPlan.installationSchedule?.startDate,
+        },
+      ]);
+      // development plan costs
+      const duplicatedDevelopmentPlanCosts = await sqlConnection(
+        "reconversion_project_development_plan_costs",
+      )
+        .where("development_plan_id", duplicatedDevelopmentPlans[0]?.id)
+        .select("amount", "purpose");
+      expect(duplicatedDevelopmentPlanCosts).toEqual(sourceUrbanProject.developmentPlan.costs);
+      // reinstatement costs
+      const duplicatedReinstatementCosts = await sqlConnection(
+        "reconversion_project_reinstatement_costs",
+      )
+        .where({ reconversion_project_id: newProjectId })
+        .select("amount", "purpose");
+      expect(duplicatedReinstatementCosts).toEqual(sourceUrbanProject.reinstatementCosts);
+      // yearly expenses
+      const duplicatedYearlyExpenses = await sqlConnection("reconversion_project_yearly_expenses")
+        .where({ reconversion_project_id: newProjectId })
+        .select("amount", "purpose");
+      expect(duplicatedYearlyExpenses).toEqual([{ amount: 34000, purpose: "maintenance" }]);
+      // yearly revenues
+      const duplicatedYearlyRevenues = await sqlConnection("reconversion_project_yearly_revenues")
+        .where({ reconversion_project_id: newProjectId })
+        .select("amount", "source");
+      expect(duplicatedYearlyRevenues).toEqual([{ amount: 50000, source: "rent" }]);
+      // soil distributions
+      const duplicatedSoilDistributions = await sqlConnection(
+        "reconversion_project_soils_distributions",
+      )
+        .where({ reconversion_project_id: newProjectId })
+        .select(
+          "soil_type as soilType",
+          "surface_area as surfaceArea",
+          "space_category as spaceCategory",
+        );
+      expect(duplicatedSoilDistributions).toEqual(sourceUrbanProject.soilsDistribution);
+    });
+
+    it("successfully duplicates a urban project with very little information", async () => {
+      const siteId = uuid();
+      const newProjectId = uuid();
+
+      const authenticatedUser = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(authenticatedUser);
+
+      // Create a site
+      await sqlConnection("sites").insert({
+        id: siteId,
+        created_by: authenticatedUser.id,
+        name: "Site name",
+        surface_area: 14000,
+        owner_structure_type: "local_authority",
+        created_at: new Date(),
+      });
+
+      const sourceUrbanProject: ReconversionProjectProps = {
+        id: uuid(),
+        relatedSiteId: siteId,
+        createdAt: new Date(),
+        creationMode: "custom",
+        name: "ébauche projet urbain",
+        createdBy: authenticatedUser.id,
+        developmentPlan: {
+          type: "URBAN_PROJECT",
+          developer: { name: "Aménageur", structureType: "unknown" },
+          costs: [],
+          installationSchedule: {
+            startDate: new Date("2027-10-17T00:00:00.000Z"),
+            endDate: new Date("2028-10-17T00:00:00.000Z"),
+          },
+          features: {
+            spacesDistribution: { PUBLIC_GREEN_SPACES: 34794 },
+            buildingsFloorAreaDistribution: {},
+          },
+        },
+        decontaminatedSoilSurface: 0,
+        financialAssistanceRevenues: [],
+        yearlyProjectedCosts: [],
+        yearlyProjectedRevenues: [],
+        operationsFirstYear: 2028,
+        projectPhase: "setup",
+        soilsDistribution: [
+          {
+            soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+            spaceCategory: "PUBLIC_GREEN_SPACE",
+            surfaceArea: 13917.6,
+          },
+          {
+            soilType: "ARTIFICIAL_TREE_FILLED",
+            spaceCategory: "PUBLIC_GREEN_SPACE",
+            surfaceArea: 20876.4,
+          },
+        ],
+      };
+      await app.get(SqlReconversionProjectRepository).save(sourceUrbanProject);
+
+      const response = await supertest(app.getHttpServer())
+        .post(`/api/reconversion-projects/${sourceUrbanProject.id}/duplicate`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send({ newProjectId });
+
+      expect(response.status).toEqual(201);
+
+      const duplicatedProjects = await sqlConnection("reconversion_projects")
+        .where({ id: newProjectId })
+        .select("*");
+
+      expect(duplicatedProjects).toHaveLength(1);
+      expect(duplicatedProjects[0]).toEqual({
+        id: newProjectId,
+        name: "Copie de " + sourceUrbanProject.name,
+        creation_mode: "duplicated",
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        created_at: expect.any(Date),
+        description: null,
+        created_by: authenticatedUser.id,
+        related_site_id: siteId,
+        project_phase: sourceUrbanProject.projectPhase,
+        // stakeholders
+        future_operator_name: null,
+        future_operator_structure_type: null,
+        future_site_owner_name: null,
+        future_site_owner_structure_type: null,
+        // reinstatement
+        reinstatement_contract_owner_name: null,
+        reinstatement_contract_owner_structure_type: null,
+        reinstatement_schedule_end_date: null,
+        reinstatement_schedule_start_date: null,
+        friche_decontaminated_soil_surface_area: 0,
+        operations_first_year: sourceUrbanProject.operationsFirstYear,
+        // buildings and site resale
+        buildings_resale_expected_property_transfer_duties: null,
+        buildings_resale_expected_selling_price: null,
+        site_resale_expected_selling_price: null,
+        site_resale_expected_property_transfer_duties: null,
+        site_purchase_selling_price: null,
+        site_purchase_property_transfer_duties: null,
+      });
+
+      // development plan
+      const duplicatedDevelopmentPlans = await sqlConnection(
+        "reconversion_project_development_plans",
+      )
+        .where({ reconversion_project_id: newProjectId })
+        .select("*");
+      expect(duplicatedDevelopmentPlans).toEqual<SqlDevelopmentPlan[]>([
+        {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          id: expect.any(String),
+          type: "URBAN_PROJECT",
+          developer_name: sourceUrbanProject.developmentPlan.developer.name,
+          developer_structure_type: sourceUrbanProject.developmentPlan.developer.structureType,
+          reconversion_project_id: newProjectId,
+          features: sourceUrbanProject.developmentPlan.features,
+          schedule_end_date: sourceUrbanProject.developmentPlan.installationSchedule?.endDate,
+          schedule_start_date: sourceUrbanProject.developmentPlan.installationSchedule?.startDate,
+        },
+      ]);
+      // development plan costs
+      const duplicatedDevelopmentPlanCosts = await sqlConnection(
+        "reconversion_project_development_plan_costs",
+      )
+        .where("development_plan_id", duplicatedDevelopmentPlans[0]?.id)
+        .select("amount", "purpose");
+      expect(duplicatedDevelopmentPlanCosts).toEqual(sourceUrbanProject.developmentPlan.costs);
+      // reinstatement costs
+      const duplicatedReinstatementCosts = await sqlConnection(
+        "reconversion_project_reinstatement_costs",
+      )
+        .where({ reconversion_project_id: newProjectId })
+        .select("amount", "purpose");
+      expect(duplicatedReinstatementCosts).toEqual([]);
+      // yearly expenses
+      const duplicatedYearlyExpenses = await sqlConnection("reconversion_project_yearly_expenses")
+        .where({ reconversion_project_id: newProjectId })
+        .select("amount", "purpose");
+      expect(duplicatedYearlyExpenses).toEqual([]);
+      // yearly revenues
+      const duplicatedYearlyRevenues = await sqlConnection("reconversion_project_yearly_revenues")
+        .where({ reconversion_project_id: newProjectId })
+        .select("*");
+      expect(duplicatedYearlyRevenues).toEqual([]);
+      // soil distributions
+      const duplicatedSoilDistributions = await sqlConnection(
+        "reconversion_project_soils_distributions",
+      )
+        .where({ reconversion_project_id: newProjectId })
+        .select(
+          "soil_type as soilType",
+          "surface_area as surfaceArea",
+          "space_category as spaceCategory",
+        );
+      expect(duplicatedSoilDistributions).toEqual(sourceUrbanProject.soilsDistribution);
     });
   });
 });

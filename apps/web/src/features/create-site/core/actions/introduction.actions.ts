@@ -3,6 +3,7 @@ import {
   AgriculturalOperationActivity,
   FricheActivity,
   NaturalAreaType,
+  ReconversionProjectCreationMode,
   SiteNature,
 } from "shared";
 
@@ -15,7 +16,7 @@ export const siteCreationInitiated = createSiteCreationAction<
 export const introductionStepCompleted = createStepCompletedAction("INTRODUCTION");
 
 export const createModeSelectionCompleted = createStepCompletedAction<{
-  createMode: "express" | "custom";
+  createMode: Extract<ReconversionProjectCreationMode, "custom" | "express">;
 }>("CREATE_MODE_SELECTION");
 
 export const isFricheCompleted = createStepCompletedAction<{ isFriche: boolean }>("IS_FRICHE");

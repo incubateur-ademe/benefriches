@@ -1,4 +1,5 @@
 import type { Knex } from "knex";
+import { ReconversionProjectCreationMode } from "shared";
 
 export async function up(knex: Knex): Promise<void> {
   await knex.transaction(async (trx) => {
@@ -19,7 +20,7 @@ export async function up(knex: Knex): Promise<void> {
       surface_area: number;
       friche_contaminated_soil_surface_area?: number;
       id: string;
-      creation_mode: "express" | "custom";
+      creation_mode: ReconversionProjectCreationMode;
     }[];
 
     if (reconversionProjects.length > 0) {

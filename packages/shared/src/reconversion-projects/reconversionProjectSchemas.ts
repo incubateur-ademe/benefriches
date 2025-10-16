@@ -54,7 +54,7 @@ export const reconversionProjectSchema = z.object({
   id: z.uuid(),
   createdBy: z.uuid(),
   createdAt: z.date(),
-  creationMode: z.enum(["express", "custom"]),
+  creationMode: z.enum(["express", "custom", "duplicated"]),
   name: z.string(),
   description: z.string().optional(),
   relatedSiteId: z.uuid(),
