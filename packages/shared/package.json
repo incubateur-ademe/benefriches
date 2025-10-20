@@ -21,7 +21,7 @@
     "lint": "eslint --max-warnings 0 .",
     "format": "prettier --write --cache \"./**/*.{js,ts,md,json}\" src/",
     "format:check": "prettier --check --cache  \"./**/*.{js,ts,md,json}\" src/",
-    "prepublishOnly": "pnpm build"
+    "postinstall": "pnpm run build"
   },
   "keywords": [],
   "author": "",
