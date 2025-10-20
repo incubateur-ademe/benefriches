@@ -14,10 +14,6 @@
     "module": "NodeNext" /* Specify what module code is generated. */,
     "rootDir": "./" /* Specify the root folder within your source files. */,
     "baseUrl": "./" /* Specify the base directory to resolve non-relative module names. */,
-    "typeRoots": [
-      "./node_modules/@types",
-      "./node_modules"
-    ] /* Specify multiple folders that act like './node_modules/@types'. */,
     "types": ["vitest/globals"],
     /* Emit */
     "declaration": true /* Generate .d.ts files from TypeScript and JavaScript files in your project. */,
