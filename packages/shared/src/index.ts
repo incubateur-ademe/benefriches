@@ -11,3 +11,4 @@ export * from "./local-authority";
 export * from "./co2eq";
 export * from "./api-contracts";
 export * from "./urban-sprawl-impacts-comparison";
+export { type IDateProvider } from "./adapters/IDateProvider";

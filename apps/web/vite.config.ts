@@ -33,21 +33,12 @@ export default defineConfig(({ mode }) => {
   return {
     base: "/", // make sure all assets are fetched from '/', even when route path is overwritten (like /embed/* routes)
     plugins: [tailwindcss(), react(), interceptEmbedRouting()],
-
-    // Vite expects local dependencies to be exported as ES Modules but shared is built as CommonJS
-    // https://vitejs.dev/guide/dep-pre-bundling#monorepos-and-linked-dependencies
-    optimizeDeps: {
-      include: ["shared"],
-    },
     build: {
       rollupOptions: {
         input: {
           embed: resolve(__dirname, "embed.html"),
           main: resolve(__dirname, "index.html"),
         },
-      },
-      commonjsOptions: {
-        include: [/shared/, /node_modules/],
       },
     },
     server: {

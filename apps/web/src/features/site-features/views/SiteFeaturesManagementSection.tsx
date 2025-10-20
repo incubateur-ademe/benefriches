@@ -9,8 +9,8 @@ import {
   SECURITY_COST_BY_HECTARE_PER_YEAR,
   SiteYearlyExpensePurpose,
   sumListWithKey,
+  INCOMES_EURO_PER_HECTARE_PER_YEAR,
 } from "shared";
-import { INCOMES_EURO_PER_HECTARE_PER_YEAR } from "shared/src/site/agricultural-operation/yearlyIncomes";
 
 import { getLabelForExpensePurpose } from "@/features/create-site/core/expenses.functions";
 import { getLabelForIncomeSource } from "@/features/create-site/core/incomes.functions";

@@ -2,7 +2,7 @@ import Input from "@codegouvfr/react-dsfr/Input";
 import Select from "@codegouvfr/react-dsfr/SelectNext";
 import { ReactNode } from "react";
 import { useForm } from "react-hook-form";
-import { LocalAuthority } from "shared/dist/local-authority";
+import { LocalAuthority } from "shared";
 
 import { AvailableProjectStakeholder } from "@/features/create-project/core/stakeholders.selectors";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";

@@ -1,10 +1,11 @@
 import eslint from "@eslint/js";
 import eslintConfigPrettier from "eslint-config-prettier";
+import vitest from "eslint-plugin-vitest";
+import { defineConfig } from "eslint/config";
 import tseslint from "typescript-eslint";
-import { defineConfig } from 'eslint/config';
-import vitest from 'eslint-plugin-vitest';
 
 export default defineConfig(
+  { ignores: ["node_modules/", "dist/", "tsdown.config.ts"] },
   eslint.configs.recommended,
   ...tseslint.configs.strictTypeChecked,
   ...tseslint.configs.stylisticTypeChecked,
@@ -12,7 +13,7 @@ export default defineConfig(
   {
     plugins: {
       ["@typescript-eslint"]: tseslint.plugin,
-      ['vitest']: vitest,
+      ["vitest"]: vitest,
     },
   },
   { ignores: ["node_modules/", "dist/"] },
@@ -20,7 +21,7 @@ export default defineConfig(
     languageOptions: {
       parser: tseslint.parser,
       parserOptions: {
-        tsconfigRootDir: import.meta.dirname, 
+        tsconfigRootDir: import.meta.dirname,
         project: true,
       },
     },

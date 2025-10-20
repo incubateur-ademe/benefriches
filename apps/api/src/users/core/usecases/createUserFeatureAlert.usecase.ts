@@ -1,4 +1,4 @@
-import { IDateProvider } from "shared/dist/adapters/IDateProvider";
+import { IDateProvider } from "shared";
 import { z } from "zod";
 
 import { UseCase } from "src/shared-kernel/usecase";

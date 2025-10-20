@@ -2,8 +2,10 @@
   "extends": "../../.tooling/tsconfig.base.json",
   "compilerOptions": {
     /* Language and Environment */
-    "target": "ES2022",
-    "module": "NodeNext",
+    "target": "esnext",
+    "module": "preserve",
+    "lib": ["es2023"],
+    "moduleDetection": "force",
     /* Modules */
     /* cf. https://vitest.dev/config/#globals */
     "typeRoots": [

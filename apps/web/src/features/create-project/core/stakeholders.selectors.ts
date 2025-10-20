@@ -1,6 +1,5 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { formatLocalAuthorityName } from "shared";
-import { LocalAuthority } from "shared/dist/local-authority";
+import { formatLocalAuthorityName, LocalAuthority } from "shared";
 
 import { RootState } from "@/shared/core/store-config/store";
 

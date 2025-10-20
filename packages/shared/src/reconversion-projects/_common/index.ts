@@ -8,4 +8,4 @@ export * from "./schedule/worksSchedule";
 
 export * from "./project-generator/ExpressProjectCategory";
 
-export { ReconversionProjectCreationMode } from "./creationMode";
+export { type ReconversionProjectCreationMode } from "./creationMode";
