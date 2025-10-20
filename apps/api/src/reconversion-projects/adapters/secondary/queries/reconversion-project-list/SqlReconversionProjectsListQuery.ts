@@ -56,6 +56,7 @@ export class SqlReconversionProjectsListQuery implements ReconversionProjectsLis
       }[];
     }[];
 
+    // oxlint-disable-next-line no-map-spread
     return result.map(({ creationMode, ...reconversionProjectsBySite }) => {
       return {
         ...reconversionProjectsBySite,

@@ -4,7 +4,7 @@ export const ACCESS_TOKEN_SERVICE_INJECTION_TOKEN = Symbol("AccessTokenService")
 
 export interface AccessTokenService {
   signAsync(payload: object | string, options?: JwtSignOptions): Promise<string>;
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
+  // oxlint-disable-next-line typescript/no-unnecessary-type-parameters
   decode<TToken extends object>(token: string): TToken | null;
   verifyAsync<TPayload extends object>(
     token: string,

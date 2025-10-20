@@ -86,7 +86,7 @@ describe("Auth integration tests", () => {
       "cannot register a user without field '%s'",
       async (mandatoryField) => {
         const requestBody = buildRegisterUserPayload();
-        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+        // oxlint-disable-next-line typescript/no-dynamic-delete
         delete requestBody[mandatoryField];
 
         const response = await request(app.getHttpServer())
@@ -221,7 +221,7 @@ describe("Auth integration tests", () => {
 
       // is email set as verified?
       const verifiedEmails = await sqlConnection("verified_emails").select("*");
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      // oxlint-disable-next-line typescript/no-unsafe-assignment
       expect(verifiedEmails).toEqual([{ email: userEmail, verified_at: expect.any(Date) }]);
 
       // is Pro Connect identity saved?
@@ -234,7 +234,7 @@ describe("Auth integration tests", () => {
           user_id: user.id,
           provider: "pro-connect",
           provider_user_id: proConnectClient.mockUserIdentity.id,
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          // oxlint-disable-next-line typescript/no-unsafe-assignment
           created_at: expect.any(Date),
           provider_info: proConnectClient.mockUserIdentity,
         },
@@ -443,7 +443,7 @@ describe("Auth integration tests", () => {
 
       expect(response.status).toBe(200);
       const verifiedEmails = await sqlConnection("verified_emails").select("*");
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      // oxlint-disable-next-line typescript/no-unsafe-assignment
       expect(verifiedEmails).toEqual([{ email: user.email, verified_at: expect.any(Date) }]);
     });
   });

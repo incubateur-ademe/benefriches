@@ -11,7 +11,7 @@ import {
 const dataPath = path.resolve(__dirname, "./../../../../../data/aldo/carbonStorage.csv");
 const HEADER = "reservoir,soil_category,stock_tC_by_ha,localisation_category,localisation_code";
 
-const readCsvData = async () => {
+const readCsvData = () => {
   return new Promise((resolve, reject) => {
     const readStream = fs.createReadStream(dataPath, "utf-8");
     const rl = readline.createInterface({ input: readStream });
@@ -48,7 +48,7 @@ const readCsvData = async () => {
   });
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+// oxlint-disable-next-line typescript/no-unsafe-member-access
 exports.seed = async function (knex: Knex): Promise<void> {
   await knex("carbon_storage").del();
   try {

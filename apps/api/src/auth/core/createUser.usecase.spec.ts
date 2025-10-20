@@ -40,7 +40,7 @@ describe("CreateUser Use Case", () => {
         "Cannot create an user without providing %s",
         async (mandatoryField) => {
           const userProps = buildMinimalUserProps(); // @ts-expect-error dynamic delete
-          // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+          // oxlint-disable-next-line typescript/no-dynamic-delete
           delete userProps[mandatoryField];
 
           const usecase = new CreateUserUseCase(

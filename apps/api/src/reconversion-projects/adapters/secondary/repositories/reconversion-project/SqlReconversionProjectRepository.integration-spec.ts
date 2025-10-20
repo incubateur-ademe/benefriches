@@ -472,7 +472,7 @@ describe("SqlReconversionProjectRepository integration", () => {
         expect(result).toHaveLength(1);
         expect(result).toEqual([
           {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+            // oxlint-disable-next-line typescript/no-unsafe-assignment
             id: expect.any(String),
             type: reconversionProject.developmentPlan.type,
             features: reconversionProject.developmentPlan.features,

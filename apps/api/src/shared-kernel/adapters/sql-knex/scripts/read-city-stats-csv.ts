@@ -4,7 +4,7 @@ import readline from "node:readline";
 
 import { CityStats } from "../tableTypes";
 
-export const readCityStatsCsvData = async () => {
+export const readCityStatsCsvData = () => {
   const dataPath = path.resolve(__dirname, "./../../../../../data/dvf/cityStats.csv");
   const HEADER =
     "city_code;da_name;da_population;da_surface_ha;dvf_nbtrans;dvf_pxm2_median;dvf_surface_median;dvf_nbtrans_cod111;dvf_pxm2_median_cod111;dvf_nbtrans_cod121;dvf_pxm2_median_cod121;dvf_surface_median_cod111;dvf_surface_median_cod121";

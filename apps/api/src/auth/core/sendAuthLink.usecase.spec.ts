@@ -234,7 +234,7 @@ describe("SendAuthLink Use Case", () => {
       {
         email: user.email,
         authLinkUrl: `http://app.test.benefriches.fr/authentification/token?token=${fakeToken}`,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        // oxlint-disable-next-line typescript/no-unsafe-assignment
         sentAt: expect.any(Date),
       },
     ]);

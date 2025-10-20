@@ -9,7 +9,7 @@ export class InMemoryReconversionProjectRepository implements ReconversionProjec
     await Promise.resolve();
   }
 
-  async getById(id: string): Promise<ReconversionProjectInput | null> {
+  getById(id: string): Promise<ReconversionProjectInput | null> {
     const foundReconversionProject = this.reconversionProjects.find((project) => project.id === id);
     return Promise.resolve(foundReconversionProject ?? null);
   }

@@ -61,6 +61,7 @@ export class CreateNewExpressSiteUseCase implements UseCase<Request, void> {
       const { population } = await this.cityStatsQuery.getCityStats(siteProps.address.cityCode);
       siteCityPopulation = population;
     } catch (error) {
+      // oxlint-disable-next-line no-console
       console.error(error);
     }
 

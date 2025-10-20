@@ -55,7 +55,7 @@ describe("GetUserReconversionProjectsBySite Use Case", () => {
     const usecase = new GetUserReconversionProjectsBySiteUseCase(query);
     const result = await usecase.execute({ userId });
     expect(result).toEqual(reconversionProjects);
-    /* eslint-disable-next-line @typescript-eslint/unbound-method */
+    /* oxlint-disable-next-line typescript/unbound-method */
     expect(query.getGroupedBySite).toHaveBeenCalledWith({ userId });
   });
 });

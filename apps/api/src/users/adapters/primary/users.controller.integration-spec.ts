@@ -48,7 +48,7 @@ describe("Users controller", () => {
         const user = new UserBuilder().asLocalAuthority().build();
         const { accessToken } = await authenticateUser(app)(user);
 
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        // oxlint-disable-next-line typescript/no-unused-vars
         const { [mandatoryField]: _, ...props } = {
           id: "2096a04d-4876-4e1e-b071-d5355fd0ee4c",
           userId: "cc5fefe9-3bcb-4271-a27b-50ab9bb33596",

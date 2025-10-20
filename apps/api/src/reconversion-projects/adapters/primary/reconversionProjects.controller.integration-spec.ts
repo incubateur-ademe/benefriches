@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
+/* oxlint-disable typescript/no-non-null-assertion */
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { Knex } from "knex";
 import { expressProjectCategorySchema, saveReconversionProjectPropsSchema } from "shared";
@@ -71,7 +71,7 @@ describe("ReconversionProjects controller", () => {
           const requestBody = buildMinimalReconversionProjectProps();
           const user = new UserBuilder().withId(requestBody.createdBy).asLocalAuthority().build();
           const { accessToken } = await authenticateUser(app)(user);
-          // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+          // oxlint-disable-next-line typescript/no-dynamic-delete
           delete requestBody[mandatoryField];
 
           const response = await supertest(app.getHttpServer())
@@ -331,7 +331,7 @@ describe("ReconversionProjects controller", () => {
         .send();
 
       expect(response.status).toEqual(400);
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      // oxlint-disable-next-line typescript/no-unsafe-member-access
       const validationErrors = response.body.errors as ZodError[];
       expect(validationErrors).toHaveLength(1);
       expect(validationErrors[0]).toMatchObject({
@@ -649,7 +649,7 @@ describe("ReconversionProjects controller", () => {
         id: newProjectId,
         name: "Copie de " + sourceUrbanProject.name,
         creation_mode: "duplicated",
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        // oxlint-disable-next-line typescript/no-unsafe-assignment
         created_at: expect.any(Date),
         description: sourceUrbanProject.description!,
         created_by: authenticatedUser.id,
@@ -689,7 +689,7 @@ describe("ReconversionProjects controller", () => {
         .select("*");
       expect(duplicatedDevelopmentPlans).toEqual<SqlDevelopmentPlan[]>([
         {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          // oxlint-disable-next-line typescript/no-unsafe-assignment
           id: expect.any(String),
           type: "URBAN_PROJECT",
           developer_name: sourceUrbanProject.developmentPlan.developer.name,
@@ -811,7 +811,7 @@ describe("ReconversionProjects controller", () => {
         id: newProjectId,
         name: "Copie de " + sourceUrbanProject.name,
         creation_mode: "duplicated",
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        // oxlint-disable-next-line typescript/no-unsafe-assignment
         created_at: expect.any(Date),
         description: null,
         created_by: authenticatedUser.id,
@@ -846,7 +846,7 @@ describe("ReconversionProjects controller", () => {
         .select("*");
       expect(duplicatedDevelopmentPlans).toEqual<SqlDevelopmentPlan[]>([
         {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          // oxlint-disable-next-line typescript/no-unsafe-assignment
           id: expect.any(String),
           type: "URBAN_PROJECT",
           developer_name: sourceUrbanProject.developmentPlan.developer.name,

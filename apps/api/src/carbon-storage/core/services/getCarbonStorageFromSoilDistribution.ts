@@ -44,6 +44,7 @@ export class GetCarbonStorageFromSoilDistributionService {
         ...soilsCarbonStorage,
       };
     } catch (err) {
+      // oxlint-disable-next-line no-console
       console.error("Failed to compute soils carbon storage impact", err);
       return undefined;
     }

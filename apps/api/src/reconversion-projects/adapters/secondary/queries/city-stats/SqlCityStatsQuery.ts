@@ -62,6 +62,7 @@ export class SqlCityStatsQuery implements CityStatsProvider {
             : getDefaultMedianPriceFromPopulation(population),
       };
     } catch (err) {
+      // oxlint-disable-next-line no-console
       console.warn(err);
       return {
         name: "",

@@ -43,7 +43,7 @@ describe("Sites controller", () => {
   });
 
   describe("POST /sites/create-express", () => {
-    // eslint-disable-next-line vitest/expect-expect
+    // oxlint-disable-next-line vitest/expect-expect
     it.each(["id", "nature", "createdBy", "address"] satisfies (keyof CreateExpressSiteDto)[])(
       "can't create a site without mandatory field %s",
       async (mandatoryField) => {
@@ -63,7 +63,7 @@ describe("Sites controller", () => {
             value: "Rue de Paradis 75010 Paris",
           },
         };
-        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+        // oxlint-disable-next-line typescript/no-dynamic-delete
         delete requestBody[mandatoryField];
 
         const response = await supertest(app.getHttpServer())
@@ -74,7 +74,7 @@ describe("Sites controller", () => {
       },
     );
 
-    // eslint-disable-next-line vitest/expect-expect
+    // oxlint-disable-next-line vitest/expect-expect
     it("can't create an express friche without friche activity", async () => {
       const requestBody: Omit<CreateExpressSiteDto, "fricheActivity"> = {
         id: "03a53ffd-4f71-419e-8d04-041311eefa23",
@@ -99,7 +99,7 @@ describe("Sites controller", () => {
       expectBadRequestWithMissingField(response, "fricheActivity");
     });
 
-    // eslint-disable-next-line vitest/expect-expect
+    // oxlint-disable-next-line vitest/expect-expect
     it("can't create an express agricultral operation without activity", async () => {
       const requestBody: Omit<CreateExpressSiteDto, "activity"> = {
         id: "03a53ffd-4f71-419e-8d04-041311eefa23",
@@ -124,7 +124,7 @@ describe("Sites controller", () => {
       expectBadRequestWithMissingField(response, "activity");
     });
 
-    // eslint-disable-next-line vitest/expect-expect
+    // oxlint-disable-next-line vitest/expect-expect
     it("can't create an express natural area without activity", async () => {
       const requestBody: Omit<CreateExpressSiteDto, "type"> = {
         id: "03a53ffd-4f71-419e-8d04-041311eefa23",
@@ -267,7 +267,7 @@ describe("Sites controller", () => {
           yearlyIncomes: [],
           agriculturalOperationActivity: "CATTLE_FARMING",
         };
-        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+        // oxlint-disable-next-line typescript/no-dynamic-delete
         delete requestBody[mandatoryField];
 
         const response = await supertest(app.getHttpServer())
@@ -332,7 +332,7 @@ describe("Sites controller", () => {
       expect(sitesInDb[0]).toEqual<SqlSite>({
         id: "03a53ffd-4f71-419e-8d04-041311eefa23",
         created_by: "74ac340f-0654-4887-9449-3dbb43ce35b5",
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        // oxlint-disable-next-line typescript/no-unsafe-assignment
         created_at: expect.any(Date),
         description: "Description of site",
         name: "Exploitation agricole",
@@ -426,7 +426,7 @@ describe("Sites controller", () => {
       expect(sitesInDb[0]).toEqual<SqlSite>({
         id: "03a53ffd-4f71-419e-8d04-041311eefa23",
         created_by: "74ac340f-0654-4887-9449-3dbb43ce35b5",
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        // oxlint-disable-next-line typescript/no-unsafe-assignment
         created_at: expect.any(Date),
         description: "Description of site",
         name: "Forêt",
@@ -522,7 +522,7 @@ describe("Sites controller", () => {
         friche_contaminated_soil_surface_area: 1400.3,
         friche_has_contaminated_soils: true,
         surface_area: 74300,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        // oxlint-disable-next-line typescript/no-unsafe-assignment
         created_at: expect.any(Date),
         description: "Description of site",
         friche_activity: "RAILWAY",

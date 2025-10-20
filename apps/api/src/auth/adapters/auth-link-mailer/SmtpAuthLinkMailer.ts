@@ -34,9 +34,9 @@ export class SmtpAuthLinkMailer implements AuthLinkMailer {
 
       await this.transporter.sendMail(mailOptions);
     } catch (error) {
-      console.error(error);
       throw new Error(
         `Failed to send auth link: ${error instanceof Error ? error.message : "unknown error"}`,
+        { cause: error },
       );
     }
   }

@@ -9,7 +9,7 @@ export class InMemoryTokenAuthenticationAttemptRepository
 {
   tokens: TokenAuthenticationAttempt[] = [];
 
-  async save(authToken: TokenAuthenticationAttempt): Promise<void> {
+  save(authToken: TokenAuthenticationAttempt): Promise<void> {
     this.tokens.push(authToken);
 
     return Promise.resolve();

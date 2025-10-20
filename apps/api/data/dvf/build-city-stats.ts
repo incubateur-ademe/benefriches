@@ -1,4 +1,6 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
+// oxlint-disable no-console
+/* oxlint-disable typescript/no-non-null-assertion */
+/* oxlint-disable typescript/no-unsafe-assignment */
 import { createReadStream, createWriteStream } from "node:fs";
 import * as fs from "node:fs";
 import * as https from "node:https";
@@ -183,7 +185,7 @@ class DVFCommuneAnalyzer {
     }
   }
 
-  private async fetchCommunes(): Promise<Commune[]> {
+  private fetchCommunes(): Promise<Commune[]> {
     console.log(" 📍 Récupération de la liste des communes depuis l'API Géo...");
 
     const url = "https://geo.api.gouv.fr/communes?fields=nom,code,population,surface&format=json";
@@ -254,7 +256,7 @@ class DVFCommuneAnalyzer {
     return result;
   }
 
-  private async fetchArrondissement(codeInsee: string): Promise<Commune> {
+  private fetchArrondissement(codeInsee: string): Promise<Commune> {
     const url = `https://geo.api.gouv.fr/communes/${codeInsee}?fields=nom,code,population,surface&format=json`;
 
     return new Promise((resolve, reject) => {
@@ -331,7 +333,7 @@ class DVFCommuneAnalyzer {
     return downloadedFiles;
   }
 
-  private async downloadFile(url: string, filePath: string): Promise<void> {
+  private downloadFile(url: string, filePath: string): Promise<void> {
     return new Promise((resolve, reject) => {
       const file = createWriteStream(filePath);
       const request = https.get(url, (response) => {
@@ -379,7 +381,7 @@ class DVFCommuneAnalyzer {
       this.yearRange = {
         min: Math.min(...years),
         max: Math.max(...years),
-        years: years.sort((a, b) => b - a),
+        years: years.toSorted((a, b) => b - a),
       };
 
       console.log(
@@ -392,7 +394,7 @@ class DVFCommuneAnalyzer {
     }
   }
 
-  private async parseCSV(filePath: string): Promise<DVFTransaction[]> {
+  private parseCSV(filePath: string): Promise<DVFTransaction[]> {
     return new Promise((resolve, reject) => {
       const data: DVFTransaction[] = [];
       let headers: (keyof RawDVFRow)[] = [];
@@ -649,10 +651,10 @@ class DVFCommuneAnalyzer {
     }
 
     // Calculer les médianes
-    const prixM2Sorted = selectedTransactions.map((t) => t.prix_m2).sort((a, b) => a - b);
+    const prixM2Sorted = selectedTransactions.map((t) => t.prix_m2).toSorted((a, b) => a - b);
     const surfacesSorted = selectedTransactions
       .map((t) => t.surface_reelle_bati)
-      .sort((a, b) => a - b);
+      .toSorted((a, b) => a - b);
 
     return {
       nb_transactions: selectedTransactions.length,
@@ -774,7 +776,7 @@ class DVFCommuneAnalyzer {
     // Créer des paires valeur-poids et trier par valeur
     const sorted = values
       .filter(({ value, weight }) => !isNaN(value) && weight > 0)
-      .sort((a, b) => a.value - b.value);
+      .toSorted((a, b) => a.value - b.value);
 
     if (sorted.length === 0) return 0;
 
@@ -804,9 +806,7 @@ class DVFCommuneAnalyzer {
       // 2. ET aucun prix médian disponible
       // 3. ET aucune surface médiane disponible
 
-      const noTransactions =
-        (commune.dvf_nbtrans_cod111 === 0 || commune.dvf_nbtrans_cod111 === 0) &&
-        (commune.dvf_nbtrans_cod121 === 0 || commune.dvf_nbtrans_cod121 === 0);
+      const noTransactions = commune.dvf_nbtrans_cod111 === 0 && commune.dvf_nbtrans_cod121 === 0;
 
       const noPrices =
         (commune.dvf_pxm2_median_cod111 === null || commune.dvf_pxm2_median_cod111 === 0) &&
@@ -973,7 +973,7 @@ class DVFCommuneAnalyzer {
       if (groupedByPopulation.others.length > 0) {
         analysis += `#### Communes de plus de 200 habitants sans données DVF\n\n`;
 
-        const sortedCommunes = [...groupedByPopulation.others].sort(
+        const sortedCommunes = [...groupedByPopulation.others].toSorted(
           (a, b) => (b.da_population ?? 0) - (a.da_population ?? 0),
         );
         const displayLimit = Math.min(10, sortedCommunes.length);
@@ -1358,8 +1358,10 @@ const analyzer = new DVFCommuneAnalyzer();
 analyzer
   .analyzeAll()
   .then(() => {
+    // oxlint-disable-next-line no-console
     console.log("\n✅ Extraction terminée avec succès !");
   })
   .catch(() => {
+    // oxlint-disable-next-line no-console
     console.log("\n❌ Erreur lors de l'extraction");
   });

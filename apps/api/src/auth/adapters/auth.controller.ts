@@ -1,4 +1,4 @@
-/* eslint-disable no-case-declarations */
+/* oxlint-disable no-case-declarations */
 import {
   BadRequestException,
   Body,
@@ -369,7 +369,7 @@ export class AuthController {
         req.session.state = state;
         const providerIdToken = accessTokenPayload.authProviderTokenId;
         const providerLogoutUrl = await this.oidcLogin.getLogoutUrl({
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          // oxlint-disable-next-line typescript/no-non-null-assertion
           idToken: providerIdToken!,
           postLogoutRedirectUri: this.configService.getOrThrow<string>("AUTH_LOGOUT_CALLBACK_URL"),
           state,

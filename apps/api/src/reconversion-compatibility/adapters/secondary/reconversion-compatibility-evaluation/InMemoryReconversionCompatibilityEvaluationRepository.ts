@@ -6,7 +6,7 @@ export class InMemoryReconversionCompatibilityEvaluationRepository
 {
   evaluations: ReconversionCompatibilityEvaluation[] = [];
 
-  async existsWithId(id: string): Promise<boolean> {
+  existsWithId(id: string): Promise<boolean> {
     return Promise.resolve(
       this.evaluations.find((evaluation) => evaluation.id === id) !== undefined,
     );

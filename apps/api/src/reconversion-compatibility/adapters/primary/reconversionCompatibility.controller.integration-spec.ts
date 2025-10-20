@@ -78,7 +78,7 @@ describe("ReconversionCompatibility controller", () => {
         created_by: user.id,
         status: "started",
         mutafriches_evaluation_id: null,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        // oxlint-disable-next-line typescript/no-unsafe-assignment
         created_at: expect.any(Date),
         completed_at: null,
         project_creations: [],
@@ -128,7 +128,7 @@ describe("ReconversionCompatibility controller", () => {
         const user = new UserBuilder().asLocalAuthority().build();
         const { accessToken } = await authenticateUser(app)(user);
 
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        // oxlint-disable-next-line typescript/no-unused-vars
         const { [mandatoryField]: _, ...body } = {
           id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
           mutafrichesId: "mutafriches-123",
@@ -213,7 +213,7 @@ describe("ReconversionCompatibility controller", () => {
         const user = new UserBuilder().asLocalAuthority().build();
         const { accessToken } = await authenticateUser(app)(user);
 
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        // oxlint-disable-next-line typescript/no-unused-vars
         const { [mandatoryField]: _, ...body } = {
           evaluationId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
           reconversionProjectId: "e717848d-1f24-4c71-b628-98aac33e3a00",
@@ -273,7 +273,7 @@ describe("ReconversionCompatibility controller", () => {
         project_creations: [
           {
             reconversionProjectId: "fae39a8a-50de-4449-86f3-742a1584d9bd",
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+            // oxlint-disable-next-line typescript/no-unsafe-assignment
             createdAt: expect.any(String), // stored as ISO string in JSONB
           },
         ],

@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/dot-notation */
+/* oxlint-disable typescript/dot-notation */
 import { YearlyUrbanFreshnessRelatedImpacts } from "./YearlyUrbanFreshnessRelatedImpacts";
 
 describe("YearlyUrbanFreshnessRelatedImpacts", () => {

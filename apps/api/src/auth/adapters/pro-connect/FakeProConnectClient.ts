@@ -15,7 +15,7 @@ export class FakeProConnectClient implements ProConnectClient {
   public mockAuthUrl = new URL("https://fake-pro-connect.com/auth");
   public mockLogoutUrl = new URL("https://fake-pro-connect.com/logout");
 
-  async getAuthorizationUrl(): Promise<{ authorizationUrl: URL; state: string; nonce: string }> {
+  getAuthorizationUrl(): Promise<{ authorizationUrl: URL; state: string; nonce: string }> {
     return Promise.resolve({
       authorizationUrl: this.mockAuthUrl,
       state: "fake-state",
@@ -23,11 +23,11 @@ export class FakeProConnectClient implements ProConnectClient {
     });
   }
 
-  async getLogoutUrl(): Promise<URL> {
+  getLogoutUrl(): Promise<URL> {
     return Promise.resolve(this.mockLogoutUrl);
   }
 
-  async fetchUserIdentity(): Promise<FetchUserIdentityResult> {
+  fetchUserIdentity(): Promise<FetchUserIdentityResult> {
     return Promise.resolve(this.mockUserIdentity);
   }
 

@@ -57,12 +57,12 @@ export class HttpProConnectClient implements ProConnectClient {
     const userInfo = await oidcHttpClient.fetchUserInfo(config, tokens.access_token, claims.sub);
 
     return {
-      // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
+      // oxlint-disable-next-line typescript/non-nullable-type-assertion-style
       idToken: tokens.id_token as string,
-      // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
+      // oxlint-disable-next-line typescript/non-nullable-type-assertion-style
       email: userInfo.email as string,
       id: userInfo.sub,
-      // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
+      // oxlint-disable-next-line typescript/non-nullable-type-assertion-style
       firstName: userInfo.given_name as string,
       lastName: userInfo.usual_name as string,
       siret: userInfo.siret as string,

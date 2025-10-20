@@ -14,7 +14,7 @@ const dataPath = path.resolve(__dirname, "./../../../../../data/aldo/cities.csv"
 const HEADER =
   "city_code;name;department;region;epci;zpc;code_greco;code_groupeser;code_ser;code_bassin_populicole";
 
-const readCsvData = async () => {
+const readCsvData = () => {
   return new Promise((resolve, reject) => {
     const readStream = fs.createReadStream(dataPath, "utf-8");
     const rl = readline.createInterface({ input: readStream });
@@ -71,7 +71,7 @@ const readCsvData = async () => {
   });
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+// oxlint-disable-next-line typescript/no-unsafe-member-access
 exports.seed = async function (knex: Knex): Promise<void> {
   await knex("cities").del();
   try {

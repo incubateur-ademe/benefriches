@@ -18,7 +18,7 @@
     "test": "pnpm test:unit && pnpm test:integration",
     "test:unit": "vitest --config test/vitest.config.ts",
     "test:integration": "vitest --config test/vitest.integration.config.ts",
-    "lint": "eslint --max-warnings 0 .",
+    "lint": "oxlint --type-aware",
     "format": "prettier --write --cache \"./**/*.{js,jsx,ts,tsx,css,md,json}\" src/ test/",
     "format:check": "prettier --check --cache  \"./**/*.{js,jsx,ts,tsx,css,md,json}\" src/ test/",
     "knex:new-migration": "knex migrate:make -x ts --knexfile=src/shared-kernel/adapters/sql-knex/knexfile.ts",
@@ -28,7 +28,6 @@
     "knex:seed-run": "knex seed:run --knexfile=src/shared-kernel/adapters/sql-knex/knexfile.ts"
   },
   "devDependencies": {
-    "@eslint/js": "~9.36.0",
     "@nestjs/cli": "~11.0.10",
     "@nestjs/schematics": "~11.0.7",
     "@nestjs/testing": "~11.1.6",
@@ -43,15 +42,10 @@
     "@types/supertest": "~6.0.3",
     "cookie": "^1.0.2",
     "dotenv": "~17.2.2",
-    "eslint": "~9.36.0",
-    "eslint-config-prettier": "~10.1.8",
-    "eslint-plugin-n": "^17.23.1",
-    "eslint-plugin-vitest": "^0.5.4",
     "globals": "~16.4.0",
     "supertest": "~7.1.4",
     "testcontainers": "~11.7.0",
     "ts-node": "~10.9.2",
-    "typescript-eslint": "~8.45.0",
     "unplugin-swc": "^1.5.7",
     "vite-tsconfig-paths": "^5.1.4"
   },

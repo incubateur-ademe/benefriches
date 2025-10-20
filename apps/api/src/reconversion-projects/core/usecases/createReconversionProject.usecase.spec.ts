@@ -22,11 +22,10 @@ describe("CreateReconversionProject Use Case", () => {
   const fakeNow = new Date("2024-01-05T13:00:00");
 
   const getZodIssues = (err: unknown) => {
-    // we cannot use `instanceof ZodError` here because the createReconversionPropsSchema
-    // is from our shared module and vitest bundling process will result in two different ZodError classes
-    // one for our api package and one for the api package
-    // very good explanation here: https://github.com/evanw/esbuild/issues/3333
-    return (err as ZodError).issues;
+    if (!(err instanceof ZodError)) {
+      throw err;
+    }
+    return err.issues;
   };
 
   beforeEach(() => {
@@ -49,7 +48,7 @@ describe("CreateReconversionProject Use Case", () => {
         "projectPhase",
       ])("Cannot create a reconversion project without providing %s", async (mandatoryField) => {
         const reconversionProjectProps = buildMinimalReconversionProjectProps(); // @ts-expect-error dynamic delete
-        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+        // oxlint-disable-next-line typescript/no-dynamic-delete
         delete reconversionProjectProps[mandatoryField];
 
         const usecase = new CreateReconversionProjectUseCase(

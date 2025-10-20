@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/dot-notation */
+/* oxlint-disable typescript/dot-notation */
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 
