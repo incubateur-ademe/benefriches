@@ -85,6 +85,7 @@ export function getSoilsDistributionForFricheActivity(
     if (soilType !== "BUILDINGS" && ratio > 0) {
       const area = ratio * adjustmentFactor * surfaceArea;
       if (area > 0) {
+        // oxlint-disable-next-line typescript/no-unsafe-type-assertion
         distribution.addSurface(soilType as SoilType, area);
       }
     }

@@ -51,6 +51,7 @@ export class DefaultProjectGenerator {
     if (!this.isFriche) {
       return undefined;
     }
+    // oxlint-disable-next-line typescript/no-unsafe-type-assertion
     return typedObjectEntries(
       computeProjectReinstatementExpenses(
         this.siteData.soilsDistribution,

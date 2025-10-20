@@ -1,4 +1,5 @@
 import { computeAgriculturalOperationEtpFromSurface } from "./fullTimeJobs";
+import { AgriculturalOperationActivity } from "./operationActivity";
 
 const SURFACE_AREA = 15000;
 
@@ -15,11 +16,11 @@ describe("computeAgriculturalOperationYearlyExpenses and computeAgriculturalOper
     { activity: "POULTRY_FARMING", value: 1.8 },
     { activity: "SHEEP_AND_GOAT_FARMING", value: 1.2 },
     { activity: "POLYCULTURE_AND_LIVESTOCK", value: 1.6 },
-  ] as const)(
+  ] as const satisfies { activity: AgriculturalOperationActivity; value: number }[])(
     "should returns $value ETP for agricultural operation: $activity",
     ({ activity, value }) => {
       const etp = computeAgriculturalOperationEtpFromSurface({
-        operationActivity: activity,
+        operationActivity: activity as AgriculturalOperationActivity,
         surfaceArea: SURFACE_AREA,
       });
 

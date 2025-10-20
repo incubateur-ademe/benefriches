@@ -1,0 +1,69 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "oxc", "unicorn", "vitest", "import"],
+  "categories": {
+    "correctness": "error",
+    "nursery": "error",
+    "suspicious": "error"
+  },
+  "ignorePatterns": ["node_modules/", "dist/", "tsdown.config.ts"],
+  "rules": {
+    "import/no-named-as-default": "off",
+    "typescript/no-confusing-void-expression": "error",
+    "typescript/no-dynamic-delete": "error",
+    "typescript/no-empty-object-type": "error",
+    "typescript/no-explicit-any": "error",
+    "typescript/no-extraneous-class": "error",
+    "typescript/no-non-null-asserted-nullish-coalescing": "error",
+    "typescript/no-non-null-asserted-optional-chain": "error",
+    "typescript/no-non-null-assertion": "error",
+    "typescript/no-unsafe-assignment": "error",
+    "typescript/no-unsafe-call": "off",
+    "typescript/no-unsafe-return": "error",
+    "no-throw-literal": "off",
+    "no-console": "error",
+    "typescript/only-throw-error": "error",
+    "prefer-promise-reject-errors": "error",
+    "typescript/prefer-promise-reject-errors": "error",
+    "typescript/prefer-reduce-type-parameter": "error",
+    "typescript/prefer-return-this-type": "error",
+    "require-await": "error",
+    "typescript/require-await": "error",
+    "typescript/use-unknown-in-catch-callback-variable": "error",
+    "typescript/array-type": "error",
+    "typescript/no-confusing-non-null-assertion": "error",
+    "no-empty-function": "error",
+    "typescript/non-nullable-type-assertion-style": "error",
+    "typescript/prefer-ts-expect-error": "error"
+  },
+  "overrides": [
+    {
+      "files": ["*.spec.ts"],
+      "rules": {
+        "typescript/no-unsafe-type-assertion": "off",
+        "vitest/expect-expect": "error",
+        "vitest/no-identical-title": "error",
+        "vitest/no-commented-out-tests": "error",
+        "vitest/valid-expect": "error",
+        "vitest/valid-describe-callback": "error",
+        "vitest/require-local-test-context-for-concurrent-snapshots": "error",
+        "vitest/no-import-node-test": "error",
+        "vitest/no-conditional-tests": "error"
+      },
+      "globals": {
+        "suite": "writeable",
+        "test": "writeable",
+        "describe": "writeable",
+        "it": "writeable",
+        "expect": "writeable",
+        "assert": "writeable",
+        "vitest": "writeable",
+        "vi": "writeable",
+        "beforeAll": "writeable",
+        "afterAll": "writeable",
+        "beforeEach": "writeable",
+        "afterEach": "writeable"
+      }
+    }
+  ]
+}

@@ -186,8 +186,7 @@ export class PhotovoltaicPowerPlantProjectGenerator extends DefaultProjectGenera
           peakPower: this.featuresElectricalPowerKWc,
         });
       return Math.round(expectedPerformance.kwhPerYear / 1000);
-    } catch (err) {
-      console.error("Fail to compute expectedAnnualProduction for PV express project", err);
+    } catch {
       // on utilise une valeur moyenne par defaut : 1 kWc = 1 200 kWh/an
       return Math.round((1200 * this.featuresElectricalPowerKWc) / 1000);
     }

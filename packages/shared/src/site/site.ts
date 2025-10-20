@@ -182,6 +182,7 @@ export function createAgriculturalOrNaturalSite(
     return result.success
       ? {
           success: true,
+          // oxlint-disable-next-line typescript/no-unsafe-type-assertion
           site: result.data as AgriculturalOperationSite,
         }
       : {
@@ -198,6 +199,7 @@ export function createAgriculturalOrNaturalSite(
   return result.success
     ? {
         success: true,
+        // oxlint-disable-next-line typescript/no-unsafe-type-assertion
         site: result.data as NaturalAreaSite,
       }
     : {
@@ -257,6 +259,7 @@ export function createFriche(props: CreateFricheProps): FricheCreationResult {
   return result.success
     ? {
         success: true,
+        // oxlint-disable-next-line typescript/no-unsafe-type-assertion
         site: result.data as unknown as Friche,
       }
     : {
