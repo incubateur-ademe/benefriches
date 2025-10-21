@@ -2,7 +2,7 @@ import { getFutureOperator } from "../../../stakeholders";
 import { ReadStateHelper } from "../../helpers/readState";
 import { AnswerStepHandler, StepInvalidationRule } from "../stepHandler.type";
 
-const STEP_ID = "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION" as const;
+const STEP_ID = "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION";
 
 export const BuildingsResaleSelectionHandler: AnswerStepHandler<typeof STEP_ID> = {
   stepId: STEP_ID,

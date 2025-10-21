@@ -38,6 +38,6 @@ export const expressUrbanProjectCreated = createAppAsyncThunk<
       createdBy: currentUser.currentUser?.id,
     });
 
-    return await extra.createExpressReconversionProjectService.get(expressProjectPayload);
+    return extra.createExpressReconversionProjectService.get(expressProjectPayload);
   },
 );

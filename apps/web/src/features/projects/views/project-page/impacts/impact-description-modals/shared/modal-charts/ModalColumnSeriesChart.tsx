@@ -86,7 +86,7 @@ const ModalColumnSeriesChart = ({ data, format, exportTitle, exportSubtitle, ...
             label,
             total: sumListWithKey(values, "value"),
           })),
-          series: series as Array<SeriesOptionsType>,
+          series: series as SeriesOptionsType[],
           onChartReady,
         })}
         {...props}

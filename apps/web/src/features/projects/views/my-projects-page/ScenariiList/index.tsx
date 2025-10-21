@@ -62,8 +62,8 @@ function ScenariiListContainer({ projectsList }: Props) {
       )}
       {projectsList.map((projectGroup) => (
         <ScenariiGroup
-          {...projectGroup}
           key={projectGroup.siteId}
+          {...projectGroup}
           selectableIds={selectableIds}
           selectedIds={selectedIds}
           onChangeSelectedProject={onChangeSelectedProject}

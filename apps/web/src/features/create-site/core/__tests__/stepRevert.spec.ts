@@ -4,8 +4,8 @@ import { stepRevertAttempted, stepRevertConfirmationResolved } from "../actions/
 import { selectShouldConfirmStepRevert } from "../selectors/createSite.selectors";
 import { expectCurrentStep, StoreBuilder } from "./creation-steps/testUtils";
 
-const expectConfirmationAsked = (store: ReturnType<typeof createStore>) => {
-  return expect(selectShouldConfirmStepRevert(store.getState()));
+const getConfirmationAsked = (store: ReturnType<typeof createStore>) => {
+  return selectShouldConfirmStepRevert(store.getState());
 };
 
 describe("Site creation: step revert confirmation logic", () => {
@@ -20,7 +20,7 @@ describe("Site creation: step revert confirmation logic", () => {
       store.dispatch(stepRevertAttempted());
       store.dispatch(stepRevertAttempted());
 
-      expectConfirmationAsked(store).toBe(false);
+      expect(getConfirmationAsked(store)).toBe(false);
       expectCurrentStep(store.getState(), "INTRODUCTION");
     });
   });
@@ -35,7 +35,7 @@ describe("Site creation: step revert confirmation logic", () => {
 
       // revert current step
       store.dispatch(stepRevertAttempted());
-      expectConfirmationAsked(store).toBe(true);
+      expect(getConfirmationAsked(store)).toBe(true);
       // revert was not performed
       expectCurrentStep(store.getState(), "SITE_NATURE");
     });
@@ -47,7 +47,7 @@ describe("Site creation: step revert confirmation logic", () => {
 
       // revert current step
       store.dispatch(stepRevertAttempted());
-      expectConfirmationAsked(store).toBe(true);
+      expect(getConfirmationAsked(store)).toBe(true);
       expectCurrentStep(store.getState(), "SITE_NATURE");
 
       store.dispatch(stepRevertConfirmationResolved({ confirmed: false, doNotAskAgain: false }));
@@ -56,7 +56,7 @@ describe("Site creation: step revert confirmation logic", () => {
 
       // revert was not performed
       expectCurrentStep(store.getState(), "SITE_NATURE");
-      expectConfirmationAsked(store).toBe(false);
+      expect(getConfirmationAsked(store)).toBe(false);
     });
 
     it("asks for confirmation and then perform step revert when user confirms", async () => {
@@ -67,7 +67,7 @@ describe("Site creation: step revert confirmation logic", () => {
 
       // revert current step
       store.dispatch(stepRevertAttempted());
-      expectConfirmationAsked(store).toBe(true);
+      expect(getConfirmationAsked(store)).toBe(true);
       // make sure revert was not performed
       expectCurrentStep(store.getState(), "SITE_NATURE");
       expect(store.getState().siteCreation.siteData.nature).toBe("AGRICULTURAL_OPERATION");
@@ -76,7 +76,7 @@ describe("Site creation: step revert confirmation logic", () => {
       // wait for the next tick to ensure async flow in listener is done
       await new Promise((resolve) => setTimeout(resolve, 0));
       // revert should have been performed
-      expectConfirmationAsked(store).toBe(false);
+      expect(getConfirmationAsked(store)).toBe(false);
       expect(store.getState().siteCreation.siteData.nature).toBe(undefined);
       expectCurrentStep(store.getState(), "IS_FRICHE");
     });
@@ -94,7 +94,7 @@ describe("Site creation: step revert confirmation logic", () => {
         .build();
 
       store.dispatch(stepRevertAttempted());
-      expectConfirmationAsked(store).toBe(true);
+      expect(getConfirmationAsked(store)).toBe(true);
 
       // confirm and do not ask again
       expect(store.getState().appSettings.askForConfirmationOnStepRevert).toBe(true);
@@ -106,7 +106,7 @@ describe("Site creation: step revert confirmation logic", () => {
       // revert again
       store.dispatch(stepRevertAttempted());
       // user should not be asked for confirmation again
-      expectConfirmationAsked(store).toBe(false);
+      expect(getConfirmationAsked(store)).toBe(false);
       // step should have been reverted
       expectCurrentStep(store.getState(), "SITE_NATURE");
     });

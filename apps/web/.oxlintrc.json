@@ -1,0 +1,105 @@
+{
+  "$schema": "../../node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "unicorn", "react", "oxc", "import"],
+  "categories": {
+    "correctness": "error"
+  },
+  "env": {
+    "browser": true
+  },
+  "ignorePatterns": ["node_modules/", "dist/", "public/", "vite.config.ts", ".prettierrc.cjs"],
+  "rules": {
+    "typescript/no-confusing-void-expression": "error",
+    "typescript/no-dynamic-delete": "error",
+    "typescript/no-empty-object-type": "error",
+    "typescript/no-explicit-any": "error",
+    "typescript/no-non-null-asserted-nullish-coalescing": "error",
+    "typescript/no-non-null-asserted-optional-chain": "error",
+    "typescript/no-unsafe-call": "error",
+    "typescript/no-unsafe-assignment": "error",
+    "typescript/no-unsafe-return": "error",
+    "typescript/only-throw-error": "error",
+    "prefer-promise-reject-errors": "error",
+    "typescript/prefer-promise-reject-errors": "error",
+    "typescript/prefer-reduce-type-parameter": "error",
+    "typescript/prefer-return-this-type": "error",
+    "typescript/use-unknown-in-catch-callback-variable": "error",
+    "typescript/array-type": "error",
+    "typescript/no-confusing-non-null-assertion": "error",
+    "typescript/prefer-ts-expect-error": "error",
+    "no-console": [
+      "error",
+      {
+        "allow": ["error"]
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": ["*.{js,jsx,ts,tsx}"],
+      "rules": {
+        "react/jsx-key": "warn",
+        "react/jsx-no-comment-textnodes": "warn",
+        "react/jsx-no-duplicate-props": "warn",
+        "react/jsx-no-target-blank": "warn",
+        "react/jsx-no-undef": "warn",
+        "react/no-children-prop": "warn",
+        "react/no-danger-with-children": "warn",
+        "react/no-direct-mutation-state": "warn",
+        "react/no-find-dom-node": "warn",
+        "react/no-is-mounted": "warn",
+        "react/no-render-return-value": "warn",
+        "react/no-string-refs": "warn",
+        // "react/no-unescaped-entities": [
+        //   "error",
+        //   {
+        //     "forbid": [">", "}"],
+        //     "allow": ["'"]
+        //   }
+        // ],
+        "react/no-unescaped-entities": "off",
+        "react/no-unknown-property": "warn",
+        "react/react-in-jsx-scope": "off",
+        "react/require-render-return": "warn",
+        "react-hooks/rules-of-hooks": "error",
+        "react-hooks/exhaustive-deps": "warn",
+        "react/jsx-no-useless-fragment": "error"
+      },
+      "plugins": ["react"]
+    },
+    {
+      "files": ["*.spec.ts"],
+      "rules": {
+        "vitest/expect-expect": "error",
+        "vitest/no-identical-title": "error",
+        "vitest/no-commented-out-tests": "error",
+        "vitest/valid-expect": "error",
+        "vitest/valid-describe-callback": "error",
+        "vitest/require-local-test-context-for-concurrent-snapshots": "error",
+        "vitest/no-import-node-test": "error",
+        "vitest/no-conditional-tests": "error",
+        "jest/expect-expect": [
+          "error",
+          {
+            "assertFunctionNames": ["expect*"]
+          }
+        ]
+      },
+      "globals": {
+        "suite": "writeable",
+        "test": "writeable",
+        "describe": "writeable",
+        "it": "writeable",
+        "expect": "writeable",
+        "assert": "writeable",
+        "vitest": "writeable",
+        "vi": "writeable",
+        "beforeAll": "writeable",
+        "afterAll": "writeable",
+        "beforeEach": "writeable",
+        "afterEach": "writeable"
+      },
+      "plugins": ["vitest", "jest"]
+    }
+  ]
+}

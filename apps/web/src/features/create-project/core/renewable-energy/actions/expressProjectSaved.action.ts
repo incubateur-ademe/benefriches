@@ -31,7 +31,7 @@ export const expressPhotovoltaicProjectCreated =
         throw new Error("Missing siteId or currentUserId");
       }
 
-      return await extra.createExpressReconversionProjectService.get({
+      return extra.createExpressReconversionProjectService.get({
         siteId: projectCreation.siteData.id,
         category: "PHOTOVOLTAIC_POWER_PLANT",
         createdBy: currentUser.currentUser.id,

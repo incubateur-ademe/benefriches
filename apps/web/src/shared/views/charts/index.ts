@@ -72,7 +72,7 @@ export function withDefaultBarChartOptions({
     },
     plotOptions: {
       ...plotOptions,
-      column: { borderRadius: 8, minPointLength: 4, ...(plotOptions.column ?? {}) },
+      column: { borderRadius: 8, minPointLength: 4, ...plotOptions.column },
     },
     ...options,
   });

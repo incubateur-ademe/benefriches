@@ -209,21 +209,17 @@ describe("navigateToStep action", () => {
   });
 
   describe("LoadStep edge cases", () => {
-    it("should handle navigateToStep for steps without default logic", () => {
-      const stepsWithoutDefaults = [
-        "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION",
-        "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
-        "URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION",
-        "URBAN_PROJECT_PROJECT_PHASE",
-      ] as const;
+    it.each([
+      "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION",
+      "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
+      "URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION",
+      "URBAN_PROJECT_PROJECT_PHASE",
+    ] as const)("should handle navigateToStep for steps without default logic", (stepId) => {
+      const testStore = createTestStore();
+      testStore.dispatch(navigateToStep({ stepId: stepId }));
 
-      stepsWithoutDefaults.forEach((stepId) => {
-        const testStore = createTestStore();
-        testStore.dispatch(navigateToStep({ stepId: stepId }));
-
-        const steps = testStore.getState().projectCreation.urbanProject.steps;
-        expect(steps[stepId]).toBeUndefined();
-      });
+      const steps = testStore.getState().projectCreation.urbanProject.steps;
+      expect(steps[stepId]).toBeUndefined();
     });
   });
 });

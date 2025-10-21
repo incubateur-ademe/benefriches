@@ -1,7 +1,7 @@
 import { AnswerStepHandler } from "../stepHandler.type";
 import { getDeleteBuildingsRules, getReinstatementCostsRecomputationRules } from "./getCommonRules";
 
-const STEP_ID = "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION" as const;
+const STEP_ID = "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION";
 
 export const UrbanProjectSpacesCategoriesSelectionHandler: AnswerStepHandler<typeof STEP_ID> = {
   stepId: STEP_ID,

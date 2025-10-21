@@ -7,7 +7,7 @@ export class InMemoryCurrentUserService implements CurrentUserGateway {
   async get() {
     if (this.shouldFail) throw new Error("Intended error");
 
-    return await Promise.resolve({
+    return Promise.resolve({
       id: "72cf2f39-8859-461c-b060-beb9aaab6fad",
       email: "email@test.fr",
       structureType: "company",

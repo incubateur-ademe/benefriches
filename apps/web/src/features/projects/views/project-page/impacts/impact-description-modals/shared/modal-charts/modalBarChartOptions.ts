@@ -10,7 +10,7 @@ type Props = {
   noTooltip?: boolean;
   colorByPoint?: boolean;
   categories: { label: string; total: number }[];
-  series: Array<SeriesOptionsType>;
+  series: SeriesOptionsType[];
   onChartReady: () => void;
 };
 

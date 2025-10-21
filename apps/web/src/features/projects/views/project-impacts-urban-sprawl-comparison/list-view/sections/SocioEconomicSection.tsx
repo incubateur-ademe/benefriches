@@ -1,3 +1,4 @@
+import React from "react";
 import {
   AvoidedCO2EqEmissions,
   AvoidedFricheCostsImpact,
@@ -235,9 +236,8 @@ const ImpactComparisonListSocioEconomicSection = ({ baseCase, comparisonCase }: 
                     const [baseForActor] = baseByActor.get(actor) ?? [];
                     const [comparisonForActor] = comparisonByActor.get(actor) ?? [];
                     return (
-                      <>
+                      <React.Fragment key={actor}>
                         <TableAccordionRow
-                          key={actor}
                           actor={getActorLabel(actor)}
                           label={getSocioEconomicImpactLabel("avoided_friche_costs")}
                           baseValue={baseForActor?.amount ?? 0}
@@ -267,7 +267,7 @@ const ImpactComparisonListSocioEconomicSection = ({ baseCase, comparisonCase }: 
                             ))}
                         </TableAccordionRow>
                         <ImpactComparisonTableSeparatorRow />
-                      </>
+                      </React.Fragment>
                     );
                   });
                 }
@@ -298,9 +298,8 @@ const ImpactComparisonListSocioEconomicSection = ({ baseCase, comparisonCase }: 
                     const [baseForActor] = baseByActor.get(actor) ?? [];
                     const [comparisonForActor] = comparisonByActor.get(actor) ?? [];
                     return (
-                      <>
+                      <React.Fragment key={actor}>
                         <TableAccordionRow
-                          key={actor}
                           actor={getActorLabel(actor)}
                           label={getSocioEconomicImpactLabel(category)}
                           baseValue={baseForActor?.amount ?? 0}
@@ -330,7 +329,7 @@ const ImpactComparisonListSocioEconomicSection = ({ baseCase, comparisonCase }: 
                             ))}
                         </TableAccordionRow>
                         <ImpactComparisonTableSeparatorRow />
-                      </>
+                      </React.Fragment>
                     );
                   });
                 }
@@ -359,9 +358,8 @@ const ImpactComparisonListSocioEconomicSection = ({ baseCase, comparisonCase }: 
                     const [baseForActor] = baseByActor.get(actor) ?? [];
                     const [comparisonForActor] = comparisonByActor.get(actor) ?? [];
                     return (
-                      <>
+                      <React.Fragment key={actor}>
                         <TableAccordionRow
-                          key={actor}
                           actor={getActorLabel(actor)}
                           label={getSocioEconomicImpactLabel(category)}
                           baseValue={baseForActor?.amount ?? 0}
@@ -391,7 +389,7 @@ const ImpactComparisonListSocioEconomicSection = ({ baseCase, comparisonCase }: 
                             ))}
                         </TableAccordionRow>
                         <ImpactComparisonTableSeparatorRow />
-                      </>
+                      </React.Fragment>
                     );
                   });
                 }
@@ -410,7 +408,7 @@ const ImpactComparisonListSocioEconomicSection = ({ baseCase, comparisonCase }: 
                     return null;
                   }
                   return (
-                    <>
+                    <React.Fragment key={category}>
                       <ImpactComparisonTableRow
                         label={getSocioEconomicImpactLabel(category)}
                         isFirst
@@ -421,7 +419,7 @@ const ImpactComparisonListSocioEconomicSection = ({ baseCase, comparisonCase }: 
                         formatValueFn={formatValueFn}
                       />
                       <ImpactComparisonTableSeparatorRow />
-                    </>
+                    </React.Fragment>
                   );
                 }
               }
@@ -460,7 +458,7 @@ const ImpactComparisonListSocioEconomicSection = ({ baseCase, comparisonCase }: 
                     return null;
                   }
                   return (
-                    <>
+                    <React.Fragment key={category}>
                       <TableAccordionRow
                         label={getSocioEconomicImpactLabel(category)}
                         actor={getActorLabel(base?.actor ?? comparison?.actor ?? "")}
@@ -490,7 +488,7 @@ const ImpactComparisonListSocioEconomicSection = ({ baseCase, comparisonCase }: 
                           ))}
                       </TableAccordionRow>
                       <ImpactComparisonTableSeparatorRow />
-                    </>
+                    </React.Fragment>
                   );
                 }
                 case "avoided_air_conditioning_expenses":
@@ -512,7 +510,7 @@ const ImpactComparisonListSocioEconomicSection = ({ baseCase, comparisonCase }: 
                     return null;
                   }
                   return (
-                    <>
+                    <React.Fragment key={category}>
                       <ImpactComparisonTableRow
                         label={getSocioEconomicImpactLabel(category)}
                         isFirst
@@ -523,7 +521,7 @@ const ImpactComparisonListSocioEconomicSection = ({ baseCase, comparisonCase }: 
                         formatValueFn={formatValueFn}
                       />
                       <ImpactComparisonTableSeparatorRow />
-                    </>
+                    </React.Fragment>
                   );
                 }
               }
@@ -562,7 +560,7 @@ const ImpactComparisonListSocioEconomicSection = ({ baseCase, comparisonCase }: 
                     return null;
                   }
                   return (
-                    <>
+                    <React.Fragment key={category}>
                       <TableAccordionRow
                         label={getSocioEconomicImpactLabel(category)}
                         actor={getActorLabel(base?.actor ?? comparison?.actor ?? "")}
@@ -592,7 +590,7 @@ const ImpactComparisonListSocioEconomicSection = ({ baseCase, comparisonCase }: 
                           ))}
                       </TableAccordionRow>
                       <ImpactComparisonTableSeparatorRow />
-                    </>
+                    </React.Fragment>
                   );
                 }
                 case "avoided_air_pollution":
@@ -608,7 +606,7 @@ const ImpactComparisonListSocioEconomicSection = ({ baseCase, comparisonCase }: 
                     return null;
                   }
                   return (
-                    <>
+                    <React.Fragment key={category}>
                       <ImpactComparisonTableRow
                         label={getSocioEconomicImpactLabel(category)}
                         isFirst
@@ -619,7 +617,7 @@ const ImpactComparisonListSocioEconomicSection = ({ baseCase, comparisonCase }: 
                         formatValueFn={formatValueFn}
                       />
                       <ImpactComparisonTableSeparatorRow />
-                    </>
+                    </React.Fragment>
                   );
                 }
               }
@@ -658,7 +656,7 @@ const ImpactComparisonListSocioEconomicSection = ({ baseCase, comparisonCase }: 
                     return null;
                   }
                   return (
-                    <>
+                    <React.Fragment key={category}>
                       <TableAccordionRow
                         label={getSocioEconomicImpactLabel("avoided_co2_eq_emissions")}
                         actor={getActorLabel(base?.actor ?? comparison?.actor ?? "")}
@@ -688,7 +686,7 @@ const ImpactComparisonListSocioEconomicSection = ({ baseCase, comparisonCase }: 
                           ))}
                       </TableAccordionRow>
                       <ImpactComparisonTableSeparatorRow />
-                    </>
+                    </React.Fragment>
                   );
                 }
                 case "ecosystem_services": {
@@ -702,7 +700,7 @@ const ImpactComparisonListSocioEconomicSection = ({ baseCase, comparisonCase }: 
                     return null;
                   }
                   return (
-                    <>
+                    <React.Fragment key={category}>
                       <TableAccordionRow
                         label={getSocioEconomicImpactLabel(category)}
                         actor={getActorLabel(base?.actor ?? comparison?.actor ?? "")}
@@ -732,7 +730,7 @@ const ImpactComparisonListSocioEconomicSection = ({ baseCase, comparisonCase }: 
                           ))}
                       </TableAccordionRow>
                       <ImpactComparisonTableSeparatorRow />
-                    </>
+                    </React.Fragment>
                   );
                 }
                 case "water_regulation": {
@@ -747,7 +745,7 @@ const ImpactComparisonListSocioEconomicSection = ({ baseCase, comparisonCase }: 
                     return null;
                   }
                   return (
-                    <>
+                    <React.Fragment key={category}>
                       <ImpactComparisonTableRow
                         label={getSocioEconomicImpactLabel(category)}
                         isFirst
@@ -758,7 +756,7 @@ const ImpactComparisonListSocioEconomicSection = ({ baseCase, comparisonCase }: 
                         formatValueFn={formatValueFn}
                       />
                       <ImpactComparisonTableSeparatorRow />
-                    </>
+                    </React.Fragment>
                   );
                 }
               }

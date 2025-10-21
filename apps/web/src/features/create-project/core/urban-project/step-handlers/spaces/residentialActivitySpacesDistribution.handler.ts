@@ -4,7 +4,7 @@ import { ReadStateHelper } from "../../helpers/readState";
 import { AnswerStepHandler } from "../stepHandler.type";
 import { getDeleteBuildingsRules, getReinstatementCostsRecomputationRules } from "./getCommonRules";
 
-const STEP_ID = "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION" as const;
+const STEP_ID = "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION";
 
 export const ResidentialAndActivitySpacesDistributionHandler: AnswerStepHandler<typeof STEP_ID> = {
   stepId: STEP_ID,

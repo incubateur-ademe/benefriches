@@ -1,3 +1,5 @@
+import React from "react";
+
 import { EconomicBalance } from "@/features/projects/domain/projectImpactsEconomicBalance";
 
 import {
@@ -34,7 +36,7 @@ const EconomicBalanceListSection = ({ impact, modalData }: Props) => {
         dialogId={`fr-modal-impacts-economic_balance-List`}
       >
         {economicBalance.map(({ name, value, details = [] }) => (
-          <>
+          <React.Fragment key={name}>
             <ImpactModalDescription
               dialogId={`fr-modal-impacts-economic_balance-${name}-List`}
               initialState={{ sectionName: "economic_balance", impactName: name }}
@@ -74,7 +76,7 @@ const EconomicBalanceListSection = ({ impact, modalData }: Props) => {
                 {...modalData}
               />
             ))}
-          </>
+          </React.Fragment>
         ))}
       </ImpactSection>
     </>

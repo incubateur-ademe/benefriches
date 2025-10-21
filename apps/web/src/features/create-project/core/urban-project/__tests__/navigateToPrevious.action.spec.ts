@@ -436,6 +436,8 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
               break;
           }
 
+          // todo: use it.each here instead of forEach loop with switch
+          // oxlint-disable-next-line no-standalone-expect
           expect(store.getState().projectCreation.urbanProject.currentStep).toBe(nextStep);
         });
 

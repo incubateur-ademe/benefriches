@@ -15,9 +15,8 @@
     "lib": ["es2022", "dom", "dom.iterable"],
 
     /* folders */
-    "baseUrl": "./",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["./src/*"]
     },
     "types": ["vitest/globals"]
   },

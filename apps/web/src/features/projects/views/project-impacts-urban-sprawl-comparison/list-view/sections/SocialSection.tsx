@@ -207,11 +207,12 @@ const ImpactComparisonListSocialSection = ({ baseCase, comparisonCase }: Props) 
                     formatValueFn={formatValueFn}
                   />
                 ) : undefined}
-                {baseFricheAccidents?.severeInjuries || baseFricheAccidents?.severeInjuries ? (
+                {baseFricheAccidents?.severeInjuries ||
+                comparisonFricheAccidents?.severeInjuries ? (
                   <ImpactComparisonTableRow
                     label={getSocialImpactLabel("avoided_friche_severe_accidents")}
                     isLast
-                    baseValue={baseFricheAccidents.severeInjuries.difference}
+                    baseValue={baseFricheAccidents?.severeInjuries.difference ?? 0}
                     comparisonValue={comparisonFricheAccidents?.severeInjuries.difference ?? 0}
                     formatValueFn={formatValueFn}
                   />

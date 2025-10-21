@@ -168,21 +168,19 @@ const ExpensesIncomeBarChart = ({
       width: "33%",
       verticalAlign: "middle",
     },
-    series: expenses as Array<Highcharts.SeriesOptionsType>,
+    series: expenses as Highcharts.SeriesOptionsType[],
   });
 
   return (
     <div
       className="w-full"
-      style={{
-        ...expenses.reduce(
-          (style, { color }, index) => ({
-            ...style,
-            [`--highcharts-color-${index}`]: color,
-          }),
-          {},
-        ),
-      }}
+      style={expenses.reduce(
+        (style, { color }, index) => ({
+          ...style,
+          [`--highcharts-color-${index}`]: color,
+        }),
+        {},
+      )}
     >
       <HighchartsReact
         containerProps={{ className: "highcharts-no-xaxis" }}

@@ -8,5 +8,6 @@ export function splitEvenly(total: number, parts: number): number[] {
   const splitValue = roundTo2Digits(total / parts);
   const remainder = total - splitValue * (parts - 1);
 
+  // oxlint-disable-next-line no-new-array
   return new Array<number>(parts - 1).fill(splitValue).concat(remainder);
 }

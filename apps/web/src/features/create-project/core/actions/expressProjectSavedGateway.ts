@@ -1,8 +1,6 @@
 import { BaseReconversionProjectFeaturesView, expressProjectCategorySchema } from "shared";
 import { z } from "zod";
 
-import { Schedule } from "../project.types";
-
 export const saveExpressProjectSchema = z.object({
   reconversionProjectId: z.string(),
   siteId: z.string(),
@@ -11,7 +9,7 @@ export const saveExpressProjectSchema = z.object({
 });
 
 export type ExpressReconversionProjectPayload = z.infer<typeof saveExpressProjectSchema>;
-export type ExpressReconversionProjectResult = BaseReconversionProjectFeaturesView<Schedule>;
+export type ExpressReconversionProjectResult = BaseReconversionProjectFeaturesView;
 
 export interface CreateExpressReconversionProjectGateway {
   get(params: {

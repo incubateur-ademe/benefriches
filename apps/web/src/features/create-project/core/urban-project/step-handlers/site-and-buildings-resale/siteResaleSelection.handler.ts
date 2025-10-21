@@ -2,7 +2,7 @@ import { getFutureSiteOwner } from "../../../stakeholders";
 import { ReadStateHelper } from "../../helpers/readState";
 import { AnswerStepHandler } from "../stepHandler.type";
 
-const STEP_ID = "URBAN_PROJECT_SITE_RESALE_SELECTION" as const;
+const STEP_ID = "URBAN_PROJECT_SITE_RESALE_SELECTION";
 
 export const SiteResaleSelectionHandler: AnswerStepHandler<typeof STEP_ID> = {
   stepId: STEP_ID,

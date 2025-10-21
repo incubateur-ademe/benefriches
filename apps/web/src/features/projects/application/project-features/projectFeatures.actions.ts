@@ -18,6 +18,6 @@ export const fetchProjectFeatures = createAppAsyncThunk<ProjectFeatures, { proje
       return Promise.resolve(projectFeatures.data);
     }
 
-    return await extra.projectFeaturesService.getById(projectId);
+    return extra.projectFeaturesService.getById(projectId);
   },
 );
