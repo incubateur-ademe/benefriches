@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { EventEmitter2 } from "@nestjs/event-emitter";
-import { JwtModule, JwtService } from "@nestjs/jwt";
+import { JwtModule, JwtService, JwtSignOptions } from "@nestjs/jwt";
 
 import { CreateUserUseCase } from "src/auth/core/createUser.usecase";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
@@ -47,7 +47,7 @@ import { VERIFIED_EMAIL_REPOSITORY_INJECTION_TOKEN } from "./verified-email-repo
         return {
           secret: configService.getOrThrow<string>("AUTH_JWT_SECRET"),
           signOptions: {
-            expiresIn: Number(configService.getOrThrow<string>("AUTH_JWT_EXPIRES_IN")),
+            expiresIn: configService.getOrThrow<JwtSignOptions["expiresIn"]>("AUTH_JWT_EXPIRES_IN"),
           },
         };
       },
