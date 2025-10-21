@@ -84,7 +84,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
       instructions="Si des données sont erronées, vous pouvez revenir en arrière pour les modifier."
     >
       <>
-        <Section title="🏗 Type de projet">
+        <Section title="🏗️ Type de projet">
           <DataLine
             label={<strong>Type d'aménagement</strong>}
             value={getLabelForDevelopmentPlanCategory(projectData.developmentPlanCategory)}

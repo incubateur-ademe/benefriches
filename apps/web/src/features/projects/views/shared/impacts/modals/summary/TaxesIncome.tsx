@@ -44,7 +44,7 @@ const SummaryTaxesIncomeDescription = ({ impactData }: Props) => {
           <ImpactItemDetails
             impactRowValueProps={{ buttonInfoAlwaysDisplayed: true }}
             value={value}
-            label="🏛 Recettes fiscales"
+            label="🏛️ Recettes fiscales"
             type="monetary"
             labelProps={{
               onClick: (e) => {

@@ -7,7 +7,7 @@ export default function HasSiteAndProjectSteps() {
         Type de site, sols, pollution, gestion du site... avec un maximum de données pré-remplies
         par l'outil.
       </HowItWorksStep>
-      <HowItWorksStep emoji="🏗️" title="Je décris mon projet">
+      <HowItWorksStep emoji="🏗️️" title="Je décris mon projet">
         Type de projet, dépenses et recettes... avec là aussi un maximum de données pré-remplies.
       </HowItWorksStep>
       <HowItWorksStep emoji="📊" title="L'outil calcule les impacts du projet">

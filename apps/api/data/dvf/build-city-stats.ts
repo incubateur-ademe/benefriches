@@ -1313,7 +1313,7 @@ ${missingAnalysis}
     );
     const communes = this.stats.length - arrondissements.length;
 
-    console.log(` 🏘️ Communes analysées : ${communes.toLocaleString()}`);
+    console.log(` 🏘️️ Communes analysées : ${communes.toLocaleString()}`);
     console.log(` 🏙️ Arrondissements analysés : ${arrondissements.length}`);
     console.log(` 💯 Total entités : ${this.stats.length.toLocaleString()}`);
 
@@ -1346,7 +1346,7 @@ ${missingAnalysis}
 
     console.log(` 💰 Prix médian toute transactions : ${nationalStats.total.pxm2_median} €/m²`);
     console.log(`     🏡 Maisons : ${nationalStats.maisons.pxm2_median} €/m²`);
-    console.log(`     🏘️ Appartements : ${nationalStats.appartements.pxm2_median} €/m²`);
+    console.log(`     🏘️️ Appartements : ${nationalStats.appartements.pxm2_median} €/m²`);
 
     console.log("\n=== 💾 FICHIERS GÉNÉRÉS ===\n");
     console.log(" - cityStats.csv");

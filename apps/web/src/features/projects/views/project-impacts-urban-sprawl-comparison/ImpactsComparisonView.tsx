@@ -70,7 +70,7 @@ const ImpactsComparisonView = ({
             />
           </>
         )}
-        {currentViewMode === "charts" && <h2 className="py-10"> 🏗️ Bientôt disponible...</h2>}
+        {currentViewMode === "charts" && <h2 className="py-10"> 🏗️️ Bientôt disponible...</h2>}
         <ImpactsComparisonFooter
           baseCaseSiteData={baseCase.conversionSiteData}
           comparisonCaseSiteData={comparisonCase.conversionSiteData}

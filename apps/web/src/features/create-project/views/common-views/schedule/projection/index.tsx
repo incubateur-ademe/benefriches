@@ -21,7 +21,7 @@ function ScheduleProjectionFormContainer({
   initialValues,
   onSubmit,
   onBack,
-  installationScheduleLabel = "🏘️ Installation du projet",
+  installationScheduleLabel = "🏘️️ Installation du projet",
 }: Props) {
   const isSiteFriche = useAppSelector(selectIsSiteFriche);
 

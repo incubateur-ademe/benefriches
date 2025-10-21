@@ -55,7 +55,7 @@ type FaqItem = {
 
 const faqData: FaqItem[] = [
   {
-    question: "🏗️ Quels projets d'aménagement sont évaluables sur Bénéfriches ?",
+    question: "🏗️️ Quels projets d'aménagement sont évaluables sur Bénéfriches ?",
     answer: (
       <div>
         <p>Sur Bénéfriches, vous pouvez créer les projets suivants :</p>

@@ -50,7 +50,7 @@ const TaxesIncomeDescription = ({ developmentPlan, impactData }: Props) => {
   return (
     <ModalBody size="large">
       <ModalHeader
-        title="🏛 Recettes fiscales"
+        title="🏛️ Recettes fiscales"
         value={
           impactData
             ? {
@@ -68,7 +68,7 @@ const TaxesIncomeDescription = ({ developmentPlan, impactData }: Props) => {
       />
       <ModalGrid>
         <ModalData>
-          <ModalColumnPointChart format="monetary" data={data} exportTitle="🏛 Recettes fiscales" />
+          <ModalColumnPointChart format="monetary" data={data} exportTitle="🏛️ Recettes fiscales" />
 
           <ModalTable
             caption="Liste des recettes fiscales"

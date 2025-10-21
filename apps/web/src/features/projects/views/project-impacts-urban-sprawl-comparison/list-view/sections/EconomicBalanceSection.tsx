@@ -130,7 +130,7 @@ const ImpactComparisonListEconomicBalanceSection = ({
               label={
                 projectType === "PHOTOVOLTAIC_POWER_PLANT"
                   ? "⚡️ Installation de la centrale photovoltaïque"
-                  : "🏘 Aménagement du site"
+                  : "🏘️ Aménagement du site"
               }
               actor={baseCase.impacts.economicBalance.bearer}
               baseValue={-1 * (base?.total ?? 0)}

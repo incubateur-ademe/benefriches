@@ -109,7 +109,7 @@ const DevelopmentPlanFeatures = ({
       return (
         <>
           <Section
-            title="🏘 Espaces"
+            title="🏘️ Espaces"
             buttonProps={
               getSectionButtonProps
                 ? getSectionButtonProps("URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION")

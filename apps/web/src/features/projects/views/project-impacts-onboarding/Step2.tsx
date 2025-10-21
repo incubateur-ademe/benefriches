@@ -48,7 +48,7 @@ export default function Step2({ onNextClick, onBackClick, skipStepByStepAnimatio
             <EmojiListItem emoji="👷‍♀️" emojiClassName={EMOJI_CLASSNAME}>
               L’aménageur ou le promoteur
             </EmojiListItem>
-            <EmojiListItem emoji="🏛️" emojiClassName={EMOJI_CLASSNAME}>
+            <EmojiListItem emoji="🏛️️" emojiClassName={EMOJI_CLASSNAME}>
               La collectivité
             </EmojiListItem>
           </ul>
@@ -63,7 +63,7 @@ export default function Step2({ onNextClick, onBackClick, skipStepByStepAnimatio
         >
           Les groupes de population pouvant être concernés par le projet ou ses retombées :
           <ul className="text-base list-none">
-            <EmojiListItem emoji="🏘️" emojiClassName={EMOJI_CLASSNAME}>
+            <EmojiListItem emoji="🏘️️" emojiClassName={EMOJI_CLASSNAME}>
               La population locale <span>→</span>{" "}
               <span className="font-normal">
                 Concernée, par exemple, par la valeur patrimoniale des bâtiments

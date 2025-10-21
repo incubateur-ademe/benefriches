@@ -12,7 +12,7 @@ function ScheduleProjectionFormContainer() {
   const onBack = useStepBack();
   return (
     <ScheduleProjectionForm
-      installationScheduleLabel="🏘️ Aménagement du site"
+      installationScheduleLabel="🏘️️ Aménagement du site"
       onSubmit={(formData) => {
         dispatch(
           requestStepCompletion({

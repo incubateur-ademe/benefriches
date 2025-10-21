@@ -15,7 +15,7 @@ const PropertyTransferDutiesIncreaseDescription = ({ impactData }: Props) => {
   return (
     <ModalBody size="large">
       <ModalHeader
-        title="🏛 Droits de mutation sur la transaction foncière"
+        title="🏛️ Droits de mutation sur la transaction foncière"
         value={
           impactData
             ? {

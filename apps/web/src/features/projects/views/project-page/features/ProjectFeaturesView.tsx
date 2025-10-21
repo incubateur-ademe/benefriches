@@ -21,7 +21,7 @@ type Props = {
 export default function ProjectFeaturesView({ projectData, getSectionButtonProps }: Props) {
   return (
     <>
-      <Section title="🏗 Type de projet">
+      <Section title="🏗️ Type de projet">
         <DataLine
           label={<strong>Type d'aménagement</strong>}
           value={

@@ -32,7 +32,7 @@ function CreateProjectIntroductionPage({ onNext, siteName, siteLoadingState }: P
     case "success":
       return (
         <EditorialPageLayout>
-          <EditorialPageIcon>🏗</EditorialPageIcon>
+          <EditorialPageIcon>🏗️</EditorialPageIcon>
           <EditorialPageTitle>
             Vous avez un projet d'aménagement sur le site "{siteName}".
           </EditorialPageTitle>

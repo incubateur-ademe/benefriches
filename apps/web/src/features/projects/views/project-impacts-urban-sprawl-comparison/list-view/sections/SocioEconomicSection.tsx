@@ -50,15 +50,15 @@ const getSocioEconomicImpactLabel = (impact: ImpactName) => {
     case "roads_and_utilities_maintenance_expenses":
       return "🅿️ Dépenses d'entretien et maintenance des VRD supplémentaires";
     case "avoided_roads_and_utilities_construction_expenses":
-      return "🏗 Dépenses de travaux de VRD évitées";
+      return "🏗️ Dépenses de travaux de VRD évitées";
     case "statu_quo_friche_costs":
       return "🏚 Dépenses de gestion et de sécurisation de la friche";
     case "roads_and_utilities_construction_expenses":
-      return "🏗 Dépenses de travaux de VRD";
+      return "🏗️ Dépenses de travaux de VRD";
     case "local_property_value_increase":
       return "🏡 Valeur patrimoniale des bâtiments autour du site";
     case "local_transfer_duties_increase":
-      return "🏛 Droits de mutation sur les ventes immobilières autour du site";
+      return "🏛️ Droits de mutation sur les ventes immobilières autour du site";
     case "project_rental_income":
       return "🔑 Revenu locatif du site converti";
     case "site_statu_quo_rental_income":
@@ -74,11 +74,11 @@ const getSocioEconomicImpactLabel = (impact: ImpactName) => {
     case "site_statu_quo_security_costs":
       return "👮 Gardiennage";
     case "site_statu_quo_property_taxes":
-      return "🏛 Taxe foncière du site non converti";
+      return "🏛️ Taxe foncière du site non converti";
     case "site_statu_quo_operation_taxes":
-      return "🏛 Taxes d'exploitation du site non converti";
+      return "🏛️ Taxes d'exploitation du site non converti";
     case "site_statu_quo_taxes":
-      return "🏛 Impôts et taxes du site non converti";
+      return "🏛️ Impôts et taxes du site non converti";
     default:
       return getSocioEconomicProjectImpactLabel(impact);
   }

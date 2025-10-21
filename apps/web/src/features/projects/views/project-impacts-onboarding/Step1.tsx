@@ -68,7 +68,7 @@ export default function Step1({ onNextClick, skipStepByStepAnimation }: Props) {
         >
           Des impacts non-monétaires :
           <ul className="text-base list-none">
-            <EmojiListItem emoji="🏘️" emojiClassName={EMOJI_CLASSNAME}>
+            <EmojiListItem emoji="🏘️️" emojiClassName={EMOJI_CLASSNAME}>
               Impacts sociaux <span>→</span>{" "}
               <span className="font-normal">Exemple : nombre d’emplois</span>
             </EmojiListItem>

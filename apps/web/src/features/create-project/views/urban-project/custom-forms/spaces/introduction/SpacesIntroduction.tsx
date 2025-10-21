@@ -14,7 +14,7 @@ type Props = {
 const UrbanProjectSpacesIntroduction = ({ onNext, onBack }: Props) => {
   return (
     <EditorialPageLayout>
-      <EditorialPageIcon>🏘</EditorialPageIcon>
+      <EditorialPageIcon>🏘️</EditorialPageIcon>
       <EditorialPageTitle>
         Commençons par parler des espaces qui composeront le projet urbain.
       </EditorialPageTitle>
