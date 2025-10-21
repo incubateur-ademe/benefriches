@@ -30,7 +30,7 @@ const ModalColumnSeriesChart = ({ data, format, exportTitle, exportSubtitle, ...
 
   useChartCustomPointColors(
     chartContainerId,
-    data.map(({ values }) => values.map(({ color }) => color)).flat(),
+    data.flatMap(({ values }) => values.map(({ color }) => color)),
   );
 
   const { onMouseLeave, onMouseMove, onChartReady, isChartReady, position, colIndex } =
@@ -45,18 +45,16 @@ const ModalColumnSeriesChart = ({ data, format, exportTitle, exportSubtitle, ...
     color,
   }));
 
-  const series = data
-    .map(({ values }, colIndex) =>
-      values.map(({ label: detailsLabel, value, color }) => ({
-        name: detailsLabel,
-        type: "column",
-        color,
-        data: Array(data.length)
-          .fill(null)
-          .map((defValue: 0, index) => (colIndex === index ? value : defValue)),
-      })),
-    )
-    .flat();
+  const series = data.flatMap(({ values }, colIndex) =>
+    values.map(({ label: detailsLabel, value, color }) => ({
+      name: detailsLabel,
+      type: "column",
+      color,
+      data: Array(data.length)
+        .fill(null)
+        .map((defValue: 0, index) => (colIndex === index ? value : defValue)),
+    })),
+  );
 
   return (
     <div className="relative">

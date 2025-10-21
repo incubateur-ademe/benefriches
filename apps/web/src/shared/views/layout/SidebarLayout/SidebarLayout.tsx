@@ -26,10 +26,10 @@ function SidebarLayout({ mainChildren, title, sidebarChildren }: SidebarLayoutPr
     [breakpointsValues.lg, windowInnerWidth],
   );
 
-  const [isOpen, setOpen] = useState(isCompactMode ? false : true);
+  const [isOpen, setOpen] = useState(!isCompactMode);
 
   useEffect(() => {
-    setOpen(isCompactMode ? false : true);
+    setOpen(!isCompactMode);
   }, [isCompactMode]);
 
   return (

@@ -21,8 +21,8 @@ function EconomicBalanceChartCard({ economicBalance, bearer = "l'aménageur", mo
   const revenuesList = economicBalance.filter(({ value }) => value > 0);
   const costsList = economicBalance.filter(({ value }) => value < 0);
 
-  const maxRevenue = revenuesList.sort((a, b) => b.value - a.value)[0]?.name;
-  const maxCost = costsList.sort((a, b) => Math.abs(b.value) - Math.abs(a.value))[0]?.name;
+  const maxRevenue = revenuesList.toSorted((a, b) => b.value - a.value)[0]?.name;
+  const maxCost = costsList.toSorted((a, b) => Math.abs(b.value) - Math.abs(a.value))[0]?.name;
 
   return (
     <>

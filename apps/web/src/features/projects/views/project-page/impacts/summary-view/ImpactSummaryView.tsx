@@ -18,7 +18,7 @@ const ImpactSummaryView = ({ keyImpactIndicatorsList, modalData }: Props) => {
   return (
     <section className="mt-10 grid grid-rows-1 lg:grid-cols-3 gap-6">
       {keyImpactIndicatorsList
-        .sort(
+        .toSorted(
           ({ name: aName }, { name: bName }) =>
             PRIORITY_ORDER.indexOf(aName) - PRIORITY_ORDER.indexOf(bName),
         )

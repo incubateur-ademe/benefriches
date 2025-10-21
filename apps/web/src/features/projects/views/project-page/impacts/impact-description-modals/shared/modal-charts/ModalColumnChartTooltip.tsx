@@ -2,6 +2,7 @@ import { CSSProperties } from "react";
 
 import { getPositiveNegativeTextClassesFromValue } from "@/shared/views/classes/positiveNegativeTextClasses";
 
+// oxlint-disable-next-line no-unassigned-import
 import "./ModalColumnChartTooltip.css";
 
 type Props = {

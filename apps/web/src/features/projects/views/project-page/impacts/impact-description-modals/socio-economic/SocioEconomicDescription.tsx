@@ -58,22 +58,20 @@ const SocioEconomicDescription = ({ impactsData }: Props) => {
 
           <ModalTable
             caption="Liste des impacts socio-économiques"
-            data={impactList
-              .map(({ label: actor, values }) =>
-                values.map(({ value, label, name, color }) => ({
-                  label,
-                  color,
-                  value,
-                  actor,
-                  onClick: () => {
-                    updateModalContent({
-                      sectionName: "socio_economic",
-                      impactName: name,
-                    });
-                  },
-                })),
-              )
-              .flat()}
+            data={impactList.flatMap(({ label: actor, values }) =>
+              values.map(({ value, label, name, color }) => ({
+                label,
+                color,
+                value,
+                actor,
+                onClick: () => {
+                  updateModalContent({
+                    sectionName: "socio_economic",
+                    impactName: name,
+                  });
+                },
+              })),
+            )}
           />
         </ModalData>
         <ModalContent>

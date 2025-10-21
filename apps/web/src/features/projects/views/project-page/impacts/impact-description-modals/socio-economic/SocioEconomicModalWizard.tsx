@@ -134,11 +134,10 @@ type ImpactsGroupedByName = Partial<Record<SocioEconomicImpactName, ImpactActorL
 
 const groupByImpactName = (impacts: GetImpactsGroupedByNameProps): ImpactsGroupedByName => {
   return impacts
-    .map(({ actor, amount, impact, details = [] }) => [
+    .flatMap(({ actor, amount, impact, details = [] }) => [
       { actor, amount, impact },
       ...details.map(({ impact, amount }) => ({ impact, amount, actor })),
     ])
-    .flat()
     .reduce<ImpactsGroupedByName>(
       (byImpactName, { impact, actor, amount }) => ({
         ...byImpactName,

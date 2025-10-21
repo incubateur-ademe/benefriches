@@ -2,13 +2,21 @@
   "$schema": "../../node_modules/oxlint/configuration_schema.json",
   "plugins": ["typescript", "unicorn", "react", "oxc", "import"],
   "categories": {
-    "correctness": "error"
+    "correctness": "error",
+    "suspicious": "error",
+    "nursery": "error",
+    "perf": "error"
   },
   "env": {
     "browser": true
   },
   "ignorePatterns": ["node_modules/", "dist/", "public/", "vite.config.ts", ".prettierrc.cjs"],
   "rules": {
+    "import/no-named-as-default": "off",
+    "oxc/no-map-spread": "off",
+    "no-accumulating-spread": "off",
+    "typescript/ban-types": "error",
+    "typescript/no-unsafe-type-assertion": "off",
     "typescript/no-confusing-void-expression": "error",
     "typescript/no-dynamic-delete": "error",
     "typescript/no-empty-object-type": "error",
@@ -38,6 +46,7 @@
     {
       "files": ["*.{js,jsx,ts,tsx}"],
       "rules": {
+        "react/style-prop-object": "off",
         "react/jsx-key": "warn",
         "react/jsx-no-comment-textnodes": "warn",
         "react/jsx-no-duplicate-props": "warn",
@@ -62,13 +71,13 @@
         "react/react-in-jsx-scope": "off",
         "react/require-render-return": "warn",
         "react-hooks/rules-of-hooks": "error",
-        "react-hooks/exhaustive-deps": "warn",
+        "react-hooks/exhaustive-deps": "error",
         "react/jsx-no-useless-fragment": "error"
       },
       "plugins": ["react"]
     },
     {
-      "files": ["*.spec.ts"],
+      "files": ["*.spec.{ts,tsx}"],
       "rules": {
         "vitest/expect-expect": "error",
         "vitest/no-identical-title": "error",

@@ -28,7 +28,7 @@ const getMaxColor = (
     value: number;
   }[],
 ) => {
-  const max = impacts.sort((a, b) => Math.abs(b.value) - Math.abs(a.value))[0];
+  const max = impacts.toSorted((a, b) => Math.abs(b.value) - Math.abs(a.value))[0];
 
   if (max) {
     return max.color;

@@ -75,7 +75,7 @@ export class HttpReconversionCompatibilityEvaluation
       mutafrichesId: json.id,
       reliabilityScore: json.mutabilite.fiabilite.note,
       top3Usages: json.mutabilite.resultats
-        .sort((a, b) => a.rang - b.rang)
+        .toSorted((a, b) => a.rang - b.rang)
         .slice(0, 3)
         .map((usage) => ({
           usage: usage.usage,

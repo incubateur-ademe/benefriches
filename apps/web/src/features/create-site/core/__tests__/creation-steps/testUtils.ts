@@ -1,3 +1,5 @@
+import { expect } from "vitest";
+
 import { DEFAULT_APP_SETTINGS } from "@/features/app-settings/core/appSettings";
 import { User } from "@/features/onboarding/core/user";
 import { initialState } from "@/features/onboarding/core/user.reducer";

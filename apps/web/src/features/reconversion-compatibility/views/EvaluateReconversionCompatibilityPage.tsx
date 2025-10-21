@@ -45,6 +45,7 @@ export default function EvaluateReconversionCompatibilityPage() {
   return (
     <section className="py-10">
       <h1 className="fr-container">Analyse de la compatibilité de la friche</h1>
+      {/* oxlint-disable-next-line iframe-missing-sandbox */}
       <iframe
         width="100%"
         height="950px"

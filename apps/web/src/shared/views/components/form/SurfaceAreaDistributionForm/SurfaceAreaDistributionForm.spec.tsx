@@ -64,6 +64,7 @@ describe("SurfaceAreaDistributionForm", () => {
 
       expect(screen.getByRole("button", { name: "Valider" })).toBeDisabled();
       await waitFor(() => {
+        // oxlint-disable-next-line no-standalone-expect
         expect(onSubmitSpy).not.toHaveBeenCalled();
       });
     });
@@ -99,6 +100,7 @@ describe("SurfaceAreaDistributionForm", () => {
       fireEvent.submit(submitButton);
 
       await waitFor(() => {
+        // oxlint-disable-next-line no-standalone-expect
         expect(onSubmitSpy).toHaveBeenCalledWith({ field1: 30, field2: 20 });
       });
     });
@@ -142,6 +144,7 @@ describe("SurfaceAreaDistributionForm", () => {
       fireEvent.submit(submitButton);
 
       await waitFor(() => {
+        // oxlint-disable-next-line no-standalone-expect
         expect(onSubmitSpy).toHaveBeenCalledWith({ field1: 7000, field4: 3000 });
       });
     });
@@ -228,6 +231,7 @@ describe("SurfaceAreaDistributionForm", () => {
 
       expect(screen.getByRole("button", { name: "Valider" })).toBeDisabled();
       await waitFor(() => {
+        // oxlint-disable-next-line no-standalone-expect
         expect(onSubmitSpy).not.toHaveBeenCalled();
       });
     });
@@ -266,6 +270,7 @@ describe("SurfaceAreaDistributionForm", () => {
       fireEvent.submit(submitButton);
 
       await waitFor(() => {
+        // oxlint-disable-next-line no-standalone-expect
         expect(onSubmitSpy).toHaveBeenCalledWith({ field1: 7000, field2: 3000 });
       });
     });
@@ -308,6 +313,7 @@ describe("SurfaceAreaDistributionForm", () => {
       fireEvent.submit(submitButton);
 
       await waitFor(() => {
+        // oxlint-disable-next-line no-standalone-expect
         expect(onSubmitSpy).toHaveBeenCalledWith({ field1: 7000, field4: 3000 });
       });
     });

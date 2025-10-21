@@ -1,4 +1,5 @@
 import { fr } from "@codegouvfr/react-dsfr";
+// oxlint-disable-next-line no-unassigned-import
 import "@codegouvfr/react-dsfr/dsfr/utility/icons/icons-system/icons-system.css";
 import { Link } from "type-route";
 

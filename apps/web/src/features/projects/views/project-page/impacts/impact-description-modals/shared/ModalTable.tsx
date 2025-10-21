@@ -6,6 +6,7 @@ import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImp
 import { getPositiveNegativeTextClassesFromValue } from "@/shared/views/classes/positiveNegativeTextClasses";
 import classNames from "@/shared/views/clsx";
 
+// oxlint-disable-next-line no-unassigned-import
 import "./ModalTable.css";
 
 type Props = {

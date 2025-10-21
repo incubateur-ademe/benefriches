@@ -12,7 +12,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "lib": ["es2022", "dom", "dom.iterable"],
+    "lib": ["ESNext", "dom", "dom.iterable"],
 
     /* folders */
     "paths": {

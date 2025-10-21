@@ -86,7 +86,7 @@ const useMapStepListToCategoryList = (
             state: isCurrentStep ? "current" : subCategoryState.status,
           });
         }, [])
-        .sort((a, b) => a.order - b.order);
+        .toSorted((a, b) => a.order - b.order);
 
       const completedStatus =
         subCategories && !subCategories.every((sc) => sc.state === "completed")
@@ -104,7 +104,7 @@ const useMapStepListToCategoryList = (
           state: isCurrentCategory ? currentStatus : completedStatus,
         },
       ];
-    }, []).sort((a, b) => a.order - b.order);
+    }, []).toSorted((a, b) => a.order - b.order);
 
     return {
       categories,

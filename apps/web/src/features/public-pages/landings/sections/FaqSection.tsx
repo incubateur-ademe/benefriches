@@ -179,8 +179,8 @@ export default function FaqSection() {
       <div className="fr-container mx-auto">
         <SectionTitle>Questions fréquentes</SectionTitle>
         <div className="space-y-6">
-          {faqData.map((item, index) => (
-            <Accordion key={index} label={item.question}>
+          {faqData.map((item) => (
+            <Accordion key={item.question} label={item.question}>
               {item.answer}
             </Accordion>
           ))}

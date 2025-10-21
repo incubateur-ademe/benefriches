@@ -38,17 +38,15 @@ const AvoidedFricheExpensesDescription = ({ impactData = [] }: Props) => {
 
   const { updateModalContent } = useContext(ImpactModalDescriptionContext);
 
-  const data = impactData
-    .map(({ details, actor }) =>
-      details.map(({ impact, amount }) => ({
-        label: getSocioEconomicImpactLabel(impact),
-        color: getChartColor(impact),
-        value: amount,
-        name: impact,
-        actor,
-      })),
-    )
-    .flat();
+  const data = impactData.flatMap(({ details, actor }) =>
+    details.map(({ impact, amount }) => ({
+      label: getSocioEconomicImpactLabel(impact),
+      color: getChartColor(impact),
+      value: amount,
+      name: impact,
+      actor,
+    })),
+  );
 
   return (
     <ModalBody size="large">

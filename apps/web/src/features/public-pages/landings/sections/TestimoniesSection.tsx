@@ -166,9 +166,9 @@ export default function TestimoniesSection() {
       </div>
 
       <div className="flex mt-[60px] gap-2 fr-container">
-        {testimonies.map((_, index) => (
+        {testimonies.map(({ imgSrc }, index) => (
           <button
-            key={index}
+            key={imgSrc}
             onClick={() => {
               scrollToIndex(index);
             }}

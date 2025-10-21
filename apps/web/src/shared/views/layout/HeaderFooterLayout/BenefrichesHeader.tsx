@@ -5,6 +5,7 @@ import { routes } from "@/shared/views/router";
 
 import { BENEFRICHES_ENV } from "../../envVars";
 import { useAppSelector } from "../../hooks/store.hooks";
+// oxlint-disable-next-line no-unassigned-import
 import "./BenefrichesHeader.css";
 
 function BenefrichesHeader({

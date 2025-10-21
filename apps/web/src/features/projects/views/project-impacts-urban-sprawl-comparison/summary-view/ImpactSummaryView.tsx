@@ -30,7 +30,7 @@ const ImpactSummaryView = ({ baseCase, comparisonCase, modalData }: Props) => {
         const modalPrefix = index === 0 ? "base" : "comparison";
         return (
           <div
-            key={index}
+            key={siteName}
             className="flex flex-col gap-6 p-6 bg-(--background-raised-grey) rounded-2xl"
           >
             <h3
@@ -48,7 +48,7 @@ const ImpactSummaryView = ({ baseCase, comparisonCase, modalData }: Props) => {
               {siteName}
             </h3>
             {indicators
-              .sort(
+              .toSorted(
                 ({ name: aName }, { name: bName }) =>
                   PRIORITY_ORDER.indexOf(aName) - PRIORITY_ORDER.indexOf(bName),
               )

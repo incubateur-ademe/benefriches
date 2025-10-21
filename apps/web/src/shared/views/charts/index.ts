@@ -1,3 +1,4 @@
+// oxlint-disable no-unassigned-import
 import "highcharts";
 import { Options } from "highcharts/highcharts";
 // import modules here so it's loaded once for every chart

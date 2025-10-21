@@ -48,9 +48,9 @@ const getOptions = (siteNature: SiteNature): Option[] => {
   ] as const satisfies Option[];
 };
 
+const withSiteNature = (natureLabel: string) =>
+  `Comment souhaitez-vous renseigner les informations ${natureLabel} ?`;
 const getTitle = (siteNature: SiteNature) => {
-  const withSiteNature = (natureLabel: string) =>
-    `Comment souhaitez-vous renseigner les informations ${natureLabel} ?`;
   switch (siteNature) {
     case "FRICHE":
       return withSiteNature("de la friche");

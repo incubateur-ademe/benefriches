@@ -19,6 +19,7 @@ export default function ListItem({ children }: Props) {
   return (
     <View style={styles.row}>
       <View style={styles.bullet}>
+        {/* oxlint-disable-next-line no-useless-concat */}
         <Text>{"\u2022" + " "}</Text>
       </View>
       <Text>{children}</Text>

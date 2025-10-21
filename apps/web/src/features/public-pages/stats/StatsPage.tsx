@@ -12,6 +12,7 @@ function StatsPage() {
         className="border-0"
         width="100%"
         height="600"
+        sandbox=""
       ></iframe>
     </section>
   );
