@@ -47,7 +47,7 @@ import { VERIFIED_EMAIL_REPOSITORY_INJECTION_TOKEN } from "./verified-email-repo
         return {
           secret: configService.getOrThrow<string>("AUTH_JWT_SECRET"),
           signOptions: {
-            expiresIn: configService.getOrThrow<string>("AUTH_JWT_EXPIRES_IN"),
+            expiresIn: Number(configService.getOrThrow<string>("AUTH_JWT_EXPIRES_IN")),
           },
         };
       },
