@@ -23,7 +23,7 @@ export default function ProjectFeaturesPdfPage({ projectFeatures }: Props) {
     <>
       <PdfPage id={pageIds["project-features"]}>
         <PdfPageTitle>2. Caractéristiques du projet</PdfPageTitle>
-        <FeaturesSection title="🏗 Type de projet">
+        <FeaturesSection title="🏗️️ Type de projet">
           <DataLine
             label="Type d'aménagement"
             labelClassName="font-bold"

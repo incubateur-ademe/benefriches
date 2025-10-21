@@ -23,8 +23,12 @@ export const styles = StyleSheet.create({
 
 export const tw = createTw({
   colors: {
-    ["border-grey"]: "#DDDDDD",
-    ["grey-light"]: "#F6F6F6",
+    /*
+      ⚠️ use camelCase for properties as kebab case does not work
+      See https://github.com/aanckar/react-pdf-tailwind/issues/24
+    */
+    ["borderGrey"]: "#DDDDDD",
+    ["greyLight"]: "#F6F6F6",
   },
 });
 

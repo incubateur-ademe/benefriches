@@ -124,7 +124,7 @@ export const getSocioEconomicImpactLabel = (name: SocioEconomicImpactName) => {
     case "local_property_value_increase":
       return "🏡 Valeur patrimoniale des bâtiments alentour";
     case "local_transfer_duties_increase":
-      return "🏛 Droits de mutation sur les ventes immobilières alentour";
+      return "🏛️ Droits de mutation sur les ventes immobilières alentour";
     case "project_new_company_taxation_income":
       return "🏢 Fiscalité sur les entreprises créées";
     case "project_new_houses_taxes_income":
@@ -200,11 +200,11 @@ export const getEconomicBalanceImpactLabel = (name: EconomicBalanceMainName): st
     case "financial_assistance":
       return "🏦 Aides financières";
     case "development_plan_installation":
-      return "🏗 Aménagement du projet";
+      return "🏗️️ Aménagement du projet";
     case "photovoltaic_development_plan_installation":
       return "⚡️ Installation des panneaux photovoltaïques";
     case "urban_project_development_plan_installation":
-      return "🏘 Aménagement du site";
+      return "🏘️️ Aménagement du site";
     case "operations_costs":
       return "💸️ Charges d'exploitation";
     case "operations_revenues":
@@ -247,7 +247,7 @@ const getEconomicBalanceYearlyExpensePurposeLabel = (purpose: RecurringExpense["
     case "maintenance":
       return "⚙️ Entretien et maintenance";
     case "taxes":
-      return "🏛 Taxes et impôts";
+      return "🏛️ Taxes et impôts";
     case "other":
       return "💸 Autres charges d’exploitation";
   }
@@ -281,7 +281,7 @@ const getEconomicBalanceReinstatementExpensePurposeLabel = (
     case "waste_collection":
       return "♻️ Évacuation et traitement des déchets";
     default:
-      return "🏗 Autres dépenses de remise en état";
+      return "🏗️ Autres dépenses de remise en état";
   }
 };
 
@@ -290,7 +290,7 @@ const getEconomicBalanceFinancialAssistanceLabel = (
 ): string => {
   switch (revenueSource) {
     case "local_or_regional_authority_participation":
-      return "🏛 Participation des collectivités";
+      return "🏛️ Participation des collectivités";
     case "public_subsidies":
       return "🏫 Subventions publiques";
     default:
@@ -307,17 +307,17 @@ const getEconomicBalanceInstallationLabel = (
     case "technical_studies":
       return "📋 Études et honoraires techniques";
     case "photovoltaic_works":
-      return "🛠 Travaux d'installation des panneaux";
+      return "🛠️ Travaux d'installation des panneaux";
     case "photovoltaic_other":
       return "⚡️ Autres frais d'installation des panneaux";
     case "urban_project_works":
-      return "🏗 Travaux d'aménagement";
+      return "🏗️ Travaux d'aménagement";
     case "urban_project_other":
-      return " 🏘 Autres dépenses d'aménagement";
+      return "🏘️ Autres dépenses d'aménagement";
     case "installation_works":
     case "development_works":
-      return "🛠 Travaux d'installation";
+      return "🛠️ Travaux d'installation";
     case "other":
-      return "🏗 Autres frais d'installation";
+      return "🏗️ Autres frais d'installation";
   }
 };

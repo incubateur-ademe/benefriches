@@ -14,7 +14,7 @@ type Props = {
 
 export default function ImpactsSection({ title, isMain, total, valueType, children }: Props) {
   return (
-    <View style={tw("bg-grey-light mb-6 p-4")}>
+    <View style={tw("bg-greyLight mb-6 p-4")}>
       <View style={tw(concatClassNames("px-4 w-full rounded-sm mb-2"))}>
         <ImpactRowValue label={title} isMain={isMain} value={total} valueType={valueType} isTotal />
       </View>

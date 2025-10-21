@@ -85,7 +85,7 @@ const DevelopmentPlanFeatures = ({
 
       return (
         <>
-          <FeaturesSection title="🏘 Espaces">
+          <FeaturesSection title="🏘️️ Espaces">
             <DataLine
               label="Superficie du site"
               bold

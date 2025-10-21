@@ -20,7 +20,7 @@ export default function DataLine({
   noBorder = false,
   labelClassName = "",
 }: DataLineProps) {
-  const borderStyle = isDetails ? "border-l-black border-l" : "border-b border-border-grey";
+  const borderStyle = isDetails ? "border-l-black border-l" : "border-b border-borderGrey";
   const styles = concatClassNames(
     "flex flex-row justify-between",
     bold ? "font-bold" : "",
@@ -28,7 +28,7 @@ export default function DataLine({
   );
 
   const labelStyles = tw(concatClassNames("py-2", isDetails ? "pl-4" : "", labelClassName));
-  const valueStyles = tw("p-2 w-[30%] text-right bg-grey-light");
+  const valueStyles = tw("p-2 w-[30%] text-right bg-greyLight");
 
   return (
     <View style={tw(styles)}>

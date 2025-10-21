@@ -9,7 +9,7 @@ type Props = {
 export default function ImpactItemGroup({ children }: Props) {
   return (
     <View
-      style={tw("bg-white border border-solid border-border-grey py-2 px-4 rounded-sm")}
+      style={tw("bg-white border border-solid border-borderGrey py-2 px-4 rounded-sm")}
       wrap={false}
     >
       {children}

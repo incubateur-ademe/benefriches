@@ -59,7 +59,7 @@ export const getLabelForPhotovoltaicInstallationExpensePurpose = (
     case "technical_studies":
       return "📋 Études et honoraires techniques";
     case "installation_works":
-      return "🛠 Travaux d'installation des panneaux";
+      return "🛠️ Travaux d'installation des panneaux";
     case "other":
       return "⚡️ Autres frais d'installation des panneaux";
   }
@@ -82,6 +82,6 @@ export const getLabelForReinstatementExpensePurpose = (
     case "waste_collection":
       return "♻️ Évacuation et traitement des déchets";
     default:
-      return "🏗 Autres dépenses de remise en état";
+      return "🏗️ Autres dépenses de remise en état";
   }
 };
