@@ -26,7 +26,7 @@ export const getEnvironmentalImpactLabel = (name: EnvironmentalMainImpactName) =
     case "co2_benefit":
       return "☁️ CO2-eq stocké ou évité";
     case "permeable_surface_area":
-      return "🌧 Surface perméable";
+      return "🌧️ Surface perméable";
   }
 };
 
@@ -94,7 +94,7 @@ export const getSocialImpactLabel = (name: SocialImpactName) => {
     case "avoided_vehicule_kilometers":
       return "🚙 Kilomètres évités";
     case "travel_time_saved":
-      return "⏱ Temps passé en moins dans les transports";
+      return "⏱️ Temps passé en moins dans les transports";
   }
 };
 
@@ -105,7 +105,7 @@ export const getSocioEconomicImpactLabel = (name: SocioEconomicImpactName) => {
       return "🔑 Revenu locatif";
     // Arrêt de la sécurisation de la friche
     case "avoided_friche_costs":
-      return "🏚 Dépenses de gestion et sécurisation de la friche évitées";
+      return "🏚️ Dépenses de gestion et sécurisation de la friche évitées";
     case "avoided_accidents_costs":
       return "💥 Accidents évités";
     case "avoided_illegal_dumping_costs":
@@ -145,7 +145,7 @@ export const getSocioEconomicImpactLabel = (name: SocioEconomicImpactName) => {
     // Sociaux monétarisés
     /// Projet urbain
     case "travel_time_saved":
-      return "⏱ Valeur monétaire du temps passé en moins dans les transports";
+      return "⏱️️ Valeur monétaire du temps passé en moins dans les transports";
     case "avoided_traffic_accidents":
       return "🚗 Dépenses de santé évitées grâce à la diminution des accidents de la route";
     case "avoided_traffic_deaths":
@@ -273,13 +273,13 @@ const getEconomicBalanceReinstatementExpensePurposeLabel = (
     case "sustainable_soils_reinstatement":
       return "🌱 Restauration écologique";
     case "deimpermeabilization":
-      return "🌧 Désimperméabilisation";
+      return "🌧️ Désimperméabilisation";
     case "remediation":
       return "✨ Dépollution des sols";
     case "demolition":
       return "🧱 Déconstruction";
     case "waste_collection":
-      return "♻️ Évacuation et traitement des déchets";
+      return "♻️️ Évacuation et traitement des déchets";
     default:
       return "🏗️ Autres dépenses de remise en état";
   }

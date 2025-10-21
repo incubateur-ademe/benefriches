@@ -41,7 +41,7 @@ const PermeableSurfaceDescription = ({ impactData }: Props) => {
   return (
     <ModalBody size="large">
       <ModalHeader
-        title="🌧 Surface perméable"
+        title="🌧️ Surface perméable"
         breadcrumbSegments={[
           mainBreadcrumbSection,
           soilsBreadcrumbSection,
@@ -56,7 +56,7 @@ const PermeableSurfaceDescription = ({ impactData }: Props) => {
             base={impactData.base}
             forecast={impactData.forecast}
             difference={impactData.difference}
-            title="🌧 Surface perméable"
+            title="🌧️ Surface perméable"
             details={data}
           />
 

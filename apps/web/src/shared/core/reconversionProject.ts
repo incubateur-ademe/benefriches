@@ -74,13 +74,13 @@ export const getLabelForReinstatementExpensePurpose = (
     case "sustainable_soils_reinstatement":
       return "🌱 Restauration écologique";
     case "deimpermeabilization":
-      return "🌧 Désimperméabilisation";
+      return "🌧️ Désimperméabilisation";
     case "remediation":
       return "✨ Dépollution des sols";
     case "demolition":
       return "🧱 Déconstruction";
     case "waste_collection":
-      return "♻️ Évacuation et traitement des déchets";
+      return "♻️️ Évacuation et traitement des déchets";
     default:
       return "🏗️ Autres dépenses de remise en état";
   }

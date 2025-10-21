@@ -160,7 +160,7 @@ const ImpactComparisonEnvironmentalSection = ({ baseCase, comparisonCase }: Prop
             <ImpactComparisonTableSeparatorRow />
 
             <TableAccordionRow
-              label="🌧 Surface perméable"
+              label="🌧️ Surface perméable"
               baseValue={basePermeableSurfaceArea.difference}
               comparisonValue={comparisonPermeableSurfaceArea.difference}
               formatValueFn={formatValueFn}

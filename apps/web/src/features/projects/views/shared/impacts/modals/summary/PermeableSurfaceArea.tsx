@@ -58,7 +58,7 @@ const SummaryPermeableSurfaceAreaDescription = ({ impactData }: Props) => {
           <ImpactItemDetails
             impactRowValueProps={{ buttonInfoAlwaysDisplayed: true }}
             value={difference}
-            label="🌧 Surface perméable"
+            label="🌧️ Surface perméable"
             type="surface_area"
             labelProps={{
               onClick: (e) => {

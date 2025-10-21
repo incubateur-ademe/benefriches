@@ -76,7 +76,7 @@ const SummaryAvoidedFricheCostsForLocalAuthorityDescription = ({ impactData }: P
           <ImpactItemDetails
             impactRowValueProps={{ buttonInfoAlwaysDisplayed: true }}
             value={amount}
-            label="🏚 Dépenses de gestion et de sécurisation de la friche évitées"
+            label="🏚️ Dépenses de gestion et de sécurisation de la friche évitées"
             type="monetary"
             labelProps={{
               onClick: (e) => {

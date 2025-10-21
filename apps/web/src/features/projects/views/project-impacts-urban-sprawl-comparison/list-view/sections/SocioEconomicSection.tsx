@@ -52,7 +52,7 @@ const getSocioEconomicImpactLabel = (impact: ImpactName) => {
     case "avoided_roads_and_utilities_construction_expenses":
       return "🏗️ Dépenses de travaux de VRD évitées";
     case "statu_quo_friche_costs":
-      return "🏚 Dépenses de gestion et de sécurisation de la friche";
+      return "🏚️ Dépenses de gestion et de sécurisation de la friche";
     case "roads_and_utilities_construction_expenses":
       return "🏗️ Dépenses de travaux de VRD";
     case "local_property_value_increase":

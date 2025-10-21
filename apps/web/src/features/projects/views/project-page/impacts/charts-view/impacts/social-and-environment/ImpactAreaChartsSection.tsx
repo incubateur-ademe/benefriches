@@ -196,7 +196,7 @@ const ImpactAreaChartsSection = ({
             base={permeableSurfaceArea.base}
             forecast={permeableSurfaceArea.forecast}
             difference={permeableSurfaceArea.difference}
-            title="🌧 Surface perméable"
+            title="🌧️ Surface perméable"
             color={getMaxColor([
               {
                 value: permeableSurfaceArea.greenSoil.difference,

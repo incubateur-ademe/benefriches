@@ -19,7 +19,7 @@ const TimeTravelSavedDescription = ({ impactData }: Props) => {
   return (
     <ModalBody size="large">
       <ModalHeader
-        title={`⏱ ${TITLE}`}
+        title={`⏱️ ${TITLE}`}
         subtitle="Grâce à la ou les commodités créées dans le quartier"
         value={
           impactData

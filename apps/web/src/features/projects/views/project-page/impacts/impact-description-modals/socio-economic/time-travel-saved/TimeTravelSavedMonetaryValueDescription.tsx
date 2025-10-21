@@ -33,7 +33,7 @@ const LinkToTimeTravelSavedSocialImpact = () => {
       className="px-1"
       priority="tertiary no outline"
     >
-      «&nbsp;⏱ Temps passé en moins dans les transports&nbsp;»
+      «&nbsp;⏱️ Temps passé en moins dans les transports&nbsp;»
     </Button>
   );
 };
@@ -42,7 +42,7 @@ const TimeTravelSavedMonetaryValueDescription = ({ impactData }: Props) => {
   return (
     <ModalBody size="large">
       <ModalHeader
-        title={`⏱ ${TITLE}`}
+        title={`⏱️ ${TITLE}`}
         subtitle="Grâce à la ou les commodités créées dans le quartier"
         value={
           impactData

@@ -51,7 +51,7 @@ const AvoidedFricheExpensesDescription = ({ impactData = [] }: Props) => {
   return (
     <ModalBody size="large">
       <ModalHeader
-        title="🏚 Dépenses de gestion et de sécurisation de la friche évitées"
+        title="🏚️ Dépenses de gestion et de sécurisation de la friche évitées"
         subtitle="Grâce à la reconversion de la friche"
         value={{
           text: formatMonetaryImpact(total),
@@ -69,7 +69,7 @@ const AvoidedFricheExpensesDescription = ({ impactData = [] }: Props) => {
           <ModalColumnPointChart
             format="monetary"
             data={data}
-            exportTitle="🏚 Dépenses de gestion et de sécurisation de la friche évitées"
+            exportTitle="🏚️ Dépenses de gestion et de sécurisation de la friche évitées"
             exportSubtitle="Grâce à la reconversion de la friche"
           />
           <ModalTable

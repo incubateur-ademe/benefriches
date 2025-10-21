@@ -138,7 +138,7 @@ function AboutImpactsContent() {
         </p>
       </section>
       <section>
-        <SectionTitle>⏱️ Sur quelle durée les impacts sont-ils calculés&nbsp;? </SectionTitle>
+        <SectionTitle>⏱️️ Sur quelle durée les impacts sont-ils calculés&nbsp;? </SectionTitle>
         <p>
           Bénéfriches calcule les impacts d’un projet de reconversion sur une durée représentative
           de la durée de vie ou d’usage des différents types de projets. Cette durée est prise par

@@ -94,7 +94,7 @@ const SummaryAvoidedMaintenanceCostsForLocalAuthorityDescription = ({ impactData
             <ImpactItemDetails
               impactRowValueProps={{ buttonInfoAlwaysDisplayed: true }}
               value={impactData.value.avoidedFricheCosts}
-              label="🏚 Dépenses de sécurisation de la friche évitées"
+              label="🏚️ Dépenses de sécurisation de la friche évitées"
               type="monetary"
               labelProps={{
                 onClick: (e) => {
@@ -131,7 +131,7 @@ const SummaryAvoidedMaintenanceCostsForLocalAuthorityDescription = ({ impactData
           <ImpactItemGroup>
             <ImpactItemDetails
               value={impactData.value.fricheCosts}
-              label="🏚 Dépenses de gestion et sécurisation de la friche"
+              label="🏚️ Dépenses de gestion et sécurisation de la friche"
               type="monetary"
               labelProps={{
                 onClick: (e) => {
