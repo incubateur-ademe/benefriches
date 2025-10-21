@@ -15,7 +15,7 @@ import {
 } from "shared";
 import z from "zod";
 
-import { ProjectStakeholder } from "../project.types";
+import { ProjectStakeholder } from "@/features/create-project/core/project.types";
 
 export const INFORMATIONAL_STEPS = [
   "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION",

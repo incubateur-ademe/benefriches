@@ -1,5 +1,6 @@
-import { ReadStateHelper } from "../../helpers/readState";
-import { BUILDINGS_STEPS } from "../../urbanProjectSteps";
+import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
+import { BUILDINGS_STEPS } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
+
 import { StepContext, StepInvalidationRule } from "../stepHandler.type";
 
 export const getDeleteBuildingsRules = (context: StepContext) => {

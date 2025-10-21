@@ -1,8 +1,8 @@
 import { selectAppSettings } from "@/features/app-settings/core/appSettings";
 import { selectSiteSurfaceArea } from "@/features/create-project/core/createProject.selectors";
-import { getSurfaceAreaDistributionWithUnit } from "@/features/create-project/core/urban-project/helpers/surfaceAreaDistribution";
 import { requestStepCompletion } from "@/features/create-project/core/urban-project/urbanProject.actions";
 import { selectStepAnswers } from "@/features/create-project/core/urban-project/urbanProject.selectors";
+import { getSurfaceAreaDistributionWithUnit } from "@/shared/core/reducers/project-form/urban-project/helpers/surfaceAreaDistribution";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import { useStepBack } from "../../useStepBack";

@@ -1,12 +1,13 @@
 import { createSelector } from "@reduxjs/toolkit";
 
+import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
+
 import {
   AvailableProjectStakeholder,
   getAvailableLocalAuthoritiesStakeholders,
   getProjectAvailableStakeholders,
   hasStakeholder,
 } from "../stakeholders.selectors";
-import { ReadStateHelper } from "./helpers/readState";
 import { selectStepState } from "./urbanProject.selectors";
 
 export const getUrbanProjectAvailableStakeholders = createSelector(

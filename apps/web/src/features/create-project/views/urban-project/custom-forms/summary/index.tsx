@@ -7,7 +7,7 @@ import {
   selectProjectSpaces,
 } from "@/features/create-project/core/urban-project/urbanProject.selectors";
 import { customUrbanProjectSaved } from "@/features/create-project/core/urban-project/urbanProjectCustomSaved.action";
-import { UrbanProjectCreationStep } from "@/features/create-project/core/urban-project/urbanProjectSteps";
+import { UrbanProjectCreationStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import { useInformationalStepBackNext } from "../useInformationalStepBackNext";

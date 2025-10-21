@@ -1,12 +1,12 @@
-import { ProjectCreationState } from "../../createProject.reducer";
+import { ProjectFormState } from "../urbanProject.reducer";
 import { AnswersByStep, AnswerStepId, UrbanProjectCreationStep } from "../urbanProjectSteps";
 
 export const MutateStateHelper = {
-  navigateToStep: (state: ProjectCreationState, stepId: UrbanProjectCreationStep) => {
+  navigateToStep: (state: ProjectFormState, stepId: UrbanProjectCreationStep) => {
     state.urbanProject.currentStep = stepId;
   },
 
-  ensureStepExists(state: ProjectCreationState, stepId: AnswerStepId, defaultCompleted = false) {
+  ensureStepExists(state: ProjectFormState, stepId: AnswerStepId, defaultCompleted = false) {
     if (!state.urbanProject.steps[stepId]) {
       state.urbanProject.steps[stepId] = { completed: defaultCompleted };
     }
@@ -14,7 +14,7 @@ export const MutateStateHelper = {
   },
 
   setDefaultValues<K extends AnswerStepId>(
-    state: ProjectCreationState,
+    state: ProjectFormState,
     stepId: K,
     answers: AnswersByStep[K],
   ) {
@@ -23,7 +23,7 @@ export const MutateStateHelper = {
   },
 
   completeStep<K extends AnswerStepId>(
-    state: ProjectCreationState,
+    state: ProjectFormState,
     stepId: K,
     answers: AnswersByStep[K],
   ) {
@@ -32,7 +32,7 @@ export const MutateStateHelper = {
     step.payload = answers;
   },
 
-  invalidateStep(state: ProjectCreationState, stepId: AnswerStepId) {
+  invalidateStep(state: ProjectFormState, stepId: AnswerStepId) {
     const step = this.ensureStepExists(state, stepId, false);
     step.completed = false;
     step.defaultValues = undefined;
@@ -40,7 +40,7 @@ export const MutateStateHelper = {
   },
 
   recomputeStep<K extends AnswerStepId>(
-    state: ProjectCreationState,
+    state: ProjectFormState,
     stepId: K,
     answers: AnswersByStep[K],
   ) {
@@ -51,7 +51,7 @@ export const MutateStateHelper = {
     };
   },
 
-  deleteStep(state: ProjectCreationState, stepId: AnswerStepId) {
+  deleteStep(state: ProjectFormState, stepId: AnswerStepId) {
     state.urbanProject.steps[stepId] = undefined;
   },
 };

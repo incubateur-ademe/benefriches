@@ -7,8 +7,8 @@ import { RootState } from "@/shared/core/store-config/store";
 
 import { ProjectCreationState } from "../../createProject.reducer";
 import { selectDefaultSchedule, selectSiteData } from "../../createProject.selectors";
-import { RenewableEnergyProjectState } from "../renewableEnergy.reducer";
 import { generateRenewableEnergyProjectName } from "../../helpers/projectName";
+import { RenewableEnergyProjectState } from "../renewableEnergy.reducer";
 
 const selectSelf = (state: RootState) => state.projectCreation;
 

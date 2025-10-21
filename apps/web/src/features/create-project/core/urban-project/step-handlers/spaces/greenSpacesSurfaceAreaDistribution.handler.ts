@@ -1,6 +1,6 @@
 import { isObjectsEqual } from "@/shared/core/isObjectsEqual/isObjectsEqual";
+import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
 
-import { ReadStateHelper } from "../../helpers/readState";
 import { AnswerStepHandler } from "../stepHandler.type";
 import { getReinstatementCostsRecomputationRules } from "./getCommonRules";
 

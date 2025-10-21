@@ -1,8 +1,9 @@
 import { describe, it, expect } from "vitest";
 
+import { AnswerStepId } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
+
 import { ProjectCreationState } from "../../createProject.reducer";
 import { selectProjectSoilDistribution, selectStepAnswers } from "../urbanProject.selectors";
-import { AnswerStepId } from "../urbanProjectSteps";
 import { createTestStore } from "./_testStoreHelpers";
 
 describe("urbanProject.selectors", () => {

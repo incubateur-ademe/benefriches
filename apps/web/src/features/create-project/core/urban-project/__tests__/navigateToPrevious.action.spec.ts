@@ -1,8 +1,9 @@
 import { SiteNature } from "shared";
 import { describe, it, expect } from "vitest";
 
+import { UrbanProjectCreationStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
+
 import { requestStepCompletion, navigateToNext, navigateToPrevious } from "../urbanProject.actions";
-import { UrbanProjectCreationStep } from "../urbanProjectSteps";
 import { mockSiteData } from "./_siteData.mock";
 import { createTestStore } from "./_testStoreHelpers";
 

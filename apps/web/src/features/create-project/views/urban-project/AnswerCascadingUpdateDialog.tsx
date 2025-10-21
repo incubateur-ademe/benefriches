@@ -7,7 +7,7 @@ import {
   cancelStepCompletion,
   confirmStepCompletion,
 } from "@/features/create-project/core/urban-project/urbanProject.actions";
-import { AnswerStepId } from "@/features/create-project/core/urban-project/urbanProjectSteps";
+import { AnswerStepId } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 import { RootState } from "@/shared/core/store-config/store";
 import classNames from "@/shared/views/clsx";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";

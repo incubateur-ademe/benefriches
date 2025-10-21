@@ -7,12 +7,12 @@ import {
   typedObjectEntries,
 } from "shared";
 
-import { ProjectCreationState } from "../../createProject.reducer";
+import { ProjectFormState } from "../urbanProject.reducer";
 import { ANSWER_STEPS, AnswersByStep, AnswerStepId, CustomFormAnswers } from "../urbanProjectSteps";
 
 export const ReadStateHelper = {
   getStep<K extends AnswerStepId = AnswerStepId>(
-    steps: ProjectCreationState["urbanProject"]["steps"],
+    steps: ProjectFormState["urbanProject"]["steps"],
     stepId: K,
   ) {
     return steps[stepId] as
@@ -25,20 +25,20 @@ export const ReadStateHelper = {
   },
 
   getStepAnswers<K extends AnswerStepId = AnswerStepId>(
-    steps: ProjectCreationState["urbanProject"]["steps"],
+    steps: ProjectFormState["urbanProject"]["steps"],
     stepId: K,
   ) {
     return this.getStep(steps, stepId)?.payload;
   },
 
   getDefaultAnswers<K extends AnswerStepId = AnswerStepId>(
-    steps: ProjectCreationState["urbanProject"]["steps"],
+    steps: ProjectFormState["urbanProject"]["steps"],
     stepId: K,
   ) {
     return this.getStep(steps, stepId)?.defaultValues;
   },
 
-  hasBuildings(steps: ProjectCreationState["urbanProject"]["steps"]) {
+  hasBuildings(steps: ProjectFormState["urbanProject"]["steps"]) {
     const livingAndActivitySpacesDistribution = this.getStepAnswers(
       steps,
       "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
@@ -50,7 +50,7 @@ export const ReadStateHelper = {
     );
   },
 
-  hasBuildingsResalePlannedAfterDevelopment(steps: ProjectCreationState["urbanProject"]["steps"]) {
+  hasBuildingsResalePlannedAfterDevelopment(steps: ProjectFormState["urbanProject"]["steps"]) {
     const buildingsResalePlannedAfterDevelopment = this.getStepAnswers(
       steps,
       "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION",
@@ -58,14 +58,14 @@ export const ReadStateHelper = {
     return buildingsResalePlannedAfterDevelopment;
   },
 
-  isSiteResalePlannedAfterDevelopment(steps: ProjectCreationState["urbanProject"]["steps"]) {
+  isSiteResalePlannedAfterDevelopment(steps: ProjectFormState["urbanProject"]["steps"]) {
     return (
       ReadStateHelper.getStepAnswers(steps, "URBAN_PROJECT_SITE_RESALE_SELECTION")
         ?.siteResalePlannedAfterDevelopment === true
     );
   },
 
-  getProjectSoilDistribution(steps: ProjectCreationState["urbanProject"]["steps"]) {
+  getProjectSoilDistribution(steps: ProjectFormState["urbanProject"]["steps"]) {
     const publicSpacesDistribution = this.getStepAnswers(
       steps,
       "URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION",
@@ -102,11 +102,11 @@ export const ReadStateHelper = {
     ];
   },
 
-  getProjectSoilDistributionBySoilType(steps: ProjectCreationState["urbanProject"]["steps"]) {
+  getProjectSoilDistributionBySoilType(steps: ProjectFormState["urbanProject"]["steps"]) {
     return getProjectSoilDistributionByType(this.getProjectSoilDistribution(steps));
   },
 
-  getSpacesDistribution(steps: ProjectCreationState["urbanProject"]["steps"]) {
+  getSpacesDistribution(steps: ProjectFormState["urbanProject"]["steps"]) {
     const publicSpacesDistribution = this.getStepAnswers(
       steps,
       "URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION",
@@ -147,7 +147,7 @@ export const ReadStateHelper = {
     );
   },
 
-  getProjectData(steps: ProjectCreationState["urbanProject"]["steps"]) {
+  getProjectData(steps: ProjectFormState["urbanProject"]["steps"]) {
     const formAnswers = this.getAllFormAnswers(steps);
 
     const mappedProjectData = {
@@ -185,7 +185,7 @@ export const ReadStateHelper = {
     return mappedProjectData;
   },
 
-  getAllFormAnswers(steps: ProjectCreationState["urbanProject"]["steps"]) {
+  getAllFormAnswers(steps: ProjectFormState["urbanProject"]["steps"]) {
     return Array.from(ANSWER_STEPS).reduce<CustomFormAnswers>(
       (acc, stepId) => ({
         ...acc,

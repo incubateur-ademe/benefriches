@@ -1,4 +1,5 @@
-import { ReadStateHelper } from "../../helpers/readState";
+import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
+
 import { InfoStepHandler } from "../stepHandler.type";
 
 export const SoilsCarbonSummaryHandler: InfoStepHandler = {

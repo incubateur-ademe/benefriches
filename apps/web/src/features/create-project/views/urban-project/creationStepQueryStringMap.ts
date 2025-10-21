@@ -1,4 +1,4 @@
-import { UrbanProjectCreationStep } from "../../core/urban-project/urbanProjectSteps";
+import { UrbanProjectCreationStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 
 export const URBAN_PROJECT_CREATION_STEP_QUERY_STRING_MAP = {
   URBAN_PROJECT_CREATE_MODE_SELECTION: "mode-creation",

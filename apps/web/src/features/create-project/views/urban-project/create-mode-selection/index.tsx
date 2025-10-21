@@ -1,9 +1,9 @@
+import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
 import { requestStepCompletion } from "@/features/create-project/core/urban-project/urbanProject.actions";
 import { selectStepAnswers } from "@/features/create-project/core/urban-project/urbanProject.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import CreateModeSelectionForm from "../../common-views/create-mode-selection/CreateModeSelectionForm";
-import { useStepBack } from "../custom-forms/useStepBack";
 
 const options = [
   {
@@ -27,7 +27,6 @@ const options = [
 export default function CreateModeSelectionFormContainer() {
   const dispatch = useAppDispatch();
 
-  const onBack = useStepBack();
   const { createMode } =
     useAppSelector(selectStepAnswers("URBAN_PROJECT_CREATE_MODE_SELECTION")) ?? {};
 
@@ -41,7 +40,9 @@ export default function CreateModeSelectionFormContainer() {
           }),
         );
       }}
-      onBack={onBack}
+      onBack={() => {
+        dispatch(stepRevertAttempted());
+      }}
       initialValues={createMode ? { createMode } : undefined}
       options={options}
     />
