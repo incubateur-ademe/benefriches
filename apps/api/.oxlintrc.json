@@ -32,7 +32,6 @@
     "typescript/no-unsafe-call": "error",
     "typescript/no-unsafe-assignment": "error",
     "typescript/no-unsafe-return": "error",
-    "no-throw-literal": "off",
     "no-console": "error",
     "typescript/only-throw-error": "error",
     "prefer-promise-reject-errors": "error",
