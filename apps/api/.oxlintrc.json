@@ -4,7 +4,8 @@
   "categories": {
     "correctness": "error",
     "nursery": "error",
-    "suspicious": "error"
+    "suspicious": "error",
+    "perf": "error"
   },
   "env": {
     "commonjs": true,
@@ -12,6 +13,9 @@
   },
   "ignorePatterns": ["node_modules/", "dist/"],
   "rules": {
+    "typescript/ban-types": "error",
+    "no-await-in-loop": "off",
+    "no-accumulating-spread": "off",
     "unicorn/prefer-node-protocol": "error",
     "unicorn/consistent-function-scoping": "off",
     "typescript/no-unsafe-type-assertion": "off",
