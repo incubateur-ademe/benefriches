@@ -1,4 +1,5 @@
-import { ReadStateHelper } from "../../helpers/readState";
+import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
+
 import { getReinstatementCostsRecomputationRules } from "../spaces/getCommonRules";
 import { AnswerStepHandler } from "../stepHandler.type";
 

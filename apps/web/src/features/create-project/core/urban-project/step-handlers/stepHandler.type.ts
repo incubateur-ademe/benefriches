@@ -1,10 +1,11 @@
-import { ProjectCreationState } from "../../createProject.reducer";
 import {
   AnswersByStep,
   AnswerStepId,
   InformationalStep,
   UrbanProjectCreationStep,
-} from "../urbanProjectSteps";
+} from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
+
+import { ProjectCreationState } from "../../createProject.reducer";
 
 export type StepContext = {
   siteData?: ProjectCreationState["siteData"];

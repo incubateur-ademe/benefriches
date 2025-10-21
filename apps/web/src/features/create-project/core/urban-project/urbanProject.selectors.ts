@@ -1,10 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import { RootState } from "@/shared/core/store-config/store";
-
-import { ReadStateHelper } from "./helpers/readState";
-import { AnswerStepHandler, InfoStepHandler } from "./step-handlers/stepHandler.type";
-import { stepHandlerRegistry } from "./step-handlers/stepHandlerRegistry";
+import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
 import {
   isInformationalStep,
   AnswerStepId,
@@ -12,7 +8,11 @@ import {
   INFORMATIONAL_STEPS,
   isAnswersStep,
   UrbanProjectCreationStep,
-} from "./urbanProjectSteps";
+} from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
+import { RootState } from "@/shared/core/store-config/store";
+
+import { AnswerStepHandler, InfoStepHandler } from "./step-handlers/stepHandler.type";
+import { stepHandlerRegistry } from "./step-handlers/stepHandlerRegistry";
 
 export const selectStepState = (state: RootState) => state.projectCreation.urbanProject.steps;
 
@@ -47,6 +47,12 @@ export const selectCurrentStep = createSelector(
   [(state: RootState) => state.projectCreation.urbanProject],
   (state) => state.currentStep,
 );
+
+export const selectSoilsCarbonStorageDifference = createSelector([selectStepState], (steps) => ({
+  loadingState: steps.URBAN_PROJECT_SOILS_CARBON_SUMMARY?.loadingState,
+  current: steps.URBAN_PROJECT_SOILS_CARBON_SUMMARY?.data?.current,
+  projected: steps.URBAN_PROJECT_SOILS_CARBON_SUMMARY?.data?.projected,
+}));
 
 const selectAvailableStepsStateEntries = createSelector(
   [(state: RootState) => state.projectCreation.siteData, selectStepState],

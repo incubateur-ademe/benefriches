@@ -1,9 +1,9 @@
+import { UrbanProjectCreationStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 import { createStore } from "@/shared/core/store-config/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import { getInitialState, ProjectCreationState } from "../../createProject.reducer";
-import { initialState as urbanProjectInitialState } from "../urbanProject.reducer";
-import { UrbanProjectCreationStep } from "../urbanProjectSteps";
+import { urbanProjectInitialState } from "../urbanProject.reducer";
 import { mockSiteData } from "./_siteData.mock";
 
 const createTestState = (

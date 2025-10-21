@@ -1,4 +1,5 @@
-import { ReadStateHelper } from "../../helpers/readState";
+import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
+
 import { AnswerStepHandler } from "../stepHandler.type";
 import { BuildingsUseSurfaceAreaDistributionHandler } from "./buildingsUseSurfaceAreaDistribution.handler";
 

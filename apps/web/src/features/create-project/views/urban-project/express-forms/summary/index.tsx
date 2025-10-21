@@ -8,7 +8,7 @@ import { useStepBack } from "../../custom-forms/useStepBack";
 
 function ProjectExpressSummaryContainer() {
   const dispatch = useAppDispatch();
-  const { loadingState = "idle", projectData } =
+  const { loadingState = "idle", data } =
     useAppSelector(
       (state) => state.projectCreation.urbanProject.steps.URBAN_PROJECT_EXPRESS_SUMMARY,
     ) ?? {};
@@ -23,7 +23,7 @@ function ProjectExpressSummaryContainer() {
   return (
     <ProjectExpressSummary
       onBack={onBack}
-      projectData={projectData}
+      projectData={data}
       onNext={onNext}
       loadingState={loadingState}
       siteName={siteData?.name ?? ""}

@@ -2,11 +2,11 @@ import { ButtonProps } from "@codegouvfr/react-dsfr/Button";
 import { ReactNode } from "react";
 import { SoilsDistribution, LEGACY_UrbanProjectSpace } from "shared";
 
+import ProjectFeaturesView from "@/features/projects/views/project-page/features/ProjectFeaturesView";
 import {
   CustomFormAnswers,
   UrbanProjectCreationStep,
-} from "@/features/create-project/core/urban-project/urbanProjectSteps";
-import ProjectFeaturesView from "@/features/projects/views/project-page/features/ProjectFeaturesView";
+} from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 

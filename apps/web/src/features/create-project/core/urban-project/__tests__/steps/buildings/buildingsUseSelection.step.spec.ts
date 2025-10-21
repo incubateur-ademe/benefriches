@@ -1,8 +1,9 @@
 import { describe, it } from "vitest";
 
+import { AnswersByStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
+
 import { confirmStepCompletion, requestStepCompletion } from "../../../urbanProject.actions";
 import { UrbanProjectState } from "../../../urbanProject.reducer";
-import { AnswersByStep } from "../../../urbanProjectSteps";
 import { createTestStore } from "../../_testStoreHelpers";
 
 const getCurrentStep = (store: ReturnType<typeof createTestStore>) =>

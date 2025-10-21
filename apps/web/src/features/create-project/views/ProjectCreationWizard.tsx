@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Route } from "type-route";
 
+import { isUrbanProjectCreationStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
@@ -10,7 +11,6 @@ import { reconversionProjectCreationInitiated } from "../core/actions/urbanProje
 import { ProjectCreationStep } from "../core/createProject.reducer";
 import { selectCurrentStep } from "../core/createProject.selectors";
 import { isRenewableEnergyCreationStep } from "../core/renewable-energy/creationSteps";
-import { isUrbanProjectCreationStep } from "../core/urban-project/urbanProjectSteps";
 import Stepper from "./Stepper";
 import StepRevertConfirmationModal from "./common-views/step-revert-confirmation-modal";
 import ProjectCreationIntroduction from "./introduction";

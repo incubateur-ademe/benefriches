@@ -1,34 +1,67 @@
-import { createAction } from "@reduxjs/toolkit";
+import {
+  createProjectFormActions,
+  makeUrbanProjectFormActionType,
+} from "@/shared/core/reducers/project-form/urban-project/urbanProject.actions";
+import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
 
-import { makeProjectCreationActionType } from "../actions/actionsUtils";
-import { AnswerStepId, AnswersByStep, UrbanProjectCreationStep } from "./urbanProjectSteps";
+import {
+  makeProjectCreationActionType,
+  PROJECT_CREATION_ACTION_PREFIX,
+} from "../actions/actionsUtils";
+import { CurrentAndProjectedSoilsCarbonStorageResult } from "../actions/soilsCarbonStorage.action";
+import { selectSiteAddress, selectSiteSoilsDistribution } from "../createProject.selectors";
+import { selectProjectSoilDistribution } from "./urbanProject.selectors";
 
-const URBAN_PROJECT_CREATION_PREFIX = "urbanProject";
+const {
+  requestStepCompletion,
+  cancelStepCompletion,
+  confirmStepCompletion,
+  navigateToNext,
+  navigateToPrevious,
+  navigateToStep,
+} = createProjectFormActions(PROJECT_CREATION_ACTION_PREFIX);
 
-export const makeUrbanProjectCreationActionType = (actionName: string) => {
-  return makeProjectCreationActionType(`${URBAN_PROJECT_CREATION_PREFIX}/${actionName}`);
+export {
+  requestStepCompletion,
+  cancelStepCompletion,
+  confirmStepCompletion,
+  navigateToNext,
+  navigateToPrevious,
+  navigateToStep,
 };
 
-const createUrbanProjectCreationAction = <TPayload = void>(actionName: string) =>
-  createAction<TPayload>(makeUrbanProjectCreationActionType(actionName));
+export const fetchSoilsCarbonStorageDifference =
+  createAppAsyncThunk<CurrentAndProjectedSoilsCarbonStorageResult>(
+    makeUrbanProjectFormActionType(
+      PROJECT_CREATION_ACTION_PREFIX,
+      "fetchCurrentAndProjectedSoilsCarbonStorage",
+    ),
+    async (_, { extra, getState }) => {
+      const rootState = getState();
+      const siteAddress = selectSiteAddress(rootState);
+      const siteSoils = selectSiteSoilsDistribution(rootState);
+      const projectSoils = selectProjectSoilDistribution(rootState);
 
-export type StepCompletionPayload<K extends AnswerStepId = AnswerStepId> = {
-  [P in K]: {
-    stepId: P;
-    answers: AnswersByStep[P];
-  };
-}[K];
-export const requestStepCompletion =
-  createUrbanProjectCreationAction<StepCompletionPayload>("requestStepCompletion");
+      if (!siteAddress) throw new Error("Missing site address");
 
-export const confirmStepCompletion = createUrbanProjectCreationAction("confirmStepCompletion");
+      const [current, projected] = await Promise.all([
+        extra.soilsCarbonStorageService.getForCityCodeAndSoils({
+          cityCode: siteAddress.cityCode,
+          soils: siteSoils,
+        }),
+        extra.soilsCarbonStorageService.getForCityCodeAndSoils({
+          soils: projectSoils,
+          cityCode: siteAddress.cityCode,
+        }),
+      ]);
 
-export const cancelStepCompletion = createUrbanProjectCreationAction("cancelStepCompletion");
+      return {
+        current,
+        projected,
+      };
+    },
+  );
 
-export const navigateToPrevious = createUrbanProjectCreationAction("navigateToPrevious");
-
-export const navigateToNext = createUrbanProjectCreationAction("navigateToNext");
-
-export const navigateToStep = createUrbanProjectCreationAction<{
-  stepId: UrbanProjectCreationStep;
-}>("navigateToStep");
+export const makeUrbanProjectCreationActionType = (actionName: string) => {
+  return makeProjectCreationActionType(`urbanProject/${actionName}`);
+};

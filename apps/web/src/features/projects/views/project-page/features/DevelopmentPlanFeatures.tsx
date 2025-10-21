@@ -1,7 +1,6 @@
 import { ButtonProps } from "@codegouvfr/react-dsfr/Button";
 import { sumObjectValues, typedObjectEntries } from "shared";
 
-import { UrbanProjectCreationStep } from "@/features/create-project/core/urban-project/urbanProjectSteps";
 import { ProjectFeatures } from "@/features/projects/domain/projects.types";
 import {
   formatNumberFr,
@@ -9,6 +8,7 @@ import {
   formatSurfaceArea,
 } from "@/shared/core/format-number/formatNumber";
 import { computePercentage } from "@/shared/core/percentage/percentage";
+import { UrbanProjectCreationStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 import { getLabelForUrbanProjectSpace } from "@/shared/core/urbanProject";
 import DataLine from "@/shared/views/components/FeaturesList/FeaturesListDataLine";
 import Section from "@/shared/views/components/FeaturesList/FeaturesListSection";

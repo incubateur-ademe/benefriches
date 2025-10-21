@@ -1,7 +1,10 @@
-import { ProjectCreationState } from "../../createProject.reducer";
-import { ShortcutResult, StepInvalidationRule } from "../step-handlers/stepHandler.type";
-import { stepHandlerRegistry } from "../step-handlers/stepHandlerRegistry";
+import {
+  ShortcutResult,
+  StepInvalidationRule,
+} from "../../../../../../features/create-project/core/urban-project/step-handlers/stepHandler.type";
+import { stepHandlerRegistry } from "../../../../../../features/create-project/core/urban-project/step-handlers/stepHandlerRegistry";
 import { StepCompletionPayload } from "../urbanProject.actions";
+import { ProjectFormState } from "../urbanProject.reducer";
 import { AnswerStepId, UrbanProjectCreationStep } from "../urbanProjectSteps";
 import { MutateStateHelper } from "./mutateState";
 import { navigateToAndLoadStep } from "./navigateToStep";
@@ -15,8 +18,8 @@ export type StepUpdateResult<T extends AnswerStepId> = {
 
 function processShortcutInvalidations(
   handlerContext: {
-    siteData: ProjectCreationState["siteData"];
-    stepsState: ProjectCreationState["urbanProject"]["steps"];
+    siteData: ProjectFormState["siteData"];
+    stepsState: ProjectFormState["urbanProject"]["steps"];
   },
   shortcutsComplete: ShortcutResult["complete"],
   dependencyRules: StepInvalidationRule[],
@@ -55,7 +58,7 @@ function processShortcutInvalidations(
  * - On navigue vers l'étape suivante
  */
 export function computeStepChanges<T extends AnswerStepId>(
-  state: ProjectCreationState,
+  state: ProjectFormState,
   payload: StepCompletionPayload<T>,
 ): StepUpdateResult<T> {
   const handler = stepHandlerRegistry[payload.stepId];
@@ -102,7 +105,7 @@ export function computeStepChanges<T extends AnswerStepId>(
 }
 
 export function applyStepChanges<T extends AnswerStepId>(
-  state: ProjectCreationState,
+  state: ProjectFormState,
   changes: StepUpdateResult<T>,
 ): void {
   const { cascadingChanges, payload, shortcutComplete } = changes;

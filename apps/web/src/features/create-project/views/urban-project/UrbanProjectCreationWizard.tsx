@@ -1,12 +1,12 @@
 import { lazy, ReactNode, Suspense } from "react";
 
+import { UrbanProjectCreationStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
 import { selectCurrentStep } from "../../core/urban-project/urbanProject.selectors";
-import { UrbanProjectCreationStep } from "../../core/urban-project/urbanProjectSteps";
 import { HTML_MAIN_TITLE } from "../mainHtmlTitle";
 import CreateModeSelectionForm from "./create-mode-selection";
 import BuildingsUseSelection from "./custom-forms/buildings/use-selection";

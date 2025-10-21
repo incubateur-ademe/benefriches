@@ -5,7 +5,7 @@ import { selectAvailableStepsState } from "@/features/create-project/core/urban-
 import {
   isAnswersStep,
   UrbanProjectCreationStep,
-} from "@/features/create-project/core/urban-project/urbanProjectSteps";
+} from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 import { RootState } from "@/shared/core/store-config/store";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import FormStepperStep from "@/shared/views/layout/WizardFormLayout/FormStepperStep";

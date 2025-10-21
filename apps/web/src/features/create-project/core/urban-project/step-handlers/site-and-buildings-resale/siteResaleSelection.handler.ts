@@ -1,5 +1,6 @@
+import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
+
 import { getFutureSiteOwner } from "../../../helpers/stakeholders";
-import { ReadStateHelper } from "../../helpers/readState";
 import { AnswerStepHandler } from "../stepHandler.type";
 
 const STEP_ID = "URBAN_PROJECT_SITE_RESALE_SELECTION";

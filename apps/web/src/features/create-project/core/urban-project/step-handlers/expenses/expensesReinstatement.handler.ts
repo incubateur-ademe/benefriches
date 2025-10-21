@@ -1,7 +1,8 @@
 import { ComputedReinstatementExpenses, computeProjectReinstatementExpenses } from "shared";
 
-import { ReadStateHelper } from "../../helpers/readState";
-import { AnswersByStep } from "../../urbanProjectSteps";
+import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
+import { AnswersByStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
+
 import { AnswerStepHandler, StepContext } from "../stepHandler.type";
 
 const getDefaultReinstatementExpenses = (context: StepContext) => {

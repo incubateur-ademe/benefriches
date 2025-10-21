@@ -2,7 +2,7 @@ import { createAction } from "@reduxjs/toolkit";
 
 import { ProjectCreationStep } from "../createProject.reducer";
 
-const PROJECT_CREATION_ACTION_PREFIX = "projectCreation";
+export const PROJECT_CREATION_ACTION_PREFIX = "projectCreation";
 
 export const makeProjectCreationActionType = (actionName: string) => {
   return `${PROJECT_CREATION_ACTION_PREFIX}/${actionName}`;

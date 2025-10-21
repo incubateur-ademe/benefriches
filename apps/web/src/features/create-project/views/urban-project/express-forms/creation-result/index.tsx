@@ -15,7 +15,7 @@ function UrbanProjectExpressCreationResultContainer() {
   return (
     <ProjectCreationResult
       projectId={projectId}
-      projectName={URBAN_PROJECT_EXPRESS_SUMMARY?.projectData?.name ?? ""}
+      projectName={URBAN_PROJECT_EXPRESS_SUMMARY?.data?.name ?? ""}
       loadingState={urbanProject.saveState}
       onBack={onBack}
     />

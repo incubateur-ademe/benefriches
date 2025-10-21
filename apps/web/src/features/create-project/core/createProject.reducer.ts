@@ -4,6 +4,7 @@ import { DevelopmentPlanCategory } from "shared";
 import { v4 as uuid } from "uuid";
 
 import { ProjectSite } from "@/features/create-project/core/project.types";
+import { UrbanProjectCreationStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 
 import {
   stepRevertAttempted,
@@ -23,10 +24,9 @@ import {
   renewableEnergyProjectReducer,
 } from "./renewable-energy/renewableEnergy.reducer";
 import urbanProjectReducer, {
-  initialState as urbanProjectInitialState,
+  urbanProjectInitialState,
   UrbanProjectState,
 } from "./urban-project/urbanProject.reducer";
-import { UrbanProjectCreationStep } from "./urban-project/urbanProjectSteps";
 
 type LoadingState = "idle" | "loading" | "success" | "error";
 

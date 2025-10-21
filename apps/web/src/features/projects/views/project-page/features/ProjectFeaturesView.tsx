@@ -1,11 +1,11 @@
 import { ButtonProps } from "@codegouvfr/react-dsfr/Button";
 
-import { UrbanProjectCreationStep } from "@/features/create-project/core/urban-project/urbanProjectSteps";
 import {
   getLabelForDevelopmentPlanCategory,
   getLabelForRenewableEnergyProductionType,
 } from "@/features/create-project/views/projectTypeLabelMapping";
 import { ProjectFeatures } from "@/features/projects/domain/projects.types";
+import { UrbanProjectCreationStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 import DataLine from "@/shared/views/components/FeaturesList/FeaturesListDataLine";
 import ScheduleDates from "@/shared/views/components/FeaturesList/FeaturesListScheduleDates";
 import Section from "@/shared/views/components/FeaturesList/FeaturesListSection";
