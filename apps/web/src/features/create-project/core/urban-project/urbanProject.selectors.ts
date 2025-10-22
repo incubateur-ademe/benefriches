@@ -1,6 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 
 import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
+import { createUrbanProjectFormSelectors } from "@/shared/core/reducers/project-form/urban-project/urbanProject.selectors";
 import {
   isInformationalStep,
   AnswerStepId,
@@ -14,11 +15,8 @@ import { RootState } from "@/shared/core/store-config/store";
 import { AnswerStepHandler, InfoStepHandler } from "./step-handlers/stepHandler.type";
 import { stepHandlerRegistry } from "./step-handlers/stepHandlerRegistry";
 
-export const selectStepState = (state: RootState) => state.projectCreation.urbanProject.steps;
-
-export const selectProjectSoilDistribution = createSelector(selectStepState, (state) =>
-  ReadStateHelper.getProjectSoilDistributionBySoilType(state),
-);
+const { selectStepState, selectProjectSoilDistribution } =
+  createUrbanProjectFormSelectors("projectCreation");
 
 export const selectStepAnswers = <T extends AnswerStepId>(stepId: T) =>
   createSelector([selectStepState], (steps) => {
@@ -137,3 +135,5 @@ export const selectIsFormStatusValid = createSelector(
     );
   },
 );
+
+export { selectProjectSoilDistribution, selectStepState };

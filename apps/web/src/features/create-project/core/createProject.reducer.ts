@@ -3,7 +3,11 @@ import reduceReducers from "reduce-reducers";
 import { DevelopmentPlanCategory } from "shared";
 import { v4 as uuid } from "uuid";
 
-import { ProjectSite } from "@/features/create-project/core/project.types";
+import {
+  addProjectFormCasesToBuilder,
+  getProjectFormInitialState,
+  ProjectFormState,
+} from "@/shared/core/reducers/project-form/projectForm.reducer";
 import { UrbanProjectCreationStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 
 import {
@@ -23,43 +27,14 @@ import {
   INITIAL_STATE as renenewableEnergyProjectInitialState,
   renewableEnergyProjectReducer,
 } from "./renewable-energy/renewableEnergy.reducer";
-import urbanProjectReducer, {
-  urbanProjectInitialState,
-  UrbanProjectState,
-} from "./urban-project/urbanProject.reducer";
+import urbanProjectReducer from "./urban-project/urbanProject.reducer";
 
-type LoadingState = "idle" | "loading" | "success" | "error";
-
-export type ProjectCreationState = {
+export type ProjectCreationState = ProjectFormState & {
   stepsHistory: ProjectCreationStep[];
-  reviewModeStartIndex?: number;
-  isReviewing: boolean;
   projectId: string;
   developmentPlanCategory?: DevelopmentPlanCategory;
-  siteData?: ProjectSite;
-  siteDataLoadingState: LoadingState;
-  urbanProject: UrbanProjectState;
   renewableEnergyProject: RenewableEnergyProjectState;
   stepRevertAttempted: boolean;
-  siteRelatedLocalAuthorities: {
-    loadingState: LoadingState;
-    city?: {
-      code: string;
-      name: string;
-    };
-    epci?: {
-      code: string;
-      name: string;
-    };
-    department?: {
-      code: string;
-      name: string;
-    };
-    region?: {
-      code: string;
-      name: string;
-    };
-  };
 };
 
 export type ProjectCreationStep =
@@ -71,22 +46,17 @@ export type ProjectCreationStep =
 export const getInitialState = (): ProjectCreationState => {
   return {
     stepsHistory: ["INTRODUCTION"],
-    isReviewing: false,
-    reviewModeStartIndex: undefined,
     projectId: uuid(),
     developmentPlanCategory: undefined,
-    siteData: undefined,
-    siteDataLoadingState: "idle",
-    siteRelatedLocalAuthorities: {
-      loadingState: "idle",
-    },
     stepRevertAttempted: false,
     renewableEnergyProject: renenewableEnergyProjectInitialState,
-    urbanProject: urbanProjectInitialState,
+    ...getProjectFormInitialState("URBAN_PROJECT_CREATE_MODE_SELECTION"),
   };
 };
 
 const projectCreationReducer = createReducer(getInitialState(), (builder) => {
+  addProjectFormCasesToBuilder(builder, { fetchSiteLocalAuthorities: fetchSiteLocalAuthorities });
+
   builder
     .addCase(introductionStepCompleted, (state) => {
       state.stepsHistory.push("PROJECT_TYPES");
@@ -116,19 +86,7 @@ const projectCreationReducer = createReducer(getInitialState(), (builder) => {
     .addCase(reconversionProjectCreationInitiated.rejected, (state) => {
       state.siteDataLoadingState = "error";
     })
-    /* fetch site local authorities */
-    .addCase(fetchSiteLocalAuthorities.pending, (state) => {
-      state.siteRelatedLocalAuthorities.loadingState = "loading";
-    })
-    .addCase(fetchSiteLocalAuthorities.fulfilled, (state, action) => {
-      state.siteRelatedLocalAuthorities = {
-        loadingState: "success",
-        ...action.payload,
-      };
-    })
-    .addCase(fetchSiteLocalAuthorities.rejected, (state) => {
-      state.siteRelatedLocalAuthorities.loadingState = "error";
-    })
+
     .addCase(stepRevertAttempted, (state) => {
       state.stepRevertAttempted = true;
     })

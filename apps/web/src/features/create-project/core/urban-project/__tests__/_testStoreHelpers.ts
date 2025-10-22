@@ -3,7 +3,6 @@ import { createStore } from "@/shared/core/store-config/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import { getInitialState, ProjectCreationState } from "../../createProject.reducer";
-import { urbanProjectInitialState } from "../urbanProject.reducer";
 import { mockSiteData } from "./_siteData.mock";
 
 const createTestState = (
@@ -15,9 +14,9 @@ const createTestState = (
 ): ProjectCreationState => ({
   ...getInitialState(),
   urbanProject: {
-    ...urbanProjectInitialState,
+    ...getInitialState().urbanProject,
     steps: options.steps || {},
-    currentStep: options.currentStep || urbanProjectInitialState.currentStep,
+    currentStep: options.currentStep || getInitialState().urbanProject.currentStep,
   },
   siteData: options.siteData || mockSiteData,
 });

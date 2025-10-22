@@ -12,9 +12,9 @@ import {
 
 import { ReconversionProjectCreationData } from "@/features/create-project/core/project.types";
 
+import { SoilsCarbonStorageResult } from "../../../../shared/core/reducers/project-form/soilsCarbonStorage.action";
 import { stepRevertConfirmed } from "../actions/actionsUtils";
 import { ExpressReconversionProjectResult } from "../actions/expressProjectSavedGateway";
-import { SoilsCarbonStorageResult } from "../actions/soilsCarbonStorage.action";
 import { ProjectCreationState } from "../createProject.reducer";
 import { saveReconversionProject } from "./actions/customProjectSaved.action";
 import {

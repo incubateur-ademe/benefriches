@@ -1,4 +1,4 @@
-import { ProjectFormState } from "../urbanProject.reducer";
+import { ProjectFormState } from "../../projectForm.reducer";
 import { AnswersByStep, AnswerStepId, UrbanProjectCreationStep } from "../urbanProjectSteps";
 
 export const MutateStateHelper = {

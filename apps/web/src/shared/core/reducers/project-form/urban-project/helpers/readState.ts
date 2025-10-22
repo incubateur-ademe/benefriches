@@ -7,7 +7,7 @@ import {
   typedObjectEntries,
 } from "shared";
 
-import { ProjectFormState } from "../urbanProject.reducer";
+import { ProjectFormState } from "../../projectForm.reducer";
 import { ANSWER_STEPS, AnswersByStep, AnswerStepId, CustomFormAnswers } from "../urbanProjectSteps";
 
 export const ReadStateHelper = {

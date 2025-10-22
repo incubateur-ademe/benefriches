@@ -13,6 +13,7 @@ import { projectImpactsReducer } from "@/features/projects/application/project-i
 import reconversionProjectsList from "@/features/projects/application/projects-list/projectsList.reducer";
 import { reconversionCompatibilityEvaluationReducer } from "@/features/reconversion-compatibility/core/reconversionCompatibilityEvaluation.reducer";
 import siteFeatures from "@/features/site-features/core/siteFeatures.reducer";
+import projectUpdate from "@/features/update-project/core/updateProject.reducer";
 import userFeatureAlert from "@/features/user-feature-alerts/core/userFeatureAlert.reducer";
 
 export const rootReducer = combineReducers({
@@ -21,6 +22,7 @@ export const rootReducer = combineReducers({
   siteCreation,
   siteFeatures,
   projectCreation,
+  projectUpdate,
   siteCarbonStorage,
   reconversionProjectsList,
   currentUser: currentUserReducer,
