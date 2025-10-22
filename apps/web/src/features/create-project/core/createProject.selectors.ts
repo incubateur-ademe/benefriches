@@ -1,13 +1,8 @@
 import { createSelector } from "@reduxjs/toolkit";
-import {
-  Address,
-  DevelopmentPlanCategory,
-  getDefaultScheduleForProject,
-  ProjectSchedule,
-  SoilsDistribution,
-} from "shared";
+import { DevelopmentPlanCategory, getDefaultScheduleForProject, ProjectSchedule } from "shared";
 
 import { selectAppSettings } from "@/features/app-settings/core/appSettings";
+import { createProjectFormSelectors } from "@/shared/core/reducers/project-form/projectForm.selectors";
 import { RootState } from "@/shared/core/store-config/store";
 
 import { ProjectCreationState, ProjectCreationStep } from "./createProject.reducer";
@@ -36,11 +31,6 @@ export const selectIsSiteFriche = createSelector(
   (siteData): boolean => siteData?.nature === "FRICHE",
 );
 
-export const selectSiteSoilsDistribution = createSelector(
-  selectSiteData,
-  (siteData): SoilsDistribution => siteData?.soilsDistribution ?? {},
-);
-
 export const selectSiteSurfaceArea = createSelector(
   selectSiteData,
   (siteData): number => siteData?.surfaceArea ?? 0,
@@ -50,10 +40,6 @@ export const selectSiteContaminatedSurfaceArea = createSelector(
   selectSiteData,
   (siteData): number => siteData?.contaminatedSoilSurface ?? 0,
 );
-
-export const selectSiteAddress = createSelector(selectSiteData, (siteData): Address | undefined => {
-  return siteData?.address;
-});
 
 export const selectDefaultSchedule = createSelector(
   selectIsSiteFriche,
@@ -69,3 +55,7 @@ export const selectShouldConfirmStepRevert = createSelector(
     return appSettings.askForConfirmationOnStepRevert && projecCreation.stepRevertAttempted;
   },
 );
+
+const { selectSiteAddress, selectSiteSoilsDistribution } =
+  createProjectFormSelectors("projectCreation");
+export { selectSiteAddress, selectSiteSoilsDistribution };

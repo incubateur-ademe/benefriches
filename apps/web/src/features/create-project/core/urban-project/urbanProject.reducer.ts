@@ -1,9 +1,6 @@
 import { createReducer, UnknownAction } from "@reduxjs/toolkit";
 
-import {
-  addUrbanProjectFormCasesToBuilder,
-  ProjectFormState,
-} from "@/shared/core/reducers/project-form/urban-project/urbanProject.reducer";
+import { addUrbanProjectFormCasesToBuilder } from "@/shared/core/reducers/project-form/urban-project/urbanProject.reducer";
 
 import { ProjectCreationState } from "../createProject.reducer";
 import {
@@ -21,16 +18,8 @@ import {
   expressUrbanProjectSaved,
 } from "./urbanProjectExpressSaved.action";
 
-export type UrbanProjectState = ProjectFormState["urbanProject"];
-
-export const urbanProjectInitialState: ProjectFormState["urbanProject"] = {
-  currentStep: "URBAN_PROJECT_CREATE_MODE_SELECTION",
-  saveState: "idle",
-  steps: {},
-  pendingStepCompletion: undefined,
-};
-
 export const createUrbanProjectReducer = createReducer({} as ProjectCreationState, (builder) => {
+  // Form actions
   addUrbanProjectFormCasesToBuilder(builder, {
     requestStepCompletion,
     cancelStepCompletion,
@@ -41,7 +30,7 @@ export const createUrbanProjectReducer = createReducer({} as ProjectCreationStat
     fetchSoilsCarbonStorageDifference,
   });
 
-  // Cas spécifiques au mode création
+  // Custom create Save
   builder.addCase(customUrbanProjectSaved.pending, (state) => {
     state.urbanProject.saveState = "loading";
   });
@@ -51,6 +40,8 @@ export const createUrbanProjectReducer = createReducer({} as ProjectCreationStat
   builder.addCase(customUrbanProjectSaved.rejected, (state) => {
     state.urbanProject.saveState = "error";
   });
+
+  // Express create Get & Save
   builder.addCase(expressUrbanProjectSaved.pending, (state) => {
     state.urbanProject.saveState = "loading";
   });

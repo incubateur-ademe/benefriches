@@ -2,7 +2,6 @@ import { configureStore, Reducer } from "@reduxjs/toolkit";
 
 import { AppSettingsGateway } from "@/features/app-settings/core/AppSettingsGateway";
 import { CreateExpressReconversionProjectGateway } from "@/features/create-project/core/actions/expressProjectSavedGateway";
-import { SiteMunicipalityDataGateway as CreateProjectMunicipalityDataGateway } from "@/features/create-project/core/actions/getSiteLocalAuthorities.action";
 import { SaveReconversionProjectGateway } from "@/features/create-project/core/actions/saveReconversionProject.action";
 import { GetSitesByIdGateway } from "@/features/create-project/core/actions/urbanProjectCreationInitiated.action";
 import { PhotovoltaicPerformanceGateway } from "@/features/create-project/core/renewable-energy/actions/getPhotovoltaicExpectedPerformance.action";
@@ -18,10 +17,11 @@ import { QuickUrbanProjectImpactsGateway } from "@/features/projects/application
 import { ReconversionCompatibilityEvaluationGateway } from "@/features/reconversion-compatibility/core/reconversionCompatibilityEvaluation.actions";
 import { SiteFeaturesGateway } from "@/features/site-features/core/fetchSiteFeatures.action";
 import { CreateFeatureAlertGateway } from "@/features/user-feature-alerts/core/CreateFeatureAlertGateway";
+import { SiteMunicipalityDataGateway as CreateProjectMunicipalityDataGateway } from "@/shared/core/reducers/project-form/getSiteLocalAuthorities.action";
 
-import { SoilsCarbonStorageGateway as ProjectSoilsCarbonStorageGateway } from "../../../features/create-project/core/actions/soilsCarbonStorage.action";
 import { SoilsCarbonStorageGateway as SiteSoilsCarbonStorageGateway } from "../../../features/create-site/core/actions/siteSoilsCarbonStorage.actions";
 import { ReconversionProjectsListGateway } from "../../../features/projects/application/projects-list/projectsList.actions";
+import { SoilsCarbonStorageGateway as ProjectSoilsCarbonStorageGateway } from "../reducers/project-form/soilsCarbonStorage.action";
 import { getListener, setupAllListeners } from "./listenerMiddleware";
 import { rootReducer } from "./rootReducer";
 

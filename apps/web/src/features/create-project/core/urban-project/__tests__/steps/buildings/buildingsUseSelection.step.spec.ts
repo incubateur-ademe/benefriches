@@ -1,9 +1,9 @@
 import { describe, it } from "vitest";
 
+import { ProjectFormState } from "@/shared/core/reducers/project-form/projectForm.reducer";
 import { AnswersByStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 
 import { confirmStepCompletion, requestStepCompletion } from "../../../urbanProject.actions";
-import { UrbanProjectState } from "../../../urbanProject.reducer";
 import { createTestStore } from "../../_testStoreHelpers";
 
 const getCurrentStep = (store: ReturnType<typeof createTestStore>) =>
@@ -22,14 +22,14 @@ describe("Urban project creation - Steps - Buildings use selection", () => {
       }),
     );
 
-    expect(store.getState().projectCreation.urbanProject.steps).toEqual<UrbanProjectState["steps"]>(
-      {
-        URBAN_PROJECT_BUILDINGS_USE_SELECTION: {
-          completed: true,
-          payload: { buildingsUsesSelection: ["RESIDENTIAL", "OFFICES"] },
-        },
+    expect(store.getState().projectCreation.urbanProject.steps).toEqual<
+      ProjectFormState["urbanProject"]["steps"]
+    >({
+      URBAN_PROJECT_BUILDINGS_USE_SELECTION: {
+        completed: true,
+        payload: { buildingsUsesSelection: ["RESIDENTIAL", "OFFICES"] },
       },
-    );
+    });
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION");
   });
 
@@ -53,19 +53,19 @@ describe("Urban project creation - Steps - Buildings use selection", () => {
       }),
     );
 
-    expect(store.getState().projectCreation.urbanProject.steps).toEqual<UrbanProjectState["steps"]>(
-      {
-        ...initialSteps,
-        URBAN_PROJECT_BUILDINGS_USE_SELECTION: {
-          completed: true,
-          payload: { buildingsUsesSelection: ["RESIDENTIAL"] },
-        },
-        URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION: {
-          completed: true,
-          payload: { buildingsUsesDistribution: { RESIDENTIAL: 1500 } },
-        },
+    expect(store.getState().projectCreation.urbanProject.steps).toEqual<
+      ProjectFormState["urbanProject"]["steps"]
+    >({
+      ...initialSteps,
+      URBAN_PROJECT_BUILDINGS_USE_SELECTION: {
+        completed: true,
+        payload: { buildingsUsesSelection: ["RESIDENTIAL"] },
       },
-    );
+      URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION: {
+        completed: true,
+        payload: { buildingsUsesDistribution: { RESIDENTIAL: 1500 } },
+      },
+    });
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION");
   });
 
@@ -94,7 +94,7 @@ describe("Urban project creation - Steps - Buildings use selection", () => {
     );
 
     expect(store.getState().projectCreation.urbanProject.pendingStepCompletion).toEqual<
-      UrbanProjectState["pendingStepCompletion"]
+      ProjectFormState["urbanProject"]["pendingStepCompletion"]
     >({
       showAlert: true,
       changes: {
@@ -111,17 +111,17 @@ describe("Urban project creation - Steps - Buildings use selection", () => {
 
     store.dispatch(confirmStepCompletion());
 
-    expect(store.getState().projectCreation.urbanProject.steps).toEqual<UrbanProjectState["steps"]>(
-      {
-        URBAN_PROJECT_BUILDINGS_USE_SELECTION: {
-          completed: true,
-          payload: newAnswer,
-        },
-        URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION: {
-          completed: false,
-        },
+    expect(store.getState().projectCreation.urbanProject.steps).toEqual<
+      ProjectFormState["urbanProject"]["steps"]
+    >({
+      URBAN_PROJECT_BUILDINGS_USE_SELECTION: {
+        completed: true,
+        payload: newAnswer,
       },
-    );
+      URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION: {
+        completed: false,
+      },
+    });
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION");
   });
 });

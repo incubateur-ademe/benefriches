@@ -1,4 +1,4 @@
-import { UrbanProjectState } from "./urbanProject.reducer";
+import { ProjectFormState } from "@/shared/core/reducers/project-form/projectForm.reducer";
 
 export const MOCK = {
   URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION: { completed: true },
@@ -170,4 +170,4 @@ export const MOCK = {
     defaultValues: { name: "Projet urbain mixte" },
     payload: { name: "Projet urbain mixte", description: "" },
   },
-} satisfies UrbanProjectState["steps"];
+} satisfies ProjectFormState["urbanProject"]["steps"];

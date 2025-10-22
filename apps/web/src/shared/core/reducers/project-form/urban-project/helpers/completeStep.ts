@@ -3,8 +3,8 @@ import {
   StepInvalidationRule,
 } from "../../../../../../features/create-project/core/urban-project/step-handlers/stepHandler.type";
 import { stepHandlerRegistry } from "../../../../../../features/create-project/core/urban-project/step-handlers/stepHandlerRegistry";
+import { ProjectFormState } from "../../projectForm.reducer";
 import { StepCompletionPayload } from "../urbanProject.actions";
-import { ProjectFormState } from "../urbanProject.reducer";
 import { AnswerStepId, UrbanProjectCreationStep } from "../urbanProjectSteps";
 import { MutateStateHelper } from "./mutateState";
 import { navigateToAndLoadStep } from "./navigateToStep";

@@ -1,16 +1,24 @@
+import { ProjectSite } from "@/features/create-project/core/project.types";
+import { createFetchLocalAuthoritiesThunk } from "@/shared/core/reducers/project-form/getSiteLocalAuthorities.action";
+import { CurrentAndProjectedSoilsCarbonStorageResult } from "@/shared/core/reducers/project-form/soilsCarbonStorage.action";
 import {
   createProjectFormActions,
   makeUrbanProjectFormActionType,
 } from "@/shared/core/reducers/project-form/urban-project/urbanProject.actions";
 import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
+import { RootState } from "@/shared/core/store-config/store";
 
-import { CurrentAndProjectedSoilsCarbonStorageResult } from "../../../../shared/core/reducers/project-form/soilsCarbonStorage.action";
 import {
-  makeProjectCreationActionType,
-  PROJECT_CREATION_ACTION_PREFIX,
-} from "../actions/actionsUtils";
-import { selectSiteAddress, selectSiteSoilsDistribution } from "../createProject.selectors";
-import { selectProjectSoilDistribution } from "./urbanProject.selectors";
+  selectProjectSoilDistribution,
+  selectSiteAddress,
+  selectSiteSoilsDistribution,
+} from "./updateProject.selectors";
+
+const UPDATE_PROJECT_ACTION_PREFIX = "updateProject";
+
+export const makeProjectUpdateActionType = (actionName: string) => {
+  return `${UPDATE_PROJECT_ACTION_PREFIX}/${actionName}`;
+};
 
 const {
   requestStepCompletion,
@@ -19,7 +27,7 @@ const {
   navigateToNext,
   navigateToPrevious,
   navigateToStep,
-} = createProjectFormActions(PROJECT_CREATION_ACTION_PREFIX);
+} = createProjectFormActions(UPDATE_PROJECT_ACTION_PREFIX);
 
 export {
   requestStepCompletion,
@@ -30,10 +38,16 @@ export {
   navigateToStep,
 };
 
+export const fetchSiteLocalAuthorities = createFetchLocalAuthoritiesThunk<RootState>({
+  entityName: UPDATE_PROJECT_ACTION_PREFIX,
+  selectSiteData: (state) => state.projectCreation.siteData,
+  selectSiteLocalAuthorities: (state) => state.projectCreation.siteRelatedLocalAuthorities,
+});
+
 export const fetchSoilsCarbonStorageDifference =
   createAppAsyncThunk<CurrentAndProjectedSoilsCarbonStorageResult>(
     makeUrbanProjectFormActionType(
-      PROJECT_CREATION_ACTION_PREFIX,
+      UPDATE_PROJECT_ACTION_PREFIX,
       "fetchCurrentAndProjectedSoilsCarbonStorage",
     ),
     async (_, { extra, getState }) => {
@@ -62,6 +76,13 @@ export const fetchSoilsCarbonStorageDifference =
     },
   );
 
-export const makeUrbanProjectCreationActionType = (actionName: string) => {
-  return makeProjectCreationActionType(`urbanProject/${actionName}`);
-};
+export const reconversionProjectUpdateInitiated = createAppAsyncThunk<
+  ProjectSite,
+  { relatedSiteId: string }
+>(makeProjectUpdateActionType("init"), async ({ relatedSiteId }, { extra }) => {
+  const projectSite = await extra.getSiteByIdService.getById(relatedSiteId);
+
+  if (!projectSite) throw new Error("Site not found");
+
+  return projectSite;
+});
