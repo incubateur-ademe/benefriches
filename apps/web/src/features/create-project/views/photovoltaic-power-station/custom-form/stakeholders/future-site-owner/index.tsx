@@ -6,8 +6,7 @@ import {
   getRenewableEnergyProjectAvailableStakeholders,
 } from "@/features/create-project/core/renewable-energy/selectors/stakeholders.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
-
-import StakeholderForm from "../../../../common-views/stakeholder-form";
+import StakeholderForm from "@/shared/views/project-form/common/stakeholder-form";
 
 function FutureOwnerFormContainer() {
   const dispatch = useAppDispatch();

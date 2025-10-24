@@ -8,8 +8,7 @@ import {
   getPictogramForProjectPhase,
 } from "@/shared/core/projectPhase";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
-
-import ProjectPhaseForm from "../../../common-views/project-phase/ProjectPhaseForm";
+import ProjectPhaseForm from "@/shared/views/project-form/common/project-phase/ProjectPhaseForm";
 
 function ProjectPhaseFormContainer() {
   const dispatch = useAppDispatch();

@@ -1,10 +1,9 @@
 import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
 import { completeSoilsDecontaminationSelection } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
-
 import SoilsDecontaminationSelection, {
   FormValues,
-} from "../../../../common-views/soils-decontamination/selection/SoilsDecontaminationSelection";
+} from "@/shared/views/project-form/common/soils-decontamination/selection/SoilsDecontaminationSelection";
 
 function SoilsDecontaminationSelectionContainer() {
   const dispatch = useAppDispatch();

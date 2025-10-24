@@ -3,8 +3,7 @@ import { selectSiteContaminatedSurfaceArea } from "@/features/create-project/cor
 import { completeSoilsDecontaminationSurfaceArea } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
 import { selectContaminatedSurfaceAreaPercentageToDecontaminate } from "@/features/create-project/core/renewable-energy/selectors/renewableEnergy.selector";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
-
-import SoilsDecontaminationSurfaceArea from "../../../../common-views/soils-decontamination/surface-area/SoilsDecontaminationSurfaceArea";
+import SoilsDecontaminationSurfaceArea from "@/shared/views/project-form/common/soils-decontamination/surface-area/SoilsDecontaminationSurfaceArea";
 
 function SoilsDecontaminationSurfaceAreaContainer() {
   const dispatch = useAppDispatch();

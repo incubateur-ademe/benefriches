@@ -1,8 +1,7 @@
 import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
 import { expressPhotovoltaicProjectSaved } from "@/features/create-project/core/renewable-energy/actions/expressProjectSaved.action";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
-
-import ProjectExpressSummary from "../../common-views/summary/ExpressSummary";
+import ProjectExpressSummary from "@/shared/views/project-form/common/summary/ExpressSummary";
 
 function ProjectExpressSummaryContainer() {
   const dispatch = useAppDispatch();

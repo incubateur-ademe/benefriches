@@ -6,92 +6,154 @@ import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 import { ProjectFormProvider } from "@/shared/views/project-form/ProjectFormProvider";
+import BuildingsUseSelection from "@/shared/views/project-form/urban-project/buildings/use-selection";
 
 import { selectUrbanProjectCurrentStep } from "../../core/urban-project/urbanProject.selectors";
 import { HTML_MAIN_TITLE } from "../mainHtmlTitle";
 import CreateModeSelectionForm from "./create-mode-selection";
-import BuildingsUseSelection from "./custom-forms/buildings/use-selection";
 import UrbanProjectStepper from "./stepper/Stepper";
 
 const ProjectExpressSummary = lazy(() => import("./express-forms/summary"));
 const UrbanProjectExpressCategory = lazy(() => import("./express-forms/express-category/"));
 const UrbanProjectExpressCreationResult = lazy(() => import("./express-forms/creation-result"));
 const AnswerCascadingUpdateDialog = lazy(() => import("./AnswerCascadingUpdateDialog"));
-const BuildingsFloorSurfaceArea = lazy(() => import("./custom-forms/buildings/floor-surface-area"));
-const BuildingsIntroduction = lazy(() => import("./custom-forms/buildings/introduction"));
-const BuildingsUseIntroduction = lazy(() => import("./custom-forms/buildings/use-introduction"));
-const BuildingsUseSurfaceAreas = lazy(() => import("./custom-forms/buildings/use-surface-areas"));
+const BuildingsFloorSurfaceArea = lazy(
+  () => import("@/shared/views/project-form/urban-project/buildings/floor-surface-area"),
+);
+const BuildingsIntroduction = lazy(
+  () => import("@/shared/views/project-form/urban-project/buildings/introduction"),
+);
+const BuildingsUseIntroduction = lazy(
+  () => import("@/shared/views/project-form/urban-project/buildings/use-introduction"),
+);
+const BuildingsUseSurfaceAreas = lazy(
+  () => import("@/shared/views/project-form/urban-project/buildings/use-surface-areas"),
+);
 const ProjectCreationResult = lazy(() => import("./custom-forms/creation-result"));
-const InstallationExpensesForm = lazy(() => import("./custom-forms/expenses/installation"));
-const ProjectExpensesIntroduction = lazy(() => import("./custom-forms/expenses/introduction"));
-const ReinstatementExpensesForm = lazy(() => import("./custom-forms/expenses/reinstatement"));
-const SitePurchaseAmounts = lazy(() => import("./custom-forms/expenses/site-purchase-amounts"));
+const InstallationExpensesForm = lazy(
+  () => import("@/shared/views/project-form/urban-project/expenses/installation"),
+);
+const ProjectExpensesIntroduction = lazy(
+  () => import("@/shared/views/project-form/urban-project/expenses/introduction"),
+);
+const ReinstatementExpensesForm = lazy(
+  () => import("@/shared/views/project-form/urban-project/expenses/reinstatement"),
+);
+const SitePurchaseAmounts = lazy(
+  () => import("@/shared/views/project-form/urban-project/expenses/site-purchase-amounts"),
+);
 const YearlyProjectedExpensesForm = lazy(
-  () => import("./custom-forms/expenses/yearly-projected-costs"),
+  () => import("@/shared/views/project-form/urban-project/expenses/yearly-projected-costs"),
 );
-const ProjectNameAndDescriptionForm = lazy(() => import("./custom-forms/name-and-description"));
-const ProjectPhaseForm = lazy(() => import("./custom-forms/project-phase"));
-const BuildingsResaleRevenueForm = lazy(() => import("./custom-forms/revenues/buildings-resale"));
+const ProjectNameAndDescriptionForm = lazy(
+  () => import("@/shared/views/project-form/urban-project/name-and-description"),
+);
+const ProjectPhaseForm = lazy(
+  () => import("@/shared/views/project-form/urban-project/project-phase"),
+);
+const BuildingsResaleRevenueForm = lazy(
+  () => import("@/shared/views/project-form/urban-project/revenues/buildings-resale"),
+);
 const ProjectFinancialAssistanceRevenueForm = lazy(
-  () => import("./custom-forms/revenues/financial-assistance"),
+  () => import("@/shared/views/project-form/urban-project/revenues/financial-assistance"),
 );
-const ProjectRevenueIntroduction = lazy(() => import("./custom-forms/revenues/introduction"));
-const SiteResaleRevenueForm = lazy(() => import("./custom-forms/revenues/site-resale"));
+const ProjectRevenueIntroduction = lazy(
+  () => import("@/shared/views/project-form/urban-project/revenues/introduction"),
+);
+const SiteResaleRevenueForm = lazy(
+  () => import("@/shared/views/project-form/urban-project/revenues/site-resale"),
+);
 const YearlyProjectedRevenueForm = lazy(
-  () => import("./custom-forms/revenues/yearly-buildings-operations-revenues"),
+  () =>
+    import(
+      "@/shared/views/project-form/urban-project/revenues/yearly-buildings-operations-revenues"
+    ),
 );
-const ProjectScheduleIntroduction = lazy(() => import("./custom-forms/schedule/introduction"));
-const ScheduleProjectionForm = lazy(() => import("./custom-forms/schedule/projection"));
-const BuildingsResaleForm = lazy(() => import("./custom-forms/site-resale/buildings-resale"));
-const SiteResaleIntroduction = lazy(() => import("./custom-forms/site-resale/introduction"));
-const SiteResaleForm = lazy(() => import("./custom-forms/site-resale/selection"));
+const ProjectScheduleIntroduction = lazy(
+  () => import("@/shared/views/project-form/urban-project/schedule/introduction"),
+);
+const ScheduleProjectionForm = lazy(
+  () => import("@/shared/views/project-form/urban-project/schedule/projection"),
+);
+const BuildingsResaleForm = lazy(
+  () => import("@/shared/views/project-form/urban-project/site-resale/buildings-resale"),
+);
+const SiteResaleIntroduction = lazy(
+  () => import("@/shared/views/project-form/urban-project/site-resale/introduction"),
+);
+const SiteResaleForm = lazy(
+  () => import("@/shared/views/project-form/urban-project/site-resale/selection"),
+);
 const SoilsDecontaminationIntroduction = lazy(
-  () => import("./custom-forms/soils-decontamination/intro"),
+  () => import("@/shared/views/project-form/urban-project/soils-decontamination/intro"),
 );
 const SoilsDecontaminationSelection = lazy(
-  () => import("./custom-forms/soils-decontamination/selection"),
+  () => import("@/shared/views/project-form/urban-project/soils-decontamination/selection"),
 );
 const SoilsDecontaminationSurfaceArea = lazy(
-  () => import("./custom-forms/soils-decontamination/surface-area"),
+  () => import("@/shared/views/project-form/urban-project/soils-decontamination/surface-area"),
 );
 const UrbanSpacesDevelopmentPlanIntroduction = lazy(
-  () => import("./custom-forms/spaces/development-plan-introduction"),
+  () => import("@/shared/views/project-form/urban-project/spaces/development-plan-introduction"),
 );
 const GreenSpacesIntroduction = lazy(
-  () => import("./custom-forms/spaces/green-spaces/introduction"),
+  () => import("@/shared/views/project-form/urban-project/spaces/green-spaces/introduction"),
 );
 const UrbanGreenSpacesDistribution = lazy(
-  () => import("./custom-forms/spaces/green-spaces/surface-area-distribution"),
+  () =>
+    import(
+      "@/shared/views/project-form/urban-project/spaces/green-spaces/surface-area-distribution"
+    ),
 );
-const UrbanProjectSpacesIntroduction = lazy(() => import("./custom-forms/spaces/introduction"));
+const UrbanProjectSpacesIntroduction = lazy(
+  () => import("@/shared/views/project-form/urban-project/spaces/introduction"),
+);
 const LivingAndActivitySpacesIntroduction = lazy(
-  () => import("./custom-forms/spaces/living-and-activity-spaces/introduction"),
+  () =>
+    import(
+      "@/shared/views/project-form/urban-project/spaces/living-and-activity-spaces/introduction"
+    ),
 );
 const LivingAndActivitySpacesDistribution = lazy(
-  () => import("./custom-forms/spaces/living-and-activity-spaces/surface-area-distribution"),
+  () =>
+    import(
+      "@/shared/views/project-form/urban-project/spaces/living-and-activity-spaces/surface-area-distribution"
+    ),
 );
 const PublicSpacesIntroduction = lazy(
-  () => import("./custom-forms/spaces/public-spaces/introduction"),
+  () => import("@/shared/views/project-form/urban-project/spaces/public-spaces/introduction"),
 );
 const PublicSpacesDistribution = lazy(
-  () => import("./custom-forms/spaces/public-spaces/surface-area-distribution"),
+  () =>
+    import(
+      "@/shared/views/project-form/urban-project/spaces/public-spaces/surface-area-distribution"
+    ),
 );
-const SpacesCategoriesSelection = lazy(() => import("./custom-forms/spaces/selection"));
+const SpacesCategoriesSelection = lazy(
+  () => import("@/shared/views/project-form/urban-project/spaces/selection"),
+);
 const UrbanProjectSoilsCarbonStorage = lazy(
-  () => import("./custom-forms/spaces/soils-carbon-storage"),
+  () => import("@/shared/views/project-form/urban-project/spaces/soils-carbon-storage"),
 );
-const UrbanProjectSoilsSummary = lazy(() => import("./custom-forms/spaces/soils-summary"));
+const UrbanProjectSoilsSummary = lazy(
+  () => import("@/shared/views/project-form/urban-project/spaces/soils-summary"),
+);
 const UrbanProjectSpaceCategoriesSurfaceAreaDistribution = lazy(
-  () => import("./custom-forms/spaces/surface-area"),
+  () => import("@/shared/views/project-form/urban-project/spaces/surface-area"),
 );
-const DeveloperForm = lazy(() => import("./custom-forms/stakeholders/developer"));
+const DeveloperForm = lazy(
+  () => import("@/shared/views/project-form/urban-project/stakeholders/developer"),
+);
 const ProjectStakeholdersIntroduction = lazy(
-  () => import("./custom-forms/stakeholders/introduction"),
+  () => import("@/shared/views/project-form/urban-project/stakeholders/introduction"),
 );
 const SiteReinstatementContractOwnerForm = lazy(
-  () => import("./custom-forms/stakeholders/reinstatement-contract-owner"),
+  () =>
+    import("@/shared/views/project-form/urban-project/stakeholders/reinstatement-contract-owner"),
 );
-const ProjectCreationDataSummary = lazy(() => import("./custom-forms/summary"));
+const ProjectCreationDataSummary = lazy(
+  () => import("@/shared/views/project-form/urban-project/summary"),
+);
 
 const HTML_URBAN_PROJECT_FORM_MAIN_TITLE = `Projet urbain - ${HTML_MAIN_TITLE}`;
 

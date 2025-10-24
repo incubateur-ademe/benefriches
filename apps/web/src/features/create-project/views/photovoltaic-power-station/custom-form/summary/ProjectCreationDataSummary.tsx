@@ -11,6 +11,7 @@ import {
 } from "shared";
 
 import { Schedule } from "@/features/create-project/core/project.types";
+import { formatCarbonStorage } from "@/shared/core/format-number/formatCarbonStorage";
 import {
   formatMoney,
   formatNumberFr,
@@ -34,7 +35,6 @@ import Section from "@/shared/views/components/FeaturesList/FeaturesListSection"
 import SoilTypeLabelWithColorSquare from "@/shared/views/components/FeaturesList/FeaturesListSoilTypeLabel";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
-import { formatCarbonStorage } from "../../../common-views/soils-carbon-storage-comparison/formatCarbonStorage";
 import {
   getLabelForDevelopmentPlanCategory,
   getLabelForRenewableEnergyProductionType,

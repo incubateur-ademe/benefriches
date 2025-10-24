@@ -2,8 +2,8 @@ import { selectSiteData } from "@/features/create-project/core/createProject.sel
 import creationProjectFormActions from "@/features/create-project/core/urban-project/urbanProject.actions";
 import { expressUrbanProjectSaved } from "@/features/create-project/core/urban-project/urbanProjectExpressSaved.action";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+import ProjectExpressSummary from "@/shared/views/project-form/common/summary/ExpressSummary";
 
-import ProjectExpressSummary from "../../../common-views/summary/ExpressSummary";
 import { useStepBack } from "../useStepBack";
 
 function ProjectExpressSummaryContainer() {
