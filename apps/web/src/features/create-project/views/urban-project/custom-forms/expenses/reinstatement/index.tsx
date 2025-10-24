@@ -1,36 +1,33 @@
-import { selectSiteSoilsDistribution } from "@/features/create-project/core/createProject.selectors";
-import { requestStepCompletion } from "@/features/create-project/core/urban-project/urbanProject.actions";
-import { selectStepAnswers } from "@/features/create-project/core/urban-project/urbanProject.selectors";
 import ReinstatementsExpensesForm from "@/features/create-project/views/common-views/expenses/reinstatement/ReinstatementExpensesForm";
 import {
   mapFormValuesToReinstatementExpenses,
   mapReinstatementExpensesToFormValues,
 } from "@/features/create-project/views/common-views/expenses/reinstatement/mappers";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
-
-import { useStepBack } from "../../useStepBack";
+import { useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 
 function ReinstatementExpensesFormContainer() {
-  const dispatch = useAppDispatch();
-  const { reinstatementExpenses } =
-    useAppSelector(selectStepAnswers("URBAN_PROJECT_EXPENSES_REINSTATEMENT")) ?? {};
-  const { decontaminatedSurfaceArea } =
-    useAppSelector(selectStepAnswers("URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA")) ?? {};
+  const { onBack, onRequestStepCompletion, selectStepAnswers, selectSiteSoilsDistribution } =
+    useProjectForm();
+
+  const reinstatementExpenses = useAppSelector(
+    selectStepAnswers("URBAN_PROJECT_EXPENSES_REINSTATEMENT"),
+  )?.reinstatementExpenses;
+  const decontaminatedSurfaceArea = useAppSelector(
+    selectStepAnswers("URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA"),
+  )?.decontaminatedSurfaceArea;
   const siteSoilsDistribution = useAppSelector(selectSiteSoilsDistribution);
 
-  const onBack = useStepBack();
   return (
     <ReinstatementsExpensesForm
       onBack={onBack}
       onSubmit={(data) => {
-        dispatch(
-          requestStepCompletion({
-            stepId: "URBAN_PROJECT_EXPENSES_REINSTATEMENT",
-            answers: {
-              reinstatementExpenses: mapFormValuesToReinstatementExpenses(data),
-            },
-          }),
-        );
+        onRequestStepCompletion({
+          stepId: "URBAN_PROJECT_EXPENSES_REINSTATEMENT",
+          answers: {
+            reinstatementExpenses: mapFormValuesToReinstatementExpenses(data),
+          },
+        });
       }}
       hasBuildings={Boolean(siteSoilsDistribution.BUILDINGS && siteSoilsDistribution.BUILDINGS > 0)}
       hasProjectedDecontamination={Boolean(

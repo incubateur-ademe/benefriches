@@ -1,14 +1,13 @@
-import { selectStepAnswers } from "@/features/create-project/core/urban-project/urbanProject.selectors";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 
-import { useInformationalStepBackNext } from "../../../useInformationalStepBackNext";
 import LivingAndActivitySpacesIntroduction from "./LivingAndActivitySpacesIntroduction";
 
 export default function LivingAndActivitySpacesIntroductionContainer() {
-  const { spacesCategoriesDistribution } =
-    useAppSelector(selectStepAnswers("URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA")) ?? {};
-
-  const { onNext, onBack } = useInformationalStepBackNext();
+  const { onBack, onNext, selectStepAnswers } = useProjectForm();
+  const spacesCategoriesDistribution = useAppSelector(
+    selectStepAnswers("URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA"),
+  )?.spacesCategoriesDistribution;
 
   return (
     <LivingAndActivitySpacesIntroduction

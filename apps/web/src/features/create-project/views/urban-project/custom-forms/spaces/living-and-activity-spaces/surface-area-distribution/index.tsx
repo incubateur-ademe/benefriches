@@ -1,20 +1,18 @@
 import { selectAppSettings } from "@/features/app-settings/core/appSettings";
-import { requestStepCompletion } from "@/features/create-project/core/urban-project/urbanProject.actions";
-import { selectStepAnswers } from "@/features/create-project/core/urban-project/urbanProject.selectors";
 import { getSurfaceAreaDistributionWithUnit } from "@/shared/core/reducers/project-form/urban-project/helpers/surfaceAreaDistribution";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 
-import { useStepBack } from "../../../useStepBack";
 import LivingAndActivitySpacesDistribution from "./LivingAndActivitySpacesDistribution";
 
 export default function LivingAndActivitySpacesDistributionContainer() {
-  const dispatch = useAppDispatch();
-  const { livingAndActivitySpacesDistribution } =
-    useAppSelector(
-      selectStepAnswers("URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION"),
-    ) ?? {};
-  const { spacesCategoriesDistribution } =
-    useAppSelector(selectStepAnswers("URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA")) ?? {};
+  const { onBack, onRequestStepCompletion, selectStepAnswers } = useProjectForm();
+  const livingAndActivitySpacesDistribution = useAppSelector(
+    selectStepAnswers("URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION"),
+  )?.livingAndActivitySpacesDistribution;
+  const spacesCategoriesDistribution = useAppSelector(
+    selectStepAnswers("URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA"),
+  )?.spacesCategoriesDistribution;
   const inputMode = useAppSelector(selectAppSettings).surfaceAreaInputMode;
 
   const initialValues =
@@ -22,17 +20,13 @@ export default function LivingAndActivitySpacesDistributionContainer() {
       ? getSurfaceAreaDistributionWithUnit(livingAndActivitySpacesDistribution, "percentage").value
       : (livingAndActivitySpacesDistribution ?? {});
 
-  const onBack = useStepBack();
-
   return (
     <LivingAndActivitySpacesDistribution
       onSubmit={(formData) => {
-        dispatch(
-          requestStepCompletion({
-            stepId: "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
-            answers: { livingAndActivitySpacesDistribution: formData },
-          }),
-        );
+        onRequestStepCompletion({
+          stepId: "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
+          answers: { livingAndActivitySpacesDistribution: formData },
+        });
       }}
       onBack={onBack}
       totalSurfaceArea={spacesCategoriesDistribution?.LIVING_AND_ACTIVITY_SPACES ?? 0}

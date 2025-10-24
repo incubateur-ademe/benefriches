@@ -1,19 +1,19 @@
 import { selectAppSettings } from "@/features/app-settings/core/appSettings";
-import { requestStepCompletion } from "@/features/create-project/core/urban-project/urbanProject.actions";
-import { selectStepAnswers } from "@/features/create-project/core/urban-project/urbanProject.selectors";
 import { getSurfaceAreaDistributionWithUnit } from "@/shared/core/reducers/project-form/urban-project/helpers/surfaceAreaDistribution";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 
-import { useStepBack } from "../../../useStepBack";
 import PublicSpacesDistribution from "./PublicSpacesDistribution";
 
 export default function PublicSpacesDistributionContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onRequestStepCompletion, selectStepAnswers } = useProjectForm();
 
-  const { publicSpacesDistribution } =
-    useAppSelector(selectStepAnswers("URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION")) ?? {};
-  const { spacesCategoriesDistribution } =
-    useAppSelector(selectStepAnswers("URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA")) ?? {};
+  const publicSpacesDistribution = useAppSelector(
+    selectStepAnswers("URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION"),
+  )?.publicSpacesDistribution;
+  const spacesCategoriesDistribution = useAppSelector(
+    selectStepAnswers("URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA"),
+  )?.spacesCategoriesDistribution;
   const inputMode = useAppSelector(selectAppSettings).surfaceAreaInputMode;
 
   const initialValues =
@@ -21,17 +21,13 @@ export default function PublicSpacesDistributionContainer() {
       ? getSurfaceAreaDistributionWithUnit(publicSpacesDistribution, "percentage").value
       : (publicSpacesDistribution ?? {});
 
-  const onBack = useStepBack();
-
   return (
     <PublicSpacesDistribution
       onSubmit={(formData) => {
-        dispatch(
-          requestStepCompletion({
-            stepId: "URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION",
-            answers: { publicSpacesDistribution: formData },
-          }),
-        );
+        onRequestStepCompletion({
+          stepId: "URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION",
+          answers: { publicSpacesDistribution: formData },
+        });
       }}
       onBack={onBack}
       totalSurfaceArea={spacesCategoriesDistribution?.PUBLIC_SPACES ?? 0}

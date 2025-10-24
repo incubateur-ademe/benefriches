@@ -5,8 +5,9 @@ import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
+import { ProjectFormProvider } from "@/shared/views/project-form/ProjectFormProvider";
 
-import { selectCurrentStep } from "../../core/urban-project/urbanProject.selectors";
+import { selectUrbanProjectCurrentStep } from "../../core/urban-project/urbanProject.selectors";
 import { HTML_MAIN_TITLE } from "../mainHtmlTitle";
 import CreateModeSelectionForm from "./create-mode-selection";
 import BuildingsUseSelection from "./custom-forms/buildings/use-selection";
@@ -417,19 +418,21 @@ const getCurrentStepView = (step: UrbanProjectCreationStep): Exclude<ReactNode, 
 };
 
 function UrbanProjectCreationWizard() {
-  const currentStep = useAppSelector(selectCurrentStep);
+  const currentStep = useAppSelector(selectUrbanProjectCurrentStep);
 
   return (
-    <SidebarLayout
-      title="Renseignement du projet"
-      sidebarChildren={<UrbanProjectStepper step={currentStep} />}
-      mainChildren={
-        <Suspense fallback={<LoadingSpinner />}>
-          {getCurrentStepView(currentStep)}
-          <AnswerCascadingUpdateDialog />
-        </Suspense>
-      }
-    />
+    <ProjectFormProvider mode="create">
+      <SidebarLayout
+        title="Renseignement du projet"
+        sidebarChildren={<UrbanProjectStepper step={currentStep} />}
+        mainChildren={
+          <Suspense fallback={<LoadingSpinner />}>
+            {getCurrentStepView(currentStep)}
+            <AnswerCascadingUpdateDialog />
+          </Suspense>
+        }
+      />
+    </ProjectFormProvider>
   );
 }
 

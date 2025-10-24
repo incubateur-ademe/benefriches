@@ -1,19 +1,17 @@
 import { URBAN_PROJECT_PHASE_VALUES } from "shared";
 
-import { requestStepCompletion } from "@/features/create-project/core/urban-project/urbanProject.actions";
-import { selectStepAnswers } from "@/features/create-project/core/urban-project/urbanProject.selectors";
 import {
   getHintTextForUrbanProjectPhase,
   getLabelForUrbanProjectPhase,
   getPictogramForProjectPhase,
 } from "@/shared/core/projectPhase";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 
 import ProjectPhaseForm from "../../../common-views/project-phase/ProjectPhaseForm";
-import { useStepBack } from "../useStepBack";
 
 function ProjectPhaseFormContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onRequestStepCompletion, selectStepAnswers } = useProjectForm();
 
   const options = URBAN_PROJECT_PHASE_VALUES.map((phase) => ({
     value: phase,
@@ -24,19 +22,16 @@ function ProjectPhaseFormContainer() {
 
   const stepAnswers = useAppSelector(selectStepAnswers("URBAN_PROJECT_PROJECT_PHASE"));
 
-  const onBack = useStepBack();
   return (
     <ProjectPhaseForm
       projectPhaseOptions={options}
       onSubmit={(formData) => {
-        dispatch(
-          requestStepCompletion({
-            stepId: "URBAN_PROJECT_PROJECT_PHASE",
-            answers: {
-              projectPhase: formData.phase,
-            },
-          }),
-        );
+        onRequestStepCompletion({
+          stepId: "URBAN_PROJECT_PROJECT_PHASE",
+          answers: {
+            projectPhase: formData.phase,
+          },
+        });
       }}
       onBack={onBack}
       initialValues={{ phase: stepAnswers?.projectPhase }}

@@ -7,9 +7,11 @@ import {
 import { describe, it, expect, beforeEach } from "vitest";
 
 import { Schedule } from "../../project.types";
-import { requestStepCompletion, navigateToStep } from "../urbanProject.actions";
+import { creationProjectFormActions } from "../urbanProject.actions";
 import { mockSiteData } from "./_siteData.mock";
 import { createTestStore } from "./_testStoreHelpers";
+
+const { navigateToStep, requestStepCompletion } = creationProjectFormActions;
 
 describe("navigateToStep action", () => {
   let store: ReturnType<typeof createTestStore>;

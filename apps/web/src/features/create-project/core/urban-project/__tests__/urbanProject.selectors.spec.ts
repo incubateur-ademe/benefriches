@@ -3,7 +3,7 @@ import { describe, it, expect } from "vitest";
 import { AnswerStepId } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 
 import { ProjectCreationState } from "../../createProject.reducer";
-import { selectProjectSoilDistribution, selectStepAnswers } from "../urbanProject.selectors";
+import { creationProjectFormSelectors } from "../urbanProject.selectors";
 import { createTestStore } from "./_testStoreHelpers";
 
 describe("urbanProject.selectors", () => {
@@ -25,7 +25,9 @@ describe("urbanProject.selectors", () => {
 
       const rootState = store.getState();
 
-      const selector = selectStepAnswers("URBAN_PROJECT_SPACES_CATEGORIES_SELECTION");
+      const selector = creationProjectFormSelectors.selectStepAnswers(
+        "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION",
+      );
 
       expect(selector(rootState)).toEqual({
         spacesCategories: ["LIVING_AND_ACTIVITY_SPACES", "GREEN_SPACES"],
@@ -36,7 +38,9 @@ describe("urbanProject.selectors", () => {
       const store = createTestStore({ steps: {} });
       const rootState = store.getState();
 
-      const selector = selectStepAnswers("URBAN_PROJECT_SPACES_CATEGORIES_SELECTION");
+      const selector = creationProjectFormSelectors.selectStepAnswers(
+        "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION",
+      );
 
       expect(selector(rootState)).toBeUndefined();
     });
@@ -53,7 +57,9 @@ describe("urbanProject.selectors", () => {
         },
       });
       const rootState = store.getState();
-      const selector = selectStepAnswers("URBAN_PROJECT_SPACES_CATEGORIES_SELECTION");
+      const selector = creationProjectFormSelectors.selectStepAnswers(
+        "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION",
+      );
 
       expect(selector(rootState)).toEqual({
         spacesCategories: ["LIVING_AND_ACTIVITY_SPACES"],
@@ -76,7 +82,7 @@ describe("urbanProject.selectors", () => {
       });
       const rootState = store.getState();
 
-      const selector = selectStepAnswers(
+      const selector = creationProjectFormSelectors.selectStepAnswers(
         "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION" as AnswerStepId,
       );
 
@@ -86,11 +92,11 @@ describe("urbanProject.selectors", () => {
     });
   });
 
-  describe("selectProjectSoilDistribution", () => {
+  describe("selectProjectSoilsDistribution", () => {
     it("should return empty object when there is no space categories filled", () => {
       const store = createTestStore();
       const rootState = store.getState();
-      const result = selectProjectSoilDistribution(rootState);
+      const result = creationProjectFormSelectors.selectProjectSoilsDistribution(rootState);
 
       expect(result).toEqual({});
     });

@@ -1,34 +1,12 @@
-import {
-  ActionCreatorWithPayload,
-  ActionReducerMapBuilder,
-  AsyncThunk,
-  AsyncThunkConfig,
-} from "@reduxjs/toolkit";
+import { ActionReducerMapBuilder } from "@reduxjs/toolkit";
 
 import { stepHandlerRegistry } from "@/features/create-project/core/urban-project/step-handlers/stepHandlerRegistry";
-import { CurrentAndProjectedSoilsCarbonStorageResult } from "@/shared/core/reducers/project-form/soilsCarbonStorage.action";
 
 import { ProjectFormState } from "../projectForm.reducer";
 import { applyStepChanges, computeStepChanges } from "./helpers/completeStep";
 import { navigateToAndLoadStep } from "./helpers/navigateToStep";
-import { StepCompletionPayload } from "./urbanProject.actions";
+import { UrbanProjectProjectReducerActions } from "./urbanProject.actions";
 import { UrbanProjectCreationStep } from "./urbanProjectSteps";
-
-type UrbanProjectProjectReducerActions = {
-  requestStepCompletion: ActionCreatorWithPayload<StepCompletionPayload>;
-  confirmStepCompletion: ActionCreatorWithPayload<void>;
-  cancelStepCompletion: ActionCreatorWithPayload<void>;
-  navigateToPrevious: ActionCreatorWithPayload<void>;
-  navigateToNext: ActionCreatorWithPayload<void>;
-  navigateToStep: ActionCreatorWithPayload<{
-    stepId: UrbanProjectCreationStep;
-  }>;
-  fetchSoilsCarbonStorageDifference: AsyncThunk<
-    CurrentAndProjectedSoilsCarbonStorageResult,
-    void,
-    AsyncThunkConfig
-  >;
-};
 
 export const addUrbanProjectFormCasesToBuilder = <
   T extends UrbanProjectCreationStep,

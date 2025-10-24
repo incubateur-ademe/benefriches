@@ -1,27 +1,24 @@
-import { requestStepCompletion } from "@/features/create-project/core/urban-project/urbanProject.actions";
-import { selectStepAnswers } from "@/features/create-project/core/urban-project/urbanProject.selectors";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 
-import { useStepBack } from "../../useStepBack";
 import BuildingsResaleForm from "./BuildingsResaleForm";
 
 export default function BuildingsResaleFormContainer() {
-  const dispatch = useAppDispatch();
-  const { buildingsResalePlannedAfterDevelopment } =
-    useAppSelector(selectStepAnswers("URBAN_PROJECT_BUILDINGS_RESALE_SELECTION")) ?? {};
-  const onBack = useStepBack();
+  const { onBack, selectStepAnswers, onRequestStepCompletion } = useProjectForm();
+
+  const buildingsResalePlannedAfterDevelopment = useAppSelector(
+    selectStepAnswers("URBAN_PROJECT_BUILDINGS_RESALE_SELECTION"),
+  )?.buildingsResalePlannedAfterDevelopment;
 
   return (
     <BuildingsResaleForm
       onSubmit={(formData) => {
-        dispatch(
-          requestStepCompletion({
-            stepId: "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION",
-            answers: {
-              buildingsResalePlannedAfterDevelopment: formData.buildingsResalePlanned === "yes",
-            },
-          }),
-        );
+        onRequestStepCompletion({
+          stepId: "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION",
+          answers: {
+            buildingsResalePlannedAfterDevelopment: formData.buildingsResalePlanned === "yes",
+          },
+        });
       }}
       onBack={onBack}
       initialValues={

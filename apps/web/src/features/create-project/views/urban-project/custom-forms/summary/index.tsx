@@ -1,26 +1,18 @@
-import { selectProjectId } from "@/features/create-project/core/createProject.selectors";
-import { navigateToStep } from "@/features/create-project/core/urban-project/urbanProject.actions";
-import {
-  selectFormAnswers,
-  selectIsFormStatusValid,
-  selectProjectSoilDistribution,
-  selectProjectSpaces,
-} from "@/features/create-project/core/urban-project/urbanProject.selectors";
 import { customUrbanProjectSaved } from "@/features/create-project/core/urban-project/urbanProjectCustomSaved.action";
 import { UrbanProjectCreationStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 
-import { useInformationalStepBackNext } from "../useInformationalStepBackNext";
 import ProjectCreationDataSummary from "./ProjectCreationDataSummary";
 
 function ProjectionCreationDataSummaryContainer() {
-  const { onNext, onBack } = useInformationalStepBackNext();
-  const projectData = useAppSelector(selectFormAnswers);
-  const projectSoilsDistribution = useAppSelector(selectProjectSoilDistribution);
-  const projectSpaces = useAppSelector(selectProjectSpaces);
-  const projectId = useAppSelector(selectProjectId);
+  const { onBack, onNext, onNavigateToStep, selectProjectSummary, selectIsFormStatusValid } =
+    useProjectForm();
+
   const dispatch = useAppDispatch();
   const isFormValid = useAppSelector(selectIsFormStatusValid);
+  const { projectData, projectSoilsDistribution, projectSpaces } =
+    useAppSelector(selectProjectSummary);
 
   return (
     <ProjectCreationDataSummary
@@ -44,14 +36,13 @@ function ProjectionCreationDataSummaryContainer() {
       onBack={onBack}
       projectData={projectData}
       projectSoilsDistribution={projectSoilsDistribution}
-      projectId={projectId}
       projectSpaces={projectSpaces}
       getSectionButtonProps={(stepId: UrbanProjectCreationStep) => {
         return {
           iconId: "fr-icon-pencil-line",
           children: "Modifier",
           onClick: () => {
-            dispatch(navigateToStep({ stepId }));
+            onNavigateToStep(stepId);
           },
         };
       }}

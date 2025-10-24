@@ -14,7 +14,7 @@ import DevelopmentPlanFeatures from "./DevelopmentPlanFeatures";
 import ExpensesAndRevenuesSection from "./ExpensesAndRevenues";
 
 type Props = {
-  projectData: ProjectFeatures;
+  projectData: Omit<ProjectFeatures, "id">;
   getSectionButtonProps?: (stepId: UrbanProjectCreationStep) => ButtonProps | undefined;
 };
 

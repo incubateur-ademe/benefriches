@@ -1,16 +1,14 @@
-import { requestStepCompletion } from "@/features/create-project/core/urban-project/urbanProject.actions";
-import { selectStepAnswers } from "@/features/create-project/core/urban-project/urbanProject.selectors";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 
-import { useStepBack } from "../../useStepBack";
 import BuildingsOperationsExpensesForm from "./BuildingsOperationsExpensesForm";
 
 function YearlyProjectedExpensesFormContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onRequestStepCompletion, selectStepAnswers } = useProjectForm();
+
   const stepAnswers = useAppSelector(
     selectStepAnswers("URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES"),
   );
-  const onBack = useStepBack();
 
   return (
     <BuildingsOperationsExpensesForm
@@ -33,14 +31,12 @@ function YearlyProjectedExpensesFormContainer() {
             { purpose: "other", amount: formData.other ?? 0 },
           ] as const
         ).filter(({ amount }) => amount > 0);
-        dispatch(
-          requestStepCompletion({
-            stepId: "URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES",
-            answers: {
-              yearlyProjectedBuildingsOperationsExpenses: expenses,
-            },
-          }),
-        );
+        onRequestStepCompletion({
+          stepId: "URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES",
+          answers: {
+            yearlyProjectedBuildingsOperationsExpenses: expenses,
+          },
+        });
       }}
       onBack={onBack}
     />

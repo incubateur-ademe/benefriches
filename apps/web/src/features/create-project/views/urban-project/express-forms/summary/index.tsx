@@ -1,10 +1,10 @@
 import { selectSiteData } from "@/features/create-project/core/createProject.selectors";
-import { navigateToNext } from "@/features/create-project/core/urban-project/urbanProject.actions";
+import creationProjectFormActions from "@/features/create-project/core/urban-project/urbanProject.actions";
 import { expressUrbanProjectSaved } from "@/features/create-project/core/urban-project/urbanProjectExpressSaved.action";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import ProjectExpressSummary from "../../../common-views/summary/ExpressSummary";
-import { useStepBack } from "../../custom-forms/useStepBack";
+import { useStepBack } from "../useStepBack";
 
 function ProjectExpressSummaryContainer() {
   const dispatch = useAppDispatch();
@@ -16,7 +16,7 @@ function ProjectExpressSummaryContainer() {
 
   const onNext = () => {
     void dispatch(expressUrbanProjectSaved());
-    void dispatch(navigateToNext());
+    void dispatch(creationProjectFormActions.navigateToNext());
   };
   const onBack = useStepBack();
 

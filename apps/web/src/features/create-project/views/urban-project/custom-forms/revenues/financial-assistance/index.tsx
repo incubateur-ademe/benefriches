@@ -1,28 +1,22 @@
-import { requestStepCompletion } from "@/features/create-project/core/urban-project/urbanProject.actions";
-import { selectStepAnswers } from "@/features/create-project/core/urban-project/urbanProject.selectors";
 import ProjectFinancialAssistanceRevenueForm from "@/features/create-project/views/common-views/revenues/financial-assistance";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
-
-import { useStepBack } from "../../useStepBack";
+import { useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 
 function ProjectFinancialAssistanceRevenueFormContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onRequestStepCompletion, selectStepAnswers } = useProjectForm();
   const stepAnswers = useAppSelector(
     selectStepAnswers("URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE"),
   );
 
-  const onBack = useStepBack();
   return (
     <ProjectFinancialAssistanceRevenueForm
       onSubmit={(formData) => {
-        dispatch(
-          requestStepCompletion({
-            stepId: "URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE",
-            answers: {
-              financialAssistanceRevenues: formData,
-            },
-          }),
-        );
+        onRequestStepCompletion({
+          stepId: "URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE",
+          answers: {
+            financialAssistanceRevenues: formData,
+          },
+        });
       }}
       onBack={onBack}
       initialValues={{

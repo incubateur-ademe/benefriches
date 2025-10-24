@@ -1,18 +1,16 @@
-import { requestStepCompletion } from "@/features/create-project/core/urban-project/urbanProject.actions";
-import { selectStepAnswers } from "@/features/create-project/core/urban-project/urbanProject.selectors";
 import InstallationExpensesForm from "@/features/create-project/views/common-views/expenses/installation-expenses/InstallationExpensesForm";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
+import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 
-import { useStepBack } from "../../useStepBack";
 import { mapExpensesToFormValues, mapFormValuesToExpenses } from "./mappers";
 
 function InstallationExpensesFormContainer() {
-  const dispatch = useAppDispatch();
-  const stepAnswers = useAppSelector(selectStepAnswers("URBAN_PROJECT_EXPENSES_INSTALLATION"));
-
-  const initialValues = mapExpensesToFormValues(stepAnswers?.installationExpenses ?? []);
-  const onBack = useStepBack();
+  const { onBack, selectStepAnswers, onRequestStepCompletion } = useProjectForm();
+  const installationExpenses = useAppSelector(
+    selectStepAnswers("URBAN_PROJECT_EXPENSES_INSTALLATION"),
+  )?.installationExpenses;
+  const initialValues = mapExpensesToFormValues(installationExpenses ?? []);
 
   return (
     <InstallationExpensesForm
@@ -35,14 +33,12 @@ function InstallationExpensesFormContainer() {
         </FormInfo>
       }
       onSubmit={(formData) => {
-        dispatch(
-          requestStepCompletion({
-            stepId: "URBAN_PROJECT_EXPENSES_INSTALLATION",
-            answers: {
-              installationExpenses: mapFormValuesToExpenses(formData),
-            },
-          }),
-        );
+        onRequestStepCompletion({
+          stepId: "URBAN_PROJECT_EXPENSES_INSTALLATION",
+          answers: {
+            installationExpenses: mapFormValuesToExpenses(formData),
+          },
+        });
       }}
       onBack={onBack}
       initialValues={initialValues}

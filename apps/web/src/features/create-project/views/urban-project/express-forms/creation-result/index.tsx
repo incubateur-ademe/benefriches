@@ -1,7 +1,7 @@
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import ProjectCreationResult from "../../../common-views/result/ProjectCreationResult";
-import { useStepBack } from "../../custom-forms/useStepBack";
+import { useStepBack } from "../useStepBack";
 
 function UrbanProjectExpressCreationResultContainer() {
   const { urbanProject, projectId } = useAppSelector((state) => state.projectCreation);

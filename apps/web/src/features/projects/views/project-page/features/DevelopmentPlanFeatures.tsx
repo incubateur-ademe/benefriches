@@ -20,7 +20,7 @@ import {
 import SoilsDistribution from "./SoilsDistribution";
 import UrbanProjectBuildingsSection from "./UrbanProjectBuildingsSection";
 
-type Props = ProjectFeatures & {
+type Props = Omit<ProjectFeatures, "id"> & {
   getSectionButtonProps?: (stepId: UrbanProjectCreationStep) => ButtonProps | undefined;
 };
 
