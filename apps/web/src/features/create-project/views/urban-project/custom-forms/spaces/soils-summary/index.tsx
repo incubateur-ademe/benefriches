@@ -1,14 +1,14 @@
-import { selectSiteSoilsDistribution } from "@/features/create-project/core/createProject.selectors";
-import { selectProjectSoilDistribution } from "@/features/create-project/core/urban-project/urbanProject.selectors";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 
-import { useInformationalStepBackNext } from "../../useInformationalStepBackNext";
 import UrbanProjectSoilsSummary from "./UrbanProjectSoilsSummary";
 
 function UrbanProjectSoilsSummaryContainer() {
+  const { onBack, onNext, selectSiteSoilsDistribution, selectProjectSoilsDistribution } =
+    useProjectForm();
+
   const siteSoilsDistribution = useAppSelector(selectSiteSoilsDistribution);
-  const projectSoilsDistribution = useAppSelector(selectProjectSoilDistribution);
-  const { onNext, onBack } = useInformationalStepBackNext();
+  const projectSoilsDistribution = useAppSelector(selectProjectSoilsDistribution);
 
   return (
     <UrbanProjectSoilsSummary

@@ -9,7 +9,7 @@ import {
 import {
   AvailableLocalAuthorityStakeholder,
   AvailableProjectStakeholder,
-} from "@/features/create-project/core/stakeholders.selectors";
+} from "@/shared/core/reducers/project-form/helpers/stakeholders";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 import StakeholderForm, { FormValues } from "./StakeholderForm";

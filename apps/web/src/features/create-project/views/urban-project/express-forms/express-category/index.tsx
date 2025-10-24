@@ -1,9 +1,9 @@
-import { requestStepCompletion } from "@/features/create-project/core/urban-project/urbanProject.actions";
-import { selectStepAnswers } from "@/features/create-project/core/urban-project/urbanProject.selectors";
+import { creationProjectFormActions } from "@/features/create-project/core/urban-project/urbanProject.actions";
+import { creationProjectFormSelectors } from "@/features/create-project/core/urban-project/urbanProject.selectors";
 import { expressUrbanProjectCreated } from "@/features/create-project/core/urban-project/urbanProjectExpressSaved.action";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import { useStepBack } from "../../custom-forms/useStepBack";
+import { useStepBack } from "../useStepBack";
 import UrbanProjectExpressCategory, { FormValues } from "./UrbanProjectExpressCategory";
 
 function UrbanProjectExpressCategoryContainer() {
@@ -12,7 +12,7 @@ function UrbanProjectExpressCategoryContainer() {
   const onSubmit = (formData: FormValues) => {
     void dispatch(expressUrbanProjectCreated(formData.expressCategory));
     void dispatch(
-      requestStepCompletion({
+      creationProjectFormActions.requestStepCompletion({
         stepId: "URBAN_PROJECT_EXPRESS_CATEGORY_SELECTION",
         answers: { expressCategory: formData.expressCategory },
       }),
@@ -21,7 +21,9 @@ function UrbanProjectExpressCategoryContainer() {
 
   const onBack = useStepBack();
   const { expressCategory } =
-    useAppSelector(selectStepAnswers("URBAN_PROJECT_EXPRESS_CATEGORY_SELECTION")) ?? {};
+    useAppSelector(
+      creationProjectFormSelectors.selectStepAnswers("URBAN_PROJECT_EXPRESS_CATEGORY_SELECTION"),
+    ) ?? {};
 
   return (
     <UrbanProjectExpressCategory

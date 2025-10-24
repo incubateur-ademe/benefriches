@@ -1,27 +1,21 @@
-import { requestStepCompletion } from "@/features/create-project/core/urban-project/urbanProject.actions";
-import { selectStepAnswers } from "@/features/create-project/core/urban-project/urbanProject.selectors";
 import ProjectNameAndDescriptionForm from "@/features/create-project/views/common-views/name-and-description/ProjectNameAndDescriptionForm";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
-
-import { useStepBack } from "../useStepBack";
+import { useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 
 function ProjectNameAndDescriptionFormContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, onRequestStepCompletion, selectStepAnswers } = useProjectForm();
   const stepAnswers = useAppSelector(selectStepAnswers("URBAN_PROJECT_NAMING"));
 
-  const onBack = useStepBack();
   return (
     <ProjectNameAndDescriptionForm
       onSubmit={(formData) => {
-        dispatch(
-          requestStepCompletion({
-            stepId: "URBAN_PROJECT_NAMING",
-            answers: {
-              name: formData.name,
-              description: formData.description,
-            },
-          }),
-        );
+        onRequestStepCompletion({
+          stepId: "URBAN_PROJECT_NAMING",
+          answers: {
+            name: formData.name,
+            description: formData.description,
+          },
+        });
       }}
       onBack={onBack}
       initialValues={{

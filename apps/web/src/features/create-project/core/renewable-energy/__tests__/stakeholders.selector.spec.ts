@@ -3,9 +3,9 @@ import { RootState } from "@/shared/core/store-config/store";
 
 import { relatedSiteData } from "../../__tests__/siteData.mock";
 import {
-  getAvailableLocalAuthoritiesStakeholders,
-  getProjectAvailableStakeholders,
-} from "../../stakeholders.selectors";
+  selectAvailableLocalAuthoritiesStakeholders,
+  selectProjectAvailableStakeholders,
+} from "../../createProject.selectors";
 import {
   getRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders,
   getRenewableEnergyProjectAvailableStakeholders,
@@ -78,7 +78,7 @@ const MOCK_STATES = {
 describe("Project Stakeholders selector", () => {
   describe("getProjectAvailableStakeholders", () => {
     it("should return project developer, reinstatement expenses owner, future site owner, future site operator, site tenant and site owner and current user structure", () => {
-      const availableProjectStakeholder = getProjectAvailableStakeholders.resultFunc(
+      const availableProjectStakeholder = selectProjectAvailableStakeholders.resultFunc(
         MOCK_STATES.projectCreation.siteData,
         MOCK_STATES.currentUser.currentUser,
       );
@@ -146,7 +146,7 @@ describe("Project Stakeholders selector", () => {
     });
 
     it("should return project developer, reinstatement expenses owner, future site owner, future site operator, site tenant and site owner but not current user structure", () => {
-      const availableProjectStakeholder = getProjectAvailableStakeholders.resultFunc(
+      const availableProjectStakeholder = selectProjectAvailableStakeholders.resultFunc(
         MOCK_STATES.projectCreation.siteData,
         buildUser(),
       );
@@ -207,7 +207,7 @@ describe("Project Stakeholders selector", () => {
     });
 
     it("should return only future site owner, project developer and current user structure", () => {
-      const availableProjectStakeholder = getProjectAvailableStakeholders.resultFunc(
+      const availableProjectStakeholder = selectProjectAvailableStakeholders.resultFunc(
         { ...siteData, tenant: undefined },
         MOCK_STATES.currentUser.currentUser,
       );
@@ -242,7 +242,7 @@ describe("Project Stakeholders selector", () => {
     });
 
     it("should return only future site owner, Reinstatement company, site owner and current user structure", () => {
-      const availableProjectStakeholder = getProjectAvailableStakeholders.resultFunc(
+      const availableProjectStakeholder = selectProjectAvailableStakeholders.resultFunc(
         { ...siteData, tenant: undefined },
         MOCK_STATES.currentUser.currentUser,
       );
@@ -304,12 +304,12 @@ describe("Project Stakeholders selector", () => {
 
   describe("getAvailableLocalAuthoritiesStakeholders", () => {
     it("should return empty array", () => {
-      const availableProjectStakeholder = getProjectAvailableStakeholders.resultFunc(
+      const availableProjectStakeholder = selectProjectAvailableStakeholders.resultFunc(
         { ...siteData, tenant: undefined },
         MOCK_STATES.currentUser.currentUser,
       );
       const availableLocalAuthoritiesStakeholders =
-        getAvailableLocalAuthoritiesStakeholders.resultFunc(
+        selectAvailableLocalAuthoritiesStakeholders.resultFunc(
           MOCK_LOCAL_AUTHORITIES_SUCCESS,
           availableProjectStakeholder,
         );
@@ -337,12 +337,12 @@ describe("Project Stakeholders selector", () => {
     });
 
     it("should return all local authorities", () => {
-      const availableProjectStakeholder = getProjectAvailableStakeholders.resultFunc(
+      const availableProjectStakeholder = selectProjectAvailableStakeholders.resultFunc(
         { ...siteData, owner: { structureType: "company", name: "" } },
         MOCK_STATES.currentUser.currentUser,
       );
       const availableLocalAuthoritiesStakeholders =
-        getAvailableLocalAuthoritiesStakeholders.resultFunc(
+        selectAvailableLocalAuthoritiesStakeholders.resultFunc(
           MOCK_LOCAL_AUTHORITIES_SUCCESS,
           availableProjectStakeholder,
         );
@@ -361,12 +361,12 @@ describe("Project Stakeholders selector", () => {
     });
 
     it("should return local authorities with generic name if no data", () => {
-      const availableProjectStakeholder = getProjectAvailableStakeholders.resultFunc(
+      const availableProjectStakeholder = selectProjectAvailableStakeholders.resultFunc(
         MOCK_STATES.projectCreation.siteData,
         MOCK_STATES.currentUser.currentUser,
       );
       const availableLocalAuthoritiesStakeholders =
-        getAvailableLocalAuthoritiesStakeholders.resultFunc(
+        selectAvailableLocalAuthoritiesStakeholders.resultFunc(
           {
             loadingState: "error",
           },
@@ -386,7 +386,7 @@ describe("Project Stakeholders selector", () => {
       ]);
 
       const availableLocalAuthoritiesStakeholdersWithNoEpci =
-        getAvailableLocalAuthoritiesStakeholders.resultFunc(
+        selectAvailableLocalAuthoritiesStakeholders.resultFunc(
           {
             loadingState: "success",
             city: {
@@ -418,7 +418,7 @@ describe("Project Stakeholders selector", () => {
     });
 
     it("should return local authorities without current user if it is local_authority", () => {
-      const availableProjectStakeholder = getProjectAvailableStakeholders.resultFunc(
+      const availableProjectStakeholder = selectProjectAvailableStakeholders.resultFunc(
         MOCK_STATES.projectCreation.siteData,
         {
           ...MOCK_STATES.currentUser.currentUser,
@@ -428,7 +428,7 @@ describe("Project Stakeholders selector", () => {
         },
       );
       const availableLocalAuthoritiesStakeholders =
-        getAvailableLocalAuthoritiesStakeholders.resultFunc(
+        selectAvailableLocalAuthoritiesStakeholders.resultFunc(
           MOCK_LOCAL_AUTHORITIES_SUCCESS,
           availableProjectStakeholder,
         );
@@ -445,7 +445,7 @@ describe("Project Stakeholders selector", () => {
     });
 
     it("should return local authorities with current user if it is local_authority but not related to the site address", () => {
-      const availableProjectStakeholder = getProjectAvailableStakeholders.resultFunc(
+      const availableProjectStakeholder = selectProjectAvailableStakeholders.resultFunc(
         MOCK_STATES.projectCreation.siteData,
         {
           ...MOCK_STATES.currentUser.currentUser,
@@ -455,7 +455,7 @@ describe("Project Stakeholders selector", () => {
         },
       );
       const availableLocalAuthoritiesStakeholders =
-        getAvailableLocalAuthoritiesStakeholders.resultFunc(
+        selectAvailableLocalAuthoritiesStakeholders.resultFunc(
           MOCK_LOCAL_AUTHORITIES_SUCCESS,
           availableProjectStakeholder,
         );

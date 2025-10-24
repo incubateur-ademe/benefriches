@@ -1,21 +1,25 @@
 import { useEffect } from "react";
 
-import { fetchSoilsCarbonStorageDifference } from "@/features/create-project/core/urban-project/urbanProject.actions";
-import { selectSoilsCarbonStorageDifference } from "@/features/create-project/core/urban-project/urbanProject.selectors";
 import SoilsCarbonStorageComparison from "@/features/create-project/views/common-views/soils-carbon-storage-comparison/SoilsCarbonStorageComparison";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
-
-import { useInformationalStepBackNext } from "../../useInformationalStepBackNext";
+import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 
 export default function UrbanProjectSoilsCarbonStorageContainer() {
   const dispatch = useAppDispatch();
+
+  const {
+    onBack,
+    onNext,
+    selectSoilsCarbonStorageDifference,
+    onFetchSoilsCarbonStorageDifference,
+  } = useProjectForm();
+
   const { current, projected, loadingState } = useAppSelector(selectSoilsCarbonStorageDifference);
-  const { onNext, onBack } = useInformationalStepBackNext();
 
   useEffect(() => {
-    void dispatch(fetchSoilsCarbonStorageDifference());
-  }, [dispatch]);
+    onFetchSoilsCarbonStorageDifference();
+  }, [dispatch, onFetchSoilsCarbonStorageDifference]);
 
   useEffect(() => {
     if (loadingState === "error") {

@@ -1,17 +1,17 @@
-import { selectStepAnswers } from "@/features/create-project/core/urban-project/urbanProject.selectors";
 import { RootState } from "@/shared/core/store-config/store";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 
 import ProjectCreationResult from "../../../common-views/result/ProjectCreationResult";
-import { useInformationalStepBackNext } from "../useInformationalStepBackNext";
 
 function ProjectCreationResultContainer() {
+  const { onBack, selectStepAnswers } = useProjectForm();
+
   const { saveState, projectId } = useAppSelector((state: RootState) => ({
     saveState: state.projectCreation.urbanProject.saveState,
     projectId: state.projectCreation.projectId,
   }));
-  const { name: projectName } = useAppSelector(selectStepAnswers("URBAN_PROJECT_NAMING")) ?? {};
-  const { onBack } = useInformationalStepBackNext();
+  const projectName = useAppSelector(selectStepAnswers("URBAN_PROJECT_NAMING"))?.name;
 
   return (
     <ProjectCreationResult

@@ -1,30 +1,24 @@
-import { requestStepCompletion } from "@/features/create-project/core/urban-project/urbanProject.actions";
-import { selectStepAnswers } from "@/features/create-project/core/urban-project/urbanProject.selectors";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 
-import { useStepBack } from "../../useStepBack";
 import SiteResaleRevenueForm from "./SiteResaleRevenueForm";
 
 function SiteResaleRevenueFormContainer() {
-  const dispatch = useAppDispatch();
+  const { onBack, selectStepAnswers, onRequestStepCompletion } = useProjectForm();
   const stepAnswers = useAppSelector(
     selectStepAnswers("URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE"),
   );
 
-  const onBack = useStepBack();
-
   return (
     <SiteResaleRevenueForm
       onSubmit={(formData) => {
-        dispatch(
-          requestStepCompletion({
-            stepId: "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE",
-            answers: {
-              siteResaleExpectedSellingPrice: formData.sellingPrice,
-              siteResaleExpectedPropertyTransferDuties: formData.propertyTransferDuties,
-            },
-          }),
-        );
+        onRequestStepCompletion({
+          stepId: "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE",
+          answers: {
+            siteResaleExpectedSellingPrice: formData.sellingPrice,
+            siteResaleExpectedPropertyTransferDuties: formData.propertyTransferDuties,
+          },
+        });
       }}
       onBack={onBack}
       initialValues={{

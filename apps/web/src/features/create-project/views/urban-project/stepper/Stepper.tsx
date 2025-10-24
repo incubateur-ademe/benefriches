@@ -1,15 +1,14 @@
-import { useMemo, useCallback } from "react";
+import { useMemo } from "react";
 
-import { navigateToStep } from "@/features/create-project/core/urban-project/urbanProject.actions";
-import { selectAvailableStepsState } from "@/features/create-project/core/urban-project/urbanProject.selectors";
 import {
   isAnswersStep,
   UrbanProjectCreationStep,
 } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 import { RootState } from "@/shared/core/store-config/store";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 import FormStepperStep from "@/shared/views/layout/WizardFormLayout/FormStepperStep";
 import FormStepperWrapper from "@/shared/views/layout/WizardFormLayout/FormStepperWrapper";
+import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 
 import StepperLiItem from "./StepperItem";
 import {
@@ -121,17 +120,10 @@ type Props = {
 };
 
 function UrbanProjectStepper({ step: currentStep }: Props) {
+  const { selectAvailableStepsState, onNavigateToStep } = useProjectForm();
   const availableStepsState = useAppSelector(selectAvailableStepsState);
   const saveState = useAppSelector(
     (state: RootState) => state.projectCreation.urbanProject.saveState,
-  );
-  const dispatch = useAppDispatch();
-
-  const onNavigateToStep = useCallback(
-    (stepId: UrbanProjectCreationStep) => {
-      dispatch(navigateToStep({ stepId }));
-    },
-    [dispatch],
   );
 
   const { categories, nextAvailableCategory } = useMapStepListToCategoryList(

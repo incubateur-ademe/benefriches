@@ -1,33 +1,26 @@
-import { requestStepCompletion } from "@/features/create-project/core/urban-project/urbanProject.actions";
-import { selectStepAnswers } from "@/features/create-project/core/urban-project/urbanProject.selectors";
 import SoilsDecontaminationSelection from "@/features/create-project/views/common-views/soils-decontamination/selection/SoilsDecontaminationSelection";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
-
-import { useStepBack } from "../../useStepBack";
+import { useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 
 function SoilsDecontaminationSelectionContainer() {
-  const dispatch = useAppDispatch();
-  const stepAnswers = useAppSelector(
+  const { onBack, onRequestStepCompletion, selectStepAnswers } = useProjectForm();
+  const decontaminationPlan = useAppSelector(
     selectStepAnswers("URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION"),
-  );
-
-  const onBack = useStepBack();
+  )?.decontaminationPlan;
 
   return (
     <SoilsDecontaminationSelection
       onSubmit={(formData) => {
-        dispatch(
-          requestStepCompletion({
-            stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
-            answers: {
-              decontaminationPlan: formData.decontaminationSelection ?? "unknown",
-            },
-          }),
-        );
+        onRequestStepCompletion({
+          stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
+          answers: {
+            decontaminationPlan: formData.decontaminationSelection ?? "unknown",
+          },
+        });
       }}
       onBack={onBack}
       initialValues={{
-        decontaminationSelection: stepAnswers?.decontaminationPlan ?? null,
+        decontaminationSelection: decontaminationPlan ?? null,
       }}
     />
   );

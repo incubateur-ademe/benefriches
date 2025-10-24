@@ -1,8 +1,9 @@
-import { useInformationalStepBackNext } from "../../useInformationalStepBackNext";
+import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
+
 import ProjectExpensesIntroduction from "./ProjectExpensesIntroduction";
 
 function ProjectExpensesIntroductionContainer() {
-  const { onBack, onNext } = useInformationalStepBackNext();
+  const { onBack, onNext } = useProjectForm();
 
   return <ProjectExpensesIntroduction onNext={onNext} onBack={onBack} />;
 }

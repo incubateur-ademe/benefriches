@@ -1,19 +1,44 @@
 import { createSelector } from "@reduxjs/toolkit";
 
 import { selectCurrentUserStructure } from "@/features/onboarding/core/user.reducer";
-
-import { selectSiteData } from "../../createProject.selectors";
-import { ProjectStakeholder } from "../../project.types";
 import {
   AvailableProjectStakeholder,
   getAvailableLocalAuthoritiesStakeholders,
   getProjectAvailableStakeholders,
   hasStakeholder,
-} from "../../stakeholders.selectors";
+} from "@/shared/core/reducers/project-form/helpers/stakeholders";
+import { RootState } from "@/shared/core/store-config/store";
+
+import { selectSiteData } from "../../createProject.selectors";
+import { ProjectStakeholder } from "../../project.types";
 import { selectCreationData } from "./renewableEnergy.selector";
 
+const selectProjectAvailableStakeholders = createSelector(
+  [selectSiteData, (state: RootState) => state.currentUser.currentUser],
+  (siteData, currentUser) => {
+    return getProjectAvailableStakeholders({
+      siteOwner: siteData?.owner,
+      siteTenant: siteData?.tenant,
+      currentUser: currentUser ?? undefined,
+    });
+  },
+);
+
+const selectAvailableLocalAuthoritiesStakeholders = createSelector(
+  [
+    (state: RootState) => state.projectCreation.siteRelatedLocalAuthorities,
+    selectProjectAvailableStakeholders,
+  ],
+  (siteRelatedLocalAuthorities, projectAvailableStakeholders) => {
+    return getAvailableLocalAuthoritiesStakeholders(
+      siteRelatedLocalAuthorities,
+      projectAvailableStakeholders,
+    );
+  },
+);
+
 export const getRenewableEnergyProjectAvailableStakeholders = createSelector(
-  [getProjectAvailableStakeholders, selectCreationData],
+  [selectProjectAvailableStakeholders, selectCreationData],
   (projectAvailableStakeholders, creationData) => {
     const stakeholders: AvailableProjectStakeholder[] = projectAvailableStakeholders;
 
@@ -58,7 +83,7 @@ export const getRenewableEnergyProjectAvailableStakeholders = createSelector(
 );
 
 export const getRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders = createSelector(
-  [getAvailableLocalAuthoritiesStakeholders, selectCreationData],
+  [selectAvailableLocalAuthoritiesStakeholders, selectCreationData],
   (availableLocalAuthoritiesStakeholders, creationData) => {
     const { projectDeveloper, futureOperator, reinstatementContractOwner, futureSiteOwner } =
       creationData;

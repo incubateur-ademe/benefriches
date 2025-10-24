@@ -11,7 +11,6 @@ import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/Back
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
-  projectId: string;
   projectData: CustomFormAnswers;
   projectSoilsDistribution: SoilsDistribution;
   projectSpaces: Partial<Record<LEGACY_UrbanProjectSpace, number>>;
@@ -23,7 +22,6 @@ type Props = {
 };
 
 function ProjectCreationDataSummary({
-  projectId,
   projectData,
   projectSpaces,
   projectSoilsDistribution,
@@ -41,7 +39,6 @@ function ProjectCreationDataSummary({
     <WizardFormLayout title="Récapitulatif du projet" instructions={instructions}>
       <ProjectFeaturesView
         projectData={{
-          id: projectId,
           name: projectData.name ?? "",
           isExpress: false,
           description: projectData.description,

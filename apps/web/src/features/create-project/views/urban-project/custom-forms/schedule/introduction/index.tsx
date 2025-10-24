@@ -1,9 +1,8 @@
 import ScheduleIntroduction from "@/features/create-project/views/common-views/schedule/introduction/ScheduleIntroduction";
-
-import { useInformationalStepBackNext } from "../../useInformationalStepBackNext";
+import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 
 function ProjectScheduleIntroductionContainer() {
-  const { onBack, onNext } = useInformationalStepBackNext();
+  const { onBack, onNext } = useProjectForm();
 
   return <ScheduleIntroduction onNext={onNext} onBack={onBack} />;
 }

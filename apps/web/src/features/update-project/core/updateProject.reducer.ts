@@ -1,17 +1,19 @@
 import { createReducer } from "@reduxjs/toolkit";
-import reduceReducers from "reduce-reducers";
 
+import { fetchCurrentAndProjectedSoilsCarbonStorage } from "@/features/create-project/core/renewable-energy/actions/soilsCarbonStorage.actions";
 import { ProjectFeatures } from "@/features/projects/domain/projects.types";
 import {
   addProjectFormCasesToBuilder,
   getProjectFormInitialState,
   ProjectFormState,
 } from "@/shared/core/reducers/project-form/projectForm.reducer";
+import { addUrbanProjectFormCasesToBuilder } from "@/shared/core/reducers/project-form/urban-project/urbanProject.reducer";
 import { UrbanProjectCreationStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 
 import {
   fetchSiteLocalAuthorities,
   reconversionProjectUpdateInitiated,
+  updateProjectFormActions,
 } from "./updateProject.actions";
 
 type ProjectUpdateStep = Exclude<
@@ -44,6 +46,11 @@ export const getInitialState = (): ProjectUpdateState => {
 const projectUpdateReducer = createReducer(getInitialState(), (builder) => {
   addProjectFormCasesToBuilder(builder, { fetchSiteLocalAuthorities: fetchSiteLocalAuthorities });
 
+  addUrbanProjectFormCasesToBuilder(builder, {
+    ...updateProjectFormActions,
+    fetchSoilsCarbonStorageDifference: fetchCurrentAndProjectedSoilsCarbonStorage,
+  });
+
   builder
     .addCase(reconversionProjectUpdateInitiated.pending, () => {
       return {
@@ -60,9 +67,4 @@ const projectUpdateReducer = createReducer(getInitialState(), (builder) => {
     });
 });
 
-const projectUpdateRootReducer = reduceReducers<ProjectUpdateState>(
-  getInitialState(),
-  projectUpdateReducer,
-);
-
-export default projectUpdateRootReducer;
+export default projectUpdateReducer;

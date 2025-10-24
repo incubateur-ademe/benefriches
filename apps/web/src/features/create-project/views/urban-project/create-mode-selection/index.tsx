@@ -1,7 +1,6 @@
 import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
-import { requestStepCompletion } from "@/features/create-project/core/urban-project/urbanProject.actions";
-import { selectStepAnswers } from "@/features/create-project/core/urban-project/urbanProject.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 
 import CreateModeSelectionForm from "../../common-views/create-mode-selection/CreateModeSelectionForm";
 
@@ -27,18 +26,19 @@ const options = [
 export default function CreateModeSelectionFormContainer() {
   const dispatch = useAppDispatch();
 
-  const { createMode } =
-    useAppSelector(selectStepAnswers("URBAN_PROJECT_CREATE_MODE_SELECTION")) ?? {};
+  const { selectStepAnswers, onRequestStepCompletion } = useProjectForm();
+
+  const createMode = useAppSelector(
+    selectStepAnswers("URBAN_PROJECT_CREATE_MODE_SELECTION"),
+  )?.createMode;
 
   return (
     <CreateModeSelectionForm
       onSubmit={(formData) => {
-        dispatch(
-          requestStepCompletion({
-            stepId: "URBAN_PROJECT_CREATE_MODE_SELECTION",
-            answers: { createMode: formData.createMode },
-          }),
-        );
+        onRequestStepCompletion({
+          stepId: "URBAN_PROJECT_CREATE_MODE_SELECTION",
+          answers: { createMode: formData.createMode },
+        });
       }}
       onBack={() => {
         dispatch(stepRevertAttempted());

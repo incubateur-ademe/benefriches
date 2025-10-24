@@ -3,21 +3,17 @@ import {
   YearlyBuildingsOperationsRevenues,
 } from "shared";
 
-import { requestStepCompletion } from "@/features/create-project/core/urban-project/urbanProject.actions";
-import { selectStepAnswers } from "@/features/create-project/core/urban-project/urbanProject.selectors";
 import ProjectYearlyRevenuesForm from "@/features/create-project/views/common-views/revenues/yearly-projected-revenue/ProjectYearlyRevenueForm";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
-
-import { useStepBack } from "../../useStepBack";
+import { useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 
 const fields = ["rent", "other"] as const;
 
 export default function YearlyBuildingsOperationsRevenuesForm() {
-  const dispatch = useAppDispatch();
+  const { onBack, selectStepAnswers, onRequestStepCompletion } = useProjectForm();
   const stepAnswers = useAppSelector(
     selectStepAnswers("URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES"),
   );
-  const onBack = useStepBack();
 
   return (
     <ProjectYearlyRevenuesForm
@@ -39,14 +35,12 @@ export default function YearlyBuildingsOperationsRevenuesForm() {
             });
           }
         }
-        dispatch(
-          requestStepCompletion({
-            stepId: "URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES",
-            answers: {
-              yearlyProjectedRevenues: revenues,
-            },
-          }),
-        );
+        onRequestStepCompletion({
+          stepId: "URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES",
+          answers: {
+            yearlyProjectedRevenues: revenues,
+          },
+        });
       }}
       onBack={onBack}
       initialValues={{

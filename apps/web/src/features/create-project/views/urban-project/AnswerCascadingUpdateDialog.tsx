@@ -1,16 +1,10 @@
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import { Description, Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
-import { useCallback } from "react";
-import { useSelector } from "react-redux";
 
-import {
-  cancelStepCompletion,
-  confirmStepCompletion,
-} from "@/features/create-project/core/urban-project/urbanProject.actions";
 import { AnswerStepId } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
-import { RootState } from "@/shared/core/store-config/store";
 import classNames from "@/shared/views/clsx";
-import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
+import { useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 
 import { STEP_LABELS, STEP_TO_CATEGORY_MAPPING } from "./stepper/stepperConfig";
 
@@ -31,19 +25,10 @@ const getStepLabel = (stepId: AnswerStepId) => {
 };
 
 export default function CascadingChangesAlert() {
-  const pendingStepCompletion = useSelector(
-    (state: RootState) => state.projectCreation.urbanProject.pendingStepCompletion,
-  );
+  const { onConfirmStepCompletion, onCancelStepCompletion, selectPendingStepCompletion } =
+    useProjectForm();
 
-  const dispatch = useAppDispatch();
-
-  const onConfirm = useCallback(() => {
-    dispatch(confirmStepCompletion());
-  }, [dispatch]);
-
-  const onCancel = useCallback(() => {
-    dispatch(cancelStepCompletion());
-  }, [dispatch]);
+  const pendingStepCompletion = useAppSelector(selectPendingStepCompletion);
 
   if (!pendingStepCompletion?.showAlert) return null;
 
@@ -55,11 +40,11 @@ export default function CascadingChangesAlert() {
   const invalidSteps = cascadingChanges?.filter(({ action }) => action === "invalidate") ?? [];
 
   return (
-    <Dialog open={pendingStepCompletion.showAlert} onClose={onCancel}>
+    <Dialog open={pendingStepCompletion.showAlert} onClose={onCancelStepCompletion}>
       <div className={classNames(DIALOG_DSFR_CSS)}>
         <DialogPanel className="max-w-2xl fr-modal__body">
           <div className="fr-modal__header">
-            <button type="button" className="fr-btn--close fr-btn" onClick={onCancel}>
+            <button type="button" className="fr-btn--close fr-btn" onClick={onCancelStepCompletion}>
               Fermer
             </button>
           </div>
@@ -102,8 +87,8 @@ export default function CascadingChangesAlert() {
               inlineLayoutWhen="always"
               alignment="right"
               buttons={[
-                { children: "Annuler", onClick: onCancel, priority: "secondary" },
-                { children: "Valider", onClick: onConfirm },
+                { children: "Annuler", onClick: onCancelStepCompletion, priority: "secondary" },
+                { children: "Valider", onClick: onConfirmStepCompletion },
               ]}
             />
           </div>

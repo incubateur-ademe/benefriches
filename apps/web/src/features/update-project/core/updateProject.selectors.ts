@@ -1,9 +1,24 @@
 import { createProjectFormSelectors } from "@/shared/core/reducers/project-form/projectForm.selectors";
 import { createUrbanProjectFormSelectors } from "@/shared/core/reducers/project-form/urban-project/urbanProject.selectors";
 
-const { selectSiteAddress, selectSiteSoilsDistribution } =
-  createProjectFormSelectors("projectUpdate");
+const {
+  selectSiteAddress,
+  selectSiteSoilsDistribution,
+  selectAvailableLocalAuthoritiesStakeholders,
+  selectProjectAvailableStakeholders,
+  selectSiteSurfaceArea,
+  selectSiteContaminatedSurfaceArea,
+} = createProjectFormSelectors("projectUpdate");
+
 export { selectSiteAddress, selectSiteSoilsDistribution };
 
-const { selectProjectSoilDistribution } = createUrbanProjectFormSelectors("projectUpdate");
-export { selectProjectSoilDistribution };
+export const updateUrbanProjectFormSelectors = createUrbanProjectFormSelectors("projectUpdate", {
+  selectAvailableLocalAuthoritiesStakeholders,
+  selectProjectAvailableStakeholders,
+  selectSiteAddress,
+  selectSiteSoilsDistribution,
+  selectSiteSurfaceArea,
+  selectSiteContaminatedSurfaceArea,
+});
+const { selectProjectSoilsDistribution } = updateUrbanProjectFormSelectors;
+export { selectProjectSoilsDistribution };

@@ -31,16 +31,6 @@ export const selectIsSiteFriche = createSelector(
   (siteData): boolean => siteData?.nature === "FRICHE",
 );
 
-export const selectSiteSurfaceArea = createSelector(
-  selectSiteData,
-  (siteData): number => siteData?.surfaceArea ?? 0,
-);
-
-export const selectSiteContaminatedSurfaceArea = createSelector(
-  selectSiteData,
-  (siteData): number => siteData?.contaminatedSoilSurface ?? 0,
-);
-
 export const selectDefaultSchedule = createSelector(
   selectIsSiteFriche,
   (isFriche): ProjectSchedule => {
@@ -56,6 +46,19 @@ export const selectShouldConfirmStepRevert = createSelector(
   },
 );
 
-const { selectSiteAddress, selectSiteSoilsDistribution } =
-  createProjectFormSelectors("projectCreation");
-export { selectSiteAddress, selectSiteSoilsDistribution };
+const {
+  selectSiteAddress,
+  selectSiteSoilsDistribution,
+  selectAvailableLocalAuthoritiesStakeholders,
+  selectProjectAvailableStakeholders,
+  selectSiteSurfaceArea,
+  selectSiteContaminatedSurfaceArea,
+} = createProjectFormSelectors("projectCreation");
+export {
+  selectSiteAddress,
+  selectSiteSoilsDistribution,
+  selectAvailableLocalAuthoritiesStakeholders,
+  selectProjectAvailableStakeholders,
+  selectSiteSurfaceArea,
+  selectSiteContaminatedSurfaceArea,
+};
