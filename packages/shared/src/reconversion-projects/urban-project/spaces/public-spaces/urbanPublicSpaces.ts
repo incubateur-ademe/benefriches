@@ -20,3 +20,16 @@ export const getSoilTypeForPublicSpace = (publicSpace: UrbanPublicSpace): SoilTy
       return "MINERAL_SOIL";
   }
 };
+
+export const getUrbanPublicSpaceFromSoilType = (soilType: SoilType): UrbanPublicSpace => {
+  switch (soilType) {
+    case "IMPERMEABLE_SOILS":
+      return "IMPERMEABLE_SURFACE";
+    case "ARTIFICIAL_GRASS_OR_BUSHES_FILLED":
+      return "GRASS_COVERED_SURFACE";
+    case "MINERAL_SOIL":
+      return "PERMEABLE_SURFACE";
+    default:
+      return "IMPERMEABLE_SURFACE";
+  }
+};

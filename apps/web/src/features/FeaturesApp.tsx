@@ -8,6 +8,8 @@ import HeaderFooterLayout from "@/shared/views/layout/HeaderFooterLayout/HeaderF
 import SidebarContainerLayout from "@/shared/views/layout/SidebarLayout/SidebarContainerLayout";
 import { routes, useRoute } from "@/shared/views/router";
 
+import UpdateProjectPage from "./update-project/views";
+
 /* Lazy-loaded pages */
 const CreateProjectPage = lazy(
   () => import("@/features/create-project/views/ProjectCreationWizard"),
@@ -32,7 +34,11 @@ const ProjectImpactsOnboardingPage = lazy(
   () => import("@/features/projects/views/project-impacts-onboarding"),
 );
 
-const formsLayoutGroup = createGroup([routes.createSiteFoncier, routes.createProject]);
+const formsLayoutGroup = createGroup([
+  routes.createSiteFoncier,
+  routes.createProject,
+  routes.updateProject,
+]);
 const onBoardingGroup = createGroup([
   routes.onBoardingIntroductionHow,
   routes.onBoardingIntroductionWhy,
@@ -52,6 +58,8 @@ function FeaturesApp() {
                   return <CreateSiteFoncierPage />;
                 case routes.createProject.name:
                   return <CreateProjectPage route={route} />;
+                case routes.updateProject.name:
+                  return <UpdateProjectPage route={route} />;
               }
             })()}
           </RequireAuthenticatedUser>

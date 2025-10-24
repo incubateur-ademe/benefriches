@@ -27,7 +27,7 @@ export type StepCompletionPayload<K extends AnswerStepId = AnswerStepId> = {
   };
 }[K];
 
-export type UrbanProjectProjectReducerActions = {
+export type UrbanProjectFormReducerActions = {
   requestStepCompletion: ActionCreatorWithPayload<StepCompletionPayload>;
   confirmStepCompletion: ActionCreatorWithPayload<void>;
   cancelStepCompletion: ActionCreatorWithPayload<void>;
@@ -47,10 +47,10 @@ type Selectors = Pick<ProjectFormSelectors, "selectSiteAddress" | "selectSiteSoi
   selectProjectSoilsDistribution: (state: RootState) => SoilsDistribution;
 };
 
-export const createProjectFormActions = (
+export const createUrbanProjectFormActions = (
   prefix: "projectCreation" | "projectUpdate",
   selectors: Selectors,
-): UrbanProjectProjectReducerActions => {
+): UrbanProjectFormReducerActions => {
   return {
     confirmStepCompletion: createUrbanProjectFormAction(prefix, "confirmStepCompletion"),
     cancelStepCompletion: createUrbanProjectFormAction(prefix, "cancelStepCompletion"),

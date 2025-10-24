@@ -12,6 +12,7 @@ export type ProjectFormContextValue = ProjectFormSelectors &
     onRequestStepCompletion: (payload: StepCompletionPayload) => void;
     onNavigateToStep: (stepId: UrbanProjectCreationStep) => void;
     onFetchSoilsCarbonStorageDifference: () => void;
+    onFetchSiteLocalAuthorities: () => void;
     onConfirmStepCompletion: () => void;
     onCancelStepCompletion: () => void;
   };

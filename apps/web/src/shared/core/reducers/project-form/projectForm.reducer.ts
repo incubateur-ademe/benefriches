@@ -1,10 +1,10 @@
-import { ActionReducerMapBuilder, AsyncThunk, AsyncThunkConfig } from "@reduxjs/toolkit";
+import { ActionReducerMapBuilder } from "@reduxjs/toolkit";
 
 import { ExpressReconversionProjectResult } from "@/features/create-project/core/actions/expressProjectSavedGateway";
 import { ProjectSite } from "@/features/create-project/core/project.types";
 import { CurrentAndProjectedSoilsCarbonStorageResult } from "@/shared/core/reducers/project-form/soilsCarbonStorage.action";
 
-import { GetMunicipalityDataResult } from "./getSiteLocalAuthorities.action";
+import { ProjectFormReducerActions } from "./projectForm.actions";
 import { StepUpdateResult } from "./urban-project/helpers/completeStep";
 import {
   AnswersByStep,
@@ -95,32 +95,24 @@ export const getProjectFormInitialState = <
   };
 };
 
-type ProjectProjectReducerActions = {
-  fetchSiteLocalAuthorities: AsyncThunk<
-    GetMunicipalityDataResult["localAuthorities"],
-    void,
-    AsyncThunkConfig
-  >;
-};
 export const addProjectFormCasesToBuilder = <
   T extends UrbanProjectCreationStep,
   S extends ProjectFormState<T>,
 >(
   builder: ActionReducerMapBuilder<S>,
-  actions: ProjectProjectReducerActions,
+  actions: ProjectFormReducerActions,
 ) => {
-  /* fetch site local authorities */
   builder
-    .addCase(actions.fetchSiteLocalAuthorities.pending, (state) => {
+    .addCase(actions.fetchSiteRelatedLocalAuthorities.pending, (state) => {
       state.siteRelatedLocalAuthorities.loadingState = "loading";
     })
-    .addCase(actions.fetchSiteLocalAuthorities.fulfilled, (state, action) => {
+    .addCase(actions.fetchSiteRelatedLocalAuthorities.fulfilled, (state, action) => {
       state.siteRelatedLocalAuthorities = {
         loadingState: "success",
         ...action.payload,
       };
     })
-    .addCase(actions.fetchSiteLocalAuthorities.rejected, (state) => {
+    .addCase(actions.fetchSiteRelatedLocalAuthorities.rejected, (state) => {
       state.siteRelatedLocalAuthorities.loadingState = "error";
     });
 };

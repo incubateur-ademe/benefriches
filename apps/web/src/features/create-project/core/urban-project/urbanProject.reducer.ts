@@ -3,7 +3,7 @@ import { createReducer, UnknownAction } from "@reduxjs/toolkit";
 import { addUrbanProjectFormCasesToBuilder } from "@/shared/core/reducers/project-form/urban-project/urbanProject.reducer";
 
 import { ProjectCreationState } from "../createProject.reducer";
-import { creationProjectFormActions } from "./urbanProject.actions";
+import { creationProjectFormUrbanActions } from "./urbanProject.actions";
 import { customUrbanProjectSaved } from "./urbanProjectCustomSaved.action";
 import {
   expressUrbanProjectCreated,
@@ -12,7 +12,7 @@ import {
 
 export const createUrbanProjectReducer = createReducer({} as ProjectCreationState, (builder) => {
   // Form actions
-  addUrbanProjectFormCasesToBuilder(builder, creationProjectFormActions);
+  addUrbanProjectFormCasesToBuilder(builder, creationProjectFormUrbanActions);
 
   // Custom create Save
   builder.addCase(customUrbanProjectSaved.pending, (state) => {

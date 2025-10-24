@@ -1,5 +1,8 @@
+import { createSelector } from "@reduxjs/toolkit";
+
 import { createProjectFormSelectors } from "@/shared/core/reducers/project-form/projectForm.selectors";
 import { createUrbanProjectFormSelectors } from "@/shared/core/reducers/project-form/urban-project/urbanProject.selectors";
+import { RootState } from "@/shared/core/store-config/store";
 
 const {
   selectSiteAddress,
@@ -22,3 +25,8 @@ export const updateUrbanProjectFormSelectors = createUrbanProjectFormSelectors("
 });
 const { selectProjectSoilsDistribution } = updateUrbanProjectFormSelectors;
 export { selectProjectSoilsDistribution };
+
+export const selectUrbanProjectCurrentStep = createSelector(
+  [(state: RootState) => state.projectUpdate.urbanProject],
+  (state) => state.currentStep,
+);

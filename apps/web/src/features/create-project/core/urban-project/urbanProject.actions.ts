@@ -1,4 +1,5 @@
-import { createProjectFormActions } from "@/shared/core/reducers/project-form/urban-project/urbanProject.actions";
+import { createProjectFormActions } from "@/shared/core/reducers/project-form/projectForm.actions";
+import { createUrbanProjectFormActions } from "@/shared/core/reducers/project-form/urban-project/urbanProject.actions";
 
 import {
   makeProjectCreationActionType,
@@ -7,14 +8,18 @@ import {
 import { selectSiteAddress, selectSiteSoilsDistribution } from "../createProject.selectors";
 import { selectProjectSoilsDistribution } from "./urbanProject.selectors";
 
-export const creationProjectFormActions = createProjectFormActions(PROJECT_CREATION_ACTION_PREFIX, {
-  selectSiteSoilsDistribution,
-  selectSiteAddress,
-  selectProjectSoilsDistribution,
-});
+export const creationProjectFormActions = createProjectFormActions(PROJECT_CREATION_ACTION_PREFIX);
+export const creationProjectFormUrbanActions = createUrbanProjectFormActions(
+  PROJECT_CREATION_ACTION_PREFIX,
+  {
+    selectProjectSoilsDistribution,
+    selectSiteAddress,
+    selectSiteSoilsDistribution,
+  },
+);
 
 export const makeUrbanProjectCreationActionType = (actionName: string) => {
   return makeProjectCreationActionType(`urbanProject/${actionName}`);
 };
 
-export default creationProjectFormActions;
+export default { creationProjectFormActions, creationProjectFormUrbanActions };

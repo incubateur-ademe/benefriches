@@ -5,6 +5,7 @@ import { isUrbanProjectCreationStep } from "@/shared/core/reducers/project-form/
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
+import { ProjectFormProvider } from "@/shared/views/project-form/ProjectFormProvider";
 import { routes } from "@/shared/views/router";
 
 import { reconversionProjectCreationInitiated } from "../core/actions/urbanProjectCreationInitiated.action";
@@ -68,16 +69,16 @@ function ProjectCreationWizard({ route }: Props) {
 
   if (isUrbanProjectCreationStep(currentStep)) {
     return (
-      <>
+      <ProjectFormProvider mode="create">
         <StepRevertConfirmationModal />
         <UrbanProjectCreationWizard />
-      </>
+      </ProjectFormProvider>
     );
   }
 
   if (isRenewableEnergyCreationStep(currentStep)) {
     return (
-      <>
+      <ProjectFormProvider mode="create">
         <StepRevertConfirmationModal />
         {currentStep === "RENEWABLE_ENERGY_TYPES" ? (
           <>
@@ -91,7 +92,7 @@ function ProjectCreationWizard({ route }: Props) {
         ) : (
           <PhotovoltaicPowerStationCreationWizard currentStep={currentStep} />
         )}
-      </>
+      </ProjectFormProvider>
     );
   }
 

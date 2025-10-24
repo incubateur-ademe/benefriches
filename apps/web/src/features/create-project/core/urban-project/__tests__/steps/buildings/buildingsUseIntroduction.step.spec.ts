@@ -2,7 +2,7 @@ import { describe, it } from "vitest";
 
 import { ProjectFormState } from "@/shared/core/reducers/project-form/projectForm.reducer";
 
-import { creationProjectFormActions } from "../../../urbanProject.actions";
+import { creationProjectFormUrbanActions } from "../../../urbanProject.actions";
 import { createTestStore } from "../../_testStoreHelpers";
 
 const getCurrentStep = (store: ReturnType<typeof createTestStore>) =>
@@ -14,7 +14,7 @@ describe("Urban project creation - Steps - Buildings use introduction", () => {
       currentStep: "URBAN_PROJECT_BUILDINGS_USE_INTRODUCTION",
     });
 
-    store.dispatch(creationProjectFormActions.navigateToNext());
+    store.dispatch(creationProjectFormUrbanActions.navigateToNext());
 
     expect(store.getState().projectCreation.urbanProject.steps).toEqual<
       ProjectFormState["urbanProject"]["steps"]
@@ -29,7 +29,7 @@ describe("Urban project creation - Steps - Buildings use introduction", () => {
       currentStep: "URBAN_PROJECT_BUILDINGS_USE_INTRODUCTION",
     });
 
-    store.dispatch(creationProjectFormActions.navigateToPrevious());
+    store.dispatch(creationProjectFormUrbanActions.navigateToPrevious());
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA");
   });
 });

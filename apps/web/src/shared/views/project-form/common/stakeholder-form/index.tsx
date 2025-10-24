@@ -1,7 +1,6 @@
 import { ReactNode, useEffect } from "react";
 import { LocalAuthority } from "shared";
 
-import { fetchSiteLocalAuthorities } from "@/features/create-project/core/actions/getSiteLocalAuthorities.action";
 import {
   ProjectStakeholder,
   ProjectStakeholderStructure,
@@ -12,6 +11,7 @@ import {
 } from "@/shared/core/reducers/project-form/helpers/stakeholders";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
+import { useProjectForm } from "../../useProjectForm";
 import StakeholderForm, { FormValues } from "./StakeholderForm";
 
 const DEFAULT_UNKNOWN_NAME = "Aménageur";
@@ -133,6 +133,8 @@ function StakeholderFormContainer({
 }: Props) {
   const dispatch = useAppDispatch();
 
+  const { onFetchSiteLocalAuthorities } = useProjectForm();
+
   const _onSubmit = (data: FormValues) => {
     onSubmit(
       convertFormValuesForStore(
@@ -143,7 +145,9 @@ function StakeholderFormContainer({
     );
   };
 
-  useEffect(() => void dispatch(fetchSiteLocalAuthorities()), [dispatch]);
+  useEffect(() => {
+    onFetchSiteLocalAuthorities();
+  }, [dispatch, onFetchSiteLocalAuthorities]);
 
   return (
     <StakeholderForm

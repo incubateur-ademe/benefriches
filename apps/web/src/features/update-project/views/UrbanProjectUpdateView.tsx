@@ -1,20 +1,18 @@
 import { lazy, ReactNode, Suspense } from "react";
 
-import { UrbanProjectCreationStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
+import { URBAN_PROJECT_CREATION_STEP_QUERY_STRING_MAP } from "@/features/create-project/views/urban-project/creationStepQueryStringMap";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
+import { ProjectFormProvider } from "@/shared/views/project-form/ProjectFormProvider";
+import UrbanProjectStepper from "@/shared/views/project-form/stepper/Stepper";
 import BuildingsUseSelection from "@/shared/views/project-form/urban-project/buildings/use-selection";
 
-import UrbanProjectStepper from "../../../../shared/views/project-form/stepper/Stepper";
-import { selectUrbanProjectCurrentStep } from "../../core/urban-project/urbanProject.selectors";
-import { HTML_MAIN_TITLE } from "../mainHtmlTitle";
-import CreateModeSelectionForm from "./create-mode-selection";
+import { UrbanProjectUpdateStep } from "../core/updateProject.reducer";
+import { selectUrbanProjectCurrentStep } from "../core/updateProject.selectors";
+import { useSyncUpdateStepWithRouteQuery } from "./useSyncUpdateStepWithRouteQuery";
 
-const ProjectExpressSummary = lazy(() => import("./express-forms/summary"));
-const UrbanProjectExpressCategory = lazy(() => import("./express-forms/express-category/"));
-const UrbanProjectExpressCreationResult = lazy(() => import("./express-forms/creation-result"));
 const AnswerCascadingUpdateDialog = lazy(
   () => import("@/shared/views/project-form/AnswerCascadingUpdateDialog"),
 );
@@ -30,7 +28,7 @@ const BuildingsUseIntroduction = lazy(
 const BuildingsUseSurfaceAreas = lazy(
   () => import("@/shared/views/project-form/urban-project/buildings/use-surface-areas"),
 );
-const ProjectCreationResult = lazy(() => import("./custom-forms/creation-result"));
+//const ProjectCreationResult = lazy(() => import("./custom-forms/creation-result"));
 const InstallationExpensesForm = lazy(
   () => import("@/shared/views/project-form/urban-project/expenses/installation"),
 );
@@ -156,33 +154,10 @@ const ProjectCreationDataSummary = lazy(
   () => import("@/shared/views/project-form/urban-project/summary"),
 );
 
-const HTML_URBAN_PROJECT_FORM_MAIN_TITLE = `Projet urbain - ${HTML_MAIN_TITLE}`;
+const HTML_URBAN_PROJECT_FORM_MAIN_TITLE = `Projet urbain - Modification`;
 
-const getCurrentStepView = (step: UrbanProjectCreationStep): Exclude<ReactNode, undefined> => {
+const getCurrentStepView = (step: UrbanProjectUpdateStep): Exclude<ReactNode, undefined> => {
   switch (step) {
-    case "URBAN_PROJECT_CREATE_MODE_SELECTION":
-      return <CreateModeSelectionForm />;
-    case "URBAN_PROJECT_EXPRESS_CATEGORY_SELECTION":
-      return (
-        <>
-          <HtmlTitle>{`Typologie de projet - Projet urbain express - ${HTML_MAIN_TITLE}`}</HtmlTitle>
-          <UrbanProjectExpressCategory />
-        </>
-      );
-    case "URBAN_PROJECT_EXPRESS_SUMMARY":
-      return (
-        <>
-          <HtmlTitle>{`Récapitulatif - Projet urbain express - ${HTML_MAIN_TITLE}`}</HtmlTitle>
-          <ProjectExpressSummary />
-        </>
-      );
-    case "URBAN_PROJECT_EXPRESS_CREATION_RESULT":
-      return (
-        <>
-          <HtmlTitle>{`Résultat - Projet urbain express - ${HTML_MAIN_TITLE}`}</HtmlTitle>
-          <UrbanProjectExpressCreationResult />
-        </>
-      );
     case "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION":
       return (
         <>
@@ -470,31 +445,43 @@ const getCurrentStepView = (step: UrbanProjectCreationStep): Exclude<ReactNode, 
           <ProjectCreationDataSummary />
         </>
       );
-    case "URBAN_PROJECT_CREATION_RESULT":
-      return (
-        <>
-          <HtmlTitle>{`Résultat - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
-          <ProjectCreationResult />
-        </>
-      );
+    // case "URBAN_PROJECT_CREATION_RESULT":
+    //   return (
+    //     <>
+    //       <HtmlTitle>{`Résultat - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
+    //       <ProjectCreationResult />
+    //     </>
+    //   );
   }
 };
 
-function UrbanProjectCreationWizard() {
+function UrbanProjectUpdateView() {
   const currentStep = useAppSelector(selectUrbanProjectCurrentStep);
+  const projectName = useAppSelector((state) => state.projectUpdate.projectData.features?.name);
+
+  useSyncUpdateStepWithRouteQuery(URBAN_PROJECT_CREATION_STEP_QUERY_STRING_MAP[currentStep]);
 
   return (
-    <SidebarLayout
-      title="Renseignement du projet"
-      sidebarChildren={<UrbanProjectStepper step={currentStep} />}
-      mainChildren={
-        <Suspense fallback={<LoadingSpinner />}>
-          {getCurrentStepView(currentStep)}
-          <AnswerCascadingUpdateDialog />
-        </Suspense>
-      }
-    />
+    <ProjectFormProvider mode="update">
+      <SidebarLayout
+        title={
+          <div className="flex flex-col">
+            Modification du projet{" "}
+            <span className="mt-1 text-sm uppercase font-normal text-dsfr-text-label-grey">
+              {projectName}
+            </span>
+          </div>
+        }
+        sidebarChildren={<UrbanProjectStepper step={currentStep} />}
+        mainChildren={
+          <Suspense fallback={<LoadingSpinner />}>
+            {getCurrentStepView(currentStep)}
+            <AnswerCascadingUpdateDialog />
+          </Suspense>
+        }
+      />
+    </ProjectFormProvider>
   );
 }
 
-export default UrbanProjectCreationWizard;
+export default UrbanProjectUpdateView;

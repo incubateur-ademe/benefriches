@@ -15,6 +15,7 @@ import { HttpReconversionProjectImpactsApi } from "@/features/projects/infrastru
 import { HttpUrbanSprawlImpactsComparisonService } from "@/features/projects/infrastructure/urban-sprawl-impacts-comparison-service/HttpUrbanSprawlImpactsComparisonService";
 import { HttpReconversionCompatibilityEvaluation } from "@/features/reconversion-compatibility/infra/reconversion-compatibility-evaluation/HttpReconversionCompatibilityEvaluation";
 import { HttpSiteFeaturesService } from "@/features/site-features/infra/site-features-service/HttpSiteFeaturesService";
+import { InMemoryUpdateReconversionProjectService } from "@/features/update-project/infrastructure/update-project-service/InMemoryUpdateReconversionProjectService";
 import { CreateFeatureAlertService } from "@/features/user-feature-alerts/infrastructure/create-feature-alert-service/CreateFeatureAlertService";
 import { AdministrativeDivisionGeoApi } from "@/shared/infrastructure/administrative-division-service/administrativeDivisionGeoApi";
 import { SoilsCarbonStorageApi } from "@/shared/infrastructure/soils-carbon-storage-service/soilsCarbonStorageApi";
@@ -46,4 +47,5 @@ export const appDependencies: AppDependencies = {
   quickUrbanProjectImpactsService: new HttpQuickUrbanProjectImpactsService(),
   urbanSprawlImpactsComparisonService: new HttpUrbanSprawlImpactsComparisonService(),
   reconversionCompatibilityEvaluationService: new HttpReconversionCompatibilityEvaluation(),
+  updateProjectService: new InMemoryUpdateReconversionProjectService(),
 };

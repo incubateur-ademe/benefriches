@@ -5,7 +5,7 @@ import { stepHandlerRegistry } from "@/shared/core/reducers/project-form/urban-p
 import { ProjectFormState } from "../projectForm.reducer";
 import { applyStepChanges, computeStepChanges } from "./helpers/completeStep";
 import { navigateToAndLoadStep } from "./helpers/navigateToStep";
-import { UrbanProjectProjectReducerActions } from "./urbanProject.actions";
+import { UrbanProjectFormReducerActions } from "./urbanProject.actions";
 import { UrbanProjectCreationStep } from "./urbanProjectSteps";
 
 export const addUrbanProjectFormCasesToBuilder = <
@@ -13,7 +13,7 @@ export const addUrbanProjectFormCasesToBuilder = <
   S extends ProjectFormState<T>,
 >(
   builder: ActionReducerMapBuilder<S>,
-  actions: UrbanProjectProjectReducerActions,
+  actions: UrbanProjectFormReducerActions,
 ) => {
   builder.addCase(actions.requestStepCompletion, (state, action) => {
     const changes = computeStepChanges(state, action.payload);

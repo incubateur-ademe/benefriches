@@ -1,8 +1,14 @@
 import React, { useMemo, useCallback, ReactNode } from "react";
 
-import { creationProjectFormActions } from "@/features/create-project/core/urban-project/urbanProject.actions";
+import {
+  creationProjectFormActions,
+  creationProjectFormUrbanActions,
+} from "@/features/create-project/core/urban-project/urbanProject.actions";
 import { creationProjectFormSelectors } from "@/features/create-project/core/urban-project/urbanProject.selectors";
-import { updateProjectFormActions } from "@/features/update-project/core/updateProject.actions";
+import {
+  updateProjectFormActions,
+  updateProjectFormUrbanActions,
+} from "@/features/update-project/core/updateProject.actions";
 import { updateUrbanProjectFormSelectors } from "@/features/update-project/core/updateProject.selectors";
 import { StepCompletionPayload } from "@/shared/core/reducers/project-form/urban-project/urbanProject.actions";
 import { UrbanProjectCreationStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
@@ -18,9 +24,18 @@ type ProjectFormProviderProps = {
 export const ProjectFormProvider: React.FC<ProjectFormProviderProps> = ({ children, mode }) => {
   const dispatch = useAppDispatch();
 
-  const actions = mode === "create" ? creationProjectFormActions : updateProjectFormActions;
-  const selectors =
-    mode === "create" ? creationProjectFormSelectors : updateUrbanProjectFormSelectors;
+  const actions = useMemo(
+    () =>
+      mode === "create"
+        ? { ...creationProjectFormActions, ...creationProjectFormUrbanActions }
+        : { ...updateProjectFormActions, ...updateProjectFormUrbanActions },
+    [mode],
+  );
+
+  const selectors = useMemo(
+    () => (mode === "create" ? creationProjectFormSelectors : updateUrbanProjectFormSelectors),
+    [mode],
+  );
 
   const onNext = useCallback(() => dispatch(actions.navigateToNext()), [dispatch, actions]);
 
@@ -43,6 +58,11 @@ export const ProjectFormProvider: React.FC<ProjectFormProviderProps> = ({ childr
     [dispatch, actions],
   );
 
+  const onFetchSiteLocalAuthorities = useCallback(
+    () => dispatch(actions.fetchSiteRelatedLocalAuthorities()),
+    [dispatch, actions],
+  );
+
   const onCancelStepCompletion = useCallback(
     () => dispatch(actions.cancelStepCompletion()),
     [dispatch, actions],
@@ -62,6 +82,7 @@ export const ProjectFormProvider: React.FC<ProjectFormProviderProps> = ({ childr
       onRequestStepCompletion,
       onNavigateToStep,
       onFetchSoilsCarbonStorageDifference,
+      onFetchSiteLocalAuthorities,
       onCancelStepCompletion,
       onConfirmStepCompletion,
     }),
@@ -73,6 +94,7 @@ export const ProjectFormProvider: React.FC<ProjectFormProviderProps> = ({ childr
       onRequestStepCompletion,
       onNavigateToStep,
       onFetchSoilsCarbonStorageDifference,
+      onFetchSiteLocalAuthorities,
       onCancelStepCompletion,
       onConfirmStepCompletion,
     ],
