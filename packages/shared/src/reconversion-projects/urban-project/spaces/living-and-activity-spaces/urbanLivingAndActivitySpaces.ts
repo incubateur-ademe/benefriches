@@ -25,3 +25,20 @@ export const getSoilTypeForLivingAndActivitySpace = (
       return "IMPERMEABLE_SOILS";
   }
 };
+
+export const getUrbanLivingAndActivitySpaceFromSoilType = (
+  soilType: SoilType,
+): UrbanLivingAndActivitySpace => {
+  switch (soilType) {
+    case "BUILDINGS":
+      return "BUILDINGS";
+    case "ARTIFICIAL_GRASS_OR_BUSHES_FILLED":
+      return "PRIVATE_GREEN_SPACES";
+    case "MINERAL_SOIL":
+      return "PERMEABLE_SURFACE";
+    case "IMPERMEABLE_SOILS":
+      return "IMPERMEABLE_SURFACE";
+    default:
+      return "IMPERMEABLE_SURFACE";
+  }
+};

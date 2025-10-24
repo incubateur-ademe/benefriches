@@ -3,7 +3,7 @@ import { describe, it } from "vitest";
 import { ProjectFormState } from "@/shared/core/reducers/project-form/projectForm.reducer";
 import { AnswersByStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 
-import { creationProjectFormActions } from "../../../urbanProject.actions";
+import { creationProjectFormUrbanActions } from "../../../urbanProject.actions";
 import { createTestStore } from "../../_testStoreHelpers";
 
 const getCurrentStep = (store: ReturnType<typeof createTestStore>) =>
@@ -14,7 +14,7 @@ describe("Urban project creation - Steps - Buildings use selection", () => {
     const store = createTestStore();
 
     store.dispatch(
-      creationProjectFormActions.requestStepCompletion({
+      creationProjectFormUrbanActions.requestStepCompletion({
         stepId: "URBAN_PROJECT_BUILDINGS_USE_SELECTION",
         answers: {
           buildingsUsesSelection: ["RESIDENTIAL", "OFFICES"],
@@ -45,7 +45,7 @@ describe("Urban project creation - Steps - Buildings use selection", () => {
     const initialSteps = store.getState().projectCreation.urbanProject.steps;
 
     store.dispatch(
-      creationProjectFormActions.requestStepCompletion({
+      creationProjectFormUrbanActions.requestStepCompletion({
         stepId: "URBAN_PROJECT_BUILDINGS_USE_SELECTION",
         answers: {
           buildingsUsesSelection: ["RESIDENTIAL"],
@@ -87,7 +87,7 @@ describe("Urban project creation - Steps - Buildings use selection", () => {
       buildingsUsesSelection: ["RESIDENTIAL", "MULTI_STORY_PARKING"],
     } satisfies AnswersByStep["URBAN_PROJECT_BUILDINGS_USE_SELECTION"];
     store.dispatch(
-      creationProjectFormActions.requestStepCompletion({
+      creationProjectFormUrbanActions.requestStepCompletion({
         stepId: "URBAN_PROJECT_BUILDINGS_USE_SELECTION",
         answers: newAnswer,
       }),
@@ -109,7 +109,7 @@ describe("Urban project creation - Steps - Buildings use selection", () => {
       },
     });
 
-    store.dispatch(creationProjectFormActions.confirmStepCompletion());
+    store.dispatch(creationProjectFormUrbanActions.confirmStepCompletion());
 
     expect(store.getState().projectCreation.urbanProject.steps).toEqual<
       ProjectFormState["urbanProject"]["steps"]

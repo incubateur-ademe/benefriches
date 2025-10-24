@@ -1,10 +1,10 @@
 import { describe, it, expect } from "vitest";
 
 import { ProjectCreationState } from "../../createProject.reducer";
-import { creationProjectFormActions } from "../urbanProject.actions";
+import { creationProjectFormUrbanActions } from "../urbanProject.actions";
 import { createTestStore } from "./_testStoreHelpers";
 
-const { cancelStepCompletion, requestStepCompletion } = creationProjectFormActions;
+const { cancelStepCompletion, requestStepCompletion } = creationProjectFormUrbanActions;
 
 describe("urbanProject.reducer - cancelStepCompletion action", () => {
   it("should not update state when cancelStepCompletion is used", () => {

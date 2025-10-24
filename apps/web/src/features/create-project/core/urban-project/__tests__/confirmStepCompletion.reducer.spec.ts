@@ -1,11 +1,11 @@
 import { describe, it, expect } from "vitest";
 
 import { ProjectCreationState } from "../../createProject.reducer";
-import { creationProjectFormActions } from "../urbanProject.actions";
+import { creationProjectFormUrbanActions } from "../urbanProject.actions";
 import { mockSiteData } from "./_siteData.mock";
 import { createTestStore } from "./_testStoreHelpers";
 
-const { confirmStepCompletion, requestStepCompletion } = creationProjectFormActions;
+const { confirmStepCompletion, requestStepCompletion } = creationProjectFormUrbanActions;
 
 describe("urbanProject.reducer - confirmStepCompletion action", () => {
   describe("Changes answers to step already completed", () => {

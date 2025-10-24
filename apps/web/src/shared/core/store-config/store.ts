@@ -16,8 +16,9 @@ import { ReconversionProjectImpactsGateway } from "@/features/projects/applicati
 import { QuickUrbanProjectImpactsGateway } from "@/features/projects/application/project-impacts/fetchQuickImpactsForUrbanProjectOnFriche.action";
 import { ReconversionCompatibilityEvaluationGateway } from "@/features/reconversion-compatibility/core/reconversionCompatibilityEvaluation.actions";
 import { SiteFeaturesGateway } from "@/features/site-features/core/fetchSiteFeatures.action";
+import { UpdateProjectServiceGateway } from "@/features/update-project/core/updateProject.actions";
 import { CreateFeatureAlertGateway } from "@/features/user-feature-alerts/core/CreateFeatureAlertGateway";
-import { SiteMunicipalityDataGateway as CreateProjectMunicipalityDataGateway } from "@/shared/core/reducers/project-form/getSiteLocalAuthorities.action";
+import { SiteMunicipalityDataGateway as CreateProjectMunicipalityDataGateway } from "@/shared/core/reducers/project-form/projectForm.actions";
 
 import { SoilsCarbonStorageGateway as SiteSoilsCarbonStorageGateway } from "../../../features/create-site/core/actions/siteSoilsCarbonStorage.actions";
 import { ReconversionProjectsListGateway } from "../../../features/projects/application/projects-list/projectsList.actions";
@@ -45,6 +46,7 @@ export type AppDependencies = {
   quickUrbanProjectImpactsService: QuickUrbanProjectImpactsGateway;
   urbanSprawlImpactsComparisonService: UrbanSprawlImpactsComparisonGateway;
   reconversionCompatibilityEvaluationService: ReconversionCompatibilityEvaluationGateway;
+  updateProjectService: UpdateProjectServiceGateway;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

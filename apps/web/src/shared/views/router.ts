@@ -39,6 +39,13 @@ const { RouteProvider, useRoute, routes } = createRouter({
     },
     () => "/creer-projet",
   ),
+  updateProject: defineRoute(
+    {
+      etape: param.query.optional.string,
+      projectId: param.path.string,
+    },
+    (params) => `/mes-projets/${params.projectId}/modifier`,
+  ),
   // PROJECT IMPACTS
   projectImpacts: defineRoute(
     { projectId: param.path.string },

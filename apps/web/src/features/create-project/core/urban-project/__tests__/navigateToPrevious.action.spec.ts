@@ -3,11 +3,12 @@ import { describe, it, expect } from "vitest";
 
 import { UrbanProjectCreationStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 
-import { creationProjectFormActions } from "../urbanProject.actions";
+import { creationProjectFormUrbanActions } from "../urbanProject.actions";
 import { mockSiteData } from "./_siteData.mock";
 import { createTestStore } from "./_testStoreHelpers";
 
-const { navigateToNext, navigateToPrevious, requestStepCompletion } = creationProjectFormActions;
+const { navigateToNext, navigateToPrevious, requestStepCompletion } =
+  creationProjectFormUrbanActions;
 
 const testScenarios = {
   withBuildingsAndContamination: mockSiteData,

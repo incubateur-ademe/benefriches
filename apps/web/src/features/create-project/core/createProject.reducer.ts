@@ -15,7 +15,7 @@ import {
   stepRevertConfirmationResolved,
   stepRevertConfirmed,
 } from "./actions/actionsUtils";
-import { fetchSiteLocalAuthorities } from "./actions/getSiteLocalAuthorities.action";
+import { fetchSiteRelatedLocalAuthorities } from "./actions/getSiteLocalAuthorities.action";
 import {
   developmentPlanCategoriesCompleted,
   introductionStepCompleted,
@@ -55,7 +55,7 @@ export const getInitialState = (): ProjectCreationState => {
 };
 
 const projectCreationReducer = createReducer(getInitialState(), (builder) => {
-  addProjectFormCasesToBuilder(builder, { fetchSiteLocalAuthorities: fetchSiteLocalAuthorities });
+  addProjectFormCasesToBuilder(builder, { fetchSiteRelatedLocalAuthorities });
 
   builder
     .addCase(introductionStepCompleted, (state) => {

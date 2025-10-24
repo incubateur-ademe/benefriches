@@ -1,9 +1,9 @@
 import { describe, it, expect, beforeEach } from "vitest";
 
-import { creationProjectFormActions } from "../urbanProject.actions";
+import { creationProjectFormUrbanActions } from "../urbanProject.actions";
 import { createTestStore } from "./_testStoreHelpers";
 
-const { navigateToNext, requestStepCompletion } = creationProjectFormActions;
+const { navigateToNext, requestStepCompletion } = creationProjectFormUrbanActions;
 
 const getCurrentStep = (store: ReturnType<typeof createTestStore>) =>
   store.getState().projectCreation.urbanProject.currentStep;

@@ -5,7 +5,7 @@ import { createStore, RootState } from "@/shared/core/store-config/store";
 import { AdministrativeDivisionMock } from "@/shared/infrastructure/administrative-division-service/administrativeDivisionMock";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
-import { fetchSiteLocalAuthorities } from "../actions/getSiteLocalAuthorities.action";
+import { fetchSiteRelatedLocalAuthorities } from "../actions/getSiteLocalAuthorities.action";
 import { getInitialState as getInitialProjectCreationState } from "../createProject.reducer";
 import { relatedSiteData } from "./siteData.mock";
 
@@ -87,7 +87,7 @@ describe("Site Local Authorities reducer", () => {
       }),
     );
 
-    await store.dispatch(fetchSiteLocalAuthorities());
+    await store.dispatch(fetchSiteRelatedLocalAuthorities());
 
     const state = store.getState();
     expect(state.projectCreation.siteRelatedLocalAuthorities).toEqual({
@@ -108,7 +108,7 @@ describe("Site Local Authorities reducer", () => {
       },
     );
 
-    await store.dispatch(fetchSiteLocalAuthorities());
+    await store.dispatch(fetchSiteRelatedLocalAuthorities());
 
     expect(localAuthoritiesMockSpy.getMunicipalityData).toHaveBeenCalledTimes(1);
     expect(localAuthoritiesMockSpy.getMunicipalityData).toHaveBeenCalledWith("75110");
@@ -124,7 +124,7 @@ describe("Site Local Authorities reducer", () => {
       },
     );
 
-    await store.dispatch(fetchSiteLocalAuthorities());
+    await store.dispatch(fetchSiteRelatedLocalAuthorities());
 
     const state = store.getState();
     expect(state.projectCreation.siteRelatedLocalAuthorities).toEqual({
@@ -149,7 +149,7 @@ describe("Site Local Authorities reducer", () => {
       },
     );
 
-    await store.dispatch(fetchSiteLocalAuthorities());
+    await store.dispatch(fetchSiteRelatedLocalAuthorities());
 
     const state = store.getState();
     expect(state.projectCreation.siteRelatedLocalAuthorities).toEqual({
@@ -172,7 +172,7 @@ describe("Site Local Authorities reducer", () => {
       },
     );
 
-    await store.dispatch(fetchSiteLocalAuthorities());
+    await store.dispatch(fetchSiteRelatedLocalAuthorities());
 
     const state = store.getState();
     expect(state.projectCreation.siteRelatedLocalAuthorities).toEqual({

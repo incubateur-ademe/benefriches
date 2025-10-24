@@ -17,6 +17,7 @@ import { MockReconversionProjectImpactsApi } from "@/features/projects/infrastru
 import { MockUrbanSprawlImpactsComparisonService } from "@/features/projects/infrastructure/urban-sprawl-impacts-comparison-service/MockUrbanSprawlImpactsComparisonService";
 import { FakeReconversionCompatibilityService } from "@/features/reconversion-compatibility/infra/reconversion-compatibility-evaluation/FakeReconversionCompatibilityEvaluation";
 import { MockSiteFeaturesService } from "@/features/site-features/infra/site-features-service/MockSiteFeaturesService";
+import { InMemoryUpdateReconversionProjectService } from "@/features/update-project/infrastructure/update-project-service/InMemoryUpdateReconversionProjectService";
 import { InMemoryCreateFeatureAlertService } from "@/features/user-feature-alerts/infrastructure/create-feature-alert-service/InMemoryCreateFeatureAlertService";
 import { AppDependencies } from "@/shared/core/store-config/store";
 import { AdministrativeDivisionMock } from "@/shared/infrastructure/administrative-division-service/administrativeDivisionMock";
@@ -68,6 +69,7 @@ export const getTestAppDependencies = (
     quickUrbanProjectImpactsService: new MockQuickUrbanProjectImpactsService(),
     urbanSprawlImpactsComparisonService: new MockUrbanSprawlImpactsComparisonService(),
     reconversionCompatibilityEvaluationService: new FakeReconversionCompatibilityService(),
+    updateProjectService: new InMemoryUpdateReconversionProjectService(),
     ...depsOverride,
   };
 };
