@@ -4,8 +4,7 @@ import { stepRevertAttempted } from "@/features/create-project/core/actions/acti
 import { completeSoilsCarbonStorageStep } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
 import { fetchCurrentAndProjectedSoilsCarbonStorage } from "@/features/create-project/core/renewable-energy/actions/soilsCarbonStorage.actions";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
-
-import SoilsCarbonStorageComparison from "../../../../common-views/soils-carbon-storage-comparison";
+import SoilsCarbonStorageComparison from "@/shared/views/project-form/common/soils-carbon-storage-comparison";
 
 function ProjectSoilsCarbonStorageContainer() {
   const dispatch = useAppDispatch();

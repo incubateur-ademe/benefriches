@@ -1,12 +1,12 @@
 import { useContext } from "react";
 
-import { formatPerFrenchPersonAnnualEquivalent } from "@/features/create-project/views/common-views/soils-carbon-storage-comparison/formatCarbonStorage";
 import { formatCO2Impact } from "@/features/projects/views/shared/formatImpactValue";
 import { ImpactModalDescriptionContext } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
 import ModalBody from "@/features/projects/views/shared/impacts/modals/ModalBody";
 import ModalContent from "@/features/projects/views/shared/impacts/modals/ModalContent";
 import ModalHeader from "@/features/projects/views/shared/impacts/modals/ModalHeader";
 import { getCo2EqEmissionsTonsInAverageFrenchAnnualEmissionsPerPerson } from "@/shared/core/carbonEmissions";
+import { formatPerFrenchPersonAnnualEquivalent } from "@/shared/core/format-number/formatCarbonStorage";
 
 import ImpactItemDetails from "../../../../project-page/impacts/list-view/ImpactItemDetails";
 import ImpactItemGroup from "../../../../project-page/impacts/list-view/ImpactItemGroup";

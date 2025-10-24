@@ -6,10 +6,9 @@ import { selectPhotovoltaicPowerStationInstallationExpensesInitialValues } from 
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
-
 import InstallationExpensesForm, {
   FormValues,
-} from "../../../../common-views/expenses/installation-expenses/InstallationExpensesForm";
+} from "@/shared/views/project-form/common/expenses/installation-expenses/InstallationExpensesForm";
 
 const purposeMapKeys = {
   technicalStudyAmount: "technical_studies",

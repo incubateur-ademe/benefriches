@@ -3,12 +3,12 @@ import { RecurringRevenue } from "shared";
 import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
 import { completeYearlyProjectedRevenue } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
 import { selectPhotovoltaicPowerStationYearlyRevenueInitialValues } from "@/features/create-project/core/renewable-energy/selectors/revenues.selectors";
-import ProjectYearlyRevenueForm from "@/features/create-project/views/common-views/revenues/yearly-projected-revenue/ProjectYearlyRevenueForm";
 import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
 import { getLabelForRecurringRevenueSource } from "@/shared/core/reconversionProject";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
+import ProjectYearlyRevenueForm from "@/shared/views/project-form/common/revenues/yearly-projected-revenue/ProjectYearlyRevenueForm";
 
 const fields = ["operations", "other"] as const;
 

@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 
-import { formatCarbonStorage } from "@/features/create-project/views/common-views/soils-carbon-storage-comparison/formatCarbonStorage";
 import { SiteCarbonStorage } from "@/features/create-site/core/siteSoilsCarbonStorage.reducer";
 import { getCarbonTonsInAverageFrenchAnnualEmissionsPerPerson } from "@/shared/core/carbonEmissions";
+import { formatCarbonStorage } from "@/shared/core/format-number/formatCarbonStorage";
 import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import SoilsCarbonStorageChart from "@/shared/views/components/Charts/SoilsCarbonStorageChart";

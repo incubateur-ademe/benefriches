@@ -6,8 +6,7 @@ import { selectPhotovoltaicPowerStationYearlyExpensesInitialValues } from "@/fea
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
-
-import YearlyProjectedExpensesForm from "../../../../common-views/expenses/yearly-projected-expenses";
+import YearlyProjectedExpensesForm from "@/shared/views/project-form/common/expenses/yearly-projected-expenses";
 
 function YearlyProjectedExpensesFormContainer() {
   const dispatch = useAppDispatch();
