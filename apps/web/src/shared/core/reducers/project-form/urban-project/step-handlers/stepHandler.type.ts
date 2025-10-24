@@ -5,11 +5,11 @@ import {
   UrbanProjectCreationStep,
 } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 
-import { ProjectCreationState } from "../../createProject.reducer";
+import { ProjectFormState } from "../../projectForm.reducer";
 
 export type StepContext = {
-  siteData?: ProjectCreationState["siteData"];
-  stepsState: ProjectCreationState["urbanProject"]["steps"];
+  siteData?: ProjectFormState["siteData"];
+  stepsState: ProjectFormState["urbanProject"]["steps"];
 };
 
 interface StepHandler {

@@ -1,5 +1,5 @@
-import { stepHandlerRegistry } from "../../../../../../features/create-project/core/urban-project/step-handlers/stepHandlerRegistry";
 import { ProjectFormState } from "../../projectForm.reducer";
+import { stepHandlerRegistry } from "../step-handlers/stepHandlerRegistry";
 import { isAnswersStep, UrbanProjectCreationStep } from "../urbanProjectSteps";
 import { MutateStateHelper } from "./mutateState";
 

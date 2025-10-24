@@ -5,9 +5,9 @@ import { computePercentage } from "@/shared/core/percentage/percentage";
 import { RenewableEnergyDevelopmentPlanType } from "@/shared/core/reconversionProject";
 import { RootState } from "@/shared/core/store-config/store";
 
+import { generateRenewableEnergyProjectName } from "../../../../../shared/core/reducers/project-form/helpers/projectName";
 import { ProjectCreationState } from "../../createProject.reducer";
 import { selectDefaultSchedule, selectSiteData } from "../../createProject.selectors";
-import { generateRenewableEnergyProjectName } from "../../helpers/projectName";
 import { RenewableEnergyProjectState } from "../renewableEnergy.reducer";
 
 const selectSelf = (state: RootState) => state.projectCreation;

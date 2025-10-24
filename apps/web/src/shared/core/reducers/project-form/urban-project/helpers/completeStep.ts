@@ -1,9 +1,6 @@
-import {
-  ShortcutResult,
-  StepInvalidationRule,
-} from "../../../../../../features/create-project/core/urban-project/step-handlers/stepHandler.type";
-import { stepHandlerRegistry } from "../../../../../../features/create-project/core/urban-project/step-handlers/stepHandlerRegistry";
 import { ProjectFormState } from "../../projectForm.reducer";
+import { ShortcutResult, StepInvalidationRule } from "../step-handlers/stepHandler.type";
+import { stepHandlerRegistry } from "../step-handlers/stepHandlerRegistry";
 import { StepCompletionPayload } from "../urbanProject.actions";
 import { AnswerStepId, UrbanProjectCreationStep } from "../urbanProjectSteps";
 import { MutateStateHelper } from "./mutateState";
