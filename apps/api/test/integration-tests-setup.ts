@@ -16,7 +16,7 @@ const spawnInfrastructure = async () => {
   dockerComposeInstance = await new DockerComposeEnvironment(composeFilePath, composeFile)
     .withEnvironmentFile(envFilePath)
     .withDefaultWaitStrategy(Wait.forListeningPorts())
-    .withDefaultWaitStrategy(Wait.forHealthCheck())
+    // .withDefaultWaitStrategy(Wait.forHealthCheck())
     .up();
 };
 
