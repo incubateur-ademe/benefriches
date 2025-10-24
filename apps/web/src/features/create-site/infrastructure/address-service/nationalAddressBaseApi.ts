@@ -3,6 +3,10 @@ import { Address } from "shared";
 
 import { AddressService } from "@/shared/views/components/form/Address/SearchAddressAutocompleteInput";
 
+type AddressWithBanId = Address & {
+  banId: string;
+};
+
 const BAN_API_URL = "https://api-adresse.data.gouv.fr/search/?";
 
 // https://adresse.data.gouv.fr/api-doc/adresse
@@ -40,8 +44,8 @@ type APIResponse = BanFeatureCollection | ErrorResponse;
 
 const mapNationalBaseAddressToAddress = (
   nationalBaseAddress: Feature<Point, BanAddress>,
-): Address => {
-  const address: Address = {
+): AddressWithBanId => {
+  const address: AddressWithBanId = {
     banId: nationalBaseAddress.properties.id,
     value: nationalBaseAddress.properties.label,
     city: nationalBaseAddress.properties.city,
@@ -72,7 +76,7 @@ type Options = {
 };
 
 export class NationalAddressBaseService implements AddressService {
-  async search(searchText: string, options?: Options): Promise<Address[]> {
+  async search(searchText: string, options?: Options) {
     const queryParams = new URLSearchParams({ q: searchText });
 
     if (options?.type) {

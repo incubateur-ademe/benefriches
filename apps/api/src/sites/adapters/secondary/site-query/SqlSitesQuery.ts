@@ -138,7 +138,7 @@ export class SqlSitesQuery implements SitesQuery {
       contaminatedSoilSurface: sqlSite.friche_contaminated_soil_surface_area ?? undefined,
       surfaceArea: sqlSite.surface_area,
       address: {
-        banId: sqlSite.address_ban_id,
+        banId: sqlSite.address_ban_id ?? undefined,
         value: sqlSite.address_value,
         city: sqlSite.address_city,
         cityCode: sqlSite.address_city_code,

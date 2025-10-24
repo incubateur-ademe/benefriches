@@ -55,7 +55,7 @@ type SqlSite = {
 
 type SqlAddress = {
   id: string;
-  ban_id: string;
+  ban_id: string | null;
   value: string;
   city: string;
   city_code: string;

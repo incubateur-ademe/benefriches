@@ -125,7 +125,6 @@ export class FricheGenerator implements SiteGenerator<FricheGenerationProps> {
         value: city.name,
         cityCode: city.cityCode,
         // todo: mandatory data from Address type/schema but not used here, maybe simplify Address
-        banId: uuid(),
         lat: 0,
         long: 0,
         postCode: "00000",

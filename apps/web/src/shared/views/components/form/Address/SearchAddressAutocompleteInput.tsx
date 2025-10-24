@@ -4,11 +4,15 @@ import { Address, typedObjectEntries } from "shared";
 
 import Autocomplete from "../../Autocomplete/Autocomplete";
 
+type AddressWithBanId = Address & {
+  banId: string; // Addresses from AddressService always have banId
+};
+
 export interface AddressService {
   search(
     searchText: string,
     options: { type?: "municipality" | "street" | "housenumber" | "locality" },
-  ): Promise<Address[]>;
+  ): Promise<AddressWithBanId[]>;
 }
 
 export type PropTypes = {

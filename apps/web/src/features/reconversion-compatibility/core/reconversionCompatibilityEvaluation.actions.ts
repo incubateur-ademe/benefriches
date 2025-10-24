@@ -136,7 +136,6 @@ export const reconversionCompatibilityResultImpactsRequested = createAppAsyncThu
     surfaceArea: evaluationResults.evaluationInput.surfaceArea,
     builtSurfaceArea: evaluationResults.evaluationInput.buildingsFootprintSurfaceArea,
     address: {
-      banId: uuid(),
       city: evaluationResults.evaluationInput.city,
       cityCode: evaluationResults.evaluationInput.cityCode,
       value: evaluationResults.evaluationInput.city,

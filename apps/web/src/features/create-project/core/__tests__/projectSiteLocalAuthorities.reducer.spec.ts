@@ -64,7 +64,6 @@ const GRENOBLE_ADDRESS_MOCK: Address = {
   lat: 5.7243,
   long: 45.182081,
   city: "Grenoble",
-  banId: "38185",
   cityCode: "38185",
   postCode: "38100",
   value: "Grenoble",

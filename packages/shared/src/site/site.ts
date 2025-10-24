@@ -18,7 +18,7 @@ const incomeSchema = z.object({
 });
 
 export const addressSchema = z.object({
-  banId: z.string(),
+  banId: z.string().optional(),
   value: z.string(),
   city: z.string(),
   cityCode: z.string(),

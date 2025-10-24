@@ -222,7 +222,7 @@ describe("SqlSitesQuery integration", () => {
       expect(result?.id).toEqual(siteId);
       expect(result?.yearlyExpenses).toEqual([]);
       expect(result?.soilsDistribution).toEqual({});
-      expect(result?.address.banId).toBeNull();
+      expect(result?.address.banId).toBeUndefined();
     });
 
     it("returns undefined when site does not exist", async () => {
