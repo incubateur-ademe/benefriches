@@ -3,7 +3,7 @@ import { HtmlHTMLAttributes, useMemo } from "react";
 import classNames from "@/shared/views/clsx";
 import FormStepperStep, { StepProps } from "@/shared/views/layout/WizardFormLayout/FormStepperStep";
 
-import { CategoryState } from "./Stepper";
+import { CategoryState } from "./useMapStepListToCategoryList";
 
 type StepperLiItemProps = {
   title: string;

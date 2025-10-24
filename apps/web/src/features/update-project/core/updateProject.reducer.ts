@@ -64,6 +64,7 @@ const projectUpdateReducer = createReducer(getInitialState(), (builder) => {
       };
 
       state.urbanProject.steps = convertProjectDataToSteps(action.payload);
+      state.urbanProject.currentStep = "URBAN_PROJECT_FINAL_SUMMARY";
     })
     .addCase(reconversionProjectUpdateInitiated.rejected, (state) => {
       state.siteDataLoadingState = "error";

@@ -6,11 +6,11 @@ import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 import { ProjectFormProvider } from "@/shared/views/project-form/ProjectFormProvider";
-import UrbanProjectStepper from "@/shared/views/project-form/stepper/Stepper";
 import BuildingsUseSelection from "@/shared/views/project-form/urban-project/buildings/use-selection";
 
 import { UrbanProjectUpdateStep } from "../core/updateProject.reducer";
 import { selectUrbanProjectCurrentStep } from "../core/updateProject.selectors";
+import UrbanProjectUpdateStepper from "./UrbanProjectUpdateStepper";
 import { useSyncUpdateStepWithRouteQuery } from "./useSyncUpdateStepWithRouteQuery";
 
 const AnswerCascadingUpdateDialog = lazy(
@@ -472,7 +472,7 @@ function UrbanProjectUpdateView() {
             </span>
           </div>
         }
-        sidebarChildren={<UrbanProjectStepper step={currentStep} />}
+        sidebarChildren={<UrbanProjectUpdateStepper step={currentStep} />}
         mainChildren={
           <Suspense fallback={<LoadingSpinner />}>
             {getCurrentStepView(currentStep)}

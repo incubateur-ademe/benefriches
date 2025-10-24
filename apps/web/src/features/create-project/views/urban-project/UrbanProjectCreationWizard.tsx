@@ -7,9 +7,9 @@ import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 import BuildingsUseSelection from "@/shared/views/project-form/urban-project/buildings/use-selection";
 
-import UrbanProjectStepper from "../../../../shared/views/project-form/stepper/Stepper";
 import { selectUrbanProjectCurrentStep } from "../../core/urban-project/urbanProject.selectors";
 import { HTML_MAIN_TITLE } from "../mainHtmlTitle";
+import UrbanProjectCreationStepper from "./UrbanProjectCreationStepper";
 import CreateModeSelectionForm from "./create-mode-selection";
 
 const ProjectExpressSummary = lazy(() => import("./express-forms/summary"));
@@ -486,7 +486,7 @@ function UrbanProjectCreationWizard() {
   return (
     <SidebarLayout
       title="Renseignement du projet"
-      sidebarChildren={<UrbanProjectStepper step={currentStep} />}
+      sidebarChildren={<UrbanProjectCreationStepper step={currentStep} />}
       mainChildren={
         <Suspense fallback={<LoadingSpinner />}>
           {getCurrentStepView(currentStep)}
