@@ -3,8 +3,8 @@ import { createSelector } from "@reduxjs/toolkit";
 import {
   AnswerStepHandler,
   InfoStepHandler,
-} from "@/features/create-project/core/urban-project/step-handlers/stepHandler.type";
-import { stepHandlerRegistry } from "@/features/create-project/core/urban-project/step-handlers/stepHandlerRegistry";
+} from "@/shared/core/reducers/project-form/urban-project/step-handlers/stepHandler.type";
+import { stepHandlerRegistry } from "@/shared/core/reducers/project-form/urban-project/step-handlers/stepHandlerRegistry";
 import { RootState } from "@/shared/core/store-config/store";
 
 import { ProjectFormSelectors } from "../projectForm.selectors";

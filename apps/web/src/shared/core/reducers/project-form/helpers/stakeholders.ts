@@ -1,10 +1,41 @@
 import { formatLocalAuthorityName, LocalAuthority } from "shared";
 
-import { ProjectStakeholderStructure } from "@/features/create-project/core/project.types";
+import {
+  ProjectStakeholder,
+  ProjectStakeholderStructure,
+} from "@/features/create-project/core/project.types";
 import { UserStructureActivity, UserStructureType } from "@/features/onboarding/core/user";
 import { OwnerStructureType, TenantStructureType } from "@/shared/core/stakeholder";
 
 import { ProjectFormState } from "../projectForm.reducer";
+
+const DEFAULT_FUTURE_SITE_OWNER = {
+  name: "Futur propriétaire inconnu",
+  structureType: "unknown",
+} as const satisfies ProjectStakeholder;
+
+export const getFutureSiteOwner = (
+  siteResalePlannedAfterDevelopment: boolean,
+  currentSiteOwner: ProjectStakeholder | undefined,
+): ProjectStakeholder => {
+  if (siteResalePlannedAfterDevelopment || !currentSiteOwner) return DEFAULT_FUTURE_SITE_OWNER;
+
+  return currentSiteOwner;
+};
+
+const DEFAULT_FUTURE_OPERATOR = {
+  name: "Futur exploitant inconnu",
+  structureType: "unknown",
+} as const satisfies ProjectStakeholder;
+
+export const getFutureOperator = (
+  buildingsResalePlannedAfterDevelopment: boolean,
+  projectDeveloper: ProjectStakeholder | undefined,
+): ProjectStakeholder => {
+  if (buildingsResalePlannedAfterDevelopment || !projectDeveloper) return DEFAULT_FUTURE_OPERATOR;
+
+  return projectDeveloper;
+};
 
 export type AvailableProjectStakeholder = {
   name: string;
