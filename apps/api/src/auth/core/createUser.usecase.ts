@@ -3,6 +3,7 @@ import { z } from "zod";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerator";
 import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
+import { TResult, fail, success } from "src/shared-kernel/result";
 import { UseCase } from "src/shared-kernel/usecase";
 
 import {
@@ -12,9 +13,7 @@ import {
 import { UserRepository } from "./gateways/UsersRepository";
 import { userSchema } from "./user";
 
-type CreateUserFailureReason = "UserEmailAlreadyExists" | "PersonalDataStorageNotConsented";
-
-type CreateUserResult = { success: true } | { success: false; error: CreateUserFailureReason };
+type CreateUserResult = TResult<void, "UserEmailAlreadyExists" | "PersonalDataStorageNotConsented">;
 
 const userPropsSchema = userSchema
   .omit({
@@ -52,11 +51,11 @@ export class CreateUserUseCase implements UseCase<Request, CreateUserResult> {
     } = await userPropsSchema.parseAsync(userProps);
 
     if (await this.userRepository.existsWithEmail(user.email)) {
-      return { success: false, error: "UserEmailAlreadyExists" };
+      return fail("UserEmailAlreadyExists");
     }
 
     if (!personalDataStorageConsented) {
-      return { success: false, error: "PersonalDataStorageNotConsented" };
+      return fail("PersonalDataStorageNotConsented");
     }
 
     await this.userRepository.save({
@@ -79,7 +78,7 @@ export class CreateUserUseCase implements UseCase<Request, CreateUserResult> {
       subscribedToNewsletter: user.subscribedToNewsletter,
     });
 
-    return { success: true };
+    return success();
   }
 
   private async publishUserCreatedEvent(eventPayload: UserAccountCreatedEvent["payload"]) {

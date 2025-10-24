@@ -1,4 +1,5 @@
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { TResult, fail, success } from "src/shared-kernel/result";
 import { UseCase } from "src/shared-kernel/usecase";
 
 import { TokenAuthenticationAttemptRepository } from "./gateways/TokenAuthenticationAttemptRepository";
@@ -14,17 +15,12 @@ type AuthenticatedUserInfo = {
   email: string;
 };
 
-type Result =
-  | {
-      success: true;
-      user: AuthenticatedUserInfo;
-    }
-  | {
-      success: false;
-      error: "TokenNotFound" | "AuthenticationAttemptExpired" | "TokenAlreadyUsed";
-    };
+type AuthenticateWithTokenResult = TResult<
+  { user: AuthenticatedUserInfo },
+  "TokenNotFound" | "AuthenticationAttemptExpired" | "TokenAlreadyUsed"
+>;
 
-export class AuthenticateWithTokenUseCase implements UseCase<Request, Result> {
+export class AuthenticateWithTokenUseCase implements UseCase<Request, AuthenticateWithTokenResult> {
   constructor(
     private readonly tokenAuthenticationAttemptRepository: TokenAuthenticationAttemptRepository,
     private readonly userRepository: UserRepository,
@@ -32,21 +28,21 @@ export class AuthenticateWithTokenUseCase implements UseCase<Request, Result> {
     private readonly tokenGenerator: TokenGenerator,
   ) {}
 
-  async execute(request: Request): Promise<Result> {
+  async execute(request: Request): Promise<AuthenticateWithTokenResult> {
     const inputToken = request.token;
 
     const hashedToken = this.tokenGenerator.hash(inputToken);
     const existingToken = await this.tokenAuthenticationAttemptRepository.findByToken(hashedToken);
 
-    if (!existingToken) return { success: false, error: "TokenNotFound" };
-    if (existingToken.completedAt) return { success: false, error: "TokenAlreadyUsed" };
+    if (!existingToken) return fail("TokenNotFound");
+    if (existingToken.completedAt) return fail("TokenAlreadyUsed");
     if (existingToken.expiresAt < this.dateProvider.now())
-      return { success: false, error: "AuthenticationAttemptExpired" };
+      return fail("AuthenticationAttemptExpired");
 
     const authenticatedUser = await this.userRepository.getWithId(existingToken.userId);
 
     if (!authenticatedUser) {
-      return { success: false, error: "TokenNotFound" };
+      return fail("TokenNotFound");
     }
 
     await this.tokenAuthenticationAttemptRepository.markAsComplete(
@@ -54,6 +50,6 @@ export class AuthenticateWithTokenUseCase implements UseCase<Request, Result> {
       this.dateProvider.now(),
     );
 
-    return { success: true, user: { id: authenticatedUser.id, email: authenticatedUser.email } };
+    return success({ user: { id: authenticatedUser.id, email: authenticatedUser.email } });
   }
 }

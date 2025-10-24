@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { TResult, fail, success } from "src/shared-kernel/result";
 import { UseCase } from "src/shared-kernel/usecase";
 
 import { ReconversionProjectRepository } from "../gateways/ReconversionProjectRepository";
@@ -20,29 +21,44 @@ type Request = {
   reconversionProjectProps: ReconversionProjectInputProps;
 };
 
-export class CreateReconversionProjectUseCase implements UseCase<Request, void> {
+type CreateReconversionProjectResult = TResult<
+  void,
+  "ValidationError" | "SiteNotFound" | "ReconversionProjectAlreadyExists",
+  { fieldErrors: Record<string, string[]> } | undefined
+>;
+
+export class CreateReconversionProjectUseCase
+  implements UseCase<Request, CreateReconversionProjectResult>
+{
   constructor(
     private readonly dateProvider: DateProvider,
     private readonly siteRepository: SiteRepository,
     private readonly reconversionProjectRepository: ReconversionProjectRepository,
   ) {}
 
-  async execute({ reconversionProjectProps }: Request): Promise<void> {
-    const parsedReconversionProject =
-      await saveReconversionProjectPropsSchema.parseAsync(reconversionProjectProps);
+  async execute({ reconversionProjectProps }: Request): Promise<CreateReconversionProjectResult> {
+    const parseResult =
+      await saveReconversionProjectPropsSchema.safeParseAsync(reconversionProjectProps);
+    if (!parseResult.success) {
+      return fail("ValidationError", {
+        fieldErrors: z.flattenError(parseResult.error).fieldErrors,
+      });
+    }
+
+    const parsedReconversionProject = parseResult.data;
 
     const doesRelatedSiteExist = await this.siteRepository.existsWithId(
       parsedReconversionProject.relatedSiteId,
     );
     if (!doesRelatedSiteExist) {
-      throw new Error(`Site with id ${parsedReconversionProject.relatedSiteId} does not exist`);
+      return fail("SiteNotFound");
     }
 
     const doesReconversionProjectExist = await this.reconversionProjectRepository.existsWithId(
       parsedReconversionProject.id,
     );
     if (doesReconversionProjectExist) {
-      throw new Error(`ReconversionProject with id ${parsedReconversionProject.id} already exists`);
+      return fail("ReconversionProjectAlreadyExists");
     }
 
     await this.reconversionProjectRepository.save({
@@ -50,5 +66,7 @@ export class CreateReconversionProjectUseCase implements UseCase<Request, void> 
       createdAt: this.dateProvider.now(),
       creationMode: "custom",
     });
+
+    return success();
   }
 }

@@ -1,4 +1,12 @@
-import { Body, Controller, Post, Req, UseGuards } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  InternalServerErrorException,
+  ConflictException,
+  Post,
+  Req,
+  UseGuards,
+} from "@nestjs/common";
 import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
 
@@ -45,27 +53,46 @@ export class ReconversionCompatibilityController {
     @Body() body: StartReconversionCompatibilityEvaluationBodyDto,
     @Req() request: RequestWithAuthenticatedUser,
   ) {
-    await this.startReconversionCompatibilityEvaluationUseCase.execute({
+    const result = await this.startReconversionCompatibilityEvaluationUseCase.execute({
       id: body.id,
       createdById: request.accessTokenPayload.userId,
     });
+
+    if (result.isFailure()) {
+      const error = result.getError();
+      switch (error) {
+        case "EvaluationAlreadyExists":
+          throw new ConflictException(error);
+        default:
+          throw new InternalServerErrorException(error);
+      }
+    }
   }
 
   @UseGuards(JwtAuthGuard)
   @Post("complete-evaluation")
   async completeEvaluation(@Body() body: CompleteReconversionCompatibilityEvaluationBodyDto) {
-    await this.completeReconversionCompatibilityEvaluationUseCase.execute({
+    const result = await this.completeReconversionCompatibilityEvaluationUseCase.execute({
       id: body.id,
       mutafrichesId: body.mutafrichesId,
     });
+
+    if (result.isFailure()) {
+      throw new InternalServerErrorException(result.getError());
+    }
   }
 
   @UseGuards(JwtAuthGuard)
   @Post("add-project-creation")
   async addProjectCreation(@Body() body: AddProjectCreationBodyDto) {
-    await this.addProjectCreationToReconversionCompatibilityEvaluationUseCase.execute({
-      evaluationId: body.evaluationId,
-      reconversionProjectId: body.reconversionProjectId,
-    });
+    const result =
+      await this.addProjectCreationToReconversionCompatibilityEvaluationUseCase.execute({
+        evaluationId: body.evaluationId,
+        reconversionProjectId: body.reconversionProjectId,
+      });
+
+    if (result.isFailure()) {
+      throw new InternalServerErrorException(result.getError());
+    }
   }
 }

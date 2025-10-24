@@ -1,3 +1,4 @@
+import { FailureResult, SuccessResult } from "src/shared-kernel/result";
 import { InMemorySitesQuery } from "src/sites/adapters/secondary/site-query/InMemorySitesQuery";
 
 import { GetSiteByIdUseCase, SiteViewModel } from "./getSiteById.usecase";
@@ -12,7 +13,9 @@ describe("GetSiteById Use Case", () => {
   it("cannot get a non-existing site", async () => {
     const siteId = "fdc94bb2-ec2c-49f8-92ea-19bd91160027";
     const usecase = new GetSiteByIdUseCase(sitesQuery);
-    await expect(usecase.execute({ siteId })).rejects.toThrow(`Site with ID ${siteId} not found`);
+    const result = await usecase.execute({ siteId });
+    expect(result.isFailure()).toBe(true);
+    expect((result as FailureResult).getError()).toBe("SiteNotFound");
   });
 
   it("Can get an existing site", async () => {
@@ -62,24 +65,27 @@ describe("GetSiteById Use Case", () => {
 
     const result = await usecase.execute({ siteId: site.id });
 
-    expect(result).toEqual({
-      id: site.id,
-      name: site.name,
-      nature: "FRICHE",
-      isExpressSite: site.isExpressSite,
-      description: site.description,
-      owner: site.owner,
-      tenant: site.tenant,
-      soilsDistribution: site.soilsDistribution,
-      surfaceArea: site.surfaceArea,
-      contaminatedSoilSurface: site.contaminatedSoilSurface,
-      address: site.address,
-      accidentsDeaths: 0,
-      accidentsMinorInjuries: 2,
-      accidentsSevereInjuries: 1,
-      yearlyExpenses: [{ amount: 10999, purpose: "rent" }],
-      yearlyIncomes: [{ amount: 13000, source: "subsidies" }],
-      fricheActivity: site.fricheActivity,
+    expect(result.isSuccess()).toBe(true);
+    expect((result as SuccessResult<unknown>).getData()).toEqual({
+      site: {
+        id: site.id,
+        name: site.name,
+        nature: "FRICHE",
+        isExpressSite: site.isExpressSite,
+        description: site.description,
+        owner: site.owner,
+        tenant: site.tenant,
+        soilsDistribution: site.soilsDistribution,
+        surfaceArea: site.surfaceArea,
+        contaminatedSoilSurface: site.contaminatedSoilSurface,
+        address: site.address,
+        accidentsDeaths: 0,
+        accidentsMinorInjuries: 2,
+        accidentsSevereInjuries: 1,
+        yearlyExpenses: [{ amount: 10999, purpose: "rent" }],
+        yearlyIncomes: [{ amount: 13000, source: "subsidies" }],
+        fricheActivity: site.fricheActivity,
+      },
     });
   });
 });

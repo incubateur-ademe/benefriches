@@ -30,6 +30,11 @@ export class PhotovoltaicPerformanceController {
       peakPower,
     });
 
-    return result;
+    if (!result.isSuccess()) {
+      // This usecase always succeeds, so this should never happen
+      throw new Error("Failed to compute photovoltaic performance");
+    }
+
+    return result.getData();
   }
 }

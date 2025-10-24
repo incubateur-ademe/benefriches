@@ -9,6 +9,7 @@ import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/Deter
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { InMemoryEventPublisher } from "src/shared-kernel/adapters/events/publisher/InMemoryEventPublisher";
 import { DeterministicUuidGenerator } from "src/shared-kernel/adapters/id-generator/DeterministicIdGenerator";
+import { FailureResult } from "src/shared-kernel/result";
 
 import { SendAuthLinkUseCase } from "./sendAuthLink.usecase";
 import { TokenAuthenticationAttempt } from "./tokenAuthenticationAttempt";
@@ -75,10 +76,8 @@ describe("SendAuthLink Use Case", () => {
 
     const result = await usecase.execute({ email: "nonexistent@example.com" });
 
-    expect(result).toEqual({
-      success: false,
-      error: "UserDoesNotExist",
-    });
+    expect(result.isFailure()).toBe(true);
+    expect((result as FailureResult).getError()).toBe("UserDoesNotExist");
 
     // no token was saved
     expect(tokenAuthAttemptRepository.tokens).toHaveLength(0);
@@ -115,7 +114,7 @@ describe("SendAuthLink Use Case", () => {
     );
 
     const firstResult = await firstUsecase.execute({ email: user.email });
-    expect(firstResult).toEqual({ success: true });
+    expect(firstResult.isSuccess()).toBe(true);
     expect(tokenAuthAttemptRepository.tokens).toHaveLength(1);
     const firstRequestToken = tokenAuthAttemptRepository.tokens[0];
     expect(authLinkMailer.sentEmails).toHaveLength(1);
@@ -135,10 +134,8 @@ describe("SendAuthLink Use Case", () => {
     );
 
     const secondResult = await secondUsecase.execute({ email: user.email });
-    expect(secondResult).toEqual({
-      success: false,
-      error: "TooManyRequests",
-    });
+    expect(secondResult.isFailure()).toBe(true);
+    expect((secondResult as FailureResult).getError()).toBe("TooManyRequests");
 
     expect(tokenAuthAttemptRepository.tokens).toEqual([firstRequestToken]);
     expect(authLinkMailer.sentEmails).toHaveLength(1);
@@ -190,7 +187,7 @@ describe("SendAuthLink Use Case", () => {
     );
 
     const secondResult = await secondUsecase.execute({ email: user.email });
-    expect(secondResult).toEqual({ success: true });
+    expect(secondResult.isSuccess()).toBe(true);
 
     expect(tokenAuthAttemptRepository.tokens).toHaveLength(2);
     expect(authLinkMailer.sentEmails).toHaveLength(2);
@@ -216,7 +213,7 @@ describe("SendAuthLink Use Case", () => {
 
     const result = await usecase.execute({ email: "user@example.com" });
 
-    expect(result).toEqual({ success: true });
+    expect(result.isSuccess()).toBe(true);
 
     // auth token was saved
     expect(tokenAuthAttemptRepository.tokens).toEqual<TokenAuthenticationAttempt[]>([

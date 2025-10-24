@@ -85,7 +85,7 @@ describe("ReconversionCompatibility controller", () => {
       });
     });
 
-    it("returns an error when trying to create an evaluation with an existing id", async () => {
+    it("returns a conflict error when trying to create an evaluation with an existing id", async () => {
       const user = new UserBuilder().asLocalAuthority().build();
       const { accessToken } = await authenticateUser(app)(user);
 
@@ -106,7 +106,7 @@ describe("ReconversionCompatibility controller", () => {
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send({ id: evaluationId });
 
-      expect(response.status).toEqual(500);
+      expect(response.status).toEqual(409);
     });
   });
 

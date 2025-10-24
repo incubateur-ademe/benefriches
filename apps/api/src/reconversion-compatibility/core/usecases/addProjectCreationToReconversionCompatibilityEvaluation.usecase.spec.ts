@@ -2,6 +2,7 @@ import { InMemoryReconversionCompatibilityEvaluationRepository } from "src/recon
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { InMemoryEventPublisher } from "src/shared-kernel/adapters/events/publisher/InMemoryEventPublisher";
 import { DeterministicUuidGenerator } from "src/shared-kernel/adapters/id-generator/DeterministicIdGenerator";
+import { FailureResult } from "src/shared-kernel/result";
 
 import { ReconversionCompatibilityEvaluation } from "../reconversionCompatibilityEvaluation";
 import { AddProjectCreationToReconversionCompatibilityEvaluationUseCase } from "./addProjectCreationToReconversionCompatibilityEvaluation.usecase";
@@ -122,11 +123,12 @@ describe("AddProjectCreationToReconversionCompatibilityEvaluationUseCase", () =>
       eventPublisher,
     );
 
-    await expect(
-      usecase.execute({
-        evaluationId: "non-existent-id",
-        reconversionProjectId: "project-123",
-      }),
-    ).rejects.toThrow("Evaluation with id non-existent-id not found");
+    const result = await usecase.execute({
+      evaluationId: "non-existent-id",
+      reconversionProjectId: "project-123",
+    });
+
+    expect(result.isFailure()).toBe(true);
+    expect((result as FailureResult<"EvaluationNotFound">).getError()).toBe("EvaluationNotFound");
   });
 });

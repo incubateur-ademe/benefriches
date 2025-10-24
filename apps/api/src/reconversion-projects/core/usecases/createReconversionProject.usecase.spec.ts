@@ -1,8 +1,7 @@
-import { ZodError } from "zod";
-
 import { InMemoryReconversionProjectRepository } from "src/reconversion-projects/adapters/secondary/repositories/reconversion-project/InMemoryReconversionProjectRepository";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { FailureResult } from "src/shared-kernel/result";
 import { InMemorySitesRepository } from "src/sites/adapters/secondary/site-repository/InMemorySiteRepository";
 import { buildFriche } from "src/sites/core/models/site.mock";
 import { SiteEntity } from "src/sites/core/models/siteEntity";
@@ -20,13 +19,6 @@ describe("CreateReconversionProject Use Case", () => {
   let siteRepository: InMemorySitesRepository;
   let reconversionProjectRepository: InMemoryReconversionProjectRepository;
   const fakeNow = new Date("2024-01-05T13:00:00");
-
-  const getZodIssues = (err: unknown) => {
-    if (!(err instanceof ZodError)) {
-      throw err;
-    }
-    return err.issues;
-  };
 
   beforeEach(() => {
     dateProvider = new DeterministicDateProvider(fakeNow);
@@ -57,15 +49,16 @@ describe("CreateReconversionProject Use Case", () => {
           reconversionProjectRepository,
         );
 
-        expect.assertions(3);
-        try {
-          await usecase.execute({ reconversionProjectProps });
-        } catch (err) {
-          const zIssues = getZodIssues(err);
-          expect(zIssues.length).toEqual(1);
-          expect(zIssues[0]?.path).toEqual([mandatoryField]);
-          expect(zIssues[0]?.code).toEqual("invalid_type");
-        }
+        const result = await usecase.execute({ reconversionProjectProps });
+        expect(result.isFailure()).toBe(true);
+        const failureResult = result as FailureResult<
+          "ValidationError",
+          { fieldErrors: Record<string, string[]> }
+        >;
+        expect(failureResult.getError()).toBe("ValidationError");
+        const issues = failureResult.getIssues();
+        expect(issues).toBeDefined();
+        expect(issues?.fieldErrors).toBeDefined();
       });
     });
 
@@ -77,9 +70,10 @@ describe("CreateReconversionProject Use Case", () => {
         siteRepository,
         reconversionProjectRepository,
       );
-      await expect(usecase.execute({ reconversionProjectProps })).rejects.toThrow(
-        `Site with id ${reconversionProjectProps.relatedSiteId} does not exist`,
-      );
+      const result = await usecase.execute({ reconversionProjectProps });
+      expect(result.isFailure()).toBe(true);
+      const failureResult = result as FailureResult<"ValidationError">;
+      expect(failureResult.getError()).toBe("SiteNotFound");
     });
 
     it("Cannot create a reconversion project with existing id", async () => {
@@ -101,9 +95,10 @@ describe("CreateReconversionProject Use Case", () => {
         siteRepository,
         reconversionProjectRepository,
       );
-      await expect(usecase.execute({ reconversionProjectProps })).rejects.toThrow(
-        `ReconversionProject with id ${reconversionProjectProps.id} already exists`,
-      );
+      const result = await usecase.execute({ reconversionProjectProps });
+      expect(result.isFailure()).toBe(true);
+      const failureResult = result as FailureResult<"ReconversionProjectAlreadyExists">;
+      expect(failureResult.getError()).toBe("ReconversionProjectAlreadyExists");
     });
   });
 
@@ -133,8 +128,9 @@ describe("CreateReconversionProject Use Case", () => {
           siteRepository,
           reconversionProjectRepository,
         );
-        await usecase.execute({ reconversionProjectProps: props });
+        const result = await usecase.execute({ reconversionProjectProps: props });
 
+        expect(result.isSuccess()).toBe(true);
         const savedReconversionProjects = reconversionProjectRepository._getReconversionProjects();
 
         expect(savedReconversionProjects).toEqual([
@@ -162,8 +158,9 @@ describe("CreateReconversionProject Use Case", () => {
           siteRepository,
           reconversionProjectRepository,
         );
-        await usecase.execute({ reconversionProjectProps: props });
+        const result = await usecase.execute({ reconversionProjectProps: props });
 
+        expect(result.isSuccess()).toBe(true);
         const savedReconversionProjects = reconversionProjectRepository._getReconversionProjects();
 
         expect(savedReconversionProjects).toEqual([

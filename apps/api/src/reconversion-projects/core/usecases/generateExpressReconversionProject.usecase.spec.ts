@@ -12,10 +12,12 @@ import { MockPhotovoltaicGeoInfoSystemApi } from "src/photovoltaic-performance/a
 import { PhotovoltaicDataProvider } from "src/photovoltaic-performance/core/gateways/PhotovoltaicDataProvider";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { FailureResult, SuccessResult } from "src/shared-kernel/result";
 import { InMemorySitesQuery } from "src/sites/adapters/secondary/site-query/InMemorySitesQuery";
 import { SiteViewModel } from "src/sites/core/usecases/getSiteById.usecase";
 import { InMemoryUserQuery } from "src/users/adapters/secondary/user-query/InMemoryUserQuery";
 
+import { ReconversionProjectInput } from "../model/reconversionProject";
 import { UrbanProjectFeatures } from "../model/urbanProjects";
 import { GenerateExpressReconversionProjectUseCase } from "./generateExpressReconversionProject.usecase";
 
@@ -51,13 +53,14 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
         );
 
         const siteId = uuid();
-        await expect(
-          usecase.execute({
-            siteId,
-            createdBy: uuid(),
-            category: expressCategory,
-          }),
-        ).rejects.toThrow(`Site with id ${siteId} does not exist`);
+        const result = await usecase.execute({
+          siteId,
+          createdBy: uuid(),
+          category: expressCategory,
+        });
+
+        expect(result.isFailure()).toBe(true);
+        expect((result as FailureResult).getError()).toBe("SiteNotFound");
       },
     );
   });
@@ -129,11 +132,13 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
 
         const expectedName = expressCategoryNameMap[expressCategory];
 
-        expect(result.relatedSiteId).toEqual(site.id);
-        expect(result.createdBy).toEqual(creatorId);
-        expect(result.createdAt).toEqual(dateProvider.now());
-        expect(result.creationMode).toEqual("express");
-        expect(result.name).toEqual(expectedName);
+        expect(result.isSuccess()).toBe(true);
+        const data = (result as SuccessResult<ReconversionProjectInput>).getData();
+        expect(data.relatedSiteId).toEqual(site.id);
+        expect(data.createdBy).toEqual(creatorId);
+        expect(data.createdAt).toEqual(dateProvider.now());
+        expect(data.creationMode).toEqual("express");
+        expect(data.name).toEqual(expectedName);
       },
     );
 
@@ -156,15 +161,17 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
           category: expressCategory,
         });
 
-        expect(result.reinstatementSchedule).toEqual({
+        expect(result.isSuccess()).toBe(true);
+        const data = (result as SuccessResult<ReconversionProjectInput>).getData();
+        expect(data.reinstatementSchedule).toEqual({
           startDate: new Date("2025-09-01T13:00:00"),
           endDate: new Date("2026-09-01T13:00:00"),
         });
-        expect(result.developmentPlan.installationSchedule).toEqual({
+        expect(data.developmentPlan.installationSchedule).toEqual({
           startDate: new Date("2026-09-02T13:00:00"),
           endDate: new Date("2027-09-02T13:00:00"),
         });
-        expect(result.operationsFirstYear).toEqual(2028);
+        expect(data.operationsFirstYear).toEqual(2028);
       },
     );
 
@@ -186,12 +193,14 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
             category: expressCategory,
           });
 
-          expect(result.futureSiteOwner).toEqual(undefined);
-          expect(result.developmentPlan.developer).toEqual({
+          expect(result.isSuccess()).toBe(true);
+          const data = (result as SuccessResult<ReconversionProjectInput>).getData();
+          expect(data.futureSiteOwner).toEqual(undefined);
+          expect(data.developmentPlan.developer).toEqual({
             structureType: "municipality",
             name: "Mairie de Montrouge",
           });
-          expect(result.reinstatementContractOwner).toEqual({
+          expect(data.reinstatementContractOwner).toEqual({
             structureType: "municipality",
             name: "Mairie de Montrouge",
           });
@@ -242,8 +251,10 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
               expectedResalePrice = 570_000;
           }
 
-          expect(result.siteResaleExpectedSellingPrice).toEqual(expectedResalePrice);
-          expect(Math.round(result.siteResaleExpectedPropertyTransferDuties ?? 0)).toEqual(
+          expect(result.isSuccess()).toBe(true);
+          const data = (result as SuccessResult<ReconversionProjectInput>).getData();
+          expect(data.siteResaleExpectedSellingPrice).toEqual(expectedResalePrice);
+          expect(Math.round(data.siteResaleExpectedPropertyTransferDuties ?? 0)).toEqual(
             Math.round(expectedResalePrice * 0.0581),
           );
         },
@@ -390,7 +401,9 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
             MINERAL_SOIL: expectedMineralSoils > 0 ? expectedMineralSoils : undefined,
           };
 
-          const { developmentPlan, soilsDistribution = [] } = result;
+          expect(result.isSuccess()).toBe(true);
+          const data = (result as SuccessResult<ReconversionProjectInput>).getData();
+          const { developmentPlan, soilsDistribution = [] } = data;
           const { buildingsFloorAreaDistribution, spacesDistribution } =
             developmentPlan.features as UrbanProjectFeatures;
 
@@ -432,16 +445,18 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
           category: "PHOTOVOLTAIC_POWER_PLANT",
         });
 
-        expect(result.futureSiteOwner).toEqual(undefined);
-        expect(result.futureOperator).toEqual({
+        expect(result.isSuccess()).toBe(true);
+        const data = (result as SuccessResult<ReconversionProjectInput>).getData();
+        expect(data.futureSiteOwner).toEqual(undefined);
+        expect(data.futureOperator).toEqual({
           structureType: "company",
           name: "My company",
         });
-        expect(result.developmentPlan.developer).toEqual({
+        expect(data.developmentPlan.developer).toEqual({
           structureType: "company",
           name: "My company",
         });
-        expect(result.reinstatementContractOwner).toEqual({
+        expect(data.reinstatementContractOwner).toEqual({
           structureType: "company",
           name: "My company",
         });
@@ -471,16 +486,18 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
           category: "PHOTOVOLTAIC_POWER_PLANT",
         });
 
-        expect(result.futureSiteOwner).toEqual(undefined);
-        expect(result.futureOperator).toEqual({
+        expect(result.isSuccess()).toBe(true);
+        const data = (result as SuccessResult<ReconversionProjectInput>).getData();
+        expect(data.futureSiteOwner).toEqual(undefined);
+        expect(data.futureOperator).toEqual({
           structureType: "municipality",
           name: "Mairie de Blajan",
         });
-        expect(result.developmentPlan.developer).toEqual({
+        expect(data.developmentPlan.developer).toEqual({
           structureType: "municipality",
           name: "Mairie de Blajan",
         });
-        expect(result.reinstatementContractOwner).toEqual({
+        expect(data.reinstatementContractOwner).toEqual({
           structureType: "municipality",
           name: "Mairie de Blajan",
         });
@@ -500,16 +517,18 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
           category: "PHOTOVOLTAIC_POWER_PLANT",
         });
 
-        expect(result.futureSiteOwner).toEqual(undefined);
-        expect(result.futureOperator).toEqual({
+        expect(result.isSuccess()).toBe(true);
+        const data = (result as SuccessResult<ReconversionProjectInput>).getData();
+        expect(data.futureSiteOwner).toEqual(undefined);
+        expect(data.futureOperator).toEqual({
           structureType: "municipality",
           name: "Mairie de Montrouge",
         });
-        expect(result.developmentPlan.developer).toEqual({
+        expect(data.developmentPlan.developer).toEqual({
           structureType: "municipality",
           name: "Mairie de Montrouge",
         });
-        expect(result.reinstatementContractOwner).toEqual({
+        expect(data.reinstatementContractOwner).toEqual({
           structureType: "municipality",
           name: "Mairie de Montrouge",
         });
@@ -542,17 +561,19 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
           category: "RESIDENTIAL_NORMAL_AREA",
         });
 
+        expect(result.isSuccess()).toBe(true);
+        const data = (result as SuccessResult<ReconversionProjectInput>).getData();
         // real estate sale transaction
-        expect(result.sitePurchaseSellingPrice).toEqual(720000);
-        expect(result.sitePurchasePropertyTransferDuties).toEqual(41832);
+        expect(data.sitePurchaseSellingPrice).toEqual(720000);
+        expect(data.sitePurchasePropertyTransferDuties).toEqual(41832);
         // development installation cost
-        expect(result.developmentPlan.costs).toEqual([
+        expect(data.developmentPlan.costs).toEqual([
           { purpose: "technical_studies", amount: 60000 },
           { purpose: "development_works", amount: 540000 },
           { purpose: "other", amount: 54000 },
         ]);
         // reinstatement costs
-        expect(result.reinstatementCosts).toEqual([]);
+        expect(data.reinstatementCosts).toEqual([]);
       });
     });
 
@@ -589,26 +610,28 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
           category: "RESIDENTIAL_NORMAL_AREA",
         });
 
+        expect(result.isSuccess()).toBe(true);
+        const data = (result as SuccessResult<ReconversionProjectInput>).getData();
         // real estate sale transaction
-        expect(result.sitePurchaseSellingPrice).toEqual(7200000);
-        expect(result.sitePurchasePropertyTransferDuties).toEqual(418320);
+        expect(data.sitePurchaseSellingPrice).toEqual(7200000);
+        expect(data.sitePurchasePropertyTransferDuties).toEqual(418320);
         // development installation cost
-        expect(result.developmentPlan.costs).toEqual([
+        expect(data.developmentPlan.costs).toEqual([
           { purpose: "technical_studies", amount: 600000 },
           { purpose: "development_works", amount: 5400000 },
           { purpose: "other", amount: 540000 },
         ]);
         // reinstatement costs
-        expect(result.reinstatementCosts).toHaveLength(3);
-        expect(result.reinstatementCosts).toContainEqual({
+        expect(data.reinstatementCosts).toHaveLength(3);
+        expect(data.reinstatementCosts).toContainEqual({
           purpose: "asbestos_removal",
           amount: 75000,
         });
-        expect(result.reinstatementCosts).toContainEqual({
+        expect(data.reinstatementCosts).toContainEqual({
           purpose: "demolition",
           amount: 75000,
         });
-        expect(result.reinstatementCosts).toContainEqual({
+        expect(data.reinstatementCosts).toContainEqual({
           purpose: "remediation",
           amount: 2475000,
         });
@@ -641,18 +664,20 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
           category: "RESIDENTIAL_NORMAL_AREA",
         });
 
+        expect(result.isSuccess()).toBe(true);
+        const data = (result as SuccessResult<ReconversionProjectInput>).getData();
         // reinstatement costs
-        expect(result.reinstatementCosts).toHaveLength(4);
-        expect(result.reinstatementCosts?.at(0)).toEqual({
+        expect(data.reinstatementCosts).toHaveLength(4);
+        expect(data.reinstatementCosts?.at(0)).toEqual({
           purpose: "deimpermeabilization",
           amount: 64000,
         });
-        expect(result.reinstatementCosts?.at(1)).toEqual({
+        expect(data.reinstatementCosts?.at(1)).toEqual({
           purpose: "sustainable_soils_reinstatement",
           amount: 270000,
         });
-        expect(result.reinstatementCosts?.at(2)?.purpose).toEqual("demolition");
-        expect(result.reinstatementCosts?.at(3)?.purpose).toEqual("asbestos_removal");
+        expect(data.reinstatementCosts?.at(2)?.purpose).toEqual("demolition");
+        expect(data.reinstatementCosts?.at(3)?.purpose).toEqual("asbestos_removal");
       });
     });
   });
@@ -708,18 +733,20 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
             category: expressCategory,
           });
 
+          expect(result.isSuccess()).toBe(true);
+          const data = (result as SuccessResult<ReconversionProjectInput>).getData();
           // real estate sale transaction
-          expect(result.sitePurchaseSellingPrice).toEqual(3600000);
-          expect(result.sitePurchasePropertyTransferDuties).toEqual(209160);
+          expect(data.sitePurchaseSellingPrice).toEqual(3600000);
+          expect(data.sitePurchasePropertyTransferDuties).toEqual(209160);
           // development installation cost
-          expect(result.developmentPlan.costs).toEqual([
+          expect(data.developmentPlan.costs).toEqual([
             { purpose: "technical_studies", amount: 300000 },
             { purpose: "development_works", amount: 2700000 },
             { purpose: "other", amount: 270000 },
           ]);
           // reinstatement costs
-          expect(result.reinstatementCosts).toEqual(undefined);
-          expect(result.futureSiteOwner).toEqual({
+          expect(data.reinstatementCosts).toEqual(undefined);
+          expect(data.futureSiteOwner).toEqual({
             structureType: "municipality",
             name: "Mairie de Montrouge",
           });
@@ -750,10 +777,12 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
             category: expressCategory,
           });
 
+          expect(result.isSuccess()).toBe(true);
+          const data = (result as SuccessResult<ReconversionProjectInput>).getData();
           // real estate sale transaction
-          expect(result.sitePurchaseSellingPrice).toEqual(undefined);
-          expect(result.sitePurchasePropertyTransferDuties).toEqual(undefined);
-          expect(result.futureSiteOwner).toEqual(undefined);
+          expect(data.sitePurchaseSellingPrice).toEqual(undefined);
+          expect(data.sitePurchasePropertyTransferDuties).toEqual(undefined);
+          expect(data.futureSiteOwner).toEqual(undefined);
         },
       );
     });

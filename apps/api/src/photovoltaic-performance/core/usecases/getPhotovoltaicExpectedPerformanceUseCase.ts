@@ -1,3 +1,5 @@
+import { success } from "../../../shared-kernel/result";
+import type { TResult } from "../../../shared-kernel/result";
 import { UseCase } from "../../../shared-kernel/usecase";
 import { PhotovoltaicDataProvider } from "../gateways/PhotovoltaicDataProvider";
 
@@ -7,7 +9,7 @@ type Request = {
   peakPower: number;
 };
 
-type Response = {
+type GetPhotovoltaicExpectedPerformanceResult = TResult<{
   expectedPerformance: {
     kwhPerDay: number;
     kwhPerMonth: number;
@@ -19,19 +21,25 @@ type Response = {
       total: number;
     };
   };
-};
+}>;
 
-export class GetPhotovoltaicExpectedPerformanceUseCase implements UseCase<Request, Response> {
+export class GetPhotovoltaicExpectedPerformanceUseCase
+  implements UseCase<Request, GetPhotovoltaicExpectedPerformanceResult>
+{
   constructor(private readonly photovoltaicDataProvider: PhotovoltaicDataProvider) {}
 
-  async execute({ lat, long, peakPower }: Request): Promise<Response> {
+  async execute({
+    lat,
+    long,
+    peakPower,
+  }: Request): Promise<GetPhotovoltaicExpectedPerformanceResult> {
     const result = await this.photovoltaicDataProvider.getPhotovoltaicPerformance({
       lat,
       long,
       peakPower,
     });
-    return {
+    return success({
       expectedPerformance: result.expectedPerformance,
-    };
+    });
   }
 }

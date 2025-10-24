@@ -26,11 +26,17 @@ export class CarbonStorageController {
   @Get("site-soils")
   async getSiteSoilsCarbonStorage(@Query() query: GetSoilsCarbonStorageDto) {
     const { cityCode, soils } = query;
-    const { totalCarbonStorage, soilsCarbonStorage } =
-      await this.getCityCarbonStoragePerSoilsCategory.execute({
-        cityCode,
-        soils,
-      });
+    const result = await this.getCityCarbonStoragePerSoilsCategory.execute({
+      cityCode,
+      soils,
+    });
+
+    if (!result.isSuccess()) {
+      // This usecase always succeeds, so this should never happen
+      throw new Error("Failed to compute carbon storage");
+    }
+
+    const { totalCarbonStorage, soilsCarbonStorage } = result.getData();
     return {
       totalCarbonStorage,
       soilsStorage: soilsCarbonStorage,

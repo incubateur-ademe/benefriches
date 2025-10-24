@@ -22,6 +22,7 @@ import {
 import { v4 as uuid } from "uuid";
 
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { TResult, fail, success } from "src/shared-kernel/result";
 import { UseCase } from "src/shared-kernel/usecase";
 
 import { CityStatsProvider } from "../gateways/CityStatsProvider";
@@ -58,7 +59,7 @@ type ReconversionProjectImpactsQueryResult = Omit<
     installationCosts: ApiReconversionProjectImpactsDataView["developmentPlan"]["installationCosts"];
   } & Partial<Omit<ApiReconversionProjectImpactsDataView["developmentPlan"], "installationCosts">>;
 };
-type ApiUrbanSprawlImpactsComparisonResult = UrbanSprawlImpactsComparisonResult<Schedule>;
+export type ApiUrbanSprawlImpactsComparisonResult = UrbanSprawlImpactsComparisonResult<Schedule>;
 
 interface ReconversionProjectImpactsQuery {
   getById(
@@ -72,30 +73,10 @@ type Request = {
   comparisonSiteNature: SiteNature;
 };
 
-class ReconversionProjectNotFound extends Error {
-  constructor(reconversionProjectId: string) {
-    super(
-      `ComputeProjectUrbanSprawlImpactsComparisonUsecase: ReconversionProject with id ${reconversionProjectId} not found`,
-    );
-    this.name = "ReconversionProjectNotFound";
-  }
-}
-
-class SiteNotFound extends Error {
-  constructor(siteId: string) {
-    super(`ComputeProjectUrbanSprawlImpactsComparisonUsecase: Site with id ${siteId} not found`);
-    this.name = "SiteNotFound";
-  }
-}
-
-class NoDevelopmentPlanType extends Error {
-  constructor(reconversionProjectId: string) {
-    super(
-      `ComputeProjectUrbanSprawlImpactsComparisonUsecase: ReconversionProject with id ${reconversionProjectId} has no development plan`,
-    );
-    this.name = "NoDevelopmentPlanType";
-  }
-}
+type ComputeProjectUrbanSprawlImpactsComparisonResult = TResult<
+  ApiUrbanSprawlImpactsComparisonResult,
+  "ReconversionProjectNotFound" | "SiteNotFound" | "NoDevelopmentPlanType"
+>;
 
 type FormatSiteDataForImpactsServiceProps = {
   siteData: SiteImpactsDataView;
@@ -560,7 +541,7 @@ const computeUrbanSprawlComparisonImpacts = ({
 };
 
 export class ComputeProjectUrbanSprawlImpactsComparisonUseCase
-  implements UseCase<Request, ApiUrbanSprawlImpactsComparisonResult>
+  implements UseCase<Request, ComputeProjectUrbanSprawlImpactsComparisonResult>
 {
   constructor(
     private readonly reconversionProjectQuery: ReconversionProjectImpactsQuery,
@@ -574,22 +555,22 @@ export class ComputeProjectUrbanSprawlImpactsComparisonUseCase
     reconversionProjectId,
     evaluationPeriodInYears,
     comparisonSiteNature,
-  }: Request): Promise<ApiUrbanSprawlImpactsComparisonResult> {
+  }: Request): Promise<ComputeProjectUrbanSprawlImpactsComparisonResult> {
     const reconversionProject = await this.reconversionProjectQuery.getById(reconversionProjectId);
 
-    if (!reconversionProject) throw new ReconversionProjectNotFound(reconversionProjectId);
+    if (!reconversionProject) return fail("ReconversionProjectNotFound");
 
     if (
       !reconversionProject.developmentPlan ||
       !reconversionProject.developmentPlan.type ||
       !reconversionProject.developmentPlan.features
     ) {
-      throw new NoDevelopmentPlanType(reconversionProjectId);
+      return fail("NoDevelopmentPlanType");
     }
 
     const relatedSite = await this.siteRepository.getById(reconversionProject.relatedSiteId);
 
-    if (!relatedSite) throw new SiteNotFound(reconversionProject.relatedSiteId);
+    if (!relatedSite) return fail("SiteNotFound");
 
     const { surfaceAreaSquareMeters, population, propertyValueMedianPricePerSquareMeters } =
       await this.cityStatsQuery.getCityStats(relatedSite.address.cityCode);
@@ -765,7 +746,7 @@ export class ComputeProjectUrbanSprawlImpactsComparisonUseCase
 
     const operationsFirstYear = this.dateProvider.now().getFullYear();
 
-    return {
+    return success({
       baseCase: {
         statuQuoSiteImpacts: comparisonSiteImpacts,
         conversionSiteData: relatedSite,
@@ -795,6 +776,6 @@ export class ComputeProjectUrbanSprawlImpactsComparisonUseCase
         }),
       },
       projectData: reconversionProject as ApiReconversionProjectImpactsDataView,
-    };
+    });
   }
 }

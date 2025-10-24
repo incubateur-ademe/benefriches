@@ -4,6 +4,7 @@ import { v4 as uuid } from "uuid";
 import { MockPhotovoltaicGeoInfoSystemApi } from "src/photovoltaic-performance/adapters/secondary/photovoltaic-data-provider/PhotovoltaicGeoInfoSystemApi.mock";
 import { InMemoryReconversionProjectRepository } from "src/reconversion-projects/adapters/secondary/repositories/reconversion-project/InMemoryReconversionProjectRepository";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
+import { FailureResult } from "src/shared-kernel/result";
 import { InMemorySitesQuery } from "src/sites/adapters/secondary/site-query/InMemorySitesQuery";
 import { SiteViewModel } from "src/sites/core/usecases/getSiteById.usecase";
 import { InMemoryUserQuery } from "src/users/adapters/secondary/user-query/InMemoryUserQuery";
@@ -73,14 +74,14 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
         );
 
         const siteId = uuid();
-        await expect(
-          usecase.execute({
-            reconversionProjectId: uuid(),
-            siteId,
-            createdBy: uuid(),
-            category: expressCategory,
-          }),
-        ).rejects.toThrow(`Site with id ${siteId} does not exist`);
+        const result = await usecase.execute({
+          reconversionProjectId: uuid(),
+          siteId,
+          createdBy: uuid(),
+          category: expressCategory,
+        });
+        expect(result.isFailure()).toBe(true);
+        expect((result as FailureResult).getError()).toBe("SiteNotFound");
       },
     );
   });
@@ -95,12 +96,13 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
 
       const reconversionProjectId = uuid();
       const creatorId = uuid();
-      await usecase.execute({
+      const result = await usecase.execute({
         reconversionProjectId,
         siteId: site.id,
         createdBy: creatorId,
         category: expressCategory,
       });
+      expect(result.isSuccess()).toBe(true);
 
       const createdReconversionProjects: ReconversionProjectInput[] =
         reconversionProjectRepository._getReconversionProjects();

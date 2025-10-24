@@ -3,6 +3,7 @@ import { ZodError } from "zod";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { InMemoryEventPublisher } from "src/shared-kernel/adapters/events/publisher/InMemoryEventPublisher";
+import { FailureResult } from "src/shared-kernel/result";
 
 import { DeterministicUuidGenerator } from "../../shared-kernel/adapters/id-generator/DeterministicIdGenerator";
 import {
@@ -76,10 +77,8 @@ describe("CreateUser Use Case", () => {
           user: { ...userProps, personalDataStorageConsented: false },
         });
 
-        expect(result).toEqual({
-          success: false,
-          error: "PersonalDataStorageNotConsented",
-        });
+        expect(result.isFailure()).toEqual(true);
+        expect((result as FailureResult).getError()).toEqual("PersonalDataStorageNotConsented");
       });
 
       it("Cannot create an user when email is already taken", async () => {
@@ -99,10 +98,8 @@ describe("CreateUser Use Case", () => {
           user: userProps,
         });
 
-        expect(result).toEqual({
-          success: false,
-          error: "UserEmailAlreadyExists",
-        });
+        expect(result.isFailure()).toEqual(true);
+        expect((result as FailureResult).getError()).toEqual("UserEmailAlreadyExists");
       });
     });
   });

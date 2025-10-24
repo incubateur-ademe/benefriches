@@ -1,5 +1,7 @@
 import { roundTo2Digits, SoilType } from "shared";
 
+import { success } from "../../../shared-kernel/result";
+import type { TResult } from "../../../shared-kernel/result";
 import { UseCase } from "../../../shared-kernel/usecase";
 import { CarbonStorageQuery } from "../gateways/CarbonStorageQuery";
 import { mapSoilTypeToRepositorySoilCategory } from "../models/soilCategory";
@@ -12,7 +14,7 @@ type Request = {
   }[];
 };
 
-type Response = {
+export type GetCityCarbonStoragePerSoilsCategoryResult = TResult<{
   totalCarbonStorage: number;
   soilsCarbonStorage: {
     surfaceArea: number; // m²
@@ -20,12 +22,17 @@ type Response = {
     carbonStorageInTonPerSquareMeters: number;
     type: SoilType;
   }[];
-};
+}>;
 
-export class GetCityCarbonStoragePerSoilsCategoryUseCase implements UseCase<Request, Response> {
+export class GetCityCarbonStoragePerSoilsCategoryUseCase
+  implements UseCase<Request, GetCityCarbonStoragePerSoilsCategoryResult>
+{
   constructor(private readonly carbonStorageQuery: CarbonStorageQuery) {}
 
-  async execute({ cityCode, soils = [] }: Request): Promise<Response> {
+  async execute({
+    cityCode,
+    soils = [],
+  }: Request): Promise<GetCityCarbonStoragePerSoilsCategoryResult> {
     const carbonStorage = await this.carbonStorageQuery.getCarbonStorageForCity(
       cityCode,
       soils.map(({ type }) => mapSoilTypeToRepositorySoilCategory(type)),
@@ -54,9 +61,9 @@ export class GetCityCarbonStoragePerSoilsCategoryUseCase implements UseCase<Requ
       0,
     );
 
-    return {
+    return success({
       totalCarbonStorage: roundTo2Digits(totalCarbonStorage),
       soilsCarbonStorage,
-    };
+    });
   }
 }

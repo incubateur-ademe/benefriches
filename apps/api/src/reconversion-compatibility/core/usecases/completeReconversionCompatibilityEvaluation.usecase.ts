@@ -1,6 +1,7 @@
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerator";
 import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
+import { TResult, fail, success } from "src/shared-kernel/result";
 import { UseCase } from "src/shared-kernel/usecase";
 
 import { createReconversionCompatibilityEvaluationCompletedEvent } from "../events/reconversionCompatibilityEvaluationCompleted.event";
@@ -15,7 +16,14 @@ type Request = {
   mutafrichesId: string;
 };
 
-export class CompleteReconversionCompatibilityEvaluationUseCase implements UseCase<Request, void> {
+type CompleteReconversionCompatibilityEvaluationResult = TResult<
+  void,
+  "EvaluationNotFound" | "EvaluationCannotBeCompleted"
+>;
+
+export class CompleteReconversionCompatibilityEvaluationUseCase
+  implements UseCase<Request, CompleteReconversionCompatibilityEvaluationResult>
+{
   constructor(
     private readonly repository: ReconversionCompatibilityEvaluationRepository,
     private readonly dateProvider: DateProvider,
@@ -23,15 +31,18 @@ export class CompleteReconversionCompatibilityEvaluationUseCase implements UseCa
     private readonly eventPublisher: DomainEventPublisher,
   ) {}
 
-  async execute({ id, mutafrichesId }: Request): Promise<void> {
+  async execute({
+    id,
+    mutafrichesId,
+  }: Request): Promise<CompleteReconversionCompatibilityEvaluationResult> {
     const evaluationToComplete = await this.repository.getById(id);
 
     if (!evaluationToComplete) {
-      throw new Error(`Reconversion compatibility evaluation with id ${id} not found`);
+      return fail("EvaluationNotFound");
     }
 
     if (!canBeCompleted(evaluationToComplete)) {
-      throw new Error(`Reconversion compatibility evaluation with id ${id} cannot be completed`);
+      return fail("EvaluationCannotBeCompleted");
     }
 
     const evaluation = completeReconversionCompatibilityEvaluation(evaluationToComplete, {
@@ -46,5 +57,6 @@ export class CompleteReconversionCompatibilityEvaluationUseCase implements UseCa
     );
 
     await this.eventPublisher.publish(event);
+    return success();
   }
 }

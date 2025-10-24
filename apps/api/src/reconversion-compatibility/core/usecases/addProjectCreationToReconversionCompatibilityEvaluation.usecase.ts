@@ -1,6 +1,7 @@
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerator";
 import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
+import { TResult, fail, success } from "src/shared-kernel/result";
 import { UseCase } from "src/shared-kernel/usecase";
 
 import { createReconversionProjectCreatedFromEvaluationEvent } from "../events/reconversionProjectCreatedFromEvaluation.event";
@@ -12,8 +13,13 @@ type Request = {
   reconversionProjectId: string;
 };
 
+type AddProjectCreationToReconversionCompatibilityEvaluationResult = TResult<
+  void,
+  "EvaluationNotFound"
+>;
+
 export class AddProjectCreationToReconversionCompatibilityEvaluationUseCase
-  implements UseCase<Request, void>
+  implements UseCase<Request, AddProjectCreationToReconversionCompatibilityEvaluationResult>
 {
   constructor(
     private readonly repository: ReconversionCompatibilityEvaluationRepository,
@@ -22,11 +28,14 @@ export class AddProjectCreationToReconversionCompatibilityEvaluationUseCase
     private readonly eventPublisher: DomainEventPublisher,
   ) {}
 
-  async execute({ evaluationId, reconversionProjectId }: Request): Promise<void> {
+  async execute({
+    evaluationId,
+    reconversionProjectId,
+  }: Request): Promise<AddProjectCreationToReconversionCompatibilityEvaluationResult> {
     const evaluation = await this.repository.getById(evaluationId);
 
     if (!evaluation) {
-      throw new Error(`Evaluation with id ${evaluationId} not found`);
+      return fail("EvaluationNotFound");
     }
 
     const updatedEvaluation = addProjectCreation(evaluation, {
@@ -42,5 +51,6 @@ export class AddProjectCreationToReconversionCompatibilityEvaluationUseCase
     );
 
     await this.eventPublisher.publish(event);
+    return success();
   }
 }

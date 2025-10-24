@@ -11,6 +11,7 @@ import {
 
 import { CityStatsProvider } from "src/reconversion-projects/core/gateways/CityStatsProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { TResult, fail, success } from "src/shared-kernel/result";
 import { UseCase } from "src/shared-kernel/usecase";
 
 import { SitesRepository } from "../gateways/SitesRepository";
@@ -31,6 +32,8 @@ type Request = {
   createdBy: string;
 };
 
+type CreateNewExpressSiteResult = TResult<void, "SiteAlreadyExists">;
+
 function createSite(props: ExpressSiteProps & { cityPopulation: number }): Site {
   switch (props.nature) {
     case "FRICHE":
@@ -48,14 +51,14 @@ function createSite(props: ExpressSiteProps & { cityPopulation: number }): Site 
   }
 }
 
-export class CreateNewExpressSiteUseCase implements UseCase<Request, void> {
+export class CreateNewExpressSiteUseCase implements UseCase<Request, CreateNewExpressSiteResult> {
   constructor(
     private readonly sitesRepository: SitesRepository,
     private readonly dateProvider: DateProvider,
     private readonly cityStatsQuery: CityStatsProvider,
   ) {}
 
-  async execute({ siteProps, createdBy }: Request): Promise<void> {
+  async execute({ siteProps, createdBy }: Request): Promise<CreateNewExpressSiteResult> {
     let siteCityPopulation = 0;
     try {
       const { population } = await this.cityStatsQuery.getCityStats(siteProps.address.cityCode);
@@ -68,7 +71,7 @@ export class CreateNewExpressSiteUseCase implements UseCase<Request, void> {
     const site = createSite({ ...siteProps, cityPopulation: siteCityPopulation });
 
     if (await this.sitesRepository.existsWithId(site.id)) {
-      throw new Error(`Site with id ${site.id} already exists`);
+      return fail("SiteAlreadyExists");
     }
 
     const siteEntity: SiteEntity = {
@@ -79,5 +82,7 @@ export class CreateNewExpressSiteUseCase implements UseCase<Request, void> {
     };
 
     await this.sitesRepository.save(siteEntity);
+
+    return success();
   }
 }

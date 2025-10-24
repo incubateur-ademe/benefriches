@@ -5,6 +5,7 @@ import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/Deter
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { InMemoryEventPublisher } from "src/shared-kernel/adapters/events/publisher/InMemoryEventPublisher";
 import { DeterministicUuidGenerator } from "src/shared-kernel/adapters/id-generator/DeterministicIdGenerator";
+import { FailureResult } from "src/shared-kernel/result";
 
 import {
   buildMinimalReconversionProjectProps,
@@ -53,10 +54,8 @@ describe("DuplicateReconversionProject use case", () => {
       userId,
     });
 
-    expect(result).toEqual({
-      success: false,
-      error: "USER_NOT_AUTHORIZED",
-    });
+    expect(result.isFailure()).toBe(true);
+    expect((result as FailureResult<"UserNotAuthorized">).getError()).toBe("UserNotAuthorized");
 
     const savedProjects = reconversionProjectRepository._getReconversionProjects();
     expect(savedProjects).toHaveLength(1);
@@ -76,10 +75,10 @@ describe("DuplicateReconversionProject use case", () => {
       userId: uuid(),
     });
 
-    expect(result).toEqual({
-      success: false,
-      error: "SOURCE_RECONVERSION_PROJECT_NOT_FOUND",
-    });
+    expect(result.isFailure()).toBe(true);
+    expect((result as FailureResult<"SourceReconversionProjectNotFound">).getError()).toBe(
+      "SourceReconversionProjectNotFound",
+    );
   });
 
   it("duplicates a reconversion project successfully", async () => {
@@ -108,7 +107,7 @@ describe("DuplicateReconversionProject use case", () => {
       newProjectId,
       userId,
     });
-    expect(result).toEqual({ success: true });
+    expect(result.isSuccess()).toBe(true);
 
     const savedProjects = reconversionProjectRepository._getReconversionProjects();
     expect(savedProjects).toHaveLength(2);

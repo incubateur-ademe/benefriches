@@ -1,5 +1,6 @@
 import { Address, SiteNature, SoilType } from "shared";
 
+import { TResult, fail, success } from "src/shared-kernel/result";
 import { UseCase } from "src/shared-kernel/usecase";
 
 import { SitesQuery } from "../gateways/SitesQuery";
@@ -37,21 +38,18 @@ export type SiteViewModel = {
   description?: string;
 };
 
-export class SiteNotFoundError extends Error {
-  constructor(readonly siteId: string) {
-    super(`Site with ID ${siteId} not found`);
-    this.name = "SiteNotFoundError";
-  }
-}
+type GetSiteByIdResult = TResult<{ site: SiteViewModel }, "SiteNotFound">;
 
-export class GetSiteByIdUseCase implements UseCase<Request, SiteViewModel> {
+export class GetSiteByIdUseCase implements UseCase<Request, GetSiteByIdResult> {
   constructor(private readonly sitesQuery: SitesQuery) {}
 
-  async execute({ siteId }: Request): Promise<SiteViewModel> {
+  async execute({ siteId }: Request): Promise<GetSiteByIdResult> {
     const site = await this.sitesQuery.getById(siteId);
 
-    if (!site) throw new SiteNotFoundError(siteId);
+    if (!site) {
+      return fail("SiteNotFound");
+    }
 
-    return site;
+    return success({ site });
   }
 }

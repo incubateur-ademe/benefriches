@@ -16,7 +16,7 @@ describe("CreateUserFeatureAlert Use Case", () => {
 
   it("create a feature alert for 'compare_impacts' type with right options", async () => {
     const usecase = new CreateUserFeatureAlertUseCase(repository, dateProvider);
-    await usecase.execute({
+    const result = await usecase.execute({
       id: "2096a04d-4876-4e1e-b071-d5355fd0ee4c",
       userId: "ecf6d4b1-d394-48c8-8208-fad936afe6ca",
       email: "user@ademe.fr",
@@ -26,6 +26,7 @@ describe("CreateUserFeatureAlert Use Case", () => {
       },
     });
 
+    expect(result.isSuccess()).toBe(true);
     const savedAlerts = repository._getUsersFeatureAlerts();
 
     expect(savedAlerts).toEqual<UserFeatureAlert[]>([
@@ -45,7 +46,7 @@ describe("CreateUserFeatureAlert Use Case", () => {
   });
   it("create a feature alert for 'export_impacts' type with right options", async () => {
     const usecase = new CreateUserFeatureAlertUseCase(repository, dateProvider);
-    await usecase.execute({
+    const result = await usecase.execute({
       id: "2096a04d-4876-4e1e-b071-d5355fd0ee4c",
       userId: "ecf6d4b1-d394-48c8-8208-fad936afe6ca",
       email: "user@ademe.fr",
@@ -55,6 +56,7 @@ describe("CreateUserFeatureAlert Use Case", () => {
       },
     });
 
+    expect(result.isSuccess()).toBe(true);
     const savedAlerts = repository._getUsersFeatureAlerts();
 
     expect(savedAlerts).toEqual<UserFeatureAlert[]>([
@@ -75,7 +77,7 @@ describe("CreateUserFeatureAlert Use Case", () => {
 
   it("create a feature alert for 'export_impacts' type with no options", async () => {
     const usecase = new CreateUserFeatureAlertUseCase(repository, dateProvider);
-    await usecase.execute({
+    const result = await usecase.execute({
       id: "2096a04d-4876-4e1e-b071-d5355fd0ee4c",
       userId: "ecf6d4b1-d394-48c8-8208-fad936afe6ca",
       email: "user@ademe.fr",
@@ -84,6 +86,7 @@ describe("CreateUserFeatureAlert Use Case", () => {
       },
     });
 
+    expect(result.isSuccess()).toBe(true);
     const savedAlerts = repository._getUsersFeatureAlerts();
 
     expect(savedAlerts).toEqual<UserFeatureAlert[]>([
@@ -104,7 +107,7 @@ describe("CreateUserFeatureAlert Use Case", () => {
 
   it("create a feature alert for 'duplicate_project' type with no options", async () => {
     const usecase = new CreateUserFeatureAlertUseCase(repository, dateProvider);
-    await usecase.execute({
+    const result = await usecase.execute({
       id: "2096a04d-4876-4e1e-b071-d5355fd0ee4c",
       userId: "ecf6d4b1-d394-48c8-8208-fad936afe6ca",
       email: "user@ademe.fr",
@@ -113,6 +116,7 @@ describe("CreateUserFeatureAlert Use Case", () => {
       },
     });
 
+    expect(result.isSuccess()).toBe(true);
     const savedAlerts = repository._getUsersFeatureAlerts();
 
     expect(savedAlerts).toEqual<UserFeatureAlert[]>([
@@ -128,7 +132,7 @@ describe("CreateUserFeatureAlert Use Case", () => {
 
   it("creates a feature alert for 'mutafriches_availability' without user id", async () => {
     const usecase = new CreateUserFeatureAlertUseCase(repository, dateProvider);
-    await usecase.execute({
+    const result = await usecase.execute({
       id: "2096a04d-4876-4e1e-b071-d5355fd0ee4c",
       email: "user@ademe.fr",
       feature: {
@@ -136,6 +140,7 @@ describe("CreateUserFeatureAlert Use Case", () => {
       },
     });
 
+    expect(result.isSuccess()).toBe(true);
     const savedAlerts = repository._getUsersFeatureAlerts();
 
     expect(savedAlerts).toEqual<UserFeatureAlert[]>([

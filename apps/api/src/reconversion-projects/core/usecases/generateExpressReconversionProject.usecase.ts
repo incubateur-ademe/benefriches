@@ -17,6 +17,7 @@ import { v4 as uuid } from "uuid";
 
 import { PhotovoltaicDataProvider } from "src/photovoltaic-performance/core/gateways/PhotovoltaicDataProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { TResult, fail, success } from "src/shared-kernel/result";
 import { UseCase } from "src/shared-kernel/usecase";
 
 import { ReconversionProjectInput } from "../model/reconversionProject";
@@ -51,7 +52,7 @@ type Request = {
   reconversionProjectId?: string;
 };
 
-type Response = ReconversionProjectInput;
+type GenerateExpressReconversionProjectResult = TResult<ReconversionProjectInput, "SiteNotFound">;
 
 const getCreationServiceClass = (
   category: Exclude<ExpressProjectCategory, "PHOTOVOLTAIC_POWER_PLANT"> | undefined,
@@ -78,7 +79,9 @@ const getCreationServiceClass = (
   }
 };
 
-export class GenerateExpressReconversionProjectUseCase implements UseCase<Request, Response> {
+export class GenerateExpressReconversionProjectUseCase
+  implements UseCase<Request, GenerateExpressReconversionProjectResult>
+{
   constructor(
     private readonly dateProvider: DateProvider,
     private readonly siteQuery: SiteQuery,
@@ -86,10 +89,10 @@ export class GenerateExpressReconversionProjectUseCase implements UseCase<Reques
     private readonly userQuery: UserQuery,
   ) {}
 
-  async execute(props: Request): Promise<Response> {
+  async execute(props: Request): Promise<GenerateExpressReconversionProjectResult> {
     const siteData = await this.siteQuery.getById(props.siteId);
     if (!siteData) {
-      throw new Error(`Site with id ${props.siteId} does not exist`);
+      return fail("SiteNotFound");
     }
 
     const projectId = props.reconversionProjectId ?? uuid();
@@ -110,7 +113,7 @@ export class GenerateExpressReconversionProjectUseCase implements UseCase<Reques
         siteData,
         photovoltaicPerformanceService: this.photovoltaicPerformanceService,
       });
-      return await creationService.getReconversionProject();
+      return success(await creationService.getReconversionProject());
     }
 
     const UrbanProjectGeneratorClass = getCreationServiceClass(props.category);
@@ -122,6 +125,6 @@ export class GenerateExpressReconversionProjectUseCase implements UseCase<Reques
       siteData,
     );
 
-    return creationService.getReconversionProject();
+    return success(creationService.getReconversionProject());
   }
 }

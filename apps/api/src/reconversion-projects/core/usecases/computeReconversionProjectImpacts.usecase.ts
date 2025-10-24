@@ -7,6 +7,7 @@ import {
 } from "shared";
 
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { TResult, fail, success } from "src/shared-kernel/result";
 import { UseCase } from "src/shared-kernel/usecase";
 
 import { CityStats, CityStatsProvider } from "../gateways/CityStatsProvider";
@@ -46,7 +47,7 @@ type Request = {
   evaluationPeriodInYears?: number;
 };
 
-export type Result = {
+export type ComputedImpacts = {
   id: string;
   name: string;
   evaluationPeriodInYears: number;
@@ -76,32 +77,14 @@ export type Result = {
   impacts: ReconversionProjectImpacts;
 };
 
-class ReconversionProjectNotFound extends Error {
-  constructor(reconversionProjectId: string) {
-    super(
-      `ComputeReconversionProjectImpacts: ReconversionProject with id ${reconversionProjectId} not found`,
-    );
-    this.name = "ReconversionProjectNotFound";
-  }
-}
+type ComputeReconversionProjectImpactsResult = TResult<
+  ComputedImpacts,
+  "ReconversionProjectNotFound" | "SiteNotFound" | "NoDevelopmentPlanType"
+>;
 
-class SiteNotFound extends Error {
-  constructor(siteId: string) {
-    super(`ComputeReconversionProjectImpacts: Site with id ${siteId} not found`);
-    this.name = "SiteNotFound";
-  }
-}
-
-class NoDevelopmentPlanType extends Error {
-  constructor(reconversionProjectId: string) {
-    super(
-      `ComputeReconversionProjectImpacts: ReconversionProject with id ${reconversionProjectId} has no development plan`,
-    );
-    this.name = "NoDevelopmentPlanType";
-  }
-}
-
-export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request, Result> {
+export class ComputeReconversionProjectImpactsUseCase
+  implements UseCase<Request, ComputeReconversionProjectImpactsResult>
+{
   constructor(
     private readonly reconversionProjectQuery: ReconversionProjectImpactsQuery,
     private readonly siteRepository: SiteImpactsQuery,
@@ -113,16 +96,16 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
   async execute({
     reconversionProjectId,
     evaluationPeriodInYears: inputEvaluationPeriodInYears,
-  }: Request): Promise<Result> {
+  }: Request): Promise<ComputeReconversionProjectImpactsResult> {
     const reconversionProject = await this.reconversionProjectQuery.getById(reconversionProjectId);
-    if (!reconversionProject) throw new ReconversionProjectNotFound(reconversionProjectId);
+    if (!reconversionProject) return fail("ReconversionProjectNotFound");
 
     if (
       !reconversionProject.developmentPlan ||
       !reconversionProject.developmentPlan.type ||
       !reconversionProject.developmentPlan.features
     ) {
-      throw new NoDevelopmentPlanType(reconversionProjectId);
+      return fail("NoDevelopmentPlanType");
     }
 
     const evaluationPeriodInYears =
@@ -134,7 +117,7 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
 
     const relatedSite = await this.siteRepository.getById(reconversionProject.relatedSiteId);
 
-    if (!relatedSite) throw new SiteNotFound(reconversionProject.relatedSiteId);
+    if (!relatedSite) return fail("SiteNotFound");
 
     const result = {
       id: reconversionProjectId,
@@ -231,10 +214,10 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
           dateProvider: this.dateProvider,
         });
 
-        return {
+        return success({
           ...result,
           impacts: photovoltaicProjectImpactsService.formatImpacts(),
-        };
+        });
       }
       case "URBAN_PROJECT": {
         const cityStats = await this.cityStatsQuery.getCityStats(relatedSite.address.cityCode);
@@ -260,14 +243,14 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
                 },
         });
 
-        return {
+        return success({
           ...result,
           siteData: {
             ...result.siteData,
             cityStats,
           },
           impacts: urbanProjectImpactsService.formatImpacts(),
-        };
+        });
       }
     }
   }

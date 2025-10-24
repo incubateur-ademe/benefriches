@@ -6,12 +6,13 @@ import { InMemoryReconversionProjectImpactsQuery } from "src/reconversion-projec
 import { InMemorySiteImpactsQuery } from "src/reconversion-projects/adapters/secondary/queries/site-impacts/InMemorySiteImpactsQuery";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { FailureResult, SuccessResult } from "src/shared-kernel/result";
 
 import { FakeGetSoilsCarbonStorageService } from "../gateways/FakeGetSoilsCarbonStorageService";
 import {
   ApiReconversionProjectImpactsDataView,
   ComputeReconversionProjectImpactsUseCase,
-  Result,
+  ComputedImpacts,
 } from "./computeReconversionProjectImpacts.usecase";
 
 describe("ComputeReconversionProjectImpactsUseCase", () => {
@@ -37,9 +38,12 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
 
       const reconversionProjectId = uuid();
       const evaluationPeriodInYears = 10;
-      await expect(
-        usecase.execute({ reconversionProjectId, evaluationPeriodInYears }),
-      ).rejects.toThrow(`ReconversionProject with id ${reconversionProjectId} not found`);
+      const result = await usecase.execute({ reconversionProjectId, evaluationPeriodInYears });
+
+      expect(result.isFailure()).toBe(true);
+      expect((result as FailureResult<"ReconversionProjectNotFound">).getError()).toBe(
+        "ReconversionProjectNotFound",
+      );
     });
 
     it("throws error when reconversion project development plan does not exist", async () => {
@@ -68,10 +72,11 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         dateProvider,
       );
       const evaluationPeriodInYears = 10;
-      await expect(
-        usecase.execute({ reconversionProjectId, evaluationPeriodInYears }),
-      ).rejects.toThrow(
-        `ComputeReconversionProjectImpacts: ReconversionProject with id ${reconversionProjectId} has no development plan`,
+      const result = await usecase.execute({ reconversionProjectId, evaluationPeriodInYears });
+
+      expect(result.isFailure()).toBe(true);
+      expect((result as FailureResult<"NoDevelopmentPlanType">).getError()).toBe(
+        "NoDevelopmentPlanType",
       );
     });
 
@@ -111,9 +116,10 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       );
 
       const evaluationPeriodInYears = 10;
-      await expect(
-        usecase.execute({ reconversionProjectId, evaluationPeriodInYears }),
-      ).rejects.toThrow(`Site with id ${siteId} not found`);
+      const result = await usecase.execute({ reconversionProjectId, evaluationPeriodInYears });
+
+      expect(result.isFailure()).toBe(true);
+      expect((result as FailureResult<"SiteNotFound">).getError()).toBe("SiteNotFound");
     });
   });
 
@@ -229,7 +235,9 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         reconversionProjectId: reconversionProjectImpactDataView.id,
         evaluationPeriodInYears,
       });
-      expect(result).toEqual<Result>({
+      expect(result.isSuccess()).toBe(true);
+      // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
+      expect((result as SuccessResult<ComputedImpacts>).getData()).toEqual<ComputedImpacts>({
         id: reconversionProjectImpactDataView.id,
         name: reconversionProjectImpactDataView.name,
         evaluationPeriodInYears: 10,
@@ -514,8 +522,10 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       const result = await usecase.execute({
         reconversionProjectId: reconversionProjectImpactDataView.id,
       });
-      expect(result.id).toEqual(reconversionProjectImpactDataView.id);
-      expect(result.evaluationPeriodInYears).toEqual(
+      expect(result.isSuccess()).toBe(true);
+      const data = (result as SuccessResult<ComputedImpacts>).getData();
+      expect(data.id).toEqual(reconversionProjectImpactDataView.id);
+      expect(data.evaluationPeriodInYears).toEqual(
         reconversionProjectImpactDataView.developmentPlan.features.contractDuration,
       );
     });
@@ -540,8 +550,10 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         reconversionProjectId: reconversionProjectImpactDataView.id,
         evaluationPeriodInYears,
       });
-      expect(result.id).toEqual(reconversionProjectImpactDataView.id);
-      expect(result.impacts.environmental.soilsCo2eqStorage).toEqual(undefined);
+      expect(result.isSuccess()).toBe(true);
+      const data = (result as SuccessResult<ComputedImpacts>).getData();
+      expect(data.id).toEqual(reconversionProjectImpactDataView.id);
+      expect(data.impacts.environmental.soilsCo2eqStorage).toEqual(undefined);
     });
   });
 
@@ -649,13 +661,15 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         reconversionProjectId: reconversionProjectImpactDataView.id,
         evaluationPeriodInYears,
       });
-      expect(result.impacts.social.fullTimeJobs?.operations.base).not.toEqual(0);
-      expect(result.impacts.environmental.nonContaminatedSurfaceArea).toEqual(undefined);
-      expect(result.impacts.social.accidents).toEqual(undefined);
-      expect(result.impacts.socioeconomic.impacts.length).not.toEqual(0);
+      expect(result.isSuccess()).toBe(true);
+      const data = (result as SuccessResult<ComputedImpacts>).getData();
+      expect(data.impacts.social.fullTimeJobs?.operations.base).not.toEqual(0);
+      expect(data.impacts.environmental.nonContaminatedSurfaceArea).toEqual(undefined);
+      expect(data.impacts.social.accidents).toEqual(undefined);
+      expect(data.impacts.socioeconomic.impacts.length).not.toEqual(0);
       expect(
-        result.impacts.socioeconomic.impacts.find(
-          ({ impact }) => impact === "avoided_friche_costs",
+        data.impacts.socioeconomic.impacts.find(
+          ({ impact }: { impact: string }) => impact === "avoided_friche_costs",
         ),
       ).toEqual(undefined);
     });
@@ -677,7 +691,9 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         reconversionProjectId: reconversionProjectImpactDataView.id,
         evaluationPeriodInYears,
       });
-      expect(result.impacts.social.fullTimeJobs?.operations.base).toEqual(0);
+      expect(result.isSuccess()).toBe(true);
+      const data = (result as SuccessResult<ComputedImpacts>).getData();
+      expect(data.impacts.social.fullTimeJobs?.operations.base).toEqual(0);
     });
   });
 });

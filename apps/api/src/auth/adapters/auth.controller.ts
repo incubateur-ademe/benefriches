@@ -8,7 +8,6 @@ import {
   HttpException,
   HttpStatus,
   Inject,
-  InternalServerErrorException,
   NotFoundException,
   Post,
   Query,
@@ -126,8 +125,8 @@ export class AuthController {
       user: userProps,
     });
 
-    if (!result.success) {
-      switch (result.error) {
+    if (result.isFailure()) {
+      switch (result.getError()) {
         case "UserEmailAlreadyExists":
           throw new ConflictException({
             error: "EMAIL_ALREADY_EXISTS",
@@ -274,12 +273,12 @@ export class AuthController {
       postLoginRedirectTo: body.postLoginRedirectTo,
     });
 
-    if (result.success) {
+    if (result.isSuccess()) {
       response.status(200).send();
       return;
     }
 
-    switch (result.error) {
+    switch (result.getError()) {
       case "UserDoesNotExist":
         // Don't reveal if user exists - return success anyway
         throw new NotFoundException({
@@ -303,19 +302,17 @@ export class AuthController {
   async loginWithToken(@Query("token") token: string, @Res() response: Response) {
     const authenticationResult = await this.authenticateWithTokenUseCase.execute({ token });
 
-    if (!authenticationResult.success) {
-      switch (authenticationResult.error) {
+    if (authenticationResult.isFailure()) {
+      switch (authenticationResult.getError()) {
         case "TokenNotFound":
           throw new BadRequestException("Invalid token");
         case "AuthenticationAttemptExpired":
         case "TokenAlreadyUsed":
           throw new UnauthorizedException();
-        default:
-          throw new InternalServerErrorException("Failed to authenticate");
       }
     }
 
-    const authenticatedUser = authenticationResult.user;
+    const authenticatedUser = authenticationResult.getData().user;
     const isEmailVerified = await this.verifiedEmailRepository.isVerified(authenticatedUser.email);
     if (!isEmailVerified) {
       await this.verifiedEmailRepository.save(authenticatedUser.email, new Date());

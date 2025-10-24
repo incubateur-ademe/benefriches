@@ -4,6 +4,7 @@ import { InMemoryTokenAuthenticationAttemptRepository } from "src/auth/adapters/
 import { InMemoryUserRepository } from "src/auth/adapters/user-repository/InMemoryAuthUserRepository";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { FailureResult, SuccessResult } from "src/shared-kernel/result";
 import { UserBuilder } from "src/users/core/model/user.mock";
 
 import { DeterministicTokenGenerator } from "../adapters/token-generator/DeterministicTokenGenerator";
@@ -51,10 +52,8 @@ describe("AuthenticateWithToken Use Case", () => {
 
       const result = await usecase.execute({ token: "non-existent-token" });
 
-      expect(result).toEqual({
-        success: false,
-        error: "TokenNotFound",
-      });
+      expect(result.isFailure()).toBe(true);
+      expect((result as FailureResult).getError()).toBe("TokenNotFound");
     });
 
     it("Cannot authenticate with expired token", async () => {
@@ -75,10 +74,8 @@ describe("AuthenticateWithToken Use Case", () => {
 
       const result = await usecase.execute({ token: fakeToken });
 
-      expect(result).toEqual({
-        success: false,
-        error: "AuthenticationAttemptExpired",
-      });
+      expect(result.isFailure()).toBe(true);
+      expect((result as FailureResult).getError()).toBe("AuthenticationAttemptExpired");
     });
 
     it("Cannot authenticate with already used token", async () => {
@@ -97,10 +94,8 @@ describe("AuthenticateWithToken Use Case", () => {
 
       const result = await usecase.execute({ token: fakeToken });
 
-      expect(result).toEqual({
-        success: false,
-        error: "TokenAlreadyUsed",
-      });
+      expect(result.isFailure()).toBe(true);
+      expect((result as FailureResult).getError()).toBe("TokenAlreadyUsed");
     });
   });
 
@@ -123,12 +118,11 @@ describe("AuthenticateWithToken Use Case", () => {
 
       const result = await usecase.execute({ token: fakeToken });
 
-      expect(result).toEqual({
-        success: true,
-        user: {
-          id: user.id,
-          email: user.email,
-        },
+      expect(result.isSuccess()).toBe(true);
+      const data = (result as SuccessResult<{ user: { id: string; email: string } }>).getData();
+      expect(data.user).toEqual({
+        id: user.id,
+        email: user.email,
       });
 
       // Token should be marked as used

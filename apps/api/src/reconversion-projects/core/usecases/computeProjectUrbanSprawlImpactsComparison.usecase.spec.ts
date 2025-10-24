@@ -6,10 +6,14 @@ import { InMemoryReconversionProjectImpactsQuery } from "src/reconversion-projec
 import { InMemorySiteImpactsQuery } from "src/reconversion-projects/adapters/secondary/queries/site-impacts/InMemorySiteImpactsQuery";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { SuccessResult, FailureResult } from "src/shared-kernel/result";
 
 import { FakeGetSoilsCarbonStorageService } from "../gateways/FakeGetSoilsCarbonStorageService";
 import { Schedule } from "../model/reconversionProject";
-import { ComputeProjectUrbanSprawlImpactsComparisonUseCase } from "./computeProjectUrbanSprawlImpactsComparison.usecase";
+import {
+  ComputeProjectUrbanSprawlImpactsComparisonUseCase,
+  type ApiUrbanSprawlImpactsComparisonResult,
+} from "./computeProjectUrbanSprawlImpactsComparison.usecase";
 import { ApiReconversionProjectImpactsDataView } from "./computeReconversionProjectImpacts.usecase";
 
 const projectData: ReconversionProjectImpactsDataView<Schedule> = {
@@ -132,13 +136,14 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
 
       const reconversionProjectId = uuid();
       const evaluationPeriodInYears = 10;
-      await expect(
-        usecase.execute({
-          reconversionProjectId,
-          evaluationPeriodInYears,
-          comparisonSiteNature: "AGRICULTURAL_OPERATION",
-        }),
-      ).rejects.toThrow(`ReconversionProject with id ${reconversionProjectId} not found`);
+      const result = await usecase.execute({
+        reconversionProjectId,
+        evaluationPeriodInYears,
+        comparisonSiteNature: "AGRICULTURAL_OPERATION",
+      });
+
+      expect(result.isFailure()).toBe(true);
+      expect((result as FailureResult).getError()).toBe("ReconversionProjectNotFound");
     });
 
     it("throws error when reconversion project development plan does not exist", async () => {
@@ -167,15 +172,14 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
         dateProvider,
       );
       const evaluationPeriodInYears = 10;
-      await expect(
-        usecase.execute({
-          reconversionProjectId,
-          evaluationPeriodInYears,
-          comparisonSiteNature: "AGRICULTURAL_OPERATION",
-        }),
-      ).rejects.toThrow(
-        `ComputeProjectUrbanSprawlImpactsComparisonUsecase: ReconversionProject with id ${reconversionProjectId} has no development plan`,
-      );
+      const result = await usecase.execute({
+        reconversionProjectId,
+        evaluationPeriodInYears,
+        comparisonSiteNature: "AGRICULTURAL_OPERATION",
+      });
+
+      expect(result.isFailure()).toBe(true);
+      expect((result as FailureResult).getError()).toBe("NoDevelopmentPlanType");
     });
 
     it("throws error when reconversion project related site does not exist", async () => {
@@ -214,13 +218,14 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
       );
 
       const evaluationPeriodInYears = 10;
-      await expect(
-        usecase.execute({
-          reconversionProjectId,
-          evaluationPeriodInYears,
-          comparisonSiteNature: "AGRICULTURAL_OPERATION",
-        }),
-      ).rejects.toThrow(`Site with id ${siteId} not found`);
+      const result = await usecase.execute({
+        reconversionProjectId,
+        evaluationPeriodInYears,
+        comparisonSiteNature: "AGRICULTURAL_OPERATION",
+      });
+
+      expect(result.isFailure()).toBe(true);
+      expect((result as FailureResult).getError()).toBe("SiteNotFound");
     });
   });
 
@@ -244,53 +249,56 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
       comparisonSiteNature: "AGRICULTURAL_OPERATION",
     });
 
-    expect(result.baseCase.projectImpacts).toBeDefined();
-    expect(result.baseCase.statuQuoSiteImpacts).toBeDefined();
-    expect(result.comparisonCase.projectImpacts).toBeDefined();
-    expect(result.comparisonCase.statuQuoSiteImpacts).toBeDefined();
-    expect(result.projectData).toEqual(projectData);
+    expect(result.isSuccess()).toBe(true);
+    const data = (result as SuccessResult<ApiUrbanSprawlImpactsComparisonResult>).getData();
 
-    expect(result.baseCase.comparisonImpacts.economicBalance).toEqual(
-      result.baseCase.projectImpacts.economicBalance,
+    expect(data.baseCase.projectImpacts).toBeDefined();
+    expect(data.baseCase.statuQuoSiteImpacts).toBeDefined();
+    expect(data.comparisonCase.projectImpacts).toBeDefined();
+    expect(data.comparisonCase.statuQuoSiteImpacts).toBeDefined();
+    expect(data.projectData).toEqual(projectData);
+
+    expect(data.baseCase.comparisonImpacts.economicBalance).toEqual(
+      data.baseCase.projectImpacts.economicBalance,
     );
-    expect(result.comparisonCase.comparisonImpacts.economicBalance).toEqual(
-      result.comparisonCase.projectImpacts.economicBalance,
+    expect(data.comparisonCase.comparisonImpacts.economicBalance).toEqual(
+      data.comparisonCase.projectImpacts.economicBalance,
     );
 
-    expect(result.baseCase.comparisonImpacts.economicBalance.costs.siteReinstatement).toBeDefined();
+    expect(data.baseCase.comparisonImpacts.economicBalance.costs.siteReinstatement).toBeDefined();
     expect(
-      result.comparisonCase.comparisonImpacts.economicBalance.costs.siteReinstatement,
+      data.comparisonCase.comparisonImpacts.economicBalance.costs.siteReinstatement,
     ).toBeUndefined();
 
     // SOCIAL
-    expect(result.baseCase.comparisonImpacts.social.accidents).toEqual(
-      result.baseCase.projectImpacts.social.accidents,
+    expect(data.baseCase.comparisonImpacts.social.accidents).toEqual(
+      data.baseCase.projectImpacts.social.accidents,
     );
-    expect(result.baseCase.comparisonImpacts.social.avoidedVehiculeKilometers).toEqual(
-      result.baseCase.projectImpacts.social.avoidedVehiculeKilometers,
+    expect(data.baseCase.comparisonImpacts.social.avoidedVehiculeKilometers).toEqual(
+      data.baseCase.projectImpacts.social.avoidedVehiculeKilometers,
     );
-    expect(result.baseCase.comparisonImpacts.social.avoidedTrafficAccidents).toEqual(
-      result.baseCase.projectImpacts.social.avoidedTrafficAccidents,
+    expect(data.baseCase.comparisonImpacts.social.avoidedTrafficAccidents).toEqual(
+      data.baseCase.projectImpacts.social.avoidedTrafficAccidents,
     );
-    expect(result.baseCase.comparisonImpacts.social.householdsPoweredByRenewableEnergy).toEqual(
-      result.baseCase.projectImpacts.social.householdsPoweredByRenewableEnergy,
+    expect(data.baseCase.comparisonImpacts.social.householdsPoweredByRenewableEnergy).toEqual(
+      data.baseCase.projectImpacts.social.householdsPoweredByRenewableEnergy,
     );
-    expect(result.baseCase.comparisonImpacts.social.travelTimeSaved).toEqual(
-      result.baseCase.projectImpacts.social.travelTimeSaved,
+    expect(data.baseCase.comparisonImpacts.social.travelTimeSaved).toEqual(
+      data.baseCase.projectImpacts.social.travelTimeSaved,
     );
-    expect(result.comparisonCase.comparisonImpacts.social.avoidedVehiculeKilometers).toEqual(
-      result.comparisonCase.projectImpacts.social.avoidedVehiculeKilometers,
+    expect(data.comparisonCase.comparisonImpacts.social.avoidedVehiculeKilometers).toEqual(
+      data.comparisonCase.projectImpacts.social.avoidedVehiculeKilometers,
     );
-    expect(result.comparisonCase.comparisonImpacts.social.avoidedTrafficAccidents).toEqual(
-      result.comparisonCase.projectImpacts.social.avoidedTrafficAccidents,
+    expect(data.comparisonCase.comparisonImpacts.social.avoidedTrafficAccidents).toEqual(
+      data.comparisonCase.projectImpacts.social.avoidedTrafficAccidents,
     );
-    expect(
-      result.comparisonCase.comparisonImpacts.social.householdsPoweredByRenewableEnergy,
-    ).toEqual(result.comparisonCase.projectImpacts.social.householdsPoweredByRenewableEnergy);
-    expect(result.comparisonCase.comparisonImpacts.social.travelTimeSaved).toEqual(
-      result.comparisonCase.projectImpacts.social.travelTimeSaved,
+    expect(data.comparisonCase.comparisonImpacts.social.householdsPoweredByRenewableEnergy).toEqual(
+      data.comparisonCase.projectImpacts.social.householdsPoweredByRenewableEnergy,
     );
-    expect(result.comparisonCase.comparisonImpacts.social.accidents).toEqual({
+    expect(data.comparisonCase.comparisonImpacts.social.travelTimeSaved).toEqual(
+      data.comparisonCase.projectImpacts.social.travelTimeSaved,
+    );
+    expect(data.comparisonCase.comparisonImpacts.social.accidents).toEqual({
       base: 3,
       forecast: 3,
       difference: 0,
@@ -311,127 +319,120 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
       },
     });
 
-    expect(result.comparisonCase.comparisonImpacts.social.fullTimeJobs).toEqual(
-      result.comparisonCase.projectImpacts.social.fullTimeJobs,
+    expect(data.comparisonCase.comparisonImpacts.social.fullTimeJobs).toEqual(
+      data.comparisonCase.projectImpacts.social.fullTimeJobs,
     );
     // ENVIRONMENTAL
-    expect(result.baseCase.comparisonImpacts.environmental.nonContaminatedSurfaceArea).toEqual(
-      result.baseCase.projectImpacts.environmental.nonContaminatedSurfaceArea,
+    expect(data.baseCase.comparisonImpacts.environmental.nonContaminatedSurfaceArea).toEqual(
+      data.baseCase.projectImpacts.environmental.nonContaminatedSurfaceArea,
     );
-    expect(result.baseCase.comparisonImpacts.environmental.avoidedCo2eqEmissions).toEqual(
-      result.baseCase.projectImpacts.environmental.avoidedCo2eqEmissions,
+    expect(data.baseCase.comparisonImpacts.environmental.avoidedCo2eqEmissions).toEqual(
+      data.baseCase.projectImpacts.environmental.avoidedCo2eqEmissions,
     );
-    expect(result.baseCase.comparisonImpacts.environmental.permeableSurfaceArea).toEqual({
+    expect(data.baseCase.comparisonImpacts.environmental.permeableSurfaceArea).toEqual({
       base:
-        2000 + 1000 + result.baseCase.statuQuoSiteImpacts.environmental.permeableSurfaceArea.total,
-      forecast: 8000 + result.baseCase.statuQuoSiteImpacts.environmental.permeableSurfaceArea.total,
-      difference: result.baseCase.projectImpacts.environmental.permeableSurfaceArea.difference,
+        2000 + 1000 + data.baseCase.statuQuoSiteImpacts.environmental.permeableSurfaceArea.total,
+      forecast: 8000 + data.baseCase.statuQuoSiteImpacts.environmental.permeableSurfaceArea.total,
+      difference: data.baseCase.projectImpacts.environmental.permeableSurfaceArea.difference,
       mineralSoil: {
         base:
-          1000 + result.baseCase.statuQuoSiteImpacts.environmental.permeableSurfaceArea.mineralSoil,
+          1000 + data.baseCase.statuQuoSiteImpacts.environmental.permeableSurfaceArea.mineralSoil,
         forecast:
-          1000 + result.baseCase.statuQuoSiteImpacts.environmental.permeableSurfaceArea.mineralSoil,
+          1000 + data.baseCase.statuQuoSiteImpacts.environmental.permeableSurfaceArea.mineralSoil,
         difference:
-          result.baseCase.projectImpacts.environmental.permeableSurfaceArea.mineralSoil.difference,
+          data.baseCase.projectImpacts.environmental.permeableSurfaceArea.mineralSoil.difference,
       },
       greenSoil: {
-        base:
-          2000 + result.baseCase.statuQuoSiteImpacts.environmental.permeableSurfaceArea.greenSoil,
+        base: 2000 + data.baseCase.statuQuoSiteImpacts.environmental.permeableSurfaceArea.greenSoil,
         forecast:
-          7000 + result.baseCase.statuQuoSiteImpacts.environmental.permeableSurfaceArea.greenSoil,
+          7000 + data.baseCase.statuQuoSiteImpacts.environmental.permeableSurfaceArea.greenSoil,
         difference:
-          result.baseCase.projectImpacts.environmental.permeableSurfaceArea.greenSoil.difference,
+          data.baseCase.projectImpacts.environmental.permeableSurfaceArea.greenSoil.difference,
       },
     });
     expect(
-      result.baseCase.comparisonImpacts.environmental.soilsCarbonStorage?.forecast,
-    ).toBeGreaterThan(
-      result.baseCase.projectImpacts.environmental.soilsCarbonStorage?.forecast ?? 0,
-    );
+      data.baseCase.comparisonImpacts.environmental.soilsCarbonStorage?.forecast,
+    ).toBeGreaterThan(data.baseCase.projectImpacts.environmental.soilsCarbonStorage?.forecast ?? 0);
     expect(
-      result.baseCase.comparisonImpacts.environmental.soilsCo2eqStorage?.forecast,
-    ).toBeGreaterThan(
-      result.baseCase.projectImpacts.environmental.soilsCo2eqStorage?.forecast ?? 0,
-    );
+      data.baseCase.comparisonImpacts.environmental.soilsCo2eqStorage?.forecast,
+    ).toBeGreaterThan(data.baseCase.projectImpacts.environmental.soilsCo2eqStorage?.forecast ?? 0);
 
     expect(
-      result.comparisonCase.comparisonImpacts.environmental.nonContaminatedSurfaceArea?.forecast,
+      data.comparisonCase.comparisonImpacts.environmental.nonContaminatedSurfaceArea?.forecast,
     ).toBeLessThan(
-      result.comparisonCase.projectImpacts.environmental.nonContaminatedSurfaceArea?.forecast ?? 0,
+      data.comparisonCase.projectImpacts.environmental.nonContaminatedSurfaceArea?.forecast ?? 0,
     );
 
-    expect(result.comparisonCase.comparisonImpacts.environmental.avoidedCo2eqEmissions).toEqual(
-      result.comparisonCase.projectImpacts.environmental.avoidedCo2eqEmissions,
+    expect(data.comparisonCase.comparisonImpacts.environmental.avoidedCo2eqEmissions).toEqual(
+      data.comparisonCase.projectImpacts.environmental.avoidedCo2eqEmissions,
     );
-    expect(result.comparisonCase.comparisonImpacts.environmental.permeableSurfaceArea).toEqual({
+    expect(data.comparisonCase.comparisonImpacts.environmental.permeableSurfaceArea).toEqual({
       base:
-        2000 + 1000 + result.baseCase.statuQuoSiteImpacts.environmental.permeableSurfaceArea.total,
+        2000 + 1000 + data.baseCase.statuQuoSiteImpacts.environmental.permeableSurfaceArea.total,
       forecast:
-        8000 + result.comparisonCase.statuQuoSiteImpacts.environmental.permeableSurfaceArea.total,
-      difference:
-        result.comparisonCase.projectImpacts.environmental.permeableSurfaceArea.difference,
+        8000 + data.comparisonCase.statuQuoSiteImpacts.environmental.permeableSurfaceArea.total,
+      difference: data.comparisonCase.projectImpacts.environmental.permeableSurfaceArea.difference,
       mineralSoil: {
         base:
-          1000 + result.baseCase.statuQuoSiteImpacts.environmental.permeableSurfaceArea.mineralSoil,
+          1000 + data.baseCase.statuQuoSiteImpacts.environmental.permeableSurfaceArea.mineralSoil,
         forecast:
           1000 +
-          result.comparisonCase.statuQuoSiteImpacts.environmental.permeableSurfaceArea.mineralSoil,
+          data.comparisonCase.statuQuoSiteImpacts.environmental.permeableSurfaceArea.mineralSoil,
         difference:
-          result.comparisonCase.projectImpacts.environmental.permeableSurfaceArea.mineralSoil
+          data.comparisonCase.projectImpacts.environmental.permeableSurfaceArea.mineralSoil
             .difference,
       },
       greenSoil: {
-        base:
-          2000 + result.baseCase.statuQuoSiteImpacts.environmental.permeableSurfaceArea.greenSoil,
+        base: 2000 + data.baseCase.statuQuoSiteImpacts.environmental.permeableSurfaceArea.greenSoil,
         forecast:
           7000 +
-          result.comparisonCase.statuQuoSiteImpacts.environmental.permeableSurfaceArea.greenSoil,
+          data.comparisonCase.statuQuoSiteImpacts.environmental.permeableSurfaceArea.greenSoil,
         difference:
-          result.comparisonCase.projectImpacts.environmental.permeableSurfaceArea.greenSoil
+          data.comparisonCase.projectImpacts.environmental.permeableSurfaceArea.greenSoil
             .difference,
       },
     });
     expect(
-      result.comparisonCase.comparisonImpacts.environmental.soilsCarbonStorage?.forecast,
+      data.comparisonCase.comparisonImpacts.environmental.soilsCarbonStorage?.forecast,
     ).toBeGreaterThan(
-      result.comparisonCase.projectImpacts.environmental.soilsCarbonStorage?.forecast ?? 0,
+      data.comparisonCase.projectImpacts.environmental.soilsCarbonStorage?.forecast ?? 0,
     );
     expect(
-      result.comparisonCase.comparisonImpacts.environmental.soilsCo2eqStorage?.forecast,
+      data.comparisonCase.comparisonImpacts.environmental.soilsCo2eqStorage?.forecast,
     ).toBeGreaterThan(
-      result.comparisonCase.projectImpacts.environmental.soilsCo2eqStorage?.forecast ?? 0,
+      data.comparisonCase.projectImpacts.environmental.soilsCo2eqStorage?.forecast ?? 0,
     );
     // SOCIO ECONOMIC
-    expect(result.baseCase.comparisonImpacts.socioeconomic.impacts.length).toBeGreaterThanOrEqual(
-      result.comparisonCase.projectImpacts.socioeconomic.impacts.length,
+    expect(data.baseCase.comparisonImpacts.socioeconomic.impacts.length).toBeGreaterThanOrEqual(
+      data.comparisonCase.projectImpacts.socioeconomic.impacts.length,
     );
     expect(
-      result.baseCase.comparisonImpacts.socioeconomic.impacts.find(
+      data.baseCase.comparisonImpacts.socioeconomic.impacts.find(
         ({ impact }) => impact === "avoided_friche_costs",
       ),
     ).toEqual(
-      result.baseCase.projectImpacts.socioeconomic.impacts.find(
+      data.baseCase.projectImpacts.socioeconomic.impacts.find(
         ({ impact }) => impact === "avoided_friche_costs",
       ),
     );
     expect(
-      result.comparisonCase.comparisonImpacts.socioeconomic.impacts.find(
+      data.comparisonCase.comparisonImpacts.socioeconomic.impacts.find(
         ({ impact }) => impact === "avoided_friche_costs",
       ),
     ).toEqual(
-      result.comparisonCase.projectImpacts.socioeconomic.impacts.find(
+      data.comparisonCase.projectImpacts.socioeconomic.impacts.find(
         ({ impact }) => impact === "avoided_friche_costs",
       ),
     );
 
     expect(
-      result.comparisonCase.comparisonImpacts.socioeconomic.impacts.find(
+      data.comparisonCase.comparisonImpacts.socioeconomic.impacts.find(
         ({ impact }) => impact === "statu_quo_friche_costs",
       ),
     ).toBeDefined();
 
     expect(
-      result.baseCase.comparisonImpacts.socioeconomic.impacts.filter(
+      data.baseCase.comparisonImpacts.socioeconomic.impacts.filter(
         ({ impact }) => impact === "rental_income",
       ),
     ).toEqual([
@@ -461,7 +462,7 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
       },
     ]);
     expect(
-      result.comparisonCase.comparisonImpacts.socioeconomic.impacts.filter(
+      data.comparisonCase.comparisonImpacts.socioeconomic.impacts.filter(
         ({ impact }) => impact === "rental_income",
       ),
     ).toEqual([
@@ -492,7 +493,7 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
     ]);
 
     expect(
-      result.baseCase.comparisonImpacts.socioeconomic.impacts.find(
+      data.baseCase.comparisonImpacts.socioeconomic.impacts.find(
         ({ impact }) => impact === "taxes_income",
       ),
     ).toEqual({
@@ -517,7 +518,7 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
     });
 
     expect(
-      result.comparisonCase.comparisonImpacts.socioeconomic.impacts.find(
+      data.comparisonCase.comparisonImpacts.socioeconomic.impacts.find(
         ({ impact }) => impact === "taxes_income",
       ),
     ).toEqual({
@@ -542,47 +543,47 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
     });
 
     expect(
-      result.baseCase.comparisonImpacts.socioeconomic.impacts.find(
+      data.baseCase.comparisonImpacts.socioeconomic.impacts.find(
         ({ impact }) => impact === "water_regulation",
       )?.amount,
     ).toEqual(
-      result.baseCase.projectImpacts.socioeconomic.impacts.find(
+      data.baseCase.projectImpacts.socioeconomic.impacts.find(
         ({ impact }) => impact === "water_regulation",
       )?.amount ?? 0,
     );
 
     expect(
-      result.comparisonCase.comparisonImpacts.socioeconomic.impacts.find(
+      data.comparisonCase.comparisonImpacts.socioeconomic.impacts.find(
         ({ impact }) => impact === "water_regulation",
       )?.amount,
     ).toBeLessThan(
-      result.comparisonCase.projectImpacts.socioeconomic.impacts.find(
+      data.comparisonCase.projectImpacts.socioeconomic.impacts.find(
         ({ impact }) => impact === "water_regulation",
       )?.amount ?? 0,
     );
 
     expect(
-      result.baseCase.comparisonImpacts.socioeconomic.impacts.find(
+      data.baseCase.comparisonImpacts.socioeconomic.impacts.find(
         ({ impact }) => impact === "ecosystem_services",
       )?.amount,
     ).toBeGreaterThan(
-      result.baseCase.projectImpacts.socioeconomic.impacts.find(
+      data.baseCase.projectImpacts.socioeconomic.impacts.find(
         ({ impact }) => impact === "ecosystem_services",
       )?.amount ?? 0,
     );
 
     expect(
-      result.comparisonCase.comparisonImpacts.socioeconomic.impacts.find(
+      data.comparisonCase.comparisonImpacts.socioeconomic.impacts.find(
         ({ impact }) => impact === "ecosystem_services",
       )?.amount,
     ).toBeGreaterThan(
-      result.comparisonCase.projectImpacts.socioeconomic.impacts.find(
+      data.comparisonCase.projectImpacts.socioeconomic.impacts.find(
         ({ impact }) => impact === "ecosystem_services",
       )?.amount ?? 0,
     );
 
     expect(
-      result.baseCase.comparisonImpacts.socioeconomic.impacts.filter(
+      data.baseCase.comparisonImpacts.socioeconomic.impacts.filter(
         ({ impact }) => impact === "avoided_roads_and_utilities_construction_expenses",
       ),
     ).toEqual([
@@ -595,7 +596,7 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
     ]);
 
     expect(
-      result.baseCase.comparisonImpacts.socioeconomic.impacts.filter(
+      data.baseCase.comparisonImpacts.socioeconomic.impacts.filter(
         ({ impact }) => impact === "avoided_roads_and_utilities_maintenance_expenses",
       ),
     ).toEqual([
@@ -608,18 +609,18 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
     ]);
 
     expect(
-      result.baseCase.comparisonImpacts.socioeconomic.impacts.filter(
+      data.baseCase.comparisonImpacts.socioeconomic.impacts.filter(
         ({ impact }) => impact === "roads_and_utilities_construction_expenses",
       ),
     ).toEqual([]);
     expect(
-      result.baseCase.comparisonImpacts.socioeconomic.impacts.filter(
+      data.baseCase.comparisonImpacts.socioeconomic.impacts.filter(
         ({ impact }) => impact === "roads_and_utilities_maintenance_expenses",
       ),
     ).toEqual([]);
 
     expect(
-      result.comparisonCase.comparisonImpacts.socioeconomic.impacts.filter(
+      data.comparisonCase.comparisonImpacts.socioeconomic.impacts.filter(
         ({ impact }) => impact === "roads_and_utilities_construction_expenses",
       ),
     ).toEqual([
@@ -632,7 +633,7 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
     ]);
 
     expect(
-      result.comparisonCase.comparisonImpacts.socioeconomic.impacts.filter(
+      data.comparisonCase.comparisonImpacts.socioeconomic.impacts.filter(
         ({ impact }) => impact === "roads_and_utilities_maintenance_expenses",
       ),
     ).toEqual([
@@ -645,12 +646,12 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
     ]);
 
     expect(
-      result.comparisonCase.comparisonImpacts.socioeconomic.impacts.filter(
+      data.comparisonCase.comparisonImpacts.socioeconomic.impacts.filter(
         ({ impact }) => impact === "avoided_roads_and_utilities_construction_expenses",
       ),
     ).toEqual([]);
     expect(
-      result.comparisonCase.comparisonImpacts.socioeconomic.impacts.filter(
+      data.comparisonCase.comparisonImpacts.socioeconomic.impacts.filter(
         ({ impact }) => impact === "avoided_roads_and_utilities_maintenance_expenses",
       ),
     ).toEqual([]);
@@ -678,14 +679,18 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
       evaluationPeriodInYears,
       comparisonSiteNature: "NATURAL_AREA",
     });
-    expect(result.projectData.id).toEqual(projectData.id);
-    expect(result.baseCase.projectImpacts.environmental.soilsCo2eqStorage).toEqual(undefined);
-    expect(result.baseCase.comparisonImpacts.environmental.soilsCo2eqStorage).toEqual(undefined);
-    expect(result.comparisonCase.projectImpacts.environmental.soilsCo2eqStorage).toEqual(undefined);
-    expect(result.comparisonCase.comparisonImpacts.environmental.soilsCo2eqStorage).toEqual(
+
+    expect(result.isSuccess()).toBe(true);
+    const data = (result as SuccessResult<ApiUrbanSprawlImpactsComparisonResult>).getData();
+
+    expect(data.projectData.id).toEqual(projectData.id);
+    expect(data.baseCase.projectImpacts.environmental.soilsCo2eqStorage).toEqual(undefined);
+    expect(data.baseCase.comparisonImpacts.environmental.soilsCo2eqStorage).toEqual(undefined);
+    expect(data.comparisonCase.projectImpacts.environmental.soilsCo2eqStorage).toEqual(undefined);
+    expect(data.comparisonCase.comparisonImpacts.environmental.soilsCo2eqStorage).toEqual(
       undefined,
     );
-    expect(result.comparisonCase.comparisonImpacts.socioeconomic.impacts.length > 0).toBeTruthy();
+    expect(data.comparisonCase.comparisonImpacts.socioeconomic.impacts.length > 0).toBeTruthy();
   });
 
   it("compares photovoltaic project on agricultural site with project on friche", async () => {
@@ -790,15 +795,16 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
       comparisonSiteNature: "FRICHE",
     });
 
+    expect(result.isSuccess()).toBe(true);
+    const data = (result as SuccessResult<ApiUrbanSprawlImpactsComparisonResult>).getData();
+
+    expect(data.baseCase.comparisonImpacts.economicBalance.costs.siteReinstatement).toBeUndefined();
     expect(
-      result.baseCase.comparisonImpacts.economicBalance.costs.siteReinstatement,
-    ).toBeUndefined();
-    expect(
-      result.comparisonCase.comparisonImpacts.economicBalance.costs.siteReinstatement,
+      data.comparisonCase.comparisonImpacts.economicBalance.costs.siteReinstatement,
     ).toBeDefined();
 
     expect(
-      result.baseCase.comparisonImpacts.socioeconomic.impacts.filter(
+      data.baseCase.comparisonImpacts.socioeconomic.impacts.filter(
         ({ impact }) => impact === "roads_and_utilities_construction_expenses",
       ),
     ).toEqual([
@@ -811,7 +817,7 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
     ]);
 
     expect(
-      result.baseCase.comparisonImpacts.socioeconomic.impacts.filter(
+      data.baseCase.comparisonImpacts.socioeconomic.impacts.filter(
         ({ impact }) => impact === "roads_and_utilities_maintenance_expenses",
       ),
     ).toEqual([
@@ -824,18 +830,18 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
     ]);
 
     expect(
-      result.baseCase.comparisonImpacts.socioeconomic.impacts.filter(
+      data.baseCase.comparisonImpacts.socioeconomic.impacts.filter(
         ({ impact }) => impact === "avoided_roads_and_utilities_construction_expenses",
       ),
     ).toEqual([]);
     expect(
-      result.baseCase.comparisonImpacts.socioeconomic.impacts.filter(
+      data.baseCase.comparisonImpacts.socioeconomic.impacts.filter(
         ({ impact }) => impact === "avoided_roads_and_utilities_maintenance_expenses",
       ),
     ).toEqual([]);
 
     expect(
-      result.baseCase.comparisonImpacts.socioeconomic.impacts.filter(
+      data.baseCase.comparisonImpacts.socioeconomic.impacts.filter(
         ({ impact }) => impact === "rental_income",
       ),
     ).toEqual([
@@ -854,7 +860,7 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
     ]);
 
     expect(
-      result.comparisonCase.comparisonImpacts.socioeconomic.impacts.filter(
+      data.comparisonCase.comparisonImpacts.socioeconomic.impacts.filter(
         ({ impact }) => impact === "rental_income",
       ),
     ).toEqual([

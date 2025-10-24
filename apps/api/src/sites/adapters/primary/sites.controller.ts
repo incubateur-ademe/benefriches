@@ -1,8 +1,9 @@
 import {
+  BadRequestException,
   Body,
   Controller,
+  ConflictException,
   Get,
-  InternalServerErrorException,
   NotFoundException,
   Param,
   Post,
@@ -18,7 +19,7 @@ import {
   ExpressSiteProps,
 } from "src/sites/core/usecases/createNewExpressSite.usecase";
 import { CreateNewCustomSiteUseCase } from "src/sites/core/usecases/createNewSite.usecase";
-import { GetSiteByIdUseCase, SiteNotFoundError } from "src/sites/core/usecases/getSiteById.usecase";
+import { GetSiteByIdUseCase } from "src/sites/core/usecases/getSiteById.usecase";
 
 // here we can't use createZodDto because dto schema is a discriminated union: https://github.com/risen228/nestjs-zod/issues/41
 const createCustomSiteDtoSchema = API_ROUTES.SITES.CREATE_CUSTOM_SITE.bodySchema;
@@ -45,7 +46,22 @@ export class SitesController {
       ...jsonSiteProps,
       soilsDistribution: createSoilSurfaceAreaDistribution(jsonSiteProps.soilsDistribution),
     } as const;
-    await this.createNewSiteUseCase.execute({ siteProps, createdBy });
+    const result = await this.createNewSiteUseCase.execute({ siteProps, createdBy });
+
+    if (result.isFailure()) {
+      switch (result.getError()) {
+        case "ValidationError":
+          throw new BadRequestException({
+            error: "VALIDATION_ERROR",
+            message: "Invalid site data provided",
+          });
+        case "SiteAlreadyExists":
+          throw new ConflictException({
+            error: "SITE_ALREADY_EXISTS",
+            message: "A site with this ID already exists",
+          });
+      }
+    }
   }
 
   @Post(API_ROUTES.SITES.CREATE_EXPRESS_SITE.path)
@@ -53,24 +69,37 @@ export class SitesController {
     @Body(new ZodValidationPipe(createExpressSiteDtoSchema)) createSiteDto: CreateExpressSiteDto,
   ) {
     const { createdBy, ...siteProps } = createSiteDto;
-    await this.createNewExpressSiteUseCase.execute({
+    const result = await this.createNewExpressSiteUseCase.execute({
       siteProps: siteProps as ExpressSiteProps,
       createdBy,
     });
+
+    if (result.isFailure()) {
+      switch (result.getError()) {
+        case "SiteAlreadyExists":
+          throw new ConflictException({
+            error: "SITE_ALREADY_EXISTS",
+            message: "A site with this ID already exists",
+          });
+      }
+    }
   }
 
   @UseGuards(JwtAuthGuard)
   @Get("sites/:siteId")
   async getSiteById(@Param("siteId") siteId: string) {
-    try {
-      const site = await this.getSiteByIdUseCase.execute({ siteId });
+    const result = await this.getSiteByIdUseCase.execute({ siteId });
 
-      return site;
-    } catch (err) {
-      if (err instanceof SiteNotFoundError) {
-        throw new NotFoundException(err.message);
+    if (result.isFailure()) {
+      switch (result.getError()) {
+        case "SiteNotFound":
+          throw new NotFoundException({
+            error: "SITE_NOT_FOUND",
+            message: `Site with ID ${siteId} not found`,
+          });
       }
-      throw new InternalServerErrorException(err);
     }
+
+    return result.getData().site;
   }
 }

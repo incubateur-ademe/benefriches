@@ -1,6 +1,7 @@
 import { roundTo2Digits } from "shared";
 
 import { LocalCarbonStorageQuery } from "src/carbon-storage/adapters/secondary/carbon-storage-query/LocalCarbonStorageQuery.mock";
+import { SuccessResult } from "src/shared-kernel/result";
 
 import { CarbonStorageQuery } from "../gateways/CarbonStorageQuery";
 import { GetCityCarbonStoragePerSoilsCategoryUseCase } from "./getCityCarbonStoragePerSoilsCategory";
@@ -32,7 +33,10 @@ describe("GetCityCarbonStocksPerSoilsCategoryUseCase", () => {
     const prairieBushesCultivation = 4 * 69;
     const biomass = 4 * 7;
 
-    expect(result.totalCarbonStorage).toEqual(soilCultivation + prairieBushesCultivation + biomass);
+    expect(result.isSuccess()).toBe(true);
+    expect(
+      (result as SuccessResult<{ totalCarbonStorage: number }>).getData().totalCarbonStorage,
+    ).toEqual(soilCultivation + prairieBushesCultivation + biomass);
   });
 
   test("it should compute the right total: example with forest", async () => {
@@ -73,7 +77,9 @@ describe("GetCityCarbonStocksPerSoilsCategoryUseCase", () => {
       biomassArtificialNonForest +
       litterForest;
 
-    expect(result.totalCarbonStorage).toEqual(roundTo2Digits(total));
+    expect(
+      (result as SuccessResult<{ totalCarbonStorage: number }>).getData().totalCarbonStorage,
+    ).toEqual(roundTo2Digits(total));
   });
 
   test("it should return the right object format with forest value", async () => {
@@ -92,7 +98,11 @@ describe("GetCityCarbonStocksPerSoilsCategoryUseCase", () => {
       ],
     });
 
-    expect(result).toEqual({
+    expect(result.isSuccess()).toBe(true);
+    const successResult = result as SuccessResult;
+    // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
+    const data = successResult.getData();
+    expect(data).toEqual({
       totalCarbonStorage: 632.61,
       soilsCarbonStorage: [
         {
@@ -133,7 +143,11 @@ describe("GetCityCarbonStocksPerSoilsCategoryUseCase", () => {
 
     const CARBON_STORAGE_BY_HECTARE_FOR_IMPERMEABLE_SOILS = 30;
 
-    expect(result).toEqual({
+    expect(result.isSuccess()).toBe(true);
+    const successResult = result as SuccessResult;
+    // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
+    const data = successResult.getData();
+    expect(data).toEqual({
       totalCarbonStorage: CARBON_STORAGE_BY_HECTARE_FOR_IMPERMEABLE_SOILS * (1.5 + 3 + 2),
       soilsCarbonStorage: [
         {
@@ -170,7 +184,11 @@ describe("GetCityCarbonStocksPerSoilsCategoryUseCase", () => {
       ],
     });
 
-    expect(result).toEqual({
+    expect(result.isSuccess()).toBe(true);
+    const successResult = result as SuccessResult;
+    // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
+    const data = successResult.getData();
+    expect(data).toEqual({
       totalCarbonStorage: 0,
       soilsCarbonStorage: [
         {

@@ -1,5 +1,6 @@
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { FailureResult } from "src/shared-kernel/result";
 import { InMemorySitesRepository } from "src/sites/adapters/secondary/site-repository/InMemorySiteRepository";
 
 import {
@@ -9,7 +10,7 @@ import {
   buildFricheProps,
 } from "../models/site.mock";
 import { SiteEntity } from "../models/siteEntity";
-import { CreateNewCustomSiteUseCase, ValidationError } from "./createNewSite.usecase";
+import { CreateNewCustomSiteUseCase } from "./createNewSite.usecase";
 
 describe("CreateNewSite Use Case", () => {
   let siteRepository: InMemorySitesRepository;
@@ -26,18 +27,18 @@ describe("CreateNewSite Use Case", () => {
     const fricheProps = buildFricheProps({ name: 123 });
 
     const usecase = new CreateNewCustomSiteUseCase(siteRepository, dateProvider);
-    expect.assertions(2);
-    try {
-      await usecase.execute({
-        siteProps: { ...fricheProps, nature: "FRICHE" },
-        createdBy: "user-123",
-      });
-    } catch (err) {
-      expect((err as ValidationError).message).toEqual("Validation error");
-      expect((err as ValidationError).issues).toEqual({
-        name: ["Invalid input: expected string, received number"],
-      });
-    }
+    const result = await usecase.execute({
+      siteProps: { ...fricheProps, nature: "FRICHE" },
+      createdBy: "user-123",
+    });
+
+    expect(result.isFailure()).toBe(true);
+    expect((result as FailureResult<"ValidationError", unknown>).getError()).toBe(
+      "ValidationError",
+    );
+    expect((result as FailureResult<"ValidationError", unknown>).getIssues()).toEqual({
+      name: ["Invalid input: expected string, received number"],
+    });
   });
 
   it("Cannot create a site when already exists", async () => {
@@ -54,13 +55,13 @@ describe("CreateNewSite Use Case", () => {
     ]);
 
     const usecase = new CreateNewCustomSiteUseCase(siteRepository, dateProvider);
-    await expect(
-      usecase.execute({
-        siteProps,
-        createdBy: "blabla",
-      }),
-    ).rejects.toThrow(`Site with id ${fricheProps.id} already exists`);
+    const result = await usecase.execute({
+      siteProps,
+      createdBy: "blabla",
+    });
 
+    expect(result.isFailure()).toBe(true);
+    expect((result as FailureResult).getError()).toBe("SiteAlreadyExists");
     expect(siteRepository._getSites().length).toEqual(1);
   });
   describe("Agricultural or natura site", () => {

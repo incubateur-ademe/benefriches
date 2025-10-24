@@ -3,6 +3,7 @@ import { Address, createSoilSurfaceAreaDistribution } from "shared";
 import { InMemoryCityStatsQuery } from "src/reconversion-projects/adapters/secondary/queries/city-stats/InMemoryCityStatsQuery";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { FailureResult } from "src/shared-kernel/result";
 import { InMemorySitesRepository } from "src/sites/adapters/secondary/site-repository/InMemorySiteRepository";
 
 import { buildFriche, buildFricheProps } from "../models/site.mock";
@@ -49,19 +50,19 @@ describe("CreateNewExpressSite Use case", () => {
     ]);
 
     const usecase = new CreateNewExpressSiteUseCase(siteRepository, dateProvider, cityStatsQuery);
-    await expect(
-      usecase.execute({
-        siteProps: {
-          id: fricheProps.id,
-          fricheActivity: "INDUSTRY",
-          surfaceArea: 1000,
-          address: buildAddress(),
-          nature: "FRICHE",
-        },
-        createdBy: "blabla",
-      }),
-    ).rejects.toThrow(`Site with id ${fricheProps.id} already exists`);
+    const result = await usecase.execute({
+      siteProps: {
+        id: fricheProps.id,
+        fricheActivity: "INDUSTRY",
+        surfaceArea: 1000,
+        address: buildAddress(),
+        nature: "FRICHE",
+      },
+      createdBy: "blabla",
+    });
 
+    expect(result.isFailure()).toBe(true);
+    expect((result as FailureResult).getError()).toBe("SiteAlreadyExists");
     expect(siteRepository._getSites().length).toEqual(1);
   });
 

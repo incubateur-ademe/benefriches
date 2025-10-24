@@ -1,4 +1,5 @@
 import { MockPhotovoltaicGeoInfoSystemApi } from "src/photovoltaic-performance/adapters/secondary/photovoltaic-data-provider/PhotovoltaicGeoInfoSystemApi.mock";
+import { SuccessResult } from "src/shared-kernel/result";
 
 import { GetPhotovoltaicExpectedPerformanceUseCase } from "./getPhotovoltaicExpectedPerformanceUseCase";
 
@@ -13,8 +14,11 @@ describe("GetPhotovoltaicExpectedPerformanceUseCase use case", () => {
     const usecase = new GetPhotovoltaicExpectedPerformanceUseCase(dataProvider);
     const result = await usecase.execute({ lat: 48.859, long: 2.347, peakPower: 3.1 });
 
-    expect(result).toBeDefined();
-    expect(result).toEqual({
+    expect(result.isSuccess()).toBe(true);
+    const successResult = result as SuccessResult;
+    // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
+    const data = successResult.getData();
+    expect(data).toEqual({
       expectedPerformance: {
         kwhPerDay: 9.43,
         kwhPerMonth: 286.91,

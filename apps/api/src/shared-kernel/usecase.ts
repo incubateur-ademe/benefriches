@@ -1,3 +1,5 @@
-export interface UseCase<TRequest, TResponse> {
-  execute(request: TRequest): Promise<TResponse>;
+import { type TResult } from "./result";
+
+export interface UseCase<TRequest, TResultType extends TResult<unknown, string, unknown>> {
+  execute(request: TRequest): Promise<TResultType>;
 }

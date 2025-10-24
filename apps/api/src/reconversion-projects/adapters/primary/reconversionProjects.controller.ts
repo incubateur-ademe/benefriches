@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   NotFoundException,
+  ForbiddenException,
   Param,
   Post,
   Query,
@@ -98,10 +99,18 @@ export class ReconversionProjectController {
   async getExpressReconversionProject(
     @Query() getExpressReconversionProjectDto: GenerateExpressReconversionProjectQueryDto,
   ): Promise<ReconversionProjectFeaturesView> {
-    const reconversionProject = await this.generateExpressReconversionProjectUseCase.execute(
+    const result = await this.generateExpressReconversionProjectUseCase.execute(
       getExpressReconversionProjectDto,
     );
-    return formatReconversionProjectInputToFeatures(reconversionProject);
+
+    if (result.isFailure()) {
+      switch (result.getError()) {
+        case "SiteNotFound":
+          throw new NotFoundException(result.getError());
+      }
+    }
+
+    return formatReconversionProjectInputToFeatures(result.getData());
   }
 
   @UseGuards(JwtAuthGuard)
@@ -109,9 +118,16 @@ export class ReconversionProjectController {
   async createExpressReconversionProject(
     @Body() createReconversionProjectDto: GenerateAndSaveExpressReconversionProjectBodyDto,
   ) {
-    await this.generateAndSaveExpressReconversionProjectUseCase.execute(
+    const result = await this.generateAndSaveExpressReconversionProjectUseCase.execute(
       createReconversionProjectDto,
     );
+
+    if (result.isFailure()) {
+      switch (result.getError()) {
+        case "SiteNotFound":
+          throw new NotFoundException(result.getError());
+      }
+    }
   }
 
   @UseGuards(JwtAuthGuard)
@@ -129,13 +145,15 @@ export class ReconversionProjectController {
       userId: authenticatedUserId,
     });
 
-    if (!result.success) {
-      switch (result.error) {
-        case "SOURCE_RECONVERSION_PROJECT_NOT_FOUND":
-        case "USER_NOT_AUTHORIZED":
+    if (result.isFailure()) {
+      const error = result.getError();
+      switch (error) {
+        case "SourceReconversionProjectNotFound":
           throw new NotFoundException(
             `Reconversion project with id ${reconversionProjectId} not found`,
           );
+        case "UserNotAuthorized":
+          throw new ForbiddenException();
       }
     }
   }
@@ -144,7 +162,12 @@ export class ReconversionProjectController {
   @Get("list-by-site")
   async getListGroupedBySite(@Query() { userId }: GetListGroupedBySiteQueryDto) {
     const result = await this.getReconversionProjectsBySite.execute({ userId });
-    return result;
+
+    if (result.isFailure()) {
+      throw new NotFoundException(result.getError());
+    }
+
+    return result.getData();
   }
 
   @UseGuards(JwtAuthGuard)
@@ -158,7 +181,16 @@ export class ReconversionProjectController {
       evaluationPeriodInYears,
     });
 
-    return result;
+    if (result.isFailure()) {
+      const error = result.getError();
+      switch (error) {
+        case "ReconversionProjectNotFound":
+        case "SiteNotFound":
+        case "NoDevelopmentPlanType":
+          throw new NotFoundException(error);
+      }
+    }
+    return result.getData();
   }
 
   @UseGuards(JwtAuthGuard)
@@ -182,7 +214,12 @@ export class ReconversionProjectController {
       siteCityCode,
       siteSurfaceArea: Number(siteSurfaceArea),
     });
-    return result;
+
+    if (result.isFailure()) {
+      throw new NotFoundException("Failed to compute impacts");
+    }
+
+    return result.getData();
   }
 
   @Get(API_ROUTES.URBAN_SPRAWL_IMPACTS_COMPARISON.GET.path.replace("/reconversion-projects/", ""))
@@ -195,6 +232,15 @@ export class ReconversionProjectController {
       evaluationPeriodInYears: urbanSprawlComparisonQueryDto.evaluationPeriodInYears,
       comparisonSiteNature: urbanSprawlComparisonQueryDto.comparisonSiteNature,
     });
-    return result;
+
+    if (result.isFailure()) {
+      const error = result.getError();
+      if (error === "ReconversionProjectNotFound" || error === "SiteNotFound") {
+        throw new NotFoundException(error);
+      }
+      throw new NotFoundException("NoDevelopmentPlanType");
+    }
+
+    return result.getData();
   }
 }

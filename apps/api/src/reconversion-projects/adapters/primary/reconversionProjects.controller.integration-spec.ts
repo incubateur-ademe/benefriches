@@ -15,7 +15,7 @@ import {
   buildUrbanProjectReconversionProjectProps,
   UrbanProjectBuilder,
 } from "src/reconversion-projects/core/model/reconversionProject.mock";
-import { Result } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
+import { ComputedImpacts } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
 import { ReconversionProjectProps } from "src/reconversion-projects/core/usecases/createReconversionProject.usecase";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import {
@@ -523,7 +523,7 @@ describe("ReconversionProjects controller", () => {
 
       expect(response.status).toEqual(200);
       expect(response.body).toBeDefined();
-      const result = response.body as Result;
+      const result = response.body as ComputedImpacts;
       expect(result.impacts).toBeDefined();
       expect(result.projectData).toBeDefined();
       expect(result.siteData.cityStats).toEqual({
@@ -557,7 +557,7 @@ describe("ReconversionProjects controller", () => {
       expect(response.status).toEqual(404);
     });
 
-    it("gets a 404 when user is not the creator of the project", async () => {
+    it("gets a 403 when user is not the creator of the project", async () => {
       const siteId = uuid();
 
       const authenticatedUser = new UserBuilder().asLocalAuthority().build();
@@ -585,7 +585,7 @@ describe("ReconversionProjects controller", () => {
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send({ newProjectId: uuid() });
 
-      expect(response.status).toEqual(404);
+      expect(response.status).toEqual(403);
     });
 
     it("successfully duplicates a urban project", async () => {

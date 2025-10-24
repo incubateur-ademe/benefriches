@@ -2,6 +2,7 @@ import { InMemoryReconversionCompatibilityEvaluationRepository } from "src/recon
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { InMemoryEventPublisher } from "src/shared-kernel/adapters/events/publisher/InMemoryEventPublisher";
 import { DeterministicUuidGenerator } from "src/shared-kernel/adapters/id-generator/DeterministicIdGenerator";
+import { FailureResult } from "src/shared-kernel/result";
 
 import { ReconversionCompatibilityEvaluation } from "../reconversionCompatibilityEvaluation";
 import { CompleteReconversionCompatibilityEvaluationUseCase } from "./completeReconversionCompatibilityEvaluation.usecase";
@@ -78,9 +79,13 @@ describe("CompleteReconversionCompatibilityEvaluationUseCase", () => {
       eventPublisher,
     );
 
-    await expect(
-      usecase.execute({ id: "non-existent-id", mutafrichesId: "mutafriches-123" }),
-    ).rejects.toThrow("Reconversion compatibility evaluation with id non-existent-id not found");
+    const result = await usecase.execute({
+      id: "non-existent-id",
+      mutafrichesId: "mutafriches-123",
+    });
+
+    expect(result.isFailure()).toBe(true);
+    expect((result as FailureResult<"EvaluationNotFound">).getError()).toBe("EvaluationNotFound");
   });
 
   it("throws an error when evaluation is already completed", async () => {
@@ -103,13 +108,14 @@ describe("CompleteReconversionCompatibilityEvaluationUseCase", () => {
       eventPublisher,
     );
 
-    await expect(
-      usecase.execute({
-        id: "bdea66f3-e911-4a32-a829-cab382bc34ea",
-        mutafrichesId: "mutafriches-123",
-      }),
-    ).rejects.toThrow(
-      "Reconversion compatibility evaluation with id bdea66f3-e911-4a32-a829-cab382bc34ea cannot be completed",
+    const result = await usecase.execute({
+      id: "bdea66f3-e911-4a32-a829-cab382bc34ea",
+      mutafrichesId: "mutafriches-123",
+    });
+
+    expect(result.isFailure()).toBe(true);
+    expect((result as FailureResult<"EvaluationCannotBeCompleted">).getError()).toBe(
+      "EvaluationCannotBeCompleted",
     );
   });
 
@@ -138,13 +144,14 @@ describe("CompleteReconversionCompatibilityEvaluationUseCase", () => {
       eventPublisher,
     );
 
-    await expect(
-      usecase.execute({
-        id: "bdea66f3-e911-4a32-a829-cab382bc34ea",
-        mutafrichesId: "mutafriches-123",
-      }),
-    ).rejects.toThrow(
-      "Reconversion compatibility evaluation with id bdea66f3-e911-4a32-a829-cab382bc34ea cannot be completed",
+    const result = await usecase.execute({
+      id: "bdea66f3-e911-4a32-a829-cab382bc34ea",
+      mutafrichesId: "mutafriches-123",
+    });
+
+    expect(result.isFailure()).toBe(true);
+    expect((result as FailureResult<"EvaluationCannotBeCompleted">).getError()).toBe(
+      "EvaluationCannotBeCompleted",
     );
   });
 });

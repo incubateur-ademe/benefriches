@@ -1,6 +1,7 @@
 import { vi } from "vitest";
 
 import { InMemoryReconversionProjectsListQuery } from "src/reconversion-projects/adapters/secondary/queries/reconversion-project-list/InMemoryReconversionProjectsListQuery";
+import { FailureResult, SuccessResult } from "src/shared-kernel/result";
 
 import {
   GetUserReconversionProjectsBySiteUseCase,
@@ -14,7 +15,9 @@ describe("GetUserReconversionProjectsBySite Use Case", () => {
     );
 
     // @ts-expect-error userId is required
-    await expect(usecase.execute({ userId: undefined })).rejects.toThrow("userId is required");
+    const result = await usecase.execute({ userId: undefined });
+    expect(result.isFailure()).toBe(true);
+    expect((result as FailureResult<"UserIdRequired">).getError()).toBe("UserIdRequired");
   });
 
   it("gets list of reconversion projects grouped by site for a user", async () => {
@@ -54,7 +57,10 @@ describe("GetUserReconversionProjectsBySite Use Case", () => {
 
     const usecase = new GetUserReconversionProjectsBySiteUseCase(query);
     const result = await usecase.execute({ userId });
-    expect(result).toEqual(reconversionProjects);
+    expect(result.isSuccess()).toBe(true);
+    expect((result as SuccessResult<ReconversionProjectsGroupedBySite>).getData()).toEqual(
+      reconversionProjects,
+    );
     /* oxlint-disable-next-line typescript/unbound-method */
     expect(query.getGroupedBySite).toHaveBeenCalledWith({ userId });
   });

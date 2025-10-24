@@ -1,6 +1,7 @@
 import { IDateProvider } from "shared";
 import { z } from "zod";
 
+import { TResult, fail, success } from "src/shared-kernel/result";
 import { UseCase } from "src/shared-kernel/usecase";
 
 export interface UserFeatureAlertRepository {
@@ -82,6 +83,8 @@ export const createFeatureAlertProps = baseFeatureAlertSchema.omit({ createdAt: 
 
 type Request = z.infer<typeof createFeatureAlertProps>;
 
+type CreateUserFeatureAlertResult = TResult<void, "ValidationError">;
+
 const convertArrayOptionsToObject = (feature: Request["feature"]) => {
   switch (feature.type) {
     case "compare_impacts":
@@ -105,16 +108,23 @@ const convertArrayOptionsToObject = (feature: Request["feature"]) => {
   }
 };
 
-export class CreateUserFeatureAlertUseCase implements UseCase<Request, void> {
+export class CreateUserFeatureAlertUseCase
+  implements UseCase<Request, CreateUserFeatureAlertResult>
+{
   constructor(
     private readonly userFeatureAlertRepository: UserFeatureAlertRepository,
     private readonly dateProvider: IDateProvider,
   ) {}
 
-  async execute(props: Request): Promise<void> {
-    const { userId, email, feature, id } = await createFeatureAlertProps.parseAsync(props);
+  async execute(props: Request): Promise<CreateUserFeatureAlertResult> {
+    const parseResult = await createFeatureAlertProps.safeParseAsync(props);
+    if (!parseResult.success) {
+      return fail("ValidationError");
+    }
 
-    const repositoryProps = await createFeatureAlertSchema.parseAsync({
+    const { userId, email, feature, id } = parseResult.data;
+
+    const repositoryProps = await createFeatureAlertSchema.safeParseAsync({
       id,
       userId,
       email,
@@ -123,6 +133,11 @@ export class CreateUserFeatureAlertUseCase implements UseCase<Request, void> {
       createdAt: this.dateProvider.now(),
     });
 
-    await this.userFeatureAlertRepository.save(repositoryProps);
+    if (!repositoryProps.success) {
+      return fail("ValidationError");
+    }
+
+    await this.userFeatureAlertRepository.save(repositoryProps.data);
+    return success();
   }
 }

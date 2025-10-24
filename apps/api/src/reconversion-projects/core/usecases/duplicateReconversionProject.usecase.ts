@@ -1,6 +1,7 @@
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerator";
 import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
+import { TResult, fail, success } from "src/shared-kernel/result";
 import { UseCase } from "src/shared-kernel/usecase";
 
 import { createReconversionProjectDuplicatedEvent } from "../events/reconversionProjectDuplicated.event";
@@ -13,18 +14,14 @@ type Request = {
   userId: string;
 };
 
-type SuccessResult = {
-  success: true;
-};
+type DuplicateReconversionProjectResult = TResult<
+  void,
+  "SourceReconversionProjectNotFound" | "UserNotAuthorized"
+>;
 
-type ErrorResult = {
-  success: false;
-  error: "SOURCE_RECONVERSION_PROJECT_NOT_FOUND" | "USER_NOT_AUTHORIZED";
-};
-
-type Result = SuccessResult | ErrorResult;
-
-export class DuplicateReconversionProjectUseCase implements UseCase<Request, Result> {
+export class DuplicateReconversionProjectUseCase
+  implements UseCase<Request, DuplicateReconversionProjectResult>
+{
   constructor(
     private readonly repository: ReconversionProjectRepository,
     private readonly dateProvider: DateProvider,
@@ -32,11 +29,15 @@ export class DuplicateReconversionProjectUseCase implements UseCase<Request, Res
     private readonly eventPublisher: DomainEventPublisher,
   ) {}
 
-  async execute({ sourceProjectId, newProjectId, userId }: Request): Promise<Result> {
+  async execute({
+    sourceProjectId,
+    newProjectId,
+    userId,
+  }: Request): Promise<DuplicateReconversionProjectResult> {
     const sourceProject = await this.repository.getById(sourceProjectId);
 
-    if (!sourceProject) return { success: false, error: "SOURCE_RECONVERSION_PROJECT_NOT_FOUND" };
-    if (sourceProject.createdBy !== userId) return { success: false, error: "USER_NOT_AUTHORIZED" };
+    if (!sourceProject) return fail("SourceReconversionProjectNotFound");
+    if (sourceProject.createdBy !== userId) return fail("UserNotAuthorized");
 
     const duplicatedProject: ReconversionProjectInput = {
       ...sourceProject,
@@ -55,6 +56,6 @@ export class DuplicateReconversionProjectUseCase implements UseCase<Request, Res
     });
 
     await this.eventPublisher.publish(event);
-    return { success: true };
+    return success();
   }
 }

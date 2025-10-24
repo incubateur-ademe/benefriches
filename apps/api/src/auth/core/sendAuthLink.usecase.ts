@@ -4,6 +4,7 @@ import { addMinutes, subMinutes } from "date-fns";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerator";
 import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
+import { TResult, fail, success } from "src/shared-kernel/result";
 import { UseCase } from "src/shared-kernel/usecase";
 
 import { createAuthLinkSendFailedEvent } from "./events/authLinkSendFailed.event";
@@ -28,7 +29,7 @@ type Request = {
 
 type SendAuthLinkFailureReason = "UserDoesNotExist" | "TooManyRequests";
 
-type SendAuthLinkResult = { success: true } | { success: false; error: SendAuthLinkFailureReason };
+type SendAuthLinkResult = TResult<void, SendAuthLinkFailureReason>;
 
 export class SendAuthLinkUseCase implements UseCase<Request, SendAuthLinkResult> {
   constructor(
@@ -49,7 +50,7 @@ export class SendAuthLinkUseCase implements UseCase<Request, SendAuthLinkResult>
     if (!user) {
       const errorName = "UserDoesNotExist";
       await this.publishFailureEvent(errorName, email);
-      return { success: false, error: errorName };
+      return fail(errorName);
     }
 
     const hasRecentUnusedToken =
@@ -61,7 +62,7 @@ export class SendAuthLinkUseCase implements UseCase<Request, SendAuthLinkResult>
     if (hasRecentUnusedToken) {
       const errorName = "TooManyRequests";
       await this.publishFailureEvent(errorName, email);
-      return { success: false, error: errorName };
+      return fail(errorName);
     }
 
     const { raw: authToken, hashed: authTokenHashed } = this.tokenGenerator.generatePair();
@@ -85,7 +86,7 @@ export class SendAuthLinkUseCase implements UseCase<Request, SendAuthLinkResult>
 
     await this.mailService.sendAuthLink(email, authLink.toString());
 
-    return { success: true };
+    return success();
   }
 
   private async publishAttemptEvent(email: string) {

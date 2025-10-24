@@ -11,6 +11,7 @@ import {
 import { v4 as uuid } from "uuid";
 
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { TResult, success } from "src/shared-kernel/result";
 import { UseCase } from "src/shared-kernel/usecase";
 
 import { CityStatsProvider } from "../gateways/CityStatsProvider";
@@ -18,7 +19,7 @@ import { GetCarbonStorageFromSoilDistributionService } from "../gateways/SoilsCa
 import { InputSiteData } from "../model/project-impacts/ReconversionProjectImpactsService";
 import { UrbanProjectImpactsService } from "../model/project-impacts/UrbanProjectImpactsService";
 import { getDefaultImpactsEvaluationPeriod } from "../model/project-impacts/impactsEvaluationPeriod";
-import { Result } from "./computeReconversionProjectImpacts.usecase";
+import { ComputedImpacts } from "./computeReconversionProjectImpacts.usecase";
 
 type City = {
   name: string;
@@ -36,7 +37,11 @@ type Request = {
   siteCityCode: string;
 };
 
-export class QuickComputeUrbanProjectImpactsOnFricheUseCase implements UseCase<Request, Result> {
+type QuickComputeUrbanProjectImpactsOnFricheResult = TResult<ComputedImpacts, never>;
+
+export class QuickComputeUrbanProjectImpactsOnFricheUseCase
+  implements UseCase<Request, QuickComputeUrbanProjectImpactsOnFricheResult>
+{
   constructor(
     private readonly cityStatsQuery: CityStatsProvider,
     private readonly siteGenerationService: SiteGenerationService,
@@ -44,7 +49,10 @@ export class QuickComputeUrbanProjectImpactsOnFricheUseCase implements UseCase<R
     private readonly getCarbonStorageFromSoilDistributionService: GetCarbonStorageFromSoilDistributionService,
   ) {}
 
-  async execute({ siteCityCode, siteSurfaceArea }: Request): Promise<Result> {
+  async execute({
+    siteCityCode,
+    siteSurfaceArea,
+  }: Request): Promise<QuickComputeUrbanProjectImpactsOnFricheResult> {
     const { name, surfaceAreaSquareMeters, population, propertyValueMedianPricePerSquareMeters } =
       await this.cityStatsQuery.getCityStats(siteCityCode);
 
@@ -147,7 +155,7 @@ export class QuickComputeUrbanProjectImpactsOnFricheUseCase implements UseCase<R
       },
     });
 
-    return {
+    return success({
       id: projectId,
       name: reconversionProject.name,
       relatedSiteId: site.id,
@@ -177,6 +185,6 @@ export class QuickComputeUrbanProjectImpactsOnFricheUseCase implements UseCase<R
         },
       },
       impacts: impacts.formatImpacts(),
-    };
+    });
   }
 }

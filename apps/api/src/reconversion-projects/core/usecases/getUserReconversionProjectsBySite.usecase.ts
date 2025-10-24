@@ -1,5 +1,6 @@
 import { SiteNature } from "shared";
 
+import { TResult, fail, success } from "src/shared-kernel/result";
 import { UseCase } from "src/shared-kernel/usecase";
 
 import { DevelopmentPlan } from "../model/reconversionProject";
@@ -22,28 +23,26 @@ export interface ReconversionProjectsListQuery {
   getGroupedBySite({ userId }: { userId: string }): Promise<ReconversionProjectsGroupedBySite>;
 }
 
-class UserIdRequiredError extends Error {
-  constructor() {
-    super(`GetUserReconversionProjectsBySite: userId is required`);
-    this.name = "UserIdRequiredError";
-  }
-}
-
 type Request = {
   userId: string;
 };
 
+type GetUserReconversionProjectsBySiteResult = TResult<
+  ReconversionProjectsGroupedBySite,
+  "UserIdRequired"
+>;
+
 export class GetUserReconversionProjectsBySiteUseCase
-  implements UseCase<Request, ReconversionProjectsGroupedBySite>
+  implements UseCase<Request, GetUserReconversionProjectsBySiteResult>
 {
   constructor(private readonly reconversionProjectsQuery: ReconversionProjectsListQuery) {}
 
-  async execute({ userId }: Request): Promise<ReconversionProjectsGroupedBySite> {
+  async execute({ userId }: Request): Promise<GetUserReconversionProjectsBySiteResult> {
     if (!userId) {
-      throw new UserIdRequiredError();
+      return fail("UserIdRequired");
     }
 
     const result = await this.reconversionProjectsQuery.getGroupedBySite({ userId });
-    return result;
+    return success(result);
   }
 }

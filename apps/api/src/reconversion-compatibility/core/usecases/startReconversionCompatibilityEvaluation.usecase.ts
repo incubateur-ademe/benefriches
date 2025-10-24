@@ -3,6 +3,7 @@ import { Injectable } from "@nestjs/common";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerator";
 import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
+import { TResult, fail, success } from "src/shared-kernel/result";
 import { UseCase } from "src/shared-kernel/usecase";
 
 import { createReconversionCompatibilityEvaluationStartedEvent } from "../events/reconversionCompatibilityEvaluationStarted.event";
@@ -14,8 +15,12 @@ type Request = {
   createdById: string;
 };
 
+type StartReconversionCompatibilityEvaluationResult = TResult<void, "EvaluationAlreadyExists">;
+
 @Injectable()
-export class StartReconversionCompatibilityEvaluationUseCase implements UseCase<Request, void> {
+export class StartReconversionCompatibilityEvaluationUseCase
+  implements UseCase<Request, StartReconversionCompatibilityEvaluationResult>
+{
   constructor(
     private readonly repository: ReconversionCompatibilityEvaluationRepository,
     private readonly dateProvider: DateProvider,
@@ -23,9 +28,12 @@ export class StartReconversionCompatibilityEvaluationUseCase implements UseCase<
     private readonly eventPublisher: DomainEventPublisher,
   ) {}
 
-  async execute({ id, createdById }: Request): Promise<void> {
+  async execute({
+    id,
+    createdById,
+  }: Request): Promise<StartReconversionCompatibilityEvaluationResult> {
     if (await this.repository.existsWithId(id)) {
-      throw new Error(`Reconversion compatibility evaluation with id ${id} already exists`);
+      return fail("EvaluationAlreadyExists");
     }
 
     const evaluation = createReconversionCompatibilityEvaluation({
@@ -44,5 +52,6 @@ export class StartReconversionCompatibilityEvaluationUseCase implements UseCase<
     );
 
     await this.eventPublisher.publish(event);
+    return success();
   }
 }
