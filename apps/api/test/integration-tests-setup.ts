@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 import knex, { Knex } from "knex";
 import { spawn } from "node:child_process";
 import path from "node:path";
-import { DockerComposeEnvironment, StartedDockerComposeEnvironment } from "testcontainers";
+import { DockerComposeEnvironment, StartedDockerComposeEnvironment, Wait } from "testcontainers";
 
 import knexConfig from "../src/shared-kernel/adapters/sql-knex/knexConfig";
 
@@ -15,6 +15,8 @@ let dockerComposeInstance: StartedDockerComposeEnvironment;
 const spawnInfrastructure = async () => {
   dockerComposeInstance = await new DockerComposeEnvironment(composeFilePath, composeFile)
     .withEnvironmentFile(envFilePath)
+    .withDefaultWaitStrategy(Wait.forListeningPorts())
+    .withDefaultWaitStrategy(Wait.forHealthCheck())
     .up();
 };
 
@@ -48,8 +50,7 @@ export const setup = async () => {
     console.log("Seeds successfully imported ✅");
     await sqlConnection.destroy();
   } catch (error) {
-    console.error(error);
-    console.error("Error while spawning infrastructure testcontainer");
+    console.error("Error while spawning infrastructure testcontainer", error);
     await sqlConnection.destroy();
     await stopInfrastructure();
   }

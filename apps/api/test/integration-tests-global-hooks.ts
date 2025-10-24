@@ -33,8 +33,7 @@ afterEach(async () => {
       await sqlConnection(table).del();
     }
   } catch (err) {
-    console.error("Error while clearing database in tests");
-    console.error(err);
+    console.error("Error while clearing database in tests", err);
   } finally {
     await sqlConnection.destroy();
   }
