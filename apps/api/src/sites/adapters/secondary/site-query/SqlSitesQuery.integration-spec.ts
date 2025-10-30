@@ -2,7 +2,7 @@ import knex, { Knex } from "knex";
 import { v4 as uuid } from "uuid";
 
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
-import { SiteViewModel } from "src/sites/core/usecases/getSiteById.usecase";
+import { SiteViewModel } from "src/sites/core/gateways/SitesQuery";
 
 import { SqlSitesQuery } from "./SqlSitesQuery";
 

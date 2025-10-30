@@ -10,8 +10,7 @@ import {
   SqlSiteIncome,
   SqlSiteSoilsDistribution,
 } from "src/shared-kernel/adapters/sql-knex/tableTypes";
-import { SitesQuery } from "src/sites/core/gateways/SitesQuery";
-import { SiteViewModel } from "src/sites/core/usecases/getSiteById.usecase";
+import { SitesQuery, SiteViewModel } from "src/sites/core/gateways/SitesQuery";
 
 export class SqlSitesQuery implements SitesQuery {
   constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}

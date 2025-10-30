@@ -23,6 +23,7 @@ import {
   GenerateExpressReconversionProjectUseCase,
   SiteQuery,
 } from "src/reconversion-projects/core/usecases/generateExpressReconversionProject.usecase";
+import { GetReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/getReconversionProject.usecase";
 import { GetReconversionProjectFeaturesUseCase } from "src/reconversion-projects/core/usecases/getReconversionProjectFeatures.usecase";
 import {
   GetUserReconversionProjectsBySiteUseCase,
@@ -38,6 +39,7 @@ import { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerat
 import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
 import { SqlSitesQuery } from "src/sites/adapters/secondary/site-query/SqlSitesQuery";
 import { SqlSiteRepository } from "src/sites/adapters/secondary/site-repository/SqlSiteRepository";
+import { SitesQuery } from "src/sites/core/gateways/SitesQuery";
 import { SqlUserQuery } from "src/users/adapters/secondary/user-query/SqlUserQuery";
 import { UserQuery } from "src/users/core/gateways/UserQuery";
 
@@ -80,6 +82,14 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
         reconversionProjectRepository: ReconversionProjectRepository,
       ) => new UpdateReconversionProjectUseCase(dateProvider, reconversionProjectRepository),
       inject: [RealDateProvider, SqlReconversionProjectRepository],
+    },
+    {
+      provide: GetReconversionProjectUseCase,
+      useFactory: (
+        reconversionProjectRepository: ReconversionProjectRepository,
+        siteQuery: SitesQuery,
+      ) => new GetReconversionProjectUseCase(reconversionProjectRepository, siteQuery),
+      inject: [SqlReconversionProjectRepository, SqlSitesQuery],
     },
     {
       provide: GenerateExpressReconversionProjectUseCase,
