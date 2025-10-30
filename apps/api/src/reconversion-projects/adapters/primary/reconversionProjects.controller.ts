@@ -4,13 +4,13 @@ import {
   Get,
   NotFoundException,
   ForbiddenException,
+  BadRequestException,
   Param,
   Post,
   Put,
   Query,
   Req,
   UseGuards,
-  BadRequestException,
 } from "@nestjs/common";
 import { createZodDto } from "nestjs-zod";
 import {
@@ -30,6 +30,7 @@ import { CreateReconversionProjectUseCase } from "src/reconversion-projects/core
 import { DuplicateReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/duplicateReconversionProject.usecase";
 import { GenerateAndSaveExpressReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/generateAndSaveExpressReconversionProject.usecase";
 import { GenerateExpressReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/generateExpressReconversionProject.usecase";
+import { GetReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/getReconversionProject.usecase";
 import { GetReconversionProjectFeaturesUseCase } from "src/reconversion-projects/core/usecases/getReconversionProjectFeatures.usecase";
 import { GetUserReconversionProjectsBySiteUseCase } from "src/reconversion-projects/core/usecases/getUserReconversionProjectsBySite.usecase";
 import { QuickComputeUrbanProjectImpactsOnFricheUseCase } from "src/reconversion-projects/core/usecases/quickComputeUrbanProjectImpactsOnFricheUseCase.usecase";
@@ -80,6 +81,7 @@ export class ReconversionProjectController {
   constructor(
     private readonly createReconversionProjectUseCase: CreateReconversionProjectUseCase,
     private readonly updateReconversionProjectUseCase: UpdateReconversionProjectUseCase,
+    private readonly getReconversionProjectUseCase: GetReconversionProjectUseCase,
     private readonly getReconversionProjectsBySite: GetUserReconversionProjectsBySiteUseCase,
     private readonly getReconversionProjectImpactsUseCase: ComputeReconversionProjectImpactsUseCase,
     private readonly generateExpressReconversionProjectUseCase: GenerateExpressReconversionProjectUseCase,
@@ -285,6 +287,37 @@ export class ReconversionProjectController {
       throw new NotFoundException("NoDevelopmentPlanType");
     }
 
+    return result.getData();
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get(":reconversionProjectId")
+  async getReconversionProject(
+    @Param("reconversionProjectId") reconversionProjectId: string,
+    @Req() req: RequestWithAuthenticatedUser,
+  ) {
+    const authenticatedUserId = req.accessTokenPayload.userId;
+
+    const result = await this.getReconversionProjectUseCase.execute({
+      reconversionProjectId,
+      authenticatedUserId,
+    });
+
+    if (result.isFailure()) {
+      const error = result.getError();
+      switch (error) {
+        case "ReconversionProjectNotFound":
+          throw new NotFoundException(
+            `Reconversion project with id ${reconversionProjectId} not found`,
+          );
+        case "SiteNotFound":
+          throw new NotFoundException(`Related Site not found`);
+        case "UserNotAuthorized":
+          throw new ForbiddenException();
+        case "ValidationError":
+          throw new BadRequestException();
+      }
+    }
     return result.getData();
   }
 }

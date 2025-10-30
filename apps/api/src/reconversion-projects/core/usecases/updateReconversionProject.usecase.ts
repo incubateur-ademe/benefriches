@@ -16,7 +16,7 @@ type Request = {
 
 type UpdateReconversionProjectResult = TResult<
   void,
-  "ValidationError" | "SiteNotFound" | "ReconversionProjectNotFound" | "UserNotAuthorized",
+  "ValidationError" | "ReconversionProjectNotFound" | "UserNotAuthorized",
   { fieldErrors: Record<string, string[]> } | undefined
 >;
 

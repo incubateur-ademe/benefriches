@@ -6,7 +6,7 @@ import { InMemoryReconversionProjectRepository } from "src/reconversion-projects
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { FailureResult } from "src/shared-kernel/result";
 import { InMemorySitesQuery } from "src/sites/adapters/secondary/site-query/InMemorySitesQuery";
-import { SiteViewModel } from "src/sites/core/usecases/getSiteById.usecase";
+import { SiteViewModel } from "src/sites/core/gateways/SitesQuery";
 import { InMemoryUserQuery } from "src/users/adapters/secondary/user-query/InMemoryUserQuery";
 
 import { ReconversionProjectInput } from "../model/reconversionProject";

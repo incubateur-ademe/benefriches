@@ -1,7 +1,8 @@
 import { FailureResult, SuccessResult } from "src/shared-kernel/result";
 import { InMemorySitesQuery } from "src/sites/adapters/secondary/site-query/InMemorySitesQuery";
 
-import { GetSiteByIdUseCase, SiteViewModel } from "./getSiteById.usecase";
+import { SiteViewModel } from "../gateways/SitesQuery";
+import { GetSiteByIdUseCase } from "./getSiteById.usecase";
 
 describe("GetSiteById Use Case", () => {
   let sitesQuery: InMemorySitesQuery;

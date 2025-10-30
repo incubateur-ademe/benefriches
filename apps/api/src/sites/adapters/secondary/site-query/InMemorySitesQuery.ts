@@ -1,5 +1,4 @@
-import { SitesQuery } from "src/sites/core/gateways/SitesQuery";
-import { SiteViewModel } from "src/sites/core/usecases/getSiteById.usecase";
+import { SitesQuery, SiteViewModel } from "src/sites/core/gateways/SitesQuery";
 
 export class InMemorySitesQuery implements SitesQuery {
   sites: SiteViewModel[] = [];
