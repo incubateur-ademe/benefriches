@@ -109,6 +109,7 @@ export type SqlReconversionProject = {
   reinstatement_contract_owner_structure_type: string | null;
   reinstatement_schedule_start_date: Date | null;
   reinstatement_schedule_end_date: Date | null;
+  friche_decontaminated_soil_surface_area: number | null;
   // site purchase
   site_purchase_selling_price: number | null;
   site_purchase_property_transfer_duties: number | null;
@@ -122,7 +123,7 @@ export type SqlReconversionProject = {
   project_phase: string;
   // dates
   created_at: Date;
-  friche_decontaminated_soil_surface_area: number | null;
+  updated_at: Date | null;
 };
 
 type SqlReconversionProjectSoilsDistribution = {

@@ -1,11 +1,26 @@
 import { ReconversionProjectRepository } from "src/reconversion-projects/core/gateways/ReconversionProjectRepository";
-import { ReconversionProjectInput } from "src/reconversion-projects/core/model/reconversionProject";
+import {
+  ReconversionProjectInput,
+  ReconversionProjectUpdateInput,
+} from "src/reconversion-projects/core/model/reconversionProject";
 
 export class InMemoryReconversionProjectRepository implements ReconversionProjectRepository {
   private reconversionProjects: ReconversionProjectInput[] = [];
 
   async save(project: ReconversionProjectInput) {
     this.reconversionProjects.push(project);
+    await Promise.resolve();
+  }
+
+  async update(project: ReconversionProjectUpdateInput) {
+    const existing = this.reconversionProjects.find(({ id }) => id === project.id);
+    if (!existing) {
+      throw new Error(
+        "InMemoryReconversionProjectRepository > update: reconversion project not found",
+      );
+    }
+    this.reconversionProjects = this.reconversionProjects.filter(({ id }) => id !== project.id);
+    this.reconversionProjects.push({ ...existing, ...project });
     await Promise.resolve();
   }
 
