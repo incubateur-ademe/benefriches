@@ -9,6 +9,7 @@ import {
   Query,
   Req,
   UseGuards,
+  BadRequestException,
 } from "@nestjs/common";
 import { createZodDto } from "nestjs-zod";
 import {
@@ -202,7 +203,17 @@ export class ReconversionProjectController {
       reconversionProjectId,
     });
 
-    return result;
+    if (result.isFailure()) {
+      const error = result.getError();
+      switch (error) {
+        case "ReconversionProjectNotFound":
+          throw new NotFoundException(error);
+        case "ReconversionProjectIdRequired":
+          throw new BadRequestException(error);
+      }
+    }
+
+    return result.getData();
   }
 
   @Get("quick-compute-urban-project-impacts-on-friche")
