@@ -42,6 +42,8 @@
   --color-warning: #b34000;
   --color-warning-ultralight: #fff0db;
 
+  --color-error-ultradark: #ce0500;
+
   --color-green-main: #32762e;
 
   --color-border-grey: #dddddd;
@@ -61,10 +63,11 @@
   --color-impacts-negative-main: #ce0500;
   --color-impacts-negative-light: #ffe9e9;
 
-  --color-onboarding-step1: #3ba91b;
-  --color-onboarding-step2: #137feb;
-  --color-onboarding-step3: #8994ab;
-  --color-onboarding-step4: #f80338;
+  --color-onboarding-step1: #c83a3b;
+  --color-onboarding-step2: #c3892d;
+  --color-onboarding-step3: #f7963c;
+  --color-onboarding-step4: #03b417;
+  --color-onboarding-step5: #4490db;
 
   --color-soils-buildings: #eb13be;
   --color-soils-impermeable-soils: #b713eb;
@@ -217,4 +220,21 @@ text.highcharts-data-label {
   --highcharts-color-3: #a1ccf7;
   --highcharts-color-4: #106cc8;
   --highcharts-color-5: #0d59a5;
+}
+
+/* Animation utilities */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.5s ease-out forwards;
 }

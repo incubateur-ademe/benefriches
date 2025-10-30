@@ -8,6 +8,8 @@ import HeaderFooterLayout from "@/shared/views/layout/HeaderFooterLayout/HeaderF
 import SidebarContainerLayout from "@/shared/views/layout/SidebarLayout/SidebarContainerLayout";
 import { routes, useRoute } from "@/shared/views/router";
 
+import OnBoardingIntroductionHow from "./onboarding/views/pages/how-it-works/HowItWorksPage";
+import OnBoardingIntroductionWhyBenefriches from "./onboarding/views/pages/why-benefriches/WhyBenefrichesPage";
 import UpdateProjectPage from "./update-project/views";
 
 /* Lazy-loaded pages */
@@ -15,9 +17,6 @@ const CreateProjectPage = lazy(
   () => import("@/features/create-project/views/ProjectCreationWizard"),
 );
 const CreateSiteFoncierPage = lazy(() => import("@/features/create-site/views/SiteCreationWizard"));
-const OnBoardingIntroductionPages = lazy(
-  () => import("@/features/onboarding/views/OnBoardingIntroductionPages"),
-);
 const MyProjectsPage = lazy(() => import("@/features/projects/views/my-projects-page"));
 const ProjectImpactsPage = lazy(() => import("@/features/projects/views/project-page"));
 const UrbanSprawlImpactsComparisonPage = lazy(
@@ -38,10 +37,6 @@ const formsLayoutGroup = createGroup([
   routes.createSiteFoncier,
   routes.createProject,
   routes.updateProject,
-]);
-const onBoardingGroup = createGroup([
-  routes.onBoardingIntroductionHow,
-  routes.onBoardingIntroductionWhy,
 ]);
 
 function FeaturesApp() {
@@ -68,18 +63,6 @@ function FeaturesApp() {
     );
   }
 
-  if (onBoardingGroup.has(route)) {
-    return (
-      <HeaderFooterLayout>
-        <Suspense fallback={<LoadingSpinner />}>
-          <RequireAuthenticatedUser>
-            <OnBoardingIntroductionPages route={route} />
-          </RequireAuthenticatedUser>
-        </Suspense>
-      </HeaderFooterLayout>
-    );
-  }
-
   return (
     <HeaderFooterLayout>
       <RequireAuthenticatedUser>
@@ -87,6 +70,10 @@ function FeaturesApp() {
           {(() => {
             switch (route.name) {
               // protected pages
+              case routes.onBoardingIntroductionWhy.name:
+                return <OnBoardingIntroductionWhyBenefriches />;
+              case routes.onBoardingIntroductionHow.name:
+                return <OnBoardingIntroductionHow />;
               case routes.myProjects.name:
                 return <MyProjectsPage />;
               case routes.projectImpacts.name:

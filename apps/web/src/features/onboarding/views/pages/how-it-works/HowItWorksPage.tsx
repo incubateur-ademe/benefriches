@@ -1,197 +1,156 @@
-import { fr } from "@codegouvfr/react-dsfr";
-import { ButtonProps } from "@codegouvfr/react-dsfr/Button";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
-import { useWindowInnerSize } from "@codegouvfr/react-dsfr/tools/useWindowInnerSize";
-import { useBreakpointsValuesPx } from "@codegouvfr/react-dsfr/useBreakpointsValuesPx";
-import { useEffect, useState } from "react";
-import { Link } from "type-route";
+import { useState } from "react";
 
+import { siteCreationInitiated } from "@/features/create-site/core/actions/introduction.actions";
 import classNames from "@/shared/views/clsx";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
+import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
+import { routes } from "@/shared/views/router";
 
-import IllustrationCard from "./IllustrationCard";
-import OnBoardingIntroductionStep from "./Step";
-import { HOW_IT_WORKS_CONTENT } from "./content";
+const STEPS = {
+  TITLE: 0,
+  STEP_1: 1,
+  STEP_2: 2,
+  STEP_3: 3,
+  STEP_4: 4,
+  STEP_5: 5,
+} as const;
 
-const TRANSITION_CLASSES = ["transition", "ease-in-out", "duration-1000"] as const;
-const VISIBLE_CLASSES = ["opacity-100", "visible", "translate-y-0"] as const;
-const INVISIBLE_CLASSES = ["md:opacity-0", "md:invisible", "md:translate-y-44"] as const;
+type StepValue = (typeof STEPS)[keyof typeof STEPS];
 
-type Props = {
-  nextButtonProps: Partial<ButtonProps>;
-  backLinkProps: Link;
-};
+const TOTAL_STEPS = Object.keys(STEPS).length;
 
-const OnBoardingIntroductionHow = ({ nextButtonProps, backLinkProps }: Props) => {
-  const { breakpointsValues } = useBreakpointsValuesPx();
-  const { windowInnerWidth } = useWindowInnerSize();
+interface StepProps {
+  emoji: string;
+  stepNumber: number;
+  title: string;
+  description: string;
+  colorClass: string;
+}
 
-  const shouldDisplayStepByStep = windowInnerWidth > breakpointsValues.md;
+function Step({ emoji, stepNumber, title, description, colorClass }: StepProps) {
+  return (
+    <div className="flex items-center animate-fade-in-up mb-6 gap-6">
+      <div
+        className="bg-grey-light rounded-full flex items-center justify-center"
+        style={{ width: "88px", height: "88px" }}
+      >
+        <span className="text-4xl" role="img" aria-hidden="true">
+          {emoji}
+        </span>
+      </div>
 
-  const [step, setStep] = useState(shouldDisplayStepByStep ? 0 : 4);
+      <div>
+        <h3 className="text-xl m-0 mb-2">
+          <span
+            className={classNames(
+              "rounded-full inline-flex flex-none items-center justify-center mr-2 text-white font-bold shrink-0 grow-0",
+              colorClass,
+            )}
+            style={{ width: "24px", height: "24px" }}
+            aria-hidden="true"
+          >
+            <span className="text-sm">{stepNumber}</span>
+          </span>
+          {title}
+        </h3>
+        <p className="text-sm m-0">{description}</p>
+      </div>
+    </div>
+  );
+}
 
-  const step1Classes = step > 0 ? VISIBLE_CLASSES : INVISIBLE_CLASSES;
-  const step2Classes = step > 1 ? VISIBLE_CLASSES : INVISIBLE_CLASSES;
-  const step3Classes = step > 2 ? VISIBLE_CLASSES : INVISIBLE_CLASSES;
-  const step4Classes = step > 3 ? VISIBLE_CLASSES : INVISIBLE_CLASSES;
+function HowItWorksPage() {
+  const dispatch = useAppDispatch();
+  const [currentStep, setCurrentStep] = useState<StepValue>(STEPS.TITLE);
 
-  useEffect(() => {
-    if (shouldDisplayStepByStep) {
-      setTimeout(() => {
-        setStep(1);
-      }, 500);
+  const handleNextClick = () => {
+    if (currentStep < TOTAL_STEPS - 1) {
+      setCurrentStep((currentStep + 1) as StepValue);
+    } else {
+      dispatch(siteCreationInitiated({ skipIntroduction: true }));
+      routes.createSiteFoncier().push();
     }
-  }, [shouldDisplayStepByStep]);
+  };
+
+  const showStep1 = currentStep >= STEPS.STEP_1;
+  const showStep2 = currentStep >= STEPS.STEP_2;
+  const showStep3 = currentStep >= STEPS.STEP_3;
+  const showStep4 = currentStep >= STEPS.STEP_4;
+  const showStep5 = currentStep >= STEPS.STEP_5;
 
   return (
     <>
       <HtmlTitle>Comment ça marche - Introduction</HtmlTitle>
-      <section className={classNames(fr.cx("fr-container"), "py-20", "grid grid-cols-12 gap-2")}>
-        <aside
-          className={classNames(
-            "col-span-12",
-            "row-start-2",
-            "md:row-start-1",
-            "md:col-span-4",
-            "grid",
-            "grid-rows-3",
-            "gap-12",
-            "px-14",
-          )}
-          aria-hidden="true"
-        >
-          <div className={classNames("relative")}>
-            <IllustrationCard
-              title="Votre site"
-              iconId="fr-icon-map-pin-2-fill"
+      <div className="fr-container">
+        <section className="pt-20 flex-1">
+          <h2 className="mb-8">Bénéfriches, comment ça marche ?</h2>
+
+          {showStep1 && (
+            <Step
+              emoji="📍"
               stepNumber={1}
-              className={["w-[60%]", TRANSITION_CLASSES, step1Classes]}
+              title="Je décris mon site"
+              description="Type de site, sols, pollution, gestion du site... avec un maximum de données pré-remplies par l'outil."
+              colorClass="bg-onboarding-step1"
             />
-            <IllustrationCard
-              title="Votre projet"
-              iconId="fr-icon-briefcase-fill"
+          )}
+
+          {showStep2 && (
+            <Step
+              emoji="🏗️"
               stepNumber={2}
-              className={[
-                "w-[60%]",
-                TRANSITION_CLASSES,
-                step2Classes,
-                "absolute",
-                "right-0",
-                "bottom-4",
-                "z-10",
-              ]}
+              title="Je décris mon projet"
+              description="Type de projet, dépenses et recettes... avec là aussi un maximum de données pré-remplies."
+              colorClass="bg-onboarding-step2"
             />
-          </div>
-          <IllustrationCard
-            title="Données Bénéfriches"
-            iconId="fr-icon-database-fill"
-            stepNumber={3}
-            className={[
-              TRANSITION_CLASSES,
-              step3Classes,
-              "before:content-['x']",
-              "before:absolute",
-              "before:-top-12",
-              "before:left-[50%]",
-              "before:text-3xl",
-              "before:font-bold",
-            ]}
-          >
-            <div className="flex gap-4 items-center">
-              <img src="/img/logos/logo-ademe.svg" alt="ADEME" className="h-10" />
-              <img src="/img/logos/logo-insee.svg" alt="INSEE" className="h-10" />
-              <img src="/img/logos/logo-aldo.svg" alt="Aldo" className="h-6" />
-            </div>
-          </IllustrationCard>
-          <IllustrationCard
-            title="Impacts de votre projet"
-            iconId="fr-icon-bar-chart-box-fill"
-            stepNumber={4}
-            className={[
-              TRANSITION_CLASSES,
-              step4Classes,
-              "mt-2",
-              "before:content-['=']",
-              "before:absolute",
-              "before:-top-12",
-              "before:left-[50%]",
-              "before:text-3xl",
-              "before:font-bold",
-            ]}
-          >
-            <span className="text-sm">
-              🌱 Environnement, 👷 Emploi, 🤕 Sécurité, 💰 Finances publiques...
-            </span>
-          </IllustrationCard>
-        </aside>
+          )}
 
-        <div className="col-span-12 md:col-span-8">
-          <h2>Bénéfriches, comment ça marche&nbsp;?</h2>
-          <OnBoardingIntroductionStep
-            stepNumber={1}
-            className={[TRANSITION_CLASSES, step1Classes]}
-            title={HOW_IT_WORKS_CONTENT.DESCRIBE_SITE_TITLE}
-            text={HOW_IT_WORKS_CONTENT.DESCRIBE_SITE_TEXT}
-          />
+          {showStep3 && (
+            <Step
+              emoji="🗂️"
+              stepNumber={3}
+              title="L'outil croise vos données avec les siennes"
+              description="Instructions du gouvernement, enquêtes et statistiques, rapports institutionnels scientifiques..."
+              colorClass="bg-onboarding-step3"
+            />
+          )}
 
-          <OnBoardingIntroductionStep
-            stepNumber={2}
-            className={[TRANSITION_CLASSES, step2Classes]}
-            title={HOW_IT_WORKS_CONTENT.DESCRIBE_PROJECT_TITLE}
-            text={HOW_IT_WORKS_CONTENT.DESCRIBE_PROJECT_TEXT}
-          />
+          {showStep4 && (
+            <Step
+              emoji="📊"
+              stepNumber={4}
+              title="L'outil calcule les impacts du projet"
+              description="Impact sur l'environnement, l'emploi, le cadre de vie des riverains, les finances publiques..."
+              colorClass="bg-onboarding-step4"
+            />
+          )}
 
-          <OnBoardingIntroductionStep
-            stepNumber={3}
-            className={[TRANSITION_CLASSES, step3Classes]}
-            title={HOW_IT_WORKS_CONTENT.BENEFRICHES_COMPUTING_TITLE}
-            text={HOW_IT_WORKS_CONTENT.BENEFRICHES_COMPUTING_TEXT}
-          />
+          {showStep5 && (
+            <Step
+              emoji="📥"
+              stepNumber={5}
+              title="Je m'approprie les impacts"
+              description="Après avoir consulté les impacts, je peux les exporter en PDF et les comparer avec les impacts d'un autre projet."
+              colorClass="bg-onboarding-step5"
+            />
+          )}
+        </section>
 
-          <OnBoardingIntroductionStep
-            stepNumber={4}
-            className={[TRANSITION_CLASSES, step4Classes]}
-            title={HOW_IT_WORKS_CONTENT.VIEW_IMPACTS_TITLE}
-            text={HOW_IT_WORKS_CONTENT.VIEW_IMPACTS_TEXT}
-          />
-
-          <ButtonsGroup
-            inlineLayoutWhen="always"
-            alignment="between"
-            className="mt-8"
-            buttons={[
-              {
-                children: "Retour",
-                priority: "secondary",
-                linkProps: backLinkProps,
-              },
-              {
-                priority: "primary",
-                ...(step === 4
-                  ? {
-                      children: "C'est parti",
-                      nativeButtonProps: {
-                        role: "link",
-                        type: "button",
-                        ...nextButtonProps,
-                      },
-                    }
-                  : {
-                      children: "Suivant",
-                      nativeButtonProps: {
-                        type: "button",
-                        onClick: () => {
-                          setStep((current) => current + 1);
-                        },
-                      },
-                    }),
-              },
-            ]}
-          />
-        </div>
-      </section>
+        <ButtonsGroup
+          inlineLayoutWhen="always"
+          alignment="right"
+          buttons={[
+            {
+              children: currentStep === TOTAL_STEPS - 1 ? "C'est parti" : "Suivant",
+              priority: "primary",
+              onClick: handleNextClick,
+            },
+          ]}
+        />
+      </div>
     </>
   );
-};
+}
 
-export default OnBoardingIntroductionHow;
+export default HowItWorksPage;
