@@ -6,6 +6,7 @@ import {
   ForbiddenException,
   Param,
   Post,
+  Put,
   Query,
   Req,
   UseGuards,
@@ -16,6 +17,7 @@ import {
   API_ROUTES,
   expressProjectCategorySchema,
   saveReconversionProjectPropsSchema,
+  updateReconversionProjectPropsSchema,
 } from "shared";
 import { z } from "zod";
 
@@ -31,8 +33,10 @@ import { GenerateExpressReconversionProjectUseCase } from "src/reconversion-proj
 import { GetReconversionProjectFeaturesUseCase } from "src/reconversion-projects/core/usecases/getReconversionProjectFeatures.usecase";
 import { GetUserReconversionProjectsBySiteUseCase } from "src/reconversion-projects/core/usecases/getUserReconversionProjectsBySite.usecase";
 import { QuickComputeUrbanProjectImpactsOnFricheUseCase } from "src/reconversion-projects/core/usecases/quickComputeUrbanProjectImpactsOnFricheUseCase.usecase";
+import { UpdateReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/updateReconversionProject.usecase";
 
 class CreateReconversionProjectBodyDto extends createZodDto(saveReconversionProjectPropsSchema) {}
+class UpdateReconversionProjectBodyDto extends createZodDto(updateReconversionProjectPropsSchema) {}
 
 class GenerateExpressReconversionProjectQueryDto extends createZodDto(
   z.object({
@@ -75,6 +79,7 @@ class DuplicateReconversionProjectBodyDto extends createZodDto(
 export class ReconversionProjectController {
   constructor(
     private readonly createReconversionProjectUseCase: CreateReconversionProjectUseCase,
+    private readonly updateReconversionProjectUseCase: UpdateReconversionProjectUseCase,
     private readonly getReconversionProjectsBySite: GetUserReconversionProjectsBySiteUseCase,
     private readonly getReconversionProjectImpactsUseCase: ComputeReconversionProjectImpactsUseCase,
     private readonly generateExpressReconversionProjectUseCase: GenerateExpressReconversionProjectUseCase,
@@ -93,6 +98,34 @@ export class ReconversionProjectController {
     await this.createReconversionProjectUseCase.execute({
       reconversionProjectProps: createReconversionProjectDto,
     });
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Put(":reconversionProjectId")
+  async updateReconversionProject(
+    @Param("reconversionProjectId") reconversionProjectId: string,
+    @Body() body: UpdateReconversionProjectBodyDto,
+    @Req() req: RequestWithAuthenticatedUser,
+  ) {
+    const authenticatedUserId = req.accessTokenPayload.userId;
+
+    const result = await this.updateReconversionProjectUseCase.execute({
+      reconversionProjectProps: body,
+      userId: authenticatedUserId,
+      reconversionProjectId,
+    });
+
+    if (result.isFailure()) {
+      const error = result.getError();
+      switch (error) {
+        case "ReconversionProjectNotFound":
+          throw new NotFoundException(
+            `Reconversion project with id ${reconversionProjectId} not found`,
+          );
+        case "UserNotAuthorized":
+          throw new ForbiddenException();
+      }
+    }
   }
 
   @UseGuards(JwtAuthGuard)

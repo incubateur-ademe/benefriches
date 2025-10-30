@@ -8,7 +8,10 @@ import { v4 as uuid } from "uuid";
 import { z, ZodError } from "zod";
 
 import { ACCESS_TOKEN_COOKIE_KEY } from "src/auth/adapters/access-token/accessTokenCookie";
-import { ReconversionProjectFeaturesView } from "src/reconversion-projects/core/model/reconversionProject";
+import {
+  ReconversionProjectFeaturesView,
+  ReconversionProjectUpdateInputProps,
+} from "src/reconversion-projects/core/model/reconversionProject";
 import {
   buildExhaustiveReconversionProjectProps,
   buildMinimalReconversionProjectProps,
@@ -651,6 +654,7 @@ describe("ReconversionProjects controller", () => {
         creation_mode: "duplicated",
         // oxlint-disable-next-line typescript/no-unsafe-assignment
         created_at: expect.any(Date),
+        updated_at: sourceUrbanProject.updatedAt ?? null,
         description: sourceUrbanProject.description!,
         created_by: authenticatedUser.id,
         related_site_id: siteId,
@@ -813,6 +817,7 @@ describe("ReconversionProjects controller", () => {
         creation_mode: "duplicated",
         // oxlint-disable-next-line typescript/no-unsafe-assignment
         created_at: expect.any(Date),
+        updated_at: sourceUrbanProject.updatedAt ?? null,
         description: null,
         created_by: authenticatedUser.id,
         related_site_id: siteId,
@@ -894,6 +899,235 @@ describe("ReconversionProjects controller", () => {
           "space_category as spaceCategory",
         );
       expect(duplicatedSoilDistributions).toEqual(sourceUrbanProject.soilsDistribution);
+    });
+  });
+
+  describe("PUT /reconversion-projects", () => {
+    const baseUpdateReconversionProjectProps = {
+      name: "Centrale photovoltaique",
+      developmentPlan: {
+        type: "PHOTOVOLTAIC_POWER_PLANT",
+        costs: [{ amount: 130000, purpose: "installation_works" }],
+        developer: {
+          structureType: "company",
+          name: "Terre cuite d’occitanie",
+        },
+        features: {
+          surfaceArea: 1200,
+          contractDuration: 25,
+          electricalPowerKWc: 10000,
+          expectedAnnualProduction: 12000,
+        },
+      },
+
+      soilsDistribution: [
+        {
+          soilType: "BUILDINGS",
+          surfaceArea: 3000,
+        },
+        {
+          soilType: "ARTIFICIAL_TREE_FILLED",
+          surfaceArea: 5000,
+        },
+        {
+          soilType: "FOREST_MIXED",
+          surfaceArea: 60000,
+        },
+        {
+          soilType: "MINERAL_SOIL",
+          surfaceArea: 5000,
+        },
+        {
+          soilType: "IMPERMEABLE_SOILS",
+          surfaceArea: 1300,
+        },
+      ],
+      yearlyProjectedCosts: [{ purpose: "rent", amount: 12000 }],
+      yearlyProjectedRevenues: [{ source: "operations", amount: 13000 }],
+      projectPhase: "planning",
+    } as const satisfies ReconversionProjectUpdateInputProps;
+    describe("error cases", () => {
+      it("gets a 401 when not authenticated", async () => {
+        const response = await supertest(app.getHttpServer())
+          .put(`/api/reconversion-projects/${uuid()}`)
+          .send(baseUpdateReconversionProjectProps);
+
+        expect(response.status).toEqual(401);
+      });
+
+      it("gets a 404 when project does not exist", async () => {
+        const userId = uuid();
+        const user = new UserBuilder().withId(userId).asLocalAuthority().build();
+        const { accessToken } = await authenticateUser(app)(user);
+
+        const response = await supertest(app.getHttpServer())
+          .put(`/api/reconversion-projects/${uuid()}`)
+          .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+          .send(baseUpdateReconversionProjectProps);
+
+        expect(response.status).toEqual(404);
+      });
+
+      it("gets a 403 when user is not the creator of the project", async () => {
+        const siteId = uuid();
+
+        const authenticatedUser = new UserBuilder().asLocalAuthority().build();
+        const { accessToken } = await authenticateUser(app)(authenticatedUser);
+
+        // Create a site
+        await sqlConnection("sites").insert({
+          id: siteId,
+          created_by: authenticatedUser.id,
+          name: "Site name",
+          surface_area: 14000,
+          owner_structure_type: "company",
+          created_at: new Date(),
+        });
+
+        const anotherUserId = uuid();
+        const urbanProject = new UrbanProjectBuilder()
+          .withCreatedBy(anotherUserId)
+          .withRelatedSiteId(siteId)
+          .build();
+        await app.get(SqlReconversionProjectRepository).save(urbanProject);
+
+        const response = await supertest(app.getHttpServer())
+          .put(`/api/reconversion-projects/${urbanProject.id}`)
+          .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+          .send(baseUpdateReconversionProjectProps);
+
+        expect(response.status).toEqual(403);
+      });
+    });
+
+    it("get a 200 response and reconversion project name is updated", async () => {
+      const user = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+
+      const siteId = uuid();
+      await sqlConnection("sites").insert({
+        id: siteId,
+        created_by: user.id,
+        name: "Site name",
+        surface_area: 14000,
+        owner_structure_type: "company",
+        created_at: new Date(),
+      });
+
+      const sourceUrbanProject = new UrbanProjectBuilder()
+        .withCreatedBy(user.id)
+        .withRelatedSiteId(siteId)
+        .withFutureOperator("Big real estate company", "company")
+        .withDeveloper("Big real estate company", "company")
+        .withFutureSiteOwner("Big real estate company", "company")
+        .withYearlyExpenses([{ amount: 34_000, purpose: "maintenance" }])
+        .withYearlyRevenues([{ amount: 50_000, source: "rent" }])
+        .withSoilsDistribution([
+          {
+            soilType: "BUILDINGS",
+            surfaceArea: 14_000,
+            spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+          },
+          {
+            soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+            surfaceArea: 25_000,
+            spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+          },
+        ])
+        .withReinstatement({
+          contractOwner: { name: "City of Paris", structureType: "local_authority" },
+          costs: [{ amount: 95_000, purpose: "demolition" }],
+          schedule: { startDate: new Date("2032-06-01"), endDate: new Date("2032-12-31") },
+        })
+        .build();
+
+      await app.get(SqlReconversionProjectRepository).save(sourceUrbanProject);
+
+      const response = await supertest(app.getHttpServer())
+        .put(`/api/reconversion-projects/${sourceUrbanProject.id}`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send({ ...sourceUrbanProject, name: "New project name" });
+
+      expect(response.status).toEqual(200);
+
+      const reconversionProjectsInDb = await sqlConnection("reconversion_projects").select(
+        "id",
+        "name",
+        "project_phase",
+        "creation_mode",
+      );
+      expect(reconversionProjectsInDb.length).toEqual(1);
+      expect(reconversionProjectsInDb[0]).toEqual({
+        id: sourceUrbanProject.id,
+        name: "New project name",
+        project_phase: sourceUrbanProject.projectPhase,
+        creation_mode: "custom",
+      });
+    });
+
+    it("get a 200 response and reconversion project is updated", async () => {
+      const user = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+
+      const siteId = uuid();
+      await sqlConnection("sites").insert({
+        id: siteId,
+        created_by: user.id,
+        name: "Site name",
+        surface_area: 14000,
+        owner_structure_type: "company",
+        created_at: new Date(),
+      });
+
+      const sourceUrbanProject = new UrbanProjectBuilder()
+        .withCreatedBy(user.id)
+        .withRelatedSiteId(siteId)
+        .build();
+
+      await app.get(SqlReconversionProjectRepository).save(sourceUrbanProject);
+
+      const updateProps = new UrbanProjectBuilder()
+        .withCreatedBy(user.id)
+        .withRelatedSiteId(siteId)
+        .withFutureOperator("Big real estate company", "company")
+        .withDeveloper("Big real estate company", "company")
+        .withFutureSiteOwner("Big real estate company", "company")
+        .withYearlyExpenses([{ amount: 34_000, purpose: "maintenance" }])
+        .withYearlyRevenues([{ amount: 50_000, source: "rent" }])
+        .withSoilsDistribution([
+          {
+            soilType: "BUILDINGS",
+            surfaceArea: 14_000,
+            spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+          },
+          {
+            soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+            surfaceArea: 25_000,
+            spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+          },
+        ])
+        .withReinstatement({
+          contractOwner: { name: "City of Paris", structureType: "local_authority" },
+          costs: [{ amount: 95_000, purpose: "demolition" }],
+          schedule: { startDate: new Date("2032-06-01"), endDate: new Date("2032-12-31") },
+        })
+        .build();
+
+      const response = await supertest(app.getHttpServer())
+        .put(`/api/reconversion-projects/${sourceUrbanProject.id}`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send(updateProps);
+
+      expect(response.status).toEqual(200);
+
+      const reconversionProjectUpdated = await app
+        .get(SqlReconversionProjectRepository)
+        .getById(sourceUrbanProject.id);
+
+      expect(reconversionProjectUpdated).toBeDefined();
+      expect(saveReconversionProjectPropsSchema.parseAsync(reconversionProjectUpdated)).toEqual(
+        saveReconversionProjectPropsSchema.parseAsync(updateProps),
+      );
     });
   });
 });

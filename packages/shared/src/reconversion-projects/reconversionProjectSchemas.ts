@@ -54,6 +54,7 @@ export const reconversionProjectSchema = z.object({
   id: z.uuid(),
   createdBy: z.uuid(),
   createdAt: z.date(),
+  updatedAt: z.date().optional(),
   creationMode: z.enum(["express", "custom", "duplicated"]),
   name: z.string(),
   description: z.string().optional(),
@@ -107,7 +108,17 @@ export const saveReconversionProjectSchema = reconversionProjectSchema
 
 export const saveReconversionProjectPropsSchema = saveReconversionProjectSchema.omit({
   createdAt: true,
+  updatedAt: true,
   creationMode: true,
+});
+
+export const updateReconversionProjectPropsSchema = saveReconversionProjectSchema.omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+  creationMode: true,
+  createdBy: true,
+  relatedSiteId: true,
 });
 
 type ScheduleString = {

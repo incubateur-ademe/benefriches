@@ -7,6 +7,7 @@ import { ReconversionProjectRepository } from "src/reconversion-projects/core/ga
 import {
   PhotovoltaicPowerStationFeatures,
   ReconversionProjectInput,
+  ReconversionProjectUpdateInput,
   Schedule,
 } from "src/reconversion-projects/core/model/reconversionProject";
 import { UrbanProjectFeatures } from "src/reconversion-projects/core/model/urbanProjects";
@@ -441,5 +442,153 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
       creationMode: sqlResult.creation_mode,
       createdAt: sqlResult.created_at,
     };
+  }
+
+  async update(reconversionProject: ReconversionProjectUpdateInput): Promise<void> {
+    await this.sqlConnection.transaction(async (trx) => {
+      await trx("reconversion_projects").where({ id: reconversionProject.id }).update({
+        updated_at: reconversionProject.updatedAt,
+        name: reconversionProject.name,
+        description: reconversionProject.description,
+        future_operator_name: reconversionProject.futureOperator?.name,
+        future_operator_structure_type: reconversionProject.futureOperator?.structureType,
+        future_site_owner_name: reconversionProject.futureSiteOwner?.name,
+        future_site_owner_structure_type: reconversionProject.futureSiteOwner?.structureType,
+        reinstatement_contract_owner_name: reconversionProject.reinstatementContractOwner?.name,
+        reinstatement_contract_owner_structure_type:
+          reconversionProject.reinstatementContractOwner?.structureType,
+        site_purchase_selling_price: reconversionProject.sitePurchaseSellingPrice,
+        site_purchase_property_transfer_duties:
+          reconversionProject.sitePurchasePropertyTransferDuties,
+        reinstatement_schedule_start_date: reconversionProject.reinstatementSchedule?.startDate,
+        reinstatement_schedule_end_date: reconversionProject.reinstatementSchedule?.endDate,
+        operations_first_year: reconversionProject.operationsFirstYear,
+        project_phase: reconversionProject.projectPhase,
+        site_resale_expected_selling_price: reconversionProject.siteResaleExpectedSellingPrice,
+        site_resale_expected_property_transfer_duties:
+          reconversionProject.siteResaleExpectedPropertyTransferDuties,
+        buildings_resale_expected_selling_price:
+          reconversionProject.buildingsResaleExpectedSellingPrice,
+        buildings_resale_expected_property_transfer_duties:
+          reconversionProject.buildingsResaleExpectedPropertyTransferDuties,
+        friche_decontaminated_soil_surface_area: reconversionProject.decontaminatedSoilSurface,
+      });
+
+      // Delete and recreate soils distribution
+      await trx("reconversion_project_soils_distributions")
+        .where({ reconversion_project_id: reconversionProject.id })
+        .delete();
+
+      const soilsDistributionToInsert: SqlReconversionProjectSoilsDistribution[] =
+        reconversionProject.soilsDistribution.map(({ soilType, surfaceArea, spaceCategory }) => ({
+          id: uuid(),
+          soil_type: soilType,
+          surface_area: surfaceArea,
+          space_category: spaceCategory,
+          reconversion_project_id: reconversionProject.id,
+        }));
+      await trx("reconversion_project_soils_distributions").insert(soilsDistributionToInsert);
+
+      // Update development plan
+      await trx("reconversion_project_development_plans")
+        .where({ reconversion_project_id: reconversionProject.id })
+        .update({
+          type: reconversionProject.developmentPlan.type,
+          developer_name: reconversionProject.developmentPlan.developer.name,
+          developer_structure_type: reconversionProject.developmentPlan.developer.structureType,
+          features: reconversionProject.developmentPlan.features,
+          schedule_start_date:
+            reconversionProject.developmentPlan.installationSchedule?.startDate ?? null,
+          schedule_end_date:
+            reconversionProject.developmentPlan.installationSchedule?.endDate ?? null,
+        });
+
+      // Get development plan id for costs update
+      const developmentPlan = await trx("reconversion_project_development_plans")
+        .select("id")
+        .where({ reconversion_project_id: reconversionProject.id })
+        .first();
+
+      if (developmentPlan) {
+        // Delete and recreate development plan costs
+        await trx("reconversion_project_development_plan_costs")
+          .where({ development_plan_id: developmentPlan.id })
+          .delete();
+
+        if (reconversionProject.developmentPlan.costs.length > 0) {
+          const costsToInsert: SqlDevelopmentPlanCost[] =
+            reconversionProject.developmentPlan.costs.map(({ amount, purpose }) => ({
+              id: uuid(),
+              amount,
+              purpose,
+              development_plan_id: developmentPlan.id,
+            }));
+          await trx("reconversion_project_development_plan_costs").insert(costsToInsert);
+        }
+      }
+
+      // Delete and recreate yearly expenses
+      await trx("reconversion_project_yearly_expenses")
+        .where({ reconversion_project_id: reconversionProject.id })
+        .delete();
+
+      if (reconversionProject.yearlyProjectedCosts.length > 0) {
+        const yearlyExpensesToInsert: SqlReconversionProjectExpense[] =
+          reconversionProject.yearlyProjectedCosts.map(({ amount, purpose }) => ({
+            id: uuid(),
+            amount,
+            purpose,
+            reconversion_project_id: reconversionProject.id,
+          }));
+        await trx("reconversion_project_yearly_expenses").insert(yearlyExpensesToInsert);
+      }
+
+      // Delete and recreate yearly revenues
+      await trx("reconversion_project_yearly_revenues")
+        .where({ reconversion_project_id: reconversionProject.id })
+        .delete();
+
+      if (reconversionProject.yearlyProjectedRevenues.length > 0) {
+        const yearlyRevenuesToInsert: SqlRevenue[] = mapRevenuesToSqlStruct(
+          reconversionProject.yearlyProjectedRevenues,
+          reconversionProject.id,
+        );
+        await trx("reconversion_project_yearly_revenues").insert(yearlyRevenuesToInsert);
+      }
+
+      // Delete and recreate reinstatement costs
+      await trx("reconversion_project_reinstatement_costs")
+        .where({ reconversion_project_id: reconversionProject.id })
+        .delete();
+
+      if (
+        reconversionProject.reinstatementCosts &&
+        reconversionProject.reinstatementCosts.length > 0
+      ) {
+        const reinstatementCostsToInsert: SqlReinstatementCost[] =
+          reconversionProject.reinstatementCosts.map(({ amount, purpose }) => ({
+            id: uuid(),
+            amount,
+            purpose,
+            reconversion_project_id: reconversionProject.id,
+          }));
+        await trx("reconversion_project_reinstatement_costs").insert(reinstatementCostsToInsert);
+      }
+
+      // Delete and recreate financial assistance revenues
+      await trx("reconversion_project_financial_assistance_revenues")
+        .where({ reconversion_project_id: reconversionProject.id })
+        .delete();
+
+      if (reconversionProject.financialAssistanceRevenues?.length) {
+        const financialAssistanceRevenuesToInsert: SqlRevenue[] = mapRevenuesToSqlStruct(
+          reconversionProject.financialAssistanceRevenues,
+          reconversionProject.id,
+        );
+        await trx("reconversion_project_financial_assistance_revenues").insert(
+          financialAssistanceRevenuesToInsert,
+        );
+      }
+    });
   }
 }
