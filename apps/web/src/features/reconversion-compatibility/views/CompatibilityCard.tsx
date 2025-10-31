@@ -1,6 +1,6 @@
 import Button from "@codegouvfr/react-dsfr/Button";
 
-import Badge from "@/shared/views/components/Badge/Badge";
+import classNames from "@/shared/views/clsx";
 
 import { MutabilityUsage } from "../core/reconversionCompatibilityEvaluation.reducer";
 
@@ -25,11 +25,11 @@ const getUsagePictogramSrc = (usage: MutabilityUsage): string => {
   }
 };
 
-const getScoreColor = (score: number): string => {
-  if (score >= 70) return "text-green-700";
-  if (score >= 60) return "text-yellow-600";
-  if (score >= 45) return "text-orange-600";
-  return "text-red-600";
+const getScoreBackgroundColor = (score: number): string => {
+  if (score >= 70) return "bg-success-ultralight";
+  if (score >= 60) return "bg-success-ultralight";
+  if (score >= 45) return "bg-warning-ultralight";
+  return "bg-red-600";
 };
 
 const getScoreLabel = (score: number): string => {
@@ -37,6 +37,19 @@ const getScoreLabel = (score: number): string => {
   if (score >= 60) return "Favorable";
   if (score >= 45) return "Correct";
   return "Défavorable";
+};
+
+const getRankColor = (rank: number): string => {
+  switch (rank) {
+    case 1:
+      return "bg-[#FFDA7B] text-black";
+    case 2:
+      return "bg-[#D9D9D9] text-black";
+    case 3:
+      return "bg-[#EAB078] text-black";
+    default:
+      return "bg-gray-200 text-black";
+  }
 };
 
 const getMutabilityUsageDisplayName = (usage: MutabilityUsage): string => {
@@ -62,29 +75,38 @@ export default function CompatibilityCard({ usage, score, rank, onDiscoverImpact
   return (
     <article
       key={usage}
-      className="flex-1 flex flex-col justify-between border-1 border-border-grey rounded-xl py-8 px-8"
+      className="relative flex-1 flex flex-col justify-between border border-border-grey rounded-xl py-8 px-8"
     >
-      <div>
+      <div
+        className={classNames(
+          getRankColor(rank),
+          "text-xl flex justify-center items-center font-bold rounded-full h-12 w-12",
+          "absolute top-4 left-4",
+        )}
+      >
+        {rank}
+      </div>
+      <div className="text-center mb-4">
         <div className="mb-4" aria-hidden="true">
-          <img src={getUsagePictogramSrc(usage)} width={100} height={100} alt="" />
+          <img src={getUsagePictogramSrc(usage)} width={80} height={80} alt="" />
         </div>
-        <div className="flex items-center gap-2 mb-6">
-          <h3 className="mb-0">{getMutabilityUsageDisplayName(usage)}</h3>
-          <Badge small style="blue">
-            #{rank}
-          </Badge>
-        </div>
+        <h3 className="mb-4 text-lg">{getMutabilityUsageDisplayName(usage)}</h3>
 
-        <div className="flex items-center gap-2 mb-6">
-          <h4 className="text-sm text-gray-600 font-normal mb-0">Indice de compatibilité :</h4>
-          <span className={`text-sm font-bold ${getScoreColor(score)}`}>
-            {score.toFixed(0)}% ({getScoreLabel(score)})
-          </span>
+        <div
+          className={classNames(
+            getScoreBackgroundColor(score),
+            "py-2 px-4 inline mx-auto rounded-lg",
+          )}
+        >
+          <span className="text-lg text-black font-bold">{score.toFixed(0)}%</span>
+          <span className="border-l border-black h-full opacity-25 mx-2" />
+          <span className="text-xs text-black font-bold align-middle">{getScoreLabel(score)}</span>
         </div>
       </div>
-      <div>
+      <div className="text-center">
         <Button
           priority="primary"
+          size="small"
           onClick={() => {
             onDiscoverImpactsClick();
           }}

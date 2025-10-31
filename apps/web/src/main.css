@@ -35,7 +35,13 @@
 
   --color-benefriches-dark: #1791c0;
 
-  --color-success-dark: #40a839 --color-green-main: #32762e;
+  --color-success-dark: #40a839;
+  --color-success-ultralight: #b8fec9;
+
+  --color-warning: #b34000;
+  --color-warning-ultralight: #fff0db;
+
+  --color-green-main: #32762e;
 
   --color-border-grey: #dddddd;
 
@@ -43,8 +49,6 @@
   --color-grey-light: #f6f6f6;
   --color-grey-dark: #333;
   --color-grey-disabled: #e5e5e5;
-
-  --color-warning: #b34000;
 
   --color-impacts-main: #eeeeee;
   --color-impacts-dark: #e5e5e5;

@@ -1,5 +1,4 @@
 import Button from "@codegouvfr/react-dsfr/Button";
-import Notice from "@codegouvfr/react-dsfr/Notice";
 import Tooltip from "@codegouvfr/react-dsfr/Tooltip";
 import { useEffect } from "react";
 
@@ -60,9 +59,8 @@ export default function ReconversionCompatibilityResultsPage() {
 
   return (
     <section className="fr-container py-10">
-      <h1>Résultats de la compatibilité de la friche</h1>
-      <div className="flex items-center justify-between mt-8">
-        <h2>🎯 Projets d'aménagement appropriés</h2>
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="m-0">Podium des projets d'aménagement</h1>
         <Button
           priority="tertiary"
           size="small"
@@ -76,7 +74,7 @@ export default function ReconversionCompatibilityResultsPage() {
 
       {viewData.evaluationResults?.reliabilityScore && (
         <p>
-          Classés par score de compatibilité • Indice de fiabilité :{" "}
+          Classés par score de compatibilité avec la friche • Indice de fiabilité :{" "}
           {viewData.evaluationResults.reliabilityScore}/10{" "}
           <Tooltip
             title={getTextForReliabilityScore(viewData.evaluationResults.reliabilityScore)}
@@ -96,14 +94,14 @@ export default function ReconversionCompatibilityResultsPage() {
           />
         ))}
       </div>
-      <Notice
-        title="Comment interpréter ces résultats ?"
-        description=" L'indice de compatibilité évalue la capacité de transformation de votre site selon différents
-        critères (accessibilité, réseaux, contraintes environnementales, etc.). Plus l'indice est
-        élevé, plus le type de reconversion est adapté à votre contexte local."
-        severity="info"
-        className="mt-8"
-      />
+      <div className="mt-8">
+        <h2 className="text-xl">💡 À propos des résultats</h2>
+        <p>
+          L'indice de compatibilité évalue la capacité de transformation de votre site selon
+          différents critères (accessibilité, réseaux, contraintes environnementales, etc.). Plus
+          l'indice est élevé, plus le type de reconversion est adapté à votre contexte local.
+        </p>
+      </div>
 
       {viewData.hasError && viewData.evaluationError && (
         <div className="fr-alert fr-alert--error fr-mb-4w">
