@@ -10,6 +10,7 @@ import BuildingsUseSelection from "@/shared/views/project-form/urban-project/bui
 
 import { UrbanProjectUpdateStep } from "../core/updateProject.reducer";
 import { selectUrbanProjectCurrentStep } from "../core/updateProject.selectors";
+import UrbanProjectUpdateHeader from "./UrbanProjectUpdateHeader";
 import UrbanProjectUpdateStepper from "./UrbanProjectUpdateStepper";
 import { useSyncUpdateStepWithRouteQuery } from "./useSyncUpdateStepWithRouteQuery";
 
@@ -445,33 +446,21 @@ const getCurrentStepView = (step: UrbanProjectUpdateStep): Exclude<ReactNode, un
           <ProjectCreationDataSummary />
         </>
       );
-    // case "URBAN_PROJECT_CREATION_RESULT":
-    //   return (
-    //     <>
-    //       <HtmlTitle>{`Résultat - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
-    //       <ProjectCreationResult />
-    //     </>
-    //   );
   }
 };
 
 function UrbanProjectUpdateView() {
   const currentStep = useAppSelector(selectUrbanProjectCurrentStep);
-  const projectName = useAppSelector((state) => state.projectUpdate.projectData.features?.name);
+  const projectName = useAppSelector(
+    (state) => state.projectUpdate.projectData.features?.name ?? "",
+  );
 
   useSyncUpdateStepWithRouteQuery(URBAN_PROJECT_CREATION_STEP_QUERY_STRING_MAP[currentStep]);
 
   return (
     <ProjectFormProvider mode="update">
       <SidebarLayout
-        title={
-          <div className="flex flex-col">
-            Modification du projet{" "}
-            <span className="mt-1 text-sm uppercase font-normal text-dsfr-text-label-grey">
-              {projectName}
-            </span>
-          </div>
-        }
+        title={<UrbanProjectUpdateHeader projectName={projectName} />}
         sidebarChildren={<UrbanProjectUpdateStepper step={currentStep} />}
         mainChildren={
           <Suspense fallback={<LoadingSpinner />}>

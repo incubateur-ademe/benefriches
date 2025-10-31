@@ -20,7 +20,7 @@ import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { TResult, fail, success } from "src/shared-kernel/result";
 import { UseCase } from "src/shared-kernel/usecase";
 
-import { ReconversionProjectInput } from "../model/reconversionProject";
+import { ReconversionProjectSaveDto } from "../model/reconversionProject";
 
 type SiteView = {
   id: string;
@@ -52,7 +52,7 @@ type Request = {
   reconversionProjectId?: string;
 };
 
-type GenerateExpressReconversionProjectResult = TResult<ReconversionProjectInput, "SiteNotFound">;
+type GenerateExpressReconversionProjectResult = TResult<ReconversionProjectSaveDto, "SiteNotFound">;
 
 const getCreationServiceClass = (
   category: Exclude<ExpressProjectCategory, "PHOTOVOLTAIC_POWER_PLANT"> | undefined,

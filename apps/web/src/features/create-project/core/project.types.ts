@@ -1,12 +1,10 @@
 import {
-  Address,
   FinancialAssistanceRevenue,
   PhotovoltaicInstallationExpense,
   RecurringExpense,
   RecurringRevenue,
   ReinstatementExpense,
   RenewableEnergyProjectPhase,
-  SiteNature,
   SoilsDistribution,
   SoilType,
   SoilsTransformationProject,
@@ -14,7 +12,8 @@ import {
 
 import { UserStructureType } from "@/features/onboarding/core/user";
 import { RenewableEnergyDevelopmentPlanType } from "@/shared/core/reconversionProject";
-import { OwnerStructureType, TenantStructureType } from "@/shared/core/stakeholder";
+import { ProjectSiteView } from "@/shared/core/reducers/project-form/projectForm.types";
+import { SiteStakeholderStructureType } from "@/shared/core/stakeholder";
 
 export type PhotovoltaicKeyParameter = "POWER" | "SURFACE";
 
@@ -66,29 +65,10 @@ export type ReconversionProjectCreationData = {
 };
 
 export type ProjectStakeholderStructure =
-  | OwnerStructureType
-  | TenantStructureType
+  | SiteStakeholderStructureType
   | UserStructureType
   | "unknown";
 
 export type ProjectStakeholder = { name: string; structureType: ProjectStakeholderStructure };
 
-export type ProjectSite = {
-  id: string;
-  name: string;
-  nature: SiteNature;
-  isExpressSite: boolean;
-  owner: {
-    name: string;
-    structureType: OwnerStructureType;
-  };
-  tenant?: {
-    name: string;
-    structureType: TenantStructureType;
-  };
-  hasContaminatedSoils?: boolean;
-  contaminatedSoilSurface?: number;
-  soilsDistribution: SoilsDistribution;
-  surfaceArea: number;
-  address: Address;
-};
+export type ProjectSite = ProjectSiteView;

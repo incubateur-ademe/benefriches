@@ -1,10 +1,10 @@
 import { ActionReducerMapBuilder } from "@reduxjs/toolkit";
 
 import { ExpressReconversionProjectResult } from "@/features/create-project/core/actions/expressProjectSavedGateway";
-import { ProjectSite } from "@/features/create-project/core/project.types";
 import { CurrentAndProjectedSoilsCarbonStorageResult } from "@/shared/core/reducers/project-form/soilsCarbonStorage.action";
 
 import { ProjectFormReducerActions } from "./projectForm.actions";
+import { LocalAuthorities, ProjectSiteView } from "./projectForm.types";
 import { StepUpdateResult } from "./urban-project/helpers/completeStep";
 import {
   AnswersByStep,
@@ -14,26 +14,6 @@ import {
 } from "./urban-project/urbanProjectSteps";
 
 type LoadingState = "idle" | "loading" | "success" | "error";
-
-type LocalAuthorities = {
-  loadingState: LoadingState;
-  city?: {
-    code: string;
-    name: string;
-  };
-  epci?: {
-    code: string;
-    name: string;
-  };
-  department?: {
-    code: string;
-    name: string;
-  };
-  region?: {
-    code: string;
-    name: string;
-  };
-};
 
 type SummaryStep<T_Data> = {
   completed: boolean;
@@ -52,9 +32,11 @@ type InformationalStep = {
 };
 
 export interface ProjectFormState<T extends UrbanProjectCreationStep = UrbanProjectCreationStep> {
-  siteData?: ProjectSite;
+  siteData?: ProjectSiteView;
   siteDataLoadingState: LoadingState;
-  siteRelatedLocalAuthorities: LocalAuthorities;
+  siteRelatedLocalAuthorities: {
+    loadingState: LoadingState;
+  } & LocalAuthorities;
   urbanProject: {
     currentStep: T;
     saveState: "idle" | "loading" | "success" | "error";

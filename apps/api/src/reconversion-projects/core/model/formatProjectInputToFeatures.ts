@@ -8,10 +8,13 @@ import {
   sumIfNotNil,
 } from "shared";
 
-import { ReconversionProjectFeaturesView, ReconversionProjectInput } from "./reconversionProject";
+import {
+  ReconversionProjectFeaturesView,
+  ReconversionProjectDataView,
+} from "./reconversionProject";
 
 export const formatReconversionProjectInputToFeatures = (
-  reconversionProject: ReconversionProjectInput,
+  reconversionProject: ReconversionProjectDataView,
 ): ReconversionProjectFeaturesView => ({
   id: reconversionProject.id,
   name: reconversionProject.name,

@@ -1,18 +1,19 @@
 import { ReconversionProjectRepository } from "src/reconversion-projects/core/gateways/ReconversionProjectRepository";
 import {
-  ReconversionProjectInput,
-  ReconversionProjectUpdateInput,
+  ReconversionProjectSaveDto,
+  ReconversionProjectUpdateDto,
+  ReconversionProjectDataView,
 } from "src/reconversion-projects/core/model/reconversionProject";
 
 export class InMemoryReconversionProjectRepository implements ReconversionProjectRepository {
-  private reconversionProjects: ReconversionProjectInput[] = [];
+  private reconversionProjects: ReconversionProjectSaveDto[] = [];
 
-  async save(project: ReconversionProjectInput) {
+  async save(project: ReconversionProjectSaveDto) {
     this.reconversionProjects.push(project);
     await Promise.resolve();
   }
 
-  async update(project: ReconversionProjectUpdateInput) {
+  async update(project: ReconversionProjectUpdateDto) {
     const existing = this.reconversionProjects.find(({ id }) => id === project.id);
     if (!existing) {
       throw new Error(
@@ -24,7 +25,7 @@ export class InMemoryReconversionProjectRepository implements ReconversionProjec
     await Promise.resolve();
   }
 
-  getById(id: string): Promise<ReconversionProjectInput | null> {
+  getById(id: string): Promise<ReconversionProjectDataView | null> {
     const foundReconversionProject = this.reconversionProjects.find((project) => project.id === id);
     return Promise.resolve(foundReconversionProject ?? null);
   }
@@ -40,7 +41,7 @@ export class InMemoryReconversionProjectRepository implements ReconversionProjec
     return this.reconversionProjects;
   }
 
-  _setReconversionProjects(reconversionProjects: ReconversionProjectInput[]) {
+  _setReconversionProjects(reconversionProjects: ReconversionProjectSaveDto[]) {
     this.reconversionProjects = reconversionProjects;
   }
 }

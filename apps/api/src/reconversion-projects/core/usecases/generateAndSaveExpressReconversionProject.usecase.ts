@@ -3,14 +3,14 @@ import { ExpressProjectCategory } from "shared";
 import { TResult, fail, success } from "src/shared-kernel/result";
 import { UseCase } from "src/shared-kernel/usecase";
 
-import { ReconversionProjectInput } from "../model/reconversionProject";
+import { ReconversionProjectSaveDto } from "../model/reconversionProject";
 
 interface GenerateExpressReconversionProjectUseCase {
-  execute(id: Request): Promise<TResult<ReconversionProjectInput, "SiteNotFound">>;
+  execute(id: Request): Promise<TResult<ReconversionProjectSaveDto, "SiteNotFound">>;
 }
 
 interface ReconversionProjectRepository {
-  save(reconversionProject: ReconversionProjectInput): Promise<void>;
+  save(reconversionProject: ReconversionProjectSaveDto): Promise<void>;
 }
 
 type Request = {

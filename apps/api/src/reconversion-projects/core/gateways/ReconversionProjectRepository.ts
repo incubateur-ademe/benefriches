@@ -1,11 +1,12 @@
 import {
-  ReconversionProjectInput,
-  ReconversionProjectUpdateInput,
+  ReconversionProjectSaveDto,
+  ReconversionProjectDataView,
+  ReconversionProjectUpdateDto,
 } from "../model/reconversionProject";
 
 export interface ReconversionProjectRepository {
   existsWithId(id: string): Promise<boolean>;
-  getById(id: string): Promise<ReconversionProjectInput | null>;
-  save(reconversionProject: ReconversionProjectInput): Promise<void>;
-  update(reconversionProject: ReconversionProjectUpdateInput): Promise<void>;
+  getById(id: string): Promise<ReconversionProjectDataView | null>;
+  save(reconversionProject: ReconversionProjectSaveDto): Promise<void>;
+  update(reconversionProject: ReconversionProjectUpdateDto): Promise<void>;
 }

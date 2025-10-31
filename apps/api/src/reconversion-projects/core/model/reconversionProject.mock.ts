@@ -5,8 +5,7 @@ import {
   ReinstatementExpensePurpose,
 } from "shared";
 
-import { ReconversionProjectProps } from "../usecases/createReconversionProject.usecase";
-import { ReconversionProjectInput, ReconversionProjectInputProps } from "./reconversionProject";
+import { ReconversionProjectSavePropsDto, ReconversionProjectSaveDto } from "./reconversionProject";
 import { UrbanProjectFeatures } from "./urbanProjects";
 
 const baseReconversionProjectProps = {
@@ -54,18 +53,18 @@ const baseReconversionProjectProps = {
   yearlyProjectedCosts: [{ purpose: "rent", amount: 12000 }],
   yearlyProjectedRevenues: [{ source: "operations", amount: 13000 }],
   projectPhase: "planning",
-} as const satisfies ReconversionProjectInputProps;
+} as const satisfies ReconversionProjectSavePropsDto;
 
 export const buildMinimalReconversionProjectProps = (
-  propsOverride?: Partial<ReconversionProjectInputProps>,
-): ReconversionProjectInputProps => {
+  propsOverride?: Partial<ReconversionProjectSavePropsDto>,
+): ReconversionProjectSavePropsDto => {
   return {
     ...baseReconversionProjectProps,
     ...propsOverride,
   };
 };
 
-export const buildExhaustiveReconversionProjectProps = (): ReconversionProjectInputProps => {
+export const buildExhaustiveReconversionProjectProps = (): ReconversionProjectSavePropsDto => {
   return {
     ...baseReconversionProjectProps,
     developmentPlan: {
@@ -126,8 +125,8 @@ export const buildExhaustiveReconversionProjectProps = (): ReconversionProjectIn
 };
 
 export const buildReconversionProject = (
-  props?: Partial<ReconversionProjectInput>,
-): ReconversionProjectInput => {
+  props?: Partial<ReconversionProjectSaveDto>,
+): ReconversionProjectSaveDto => {
   return {
     ...buildMinimalReconversionProjectProps(),
     createdAt: new Date(),
@@ -136,7 +135,7 @@ export const buildReconversionProject = (
   };
 };
 
-export const buildUrbanProjectReconversionProjectProps = (): ReconversionProjectInputProps => {
+export const buildUrbanProjectReconversionProjectProps = (): ReconversionProjectSavePropsDto => {
   return {
     ...baseReconversionProjectProps,
     developmentPlan: {
@@ -200,7 +199,7 @@ export const buildUrbanProjectReconversionProjectProps = (): ReconversionProject
 };
 
 export class UrbanProjectBuilder {
-  private readonly props: ReconversionProjectProps;
+  private readonly props: ReconversionProjectSaveDto;
 
   constructor() {
     this.props = {
@@ -283,7 +282,7 @@ export class UrbanProjectBuilder {
     return this;
   }
 
-  build(): ReconversionProjectProps {
+  build(): ReconversionProjectSaveDto {
     return this.props;
   }
 }

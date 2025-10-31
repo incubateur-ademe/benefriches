@@ -9,7 +9,7 @@ import { InMemorySitesQuery } from "src/sites/adapters/secondary/site-query/InMe
 import { SiteViewModel } from "src/sites/core/gateways/SitesQuery";
 import { InMemoryUserQuery } from "src/users/adapters/secondary/user-query/InMemoryUserQuery";
 
-import { ReconversionProjectInput } from "../model/reconversionProject";
+import { ReconversionProjectSaveDto } from "../model/reconversionProject";
 import { GenerateAndSaveExpressReconversionProjectUseCase } from "./generateAndSaveExpressReconversionProject.usecase";
 import { GenerateExpressReconversionProjectUseCase } from "./generateExpressReconversionProject.usecase";
 
@@ -104,7 +104,7 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
       });
       expect(result.isSuccess()).toBe(true);
 
-      const createdReconversionProjects: ReconversionProjectInput[] =
+      const createdReconversionProjects: ReconversionProjectSaveDto[] =
         reconversionProjectRepository._getReconversionProjects();
       expect(createdReconversionProjects).toHaveLength(1);
       const createdReconversionProject = createdReconversionProjects[0];

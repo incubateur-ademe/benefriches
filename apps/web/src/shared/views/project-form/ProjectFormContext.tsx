@@ -15,6 +15,7 @@ export type ProjectFormContextValue = ProjectFormSelectors &
     onFetchSiteLocalAuthorities: () => void;
     onConfirmStepCompletion: () => void;
     onCancelStepCompletion: () => void;
+    onSave: () => void;
   };
 
 export const ProjectFormContext = createContext<ProjectFormContextValue | null>(null);
