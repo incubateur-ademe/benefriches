@@ -18,7 +18,7 @@ function OnBoardingIdentityPage() {
           if (redirectToFromUrl) {
             window.location.href = redirectToFromUrl;
           } else {
-            routes.onBoardingIntroductionWhy().push();
+            routes.onBoardingIntroductionWhy({ fonctionnalite: "evaluation-impacts" }).push();
           }
         }}
       />

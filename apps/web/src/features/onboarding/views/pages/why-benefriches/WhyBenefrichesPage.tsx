@@ -6,6 +6,8 @@ import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import { routes } from "@/shared/views/router";
 
+export type OnboardingVariant = "evaluation-mutabilite" | "evaluation-impacts";
+
 const STEPS = {
   TITLE: 0,
   INTRO: 1,
@@ -37,7 +39,21 @@ function UseItem({ children, icon }: { children: React.ReactNode; icon: "check" 
   );
 }
 
-function WhenToUseBenefriches() {
+function WhenToUseBenefriches({ variant }: { variant: OnboardingVariant }) {
+  if (variant === "evaluation-mutabilite") {
+    return (
+      <ul className="list-none pl-0 animate-fade-in-up">
+        <UseItem icon="check">
+          Vous souhaitez connaître <strong>les usages les plus adaptés</strong> pour une friche ;
+        </UseItem>
+        <UseItem icon="check">
+          Vous hésitez entre <strong>plusieurs friches</strong> pour votre projet d'aménagement et
+          souhaitez savoir laquelle est la plus adaptée.
+        </UseItem>
+      </ul>
+    );
+  }
+
   return (
     <ul className="list-none pl-0 animate-fade-in-up">
       <UseItem icon="check">
@@ -67,10 +83,10 @@ function WhenToUseBenefriches() {
   );
 }
 
-function WhenNotToUseBenefriches() {
+function WhenNotToUseBenefriches({ variant }: { variant: OnboardingVariant }) {
   return (
     <div className="animate-fade-in-up">
-      <p className="font-medium mt-10 text-lg">En revanche, Bénéfriches n'est pas adapté si :</p>
+      <p className="font-semibold mt-10 text-lg">En revanche, Bénéfriches n'est pas adapté si :</p>
       <ul className="list-none pl-0">
         <UseItem icon="red-cross">
           Vous recherchez une friche sur votre territoire (
@@ -83,19 +99,29 @@ function WhenNotToUseBenefriches() {
           Vous avez besoin de conseils pour avancer sur votre projet de reconversion (
           <ExternalLink href="https://urbanvitaliz.fr/">Urban Vitaliz</ExternalLink>)
         </UseItem>
+        {variant === "evaluation-mutabilite" && (
+          <UseItem icon="red-cross">
+            Vous avez besoin d'une étude de faisabilité (tournez-vous pour cela vers des
+            professionnels de l'urbanisme).
+          </UseItem>
+        )}
       </ul>
     </div>
   );
 }
 
-function OnBoardingIntroductionWhyBenefriches() {
+type Props = {
+  variant: OnboardingVariant;
+};
+
+function OnBoardingIntroductionWhyBenefriches({ variant }: Props) {
   const [currentStep, setCurrentStep] = useState<StepValue>(STEPS.TITLE);
 
   const handleNextClick = () => {
     if (currentStep < TOTAL_STEPS - 1) {
       setCurrentStep((currentStep + 1) as StepValue);
     } else {
-      routes.onBoardingIntroductionHow().push();
+      routes.onBoardingIntroductionHow({ fonctionnalite: variant }).push();
     }
   };
 
@@ -105,21 +131,28 @@ function OnBoardingIntroductionWhyBenefriches() {
 
   return (
     <>
-      <HtmlTitle>Pourquoi Bénéfriches - Introduction</HtmlTitle>
+      <HtmlTitle>
+        {`Pourquoi Bénéfriches (${
+          variant === "evaluation-impacts"
+            ? "évaluation des impacts"
+            : "évaluation de la mutabilité"
+        }) - Introduction`}
+      </HtmlTitle>
       <div className="fr-container">
         <section className="pt-20 pb-10 flex-1 grow">
           <h2>En quoi Bénéfriches vous sera utile ?</h2>
 
           {showIntro && (
             <p className="text-lg animate-fade-in-up">
-              Bénéfriches calcule la valeur réelle d'un projet d'aménagement. Il vous sera utile
-              si&nbsp;:
+              {variant === "evaluation-impacts"
+                ? "Bénéfriches calcule la valeur réelle d'un projet d'aménagement. Il vous sera utile si :"
+                : "Bénéfriches est un outil qui vous permet d'analyser la compatibilité d'une friche avec différents usages. Cette fonctionnalité vous sera utile si :"}
             </p>
           )}
 
-          {showWhenToUse && <WhenToUseBenefriches />}
+          {showWhenToUse && <WhenToUseBenefriches variant={variant} />}
 
-          {showWhenNotToUse && <WhenNotToUseBenefriches />}
+          {showWhenNotToUse && <WhenNotToUseBenefriches variant={variant} />}
         </section>
 
         <ButtonsGroup
@@ -129,7 +162,9 @@ function OnBoardingIntroductionWhyBenefriches() {
             {
               children: "Passer l'intro",
               priority: "secondary",
-              onClick: handleNextClick,
+              onClick: () => {
+                routes.onBoardingIntroductionHow({ fonctionnalite: variant }).push();
+              },
             },
             {
               children: "Suivant",
