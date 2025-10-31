@@ -49,7 +49,7 @@ const ModalHeader = ({ title, subtitle, breadcrumbSegments, value }: Props) => {
               "text-2xl",
               "font-bold",
               value.state === "success"
-                ? "text-impacts-positive-main dark:text-impacts-positive-light"
+                ? "text-impacts-positive-main dark:text-success-ultralight"
                 : "text-impacts-negative-main dark:text-impacts-negative-light",
             )}
           >

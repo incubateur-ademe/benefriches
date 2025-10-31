@@ -12,7 +12,7 @@ type Props = {
 };
 
 const POSITIVE_CLASSES = [
-  "bg-impacts-positive-light hover:bg-impacts-positive-light!",
+  "bg-success-ultralight hover:bg-success-ultralight!",
   "dark:bg-impacts-positive-main dark:hover:bg-impacts-positive-main!",
   "hover:border-impacts-positive-border",
 ];
