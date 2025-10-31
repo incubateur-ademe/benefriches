@@ -71,9 +71,11 @@ function FeaturesApp() {
             switch (route.name) {
               // protected pages
               case routes.onBoardingIntroductionWhy.name:
-                return <OnBoardingIntroductionWhyBenefriches />;
+                return (
+                  <OnBoardingIntroductionWhyBenefriches variant={route.params.fonctionnalite} />
+                );
               case routes.onBoardingIntroductionHow.name:
-                return <OnBoardingIntroductionHow />;
+                return <OnBoardingIntroductionHow variant={route.params.fonctionnalite} />;
               case routes.myProjects.name:
                 return <MyProjectsPage />;
               case routes.projectImpacts.name:
