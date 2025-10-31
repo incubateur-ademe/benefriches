@@ -1,5 +1,7 @@
 import { createRouter, defineRoute, param } from "type-route";
 
+import { OnboardingVariant } from "@/features/onboarding/views/pages/why-benefriches/WhyBenefrichesPage";
+
 const onBoarding = defineRoute("/premiers-pas");
 
 const { RouteProvider, useRoute, routes } = createRouter({
@@ -16,8 +18,14 @@ const { RouteProvider, useRoute, routes } = createRouter({
     },
     () => "/identite",
   ),
-  onBoardingIntroductionWhy: onBoarding.extend("/pourquoi-benefriches"),
-  onBoardingIntroductionHow: onBoarding.extend("/comment-ca-marche"),
+  onBoardingIntroductionWhy: onBoarding.extend(
+    { fonctionnalite: param.query.ofType<OnboardingVariant>() },
+    () => "/pourquoi-benefriches",
+  ),
+  onBoardingIntroductionHow: onBoarding.extend(
+    { fonctionnalite: param.query.ofType<OnboardingVariant>() },
+    () => "/comment-ca-marche",
+  ),
   accessBenefriches: defineRoute(
     { redirectTo: param.query.optional.string },
     () => "/acceder-a-benefriches",

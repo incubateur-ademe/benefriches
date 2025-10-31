@@ -63,11 +63,17 @@
   --color-impacts-negative-main: #ce0500;
   --color-impacts-negative-light: #ffe9e9;
 
-  --color-onboarding-step1: #c83a3b;
-  --color-onboarding-step2: #c3892d;
-  --color-onboarding-step3: #f7963c;
-  --color-onboarding-step4: #03b417;
-  --color-onboarding-step5: #4490db;
+  --color-how-it-works-impacts-step-1: #c83a3b;
+  --color-how-it-works-impacts-step-2: #c3892d;
+  --color-how-it-works-impacts-step-3: #f7963c;
+  --color-how-it-works-impacts-step-4: #03b417;
+  --color-how-it-works-impacts-step-5: #4490db;
+
+  --color-how-it-works-mutabilite-step-1: #c83a3b;
+  --color-how-it-works-mutabilite-step-2: #83a7cd;
+  --color-how-it-works-mutabilite-step-3: #3fa5ae;
+  --color-how-it-works-mutabilite-step-4: #03b417;
+  --color-how-it-works-mutabilite-step-5: #e7bb50;
 
   --color-soils-buildings: #eb13be;
   --color-soils-impermeable-soils: #b713eb;
