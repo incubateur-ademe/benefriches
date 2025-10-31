@@ -17,7 +17,7 @@ import { InMemorySitesQuery } from "src/sites/adapters/secondary/site-query/InMe
 import { SiteViewModel } from "src/sites/core/gateways/SitesQuery";
 import { InMemoryUserQuery } from "src/users/adapters/secondary/user-query/InMemoryUserQuery";
 
-import { ReconversionProjectInput } from "../model/reconversionProject";
+import { ReconversionProjectSaveDto } from "../model/reconversionProject";
 import { UrbanProjectFeatures } from "../model/urbanProjects";
 import { GenerateExpressReconversionProjectUseCase } from "./generateExpressReconversionProject.usecase";
 
@@ -133,7 +133,7 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
         const expectedName = expressCategoryNameMap[expressCategory];
 
         expect(result.isSuccess()).toBe(true);
-        const data = (result as SuccessResult<ReconversionProjectInput>).getData();
+        const data = (result as SuccessResult<ReconversionProjectSaveDto>).getData();
         expect(data.relatedSiteId).toEqual(site.id);
         expect(data.createdBy).toEqual(creatorId);
         expect(data.createdAt).toEqual(dateProvider.now());
@@ -162,7 +162,7 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
         });
 
         expect(result.isSuccess()).toBe(true);
-        const data = (result as SuccessResult<ReconversionProjectInput>).getData();
+        const data = (result as SuccessResult<ReconversionProjectSaveDto>).getData();
         expect(data.reinstatementSchedule).toEqual({
           startDate: new Date("2025-09-01T13:00:00"),
           endDate: new Date("2026-09-01T13:00:00"),
@@ -194,7 +194,7 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
           });
 
           expect(result.isSuccess()).toBe(true);
-          const data = (result as SuccessResult<ReconversionProjectInput>).getData();
+          const data = (result as SuccessResult<ReconversionProjectSaveDto>).getData();
           expect(data.futureSiteOwner).toEqual(undefined);
           expect(data.developmentPlan.developer).toEqual({
             structureType: "municipality",
@@ -252,7 +252,7 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
           }
 
           expect(result.isSuccess()).toBe(true);
-          const data = (result as SuccessResult<ReconversionProjectInput>).getData();
+          const data = (result as SuccessResult<ReconversionProjectSaveDto>).getData();
           expect(data.siteResaleExpectedSellingPrice).toEqual(expectedResalePrice);
           expect(Math.round(data.siteResaleExpectedPropertyTransferDuties ?? 0)).toEqual(
             Math.round(expectedResalePrice * 0.0581),
@@ -402,7 +402,7 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
           };
 
           expect(result.isSuccess()).toBe(true);
-          const data = (result as SuccessResult<ReconversionProjectInput>).getData();
+          const data = (result as SuccessResult<ReconversionProjectSaveDto>).getData();
           const { developmentPlan, soilsDistribution = [] } = data;
           const { buildingsFloorAreaDistribution, spacesDistribution } =
             developmentPlan.features as UrbanProjectFeatures;
@@ -446,7 +446,7 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
         });
 
         expect(result.isSuccess()).toBe(true);
-        const data = (result as SuccessResult<ReconversionProjectInput>).getData();
+        const data = (result as SuccessResult<ReconversionProjectSaveDto>).getData();
         expect(data.futureSiteOwner).toEqual(undefined);
         expect(data.futureOperator).toEqual({
           structureType: "company",
@@ -487,7 +487,7 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
         });
 
         expect(result.isSuccess()).toBe(true);
-        const data = (result as SuccessResult<ReconversionProjectInput>).getData();
+        const data = (result as SuccessResult<ReconversionProjectSaveDto>).getData();
         expect(data.futureSiteOwner).toEqual(undefined);
         expect(data.futureOperator).toEqual({
           structureType: "municipality",
@@ -518,7 +518,7 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
         });
 
         expect(result.isSuccess()).toBe(true);
-        const data = (result as SuccessResult<ReconversionProjectInput>).getData();
+        const data = (result as SuccessResult<ReconversionProjectSaveDto>).getData();
         expect(data.futureSiteOwner).toEqual(undefined);
         expect(data.futureOperator).toEqual({
           structureType: "municipality",
@@ -562,7 +562,7 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
         });
 
         expect(result.isSuccess()).toBe(true);
-        const data = (result as SuccessResult<ReconversionProjectInput>).getData();
+        const data = (result as SuccessResult<ReconversionProjectSaveDto>).getData();
         // real estate sale transaction
         expect(data.sitePurchaseSellingPrice).toEqual(720000);
         expect(data.sitePurchasePropertyTransferDuties).toEqual(41832);
@@ -611,7 +611,7 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
         });
 
         expect(result.isSuccess()).toBe(true);
-        const data = (result as SuccessResult<ReconversionProjectInput>).getData();
+        const data = (result as SuccessResult<ReconversionProjectSaveDto>).getData();
         // real estate sale transaction
         expect(data.sitePurchaseSellingPrice).toEqual(7200000);
         expect(data.sitePurchasePropertyTransferDuties).toEqual(418320);
@@ -665,7 +665,7 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
         });
 
         expect(result.isSuccess()).toBe(true);
-        const data = (result as SuccessResult<ReconversionProjectInput>).getData();
+        const data = (result as SuccessResult<ReconversionProjectSaveDto>).getData();
         // reinstatement costs
         expect(data.reinstatementCosts).toHaveLength(4);
         expect(data.reinstatementCosts?.at(0)).toEqual({
@@ -734,7 +734,7 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
           });
 
           expect(result.isSuccess()).toBe(true);
-          const data = (result as SuccessResult<ReconversionProjectInput>).getData();
+          const data = (result as SuccessResult<ReconversionProjectSaveDto>).getData();
           // real estate sale transaction
           expect(data.sitePurchaseSellingPrice).toEqual(3600000);
           expect(data.sitePurchasePropertyTransferDuties).toEqual(209160);
@@ -778,7 +778,7 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
           });
 
           expect(result.isSuccess()).toBe(true);
-          const data = (result as SuccessResult<ReconversionProjectInput>).getData();
+          const data = (result as SuccessResult<ReconversionProjectSaveDto>).getData();
           // real estate sale transaction
           expect(data.sitePurchaseSellingPrice).toEqual(undefined);
           expect(data.sitePurchasePropertyTransferDuties).toEqual(undefined);

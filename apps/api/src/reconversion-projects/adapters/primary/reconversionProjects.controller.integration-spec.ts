@@ -10,7 +10,8 @@ import { z, ZodError } from "zod";
 import { ACCESS_TOKEN_COOKIE_KEY } from "src/auth/adapters/access-token/accessTokenCookie";
 import {
   ReconversionProjectFeaturesView,
-  ReconversionProjectUpdateInputProps,
+  ReconversionProjectUpdatePropsDto,
+  ReconversionProjectSaveDto,
 } from "src/reconversion-projects/core/model/reconversionProject";
 import {
   buildExhaustiveReconversionProjectProps,
@@ -19,7 +20,6 @@ import {
   UrbanProjectBuilder,
 } from "src/reconversion-projects/core/model/reconversionProject.mock";
 import { ComputedImpacts } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
-import { ReconversionProjectProps } from "src/reconversion-projects/core/usecases/createReconversionProject.usecase";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import {
   SqlDevelopmentPlan,
@@ -758,7 +758,7 @@ describe("ReconversionProjects controller", () => {
         created_at: new Date(),
       });
 
-      const sourceUrbanProject: ReconversionProjectProps = {
+      const sourceUrbanProject: ReconversionProjectSaveDto = {
         id: uuid(),
         relatedSiteId: siteId,
         createdAt: new Date(),
@@ -945,7 +945,7 @@ describe("ReconversionProjects controller", () => {
       yearlyProjectedCosts: [{ purpose: "rent", amount: 12000 }],
       yearlyProjectedRevenues: [{ source: "operations", amount: 13000 }],
       projectPhase: "planning",
-    } as const satisfies ReconversionProjectUpdateInputProps;
+    } as const satisfies ReconversionProjectUpdatePropsDto;
     describe("error cases", () => {
       it("gets a 401 when not authenticated", async () => {
         const response = await supertest(app.getHttpServer())

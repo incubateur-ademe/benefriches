@@ -5,7 +5,9 @@ import {
   creationProjectFormUrbanActions,
 } from "@/features/create-project/core/urban-project/urbanProject.actions";
 import { creationProjectFormSelectors } from "@/features/create-project/core/urban-project/urbanProject.selectors";
+import { customUrbanProjectSaved } from "@/features/create-project/core/urban-project/urbanProjectCustomSaved.action";
 import {
+  reconversionProjectUpdateSaved,
   updateProjectFormActions,
   updateProjectFormUrbanActions,
 } from "@/features/update-project/core/updateProject.actions";
@@ -37,7 +39,19 @@ export const ProjectFormProvider: React.FC<ProjectFormProviderProps> = ({ childr
     [mode],
   );
 
+  const saveAction = useMemo(
+    () => (mode === "create" ? customUrbanProjectSaved : reconversionProjectUpdateSaved),
+    [mode],
+  );
+
   const onNext = useCallback(() => dispatch(actions.navigateToNext()), [dispatch, actions]);
+
+  const onSave = useCallback(async () => {
+    await dispatch(saveAction());
+    if (mode === "create") {
+      onNext();
+    }
+  }, [dispatch, mode, onNext, saveAction]);
 
   const onBack = useCallback(() => {
     dispatch(actions.navigateToPrevious());
@@ -85,6 +99,7 @@ export const ProjectFormProvider: React.FC<ProjectFormProviderProps> = ({ childr
       onFetchSiteLocalAuthorities,
       onCancelStepCompletion,
       onConfirmStepCompletion,
+      onSave,
     }),
     [
       selectors,
@@ -97,6 +112,7 @@ export const ProjectFormProvider: React.FC<ProjectFormProviderProps> = ({ childr
       onFetchSiteLocalAuthorities,
       onCancelStepCompletion,
       onConfirmStepCompletion,
+      onSave,
     ],
   );
 

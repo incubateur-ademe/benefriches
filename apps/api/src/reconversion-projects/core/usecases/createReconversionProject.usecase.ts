@@ -6,19 +6,16 @@ import { UseCase } from "src/shared-kernel/usecase";
 
 import { ReconversionProjectRepository } from "../gateways/ReconversionProjectRepository";
 import {
-  ReconversionProjectInputProps,
+  ReconversionProjectSavePropsDto,
   saveReconversionProjectPropsSchema,
-  saveReconversionProjectSchema,
 } from "../model/reconversionProject";
 
 export interface SiteRepository {
   existsWithId(id: string): Promise<boolean>;
 }
 
-export type ReconversionProjectProps = z.infer<typeof saveReconversionProjectSchema>;
-
 type Request = {
-  reconversionProjectProps: ReconversionProjectInputProps;
+  reconversionProjectProps: ReconversionProjectSavePropsDto;
 };
 
 type CreateReconversionProjectResult = TResult<

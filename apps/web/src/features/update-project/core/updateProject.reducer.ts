@@ -11,10 +11,10 @@ import { UrbanProjectCreationStep } from "@/shared/core/reducers/project-form/ur
 import { convertProjectDataToSteps } from "./helpers/convertProjectDataToSteps";
 import {
   reconversionProjectUpdateInitiated,
-  UpdateProjectView,
   updateProjectFormActions,
   updateProjectFormUrbanActions,
 } from "./updateProject.actions";
+import { UpdateProjectView } from "./updateProject.types";
 
 export type UrbanProjectUpdateStep = Exclude<
   UrbanProjectCreationStep,

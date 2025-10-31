@@ -1,15 +1,13 @@
-import { customUrbanProjectSaved } from "@/features/create-project/core/urban-project/urbanProjectCustomSaved.action";
 import { UrbanProjectCreationStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 
 import ProjectCreationDataSummary from "./ProjectCreationDataSummary";
 
 function ProjectionCreationDataSummaryContainer() {
-  const { onBack, onNext, onNavigateToStep, selectProjectSummary, selectIsFormStatusValid } =
+  const { onBack, onNavigateToStep, onSave, selectProjectSummary, selectIsFormStatusValid } =
     useProjectForm();
 
-  const dispatch = useAppDispatch();
   const isFormValid = useAppSelector(selectIsFormStatusValid);
   const { projectData, projectSoilsDistribution, projectSpaces } =
     useAppSelector(selectProjectSummary);
@@ -29,10 +27,7 @@ function ProjectionCreationDataSummaryContainer() {
           </>
         ) : undefined
       }
-      onNext={() => {
-        void dispatch(customUrbanProjectSaved());
-        onNext();
-      }}
+      onNext={onSave}
       onBack={onBack}
       projectData={projectData}
       projectSoilsDistribution={projectSoilsDistribution}

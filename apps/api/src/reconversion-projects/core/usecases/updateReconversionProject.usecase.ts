@@ -6,11 +6,11 @@ import { TResult, fail, success } from "src/shared-kernel/result";
 import { UseCase } from "src/shared-kernel/usecase";
 
 import { ReconversionProjectRepository } from "../gateways/ReconversionProjectRepository";
-import { ReconversionProjectUpdateInputProps } from "../model/reconversionProject";
+import { ReconversionProjectUpdatePropsDto } from "../model/reconversionProject";
 
 type Request = {
   reconversionProjectId: string;
-  reconversionProjectProps: ReconversionProjectUpdateInputProps;
+  reconversionProjectProps: ReconversionProjectUpdatePropsDto;
   userId: string;
 };
 

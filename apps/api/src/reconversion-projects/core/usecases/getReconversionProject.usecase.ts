@@ -3,7 +3,7 @@ import { UseCase } from "src/shared-kernel/usecase";
 import { SitesQuery, SiteViewModel } from "src/sites/core/gateways/SitesQuery";
 
 import { ReconversionProjectRepository } from "../gateways/ReconversionProjectRepository";
-import { ReconversionProjectInput } from "../model/reconversionProject";
+import { ReconversionProjectDataView } from "../model/reconversionProject";
 
 type Request = {
   reconversionProjectId: string;
@@ -11,7 +11,7 @@ type Request = {
 };
 
 type GetReconversionProjectResult = TResult<
-  { projectData: ReconversionProjectInput; siteData: SiteViewModel },
+  { projectData: ReconversionProjectDataView; siteData: SiteViewModel },
   "ValidationError" | "SiteNotFound" | "ReconversionProjectNotFound" | "UserNotAuthorized",
   { fieldErrors: Record<string, string[]> } | undefined
 >;

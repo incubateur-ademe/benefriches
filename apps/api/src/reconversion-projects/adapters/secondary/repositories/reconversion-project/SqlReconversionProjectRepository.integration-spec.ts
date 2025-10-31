@@ -2,8 +2,8 @@ import knex, { Knex } from "knex";
 import { v4 as uuid } from "uuid";
 
 import {
-  ReconversionProjectInput,
-  ReconversionProjectUpdateInput,
+  ReconversionProjectSaveDto,
+  ReconversionProjectUpdateDto,
 } from "src/reconversion-projects/core/model/reconversionProject";
 import {
   buildExhaustiveReconversionProjectProps,
@@ -321,7 +321,7 @@ describe("SqlReconversionProjectRepository integration", () => {
         });
         it("Saves right data in table reconversion_project_reinstatement_costs", async () => {
           const siteId = await insertSiteInDb();
-          const reinstatementCosts: ReconversionProjectInput["reinstatementCosts"] = [
+          const reinstatementCosts: ReconversionProjectSaveDto["reinstatementCosts"] = [
             { amount: 1000, purpose: "waste_collection" },
             { amount: 2000, purpose: "other_reinstatement_costs" },
           ] as const;
@@ -347,7 +347,7 @@ describe("SqlReconversionProjectRepository integration", () => {
 
         it("Saves right data in table reconversion_project_financial_assistance_revenues", async () => {
           const siteId = await insertSiteInDb();
-          const financialAssistanceRevenues: ReconversionProjectInput["financialAssistanceRevenues"] =
+          const financialAssistanceRevenues: ReconversionProjectSaveDto["financialAssistanceRevenues"] =
             [
               { amount: 1000, source: "public_subsidies" },
               { amount: 2000, source: "other" },
@@ -374,7 +374,7 @@ describe("SqlReconversionProjectRepository integration", () => {
       });
     });
     describe("Urban project development plan", () => {
-      let reconversionProject: ReconversionProjectInput;
+      let reconversionProject: ReconversionProjectSaveDto;
 
       beforeEach(async () => {
         const siteId = await insertSiteInDb();
@@ -507,7 +507,7 @@ describe("SqlReconversionProjectRepository integration", () => {
           .build();
         await reconversionProjectRepository.save(reconversionProject);
 
-        const updatedProject: ReconversionProjectUpdateInput = {
+        const updatedProject: ReconversionProjectUpdateDto = {
           ...reconversionProject,
           name: "Updated name",
           description: "Updated description",
@@ -539,7 +539,7 @@ describe("SqlReconversionProjectRepository integration", () => {
           .build();
         await reconversionProjectRepository.save(reconversionProject);
 
-        const updatedProject: ReconversionProjectUpdateInput = {
+        const updatedProject: ReconversionProjectUpdateDto = {
           ...reconversionProject,
           futureOperator: { name: "New Operator", structureType: "company" },
           futureSiteOwner: { name: "New Owner", structureType: "local_or_regional_authority" },
@@ -573,7 +573,7 @@ describe("SqlReconversionProjectRepository integration", () => {
           .build();
         await reconversionProjectRepository.save(reconversionProject);
 
-        const updatedProject: ReconversionProjectUpdateInput = {
+        const updatedProject: ReconversionProjectUpdateDto = {
           ...reconversionProject,
           soilsDistribution: [
             { soilType: "BUILDINGS", surfaceArea: 3000 },
@@ -622,7 +622,7 @@ describe("SqlReconversionProjectRepository integration", () => {
           .build();
         await reconversionProjectRepository.save(reconversionProject);
 
-        const updatedProject: ReconversionProjectUpdateInput = {
+        const updatedProject: ReconversionProjectUpdateDto = {
           ...reconversionProject,
           soilsDistribution: [
             {
@@ -672,7 +672,7 @@ describe("SqlReconversionProjectRepository integration", () => {
           .build();
         await reconversionProjectRepository.save(reconversionProject);
 
-        const updatedProject: ReconversionProjectUpdateInput = {
+        const updatedProject: ReconversionProjectUpdateDto = {
           ...reconversionProject,
           developmentPlan: {
             ...reconversionProject.developmentPlan,
@@ -725,7 +725,7 @@ describe("SqlReconversionProjectRepository integration", () => {
         ];
         await reconversionProjectRepository.save(reconversionProject);
 
-        const updatedProject: ReconversionProjectUpdateInput = {
+        const updatedProject: ReconversionProjectUpdateDto = {
           ...reconversionProject,
           developmentPlan: {
             ...reconversionProject.developmentPlan,
@@ -769,7 +769,7 @@ describe("SqlReconversionProjectRepository integration", () => {
           .build();
         await reconversionProjectRepository.save(reconversionProject);
 
-        const updatedProject: ReconversionProjectUpdateInput = {
+        const updatedProject: ReconversionProjectUpdateDto = {
           ...reconversionProject,
           yearlyProjectedCosts: [
             { amount: 2000, purpose: "maintenance" },
@@ -800,7 +800,7 @@ describe("SqlReconversionProjectRepository integration", () => {
           .build();
         await reconversionProjectRepository.save(reconversionProject);
 
-        const updatedProject: ReconversionProjectUpdateInput = {
+        const updatedProject: ReconversionProjectUpdateDto = {
           ...reconversionProject,
           yearlyProjectedRevenues: [
             { amount: 15000, source: "operations" },
@@ -835,7 +835,7 @@ describe("SqlReconversionProjectRepository integration", () => {
           .build();
         await reconversionProjectRepository.save(reconversionProject);
 
-        const updatedProject: ReconversionProjectUpdateInput = {
+        const updatedProject: ReconversionProjectUpdateDto = {
           ...reconversionProject,
           reinstatementCosts: [
             { amount: 6000, purpose: "waste_collection" },
@@ -870,7 +870,7 @@ describe("SqlReconversionProjectRepository integration", () => {
           .build();
         await reconversionProjectRepository.save(reconversionProject);
 
-        const updatedProject: ReconversionProjectUpdateInput = {
+        const updatedProject: ReconversionProjectUpdateDto = {
           ...reconversionProject,
           reinstatementCosts: [],
           updatedAt,
@@ -894,7 +894,7 @@ describe("SqlReconversionProjectRepository integration", () => {
         reconversionProject.financialAssistanceRevenues = [{ amount: 8000, source: "old_subsidy" }];
         await reconversionProjectRepository.save(reconversionProject);
 
-        const updatedProject: ReconversionProjectUpdateInput = {
+        const updatedProject: ReconversionProjectUpdateDto = {
           ...reconversionProject,
           financialAssistanceRevenues: [
             { amount: 9000, source: "public_subsidies" },
@@ -926,7 +926,7 @@ describe("SqlReconversionProjectRepository integration", () => {
           .build();
         await reconversionProjectRepository.save(reconversionProject);
 
-        const updatedProject: ReconversionProjectUpdateInput = {
+        const updatedProject: ReconversionProjectUpdateDto = {
           ...reconversionProject,
           sitePurchaseSellingPrice: 500000,
           sitePurchasePropertyTransferDuties: 30000,
@@ -962,7 +962,7 @@ describe("SqlReconversionProjectRepository integration", () => {
           .build();
         await reconversionProjectRepository.save(reconversionProject);
 
-        const updatedProject: ReconversionProjectUpdateInput = {
+        const updatedProject: ReconversionProjectUpdateDto = {
           ...reconversionProject,
           reinstatementSchedule: {
             startDate: new Date("2026-06-01"),
@@ -1024,7 +1024,7 @@ describe("SqlReconversionProjectRepository integration", () => {
         };
         await reconversionProjectRepository.save(reconversionProject);
 
-        const updatedProject: ReconversionProjectUpdateInput = {
+        const updatedProject: ReconversionProjectUpdateDto = {
           ...reconversionProject,
           name: "Updated urban project",
           developmentPlan: {

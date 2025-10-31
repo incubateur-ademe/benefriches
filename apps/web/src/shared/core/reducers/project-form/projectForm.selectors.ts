@@ -1,8 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { Address, SoilsDistribution } from "shared";
 
-import { ProjectSite } from "@/features/create-project/core/project.types";
-
 import { RootState } from "../../store-config/store";
 import {
   AvailableLocalAuthorityStakeholder,
@@ -10,9 +8,10 @@ import {
   getAvailableLocalAuthoritiesStakeholders,
   getProjectAvailableStakeholders,
 } from "./helpers/stakeholders";
+import { ProjectSiteView } from "./projectForm.types";
 
 export type ProjectFormSelectors = {
-  selectSiteAddress: (state: RootState) => ProjectSite["address"] | undefined;
+  selectSiteAddress: (state: RootState) => ProjectSiteView["address"] | undefined;
   selectSiteSoilsDistribution: (state: RootState) => SoilsDistribution;
   selectSiteSurfaceArea: (state: RootState) => number;
   selectProjectAvailableStakeholders: (state: RootState) => AvailableProjectStakeholder[];

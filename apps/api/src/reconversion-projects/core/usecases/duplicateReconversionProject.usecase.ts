@@ -6,7 +6,7 @@ import { UseCase } from "src/shared-kernel/usecase";
 
 import { createReconversionProjectDuplicatedEvent } from "../events/reconversionProjectDuplicated.event";
 import { ReconversionProjectRepository } from "../gateways/ReconversionProjectRepository";
-import { ReconversionProjectInput } from "../model/reconversionProject";
+import { ReconversionProjectSaveDto } from "../model/reconversionProject";
 
 type Request = {
   sourceProjectId: string;
@@ -39,7 +39,7 @@ export class DuplicateReconversionProjectUseCase
     if (!sourceProject) return fail("SourceReconversionProjectNotFound");
     if (sourceProject.createdBy !== userId) return fail("UserNotAuthorized");
 
-    const duplicatedProject: ReconversionProjectInput = {
+    const duplicatedProject: ReconversionProjectSaveDto = {
       ...sourceProject,
       id: newProjectId,
       name: `Copie de ${sourceProject.name}`,

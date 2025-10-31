@@ -1,27 +1,35 @@
 import {
+  FinancialAssistanceRevenue,
   getUrbanGreenSpaceFromSoilType,
   getUrbanLivingAndActivitySpaceFromSoilType,
   getUrbanPublicSpaceFromSoilType,
+  RecurringExpense,
+  ReinstatementExpense,
   sumListWithKey,
   sumObjectValues,
   typedObjectEntries,
   typedObjectKeys,
   UrbanProjectDevelopmentExpense,
+  UrbanProjectPhase,
   YearlyBuildingsOperationsRevenues,
 } from "shared";
 
+import { ProjectStakeholder } from "@/features/create-project/core/project.types";
 import { ProjectFormState } from "@/shared/core/reducers/project-form/projectForm.reducer";
 import {
   ANSWER_STEPS,
   INFORMATIONAL_STEPS,
 } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 
-import { UpdateProjectView } from "../updateProject.actions";
+import { UpdateProjectView } from "../updateProject.types";
 
 export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProjectView) => {
   const steps: ProjectFormState["urbanProject"]["steps"] = {};
 
-  if (projectData.developmentPlan.type === "PHOTOVOLTAIC_POWER_PLANT" || projectData.isExpress) {
+  if (
+    projectData.developmentPlan.type === "PHOTOVOLTAIC_POWER_PLANT" ||
+    projectData.creationMode === "express"
+  ) {
     return steps;
   }
 
@@ -144,7 +152,7 @@ export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProje
         steps["URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA"] = {
           payload: {
             buildingsFloorSurfaceArea: sumObjectValues(
-              developmentPlan.buildingsFloorAreaDistribution,
+              developmentPlan.features.buildingsFloorAreaDistribution,
             ),
           },
           completed: true,
@@ -153,7 +161,9 @@ export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProje
       case "URBAN_PROJECT_BUILDINGS_USE_SELECTION":
         steps["URBAN_PROJECT_BUILDINGS_USE_SELECTION"] = {
           payload: {
-            buildingsUsesSelection: typedObjectKeys(developmentPlan.buildingsFloorAreaDistribution),
+            buildingsUsesSelection: typedObjectKeys(
+              developmentPlan.features.buildingsFloorAreaDistribution,
+            ),
           },
           completed: true,
         };
@@ -161,7 +171,7 @@ export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProje
       case "URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION":
         steps["URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION"] = {
           payload: {
-            buildingsUsesDistribution: developmentPlan.buildingsFloorAreaDistribution,
+            buildingsUsesDistribution: developmentPlan.features.buildingsFloorAreaDistribution,
           },
           completed: true,
         };
@@ -170,7 +180,7 @@ export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProje
         if (developmentPlan.developer) {
           steps["URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER"] = {
             payload: {
-              projectDeveloper: developmentPlan.developer,
+              projectDeveloper: developmentPlan.developer as ProjectStakeholder,
             },
             completed: true,
           };
@@ -181,7 +191,8 @@ export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProje
         if (siteData.nature === "FRICHE") {
           steps["URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER"] = {
             payload: {
-              reinstatementContractOwner: projectData.reinstatementContractOwner,
+              reinstatementContractOwner:
+                projectData.reinstatementContractOwner as ProjectStakeholder,
             },
             completed: true,
           };
@@ -192,7 +203,7 @@ export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProje
         steps["URBAN_PROJECT_SITE_RESALE_SELECTION"] = {
           payload: {
             siteResalePlannedAfterDevelopment: Boolean(projectData.siteResaleExpectedSellingPrice),
-            futureSiteOwner: projectData.futureOwner,
+            futureSiteOwner: projectData.futureSiteOwner as ProjectStakeholder,
           },
           completed: true,
         };
@@ -203,7 +214,7 @@ export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProje
             buildingsResalePlannedAfterDevelopment: Boolean(
               projectData.buildingsResaleExpectedSellingPrice,
             ),
-            futureOperator: projectData.futureOperator,
+            futureOperator: projectData.futureOperator as ProjectStakeholder,
           },
           completed: true,
         };
@@ -220,7 +231,7 @@ export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProje
       case "URBAN_PROJECT_EXPENSES_REINSTATEMENT":
         steps["URBAN_PROJECT_EXPENSES_REINSTATEMENT"] = {
           payload: {
-            reinstatementExpenses: projectData.reinstatementCosts,
+            reinstatementExpenses: projectData.reinstatementCosts as ReinstatementExpense[],
           },
           completed: true,
         };
@@ -228,8 +239,7 @@ export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProje
       case "URBAN_PROJECT_EXPENSES_INSTALLATION":
         steps["URBAN_PROJECT_EXPENSES_INSTALLATION"] = {
           payload: {
-            installationExpenses:
-              developmentPlan.installationCosts as UrbanProjectDevelopmentExpense[],
+            installationExpenses: developmentPlan.costs as UrbanProjectDevelopmentExpense[],
           },
           completed: true,
         };
@@ -237,7 +247,8 @@ export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProje
       case "URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES":
         steps["URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES"] = {
           payload: {
-            yearlyProjectedBuildingsOperationsExpenses: projectData.yearlyProjectedExpenses,
+            yearlyProjectedBuildingsOperationsExpenses:
+              projectData.yearlyProjectedCosts as RecurringExpense[],
           },
           completed: true,
         };
@@ -274,7 +285,8 @@ export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProje
       case "URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE":
         steps["URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE"] = {
           payload: {
-            financialAssistanceRevenues: projectData.financialAssistanceRevenues,
+            financialAssistanceRevenues:
+              projectData.financialAssistanceRevenues as FinancialAssistanceRevenue[],
           },
           completed: true,
         };
@@ -284,7 +296,7 @@ export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProje
           payload: {
             installationSchedule: projectData.developmentPlan.installationSchedule,
             reinstatementSchedule: projectData.reinstatementSchedule,
-            firstYearOfOperation: projectData.firstYearOfOperation,
+            firstYearOfOperation: projectData.operationsFirstYear,
           },
           completed: true,
         };
@@ -301,7 +313,7 @@ export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProje
       case "URBAN_PROJECT_PROJECT_PHASE":
         steps["URBAN_PROJECT_PROJECT_PHASE"] = {
           payload: {
-            projectPhase: projectData.projectPhase,
+            projectPhase: projectData.projectPhase as UrbanProjectPhase,
           },
           completed: true,
         };

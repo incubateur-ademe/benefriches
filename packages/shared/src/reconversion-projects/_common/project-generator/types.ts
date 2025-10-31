@@ -1,8 +1,6 @@
-import { z } from "zod";
-
 import { SiteNature } from "../../../site";
 import { SoilsDistribution } from "../../../soils";
-import { saveReconversionProjectSchema } from "../../reconversionProjectSchemas";
+import { ReconversionProjectSaveDto } from "../../reconversionProjectSchemas";
 
 export type SiteData = {
   id: string;
@@ -15,4 +13,4 @@ export type SiteData = {
     name?: string;
   };
 };
-export type ReconversionProject = z.infer<typeof saveReconversionProjectSchema>;
+export type ReconversionProject = ReconversionProjectSaveDto;

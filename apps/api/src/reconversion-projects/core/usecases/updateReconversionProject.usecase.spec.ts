@@ -3,7 +3,7 @@ import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/Deter
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { FailureResult } from "src/shared-kernel/result";
 
-import { ReconversionProjectUpdateInputProps } from "../model/reconversionProject";
+import { ReconversionProjectUpdatePropsDto } from "../model/reconversionProject";
 import {
   buildMinimalReconversionProjectProps,
   UrbanProjectBuilder,
@@ -52,7 +52,7 @@ const baseUpdateReconversionProjectProps = {
   yearlyProjectedCosts: [{ purpose: "rent", amount: 12000 }],
   yearlyProjectedRevenues: [{ source: "operations", amount: 13000 }],
   projectPhase: "planning",
-} as const satisfies ReconversionProjectUpdateInputProps;
+} as const satisfies ReconversionProjectUpdatePropsDto;
 
 describe("UpdateReconversionProject Use Case", () => {
   let dateProvider: DateProvider;

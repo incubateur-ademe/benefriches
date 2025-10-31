@@ -6,8 +6,9 @@ import { v4 as uuid } from "uuid";
 import { ReconversionProjectRepository } from "src/reconversion-projects/core/gateways/ReconversionProjectRepository";
 import {
   PhotovoltaicPowerStationFeatures,
-  ReconversionProjectInput,
-  ReconversionProjectUpdateInput,
+  ReconversionProjectSaveDto,
+  ReconversionProjectUpdateDto,
+  ReconversionProjectDataView,
   Schedule,
 } from "src/reconversion-projects/core/model/reconversionProject";
 import { UrbanProjectFeatures } from "src/reconversion-projects/core/model/urbanProjects";
@@ -98,7 +99,7 @@ type ReconversionProjectSqlResult = {
 export class SqlReconversionProjectRepository implements ReconversionProjectRepository {
   constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}
 
-  async save(reconversionProject: ReconversionProjectInput): Promise<void> {
+  async save(reconversionProject: ReconversionProjectSaveDto): Promise<void> {
     await this.sqlConnection.transaction(async (trx) => {
       const [insertedReconversionProject] = await trx("reconversion_projects").insert(
         {
@@ -234,7 +235,7 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
     return !!exists;
   }
 
-  async getById(reconversionProjectId: string): Promise<ReconversionProjectInput | null> {
+  async getById(reconversionProjectId: string): Promise<ReconversionProjectDataView | null> {
     const sqlResult = (await this.sqlConnection("reconversion_projects")
       .select(
         "id",
@@ -336,7 +337,7 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
 
     if (!sqlResult) return null;
 
-    const getDevelopmentPlan = (): ReconversionProjectInput["developmentPlan"] => {
+    const getDevelopmentPlan = (): ReconversionProjectDataView["developmentPlan"] => {
       const developer = {
         name: sqlResult.development_plan.developer_name,
         structureType: sqlResult.development_plan.developer_structure_type,
@@ -444,7 +445,7 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
     };
   }
 
-  async update(reconversionProject: ReconversionProjectUpdateInput): Promise<void> {
+  async update(reconversionProject: ReconversionProjectUpdateDto): Promise<void> {
     await this.sqlConnection.transaction(async (trx) => {
       await trx("reconversion_projects").where({ id: reconversionProject.id }).update({
         updated_at: reconversionProject.updatedAt,
