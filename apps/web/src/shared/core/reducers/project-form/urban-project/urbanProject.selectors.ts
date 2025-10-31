@@ -1,6 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 
 import { RootState } from "@/shared/core/store-config/store";
+import { buildStepGroupsFromSequence } from "@/shared/views/project-form/stepper/stepperConfig";
 
 import { ProjectFormSelectors } from "../projectForm.selectors";
 import { ReadStateHelper } from "./helpers/readState";
@@ -8,8 +9,13 @@ import {
   getUrbanProjectAvailableLocalAuthoritiesStakeholders,
   getUrbanProjectAvailableStakeholders,
 } from "./helpers/stakeholders";
-import { getStepperList } from "./helpers/stepperList";
-import { AnswerStepId, isAnswersStep, isInformationalStep } from "./urbanProjectSteps";
+import { computeProjectStepsSequence } from "./helpers/stepsSequence";
+import {
+  AnswerStepId,
+  isAnswersStep,
+  isSummaryStep,
+  UrbanProjectCreationStep,
+} from "./urbanProjectSteps";
 
 export const createUrbanProjectFormSelectors = (
   entityName: "projectCreation" | "projectUpdate",
@@ -30,7 +36,7 @@ export const createUrbanProjectFormSelectors = (
 
   const selectStepAnswers = <T extends AnswerStepId>(stepId: T) =>
     createSelector([selectStepState], (steps) => {
-      if (isInformationalStep(stepId)) {
+      if (!isAnswersStep(stepId)) {
         return undefined;
       }
       return (
@@ -62,26 +68,42 @@ export const createUrbanProjectFormSelectors = (
     }),
   );
 
-  const selectAvailableStepsStateList = createSelector(
+  const selectProjectStepsSequence = createSelector(
     [(state: RootState) => state[entityName].siteData, selectStepState],
-    (siteData, stepsState) => getStepperList({ siteData, stepsState }, INITIAL_STEP),
+    (siteData, stepsState) => computeProjectStepsSequence({ siteData, stepsState }, INITIAL_STEP),
   );
 
-  const selectAvailableStepsState = createSelector(
-    [selectAvailableStepsStateList],
-    (availableStepsStateList) =>
-      Object.fromEntries(
-        availableStepsStateList.map(({ order, status, stepId }) => [stepId, { order, status }]),
-      ),
+  const selectProjectStepsSequenceWithStatus = createSelector(
+    [selectProjectStepsSequence, selectStepState],
+    (stepsSequence, stepsState): { isCompleted: boolean; stepId: UrbanProjectCreationStep }[] =>
+      stepsSequence.map((stepId) => ({
+        stepId,
+        isCompleted: stepsState[stepId]?.completed ?? false,
+      })),
+  );
+
+  const selectStepsGroupedBySections = createSelector(
+    [selectProjectStepsSequenceWithStatus],
+    (selectProjectStepsSequenceWithStatus) =>
+      buildStepGroupsFromSequence(selectProjectStepsSequenceWithStatus),
   );
 
   const selectIsFormStatusValid = createSelector(
-    [selectAvailableStepsStateList],
-    (availableStepsState) => {
-      return availableStepsState.every(({ stepId, status }) =>
-        isAnswersStep(stepId) ? status === "completed" : true,
+    [selectProjectStepsSequenceWithStatus],
+    (stepsSequenceWithStatus) => {
+      return stepsSequenceWithStatus.every(({ stepId, isCompleted }) =>
+        isAnswersStep(stepId) ? isCompleted : true,
       );
     },
+  );
+
+  const selectNextEmptyStep = createSelector(
+    [selectProjectStepsSequenceWithStatus],
+    (stepsSequenceWithStatus) =>
+      stepsSequenceWithStatus.find(
+        ({ isCompleted, stepId }) =>
+          (isAnswersStep(stepId) || isSummaryStep(stepId)) && !isCompleted,
+      )?.stepId,
   );
 
   const selectProjectDeveloper = createSelector(
@@ -141,7 +163,8 @@ export const createUrbanProjectFormSelectors = (
     selectSoilsCarbonStorageDifference,
     selectIsFormStatusValid,
     selectProjectSummary,
-    selectAvailableStepsState,
+    selectStepsGroupedBySections,
+    selectNextEmptyStep,
     selectUrbanProjectAvailableStakeholders,
     selectUrbanProjectAvailableLocalAuthoritiesStakeholders,
     selectPendingStepCompletion,

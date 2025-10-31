@@ -1,12 +1,17 @@
-import { UrbanProjectCreationStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 
+import { StepGroupId } from "../../stepper/stepperConfig";
 import ProjectCreationDataSummary from "./ProjectCreationDataSummary";
 
 function ProjectionCreationDataSummaryContainer() {
-  const { onBack, onNavigateToStep, onSave, selectProjectSummary, selectIsFormStatusValid } =
-    useProjectForm();
+  const {
+    onBack,
+    onNavigateToStepperGroup,
+    onSave,
+    selectProjectSummary,
+    selectIsFormStatusValid,
+  } = useProjectForm();
 
   const isFormValid = useAppSelector(selectIsFormStatusValid);
   const { projectData, projectSoilsDistribution, projectSpaces } =
@@ -32,12 +37,12 @@ function ProjectionCreationDataSummaryContainer() {
       projectData={projectData}
       projectSoilsDistribution={projectSoilsDistribution}
       projectSpaces={projectSpaces}
-      getSectionButtonProps={(stepId: UrbanProjectCreationStep) => {
+      getSectionButtonProps={(stepGroupId: StepGroupId) => {
         return {
           iconId: "fr-icon-pencil-line",
           children: "Modifier",
           onClick: () => {
-            onNavigateToStep(stepId);
+            onNavigateToStepperGroup(stepGroupId);
           },
         };
       }}

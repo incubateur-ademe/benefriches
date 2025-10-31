@@ -7,8 +7,8 @@ import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { SidebarLayoutContext } from "@/shared/views/layout/SidebarLayout/SidebarLayoutContext";
 import FormStepperWrapper from "@/shared/views/layout/WizardFormLayout/FormStepperWrapper";
 import StepperLiItem from "@/shared/views/project-form/stepper/StepperItem";
-import { STEP_LABELS } from "@/shared/views/project-form/stepper/stepperConfig";
-import { useMapStepListToCategoryList } from "@/shared/views/project-form/stepper/useMapStepListToCategoryList";
+import { STEP_TO_GROUP_MAPPING } from "@/shared/views/project-form/stepper/stepperConfig";
+import { useBuildStepperNavigationItems } from "@/shared/views/project-form/stepper/useBuildStepperNavigationItems";
 import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 
 type Props = {
@@ -50,56 +50,65 @@ const SummaryButton = ({ onClick, isSelected }: SummaryButtonProps) => {
 };
 
 function UrbanProjectUpdateStepper({ step: currentStep }: Props) {
-  const { selectAvailableStepsState, onNavigateToStep } = useProjectForm();
-  const availableStepsState = useAppSelector(selectAvailableStepsState);
+  const {
+    selectStepsGroupedBySections,
+    selectNextEmptyStep,
+    onNavigateToStep,
+    onNavigateToStepperGroup,
+  } = useProjectForm();
+
+  const stepsGroupedBySections = useAppSelector(selectStepsGroupedBySections);
+  const nextEmptyStep = useAppSelector(selectNextEmptyStep);
+
   const saveState = useAppSelector(
     (state: RootState) => state.projectCreation.urbanProject.saveState,
   );
 
-  const { categories, nextAvailableCategory } = useMapStepListToCategoryList(
-    availableStepsState,
-    currentStep,
-  );
+  const stepGroupsList = useBuildStepperNavigationItems(stepsGroupedBySections, currentStep);
+
+  const { groupId: nextEmptyStepGroupId, subGroupId: nextEmptyStepSubGroupId } = nextEmptyStep
+    ? STEP_TO_GROUP_MAPPING[nextEmptyStep]
+    : {};
 
   const isFormDisabled = saveState === "success";
 
-  const summary = categories.find(({ labelKey }) => labelKey === "SUMMARY");
+  const summary = stepGroupsList.find(({ groupId }) => groupId === "SUMMARY");
 
   return (
     <>
       {summary && (
         <SummaryButton
           onClick={() => {
-            onNavigateToStep(summary.targetStepId);
+            onNavigateToStepperGroup("SUMMARY");
           }}
-          isSelected={summary.state === "current"}
+          isSelected={summary.variant === "current" || summary.variant === "active"}
         />
       )}
 
       <FormStepperWrapper className="my-0">
-        {categories
-          .filter(({ labelKey }) => labelKey !== "SUMMARY")
-          .map(({ targetStepId, labelKey, subCategories, state }) => (
+        {stepGroupsList
+          .filter(({ groupId }) => groupId !== "SUMMARY")
+          .map(({ title, groupId, subGroups, variant }) => (
             <StepperLiItem
-              key={labelKey}
-              title={STEP_LABELS[labelKey]}
-              state={state}
+              key={title}
+              title={title}
+              variant={variant}
               isFormDisabled={isFormDisabled}
-              isNextAvailable={nextAvailableCategory?.category === labelKey}
+              isNextAvailable={nextEmptyStepGroupId === groupId}
               onClick={() => {
-                onNavigateToStep(targetStepId);
+                onNavigateToStepperGroup(groupId);
               }}
             >
-              {subCategories && (state === "active" || state === "current") && (
+              {subGroups && (variant === "active" || variant === "current") && (
                 <FormStepperWrapper className="my-0">
-                  {subCategories.map((subStep) => (
+                  {subGroups.map((subStep) => (
                     <StepperLiItem
-                      key={subStep.labelKey}
-                      title={STEP_LABELS[subStep.labelKey]}
-                      state={subStep.state}
+                      key={subStep.title}
+                      title={subStep.title}
+                      variant={subStep.variant}
                       className="pl-6"
                       isFormDisabled={isFormDisabled}
-                      isNextAvailable={nextAvailableCategory?.subCategory === subStep.labelKey}
+                      isNextAvailable={nextEmptyStepSubGroupId === subStep.subGroupId}
                       onClick={() => {
                         onNavigateToStep(subStep.targetStepId);
                       }}

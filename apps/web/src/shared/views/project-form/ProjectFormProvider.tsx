@@ -15,8 +15,9 @@ import { updateUrbanProjectFormSelectors } from "@/features/update-project/core/
 import { StepCompletionPayload } from "@/shared/core/reducers/project-form/urban-project/urbanProject.actions";
 import { UrbanProjectCreationStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 
-import { useAppDispatch } from "../hooks/store.hooks";
+import { useAppDispatch, useAppSelector } from "../hooks/store.hooks";
 import { ProjectFormContext, ProjectFormContextValue } from "./ProjectFormContext";
+import { StepGroupId } from "./stepper/stepperConfig";
 
 type ProjectFormProviderProps = {
   children: ReactNode;
@@ -44,6 +45,8 @@ export const ProjectFormProvider: React.FC<ProjectFormProviderProps> = ({ childr
     [mode],
   );
 
+  const stepsSequenceGroupedBySections = useAppSelector(selectors.selectStepsGroupedBySections);
+
   const onNext = useCallback(() => dispatch(actions.navigateToNext()), [dispatch, actions]);
 
   const onSave = useCallback(async () => {
@@ -65,6 +68,18 @@ export const ProjectFormProvider: React.FC<ProjectFormProviderProps> = ({ childr
   const onNavigateToStep = useCallback(
     (stepId: UrbanProjectCreationStep) => dispatch(actions.navigateToStep({ stepId })),
     [dispatch, actions],
+  );
+
+  const onNavigateToStepperGroup = useCallback(
+    (stepGroupId: StepGroupId) => {
+      const stepId = stepsSequenceGroupedBySections[stepGroupId][0]?.stepId;
+      if (stepId) {
+        dispatch(actions.navigateToStep({ stepId }));
+      } else {
+        console.error(`Cannot find stepId for group section ${stepGroupId}`);
+      }
+    },
+    [dispatch, actions, stepsSequenceGroupedBySections],
   );
 
   const onFetchSoilsCarbonStorageDifference = useCallback(
@@ -95,6 +110,7 @@ export const ProjectFormProvider: React.FC<ProjectFormProviderProps> = ({ childr
       onBack,
       onRequestStepCompletion,
       onNavigateToStep,
+      onNavigateToStepperGroup,
       onFetchSoilsCarbonStorageDifference,
       onFetchSiteLocalAuthorities,
       onCancelStepCompletion,
@@ -108,6 +124,7 @@ export const ProjectFormProvider: React.FC<ProjectFormProviderProps> = ({ childr
       onBack,
       onRequestStepCompletion,
       onNavigateToStep,
+      onNavigateToStepperGroup,
       onFetchSoilsCarbonStorageDifference,
       onFetchSiteLocalAuthorities,
       onCancelStepCompletion,

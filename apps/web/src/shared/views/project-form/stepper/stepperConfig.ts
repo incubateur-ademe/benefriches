@@ -1,10 +1,52 @@
-import { UrbanProjectCreationStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
+import {
+  isAnswersStep,
+  isSummaryStep,
+  UrbanProjectCreationStep,
+} from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 
-export const STEP_LABELS = {
-  // Catégories principales
+export type StepGroupId =
+  | "CREATION_MODE"
+  | "SPACES"
+  | "SPACES_DEVELOPMENT"
+  | "SOILS_DECONTAMINATION"
+  | "BUILDINGS"
+  | "BUILDINGS_USE"
+  | "STAKEHOLDERS"
+  | "SITE_RESALE"
+  | "EXPENSES"
+  | "REVENUE"
+  | "SCHEDULE"
+  | "NAMING"
+  | "SUMMARY";
+
+export type StepSubGroupId =
+  | "SELECTION"
+  | "SURFACE"
+  | "RESIDENTIAL_SPACES"
+  | "GREEN_SPACES"
+  | "PUBLIC_SPACES"
+  | "SOILS_SUMMARY"
+  | "CARBON_STORAGE"
+  | "FLOOR_SURFACE"
+  | "SURFACE_DISTRIBUTION"
+  | "PROJECT_DEVELOPER"
+  | "REINSTATEMENT_OWNER"
+  | "SITE_PURCHASE"
+  | "SITE_REINSTATEMENT"
+  | "SITE_INSTALLATION"
+  | "BUILDINGS_OPERATION"
+  | "FINANCIAL_ASSISTANCE"
+  | "SITE_RESALE_SUB"
+  | "BUILDINGS_RESALE"
+  | "SCHEDULE_SUB"
+  | "PROJECT_PROGRESS"
+  | "SITE_CESSION"
+  | "BUILDINGS_CESSION";
+
+export const STEP_GROUP_LABELS: Record<StepGroupId | StepSubGroupId, string> = {
   CREATION_MODE: "Mode de création",
 
-  // custom
+  // Groupes
   SPACES: "Espaces",
   SPACES_DEVELOPMENT: "Aménagement des espaces",
   SOILS_DECONTAMINATION: "Dépollution des sols",
@@ -18,7 +60,7 @@ export const STEP_LABELS = {
   NAMING: "Dénomination",
   SUMMARY: "Récapitulatif",
 
-  // Sous-catégories
+  // Sous-groupes
   SELECTION: "Sélection",
   SURFACE: "Surface",
   RESIDENTIAL_SPACES: "Lieux d'habitation et d'activité",
@@ -43,297 +85,189 @@ export const STEP_LABELS = {
   BUILDINGS_CESSION: "Cession des bâtiments",
 } as const;
 
-export type SubCategoryDefinition = {
-  targetStepId: UrbanProjectCreationStep;
-  labelKey: keyof typeof STEP_LABELS;
-};
-
-export type CategoryDefinition = {
-  labelKey: keyof typeof STEP_LABELS;
-  targetStepId: UrbanProjectCreationStep;
-  subCategories?: SubCategoryDefinition[];
-};
-
-// Configuration des étapes affichées dans le Stepper
-// définit l'ordre d'affichage
-export const STEP_CATEGORIES: CategoryDefinition[] = [
-  {
-    labelKey: "CREATION_MODE",
-    targetStepId: "URBAN_PROJECT_CREATE_MODE_SELECTION",
-  },
-  {
-    labelKey: "SPACES",
-    targetStepId: "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION",
-    subCategories: [
-      { targetStepId: "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION", labelKey: "SELECTION" },
-      { targetStepId: "URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA", labelKey: "SURFACE" },
-    ],
-  },
-  {
-    labelKey: "SPACES_DEVELOPMENT",
-    targetStepId: "URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION",
-    subCategories: [
-      {
-        targetStepId: "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
-        labelKey: "RESIDENTIAL_SPACES",
-      },
-      {
-        targetStepId: "URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION",
-        labelKey: "GREEN_SPACES",
-      },
-      { targetStepId: "URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION", labelKey: "PUBLIC_SPACES" },
-      { targetStepId: "URBAN_PROJECT_SPACES_SOILS_SUMMARY", labelKey: "SOILS_SUMMARY" },
-      { targetStepId: "URBAN_PROJECT_SOILS_CARBON_SUMMARY", labelKey: "CARBON_STORAGE" },
-    ],
-  },
-  {
-    labelKey: "SOILS_DECONTAMINATION",
-    targetStepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION",
-    subCategories: [
-      { targetStepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION", labelKey: "SELECTION" },
-      { targetStepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA", labelKey: "SURFACE" },
-    ],
-  },
-  {
-    labelKey: "BUILDINGS",
-    targetStepId: "URBAN_PROJECT_BUILDINGS_INTRODUCTION",
-    subCategories: [
-      { targetStepId: "URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA", labelKey: "FLOOR_SURFACE" },
-    ],
-  },
-  {
-    labelKey: "BUILDINGS_USE",
-    targetStepId: "URBAN_PROJECT_BUILDINGS_USE_INTRODUCTION",
-    subCategories: [
-      {
-        targetStepId: "URBAN_PROJECT_BUILDINGS_USE_SELECTION",
-        labelKey: "SELECTION",
-      },
-      {
-        targetStepId: "URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION",
-        labelKey: "SURFACE_DISTRIBUTION",
-      },
-    ],
-  },
-  {
-    labelKey: "STAKEHOLDERS",
-    targetStepId: "URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION",
-    subCategories: [
-      {
-        targetStepId: "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER",
-        labelKey: "PROJECT_DEVELOPER",
-      },
-      {
-        targetStepId: "URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER",
-        labelKey: "REINSTATEMENT_OWNER",
-      },
-    ],
-  },
-  {
-    labelKey: "SITE_RESALE",
-    targetStepId: "URBAN_PROJECT_SITE_RESALE_INTRODUCTION",
-    subCategories: [
-      { targetStepId: "URBAN_PROJECT_SITE_RESALE_SELECTION", labelKey: "SITE_CESSION" },
-      { targetStepId: "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION", labelKey: "BUILDINGS_CESSION" },
-    ],
-  },
-  {
-    labelKey: "EXPENSES",
-    targetStepId: "URBAN_PROJECT_EXPENSES_INTRODUCTION",
-    subCategories: [
-      { targetStepId: "URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS", labelKey: "SITE_PURCHASE" },
-      { targetStepId: "URBAN_PROJECT_EXPENSES_REINSTATEMENT", labelKey: "SITE_REINSTATEMENT" },
-      { targetStepId: "URBAN_PROJECT_EXPENSES_INSTALLATION", labelKey: "SITE_INSTALLATION" },
-      {
-        targetStepId: "URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES",
-        labelKey: "BUILDINGS_OPERATION",
-      },
-    ],
-  },
-  {
-    labelKey: "REVENUE",
-    targetStepId: "URBAN_PROJECT_REVENUE_INTRODUCTION",
-    subCategories: [
-      {
-        targetStepId: "URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE",
-        labelKey: "FINANCIAL_ASSISTANCE",
-      },
-      {
-        targetStepId: "URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES",
-        labelKey: "BUILDINGS_OPERATION",
-      },
-      { targetStepId: "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE", labelKey: "SITE_RESALE_SUB" },
-      { targetStepId: "URBAN_PROJECT_REVENUE_BUILDINGS_RESALE", labelKey: "BUILDINGS_RESALE" },
-    ],
-  },
-  {
-    labelKey: "SCHEDULE",
-    targetStepId: "URBAN_PROJECT_SCHEDULE_INTRODUCTION",
-    subCategories: [
-      { targetStepId: "URBAN_PROJECT_SCHEDULE_PROJECTION", labelKey: "SCHEDULE_SUB" },
-      { targetStepId: "URBAN_PROJECT_PROJECT_PHASE", labelKey: "PROJECT_PROGRESS" },
-    ],
-  },
-  { labelKey: "NAMING", targetStepId: "URBAN_PROJECT_NAMING" },
-  { labelKey: "SUMMARY", targetStepId: "URBAN_PROJECT_FINAL_SUMMARY" },
-  { labelKey: "SUMMARY", targetStepId: "URBAN_PROJECT_EXPRESS_SUMMARY" },
-];
-
-// Mapping d'une étape (du state) vers la categorie et sous catégorie du Stepper
-// Plusieurs étapes du stepper peuvent renvoyer vers le même couple catégorie / sous catégorie
-// ex: URBAN_PROJECT_GREEN_SPACES_INTRODUCTION et URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION
-export const STEP_TO_CATEGORY_MAPPING: Record<
+type StepToGroupMapping = Record<
   UrbanProjectCreationStep,
-  { categoryKey: keyof typeof STEP_LABELS; subCategoryKey?: keyof typeof STEP_LABELS }
-> = {
-  URBAN_PROJECT_CREATE_MODE_SELECTION: { categoryKey: "CREATION_MODE" },
-  URBAN_PROJECT_EXPRESS_CATEGORY_SELECTION: { categoryKey: "CREATION_MODE" },
-  URBAN_PROJECT_EXPRESS_SUMMARY: { categoryKey: "SUMMARY" },
-  URBAN_PROJECT_EXPRESS_CREATION_RESULT: { categoryKey: "SUMMARY" },
+  { groupId: StepGroupId; subGroupId?: StepSubGroupId }
+>;
+export const STEP_TO_GROUP_MAPPING: StepToGroupMapping = {
+  URBAN_PROJECT_CREATE_MODE_SELECTION: { groupId: "CREATION_MODE" },
+  URBAN_PROJECT_EXPRESS_CATEGORY_SELECTION: { groupId: "CREATION_MODE" },
+  URBAN_PROJECT_EXPRESS_SUMMARY: { groupId: "SUMMARY" },
+  URBAN_PROJECT_EXPRESS_CREATION_RESULT: { groupId: "SUMMARY" },
   // Espaces
-  URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION: { categoryKey: "SPACES" },
-  URBAN_PROJECT_SPACES_CATEGORIES_SELECTION: { categoryKey: "SPACES", subCategoryKey: "SELECTION" },
+  URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION: { groupId: "SPACES" },
+  URBAN_PROJECT_SPACES_CATEGORIES_SELECTION: { groupId: "SPACES", subGroupId: "SELECTION" },
   URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA: {
-    categoryKey: "SPACES",
-    subCategoryKey: "SURFACE",
+    groupId: "SPACES",
+    subGroupId: "SURFACE",
   },
 
   // Aménagement des espaces
-  URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION: { categoryKey: "SPACES_DEVELOPMENT" },
+  URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION: { groupId: "SPACES_DEVELOPMENT" },
   URBAN_PROJECT_GREEN_SPACES_INTRODUCTION: {
-    categoryKey: "SPACES_DEVELOPMENT",
-    subCategoryKey: "GREEN_SPACES",
+    groupId: "SPACES_DEVELOPMENT",
+    subGroupId: "GREEN_SPACES",
   },
   URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION: {
-    categoryKey: "SPACES_DEVELOPMENT",
-    subCategoryKey: "GREEN_SPACES",
+    groupId: "SPACES_DEVELOPMENT",
+    subGroupId: "GREEN_SPACES",
   },
   URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_INTRODUCTION: {
-    categoryKey: "SPACES_DEVELOPMENT",
-    subCategoryKey: "RESIDENTIAL_SPACES",
+    groupId: "SPACES_DEVELOPMENT",
+    subGroupId: "RESIDENTIAL_SPACES",
   },
   URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION: {
-    categoryKey: "SPACES_DEVELOPMENT",
-    subCategoryKey: "RESIDENTIAL_SPACES",
+    groupId: "SPACES_DEVELOPMENT",
+    subGroupId: "RESIDENTIAL_SPACES",
   },
   URBAN_PROJECT_PUBLIC_SPACES_INTRODUCTION: {
-    categoryKey: "SPACES_DEVELOPMENT",
-    subCategoryKey: "PUBLIC_SPACES",
+    groupId: "SPACES_DEVELOPMENT",
+    subGroupId: "PUBLIC_SPACES",
   },
   URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION: {
-    categoryKey: "SPACES_DEVELOPMENT",
-    subCategoryKey: "PUBLIC_SPACES",
+    groupId: "SPACES_DEVELOPMENT",
+    subGroupId: "PUBLIC_SPACES",
   },
   URBAN_PROJECT_SPACES_SOILS_SUMMARY: {
-    categoryKey: "SPACES_DEVELOPMENT",
-    subCategoryKey: "SOILS_SUMMARY",
+    groupId: "SPACES_DEVELOPMENT",
+    subGroupId: "SOILS_SUMMARY",
   },
   URBAN_PROJECT_SOILS_CARBON_SUMMARY: {
-    categoryKey: "SPACES_DEVELOPMENT",
-    subCategoryKey: "CARBON_STORAGE",
+    groupId: "SPACES_DEVELOPMENT",
+    subGroupId: "CARBON_STORAGE",
   },
 
   // Dépollution des sols
-  URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION: { categoryKey: "SOILS_DECONTAMINATION" },
+  URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION: { groupId: "SOILS_DECONTAMINATION" },
   URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION: {
-    categoryKey: "SOILS_DECONTAMINATION",
-    subCategoryKey: "SELECTION",
+    groupId: "SOILS_DECONTAMINATION",
+    subGroupId: "SELECTION",
   },
   URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA: {
-    categoryKey: "SOILS_DECONTAMINATION",
-    subCategoryKey: "SURFACE",
+    groupId: "SOILS_DECONTAMINATION",
+    subGroupId: "SURFACE",
   },
 
   // Bâtiments
-  URBAN_PROJECT_BUILDINGS_INTRODUCTION: { categoryKey: "BUILDINGS" },
+  URBAN_PROJECT_BUILDINGS_INTRODUCTION: { groupId: "BUILDINGS" },
   URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA: {
-    categoryKey: "BUILDINGS",
-    subCategoryKey: "FLOOR_SURFACE",
+    groupId: "BUILDINGS",
+    subGroupId: "FLOOR_SURFACE",
   },
 
   // Usage des lieux d'habitation et d'activité
   URBAN_PROJECT_BUILDINGS_USE_INTRODUCTION: {
-    categoryKey: "BUILDINGS_USE",
+    groupId: "BUILDINGS_USE",
   },
   URBAN_PROJECT_BUILDINGS_USE_SELECTION: {
-    categoryKey: "BUILDINGS_USE",
-    subCategoryKey: "SELECTION",
+    groupId: "BUILDINGS_USE",
+    subGroupId: "SELECTION",
   },
   URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION: {
-    categoryKey: "BUILDINGS_USE",
-    subCategoryKey: "SURFACE_DISTRIBUTION",
+    groupId: "BUILDINGS_USE",
+    subGroupId: "SURFACE_DISTRIBUTION",
   },
 
   // Acteurs
-  URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION: { categoryKey: "STAKEHOLDERS" },
+  URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION: { groupId: "STAKEHOLDERS" },
   URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER: {
-    categoryKey: "STAKEHOLDERS",
-    subCategoryKey: "PROJECT_DEVELOPER",
+    groupId: "STAKEHOLDERS",
+    subGroupId: "PROJECT_DEVELOPER",
   },
   URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER: {
-    categoryKey: "STAKEHOLDERS",
-    subCategoryKey: "REINSTATEMENT_OWNER",
+    groupId: "STAKEHOLDERS",
+    subGroupId: "REINSTATEMENT_OWNER",
   },
 
   // Cession foncière
-  URBAN_PROJECT_SITE_RESALE_INTRODUCTION: { categoryKey: "SITE_RESALE" },
+  URBAN_PROJECT_SITE_RESALE_INTRODUCTION: { groupId: "SITE_RESALE" },
   URBAN_PROJECT_SITE_RESALE_SELECTION: {
-    categoryKey: "SITE_RESALE",
-    subCategoryKey: "SITE_CESSION",
+    groupId: "SITE_RESALE",
+    subGroupId: "SITE_CESSION",
   },
   URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
-    categoryKey: "SITE_RESALE",
-    subCategoryKey: "BUILDINGS_CESSION",
+    groupId: "SITE_RESALE",
+    subGroupId: "BUILDINGS_CESSION",
   },
 
   // Dépenses
-  URBAN_PROJECT_EXPENSES_INTRODUCTION: { categoryKey: "EXPENSES" },
+  URBAN_PROJECT_EXPENSES_INTRODUCTION: { groupId: "EXPENSES" },
   URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS: {
-    categoryKey: "EXPENSES",
-    subCategoryKey: "SITE_PURCHASE",
+    groupId: "EXPENSES",
+    subGroupId: "SITE_PURCHASE",
   },
   URBAN_PROJECT_EXPENSES_REINSTATEMENT: {
-    categoryKey: "EXPENSES",
-    subCategoryKey: "SITE_REINSTATEMENT",
+    groupId: "EXPENSES",
+    subGroupId: "SITE_REINSTATEMENT",
   },
   URBAN_PROJECT_EXPENSES_INSTALLATION: {
-    categoryKey: "EXPENSES",
-    subCategoryKey: "SITE_INSTALLATION",
+    groupId: "EXPENSES",
+    subGroupId: "SITE_INSTALLATION",
   },
   URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES: {
-    categoryKey: "EXPENSES",
-    subCategoryKey: "BUILDINGS_OPERATION",
+    groupId: "EXPENSES",
+    subGroupId: "BUILDINGS_OPERATION",
   },
 
   // Recettes
-  URBAN_PROJECT_REVENUE_INTRODUCTION: { categoryKey: "REVENUE" },
+  URBAN_PROJECT_REVENUE_INTRODUCTION: { groupId: "REVENUE" },
   URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE: {
-    categoryKey: "REVENUE",
-    subCategoryKey: "SITE_RESALE_SUB",
+    groupId: "REVENUE",
+    subGroupId: "SITE_RESALE_SUB",
   },
   URBAN_PROJECT_REVENUE_BUILDINGS_RESALE: {
-    categoryKey: "REVENUE",
-    subCategoryKey: "BUILDINGS_RESALE",
+    groupId: "REVENUE",
+    subGroupId: "BUILDINGS_RESALE",
   },
   URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES: {
-    categoryKey: "REVENUE",
-    subCategoryKey: "BUILDINGS_OPERATION",
+    groupId: "REVENUE",
+    subGroupId: "BUILDINGS_OPERATION",
   },
   URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE: {
-    categoryKey: "REVENUE",
-    subCategoryKey: "FINANCIAL_ASSISTANCE",
+    groupId: "REVENUE",
+    subGroupId: "FINANCIAL_ASSISTANCE",
   },
 
   // Calendrier et avancement
-  URBAN_PROJECT_SCHEDULE_INTRODUCTION: { categoryKey: "SCHEDULE" },
+  URBAN_PROJECT_SCHEDULE_INTRODUCTION: { groupId: "SCHEDULE" },
   URBAN_PROJECT_SCHEDULE_PROJECTION: {
-    categoryKey: "SCHEDULE",
-    subCategoryKey: "SCHEDULE_SUB",
+    groupId: "SCHEDULE",
+    subGroupId: "SCHEDULE_SUB",
   },
-  URBAN_PROJECT_PROJECT_PHASE: { categoryKey: "SCHEDULE", subCategoryKey: "PROJECT_PROGRESS" },
+  URBAN_PROJECT_PROJECT_PHASE: { groupId: "SCHEDULE", subGroupId: "PROJECT_PROGRESS" },
 
   // Final
-  URBAN_PROJECT_NAMING: { categoryKey: "NAMING" },
-  URBAN_PROJECT_FINAL_SUMMARY: { categoryKey: "SUMMARY" },
-  URBAN_PROJECT_CREATION_RESULT: { categoryKey: "SUMMARY" },
+  URBAN_PROJECT_NAMING: { groupId: "NAMING" },
+  URBAN_PROJECT_FINAL_SUMMARY: { groupId: "SUMMARY" },
+  URBAN_PROJECT_CREATION_RESULT: { groupId: "SUMMARY" },
+};
+
+export type ProjectStepGroups = Record<
+  StepGroupId,
+  { stepId: UrbanProjectCreationStep; subGroupId?: StepSubGroupId; isStepCompleted: boolean }[]
+>;
+export const buildStepGroupsFromSequence = <
+  T extends UrbanProjectCreationStep = UrbanProjectCreationStep,
+>(
+  stepSequence: { stepId: T; isCompleted: boolean }[],
+) => {
+  const stepGroups = {} as ProjectStepGroups;
+
+  for (const { stepId, isCompleted: isStepCompleted } of stepSequence.filter(
+    ({ stepId }) => isAnswersStep(stepId) || isSummaryStep(stepId),
+  )) {
+    const { groupId, subGroupId } = STEP_TO_GROUP_MAPPING[stepId];
+
+    if (!stepGroups[groupId]) {
+      stepGroups[groupId] = [];
+    }
+
+    stepGroups[groupId].push({
+      stepId: stepId,
+      subGroupId: subGroupId,
+      isStepCompleted,
+    });
+  }
+
+  return stepGroups;
 };

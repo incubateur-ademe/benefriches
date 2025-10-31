@@ -7,7 +7,7 @@ type Props = {
   isDone?: boolean;
 };
 
-const getStepState = (stepIndex: number, currentStepIndex: number, formIsDone: boolean) => {
+const getStepVariant = (stepIndex: number, currentStepIndex: number, formIsDone: boolean) => {
   const isPreviousStep = currentStepIndex > stepIndex;
   const isCurrent = currentStepIndex === stepIndex;
   const isCompleted = isPreviousStep || (isCurrent && formIsDone);
@@ -22,7 +22,7 @@ function FormStepper({ steps, currentStepIndex, isDone = false }: Props) {
         <FormStepperStep
           key={title}
           title={title}
-          state={getStepState(index, currentStepIndex, isDone)}
+          variant={getStepVariant(index, currentStepIndex, isDone)}
         />
       ))}
     </FormStepperWrapper>

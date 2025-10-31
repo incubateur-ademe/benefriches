@@ -17,14 +17,12 @@ import z from "zod";
 
 import { ProjectStakeholder } from "@/features/create-project/core/project.types";
 
-export const INFORMATIONAL_STEPS = [
+export const INTRODUCTION_STEPS = [
   "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION",
   "URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION",
   "URBAN_PROJECT_GREEN_SPACES_INTRODUCTION",
   "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_INTRODUCTION",
   "URBAN_PROJECT_PUBLIC_SPACES_INTRODUCTION",
-  "URBAN_PROJECT_SPACES_SOILS_SUMMARY",
-  "URBAN_PROJECT_SOILS_CARBON_SUMMARY",
   "URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION",
   "URBAN_PROJECT_BUILDINGS_INTRODUCTION",
   "URBAN_PROJECT_BUILDINGS_USE_INTRODUCTION",
@@ -33,19 +31,23 @@ export const INFORMATIONAL_STEPS = [
   "URBAN_PROJECT_EXPENSES_INTRODUCTION",
   "URBAN_PROJECT_REVENUE_INTRODUCTION",
   "URBAN_PROJECT_SCHEDULE_INTRODUCTION",
+] as const;
+
+export const SUMMARY_STEPS = [
+  "URBAN_PROJECT_SPACES_SOILS_SUMMARY",
+  "URBAN_PROJECT_SOILS_CARBON_SUMMARY",
   "URBAN_PROJECT_FINAL_SUMMARY",
   "URBAN_PROJECT_CREATION_RESULT",
   "URBAN_PROJECT_EXPRESS_CREATION_RESULT",
   "URBAN_PROJECT_EXPRESS_SUMMARY",
 ] as const;
 
-export type InformationalStep = (typeof INFORMATIONAL_STEPS)[number];
+export type SummaryStep = (typeof SUMMARY_STEPS)[number];
+export type IntroductionStep = (typeof INTRODUCTION_STEPS)[number];
 
-const INFORMATIONAL_STEPS_SET = new Set<InformationalStep>(INFORMATIONAL_STEPS);
-export const isInformationalStep = (
-  stepId: UrbanProjectCreationStep,
-): stepId is InformationalStep => {
-  return INFORMATIONAL_STEPS_SET.has(stepId as InformationalStep);
+const SUMMARY_STEPS_SET = new Set<SummaryStep>(SUMMARY_STEPS);
+export const isSummaryStep = (stepId: UrbanProjectCreationStep): stepId is SummaryStep => {
+  return SUMMARY_STEPS_SET.has(stepId as SummaryStep);
 };
 
 export const ANSWER_STEPS: AnswerStepId[] = [
@@ -226,9 +228,13 @@ export const BUILDINGS_STEPS = [
   "URBAN_PROJECT_REVENUE_BUILDINGS_RESALE",
 ] as const;
 
-export type UrbanProjectCreationStep = InformationalStep | AnswerStepId;
+export type UrbanProjectCreationStep = IntroductionStep | SummaryStep | AnswerStepId;
 
-const urbanProjectCreationSteps = z.enum([...INFORMATIONAL_STEPS, ...ANSWER_STEPS]);
+const urbanProjectCreationSteps = z.enum([
+  ...INTRODUCTION_STEPS,
+  ...SUMMARY_STEPS,
+  ...ANSWER_STEPS,
+]);
 
 export const isUrbanProjectCreationStep = (step: string): step is UrbanProjectCreationStep => {
   return urbanProjectCreationSteps.safeParse(step).success;

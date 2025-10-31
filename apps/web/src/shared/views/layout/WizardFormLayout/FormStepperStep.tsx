@@ -4,11 +4,11 @@ import classNames, { ClassValue } from "@/shared/views/clsx";
 
 import { SidebarLayoutContext } from "../SidebarLayout/SidebarLayoutContext";
 
-type StepState = "current" | "active" | "completed" | "empty";
+export type StepVariant = "current" | "active" | "completed" | "empty";
 
 export type StepProps = {
   title: string;
-  state: StepState;
+  variant: StepVariant;
   selectable?: boolean;
   disabled?: boolean;
   className?: ClassValue;
@@ -53,7 +53,7 @@ const CurrentStepArrow = () => (
 
 const FormStepperStep = ({
   title,
-  state,
+  variant,
   selectable,
   disabled,
   className,
@@ -61,9 +61,9 @@ const FormStepperStep = ({
   ...props
 }: StepProps) => {
   const { isOpen: isExtended } = useContext(SidebarLayoutContext);
-  const isActive = state === "current" || state === "active";
-  const isCurrent = state === "current";
-  const isCompleted = state === "completed";
+  const isActive = variant === "current" || variant === "active";
+  const isCurrent = variant === "current";
+  const isCompleted = variant === "completed";
 
   return (
     <HtmlTag

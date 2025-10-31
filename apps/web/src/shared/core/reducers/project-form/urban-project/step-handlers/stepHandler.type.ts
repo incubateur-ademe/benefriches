@@ -1,7 +1,8 @@
 import {
   AnswersByStep,
   AnswerStepId,
-  InformationalStep,
+  SummaryStep,
+  IntroductionStep,
   UrbanProjectCreationStep,
 } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 
@@ -19,7 +20,7 @@ interface StepHandler {
 }
 
 export interface InfoStepHandler extends StepHandler {
-  readonly stepId: InformationalStep;
+  readonly stepId: SummaryStep | IntroductionStep;
 }
 
 export interface AnswerStepHandler<T extends AnswerStepId> extends StepHandler {

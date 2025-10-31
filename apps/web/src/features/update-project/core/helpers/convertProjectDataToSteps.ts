@@ -18,7 +18,8 @@ import { ProjectStakeholder } from "@/features/create-project/core/project.types
 import { ProjectFormState } from "@/shared/core/reducers/project-form/projectForm.reducer";
 import {
   ANSWER_STEPS,
-  INFORMATIONAL_STEPS,
+  INTRODUCTION_STEPS,
+  SUMMARY_STEPS,
 } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 
 import { UpdateProjectView } from "../updateProject.types";
@@ -321,7 +322,7 @@ export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProje
     }
   });
 
-  INFORMATIONAL_STEPS.forEach((stepId) => {
+  [...INTRODUCTION_STEPS, ...SUMMARY_STEPS].forEach((stepId) => {
     steps[stepId] = {
       completed: true,
     };

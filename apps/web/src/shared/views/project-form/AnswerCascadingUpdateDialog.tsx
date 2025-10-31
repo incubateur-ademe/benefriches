@@ -6,7 +6,7 @@ import classNames from "@/shared/views/clsx";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 
-import { STEP_LABELS, STEP_TO_CATEGORY_MAPPING } from "./stepper/stepperConfig";
+import { STEP_GROUP_LABELS, STEP_TO_GROUP_MAPPING } from "./stepper/stepperConfig";
 
 const DIALOG_DSFR_CSS = [
   "fixed inset-0",
@@ -17,11 +17,11 @@ const DIALOG_DSFR_CSS = [
 ];
 
 const getStepLabel = (stepId: AnswerStepId) => {
-  const { categoryKey, subCategoryKey } = STEP_TO_CATEGORY_MAPPING[stepId];
+  const { groupId, subGroupId } = STEP_TO_GROUP_MAPPING[stepId];
 
-  return subCategoryKey
-    ? `${STEP_LABELS[categoryKey]} → ${STEP_LABELS[subCategoryKey]}`
-    : STEP_LABELS[categoryKey];
+  return subGroupId
+    ? `${STEP_GROUP_LABELS[groupId]} → ${STEP_GROUP_LABELS[subGroupId]}`
+    : STEP_GROUP_LABELS[groupId];
 };
 
 export default function CascadingChangesAlert() {

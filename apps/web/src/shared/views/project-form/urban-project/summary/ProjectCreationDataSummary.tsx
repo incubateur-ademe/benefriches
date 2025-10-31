@@ -3,12 +3,11 @@ import { ReactNode } from "react";
 import { SoilsDistribution, LEGACY_UrbanProjectSpace } from "shared";
 
 import ProjectFeaturesView from "@/features/projects/views/project-page/features/ProjectFeaturesView";
-import {
-  CustomFormAnswers,
-  UrbanProjectCreationStep,
-} from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
+import { CustomFormAnswers } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
+
+import { StepGroupId } from "../../stepper/stepperConfig";
 
 type Props = {
   projectData: CustomFormAnswers;
@@ -16,7 +15,7 @@ type Props = {
   projectSpaces: Partial<Record<LEGACY_UrbanProjectSpace, number>>;
   onNext: () => void;
   onBack: () => void;
-  getSectionButtonProps: (stepId: UrbanProjectCreationStep) => ButtonProps | undefined;
+  getSectionButtonProps: (stepGroupId: StepGroupId) => ButtonProps | undefined;
   nextDisabled?: boolean;
   instructions?: ReactNode;
 };

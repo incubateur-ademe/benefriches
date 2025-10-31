@@ -10,24 +10,25 @@ import {
   AnswersByStep,
   AnswerStepId,
   UrbanProjectCreationStep,
-  InformationalStep as InformationalStepId,
+  IntroductionStep,
+  SummaryStep,
 } from "./urban-project/urbanProjectSteps";
 
 type LoadingState = "idle" | "loading" | "success" | "error";
 
-type SummaryStep<T_Data> = {
+type SummaryStepState<T_Data> = {
   completed: boolean;
   loadingState?: "idle" | "loading" | "success" | "error";
   data?: T_Data;
 };
 
-type AnswerStep<K extends AnswerStepId> = {
+type AnswerStepState<K extends AnswerStepId> = {
   completed: boolean;
   payload?: AnswersByStep[K];
   defaultValues?: AnswersByStep[K];
 };
 
-type InformationalStep = {
+type InformationalStepState = {
   completed: boolean;
 };
 
@@ -46,12 +47,12 @@ export interface ProjectFormState<T extends UrbanProjectCreationStep = UrbanProj
     };
     steps: Partial<
       {
-        URBAN_PROJECT_EXPRESS_SUMMARY?: SummaryStep<ExpressReconversionProjectResult>;
-        URBAN_PROJECT_SOILS_CARBON_SUMMARY?: SummaryStep<CurrentAndProjectedSoilsCarbonStorageResult>;
+        URBAN_PROJECT_EXPRESS_SUMMARY?: SummaryStepState<ExpressReconversionProjectResult>;
+        URBAN_PROJECT_SOILS_CARBON_SUMMARY?: SummaryStepState<CurrentAndProjectedSoilsCarbonStorageResult>;
       } & {
-        [K in AnswerStepId]: AnswerStep<K>;
+        [K in AnswerStepId]: AnswerStepState<K>;
       } & {
-        [K in InformationalStepId]: InformationalStep;
+        [K in IntroductionStep | SummaryStep]: InformationalStepState;
       }
     >;
   };

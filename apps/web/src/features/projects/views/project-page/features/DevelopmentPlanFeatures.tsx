@@ -8,10 +8,10 @@ import {
   formatSurfaceArea,
 } from "@/shared/core/format-number/formatNumber";
 import { computePercentage } from "@/shared/core/percentage/percentage";
-import { UrbanProjectCreationStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 import { getLabelForUrbanProjectSpace } from "@/shared/core/urbanProject";
 import DataLine from "@/shared/views/components/FeaturesList/FeaturesListDataLine";
 import Section from "@/shared/views/components/FeaturesList/FeaturesListSection";
+import { StepGroupId } from "@/shared/views/project-form/stepper/stepperConfig";
 
 import {
   getLabelForUrbanProjectCategory,
@@ -21,7 +21,7 @@ import SoilsDistribution from "./SoilsDistribution";
 import UrbanProjectBuildingsSection from "./UrbanProjectBuildingsSection";
 
 type Props = Omit<ProjectFeatures, "id"> & {
-  getSectionButtonProps?: (stepId: UrbanProjectCreationStep) => ButtonProps | undefined;
+  getSectionButtonProps?: (stepGroupId: StepGroupId) => ButtonProps | undefined;
 };
 
 const DevelopmentPlanFeatures = ({
@@ -110,11 +110,7 @@ const DevelopmentPlanFeatures = ({
         <>
           <Section
             title="🏘️ Espaces"
-            buttonProps={
-              getSectionButtonProps
-                ? getSectionButtonProps("URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION")
-                : undefined
-            }
+            buttonProps={getSectionButtonProps ? getSectionButtonProps("SPACES") : undefined}
           >
             <DataLine
               label={<strong>Superficie du site</strong>}
@@ -163,9 +159,7 @@ const DevelopmentPlanFeatures = ({
           {decontaminatedSoilSurface ? (
             <Section
               buttonProps={
-                getSectionButtonProps
-                  ? getSectionButtonProps("URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION")
-                  : undefined
+                getSectionButtonProps ? getSectionButtonProps("SOILS_DECONTAMINATION") : undefined
               }
               title="✨ Dépollution"
               tooltip="Les sols de la friche nécessitent une dépollution pour permettre la réalisation du projet. La pollution à l’amiante des bâtiments n’est pas considérée ici."
@@ -187,9 +181,7 @@ const DevelopmentPlanFeatures = ({
           <Section
             title="🌾 Aménagement des espaces"
             buttonProps={
-              getSectionButtonProps
-                ? getSectionButtonProps("URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION")
-                : undefined
+              getSectionButtonProps ? getSectionButtonProps("SPACES_DEVELOPMENT") : undefined
             }
           >
             {totalLivingAndActivitiesSpaces > 0 && (
@@ -312,11 +304,7 @@ const DevelopmentPlanFeatures = ({
 
           {livingAndActivitiesSpaces.BUILDINGS_FOOTPRINT > 0 && (
             <UrbanProjectBuildingsSection
-              buttonProps={
-                getSectionButtonProps
-                  ? getSectionButtonProps("URBAN_PROJECT_BUILDINGS_INTRODUCTION")
-                  : undefined
-              }
+              buttonProps={getSectionButtonProps ? getSectionButtonProps("BUILDINGS") : undefined}
               isExpress={isExpress}
               totalSurfaceArea={totalSurfaceArea}
               buildingsFloorAreaDistribution={buildingsFloorAreaDistribution}
