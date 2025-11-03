@@ -14,10 +14,10 @@ const WithAddon = ({ state, children, addon }: WithAddonProps) => {
       {children}
       <div
         className={classNames(
-          "px-2 pt-[8px]",
+          "px-2 pt-2",
           "bg-dsfr-contrast-grey",
           "text-nowrap",
-          "border-solid border-0 border-b-2 border-[#000091]",
+          "border-solid border-0 border-b-2 border-blue-france",
           state === "error" && "border-dsfr-red",
           state === "success" && "border-dsfr-border-success",
         )}

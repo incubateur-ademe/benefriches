@@ -6,7 +6,7 @@ import { exportImpactsModal } from "../export-impacts/createExportModal";
 
 function DownloadImpactsCard() {
   return (
-    <section className="bg-[#DAF2FB] dark:bg-[#0E3D4F] rounded-lg mt-6 p-6 flex flex-col justify-between">
+    <section className="bg-blue-ultralight dark:bg-[#0E3D4F] rounded-lg mt-6 p-6 flex flex-col justify-between">
       <h4>Partagez les résultats avec vos collègues, partenaires, élu·es...</h4>
       <Button
         priority="primary"

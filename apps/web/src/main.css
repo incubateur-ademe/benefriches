@@ -27,6 +27,7 @@
   --color-text-medium: #949494;
   --color-text-light: #757575;
 
+  --color-blue-france: #000091;
   --color-blue-ultralight: #daf2fb;
   --color-blue-light: #64c7ed;
   --color-blue-medium: #22afe5;
@@ -55,9 +56,6 @@
 
   --color-impacts-positive-border: #34eb7b;
   --color-impacts-positive-main: #18753c;
-
-  --color-impacts-neutral-main: #161616;
-  --color-impacts-neutral-light: #f6f6f6;
 
   --color-impacts-negative-border: #ffafaf;
   --color-impacts-negative-main: #ce0500;
