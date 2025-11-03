@@ -19,10 +19,11 @@ type Props = {
 function UpdateProjectPage({ route }: Props) {
   const dispatch = useAppDispatch();
 
-  const { loadingState, features } = useAppSelector((state) => state.projectUpdate.projectData);
-
-  const projectType = features?.developmentPlan.type;
-  const isExpressProject = features?.creationMode === "express";
+  const {
+    loadingState,
+    projectType,
+    isExpress: isExpressProject,
+  } = useAppSelector((state) => state.projectUpdate.projectData);
 
   useEffect(() => {
     const projectId = route.params.projectId;

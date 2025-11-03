@@ -1,8 +1,9 @@
-import { useAppSelector } from "@/shared/views/hooks/store.hooks";
-import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
+import Button from "@codegouvfr/react-dsfr/Button";
 
-import { StepGroupId } from "../../stepper/stepperConfig";
-import ProjectCreationDataSummary from "./ProjectCreationDataSummary";
+import { useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { StepGroupId } from "@/shared/views/project-form/stepper/stepperConfig";
+import ProjectCreationDataSummary from "@/shared/views/project-form/urban-project/summary/ProjectCreationDataSummary";
+import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 
 function ProjectionCreationDataSummaryContainer() {
   const {
@@ -11,15 +12,28 @@ function ProjectionCreationDataSummaryContainer() {
     onSave,
     selectProjectSummary,
     selectIsFormStatusValid,
+    selectSaveState,
   } = useProjectForm();
 
   const isFormValid = useAppSelector(selectIsFormStatusValid);
+  const saveState = useAppSelector(selectSaveState);
+
   const { projectData, projectSoilsDistribution, projectSpaces } =
     useAppSelector(selectProjectSummary);
 
   return (
     <ProjectCreationDataSummary
-      nextDisabled={!isFormValid}
+      nextDisabled={!isFormValid || saveState === "success"}
+      title={
+        <div className="flex justify-between items-start">
+          Récapitulatif du projet
+          {saveState !== "success" && (
+            <Button iconId="fr-icon-save-fill" onClick={onSave}>
+              Sauvegarder les changements
+            </Button>
+          )}
+        </div>
+      }
       instructions={
         !isFormValid ? (
           <>
@@ -30,7 +44,7 @@ function ProjectionCreationDataSummaryContainer() {
               l'étapier.
             </strong>
           </>
-        ) : undefined
+        ) : null
       }
       onNext={onSave}
       onBack={onBack}

@@ -151,9 +151,7 @@ const SiteReinstatementContractOwnerForm = lazy(
   () =>
     import("@/shared/views/project-form/urban-project/stakeholders/reinstatement-contract-owner"),
 );
-const ProjectCreationDataSummary = lazy(
-  () => import("@/shared/views/project-form/urban-project/summary"),
-);
+const ProjectCreationDataSummary = lazy(() => import("./summary"));
 
 const HTML_URBAN_PROJECT_FORM_MAIN_TITLE = `Projet urbain - Modification`;
 
@@ -451,22 +449,33 @@ const getCurrentStepView = (step: UrbanProjectUpdateStep): Exclude<ReactNode, un
 
 function UrbanProjectUpdateView() {
   const currentStep = useAppSelector(selectUrbanProjectCurrentStep);
-  const projectName = useAppSelector(
-    (state) => state.projectUpdate.projectData.features?.name ?? "",
-  );
+  const projectName = useAppSelector((state) => state.projectUpdate.projectData.projectName ?? "");
+
+  const saveState = useAppSelector((state) => state.projectUpdate.urbanProject.saveState);
+  const lastUpdatedAt = useAppSelector((state) => state.projectUpdate.projectData.updatedAt);
 
   useSyncUpdateStepWithRouteQuery(URBAN_PROJECT_CREATION_STEP_QUERY_STRING_MAP[currentStep]);
 
   return (
     <ProjectFormProvider mode="update">
       <SidebarLayout
-        title={<UrbanProjectUpdateHeader projectName={projectName} />}
+        title={
+          <UrbanProjectUpdateHeader
+            updatedAt={lastUpdatedAt}
+            saveState={saveState}
+            projectName={projectName}
+          />
+        }
         sidebarChildren={<UrbanProjectUpdateStepper step={currentStep} />}
         mainChildren={
-          <Suspense fallback={<LoadingSpinner />}>
-            {getCurrentStepView(currentStep)}
-            <AnswerCascadingUpdateDialog />
-          </Suspense>
+          saveState === "loading" ? (
+            <LoadingSpinner />
+          ) : (
+            <Suspense fallback={<LoadingSpinner />}>
+              {getCurrentStepView(currentStep)}
+              <AnswerCascadingUpdateDialog />
+            </Suspense>
+          )
         }
       />
     </ProjectFormProvider>

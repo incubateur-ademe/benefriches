@@ -6,6 +6,7 @@ import { CurrentAndProjectedSoilsCarbonStorageResult } from "@/shared/core/reduc
 import { ProjectFormReducerActions } from "./projectForm.actions";
 import { LocalAuthorities, ProjectSiteView } from "./projectForm.types";
 import { StepUpdateResult } from "./urban-project/helpers/completeStep";
+import { computeProjectStepsSequence } from "./urban-project/helpers/stepsSequence";
 import {
   AnswersByStep,
   AnswerStepId,
@@ -45,6 +46,8 @@ export interface ProjectFormState<T extends UrbanProjectCreationStep = UrbanProj
       changes: StepUpdateResult<AnswerStepId>;
       showAlert: boolean;
     };
+    stepsSequence: UrbanProjectCreationStep[];
+    firstSequenceStep: UrbanProjectCreationStep;
     steps: Partial<
       {
         URBAN_PROJECT_EXPRESS_SUMMARY?: SummaryStepState<ExpressReconversionProjectResult>;
@@ -73,6 +76,11 @@ export const getProjectFormInitialState = <
       currentStep: initialStep,
       saveState: "idle",
       steps: {},
+      firstSequenceStep: initialStep,
+      stepsSequence: computeProjectStepsSequence(
+        { siteData: undefined, stepsState: {} },
+        initialStep,
+      ),
       pendingStepCompletion: undefined,
     },
   };

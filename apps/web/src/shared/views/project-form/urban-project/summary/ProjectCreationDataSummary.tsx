@@ -18,6 +18,7 @@ type Props = {
   getSectionButtonProps: (stepGroupId: StepGroupId) => ButtonProps | undefined;
   nextDisabled?: boolean;
   instructions?: ReactNode;
+  title?: ReactNode;
 };
 
 function ProjectCreationDataSummary({
@@ -28,6 +29,7 @@ function ProjectCreationDataSummary({
   onNext,
   onBack,
   nextDisabled,
+  title = "Récapitulatif du projet",
   instructions = "Si des données sont erronées, vous pouvez revenir en arrière pour les modifier.",
 }: Props) {
   const sitePurchaseTotalAmount = projectData.sitePurchaseSellingPrice
@@ -35,7 +37,7 @@ function ProjectCreationDataSummary({
     : undefined;
 
   return (
-    <WizardFormLayout title="Récapitulatif du projet" instructions={instructions}>
+    <WizardFormLayout title={title} instructions={instructions}>
       <ProjectFeaturesView
         projectData={{
           name: projectData.name ?? "",

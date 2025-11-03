@@ -71,6 +71,7 @@ type ReconversionProjectSqlResult = {
   project_phase: string;
   // dates
   created_at: Date;
+  updated_at: Date;
   friche_decontaminated_soil_surface_area: number | null;
   soils_distribution:
     | {
@@ -266,6 +267,7 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
         // project phase
         "project_phase",
         "created_at",
+        "updated_at",
         "friche_decontaminated_soil_surface_area",
         this.sqlConnection
           .select(this.sqlConnection.raw("json_agg(row_to_json(soils_distribution_rows))"))
@@ -442,6 +444,7 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
       createdBy: sqlResult.created_by,
       creationMode: sqlResult.creation_mode,
       createdAt: sqlResult.created_at,
+      updatedAt: sqlResult.updated_at ?? undefined,
     };
   }
 

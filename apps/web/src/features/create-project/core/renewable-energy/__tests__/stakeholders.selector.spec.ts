@@ -1,4 +1,5 @@
 import { buildUser } from "@/features/onboarding/core/user.mock";
+import { getProjectFormInitialState } from "@/shared/core/reducers/project-form/projectForm.reducer";
 import { RootState } from "@/shared/core/store-config/store";
 
 import { relatedSiteData } from "../../__tests__/siteData.mock";
@@ -62,11 +63,7 @@ const MOCK_STATES = {
       saveState: "idle",
       soilsCarbonStorage: { loadingState: "idle", current: undefined, projected: undefined },
     },
-    urbanProject: {
-      steps: {},
-      saveState: "idle",
-      currentStep: "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION",
-    },
+    urbanProject: getProjectFormInitialState("URBAN_PROJECT_CREATE_MODE_SELECTION").urbanProject,
   } satisfies RootState["projectCreation"],
   currentUser: {
     currentUser: USER,

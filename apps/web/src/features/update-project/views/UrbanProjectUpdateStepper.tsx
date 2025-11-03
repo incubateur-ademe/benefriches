@@ -82,7 +82,7 @@ function UrbanProjectUpdateStepper({ step: currentStep }: Props) {
               {subGroups && (variant === "active" || variant === "current") && (
                 <FormStepperWrapper className="my-0">
                   {subGroups.map((subStep) => (
-                    <li className="p-0" key={title}>
+                    <li className="p-0" key={subStep.title}>
                       <UpdateFormStepperStep
                         title={subStep.title}
                         variant={subStep.variant}

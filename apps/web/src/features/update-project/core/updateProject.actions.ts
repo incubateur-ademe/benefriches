@@ -48,7 +48,7 @@ export const reconversionProjectUpdateSaved = createAppAsyncThunk(
 
     const updateData = ReadStateHelper.getProjectData(urbanProject.steps);
 
-    const projectId = z.string().parse(projectData.features?.id);
+    const projectId = z.string().parse(projectData?.id);
     const projectToSave = updateReconversionProjectPropsSchema.parse(updateData);
 
     await extra.updateProjectService.save(projectId, projectToSave);

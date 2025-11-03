@@ -2,9 +2,11 @@ import { ProjectFormState } from "../../projectForm.reducer";
 import { ShortcutResult, StepInvalidationRule } from "../step-handlers/stepHandler.type";
 import { stepHandlerRegistry } from "../step-handlers/stepHandlerRegistry";
 import { StepCompletionPayload } from "../urbanProject.actions";
-import { AnswerStepId, UrbanProjectCreationStep } from "../urbanProjectSteps";
+import { AnswerStepId, isAnswersStep, UrbanProjectCreationStep } from "../urbanProjectSteps";
 import { MutateStateHelper } from "./mutateState";
 import { navigateToAndLoadStep } from "./navigateToStep";
+import { ReadStateHelper } from "./readState";
+import { computeProjectStepsSequence } from "./stepsSequence";
 
 export type StepUpdateResult<T extends AnswerStepId> = {
   payload: StepCompletionPayload<T>;
@@ -101,9 +103,13 @@ export function computeStepChanges<T extends AnswerStepId>(
   };
 }
 
+type StepChangesConfig = {
+  nextMode: "step_order" | "next_empty";
+};
 export function applyStepChanges<T extends AnswerStepId>(
   state: ProjectFormState,
   changes: StepUpdateResult<T>,
+  config: StepChangesConfig,
 ): void {
   const { cascadingChanges, payload, shortcutComplete } = changes;
 
@@ -135,7 +141,23 @@ export function applyStepChanges<T extends AnswerStepId>(
     }
   });
 
-  if (changes.navigationTarget) {
+  // mets à jour les étapes à compléter dans l'ordre pour finaliser le formulaire
+  state.urbanProject.stepsSequence = computeProjectStepsSequence(
+    { siteData: state.siteData, stepsState: state.urbanProject.steps },
+    state.urbanProject.firstSequenceStep,
+  );
+
+  if (config.nextMode == "step_order" && changes.navigationTarget) {
     navigateToAndLoadStep(state, changes.navigationTarget);
+  } else {
+    const nextEmptyStep = state.urbanProject.stepsSequence.find(
+      (stepId) =>
+        isAnswersStep(stepId) &&
+        !ReadStateHelper.getStep(state.urbanProject.steps, stepId)?.completed,
+    );
+    navigateToAndLoadStep(state, nextEmptyStep ?? "URBAN_PROJECT_FINAL_SUMMARY");
   }
+
+  // des changements se sont produit, le projet ne reflète plus ce qui est en bdd
+  state.urbanProject.saveState = "idle";
 }

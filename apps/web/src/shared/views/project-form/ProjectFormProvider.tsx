@@ -49,12 +49,7 @@ export const ProjectFormProvider: React.FC<ProjectFormProviderProps> = ({ childr
 
   const onNext = useCallback(() => dispatch(actions.navigateToNext()), [dispatch, actions]);
 
-  const onSave = useCallback(async () => {
-    await dispatch(saveAction());
-    if (mode === "create") {
-      onNext();
-    }
-  }, [dispatch, mode, onNext, saveAction]);
+  const onSave = useCallback(() => dispatch(saveAction()), [dispatch, saveAction]);
 
   const onBack = useCallback(() => {
     dispatch(actions.navigateToPrevious());

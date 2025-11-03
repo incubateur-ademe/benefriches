@@ -7,9 +7,7 @@ import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 import UrbanProjectUpdateHeader from "./UrbanProjectUpdateHeader";
 
 function UnavailableFeatureView() {
-  const projectName = useAppSelector(
-    (state) => state.projectUpdate.projectData.features?.name ?? "",
-  );
+  const projectName = useAppSelector((state) => state.projectUpdate.projectData.projectName ?? "");
 
   return (
     <>

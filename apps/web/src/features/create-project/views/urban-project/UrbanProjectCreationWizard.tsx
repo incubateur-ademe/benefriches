@@ -153,7 +153,7 @@ const SiteReinstatementContractOwnerForm = lazy(
     import("@/shared/views/project-form/urban-project/stakeholders/reinstatement-contract-owner"),
 );
 const ProjectCreationDataSummary = lazy(
-  () => import("@/shared/views/project-form/urban-project/summary"),
+  () => import("@/features/create-project/views/urban-project/custom-forms/summary"),
 );
 
 const HTML_URBAN_PROJECT_FORM_MAIN_TITLE = `Projet urbain - ${HTML_MAIN_TITLE}`;

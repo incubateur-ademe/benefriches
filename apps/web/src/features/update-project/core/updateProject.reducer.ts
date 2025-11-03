@@ -1,20 +1,22 @@
 import { createReducer } from "@reduxjs/toolkit";
+import { DevelopmentPlanType } from "shared";
 
 import {
   addProjectFormCasesToBuilder,
   getProjectFormInitialState,
   ProjectFormState,
 } from "@/shared/core/reducers/project-form/projectForm.reducer";
+import { computeProjectStepsSequence } from "@/shared/core/reducers/project-form/urban-project/helpers/stepsSequence";
 import { addUrbanProjectFormCasesToBuilder } from "@/shared/core/reducers/project-form/urban-project/urbanProject.reducer";
 import { UrbanProjectCreationStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 
 import { convertProjectDataToSteps } from "./helpers/convertProjectDataToSteps";
 import {
   reconversionProjectUpdateInitiated,
+  reconversionProjectUpdateSaved,
   updateProjectFormActions,
   updateProjectFormUrbanActions,
 } from "./updateProject.actions";
-import { UpdateProjectView } from "./updateProject.types";
 
 export type UrbanProjectUpdateStep = Exclude<
   UrbanProjectCreationStep,
@@ -26,8 +28,12 @@ export type UrbanProjectUpdateStep = Exclude<
 >;
 export type ProjectUpdateState = ProjectFormState<UrbanProjectUpdateStep> & {
   projectData: {
+    id?: string;
     loadingState: "idle" | "success" | "error" | "loading";
-    features?: UpdateProjectView["projectData"];
+    updatedAt?: string;
+    projectName?: string;
+    isExpress?: boolean;
+    projectType?: DevelopmentPlanType;
   };
 };
 
@@ -35,7 +41,6 @@ export const getInitialState = (): ProjectUpdateState => {
   return {
     projectData: {
       loadingState: "idle",
-      features: undefined,
     },
     ...getProjectFormInitialState<UrbanProjectUpdateStep>(
       "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION",
@@ -46,7 +51,9 @@ export const getInitialState = (): ProjectUpdateState => {
 const projectUpdateReducer = createReducer(getInitialState(), (builder) => {
   addProjectFormCasesToBuilder(builder, updateProjectFormActions);
 
-  addUrbanProjectFormCasesToBuilder(builder, updateProjectFormUrbanActions);
+  addUrbanProjectFormCasesToBuilder(builder, updateProjectFormUrbanActions, {
+    stepChangesNextMode: "next_empty",
+  });
 
   builder
     .addCase(reconversionProjectUpdateInitiated.pending, () => {
@@ -59,16 +66,39 @@ const projectUpdateReducer = createReducer(getInitialState(), (builder) => {
       state.siteDataLoadingState = "success";
       state.siteData = action.payload.siteData;
       state.projectData = {
+        id: action.payload.projectData.id,
         loadingState: "success",
-        features: action.payload.projectData,
+        updatedAt: action.payload.projectData.updatedAt,
+        projectName: action.payload.projectData.name,
+        isExpress: action.payload.projectData.creationMode === "express",
+        projectType: action.payload.projectData.developmentPlan.type,
       };
 
       state.urbanProject.steps = convertProjectDataToSteps(action.payload);
       state.urbanProject.currentStep = "URBAN_PROJECT_FINAL_SUMMARY";
+      // le projet affiché représente exactement ce qui se trouve en bdd
+      state.urbanProject.saveState = "success";
+
+      state.urbanProject.stepsSequence = computeProjectStepsSequence(
+        { siteData: action.payload.siteData, stepsState: state.urbanProject.steps },
+        state.urbanProject.firstSequenceStep,
+      );
     })
     .addCase(reconversionProjectUpdateInitiated.rejected, (state) => {
       state.siteDataLoadingState = "error";
     });
+
+  builder.addCase(reconversionProjectUpdateSaved.pending, (state) => {
+    state.urbanProject.saveState = "loading";
+  });
+  builder.addCase(reconversionProjectUpdateSaved.fulfilled, (state) => {
+    state.urbanProject.saveState = "success";
+    state.projectData.projectName = state.urbanProject.steps.URBAN_PROJECT_NAMING?.payload?.name;
+    state.projectData.updatedAt = new Date().toISOString();
+  });
+  builder.addCase(reconversionProjectUpdateSaved.rejected, (state) => {
+    state.urbanProject.saveState = "error";
+  });
 });
 
 export default projectUpdateReducer;

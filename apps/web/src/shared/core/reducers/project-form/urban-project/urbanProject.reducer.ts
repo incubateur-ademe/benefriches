@@ -8,12 +8,16 @@ import { navigateToAndLoadStep } from "./helpers/navigateToStep";
 import { UrbanProjectFormReducerActions } from "./urbanProject.actions";
 import { UrbanProjectCreationStep } from "./urbanProjectSteps";
 
+type FormReducerConfig = {
+  stepChangesNextMode: "step_order" | "next_empty";
+};
 export const addUrbanProjectFormCasesToBuilder = <
   T extends UrbanProjectCreationStep,
   S extends ProjectFormState<T>,
 >(
   builder: ActionReducerMapBuilder<S>,
   actions: UrbanProjectFormReducerActions,
+  config: FormReducerConfig = { stepChangesNextMode: "step_order" },
 ) => {
   builder.addCase(actions.requestStepCompletion, (state, action) => {
     const changes = computeStepChanges(state, action.payload);
@@ -24,14 +28,14 @@ export const addUrbanProjectFormCasesToBuilder = <
         showAlert: true,
       };
     } else {
-      applyStepChanges(state, changes);
+      applyStepChanges(state, changes, { nextMode: config.stepChangesNextMode });
     }
   });
 
   builder.addCase(actions.confirmStepCompletion, (state) => {
     const pending = state.urbanProject.pendingStepCompletion;
     if (pending) {
-      applyStepChanges(state, pending.changes);
+      applyStepChanges(state, pending.changes, { nextMode: config.stepChangesNextMode });
       state.urbanProject.pendingStepCompletion = undefined;
     }
   });

@@ -9,7 +9,6 @@ import {
   getUrbanProjectAvailableLocalAuthoritiesStakeholders,
   getUrbanProjectAvailableStakeholders,
 } from "./helpers/stakeholders";
-import { computeProjectStepsSequence } from "./helpers/stepsSequence";
 import {
   AnswerStepId,
   isAnswersStep,
@@ -21,11 +20,6 @@ export const createUrbanProjectFormSelectors = (
   entityName: "projectCreation" | "projectUpdate",
   selectors: ProjectFormSelectors,
 ) => {
-  const INITIAL_STEP =
-    entityName === "projectCreation"
-      ? "URBAN_PROJECT_CREATE_MODE_SELECTION"
-      : "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION";
-
   const selectSelf = (state: RootState) => state[entityName];
 
   const selectStepState = createSelector(selectSelf, (state) => state.urbanProject.steps);
@@ -69,8 +63,8 @@ export const createUrbanProjectFormSelectors = (
   );
 
   const selectProjectStepsSequence = createSelector(
-    [(state: RootState) => state[entityName].siteData, selectStepState],
-    (siteData, stepsState) => computeProjectStepsSequence({ siteData, stepsState }, INITIAL_STEP),
+    selectSelf,
+    (state) => state.urbanProject.stepsSequence,
   );
 
   const selectProjectStepsSequenceWithStatus = createSelector(
@@ -156,6 +150,8 @@ export const createUrbanProjectFormSelectors = (
     (state) => state.urbanProject.pendingStepCompletion,
   );
 
+  const selectSaveState = createSelector([selectSelf], (state) => state.urbanProject.saveState);
+
   return {
     selectStepState,
     selectProjectSoilsDistribution,
@@ -168,6 +164,7 @@ export const createUrbanProjectFormSelectors = (
     selectUrbanProjectAvailableStakeholders,
     selectUrbanProjectAvailableLocalAuthoritiesStakeholders,
     selectPendingStepCompletion,
+    selectSaveState,
     ...selectors,
   };
 };
