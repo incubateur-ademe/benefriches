@@ -1,8 +1,12 @@
+import {
+  BENEFRICHES_HIGHLIGHTS,
+  MUTAFRICHES_HIGHLIGHTS,
+} from "@/features/public-pages/highlightContent";
+import HighlightsList from "@/shared/views/components/HighlightsList/HighlightsList";
+
 import SectionTitle from "../SectionTitle";
 import BenefrichesButton from "./AccessBenefrichesButton";
 import MutafrichesButton from "./AccessMutafrichesButton";
-import BenefrichesHighlights from "./BenefrichesHighlights";
-import MutafrichesHighlights from "./MutafrichesHighlights";
 
 export default function SituationSection() {
   return (
@@ -17,7 +21,7 @@ export default function SituationSection() {
             </h3>
             <MutafrichesButton />
             <p className="mt-6 mb-2 font-bold">POINTS FORTS :</p>
-            <MutafrichesHighlights />
+            <HighlightsList items={MUTAFRICHES_HIGHLIGHTS} />
           </article>
           <article className="bg-[#E2EEF3] dark:bg-blue-ultradark p-10 rounded-xl">
             <img className="mb-6 h-[100px]" src="/img/pictograms/all-projects.svg" alt="" />
@@ -26,7 +30,7 @@ export default function SituationSection() {
             </h3>
             <BenefrichesButton />
             <p className="mt-6 mb-2 font-bold">POINTS FORTS :</p>
-            <BenefrichesHighlights />
+            <HighlightsList items={BENEFRICHES_HIGHLIGHTS} />
           </article>
         </div>
       </div>
