@@ -28,7 +28,11 @@ function ProjectionCreationDataSummaryContainer() {
         <div className="flex justify-between items-start">
           Récapitulatif du projet
           {saveState !== "success" && (
-            <Button iconId="fr-icon-save-fill" onClick={onSave}>
+            <Button
+              iconId="fr-icon-save-fill"
+              onClick={onSave}
+              nativeButtonProps={{ disabled: !isFormValid }}
+            >
               Sauvegarder les changements
             </Button>
           )}
