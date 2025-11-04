@@ -58,10 +58,6 @@ function WhenToUseBenefriches({ variant }: { variant: OnboardingVariant }) {
   return (
     <ul className="list-none pl-0 animate-fade-in-up">
       <UseItem icon="check">
-        Vous hésitez à reconvertir une friche car vous ne savez pas si la valeur des impacts{" "}
-        <strong>compensera le déficit</strong> lié aux travaux de reconversion ;
-      </UseItem>
-      <UseItem icon="check">
         Vous hésitez sur <strong>l'emplacement</strong> de votre projet d'aménagement, entre une
         friche et un espace naturel ou agricole ;
       </UseItem>
@@ -71,10 +67,6 @@ function WhenToUseBenefriches({ variant }: { variant: OnboardingVariant }) {
       <UseItem icon="check">
         Vous avez besoin de connaître l'ensemble des <strong>retombées</strong> de votre projet (sur
         l'environnement, l'emploi, la sécurité des personnes, les finances publiques...) ;
-      </UseItem>
-      <UseItem icon="check">
-        Vous avez besoin de préparer une <strong>présentation aux élus</strong> ou aux partenaires,
-        avec des graphiques clairs et des chiffres étayés ;
       </UseItem>
       <UseItem icon="check">
         Vous avez besoin d'appuyer un <strong>dossier de financement</strong> (fonds vert mesure
