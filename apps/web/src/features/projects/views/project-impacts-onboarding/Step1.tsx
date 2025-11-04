@@ -1,12 +1,14 @@
-import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import { useState } from "react";
 
 import classNames from "@/shared/views/clsx";
 
 import EmojiListItem from "./StepEmojiListItem";
+import StepView from "./StepView";
 
 type Props = {
   onNextClick: () => void;
+  canSkipOnboarding: boolean;
+  skipOnboarding: () => void;
   skipStepByStepAnimation?: boolean;
 };
 
@@ -16,7 +18,12 @@ const INVISIBLE_CLASSES = ["md:opacity-0", "md:invisible"] as const;
 
 const EMOJI_CLASSNAME = "bg-[#B8FEC9]";
 
-export default function Step1({ onNextClick, skipStepByStepAnimation }: Props) {
+export default function Step1({
+  onNextClick,
+  skipStepByStepAnimation,
+  canSkipOnboarding,
+  skipOnboarding,
+}: Props) {
   const [innerStep, setInnerStep] = useState(skipStepByStepAnimation ? 2 : 0);
 
   const onNextInnerStep = () => {
@@ -24,11 +31,18 @@ export default function Step1({ onNextClick, skipStepByStepAnimation }: Props) {
   };
 
   return (
-    <>
-      <h1 className="text-[32px]">
-        Bénéfriches calcule <span className="bg-[#B8FEC9] dark:text-black">6 types d'impacts</span>.
-      </h1>
-      <ul className="font-bold">
+    <StepView
+      title={
+        <>
+          Bénéfriches calcule{" "}
+          <span className="bg-[#B8FEC9] dark:text-black">6 types d'impacts</span>.
+        </>
+      }
+      onNextClick={innerStep === 2 ? onNextClick : onNextInnerStep}
+      canSkipOnboarding={canSkipOnboarding}
+      skipOnboarding={skipOnboarding}
+    >
+      <ul className="font-bold space-y-4">
         <li
           className={classNames(
             "text-xl",
@@ -36,8 +50,8 @@ export default function Step1({ onNextClick, skipStepByStepAnimation }: Props) {
             innerStep > 0 ? VISIBLE_CLASSES : INVISIBLE_CLASSES,
           )}
         >
-          Des impacts monétaires :
-          <ul className="text-base list-none">
+          <div className="mb-4">Des impacts monétaires :</div>
+          <ul className="text-base list-none space-y-2">
             <EmojiListItem emoji="💰" emojiClassName={EMOJI_CLASSNAME}>
               Impacts économiques directs <span>→</span>{" "}
               <span className="font-normal">
@@ -66,8 +80,8 @@ export default function Step1({ onNextClick, skipStepByStepAnimation }: Props) {
             innerStep > 1 ? VISIBLE_CLASSES : INVISIBLE_CLASSES,
           )}
         >
-          Des impacts non-monétaires :
-          <ul className="text-base list-none">
+          <div className="mb-4">Des impacts non-monétaires :</div>
+          <ul className="text-base list-none space-y-2">
             <EmojiListItem emoji="🏘️️" emojiClassName={EMOJI_CLASSNAME}>
               Impacts sociaux <span>→</span>{" "}
               <span className="font-normal">Exemple : nombre d’emplois</span>
@@ -79,24 +93,6 @@ export default function Step1({ onNextClick, skipStepByStepAnimation }: Props) {
           </ul>
         </li>
       </ul>
-
-      <div className="mt-8">
-        <ButtonsGroup
-          inlineLayoutWhen="always"
-          alignment="between"
-          buttons={[
-            {
-              children: "Retour",
-              priority: "secondary",
-            },
-            {
-              priority: "primary",
-              children: "Suivant",
-              onClick: innerStep === 2 ? onNextClick : onNextInnerStep,
-            },
-          ]}
-        />
-      </div>
-    </>
+    </StepView>
   );
 }

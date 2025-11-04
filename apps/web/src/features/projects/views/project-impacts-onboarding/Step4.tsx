@@ -1,11 +1,14 @@
-import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import { useState } from "react";
 
 import classNames from "@/shared/views/clsx";
 
+import StepView from "./StepView";
+
 type Props = {
   onBackClick: () => void;
   onNextClick: () => void;
+  canSkipOnboarding: boolean;
+  skipOnboarding: () => void;
   skipStepByStepAnimation?: boolean;
 };
 
@@ -13,7 +16,13 @@ const TRANSITION_CLASSES = ["transition", "ease-in-out", "duration-1000"] as con
 const VISIBLE_CLASSES = ["opacity-100", "visible"] as const;
 const INVISIBLE_CLASSES = ["md:opacity-0", "md:invisible"] as const;
 
-export default function Step4({ onNextClick, onBackClick, skipStepByStepAnimation }: Props) {
+export default function Step4({
+  onNextClick,
+  onBackClick,
+  skipStepByStepAnimation,
+  canSkipOnboarding,
+  skipOnboarding,
+}: Props) {
   const [innerStep, setInnerStep] = useState(skipStepByStepAnimation ? 1 : 0);
 
   const onNextInnerStep = () => {
@@ -21,12 +30,19 @@ export default function Step4({ onNextClick, onBackClick, skipStepByStepAnimatio
   };
 
   return (
-    <>
-      <h1 className="text-[32px] mb-14">
-        Votre site et votre projet sont{" "}
-        <span className="bg-[#FBB8F6] dark:text-black">sauvegardés automatiquement</span>.
-      </h1>
-
+    <StepView
+      title={
+        <>
+          Votre site et votre projet sont{" "}
+          <span className="bg-[#FBB8F6] dark:text-black">sauvegardés automatiquement</span>.
+        </>
+      }
+      onNextClick={innerStep === 2 ? onNextClick : onNextInnerStep}
+      nextButtonLabel={innerStep === 2 ? "Consulter les impacts" : "Suivant"}
+      onBackClick={onBackClick}
+      canSkipOnboarding={canSkipOnboarding}
+      skipOnboarding={skipOnboarding}
+    >
       <div className="flex flex-col md:flex-row gap-8">
         <div
           className={classNames(
@@ -55,24 +71,6 @@ export default function Step4({ onNextClick, onBackClick, skipStepByStepAnimatio
           </p>
         </div>
       </div>
-      <div className="mt-8">
-        <ButtonsGroup
-          inlineLayoutWhen="always"
-          alignment="between"
-          buttons={[
-            {
-              children: "Retour",
-              priority: "secondary",
-              onClick: onBackClick,
-            },
-            {
-              priority: "primary",
-              children: innerStep === 2 ? "Consulter les impacts" : "Suivant",
-              onClick: innerStep === 2 ? onNextClick : onNextInnerStep,
-            },
-          ]}
-        />
-      </div>
-    </>
+    </StepView>
   );
 }

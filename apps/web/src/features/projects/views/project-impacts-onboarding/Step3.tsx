@@ -1,11 +1,14 @@
-import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import { useState } from "react";
 
 import classNames from "@/shared/views/clsx";
 
+import StepView from "./StepView";
+
 type Props = {
   onBackClick: () => void;
   onNextClick: () => void;
+  canSkipOnboarding: boolean;
+  skipOnboarding: () => void;
   skipStepByStepAnimation?: boolean;
 };
 
@@ -13,19 +16,31 @@ const TRANSITION_CLASSES = ["transition", "ease-in-out", "duration-1000"] as con
 const VISIBLE_CLASSES = ["opacity-100", "visible"] as const;
 const INVISIBLE_CLASSES = ["md:opacity-0", "md:invisible"] as const;
 
-export default function Step3({ onNextClick, onBackClick, skipStepByStepAnimation }: Props) {
+export default function Step3({
+  onNextClick,
+  onBackClick,
+  skipStepByStepAnimation,
+  canSkipOnboarding,
+  skipOnboarding,
+}: Props) {
   const [innerStep, setInnerStep] = useState(skipStepByStepAnimation ? 2 : 0);
 
   const onNextInnerStep = () => {
     setInnerStep((current) => current + 1);
   };
   return (
-    <>
-      <h1 className="text-[32px]">
-        Vous avez accès au{" "}
-        <span className="bg-[#96ECFF] dark:text-black">calcul de tous les impacts</span>.
-      </h1>
-
+    <StepView
+      title={
+        <>
+          Vous avez accès au{" "}
+          <span className="bg-[#96ECFF] dark:text-black">calcul de tous les impacts</span>.
+        </>
+      }
+      onNextClick={innerStep === 2 ? onNextClick : onNextInnerStep}
+      onBackClick={onBackClick}
+      canSkipOnboarding={canSkipOnboarding}
+      skipOnboarding={skipOnboarding}
+    >
       <div className="flex justify-between gap-6">
         <div
           className={classNames(
@@ -70,25 +85,6 @@ export default function Step3({ onNextClick, onBackClick, skipStepByStepAnimatio
           />
         </div>
       </div>
-
-      <div className="mt-8">
-        <ButtonsGroup
-          inlineLayoutWhen="always"
-          alignment="between"
-          buttons={[
-            {
-              children: "Retour",
-              priority: "secondary",
-              onClick: onBackClick,
-            },
-            {
-              priority: "primary",
-              children: "Suivant",
-              onClick: innerStep === 2 ? onNextClick : onNextInnerStep,
-            },
-          ]}
-        />
-      </div>
-    </>
+    </StepView>
   );
 }

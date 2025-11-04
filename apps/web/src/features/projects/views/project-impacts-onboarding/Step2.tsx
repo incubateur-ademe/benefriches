@@ -1,13 +1,15 @@
-import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import { useState } from "react";
 
 import classNames from "@/shared/views/clsx";
 
 import EmojiListItem from "./StepEmojiListItem";
+import StepView from "./StepView";
 
 type Props = {
   onBackClick: () => void;
   onNextClick: () => void;
+  canSkipOnboarding: boolean;
+  skipOnboarding: () => void;
   skipStepByStepAnimation?: boolean;
 };
 
@@ -17,7 +19,13 @@ const INVISIBLE_CLASSES = ["md:opacity-0", "md:invisible"] as const;
 
 const EMOJI_CLASSNAME = "bg-[#FCEEAC]";
 
-export default function Step2({ onNextClick, onBackClick, skipStepByStepAnimation }: Props) {
+export default function Step2({
+  onNextClick,
+  onBackClick,
+  skipStepByStepAnimation,
+  canSkipOnboarding,
+  skipOnboarding,
+}: Props) {
   const [innerStep, setInnerStep] = useState(skipStepByStepAnimation ? 2 : 0);
 
   const onNextInnerStep = () => {
@@ -25,11 +33,18 @@ export default function Step2({ onNextClick, onBackClick, skipStepByStepAnimatio
   };
 
   return (
-    <>
-      <h1 className="text-[32px]">
-        Bénéfriches prend en compte <span className="bg-[#FFC72780]">plusieurs entités</span>.
-      </h1>
-      <ul className="font-bold">
+    <StepView
+      title={
+        <>
+          Bénéfriches prend en compte <span className="bg-[#FFC72780]">plusieurs entités</span>.
+        </>
+      }
+      onNextClick={innerStep === 2 ? onNextClick : onNextInnerStep}
+      onBackClick={onBackClick}
+      canSkipOnboarding={canSkipOnboarding}
+      skipOnboarding={skipOnboarding}
+    >
+      <ul className="font-bold space-y-4">
         <li
           className={classNames(
             "text-xl",
@@ -38,7 +53,7 @@ export default function Step2({ onNextClick, onBackClick, skipStepByStepAnimatio
           )}
         >
           Les acteurs liés au projet d’aménagement :
-          <ul className="text-base list-none">
+          <ul className="text-base list-none space-y-2">
             <EmojiListItem emoji="👨‍🌾" emojiClassName={EMOJI_CLASSNAME}>
               L’actuel propriétaire et/ou exploitant du site
             </EmojiListItem>
@@ -62,7 +77,7 @@ export default function Step2({ onNextClick, onBackClick, skipStepByStepAnimatio
           )}
         >
           Les groupes de population pouvant être concernés par le projet ou ses retombées :
-          <ul className="text-base list-none">
+          <ul className="text-base list-none space-y-2">
             <EmojiListItem emoji="🏘️️" emojiClassName={EMOJI_CLASSNAME}>
               La population locale <span>→</span>{" "}
               <span className="font-normal">
@@ -90,25 +105,6 @@ export default function Step2({ onNextClick, onBackClick, skipStepByStepAnimatio
           </ul>
         </li>
       </ul>
-
-      <div className="mt-8">
-        <ButtonsGroup
-          inlineLayoutWhen="always"
-          alignment="between"
-          buttons={[
-            {
-              children: "Retour",
-              priority: "secondary",
-              onClick: onBackClick,
-            },
-            {
-              priority: "primary",
-              children: "Suivant",
-              onClick: innerStep === 2 ? onNextClick : onNextInnerStep,
-            },
-          ]}
-        />
-      </div>
-    </>
+    </StepView>
   );
 }
