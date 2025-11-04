@@ -4,6 +4,7 @@ import React, { ReactNode, useState } from "react";
 import { siteCreationInitiated } from "@/features/create-site/core/actions/introduction.actions";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
+import { useHeaderHeight } from "@/shared/views/hooks/useHeaderHeight";
 import { routes } from "@/shared/views/router";
 
 import { OnboardingVariant } from "../why-benefriches/WhyBenefrichesPage";
@@ -100,6 +101,7 @@ const mutabiliteEvaluationSteps: HowItWorksStepDefinition[] = [
 
 function HowItWorksPage({ variant }: Props) {
   const dispatch = useAppDispatch();
+  const headerHeight = useHeaderHeight();
   const INITIAL_STEP = -1;
   const [currentStep, setCurrentStep] = useState<number>(INITIAL_STEP);
   const stepsToUse =
@@ -123,11 +125,13 @@ function HowItWorksPage({ variant }: Props) {
     }
   };
 
+  const containerHeight = headerHeight > 0 ? `calc(100vh - ${headerHeight}px)` : "100vh";
+
   return (
     <>
       <HtmlTitle>Comment ça marche - Introduction</HtmlTitle>
-      <div className="fr-container">
-        <section className="pt-20 flex-1">
+      <div className="fr-container flex flex-col" style={{ minHeight: containerHeight }}>
+        <section className="py-10 flex-1">
           <h2 className="mb-8">Bénéfriches, comment ça marche ?</h2>
 
           {stepsToUse.slice(0, currentStep + 1).map((props, index) => (
@@ -139,10 +143,12 @@ function HowItWorksPage({ variant }: Props) {
         </section>
 
         <ButtonsGroup
+          className="sticky bottom-0 right-0 bg-white border-t border-border-grey py-4"
           inlineLayoutWhen="always"
           alignment="right"
           buttons={[
             {
+              className: "mb-0",
               children: "Passer l'intro",
               priority: "secondary",
               onClick: () => {
@@ -150,6 +156,7 @@ function HowItWorksPage({ variant }: Props) {
               },
             },
             {
+              className: "mb-0",
               children: currentStep === totalSteps - 1 ? "C'est parti" : "Suivant",
               priority: "primary",
               onClick: handleNextClick,

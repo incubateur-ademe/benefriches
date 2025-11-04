@@ -4,6 +4,7 @@ import { useState } from "react";
 import classNames from "@/shared/views/clsx";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
+import { useHeaderHeight } from "@/shared/views/hooks/useHeaderHeight";
 import { routes } from "@/shared/views/router";
 
 export type OnboardingVariant = "evaluation-mutabilite" | "evaluation-impacts";
@@ -116,6 +117,7 @@ type Props = {
 
 function OnBoardingIntroductionWhyBenefriches({ variant }: Props) {
   const [currentStep, setCurrentStep] = useState<StepValue>(STEPS.TITLE);
+  const headerHeight = useHeaderHeight();
 
   const handleNextClick = () => {
     if (currentStep < TOTAL_STEPS - 1) {
@@ -129,6 +131,8 @@ function OnBoardingIntroductionWhyBenefriches({ variant }: Props) {
   const showWhenToUse = currentStep >= STEPS.WHEN_TO_USE;
   const showWhenNotToUse = currentStep >= STEPS.WHEN_NOT_TO_USE;
 
+  const containerHeight = headerHeight > 0 ? `calc(100vh - ${headerHeight}px)` : "100vh";
+
   return (
     <>
       <HtmlTitle>
@@ -138,8 +142,8 @@ function OnBoardingIntroductionWhyBenefriches({ variant }: Props) {
             : "évaluation de la mutabilité"
         }) - Introduction`}
       </HtmlTitle>
-      <div className="fr-container">
-        <section className="pt-20 pb-10 flex-1 grow">
+      <div className="fr-container flex flex-col" style={{ minHeight: containerHeight }}>
+        <section className="py-10 flex-1">
           <h2>En quoi Bénéfriches vous sera utile ?</h2>
 
           {showIntro && (
@@ -156,17 +160,20 @@ function OnBoardingIntroductionWhyBenefriches({ variant }: Props) {
         </section>
 
         <ButtonsGroup
+          className="sticky bottom-0 right-0 bg-white border-t border-border-grey py-4"
           inlineLayoutWhen="always"
           alignment="right"
           buttons={[
             {
               children: "Passer l'intro",
+              className: "mb-0",
               priority: "secondary",
               onClick: () => {
                 routes.onBoardingIntroductionHow({ fonctionnalite: variant }).push();
               },
             },
             {
+              className: "mb-0",
               children: "Suivant",
               priority: "primary",
               onClick: handleNextClick,
