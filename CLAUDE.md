@@ -28,7 +28,7 @@ benefriches/
 
 - **web** (`apps/web/`): React SPA for end users
   - Built with Vite + Redux + Clean Architecture
-  - App-specific guide: **Not yet created** - See [apps/api/CLAUDE.md](apps/api/CLAUDE.md) as a template for structure when creating
+  - Detailed patterns in [apps/web/CLAUDE.md](apps/web/CLAUDE.md)
 
 - **shared** (`packages/shared/`): Monorepo-wide types and utilities
   - **Framework-agnostic**: Pure TypeScript only (no React, no NestJS)
@@ -427,7 +427,7 @@ For detailed coding patterns and architecture, see:
 | App | Guide | Purpose |
 |-----|-------|---------|
 | **API** | [apps/api/CLAUDE.md](apps/api/CLAUDE.md) | Clean Architecture, CQS, Result Pattern, NestJS, database patterns |
-| **Web** | `apps/web/CLAUDE.md` | To be created (React, Redux, component patterns) |
+| **Web** | [apps/web/CLAUDE.md](apps/web/CLAUDE.md) | React, Redux, Clean Architecture, component patterns |
 | **Shared** | (none needed) | Keep pure TypeScript, no framework deps |
 
 ---
@@ -510,13 +510,15 @@ This CLAUDE.md evolves with your project. Review and update in these scenarios:
 
 When generating code:
 
-1. **Always follow patterns** from [apps/api/CLAUDE.md](apps/api/CLAUDE.md) for backend code
+1. **Always follow patterns** from app-specific CLAUDE.md files:
+   - Backend code: [apps/api/CLAUDE.md](apps/api/CLAUDE.md)
+   - Frontend code: [apps/web/CLAUDE.md](apps/web/CLAUDE.md)
    - For detailed API testing workflow and checklist, see [API CLAUDE.md → AI Assistant Workflow](apps/api/CLAUDE.md#-ai-assistant-workflow)
 2. **Reference real examples** in the codebase (use file links in your response)
 3. **Run checks after coding**:
-   - TypeScript: `pnpm --filter api typecheck`
-   - Lint: `pnpm --filter api lint`
-   - Tests: `pnpm --filter api test`
+   - TypeScript: `pnpm --filter <app> typecheck`
+   - Lint: `pnpm --filter <app> lint`
+   - Tests: `pnpm --filter <app> test`
 4. **For `shared` changes**: Verify both `api` and `web` still pass checks
 5. **Use relative paths with markdown**: `[file.ts](apps/api/src/file.ts)` not just `file.ts`
 
