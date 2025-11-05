@@ -34,7 +34,7 @@ function CreateProjectIntroductionPage({ onNext, siteName, siteLoadingState }: P
         <EditorialPageLayout>
           <EditorialPageIcon>🏗️</EditorialPageIcon>
           <EditorialPageTitle>
-            Vous avez un projet d'aménagement sur le site "{siteName}".
+            Vous souhaitez évaluer un projet d'aménagement sur le site "{siteName}".
           </EditorialPageTitle>
           <EditorialPageText>
             Nous allons ici parler de votre <strong>projet d'aménagement</strong> : la nature du

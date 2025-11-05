@@ -37,7 +37,7 @@ function ProjectTypesForm({ onSubmit, initialValues, allowedDevelopmentPlanCateg
     });
 
   return (
-    <WizardFormLayout title="Que souhaitez-vous aménager sur ce site ?" fullScreen>
+    <WizardFormLayout title="Quel type de projet souhaitez-vous évaluer ?" fullScreen>
       <form onSubmit={handleSubmit(onSubmit)}>
         <TileFormFieldsWrapper>
           {options.map(({ value, label }) => {
@@ -46,7 +46,7 @@ function ProjectTypesForm({ onSubmit, initialValues, allowedDevelopmentPlanCateg
                 <Controller
                   control={control}
                   name="developmentPlanCategory"
-                  rules={{ required: "Veuillez sélectionner un type d'aménagement." }}
+                  rules={{ required: "Veuillez sélectionner un type de projet." }}
                   render={({ field }) => {
                     const isSelected = field.value === value;
                     return (
