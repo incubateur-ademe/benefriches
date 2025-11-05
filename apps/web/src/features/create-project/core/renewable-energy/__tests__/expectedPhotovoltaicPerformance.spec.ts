@@ -5,7 +5,7 @@ import { SitesServiceMock } from "@/features/create-project/infrastructure/sites
 import { createStore } from "@/shared/core/store-config/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
-import { reconversionProjectCreationInitiated } from "../../actions/urbanProjectCreationInitiated.action";
+import { reconversionProjectCreationInitiated } from "../../actions/reconversionProjectCreationInitiated.action";
 import {
   fetchPhotovoltaicExpectedAnnulPowerPerformanceForLocation,
   PhotovoltaicPerformanceApiResult,

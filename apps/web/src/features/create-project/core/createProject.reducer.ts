@@ -20,7 +20,7 @@ import {
   developmentPlanCategoriesCompleted,
   introductionStepCompleted,
 } from "./actions/introductionStep.actions";
-import { reconversionProjectCreationInitiated } from "./actions/urbanProjectCreationInitiated.action";
+import { reconversionProjectCreationInitiated } from "./actions/reconversionProjectCreationInitiated.action";
 import { RenewableEnergyCreationStep } from "./renewable-energy/creationSteps";
 import {
   RenewableEnergyProjectState,

@@ -1,7 +1,7 @@
 import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
 
 import { ProjectSite } from "../project.types";
-import { makeRenewableEnergyProjectCreationActionType } from "../renewable-energy/actions/renewableEnergy.actions";
+import { makeProjectCreationActionType } from "./actionsUtils";
 
 export interface GetSitesByIdGateway {
   getById(siteId: string): Promise<ProjectSite | undefined>;
@@ -10,7 +10,7 @@ export interface GetSitesByIdGateway {
 export const reconversionProjectCreationInitiated = createAppAsyncThunk<
   ProjectSite,
   { relatedSiteId: string }
->(makeRenewableEnergyProjectCreationActionType("init"), async ({ relatedSiteId }, { extra }) => {
+>(makeProjectCreationActionType("initiated"), async ({ relatedSiteId }, { extra }) => {
   const projectSite = await extra.getSiteByIdService.getById(relatedSiteId);
 
   if (!projectSite) throw new Error("Site not found");

@@ -8,7 +8,7 @@ import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 import { ProjectFormProvider } from "@/shared/views/project-form/ProjectFormProvider";
 import { routes } from "@/shared/views/router";
 
-import { reconversionProjectCreationInitiated } from "../core/actions/urbanProjectCreationInitiated.action";
+import { reconversionProjectCreationInitiated } from "../core/actions/reconversionProjectCreationInitiated.action";
 import { ProjectCreationStep } from "../core/createProject.reducer";
 import { selectCurrentStep } from "../core/createProject.selectors";
 import { isRenewableEnergyCreationStep } from "../core/renewable-energy/creationSteps";
