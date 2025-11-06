@@ -10,29 +10,22 @@ type Props = {
 
 export default function Step({ emoji, stepNumber, title, description, colorClass }: Props) {
   return (
-    <div className="flex items-center animate-fade-in-up mb-6 gap-6">
+    <div className="flex items-center mb-8 gap-6">
       <div
-        className="bg-grey-light rounded-full flex items-center justify-center"
-        style={{ width: "88px", height: "88px" }}
+        className={classNames(
+          "rounded-full flex items-center justify-center text-white",
+          colorClass,
+        )}
+        style={{ width: "56px", height: "56px" }}
       >
-        <span className="text-4xl" role="img" aria-hidden="true">
-          {emoji}
+        <span className="text-2xl font-bold" role="img" aria-hidden="true">
+          {stepNumber}
         </span>
       </div>
 
       <div>
-        <h3 className="text-xl m-0 mb-2">
-          <span
-            className={classNames(
-              "rounded-full inline-flex flex-none items-center justify-center mr-2 text-white font-bold shrink-0 grow-0",
-              colorClass,
-            )}
-            style={{ width: "24px", height: "24px" }}
-            aria-hidden="true"
-          >
-            <span className="text-sm">{stepNumber}</span>
-          </span>
-          {title}
+        <h3 className="text-lg m-0 mb-1">
+          {title} {emoji}
         </h3>
         <p className="text-sm m-0">{description}</p>
       </div>

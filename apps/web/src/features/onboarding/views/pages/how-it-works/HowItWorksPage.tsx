@@ -1,5 +1,5 @@
 import Button from "@codegouvfr/react-dsfr/Button";
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode } from "react";
 
 import { siteCreationInitiated } from "@/features/create-site/core/actions/introduction.actions";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
@@ -102,11 +102,8 @@ const mutabiliteEvaluationSteps: HowItWorksStepDefinition[] = [
 function HowItWorksPage({ variant }: Props) {
   const dispatch = useAppDispatch();
   const headerHeight = useHeaderHeight();
-  const INITIAL_STEP = -1;
-  const [currentStep, setCurrentStep] = useState<number>(INITIAL_STEP);
   const stepsToUse =
     variant === "evaluation-impacts" ? impactsEvaluationSteps : mutabiliteEvaluationSteps;
-  const totalSteps = stepsToUse.length;
 
   const finishIntroduction = () => {
     if (variant === "evaluation-mutabilite") {
@@ -117,29 +114,23 @@ function HowItWorksPage({ variant }: Props) {
     }
   };
 
-  const handleNextClick = () => {
-    if (currentStep < totalSteps - 1) {
-      setCurrentStep(currentStep + 1);
-    } else {
-      finishIntroduction();
-    }
-  };
-
   const containerHeight = headerHeight > 0 ? `calc(100vh - ${headerHeight}px)` : "100vh";
 
   return (
     <>
       <HtmlTitle>Comment ça marche - Introduction</HtmlTitle>
       <div className="fr-container flex flex-col" style={{ minHeight: containerHeight }}>
-        <section className="py-10 flex-1">
+        <section className="py-10 md:py-20 flex-1">
           <h2 className="mb-8">Bénéfriches, comment ça marche ?</h2>
 
-          {stepsToUse.slice(0, currentStep + 1).map((props, index) => (
-            <React.Fragment key={props.title}>
-              {props.introductionText}
-              <Step stepNumber={index + 1} {...props} />
-            </React.Fragment>
-          ))}
+          <div className="animate-fade-in-up ">
+            {stepsToUse.map((props, index) => (
+              <React.Fragment key={props.title}>
+                {props.introductionText}
+                <Step stepNumber={index + 1} {...props} />
+              </React.Fragment>
+            ))}
+          </div>
         </section>
         <div className="sticky flex justify-between gap-4 bottom-0 right-0 bg-white border-t border-border-grey py-4">
           <Button
@@ -151,8 +142,8 @@ function HowItWorksPage({ variant }: Props) {
           <Button priority="secondary" className="ml-auto" onClick={finishIntroduction}>
             Passer l'intro
           </Button>
-          <Button priority="primary" onClick={handleNextClick}>
-            Suivant
+          <Button priority="primary" onClick={finishIntroduction}>
+            C'est parti
           </Button>
         </div>
       </div>
