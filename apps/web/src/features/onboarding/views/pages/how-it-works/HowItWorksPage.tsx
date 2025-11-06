@@ -1,4 +1,4 @@
-import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
+import Button from "@codegouvfr/react-dsfr/Button";
 import React, { ReactNode, useState } from "react";
 
 import { siteCreationInitiated } from "@/features/create-site/core/actions/introduction.actions";
@@ -7,7 +7,7 @@ import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 import { useHeaderHeight } from "@/shared/views/hooks/useHeaderHeight";
 import { routes } from "@/shared/views/router";
 
-import { OnboardingVariant } from "../why-benefriches/WhyBenefrichesPage";
+import { OnboardingVariant } from "../when-to-use/OnboardingWhenToUsePage";
 import Step from "./HowItWorksStep";
 
 type Props = {
@@ -141,28 +141,20 @@ function HowItWorksPage({ variant }: Props) {
             </React.Fragment>
           ))}
         </section>
-
-        <ButtonsGroup
-          className="sticky bottom-0 right-0 bg-white border-t border-border-grey py-4"
-          inlineLayoutWhen="always"
-          alignment="right"
-          buttons={[
-            {
-              className: "mb-0",
-              children: "Passer l'intro",
-              priority: "secondary",
-              onClick: () => {
-                finishIntroduction();
-              },
-            },
-            {
-              className: "mb-0",
-              children: currentStep === totalSteps - 1 ? "C'est parti" : "Suivant",
-              priority: "primary",
-              onClick: handleNextClick,
-            },
-          ]}
-        />
+        <div className="sticky flex justify-between gap-4 bottom-0 right-0 bg-white border-t border-border-grey py-4">
+          <Button
+            priority="secondary"
+            linkProps={routes.onBoardingWhenNotToUse({ fonctionnalite: variant }).link}
+          >
+            Retour
+          </Button>
+          <Button priority="secondary" className="ml-auto" onClick={finishIntroduction}>
+            Passer l'intro
+          </Button>
+          <Button priority="primary" onClick={handleNextClick}>
+            Suivant
+          </Button>
+        </div>
       </div>
     </>
   );

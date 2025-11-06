@@ -46,7 +46,6 @@ function App() {
         if (groups.public.has(route)) {
           return <PublicApp />;
         }
-
         return <FeaturesApp />;
       })()}
       {BENEFRICHES_ENV.matomoTrackingEnabled && (

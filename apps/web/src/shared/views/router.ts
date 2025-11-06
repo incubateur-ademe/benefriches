@@ -1,6 +1,6 @@
 import { createRouter, defineRoute, param } from "type-route";
 
-import { OnboardingVariant } from "@/features/onboarding/views/pages/why-benefriches/WhyBenefrichesPage";
+import { OnboardingVariant } from "@/features/onboarding/views/pages/when-to-use/OnboardingWhenToUsePage";
 
 const onBoarding = defineRoute("/premiers-pas");
 
@@ -18,9 +18,13 @@ const { RouteProvider, useRoute, routes } = createRouter({
     },
     () => "/identite",
   ),
-  onBoardingIntroductionWhy: onBoarding.extend(
+  onBoardingWhenToUse: onBoarding.extend(
     { fonctionnalite: param.query.ofType<OnboardingVariant>() },
-    () => "/pourquoi-benefriches",
+    () => "/quand-utiliser-benefriches",
+  ),
+  onBoardingWhenNotToUse: onBoarding.extend(
+    { fonctionnalite: param.query.ofType<OnboardingVariant>() },
+    () => "/quand-ne-pas-utiliser-benefriches",
   ),
   onBoardingIntroductionHow: onBoarding.extend(
     { fonctionnalite: param.query.ofType<OnboardingVariant>() },

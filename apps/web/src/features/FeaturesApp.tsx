@@ -9,7 +9,8 @@ import SidebarContainerLayout from "@/shared/views/layout/SidebarLayout/SidebarC
 import { routes, useRoute } from "@/shared/views/router";
 
 import OnBoardingIntroductionHow from "./onboarding/views/pages/how-it-works/HowItWorksPage";
-import OnBoardingIntroductionWhyBenefriches from "./onboarding/views/pages/why-benefriches/WhyBenefrichesPage";
+import OnboardingWhenNotToUsePage from "./onboarding/views/pages/when-not-to-use/OnboardingWhenNotToUsePage";
+import OnboardingWhenToUsePage from "./onboarding/views/pages/when-to-use/OnboardingWhenToUsePage";
 import UpdateProjectPage from "./update-project/views";
 
 /* Lazy-loaded pages */
@@ -70,10 +71,10 @@ function FeaturesApp() {
           {(() => {
             switch (route.name) {
               // protected pages
-              case routes.onBoardingIntroductionWhy.name:
-                return (
-                  <OnBoardingIntroductionWhyBenefriches variant={route.params.fonctionnalite} />
-                );
+              case routes.onBoardingWhenToUse.name:
+                return <OnboardingWhenToUsePage variant={route.params.fonctionnalite} />;
+              case routes.onBoardingWhenNotToUse.name:
+                return <OnboardingWhenNotToUsePage variant={route.params.fonctionnalite} />;
               case routes.onBoardingIntroductionHow.name:
                 return <OnBoardingIntroductionHow variant={route.params.fonctionnalite} />;
               case routes.myProjects.name:
