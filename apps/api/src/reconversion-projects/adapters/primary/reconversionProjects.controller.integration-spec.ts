@@ -1,7 +1,7 @@
 /* oxlint-disable typescript/no-non-null-assertion */
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { Knex } from "knex";
-import { expressProjectCategorySchema, saveReconversionProjectPropsSchema } from "shared";
+import { projectGenerationCategorySchema, saveReconversionProjectPropsSchema } from "shared";
 import supertest from "supertest";
 import { authenticateUser, createTestApp } from "test/testApp";
 import { v4 as uuid } from "uuid";
@@ -195,7 +195,7 @@ describe("ReconversionProjects controller", () => {
       expect(responseErrors[0]?.path).toContain("category");
     });
 
-    it.each(expressProjectCategorySchema.options)(
+    it.each(projectGenerationCategorySchema.options)(
       "get a 201 response and reconversion project is returned with category %s",
       async (category) => {
         const createdBy = "612d16c7-b6e4-4e2c-88a8-0512cc51946c";
@@ -280,7 +280,7 @@ describe("ReconversionProjects controller", () => {
       expect(responseErrors[0]?.path).toContain("category");
     });
 
-    it.each(expressProjectCategorySchema.options)(
+    it.each(projectGenerationCategorySchema.options)(
       "get a 201 response and reconversion project is created with category %s",
       async (category) => {
         const requestBody = {

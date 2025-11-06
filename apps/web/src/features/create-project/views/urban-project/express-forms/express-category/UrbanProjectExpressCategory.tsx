@@ -1,6 +1,11 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import { Controller, useForm } from "react-hook-form";
+import { UrbanProjectCategory } from "shared";
 
+import {
+  getLabelForUrbanProjectCategory,
+  getPictogramForUrbanProjectCategory,
+} from "@/features/projects/views/shared/urbanProjectCategory";
 import { ClassValue } from "@/shared/views/clsx";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import Badge from "@/shared/views/components/Badge/Badge";
@@ -17,11 +22,10 @@ type Props = {
 };
 
 export type FormValues = {
-  expressCategory:
-    | "PUBLIC_FACILITIES"
-    | "RESIDENTIAL_TENSE_AREA"
-    | "RESIDENTIAL_NORMAL_AREA"
-    | "NEW_URBAN_CENTER";
+  expressCategory: Extract<
+    UrbanProjectCategory,
+    "RESIDENTIAL_NORMAL_AREA" | "RESIDENTIAL_TENSE_AREA" | "NEW_URBAN_CENTER" | "PUBLIC_FACILITIES"
+  >;
 };
 
 type Option = {
@@ -36,34 +40,34 @@ type Option = {
 const options: Option[] = [
   {
     value: "RESIDENTIAL_NORMAL_AREA",
-    title: "Résidentiel secteur détendu",
+    title: getLabelForUrbanProjectCategory("RESIDENTIAL_NORMAL_AREA"),
     description: "Habitat individuel + petit collectif",
-    imgSrc: "/img/pictograms/express-urban-categories/residentiel-secteur-detendu.svg",
+    imgSrc: getPictogramForUrbanProjectCategory("RESIDENTIAL_NORMAL_AREA"),
     badgeText: "40 logements / ha",
     badgeClassName: "bg-[#ECF2FF] text-[#5371AC]",
   },
   {
     value: "RESIDENTIAL_TENSE_AREA",
-    title: "Résidentiel secteur tendu",
+    title: getLabelForUrbanProjectCategory("RESIDENTIAL_TENSE_AREA"),
     description: "Habitat collectif, commerces, tertiaires, services et équipements de proximité",
-    imgSrc: "/img/pictograms/express-urban-categories/residentiel-secteur-tendu.svg",
+    imgSrc: getPictogramForUrbanProjectCategory("RESIDENTIAL_TENSE_AREA"),
     badgeText: "200 logements / ha",
     badgeClassName: "bg-[#C2D5FF] text-[#212D45]",
   },
 
   {
     value: "NEW_URBAN_CENTER",
-    title: "Centralité urbaine",
+    title: getLabelForUrbanProjectCategory("NEW_URBAN_CENTER"),
     description: "Forte mixité fonctionnelle",
-    imgSrc: "/img/pictograms/express-urban-categories/nouvelle-centralite.svg",
+    imgSrc: getPictogramForUrbanProjectCategory("NEW_URBAN_CENTER"),
     badgeText: "115 logements / ha",
     badgeClassName: "bg-[#D6E3FF] text-[#3A4F79]",
   },
   {
     value: "PUBLIC_FACILITIES",
-    title: "Équipement public",
+    title: getLabelForUrbanProjectCategory("PUBLIC_FACILITIES"),
     description: "Établissement public (type médiathèque) + espace vert + espace public",
-    imgSrc: "/img/pictograms/express-urban-categories/equipement-public.svg",
+    imgSrc: getPictogramForUrbanProjectCategory("PUBLIC_FACILITIES"),
   },
 ] as const;
 

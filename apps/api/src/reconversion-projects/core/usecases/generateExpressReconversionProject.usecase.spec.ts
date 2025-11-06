@@ -1,7 +1,7 @@
 import {
   BuildingsUseDistribution,
-  ExpressProjectCategory,
-  expressProjectCategorySchema,
+  ProjectGenerationCategory,
+  projectGenerationCategorySchema,
   getProjectSoilDistributionByType,
   sumListWithKey,
   sumObjectValues,
@@ -21,9 +21,9 @@ import { ReconversionProjectSaveDto } from "../model/reconversionProject";
 import { UrbanProjectFeatures } from "../model/urbanProjects";
 import { GenerateExpressReconversionProjectUseCase } from "./generateExpressReconversionProject.usecase";
 
-const EXPRESS_CATEGORIES = expressProjectCategorySchema.options;
+const EXPRESS_CATEGORIES = projectGenerationCategorySchema.options;
 
-const EXPRESS_URBAN_PROJECT_CATEGORIES = expressProjectCategorySchema.exclude([
+const EXPRESS_URBAN_PROJECT_CATEGORIES = projectGenerationCategorySchema.exclude([
   "PHOTOVOLTAIC_POWER_PLANT",
 ]).options;
 
@@ -118,7 +118,7 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
           category: expressCategory,
         });
 
-        const expressCategoryNameMap: Record<ExpressProjectCategory, string> = {
+        const expressCategoryNameMap: Record<ProjectGenerationCategory, string> = {
           NEW_URBAN_CENTER: "Centralité urbaine",
           PUBLIC_FACILITIES: "Équipement public",
           RESIDENTIAL_TENSE_AREA: "Résidentiel secteur tendu",

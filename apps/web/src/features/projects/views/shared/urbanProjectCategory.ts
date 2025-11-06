@@ -1,4 +1,9 @@
-import { BUILDINGS_ECONOMIC_ACTIVITY_USE, BuildingsUse, typedObjectEntries } from "shared";
+import {
+  BUILDINGS_ECONOMIC_ACTIVITY_USE,
+  BuildingsUse,
+  typedObjectEntries,
+  UrbanProjectCategory,
+} from "shared";
 
 import { UrbanProjectFeatures } from "../../domain/projects.types";
 
@@ -7,13 +12,6 @@ const PUBLIC_FACILITIES = [
   "CULTURAL_PLACE",
   "SPORTS_FACILITIES",
 ] as const satisfies BuildingsUse[];
-
-type UrbanProjectCategory =
-  | "PUBLIC_FACILITIES"
-  | "RESIDENTIAL_TENSE_AREA"
-  | "RESIDENTIAL_NORMAL_AREA"
-  | "NEW_URBAN_CENTER"
-  | "OTHER";
 
 type Props = {
   buildingsUseDistribution: UrbanProjectFeatures["buildingsFloorAreaDistribution"];
@@ -60,7 +58,7 @@ export const getUrbanProjectCategoryFromFeatures = ({
   return "OTHER";
 };
 
-export const getLabelForUrbanProjectCategory = (category: UrbanProjectCategory) => {
+export const getLabelForUrbanProjectCategory = (category: UrbanProjectCategory): string => {
   switch (category) {
     case "NEW_URBAN_CENTER":
       return "Centralité urbaine";
@@ -70,7 +68,30 @@ export const getLabelForUrbanProjectCategory = (category: UrbanProjectCategory) 
       return "Résidentiel secteur détendu";
     case "RESIDENTIAL_TENSE_AREA":
       return "Résidentiel secteur tendu";
+    case "INDUSTRIAL_FACILITIES":
+      return "Zone industrielle ou logistique";
+    case "TOURISM_AND_CULTURAL_FACILITIES":
+      return "Lieu culturel ou touristique";
+    case "OFFICES":
+      return "Bureaux";
+    case "RENATURATION":
+      return "Espace de nature";
     case "OTHER":
       return "Projet urbain";
+  }
+};
+
+export const getPictogramForUrbanProjectCategory = (category: UrbanProjectCategory): string => {
+  switch (category) {
+    case "NEW_URBAN_CENTER":
+      return "/img/pictograms/express-urban-categories/nouvelle-centralite.svg";
+    case "PUBLIC_FACILITIES":
+      return "/img/pictograms/express-urban-categories/equipement-public.svg";
+    case "RESIDENTIAL_NORMAL_AREA":
+      return "/img/pictograms/express-urban-categories/residentiel-secteur-detendu.svg";
+    case "RESIDENTIAL_TENSE_AREA":
+      return "/img/pictograms/express-urban-categories/residentiel-secteur-tendu.svg";
+    default:
+      return "/img/pictograms/express-urban-categories/projet-urbain.svg";
   }
 };

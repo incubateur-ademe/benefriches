@@ -1,15 +1,15 @@
 import z from "zod";
 
-export const expressProjectCategorySchema = z.enum([
+export const urbanProjectCategorySchema = z.enum([
   "PUBLIC_FACILITIES",
   "RESIDENTIAL_TENSE_AREA",
   "RESIDENTIAL_NORMAL_AREA",
   "NEW_URBAN_CENTER",
-  "PHOTOVOLTAIC_POWER_PLANT",
   "TOURISM_AND_CULTURAL_FACILITIES",
   "OFFICES",
   "INDUSTRIAL_FACILITIES",
   "RENATURATION",
+  "OTHER",
 ]);
 
-export type ExpressProjectCategory = z.infer<typeof expressProjectCategorySchema>;
+export type UrbanProjectCategory = z.infer<typeof urbanProjectCategorySchema>;

@@ -15,7 +15,7 @@ import {
 import { createZodDto } from "nestjs-zod";
 import {
   API_ROUTES,
-  expressProjectCategorySchema,
+  projectGenerationCategorySchema,
   saveReconversionProjectPropsSchema,
   updateReconversionProjectPropsSchema,
 } from "shared";
@@ -43,7 +43,7 @@ class GenerateExpressReconversionProjectQueryDto extends createZodDto(
   z.object({
     siteId: z.string(),
     createdBy: z.string(),
-    category: expressProjectCategorySchema,
+    category: projectGenerationCategorySchema,
   }),
 ) {}
 
@@ -52,7 +52,7 @@ class GenerateAndSaveExpressReconversionProjectBodyDto extends createZodDto(
     reconversionProjectId: z.string(),
     siteId: z.string(),
     createdBy: z.string(),
-    category: expressProjectCategorySchema,
+    category: projectGenerationCategorySchema,
   }),
 ) {}
 

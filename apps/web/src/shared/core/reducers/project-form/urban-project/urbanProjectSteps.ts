@@ -1,6 +1,6 @@
 import {
   BuildingsUse,
-  ExpressProjectCategory,
+  ProjectGenerationCategory,
   FinancialAssistanceRevenue,
   RecurringExpense,
   ReinstatementExpense,
@@ -138,7 +138,7 @@ export type AnswersByStep = {
   // Express
   URBAN_PROJECT_EXPRESS_CATEGORY_SELECTION: {
     expressCategory?: Extract<
-      ExpressProjectCategory,
+      ProjectGenerationCategory,
       | "PUBLIC_FACILITIES"
       | "RESIDENTIAL_TENSE_AREA"
       | "RESIDENTIAL_NORMAL_AREA"

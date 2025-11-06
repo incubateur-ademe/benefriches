@@ -1,4 +1,4 @@
-import { ExpressProjectCategory } from "shared";
+import { ProjectGenerationCategory } from "shared";
 
 import { ProjectFeatures } from "@/features/projects/domain/projects.types";
 import { objectToQueryParams } from "@/shared/core/object-query-parameters/objectToQueryParameters";
@@ -9,14 +9,14 @@ export type GetExpressReconversionProjectParams = {
   reconversionProjectId: string;
   siteId: string;
   createdBy: string;
-  category: ExpressProjectCategory;
+  category: ProjectGenerationCategory;
 };
 
 export type SaveExpressReconversionProjectPayload = {
   reconversionProjectId: string;
   siteId: string;
   createdBy: string;
-  category: ExpressProjectCategory;
+  category: ProjectGenerationCategory;
 };
 
 export default class HttpCreateExpressReconversionProjectService

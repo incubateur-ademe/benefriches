@@ -7,3 +7,4 @@ export * from "./OfficesProjectGenerator";
 export * from "./RenaturationProjectGenerator";
 export * from "./TourismAndCultureProjectGenerator";
 export * from "./UrbanProjectGenerator";
+export { type UrbanProjectCategory } from "./categories";

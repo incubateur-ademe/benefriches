@@ -1,4 +1,4 @@
-import { expressProjectCategorySchema } from "shared";
+import { projectGenerationCategorySchema } from "shared";
 import { v4 as uuid } from "uuid";
 
 import { MockPhotovoltaicGeoInfoSystemApi } from "src/photovoltaic-performance/adapters/secondary/photovoltaic-data-provider/PhotovoltaicGeoInfoSystemApi.mock";
@@ -13,7 +13,7 @@ import { ReconversionProjectSaveDto } from "../model/reconversionProject";
 import { GenerateAndSaveExpressReconversionProjectUseCase } from "./generateAndSaveExpressReconversionProject.usecase";
 import { GenerateExpressReconversionProjectUseCase } from "./generateExpressReconversionProject.usecase";
 
-const EXPRESS_CATEGORIES = expressProjectCategorySchema.options;
+const EXPRESS_CATEGORIES = projectGenerationCategorySchema.options;
 
 const site: SiteViewModel = {
   id: uuid(),

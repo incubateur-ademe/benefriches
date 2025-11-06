@@ -1,4 +1,4 @@
-import { ExpressProjectCategory } from "shared";
+import { ProjectGenerationCategory } from "shared";
 
 import { TResult, fail, success } from "src/shared-kernel/result";
 import { UseCase } from "src/shared-kernel/usecase";
@@ -17,7 +17,7 @@ type Request = {
   reconversionProjectId: string;
   siteId: string;
   createdBy: string;
-  category?: ExpressProjectCategory;
+  category?: ProjectGenerationCategory;
 };
 
 type GenerateAndSaveExpressReconversionProjectResult = TResult<void, "SiteNotFound">;

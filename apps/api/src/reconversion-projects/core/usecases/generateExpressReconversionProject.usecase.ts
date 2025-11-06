@@ -10,7 +10,7 @@ import {
   ManufacturingProjectGenerator,
   TourismAndCultureProjectGenerator,
   OfficesProjectGenerator,
-  ExpressProjectCategory,
+  ProjectGenerationCategory,
   RenaturationProjectGenerator,
 } from "shared";
 import { v4 as uuid } from "uuid";
@@ -47,7 +47,7 @@ interface UserQuery {
 
 type Request = {
   siteId: string;
-  category?: ExpressProjectCategory;
+  category?: ProjectGenerationCategory;
   createdBy: string;
   reconversionProjectId?: string;
 };
@@ -55,7 +55,7 @@ type Request = {
 type GenerateExpressReconversionProjectResult = TResult<ReconversionProjectSaveDto, "SiteNotFound">;
 
 const getCreationServiceClass = (
-  category: Exclude<ExpressProjectCategory, "PHOTOVOLTAIC_POWER_PLANT"> | undefined,
+  category: Exclude<ProjectGenerationCategory, "PHOTOVOLTAIC_POWER_PLANT"> | undefined,
 ) => {
   switch (category) {
     case "NEW_URBAN_CENTER":
