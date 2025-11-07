@@ -97,6 +97,15 @@ function migrateSoilsDistribution(
     });
   }
 
+  if (spacesDistribution.PUBLIC_PARKING_LOT && spacesDistribution.PUBLIC_PARKING_LOT > 0) {
+    newSoils.push({
+      soil_type: "IMPERMEABLE_SOILS",
+      surface_area: spacesDistribution.PUBLIC_PARKING_LOT,
+      space_category: "PUBLIC_SPACE",
+      reconversion_project_id: reconversionProjectId,
+    });
+  }
+
   // PUBLIC_GRAVEL_ROAD_OR_SQUARES_OR_SIDEWALKS → MINERAL_SOIL
   // Note: cette valeur contient potentiellement des allées gravel de PUBLIC_GREEN_SPACE
   // mais on affecte par défaut à PUBLIC_SPACE
