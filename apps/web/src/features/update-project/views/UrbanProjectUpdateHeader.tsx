@@ -40,7 +40,7 @@ const SaveStateInfo = ({
   const { text, severity } = getBadgeProps(saveState);
 
   return (
-    <div className="flex gap-2 items-center">
+    <div className="flex flex-col lg:flex-row gap-2 lg:items-center">
       <Badge small severity={severity}>
         {text}
       </Badge>
@@ -63,17 +63,15 @@ const SaveStateInfo = ({
 
 function UrbanProjectUpdateHeader({ projectName, saveState, updatedAt }: Props) {
   return (
-    <div className="flex gap-2 justify-between items-center">
-      <div className="flex flex-col">
-        <div className="flex gap-2 items-center mb-1.5">
-          Modification du projet
-          <span> - </span>
-          <span className="mt-1 text-sm uppercase font-normal text-dsfr-text-label-grey">
-            {projectName}
-          </span>
-        </div>
-        {saveState && <SaveStateInfo saveState={saveState} updatedAt={updatedAt} />}
+    <div className="flex flex-col grow">
+      <div className="flex flex-col lg:flex-row gap-2 lg:items-center mb-1.5">
+        Modification du projet
+        <span className="hidden lg:block"> - </span>
+        <span className="mt-1 text-sm uppercase font-normal text-dsfr-text-label-grey">
+          {projectName}
+        </span>
       </div>
+      {saveState && <SaveStateInfo saveState={saveState} updatedAt={updatedAt} />}
     </div>
   );
 }

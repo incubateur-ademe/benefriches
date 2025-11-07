@@ -1,4 +1,4 @@
-import Button from "@codegouvfr/react-dsfr/Button";
+import Button, { ButtonProps } from "@codegouvfr/react-dsfr/Button";
 import { SkipLinks } from "@codegouvfr/react-dsfr/SkipLinks";
 import { useWindowInnerSize } from "@codegouvfr/react-dsfr/tools/useWindowInnerSize";
 import { useBreakpointsValuesPx } from "@codegouvfr/react-dsfr/useBreakpointsValuesPx";
@@ -15,9 +15,10 @@ type SidebarLayoutProps = {
   mainChildren: ReactNode;
   sidebarChildren: ReactNode;
   title: ReactNode;
+  actions?: ButtonProps[];
 };
 
-function SidebarLayout({ mainChildren, title, sidebarChildren }: SidebarLayoutProps) {
+function SidebarLayout({ mainChildren, title, sidebarChildren, actions }: SidebarLayoutProps) {
   const { breakpointsValues } = useBreakpointsValuesPx();
   const { windowInnerWidth } = useWindowInnerSize();
 
@@ -94,13 +95,18 @@ function SidebarLayout({ mainChildren, title, sidebarChildren }: SidebarLayoutPr
               )}
             >
               <div className="text-xl font-bold">{title}</div>
-              <Button
-                priority="tertiary no outline"
-                linkProps={routes.myProjects().link}
-                iconId="fr-icon-briefcase-fill"
-              >
-                Retour à mes projets
-              </Button>
+              <div>
+                {actions?.map((button) => (
+                  <Button {...button} />
+                ))}
+                <Button
+                  priority="tertiary no outline"
+                  linkProps={routes.myProjects().link}
+                  iconId="fr-icon-briefcase-fill"
+                >
+                  Retour à mes projets
+                </Button>
+              </div>
             </header>
 
             <main id="contenu" className="p-6 container">

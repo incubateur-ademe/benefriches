@@ -1,6 +1,10 @@
+import Alert from "@codegouvfr/react-dsfr/Alert";
 import Button, { ButtonProps } from "@codegouvfr/react-dsfr/Button";
+import { useCallback, useState } from "react";
+import { v4 as uuid } from "uuid";
 
 import { selectCurrentUserEmail } from "@/features/onboarding/core/user.reducer";
+import { HttpDuplicateProjectService } from "@/features/projects/infrastructure/duplicate-project-service/HttpDuplicateProjectService";
 import { featureAlertSubscribed } from "@/features/user-feature-alerts/core/createFeatureAlert.action";
 import { selectUserFeaturesAlerts } from "@/features/user-feature-alerts/core/userFeatureAlert.reducer";
 import classNames from "@/shared/views/clsx";
@@ -21,20 +25,46 @@ const DUPLICATE_PROJECT_FEATURE_ALERT_DIALOG_ID = "duplicate-project-feature-ale
 const UPDATE_PROJECT_FEATURE_ALERT_DIALOG_ID = "update-project-feature-alert-footer-dialog";
 const UPDATE_SITE_FEATURE_ALERT_DIALOG_ID = "update-site-feature-alert-footer-dialog";
 
-export default function FurtherActionsSection({ siteId }: { siteId: string }) {
+type Props = {
+  siteId: string;
+  projectId: string;
+  isUpdateEnabled: boolean;
+};
+export default function FurtherActionsSection({ siteId, projectId, isUpdateEnabled }: Props) {
+  const [duplicationState, setIsDuplicationState] = useState<"idle" | "error" | "loading">("idle");
+
+  const onDuplicateProject = useCallback(async () => {
+    setIsDuplicationState("loading");
+    try {
+      const duplicateService = new HttpDuplicateProjectService();
+      const newProjectId = uuid();
+      await duplicateService.duplicate({ newProjectId, reconversionProjectId: projectId });
+      routes.updateProject({ projectId: newProjectId }).push();
+    } catch (err) {
+      console.error("Impossible de dupliquer le projet", err);
+      setIsDuplicationState("error");
+    }
+  }, [projectId]);
+
   const links: Link[] = [
     {
       categoryName: "Modifier",
       links: [
-        {
-          iconId: "fr-icon-edit-line",
-          disabled: true,
-          title: "Modifier les infos du projet",
-          badgeProps: {
-            "aria-controls": UPDATE_PROJECT_FEATURE_ALERT_DIALOG_ID,
-            "data-fr-opened": "false",
-          },
-        },
+        isUpdateEnabled
+          ? {
+              iconId: "fr-icon-edit-line",
+              title: "Modifier les infos du projet",
+              linkProps: routes.updateProject({ projectId }).link,
+            }
+          : {
+              iconId: "fr-icon-edit-line",
+              disabled: true,
+              title: "Modifier les infos du projet",
+              badgeProps: {
+                "aria-controls": UPDATE_PROJECT_FEATURE_ALERT_DIALOG_ID,
+                "data-fr-opened": "false",
+              },
+            },
         {
           iconId: "fr-icon-edit-line",
           disabled: true,
@@ -49,15 +79,23 @@ export default function FurtherActionsSection({ siteId }: { siteId: string }) {
     {
       categoryName: "Créer",
       links: [
-        {
-          iconId: "ri-file-copy-line",
-          disabled: true,
-          title: "Créer une variante du projet",
-          badgeProps: {
-            "aria-controls": DUPLICATE_PROJECT_FEATURE_ALERT_DIALOG_ID,
-            "data-fr-opened": "false",
-          },
-        },
+        isUpdateEnabled
+          ? {
+              iconId: "ri-file-copy-line",
+              title: "Créer une variante du projet",
+              onClick: onDuplicateProject,
+              disabled: duplicationState === "loading",
+              className: duplicationState === "loading" ? "cursor-wait" : undefined,
+            }
+          : {
+              iconId: "ri-file-copy-line",
+              disabled: true,
+              title: "Créer une variante du projet",
+              badgeProps: {
+                "aria-controls": DUPLICATE_PROJECT_FEATURE_ALERT_DIALOG_ID,
+                "data-fr-opened": "false",
+              },
+            },
         {
           iconId: "fr-icon-file-add-line",
           linkProps: routes.createProject({ siteId }).link,
@@ -115,17 +153,25 @@ export default function FurtherActionsSection({ siteId }: { siteId: string }) {
   return (
     <section className="rounded-lg mt-6 p-6 bg-impacts-main dark:bg-black">
       <h4>Aller plus loin</h4>
+      {duplicationState === "error" && (
+        <Alert
+          className="my-4"
+          severity="error"
+          title="Impossible de dupliquer le projet"
+          description="Une erreur s'est produite lors de la duplication du projet ..."
+        />
+      )}
       <div className="grid md:grid-cols-3 gap-4">
         {links.map(({ categoryName, links }, columnIndex) => (
           <div key={`link-item-${columnIndex}`}>
             <h5 className={classNames("text-sm", "uppercase", "mb-4")}>{categoryName}</h5>
             <ul className={classNames("list-none", "m-0", "p-0")}>
-              {links.map(({ title, badgeProps, ...buttonProps }, linkItemIndex) => (
+              {links.map(({ title, badgeProps, className, ...buttonProps }, linkItemIndex) => (
                 <li key={`li-${linkItemIndex}`} className="pb-4 flex items-center">
                   <Button
                     priority="tertiary no outline"
                     size="small"
-                    className="text-left -ml-2"
+                    className={classNames("text-left -ml-2", className)}
                     {...buttonProps}
                   >
                     {title}

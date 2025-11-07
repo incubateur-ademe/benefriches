@@ -7,6 +7,7 @@ import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 import { ProjectFormProvider } from "@/shared/views/project-form/ProjectFormProvider";
 import BuildingsUseSelection from "@/shared/views/project-form/urban-project/buildings/use-selection";
+import { routes } from "@/shared/views/router";
 
 import { UrbanProjectUpdateStep } from "../core/updateProject.reducer";
 import { selectUrbanProjectCurrentStep } from "../core/updateProject.selectors";
@@ -449,6 +450,7 @@ const getCurrentStepView = (step: UrbanProjectUpdateStep): Exclude<ReactNode, un
 
 function UrbanProjectUpdateView() {
   const currentStep = useAppSelector(selectUrbanProjectCurrentStep);
+  const projectId = useAppSelector((state) => state.projectUpdate.projectData.id);
   const projectName = useAppSelector((state) => state.projectUpdate.projectData.projectName ?? "");
 
   const saveState = useAppSelector((state) => state.projectUpdate.urbanProject.saveState);
@@ -465,6 +467,18 @@ function UrbanProjectUpdateView() {
             saveState={saveState}
             projectName={projectName}
           />
+        }
+        actions={
+          projectId
+            ? [
+                {
+                  linkProps: routes.projectImpacts({ projectId }).link,
+                  iconId: "ri-bar-chart-2-fill",
+                  priority: "tertiary no outline",
+                  children: "Voir les impacts du projet",
+                },
+              ]
+            : undefined
         }
         sidebarChildren={<UrbanProjectUpdateStepper step={currentStep} />}
         mainChildren={

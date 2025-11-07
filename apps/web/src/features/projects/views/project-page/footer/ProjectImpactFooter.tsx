@@ -14,9 +14,16 @@ type Props = {
   siteNature: SiteNature;
   projectId: string;
   evaluationPeriod?: number;
+  isUpdateEnabled: boolean;
 };
 
-function ProjectImpactFooter({ siteId, siteNature, projectId, evaluationPeriod }: Props) {
+function ProjectImpactFooter({
+  siteId,
+  siteNature,
+  projectId,
+  evaluationPeriod,
+  isUpdateEnabled,
+}: Props) {
   const dispatch = useAppDispatch();
 
   const onSelectOption = (comparisonSiteNature: SiteNature) => {
@@ -32,7 +39,11 @@ function ProjectImpactFooter({ siteId, siteNature, projectId, evaluationPeriod }
           <FricheComparisonSectionCard onSelectOption={onSelectOption} />
         </div>
 
-        <FurtherActionsSection siteId={siteId} />
+        <FurtherActionsSection
+          siteId={siteId}
+          projectId={projectId}
+          isUpdateEnabled={isUpdateEnabled}
+        />
       </>
     );
   }
@@ -40,7 +51,11 @@ function ProjectImpactFooter({ siteId, siteNature, projectId, evaluationPeriod }
   return (
     <>
       <NonFricheComparisonSectionCard siteNature={siteNature} onSelectOption={onSelectOption} />
-      <FurtherActionsSection siteId={siteId} />
+      <FurtherActionsSection
+        siteId={siteId}
+        projectId={projectId}
+        isUpdateEnabled={isUpdateEnabled}
+      />
     </>
   );
 }

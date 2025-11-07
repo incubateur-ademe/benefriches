@@ -91,6 +91,9 @@ function ProjectPage({
               siteNature={projectContext.siteNature!}
               projectId={projectId}
               evaluationPeriod={evaluationPeriod}
+              isUpdateEnabled={
+                projectContext.type === "URBAN_PROJECT" && !projectContext.isExpressProject
+              }
             />
           </>
         )}
