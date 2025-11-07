@@ -28,7 +28,7 @@ const revenueSchema = z.object({ source: z.string(), amount: z.number().nonnegat
 const developmentPlanType = z.enum(["PHOTOVOLTAIC_POWER_PLANT", "URBAN_PROJECT"]);
 
 const spaceCategorySchema = z
-  .enum(["PUBLIC_GREEN_SPACE", "PUBLIC_SPACE", "LIVING_AND_ACTIVITY_SPACE"])
+  .enum(["PUBLIC_GREEN_SPACE", "PUBLIC_SPACE", "LIVING_AND_ACTIVITY_SPACE", "URBAN_POND_OR_LAKE"])
   .optional();
 
 const coerceToDate = z.string().or(z.date()).pipe(z.coerce.date());

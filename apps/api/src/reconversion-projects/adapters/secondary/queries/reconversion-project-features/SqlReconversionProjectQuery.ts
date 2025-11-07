@@ -3,6 +3,7 @@ import { Knex } from "knex";
 import {
   DevelopmentPlanInstallationExpenses,
   FinancialAssistanceRevenue,
+  getProjectSoilDistributionByType,
   RecurringExpense,
   RecurringRevenue,
   ReinstatementExpense,
@@ -202,12 +203,13 @@ export class SqlReconversionProjectQuery implements ReconversionProjectQueryGate
       futureOwner: sqlResult.future_site_owner_name ?? undefined,
       futureOperator: sqlResult.future_operator_name ?? undefined,
       developmentPlan: getDevelopmentPlan(),
-      soilsDistribution: sqlResult.soils_distribution.reduce((acc, { soil_type, surface_area }) => {
-        return {
-          ...acc,
-          [soil_type]: surface_area,
-        };
-      }, {}),
+      soilsDistribution: getProjectSoilDistributionByType(
+        sqlResult.soils_distribution.map((sd) => ({
+          soilType: sd.soil_type,
+          surfaceArea: sd.surface_area,
+          spaceCategory: sd.space_category,
+        })),
+      ),
       yearlyProjectedExpenses: sqlResult.expenses ?? [],
       yearlyProjectedRevenues: sqlResult.revenues ?? [],
       reinstatementContractOwner: sqlResult.reinstatement_contract_owner_name ?? undefined,
