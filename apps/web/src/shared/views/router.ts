@@ -40,10 +40,7 @@ const { RouteProvider, useRoute, routes } = createRouter({
     () => "/authentification/token",
   ),
   // FORMS
-  createSiteFoncier: defineRoute(
-    { etape: param.query.optional.string },
-    () => "/creer-site-foncier",
-  ),
+  createSite: defineRoute({ etape: param.query.optional.string }, () => "/creer-site-foncier"),
   createProject: defineRoute(
     {
       etape: param.query.optional.string,

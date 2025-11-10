@@ -103,7 +103,7 @@ export default function FurtherActionsSection({ siteId, projectId, isUpdateEnabl
         },
         {
           iconId: "fr-icon-add-line",
-          linkProps: routes.createSiteFoncier().link,
+          linkProps: routes.createSite().link,
           title: "Créer un nouveau site",
         },
       ],

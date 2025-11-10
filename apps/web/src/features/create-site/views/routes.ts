@@ -43,6 +43,6 @@ const SITE_CREATION_STEP_ROUTE_QUERY_STRING_MAP = {
 
 export const getRouteFromCreationStep = (
   step: SiteCreationStep,
-): Route<typeof routes.createSiteFoncier> => {
-  return routes.createSiteFoncier({ etape: SITE_CREATION_STEP_ROUTE_QUERY_STRING_MAP[step] });
+): Route<typeof routes.createSite> => {
+  return routes.createSite({ etape: SITE_CREATION_STEP_ROUTE_QUERY_STRING_MAP[step] });
 };

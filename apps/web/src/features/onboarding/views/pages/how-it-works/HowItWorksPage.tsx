@@ -110,7 +110,7 @@ function HowItWorksPage({ variant }: Props) {
       routes.evaluateReconversionCompatibility().push();
     } else {
       dispatch(siteCreationInitiated({ skipIntroduction: true }));
-      routes.createSiteFoncier().push();
+      routes.createSite().push();
     }
   };
 

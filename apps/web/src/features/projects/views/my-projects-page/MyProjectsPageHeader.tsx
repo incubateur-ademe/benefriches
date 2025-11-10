@@ -22,7 +22,7 @@ function MyProjectsPageHeader() {
             priority="primary"
             onClick={() => {
               dispatch(siteCreationInitiated({ skipIntroduction: false }));
-              routes.createSiteFoncier().push();
+              routes.createSite().push();
             }}
             iconId="fr-icon-add-line"
           >
