@@ -8,6 +8,7 @@ import {
   SoilsDistribution,
   SoilType,
   SoilsTransformationProject,
+  ProjectGenerationCategory,
 } from "shared";
 
 import { UserStructureType } from "@/features/onboarding/core/user";
@@ -20,6 +21,11 @@ export type PhotovoltaicKeyParameter = "POWER" | "SURFACE";
 export type Schedule = {
   startDate: string;
   endDate: string;
+};
+
+export type ProjectSuggestion = {
+  type: ProjectGenerationCategory;
+  compatibilityScore: number;
 };
 
 export type ReconversionProjectCreationData = {

@@ -21,6 +21,7 @@ import {
   introductionStepCompleted,
 } from "./actions/introductionStep.actions";
 import { reconversionProjectCreationInitiated } from "./actions/reconversionProjectCreationInitiated.action";
+import { ProjectSuggestion } from "./project.types";
 import { RenewableEnergyCreationStep } from "./renewable-energy/creationSteps";
 import {
   RenewableEnergyProjectState,
@@ -35,11 +36,13 @@ export type ProjectCreationState = ProjectFormState & {
   developmentPlanCategory?: DevelopmentPlanCategory;
   renewableEnergyProject: RenewableEnergyProjectState;
   stepRevertAttempted: boolean;
+  projectSuggestions?: ProjectSuggestion[];
 };
 
 export type ProjectCreationStep =
   | "INTRODUCTION"
   | "PROJECT_TYPES"
+  | "PROJECT_SUGGESTIONS"
   | UrbanProjectCreationStep
   | RenewableEnergyCreationStep;
 
@@ -49,6 +52,7 @@ export const getInitialState = (): ProjectCreationState => {
     projectId: uuid(),
     developmentPlanCategory: undefined,
     stepRevertAttempted: false,
+    projectSuggestions: undefined,
     renewableEnergyProject: renenewableEnergyProjectInitialState,
     ...getProjectFormInitialState("URBAN_PROJECT_CREATE_MODE_SELECTION"),
   };
@@ -73,7 +77,15 @@ const projectCreationReducer = createReducer(getInitialState(), (builder) => {
           break;
       }
     })
-    .addCase(reconversionProjectCreationInitiated.pending, () => {
+    .addCase(reconversionProjectCreationInitiated.pending, (_state, action) => {
+      if (action.meta.arg.withProjectSuggestions) {
+        return {
+          ...getInitialState(),
+          stepsHistory: ["PROJECT_SUGGESTIONS"],
+          projectSuggestions: action.meta.arg.withProjectSuggestions,
+        };
+      }
+
       return {
         ...getInitialState(),
         siteDataLoadingState: "loading",
@@ -86,7 +98,6 @@ const projectCreationReducer = createReducer(getInitialState(), (builder) => {
     .addCase(reconversionProjectCreationInitiated.rejected, (state) => {
       state.siteDataLoadingState = "error";
     })
-
     .addCase(stepRevertAttempted, (state) => {
       state.stepRevertAttempted = true;
     })

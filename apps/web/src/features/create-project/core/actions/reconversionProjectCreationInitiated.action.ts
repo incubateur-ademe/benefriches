@@ -1,6 +1,6 @@
 import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
 
-import { ProjectSite } from "../project.types";
+import { ProjectSite, ProjectSuggestion } from "../project.types";
 import { makeProjectCreationActionType } from "./actionsUtils";
 
 export interface GetSitesByIdGateway {
@@ -9,7 +9,7 @@ export interface GetSitesByIdGateway {
 
 export const reconversionProjectCreationInitiated = createAppAsyncThunk<
   ProjectSite,
-  { relatedSiteId: string }
+  { relatedSiteId: string; withProjectSuggestions?: ProjectSuggestion[] }
 >(makeProjectCreationActionType("initiated"), async ({ relatedSiteId }, { extra }) => {
   const projectSite = await extra.getSiteByIdService.getById(relatedSiteId);
 
