@@ -1,7 +1,6 @@
 import {
   FinancialAssistanceRevenue,
   getUrbanGreenSpaceFromSoilType,
-  getUrbanLivingAndActivitySpaceFromSoilType,
   getUrbanPublicSpaceFromSoilType,
   RecurringExpense,
   ReinstatementExpense,
@@ -92,14 +91,42 @@ export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProje
       case "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION":
         steps["URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION"] = {
           payload: {
-            livingAndActivitySpacesDistribution: Object.fromEntries(
-              projectData.soilsDistribution
-                .filter(({ spaceCategory }) => spaceCategory === "LIVING_AND_ACTIVITY_SPACE")
-                .map(({ soilType, surfaceArea }) => [
-                  getUrbanLivingAndActivitySpaceFromSoilType(soilType),
-                  surfaceArea,
-                ]),
-            ),
+            livingAndActivitySpacesDistribution: {
+              BUILDINGS: sumListWithKey(
+                projectData.soilsDistribution.filter(
+                  ({ spaceCategory, soilType }) =>
+                    spaceCategory === "LIVING_AND_ACTIVITY_SPACE" && soilType === "BUILDINGS",
+                ),
+                "surfaceArea",
+              ),
+              IMPERMEABLE_SURFACE: sumListWithKey(
+                projectData.soilsDistribution.filter(
+                  ({ spaceCategory, soilType }) =>
+                    spaceCategory === "LIVING_AND_ACTIVITY_SPACE" &&
+                    soilType === "IMPERMEABLE_SOILS",
+                ),
+                "surfaceArea",
+              ),
+              PERMEABLE_SURFACE: sumListWithKey(
+                projectData.soilsDistribution.filter(
+                  ({ spaceCategory, soilType }) =>
+                    spaceCategory === "LIVING_AND_ACTIVITY_SPACE" && soilType === "MINERAL_SOIL",
+                ),
+                "surfaceArea",
+              ),
+              PRIVATE_GREEN_SPACES: sumListWithKey(
+                projectData.soilsDistribution.filter(
+                  ({ spaceCategory, soilType }) =>
+                    spaceCategory === "LIVING_AND_ACTIVITY_SPACE" &&
+                    [
+                      "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+                      "ARTIFICIAL_TREE_FILLED",
+                      "WATER",
+                    ].includes(soilType),
+                ),
+                "surfaceArea",
+              ),
+            },
           },
           completed: true,
         };

@@ -82,23 +82,27 @@ export const ReadStateHelper = {
     )?.livingAndActivitySpacesDistribution;
 
     return [
-      ...typedObjectEntries(publicSpacesDistribution ?? {}).map(([soil, surfaceArea = 0]) => ({
-        surfaceArea,
-        soilType: getSoilTypeForPublicSpace(soil),
-        spaceCategory: "PUBLIC_SPACE" as const,
-      })),
-      ...typedObjectEntries(livingAndActivitySpacesDistribution ?? {}).map(
-        ([soil, surfaceArea = 0]) => ({
+      ...typedObjectEntries(publicSpacesDistribution ?? {})
+        .filter(([_, surfaceArea]) => surfaceArea)
+        .map(([soil, surfaceArea = 0]) => ({
+          surfaceArea,
+          soilType: getSoilTypeForPublicSpace(soil),
+          spaceCategory: "PUBLIC_SPACE" as const,
+        })),
+      ...typedObjectEntries(livingAndActivitySpacesDistribution ?? {})
+        .filter(([_, surfaceArea]) => surfaceArea)
+        .map(([soil, surfaceArea = 0]) => ({
           surfaceArea,
           soilType: getSoilTypeForLivingAndActivitySpace(soil),
           spaceCategory: "LIVING_AND_ACTIVITY_SPACE" as const,
-        }),
-      ),
-      ...typedObjectEntries(greenSpacesDistribution ?? {}).map(([soil, surfaceArea = 0]) => ({
-        surfaceArea,
-        soilType: getSoilTypeForUrbanGreenSpace(soil),
-        spaceCategory: "PUBLIC_GREEN_SPACE" as const,
-      })),
+        })),
+      ...typedObjectEntries(greenSpacesDistribution ?? {})
+        .filter(([_, surfaceArea]) => surfaceArea)
+        .map(([soil, surfaceArea = 0]) => ({
+          surfaceArea,
+          soilType: getSoilTypeForUrbanGreenSpace(soil),
+          spaceCategory: "PUBLIC_GREEN_SPACE" as const,
+        })),
     ];
   },
 

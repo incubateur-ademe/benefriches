@@ -96,8 +96,8 @@ function SidebarLayout({ mainChildren, title, sidebarChildren, actions }: Sideba
             >
               <div className="text-xl font-bold">{title}</div>
               <div>
-                {actions?.map((button) => (
-                  <Button {...button} />
+                {actions?.map((button, index) => (
+                  <Button key={`menu-button-${index}`} {...button} />
                 ))}
                 <Button
                   priority="tertiary no outline"
