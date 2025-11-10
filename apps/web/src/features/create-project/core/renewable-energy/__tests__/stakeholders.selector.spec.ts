@@ -47,7 +47,7 @@ const MOCK_LOCAL_AUTHORITIES_SUCCESS = {
 } as const;
 const MOCK_STATES = {
   projectCreation: {
-    stepsHistory: ["PROJECT_TYPES"],
+    stepsHistory: ["PROJECT_TYPE_SELECTION"],
     projectId: "",
     siteData,
     siteDataLoadingState: "success",

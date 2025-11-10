@@ -29,7 +29,7 @@ type Props = {
 };
 const PROJECT_CREATION_STEP_QUERY_STRING_MAP = {
   INTRODUCTION: "introduction",
-  PROJECT_TYPES: "type-de-projet",
+  PROJECT_TYPE_SELECTION: "type-de-projet",
   PROJECT_SUGGESTIONS: "projets-suggeres",
   ...URBAN_PROJECT_CREATION_STEP_QUERY_STRING_MAP,
   ...RENEWABLE_ENERGY_PROJECT_CREATION_STEP_QUERY_STRING_MAP,
@@ -44,7 +44,7 @@ const ProjectCreationIntroductionWizard = ({
     switch (currentStep) {
       case "INTRODUCTION":
         return <ProjectCreationIntroduction />;
-      case "PROJECT_TYPES":
+      case "PROJECT_TYPE_SELECTION":
         return <ProjectTypesForm />;
       case "PROJECT_SUGGESTIONS":
         return <div>En construction</div>;

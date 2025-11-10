@@ -41,7 +41,7 @@ export type ProjectCreationState = ProjectFormState & {
 
 export type ProjectCreationStep =
   | "INTRODUCTION"
-  | "PROJECT_TYPES"
+  | "PROJECT_TYPE_SELECTION"
   | "PROJECT_SUGGESTIONS"
   | UrbanProjectCreationStep
   | RenewableEnergyCreationStep;
@@ -63,7 +63,7 @@ const projectCreationReducer = createReducer(getInitialState(), (builder) => {
 
   builder
     .addCase(introductionStepCompleted, (state) => {
-      state.stepsHistory.push("PROJECT_TYPES");
+      state.stepsHistory.push("PROJECT_TYPE_SELECTION");
     })
     .addCase(developmentPlanCategoriesCompleted, (state, action) => {
       state.developmentPlanCategory = action.payload;
