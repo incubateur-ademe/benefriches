@@ -35,7 +35,7 @@ const ProjectImpactsOnboardingPage = lazy(
 );
 
 const formsLayoutGroup = createGroup([
-  routes.createSiteFoncier,
+  routes.createSite,
   routes.createProject,
   routes.updateProject,
 ]);
@@ -50,7 +50,7 @@ function FeaturesApp() {
           <RequireAuthenticatedUser>
             {(() => {
               switch (route.name) {
-                case routes.createSiteFoncier.name:
+                case routes.createSite.name:
                   return <CreateSiteFoncierPage />;
                 case routes.createProject.name:
                   return <CreateProjectPage route={route} />;
