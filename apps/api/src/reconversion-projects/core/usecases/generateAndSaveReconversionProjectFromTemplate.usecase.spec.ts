@@ -1,4 +1,4 @@
-import { projectGenerationCategorySchema } from "shared";
+import { reconversionProjectTemplateSchema } from "shared";
 import { v4 as uuid } from "uuid";
 
 import { MockPhotovoltaicGeoInfoSystemApi } from "src/photovoltaic-performance/adapters/secondary/photovoltaic-data-provider/PhotovoltaicGeoInfoSystemApi.mock";
@@ -10,10 +10,8 @@ import { SiteViewModel } from "src/sites/core/gateways/SitesQuery";
 import { InMemoryUserQuery } from "src/users/adapters/secondary/user-query/InMemoryUserQuery";
 
 import { ReconversionProjectSaveDto } from "../model/reconversionProject";
-import { GenerateAndSaveExpressReconversionProjectUseCase } from "./generateAndSaveExpressReconversionProject.usecase";
-import { GenerateExpressReconversionProjectUseCase } from "./generateExpressReconversionProject.usecase";
-
-const EXPRESS_CATEGORIES = projectGenerationCategorySchema.options;
+import { GenerateAndSaveReconversionProjectFromTemplateUseCase } from "./generateAndSaveReconversionProjectFromTemplate.usecase";
+import { GenerateReconversionProjectFromTemplateUseCase } from "./generateReconversionProjectFromTemplate.usecase";
 
 const site: SiteViewModel = {
   id: uuid(),
@@ -46,8 +44,8 @@ const site: SiteViewModel = {
   yearlyIncomes: [],
 };
 
-describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
-  let generateExpressReconversionProjectUseCase: GenerateExpressReconversionProjectUseCase;
+describe("GenerateAndSaveReconversionProjectFromTemplateUseCase Use Case", () => {
+  let generateReconversionProjectFromTemplateUseCase: GenerateReconversionProjectFromTemplateUseCase;
   let reconversionProjectRepository: InMemoryReconversionProjectRepository;
   const fakeNow = new Date("2024-01-05T13:00:00");
 
@@ -55,21 +53,22 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
     const siteQuery = new InMemorySitesQuery();
     siteQuery._setSites([site]);
 
-    generateExpressReconversionProjectUseCase = new GenerateExpressReconversionProjectUseCase(
-      new DeterministicDateProvider(fakeNow),
-      siteQuery,
-      new MockPhotovoltaicGeoInfoSystemApi(),
-      new InMemoryUserQuery(),
-    );
+    generateReconversionProjectFromTemplateUseCase =
+      new GenerateReconversionProjectFromTemplateUseCase(
+        new DeterministicDateProvider(fakeNow),
+        siteQuery,
+        new MockPhotovoltaicGeoInfoSystemApi(),
+        new InMemoryUserQuery(),
+      );
     reconversionProjectRepository = new InMemoryReconversionProjectRepository();
   });
 
   describe("Error cases", () => {
-    test.each(EXPRESS_CATEGORIES)(
-      "cannot create an express %s reconversion project with a non-existing site",
-      async (expressCategory) => {
-        const usecase = new GenerateAndSaveExpressReconversionProjectUseCase(
-          generateExpressReconversionProjectUseCase,
+    test.each(reconversionProjectTemplateSchema.options)(
+      "cannot create a template %s reconversion project with a non-existing site",
+      async (template) => {
+        const usecase = new GenerateAndSaveReconversionProjectFromTemplateUseCase(
+          generateReconversionProjectFromTemplateUseCase,
           reconversionProjectRepository,
         );
 
@@ -78,7 +77,7 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
           reconversionProjectId: uuid(),
           siteId,
           createdBy: uuid(),
-          category: expressCategory,
+          template: template,
         });
         expect(result.isFailure()).toBe(true);
         expect((result as FailureResult).getError()).toBe("SiteNotFound");
@@ -86,11 +85,11 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
     );
   });
 
-  test.each(EXPRESS_CATEGORIES)(
+  test.each(reconversionProjectTemplateSchema.options)(
     "should generate and save a %s project with default name, given related site id, createdBy, createdAt and creationMode",
-    async (expressCategory) => {
-      const usecase = new GenerateAndSaveExpressReconversionProjectUseCase(
-        generateExpressReconversionProjectUseCase,
+    async (template) => {
+      const usecase = new GenerateAndSaveReconversionProjectFromTemplateUseCase(
+        generateReconversionProjectFromTemplateUseCase,
         reconversionProjectRepository,
       );
 
@@ -100,7 +99,7 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
         reconversionProjectId,
         siteId: site.id,
         createdBy: creatorId,
-        category: expressCategory,
+        template: template,
       });
       expect(result.isSuccess()).toBe(true);
 

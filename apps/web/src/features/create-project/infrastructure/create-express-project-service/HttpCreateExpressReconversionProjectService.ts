@@ -1,4 +1,4 @@
-import { ProjectGenerationCategory } from "shared";
+import { ReconversionProjectTemplate } from "shared";
 
 import { ProjectFeatures } from "@/features/projects/domain/projects.types";
 import { objectToQueryParams } from "@/shared/core/object-query-parameters/objectToQueryParameters";
@@ -9,14 +9,14 @@ export type GetExpressReconversionProjectParams = {
   reconversionProjectId: string;
   siteId: string;
   createdBy: string;
-  category: ProjectGenerationCategory;
+  template: ReconversionProjectTemplate;
 };
 
 export type SaveExpressReconversionProjectPayload = {
   reconversionProjectId: string;
   siteId: string;
   createdBy: string;
-  category: ProjectGenerationCategory;
+  template: ReconversionProjectTemplate;
 };
 
 export default class HttpCreateExpressReconversionProjectService
@@ -25,7 +25,7 @@ export default class HttpCreateExpressReconversionProjectService
   async get(params: GetExpressReconversionProjectParams) {
     const queryString = objectToQueryParams(params);
 
-    const response = await fetch(`/api/reconversion-projects/create-from-site?${queryString}`);
+    const response = await fetch(`/api/reconversion-projects/create-from-template?${queryString}`);
 
     if (!response.ok) throw new Error("Error while fetching express reconversion project");
 
@@ -33,7 +33,7 @@ export default class HttpCreateExpressReconversionProjectService
   }
 
   async save(payload: SaveExpressReconversionProjectPayload) {
-    const response = await fetch(`/api/reconversion-projects/create-from-site`, {
+    const response = await fetch(`/api/reconversion-projects/create-from-template`, {
       method: "POST",
       body: JSON.stringify(payload),
       headers: {

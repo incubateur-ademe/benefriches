@@ -1,7 +1,7 @@
 import {
   BaseReconversionProjectFeaturesView,
-  ProjectGenerationCategory,
-  projectGenerationCategorySchema,
+  ReconversionProjectTemplate,
+  reconversionProjectTemplateSchema,
 } from "shared";
 import { z } from "zod";
 
@@ -9,7 +9,7 @@ export const saveExpressProjectSchema = z.object({
   reconversionProjectId: z.string(),
   siteId: z.string(),
   createdBy: z.string(),
-  category: projectGenerationCategorySchema,
+  template: reconversionProjectTemplateSchema,
 });
 
 export type ExpressReconversionProjectPayload = z.infer<typeof saveExpressProjectSchema>;
@@ -19,7 +19,7 @@ export interface CreateExpressReconversionProjectGateway {
   get(params: {
     siteId: string;
     createdBy: string;
-    category: ProjectGenerationCategory;
+    template: ReconversionProjectTemplate;
   }): Promise<ExpressReconversionProjectResult>;
   save(payload: ExpressReconversionProjectPayload): Promise<void>;
 }

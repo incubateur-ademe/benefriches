@@ -7,8 +7,8 @@ export * from "./schedule/operationFirstYear";
 export * from "./schedule/worksSchedule";
 
 export {
-  type ProjectGenerationCategory,
-  projectGenerationCategorySchema,
+  type ReconversionProjectTemplate,
+  reconversionProjectTemplateSchema,
 } from "./project-generator/projectGenerationCategory";
 
 export { type ReconversionProjectCreationMode } from "./creationMode";

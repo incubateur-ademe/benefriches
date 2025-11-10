@@ -8,7 +8,7 @@ import {
   SoilsDistribution,
   SoilType,
   SoilsTransformationProject,
-  ProjectGenerationCategory,
+  ReconversionProjectTemplate,
 } from "shared";
 
 import { UserStructureType } from "@/features/onboarding/core/user";
@@ -24,7 +24,7 @@ export type Schedule = {
 };
 
 export type ProjectSuggestion = {
-  type: ProjectGenerationCategory;
+  type: ReconversionProjectTemplate;
   compatibilityScore: number;
 };
 

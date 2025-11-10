@@ -15,7 +15,7 @@ import {
 import { createZodDto } from "nestjs-zod";
 import {
   API_ROUTES,
-  projectGenerationCategorySchema,
+  reconversionProjectTemplateSchema,
   saveReconversionProjectPropsSchema,
   updateReconversionProjectPropsSchema,
 } from "shared";
@@ -28,8 +28,8 @@ import { ComputeProjectUrbanSprawlImpactsComparisonUseCase } from "src/reconvers
 import { ComputeReconversionProjectImpactsUseCase } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
 import { CreateReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/createReconversionProject.usecase";
 import { DuplicateReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/duplicateReconversionProject.usecase";
-import { GenerateAndSaveExpressReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/generateAndSaveExpressReconversionProject.usecase";
-import { GenerateExpressReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/generateExpressReconversionProject.usecase";
+import { GenerateAndSaveReconversionProjectFromTemplateUseCase } from "src/reconversion-projects/core/usecases/generateAndSaveReconversionProjectFromTemplate.usecase";
+import { GenerateReconversionProjectFromTemplateUseCase } from "src/reconversion-projects/core/usecases/generateReconversionProjectFromTemplate.usecase";
 import { GetReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/getReconversionProject.usecase";
 import { GetReconversionProjectFeaturesUseCase } from "src/reconversion-projects/core/usecases/getReconversionProjectFeatures.usecase";
 import { GetUserReconversionProjectsBySiteUseCase } from "src/reconversion-projects/core/usecases/getUserReconversionProjectsBySite.usecase";
@@ -39,20 +39,20 @@ import { UpdateReconversionProjectUseCase } from "src/reconversion-projects/core
 class CreateReconversionProjectBodyDto extends createZodDto(saveReconversionProjectPropsSchema) {}
 class UpdateReconversionProjectBodyDto extends createZodDto(updateReconversionProjectPropsSchema) {}
 
-class GenerateExpressReconversionProjectQueryDto extends createZodDto(
+class GenerateReconversionProjectFromTemplateQueryDto extends createZodDto(
   z.object({
     siteId: z.string(),
     createdBy: z.string(),
-    category: projectGenerationCategorySchema,
+    template: reconversionProjectTemplateSchema,
   }),
 ) {}
 
-class GenerateAndSaveExpressReconversionProjectBodyDto extends createZodDto(
+class GenerateAndSaveReconversionProjectFromTemplateBodyDto extends createZodDto(
   z.object({
     reconversionProjectId: z.string(),
     siteId: z.string(),
     createdBy: z.string(),
-    category: projectGenerationCategorySchema,
+    template: reconversionProjectTemplateSchema,
   }),
 ) {}
 
@@ -84,8 +84,8 @@ export class ReconversionProjectController {
     private readonly getReconversionProjectUseCase: GetReconversionProjectUseCase,
     private readonly getReconversionProjectsBySite: GetUserReconversionProjectsBySiteUseCase,
     private readonly getReconversionProjectImpactsUseCase: ComputeReconversionProjectImpactsUseCase,
-    private readonly generateExpressReconversionProjectUseCase: GenerateExpressReconversionProjectUseCase,
-    private readonly generateAndSaveExpressReconversionProjectUseCase: GenerateAndSaveExpressReconversionProjectUseCase,
+    private readonly generateReconversionProjectFromTemplateUseCase: GenerateReconversionProjectFromTemplateUseCase,
+    private readonly generateAndSaveReconversionProjectFromTemplateUseCase: GenerateAndSaveReconversionProjectFromTemplateUseCase,
     private readonly getReconversionProjectFeaturesUseCase: GetReconversionProjectFeaturesUseCase,
     private readonly quickComputeUrbanProjectImpactsOnFricheUseCase: QuickComputeUrbanProjectImpactsOnFricheUseCase,
     private readonly getProjectUrbanSprawlImpactsComparisonUseCase: ComputeProjectUrbanSprawlImpactsComparisonUseCase,
@@ -131,12 +131,12 @@ export class ReconversionProjectController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get("create-from-site")
-  async getExpressReconversionProject(
-    @Query() getExpressReconversionProjectDto: GenerateExpressReconversionProjectQueryDto,
+  @Get("create-from-template")
+  async getReconversionProjectFromTemplate(
+    @Query() getReconversionProjectFromTemplateDto: GenerateReconversionProjectFromTemplateQueryDto,
   ): Promise<ReconversionProjectFeaturesView> {
-    const result = await this.generateExpressReconversionProjectUseCase.execute(
-      getExpressReconversionProjectDto,
+    const result = await this.generateReconversionProjectFromTemplateUseCase.execute(
+      getReconversionProjectFromTemplateDto,
     );
 
     if (result.isFailure()) {
@@ -150,11 +150,11 @@ export class ReconversionProjectController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post("create-from-site")
-  async createExpressReconversionProject(
-    @Body() createReconversionProjectDto: GenerateAndSaveExpressReconversionProjectBodyDto,
+  @Post("create-from-template")
+  async createReconversionProjectFromTemplate(
+    @Body() createReconversionProjectDto: GenerateAndSaveReconversionProjectFromTemplateBodyDto,
   ) {
-    const result = await this.generateAndSaveExpressReconversionProjectUseCase.execute(
+    const result = await this.generateAndSaveReconversionProjectFromTemplateUseCase.execute(
       createReconversionProjectDto,
     );
 

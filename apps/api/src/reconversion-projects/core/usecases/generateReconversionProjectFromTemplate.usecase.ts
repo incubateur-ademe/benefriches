@@ -10,7 +10,7 @@ import {
   ManufacturingProjectGenerator,
   TourismAndCultureProjectGenerator,
   OfficesProjectGenerator,
-  ProjectGenerationCategory,
+  ReconversionProjectTemplate,
   RenaturationProjectGenerator,
 } from "shared";
 import { v4 as uuid } from "uuid";
@@ -47,17 +47,20 @@ interface UserQuery {
 
 type Request = {
   siteId: string;
-  category?: ProjectGenerationCategory;
+  template?: ReconversionProjectTemplate;
   createdBy: string;
   reconversionProjectId?: string;
 };
 
-type GenerateExpressReconversionProjectResult = TResult<ReconversionProjectSaveDto, "SiteNotFound">;
+type GenerateReconversionProjectFromTemplateResult = TResult<
+  ReconversionProjectSaveDto,
+  "SiteNotFound"
+>;
 
 const getCreationServiceClass = (
-  category: Exclude<ProjectGenerationCategory, "PHOTOVOLTAIC_POWER_PLANT"> | undefined,
+  template: Exclude<ReconversionProjectTemplate, "PHOTOVOLTAIC_POWER_PLANT"> | undefined,
 ) => {
-  switch (category) {
+  switch (template) {
     case "NEW_URBAN_CENTER":
       return NewUrbanCenterProjectGenerator;
     case "RESIDENTIAL_TENSE_AREA":
@@ -79,8 +82,8 @@ const getCreationServiceClass = (
   }
 };
 
-export class GenerateExpressReconversionProjectUseCase
-  implements UseCase<Request, GenerateExpressReconversionProjectResult>
+export class GenerateReconversionProjectFromTemplateUseCase
+  implements UseCase<Request, GenerateReconversionProjectFromTemplateResult>
 {
   constructor(
     private readonly dateProvider: DateProvider,
@@ -89,7 +92,7 @@ export class GenerateExpressReconversionProjectUseCase
     private readonly userQuery: UserQuery,
   ) {}
 
-  async execute(props: Request): Promise<GenerateExpressReconversionProjectResult> {
+  async execute(props: Request): Promise<GenerateReconversionProjectFromTemplateResult> {
     const siteData = await this.siteQuery.getById(props.siteId);
     if (!siteData) {
       return fail("SiteNotFound");
@@ -97,7 +100,7 @@ export class GenerateExpressReconversionProjectUseCase
 
     const projectId = props.reconversionProjectId ?? uuid();
 
-    if (props.category === "PHOTOVOLTAIC_POWER_PLANT") {
+    if (props.template === "PHOTOVOLTAIC_POWER_PLANT") {
       const userData = await this.userQuery.getById(props.createdBy);
       const creationService = new PhotovoltaicPowerPlantProjectGenerator({
         dateProvider: this.dateProvider,
@@ -116,7 +119,7 @@ export class GenerateExpressReconversionProjectUseCase
       return success(await creationService.getReconversionProject());
     }
 
-    const UrbanProjectGeneratorClass = getCreationServiceClass(props.category);
+    const UrbanProjectGeneratorClass = getCreationServiceClass(props.template);
 
     const creationService = new UrbanProjectGeneratorClass(
       this.dateProvider,

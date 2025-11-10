@@ -14,7 +14,7 @@ export const expressUrbanProjectSaved = createAppAsyncThunk(
     const expressProjectPayload = await saveExpressProjectSchema.parseAsync({
       reconversionProjectId: projectCreation.projectId,
       siteId: projectCreation.siteData?.id,
-      category:
+      template:
         projectCreation.urbanProject.steps.URBAN_PROJECT_EXPRESS_CATEGORY_SELECTION?.payload
           ?.expressCategory,
       createdBy: currentUser.currentUser?.id,
@@ -26,7 +26,7 @@ export const expressUrbanProjectSaved = createAppAsyncThunk(
 
 export const expressUrbanProjectCreated = createAppAsyncThunk<
   ExpressReconversionProjectResult,
-  ExpressReconversionProjectPayload["category"]
+  ExpressReconversionProjectPayload["template"]
 >(
   makeUrbanProjectCreationActionType("expressUrbanProjectCreated"),
   async (expressCategory, { getState, extra }) => {
@@ -34,7 +34,7 @@ export const expressUrbanProjectCreated = createAppAsyncThunk<
     const expressProjectPayload = await saveExpressProjectSchema.parseAsync({
       reconversionProjectId: projectCreation.projectId,
       siteId: projectCreation.siteData?.id,
-      category: expressCategory,
+      template: expressCategory,
       createdBy: currentUser.currentUser?.id,
     });
 

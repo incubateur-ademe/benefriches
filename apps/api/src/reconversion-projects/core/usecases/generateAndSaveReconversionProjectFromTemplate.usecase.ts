@@ -1,11 +1,11 @@
-import { ProjectGenerationCategory } from "shared";
+import { ReconversionProjectTemplate } from "shared";
 
 import { TResult, fail, success } from "src/shared-kernel/result";
 import { UseCase } from "src/shared-kernel/usecase";
 
 import { ReconversionProjectSaveDto } from "../model/reconversionProject";
 
-interface GenerateExpressReconversionProjectUseCase {
+interface GenerateReconversionProjectFromTemplateUseCase {
   execute(id: Request): Promise<TResult<ReconversionProjectSaveDto, "SiteNotFound">>;
 }
 
@@ -17,21 +17,21 @@ type Request = {
   reconversionProjectId: string;
   siteId: string;
   createdBy: string;
-  category?: ProjectGenerationCategory;
+  template?: ReconversionProjectTemplate;
 };
 
-type GenerateAndSaveExpressReconversionProjectResult = TResult<void, "SiteNotFound">;
+type GenerateAndSaveReconversionProjectFromTemplateResult = TResult<void, "SiteNotFound">;
 
-export class GenerateAndSaveExpressReconversionProjectUseCase
-  implements UseCase<Request, GenerateAndSaveExpressReconversionProjectResult>
+export class GenerateAndSaveReconversionProjectFromTemplateUseCase
+  implements UseCase<Request, GenerateAndSaveReconversionProjectFromTemplateResult>
 {
   constructor(
-    private readonly generateExpressReconversionProjectUseCase: GenerateExpressReconversionProjectUseCase,
+    private readonly generateReconversionProjectFromTemplateUseCase: GenerateReconversionProjectFromTemplateUseCase,
     private readonly reconversionProjectRepository: ReconversionProjectRepository,
   ) {}
 
-  async execute(props: Request): Promise<GenerateAndSaveExpressReconversionProjectResult> {
-    const result = await this.generateExpressReconversionProjectUseCase.execute(props);
+  async execute(props: Request): Promise<GenerateAndSaveReconversionProjectFromTemplateResult> {
+    const result = await this.generateReconversionProjectFromTemplateUseCase.execute(props);
 
     if (result.isFailure()) {
       return fail(result.getError());

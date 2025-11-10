@@ -13,7 +13,7 @@ export const expressPhotovoltaicProjectSaved = createAppAsyncThunk(
     const expressProjectPayload = await saveExpressProjectSchema.parseAsync({
       reconversionProjectId: projectCreation.projectId,
       siteId: projectCreation.siteData?.id,
-      category: "PHOTOVOLTAIC_POWER_PLANT",
+      template: "PHOTOVOLTAIC_POWER_PLANT",
       createdBy: currentUser.currentUser?.id,
     });
 
@@ -33,7 +33,7 @@ export const expressPhotovoltaicProjectCreated =
 
       return extra.createExpressReconversionProjectService.get({
         siteId: projectCreation.siteData.id,
-        category: "PHOTOVOLTAIC_POWER_PLANT",
+        template: "PHOTOVOLTAIC_POWER_PLANT",
         createdBy: currentUser.currentUser.id,
       });
     },

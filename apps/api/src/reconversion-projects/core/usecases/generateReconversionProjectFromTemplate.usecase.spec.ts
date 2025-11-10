@@ -1,7 +1,7 @@
 import {
   BuildingsUseDistribution,
-  ProjectGenerationCategory,
-  projectGenerationCategorySchema,
+  ReconversionProjectTemplate,
+  reconversionProjectTemplateSchema,
   getProjectSoilDistributionByType,
   sumListWithKey,
   sumObjectValues,
@@ -19,15 +19,13 @@ import { InMemoryUserQuery } from "src/users/adapters/secondary/user-query/InMem
 
 import { ReconversionProjectSaveDto } from "../model/reconversionProject";
 import { UrbanProjectFeatures } from "../model/urbanProjects";
-import { GenerateExpressReconversionProjectUseCase } from "./generateExpressReconversionProject.usecase";
+import { GenerateReconversionProjectFromTemplateUseCase } from "./generateReconversionProjectFromTemplate.usecase";
 
-const EXPRESS_CATEGORIES = projectGenerationCategorySchema.options;
-
-const EXPRESS_URBAN_PROJECT_CATEGORIES = projectGenerationCategorySchema.exclude([
+const URBAN_PROJECT_TEMPLATES = reconversionProjectTemplateSchema.exclude([
   "PHOTOVOLTAIC_POWER_PLANT",
 ]).options;
 
-describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
+describe("GenerateAndSaveReconversionProjectFromTemplateUseCase Use Case", () => {
   let dateProvider: DateProvider;
   let sitesQuery: InMemorySitesQuery;
   let photovoltaicPerformanceService: PhotovoltaicDataProvider;
@@ -42,10 +40,10 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
   });
 
   describe("Error cases", () => {
-    test.each(EXPRESS_CATEGORIES)(
-      "cannot create an express %s reconversion project with a non-existing site",
-      async (expressCategory) => {
-        const usecase = new GenerateExpressReconversionProjectUseCase(
+    test.each(reconversionProjectTemplateSchema.options)(
+      "cannot create a template %s reconversion project with a non-existing site",
+      async (template) => {
+        const usecase = new GenerateReconversionProjectFromTemplateUseCase(
           dateProvider,
           sitesQuery,
           photovoltaicPerformanceService,
@@ -56,7 +54,7 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
         const result = await usecase.execute({
           siteId,
           createdBy: uuid(),
-          category: expressCategory,
+          template: template,
         });
 
         expect(result.isFailure()).toBe(true);
@@ -101,10 +99,10 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
       sitesQuery._setSites([site]);
     });
 
-    test.each(EXPRESS_CATEGORIES)(
+    test.each(reconversionProjectTemplateSchema.options)(
       "should create a %s project with default name, given related site id, createdBy, createdAt and creationMode",
-      async (expressCategory) => {
-        const usecase = new GenerateExpressReconversionProjectUseCase(
+      async (template) => {
+        const usecase = new GenerateReconversionProjectFromTemplateUseCase(
           dateProvider,
           sitesQuery,
           photovoltaicPerformanceService,
@@ -115,10 +113,10 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
         const result = await usecase.execute({
           siteId: site.id,
           createdBy: creatorId,
-          category: expressCategory,
+          template: template,
         });
 
-        const expressCategoryNameMap: Record<ProjectGenerationCategory, string> = {
+        const templateNameMap: Record<ReconversionProjectTemplate, string> = {
           NEW_URBAN_CENTER: "Centralité urbaine",
           PUBLIC_FACILITIES: "Équipement public",
           RESIDENTIAL_TENSE_AREA: "Résidentiel secteur tendu",
@@ -130,7 +128,7 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
           TOURISM_AND_CULTURAL_FACILITIES: "Centre culturel",
         };
 
-        const expectedName = expressCategoryNameMap[expressCategory];
+        const expectedName = templateNameMap[template];
 
         expect(result.isSuccess()).toBe(true);
         const data = (result as SuccessResult<ReconversionProjectSaveDto>).getData();
@@ -142,12 +140,12 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
       },
     );
 
-    test.each(EXPRESS_CATEGORIES)(
+    test.each(reconversionProjectTemplateSchema.options)(
       "should create a %s project with reinstatement scheduled 1 year after current date, installation works 1 year after reinstatement and first operations 1 year after",
-      async (expressCategory) => {
+      async (template) => {
         dateProvider = new DeterministicDateProvider(new Date("2024-09-01T13:00:00"));
 
-        const usecase = new GenerateExpressReconversionProjectUseCase(
+        const usecase = new GenerateReconversionProjectFromTemplateUseCase(
           dateProvider,
           sitesQuery,
           photovoltaicPerformanceService,
@@ -158,7 +156,7 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
         const result = await usecase.execute({
           siteId: site.id,
           createdBy: creatorId,
-          category: expressCategory,
+          template: template,
         });
 
         expect(result.isSuccess()).toBe(true);
@@ -176,10 +174,10 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
     );
 
     describe("Urban projects", () => {
-      test.each(EXPRESS_URBAN_PROJECT_CATEGORIES)(
+      test.each(URBAN_PROJECT_TEMPLATES)(
         "should create a %s project with site city as developer, reinstatement contract owner and no site owner",
-        async (expressCategory) => {
-          const usecase = new GenerateExpressReconversionProjectUseCase(
+        async (template) => {
+          const usecase = new GenerateReconversionProjectFromTemplateUseCase(
             dateProvider,
             sitesQuery,
             photovoltaicPerformanceService,
@@ -190,7 +188,7 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
           const result = await usecase.execute({
             siteId: site.id,
             createdBy: creatorId,
-            category: expressCategory,
+            template: template,
           });
 
           expect(result.isSuccess()).toBe(true);
@@ -206,10 +204,10 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
           });
         },
       );
-      test.each(EXPRESS_URBAN_PROJECT_CATEGORIES)(
+      test.each(URBAN_PROJECT_TEMPLATES)(
         "should create a %s project with expected sale after development relative to buildings floor surface area",
-        async (expressCategory) => {
-          const usecase = new GenerateExpressReconversionProjectUseCase(
+        async (template) => {
+          const usecase = new GenerateReconversionProjectFromTemplateUseCase(
             dateProvider,
             sitesQuery,
             photovoltaicPerformanceService,
@@ -220,12 +218,12 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
           const result = await usecase.execute({
             siteId: site.id,
             createdBy: creatorId,
-            category: expressCategory,
+            template: template,
           });
 
           let expectedResalePrice;
 
-          switch (expressCategory) {
+          switch (template) {
             case "RESIDENTIAL_TENSE_AREA":
               expectedResalePrice = 2_772_500;
               break;
@@ -260,10 +258,10 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
         },
       );
 
-      test.each(EXPRESS_URBAN_PROJECT_CATEGORIES)(
+      test.each(URBAN_PROJECT_TEMPLATES)(
         "should create a %s project with right spaces, buildings floor area and soils distribution",
-        async (expressCategory) => {
-          const usecase = new GenerateExpressReconversionProjectUseCase(
+        async (template) => {
+          const usecase = new GenerateReconversionProjectFromTemplateUseCase(
             dateProvider,
             sitesQuery,
             photovoltaicPerformanceService,
@@ -274,13 +272,13 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
           const result = await usecase.execute({
             siteId: site.id,
             createdBy: creatorId,
-            category: expressCategory,
+            template: template,
           });
 
           let expectedBuildingsFloorAreaDistribution: BuildingsUseDistribution = {};
           let expectedSpacesDistribution;
 
-          if (expressCategory === "RESIDENTIAL_TENSE_AREA") {
+          if (template === "RESIDENTIAL_TENSE_AREA") {
             expectedSpacesDistribution = {
               BUILDINGS_FOOTPRINT: 4200,
               PRIVATE_PAVED_ALLEY_OR_PARKING_LOT: 350,
@@ -298,7 +296,7 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
               OFFICES: 500,
               LOCAL_SERVICES: 600,
             };
-          } else if (expressCategory === "NEW_URBAN_CENTER") {
+          } else if (template === "NEW_URBAN_CENTER") {
             expectedSpacesDistribution = {
               BUILDINGS_FOOTPRINT: 2925,
               PRIVATE_PAVED_ALLEY_OR_PARKING_LOT: 325,
@@ -318,7 +316,7 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
               ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES: 160,
               PUBLIC_FACILITIES: 160,
             };
-          } else if (expressCategory === "PUBLIC_FACILITIES") {
+          } else if (template === "PUBLIC_FACILITIES") {
             expectedSpacesDistribution = {
               BUILDINGS_FOOTPRINT: 4100,
               PUBLIC_GREEN_SPACES: 3800,
@@ -328,7 +326,7 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
             expectedBuildingsFloorAreaDistribution = {
               PUBLIC_FACILITIES: 4100,
             };
-          } else if (expressCategory === "OFFICES") {
+          } else if (template === "OFFICES") {
             expectedSpacesDistribution = {
               BUILDINGS_FOOTPRINT: 8_000,
               PRIVATE_PAVED_ALLEY_OR_PARKING_LOT: 500,
@@ -338,7 +336,7 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
             expectedBuildingsFloorAreaDistribution = {
               OFFICES: 24_000,
             };
-          } else if (expressCategory === "TOURISM_AND_CULTURAL_FACILITIES") {
+          } else if (template === "TOURISM_AND_CULTURAL_FACILITIES") {
             expectedSpacesDistribution = {
               BUILDINGS_FOOTPRINT: 6_000,
               PRIVATE_PAVED_ALLEY_OR_PARKING_LOT: 2_000,
@@ -347,7 +345,7 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
             expectedBuildingsFloorAreaDistribution = {
               CULTURAL_PLACE: 6_000,
             };
-          } else if (expressCategory === "INDUSTRIAL_FACILITIES") {
+          } else if (template === "INDUSTRIAL_FACILITIES") {
             expectedSpacesDistribution = {
               BUILDINGS_FOOTPRINT: 6_000,
               PRIVATE_PAVED_ALLEY_OR_PARKING_LOT: 3_000,
@@ -356,7 +354,7 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
             expectedBuildingsFloorAreaDistribution = {
               ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES: 6_000,
             };
-          } else if (expressCategory === "RENATURATION") {
+          } else if (template === "RENATURATION") {
             expectedSpacesDistribution = {
               PUBLIC_GREEN_SPACES: site.surfaceArea,
             };
@@ -432,7 +430,7 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
             },
           },
         ]);
-        const usecase = new GenerateExpressReconversionProjectUseCase(
+        const usecase = new GenerateReconversionProjectFromTemplateUseCase(
           dateProvider,
           sitesQuery,
           photovoltaicPerformanceService,
@@ -442,7 +440,7 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
         const result = await usecase.execute({
           siteId: site.id,
           createdBy: creatorId,
-          category: "PHOTOVOLTAIC_POWER_PLANT",
+          template: "PHOTOVOLTAIC_POWER_PLANT",
         });
 
         expect(result.isSuccess()).toBe(true);
@@ -473,7 +471,7 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
             },
           },
         ]);
-        const usecase = new GenerateExpressReconversionProjectUseCase(
+        const usecase = new GenerateReconversionProjectFromTemplateUseCase(
           dateProvider,
           sitesQuery,
           photovoltaicPerformanceService,
@@ -483,7 +481,7 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
         const result = await usecase.execute({
           siteId: site.id,
           createdBy: creatorId,
-          category: "PHOTOVOLTAIC_POWER_PLANT",
+          template: "PHOTOVOLTAIC_POWER_PLANT",
         });
 
         expect(result.isSuccess()).toBe(true);
@@ -503,7 +501,7 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
         });
       });
       it("should create a PHOTOVOLTAIC_POWER_PLANT project with site owner as developer, reinstatement contract owner and site operator", async () => {
-        const usecase = new GenerateExpressReconversionProjectUseCase(
+        const usecase = new GenerateReconversionProjectFromTemplateUseCase(
           dateProvider,
           sitesQuery,
           photovoltaicPerformanceService,
@@ -514,7 +512,7 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
         const result = await usecase.execute({
           siteId: site.id,
           createdBy: creatorId,
-          category: "PHOTOVOLTAIC_POWER_PLANT",
+          template: "PHOTOVOLTAIC_POWER_PLANT",
         });
 
         expect(result.isSuccess()).toBe(true);
@@ -547,7 +545,7 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
       it("should create a RESIDENTIAL_NORMAL_AREA with reinstatement costs, real estate sale transaction and development installation costs", async () => {
         sitesQuery._setSites([nonPollutedFricheWithNoBuildings]);
 
-        const usecase = new GenerateExpressReconversionProjectUseCase(
+        const usecase = new GenerateReconversionProjectFromTemplateUseCase(
           dateProvider,
           sitesQuery,
           photovoltaicPerformanceService,
@@ -558,7 +556,7 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
         const result = await usecase.execute({
           siteId: nonPollutedFricheWithNoBuildings.id,
           createdBy: creatorId,
-          category: "RESIDENTIAL_NORMAL_AREA",
+          template: "RESIDENTIAL_NORMAL_AREA",
         });
 
         expect(result.isSuccess()).toBe(true);
@@ -596,7 +594,7 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
       it("should create a RESIDENTIAL_NORMAL_AREA should create a %s with reinstatement costs, real estate sale transaction and development installation costs based on site data", async () => {
         sitesQuery._setSites([pollutedFricheWithBuildings]);
 
-        const usecase = new GenerateExpressReconversionProjectUseCase(
+        const usecase = new GenerateReconversionProjectFromTemplateUseCase(
           dateProvider,
           sitesQuery,
           photovoltaicPerformanceService,
@@ -607,7 +605,7 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
         const result = await usecase.execute({
           siteId: pollutedFricheWithBuildings.id,
           createdBy: creatorId,
-          category: "RESIDENTIAL_NORMAL_AREA",
+          template: "RESIDENTIAL_NORMAL_AREA",
         });
 
         expect(result.isSuccess()).toBe(true);
@@ -650,7 +648,7 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
       it("should create a RESIDENTIAL_NORMAL_AREA with deimpermeabilization and sustainable soils reinstatement expenses", async () => {
         sitesQuery._setSites([allImpermeableFriche]);
 
-        const usecase = new GenerateExpressReconversionProjectUseCase(
+        const usecase = new GenerateReconversionProjectFromTemplateUseCase(
           dateProvider,
           sitesQuery,
           photovoltaicPerformanceService,
@@ -661,7 +659,7 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
         const result = await usecase.execute({
           siteId: allImpermeableFriche.id,
           createdBy: creatorId,
-          category: "RESIDENTIAL_NORMAL_AREA",
+          template: "RESIDENTIAL_NORMAL_AREA",
         });
 
         expect(result.isSuccess()).toBe(true);
@@ -715,11 +713,11 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
       },
     } as const satisfies SiteViewModel;
     describe("with site purchase", () => {
-      test.each(EXPRESS_URBAN_PROJECT_CATEGORIES)(
+      test.each(URBAN_PROJECT_TEMPLATES)(
         "should create a %s with real estate sale transaction and development installation costs based on site",
-        async (expressCategory) => {
+        async (template) => {
           sitesQuery._setSites([site]);
-          const usecase = new GenerateExpressReconversionProjectUseCase(
+          const usecase = new GenerateReconversionProjectFromTemplateUseCase(
             dateProvider,
             sitesQuery,
             photovoltaicPerformanceService,
@@ -730,7 +728,7 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
           const result = await usecase.execute({
             siteId: site.id,
             createdBy: creatorId,
-            category: expressCategory,
+            template: template,
           });
 
           expect(result.isSuccess()).toBe(true);
@@ -755,15 +753,15 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
     });
 
     describe("without site purchase", () => {
-      test.each(EXPRESS_URBAN_PROJECT_CATEGORIES)(
+      test.each(URBAN_PROJECT_TEMPLATES)(
         "should create a %s without real estate sale transaction and future site owner",
-        async (expressCategory) => {
+        async (template) => {
           const siteOwner = {
             name: "Mairie de Montrouge",
             structureType: "municipality",
           };
           sitesQuery._setSites([{ ...site, owner: siteOwner }]);
-          const usecase = new GenerateExpressReconversionProjectUseCase(
+          const usecase = new GenerateReconversionProjectFromTemplateUseCase(
             dateProvider,
             sitesQuery,
             photovoltaicPerformanceService,
@@ -774,7 +772,7 @@ describe("GenerateAndSaveExpressReconversionProjectUseCase Use Case", () => {
           const result = await usecase.execute({
             siteId: site.id,
             createdBy: creatorId,
-            category: expressCategory,
+            template: template,
           });
 
           expect(result.isSuccess()).toBe(true);

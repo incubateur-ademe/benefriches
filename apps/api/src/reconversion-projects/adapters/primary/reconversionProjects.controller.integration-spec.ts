@@ -1,7 +1,7 @@
 /* oxlint-disable typescript/no-non-null-assertion */
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { Knex } from "knex";
-import { projectGenerationCategorySchema, saveReconversionProjectPropsSchema } from "shared";
+import { reconversionProjectTemplateSchema, saveReconversionProjectPropsSchema } from "shared";
 import supertest from "supertest";
 import { authenticateUser, createTestApp } from "test/testApp";
 import { v4 as uuid } from "uuid";
@@ -131,7 +131,7 @@ describe("ReconversionProjects controller", () => {
     });
   });
 
-  describe("GET /create-from-site", () => {
+  describe("GET /create-from-template", () => {
     const siteId = "f590f643-cd9a-4187-8973-f90e9f1998c8";
 
     beforeEach(async () => {
@@ -162,18 +162,18 @@ describe("ReconversionProjects controller", () => {
 
     it("responds with a 401 when no access token is provided", async () => {
       const response = await supertest(app.getHttpServer())
-        .post("/api/reconversion-projects/create-from-site")
+        .post("/api/reconversion-projects/create-from-template")
         .send({
           reconversionProjectId: "64789135-afad-46ea-97a2-f14ba460d485",
           createdBy: "612d16c7-b6e4-4e2c-88a8-0512cc51946c",
           siteId: siteId,
-          category: "PUBLIC_FACILITIES",
+          template: "PUBLIC_FACILITIES",
         });
 
       expect(response.status).toEqual(401);
     });
 
-    it("can't generate a reconversion project without category", async () => {
+    it("can't generate a reconversion project without template", async () => {
       const requestBody = {
         reconversionProjectId: "64789135-afad-46ea-97a2-f14ba460d485",
         createdBy: "612d16c7-b6e4-4e2c-88a8-0512cc51946c",
@@ -183,7 +183,7 @@ describe("ReconversionProjects controller", () => {
       const { accessToken } = await authenticateUser(app)(user);
 
       const response = await supertest(app.getHttpServer())
-        .post("/api/reconversion-projects/create-from-site")
+        .post("/api/reconversion-projects/create-from-template")
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send(requestBody);
 
@@ -192,19 +192,19 @@ describe("ReconversionProjects controller", () => {
 
       const responseErrors = (response.body as BadRequestResponseBody).errors;
       expect(responseErrors).toHaveLength(1);
-      expect(responseErrors[0]?.path).toContain("category");
+      expect(responseErrors[0]?.path).toContain("template");
     });
 
-    it.each(projectGenerationCategorySchema.options)(
-      "get a 201 response and reconversion project is returned with category %s",
-      async (category) => {
+    it.each(reconversionProjectTemplateSchema.options)(
+      "get a 201 response and reconversion project is returned with template %s",
+      async (template) => {
         const createdBy = "612d16c7-b6e4-4e2c-88a8-0512cc51946c";
         const user = new UserBuilder().withId(createdBy).asLocalAuthority().build();
         const { accessToken } = await authenticateUser(app)(user);
 
         const response = await supertest(app.getHttpServer())
           .get(
-            `/api/reconversion-projects/create-from-site?category=${category}&siteId=${siteId}&createdBy=${createdBy}`,
+            `/api/reconversion-projects/create-from-template?template=${template}&siteId=${siteId}&createdBy=${createdBy}`,
           )
           .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
           .send();
@@ -216,7 +216,7 @@ describe("ReconversionProjects controller", () => {
     );
   });
 
-  describe("POST /create-from-site", () => {
+  describe("POST /create-from-template", () => {
     const siteId = "f590f643-cd9a-4187-8973-f90e9f1998c8";
 
     beforeEach(async () => {
@@ -247,18 +247,18 @@ describe("ReconversionProjects controller", () => {
 
     it("responds with a 401 when no access token is provided", async () => {
       const response = await supertest(app.getHttpServer())
-        .post("/api/reconversion-projects/create-from-site")
+        .post("/api/reconversion-projects/create-from-template")
         .send({
           reconversionProjectId: "64789135-afad-46ea-97a2-f14ba460d485",
           createdBy: "612d16c7-b6e4-4e2c-88a8-0512cc51946c",
           siteId: siteId,
-          category: "PUBLIC_FACILITIES",
+          template: "PUBLIC_FACILITIES",
         });
 
       expect(response.status).toEqual(401);
     });
 
-    it("can't create a reconversion project without category", async () => {
+    it("can't create a reconversion project without template", async () => {
       const requestBody = {
         reconversionProjectId: "64789135-afad-46ea-97a2-f14ba460d485",
         createdBy: "612d16c7-b6e4-4e2c-88a8-0512cc51946c",
@@ -268,7 +268,7 @@ describe("ReconversionProjects controller", () => {
       const { accessToken } = await authenticateUser(app)(user);
 
       const response = await supertest(app.getHttpServer())
-        .post("/api/reconversion-projects/create-from-site")
+        .post("/api/reconversion-projects/create-from-template")
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send(requestBody);
 
@@ -277,23 +277,23 @@ describe("ReconversionProjects controller", () => {
 
       const responseErrors = (response.body as BadRequestResponseBody).errors;
       expect(responseErrors).toHaveLength(1);
-      expect(responseErrors[0]?.path).toContain("category");
+      expect(responseErrors[0]?.path).toContain("template");
     });
 
-    it.each(projectGenerationCategorySchema.options)(
-      "get a 201 response and reconversion project is created with category %s",
-      async (category) => {
+    it.each(reconversionProjectTemplateSchema.options)(
+      "get a 201 response and reconversion project is created with template %s",
+      async (template) => {
         const requestBody = {
           reconversionProjectId: "64789135-afad-46ea-97a2-f14ba460d485",
           createdBy: "612d16c7-b6e4-4e2c-88a8-0512cc51946c",
           siteId: siteId,
-          category,
+          template,
         };
         const user = new UserBuilder().withId(requestBody.createdBy).asLocalAuthority().build();
         const { accessToken } = await authenticateUser(app)(user);
 
         const response = await supertest(app.getHttpServer())
-          .post("/api/reconversion-projects/create-from-site")
+          .post("/api/reconversion-projects/create-from-template")
           .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
           .send(requestBody);
         expect(response.status).toEqual(201);
