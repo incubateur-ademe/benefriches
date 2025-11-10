@@ -79,6 +79,7 @@
     {
       "files": ["*.spec.{ts,tsx}"],
       "rules": {
+        "typescript/no-unsafe-assignment": "off",
         "vitest/expect-expect": "error",
         "vitest/no-identical-title": "error",
         "vitest/no-commented-out-tests": "error",

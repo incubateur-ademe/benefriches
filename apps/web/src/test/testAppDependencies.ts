@@ -5,7 +5,7 @@ import {
   MOCK_RESULT,
 } from "@/features/create-project/infrastructure/photovoltaic-performance-service/photovoltaicPerformanceMock";
 import { InMemorySaveReconversionProjectService } from "@/features/create-project/infrastructure/save-project-service/InMemorySaveReconversionProjectService";
-import { SitesServiceMock } from "@/features/create-project/infrastructure/sites-service/SitesServiceMock";
+import { InMemorySitesService } from "@/features/create-project/infrastructure/sites-service/InMemorySitesService";
 import { InMemoryCreateSiteService } from "@/features/create-site/infrastructure/create-site-service/inMemoryCreateSiteApi";
 import FakeAuthService from "@/features/onboarding/infrastructure/auth-service/FakeAuthService";
 import { InMemoryCreateUserService } from "@/features/onboarding/infrastructure/create-user-service/inMemoryCreateUserService";
@@ -37,7 +37,7 @@ export const getTestAppDependencies = (
     reconversionProjectsListService: new InMemoryReconversionProjectsListService([]),
     reconversionProjectImpacts: new MockReconversionProjectImpactsApi(),
     saveReconversionProjectService: new InMemorySaveReconversionProjectService(),
-    getSiteByIdService: new SitesServiceMock(),
+    getSiteByIdService: new InMemorySitesService(),
     photovoltaicPerformanceService: new ExpectedPhotovoltaicPerformanceMock(MOCK_RESULT),
     municipalityDataService: new AdministrativeDivisionMock({
       localAuthorities: {
