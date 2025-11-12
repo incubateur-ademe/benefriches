@@ -6,7 +6,7 @@ import { MutabilityUsage } from "./reconversionCompatibilityEvaluation.reducer";
 
 const selectSelf = (state: RootState) => state.reconversionCompatibilityEvaluation;
 
-type ReconversionCompatibilityEvaluationViewData = {
+export type ReconversionCompatibilityEvaluationViewData = {
   evaluationResults:
     | {
         top3MutabilityUsages: { usage: MutabilityUsage; score: number; rank: number }[];
@@ -14,7 +14,6 @@ type ReconversionCompatibilityEvaluationViewData = {
       }
     | undefined;
   isAnalysisComplete: boolean;
-  isCreatingProject: boolean;
   evaluationError: string | undefined;
   evaluationResultsLoadingState: "idle" | "loading" | "success" | "error";
   hasError: boolean;
@@ -32,7 +31,6 @@ export const selectReconversionCompatibilityViewData = createSelector(
     evaluationResultsLoadingState: state.evaluationResultsLoadingState,
     evaluationError: state.evaluationError,
     isAnalysisComplete: state.evaluationResults !== undefined,
-    isCreatingProject: state.projectCreationState === "loading",
     hasError: state.evaluationError !== undefined,
   }),
 );

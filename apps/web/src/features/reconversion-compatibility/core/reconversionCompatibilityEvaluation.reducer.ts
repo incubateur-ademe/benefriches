@@ -6,7 +6,6 @@ import {
   reconversionCompatibilityEvaluationReset,
   reconversionCompatibilityEvaluationResultsRequested,
   reconversionCompatibilityEvaluationStarted,
-  reconversionCompatibilityResultImpactsRequested,
 } from "./reconversionCompatibilityEvaluation.actions";
 
 export type MutabilityUsage =
@@ -23,9 +22,6 @@ type ReconversionCompatibilityEvaluationState = {
   evaluationResults: ReconversionCompatibilityEvaluationResults | undefined;
   evaluationError: string | undefined;
   evaluationResultsLoadingState: "idle" | "loading" | "success" | "error";
-  projectCreationState: "idle" | "loading" | "success" | "error";
-  projectCreationStateErrorCode: string | undefined;
-  createdProjectId: string | undefined;
 };
 
 const initialState: ReconversionCompatibilityEvaluationState = {
@@ -33,9 +29,6 @@ const initialState: ReconversionCompatibilityEvaluationState = {
   evaluationResults: undefined,
   evaluationError: undefined,
   evaluationResultsLoadingState: "idle",
-  projectCreationState: "idle",
-  projectCreationStateErrorCode: undefined,
-  createdProjectId: undefined,
 };
 
 export const reconversionCompatibilityEvaluationReducer = createReducer(initialState, (builder) => {
@@ -45,7 +38,6 @@ export const reconversionCompatibilityEvaluationReducer = createReducer(initialS
     })
     .addCase(reconversionCompatibilityEvaluationReset, (state) => {
       state.evaluationError = undefined;
-      state.projectCreationState = "idle";
       state.currentEvaluationId = uuid();
     })
     .addCase(reconversionCompatibilityEvaluationResultsRequested.pending, (state) => {
@@ -62,16 +54,5 @@ export const reconversionCompatibilityEvaluationReducer = createReducer(initialS
       state.evaluationResults = undefined;
       state.evaluationError = action.error.message;
       state.evaluationResultsLoadingState = "error";
-    })
-    .addCase(reconversionCompatibilityResultImpactsRequested.pending, (state) => {
-      state.projectCreationState = "loading";
-    })
-    .addCase(reconversionCompatibilityResultImpactsRequested.fulfilled, (state, action) => {
-      state.projectCreationState = "success";
-      state.createdProjectId = action.payload.projectId;
-    })
-    .addCase(reconversionCompatibilityResultImpactsRequested.rejected, (state, action) => {
-      state.projectCreationState = "error";
-      state.projectCreationStateErrorCode = action.error.message;
     });
 });

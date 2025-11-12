@@ -24,10 +24,13 @@ const UrbanSprawlImpactsComparisonPage = lazy(
   () => import("@/features/projects/views/project-impacts-urban-sprawl-comparison"),
 );
 const EvaluateReconversionCompatibilityPage = lazy(
-  () => import("@/features/reconversion-compatibility/views/EvaluateReconversionCompatibilityPage"),
+  () =>
+    import(
+      "@/features/reconversion-compatibility/views/evaluation/EvaluateReconversionCompatibilityPage"
+    ),
 );
 const ReconversionCompatibilityResultsPage = lazy(
-  () => import("@/features/reconversion-compatibility/views/ReconversionCompatibilityResultsPage"),
+  () => import("@/features/reconversion-compatibility/views/results"),
 );
 const SiteFeaturesPage = lazy(() => import("@/features/site-features/views"));
 const ProjectImpactsOnboardingPage = lazy(

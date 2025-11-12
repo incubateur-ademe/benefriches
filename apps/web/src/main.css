@@ -27,6 +27,8 @@
   --color-text-medium: #949494;
   --color-text-light: #757575;
 
+  --color-background-light: #eeeeee;
+
   --color-blue-france: #000091;
   --color-blue-ultralight: #daf2fb;
   --color-blue-light: #64c7ed;
@@ -42,6 +44,7 @@
   --color-warning: #b34000;
   --color-warning-ultralight: #fff0db;
 
+  --color-error-ultralight: #ffe9e9;
   --color-error-ultradark: #ce0500;
 
   --color-green-main: #32762e;

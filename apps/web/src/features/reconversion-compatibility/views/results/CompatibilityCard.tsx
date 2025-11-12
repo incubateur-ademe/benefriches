@@ -1,8 +1,10 @@
-import Button from "@codegouvfr/react-dsfr/Button";
-
 import classNames from "@/shared/views/clsx";
 
-import { MutabilityUsage } from "../core/reconversionCompatibilityEvaluation.reducer";
+import { MutabilityUsage } from "../../core/reconversionCompatibilityEvaluation.reducer";
+import {
+  getCompatibilityScoreBackgroundColor,
+  getTextForCompatibilityScore,
+} from "../../core/score";
 
 const getUsagePictogramSrc = (usage: MutabilityUsage): string => {
   switch (usage) {
@@ -23,20 +25,6 @@ const getUsagePictogramSrc = (usage: MutabilityUsage): string => {
     default:
       return "";
   }
-};
-
-const getScoreBackgroundColor = (score: number): string => {
-  if (score >= 70) return "bg-success-ultralight";
-  if (score >= 60) return "bg-success-ultralight";
-  if (score >= 45) return "bg-warning-ultralight";
-  return "bg-red-600";
-};
-
-const getScoreLabel = (score: number): string => {
-  if (score >= 70) return "Très favorable";
-  if (score >= 60) return "Favorable";
-  if (score >= 45) return "Correct";
-  return "Défavorable";
 };
 
 const getRankColor = (rank: number): string => {
@@ -68,10 +56,9 @@ type Props = {
   usage: MutabilityUsage;
   score: number;
   rank: number;
-  onDiscoverImpactsClick: () => void;
 };
 
-export default function CompatibilityCard({ usage, score, rank, onDiscoverImpactsClick }: Props) {
+export default function CompatibilityCard({ usage, score, rank }: Props) {
   return (
     <article
       key={usage}
@@ -86,7 +73,7 @@ export default function CompatibilityCard({ usage, score, rank, onDiscoverImpact
       >
         {rank}
       </div>
-      <div className="text-center mb-4">
+      <div className="text-center">
         <div className="mb-4" aria-hidden="true">
           <img src={getUsagePictogramSrc(usage)} width={80} height={80} alt="" />
         </div>
@@ -94,25 +81,16 @@ export default function CompatibilityCard({ usage, score, rank, onDiscoverImpact
 
         <div
           className={classNames(
-            getScoreBackgroundColor(score),
+            getCompatibilityScoreBackgroundColor(score),
             "py-2 px-4 inline mx-auto rounded-lg",
           )}
         >
           <span className="text-lg text-black font-bold">{score.toFixed(0)}%</span>
           <span className="border-l border-black h-full opacity-25 mx-2" />
-          <span className="text-xs text-black font-bold align-middle">{getScoreLabel(score)}</span>
+          <span className="text-xs text-black font-bold align-middle">
+            {getTextForCompatibilityScore(score)}
+          </span>
         </div>
-      </div>
-      <div className="text-center">
-        <Button
-          priority="primary"
-          size="small"
-          onClick={() => {
-            onDiscoverImpactsClick();
-          }}
-        >
-          Découvrir les impacts
-        </Button>
       </div>
     </article>
   );

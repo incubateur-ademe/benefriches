@@ -1,0 +1,83 @@
+import { ReconversionProjectTemplate } from "shared";
+import { v4 as uuid } from "uuid";
+
+import { ProjectSuggestion } from "@/features/create-project/core/project.types";
+import type { ExpressSitePayload } from "@/features/create-site/core/actions/finalStep.actions";
+import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
+import { routes } from "@/shared/views/router";
+
+import { ACTION_PREFIX } from ".";
+import { MutabilityUsage } from "../reconversionCompatibilityEvaluation.reducer";
+
+function mapMutabilityUsageToProjectTypeTemplate(
+  usage: MutabilityUsage,
+): ReconversionProjectTemplate {
+  switch (usage) {
+    case "residentiel":
+      return "RESIDENTIAL_NORMAL_AREA";
+    case "equipements":
+      return "PUBLIC_FACILITIES";
+    case "culture":
+      return "TOURISM_AND_CULTURAL_FACILITIES";
+    case "tertiaire":
+      return "OFFICES";
+    case "industrie":
+      return "INDUSTRIAL_FACILITIES";
+    case "renaturation":
+      return "RENATURATION";
+    case "photovoltaique":
+      return "PHOTOVOLTAIC_POWER_PLANT";
+  }
+}
+
+const actionType = `${ACTION_PREFIX}/fricheSaved`;
+
+export const fricheSavedFromCompatibilityEvaluation = createAppAsyncThunk(
+  actionType,
+  async (_, { extra, getState }) => {
+    const {
+      currentUser: currentUserState,
+      reconversionCompatibilityEvaluation: compatibilityState,
+    } = getState();
+    const { evaluationResults } = compatibilityState;
+
+    if (!currentUserState.currentUser) throw new Error("NO_AUTHENTICATED_USER");
+    if (!evaluationResults) throw new Error("NO_EVALUATION_RESULTS");
+
+    const siteId = uuid();
+    const siteToCreate: ExpressSitePayload = {
+      id: siteId,
+      nature: "FRICHE",
+      fricheActivity: "INDUSTRY",
+      createdBy: currentUserState.currentUser.id,
+      surfaceArea: evaluationResults.evaluationInput.surfaceArea,
+      builtSurfaceArea: evaluationResults.evaluationInput.buildingsFootprintSurfaceArea,
+      address: {
+        city: evaluationResults.evaluationInput.city,
+        cityCode: evaluationResults.evaluationInput.cityCode,
+        value: evaluationResults.evaluationInput.city,
+        long: 0, // TODO: get coordinates from mutafriches response
+        lat: 0,
+        postCode: "50200",
+      },
+    };
+
+    await extra.createSiteService.saveExpress(siteToCreate);
+
+    const projectSuggestions: ProjectSuggestion[] = evaluationResults.top3Usages.map(
+      ({ score, usage }) => ({
+        type: mapMutabilityUsageToProjectTypeTemplate(usage),
+        compatibilityScore: score,
+      }),
+    );
+    routes
+      .siteFeatures({
+        siteId,
+        fromCompatibilityEvaluation: true,
+        projectEvaluationSuggestions: projectSuggestions,
+      })
+      .push();
+
+    return { siteId };
+  },
+);
