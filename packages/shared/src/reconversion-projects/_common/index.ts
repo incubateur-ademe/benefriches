@@ -9,6 +9,6 @@ export * from "./schedule/worksSchedule";
 export {
   type ReconversionProjectTemplate,
   reconversionProjectTemplateSchema,
-} from "./project-generator/projectGenerationCategory";
+} from "./project-generator/projectGenerationTemplates";
 
 export { type ReconversionProjectCreationMode } from "./creationMode";
