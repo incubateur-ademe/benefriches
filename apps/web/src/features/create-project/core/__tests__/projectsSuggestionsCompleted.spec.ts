@@ -80,10 +80,10 @@ describe("Reconversion project suggestions step completed", () => {
       currentStep: "URBAN_PROJECT_EXPRESS_SUMMARY",
       pendingStepCompletion: undefined,
       steps: {
-        URBAN_PROJECT_EXPRESS_CATEGORY_SELECTION: {
+        URBAN_PROJECT_EXPRESS_TEMPLATE_SELECTION: {
           completed: true,
           payload: {
-            expressCategory: "OFFICES",
+            projectTemplate: "OFFICES",
           },
         },
         URBAN_PROJECT_CREATE_MODE_SELECTION: {
@@ -101,7 +101,7 @@ describe("Reconversion project suggestions step completed", () => {
       saveState: "idle",
       stepsSequence: [
         "URBAN_PROJECT_CREATE_MODE_SELECTION",
-        "URBAN_PROJECT_EXPRESS_CATEGORY_SELECTION",
+        "URBAN_PROJECT_EXPRESS_TEMPLATE_SELECTION",
         "URBAN_PROJECT_EXPRESS_SUMMARY",
         "URBAN_PROJECT_EXPRESS_CREATION_RESULT",
       ],

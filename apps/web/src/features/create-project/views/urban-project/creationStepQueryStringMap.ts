@@ -2,7 +2,7 @@ import { UrbanProjectCreationStep } from "@/shared/core/reducers/project-form/ur
 
 export const URBAN_PROJECT_CREATION_STEP_QUERY_STRING_MAP = {
   URBAN_PROJECT_CREATE_MODE_SELECTION: "mode-creation",
-  URBAN_PROJECT_EXPRESS_CATEGORY_SELECTION: "typologie-de-projet-express",
+  URBAN_PROJECT_EXPRESS_TEMPLATE_SELECTION: "typologie-de-projet-express",
   URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION: "espaces-introduction",
   URBAN_PROJECT_SPACES_CATEGORIES_SELECTION: "espaces-selection",
   URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA: "espaces-surfaces",

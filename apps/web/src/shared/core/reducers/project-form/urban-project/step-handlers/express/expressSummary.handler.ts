@@ -4,7 +4,7 @@ export const ExpressSummaryHandler: InfoStepHandler = {
   stepId: "URBAN_PROJECT_EXPRESS_SUMMARY",
 
   getPreviousStepId() {
-    return "URBAN_PROJECT_EXPRESS_CATEGORY_SELECTION";
+    return "URBAN_PROJECT_EXPRESS_TEMPLATE_SELECTION";
   },
 
   getNextStepId() {

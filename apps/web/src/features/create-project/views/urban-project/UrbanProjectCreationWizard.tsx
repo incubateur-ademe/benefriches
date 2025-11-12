@@ -13,7 +13,9 @@ import UrbanProjectCreationStepper from "./UrbanProjectCreationStepper";
 import CreateModeSelectionForm from "./create-mode-selection";
 
 const ProjectExpressSummary = lazy(() => import("./express-forms/summary"));
-const UrbanProjectExpressCategory = lazy(() => import("./express-forms/express-category/"));
+const UrbanProjectExpressTemplateSelection = lazy(
+  () => import("./express-forms/express-template-selection"),
+);
 const UrbanProjectExpressCreationResult = lazy(() => import("./express-forms/creation-result"));
 const AnswerCascadingUpdateDialog = lazy(
   () => import("@/shared/views/project-form/AnswerCascadingUpdateDialog"),
@@ -162,11 +164,11 @@ const getCurrentStepView = (step: UrbanProjectCreationStep): Exclude<ReactNode, 
   switch (step) {
     case "URBAN_PROJECT_CREATE_MODE_SELECTION":
       return <CreateModeSelectionForm />;
-    case "URBAN_PROJECT_EXPRESS_CATEGORY_SELECTION":
+    case "URBAN_PROJECT_EXPRESS_TEMPLATE_SELECTION":
       return (
         <>
           <HtmlTitle>{`Typologie de projet - Projet urbain express - ${HTML_MAIN_TITLE}`}</HtmlTitle>
-          <UrbanProjectExpressCategory />
+          <UrbanProjectExpressTemplateSelection />
         </>
       );
     case "URBAN_PROJECT_EXPRESS_SUMMARY":

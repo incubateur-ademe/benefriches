@@ -3,28 +3,28 @@ import { expressUrbanProjectCreated } from "@/features/create-project/core/urban
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import { useStepBack } from "../useStepBack";
-import UrbanProjectExpressCategory, { FormValues } from "./UrbanProjectExpressCategory";
+import UrbanProjectExpressTemplate, { FormValues } from "./UrbanProjectExpressTemplate";
 
-function UrbanProjectExpressCategoryContainer() {
+function UrbanProjectExpressTemplateContainerSelection() {
   const dispatch = useAppDispatch();
 
   const onSubmit = (formData: FormValues) => {
-    void dispatch(expressUrbanProjectCreated(formData.expressCategory));
+    void dispatch(expressUrbanProjectCreated(formData.projectTemplate));
   };
 
   const onBack = useStepBack();
-  const { expressCategory } =
+  const { projectTemplate } =
     useAppSelector(
-      creationProjectFormSelectors.selectStepAnswers("URBAN_PROJECT_EXPRESS_CATEGORY_SELECTION"),
+      creationProjectFormSelectors.selectStepAnswers("URBAN_PROJECT_EXPRESS_TEMPLATE_SELECTION"),
     ) ?? {};
 
   return (
-    <UrbanProjectExpressCategory
-      initialValues={expressCategory ? { expressCategory } : undefined}
+    <UrbanProjectExpressTemplate
+      initialValues={projectTemplate ? { projectTemplate } : undefined}
       onSubmit={onSubmit}
       onBack={onBack}
     />
   );
 }
 
-export default UrbanProjectExpressCategoryContainer;
+export default UrbanProjectExpressTemplateContainerSelection;

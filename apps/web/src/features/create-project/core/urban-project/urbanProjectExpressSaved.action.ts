@@ -19,8 +19,8 @@ export const expressUrbanProjectSaved = createAppAsyncThunk(
       reconversionProjectId: projectCreation.projectId,
       siteId: projectCreation.siteData?.id,
       template:
-        projectCreation.urbanProject.steps.URBAN_PROJECT_EXPRESS_CATEGORY_SELECTION?.payload
-          ?.expressCategory,
+        projectCreation.urbanProject.steps.URBAN_PROJECT_EXPRESS_TEMPLATE_SELECTION?.payload
+          ?.projectTemplate,
       createdBy: currentUser.currentUser?.id,
     });
 
@@ -38,8 +38,8 @@ export const expressUrbanProjectCreated = createAppAsyncThunk<
 
     void dispatch(
       creationProjectFormUrbanActions.requestStepCompletion({
-        stepId: "URBAN_PROJECT_EXPRESS_CATEGORY_SELECTION",
-        answers: { expressCategory: urbanProjectTemplate },
+        stepId: "URBAN_PROJECT_EXPRESS_TEMPLATE_SELECTION",
+        answers: { projectTemplate: urbanProjectTemplate },
       }),
     );
 

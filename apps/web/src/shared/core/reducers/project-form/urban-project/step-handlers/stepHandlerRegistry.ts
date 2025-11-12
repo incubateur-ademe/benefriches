@@ -10,8 +10,8 @@ import { ExpensesProjectedBuildingsOperatingExpensesHandler } from "./expenses/e
 import { UrbanProjectReinstatementExpensesHandler } from "./expenses/expensesReinstatement.handler";
 import { ExpensesSitePurchaseAmountsHandler } from "./expenses/expensesSitePurchaseAmounts.handler";
 import { ExpressCreationResultHandler } from "./express/creationResult.handler";
-import { ExpressCategoryHandler } from "./express/expressCategory.handler";
 import { ExpressSummaryHandler } from "./express/expressSummary.handler";
+import { ExpressTemplateSelectionHandler } from "./express/expressTemplateSelection.handler";
 import { UrbanProjectNamingHandler } from "./naming/naming.handler";
 import { ProjectPhaseHandler } from "./project-phase/projectPhase.handler";
 import { CreationResultHandler } from "./result/creationResult.handler";
@@ -48,7 +48,7 @@ import { FinalSummaryHandler } from "./summary/finalSummary.handler";
 export const stepHandlerRegistry = {
   URBAN_PROJECT_CREATE_MODE_SELECTION: CreationModeSelectionHandler,
   // express
-  URBAN_PROJECT_EXPRESS_CATEGORY_SELECTION: ExpressCategoryHandler,
+  URBAN_PROJECT_EXPRESS_TEMPLATE_SELECTION: ExpressTemplateSelectionHandler,
   URBAN_PROJECT_EXPRESS_SUMMARY: ExpressSummaryHandler,
   URBAN_PROJECT_EXPRESS_CREATION_RESULT: ExpressCreationResultHandler,
   // custom

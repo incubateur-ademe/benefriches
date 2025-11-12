@@ -22,11 +22,11 @@ type Props = {
 };
 
 export type FormValues = {
-  expressCategory: UrbanProjectTemplate;
+  projectTemplate: UrbanProjectTemplate;
 };
 
 type Option = {
-  value: FormValues["expressCategory"];
+  value: FormValues["projectTemplate"];
   title: string;
   description: string;
   imgSrc: string;
@@ -68,11 +68,11 @@ const options: Option[] = [
   },
 ] as const;
 
-function UrbanProjectExpressCategory({ onSubmit, onBack, initialValues }: Props) {
+function UrbanProjectExpressTemplate({ onSubmit, onBack, initialValues }: Props) {
   const { control, handleSubmit, formState } = useForm<FormValues>({
     defaultValues: initialValues,
   });
-  const validationError = formState.errors.expressCategory;
+  const validationError = formState.errors.projectTemplate;
 
   return (
     <WizardFormLayout title="De quel type de projet urbain s’agit-il ?" fullScreen>
@@ -83,7 +83,7 @@ function UrbanProjectExpressCategory({ onSubmit, onBack, initialValues }: Props)
               <TileFormFieldWrapper key={option.value}>
                 <Controller
                   control={control}
-                  name="expressCategory"
+                  name="projectTemplate"
                   rules={{ required: "Veuillez sélectionner une typologie de projet." }}
                   render={({ field }) => {
                     const isSelected = field.value === option.value;
@@ -131,4 +131,4 @@ function UrbanProjectExpressCategory({ onSubmit, onBack, initialValues }: Props)
   );
 }
 
-export default UrbanProjectExpressCategory;
+export default UrbanProjectExpressTemplate;

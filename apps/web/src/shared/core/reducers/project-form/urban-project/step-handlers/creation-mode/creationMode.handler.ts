@@ -6,7 +6,7 @@ export const CreationModeSelectionHandler: AnswerStepHandler<"URBAN_PROJECT_CREA
 
     getNextStepId(_, answers) {
       return answers?.createMode === "express"
-        ? "URBAN_PROJECT_EXPRESS_CATEGORY_SELECTION"
+        ? "URBAN_PROJECT_EXPRESS_TEMPLATE_SELECTION"
         : "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION";
     },
   };

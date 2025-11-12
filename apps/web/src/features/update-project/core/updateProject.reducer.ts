@@ -24,7 +24,7 @@ export type UrbanProjectUpdateStep = Exclude<
   | "URBAN_PROJECT_EXPRESS_CREATION_RESULT"
   | "URBAN_PROJECT_EXPRESS_SUMMARY"
   | "URBAN_PROJECT_CREATE_MODE_SELECTION"
-  | "URBAN_PROJECT_EXPRESS_CATEGORY_SELECTION"
+  | "URBAN_PROJECT_EXPRESS_TEMPLATE_SELECTION"
 >;
 export type ProjectUpdateState = ProjectFormState<UrbanProjectUpdateStep> & {
   projectData: {

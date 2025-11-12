@@ -54,7 +54,7 @@ export const ANSWER_STEPS: AnswerStepId[] = [
   // Common
   "URBAN_PROJECT_CREATE_MODE_SELECTION",
   // Express
-  "URBAN_PROJECT_EXPRESS_CATEGORY_SELECTION",
+  "URBAN_PROJECT_EXPRESS_TEMPLATE_SELECTION",
   // Custom
   "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION",
   "URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA",
@@ -136,8 +136,8 @@ export type AnswersByStep = {
   // Common
   URBAN_PROJECT_CREATE_MODE_SELECTION: { createMode?: "custom" | "express" };
   // Express
-  URBAN_PROJECT_EXPRESS_CATEGORY_SELECTION: {
-    expressCategory?: UrbanProjectTemplate;
+  URBAN_PROJECT_EXPRESS_TEMPLATE_SELECTION: {
+    projectTemplate?: UrbanProjectTemplate;
   };
   // Custom
   URBAN_PROJECT_SPACES_CATEGORIES_SELECTION: Pick<CustomFormAnswers, "spacesCategories">;
