@@ -46,7 +46,7 @@ function TaskItem({
   );
 }
 
-export default function SiteCheckList({ siteId }: { siteId: string }) {
+export default function SiteCheckList({ siteId, siteName }: { siteId: string; siteName: string }) {
   const route = useRoute() as Route<typeof routes.siteFeatures>;
   return (
     <section>
@@ -59,8 +59,9 @@ export default function SiteCheckList({ siteId }: { siteId: string }) {
         >
           <Button
             size="small"
-            linkProps={routes.createProject({
+            linkProps={routes.projectCreationOnboarding({
               siteId,
+              siteName,
               projectSuggestions: route.params.projectEvaluationSuggestions,
             })}
           >

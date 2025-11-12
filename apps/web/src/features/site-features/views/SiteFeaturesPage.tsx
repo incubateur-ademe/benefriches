@@ -59,7 +59,13 @@ function SiteFeaturesPage({ onPageLoad, siteData, loadingState }: Props) {
   ];
 
   const tabs = fromCompatibilityEvaluation
-    ? [...defaultTabs, { label: "Suivi du site", content: <SiteCheckList siteId={siteData.id} /> }]
+    ? [
+        {
+          label: "Suivi du site",
+          content: <SiteCheckList siteId={siteData.id} siteName={siteData.name} />,
+        },
+        ...defaultTabs,
+      ]
     : defaultTabs;
 
   return (

@@ -36,6 +36,12 @@ const SiteFeaturesPage = lazy(() => import("@/features/site-features/views"));
 const ProjectImpactsOnboardingPage = lazy(
   () => import("@/features/projects/views/project-impacts-onboarding"),
 );
+const ProjectCreationOnboardingPage = lazy(
+  () =>
+    import(
+      "@/features/create-project/views/onboarding-from-compatibility-evaluation/ProjectCreationFromCompatibilityEvaluationOnboarding"
+    ),
+);
 
 const formsLayoutGroup = createGroup([
   routes.createSite,
@@ -80,6 +86,8 @@ function FeaturesApp() {
                 return <OnboardingWhenNotToUsePage variant={route.params.fonctionnalite} />;
               case routes.onBoardingIntroductionHow.name:
                 return <OnBoardingIntroductionHow variant={route.params.fonctionnalite} />;
+              case routes.projectCreationOnboarding.name:
+                return <ProjectCreationOnboardingPage route={route} />;
               case routes.myProjects.name:
                 return <MyProjectsPage />;
               case routes.projectImpacts.name:

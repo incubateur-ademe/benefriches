@@ -50,6 +50,14 @@ const { RouteProvider, useRoute, routes } = createRouter({
     },
     () => "/creer-projet",
   ),
+  projectCreationOnboarding: defineRoute(
+    {
+      siteId: param.query.string,
+      siteName: param.query.string,
+      projectSuggestions: param.query.optional.array.ofType<ProjectSuggestion>(),
+    },
+    () => "/creer-projet/introduction",
+  ),
   updateProject: defineRoute(
     {
       etape: param.query.optional.string,
