@@ -1,6 +1,6 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import { Controller, useForm } from "react-hook-form";
-import { UrbanProjectCategory } from "shared";
+import { type UrbanProjectTemplate } from "shared";
 
 import {
   getLabelForUrbanProjectCategory,
@@ -22,10 +22,7 @@ type Props = {
 };
 
 export type FormValues = {
-  expressCategory: Extract<
-    UrbanProjectCategory,
-    "RESIDENTIAL_NORMAL_AREA" | "RESIDENTIAL_TENSE_AREA" | "NEW_URBAN_CENTER" | "PUBLIC_FACILITIES"
-  >;
+  expressCategory: UrbanProjectTemplate;
 };
 
 type Option = {

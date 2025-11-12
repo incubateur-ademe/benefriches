@@ -16,7 +16,6 @@ export const expressPhotovoltaicProjectSaved = createAppAsyncThunk(
       template: "PHOTOVOLTAIC_POWER_PLANT",
       createdBy: currentUser.currentUser?.id,
     });
-
     await extra.createExpressReconversionProjectService.save(expressProjectPayload);
   },
 );

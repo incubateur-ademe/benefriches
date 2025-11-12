@@ -91,7 +91,15 @@ export const getPictogramForUrbanProjectCategory = (category: UrbanProjectCatego
       return "/img/pictograms/express-urban-categories/residentiel-secteur-detendu.svg";
     case "RESIDENTIAL_TENSE_AREA":
       return "/img/pictograms/express-urban-categories/residentiel-secteur-tendu.svg";
-    default:
+    case "INDUSTRIAL_FACILITIES":
+      return "/img/pictograms/mutability-usages/industry.svg";
+    case "OFFICES":
+      return "/img/pictograms/mutability-usages/offices.svg";
+    case "TOURISM_AND_CULTURAL_FACILITIES":
+      return "/img/pictograms/mutability-usages/culture-and-tourism.svg";
+    case "RENATURATION":
+      return "/img/pictograms/mutability-usages/renaturation.svg";
+    case "OTHER":
       return "/img/pictograms/express-urban-categories/projet-urbain.svg";
   }
 };

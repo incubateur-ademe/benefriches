@@ -1,6 +1,5 @@
 import {
   BuildingsUse,
-  ReconversionProjectTemplate,
   FinancialAssistanceRevenue,
   RecurringExpense,
   ReinstatementExpense,
@@ -12,6 +11,7 @@ import {
   UrbanPublicSpace,
   UrbanSpaceCategory,
   YearlyBuildingsOperationsRevenues,
+  UrbanProjectTemplate,
 } from "shared";
 import z from "zod";
 
@@ -137,13 +137,7 @@ export type AnswersByStep = {
   URBAN_PROJECT_CREATE_MODE_SELECTION: { createMode?: "custom" | "express" };
   // Express
   URBAN_PROJECT_EXPRESS_CATEGORY_SELECTION: {
-    expressCategory?: Extract<
-      ReconversionProjectTemplate,
-      | "PUBLIC_FACILITIES"
-      | "RESIDENTIAL_TENSE_AREA"
-      | "RESIDENTIAL_NORMAL_AREA"
-      | "NEW_URBAN_CENTER"
-    >;
+    expressCategory?: UrbanProjectTemplate;
   };
   // Custom
   URBAN_PROJECT_SPACES_CATEGORIES_SELECTION: Pick<CustomFormAnswers, "spacesCategories">;

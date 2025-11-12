@@ -1,11 +1,15 @@
+import { UrbanProjectTemplate } from "shared";
+
 import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
 
 import {
-  ExpressReconversionProjectPayload,
   ExpressReconversionProjectResult,
   saveExpressProjectSchema,
 } from "../actions/expressProjectSavedGateway";
-import { makeUrbanProjectCreationActionType } from "./urbanProject.actions";
+import {
+  creationProjectFormUrbanActions,
+  makeUrbanProjectCreationActionType,
+} from "./urbanProject.actions";
 
 export const expressUrbanProjectSaved = createAppAsyncThunk(
   makeUrbanProjectCreationActionType("expressUrbanProjectSaved"),
@@ -26,15 +30,23 @@ export const expressUrbanProjectSaved = createAppAsyncThunk(
 
 export const expressUrbanProjectCreated = createAppAsyncThunk<
   ExpressReconversionProjectResult,
-  ExpressReconversionProjectPayload["template"]
+  UrbanProjectTemplate
 >(
   makeUrbanProjectCreationActionType("expressUrbanProjectCreated"),
-  async (expressCategory, { getState, extra }) => {
+  async (urbanProjectTemplate, { getState, extra, dispatch }) => {
     const { projectCreation, currentUser } = getState();
+
+    void dispatch(
+      creationProjectFormUrbanActions.requestStepCompletion({
+        stepId: "URBAN_PROJECT_EXPRESS_CATEGORY_SELECTION",
+        answers: { expressCategory: urbanProjectTemplate },
+      }),
+    );
+
     const expressProjectPayload = await saveExpressProjectSchema.parseAsync({
       reconversionProjectId: projectCreation.projectId,
       siteId: projectCreation.siteData?.id,
-      template: expressCategory,
+      template: urbanProjectTemplate,
       createdBy: currentUser.currentUser?.id,
     });
 

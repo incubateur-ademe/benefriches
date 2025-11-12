@@ -1,6 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit";
 import reduceReducers from "reduce-reducers";
-import { DevelopmentPlanCategory } from "shared";
+import { DevelopmentPlanCategory, isUrbanProjectTemplate } from "shared";
 import { v4 as uuid } from "uuid";
 
 import {
@@ -20,6 +20,7 @@ import {
   developmentPlanCategoriesCompleted,
   introductionStepCompleted,
 } from "./actions/introductionStep.actions";
+import { projectSuggestionsCompleted } from "./actions/projectSuggestionCompleted.action";
 import { reconversionProjectCreationInitiated } from "./actions/reconversionProjectCreationInitiated.action";
 import { ProjectSuggestion } from "./project.types";
 import { RenewableEnergyCreationStep } from "./renewable-energy/creationSteps";
@@ -78,11 +79,11 @@ const projectCreationReducer = createReducer(getInitialState(), (builder) => {
       }
     })
     .addCase(reconversionProjectCreationInitiated.pending, (_state, action) => {
-      if (action.meta.arg.withProjectSuggestions) {
+      if (action.meta.arg?.projectSuggestions) {
         return {
           ...getInitialState(),
           stepsHistory: ["PROJECT_SUGGESTIONS"],
-          projectSuggestions: action.meta.arg.withProjectSuggestions,
+          projectSuggestions: action.meta.arg.projectSuggestions,
         };
       }
 
@@ -97,6 +98,18 @@ const projectCreationReducer = createReducer(getInitialState(), (builder) => {
     })
     .addCase(reconversionProjectCreationInitiated.rejected, (state) => {
       state.siteDataLoadingState = "error";
+    })
+    .addCase(projectSuggestionsCompleted, (state, action) => {
+      if (action.payload.selectedOption === "none") {
+        state.stepsHistory.push("PROJECT_TYPE_SELECTION");
+      }
+      if (action.payload.selectedOption === "PHOTOVOLTAIC_POWER_PLANT") {
+        state.developmentPlanCategory = "RENEWABLE_ENERGY";
+      }
+      if (isUrbanProjectTemplate(action.payload.selectedOption)) {
+        state.developmentPlanCategory = "URBAN_PROJECT";
+        state.stepsHistory.push("URBAN_PROJECT_EXPRESS_SUMMARY");
+      }
     })
     .addCase(stepRevertAttempted, (state) => {
       state.stepRevertAttempted = true;

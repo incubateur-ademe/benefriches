@@ -1,9 +1,9 @@
 import z from "zod";
 
-import { urbanProjectCategorySchema } from "../../urban-project/project-generator/categories";
+import { urbanProjectTemplateSchema } from "../../urban-project/project-generator/categories";
 
 export const reconversionProjectTemplateSchema = z.enum([
-  ...urbanProjectCategorySchema.exclude(["OTHER"]).options,
+  ...urbanProjectTemplateSchema.options,
   "PHOTOVOLTAIC_POWER_PLANT",
 ]);
 

@@ -79,7 +79,7 @@ describe("Reconversion project creation initialization", () => {
     await store.dispatch(
       reconversionProjectCreationInitiated({
         relatedSiteId: relatedSiteData.id,
-        withProjectSuggestions: projectSuggestions,
+        projectSuggestions: projectSuggestions,
       }),
     );
 

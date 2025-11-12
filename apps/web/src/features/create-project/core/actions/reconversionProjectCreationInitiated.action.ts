@@ -9,7 +9,7 @@ export interface GetSitesByIdGateway {
 
 export const reconversionProjectCreationInitiated = createAppAsyncThunk<
   ProjectSite,
-  { relatedSiteId: string; withProjectSuggestions?: ProjectSuggestion[] }
+  { relatedSiteId: string; projectSuggestions?: ProjectSuggestion[] }
 >(makeProjectCreationActionType("initiated"), async ({ relatedSiteId }, { extra }) => {
   const projectSite = await extra.getSiteByIdService.getById(relatedSiteId);
 

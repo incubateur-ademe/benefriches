@@ -6,6 +6,7 @@ import { createProjectFormSelectors } from "@/shared/core/reducers/project-form/
 import { RootState } from "@/shared/core/store-config/store";
 
 import { ProjectCreationState, ProjectCreationStep } from "./createProject.reducer";
+import { ProjectSuggestion } from "./project.types";
 
 const selectSelf = (state: RootState) => state.projectCreation;
 
@@ -20,6 +21,17 @@ export const selectProjectId = createSelector(selectSelf, (state): string => {
 export const selectProjectDevelopmentPlanCategory = createSelector(
   selectSelf,
   (state): DevelopmentPlanCategory | undefined => state.developmentPlanCategory,
+);
+
+type ProjectSuggestionsViewData = {
+  projectSuggestions: ProjectSuggestion[];
+};
+
+export const selectProjectSuggestionsViewData = createSelector(
+  selectSelf,
+  (state): ProjectSuggestionsViewData => ({
+    projectSuggestions: state.projectSuggestions ?? [],
+  }),
 );
 
 export const selectSiteData = createSelector(

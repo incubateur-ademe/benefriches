@@ -1,4 +1,3 @@
-import { creationProjectFormUrbanActions } from "@/features/create-project/core/urban-project/urbanProject.actions";
 import { creationProjectFormSelectors } from "@/features/create-project/core/urban-project/urbanProject.selectors";
 import { expressUrbanProjectCreated } from "@/features/create-project/core/urban-project/urbanProjectExpressSaved.action";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
@@ -11,12 +10,6 @@ function UrbanProjectExpressCategoryContainer() {
 
   const onSubmit = (formData: FormValues) => {
     void dispatch(expressUrbanProjectCreated(formData.expressCategory));
-    void dispatch(
-      creationProjectFormUrbanActions.requestStepCompletion({
-        stepId: "URBAN_PROJECT_EXPRESS_CATEGORY_SELECTION",
-        answers: { expressCategory: formData.expressCategory },
-      }),
-    );
   };
 
   const onBack = useStepBack();

@@ -1,5 +1,6 @@
 import { createRouter, defineRoute, param } from "type-route";
 
+import { ProjectSuggestion } from "@/features/create-project/core/project.types";
 import { OnboardingVariant } from "@/features/onboarding/views/pages/when-to-use/OnboardingWhenToUsePage";
 
 const onBoarding = defineRoute("/premiers-pas");
@@ -43,8 +44,9 @@ const { RouteProvider, useRoute, routes } = createRouter({
   createSite: defineRoute({ etape: param.query.optional.string }, () => "/creer-site-foncier"),
   createProject: defineRoute(
     {
-      etape: param.query.optional.string,
       siteId: param.query.string,
+      etape: param.query.optional.string,
+      projectSuggestions: param.query.optional.array.ofType<ProjectSuggestion>(),
     },
     () => "/creer-projet",
   ),
@@ -81,6 +83,8 @@ const { RouteProvider, useRoute, routes } = createRouter({
   siteFeatures: defineRoute(
     {
       siteId: param.path.string,
+      fromCompatibilityEvaluation: param.query.optional.boolean,
+      projectEvaluationSuggestions: param.query.optional.array.ofType<ProjectSuggestion>(),
     },
     (params) => `/sites/${params.siteId}/caracteristiques`,
   ),

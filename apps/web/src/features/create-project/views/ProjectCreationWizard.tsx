@@ -18,6 +18,7 @@ import ProjectCreationIntroduction from "./introduction";
 import { HTML_MAIN_TITLE } from "./mainHtmlTitle";
 import PhotovoltaicPowerStationCreationWizard from "./photovoltaic-power-station/PhotovoltaicPowerStationCreationWizard";
 import { RENEWABLE_ENERGY_PROJECT_CREATION_STEP_QUERY_STRING_MAP } from "./photovoltaic-power-station/custom-form/creationStepQueryStringMap";
+import ProjectSuggestionsForm from "./project-suggestions";
 import ProjectTypesForm from "./project-types";
 import RenewableEnergyTypesForm from "./renewable-energy-types";
 import UrbanProjectCreationWizard from "./urban-project/UrbanProjectCreationWizard";
@@ -47,7 +48,7 @@ const ProjectCreationIntroductionWizard = ({
       case "PROJECT_TYPE_SELECTION":
         return <ProjectTypesForm />;
       case "PROJECT_SUGGESTIONS":
-        return <div>En construction</div>;
+        return <ProjectSuggestionsForm />;
     }
   };
   return (
@@ -65,8 +66,11 @@ function ProjectCreationWizard({ route }: Props) {
 
   useEffect(() => {
     const relatedSiteId = route.params.siteId;
-    void dispatch(reconversionProjectCreationInitiated({ relatedSiteId }));
-  }, [dispatch, route.params.siteId]);
+    const payload = route.params.projectSuggestions
+      ? { relatedSiteId, projectSuggestions: route.params.projectSuggestions }
+      : { relatedSiteId };
+    void dispatch(reconversionProjectCreationInitiated(payload));
+  }, [dispatch, route.params.siteId, route.params.projectSuggestions]);
 
   useSyncCreationStepWithRouteQuery(PROJECT_CREATION_STEP_QUERY_STRING_MAP[currentStep]);
 

@@ -12,4 +12,11 @@ export const urbanProjectCategorySchema = z.enum([
   "OTHER",
 ]);
 
+export const urbanProjectTemplateSchema = urbanProjectCategorySchema.exclude(["OTHER"]);
+
+export function isUrbanProjectTemplate(template: unknown): template is UrbanProjectTemplate {
+  return urbanProjectTemplateSchema.safeParse(template).success;
+}
+
 export type UrbanProjectCategory = z.infer<typeof urbanProjectCategorySchema>;
+export type UrbanProjectTemplate = z.infer<typeof urbanProjectTemplateSchema>;
