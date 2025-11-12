@@ -15,7 +15,7 @@ const faqData: FaqItem[] = [
     question: "🏗️️ Quels projets d'aménagement sont évaluables sur Bénéfriches ?",
     answer: (
       <div>
-        <p>Sur Bénéfriches, vous pouvez créer les projets suivants :</p>
+        <p>Sur Bénéfriches, vous pouvez évaluer les projets suivants :</p>
         <ul>
           <li>Projets urbains (quartier résidentiel, nouvelle centralité, équipement public...)</li>
           <li>Zone d'activités économiques (zone commerciale, zone industrielle, bureaux...)</li>

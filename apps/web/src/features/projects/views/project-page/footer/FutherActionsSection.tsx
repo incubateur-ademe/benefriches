@@ -77,12 +77,12 @@ export default function FurtherActionsSection({ siteId, projectId, isUpdateEnabl
       ],
     },
     {
-      categoryName: "Créer",
+      categoryName: "Évaluer",
       links: [
         isUpdateEnabled
           ? {
               iconId: "ri-file-copy-line",
-              title: "Créer une variante du projet",
+              title: "Évaluer une variante du projet",
               onClick: onDuplicateProject,
               disabled: duplicationState === "loading",
               className: duplicationState === "loading" ? "cursor-wait" : undefined,
@@ -90,7 +90,7 @@ export default function FurtherActionsSection({ siteId, projectId, isUpdateEnabl
           : {
               iconId: "ri-file-copy-line",
               disabled: true,
-              title: "Créer une variante du projet",
+              title: "Évaluer une variante du projet",
               badgeProps: {
                 "aria-controls": DUPLICATE_PROJECT_FEATURE_ALERT_DIALOG_ID,
                 "data-fr-opened": "false",
@@ -99,7 +99,7 @@ export default function FurtherActionsSection({ siteId, projectId, isUpdateEnabl
         {
           iconId: "fr-icon-file-add-line",
           linkProps: routes.createProject({ siteId }).link,
-          title: "Créer un nouveau projet",
+          title: "Évaluer un nouveau projet",
         },
         {
           iconId: "fr-icon-add-line",
@@ -189,7 +189,7 @@ export default function FurtherActionsSection({ siteId, projectId, isUpdateEnabl
       </div>
       <ProjectFeatureAlertModal
         dialogId={DUPLICATE_PROJECT_FEATURE_ALERT_DIALOG_ID}
-        title="Créer une variante du projet"
+        title="Évaluer une variante du projet"
         userEmail={userEmail}
         hasProjectAlert={duplicateProjectAlert?.hasAlert === true}
         onSaveLoadingState={createUserFeatureAlertState.duplicateProject}
