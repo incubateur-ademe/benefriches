@@ -11,8 +11,10 @@ import { routes, useRoute } from "@/shared/views/router";
 
 import { SiteFeatures } from "../core/siteFeatures";
 import SiteCheckList from "./SiteCheckList";
+import SiteCreationConfirmationModal from "./SiteCreationConfirmationModal";
 import SiteFeaturesHeader from "./SiteFeaturesHeader";
 import SiteFeaturesList from "./SiteFeaturesList";
+import { open } from "./creationConfirmationModal";
 
 type Props = {
   onPageLoad: () => void;
@@ -28,6 +30,17 @@ function SiteFeaturesPage({ onPageLoad, siteData, loadingState }: Props) {
   const route = useRoute();
   const fromCompatibilityEvaluation =
     (route as Route<typeof routes.siteFeatures>).params.fromCompatibilityEvaluation ?? false;
+
+  useEffect(() => {
+    if (loadingState === "success" && fromCompatibilityEvaluation) {
+      const timeoutId = setTimeout(() => {
+        open();
+      }, 100);
+      return () => {
+        clearTimeout(timeoutId);
+      };
+    }
+  }, [loadingState, fromCompatibilityEvaluation]);
 
   if (loadingState === "loading" || !siteData) {
     return (
@@ -80,6 +93,7 @@ function SiteFeaturesPage({ onPageLoad, siteData, loadingState }: Props) {
       <section className={classNames(fr.cx("fr-container"), "lg:px-24", "py-6")}>
         <Tabs tabs={tabs} />
       </section>
+      <SiteCreationConfirmationModal />
     </>
   );
 }
