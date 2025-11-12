@@ -1,12 +1,16 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import Alert from "@codegouvfr/react-dsfr/Alert";
+import { Tabs } from "@codegouvfr/react-dsfr/Tabs";
 import { useEffect } from "react";
+import { Route } from "type-route";
 
 import classNames from "@/shared/views/clsx";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
+import { routes, useRoute } from "@/shared/views/router";
 
 import { SiteFeatures } from "../core/siteFeatures";
+import SiteCheckList from "./SiteCheckList";
 import SiteFeaturesHeader from "./SiteFeaturesHeader";
 import SiteFeaturesList from "./SiteFeaturesList";
 
@@ -20,6 +24,10 @@ function SiteFeaturesPage({ onPageLoad, siteData, loadingState }: Props) {
   useEffect(() => {
     onPageLoad();
   }, [onPageLoad]);
+
+  const route = useRoute();
+  const fromCompatibilityEvaluation =
+    (route as Route<typeof routes.siteFeatures>).params.fromCompatibilityEvaluation ?? false;
 
   if (loadingState === "loading" || !siteData) {
     return (
@@ -43,6 +51,16 @@ function SiteFeaturesPage({ onPageLoad, siteData, loadingState }: Props) {
       </div>
     );
   }
+  const defaultTabs = [
+    {
+      label: "Caractéristiques du site",
+      content: <SiteFeaturesList {...siteData} />,
+    },
+  ];
+
+  const tabs = fromCompatibilityEvaluation
+    ? [...defaultTabs, { label: "Suivi du site", content: <SiteCheckList siteId={siteData.id} /> }]
+    : defaultTabs;
 
   return (
     <>
@@ -54,7 +72,7 @@ function SiteFeaturesPage({ onPageLoad, siteData, loadingState }: Props) {
         address={siteData.address}
       />
       <section className={classNames(fr.cx("fr-container"), "lg:px-24", "py-6")}>
-        <SiteFeaturesList {...siteData} />
+        <Tabs tabs={tabs} />
       </section>
     </>
   );
