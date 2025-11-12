@@ -12,7 +12,7 @@ export const saveExpressProjectSchema = z.object({
   template: reconversionProjectTemplateSchema,
 });
 
-export type ExpressReconversionProjectPayload = z.infer<typeof saveExpressProjectSchema>;
+type ExpressReconversionProjectPayload = z.infer<typeof saveExpressProjectSchema>;
 export type ExpressReconversionProjectResult = BaseReconversionProjectFeaturesView;
 
 export interface CreateExpressReconversionProjectGateway {

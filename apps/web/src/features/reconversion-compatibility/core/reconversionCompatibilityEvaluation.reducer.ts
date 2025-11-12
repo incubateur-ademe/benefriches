@@ -1,12 +1,10 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { v4 as uuid } from "uuid";
 
-import {
-  ReconversionCompatibilityEvaluationResults,
-  reconversionCompatibilityEvaluationReset,
-  reconversionCompatibilityEvaluationResultsRequested,
-  reconversionCompatibilityEvaluationStarted,
-} from "./reconversionCompatibilityEvaluation.actions";
+import { reconversionCompatibilityEvaluationReset } from "./actions/compatibilityEvaluationReset.actions";
+import { ReconversionCompatibilityEvaluationResults } from "./actions/compatibilityEvaluationResultsRequested.actions";
+import { reconversionCompatibilityEvaluationResultsRequested } from "./actions/compatibilityEvaluationResultsRequested.actions";
+import { reconversionCompatibilityEvaluationStarted } from "./actions/compatibilityEvaluationStarted.actions";
 
 export type MutabilityUsage =
   | "residentiel"

@@ -1,10 +1,8 @@
 import { BENEFRICHES_ENV } from "@/shared/views/envVars";
 
-import {
-  ReconversionCompatibilityEvaluationResults,
-  ReconversionCompatibilityEvaluationGateway,
-  EvaluationCompletedPayload,
-} from "../../core/reconversionCompatibilityEvaluation.actions";
+import { EvaluationCompletedPayload } from "../../core/actions/compatibilityEvaluationCompleted.actions";
+import { ReconversionCompatibilityEvaluationResults } from "../../core/actions/compatibilityEvaluationResultsRequested.actions";
+import { ReconversionCompatibilityEvaluationGateway } from "../../core/actions/reconversionCompatibilityEvaluationGateway";
 import { MutabilityUsage } from "../../core/reconversionCompatibilityEvaluation.reducer";
 
 export type MutafrichesEvaluationResultResponse = {

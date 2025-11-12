@@ -1,7 +1,5 @@
-import {
-  ReconversionCompatibilityEvaluationResults,
-  ReconversionCompatibilityEvaluationGateway,
-} from "../../core/reconversionCompatibilityEvaluation.actions";
+import { ReconversionCompatibilityEvaluationResults } from "../../core/actions/compatibilityEvaluationResultsRequested.actions";
+import { ReconversionCompatibilityEvaluationGateway } from "../../core/actions/reconversionCompatibilityEvaluationGateway";
 import { MutafrichesEvaluationResultResponse } from "./HttpReconversionCompatibilityEvaluation";
 
 const fakeResponse = {

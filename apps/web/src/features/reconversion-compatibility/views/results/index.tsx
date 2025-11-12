@@ -3,11 +3,9 @@ import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { routes, useRoute } from "@/shared/views/router";
 
+import { reconversionCompatibilityEvaluationReset } from "../../core/actions/compatibilityEvaluationReset.actions";
+import { reconversionCompatibilityEvaluationResultsRequested } from "../../core/actions/compatibilityEvaluationResultsRequested.actions";
 import { fricheSavedFromCompatibilityEvaluation } from "../../core/actions/fricheSavedFromCompatibilityEvaluation.actions";
-import {
-  reconversionCompatibilityEvaluationReset,
-  reconversionCompatibilityEvaluationResultsRequested,
-} from "../../core/reconversionCompatibilityEvaluation.actions";
 import { selectReconversionCompatibilityViewData } from "../../core/reconversionCompatibilityEvaluation.selectors";
 import ReconversionCompatibilityResultsPage from "./ReconversionCompatibilityResultsPage";
 
