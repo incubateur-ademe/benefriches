@@ -95,7 +95,7 @@ function ProjectSuggestionsForm({ projectSuggestions, onSubmit }: Props) {
                           <div
                             className={classNames(
                               getCompatibilityScoreBackgroundColor(option.compatibilityScore),
-                              "py-2 px-4 inline rounded-lg text-xs font-bold",
+                              "py-2 px-4 inline rounded-lg text-xs dark:text-text-dark font-bold",
                             )}
                           >
                             <span>{option.compatibilityScore.toFixed(0)}%</span>
