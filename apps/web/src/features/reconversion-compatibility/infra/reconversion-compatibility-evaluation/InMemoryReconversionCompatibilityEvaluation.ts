@@ -7,10 +7,18 @@ export class InMemoryReconversionCompatibilityEvaluationService
 {
   _startedEvaluations: { evaluationId: string }[] = [];
   _completedEvaluations: EvaluationCompletedPayload[] = [];
+  _evaluationResults: Map<string, ReconversionCompatibilityEvaluationResults> = new Map();
   private shouldFail = false;
 
   shouldFailOnCall() {
     this.shouldFail = true;
+  }
+
+  setEvaluationResults(
+    mutafrichesId: string,
+    results: ReconversionCompatibilityEvaluationResults,
+  ): void {
+    this._evaluationResults.set(mutafrichesId, results);
   }
 
   async startEvaluation(input: { evaluationId: string }): Promise<void> {
@@ -28,11 +36,11 @@ export class InMemoryReconversionCompatibilityEvaluationService
   }
 
   async getEvaluationResults(
-    _mutafrichesId: string,
+    mutafrichesId: string,
   ): Promise<ReconversionCompatibilityEvaluationResults | null> {
     if (this.shouldFail) {
       throw new Error("InMemoryReconversionCompatibilityEvaluationService intended test failure");
     }
-    return Promise.resolve(null);
+    return Promise.resolve(this._evaluationResults.get(mutafrichesId) ?? null);
   }
 }
