@@ -15,6 +15,7 @@ import Section from "@/shared/views/components/FeaturesList/FeaturesListSection"
 import SoilTypeLabelWithColorSquare from "@/shared/views/components/FeaturesList/FeaturesListSoilTypeLabel";
 
 import { SiteFeatures } from "../core/siteFeatures";
+import ExpressSiteDisclaimer from "./ExpressSiteDisclaimer";
 import SiteFeaturesManagementSection from "./SiteFeaturesManagementSection";
 
 type Props = SiteFeatures;
@@ -22,12 +23,13 @@ type Props = SiteFeatures;
 export default function SiteFeaturesList(siteFeatures: Props) {
   return (
     <>
+      {siteFeatures.isExpressSite && <ExpressSiteDisclaimer siteNature={siteFeatures.nature} />}
       <Section title="📍 Localisation">
         <DataLine label={<strong>Adresse du site</strong>} value={siteFeatures.address} />
       </Section>
       <Section
         title="🌾️ Sols"
-        tooltip="L’occupation des sols conditionne la capacité d’infiltration des eaux, la capacité de stockage de carbone dans les sols, etc."
+        tooltip="L'occupation des sols conditionne la capacité d'infiltration des eaux, la capacité de stockage de carbone dans les sols, etc."
       >
         <DataLine
           noBorder
@@ -78,9 +80,9 @@ export default function SiteFeaturesList(siteFeatures: Props) {
                 }
                 switch (siteFeatures.nature) {
                   case "FRICHE":
-                    return `Occupation des sols représentative des friches ${siteFeatures.fricheActivity ? `de type « ${getFricheActivityLabel(siteFeatures.fricheActivity)} »` : "de ce type"} dont l’ADEME a pu accompagner la reconversion.`;
+                    return `Occupation des sols représentative des friches ${siteFeatures.fricheActivity ? `de type « ${getFricheActivityLabel(siteFeatures.fricheActivity)} »` : "de ce type"} dont l'ADEME a pu accompagner la reconversion.`;
                   case "AGRICULTURAL_OPERATION":
-                    return `Occupation représentative des exploitations agricoles ${siteFeatures.agriculturalOperationActivity ? `de type « ${getLabelForAgriculturalOperationActivity(siteFeatures.agriculturalOperationActivity)} »` : "de ce type"}, d’après DRAAF Pays-de-la-Loire et web-agri.com.`;
+                    return `Occupation représentative des exploitations agricoles ${siteFeatures.agriculturalOperationActivity ? `de type « ${getLabelForAgriculturalOperationActivity(siteFeatures.agriculturalOperationActivity)} »` : "de ce type"}, d'après DRAAF Pays-de-la-Loire et web-agri.com.`;
                   case "NATURAL_AREA":
                     return `Occupation représentative des espaces naturels de type « ${getLabelForNaturalAreaType(siteFeatures.naturalAreaType ?? "MIXED_NATURAL_AREA")} ».`;
                 }
@@ -104,11 +106,11 @@ export default function SiteFeaturesList(siteFeatures: Props) {
           <Section title="☣️ Pollution">
             <DataLine
               label={<strong>Superficie polluée</strong>}
-              labelTooltip="Les activités antérieures exercées sur un site en friche, qu’elles soient industrielles, de service, ferroviaire, etc. peuvent être à l’origine de pollution des sols.
-La pollution à l’amiante des bâtiments n’est pas considérée ici."
+              labelTooltip="Les activités antérieures exercées sur un site en friche, qu'elles soient industrielles, de service, ferroviaire, etc. peuvent être à l'origine de pollution des sols.
+La pollution à l'amiante des bâtiments n'est pas considérée ici."
               valueTooltip={
                 siteFeatures.isExpressSite && siteFeatures.fricheActivity
-                  ? `On considère ici que ${formatPercentage(getContaminatedPercentageFromFricheActivity(siteFeatures.fricheActivity) * 100)} de la surface de la friche est polluée. Il s’agit d’une valeur couramment rencontrée sur les friches de type « ${getFricheActivityLabel(siteFeatures.fricheActivity)} ». Cela n’implique pas systématiquement que toute cette surface sera à dépolluer.`
+                  ? `On considère ici que ${formatPercentage(getContaminatedPercentageFromFricheActivity(siteFeatures.fricheActivity) * 100)} de la surface de la friche est polluée. Il s'agit d'une valeur couramment rencontrée sur les friches de type « ${getFricheActivityLabel(siteFeatures.fricheActivity)} ». Cela n'implique pas systématiquement que toute cette surface sera à dépolluer.`
                   : undefined
               }
               value={
@@ -122,11 +124,11 @@ La pollution à l’amiante des bâtiments n’est pas considérée ici."
             <>
               <DataLine
                 label={<strong>Accidents survenus sur le site depuis 5 ans</strong>}
-                labelTooltip="Les friches, en tant que lieux laissés à l’abandon, font fréquemment l’objet d’intrusion. La présence de zones dangereuses et l’état potentiellement délabrées (ex : toitures, passerelles) deviennent sources d’accident."
+                labelTooltip="Les friches, en tant que lieux laissés à l'abandon, font fréquemment l'objet d'intrusion. La présence de zones dangereuses et l'état potentiellement délabrées (ex : toitures, passerelles) deviennent sources d'accident."
                 value={<strong>{sumObjectValues(siteFeatures.accidents) || "Aucun"}</strong>}
                 valueTooltip={
                   siteFeatures.isExpressSite
-                    ? "En l’absence de moyennes chiffrées, on considère ici que la friche n’a pas été concernée par des accidents."
+                    ? "En l'absence de moyennes chiffrées, on considère ici que la friche n'a pas été concernée par des accidents."
                     : undefined
                 }
               />

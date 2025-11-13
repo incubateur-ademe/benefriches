@@ -16,6 +16,7 @@ describe("App settings", () => {
     appSettingsService.persist({
       surfaceAreaInputMode: "squareMeters",
       askForConfirmationOnStepRevert: true,
+      displayExpressSiteDisclaimer: true,
     });
     const store = createStore(
       getTestAppDependencies({
@@ -26,6 +27,7 @@ describe("App settings", () => {
     expect(selectAppSettings(rootState)).toEqual({
       surfaceAreaInputMode: "squareMeters",
       askForConfirmationOnStepRevert: true,
+      displayExpressSiteDisclaimer: true,
     });
   });
 

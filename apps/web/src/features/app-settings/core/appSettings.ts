@@ -4,11 +4,13 @@ import { RootState } from "@/shared/core/store-config/store";
 
 export type AppSettings = {
   surfaceAreaInputMode: "percentage" | "squareMeters";
+  displayExpressSiteDisclaimer: boolean;
   askForConfirmationOnStepRevert: boolean;
 };
 
 export const DEFAULT_APP_SETTINGS: AppSettings = {
   surfaceAreaInputMode: "percentage",
+  displayExpressSiteDisclaimer: true,
   askForConfirmationOnStepRevert: true,
 };
 
