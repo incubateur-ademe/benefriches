@@ -130,14 +130,38 @@ export default function FurtherActionsSection({ siteId, projectId, isUpdateEnabl
         //  { iconId: "ri-folder-2-line", title: "Voir des projets similaires" },
       ],
     },
-    // {
-    //   categoryName: "Être accompagné·e",
-    //   links: [
-    //     { iconId: "ri-questionnaire-line", title: "Discuter avec un·e expert·e friche" },
-    //     { iconId: "ri-mail-line", title: "Demander conseil sur la dépollution" },
-    //     { iconId: "ri-money-euro-box-line", title: "Trouver des subventions" },
-    //   ],
-    // },
+    {
+      categoryName: "Être accompagné·e",
+      links: [
+        {
+          iconId: "ri-questionnaire-line",
+          linkProps: {
+            href: "https://urbanvitaliz.fr/",
+            rel: "noopener noreferrer external nofollow",
+            target: "_blank",
+          },
+          title: "Discuter avec un·e expert·e friche",
+        },
+        {
+          iconId: "ri-mail-line",
+          title: "Demander conseil sur la dépollution",
+          linkProps: {
+            href: "mailto:friches.fondsvert@ademe.fr",
+            rel: "noopener noreferrer external nofollow",
+            target: "_blank",
+          },
+        },
+        {
+          iconId: "ri-money-euro-box-line",
+          title: "Trouver des subventions",
+          linkProps: {
+            href: "https://aides-territoires.beta.gouv.fr/",
+            rel: "noopener noreferrer external nofollow",
+            target: "_blank",
+          },
+        },
+      ],
+    },
   ];
 
   const dispatch = useAppDispatch();
@@ -161,7 +185,7 @@ export default function FurtherActionsSection({ siteId, projectId, isUpdateEnabl
           description="Une erreur s'est produite lors de la duplication du projet ..."
         />
       )}
-      <div className="grid md:grid-cols-3 gap-4">
+      <div className="grid md:grid-cols-4 gap-4">
         {links.map(({ categoryName, links }, columnIndex) => (
           <div key={`link-item-${columnIndex}`}>
             <h5 className={classNames("text-sm", "uppercase", "mb-4")}>{categoryName}</h5>
