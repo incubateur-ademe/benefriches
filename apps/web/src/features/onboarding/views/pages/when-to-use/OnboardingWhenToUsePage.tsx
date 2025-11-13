@@ -2,6 +2,7 @@ import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 
 import { siteCreationInitiated } from "@/features/create-site/core/actions/introduction.actions";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
+import StickyBottomBar from "@/shared/views/components/StickyBottomBar/StickyBottomBar";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 import { useHeaderHeight } from "@/shared/views/hooks/useHeaderHeight";
 import { routes } from "@/shared/views/router";
@@ -77,25 +78,26 @@ function OnboardingWhenToUsePage({ variant }: Props) {
           )}
         </section>
 
-        <ButtonsGroup
-          className="sticky bottom-0 right-0 bg-white border-t border-border-grey py-4"
-          inlineLayoutWhen="always"
-          alignment="right"
-          buttons={[
-            {
-              children: "Passer l'intro",
-              className: "mb-0",
-              priority: "secondary",
-              onClick: skipIntroduction,
-            },
-            {
-              className: "mb-0",
-              children: "Suivant",
-              priority: "primary",
-              linkProps: routes.onBoardingWhenNotToUse({ fonctionnalite: variant }).link,
-            },
-          ]}
-        />
+        <StickyBottomBar>
+          <ButtonsGroup
+            inlineLayoutWhen="always"
+            alignment="right"
+            buttons={[
+              {
+                children: "Passer l'intro",
+                className: "mb-0",
+                priority: "secondary",
+                onClick: skipIntroduction,
+              },
+              {
+                className: "mb-0",
+                children: "Suivant",
+                priority: "primary",
+                linkProps: routes.onBoardingWhenNotToUse({ fonctionnalite: variant }).link,
+              },
+            ]}
+          />
+        </StickyBottomBar>
       </div>
     </>
   );

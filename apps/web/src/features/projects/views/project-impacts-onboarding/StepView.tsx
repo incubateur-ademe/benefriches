@@ -1,6 +1,7 @@
 import Button from "@codegouvfr/react-dsfr/Button";
 import { ReactNode } from "react";
 
+import StickyBottomBar from "@/shared/views/components/StickyBottomBar/StickyBottomBar";
 import { useHeaderHeight } from "@/shared/views/hooks/useHeaderHeight";
 
 type Props = {
@@ -32,27 +33,29 @@ export default function StepView({
         {children}
       </section>
 
-      <ul className="list-none p-0 m-0 flex gap-4 items-center justify-between sticky bottom-0 right-0 bg-white border-t border-border-grey py-4">
-        {onBackClick && (
-          <li>
-            <Button priority="secondary" onClick={onBackClick}>
-              Retour
+      <StickyBottomBar>
+        <ul className="list-none flex gap-4 items-center justify-between">
+          {onBackClick && (
+            <li>
+              <Button priority="secondary" onClick={onBackClick}>
+                Retour
+              </Button>
+            </li>
+          )}
+          {canSkipOnboarding && (
+            <li className="ml-auto">
+              <Button priority="tertiary no outline" onClick={skipOnboarding}>
+                Passer l'introduction
+              </Button>
+            </li>
+          )}
+          <li className={!canSkipOnboarding ? "ml-auto" : ""}>
+            <Button priority="primary" onClick={onNextClick}>
+              {nextButtonLabel}
             </Button>
           </li>
-        )}
-        {canSkipOnboarding && (
-          <li className="ml-auto">
-            <Button priority="tertiary no outline" onClick={skipOnboarding}>
-              Passer l'introduction
-            </Button>
-          </li>
-        )}
-        <li className={!canSkipOnboarding ? "ml-auto" : ""}>
-          <Button priority="primary" onClick={onNextClick}>
-            {nextButtonLabel}
-          </Button>
-        </li>
-      </ul>
+        </ul>
+      </StickyBottomBar>
     </div>
   );
 }

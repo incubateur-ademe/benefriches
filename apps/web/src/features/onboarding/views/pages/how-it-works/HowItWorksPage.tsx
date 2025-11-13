@@ -3,6 +3,7 @@ import React, { ReactNode } from "react";
 
 import { siteCreationInitiated } from "@/features/create-site/core/actions/introduction.actions";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
+import StickyBottomBar from "@/shared/views/components/StickyBottomBar/StickyBottomBar";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 import { useHeaderHeight } from "@/shared/views/hooks/useHeaderHeight";
 import { routes } from "@/shared/views/router";
@@ -132,20 +133,22 @@ function HowItWorksPage({ variant }: Props) {
             ))}
           </div>
         </section>
-        <div className="sticky flex justify-between gap-4 bottom-0 right-0 bg-white border-t border-border-grey py-4">
-          <Button
-            priority="secondary"
-            linkProps={routes.onBoardingWhenNotToUse({ fonctionnalite: variant }).link}
-          >
-            Retour
-          </Button>
-          <Button priority="secondary" className="ml-auto" onClick={finishIntroduction}>
-            Passer l'intro
-          </Button>
-          <Button priority="primary" onClick={finishIntroduction}>
-            C'est parti
-          </Button>
-        </div>
+        <StickyBottomBar>
+          <div className="flex justify-between gap-4">
+            <Button
+              priority="secondary"
+              linkProps={routes.onBoardingWhenNotToUse({ fonctionnalite: variant }).link}
+            >
+              Retour
+            </Button>
+            <Button priority="secondary" className="ml-auto" onClick={finishIntroduction}>
+              Passer l'intro
+            </Button>
+            <Button priority="primary" onClick={finishIntroduction}>
+              C'est parti
+            </Button>
+          </div>
+        </StickyBottomBar>
       </div>
     </>
   );

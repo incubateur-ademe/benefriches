@@ -4,6 +4,7 @@ import type { Route } from "type-route";
 import UseCaseList from "@/features/onboarding/views/pages/when-to-use/UseCaseList";
 import UseItem from "@/features/onboarding/views/pages/when-to-use/UseItem";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
+import StickyBottomBar from "@/shared/views/components/StickyBottomBar/StickyBottomBar";
 import { useHeaderHeight } from "@/shared/views/hooks/useHeaderHeight";
 import { routes } from "@/shared/views/router";
 
@@ -48,19 +49,20 @@ function ProjectCreationFromCompatibilityEvaluationOnboarding({ route }: Props) 
           </UseCaseList>
         </section>
 
-        <ButtonsGroup
-          className="sticky bottom-0 right-0 bg-white border-t border-border-grey py-4"
-          inlineLayoutWhen="always"
-          alignment="right"
-          buttons={[
-            {
-              className: "mb-0",
-              children: "Continuer",
-              priority: "primary",
-              linkProps: routes.createProject({ siteId, projectSuggestions }).link,
-            },
-          ]}
-        />
+        <StickyBottomBar>
+          <ButtonsGroup
+            inlineLayoutWhen="always"
+            alignment="right"
+            buttons={[
+              {
+                className: "mb-0",
+                children: "Continuer",
+                priority: "primary",
+                linkProps: routes.createProject({ siteId, projectSuggestions }).link,
+              },
+            ]}
+          />
+        </StickyBottomBar>
       </div>
     </>
   );

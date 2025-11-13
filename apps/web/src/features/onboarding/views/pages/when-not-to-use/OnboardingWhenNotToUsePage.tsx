@@ -3,6 +3,7 @@ import Button from "@codegouvfr/react-dsfr/Button";
 import { siteCreationInitiated } from "@/features/create-site/core/actions/introduction.actions";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
+import StickyBottomBar from "@/shared/views/components/StickyBottomBar/StickyBottomBar";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 import { useHeaderHeight } from "@/shared/views/hooks/useHeaderHeight";
 import { routes } from "@/shared/views/router";
@@ -67,20 +68,22 @@ function OnboardingWhenNotToUsePage({ variant }: Props) {
           </UseCaseList>
         </section>
 
-        <div className="sticky flex justify-between gap-4 bottom-0 right-0 bg-white border-t border-border-grey py-4">
-          <Button
-            priority="secondary"
-            linkProps={routes.onBoardingWhenToUse({ fonctionnalite: variant }).link}
-          >
-            Retour
-          </Button>
-          <Button priority="secondary" className="ml-auto" onClick={skipIntroduction}>
-            Passer l'intro
-          </Button>
-          <Button priority="primary" onClick={onNextClick}>
-            Suivant
-          </Button>
-        </div>
+        <StickyBottomBar>
+          <div className="flex justify-between gap-4">
+            <Button
+              priority="secondary"
+              linkProps={routes.onBoardingWhenToUse({ fonctionnalite: variant }).link}
+            >
+              Retour
+            </Button>
+            <Button priority="secondary" className="ml-auto" onClick={skipIntroduction}>
+              Passer l'intro
+            </Button>
+            <Button priority="primary" onClick={onNextClick}>
+              Suivant
+            </Button>
+          </div>
+        </StickyBottomBar>
       </div>
     </>
   );
