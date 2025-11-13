@@ -21,6 +21,8 @@ type ReconversionCompatibilityEvaluationState = {
   evaluationResults: ReconversionCompatibilityEvaluationResults | undefined;
   evaluationError: string | undefined;
   evaluationResultsLoadingState: "idle" | "loading" | "success" | "error";
+  evaluationStartLoadingState: "idle" | "loading" | "success" | "error";
+  evaluationStartError: string | undefined;
   saveSiteLoadingState: "idle" | "loading" | "success" | "error";
   saveSiteError: string | undefined;
 };
@@ -30,14 +32,28 @@ const initialState: ReconversionCompatibilityEvaluationState = {
   evaluationResults: undefined,
   evaluationError: undefined,
   evaluationResultsLoadingState: "idle",
+  evaluationStartLoadingState: "idle",
+  evaluationStartError: undefined,
   saveSiteLoadingState: "idle",
   saveSiteError: undefined,
 };
 
 export const reconversionCompatibilityEvaluationReducer = createReducer(initialState, (builder) => {
   builder
+    .addCase(reconversionCompatibilityEvaluationStarted.pending, (state) => {
+      state.evaluationStartLoadingState = "loading";
+      state.evaluationStartError = undefined;
+    })
     .addCase(reconversionCompatibilityEvaluationStarted.fulfilled, (state, action) => {
       state.currentEvaluationId = action.payload.evaluationId;
+      state.evaluationStartLoadingState = "success";
+      state.evaluationStartError = undefined;
+      state.saveSiteLoadingState = "idle";
+      state.saveSiteError = undefined;
+    })
+    .addCase(reconversionCompatibilityEvaluationStarted.rejected, (state, action) => {
+      state.evaluationStartLoadingState = "error";
+      state.evaluationStartError = action.error.message;
     })
     .addCase(reconversionCompatibilityEvaluationReset, (state) => {
       state.evaluationError = undefined;

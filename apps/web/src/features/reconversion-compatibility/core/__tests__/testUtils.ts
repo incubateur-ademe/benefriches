@@ -44,6 +44,18 @@ export class StoreBuilder {
     return this;
   }
 
+  withSaveSiteState(saveState: {
+    loadingState?: "idle" | "loading" | "success" | "error";
+    error?: string;
+  }): this {
+    this.preloadedRootState.reconversionCompatibilityEvaluation = {
+      ...this.preloadedRootState.reconversionCompatibilityEvaluation,
+      saveSiteLoadingState: saveState.loadingState ?? "idle",
+      saveSiteError: saveState.error,
+    };
+    return this;
+  }
+
   build() {
     return createStore(this._appDependencies, this.preloadedRootState);
   }
