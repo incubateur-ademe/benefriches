@@ -94,6 +94,8 @@ export class FakeReconversionCompatibilityService
         cityCode: fakeResponse.enrichissement.codeInsee,
         surfaceArea: fakeResponse.enrichissement.surfaceSite,
         buildingsFootprintSurfaceArea: fakeResponse.enrichissement.surfaceBati,
+        lat: fakeResponse.enrichissement.coordonnees.latitude,
+        long: fakeResponse.enrichissement.coordonnees.longitude,
       },
     });
   }

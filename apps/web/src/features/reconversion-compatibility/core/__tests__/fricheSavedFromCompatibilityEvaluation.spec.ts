@@ -103,8 +103,8 @@ describe("Reconversion compatibility evaluation actions: fricheSavedFromCompatib
           city: "Lyon",
           cityCode: "69001",
           value: "Lyon",
-          long: 0,
-          lat: 0,
+          long: 4.832,
+          lat: 45.7578,
           postCode: "50200",
         },
       });

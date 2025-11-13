@@ -56,8 +56,8 @@ export const fricheSavedFromCompatibilityEvaluation = createAppAsyncThunk(
         city: evaluationResults.evaluationInput.city,
         cityCode: evaluationResults.evaluationInput.cityCode,
         value: evaluationResults.evaluationInput.city,
-        long: 0, // TODO: get coordinates from mutafriches response
-        lat: 0,
+        long: evaluationResults.evaluationInput.long,
+        lat: evaluationResults.evaluationInput.lat,
         postCode: "50200",
       },
     };

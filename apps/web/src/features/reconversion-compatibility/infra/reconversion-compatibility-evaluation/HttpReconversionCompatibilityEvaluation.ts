@@ -75,6 +75,8 @@ export class HttpReconversionCompatibilityEvaluation
         cityCode: json.enrichissement.codeInsee,
         surfaceArea: json.enrichissement.surfaceSite,
         buildingsFootprintSurfaceArea: json.enrichissement.surfaceBati,
+        lat: json.enrichissement.coordonnees.latitude,
+        long: json.enrichissement.coordonnees.longitude,
       },
     };
   }

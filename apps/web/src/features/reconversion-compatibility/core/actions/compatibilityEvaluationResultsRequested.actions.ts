@@ -16,6 +16,8 @@ export type ReconversionCompatibilityEvaluationResults = {
     city: string;
     cityCode: string;
     surfaceArea: number;
+    lat: number;
+    long: number;
     buildingsFootprintSurfaceArea: number;
   };
 };
