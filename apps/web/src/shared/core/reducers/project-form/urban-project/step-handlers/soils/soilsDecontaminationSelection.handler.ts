@@ -8,11 +8,24 @@ export const SoilsDecontaminationSelectionHandler: AnswerStepHandler<"URBAN_PROJ
     stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
 
     getDependencyRules(context, newAnswers) {
+      const existingAnswers = ReadStateHelper.getStepAnswers(
+        context.stepsState,
+        "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
+      );
+
       if (
-        context.stepsState.URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION?.payload
-          ?.decontaminationPlan === newAnswers.decontaminationPlan
+        !existingAnswers ||
+        existingAnswers?.decontaminationPlan === newAnswers.decontaminationPlan
       ) {
         return [];
+      }
+
+      const reinstatementRules = getReinstatementCostsRecomputationRules(context);
+      if (newAnswers.decontaminationPlan === "partial") {
+        return [
+          ...reinstatementRules,
+          { stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA", action: "delete" },
+        ];
       }
       return getReinstatementCostsRecomputationRules(context);
     },
