@@ -14,12 +14,12 @@ export class InMemoryCreateSiteService implements CreateSiteGateway {
   }
 
   async saveCustom(newSite: CustomSitePayload) {
-    if (this.shouldFail) throw new Error("Intended error");
+    if (this.shouldFail) throw new Error("InMemoryCreateSiteService intended test failure");
     await Promise.resolve(this._customSites.push(newSite));
   }
 
   async saveExpress(newSite: ExpressSitePayload) {
-    if (this.shouldFail) throw new Error("Intended error");
+    if (this.shouldFail) throw new Error("InMemoryCreateSiteService intended test failure");
     await Promise.resolve(this._expressSites.push(newSite));
   }
 }

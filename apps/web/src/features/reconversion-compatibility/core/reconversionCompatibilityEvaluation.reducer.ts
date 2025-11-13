@@ -5,6 +5,7 @@ import { reconversionCompatibilityEvaluationReset } from "./actions/compatibilit
 import { ReconversionCompatibilityEvaluationResults } from "./actions/compatibilityEvaluationResultsRequested.actions";
 import { reconversionCompatibilityEvaluationResultsRequested } from "./actions/compatibilityEvaluationResultsRequested.actions";
 import { reconversionCompatibilityEvaluationStarted } from "./actions/compatibilityEvaluationStarted.actions";
+import { fricheSavedFromCompatibilityEvaluation } from "./actions/fricheSavedFromCompatibilityEvaluation.actions";
 
 export type MutabilityUsage =
   | "residentiel"
@@ -20,6 +21,8 @@ type ReconversionCompatibilityEvaluationState = {
   evaluationResults: ReconversionCompatibilityEvaluationResults | undefined;
   evaluationError: string | undefined;
   evaluationResultsLoadingState: "idle" | "loading" | "success" | "error";
+  saveSiteLoadingState: "idle" | "loading" | "success" | "error";
+  saveSiteError: string | undefined;
 };
 
 const initialState: ReconversionCompatibilityEvaluationState = {
@@ -27,6 +30,8 @@ const initialState: ReconversionCompatibilityEvaluationState = {
   evaluationResults: undefined,
   evaluationError: undefined,
   evaluationResultsLoadingState: "idle",
+  saveSiteLoadingState: "idle",
+  saveSiteError: undefined,
 };
 
 export const reconversionCompatibilityEvaluationReducer = createReducer(initialState, (builder) => {
@@ -52,5 +57,19 @@ export const reconversionCompatibilityEvaluationReducer = createReducer(initialS
       state.evaluationResults = undefined;
       state.evaluationError = action.error.message;
       state.evaluationResultsLoadingState = "error";
+    })
+    .addCase(fricheSavedFromCompatibilityEvaluation.pending, (state) => {
+      state.saveSiteLoadingState = "loading";
+      state.saveSiteError = undefined;
+    })
+    .addCase(fricheSavedFromCompatibilityEvaluation.fulfilled, (state) => {
+      state.saveSiteLoadingState = "success";
+      state.saveSiteError = undefined;
+    })
+    .addCase(fricheSavedFromCompatibilityEvaluation.rejected, (state, action) => {
+      state.saveSiteLoadingState = "error";
+      state.saveSiteError = action.error.message;
     });
 });
+
+export const getInitialState = (): ReconversionCompatibilityEvaluationState => initialState;
