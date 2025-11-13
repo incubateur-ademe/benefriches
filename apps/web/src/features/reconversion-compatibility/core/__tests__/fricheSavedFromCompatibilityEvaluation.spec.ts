@@ -34,6 +34,24 @@ describe("Reconversion compatibility evaluation actions: fricheSavedFromCompatib
       );
     });
 
+    it("should be in error state when no currentEvaluationId in store", async () => {
+      const user = buildUser();
+      const evaluationResults = buildMockEvaluationResults();
+
+      const store = new StoreBuilder()
+        .withCurrentUser(user)
+        .withEvaluationResults(evaluationResults)
+        .build();
+
+      await store.dispatch(fricheSavedFromCompatibilityEvaluation());
+
+      const state = store.getState();
+      expect(state.reconversionCompatibilityEvaluation.saveSiteLoadingState).toEqual("error");
+      expect(state.reconversionCompatibilityEvaluation.saveSiteError).toEqual(
+        "NO_CURRENT_EVALUATION_ID",
+      );
+    });
+
     it("should be in error state when saving friche on server fails", async () => {
       const user = buildUser();
       const evaluationResults = buildMockEvaluationResults();
@@ -42,6 +60,7 @@ describe("Reconversion compatibility evaluation actions: fricheSavedFromCompatib
 
       const store = new StoreBuilder()
         .withCurrentUser(user)
+        .withCurrentEvaluationId("id")
         .withEvaluationResults(evaluationResults)
         .withAppDependencies({ createSiteService })
         .build();
@@ -80,6 +99,7 @@ describe("Reconversion compatibility evaluation actions: fricheSavedFromCompatib
       const store = new StoreBuilder()
         .withCurrentUser(user)
         .withEvaluationResults(evaluationResults)
+        .withCurrentEvaluationId("id")
         .withAppDependencies({ createSiteService })
         .build();
 

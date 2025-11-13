@@ -35,6 +35,11 @@ export class InMemoryReconversionCompatibilityEvaluationService
     await Promise.resolve(this._completedEvaluations.push(payload));
   }
 
+  async addRelatedSite(): Promise<void> {
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    return Promise.resolve();
+  }
+
   async getEvaluationResults(
     mutafrichesId: string,
   ): Promise<ReconversionCompatibilityEvaluationResults | null> {

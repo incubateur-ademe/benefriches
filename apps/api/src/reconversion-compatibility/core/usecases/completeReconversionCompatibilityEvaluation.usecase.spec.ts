@@ -30,7 +30,7 @@ describe("CompleteReconversionCompatibilityEvaluationUseCase", () => {
       mutafrichesEvaluationId: null,
       createdAt: new Date("2024-01-10T09:00:00Z"),
       completedAt: null,
-      projectCreations: [],
+      relatedSiteId: null,
     };
 
     repository.evaluations = [existingEvaluation];
@@ -55,7 +55,7 @@ describe("CompleteReconversionCompatibilityEvaluationUseCase", () => {
         mutafrichesEvaluationId: "mutafriches-123",
         createdAt: existingEvaluation.createdAt,
         completedAt: fakeNow,
-        projectCreations: existingEvaluation.projectCreations,
+        relatedSiteId: null,
       },
     ]);
 
@@ -96,7 +96,7 @@ describe("CompleteReconversionCompatibilityEvaluationUseCase", () => {
       mutafrichesEvaluationId: "mutafriches-456",
       createdAt: new Date("2024-01-10T09:00:00Z"),
       completedAt: new Date("2024-01-10T09:30:00Z"),
-      projectCreations: [],
+      relatedSiteId: null,
     };
 
     repository.evaluations = [completedEvaluation];
@@ -119,20 +119,15 @@ describe("CompleteReconversionCompatibilityEvaluationUseCase", () => {
     );
   });
 
-  it("throws an error when evaluation has projects created", async () => {
+  it("throws an error when evaluation has related site", async () => {
     const evaluationWithProjects: ReconversionCompatibilityEvaluation = {
       id: "bdea66f3-e911-4a32-a829-cab382bc34ea",
       createdBy: "58090ca1-7680-4193-a3e8-89b7ed2bd6b8",
-      status: "has_projects_created",
+      status: "related_site_created",
       mutafrichesEvaluationId: "mutafriches-456",
       createdAt: new Date("2024-01-10T09:00:00Z"),
       completedAt: new Date("2024-01-10T09:30:00Z"),
-      projectCreations: [
-        {
-          reconversionProjectId: "project-123",
-          createdAt: new Date("2024-01-10T09:45:00Z"),
-        },
-      ],
+      relatedSiteId: "site-123",
     };
 
     repository.evaluations = [evaluationWithProjects];

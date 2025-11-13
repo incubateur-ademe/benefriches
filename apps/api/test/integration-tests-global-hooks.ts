@@ -6,6 +6,7 @@ afterEach(async () => {
   const sqlConnection: Knex = knex(knexConfig);
 
   const tablesToDelete = [
+    "reconversion_compatibility_evaluations",
     "reconversion_project_yearly_expenses",
     "reconversion_project_yearly_revenues",
     "reconversion_project_reinstatement_costs",
@@ -25,7 +26,6 @@ afterEach(async () => {
     "auth_external_user_identities",
     "verified_emails",
     "domain_events",
-    "reconversion_compatibility_evaluations",
   ] as const;
 
   try {

@@ -15,10 +15,7 @@ const mapToEntity = (
   mutafrichesEvaluationId: row.mutafriches_evaluation_id,
   createdAt: row.created_at,
   completedAt: row.completed_at,
-  projectCreations: row.project_creations.map((pc) => ({
-    reconversionProjectId: pc.reconversionProjectId,
-    createdAt: new Date(pc.createdAt),
-  })),
+  relatedSiteId: row.related_site_id,
 });
 
 @Injectable()
@@ -39,8 +36,8 @@ export class SqlReconversionCompatibilityEvaluationRepository
   async save(evaluation: ReconversionCompatibilityEvaluation): Promise<void> {
     await this.sqlConnection.raw(
       `INSERT INTO reconversion_compatibility_evaluations 
-     (id, created_by, status, mutafriches_evaluation_id, created_at, completed_at, project_creations) 
-     VALUES (?, ?, ?, ?, ?, ?, ?::jsonb)
+     (id, created_by, status, mutafriches_evaluation_id, created_at, completed_at, related_site_id)
+     VALUES (?, ?, ?, ?, ?, ?, ?)
      ON CONFLICT (id) 
      DO UPDATE SET 
        created_by = EXCLUDED.created_by,
@@ -48,7 +45,7 @@ export class SqlReconversionCompatibilityEvaluationRepository
        mutafriches_evaluation_id = EXCLUDED.mutafriches_evaluation_id,
        created_at = EXCLUDED.created_at,
        completed_at = EXCLUDED.completed_at,
-       project_creations = EXCLUDED.project_creations`,
+       related_site_id = EXCLUDED.related_site_id`,
       [
         evaluation.id,
         evaluation.createdBy,
@@ -56,7 +53,7 @@ export class SqlReconversionCompatibilityEvaluationRepository
         evaluation.mutafrichesEvaluationId,
         evaluation.createdAt,
         evaluation.completedAt,
-        JSON.stringify(evaluation.projectCreations),
+        evaluation.relatedSiteId,
       ],
     );
   }

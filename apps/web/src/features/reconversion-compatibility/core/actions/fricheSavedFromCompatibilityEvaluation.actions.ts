@@ -39,10 +39,11 @@ export const fricheSavedFromCompatibilityEvaluation = createAppAsyncThunk(
       currentUser: currentUserState,
       reconversionCompatibilityEvaluation: compatibilityState,
     } = getState();
-    const { evaluationResults } = compatibilityState;
+    const { evaluationResults, currentEvaluationId } = compatibilityState;
 
     if (!currentUserState.currentUser) throw new Error("NO_AUTHENTICATED_USER");
     if (!evaluationResults) throw new Error("NO_EVALUATION_RESULTS");
+    if (!currentEvaluationId) throw new Error("NO_CURRENT_EVALUATION_ID");
 
     const siteId = uuid();
     const siteToCreate: ExpressSitePayload = {
@@ -63,6 +64,11 @@ export const fricheSavedFromCompatibilityEvaluation = createAppAsyncThunk(
     };
 
     await extra.createSiteService.saveExpress(siteToCreate);
+
+    await extra.reconversionCompatibilityEvaluationService.addRelatedSite({
+      evaluationId: currentEvaluationId,
+      relatedSiteId: siteId,
+    });
 
     const projectSuggestions: ProjectSuggestion[] = evaluationResults.top3Usages.map(
       ({ score, usage }) => ({

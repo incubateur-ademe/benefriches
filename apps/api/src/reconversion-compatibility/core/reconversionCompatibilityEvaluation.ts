@@ -1,11 +1,11 @@
 export type ReconversionCompatibilityEvaluation = {
   id: string;
   createdBy: string;
-  status: "started" | "completed" | "has_projects_created";
+  status: "started" | "completed" | "related_site_created";
   mutafrichesEvaluationId: string | null;
   createdAt: Date;
   completedAt: Date | null;
-  projectCreations: { reconversionProjectId: string; createdAt: Date }[];
+  relatedSiteId: string | null;
 };
 
 export function createReconversionCompatibilityEvaluation(
@@ -18,7 +18,7 @@ export function createReconversionCompatibilityEvaluation(
     status: "started",
     mutafrichesEvaluationId: null,
     completedAt: null,
-    projectCreations: [],
+    relatedSiteId: null,
   };
 }
 
@@ -38,13 +38,13 @@ export function completeReconversionCompatibilityEvaluation(
   };
 }
 
-export function addProjectCreation(
+export function addRelatedSite(
   evaluation: ReconversionCompatibilityEvaluation,
-  projectCreation: { reconversionProjectId: string; createdAt: Date },
+  relatedSiteId: string,
 ): ReconversionCompatibilityEvaluation {
   return {
     ...evaluation,
-    status: "has_projects_created",
-    projectCreations: [...evaluation.projectCreations, projectCreation],
+    status: "related_site_created",
+    relatedSiteId,
   };
 }

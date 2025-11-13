@@ -48,6 +48,16 @@ export class HttpReconversionCompatibilityEvaluation
     });
   }
 
+  async addRelatedSite(input: { evaluationId: string; relatedSiteId: string }): Promise<void> {
+    await fetch(`/api/reconversion-compatibility/${input.evaluationId}/add-related-site`, {
+      method: "POST",
+      body: JSON.stringify({ relatedSiteId: input.relatedSiteId }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
+
   async getEvaluationResults(
     mutafrichesId: string,
   ): Promise<ReconversionCompatibilityEvaluationResults | null> {

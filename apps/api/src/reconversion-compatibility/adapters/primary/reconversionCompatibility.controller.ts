@@ -6,12 +6,13 @@ import {
   Post,
   Req,
   UseGuards,
+  Param,
 } from "@nestjs/common";
 import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
 
 import { JwtAuthGuard, RequestWithAuthenticatedUser } from "src/auth/adapters/JwtAuthGuard";
-import { AddProjectCreationToReconversionCompatibilityEvaluationUseCase } from "src/reconversion-compatibility/core/usecases/addProjectCreationToReconversionCompatibilityEvaluation.usecase";
+import { AddRelatedSiteToReconversionCompatibilityEvaluationUseCase } from "src/reconversion-compatibility/core/usecases/addRelatedSiteToReconversionCompatibilityEvaluation.usecase";
 import { CompleteReconversionCompatibilityEvaluationUseCase } from "src/reconversion-compatibility/core/usecases/completeReconversionCompatibilityEvaluation.usecase";
 import { StartReconversionCompatibilityEvaluationUseCase } from "src/reconversion-compatibility/core/usecases/startReconversionCompatibilityEvaluation.usecase";
 
@@ -32,19 +33,18 @@ class CompleteReconversionCompatibilityEvaluationBodyDto extends createZodDto(
   completeReconversionCompatibilityEvaluationBodySchema,
 ) {}
 
-const addProjectCreationBodySchema = z.object({
-  evaluationId: z.uuid(),
-  reconversionProjectId: z.uuid(),
+const addRelatedSiteIdBodySchema = z.object({
+  relatedSiteId: z.uuid(),
 });
 
-class AddProjectCreationBodyDto extends createZodDto(addProjectCreationBodySchema) {}
+class AddRelatedSiteBodyDto extends createZodDto(addRelatedSiteIdBodySchema) {}
 
 @Controller("reconversion-compatibility")
 export class ReconversionCompatibilityController {
   constructor(
     private readonly startReconversionCompatibilityEvaluationUseCase: StartReconversionCompatibilityEvaluationUseCase,
     private readonly completeReconversionCompatibilityEvaluationUseCase: CompleteReconversionCompatibilityEvaluationUseCase,
-    private readonly addProjectCreationToReconversionCompatibilityEvaluationUseCase: AddProjectCreationToReconversionCompatibilityEvaluationUseCase,
+    private readonly addRelatedSiteToReconversionCompatibilityEvaluationUseCase: AddRelatedSiteToReconversionCompatibilityEvaluationUseCase,
   ) {}
 
   @UseGuards(JwtAuthGuard)
@@ -83,13 +83,15 @@ export class ReconversionCompatibilityController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post("add-project-creation")
-  async addProjectCreation(@Body() body: AddProjectCreationBodyDto) {
-    const result =
-      await this.addProjectCreationToReconversionCompatibilityEvaluationUseCase.execute({
-        evaluationId: body.evaluationId,
-        reconversionProjectId: body.reconversionProjectId,
-      });
+  @Post(":evaluationId/add-related-site")
+  async addSiteCreation(
+    @Param("evaluationId") evaluationId: string,
+    @Body() body: AddRelatedSiteBodyDto,
+  ) {
+    const result = await this.addRelatedSiteToReconversionCompatibilityEvaluationUseCase.execute({
+      evaluationId: evaluationId,
+      relatedSiteId: body.relatedSiteId,
+    });
 
     if (result.isFailure()) {
       throw new InternalServerErrorException(result.getError());

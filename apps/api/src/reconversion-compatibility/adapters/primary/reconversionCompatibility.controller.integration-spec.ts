@@ -81,7 +81,8 @@ describe("ReconversionCompatibility controller", () => {
         // oxlint-disable-next-line typescript/no-unsafe-assignment
         created_at: expect.any(Date),
         completed_at: null,
-        project_creations: [],
+        project_creations: null,
+        related_site_id: null,
       });
     });
 
@@ -99,6 +100,7 @@ describe("ReconversionCompatibility controller", () => {
         project_creations: [],
         completed_at: null,
         mutafriches_evaluation_id: null,
+        related_site_id: null,
       });
 
       const response = await supertest(app.getHttpServer())
@@ -198,42 +200,35 @@ describe("ReconversionCompatibility controller", () => {
     });
   });
 
-  describe("POST /reconversion-compatibility/add-project-creation", () => {
+  describe("POST /reconversion-compatibility/:evaluationId/add-related-site", () => {
     it("responds with 401 if not authenticated", async () => {
       const response = await supertest(app.getHttpServer())
-        .post("/api/reconversion-compatibility/add-project-creation")
-        .send({ evaluationId: uuid(), reconversionProjectId: uuid() });
+        .post(`/api/reconversion-compatibility/${uuid()}/add-related-site`)
+        .send({ relatedSiteId: uuid() });
 
       expect(response.status).toEqual(401);
     });
 
-    it.each(["evaluationId", "reconversionProjectId"] as const)(
-      "can't add project creation without mandatory field '%s'",
-      async (mandatoryField) => {
-        const user = new UserBuilder().asLocalAuthority().build();
-        const { accessToken } = await authenticateUser(app)(user);
+    it("can't add related site id without required parameter", async () => {
+      const user = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
 
-        // oxlint-disable-next-line typescript/no-unused-vars
-        const { [mandatoryField]: _, ...body } = {
-          evaluationId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-          reconversionProjectId: "e717848d-1f24-4c71-b628-98aac33e3a00",
-        };
+      const response = await supertest(app.getHttpServer())
+        .post(
+          `/api/reconversion-compatibility/f47ac10b-58cc-4372-a567-0e02b2c3d479/add-related-site`,
+        )
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send({});
 
-        const response = await supertest(app.getHttpServer())
-          .post("/api/reconversion-compatibility/add-project-creation")
-          .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
-          .send(body);
+      expect(response.status).toEqual(400);
+      expect(response.body).toHaveProperty("errors");
 
-        expect(response.status).toEqual(400);
-        expect(response.body).toHaveProperty("errors");
+      const responseErrors = (response.body as BadRequestResponseBody).errors;
+      expect(responseErrors).toHaveLength(1);
+      expect(responseErrors[0]?.path).toContain("relatedSiteId");
+    });
 
-        const responseErrors = (response.body as BadRequestResponseBody).errors;
-        expect(responseErrors).toHaveLength(1);
-        expect(responseErrors[0]?.path).toContain(mandatoryField);
-      },
-    );
-
-    it("adds a project creation to a completed evaluation and updates it in database", async () => {
+    it("adds a relatedSiteId to a completed evaluation and updates it in database", async () => {
       const user = new UserBuilder().asLocalAuthority().build();
       const { accessToken } = await authenticateUser(app)(user);
 
@@ -242,18 +237,34 @@ describe("ReconversionCompatibility controller", () => {
       const completedAt = new Date("2024-01-10T10:00:00Z");
 
       await sqlConnection.raw(
+        `INSERT INTO sites 
+       (id, name, created_by, creation_mode, nature, surface_area, owner_structure_type, tenant_structure_type, created_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [
+          "fae39a8a-50de-4449-86f3-742a1584d9bd",
+          "Mon site",
+          user.id,
+          "custom",
+          "friche",
+          15000,
+          "",
+          "",
+          startedAt,
+        ],
+      );
+
+      await sqlConnection.raw(
         `INSERT INTO reconversion_compatibility_evaluations 
-       (id, created_by, status, mutafriches_evaluation_id, created_at, completed_at, project_creations) 
-       VALUES (?, ?, ?, ?, ?, ?, ?::jsonb)`,
-        [evaluationId, user.id, "completed", "mutafriches-123", startedAt, completedAt, "[]"],
+       (id, created_by, status, mutafriches_evaluation_id, created_at, completed_at) 
+       VALUES (?, ?, ?, ?, ?, ?)`,
+        [evaluationId, user.id, "completed", "mutafriches-123", startedAt, completedAt],
       );
 
       const response = await supertest(app.getHttpServer())
-        .post("/api/reconversion-compatibility/add-project-creation")
+        .post(`/api/reconversion-compatibility/${evaluationId}/add-related-site`)
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send({
-          evaluationId,
-          reconversionProjectId: "fae39a8a-50de-4449-86f3-742a1584d9bd",
+          relatedSiteId: "fae39a8a-50de-4449-86f3-742a1584d9bd",
         });
 
       expect(response.status).toEqual(201);
@@ -266,30 +277,54 @@ describe("ReconversionCompatibility controller", () => {
       expect(evaluationsInDb[0]).toEqual({
         id: evaluationId,
         created_by: user.id,
-        status: "has_projects_created",
+        status: "related_site_created",
         mutafriches_evaluation_id: "mutafriches-123",
         created_at: startedAt,
         completed_at: completedAt,
-        project_creations: [
-          {
-            reconversionProjectId: "fae39a8a-50de-4449-86f3-742a1584d9bd",
-            // oxlint-disable-next-line typescript/no-unsafe-assignment
-            createdAt: expect.any(String), // stored as ISO string in JSONB
-          },
-        ],
+        related_site_id: "fae39a8a-50de-4449-86f3-742a1584d9bd",
+        project_creations: null,
       });
     });
 
-    it("returns an error when trying to add project creation to a non-existent evaluation", async () => {
+    it("returns an error when trying to add related site id to an evaluation that already have related_site_id", async () => {
+      const user = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+      const startedAt = new Date("2024-01-10T09:00:00Z");
+      const completedAt = new Date("2024-01-10T10:00:00Z");
+
+      const siteId = uuid();
+      await sqlConnection.raw(
+        `INSERT INTO sites 
+       (id, name, created_by, creation_mode, nature, surface_area, owner_structure_type, tenant_structure_type, created_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [siteId, "Mon site", user.id, "custom", "friche", 15000, "", "", startedAt],
+      );
+      await sqlConnection.raw(
+        `INSERT INTO reconversion_compatibility_evaluations 
+       (id, created_by, status, mutafriches_evaluation_id, created_at, completed_at, related_site_id) 
+       VALUES (?, ?, ?, ?, ?, ?, ?)`,
+        [uuid(), user.id, "completed", "mutafriches-123", startedAt, completedAt, siteId],
+      );
+
+      const response = await supertest(app.getHttpServer())
+        .post(`/api/reconversion-compatibility/${uuid()}/add-related-site`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send({
+          relatedSiteId: uuid(),
+        });
+
+      expect(response.status).toEqual(500);
+    });
+
+    it("returns an error when trying to add related site id to a non-existent evaluation", async () => {
       const user = new UserBuilder().asLocalAuthority().build();
       const { accessToken } = await authenticateUser(app)(user);
 
       const response = await supertest(app.getHttpServer())
-        .post("/api/reconversion-compatibility/add-project-creation")
+        .post(`/api/reconversion-compatibility/${uuid()}/add-related-site`)
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send({
-          evaluationId: uuid(),
-          reconversionProjectId: uuid(),
+          relatedSiteId: uuid(),
         });
 
       expect(response.status).toEqual(500);

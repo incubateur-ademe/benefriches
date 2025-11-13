@@ -42,7 +42,7 @@ describe("StartReconversionCompatibilityEvaluationUseCase", () => {
         mutafrichesEvaluationId: null,
         createdAt: fakeNow,
         completedAt: null,
-        projectCreations: [],
+        relatedSiteId: null,
       },
     ]);
 

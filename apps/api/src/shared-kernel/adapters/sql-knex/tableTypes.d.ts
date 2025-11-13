@@ -252,6 +252,7 @@ declare module "knex/types/tables" {
       mutafriches_evaluation_id: string | null;
       created_at: Date;
       completed_at: Date | null;
+      related_site_id: string | null;
       project_creations: {
         reconversionProjectId: string;
         createdAt: string; // JSON stores dates as ISO strings

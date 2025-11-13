@@ -7,4 +7,5 @@ export interface ReconversionCompatibilityEvaluationGateway {
   getEvaluationResults(
     mutafrichesId: string,
   ): Promise<ReconversionCompatibilityEvaluationResults | null>;
+  addRelatedSite(payload: { evaluationId: string; relatedSiteId: string }): Promise<void>;
 }
