@@ -47,25 +47,33 @@ export default function ReconversionCompatibilityResultsPage({
       )}
       {viewData.hasError && viewData.evaluationError && (
         <div className="fr-alert fr-alert--error fr-mb-4w">
-          <p className="fr-alert__body fr-mb-0">{viewData.evaluationError}</p>
+          <p className="fr-alert__body fr-mb-0">
+            {viewData.evaluationError === "EVALUATION_NOT_FOUND"
+              ? "Aucun évaluation n'a été trouvée avec l'identifiant fourni."
+              : "Une erreur est survenue lors de la récupération des résultats d'évaluation. Veuillez réessayer plus tard."}
+          </p>
         </div>
       )}
-      <section className="flex flex-col md:flex-row gap-8">
-        {viewData.evaluationResults?.top3MutabilityUsages.map((result) => (
-          <CompatibilityCard
-            usage={result.usage}
-            score={result.score}
-            rank={result.rank}
-            key={result.usage}
-          />
-        ))}
-      </section>
-      <div className="mt-10 flex flex-col items-end gap-2">
-        <Button onClick={onFricheSaved}>Sauvegarder ma friche</Button>
-        <p className="text-sm">
-          Vous pourrez ensuite évaluer les impacts socio-économiques d'un projet.
-        </p>
-      </div>
+      {viewData.evaluationResultsLoadingState === "success" && (
+        <>
+          <section className="flex flex-col md:flex-row gap-8">
+            {viewData.evaluationResults?.top3MutabilityUsages.map((result) => (
+              <CompatibilityCard
+                usage={result.usage}
+                score={result.score}
+                rank={result.rank}
+                key={result.usage}
+              />
+            ))}
+          </section>
+          <div className="mt-10 flex flex-col items-end gap-2">
+            <Button onClick={onFricheSaved}>Sauvegarder ma friche</Button>
+            <p className="text-sm">
+              Vous pourrez ensuite évaluer les impacts socio-économiques d'un projet.
+            </p>
+          </div>
+        </>
+      )}
     </section>
   );
 }
