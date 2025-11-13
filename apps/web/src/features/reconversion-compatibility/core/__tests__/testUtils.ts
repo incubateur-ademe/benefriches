@@ -56,6 +56,14 @@ export class StoreBuilder {
     return this;
   }
 
+  withCurrentEvaluationId(evaluationId: string): this {
+    this.preloadedRootState.reconversionCompatibilityEvaluation = {
+      ...this.preloadedRootState.reconversionCompatibilityEvaluation,
+      currentEvaluationId: evaluationId,
+    };
+    return this;
+  }
+
   build() {
     return createStore(this._appDependencies, this.preloadedRootState);
   }

@@ -1,6 +1,7 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { v4 as uuid } from "uuid";
 
+import { reconversionCompatibilityEvaluationCompleted } from "./actions/compatibilityEvaluationCompleted.actions";
 import { reconversionCompatibilityEvaluationReset } from "./actions/compatibilityEvaluationReset.actions";
 import { ReconversionCompatibilityEvaluationResults } from "./actions/compatibilityEvaluationResultsRequested.actions";
 import { reconversionCompatibilityEvaluationResultsRequested } from "./actions/compatibilityEvaluationResultsRequested.actions";
@@ -23,6 +24,8 @@ type ReconversionCompatibilityEvaluationState = {
   evaluationResultsLoadingState: "idle" | "loading" | "success" | "error";
   evaluationStartLoadingState: "idle" | "loading" | "success" | "error";
   evaluationStartError: string | undefined;
+  evaluationCompletedLoadingState: "idle" | "loading" | "success" | "error";
+  evaluationCompletedError: string | undefined;
   saveSiteLoadingState: "idle" | "loading" | "success" | "error";
   saveSiteError: string | undefined;
 };
@@ -34,6 +37,8 @@ const initialState: ReconversionCompatibilityEvaluationState = {
   evaluationResultsLoadingState: "idle",
   evaluationStartLoadingState: "idle",
   evaluationStartError: undefined,
+  evaluationCompletedLoadingState: "idle",
+  evaluationCompletedError: undefined,
   saveSiteLoadingState: "idle",
   saveSiteError: undefined,
 };
@@ -54,6 +59,18 @@ export const reconversionCompatibilityEvaluationReducer = createReducer(initialS
     .addCase(reconversionCompatibilityEvaluationStarted.rejected, (state, action) => {
       state.evaluationStartLoadingState = "error";
       state.evaluationStartError = action.error.message;
+    })
+    .addCase(reconversionCompatibilityEvaluationCompleted.pending, (state) => {
+      state.evaluationCompletedLoadingState = "loading";
+      state.evaluationCompletedError = undefined;
+    })
+    .addCase(reconversionCompatibilityEvaluationCompleted.fulfilled, (state) => {
+      state.evaluationCompletedLoadingState = "success";
+      state.evaluationCompletedError = undefined;
+    })
+    .addCase(reconversionCompatibilityEvaluationCompleted.rejected, (state, action) => {
+      state.evaluationCompletedLoadingState = "error";
+      state.evaluationCompletedError = action.error.message;
     })
     .addCase(reconversionCompatibilityEvaluationReset, (state) => {
       state.evaluationError = undefined;
