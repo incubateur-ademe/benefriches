@@ -70,7 +70,17 @@ export default function SiteCheckList({ siteId, siteName }: { siteId: string; si
         </TaskItem>
         <TaskItem name="Demande d'accompagnement par un·e expert·e friche" status="todo">
           <ExternalLink className="text-sm" href="https://urbanvitaliz.fr/">
-            Contacter un conseiller
+            Contacter un conseiller Urban Vitaliz
+          </ExternalLink>
+        </TaskItem>
+        <TaskItem name="Demande de conseils sur la dépollution" status="todo">
+          <ExternalLink className="text-sm" href="mailto:friches.fondsvert@ademe.fr">
+            Contacter l'ADEME
+          </ExternalLink>
+        </TaskItem>
+        <TaskItem name="Trouver des subventions" status="todo">
+          <ExternalLink className="text-sm" href="https://aides-territoires.beta.gouv.fr/">
+            Vérifier mon éligibilité sur Aides-Territoires
           </ExternalLink>
         </TaskItem>
       </ul>
