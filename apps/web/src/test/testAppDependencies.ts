@@ -15,7 +15,7 @@ import { InMemoryReconversionProjectsListService } from "@/features/projects/inf
 import { MockQuickUrbanProjectImpactsService } from "@/features/projects/infrastructure/quick-urban-project-impacts-service/MockQuickUrbanProjectImpactsService";
 import { MockReconversionProjectImpactsApi } from "@/features/projects/infrastructure/reconversion-project-impacts-service/MockReconversionProjectImpactsService";
 import { MockUrbanSprawlImpactsComparisonService } from "@/features/projects/infrastructure/urban-sprawl-impacts-comparison-service/MockUrbanSprawlImpactsComparisonService";
-import { FakeReconversionCompatibilityService } from "@/features/reconversion-compatibility/infra/reconversion-compatibility-evaluation/FakeReconversionCompatibilityEvaluation";
+import { InMemoryReconversionCompatibilityEvaluationService } from "@/features/reconversion-compatibility/infra/reconversion-compatibility-evaluation/InMemoryReconversionCompatibilityEvaluation";
 import { MockSiteFeaturesService } from "@/features/site-features/infra/site-features-service/MockSiteFeaturesService";
 import { InMemoryUpdateReconversionProjectService } from "@/features/update-project/infrastructure/update-project-service/InMemoryUpdateReconversionProjectService";
 import { InMemoryCreateFeatureAlertService } from "@/features/user-feature-alerts/infrastructure/create-feature-alert-service/InMemoryCreateFeatureAlertService";
@@ -68,7 +68,8 @@ export const getTestAppDependencies = (
     projectFeaturesService: new MockProjectFeaturesService(),
     quickUrbanProjectImpactsService: new MockQuickUrbanProjectImpactsService(),
     urbanSprawlImpactsComparisonService: new MockUrbanSprawlImpactsComparisonService(),
-    reconversionCompatibilityEvaluationService: new FakeReconversionCompatibilityService(),
+    reconversionCompatibilityEvaluationService:
+      new InMemoryReconversionCompatibilityEvaluationService(),
     updateProjectService: new InMemoryUpdateReconversionProjectService(),
     ...depsOverride,
   };
