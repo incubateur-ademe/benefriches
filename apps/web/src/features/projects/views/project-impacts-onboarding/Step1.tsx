@@ -32,6 +32,7 @@ export default function Step1({
 
   return (
     <StepView
+      htmlTitle="Types d'impacts - Introduction - Impacts du projet"
       title={
         <>
           Bénéfriches calcule{" "}

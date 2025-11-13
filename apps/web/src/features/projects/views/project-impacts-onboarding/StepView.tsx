@@ -1,10 +1,10 @@
 import Button from "@codegouvfr/react-dsfr/Button";
 import { ReactNode } from "react";
 
-import StickyBottomBar from "@/shared/views/components/StickyBottomBar/StickyBottomBar";
-import { useHeaderHeight } from "@/shared/views/hooks/useHeaderHeight";
+import OnboardingPageLayout from "@/shared/views/layout/OnboardingPageLayout/OnboardingPageLayout";
 
 type Props = {
+  htmlTitle: string;
   title: ReactNode;
   children: ReactNode;
   nextButtonLabel?: string;
@@ -15,6 +15,7 @@ type Props = {
 };
 
 export default function StepView({
+  htmlTitle,
   title,
   children,
   onNextClick,
@@ -23,18 +24,11 @@ export default function StepView({
   canSkipOnboarding,
   skipOnboarding,
 }: Props) {
-  const headerHeight = useHeaderHeight();
-  const innerPageHeight = `calc(100vh - ${headerHeight}px)`;
-
   return (
-    <div className="flex flex-col" style={{ minHeight: innerPageHeight }}>
-      <section className="flex-1 py-8 md:pt-20">
-        <h1 className="text-[32px]">{title}</h1>
-        {children}
-      </section>
-
-      <StickyBottomBar>
-        <ul className="list-none flex gap-4 items-center justify-between">
+    <OnboardingPageLayout
+      htmlTitle={htmlTitle}
+      bottomBarContent={
+        <ul className="list-none p-0 m-0 flex gap-4 items-center justify-between md:max-w-3/4 md:mx-auto">
           {onBackClick && (
             <li>
               <Button priority="secondary" onClick={onBackClick}>
@@ -55,7 +49,12 @@ export default function StepView({
             </Button>
           </li>
         </ul>
-      </StickyBottomBar>
-    </div>
+      }
+    >
+      <div className="md:max-w-3/4 md:mx-auto">
+        <h1 className="text-[32px]">{title}</h1>
+        {children}
+      </div>
+    </OnboardingPageLayout>
   );
 }

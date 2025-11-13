@@ -2,10 +2,8 @@ import Button from "@codegouvfr/react-dsfr/Button";
 import React, { ReactNode } from "react";
 
 import { siteCreationInitiated } from "@/features/create-site/core/actions/introduction.actions";
-import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
-import StickyBottomBar from "@/shared/views/components/StickyBottomBar/StickyBottomBar";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
-import { useHeaderHeight } from "@/shared/views/hooks/useHeaderHeight";
+import OnboardingPageLayout from "@/shared/views/layout/OnboardingPageLayout/OnboardingPageLayout";
 import { routes } from "@/shared/views/router";
 
 import { OnboardingVariant } from "../when-to-use/OnboardingWhenToUsePage";
@@ -102,7 +100,6 @@ const mutabiliteEvaluationSteps: HowItWorksStepDefinition[] = [
 
 function HowItWorksPage({ variant }: Props) {
   const dispatch = useAppDispatch();
-  const headerHeight = useHeaderHeight();
   const stepsToUse =
     variant === "evaluation-impacts" ? impactsEvaluationSteps : mutabiliteEvaluationSteps;
 
@@ -115,42 +112,37 @@ function HowItWorksPage({ variant }: Props) {
     }
   };
 
-  const containerHeight = headerHeight > 0 ? `calc(100vh - ${headerHeight}px)` : "100vh";
-
   return (
-    <>
-      <HtmlTitle>Comment ça marche - Introduction</HtmlTitle>
-      <div className="fr-container flex flex-col" style={{ minHeight: containerHeight }}>
-        <section className="py-10 md:py-20 flex-1">
-          <h2 className="mb-8">Bénéfriches, comment ça marche ?</h2>
+    <OnboardingPageLayout
+      htmlTitle="Comment ça marche - Introduction"
+      bottomBarContent={
+        <div className="flex justify-between gap-4">
+          <Button
+            priority="secondary"
+            linkProps={routes.onBoardingWhenNotToUse({ fonctionnalite: variant }).link}
+          >
+            Retour
+          </Button>
+          <Button priority="secondary" className="ml-auto" onClick={finishIntroduction}>
+            Passer l'intro
+          </Button>
+          <Button priority="primary" onClick={finishIntroduction}>
+            C'est parti
+          </Button>
+        </div>
+      }
+    >
+      <h2 className="mb-8">Bénéfriches, comment ça marche ?</h2>
 
-          <div className="animate-fade-in-up ">
-            {stepsToUse.map((props, index) => (
-              <React.Fragment key={props.title}>
-                {props.introductionText}
-                <Step stepNumber={index + 1} {...props} />
-              </React.Fragment>
-            ))}
-          </div>
-        </section>
-        <StickyBottomBar>
-          <div className="flex justify-between gap-4">
-            <Button
-              priority="secondary"
-              linkProps={routes.onBoardingWhenNotToUse({ fonctionnalite: variant }).link}
-            >
-              Retour
-            </Button>
-            <Button priority="secondary" className="ml-auto" onClick={finishIntroduction}>
-              Passer l'intro
-            </Button>
-            <Button priority="primary" onClick={finishIntroduction}>
-              C'est parti
-            </Button>
-          </div>
-        </StickyBottomBar>
+      <div className="animate-fade-in-up ">
+        {stepsToUse.map((props, index) => (
+          <React.Fragment key={props.title}>
+            {props.introductionText}
+            <Step stepNumber={index + 1} {...props} />
+          </React.Fragment>
+        ))}
       </div>
-    </>
+    </OnboardingPageLayout>
   );
 }
 

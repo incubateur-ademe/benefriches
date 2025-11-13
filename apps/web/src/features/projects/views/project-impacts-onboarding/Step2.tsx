@@ -34,6 +34,7 @@ export default function Step2({
 
   return (
     <StepView
+      htmlTitle="Types d'entités - Introduction - Impacts du projet"
       title={
         <>
           Bénéfriches prend en compte <span className="bg-[#FFC72780]">plusieurs entités</span>.
