@@ -44,23 +44,6 @@ module/
 
 ---
 
-## 📝 Code Templates
-
-**For detailed code templates and examples, see [CLAUDE-PATTERNS.md](./CLAUDE-PATTERNS.md).**
-
-This includes:
-
-- Domain Models (Type-based, Class-based, Zod schemas)
-- ViewModels & Gateway Interfaces
-- UseCase implementations
-- Unit tests (happy path & failure cases)
-- SQL Repository, Query, and In-Memory implementations
-- Controllers & NestJS Modules
-- Error handling, Domain events, Migrations
-- Transactions & JSON aggregation queries
-
----
-
 ## 🎯 Naming & File Conventions
 
 ### Code Element Naming
@@ -233,40 +216,99 @@ import {
 
 ---
 
-## 🚀 Feature Checklist (TDD Approach)
+## 🚀 TDD Development Workflow
 
-When adding a feature, follow this TDD workflow:
+**CRITICAL**: Always follow Test-Driven Development (TDD) - write tests BEFORE implementation.
 
-### Phase 1: UseCase Core (TDD Red-Green-Refactor)
+### Phase 1: UseCase Core (Red-Green-Refactor Cycle)
 
-1. ✅ **Gateway interfaces**: `core/gateways/[Name]Repository.ts` + `[Name]Query.ts` (minimal, just what UseCase needs)
-2. ✅ **Empty UseCase skeleton**: `core/usecases/[verb][Noun].usecase.ts` with minimal structure
-3. ✅ **Nominal unit test**: Write the happy path test FIRST → 🔴 **RED** (test fails)
-4. ✅ **InMemory implementation**: `adapters/secondary/*/InMemory*.ts` for testing
-5. ✅ **Implement UseCase**: Make the nominal test pass → 🟢 **GREEN**
-6. ✅ **Add edge case tests**: Failure scenarios, validation errors, boundary conditions
-7. ✅ **Refactor**: Clean up implementation while keeping all tests green → 🔵 **REFACTOR**
+**Setup**:
 
-### Phase 2: Domain Models & Mocks
+1. ✅ **Gateway interfaces**: `core/gateways/[Name]Repository.ts` + `[Name]Query.ts` (minimal signatures)
+2. ✅ **UseCase skeleton**: `core/usecases/[verb][Noun].usecase.ts` (empty `execute()` method)
+3. ✅ **InMemory implementations**: `adapters/secondary/*/InMemory*.ts` (for testing)
 
-8. ✅ **Domain model** (if needed): `core/models/[entity].ts` (type, class, or Zod schema)
-9. ✅ **Mock factory**: `core/models/[entity].mock.ts`
+**TDD Cycle** (repeat for each behavior):
 
-### Phase 3: SQL Implementation (Test-First)
+```
+🔴 RED → 🟢 GREEN → 🔵 REFACTOR
+```
 
-10. ✅ **Migration**: `migrations/[timestamp]_*.ts` - Create database schema
-11. ✅ **Table types**: Update `shared-kernel/adapters/sql-knex/tableTypes.d.ts`
-12. ✅ **SQL Repository/Query**: `adapters/secondary/*/Sql*.ts`
-13. ✅ **SQL Integration tests**: Test SQL implementation against real database
+4. ✅ **Write ONE failing unit test** → 🔴 **RED**
+   - Start with happy path test
+   - Test should fail (UseCase not implemented yet)
+   - Example: `it("should create site and return id")`
 
-### Phase 4: HTTP Layer & Wiring
+5. ✅ **Make test pass with minimal code** → 🟢 **GREEN**
+   - Implement just enough to make THIS test pass
+   - Don't implement features not tested yet
+   - Run: `pnpm --filter api test:unit path/to/usecase.spec.ts`
 
-14. ✅ **Controller**: `adapters/primary/[module].controller.ts`
-15. ✅ **Controller integration tests**: Test full HTTP → UseCase → DB flow
-16. ✅ **Module**: `adapters/primary/[module].module.ts` - Wire all dependencies with factory pattern
-17. ✅ **Update AppModule**: Add new module to `app.module.ts` imports
+6. ✅ **Refactor if needed** → 🔵 **REFACTOR**
+   - Clean up code while keeping test green
+   - Extract helper functions, improve naming
+   - Tests must still pass
 
-**Key Principle**: Always write tests BEFORE implementation (TDD). Start with usecase unit tests, then SQL integration tests, then controller integration tests.
+7. ✅ **Repeat cycle for next behavior**
+   - Write test for failure case (e.g., "site already exists")
+   - Make it pass
+   - Refactor
+   - Continue until all business logic is covered
+
+**Result**: Fully tested UseCase with InMemory implementations, no database yet.
+
+### Phase 2: SQL Layer (Test-First)
+
+8. ✅ **Migration FIRST**: `migrations/[timestamp]_*.ts`
+   - Create database schema
+   - Run: `pnpm --filter api knex:migrate-latest`
+
+9. ✅ **Table types**: Update `shared-kernel/adapters/sql-knex/tableTypes.d.ts`
+
+10. ✅ **Write SQL integration test** → 🔴 **RED**
+    - Test SQL Repository/Query against real DB
+    - Test should fail (SQL implementation doesn't exist)
+    - Example: `SqlSiteRepository.integration-spec.ts`
+
+11. ✅ **Implement SQL Repository/Query** → 🟢 **GREEN**
+    - Make integration test pass
+    - Run: `pnpm --filter api test:integration path/to/Sql*.integration-spec.ts`
+
+12. ✅ **Refactor SQL implementation** → 🔵 **REFACTOR**
+
+### Phase 3: HTTP Layer (Test-First)
+
+13. ✅ **Write controller integration test** → 🔴 **RED**
+    - Test full HTTP → Controller → UseCase → DB flow
+    - Test authentication, validation, error cases
+    - Example: `sites.controller.integration-spec.ts`
+
+14. ✅ **Implement controller** → 🟢 **GREEN**
+    - Handle Result → HTTP mapping
+    - Add authentication guards
+    - Make integration test pass
+
+15. ✅ **Wire dependencies in NestJS module**
+    - Create `[module].module.ts` with factory pattern
+    - Register all providers (UseCases, Repositories, Queries)
+
+16. ✅ **Update AppModule**: Add new module to `app.module.ts` imports
+
+17. ✅ **Run full test suite**:
+    - `pnpm --filter api typecheck`
+    - `pnpm --filter api lint`
+    - `pnpm --filter api test:unit`
+    - `pnpm --filter api test:integration`
+
+### TDD Principles
+
+- **Write test BEFORE code**: Every piece of functionality starts with a failing test
+- **Smallest step possible**: Make test pass with minimal implementation
+- **One test at a time**: Don't write multiple tests before making first one pass
+- **Refactor with confidence**: Tests ensure refactoring doesn't break behavior
+- **Red-Green-Refactor rhythm**: Never skip a step in the cycle
+
+**See also**: [05-unit-testing-pattern.md](../../.claude/context/api/05-unit-testing-pattern.md), [06-integration-testing-pattern.md](../../.claude/context/api/06-integration-testing-pattern.md)
 
 ---
 
@@ -345,65 +387,32 @@ See [root CLAUDE.md](../../CLAUDE.md#-tech-stack-summary) for full monorepo tech
 
 ---
 
-## 🧪 Test Pattern
-
-```typescript
-describe("[UseCase/Class Name]", () => {
-  let dependency: InMemoryDependency;
-  let usecase: MyUseCase;
-
-  beforeEach(() => {
-    dependency = new InMemoryDependency();
-    usecase = new MyUseCase(dependency);
-  });
-
-  it("should [expected behavior]", async () => {
-    // Arrange
-    dependency._setData([...]);
-
-    // Act
-    const result = await usecase.execute({ ... });
-
-    // Assert
-    expect(result.isSuccess()).toBe(true);
-    expect(result.getData()).toEqual({ ... });
-  });
-});
-```
-
----
-
-## 📖 Type Patterns
-
-```typescript
-// Request/Response types (at top of usecase)
-type Request = { siteId: string };
-type Response = SiteViewModel;
-
-// ViewModel (for API responses)
-export type SiteViewModel = {
-  id: string;
-  name: string;
-  // ... public API shape
-};
-
-// Domain type (internal)
-export type Site = z.infer<typeof siteSchema>;
-
-// Interface for behavior
-export interface SitesRepository {
-  save(site: Site): Promise<void>;
-}
-```
-
----
-
 ## 🤖 AI Assistant Workflow
 
-**See also**:
+**See also**: [root CLAUDE.md → For AI Assistants](../../CLAUDE.md#-for-ai-assistants) for high-level guidance on code generation across the monorepo
 
-- [root CLAUDE.md → For AI Assistants](../../CLAUDE.md#-for-ai-assistants) for high-level guidance on code generation across the monorepo
-- [root CLAUDE.md → Testing Strategy](../../CLAUDE.md#-testing-strategy) for test organization and workflow after code generation
+### Context Discovery: Granular Pattern Files
+
+**NEW**: Detailed patterns are now in [`.claude/context/api/`](../../.claude/context/api/) for granular, on-demand loading.
+
+#### Always Load First
+
+- **[00-overview.md](../../.claude/context/api/00-overview.md)** - Architecture overview + naming conventions (always applicable)
+
+#### Load Task-Specific Patterns
+
+| Task                   | Load These Patterns                                                                                                                                                              |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Create UseCase**     | [01-usecase-pattern.md](../../.claude/context/api/01-usecase-pattern.md), [05-unit-testing-pattern.md](../../.claude/context/api/05-unit-testing-pattern.md)                     |
+| **Add Controller**     | [02-controller-pattern.md](../../.claude/context/api/02-controller-pattern.md), [06-integration-testing-pattern.md](../../.claude/context/api/06-integration-testing-pattern.md) |
+| **Write Repository**   | [03-repository-pattern.md](../../.claude/context/api/03-repository-pattern.md), [05-unit-testing-pattern.md](../../.claude/context/api/05-unit-testing-pattern.md)               |
+| **Write Query**        | [04-query-pattern.md](../../.claude/context/api/04-query-pattern.md), [06-integration-testing-pattern.md](../../.claude/context/api/06-integration-testing-pattern.md)           |
+| **Database Migration** | [07-database-patterns.md](../../.claude/context/api/07-database-patterns.md)                                                                                                     |
+| **Wire Dependencies**  | [08-dependency-injection.md](../../.claude/context/api/08-dependency-injection.md)                                                                                               |
+| **Domain Events**      | [10-domain-events-pattern.md](../../.claude/context/api/10-domain-events-pattern.md)                                                                                             |
+| **Complete Feature**   | Load `00-overview.md` + relevant patterns above                                                                                                                                  |
+
+**Pattern files cross-reference each other** - follow links to related patterns when needed.
 
 ### After Code Generation - ALWAYS RUN:
 

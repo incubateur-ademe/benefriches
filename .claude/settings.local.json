@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(tree:*)",
+      "Bash(pnpm typecheck:*)",
+      "Bash(pnpm lint:*)",
+      "Bash(pnpm --filter api lint:*)",
+      "Bash(pnpm --filter api typecheck:*)",
+      "Bash(pnpm --filter api test:*)",
+      "Bash(pnpm --filter api test:integration:*)",
+      "Bash(pnpm --filter web typecheck:*)",
+      "Bash(pnpm --filter web lint:*)",
+      "Bash(pnpm --filter web test)",
+      "Bash(pnpm --filter web test:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
