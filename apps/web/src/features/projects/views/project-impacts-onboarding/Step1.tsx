@@ -16,7 +16,7 @@ const TRANSITION_CLASSES = ["transition", "ease-in-out", "duration-1000"] as con
 const VISIBLE_CLASSES = ["opacity-100", "visible"] as const;
 const INVISIBLE_CLASSES = ["md:opacity-0", "md:invisible"] as const;
 
-const EMOJI_CLASSNAME = "bg-[#B8FEC9]";
+const EMOJI_CLASSNAME = "bg-success-ultralight";
 
 export default function Step1({
   onNextClick,
@@ -36,7 +36,7 @@ export default function Step1({
       title={
         <>
           Bénéfriches calcule{" "}
-          <span className="bg-[#B8FEC9] dark:text-black">6 types d'impacts</span>.
+          <span className="bg-success-ultralight dark:text-black">6 types d'impacts</span>.
         </>
       }
       onNextClick={innerStep === 2 ? onNextClick : onNextInnerStep}

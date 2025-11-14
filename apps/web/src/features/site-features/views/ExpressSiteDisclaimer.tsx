@@ -22,7 +22,7 @@ export default function ExpressSiteDisclaimer({ siteNature }: Props) {
   if (!displayExpressSiteDisclaimer) return null;
 
   return (
-    <section className="bg-warning-ultralight p-6 rounded-lg mb-4">
+    <section className="bg-warning-ultralight dark:bg-warning-ultradark p-6 rounded-lg mb-4">
       <h3 className="text-xl mb-4">
         Comment ont été affectées les caractéristiques de{" "}
         {siteNature === "FRICHE" ? "ma friche" : "mon site"} ?

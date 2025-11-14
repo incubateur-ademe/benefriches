@@ -45,8 +45,8 @@ const ImpactSection = ({
           "w-full",
           "rounded-sm border border-solid border-transparent",
           isMain
-            ? ["bg-impacts-dark", "dark:bg-black", "mb-6"]
-            : ["bg-impacts-main", "dark:bg-black", "mb-2"],
+            ? ["bg-grey-disabled", "dark:bg-black", "mb-6"]
+            : ["bg-background-light", "dark:bg-black", "mb-2"],
           "cursor-pointer",
           "transition ease-in-out duration-500",
           "hover:border-grey-dark dark:hover:border-white",

@@ -3,6 +3,6 @@ export const getPositiveNegativeTextClassesFromValue = (value: number) => {
     return "text-text-dark dark:text-grey-light";
   }
   return value > 0
-    ? "text-impacts-positive-main dark:text-success-ultralight"
-    : "text-impacts-negative-main dark:text-impacts-negative-light";
+    ? "text-success-ultradark dark:text-success-ultralight"
+    : "text-error-ultradark dark:text-error-ultralight";
 };

@@ -38,13 +38,17 @@
 
   --color-benefriches-dark: #1791c0;
 
-  --color-success-dark: #40a839;
   --color-success-ultralight: #b8fec9;
+  --color-success-light: #34eb7b;
+  --color-success-dark: #40a839;
+  --color-success-ultradark: #19753c;
 
   --color-warning: #b34000;
   --color-warning-ultralight: #fff0db;
+  --color-warning-ultradark: #774600;
 
   --color-error-ultralight: #ffe9e9;
+  --color-error-light: #ffafaf;
   --color-error-ultradark: #ce0500;
 
   --color-green-main: #32762e;
@@ -55,16 +59,6 @@
   --color-grey-light: #f6f6f6;
   --color-grey-dark: #333;
   --color-grey-disabled: #e5e5e5;
-
-  --color-impacts-main: #eeeeee;
-  --color-impacts-dark: #e5e5e5;
-
-  --color-impacts-positive-border: #34eb7b;
-  --color-impacts-positive-main: #18753c;
-
-  --color-impacts-negative-border: #ffafaf;
-  --color-impacts-negative-main: #ce0500;
-  --color-impacts-negative-light: #ffe9e9;
 
   --color-how-it-works-impacts-step-1: #c83a3b;
   --color-how-it-works-impacts-step-2: #c3892d;

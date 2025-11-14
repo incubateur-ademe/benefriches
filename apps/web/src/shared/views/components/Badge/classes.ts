@@ -15,6 +15,6 @@ export const badgeStyleClasses = {
   ["green-tilleul"]: "bg-[#FEF7DA] text-[#66673D]",
   ["blue"]: "bg-[#DEE5FD] text-[#2F4077]",
   ["success"]: "bg-success-ultralight",
-  ["error"]: "bg-impacts-negative-light",
+  ["error"]: "bg-error-ultralight",
   ["neutral"]: "bg-text-dark dark:bg-grey-light",
 } as const;

@@ -13,13 +13,13 @@ type Props = {
 
 const POSITIVE_CLASSES = [
   "bg-success-ultralight hover:bg-success-ultralight!",
-  "dark:bg-impacts-positive-main dark:hover:bg-impacts-positive-main!",
-  "hover:border-impacts-positive-border",
+  "dark:bg-success-ultradark dark:hover:bg-success-ultradark!",
+  "hover:border-success-light",
 ];
 const NEGATIVE_CLASSES = [
-  "bg-impacts-negative-light hover:bg-impacts-negative-light!",
-  "dark:bg-impacts-negative-main dark:hover:bg-impacts-negative-main!",
-  "hover:border-impacts-negative-border",
+  "bg-error-ultralight hover:bg-error-ultralight!",
+  "dark:bg-error-ultradark dark:hover:bg-error-ultradark!",
+  "hover:border-error-light dark:hover:border-error-dark",
 ];
 
 const KeyImpactIndicatorCard = ({ title, type, buttonProps }: Props) => {
@@ -41,8 +41,8 @@ const KeyImpactIndicatorCard = ({ title, type, buttonProps }: Props) => {
         className={classNames(
           "fr-icon--xxl",
           type === "success"
-            ? [fr.cx("fr-icon-checkbox-circle-fill"), "text-impacts-positive-border"]
-            : [fr.cx("fr-icon-warning-fill"), "text-impacts-negative-border"],
+            ? [fr.cx("fr-icon-checkbox-circle-fill"), "text-success-light"]
+            : [fr.cx("fr-icon-warning-fill"), "text-error-light"],
         )}
         aria-hidden="true"
       ></span>

@@ -93,7 +93,7 @@ const useImpactAreaChartProps = ({
               const className =
                 percentageVariation > 0
                   ? "bg-success-ultralight dark:text-black"
-                  : "bg-impacts-negative-light dark:text-black";
+                  : "bg-error-ultralight dark:text-black";
               const percentage = `<span class="fr-badge normal-case font-normal rounded-xl px-2 fr-badge--sm ${className}">${formatEvolutionPercentage(getPercentageDifference(base, forecast))}</span>`;
               return `<strong>${this.value}</strong><br>${valueText} ${percentage}`;
             }

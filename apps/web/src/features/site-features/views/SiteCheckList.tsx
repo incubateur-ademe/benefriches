@@ -36,7 +36,7 @@ function TaskItem({
   children?: React.ReactNode;
 }) {
   return (
-    <li className="flex items-center justify-between m-0 py-4 border-b border-[#DDDDDD]">
+    <li className="flex items-center justify-between m-0 py-4 border-b border-border-grey">
       <div className="flex items-center gap-4">
         <StatusIndicator status={status} />
         <h4 className="mb-0 font-normal text-lg">{name}</h4>

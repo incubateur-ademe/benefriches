@@ -22,7 +22,7 @@ export default function Accordion({ label, children, defaultOpen = false }: Acco
         className={classNames(
           "py-2 px-4 mb-4",
           "rounded-sm border border-solid border-transparent",
-          "bg-impacts-main dark:bg-blue-dark",
+          "bg-background-light dark:bg-blue-dark",
           "cursor-pointer",
           "transition ease-in-out duration-500",
           "hover:border-grey-dark hover:dark:border-white",

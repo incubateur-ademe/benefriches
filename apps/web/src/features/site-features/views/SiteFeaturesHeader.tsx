@@ -29,7 +29,7 @@ export default function SiteFeaturesHeader({
   isExpressSite,
 }: Props) {
   return (
-    <section className={classNames("py-8", "bg-impacts-main", "dark:bg-grey-dark")}>
+    <section className={classNames("py-8", "bg-background-light", "dark:bg-grey-dark")}>
       <div className={fr.cx("fr-container")}>
         <div className="flex items-center">
           <img

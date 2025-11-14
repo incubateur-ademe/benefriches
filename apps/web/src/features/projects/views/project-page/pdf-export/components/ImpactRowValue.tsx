@@ -15,9 +15,9 @@ const getPositiveNegativeTextClassesFromValue = (value: number): string => {
   if (value === 0) {
     return "text-[#161616]";
   }
-  // colors come from theme text-impacts-positive-main and text-impacts-negative-main
+  // colors come from theme text-success-ultradark and text-error-ultradark
   // but they are not available in the rendered pdf for some reasons
-  return value > 0 ? "text-[#18753C]" : "text-[#CE0500]";
+  return value > 0 ? "text-[#19753C]" : "text-[#CE0500]";
 };
 
 const impactTypeFormatterMap = {

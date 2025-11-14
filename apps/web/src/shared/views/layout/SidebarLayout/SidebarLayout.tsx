@@ -76,7 +76,7 @@ function SidebarLayout({ mainChildren, title, sidebarChildren, actions }: Sideba
                 className={classNames(
                   "transition-opacity",
                   "absolute top-0 left-0 w-screen h-screen",
-                  "bg-[#161616a3]",
+                  "bg-text-dark/64",
                   isOpen ? "z-5" : "z-[-1]",
                   isOpen ? "opacity-1" : "opacity-0",
                 )}

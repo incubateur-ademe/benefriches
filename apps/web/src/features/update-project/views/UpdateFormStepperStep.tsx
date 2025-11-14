@@ -29,7 +29,10 @@ const ACTIVE_CLASSES = [
   "font-medium",
 ];
 const COMPLETED_CLASSES = ["before:bg-blue-ultradark"];
-const EMPTY_CLASSES = [fr.cx("fr-icon-error-warning-line"), "bg-[#FFF0DB] text-[#774600]"];
+const EMPTY_CLASSES = [
+  fr.cx("fr-icon-error-warning-line"),
+  "bg-warning-ultralight text-warning-ultradark",
+];
 
 const CurrentStepArrow = () => (
   <span className="fr-icon-arrow-right-s-line ml-auto" aria-hidden="true" />
