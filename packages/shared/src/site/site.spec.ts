@@ -26,7 +26,11 @@ describe("Site core logic", () => {
         long: 2.3522,
       },
       yearlyExpenses: [],
-      soilsDistribution: createSoilSurfaceAreaDistribution({}),
+      soilsDistribution: createSoilSurfaceAreaDistribution({
+        BUILDINGS: 150,
+        ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 400,
+        MINERAL_SOIL: 250,
+      }),
     };
     it("cannot create a friche with an invalid friche activity", () => {
       const result = createFriche({
@@ -37,6 +41,19 @@ describe("Site core logic", () => {
       expect(result.success).toBe(false);
       expect(result.error.fieldErrors.fricheActivity).toHaveLength(1);
       expect(result.error.fieldErrors.fricheActivity?.[0]).toContain("Invalid option");
+    });
+
+    it("cannot create a friche with empty soils distribution", () => {
+      const result = createFriche({
+        ...minimalProps,
+        soilsDistribution: createSoilSurfaceAreaDistribution({}),
+      });
+      expect(result.success).toBe(false);
+      const errorResult = result as FricheErrorResult;
+      expect(errorResult.error.fieldErrors.soilsDistribution).toHaveLength(1);
+      expect(errorResult.error.fieldErrors.soilsDistribution?.[0]).toContain(
+        "Total surface area must be greater than 0",
+      );
     });
 
     it("will assign 'OTHER' activity when none provided", () => {

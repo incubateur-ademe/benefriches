@@ -234,6 +234,16 @@ export function createFriche(props: CreateFricheProps): FricheCreationResult {
   const surfaceArea = props.soilsDistribution.getTotalSurfaceArea();
   const hasContaminatedSoils = !!props.contaminatedSoilSurface;
 
+  if (surfaceArea === 0) {
+    return {
+      success: false,
+      error: {
+        fieldErrors: { soilsDistribution: ["Total surface area must be greater than 0"] },
+        formErrors: [],
+      },
+    };
+  }
+
   const candidate = {
     id: props.id,
     name: props.name,
