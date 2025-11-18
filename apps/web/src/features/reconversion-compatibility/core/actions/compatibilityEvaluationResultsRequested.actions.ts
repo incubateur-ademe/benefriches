@@ -1,7 +1,8 @@
+import { MutabilityUsage } from "shared";
+
 import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
 
 import { ACTION_PREFIX } from ".";
-import { MutabilityUsage } from "../reconversionCompatibilityEvaluation.reducer";
 
 export type ReconversionCompatibilityEvaluationResults = {
   mutafrichesId: string;

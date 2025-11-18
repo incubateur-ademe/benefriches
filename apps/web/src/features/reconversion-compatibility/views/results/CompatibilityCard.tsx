@@ -1,6 +1,7 @@
+import { MutabilityUsage } from "shared";
+
 import classNames from "@/shared/views/clsx";
 
-import { MutabilityUsage } from "../../core/reconversionCompatibilityEvaluation.reducer";
 import {
   getCompatibilityScoreBackgroundColor,
   getTextForCompatibilityScore,

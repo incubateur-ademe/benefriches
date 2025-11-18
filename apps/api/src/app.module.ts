@@ -14,6 +14,7 @@ import { DomainEventsRepository } from "./shared-kernel/adapters/events/reposito
 import { SqlDomainEventsRepository } from "./shared-kernel/adapters/events/repository/SqlDomainEventsRepository";
 import { SqlConnectionModule } from "./shared-kernel/adapters/sql-knex/sqlConnection.module";
 import { DomainEvent } from "./shared-kernel/domainEvent";
+import { SiteEvaluationsModule } from "./site-evaluations/adapters/primary/siteEvaluations.module";
 import { SitesModule } from "./sites/adapters/primary/sites.module";
 import { UsersModule } from "./users/adapters/primary/users.module";
 
@@ -42,6 +43,7 @@ class DomainEventsHandler {
     UsersModule,
     MarketingModule,
     ReconversionCompatibilityModule,
+    SiteEvaluationsModule,
   ],
   providers: [
     { provide: APP_PIPE, useClass: ZodValidationPipe },

@@ -1,4 +1,5 @@
 import { ReconversionProjectTemplate } from "shared";
+import { MutabilityUsage } from "shared";
 import { v4 as uuid } from "uuid";
 
 import { ProjectSuggestion } from "@/features/create-project/core/project.types";
@@ -7,7 +8,6 @@ import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
 import { routes } from "@/shared/views/router";
 
 import { ACTION_PREFIX } from ".";
-import { MutabilityUsage } from "../reconversionCompatibilityEvaluation.reducer";
 
 function mapMutabilityUsageToProjectTypeTemplate(
   usage: MutabilityUsage,

@@ -1,4 +1,4 @@
-import { MutabilityUsage } from "../core/reconversionCompatibilityEvaluation.reducer";
+import { MutabilityUsage } from "shared";
 
 type EvaluationResults = {
   evaluationId: string;

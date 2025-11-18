@@ -8,15 +8,6 @@ import { reconversionCompatibilityEvaluationResultsRequested } from "./actions/c
 import { reconversionCompatibilityEvaluationStarted } from "./actions/compatibilityEvaluationStarted.actions";
 import { fricheSavedFromCompatibilityEvaluation } from "./actions/fricheSavedFromCompatibilityEvaluation.actions";
 
-export type MutabilityUsage =
-  | "residentiel"
-  | "equipements"
-  | "culture"
-  | "tertiaire"
-  | "industrie"
-  | "renaturation"
-  | "photovoltaique";
-
 type ReconversionCompatibilityEvaluationState = {
   currentEvaluationId: string | undefined;
   evaluationResults: ReconversionCompatibilityEvaluationResults | undefined;

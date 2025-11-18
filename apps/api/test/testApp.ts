@@ -15,6 +15,8 @@ import { ConnectCrm } from "src/marketing/adapters/secondary/ConnectCrm";
 import { FakeCrm } from "src/marketing/adapters/secondary/FakeCrm";
 import { PhotovoltaicGeoInfoSystemApi } from "src/photovoltaic-performance/adapters/secondary/photovoltaic-data-provider/PhotovoltaicGeoInfoSystemApi";
 import { MockPhotovoltaicGeoInfoSystemApi } from "src/photovoltaic-performance/adapters/secondary/photovoltaic-data-provider/PhotovoltaicGeoInfoSystemApi.mock";
+import { InMemoryMutabilityEvaluationQuery } from "src/site-evaluations/adapters/secondary/queries/InMemoryMutabilityEvaluationQuery";
+import { MutafrichesEvaluationQuery } from "src/site-evaluations/adapters/secondary/queries/MutafrichesEvaluationQuery";
 
 const ERROR_HTTP_SERVICE = {
   get: () => {
@@ -66,7 +68,9 @@ export async function createTestApp({ providerOverrides }: CreateTestAppInput = 
     .overrideProvider(PhotovoltaicGeoInfoSystemApi)
     .useClass(MockPhotovoltaicGeoInfoSystemApi)
     .overrideProvider(ConnectCrm)
-    .useClass(FakeCrm);
+    .useClass(FakeCrm)
+    .overrideProvider(MutafrichesEvaluationQuery)
+    .useClass(InMemoryMutabilityEvaluationQuery);
 
   if (providerOverrides) {
     providerOverrides.forEach((override) => {

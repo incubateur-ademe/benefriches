@@ -1,8 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
+import { MutabilityUsage } from "shared";
 
 import { RootState } from "@/shared/core/store-config/store";
-
-import { MutabilityUsage } from "./reconversionCompatibilityEvaluation.reducer";
 
 const selectSelf = (state: RootState) => state.reconversionCompatibilityEvaluation;
 

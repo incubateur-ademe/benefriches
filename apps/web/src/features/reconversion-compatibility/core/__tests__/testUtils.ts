@@ -1,3 +1,5 @@
+import { MutabilityUsage } from "shared";
+
 import { DEFAULT_APP_SETTINGS } from "@/features/app-settings/core/appSettings";
 import { User } from "@/features/onboarding/core/user";
 import { initialState } from "@/features/onboarding/core/user.reducer";
@@ -5,7 +7,7 @@ import { AppDependencies, createStore, RootState } from "@/shared/core/store-con
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import { ReconversionCompatibilityEvaluationResults } from "../actions/compatibilityEvaluationResultsRequested.actions";
-import { getInitialState, MutabilityUsage } from "../reconversionCompatibilityEvaluation.reducer";
+import { getInitialState } from "../reconversionCompatibilityEvaluation.reducer";
 
 export class StoreBuilder {
   preloadedRootState: Pick<
