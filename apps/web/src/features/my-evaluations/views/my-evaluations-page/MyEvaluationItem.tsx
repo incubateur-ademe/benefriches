@@ -145,7 +145,7 @@ function MyEvaluationItem({ evaluation }: Props) {
                   ) : (
                     <>
                       <span className="text-[40px]">1</span>
-                      autres projets
+                      autre projet
                     </>
                   )}
                 </h4>
