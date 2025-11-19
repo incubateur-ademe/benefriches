@@ -9,20 +9,20 @@ import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import { routes, useRoute } from "@/shared/views/router";
 
-import { SiteFeatures } from "../core/siteFeatures";
+import { SitePageViewModel } from "../core/siteView.reducer";
 import SiteCheckList from "./SiteCheckList";
 import SiteCreationConfirmationModal from "./SiteCreationConfirmationModal";
 import SiteFeaturesHeader from "./SiteFeaturesHeader";
 import SiteFeaturesList from "./SiteFeaturesList";
 import { open } from "./creationConfirmationModal";
+import ProjectsList from "./evaluated-projects/EvaluatedProjectsList";
 
 type Props = {
   onPageLoad: () => void;
-  siteData?: SiteFeatures;
-  loadingState: "idle" | "loading" | "success" | "error";
+  viewModel: SitePageViewModel;
 };
 
-function SiteFeaturesPage({ onPageLoad, siteData, loadingState }: Props) {
+function SiteFeaturesPage({ onPageLoad, viewModel }: Props) {
   useEffect(() => {
     onPageLoad();
   }, [onPageLoad]);
@@ -32,7 +32,7 @@ function SiteFeaturesPage({ onPageLoad, siteData, loadingState }: Props) {
     (route as Route<typeof routes.siteFeatures>).params.fromCompatibilityEvaluation ?? false;
 
   useEffect(() => {
-    if (loadingState === "success" && fromCompatibilityEvaluation) {
+    if (viewModel.loadingState === "success" && fromCompatibilityEvaluation) {
       const timeoutId = setTimeout(() => {
         open();
       }, 100);
@@ -40,62 +40,78 @@ function SiteFeaturesPage({ onPageLoad, siteData, loadingState }: Props) {
         clearTimeout(timeoutId);
       };
     }
-  }, [loadingState, fromCompatibilityEvaluation]);
+  }, [viewModel.loadingState, fromCompatibilityEvaluation]);
 
-  if (loadingState === "loading" || !siteData) {
-    return (
-      <>
-        <HtmlTitle>{`Chargement... - Caractéristiques du site`}</HtmlTitle>
-        <LoadingSpinner />
-      </>
-    );
-  }
+  switch (viewModel.loadingState) {
+    case "loading":
+    case "idle":
+      return (
+        <>
+          <HtmlTitle>{`Chargement... - Page du site`}</HtmlTitle>
+          <LoadingSpinner />
+        </>
+      );
 
-  if (loadingState === "error") {
-    return (
-      <div className="fr-container">
-        <HtmlTitle>{`Erreur - Caractéristiques du site`}</HtmlTitle>
-        <Alert
-          description="Une erreur s'est produite lors du chargement des caractéristiques du site... Veuillez réessayer."
-          severity="error"
-          title="Échec du chargement des caractéristiques du site"
-          className="my-7"
-        />
-      </div>
-    );
-  }
-  const defaultTabs = [
-    {
-      label: "Caractéristiques du site",
-      content: <SiteFeaturesList {...siteData} />,
-    },
-  ];
+    case "error":
+      return (
+        <div className="fr-container">
+          <HtmlTitle>{`Erreur - Page du site`}</HtmlTitle>
+          <Alert
+            description="Une erreur s'est produite lors du chargement des caractéristiques du site... Veuillez réessayer."
+            severity="error"
+            title="Échec du chargement des caractéristiques du site"
+            className="my-7"
+          />
+        </div>
+      );
 
-  const tabs = fromCompatibilityEvaluation
-    ? [
+    case "success":
+      const { siteView } = viewModel;
+
+      const defaultTabs = [
         {
-          label: "Suivi du site",
-          content: <SiteCheckList siteId={siteData.id} siteName={siteData.name} />,
+          label: "Caractéristiques du site",
+          content: <SiteFeaturesList {...siteView.features} />,
         },
-        ...defaultTabs,
-      ]
-    : defaultTabs;
+        {
+          label: `Projets évalués (${siteView.reconversionProjects.length})`,
+          content: (
+            <ProjectsList siteId={siteView.features.id} projects={siteView.reconversionProjects} />
+          ),
+        },
+      ];
 
-  return (
-    <>
-      <HtmlTitle>{`${siteData.name} - Caractéristiques du site`}</HtmlTitle>
-      <SiteFeaturesHeader
-        siteName={siteData.name}
-        siteNature={siteData.nature}
-        isExpressSite={siteData.isExpressSite}
-        address={siteData.address}
-      />
-      <section className={classNames(fr.cx("fr-container"), "lg:px-24", "py-6")}>
-        <Tabs tabs={tabs} />
-      </section>
-      <SiteCreationConfirmationModal />
-    </>
-  );
+      const tabs = fromCompatibilityEvaluation
+        ? [
+            {
+              label: "Suivi du site",
+              content: (
+                <SiteCheckList siteId={siteView.features.id} siteName={siteView.features.name} />
+              ),
+            },
+            ...defaultTabs,
+          ]
+        : defaultTabs;
+
+      return (
+        <>
+          <HtmlTitle>{`${siteView.features.name} - Page du site`}</HtmlTitle>
+          <SiteFeaturesHeader
+            siteName={siteView.features.name}
+            siteNature={siteView.features.nature}
+            isExpressSite={siteView.features.isExpressSite}
+            address={siteView.features.address}
+          />
+          <section className={classNames(fr.cx("fr-container"), "py-6")}>
+            <Tabs tabs={tabs} />
+          </section>
+          <SiteCreationConfirmationModal />
+        </>
+      );
+
+    default:
+      return null;
+  }
 }
 
 export default SiteFeaturesPage;

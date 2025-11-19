@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { DevelopmentPlanType } from "shared";
 
 import { routes } from "@/shared/views/router";
 
@@ -11,7 +12,7 @@ type Props = {
   isExpressProject: boolean;
   selectedIds: string[];
   selectableIds: string[];
-  type: string;
+  type: DevelopmentPlanType;
   onChangeSelectedProject: (id: string, checked: boolean) => void;
 };
 

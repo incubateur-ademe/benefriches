@@ -63,7 +63,7 @@ export const getTestAppDependencies = (
     currentUserService: new InMemoryCurrentUserService(),
     createUserService: new InMemoryCreateUserService(),
     createUserFeatureAlertService: new InMemoryCreateFeatureAlertService(),
-    siteFeaturesService: new MockSiteFeaturesService(),
+    siteService: new MockSiteFeaturesService(),
     createExpressReconversionProjectService: new InMemoryCreateExpressReconversionProjectService(),
     projectFeaturesService: new MockProjectFeaturesService(),
     quickUrbanProjectImpactsService: new MockQuickUrbanProjectImpactsService(),

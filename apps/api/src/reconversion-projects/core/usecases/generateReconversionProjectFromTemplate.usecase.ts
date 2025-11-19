@@ -22,7 +22,7 @@ import { UseCase } from "src/shared-kernel/usecase";
 
 import { ReconversionProjectSaveDto } from "../model/reconversionProject";
 
-type SiteView = {
+type SiteFeaturesView = {
   id: string;
   nature: SiteNature;
   surfaceArea: number;
@@ -36,7 +36,7 @@ type SiteView = {
 };
 
 export interface SiteQuery {
-  getById(id: string): Promise<SiteView | undefined>;
+  getSiteFeaturesById(id: string): Promise<SiteFeaturesView | undefined>;
 }
 
 interface UserQuery {
@@ -93,7 +93,7 @@ export class GenerateReconversionProjectFromTemplateUseCase
   ) {}
 
   async execute(props: Request): Promise<GenerateReconversionProjectFromTemplateResult> {
-    const siteData = await this.siteQuery.getById(props.siteId);
+    const siteData = await this.siteQuery.getSiteFeaturesById(props.siteId);
     if (!siteData) {
       return fail("SiteNotFound");
     }

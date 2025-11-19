@@ -1,7 +1,7 @@
-import { SiteFeaturesGateway } from "../../core/fetchSiteFeatures.action";
-import { SiteFeatures } from "../../core/siteFeatures";
+import { SiteGateway } from "../../core/fetchSiteFeatures.action";
+import { SiteFeatures, SiteView } from "../../core/site.types";
 
-export class MockSiteFeaturesService implements SiteFeaturesGateway {
+export class MockSiteFeaturesService implements SiteGateway {
   siteFeatures: SiteFeatures = {
     id: "189038dd-3a6a-43af-bc8d-c4999d8d82cc",
     name: "Mocked site name",
@@ -29,11 +29,25 @@ export class MockSiteFeaturesService implements SiteFeaturesGateway {
     },
   };
 
+  siteView: SiteView = {
+    id: "189038dd-3a6a-43af-bc8d-c4999d8d82cc",
+    features: this.siteFeatures,
+    reconversionProjects: [],
+  };
+
   setSiteFeatures(siteFeatures: SiteFeatures): void {
     this.siteFeatures = siteFeatures;
   }
 
+  setSiteView(siteView: SiteView): void {
+    this.siteView = siteView;
+  }
+
   async getSiteFeatures(): Promise<SiteFeatures> {
     return Promise.resolve(this.siteFeatures);
+  }
+
+  async getSiteView(): Promise<SiteView> {
+    return Promise.resolve(this.siteView);
   }
 }

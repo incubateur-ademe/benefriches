@@ -6,14 +6,14 @@ import { InMemoryReconversionProjectRepository } from "src/reconversion-projects
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { FailureResult } from "src/shared-kernel/result";
 import { InMemorySitesQuery } from "src/sites/adapters/secondary/site-query/InMemorySitesQuery";
-import { SiteViewModel } from "src/sites/core/gateways/SitesQuery";
+import { SiteFeaturesView } from "src/sites/core/models/views";
 import { InMemoryUserQuery } from "src/users/adapters/secondary/user-query/InMemoryUserQuery";
 
 import { ReconversionProjectSaveDto } from "../model/reconversionProject";
 import { GenerateAndSaveReconversionProjectFromTemplateUseCase } from "./generateAndSaveReconversionProjectFromTemplate.usecase";
 import { GenerateReconversionProjectFromTemplateUseCase } from "./generateReconversionProjectFromTemplate.usecase";
 
-const site: SiteViewModel = {
+const site: SiteFeaturesView = {
   id: uuid(),
   name: "Base site",
   nature: "FRICHE",

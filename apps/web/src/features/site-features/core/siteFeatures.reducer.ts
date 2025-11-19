@@ -3,7 +3,7 @@ import { createSelector, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "@/shared/core/store-config/store";
 
 import { fetchSiteFeatures } from "./fetchSiteFeatures.action";
-import { SiteFeatures } from "./siteFeatures";
+import { SiteFeatures } from "./site.types";
 
 type LoadingState = "idle" | "loading" | "success" | "error";
 

@@ -1,7 +1,7 @@
 import { FailureResult, SuccessResult } from "src/shared-kernel/result";
 import { InMemorySitesQuery } from "src/sites/adapters/secondary/site-query/InMemorySitesQuery";
 
-import { SiteViewModel } from "../gateways/SitesQuery";
+import { SiteFeaturesView } from "../models/views";
 import { GetSiteByIdUseCase } from "./getSiteById.usecase";
 
 describe("GetSiteById Use Case", () => {
@@ -20,7 +20,7 @@ describe("GetSiteById Use Case", () => {
   });
 
   it("Can get an existing site", async () => {
-    const site: SiteViewModel = {
+    const site: SiteFeaturesView = {
       id: "4550d9f0-ce28-43ae-a319-94851ae033db",
       nature: "FRICHE",
       name: "My existing site",

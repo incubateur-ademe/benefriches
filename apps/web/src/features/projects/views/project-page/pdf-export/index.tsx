@@ -5,7 +5,7 @@ import { EnvironmentalImpact } from "@/features/projects/domain/projectImpactsEn
 import { SocialImpact } from "@/features/projects/domain/projectImpactsSocial";
 import { SocioEconomicDetailedImpact } from "@/features/projects/domain/projectImpactsSocioEconomic";
 import { ProjectFeatures } from "@/features/projects/domain/projects.types";
-import { SiteFeatures } from "@/features/site-features/core/siteFeatures";
+import { SiteFeatures } from "@/features/site-features/core/site.types";
 
 import ProjectPdfExportCoverPage from "./components/CoverPage";
 import { ExportImpactsContext } from "./context";

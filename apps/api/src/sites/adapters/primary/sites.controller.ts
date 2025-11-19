@@ -20,6 +20,7 @@ import {
 } from "src/sites/core/usecases/createNewExpressSite.usecase";
 import { CreateNewCustomSiteUseCase } from "src/sites/core/usecases/createNewSite.usecase";
 import { GetSiteByIdUseCase } from "src/sites/core/usecases/getSiteById.usecase";
+import { GetSiteViewByIdUseCase } from "src/sites/core/usecases/getSiteViewById.usecase";
 
 // here we can't use createZodDto because dto schema is a discriminated union: https://github.com/risen228/nestjs-zod/issues/41
 const createCustomSiteDtoSchema = API_ROUTES.SITES.CREATE_CUSTOM_SITE.bodySchema;
@@ -35,6 +36,7 @@ export class SitesController {
     private readonly createNewSiteUseCase: CreateNewCustomSiteUseCase,
     private readonly createNewExpressSiteUseCase: CreateNewExpressSiteUseCase,
     private readonly getSiteByIdUseCase: GetSiteByIdUseCase,
+    private readonly getSiteViewByIdUseCase: GetSiteViewByIdUseCase,
   ) {}
 
   @Post(API_ROUTES.SITES.CREATE_CUSTOM_SITE.path)
@@ -86,9 +88,27 @@ export class SitesController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get("sites/:siteId")
+  @Get("sites/:siteId/features")
   async getSiteById(@Param("siteId") siteId: string) {
     const result = await this.getSiteByIdUseCase.execute({ siteId });
+
+    if (result.isFailure()) {
+      switch (result.getError()) {
+        case "SiteNotFound":
+          throw new NotFoundException({
+            error: "SITE_NOT_FOUND",
+            message: `Site with ID ${siteId} not found`,
+          });
+      }
+    }
+
+    return result.getData().site;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get("sites/:siteId")
+  async getSiteViewById(@Param("siteId") siteId: string) {
+    const result = await this.getSiteViewByIdUseCase.execute({ siteId });
 
     if (result.isFailure()) {
       switch (result.getError()) {

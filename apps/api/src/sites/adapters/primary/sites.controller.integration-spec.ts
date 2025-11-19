@@ -564,11 +564,11 @@ describe("Sites controller", () => {
     });
   });
 
-  describe("GET /sites/:siteId", () => {
+  describe("GET /sites/:siteId/features", () => {
     it("gets a 401 error when no authentication is provided", async () => {
       const siteId = uuid();
       const response = await supertest(app.getHttpServer())
-        .get(`/api/sites/${siteId}`)
+        .get(`/api/sites/${siteId}/features`)
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=nope`)
         .send();
 
@@ -581,7 +581,7 @@ describe("Sites controller", () => {
 
       const siteId = uuid();
       const response = await supertest(app.getHttpServer())
-        .get(`/api/sites/${siteId}`)
+        .get(`/api/sites/${siteId}/features`)
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send();
 
@@ -641,7 +641,7 @@ describe("Sites controller", () => {
       ]);
 
       const response = await supertest(app.getHttpServer())
-        .get(`/api/sites/${siteId}`)
+        .get(`/api/sites/${siteId}/features`)
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send();
 
@@ -740,7 +740,7 @@ describe("Sites controller", () => {
       ]);
 
       const response = await supertest(app.getHttpServer())
-        .get(`/api/sites/${siteId}`)
+        .get(`/api/sites/${siteId}/features`)
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send();
 
@@ -813,7 +813,7 @@ describe("Sites controller", () => {
       ]);
 
       const response = await supertest(app.getHttpServer())
-        .get(`/api/sites/${siteId}`)
+        .get(`/api/sites/${siteId}/features`)
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send();
 
@@ -843,6 +843,149 @@ describe("Sites controller", () => {
         description: "Description of site",
         yearlyExpenses: [],
         yearlyIncomes: [],
+      });
+    });
+  });
+
+  describe("GET /sites/:siteId", () => {
+    it("gets a 401 error when no authentication is provided", async () => {
+      const siteId = uuid();
+      const response = await supertest(app.getHttpServer())
+        .get(`/api/sites/${siteId}`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=nope`)
+        .send();
+
+      expect(response.status).toEqual(401);
+    });
+
+    it("gets a 404 error when site does not exist", async () => {
+      const user = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+
+      const siteId = uuid();
+      const response = await supertest(app.getHttpServer())
+        .get(`/api/sites/${siteId}`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send();
+
+      expect(response.status).toEqual(404);
+    });
+
+    it("gets a 200 response with site features and projects", async () => {
+      const user = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+
+      const siteId = uuid();
+      const project1Id = uuid();
+      const project2Id = uuid();
+
+      await sqlConnection("sites").insert({
+        id: siteId,
+        created_by: user.id,
+        name: "Friche with projects",
+        nature: "FRICHE",
+        description: "Site description",
+        surface_area: 20000,
+        owner_name: "Owner name",
+        owner_structure_type: "company",
+        created_at: new Date(),
+        friche_activity: "INDUSTRY",
+      });
+
+      await sqlConnection("addresses").insert({
+        id: uuid(),
+        site_id: siteId,
+        value: "10 Rue Test 75001 Paris",
+        city: "Paris",
+        city_code: "75001",
+        post_code: "75001",
+        ban_id: "75001_test",
+        lat: 48.856614,
+        long: 2.352222,
+      });
+
+      await sqlConnection("site_soils_distributions").insert([
+        { id: uuid(), site_id: siteId, soil_type: "BUILDINGS", surface_area: 20000 },
+      ]);
+
+      await sqlConnection("reconversion_projects").insert([
+        {
+          id: project1Id,
+          name: "Solar Project",
+          related_site_id: siteId,
+          created_by: user.id,
+          creation_mode: "custom",
+          created_at: new Date(),
+        },
+        {
+          id: project2Id,
+          name: "Urban Project",
+          related_site_id: siteId,
+          created_by: user.id,
+          creation_mode: "express",
+          created_at: new Date(),
+        },
+      ]);
+
+      await sqlConnection("reconversion_project_development_plans").insert([
+        {
+          id: uuid(),
+          type: "PHOTOVOLTAIC_POWER_PLANT",
+          reconversion_project_id: project1Id,
+          features: {},
+        },
+        {
+          id: uuid(),
+          type: "URBAN_PROJECT",
+          reconversion_project_id: project2Id,
+          features: {},
+        },
+      ]);
+
+      const response = await supertest(app.getHttpServer())
+        .get(`/api/sites/${siteId}`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send();
+
+      expect(response.status).toEqual(200);
+      expect(response.body).toEqual({
+        id: siteId,
+        features: {
+          id: siteId,
+          name: "Friche with projects",
+          nature: "FRICHE",
+          isExpressSite: false,
+          surfaceArea: 20000,
+          owner: { name: "Owner name", structureType: "company" },
+          address: {
+            value: "10 Rue Test 75001 Paris",
+            city: "Paris",
+            cityCode: "75001",
+            postCode: "75001",
+            banId: "75001_test",
+            lat: 48.856614,
+            long: 2.352222,
+          },
+          soilsDistribution: {
+            BUILDINGS: 20000,
+          },
+          description: "Site description",
+          fricheActivity: "INDUSTRY",
+          yearlyExpenses: [],
+          yearlyIncomes: [],
+        },
+        reconversionProjects: [
+          {
+            id: project1Id,
+            name: "Solar Project",
+            type: "PHOTOVOLTAIC_POWER_PLANT",
+          },
+          {
+            id: project2Id,
+            name: "Urban Project",
+            type: "URBAN_PROJECT",
+          },
+        ],
       });
     });
   });

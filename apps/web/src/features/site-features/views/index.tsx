@@ -2,8 +2,8 @@ import { useCallback } from "react";
 
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import { fetchSiteFeatures } from "../core/fetchSiteFeatures.action";
-import { selectLoadingState, selectSiteFeatures } from "../core/siteFeatures.reducer";
+import { fetchSiteView } from "../core/fetchSiteView.action";
+import { selectSitePageViewModel } from "../core/siteView.reducer";
 import SiteFeaturesPage from "./SiteFeaturesPage";
 
 type Props = {
@@ -12,14 +12,11 @@ type Props = {
 
 export default function SiteFeaturesPageContainer({ siteId }: Props) {
   const dispatch = useAppDispatch();
-  const siteFeatures = useAppSelector(selectSiteFeatures);
-  const loadingState = useAppSelector(selectLoadingState);
+  const sitePageViewModel = useAppSelector((state) => selectSitePageViewModel(state, siteId));
 
   const onPageLoad = useCallback(() => {
-    void dispatch(fetchSiteFeatures({ siteId }));
+    void dispatch(fetchSiteView({ siteId }));
   }, [dispatch, siteId]);
 
-  return (
-    <SiteFeaturesPage onPageLoad={onPageLoad} siteData={siteFeatures} loadingState={loadingState} />
-  );
+  return <SiteFeaturesPage onPageLoad={onPageLoad} viewModel={sitePageViewModel} />;
 }

@@ -1,5 +1,5 @@
 import { ProjectFeatures } from "@/features/projects/domain/projects.types";
-import { SiteFeatures } from "@/features/site-features/core/siteFeatures";
+import { SiteFeatures } from "@/features/site-features/core/site.types";
 import SiteFeaturesList from "@/features/site-features/views/SiteFeaturesList";
 import Accordion from "@/shared/views/components/Accordion/Accordion";
 import Dialog from "@/shared/views/components/Dialog/A11yDialog";

@@ -1,6 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import { SiteFeatures } from "@/features/site-features/core/siteFeatures";
+import { SiteFeatures } from "@/features/site-features/core/site.types";
 import { RootState } from "@/shared/core/store-config/store";
 
 import { EconomicBalance } from "../../domain/projectImpactsEconomicBalance";

@@ -14,7 +14,7 @@ import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/Deter
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { FailureResult, SuccessResult } from "src/shared-kernel/result";
 import { InMemorySitesQuery } from "src/sites/adapters/secondary/site-query/InMemorySitesQuery";
-import { SiteViewModel } from "src/sites/core/gateways/SitesQuery";
+import { SiteFeaturesView } from "src/sites/core/models/views";
 import { InMemoryUserQuery } from "src/users/adapters/secondary/user-query/InMemoryUserQuery";
 
 import { ReconversionProjectSaveDto } from "../model/reconversionProject";
@@ -64,7 +64,7 @@ describe("GenerateAndSaveReconversionProjectFromTemplateUseCase Use Case", () =>
   });
 
   describe("On friche site", () => {
-    const site: SiteViewModel = {
+    const site: SiteFeaturesView = {
       id: uuid(),
       name: "Base site",
       nature: "FRICHE",
@@ -711,7 +711,7 @@ describe("GenerateAndSaveReconversionProjectFromTemplateUseCase Use Case", () =>
         name: "Monsieur Dupont",
         structureType: "private_individual",
       },
-    } as const satisfies SiteViewModel;
+    } as const satisfies SiteFeaturesView;
     describe("with site purchase", () => {
       test.each(URBAN_PROJECT_TEMPLATES)(
         "should create a %s with real estate sale transaction and development installation costs based on site",

@@ -14,7 +14,7 @@ import DataLine from "@/shared/views/components/FeaturesList/FeaturesListDataLin
 import Section from "@/shared/views/components/FeaturesList/FeaturesListSection";
 import SoilTypeLabelWithColorSquare from "@/shared/views/components/FeaturesList/FeaturesListSoilTypeLabel";
 
-import { SiteFeatures } from "../core/siteFeatures";
+import { SiteFeatures } from "../core/site.types";
 import ExpressSiteDisclaimer from "./ExpressSiteDisclaimer";
 import SiteFeaturesManagementSection from "./SiteFeaturesManagementSection";
 

@@ -1,6 +1,7 @@
 import { TResult, fail, success } from "src/shared-kernel/result";
 import { UseCase } from "src/shared-kernel/usecase";
-import { SitesQuery, SiteViewModel } from "src/sites/core/gateways/SitesQuery";
+import { SitesQuery } from "src/sites/core/gateways/SitesQuery";
+import { SiteFeaturesView } from "src/sites/core/models/views";
 
 import { ReconversionProjectRepository } from "../gateways/ReconversionProjectRepository";
 import { ReconversionProjectDataView } from "../model/reconversionProject";
@@ -11,7 +12,7 @@ type Request = {
 };
 
 type GetReconversionProjectResult = TResult<
-  { projectData: ReconversionProjectDataView; siteData: SiteViewModel },
+  { projectData: ReconversionProjectDataView; siteData: SiteFeaturesView },
   "ValidationError" | "SiteNotFound" | "ReconversionProjectNotFound" | "UserNotAuthorized",
   { fieldErrors: Record<string, string[]> } | undefined
 >;
@@ -32,7 +33,7 @@ export class GetReconversionProjectUseCase
     if (!project) return fail("ReconversionProjectNotFound");
     if (project.createdBy !== authenticatedUserId) return fail("UserNotAuthorized");
 
-    const siteData = await this.siteQuery.getById(project.relatedSiteId);
+    const siteData = await this.siteQuery.getSiteFeaturesById(project.relatedSiteId);
     if (!siteData) {
       return fail("SiteNotFound");
     }

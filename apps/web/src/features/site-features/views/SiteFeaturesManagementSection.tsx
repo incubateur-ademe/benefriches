@@ -18,7 +18,7 @@ import { formatNumberFr, formatPercentage } from "@/shared/core/format-number/fo
 import DataLine from "@/shared/views/components/FeaturesList/FeaturesListDataLine";
 import Section from "@/shared/views/components/FeaturesList/FeaturesListSection";
 
-import { SiteFeatures } from "../core/siteFeatures";
+import { SiteFeatures } from "../core/site.types";
 
 type Props = SiteFeatures;
 

@@ -1,6 +1,6 @@
 import { Inject } from "@nestjs/common";
 import { Knex } from "knex";
-import { SiteNature } from "shared";
+import { DevelopmentPlanType, SiteNature } from "shared";
 
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import {
@@ -10,12 +10,13 @@ import {
   SqlSiteIncome,
   SqlSiteSoilsDistribution,
 } from "src/shared-kernel/adapters/sql-knex/tableTypes";
-import { SitesQuery, SiteViewModel } from "src/sites/core/gateways/SitesQuery";
+import { SitesQuery } from "src/sites/core/gateways/SitesQuery";
+import { SiteFeaturesView, SiteView } from "src/sites/core/models/views";
 
 export class SqlSitesQuery implements SitesQuery {
   constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}
 
-  async getById(siteId: string): Promise<SiteViewModel | undefined> {
+  async getSiteFeaturesById(siteId: string): Promise<SiteFeaturesView | undefined> {
     const sqlResult = (await this.sqlConnection("sites")
       .where("sites.id", siteId)
       .leftJoin("addresses as address", "sites.id", "address.site_id")
@@ -161,6 +162,40 @@ export class SqlSitesQuery implements SitesQuery {
       accidentsDeaths: sqlSite.friche_accidents_deaths ?? undefined,
       yearlyExpenses: sqlSite.yearly_expenses ?? [],
       yearlyIncomes: sqlSite.yearly_incomes ?? [],
+    };
+  }
+
+  async getViewById(siteId: string): Promise<SiteView | undefined> {
+    const siteFeatures = await this.getSiteFeaturesById(siteId);
+    if (!siteFeatures) return undefined;
+
+    const projectsResult = (await this.sqlConnection("reconversion_projects")
+      .where("reconversion_projects.related_site_id", siteId)
+      .leftJoin(
+        "reconversion_project_development_plans as dev_plan",
+        "reconversion_projects.id",
+        "dev_plan.reconversion_project_id",
+      )
+      .select(
+        "reconversion_projects.id",
+        "reconversion_projects.name",
+        "dev_plan.type as project_type",
+      )) as {
+      id: string;
+      name: string;
+      project_type: DevelopmentPlanType;
+    }[];
+
+    const reconversionProjects = projectsResult.map((project) => ({
+      id: project.id,
+      name: project.name,
+      type: project.project_type,
+    }));
+
+    return {
+      id: siteId,
+      features: siteFeatures,
+      reconversionProjects,
     };
   }
 }

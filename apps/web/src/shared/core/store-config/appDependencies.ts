@@ -14,7 +14,7 @@ import { HttpQuickUrbanProjectImpactsService } from "@/features/projects/infrast
 import { HttpReconversionProjectImpactsApi } from "@/features/projects/infrastructure/reconversion-project-impacts-service/HttpReconversionProjectImpactsService";
 import { HttpUrbanSprawlImpactsComparisonService } from "@/features/projects/infrastructure/urban-sprawl-impacts-comparison-service/HttpUrbanSprawlImpactsComparisonService";
 import { HttpReconversionCompatibilityEvaluation } from "@/features/reconversion-compatibility/infra/reconversion-compatibility-evaluation/HttpReconversionCompatibilityEvaluation";
-import { HttpSiteFeaturesService } from "@/features/site-features/infra/site-features-service/HttpSiteFeaturesService";
+import { HttpSiteService } from "@/features/site-features/infra/site-features-service/HttpSiteFeaturesService";
 import { HttpUpdateReconversionProjectService } from "@/features/update-project/infrastructure/update-project-service/HttpUpdateReconversionProjectService";
 import { CreateFeatureAlertService } from "@/features/user-feature-alerts/infrastructure/create-feature-alert-service/CreateFeatureAlertService";
 import { AdministrativeDivisionGeoApi } from "@/shared/infrastructure/administrative-division-service/administrativeDivisionGeoApi";
@@ -42,7 +42,7 @@ export const appDependencies: AppDependencies = {
   currentUserService,
   createUserService: new HttpCreateUserService(),
   createUserFeatureAlertService: new CreateFeatureAlertService(),
-  siteFeaturesService: new HttpSiteFeaturesService(),
+  siteService: new HttpSiteService(),
   projectFeaturesService: new HttpProjectFeaturesService(),
   quickUrbanProjectImpactsService: new HttpQuickUrbanProjectImpactsService(),
   urbanSprawlImpactsComparisonService: new HttpUrbanSprawlImpactsComparisonService(),

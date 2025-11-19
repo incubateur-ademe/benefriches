@@ -2,8 +2,8 @@ import { GetSitesByIdGateway } from "../../core/actions/reconversionProjectCreat
 import { ProjectSite } from "../../core/project.types";
 
 export class HttpSitesService implements GetSitesByIdGateway {
-  async getById(siteId: string): Promise<ProjectSite | undefined> {
-    const response = await fetch(`/api/sites/${siteId}`);
+  async getSiteFeaturesById(siteId: string): Promise<ProjectSite | undefined> {
+    const response = await fetch(`/api/sites/${siteId}/features`);
 
     if (!response.ok) throw new Error(`Error while fetching site with id ${siteId}`);
 

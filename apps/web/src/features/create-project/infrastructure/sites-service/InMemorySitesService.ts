@@ -8,7 +8,7 @@ export class InMemorySitesService implements GetSitesByIdGateway {
     sites.forEach((site) => this.sites.set(site.id, site));
   }
 
-  async getById(siteId: string): Promise<ProjectSite | undefined> {
+  async getSiteFeaturesById(siteId: string): Promise<ProjectSite | undefined> {
     const siteFound = this.sites.get(siteId);
 
     if (!siteFound) throw new Error("InMemorySitesService: site not found");

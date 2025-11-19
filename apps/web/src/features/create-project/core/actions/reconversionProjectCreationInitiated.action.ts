@@ -4,14 +4,14 @@ import { ProjectSite, ProjectSuggestion } from "../project.types";
 import { makeProjectCreationActionType } from "./actionsUtils";
 
 export interface GetSitesByIdGateway {
-  getById(siteId: string): Promise<ProjectSite | undefined>;
+  getSiteFeaturesById(siteId: string): Promise<ProjectSite | undefined>;
 }
 
 export const reconversionProjectCreationInitiated = createAppAsyncThunk<
   ProjectSite,
   { relatedSiteId: string; projectSuggestions?: ProjectSuggestion[] }
 >(makeProjectCreationActionType("initiated"), async ({ relatedSiteId }, { extra }) => {
-  const projectSite = await extra.getSiteByIdService.getById(relatedSiteId);
+  const projectSite = await extra.getSiteByIdService.getSiteFeaturesById(relatedSiteId);
 
   if (!projectSite) throw new Error("Site not found");
 

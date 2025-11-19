@@ -12,6 +12,7 @@ import { SitesRepository } from "src/sites/core/gateways/SitesRepository";
 import { CreateNewExpressSiteUseCase } from "src/sites/core/usecases/createNewExpressSite.usecase";
 import { CreateNewCustomSiteUseCase } from "src/sites/core/usecases/createNewSite.usecase";
 import { GetSiteByIdUseCase } from "src/sites/core/usecases/getSiteById.usecase";
+import { GetSiteViewByIdUseCase } from "src/sites/core/usecases/getSiteViewById.usecase";
 
 import { SqlSitesQuery } from "../secondary/site-query/SqlSitesQuery";
 import { SqlSiteRepository } from "../secondary/site-repository/SqlSiteRepository";
@@ -39,6 +40,11 @@ import { SitesController } from "./sites.controller";
     {
       provide: GetSiteByIdUseCase,
       useFactory: (siteRepository: SitesQuery) => new GetSiteByIdUseCase(siteRepository),
+      inject: [SqlSitesQuery],
+    },
+    {
+      provide: GetSiteViewByIdUseCase,
+      useFactory: (siteRepository: SitesQuery) => new GetSiteViewByIdUseCase(siteRepository),
       inject: [SqlSitesQuery],
     },
     SqlSiteRepository,

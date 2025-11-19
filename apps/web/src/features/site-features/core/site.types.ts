@@ -1,5 +1,6 @@
 import {
   AgriculturalOperationActivity,
+  DevelopmentPlanType,
   FricheActivity,
   NaturalAreaType,
   SiteNature,
@@ -30,4 +31,14 @@ export type SiteFeatures = {
   fricheActivity?: FricheActivity;
   agriculturalOperationActivity?: AgriculturalOperationActivity;
   naturalAreaType?: NaturalAreaType;
+};
+
+export type SiteView = {
+  id: string;
+  features: SiteFeatures;
+  reconversionProjects: {
+    id: string;
+    name: string;
+    type: DevelopmentPlanType;
+  }[];
 };
