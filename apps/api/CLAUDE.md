@@ -19,62 +19,41 @@ All code must pass these checks:
 
 ## 🏗️ Architecture Pattern: Clean/Hexagonal + CQS
 
-**Dependency Rule**: `core/` NEVER imports from `adapters/`
+The API uses **Clean/Hexagonal Architecture + Command-Query Separation (CQS)** to maintain strict separation between business logic (`core/`) and infrastructure (`adapters/`).
 
-```
-module/
-├── core/
-│   ├── models/[entity].ts           # Domain models (types, classes, enums)
-│   ├── gateways/[Name]Repository.ts # Write interface
-│   ├── gateways/[Name]Query.ts      # Read interface
-│   ├── usecases/[verb][Noun].usecase.ts
-│   └── events/[event].event.ts
-└── adapters/
-    ├── primary/
-    │   ├── [module].controller.ts
-    │   └── [module].module.ts
-    └── secondary/
-        ├── [name]-repository/
-        │   ├── Sql[Name]Repository.ts
-        │   └── InMemory[Name]Repository.ts
-        └── [name]-query/
-            ├── Sql[Name]Query.ts
-            └── InMemory[Name]Query.ts
-```
+**CRITICAL**: `core/` NEVER imports from `adapters/`
+
+**For detailed architecture guidance, examples, and implementation patterns**, see [Architecture Overview](../../.claude/context/api/00-overview.md).
 
 ---
 
 ## 🎯 Naming & File Conventions
+
+Quick reference - **For complete naming guide with examples, see [09-naming-conventions.md](../../.claude/context/api/09-naming-conventions.md).**
 
 ### Code Element Naming
 
 - **Classes**: `PascalCase` → `CreateSiteUseCase`, `SqlSiteRepository`
 - **Variables/Functions**: `camelCase` → `siteRepository`, `getUserSites`
 - **Constants**: `UPPER_SNAKE_CASE` → `SITE_CREATED`, `SQL_CONNECTION`
-- **Types/Interfaces**: `PascalCase` → `SitesRepository`, `SiteViewModel`
-- **Error Types**: `PascalCase` (noun-based, describes error state) → `"UserNotFound"`, `"ValidationFailed"`, `"AlreadyExists"`, `"Unauthorized"`
+- **Error Types**: `PascalCase` (noun-based, no verbs) → `"UserNotFound"`, `"ValidationFailed"`
 
-### File Naming
+### File Naming (Quick Ref)
 
-| Type                       | Pattern                                   | Example                                 |
-| -------------------------- | ----------------------------------------- | --------------------------------------- |
-| UseCase                    | `[verb][Noun].usecase.ts`                 | `createSite.usecase.ts`                 |
-| UseCase Test               | `[verb][Noun].usecase.spec.ts`            | `createSite.usecase.spec.ts`            |
-| SQL Repository Integration | `Sql[Name]Repository.integration-spec.ts` | `SqlSiteRepository.integration-spec.ts` |
-| Controller Integration     | `[module].controller.integration-spec.ts` | `sites.controller.integration-spec.ts`  |
-| Controller                 | `[module].controller.ts`                  | `sites.controller.ts`                   |
-| Module                     | `[module].module.ts`                      | `sites.module.ts`                       |
-| Repository                 | `Sql[Name]Repository.ts`                  | `SqlSiteRepository.ts`                  |
-| Query                      | `Sql[Name]Query.ts`                       | `SqlSitesQuery.ts`                      |
-| In-Memory                  | `InMemory[Name][Type].ts`                 | `InMemorySiteRepository.ts`             |
-| Mock                       | `[entity].mock.ts`                        | `site.mock.ts`                          |
-| Event                      | `[eventName].event.ts`                    | `siteCreated.event.ts`                  |
+| Type       | Pattern                   | Example                 |
+| ---------- | ------------------------- | ----------------------- |
+| UseCase    | `[verb][Noun].usecase.ts` | `createSite.usecase.ts` |
+| Repository | `Sql[Name]Repository.ts`  | `SqlSiteRepository.ts`  |
+| Query      | `Sql[Name]Query.ts`       | `SqlSitesQuery.ts`      |
+| Controller | `[module].controller.ts`  | `sites.controller.ts`   |
+| Module     | `[module].module.ts`      | `sites.module.ts`       |
 
 ### Database Naming
 
-- **Tables**: `snake_case` → `sites`, `reconversion_projects`
-- **Columns**: `snake_case` → `site_id`, `created_at`, `surface_area`
-- **App Properties**: `camelCase` → `siteId`, `createdAt`, `surfaceArea`
+**CRITICAL**: Snake_case (DB) ↔ camelCase (App)
+
+- DB columns: `site_id`, `created_at`, `surface_area`
+- App properties: `siteId`, `createdAt`, `surfaceArea`
 
 ---
 
@@ -144,47 +123,22 @@ import type { Site } from "../models/site";
 
 ## ⬆️ Result Pattern (Core to API Design)
 
-**All usecases MUST implement `UseCase<Request, TResult<Data, Error>>`** - Compiler enforces this.
+**All usecases MUST implement `UseCase<Request, TResult<Data, Error>>`** - Type-safe error handling.
 
-### Core Concept
-
-Every usecase returns a `TResult<Data, Error>` that is either:
-
-- **Success**: Operation completed successfully, contains data
-- **Failure**: Domain error occurred, contains error details
-
-### Quick Usage
+Every usecase returns `TResult<Data, Error>` (success or failure). Use `fail("ErrorType")` for domain errors, `success(data)` for success:
 
 ```typescript
 import { fail, success, type TResult } from "@/shared-kernel/result";
 
 export class MyUseCase implements UseCase<Request, TResult<Response, Error>> {
   async execute(request: Request): Promise<TResult<Response, Error>> {
-    if (validRequest) {
-      return success({ id: "123", name: "Example" });
-    }
-    return fail("ValidationFailed");
+    if (errorCondition) return fail("ValidationFailed");
+    return success({ id: "123", name: "Example" });
   }
 }
 ```
 
-### Available Imports
-
-```typescript
-import {
-  fail,
-  // Create failure: fail("ErrorType")
-  success,
-  // Create success: success(data)
-  type TResult,
-  // Result<SuccessType, ErrorType>
-  type SuccessResult,
-  // Success variant only
-  type FailureResult, // Failure variant only
-} from "@/shared-kernel/result";
-```
-
-**For advanced patterns and test examples, see [CLAUDE-PATTERNS.md → UseCase (Result Pattern)](./CLAUDE-PATTERNS.md#3-usecase-result-pattern).**
+**For detailed patterns, advanced usage, and test examples, see [01-usecase-pattern.md](../../.claude/context/api/01-usecase-pattern.md).**
 
 ---
 
@@ -192,27 +146,27 @@ import {
 
 ### ALWAYS:
 
-1. **Use Result Pattern**: (See [Result Pattern section](#-result-pattern-core-to-api-design) above) - Compiler enforces
-2. **Separate CQS**: Repository (write) ≠ Query (read)
-3. **Implement UseCase interface**: `UseCase<Request, TResult<...>>`
-4. **Validate domain models**: Use appropriate validation (Zod, classes, types) based on your needs
-5. **Map naming**: snake_case (DB) ↔ camelCase (app)
-6. **Factory pattern** in NestJS modules
-7. **InMemory implementations** for all gateways (testing)
-8. **Transactions** for multi-table operations
-9. **Type imports** with `import type { }`
-10. **Gateway interfaces** for all dependencies
+1. **Use Result Pattern** - See [01-usecase-pattern.md](../../.claude/context/api/01-usecase-pattern.md)
+2. **Separate CQS** - See [03-repository-pattern.md](../../.claude/context/api/03-repository-pattern.md) & [04-query-pattern.md](../../.claude/context/api/04-query-pattern.md)
+3. **Implement UseCase interface** - See [01-usecase-pattern.md](../../.claude/context/api/01-usecase-pattern.md)
+4. **Gateway interfaces** (not concrete classes) - See [08-dependency-injection.md](../../.claude/context/api/08-dependency-injection.md)
+5. **InMemory implementations** for all gateways - See [05-unit-testing-pattern.md](../../.claude/context/api/05-unit-testing-pattern.md)
+6. **Map naming**: snake_case (DB) ↔ camelCase (app) - See [09-naming-conventions.md](../../.claude/context/api/09-naming-conventions.md)
+7. **Factory pattern** in NestJS modules - See [08-dependency-injection.md](../../.claude/context/api/08-dependency-injection.md)
+8. **Type imports** with `import type { }` - See [00-overview.md](../../.claude/context/api/00-overview.md#code-quality-standards)
+9. **Validate domain models** - See [02-controller-pattern.md](../../.claude/context/api/02-controller-pattern.md) for controller validation
+10. **Transactions** for multi-table operations - See [03-repository-pattern.md](../../.claude/context/api/03-repository-pattern.md)
 
 ### NEVER:
 
-1. ❌ Import `adapters/` code in `core/`
-2. ❌ Use concrete classes in UseCase constructor types
-3. ❌ Mix business logic in controllers
-4. ❌ Use `any` type (use `unknown`)
-5. ❌ Combine reads + writes in same interface
-6. ❌ Skip unit tests
-7. ❌ Modify DB without migration
-8. ❌ Return domain entities from controllers (use ViewModels)
+1. ❌ Import `adapters/` code in `core/` - See [00-overview.md](../../.claude/context/api/00-overview.md)
+2. ❌ Use concrete classes in UseCase constructor types - Use interfaces instead
+3. ❌ Mix business logic in controllers - Controllers only map HTTP ↔ UseCase, see [02-controller-pattern.md](../../.claude/context/api/02-controller-pattern.md)
+4. ❌ Use `any` type - Use `unknown` instead
+5. ❌ Combine reads + writes in same interface - Separate Repository ≠ Query
+6. ❌ Skip unit tests - See [05-unit-testing-pattern.md](../../.claude/context/api/05-unit-testing-pattern.md)
+7. ❌ Modify DB without migration - See [07-database-patterns.md](../../.claude/context/api/07-database-patterns.md)
+8. ❌ Return domain entities from controllers - Use ViewModels instead, see [02-controller-pattern.md](../../.claude/context/api/02-controller-pattern.md)
 
 ---
 
@@ -304,7 +258,10 @@ import {
 
 - **Write test BEFORE code**: Every piece of functionality starts with a failing test
 - **Smallest step possible**: Make test pass with minimal implementation
-- **One test at a time**: Don't write multiple tests before making first one pass
+- **One test at a time (ALL test types)**: Don't write multiple tests before making first one pass
+  - Applies to **all** unit and integration tests: queries, usecases, repositories, controllers
+  - Example: For a query with multiple scenarios, write test for "0 projects" → make pass → test "multiple projects" → make pass → test "not found"
+  - Benefit: Ensures each scenario is properly tested before moving forward; prevents skipping untested cases
 - **Refactor with confidence**: Tests ensure refactoring doesn't break behavior
 - **Red-Green-Refactor rhythm**: Never skip a step in the cycle
 
@@ -312,64 +269,102 @@ import {
 
 ---
 
-## 🛠️ Common Shared Services
+## 🧪 Testing Best Practices
 
-Available for injection in NestJS modules:
+### Object Assertions: Prefer Single expect()
 
-| Service                                    | Import                                                           | Purpose                  | When to Use           |
-| ------------------------------------------ | ---------------------------------------------------------------- | ------------------------ | --------------------- |
-| **RandomUuidGenerator**                    | `@/shared-kernel/adapters/id-generator/RandomUuidGenerator`      | Generate random UUIDs    | Production (default)  |
-| **DeterministicIdGenerator**               | `@/shared-kernel/adapters/id-generator/DeterministicIdGenerator` | Generate predictable IDs | Testing only          |
-| **RealDateProvider**                       | `@/shared-kernel/adapters/date/RealDateProvider`                 | Get current date/time    | Production (default)  |
-| **DeterministicDateProvider**              | `@/shared-kernel/adapters/date/DeterministicDateProvider`        | Fixed date/time          | Testing only          |
-| **SQL_CONNECTION**                         | `@/shared-kernel/adapters/sql-knex/sqlConnection.module`         | Knex database connection | All repositories      |
-| **DOMAIN_EVENT_PUBLISHER_INJECTION_TOKEN** | `@/shared-kernel/adapters/events/eventPublisher.module`          | Publish domain events    | Event-driven usecases |
+When asserting object shapes (DTOs, ViewModels, API responses, database results):
+
+**PREFERRED**: Single `expect()` with complete object validation
+
+- Forces thinking about the complete data shape upfront
+- Catches missing properties that multi-assertion approaches can accidentally skip
+- More readable intent: "function returns exactly this structure"
+- Easier to review what's being validated at a glance
+
+```typescript
+// PREFERRED: Single expect for complete validation
+expect(result).toEqual({
+  id: siteId,
+  features: {
+    id: siteId,
+    name: "Site Name",
+    nature: "FRICHE",
+    // ... all properties
+  },
+  reconversionProjects: [
+    {
+      id: project1Id,
+      name: "Project 1",
+      type: "PHOTOVOLTAIC_POWER_PLANT",
+    },
+    // ... all projects
+  ],
+});
+```
+
+**EXCEPTION**: Use targeted assertions when:
+
+- You only care about specific properties (partial validation)
+- Properties are non-deterministic (timestamps, UUIDs that vary)
+- Object structure is very large (break into multiple assertions for readability)
+
+```typescript
+// EXCEPTION: Partial assertion when only specific properties matter
+expect(result.id).toEqual(siteId);
+expect(result.reconversionProjects).toHaveLength(2);
+
+// EXCEPTION: When properties are non-deterministic
+expect(result).toEqual({
+  id: expect.any(String), // UUID varies
+  createdAt: expect.any(Date), // Timestamp varies
+  name: "Site Name", // But name must be exact
+});
+```
+
+**CRITICAL**: Never skip validating the critical shape of response objects - always assert the essential structure.
+
+---
+
+## 🛠️ Shared Services & Dependency Injection
+
+**For comprehensive reference on injectable services, factory pattern, and testing**, see [11-shared-services.md](../../.claude/context/api/11-shared-services.md).
+
+**Quick summary**:
+
+- **ID Generation**: `RandomUuidGenerator` (prod), `DeterministicIdGenerator` (tests)
+- **Date/Time**: `RealDateProvider` (prod), `DeterministicDateProvider` (tests)
+- **Database**: Inject `SQL_CONNECTION` into SQL repositories/queries
+- **Events**: `DOMAIN_EVENT_PUBLISHER_INJECTION_TOKEN` for cross-module events
+
+Use **factory pattern** in NestJS modules to wire dependencies (see [08-dependency-injection.md](../../.claude/context/api/08-dependency-injection.md)).
 
 ---
 
 ## 🗄️ Database Table Types
 
-All SQL table type definitions are centralized in:
-**[tableTypes.d.ts](./src/shared-kernel/adapters/sql-knex/tableTypes.d.ts)** (`src/shared-kernel/adapters/sql-knex/tableTypes.d.ts`)
+**For complete guidance on table types, migrations, and SQL patterns**, see [07-database-patterns.md](../../.claude/context/api/07-database-patterns.md#table-types).
 
-When creating a new table via migration, **always add the corresponding TypeScript type**:
+**Critical rules**:
+
+1. Define types in `src/shared-kernel/adapters/sql-knex/tableTypes.d.ts` (central registry)
+2. Use `snake_case` for columns (matching database)
+3. Use `Date` for timestamps (Knex auto-converts)
+4. Mark nullable columns with `| null` (not optional `?:`)
+5. Add type **immediately after creating migration**
+
+**Example**:
 
 ```typescript
-// Example: apps/api/src/shared-kernel/adapters/sql-knex/tableTypes.d.ts
+// Database migration
+table.string("name").notNullable();
+table.timestamp("created_at").notNullable();
+
+// Type definition
 export type SqlExample = {
-  id: string;
   name: string;
-  created_at: Date; // Knex deserializes timestamps to Date objects
-  updated_at: Date | null;
-  // Use snake_case for column names (DB convention)
+  created_at: Date; // Knex converts timestamp → Date
 };
-```
-
-**Important:**
-
-- ✅ Use `snake_case` for column names (matches database convention)
-- ✅ Use `Date` for timestamp/datetime columns - Knex automatically deserializes them from the database
-- ✅ These types are used by SQL repositories for type-safe Knex queries
-- ✅ Keep in sync with migrations - add type when you create migration
-- ✅ Use exact database types (`string`, `number`, `Date`, `boolean`, etc.)
-- ✅ Mark nullable columns with `| null`
-
-**Knex Timestamp Handling**: When Knex queries the database, it automatically converts timestamp columns to JavaScript `Date` objects. In your TypeScript type definitions, always use `Date` for these columns, not `string`.
-
-**Example usage in SQL Repository:**
-
-```typescript
-import type { SqlExample } from "@/shared-kernel/adapters/sql-knex/tableTypes";
-
-async save(example: Example): Promise<void> {
-  const row: SqlExample = {
-    id: example.id,
-    name: example.name,
-    created_at: example.createdAt,
-    updated_at: null,
-  };
-  await this.sqlConnection("examples").insert(row);
-}
 ```
 
 ---

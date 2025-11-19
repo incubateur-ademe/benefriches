@@ -122,56 +122,228 @@ pnpm --filter api knex:migrate-status
 
 ## Table Types
 
-**CRITICAL**: Always define TypeScript types for SQL tables in `tableTypes.d.ts`.
+**CRITICAL**: Always define TypeScript types for SQL tables in `tableTypes.d.ts`. This ensures compile-time type safety when working with Knex queries.
 
-### Location
+### Location & Central Registry
 
 **[src/shared-kernel/adapters/sql-knex/tableTypes.d.ts](../../../apps/api/src/shared-kernel/adapters/sql-knex/tableTypes.d.ts)**
+
+This file serves as the **single source of truth** for all SQL table types. When you create a new table via migration, add the corresponding TypeScript type here immediately.
 
 ### Type Definition Pattern
 
 ```typescript
 // src/shared-kernel/adapters/sql-knex/tableTypes.d.ts
 
+// Basic table with nullable columns
 export type SqlExample = {
-  id: string;
-  name: string;
-  description: string | null;
-  created_at: Date;  // Knex auto-converts timestamps to Date
-  updated_at: Date | null;
+  id: string;                          // Primary key (UUID)
+  name: string;                        // Required string
+  description: string | null;          // Optional string
+  created_at: Date;                    // Knex auto-converts timestamps to Date
+  updated_at: Date | null;             // Nullable timestamp
 };
 
+// Table with foreign key
 export type SqlSiteSoil = {
   id: string;
-  site_id: string;
+  site_id: string;                     // Foreign key
   type: string;
   surface_area: number;
+};
+
+// Table with JSON/JSONB column
+export type SqlConfig = {
+  id: string;
+  settings: Record<string, unknown>;   // JSONB column
+  tags: string[];                      // JSON array
+  created_at: Date;
+};
+
+// Table with numeric precision
+export type SqlCost = {
+  id: string;
+  amount: number;                      // Can be integer or decimal
+  percentage: number;
+  created_at: Date;
 };
 ```
 
 ### Rules for Table Types
 
-- ✅ Use `snake_case` for column names (matches database)
-- ✅ Use `Date` for timestamp columns (Knex auto-converts)
-- ✅ Mark nullable columns with `| null`
-- ✅ Use exact database types (`string`, `number`, `boolean`, `Date`)
-- ✅ Add type immediately after creating migration
+**CRITICAL - Must Follow**:
+
+1. **Use `snake_case` for column names** - Matches database convention exactly
+2. **Use `Date` for timestamp columns** - Knex automatically converts timestamps to Date objects
+3. **Mark nullable columns with `| null`** - Don't use optional properties `?:`
+4. **Use exact database types** - `string`, `number`, `boolean`, `Date`, `Record<string, unknown>` for JSON
+5. **Add type IMMEDIATELY after creating migration** - Don't postpone this
+6. **Never use `any` type** - Be explicit about structure
+
+```typescript
+// ✅ CORRECT - Explicit about what's nullable
+export type SqlUser = {
+  id: string;
+  name: string;
+  email: string;
+  phone: string | null;           // Nullable column
+  created_at: Date;
+};
+
+// ❌ WRONG - Optional properties instead of null
+export type SqlUser = {
+  id: string;
+  name: string;
+  email: string;
+  phone?: string;                 // Wrong! Use | null instead
+  created_at: Date;
+};
+
+// ❌ WRONG - Any type for JSON
+export type SqlConfig = {
+  settings: any;                  // Wrong! Too permissive
+};
+
+// ✅ CORRECT - Explicit JSON structure
+export type SqlConfig = {
+  settings: Record<string, unknown>;   // For unstructured JSON
+  // OR
+  settings: {
+    theme: "light" | "dark";
+    fontSize: number;
+  };  // For structured JSON with known shape
+};
+```
+
+### Workflow: Migration → Type Definition
+
+Always follow this sequence:
+
+```bash
+# Step 1: Create migration file
+pnpm --filter api knex:migrate-make create_table_examples
+
+# Step 2: Write migration (up + down functions)
+# Edit migrations/[timestamp]_create_table_examples.ts
+
+# Step 3: Add TypeScript type to tableTypes.d.ts
+# Edit src/shared-kernel/adapters/sql-knex/tableTypes.d.ts
+# Add: export type SqlExample = { ... }
+
+# Step 4: Run migration
+pnpm --filter api knex:migrate-latest
+
+# Step 5: Test migration
+pnpm --filter api knex:migrate-status
+```
 
 ### Knex Timestamp Handling
 
-**IMPORTANT**: Knex automatically converts timestamp columns to JavaScript `Date` objects.
+**IMPORTANT**: Knex automatically converts PostgreSQL `timestamp` columns to JavaScript `Date` objects.
 
+**When you query with Knex**:
 ```typescript
-// ✅ CORRECT - Use Date in type definition
+const row = await knex<SqlExample>("examples").where("id", id).first();
+// row.created_at is automatically a Date object, not a string
+```
+
+**In your TypeScript types**:
+```typescript
+// ✅ CORRECT - Use Date for timestamp columns
 export type SqlExample = {
-  created_at: Date;  // Knex converts timestamp → Date
+  created_at: Date;                           // Knex converts timestamp → Date
+  updated_at: Date | null;                    // Nullable timestamp
 };
 
 // ❌ WRONG - Don't use string for timestamps
 export type SqlExample = {
-  created_at: string;  // Wrong!
+  created_at: string;                         // Wrong! Knex returns Date, not string
+  updated_at: string | null;                  // Wrong!
 };
 ```
+
+### Using Types in SQL Operations
+
+```typescript
+import type { SqlExample } from "@/shared-kernel/adapters/sql-knex/tableTypes";
+
+export class SqlExampleRepository {
+  async save(example: Example): Promise<void> {
+    // Step 1: Map domain model to SQL row type
+    const row: SqlExample = {
+      id: example.id,
+      name: example.name,
+      description: example.description || null,  // Map undefined → null
+      created_at: new Date(),
+      updated_at: null,
+    };
+
+    // Step 2: Insert with type safety
+    await this.sqlConnection("examples").insert(row);
+  }
+
+  async getById(id: string): Promise<Example | undefined> {
+    // Step 3: Query with type annotation
+    const row = await this.sqlConnection<SqlExample>("examples")
+      .where("id", id)
+      .first();
+
+    if (!row) return undefined;
+
+    // Step 4: Map SQL row back to domain model
+    return new Example({
+      id: row.id,
+      name: row.name,
+      description: row.description || undefined,  // Map null → undefined
+      createdAt: row.created_at,
+    });
+  }
+}
+```
+
+### When to Create New Types
+
+✅ Create new type when:
+- Creating a new table
+- Adding a new column to existing table (update type)
+- Modifying a column (update type signature)
+
+❌ Don't create new type for:
+- Just viewing data (reuse existing table type with `<SqlTable>` in Knex)
+- Temporary query results (use inline type or `Record<string, unknown>`)
+
+### Maintaining Type Definitions
+
+**Keep `tableTypes.d.ts` in sync with migrations**:
+
+1. **After adding column to table**:
+   ```typescript
+   // Update the corresponding type
+   export type SqlExample = {
+     // ... existing fields
+     newField: string | null;  // Add this line
+   };
+   ```
+
+2. **After removing column from table**:
+   ```typescript
+   // Remove from type
+   export type SqlExample = {
+     // ... existing fields
+     // deletedField: string;  ← Remove this line
+   };
+   ```
+
+3. **After changing column type**:
+   ```typescript
+   // Update type signature
+   export type SqlExample = {
+     // Before:
+     // age: number;
+     // After:
+     age: string | null;  // Changed type and nullability
+   };
+   ```
 
 ## SQL Patterns
 
