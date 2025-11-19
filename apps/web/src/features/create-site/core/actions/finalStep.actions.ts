@@ -1,12 +1,12 @@
-import { API_ROUTES } from "shared";
+import { createCustomSiteDtoSchema, createExpressSiteDtoSchema } from "shared";
 import z from "zod";
 
 import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
 
-const customSiteSchema = API_ROUTES.SITES.CREATE_CUSTOM_SITE.bodySchema;
+const customSiteSchema = createCustomSiteDtoSchema;
 export type CustomSitePayload = z.infer<typeof customSiteSchema>;
 
-const expressSiteSchema = API_ROUTES.SITES.CREATE_EXPRESS_SITE.bodySchema;
+const expressSiteSchema = createExpressSiteDtoSchema;
 export type ExpressSitePayload = z.infer<typeof expressSiteSchema>;
 
 export interface CreateSiteGateway {

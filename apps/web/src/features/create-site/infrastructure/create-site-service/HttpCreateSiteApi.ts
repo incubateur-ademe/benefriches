@@ -1,5 +1,3 @@
-import { API_ROUTES } from "shared";
-
 import {
   CreateSiteGateway,
   CustomSitePayload,
@@ -8,7 +6,7 @@ import {
 
 export class HttpCreateSiteApi implements CreateSiteGateway {
   async saveCustom(newSite: CustomSitePayload) {
-    const response = await fetch(`/api${API_ROUTES.SITES.CREATE_CUSTOM_SITE.path}`, {
+    const response = await fetch("/api/sites/create-custom", {
       method: "POST",
       body: JSON.stringify(newSite),
       headers: {
@@ -20,7 +18,7 @@ export class HttpCreateSiteApi implements CreateSiteGateway {
   }
 
   async saveExpress(newSite: ExpressSitePayload): Promise<void> {
-    const response = await fetch(`/api${API_ROUTES.SITES.CREATE_EXPRESS_SITE.path}`, {
+    const response = await fetch("/api/sites/create-express", {
       method: "POST",
       body: JSON.stringify(newSite),
       headers: {

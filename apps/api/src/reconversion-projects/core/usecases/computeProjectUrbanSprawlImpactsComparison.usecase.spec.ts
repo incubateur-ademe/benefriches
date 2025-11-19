@@ -12,7 +12,7 @@ import { FakeGetSoilsCarbonStorageService } from "../gateways/FakeGetSoilsCarbon
 import { Schedule } from "../model/reconversionProject";
 import {
   ComputeProjectUrbanSprawlImpactsComparisonUseCase,
-  type ApiUrbanSprawlImpactsComparisonResult,
+  type ApiUrbanSprawlImpactsComparisonResultDto,
 } from "./computeProjectUrbanSprawlImpactsComparison.usecase";
 import { ApiReconversionProjectImpactsDataView } from "./computeReconversionProjectImpacts.usecase";
 
@@ -250,7 +250,7 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
     });
 
     expect(result.isSuccess()).toBe(true);
-    const data = (result as SuccessResult<ApiUrbanSprawlImpactsComparisonResult>).getData();
+    const data = (result as SuccessResult<ApiUrbanSprawlImpactsComparisonResultDto>).getData();
 
     expect(data.baseCase.projectImpacts).toBeDefined();
     expect(data.baseCase.statuQuoSiteImpacts).toBeDefined();
@@ -681,7 +681,7 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
     });
 
     expect(result.isSuccess()).toBe(true);
-    const data = (result as SuccessResult<ApiUrbanSprawlImpactsComparisonResult>).getData();
+    const data = (result as SuccessResult<ApiUrbanSprawlImpactsComparisonResultDto>).getData();
 
     expect(data.projectData.id).toEqual(projectData.id);
     expect(data.baseCase.projectImpacts.environmental.soilsCo2eqStorage).toEqual(undefined);
@@ -796,7 +796,7 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
     });
 
     expect(result.isSuccess()).toBe(true);
-    const data = (result as SuccessResult<ApiUrbanSprawlImpactsComparisonResult>).getData();
+    const data = (result as SuccessResult<ApiUrbanSprawlImpactsComparisonResultDto>).getData();
 
     expect(data.baseCase.comparisonImpacts.economicBalance.costs.siteReinstatement).toBeUndefined();
     expect(

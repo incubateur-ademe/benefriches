@@ -1,7 +1,6 @@
 import z from "zod";
 
 import { addressSchema, fricheActivitySchema, siteNatureSchema } from "../../site";
-import { RouteDef } from "../routeDef";
 
 const baseExpressSiteDtoSchema = z.object({
   id: z.string(),
@@ -11,7 +10,7 @@ const baseExpressSiteDtoSchema = z.object({
   nature: siteNatureSchema,
 });
 
-const createExpressSiteDtoSchema = z.discriminatedUnion("nature", [
+export const createExpressSiteDtoSchema = z.discriminatedUnion("nature", [
   baseExpressSiteDtoSchema.extend({
     nature: z.literal("FRICHE"),
     fricheActivity: fricheActivitySchema,
@@ -27,7 +26,4 @@ const createExpressSiteDtoSchema = z.discriminatedUnion("nature", [
   }),
 ]);
 
-export const createExpressSite = {
-  path: "/sites/create-express",
-  bodySchema: createExpressSiteDtoSchema,
-} as const satisfies RouteDef;
+export type CreateExpressSiteDto = z.infer<typeof createExpressSiteDtoSchema>;

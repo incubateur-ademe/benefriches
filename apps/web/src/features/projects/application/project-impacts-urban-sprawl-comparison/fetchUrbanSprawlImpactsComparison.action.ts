@@ -1,4 +1,4 @@
-import { SiteNature, UrbanSprawlImpactsComparisonResult } from "shared";
+import { SiteNature, UrbanSprawlImpactsComparisonResultDto } from "shared";
 
 import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
 
@@ -8,7 +8,7 @@ type Props = {
   comparisonSiteNature: SiteNature;
 };
 
-export type UrbanSprawlImpactsComparisonObj = UrbanSprawlImpactsComparisonResult<{
+export type UrbanSprawlImpactsComparisonObj = UrbanSprawlImpactsComparisonResultDto<{
   startDate: string;
   endDate: string;
 }>;

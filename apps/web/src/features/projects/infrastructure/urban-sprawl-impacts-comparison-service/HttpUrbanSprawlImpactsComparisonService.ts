@@ -1,4 +1,4 @@
-import { API_ROUTES, SiteNature } from "shared";
+import { SiteNature } from "shared";
 
 import {
   UrbanSprawlImpactsComparisonGateway,
@@ -24,7 +24,7 @@ export class HttpUrbanSprawlImpactsComparisonService
     queryParams.append("comparisonSiteNature", comparisonSiteNature);
 
     const response = await fetch(
-      `/api${API_ROUTES.URBAN_SPRAWL_IMPACTS_COMPARISON.GET.path.replace(":reconversionProjectId", reconversionProjectId)}?${queryParams.toString()}`,
+      `/api/reconversion-projects/${reconversionProjectId}/urban-sprawl-comparison?${queryParams.toString()}`,
     );
 
     if (!response.ok)

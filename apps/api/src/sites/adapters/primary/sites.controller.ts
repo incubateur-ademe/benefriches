@@ -10,8 +10,13 @@ import {
   UseGuards,
 } from "@nestjs/common";
 import { ZodValidationPipe } from "nestjs-zod";
-import { API_ROUTES, createSoilSurfaceAreaDistribution } from "shared";
-import { z } from "zod";
+import {
+  createCustomSiteDtoSchema,
+  type CreateCustomSiteDto,
+  createExpressSiteDtoSchema,
+  type CreateExpressSiteDto,
+  createSoilSurfaceAreaDistribution,
+} from "shared";
 
 import { JwtAuthGuard } from "src/auth/adapters/JwtAuthGuard";
 import {
@@ -22,14 +27,6 @@ import { CreateNewCustomSiteUseCase } from "src/sites/core/usecases/createNewSit
 import { GetSiteByIdUseCase } from "src/sites/core/usecases/getSiteById.usecase";
 import { GetSiteViewByIdUseCase } from "src/sites/core/usecases/getSiteViewById.usecase";
 
-// here we can't use createZodDto because dto schema is a discriminated union: https://github.com/risen228/nestjs-zod/issues/41
-const createCustomSiteDtoSchema = API_ROUTES.SITES.CREATE_CUSTOM_SITE.bodySchema;
-export type CreateCustomSiteDto = z.infer<typeof createCustomSiteDtoSchema>;
-
-// here we can't use createZodDto because dto schema is a discriminated union: https://github.com/risen228/nestjs-zod/issues/41
-const createExpressSiteDtoSchema = API_ROUTES.SITES.CREATE_EXPRESS_SITE.bodySchema;
-export type CreateExpressSiteDto = z.infer<typeof createExpressSiteDtoSchema>;
-
 @Controller()
 export class SitesController {
   constructor(
@@ -39,7 +36,7 @@ export class SitesController {
     private readonly getSiteViewByIdUseCase: GetSiteViewByIdUseCase,
   ) {}
 
-  @Post(API_ROUTES.SITES.CREATE_CUSTOM_SITE.path)
+  @Post("/sites/create-custom")
   async createNewCustomSite(
     @Body(new ZodValidationPipe(createCustomSiteDtoSchema)) createSiteDto: CreateCustomSiteDto,
   ) {
@@ -66,7 +63,7 @@ export class SitesController {
     }
   }
 
-  @Post(API_ROUTES.SITES.CREATE_EXPRESS_SITE.path)
+  @Post("/sites/create-express")
   async createNewExpressSite(
     @Body(new ZodValidationPipe(createExpressSiteDtoSchema)) createSiteDto: CreateExpressSiteDto,
   ) {

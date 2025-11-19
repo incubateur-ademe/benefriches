@@ -1,5 +1,6 @@
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { Knex } from "knex";
+import { CreateCustomSiteDto, CreateExpressSiteDto } from "shared";
 import supertest from "supertest";
 import { authenticateUser, createTestApp } from "test/testApp";
 import { v4 as uuid } from "uuid";
@@ -8,8 +9,6 @@ import { ACCESS_TOKEN_COOKIE_KEY } from "src/auth/adapters/access-token/accessTo
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import { SqlSite } from "src/shared-kernel/adapters/sql-knex/tableTypes";
 import { UserBuilder } from "src/users/core/model/user.mock";
-
-import { CreateCustomSiteDto, CreateExpressSiteDto } from "./sites.controller";
 
 type BadRequestResponseBody = {
   errors: { path: string[] }[];

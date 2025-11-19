@@ -7,7 +7,6 @@ import {
   siteYearlyExpenseSchema,
   siteYearlyIncomeSchema,
 } from "../../site";
-import { RouteDef } from "../routeDef";
 
 const baseSchema = z.object({
   createdBy: z.string(),
@@ -54,13 +53,10 @@ const naturalCustomSiteDtoSchema = baseSchema.extend({
   naturalAreaType: z.enum(["PRAIRIE", "FOREST", "WET_LAND", "MIXED_NATURAL_AREA"]),
 });
 
-const createCustomSiteDtoSchema = z.discriminatedUnion("nature", [
+export const createCustomSiteDtoSchema = z.discriminatedUnion("nature", [
   fricheCustomDtoSchema,
   agriculturalCustomSiteDtoSchema,
   naturalCustomSiteDtoSchema,
 ]);
 
-export const createCustomSite = {
-  path: "/sites/create-custom",
-  bodySchema: createCustomSiteDtoSchema,
-} as const satisfies RouteDef;
+export type CreateCustomSiteDto = z.infer<typeof createCustomSiteDtoSchema>;

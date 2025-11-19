@@ -9,6 +9,6 @@ export * from "./services";
 export * from "./financial";
 export * from "./local-authority";
 export * from "./co2eq";
-export * from "./api-contracts";
+export * from "./api-dtos";
 export * from "./urban-sprawl-impacts-comparison";
 export { type IDateProvider } from "./adapters/IDateProvider";

@@ -17,7 +17,7 @@ import {
   sumListWithKey,
   typedObjectEntries,
   UrbanSprawlComparisonImpacts,
-  UrbanSprawlImpactsComparisonResult,
+  UrbanSprawlImpactsComparisonResultDto,
 } from "shared";
 import { v4 as uuid } from "uuid";
 
@@ -59,7 +59,8 @@ type ReconversionProjectImpactsQueryResult = Omit<
     installationCosts: ApiReconversionProjectImpactsDataView["developmentPlan"]["installationCosts"];
   } & Partial<Omit<ApiReconversionProjectImpactsDataView["developmentPlan"], "installationCosts">>;
 };
-export type ApiUrbanSprawlImpactsComparisonResult = UrbanSprawlImpactsComparisonResult<Schedule>;
+export type ApiUrbanSprawlImpactsComparisonResultDto =
+  UrbanSprawlImpactsComparisonResultDto<Schedule>;
 
 interface ReconversionProjectImpactsQuery {
   getById(
@@ -73,8 +74,8 @@ type Request = {
   comparisonSiteNature: SiteNature;
 };
 
-type ComputeProjectUrbanSprawlImpactsComparisonResult = TResult<
-  ApiUrbanSprawlImpactsComparisonResult,
+type ComputeProjectUrbanSprawlImpactsComparisonResultDto = TResult<
+  ApiUrbanSprawlImpactsComparisonResultDto,
   "ReconversionProjectNotFound" | "SiteNotFound" | "NoDevelopmentPlanType"
 >;
 
@@ -541,7 +542,7 @@ const computeUrbanSprawlComparisonImpacts = ({
 };
 
 export class ComputeProjectUrbanSprawlImpactsComparisonUseCase
-  implements UseCase<Request, ComputeProjectUrbanSprawlImpactsComparisonResult>
+  implements UseCase<Request, ComputeProjectUrbanSprawlImpactsComparisonResultDto>
 {
   constructor(
     private readonly reconversionProjectQuery: ReconversionProjectImpactsQuery,
@@ -555,7 +556,7 @@ export class ComputeProjectUrbanSprawlImpactsComparisonUseCase
     reconversionProjectId,
     evaluationPeriodInYears,
     comparisonSiteNature,
-  }: Request): Promise<ComputeProjectUrbanSprawlImpactsComparisonResult> {
+  }: Request): Promise<ComputeProjectUrbanSprawlImpactsComparisonResultDto> {
     const reconversionProject = await this.reconversionProjectQuery.getById(reconversionProjectId);
 
     if (!reconversionProject) return fail("ReconversionProjectNotFound");

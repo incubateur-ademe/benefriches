@@ -14,10 +14,10 @@ import {
 } from "@nestjs/common";
 import { createZodDto } from "nestjs-zod";
 import {
-  API_ROUTES,
   reconversionProjectTemplateSchema,
   saveReconversionProjectPropsSchema,
   updateReconversionProjectPropsSchema,
+  getUrbanSprawlImpactsComparisonDtoSchema,
 } from "shared";
 import { z } from "zod";
 
@@ -67,7 +67,7 @@ class GetReconversionProjectImpactsQueryDto extends createZodDto(
 ) {}
 
 class UrbanSprawlComparisonQueryDto extends createZodDto(
-  API_ROUTES.URBAN_SPRAWL_IMPACTS_COMPARISON.GET.querySchema,
+  getUrbanSprawlImpactsComparisonDtoSchema,
 ) {}
 
 class DuplicateReconversionProjectBodyDto extends createZodDto(
@@ -268,7 +268,7 @@ export class ReconversionProjectController {
     return result.getData();
   }
 
-  @Get(API_ROUTES.URBAN_SPRAWL_IMPACTS_COMPARISON.GET.path.replace("/reconversion-projects/", ""))
+  @Get(":reconversionProjectId/urban-sprawl-comparison")
   async getUrbanSprawlImpactsComparison(
     @Param("reconversionProjectId") reconversionProjectId: string,
     @Query() urbanSprawlComparisonQueryDto: UrbanSprawlComparisonQueryDto,
