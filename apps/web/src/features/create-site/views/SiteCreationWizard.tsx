@@ -19,6 +19,7 @@ import SiteCreationIntroduction from "./introduction";
 import IsFricheForm from "./is-friche";
 import SiteNatureForm from "./site-nature";
 import StepRevertConfirmationModal from "./step-revert-confirmation-modal";
+import UseMutabilityForm from "./use-mutability";
 import { useSyncCreationStepWithRouteQuery } from "./useSyncCreationStepWithRouteQuery";
 
 export const HTML_MAIN_TITLE = "Renseignement du site";
@@ -40,6 +41,13 @@ const getMainChildren = (
         <>
           <HtmlTitle>{`Type de site - ${HTML_MAIN_TITLE}`}</HtmlTitle>
           <IsFricheForm />
+        </>
+      );
+    case "USE_MUTABILITY":
+      return (
+        <>
+          <HtmlTitle>{`Type d'évaluation - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <UseMutabilityForm />
         </>
       );
     case "SITE_NATURE":

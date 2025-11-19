@@ -15,7 +15,11 @@ export default function SituationSection() {
         <SectionTitle>Où en êtes-vous de votre projet d'aménagement ?</SectionTitle>
         <div className="md:grid md:grid-cols-2 gap-6 mt-[60px]">
           <article className="bg-[#EEE9F4] dark:bg-blue-ultradark p-10 rounded-xl">
-            <img className="mb-6 h-[100px]" src="/img/pictograms/site-nature/friche.svg" alt="" />
+            <img
+              className="mb-6 h-[100px]"
+              src="/img/pictograms/evaluations/mutability.svg"
+              alt=""
+            />
             <h3 className="text-2xl">
               J'ai une friche et je souhaite trouver l'usage le plus adapté.
             </h3>
@@ -24,7 +28,7 @@ export default function SituationSection() {
             <HighlightsList items={MUTAFRICHES_HIGHLIGHTS} />
           </article>
           <article className="bg-[#E2EEF3] dark:bg-blue-ultradark p-10 rounded-xl">
-            <img className="mb-6 h-[100px]" src="/img/pictograms/all-projects.svg" alt="" />
+            <img className="mb-6 h-[100px]" src="/img/pictograms/evaluations/impacts.svg" alt="" />
             <h3 className="text-2xl">
               J'ai un projet sur un site et je souhaite savoir quelles seraient ses retombées.
             </h3>

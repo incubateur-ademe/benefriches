@@ -8,6 +8,7 @@ import {
   siteNatureCompleted,
   addressStepCompleted,
   siteCreationInitiated,
+  useMutabilityCompleted,
 } from "../../actions/introduction.actions";
 import { stepRevertAttempted } from "../../actions/revert.actions";
 import { siteWithExhaustiveData } from "../../siteData.mock";
@@ -61,7 +62,7 @@ describe("Site creation: introduction steps (intro, nature, creation mode, addre
       expectSiteDataDiff(initialRootState, newState, { isFriche: false });
       expectNewCurrentStep(initialRootState, newState, "SITE_NATURE");
     });
-    it("goes to CREATE_MODE_SELECTION step and sets site nature to friche when step is completed and site is a friche", () => {
+    it("goes to USE_MUTABILITY step and sets site nature to friche when step is completed and site is a friche", () => {
       const store = new StoreBuilder().withStepsHistory(["INTRODUCTION", "IS_FRICHE"]).build();
       const initialRootState = store.getState();
 
@@ -69,7 +70,7 @@ describe("Site creation: introduction steps (intro, nature, creation mode, addre
 
       const newState = store.getState();
       expectSiteDataDiff(initialRootState, newState, { isFriche: true, nature: "FRICHE" });
-      expectNewCurrentStep(initialRootState, newState, "CREATE_MODE_SELECTION");
+      expectNewCurrentStep(initialRootState, newState, "USE_MUTABILITY");
     });
     it("goes to previous step and unsets isFriche when step is reverted", () => {
       const store = new StoreBuilder().withStepsHistory(["INTRODUCTION", "IS_FRICHE"]).build();
@@ -79,6 +80,26 @@ describe("Site creation: introduction steps (intro, nature, creation mode, addre
 
       const newState = store.getState();
       expectSiteDataDiff(initialRootState, newState, { isFriche: undefined });
+      expectStepReverted(initialRootState, newState);
+    });
+  });
+  describe("USE_MUTABILITY", () => {
+    it("goes to CREATION_MODE_SELECTION step when step is completed with useMutability false", () => {
+      const store = new StoreBuilder().withStepsHistory(["INTRODUCTION", "IS_FRICHE"]).build();
+      const initialRootState = store.getState();
+
+      store.dispatch(useMutabilityCompleted({ useMutability: false }));
+
+      const newState = store.getState();
+      expectNewCurrentStep(initialRootState, newState, "CREATE_MODE_SELECTION");
+    });
+    it("goes to previous step when step is reverted", () => {
+      const store = new StoreBuilder().withStepsHistory(["INTRODUCTION", "USE_MUTABILITY"]).build();
+      const initialRootState = store.getState();
+
+      store.dispatch(stepRevertAttempted());
+
+      const newState = store.getState();
       expectStepReverted(initialRootState, newState);
     });
   });

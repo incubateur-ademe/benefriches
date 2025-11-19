@@ -25,6 +25,7 @@ import {
   naturalAreaTypeCompleted,
   siteCreationInitiated,
   siteNatureCompleted,
+  useMutabilityCompleted,
 } from "./actions/introduction.actions";
 import { namingIntroductionStepCompleted, namingStepCompleted } from "./actions/naming.actions";
 import {
@@ -109,6 +110,7 @@ export type SiteCreationExpressStep =
 export type SiteCreationStep =
   | "INTRODUCTION"
   | "IS_FRICHE"
+  | "USE_MUTABILITY"
   | "SITE_NATURE"
   | "CREATE_MODE_SELECTION"
   | SiteCreationExpressStep
@@ -119,6 +121,7 @@ export type SiteCreationState = {
   siteData: SiteCreationData;
   stepRevertAttempted: boolean;
   createMode?: "express" | "custom";
+  useMutability?: boolean;
   saveLoadingState: "idle" | "loading" | "success" | "error";
 };
 
@@ -157,9 +160,15 @@ const siteCreationReducer = createReducer(getInitialState(), (builder) => {
       state.siteData.isFriche = isFriche;
       if (isFriche) {
         state.siteData.nature = "FRICHE";
-        state.stepsHistory.push("CREATE_MODE_SELECTION");
+        state.stepsHistory.push("USE_MUTABILITY");
       } else {
         state.stepsHistory.push("SITE_NATURE");
+      }
+    })
+    .addCase(useMutabilityCompleted, (state, action) => {
+      state.useMutability = action.payload.useMutability;
+      if (!action.payload.useMutability) {
+        state.stepsHistory.push("CREATE_MODE_SELECTION");
       }
     })
     .addCase(siteNatureCompleted, (state, action) => {
