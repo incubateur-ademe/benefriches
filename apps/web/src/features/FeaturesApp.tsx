@@ -18,7 +18,7 @@ const CreateProjectPage = lazy(
   () => import("@/features/create-project/views/ProjectCreationWizard"),
 );
 const CreateSiteFoncierPage = lazy(() => import("@/features/create-site/views/SiteCreationWizard"));
-const MyProjectsPage = lazy(() => import("@/features/projects/views/my-projects-page"));
+const MyEvaluationsPage = lazy(() => import("@/features/my-evaluations/views/my-evaluations-page"));
 const ProjectImpactsPage = lazy(() => import("@/features/projects/views/project-page"));
 const UrbanSprawlImpactsComparisonPage = lazy(
   () => import("@/features/projects/views/project-impacts-urban-sprawl-comparison"),
@@ -88,8 +88,8 @@ function FeaturesApp() {
                 return <OnBoardingIntroductionHow variant={route.params.fonctionnalite} />;
               case routes.projectCreationOnboarding.name:
                 return <ProjectCreationOnboardingPage route={route} />;
-              case routes.myProjects.name:
-                return <MyProjectsPage />;
+              case routes.myEvaluations.name:
+                return <MyEvaluationsPage />;
               case routes.projectImpacts.name:
                 return <ProjectImpactsPage projectId={route.params.projectId} />;
 

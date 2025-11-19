@@ -14,7 +14,7 @@ export default function AccessBenefrichesPage() {
   const postLoginRedirectTo =
     currentRoute.name === "accessBenefriches" && currentRoute.params.redirectTo
       ? currentRoute.params.redirectTo
-      : routes.myProjects().href;
+      : routes.myEvaluations().href;
   const loginUrl = `/api/auth/login/pro-connect?redirectTo=${postLoginRedirectTo}`;
 
   return (

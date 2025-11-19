@@ -1,5 +1,6 @@
 import { MutabilityUsage } from "shared";
 
+import { getMutabilityUsageDisplayName } from "@/shared/core/reconversionCompatibility";
 import classNames from "@/shared/views/clsx";
 
 import {
@@ -39,18 +40,6 @@ const getRankColor = (rank: number): string => {
     default:
       return "bg-gray-200 text-black";
   }
-};
-
-const getMutabilityUsageDisplayName = (usage: MutabilityUsage): string => {
-  return {
-    culture: "Lieu culturel ou touristique",
-    renaturation: "Espace de nature",
-    equipements: "Équipements publics",
-    tertiaire: "Bureaux",
-    residentiel: "Habitations et commerces de proximité",
-    photovoltaique: "Centrale photovoltaïque",
-    industrie: "Zone industrielle ou logistique",
-  }[usage];
 };
 
 type Props = {

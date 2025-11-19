@@ -86,8 +86,8 @@ const { RouteProvider, useRoute, routes } = createRouter({
     },
     (params) => `/mes-projets/${params.projectId}/comparaison-extension-urbaine`,
   ),
-  // MES PROJETS
-  myProjects: defineRoute("/mes-projets"),
+  // MES EVALUATIONS
+  myEvaluations: defineRoute("/mes-evaluations"),
   siteFeatures: defineRoute(
     {
       siteId: param.path.string,

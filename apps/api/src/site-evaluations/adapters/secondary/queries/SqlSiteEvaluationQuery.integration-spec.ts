@@ -182,6 +182,14 @@ describe("SqlSiteEvaluationQuery integration", () => {
           created_at: new Date("2025-10-01"),
           creation_mode: "custom",
         },
+        {
+          id: uuid(),
+          created_by: userId,
+          name: "Projet urbain mixte",
+          related_site_id: siteInDb3.id,
+          created_at: new Date("2025-10-01"),
+          creation_mode: "custom",
+        },
       ] as const;
 
       await sqlConnection("reconversion_projects").insert(testProjects);
@@ -269,7 +277,7 @@ describe("SqlSiteEvaluationQuery integration", () => {
             mutafrichesEvaluationId: compatibilityEvaluations[2]?.mutafriches_evaluation_id,
           },
           reconversionProjects: {
-            total: 3,
+            total: 4,
             lastProjects: [
               {
                 id: testProjects[4].id,
@@ -280,6 +288,18 @@ describe("SqlSiteEvaluationQuery integration", () => {
               {
                 id: testProjects[3].id,
                 name: testProjects[3].name,
+                projectType: "PHOTOVOLTAIC_POWER_PLANT",
+                isExpressProject: false,
+              },
+              {
+                id: testProjects[5].id,
+                name: testProjects[5].name,
+                projectType: "PHOTOVOLTAIC_POWER_PLANT",
+                isExpressProject: false,
+              },
+              {
+                id: testProjects[6].id,
+                name: testProjects[6].name,
                 projectType: "PHOTOVOLTAIC_POWER_PLANT",
                 isExpressProject: false,
               },

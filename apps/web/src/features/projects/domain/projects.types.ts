@@ -1,20 +1,4 @@
-import { BaseReconversionProjectFeaturesView, FricheActivity, SiteNature } from "shared";
-
-export type ProjectsGroup = {
-  siteId: string;
-  siteName: string;
-  siteNature: SiteNature;
-  isExpressSite: boolean;
-  fricheActivity?: FricheActivity;
-  reconversionProjects: {
-    id: string;
-    name: string;
-    type: ProjectDevelopmentPlanType;
-    isExpressProject: boolean;
-  }[];
-};
-
-export type ReconversionProjectsGroupedBySite = ProjectsGroup[];
+import { BaseReconversionProjectFeaturesView } from "shared";
 
 export type UrbanProjectFeatures = Extract<
   ProjectFeatures["developmentPlan"],

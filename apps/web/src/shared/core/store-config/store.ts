@@ -21,7 +21,7 @@ import { CreateFeatureAlertGateway } from "@/features/user-feature-alerts/core/C
 import { SiteMunicipalityDataGateway as CreateProjectMunicipalityDataGateway } from "@/shared/core/reducers/project-form/projectForm.actions";
 
 import { SoilsCarbonStorageGateway as SiteSoilsCarbonStorageGateway } from "../../../features/create-site/core/actions/siteSoilsCarbonStorage.actions";
-import { ReconversionProjectsListGateway } from "../../../features/projects/application/projects-list/projectsList.actions";
+import { SiteEvaluationGateway } from "../../../features/my-evaluations/application/evaluationsList.actions";
 import { SoilsCarbonStorageGateway as ProjectSoilsCarbonStorageGateway } from "../reducers/project-form/soilsCarbonStorage.action";
 import { getListener, setupAllListeners } from "./listenerMiddleware";
 import { rootReducer } from "./rootReducer";
@@ -33,7 +33,7 @@ export type AppDependencies = {
   createSiteService: CreateSiteGateway;
   saveReconversionProjectService: SaveReconversionProjectGateway;
   createExpressReconversionProjectService: CreateExpressReconversionProjectGateway;
-  reconversionProjectsListService: ReconversionProjectsListGateway;
+  siteEvaluationService: SiteEvaluationGateway;
   getSiteByIdService: GetSitesByIdGateway;
   photovoltaicPerformanceService: PhotovoltaicPerformanceGateway;
   municipalityDataService: CreateSiteMunicipalityDataGateway | CreateProjectMunicipalityDataGateway;

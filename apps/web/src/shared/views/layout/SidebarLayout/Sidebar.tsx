@@ -40,9 +40,9 @@ function Sidebar({ children, mode, onToggleOpen }: SidebarProps) {
       >
         {isOpen && (
           <a
-            {...routes.myProjects().link}
+            {...routes.myEvaluations().link}
             className="bg-none"
-            aria-description="Retour à mes projets"
+            aria-description="Retour à mes évaluations"
           >
             <img src="/img/logos/logo-benefriches-simple.svg" alt="Bénéfriches" />
           </a>

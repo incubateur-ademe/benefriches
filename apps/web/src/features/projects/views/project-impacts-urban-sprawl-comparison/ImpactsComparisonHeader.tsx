@@ -1,10 +1,10 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import Button from "@codegouvfr/react-dsfr/Button";
+import { ReactNode, useId } from "react";
 
 import { ProjectDevelopmentPlanType } from "@/features/projects/domain/projects.types";
 import classNames, { ClassValue } from "@/shared/views/clsx";
 
-import WithTooltip from "../my-projects-page/ScenariiList/ScenarioTile/ScenarioTileTooltip";
 import { getScenarioPictoUrl } from "../shared/scenarioType";
 
 type HeaderProps = {
@@ -13,6 +13,22 @@ type HeaderProps = {
   comparisonSiteName: string;
   projectType: ProjectDevelopmentPlanType;
   className?: ClassValue;
+};
+
+const WithTooltip = ({ children, tooltipText }: { children: ReactNode; tooltipText: string }) => {
+  const id = useId();
+
+  if (!tooltipText) return children;
+
+  const tooltipId = `tooltip-scenario-tile-${id}`;
+  return (
+    <>
+      <div aria-describedby={tooltipId}>{children}</div>
+      <span className="fr-tooltip fr-placement" id={tooltipId} role="tooltip" aria-hidden="true">
+        {tooltipText}
+      </span>
+    </>
+  );
 };
 
 const ImpactsComparisonHeader = ({

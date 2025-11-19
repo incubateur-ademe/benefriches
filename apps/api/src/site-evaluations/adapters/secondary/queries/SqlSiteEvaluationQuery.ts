@@ -44,7 +44,7 @@ export class SqlSiteEvaluationQuery implements SiteEvaluationQuery {
                   ON rp3.id = rpdp3.reconversion_project_id
                 WHERE rp3.related_site_id = sites.id
                 ORDER BY rp3.created_at DESC
-                LIMIT 2
+                LIMIT 4
               ) as sub
             ),
             '[]'::json

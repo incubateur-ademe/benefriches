@@ -4,12 +4,12 @@ import { ExpectedPhotovoltaicPerformanceApi } from "@/features/create-project/in
 import { HttpSaveReconversionProjectService } from "@/features/create-project/infrastructure/save-project-service/HttpSaveReconversionProjectService";
 import { HttpSitesService } from "@/features/create-project/infrastructure/sites-service/HttpSiteService";
 import { HttpCreateSiteApi } from "@/features/create-site/infrastructure/create-site-service/HttpCreateSiteApi";
+import { HttpSiteEvaluationApi } from "@/features/my-evaluations/infrastructure/projects-list-service/HttpSiteEvaluationApi";
 import { HttpAuthService } from "@/features/onboarding/infrastructure/auth-service/HttpAuthService";
 import { HttpCreateUserService } from "@/features/onboarding/infrastructure/create-user-service/HttpCreateUserService";
 import { HttpCurrentUserService } from "@/features/onboarding/infrastructure/current-user-service/HttpCurrentUserService";
 import { LocalStorageCurrentUserService } from "@/features/onboarding/infrastructure/current-user-service/LocalStorageCurrentUserService";
 import { HttpProjectFeaturesService } from "@/features/projects/infrastructure/project-features-service/HttpProjectFeaturesService";
-import { HttpReconversionProjectsListApi } from "@/features/projects/infrastructure/projects-list-service/HttpProjectsListApi";
 import { HttpQuickUrbanProjectImpactsService } from "@/features/projects/infrastructure/quick-urban-project-impacts-service/HttpQuickUrbanProjectImpactsService";
 import { HttpReconversionProjectImpactsApi } from "@/features/projects/infrastructure/reconversion-project-impacts-service/HttpReconversionProjectImpactsService";
 import { HttpUrbanSprawlImpactsComparisonService } from "@/features/projects/infrastructure/urban-sprawl-impacts-comparison-service/HttpUrbanSprawlImpactsComparisonService";
@@ -33,7 +33,7 @@ export const appDependencies: AppDependencies = {
   soilsCarbonStorageService: new SoilsCarbonStorageApi(),
   createSiteService: new HttpCreateSiteApi(),
   getSiteByIdService: new HttpSitesService(),
-  reconversionProjectsListService: new HttpReconversionProjectsListApi(),
+  siteEvaluationService: new HttpSiteEvaluationApi(),
   saveReconversionProjectService: new HttpSaveReconversionProjectService(),
   createExpressReconversionProjectService: new HttpCreateExpressReconversionProjectService(),
   reconversionProjectImpacts: new HttpReconversionProjectImpactsApi(),

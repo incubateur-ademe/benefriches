@@ -2,21 +2,20 @@ import Button from "@codegouvfr/react-dsfr/Button";
 
 import { siteCreationInitiated } from "@/features/create-site/core/actions/introduction.actions";
 import classNames from "@/shared/views/clsx";
-import DropdownMenu from "@/shared/views/components/Menu/DropdownMenu";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 import { useIsSmallScreen } from "@/shared/views/hooks/useIsSmallScreen";
 import { routes } from "@/shared/views/router";
 
-function MyProjectsPageHeader() {
+function MyEvaluationsPageHeader() {
   const isSmScreen = useIsSmallScreen();
 
   const dispatch = useAppDispatch();
 
   return (
     <div className={classNames("flex", "justify-between", "items-center")}>
-      <h2>Mes projets</h2>
+      <h2>Mes évaluations</h2>
       <div className={classNames("flex", "gap-2", "mb-6")}>
-        <div className="tour-guide-step-create-new-site">
+        <div>
           <Button
             size={isSmScreen ? "small" : "medium"}
             priority="primary"
@@ -26,28 +25,12 @@ function MyProjectsPageHeader() {
             }}
             iconId="fr-icon-add-line"
           >
-            Nouveau site
+            Évaluer un nouveau site
           </Button>
         </div>
-
-        <DropdownMenu
-          size="small"
-          buttonProps={{
-            size: isSmScreen ? "small" : "medium",
-            priority: "secondary",
-            iconId: "fr-icon-more-fill",
-            title: "Voir plus de fonctionnalités",
-          }}
-          options={[
-            {
-              children: "Revoir le tutoriel",
-              iconId: "fr-icon-lightbulb-line",
-            },
-          ]}
-        />
       </div>
     </div>
   );
 }
 
-export default MyProjectsPageHeader;
+export default MyEvaluationsPageHeader;

@@ -10,7 +10,7 @@ import "./BenefrichesHeader.css";
 
 function BenefrichesHeader({
   homeLinkPropsHref = routes.home().href,
-  myProjectsLink = routes.myProjects().link,
+  myProjectsLink = routes.myEvaluations().link,
   ...props
 }: Partial<HeaderProps> & { myProjectsLink?: Link; homeLinkPropsHref?: Link["href"] }) {
   const isUserLoggedIn = useAppSelector(
@@ -23,7 +23,7 @@ function BenefrichesHeader({
     quickAccessItems.push({
       iconId: "fr-icon-briefcase-fill",
       linkProps: myProjectsLink,
-      text: "Mes projets",
+      text: "Mes évaluations",
     });
 
     if (BENEFRICHES_ENV.authEnabled) {

@@ -14,7 +14,7 @@ export default function AuthWithToken() {
   const postLoginRedirectTo =
     currentRoute.name === "authWithToken" && currentRoute.params.redirectTo
       ? currentRoute.params.redirectTo
-      : routes.myProjects().href;
+      : routes.myEvaluations().href;
   const dispatch = useAppDispatch();
   const authenticationWithTokenState = useAppSelector(
     (state) => state.auth.authenticationWithTokenState,

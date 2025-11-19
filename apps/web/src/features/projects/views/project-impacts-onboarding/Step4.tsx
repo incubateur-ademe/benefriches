@@ -52,7 +52,7 @@ export default function Step4({
             innerStep > 0 ? VISIBLE_CLASSES : INVISIBLE_CLASSES,
           )}
         >
-          <p className="text-xl font-bold">Ils se trouvent dans "Mes projets".</p>
+          <p className="text-xl font-bold">Ils se trouvent dans "Mes évaluations".</p>
           <img
             src="/img/pictograms/project-impacts-onboarding/step4-my-projects.svg"
             aria-hidden="true"

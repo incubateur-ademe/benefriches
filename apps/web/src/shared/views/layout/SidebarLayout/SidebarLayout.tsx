@@ -101,10 +101,10 @@ function SidebarLayout({ mainChildren, title, sidebarChildren, actions }: Sideba
                 ))}
                 <Button
                   priority="tertiary no outline"
-                  linkProps={routes.myProjects().link}
+                  linkProps={routes.myEvaluations().link}
                   iconId="fr-icon-briefcase-fill"
                 >
-                  Retour à mes projets
+                  Retour à mes évaluations
                 </Button>
               </div>
             </header>
