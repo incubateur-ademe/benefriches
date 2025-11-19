@@ -7,6 +7,7 @@ import {
   siteYearlyExpenseSchema,
   siteYearlyIncomeSchema,
 } from "../../site";
+import { soilsDistributionSchema } from "../../soils";
 
 const baseSchema = z.object({
   createdBy: z.string(),
@@ -14,7 +15,7 @@ const baseSchema = z.object({
   name: z.string(),
   description: z.string().optional(),
   address: addressSchema,
-  soilsDistribution: z.partialRecord(z.string(), z.number().nonnegative()),
+  soilsDistribution: soilsDistributionSchema,
   owner: z.object({ structureType: z.string(), name: z.string() }).optional(),
   tenant: z.object({ structureType: z.string(), name: z.string() }).optional(),
   yearlyExpenses: siteYearlyExpenseSchema.array(),

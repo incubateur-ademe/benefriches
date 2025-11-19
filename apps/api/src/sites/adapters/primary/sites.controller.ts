@@ -16,6 +16,8 @@ import {
   createExpressSiteDtoSchema,
   type CreateExpressSiteDto,
   createSoilSurfaceAreaDistribution,
+  type GetSiteFeaturesResponseDto,
+  type GetSiteViewResponseDto,
 } from "shared";
 
 import { JwtAuthGuard } from "src/auth/adapters/JwtAuthGuard";
@@ -86,7 +88,7 @@ export class SitesController {
 
   @UseGuards(JwtAuthGuard)
   @Get("sites/:siteId/features")
-  async getSiteById(@Param("siteId") siteId: string) {
+  async getSiteById(@Param("siteId") siteId: string): Promise<GetSiteFeaturesResponseDto> {
     const result = await this.getSiteByIdUseCase.execute({ siteId });
 
     if (result.isFailure()) {
@@ -104,7 +106,7 @@ export class SitesController {
 
   @UseGuards(JwtAuthGuard)
   @Get("sites/:siteId")
-  async getSiteViewById(@Param("siteId") siteId: string) {
+  async getSiteViewById(@Param("siteId") siteId: string): Promise<GetSiteViewResponseDto> {
     const result = await this.getSiteViewByIdUseCase.execute({ siteId });
 
     if (result.isFailure()) {

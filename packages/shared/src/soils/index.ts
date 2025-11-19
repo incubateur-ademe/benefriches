@@ -24,6 +24,8 @@ export const soilTypes = soilTypeSchema.options;
 
 export type SoilType = z.infer<typeof soilTypeSchema>;
 
+export const soilsDistributionSchema = z.partialRecord(soilTypeSchema, z.number().nonnegative());
+
 export const isImpermeableSoil = (soilType: SoilType) => {
   return ["BUILDINGS", "IMPERMEABLE_SOILS"].includes(soilType);
 };

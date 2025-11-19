@@ -1,55 +1,15 @@
 import {
-  Address,
   AgriculturalOperationActivity,
-  DevelopmentPlanType,
   FricheActivity,
   NaturalAreaType,
-  SiteNature,
   SiteYearlyExpensePurpose,
   SiteYearlyIncome,
-  SoilType,
+  type GetSiteFeaturesResponseDto,
+  type GetSiteViewResponseDto,
 } from "shared";
 
 import { SiteGateway } from "../../core/fetchSiteFeatures.action";
 import { SiteFeatures, SiteView } from "../../core/site.types";
-
-type SiteFromApi = {
-  id: string;
-  name: string;
-  nature: SiteNature;
-  isExpressSite: boolean;
-  owner: {
-    name?: string;
-    structureType: string;
-  };
-  tenant?: {
-    name?: string;
-    structureType?: string;
-  };
-  hasContaminatedSoils?: boolean;
-  contaminatedSoilSurface?: number;
-  soilsDistribution: Partial<Record<SoilType, number>>;
-  surfaceArea: number;
-  address: Address;
-  accidentsMinorInjuries?: number;
-  accidentsSevereInjuries?: number;
-  accidentsDeaths?: number;
-  yearlyExpenses: { amount: number; purpose: string }[];
-  yearlyIncomes: { amount: number; source: string }[];
-  fricheActivity?: string;
-  agriculturalOperationActivity?: string;
-  naturalAreaType?: string;
-  description?: string;
-};
-
-type SiteViewFromApi = {
-  features: SiteFromApi;
-  reconversionProjects: {
-    id: string;
-    name: string;
-    type: DevelopmentPlanType;
-  }[];
-};
 
 export class HttpSiteService implements SiteGateway {
   async getSiteFeatures(siteId: string): Promise<SiteFeatures> {
@@ -62,7 +22,8 @@ export class HttpSiteService implements SiteGateway {
 
     if (!response.ok) throw new Error("Error while fetching site features");
 
-    const jsonResponse = (await response.json()) as SiteFromApi;
+    const apiResponse = (await response.json()) as { site: GetSiteFeaturesResponseDto };
+    const jsonResponse = apiResponse.site;
     return {
       id: jsonResponse.id,
       nature: jsonResponse.nature,
@@ -106,7 +67,8 @@ export class HttpSiteService implements SiteGateway {
 
     if (!response.ok) throw new Error("Error while fetching site view");
 
-    const jsonResponse = (await response.json()) as SiteViewFromApi;
+    const apiResponse = (await response.json()) as { site: GetSiteViewResponseDto };
+    const jsonResponse = apiResponse.site;
 
     const features: SiteFeatures = {
       id: jsonResponse.features.id,
