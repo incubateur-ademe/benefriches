@@ -77,7 +77,7 @@ export const fricheSavedFromCompatibilityEvaluation = createAppAsyncThunk(
       }),
     );
     routes
-      .siteFeatures({
+      .siteActionsList({
         siteId,
         fromCompatibilityEvaluation: true,
         projectEvaluationSuggestions: projectSuggestions,
