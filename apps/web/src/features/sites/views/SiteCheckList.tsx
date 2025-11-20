@@ -59,11 +59,13 @@ export default function SiteCheckList({ siteId, siteName }: { siteId: string; si
         >
           <Button
             size="small"
-            linkProps={routes.projectCreationOnboarding({
-              siteId,
-              siteName,
-              projectSuggestions: route.params.projectEvaluationSuggestions,
-            })}
+            linkProps={
+              routes.projectCreationOnboarding({
+                siteId,
+                siteName,
+                projectSuggestions: route.params.projectEvaluationSuggestions,
+              }).link
+            }
           >
             Choisir un projet à évaluer
           </Button>
