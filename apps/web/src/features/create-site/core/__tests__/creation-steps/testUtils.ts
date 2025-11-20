@@ -72,6 +72,14 @@ export class StoreBuilder {
     return this;
   }
 
+  withSkipUseMutability(skipUseMutability: boolean) {
+    this.preloadedRootState.siteCreation = {
+      ...this.preloadedRootState.siteCreation,
+      skipUseMutability,
+    };
+    return this;
+  }
+
   withCreateMode(createMode: "custom" | "express") {
     this.preloadedRootState.siteCreation = {
       ...this.preloadedRootState.siteCreation,

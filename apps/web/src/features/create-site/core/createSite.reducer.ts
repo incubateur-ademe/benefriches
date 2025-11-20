@@ -122,15 +122,20 @@ export type SiteCreationState = {
   stepRevertAttempted: boolean;
   createMode?: "express" | "custom";
   useMutability?: boolean;
+  skipUseMutability: boolean;
   saveLoadingState: "idle" | "loading" | "success" | "error";
 };
 
-export const getInitialState = (): SiteCreationState => {
+export const getInitialState = (props?: {
+  initialStep?: SiteCreationStep;
+  skipUseMutability?: boolean;
+}): SiteCreationState => {
   return {
-    stepsHistory: ["INTRODUCTION"],
+    stepsHistory: [props?.initialStep ?? "INTRODUCTION"],
     saveLoadingState: "idle",
     createMode: undefined,
     stepRevertAttempted: false,
+    skipUseMutability: props?.skipUseMutability ? props?.skipUseMutability : false,
     siteData: {
       id: uuid(),
       soils: [],
@@ -143,13 +148,10 @@ export const getInitialState = (): SiteCreationState => {
 const siteCreationReducer = createReducer(getInitialState(), (builder) => {
   builder
     .addCase(siteCreationInitiated, (_state, action) => {
-      if (action.payload?.skipIntroduction) {
-        return {
-          ...getInitialState(),
-          stepsHistory: ["IS_FRICHE"],
-        };
-      }
-      return getInitialState();
+      return getInitialState({
+        initialStep: action.payload?.skipIntroduction ? "IS_FRICHE" : "INTRODUCTION",
+        skipUseMutability: action.payload?.skipUseMutability,
+      });
     })
     .addCase(introductionStepCompleted, (state) => {
       state.stepsHistory.push("IS_FRICHE");
@@ -160,7 +162,9 @@ const siteCreationReducer = createReducer(getInitialState(), (builder) => {
       state.siteData.isFriche = isFriche;
       if (isFriche) {
         state.siteData.nature = "FRICHE";
-        state.stepsHistory.push("USE_MUTABILITY");
+        state.stepsHistory.push(
+          state.skipUseMutability ? "CREATE_MODE_SELECTION" : "USE_MUTABILITY",
+        );
       } else {
         state.stepsHistory.push("SITE_NATURE");
       }

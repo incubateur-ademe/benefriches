@@ -10,7 +10,7 @@ import {
 import { createSiteCreationAction, createStepCompletedAction } from "./actionsUtils";
 
 export const siteCreationInitiated = createSiteCreationAction<
-  undefined | { skipIntroduction: boolean }
+  undefined | { skipIntroduction: boolean; skipUseMutability?: boolean }
 >("init");
 
 export const introductionStepCompleted = createStepCompletedAction("INTRODUCTION");

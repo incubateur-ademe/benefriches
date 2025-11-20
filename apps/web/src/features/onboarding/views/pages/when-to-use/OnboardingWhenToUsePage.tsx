@@ -21,7 +21,7 @@ function OnboardingWhenToUsePage({ variant }: Props) {
     if (variant === "evaluation-mutabilite") {
       routes.evaluateReconversionCompatibility().push();
     } else {
-      dispatch(siteCreationInitiated({ skipIntroduction: true }));
+      dispatch(siteCreationInitiated({ skipIntroduction: true, skipUseMutability: true }));
       routes.createSite().push();
     }
   };

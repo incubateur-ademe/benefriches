@@ -37,6 +37,14 @@ describe("Site creation: introduction steps (intro, nature, creation mode, addre
 
       expect(store.getState().siteCreation.stepsHistory).toEqual(["IS_FRICHE"]);
     });
+
+    it("sets true to skipUseMutability in store", () => {
+      const store = new StoreBuilder().build();
+
+      store.dispatch(siteCreationInitiated({ skipIntroduction: true, skipUseMutability: true }));
+
+      expect(store.getState().siteCreation.skipUseMutability).toEqual(true);
+    });
   });
 
   describe("INTRODUCTION", () => {
@@ -71,6 +79,19 @@ describe("Site creation: introduction steps (intro, nature, creation mode, addre
       const newState = store.getState();
       expectSiteDataDiff(initialRootState, newState, { isFriche: true, nature: "FRICHE" });
       expectNewCurrentStep(initialRootState, newState, "USE_MUTABILITY");
+    });
+    it("goes to CREATE_MODE_SELECTION step and sets site nature to friche when step is completed and site is a friche but skipUseMutability is true", () => {
+      const store = new StoreBuilder()
+        .withSkipUseMutability(true)
+        .withStepsHistory(["INTRODUCTION", "IS_FRICHE"])
+        .build();
+      const initialRootState = store.getState();
+
+      store.dispatch(isFricheCompleted({ isFriche: true }));
+
+      const newState = store.getState();
+      expectSiteDataDiff(initialRootState, newState, { isFriche: true, nature: "FRICHE" });
+      expectNewCurrentStep(initialRootState, newState, "CREATE_MODE_SELECTION");
     });
     it("goes to previous step and unsets isFriche when step is reverted", () => {
       const store = new StoreBuilder().withStepsHistory(["INTRODUCTION", "IS_FRICHE"]).build();
