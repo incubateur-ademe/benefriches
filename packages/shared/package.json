@@ -32,8 +32,8 @@
     "zod": "~4.1.12"
   },
   "devDependencies": {
-    "@trivago/prettier-plugin-sort-imports": "~5.2.2",
-    "tsdown": "^0.15.9",
+    "@trivago/prettier-plugin-sort-imports": "~6.0.0",
+    "tsdown": "^0.16.6",
     "vitest": "~3.2.4"
   }
 }

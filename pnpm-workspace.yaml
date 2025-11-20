@@ -6,3 +6,4 @@ onlyBuiltDependencies:
   - '@nestjs/core'
   - '@tailwindcss/oxide'
   - bcrypt
+  - protobufjs
