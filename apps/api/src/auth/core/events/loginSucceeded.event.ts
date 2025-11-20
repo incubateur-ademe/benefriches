@@ -1,8 +1,8 @@
 import { DomainEvent } from "src/shared-kernel/domainEvent";
 
-const LOGIN_SUCCEEDED = "user.login-succeeded";
+export const LOGIN_SUCCEEDED = "user.login-succeeded";
 
-type LoginSucceededEvent = DomainEvent<
+export type LoginSucceededEvent = DomainEvent<
   typeof LOGIN_SUCCEEDED,
   {
     userId: string;

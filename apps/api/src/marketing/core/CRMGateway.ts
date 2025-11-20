@@ -9,4 +9,5 @@ export type NewContactProps = {
 
 export interface CRMGateway {
   createContact(props: NewContactProps): Promise<void>;
+  updateContactLastLoginDate(email: string, loginDate: Date): Promise<void>;
 }
