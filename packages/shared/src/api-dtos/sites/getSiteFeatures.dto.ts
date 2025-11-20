@@ -3,8 +3,7 @@ import z from "zod";
 import { addressSchema, siteNatureSchema } from "../../site";
 import { soilsDistributionSchema } from "../../soils";
 
-// SiteFeaturesView response schema
-const siteFeaturesViewSchema = z.object({
+export const getSiteFeaturesResponseDtoSchema = z.object({
   id: z.string(),
   name: z.string(),
   nature: siteNatureSchema,
@@ -49,8 +48,4 @@ const siteFeaturesViewSchema = z.object({
   description: z.string().optional(),
 });
 
-export type GetSiteFeaturesResponseDto = z.infer<typeof siteFeaturesViewSchema>;
-
-export const getSiteFeaturesResponseDtoSchema = z.object({
-  site: siteFeaturesViewSchema,
-});
+export type GetSiteFeaturesResponseDto = z.infer<typeof getSiteFeaturesResponseDtoSchema>;

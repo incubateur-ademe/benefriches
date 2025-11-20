@@ -1,15 +1,52 @@
 import {
   AgriculturalOperationActivity,
   FricheActivity,
+  getSiteFeaturesResponseDtoSchema,
+  getSiteViewResponseDtoSchema,
   NaturalAreaType,
   SiteYearlyExpensePurpose,
   SiteYearlyIncome,
   type GetSiteFeaturesResponseDto,
-  type GetSiteViewResponseDto,
 } from "shared";
 
 import { SiteGateway } from "../../core/fetchSiteFeatures.action";
 import { SiteFeatures, SiteView } from "../../core/site.types";
+
+const mapApiSiteFeaturesResponseToFeaturesView = (
+  apiResponse: GetSiteFeaturesResponseDto,
+): SiteFeatures => {
+  return {
+    id: apiResponse.id,
+    nature: apiResponse.nature,
+    isExpressSite: apiResponse.isExpressSite,
+    address: apiResponse.address.value,
+    ownerName: apiResponse.owner.name || "",
+    tenantName: apiResponse.tenant?.name || "",
+    accidents: {
+      minorInjuries: apiResponse.accidentsMinorInjuries || 0,
+      severyInjuries: apiResponse.accidentsSevereInjuries || 0,
+      accidentsDeaths: apiResponse.accidentsDeaths || 0,
+    },
+    expenses: apiResponse.yearlyExpenses as {
+      amount: number;
+      purpose: SiteYearlyExpensePurpose;
+    }[],
+    incomes: apiResponse.yearlyIncomes as {
+      amount: number;
+      source: SiteYearlyIncome["source"];
+    }[],
+    surfaceArea: apiResponse.surfaceArea,
+    soilsDistribution: apiResponse.soilsDistribution,
+    contaminatedSurfaceArea: apiResponse.contaminatedSoilSurface,
+    fricheActivity: apiResponse.fricheActivity as FricheActivity | undefined,
+    agriculturalOperationActivity: apiResponse.agriculturalOperationActivity as
+      | AgriculturalOperationActivity
+      | undefined,
+    naturalAreaType: apiResponse.naturalAreaType as NaturalAreaType | undefined,
+    name: apiResponse.name,
+    description: apiResponse.description || "",
+  };
+};
 
 export class HttpSiteService implements SiteGateway {
   async getSiteFeatures(siteId: string): Promise<SiteFeatures> {
@@ -22,39 +59,15 @@ export class HttpSiteService implements SiteGateway {
 
     if (!response.ok) throw new Error("Error while fetching site features");
 
-    const apiResponse = (await response.json()) as { site: GetSiteFeaturesResponseDto };
-    const jsonResponse = apiResponse.site;
-    return {
-      id: jsonResponse.id,
-      nature: jsonResponse.nature,
-      isExpressSite: jsonResponse.isExpressSite,
-      address: jsonResponse.address.value,
-      ownerName: jsonResponse.owner.name || "",
-      tenantName: jsonResponse.tenant?.name || "",
-      accidents: {
-        minorInjuries: jsonResponse.accidentsMinorInjuries || 0,
-        severyInjuries: jsonResponse.accidentsSevereInjuries || 0,
-        accidentsDeaths: jsonResponse.accidentsDeaths || 0,
-      },
-      expenses: jsonResponse.yearlyExpenses as {
-        amount: number;
-        purpose: SiteYearlyExpensePurpose;
-      }[],
-      incomes: jsonResponse.yearlyIncomes as {
-        amount: number;
-        source: SiteYearlyIncome["source"];
-      }[],
-      surfaceArea: jsonResponse.surfaceArea,
-      soilsDistribution: jsonResponse.soilsDistribution,
-      contaminatedSurfaceArea: jsonResponse.contaminatedSoilSurface,
-      fricheActivity: jsonResponse.fricheActivity as FricheActivity | undefined,
-      agriculturalOperationActivity: jsonResponse.agriculturalOperationActivity as
-        | AgriculturalOperationActivity
-        | undefined,
-      naturalAreaType: jsonResponse.naturalAreaType as NaturalAreaType | undefined,
-      name: jsonResponse.name,
-      description: jsonResponse.description || "",
-    };
+    const jsonResponse = (await response.json()) as unknown;
+
+    const siteFeaturesParsingResult = getSiteFeaturesResponseDtoSchema.safeParse(jsonResponse);
+
+    if (!siteFeaturesParsingResult.success) {
+      throw new Error("HttpSiteService: Invalid response format", siteFeaturesParsingResult.error);
+    }
+
+    return mapApiSiteFeaturesResponseToFeaturesView(siteFeaturesParsingResult.data);
   }
 
   async getSiteView(siteId: string): Promise<SiteView> {
@@ -67,52 +80,18 @@ export class HttpSiteService implements SiteGateway {
 
     if (!response.ok) throw new Error("Error while fetching site view");
 
-    const apiResponse = (await response.json()) as { site: GetSiteViewResponseDto };
-    const jsonResponse = apiResponse.site;
+    const jsonResponse = (await response.json()) as unknown;
 
-    const features: SiteFeatures = {
-      id: jsonResponse.features.id,
-      nature: jsonResponse.features.nature,
-      isExpressSite: jsonResponse.features.isExpressSite,
-      address: jsonResponse.features.address.value,
-      ownerName: jsonResponse.features.owner.name || "",
-      tenantName: jsonResponse.features.tenant?.name || "",
-      accidents: {
-        minorInjuries: jsonResponse.features.accidentsMinorInjuries || 0,
-        severyInjuries: jsonResponse.features.accidentsSevereInjuries || 0,
-        accidentsDeaths: jsonResponse.features.accidentsDeaths || 0,
-      },
-      expenses: jsonResponse.features.yearlyExpenses as {
-        amount: number;
-        purpose: SiteYearlyExpensePurpose;
-      }[],
-      incomes: jsonResponse.features.yearlyIncomes as {
-        amount: number;
-        source: SiteYearlyIncome["source"];
-      }[],
-      surfaceArea: jsonResponse.features.surfaceArea,
-      soilsDistribution: jsonResponse.features.soilsDistribution,
-      contaminatedSurfaceArea: jsonResponse.features.contaminatedSoilSurface,
-      fricheActivity: jsonResponse.features.fricheActivity as FricheActivity | undefined,
-      agriculturalOperationActivity: jsonResponse.features.agriculturalOperationActivity as
-        | AgriculturalOperationActivity
-        | undefined,
-      naturalAreaType: jsonResponse.features.naturalAreaType as NaturalAreaType | undefined,
-      name: jsonResponse.features.name,
-      description: jsonResponse.features.description || "",
-    };
+    const siteViewParsingResult = getSiteViewResponseDtoSchema.safeParse(jsonResponse);
 
-    const reconversionProjects: SiteView["reconversionProjects"] =
-      jsonResponse.reconversionProjects.map((project) => ({
-        id: project.id,
-        name: project.name,
-        type: project.type,
-      }));
+    if (!siteViewParsingResult.success) {
+      throw new Error("HttpSiteService: Invalid response format", siteViewParsingResult.error);
+    }
 
     return {
-      id: jsonResponse.features.id,
-      features,
-      reconversionProjects,
+      id: siteViewParsingResult.data.id,
+      features: mapApiSiteFeaturesResponseToFeaturesView(siteViewParsingResult.data.features),
+      reconversionProjects: siteViewParsingResult.data.reconversionProjects,
     };
   }
 }
