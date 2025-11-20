@@ -96,6 +96,22 @@ const { RouteProvider, useRoute, routes } = createRouter({
     },
     (params) => `/sites/${params.siteId}/caracteristiques`,
   ),
+  siteEvaluatedProjects: defineRoute(
+    {
+      siteId: param.path.string,
+      fromCompatibilityEvaluation: param.query.optional.boolean,
+      projectEvaluationSuggestions: param.query.optional.array.ofType<ProjectSuggestion>(),
+    },
+    (params) => `/sites/${params.siteId}/projets-evalues`,
+  ),
+  siteActionsList: defineRoute(
+    {
+      siteId: param.path.string,
+      fromCompatibilityEvaluation: param.query.optional.boolean,
+      projectEvaluationSuggestions: param.query.optional.array.ofType<ProjectSuggestion>(),
+    },
+    (params) => `/sites/${params.siteId}/suivi-du-site`,
+  ),
   // RECONVERSION COMPATIBILITY
   evaluateReconversionCompatibility: defineRoute("/evaluer-compatibilite-friche"),
   reconversionCompatibilityResults: defineRoute(

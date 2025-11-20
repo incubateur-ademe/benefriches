@@ -100,7 +100,9 @@ function FeaturesApp() {
               case routes.urbanSprawlImpactsComparison.name:
                 return <UrbanSprawlImpactsComparisonPage route={route} />;
               case routes.siteFeatures.name:
-                return <SiteFeaturesPage siteId={route.params.siteId} />;
+              case routes.siteEvaluatedProjects.name:
+              case routes.siteActionsList.name:
+                return <SiteFeaturesPage />;
               case routes.evaluateReconversionCompatibility.name:
                 return <EvaluateReconversionCompatibilityPage />;
               case routes.reconversionCompatibilityResults.name:
