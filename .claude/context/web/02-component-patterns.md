@@ -66,7 +66,7 @@ type Props = {
   loadingState: LoadingState;
 };
 
-function SiteFeaturesPage({ siteView, loadingState }: Props) {
+function SitePage({ siteView, loadingState }: Props) {
   return (
     <>
       <SiteFeaturesList {...siteView.features} />

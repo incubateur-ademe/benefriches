@@ -22,12 +22,7 @@ function getPictogramUrlForSiteNature(siteNature: SiteNature): string {
   }
 }
 
-export default function SiteFeaturesHeader({
-  siteName,
-  address,
-  siteNature,
-  isExpressSite,
-}: Props) {
+export default function SitePageHeader({ siteName, address, siteNature, isExpressSite }: Props) {
   return (
     <section className={classNames("py-8", "bg-background-light", "dark:bg-grey-dark")}>
       <div className={fr.cx("fr-container")}>

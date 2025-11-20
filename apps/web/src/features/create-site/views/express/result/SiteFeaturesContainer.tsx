@@ -3,7 +3,7 @@ import { useEffect } from "react";
 
 import { fetchSiteFeatures } from "@/features/sites/core/fetchSiteFeatures.action";
 import { selectLoadingState, selectSiteFeatures } from "@/features/sites/core/siteFeatures.reducer";
-import SiteFeaturesList from "@/features/sites/views/SiteFeaturesList";
+import SiteFeaturesList from "@/features/sites/views/features/SiteFeaturesList";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 

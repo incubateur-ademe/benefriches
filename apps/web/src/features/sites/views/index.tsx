@@ -6,7 +6,7 @@ import { routes, useRoute } from "@/shared/views/router";
 
 import { fetchSiteView } from "../core/fetchSiteView.action";
 import { selectSitePageViewModel } from "../core/siteView.reducer";
-import SiteFeaturesPage, { SiteTab } from "./SiteFeaturesPage";
+import SitePage, { SiteTab } from "./SitePage";
 
 type SiteRoute =
   | Route<typeof routes.siteFeatures>
@@ -18,7 +18,7 @@ function getSiteTabFromRoute(routeName: string): SiteTab {
     case routes.siteEvaluatedProjects.name:
       return "evaluatedProjects";
     case routes.siteActionsList.name:
-      return "siteActionsList";
+      return "actionsList";
     case routes.siteFeatures.name:
     default:
       return "features";
@@ -47,7 +47,7 @@ export default function SitesRouter() {
         case "evaluatedProjects":
           routes.siteEvaluatedProjects({ ...route.params, siteId }).replace();
           break;
-        case "siteActionsList":
+        case "actionsList":
           routes.siteActionsList({ ...route.params, siteId }).replace();
           break;
       }
@@ -56,7 +56,7 @@ export default function SitesRouter() {
   );
 
   return (
-    <SiteFeaturesPage
+    <SitePage
       onPageLoad={onPageLoad}
       viewModel={sitePageViewModel}
       selectedTab={selectedTab}

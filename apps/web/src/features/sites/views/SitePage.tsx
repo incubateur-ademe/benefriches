@@ -7,15 +7,15 @@ import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
 import { SitePageViewModel } from "../core/siteView.reducer";
-import SiteCheckList from "./SiteCheckList";
 import SiteCreationConfirmationModal from "./SiteCreationConfirmationModal";
-import SiteFeaturesHeader from "./SiteFeaturesHeader";
-import SiteFeaturesList from "./SiteFeaturesList";
 import SitePageError from "./SitePageError";
+import SitePageHeader from "./SitePageHeader";
+import SiteActionsList from "./actions-list/SiteActionsList";
 import { open } from "./creationConfirmationModal";
 import ProjectsList from "./evaluated-projects/EvaluatedProjectsList";
+import SiteFeaturesList from "./features/SiteFeaturesList";
 
-export type SiteTab = "features" | "evaluatedProjects" | "siteActionsList";
+export type SiteTab = "features" | "evaluatedProjects" | "actionsList";
 
 type Props = {
   onPageLoad: () => void;
@@ -25,7 +25,7 @@ type Props = {
   onTabChange: (tab: SiteTab) => void;
 };
 
-function SiteFeaturesPage({
+function SitePage({
   onPageLoad,
   viewModel,
   selectedTab,
@@ -72,13 +72,13 @@ function SiteFeaturesPage({
       ];
 
       const tabs = fromCompatibilityEvaluation
-        ? [{ tabId: "siteActionsList", label: "Suivi du site" }, ...defaultTabs]
+        ? [{ tabId: "actionsList", label: "Suivi du site" }, ...defaultTabs]
         : defaultTabs;
 
       return (
         <>
           <HtmlTitle>{`${siteView.features.name} - Page du site`}</HtmlTitle>
-          <SiteFeaturesHeader
+          <SitePageHeader
             siteName={siteView.features.name}
             siteNature={siteView.features.nature}
             isExpressSite={siteView.features.isExpressSite}
@@ -96,9 +96,9 @@ function SiteFeaturesPage({
                 switch (selectedTab) {
                   case "features":
                     return <SiteFeaturesList {...siteView.features} />;
-                  case "siteActionsList":
+                  case "actionsList":
                     return (
-                      <SiteCheckList
+                      <SiteActionsList
                         siteId={siteView.features.id}
                         siteName={siteView.features.name}
                       />
@@ -120,4 +120,4 @@ function SiteFeaturesPage({
   }
 }
 
-export default SiteFeaturesPage;
+export default SitePage;

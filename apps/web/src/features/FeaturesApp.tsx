@@ -32,7 +32,7 @@ const EvaluateReconversionCompatibilityPage = lazy(
 const ReconversionCompatibilityResultsPage = lazy(
   () => import("@/features/reconversion-compatibility/views/results"),
 );
-const SiteFeaturesPage = lazy(() => import("@/features/sites/views"));
+const SitePage = lazy(() => import("@/features/sites/views"));
 const ProjectImpactsOnboardingPage = lazy(
   () => import("@/features/projects/views/project-impacts-onboarding"),
 );
@@ -102,7 +102,7 @@ function FeaturesApp() {
               case routes.siteFeatures.name:
               case routes.siteEvaluatedProjects.name:
               case routes.siteActionsList.name:
-                return <SiteFeaturesPage />;
+                return <SitePage />;
               case routes.evaluateReconversionCompatibility.name:
                 return <EvaluateReconversionCompatibilityPage />;
               case routes.reconversionCompatibilityResults.name:

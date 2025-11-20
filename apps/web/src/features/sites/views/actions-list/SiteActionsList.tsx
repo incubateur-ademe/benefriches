@@ -46,7 +46,13 @@ function TaskItem({
   );
 }
 
-export default function SiteCheckList({ siteId, siteName }: { siteId: string; siteName: string }) {
+export default function SiteActionsList({
+  siteId,
+  siteName,
+}: {
+  siteId: string;
+  siteName: string;
+}) {
   const route = useRoute() as Route<typeof routes.siteFeatures>;
   return (
     <section>

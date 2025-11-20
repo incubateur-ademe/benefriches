@@ -8,7 +8,7 @@ import {
   SoilsDistribution,
 } from "shared";
 
-import SiteFeaturesList from "@/features/sites/views/SiteFeaturesList";
+import SiteFeaturesList from "@/features/sites/views/features/SiteFeaturesList";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
