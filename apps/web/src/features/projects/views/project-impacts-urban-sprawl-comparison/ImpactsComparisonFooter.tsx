@@ -6,7 +6,7 @@ import {
   UrbanProjectDevelopmentExpense,
 } from "shared";
 
-import SiteFeaturesList from "@/features/site-features/views/SiteFeaturesList";
+import SiteFeaturesList from "@/features/sites/views/SiteFeaturesList";
 import Dialog from "@/shared/views/components/Dialog/A11yDialog";
 
 import { UrbanSprawlImpactsComparisonObj } from "../../application/project-impacts-urban-sprawl-comparison/fetchUrbanSprawlImpactsComparison.action";

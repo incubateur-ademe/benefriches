@@ -12,8 +12,8 @@ import { projectFeaturesReducer } from "@/features/projects/application/project-
 import urbanSprawlComparison from "@/features/projects/application/project-impacts-urban-sprawl-comparison/urbanSprawlComparison.reducer";
 import { projectImpactsReducer } from "@/features/projects/application/project-impacts/projectImpacts.reducer";
 import { reconversionCompatibilityEvaluationReducer } from "@/features/reconversion-compatibility/core/reconversionCompatibilityEvaluation.reducer";
-import siteFeatures from "@/features/site-features/core/siteFeatures.reducer";
-import { siteViewReducer } from "@/features/site-features/core/siteView.reducer";
+import siteFeatures from "@/features/sites/core/siteFeatures.reducer";
+import { siteViewReducer } from "@/features/sites/core/siteView.reducer";
 import projectUpdate from "@/features/update-project/core/updateProject.reducer";
 import userFeatureAlert from "@/features/user-feature-alerts/core/userFeatureAlert.reducer";
 

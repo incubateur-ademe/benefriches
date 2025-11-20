@@ -2,7 +2,7 @@ import { getFricheActivityLabel, sumListWithKey, sumObjectValues } from "shared"
 
 import { getLabelForExpensePurpose } from "@/features/create-site/core/expenses.functions";
 import { getLabelForIncomeSource } from "@/features/create-site/core/incomes.functions";
-import { SiteFeatures } from "@/features/site-features/core/site.types";
+import { SiteFeatures } from "@/features/sites/core/site.types";
 
 import DataLine from "../components/DataLine";
 import FeaturesSection from "../components/FeaturesSection";

@@ -15,7 +15,7 @@ import { UrbanSprawlImpactsComparisonGateway } from "@/features/projects/applica
 import { ReconversionProjectImpactsGateway } from "@/features/projects/application/project-impacts/actions";
 import { QuickUrbanProjectImpactsGateway } from "@/features/projects/application/project-impacts/fetchQuickImpactsForUrbanProjectOnFriche.action";
 import { ReconversionCompatibilityEvaluationGateway } from "@/features/reconversion-compatibility/core/actions/reconversionCompatibilityEvaluationGateway";
-import { SiteGateway } from "@/features/site-features/core/fetchSiteFeatures.action";
+import { SiteGateway } from "@/features/sites/core/fetchSiteFeatures.action";
 import { UpdateProjectServiceGateway } from "@/features/update-project/core/updateProject.types";
 import { CreateFeatureAlertGateway } from "@/features/user-feature-alerts/core/CreateFeatureAlertGateway";
 import { SiteMunicipalityDataGateway as CreateProjectMunicipalityDataGateway } from "@/shared/core/reducers/project-form/projectForm.actions";

@@ -4,7 +4,7 @@ import { roundToInteger } from "shared";
 
 import { fetchProjectFeatures } from "@/features/projects/application/project-features/projectFeatures.actions";
 import { selectExportImpactsView } from "@/features/projects/application/project-impacts/exportImpacts.selectors";
-import { fetchSiteFeatures } from "@/features/site-features/core/fetchSiteFeatures.action";
+import { fetchSiteFeatures } from "@/features/sites/core/fetchSiteFeatures.action";
 import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
 import { impactsExportDownloaded, trackEvent } from "@/shared/views/analytics";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";

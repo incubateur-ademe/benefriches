@@ -8,7 +8,7 @@ import {
 } from "shared";
 
 import { UrbanSprawlImpactsComparisonState } from "@/features/projects/application/project-impacts-urban-sprawl-comparison/urbanSprawlComparison.reducer";
-import SiteFeaturesList from "@/features/site-features/views/SiteFeaturesList";
+import SiteFeaturesList from "@/features/sites/views/SiteFeaturesList";
 import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
 
 import { formatSiteDataAsFeatures } from "../formatSiteData";

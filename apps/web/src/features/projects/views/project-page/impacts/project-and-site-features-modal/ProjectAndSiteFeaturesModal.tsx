@@ -1,6 +1,6 @@
 import { ProjectFeatures } from "@/features/projects/domain/projects.types";
-import { SiteFeatures } from "@/features/site-features/core/site.types";
-import SiteFeaturesList from "@/features/site-features/views/SiteFeaturesList";
+import { SiteFeatures } from "@/features/sites/core/site.types";
+import SiteFeaturesList from "@/features/sites/views/SiteFeaturesList";
 import Accordion from "@/shared/views/components/Accordion/Accordion";
 import Dialog from "@/shared/views/components/Dialog/A11yDialog";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";

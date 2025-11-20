@@ -1,6 +1,6 @@
 import { SiteImpactsDataView } from "shared";
 
-import { SiteFeatures } from "@/features/site-features/core/site.types";
+import { SiteFeatures } from "@/features/sites/core/site.types";
 
 export const formatSiteDataAsFeatures = (siteData: SiteImpactsDataView) => {
   return {

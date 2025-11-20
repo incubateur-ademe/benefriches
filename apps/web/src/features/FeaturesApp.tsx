@@ -32,7 +32,7 @@ const EvaluateReconversionCompatibilityPage = lazy(
 const ReconversionCompatibilityResultsPage = lazy(
   () => import("@/features/reconversion-compatibility/views/results"),
 );
-const SiteFeaturesPage = lazy(() => import("@/features/site-features/views"));
+const SiteFeaturesPage = lazy(() => import("@/features/sites/views"));
 const ProjectImpactsOnboardingPage = lazy(
   () => import("@/features/projects/views/project-impacts-onboarding"),
 );

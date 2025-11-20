@@ -16,7 +16,7 @@ import { MockQuickUrbanProjectImpactsService } from "@/features/projects/infrast
 import { MockReconversionProjectImpactsApi } from "@/features/projects/infrastructure/reconversion-project-impacts-service/MockReconversionProjectImpactsService";
 import { MockUrbanSprawlImpactsComparisonService } from "@/features/projects/infrastructure/urban-sprawl-impacts-comparison-service/MockUrbanSprawlImpactsComparisonService";
 import { InMemoryReconversionCompatibilityEvaluationService } from "@/features/reconversion-compatibility/infra/reconversion-compatibility-evaluation/InMemoryReconversionCompatibilityEvaluation";
-import { MockSiteFeaturesService } from "@/features/site-features/infra/site-features-service/MockSiteFeaturesService";
+import { InMemorySiteService } from "@/features/sites/infra/site-service/InMemorySiteService";
 import { InMemoryUpdateReconversionProjectService } from "@/features/update-project/infrastructure/update-project-service/InMemoryUpdateReconversionProjectService";
 import { InMemoryCreateFeatureAlertService } from "@/features/user-feature-alerts/infrastructure/create-feature-alert-service/InMemoryCreateFeatureAlertService";
 import { AppDependencies } from "@/shared/core/store-config/store";
@@ -63,7 +63,7 @@ export const getTestAppDependencies = (
     currentUserService: new InMemoryCurrentUserService(),
     createUserService: new InMemoryCreateUserService(),
     createUserFeatureAlertService: new InMemoryCreateFeatureAlertService(),
-    siteService: new MockSiteFeaturesService(),
+    siteService: new InMemorySiteService(),
     createExpressReconversionProjectService: new InMemoryCreateExpressReconversionProjectService(),
     projectFeaturesService: new MockProjectFeaturesService(),
     quickUrbanProjectImpactsService: new MockQuickUrbanProjectImpactsService(),

@@ -1,7 +1,7 @@
 import { SiteGateway } from "../../core/fetchSiteFeatures.action";
 import { SiteFeatures, SiteView } from "../../core/site.types";
 
-export class MockSiteFeaturesService implements SiteGateway {
+export class InMemorySiteService implements SiteGateway {
   siteFeatures: SiteFeatures = {
     id: "189038dd-3a6a-43af-bc8d-c4999d8d82cc",
     name: "Mocked site name",

@@ -3,8 +3,8 @@ import { useEffect } from "react";
 
 import { fetchProjectFeatures } from "@/features/projects/application/project-features/projectFeatures.actions";
 import { selectProjectFeatures } from "@/features/projects/application/project-features/projectFeatures.reducer";
-import { fetchSiteFeatures } from "@/features/site-features/core/fetchSiteFeatures.action";
-import { selectSiteFeatures } from "@/features/site-features/core/siteFeatures.reducer";
+import { fetchSiteFeatures } from "@/features/sites/core/fetchSiteFeatures.action";
+import { selectSiteFeatures } from "@/features/sites/core/siteFeatures.reducer";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import ProjectAndSiteFeaturesModal from "./ProjectAndSiteFeaturesModal";
