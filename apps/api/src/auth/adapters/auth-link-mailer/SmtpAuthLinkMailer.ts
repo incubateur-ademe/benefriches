@@ -69,7 +69,7 @@ export class SmtpAuthLinkMailer implements AuthLinkMailer {
           
           <div style="background-color: #fff3cd; border: 1px solid #ffeaa7; padding: 15px; border-radius: 4px; margin: 30px 0;">
             <p style="margin: 0; color: #856404; font-size: 14px;">
-              <strong>⚠️ Important :</strong> Ce lien de connexion expire dans <strong>15 minutes</strong> pour des raisons de sécurité.
+              <strong>⚠️ Important :</strong> Ce lien de connexion expire dans <strong>${this.configService.getOrThrow<number>("AUTH_LINK_TOKEN_EXPIRATION_MINUTES")} minutes</strong> pour des raisons de sécurité.
             </p>
           </div>
           
@@ -114,7 +114,7 @@ export class SmtpAuthLinkMailer implements AuthLinkMailer {
 
         ${authLinkUrl}
 
-        ⚠️ Important : Ce lien de connexion expire dans 15 minutes pour des raisons de sécurité.
+        ⚠️ Important : Ce lien de connexion expire dans ${this.configService.getOrThrow<number>("AUTH_LINK_TOKEN_EXPIRATION_MINUTES")} minutes pour des raisons de sécurité.
 
         Si vous n'avez pas demandé cette connexion, vous pouvez ignorer cet email en toute sécurité.
 

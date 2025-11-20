@@ -66,7 +66,10 @@ export class SendAuthLinkUseCase implements UseCase<Request, SendAuthLinkResult>
     }
 
     const { raw: authToken, hashed: authTokenHashed } = this.tokenGenerator.generatePair();
-    const expirationDate = addMinutes(this.dateProvider.now(), 15);
+    const expirationDate = addMinutes(
+      this.dateProvider.now(),
+      this.configService.getOrThrow<number>("AUTH_LINK_TOKEN_EXPIRATION_MINUTES"),
+    );
 
     await this.tokenAuthenticationAttemptRepository.save({
       userId: user.id,

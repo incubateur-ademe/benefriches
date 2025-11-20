@@ -193,7 +193,7 @@ describe("SendAuthLink Use Case", () => {
     expect(authLinkMailer.sentEmails).toHaveLength(2);
   });
 
-  it("Sends auth link to existing user with expiration time of 15 minutes", async () => {
+  it("Sends auth link to existing user with expiration time of 1 minute (set from test env)", async () => {
     const user = buildAuthenticatedUser({
       email: "user@example.com",
     });
@@ -222,7 +222,7 @@ describe("SendAuthLink Use Case", () => {
         token: fakeToken + "-hashed",
         email: user.email,
         createdAt: new Date(new Date("2025-01-01T14:00:00Z")),
-        expiresAt: new Date(new Date("2025-01-01T14:15:00Z")),
+        expiresAt: new Date(new Date("2025-01-01T14:01:00Z")),
         completedAt: null,
       },
     ]);
