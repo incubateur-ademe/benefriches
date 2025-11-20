@@ -167,39 +167,62 @@ export class AuthController {
 
 ## Listening to Events
 
-### Event Listener Example
+### Event Listener with Dependencies (Factory Pattern)
+
+When a listener needs injected dependencies (gateways, services, DateProvider), use the factory pattern:
 
 ```typescript
-// other-module/adapters/primary/listeners/exampleCreated.listener.ts
-import { EXAMPLE_CREATED, type ExampleCreatedEvent } from "@/examples/core/events/exampleCreated.event";
+// marketing/adapters/primary/loginSucceeded.handler.ts
 import { Injectable } from "@nestjs/common";
 import { OnEvent } from "@nestjs/event-emitter";
+import { LOGIN_SUCCEEDED, type LoginSucceededEvent } from "@/auth/core/events/loginSucceeded.event";
+import { DateProvider } from "@/shared-kernel/adapters/date/IDateProvider";
+import { CRMGateway } from "@/marketing/core/CRMGateway";
 
 @Injectable()
-export class ExampleCreatedListener {
-  constructor(private readonly someService: SomeService) {}
+export class LoginSucceededHandler {
+  constructor(
+    private readonly crm: CRMGateway,
+    private readonly dateProvider: DateProvider,
+  ) {}
 
-  @OnEvent(EXAMPLE_CREATED)
-  async handle(event: ExampleCreatedEvent): Promise<void> {
-    console.log(`Example created: ${event.payload.exampleId}`);
-
-    // Trigger side effects
-    await this.someService.doSomething(event.payload);
+  @OnEvent(LOGIN_SUCCEEDED)
+  async handleLoginSucceeded(event: LoginSucceededEvent) {
+    // Use injected DateProvider for testable timestamps
+    await this.crm.updateContactLastLoginDate(
+      event.payload.userEmail,
+      this.dateProvider.now(),
+    );
   }
 }
 ```
 
-### Register Listener in Module
+**Register in module using factory pattern**:
 
 ```typescript
+// marketing/adapters/primary/marketing.module.ts
 @Module({
+  imports: [HttpModule, ConfigModule],
   providers: [
-    ExampleCreatedListener,  // Register as provider
-    // ... other providers
+    {
+      provide: LoginSucceededHandler,
+      useFactory: (crm: CRMGateway, dateProvider: DateProvider) =>
+        new LoginSucceededHandler(crm, dateProvider),
+      inject: [ConnectCrm, RealDateProvider],  // Inject concrete implementations
+    },
+    RealDateProvider,  // Register production implementation
+    ConnectCrm,
   ],
 })
-export class OtherModule {}
+export class MarketingModule {}
 ```
+
+**Why this pattern?**
+- **DateProvider**: Use `RealDateProvider` in production, `DeterministicDateProvider` in tests for predictable behavior
+- **CRMGateway**: Interface injected, concrete implementation provided via `ConnectCrm`
+- **Testability**: Override providers in test with fakes/deterministic implementations (see [06-integration-testing-pattern.md](06-integration-testing-pattern.md))
+
+**Real Example**: [marketing/adapters/primary/loginSucceeded.handler.ts](../../../apps/api/src/marketing/adapters/primary/loginSucceeded.handler.ts)
 
 ## Dependency Injection
 
@@ -239,13 +262,22 @@ export class ExampleModule {}
 
 ## Common Shared Services
 
-For event publishing:
+**For event publishing**:
 
 | Service | Import | When to Use |
 |---------|--------|-------------|
 | **DomainEventPublisher** | `@/shared-kernel/domainEvent` | Type interface (injected in UseCases) |
 | **DOMAIN_EVENT_PUBLISHER_INJECTION_TOKEN** | `@/shared-kernel/adapters/events/eventPublisher.module` | Injection token (for controllers) |
 | **EventPublisherModule** | `@/shared-kernel/adapters/events/eventPublisher.module` | Module import |
+
+**For event listeners needing side effects** (see [11-shared-services.md](11-shared-services.md)):
+
+| Service | Import | When to Use |
+|---------|--------|-------------|
+| **DateProvider** | `@/shared-kernel/adapters/date/IDateProvider` | Type interface for testable timestamps |
+| **RealDateProvider** | `@/shared-kernel/adapters/date/RealDateProvider` | Production date provider |
+| **DeterministicDateProvider** | `@/shared-kernel/adapters/date/DeterministicDateProvider` | Test fixtures with fixed dates |
+| **Gateway interfaces** | Domain-specific | Side effect execution (HTTP, databases) |
 
 ## Best Practices
 
@@ -256,6 +288,8 @@ For event publishing:
 - ✅ Use past tense for event names (`created`, not `create`)
 - ✅ Include all relevant context in event payload
 - ✅ Use typed event interfaces
+- ✅ Inject shared services (DateProvider, gateways) into listeners for testable side effects
+- ✅ Use `DeterministicDateProvider` in tests for predictable behavior
 
 ### DON'T:
 - ❌ Don't create events inline (use factory functions)
@@ -266,4 +300,6 @@ For event publishing:
 ## Related Patterns
 
 - **UseCases**: [01-usecase-pattern.md](01-usecase-pattern.md) (emitting events from business logic)
-- **Dependency Injection**: [08-dependency-injection.md](08-dependency-injection.md) (wiring event publishers)
+- **Dependency Injection**: [08-dependency-injection.md](08-dependency-injection.md) (wiring event publishers and listeners)
+- **Shared Services**: [11-shared-services.md](11-shared-services.md) (DateProvider, ID generators for testability)
+- **Integration Testing**: [06-integration-testing-pattern.md](06-integration-testing-pattern.md) (testing listeners with overridden providers)

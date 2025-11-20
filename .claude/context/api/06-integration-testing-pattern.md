@@ -17,11 +17,12 @@ Integration tests verify that SQL implementations (repositories, queries) and HT
 
 ## Types of Integration Tests
 
-| Type | What It Tests | Database | HTTP |
-|------|--------------|----------|------|
-| **SQL Repository** | Repository implementation against real DB | ✅ | ❌ |
-| **SQL Query** | Query implementation against real DB | ✅ | ❌ |
-| **Controller** | Full flow: HTTP → Controller → UseCase → DB | ✅ | ✅ |
+| Type | What It Tests | Database | HTTP | Events |
+|------|--------------|----------|------|--------|
+| **SQL Repository** | Repository implementation against real DB | ✅ | ❌ | ❌ |
+| **SQL Query** | Query implementation against real DB | ✅ | ❌ | ❌ |
+| **Controller** | Full flow: HTTP → Controller → UseCase → DB | ✅ | ✅ | ❌ |
+| **Event Listener** | Event handler with dependencies (gateways, DateProvider) | ❌ | ❌ | ✅ |
 
 ## SQL Repository Integration Tests
 
@@ -384,6 +385,88 @@ it("updates jsonb array in database", async () => {
 });
 ```
 
+## Event Listener Integration Tests
+
+Test event handlers that listen to domain events and trigger side effects (gateways, services).
+
+**Real Examples**:
+- [loginSucceeded.handler.integration-spec.ts](../../../apps/api/src/marketing/adapters/primary/loginSucceeded.handler.integration-spec.ts) (listening to auth event, notifying CRM)
+- [userAccountCreated.handler.integration-spec.ts](../../../apps/api/src/marketing/adapters/primary/userAccountCreated.handler.integration-spec.ts) (listening to user event, creating CRM contact)
+
+### Test Structure
+
+Event listeners are tested by:
+1. Publishing domain events via `DomainEventPublisher`
+2. Overriding gateway/service implementations with fakes
+3. Asserting the listener called the gateway with correct data
+4. Using `DeterministicDateProvider` for predictable timestamps
+
+```typescript
+// marketing/adapters/primary/loginSucceeded.handler.integration-spec.ts
+import { NestExpressApplication } from "@nestjs/platform-express";
+import { createTestApp } from "test/testApp";
+import { createLoginSucceededEvent } from "@/auth/core/events/loginSucceeded.event";
+import { DeterministicDateProvider } from "@/shared-kernel/adapters/date/DeterministicDateProvider";
+import { RealDateProvider } from "@/shared-kernel/adapters/date/RealDateProvider";
+import { RealEventPublisher } from "@/shared-kernel/adapters/events/publisher/RealEventPublisher";
+import { DomainEventPublisher } from "@/shared-kernel/domainEventPublisher";
+
+import { ConnectCrm } from "../secondary/ConnectCrm";
+import { FakeCrm } from "../secondary/FakeCrm";
+
+describe("LoginSucceededHandler integration test", () => {
+  let eventPublisher: DomainEventPublisher;
+  let fakeCrm: FakeCrm;
+  let app: NestExpressApplication;
+  const fakeNow = new Date("2024-01-15T10:30:00");
+
+  beforeEach(async () => {
+    fakeCrm = new FakeCrm();
+    const dateProvider = new DeterministicDateProvider(fakeNow);
+
+    // Override real implementations with fakes/deterministic versions
+    app = await createTestApp({
+      providerOverrides: [
+        { token: ConnectCrm, useValue: fakeCrm },
+        { token: RealDateProvider, useValue: dateProvider },
+      ],
+    });
+    await app.init();
+
+    eventPublisher = app.get(RealEventPublisher);
+  });
+
+  afterEach(async () => {
+    await app.close();
+  });
+
+  it("should update CRM contact when login event is published", async () => {
+    const event = createLoginSucceededEvent("event-123", {
+      userId: "user-123",
+      userEmail: "user@example.com",
+      method: "email-link",
+    });
+
+    await eventPublisher.publish(event);
+
+    // Assert the gateway was called with correct data
+    expect(fakeCrm._loginUpdates).toHaveLength(1);
+    expect(fakeCrm._loginUpdates[0]).toEqual({
+      email: "user@example.com",
+      loginDate: fakeNow,  // Deterministic date from provider
+    });
+  });
+});
+```
+
+**Key patterns**:
+- **Override providers**: Use `createTestApp({ providerOverrides })` to replace real gateways/services with fakes
+- **DeterministicDateProvider**: Use fixed dates for predictable test results instead of current system time
+- **Fake implementations**: Create simple fakes (like `FakeCrm`) that track calls for assertions
+- **No database needed**: Event listener tests don't require database setup (use event publisher only)
+
+**Real Example**: See [loginSucceeded.handler.integration-spec.ts](../../../apps/api/src/marketing/adapters/primary/loginSucceeded.handler.integration-spec.ts) for complete implementation with both login methods tested.
+
 ## Test Utilities
 
 ### Authentication Helper
@@ -461,3 +544,4 @@ pnpm --filter api test:integration -- --watch
 - **Controller**: [02-controller-pattern.md](02-controller-pattern.md) (HTTP layer)
 - **Repository**: [03-repository-pattern.md](03-repository-pattern.md) (SQL implementation)
 - **Query**: [04-query-pattern.md](04-query-pattern.md) (SQL queries)
+- **Domain Events**: [10-domain-events-pattern.md](10-domain-events-pattern.md) (publishing and listening to events)
