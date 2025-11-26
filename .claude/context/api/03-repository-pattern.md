@@ -68,9 +68,9 @@ export interface ExampleRepository {
 
 ```typescript
 // adapters/secondary/example-repository/SqlExampleRepository.ts
-import type { ExampleRepository } from "@/examples/core/gateways/ExampleRepository";
-import type { Example } from "@/examples/core/models/example";
-import type { SqlExample } from "@/shared-kernel/adapters/sql-knex/tableTypes";
+import type { ExampleRepository } from "src/examples/core/gateways/ExampleRepository";
+import type { Example } from "src/examples/core/models/example";
+import type { SqlExample } from "src/shared-kernel/adapters/sql-knex/tableTypes";
 import type { Knex } from "knex";
 
 export class SqlExampleRepository implements ExampleRepository {
@@ -202,7 +202,7 @@ const row: SqlExample = {
 **CRITICAL**: Import and use `Sql*` types from `tableTypes.d.ts`:
 
 ```typescript
-import type { SqlExample } from "@/shared-kernel/adapters/sql-knex/tableTypes";
+import type { SqlExample } from "src/shared-kernel/adapters/sql-knex/tableTypes";
 
 // ✅ CORRECT - Typed row
 const row: SqlExample = { ... };
@@ -222,8 +222,8 @@ await this.sqlConnection("examples").insert({
 
 ```typescript
 // adapters/secondary/example-repository/InMemoryExampleRepository.ts
-import type { ExampleRepository } from "@/examples/core/gateways/ExampleRepository";
-import type { Example } from "@/examples/core/models/example";
+import type { ExampleRepository } from "src/examples/core/gateways/ExampleRepository";
+import type { Example } from "src/examples/core/models/example";
 
 export class InMemoryExampleRepository implements ExampleRepository {
   private examples = new Map<string, Example>();

@@ -105,7 +105,7 @@ type Site = {
 
 ## Import Aliases
 
-- `@/` - Absolute imports within API (`apps/api/src/`)
+- `src/` - Absolute imports within API (`apps/api/src/`)
 - `"shared"` - Shared package (`packages/shared`)
 - `./` or `../` - Relative (same feature module only)
 

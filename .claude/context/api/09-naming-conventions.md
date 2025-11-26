@@ -96,16 +96,16 @@ const row: SqlSite = {
 
 | Pattern | Resolves To | Usage |
 |---------|-------------|-------|
-| `@/` | `apps/api/src/` | Cross-module imports within API |
+| `src/` | `apps/api/src/` | Cross-module imports within API |
 | `"shared"` | `packages/shared` | Shared package types/utilities |
 | `./` or `../` | Relative | Same feature module only |
 
 ### Examples
 
 ```typescript
-// ✅ CORRECT - Cross-module with @/
-import { UseCase } from "@/shared-kernel/usecase";
-import { CreateSiteUseCase } from "@/sites/core/usecases/createSite.usecase";
+// ✅ CORRECT - Cross-module with src/
+import { UseCase } from "src/shared-kernel/usecase";
+import { CreateSiteUseCase } from "src/sites/core/usecases/createSite.usecase";
 
 // ✅ CORRECT - Shared package
 import type { Site } from "shared";
@@ -115,18 +115,18 @@ import { validateEmail } from "shared";
 import type { SitesRepository } from "../gateways/SitesRepository";
 import type { Site } from "../models/site";
 
-// ❌ WRONG - Using @/ for shared package
-import type { Site } from "@/shared";
+// ❌ WRONG - Using src/ for shared package
+import type { Site } from "src/shared";
 
 // ❌ WRONG - Long relative paths for cross-module
 import { CreateSiteUseCase } from "../../../../sites/core/usecases/createSite.usecase";
 ```
 
 **Rules**:
-- ✅ Use `@/` for any cross-module import within API
+- ✅ Use `src/` for any cross-module import within API
 - ✅ Use `"shared"` for shared package imports
 - ✅ Use relative `./` or `../` **only** within same feature module
-- ❌ Never use `../../../` chains (use `@/` instead)
+- ❌ Never use `../../../` chains (use `src/` instead)
 
 ## Route Naming
 
@@ -232,7 +232,7 @@ export class User {
 - **Classes**: `PascalCase`
 - **Files**: Descriptive with type suffix (`.usecase.ts`, `.repository.ts`)
 - **Database**: `snake_case` → map to `camelCase` in app
-- **Imports**: `@/` for cross-module, `"shared"` for shared package
+- **Imports**: `src/` for cross-module, `"shared"` for shared package
 - **Routes**: Intent-driven, not strictly REST
 - **Errors**: Describe state, not action
 

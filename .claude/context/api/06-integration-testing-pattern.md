@@ -6,10 +6,12 @@
 
 Integration tests verify that SQL implementations (repositories, queries) and HTTP flows (controllers) work correctly with real infrastructure. They use TestContainers for isolated PostgreSQL instances and supertest for HTTP assertions, ensuring database queries, transactions, and full request-response cycles function as expected in production-like environments.
 
+**IMPORTANT**: All SQL tables are automatically cleared after each integration test by a global hook configured in [`apps/api/test/integration-tests-global-hooks.ts`](../../../apps/api/test/integration-tests-global-hooks.ts). This ensures complete test isolation without manual cleanup in every test file.
+
 ## Core Principles
 
 1. **Real Infrastructure**: Use actual PostgreSQL database via TestContainers, not mocks
-2. **Isolated Tests**: Each test cleans database state in `beforeEach()` for independence
+2. **Isolated Tests**: Each test automatically clears database state (via global `afterEach()` hook)
 3. **Full Stack Testing**: Controllers test complete HTTP → UseCase → Database flow
 4. **Authentication Required**: Test both authenticated and unauthenticated scenarios
 5. **Exhaustive Validation**: Verify database state after mutations, test all error cases
@@ -40,7 +42,7 @@ Test repository write operations against real database.
 import { Knex } from "knex";
 import { beforeAll, afterAll, beforeEach, describe, it, expect } from "vitest";
 import { createTestApp } from "test/testApp";
-import { SqlConnection } from "@/shared-kernel/adapters/sql-knex/sqlConnection.module";
+import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import type { NestExpressApplication } from "@nestjs/platform-express";
 
 import { SqlExampleRepository } from "./SqlExampleRepository";
@@ -103,7 +105,7 @@ Test query read operations against real database.
 import { Knex } from "knex";
 import { beforeAll, afterAll, beforeEach, describe, it, expect } from "vitest";
 import { createTestApp } from "test/testApp";
-import { SqlConnection } from "@/shared-kernel/adapters/sql-knex/sqlConnection.module";
+import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import type { NestExpressApplication } from "@nestjs/platform-express";
 
 import { SqlExamplesQuery } from "./SqlExamplesQuery";
@@ -174,9 +176,9 @@ import supertest from "supertest";
 import { authenticateUser, createTestApp } from "test/testApp";
 import { v4 as uuid } from "uuid";
 
-import { ACCESS_TOKEN_COOKIE_KEY } from "@/auth/adapters/access-token/accessTokenCookie";
-import { SqlConnection } from "@/shared-kernel/adapters/sql-knex/sqlConnection.module";
-import { UserBuilder } from "@/users/core/model/user.mock";
+import { ACCESS_TOKEN_COOKIE_KEY } from "src/auth/adapters/access-token/accessTokenCookie";
+import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
+import { UserBuilder } from "src/users/core/model/user.mock";
 
 type BadRequestResponseBody = {
   errors: { path: string[] }[];
@@ -389,6 +391,11 @@ it("updates jsonb array in database", async () => {
 
 Test event handlers that listen to domain events and trigger side effects (gateways, services).
 
+**CRITICAL**: Use `RealEventPublisher` (obtained from app instance) when testing event listeners:
+- Event listeners are wired to respond to `RealEventPublisher` events
+- Tests must publish through the real publisher for listeners to be triggered
+- Extracting from app: `eventPublisher = app.get(RealEventPublisher)`
+
 **Real Examples**:
 - [loginSucceeded.handler.integration-spec.ts](../../../apps/api/src/marketing/adapters/primary/loginSucceeded.handler.integration-spec.ts) (listening to auth event, notifying CRM)
 - [userAccountCreated.handler.integration-spec.ts](../../../apps/api/src/marketing/adapters/primary/userAccountCreated.handler.integration-spec.ts) (listening to user event, creating CRM contact)
@@ -396,20 +403,22 @@ Test event handlers that listen to domain events and trigger side effects (gatew
 ### Test Structure
 
 Event listeners are tested by:
-1. Publishing domain events via `DomainEventPublisher`
-2. Overriding gateway/service implementations with fakes
-3. Asserting the listener called the gateway with correct data
-4. Using `DeterministicDateProvider` for predictable timestamps
+1. Creating test app with `createTestApp()` (which wires all listeners)
+2. Extracting `RealEventPublisher` from app instance
+3. Overriding gateway/service implementations with fakes for assertions
+4. Publishing domain events via `RealEventPublisher`
+5. Asserting the listener called the gateway with correct data
+6. Using `DeterministicDateProvider` for predictable timestamps
 
 ```typescript
 // marketing/adapters/primary/loginSucceeded.handler.integration-spec.ts
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { createTestApp } from "test/testApp";
-import { createLoginSucceededEvent } from "@/auth/core/events/loginSucceeded.event";
-import { DeterministicDateProvider } from "@/shared-kernel/adapters/date/DeterministicDateProvider";
-import { RealDateProvider } from "@/shared-kernel/adapters/date/RealDateProvider";
-import { RealEventPublisher } from "@/shared-kernel/adapters/events/publisher/RealEventPublisher";
-import { DomainEventPublisher } from "@/shared-kernel/domainEventPublisher";
+import { createLoginSucceededEvent } from "src/auth/core/events/loginSucceeded.event";
+import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
+import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
+import { RealEventPublisher } from "src/shared-kernel/adapters/events/publisher/RealEventPublisher";
+import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
 
 import { ConnectCrm } from "../secondary/ConnectCrm";
 import { FakeCrm } from "../secondary/FakeCrm";
@@ -473,7 +482,7 @@ describe("LoginSucceededHandler integration test", () => {
 
 ```typescript
 import { authenticateUser } from "test/testApp";
-import { UserBuilder } from "@/users/core/model/user.mock";
+import { UserBuilder } from "src/users/core/model/user.mock";
 
 const user = new UserBuilder().asLocalAuthority().build();
 const { accessToken } = await authenticateUser(app)(user);
@@ -482,7 +491,7 @@ const { accessToken } = await authenticateUser(app)(user);
 ### Cookie Authentication
 
 ```typescript
-import { ACCESS_TOKEN_COOKIE_KEY } from "@/auth/adapters/access-token/accessTokenCookie";
+import { ACCESS_TOKEN_COOKIE_KEY } from "src/auth/adapters/access-token/accessTokenCookie";
 
 const response = await supertest(app.getHttpServer())
   .post("/api/examples")
@@ -508,8 +517,8 @@ pnpm --filter api test:integration -- --watch
 ### DO:
 - ✅ Use `createTestApp()` from `test/testApp`
 - ✅ Get `sqlConnection` via `app.get(SqlConnection)`
-- ✅ Clean database in `beforeEach` (per-test isolation)
 - ✅ Close app and destroy connection in `afterAll`
+- ✅ Trust the global `afterEach()` hook to clean all tables (configured in [`integration-tests-global-hooks.ts`](../../../apps/api/test/integration-tests-global-hooks.ts))
 - ✅ Test authentication (401 responses)
 - ✅ Test validation errors (400 responses with field paths)
 - ✅ Use `it.each()` for testing multiple required fields
@@ -519,11 +528,11 @@ pnpm --filter api test:integration -- --watch
 - ✅ Use `toEqual()` for exhaustive assertions
 
 ### DON'T:
-- ❌ Don't share state between tests
+- ❌ Don't share state between tests (global hook prevents this)
 - ❌ Don't forget to test authentication
-- ❌ Don't forget to clean database
 - ❌ Don't skip error cases (404, 409, 400)
 - ❌ Don't leave connections open
+- ❌ Don't manually cleanup tables in `afterEach()` (the global hook handles it)
 
 ## Common HTTP Status Codes
 

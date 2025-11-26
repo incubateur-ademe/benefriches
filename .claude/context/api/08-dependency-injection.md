@@ -24,13 +24,13 @@ All modules follow the same structure:
 import { Module } from "@nestjs/common";
 import type { Knex } from "knex";
 
-import { SqlExampleRepository } from "@/examples/adapters/secondary/example-repository/SqlExampleRepository";
-import { SqlExamplesQuery } from "@/examples/adapters/secondary/examples-query/SqlExamplesQuery";
-import { CreateExampleUseCase } from "@/examples/core/usecases/createExample.usecase";
-import { GetExampleByIdUseCase } from "@/examples/core/usecases/getExampleById.usecase";
-import { RandomUuidGenerator } from "@/shared-kernel/adapters/id-generator/RandomUuidGenerator";
-import { SQL_CONNECTION } from "@/shared-kernel/adapters/sql-knex/sqlConnection.module";
-import { SqlConnectionModule } from "@/shared-kernel/adapters/sql-knex/sqlConnection.module";
+import { SqlExampleRepository } from "src/examples/adapters/secondary/example-repository/SqlExampleRepository";
+import { SqlExamplesQuery } from "src/examples/adapters/secondary/examples-query/SqlExamplesQuery";
+import { CreateExampleUseCase } from "src/examples/core/usecases/createExample.usecase";
+import { GetExampleByIdUseCase } from "src/examples/core/usecases/getExampleById.usecase";
+import { RandomUuidGenerator } from "src/shared-kernel/adapters/id-generator/RandomUuidGenerator";
+import { SQL_CONNECTION } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
+import { SqlConnectionModule } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 
 import { ExampleController } from "./example.controller";
 
@@ -116,18 +116,18 @@ export class ExampleModule {}
 
 | Service | Import | Purpose | When to Use |
 |---------|--------|---------|-------------|
-| **RandomUuidGenerator** | `@/shared-kernel/adapters/id-generator/RandomUuidGenerator` | Generate random UUIDs | Production (default) |
-| **DeterministicIdGenerator** | `@/shared-kernel/adapters/id-generator/DeterministicIdGenerator` | Predictable IDs | Testing only |
-| **RealDateProvider** | `@/shared-kernel/adapters/date/RealDateProvider` | Current date/time | Production (default) |
-| **DeterministicDateProvider** | `@/shared-kernel/adapters/date/DeterministicDateProvider` | Fixed date | Testing only |
-| **SQL_CONNECTION** | `@/shared-kernel/adapters/sql-knex/sqlConnection.module` | Knex database connection | All repositories/queries |
-| **DomainEventPublisher** | `@/shared-kernel/domainEventPublisher` | Publish domain events | Event-driven usecases |
-| **DOMAIN_EVENT_PUBLISHER_INJECTION_TOKEN** | `@/shared-kernel/adapters/events/eventPublisher.module` | Event publisher token | For controller injection |
+| **RandomUuidGenerator** | `src/shared-kernel/adapters/id-generator/RandomUuidGenerator` | Generate random UUIDs | Production (default) |
+| **DeterministicIdGenerator** | `src/shared-kernel/adapters/id-generator/DeterministicIdGenerator` | Predictable IDs | Testing only |
+| **RealDateProvider** | `src/shared-kernel/adapters/date/RealDateProvider` | Current date/time | Production (default) |
+| **DeterministicDateProvider** | `src/shared-kernel/adapters/date/DeterministicDateProvider` | Fixed date | Testing only |
+| **SQL_CONNECTION** | `src/shared-kernel/adapters/sql-knex/sqlConnection.module` | Knex database connection | All repositories/queries |
+| **DomainEventPublisher** | `src/shared-kernel/domainEventPublisher` | Publish domain events | Event-driven usecases |
+| **DOMAIN_EVENT_PUBLISHER_INJECTION_TOKEN** | `src/shared-kernel/adapters/events/eventPublisher.module` | Event publisher token | For controller injection |
 
 ### SQL Connection
 
 ```typescript
-import { SqlConnectionModule, SQL_CONNECTION } from "@/shared-kernel/adapters/sql-knex/sqlConnection.module";
+import { SqlConnectionModule, SQL_CONNECTION } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import type { Knex } from "knex";
 
 @Module({
@@ -146,7 +146,7 @@ import type { Knex } from "knex";
 ### ID Generator
 
 ```typescript
-import { RandomUuidGenerator } from "@/shared-kernel/adapters/id-generator/RandomUuidGenerator";
+import { RandomUuidGenerator } from "src/shared-kernel/adapters/id-generator/RandomUuidGenerator";
 
 @Module({
   providers: [
@@ -164,7 +164,7 @@ import { RandomUuidGenerator } from "@/shared-kernel/adapters/id-generator/Rando
 ### Date Provider
 
 ```typescript
-import { RealDateProvider } from "@/shared-kernel/adapters/date/RealDateProvider";
+import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
 
 @Module({
   providers: [
@@ -181,24 +181,86 @@ import { RealDateProvider } from "@/shared-kernel/adapters/date/RealDateProvider
 
 ### Domain Event Publisher
 
+**CRITICAL RULE**:
+- ✅ **UseCases**: ALWAYS use direct injection of `RealEventPublisher` and `RandomUuidGenerator`
+- ⚠️ **Controllers**: Use injection tokens ONLY when necessary for HTTP-layer events
+
+#### Pattern 1: Direct Injection in UseCases (ALWAYS Use This)
+
 ```typescript
-import { EventPublisherModule } from "@/shared-kernel/adapters/events/eventPublisher.module";
-import type { DomainEventPublisher } from "@/shared-kernel/domainEventPublisher";
+import { RealEventPublisher } from "src/shared-kernel/adapters/events/publisher/RealEventPublisher";
+import { RandomUuidGenerator } from "src/shared-kernel/adapters/id-generator/RandomUuidGenerator";
+import type { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
+import type { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerator";
 
 @Module({
-  imports: [EventPublisherModule],  // Import module
+  imports: [EventPublisherModule],  // Import for event infrastructure
   providers: [
     {
       provide: CreateExampleUseCase,
       useFactory: (
         repository: SqlExampleRepository,
-        eventPublisher: DomainEventPublisher,
-      ) => new CreateExampleUseCase(repository, eventPublisher),
-      inject: [SqlExampleRepository, DomainEventPublisher],
+        eventPublisher: RealEventPublisher,  // Direct injection (NOT token)
+        uuidGenerator: RandomUuidGenerator,   // For generating event IDs
+      ) => new CreateExampleUseCase(repository, eventPublisher, uuidGenerator),
+      inject: [
+        SqlExampleRepository,
+        RealEventPublisher,      // Inject concrete implementation directly
+        RandomUuidGenerator,     // Inject concrete implementation directly
+      ],
     },
+    RealEventPublisher,   // Register concrete implementation
+    RandomUuidGenerator,  // Register concrete implementation
   ],
 })
 ```
+
+**Why direct injection**:
+- ✅ Clearer intent - no indirection via tokens
+- ✅ More testable - tests can inject `InMemoryEventPublisher` + `RandomUuidGenerator`
+- ✅ Follows DI best practices - inject what you use, not abstraction tokens
+- ✅ `RealEventPublisher` is always the concrete implementation in production
+
+#### Pattern 2: Token-Based Injection in Controllers (Only When Necessary)
+
+ONLY use injection tokens for controllers publishing HTTP-layer events (rare cases):
+
+```typescript
+import { DOMAIN_EVENT_PUBLISHER_INJECTION_TOKEN } from "src/shared-kernel/adapters/events/eventPublisher.module";
+import { UUID_GENERATOR_INJECTION_TOKEN } from "src/shared-kernel/adapters/id-generator/UidGenerator";
+import type { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
+import type { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerator";
+import { Inject } from "@nestjs/common";
+
+@Controller("auth")
+export class AuthController {
+  constructor(
+    @Inject(DOMAIN_EVENT_PUBLISHER_INJECTION_TOKEN)
+    private readonly eventPublisher: DomainEventPublisher,
+    @Inject(UUID_GENERATOR_INJECTION_TOKEN)
+    private readonly uidGenerator: UidGenerator,
+  ) {}
+
+  @Get("login")
+  async login() {
+    // Only publish HTTP-layer events from controllers (rare)
+    await this.eventPublisher.publish(
+      createLoginAttemptedEvent(this.uidGenerator.generate(), {
+        method: "pro-connect",
+      })
+    );
+  }
+}
+```
+
+**When to use tokens in controllers**:
+- ⚠️ ONLY for HTTP-layer events (authentication flow, login tracking)
+- ⚠️ ONLY when event publishing is tightly coupled to HTTP request handling
+- ❌ Do NOT use in controllers for business domain events - move to UseCase instead
+
+**Real-world examples**:
+- [sites.module.ts](../../../apps/api/src/sites/adapters/primary/sites.module.ts) - Direct injection in UseCase (Pattern 1, ALWAYS USE)
+- [auth.controller.ts](../../../apps/api/src/auth/adapters/auth.controller.ts) - Token injection in controller (Pattern 2, RARE)
 
 ## Controller Injection
 
@@ -225,8 +287,8 @@ export class ExampleController {
 For services that need injection tokens:
 
 ```typescript
-import { DOMAIN_EVENT_PUBLISHER_INJECTION_TOKEN } from "@/shared-kernel/adapters/events/eventPublisher.module";
-import type { DomainEventPublisher } from "@/shared-kernel/domainEventPublisher";
+import { DOMAIN_EVENT_PUBLISHER_INJECTION_TOKEN } from "src/shared-kernel/adapters/events/eventPublisher.module";
+import type { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
 import { Inject } from "@nestjs/common";
 
 @Controller("examples")
@@ -289,18 +351,18 @@ Then import in other modules:
 import { Module } from "@nestjs/common";
 import type { Knex } from "knex";
 
-import { SqlExampleRepository } from "@/examples/adapters/secondary/example-repository/SqlExampleRepository";
-import { SqlExamplesQuery } from "@/examples/adapters/secondary/examples-query/SqlExamplesQuery";
-import { CreateExampleUseCase } from "@/examples/core/usecases/createExample.usecase";
-import { DeleteExampleUseCase } from "@/examples/core/usecases/deleteExample.usecase";
-import { GetExampleByIdUseCase } from "@/examples/core/usecases/getExampleById.usecase";
-import { GetExamplesListUseCase } from "@/examples/core/usecases/getExamplesList.usecase";
-import { UpdateExampleUseCase } from "@/examples/core/usecases/updateExample.usecase";
-import { RealDateProvider } from "@/shared-kernel/adapters/date/RealDateProvider";
-import { EventPublisherModule } from "@/shared-kernel/adapters/events/eventPublisher.module";
-import { RandomUuidGenerator } from "@/shared-kernel/adapters/id-generator/RandomUuidGenerator";
-import { SQL_CONNECTION, SqlConnectionModule } from "@/shared-kernel/adapters/sql-knex/sqlConnection.module";
-import type { DomainEventPublisher } from "@/shared-kernel/domainEventPublisher";
+import { SqlExampleRepository } from "src/examples/adapters/secondary/example-repository/SqlExampleRepository";
+import { SqlExamplesQuery } from "src/examples/adapters/secondary/examples-query/SqlExamplesQuery";
+import { CreateExampleUseCase } from "src/examples/core/usecases/createExample.usecase";
+import { DeleteExampleUseCase } from "src/examples/core/usecases/deleteExample.usecase";
+import { GetExampleByIdUseCase } from "src/examples/core/usecases/getExampleById.usecase";
+import { GetExamplesListUseCase } from "src/examples/core/usecases/getExamplesList.usecase";
+import { UpdateExampleUseCase } from "src/examples/core/usecases/updateExample.usecase";
+import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
+import { EventPublisherModule } from "src/shared-kernel/adapters/events/eventPublisher.module";
+import { RandomUuidGenerator } from "src/shared-kernel/adapters/id-generator/RandomUuidGenerator";
+import { SQL_CONNECTION, SqlConnectionModule } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
+import type { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
 
 import { ExamplesController } from "./examples.controller";
 
@@ -380,7 +442,7 @@ Add new module to `app.module.ts`:
 
 ```typescript
 // src/app.module.ts
-import { ExamplesModule } from "@/examples/adapters/primary/examples.module";
+import { ExamplesModule } from "src/examples/adapters/primary/examples.module";
 
 @Module({
   imports: [

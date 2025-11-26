@@ -17,7 +17,7 @@ The API provides standardized, injectable services through the `shared-kernel` m
 **For Production**:
 
 ```typescript
-import { RandomUuidGenerator } from "@/shared-kernel/adapters/id-generator/RandomUuidGenerator";
+import { RandomUuidGenerator } from "src/shared-kernel/adapters/id-generator/RandomUuidGenerator";
 
 export class MyUseCase {
   constructor(private readonly idGenerator: RandomUuidGenerator) {}
@@ -32,7 +32,7 @@ export class MyUseCase {
 **For Testing**:
 
 ```typescript
-import { DeterministicIdGenerator } from "@/shared-kernel/adapters/id-generator/DeterministicIdGenerator";
+import { DeterministicIdGenerator } from "src/shared-kernel/adapters/id-generator/DeterministicIdGenerator";
 
 it("should create item with id", async () => {
   const idGenerator = new DeterministicIdGenerator();
@@ -48,15 +48,15 @@ it("should create item with id", async () => {
 
 | Service | Import | Purpose | Provides |
 |---------|--------|---------|----------|
-| **RandomUuidGenerator** | `@/shared-kernel/adapters/id-generator/RandomUuidGenerator` | Production ID generation | Random UUID v4 strings |
-| **DeterministicIdGenerator** | `@/shared-kernel/adapters/id-generator/DeterministicIdGenerator` | Testing only (predictable) | Sequential IDs: "1", "2", "3"... |
+| **RandomUuidGenerator** | `src/shared-kernel/adapters/id-generator/RandomUuidGenerator` | Production ID generation | Random UUID v4 strings |
+| **DeterministicIdGenerator** | `src/shared-kernel/adapters/id-generator/DeterministicIdGenerator` | Testing only (predictable) | Sequential IDs: "1", "2", "3"... |
 
 ### Date/Time Providers
 
 **For Production**:
 
 ```typescript
-import { RealDateProvider } from "@/shared-kernel/adapters/date/RealDateProvider";
+import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
 
 export class MyUseCase {
   constructor(private readonly dateProvider: RealDateProvider) {}
@@ -71,7 +71,7 @@ export class MyUseCase {
 **For Testing**:
 
 ```typescript
-import { DeterministicDateProvider } from "@/shared-kernel/adapters/date/DeterministicDateProvider";
+import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 
 it("should create item with timestamp", async () => {
   const dateProvider = new DeterministicDateProvider(new Date("2024-01-01"));
@@ -87,8 +87,8 @@ it("should create item with timestamp", async () => {
 
 | Service | Import | Purpose | Provides |
 |---------|--------|---------|----------|
-| **RealDateProvider** | `@/shared-kernel/adapters/date/RealDateProvider` | Production date/time | `now(): Date` returning current time |
-| **DeterministicDateProvider** | `@/shared-kernel/adapters/date/DeterministicDateProvider` | Testing only (fixed) | `now(): Date` returning constructor-supplied fixed date |
+| **RealDateProvider** | `src/shared-kernel/adapters/date/RealDateProvider` | Production date/time | `now(): Date` returning current time |
+| **DeterministicDateProvider** | `src/shared-kernel/adapters/date/DeterministicDateProvider` | Testing only (fixed) | `now(): Date` returning constructor-supplied fixed date |
 
 ---
 
@@ -97,7 +97,7 @@ it("should create item with timestamp", async () => {
 ### SQL Connection (Knex)
 
 ```typescript
-import { SQL_CONNECTION } from "@/shared-kernel/adapters/sql-knex/sqlConnection.module";
+import { SQL_CONNECTION } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import { Inject } from "@nestjs/common";
 import type { Knex } from "knex";
 
@@ -114,7 +114,7 @@ export class MySqlRepository {
 
 | Service | Import | Purpose | Provides |
 |---------|--------|---------|----------|
-| **SQL_CONNECTION** | `@/shared-kernel/adapters/sql-knex/sqlConnection.module` | Database access | Knex instance for query building |
+| **SQL_CONNECTION** | `src/shared-kernel/adapters/sql-knex/sqlConnection.module` | Database access | Knex instance for query building |
 
 **Where to Use**:
 - SQL Repositories (write operations)
@@ -128,9 +128,9 @@ export class MySqlRepository {
 ### Domain Event Publisher
 
 ```typescript
-import { DOMAIN_EVENT_PUBLISHER_INJECTION_TOKEN } from "@/shared-kernel/adapters/events/eventPublisher.module";
+import { DOMAIN_EVENT_PUBLISHER_INJECTION_TOKEN } from "src/shared-kernel/adapters/events/eventPublisher.module";
 import { Inject } from "@nestjs/common";
-import type { DomainEventPublisher } from "@/shared-kernel/events/DomainEventPublisher";
+import type { DomainEventPublisher } from "src/shared-kernel/events/DomainEventPublisher";
 
 export class MyUseCase {
   constructor(
@@ -158,7 +158,7 @@ export class MyUseCase {
 
 | Service | Import | Purpose | When to Use |
 |---------|--------|---------|------------|
-| **DOMAIN_EVENT_PUBLISHER_INJECTION_TOKEN** | `@/shared-kernel/adapters/events/eventPublisher.module` | Cross-module communication, side effects | When UseCase completion should trigger other domain actions (emails, notifications, audit) |
+| **DOMAIN_EVENT_PUBLISHER_INJECTION_TOKEN** | `src/shared-kernel/adapters/events/eventPublisher.module` | Cross-module communication, side effects | When UseCase completion should trigger other domain actions (emails, notifications, audit) |
 
 **See also**: [10-domain-events-pattern.md](10-domain-events-pattern.md) for complete event patterns.
 
@@ -172,11 +172,11 @@ Always inject services through factory pattern in NestJS modules:
 
 ```typescript
 import { Module } from "@nestjs/common";
-import { RandomUuidGenerator } from "@/shared-kernel/adapters/id-generator/RandomUuidGenerator";
-import { RealDateProvider } from "@/shared-kernel/adapters/date/RealDateProvider";
-import { SQL_CONNECTION } from "@/shared-kernel/adapters/sql-knex/sqlConnection.module";
-import { MyUseCase } from "@/my-module/core/usecases/my.usecase";
-import { SqlMyRepository } from "@/my-module/adapters/secondary/my-repository/SqlMyRepository";
+import { RandomUuidGenerator } from "src/shared-kernel/adapters/id-generator/RandomUuidGenerator";
+import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
+import { SQL_CONNECTION } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
+import { MyUseCase } from "src/my-module/core/usecases/my.usecase";
+import { SqlMyRepository } from "src/my-module/adapters/secondary/my-repository/SqlMyRepository";
 import { MyModule as RootMyModule } from "./my.module";
 
 @Module({
@@ -216,9 +216,9 @@ export class MyModule {}
 For unit tests, instantiate services directly without NestJS:
 
 ```typescript
-import { DeterministicIdGenerator } from "@/shared-kernel/adapters/id-generator/DeterministicIdGenerator";
-import { DeterministicDateProvider } from "@/shared-kernel/adapters/date/DeterministicDateProvider";
-import { InMemoryMyRepository } from "@/my-module/adapters/secondary/my-repository/InMemoryMyRepository";
+import { DeterministicIdGenerator } from "src/shared-kernel/adapters/id-generator/DeterministicIdGenerator";
+import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
+import { InMemoryMyRepository } from "src/my-module/adapters/secondary/my-repository/InMemoryMyRepository";
 
 describe("MyUseCase", () => {
   it("should create item", async () => {
@@ -272,10 +272,10 @@ describe("MyUseCase", () => {
 
 | Need | Production | Testing | Module Location |
 |------|-----------|---------|-----------------|
-| Generate IDs | `RandomUuidGenerator` | `DeterministicIdGenerator` | `@/shared-kernel/adapters/id-generator/` |
-| Get current time | `RealDateProvider` | `DeterministicDateProvider` | `@/shared-kernel/adapters/date/` |
-| Database queries | `SQL_CONNECTION` (Knex) | `InMemory*Repository` | `@/shared-kernel/adapters/sql-knex/` |
-| Publish events | `DOMAIN_EVENT_PUBLISHER_INJECTION_TOKEN` | Mock publisher | `@/shared-kernel/adapters/events/` |
+| Generate IDs | `RandomUuidGenerator` | `DeterministicIdGenerator` | `src/shared-kernel/adapters/id-generator/` |
+| Get current time | `RealDateProvider` | `DeterministicDateProvider` | `src/shared-kernel/adapters/date/` |
+| Database queries | `SQL_CONNECTION` (Knex) | `InMemory*Repository` | `src/shared-kernel/adapters/sql-knex/` |
+| Publish events | `DOMAIN_EVENT_PUBLISHER_INJECTION_TOKEN` | Mock publisher | `src/shared-kernel/adapters/events/` |
 
 ---
 

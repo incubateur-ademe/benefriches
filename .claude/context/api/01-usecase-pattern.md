@@ -20,8 +20,8 @@ UseCases encapsulate business actions and orchestrate domain logic. They represe
 All UseCases follow this structure:
 
 ```typescript
-import { UseCase } from "@/shared-kernel/usecase";
-import { success, fail, type TResult } from "@/shared-kernel/result";
+import { UseCase } from "src/shared-kernel/usecase";
+import { success, fail, type TResult } from "src/shared-kernel/result";
 
 type Request = {
   // Input parameters
@@ -70,7 +70,7 @@ import {
   type TResult,  // Result<SuccessType, ErrorType>
   type SuccessResult,  // Success variant only
   type FailureResult,  // Failure variant only
-} from "@/shared-kernel/result";
+} from "src/shared-kernel/result";
 ```
 
 ### Quick Examples

@@ -265,7 +265,7 @@ export type SqlExample = {
 ### Using Types in SQL Operations
 
 ```typescript
-import type { SqlExample } from "@/shared-kernel/adapters/sql-knex/tableTypes";
+import type { SqlExample } from "src/shared-kernel/adapters/sql-knex/tableTypes";
 
 export class SqlExampleRepository {
   async save(example: Example): Promise<void> {

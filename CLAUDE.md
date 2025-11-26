@@ -260,6 +260,8 @@ When you finish writing or modifying API code, you MUST run these checks **in th
 
 **DO NOT**: Skip tests or batch checks at the end. Run after each logical change.
 
+**Database Isolation**: All SQL tables are automatically cleared after each integration test by a global hook in `apps/api/test/integration-tests-global-hooks.ts`, ensuring complete test isolation without manual cleanup.
+
 ---
 
 ## ✅ Code Quality Standards

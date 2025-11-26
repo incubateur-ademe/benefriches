@@ -24,9 +24,9 @@ Controllers are thin adapters that:
 4. NEVER contain business logic
 
 ```typescript
-import { JwtAuthGuard } from "@/auth/adapters/primary/guards/jwt-auth.guard";
-import { CreateExampleUseCase } from "@/examples/core/usecases/createExample.usecase";
-import type { FailureResult, SuccessResult } from "@/shared-kernel/result";
+import { JwtAuthGuard } from "src/auth/adapters/primary/guards/jwt-auth.guard";
+import { CreateExampleUseCase } from "src/examples/core/usecases/createExample.usecase";
+import type { FailureResult, SuccessResult } from "src/shared-kernel/result";
 import {
   Controller,
   Post,
@@ -202,7 +202,7 @@ const createUserSchema = z.object({
 **RULE**: All routes MUST use `@UseGuards(JwtAuthGuard)` unless explicitly public.
 
 ```typescript
-import { JwtAuthGuard } from "@/auth/adapters/primary/guards/jwt-auth.guard";
+import { JwtAuthGuard } from "src/auth/adapters/primary/guards/jwt-auth.guard";
 
 @Controller("examples")
 export class ExampleController {
@@ -222,7 +222,7 @@ export class ExampleController {
 ### Extracting User from Request
 
 ```typescript
-import { RequestWithAuthenticatedUser } from "@/auth/adapters/primary/JwtAuthGuard";
+import { RequestWithAuthenticatedUser } from "src/auth/adapters/primary/JwtAuthGuard";
 
 @Post("my-examples")
 @UseGuards(JwtAuthGuard)

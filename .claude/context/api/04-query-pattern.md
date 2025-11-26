@@ -84,9 +84,9 @@ export type ExampleViewModel = {
 
 ```typescript
 // adapters/secondary/examples-query/SqlExamplesQuery.ts
-import type { ExamplesQuery } from "@/examples/core/gateways/ExamplesQuery";
-import type { ExampleViewModel } from "@/examples/core/models/exampleViewModel";
-import type { SqlExample } from "@/shared-kernel/adapters/sql-knex/tableTypes";
+import type { ExamplesQuery } from "src/examples/core/gateways/ExamplesQuery";
+import type { ExampleViewModel } from "src/examples/core/models/exampleViewModel";
+import type { SqlExample } from "src/shared-kernel/adapters/sql-knex/tableTypes";
 import type { Knex } from "knex";
 
 export class SqlExamplesQuery implements ExamplesQuery {
@@ -240,8 +240,8 @@ return {
 
 ```typescript
 // adapters/secondary/examples-query/InMemoryExamplesQuery.ts
-import type { ExamplesQuery } from "@/examples/core/gateways/ExamplesQuery";
-import type { ExampleViewModel } from "@/examples/core/models/exampleViewModel";
+import type { ExamplesQuery } from "src/examples/core/gateways/ExamplesQuery";
+import type { ExampleViewModel } from "src/examples/core/models/exampleViewModel";
 
 export class InMemoryExamplesQuery implements ExamplesQuery {
   private examples: ExampleViewModel[] = [];
