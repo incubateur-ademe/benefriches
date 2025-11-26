@@ -7,6 +7,10 @@ import { SqlCityStatsQuery } from "src/reconversion-projects/adapters/secondary/
 import { CityStatsProvider } from "src/reconversion-projects/core/gateways/CityStatsProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
+import { RealEventPublisher } from "src/shared-kernel/adapters/events/publisher/RealEventPublisher";
+import { RandomUuidGenerator } from "src/shared-kernel/adapters/id-generator/RandomUuidGenerator";
+import { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerator";
+import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
 import { SitesQuery } from "src/sites/core/gateways/SitesQuery";
 import { SitesRepository } from "src/sites/core/gateways/SitesRepository";
 import { CreateNewExpressSiteUseCase } from "src/sites/core/usecases/createNewExpressSite.usecase";
@@ -24,9 +28,14 @@ import { SitesController } from "./sites.controller";
   providers: [
     {
       provide: CreateNewCustomSiteUseCase,
-      useFactory: (siteRepository: SitesRepository, dateProvider: DateProvider) =>
-        new CreateNewCustomSiteUseCase(siteRepository, dateProvider),
-      inject: [SqlSiteRepository, RealDateProvider],
+      useFactory: (
+        siteRepository: SitesRepository,
+        dateProvider: DateProvider,
+        uuidGenerator: UidGenerator,
+        eventPublisher: DomainEventPublisher,
+      ) =>
+        new CreateNewCustomSiteUseCase(siteRepository, dateProvider, uuidGenerator, eventPublisher),
+      inject: [SqlSiteRepository, RealDateProvider, RandomUuidGenerator, RealEventPublisher],
     },
     {
       provide: CreateNewExpressSiteUseCase,
@@ -34,8 +43,23 @@ import { SitesController } from "./sites.controller";
         siteRepository: SitesRepository,
         dateProvider: DateProvider,
         cityStatsQuery: CityStatsProvider,
-      ) => new CreateNewExpressSiteUseCase(siteRepository, dateProvider, cityStatsQuery),
-      inject: [SqlSiteRepository, RealDateProvider, SqlCityStatsQuery],
+        uuidGenerator: UidGenerator,
+        eventPublisher: DomainEventPublisher,
+      ) =>
+        new CreateNewExpressSiteUseCase(
+          siteRepository,
+          dateProvider,
+          cityStatsQuery,
+          uuidGenerator,
+          eventPublisher,
+        ),
+      inject: [
+        SqlSiteRepository,
+        RealDateProvider,
+        SqlCityStatsQuery,
+        RandomUuidGenerator,
+        RealEventPublisher,
+      ],
     },
     {
       provide: GetSiteByIdUseCase,
@@ -51,6 +75,8 @@ import { SitesController } from "./sites.controller";
     SqlSitesQuery,
     RealDateProvider,
     SqlCityStatsQuery,
+    RandomUuidGenerator,
+    RealEventPublisher,
   ],
 })
 export class SitesModule {}

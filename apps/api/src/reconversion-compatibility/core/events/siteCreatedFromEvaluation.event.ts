@@ -1,8 +1,8 @@
-import { DomainEvent } from "src/shared-kernel/domainEvent";
+import type { DomainEvent } from "src/shared-kernel/domainEvent";
 
-const SITE_CREATED_FROM_EVALUATION = "reconversion-compatibility-evaluation.site-created";
+export const SITE_CREATED_FROM_EVALUATION = "reconversion-compatibility-evaluation.site-created";
 
-type SiteCreatedFromEvaluationEvent = DomainEvent<
+export type SiteCreatedFromEvaluationEvent = DomainEvent<
   typeof SITE_CREATED_FROM_EVALUATION,
   {
     evaluationId: string;

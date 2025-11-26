@@ -1,9 +1,12 @@
 import { z } from "zod";
 
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerator";
+import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
 import { TResult, fail, success } from "src/shared-kernel/result";
 import { UseCase } from "src/shared-kernel/usecase";
 
+import { createReconversionProjectCreatedEvent } from "../events/reconversionProjectCreated.event";
 import { ReconversionProjectRepository } from "../gateways/ReconversionProjectRepository";
 import {
   ReconversionProjectSavePropsDto,
@@ -31,6 +34,8 @@ export class CreateReconversionProjectUseCase
     private readonly dateProvider: DateProvider,
     private readonly siteRepository: SiteRepository,
     private readonly reconversionProjectRepository: ReconversionProjectRepository,
+    private readonly uuidGenerator: UidGenerator,
+    private readonly eventPublisher: DomainEventPublisher,
   ) {}
 
   async execute({ reconversionProjectProps }: Request): Promise<CreateReconversionProjectResult> {
@@ -63,6 +68,14 @@ export class CreateReconversionProjectUseCase
       createdAt: this.dateProvider.now(),
       creationMode: "custom",
     });
+
+    await this.eventPublisher.publish(
+      createReconversionProjectCreatedEvent(this.uuidGenerator.generate(), {
+        reconversionProjectId: parsedReconversionProject.id,
+        siteId: parsedReconversionProject.relatedSiteId,
+        createdBy: parsedReconversionProject.createdBy,
+      }),
+    );
 
     return success();
   }

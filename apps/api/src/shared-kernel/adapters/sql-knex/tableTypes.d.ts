@@ -89,6 +89,15 @@ type SqlSiteIncome = {
   amount: number;
 };
 
+type SqlSiteAction = {
+  id: string;
+  site_id: string;
+  action_type: string;
+  status: string;
+  created_at: Date;
+  completed_at: Date | null;
+};
+
 /*
   RECONVERSION PROJECTS TABLES
 */
@@ -216,6 +225,7 @@ declare module "knex/types/tables" {
     site_soils_distributions: SqlSiteSoilsDistribution;
     site_expenses: SqlSiteExpense;
     site_incomes: SqlSiteIncome;
+    site_actions: SqlSiteAction;
 
     // users
     users: SqlUser;

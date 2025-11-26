@@ -67,13 +67,23 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
         dateProvider: DateProvider,
         siteRepository: SiteRepository,
         reconversionProjectRepository: ReconversionProjectRepository,
+        uuidGenerator: UidGenerator,
+        eventPublisher: DomainEventPublisher,
       ) =>
         new CreateReconversionProjectUseCase(
           dateProvider,
           siteRepository,
           reconversionProjectRepository,
+          uuidGenerator,
+          eventPublisher,
         ),
-      inject: [RealDateProvider, SqlSiteRepository, SqlReconversionProjectRepository],
+      inject: [
+        RealDateProvider,
+        SqlSiteRepository,
+        SqlReconversionProjectRepository,
+        RandomUuidGenerator,
+        RealEventPublisher,
+      ],
     },
     {
       provide: UpdateReconversionProjectUseCase,
@@ -112,12 +122,21 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
       useFactory: (
         generateReconversionProjectFromTemplateUseCase: GenerateReconversionProjectFromTemplateUseCase,
         reconversionProjectRepository: ReconversionProjectRepository,
+        eventPublisher: RealEventPublisher,
+        uuidGenerator: RandomUuidGenerator,
       ) =>
         new GenerateAndSaveReconversionProjectFromTemplateUseCase(
           generateReconversionProjectFromTemplateUseCase,
           reconversionProjectRepository,
+          eventPublisher,
+          uuidGenerator,
         ),
-      inject: [GenerateReconversionProjectFromTemplateUseCase, SqlReconversionProjectRepository],
+      inject: [
+        GenerateReconversionProjectFromTemplateUseCase,
+        SqlReconversionProjectRepository,
+        RealEventPublisher,
+        RandomUuidGenerator,
+      ],
     },
     {
       provide: GetUserReconversionProjectsBySiteUseCase,

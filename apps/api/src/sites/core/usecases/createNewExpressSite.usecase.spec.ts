@@ -1,11 +1,16 @@
+/* oxlint-disable typescript-eslint/no-unsafe-assignment */
 import { Address, createSoilSurfaceAreaDistribution } from "shared";
 
 import { InMemoryCityStatsQuery } from "src/reconversion-projects/adapters/secondary/queries/city-stats/InMemoryCityStatsQuery";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { InMemoryEventPublisher } from "src/shared-kernel/adapters/events/publisher/InMemoryEventPublisher";
+import { DeterministicUuidGenerator } from "src/shared-kernel/adapters/id-generator/DeterministicIdGenerator";
+import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
 import { FailureResult } from "src/shared-kernel/result";
 import { InMemorySitesRepository } from "src/sites/adapters/secondary/site-repository/InMemorySiteRepository";
 
+import { SITE_CREATED, SiteCreatedEvent } from "../events/siteCreated.event";
 import { buildFriche, buildFricheProps } from "../models/site.mock";
 import { SiteEntity } from "../models/siteEntity";
 import { CreateNewExpressSiteUseCase, ExpressSiteProps } from "./createNewExpressSite.usecase";
@@ -29,12 +34,17 @@ describe("CreateNewExpressSite Use case", () => {
   let siteRepository: InMemorySitesRepository;
   let dateProvider: DateProvider;
   let cityStatsQuery: InMemoryCityStatsQuery;
+  let uuidGenerator: DeterministicUuidGenerator;
+  let eventPublisher: DomainEventPublisher;
   const fakeNow = new Date("2024-01-03T13:50:45");
 
   beforeEach(() => {
     siteRepository = new InMemorySitesRepository();
     dateProvider = new DeterministicDateProvider(fakeNow);
     cityStatsQuery = new InMemoryCityStatsQuery();
+    uuidGenerator = new DeterministicUuidGenerator();
+    uuidGenerator.nextUuids("event-id-1");
+    eventPublisher = new InMemoryEventPublisher();
   });
 
   it("Cannot create a site when already exists", async () => {
@@ -49,7 +59,13 @@ describe("CreateNewExpressSite Use case", () => {
       },
     ]);
 
-    const usecase = new CreateNewExpressSiteUseCase(siteRepository, dateProvider, cityStatsQuery);
+    const usecase = new CreateNewExpressSiteUseCase(
+      siteRepository,
+      dateProvider,
+      cityStatsQuery,
+      uuidGenerator,
+      eventPublisher,
+    );
     const result = await usecase.execute({
       siteProps: {
         id: fricheProps.id,
@@ -73,6 +89,8 @@ describe("CreateNewExpressSite Use case", () => {
       siteRepository,
       dateProvider,
       failingCityDataProvider,
+      uuidGenerator,
+      eventPublisher,
     );
 
     const siteProps = {
@@ -86,11 +104,28 @@ describe("CreateNewExpressSite Use case", () => {
 
     const savedSites = siteRepository._getSites();
     expect(savedSites).toHaveLength(1);
+    // oxlint-disable-next-line no-non-null-assertion
+    const siteId = savedSites[0]!.id;
+    expect((eventPublisher as InMemoryEventPublisher).events).toHaveLength(1);
+    expect((eventPublisher as InMemoryEventPublisher).events[0]).toEqual<SiteCreatedEvent>({
+      id: expect.any(String),
+      name: SITE_CREATED,
+      payload: {
+        siteId,
+        createdBy: "user-id-123",
+      },
+    });
   });
 
   describe("Agricultural", () => {
     it("creates a new express agricultural operation from given props", async () => {
-      const usecase = new CreateNewExpressSiteUseCase(siteRepository, dateProvider, cityStatsQuery);
+      const usecase = new CreateNewExpressSiteUseCase(
+        siteRepository,
+        dateProvider,
+        cityStatsQuery,
+        uuidGenerator,
+        eventPublisher,
+      );
 
       const siteProps = {
         id: "e869d8db-3d63-4fd5-93ab-7728c1c19a1e",
@@ -154,12 +189,29 @@ describe("CreateNewExpressSite Use case", () => {
           ],
         },
       ]);
+      // oxlint-disable-next-line no-non-null-assertion
+      const siteId = savedSites[0]!.id;
+      expect((eventPublisher as InMemoryEventPublisher).events).toHaveLength(1);
+      expect((eventPublisher as InMemoryEventPublisher).events[0]).toEqual<SiteCreatedEvent>({
+        id: expect.any(String),
+        name: SITE_CREATED,
+        payload: {
+          siteId,
+          createdBy: "user-id-123",
+        },
+      });
     });
   });
 
   describe("Natural area", () => {
     it("creates a new natural area operation from given props", async () => {
-      const usecase = new CreateNewExpressSiteUseCase(siteRepository, dateProvider, cityStatsQuery);
+      const usecase = new CreateNewExpressSiteUseCase(
+        siteRepository,
+        dateProvider,
+        cityStatsQuery,
+        uuidGenerator,
+        eventPublisher,
+      );
 
       const siteProps = {
         id: "e869d8db-3d63-4fd5-93ab-7728c1c19a1e",
@@ -192,12 +244,29 @@ describe("CreateNewExpressSite Use case", () => {
           yearlyIncomes: [],
         },
       ]);
+      // oxlint-disable-next-line no-non-null-assertion
+      const siteId = savedSites[0]!.id;
+      expect((eventPublisher as InMemoryEventPublisher).events).toHaveLength(1);
+      expect((eventPublisher as InMemoryEventPublisher).events[0]).toEqual<SiteCreatedEvent>({
+        id: expect.any(String),
+        name: SITE_CREATED,
+        payload: {
+          siteId,
+          createdBy: "user-id-123",
+        },
+      });
     });
   });
 
   describe("Friche", () => {
     it("creates a new express friche from given props", async () => {
-      const usecase = new CreateNewExpressSiteUseCase(siteRepository, dateProvider, cityStatsQuery);
+      const usecase = new CreateNewExpressSiteUseCase(
+        siteRepository,
+        dateProvider,
+        cityStatsQuery,
+        uuidGenerator,
+        eventPublisher,
+      );
 
       const fricheProps = {
         id: "e869d8db-3d63-4fd5-93ab-7728c1c19a1e",
@@ -244,10 +313,27 @@ describe("CreateNewExpressSite Use case", () => {
           accidentsDeaths: undefined,
         },
       ]);
+      // oxlint-disable-next-line no-non-null-assertion
+      const siteId = savedSites[0]!.id;
+      expect((eventPublisher as InMemoryEventPublisher).events).toHaveLength(1);
+      expect((eventPublisher as InMemoryEventPublisher).events[0]).toEqual<SiteCreatedEvent>({
+        id: expect.any(String),
+        name: SITE_CREATED,
+        payload: {
+          siteId,
+          createdBy: "user-id-123",
+        },
+      });
     });
 
     it("creates a new express industrial friche with given built surface area", async () => {
-      const usecase = new CreateNewExpressSiteUseCase(siteRepository, dateProvider, cityStatsQuery);
+      const usecase = new CreateNewExpressSiteUseCase(
+        siteRepository,
+        dateProvider,
+        cityStatsQuery,
+        uuidGenerator,
+        eventPublisher,
+      );
 
       const fricheProps = {
         id: "e869d8db-3d63-4fd5-93ab-7728c1c19a1e",
@@ -293,6 +379,17 @@ describe("CreateNewExpressSite Use case", () => {
           accidentsDeaths: undefined,
         },
       ]);
+      // oxlint-disable-next-line no-non-null-assertion
+      const siteId = savedSites[0]!.id;
+      expect((eventPublisher as InMemoryEventPublisher).events).toHaveLength(1);
+      expect((eventPublisher as InMemoryEventPublisher).events[0]).toEqual<SiteCreatedEvent>({
+        id: expect.any(String),
+        name: SITE_CREATED,
+        payload: {
+          siteId,
+          createdBy: "user-id-123",
+        },
+      });
     });
   });
 });

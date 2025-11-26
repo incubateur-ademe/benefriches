@@ -1,8 +1,13 @@
+/* oxlint-disable typescript-eslint/no-unsafe-assignment */
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { InMemoryEventPublisher } from "src/shared-kernel/adapters/events/publisher/InMemoryEventPublisher";
+import { RandomUuidGenerator } from "src/shared-kernel/adapters/id-generator/RandomUuidGenerator";
+import { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerator";
 import { FailureResult } from "src/shared-kernel/result";
 import { InMemorySitesRepository } from "src/sites/adapters/secondary/site-repository/InMemorySiteRepository";
 
+import { SITE_CREATED, SiteCreatedEvent } from "../events/siteCreated.event";
 import {
   buildAgriculturalOrNaturalSite,
   buildAgriculturalOperationSiteProps,
@@ -15,18 +20,27 @@ import { CreateNewCustomSiteUseCase } from "./createNewSite.usecase";
 describe("CreateNewSite Use Case", () => {
   let siteRepository: InMemorySitesRepository;
   let dateProvider: DateProvider;
+  let uuidGenerator: UidGenerator;
+  let eventPublisher: InMemoryEventPublisher;
   const fakeNow = new Date("2024-01-03T13:50:45");
 
   beforeEach(() => {
     siteRepository = new InMemorySitesRepository();
     dateProvider = new DeterministicDateProvider(fakeNow);
+    uuidGenerator = new RandomUuidGenerator();
+    eventPublisher = new InMemoryEventPublisher();
   });
 
   it("Cannot create a new friche with invalid props", async () => {
     // @ts-expect-error invalid name
     const fricheProps = buildFricheProps({ name: 123 });
 
-    const usecase = new CreateNewCustomSiteUseCase(siteRepository, dateProvider);
+    const usecase = new CreateNewCustomSiteUseCase(
+      siteRepository,
+      dateProvider,
+      uuidGenerator,
+      eventPublisher,
+    );
     const result = await usecase.execute({
       siteProps: { ...fricheProps, nature: "FRICHE" },
       createdBy: "user-123",
@@ -39,6 +53,7 @@ describe("CreateNewSite Use Case", () => {
     expect((result as FailureResult<"ValidationError", unknown>).getIssues()).toEqual({
       name: ["Invalid input: expected string, received number"],
     });
+    expect(eventPublisher.events).toHaveLength(0);
   });
 
   it("Cannot create a site when already exists", async () => {
@@ -54,7 +69,12 @@ describe("CreateNewSite Use Case", () => {
       },
     ]);
 
-    const usecase = new CreateNewCustomSiteUseCase(siteRepository, dateProvider);
+    const usecase = new CreateNewCustomSiteUseCase(
+      siteRepository,
+      dateProvider,
+      uuidGenerator,
+      eventPublisher,
+    );
     const result = await usecase.execute({
       siteProps,
       createdBy: "blabla",
@@ -63,11 +83,17 @@ describe("CreateNewSite Use Case", () => {
     expect(result.isFailure()).toBe(true);
     expect((result as FailureResult).getError()).toBe("SiteAlreadyExists");
     expect(siteRepository._getSites().length).toEqual(1);
+    expect(eventPublisher.events).toHaveLength(0);
   });
   describe("Agricultural or natura site", () => {
     it("Can create a new agricultural site with minimal data", async () => {
       const agriculturalOperationProps = buildAgriculturalOperationSiteProps();
-      const usecase = new CreateNewCustomSiteUseCase(siteRepository, dateProvider);
+      const usecase = new CreateNewCustomSiteUseCase(
+        siteRepository,
+        dateProvider,
+        uuidGenerator,
+        eventPublisher,
+      );
 
       await usecase.execute({
         siteProps: agriculturalOperationProps,
@@ -84,6 +110,18 @@ describe("CreateNewSite Use Case", () => {
           creationMode: "custom",
         },
       ]);
+
+      // oxlint-disable-next-line no-non-null-assertion
+      const siteId = savedSites[0]!.id;
+      expect(eventPublisher.events).toHaveLength(1);
+      expect(eventPublisher.events[0]).toEqual<SiteCreatedEvent>({
+        id: expect.any(String),
+        name: SITE_CREATED,
+        payload: {
+          siteId,
+          createdBy: "user-id-123",
+        },
+      });
     });
 
     it("Can create a new agricultural site with complete data", async () => {
@@ -100,7 +138,12 @@ describe("CreateNewSite Use Case", () => {
         ],
       });
 
-      const usecase = new CreateNewCustomSiteUseCase(siteRepository, dateProvider);
+      const usecase = new CreateNewCustomSiteUseCase(
+        siteRepository,
+        dateProvider,
+        uuidGenerator,
+        eventPublisher,
+      );
 
       await usecase.execute({
         createdBy: "user-id-123",
@@ -117,6 +160,18 @@ describe("CreateNewSite Use Case", () => {
           creationMode: "custom",
         },
       ]);
+
+      // oxlint-disable-next-line no-non-null-assertion
+      const siteId = savedSites[0]!.id;
+      expect(eventPublisher.events).toHaveLength(1);
+      expect(eventPublisher.events[0]).toEqual<SiteCreatedEvent>({
+        id: expect.any(String),
+        name: SITE_CREATED,
+        payload: {
+          siteId,
+          createdBy: "user-id-123",
+        },
+      });
     });
   });
 
@@ -125,7 +180,12 @@ describe("CreateNewSite Use Case", () => {
       const fricheProps = buildFricheProps();
       const siteProps = { nature: "FRICHE", ...fricheProps } as const;
 
-      const usecase = new CreateNewCustomSiteUseCase(siteRepository, dateProvider);
+      const usecase = new CreateNewCustomSiteUseCase(
+        siteRepository,
+        dateProvider,
+        uuidGenerator,
+        eventPublisher,
+      );
 
       await usecase.execute({
         createdBy: "user-id-123",
@@ -142,6 +202,18 @@ describe("CreateNewSite Use Case", () => {
           creationMode: "custom",
         },
       ]);
+
+      // oxlint-disable-next-line no-non-null-assertion
+      const siteId = savedSites[0]!.id;
+      expect(eventPublisher.events).toHaveLength(1);
+      expect(eventPublisher.events[0]).toEqual<SiteCreatedEvent>({
+        id: expect.any(String),
+        name: SITE_CREATED,
+        payload: {
+          siteId,
+          createdBy: "user-id-123",
+        },
+      });
     });
 
     it("Can create a new friche with complete data", async () => {
@@ -160,7 +232,12 @@ describe("CreateNewSite Use Case", () => {
       });
       const siteProps = { nature: "FRICHE", ...fricheProps } as const;
 
-      const usecase = new CreateNewCustomSiteUseCase(siteRepository, dateProvider);
+      const usecase = new CreateNewCustomSiteUseCase(
+        siteRepository,
+        dateProvider,
+        uuidGenerator,
+        eventPublisher,
+      );
 
       await usecase.execute({
         createdBy: "user-id-123",
@@ -177,6 +254,18 @@ describe("CreateNewSite Use Case", () => {
           creationMode: "custom",
         },
       ]);
+
+      // oxlint-disable-next-line no-non-null-assertion
+      const siteId = savedSites[0]!.id;
+      expect(eventPublisher.events).toHaveLength(1);
+      expect(eventPublisher.events[0]).toEqual<SiteCreatedEvent>({
+        id: expect.any(String),
+        name: SITE_CREATED,
+        payload: {
+          siteId,
+          createdBy: "user-id-123",
+        },
+      });
     });
   });
 });

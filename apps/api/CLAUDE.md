@@ -269,7 +269,13 @@ export class MyUseCase implements UseCase<Request, TResult<Response, Error>> {
 
 ---
 
-## 🧪 Testing Best Practices
+## 🧪 Testing Infrastructure & Best Practices
+
+### Automatic Database Cleanup
+
+All SQL tables are automatically cleared after each integration test by a global hook configured in [`test/integration-tests-global-hooks.ts`](./test/integration-tests-global-hooks.ts). This ensures complete test isolation without manual cleanup in individual test files.
+
+**Tables cleared**: The hook clears all 30 API tables including `sites`, `reconversion_projects`, `domain_events`, etc.
 
 ### Object Assertions: Prefer Single expect()
 

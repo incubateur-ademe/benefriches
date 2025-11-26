@@ -15,3 +15,11 @@ export {
   getUrbanSprawlImpactsComparisonDtoSchema,
   type UrbanSprawlImpactsComparisonResultDto,
 } from "./urban-sprawl-impacts-comparison";
+
+// Site Actions DTOs
+export {
+  getSiteActionsResponseDtoSchema,
+  type GetSiteActionsResponseDto,
+  updateSiteActionStatusDtoSchema,
+  type UpdateSiteActionStatusDto,
+} from "./site-actions";

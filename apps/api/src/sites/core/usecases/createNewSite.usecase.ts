@@ -6,9 +6,12 @@ import {
 } from "shared";
 
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerator";
+import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
 import { TResult, fail, success } from "src/shared-kernel/result";
 import { UseCase } from "src/shared-kernel/usecase";
 
+import { createSiteCreatedEvent } from "../events/siteCreated.event";
 import { SitesRepository } from "../gateways/SitesRepository";
 import { SiteEntity } from "../models/siteEntity";
 
@@ -23,6 +26,8 @@ export class CreateNewCustomSiteUseCase implements UseCase<Request, CreateNewCus
   constructor(
     private readonly sitesRepository: SitesRepository,
     private readonly dateProvider: DateProvider,
+    private readonly uuidGenerator: UidGenerator,
+    private readonly eventPublisher: DomainEventPublisher,
   ) {}
 
   async execute({ siteProps, createdBy }: Request): Promise<CreateNewCustomSiteResult> {
@@ -47,6 +52,13 @@ export class CreateNewCustomSiteUseCase implements UseCase<Request, CreateNewCus
     };
 
     await this.sitesRepository.save(siteEntity);
+
+    await this.eventPublisher.publish(
+      createSiteCreatedEvent(this.uuidGenerator.generate(), {
+        siteId: siteEntity.id,
+        createdBy,
+      }),
+    );
 
     return success();
   }

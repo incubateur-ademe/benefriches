@@ -1,11 +1,20 @@
+/* oxlint-disable typescript-eslint/no-unsafe-assignment */
 import { InMemoryReconversionProjectRepository } from "src/reconversion-projects/adapters/secondary/repositories/reconversion-project/InMemoryReconversionProjectRepository";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { InMemoryEventPublisher } from "src/shared-kernel/adapters/events/publisher/InMemoryEventPublisher";
+import { RandomUuidGenerator } from "src/shared-kernel/adapters/id-generator/RandomUuidGenerator";
+import { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerator";
 import { FailureResult } from "src/shared-kernel/result";
 import { InMemorySitesRepository } from "src/sites/adapters/secondary/site-repository/InMemorySiteRepository";
 import { buildFriche } from "src/sites/core/models/site.mock";
 import { SiteEntity } from "src/sites/core/models/siteEntity";
 
+import {
+  RECONVERSION_PROJECT_CREATED,
+  ReconversionProjectCreatedEvent,
+} from "../events/reconversionProjectCreated.event";
+import { ReconversionProjectSaveDto } from "../model/reconversionProject";
 import {
   buildExhaustiveReconversionProjectProps,
   buildMinimalReconversionProjectProps,
@@ -18,12 +27,16 @@ describe("CreateReconversionProject Use Case", () => {
   let dateProvider: DateProvider;
   let siteRepository: InMemorySitesRepository;
   let reconversionProjectRepository: InMemoryReconversionProjectRepository;
+  let uuidGenerator: UidGenerator;
+  let eventPublisher: InMemoryEventPublisher;
   const fakeNow = new Date("2024-01-05T13:00:00");
 
   beforeEach(() => {
     dateProvider = new DeterministicDateProvider(fakeNow);
     siteRepository = new InMemorySitesRepository();
     reconversionProjectRepository = new InMemoryReconversionProjectRepository();
+    uuidGenerator = new RandomUuidGenerator();
+    eventPublisher = new InMemoryEventPublisher();
   });
 
   describe("Error cases", () => {
@@ -47,6 +60,8 @@ describe("CreateReconversionProject Use Case", () => {
           dateProvider,
           siteRepository,
           reconversionProjectRepository,
+          uuidGenerator,
+          eventPublisher,
         );
 
         const result = await usecase.execute({ reconversionProjectProps });
@@ -59,6 +74,7 @@ describe("CreateReconversionProject Use Case", () => {
         const issues = failureResult.getIssues();
         expect(issues).toBeDefined();
         expect(issues?.fieldErrors).toBeDefined();
+        expect(eventPublisher.events).toHaveLength(0);
       });
     });
 
@@ -69,11 +85,14 @@ describe("CreateReconversionProject Use Case", () => {
         dateProvider,
         siteRepository,
         reconversionProjectRepository,
+        uuidGenerator,
+        eventPublisher,
       );
       const result = await usecase.execute({ reconversionProjectProps });
       expect(result.isFailure()).toBe(true);
       const failureResult = result as FailureResult<"ValidationError">;
       expect(failureResult.getError()).toBe("SiteNotFound");
+      expect(eventPublisher.events).toHaveLength(0);
     });
 
     it("Cannot create a reconversion project with existing id", async () => {
@@ -94,11 +113,14 @@ describe("CreateReconversionProject Use Case", () => {
         dateProvider,
         siteRepository,
         reconversionProjectRepository,
+        uuidGenerator,
+        eventPublisher,
       );
       const result = await usecase.execute({ reconversionProjectProps });
       expect(result.isFailure()).toBe(true);
       const failureResult = result as FailureResult<"ReconversionProjectAlreadyExists">;
       expect(failureResult.getError()).toBe("ReconversionProjectAlreadyExists");
+      expect(eventPublisher.events).toHaveLength(0);
     });
   });
 
@@ -127,15 +149,30 @@ describe("CreateReconversionProject Use Case", () => {
           dateProvider,
           siteRepository,
           reconversionProjectRepository,
+          uuidGenerator,
+          eventPublisher,
         );
         const result = await usecase.execute({ reconversionProjectProps: props });
 
         expect(result.isSuccess()).toBe(true);
         const savedReconversionProjects = reconversionProjectRepository._getReconversionProjects();
 
-        expect(savedReconversionProjects).toEqual([
+        expect(savedReconversionProjects).toEqual<ReconversionProjectSaveDto[]>([
           { ...props, createdAt: fakeNow, creationMode: "custom" },
         ]);
+
+        // oxlint-disable-next-line no-non-null-assertion
+        const projectId = savedReconversionProjects[0]!.id;
+        expect(eventPublisher.events).toHaveLength(1);
+        expect(eventPublisher.events[0]).toEqual<ReconversionProjectCreatedEvent>({
+          id: expect.any(String),
+          name: RECONVERSION_PROJECT_CREATED,
+          payload: {
+            reconversionProjectId: projectId,
+            siteId: props.relatedSiteId,
+            createdBy: props.createdBy,
+          },
+        });
       });
     });
     describe("Urban project", () => {
@@ -157,15 +194,30 @@ describe("CreateReconversionProject Use Case", () => {
           dateProvider,
           siteRepository,
           reconversionProjectRepository,
+          uuidGenerator,
+          eventPublisher,
         );
         const result = await usecase.execute({ reconversionProjectProps: props });
 
         expect(result.isSuccess()).toBe(true);
         const savedReconversionProjects = reconversionProjectRepository._getReconversionProjects();
 
-        expect(savedReconversionProjects).toEqual([
+        expect(savedReconversionProjects).toEqual<ReconversionProjectSaveDto[]>([
           { ...props, createdAt: fakeNow, creationMode: "custom" },
         ]);
+
+        // oxlint-disable-next-line no-non-null-assertion
+        const projectId = savedReconversionProjects[0]!.id;
+        expect(eventPublisher.events).toHaveLength(1);
+        expect(eventPublisher.events[0]).toEqual<ReconversionProjectCreatedEvent>({
+          id: expect.any(String),
+          name: RECONVERSION_PROJECT_CREATED,
+          payload: {
+            reconversionProjectId: projectId,
+            siteId: props.relatedSiteId,
+            createdBy: props.createdBy,
+          },
+        });
       });
     });
   });
