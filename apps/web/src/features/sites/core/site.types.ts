@@ -3,6 +3,8 @@ import {
   DevelopmentPlanType,
   FricheActivity,
   NaturalAreaType,
+  SiteActionStatus,
+  SiteActionType,
   SiteNature,
   SiteYearlyExpensePurpose,
   SiteYearlyIncome,
@@ -36,6 +38,10 @@ export type SiteFeatures = {
 export type SiteView = {
   id: string;
   features: SiteFeatures;
+  actions: {
+    action: SiteActionType;
+    status: SiteActionStatus;
+  }[];
   reconversionProjects: {
     id: string;
     name: string;

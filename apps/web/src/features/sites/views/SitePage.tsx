@@ -63,17 +63,14 @@ function SitePage({
     case "success":
       const { siteView } = viewModel;
 
-      const defaultTabs = [
+      const tabs = [
+        { tabId: "actionsList", label: "Suivi du site" },
         { tabId: "features", label: "Caractéristiques du site" },
         {
           tabId: "evaluatedProjects",
           label: `Projets évalués (${siteView.reconversionProjects.length})`,
         },
       ];
-
-      const tabs = fromCompatibilityEvaluation
-        ? [{ tabId: "actionsList", label: "Suivi du site" }, ...defaultTabs]
-        : defaultTabs;
 
       return (
         <>
@@ -101,6 +98,7 @@ function SitePage({
                       <SiteActionsList
                         siteId={siteView.features.id}
                         siteName={siteView.features.name}
+                        actions={siteView.actions}
                       />
                     );
                   case "evaluatedProjects":

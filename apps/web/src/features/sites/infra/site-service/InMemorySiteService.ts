@@ -32,6 +32,7 @@ export class InMemorySiteService implements SiteGateway {
   siteView: SiteView = {
     id: "189038dd-3a6a-43af-bc8d-c4999d8d82cc",
     features: this.siteFeatures,
+    actions: [],
     reconversionProjects: [],
   };
 

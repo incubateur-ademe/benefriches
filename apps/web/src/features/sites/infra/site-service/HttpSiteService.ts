@@ -91,6 +91,7 @@ export class HttpSiteService implements SiteGateway {
     return {
       id: siteViewParsingResult.data.id,
       features: mapApiSiteFeaturesResponseToFeaturesView(siteViewParsingResult.data.features),
+      actions: siteViewParsingResult.data.actions,
       reconversionProjects: siteViewParsingResult.data.reconversionProjects,
     };
   }

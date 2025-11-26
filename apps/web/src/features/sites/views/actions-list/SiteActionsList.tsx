@@ -1,96 +1,115 @@
 import Button from "@codegouvfr/react-dsfr/Button";
+import { SiteActionStatus, SiteActionType } from "shared";
 import { Route } from "type-route";
 
-import classNames from "@/shared/views/clsx";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import { routes, useRoute } from "@/shared/views/router";
 
-type TaskStatus = "completed" | "skipped" | "todo";
+import { ActionItem } from "./ActionItem";
 
-const statusIconClasses = {
-  completed: "bg-success-ultralight border-success-light text-success-dark",
-  skipped: "bg-success-ultralight border-success-light text-success-dark",
-  todo: "border-text-medium bg-background-light",
-} as const;
+type ActionsList = { action: SiteActionType; status: SiteActionStatus }[];
 
-function StatusIndicator({ status }: { status: TaskStatus }) {
-  return (
-    <i
-      className={classNames(
-        "h-14 w-14 rounded-full flex items-center justify-center",
-        statusIconClasses[status],
-        status === "completed" && "fr-icon-check-line",
-        status === "skipped" && "fr-icon-close-line",
-      )}
-    />
+type ActionConfig = {
+  label: string;
+  position: number;
+  renderAction: (props: {
+    status: SiteActionStatus;
+    siteId: string;
+    siteName: string;
+    routeParams: Route<typeof routes.siteFeatures>["params"];
+  }) => React.ReactNode;
+};
+
+const ACTIONS_CONFIG = {
+  EVALUATE_COMPATIBILITY: {
+    label: "Analyse de la compatibilité de la friche",
+    position: 0,
+    renderAction: () => null,
+  },
+  EVALUATE_RECONVERSION_SOCIOECONOMIC_IMPACTS: {
+    label: "Évaluation des impacts socio-économiques d'un projet d'aménagement",
+    position: 1,
+    renderAction: ({ status, siteId, siteName, routeParams }) =>
+      status === "todo" ? (
+        <Button
+          size="small"
+          linkProps={
+            routes.projectCreationOnboarding({
+              siteId,
+              siteName,
+              projectSuggestions: routeParams.projectEvaluationSuggestions,
+            }).link
+          }
+        >
+          Choisir un projet à évaluer
+        </Button>
+      ) : null,
+  },
+  REQUEST_URBAN_VITALIZ_SUPPORT: {
+    label: "Demande d'accompagnement par un·e expert·e friche",
+    position: 2,
+    renderAction: () => (
+      <ExternalLink className="text-sm" href="https://urbanvitaliz.fr/">
+        Contacter un conseiller Urban Vitaliz
+      </ExternalLink>
+    ),
+  },
+  REQUEST_INFORMATION_ABOUT_REMEDIATION: {
+    label: "Demande de conseils sur la dépollution",
+    position: 3,
+    renderAction: () => (
+      <ExternalLink className="text-sm" href="mailto:friches.fondsvert@ademe.fr">
+        Contacter l'ADEME
+      </ExternalLink>
+    ),
+  },
+  REQUEST_FUNDING_INFORMATION: {
+    label: "Demande d'information sur les financements",
+    position: 4,
+    renderAction: () => (
+      <ExternalLink className="text-sm" href="https://aides-territoires.beta.gouv.fr/">
+        Vérifier mon éligibilité sur Aides-Territoires
+      </ExternalLink>
+    ),
+  },
+  REFERENCE_SITE_ON_CARTOFRICHES: {
+    label: "Référencer le site sur Cartofriches",
+    position: 5,
+    renderAction: () => null,
+  },
+} as const satisfies Record<SiteActionType, ActionConfig>;
+
+const sortActionsByOrder = (actions: ActionsList): ActionsList => {
+  return actions.toSorted(
+    (a, b) => ACTIONS_CONFIG[a.action].position - ACTIONS_CONFIG[b.action].position,
   );
-}
+};
 
-function TaskItem({
-  name,
-  status,
-  children,
-}: {
-  name: string;
-  status: TaskStatus;
-  children?: React.ReactNode;
-}) {
-  return (
-    <li className="flex items-center justify-between m-0 py-4 border-b border-border-grey">
-      <div className="flex items-center gap-4">
-        <StatusIndicator status={status} />
-        <h4 className="mb-0 font-normal text-lg">{name}</h4>
-      </div>
-      {children}
-    </li>
-  );
-}
-
-export default function SiteActionsList({
-  siteId,
-  siteName,
-}: {
+type Props = {
   siteId: string;
   siteName: string;
-}) {
+  actions: ActionsList;
+};
+
+export default function SiteActionsList({ siteId, siteName, actions }: Props) {
   const route = useRoute() as Route<typeof routes.siteFeatures>;
   return (
     <section>
       <ul className="list-none p-0 space-y-8 text-lg">
-        <TaskItem name="Renseignement de mon site" status="completed" />
-        <TaskItem name="Analyse de la compatibilité de la friche" status="completed" />
-        <TaskItem
-          name="Évaluation des impacts socio-économiques d'un projet d'aménagement"
-          status="todo"
-        >
-          <Button
-            size="small"
-            linkProps={
-              routes.projectCreationOnboarding({
+        <ActionItem name="Renseignement de mon site" status="done" />
+        {sortActionsByOrder(actions).map((action) => {
+          const config = ACTIONS_CONFIG[action.action];
+          return (
+            <ActionItem key={action.action} name={config.label} status={action.status}>
+              {config.renderAction({
+                status: action.status,
                 siteId,
                 siteName,
-                projectSuggestions: route.params.projectEvaluationSuggestions,
-              }).link
-            }
-          >
-            Choisir un projet à évaluer
-          </Button>
-        </TaskItem>
-        <TaskItem name="Demande d'accompagnement par un·e expert·e friche" status="todo">
-          <ExternalLink className="text-sm" href="https://urbanvitaliz.fr/">
-            Contacter un conseiller Urban Vitaliz
-          </ExternalLink>
-        </TaskItem>
-        <TaskItem name="Demande de conseils sur la dépollution" status="todo">
-          <ExternalLink className="text-sm" href="mailto:friches.fondsvert@ademe.fr">
-            Contacter l'ADEME
-          </ExternalLink>
-        </TaskItem>
-        <TaskItem name="Trouver des subventions" status="todo">
-          <ExternalLink className="text-sm" href="https://aides-territoires.beta.gouv.fr/">
-            Vérifier mon éligibilité sur Aides-Territoires
-          </ExternalLink>
-        </TaskItem>
+                routeParams: route.params,
+              })}
+            </ActionItem>
+          );
+        })}
       </ul>
     </section>
   );
