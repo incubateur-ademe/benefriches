@@ -11,7 +11,7 @@ describe("GetSiteViewById Use Case", () => {
     sitesQuery = new InMemorySitesQuery();
   });
 
-  it("returns site with features and projects when site exists", async () => {
+  it("returns site with features, actions and projects when site exists", async () => {
     const siteFeatures: SiteFeaturesView = {
       id: "4550d9f0-ce28-43ae-a319-94851ae033db",
       nature: "FRICHE",
@@ -39,9 +39,19 @@ describe("GetSiteViewById Use Case", () => {
       },
     };
 
-    const siteWithProjects: SiteView = {
+    const site: SiteView = {
       id: "4550d9f0-ce28-43ae-a319-94851ae033db",
       features: siteFeatures,
+      actions: [
+        {
+          action: "EVALUATE_COMPATIBILITY",
+          status: "todo",
+        },
+        {
+          action: "REQUEST_FUNDING_INFORMATION",
+          status: "done",
+        },
+      ],
       reconversionProjects: [
         {
           id: "project-1",
@@ -56,14 +66,14 @@ describe("GetSiteViewById Use Case", () => {
       ],
     };
 
-    sitesQuery._setSitesWithProjects([siteWithProjects]);
+    sitesQuery._setSitesWithProjects([site]);
 
     const usecase = new GetSiteViewByIdUseCase(sitesQuery);
-    const result = await usecase.execute({ siteId: siteWithProjects.id });
+    const result = await usecase.execute({ siteId: site.id });
 
     expect(result.isSuccess()).toBe(true);
     expect((result as SuccessResult<{ site: SiteView }>).getData()).toEqual({
-      site: siteWithProjects,
+      site,
     });
   });
 

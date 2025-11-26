@@ -1,7 +1,6 @@
 /* oxlint-disable typescript/no-non-null-assertion */
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { Knex } from "knex";
-import type { GetSiteActionsResponseDto } from "shared";
 import supertest from "supertest";
 import { authenticateUser, createTestApp } from "test/testApp";
 import { v4 as uuid } from "uuid";
@@ -37,74 +36,6 @@ describe("SiteActions controller", () => {
       surface_area: 1000,
       owner_structure_type: "municipality",
       created_at: new Date(),
-    });
-  });
-
-  describe("GET /sites/:siteId/actions", () => {
-    it("responds with a 401 when no authentication provided", async () => {
-      const response = await supertest(app.getHttpServer()).get(`/api/sites/${siteId}/actions`);
-
-      expect(response.status).toEqual(401);
-    });
-
-    it("returns empty array when site has no actions", async () => {
-      const user = new UserBuilder().asLocalAuthority().build();
-      const { accessToken } = await authenticateUser(app)(user);
-
-      const response = await supertest(app.getHttpServer())
-        .get(`/api/sites/${siteId}/actions`)
-        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`);
-
-      expect(response.status).toEqual(200);
-      expect(response.body).toEqual<GetSiteActionsResponseDto>([]);
-    });
-
-    it("returns all actions for a site when they exist", async () => {
-      const user = new UserBuilder().asLocalAuthority().build();
-      const { accessToken } = await authenticateUser(app)(user);
-
-      const action1Id = uuid();
-      const action2Id = uuid();
-      const now = new Date();
-
-      // Insert test actions
-      await sqlConnection("site_actions").insert([
-        {
-          id: action1Id,
-          site_id: siteId,
-          action_type: "EVALUATE_COMPATIBILITY",
-          status: "todo",
-          created_at: now,
-        },
-        {
-          id: action2Id,
-          site_id: siteId,
-          action_type: "REQUEST_FUNDING_INFORMATION",
-          status: "done",
-          created_at: new Date(now.getTime() + 1000),
-          completed_at: new Date(now.getTime() + 2000),
-        },
-      ]);
-
-      const response = await supertest(app.getHttpServer())
-        .get(`/api/sites/${siteId}/actions`)
-        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`);
-
-      expect(response.status).toEqual(200);
-      expect(response.body).toEqual<GetSiteActionsResponseDto>([
-        {
-          id: action1Id,
-          siteId,
-          actionType: "EVALUATE_COMPATIBILITY",
-          status: "todo",
-        },
-        {
-          id: action2Id,
-          siteId,
-          actionType: "REQUEST_FUNDING_INFORMATION",
-          status: "done",
-        },
-      ]);
     });
   });
 

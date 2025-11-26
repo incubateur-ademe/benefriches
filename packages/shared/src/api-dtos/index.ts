@@ -17,9 +17,4 @@ export {
 } from "./urban-sprawl-impacts-comparison";
 
 // Site Actions DTOs
-export {
-  getSiteActionsResponseDtoSchema,
-  type GetSiteActionsResponseDto,
-  updateSiteActionStatusDtoSchema,
-  type UpdateSiteActionStatusDto,
-} from "./site-actions";
+export { updateSiteActionStatusDtoSchema, type UpdateSiteActionStatusDto } from "./site-actions";

@@ -1,6 +1,6 @@
 import { Inject } from "@nestjs/common";
 import { Knex } from "knex";
-import { DevelopmentPlanType, SiteNature } from "shared";
+import { DevelopmentPlanType, SiteActionStatus, SiteActionType, SiteNature } from "shared";
 
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import {
@@ -192,9 +192,19 @@ export class SqlSitesQuery implements SitesQuery {
       type: project.project_type,
     }));
 
+    const actionsResult = await this.sqlConnection("site_actions")
+      .where("site_id", siteId)
+      .select("action_type", "status");
+
+    const actions = actionsResult.map((row) => ({
+      action: row.action_type as SiteActionType,
+      status: row.status as SiteActionStatus,
+    }));
+
     return {
       id: siteId,
       features: siteFeatures,
+      actions,
       reconversionProjects,
     };
   }

@@ -1,6 +1,6 @@
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { Knex } from "knex";
-import { CreateCustomSiteDto, CreateExpressSiteDto } from "shared";
+import { CreateCustomSiteDto, CreateExpressSiteDto, GetSiteViewResponseDto } from "shared";
 import supertest from "supertest";
 import { authenticateUser, createTestApp } from "test/testApp";
 import { v4 as uuid } from "uuid";
@@ -870,7 +870,7 @@ describe("Sites controller", () => {
       expect(response.status).toEqual(404);
     });
 
-    it("gets a 200 response with site features and projects", async () => {
+    it("gets a 200 response with site features, actions and reconversion projects", async () => {
       const user = new UserBuilder().asLocalAuthority().build();
       const { accessToken } = await authenticateUser(app)(user);
 
@@ -941,13 +941,30 @@ describe("Sites controller", () => {
         },
       ]);
 
+      await sqlConnection("site_actions").insert([
+        {
+          id: uuid(),
+          site_id: siteId,
+          action_type: "EVALUATE_COMPATIBILITY",
+          status: "todo",
+          created_at: new Date(),
+        },
+        {
+          id: uuid(),
+          site_id: siteId,
+          action_type: "REQUEST_FUNDING_INFORMATION",
+          status: "done",
+          created_at: new Date(),
+        },
+      ]);
+
       const response = await supertest(app.getHttpServer())
         .get(`/api/sites/${siteId}`)
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send();
 
       expect(response.status).toEqual(200);
-      expect(response.body).toEqual({
+      expect(response.body).toEqual<GetSiteViewResponseDto>({
         id: siteId,
         features: {
           id: siteId,
@@ -973,6 +990,10 @@ describe("Sites controller", () => {
           yearlyExpenses: [],
           yearlyIncomes: [],
         },
+        actions: [
+          { action: "EVALUATE_COMPATIBILITY", status: "todo" },
+          { action: "REQUEST_FUNDING_INFORMATION", status: "done" },
+        ],
         reconversionProjects: [
           {
             id: project1Id,

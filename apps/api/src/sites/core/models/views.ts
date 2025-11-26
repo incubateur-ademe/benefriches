@@ -2,6 +2,8 @@ import {
   Address,
   DevelopmentPlanType,
   SiteNature,
+  SiteActionType,
+  SiteActionStatus,
   SoilType,
   SurfaceAreaDistributionJson,
 } from "shared";
@@ -38,6 +40,10 @@ export type SiteFeaturesView = {
 export type SiteView = {
   id: string;
   features: SiteFeaturesView;
+  actions: {
+    action: SiteActionType;
+    status: SiteActionStatus;
+  }[];
   reconversionProjects: {
     id: string;
     name: string;

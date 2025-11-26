@@ -8,7 +8,6 @@ import { RandomUuidGenerator } from "src/shared-kernel/adapters/id-generator/Ran
 import { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerator";
 import { SiteActionsQuery } from "src/site-actions/core/gateways/SiteActionsQuery";
 import { SiteActionsRepository } from "src/site-actions/core/gateways/SiteActionsRepository";
-import { GetSiteActionsUseCase } from "src/site-actions/core/usecases/getSiteActions.usecase";
 import { InitializeSiteActionsUseCase } from "src/site-actions/core/usecases/initializeSiteActions.usecase";
 import { UpdateSiteActionStatusUseCase } from "src/site-actions/core/usecases/updateSiteActionStatus.usecase";
 
@@ -52,12 +51,6 @@ import { SiteActionsController } from "./siteActions.controller";
         dateProvider: DateProvider,
       ) => new UpdateSiteActionStatusUseCase(siteActionsRepository, siteActionsQuery, dateProvider),
       inject: [SqlSiteActionsRepository, SqlSiteActionsQuery, RealDateProvider],
-    },
-    {
-      provide: GetSiteActionsUseCase,
-      useFactory: (siteActionsQuery: SiteActionsQuery) =>
-        new GetSiteActionsUseCase(siteActionsQuery),
-      inject: [SqlSiteActionsQuery],
     },
     {
       provide: ReconversionProjectCreatedHandler,

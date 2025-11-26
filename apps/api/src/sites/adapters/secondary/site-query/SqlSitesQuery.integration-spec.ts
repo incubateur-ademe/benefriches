@@ -310,6 +310,7 @@ describe("SqlSitesQuery integration", () => {
       const expectedResult: SiteView = {
         id: siteId,
         features: expectedFeatures,
+        actions: [],
         reconversionProjects: [],
       };
 
@@ -413,6 +414,7 @@ describe("SqlSitesQuery integration", () => {
       const expectedResult: SiteView = {
         id: siteId,
         features: expectedFeatures,
+        actions: [],
         reconversionProjects: [
           {
             id: project1Id,
@@ -428,6 +430,97 @@ describe("SqlSitesQuery integration", () => {
       };
 
       expect(result).toEqual(expectedResult);
+    });
+
+    it("should return site with actions array when site has multiple actions", async () => {
+      const siteId = uuid();
+
+      await sqlConnection("sites").insert({
+        id: siteId,
+        created_by: "d185b43f-e54a-4dd4-9c60-ba85775a01e7",
+        name: "Site with actions",
+        nature: "FRICHE",
+        surface_area: 14000,
+        owner_structure_type: "company",
+        created_at: now,
+        friche_activity: "INDUSTRY",
+      });
+
+      await sqlConnection("addresses").insert({
+        id: uuid(),
+        site_id: siteId,
+        city: "Paris",
+        city_code: "75109",
+        post_code: "75009",
+        ban_id: "123abc",
+        lat: 48.876517,
+        long: 2.330785,
+        value: "1 rue de Londres, 75009 Paris",
+      });
+
+      await sqlConnection("site_soils_distributions").insert([
+        { id: uuid(), site_id: siteId, soil_type: "BUILDINGS", surface_area: 14000 },
+      ]);
+
+      // Insert site actions
+      await sqlConnection("site_actions").insert([
+        {
+          id: uuid(),
+          site_id: siteId,
+          action_type: "EVALUATE_COMPATIBILITY",
+          status: "todo",
+          created_at: now,
+        },
+        {
+          id: uuid(),
+          site_id: siteId,
+          action_type: "REQUEST_FUNDING_INFORMATION",
+          status: "done",
+          created_at: now,
+        },
+      ]);
+
+      const result = await sitesQuery.getViewById(siteId);
+
+      expect(result?.actions).toEqual([
+        { action: "EVALUATE_COMPATIBILITY", status: "todo" },
+        { action: "REQUEST_FUNDING_INFORMATION", status: "done" },
+      ]);
+    });
+
+    it("should return site with empty actions array when site has no actions", async () => {
+      const siteId = uuid();
+
+      await sqlConnection("sites").insert({
+        id: siteId,
+        created_by: "d185b43f-e54a-4dd4-9c60-ba85775a01e7",
+        name: "Site without actions",
+        nature: "FRICHE",
+        surface_area: 14000,
+        owner_structure_type: "company",
+        created_at: now,
+        friche_activity: "INDUSTRY",
+      });
+
+      await sqlConnection("addresses").insert({
+        id: uuid(),
+        site_id: siteId,
+        city: "Paris",
+        city_code: "75109",
+        post_code: "75009",
+        ban_id: "123abc",
+        lat: 48.876517,
+        long: 2.330785,
+        value: "1 rue de Londres, 75009 Paris",
+      });
+
+      await sqlConnection("site_soils_distributions").insert([
+        { id: uuid(), site_id: siteId, soil_type: "BUILDINGS", surface_area: 14000 },
+      ]);
+
+      const result = await sitesQuery.getViewById(siteId);
+
+      expect(result?.actions).toEqual([]);
     });
 
     it("should return undefined for non-existent siteId", async () => {
