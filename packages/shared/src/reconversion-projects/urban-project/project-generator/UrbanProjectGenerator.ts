@@ -86,7 +86,7 @@ export class UrbanProjectGenerator extends DefaultProjectGenerator {
           return {
             surfaceArea,
             soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
-            spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+            spaceCategory: "PUBLIC_SPACE",
           };
         case "PUBLIC_PARKING_LOT":
           return {
