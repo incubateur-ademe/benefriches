@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 
+import { saveFricheFromCompatibilityEvaluationClicked, trackEvent } from "@/shared/views/analytics";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { routes, useRoute } from "@/shared/views/router";
 
@@ -31,6 +32,7 @@ export default function ReconversionCompatibilityResultsPageContainer() {
   return (
     <ReconversionCompatibilityResultsPage
       onFricheSaved={() => {
+        trackEvent(saveFricheFromCompatibilityEvaluationClicked());
         void dispatch(fricheSavedFromCompatibilityEvaluation());
       }}
       onResetAnalysis={handleResetAnalysis}

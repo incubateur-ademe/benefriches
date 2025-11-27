@@ -44,6 +44,14 @@ export const hideExpressSiteDisclaimerClicked = (): AnalyticsEvent => {
   };
 };
 
+export const saveFricheFromCompatibilityEvaluationClicked = (): AnalyticsEvent => {
+  return {
+    category: "reconversion-compatibility-evaluation-results",
+    action: "save-friche-clicked",
+    name: "save-friche-from-compatibility-evaluation-clicked",
+  };
+};
+
 export const trackEvent = (event: AnalyticsEvent) => {
   if (!window._paq) return;
   window._paq.push(["trackEvent", event.category, event.action, event.name, event.value]);
