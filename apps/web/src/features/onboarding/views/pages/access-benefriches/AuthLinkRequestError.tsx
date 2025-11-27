@@ -1,6 +1,5 @@
 import Alert from "@codegouvfr/react-dsfr/Alert";
 
-import { BENEFRICHES_ENV } from "@/shared/views/envVars";
 import { routes, useRoute } from "@/shared/views/router";
 
 type Props = {
@@ -29,15 +28,13 @@ export default function AuthLinkRequestError({ errorKind }: Props) {
           severity="warning"
           description={
             <p className="mb-4">
-              {BENEFRICHES_ENV.authEnabled && (
-                <span>
-                  Vous pouvez créer un compte en suivant{" "}
-                  <a className="text-sm font-medium" {...accountCreationLink}>
-                    ce lien
-                  </a>
-                  .
-                </span>
-              )}
+              <span>
+                Vous pouvez créer un compte en suivant{" "}
+                <a className="text-sm font-medium" {...accountCreationLink}>
+                  ce lien
+                </a>
+                .
+              </span>
             </p>
           }
         />

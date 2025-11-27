@@ -14,7 +14,6 @@ export const BENEFRICHES_ENV = {
   matomoUrl: windowEnv.WEBAPP_MATOMO_URL ?? "",
   allowedDevelopmentPlanCategories:
     windowEnv.WEBAPP_ALLOWED_DEVELOPMENT_PLAN_CATEGORIES?.split(",") ?? [],
-  authEnabled: windowEnv.WEBAPP_AUTH_ENABLED === "true",
   mutafrichesUrl: windowEnv.WEBAPP_MUTAFRICHES_FRAME_SRC ?? "",
   mutafrichesIntegrator: windowEnv.WEBAPP_MUTAFRICHES_INTEGRATOR ?? "",
 };

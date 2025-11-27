@@ -1,6 +1,5 @@
 import Alert from "@codegouvfr/react-dsfr/Alert";
 
-import { BENEFRICHES_ENV } from "@/shared/views/envVars";
 import { routes } from "@/shared/views/router";
 
 type Props = {
@@ -17,15 +16,13 @@ export default function CreateUserErrorMessage({ errorKind }: Props) {
           <div>
             <p className="mb-4">
               L'adresse e-mail fournie est déjà utilisée.{" "}
-              {BENEFRICHES_ENV.authEnabled && (
-                <span>
-                  Veuillez{" "}
-                  <a className="text-sm font-medium" {...routes.accessBenefriches().link}>
-                    vous identifier via Pro Connect ou votre email
-                  </a>
-                  .
-                </span>
-              )}
+              <span>
+                Veuillez{" "}
+                <a className="text-sm font-medium" {...routes.accessBenefriches().link}>
+                  vous identifier via Pro Connect ou votre email
+                </a>
+                .
+              </span>
             </p>
           </div>
         }

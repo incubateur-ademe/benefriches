@@ -8,7 +8,6 @@ import { HttpSiteEvaluationApi } from "@/features/my-evaluations/infrastructure/
 import { HttpAuthService } from "@/features/onboarding/infrastructure/auth-service/HttpAuthService";
 import { HttpCreateUserService } from "@/features/onboarding/infrastructure/create-user-service/HttpCreateUserService";
 import { HttpCurrentUserService } from "@/features/onboarding/infrastructure/current-user-service/HttpCurrentUserService";
-import { LocalStorageCurrentUserService } from "@/features/onboarding/infrastructure/current-user-service/LocalStorageCurrentUserService";
 import { HttpProjectFeaturesService } from "@/features/projects/infrastructure/project-features-service/HttpProjectFeaturesService";
 import { HttpQuickUrbanProjectImpactsService } from "@/features/projects/infrastructure/quick-urban-project-impacts-service/HttpQuickUrbanProjectImpactsService";
 import { HttpReconversionProjectImpactsApi } from "@/features/projects/infrastructure/reconversion-project-impacts-service/HttpReconversionProjectImpactsService";
@@ -19,13 +18,8 @@ import { HttpUpdateReconversionProjectService } from "@/features/update-project/
 import { CreateFeatureAlertService } from "@/features/user-feature-alerts/infrastructure/create-feature-alert-service/CreateFeatureAlertService";
 import { AdministrativeDivisionGeoApi } from "@/shared/infrastructure/administrative-division-service/administrativeDivisionGeoApi";
 import { SoilsCarbonStorageApi } from "@/shared/infrastructure/soils-carbon-storage-service/soilsCarbonStorageApi";
-import { BENEFRICHES_ENV } from "@/shared/views/envVars";
 
 import { AppDependencies } from "./store";
-
-const currentUserService = BENEFRICHES_ENV.authEnabled
-  ? new HttpCurrentUserService()
-  : new LocalStorageCurrentUserService();
 
 export const appDependencies: AppDependencies = {
   appSettingsService: new LocalStorageAppSettings(),
@@ -39,7 +33,7 @@ export const appDependencies: AppDependencies = {
   reconversionProjectImpacts: new HttpReconversionProjectImpactsApi(),
   photovoltaicPerformanceService: new ExpectedPhotovoltaicPerformanceApi(),
   municipalityDataService: new AdministrativeDivisionGeoApi(),
-  currentUserService,
+  currentUserService: new HttpCurrentUserService(),
   createUserService: new HttpCreateUserService(),
   createUserFeatureAlertService: new CreateFeatureAlertService(),
   siteService: new HttpSiteService(),
