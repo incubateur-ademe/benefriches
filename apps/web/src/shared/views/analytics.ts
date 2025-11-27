@@ -36,19 +36,6 @@ export const impactsExportDownloaded = (exportType: string): AnalyticsEvent => {
   };
 };
 
-export const compatibilityResultDiscoverImpactsClicked = ({
-  usage,
-}: {
-  usage: string;
-}): AnalyticsEvent => {
-  return {
-    category: "friche-mutability-evaluation",
-    action: "discover-impacts-clicked",
-    name: "friche-mutability-evaluation-discover-impacts-clicked",
-    value: { usage },
-  };
-};
-
 export const hideExpressSiteDisclaimerClicked = (): AnalyticsEvent => {
   return {
     category: "express-site-disclaimer",
