@@ -49,6 +49,14 @@ export const compatibilityResultDiscoverImpactsClicked = ({
   };
 };
 
+export const hideExpressSiteDisclaimerClicked = (): AnalyticsEvent => {
+  return {
+    category: "express-site-disclaimer",
+    action: "hide-disclaimer-clicked",
+    name: "express-site-disclaimer-hide-disclaimer-clicked",
+  };
+};
+
 export const trackEvent = (event: AnalyticsEvent) => {
   if (!window._paq) return;
   window._paq.push(["trackEvent", event.category, event.action, event.name, event.value]);

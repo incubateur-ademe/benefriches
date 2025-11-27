@@ -4,6 +4,7 @@ import { useState } from "react";
 import { SiteNature } from "shared";
 
 import { appSettingUpdated, selectAppSettings } from "@/features/app-settings/core/appSettings";
+import { hideExpressSiteDisclaimerClicked, trackEvent } from "@/shared/views/analytics";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 type Props = {
@@ -16,6 +17,7 @@ export default function ExpressSiteDisclaimer({ siteNature }: Props) {
   const [dismissable, setDismissable] = useState(false);
 
   const onDismiss = () => {
+    trackEvent(hideExpressSiteDisclaimerClicked());
     dispatch(appSettingUpdated({ field: "displayExpressSiteDisclaimer", value: false }));
   };
 
