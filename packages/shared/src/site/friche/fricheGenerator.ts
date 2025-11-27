@@ -22,6 +22,7 @@ import {
 type FricheGenerationProps = SiteGenerationProps & {
   fricheActivity: FricheActivity;
   builtSurfaceArea?: number;
+  hasContaminatedSoils?: boolean;
 };
 
 export const getContaminatedPercentageFromFricheActivity = (fricheActivity: FricheActivity) => {
@@ -52,7 +53,15 @@ function getContaminatedSoilSurfaceFromFricheActivity(
 
 export class FricheGenerator implements SiteGenerator<FricheGenerationProps> {
   fromSurfaceAreaAndLocalInformation(props: FricheGenerationProps): Friche {
-    const { id, surfaceArea, address, cityPopulation, fricheActivity, builtSurfaceArea } = props;
+    const {
+      id,
+      surfaceArea,
+      address,
+      cityPopulation,
+      fricheActivity,
+      builtSurfaceArea,
+      hasContaminatedSoils,
+    } = props;
 
     const soilsDistributionOptions = builtSurfaceArea ? { builtSurfaceArea } : undefined;
     const soilsDistribution = getSoilsDistributionForFricheActivity(
@@ -89,10 +98,11 @@ export class FricheGenerator implements SiteGenerator<FricheGenerationProps> {
       );
     }
 
-    const contaminatedSoilSurface = getContaminatedSoilSurfaceFromFricheActivity(
-      surfaceArea,
-      fricheActivity,
-    );
+    // assume contaminated soil surface area based on friche activity if not specified
+    const contaminatedSoilSurface =
+      hasContaminatedSoils === false
+        ? 0
+        : getContaminatedSoilSurfaceFromFricheActivity(surfaceArea, fricheActivity);
 
     const result = createFriche({
       id,

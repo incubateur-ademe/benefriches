@@ -307,7 +307,7 @@ describe("CreateNewExpressSite Use case", () => {
           yearlyIncomes: [],
           fricheActivity: "OTHER",
           hasContaminatedSoils: false,
-          contaminatedSoilSurface: 0,
+          contaminatedSoilSurface: undefined,
           accidentsMinorInjuries: undefined,
           accidentsSevereInjuries: undefined,
           accidentsDeaths: undefined,
@@ -374,6 +374,72 @@ describe("CreateNewExpressSite Use case", () => {
           fricheActivity: "INDUSTRY",
           hasContaminatedSoils: true,
           contaminatedSoilSurface: 5_000,
+          accidentsMinorInjuries: undefined,
+          accidentsSevereInjuries: undefined,
+          accidentsDeaths: undefined,
+        },
+      ]);
+      // oxlint-disable-next-line no-non-null-assertion
+      const siteId = savedSites[0]!.id;
+      expect((eventPublisher as InMemoryEventPublisher).events).toHaveLength(1);
+      expect((eventPublisher as InMemoryEventPublisher).events[0]).toEqual<SiteCreatedEvent>({
+        id: expect.any(String),
+        name: SITE_CREATED,
+        payload: {
+          siteId,
+          createdBy: "user-id-123",
+        },
+      });
+    });
+
+    it("creates a new express industrial friche with no contaminated soils", async () => {
+      const usecase = new CreateNewExpressSiteUseCase(
+        siteRepository,
+        dateProvider,
+        cityStatsQuery,
+        uuidGenerator,
+        eventPublisher,
+      );
+
+      const fricheProps = {
+        id: "e869d8db-3d63-4fd5-93ab-7728c1c19a1e",
+        surfaceArea: 10_000,
+        builtSurfaceArea: 2_500,
+        hasContaminatedSoils: false,
+        address: buildAddress(),
+        nature: "FRICHE",
+        fricheActivity: "INDUSTRY",
+      } as const satisfies ExpressSiteProps;
+      await usecase.execute({ createdBy: "user-id-123", siteProps: fricheProps });
+
+      const savedSites = siteRepository._getSites();
+
+      expect(savedSites).toEqual<SiteEntity[]>([
+        {
+          id: fricheProps.id,
+          address: fricheProps.address,
+          surfaceArea: fricheProps.surfaceArea,
+          createdAt: fakeNow,
+          createdBy: "user-id-123",
+          creationMode: "express",
+          nature: "FRICHE",
+          name: "Friche industrielle de Montrouge",
+          description: undefined,
+          soilsDistribution: createSoilSurfaceAreaDistribution({
+            BUILDINGS: 2_500,
+            IMPERMEABLE_SOILS: 5_000,
+            ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 2_500,
+          }),
+          owner: { structureType: "municipality", name: "Mairie de Montrouge" },
+          yearlyExpenses: [
+            { purpose: "illegalDumpingCost", amount: 76, bearer: "owner" },
+            { purpose: "security", amount: 22_000, bearer: "owner" },
+            { purpose: "maintenance", amount: 17_500, bearer: "owner" },
+            { purpose: "propertyTaxes", amount: 7_067, bearer: "owner" },
+          ],
+          yearlyIncomes: [],
+          fricheActivity: "INDUSTRY",
+          hasContaminatedSoils: false,
           accidentsMinorInjuries: undefined,
           accidentsSevereInjuries: undefined,
           accidentsDeaths: undefined,

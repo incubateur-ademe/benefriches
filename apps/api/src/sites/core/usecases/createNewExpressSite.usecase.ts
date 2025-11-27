@@ -25,7 +25,12 @@ export type ExpressSiteProps = {
   surfaceArea: number;
   address: Address;
 } & (
-  | { nature: "FRICHE"; fricheActivity: FricheActivity; builtSurfaceArea?: number }
+  | {
+      nature: "FRICHE";
+      fricheActivity: FricheActivity;
+      builtSurfaceArea?: number;
+      hasContaminatedSoils?: boolean;
+    }
   | { nature: "AGRICULTURAL_OPERATION"; activity: AgriculturalOperationActivity }
   | { nature: "NATURAL_AREA"; type: NaturalAreaType }
 );

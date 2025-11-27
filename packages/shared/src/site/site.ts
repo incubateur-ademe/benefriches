@@ -258,7 +258,7 @@ export function createFriche(props: CreateFricheProps): FricheCreationResult {
     surfaceArea,
     fricheActivity,
     hasContaminatedSoils,
-    contaminatedSoilSurface: props.contaminatedSoilSurface,
+    contaminatedSoilSurface: props.contaminatedSoilSurface || undefined,
     accidentsMinorInjuries: props.accidentsMinorInjuries,
     accidentsSevereInjuries: props.accidentsSevereInjuries,
     accidentsDeaths: props.accidentsDeaths,
