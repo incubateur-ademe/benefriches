@@ -3,6 +3,9 @@
 
 name: Integration validation (install, typecheck, lint, format, build)
 
+permissions:
+  contents: read
+
 on:
   push:
     branches-ignore:

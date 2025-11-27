@@ -1,5 +1,8 @@
 name: Deploy application on scalingo
 
+permissions:
+  contents: read
+
 on:
   workflow_call:
     inputs:

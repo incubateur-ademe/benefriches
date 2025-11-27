@@ -1,5 +1,8 @@
 name: "Continuous Delivery"
 
+permissions:
+  contents: read
+
 # Run when push occurs on main branch
 on:
   push:

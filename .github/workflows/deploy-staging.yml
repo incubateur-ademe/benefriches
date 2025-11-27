@@ -1,5 +1,8 @@
 name: "Deploy staging"
 
+permissions:
+  contents: read
+
 on:
   workflow_dispatch:
   workflow_call:
