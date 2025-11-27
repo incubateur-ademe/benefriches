@@ -72,7 +72,7 @@ export default function SitePageHeader({ siteId, siteName, siteNature, isExpress
             height={76}
           />
           <h2 className="my-0">{siteName}</h2>
-          {!isExpressSite && (
+          {isExpressSite && (
             <Badge small className="my-2 md:mx-3" style="blue">
               Site express
             </Badge>
