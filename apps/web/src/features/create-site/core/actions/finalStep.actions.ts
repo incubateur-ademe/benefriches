@@ -1,4 +1,8 @@
-import { createCustomSiteDtoSchema, createExpressSiteDtoSchema } from "shared";
+import {
+  createCustomSiteDtoSchema,
+  createExpressSiteDtoSchema,
+  CreateExpressSiteDto,
+} from "shared";
 import z from "zod";
 
 import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
@@ -6,12 +10,9 @@ import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
 const customSiteSchema = createCustomSiteDtoSchema;
 export type CustomSitePayload = z.infer<typeof customSiteSchema>;
 
-const expressSiteSchema = createExpressSiteDtoSchema;
-export type ExpressSitePayload = z.infer<typeof expressSiteSchema>;
-
 export interface CreateSiteGateway {
   saveCustom(siteData: CustomSitePayload): Promise<void>;
-  saveExpress(siteData: ExpressSitePayload): Promise<void>;
+  saveExpress(siteData: CreateExpressSiteDto): Promise<void>;
 }
 
 export const customSiteSaved = createAppAsyncThunk(
@@ -39,7 +40,7 @@ export const expressSiteSaved = createAppAsyncThunk(
       throw new Error("Current user is missing");
     }
 
-    const siteToCreate: ExpressSitePayload = expressSiteSchema.parse({
+    const siteToCreate: CreateExpressSiteDto = createExpressSiteDtoSchema.parse({
       ...siteData,
       activity: siteData.agriculturalOperationActivity,
       type: siteData.naturalAreaType,

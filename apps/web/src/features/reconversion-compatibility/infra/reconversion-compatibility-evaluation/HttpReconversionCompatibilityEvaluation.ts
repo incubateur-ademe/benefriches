@@ -20,6 +20,14 @@ export type MutafrichesEvaluationResultResponse = {
     surfaceSite: number;
     identifiantParcelle: string;
   };
+  donneesComplementaires: {
+    presencePollution:
+      | "non"
+      | "deja-geree"
+      | "oui-composes-volatils"
+      | "oui-autres-composes"
+      | "ne-sait-pas";
+  };
   mutabilite: {
     fiabilite: { note: number };
     resultats: { rang: number; usage: MutabilityUsage; indiceMutabilite: number }[];
@@ -86,6 +94,7 @@ export class HttpReconversionCompatibilityEvaluation
         cityCode: json.enrichissement.codeInsee,
         surfaceArea: json.enrichissement.surfaceSite,
         buildingsFootprintSurfaceArea: json.enrichissement.surfaceBati,
+        hasContaminatedSoils: json.donneesComplementaires.presencePollution !== "non",
         lat: json.enrichissement.coordonnees.latitude,
         long: json.enrichissement.coordonnees.longitude,
       },

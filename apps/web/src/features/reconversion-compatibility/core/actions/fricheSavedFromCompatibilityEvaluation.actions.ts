@@ -1,9 +1,8 @@
-import { ReconversionProjectTemplate } from "shared";
+import { ReconversionProjectTemplate, CreateExpressSiteDto } from "shared";
 import { MutabilityUsage } from "shared";
 import { v4 as uuid } from "uuid";
 
 import { ProjectSuggestion } from "@/features/create-project/core/project.types";
-import type { ExpressSitePayload } from "@/features/create-site/core/actions/finalStep.actions";
 import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
 import { routes } from "@/shared/views/router";
 
@@ -46,13 +45,14 @@ export const fricheSavedFromCompatibilityEvaluation = createAppAsyncThunk(
     if (!currentEvaluationId) throw new Error("NO_CURRENT_EVALUATION_ID");
 
     const siteId = uuid();
-    const siteToCreate: ExpressSitePayload = {
+    const siteToCreate: CreateExpressSiteDto = {
       id: siteId,
       nature: "FRICHE",
       fricheActivity: "INDUSTRY",
       createdBy: currentUserState.currentUser.id,
       surfaceArea: evaluationResults.evaluationInput.surfaceArea,
       builtSurfaceArea: evaluationResults.evaluationInput.buildingsFootprintSurfaceArea,
+      hasContaminatedSoils: evaluationResults.evaluationInput.hasContaminatedSoils,
       address: {
         city: evaluationResults.evaluationInput.city,
         cityCode: evaluationResults.evaluationInput.cityCode,

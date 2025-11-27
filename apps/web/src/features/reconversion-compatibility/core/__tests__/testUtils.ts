@@ -92,6 +92,7 @@ export const buildMockEvaluationResults = (
       lat: 48.8566,
       long: 2.3522,
       buildingsFootprintSurfaceArea: 3000,
+      hasContaminatedSoils: true,
     },
     ...overrides,
   };

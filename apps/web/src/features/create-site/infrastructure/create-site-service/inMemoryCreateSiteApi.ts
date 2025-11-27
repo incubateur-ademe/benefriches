@@ -1,12 +1,10 @@
-import {
-  CreateSiteGateway,
-  CustomSitePayload,
-  ExpressSitePayload,
-} from "../../core/actions/finalStep.actions";
+import { CreateExpressSiteDto } from "shared";
+
+import { CreateSiteGateway, CustomSitePayload } from "../../core/actions/finalStep.actions";
 
 export class InMemoryCreateSiteService implements CreateSiteGateway {
   _customSites: CustomSitePayload[] = [];
-  _expressSites: ExpressSitePayload[] = [];
+  _expressSites: CreateExpressSiteDto[] = [];
   private shouldFail = false;
 
   shouldFailOnCall() {
@@ -18,7 +16,7 @@ export class InMemoryCreateSiteService implements CreateSiteGateway {
     await Promise.resolve(this._customSites.push(newSite));
   }
 
-  async saveExpress(newSite: ExpressSitePayload) {
+  async saveExpress(newSite: CreateExpressSiteDto) {
     if (this.shouldFail) throw new Error("InMemoryCreateSiteService intended test failure");
     await Promise.resolve(this._expressSites.push(newSite));
   }

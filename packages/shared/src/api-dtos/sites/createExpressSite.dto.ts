@@ -15,6 +15,7 @@ export const createExpressSiteDtoSchema = z.discriminatedUnion("nature", [
     nature: z.literal("FRICHE"),
     fricheActivity: fricheActivitySchema,
     builtSurfaceArea: z.number().nonnegative().optional(),
+    hasContaminatedSoils: z.boolean().optional(),
   }),
   baseExpressSiteDtoSchema.extend({
     nature: z.literal("AGRICULTURAL_OPERATION"),

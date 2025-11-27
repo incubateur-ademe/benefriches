@@ -1,8 +1,6 @@
-import {
-  CreateSiteGateway,
-  CustomSitePayload,
-  ExpressSitePayload,
-} from "../../core/actions/finalStep.actions";
+import { CreateExpressSiteDto } from "shared";
+
+import { CreateSiteGateway, CustomSitePayload } from "../../core/actions/finalStep.actions";
 
 export class HttpCreateSiteApi implements CreateSiteGateway {
   async saveCustom(newSite: CustomSitePayload) {
@@ -17,7 +15,7 @@ export class HttpCreateSiteApi implements CreateSiteGateway {
     if (!response.ok) throw new Error("Error while creating custom site");
   }
 
-  async saveExpress(newSite: ExpressSitePayload): Promise<void> {
+  async saveExpress(newSite: CreateExpressSiteDto): Promise<void> {
     const response = await fetch("/api/sites/create-express", {
       method: "POST",
       body: JSON.stringify(newSite),

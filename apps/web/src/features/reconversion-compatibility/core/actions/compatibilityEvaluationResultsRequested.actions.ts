@@ -20,6 +20,7 @@ export type ReconversionCompatibilityEvaluationResults = {
     lat: number;
     long: number;
     buildingsFootprintSurfaceArea: number;
+    hasContaminatedSoils: boolean;
   };
 };
 

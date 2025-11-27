@@ -87,6 +87,7 @@ describe("Reconversion compatibility evaluation actions: fricheSavedFromCompatib
           lat: 45.7578,
           long: 4.832,
           buildingsFootprintSurfaceArea: 5000,
+          hasContaminatedSoils: true,
         },
         top3Usages: [
           { usage: "photovoltaique", score: 0.92, rank: 1 },
@@ -119,6 +120,7 @@ describe("Reconversion compatibility evaluation actions: fricheSavedFromCompatib
         createdBy: user.id,
         surfaceArea: 25000,
         builtSurfaceArea: 5000,
+        hasContaminatedSoils: true,
         address: {
           city: "Lyon",
           cityCode: "69001",
