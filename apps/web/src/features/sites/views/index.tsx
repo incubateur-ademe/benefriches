@@ -8,7 +8,7 @@ import { fetchSiteView } from "../core/fetchSiteView.action";
 import { selectSitePageViewModel } from "../core/siteView.reducer";
 import SitePage, { SiteTab } from "./SitePage";
 
-type SiteRoute =
+export type SiteRoute =
   | Route<typeof routes.siteFeatures>
   | Route<typeof routes.siteEvaluatedProjects>
   | Route<typeof routes.siteActionsList>;
@@ -38,30 +38,12 @@ export default function SitesRouter() {
     void dispatch(fetchSiteView({ siteId }));
   }, [dispatch, siteId]);
 
-  const handleTabChange = useCallback(
-    (tabName: SiteTab) => {
-      switch (tabName) {
-        case "features":
-          routes.siteFeatures({ ...route.params, siteId }).replace();
-          break;
-        case "evaluatedProjects":
-          routes.siteEvaluatedProjects({ ...route.params, siteId }).replace();
-          break;
-        case "actionsList":
-          routes.siteActionsList({ ...route.params, siteId }).replace();
-          break;
-      }
-    },
-    [siteId, route.params],
-  );
-
   return (
     <SitePage
       onPageLoad={onPageLoad}
       viewModel={sitePageViewModel}
       selectedTab={selectedTab}
       fromCompatibilityEvaluation={route.params.fromCompatibilityEvaluation ?? false}
-      onTabChange={handleTabChange}
     />
   );
 }

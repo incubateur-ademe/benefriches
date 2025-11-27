@@ -95,6 +95,7 @@ export default function SiteActionsList({ siteId, siteName, actions }: Props) {
   const route = useRoute() as Route<typeof routes.siteFeatures>;
   return (
     <section>
+      <h3 className="text-2xl">Suivi du site</h3>
       <ul className="list-none p-0 space-y-8 text-lg">
         <ActionItem name="Renseignement de mon site" status="done" />
         {sortActionsByOrder(actions).map((action) => {

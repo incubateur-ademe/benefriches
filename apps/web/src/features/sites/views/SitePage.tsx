@@ -1,5 +1,4 @@
 import { fr } from "@codegouvfr/react-dsfr";
-import { Tabs } from "@codegouvfr/react-dsfr/Tabs";
 import { useEffect } from "react";
 
 import classNames from "@/shared/views/clsx";
@@ -22,16 +21,9 @@ type Props = {
   viewModel: SitePageViewModel;
   selectedTab: SiteTab;
   fromCompatibilityEvaluation: boolean;
-  onTabChange: (tab: SiteTab) => void;
 };
 
-function SitePage({
-  onPageLoad,
-  viewModel,
-  selectedTab,
-  fromCompatibilityEvaluation,
-  onTabChange,
-}: Props) {
+function SitePage({ onPageLoad, viewModel, selectedTab, fromCompatibilityEvaluation }: Props) {
   useEffect(() => {
     onPageLoad();
   }, [onPageLoad]);
@@ -63,54 +55,37 @@ function SitePage({
     case "success":
       const { siteView } = viewModel;
 
-      const tabs = [
-        { tabId: "actionsList", label: "Suivi du site" },
-        { tabId: "features", label: "Caractéristiques du site" },
-        {
-          tabId: "evaluatedProjects",
-          label: `Projets évalués (${siteView.reconversionProjects.length})`,
-        },
-      ];
-
       return (
         <>
           <HtmlTitle>{`${siteView.features.name} - Page du site`}</HtmlTitle>
           <SitePageHeader
+            siteId={siteView.features.id}
             siteName={siteView.features.name}
             siteNature={siteView.features.nature}
             isExpressSite={siteView.features.isExpressSite}
-            address={siteView.features.address}
           />
-          <section className={classNames(fr.cx("fr-container"), "py-6")}>
-            <Tabs
-              tabs={tabs}
-              selectedTabId={selectedTab}
-              onTabChange={(tabId) => {
-                onTabChange(tabId as SiteTab);
-              }}
-            >
-              {(() => {
-                switch (selectedTab) {
-                  case "features":
-                    return <SiteFeaturesList {...siteView.features} />;
-                  case "actionsList":
-                    return (
-                      <SiteActionsList
-                        siteId={siteView.features.id}
-                        siteName={siteView.features.name}
-                        actions={siteView.actions}
-                      />
-                    );
-                  case "evaluatedProjects":
-                    return (
-                      <ProjectsList
-                        siteId={siteView.features.id}
-                        projects={siteView.reconversionProjects}
-                      />
-                    );
-                }
-              })()}
-            </Tabs>
+          <section className={classNames(fr.cx("fr-container"), "py-6 md:py-10")}>
+            {(() => {
+              switch (selectedTab) {
+                case "features":
+                  return <SiteFeaturesList {...siteView.features} />;
+                case "actionsList":
+                  return (
+                    <SiteActionsList
+                      siteId={siteView.features.id}
+                      siteName={siteView.features.name}
+                      actions={siteView.actions}
+                    />
+                  );
+                case "evaluatedProjects":
+                  return (
+                    <ProjectsList
+                      siteId={siteView.features.id}
+                      projects={siteView.reconversionProjects}
+                    />
+                  );
+              }
+            })()}
           </section>
           <SiteCreationConfirmationModal />
         </>

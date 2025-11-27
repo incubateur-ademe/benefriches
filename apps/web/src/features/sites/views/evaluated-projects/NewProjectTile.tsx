@@ -9,11 +9,14 @@ type Props = {
 
 function NewProjectTile({ siteId }: Props) {
   return (
-    <a {...routes.createProject({ siteId }).link} className={"text-blue-france bg-none"}>
+    <a
+      {...routes.createProject({ siteId }).link}
+      className={"text-blue-france dark:text-blue-light bg-none"}
+    >
       <div
         className={classNames(
           "flex flex-col h-full gap-1 items-center justify-center",
-          "border-dashed border border-blue-france rounded-lg p-8",
+          "border-dashed border border-blue-france dark:border-blue-light rounded-lg p-8",
           "hover:bg-gray-50 dark:hover:bg-grey-dark",
         )}
       >
