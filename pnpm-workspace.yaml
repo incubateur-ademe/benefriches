@@ -3,6 +3,7 @@ packages:
   - packages/*
 
 minimumReleaseAge: 10080 # in minutes (7 days)
+trustPolicy: no-downgrade
 
 onlyBuiltDependencies:
   - '@nestjs/core'
