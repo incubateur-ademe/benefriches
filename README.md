@@ -22,7 +22,7 @@ Le code commun au front-end et au back-end (types, fonctions de calculs, etc.) e
 
 ### Pré-requis
 * node (version 24 ou supérieure)
-* pnpm (version 10.13.1 ou supérieure)
+* pnpm (version 10.24.0 ou supérieure)
 * docker (optionnel)
 * postgresql (si docker non installé)
 

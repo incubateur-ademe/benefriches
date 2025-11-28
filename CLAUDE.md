@@ -44,7 +44,7 @@ benefriches/
 ```bash
 # Verify you have the right versions
 node --version  # Should be 24+
-pnpm --version  # Should be 10.13.1+
+pnpm --version  # Should be 10.24.0+
 docker --version  # Optional (for containerized PostgreSQL)
 ```
 
@@ -449,7 +449,7 @@ For detailed coding patterns and architecture, see:
 
 ## 🛠️ Package Manager Details
 
-- **Version**: pnpm 10.13.1 (locked in `packageManager` field)
+- **Version**: pnpm 10.24.0 (locked in `packageManager` field)
 - **Node version**: 24.x (locked in `engines` field)
 - **Workspace protocol**: `workspace:*` for internal dependencies
 - **Lock file**: `pnpm-lock.yaml` (commit this!)
