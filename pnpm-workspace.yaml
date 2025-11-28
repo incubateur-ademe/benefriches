@@ -2,6 +2,8 @@ packages:
   - apps/*
   - packages/*
 
+minimumReleaseAge: 10080 # in minutes (7 days)
+
 onlyBuiltDependencies:
   - '@nestjs/core'
   - '@tailwindcss/oxide'
