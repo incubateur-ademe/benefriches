@@ -27,10 +27,10 @@ cp -rv apps/api/data .tmp-build/apps/api/dist
 cp -v apps/api/scalingo/.buildpacks apps/api/scalingo/Procfile .tmp-build/
 
 # The buildpack used to deploy api (see Procfile) runs "pnpm install", "pnpm build" and "pnpm prune --prod"
-# Our code is already built and we don't include the source so we skip the "build" in root package.json
+# Our code is already built and we don't include the source so we skip "build", "prepare", "test" etc... in root package.json
 # /!\ WARNING /!\ these sed commands are NOT compatible with MacOS (add '' after -i if you want to run it on your laptop)
-sed -i 's/pnpm run -r build/echo 1/' .tmp-build/package.json
-# We don't need these
+sed -i /\"build\":/d .tmp-build/package.json
+sed -i /\"test\":/d .tmp-build/package.json
 sed -i /\"prepare\":/d .tmp-build/package.json
 sed -i /\"lint\":/d .tmp-build/package.json
 sed -i /\"format\":/d .tmp-build/package.json
