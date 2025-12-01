@@ -114,7 +114,7 @@ function MyEvaluationItem({ evaluation }: Props) {
                   }
                 >
                   <img
-                    className="fr-responsive-img w-[80px]"
+                    className="fr-responsive-img w-20"
                     src={getScenarioPictoUrl(projectType)}
                     aria-hidden={true}
                     alt=""
@@ -134,7 +134,7 @@ function MyEvaluationItem({ evaluation }: Props) {
             {nbOtherProjects > 0 && (
               <MyEvaluationsProjectLinkTile
                 justify="center"
-                linkProps={routes.siteFeatures({ siteId }).link}
+                linkProps={routes.siteEvaluatedProjects({ siteId }).link}
               >
                 <h4 className="text-lg mb-0 text-center flex flex-col">
                   {nbOtherProjects > 1 ? (
