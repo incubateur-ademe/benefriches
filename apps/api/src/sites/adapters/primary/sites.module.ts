@@ -11,6 +11,9 @@ import { RealEventPublisher } from "src/shared-kernel/adapters/events/publisher/
 import { RandomUuidGenerator } from "src/shared-kernel/adapters/id-generator/RandomUuidGenerator";
 import { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerator";
 import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
+import { SiteEvaluationsModule } from "src/site-evaluations/adapters/primary/siteEvaluations.module";
+import { MutafrichesEvaluationQuery } from "src/site-evaluations/adapters/secondary/queries/MutafrichesEvaluationQuery";
+import type { MutabilityEvaluationQuery } from "src/site-evaluations/core/gateways/MutabilityEvaluationQuery";
 import { SitesQuery } from "src/sites/core/gateways/SitesQuery";
 import { SitesRepository } from "src/sites/core/gateways/SitesRepository";
 import { CreateNewExpressSiteUseCase } from "src/sites/core/usecases/createNewExpressSite.usecase";
@@ -23,7 +26,7 @@ import { SqlSiteRepository } from "../secondary/site-repository/SqlSiteRepositor
 import { SitesController } from "./sites.controller";
 
 @Module({
-  imports: [HttpModule, AuthModule, ConfigModule],
+  imports: [HttpModule, AuthModule, ConfigModule, SiteEvaluationsModule],
   controllers: [SitesController],
   providers: [
     {
@@ -68,8 +71,11 @@ import { SitesController } from "./sites.controller";
     },
     {
       provide: GetSiteViewByIdUseCase,
-      useFactory: (siteRepository: SitesQuery) => new GetSiteViewByIdUseCase(siteRepository),
-      inject: [SqlSitesQuery],
+      useFactory: (
+        siteRepository: SitesQuery,
+        mutabilityEvaluationQuery: MutabilityEvaluationQuery,
+      ) => new GetSiteViewByIdUseCase(siteRepository, mutabilityEvaluationQuery),
+      inject: [SqlSitesQuery, MutafrichesEvaluationQuery],
     },
     SqlSiteRepository,
     SqlSitesQuery,
@@ -77,6 +83,7 @@ import { SitesController } from "./sites.controller";
     SqlCityStatsQuery,
     RandomUuidGenerator,
     RealEventPublisher,
+    MutafrichesEvaluationQuery,
   ],
 })
 export class SitesModule {}

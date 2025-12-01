@@ -1,6 +1,7 @@
 import z from "zod";
 
 import { developmentPlanTypeSchema } from "../../reconversion-projects";
+import { mutabilityUsageSchema } from "../../reconversion-projects/mutability";
 import { siteActionStatusSchema, siteActionTypeSchema } from "../../siteActions";
 import { getSiteFeaturesResponseDtoSchema } from "./getSiteFeatures.dto";
 
@@ -20,6 +21,17 @@ export const getSiteViewResponseDtoSchema = z.object({
       type: developmentPlanTypeSchema,
     }),
   ),
+  compatibilityEvaluation: z
+    .object({
+      results: z.array(
+        z.object({
+          usage: mutabilityUsageSchema,
+          score: z.number(),
+        }),
+      ),
+      reliabilityScore: z.number(),
+    })
+    .nullable(),
 });
 
 export type GetSiteViewResponseDto = z.infer<typeof getSiteViewResponseDtoSchema>;

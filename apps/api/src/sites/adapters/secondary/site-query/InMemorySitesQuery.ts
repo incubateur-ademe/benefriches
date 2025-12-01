@@ -4,6 +4,7 @@ import { SiteFeaturesView, SiteView } from "src/sites/core/models/views";
 export class InMemorySitesQuery implements SitesQuery {
   sites: SiteFeaturesView[] = [];
   sitesWithProjects: SiteView[] = [];
+  mutafrichesIds: Map<string, string | null> = new Map();
 
   _setSites(sites: SiteFeaturesView[]) {
     this.sites = sites;
@@ -13,11 +14,19 @@ export class InMemorySitesQuery implements SitesQuery {
     this.sitesWithProjects = sitesWithProjects;
   }
 
+  _setMutafrichesId(siteId: string, mutafrichesId: string | null) {
+    this.mutafrichesIds.set(siteId, mutafrichesId);
+  }
+
   getSiteFeaturesById(siteId: string): Promise<SiteFeaturesView | undefined> {
     return Promise.resolve(this.sites.find(({ id }) => id === siteId));
   }
 
   getViewById(siteId: string): Promise<SiteView | undefined> {
     return Promise.resolve(this.sitesWithProjects.find(({ id }) => id === siteId));
+  }
+
+  getMutafrichesIdBySiteId(siteId: string): Promise<string | null> {
+    return Promise.resolve(this.mutafrichesIds.get(siteId) ?? null);
   }
 }

@@ -63,6 +63,8 @@ describe("GetUserSiteEvaluationsUseCase", () => {
     const userId = "0918223a-4d05-43a3-ad15-ccac704f7998";
     const evalutionQuery = new InMemorySiteEvaluationQuery(siteEvaluations);
     const mutabilityQuery = new InMemoryMutabilityEvaluationQuery();
+    mutabilityQuery.withDefaultDataForId("24ffc957-6a91-4309-b176-3699d70f1bf3");
+
     vi.spyOn(evalutionQuery, "getUserSiteEvaluations");
     vi.spyOn(mutabilityQuery, "getEvaluation");
 

@@ -206,6 +206,20 @@ export class SqlSitesQuery implements SitesQuery {
       features: siteFeatures,
       actions,
       reconversionProjects,
+      compatibilityEvaluation: null,
     };
+  }
+
+  async getMutafrichesIdBySiteId(siteId: string): Promise<string | null> {
+    const latestCompatibilityEvaluationResult = (await this.sqlConnection(
+      "reconversion_compatibility_evaluations",
+    )
+      .where("related_site_id", siteId)
+      .orderBy("created_at", "desc")
+      .limit(1)
+      .select("mutafriches_evaluation_id")
+      .first()) as { mutafriches_evaluation_id: string | null } | undefined;
+
+    return latestCompatibilityEvaluationResult?.mutafriches_evaluation_id ?? null;
   }
 }

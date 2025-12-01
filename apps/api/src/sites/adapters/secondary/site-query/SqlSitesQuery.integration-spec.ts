@@ -312,6 +312,7 @@ describe("SqlSitesQuery integration", () => {
         features: expectedFeatures,
         actions: [],
         reconversionProjects: [],
+        compatibilityEvaluation: null,
       };
 
       expect(result).toEqual(expectedResult);
@@ -427,6 +428,7 @@ describe("SqlSitesQuery integration", () => {
             type: "URBAN_PROJECT",
           },
         ],
+        compatibilityEvaluation: null,
       };
 
       expect(result).toEqual(expectedResult);
@@ -528,6 +530,46 @@ describe("SqlSitesQuery integration", () => {
       const result = await sitesQuery.getViewById(nonExistentSiteId);
 
       expect(result).toEqual(undefined);
+    });
+
+    describe("getMutafrichesIdBySiteId", () => {
+      it("should return mutafrichesId when compatibility evaluation exists", async () => {
+        const siteId = uuid();
+        const evaluationId = uuid();
+
+        await sqlConnection("sites").insert({
+          id: siteId,
+          created_by: "d185b43f-e54a-4dd4-9c60-ba85775a01e7",
+          name: "Site with evaluation",
+          nature: "FRICHE",
+          surface_area: 14000,
+          owner_structure_type: "company",
+          created_at: now,
+          friche_activity: "INDUSTRY",
+        });
+
+        await sqlConnection("reconversion_compatibility_evaluations").insert({
+          id: uuid(),
+          created_by: "d185b43f-e54a-4dd4-9c60-ba85775a01e7",
+          related_site_id: siteId,
+          mutafriches_evaluation_id: evaluationId,
+          status: "completed",
+          created_at: now,
+          project_creations: [],
+        });
+
+        const result = await sitesQuery.getMutafrichesIdBySiteId(siteId);
+
+        expect(result).toEqual(evaluationId);
+      });
+
+      it("should return null when no compatibility evaluation exists for site", async () => {
+        const siteId = uuid();
+
+        const result = await sitesQuery.getMutafrichesIdBySiteId(siteId);
+
+        expect(result).toEqual(null);
+      });
     });
   });
 });

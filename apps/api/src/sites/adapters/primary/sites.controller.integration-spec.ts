@@ -8,6 +8,8 @@ import { v4 as uuid } from "uuid";
 import { ACCESS_TOKEN_COOKIE_KEY } from "src/auth/adapters/access-token/accessTokenCookie";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import { SqlSite } from "src/shared-kernel/adapters/sql-knex/tableTypes";
+import { InMemoryMutabilityEvaluationQuery } from "src/site-evaluations/adapters/secondary/queries/InMemoryMutabilityEvaluationQuery";
+import { MutafrichesEvaluationQuery } from "src/site-evaluations/adapters/secondary/queries/MutafrichesEvaluationQuery";
 import { UserBuilder } from "src/users/core/model/user.mock";
 
 type BadRequestResponseBody = {
@@ -1006,6 +1008,123 @@ describe("Sites controller", () => {
             type: "URBAN_PROJECT",
           },
         ],
+        compatibilityEvaluation: null,
+      });
+    });
+
+    it("gets a 200 response with site features, actions and compatibility evaluation", async () => {
+      // Prepare in-memory MutafrichesEvaluationQuery with a mocked response
+      const mutafrichesEvaluationId = uuid();
+      const inMemoryMutafrichesQuery = new InMemoryMutabilityEvaluationQuery();
+      inMemoryMutafrichesQuery.setResponseForId(mutafrichesEvaluationId, {
+        mutafrichesId: mutafrichesEvaluationId,
+        usages: [{ rank: 1, usage: "culture", score: 5 }],
+        reliabilityScore: 3,
+      });
+
+      const app = await createTestApp({
+        providerOverrides: [
+          { token: MutafrichesEvaluationQuery, useValue: inMemoryMutafrichesQuery },
+        ],
+      });
+      await app.init();
+
+      const user = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+
+      const siteId = uuid();
+
+      await sqlConnection("sites").insert({
+        id: siteId,
+        created_by: user.id,
+        name: "Friche with compatibility evaluation",
+        nature: "FRICHE",
+        description: "Site with evaluation",
+        surface_area: 25000,
+        owner_name: "Owner name",
+        owner_structure_type: "company",
+        created_at: new Date(),
+        friche_activity: "INDUSTRY",
+      });
+
+      await sqlConnection("addresses").insert({
+        id: uuid(),
+        site_id: siteId,
+        value: "15 Boulevard Test 75002 Paris",
+        city: "Paris",
+        city_code: "75002",
+        post_code: "75002",
+        ban_id: "75002_eval",
+        lat: 48.8566,
+        long: 2.3522,
+      });
+
+      await sqlConnection("site_soils_distributions").insert([
+        { id: uuid(), site_id: siteId, soil_type: "BUILDINGS", surface_area: 25000 },
+      ]);
+
+      await sqlConnection("site_actions").insert([
+        {
+          id: uuid(),
+          site_id: siteId,
+          action_type: "EVALUATE_COMPATIBILITY",
+          status: "done",
+          created_at: new Date(),
+        },
+      ]);
+
+      await sqlConnection("reconversion_compatibility_evaluations").insert({
+        id: uuid(),
+        created_by: user.id,
+        related_site_id: siteId,
+        mutafriches_evaluation_id: mutafrichesEvaluationId,
+        status: "completed",
+        created_at: new Date(),
+      });
+
+      const response = await supertest(app.getHttpServer())
+        .get(`/api/sites/${siteId}`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send();
+
+      expect(response.status).toEqual(200);
+      expect(response.body).toEqual<GetSiteViewResponseDto>({
+        id: siteId,
+        features: {
+          id: siteId,
+          name: "Friche with compatibility evaluation",
+          nature: "FRICHE",
+          isExpressSite: false,
+          surfaceArea: 25000,
+          owner: { name: "Owner name", structureType: "company" },
+          address: {
+            value: "15 Boulevard Test 75002 Paris",
+            city: "Paris",
+            cityCode: "75002",
+            postCode: "75002",
+            banId: "75002_eval",
+            lat: 48.8566,
+            long: 2.3522,
+          },
+          soilsDistribution: {
+            BUILDINGS: 25000,
+          },
+          description: "Site with evaluation",
+          fricheActivity: "INDUSTRY",
+          yearlyExpenses: [],
+          yearlyIncomes: [],
+        },
+        actions: [{ action: "EVALUATE_COMPATIBILITY", status: "done" }],
+        reconversionProjects: [],
+        compatibilityEvaluation: {
+          results: [
+            {
+              score: 5,
+              usage: "culture",
+            },
+          ],
+          reliabilityScore: 3,
+        },
       });
     });
   });

@@ -9,12 +9,24 @@ import { ACCESS_TOKEN_COOKIE_KEY } from "src/auth/adapters/access-token/accessTo
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import { UserBuilder } from "src/users/core/model/user.mock";
 
+import { InMemoryMutabilityEvaluationQuery } from "../secondary/queries/InMemoryMutabilityEvaluationQuery";
+import { MutafrichesEvaluationQuery } from "../secondary/queries/MutafrichesEvaluationQuery";
+
 describe("SiteEvaluations controller", () => {
   let app: NestExpressApplication;
   let sqlConnection: Knex;
+  let mutafrichesEvaluationId: string;
 
   beforeAll(async () => {
-    app = await createTestApp();
+    mutafrichesEvaluationId = uuid();
+    const inMemoryMutafrichesQuery = new InMemoryMutabilityEvaluationQuery();
+    inMemoryMutafrichesQuery.withDefaultDataForId(mutafrichesEvaluationId);
+
+    app = await createTestApp({
+      providerOverrides: [
+        { token: MutafrichesEvaluationQuery, useValue: inMemoryMutafrichesQuery },
+      ],
+    });
     await app.init();
     sqlConnection = app.get(SqlConnection);
   });
@@ -110,7 +122,7 @@ describe("SiteEvaluations controller", () => {
         id: uuid(),
         created_by: userId,
         completed_at: new Date(),
-        mutafriches_evaluation_id: uuid(),
+        mutafriches_evaluation_id: mutafrichesEvaluationId,
         created_at: new Date(),
         status: "related_site_created",
         related_site_id: siteInDb1.id,
