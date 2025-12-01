@@ -6,6 +6,7 @@ import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
 import { SitePageViewModel } from "../core/siteView.reducer";
+import CompatibilityEvaluation from "./CompatibilityEvaluation";
 import SiteCreationConfirmationModal from "./SiteCreationConfirmationModal";
 import SitePageError from "./SitePageError";
 import SitePageHeader from "./SitePageHeader";
@@ -14,7 +15,7 @@ import { open } from "./creationConfirmationModal";
 import ProjectsList from "./evaluated-projects/EvaluatedProjectsList";
 import SiteFeaturesList from "./features/SiteFeaturesList";
 
-export type SiteTab = "features" | "evaluatedProjects" | "actionsList";
+export type SiteTab = "features" | "evaluatedProjects" | "actionsList" | "compatibilityEvaluation";
 
 type Props = {
   onPageLoad: () => void;
@@ -82,6 +83,12 @@ function SitePage({ onPageLoad, viewModel, selectedTab, fromCompatibilityEvaluat
                     <ProjectsList
                       siteId={siteView.features.id}
                       projects={siteView.reconversionProjects}
+                    />
+                  );
+                case "compatibilityEvaluation":
+                  return (
+                    <CompatibilityEvaluation
+                      compatibilityEvaluation={siteView.compatibilityEvaluation}
                     />
                   );
               }

@@ -112,6 +112,14 @@ const { RouteProvider, useRoute, routes } = createRouter({
     },
     (params) => `/sites/${params.siteId}/suivi-du-site`,
   ),
+  siteCompatibilityEvaluation: defineRoute(
+    {
+      siteId: param.path.string,
+      fromCompatibilityEvaluation: param.query.optional.boolean,
+      projectEvaluationSuggestions: param.query.optional.array.ofType<ProjectSuggestion>(),
+    },
+    (params) => `/sites/${params.siteId}/analyse-de-compatibilite`,
+  ),
   // RECONVERSION COMPATIBILITY
   evaluateReconversionCompatibility: defineRoute("/evaluer-compatibilite-friche"),
   reconversionCompatibilityResults: defineRoute(

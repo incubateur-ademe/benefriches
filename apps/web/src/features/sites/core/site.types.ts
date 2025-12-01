@@ -2,6 +2,7 @@ import {
   AgriculturalOperationActivity,
   DevelopmentPlanType,
   FricheActivity,
+  MutabilityUsage,
   NaturalAreaType,
   SiteActionStatus,
   SiteActionType,
@@ -47,4 +48,8 @@ export type SiteView = {
     name: string;
     type: DevelopmentPlanType;
   }[];
+  compatibilityEvaluation: {
+    results: { usage: MutabilityUsage; score: number }[];
+    reliabilityScore: number;
+  } | null;
 };

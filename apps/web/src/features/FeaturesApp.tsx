@@ -102,6 +102,7 @@ function FeaturesApp() {
               case routes.siteFeatures.name:
               case routes.siteEvaluatedProjects.name:
               case routes.siteActionsList.name:
+              case routes.siteCompatibilityEvaluation.name:
                 return <SitePage />;
               case routes.evaluateReconversionCompatibility.name:
                 return <EvaluateReconversionCompatibilityPage />;

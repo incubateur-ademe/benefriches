@@ -34,6 +34,7 @@ export class InMemorySiteService implements SiteGateway {
     features: this.siteFeatures,
     actions: [],
     reconversionProjects: [],
+    compatibilityEvaluation: null,
   };
 
   setSiteFeatures(siteFeatures: SiteFeatures): void {

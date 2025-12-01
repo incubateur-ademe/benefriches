@@ -11,7 +11,8 @@ import SitePage, { SiteTab } from "./SitePage";
 export type SiteRoute =
   | Route<typeof routes.siteFeatures>
   | Route<typeof routes.siteEvaluatedProjects>
-  | Route<typeof routes.siteActionsList>;
+  | Route<typeof routes.siteActionsList>
+  | Route<typeof routes.siteCompatibilityEvaluation>;
 
 function getSiteTabFromRoute(routeName: string): SiteTab {
   switch (routeName) {
@@ -19,6 +20,8 @@ function getSiteTabFromRoute(routeName: string): SiteTab {
       return "evaluatedProjects";
     case routes.siteActionsList.name:
       return "actionsList";
+    case routes.siteCompatibilityEvaluation.name:
+      return "compatibilityEvaluation";
     case routes.siteFeatures.name:
     default:
       return "features";

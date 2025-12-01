@@ -93,8 +93,14 @@ export default function SitePageHeader({ siteId, siteName, siteNature, isExpress
               linkProps={routes.siteFeatures({ ...route.params, siteId }).link}
             />
             <TabItem
-              isActive={route.name === routes.siteEvaluatedProjects.name}
+              isActive={route.name === routes.siteCompatibilityEvaluation.name}
               iconId="fr-icon-bar-chart-box-line"
+              label="Analyse de compatibilité"
+              linkProps={routes.siteCompatibilityEvaluation({ ...route.params, siteId }).link}
+            />
+            <TabItem
+              isActive={route.name === routes.siteEvaluatedProjects.name}
+              iconId="fr-icon-community-line"
               label="Projets évalués"
               linkProps={routes.siteEvaluatedProjects({ ...route.params, siteId }).link}
             />

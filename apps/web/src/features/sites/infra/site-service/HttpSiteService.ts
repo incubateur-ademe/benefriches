@@ -87,12 +87,12 @@ export class HttpSiteService implements SiteGateway {
     if (!siteViewParsingResult.success) {
       throw new Error("HttpSiteService: Invalid response format", siteViewParsingResult.error);
     }
-
     return {
       id: siteViewParsingResult.data.id,
       features: mapApiSiteFeaturesResponseToFeaturesView(siteViewParsingResult.data.features),
       actions: siteViewParsingResult.data.actions,
       reconversionProjects: siteViewParsingResult.data.reconversionProjects,
+      compatibilityEvaluation: siteViewParsingResult.data.compatibilityEvaluation,
     };
   }
 }
