@@ -2,7 +2,8 @@ packages:
   - apps/*
   - packages/*
 
-minimumReleaseAge: 10080 # in minutes (7 days)
+savePrefix: '~' # only accept versions within minor semver range
+minimumReleaseAge: 10080 # wait for a 7 days (in minutes) cooldown period
 trustPolicy: no-downgrade
 
 onlyBuiltDependencies:
