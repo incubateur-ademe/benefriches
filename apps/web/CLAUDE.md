@@ -118,7 +118,32 @@ For detailed component patterns, form handling, and composed types, see [02-comp
 
 Follow **Ports & Adapters**: Define gateway interfaces in `core/`, implement HTTP client in infrastructure, implement InMemory mock for tests, inject via store's `appDependencies`.
 
-Example flow:
+### Using Backend DTOs for Type Safety
+
+**Key**: Import request/response DTOs from the `shared` package to enable type-safe HTTP calls:
+
+```typescript
+// core/sites.gateway.ts
+import type { CreateCustomSiteDto, GetSiteViewResponseDto } from "shared";
+
+export interface SitesGateway {
+  createSite(request: CreateCustomSiteDto): Promise<GetSiteViewResponseDto>;
+}
+
+// infrastructure/sites-service/HttpSitesApi.ts
+export class HttpSitesApi implements SitesGateway {
+  async createSite(request: CreateCustomSiteDto): Promise<GetSiteViewResponseDto> {
+    const response = await fetch("/api/sites", {
+      /* ... */
+    });
+    return response.json();
+  }
+}
+```
+
+This ensures frontend and backend share the exact same type definitions for API contracts.
+
+### Standard Gateway Flow
 
 1. **Gateway interface** in `core/` (e.g., `core/sites.gateway.ts`): `export interface SitesGateway { getSite(id: string): Promise<Site> }`
 2. **HTTP implementation** in `infrastructure/sites-service/HttpSitesApi.ts`: `export class HttpSitesApi implements SitesGateway { ... }`

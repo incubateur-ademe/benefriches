@@ -415,6 +415,14 @@ See [root CLAUDE.md](../../CLAUDE.md#-tech-stack-summary) for full monorepo tech
 
 **Pattern files cross-reference each other** - follow links to related patterns when needed.
 
+### DTO Best Practice: Shared Package Only
+
+**CRITICAL**: All controller route DTOs go in `/packages/shared/src/api-dtos/`.
+
+**Quick pattern**: Create `[feature]/[operation].dto.ts` with both schema and type, import in controller from `"shared"`, validate with `ZodValidationPipe`.
+
+For complete organization structure, naming patterns, and detailed examples, see [02-controller-pattern.md → DTO Pattern](../../.claude/context/api/02-controller-pattern.md#dto-pattern).
+
 ### After Code Generation - ALWAYS RUN:
 
 Follow the **API Testing Workflow** in [root CLAUDE.md → Testing Strategy → API Testing Workflow](../../CLAUDE.md#api-testing-workflow-after-code-generation).

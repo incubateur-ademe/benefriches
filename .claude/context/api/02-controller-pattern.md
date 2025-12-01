@@ -70,51 +70,75 @@ export class ExampleController {
 
 ## DTO Pattern
 
-### Current State (DTOs in controller file)
+**CRITICAL**: All controller route DTOs (input and output) MUST be in `/packages/shared/src/api-dtos/` for frontend-backend type safety.
 
-**Right now**, DTOs are defined in the controller file:
+### Organization in Shared Package
 
-```typescript
-// adapters/primary/example.controller.ts
-import { createZodDto } from "nestjs-zod";
-import { z } from "zod";
-
-const createExampleSchema = z.object({
-  name: z.string().min(1).max(100),
-  email: z.string().email().optional(),
-});
-
-class CreateExampleDto extends createZodDto(createExampleSchema) {}
-
-@Controller("examples")
-export class ExampleController {
-  // ... use CreateExampleDto in @Body()
-}
+```
+packages/shared/src/api-dtos/
+├── index.ts                                    # Barrel export
+├── sites/
+│   ├── index.ts
+│   ├── createCustomSite.dto.ts                # Input DTO for custom site creation
+│   ├── createExpressSite.dto.ts               # Input DTO for express site creation
+│   ├── getSiteFeatures.dto.ts                 # Output DTO for site features
+│   └── getSiteView.dto.ts                     # Output DTO for site view
+├── site-actions/
+│   ├── index.ts
+│   └── updateSiteActionStatus.dto.ts          # Input DTO for status update
+└── [feature]/
+    ├── index.ts
+    └── [operation].dto.ts                      # One file per route operation
 ```
 
-**Real Example**: [reconversionCompatibility.controller.ts:18-24](../../../apps/api/src/reconversion-compatibility/adapters/primary/reconversionCompatibility.controller.ts#L18-L24)
+### File & Export Pattern
 
-### Target State (Separate DTO files)
+**File Naming**:
+- `[verb][Noun].dto.ts` for inputs: `createExample.dto.ts`, `updateUser.dto.ts`
+- `get[Noun][Response].dto.ts` for outputs: `getSiteView.dto.ts`, `getUserProfile.dto.ts`
 
-**IMPORTANT**: DTOs should be extracted to separate `*.dto.ts` files:
+**Always export both schema (for validation) and type (for IDE/frontend)**:
 
 ```typescript
-// adapters/primary/example.dto.ts
-import { createZodDto } from "nestjs-zod";
-import { z } from "zod";
-
+// packages/shared/src/api-dtos/examples/createExample.dto.ts
 export const createExampleSchema = z.object({
   name: z.string().min(1).max(100),
   email: z.string().email().optional(),
 });
-
-export class CreateExampleDto extends createZodDto(createExampleSchema) {}
+export type CreateExampleDto = z.infer<typeof createExampleSchema>;
 ```
 
-**Why separate files**:
-- **Short-term goal**: Share DTOs with webapp for type-safe HTTP interactions
-- Better organization and reusability
-- Easier to maintain and test
+### Usage in Controllers
+
+Import from shared and use with `ZodValidationPipe`:
+
+```typescript
+// apps/api/src/examples/adapters/primary/examples.controller.ts
+import { createExampleSchema, type CreateExampleDto } from "shared";
+import { ZodValidationPipe } from "nestjs-zod";
+
+@Controller("examples")
+export class ExampleController {
+  @Post()
+  async create(@Body(new ZodValidationPipe(createExampleSchema)) dto: CreateExampleDto) {
+    // DTO validation already happened via pipe
+  }
+}
+```
+
+### Why Shared DTOs
+
+**Benefits**:
+- **Frontend-Backend Type Safety**: Frontend imports the exact same types backend uses
+- **Single Source of Truth**: No duplication of type definitions
+- **Type-Safe HTTP Client**: Frontend builds type-safe API calls
+- **Better Organization**: DTOs grouped by feature
+- **Easier Maintenance**: Changes to API contracts visible to both teams
+
+**Real Examples**:
+- Input: [sites/createCustomSite.dto.ts](../../../packages/shared/src/api-dtos/sites/createCustomSite.dto.ts)
+- Output: [sites/getSiteView.dto.ts](../../../packages/shared/src/api-dtos/sites/getSiteView.dto.ts)
+- Controller: [sites.controller.ts:13-21](../../../apps/api/src/sites/adapters/primary/sites.controller.ts#L13-L21)
 
 ### DTO Validation Responsibility
 
@@ -284,29 +308,16 @@ async getById(@Param("id") id: string): Promise<Example> {
 
 **Why**: ViewModels control API contract. Domain models can change without breaking API.
 
-## File Location
-
-Controllers are **primary adapters** (inbound):
-
-```
-module/
-└── adapters/
-    └── primary/
-        ├── example.controller.ts
-        ├── example.controller.integration-spec.ts
-        ├── example.dto.ts               # ← Future: separate file
-        └── example.module.ts
-```
-
 ## Summary: Controller Responsibilities
 
 ### DO:
-- ✅ Validate input **shape** with Zod DTOs
+- ✅ Use DTOs from `/packages/shared/src/api-dtos/` for all routes
+- ✅ Validate input **shape** with Zod DTOs via `ZodValidationPipe`
 - ✅ Protect routes with `@UseGuards(JwtAuthGuard)` by default
 - ✅ Use intent-driven route names
 - ✅ Map Result errors to HTTP exceptions
 - ✅ Return ViewModels only
-- ✅ Extract DTOs to separate files (target state)
+- ✅ Define both input (request body) and output (response) DTOs in shared
 
 ### DON'T:
 - ❌ Validate business logic in DTOs
