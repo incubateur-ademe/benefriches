@@ -1,5 +1,6 @@
 import { HttpService } from "@nestjs/axios";
-import { Injectable } from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 import { AxiosError } from "axios";
 import { catchError, lastValueFrom, map } from "rxjs";
 import { MutabilityUsage } from "shared";
@@ -18,12 +19,17 @@ type MutafrichesEvaluationResultResponse = {
 };
 @Injectable()
 export class MutafrichesEvaluationQuery implements MutabilityEvaluationQuery {
-  constructor(private readonly httpService: HttpService) {}
+  constructor(
+    private readonly httpService: HttpService,
+    @Inject(ConfigService) private readonly configService: ConfigService,
+  ) {}
 
   getEvaluation(mutafrichesId: string): Promise<MutabilityEvaluationResult | null> {
     return lastValueFrom(
       this.httpService
-        .get(`${process.env.MUTAFRICHES_API_URL}/friches/evaluations/${mutafrichesId}`)
+        .get(
+          `${this.configService.getOrThrow<string>("MUTAFRICHES_API_URL")}/friches/evaluations/${mutafrichesId}`,
+        )
         .pipe(
           map(({ data: result }: { data: MutafrichesEvaluationResultResponse }) => {
             return {
