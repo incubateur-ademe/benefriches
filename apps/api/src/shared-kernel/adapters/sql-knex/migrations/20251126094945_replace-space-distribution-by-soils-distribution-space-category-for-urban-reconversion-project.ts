@@ -13,6 +13,8 @@ import { UrbanProjectFeatures } from "src/reconversion-projects/core/model/urban
 
 import { SqlReconversionProjectSoilsDistribution } from "../tableTypes";
 
+const PUBLIC_GREEN_SPACE_TREE_REPLACED_DATE = new Date("2024-07-15");
+
 const checkSpaceDistributionMigration = (
   oldSpaceDistribution: LEGACY_SpacesDistribution,
   newSoilsDistribution: Pick<
@@ -222,48 +224,79 @@ export async function up(knex: Knex): Promise<void> {
       const newDistributions = getNewProjectSoilsDistribution(spacesDistribution);
 
       const existingDistributionsByType = existingSoilsDistributions.reduce<SoilsDistribution>(
-        (result, { soil_type, surface_area = 0 }) =>
-          surface_area
-            ? {
-                ...result,
-                [soil_type]: (result[soil_type] ?? 0) + surface_area,
-              }
-            : result,
+        (result, { soil_type, surface_area = 0 }) => ({
+          ...result,
+          [soil_type]: (result[soil_type] ?? 0) + surface_area,
+        }),
         {},
       );
       const newDistributionsByType = newDistributions.reduce<SoilsDistribution>(
-        (result, { soil_type, surface_area = 0 }) =>
-          surface_area
-            ? {
-                ...result,
-                [soil_type]: (result[soil_type] ?? 0) + surface_area,
-              }
-            : result,
+        (result, { soil_type, surface_area = 0 }) => ({
+          ...result,
+          [soil_type]: (result[soil_type] ?? 0) + surface_area,
+        }),
         {},
       );
-      const warnings: string[] = [];
-      typedObjectEntries(existingDistributionsByType).forEach(([oldType, oldSurface]) => {
-        if (!newDistributionsByType[oldType]) {
-          warnings.push(
-            `Type de sol ${oldType} présent dans l'ancienne distribution (${oldSurface}m²) mais absent du nouveau. ` +
-              `Vérifier la cohérence des données.`,
-          );
-        } else {
-          const newTotal = newDistributionsByType[oldType];
-          if (roundTo2Digits(newTotal) !== roundTo2Digits(oldSurface ?? 0)) {
-            warnings.push(
-              `Type de sol ${oldType} auparavant = ${oldSurface} et maintenant ${newTotal} ` +
-                `Vérifier la cohérence des données.`,
-            );
+      const warnings: string[] = typedObjectEntries(existingDistributionsByType).reduce<string[]>(
+        (warns, [oldType, oldSurface]) => {
+          if (!newDistributionsByType[oldType]) {
+            if (
+              oldType === "ARTIFICIAL_TREE_FILLED" &&
+              project.created_at <= PUBLIC_GREEN_SPACE_TREE_REPLACED_DATE
+            ) {
+              const oldGreenSoils = roundTo2Digits(
+                (existingDistributionsByType.ARTIFICIAL_GRASS_OR_BUSHES_FILLED ?? 0) +
+                  (existingDistributionsByType.ARTIFICIAL_TREE_FILLED ?? 0),
+              );
+
+              if (oldGreenSoils === newDistributionsByType.ARTIFICIAL_GRASS_OR_BUSHES_FILLED) {
+                console.log(
+                  `ℹ️ Replace ARTIFICIAL_TREE_FILLED by ARTIFICIAL_GRASS_OR_BUSHES_FILLED for project created before ${PUBLIC_GREEN_SPACE_TREE_REPLACED_DATE.toDateString()}`,
+                );
+                return warns;
+              }
+            }
+            return [
+              ...warns,
+              `Type de sol ${oldType} présent dans l'ancienne distribution (${oldSurface}m²) mais absent du nouveau. Vérifier la cohérence des données.`,
+            ];
           }
-        }
-      });
+
+          const newTotal = roundTo2Digits(newDistributionsByType[oldType]);
+          if (newTotal !== roundTo2Digits(oldSurface ?? 0)) {
+            if (
+              oldType === "ARTIFICIAL_GRASS_OR_BUSHES_FILLED" &&
+              project.created_at <= PUBLIC_GREEN_SPACE_TREE_REPLACED_DATE
+            ) {
+              const oldGreenSoils = roundTo2Digits(
+                (existingDistributionsByType.ARTIFICIAL_GRASS_OR_BUSHES_FILLED ?? 0) +
+                  (existingDistributionsByType.ARTIFICIAL_TREE_FILLED ?? 0),
+              );
+
+              if (oldGreenSoils === newTotal) {
+                console.log(
+                  `ℹ️ Replace ARTIFICIAL_TREE_FILLED by ARTIFICIAL_GRASS_OR_BUSHES_FILLED for project created before ${PUBLIC_GREEN_SPACE_TREE_REPLACED_DATE.toDateString()}`,
+                );
+                return warns;
+              }
+            }
+            return [
+              ...warns,
+              `Type de sol ${oldType} auparavant = ${oldSurface} et maintenant ${newTotal}. Vérifier la cohérence des données.`,
+            ];
+          }
+          return warns;
+        },
+        [],
+      );
 
       if (warnings.length > 0) {
         console.warn(`--> ⚠️ WRONG newDistributionsByType, skipping`);
         errors.push({
           projectId: project.id,
-          error: `WRONG newDistributionsByType \n ${typedObjectEntries(newDistributionsByType)
+          error: `WRONG newDistributionsByType \n ${warnings.join("\n--> ⚠️ ")} ${typedObjectEntries(
+            newDistributionsByType,
+          )
             .map(([key, surface]) => `${key} -> ${surface?.toString()}`)
             .join("\n")} \nvs\n ${typedObjectEntries(existingDistributionsByType)
             .map(([key, surface]) => `${key} -> ${surface?.toString()}`)
