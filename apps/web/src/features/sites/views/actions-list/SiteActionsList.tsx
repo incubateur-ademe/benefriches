@@ -1,5 +1,5 @@
 import Button from "@codegouvfr/react-dsfr/Button";
-import { SiteActionStatus, SiteActionType } from "shared";
+import { SiteActionStatus, SiteActionType, SiteNature } from "shared";
 import { Route } from "type-route";
 
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
@@ -24,7 +24,19 @@ const ACTIONS_CONFIG = {
   EVALUATE_COMPATIBILITY: {
     label: "Analyse de la compatibilité de la friche",
     position: 0,
-    renderAction: () => null,
+    renderAction: ({ siteId, status, routeParams }) =>
+      status === "done" ? (
+        <a
+          className="text-sm text-blue-france"
+          {...routes.siteCompatibilityEvaluation({
+            siteId,
+            fromCompatibilityEvaluation: routeParams.fromCompatibilityEvaluation,
+            projectEvaluationSuggestions: routeParams.projectEvaluationSuggestions,
+          }).link}
+        >
+          Voir l'analyse de compatibilité
+        </a>
+      ) : null,
   },
   EVALUATE_RECONVERSION_SOCIOECONOMIC_IMPACTS: {
     label: "Évaluation des impacts socio-économiques d'un projet d'aménagement",
@@ -49,7 +61,7 @@ const ACTIONS_CONFIG = {
     label: "Demande d'accompagnement par un·e expert·e friche",
     position: 2,
     renderAction: () => (
-      <ExternalLink className="text-sm" href="https://urbanvitaliz.fr/">
+      <ExternalLink className="text-sm text-blue-france" href="https://urbanvitaliz.fr/">
         Contacter un conseiller Urban Vitaliz
       </ExternalLink>
     ),
@@ -58,7 +70,7 @@ const ACTIONS_CONFIG = {
     label: "Demande de conseils sur la dépollution",
     position: 3,
     renderAction: () => (
-      <ExternalLink className="text-sm" href="mailto:friches.fondsvert@ademe.fr">
+      <ExternalLink className="text-sm text-blue-france" href="mailto:friches.fondsvert@ademe.fr">
         Contacter l'ADEME
       </ExternalLink>
     ),
@@ -67,7 +79,10 @@ const ACTIONS_CONFIG = {
     label: "Demande d'information sur les financements",
     position: 4,
     renderAction: () => (
-      <ExternalLink className="text-sm" href="https://aides-territoires.beta.gouv.fr/">
+      <ExternalLink
+        className="text-sm text-blue-france"
+        href="https://aides-territoires.beta.gouv.fr/"
+      >
         Vérifier mon éligibilité sur Aides-Territoires
       </ExternalLink>
     ),
@@ -88,16 +103,28 @@ const sortActionsByOrder = (actions: ActionsList): ActionsList => {
 type Props = {
   siteId: string;
   siteName: string;
+  siteNature: SiteNature;
   actions: ActionsList;
 };
 
-export default function SiteActionsList({ siteId, siteName, actions }: Props) {
+export default function SiteActionsList({ siteId, siteName, siteNature, actions }: Props) {
   const route = useRoute() as Route<typeof routes.siteFeatures>;
   return (
     <section>
       <h3 className="text-2xl">Suivi du site</h3>
       <ul className="list-none p-0 space-y-8 text-lg">
-        <ActionItem name="Renseignement de mon site" status="done" />
+        <ActionItem name="Renseignement de mon site" status="done">
+          <a
+            className="text-sm text-blue-france"
+            {...routes.siteCompatibilityEvaluation({
+              siteId,
+              fromCompatibilityEvaluation: route.params.fromCompatibilityEvaluation,
+              projectEvaluationSuggestions: route.params.projectEvaluationSuggestions,
+            }).link}
+          >
+            Voir les caractéristiques de {siteNature === "FRICHE" ? "ma friche" : "mon site"}
+          </a>
+        </ActionItem>
         {sortActionsByOrder(actions).map((action) => {
           const config = ACTIONS_CONFIG[action.action];
           return (

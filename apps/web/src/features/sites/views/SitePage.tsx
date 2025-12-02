@@ -75,6 +75,7 @@ function SitePage({ onPageLoad, viewModel, selectedTab, fromCompatibilityEvaluat
                     <SiteActionsList
                       siteId={siteView.features.id}
                       siteName={siteView.features.name}
+                      siteNature={siteView.features.nature}
                       actions={siteView.actions}
                     />
                   );
