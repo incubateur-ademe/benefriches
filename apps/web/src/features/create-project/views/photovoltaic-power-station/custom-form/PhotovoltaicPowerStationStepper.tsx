@@ -9,7 +9,8 @@ const stepCategories = [
   "Transformation des sols",
   "Acteurs",
   "Dépenses et recettes",
-  "Calendrier et avancement",
+  "Calendrier",
+  "Avancement",
   "Dénomination",
   "Récapitulatif",
 ] as const;
@@ -54,10 +55,10 @@ const getCategoryForStep = (step: RenewableEnergyCustomCreationStep): StepCatego
     case "RENEWABLE_ENERGY_REVENUE_PROJECTED_YEARLY_REVENUE":
     case "RENEWABLE_ENERGY_REVENUE_FINANCIAL_ASSISTANCE":
       return "Dépenses et recettes";
-    case "RENEWABLE_ENERGY_SCHEDULE_INTRODUCTION":
     case "RENEWABLE_ENERGY_SCHEDULE_PROJECTION":
+      return "Calendrier";
     case "RENEWABLE_ENERGY_PROJECT_PHASE":
-      return "Calendrier et avancement";
+      return "Avancement";
     case "RENEWABLE_ENERGY_NAMING":
       return "Dénomination";
     case "RENEWABLE_ENERGY_CREATION_RESULT":

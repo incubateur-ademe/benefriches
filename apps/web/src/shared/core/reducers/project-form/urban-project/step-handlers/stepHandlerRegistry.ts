@@ -20,7 +20,6 @@ import { RevenueBuildingsResaleHandler } from "./revenues/revenueBuildingsResale
 import { RevenueExpectedSiteResaleHandler } from "./revenues/revenueExpectedSiteResale.handler";
 import { RevenueFinancialAssistanceHandler } from "./revenues/revenueFinancialAssistance.handler";
 import { RevenueIntroductionHandler } from "./revenues/revenueIntroduction.handler";
-import { ScheduleIntroductionHandler } from "./schedule/scheduleIntroduction.handler";
 import { UrbanProjectScheduleProjectionHandler } from "./schedule/scheduleProjection.handler";
 import { BuildingsResaleSelectionHandler } from "./site-and-buildings-resale/buildingsResaleSelection.handler";
 import { SiteResaleIntroductionHandler } from "./site-and-buildings-resale/siteResaleIntroduction.handler";
@@ -67,8 +66,6 @@ export const stepHandlerRegistry = {
   URBAN_PROJECT_SITE_RESALE_INTRODUCTION: SiteResaleIntroductionHandler,
   URBAN_PROJECT_EXPENSES_INTRODUCTION: ExpensesIntroductionHandler,
   URBAN_PROJECT_REVENUE_INTRODUCTION: RevenueIntroductionHandler,
-  URBAN_PROJECT_SCHEDULE_INTRODUCTION: ScheduleIntroductionHandler,
-
   URBAN_PROJECT_SPACES_CATEGORIES_SELECTION: UrbanProjectSpacesCategoriesSelectionHandler,
   URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA: UrbanProjectSpacesCategoriesSurfaceAreaHandler,
   URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION: GreenSpacesSurfaceAreaDistributionHandler,

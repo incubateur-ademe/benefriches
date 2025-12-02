@@ -16,30 +16,33 @@ export type StepGroupId =
   | "EXPENSES"
   | "REVENUE"
   | "SCHEDULE"
+  | "PROJECT_PROGRESS"
   | "NAMING"
   | "SUMMARY";
 
 export type StepSubGroupId =
-  | "SELECTION"
-  | "SURFACE"
+  | "SPACES_SELECTION"
+  | "SPACES_SURFACES"
   | "RESIDENTIAL_SPACES"
   | "GREEN_SPACES"
   | "PUBLIC_SPACES"
   | "SOILS_SUMMARY"
+  | "DECONTAMINATION_SELECTION"
+  | "DECONTAMINATION_SURFACE"
   | "CARBON_STORAGE"
   | "FLOOR_SURFACE"
-  | "SURFACE_DISTRIBUTION"
-  | "PROJECT_DEVELOPER"
-  | "REINSTATEMENT_OWNER"
-  | "SITE_PURCHASE"
-  | "SITE_REINSTATEMENT"
-  | "SITE_INSTALLATION"
-  | "BUILDINGS_OPERATION"
-  | "FINANCIAL_ASSISTANCE"
-  | "SITE_RESALE_SUB"
-  | "BUILDINGS_RESALE"
-  | "SCHEDULE_SUB"
-  | "PROJECT_PROGRESS"
+  | "BUILDINGS_USE_SELECTION"
+  | "BUILDINGS_USE_SURFACES"
+  | "STAKEHOLDERS_PROJECT_DEVELOPER"
+  | "STAKEHOLDERS_REINSTATEMENT_OWNER"
+  | "EXPENSES_SITE_PURCHASE"
+  | "EXPENSES_SITE_REINSTATEMENT"
+  | "EXPENSES_SITE_INSTALLATION"
+  | "EXPENSES_BUILDINGS_OPERATION"
+  | "REVENUE_BUILDINGS_OPERATION"
+  | "REVENUE_FINANCIAL_ASSISTANCE"
+  | "REVENUE_SITE_RESALE"
+  | "REVENUE_BUILDINGS_RESALE"
   | "SITE_CESSION"
   | "BUILDINGS_CESSION";
 
@@ -48,41 +51,49 @@ export const STEP_GROUP_LABELS: Record<StepGroupId | StepSubGroupId, string> = {
 
   // Groupes
   SPACES: "Espaces",
-  SPACES_DEVELOPMENT: "Aménagement des espaces",
-  SOILS_DECONTAMINATION: "Dépollution des sols",
-  BUILDINGS: "Bâtiments",
-  BUILDINGS_USE: "Usage des lieux d'habitation et d'activité",
-  STAKEHOLDERS: "Acteurs",
-  SITE_RESALE: "Cession foncière",
-  EXPENSES: "Dépenses",
-  REVENUE: "Recettes",
-  SCHEDULE: "Calendrier et avancement",
-  NAMING: "Dénomination",
-  SUMMARY: "Récapitulatif",
-
-  // Sous-groupes
-  SELECTION: "Sélection",
-  SURFACE: "Surface",
+  SPACES_SELECTION: "Choix des espaces",
+  SPACES_SURFACES: "Surfaces",
+  SPACES_DEVELOPMENT: "Aménagement",
   RESIDENTIAL_SPACES: "Lieux d'habitation et d'activité",
   GREEN_SPACES: "Espaces verts",
   PUBLIC_SPACES: "Espaces publics",
   SOILS_SUMMARY: "Récapitulatif des sols",
   CARBON_STORAGE: "Stockage de carbone",
+  SOILS_DECONTAMINATION: "Dépollution",
+  DECONTAMINATION_SELECTION: "Choix de dépolluer",
+  DECONTAMINATION_SURFACE: "Surface",
+  BUILDINGS: "Bâtiments",
   FLOOR_SURFACE: "Surface de plancher",
-  SURFACE_DISTRIBUTION: "Distribution des surfaces",
-  PROJECT_DEVELOPER: "Aménageur",
-  REINSTATEMENT_OWNER: "Maître d'ouvrage de la remise en état",
-  SITE_PURCHASE: "Achat du site",
-  SITE_REINSTATEMENT: "Remise en état du site",
-  SITE_INSTALLATION: "Aménagement du site",
-  BUILDINGS_OPERATION: "Exploitation des bâtiments",
-  FINANCIAL_ASSISTANCE: "Subventions",
-  SITE_RESALE_SUB: "Revente du site",
-  BUILDINGS_RESALE: "Revente des bâtiments",
-  SCHEDULE_SUB: "Calendrier",
-  PROJECT_PROGRESS: "Avancement",
+  BUILDINGS_USE: "Usages",
+  BUILDINGS_USE_SELECTION: "Choix des usages",
+  BUILDINGS_USE_SURFACES: "Surfaces",
+
+  STAKEHOLDERS: "Acteurs",
+  STAKEHOLDERS_PROJECT_DEVELOPER: "Aménageur",
+  STAKEHOLDERS_REINSTATEMENT_OWNER: "Maître d'ouvrage",
+
+  SITE_RESALE: "Cession foncière",
   SITE_CESSION: "Cession du site",
-  BUILDINGS_CESSION: "Cession des bâtiments",
+  BUILDINGS_CESSION: "Revente des bâtiments",
+
+  EXPENSES: "Dépenses",
+  EXPENSES_SITE_PURCHASE: "Acquisition du site",
+  EXPENSES_SITE_REINSTATEMENT: "Remise en état",
+  EXPENSES_SITE_INSTALLATION: "Aménagement",
+  EXPENSES_BUILDINGS_OPERATION: "Exploitation des bâtiments",
+
+  REVENUE: "Recettes",
+  REVENUE_BUILDINGS_OPERATION: "Exploitation des bâtiments",
+  REVENUE_FINANCIAL_ASSISTANCE: "Aides financières",
+  REVENUE_SITE_RESALE: "Revente du site",
+  REVENUE_BUILDINGS_RESALE: "Revente des bâtiments",
+
+  SCHEDULE: "Calendrier",
+  PROJECT_PROGRESS: "Avancement",
+
+  NAMING: "Dénomination",
+
+  SUMMARY: "Récapitulatif",
 } as const;
 
 type StepToGroupMapping = Record<
@@ -96,10 +107,10 @@ export const STEP_TO_GROUP_MAPPING: StepToGroupMapping = {
   URBAN_PROJECT_EXPRESS_CREATION_RESULT: { groupId: "SUMMARY" },
   // Espaces
   URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION: { groupId: "SPACES" },
-  URBAN_PROJECT_SPACES_CATEGORIES_SELECTION: { groupId: "SPACES", subGroupId: "SELECTION" },
+  URBAN_PROJECT_SPACES_CATEGORIES_SELECTION: { groupId: "SPACES", subGroupId: "SPACES_SELECTION" },
   URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA: {
     groupId: "SPACES",
-    subGroupId: "SURFACE",
+    subGroupId: "SPACES_SURFACES",
   },
 
   // Aménagement des espaces
@@ -141,11 +152,11 @@ export const STEP_TO_GROUP_MAPPING: StepToGroupMapping = {
   URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION: { groupId: "SOILS_DECONTAMINATION" },
   URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION: {
     groupId: "SOILS_DECONTAMINATION",
-    subGroupId: "SELECTION",
+    subGroupId: "DECONTAMINATION_SELECTION",
   },
   URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA: {
     groupId: "SOILS_DECONTAMINATION",
-    subGroupId: "SURFACE",
+    subGroupId: "DECONTAMINATION_SURFACE",
   },
 
   // Bâtiments
@@ -161,22 +172,22 @@ export const STEP_TO_GROUP_MAPPING: StepToGroupMapping = {
   },
   URBAN_PROJECT_BUILDINGS_USE_SELECTION: {
     groupId: "BUILDINGS_USE",
-    subGroupId: "SELECTION",
+    subGroupId: "BUILDINGS_USE_SELECTION",
   },
   URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION: {
     groupId: "BUILDINGS_USE",
-    subGroupId: "SURFACE_DISTRIBUTION",
+    subGroupId: "BUILDINGS_USE_SURFACES",
   },
 
   // Acteurs
   URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION: { groupId: "STAKEHOLDERS" },
   URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER: {
     groupId: "STAKEHOLDERS",
-    subGroupId: "PROJECT_DEVELOPER",
+    subGroupId: "STAKEHOLDERS_PROJECT_DEVELOPER",
   },
   URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER: {
     groupId: "STAKEHOLDERS",
-    subGroupId: "REINSTATEMENT_OWNER",
+    subGroupId: "STAKEHOLDERS_REINSTATEMENT_OWNER",
   },
 
   // Cession foncière
@@ -194,47 +205,45 @@ export const STEP_TO_GROUP_MAPPING: StepToGroupMapping = {
   URBAN_PROJECT_EXPENSES_INTRODUCTION: { groupId: "EXPENSES" },
   URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS: {
     groupId: "EXPENSES",
-    subGroupId: "SITE_PURCHASE",
+    subGroupId: "EXPENSES_SITE_PURCHASE",
   },
   URBAN_PROJECT_EXPENSES_REINSTATEMENT: {
     groupId: "EXPENSES",
-    subGroupId: "SITE_REINSTATEMENT",
+    subGroupId: "EXPENSES_SITE_REINSTATEMENT",
   },
   URBAN_PROJECT_EXPENSES_INSTALLATION: {
     groupId: "EXPENSES",
-    subGroupId: "SITE_INSTALLATION",
+    subGroupId: "EXPENSES_SITE_INSTALLATION",
   },
   URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES: {
     groupId: "EXPENSES",
-    subGroupId: "BUILDINGS_OPERATION",
+    subGroupId: "EXPENSES_BUILDINGS_OPERATION",
   },
 
   // Recettes
   URBAN_PROJECT_REVENUE_INTRODUCTION: { groupId: "REVENUE" },
   URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE: {
     groupId: "REVENUE",
-    subGroupId: "SITE_RESALE_SUB",
+    subGroupId: "REVENUE_SITE_RESALE",
   },
   URBAN_PROJECT_REVENUE_BUILDINGS_RESALE: {
     groupId: "REVENUE",
-    subGroupId: "BUILDINGS_RESALE",
+    subGroupId: "REVENUE_BUILDINGS_RESALE",
   },
   URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES: {
     groupId: "REVENUE",
-    subGroupId: "BUILDINGS_OPERATION",
+    subGroupId: "REVENUE_BUILDINGS_OPERATION",
   },
   URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE: {
     groupId: "REVENUE",
-    subGroupId: "FINANCIAL_ASSISTANCE",
+    subGroupId: "REVENUE_FINANCIAL_ASSISTANCE",
   },
 
   // Calendrier et avancement
-  URBAN_PROJECT_SCHEDULE_INTRODUCTION: { groupId: "SCHEDULE" },
   URBAN_PROJECT_SCHEDULE_PROJECTION: {
     groupId: "SCHEDULE",
-    subGroupId: "SCHEDULE_SUB",
   },
-  URBAN_PROJECT_PROJECT_PHASE: { groupId: "SCHEDULE", subGroupId: "PROJECT_PROGRESS" },
+  URBAN_PROJECT_PROJECT_PHASE: { groupId: "PROJECT_PROGRESS" },
 
   // Final
   URBAN_PROJECT_NAMING: { groupId: "NAMING" },

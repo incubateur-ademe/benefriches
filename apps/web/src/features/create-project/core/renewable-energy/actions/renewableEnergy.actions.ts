@@ -109,9 +109,6 @@ export const completeSoilsSummaryStep = createRenewableEnergyAction("completeSoi
 export const completeSoilsCarbonStorageStep = createRenewableEnergyAction(
   "completeSoilsCarbonStorageStep",
 );
-export const completeScheduleIntroductionStep = createRenewableEnergyAction(
-  "completeScheduleIntroductionStep",
-);
 export const completeScheduleStep = createRenewableEnergyAction<{
   firstYearOfOperation?: number;
   photovoltaicInstallationSchedule?: Schedule;

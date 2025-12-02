@@ -23,7 +23,6 @@ import ProjectCreationResult from "./result";
 import ProjectFinancialAssistanceRevenueForm from "./revenue/financial-assistance";
 import ProjectRevenueIntroduction from "./revenue/introduction";
 import ProjectYearlyProjectedRevenueForm from "./revenue/yearly-projected-revenue";
-import ProjectScheduleIntroductionContainer from "./schedule/introduction";
 import ProjectScheduleProjectionFormContainer from "./schedule/projection";
 import SoilsDecontaminationIntroduction from "./soils-decontamination/introduction";
 import SoilsDecontaminationSelection from "./soils-decontamination/selection";
@@ -277,13 +276,6 @@ const getCurrentStepView = (currentStep: RenewableEnergyCreationStep) => {
         <>
           <HtmlTitle>{`Stockage de carbone - Sols - ${HTML_PV_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
           <ProjectSoilsCarbonStorageContainer />
-        </>
-      );
-    case "RENEWABLE_ENERGY_SCHEDULE_INTRODUCTION":
-      return (
-        <>
-          <HtmlTitle>{`Introduction - Calendrier - ${HTML_PV_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
-          <ProjectScheduleIntroductionContainer />
         </>
       );
     case "RENEWABLE_ENERGY_SCHEDULE_PROJECTION":

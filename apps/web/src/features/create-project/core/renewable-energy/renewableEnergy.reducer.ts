@@ -50,7 +50,6 @@ import {
   completePhotovoltaicContractDuration,
   completeSoilsSummaryStep,
   completeSoilsCarbonStorageStep,
-  completeScheduleIntroductionStep,
   completeScheduleStep,
   completeSitePurchase,
   completeFutureSiteOwner,
@@ -344,7 +343,7 @@ const addCompleteStepActionCases = (builder: ActionReducerMapBuilder<ProjectCrea
   });
   builder.addCase(completeFinancialAssistanceRevenues, (state, action) => {
     state.renewableEnergyProject.creationData.financialAssistanceRevenues = action.payload;
-    state.stepsHistory.push("RENEWABLE_ENERGY_SCHEDULE_INTRODUCTION");
+    state.stepsHistory.push("RENEWABLE_ENERGY_SCHEDULE_PROJECTION");
   });
   builder.addCase(completeYearlyProjectedRevenue, (state, action) => {
     state.renewableEnergyProject.creationData.yearlyProjectedRevenues = action.payload;
@@ -402,9 +401,6 @@ const addCompleteStepActionCases = (builder: ActionReducerMapBuilder<ProjectCrea
   });
   builder.addCase(completeSoilsCarbonStorageStep, (state) => {
     state.stepsHistory.push("RENEWABLE_ENERGY_STAKEHOLDERS_INTRODUCTION");
-  });
-  builder.addCase(completeScheduleIntroductionStep, (state) => {
-    state.stepsHistory.push("RENEWABLE_ENERGY_SCHEDULE_PROJECTION");
   });
   builder.addCase(completeScheduleStep, (state, action) => {
     const { firstYearOfOperation, photovoltaicInstallationSchedule, reinstatementSchedule } =

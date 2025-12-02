@@ -152,7 +152,6 @@ export const MOCK = {
       ],
     },
   },
-  URBAN_PROJECT_SCHEDULE_INTRODUCTION: { completed: true },
   URBAN_PROJECT_SCHEDULE_PROJECTION: {
     completed: true,
     defaultValues: {

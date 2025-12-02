@@ -29,7 +29,7 @@ export const UrbanProjectScheduleProjectionHandler: AnswerStepHandler<"URBAN_PRO
     },
 
     getPreviousStepId() {
-      return "URBAN_PROJECT_SCHEDULE_INTRODUCTION";
+      return "URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE";
     },
 
     getNextStepId() {
