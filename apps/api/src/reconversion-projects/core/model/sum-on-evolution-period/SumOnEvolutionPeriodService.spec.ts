@@ -131,4 +131,48 @@ describe("SumOnEvolutionPeriodService", () => {
       }),
     ).toEqual(102975);
   });
+
+  it("should replace evaluationPeriodInYears by max or min value if wrong value is passed to service", () => {
+    expect(
+      new SumOnEvolutionPeriodService({
+        evaluationPeriodInYears: 5000,
+        operationsFirstYear: 2025,
+      }).evaluationPeriodInYears,
+    ).toEqual(50);
+
+    expect(
+      new SumOnEvolutionPeriodService({
+        evaluationPeriodInYears: 50,
+        operationsFirstYear: 2025,
+      }).evaluationPeriodInYears,
+    ).toEqual(50);
+
+    expect(
+      new SumOnEvolutionPeriodService({
+        evaluationPeriodInYears: 1,
+        operationsFirstYear: 2025,
+      }).evaluationPeriodInYears,
+    ).toEqual(1);
+
+    expect(
+      new SumOnEvolutionPeriodService({
+        evaluationPeriodInYears: 25,
+        operationsFirstYear: 2025,
+      }).evaluationPeriodInYears,
+    ).toEqual(25);
+
+    expect(
+      new SumOnEvolutionPeriodService({
+        evaluationPeriodInYears: 0,
+        operationsFirstYear: 2025,
+      }).evaluationPeriodInYears,
+    ).toEqual(1);
+
+    expect(
+      new SumOnEvolutionPeriodService({
+        evaluationPeriodInYears: -52,
+        operationsFirstYear: 2025,
+      }).evaluationPeriodInYears,
+    ).toEqual(1);
+  });
 });

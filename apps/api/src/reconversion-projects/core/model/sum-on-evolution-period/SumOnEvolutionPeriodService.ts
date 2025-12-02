@@ -20,12 +20,18 @@ const CO2_EQ_EMITTED_PER_VEHICULE_KILOMETER = {
   2050: 87.2,
 };
 
+const MIN_EVALUATION_PERIOD_IN_YEARS = 1;
+const MAX_EVALUATION_PERIOD_IN_YEARS = 50;
+
 export class SumOnEvolutionPeriodService {
   readonly evaluationPeriodInYears: number;
   readonly operationsFirstYear: number;
 
   constructor(props: SumOnEvolutionPeriodServiceProps) {
-    this.evaluationPeriodInYears = props.evaluationPeriodInYears;
+    this.evaluationPeriodInYears = Math.min(
+      Math.max(props.evaluationPeriodInYears, MIN_EVALUATION_PERIOD_IN_YEARS),
+      MAX_EVALUATION_PERIOD_IN_YEARS,
+    );
     this.operationsFirstYear = props.operationsFirstYear;
   }
 
