@@ -150,7 +150,7 @@ export default function SiteActionsList({ siteId, siteName, siteNature, actions 
     <section>
       <h3 className="text-2xl">Suivi du site</h3>
       <ul className="list-none p-0 space-y-8 text-lg">
-        <ActionItem title="Renseignement de mon site" status="done" display="inline">
+        <ActionItem title="Renseignement de mon site" status="done" collapsable={false}>
           <a
             className="text-sm text-blue-france dark:text-blue-light"
             {...routes.siteCompatibilityEvaluation({
