@@ -1,6 +1,8 @@
 import {
   BUILDINGS_ECONOMIC_ACTIVITY_USE,
   BuildingsUse,
+  ReconversionProjectSoilsDistribution,
+  sumListWithKey,
   typedObjectEntries,
   UrbanProjectCategory,
 } from "shared";
@@ -15,12 +17,12 @@ const PUBLIC_FACILITIES = [
 
 type Props = {
   buildingsUseDistribution: UrbanProjectFeatures["buildingsFloorAreaDistribution"];
-  spacesDistribution: UrbanProjectFeatures["spacesDistribution"];
+  soilsDistribution: ReconversionProjectSoilsDistribution;
 };
 
 export const getUrbanProjectCategoryFromFeatures = ({
   buildingsUseDistribution,
-  spacesDistribution,
+  soilsDistribution,
 }: Props): UrbanProjectCategory => {
   const buildingsUses = typedObjectEntries(buildingsUseDistribution)
     .filter(([, value]) => value && value > 0)
@@ -48,10 +50,13 @@ export const getUrbanProjectCategoryFromFeatures = ({
     return "NEW_URBAN_CENTER";
   }
 
-  if (
-    hasPublicFacilities ||
-    (spacesDistribution.PUBLIC_GREEN_SPACES && spacesDistribution.PUBLIC_GREEN_SPACES > 0)
-  ) {
+  const hasPublicGreenSpaces =
+    sumListWithKey(
+      soilsDistribution.filter(({ spaceCategory }) => spaceCategory === "PUBLIC_GREEN_SPACE"),
+      "surfaceArea",
+    ) > 0;
+
+  if (hasPublicFacilities || hasPublicGreenSpaces) {
     return "PUBLIC_FACILITIES";
   }
 

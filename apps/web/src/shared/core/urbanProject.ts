@@ -1,25 +1,31 @@
-import { BuildingsUse, UrbanProjectDevelopmentExpense, LEGACY_UrbanProjectSpace } from "shared";
+import { BuildingsUse, UrbanProjectDevelopmentExpense, SoilType } from "shared";
 
-export const getLabelForUrbanProjectSpace = (space: LEGACY_UrbanProjectSpace): string => {
-  switch (space) {
-    case "BUILDINGS_FOOTPRINT":
+export const getUrbanSpaceLabelForLivingAndActivitySpace = (soilType: SoilType): string => {
+  switch (soilType) {
+    case "BUILDINGS":
       return "Emprise au sol bâti";
-    case "PRIVATE_PAVED_ALLEY_OR_PARKING_LOT":
+    case "IMPERMEABLE_SOILS":
       return "Allée ou parking privé bitumé";
-    case "PRIVATE_GRAVEL_ALLEY_OR_PARKING_LOT":
+    case "MINERAL_SOIL":
       return "Allée ou parking privé en gravier";
-    case "PRIVATE_GARDEN_AND_GRASS_ALLEYS":
+    case "ARTIFICIAL_GRASS_OR_BUSHES_FILLED":
+    case "ARTIFICIAL_TREE_FILLED":
       return "Espaces verts privés";
-    case "PUBLIC_GREEN_SPACES":
-      return "Espaces verts publics";
-    case "PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS":
-      return "Voies, places, trottoirs bitumés";
-    case "PUBLIC_GRAVEL_ROAD_OR_SQUARES_OR_SIDEWALKS":
+    default:
+      return "Autres espaces privés";
+  }
+};
+
+export const getUrbanSpaceLabelForPublicSpace = (soilType: SoilType): string => {
+  switch (soilType) {
+    case "IMPERMEABLE_SOILS":
+      return "Voies, places, trottoirs ou parking bitumés";
+    case "MINERAL_SOIL":
       return "Voies, places, trottoirs en gravier";
-    case "PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS":
+    case "ARTIFICIAL_GRASS_OR_BUSHES_FILLED":
       return "Voies, places, trottoirs enherbés";
-    case "PUBLIC_PARKING_LOT":
-      return "Parking public";
+    default:
+      return "Autres espaces publics";
   }
 };
 

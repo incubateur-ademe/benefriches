@@ -2,7 +2,6 @@ import {
   BuildingsUseDistribution,
   BUILDINGS_ECONOMIC_ACTIVITY_USE,
   filterObjectWithKeys,
-  LEGACY_SpacesDistribution,
   sumObjectValues,
 } from "shared";
 
@@ -19,7 +18,7 @@ type Props = {
   citySquareMetersSurfaceArea: number;
   cityPopulation: number;
   buildingsFloorAreaDistribution: BuildingsUseDistribution;
-  spacesDistribution: LEGACY_SpacesDistribution;
+  projectPublicGreenSpaceSurface: number;
 };
 
 export class YearlyUrbanFreshnessRelatedImpacts extends InfluenceAreaService {
@@ -34,7 +33,7 @@ export class YearlyUrbanFreshnessRelatedImpacts extends InfluenceAreaService {
     citySquareMetersSurfaceArea,
     cityPopulation,
     buildingsFloorAreaDistribution,
-    spacesDistribution,
+    projectPublicGreenSpaceSurface,
   }: Props) {
     super({
       siteSquareMetersSurfaceArea,
@@ -51,7 +50,7 @@ export class YearlyUrbanFreshnessRelatedImpacts extends InfluenceAreaService {
     );
 
     this.projectOtherEconomicActivitySurface = sumObjectValues(economicActivityBuildings);
-    this.projectPublicGreenSpaceSurface = spacesDistribution.PUBLIC_GREEN_SPACES ?? 0;
+    this.projectPublicGreenSpaceSurface = projectPublicGreenSpaceSurface;
 
     this.siteSurfaceArea = siteSquareMetersSurfaceArea;
 

@@ -1,7 +1,6 @@
 import {
   DevelopmentPlanInstallationExpenses,
   FinancialAssistanceRevenue,
-  getProjectSoilDistributionByType,
   RecurringExpense,
   RecurringRevenue,
   ReinstatementExpense,
@@ -39,7 +38,7 @@ export const formatReconversionProjectInputToFeatures = (
 
   futureOwner: reconversionProject.futureSiteOwner?.name,
   futureOperator: reconversionProject.futureOperator?.name,
-  soilsDistribution: getProjectSoilDistributionByType(reconversionProject.soilsDistribution),
+  soilsDistribution: reconversionProject.soilsDistribution,
   reinstatementContractOwner: reconversionProject.reinstatementContractOwner?.name,
   financialAssistanceRevenues:
     reconversionProject.financialAssistanceRevenues as FinancialAssistanceRevenue[],

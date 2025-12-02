@@ -17,6 +17,8 @@ import {
   AgriculturalOperationActivity,
   SiteYearlyIncome,
   SiteOperationBenefitsLoss,
+  ReconversionProjectSoilsDistribution,
+  getProjectSoilDistributionByType,
 } from "shared";
 
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
@@ -112,7 +114,7 @@ export type InputReconversionProjectData = {
   developmentPlanInstallationExpenses: DevelopmentPlanInstallationExpenses[];
   conversionSchedule?: Schedule;
   reinstatementSchedule?: Schedule;
-  soilsDistribution: SoilsDistribution;
+  soilsDistribution: ReconversionProjectSoilsDistribution;
   decontaminatedSoilSurface?: number;
   soilsCarbonStorage?: SoilsCarbonStorage;
 };
@@ -124,7 +126,9 @@ export type ReconversionProjectImpactsServiceProps = {
   dateProvider: DateProvider;
 };
 export class ReconversionProjectImpactsService implements ImpactsServiceInterface {
-  protected readonly reconversionProject: InputReconversionProjectData;
+  protected readonly reconversionProject: InputReconversionProjectData & {
+    soilsDistributionByType: SoilsDistribution;
+  };
   protected readonly relatedSite: InputSiteData;
 
   protected readonly sumOnEvolutionPeriodService: SumOnEvolutionPeriodService;
@@ -135,7 +139,12 @@ export class ReconversionProjectImpactsService implements ImpactsServiceInterfac
     evaluationPeriodInYears,
     dateProvider,
   }: ReconversionProjectImpactsServiceProps) {
-    this.reconversionProject = reconversionProject;
+    this.reconversionProject = {
+      ...reconversionProject,
+      soilsDistributionByType: getProjectSoilDistributionByType(
+        reconversionProject.soilsDistribution,
+      ),
+    };
     this.relatedSite = relatedSite;
 
     this.sumOnEvolutionPeriodService = new SumOnEvolutionPeriodService({
@@ -394,7 +403,7 @@ export class ReconversionProjectImpactsService implements ImpactsServiceInterfac
   protected get permeableSurfaceArea() {
     return getPermeableSurfaceImpact(
       this.relatedSite.soilsDistribution,
-      this.reconversionProject.soilsDistribution,
+      this.reconversionProject.soilsDistributionByType,
     );
   }
 
@@ -403,7 +412,7 @@ export class ReconversionProjectImpactsService implements ImpactsServiceInterfac
 
     const natureConservationImpactsService = new NatureConservationImpactsService({
       baseSoilsDistribution: this.relatedSite.soilsDistribution,
-      forecastSoilsDistribution: this.reconversionProject.soilsDistribution,
+      forecastSoilsDistribution: this.reconversionProject.soilsDistributionByType,
       baseDecontaminatedSurfaceArea: 0,
       forecastDecontaminedSurfaceArea: this.reconversionProject.decontaminatedSoilSurface,
       baseSoilsCo2eqStorage: this.soilsCo2eqStorage?.base,

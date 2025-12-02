@@ -63,6 +63,7 @@ describe("SqlReconversionProjectQuery integration", () => {
           id: uuid(),
           reconversion_project_id: reconversionProjectId,
           soil_type: "BUILDINGS",
+          space_category: "LIVING_AND_ACTIVITY_SPACE",
           surface_area: 7000,
         },
         {
@@ -70,12 +71,14 @@ describe("SqlReconversionProjectQuery integration", () => {
           reconversion_project_id: reconversionProjectId,
           soil_type: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
           surface_area: 10000,
+          space_category: "PUBLIC_GREEN_SPACE",
         },
         {
           id: uuid(),
           reconversion_project_id: reconversionProjectId,
           soil_type: "ARTIFICIAL_TREE_FILLED",
           surface_area: 3000,
+          space_category: "LIVING_AND_ACTIVITY_SPACE",
         },
       ]);
 
@@ -99,11 +102,6 @@ describe("SqlReconversionProjectQuery integration", () => {
           developer_name: "Promoteur immo",
           developer_structure_type: "company",
           features: {
-            spacesDistribution: {
-              BUILDINGS_FOOTPRINT: 7000,
-              PUBLIC_GREEN_SPACES: 10000,
-              PRIVATE_GARDEN_AND_GRASS_ALLEYS: 3000,
-            },
             buildingsFloorAreaDistribution: {
               RESIDENTIAL: 5000,
               LOCAL_SERVICES: 2000,
@@ -156,22 +154,25 @@ describe("SqlReconversionProjectQuery integration", () => {
         name: "Urban project",
         description: "A urban project description",
         isExpress: false,
-        soilsDistribution: {
-          BUILDINGS: 7000,
-          ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 10000,
-          ARTIFICIAL_TREE_FILLED: 3000,
-        },
+        soilsDistribution: [
+          { soilType: "BUILDINGS", spaceCategory: "LIVING_AND_ACTIVITY_SPACE", surfaceArea: 7000 },
+          {
+            soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+            spaceCategory: "PUBLIC_GREEN_SPACE",
+            surfaceArea: 10000,
+          },
+          {
+            soilType: "ARTIFICIAL_TREE_FILLED",
+            spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+            surfaceArea: 3000,
+          },
+        ],
         developmentPlan: {
           type: "URBAN_PROJECT",
           installationCosts: [
             { amount: 35000, purpose: "other" },
             { amount: 125000, purpose: "development_works" },
           ],
-          spacesDistribution: {
-            BUILDINGS_FOOTPRINT: 7000,
-            PUBLIC_GREEN_SPACES: 10000,
-            PRIVATE_GARDEN_AND_GRASS_ALLEYS: 3000,
-          },
           buildingsFloorAreaDistribution: {
             RESIDENTIAL: 5000,
             LOCAL_SERVICES: 2000,
@@ -317,10 +318,13 @@ describe("SqlReconversionProjectQuery integration", () => {
         name: "Photovoltaic power station",
         description: "A description of a photovoltaic power station",
         isExpress: false,
-        soilsDistribution: {
-          ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 18000,
-          MINERAL_SOIL: 2000,
-        },
+        soilsDistribution: [
+          {
+            soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+            surfaceArea: 18000,
+          },
+          { soilType: "MINERAL_SOIL", surfaceArea: 2000 },
+        ],
         developmentPlan: {
           type: "PHOTOVOLTAIC_POWER_PLANT",
           installationCosts: [{ amount: 100000, purpose: "installation_works" }],
@@ -412,10 +416,13 @@ describe("SqlReconversionProjectQuery integration", () => {
         id: reconversionProjectId,
         name: "Photovoltaic power station",
         isExpress: false,
-        soilsDistribution: {
-          ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 18000,
-          MINERAL_SOIL: 2000,
-        },
+        soilsDistribution: [
+          {
+            soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+            surfaceArea: 18000,
+          },
+          { soilType: "MINERAL_SOIL", surfaceArea: 2000 },
+        ],
         developmentPlan: {
           type: "PHOTOVOLTAIC_POWER_PLANT",
           installationCosts: [],

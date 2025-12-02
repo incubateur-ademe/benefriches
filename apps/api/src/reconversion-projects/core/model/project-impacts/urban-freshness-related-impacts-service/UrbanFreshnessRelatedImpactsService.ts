@@ -1,9 +1,4 @@
-import {
-  BuildingsUseDistribution,
-  roundTo2Digits,
-  SocioEconomicImpact,
-  LEGACY_SpacesDistribution,
-} from "shared";
+import { BuildingsUseDistribution, roundTo2Digits, SocioEconomicImpact } from "shared";
 
 import { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import { YearlyUrbanFreshnessRelatedImpacts } from "./YearlyUrbanFreshnessRelatedImpacts";
@@ -13,7 +8,7 @@ type Props = {
   citySquareMetersSurfaceArea: number;
   cityPopulation: number;
   buildingsFloorAreaDistribution: BuildingsUseDistribution;
-  spacesDistribution: LEGACY_SpacesDistribution;
+  projectPublicGreenSpaceSurface: number;
   sumOnEvolutionPeriodService: SumOnEvolutionPeriodService;
 };
 
@@ -25,7 +20,7 @@ export class UrbanFreshnessRelatedImpactsService extends YearlyUrbanFreshnessRel
     citySquareMetersSurfaceArea,
     cityPopulation,
     buildingsFloorAreaDistribution,
-    spacesDistribution,
+    projectPublicGreenSpaceSurface,
     sumOnEvolutionPeriodService,
   }: Props) {
     super({
@@ -33,7 +28,7 @@ export class UrbanFreshnessRelatedImpactsService extends YearlyUrbanFreshnessRel
       citySquareMetersSurfaceArea,
       cityPopulation,
       buildingsFloorAreaDistribution,
-      spacesDistribution,
+      projectPublicGreenSpaceSurface,
     });
 
     this.sumOnEvolutionPeriodService = sumOnEvolutionPeriodService;

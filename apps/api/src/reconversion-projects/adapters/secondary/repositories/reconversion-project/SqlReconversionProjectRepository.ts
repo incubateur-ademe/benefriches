@@ -368,7 +368,7 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
         };
       }
       if (sqlResult.development_plan.type === "URBAN_PROJECT") {
-        const { spacesDistribution, buildingsFloorAreaDistribution } = sqlResult.development_plan
+        const { buildingsFloorAreaDistribution } = sqlResult.development_plan
           .features as UrbanProjectFeatures;
 
         return {
@@ -377,7 +377,6 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
           installationSchedule,
           type: "URBAN_PROJECT",
           features: {
-            spacesDistribution,
             buildingsFloorAreaDistribution,
           },
         };

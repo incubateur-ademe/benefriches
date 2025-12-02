@@ -1,11 +1,16 @@
+import { ReconversionProjectSoilsDistribution } from "../../reconversionProjectSchemas";
 import { UrbanProjectGenerator } from "./UrbanProjectGenerator";
 
 export class RenaturationProjectGenerator extends UrbanProjectGenerator {
   override name = "Renaturation";
 
-  override get spacesDistribution() {
-    return {
-      PUBLIC_GREEN_SPACES: this.siteData.surfaceArea,
-    };
+  override get projectSoilsDistribution(): ReconversionProjectSoilsDistribution {
+    return [
+      {
+        surfaceArea: this.siteData.surfaceArea,
+        spaceCategory: "PUBLIC_GREEN_SPACE",
+        soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+      },
+    ];
   }
 }

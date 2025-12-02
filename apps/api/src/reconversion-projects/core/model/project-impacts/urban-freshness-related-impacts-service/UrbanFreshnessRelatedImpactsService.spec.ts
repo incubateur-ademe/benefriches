@@ -8,7 +8,7 @@ describe("UrbanFreshnessRelatedImpactsService", () => {
       citySquareMetersSurfaceArea: 15000000,
       cityPopulation: 18000,
       buildingsFloorAreaDistribution: {},
-      spacesDistribution: {},
+      projectPublicGreenSpaceSurface: 0,
       sumOnEvolutionPeriodService: new SumOnEvolutionPeriodService({
         evaluationPeriodInYears: 10,
         operationsFirstYear: 2025,
@@ -30,9 +30,7 @@ describe("UrbanFreshnessRelatedImpactsService", () => {
         RESIDENTIAL: 500,
         LOCAL_STORE: 100,
       },
-      spacesDistribution: {
-        PUBLIC_GREEN_SPACES: 400,
-      },
+      projectPublicGreenSpaceSurface: 400,
       sumOnEvolutionPeriodService: new SumOnEvolutionPeriodService({
         evaluationPeriodInYears: 10,
         operationsFirstYear: 2025,
@@ -55,9 +53,7 @@ describe("UrbanFreshnessRelatedImpactsService", () => {
         OFFICES: 12000,
         LOCAL_STORE: 1000,
       },
-      spacesDistribution: {
-        PUBLIC_GREEN_SPACES: 65100,
-      },
+      projectPublicGreenSpaceSurface: 65100,
       sumOnEvolutionPeriodService: new SumOnEvolutionPeriodService({
         evaluationPeriodInYears: 10,
         operationsFirstYear: 2025,

@@ -23,8 +23,8 @@ export const updateUrbanProjectFormSelectors = createUrbanProjectFormSelectors("
   selectSiteSurfaceArea,
   selectSiteContaminatedSurfaceArea,
 });
-const { selectProjectSoilsDistribution } = updateUrbanProjectFormSelectors;
-export { selectProjectSoilsDistribution };
+const { selectProjectSoilsDistributionByType } = updateUrbanProjectFormSelectors;
+export { selectProjectSoilsDistributionByType };
 
 export const selectUrbanProjectCurrentStep = createSelector(
   [(state: RootState) => state.projectUpdate.urbanProject],

@@ -1,4 +1,9 @@
-import { getFricheActivityLabel, sumListWithKey, sumObjectValues } from "shared";
+import {
+  getFricheActivityLabel,
+  sumListWithKey,
+  sumObjectValues,
+  typedObjectEntries,
+} from "shared";
 
 import { getLabelForExpensePurpose } from "@/features/create-site/core/expenses.functions";
 import { getLabelForIncomeSource } from "@/features/create-site/core/incomes.functions";
@@ -43,7 +48,11 @@ export default function SiteFeaturesPdfPage({ siteFeatures }: Props) {
           />
         </FeaturesSection>
         <FeaturesSection title="🌾️ Sols">
-          <SoilsDistributionPdf soilsDistribution={siteFeatures.soilsDistribution} />
+          <SoilsDistributionPdf
+            soilsDistribution={typedObjectEntries(siteFeatures.soilsDistribution).map(
+              ([soilType, surfaceArea = 0]) => ({ soilType, surfaceArea }),
+            )}
+          />
         </FeaturesSection>
         {siteFeatures.nature === "FRICHE" && (
           <>

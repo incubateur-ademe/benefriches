@@ -512,7 +512,6 @@ describe("ReconversionProjects controller", () => {
         reconversion_project_id: projectInDb.id,
         type: "URBAN_PROJECT",
         features: {
-          spacesDistribution: { BUILDING: 1000 },
           buildingsFloorAreaDistribution: { RESIDENTIAL: 1000 },
         },
       });
@@ -774,7 +773,6 @@ describe("ReconversionProjects controller", () => {
             endDate: new Date("2028-10-17T00:00:00.000Z"),
           },
           features: {
-            spacesDistribution: { PUBLIC_GREEN_SPACES: 34794 },
             buildingsFloorAreaDistribution: {},
           },
         },

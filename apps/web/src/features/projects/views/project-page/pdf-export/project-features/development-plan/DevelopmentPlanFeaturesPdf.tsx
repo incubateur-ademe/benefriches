@@ -1,8 +1,12 @@
 import { Text } from "@react-pdf/renderer";
-import { sumObjectValues, typedObjectEntries } from "shared";
+import { sumListWithKey, sumObjectValues, typedObjectEntries } from "shared";
 
 import { ProjectFeatures } from "@/features/projects/domain/projects.types";
-import { getLabelForBuildingsUse, getLabelForUrbanProjectSpace } from "@/shared/core/urbanProject";
+import {
+  getLabelForBuildingsUse,
+  getUrbanSpaceLabelForLivingAndActivitySpace,
+  getUrbanSpaceLabelForPublicSpace,
+} from "@/shared/core/urbanProject";
 
 import DataLine from "../../components/DataLine";
 import FeaturesSection from "../../components/FeaturesSection";
@@ -55,33 +59,35 @@ const DevelopmentPlanFeatures = ({
         </>
       );
     case "URBAN_PROJECT": {
-      const { spacesDistribution, buildingsFloorAreaDistribution } = developmentPlan;
+      const { buildingsFloorAreaDistribution } = developmentPlan;
 
-      const livingAndActivitiesSpaces = {
-        BUILDINGS_FOOTPRINT: spacesDistribution.BUILDINGS_FOOTPRINT ?? 0,
-        PRIVATE_GARDEN_AND_GRASS_ALLEYS: spacesDistribution.PRIVATE_GARDEN_AND_GRASS_ALLEYS ?? 0,
-        PRIVATE_PAVED_ALLEY_OR_PARKING_LOT:
-          spacesDistribution.PRIVATE_PAVED_ALLEY_OR_PARKING_LOT ?? 0,
-        PRIVATE_GRAVEL_ALLEY_OR_PARKING_LOT:
-          spacesDistribution.PRIVATE_GRAVEL_ALLEY_OR_PARKING_LOT ?? 0,
-      };
-      const greenPublicSpaces = {
-        PUBLIC_GREEN_SPACES: spacesDistribution.PUBLIC_GREEN_SPACES ?? 0,
-        PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS:
-          spacesDistribution.PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS ?? 0,
-      };
+      const livingAndActivitiesSpaces = soilsDistribution.filter(
+        ({ spaceCategory }) => spaceCategory === "LIVING_AND_ACTIVITY_SPACE",
+      );
 
-      const publicSpaces = {
-        PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS:
-          spacesDistribution.PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS ?? 0,
-        PUBLIC_GRAVEL_ROAD_OR_SQUARES_OR_SIDEWALKS:
-          spacesDistribution.PUBLIC_GRAVEL_ROAD_OR_SQUARES_OR_SIDEWALKS ?? 0,
-        PUBLIC_PARKING_LOT: spacesDistribution.PUBLIC_PARKING_LOT ?? 0,
-      };
+      const totalGrassPublicSpaces =
+        soilsDistribution.find(
+          ({ spaceCategory, soilType }) =>
+            spaceCategory === "PUBLIC_SPACE" && soilType === "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+        )?.surfaceArea ?? 0;
 
-      const totalLivingAndActivitiesSpaces = sumObjectValues(livingAndActivitiesSpaces);
-      const totalGreenPublicSpaces = sumObjectValues(greenPublicSpaces);
-      const totalPublicSpaces = sumObjectValues(publicSpaces);
+      const otherPublicSpaces = soilsDistribution.filter(
+        ({ spaceCategory, soilType }) =>
+          spaceCategory === "PUBLIC_SPACE" && soilType !== "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+      );
+
+      const totalPublicGreenSpaces = sumListWithKey(
+        soilsDistribution.filter(({ spaceCategory }) => spaceCategory === "PUBLIC_GREEN_SPACE"),
+        "surfaceArea",
+      );
+
+      const totalLivingAndActivitiesSpaces = sumListWithKey(
+        livingAndActivitiesSpaces,
+        "surfaceArea",
+      );
+      const totalPublicGreenSpacesAndPublicGrassSpaces =
+        totalGrassPublicSpaces + totalPublicGreenSpaces;
+      const totalOtherPublicSpaces = sumListWithKey(otherPublicSpaces, "surfaceArea");
 
       return (
         <>
@@ -90,7 +96,9 @@ const DevelopmentPlanFeatures = ({
               label="Superficie du site"
               bold
               value={formatSurfaceAreaPdf(
-                totalLivingAndActivitiesSpaces + totalPublicSpaces + totalGreenPublicSpaces,
+                totalLivingAndActivitiesSpaces +
+                  totalOtherPublicSpaces +
+                  totalPublicGreenSpacesAndPublicGrassSpaces,
               )}
             />
             {totalLivingAndActivitiesSpaces > 0 && (
@@ -99,13 +107,16 @@ const DevelopmentPlanFeatures = ({
                 value={formatSurfaceAreaPdf(totalLivingAndActivitiesSpaces)}
               />
             )}
-            {totalPublicSpaces > 0 && (
-              <DataLine label="Espaces publics" value={formatSurfaceAreaPdf(totalPublicSpaces)} />
+            {totalOtherPublicSpaces > 0 && (
+              <DataLine
+                label="Espaces publics"
+                value={formatSurfaceAreaPdf(totalOtherPublicSpaces)}
+              />
             )}
-            {totalGreenPublicSpaces > 0 && (
+            {totalPublicGreenSpacesAndPublicGrassSpaces > 0 && (
               <DataLine
                 label="Espaces verts publics"
-                value={formatSurfaceAreaPdf(totalGreenPublicSpaces)}
+                value={formatSurfaceAreaPdf(totalPublicGreenSpacesAndPublicGrassSpaces)}
               />
             )}
           </FeaturesSection>
@@ -129,58 +140,60 @@ const DevelopmentPlanFeatures = ({
                   bold
                   noBorder
                 />
-                {typedObjectEntries(livingAndActivitiesSpaces)
-                  .filter(([, surfaceArea]) => surfaceArea)
-                  .map(([space, surfaceArea]) => {
+                {livingAndActivitiesSpaces
+                  .filter(({ surfaceArea }) => surfaceArea)
+                  .map(({ spaceCategory, soilType, surfaceArea }) => {
                     return (
                       <DataLine
-                        label={getLabelForUrbanProjectSpace(space)}
+                        label={getUrbanSpaceLabelForLivingAndActivitySpace(soilType)}
                         value={formatSurfaceAreaPdf(surfaceArea)}
-                        key={space}
+                        key={`${spaceCategory}-${soilType}`}
                         isDetails
                       />
                     );
                   })}
               </>
             )}
-            {totalGreenPublicSpaces > 0 && (
+            {totalPublicGreenSpacesAndPublicGrassSpaces > 0 && (
               <>
                 <DataLine
                   label="Espaces verts publics"
-                  value={formatSurfaceAreaPdf(totalGreenPublicSpaces)}
+                  value={formatSurfaceAreaPdf(totalPublicGreenSpacesAndPublicGrassSpaces)}
                   noBorder
                   bold
                 />
-                {typedObjectEntries(greenPublicSpaces)
-                  .filter(([, surfaceArea]) => surfaceArea)
-                  .map(([space, surfaceArea]) => {
-                    return (
-                      <DataLine
-                        label={getLabelForUrbanProjectSpace(space)}
-                        value={formatSurfaceAreaPdf(surfaceArea)}
-                        key={space}
-                        isDetails
-                      />
-                    );
-                  })}
+                {totalGrassPublicSpaces > 0 && (
+                  <DataLine
+                    label="Voies, places, trottoirs enherbés"
+                    value={formatSurfaceAreaPdf(totalGrassPublicSpaces)}
+                    isDetails
+                  />
+                )}
+                {totalPublicGreenSpaces > 0 && (
+                  <DataLine
+                    label="Espaces verts publics"
+                    value={formatSurfaceAreaPdf(totalPublicGreenSpaces)}
+                    isDetails
+                  />
+                )}
               </>
             )}
-            {totalPublicSpaces > 0 && (
+            {totalOtherPublicSpaces > 0 && (
               <>
                 <DataLine
                   label="Espaces publics"
-                  value={formatSurfaceAreaPdf(totalPublicSpaces)}
+                  value={formatSurfaceAreaPdf(totalOtherPublicSpaces)}
                   noBorder
                   bold
                 />
-                {typedObjectEntries(publicSpaces)
-                  .filter(([, surfaceArea]) => surfaceArea)
-                  .map(([space, surfaceArea]) => {
+                {otherPublicSpaces
+                  .filter(({ surfaceArea }) => surfaceArea)
+                  .map(({ spaceCategory, soilType, surfaceArea }) => {
                     return (
                       <DataLine
-                        label={getLabelForUrbanProjectSpace(space)}
+                        label={getUrbanSpaceLabelForPublicSpace(soilType)}
                         value={formatSurfaceAreaPdf(surfaceArea)}
-                        key={space}
+                        key={`${spaceCategory}-${soilType}`}
                         isDetails
                       />
                     );

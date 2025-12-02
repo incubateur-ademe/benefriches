@@ -35,17 +35,6 @@ const projectData: ReconversionProjectImpactsDataView<Schedule> = {
     },
     type: "URBAN_PROJECT",
     features: {
-      spacesDistribution: {
-        BUILDINGS_FOOTPRINT: 4387.5,
-        PRIVATE_PAVED_ALLEY_OR_PARKING_LOT: 487.5,
-        PRIVATE_GRAVEL_ALLEY_OR_PARKING_LOT: 487.5,
-        PRIVATE_GARDEN_AND_GRASS_ALLEYS: 4387.5,
-        PUBLIC_GREEN_SPACES: 2250,
-        PUBLIC_PARKING_LOT: 1350,
-        PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS: 150,
-        PUBLIC_GRAVEL_ROAD_OR_SQUARES_OR_SIDEWALKS: 750,
-        PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS: 750,
-      },
       buildingsFloorAreaDistribution: {
         RESIDENTIAL: 7440,
         LOCAL_STORE: 240,
@@ -56,12 +45,44 @@ const projectData: ReconversionProjectImpactsDataView<Schedule> = {
       },
     },
   },
-  soilsDistribution: {
-    BUILDINGS: 4000,
-    IMPERMEABLE_SOILS: 2000,
-    MINERAL_SOIL: 1000,
-    ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 7000,
-  },
+  soilsDistribution: [
+    {
+      soilType: "IMPERMEABLE_SOILS",
+      spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+      surfaceArea: 500,
+    },
+    {
+      soilType: "MINERAL_SOIL",
+      spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+      surfaceArea: 250,
+    },
+    {
+      soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+      spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+      surfaceArea: 3500,
+    },
+    {
+      soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+      spaceCategory: "PUBLIC_SPACE",
+      surfaceArea: 500,
+    },
+    {
+      soilType: "IMPERMEABLE_SOILS",
+      spaceCategory: "PUBLIC_SPACE",
+      surfaceArea: 1500,
+    },
+    {
+      soilType: "MINERAL_SOIL",
+      spaceCategory: "PUBLIC_SPACE",
+      surfaceArea: 750,
+    },
+    {
+      soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+      spaceCategory: "PUBLIC_GREEN_SPACE",
+      surfaceArea: 3000,
+    },
+    { soilType: "BUILDINGS", spaceCategory: "LIVING_AND_ACTIVITY_SPACE", surfaceArea: 4000 },
+  ],
   yearlyProjectedExpenses: [{ amount: 15000, purpose: "rent" }],
   yearlyProjectedRevenues: [],
   sitePurchaseTotalAmount: 1800000,
@@ -81,7 +102,7 @@ const friche = {
   fricheActivity: "AGRICULTURE",
   surfaceArea: 14000,
   soilsDistribution: {
-    ...projectData.soilsDistribution,
+    MINERAL_SOIL: 1000,
     BUILDINGS: 2000,
     IMPERMEABLE_SOILS: 10000,
     ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 2000,
@@ -155,7 +176,7 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
         isExpressProject: false,
         name: "Test reconversion project",
         relatedSiteId: siteId,
-        soilsDistribution: {},
+        soilsDistribution: [],
         sitePurchaseTotalAmount: 0,
         reinstatementExpenses: [],
         developmentPlan: undefined,
@@ -201,7 +222,7 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
           },
         },
         relatedSiteId: siteId,
-        soilsDistribution: {},
+        soilsDistribution: [],
         sitePurchaseTotalAmount: 0,
         reinstatementExpenses: [],
         financialAssistanceRevenues: [],
@@ -700,13 +721,22 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
       name: "Project with big impacts",
       relatedSiteId: uuid(),
       isExpressProject: false,
-      soilsDistribution: {
-        ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 10000,
-        PRAIRIE_TREES: 20000,
-        BUILDINGS: 20000,
-        MINERAL_SOIL: 20000,
-        IMPERMEABLE_SOILS: 30000,
-      },
+      soilsDistribution: [
+        {
+          soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+          surfaceArea: 10000,
+        },
+        {
+          soilType: "PRAIRIE_TREES",
+          surfaceArea: 20000,
+        },
+        { soilType: "BUILDINGS", surfaceArea: 20000 },
+        {
+          soilType: "MINERAL_SOIL",
+          surfaceArea: 20000,
+        },
+        { soilType: "IMPERMEABLE_SOILS", surfaceArea: 30000 },
+      ],
       conversionSchedule: {
         startDate: new Date("2025-07-01"),
         endDate: new Date("2026-07-01"),
@@ -751,7 +781,8 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
       isSiteOperated: true,
       surfaceArea: 50000,
       soilsDistribution: {
-        ...reconversionProjectImpactDataView.soilsDistribution,
+        BUILDINGS: 20000,
+        MINERAL_SOIL: 20000,
         PRAIRIE_TREES: 0,
         IMPERMEABLE_SOILS: 10000,
         ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 40000,

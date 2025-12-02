@@ -24,8 +24,12 @@ export const createUrbanProjectFormSelectors = (
 
   const selectStepState = createSelector(selectSelf, (state) => state.urbanProject.steps);
 
-  const selectProjectSoilsDistribution = createSelector(selectStepState, (state) =>
+  const selectProjectSoilsDistributionByType = createSelector(selectStepState, (state) =>
     ReadStateHelper.getProjectSoilDistributionBySoilType(state),
+  );
+
+  const selectProjectSoilsDistribution = createSelector(selectStepState, (state) =>
+    ReadStateHelper.getProjectSoilDistribution(state),
   );
 
   const selectStepAnswers = <T extends AnswerStepId>(stepId: T) =>
@@ -39,10 +43,6 @@ export const createUrbanProjectFormSelectors = (
       );
     });
 
-  const selectProjectSpaces = createSelector([selectStepState], (steps) =>
-    ReadStateHelper.getSpacesDistribution(steps),
-  );
-
   const selectFormAnswers = createSelector([selectStepState], (steps) =>
     ReadStateHelper.getAllFormAnswers(steps),
   );
@@ -54,10 +54,9 @@ export const createUrbanProjectFormSelectors = (
   }));
 
   const selectProjectSummary = createSelector(
-    [selectFormAnswers, selectProjectSpaces, selectProjectSoilsDistribution],
-    (projectData, projectSpaces, projectSoilsDistribution) => ({
+    [selectFormAnswers, selectProjectSoilsDistribution],
+    (projectData, projectSoilsDistribution) => ({
       projectData,
-      projectSpaces,
       projectSoilsDistribution,
     }),
   );
@@ -154,6 +153,7 @@ export const createUrbanProjectFormSelectors = (
 
   return {
     selectStepState,
+    selectProjectSoilsDistributionByType,
     selectProjectSoilsDistribution,
     selectStepAnswers,
     selectSoilsCarbonStorageDifference,

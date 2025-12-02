@@ -18,8 +18,7 @@ function ProjectionCreationDataSummaryContainer() {
   const isFormValid = useAppSelector(selectIsFormStatusValid);
   const saveState = useAppSelector(selectSaveState);
 
-  const { projectData, projectSoilsDistribution, projectSpaces } =
-    useAppSelector(selectProjectSummary);
+  const { projectData, projectSoilsDistribution } = useAppSelector(selectProjectSummary);
 
   return (
     <ProjectCreationDataSummary
@@ -54,7 +53,6 @@ function ProjectionCreationDataSummaryContainer() {
       onBack={onBack}
       projectData={projectData}
       projectSoilsDistribution={projectSoilsDistribution}
-      projectSpaces={projectSpaces}
       getSectionButtonProps={(stepGroupId: StepGroupId) => {
         return {
           iconId: "fr-icon-pencil-line",

@@ -4,6 +4,7 @@ import {
   ComparisonRoadAndUtilitiesMaintenanceImpact,
   computeProjectReinstatementExpenses,
   FricheGenerator,
+  getProjectSoilDistributionByType,
   Impact,
   NaturalAreaGenerator,
   ReconversionProjectImpacts,
@@ -619,10 +620,14 @@ export class ComputeProjectUrbanSprawlImpactsComparisonUseCase
         soilsDistribution: relatedSite.soilsDistribution,
       });
 
+    const soilsDistributionByType = getProjectSoilDistributionByType(
+      reconversionProject.soilsDistribution,
+    );
+
     const projectSoilsCarbonStorage =
       await this.getCarbonStorageFromSoilDistributionService.execute({
         cityCode: relatedSite.address.cityCode,
-        soilsDistribution: reconversionProject.soilsDistribution,
+        soilsDistribution: soilsDistributionByType,
       });
 
     const comparisonSiteSoilsCarbonStorage =
@@ -657,7 +662,7 @@ export class ComputeProjectUrbanSprawlImpactsComparisonUseCase
             reinstatementExpenses: typedObjectEntries(
               computeProjectReinstatementExpenses(
                 comparisonInputSiteData.soilsDistribution,
-                baseInputReconversionProjectData.soilsDistribution,
+                soilsDistributionByType,
                 0.75 * (comparisonSiteData.contaminatedSoilSurface ?? 0),
               ),
             )

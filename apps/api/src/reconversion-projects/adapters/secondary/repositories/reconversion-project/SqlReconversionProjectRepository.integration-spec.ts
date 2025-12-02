@@ -392,17 +392,6 @@ describe("SqlReconversionProjectRepository integration", () => {
               endDate: new Date("2027-01-05T12:00:00.000Z"),
             },
             features: {
-              spacesDistribution: {
-                BUILDINGS_FOOTPRINT: 2000,
-                PRIVATE_PAVED_ALLEY_OR_PARKING_LOT: 500,
-                PRIVATE_GRAVEL_ALLEY_OR_PARKING_LOT: 200,
-                PRIVATE_GARDEN_AND_GRASS_ALLEYS: 3700,
-                PUBLIC_GREEN_SPACES: 1900,
-                PUBLIC_PARKING_LOT: 500,
-                PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS: 400,
-                PUBLIC_GRAVEL_ROAD_OR_SQUARES_OR_SIDEWALKS: 700,
-                PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS: 100,
-              },
               buildingsFloorAreaDistribution: { RESIDENTIAL: 1840, LOCAL_STORE: 160 },
             },
           },
@@ -413,11 +402,38 @@ describe("SqlReconversionProjectRepository integration", () => {
           yearlyProjectedCosts: [],
           yearlyProjectedRevenues: [],
           soilsDistribution: [
-            { soilType: "BUILDINGS", surfaceArea: 10000 },
-            { soilType: "IMPERMEABLE_SOILS", surfaceArea: 7000 },
-            { soilType: "MINERAL_SOIL", surfaceArea: 4500 },
-            { soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED", surfaceArea: 19000 },
-            { soilType: "ARTIFICIAL_TREE_FILLED", surfaceArea: 9500 },
+            {
+              soilType: "BUILDINGS",
+              surfaceArea: 2000,
+              spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+            },
+            {
+              soilType: "IMPERMEABLE_SOILS",
+              surfaceArea: 500,
+              spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+            },
+            { soilType: "IMPERMEABLE_SOILS", surfaceArea: 900, spaceCategory: "PUBLIC_SPACE" },
+            {
+              soilType: "MINERAL_SOIL",
+              surfaceArea: 200,
+              spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+            },
+            { soilType: "MINERAL_SOIL", surfaceArea: 700, spaceCategory: "PUBLIC_SPACE" },
+            {
+              soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+              surfaceArea: 1900,
+              spaceCategory: "PUBLIC_SPACE",
+            },
+            {
+              soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+              surfaceArea: 100,
+              spaceCategory: "PUBLIC_GREEN_SPACE",
+            },
+            {
+              soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+              surfaceArea: 3700,
+              spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+            },
           ],
 
           reinstatementSchedule: {
@@ -679,7 +695,6 @@ describe("SqlReconversionProjectRepository integration", () => {
             type: "URBAN_PROJECT",
             developer: { name: "New Developer", structureType: "company" },
             features: {
-              spacesDistribution: {},
               buildingsFloorAreaDistribution: {
                 SPORTS_FACILITIES: 1500,
               },
@@ -706,7 +721,6 @@ describe("SqlReconversionProjectRepository integration", () => {
           schedule_end_date: new Date("2028-01-01"),
         });
         expect(result?.features).toEqual({
-          spacesDistribution: {},
           buildingsFloorAreaDistribution: {
             SPORTS_FACILITIES: 1500,
           },
@@ -1008,10 +1022,6 @@ describe("SqlReconversionProjectRepository integration", () => {
               endDate: new Date("2027-01-05"),
             },
             features: {
-              spacesDistribution: {
-                BUILDINGS_FOOTPRINT: 2000,
-                PRIVATE_PAVED_ALLEY_OR_PARKING_LOT: 500,
-              },
               buildingsFloorAreaDistribution: { RESIDENTIAL: 1840 },
             },
           },
@@ -1027,14 +1037,19 @@ describe("SqlReconversionProjectRepository integration", () => {
         const updatedProject: ReconversionProjectUpdateDto = {
           ...reconversionProject,
           name: "Updated urban project",
+          soilsDistribution: [
+            { soilType: "BUILDINGS", surfaceArea: 3000 },
+            {
+              soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+              spaceCategory: "PUBLIC_GREEN_SPACE",
+              surfaceArea: 1500,
+            },
+          ],
+
           developmentPlan: {
             ...reconversionProject.developmentPlan,
             developer: { name: "Paris", structureType: "municipality" },
             features: {
-              spacesDistribution: {
-                BUILDINGS_FOOTPRINT: 3000,
-                PUBLIC_GREEN_SPACES: 1500,
-              },
               buildingsFloorAreaDistribution: { RESIDENTIAL: 2500, LOCAL_STORE: 500 },
             },
           },
@@ -1052,8 +1067,13 @@ describe("SqlReconversionProjectRepository integration", () => {
         expect(result?.name).toEqual("Updated urban project");
         expect(result?.relatedSiteId).toEqual(siteId);
         expect(result?.projectPhase).toEqual("planning");
-        expect(developmentPlanFeatures.spacesDistribution.BUILDINGS_FOOTPRINT).toBe(3000);
-        expect(developmentPlanFeatures.spacesDistribution.PUBLIC_GREEN_SPACES).toBe(1500);
+        expect(
+          result?.soilsDistribution.find((elem) => elem.soilType === "BUILDINGS")?.surfaceArea,
+        ).toBe(3000);
+        expect(
+          result?.soilsDistribution.find((elem) => elem.spaceCategory === "PUBLIC_GREEN_SPACE")
+            ?.surfaceArea,
+        ).toBe(1500);
         expect(developmentPlanFeatures.buildingsFloorAreaDistribution.RESIDENTIAL).toBe(2500);
         expect(developmentPlanFeatures.buildingsFloorAreaDistribution.LOCAL_STORE).toBe(500);
       });

@@ -20,11 +20,14 @@ export class MockProjectFeaturesService implements ProjectFeaturesGateway {
       expectedAnnualProduction: 4399,
       contractDuration: 20,
     },
-    soilsDistribution: {
-      ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 115000,
-      MINERAL_SOIL: 3500,
-      IMPERMEABLE_SOILS: 1500,
-    },
+    soilsDistribution: [
+      {
+        soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+        surfaceArea: 115000,
+      },
+      { soilType: "MINERAL_SOIL", surfaceArea: 3500 },
+      { soilType: "IMPERMEABLE_SOILS", surfaceArea: 1500 },
+    ],
     futureOwner: "ADEME",
     futureOperator: "ADEME",
     reinstatementContractOwner: "ADEME",

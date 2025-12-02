@@ -8,13 +8,21 @@ import { InputFricheData, InputReconversionProjectData } from "./ReconversionPro
 import { UrbanProjectImpactsService } from "./UrbanProjectImpactsService";
 
 const reconversionProjectImpactDataView = {
-  soilsDistribution: {
-    ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 10000,
-    PRAIRIE_TREES: 20000,
-    BUILDINGS: 20000,
-    MINERAL_SOIL: 20000,
-    IMPERMEABLE_SOILS: 30000,
-  },
+  soilsDistribution: [
+    {
+      soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+      spaceCategory: "PUBLIC_GREEN_SPACE",
+      surfaceArea: 10000,
+    },
+    {
+      soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+      spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+      surfaceArea: 20000,
+    },
+    { soilType: "BUILDINGS", spaceCategory: "LIVING_AND_ACTIVITY_SPACE", surfaceArea: 20000 },
+    { soilType: "MINERAL_SOIL", spaceCategory: "LIVING_AND_ACTIVITY_SPACE", surfaceArea: 20000 },
+    { soilType: "IMPERMEABLE_SOILS", spaceCategory: "PUBLIC_SPACE", surfaceArea: 30000 },
+  ],
   conversionSchedule: {
     startDate: new Date("2025-07-01"),
     endDate: new Date("2026-07-01"),
@@ -31,7 +39,6 @@ const reconversionProjectImpactDataView = {
   developmentPlanInstallationExpenses: [{ amount: 200000, purpose: "installation_works" }],
   developmentPlanFeatures: {
     buildingsFloorAreaDistribution: { RESIDENTIAL: 11000 },
-    spacesDistribution: { BUILDINGS_FOOTPRINT: 1000 },
   },
   developmentPlanType: "URBAN_PROJECT",
   developmentPlanDeveloperName: "Mairie de Blajan",
@@ -204,9 +211,6 @@ describe("UrbanProjectImpactsService", () => {
           ...reconversionProjectImpactDataView,
           developmentPlanFeatures: {
             buildingsFloorAreaDistribution: { LOCAL_STORE: 500, OFFICES: 500 },
-            spacesDistribution: {
-              BUILDINGS_FOOTPRINT: 1000,
-            },
           },
         },
         relatedSite: site,
@@ -249,10 +253,6 @@ describe("UrbanProjectImpactsService", () => {
               OFFICES: 1000,
               CULTURAL_PLACE: 500,
               SPORTS_FACILITIES: 1000,
-            },
-            spacesDistribution: {
-              BUILDINGS_FOOTPRINT: 10000,
-              PUBLIC_GREEN_SPACES: 65100,
             },
           },
         },
@@ -349,10 +349,6 @@ describe("UrbanProjectImpactsService", () => {
               OFFICES: 1000,
               CULTURAL_PLACE: 500,
               SPORTS_FACILITIES: 1000,
-            },
-            spacesDistribution: {
-              BUILDINGS_FOOTPRINT: 10000,
-              PUBLIC_GREEN_SPACES: 65100,
             },
           },
         },

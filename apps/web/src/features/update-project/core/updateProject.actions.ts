@@ -7,7 +7,7 @@ import { createUrbanProjectFormActions } from "@/shared/core/reducers/project-fo
 import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
 
 import {
-  selectProjectSoilsDistribution,
+  selectProjectSoilsDistributionByType,
   selectSiteAddress,
   selectSiteSoilsDistribution,
 } from "./updateProject.selectors";
@@ -23,7 +23,7 @@ export const updateProjectFormActions = createProjectFormActions(UPDATE_PROJECT_
 export const updateProjectFormUrbanActions = createUrbanProjectFormActions(
   UPDATE_PROJECT_STORE_KEY,
   {
-    selectProjectSoilsDistribution,
+    selectProjectSoilsDistributionByType,
     selectSiteAddress,
     selectSiteSoilsDistribution,
   },

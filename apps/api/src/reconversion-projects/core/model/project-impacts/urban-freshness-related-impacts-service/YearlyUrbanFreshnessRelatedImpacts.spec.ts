@@ -9,7 +9,7 @@ describe("YearlyUrbanFreshnessRelatedImpacts", () => {
         citySquareMetersSurfaceArea: 15000000,
         cityPopulation: 18000,
         buildingsFloorAreaDistribution: {},
-        spacesDistribution: {},
+        projectPublicGreenSpaceSurface: 0,
       });
 
       expect(urbanFreshnessRelatedImpactsService.hasUrbanFreshnessImpact).toEqual(false);
@@ -24,9 +24,7 @@ describe("YearlyUrbanFreshnessRelatedImpacts", () => {
           RESIDENTIAL: 500,
           LOCAL_STORE: 100,
         },
-        spacesDistribution: {
-          PUBLIC_GREEN_SPACES: 400,
-        },
+        projectPublicGreenSpaceSurface: 400,
       });
 
       expect(urbanFreshnessRelatedImpactsService.hasUrbanFreshnessImpact).toEqual(false);
@@ -41,9 +39,7 @@ describe("YearlyUrbanFreshnessRelatedImpacts", () => {
           RESIDENTIAL: 5000,
           LOCAL_STORE: 2600,
         },
-        spacesDistribution: {
-          PUBLIC_GREEN_SPACES: 400,
-        },
+        projectPublicGreenSpaceSurface: 400,
       });
 
       expect(urbanFreshnessRelatedImpactsService.hasUrbanFreshnessImpact).toEqual(false);
@@ -64,9 +60,7 @@ describe("YearlyUrbanFreshnessRelatedImpacts", () => {
           RESIDENTIAL: 1500,
           LOCAL_STORE: 1000,
         },
-        spacesDistribution: {
-          PUBLIC_GREEN_SPACES: 2100,
-        },
+        projectPublicGreenSpaceSurface: 2100,
       });
 
       const newResidentsEffectAndInfluenceRadiusEffectService =
@@ -76,9 +70,7 @@ describe("YearlyUrbanFreshnessRelatedImpacts", () => {
             RESIDENTIAL: 1500,
             LOCAL_STORE: 1000,
           },
-          spacesDistribution: {
-            PUBLIC_GREEN_SPACES: 3995,
-          },
+          projectPublicGreenSpaceSurface: 3995,
         });
 
       expect(withOnlyNewResidentsEffectService.hasUrbanFreshnessImpact).toEqual(true);
@@ -104,9 +96,7 @@ describe("YearlyUrbanFreshnessRelatedImpacts", () => {
             RESIDENTIAL: 1500,
             LOCAL_STORE: 1000,
           },
-          spacesDistribution: {
-            PUBLIC_GREEN_SPACES: 5100,
-          },
+          projectPublicGreenSpaceSurface: 5100,
         })["influenceRadius"],
       ).toEqual(25);
       expect(
@@ -117,9 +107,7 @@ describe("YearlyUrbanFreshnessRelatedImpacts", () => {
             RESIDENTIAL: 1500,
             LOCAL_STORE: 1000,
           },
-          spacesDistribution: {
-            PUBLIC_GREEN_SPACES: 9990,
-          },
+          projectPublicGreenSpaceSurface: 9990,
         })["influenceRadius"],
       ).toEqual(50);
     });
@@ -138,9 +126,7 @@ describe("YearlyUrbanFreshnessRelatedImpacts", () => {
             RESIDENTIAL: 1500,
             LOCAL_STORE: 1000,
           },
-          spacesDistribution: {
-            PUBLIC_GREEN_SPACES: 11111,
-          },
+          projectPublicGreenSpaceSurface: 11111,
         })["influenceRadius"],
       ).toEqual(0);
 
@@ -151,9 +137,7 @@ describe("YearlyUrbanFreshnessRelatedImpacts", () => {
             RESIDENTIAL: 1500,
             LOCAL_STORE: 1000,
           },
-          spacesDistribution: {
-            PUBLIC_GREEN_SPACES: 65600,
-          },
+          projectPublicGreenSpaceSurface: 65600,
         })["influenceRadius"],
       ).toEqual(50);
 
@@ -164,9 +148,7 @@ describe("YearlyUrbanFreshnessRelatedImpacts", () => {
             RESIDENTIAL: 1500,
             LOCAL_STORE: 1000,
           },
-          spacesDistribution: {
-            PUBLIC_GREEN_SPACES: 119000,
-          },
+          projectPublicGreenSpaceSurface: 119000,
         })["influenceRadius"],
       ).toEqual(75);
     });

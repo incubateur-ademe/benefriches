@@ -21,11 +21,11 @@ export const creationProjectFormSelectors = createUrbanProjectFormSelectors("pro
   selectSiteContaminatedSurfaceArea,
 });
 
-const { selectStepState, selectProjectSoilsDistribution } = creationProjectFormSelectors;
+const { selectStepState, selectProjectSoilsDistributionByType } = creationProjectFormSelectors;
 
 export const selectUrbanProjectCurrentStep = createSelector(
   [(state: RootState) => state.projectCreation.urbanProject],
   (state) => state.currentStep,
 );
 
-export { selectProjectSoilsDistribution, selectStepState };
+export { selectProjectSoilsDistributionByType, selectStepState };

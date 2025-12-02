@@ -138,6 +138,20 @@ export const buildReconversionProject = (
 export const buildUrbanProjectReconversionProjectProps = (): ReconversionProjectSavePropsDto => {
   return {
     ...baseReconversionProjectProps,
+
+    soilsDistribution: [
+      {
+        soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+        spaceCategory: "PUBLIC_SPACE",
+        surfaceArea: 1000,
+      },
+      {
+        soilType: "ARTIFICIAL_TREE_FILLED",
+        spaceCategory: "PUBLIC_GREEN_SPACE",
+        surfaceArea: 5000,
+      },
+      { soilType: "BUILDINGS", spaceCategory: "LIVING_AND_ACTIVITY_SPACE", surfaceArea: 1500 },
+    ],
     developmentPlan: {
       type: "URBAN_PROJECT",
       costs: [
@@ -149,11 +163,6 @@ export const buildUrbanProjectReconversionProjectProps = (): ReconversionProject
         structureType: "company",
       },
       features: {
-        spacesDistribution: {
-          BUILDINGS_FOOTPRINT: 1500,
-          PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS: 1000,
-          PUBLIC_GREEN_SPACES: 5000,
-        },
         buildingsFloorAreaDistribution: {
           RESIDENTIAL: 250,
           LOCAL_STORE: 250,

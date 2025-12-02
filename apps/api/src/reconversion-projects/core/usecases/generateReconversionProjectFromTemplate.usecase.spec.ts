@@ -2,9 +2,8 @@ import {
   BuildingsUseDistribution,
   ReconversionProjectTemplate,
   reconversionProjectTemplateSchema,
-  getProjectSoilDistributionByType,
   sumListWithKey,
-  sumObjectValues,
+  ReconversionProjectSoilsDistribution,
 } from "shared";
 import { v4 as uuid } from "uuid";
 
@@ -276,20 +275,43 @@ describe("GenerateAndSaveReconversionProjectFromTemplateUseCase Use Case", () =>
           });
 
           let expectedBuildingsFloorAreaDistribution: BuildingsUseDistribution = {};
-          let expectedSpacesDistribution;
+          let expectedSoilsDistribution: ReconversionProjectSoilsDistribution = [];
 
           if (template === "RESIDENTIAL_TENSE_AREA") {
-            expectedSpacesDistribution = {
-              BUILDINGS_FOOTPRINT: 4200,
-              PRIVATE_PAVED_ALLEY_OR_PARKING_LOT: 350,
-              PRIVATE_GRAVEL_ALLEY_OR_PARKING_LOT: 350,
-              PRIVATE_GARDEN_AND_GRASS_ALLEYS: 2100,
-              PUBLIC_GREEN_SPACES: 1500,
-              PUBLIC_PARKING_LOT: 500,
-              PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS: 200,
-              PUBLIC_GRAVEL_ROAD_OR_SQUARES_OR_SIDEWALKS: 400,
-              PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS: 400,
-            };
+            expectedSoilsDistribution = [
+              {
+                soilType: "BUILDINGS",
+                spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+                surfaceArea: 4200,
+              },
+              {
+                soilType: "IMPERMEABLE_SOILS",
+                spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+                surfaceArea: 350,
+              },
+              {
+                soilType: "MINERAL_SOIL",
+                spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+                surfaceArea: 350,
+              },
+              {
+                soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+                spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+                surfaceArea: 2100,
+              },
+              {
+                soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+                spaceCategory: "PUBLIC_GREEN_SPACE",
+                surfaceArea: 1500,
+              },
+              { soilType: "IMPERMEABLE_SOILS", spaceCategory: "PUBLIC_SPACE", surfaceArea: 700 },
+              { soilType: "MINERAL_SOIL", spaceCategory: "PUBLIC_SPACE", surfaceArea: 400 },
+              {
+                soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+                spaceCategory: "PUBLIC_SPACE",
+                surfaceArea: 400,
+              },
+            ];
             expectedBuildingsFloorAreaDistribution = {
               RESIDENTIAL: 8500,
               LOCAL_STORE: 400,
@@ -297,17 +319,40 @@ describe("GenerateAndSaveReconversionProjectFromTemplateUseCase Use Case", () =>
               LOCAL_SERVICES: 600,
             };
           } else if (template === "NEW_URBAN_CENTER") {
-            expectedSpacesDistribution = {
-              BUILDINGS_FOOTPRINT: 2925,
-              PRIVATE_PAVED_ALLEY_OR_PARKING_LOT: 325,
-              PRIVATE_GRAVEL_ALLEY_OR_PARKING_LOT: 325,
-              PRIVATE_GARDEN_AND_GRASS_ALLEYS: 2925,
-              PUBLIC_GREEN_SPACES: 1500,
-              PUBLIC_PARKING_LOT: 900,
-              PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS: 100,
-              PUBLIC_GRAVEL_ROAD_OR_SQUARES_OR_SIDEWALKS: 500,
-              PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS: 500,
-            };
+            expectedSoilsDistribution = [
+              {
+                soilType: "BUILDINGS",
+                spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+                surfaceArea: 2925,
+              },
+              {
+                soilType: "IMPERMEABLE_SOILS",
+                spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+                surfaceArea: 325,
+              },
+              {
+                soilType: "MINERAL_SOIL",
+                spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+                surfaceArea: 325,
+              },
+              {
+                soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+                spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+                surfaceArea: 2925,
+              },
+              {
+                soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+                spaceCategory: "PUBLIC_GREEN_SPACE",
+                surfaceArea: 1500,
+              },
+              { soilType: "IMPERMEABLE_SOILS", spaceCategory: "PUBLIC_SPACE", surfaceArea: 1000 },
+              { soilType: "MINERAL_SOIL", spaceCategory: "PUBLIC_SPACE", surfaceArea: 500 },
+              {
+                soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+                spaceCategory: "PUBLIC_SPACE",
+                surfaceArea: 500,
+              },
+            ];
             expectedBuildingsFloorAreaDistribution = {
               RESIDENTIAL: 4960,
               LOCAL_STORE: 160,
@@ -317,102 +362,150 @@ describe("GenerateAndSaveReconversionProjectFromTemplateUseCase Use Case", () =>
               PUBLIC_FACILITIES: 160,
             };
           } else if (template === "PUBLIC_FACILITIES") {
-            expectedSpacesDistribution = {
-              BUILDINGS_FOOTPRINT: 4100,
-              PUBLIC_GREEN_SPACES: 3800,
-              PUBLIC_PARKING_LOT: 1000,
-              PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS: 1100,
-            };
+            expectedSoilsDistribution = [
+              {
+                soilType: "BUILDINGS",
+                spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+                surfaceArea: 4100,
+              },
+              {
+                soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+                spaceCategory: "PUBLIC_GREEN_SPACE",
+                surfaceArea: 3800,
+              },
+              { soilType: "IMPERMEABLE_SOILS", spaceCategory: "PUBLIC_SPACE", surfaceArea: 2100 },
+            ];
             expectedBuildingsFloorAreaDistribution = {
               PUBLIC_FACILITIES: 4100,
             };
           } else if (template === "OFFICES") {
-            expectedSpacesDistribution = {
-              BUILDINGS_FOOTPRINT: 8_000,
-              PRIVATE_PAVED_ALLEY_OR_PARKING_LOT: 500,
-              PRIVATE_GRAVEL_ALLEY_OR_PARKING_LOT: 500,
-              PRIVATE_GARDEN_AND_GRASS_ALLEYS: 1_000,
-            };
+            expectedSoilsDistribution = [
+              {
+                soilType: "BUILDINGS",
+                spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+                surfaceArea: 8_000,
+              },
+              {
+                soilType: "IMPERMEABLE_SOILS",
+                spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+                surfaceArea: 500,
+              },
+              {
+                soilType: "MINERAL_SOIL",
+                spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+                surfaceArea: 500,
+              },
+              {
+                soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+                spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+                surfaceArea: 1_000,
+              },
+            ];
             expectedBuildingsFloorAreaDistribution = {
               OFFICES: 24_000,
             };
           } else if (template === "TOURISM_AND_CULTURAL_FACILITIES") {
-            expectedSpacesDistribution = {
-              BUILDINGS_FOOTPRINT: 6_000,
-              PRIVATE_PAVED_ALLEY_OR_PARKING_LOT: 2_000,
-              PUBLIC_GREEN_SPACES: 2_000,
-            };
+            expectedSoilsDistribution = [
+              {
+                soilType: "BUILDINGS",
+                spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+                surfaceArea: 6_000,
+              },
+              {
+                soilType: "IMPERMEABLE_SOILS",
+                spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+                surfaceArea: 2_000,
+              },
+              {
+                soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+                spaceCategory: "PUBLIC_GREEN_SPACE",
+                surfaceArea: 2_000,
+              },
+            ];
             expectedBuildingsFloorAreaDistribution = {
               CULTURAL_PLACE: 6_000,
             };
           } else if (template === "INDUSTRIAL_FACILITIES") {
-            expectedSpacesDistribution = {
-              BUILDINGS_FOOTPRINT: 6_000,
-              PRIVATE_PAVED_ALLEY_OR_PARKING_LOT: 3_000,
-              PRIVATE_GARDEN_AND_GRASS_ALLEYS: 1_000,
-            };
+            expectedSoilsDistribution = [
+              {
+                soilType: "BUILDINGS",
+                spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+                surfaceArea: 6_000,
+              },
+              {
+                soilType: "IMPERMEABLE_SOILS",
+                spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+                surfaceArea: 3_000,
+              },
+              {
+                soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+                spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+                surfaceArea: 1_000,
+              },
+            ];
             expectedBuildingsFloorAreaDistribution = {
               ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES: 6_000,
             };
           } else if (template === "RENATURATION") {
-            expectedSpacesDistribution = {
-              PUBLIC_GREEN_SPACES: site.surfaceArea,
-            };
+            expectedSoilsDistribution = [
+              {
+                soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+                spaceCategory: "PUBLIC_GREEN_SPACE",
+                surfaceArea: site.surfaceArea,
+              },
+            ];
           } else {
-            expectedSpacesDistribution = {
-              BUILDINGS_FOOTPRINT: 2000,
-              PRIVATE_PAVED_ALLEY_OR_PARKING_LOT: 700,
-              PRIVATE_GRAVEL_ALLEY_OR_PARKING_LOT: 200,
-              PRIVATE_GARDEN_AND_GRASS_ALLEYS: 3700,
-              PUBLIC_GREEN_SPACES: 1900,
-              PUBLIC_PARKING_LOT: 500,
-              PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS: 400,
-              PUBLIC_GRAVEL_ROAD_OR_SQUARES_OR_SIDEWALKS: 200,
-              PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS: 400,
-            };
+            expectedSoilsDistribution = [
+              {
+                soilType: "BUILDINGS",
+                spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+                surfaceArea: 2000,
+              },
+              {
+                soilType: "IMPERMEABLE_SOILS",
+                spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+                surfaceArea: 700,
+              },
+              {
+                soilType: "MINERAL_SOIL",
+                spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+                surfaceArea: 200,
+              },
+              {
+                soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+                spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+                surfaceArea: 3700,
+              },
+              {
+                soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+                spaceCategory: "PUBLIC_GREEN_SPACE",
+                surfaceArea: 1900,
+              },
+              { soilType: "IMPERMEABLE_SOILS", spaceCategory: "PUBLIC_SPACE", surfaceArea: 900 },
+              { soilType: "MINERAL_SOIL", spaceCategory: "PUBLIC_SPACE", surfaceArea: 200 },
+              {
+                soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+                spaceCategory: "PUBLIC_SPACE",
+                surfaceArea: 400,
+              },
+            ];
             expectedBuildingsFloorAreaDistribution = {
               RESIDENTIAL: 3800,
             };
           }
 
-          const expectedMineralSoils =
-            (expectedSpacesDistribution.PRIVATE_GRAVEL_ALLEY_OR_PARKING_LOT ?? 0) +
-            (expectedSpacesDistribution.PUBLIC_GRAVEL_ROAD_OR_SQUARES_OR_SIDEWALKS ?? 0);
-
-          const expectedImpermeableSoils =
-            (expectedSpacesDistribution.PUBLIC_PARKING_LOT ?? 0) +
-            (expectedSpacesDistribution.PRIVATE_PAVED_ALLEY_OR_PARKING_LOT ?? 0) +
-            (expectedSpacesDistribution.PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS ?? 0);
-
-          const expectedArtificialGrassOrBushesSoils =
-            (expectedSpacesDistribution.PRIVATE_GARDEN_AND_GRASS_ALLEYS ?? 0) +
-            (expectedSpacesDistribution.PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS ?? 0) +
-            (expectedSpacesDistribution.PUBLIC_GREEN_SPACES ?? 0);
-
-          const expectedSoilsDistribution = {
-            BUILDINGS: expectedSpacesDistribution.BUILDINGS_FOOTPRINT,
-            ARTIFICIAL_GRASS_OR_BUSHES_FILLED:
-              expectedArtificialGrassOrBushesSoils > 0
-                ? expectedArtificialGrassOrBushesSoils
-                : undefined,
-            IMPERMEABLE_SOILS: expectedImpermeableSoils > 0 ? expectedImpermeableSoils : undefined,
-            MINERAL_SOIL: expectedMineralSoils > 0 ? expectedMineralSoils : undefined,
-          };
-
           expect(result.isSuccess()).toBe(true);
           const data = (result as SuccessResult<ReconversionProjectSaveDto>).getData();
           const { developmentPlan, soilsDistribution = [] } = data;
-          const { buildingsFloorAreaDistribution, spacesDistribution } =
+          const { buildingsFloorAreaDistribution } =
             developmentPlan.features as UrbanProjectFeatures;
 
           expect(developmentPlan.type).toEqual("URBAN_PROJECT");
 
-          expect(spacesDistribution).toEqual(expectedSpacesDistribution);
-          expect(sumObjectValues(spacesDistribution)).toEqual(site.surfaceArea);
+          expect(sumListWithKey(soilsDistribution, "surfaceArea")).toEqual(site.surfaceArea);
           expect(buildingsFloorAreaDistribution).toEqual(expectedBuildingsFloorAreaDistribution);
 
-          const soilsDistributionByType = getProjectSoilDistributionByType(soilsDistribution);
-          expect(soilsDistributionByType).toEqual(expectedSoilsDistribution);
+          expect(soilsDistribution).toEqual(expectedSoilsDistribution);
           expect(sumListWithKey(soilsDistribution, "surfaceArea")).toEqual(site.surfaceArea);
         },
       );

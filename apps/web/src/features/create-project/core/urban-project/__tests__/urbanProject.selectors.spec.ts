@@ -92,11 +92,11 @@ describe("urbanProject.selectors", () => {
     });
   });
 
-  describe("selectProjectSoilsDistribution", () => {
+  describe("selectProjectSoilsDistributionByType", () => {
     it("should return empty object when there is no space categories filled", () => {
       const store = createTestStore();
       const rootState = store.getState();
-      const result = creationProjectFormSelectors.selectProjectSoilsDistribution(rootState);
+      const result = creationProjectFormSelectors.selectProjectSoilsDistributionByType(rootState);
 
       expect(result).toEqual({});
     });

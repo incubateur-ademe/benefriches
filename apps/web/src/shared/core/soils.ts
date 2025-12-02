@@ -1,5 +1,5 @@
 import { fr } from "@codegouvfr/react-dsfr";
-import { SoilType } from "shared";
+import { ReconversionProjectSoilsDistribution, SoilType, ORDERED_SOIL_TYPES } from "shared";
 
 const soilColors = {
   buildings: "#EB13BE",
@@ -65,4 +65,19 @@ export const getColorForCarbonStorageSoilType = (value: SoilType): string => {
     return fr.colors.decisions.background.default.grey.default;
   }
   return getColorForSoilType(value);
+};
+
+export const sortAndAggregateProjectSoilDistribution = (
+  soilsDistribution: ReconversionProjectSoilsDistribution,
+): { soilType: SoilType; surfaceArea: number }[] => {
+  const groupedMap = soilsDistribution.reduce((acc, item) => {
+    const current = acc.get(item.soilType) || 0;
+    acc.set(item.soilType, current + item.surfaceArea);
+    return acc;
+  }, new Map<SoilType, number>());
+
+  return ORDERED_SOIL_TYPES.filter((soilType) => groupedMap.has(soilType)).map((soilType) => ({
+    soilType,
+    surfaceArea: groupedMap.get(soilType)!,
+  }));
 };

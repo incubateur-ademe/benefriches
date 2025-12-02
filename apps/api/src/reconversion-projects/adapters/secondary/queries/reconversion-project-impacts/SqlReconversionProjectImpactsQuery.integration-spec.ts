@@ -141,10 +141,16 @@ describe("SqlReconversionProjectImpactsQuery integration", () => {
         name: "Big project",
         isExpressProject: true,
         relatedSiteId: siteId,
-        soilsDistribution: {
-          BUILDINGS: 1200,
-          ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 30000,
-        },
+        soilsDistribution: [
+          {
+            soilType: "BUILDINGS",
+            surfaceArea: 1200,
+          },
+          {
+            soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+            surfaceArea: 30000,
+          },
+        ],
         conversionSchedule: {
           startDate: new Date("2025-01-01"),
           endDate: new Date("2025-05-15"),
@@ -248,10 +254,16 @@ describe("SqlReconversionProjectImpactsQuery integration", () => {
         name: "Big project",
         isExpressProject: false,
         relatedSiteId: siteId,
-        soilsDistribution: {
-          BUILDINGS: 1200,
-          ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 30000,
-        },
+        soilsDistribution: [
+          {
+            soilType: "BUILDINGS",
+            surfaceArea: 1200,
+          },
+          {
+            soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+            surfaceArea: 30000,
+          },
+        ],
         yearlyProjectedExpenses: [],
         yearlyProjectedRevenues: [],
         conversionSchedule: undefined,

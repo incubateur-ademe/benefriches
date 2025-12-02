@@ -4,11 +4,11 @@ import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 import UrbanProjectSoilsSummary from "./UrbanProjectSoilsSummary";
 
 function UrbanProjectSoilsSummaryContainer() {
-  const { onBack, onNext, selectSiteSoilsDistribution, selectProjectSoilsDistribution } =
+  const { onBack, onNext, selectSiteSoilsDistribution, selectProjectSoilsDistributionByType } =
     useProjectForm();
 
   const siteSoilsDistribution = useAppSelector(selectSiteSoilsDistribution);
-  const projectSoilsDistribution = useAppSelector(selectProjectSoilsDistribution);
+  const projectSoilsDistribution = useAppSelector(selectProjectSoilsDistributionByType);
 
   return (
     <UrbanProjectSoilsSummary

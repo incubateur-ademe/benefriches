@@ -1,6 +1,5 @@
 import { Inject } from "@nestjs/common";
 import { Knex } from "knex";
-import { getProjectSoilDistributionByType } from "shared";
 
 import { DevelopmentPlan } from "src/reconversion-projects/core/model/reconversionProject";
 import {
@@ -151,13 +150,11 @@ export class SqlReconversionProjectImpactsQuery implements ReconversionProjectIm
       name: reconversionProject.name,
       isExpressProject: reconversionProject.creation_mode === "express",
       relatedSiteId: reconversionProject.related_site_id,
-      soilsDistribution: getProjectSoilDistributionByType(
-        sqlSoilDistributions.map((sd) => ({
-          soilType: sd.soil_type,
-          surfaceArea: sd.surface_area,
-          spaceCategory: sd.space_category,
-        })),
-      ),
+      soilsDistribution: sqlSoilDistributions.map((sd) => ({
+        soilType: sd.soil_type,
+        surfaceArea: sd.surface_area,
+        spaceCategory: sd.space_category ?? undefined,
+      })),
       conversionSchedule,
       reinstatementSchedule,
       futureOperatorName: reconversionProject.future_operator_name ?? undefined,

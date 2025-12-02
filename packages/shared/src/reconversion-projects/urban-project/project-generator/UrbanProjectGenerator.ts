@@ -1,7 +1,6 @@
 import { IDateProvider } from "../../../adapters/IDateProvider";
 import { computePropertyTransferDutiesFromSellingPrice } from "../../../financial";
 import { formatMunicipalityName } from "../../../local-authority";
-import { typedObjectEntries } from "../../../object-entries";
 import { computeDefaultSitePurchaseFromSiteSurfaceArea } from "../../_common";
 import { DefaultProjectGenerator } from "../../_common/project-generator/DefaultProjectGenerator";
 import { ReconversionProject, SiteData } from "../../_common/project-generator/types";
@@ -12,7 +11,6 @@ import {
 import { computeExpectedPostDevelopmentResaleSellingPriceFromSurfaces } from "../expectedPostDevelopmentResale";
 import { computeDefaultInstallationExpensesFromSiteSurfaceArea } from "../installationExpenses";
 import { BuildingsUseDistribution } from "../spaces/living-and-activity-spaces/buildingsUse";
-import { LEGACY_SpacesDistribution } from "../urbanProject";
 
 export class UrbanProjectGenerator extends DefaultProjectGenerator {
   name;
@@ -29,73 +27,12 @@ export class UrbanProjectGenerator extends DefaultProjectGenerator {
     this.developmentType = "URBAN_PROJECT" as const;
   }
 
-  get spacesDistribution(): LEGACY_SpacesDistribution {
-    return {};
-  }
-
   get buildingsFloorAreaDistribution(): BuildingsUseDistribution {
     return {};
   }
 
   override get projectSoilsDistribution(): ReconversionProjectSoilsDistribution {
-    return typedObjectEntries(this.spacesDistribution).map(([spaceType, surfaceArea = 0]) => {
-      switch (spaceType) {
-        case "BUILDINGS_FOOTPRINT":
-          return {
-            surfaceArea,
-            soilType: "BUILDINGS",
-            spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
-          };
-        case "PRIVATE_PAVED_ALLEY_OR_PARKING_LOT":
-          return {
-            surfaceArea,
-            soilType: "IMPERMEABLE_SOILS",
-            spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
-          };
-        case "PRIVATE_GRAVEL_ALLEY_OR_PARKING_LOT":
-          return {
-            surfaceArea,
-            soilType: "MINERAL_SOIL",
-            spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
-          };
-        case "PRIVATE_GARDEN_AND_GRASS_ALLEYS":
-          return {
-            surfaceArea,
-            soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
-            spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
-          };
-        case "PUBLIC_GREEN_SPACES":
-          return {
-            surfaceArea,
-            soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
-            spaceCategory: "PUBLIC_GREEN_SPACE",
-          };
-        case "PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS":
-          return {
-            surfaceArea,
-            soilType: "IMPERMEABLE_SOILS",
-            spaceCategory: "PUBLIC_SPACE",
-          };
-        case "PUBLIC_GRAVEL_ROAD_OR_SQUARES_OR_SIDEWALKS":
-          return {
-            surfaceArea,
-            soilType: "MINERAL_SOIL",
-            spaceCategory: "PUBLIC_SPACE",
-          };
-        case "PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS":
-          return {
-            surfaceArea,
-            soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
-            spaceCategory: "PUBLIC_SPACE",
-          };
-        case "PUBLIC_PARKING_LOT":
-          return {
-            surfaceArea,
-            soilType: "IMPERMEABLE_SOILS",
-            spaceCategory: "PUBLIC_SPACE",
-          };
-      }
-    });
+    return [];
   }
 
   override get developer() {
@@ -173,7 +110,6 @@ export class UrbanProjectGenerator extends DefaultProjectGenerator {
       developmentPlan: {
         developer: this.developer,
         features: {
-          spacesDistribution: this.spacesDistribution,
           buildingsFloorAreaDistribution: this.buildingsFloorAreaDistribution,
         },
         installationSchedule: this.installationSchedule,

@@ -6,13 +6,13 @@ import {
   PROJECT_CREATION_ACTION_PREFIX,
 } from "../actions/actionsUtils";
 import { selectSiteAddress, selectSiteSoilsDistribution } from "../createProject.selectors";
-import { selectProjectSoilsDistribution } from "./urbanProject.selectors";
+import { selectProjectSoilsDistributionByType } from "./urbanProject.selectors";
 
 export const creationProjectFormActions = createProjectFormActions(PROJECT_CREATION_ACTION_PREFIX);
 export const creationProjectFormUrbanActions = createUrbanProjectFormActions(
   PROJECT_CREATION_ACTION_PREFIX,
   {
-    selectProjectSoilsDistribution,
+    selectProjectSoilsDistributionByType,
     selectSiteAddress,
     selectSiteSoilsDistribution,
   },

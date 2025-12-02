@@ -9,13 +9,21 @@ import {
 } from "./ReconversionProjectImpactsService";
 
 const reconversionProjectImpactDataView = {
-  soilsDistribution: {
-    ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 10000,
-    PRAIRIE_TREES: 20000,
-    BUILDINGS: 20000,
-    MINERAL_SOIL: 20000,
-    IMPERMEABLE_SOILS: 30000,
-  },
+  soilsDistribution: [
+    {
+      soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+      spaceCategory: "PUBLIC_GREEN_SPACE",
+      surfaceArea: 10000,
+    },
+    {
+      soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+      spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+      surfaceArea: 20000,
+    },
+    { soilType: "BUILDINGS", spaceCategory: "LIVING_AND_ACTIVITY_SPACE", surfaceArea: 20000 },
+    { soilType: "MINERAL_SOIL", spaceCategory: "LIVING_AND_ACTIVITY_SPACE", surfaceArea: 20000 },
+    { soilType: "IMPERMEABLE_SOILS", spaceCategory: "PUBLIC_SPACE", surfaceArea: 30000 },
+  ],
   conversionSchedule: {
     startDate: new Date("2025-07-01"),
     endDate: new Date("2026-07-01"),

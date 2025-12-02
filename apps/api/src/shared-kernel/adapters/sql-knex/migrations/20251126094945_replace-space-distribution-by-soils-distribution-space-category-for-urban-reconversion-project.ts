@@ -1,6 +1,5 @@
 import type { Knex } from "knex";
 import {
-  LEGACY_SpacesDistribution,
   roundTo2Digits,
   SoilsDistribution,
   sumListWithKey,
@@ -12,6 +11,18 @@ import { v4 as uuid } from "uuid";
 import { UrbanProjectFeatures } from "src/reconversion-projects/core/model/urbanProjects";
 
 import { SqlReconversionProjectSoilsDistribution } from "../tableTypes";
+
+type LEGACY_SpacesDistribution = {
+  BUILDINGS_FOOTPRINT?: number | undefined;
+  PRIVATE_PAVED_ALLEY_OR_PARKING_LOT?: number | undefined;
+  PRIVATE_GRAVEL_ALLEY_OR_PARKING_LOT?: number | undefined;
+  PRIVATE_GARDEN_AND_GRASS_ALLEYS?: number | undefined;
+  PUBLIC_GREEN_SPACES?: number | undefined;
+  PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS?: number | undefined;
+  PUBLIC_GRAVEL_ROAD_OR_SQUARES_OR_SIDEWALKS?: number | undefined;
+  PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS?: number | undefined;
+  PUBLIC_PARKING_LOT?: number | undefined;
+};
 
 const PUBLIC_GREEN_SPACE_TREE_REPLACED_DATE = new Date("2024-07-15");
 

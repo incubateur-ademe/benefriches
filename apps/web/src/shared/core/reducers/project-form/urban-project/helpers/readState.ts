@@ -178,7 +178,6 @@ export const ReadStateHelper = {
         costs: formAnswers.installationExpenses,
         installationSchedule: formAnswers.installationSchedule,
         features: {
-          spacesDistribution: this.getSpacesDistribution(steps),
           buildingsFloorAreaDistribution: formAnswers.buildingsUsesDistribution ?? {},
         },
       },

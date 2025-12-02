@@ -55,7 +55,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         isExpressProject: false,
         name: "Test reconversion project",
         relatedSiteId: siteId,
-        soilsDistribution: {},
+        soilsDistribution: [],
         sitePurchaseTotalAmount: 0,
         reinstatementExpenses: [],
         developmentPlan: undefined,
@@ -99,7 +99,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
           },
         },
         relatedSiteId: siteId,
-        soilsDistribution: {},
+        soilsDistribution: [],
         sitePurchaseTotalAmount: 0,
         reinstatementExpenses: [],
         financialAssistanceRevenues: [],
@@ -129,13 +129,19 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       name: "Project with big impacts",
       relatedSiteId: uuid(),
       isExpressProject: false,
-      soilsDistribution: {
-        ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 10000,
-        PRAIRIE_TREES: 20000,
-        BUILDINGS: 20000,
-        MINERAL_SOIL: 20000,
-        IMPERMEABLE_SOILS: 30000,
-      },
+      soilsDistribution: [
+        {
+          soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+          surfaceArea: 10000,
+        },
+        {
+          soilType: "PRAIRIE_TREES",
+          surfaceArea: 20000,
+        },
+        { soilType: "BUILDINGS", surfaceArea: 20000 },
+        { soilType: "MINERAL_SOIL", surfaceArea: 20000 },
+        { soilType: "IMPERMEABLE_SOILS", surfaceArea: 30000 },
+      ],
       conversionSchedule: {
         startDate: new Date("2025-07-01"),
         endDate: new Date("2026-07-01"),
@@ -182,8 +188,8 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       fricheActivity: "AGRICULTURE",
       surfaceArea: 50000,
       soilsDistribution: {
-        ...reconversionProjectImpactDataView.soilsDistribution,
-        PRAIRIE_TREES: 0,
+        BUILDINGS: 20000,
+        MINERAL_SOIL: 20000,
         IMPERMEABLE_SOILS: 10000,
         ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 40000,
       },
@@ -244,7 +250,13 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         relatedSiteId: site.id,
         relatedSiteName: site.name,
         projectData: {
-          soilsDistribution: reconversionProjectImpactDataView.soilsDistribution,
+          soilsDistribution: {
+            ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 10000,
+            PRAIRIE_TREES: 20000,
+            BUILDINGS: 20000,
+            MINERAL_SOIL: 20000,
+            IMPERMEABLE_SOILS: 30000,
+          },
           isExpressProject: reconversionProjectImpactDataView.isExpressProject,
           contaminatedSoilSurface: 0,
           developmentPlan: {
@@ -259,8 +271,8 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
           addressLabel: "Blajan",
           contaminatedSoilSurface: 20000,
           soilsDistribution: {
-            ...reconversionProjectImpactDataView.soilsDistribution,
-            PRAIRIE_TREES: 0,
+            BUILDINGS: 20000,
+            MINERAL_SOIL: 20000,
             IMPERMEABLE_SOILS: 10000,
             ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 40000,
           },
@@ -563,13 +575,22 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       name: "Project with big impacts",
       relatedSiteId: uuid(),
       isExpressProject: false,
-      soilsDistribution: {
-        ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 10000,
-        PRAIRIE_TREES: 20000,
-        BUILDINGS: 20000,
-        MINERAL_SOIL: 20000,
-        IMPERMEABLE_SOILS: 30000,
-      },
+      soilsDistribution: [
+        {
+          soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+          surfaceArea: 10000,
+        },
+        {
+          soilType: "PRAIRIE_TREES",
+          surfaceArea: 20000,
+        },
+        { soilType: "BUILDINGS", surfaceArea: 20000 },
+        {
+          soilType: "MINERAL_SOIL",
+          surfaceArea: 20000,
+        },
+        { soilType: "IMPERMEABLE_SOILS", surfaceArea: 30000 },
+      ],
       conversionSchedule: {
         startDate: new Date("2025-07-01"),
         endDate: new Date("2026-07-01"),
@@ -617,8 +638,8 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       isSiteOperated: true,
       surfaceArea: 50000,
       soilsDistribution: {
-        ...reconversionProjectImpactDataView.soilsDistribution,
-        PRAIRIE_TREES: 0,
+        BUILDINGS: 20000,
+        MINERAL_SOIL: 20000,
         IMPERMEABLE_SOILS: 10000,
         ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 40000,
       },

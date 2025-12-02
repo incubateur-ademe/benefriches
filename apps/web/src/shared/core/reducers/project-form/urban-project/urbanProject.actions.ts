@@ -44,7 +44,7 @@ export type UrbanProjectFormReducerActions = {
 };
 
 type Selectors = Pick<ProjectFormSelectors, "selectSiteAddress" | "selectSiteSoilsDistribution"> & {
-  selectProjectSoilsDistribution: (state: RootState) => SoilsDistribution;
+  selectProjectSoilsDistributionByType: (state: RootState) => SoilsDistribution;
 };
 
 export const createUrbanProjectFormActions = (
@@ -70,7 +70,7 @@ export const createUrbanProjectFormActions = (
           const rootState = getState();
           const siteAddress = selectors.selectSiteAddress(rootState);
           const siteSoils = selectors.selectSiteSoilsDistribution(rootState);
-          const projectSoils = selectors.selectProjectSoilsDistribution(rootState);
+          const projectSoils = selectors.selectProjectSoilsDistributionByType(rootState);
 
           if (!siteAddress) throw new Error("Missing site address");
 

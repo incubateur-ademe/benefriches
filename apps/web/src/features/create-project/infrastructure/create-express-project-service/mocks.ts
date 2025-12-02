@@ -6,22 +6,29 @@ export const mockedGeneratedUrbanProject = {
   name: "Urban project",
   description: "A urban project description",
   isExpress: false,
-  soilsDistribution: {
-    BUILDINGS: 7000,
-    ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 10000,
-    ARTIFICIAL_TREE_FILLED: 3000,
-  },
+  soilsDistribution: [
+    {
+      soilType: "BUILDINGS",
+      surfaceArea: 7000,
+      spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+    },
+    {
+      soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+      surfaceArea: 10000,
+      spaceCategory: "PUBLIC_GREEN_SPACE",
+    },
+    {
+      soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+      surfaceArea: 3000,
+      spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+    },
+  ],
   developmentPlan: {
     type: "URBAN_PROJECT",
     installationCosts: [
       { amount: 35000, purpose: "other" },
       { amount: 125000, purpose: "development_works" },
     ],
-    spacesDistribution: {
-      BUILDINGS_FOOTPRINT: 7000,
-      PUBLIC_GREEN_SPACES: 10000,
-      PRIVATE_GARDEN_AND_GRASS_ALLEYS: 3000,
-    },
     buildingsFloorAreaDistribution: {
       RESIDENTIAL: 5000,
       LOCAL_SERVICES: 2000,
@@ -71,11 +78,14 @@ export const mockedGeneratedPhotovoltaicProject = {
     expectedAnnualProduction: 4399,
     contractDuration: 20,
   },
-  soilsDistribution: {
-    ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 115000,
-    MINERAL_SOIL: 3500,
-    IMPERMEABLE_SOILS: 1500,
-  },
+  soilsDistribution: [
+    {
+      soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+      surfaceArea: 115000,
+    },
+    { soilType: "MINERAL_SOIL", surfaceArea: 3500 },
+    { soilType: "IMPERMEABLE_SOILS", surfaceArea: 1500 },
+  ],
   futureOwner: "ADEME",
   futureOperator: "ADEME",
   reinstatementContractOwner: "ADEME",

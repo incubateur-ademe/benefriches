@@ -131,7 +131,7 @@ export class QuickComputeUrbanProjectImpactsOnFricheUseCase
         developmentPlanType: reconversionProject.developmentPlan.type,
         developmentPlanFeatures: reconversionProject.developmentPlan.features,
         developmentPlanDeveloperName: reconversionProject.developmentPlan.developer.name,
-        soilsDistribution: reconversionProjectCreationService.projectSoilsDistributionByType,
+        soilsDistribution: reconversionProjectCreationService.projectSoilsDistribution,
         financialAssistanceRevenues:
           reconversionProject.financialAssistanceRevenues as FinancialAssistanceRevenue[],
         futureSiteOwnerName: reconversionProject.futureSiteOwner?.name,

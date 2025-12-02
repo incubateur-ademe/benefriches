@@ -1,14 +1,10 @@
 import z from "zod";
 
 import { DevelopmentPlanInstallationExpenses } from "../reconversion-project-impacts";
-import { SoilsDistribution, soilTypeSchema } from "../soils";
+import { soilTypeSchema } from "../soils";
 import { FinancialAssistanceRevenue, ReinstatementExpense } from "./_common";
 import { RecurringExpense, RecurringRevenue } from "./renewable-energy";
 import { BuildingsUseDistribution, buildingsUseDistributionSchema } from "./urban-project";
-import {
-  LEGACY_SpacesDistribution,
-  LEGACY_urbanProjectsSpaceSchema,
-} from "./urban-project/urbanProject";
 
 export const photovoltaicPowerStationFeaturesSchema = z.object({
   surfaceArea: z.number().nonnegative(),
@@ -18,7 +14,6 @@ export const photovoltaicPowerStationFeaturesSchema = z.object({
 });
 
 export const urbanProjectsFeaturesSchema = z.object({
-  spacesDistribution: LEGACY_urbanProjectsSpaceSchema,
   buildingsFloorAreaDistribution: buildingsUseDistributionSchema,
 });
 
@@ -149,12 +144,11 @@ export type BaseReconversionProjectFeaturesView<T_Schedule = ScheduleString> = {
     | {
         type: "URBAN_PROJECT";
         developerName?: string;
-        spacesDistribution: LEGACY_SpacesDistribution;
         buildingsFloorAreaDistribution: BuildingsUseDistribution;
         installationCosts: DevelopmentPlanInstallationExpenses[];
         installationSchedule?: T_Schedule;
       };
-  soilsDistribution: SoilsDistribution;
+  soilsDistribution: ReconversionProjectSoilsDistribution;
   futureOwner?: string;
   futureOperator?: string;
   reinstatementContractOwner?: string;

@@ -1,22 +1,54 @@
 import { roundTo2Digits } from "../../../services";
+import { ReconversionProjectSoilsDistribution } from "../../reconversionProjectSchemas";
 import { computeExpectedPostDevelopmentResaleSellingPriceFromSurfacesInTenseArea } from "../expectedPostDevelopmentResale";
 import { UrbanProjectGenerator } from "./UrbanProjectGenerator";
 
 export class ResidentialTenseAreaProjectGenerator extends UrbanProjectGenerator {
   override name = "Résidentiel secteur tendu";
 
-  override get spacesDistribution() {
-    return {
-      BUILDINGS_FOOTPRINT: roundTo2Digits(0.42 * this.siteData.surfaceArea),
-      PRIVATE_PAVED_ALLEY_OR_PARKING_LOT: roundTo2Digits(0.035 * this.siteData.surfaceArea),
-      PRIVATE_GRAVEL_ALLEY_OR_PARKING_LOT: roundTo2Digits(0.035 * this.siteData.surfaceArea),
-      PRIVATE_GARDEN_AND_GRASS_ALLEYS: roundTo2Digits(0.21 * this.siteData.surfaceArea),
-      PUBLIC_GREEN_SPACES: roundTo2Digits(0.15 * this.siteData.surfaceArea),
-      PUBLIC_PARKING_LOT: roundTo2Digits(0.05 * this.siteData.surfaceArea),
-      PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS: roundTo2Digits(0.02 * this.siteData.surfaceArea),
-      PUBLIC_GRAVEL_ROAD_OR_SQUARES_OR_SIDEWALKS: roundTo2Digits(0.04 * this.siteData.surfaceArea),
-      PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS: roundTo2Digits(0.04 * this.siteData.surfaceArea),
-    };
+  override get projectSoilsDistribution(): ReconversionProjectSoilsDistribution {
+    return [
+      {
+        surfaceArea: roundTo2Digits(0.42 * this.siteData.surfaceArea),
+        spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+        soilType: "BUILDINGS",
+      },
+      {
+        surfaceArea: roundTo2Digits(0.035 * this.siteData.surfaceArea),
+        spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+        soilType: "IMPERMEABLE_SOILS",
+      },
+      {
+        surfaceArea: roundTo2Digits(0.035 * this.siteData.surfaceArea),
+        spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+        soilType: "MINERAL_SOIL",
+      },
+      {
+        surfaceArea: roundTo2Digits(0.21 * this.siteData.surfaceArea),
+        spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+        soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+      },
+      {
+        surfaceArea: roundTo2Digits(0.15 * this.siteData.surfaceArea),
+        spaceCategory: "PUBLIC_GREEN_SPACE",
+        soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+      },
+      {
+        surfaceArea: roundTo2Digits(0.07 * this.siteData.surfaceArea),
+        spaceCategory: "PUBLIC_SPACE",
+        soilType: "IMPERMEABLE_SOILS",
+      },
+      {
+        surfaceArea: roundTo2Digits(0.04 * this.siteData.surfaceArea),
+        spaceCategory: "PUBLIC_SPACE",
+        soilType: "MINERAL_SOIL",
+      },
+      {
+        surfaceArea: roundTo2Digits(0.04 * this.siteData.surfaceArea),
+        spaceCategory: "PUBLIC_SPACE",
+        soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+      },
+    ];
   }
 
   override get buildingsFloorAreaDistribution() {

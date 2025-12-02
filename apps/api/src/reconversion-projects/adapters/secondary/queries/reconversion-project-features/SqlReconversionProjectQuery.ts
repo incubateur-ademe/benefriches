@@ -3,7 +3,6 @@ import { Knex } from "knex";
 import {
   DevelopmentPlanInstallationExpenses,
   FinancialAssistanceRevenue,
-  getProjectSoilDistributionByType,
   RecurringExpense,
   RecurringRevenue,
   ReinstatementExpense,
@@ -176,7 +175,7 @@ export class SqlReconversionProjectQuery implements ReconversionProjectQueryGate
         };
       }
       if (sqlResult.development_plan.type === "URBAN_PROJECT") {
-        const { spacesDistribution, buildingsFloorAreaDistribution } = sqlResult.development_plan
+        const { buildingsFloorAreaDistribution } = sqlResult.development_plan
           .features as UrbanProjectFeatures;
         return {
           installationCosts: sqlResult.development_plan.costs ?? [],
@@ -186,7 +185,6 @@ export class SqlReconversionProjectQuery implements ReconversionProjectQueryGate
             sqlResult.development_plan.schedule_end_date,
           ),
           type: "URBAN_PROJECT",
-          spacesDistribution: spacesDistribution,
           buildingsFloorAreaDistribution: buildingsFloorAreaDistribution,
         };
       }
@@ -203,13 +201,11 @@ export class SqlReconversionProjectQuery implements ReconversionProjectQueryGate
       futureOwner: sqlResult.future_site_owner_name ?? undefined,
       futureOperator: sqlResult.future_operator_name ?? undefined,
       developmentPlan: getDevelopmentPlan(),
-      soilsDistribution: getProjectSoilDistributionByType(
-        sqlResult.soils_distribution.map((sd) => ({
-          soilType: sd.soil_type,
-          surfaceArea: sd.surface_area,
-          spaceCategory: sd.space_category,
-        })),
-      ),
+      soilsDistribution: sqlResult.soils_distribution.map((sd) => ({
+        soilType: sd.soil_type,
+        surfaceArea: sd.surface_area,
+        spaceCategory: sd.space_category ?? undefined,
+      })),
       yearlyProjectedExpenses: sqlResult.expenses ?? [],
       yearlyProjectedRevenues: sqlResult.revenues ?? [],
       reinstatementContractOwner: sqlResult.reinstatement_contract_owner_name ?? undefined,

@@ -1,6 +1,6 @@
 import { ButtonProps } from "@codegouvfr/react-dsfr/Button";
 import { ReactNode } from "react";
-import { SoilsDistribution, LEGACY_UrbanProjectSpace } from "shared";
+import { ReconversionProjectSoilsDistribution } from "shared";
 
 import ProjectFeaturesView from "@/features/projects/views/project-page/features/ProjectFeaturesView";
 import { CustomFormAnswers } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
@@ -11,8 +11,7 @@ import { StepGroupId } from "../../stepper/stepperConfig";
 
 type Props = {
   projectData: CustomFormAnswers;
-  projectSoilsDistribution: SoilsDistribution;
-  projectSpaces: Partial<Record<LEGACY_UrbanProjectSpace, number>>;
+  projectSoilsDistribution: ReconversionProjectSoilsDistribution;
   onNext: () => void;
   onBack: () => void;
   getSectionButtonProps: (stepGroupId: StepGroupId) => ButtonProps | undefined;
@@ -23,7 +22,6 @@ type Props = {
 
 function ProjectCreationDataSummary({
   projectData,
-  projectSpaces,
   projectSoilsDistribution,
   getSectionButtonProps,
   onNext,
@@ -48,7 +46,6 @@ function ProjectCreationDataSummary({
             developerName: projectData.projectDeveloper?.name,
             installationCosts: projectData.installationExpenses ?? [],
             installationSchedule: projectData.installationSchedule,
-            spacesDistribution: projectSpaces,
             buildingsFloorAreaDistribution: projectData.buildingsUsesDistribution ?? {},
           },
           futureOwner: projectData.futureSiteOwner?.name,

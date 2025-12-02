@@ -1,4 +1,5 @@
 import { roundTo2Digits } from "../../../services";
+import { ReconversionProjectSoilsDistribution } from "../../reconversionProjectSchemas";
 import { UrbanProjectGenerator } from "./UrbanProjectGenerator";
 
 const AVERAGE_OFFICES_FLOOR_COUNT = 3;
@@ -6,18 +7,37 @@ const AVERAGE_OFFICES_FLOOR_COUNT = 3;
 export class OfficesProjectGenerator extends UrbanProjectGenerator {
   override name = "Tertiaire";
 
-  override get spacesDistribution() {
-    return {
-      BUILDINGS_FOOTPRINT: roundTo2Digits(0.8 * this.siteData.surfaceArea),
-      PRIVATE_PAVED_ALLEY_OR_PARKING_LOT: roundTo2Digits(0.05 * this.siteData.surfaceArea),
-      PRIVATE_GRAVEL_ALLEY_OR_PARKING_LOT: roundTo2Digits(0.05 * this.siteData.surfaceArea),
-      PRIVATE_GARDEN_AND_GRASS_ALLEYS: roundTo2Digits(0.1 * this.siteData.surfaceArea),
-    };
+  private get buildingsFootprint() {
+    return roundTo2Digits(0.8 * this.siteData.surfaceArea);
+  }
+
+  override get projectSoilsDistribution(): ReconversionProjectSoilsDistribution {
+    return [
+      {
+        surfaceArea: this.buildingsFootprint,
+        spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+        soilType: "BUILDINGS",
+      },
+      {
+        surfaceArea: roundTo2Digits(0.05 * this.siteData.surfaceArea),
+        spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+        soilType: "IMPERMEABLE_SOILS",
+      },
+      {
+        surfaceArea: roundTo2Digits(0.05 * this.siteData.surfaceArea),
+        spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+        soilType: "MINERAL_SOIL",
+      },
+      {
+        surfaceArea: roundTo2Digits(0.1 * this.siteData.surfaceArea),
+        spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+        soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+      },
+    ];
   }
 
   override get buildingsFloorAreaDistribution() {
-    const buildingsFloorSurfaceArea =
-      this.spacesDistribution.BUILDINGS_FOOTPRINT * AVERAGE_OFFICES_FLOOR_COUNT;
+    const buildingsFloorSurfaceArea = this.buildingsFootprint * AVERAGE_OFFICES_FLOOR_COUNT;
     return {
       OFFICES: roundTo2Digits(buildingsFloorSurfaceArea),
     };

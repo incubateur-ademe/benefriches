@@ -1,5 +1,5 @@
 import { ButtonProps } from "@codegouvfr/react-dsfr/Button";
-import { sumObjectValues, typedObjectEntries } from "shared";
+import { sumListWithKey, sumObjectValues } from "shared";
 
 import { ProjectFeatures } from "@/features/projects/domain/projects.types";
 import {
@@ -8,7 +8,10 @@ import {
   formatSurfaceArea,
 } from "@/shared/core/format-number/formatNumber";
 import { computePercentage } from "@/shared/core/percentage/percentage";
-import { getLabelForUrbanProjectSpace } from "@/shared/core/urbanProject";
+import {
+  getUrbanSpaceLabelForLivingAndActivitySpace,
+  getUrbanSpaceLabelForPublicSpace,
+} from "@/shared/core/urbanProject";
 import DataLine from "@/shared/views/components/FeaturesList/FeaturesListDataLine";
 import Section from "@/shared/views/components/FeaturesList/FeaturesListSection";
 import { StepGroupId } from "@/shared/views/project-form/stepper/stepperConfig";
@@ -69,39 +72,41 @@ const DevelopmentPlanFeatures = ({
         </>
       );
     case "URBAN_PROJECT": {
-      const { spacesDistribution, buildingsFloorAreaDistribution } = developmentPlan;
+      const { buildingsFloorAreaDistribution } = developmentPlan;
 
-      const livingAndActivitiesSpaces = {
-        BUILDINGS_FOOTPRINT: spacesDistribution.BUILDINGS_FOOTPRINT ?? 0,
-        PRIVATE_GARDEN_AND_GRASS_ALLEYS: spacesDistribution.PRIVATE_GARDEN_AND_GRASS_ALLEYS ?? 0,
-        PRIVATE_PAVED_ALLEY_OR_PARKING_LOT:
-          spacesDistribution.PRIVATE_PAVED_ALLEY_OR_PARKING_LOT ?? 0,
-        PRIVATE_GRAVEL_ALLEY_OR_PARKING_LOT:
-          spacesDistribution.PRIVATE_GRAVEL_ALLEY_OR_PARKING_LOT ?? 0,
-      };
-      const greenPublicSpaces = {
-        PUBLIC_GREEN_SPACES: spacesDistribution.PUBLIC_GREEN_SPACES ?? 0,
-        PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS:
-          spacesDistribution.PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS ?? 0,
-      };
+      const livingAndActivitiesSpaces = soilsDistribution.filter(
+        ({ spaceCategory }) => spaceCategory === "LIVING_AND_ACTIVITY_SPACE",
+      );
 
-      const publicSpaces = {
-        PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS:
-          spacesDistribution.PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS ?? 0,
-        PUBLIC_GRAVEL_ROAD_OR_SQUARES_OR_SIDEWALKS:
-          spacesDistribution.PUBLIC_GRAVEL_ROAD_OR_SQUARES_OR_SIDEWALKS ?? 0,
-        PUBLIC_PARKING_LOT: spacesDistribution.PUBLIC_PARKING_LOT ?? 0,
-      };
+      const totalGrassPublicSpaces =
+        soilsDistribution.find(
+          ({ spaceCategory, soilType }) =>
+            spaceCategory === "PUBLIC_SPACE" && soilType === "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+        )?.surfaceArea ?? 0;
 
-      const totalLivingAndActivitiesSpaces = sumObjectValues(livingAndActivitiesSpaces);
-      const totalGreenPublicSpaces = sumObjectValues(greenPublicSpaces);
-      const totalPublicSpaces = sumObjectValues(publicSpaces);
+      const otherPublicSpaces = soilsDistribution.filter(
+        ({ spaceCategory, soilType }) =>
+          spaceCategory === "PUBLIC_SPACE" && soilType !== "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+      );
 
-      const totalSurfaceArea = sumObjectValues(soilsDistribution);
+      const totalPublicGreenSpaces = sumListWithKey(
+        soilsDistribution.filter(({ spaceCategory }) => spaceCategory === "PUBLIC_GREEN_SPACE"),
+        "surfaceArea",
+      );
+
+      const totalLivingAndActivitiesSpaces = sumListWithKey(
+        livingAndActivitiesSpaces,
+        "surfaceArea",
+      );
+      const totalPublicGreenSpacesAndPublicGrassSpaces =
+        totalGrassPublicSpaces + totalPublicGreenSpaces;
+      const totalOtherPublicSpaces = sumListWithKey(otherPublicSpaces, "surfaceArea");
+
+      const totalSurfaceArea = sumListWithKey(soilsDistribution, "surfaceArea");
 
       const urbanProjectCategory = getUrbanProjectCategoryFromFeatures({
         buildingsUseDistribution: buildingsFloorAreaDistribution,
-        spacesDistribution,
+        soilsDistribution,
       });
 
       const urbanProjectCategoryLabel = getLabelForUrbanProjectCategory(urbanProjectCategory);
@@ -114,11 +119,7 @@ const DevelopmentPlanFeatures = ({
           >
             <DataLine
               label={<strong>Superficie du site</strong>}
-              value={
-                <strong>
-                  {formatSurfaceArea(sumObjectValues(developmentPlan.spacesDistribution))}
-                </strong>
-              }
+              value={<strong>{formatSurfaceArea(totalSurfaceArea)}</strong>}
             />
             {totalLivingAndActivitiesSpaces > 0 && (
               <DataLine
@@ -132,27 +133,27 @@ const DevelopmentPlanFeatures = ({
                 }
               />
             )}
-            {totalPublicSpaces > 0 && (
+            {totalOtherPublicSpaces > 0 && (
               <DataLine
                 label="Espaces publics"
-                value={formatSurfaceArea(totalPublicSpaces)}
+                value={formatSurfaceArea(totalOtherPublicSpaces)}
                 valueTooltip={
                   isExpress
-                    ? `On considère que les espaces publics occupent ${formatPercentage(computePercentage(totalPublicSpaces, totalSurfaceArea))} de la surface du site ; fonction du type de projet « ${urbanProjectCategoryLabel} ». Cette valeur est issue du retour d’expérience ADEME.`
+                    ? `On considère que les espaces publics occupent ${formatPercentage(computePercentage(totalOtherPublicSpaces, totalSurfaceArea))} de la surface du site ; fonction du type de projet « ${urbanProjectCategoryLabel} ». Cette valeur est issue du retour d’expérience ADEME.`
                     : undefined
                 }
               />
             )}
-            {totalGreenPublicSpaces > 0 && (
+            {totalPublicGreenSpacesAndPublicGrassSpaces > 0 && (
               <DataLine
                 label="Espaces verts publics"
                 labelTooltip="Il s’agit des espaces verts publics (parcs, jardins, forêt urbaines, alignements d’arbres, noues, etc.)."
                 valueTooltip={
                   isExpress
-                    ? `On considère que les espaces verts occupent ${formatPercentage(computePercentage(totalGreenPublicSpaces, totalSurfaceArea))} de la surface du site ; fonction du type de projet « ${urbanProjectCategoryLabel} ». Cette valeur est issue du retour d’expérience ADEME.`
+                    ? `On considère que les espaces verts occupent ${formatPercentage(computePercentage(totalPublicGreenSpacesAndPublicGrassSpaces, totalSurfaceArea))} de la surface du site ; fonction du type de projet « ${urbanProjectCategoryLabel} ». Cette valeur est issue du retour d’expérience ADEME.`
                     : undefined
                 }
-                value={formatSurfaceArea(totalGreenPublicSpaces)}
+                value={formatSurfaceArea(totalPublicGreenSpacesAndPublicGrassSpaces)}
               />
             )}
           </Section>
@@ -191,26 +192,27 @@ const DevelopmentPlanFeatures = ({
                   label={<strong>Lieux d’habitation et d’activité</strong>}
                   value={<strong>{formatSurfaceArea(totalLivingAndActivitiesSpaces)}</strong>}
                 />
-                {typedObjectEntries(livingAndActivitiesSpaces)
-                  .filter(([, surfaceArea]) => surfaceArea)
-                  .map(([space, surfaceArea]) => {
+                {livingAndActivitiesSpaces
+                  .filter(({ surfaceArea }) => surfaceArea)
+                  .map(({ spaceCategory, soilType, surfaceArea }) => {
                     return (
                       <DataLine
-                        label={getLabelForUrbanProjectSpace(space)}
+                        label={getUrbanSpaceLabelForLivingAndActivitySpace(soilType)}
                         value={formatSurfaceArea(surfaceArea)}
-                        key={space}
+                        key={`${spaceCategory}-${soilType}`}
                         isDetails
                         valueTooltip={
                           isExpress
                             ? `On considère que ${(() => {
-                                switch (space) {
-                                  case "BUILDINGS_FOOTPRINT":
+                                switch (soilType) {
+                                  case "BUILDINGS":
                                     return "l'emprise au sol bâti";
-                                  case "PRIVATE_GARDEN_AND_GRASS_ALLEYS":
+                                  case "ARTIFICIAL_GRASS_OR_BUSHES_FILLED":
+                                  case "ARTIFICIAL_TREE_FILLED":
                                     return "les jardins et allées enherbées privées";
-                                  case "PRIVATE_GRAVEL_ALLEY_OR_PARKING_LOT":
+                                  case "MINERAL_SOIL":
                                     return "les allées ou parkings privés en gravier ";
-                                  case "PRIVATE_PAVED_ALLEY_OR_PARKING_LOT":
+                                  case "IMPERMEABLE_SOILS":
                                     return "les allées ou parkings privés bitumés";
                                 }
                               })()} occupent ${formatPercentage(computePercentage(surfaceArea, totalSurfaceArea))} de la surface du site des lieux d’habitation et d’activité ; fonction du type de projet « ${urbanProjectCategoryLabel} ». Cette valeur est issue du retour d’expérience ADEME.`
@@ -221,68 +223,68 @@ const DevelopmentPlanFeatures = ({
                   })}
               </>
             )}
-            {totalGreenPublicSpaces > 0 && (
+            {totalPublicGreenSpacesAndPublicGrassSpaces > 0 && (
               <>
                 <DataLine
                   className="pt-2"
                   noBorder
                   label={<strong>Espaces verts publics</strong>}
-                  value={<strong>{formatSurfaceArea(totalGreenPublicSpaces)}</strong>}
+                  value={
+                    <strong>{formatSurfaceArea(totalPublicGreenSpacesAndPublicGrassSpaces)}</strong>
+                  }
                 />
-                {typedObjectEntries(greenPublicSpaces)
-                  .filter(([, surfaceArea]) => surfaceArea)
-                  .map(([space, surfaceArea]) => {
-                    return (
-                      <DataLine
-                        label={getLabelForUrbanProjectSpace(space)}
-                        value={formatSurfaceArea(surfaceArea)}
-                        key={space}
-                        isDetails
-                        valueTooltip={
-                          isExpress
-                            ? `On considère que ${(() => {
-                                switch (space) {
-                                  case "PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS":
-                                    return "les espaces verts publics";
-                                  case "PUBLIC_GREEN_SPACES":
-                                    return "les jardins et allées enherbées publics";
-                                }
-                              })()} occupent ${formatPercentage(computePercentage(surfaceArea, totalSurfaceArea))} de la surface du site des lieux d’habitation et d’activité ; fonction du type de projet « ${urbanProjectCategoryLabel} ». Cette valeur est issue du retour d’expérience ADEME.`
-                            : undefined
-                        }
-                      />
-                    );
-                  })}
+                {totalGrassPublicSpaces > 0 && (
+                  <DataLine
+                    label="Voies, places, trottoirs enherbés"
+                    value={formatSurfaceArea(totalGrassPublicSpaces)}
+                    isDetails
+                    valueTooltip={
+                      isExpress
+                        ? `On considère que les jardins et allées enherbées publics occupent ${formatPercentage(computePercentage(totalGrassPublicSpaces, totalSurfaceArea))} de la surface du site des lieux d’habitation et d’activité ; fonction du type de projet « ${urbanProjectCategoryLabel} ». Cette valeur est issue du retour d’expérience ADEME.`
+                        : undefined
+                    }
+                  />
+                )}
+                {totalPublicGreenSpaces > 0 && (
+                  <DataLine
+                    label="Espaces verts publics"
+                    value={formatSurfaceArea(totalPublicGreenSpaces)}
+                    isDetails
+                    valueTooltip={
+                      isExpress
+                        ? `On considère que les espaces verts publics occupent ${formatPercentage(computePercentage(totalPublicGreenSpaces, totalSurfaceArea))} de la surface du site des lieux d’habitation et d’activité ; fonction du type de projet « ${urbanProjectCategoryLabel} ». Cette valeur est issue du retour d’expérience ADEME.`
+                        : undefined
+                    }
+                  />
+                )}
               </>
             )}
-            {totalPublicSpaces > 0 && (
+            {totalOtherPublicSpaces > 0 && (
               <>
                 <DataLine
                   className="pt-2"
                   noBorder
                   label={<strong>Espaces publics</strong>}
                   labelTooltip="Les espaces publics sont comptabilisés hors espaces verts."
-                  value={<strong>{formatSurfaceArea(totalPublicSpaces)}</strong>}
+                  value={<strong>{formatSurfaceArea(totalOtherPublicSpaces)}</strong>}
                 />
-                {typedObjectEntries(publicSpaces)
-                  .filter(([, surfaceArea]) => surfaceArea)
-                  .map(([space, surfaceArea]) => {
+                {otherPublicSpaces
+                  .filter(({ surfaceArea }) => surfaceArea)
+                  .map(({ spaceCategory, soilType, surfaceArea }) => {
                     return (
                       <DataLine
-                        label={getLabelForUrbanProjectSpace(space)}
+                        label={getUrbanSpaceLabelForPublicSpace(soilType)}
                         value={formatSurfaceArea(surfaceArea)}
-                        key={space}
+                        key={`${spaceCategory}-${soilType}`}
                         isDetails
                         valueTooltip={
                           isExpress
                             ? `On considère que ${(() => {
-                                switch (space) {
-                                  case "PUBLIC_GRAVEL_ROAD_OR_SQUARES_OR_SIDEWALKS":
+                                switch (soilType) {
+                                  case "MINERAL_SOIL":
                                     return "les voies, places, trottoirs en gravier";
-                                  case "PUBLIC_PARKING_LOT":
-                                    return "les parkings";
-                                  case "PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS":
-                                    return "les voies, places, trottoirs bitumés ";
+                                  case "IMPERMEABLE_SOILS":
+                                    return "les voies, places, trottoirs et parkings bitumés ";
                                 }
                               })()} occupent ${formatPercentage(computePercentage(surfaceArea, totalSurfaceArea))} de la surface du site des lieux d’habitation et d’activité ; fonction du type de projet « ${urbanProjectCategoryLabel} ». Cette valeur est issue du retour d’expérience ADEME.`
                             : undefined
@@ -302,7 +304,7 @@ const DevelopmentPlanFeatures = ({
             />
           </Section>
 
-          {livingAndActivitiesSpaces.BUILDINGS_FOOTPRINT > 0 && (
+          {sumObjectValues(buildingsFloorAreaDistribution) > 0 && (
             <UrbanProjectBuildingsSection
               buttonProps={getSectionButtonProps ? getSectionButtonProps("BUILDINGS") : undefined}
               isExpress={isExpress}

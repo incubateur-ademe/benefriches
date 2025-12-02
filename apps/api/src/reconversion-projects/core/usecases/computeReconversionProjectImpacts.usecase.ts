@@ -4,6 +4,7 @@ import {
   SoilsDistribution,
   ReconversionProjectImpactsDataView,
   SiteImpactsDataView,
+  getProjectSoilDistributionByType,
 } from "shared";
 
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
@@ -119,6 +120,10 @@ export class ComputeReconversionProjectImpactsUseCase
 
     if (!relatedSite) return fail("SiteNotFound");
 
+    const soilsDistributionByType = getProjectSoilDistributionByType(
+      reconversionProject.soilsDistribution,
+    );
+
     const result = {
       id: reconversionProjectId,
       name: reconversionProject.name,
@@ -126,7 +131,7 @@ export class ComputeReconversionProjectImpactsUseCase
       relatedSiteName: relatedSite.name,
       evaluationPeriodInYears,
       projectData: {
-        soilsDistribution: reconversionProject.soilsDistribution,
+        soilsDistribution: soilsDistributionByType,
         contaminatedSoilSurface:
           (relatedSite.contaminatedSoilSurface ?? 0) -
           (reconversionProject.decontaminatedSoilSurface ?? 0),
@@ -157,7 +162,7 @@ export class ComputeReconversionProjectImpactsUseCase
     const projectSoilsCarbonStorage =
       await this.getCarbonStorageFromSoilDistributionService.execute({
         cityCode: relatedSite.address.cityCode,
-        soilsDistribution: reconversionProject.soilsDistribution,
+        soilsDistribution: soilsDistributionByType,
       });
 
     const siteData: InputSiteData = (() => {

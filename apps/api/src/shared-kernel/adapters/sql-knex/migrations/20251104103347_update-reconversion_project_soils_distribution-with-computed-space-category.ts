@@ -1,10 +1,5 @@
 import { Knex } from "knex";
-import {
-  LEGACY_SpacesDistribution,
-  roundTo2Digits,
-  sumListWithKey,
-  typedObjectEntries,
-} from "shared";
+import { roundTo2Digits, sumListWithKey, typedObjectEntries } from "shared";
 import { v4 as uuid } from "uuid";
 
 import { UrbanProjectFeatures } from "src/reconversion-projects/core/model/urbanProjects";
@@ -17,6 +12,17 @@ type MigrationResult = {
     "soil_type" | "space_category" | "surface_area" | "reconversion_project_id"
   >[];
   warnings: string[];
+};
+type LEGACY_SpacesDistribution = {
+  BUILDINGS_FOOTPRINT?: number | undefined;
+  PRIVATE_PAVED_ALLEY_OR_PARKING_LOT?: number | undefined;
+  PRIVATE_GRAVEL_ALLEY_OR_PARKING_LOT?: number | undefined;
+  PRIVATE_GARDEN_AND_GRASS_ALLEYS?: number | undefined;
+  PUBLIC_GREEN_SPACES?: number | undefined;
+  PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS?: number | undefined;
+  PUBLIC_GRAVEL_ROAD_OR_SQUARES_OR_SIDEWALKS?: number | undefined;
+  PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS?: number | undefined;
+  PUBLIC_PARKING_LOT?: number | undefined;
 };
 
 const PRIVATE_TREE_REMOVED_DATE = new Date("2025-05-19");
@@ -551,7 +557,9 @@ export async function up(knex: Knex): Promise<void> {
     try {
       console.log(`\nProcess: Project ${project.id}:`);
 
-      const { spacesDistribution, ...restFeatures } = project.features as UrbanProjectFeatures;
+      const { spacesDistribution, ...restFeatures } = project.features as UrbanProjectFeatures & {
+        spacesDistribution: unknown;
+      };
 
       if (!spacesDistribution) {
         console.warn(`⚠️  Project ${project.id}: No spacesDistribution found, skipping`);

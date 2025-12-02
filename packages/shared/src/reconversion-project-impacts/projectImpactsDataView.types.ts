@@ -1,12 +1,11 @@
 import {
   BuildingsUseDistribution,
   FinancialAssistanceRevenue,
-  LEGACY_SpacesDistribution,
+  ReconversionProjectSoilsDistribution,
   RecurringExpense,
   RecurringRevenue,
   ReinstatementExpense,
 } from "../reconversion-projects";
-import { SoilsDistribution } from "../soils";
 import { DevelopmentPlanInstallationExpenses } from "./types";
 
 type DevelopmentPlanFeatures =
@@ -22,7 +21,6 @@ type DevelopmentPlanFeatures =
   | {
       type: "URBAN_PROJECT";
       features: {
-        spacesDistribution: LEGACY_SpacesDistribution;
         buildingsFloorAreaDistribution: BuildingsUseDistribution;
       };
     };
@@ -31,7 +29,7 @@ export type ReconversionProjectImpactsDataView<TSchedule> = {
   id: string;
   name: string;
   relatedSiteId: string;
-  soilsDistribution: SoilsDistribution;
+  soilsDistribution: ReconversionProjectSoilsDistribution;
   isExpressProject: boolean;
   conversionSchedule?: TSchedule;
   reinstatementSchedule?: TSchedule;

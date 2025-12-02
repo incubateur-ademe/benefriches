@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const soilTypeSchema = z.enum([
+export const ORDERED_SOIL_TYPES = [
   "BUILDINGS",
   "IMPERMEABLE_SOILS",
   "MINERAL_SOIL",
@@ -18,7 +18,8 @@ export const soilTypeSchema = z.enum([
   "VINEYARD", // vigne
   "WET_LAND", // zone humide
   "WATER", // plan d'eau
-]);
+] as const;
+export const soilTypeSchema = z.enum(ORDERED_SOIL_TYPES);
 
 export const soilTypes = soilTypeSchema.options;
 

@@ -61,7 +61,12 @@ export class UrbanProjectImpactsService
 
     this.urbanFreshnessImpactsService = new UrbanFreshnessRelatedImpactsService({
       buildingsFloorAreaDistribution: this.developmentPlanFeatures.buildingsFloorAreaDistribution,
-      spacesDistribution: this.developmentPlanFeatures.spacesDistribution,
+      projectPublicGreenSpaceSurface: sumListWithKey(
+        this.reconversionProject.soilsDistribution.filter(
+          ({ spaceCategory }) => spaceCategory === "PUBLIC_GREEN_SPACE",
+        ),
+        "surfaceArea",
+      ),
       siteSquareMetersSurfaceArea: this.relatedSite.surfaceArea,
       citySquareMetersSurfaceArea: this.siteCityData.citySquareMetersSurfaceArea,
       cityPopulation: this.siteCityData.cityPopulation,
