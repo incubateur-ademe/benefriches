@@ -1,5 +1,7 @@
 import Button from "@codegouvfr/react-dsfr/Button";
 
+import { routes } from "@/shared/views/router";
+
 import HeroSection from "./HeroSection";
 import { HERO_CTA_BUTTON_CLASSNAMES } from "./buttonClassNames";
 
@@ -13,7 +15,7 @@ export default function HeroHomeSection() {
       <>
         <p className="text-sm mb-8">+ de 400 projets évalués</p>
         <Button
-          linkProps={{ href: "#votre-projet-d-amenagement" }}
+          linkProps={routes.onBoardingWhenToUse({ fonctionnalite: "evaluation-impacts" }).link}
           size="large"
           className={HERO_CTA_BUTTON_CLASSNAMES}
         >
