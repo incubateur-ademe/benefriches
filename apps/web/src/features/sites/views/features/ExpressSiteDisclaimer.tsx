@@ -1,10 +1,8 @@
-import Button from "@codegouvfr/react-dsfr/Button";
-import Checkbox from "@codegouvfr/react-dsfr/Checkbox";
-import { useState } from "react";
 import { SiteNature } from "shared";
 
 import { appSettingUpdated, selectAppSettings } from "@/features/app-settings/core/appSettings";
 import { hideExpressSiteDisclaimerClicked, trackEvent } from "@/shared/views/analytics";
+import Disclaimer from "@/shared/views/components/Disclaimer/Disclaimer";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 type Props = {
@@ -14,7 +12,6 @@ type Props = {
 export default function ExpressSiteDisclaimer({ siteNature }: Props) {
   const dispatch = useAppDispatch();
   const { displayExpressSiteDisclaimer } = useAppSelector(selectAppSettings);
-  const [dismissable, setDismissable] = useState(false);
 
   const onDismiss = () => {
     trackEvent(hideExpressSiteDisclaimerClicked());
@@ -23,37 +20,16 @@ export default function ExpressSiteDisclaimer({ siteNature }: Props) {
 
   if (!displayExpressSiteDisclaimer) return null;
 
+  const siteTypeLabel = siteNature === "FRICHE" ? "friche" : "site";
+
+  const title = `Comment ont été affectées les caractéristiques de ${siteNature === "FRICHE" ? "ma friche" : "mon site"} ?`;
+
   return (
-    <section className="bg-warning-ultralight dark:bg-warning-ultradark p-6 rounded-lg mb-4">
-      <h3 className="text-xl mb-4">
-        Comment ont été affectées les caractéristiques de{" "}
-        {siteNature === "FRICHE" ? "ma friche" : "mon site"} ?
-      </h3>
-      <p className="mb-4">
-        Bénéfriches a <strong>automatiquement complété les caractéristiques manquantes</strong>{" "}
-        (typologie des sols, bâtiments, gestion et sécurisation de la friche, etc.) Bénéfriches se
-        base pour cela sur les valeurs représentatives pour ce type de{" "}
-        {siteNature === "FRICHE" ? "friche" : "site"} sur la{" "}
-        <strong>localisation géographique</strong> que vous avez renseigné.
-      </p>
-      <Checkbox
-        className="text-sm mb-6"
-        options={[
-          {
-            label: "J'ai compris",
-            nativeInputProps: {
-              defaultChecked: dismissable,
-              value: "expressSiteDisclaimerDismissable",
-              onChange: (ev) => {
-                setDismissable(ev.target.checked);
-              },
-            },
-          },
-        ]}
-      />
-      <Button priority="secondary" onClick={onDismiss} disabled={!dismissable}>
-        Masquer ce message
-      </Button>
-    </section>
+    <Disclaimer title={title} onDismiss={onDismiss}>
+      Bénéfriches a <strong>automatiquement complété les caractéristiques manquantes</strong>{" "}
+      (typologie des sols, bâtiments, gestion et sécurisation de la friche, etc.) Bénéfriches se
+      base pour cela sur les valeurs représentatives pour ce type de {siteTypeLabel} sur la{" "}
+      <strong>localisation géographique</strong> que vous avez renseigné.
+    </Disclaimer>
   );
 }
