@@ -9,7 +9,7 @@ import {
   reconversionProjectImpactsRequested,
 } from "../../application/project-impacts/actions";
 import {
-  selectProjectContext,
+  selectProjectsImpactsViewData,
   ViewMode,
 } from "../../application/project-impacts/projectImpacts.reducer";
 import ProjectPage from "./ProjectImpactsPage";
@@ -25,7 +25,9 @@ function ProjectPageContainer({ projectId }: Props) {
     (state) => state.projectImpacts,
   );
 
-  const projectContext = useAppSelector(selectProjectContext);
+  const { displayImpactsAccuracyDisclaimer, ...projectContext } = useAppSelector(
+    selectProjectsImpactsViewData,
+  );
 
   useEffect(() => {
     void dispatch(reconversionProjectImpactsRequested({ projectId }));
@@ -42,6 +44,7 @@ function ProjectPageContainer({ projectId }: Props) {
       dataLoadingState={dataLoadingState}
       evaluationPeriod={evaluationPeriod}
       currentViewMode={currentViewMode}
+      displayImpactsAccuracyDisclaimer={displayImpactsAccuracyDisclaimer}
       onEvaluationPeriodChange={(evaluationPeriodInYears: number) =>
         dispatch(evaluationPeriodUpdated({ evaluationPeriodInYears }))
       }

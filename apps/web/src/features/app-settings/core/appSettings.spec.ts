@@ -17,6 +17,7 @@ describe("App settings", () => {
       surfaceAreaInputMode: "squareMeters",
       askForConfirmationOnStepRevert: true,
       displayExpressSiteDisclaimer: true,
+      displayImpactsAccuracyDisclaimer: true,
     });
     const store = createStore(
       getTestAppDependencies({
@@ -28,6 +29,7 @@ describe("App settings", () => {
       surfaceAreaInputMode: "squareMeters",
       askForConfirmationOnStepRevert: true,
       displayExpressSiteDisclaimer: true,
+      displayImpactsAccuracyDisclaimer: true,
     });
   });
 

@@ -31,6 +31,7 @@ const ProjectPageHeader = ({
   const isSmallScreen = useIsSmallScreen();
   const size = propsSize ?? (isSmallScreen ? "small" : "medium");
   const isSmallSize = size === "small";
+
   return (
     <div className={classNames(fr.cx("fr-container"), className)}>
       <div

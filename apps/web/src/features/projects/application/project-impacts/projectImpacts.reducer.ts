@@ -1,6 +1,7 @@
 import { createReducer, createSelector, isAnyOf, PayloadAction } from "@reduxjs/toolkit";
 import { FricheActivity, SiteNature, SoilsDistribution } from "shared";
 
+import { selectAppSettings } from "@/features/app-settings/core/appSettings";
 import { RootState } from "@/shared/core/store-config/store";
 
 import { ProjectDevelopmentPlanType } from "../../domain/projects.types";
@@ -137,24 +138,33 @@ export const selectProjectName = createSelector(
   (state): string => state.projectData?.name ?? "Projet",
 );
 
-type ProjectContext = {
+type ProjectsImpactsViewData = {
   name: string;
   siteName: string;
   siteNature?: SiteNature;
   siteId: string;
   type?: ProjectDevelopmentPlanType;
   isExpressProject: boolean;
+  displayImpactsAccuracyDisclaimer: boolean;
 };
-export const selectProjectContext = createSelector(
-  selectSelf,
-  (state): ProjectContext => ({
-    name: state.projectData?.name ?? "Projet",
-    siteNature: state.relatedSiteData?.nature,
-    siteName: state.relatedSiteData?.name ?? "",
-    siteId: state.relatedSiteData?.id ?? "",
-    type: state.projectData?.developmentPlan.type,
-    isExpressProject: !!state.projectData?.isExpressProject,
-  }),
+export const selectProjectsImpactsViewData = createSelector(
+  [selectSelf, selectAppSettings],
+  (state, appSettings): ProjectsImpactsViewData => {
+    const isExpressProject = !!state.projectData?.isExpressProject;
+    const isExpressSite = !!state.relatedSiteData?.isExpressSite;
+    const displayImpactsAccuracyDisclaimer =
+      (isExpressProject || isExpressSite) && appSettings.displayImpactsAccuracyDisclaimer;
+
+    return {
+      name: state.projectData?.name ?? "Projet",
+      siteNature: state.relatedSiteData?.nature,
+      siteName: state.relatedSiteData?.name ?? "",
+      siteId: state.relatedSiteData?.id ?? "",
+      type: state.projectData?.developmentPlan.type,
+      isExpressProject,
+      displayImpactsAccuracyDisclaimer,
+    };
+  },
 );
 
 export const selectModalData = createSelector(

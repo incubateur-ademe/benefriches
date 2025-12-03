@@ -16,6 +16,7 @@ import ExportImpactsModal from "./export-impacts/ExportModal";
 import { PROJECT_AND_SITE_FEATURES_FOOTER_DIALOG_ID } from "./footer/FutherActionsSection.tsx";
 import ProjectImpactFooter from "./footer/ProjectImpactFooter";
 import ProjectsImpactsPageHeader from "./header/ProjectPageHeader";
+import ImpactsAccuracyDisclaimer from "./impacts-accuracy-disclaimer/ImpactsAccuracyDisclaimer";
 import ProjectImpactsPage from "./impacts/ProjectImpactsView";
 import AboutImpactsModal from "./impacts/about-impacts-modal/AboutImpactsModal.tsx";
 import ProjectFeaturesModal from "./impacts/project-and-site-features-modal/index.tsx";
@@ -35,6 +36,7 @@ type Props = {
   evaluationPeriod: number | undefined;
   onCurrentViewModeChange: (n: ViewMode) => void;
   currentViewMode: ViewMode;
+  displayImpactsAccuracyDisclaimer: boolean;
 };
 
 function ProjectPage({
@@ -45,6 +47,7 @@ function ProjectPage({
   evaluationPeriod,
   currentViewMode,
   onCurrentViewModeChange,
+  displayImpactsAccuracyDisclaimer,
 }: Props) {
   const headerProps = {
     projectType: projectContext.type,
@@ -64,6 +67,8 @@ function ProjectPage({
       </div>
 
       <div className="fr-container pb-14">
+        {displayImpactsAccuracyDisclaimer && <ImpactsAccuracyDisclaimer />}
+
         <ProjectImpactsActionBar
           selectedViewMode={currentViewMode}
           evaluationPeriod={evaluationPeriod}
