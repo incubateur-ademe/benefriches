@@ -38,9 +38,17 @@ export const impactsExportDownloaded = (exportType: string): AnalyticsEvent => {
 
 export const hideExpressSiteDisclaimerClicked = (): AnalyticsEvent => {
   return {
-    category: "express-site-disclaimer",
-    action: "hide-disclaimer-clicked",
-    name: "express-site-disclaimer-hide-disclaimer-clicked",
+    category: "site-page",
+    action: "hide-express-site-disclaimer-clicked",
+    name: "site-page/hide-express-site-disclaimer-clicked",
+  };
+};
+
+export const hideImpactsAccuracyDisclaimerClicked = (): AnalyticsEvent => {
+  return {
+    category: "impacts-page",
+    action: "hide-impacts-accuracy-disclaimer-clicked",
+    name: "impacts-page/hide-impacts-accuracy-disclaimer-clicked",
   };
 };
 
