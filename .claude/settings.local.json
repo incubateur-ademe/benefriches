@@ -2,16 +2,19 @@
   "permissions": {
     "allow": [
       "Bash(tree:*)",
+      "Bash(pnpm install:*)",
       "Bash(pnpm typecheck:*)",
       "Bash(pnpm lint:*)",
       "Bash(pnpm --filter api lint:*)",
       "Bash(pnpm --filter api typecheck:*)",
-      "Bash(pnpm --filter api test:*)",
-      "Bash(pnpm --filter api test:integration:*)",
+      "Bash(pnpm --filter api test*)",
       "Bash(pnpm --filter web typecheck:*)",
       "Bash(pnpm --filter web lint:*)",
-      "Bash(pnpm --filter web test)",
-      "Bash(pnpm --filter web test:*)"
+      "Bash(pnpm --filter web test:*)",
+      "Bash(pnpm --filter shared build:*)",
+      "Bash(pnpm --filter shared lint:*)",
+      "Bash(pnpm --filter shared typecheck:*)",
+      "Bash(pnpm --filter shared test:*)"
     ],
     "deny": [],
     "ask": []
