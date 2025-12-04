@@ -8,5 +8,7 @@ Dockerfile.*
 **/dist
 **/node_modules
 **/scalingo
+# Allow nginx config from scalingo directory for Docker builds
+!apps/web/scalingo/nginx.conf.erb
 **/.DS_Store
 **/*.local
