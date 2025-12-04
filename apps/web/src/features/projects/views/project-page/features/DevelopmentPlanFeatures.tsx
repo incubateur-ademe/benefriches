@@ -1,5 +1,5 @@
 import { ButtonProps } from "@codegouvfr/react-dsfr/Button";
-import { sumListWithKey, sumObjectValues } from "shared";
+import { roundToInteger, sumListWithKey, sumObjectValues } from "shared";
 
 import { ProjectFeatures } from "@/features/projects/domain/projects.types";
 import {
@@ -45,7 +45,7 @@ const DevelopmentPlanFeatures = ({
             />
             <DataLine
               label={<strong>Superficie occupée par les panneaux</strong>}
-              value={formatSurfaceArea(developmentPlan.surfaceArea)}
+              value={formatSurfaceArea(roundToInteger(developmentPlan.surfaceArea))}
             />
             <DataLine
               label={<strong>Production annuelle attendue</strong>}
@@ -60,7 +60,7 @@ const DevelopmentPlanFeatures = ({
             {decontaminatedSoilSurface ? (
               <DataLine
                 label="Surface dépolluée"
-                value={formatSurfaceArea(decontaminatedSoilSurface)}
+                value={formatSurfaceArea(roundToInteger(decontaminatedSoilSurface))}
               />
             ) : null}
             <SoilsDistribution
@@ -119,13 +119,13 @@ const DevelopmentPlanFeatures = ({
           >
             <DataLine
               label={<strong>Superficie du site</strong>}
-              value={<strong>{formatSurfaceArea(totalSurfaceArea)}</strong>}
+              value={<strong>{formatSurfaceArea(roundToInteger(totalSurfaceArea))}</strong>}
             />
             {totalLivingAndActivitiesSpaces > 0 && (
               <DataLine
                 label="Lieux d'habitation et d’activité"
                 labelTooltip="Les lieux d'habitation et d’activité regroupent les lots dédiés aux logements, aux activités économiques, les emprises des équipements publics, en dehors des espaces verts publics et autres espaces publics de type rues, places, parking…"
-                value={formatSurfaceArea(totalLivingAndActivitiesSpaces)}
+                value={formatSurfaceArea(roundToInteger(totalLivingAndActivitiesSpaces))}
                 valueTooltip={
                   isExpress
                     ? `On considère que les lieux d'habitation et d’activité occupent ${formatPercentage(computePercentage(totalLivingAndActivitiesSpaces, totalSurfaceArea))} de la surface du site ; fonction du type de projet « ${urbanProjectCategoryLabel} ». Cette valeur est issue du retour d’expérience ADEME.`
@@ -136,7 +136,7 @@ const DevelopmentPlanFeatures = ({
             {totalOtherPublicSpaces > 0 && (
               <DataLine
                 label="Espaces publics"
-                value={formatSurfaceArea(totalOtherPublicSpaces)}
+                value={formatSurfaceArea(roundToInteger(totalOtherPublicSpaces))}
                 valueTooltip={
                   isExpress
                     ? `On considère que les espaces publics occupent ${formatPercentage(computePercentage(totalOtherPublicSpaces, totalSurfaceArea))} de la surface du site ; fonction du type de projet « ${urbanProjectCategoryLabel} ». Cette valeur est issue du retour d’expérience ADEME.`
@@ -153,7 +153,9 @@ const DevelopmentPlanFeatures = ({
                     ? `On considère que les espaces verts occupent ${formatPercentage(computePercentage(totalPublicGreenSpacesAndPublicGrassSpaces, totalSurfaceArea))} de la surface du site ; fonction du type de projet « ${urbanProjectCategoryLabel} ». Cette valeur est issue du retour d’expérience ADEME.`
                     : undefined
                 }
-                value={formatSurfaceArea(totalPublicGreenSpacesAndPublicGrassSpaces)}
+                value={formatSurfaceArea(
+                  roundToInteger(totalPublicGreenSpacesAndPublicGrassSpaces),
+                )}
               />
             )}
           </Section>
@@ -168,7 +170,7 @@ const DevelopmentPlanFeatures = ({
               {decontaminatedSoilSurface ? (
                 <DataLine
                   label="Surface dépolluée"
-                  value={formatSurfaceArea(decontaminatedSoilSurface)}
+                  value={formatSurfaceArea(roundToInteger(decontaminatedSoilSurface))}
                   valueTooltip={
                     isExpress
                       ? `Bénéfriches considère que 75% de la surface polluée est dépolluée. Cette valeur est issue du retour d’expérience ADEME.`
@@ -190,7 +192,11 @@ const DevelopmentPlanFeatures = ({
                 <DataLine
                   noBorder
                   label={<strong>Lieux d’habitation et d’activité</strong>}
-                  value={<strong>{formatSurfaceArea(totalLivingAndActivitiesSpaces)}</strong>}
+                  value={
+                    <strong>
+                      {formatSurfaceArea(roundToInteger(totalLivingAndActivitiesSpaces))}
+                    </strong>
+                  }
                 />
                 {livingAndActivitiesSpaces
                   .filter(({ surfaceArea }) => surfaceArea)
@@ -198,7 +204,7 @@ const DevelopmentPlanFeatures = ({
                     return (
                       <DataLine
                         label={getUrbanSpaceLabelForLivingAndActivitySpace(soilType)}
-                        value={formatSurfaceArea(surfaceArea)}
+                        value={formatSurfaceArea(roundToInteger(surfaceArea))}
                         key={`${spaceCategory}-${soilType}`}
                         isDetails
                         valueTooltip={
@@ -230,13 +236,17 @@ const DevelopmentPlanFeatures = ({
                   noBorder
                   label={<strong>Espaces verts publics</strong>}
                   value={
-                    <strong>{formatSurfaceArea(totalPublicGreenSpacesAndPublicGrassSpaces)}</strong>
+                    <strong>
+                      {formatSurfaceArea(
+                        roundToInteger(totalPublicGreenSpacesAndPublicGrassSpaces),
+                      )}
+                    </strong>
                   }
                 />
                 {totalGrassPublicSpaces > 0 && (
                   <DataLine
                     label="Voies, places, trottoirs enherbés"
-                    value={formatSurfaceArea(totalGrassPublicSpaces)}
+                    value={formatSurfaceArea(roundToInteger(totalGrassPublicSpaces))}
                     isDetails
                     valueTooltip={
                       isExpress
@@ -248,7 +258,7 @@ const DevelopmentPlanFeatures = ({
                 {totalPublicGreenSpaces > 0 && (
                   <DataLine
                     label="Espaces verts publics"
-                    value={formatSurfaceArea(totalPublicGreenSpaces)}
+                    value={formatSurfaceArea(roundToInteger(totalPublicGreenSpaces))}
                     isDetails
                     valueTooltip={
                       isExpress
@@ -266,7 +276,9 @@ const DevelopmentPlanFeatures = ({
                   noBorder
                   label={<strong>Espaces publics</strong>}
                   labelTooltip="Les espaces publics sont comptabilisés hors espaces verts."
-                  value={<strong>{formatSurfaceArea(totalOtherPublicSpaces)}</strong>}
+                  value={
+                    <strong>{formatSurfaceArea(roundToInteger(totalOtherPublicSpaces))}</strong>
+                  }
                 />
                 {otherPublicSpaces
                   .filter(({ surfaceArea }) => surfaceArea)
@@ -274,7 +286,7 @@ const DevelopmentPlanFeatures = ({
                     return (
                       <DataLine
                         label={getUrbanSpaceLabelForPublicSpace(soilType)}
-                        value={formatSurfaceArea(surfaceArea)}
+                        value={formatSurfaceArea(roundToInteger(surfaceArea))}
                         key={`${spaceCategory}-${soilType}`}
                         isDetails
                         valueTooltip={
@@ -295,13 +307,13 @@ const DevelopmentPlanFeatures = ({
               </>
             )}
 
-            <h4 className="text-base pb-2 pt-4 mb-0">Répartition des sols</h4>
-
-            <SoilsDistribution
-              isExpressProject={isExpress}
-              projectType="URBAN_PROJECT"
-              soilsDistribution={soilsDistribution}
-            />
+            <div className="mt-4">
+              <SoilsDistribution
+                isExpressProject={isExpress}
+                projectType="URBAN_PROJECT"
+                soilsDistribution={soilsDistribution}
+              />
+            </div>
           </Section>
 
           {sumObjectValues(buildingsFloorAreaDistribution) > 0 && (

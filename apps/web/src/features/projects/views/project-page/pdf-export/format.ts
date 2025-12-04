@@ -1,3 +1,5 @@
+import { roundToInteger } from "shared";
+
 import {
   formatNumberFr,
   formatSurfaceArea,
@@ -30,9 +32,9 @@ export const formatNumberPdf = (number: number): string => {
 };
 
 export const formatSurfaceAreaPdf = (surfaceArea: number): string => {
-  return replaceSquareMetersHtmlSymbolPdf(
-    replaceNonBreakingSpacePdf(formatSurfaceArea(surfaceArea)),
-  );
+  const roundedSurfaceArea = roundToInteger(surfaceArea);
+  const formattedSurfaceArea = formatSurfaceArea(roundedSurfaceArea);
+  return replaceSquareMetersHtmlSymbolPdf(replaceNonBreakingSpacePdf(formattedSurfaceArea));
 };
 
 export const formatMoneyPdf = (amount: number): string => {
@@ -49,7 +51,7 @@ export const formatMonetaryImpactPdf = (impactValue: number): string => {
 
 export const formatSurfaceAreaImpactPdf = (impactValue: number): string =>
   replaceSquareMetersHtmlSymbolPdf(
-    replaceNonBreakingSpacePdf(formatSurfaceAreaImpact(impactValue)),
+    replaceNonBreakingSpacePdf(formatSurfaceAreaImpact(roundToInteger(impactValue))),
   );
 
 export const formatCO2ImpactPdf = (impactValue: number): string =>

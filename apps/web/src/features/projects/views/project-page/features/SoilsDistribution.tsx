@@ -1,4 +1,4 @@
-import { getProjectSoilDistributionByType, sumListWithKey } from "shared";
+import { getProjectSoilDistributionByType, roundToInteger, sumListWithKey } from "shared";
 
 import {
   ProjectDevelopmentPlanType,
@@ -26,9 +26,11 @@ export default function SoilsDistribution({
     <>
       <DataLine
         noBorder
-        label={<strong>Superficie totale</strong>}
+        label={<strong>Total de la répartition des sols</strong>}
         value={
-          <strong>{formatSurfaceArea(sumListWithKey(soilsDistribution, "surfaceArea"))}</strong>
+          <strong>
+            {formatSurfaceArea(roundToInteger(sumListWithKey(soilsDistribution, "surfaceArea")))}
+          </strong>
         }
       />
       <div className="grid grid-cols-12">
@@ -68,7 +70,7 @@ export default function SoilsDistribution({
                 <DataLine
                   noBorder
                   label={<SoilTypeLabelWithColorSquare soilType={soilType} />}
-                  value={formatSurfaceArea(surfaceArea ?? 0)}
+                  value={formatSurfaceArea(roundToInteger(surfaceArea ?? 0))}
                   key={soilType}
                   className="md:grid-cols-[5fr_4fr]"
                   valueTooltip={

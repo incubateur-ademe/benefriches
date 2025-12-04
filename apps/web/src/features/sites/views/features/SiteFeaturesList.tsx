@@ -5,6 +5,7 @@ import {
   getLabelForNaturalAreaType,
   getLabelForAgriculturalOperationActivity,
   getContaminatedPercentageFromFricheActivity,
+  roundToInteger,
 } from "shared";
 
 import { formatPercentage, formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
@@ -34,7 +35,7 @@ export default function SiteFeaturesList(siteFeatures: Props) {
         <DataLine
           noBorder
           label={<strong>Superficie totale du site</strong>}
-          value={<strong>{formatSurfaceArea(siteFeatures.surfaceArea)}</strong>}
+          value={<strong>{formatSurfaceArea(roundToInteger(siteFeatures.surfaceArea))}</strong>}
         />
 
         <div className="grid grid-cols-12">
@@ -55,7 +56,7 @@ export default function SiteFeaturesList(siteFeatures: Props) {
               exportConfig={{
                 title: "Répartition de l'occupation des sols",
                 subtitle: siteFeatures.name,
-                caption: `Surface totale : ${formatSurfaceArea(siteFeatures.surfaceArea)}`,
+                caption: `Surface totale : ${formatSurfaceArea(roundToInteger(siteFeatures.surfaceArea))}`,
               }}
             />
           </div>
@@ -91,7 +92,7 @@ export default function SiteFeaturesList(siteFeatures: Props) {
                 <DataLine
                   noBorder
                   label={<SoilTypeLabelWithColorSquare soilType={soilType} />}
-                  value={formatSurfaceArea(surfaceArea ?? 0)}
+                  value={formatSurfaceArea(roundToInteger(surfaceArea ?? 0))}
                   key={soilType}
                   className="md:grid-cols-[5fr_4fr]"
                   valueTooltip={valueTooltip}
@@ -115,7 +116,7 @@ La pollution à l'amiante des bâtiments n'est pas considérée ici."
               }
               value={
                 siteFeatures.contaminatedSurfaceArea
-                  ? formatSurfaceArea(siteFeatures.contaminatedSurfaceArea)
+                  ? formatSurfaceArea(roundToInteger(siteFeatures.contaminatedSurfaceArea))
                   : "Pas de pollution déclarée"
               }
             />
