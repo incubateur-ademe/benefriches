@@ -4,6 +4,7 @@ import {
   EditorialPageLayout,
   EditorialPageText,
   EditorialPageTitle,
+  EditorialPageButtonsSection,
 } from "@/shared/views/layout/EditorialPageLayout";
 
 type Props = {
@@ -19,7 +20,9 @@ const FricheAccidentsIntroduction = ({ onNext, onBack }: Props) => {
       <EditorialPageText>
         Cela peut malheureusement arriver lorsqu'un site est laissé à l'abandon.
       </EditorialPageText>
-      <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
+      <EditorialPageButtonsSection>
+        <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
+      </EditorialPageButtonsSection>
     </EditorialPageLayout>
   );
 };

@@ -5,6 +5,7 @@ import {
   EditorialPageLayout,
   EditorialPageText,
   EditorialPageTitle,
+  EditorialPageButtonsSection,
 } from "@/shared/views/layout/EditorialPageLayout";
 
 type Props = {
@@ -19,10 +20,12 @@ const UrbanGreenSpacesIntroduction = ({ greenSpacesSurfaceArea, onNext, onBack }
       <EditorialPageIcon>🌳</EditorialPageIcon>
       <EditorialPageTitle>Parlons des espaces verts publics.</EditorialPageTitle>
       <EditorialPageText>
-        Vous envisagez d’aménager <strong>{formatSurfaceArea(greenSpacesSurfaceArea)}</strong>{" "}
-        d’espaces verts publics.
+        Vous envisagez d'aménager <strong>{formatSurfaceArea(greenSpacesSurfaceArea)}</strong>{" "}
+        d'espaces verts publics.
       </EditorialPageText>
-      <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
+      <EditorialPageButtonsSection>
+        <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
+      </EditorialPageButtonsSection>
     </EditorialPageLayout>
   );
 };

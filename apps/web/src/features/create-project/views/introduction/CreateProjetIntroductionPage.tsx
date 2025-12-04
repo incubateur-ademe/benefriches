@@ -6,6 +6,7 @@ import {
   EditorialPageLayout,
   EditorialPageText,
   EditorialPageTitle,
+  EditorialPageButtonsSection,
 } from "@/shared/views/layout/EditorialPageLayout";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
@@ -41,9 +42,11 @@ function CreateProjectIntroductionPage({ onNext, siteName, siteLoadingState }: P
             projet, l'aménagement des espaces et l'occupation des sols associée, les acteurs du
             projet, les dépenses et recettes prévisionnelles, le calendrier des travaux, etc.
           </EditorialPageText>
-          <Button size="large" onClick={onNext}>
-            Commencer
-          </Button>
+          <EditorialPageButtonsSection>
+            <Button size="large" onClick={onNext}>
+              Commencer
+            </Button>
+          </EditorialPageButtonsSection>
         </EditorialPageLayout>
       );
   }

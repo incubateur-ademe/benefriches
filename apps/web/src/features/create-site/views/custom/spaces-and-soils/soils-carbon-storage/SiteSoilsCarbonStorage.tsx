@@ -101,13 +101,15 @@ const SiteSoilsCarbonStorage = ({
             C'est l'équivalent de ce qu'émettent{" "}
             <strong>{frenchAnnualEmissionsText} français</strong> en 1 an.
           </p>
-          <SoilsCarbonStorageChart
-            soilsCarbonStorage={siteCarbonStorage.soils}
-            exportConfig={{
-              title: "Stockage du carbone par les sols",
-              caption: `Ce site stocke environ <strong>${totalText} t</strong> de carbone.<br>C'est l'équivalent de ce qu'émettent <strong>${frenchAnnualEmissionsText} français</strong> en 1 an.`,
-            }}
-          />
+          <div className="mb-10">
+            <SoilsCarbonStorageChart
+              soilsCarbonStorage={siteCarbonStorage.soils}
+              exportConfig={{
+                title: "Stockage du carbone par les sols",
+                caption: `Ce site stocke environ <strong>${totalText} t</strong> de carbone.<br>C'est l'équivalent de ce qu'émettent <strong>${frenchAnnualEmissionsText} français</strong> en 1 an.`,
+              }}
+            />
+          </div>
         </>
       )}
       <BackNextButtonsGroup onBack={onBack} onNext={onNext} />

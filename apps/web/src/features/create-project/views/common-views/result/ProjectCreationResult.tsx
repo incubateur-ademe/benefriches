@@ -7,6 +7,7 @@ import {
   EditorialPageLayout,
   EditorialPageText,
   EditorialPageTitle,
+  EditorialPageButtonsSection,
 } from "@/shared/views/layout/EditorialPageLayout";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 import { routes } from "@/shared/views/router";
@@ -51,9 +52,11 @@ function ProjectCreationResult({ projectId, projectName, loadingState, onBack }:
             Ses impacts ont été calculés et sont prêts à être consultés.
           </EditorialPageText>
           <EditorialPageText>Mais avant cela, 3 informations importantes.</EditorialPageText>
-          <Button size="large" linkProps={routes.projectImpactsOnboarding({ projectId }).link}>
-            Voir les infos importantes
-          </Button>
+          <EditorialPageButtonsSection>
+            <Button size="large" linkProps={routes.projectImpactsOnboarding({ projectId }).link}>
+              Voir les infos importantes
+            </Button>
+          </EditorialPageButtonsSection>
         </EditorialPageLayout>
       );
   }

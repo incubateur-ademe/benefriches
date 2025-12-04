@@ -6,6 +6,7 @@ import {
   EditorialPageIcon,
   EditorialPageLayout,
   EditorialPageTitle,
+  EditorialPageButtonsSection,
 } from "@/shared/views/layout/EditorialPageLayout";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 import { routes } from "@/shared/views/router";
@@ -43,10 +44,12 @@ function SiteCreationResult({ siteId, siteName, loadingState, onBack }: Props) {
       return (
         <EditorialPageLayout>
           <EditorialPageIcon>✅</EditorialPageIcon>
-          <EditorialPageTitle>Le site « {siteName} » est créé !</EditorialPageTitle>
-          <Button size="large" linkProps={routes.createProject({ siteId }).link}>
-            Renseigner mon projet sur ce site
-          </Button>
+          <EditorialPageTitle>Le site « {siteName} » est créé&nbsp;!</EditorialPageTitle>
+          <EditorialPageButtonsSection>
+            <Button size="large" linkProps={routes.createProject({ siteId }).link}>
+              Renseigner mon projet sur ce site
+            </Button>
+          </EditorialPageButtonsSection>
         </EditorialPageLayout>
       );
   }

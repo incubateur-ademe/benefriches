@@ -5,5 +5,5 @@ type Props = {
 };
 
 export default function EditorialPageTitle({ children }: Props) {
-  return <h2 className="mb-10">{children}</h2>;
+  return <h2 className="mb-8">{children}</h2>;
 }

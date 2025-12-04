@@ -4,6 +4,7 @@ import {
   EditorialPageLayout,
   EditorialPageText,
   EditorialPageTitle,
+  EditorialPageButtonsSection,
 } from "@/shared/views/layout/EditorialPageLayout";
 
 type Props = {
@@ -19,7 +20,9 @@ const SiteNamingIntroduction = ({ onNext, onBack }: Props) => {
       <EditorialPageText>
         Dernières questions avant de pouvoir renseigner votre projet !
       </EditorialPageText>
-      <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
+      <EditorialPageButtonsSection>
+        <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
+      </EditorialPageButtonsSection>{" "}
     </EditorialPageLayout>
   );
 };

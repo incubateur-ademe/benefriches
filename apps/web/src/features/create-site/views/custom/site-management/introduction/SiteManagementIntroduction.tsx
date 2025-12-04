@@ -6,6 +6,7 @@ import {
   EditorialPageLayout,
   EditorialPageText,
   EditorialPageTitle,
+  EditorialPageButtonsSection,
 } from "@/shared/views/layout/EditorialPageLayout";
 
 type Props = {
@@ -39,7 +40,9 @@ const SiteManagementIntroduction = ({ siteNature, onNext, onBack }: Props) => {
       <EditorialPageIcon>🧑‍💼</EditorialPageIcon>
       <EditorialPageTitle>{title}</EditorialPageTitle>
       <EditorialPageText>{text} </EditorialPageText>
-      <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
+      <EditorialPageButtonsSection>
+        <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
+      </EditorialPageButtonsSection>{" "}
     </EditorialPageLayout>
   );
 };

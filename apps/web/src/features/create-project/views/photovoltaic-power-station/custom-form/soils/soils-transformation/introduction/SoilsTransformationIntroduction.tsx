@@ -4,6 +4,7 @@ import {
   EditorialPageLayout,
   EditorialPageText,
   EditorialPageTitle,
+  EditorialPageButtonsSection,
 } from "@/shared/views/layout/EditorialPageLayout";
 
 type Props = {
@@ -25,7 +26,9 @@ const SoilsTransformationIntroduction = ({ onNext, onBack }: Props) => {
         Cela aura un impact direct sur la capacité d’absorption de l’eau et sur le pouvoir de
         stockage du carbone, il est donc important de bien renseigner cette partie.
       </EditorialPageText>
-      <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
+      <EditorialPageButtonsSection>
+        <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
+      </EditorialPageButtonsSection>
     </EditorialPageLayout>
   );
 };

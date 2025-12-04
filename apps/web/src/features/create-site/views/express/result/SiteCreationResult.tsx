@@ -7,6 +7,7 @@ import {
   EditorialPageIcon,
   EditorialPageLayout,
   EditorialPageTitle,
+  EditorialPageButtonsSection,
 } from "@/shared/views/layout/EditorialPageLayout";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 import { routes } from "@/shared/views/router";
@@ -61,9 +62,11 @@ function SiteCreationResult({ siteId, siteName, loadingState, onBack }: Props) {
           </div>
 
           <SiteFeaturesModalView siteId={siteId} />
-          <Button size="large" linkProps={routes.createProject({ siteId }).link}>
-            Renseigner mon projet sur ce site
-          </Button>
+          <EditorialPageButtonsSection>
+            <Button size="large" linkProps={routes.createProject({ siteId }).link}>
+              Renseigner mon projet sur ce site
+            </Button>
+          </EditorialPageButtonsSection>
           <p className="text-sm mt-5">
             Attention, le site ayant été créé en mode "express", c'est-à-dire avec des données
             moyennes, les impacts du projet que vous allez renseigner peuvent ne pas refléter la

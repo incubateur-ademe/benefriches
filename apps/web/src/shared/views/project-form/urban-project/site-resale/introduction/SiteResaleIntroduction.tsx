@@ -4,6 +4,7 @@ import {
   EditorialPageLayout,
   EditorialPageText,
   EditorialPageTitle,
+  EditorialPageButtonsSection,
 } from "@/shared/views/layout/EditorialPageLayout";
 
 type Props = {
@@ -21,7 +22,9 @@ const SiteResaleIntroduction = ({ onNext, onBack }: Props) => {
         bailleur social, collectivité...). <br />
         Voyons si cela fait partie de vos projets et dans quelle mesure.
       </EditorialPageText>
-      <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
+      <EditorialPageButtonsSection>
+        <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
+      </EditorialPageButtonsSection>
     </EditorialPageLayout>
   );
 };

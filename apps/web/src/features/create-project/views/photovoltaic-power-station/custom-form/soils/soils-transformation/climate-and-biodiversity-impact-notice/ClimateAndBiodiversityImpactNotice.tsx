@@ -5,6 +5,7 @@ import {
   EditorialPageLayout,
   EditorialPageText,
   EditorialPageTitle,
+  EditorialPageButtonsSection,
 } from "@/shared/views/layout/EditorialPageLayout";
 
 import { open } from "./modal";
@@ -92,7 +93,9 @@ export default function ClimateAndBiodiversityImpactNotice({
         </EditorialPageText>
       )}
       <ClimateAndBiodiversityInformationModal />
-      <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
+      <EditorialPageButtonsSection>
+        <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
+      </EditorialPageButtonsSection>
     </EditorialPageLayout>
   );
 }

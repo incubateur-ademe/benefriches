@@ -4,6 +4,7 @@ import {
   EditorialPageLayout,
   EditorialPageText,
   EditorialPageTitle,
+  EditorialPageButtonsSection,
 } from "@/shared/views/layout/EditorialPageLayout";
 
 type Props = {
@@ -20,7 +21,9 @@ const SoilContaminationIntroduction = ({ onNext, onBack }: Props) => {
         Cela n'empêchera pas la réalisation du projet mais nécessitera des travaux de dépollution.
         Voyons quelle est la superficie polluée.
       </EditorialPageText>
-      <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
+      <EditorialPageButtonsSection>
+        <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
+      </EditorialPageButtonsSection>
     </EditorialPageLayout>
   );
 };

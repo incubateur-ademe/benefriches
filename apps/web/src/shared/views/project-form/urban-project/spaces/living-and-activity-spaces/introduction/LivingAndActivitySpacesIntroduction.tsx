@@ -5,6 +5,7 @@ import {
   EditorialPageLayout,
   EditorialPageText,
   EditorialPageTitle,
+  EditorialPageButtonsSection,
 } from "@/shared/views/layout/EditorialPageLayout";
 
 type Props = {
@@ -30,7 +31,9 @@ const LivingAndActivitySpacesIntroduction = ({
         Ces lieux peuvent contenir des bâtiments, mais aussi des des allées privées, des parkings
         privés ou encore des jardins privatifs ou partagés.
       </EditorialPageText>
-      <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
+      <EditorialPageButtonsSection>
+        <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
+      </EditorialPageButtonsSection>
     </EditorialPageLayout>
   );
 };

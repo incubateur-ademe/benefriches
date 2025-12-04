@@ -5,6 +5,7 @@ import {
   EditorialPageLayout,
   EditorialPageText,
   EditorialPageTitle,
+  EditorialPageButtonsSection,
 } from "@/shared/views/layout/EditorialPageLayout";
 
 type Props = {
@@ -22,7 +23,9 @@ const PublicSpacesIntroduction = ({ publicSpacesSurfaceArea, onNext, onBack }: P
         Vous envisagez d'aménager <strong>{formatSurfaceArea(publicSpacesSurfaceArea)}</strong>{" "}
         d'espaces publics.
       </EditorialPageText>
-      <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
+      <EditorialPageButtonsSection>
+        <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
+      </EditorialPageButtonsSection>
     </EditorialPageLayout>
   );
 };

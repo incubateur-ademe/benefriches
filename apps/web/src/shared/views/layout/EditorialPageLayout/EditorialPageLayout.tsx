@@ -5,5 +5,5 @@ type Props = {
 };
 
 export default function EditorialPageLayout({ children }: Props) {
-  return <section className="py-3 lg:px-[200px]">{children}</section>;
+  return <section className="px-6 lg:max-w-3xl h-full flex flex-col">{children}</section>;
 }

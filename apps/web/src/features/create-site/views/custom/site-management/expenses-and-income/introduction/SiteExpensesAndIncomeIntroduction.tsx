@@ -6,6 +6,7 @@ import {
   EditorialPageLayout,
   EditorialPageText,
   EditorialPageTitle,
+  EditorialPageButtonsSection,
 } from "@/shared/views/layout/EditorialPageLayout";
 
 type Props = {
@@ -22,7 +23,9 @@ const SiteExpensesAndIncomeIntroduction = ({ siteNature, onNext, onBack }: Props
           <EditorialPageIcon>💸</EditorialPageIcon>
           <EditorialPageTitle>La friche engendre des dépenses</EditorialPageTitle>
           <EditorialPageText>Notamment de gestion et de sécurisation.</EditorialPageText>
-          <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
+          <EditorialPageButtonsSection>
+            <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
+          </EditorialPageButtonsSection>{" "}
         </EditorialPageLayout>
       );
     case "AGRICULTURAL_OPERATION":
@@ -35,7 +38,9 @@ const SiteExpensesAndIncomeIntroduction = ({ siteNature, onNext, onBack }: Props
           <EditorialPageText>
             Voyons quels sont les montants liés à l’exploitation.
           </EditorialPageText>
-          <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
+          <EditorialPageButtonsSection>
+            <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
+          </EditorialPageButtonsSection>{" "}
         </EditorialPageLayout>
       );
     default:

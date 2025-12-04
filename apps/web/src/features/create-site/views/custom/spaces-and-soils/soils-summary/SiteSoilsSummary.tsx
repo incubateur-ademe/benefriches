@@ -50,13 +50,15 @@ const SiteSoilsSummary = ({
         </strong>
         .
       </p>
-      <SurfaceAreaPieChart
-        soilsDistribution={soilsDistribution}
-        exportConfig={{
-          title: "Récapitulatif de l'occupation des sols",
-          caption: `Surface totale : ${formatSurfaceArea(totalSurfaceArea)}`,
-        }}
-      />
+      <div className="mb-10">
+        <SurfaceAreaPieChart
+          soilsDistribution={soilsDistribution}
+          exportConfig={{
+            title: "Récapitulatif de l'occupation des sols",
+            caption: `Surface totale : ${formatSurfaceArea(totalSurfaceArea)}`,
+          }}
+        />
+      </div>
       <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
     </WizardFormLayout>
   );

@@ -63,7 +63,7 @@ function SidebarLayout({ mainChildren, title, sidebarChildren, actions }: Sideba
           </Sidebar>
 
           <div
-            className={classNames("overflow-auto", "w-full")}
+            className={classNames("overflow-auto", "w-full flex flex-col")}
             onClick={() => {
               if (isOpen && isCompactMode) {
                 setOpen(false);
@@ -109,7 +109,7 @@ function SidebarLayout({ mainChildren, title, sidebarChildren, actions }: Sideba
               </div>
             </header>
 
-            <main id="contenu" className="p-6 container">
+            <main id="contenu" className="p-6 container flex-1">
               {mainChildren}
             </main>
           </div>

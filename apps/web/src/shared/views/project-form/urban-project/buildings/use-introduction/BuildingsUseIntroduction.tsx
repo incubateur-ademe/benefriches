@@ -4,6 +4,7 @@ import {
   EditorialPageLayout,
   EditorialPageText,
   EditorialPageTitle,
+  EditorialPageButtonsSection,
 } from "@/shared/views/layout/EditorialPageLayout";
 
 type Props = {
@@ -25,7 +26,9 @@ const BuildingsUseIntroduction = ({ onNext, onBack }: Props) => {
         bâtiments publics ou encore des parkings silo.
       </EditorialPageText>
       <EditorialPageText>Voyons lesquels vous envisagez d'aménager.</EditorialPageText>
-      <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
+      <EditorialPageButtonsSection>
+        <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
+      </EditorialPageButtonsSection>
     </EditorialPageLayout>
   );
 };

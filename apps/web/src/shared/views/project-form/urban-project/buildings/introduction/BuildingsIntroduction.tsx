@@ -5,6 +5,7 @@ import {
   EditorialPageLayout,
   EditorialPageText,
   EditorialPageTitle,
+  EditorialPageButtonsSection,
 } from "@/shared/views/layout/EditorialPageLayout";
 
 type Props = {
@@ -30,7 +31,9 @@ const BuildingsIntroduction = ({ onNext, onBack, buildingsFootprintSurfaceArea }
         Dans les étapes suivantes, vous allez pouvoir renseigner les interventions que vous aurez
         sur les bâtiments, leurs surface de plancher, leurs usages, leurs équipements, etc.
       </EditorialPageText>
-      <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
+      <EditorialPageButtonsSection>
+        <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
+      </EditorialPageButtonsSection>
     </EditorialPageLayout>
   );
 };

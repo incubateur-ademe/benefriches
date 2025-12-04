@@ -1,5 +1,3 @@
-import { fr } from "@codegouvfr/react-dsfr";
-
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import { introductionStepCompleted } from "../../core/actions/introductionStep.actions";
@@ -10,13 +8,11 @@ function CreateProjectIntroductionContainer() {
   const { siteData, siteDataLoadingState } = useAppSelector((state) => state.projectCreation);
 
   return (
-    <section className={fr.cx("fr-container", "fr-py-4w")}>
-      <CreateProjectIntroductionPage
-        siteName={siteData?.name ?? ""}
-        siteLoadingState={siteDataLoadingState}
-        onNext={() => dispatch(introductionStepCompleted())}
-      />
-    </section>
+    <CreateProjectIntroductionPage
+      siteName={siteData?.name ?? ""}
+      siteLoadingState={siteDataLoadingState}
+      onNext={() => dispatch(introductionStepCompleted())}
+    />
   );
 }
 

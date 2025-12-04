@@ -4,6 +4,7 @@ import {
   EditorialPageLayout,
   EditorialPageText,
   EditorialPageTitle,
+  EditorialPageButtonsSection,
 } from "@/shared/views/layout/EditorialPageLayout";
 
 type Props = {
@@ -23,7 +24,9 @@ const UrbanProjectSpacesIntroduction = ({ onNext, onBack }: Props) => {
         des espaces verts, des espaces publics, mais aussi une ferme urbaine, une centrale de
         production d'énergie renouvelable ou encore un plan d'eau.
       </EditorialPageText>
-      <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
+      <EditorialPageButtonsSection>
+        <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
+      </EditorialPageButtonsSection>
     </EditorialPageLayout>
   );
 };
