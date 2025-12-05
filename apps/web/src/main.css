@@ -27,7 +27,7 @@
   --color-text-medium: #949494;
   --color-text-light: #757575;
 
-  --color-background-ultralight: #f6f6f6;
+  --color-background-ultralight: var(--background-alt-grey);
   --color-background-light: #eeeeee;
 
   --color-blue-france: #000091;
