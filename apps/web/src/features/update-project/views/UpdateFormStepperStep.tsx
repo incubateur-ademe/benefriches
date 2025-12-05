@@ -31,7 +31,7 @@ const ACTIVE_CLASSES = [
 const COMPLETED_CLASSES = ["before:bg-blue-ultradark"];
 const EMPTY_CLASSES = [
   fr.cx("fr-icon-error-warning-line"),
-  "bg-warning-ultralight text-warning-ultradark",
+  "bg-warning-ultralight dark:bg-warning-ultradark text-warning-ultradark dark:text-warning-ultralight",
 ];
 
 const CurrentStepArrow = () => (

@@ -513,6 +513,7 @@ function UrbanProjectUpdateView() {
   return (
     <SidebarLayout
       title={`Modification du projet «\u00a0${projectName}\u00a0»`}
+      header="sticky"
       actions={sidebarActions}
       sidebarChildren={<UrbanProjectUpdateStepper step={currentStep} />}
       mainChildren={

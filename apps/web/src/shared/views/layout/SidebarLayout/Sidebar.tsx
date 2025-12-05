@@ -27,7 +27,6 @@ function Sidebar({ children, mode, onToggleOpen }: SidebarProps) {
         isOpen ? "w-80 lg:relative absolute" : "w-20",
         isOpen && mode === "compact" && "drop-shadow-[0_3px_9px_var(--shadow-color)]",
         "h-full",
-        "overflow-y-auto",
       )}
     >
       <div

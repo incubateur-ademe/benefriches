@@ -9,13 +9,12 @@ type Props = {
 
 function FormWarning({ children }: Props) {
   return (
-    <section
+    <div
       className={classNames(
         "bg-warning-ultralight",
+        "dark:bg-warning-ultradark",
         "rounded-lg",
         "p-4",
-        "md:sticky",
-        "md:top-4",
         "flex",
         "flex-col",
         "gap-4",
@@ -25,12 +24,12 @@ function FormWarning({ children }: Props) {
       <span
         aria-hidden="true"
         className={classNames(
-          "text-3xl text-warning-ultradark",
+          "text-3xl text-warning-ultradark dark:text-warning-ultralight",
           fr.cx("fr-icon-error-warning-line"),
         )}
       ></span>
       {children}
-    </section>
+    </div>
   );
 }
 

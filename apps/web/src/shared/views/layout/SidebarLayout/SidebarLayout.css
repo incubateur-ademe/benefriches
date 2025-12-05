@@ -1,0 +1,11 @@
+.sidebar-layout {
+  --sidebar-layout-header-height: 89px;
+  --sidebar-layout-main-padding: 24px;
+  --sidebar-layout-sticky-top-offset: var(--sidebar-layout-main-padding);
+}
+
+.sidebar-layout.header-sticky {
+  --sidebar-layout-sticky-top-offset: calc(
+    var(--sidebar-layout-header-height) + var(--sidebar-layout-main-padding)
+  );
+}

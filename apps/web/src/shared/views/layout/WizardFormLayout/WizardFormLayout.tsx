@@ -36,31 +36,32 @@ function WizardFormLayout({
         </div>
       </section>
       {hasRightPanelContent && (
-        <section
-          className={classNames(
-            "md:grid-start-8",
-            "col-span-12",
-            "md:col-span-4",
-            "flex flex-col gap-4",
-          )}
-        >
-          {warnings && <FormWarning>{warnings}</FormWarning>}
-          {instructions && (
-            <div
-              className={classNames(
-                "border-border-grey",
-                "border-solid",
-                "border",
-                "shadow-md",
-                "rounded-lg",
-                "p-4",
-                "md:sticky",
-                "md:top-4",
-              )}
-            >
-              {instructions}
-            </div>
-          )}
+        <section className={classNames("md:grid-start-8", "col-span-12", "md:col-span-4")}>
+          <div
+            className={classNames(
+              "flex",
+              "flex-col",
+              "gap-4",
+              "md:sticky",
+              "md:top-(--sidebar-layout-sticky-top-offset)",
+            )}
+          >
+            {warnings && <FormWarning>{warnings}</FormWarning>}
+            {instructions && (
+              <div
+                className={classNames(
+                  "border-border-grey",
+                  "border-solid",
+                  "border",
+                  "shadow-md",
+                  "rounded-lg",
+                  "p-4",
+                )}
+              >
+                {instructions}
+              </div>
+            )}
+          </div>
         </section>
       )}
     </div>

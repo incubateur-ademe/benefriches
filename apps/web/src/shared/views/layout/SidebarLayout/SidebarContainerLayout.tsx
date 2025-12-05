@@ -13,11 +13,10 @@ function SidebarContainerLayout({ children }: FormLayoutProps) {
     <section
       className={classNames(
         "flex",
-        "h-screen",
+        "h-full",
         "items-center",
         "justify-center",
         "w-full",
-        "overflow-hidden",
         // Force highchart à suivre la config dsfr pour le dark mode,
         // sinon la lib suit la config du navigateur "prefers-color-scheme"
         isDark ? "highcharts-dark" : "highcharts-light",

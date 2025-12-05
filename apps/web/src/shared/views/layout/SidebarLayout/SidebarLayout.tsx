@@ -8,6 +8,8 @@ import classNames from "@/shared/views/clsx";
 import { routes } from "@/shared/views/router";
 
 import Sidebar from "./Sidebar";
+// oxlint-disable-next-line no-unassigned-import
+import "./SidebarLayout.css";
 import { SidebarLayoutContext } from "./SidebarLayoutContext";
 import SidebarLayoutFooter from "./SidebarLayoutFooter";
 
@@ -15,6 +17,7 @@ export type SidebarLayoutProps = {
   mainChildren: ReactNode;
   sidebarChildren: ReactNode;
   title: ReactNode;
+  header?: "sticky" | "normal";
   actions?: (ButtonProps.Common & {
     title?: string;
     iconId: ButtonProps.WithIcon["iconId"];
@@ -38,6 +41,7 @@ function SidebarLayout({
   title,
   sidebarChildren,
   actions = DEFAULT_ACTIONS,
+  header = "normal",
 }: SidebarLayoutProps) {
   const { breakpointsValues } = useBreakpointsValuesPx();
   const { windowInnerWidth } = useWindowInnerSize();
@@ -55,7 +59,16 @@ function SidebarLayout({
 
   return (
     <SidebarLayoutContext.Provider value={{ isOpen }}>
-      <div className={classNames("flex", "flex-col", "w-full", "h-screen", "overflow-y-auto")}>
+      <div
+        className={classNames(
+          "sidebar-layout",
+          header === "sticky" && "header-sticky",
+          "flex",
+          "flex-col",
+          "w-full",
+          "h-screen",
+        )}
+      >
         <SkipLinks
           links={[
             {
@@ -83,7 +96,7 @@ function SidebarLayout({
           </Sidebar>
 
           <div
-            className={classNames("overflow-auto", "w-full flex flex-col")}
+            className={classNames("w-full flex flex-col")}
             onClick={() => {
               if (isOpen && isCompactMode) {
                 setOpen(false);
@@ -95,10 +108,10 @@ function SidebarLayout({
                 aria-hidden="true"
                 className={classNames(
                   "transition-opacity",
-                  "absolute top-0 left-0 w-screen h-screen",
+                  "absolute top-0 left-0 w-screen h-full",
                   "bg-text-dark/64",
                   isOpen ? "z-5" : "z-[-1]",
-                  isOpen ? "opacity-1" : "opacity-0",
+                  isOpen ? "opacity-100" : "opacity-0",
                 )}
               ></div>
             )}
@@ -112,9 +125,12 @@ function SidebarLayout({
                 "border-border-grey",
                 "border-0",
                 "border-b",
+                "bg-(--background-default-grey)",
+                `h-(--sidebar-layout-header-height)`,
+                header === "sticky" && ["sticky", "top-0", "z-4"],
               )}
             >
-              <div className="text-xl font-bold">{title}</div>
+              <div className="text-lg md:text-xl font-bold">{title}</div>
               {actions && (
                 <div className="flex gap-2 md:gap-4">
                   {actions.map((button, index) =>
@@ -138,7 +154,7 @@ function SidebarLayout({
               )}
             </header>
 
-            <main id="contenu" className="p-6 container flex-1">
+            <main id="contenu" className={`p-(--sidebar-layout-main-padding) container flex-1`}>
               {mainChildren}
             </main>
           </div>

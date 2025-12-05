@@ -51,9 +51,9 @@ function SidebarLayoutFooter() {
   }
 
   return (
-    <footer id="footer">
+    <footer id="footer" className="z-10 bg-(--background-default-grey)">
       <Display />
-      <div className={classNames(fr.cx("fr-footer__bottom"), "m-0")}>
+      <div className={classNames(fr.cx("fr-footer__bottom"), "m-0", "px-4")}>
         <ul className={classNames(fr.cx("fr-footer__bottom-list"), "mx-auto w-auto")}>
           {bottomItems.map((bottomItem, i) => (
             <li className={classNames(fr.cx("fr-footer__bottom-item"))} key={i}>
