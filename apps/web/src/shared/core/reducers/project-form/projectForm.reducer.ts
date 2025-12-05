@@ -41,7 +41,7 @@ export interface ProjectFormState<T extends UrbanProjectCreationStep = UrbanProj
   } & LocalAuthorities;
   urbanProject: {
     currentStep: T;
-    saveState: "idle" | "loading" | "success" | "error";
+    saveState: "idle" | "dirty" | "loading" | "success" | "error";
     pendingStepCompletion?: {
       changes: StepUpdateResult<AnswerStepId>;
       showAlert: boolean;

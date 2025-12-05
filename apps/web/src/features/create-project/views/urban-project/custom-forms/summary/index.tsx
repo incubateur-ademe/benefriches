@@ -19,17 +19,19 @@ function ProjectionCreationDataSummaryContainer() {
   return (
     <ProjectCreationDataSummary
       nextDisabled={!isFormValid}
-      instructions={
+      instructions={!isFormValid ? null : undefined}
+      warnings={
         !isFormValid ? (
           <>
-            <div className="text-3xl py-2">⚠️</div>
-            <strong className="*:mb-4">
-              Le formulaire n'est pas complet ! <br />
+            <p>
+              <strong>Le formulaire n'est pas complet ! </strong>
+            </p>
+            <p>
               Pour valider votre projet, veuillez remplir les étapes manquantes en naviguant via
               l'étapier.
-            </strong>
+            </p>
           </>
-        ) : undefined
+        ) : null
       }
       onNext={() => {
         onSave();

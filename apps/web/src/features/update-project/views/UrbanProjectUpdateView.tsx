@@ -1,17 +1,18 @@
-import { lazy, ReactNode, Suspense } from "react";
+import { lazy, ReactNode, Suspense, useMemo } from "react";
 
 import { URBAN_PROJECT_CREATION_STEP_QUERY_STRING_MAP } from "@/features/create-project/views/urban-project/creationStepQueryStringMap";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
-import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
-import { ProjectFormProvider } from "@/shared/views/project-form/ProjectFormProvider";
+import SidebarLayout, {
+  SidebarLayoutProps,
+} from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 import BuildingsUseSelection from "@/shared/views/project-form/urban-project/buildings/use-selection";
+import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 import { routes } from "@/shared/views/router";
 
 import { UrbanProjectUpdateStep } from "../core/updateProject.reducer";
 import { selectUrbanProjectCurrentStep } from "../core/updateProject.selectors";
-import UrbanProjectUpdateHeader from "./UrbanProjectUpdateHeader";
 import UrbanProjectUpdateStepper from "./UrbanProjectUpdateStepper";
 import { useSyncUpdateStepWithRouteQuery } from "./useSyncUpdateStepWithRouteQuery";
 
@@ -443,46 +444,88 @@ function UrbanProjectUpdateView() {
   const projectId = useAppSelector((state) => state.projectUpdate.projectData.id);
   const projectName = useAppSelector((state) => state.projectUpdate.projectData.projectName ?? "");
 
-  const saveState = useAppSelector((state) => state.projectUpdate.urbanProject.saveState);
-  const lastUpdatedAt = useAppSelector((state) => state.projectUpdate.projectData.updatedAt);
-
   useSyncUpdateStepWithRouteQuery(URBAN_PROJECT_CREATION_STEP_QUERY_STRING_MAP[currentStep]);
 
+  const { onSave, selectIsFormStatusValid, selectSaveState } = useProjectForm();
+
+  const isFormValid = useAppSelector(selectIsFormStatusValid);
+  const saveState = useAppSelector(selectSaveState);
+
+  const sidebarActions = useMemo((): SidebarLayoutProps["actions"] => {
+    if (!projectId) {
+      return undefined;
+    }
+
+    const actions: SidebarLayoutProps["actions"] = [
+      {
+        linkProps: routes.projectImpacts({ projectId }).link,
+        iconId: "ri-bar-chart-2-line",
+        priority: "secondary",
+        text: "Retourner aux impacts",
+      },
+    ];
+
+    if (saveState === "idle") {
+      return actions;
+    }
+
+    if (saveState === "loading") {
+      return [
+        {
+          onClick: onSave,
+          iconId: "ri-loader-2-line",
+          priority: "primary",
+          text: "Sauvegarde en cours...",
+          disabled: true,
+        },
+        ...actions,
+      ];
+    }
+    if (saveState === "success") {
+      return [
+        {
+          onClick: onSave,
+          iconId: "fr-icon-check-line",
+          priority: "primary",
+          text: "Modifications sauvegardées",
+          className: "before:text-success-dark",
+          disabled: true,
+        },
+        ...actions,
+      ];
+    }
+
+    return [
+      {
+        onClick: onSave,
+        iconId: "fr-icon-save-line",
+        priority: "primary",
+        text: "Sauvegarder les modifications",
+        disabled: !isFormValid,
+        title: !isFormValid
+          ? "Le formulaire est incomplet. Terminez l'édition avant de sauvegarder."
+          : undefined,
+      },
+      ...actions,
+    ];
+  }, [isFormValid, onSave, projectId, saveState]);
+
   return (
-    <ProjectFormProvider mode="update">
-      <SidebarLayout
-        title={
-          <UrbanProjectUpdateHeader
-            updatedAt={lastUpdatedAt}
-            saveState={saveState}
-            projectName={projectName}
-          />
-        }
-        actions={
-          projectId
-            ? [
-                {
-                  linkProps: routes.projectImpacts({ projectId }).link,
-                  iconId: "ri-bar-chart-2-fill",
-                  priority: "tertiary no outline",
-                  children: "Voir les impacts du projet",
-                },
-              ]
-            : undefined
-        }
-        sidebarChildren={<UrbanProjectUpdateStepper step={currentStep} />}
-        mainChildren={
-          saveState === "loading" ? (
-            <LoadingSpinner />
-          ) : (
-            <Suspense fallback={<LoadingSpinner />}>
-              {getCurrentStepView(currentStep)}
-              <AnswerCascadingUpdateDialog />
-            </Suspense>
-          )
-        }
-      />
-    </ProjectFormProvider>
+    <SidebarLayout
+      title={`Modification du projet «\u00a0${projectName}\u00a0»`}
+      actions={sidebarActions}
+      sidebarChildren={<UrbanProjectUpdateStepper step={currentStep} />}
+      mainChildren={
+        saveState === "loading" ? (
+          <LoadingSpinner />
+        ) : (
+          <Suspense fallback={<LoadingSpinner />}>
+            {getCurrentStepView(currentStep)}
+            <AnswerCascadingUpdateDialog />
+          </Suspense>
+        )
+      }
+    />
   );
 }
 

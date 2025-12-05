@@ -6,6 +6,7 @@ import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
+import { ProjectFormProvider } from "@/shared/views/project-form/ProjectFormProvider";
 import { routes } from "@/shared/views/router";
 
 import { reconversionProjectUpdateInitiated } from "../core/updateProject.actions";
@@ -59,7 +60,11 @@ function UpdateProjectPage({ route }: Props) {
   }
 
   if (projectType === "URBAN_PROJECT" && !isExpressProject) {
-    return <UrbanProjectUpdateView />;
+    return (
+      <ProjectFormProvider mode="update">
+        <UrbanProjectUpdateView />
+      </ProjectFormProvider>
+    );
   }
 
   return <UnavailableFeatureView />;

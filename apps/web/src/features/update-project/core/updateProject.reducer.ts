@@ -76,8 +76,7 @@ const projectUpdateReducer = createReducer(getInitialState(), (builder) => {
 
       state.urbanProject.steps = convertProjectDataToSteps(action.payload);
       state.urbanProject.currentStep = "URBAN_PROJECT_FINAL_SUMMARY";
-      // le projet affiché représente exactement ce qui se trouve en bdd
-      state.urbanProject.saveState = "success";
+      state.urbanProject.saveState = "idle";
 
       state.urbanProject.stepsSequence = computeProjectStepsSequence(
         { siteData: action.payload.siteData, stepsState: state.urbanProject.steps },

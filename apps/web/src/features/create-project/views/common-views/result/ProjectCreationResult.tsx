@@ -15,13 +15,14 @@ import { routes } from "@/shared/views/router";
 type Props = {
   projectName: string;
   projectId: string;
-  loadingState: "idle" | "loading" | "success" | "error";
+  loadingState: "idle" | "dirty" | "loading" | "success" | "error";
   onBack: () => void;
 };
 
 function ProjectCreationResult({ projectId, projectName, loadingState, onBack }: Props) {
   switch (loadingState) {
     case "idle":
+    case "dirty":
       return null;
     case "loading":
       return (

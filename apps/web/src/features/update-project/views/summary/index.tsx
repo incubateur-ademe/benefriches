@@ -1,5 +1,3 @@
-import Button from "@codegouvfr/react-dsfr/Button";
-
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { StepGroupId } from "@/shared/views/project-form/stepper/stepperConfig";
 import ProjectCreationDataSummary from "@/shared/views/project-form/urban-project/summary/ProjectCreationDataSummary";
@@ -23,29 +21,18 @@ function ProjectionCreationDataSummaryContainer() {
   return (
     <ProjectCreationDataSummary
       nextDisabled={!isFormValid || saveState === "success"}
-      title={
-        <div className="flex justify-between items-start">
-          Récapitulatif du projet
-          {saveState !== "success" && (
-            <Button
-              iconId="fr-icon-save-fill"
-              onClick={onSave}
-              nativeButtonProps={{ disabled: !isFormValid }}
-            >
-              Sauvegarder les changements
-            </Button>
-          )}
-        </div>
-      }
-      instructions={
+      title="Récapitulatif du projet"
+      instructions={null}
+      warnings={
         !isFormValid ? (
           <>
-            <div className="text-3xl py-2">⚠️</div>
-            <strong className="*:mb-4">
-              Le formulaire n'est pas complet ! <br />
+            <p>
+              <strong>Le formulaire n'est pas complet ! </strong>
+            </p>
+            <p>
               Pour valider votre projet, veuillez remplir les étapes manquantes en naviguant via
               l'étapier.
-            </strong>
+            </p>
           </>
         ) : null
       }

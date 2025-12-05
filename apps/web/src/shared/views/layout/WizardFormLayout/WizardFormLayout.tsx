@@ -1,16 +1,25 @@
 import { ReactNode } from "react";
 
 import classNames from "../../clsx";
+import FormWarning from "./FormWarning";
 
-type Props = {
+export type WizardFormLayoutProps = {
   title: ReactNode;
   instructions?: ReactNode;
+  warnings?: ReactNode;
   children: ReactNode;
   fullScreen?: boolean;
 };
 
-function WizardFormLayout({ title, children, instructions = null, fullScreen = false }: Props) {
-  const shouldDisplayFullScreen = fullScreen && !instructions;
+function WizardFormLayout({
+  title,
+  children,
+  instructions = null,
+  warnings = null,
+  fullScreen = false,
+}: WizardFormLayoutProps) {
+  const hasRightPanelContent = instructions || warnings;
+  const shouldDisplayFullScreen = fullScreen && !hasRightPanelContent;
 
   return (
     <div className="grid grid-cols-12 gap-6 w-full">
@@ -26,22 +35,32 @@ function WizardFormLayout({ title, children, instructions = null, fullScreen = f
           {children}
         </div>
       </section>
-      {instructions && (
-        <section className={classNames("md:grid-start-8", "col-span-12", "md:col-span-4")}>
-          <div
-            className={classNames(
-              "border-border-grey",
-              "border-solid",
-              "border",
-              "shadow-md",
-              "rounded-lg",
-              "p-4",
-              "md:sticky",
-              "md:top-4",
-            )}
-          >
-            {instructions}
-          </div>
+      {hasRightPanelContent && (
+        <section
+          className={classNames(
+            "md:grid-start-8",
+            "col-span-12",
+            "md:col-span-4",
+            "flex flex-col gap-4",
+          )}
+        >
+          {warnings && <FormWarning>{warnings}</FormWarning>}
+          {instructions && (
+            <div
+              className={classNames(
+                "border-border-grey",
+                "border-solid",
+                "border",
+                "shadow-md",
+                "rounded-lg",
+                "p-4",
+                "md:sticky",
+                "md:top-4",
+              )}
+            >
+              {instructions}
+            </div>
+          )}
         </section>
       )}
     </div>

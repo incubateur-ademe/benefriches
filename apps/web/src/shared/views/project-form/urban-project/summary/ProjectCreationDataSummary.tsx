@@ -1,11 +1,12 @@
 import { ButtonProps } from "@codegouvfr/react-dsfr/Button";
-import { ReactNode } from "react";
 import { ReconversionProjectSoilsDistribution } from "shared";
 
 import ProjectFeaturesView from "@/features/projects/views/project-page/features/ProjectFeaturesView";
 import { CustomFormAnswers } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
-import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
+import WizardFormLayout, {
+  WizardFormLayoutProps,
+} from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 import { StepGroupId } from "../../stepper/stepperConfig";
 
@@ -16,9 +17,7 @@ type Props = {
   onBack: () => void;
   getSectionButtonProps: (stepGroupId: StepGroupId) => ButtonProps | undefined;
   nextDisabled?: boolean;
-  instructions?: ReactNode;
-  title?: ReactNode;
-};
+} & Partial<WizardFormLayoutProps>;
 
 function ProjectCreationDataSummary({
   projectData,
@@ -29,13 +28,14 @@ function ProjectCreationDataSummary({
   nextDisabled,
   title = "Récapitulatif du projet",
   instructions = "Si des données sont erronées, vous pouvez revenir en arrière pour les modifier.",
+  warnings,
 }: Props) {
   const sitePurchaseTotalAmount = projectData.sitePurchaseSellingPrice
     ? projectData.sitePurchaseSellingPrice + (projectData.sitePurchasePropertyTransferDuties ?? 0)
     : undefined;
 
   return (
-    <WizardFormLayout title={title} instructions={instructions}>
+    <WizardFormLayout title={title} instructions={instructions} warnings={warnings}>
       <ProjectFeaturesView
         projectData={{
           name: projectData.name ?? "",

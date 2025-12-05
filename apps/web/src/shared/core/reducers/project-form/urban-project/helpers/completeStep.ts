@@ -158,6 +158,5 @@ export function applyStepChanges<T extends AnswerStepId>(
     navigateToAndLoadStep(state, nextEmptyStep ?? "URBAN_PROJECT_FINAL_SUMMARY");
   }
 
-  // des changements se sont produit, le projet ne reflète plus ce qui est en bdd
-  state.urbanProject.saveState = "idle";
+  state.urbanProject.saveState = "dirty";
 }

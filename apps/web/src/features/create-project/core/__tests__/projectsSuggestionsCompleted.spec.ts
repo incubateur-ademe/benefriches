@@ -98,7 +98,7 @@ describe("Reconversion project suggestions step completed", () => {
           data: mockedGeneratedUrbanProject,
         },
       },
-      saveState: "idle",
+      saveState: "dirty",
       stepsSequence: [
         "URBAN_PROJECT_CREATE_MODE_SELECTION",
         "URBAN_PROJECT_EXPRESS_TEMPLATE_SELECTION",

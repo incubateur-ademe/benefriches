@@ -4,8 +4,6 @@ import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
-import UrbanProjectUpdateHeader from "./UrbanProjectUpdateHeader";
-
 function UnavailableFeatureView() {
   const projectName = useAppSelector((state) => state.projectUpdate.projectData.projectName ?? "");
 
@@ -13,7 +11,7 @@ function UnavailableFeatureView() {
     <>
       <HtmlTitle>Modifier un projet - En construction</HtmlTitle>
       <SidebarLayout
-        title={<UrbanProjectUpdateHeader projectName={projectName} />}
+        title={`Modification du projet «\u00a0${projectName}\u00a0»`}
         sidebarChildren={null}
         mainChildren={
           <div className="md:max-w-xl">

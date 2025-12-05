@@ -11,14 +11,34 @@ import Sidebar from "./Sidebar";
 import { SidebarLayoutContext } from "./SidebarLayoutContext";
 import SidebarLayoutFooter from "./SidebarLayoutFooter";
 
-type SidebarLayoutProps = {
+export type SidebarLayoutProps = {
   mainChildren: ReactNode;
   sidebarChildren: ReactNode;
   title: ReactNode;
-  actions?: ButtonProps[];
+  actions?: (ButtonProps.Common & {
+    title?: string;
+    iconId: ButtonProps.WithIcon["iconId"];
+    iconPosition?: ButtonProps.WithIcon["iconPosition"];
+    children?: ReactNode;
+    text: string;
+  } & (ButtonProps.AsAnchor | ButtonProps.AsButton))[];
 };
 
-function SidebarLayout({ mainChildren, title, sidebarChildren, actions }: SidebarLayoutProps) {
+const DEFAULT_ACTIONS: SidebarLayoutProps["actions"] = [
+  {
+    priority: "tertiary no outline",
+    linkProps: routes.myEvaluations().link,
+    iconId: "fr-icon-briefcase-fill",
+    text: "Retour à mes évaluations",
+  },
+];
+
+function SidebarLayout({
+  mainChildren,
+  title,
+  sidebarChildren,
+  actions = DEFAULT_ACTIONS,
+}: SidebarLayoutProps) {
   const { breakpointsValues } = useBreakpointsValuesPx();
   const { windowInnerWidth } = useWindowInnerSize();
 
@@ -95,18 +115,27 @@ function SidebarLayout({ mainChildren, title, sidebarChildren, actions }: Sideba
               )}
             >
               <div className="text-xl font-bold">{title}</div>
-              <div>
-                {actions?.map((button, index) => (
-                  <Button key={`menu-button-${index}`} {...button} />
-                ))}
-                <Button
-                  priority="tertiary no outline"
-                  linkProps={routes.myEvaluations().link}
-                  iconId="fr-icon-briefcase-fill"
-                >
-                  Retour à mes évaluations
-                </Button>
-              </div>
+              {actions && (
+                <div className="flex gap-2 md:gap-4">
+                  {actions.map((button, index) =>
+                    isCompactMode ? (
+                      <Button
+                        key={`menu-button-${index}`}
+                        {...button}
+                        title={button.title ? `${button.text} - ${button.title}` : button.text}
+                        iconPosition={button.iconPosition ?? "left"}
+                        iconId={button.iconId}
+                      >
+                        {undefined}
+                      </Button>
+                    ) : (
+                      <Button key={`menu-button-${index}`} title={undefined} {...button}>
+                        {button.children ?? button.text}
+                      </Button>
+                    ),
+                  )}
+                </div>
+              )}
             </header>
 
             <main id="contenu" className="p-6 container flex-1">
