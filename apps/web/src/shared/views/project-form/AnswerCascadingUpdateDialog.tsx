@@ -1,6 +1,6 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
-import { Description, Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
+import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 
 import { AnswerStepId } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 import classNames from "@/shared/views/clsx";
@@ -58,61 +58,59 @@ export default function CascadingChangesAlert() {
               La modification de cette étape entraîne d’autres modifications.
             </DialogTitle>
 
-            <Description>
-              {deletedSteps.length > 0 && (
-                <>
-                  <p className="my-4">Les étapes suivantes seront supprimées :</p>
+            {deletedSteps.length > 0 && (
+              <>
+                <p className="my-4">Les étapes suivantes seront supprimées :</p>
 
-                  <ul className="w-full  mb-6 bg-background-ultralight list-none line-through py-2">
-                    {deletedSteps.map(({ stepId }) => (
-                      <li key={stepId} className="py-1">
-                        {getStepLabel(stepId)}
-                      </li>
-                    ))}
-                  </ul>
-                </>
-              )}
+                <ul className="w-full  mb-6 bg-background-ultralight list-none line-through py-2">
+                  {deletedSteps.map(({ stepId }) => (
+                    <li key={stepId} className="py-1">
+                      {getStepLabel(stepId)}
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
 
-              {invalidSteps.length > 0 && (
-                <>
-                  <p className="my-4">
-                    Les étapes suivantes seront réinitialisées, vous devrez les compléter :
-                  </p>
-                  <ul className="w-full list-none py-2 mb-6 bg-warning-ultralight dark:bg-warning-ultradark text-warning-ultradark dark:text-warning-ultralight">
-                    {invalidSteps.map(({ stepId }) => (
-                      <li
-                        key={stepId}
-                        className={classNames(
-                          "py-1",
-                          "before:mr-2",
-                          fr.cx("fr-icon-error-warning-fill"),
-                        )}
-                      >
-                        {getStepLabel(stepId)}
-                      </li>
-                    ))}
-                  </ul>
-                </>
-              )}
+            {invalidSteps.length > 0 && (
+              <>
+                <p className="my-4">
+                  Les étapes suivantes seront réinitialisées, vous devrez les compléter :
+                </p>
+                <ul className="w-full list-none py-2 mb-6 bg-warning-ultralight dark:bg-warning-ultradark text-warning-ultradark dark:text-warning-ultralight">
+                  {invalidSteps.map(({ stepId }) => (
+                    <li
+                      key={stepId}
+                      className={classNames(
+                        "py-1",
+                        "before:mr-2",
+                        fr.cx("fr-icon-error-warning-fill"),
+                      )}
+                    >
+                      {getStepLabel(stepId)}
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
 
-              {recomputedSteps.length > 0 && (
-                <>
-                  <p className="my-4">
-                    Bénéfriches recalculera automatiquement les montants suivants :
-                  </p>
-                  <ul className="w-full list-none py-2 mb-6 bg-success-ultralight dark:bg-success-ultradark text-success-ultradark dark:text-success-ultralight">
-                    {recomputedSteps.map(({ stepId }) => (
-                      <li
-                        key={stepId}
-                        className={classNames("py-1", "before:mr-2", fr.cx("fr-icon-check-line"))}
-                      >
-                        {getStepLabel(stepId)}
-                      </li>
-                    ))}
-                  </ul>
-                </>
-              )}
-            </Description>
+            {recomputedSteps.length > 0 && (
+              <>
+                <p className="my-4">
+                  Bénéfriches recalculera automatiquement les montants suivants :
+                </p>
+                <ul className="w-full list-none py-2 mb-6 bg-success-ultralight dark:bg-success-ultradark text-success-ultradark dark:text-success-ultralight">
+                  {recomputedSteps.map(({ stepId }) => (
+                    <li
+                      key={stepId}
+                      className={classNames("py-1", "before:mr-2", fr.cx("fr-icon-check-line"))}
+                    >
+                      {getStepLabel(stepId)}
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
           </div>
 
           <div className="fr-modal__footer">
