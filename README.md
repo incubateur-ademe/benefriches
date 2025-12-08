@@ -80,7 +80,7 @@ La stack complète peut être lancée via Docker Compose dans un environnement s
 docker compose --env-file .env.e2e -f docker-compose.e2e.yml up -d
 
 # Arrêter la stack
-docker compose -f docker-compose.e2e.yml down
+docker compose --env-file .env.e2e -f docker-compose.e2e.yml down
 ```
 
 Services disponibles (configuration par défaut dans `.env.e2e`) :
@@ -110,7 +110,7 @@ pnpm --filter e2e-tests exec playwright install --with-deps
 pnpm --filter e2e-tests test
 
 # Arrêter la stack
-docker compose -f docker-compose.e2e.yml down
+docker compose --env-file .env.e2e -f docker-compose.e2e.yml down
 ```
 
 ## Build, lint et formattage
