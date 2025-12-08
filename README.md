@@ -71,9 +71,46 @@ pnpm --filter web setup-env-vars
 pnpm --filter web dev
 ```
 
+### Stack Docker production-like
+
+La stack complète peut être lancée via Docker Compose dans un environnement similaire à la production (tests manuels, debugging, etc.).
+
+```sh
+# Démarrer la stack (postgres, api, web, mailcatcher)
+docker compose --env-file .env.e2e -f docker-compose.e2e.yml up -d
+
+# Arrêter la stack
+docker compose -f docker-compose.e2e.yml down
+```
+
+Services disponibles (configuration par défaut dans `.env.e2e`) :
+- Application web : `http://localhost:3001`
+- API : `http://localhost:4001`
+- Mailcatcher (emails envoyés par l'API) : `http://localhost:1080`
+
 ## Lancement des tests
+
+### Tests unitaires et d'intégration
 ```sh
 pnpm run -r test
+```
+
+### Tests end-to-end (E2E)
+
+Les tests E2E utilisent la stack Docker production-like.
+
+```sh
+# Démarrer la stack Docker
+docker compose --env-file .env.e2e -f docker-compose.e2e.yml up -d
+
+# Installer les navigateurs Playwright (première fois uniquement)
+pnpm --filter e2e-tests exec playwright install --with-deps
+
+# Lancer les tests
+pnpm --filter e2e-tests test
+
+# Arrêter la stack
+docker compose -f docker-compose.e2e.yml down
 ```
 
 ## Build, lint et formattage

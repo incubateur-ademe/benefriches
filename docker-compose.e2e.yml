@@ -1,0 +1,82 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    restart: always
+    ports:
+      - '${DATABASE_PORT}:5432'
+    environment:
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_DB_NAME}
+    volumes:
+      - benefriches_pg_e2e_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${DATABASE_USER}']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  mailcatcher:
+    image: dockage/mailcatcher
+    restart: always
+    ports:
+      - '1080:1080'
+      - '${SMTP_PORT}:1025'
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    restart: always
+    ports:
+      - '${WEBAPP_PORT}:80'
+    environment:
+      API_HOST_URL: ${API_HOST_URL}
+      WEBAPP_MATOMO_URL: ${WEBAPP_MATOMO_URL}
+      WEBAPP_MATOMO_SITE_ID: ${WEBAPP_MATOMO_SITE_ID}
+      WEBAPP_ALLOWED_DEVELOPMENT_PLAN_CATEGORIES: ${WEBAPP_ALLOWED_DEVELOPMENT_PLAN_CATEGORIES}
+      WEBAPP_MUTAFRICHES_FRAME_SRC: ${WEBAPP_MUTAFRICHES_FRAME_SRC}
+      WEBAPP_MUTAFRICHES_INTEGRATOR: ${WEBAPP_MUTAFRICHES_INTEGRATOR}
+    depends_on:
+      api:
+        condition: service_started
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    restart: always
+    ports:
+      - '${API_PORT}:${API_PORT}'
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      PORT: ${API_PORT}
+      SESSION_SECRET: ${SESSION_SECRET}
+      AUTH_JWT_SECRET: ${AUTH_JWT_SECRET}
+      AUTH_JWT_EXPIRES_IN: ${AUTH_JWT_EXPIRES_IN}
+      DATABASE_URL: postgresql://${DATABASE_USER}:${DATABASE_PASSWORD}@postgres:5432/${DATABASE_DB_NAME}
+      WEBAPP_URL: ${WEBAPP_URL}
+      AUTH_CREATE_USER_ACCOUNT_URL: ${AUTH_CREATE_USER_ACCOUNT_URL}
+      AUTH_LOGOUT_CALLBACK_URL: ${AUTH_LOGOUT_CALLBACK_URL}
+      AUTH_LINK_TOKEN_EXPIRATION_MINUTES: ${AUTH_LINK_TOKEN_EXPIRATION_MINUTES}
+      PRO_CONNECT_PROVIDER_DOMAIN: ${PRO_CONNECT_PROVIDER_DOMAIN}
+      PRO_CONNECT_CLIENT_ID: ${PRO_CONNECT_CLIENT_ID}
+      PRO_CONNECT_CLIENT_SECRET: ${PRO_CONNECT_CLIENT_SECRET}
+      PRO_CONNECT_LOGIN_CALLBACK_URL: ${PRO_CONNECT_LOGIN_CALLBACK_URL}
+      SMTP_HOST: mailcatcher
+      SMTP_PORT: 1025
+      SMTP_USER: ${SMTP_USER}
+      SMTP_PASSWORD: ${SMTP_PASSWORD}
+      SMTP_FROM_ADDRESS: ${SMTP_FROM_ADDRESS}
+      CONNECT_CRM_URL: ${CONNECT_CRM_URL}
+      CONNECT_CRM_CLIENT_ID: ${CONNECT_CRM_CLIENT_ID}
+      CONNECT_CRM_CLIENT_SECRET: ${CONNECT_CRM_CLIENT_SECRET}
+      MUTAFRICHES_API_URL: ${MUTAFRICHES_API_URL}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mailcatcher:
+        condition: service_started
+
+volumes:
+  benefriches_pg_e2e_data:
