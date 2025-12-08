@@ -2,6 +2,8 @@
 
 # Base stage with Node.js and pnpm
 FROM node:24-slim AS base
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable && corepack prepare pnpm@10.24.0 --activate
 WORKDIR /app
 
