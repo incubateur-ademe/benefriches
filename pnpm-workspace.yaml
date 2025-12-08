@@ -4,7 +4,13 @@ packages:
 
 savePrefix: '~' # only accept versions within minor semver range
 minimumReleaseAge: 10080 # wait for a 7 days (in minutes) cooldown period
+
 trustPolicy: no-downgrade
+trustPolicyExclude:
+  # this version was published manually by the maintainer
+  # see https://github.com/paulmillr/chokidar/issues/1440 
+  - chokidar@4.0.3
+
 
 onlyBuiltDependencies:
   - '@nestjs/core'
