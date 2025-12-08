@@ -1,19 +1,18 @@
-import { lazy, ReactNode, Suspense, useMemo } from "react";
+import { lazy, ReactNode, Suspense } from "react";
 
 import { URBAN_PROJECT_CREATION_STEP_QUERY_STRING_MAP } from "@/features/create-project/views/urban-project/creationStepQueryStringMap";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
-import SidebarLayout, {
-  SidebarLayoutProps,
-} from "@/shared/views/layout/SidebarLayout/SidebarLayout";
+import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 import BuildingsUseSelection from "@/shared/views/project-form/urban-project/buildings/use-selection";
 import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
-import { routes } from "@/shared/views/router";
 
 import { UrbanProjectUpdateStep } from "../core/updateProject.reducer";
 import { selectUrbanProjectCurrentStep } from "../core/updateProject.selectors";
+import NavigationBlockerDialog from "./NavigationBlockerDialog";
 import UrbanProjectUpdateStepper from "./UrbanProjectUpdateStepper";
+import { useSidebarActions } from "./useSidebarActions";
 import { useSyncUpdateStepWithRouteQuery } from "./useSyncUpdateStepWithRouteQuery";
 
 const AnswerCascadingUpdateDialog = lazy(
@@ -444,71 +443,13 @@ function UrbanProjectUpdateView() {
   const projectId = useAppSelector((state) => state.projectUpdate.projectData.id);
   const projectName = useAppSelector((state) => state.projectUpdate.projectData.projectName ?? "");
 
-  useSyncUpdateStepWithRouteQuery(URBAN_PROJECT_CREATION_STEP_QUERY_STRING_MAP[currentStep]);
-
   const { onSave, selectIsFormStatusValid, selectSaveState } = useProjectForm();
-
   const isFormValid = useAppSelector(selectIsFormStatusValid);
   const saveState = useAppSelector(selectSaveState);
 
-  const sidebarActions = useMemo((): SidebarLayoutProps["actions"] => {
-    if (!projectId) {
-      return undefined;
-    }
+  const sidebarActions = useSidebarActions({ onSave, isFormValid, saveState, projectId });
 
-    const actions: SidebarLayoutProps["actions"] = [
-      {
-        linkProps: routes.projectImpacts({ projectId }).link,
-        iconId: "ri-bar-chart-2-line",
-        priority: "secondary",
-        text: "Retourner aux impacts",
-      },
-    ];
-
-    if (saveState === "idle") {
-      return actions;
-    }
-
-    if (saveState === "loading") {
-      return [
-        {
-          onClick: onSave,
-          iconId: "ri-loader-2-line",
-          priority: "primary",
-          text: "Sauvegarde en cours...",
-          disabled: true,
-        },
-        ...actions,
-      ];
-    }
-    if (saveState === "success") {
-      return [
-        {
-          onClick: onSave,
-          iconId: "fr-icon-check-line",
-          priority: "primary",
-          text: "Modifications sauvegardées",
-          className: "before:text-success-dark",
-          disabled: true,
-        },
-        ...actions,
-      ];
-    }
-
-    return [
-      {
-        onClick: onSave,
-        iconId: "fr-icon-save-line",
-        priority: "primary",
-        text: "Sauvegarder les modifications",
-        disabled: !isFormValid,
-        title: !isFormValid
-          ? "Le formulaire est incomplet. Terminez l'édition avant de sauvegarder."
-          : undefined,
-      },
-      ...actions,
-    ];
-  }, [isFormValid, onSave, projectId, saveState]);
+  useSyncUpdateStepWithRouteQuery(URBAN_PROJECT_CREATION_STEP_QUERY_STRING_MAP[currentStep]);
 
   return (
     <SidebarLayout
@@ -523,6 +464,7 @@ function UrbanProjectUpdateView() {
           <Suspense fallback={<LoadingSpinner />}>
             {getCurrentStepView(currentStep)}
             <AnswerCascadingUpdateDialog />
+            <NavigationBlockerDialog />
           </Suspense>
         )
       }

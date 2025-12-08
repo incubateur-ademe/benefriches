@@ -5,7 +5,7 @@ import { OnboardingVariant } from "@/features/onboarding/views/pages/when-to-use
 
 const onBoarding = defineRoute("/premiers-pas");
 
-const { RouteProvider, useRoute, routes } = createRouter({
+const { RouteProvider, useRoute, routes, session } = createRouter({
   home: defineRoute("/"),
   landingBenefriches: defineRoute("/commencer-avec-benefriches"),
   landingMutabilite: defineRoute("/commencer-avec-mutabilite"),
@@ -134,4 +134,4 @@ const { RouteProvider, useRoute, routes } = createRouter({
   politiqueConfidentialite: defineRoute("/politique-de-confidentialite"),
 });
 
-export { RouteProvider, useRoute, routes };
+export { RouteProvider, useRoute, routes, session };
