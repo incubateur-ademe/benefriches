@@ -32,7 +32,7 @@ jobs:
 
       - name: Run Playwright tests
         working-directory: apps/e2e-tests
-        run: pnpm exec playwright test
+        run: pnpm --filter e2e-tests test:e2e
 
       - name: Stop E2E stack
         if: always()

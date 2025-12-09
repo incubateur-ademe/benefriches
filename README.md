@@ -107,7 +107,7 @@ docker compose --env-file .env.e2e -f docker-compose.e2e.yml up -d
 pnpm --filter e2e-tests exec playwright install --with-deps
 
 # Lancer les tests
-pnpm --filter e2e-tests test
+pnpm --filter e2e-tests test:headed
 
 # Arrêter la stack
 docker compose --env-file .env.e2e -f docker-compose.e2e.yml down
