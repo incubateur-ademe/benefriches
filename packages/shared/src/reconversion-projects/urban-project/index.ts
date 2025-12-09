@@ -9,5 +9,6 @@ export * from "./spaces/living-and-activity-spaces/buildingsUse";
 export * from "./spaces/spaceCategories";
 export * from "./projectPhase";
 export * from "./revenues";
+export * from "./operationsExpenses";
 
 export * from "./project-generator";

@@ -1,8 +1,16 @@
+import z from "zod";
+
 import { TExpense } from "../../financial";
 import { roundToInteger } from "../../services";
 
+export const urbanProjectDevelopmentExpensePurposeSchema = z.enum([
+  "technical_studies",
+  "development_works",
+  "other",
+]);
+
 export type UrbanProjectDevelopmentExpense = TExpense<
-  "technical_studies" | "development_works" | "other"
+  z.infer<typeof urbanProjectDevelopmentExpensePurposeSchema>
 >;
 
 export type ComputedInstallationExpenses = {

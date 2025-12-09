@@ -1,6 +1,6 @@
 import z from "zod";
 
-export const urbanProjectTemplate = z.enum([
+export const urbanProjectTemplateSchema = z.enum([
   "PUBLIC_FACILITIES",
   "RESIDENTIAL_TENSE_AREA",
   "RESIDENTIAL_NORMAL_AREA",
@@ -12,7 +12,7 @@ export const urbanProjectTemplate = z.enum([
 ]);
 
 export function isUrbanProjectTemplate(template: unknown): template is UrbanProjectTemplate {
-  return urbanProjectTemplate.safeParse(template).success;
+  return urbanProjectTemplateSchema.safeParse(template).success;
 }
 
-export type UrbanProjectTemplate = z.infer<typeof urbanProjectTemplate>;
+export type UrbanProjectTemplate = z.infer<typeof urbanProjectTemplateSchema>;

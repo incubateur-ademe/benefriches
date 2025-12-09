@@ -8,7 +8,7 @@ import {
 } from "shared";
 
 import { ProjectFormState } from "../../projectForm.reducer";
-import { ANSWER_STEPS, AnswersByStep, AnswerStepId, CustomFormAnswers } from "../urbanProjectSteps";
+import { AnswersByStep, AnswerStepId, UrbanProjectFormData } from "../urbanProjectSteps";
 
 export const ReadStateHelper = {
   getStep<K extends AnswerStepId = AnswerStepId>(
@@ -151,50 +151,55 @@ export const ReadStateHelper = {
     );
   },
 
-  getProjectData(steps: ProjectFormState["urbanProject"]["steps"]) {
-    const formAnswers = this.getAllFormAnswers(steps);
-
-    const mappedProjectData = {
-      name: formAnswers.name,
-      description: formAnswers.description,
-      reinstatementContractOwner: formAnswers.reinstatementContractOwner,
-      reinstatementCosts: formAnswers.reinstatementExpenses,
-      sitePurchaseSellingPrice: formAnswers.sitePurchaseSellingPrice,
-      sitePurchasePropertyTransferDuties: formAnswers.sitePurchasePropertyTransferDuties,
-      siteResaleExpectedSellingPrice: formAnswers.siteResaleExpectedSellingPrice,
+  getProjectData(steps: ProjectFormState["urbanProject"]["steps"]): Partial<UrbanProjectFormData> {
+    return {
+      name: steps.URBAN_PROJECT_NAMING?.payload?.name,
+      description: steps.URBAN_PROJECT_NAMING?.payload?.description,
+      reinstatementContractOwner:
+        steps.URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER?.payload
+          ?.reinstatementContractOwner,
+      reinstatementCosts:
+        steps.URBAN_PROJECT_EXPENSES_REINSTATEMENT?.payload?.reinstatementExpenses,
+      sitePurchaseSellingPrice:
+        steps.URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS?.payload?.sitePurchaseSellingPrice,
+      sitePurchasePropertyTransferDuties:
+        steps.URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS?.payload
+          ?.sitePurchasePropertyTransferDuties,
+      siteResaleExpectedSellingPrice:
+        steps.URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE?.payload?.siteResaleExpectedSellingPrice,
       siteResaleExpectedPropertyTransferDuties:
-        formAnswers.siteResaleExpectedPropertyTransferDuties,
-      financialAssistanceRevenues: formAnswers.financialAssistanceRevenues,
-      yearlyProjectedCosts: formAnswers.yearlyProjectedBuildingsOperationsExpenses ?? [],
-      yearlyProjectedRevenues: formAnswers.yearlyProjectedRevenues ?? [],
+        steps.URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE?.payload
+          ?.siteResaleExpectedPropertyTransferDuties,
+      financialAssistanceRevenues:
+        steps.URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE?.payload?.financialAssistanceRevenues,
+      yearlyProjectedCosts:
+        steps.URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES?.payload
+          ?.yearlyProjectedBuildingsOperationsExpenses ?? [],
+      yearlyProjectedRevenues:
+        steps.URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES?.payload
+          ?.yearlyProjectedRevenues ?? [],
       soilsDistribution: this.getProjectSoilDistribution(steps),
-      reinstatementSchedule: formAnswers.reinstatementSchedule,
-      operationsFirstYear: formAnswers.firstYearOfOperation,
-      futureOperator: formAnswers.futureOperator,
-      futureSiteOwner: formAnswers.futureSiteOwner,
+      reinstatementSchedule:
+        steps.URBAN_PROJECT_SCHEDULE_PROJECTION?.payload?.reinstatementSchedule,
+      operationsFirstYear: steps.URBAN_PROJECT_SCHEDULE_PROJECTION?.payload?.firstYearOfOperation,
+      futureOperator: steps.URBAN_PROJECT_BUILDINGS_RESALE_SELECTION?.payload?.futureOperator,
+      futureSiteOwner: steps.URBAN_PROJECT_SITE_RESALE_SELECTION?.payload?.futureSiteOwner,
       developmentPlan: {
         type: "URBAN_PROJECT",
-        developer: formAnswers.projectDeveloper,
-        costs: formAnswers.installationExpenses,
-        installationSchedule: formAnswers.installationSchedule,
+        developer: steps.URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER?.payload
+          ?.projectDeveloper ?? { structureType: "", name: "" },
+        costs: steps.URBAN_PROJECT_EXPENSES_INSTALLATION?.payload?.installationExpenses ?? [],
+        installationSchedule:
+          steps.URBAN_PROJECT_SCHEDULE_PROJECTION?.payload?.installationSchedule,
         features: {
-          buildingsFloorAreaDistribution: formAnswers.buildingsUsesDistribution ?? {},
+          buildingsFloorAreaDistribution:
+            steps.URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION?.payload
+              ?.buildingsUsesDistribution ?? {},
         },
       },
-      projectPhase: formAnswers.projectPhase,
-      decontaminatedSoilSurface: formAnswers.decontaminatedSurfaceArea,
+      projectPhase: steps.URBAN_PROJECT_PROJECT_PHASE?.payload?.projectPhase,
+      decontaminatedSoilSurface:
+        steps.URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA?.payload?.decontaminatedSurfaceArea,
     };
-
-    return mappedProjectData;
-  },
-
-  getAllFormAnswers(steps: ProjectFormState["urbanProject"]["steps"]) {
-    return Array.from(ANSWER_STEPS).reduce<CustomFormAnswers>(
-      (acc, stepId) => ({
-        ...acc,
-        ...this.getStepAnswers(steps, stepId),
-      }),
-      {},
-    );
   },
 } as const;

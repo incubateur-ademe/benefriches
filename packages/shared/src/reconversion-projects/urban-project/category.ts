@@ -1,7 +1,7 @@
 import z from "zod";
 
-import { urbanProjectTemplate } from "./project-generator/templates";
+import { urbanProjectTemplateSchema } from "./project-generator/templates";
 
-const urbanProjectCategorySchema = z.enum([...urbanProjectTemplate.options, "OTHER"]);
+const urbanProjectCategorySchema = z.enum([...urbanProjectTemplateSchema.options, "OTHER"]);
 
 export type UrbanProjectCategory = z.infer<typeof urbanProjectCategorySchema>;

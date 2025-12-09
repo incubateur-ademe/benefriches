@@ -1,8 +1,9 @@
 import { ButtonProps } from "@codegouvfr/react-dsfr/Button";
 import { ReconversionProjectSoilsDistribution } from "shared";
 
+import { ProjectFeatures } from "@/features/projects/domain/projects.types";
 import ProjectFeaturesView from "@/features/projects/views/project-page/features/ProjectFeaturesView";
-import { CustomFormAnswers } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
+import { UrbanProjectFormData } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import WizardFormLayout, {
   WizardFormLayoutProps,
@@ -11,7 +12,7 @@ import WizardFormLayout, {
 import { StepGroupId } from "../../stepper/stepperConfig";
 
 type Props = {
-  projectData: CustomFormAnswers;
+  projectData: Partial<UrbanProjectFormData>;
   projectSoilsDistribution: ReconversionProjectSoilsDistribution;
   onNext: () => void;
   onBack: () => void;
@@ -37,32 +38,35 @@ function ProjectCreationDataSummary({
   return (
     <WizardFormLayout title={title} instructions={instructions} warnings={warnings}>
       <ProjectFeaturesView
-        projectData={{
-          name: projectData.name ?? "",
-          isExpress: false,
-          description: projectData.description,
-          developmentPlan: {
-            type: "URBAN_PROJECT",
-            developerName: projectData.projectDeveloper?.name,
-            installationCosts: projectData.installationExpenses ?? [],
-            installationSchedule: projectData.installationSchedule,
-            buildingsFloorAreaDistribution: projectData.buildingsUsesDistribution ?? {},
-          },
-          futureOwner: projectData.futureSiteOwner?.name,
-          futureOperator: projectData.futureOperator?.name,
-          soilsDistribution: projectSoilsDistribution,
-          reinstatementContractOwner: projectData.reinstatementContractOwner?.name,
-          financialAssistanceRevenues: projectData.financialAssistanceRevenues,
-          reinstatementCosts: projectData.reinstatementExpenses,
-          yearlyProjectedExpenses: projectData.yearlyProjectedBuildingsOperationsExpenses ?? [],
-          yearlyProjectedRevenues: projectData.yearlyProjectedRevenues ?? [],
-          reinstatementSchedule: projectData.reinstatementSchedule,
-          firstYearOfOperation: projectData.firstYearOfOperation,
-          sitePurchaseTotalAmount,
-          siteResaleSellingPrice: projectData.siteResaleExpectedSellingPrice,
-          buildingsResaleSellingPrice: projectData.buildingsResaleSellingPrice,
-          decontaminatedSoilSurface: projectData.decontaminatedSurfaceArea,
-        }}
+        projectData={
+          {
+            name: projectData.name ?? "",
+            isExpress: false,
+            description: projectData.description,
+            developmentPlan: {
+              type: "URBAN_PROJECT",
+              developerName: projectData.developmentPlan?.developer?.name,
+              installationCosts: projectData.developmentPlan?.costs ?? [],
+              installationSchedule: projectData.developmentPlan?.installationSchedule,
+              buildingsFloorAreaDistribution:
+                projectData.developmentPlan?.features.buildingsFloorAreaDistribution ?? {},
+            },
+            futureOwner: projectData.futureSiteOwner?.name,
+            futureOperator: projectData.futureOperator?.name,
+            soilsDistribution: projectSoilsDistribution,
+            reinstatementContractOwner: projectData.reinstatementContractOwner?.name,
+            financialAssistanceRevenues: projectData.financialAssistanceRevenues,
+            reinstatementCosts: projectData.reinstatementCosts,
+            yearlyProjectedExpenses: projectData.yearlyProjectedCosts ?? [],
+            yearlyProjectedRevenues: projectData.yearlyProjectedRevenues ?? [],
+            reinstatementSchedule: projectData.reinstatementSchedule,
+            firstYearOfOperation: projectData.operationsFirstYear,
+            sitePurchaseTotalAmount,
+            siteResaleSellingPrice: projectData.siteResaleExpectedSellingPrice,
+            buildingsResaleSellingPrice: projectData.buildingsResaleExpectedSellingPrice,
+            decontaminatedSoilSurface: projectData.decontaminatedSoilSurface,
+          } as ProjectFeatures
+        }
         getSectionButtonProps={getSectionButtonProps}
       />
 

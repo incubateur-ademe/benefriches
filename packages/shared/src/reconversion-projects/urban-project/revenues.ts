@@ -1,6 +1,11 @@
+import z from "zod";
+
 import { TRevenue } from "../../financial";
 
-export type YearlyBuildingsOperationsRevenues = TRevenue<"rent" | "other">;
+export const yearlyBuildingsOperationsRevenuePurposeSchema = z.enum(["rent", "other"]);
+export type YearlyBuildingsOperationsRevenues = TRevenue<
+  z.infer<typeof yearlyBuildingsOperationsRevenuePurposeSchema>
+>;
 
 export const getLabelForYearlyBuildingsOperationsRevenues = (
   revenueSource: YearlyBuildingsOperationsRevenues["source"],

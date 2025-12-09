@@ -10,6 +10,7 @@ import {
   getUrbanProjectAvailableStakeholders,
 } from "./helpers/stakeholders";
 import {
+  answersByStepSchemas,
   AnswerStepId,
   isAnswersStep,
   isSummaryStep,
@@ -43,8 +44,8 @@ export const createUrbanProjectFormSelectors = (
       );
     });
 
-  const selectFormAnswers = createSelector([selectStepState], (steps) =>
-    ReadStateHelper.getAllFormAnswers(steps),
+  const selectProjectData = createSelector([selectStepState], (steps) =>
+    ReadStateHelper.getProjectData(steps),
   );
 
   const selectSoilsCarbonStorageDifference = createSelector([selectStepState], (steps) => ({
@@ -54,7 +55,7 @@ export const createUrbanProjectFormSelectors = (
   }));
 
   const selectProjectSummary = createSelector(
-    [selectFormAnswers, selectProjectSoilsDistribution],
+    [selectProjectData, selectProjectSoilsDistribution],
     (projectData, projectSoilsDistribution) => ({
       projectData,
       projectSoilsDistribution,
@@ -69,10 +70,22 @@ export const createUrbanProjectFormSelectors = (
   const selectProjectStepsSequenceWithStatus = createSelector(
     [selectProjectStepsSequence, selectStepState],
     (stepsSequence, stepsState): { isCompleted: boolean; stepId: UrbanProjectCreationStep }[] =>
-      stepsSequence.map((stepId) => ({
-        stepId,
-        isCompleted: stepsState[stepId]?.completed ?? false,
-      })),
+      stepsSequence.map((stepId) => {
+        if (isAnswersStep(stepId)) {
+          const isCompleted = stepsState[stepId]?.completed ?? false;
+          const isAnswerValid = answersByStepSchemas[stepId].safeParse(
+            stepsState[stepId]?.payload,
+          ).success;
+          return {
+            stepId,
+            isCompleted: isCompleted && isAnswerValid,
+          };
+        }
+        return {
+          stepId,
+          isCompleted: stepsState[stepId]?.completed ?? false,
+        };
+      }),
   );
 
   const selectStepsGroupedBySections = createSelector(

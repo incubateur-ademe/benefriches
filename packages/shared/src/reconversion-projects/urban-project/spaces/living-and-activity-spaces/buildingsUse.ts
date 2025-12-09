@@ -2,7 +2,7 @@ import z from "zod";
 
 import { SurfaceAreaDistributionJson } from "../../../../surface-area";
 
-const buildingsUseSchema = z.enum([
+export const buildingsUseSchema = z.enum([
   "RESIDENTIAL",
   "LOCAL_STORE",
   "LOCAL_SERVICES",

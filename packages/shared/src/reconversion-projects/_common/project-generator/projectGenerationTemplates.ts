@@ -1,9 +1,9 @@
 import z from "zod";
 
-import { urbanProjectTemplate } from "../../urban-project/project-generator/templates";
+import { urbanProjectTemplateSchema } from "../../urban-project/project-generator/templates";
 
 export const reconversionProjectTemplateSchema = z.enum([
-  ...urbanProjectTemplate.options,
+  ...urbanProjectTemplateSchema.options,
   "PHOTOVOLTAIC_POWER_PLANT",
 ]);
 

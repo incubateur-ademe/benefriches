@@ -1,21 +1,19 @@
 import {
-  BuildingsUse,
-  FinancialAssistanceRevenue,
-  RecurringExpense,
-  ReinstatementExpense,
-  SurfaceAreaDistributionJson,
-  UrbanGreenSpace,
-  UrbanLivingAndActivitySpace,
-  UrbanProjectDevelopmentExpense,
-  UrbanProjectPhase,
-  UrbanPublicSpace,
-  UrbanSpaceCategory,
-  YearlyBuildingsOperationsRevenues,
-  UrbanProjectTemplate,
+  buildingsUseSchema,
+  createReconversionProjectSchema,
+  financialAssistanceRevenueSourceSchema,
+  livingAndActivitySpace,
+  reinstatementExpensesPurposeSchema,
+  typedObjectKeys,
+  urbanGreenSpaces,
+  urbanProjectDevelopmentExpensePurposeSchema,
+  urbanProjectSpacesCategories,
+  urbanProjectTemplateSchema,
+  urbanPublicSpace,
+  yearlyBuildingsOperationsExpensePurposeSchema,
+  yearlyBuildingsOperationsRevenuePurposeSchema,
 } from "shared";
 import z from "zod";
-
-import { ProjectStakeholder } from "@/features/create-project/core/project.types";
 
 export const INTRODUCTION_STEPS = [
   "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION",
@@ -49,166 +47,197 @@ export const isSummaryStep = (stepId: UrbanProjectCreationStep): stepId is Summa
   return SUMMARY_STEPS_SET.has(stepId as SummaryStep);
 };
 
-export const ANSWER_STEPS: AnswerStepId[] = [
+export const urbanProjectFormDataSchema = createReconversionProjectSchema(z.string()).omit({
+  createdBy: true,
+  id: true,
+  relatedSiteId: true,
+  createdAt: true,
+  updatedAt: true,
+  creationMode: true,
+});
+
+type ReconversionProject = z.infer<typeof urbanProjectFormDataSchema>;
+export type UrbanProjectFormData = Omit<ReconversionProject, "developmentPlan"> & {
+  developmentPlan: Extract<ReconversionProject["developmentPlan"], { type: "URBAN_PROJECT" }>;
+};
+
+const projectStakeholderSchema = z.object({
+  name: z.string(),
+  structureType: z.enum([
+    "unknown",
+    "company",
+    "private_individual",
+    "municipality",
+    "epci",
+    "department",
+    "region",
+    "local_authority",
+  ]),
+});
+
+export const answersByStepSchemas = {
   // Common
-  "URBAN_PROJECT_CREATE_MODE_SELECTION",
+  URBAN_PROJECT_CREATE_MODE_SELECTION: z.object({
+    createMode: z.enum(["custom", "express"]),
+  }),
+
   // Express
-  "URBAN_PROJECT_EXPRESS_TEMPLATE_SELECTION",
+  URBAN_PROJECT_EXPRESS_TEMPLATE_SELECTION: z.object({
+    projectTemplate: urbanProjectTemplateSchema,
+  }),
+
   // Custom
-  "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION",
-  "URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA",
-  "URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION",
-  "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
-  "URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION",
-  "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
-  "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA",
-  "URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA",
-  "URBAN_PROJECT_BUILDINGS_USE_SELECTION",
-  "URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION",
-  "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER",
-  "URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER",
-  "URBAN_PROJECT_SITE_RESALE_SELECTION",
-  "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION",
-  "URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS",
-  "URBAN_PROJECT_EXPENSES_REINSTATEMENT",
-  "URBAN_PROJECT_EXPENSES_INSTALLATION",
-  "URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES",
-  "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE",
-  "URBAN_PROJECT_REVENUE_BUILDINGS_RESALE",
-  "URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES",
-  "URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE",
-  "URBAN_PROJECT_SCHEDULE_PROJECTION",
-  "URBAN_PROJECT_NAMING",
-  "URBAN_PROJECT_PROJECT_PHASE",
-] as const;
+  URBAN_PROJECT_SPACES_CATEGORIES_SELECTION: z.object({
+    spacesCategories: z.array(urbanProjectSpacesCategories),
+  }),
 
-export type AnswerStepId = keyof AnswersByStep;
+  URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA: z.object({
+    spacesCategoriesDistribution: z.partialRecord(urbanProjectSpacesCategories, z.number()),
+  }),
 
+  URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION: z.object({
+    greenSpacesDistribution: z.partialRecord(urbanGreenSpaces, z.number()),
+  }),
+
+  URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION: z.object({
+    livingAndActivitySpacesDistribution: z.partialRecord(livingAndActivitySpace, z.number()),
+  }),
+
+  URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION: z.object({
+    publicSpacesDistribution: z.partialRecord(urbanPublicSpace, z.number()),
+  }),
+
+  URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION: z.object({
+    decontaminationPlan: z.enum(["partial", "none", "unknown"]),
+  }),
+
+  URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA: z.object({
+    decontaminatedSurfaceArea: z.number(),
+  }),
+
+  URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA: z.object({
+    buildingsFloorSurfaceArea: z.number(),
+  }),
+
+  URBAN_PROJECT_BUILDINGS_USE_SELECTION: z.object({
+    buildingsUsesSelection: z.array(buildingsUseSchema),
+  }),
+
+  URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION: z.object({
+    buildingsUsesDistribution: z.partialRecord(buildingsUseSchema, z.number()),
+  }),
+
+  URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER: z.object({
+    projectDeveloper: projectStakeholderSchema,
+  }),
+
+  URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER: z.object({
+    reinstatementContractOwner: projectStakeholderSchema,
+  }),
+
+  URBAN_PROJECT_SITE_RESALE_SELECTION: z.object({
+    siteResalePlannedAfterDevelopment: z.boolean(),
+    futureSiteOwner: projectStakeholderSchema.optional(),
+  }),
+
+  URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: z.object({
+    buildingsResalePlannedAfterDevelopment: z.boolean(),
+    futureOperator: projectStakeholderSchema.optional(),
+  }),
+
+  URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS: z.object({
+    sitePurchaseSellingPrice: z.number().optional(),
+    sitePurchasePropertyTransferDuties: z.number().optional(),
+  }),
+
+  URBAN_PROJECT_EXPENSES_REINSTATEMENT: z.object({
+    reinstatementExpenses: z.array(
+      z.object({
+        amount: z.number().nonnegative(),
+        purpose: reinstatementExpensesPurposeSchema,
+      }),
+    ),
+  }),
+
+  URBAN_PROJECT_EXPENSES_INSTALLATION: z.object({
+    installationExpenses: z.array(
+      z.object({
+        amount: z.number().nonnegative(),
+        purpose: urbanProjectDevelopmentExpensePurposeSchema,
+      }),
+    ),
+  }),
+
+  URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES: z.object({
+    yearlyProjectedBuildingsOperationsExpenses: z.array(
+      z.object({
+        amount: z.number().nonnegative(),
+        purpose: yearlyBuildingsOperationsExpensePurposeSchema,
+      }),
+    ),
+  }),
+
+  URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE: z.object({
+    siteResaleExpectedSellingPrice: z.number().optional(),
+    siteResaleExpectedPropertyTransferDuties: z.number().optional(),
+  }),
+
+  URBAN_PROJECT_REVENUE_BUILDINGS_RESALE: z.object({
+    buildingsResaleSellingPrice: z.number().optional(),
+    buildingsResalePropertyTransferDuties: z.number().optional(),
+  }),
+
+  URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES: z.object({
+    yearlyProjectedRevenues: z.array(
+      z.object({
+        amount: z.number().nonnegative(),
+        source: yearlyBuildingsOperationsRevenuePurposeSchema,
+      }),
+    ),
+  }),
+
+  URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE: z.object({
+    financialAssistanceRevenues: z.array(
+      z.object({
+        amount: z.number().nonnegative(),
+        source: financialAssistanceRevenueSourceSchema,
+      }),
+    ),
+  }),
+
+  URBAN_PROJECT_SCHEDULE_PROJECTION: z.object({
+    reinstatementSchedule: z
+      .object({
+        startDate: z.string(),
+        endDate: z.string(),
+      })
+      .optional(),
+    installationSchedule: z.object({
+      startDate: z.string(),
+      endDate: z.string(),
+    }),
+    firstYearOfOperation: z.number(),
+  }),
+
+  URBAN_PROJECT_NAMING: z.object({
+    name: z.string(),
+    description: z.string().optional(),
+  }),
+
+  URBAN_PROJECT_PROJECT_PHASE: z.object({
+    projectPhase: z.string().optional(),
+  }),
+};
+
+export const ANSWER_STEPS = typedObjectKeys(answersByStepSchemas);
 const ANSWER_STEPS_SET = new Set<AnswerStepId>(ANSWER_STEPS);
 export const isAnswersStep = (stepId: UrbanProjectCreationStep): stepId is AnswerStepId => {
   return ANSWER_STEPS_SET.has(stepId as AnswerStepId);
 };
 
-export type CustomFormAnswers = {
-  spacesCategories?: UrbanSpaceCategory[];
-  spacesCategoriesDistribution?: Partial<Record<UrbanSpaceCategory, number>>;
-  greenSpacesDistribution?: Partial<Record<UrbanGreenSpace, number>>;
-  livingAndActivitySpacesDistribution?: Partial<Record<UrbanLivingAndActivitySpace, number>>;
-  publicSpacesDistribution?: Partial<Record<UrbanPublicSpace, number>>;
-  decontaminationPlan?: "partial" | "none" | "unknown";
-  decontaminatedSurfaceArea?: number;
-  buildingsFloorSurfaceArea?: number;
-  buildingsUsesSelection?: BuildingsUse[];
-  buildingsUsesDistribution?: SurfaceAreaDistributionJson<BuildingsUse>;
-  projectDeveloper?: ProjectStakeholder;
-  reinstatementContractOwner?: ProjectStakeholder;
-  siteResalePlannedAfterDevelopment?: boolean;
-  futureSiteOwner?: ProjectStakeholder;
-  buildingsResalePlannedAfterDevelopment?: boolean;
-  futureOperator?: ProjectStakeholder;
-  sitePurchaseSellingPrice?: number;
-  sitePurchasePropertyTransferDuties?: number;
-  reinstatementExpenses?: ReinstatementExpense[];
-  installationExpenses?: UrbanProjectDevelopmentExpense[];
-  yearlyProjectedBuildingsOperationsExpenses?: RecurringExpense[];
-  siteResaleExpectedSellingPrice?: number;
-  siteResaleExpectedPropertyTransferDuties?: number;
-  buildingsResaleSellingPrice?: number;
-  buildingsResalePropertyTransferDuties?: number;
-  yearlyProjectedRevenues?: YearlyBuildingsOperationsRevenues[];
-  financialAssistanceRevenues?: FinancialAssistanceRevenue[];
-  reinstatementSchedule?: {
-    startDate: string;
-    endDate: string;
-  };
-  installationSchedule?: {
-    startDate: string;
-    endDate: string;
-  };
-  firstYearOfOperation?: number;
-  name?: string;
-  description?: string;
-  projectPhase?: UrbanProjectPhase;
-};
-
+export type AnswerStepId = keyof typeof answersByStepSchemas;
 export type AnswersByStep = {
-  // Common
-  URBAN_PROJECT_CREATE_MODE_SELECTION: { createMode?: "custom" | "express" };
-  // Express
-  URBAN_PROJECT_EXPRESS_TEMPLATE_SELECTION: {
-    projectTemplate?: UrbanProjectTemplate;
-  };
-  // Custom
-  URBAN_PROJECT_SPACES_CATEGORIES_SELECTION: Pick<CustomFormAnswers, "spacesCategories">;
-  URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA: Pick<
-    CustomFormAnswers,
-    "spacesCategoriesDistribution"
-  >;
-  URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION: Pick<
-    CustomFormAnswers,
-    "greenSpacesDistribution"
-  >;
-  URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION: Pick<
-    CustomFormAnswers,
-    "livingAndActivitySpacesDistribution"
-  >;
-  URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION: Pick<CustomFormAnswers, "publicSpacesDistribution">;
-  URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION: Pick<CustomFormAnswers, "decontaminationPlan">;
-  URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA: Pick<
-    CustomFormAnswers,
-    "decontaminatedSurfaceArea"
-  >;
-  URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA: Pick<CustomFormAnswers, "buildingsFloorSurfaceArea">;
-  URBAN_PROJECT_BUILDINGS_USE_SELECTION: Pick<CustomFormAnswers, "buildingsUsesSelection">;
-  URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION: Pick<
-    CustomFormAnswers,
-    "buildingsUsesDistribution"
-  >;
-  URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER: Pick<CustomFormAnswers, "projectDeveloper">;
-  URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER: Pick<
-    CustomFormAnswers,
-    "reinstatementContractOwner"
-  >;
-  URBAN_PROJECT_SITE_RESALE_SELECTION: Pick<
-    CustomFormAnswers,
-    "siteResalePlannedAfterDevelopment" | "futureSiteOwner"
-  >;
-  URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: Pick<
-    CustomFormAnswers,
-    "buildingsResalePlannedAfterDevelopment" | "futureOperator"
-  >;
-  URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS: Pick<
-    CustomFormAnswers,
-    "sitePurchaseSellingPrice" | "sitePurchasePropertyTransferDuties"
-  >;
-  URBAN_PROJECT_EXPENSES_REINSTATEMENT: Pick<CustomFormAnswers, "reinstatementExpenses">;
-  URBAN_PROJECT_EXPENSES_INSTALLATION: Pick<CustomFormAnswers, "installationExpenses">;
-  URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES: Pick<
-    CustomFormAnswers,
-    "yearlyProjectedBuildingsOperationsExpenses"
-  >;
-  URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE: Pick<
-    CustomFormAnswers,
-    "siteResaleExpectedSellingPrice" | "siteResaleExpectedPropertyTransferDuties"
-  >;
-  URBAN_PROJECT_REVENUE_BUILDINGS_RESALE: Pick<
-    CustomFormAnswers,
-    "buildingsResaleSellingPrice" | "buildingsResalePropertyTransferDuties"
-  >;
-  URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES: Pick<
-    CustomFormAnswers,
-    "yearlyProjectedRevenues"
-  >;
-  URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE: Pick<
-    CustomFormAnswers,
-    "financialAssistanceRevenues"
-  >;
-  URBAN_PROJECT_SCHEDULE_PROJECTION: Pick<
-    CustomFormAnswers,
-    "reinstatementSchedule" | "installationSchedule" | "firstYearOfOperation"
-  >;
-  URBAN_PROJECT_NAMING: Pick<CustomFormAnswers, "name" | "description">;
-  URBAN_PROJECT_PROJECT_PHASE: Pick<CustomFormAnswers, "projectPhase">;
+  [K in keyof typeof answersByStepSchemas]: Partial<z.infer<(typeof answersByStepSchemas)[K]>>;
 };
 
 export const BUILDINGS_STEPS = [

@@ -1,3 +1,5 @@
+import z from "zod";
+
 import { TExpense } from "../../../financial";
 import { roundToInteger } from "../../../services";
 import {
@@ -6,14 +8,17 @@ import {
   SoilsDistribution,
 } from "../../../soils/soilDistribution";
 
-export type ReinstatementExpensePurpose =
-  | "asbestos_removal"
-  | "deimpermeabilization"
-  | "demolition"
-  | "other_reinstatement"
-  | "remediation"
-  | "sustainable_soils_reinstatement"
-  | "waste_collection";
+export const reinstatementExpensesPurposeSchema = z.enum([
+  "asbestos_removal",
+  "deimpermeabilization",
+  "demolition",
+  "other_reinstatement",
+  "remediation",
+  "sustainable_soils_reinstatement",
+  "waste_collection",
+]);
+
+export type ReinstatementExpensePurpose = z.infer<typeof reinstatementExpensesPurposeSchema>;
 export type ReinstatementExpense = TExpense<ReinstatementExpensePurpose>;
 
 export type ComputedReinstatementExpenses = {

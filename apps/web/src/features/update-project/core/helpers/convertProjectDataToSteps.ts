@@ -2,7 +2,6 @@ import {
   FinancialAssistanceRevenue,
   getUrbanGreenSpaceFromSoilType,
   getUrbanPublicSpaceFromSoilType,
-  RecurringExpense,
   ReinstatementExpense,
   sumListWithKey,
   sumObjectValues,
@@ -11,6 +10,7 @@ import {
   UrbanProjectDevelopmentExpense,
   UrbanProjectPhase,
   YearlyBuildingsOperationsRevenues,
+  YearlyBuildingsOperationsExpenses,
 } from "shared";
 
 import { ProjectStakeholder } from "@/features/create-project/core/project.types";
@@ -276,7 +276,7 @@ export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProje
         steps["URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES"] = {
           payload: {
             yearlyProjectedBuildingsOperationsExpenses:
-              projectData.yearlyProjectedCosts as RecurringExpense[],
+              projectData.yearlyProjectedCosts as YearlyBuildingsOperationsExpenses[],
           },
           completed: true,
         };
