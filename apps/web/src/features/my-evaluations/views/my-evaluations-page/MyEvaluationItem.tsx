@@ -55,7 +55,9 @@ function MyEvaluationItem({ evaluation }: Props) {
     <div className="rounded-2xl">
       <div className="rounded-t-2xl bg-(--background-alt-grey) p-6 flex flex-wrap justify-between items-center">
         <div className="flex items-center gap-4">
-          <h2 className="mb-0 text-2xl">{siteName}</h2>
+          <a {...routes.siteFeatures({ siteId }).link} className="bg-none">
+            <h2 className="mb-0 text-2xl">{siteName}</h2>
+          </a>
           {isExpressSite && (
             <Badge small style="blue">
               Site express
