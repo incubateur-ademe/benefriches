@@ -2,6 +2,7 @@ import { fr } from "@codegouvfr/react-dsfr";
 import Button from "@codegouvfr/react-dsfr/Button";
 
 import { ProjectDevelopmentPlanType } from "@/features/projects/domain/projects.types";
+import { impactsExportModalOpened, trackEvent } from "@/shared/views/analytics";
 import classNames, { ClassValue } from "@/shared/views/clsx";
 import { useIsSmallScreen } from "@/shared/views/hooks/useIsSmallScreen";
 
@@ -87,6 +88,7 @@ const ProjectPageHeader = ({
             iconId="fr-icon-file-download-line"
             size={size}
             onClick={() => {
+              trackEvent(impactsExportModalOpened());
               exportImpactsModal.open();
             }}
           >
