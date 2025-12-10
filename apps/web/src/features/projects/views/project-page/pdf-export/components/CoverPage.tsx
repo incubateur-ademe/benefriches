@@ -63,6 +63,10 @@ export default function ProjectPdfExportCoverPage() {
               label="3.4 Impacts environnementaux"
             />
           </View>
+          <TableOfContentsItem
+            link={getPageLinkForId(pageIds["about-benefriches"])}
+            label="4. À propos de Bénéfriches"
+          />
         </View>
       </View>
     </PdfPage>

@@ -7,6 +7,7 @@ import { SocioEconomicDetailedImpact } from "@/features/projects/domain/projectI
 import { ProjectFeatures } from "@/features/projects/domain/projects.types";
 import { SiteFeatures } from "@/features/sites/core/site.types";
 
+import AboutBenefrichesPdfPage from "./about-benefriches/AboutBenefrichesPdfPage";
 import ProjectPdfExportCoverPage from "./components/CoverPage";
 import { ExportImpactsContext } from "./context";
 import ProjectImpactsPdfPage from "./impacts/ProjectImpactsPdfPage";
@@ -47,6 +48,7 @@ export default function ProjectPdfExport({
           impacts={impacts}
           evaluationPeriodInYears={evaluationPeriodInYears}
         />
+        <AboutBenefrichesPdfPage />
       </Document>
     </ExportImpactsContext.Provider>
   );
