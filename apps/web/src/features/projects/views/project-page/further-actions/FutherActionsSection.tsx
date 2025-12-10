@@ -175,7 +175,7 @@ export default function FurtherActionsSection({ siteId, projectId, isUpdateEnabl
   } = useAppSelector(selectUserFeaturesAlerts);
 
   return (
-    <section className="rounded-lg mt-6 p-6 bg-background-light dark:bg-black">
+    <section className="rounded-lg mt-10 p-6 bg-background-light dark:bg-black">
       <h4>Aller plus loin</h4>
       {duplicationState === "error" && (
         <Alert

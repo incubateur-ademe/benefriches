@@ -13,11 +13,12 @@ import { ProjectDevelopmentPlanType } from "../../domain/projects.types";
 import ProjectImpactsActionBar from "../shared/actions/ProjectImpactsActionBar.tsx";
 import { PROJECT_AND_SITE_FEATURES_BADGE_DIALOG_ID } from "./ExpressProjectBadge.tsx";
 import ExportImpactsModal from "./export-impacts/ExportModal";
-import { PROJECT_AND_SITE_FEATURES_FOOTER_DIALOG_ID } from "./footer/FutherActionsSection.tsx";
-import ProjectImpactFooter from "./footer/ProjectImpactFooter";
+import FurtherActionsSection, {
+  PROJECT_AND_SITE_FEATURES_FOOTER_DIALOG_ID,
+} from "./further-actions/FutherActionsSection.tsx";
 import ProjectsImpactsPageHeader from "./header/ProjectPageHeader";
 import ImpactsAccuracyDisclaimer from "./impacts-accuracy-disclaimer/ImpactsAccuracyDisclaimer";
-import ProjectImpactsPage from "./impacts/ProjectImpactsView";
+import ProjectImpactsView from "./impacts/ProjectImpactsView";
 import AboutImpactsModal from "./impacts/about-impacts-modal/AboutImpactsModal.tsx";
 import ProjectFeaturesModal from "./impacts/project-and-site-features-modal/index.tsx";
 
@@ -87,15 +88,13 @@ function ProjectPage({
         {dataLoadingState === "loading" && <LoadingSpinner />}
         {dataLoadingState === "success" && (
           <>
-            <ProjectImpactsPage
+            <ProjectImpactsView
               currentViewMode={currentViewMode}
               projectName={projectContext.name}
             />
-            <ProjectImpactFooter
+            <FurtherActionsSection
               siteId={projectContext.siteId}
-              siteNature={projectContext.siteNature!}
               projectId={projectId}
-              evaluationPeriod={evaluationPeriod}
               isUpdateEnabled={
                 projectContext.type === "URBAN_PROJECT" && !projectContext.isExpressProject
               }
