@@ -1,5 +1,7 @@
 import { Document } from "@react-pdf/renderer";
 
+// import Buffer from "node:buffer";
+
 import { EconomicBalance } from "@/features/projects/domain/projectImpactsEconomicBalance";
 import { EnvironmentalImpact } from "@/features/projects/domain/projectImpactsEnvironmental";
 import { SocialImpact } from "@/features/projects/domain/projectImpactsSocial";

@@ -1,7 +1,3 @@
-import { useWindowInnerSize } from "@codegouvfr/react-dsfr/tools/useWindowInnerSize";
-import { useBreakpointsValuesPx } from "@codegouvfr/react-dsfr/useBreakpointsValuesPx";
-import { useState } from "react";
-
 import Step1 from "./Step1";
 import Step2 from "./Step2";
 import Step3 from "./Step3";
@@ -28,24 +24,13 @@ export default function ProjectImpactsOnboardingPage({
 }: Props) {
   const currentStep = parseRouteStep(routeStep);
 
-  const [stepsHistory, setStepsHistory] = useState<string[]>([]);
-
-  const { breakpointsValues } = useBreakpointsValuesPx();
-  const { windowInnerWidth } = useWindowInnerSize();
-
-  const shouldDisableStepByStepAnimation = windowInnerWidth < breakpointsValues.md;
-
   switch (currentStep) {
     case STEPS[1]:
       return (
         <Step1
           onNextClick={() => {
-            setStepsHistory((current) => [...current, STEPS[1]]);
             onNextToStep(STEPS[2]);
           }}
-          skipStepByStepAnimation={
-            shouldDisableStepByStepAnimation || stepsHistory.includes(STEPS[1])
-          }
           canSkipOnboarding={canSkipOnboarding}
           skipOnboarding={onFinalNext}
         />
@@ -54,15 +39,11 @@ export default function ProjectImpactsOnboardingPage({
       return (
         <Step2
           onNextClick={() => {
-            setStepsHistory((current) => [...current, STEPS[2]]);
             onNextToStep(STEPS[3]);
           }}
           onBackClick={() => {
             onBackToStep(STEPS[1]);
           }}
-          skipStepByStepAnimation={
-            shouldDisableStepByStepAnimation || stepsHistory.includes(STEPS[2])
-          }
           canSkipOnboarding={canSkipOnboarding}
           skipOnboarding={onFinalNext}
         />
@@ -71,15 +52,11 @@ export default function ProjectImpactsOnboardingPage({
       return (
         <Step3
           onNextClick={() => {
-            setStepsHistory((current) => [...current, STEPS[3]]);
             onNextToStep(STEPS[4]);
           }}
           onBackClick={() => {
             onBackToStep(STEPS[2]);
           }}
-          skipStepByStepAnimation={
-            shouldDisableStepByStepAnimation || stepsHistory.includes(STEPS[3])
-          }
           canSkipOnboarding={canSkipOnboarding}
           skipOnboarding={onFinalNext}
         />
@@ -91,7 +68,6 @@ export default function ProjectImpactsOnboardingPage({
           onBackClick={() => {
             onBackToStep(STEPS[3]);
           }}
-          skipStepByStepAnimation={shouldDisableStepByStepAnimation}
           canSkipOnboarding={canSkipOnboarding}
           skipOnboarding={onFinalNext}
         />

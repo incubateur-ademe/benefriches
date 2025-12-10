@@ -1,7 +1,3 @@
-import { useState } from "react";
-
-import classNames from "@/shared/views/clsx";
-
 import EmojiListItem from "./StepEmojiListItem";
 import StepView from "./StepView";
 
@@ -10,28 +6,16 @@ type Props = {
   onNextClick: () => void;
   canSkipOnboarding: boolean;
   skipOnboarding: () => void;
-  skipStepByStepAnimation?: boolean;
 };
-
-const TRANSITION_CLASSES = ["transition", "ease-in-out", "duration-1000"] as const;
-const VISIBLE_CLASSES = ["opacity-100", "visible"] as const;
-const INVISIBLE_CLASSES = ["md:opacity-0", "md:invisible"] as const;
 
 const EMOJI_CLASSNAME = "bg-[#FCEEAC]";
 
 export default function Step2({
   onNextClick,
   onBackClick,
-  skipStepByStepAnimation,
   canSkipOnboarding,
   skipOnboarding,
 }: Props) {
-  const [innerStep, setInnerStep] = useState(skipStepByStepAnimation ? 2 : 0);
-
-  const onNextInnerStep = () => {
-    setInnerStep((current) => current + 1);
-  };
-
   return (
     <StepView
       htmlTitle="Types d'entités - Introduction - Impacts du projet"
@@ -40,29 +24,23 @@ export default function Step2({
           Bénéfriches prend en compte <span className="bg-[#FFC72780]">plusieurs entités</span>.
         </>
       }
-      onNextClick={innerStep === 2 ? onNextClick : onNextInnerStep}
+      onNextClick={onNextClick}
       onBackClick={onBackClick}
       canSkipOnboarding={canSkipOnboarding}
       skipOnboarding={skipOnboarding}
     >
       <ul className="font-bold space-y-4">
-        <li
-          className={classNames(
-            "text-xl",
-            TRANSITION_CLASSES,
-            innerStep > 0 ? VISIBLE_CLASSES : INVISIBLE_CLASSES,
-          )}
-        >
-          Les acteurs liés au projet d’aménagement :
+        <li className="text-xl">
+          Les acteurs liés au projet d'aménagement :
           <ul className="text-base list-none space-y-2">
             <EmojiListItem emoji="👨‍🌾" emojiClassName={EMOJI_CLASSNAME}>
-              L’actuel propriétaire et/ou exploitant du site
+              L'actuel propriétaire et/ou exploitant du site
             </EmojiListItem>
             <EmojiListItem emoji="👨‍💼" emojiClassName={EMOJI_CLASSNAME}>
               Le futur propriétaire et/ou exploitant du site
             </EmojiListItem>
             <EmojiListItem emoji="👷‍♀️" emojiClassName={EMOJI_CLASSNAME}>
-              L’aménageur ou le promoteur
+              L'aménageur ou le promoteur
             </EmojiListItem>
             <EmojiListItem emoji="🏛️️" emojiClassName={EMOJI_CLASSNAME}>
               La collectivité
@@ -70,13 +48,7 @@ export default function Step2({
           </ul>
         </li>
 
-        <li
-          className={classNames(
-            "text-xl",
-            TRANSITION_CLASSES,
-            innerStep > 1 ? VISIBLE_CLASSES : INVISIBLE_CLASSES,
-          )}
-        >
+        <li className="text-xl">
           Les groupes de population pouvant être concernés par le projet ou ses retombées :
           <ul className="text-base list-none space-y-2">
             <EmojiListItem emoji="🏘️️" emojiClassName={EMOJI_CLASSNAME}>
