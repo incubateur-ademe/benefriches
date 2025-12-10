@@ -2,6 +2,7 @@ import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { resolve } from "node:path";
 import { defineConfig, loadEnv } from "vite";
+import { nodePolyfills } from "vite-plugin-node-polyfills";
 
 const interceptEmbedRouting = () => {
   return {
@@ -32,7 +33,14 @@ export default defineConfig(({ mode }) => {
 
   return {
     base: "/", // make sure all assets are fetched from '/', even when route path is overwritten (like /embed/* routes)
-    plugins: [tailwindcss(), react(), interceptEmbedRouting()],
+    plugins: [
+      nodePolyfills({
+        include: ["buffer"], // only polyfill buffer (needed by react-pdf)
+      }),
+      tailwindcss(),
+      react(),
+      interceptEmbedRouting(),
+    ],
     build: {
       rollupOptions: {
         input: {
