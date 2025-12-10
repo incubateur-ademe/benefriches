@@ -58,3 +58,7 @@ jobs:
           cache: "pnpm"
       - run: pnpm install
       - run: pnpm build
+
+  e2e-tests:
+    name: End-to-end tests
+    uses: ./.github/workflows/e2e-tests.yml
