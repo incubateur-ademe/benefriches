@@ -15,7 +15,7 @@ export class AccessBenefrichesPage {
     await this.page.getByRole("link", { name: "Créer un compte" }).click();
   }
 
-  async clickLogin(): Promise<void> {
-    await this.page.getByRole("link", { name: "Se connecter" }).click();
+  async clickContinueWithEmail(): Promise<void> {
+    await this.page.getByRole("button", { name: "Continuer avec mon adresse e-mail" }).click();
   }
 }

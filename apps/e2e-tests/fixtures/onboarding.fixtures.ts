@@ -32,7 +32,9 @@ export const test = base.extend<Fixtures>({
     const signupPage = new SignupPage(page);
     await use(signupPage);
   },
-  testUser: async (_, use) => {
+  // @ts-expect-error Playwright requires destructuring even if 'page' is unused
+  // oxlint-disable-next-line no-unused-vars
+  testUser: async ({ page }, use) => {
     const user: TestUser = {
       email: `e2e-test-user-${Date.now()}@mail.com`,
       firstName: "Jean",

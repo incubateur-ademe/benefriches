@@ -19,6 +19,10 @@ export class HomePage {
     await this.page.getByRole("link", { name: "Commencer" }).click();
   }
 
+  async clickAccessBenefriches(): Promise<void> {
+    await this.page.getByRole("link", { name: "Accéder à Bénéfriches" }).click();
+  }
+
   async clickAnalyzeCompatibility(): Promise<void> {
     await this.page.getByRole("link", { name: "Analyser la compatibilité de" }).click();
   }

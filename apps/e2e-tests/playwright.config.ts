@@ -1,5 +1,8 @@
 import { defineConfig, devices } from "@playwright/test";
 
+const BASE_URL = process.env.BASE_URL ?? "http://localhost:3001";
+const MAIL_CATCHER_URL = process.env.MAIL_CATCHER_URL ?? "http://localhost:1080";
+
 /**
  * Playwright configuration for E2E tests.
  * Tests run against the webapp served by docker-compose.e2e.yml on port 3001.
@@ -14,7 +17,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: "html",
   use: {
-    baseURL: "http://localhost:3001",
+    baseURL: BASE_URL,
     trace: "on-first-retry",
   },
   projects: [
@@ -24,3 +27,5 @@ export default defineConfig({
     },
   ],
 });
+
+export { MAIL_CATCHER_URL };
