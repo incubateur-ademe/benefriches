@@ -56,7 +56,7 @@ export function createReconversionProjectSchema<T extends z.ZodTypeAny>(dateSche
     createdBy: z.uuid(),
     createdAt: dateSchema,
     updatedAt: dateSchema.optional(),
-    creationMode: z.enum(["express", "custom", "duplicated"]),
+    creationMode: z.enum(["express", "custom", "duplicated", "csv-import"]),
     name: z.string(),
     description: z.string().optional(),
     relatedSiteId: z.uuid(),
