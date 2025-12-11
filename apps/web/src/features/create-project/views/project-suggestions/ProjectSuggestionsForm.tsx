@@ -7,11 +7,7 @@ import {
   getLabelForUrbanProjectCategory,
   getPictogramForUrbanProjectCategory,
 } from "@/features/projects/views/shared/urbanProjectCategory";
-import {
-  getCompatibilityScoreBackgroundColor,
-  getTextForCompatibilityScore,
-} from "@/features/reconversion-compatibility/core/score";
-import classNames from "@/shared/views/clsx";
+import CompatibilityScoreBadge from "@/features/reconversion-compatibility/views/shared/CompatibilityScoreBadge";
 import CheckableTile from "@/shared/views/components/CheckableTile/CheckableTile";
 import TileFormFooterWrapper from "@/shared/views/layout/TileFormWrapper/TileFormFooterWrapper";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
@@ -92,16 +88,7 @@ function ProjectSuggestionsForm({ projectSuggestions, onSubmit }: Props) {
                         "Renseignez votre propre projet, qu'il soit projet urbain, centrale photovoltaïque, espace de nature, etc."
                       ) : (
                         <div className="pt-4">
-                          <div
-                            className={classNames(
-                              getCompatibilityScoreBackgroundColor(option.compatibilityScore),
-                              "py-2 px-4 inline rounded-lg text-xs dark:text-text-dark font-bold",
-                            )}
-                          >
-                            <span>{option.compatibilityScore.toFixed(0)}%</span>
-                            <span className="border-l border-black h-full opacity-25 mx-2" />
-                            <span>{getTextForCompatibilityScore(option.compatibilityScore)}</span>
-                          </div>
+                          <CompatibilityScoreBadge score={option.compatibilityScore} compact />
                         </div>
                       )
                     }

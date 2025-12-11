@@ -7,9 +7,10 @@ import {
 
 type Props = {
   score: number;
+  compact?: boolean;
 };
 
-export default function CompatibilityScoreBadge({ score }: Props) {
+export default function CompatibilityScoreBadge({ score, compact }: Props) {
   return (
     <div
       className={classNames(
@@ -17,7 +18,9 @@ export default function CompatibilityScoreBadge({ score }: Props) {
         "py-2 px-4 inline rounded-lg",
       )}
     >
-      <span className="text-lg text-black font-bold">{score.toFixed(0)}%</span>
+      <span className={classNames(compact ? "text-xs" : "text-lg", "text-black font-bold")}>
+        {score.toFixed(0)}%
+      </span>
       <span className="border-l border-black h-full opacity-25 mx-2" />
       <span className="text-xs text-black font-bold align-middle">
         {getTextForCompatibilityScore(score)}
