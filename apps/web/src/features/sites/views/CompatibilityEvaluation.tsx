@@ -4,6 +4,8 @@ import type { MutabilityUsage } from "shared";
 import { getTextForReliabilityScore } from "@/features/reconversion-compatibility/core/score";
 import CompatibilityCard from "@/features/reconversion-compatibility/views/results/CompatibilityCard";
 
+import CompatibilityResultRow from "./CompatibilityResultRow";
+
 const PODIUM_LENGTH = 3;
 
 type Props = {
@@ -22,13 +24,14 @@ function CompatibilityEvaluation({ compatibilityEvaluation }: Props) {
     );
   }
 
-  const rankedResults = compatibilityEvaluation.results
+  const allRankedResults = compatibilityEvaluation.results
     .toSorted((a, b) => b.score - a.score)
-    .slice(0, PODIUM_LENGTH)
     .map((result, index) => ({
       ...result,
       rank: index + 1,
     }));
+
+  const rankedPodium = allRankedResults.slice(0, PODIUM_LENGTH);
 
   return (
     <section>
@@ -43,8 +46,20 @@ function CompatibilityEvaluation({ compatibilityEvaluation }: Props) {
       )}
 
       <section className="flex flex-col md:flex-row gap-8">
-        {rankedResults.map((result) => (
+        {rankedPodium.map((result) => (
           <CompatibilityCard
+            key={result.usage}
+            usage={result.usage}
+            score={result.score}
+            rank={result.rank}
+          />
+        ))}
+      </section>
+
+      <section className="mt-10">
+        <h4 className="text-xl mb-4">Tous les résultats</h4>
+        {allRankedResults.map((result) => (
+          <CompatibilityResultRow
             key={result.usage}
             usage={result.usage}
             score={result.score}
