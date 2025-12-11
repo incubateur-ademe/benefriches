@@ -1,6 +1,7 @@
 import Button from "@codegouvfr/react-dsfr/Button";
 import Tooltip from "@codegouvfr/react-dsfr/Tooltip";
 
+import CompatibilityResultRow from "@/features/sites/views/CompatibilityResultRow";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
 import { ReconversionCompatibilityEvaluationViewData } from "../../core/reconversionCompatibilityEvaluation.selectors";
@@ -57,7 +58,7 @@ export default function ReconversionCompatibilityResultsPage({
       {viewData.evaluationResultsLoadingState === "success" && (
         <>
           <section className="flex flex-col md:flex-row gap-8">
-            {viewData.evaluationResults?.top3MutabilityUsages.map((result) => (
+            {viewData.evaluationResults?.rankedResults.slice(0, 3).map((result) => (
               <CompatibilityCard
                 usage={result.usage}
                 score={result.score}
@@ -72,6 +73,17 @@ export default function ReconversionCompatibilityResultsPage({
               Vous pourrez ensuite évaluer les impacts socio-économiques d'un projet.
             </p>
           </div>
+          <section className="mt-6">
+            <h4 className="text-xl mb-4">Tous les résultats</h4>
+            {viewData.evaluationResults?.rankedResults.map((result) => (
+              <CompatibilityResultRow
+                key={result.usage}
+                usage={result.usage}
+                score={result.score}
+                rank={result.rank}
+              />
+            ))}
+          </section>
         </>
       )}
     </section>

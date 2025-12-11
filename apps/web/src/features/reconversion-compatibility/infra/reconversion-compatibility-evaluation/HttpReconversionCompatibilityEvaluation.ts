@@ -80,9 +80,8 @@ export class HttpReconversionCompatibilityEvaluation
     return {
       mutafrichesId: json.id,
       reliabilityScore: json.mutabilite.fiabilite.note,
-      top3Usages: json.mutabilite.resultats
+      rankedResults: json.mutabilite.resultats
         .toSorted((a, b) => a.rang - b.rang)
-        .slice(0, 3)
         .map((usage) => ({
           usage: usage.usage,
           score: usage.indiceMutabilite,

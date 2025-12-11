@@ -7,7 +7,7 @@ import { ACTION_PREFIX } from ".";
 export type ReconversionCompatibilityEvaluationResults = {
   mutafrichesId: string;
   reliabilityScore: number;
-  top3Usages: {
+  rankedResults: {
     usage: MutabilityUsage;
     score: number;
     rank: number;

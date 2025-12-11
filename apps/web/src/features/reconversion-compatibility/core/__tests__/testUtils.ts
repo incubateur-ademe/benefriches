@@ -74,16 +74,17 @@ export class StoreBuilder {
 export const buildMockEvaluationResults = (
   overrides?: Partial<ReconversionCompatibilityEvaluationResults>,
 ): ReconversionCompatibilityEvaluationResults => {
-  const top3Usages: { usage: MutabilityUsage; score: number; rank: number }[] = [
+  const rankedResults: { usage: MutabilityUsage; score: number; rank: number }[] = [
     { usage: "photovoltaique", score: 0.9, rank: 1 },
     { usage: "residentiel", score: 0.75, rank: 2 },
     { usage: "tertiaire", score: 0.6, rank: 3 },
+    { usage: "equipements", score: 0.4, rank: 4 },
   ];
 
   return {
     mutafrichesId: "test-mutafriches-id",
     reliabilityScore: 0.85,
-    top3Usages,
+    rankedResults,
     evaluationInput: {
       cadastreId: "test-cadastre-123",
       city: "Paris",

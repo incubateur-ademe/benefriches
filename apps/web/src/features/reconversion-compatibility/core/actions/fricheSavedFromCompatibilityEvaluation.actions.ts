@@ -70,7 +70,7 @@ export const fricheSavedFromCompatibilityEvaluation = createAppAsyncThunk(
       relatedSiteId: siteId,
     });
 
-    const projectSuggestions: ProjectSuggestion[] = evaluationResults.top3Usages.map(
+    const projectSuggestions: ProjectSuggestion[] = evaluationResults.rankedResults.map(
       ({ score, usage }) => ({
         type: mapMutabilityUsageToProjectTypeTemplate(usage),
         compatibilityScore: score,

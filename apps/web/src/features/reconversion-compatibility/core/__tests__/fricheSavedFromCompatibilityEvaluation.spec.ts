@@ -89,7 +89,7 @@ describe("Reconversion compatibility evaluation actions: fricheSavedFromCompatib
           buildingsFootprintSurfaceArea: 5000,
           hasContaminatedSoils: true,
         },
-        top3Usages: [
+        rankedResults: [
           { usage: "photovoltaique", score: 0.92, rank: 1 },
           { usage: "residentiel", score: 0.78, rank: 2 },
           { usage: "industrie", score: 0.65, rank: 3 },

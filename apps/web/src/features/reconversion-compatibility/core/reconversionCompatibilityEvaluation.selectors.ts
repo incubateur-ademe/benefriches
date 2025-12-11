@@ -8,7 +8,7 @@ const selectSelf = (state: RootState) => state.reconversionCompatibilityEvaluati
 export type ReconversionCompatibilityEvaluationViewData = {
   evaluationResults:
     | {
-        top3MutabilityUsages: { usage: MutabilityUsage; score: number; rank: number }[];
+        rankedResults: { usage: MutabilityUsage; score: number; rank: number }[];
         reliabilityScore: number;
       }
     | undefined;
@@ -23,7 +23,7 @@ export const selectReconversionCompatibilityViewData = createSelector(
   (state): ReconversionCompatibilityEvaluationViewData => ({
     evaluationResults: state.evaluationResults
       ? {
-          top3MutabilityUsages: state.evaluationResults.top3Usages,
+          rankedResults: state.evaluationResults.rankedResults,
           reliabilityScore: state.evaluationResults.reliabilityScore,
         }
       : undefined,
