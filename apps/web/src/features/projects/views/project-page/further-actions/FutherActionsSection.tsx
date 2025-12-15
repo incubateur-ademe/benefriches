@@ -23,7 +23,6 @@ type Link = {
 export const PROJECT_AND_SITE_FEATURES_FOOTER_DIALOG_ID = "project-and-site-features-footer-dialog";
 const DUPLICATE_PROJECT_FEATURE_ALERT_DIALOG_ID = "duplicate-project-feature-alert-footer-dialog";
 const UPDATE_PROJECT_FEATURE_ALERT_DIALOG_ID = "update-project-feature-alert-footer-dialog";
-const UPDATE_SITE_FEATURE_ALERT_DIALOG_ID = "update-site-feature-alert-footer-dialog";
 
 type Props = {
   siteId: string;
@@ -48,7 +47,7 @@ export default function FurtherActionsSection({ siteId, projectId, isUpdateEnabl
 
   const links: Link[] = [
     {
-      categoryName: "Modifier",
+      categoryName: "Modifier et évaluer",
       links: [
         isUpdateEnabled
           ? {
@@ -65,20 +64,6 @@ export default function FurtherActionsSection({ siteId, projectId, isUpdateEnabl
                 "data-fr-opened": "false",
               },
             },
-        {
-          iconId: "fr-icon-edit-line",
-          disabled: true,
-          title: "Modifier les infos du site",
-          badgeProps: {
-            "aria-controls": UPDATE_SITE_FEATURE_ALERT_DIALOG_ID,
-            "data-fr-opened": "false",
-          },
-        },
-      ],
-    },
-    {
-      categoryName: "Évaluer",
-      links: [
         isUpdateEnabled
           ? {
               iconId: "ri-file-copy-line",
@@ -101,24 +86,11 @@ export default function FurtherActionsSection({ siteId, projectId, isUpdateEnabl
           linkProps: routes.createProject({ siteId }).link,
           title: "Évaluer un nouveau projet",
         },
-        {
-          iconId: "fr-icon-add-line",
-          linkProps: routes.createSite().link,
-          title: "Créer un nouveau site",
-        },
       ],
     },
     {
       categoryName: "Comprendre",
       links: [
-        {
-          iconId: "fr-icon-lightbulb-line",
-          nativeButtonProps: {
-            "aria-controls": ABOUT_IMPACTS_DIALOG_ID,
-            "data-fr-opened": false,
-          },
-          title: "Comprendre les calculs de Bénéfriches",
-        },
         {
           iconId: "fr-icon-file-text-line",
           nativeButtonProps: {
@@ -127,7 +99,14 @@ export default function FurtherActionsSection({ siteId, projectId, isUpdateEnabl
           },
           title: "Revoir les données du site et du projet",
         },
-        //  { iconId: "ri-folder-2-line", title: "Voir des projets similaires" },
+        {
+          iconId: "fr-icon-lightbulb-line",
+          nativeButtonProps: {
+            "aria-controls": ABOUT_IMPACTS_DIALOG_ID,
+            "data-fr-opened": false,
+          },
+          title: "Comprendre les calculs de Bénéfriches",
+        },
       ],
     },
     {
@@ -167,16 +146,12 @@ export default function FurtherActionsSection({ siteId, projectId, isUpdateEnabl
   const dispatch = useAppDispatch();
 
   const userEmail = useAppSelector(selectCurrentUserEmail);
-  const {
-    createUserFeatureAlertState,
-    duplicateProjectAlert,
-    updateProjectAlert,
-    updateSiteAlert,
-  } = useAppSelector(selectUserFeaturesAlerts);
+  const { createUserFeatureAlertState, duplicateProjectAlert, updateProjectAlert } =
+    useAppSelector(selectUserFeaturesAlerts);
 
   return (
     <section className="rounded-lg mt-10 p-6 bg-background-light dark:bg-black">
-      <h4>Aller plus loin</h4>
+      <h4>Liens utiles</h4>
       {duplicationState === "error" && (
         <Alert
           className="my-4"
@@ -185,11 +160,11 @@ export default function FurtherActionsSection({ siteId, projectId, isUpdateEnabl
           description="Une erreur s'est produite lors de la duplication du projet ..."
         />
       )}
-      <div className="grid md:grid-cols-4 gap-4">
+      <div className="grid md:grid-cols-3 gap-4">
         {links.map(({ categoryName, links }, columnIndex) => (
           <div key={`link-item-${columnIndex}`}>
-            <h5 className={classNames("text-sm", "uppercase", "mb-4")}>{categoryName}</h5>
-            <ul className={classNames("list-none", "m-0", "p-0")}>
+            <h5 className="text-sm uppercase mb-4">{categoryName}</h5>
+            <ul className="list-none m-0 p-0">
               {links.map(({ title, badgeProps, className, ...buttonProps }, linkItemIndex) => (
                 <li key={`li-${linkItemIndex}`} className="pb-4 flex items-center">
                   <Button
@@ -221,21 +196,6 @@ export default function FurtherActionsSection({ siteId, projectId, isUpdateEnabl
           void dispatch(
             featureAlertSubscribed({
               feature: { type: "duplicate_project" },
-              email,
-            }),
-          );
-        }}
-      />
-      <ProjectFeatureAlertModal
-        dialogId={UPDATE_SITE_FEATURE_ALERT_DIALOG_ID}
-        title="Modifier les informations du site"
-        userEmail={userEmail}
-        hasProjectAlert={updateSiteAlert?.hasAlert === true}
-        onSaveLoadingState={createUserFeatureAlertState.updateSite}
-        onSubmit={({ email }) => {
-          void dispatch(
-            featureAlertSubscribed({
-              feature: { type: "update_site" },
               email,
             }),
           );
