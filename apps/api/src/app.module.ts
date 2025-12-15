@@ -6,6 +6,7 @@ import { ZodValidationPipe } from "nestjs-zod";
 
 import { AuthModule } from "./auth/adapters/auth.module";
 import { CarbonStorageModule } from "./carbon-storage/adapters/primary/carbonStorage.module";
+import { HealthCheckModule } from "./healthcheck/healthcheck.module";
 import { MarketingModule } from "./marketing/adapters/primary/marketing.module";
 import { PhotovoltaicPerformanceModule } from "./photovoltaic-performance/adapters/primary/photovoltaicPerformance.module";
 import { ReconversionCompatibilityModule } from "./reconversion-compatibility/adapters/primary/reconversionCompatibility.module";
@@ -37,6 +38,7 @@ class DomainEventsHandler {
     }),
     SqlConnectionModule,
     AuthModule,
+    HealthCheckModule,
     PhotovoltaicPerformanceModule,
     CarbonStorageModule,
     SitesModule,
