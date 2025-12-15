@@ -20,3 +20,6 @@ logs
 *.launch
 .settings/
 *.sublime-workspace
+
+# plans writen by AI agents
+specs/
