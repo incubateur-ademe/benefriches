@@ -421,6 +421,8 @@ See [root CLAUDE.md](../../CLAUDE.md#-tech-stack-summary) for full monorepo tech
 
 **Quick pattern**: Create `[feature]/[operation].dto.ts` with both schema and type, import in controller from `"shared"`, validate with `ZodValidationPipe`.
 
+**See also**: [packages/shared/CLAUDE.md](../../packages/shared/CLAUDE.md) for DTO naming conventions and shared package guidelines.
+
 For complete organization structure, naming patterns, and detailed examples, see [02-controller-pattern.md → DTO Pattern](../../.claude/context/api/02-controller-pattern.md#dto-pattern).
 
 ### After Code Generation - ALWAYS RUN:

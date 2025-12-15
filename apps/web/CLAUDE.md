@@ -18,6 +18,23 @@
 
 ---
 
+## 📦 Import Path Conventions
+
+| Import Type             | Pattern       | Example                                                             |
+| ----------------------- | ------------- | ------------------------------------------------------------------- |
+| **Within web app**      | `@/` alias    | `import { useAppSelector } from "@/shared/views/hooks/store.hooks"` |
+| **From shared package** | `shared`      | `import type { GetSiteViewResponseDto } from "shared"`              |
+| **Relative**            | `./` or `../` | Only within same feature folder                                     |
+
+**Rules**:
+
+- Use `@/` for cross-feature imports within web app
+- Use `shared` for DTOs and shared types (never relative path to `packages/shared`)
+- Use relative imports only within the same feature directory
+- **Node.js compatibility**: No TypeScript enums or namespaces (see [root CLAUDE.md → Node.js Compatibility](../../CLAUDE.md#nodejs-compatibility))
+
+---
+
 ## ✅ Code Quality Standards
 
 **For complete TypeScript rules and standards, see [root CLAUDE.md → Code Quality Standards](../../CLAUDE.md#-code-quality-standards).**
@@ -271,4 +288,4 @@ When creating a new feature, follow these steps:
 
 ---
 
-**Current versions**: React 18+, Redux Toolkit 2+, Vite 6+, TypeScript 5+
+**Current versions**: React 19+, Redux Toolkit 2+, Vite 7+, TypeScript 5+ (check `package.json` for exact versions)
