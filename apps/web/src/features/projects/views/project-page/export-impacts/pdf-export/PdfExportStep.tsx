@@ -20,7 +20,7 @@ type ActionButtonProps = {
   selectedSections: PdfExportSectionSelection;
   shouldRenderPdf: boolean;
   isDownloadAvailable: boolean;
-  onGenerate: () => void;
+  onGenerateClick: () => void;
   downloadElement: React.ReactNode;
 };
 
@@ -28,7 +28,7 @@ function ActionButton({
   selectedSections,
   shouldRenderPdf,
   isDownloadAvailable,
-  onGenerate,
+  onGenerateClick,
   downloadElement,
 }: ActionButtonProps) {
   const canGenerate = hasAtLeastOneSectionSelected(selectedSections);
@@ -42,7 +42,7 @@ function ActionButton({
   }
 
   return (
-    <Button disabled={!canGenerate} onClick={onGenerate}>
+    <Button disabled={!canGenerate} onClick={onGenerateClick}>
       Générer le PDF
     </Button>
   );
@@ -57,6 +57,9 @@ export default function PdfExportStep({ projectId, siteId, onBack }: Props) {
 
   const handleSectionChange = (sectionKey: PdfExportSectionId, checked: boolean) => {
     setSelectedSections((prev) => ({ ...prev, [sectionKey]: checked }));
+
+    // Reset generated PDF when sections change
+    if (shouldRenderPdf) setShouldRenderPdf(false);
   };
 
   const handleGenerate = () => {
@@ -79,7 +82,7 @@ export default function PdfExportStep({ projectId, siteId, onBack }: Props) {
           selectedSections={selectedSections}
           shouldRenderPdf={shouldRenderPdf}
           isDownloadAvailable={isDownloadAvailable}
-          onGenerate={handleGenerate}
+          onGenerateClick={handleGenerate}
           downloadElement={
             <PdfExportDownload
               projectId={projectId}
