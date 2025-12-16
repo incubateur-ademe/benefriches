@@ -1,7 +1,5 @@
 import { Document } from "@react-pdf/renderer";
 
-// import Buffer from "node:buffer";
-
 import { EconomicBalance } from "@/features/projects/domain/projectImpactsEconomicBalance";
 import { EnvironmentalImpact } from "@/features/projects/domain/projectImpactsEnvironmental";
 import { SocialImpact } from "@/features/projects/domain/projectImpactsSocial";
@@ -9,6 +7,7 @@ import { SocioEconomicDetailedImpact } from "@/features/projects/domain/projectI
 import { ProjectFeatures } from "@/features/projects/domain/projects.types";
 import { SiteFeatures } from "@/features/sites/core/site.types";
 
+import type { PdfExportSectionSelection } from "../export-impacts/pdf-export/pdfExportSections";
 import AboutBenefrichesPdfPage from "./about-benefriches/AboutBenefrichesPdfPage";
 import ProjectPdfExportCoverPage from "./components/CoverPage";
 import { ExportImpactsContext } from "./context";
@@ -20,6 +19,7 @@ export type Props = {
   siteFeatures: SiteFeatures;
   projectFeatures: ProjectFeatures;
   evaluationPeriodInYears: number;
+  selectedSections: PdfExportSectionSelection;
   impacts: {
     economicBalance: EconomicBalance;
     environment: EnvironmentalImpact[];
@@ -32,11 +32,16 @@ export default function ProjectPdfExport({
   siteFeatures,
   projectFeatures,
   evaluationPeriodInYears,
+  selectedSections,
   impacts,
 }: Props) {
   return (
-    <ExportImpactsContext.Provider
-      value={{ projectName: projectFeatures.name, siteName: siteFeatures.name }}
+    <ExportImpactsContext
+      value={{
+        projectName: projectFeatures.name,
+        siteName: siteFeatures.name,
+        selectedSections,
+      }}
     >
       <Document
         author="Bénéfriches - ADEME"
@@ -44,14 +49,20 @@ export default function ProjectPdfExport({
         language="fr"
       >
         <ProjectPdfExportCoverPage />
-        <SiteFeaturesPdfPage siteFeatures={siteFeatures} />
-        <ProjectFeaturesPdfPage projectFeatures={projectFeatures} />
+        {selectedSections.siteFeatures && <SiteFeaturesPdfPage siteFeatures={siteFeatures} />}
+        {selectedSections.projectFeatures && (
+          <ProjectFeaturesPdfPage projectFeatures={projectFeatures} />
+        )}
         <ProjectImpactsPdfPage
           impacts={impacts}
           evaluationPeriodInYears={evaluationPeriodInYears}
+          showEconomicBalance={selectedSections.economicBalance}
+          showSocioEconomicImpacts={selectedSections.socioEconomicImpacts}
+          showSocialImpacts={selectedSections.socialImpacts}
+          showEnvironmentalImpacts={selectedSections.environmentalImpacts}
         />
-        <AboutBenefrichesPdfPage />
+        {selectedSections.aboutBenefriches && <AboutBenefrichesPdfPage />}
       </Document>
-    </ExportImpactsContext.Provider>
+    </ExportImpactsContext>
   );
 }

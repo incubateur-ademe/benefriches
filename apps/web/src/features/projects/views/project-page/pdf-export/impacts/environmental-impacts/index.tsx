@@ -12,6 +12,7 @@ import ImpactsSection from "../../components/ImpactsSection";
 import ListItem from "../../components/ListItem";
 import PdfPage from "../../components/PdfPage";
 import PdfPageSubtitle from "../../components/PdfPageSubtitle";
+import { useSectionLabel } from "../../context";
 import { pageIds } from "../../pageIds";
 import { tw } from "../../styles";
 
@@ -25,12 +26,13 @@ type Props = {
 };
 
 export default function EnvironmentalImpactsPage({ impacts }: Props) {
+  const sectionLabel = useSectionLabel("impacts-environment");
   const co2Impacts = impacts.filter(({ name }) => ENVIRONMENTAL_SECTIONS.co2.includes(name));
   const soilsImpacts = impacts.filter(({ name }) => ENVIRONMENTAL_SECTIONS.soils.includes(name));
 
   return (
     <PdfPage id={pageIds["impacts-environment"]}>
-      <PdfPageSubtitle>3.4 Impacts environnementaux</PdfPageSubtitle>
+      <PdfPageSubtitle>{sectionLabel}</PdfPageSubtitle>
       <View style={tw("mb-4")}>
         <Text>Les impacts environnementaux se décompose en différents types d'indicateurs :</Text>
         <View style={tw("py-2")}>

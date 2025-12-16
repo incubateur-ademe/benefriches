@@ -1,7 +1,7 @@
 import { Image, Link, Text, View } from "@react-pdf/renderer";
 import { useContext } from "react";
 
-import { ExportImpactsContext } from "../context";
+import { ExportImpactsContext, useTableOfContents } from "../context";
 import { getPageLinkForId, pageIds } from "../pageIds";
 import { tw } from "../styles";
 import PdfPage from "./PdfPage";
@@ -14,6 +14,7 @@ const TableOfContentsItem = ({ label, link }: { label: string; link: string }) =
 
 export default function ProjectPdfExportCoverPage() {
   const { projectName, siteName } = useContext(ExportImpactsContext);
+  const tableOfContents = useTableOfContents();
 
   return (
     <PdfPage withHeader={false} withFooter={false}>
@@ -33,40 +34,25 @@ export default function ProjectPdfExportCoverPage() {
           Exporté le {new Date().toLocaleDateString()}
         </Text>
         <View style={tw("mt-16 ml-16 text-lg")}>
-          <TableOfContentsItem
-            link={getPageLinkForId(pageIds["site-features"])}
-            label="1. Caractéristiques du site"
-          />
-          <TableOfContentsItem
-            link={getPageLinkForId(pageIds["project-features"])}
-            label="2. Caractéristiques du projet"
-          />
-          <TableOfContentsItem
-            link={getPageLinkForId(pageIds["impacts-economic-balance"])}
-            label="3. Impacts du projet"
-          />
-          <View style={tw("ml-6")}>
-            <TableOfContentsItem
-              link={getPageLinkForId(pageIds["impacts-economic-balance"])}
-              label="3.1 Bilan de l'opération"
-            />
-            <TableOfContentsItem
-              link={getPageLinkForId(pageIds["impacts-socio-economic"])}
-              label="3.2 Impacts socio-économiques"
-            />
-            <TableOfContentsItem
-              link={getPageLinkForId(pageIds["impacts-social"])}
-              label="3.3 Impacts sociaux"
-            />
-            <TableOfContentsItem
-              link={getPageLinkForId(pageIds["impacts-environment"])}
-              label="3.4 Impacts environnementaux"
-            />
-          </View>
-          <TableOfContentsItem
-            link={getPageLinkForId(pageIds["about-benefriches"])}
-            label="4. À propos de Bénéfriches"
-          />
+          {tableOfContents.map((entry) => (
+            <View key={entry.pageId}>
+              <TableOfContentsItem
+                link={getPageLinkForId(pageIds[entry.pageId])}
+                label={entry.label}
+              />
+              {entry.subsections && (
+                <View style={tw("ml-6")}>
+                  {entry.subsections.map((sub) => (
+                    <TableOfContentsItem
+                      key={sub.pageId}
+                      link={getPageLinkForId(pageIds[sub.pageId])}
+                      label={sub.label}
+                    />
+                  ))}
+                </View>
+              )}
+            </View>
+          ))}
         </View>
       </View>
     </PdfPage>

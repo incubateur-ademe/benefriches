@@ -9,6 +9,7 @@ import ImpactsSection from "../../components/ImpactsSection";
 import ListItem from "../../components/ListItem";
 import PdfPage from "../../components/PdfPage";
 import PdfPageSubtitle from "../../components/PdfPageSubtitle";
+import { useSectionLabel } from "../../context";
 import { pageIds } from "../../pageIds";
 import { tw } from "../../styles";
 
@@ -23,6 +24,7 @@ type Props = {
 };
 
 const SocialImpactsPage = ({ impacts }: Props) => {
+  const sectionLabel = useSectionLabel("impacts-social");
   const jobsImpacts = impacts.filter(({ name }) => SOCIAL_SECTIONS.jobs.includes(name));
   const residentsImpacts = impacts.filter(({ name }) => SOCIAL_SECTIONS.residents.includes(name));
   const frenchSocietyImpacts = impacts.filter(({ name }) =>
@@ -31,7 +33,7 @@ const SocialImpactsPage = ({ impacts }: Props) => {
 
   return (
     <PdfPage id={pageIds["impacts-social"]}>
-      <PdfPageSubtitle>3.3 Impacts sociaux</PdfPageSubtitle>
+      <PdfPageSubtitle>{sectionLabel}</PdfPageSubtitle>
       <View style={tw("mb-4")}>
         <Text>La catégorie des impacts sociaux regroupe les impacts :</Text>
         <View style={tw("py-2")}>

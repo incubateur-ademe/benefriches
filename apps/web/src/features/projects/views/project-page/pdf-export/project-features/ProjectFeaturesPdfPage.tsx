@@ -8,6 +8,7 @@ import DataLine from "../components/DataLine";
 import FeaturesSection from "../components/FeaturesSection";
 import PdfPage from "../components/PdfPage";
 import PdfPageTitle from "../components/PdfPageTitle";
+import { useSectionLabel } from "../context";
 import { pageIds } from "../pageIds";
 import DevelopmentPlanFeatures from "./development-plan/DevelopmentPlanFeaturesPdf";
 import ProjectExpensesAndIncomesPdf from "./expenses-and-incomes/ProjectExpensesAndIncomesPdf";
@@ -19,10 +20,12 @@ type Props = {
 };
 
 export default function ProjectFeaturesPdfPage({ projectFeatures }: Props) {
+  const sectionLabel = useSectionLabel("project-features");
+
   return (
     <>
       <PdfPage id={pageIds["project-features"]}>
-        <PdfPageTitle>2. Caractéristiques du projet</PdfPageTitle>
+        <PdfPageTitle>{sectionLabel}</PdfPageTitle>
         <FeaturesSection title="🏗️️ Type de projet">
           <DataLine
             label="Type d'aménagement"

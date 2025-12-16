@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks
 
 import { Props as ImpactsPdfDocumentProps } from "../../pdf-export";
 import PdfExportDocument from "../../pdf-export";
+import type { PdfExportSectionSelection } from "./pdfExportSections";
 
 const octetsToKo = (octets: number) => octets / 1000;
 
@@ -23,11 +24,13 @@ const formatFileSize = (sizeInOctets: number) => {
 type Props = {
   projectId: string;
   siteId: string;
+  selectedSections: PdfExportSectionSelection;
   onDownloadAvailable: () => void;
 };
 
 type PdfDownloadProps = {
   onDownloadAvailable: () => void;
+  selectedSections: PdfExportSectionSelection;
 } & ImpactsPdfDocumentProps;
 
 const PdfDownload = ({
@@ -35,6 +38,7 @@ const PdfDownload = ({
   projectFeatures,
   impacts,
   evaluationPeriodInYears,
+  selectedSections,
   onDownloadAvailable,
 }: PdfDownloadProps) => {
   const [instance] = usePDF({
@@ -43,7 +47,8 @@ const PdfDownload = ({
         siteFeatures={siteFeatures}
         projectFeatures={projectFeatures}
         impacts={impacts}
-        evaluationPeriodInYears={evaluationPeriodInYears} // evaluationPeriodInYears is defined if loadingState is "success"
+        evaluationPeriodInYears={evaluationPeriodInYears}
+        selectedSections={selectedSections}
       />
     ),
   });
@@ -74,6 +79,7 @@ const PdfDownload = ({
 export default function PdfExportDownloadContainer({
   projectId,
   siteId,
+  selectedSections,
   onDownloadAvailable,
 }: Props) {
   const dispatch = useAppDispatch();
@@ -95,6 +101,7 @@ export default function PdfExportDownloadContainer({
       projectFeatures={projectFeatures}
       impacts={impacts}
       evaluationPeriodInYears={evaluationPeriodInYears as number}
+      selectedSections={selectedSections}
       onDownloadAvailable={onDownloadAvailable}
     />
   );

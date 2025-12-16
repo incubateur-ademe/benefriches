@@ -12,6 +12,7 @@ import ListItem from "../components/ListItem";
 import PdfPage from "../components/PdfPage";
 import PdfPageSubtitle from "../components/PdfPageSubtitle";
 import PdfPageTitle from "../components/PdfPageTitle";
+import { useSectionLabel } from "../context";
 import { pageIds } from "../pageIds";
 import { tw } from "../styles";
 
@@ -21,13 +22,15 @@ type Props = {
 };
 
 export default function EconomicBalanceSection({ impact, evaluationPeriodInYears }: Props) {
+  const impactsSectionLabel = useSectionLabel("impacts");
+  const economicBalanceSectionLabel = useSectionLabel("impacts-economic-balance");
   const { total, economicBalance, bearer } = impact;
   return (
     <PdfPage id={pageIds["impacts-economic-balance"]}>
-      <PdfPageTitle>3. Impacts du projet</PdfPageTitle>
+      <PdfPageTitle>{impactsSectionLabel}</PdfPageTitle>
       <Text style={tw("text-lg text-[#000091] font-bold")}>Sur {evaluationPeriodInYears} ans</Text>
       <Text style={tw("text-sm mb-4")}>(durée à partir de la mise en service du projet)</Text>
-      <PdfPageSubtitle>3.1 Bilan de l'opération</PdfPageSubtitle>
+      <PdfPageSubtitle>{economicBalanceSectionLabel}</PdfPageSubtitle>
       <View style={tw("mb-4")}>
         <Text>
           Le bilan d'opération regroupe l'ensemble des recettes et des dépenses d'une opération

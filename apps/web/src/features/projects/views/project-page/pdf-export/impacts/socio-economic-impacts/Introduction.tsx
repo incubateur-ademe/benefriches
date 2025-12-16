@@ -3,13 +3,16 @@ import { Link, Text, View } from "@react-pdf/renderer";
 import ListItem from "../../components/ListItem";
 import PdfPage from "../../components/PdfPage";
 import PdfPageSubtitle from "../../components/PdfPageSubtitle";
+import { useSectionLabel } from "../../context";
 import { pageIds } from "../../pageIds";
 import { tw } from "../../styles";
 
 export default function SocioEconomicImpactsIntroductionPage() {
+  const sectionLabel = useSectionLabel("impacts-socio-economic");
+
   return (
     <PdfPage id={pageIds["impacts-socio-economic"]}>
-      <PdfPageSubtitle>3.2 Impacts socio-économiques</PdfPageSubtitle>
+      <PdfPageSubtitle>{sectionLabel}</PdfPageSubtitle>
       <Text style={tw("mb-2")}>
         L'évaluation socio-économique a pour objet d'apprécier l'intérêt d'un projet ou d'un
         investissement pour la collectivité.

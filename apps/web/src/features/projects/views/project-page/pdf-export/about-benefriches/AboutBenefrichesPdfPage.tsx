@@ -11,6 +11,7 @@ import {
 import ListItemComponent from "../components/ListItem";
 import PdfPage from "../components/PdfPage";
 import PdfPageTitle from "../components/PdfPageTitle";
+import { useSectionLabel } from "../context";
 import { pageIds } from "../pageIds";
 import { tw } from "../styles";
 
@@ -54,10 +55,11 @@ const renderSectionContent = (section: AboutSection) => {
 };
 
 export default function AboutBenefrichesPdfPage() {
+  const sectionLabel = useSectionLabel("about-benefriches");
+
   return (
     <PdfPage id={pageIds["about-benefriches"]}>
-      <PdfPageTitle>4. À propos de Bénéfriches</PdfPageTitle>
-
+      <PdfPageTitle>{sectionLabel}</PdfPageTitle>
       {[...ABOUT_SECTIONS, LEARN_MORE_SECTION].map((section) => (
         <View key={section.id} style={tw("mb-6")} wrap={false}>
           <SectionTitle>{section.title}</SectionTitle>

@@ -13,6 +13,7 @@ import DataLine from "../components/DataLine";
 import FeaturesSection from "../components/FeaturesSection";
 import PdfPage from "../components/PdfPage";
 import PdfPageTitle from "../components/PdfPageTitle";
+import { useSectionLabel } from "../context";
 import { formatMoneyPdf, formatSurfaceAreaPdf } from "../format";
 import { pageIds } from "../pageIds";
 import SoilsDistributionPdf from "../project-features/development-plan/SoilsDistributionPdf";
@@ -22,6 +23,8 @@ type Props = {
 };
 
 export default function SiteFeaturesPdfPage({ siteFeatures }: Props) {
+  const sectionLabel = useSectionLabel("site-features");
+
   const siteManagementExpenses = siteFeatures.expenses.filter((e) =>
     [
       "maintenance",
@@ -39,7 +42,7 @@ export default function SiteFeaturesPdfPage({ siteFeatures }: Props) {
   return (
     <>
       <PdfPage id={pageIds["site-features"]}>
-        <PdfPageTitle>1. Caractéristiques du site</PdfPageTitle>
+        <PdfPageTitle>{sectionLabel}</PdfPageTitle>
         <FeaturesSection title="📍 Localisation">
           <DataLine
             label="Adresse du site"
