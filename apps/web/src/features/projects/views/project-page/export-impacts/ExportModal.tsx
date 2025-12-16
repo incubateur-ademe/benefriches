@@ -52,6 +52,7 @@ export default function ExportImpactsModal({ projectId, siteId }: Props) {
     <exportImpactsModal.Component
       title="Télécharger les impacts du projet"
       iconId="fr-icon-file-download-line"
+      size="large"
       buttons={
         currentStep === "format_selection"
           ? [

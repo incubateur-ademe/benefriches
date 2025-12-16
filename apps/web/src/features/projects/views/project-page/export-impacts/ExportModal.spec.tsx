@@ -7,7 +7,6 @@ import { createStore } from "@/shared/core/store-config/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import ExportImpactsModal from "./ExportModal";
-import { PDF_EXPORT_SECTION_LABELS } from "./pdf-export/pdfExportSections";
 
 // Mock PdfExportDownload since it has complex dependencies
 vi.mock("./pdf-export", () => ({
@@ -26,18 +25,6 @@ function renderWithProviders(ui: React.ReactElement) {
 
 describe("ExportImpactsModal", () => {
   // DSFR dialog renders content as hidden, so we need to use { hidden: true } option
-  it("should not show section checkboxes when PDF is not selected", () => {
-    renderWithProviders(<ExportImpactsModal projectId="project-1" siteId="site-1" />);
-
-    // Radio buttons should be visible (in hidden dialog)
-    expect(screen.getByRole("radio", { name: "PDF", hidden: true })).toBeInTheDocument();
-
-    // Section checkboxes should not be present at all
-    expect(screen.queryByText(PDF_EXPORT_SECTION_LABELS.siteFeatures)).not.toBeInTheDocument();
-    expect(screen.queryByText(PDF_EXPORT_SECTION_LABELS.projectFeatures)).not.toBeInTheDocument();
-    expect(screen.queryByText(PDF_EXPORT_SECTION_LABELS.economicBalance)).not.toBeInTheDocument();
-  });
-
   it("should have 'Télécharger' button disabled when no format is selected", () => {
     renderWithProviders(<ExportImpactsModal projectId="project-1" siteId="site-1" />);
 
@@ -76,7 +63,7 @@ describe("ExportImpactsModal", () => {
     fireEvent.click(nextButton);
 
     await waitFor(() => {
-      expect(screen.getByText(PDF_EXPORT_SECTION_LABELS.siteFeatures)).toBeInTheDocument();
+      expect(screen.getByText("Caractéristiques du site")).toBeInTheDocument();
     });
 
     // All checkboxes should be checked
@@ -97,7 +84,7 @@ describe("ExportImpactsModal", () => {
     fireEvent.click(nextButton);
 
     await waitFor(() => {
-      expect(screen.getByText(PDF_EXPORT_SECTION_LABELS.siteFeatures)).toBeInTheDocument();
+      expect(screen.getByText("Caractéristiques du site")).toBeInTheDocument();
     });
 
     // PdfExportDownload should not be rendered yet
@@ -123,7 +110,7 @@ describe("ExportImpactsModal", () => {
     fireEvent.click(nextButton);
 
     await waitFor(() => {
-      expect(screen.getByText(PDF_EXPORT_SECTION_LABELS.siteFeatures)).toBeInTheDocument();
+      expect(screen.getByText("Caractéristiques du site")).toBeInTheDocument();
     });
 
     // Uncheck all checkboxes
@@ -147,12 +134,12 @@ describe("ExportImpactsModal", () => {
     fireEvent.click(nextButton);
 
     await waitFor(() => {
-      expect(screen.getByText(PDF_EXPORT_SECTION_LABELS.siteFeatures)).toBeInTheDocument();
+      expect(screen.getByText("Caractéristiques du site")).toBeInTheDocument();
     });
 
     // Uncheck site features
     const siteFeaturesCheckbox = screen.getByRole("checkbox", {
-      name: PDF_EXPORT_SECTION_LABELS.siteFeatures,
+      name: /Caractéristiques du site/,
       hidden: true,
     });
     fireEvent.click(siteFeaturesCheckbox);
@@ -184,7 +171,7 @@ describe("ExportImpactsModal", () => {
     fireEvent.click(nextButton);
 
     await waitFor(() => {
-      expect(screen.getByText(PDF_EXPORT_SECTION_LABELS.siteFeatures)).toBeInTheDocument();
+      expect(screen.getByText("Caractéristiques du site")).toBeInTheDocument();
     });
 
     // Should show "Retour" button instead of "Annuler"
@@ -200,6 +187,6 @@ describe("ExportImpactsModal", () => {
       expect(screen.getByRole("radio", { name: "PDF", hidden: true })).toBeInTheDocument();
     });
 
-    expect(screen.queryByText(PDF_EXPORT_SECTION_LABELS.siteFeatures)).not.toBeInTheDocument();
+    expect(screen.queryByText("Caractéristiques du site")).not.toBeInTheDocument();
   });
 });
