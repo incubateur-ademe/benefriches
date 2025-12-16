@@ -24,7 +24,7 @@ export default function ProjectPdfExportCoverPage() {
           <Image src="/img/logos/logo-benefriches.png" style={tw("h-8")} />
         </View>
         <Text style={tw("text-2xl leading-none font-bold text-center mt-8")}>
-          Impacts du projet
+          Évaluation des impacts du projet
         </Text>
         <Text style={tw("text-4xl leading-none font-bold text-center my-6")}>
           « {projectName} »
