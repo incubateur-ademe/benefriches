@@ -1,4 +1,4 @@
-import { selectAppSettings } from "@/features/app-settings/core/appSettings";
+import { useSurfaceAreaInputMode } from "@/features/create-project/views/useSurfaceAreaInputMode";
 import { getSurfaceAreaDistributionWithUnit } from "@/shared/core/reducers/project-form/urban-project/helpers/surfaceAreaDistribution";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
@@ -13,7 +13,7 @@ export default function LivingAndActivitySpacesDistributionContainer() {
   const spacesCategoriesDistribution = useAppSelector(
     selectStepAnswers("URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA"),
   )?.spacesCategoriesDistribution;
-  const inputMode = useAppSelector(selectAppSettings).surfaceAreaInputMode;
+  const { inputMode } = useSurfaceAreaInputMode();
 
   const initialValues =
     livingAndActivitySpacesDistribution && inputMode === "percentage"

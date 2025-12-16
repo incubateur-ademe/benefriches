@@ -1,6 +1,7 @@
-import { createAction } from "@reduxjs/toolkit";
 import { ReconversionProjectTemplate } from "shared";
 
-export const projectSuggestionsCompleted = createAction<{
+import { createProjectCreationAction } from "./actionsUtils";
+
+export const projectSuggestionsCompleted = createProjectCreationAction<{
   selectedOption: ReconversionProjectTemplate | "none";
-}>("projectCreation/projectSuggestionsCompleted");
+}>("projectSuggestionsCompleted");

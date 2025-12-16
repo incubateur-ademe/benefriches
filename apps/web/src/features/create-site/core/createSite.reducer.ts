@@ -60,6 +60,7 @@ import {
   soilsSummaryStepCompleted,
   spacesSurfaceAreaDistributionKnowledgeCompleted,
   spacesKnowledgeStepCompleted,
+  surfaceAreaInputModeUpdated,
 } from "./actions/spaces.actions";
 
 export type SiteCreationCustomStep =
@@ -124,6 +125,7 @@ export type SiteCreationState = {
   useMutability?: boolean;
   skipUseMutability: boolean;
   saveLoadingState: "idle" | "loading" | "success" | "error";
+  surfaceAreaInputMode: "percentage" | "squareMeters";
 };
 
 export const getInitialState = (props?: {
@@ -142,6 +144,7 @@ export const getInitialState = (props?: {
       yearlyExpenses: [],
       yearlyIncomes: [],
     },
+    surfaceAreaInputMode: "percentage",
   } as const;
 };
 
@@ -500,6 +503,9 @@ const siteCreationReducer = createReducer(getInitialState(), (builder) => {
     })
     .addCase(stepRevertAttempted, (state) => {
       state.stepRevertAttempted = true;
+    })
+    .addCase(surfaceAreaInputModeUpdated, (state, action) => {
+      state.surfaceAreaInputMode = action.payload;
     });
 });
 

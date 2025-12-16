@@ -1,5 +1,6 @@
 import { SoilType, SurfaceAreaDistributionJson } from "shared";
 
+import { useSurfaceAreaInputMode } from "@/features/create-site/views/useSurfaceAreaInputMode";
 import {
   formatSurfaceArea,
   SQUARE_METERS_HTML_SYMBOL,
@@ -30,6 +31,7 @@ function SiteSpacesDistributionForm({
   onSubmit,
   onBack,
 }: Props) {
+  const { inputMode, onInputModeChange } = useSurfaceAreaInputMode();
   return (
     <SurfaceAreaDistributionForm
       initialValues={initialValues}
@@ -39,6 +41,8 @@ function SiteSpacesDistributionForm({
           La surface totale du site est de <strong>{formatSurfaceArea(totalSurfaceArea)}</strong>.
         </FormInfo>
       }
+      inputMode={inputMode}
+      onInputModeChange={onInputModeChange}
       onBack={onBack}
       onSubmit={onSubmit}
       totalSurfaceArea={totalSurfaceArea}

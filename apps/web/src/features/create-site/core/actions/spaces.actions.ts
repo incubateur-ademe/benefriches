@@ -1,6 +1,10 @@
 import { SoilsDistribution, SoilType } from "shared";
 
-import { createStepCompletedAction } from "./actionsUtils";
+import { createSiteCreationAction, createStepCompletedAction } from "./actionsUtils";
+
+export const surfaceAreaInputModeUpdated = createSiteCreationAction<"percentage" | "squareMeters">(
+  "SURFACE_AREA_INPUT_MODE_UPDATED",
+);
 
 export const soilsIntroductionStepCompleted = createStepCompletedAction("SPACES_INTRODUCTION");
 

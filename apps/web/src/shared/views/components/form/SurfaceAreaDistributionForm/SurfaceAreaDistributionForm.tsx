@@ -9,7 +9,6 @@ import {
 } from "@/shared/core/format-number/formatNumber";
 import { computePercentage, computeValueFromPercentage } from "@/shared/core/percentage/percentage";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
-import { useSurfaceAreaInputMode } from "@/shared/views/hooks/useSurfaceAreaInputMode";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 import RowNumericInput from "../NumericInput/RowNumericInput";
@@ -32,6 +31,8 @@ type Props = {
     color?: string;
   }[];
   maxErrorMessage?: string;
+  inputMode: "percentage" | "squareMeters";
+  onInputModeChange: (inputMode: "percentage" | "squareMeters") => void;
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
 };
@@ -92,10 +93,11 @@ function SurfaceAreaDistributionForm({
   surfaces,
   totalSurfaceArea,
   maxErrorMessage = "La surface de ce sol ne peut pas être supérieure à la surface totale disponible",
+  inputMode,
+  onInputModeChange,
   onSubmit,
   onBack,
 }: Props) {
-  const { inputMode, onInputModeChange } = useSurfaceAreaInputMode();
   const { register, handleSubmit, watch, setValue } = useForm<FormValues>({
     defaultValues: initialValues,
   });

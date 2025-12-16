@@ -4,6 +4,7 @@ import {
   getDescriptionForBuildingsUse,
   getPictogramUrlForBuildingsUse,
 } from "@/features/create-project/core/urban-project/urbanProject";
+import { useSurfaceAreaInputMode } from "@/features/create-project/views/useSurfaceAreaInputMode";
 import { formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 import { getColorForBuildingsUse, getLabelForBuildingsUse } from "@/shared/core/urbanProject";
 import SurfaceAreaDistributionForm from "@/shared/views/components/form/SurfaceAreaDistributionForm/SurfaceAreaDistributionForm";
@@ -26,6 +27,8 @@ function BuildingsUseSurfaceAreas({
   onBack,
   options,
 }: Props) {
+  const { inputMode, onInputModeChange } = useSurfaceAreaInputMode();
+
   return (
     <SurfaceAreaDistributionForm
       initialValues={initialValues}
@@ -36,6 +39,8 @@ function BuildingsUseSurfaceAreas({
           bâtiments.
         </FormInfo>
       }
+      inputMode={inputMode}
+      onInputModeChange={onInputModeChange}
       onBack={onBack}
       onSubmit={onSubmit}
       totalSurfaceArea={totalSurfaceArea}

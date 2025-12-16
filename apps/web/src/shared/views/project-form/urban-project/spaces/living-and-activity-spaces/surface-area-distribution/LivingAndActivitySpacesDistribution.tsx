@@ -10,6 +10,7 @@ import {
   getLabelForLivingAndActivitySpace,
   getPictogramUrlForUrbanLivingAndActivitySpace,
 } from "@/features/create-project/core/urban-project/urbanProject";
+import { useSurfaceAreaInputMode } from "@/features/create-project/views/useSurfaceAreaInputMode";
 import { formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 import SurfaceAreaDistributionForm from "@/shared/views/components/form/SurfaceAreaDistributionForm/SurfaceAreaDistributionForm";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
@@ -29,6 +30,8 @@ function LivingAndActivitySpacesDistribution({
   onSubmit,
   onBack,
 }: Props) {
+  const { inputMode, onInputModeChange } = useSurfaceAreaInputMode();
+
   return (
     <SurfaceAreaDistributionForm
       initialValues={initialValues}
@@ -39,6 +42,8 @@ function LivingAndActivitySpacesDistribution({
           lieux d'habitation et d'activité.
         </FormInfo>
       }
+      inputMode={inputMode}
+      onInputModeChange={onInputModeChange}
       onBack={onBack}
       onSubmit={onSubmit}
       totalSurfaceArea={totalSurfaceArea}

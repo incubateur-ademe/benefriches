@@ -1,6 +1,6 @@
 import { typedObjectKeys } from "shared";
 
-import { selectAppSettings } from "@/features/app-settings/core/appSettings";
+import { useSurfaceAreaInputMode } from "@/features/create-project/views/useSurfaceAreaInputMode";
 import { getSurfaceAreaDistributionWithUnit } from "@/shared/core/reducers/project-form/urban-project/helpers/surfaceAreaDistribution";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
@@ -22,7 +22,7 @@ export default function BuildingsUseSurfaceAreaContainers() {
     selectStepAnswers("URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION"),
   )?.buildingsUsesDistribution;
 
-  const inputMode = useAppSelector(selectAppSettings).surfaceAreaInputMode;
+  const { inputMode } = useSurfaceAreaInputMode();
 
   const buildingsUsesOptions = buildingsUsesDistribution
     ? typedObjectKeys(buildingsUsesDistribution)

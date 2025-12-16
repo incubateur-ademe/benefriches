@@ -32,6 +32,7 @@ describe("Reconversion project creation initialization", () => {
       siteRelatedLocalAuthorities: { loadingState: "idle" },
       urbanProject: expect.any(Object),
       renewableEnergyProject: expect.any(Object),
+      surfaceAreaInputMode: "percentage",
     });
   });
 
@@ -59,6 +60,7 @@ describe("Reconversion project creation initialization", () => {
       siteRelatedLocalAuthorities: { loadingState: "idle" },
       urbanProject: expect.any(Object),
       renewableEnergyProject: expect.any(Object),
+      surfaceAreaInputMode: "percentage",
     });
   });
 
@@ -94,6 +96,7 @@ describe("Reconversion project creation initialization", () => {
       siteRelatedLocalAuthorities: { loadingState: "idle" },
       urbanProject: expect.any(Object),
       renewableEnergyProject: expect.any(Object),
+      surfaceAreaInputMode: "percentage",
     });
   });
 });

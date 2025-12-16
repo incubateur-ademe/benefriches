@@ -64,6 +64,7 @@ const MOCK_STATES = {
       soilsCarbonStorage: { loadingState: "idle", current: undefined, projected: undefined },
     },
     urbanProject: getProjectFormInitialState("URBAN_PROJECT_CREATE_MODE_SELECTION").urbanProject,
+    surfaceAreaInputMode: "percentage",
   } satisfies RootState["projectCreation"],
   currentUser: {
     currentUser: USER,

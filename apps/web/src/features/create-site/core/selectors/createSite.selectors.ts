@@ -44,6 +44,11 @@ export const selectSiteAccidentsData = createSelector(selectSelf, (state) => {
   };
 });
 
+export const selectSurfaceAreaInputMode = createSelector(
+  selectSelf,
+  (state) => state.surfaceAreaInputMode,
+);
+
 export const selectSiteOwner = createSelector(selectSelf, (state) => state.siteData.owner);
 
 export const selectShouldConfirmStepRevert = createSelector(

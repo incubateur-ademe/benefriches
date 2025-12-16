@@ -14,7 +14,6 @@ describe("App settings", () => {
   it("should get persisted app settings", () => {
     const appSettingsService = new InMemoryAppSettings();
     appSettingsService.persist({
-      surfaceAreaInputMode: "squareMeters",
       askForConfirmationOnStepRevert: true,
       displayExpressSiteDisclaimer: true,
       displayImpactsAccuracyDisclaimer: true,
@@ -26,7 +25,6 @@ describe("App settings", () => {
     );
     const rootState = store.getState();
     expect(selectAppSettings(rootState)).toEqual({
-      surfaceAreaInputMode: "squareMeters",
       askForConfirmationOnStepRevert: true,
       displayExpressSiteDisclaimer: true,
       displayImpactsAccuracyDisclaimer: true,
@@ -37,19 +35,19 @@ describe("App settings", () => {
     const appSettingsService = new InMemoryAppSettings();
     appSettingsService.persist({
       ...DEFAULT_APP_SETTINGS,
-      surfaceAreaInputMode: "percentage",
+      displayExpressSiteDisclaimer: false,
     });
     const store = createStore(
       getTestAppDependencies({
         appSettingsService,
       }),
     );
-    store.dispatch(appSettingUpdated({ field: "surfaceAreaInputMode", value: "squareMeters" }));
+    store.dispatch(appSettingUpdated({ field: "displayExpressSiteDisclaimer", value: true }));
     const rootState = store.getState();
 
     const expectedAppSettings = {
       ...DEFAULT_APP_SETTINGS,
-      surfaceAreaInputMode: "squareMeters",
+      displayExpressSiteDisclaimer: true,
     };
     expect(selectAppSettings(rootState)).toEqual(expectedAppSettings);
     expect(appSettingsService.getAll()).toEqual(expectedAppSettings);

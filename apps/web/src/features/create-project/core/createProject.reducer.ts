@@ -22,6 +22,7 @@ import {
 } from "./actions/introductionStep.actions";
 import { projectSuggestionsCompleted } from "./actions/projectSuggestionCompleted.action";
 import { reconversionProjectCreationInitiated } from "./actions/reconversionProjectCreationInitiated.action";
+import { surfaceAreaInputModeUpdated } from "./actions/surfaceAreaInputModeUpdated.action";
 import { ProjectSuggestion } from "./project.types";
 import { RenewableEnergyCreationStep } from "./renewable-energy/creationSteps";
 import {
@@ -38,6 +39,7 @@ export type ProjectCreationState = ProjectFormState & {
   renewableEnergyProject: RenewableEnergyProjectState;
   stepRevertAttempted: boolean;
   projectSuggestions?: ProjectSuggestion[];
+  surfaceAreaInputMode: "percentage" | "squareMeters";
 };
 
 export type ProjectCreationStep =
@@ -55,6 +57,7 @@ export const getInitialState = (): ProjectCreationState => {
     stepRevertAttempted: false,
     projectSuggestions: undefined,
     renewableEnergyProject: renenewableEnergyProjectInitialState,
+    surfaceAreaInputMode: "percentage",
     ...getProjectFormInitialState("URBAN_PROJECT_CREATE_MODE_SELECTION"),
   };
 };
@@ -123,6 +126,9 @@ const projectCreationReducer = createReducer(getInitialState(), (builder) => {
       if (state.stepsHistory.length > 1) {
         state.stepsHistory = state.stepsHistory.slice(0, -1);
       }
+    })
+    .addCase(surfaceAreaInputModeUpdated, (state, action) => {
+      state.surfaceAreaInputMode = action.payload;
     });
 });
 

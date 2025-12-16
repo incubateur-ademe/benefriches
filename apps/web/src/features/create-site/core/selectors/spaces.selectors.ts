@@ -6,7 +6,6 @@ import {
   SurfaceAreaDistributionJson,
 } from "shared";
 
-import { selectAppSettings } from "@/features/app-settings/core/appSettings";
 import { RootState } from "@/shared/core/store-config/store";
 
 type SurfaceAreaDistributionWithUnit<TSurface extends string> = {
@@ -36,14 +35,13 @@ type SiteSoilsDistributionViewData = {
 
 export const selectSiteSoilsDistributionViewData = createSelector(
   (state: RootState) => state.siteCreation,
-  selectAppSettings,
-  (siteCreation, appSettings): SiteSoilsDistributionViewData => {
-    const siteSoils = siteCreation.siteData.soils;
-    const siteSurfaceArea = siteCreation.siteData.surfaceArea ?? 0;
+  ({ siteData, surfaceAreaInputMode }): SiteSoilsDistributionViewData => {
+    const siteSoils = siteData.soils;
+    const siteSurfaceArea = siteData.surfaceArea ?? 0;
 
     const initialValues = getSurfaceAreaDistributionWithUnit(
-      siteCreation.siteData.soilsDistribution ?? {},
-      appSettings.surfaceAreaInputMode,
+      siteData.soilsDistribution ?? {},
+      surfaceAreaInputMode,
     );
 
     return { initialValues, siteSoils, siteSurfaceArea };
