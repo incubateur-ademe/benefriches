@@ -41,7 +41,7 @@ export const sectionsConfig: TopLevelSection[] = [
     pageId: "impacts",
     subSections: impactsSubSections,
   },
-  { key: "aboutBenefriches", label: "À propos de Bénéfriches", pageId: "about-benefriches" },
+  { key: "aboutBenefriches", label: "Notice explicative", pageId: "explanatory-note" },
 ];
 
 export type TableOfContentEntry = {

@@ -39,8 +39,8 @@ describe("buildTableOfContents", () => {
 
       expect(result).toEqual<TableOfContent>([
         {
-          label: "1. À propos de Bénéfriches",
-          pageId: "about-benefriches",
+          label: "1. Notice explicative",
+          pageId: "explanatory-note",
         },
       ]);
     });
@@ -56,7 +56,7 @@ describe("buildTableOfContents", () => {
       expect(result).toEqual<TableOfContent>([
         { label: "1. Caractéristiques du site", pageId: "site-features" },
         { label: "2. Caractéristiques du projet", pageId: "project-features" },
-        { label: "3. À propos de Bénéfriches", pageId: "about-benefriches" },
+        { label: "3. Notice explicative", pageId: "explanatory-note" },
       ]);
     });
   });
@@ -78,7 +78,7 @@ describe("buildTableOfContents", () => {
             { label: "3.4 Impacts environnementaux", pageId: "impacts-environment" },
           ],
         },
-        { label: "4. À propos de Bénéfriches", pageId: "about-benefriches" },
+        { label: "4. Notice explicative", pageId: "explanatory-note" },
       ]);
     });
   });
@@ -102,7 +102,7 @@ describe("buildTableOfContents", () => {
             { label: "2.4 Impacts environnementaux", pageId: "impacts-environment" },
           ],
         },
-        { label: "3. À propos de Bénéfriches", pageId: "about-benefriches" },
+        { label: "3. Notice explicative", pageId: "explanatory-note" },
       ]);
     });
   });
@@ -147,7 +147,7 @@ describe("buildTableOfContents", () => {
             { label: "3.2 Impacts environnementaux", pageId: "impacts-environment" },
           ],
         },
-        { label: "4. À propos de Bénéfriches", pageId: "about-benefriches" },
+        { label: "4. Notice explicative", pageId: "explanatory-note" },
       ]);
     });
   });
@@ -159,7 +159,7 @@ describe("getSectionLabel", () => {
 
     expect(getSectionLabel(toc, "site-features")).toBe("1. Caractéristiques du site");
     expect(getSectionLabel(toc, "project-features")).toBe("2. Caractéristiques du projet");
-    expect(getSectionLabel(toc, "about-benefriches")).toBe("4. À propos de Bénéfriches");
+    expect(getSectionLabel(toc, "explanatory-note")).toBe("4. Notice explicative");
   });
 
   it("returns full label for impacts parent section", () => {
@@ -186,7 +186,7 @@ describe("getSectionLabel", () => {
     expect(getSectionLabel(toc, "project-features")).toBe("1. Caractéristiques du projet");
     expect(getSectionLabel(toc, "impacts")).toBe("2. Impacts du projet");
     expect(getSectionLabel(toc, "impacts-economic-balance")).toBe("2.1 Bilan de l'opération");
-    expect(getSectionLabel(toc, "about-benefriches")).toBe("3. À propos de Bénéfriches");
+    expect(getSectionLabel(toc, "explanatory-note")).toBe("3. Notice explicative");
   });
 
   it("returns empty string for excluded sections", () => {

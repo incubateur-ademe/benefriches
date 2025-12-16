@@ -6,7 +6,7 @@ export const pageIds = {
   "impacts-environment": "impacts-environment",
   "project-features": "project-features",
   "site-features": "site-features",
-  "about-benefriches": "about-benefriches",
+  "explanatory-note": "explanatory-note",
 } as const;
 
 export const getPageLinkForId = (id: keyof typeof pageIds) => {

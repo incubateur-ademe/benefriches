@@ -55,10 +55,10 @@ const renderSectionContent = (section: AboutSection) => {
 };
 
 export default function AboutBenefrichesPdfPage() {
-  const sectionLabel = useSectionLabel("about-benefriches");
+  const sectionLabel = useSectionLabel("explanatory-note");
 
   return (
-    <PdfPage id={pageIds["about-benefriches"]}>
+    <PdfPage id={pageIds["explanatory-note"]}>
       <PdfPageTitle>{sectionLabel}</PdfPageTitle>
       {[...ABOUT_SECTIONS, LEARN_MORE_SECTION].map((section) => (
         <View key={section.id} style={tw("mb-6")} wrap={false}>
