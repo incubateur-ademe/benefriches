@@ -149,7 +149,9 @@ const SiteReinstatementContractOwnerForm = lazy(
   () =>
     import("@/shared/views/project-form/urban-project/stakeholders/reinstatement-contract-owner"),
 );
-const ProjectCreationDataSummary = lazy(() => import("./summary"));
+const ProjectUpdateDataSummary = lazy(
+  () => import("@/shared/views/project-form/urban-project/summary"),
+);
 
 const HTML_URBAN_PROJECT_FORM_MAIN_TITLE = `Projet urbain - Modification`;
 
@@ -432,7 +434,7 @@ const getCurrentStepView = (step: UrbanProjectUpdateStep): Exclude<ReactNode, un
       return (
         <>
           <HtmlTitle>{`Récapitulatif - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
-          <ProjectCreationDataSummary />
+          <ProjectUpdateDataSummary />
         </>
       );
   }

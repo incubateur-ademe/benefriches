@@ -200,6 +200,11 @@ export const ReadStateHelper = {
       projectPhase: steps.URBAN_PROJECT_PROJECT_PHASE?.payload?.projectPhase,
       decontaminatedSoilSurface:
         steps.URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA?.payload?.decontaminatedSurfaceArea,
+      buildingsResaleExpectedPropertyTransferDuties:
+        steps.URBAN_PROJECT_REVENUE_BUILDINGS_RESALE?.payload
+          ?.buildingsResalePropertyTransferDuties,
+      buildingsResaleExpectedSellingPrice:
+        steps.URBAN_PROJECT_REVENUE_BUILDINGS_RESALE?.payload?.buildingsResaleSellingPrice,
     };
   },
 } as const;

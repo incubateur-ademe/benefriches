@@ -53,6 +53,9 @@ export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProje
   };
   const developmentPlan = projectData.developmentPlan;
 
+  const hasBuildings =
+    typedObjectKeys(developmentPlan.features.buildingsFloorAreaDistribution).length > 0;
+
   ANSWER_STEPS.forEach((stepId) => {
     switch (stepId) {
       case "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION":
@@ -177,32 +180,39 @@ export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProje
         break;
 
       case "URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA":
-        steps["URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA"] = {
-          payload: {
-            buildingsFloorSurfaceArea: sumObjectValues(
-              developmentPlan.features.buildingsFloorAreaDistribution,
-            ),
-          },
-          completed: true,
-        };
+        if (hasBuildings) {
+          steps["URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA"] = {
+            payload: {
+              buildingsFloorSurfaceArea: sumObjectValues(
+                developmentPlan.features.buildingsFloorAreaDistribution,
+              ),
+            },
+            completed: true,
+          };
+        }
+
         break;
       case "URBAN_PROJECT_BUILDINGS_USE_SELECTION":
-        steps["URBAN_PROJECT_BUILDINGS_USE_SELECTION"] = {
-          payload: {
-            buildingsUsesSelection: typedObjectKeys(
-              developmentPlan.features.buildingsFloorAreaDistribution,
-            ),
-          },
-          completed: true,
-        };
+        if (hasBuildings) {
+          steps["URBAN_PROJECT_BUILDINGS_USE_SELECTION"] = {
+            payload: {
+              buildingsUsesSelection: typedObjectKeys(
+                developmentPlan.features.buildingsFloorAreaDistribution,
+              ),
+            },
+            completed: true,
+          };
+        }
         break;
       case "URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION":
-        steps["URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION"] = {
-          payload: {
-            buildingsUsesDistribution: developmentPlan.features.buildingsFloorAreaDistribution,
-          },
-          completed: true,
-        };
+        if (hasBuildings) {
+          steps["URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION"] = {
+            payload: {
+              buildingsUsesDistribution: developmentPlan.features.buildingsFloorAreaDistribution,
+            },
+            completed: true,
+          };
+        }
         break;
       case "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER": {
         if (developmentPlan.developer) {

@@ -1,5 +1,3 @@
-import { ButtonProps } from "@codegouvfr/react-dsfr/Button";
-
 import {
   getLabelForDevelopmentPlanCategory,
   getLabelForRenewableEnergyProductionType,
@@ -8,17 +6,15 @@ import { ProjectFeatures } from "@/features/projects/domain/projects.types";
 import DataLine from "@/shared/views/components/FeaturesList/FeaturesListDataLine";
 import ScheduleDates from "@/shared/views/components/FeaturesList/FeaturesListScheduleDates";
 import Section from "@/shared/views/components/FeaturesList/FeaturesListSection";
-import { StepGroupId } from "@/shared/views/project-form/stepper/stepperConfig";
 
 import DevelopmentPlanFeatures from "./DevelopmentPlanFeatures";
 import ExpensesAndRevenuesSection from "./ExpensesAndRevenues";
 
 type Props = {
   projectData: Omit<ProjectFeatures, "id">;
-  getSectionButtonProps?: (stepGroupId: StepGroupId) => ButtonProps | undefined;
 };
 
-export default function ProjectFeaturesView({ projectData, getSectionButtonProps }: Props) {
+export default function ProjectFeaturesView({ projectData }: Props) {
   return (
     <>
       <Section title="🏗️ Type de projet">
@@ -37,12 +33,11 @@ export default function ProjectFeaturesView({ projectData, getSectionButtonProps
           />
         )}
       </Section>
-      <DevelopmentPlanFeatures {...projectData} getSectionButtonProps={getSectionButtonProps} />
+      <DevelopmentPlanFeatures {...projectData} />
 
       <Section
         title="👱 Acteurs"
         tooltip="Il s’agit des entités ou personnes impliquées dans la réalisation du projet."
-        buttonProps={getSectionButtonProps ? getSectionButtonProps("STAKEHOLDERS") : undefined}
       >
         <DataLine
           label={<strong>Aménageur du site</strong>}
@@ -83,7 +78,6 @@ export default function ProjectFeaturesView({ projectData, getSectionButtonProps
         buildingsResaleSellingPrice={projectData.buildingsResaleSellingPrice}
         financialAssistanceRevenues={projectData.financialAssistanceRevenues}
         reinstatementCosts={projectData.reinstatementCosts}
-        buttonProps={getSectionButtonProps ? getSectionButtonProps("EXPENSES") : undefined}
         isExpress={projectData.isExpress}
         buildingsFloorArea={
           projectData.developmentPlan.type === "URBAN_PROJECT"
@@ -91,10 +85,7 @@ export default function ProjectFeaturesView({ projectData, getSectionButtonProps
             : undefined
         }
       />
-      <Section
-        title="📆 Calendrier"
-        buttonProps={getSectionButtonProps ? getSectionButtonProps("SCHEDULE") : undefined}
-      >
+      <Section title="📆 Calendrier">
         {projectData.reinstatementSchedule && (
           <DataLine
             label={<strong>Travaux de remise en état de la friche</strong>}
@@ -137,10 +128,7 @@ export default function ProjectFeaturesView({ projectData, getSectionButtonProps
           }
         />
       </Section>
-      <Section
-        title="✍️ Dénomination"
-        buttonProps={getSectionButtonProps ? getSectionButtonProps("NAMING") : undefined}
-      >
+      <Section title="✍️ Dénomination">
         <DataLine label={<strong>Nom du projet</strong>} value={projectData.name} />
         {projectData.description && (
           <DataLine label={<strong>Description</strong>} value={projectData.description} />

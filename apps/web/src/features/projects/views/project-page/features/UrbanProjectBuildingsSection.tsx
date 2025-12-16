@@ -1,4 +1,3 @@
-import { ButtonProps } from "@codegouvfr/react-dsfr/Button";
 import { sumObjectValues, typedObjectEntries } from "shared";
 
 import { UrbanProjectFeatures } from "@/features/projects/domain/projects.types";
@@ -14,7 +13,6 @@ type Props = {
   isExpress: boolean;
   totalSurfaceArea: number;
   urbanProjectCategoryLabel: string;
-  buttonProps?: ButtonProps;
 };
 
 const UrbanProjectBuildingsSection = ({
@@ -22,12 +20,10 @@ const UrbanProjectBuildingsSection = ({
   isExpress,
   totalSurfaceArea,
   urbanProjectCategoryLabel,
-  buttonProps,
 }: Props) => {
   const totalBuildingsSurfaceArea = sumObjectValues(buildingsFloorAreaDistribution);
   return (
     <Section
-      buttonProps={buttonProps}
       title="🏢 Bâtiments"
       tooltip={
         isExpress

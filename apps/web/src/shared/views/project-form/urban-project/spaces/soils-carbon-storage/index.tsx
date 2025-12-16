@@ -29,7 +29,7 @@ export default function UrbanProjectSoilsCarbonStorageContainer() {
         <section className="bg-warning-ultralight dark:bg-warning-ultradark p-6 rounded-lg mb-4">
           <span
             aria-hidden="true"
-            className="fr-icon--lg fr-icon-error-warning-line before:dark:text-warning-ultralight before:text-warning-ultradark flex mb-4"
+            className="fr-icon--lg fr-icon-error-warning-line dark:before:text-warning-ultralight before:text-warning-ultradark flex mb-4"
           ></span>
           <p className="text-xl font-black">Bénéfriches n'a pas pu effectuer le calcul...</p>
           Des données nécessaires au calcul de stockage du carbone sont manquantes&nbsp;:

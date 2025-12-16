@@ -1,12 +1,14 @@
 import { ReactNode } from "react";
 
 import classNames from "../../clsx";
+import FormError from "./FormError";
 import FormWarning from "./FormWarning";
 
 export type WizardFormLayoutProps = {
   title: ReactNode;
   instructions?: ReactNode;
   warnings?: ReactNode;
+  errors?: ReactNode;
   children: ReactNode;
   fullScreen?: boolean;
 };
@@ -16,9 +18,10 @@ function WizardFormLayout({
   children,
   instructions = null,
   warnings = null,
+  errors = null,
   fullScreen = false,
 }: WizardFormLayoutProps) {
-  const hasRightPanelContent = instructions || warnings;
+  const hasRightPanelContent = instructions || warnings || errors;
   const shouldDisplayFullScreen = fullScreen && !hasRightPanelContent;
 
   return (
@@ -46,6 +49,7 @@ function WizardFormLayout({
               "md:top-(--sidebar-layout-sticky-top-offset)",
             )}
           >
+            {errors && <FormError>{errors}</FormError>}
             {warnings && <FormWarning>{warnings}</FormWarning>}
             {instructions && (
               <div

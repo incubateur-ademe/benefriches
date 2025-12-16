@@ -1,4 +1,3 @@
-import { ButtonProps } from "@codegouvfr/react-dsfr/Button";
 import {
   BuildingsUseDistribution,
   DevelopmentPlanType,
@@ -26,7 +25,6 @@ import Section from "@/shared/views/components/FeaturesList/FeaturesListSection"
 import DevelopmentPlanInstallationExpenses from "./DevelopmentPlanInstallationExpenses";
 
 type Props = {
-  buttonProps?: ButtonProps;
   buildingsFloorArea?: BuildingsUseDistribution;
   installationCosts: ProjectFeatures["developmentPlan"]["installationCosts"];
   developmentPlanType: DevelopmentPlanType;
@@ -43,7 +41,6 @@ type Props = {
 >;
 
 export default function ExpensesAndRevenuesSection({
-  buttonProps,
   isExpress,
   developmentPlanType,
   buildingsFloorArea,
@@ -68,14 +65,14 @@ export default function ExpensesAndRevenuesSection({
 
   if (!hasExpensesOrRevenues) {
     return (
-      <Section title="💰 Dépenses et recettes du projet" buttonProps={buttonProps}>
+      <Section title="💰 Dépenses et recettes du projet">
         Aucune dépense ou revenu renseigné.
       </Section>
     );
   }
 
   return (
-    <Section title="💰 Dépenses et recettes du projet" buttonProps={buttonProps}>
+    <Section title="💰 Dépenses et recettes du projet">
       {sitePurchaseTotalAmount ? (
         <DataLine
           label={<strong>Prix d'achat du site et droits de mutation</strong>}

@@ -4,6 +4,7 @@ import { RootState } from "@/shared/core/store-config/store";
 import { buildStepGroupsFromSequence } from "@/shared/views/project-form/stepper/stepperConfig";
 
 import { ProjectFormSelectors } from "../projectForm.selectors";
+import { getProjectSummary } from "./helpers/projectSummary";
 import { ReadStateHelper } from "./helpers/readState";
 import {
   getUrbanProjectAvailableLocalAuthoritiesStakeholders,
@@ -44,27 +45,20 @@ export const createUrbanProjectFormSelectors = (
       );
     });
 
-  const selectProjectData = createSelector([selectStepState], (steps) =>
-    ReadStateHelper.getProjectData(steps),
-  );
-
   const selectSoilsCarbonStorageDifference = createSelector([selectStepState], (steps) => ({
     loadingState: steps.URBAN_PROJECT_SOILS_CARBON_SUMMARY?.loadingState ?? "idle",
     current: steps.URBAN_PROJECT_SOILS_CARBON_SUMMARY?.data?.current,
     projected: steps.URBAN_PROJECT_SOILS_CARBON_SUMMARY?.data?.projected,
   }));
 
-  const selectProjectSummary = createSelector(
-    [selectProjectData, selectProjectSoilsDistribution],
-    (projectData, projectSoilsDistribution) => ({
-      projectData,
-      projectSoilsDistribution,
-    }),
-  );
-
   const selectProjectStepsSequence = createSelector(
     selectSelf,
     (state) => state.urbanProject.stepsSequence,
+  );
+
+  const selectProjectSummary = createSelector(
+    [selectStepState, selectProjectStepsSequence, selectProjectSoilsDistribution],
+    (steps, stepsSequence) => getProjectSummary(steps, stepsSequence),
   );
 
   const selectProjectStepsSequenceWithStatus = createSelector(
