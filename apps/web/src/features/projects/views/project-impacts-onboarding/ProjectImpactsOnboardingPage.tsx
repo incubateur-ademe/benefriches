@@ -13,7 +13,7 @@ type Props = {
 };
 
 const parseRouteStep = (step?: string) =>
-  step && Object.values(STEPS).includes(step) ? step : DEFAULT_STEP;
+  step && (STEPS as readonly string[]).includes(step) ? step : DEFAULT_STEP;
 
 export default function ProjectImpactsOnboardingPage({
   onBackToStep,
@@ -25,11 +25,24 @@ export default function ProjectImpactsOnboardingPage({
   const currentStep = parseRouteStep(routeStep);
 
   switch (currentStep) {
-    case STEPS[1]:
+    case STEPS[0]:
       return (
         <Step1
           onNextClick={() => {
+            onNextToStep(STEPS[1]);
+          }}
+          canSkipOnboarding={canSkipOnboarding}
+          skipOnboarding={onFinalNext}
+        />
+      );
+    case STEPS[1]:
+      return (
+        <Step2
+          onNextClick={() => {
             onNextToStep(STEPS[2]);
+          }}
+          onBackClick={() => {
+            onBackToStep(STEPS[0]);
           }}
           canSkipOnboarding={canSkipOnboarding}
           skipOnboarding={onFinalNext}
@@ -37,7 +50,7 @@ export default function ProjectImpactsOnboardingPage({
       );
     case STEPS[2]:
       return (
-        <Step2
+        <Step3
           onNextClick={() => {
             onNextToStep(STEPS[3]);
           }}
@@ -50,23 +63,10 @@ export default function ProjectImpactsOnboardingPage({
       );
     case STEPS[3]:
       return (
-        <Step3
-          onNextClick={() => {
-            onNextToStep(STEPS[4]);
-          }}
-          onBackClick={() => {
-            onBackToStep(STEPS[2]);
-          }}
-          canSkipOnboarding={canSkipOnboarding}
-          skipOnboarding={onFinalNext}
-        />
-      );
-    case STEPS[4]:
-      return (
         <Step4
           onNextClick={onFinalNext}
           onBackClick={() => {
-            onBackToStep(STEPS[3]);
+            onBackToStep(STEPS[2]);
           }}
           canSkipOnboarding={canSkipOnboarding}
           skipOnboarding={onFinalNext}
