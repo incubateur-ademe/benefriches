@@ -1,6 +1,9 @@
 import { useEffect } from "react";
 import { Route } from "type-route";
 
+import { impactsOnboardingCompleted } from "@/features/projects/application/project-impacts/impactsOnboardingSkip.actions";
+import { selectCanSkipImpactsOnboarding } from "@/features/projects/application/project-impacts/impactsOnboardingSkip.selectors";
+import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { routes } from "@/shared/views/router";
 
 import ProjectImpactsOnboardingPage from "./ProjectImpactsOnboardingPage";
@@ -12,16 +15,23 @@ type Props = {
 };
 
 function ProjectImpactsOnboardingPageContainer({ projectId, route }: Props) {
+  const dispatch = useAppDispatch();
+  const canSkipOnboarding = useAppSelector(selectCanSkipImpactsOnboarding);
+
   useEffect(() => {
     if (!route.params.etape)
       routes
         .projectImpactsOnboarding({
           projectId,
           etape: DEFAULT_STEP,
-          canSkipIntroduction: route.params.canSkipIntroduction,
         })
         .replace();
   }, [route, projectId]);
+
+  const handleOnboardingExit = () => {
+    dispatch(impactsOnboardingCompleted());
+    routes.projectImpacts({ projectId }).push();
+  };
 
   return (
     <ProjectImpactsOnboardingPage
@@ -31,7 +41,6 @@ function ProjectImpactsOnboardingPageContainer({ projectId, route }: Props) {
           .projectImpactsOnboarding({
             projectId,
             etape: step,
-            canSkipIntroduction: route.params.canSkipIntroduction,
           })
           .push();
       }}
@@ -40,14 +49,11 @@ function ProjectImpactsOnboardingPageContainer({ projectId, route }: Props) {
           .projectImpactsOnboarding({
             projectId,
             etape: step,
-            canSkipIntroduction: route.params.canSkipIntroduction,
           })
           .replace();
       }}
-      onFinalNext={() => {
-        routes.projectImpacts({ projectId }).push();
-      }}
-      canSkipOnboarding={route.params.canSkipIntroduction === true}
+      onFinalNext={handleOnboardingExit}
+      canSkipOnboarding={canSkipOnboarding}
     />
   );
 }

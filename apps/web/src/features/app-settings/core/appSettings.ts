@@ -6,12 +6,14 @@ export type AppSettings = {
   displayExpressSiteDisclaimer: boolean;
   displayImpactsAccuracyDisclaimer: boolean;
   askForConfirmationOnStepRevert: boolean;
+  impactsOnboardingLastSeenAt: string | null;
 };
 
 export const DEFAULT_APP_SETTINGS: AppSettings = {
   displayExpressSiteDisclaimer: true,
   displayImpactsAccuracyDisclaimer: true,
   askForConfirmationOnStepRevert: true,
+  impactsOnboardingLastSeenAt: null,
 };
 
 export const selectAppSettings = (state: RootState) => state.appSettings;

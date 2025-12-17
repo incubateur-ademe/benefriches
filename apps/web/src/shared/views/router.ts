@@ -74,7 +74,6 @@ const { RouteProvider, useRoute, routes, session } = createRouter({
     {
       projectId: param.path.string,
       etape: param.query.optional.string,
-      canSkipIntroduction: param.query.optional.boolean,
     },
     (params) => `/mes-projets/${params.projectId}/onboarding-impacts`,
   ),

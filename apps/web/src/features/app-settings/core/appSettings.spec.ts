@@ -17,6 +17,7 @@ describe("App settings", () => {
       askForConfirmationOnStepRevert: true,
       displayExpressSiteDisclaimer: true,
       displayImpactsAccuracyDisclaimer: true,
+      impactsOnboardingLastSeenAt: null,
     });
     const store = createStore(
       getTestAppDependencies({
@@ -28,6 +29,7 @@ describe("App settings", () => {
       askForConfirmationOnStepRevert: true,
       displayExpressSiteDisclaimer: true,
       displayImpactsAccuracyDisclaimer: true,
+      impactsOnboardingLastSeenAt: null,
     });
   });
 
@@ -51,5 +53,21 @@ describe("App settings", () => {
     };
     expect(selectAppSettings(rootState)).toEqual(expectedAppSettings);
     expect(appSettingsService.getAll()).toEqual(expectedAppSettings);
+  });
+
+  it("should update impactsOnboardingLastSeenAt and persist it", () => {
+    const appSettingsService = new InMemoryAppSettings();
+    const store = createStore(
+      getTestAppDependencies({
+        appSettingsService,
+      }),
+    );
+    const timestamp = "2025-01-15T12:00:00.000Z";
+
+    store.dispatch(appSettingUpdated({ field: "impactsOnboardingLastSeenAt", value: timestamp }));
+    const rootState = store.getState();
+
+    expect(selectAppSettings(rootState).impactsOnboardingLastSeenAt).toBe(timestamp);
+    expect(appSettingsService.getAll().impactsOnboardingLastSeenAt).toBe(timestamp);
   });
 });
