@@ -1,34 +1,118 @@
-import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
+import Alert from "@codegouvfr/react-dsfr/Alert";
+import { SiteNature } from "shared";
 
-import { ViewMode } from "../../../application/project-impacts/projectImpacts.reducer";
+import { ProjectDevelopmentPlanType } from "@/features/projects/domain/projects.types";
+import { impactsExportModalOpened, trackEvent } from "@/shared/views/analytics";
+import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
+import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
+
+import {
+  ProjectImpactsState,
+  ViewMode,
+} from "../../../application/project-impacts/projectImpacts.reducer";
+import { exportImpactsModal } from "../../project-page/export-impacts/createExportModal";
+import ProjectImpactsActionBar from "../../shared/actions/ProjectImpactsActionBar";
+import ExportImpactsModal from "../export-impacts/ExportModal";
+import { SITE_FEATURES_FOOTER_DIALOG_ID } from "../footer/FutherActionsSection";
+import ProjectImpactFooter from "../footer/ProjectImpactFooter";
+import ProjectPageHeader from "../header";
+import ImpactsAccuracyDisclaimer from "../impacts-accuracy-disclaimer/ImpactsAccuracyDisclaimer";
+import AboutImpactsModal from "./about-impacts-modal/AboutImpactsModal";
 import ImpactsChartsView from "./charts-view";
 import ImpactsListViewContainer from "./list-view";
+import SiteFeaturesModal from "./site-features-modal/";
 import ImpactsSummaryViewContainer from "./summary-view";
 
 type Props = {
   currentViewMode: ViewMode;
   projectName: string;
+  projectId: string;
+  dataLoadingState: ProjectImpactsState["dataLoadingState"];
+  projectContext: {
+    name: string;
+    siteName: string;
+    siteNature?: SiteNature;
+    siteId: string;
+    type?: ProjectDevelopmentPlanType;
+    isExpressProject: boolean;
+  };
+  onEvaluationPeriodChange: (n: number) => void;
+  evaluationPeriod: number | undefined;
+  onCurrentViewModeChange: (n: ViewMode) => void;
+  displayImpactsAccuracyDisclaimer: boolean;
 };
 
-const ProjectImpactsView = ({ currentViewMode, projectName }: Props) => {
+const ProjectImpactsView = ({
+  currentViewMode,
+  projectName,
+  displayImpactsAccuracyDisclaimer,
+  projectId,
+  projectContext,
+  dataLoadingState,
+  onEvaluationPeriodChange,
+  evaluationPeriod,
+  onCurrentViewModeChange,
+}: Props) => {
   return (
     <>
-      {currentViewMode === "summary" && (
-        <>
-          <HtmlTitle>{`Synthèse - ${projectName} - Impacts`}</HtmlTitle>
-          <ImpactsSummaryViewContainer />
-        </>
+      {displayImpactsAccuracyDisclaimer && <ImpactsAccuracyDisclaimer />}
+
+      <ProjectImpactsActionBar
+        selectedViewMode={currentViewMode}
+        evaluationPeriod={evaluationPeriod}
+        onViewModeClick={onCurrentViewModeChange}
+        onEvaluationPeriodChange={onEvaluationPeriodChange}
+        header={<ProjectPageHeader />}
+        onDownloadImpacts={() => {
+          trackEvent(impactsExportModalOpened());
+          exportImpactsModal.open();
+        }}
+      />
+
+      {dataLoadingState === "error" && (
+        <Alert
+          description="Une erreur s'est produite lors du chargement des données, veuillez réessayer."
+          severity="error"
+          title="Impossible de charger les impacts et caractéristiques du projet"
+          className="my-7"
+        />
       )}
-      {currentViewMode === "list" && (
+      {dataLoadingState === "loading" && <LoadingSpinner />}
+      {dataLoadingState === "success" && (
         <>
-          <HtmlTitle>{`Liste - ${projectName} - Impacts`}</HtmlTitle>
-          <ImpactsListViewContainer />
-        </>
-      )}
-      {currentViewMode === "charts" && (
-        <>
-          <HtmlTitle>{`Graphique - ${projectName} - Impacts`}</HtmlTitle>
-          <ImpactsChartsView />
+          {currentViewMode === "summary" && (
+            <>
+              <HtmlTitle>{`Synthèse - ${projectName} - Impacts`}</HtmlTitle>
+              <ImpactsSummaryViewContainer />
+            </>
+          )}
+          {currentViewMode === "list" && (
+            <>
+              <HtmlTitle>{`Liste - ${projectName} - Impacts`}</HtmlTitle>
+              <ImpactsListViewContainer />
+            </>
+          )}
+          {currentViewMode === "charts" && (
+            <>
+              <HtmlTitle>{`Graphique - ${projectName} - Impacts`}</HtmlTitle>
+              <ImpactsChartsView />
+            </>
+          )}
+          <ProjectImpactFooter
+            siteId={projectContext.siteId}
+            siteNature={projectContext.siteNature!}
+            projectId={projectId}
+            evaluationPeriod={evaluationPeriod}
+            isUpdateEnabled={
+              projectContext.type === "URBAN_PROJECT" && !projectContext.isExpressProject
+            }
+          />
+          <AboutImpactsModal />
+          <SiteFeaturesModal
+            dialogId={SITE_FEATURES_FOOTER_DIALOG_ID}
+            siteId={projectContext.siteId}
+          />
+          <ExportImpactsModal projectId={projectId} siteId={projectContext.siteId} />
         </>
       )}
     </>

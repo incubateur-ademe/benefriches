@@ -1,9 +1,8 @@
-import { fr, FrIconClassName } from "@codegouvfr/react-dsfr";
+import { fr } from "@codegouvfr/react-dsfr";
 import { SiteNature } from "shared";
-import { Link } from "type-route";
 
-import classNames from "@/shared/views/clsx";
 import Badge from "@/shared/views/components/Badge/Badge";
+import TabItem from "@/shared/views/components/TabItem/TabItem";
 import { routes, useRoute } from "@/shared/views/router";
 
 import { SiteRoute } from ".";
@@ -24,36 +23,6 @@ function getPictogramUrlForSiteNature(siteNature: SiteNature): string {
     case "NATURAL_AREA":
       return "/img/pictograms/site-nature/natural-area.svg";
   }
-}
-
-type TabItemProps = {
-  isActive: boolean;
-  label: React.ReactNode;
-  linkProps: Link;
-  iconId: FrIconClassName;
-};
-
-function TabItem({ isActive, iconId, label, linkProps }: TabItemProps) {
-  return (
-    <li
-      className={classNames(
-        isActive
-          ? "bg-blue-ultralight text-blue-ultradark dark:bg-blue-dark dark:text-blue-ultralight"
-          : "bg-background-light text-[#4f4f4f] dark:bg-gray-700 dark:text-grey-light",
-        "px-4 py-2 text-sm font-medium rounded-t-lg",
-      )}
-    >
-      <a className="bg-none" {...linkProps}>
-        <span className="inline-flex items-center gap-2">
-          <i
-            className={`${iconId} fr-icon--md text-blue-dark dark:text-blue-ultralight`}
-            aria-hidden="true"
-          />
-          {label}
-        </span>
-      </a>
-    </li>
-  );
 }
 
 export default function SitePageHeader({ siteId, siteName, siteNature, isExpressSite }: Props) {

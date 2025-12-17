@@ -53,7 +53,7 @@ const ImpactChartCard = ({
         "dark:bg-black",
         "border",
         "border-solid",
-        "border-transparent",
+        "border-border-grey",
         "cursor-pointer",
         "hover:border-current focus:border-current",
         "transition ease-in-out duration-500",

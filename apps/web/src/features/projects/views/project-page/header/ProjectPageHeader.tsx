@@ -1,14 +1,11 @@
 import { fr } from "@codegouvfr/react-dsfr";
-import Button from "@codegouvfr/react-dsfr/Button";
 
 import { ProjectDevelopmentPlanType } from "@/features/projects/domain/projects.types";
-import { impactsExportModalOpened, trackEvent } from "@/shared/views/analytics";
 import classNames, { ClassValue } from "@/shared/views/clsx";
 import { useIsSmallScreen } from "@/shared/views/hooks/useIsSmallScreen";
 
+import ExpressProjectTooltipBadge from "../../shared/project-badge/ExpressProjectBadge";
 import { getScenarioPictoUrl } from "../../shared/scenarioType";
-import { exportImpactsModal } from "../export-impacts/createExportModal";
-import ExpressProjectTooltipBadge from "./../ExpressProjectBadge";
 
 type HeaderProps = {
   projectName: string;
@@ -81,19 +78,6 @@ const ProjectPageHeader = ({
           >
             {siteName}
           </a>
-        </div>
-        <div className="md:col-start-3 md:row-span-3 flex items-center md:justify-end">
-          <Button
-            priority="primary"
-            iconId="fr-icon-file-download-line"
-            size={size}
-            onClick={() => {
-              trackEvent(impactsExportModalOpened());
-              exportImpactsModal.open();
-            }}
-          >
-            Télécharger les impacts
-          </Button>
         </div>
       </div>
     </div>

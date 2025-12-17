@@ -40,3 +40,10 @@ export const selectProjectFeatures = createSelector(
     return state.data;
   },
 );
+
+export const selectProjectFeaturesLoadingState = createSelector(
+  selectSelf,
+  (state): LoadingState => {
+    return state.dataLoadingState;
+  },
+);
