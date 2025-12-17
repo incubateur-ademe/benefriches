@@ -33,7 +33,10 @@ export const MutateStateHelper = {
   },
 
   invalidateStep(state: ProjectFormState, stepId: AnswerStepId) {
-    const step = this.ensureStepExists(state, stepId, false);
+    const step = state.urbanProject.steps[stepId];
+    if (!step) {
+      return;
+    }
     step.completed = false;
     step.defaultValues = undefined;
     step.payload = undefined;
@@ -52,6 +55,10 @@ export const MutateStateHelper = {
   },
 
   deleteStep(state: ProjectFormState, stepId: AnswerStepId) {
+    const step = state.urbanProject.steps[stepId];
+    if (!step) {
+      return;
+    }
     state.urbanProject.steps[stepId] = undefined;
   },
 };

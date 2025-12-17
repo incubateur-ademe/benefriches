@@ -22,9 +22,12 @@ export const SiteResaleSelectionHandler: AnswerStepHandler<typeof STEP_ID> = {
 
   getDependencyRules(state, newAnswers) {
     if (state.stepsState.URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE) {
-      if (!newAnswers.siteResalePlannedAfterDevelopment) {
-        return [{ action: "delete", stepId: "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE" }];
-      }
+      return [
+        {
+          action: newAnswers.siteResalePlannedAfterDevelopment ? "invalidate" : "delete",
+          stepId: "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE",
+        },
+      ];
     }
     return [];
   },

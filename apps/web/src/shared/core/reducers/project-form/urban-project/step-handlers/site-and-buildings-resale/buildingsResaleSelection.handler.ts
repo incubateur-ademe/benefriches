@@ -18,27 +18,28 @@ export const BuildingsResaleSelectionHandler: AnswerStepHandler<typeof STEP_ID> 
 
   getDependencyRules(state, newAnswers) {
     const rules: StepInvalidationRule[] = [];
+    const hasBuildingResale = newAnswers.buildingsResalePlannedAfterDevelopment;
 
     if (state.stepsState.URBAN_PROJECT_REVENUE_BUILDINGS_RESALE) {
-      if (!newAnswers.buildingsResalePlannedAfterDevelopment) {
-        rules.push({ stepId: "URBAN_PROJECT_REVENUE_BUILDINGS_RESALE", action: "delete" });
-      }
+      rules.push({
+        stepId: "URBAN_PROJECT_REVENUE_BUILDINGS_RESALE",
+        action: hasBuildingResale ? "invalidate" : "delete",
+      });
     }
 
-    if (newAnswers.buildingsResalePlannedAfterDevelopment) {
-      if (state.stepsState.URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES) {
-        rules.push({
-          stepId: "URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES",
-          action: "delete",
-        });
-      }
-      if (state.stepsState.URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES) {
-        rules.push({
-          stepId: "URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES",
-          action: "delete",
-        });
-      }
+    if (state.stepsState.URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES) {
+      rules.push({
+        stepId: "URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES",
+        action: hasBuildingResale ? "delete" : "invalidate",
+      });
     }
+    if (state.stepsState.URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES) {
+      rules.push({
+        stepId: "URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES",
+        action: hasBuildingResale ? "delete" : "invalidate",
+      });
+    }
+
     return rules;
   },
 

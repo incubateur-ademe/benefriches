@@ -44,9 +44,9 @@ export const ReadStateHelper = {
       "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
     )?.livingAndActivitySpacesDistribution;
 
-    return (
+    return Boolean(
       livingAndActivitySpacesDistribution?.BUILDINGS &&
-      livingAndActivitySpacesDistribution.BUILDINGS > 0
+        livingAndActivitySpacesDistribution.BUILDINGS > 0,
     );
   },
 
