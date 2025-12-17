@@ -1,4 +1,4 @@
-import { lazy, ReactNode, Suspense } from "react";
+import { lazy, ReactNode, Suspense, useEffect } from "react";
 
 import { URBAN_PROJECT_CREATION_STEP_QUERY_STRING_MAP } from "@/features/create-project/views/urban-project/creationStepQueryStringMap";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
@@ -452,6 +452,9 @@ function UrbanProjectUpdateView() {
   const sidebarActions = useSidebarActions({ onSave, isFormValid, saveState, projectId });
 
   useSyncUpdateStepWithRouteQuery(URBAN_PROJECT_CREATION_STEP_QUERY_STRING_MAP[currentStep]);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [currentStep]);
 
   return (
     <SidebarLayout

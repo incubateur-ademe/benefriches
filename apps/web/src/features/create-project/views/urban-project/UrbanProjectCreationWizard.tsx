@@ -1,4 +1,4 @@
-import { lazy, ReactNode, Suspense } from "react";
+import { lazy, ReactNode, Suspense, useEffect } from "react";
 
 import { UrbanProjectCreationStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
@@ -475,6 +475,9 @@ const getCurrentStepView = (step: UrbanProjectCreationStep): Exclude<ReactNode, 
 
 function UrbanProjectCreationWizard() {
   const currentStep = useAppSelector(selectUrbanProjectCurrentStep);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [currentStep]);
 
   return (
     <SidebarLayout
