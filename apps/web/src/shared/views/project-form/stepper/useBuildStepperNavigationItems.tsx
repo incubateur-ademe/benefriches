@@ -3,35 +3,8 @@ import { typedObjectEntries } from "shared";
 
 import { UrbanProjectCreationStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 
-import { StepVariant } from "../../layout/WizardFormLayout/FormStepperStep";
+import { StepVariant } from "../../layout/WizardFormLayout/FormBaseStepperStep";
 import { ProjectStepGroups, STEP_GROUP_LABELS, STEP_TO_GROUP_MAPPING } from "./stepperConfig";
-
-type ComputeGroupVariantProps = {
-  isCompleted: boolean;
-  isCurrentGroup: boolean;
-  currentHasSubGroup: boolean;
-};
-const computeGroupVariant = ({
-  isCompleted,
-  isCurrentGroup,
-  currentHasSubGroup,
-}: ComputeGroupVariantProps): StepVariant => {
-  if (isCurrentGroup) {
-    return currentHasSubGroup ? "active" : "current";
-  }
-  return isCompleted ? "completed" : "empty";
-};
-
-type ComputeSubGroupVariantProps = { isCompleted: boolean; isCurrent: boolean };
-const computeSubGroupVariant = ({
-  isCompleted,
-  isCurrent,
-}: ComputeSubGroupVariantProps): StepVariant => {
-  if (isCurrent) {
-    return "current";
-  }
-  return isCompleted ? "completed" : "empty";
-};
 
 export const useBuildStepperNavigationItems = (
   projectStepGroups: ProjectStepGroups,
@@ -48,11 +21,14 @@ export const useBuildStepperNavigationItems = (
       return {
         groupId,
         title: STEP_GROUP_LABELS[groupId],
-        variant: computeGroupVariant({
-          isCompleted: isGroupCompleted,
-          isCurrentGroup,
-          currentHasSubGroup: currentGroupId !== undefined,
-        }),
+        variant: {
+          activity: isCurrentGroup
+            ? currentSubGroupId !== undefined
+              ? "groupActive"
+              : "current"
+            : "inactive",
+          validation: isGroupCompleted ? "completed" : "empty",
+        } as StepVariant,
         subGroups: subGroups
           .filter(
             (item): item is typeof item & { subGroupId: NonNullable<typeof item.subGroupId> } =>
@@ -61,10 +37,11 @@ export const useBuildStepperNavigationItems = (
           .map(({ stepId, subGroupId, isStepCompleted }) => {
             return {
               targetStepId: stepId,
-              variant: computeSubGroupVariant({
-                isCurrent: currentGroupId === groupId && currentSubGroupId === subGroupId,
-                isCompleted: isStepCompleted,
-              }),
+              variant: {
+                activity:
+                  isCurrentGroup && currentSubGroupId === subGroupId ? "current" : "inactive",
+                validation: isStepCompleted ? "completed" : "empty",
+              } as StepVariant,
               subGroupId,
               title: STEP_GROUP_LABELS[subGroupId],
             };

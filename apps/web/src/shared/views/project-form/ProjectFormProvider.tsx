@@ -72,11 +72,15 @@ export const ProjectFormProvider: React.FC<ProjectFormProviderProps> = ({ childr
 
   const onNavigateToStepperGroup = useCallback(
     (stepGroupId: StepGroupId) => {
-      const stepId = stepsSequenceGroupedBySections[stepGroupId][0]?.stepId;
-      if (stepId) {
-        dispatch(actions.navigateToStep({ stepId }));
+      const firstStepId = stepsSequenceGroupedBySections[stepGroupId][0]?.stepId;
+      const nextStepToFill = stepsSequenceGroupedBySections[stepGroupId].find(
+        ({ isStepCompleted }) => !isStepCompleted,
+      )?.stepId;
+      const nextStep = nextStepToFill ?? firstStepId;
+      if (nextStep) {
+        dispatch(actions.navigateToStep({ stepId: nextStep }));
       } else {
-        console.error(`Cannot find stepId for group section ${stepGroupId}`);
+        console.error(`Cannot find nextStepId for group section ${stepGroupId}`);
       }
     },
     [dispatch, actions, stepsSequenceGroupedBySections],

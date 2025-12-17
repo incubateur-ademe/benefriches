@@ -2,13 +2,12 @@ import { HtmlHTMLAttributes, useMemo } from "react";
 
 import classNames from "@/shared/views/clsx";
 import FormStepperStep, {
-  StepProps,
-  StepVariant,
+  FormStepperStepProps,
 } from "@/shared/views/layout/WizardFormLayout/FormStepperStep";
 
 type StepperLiItemProps = {
-  title: string;
-  variant: StepVariant;
+  title: FormStepperStepProps["title"];
+  variant: FormStepperStepProps["variant"];
   onClick: () => void;
   isNextAvailable: boolean;
   isFormDisabled?: boolean;
@@ -24,11 +23,11 @@ const StepperLiItem = ({
   className,
 }: StepperLiItemProps) => {
   const isDisabled = useMemo(
-    () => isFormDisabled || !(variant === "completed" || isNextAvailable),
+    () => isFormDisabled || !(variant.validation === "completed" || isNextAvailable),
     [isFormDisabled, isNextAvailable, variant],
   );
 
-  const extraProps: Pick<StepProps, "className" | "as" | "onClick"> = useMemo(() => {
+  const extraProps: Pick<FormStepperStepProps, "className" | "as" | "onClick"> = useMemo(() => {
     return !isDisabled
       ? {
           onClick,

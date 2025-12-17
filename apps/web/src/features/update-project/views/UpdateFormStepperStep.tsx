@@ -1,78 +1,61 @@
 import { fr } from "@codegouvfr/react-dsfr";
-import { HTMLAttributes, useContext } from "react";
 
-import classNames, { ClassValue } from "@/shared/views/clsx";
-import { SidebarLayoutContext } from "@/shared/views/layout/SidebarLayout/SidebarLayoutContext";
+import BaseStepperStep, {
+  BaseStepperStepProps,
+  SHARED_STYLES,
+  VariantStyleConfig,
+} from "@/shared/views/layout/WizardFormLayout/FormBaseStepperStep";
 
-export type StepProps = {
-  title: string;
-  variant: "completed" | "empty" | "current" | "active";
-  className?: ClassValue;
-} & HTMLAttributes<HTMLButtonElement>;
+type UpdateStepperStepProps = Omit<BaseStepperStepProps, "variantStyles" | "as">;
 
-const MARKER_NUMBER_CLASSES = [
-  "before:text-white",
-  "before:rounded-full",
-  "before:leading-6",
-  "before:min-w-6",
-  "before:h-6",
-  "before:text-center",
-  "before:font-bold",
-  "before:text-xs",
-  'before:content-[counters(li-counter,".")]',
-] as const;
-
-const ACTIVE_CLASSES = [
-  "before:bg-blue-ultradark",
-  "bg-blue-ultralight dark:bg-blue-ultradark",
-  "text-blue-ultradark dark:text-blue-ultralight",
-  "font-medium",
-];
-const COMPLETED_CLASSES = ["before:bg-blue-ultradark"];
-const EMPTY_CLASSES = [
+const WARNING_ICON = [
   fr.cx("fr-icon-error-warning-line"),
-  "bg-warning-ultralight dark:bg-warning-ultradark text-warning-ultradark dark:text-warning-ultralight",
+  "text-warning-ultradark dark:text-warning-ultralight",
 ];
 
-const CurrentStepArrow = () => (
-  <span className="fr-icon-arrow-right-s-line ml-auto" aria-hidden="true" />
-);
+const UPDATE_STEPPER_STYLES: VariantStyleConfig = {
+  "current-empty": [
+    WARNING_ICON,
+    "bg-warning-light dark:bg-warning-dark",
+    "hover:bg-warning-light dark:hover:bg-warning-dark",
+    "font-medium",
+  ],
+  "current-completed": [
+    SHARED_STYLES.numberMarker,
+    "before:bg-blue-ultradark",
+    "bg-blue-ultralight dark:bg-blue-ultradark",
+    "text-blue-ultradark dark:text-blue-ultralight",
+    "hover:bg-blue-ultralight hover:dark:bg-blue-ultradark",
+    "font-medium",
+  ],
 
-const UpdateFormStepperStep = ({ title, variant, className, ...props }: StepProps) => {
-  const { isOpen: isExtended } = useContext(SidebarLayoutContext);
+  "groupActive-empty": [
+    WARNING_ICON,
+    "bg-warning-ultralight dark:bg-warning-ultradark",
+    "hover:bg-warning-light dark:hover:bg-warning-dark",
+  ],
+  "groupActive-completed": [
+    SHARED_STYLES.numberMarker,
+    "before:bg-blue-ultradark",
+    "bg-blue-ultralight dark:bg-blue-ultradark",
+    "text-blue-ultradark dark:text-blue-ultralight",
+    "hover:bg-blue-ultralight hover:dark:bg-blue-ultradark",
+  ],
 
-  const isActive = variant === "current" || variant === "active";
-
-  return (
-    <button
-      title={!isExtended ? title : undefined}
-      {...props}
-      className={classNames(
-        "flex",
-        "items-center",
-        "text-sm",
-        "p-2",
-        "before:mx-4",
-        "text-left w-full",
-        "marker:content-none",
-
-        variant === "empty"
-          ? EMPTY_CLASSES
-          : [MARKER_NUMBER_CLASSES, isActive ? ACTIVE_CLASSES : COMPLETED_CLASSES],
-
-        "hover:bg-blue-ultralight hover:dark:bg-blue-ultradark",
-
-        className,
-      )}
-    >
-      {isExtended && (
-        <>
-          {title}
-          {variant === "current" && <CurrentStepArrow />}
-        </>
-      )}
-    </button>
-  );
+  "inactive-empty": [
+    WARNING_ICON,
+    "bg-warning-ultralight dark:bg-warning-ultradark",
+    "hover:bg-warning-light dark:hover:bg-warning-dark",
+  ],
+  "inactive-completed": [
+    SHARED_STYLES.numberMarker,
+    "before:bg-blue-ultradark",
+    "hover:bg-blue-ultralight hover:dark:bg-blue-ultradark",
+  ],
 };
 
-export default UpdateFormStepperStep;
+const UpdateStepperStep = (props: UpdateStepperStepProps) => {
+  return <BaseStepperStep {...props} as="button" variantStyles={UPDATE_STEPPER_STYLES} />;
+};
+
+export default UpdateStepperStep;

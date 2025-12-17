@@ -63,7 +63,9 @@ function UrbanProjectUpdateStepper({ step: currentStep }: Props) {
           onClick={() => {
             onNavigateToStepperGroup("SUMMARY");
           }}
-          isSelected={summary.variant === "current" || summary.variant === "active"}
+          isSelected={
+            summary.variant.activity === "current" || summary.variant.activity === "groupActive"
+          }
         />
       )}
 
@@ -79,22 +81,23 @@ function UrbanProjectUpdateStepper({ step: currentStep }: Props) {
                   onNavigateToStepperGroup(groupId);
                 }}
               />
-              {subGroups && (variant === "active" || variant === "current") && (
-                <FormStepperWrapper className="my-0">
-                  {subGroups.map((subStep) => (
-                    <li className="p-0" key={subStep.title}>
-                      <UpdateFormStepperStep
-                        title={subStep.title}
-                        variant={subStep.variant}
-                        className="pl-6"
-                        onClick={() => {
-                          onNavigateToStep(subStep.targetStepId);
-                        }}
-                      />
-                    </li>
-                  ))}
-                </FormStepperWrapper>
-              )}
+              {subGroups &&
+                (variant.activity === "groupActive" || variant.activity === "current") && (
+                  <FormStepperWrapper className="my-0">
+                    {subGroups.map((subStep) => (
+                      <li className="p-0" key={subStep.title}>
+                        <UpdateFormStepperStep
+                          title={subStep.title}
+                          variant={subStep.variant}
+                          className="pl-6"
+                          onClick={() => {
+                            onNavigateToStep(subStep.targetStepId);
+                          }}
+                        />
+                      </li>
+                    ))}
+                  </FormStepperWrapper>
+                )}
             </li>
           ))}
       </FormStepperWrapper>

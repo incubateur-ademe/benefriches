@@ -1,3 +1,4 @@
+import { StepVariant } from "./FormBaseStepperStep";
 import FormStepperStep from "./FormStepperStep";
 import FormStepperWrapper from "./FormStepperWrapper";
 
@@ -7,22 +8,29 @@ type Props = {
   isDone?: boolean;
 };
 
-const getStepVariant = (stepIndex: number, currentStepIndex: number, formIsDone: boolean) => {
+const getStepVariant = (
+  stepIndex: number,
+  currentStepIndex: number,
+  formIsDone: boolean,
+): StepVariant => {
   const isPreviousStep = currentStepIndex > stepIndex;
   const isCurrent = currentStepIndex === stepIndex;
   const isCompleted = isPreviousStep || (isCurrent && formIsDone);
 
-  return isCurrent ? "current" : isCompleted ? "completed" : "empty";
+  return {
+    activity: isCurrent ? "current" : "inactive",
+    validation: isCompleted ? "completed" : "empty",
+  };
 };
 
 function FormStepper({ steps, currentStepIndex, isDone = false }: Props) {
   return (
     <FormStepperWrapper>
-      {steps.map((title, index) => (
+      {steps.map((title, stepIndex) => (
         <FormStepperStep
           key={title}
           title={title}
-          variant={getStepVariant(index, currentStepIndex, isDone)}
+          variant={getStepVariant(stepIndex, currentStepIndex, isDone)}
         />
       ))}
     </FormStepperWrapper>

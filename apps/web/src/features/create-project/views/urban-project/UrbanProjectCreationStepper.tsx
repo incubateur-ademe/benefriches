@@ -37,7 +37,10 @@ function UrbanProjectCreationStepper({ step: currentStep }: Props) {
 
   return (
     <FormStepperWrapper>
-      <FormStepperStep title="Type de projet" variant="completed" />
+      <FormStepperStep
+        title="Type de projet"
+        variant={{ activity: "inactive", validation: "completed" }}
+      />
       {stepGroupsList.map(({ title, groupId, subGroups, variant }) => (
         <StepperLiItem
           key={title}
@@ -49,7 +52,7 @@ function UrbanProjectCreationStepper({ step: currentStep }: Props) {
             onNavigateToStepperGroup(groupId);
           }}
         >
-          {subGroups && (variant === "active" || variant === "current") && (
+          {subGroups && (variant.activity === "groupActive" || variant.activity === "current") && (
             <FormStepperWrapper className="my-0">
               {subGroups.map((subStep) => (
                 <StepperLiItem
