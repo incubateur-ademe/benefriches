@@ -1,6 +1,6 @@
 import classNames from "@/shared/views/clsx";
 
-import ExpressProjectTooltipBadge from "../project-page/ExpressProjectBadge";
+import ExpressProjectTooltipBadge from "../shared/project-badge/ExpressProjectBadge";
 import { getScenarioPictoUrl } from "../shared/scenarioType";
 
 type Props = {

@@ -38,7 +38,13 @@ function ImpactsActionBar({
   };
 
   return (
-    <section ref={ref} className={classNames("md:flex", "justify-between", className)}>
+    <section ref={ref} className={classNames("flex", "flex-wrap", "gap-4", className)}>
+      {evaluationPeriod !== undefined && (
+        <ImpactEvaluationPeriodSelect
+          onChange={onEvaluationPeriodChange}
+          value={evaluationPeriod}
+        />
+      )}
       <SegmentedControl
         small={isSmScreen}
         legend="Filtres"
@@ -61,14 +67,6 @@ function ImpactsActionBar({
           },
         ]}
       />
-      <div className="w-full md:w-auto">
-        {evaluationPeriod !== undefined && (
-          <ImpactEvaluationPeriodSelect
-            onChange={onEvaluationPeriodChange}
-            value={evaluationPeriod}
-          />
-        )}
-      </div>
     </section>
   );
 }

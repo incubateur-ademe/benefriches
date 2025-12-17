@@ -78,6 +78,10 @@ const { RouteProvider, useRoute, routes, session } = createRouter({
     },
     (params) => `/mes-projets/${params.projectId}/onboarding-impacts`,
   ),
+  projectFeatures: defineRoute(
+    { projectId: param.path.string },
+    (params) => `/mes-projets/${params.projectId}/caracterisques`,
+  ),
   urbanSprawlImpactsComparison: defineRoute(
     {
       projectId: param.path.string,

@@ -20,7 +20,7 @@ type Link = {
   links: (ButtonProps & { badgeProps?: ButtonProps["nativeButtonProps"] })[];
 };
 
-export const PROJECT_AND_SITE_FEATURES_FOOTER_DIALOG_ID = "project-and-site-features-footer-dialog";
+export const SITE_FEATURES_FOOTER_DIALOG_ID = "site-features-footer-dialog";
 const DUPLICATE_PROJECT_FEATURE_ALERT_DIALOG_ID = "duplicate-project-feature-alert-footer-dialog";
 const UPDATE_PROJECT_FEATURE_ALERT_DIALOG_ID = "update-project-feature-alert-footer-dialog";
 
@@ -94,10 +94,10 @@ export default function FurtherActionsSection({ siteId, projectId, isUpdateEnabl
         {
           iconId: "fr-icon-file-text-line",
           nativeButtonProps: {
-            "aria-controls": PROJECT_AND_SITE_FEATURES_FOOTER_DIALOG_ID,
+            "aria-controls": SITE_FEATURES_FOOTER_DIALOG_ID,
             "data-fr-opened": false,
           },
-          title: "Revoir les données du site et du projet",
+          title: "Revoir les données du site",
         },
         {
           iconId: "fr-icon-lightbulb-line",

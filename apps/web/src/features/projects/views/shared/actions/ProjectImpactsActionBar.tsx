@@ -1,3 +1,4 @@
+import Button from "@codegouvfr/react-dsfr/Button";
 import { ReactNode, useState } from "react";
 
 import { ViewMode } from "@/features/projects/application/project-impacts/projectImpacts.reducer";
@@ -11,6 +12,7 @@ type Props = {
   evaluationPeriod: number | undefined;
   onViewModeClick: (viewMode: ViewMode) => void;
   onEvaluationPeriodChange: (n: number) => void;
+  onDownloadImpacts?: () => void;
   header: ReactNode;
   disabledSegments?: ViewMode[];
   className?: ClassValue;
@@ -21,6 +23,7 @@ function ProjectImpactsActionBar({
   selectedViewMode,
   evaluationPeriod,
   onEvaluationPeriodChange,
+  onDownloadImpacts,
   header,
   disabledSegments,
   className,
@@ -48,15 +51,26 @@ function ProjectImpactsActionBar({
           onEvaluationPeriodChange={onEvaluationPeriodChange}
         />
       )}
-      <ImpactsActionBar
-        ref={inlineActionBarRef}
-        selectedViewMode={selectedViewMode}
-        evaluationPeriod={evaluationPeriod}
-        onViewModeClick={onViewModeClick}
-        onEvaluationPeriodChange={onEvaluationPeriodChange}
-        disabledSegments={disabledSegments}
-        className={className}
-      />
+      <div className="flex flex-wrap gap-2 justify-between">
+        <ImpactsActionBar
+          ref={inlineActionBarRef}
+          selectedViewMode={selectedViewMode}
+          evaluationPeriod={evaluationPeriod}
+          onViewModeClick={onViewModeClick}
+          onEvaluationPeriodChange={onEvaluationPeriodChange}
+          disabledSegments={disabledSegments}
+          className={className}
+        />
+        {onDownloadImpacts && (
+          <Button
+            priority="primary"
+            iconId="fr-icon-file-download-line"
+            onClick={onDownloadImpacts}
+          >
+            Télécharger les impacts
+          </Button>
+        )}
+      </div>
     </>
   );
 }
