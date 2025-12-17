@@ -6,14 +6,18 @@ Create a plan in `specs/<feature-name>.md` for the `Feature` below.
 
 1. **Declare scope first** - Determine if this is API-only, Web-only, Full-stack, or Shared
 2. **Load only relevant context** based on scope:
-   - API: `.claude/context/api/00-overview.md` + specific patterns needed
-   - Web: `.claude/context/web/00-overview.md` + specific patterns needed
+   - API: `<root>/.claude/context/api/00-overview.md` + specific patterns needed
+   - Web: `<root>/.claude/context/web/00-overview.md` + specific patterns needed
    - Full-stack: Both overviews + specific patterns as needed
 3. **Explore targeted directories** - Don't explore everything:
-   - API: `apps/api/src/[relevant-module]/`
-   - Web: `apps/web/src/features/[relevant-feature]/`
-   - Shared: `packages/shared/src/`
-4. Follow existing patterns. Report new library needs in Notes.
+   - API: `<root>/apps/api/src/[relevant-module]/`
+   - Web: `<root>/apps/web/src/features/[relevant-feature]/`
+   - Shared: `<root>/packages/shared/src/`
+4. **Testing principles** - Each test should verify a distinct behavior:
+   - Ask: "If test A passes, would test B always pass?" → If yes, test B is redundant
+   - Ask: "What unique failure mode does this test catch?"
+   - Avoid redundant tests (e.g., "response validation" covered by happy path)
+5. Follow existing patterns. Report new library needs in Notes.
 
 ## Plan Format
 
@@ -48,16 +52,6 @@ Use these files to implement the feature:
 <list specific, measurable criteria that must be met for the feature to be considered complete>
 
 ## Testing Strategy
-
-**Principle**: Each test should verify a **distinct behavior** not covered by other tests.
-
-Before listing tests, ask:
-- "If test A passes, would test B always pass?" → If yes, test B is redundant
-- "What unique failure mode does this test catch?"
-
-Avoid redundant tests like:
-- "Response validation" that just checks properties exist (covered by happy path)
-- Tests asserting the same values in different ways
 
 ### Unit Tests
 <describe unit tests needed - each should test a distinct behavior>
