@@ -247,6 +247,13 @@ pnpm -r install && pnpm -r typecheck && pnpm -r test
   - **HTTP Integration**: Test full flow from HTTP request → UseCase → database
 - **E2E tests** (`.spec.ts` in `e2e-tests/tests/`): Full user flows with Playwright against running stack
 
+### Testing Principles
+
+Each test should verify a **distinct behavior** not covered by other tests:
+- Ask: "If test A passes, would test B always pass?" → If yes, test B is redundant
+- Ask: "What unique failure mode does this test catch?"
+- Avoid redundant tests (e.g., "response validation" covered by happy path)
+
 ### Running Tests
 
 ```bash
@@ -306,6 +313,10 @@ These standards apply across the entire monorepo.
 - **Formatter**: Prettier (configured at root)
 - **Linter**: oxlint with `--type-aware` flag
 - **Import sorting**: `@trivago/prettier-plugin-sort-imports`
+
+### Library Preferences:
+
+- **Date manipulation**: Always use `date-fns` for date operations (formatting, parsing, arithmetic, comparisons). Avoid native `Date` methods for complex operations.
 
 ### Node.js Compatibility
 
