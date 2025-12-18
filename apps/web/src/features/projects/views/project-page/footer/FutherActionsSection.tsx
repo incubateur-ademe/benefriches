@@ -1,10 +1,7 @@
 import Alert from "@codegouvfr/react-dsfr/Alert";
 import Button, { ButtonProps } from "@codegouvfr/react-dsfr/Button";
-import { useCallback, useState } from "react";
-import { v4 as uuid } from "uuid";
 
 import { selectCurrentUserEmail } from "@/features/onboarding/core/user.reducer";
-import { HttpDuplicateProjectService } from "@/features/projects/infrastructure/duplicate-project-service/HttpDuplicateProjectService";
 import { featureAlertSubscribed } from "@/features/user-feature-alerts/core/createFeatureAlert.action";
 import { selectUserFeaturesAlerts } from "@/features/user-feature-alerts/core/userFeatureAlert.reducer";
 import classNames from "@/shared/views/clsx";
@@ -13,6 +10,7 @@ import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks
 import { routes } from "@/shared/views/router";
 
 import { ABOUT_IMPACTS_DIALOG_ID } from "../impacts/about-impacts-modal/AboutImpactsModal";
+import useDuplicateProject from "../useDuplicateProject";
 import ProjectFeatureAlertModal from "./ProjectFeatureAlertModal";
 
 type Link = {
@@ -30,20 +28,7 @@ type Props = {
   isUpdateEnabled: boolean;
 };
 export default function FurtherActionsSection({ siteId, projectId, isUpdateEnabled }: Props) {
-  const [duplicationState, setIsDuplicationState] = useState<"idle" | "error" | "loading">("idle");
-
-  const onDuplicateProject = useCallback(async () => {
-    setIsDuplicationState("loading");
-    try {
-      const duplicateService = new HttpDuplicateProjectService();
-      const newProjectId = uuid();
-      await duplicateService.duplicate({ newProjectId, reconversionProjectId: projectId });
-      routes.updateProject({ projectId: newProjectId }).push();
-    } catch (err) {
-      console.error("Impossible de dupliquer le projet", err);
-      setIsDuplicationState("error");
-    }
-  }, [projectId]);
+  const { onDuplicateProject, duplicationState } = useDuplicateProject(projectId);
 
   const links: Link[] = [
     {

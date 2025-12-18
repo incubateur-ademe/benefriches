@@ -24,7 +24,7 @@ function ProjectPage({ projectId }: Props) {
     <div id="project-impacts-page" className={classNames("h-full")}>
       <div className="mb-8 bg-grey-light dark:bg-grey-dark">
         <div className="py-8">
-          <ProjectPageHeader />
+          <ProjectPageHeader projectId={projectId} />
         </div>
         <ProjectPageTabs />
       </div>
