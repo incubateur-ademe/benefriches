@@ -23,7 +23,7 @@ jobs:
           cache: "pnpm"
 
       - name: Install dependencies
-        run: pnpm --filter e2e-tests install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Install Playwright Browsers
         run: pnpm --filter e2e-tests exec playwright install --with-deps
