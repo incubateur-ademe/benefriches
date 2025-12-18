@@ -12,6 +12,7 @@ const MAIL_CATCHER_URL = process.env.MAIL_CATCHER_URL ?? "http://localhost:1080"
 export default defineConfig({
   testDir: "./tests",
   fullyParallel: true,
+  timeout: 5 * 1000,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
