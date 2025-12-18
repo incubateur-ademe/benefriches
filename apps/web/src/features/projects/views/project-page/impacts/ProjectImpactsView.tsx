@@ -62,7 +62,7 @@ const ProjectImpactsView = ({
         evaluationPeriod={evaluationPeriod}
         onViewModeClick={onCurrentViewModeChange}
         onEvaluationPeriodChange={onEvaluationPeriodChange}
-        header={<ProjectPageHeader />}
+        header={<ProjectPageHeader projectId={projectId} />}
         onDownloadImpacts={() => {
           trackEvent(impactsExportModalOpened());
           exportImpactsModal.open();

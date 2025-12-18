@@ -1,7 +1,13 @@
 import { fr } from "@codegouvfr/react-dsfr";
+import Button from "@codegouvfr/react-dsfr/Button";
+import { Menu, MenuButton, MenuItems, MenuSeparator } from "@headlessui/react";
+import { Fragment } from "react/jsx-runtime";
+import { Link } from "type-route";
 
 import { ProjectDevelopmentPlanType } from "@/features/projects/domain/projects.types";
 import classNames, { ClassValue } from "@/shared/views/clsx";
+import MenuItemButton from "@/shared/views/components/Menu/MenuItemButton";
+import { MENU_ITEMS_CLASSES } from "@/shared/views/components/Menu/classes";
 import { useIsSmallScreen } from "@/shared/views/hooks/useIsSmallScreen";
 
 import ExpressProjectTooltipBadge from "../../shared/project-badge/ExpressProjectBadge";
@@ -15,6 +21,9 @@ type HeaderProps = {
   isExpressProject: boolean;
   size?: "small" | "medium";
   className?: ClassValue;
+  onDuplicateProject: () => void;
+  updateProjectLinkProps: Link;
+  createProjectLinkProps: Link;
 };
 
 const ProjectPageHeader = ({
@@ -25,17 +34,26 @@ const ProjectPageHeader = ({
   isExpressProject,
   size: propsSize,
   className,
+  updateProjectLinkProps,
+  createProjectLinkProps,
+  onDuplicateProject,
 }: HeaderProps) => {
   const isSmallScreen = useIsSmallScreen();
   const size = propsSize ?? (isSmallScreen ? "small" : "medium");
   const isSmallSize = size === "small";
 
+  const hasUpdateFeature = !isExpressProject && projectType === "URBAN_PROJECT";
+
   return (
     <div className={classNames(fr.cx("fr-container"), className)}>
       <div
         className={classNames(
-          "flex flex-col gap-2",
-          "md:grid md:grid-cols-[72px_1fr_240px] md:gap-x-3",
+          "grid",
+          "grid-cols-[60px_1fr_40px]",
+          "md:grid-cols-[72px_1fr_40px]",
+          "gap-x-2 md:gap-x-3",
+          "items-center",
+          "justify-center",
         )}
       >
         {projectType && (
@@ -59,8 +77,9 @@ const ProjectPageHeader = ({
         </div>
         <div
           className={classNames(
-            "sm:col-start-2 sm:col-span-1",
-            "row-start-2 col-start-1 col-span-3",
+            "row-start-2",
+            "col-start-1 sm:col-start-2",
+            "col-span-2 sm:col-span-1",
           )}
         >
           <span
@@ -78,6 +97,37 @@ const ProjectPageHeader = ({
           >
             {siteName}
           </a>
+        </div>
+        <div className="md:col-start-3 md:row-span-3 flex items-center md:justify-end">
+          <Menu>
+            <MenuButton as={Fragment}>
+              <Button
+                priority="secondary"
+                iconId="fr-icon-more-fill"
+                title="Voir plus de fonctionnalités"
+              />
+            </MenuButton>
+            <MenuItems
+              anchor="bottom end"
+              transition
+              className={classNames("z-40", "w-80", MENU_ITEMS_CLASSES)}
+            >
+              {hasUpdateFeature && (
+                <MenuItemButton iconId="fr-icon-edit-line" linkProps={updateProjectLinkProps}>
+                  Modifier les caractéristiques du projet
+                </MenuItemButton>
+              )}
+              <MenuSeparator className="my-1 h-px bg-border-grey mx-3" />
+              {hasUpdateFeature && (
+                <MenuItemButton iconId="ri-file-copy-line" onClick={onDuplicateProject}>
+                  Évaluer une variante du projet
+                </MenuItemButton>
+              )}
+              <MenuItemButton iconId="fr-icon-file-add-line" linkProps={createProjectLinkProps}>
+                Évaluer un nouveau projet
+              </MenuItemButton>
+            </MenuItems>
+          </Menu>
         </div>
       </div>
     </div>
