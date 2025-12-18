@@ -17,9 +17,16 @@ type Props = {
   projectId: string;
   loadingState: "idle" | "dirty" | "loading" | "success" | "error";
   onBack: () => void;
+  shouldGoThroughOnboarding: boolean;
 };
 
-function ProjectCreationResult({ projectId, projectName, loadingState, onBack }: Props) {
+function ProjectCreationResult({
+  projectId,
+  projectName,
+  loadingState,
+  onBack,
+  shouldGoThroughOnboarding,
+}: Props) {
   switch (loadingState) {
     case "idle":
     case "dirty":
@@ -36,7 +43,7 @@ function ProjectCreationResult({ projectId, projectName, loadingState, onBack }:
           <Alert
             description={`Une erreur est survenue lors de la création du projet « ${projectName} », veuillez réessayer.`}
             severity="error"
-            title="Le projet n'a pas pu être enregistré"
+            title="Le projet n'a pas pu être sauvegardé"
             className="my-7"
           />
           <Button onClick={onBack} priority="secondary">
@@ -52,12 +59,25 @@ function ProjectCreationResult({ projectId, projectName, loadingState, onBack }:
           <EditorialPageText>
             Ses impacts ont été calculés et sont prêts à être consultés.
           </EditorialPageText>
-          <EditorialPageText>Mais avant cela, 3 informations importantes.</EditorialPageText>
-          <EditorialPageButtonsSection>
-            <Button size="large" linkProps={routes.projectImpactsOnboarding({ projectId }).link}>
-              Voir les infos importantes
-            </Button>
-          </EditorialPageButtonsSection>
+          {shouldGoThroughOnboarding ? (
+            <>
+              <EditorialPageText>Mais avant cela, 3 informations importantes.</EditorialPageText>
+              <EditorialPageButtonsSection>
+                <Button
+                  size="large"
+                  linkProps={routes.projectImpactsOnboarding({ projectId }).link}
+                >
+                  Voir les infos importantes
+                </Button>
+              </EditorialPageButtonsSection>
+            </>
+          ) : (
+            <EditorialPageButtonsSection>
+              <Button size="large" linkProps={routes.projectImpacts({ projectId }).link}>
+                Consulter les impacts
+              </Button>
+            </EditorialPageButtonsSection>
+          )}
         </EditorialPageLayout>
       );
   }

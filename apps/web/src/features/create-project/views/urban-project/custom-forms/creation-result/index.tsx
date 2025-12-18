@@ -1,3 +1,4 @@
+import { selectShouldGoThroughOnboarding } from "@/features/projects/application/project-impacts/impactsOnboardingSkip.selectors";
 import { RootState } from "@/shared/core/store-config/store";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
@@ -12,6 +13,7 @@ function ProjectCreationResultContainer() {
     projectId: state.projectCreation.projectId,
   }));
   const projectName = useAppSelector(selectStepAnswers("URBAN_PROJECT_NAMING"))?.name;
+  const shouldGoThroughOnboarding = useAppSelector(selectShouldGoThroughOnboarding);
 
   return (
     <ProjectCreationResult
@@ -19,6 +21,7 @@ function ProjectCreationResultContainer() {
       projectName={projectName ?? ""}
       loadingState={saveState}
       onBack={onBack}
+      shouldGoThroughOnboarding={shouldGoThroughOnboarding}
     />
   );
 }
