@@ -39,7 +39,7 @@ function MyEvaluationsPage({ loadingState, evaluations }: Props) {
 
   if (loadingState === "success") {
     return (
-      <div className="bg-(--background-contrast-grey)">
+      <div className="bg-(--background-contrast-grey) h-full">
         <section className={fr.cx("fr-container", "fr-py-4w")}>
           <HtmlTitle>Mes évaluations</HtmlTitle>
           <MyEvaluationsPageHeader />

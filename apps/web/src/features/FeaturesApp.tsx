@@ -6,6 +6,7 @@ import RequireAuthenticatedUser from "@/shared/views/components/RequireAuthentic
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import HeaderFooterLayout from "@/shared/views/layout/HeaderFooterLayout/HeaderFooterLayout";
 import SidebarContainerLayout from "@/shared/views/layout/SidebarLayout/SidebarContainerLayout";
+import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 import { routes, useRoute } from "@/shared/views/router";
 
 import OnBoardingIntroductionHow from "./onboarding/views/pages/how-it-works/HowItWorksPage";
@@ -55,7 +56,15 @@ function FeaturesApp() {
   if (formsLayoutGroup.has(route)) {
     return (
       <SidebarContainerLayout>
-        <Suspense fallback={<LoadingSpinner />}>
+        <Suspense
+          fallback={
+            <SidebarLayout
+              title=""
+              sidebarChildren={null}
+              mainChildren={<LoadingSpinner />}
+            ></SidebarLayout>
+          }
+        >
           <RequireAuthenticatedUser>
             {(() => {
               switch (route.name) {

@@ -19,7 +19,7 @@ function BenefrichesHeader({
   const quickAccessItems: HeaderProps.QuickAccessItem[] = isUserLoggedIn
     ? [
         {
-          iconId: "fr-icon-briefcase-fill",
+          iconId: "fr-icon-bar-chart-box-line",
           linkProps: myProjectsLink,
           text: "Mes évaluations",
         },
