@@ -1,15 +1,10 @@
-import {
-  test,
-  expect,
-  getMailCatcherMessages,
-  getMailCatcherMessagePlainText,
-} from "../fixtures/login.fixtures";
+import { test, expect, waitForEmail, getMessagePlainText } from "./login.fixtures";
 
 test.describe("Login with email", () => {
   test("shows error when user enters unknown email", async ({
     homePage,
     accessBenefrichesPage,
-    loginPage,
+    loginModal,
   }) => {
     const unknownEmail = `unknown-${Date.now()}@mail.com`;
 
@@ -24,23 +19,23 @@ test.describe("Login with email", () => {
     await accessBenefrichesPage.clickContinueWithEmail();
 
     // Expect login modal to be visible
-    await loginPage.expectVisible();
+    await loginModal.expectVisible();
 
     // Fill in unknown email address
-    await loginPage.fillEmail(unknownEmail);
+    await loginModal.fillEmail(unknownEmail);
 
     // Click "Recevoir un lien"
-    await loginPage.clickReceiveLink();
+    await loginModal.clickReceiveLink();
 
     // Check that error message is displayed
-    await loginPage.expectUnknownEmailError();
+    await loginModal.expectUnknownEmailError();
   });
 
   test("allows existing user to log in via email", async ({
     page,
     homePage,
     accessBenefrichesPage,
-    loginPage,
+    loginModal,
     testUser,
   }) => {
     // Navigate to homepage and click "Commencer"
@@ -54,29 +49,22 @@ test.describe("Login with email", () => {
     await accessBenefrichesPage.clickContinueWithEmail();
 
     // Expect login modal to be visible
-    await loginPage.expectVisible();
+    await loginModal.expectVisible();
 
     // Fill in email address
-    await loginPage.fillEmail(testUser.email);
+    await loginModal.fillEmail(testUser.email);
 
     // Click "Recevoir un lien"
-    await loginPage.clickReceiveLink();
+    await loginModal.clickReceiveLink();
 
     // Check that success message is displayed
-    await loginPage.expectSuccessMessage();
+    await loginModal.expectSuccessMessage();
 
-    // Wait a bit for the email to be sent
-    await page.waitForTimeout(100);
+    // Wait for the login email to arrive in MailCatcher
+    const loginEmail = await waitForEmail(testUser.email);
 
-    // look for the email in MailCatcher
-    const messages = await getMailCatcherMessages();
-    const loginEmailInList = messages.find((msg) =>
-      msg.recipients.some((recipient) => recipient.includes(testUser.email)),
-    );
-    expect(loginEmailInList).toBeDefined();
-
-    // fetch email plain text to extract login link
-    const loginEmailPlainText = await getMailCatcherMessagePlainText(loginEmailInList!.id);
+    // Fetch email plain text to extract login link
+    const loginEmailPlainText = await getMessagePlainText(loginEmail.id);
     const urlMatch = loginEmailPlainText.match(/https?:\/\/[^\s]+/);
     const authLink = urlMatch?.[0];
 

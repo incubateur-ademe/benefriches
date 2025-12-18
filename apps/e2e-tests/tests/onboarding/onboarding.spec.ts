@@ -1,4 +1,4 @@
-import { test, expect } from "../fixtures/onboarding.fixtures";
+import { test, expect } from "./onboarding.fixtures";
 
 test.describe("Onboarding", () => {
   test("Impact evaluation: allows new user to create account and complete onboarding", async ({
@@ -51,9 +51,9 @@ test.describe("Onboarding", () => {
   }) => {
     // Navigate to homepage and start compatibility flow
     await homePage.goto();
-    await expect(page.locator("#votre-projet-d-amenagement")).toContainText(
-      "J'ai une friche et je souhaite trouver l'usage le plus adapté.",
-    );
+    await expect(
+      page.getByText("J'ai une friche et je souhaite trouver l'usage le plus adapté."),
+    ).toBeVisible();
     await homePage.clickAnalyzeCompatibility();
 
     // Create account

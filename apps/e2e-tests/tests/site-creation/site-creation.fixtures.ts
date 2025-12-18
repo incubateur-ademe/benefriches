@@ -1,5 +1,5 @@
-import { test as authTest } from "./auth.fixtures";
-import { SiteCreationPage } from "../pages/SiteCreationPage";
+import { test as authTest } from "../../fixtures/auth.fixtures";
+import { SiteCreationPage } from "../../pages/SiteCreationPage";
 
 type SiteCreationFixtures = {
   siteCreationPage: SiteCreationPage;

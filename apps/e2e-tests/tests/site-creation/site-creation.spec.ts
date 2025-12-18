@@ -1,4 +1,4 @@
-import { test } from "../fixtures/site-creation.fixtures";
+import { test } from "./site-creation.fixtures";
 
 test.describe("Site creation (express mode)", () => {
   test("allows authenticated user to create a friche site via express mode", async ({

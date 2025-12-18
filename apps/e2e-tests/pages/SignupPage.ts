@@ -1,6 +1,5 @@
 import { expect, type Page } from "@playwright/test";
-
-import type { TestUser } from "../fixtures/onboarding.fixtures";
+import { TestUser } from "../fixtures/auth.fixtures";
 
 type SignupOptions = {
   withNewsletterSubscription?: boolean;

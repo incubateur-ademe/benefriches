@@ -1,25 +1,22 @@
+/**
+ * Onboarding test fixtures.
+ * Note: testUser here is NOT pre-registered - it's used for new account creation.
+ */
+
 import { test as base } from "@playwright/test";
+import { createTestUserData, TestUser } from "../../fixtures/auth.fixtures";
+import { SignupPage } from "../../pages/SignupPage";
+import { HomePage } from "../../pages/HomePage";
+import { AccessBenefrichesPage } from "../../pages/AccessBenefrichesPage";
 
-import { HomePage } from "../pages/HomePage";
-import { AccessBenefrichesPage } from "../pages/AccessBenefrichesPage";
-import { SignupPage } from "../pages/SignupPage";
-
-export type TestUser = {
-  email: string;
-  firstName: string;
-  lastName: string;
-  structureType: string;
-  structureName: string;
-};
-
-type Fixtures = {
+type OnboardingFixtures = {
   testUser: TestUser;
   homePage: HomePage;
   accessBenefrichesPage: AccessBenefrichesPage;
   signupPage: SignupPage;
 };
 
-export const test = base.extend<Fixtures>({
+export const test = base.extend<OnboardingFixtures>({
   homePage: async ({ page }, use) => {
     const homePage = new HomePage(page);
     await use(homePage);
@@ -32,16 +29,13 @@ export const test = base.extend<Fixtures>({
     const signupPage = new SignupPage(page);
     await use(signupPage);
   },
+
   // @ts-expect-error Playwright requires destructuring even if 'page' is unused
   // oxlint-disable-next-line no-unused-vars
   testUser: async ({ page }, use) => {
-    const user: TestUser = {
-      email: `e2e-test-user-${Date.now()}@mail.com`,
-      firstName: "Jean",
-      lastName: "Doe",
-      structureType: "other",
-      structureName: "ADEME",
-    };
+    // Create user data only - not registered via API
+    // The onboarding tests will register the user through the UI
+    const user = createTestUserData("onboarding");
     await use(user);
   },
 });

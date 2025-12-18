@@ -1,5 +1,6 @@
-import { test, expect } from "../fixtures/onboarding.fixtures";
-import { HomePage } from "../pages/HomePage";
+import { test, expect } from "@playwright/test";
+
+import { HomePage } from "../../pages/HomePage";
 
 test.describe("Homepage", () => {
   test("displays the correct title", async ({ page }) => {
