@@ -14,7 +14,7 @@ import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 import { useProjectForm } from "../../useProjectForm";
 import StakeholderForm, { FormValues } from "./StakeholderForm";
 
-const DEFAULT_UNKNOWN_NAME = "Aménageur";
+const DEFAULT_UNKNOWN_NAME = "Aménageur inconnu";
 
 const convertFormValuesForStore = (
   data: FormValues,
