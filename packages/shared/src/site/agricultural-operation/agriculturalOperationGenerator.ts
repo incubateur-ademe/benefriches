@@ -71,9 +71,7 @@ type AgriculturalOperationGenerationProps = SiteGenerationProps & {
   operationActivity: AgriculturalOperationActivity;
 };
 
-export class AgriculturalOperationGenerator
-  implements SiteGenerator<AgriculturalOperationGenerationProps>
-{
+export class AgriculturalOperationGenerator implements SiteGenerator<AgriculturalOperationGenerationProps> {
   fromSurfaceAreaAndLocalInformation(
     props: AgriculturalOperationGenerationProps,
   ): AgriculturalOrNaturalSite {
