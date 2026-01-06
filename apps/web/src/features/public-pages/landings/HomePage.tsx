@@ -1,6 +1,6 @@
 import DataSourcesSection from "./sections/DataSourcesSection";
 import FaqSection from "./sections/FaqSection";
-import GetNotifiedSection from "./sections/GetNotifiedSection";
+import NewsletterSection from "./sections/NewsletterSection";
 import PreserveSoilsSection from "./sections/PreserveSoilsSection";
 import TestimoniesSection from "./sections/TestimoniesSection";
 import UrbanPlanningProfessionsSection from "./sections/UrbanPlanningProfessionsSection";
@@ -21,7 +21,7 @@ function HomePage() {
       <TestimoniesSection />
       <PreserveSoilsSection />
       <FaqSection />
-      <GetNotifiedSection />
+      <NewsletterSection />
     </>
   );
 }

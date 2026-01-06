@@ -78,7 +78,7 @@ export default function MentionsLegalesPage() {
       <h3>1.5. Attribution tierce</h3>
 
       <p>
-        Le formulaire "Être tenu informé" est hébergé par{" "}
+        Le formulaire "Contactez l'équipe Bénéfriches" est hébergé par{" "}
         <ExternalLink href="https://tally.so">Tally</ExternalLink>.
       </p>
 

@@ -1,6 +1,6 @@
 import Button from "@codegouvfr/react-dsfr/Button";
 
-export default function GetNotifiedSection() {
+export default function NewsletterSection() {
   return (
     <section className="bg-blue-light py-20">
       <div className="fr-container">
@@ -10,17 +10,20 @@ export default function GetNotifiedSection() {
             <h2 className="dark:text-grey-dark">
               Bénéfriches, un produit de l'ADEME qui évolue chaque jour
             </h2>
-            <p className="dark:text-grey-dark">
+            <p className="dark:text-grey-dark font-medium">
               Soyez informé·e de la sortie des prochaines fonctionnalités de l'outil !
             </p>
           </div>
           <Button
             priority="primary"
-            data-tally-open="npKkaE"
-            data-tally-width="450"
+            linkProps={{
+              href: "https://cloud.contact.ademe.fr/benefriches",
+              target: "_blank",
+              rel: "noopener noreferrer",
+            }}
             className="whitespace-nowrap"
           >
-            Être tenu informé·e
+            S'abonner à la newsletter
           </Button>
         </div>
       </div>

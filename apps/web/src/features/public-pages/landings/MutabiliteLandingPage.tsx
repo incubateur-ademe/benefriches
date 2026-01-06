@@ -1,5 +1,5 @@
 import FaqSection from "./sections/FaqSection";
-import GetNotifiedSection from "./sections/GetNotifiedSection";
+import NewsletterSection from "./sections/NewsletterSection";
 import PreserveSoilsSection from "./sections/PreserveSoilsSection";
 import SectionTitle from "./sections/SectionTitle";
 import MutafrichesLandingHeroSection from "./sections/hero-section/MutafrichesLandingHeroSection";
@@ -16,7 +16,7 @@ function MutabiliteLandingPage() {
       </HowItWorksSectionWrapper>
       <PreserveSoilsSection />
       <FaqSection />
-      <GetNotifiedSection />
+      <NewsletterSection />
     </>
   );
 }

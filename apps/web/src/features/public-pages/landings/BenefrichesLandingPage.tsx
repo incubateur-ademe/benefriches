@@ -1,6 +1,6 @@
 import DataSourcesSection from "./sections/DataSourcesSection";
 import FaqSection from "./sections/FaqSection";
-import GetNotifiedSection from "./sections/GetNotifiedSection";
+import NewsletterSection from "./sections/NewsletterSection";
 import PreserveSoilsSection from "./sections/PreserveSoilsSection";
 import SectionTitle from "./sections/SectionTitle";
 import TestimoniesSection from "./sections/TestimoniesSection";
@@ -25,7 +25,7 @@ function BenefrichesLandingPage() {
       <TestimoniesSection />
       <PreserveSoilsSection />
       <FaqSection />
-      <GetNotifiedSection />
+      <NewsletterSection />
     </>
   );
 }
