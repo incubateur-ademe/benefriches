@@ -13,8 +13,10 @@ export interface SuccessResult<TData = void, TIssues = undefined> extends BaseRe
 /**
  * Failure result branch - only allows failure operations
  */
-export interface FailureResult<TError extends string = string, TIssues = undefined>
-  extends BaseResult {
+export interface FailureResult<
+  TError extends string = string,
+  TIssues = undefined,
+> extends BaseResult {
   readonly _isSuccess: false;
   readonly _reason: TError;
   readonly _issues?: TIssues;

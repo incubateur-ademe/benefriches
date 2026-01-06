@@ -32,9 +32,10 @@ type GetUserReconversionProjectsBySiteResult = TResult<
   "UserIdRequired"
 >;
 
-export class GetUserReconversionProjectsBySiteUseCase
-  implements UseCase<Request, GetUserReconversionProjectsBySiteResult>
-{
+export class GetUserReconversionProjectsBySiteUseCase implements UseCase<
+  Request,
+  GetUserReconversionProjectsBySiteResult
+> {
   constructor(private readonly reconversionProjectsQuery: ReconversionProjectsListQuery) {}
 
   async execute({ userId }: Request): Promise<GetUserReconversionProjectsBySiteResult> {

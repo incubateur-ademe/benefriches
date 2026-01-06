@@ -68,9 +68,7 @@ const SiteResaleRevenueForm = lazy(
 );
 const YearlyProjectedRevenueForm = lazy(
   () =>
-    import(
-      "@/shared/views/project-form/urban-project/revenues/yearly-buildings-operations-revenues"
-    ),
+    import("@/shared/views/project-form/urban-project/revenues/yearly-buildings-operations-revenues"),
 );
 
 const ScheduleProjectionForm = lazy(
@@ -102,33 +100,25 @@ const GreenSpacesIntroduction = lazy(
 );
 const UrbanGreenSpacesDistribution = lazy(
   () =>
-    import(
-      "@/shared/views/project-form/urban-project/spaces/green-spaces/surface-area-distribution"
-    ),
+    import("@/shared/views/project-form/urban-project/spaces/green-spaces/surface-area-distribution"),
 );
 const UrbanProjectSpacesIntroduction = lazy(
   () => import("@/shared/views/project-form/urban-project/spaces/introduction"),
 );
 const LivingAndActivitySpacesIntroduction = lazy(
   () =>
-    import(
-      "@/shared/views/project-form/urban-project/spaces/living-and-activity-spaces/introduction"
-    ),
+    import("@/shared/views/project-form/urban-project/spaces/living-and-activity-spaces/introduction"),
 );
 const LivingAndActivitySpacesDistribution = lazy(
   () =>
-    import(
-      "@/shared/views/project-form/urban-project/spaces/living-and-activity-spaces/surface-area-distribution"
-    ),
+    import("@/shared/views/project-form/urban-project/spaces/living-and-activity-spaces/surface-area-distribution"),
 );
 const PublicSpacesIntroduction = lazy(
   () => import("@/shared/views/project-form/urban-project/spaces/public-spaces/introduction"),
 );
 const PublicSpacesDistribution = lazy(
   () =>
-    import(
-      "@/shared/views/project-form/urban-project/spaces/public-spaces/surface-area-distribution"
-    ),
+    import("@/shared/views/project-form/urban-project/spaces/public-spaces/surface-area-distribution"),
 );
 const SpacesCategoriesSelection = lazy(
   () => import("@/shared/views/project-form/urban-project/spaces/selection"),

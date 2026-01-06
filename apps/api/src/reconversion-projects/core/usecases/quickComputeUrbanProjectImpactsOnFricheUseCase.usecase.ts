@@ -39,9 +39,10 @@ type Request = {
 
 type QuickComputeUrbanProjectImpactsOnFricheResult = TResult<ComputedImpacts, never>;
 
-export class QuickComputeUrbanProjectImpactsOnFricheUseCase
-  implements UseCase<Request, QuickComputeUrbanProjectImpactsOnFricheResult>
-{
+export class QuickComputeUrbanProjectImpactsOnFricheUseCase implements UseCase<
+  Request,
+  QuickComputeUrbanProjectImpactsOnFricheResult
+> {
   constructor(
     private readonly cityStatsQuery: CityStatsProvider,
     private readonly siteGenerationService: SiteGenerationService,

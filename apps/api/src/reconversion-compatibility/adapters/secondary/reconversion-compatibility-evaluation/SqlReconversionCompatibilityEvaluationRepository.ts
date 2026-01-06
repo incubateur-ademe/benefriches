@@ -19,9 +19,7 @@ const mapToEntity = (
 });
 
 @Injectable()
-export class SqlReconversionCompatibilityEvaluationRepository
-  implements ReconversionCompatibilityEvaluationRepository
-{
+export class SqlReconversionCompatibilityEvaluationRepository implements ReconversionCompatibilityEvaluationRepository {
   constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}
 
   async existsWithId(id: string): Promise<boolean> {

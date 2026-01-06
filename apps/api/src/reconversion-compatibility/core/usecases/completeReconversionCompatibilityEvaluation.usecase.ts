@@ -21,9 +21,10 @@ type CompleteReconversionCompatibilityEvaluationResult = TResult<
   "EvaluationNotFound" | "EvaluationCannotBeCompleted"
 >;
 
-export class CompleteReconversionCompatibilityEvaluationUseCase
-  implements UseCase<Request, CompleteReconversionCompatibilityEvaluationResult>
-{
+export class CompleteReconversionCompatibilityEvaluationUseCase implements UseCase<
+  Request,
+  CompleteReconversionCompatibilityEvaluationResult
+> {
   constructor(
     private readonly repository: ReconversionCompatibilityEvaluationRepository,
     private readonly dateProvider: DateProvider,

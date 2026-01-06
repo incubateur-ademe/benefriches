@@ -19,9 +19,7 @@ export type SaveExpressReconversionProjectPayload = {
   template: ReconversionProjectTemplate;
 };
 
-export default class HttpCreateExpressReconversionProjectService
-  implements CreateExpressReconversionProjectGateway
-{
+export default class HttpCreateExpressReconversionProjectService implements CreateExpressReconversionProjectGateway {
   async get(params: GetExpressReconversionProjectParams) {
     const queryString = objectToQueryParams(params);
 

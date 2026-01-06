@@ -34,9 +34,7 @@ export type MutafrichesEvaluationResultResponse = {
   };
 };
 
-export class HttpReconversionCompatibilityEvaluation
-  implements ReconversionCompatibilityEvaluationGateway
-{
+export class HttpReconversionCompatibilityEvaluation implements ReconversionCompatibilityEvaluationGateway {
   async startEvaluation(input: { evaluationId: string }): Promise<void> {
     await fetch("/api/reconversion-compatibility/start-evaluation", {
       method: "POST",

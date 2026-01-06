@@ -83,9 +83,10 @@ type ComputeReconversionProjectImpactsResult = TResult<
   "ReconversionProjectNotFound" | "SiteNotFound" | "NoDevelopmentPlanType"
 >;
 
-export class ComputeReconversionProjectImpactsUseCase
-  implements UseCase<Request, ComputeReconversionProjectImpactsResult>
-{
+export class ComputeReconversionProjectImpactsUseCase implements UseCase<
+  Request,
+  ComputeReconversionProjectImpactsResult
+> {
   constructor(
     private readonly reconversionProjectQuery: ReconversionProjectImpactsQuery,
     private readonly siteRepository: SiteImpactsQuery,

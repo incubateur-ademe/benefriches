@@ -23,9 +23,10 @@ type GetPhotovoltaicExpectedPerformanceResult = TResult<{
   };
 }>;
 
-export class GetPhotovoltaicExpectedPerformanceUseCase
-  implements UseCase<Request, GetPhotovoltaicExpectedPerformanceResult>
-{
+export class GetPhotovoltaicExpectedPerformanceUseCase implements UseCase<
+  Request,
+  GetPhotovoltaicExpectedPerformanceResult
+> {
   constructor(private readonly photovoltaicDataProvider: PhotovoltaicDataProvider) {}
 
   async execute({

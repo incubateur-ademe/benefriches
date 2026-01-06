@@ -25,9 +25,10 @@ type Request = {
 
 type GenerateAndSaveReconversionProjectFromTemplateResult = TResult<void, "SiteNotFound">;
 
-export class GenerateAndSaveReconversionProjectFromTemplateUseCase
-  implements UseCase<Request, GenerateAndSaveReconversionProjectFromTemplateResult>
-{
+export class GenerateAndSaveReconversionProjectFromTemplateUseCase implements UseCase<
+  Request,
+  GenerateAndSaveReconversionProjectFromTemplateResult
+> {
   constructor(
     private readonly generateReconversionProjectFromTemplateUseCase: GenerateReconversionProjectFromTemplateUseCase,
     private readonly reconversionProjectRepository: ReconversionProjectRepository,

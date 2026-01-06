@@ -4,9 +4,7 @@ import {
 } from "../../core/actions/expressProjectSavedGateway";
 import { SaveExpressReconversionProjectPayload } from "./HttpCreateExpressReconversionProjectService";
 
-export class InMemoryCreateExpressReconversionProjectService
-  implements CreateExpressReconversionProjectGateway
-{
+export class InMemoryCreateExpressReconversionProjectService implements CreateExpressReconversionProjectGateway {
   private _shouldFail = false;
   generatedProjects: ExpressReconversionProjectResult[] = [];
   savedProjects: SaveExpressReconversionProjectPayload[] = [];

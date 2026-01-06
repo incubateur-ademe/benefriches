@@ -18,9 +18,10 @@ type Request = {
 type StartReconversionCompatibilityEvaluationResult = TResult<void, "EvaluationAlreadyExists">;
 
 @Injectable()
-export class StartReconversionCompatibilityEvaluationUseCase
-  implements UseCase<Request, StartReconversionCompatibilityEvaluationResult>
-{
+export class StartReconversionCompatibilityEvaluationUseCase implements UseCase<
+  Request,
+  StartReconversionCompatibilityEvaluationResult
+> {
   constructor(
     private readonly repository: ReconversionCompatibilityEvaluationRepository,
     private readonly dateProvider: DateProvider,

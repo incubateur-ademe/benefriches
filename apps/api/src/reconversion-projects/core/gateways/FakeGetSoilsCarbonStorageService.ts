@@ -25,9 +25,7 @@ const CARBON_STORAGE = {
   WET_LAND: 3,
   WATER: 0,
 };
-export class FakeGetSoilsCarbonStorageService
-  implements GetCarbonStorageFromSoilDistributionService
-{
+export class FakeGetSoilsCarbonStorageService implements GetCarbonStorageFromSoilDistributionService {
   result: SoilsCarbonStorage | null = null;
   _isShouldFailOnExecute = false;
 

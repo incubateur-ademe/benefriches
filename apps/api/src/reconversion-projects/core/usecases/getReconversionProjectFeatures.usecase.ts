@@ -18,9 +18,10 @@ type GetReconversionProjectFeaturesResult = TResult<
   "ReconversionProjectIdRequired" | "ReconversionProjectNotFound"
 >;
 
-export class GetReconversionProjectFeaturesUseCase
-  implements UseCase<Request, GetReconversionProjectFeaturesResult>
-{
+export class GetReconversionProjectFeaturesUseCase implements UseCase<
+  Request,
+  GetReconversionProjectFeaturesResult
+> {
   constructor(private readonly reconversionProjectQuery: ReconversionProjectQueryGateway) {}
 
   async execute({ reconversionProjectId }: Request): Promise<GetReconversionProjectFeaturesResult> {

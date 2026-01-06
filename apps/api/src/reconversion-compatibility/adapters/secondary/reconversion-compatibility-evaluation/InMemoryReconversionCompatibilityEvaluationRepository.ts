@@ -1,9 +1,7 @@
 import { ReconversionCompatibilityEvaluationRepository } from "src/reconversion-compatibility/core/gateways/ReconversionCompatibilityEvaluationRepository";
 import { ReconversionCompatibilityEvaluation } from "src/reconversion-compatibility/core/reconversionCompatibilityEvaluation";
 
-export class InMemoryReconversionCompatibilityEvaluationRepository
-  implements ReconversionCompatibilityEvaluationRepository
-{
+export class InMemoryReconversionCompatibilityEvaluationRepository implements ReconversionCompatibilityEvaluationRepository {
   evaluations: ReconversionCompatibilityEvaluation[] = [];
 
   existsWithId(id: string): Promise<boolean> {

@@ -24,9 +24,10 @@ export type GetCityCarbonStoragePerSoilsCategoryResult = TResult<{
   }[];
 }>;
 
-export class GetCityCarbonStoragePerSoilsCategoryUseCase
-  implements UseCase<Request, GetCityCarbonStoragePerSoilsCategoryResult>
-{
+export class GetCityCarbonStoragePerSoilsCategoryUseCase implements UseCase<
+  Request,
+  GetCityCarbonStoragePerSoilsCategoryResult
+> {
   constructor(private readonly carbonStorageQuery: CarbonStorageQuery) {}
 
   async execute({

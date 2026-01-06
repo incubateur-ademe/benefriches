@@ -13,9 +13,10 @@ type Request = {
 
 type UpdateSiteActionStatusResult = TResult<void, "ActionNotFound">;
 
-export class UpdateSiteActionStatusUseCase
-  implements UseCase<Request, UpdateSiteActionStatusResult>
-{
+export class UpdateSiteActionStatusUseCase implements UseCase<
+  Request,
+  UpdateSiteActionStatusResult
+> {
   constructor(
     private readonly siteActionsRepository: SiteActionsRepository,
     private readonly siteActionsQuery: SiteActionsQuery,

@@ -82,9 +82,10 @@ const getCreationServiceClass = (
   }
 };
 
-export class GenerateReconversionProjectFromTemplateUseCase
-  implements UseCase<Request, GenerateReconversionProjectFromTemplateResult>
-{
+export class GenerateReconversionProjectFromTemplateUseCase implements UseCase<
+  Request,
+  GenerateReconversionProjectFromTemplateResult
+> {
   constructor(
     private readonly dateProvider: DateProvider,
     private readonly siteQuery: SiteQuery,

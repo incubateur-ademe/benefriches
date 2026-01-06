@@ -17,9 +17,10 @@ type AddRelatedSiteToReconversionCompatibilityEvaluationResult = TResult<
   "EvaluationNotFound" | "RelatedSiteAlreadyExists"
 >;
 
-export class AddRelatedSiteToReconversionCompatibilityEvaluationUseCase
-  implements UseCase<Request, AddRelatedSiteToReconversionCompatibilityEvaluationResult>
-{
+export class AddRelatedSiteToReconversionCompatibilityEvaluationUseCase implements UseCase<
+  Request,
+  AddRelatedSiteToReconversionCompatibilityEvaluationResult
+> {
   constructor(
     private readonly repository: ReconversionCompatibilityEvaluationRepository,
     private readonly uuidGenerator: UidGenerator,

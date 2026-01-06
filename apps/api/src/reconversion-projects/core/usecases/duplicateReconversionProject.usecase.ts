@@ -19,9 +19,10 @@ type DuplicateReconversionProjectResult = TResult<
   "SourceReconversionProjectNotFound" | "UserNotAuthorized"
 >;
 
-export class DuplicateReconversionProjectUseCase
-  implements UseCase<Request, DuplicateReconversionProjectResult>
-{
+export class DuplicateReconversionProjectUseCase implements UseCase<
+  Request,
+  DuplicateReconversionProjectResult
+> {
   constructor(
     private readonly repository: ReconversionProjectRepository,
     private readonly dateProvider: DateProvider,

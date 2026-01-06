@@ -3,9 +3,7 @@ import {
   UrbanSprawlImpactsComparisonObj,
 } from "../../application/project-impacts-urban-sprawl-comparison/fetchUrbanSprawlImpactsComparison.action";
 
-export class MockUrbanSprawlImpactsComparisonService
-  implements UrbanSprawlImpactsComparisonGateway
-{
+export class MockUrbanSprawlImpactsComparisonService implements UrbanSprawlImpactsComparisonGateway {
   data: UrbanSprawlImpactsComparisonObj | undefined = undefined;
 
   async getImpactsUrbanSprawlComparison(): Promise<UrbanSprawlImpactsComparisonObj> {

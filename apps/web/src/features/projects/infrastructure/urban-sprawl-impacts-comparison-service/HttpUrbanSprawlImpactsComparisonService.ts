@@ -11,9 +11,7 @@ type Props = {
   comparisonSiteNature: SiteNature;
 };
 
-export class HttpUrbanSprawlImpactsComparisonService
-  implements UrbanSprawlImpactsComparisonGateway
-{
+export class HttpUrbanSprawlImpactsComparisonService implements UrbanSprawlImpactsComparisonGateway {
   async getImpactsUrbanSprawlComparison({
     reconversionProjectId,
     evaluationPeriodInYears,

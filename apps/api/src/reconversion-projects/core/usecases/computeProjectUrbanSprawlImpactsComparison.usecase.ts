@@ -542,9 +542,10 @@ const computeUrbanSprawlComparisonImpacts = ({
   };
 };
 
-export class ComputeProjectUrbanSprawlImpactsComparisonUseCase
-  implements UseCase<Request, ComputeProjectUrbanSprawlImpactsComparisonResultDto>
-{
+export class ComputeProjectUrbanSprawlImpactsComparisonUseCase implements UseCase<
+  Request,
+  ComputeProjectUrbanSprawlImpactsComparisonResultDto
+> {
   constructor(
     private readonly reconversionProjectQuery: ReconversionProjectImpactsQuery,
     private readonly siteRepository: SiteImpactsQuery,

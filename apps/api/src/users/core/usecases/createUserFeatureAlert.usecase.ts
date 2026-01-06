@@ -108,9 +108,10 @@ const convertArrayOptionsToObject = (feature: Request["feature"]) => {
   }
 };
 
-export class CreateUserFeatureAlertUseCase
-  implements UseCase<Request, CreateUserFeatureAlertResult>
-{
+export class CreateUserFeatureAlertUseCase implements UseCase<
+  Request,
+  CreateUserFeatureAlertResult
+> {
   constructor(
     private readonly userFeatureAlertRepository: UserFeatureAlertRepository,
     private readonly dateProvider: IDateProvider,

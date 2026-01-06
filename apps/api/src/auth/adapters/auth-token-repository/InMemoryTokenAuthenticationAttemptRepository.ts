@@ -4,9 +4,7 @@ import { TokenAuthenticationAttemptRepository } from "src/auth/core/gateways/Tok
 import { TokenAuthenticationAttempt } from "src/auth/core/tokenAuthenticationAttempt";
 
 @Injectable()
-export class InMemoryTokenAuthenticationAttemptRepository
-  implements TokenAuthenticationAttemptRepository
-{
+export class InMemoryTokenAuthenticationAttemptRepository implements TokenAuthenticationAttemptRepository {
   tokens: TokenAuthenticationAttempt[] = [];
 
   save(authToken: TokenAuthenticationAttempt): Promise<void> {

@@ -2,9 +2,7 @@ import { EvaluationCompletedPayload } from "../../core/actions/compatibilityEval
 import { ReconversionCompatibilityEvaluationResults } from "../../core/actions/compatibilityEvaluationResultsRequested.actions";
 import { ReconversionCompatibilityEvaluationGateway } from "../../core/actions/reconversionCompatibilityEvaluationGateway";
 
-export class InMemoryReconversionCompatibilityEvaluationService
-  implements ReconversionCompatibilityEvaluationGateway
-{
+export class InMemoryReconversionCompatibilityEvaluationService implements ReconversionCompatibilityEvaluationGateway {
   _startedEvaluations: { evaluationId: string }[] = [];
   _completedEvaluations: EvaluationCompletedPayload[] = [];
   _evaluationResults: Map<string, ReconversionCompatibilityEvaluationResults> = new Map();

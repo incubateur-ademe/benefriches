@@ -67,9 +67,7 @@ const AvoidedTrafficAccidentsMinorInjuriesMonetaryValueDescription = lazy(
 );
 const AvoidedTrafficAccidentsSevereInjuriesMonetaryValueDescription = lazy(
   () =>
-    import(
-      "./avoided-traffic-accidents-monetary-value/AvoidedTrafficAccidentsSevereInjuriesDescription"
-    ),
+    import("./avoided-traffic-accidents-monetary-value/AvoidedTrafficAccidentsSevereInjuriesDescription"),
 );
 const EcosystemServicesDescription = lazy(
   () => import("./ecosystem-services/EcosystemServicesDescription"),

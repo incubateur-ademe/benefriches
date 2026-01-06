@@ -17,9 +17,10 @@ type GetReconversionProjectResult = TResult<
   { fieldErrors: Record<string, string[]> } | undefined
 >;
 
-export class GetReconversionProjectUseCase
-  implements UseCase<Request, GetReconversionProjectResult>
-{
+export class GetReconversionProjectUseCase implements UseCase<
+  Request,
+  GetReconversionProjectResult
+> {
   constructor(
     private readonly reconversionProjectRepository: ReconversionProjectRepository,
     private readonly siteQuery: SitesQuery,

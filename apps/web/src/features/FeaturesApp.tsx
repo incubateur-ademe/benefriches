@@ -26,9 +26,7 @@ const UrbanSprawlImpactsComparisonPage = lazy(
 );
 const EvaluateReconversionCompatibilityPage = lazy(
   () =>
-    import(
-      "@/features/reconversion-compatibility/views/evaluation/EvaluateReconversionCompatibilityPage"
-    ),
+    import("@/features/reconversion-compatibility/views/evaluation/EvaluateReconversionCompatibilityPage"),
 );
 const ReconversionCompatibilityResultsPage = lazy(
   () => import("@/features/reconversion-compatibility/views/results"),
@@ -39,9 +37,7 @@ const ProjectImpactsOnboardingPage = lazy(
 );
 const ProjectCreationOnboardingPage = lazy(
   () =>
-    import(
-      "@/features/create-project/views/onboarding-from-compatibility-evaluation/ProjectCreationFromCompatibilityEvaluationOnboarding"
-    ),
+    import("@/features/create-project/views/onboarding-from-compatibility-evaluation/ProjectCreationFromCompatibilityEvaluationOnboarding"),
 );
 
 const formsLayoutGroup = createGroup([

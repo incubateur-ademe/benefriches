@@ -46,7 +46,7 @@ export const ReadStateHelper = {
 
     return Boolean(
       livingAndActivitySpacesDistribution?.BUILDINGS &&
-        livingAndActivitySpacesDistribution.BUILDINGS > 0,
+      livingAndActivitySpacesDistribution.BUILDINGS > 0,
     );
   },
 

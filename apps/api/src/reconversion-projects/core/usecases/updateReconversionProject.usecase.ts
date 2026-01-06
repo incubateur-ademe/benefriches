@@ -20,9 +20,10 @@ type UpdateReconversionProjectResult = TResult<
   { fieldErrors: Record<string, string[]> } | undefined
 >;
 
-export class UpdateReconversionProjectUseCase
-  implements UseCase<Request, UpdateReconversionProjectResult>
-{
+export class UpdateReconversionProjectUseCase implements UseCase<
+  Request,
+  UpdateReconversionProjectResult
+> {
   constructor(
     private readonly dateProvider: DateProvider,
     private readonly reconversionProjectRepository: ReconversionProjectRepository,
