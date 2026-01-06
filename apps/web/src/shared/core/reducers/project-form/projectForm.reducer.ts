@@ -86,10 +86,7 @@ export const getProjectFormInitialState = <
   };
 };
 
-export const addProjectFormCasesToBuilder = <
-  T extends UrbanProjectCreationStep,
-  S extends ProjectFormState<T>,
->(
+export const addProjectFormCasesToBuilder = <S extends ProjectFormState>(
   builder: ActionReducerMapBuilder<S>,
   actions: ProjectFormReducerActions,
 ) => {

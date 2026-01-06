@@ -10,6 +10,14 @@ trustPolicyExclude:
   # this version was published manually by the maintainer
   # see https://github.com/paulmillr/chokidar/issues/1440 
   - chokidar@4.0.3
+  # react-redux has not been updated for a long time
+  # see https://github.com/reduxjs/redux-toolkit/issues/5095
+  - react-redux@9.2.0
+  # reselect has not been updated for a long time, it should be fixed with next published version
+  # see https://github.com/reduxjs/reselect/issues/752 and https://github.com/reduxjs/redux-toolkit/issues/5095
+  - reselect@5.1.1
+  # semver 6.x is not signed, https://www.npmjs.com/package/semver?activeTab=versions
+  - semver@6.3.1
 
 
 onlyBuiltDependencies:
