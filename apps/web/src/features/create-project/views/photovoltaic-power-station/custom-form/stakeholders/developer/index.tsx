@@ -1,4 +1,4 @@
-import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
+import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
 import { ProjectStakeholderStructure } from "@/features/create-project/core/project.types";
 import { completeProjectDeveloper } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
 import {
@@ -21,7 +21,7 @@ function DeveloperFormContainer() {
   };
 
   const onBack = () => {
-    dispatch(stepRevertAttempted());
+    dispatch(stepReverted());
   };
 
   return (

@@ -1,4 +1,4 @@
-import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
+import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
 import { ProjectStakeholderStructure } from "@/features/create-project/core/project.types";
 import { completeFutureSiteOwner } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
 import {
@@ -20,7 +20,7 @@ function FutureOwnerFormContainer() {
   };
 
   const onBack = () => {
-    dispatch(stepRevertAttempted());
+    dispatch(stepReverted());
   };
 
   return (

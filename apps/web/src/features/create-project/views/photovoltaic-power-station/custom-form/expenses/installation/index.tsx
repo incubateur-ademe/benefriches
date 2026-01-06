@@ -1,6 +1,6 @@
 import { PhotovoltaicInstallationExpense, typedObjectEntries } from "shared";
 
-import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
+import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
 import { completePhotovoltaicPanelsInstallationExpenses } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
 import { selectPhotovoltaicPowerStationInstallationExpensesInitialValues } from "@/features/create-project/core/renewable-energy/selectors/expenses.selectors";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
@@ -59,7 +59,7 @@ function PhotovoltaicPanelsInstallationExpensesFormContainer() {
         dispatch(completePhotovoltaicPanelsInstallationExpenses(expenses));
       }}
       onBack={() => {
-        dispatch(stepRevertAttempted());
+        dispatch(stepReverted());
       }}
     />
   );

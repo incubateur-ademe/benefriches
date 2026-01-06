@@ -1,6 +1,6 @@
 import { RecurringExpense } from "shared";
 
-import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
+import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
 import { completeYearlyProjectedExpenses } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
 import { selectPhotovoltaicPowerStationYearlyExpensesInitialValues } from "@/features/create-project/core/renewable-energy/selectors/expenses.selectors";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
@@ -38,7 +38,7 @@ function YearlyProjectedExpensesFormContainer() {
         dispatch(completeYearlyProjectedExpenses(expenses));
       }}
       onBack={() => {
-        dispatch(stepRevertAttempted());
+        dispatch(stepReverted());
       }}
     />
   );

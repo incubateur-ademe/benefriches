@@ -1,4 +1,4 @@
-import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
+import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
 import { ProjectStakeholder } from "@/features/create-project/core/project.types";
 import { futureOperatorCompleted } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
 import { selectCreationData } from "@/features/create-project/core/renewable-energy/selectors/renewableEnergy.selector";
@@ -43,7 +43,7 @@ function FutureOperatorFormContainer() {
   };
 
   const onBack = () => {
-    dispatch(stepRevertAttempted());
+    dispatch(stepReverted());
   };
 
   return (

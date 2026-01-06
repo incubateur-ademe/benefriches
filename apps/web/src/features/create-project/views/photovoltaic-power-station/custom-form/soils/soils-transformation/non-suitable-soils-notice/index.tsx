@@ -1,4 +1,4 @@
-import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
+import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
 import { completeNonSuitableSoilsNoticeStep } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
 import { selectPhotovoltaicPanelsSurfaceArea } from "@/features/create-project/core/renewable-energy/selectors/photovoltaicPowerStation.selectors";
 import { selectSuitableSurfaceAreaForPhotovoltaicPanels } from "@/features/create-project/core/renewable-energy/selectors/soilsTransformation.selectors";
@@ -16,7 +16,7 @@ function NonSuitableSoilsNoticeContainer() {
       photovoltaicPanelsSurfaceAre={photovoltaicPanelsSurfaceAre}
       suitableSurfaceArea={suitableSurfaceArea}
       onNext={() => dispatch(completeNonSuitableSoilsNoticeStep())}
-      onBack={() => dispatch(stepRevertAttempted())}
+      onBack={() => dispatch(stepReverted())}
     />
   );
 }

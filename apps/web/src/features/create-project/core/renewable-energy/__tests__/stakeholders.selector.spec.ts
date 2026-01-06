@@ -52,7 +52,6 @@ const MOCK_STATES = {
     siteData,
     siteDataLoadingState: "success",
     siteRelatedLocalAuthorities: { loadingState: "idle" },
-    stepRevertAttempted: false,
     renewableEnergyProject: {
       expressData: { loadingState: "idle" },
       createMode: "custom",

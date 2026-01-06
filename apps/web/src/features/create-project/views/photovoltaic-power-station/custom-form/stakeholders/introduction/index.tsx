@@ -1,4 +1,4 @@
-import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
+import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
 import { completeStakeholdersIntroductionStep } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 import ProjectStakeholdersIntroduction from "@/shared/views/project-form/common/stakeholder-introduction/StakeholdersIntroduction";
@@ -9,7 +9,7 @@ function ProjectStakeholdersIntroductionContainer() {
   return (
     <ProjectStakeholdersIntroduction
       onNext={() => dispatch(completeStakeholdersIntroductionStep())}
-      onBack={() => dispatch(stepRevertAttempted())}
+      onBack={() => dispatch(stepReverted())}
     />
   );
 }

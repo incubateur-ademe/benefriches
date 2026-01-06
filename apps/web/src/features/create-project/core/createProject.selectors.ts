@@ -1,7 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { DevelopmentPlanCategory, getDefaultScheduleForProject, ProjectSchedule } from "shared";
 
-import { selectAppSettings } from "@/features/app-settings/core/appSettings";
 import { createProjectFormSelectors } from "@/shared/core/reducers/project-form/projectForm.selectors";
 import { RootState } from "@/shared/core/store-config/store";
 
@@ -47,14 +46,6 @@ export const selectDefaultSchedule = createSelector(
   selectIsSiteFriche,
   (isFriche): ProjectSchedule => {
     return getDefaultScheduleForProject({ now: () => new Date() })({ hasReinstatement: isFriche });
-  },
-);
-
-export const selectShouldConfirmStepRevert = createSelector(
-  selectSelf,
-  selectAppSettings,
-  (projecCreation, appSettings) => {
-    return appSettings.askForConfirmationOnStepRevert && projecCreation.stepRevertAttempted;
   },
 );
 

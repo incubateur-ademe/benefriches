@@ -1,5 +1,5 @@
 import { agriculturalOperationActivityCompleted } from "@/features/create-site/core/actions/introduction.actions";
-import { stepRevertAttempted } from "@/features/create-site/core/actions/revert.actions";
+import { stepReverted } from "@/features/create-site/core/actions/revert.action";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import AgriculturalOperationActivityForm, { FormValues } from "./AgriculturalOperationActivityForm";
@@ -17,7 +17,7 @@ export default function AgriculturalOperationActivityFormContainer() {
         dispatch(agriculturalOperationActivityCompleted(data));
       }}
       onBack={() => {
-        dispatch(stepRevertAttempted());
+        dispatch(stepReverted());
       }}
     />
   );

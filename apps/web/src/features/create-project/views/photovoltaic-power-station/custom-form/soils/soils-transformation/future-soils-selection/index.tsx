@@ -1,4 +1,4 @@
-import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
+import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
 import { completeCustomSoilsSelectionStep } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
 import { selectFutureSoilsSelectionViewData } from "@/features/create-project/core/renewable-energy/selectors/soilsTransformation.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
@@ -20,7 +20,7 @@ function FutureSoilsSelectionFormContainer() {
         dispatch(completeCustomSoilsSelectionStep(data.soils));
       }}
       onBack={() => {
-        dispatch(stepRevertAttempted());
+        dispatch(stepReverted());
       }}
     />
   );

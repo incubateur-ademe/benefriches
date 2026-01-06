@@ -2,7 +2,7 @@ import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks
 import { routes } from "@/shared/views/router";
 
 import { useMutabilityCompleted } from "../../core/actions/introduction.actions";
-import { stepRevertAttempted } from "../../core/actions/revert.actions";
+import { stepReverted } from "../../core/actions/revert.action";
 import UseMutabilityForm from "./UseMutabilityForm";
 
 function UseMutabilityFormContainer() {
@@ -19,7 +19,7 @@ function UseMutabilityFormContainer() {
           return;
         }
       }}
-      onBack={() => dispatch(stepRevertAttempted())}
+      onBack={() => dispatch(stepReverted())}
     />
   );
 }

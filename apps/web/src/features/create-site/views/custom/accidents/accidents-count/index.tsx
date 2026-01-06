@@ -1,4 +1,4 @@
-import { stepRevertAttempted } from "@/features/create-site/core/actions/revert.actions";
+import { stepReverted } from "@/features/create-site/core/actions/revert.action";
 import { fricheAccidentsStepCompleted } from "@/features/create-site/core/actions/soilsContaminationAndAccidents.actions";
 import { selectSiteAccidentsData } from "@/features/create-site/core/selectors/createSite.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
@@ -39,7 +39,7 @@ function FricheAccidentsFormContainer() {
         );
       }}
       onBack={() => {
-        dispatch(stepRevertAttempted());
+        dispatch(stepReverted());
       }}
     />
   );

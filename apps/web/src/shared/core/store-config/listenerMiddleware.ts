@@ -7,7 +7,6 @@ import {
 
 import { setupAppSettingsListeners } from "@/features/app-settings/core/appSettingsListeners";
 import { setupProjectCreationListeners } from "@/features/create-project/core/listeners/projectCreationListeners";
-import { setupSiteCreationListeners } from "@/features/create-site/core/listeners/siteCreationListeners";
 
 import { rootReducer } from "./rootReducer";
 import { AppDependencies, AppDispatch, RootState } from "./store";
@@ -28,6 +27,5 @@ export type AppStartListening = TypedStartListening<RootState, AppDispatch, AppD
 
 export function setupAllListeners(startAppListening: AppStartListening) {
   setupAppSettingsListeners(startAppListening);
-  setupSiteCreationListeners(startAppListening);
   setupProjectCreationListeners(startAppListening);
 }

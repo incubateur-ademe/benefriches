@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
+import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
 import { fetchPhotovoltaicExpectedAnnulPowerPerformanceForLocation } from "@/features/create-project/core/renewable-energy/actions/getPhotovoltaicExpectedPerformance.action";
 import { completePhotovoltaicExpectedAnnualProduction } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
@@ -31,7 +31,7 @@ function PhotovoltaicExpectedAnnualProductionContainer() {
           completePhotovoltaicExpectedAnnualProduction(data.photovoltaicExpectedAnnualProduction),
         );
       }}
-      onBack={() => dispatch(stepRevertAttempted())}
+      onBack={() => dispatch(stepReverted())}
     />
   );
 }

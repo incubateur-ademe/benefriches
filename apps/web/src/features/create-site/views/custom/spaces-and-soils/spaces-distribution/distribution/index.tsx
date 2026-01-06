@@ -1,6 +1,6 @@
 import { createSoilSurfaceAreaDistribution } from "shared";
 
-import { stepRevertAttempted } from "@/features/create-site/core/actions/revert.actions";
+import { stepReverted } from "@/features/create-site/core/actions/revert.action";
 import { soilsDistributionStepCompleted } from "@/features/create-site/core/actions/spaces.actions";
 import { selectSiteSoilsDistributionViewData } from "@/features/create-site/core/selectors/spaces.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
@@ -22,7 +22,7 @@ export default function SiteSpacesDistributionContainer() {
   };
 
   const onBack = () => {
-    dispatch(stepRevertAttempted());
+    dispatch(stepReverted());
   };
 
   return (

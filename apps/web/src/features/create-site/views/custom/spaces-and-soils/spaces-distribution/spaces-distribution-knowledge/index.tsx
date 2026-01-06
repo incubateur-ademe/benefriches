@@ -1,4 +1,4 @@
-import { stepRevertAttempted } from "@/features/create-site/core/actions/revert.actions";
+import { stepReverted } from "@/features/create-site/core/actions/revert.action";
 import { spacesSurfaceAreaDistributionKnowledgeCompleted } from "@/features/create-site/core/actions/spaces.actions";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
@@ -19,7 +19,7 @@ function SiteSpacesDistributionKnowledgeFormContainer() {
   };
 
   const onBack = () => {
-    dispatch(stepRevertAttempted());
+    dispatch(stepReverted());
   };
 
   return (

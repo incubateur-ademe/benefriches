@@ -1,4 +1,4 @@
-import { stepRevertAttempted } from "../../actions/revert.actions";
+import { stepReverted } from "../../actions/revert.action";
 import {
   siteSurfaceAreaStepCompleted,
   soilsCarbonStorageStepCompleted,
@@ -57,7 +57,7 @@ describe("Site creation: spaces steps", () => {
               .build();
             const initialRootState = store.getState();
 
-            store.dispatch(stepRevertAttempted());
+            store.dispatch(stepReverted());
 
             const newState = store.getState();
             expectSiteDataDiff(initialRootState, newState, { surfaceArea: undefined });
@@ -156,7 +156,7 @@ describe("Site creation: spaces steps", () => {
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(stepRevertAttempted());
+        store.dispatch(stepReverted());
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, { soils: [], soilsDistribution: undefined });
@@ -205,7 +205,7 @@ describe("Site creation: spaces steps", () => {
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(stepRevertAttempted());
+        store.dispatch(stepReverted());
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, { soils: [] });
@@ -280,7 +280,7 @@ describe("Site creation: spaces steps", () => {
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(stepRevertAttempted());
+        store.dispatch(stepReverted());
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, {
@@ -330,7 +330,7 @@ describe("Site creation: spaces steps", () => {
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(stepRevertAttempted());
+        store.dispatch(stepReverted());
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, { soilsDistribution: undefined });

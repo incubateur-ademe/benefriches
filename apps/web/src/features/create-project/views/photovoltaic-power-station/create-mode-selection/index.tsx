@@ -1,4 +1,4 @@
-import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
+import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
 import { expressPhotovoltaicProjectCreated } from "@/features/create-project/core/renewable-energy/actions/expressProjectSaved.action";
 import { customCreateModeSelected } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
@@ -39,7 +39,7 @@ export default function CreateModeSelectionFormContainer() {
   };
 
   const onBack = () => {
-    dispatch(stepRevertAttempted());
+    dispatch(stepReverted());
   };
 
   return <CreateModeSelectionForm onSubmit={onSubmit} onBack={onBack} options={options} />;

@@ -1,4 +1,4 @@
-import { stepRevertAttempted } from "@/features/create-site/core/actions/revert.actions";
+import { stepReverted } from "@/features/create-site/core/actions/revert.action";
 import { soilsIntroductionStepCompleted } from "@/features/create-site/core/actions/spaces.actions";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
@@ -13,7 +13,7 @@ function SiteSpacesIntroductionContainer() {
       siteNature={siteNature}
       onNext={() => dispatch(soilsIntroductionStepCompleted())}
       onBack={() => {
-        dispatch(stepRevertAttempted());
+        dispatch(stepReverted());
       }}
     />
   );

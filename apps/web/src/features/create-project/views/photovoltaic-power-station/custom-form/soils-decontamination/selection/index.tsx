@@ -1,4 +1,4 @@
-import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
+import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
 import { completeSoilsDecontaminationSelection } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import SoilsDecontaminationSelection, {
@@ -19,7 +19,7 @@ function SoilsDecontaminationSelectionContainer() {
       onSubmit={(data: FormValues) => {
         dispatch(completeSoilsDecontaminationSelection(data.decontaminationSelection ?? "unknown"));
       }}
-      onBack={() => dispatch(stepRevertAttempted())}
+      onBack={() => dispatch(stepReverted())}
     />
   );
 }

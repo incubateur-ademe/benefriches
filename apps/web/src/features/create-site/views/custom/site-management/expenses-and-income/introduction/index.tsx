@@ -1,4 +1,4 @@
-import { stepRevertAttempted } from "@/features/create-site/core/actions/revert.actions";
+import { stepReverted } from "@/features/create-site/core/actions/revert.action";
 import { yearlyExpensesAndIncomeIntroductionCompleted } from "@/features/create-site/core/actions/siteManagement.actions";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
@@ -12,7 +12,7 @@ function SiteExpensesAndIncomeIntroductionContainer() {
     <SiteExpensesAndIncomeIntroduction
       siteNature={siteNature}
       onNext={() => dispatch(yearlyExpensesAndIncomeIntroductionCompleted())}
-      onBack={() => dispatch(stepRevertAttempted())}
+      onBack={() => dispatch(stepReverted())}
     />
   );
 }

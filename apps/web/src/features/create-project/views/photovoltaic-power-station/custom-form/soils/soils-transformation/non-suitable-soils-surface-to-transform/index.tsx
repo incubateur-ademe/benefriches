@@ -1,4 +1,4 @@
-import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
+import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
 import { completeNonSuitableSoilsSurfaceStep } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
 import { selectNonSuitableSoilsSurfaceAreaToTransformViewData } from "@/features/create-project/core/renewable-energy/selectors/soilsTransformation.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
@@ -20,7 +20,7 @@ function NonSuitableSoilsSurfaceFormContainer() {
         dispatch(completeNonSuitableSoilsSurfaceStep(data.soilsTransformation));
       }}
       onBack={() => {
-        dispatch(stepRevertAttempted());
+        dispatch(stepReverted());
       }}
     />
   );

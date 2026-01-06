@@ -1,4 +1,4 @@
-import { stepRevertAttempted } from "@/features/create-site/core/actions/revert.actions";
+import { stepReverted } from "@/features/create-site/core/actions/revert.action";
 import { spacesKnowledgeStepCompleted } from "@/features/create-site/core/actions/spaces.actions";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
@@ -14,7 +14,7 @@ export default function SpacesKnowledgeFormContainer() {
         dispatch(spacesKnowledgeStepCompleted({ knowsSpaces: data.knowsSpaces === "yes" }));
       }}
       onBack={() => {
-        dispatch(stepRevertAttempted());
+        dispatch(stepReverted());
       }}
       siteNature={siteNature}
     />

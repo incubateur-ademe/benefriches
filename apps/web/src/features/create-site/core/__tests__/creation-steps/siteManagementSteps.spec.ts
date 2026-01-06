@@ -1,4 +1,4 @@
-import { stepRevertAttempted } from "../../actions/revert.actions";
+import { stepReverted } from "../../actions/revert.action";
 import {
   isFricheLeasedStepCompleted,
   isSiteOperatedStepCompleted,
@@ -88,7 +88,7 @@ describe("Site creation: site management steps", () => {
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(stepRevertAttempted());
+        store.dispatch(stepReverted());
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, { owner: undefined });
@@ -130,7 +130,7 @@ describe("Site creation: site management steps", () => {
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(stepRevertAttempted());
+        store.dispatch(stepReverted());
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, {
@@ -175,7 +175,7 @@ describe("Site creation: site management steps", () => {
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(stepRevertAttempted());
+        store.dispatch(stepReverted());
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, {
@@ -218,7 +218,7 @@ describe("Site creation: site management steps", () => {
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(stepRevertAttempted());
+        store.dispatch(stepReverted());
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, {
@@ -306,7 +306,7 @@ describe("Site creation: site management steps", () => {
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(stepRevertAttempted());
+        store.dispatch(stepReverted());
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, {
@@ -338,7 +338,7 @@ describe("Site creation: site management steps", () => {
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(stepRevertAttempted());
+        store.dispatch(stepReverted());
 
         const newState = store.getState();
         expectStepReverted(initialRootState, newState);
@@ -389,7 +389,7 @@ describe("Site creation: site management steps", () => {
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(stepRevertAttempted());
+        store.dispatch(stepReverted());
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, {
@@ -440,7 +440,7 @@ describe("Site creation: site management steps", () => {
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(stepRevertAttempted());
+        store.dispatch(stepReverted());
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, {

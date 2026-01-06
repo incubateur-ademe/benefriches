@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import { isFricheCompleted } from "../../core/actions/introduction.actions";
-import { stepRevertAttempted } from "../../core/actions/revert.actions";
+import { stepReverted } from "../../core/actions/revert.action";
 import IsFricheForm from "./IsFricheForm";
 
 const mapIsFricheValue = (isFriche: boolean | undefined) => {
@@ -19,7 +19,7 @@ function IsFricheFormContainer() {
       onSubmit={(data) => {
         dispatch(isFricheCompleted({ isFriche: data.isFriche === "yes" }));
       }}
-      onBack={() => dispatch(stepRevertAttempted())}
+      onBack={() => dispatch(stepReverted())}
     />
   );
 }

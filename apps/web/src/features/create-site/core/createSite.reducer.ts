@@ -28,11 +28,7 @@ import {
   useMutabilityCompleted,
 } from "./actions/introduction.actions";
 import { namingIntroductionStepCompleted, namingStepCompleted } from "./actions/naming.actions";
-import {
-  stepRevertAttempted,
-  stepRevertConfirmationResolved,
-  stepRevertConfirmed,
-} from "./actions/revert.actions";
+import { stepReverted } from "./actions/revert.action";
 import {
   isFricheLeasedStepCompleted,
   isSiteOperatedStepCompleted,
@@ -120,7 +116,6 @@ export type SiteCreationStep =
 export type SiteCreationState = {
   stepsHistory: SiteCreationStep[];
   siteData: SiteCreationData;
-  stepRevertAttempted: boolean;
   createMode?: "express" | "custom";
   useMutability?: boolean;
   skipUseMutability: boolean;
@@ -136,7 +131,6 @@ export const getInitialState = (props?: {
     stepsHistory: [props?.initialStep ?? "INTRODUCTION"],
     saveLoadingState: "idle",
     createMode: undefined,
-    stepRevertAttempted: false,
     skipUseMutability: props?.skipUseMutability ? props?.skipUseMutability : false,
     siteData: {
       id: uuid(),
@@ -419,7 +413,7 @@ const siteCreationReducer = createReducer(getInitialState(), (builder) => {
     .addCase(expressSiteSaved.rejected, (state) => {
       state.saveLoadingState = "error";
     })
-    .addCase(stepRevertConfirmed, (state) => {
+    .addCase(stepReverted, (state) => {
       switch (state.stepsHistory.at(-1)) {
         case "IS_FRICHE":
           state.siteData.isFriche = undefined;
@@ -497,12 +491,6 @@ const siteCreationReducer = createReducer(getInitialState(), (builder) => {
       if (state.stepsHistory.length > 1) {
         state.stepsHistory = state.stepsHistory.slice(0, -1);
       }
-    })
-    .addCase(stepRevertConfirmationResolved, (state) => {
-      state.stepRevertAttempted = false;
-    })
-    .addCase(stepRevertAttempted, (state) => {
-      state.stepRevertAttempted = true;
     })
     .addCase(surfaceAreaInputModeUpdated, (state, action) => {
       state.surfaceAreaInputMode = action.payload;

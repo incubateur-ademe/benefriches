@@ -1,4 +1,4 @@
-import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
+import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
 import { completeSoilsTransformationIntroductionStep } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
@@ -10,7 +10,7 @@ function SoilsTransformationIntroductionContainer() {
   return (
     <SoilsTransformationIntroduction
       onNext={() => dispatch(completeSoilsTransformationIntroductionStep())}
-      onBack={() => dispatch(stepRevertAttempted())}
+      onBack={() => dispatch(stepReverted())}
     />
   );
 }

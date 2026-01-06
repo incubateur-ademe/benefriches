@@ -1,5 +1,5 @@
 import { namingIntroductionStepCompleted } from "@/features/create-site/core/actions/naming.actions";
-import { stepRevertAttempted } from "@/features/create-site/core/actions/revert.actions";
+import { stepReverted } from "@/features/create-site/core/actions/revert.action";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 import SiteNamingIntroduction from "./SiteNamingIntroduction";
@@ -11,7 +11,7 @@ function SiteNamingIntroductionContainer() {
     <SiteNamingIntroduction
       onNext={() => dispatch(namingIntroductionStepCompleted())}
       onBack={() => {
-        dispatch(stepRevertAttempted());
+        dispatch(stepReverted());
       }}
     />
   );

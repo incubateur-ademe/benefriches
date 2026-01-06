@@ -1,4 +1,4 @@
-import { stepRevertAttempted } from "@/features/create-site/core/actions/revert.actions";
+import { stepReverted } from "@/features/create-site/core/actions/revert.action";
 import { soilsSelectionStepCompleted } from "@/features/create-site/core/actions/spaces.actions";
 import { selectSiteSoils } from "@/features/create-site/core/selectors/createSite.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
@@ -20,7 +20,7 @@ const SiteSpacesSelectionFormContainer = () => {
         dispatch(soilsSelectionStepCompleted({ soils: formData.soils }));
       }}
       onBack={() => {
-        dispatch(stepRevertAttempted());
+        dispatch(stepReverted());
       }}
     />
   );

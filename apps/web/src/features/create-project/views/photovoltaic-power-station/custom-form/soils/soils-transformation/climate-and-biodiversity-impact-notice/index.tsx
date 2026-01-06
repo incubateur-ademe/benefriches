@@ -1,4 +1,4 @@
-import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
+import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
 import { completeSoilsTransformationClimateAndBiodiversityImpactNoticeStep } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
 import {
   selectBiodiversityAndClimateSensibleSoilsSurfaceAreaDestroyed,
@@ -23,7 +23,7 @@ export default function ClimateAndBiodiversityImpactNoticeContainer() {
 
   return (
     <ClimateAndBiodiversityImpactNotice
-      onBack={() => dispatch(stepRevertAttempted())}
+      onBack={() => dispatch(stepReverted())}
       onNext={() => dispatch(completeSoilsTransformationClimateAndBiodiversityImpactNoticeStep())}
       hasTransformationNegativeImpact={hasTransformationNegativeImpact}
       sensibleSurfaceAreaDestroyed={biodiversityAndClimateSensitiveSoilsSurfaceAreaDestroyed}

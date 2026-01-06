@@ -1,4 +1,4 @@
-import { stepRevertAttempted } from "@/features/create-site/core/actions/revert.actions";
+import { stepReverted } from "@/features/create-site/core/actions/revert.action";
 import { fricheAccidentsIntroductionStepCompleted } from "@/features/create-site/core/actions/soilsContaminationAndAccidents.actions";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
@@ -10,7 +10,7 @@ function FricheAccidentsIntroductionContainer() {
   return (
     <FricheAccidentsIntroduction
       onBack={() => {
-        dispatch(stepRevertAttempted());
+        dispatch(stepReverted());
       }}
       onNext={() => {
         dispatch(fricheAccidentsIntroductionStepCompleted());

@@ -1,4 +1,4 @@
-import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
+import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
 import { completeFinancialAssistanceRevenues } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
 import { selectPhotovoltaicPowerStationFinancialAssistanceRevenueInitialValues } from "@/features/create-project/core/renewable-energy/selectors/revenues.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
@@ -14,7 +14,7 @@ function ProjectFinancialAssistanceRevenueFormContainer() {
     <ProjectFinancialAssistanceRevenueForm
       initialValues={initialValues}
       onBack={() => {
-        dispatch(stepRevertAttempted());
+        dispatch(stepReverted());
       }}
       onSubmit={(revenues) => {
         dispatch(completeFinancialAssistanceRevenues(revenues));

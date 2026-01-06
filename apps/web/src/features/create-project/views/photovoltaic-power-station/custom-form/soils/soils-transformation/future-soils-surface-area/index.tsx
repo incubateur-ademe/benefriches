@@ -1,4 +1,4 @@
-import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
+import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
 import { completeCustomSoilsSurfaceAreaAllocationStep } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
 import { selectFutureSoilsSurfaceAreasViewData } from "@/features/create-project/core/renewable-energy/selectors/soilsTransformation.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
@@ -26,7 +26,7 @@ function FutureSoilsSurfaceAreaFormContainer() {
         dispatch(completeCustomSoilsSurfaceAreaAllocationStep(data));
       }}
       onBack={() => {
-        dispatch(stepRevertAttempted());
+        dispatch(stepReverted());
       }}
     />
   );

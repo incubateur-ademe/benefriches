@@ -18,7 +18,6 @@ import SiteCreationExpressStepper from "./express/Stepper";
 import SiteCreationIntroduction from "./introduction";
 import IsFricheForm from "./is-friche";
 import SiteNatureForm from "./site-nature";
-import StepRevertConfirmationModal from "./step-revert-confirmation-modal";
 import UseMutabilityForm from "./use-mutability";
 import { useSyncCreationStepWithRouteQuery } from "./useSyncCreationStepWithRouteQuery";
 
@@ -83,28 +82,25 @@ function SiteCreationWizard() {
   useSyncCreationStepWithRouteQuery();
 
   return (
-    <>
-      <StepRevertConfirmationModal />
-      <SidebarLayout
-        mainChildren={getMainChildren(currentStep, createMode)}
-        title="Renseignement du site"
-        sidebarChildren={(() => {
-          switch (createMode) {
-            case "express":
-              return <SiteCreationExpressStepper step={currentStep as SiteCreationExpressStep} />;
-            case "custom":
-              return (
-                <SiteCreationCustomStepper
-                  isFriche={isFriche}
-                  step={currentStep as SiteCreationCustomStep}
-                />
-              );
-            default:
-              return <FormStepper currentStepIndex={0} steps={["Introduction"]} isDone={false} />;
-          }
-        })()}
-      />
-    </>
+    <SidebarLayout
+      mainChildren={getMainChildren(currentStep, createMode)}
+      title="Renseignement du site"
+      sidebarChildren={(() => {
+        switch (createMode) {
+          case "express":
+            return <SiteCreationExpressStepper step={currentStep as SiteCreationExpressStep} />;
+          case "custom":
+            return (
+              <SiteCreationCustomStepper
+                isFriche={isFriche}
+                step={currentStep as SiteCreationCustomStep}
+              />
+            );
+          default:
+            return <FormStepper currentStepIndex={0} steps={["Introduction"]} isDone={false} />;
+        }
+      })()}
+    />
   );
 }
 

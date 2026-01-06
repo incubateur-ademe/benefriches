@@ -10,11 +10,7 @@ import {
 } from "@/shared/core/reducers/project-form/projectForm.reducer";
 import { UrbanProjectCreationStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 
-import {
-  stepRevertAttempted,
-  stepRevertConfirmationResolved,
-  stepRevertConfirmed,
-} from "./actions/actionsUtils";
+import { stepReverted } from "./actions/actionsUtils";
 import { fetchSiteRelatedLocalAuthorities } from "./actions/getSiteLocalAuthorities.action";
 import {
   developmentPlanCategoriesCompleted,
@@ -37,7 +33,6 @@ export type ProjectCreationState = ProjectFormState & {
   projectId: string;
   developmentPlanCategory?: DevelopmentPlanCategory;
   renewableEnergyProject: RenewableEnergyProjectState;
-  stepRevertAttempted: boolean;
   projectSuggestions?: ProjectSuggestion[];
   surfaceAreaInputMode: "percentage" | "squareMeters";
 };
@@ -54,7 +49,6 @@ export const getInitialState = (): ProjectCreationState => {
     stepsHistory: ["INTRODUCTION"],
     projectId: uuid(),
     developmentPlanCategory: undefined,
-    stepRevertAttempted: false,
     projectSuggestions: undefined,
     renewableEnergyProject: renenewableEnergyProjectInitialState,
     surfaceAreaInputMode: "percentage",
@@ -114,15 +108,7 @@ const projectCreationReducer = createReducer(getInitialState(), (builder) => {
         state.stepsHistory.push("URBAN_PROJECT_EXPRESS_SUMMARY");
       }
     })
-    .addCase(stepRevertAttempted, (state) => {
-      state.stepRevertAttempted = true;
-    })
-    .addCase(stepRevertConfirmationResolved, (state) => {
-      state.stepRevertAttempted = false;
-    })
-    .addCase(stepRevertConfirmed, (state) => {
-      state.stepRevertAttempted = false;
-
+    .addCase(stepReverted, (state) => {
       if (state.stepsHistory.length > 1) {
         state.stepsHistory = state.stepsHistory.slice(0, -1);
       }

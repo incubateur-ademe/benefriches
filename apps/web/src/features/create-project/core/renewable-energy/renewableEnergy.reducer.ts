@@ -13,7 +13,7 @@ import {
 import { ReconversionProjectCreationData } from "@/features/create-project/core/project.types";
 
 import { SoilsCarbonStorageResult } from "../../../../shared/core/reducers/project-form/soilsCarbonStorage.action";
-import { stepRevertConfirmed } from "../actions/actionsUtils";
+import { stepReverted } from "../actions/actionsUtils";
 import { ExpressReconversionProjectResult } from "../actions/expressProjectSavedGateway";
 import { projectSuggestionsCompleted } from "../actions/projectSuggestionCompleted.action";
 import { ProjectCreationState } from "../createProject.reducer";
@@ -475,8 +475,8 @@ const addFetchCarbonStorageComparisonActionCases = (
 };
 
 const addRevertStepActionCases = (builder: ActionReducerMapBuilder<ProjectCreationState>) => {
-  builder.addCase(stepRevertConfirmed, (state, action) => {
-    switch (action.payload.revertedStep) {
+  builder.addCase(stepReverted, (state) => {
+    switch (state.stepsHistory.at(-1)) {
       case "RENEWABLE_ENERGY_TYPES":
         state.renewableEnergyProject.creationData.renewableEnergyType = undefined;
         break;

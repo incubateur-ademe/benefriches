@@ -1,7 +1,7 @@
 import { Address } from "shared";
 
 import { addressStepCompleted } from "@/features/create-site/core/actions/introduction.actions";
-import { stepRevertAttempted } from "@/features/create-site/core/actions/revert.actions";
+import { stepReverted } from "@/features/create-site/core/actions/revert.action";
 import { selectSiteAddress } from "@/features/create-site/core/selectors/createSite.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
@@ -28,7 +28,7 @@ function AddressFormContainer() {
         dispatch(addressStepCompleted({ address }));
       }}
       onBack={() => {
-        dispatch(stepRevertAttempted());
+        dispatch(stepReverted());
       }}
     />
   );

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { LocalAuthority } from "shared";
 
-import { stepRevertAttempted } from "@/features/create-site/core/actions/revert.actions";
+import { stepReverted } from "@/features/create-site/core/actions/revert.action";
 import { ownerStepCompleted } from "@/features/create-site/core/actions/siteManagement.actions";
 import { fetchSiteMunicipalityData } from "@/features/create-site/core/actions/siteMunicipalityData.actions";
 import { selectSiteOwner } from "@/features/create-site/core/selectors/createSite.selectors";
@@ -116,7 +116,7 @@ function SiteOwnerFormContainer() {
   };
 
   const onBack = () => {
-    dispatch(stepRevertAttempted());
+    dispatch(stepReverted());
   };
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import { stepRevertAttempted } from "../../actions/revert.actions";
+import { stepReverted } from "../../actions/revert.action";
 import {
   fricheAccidentsIntroductionStepCompleted,
   fricheAccidentsStepCompleted,
@@ -72,7 +72,7 @@ describe("Site creation: soils contamination and friche accidents steps", () => 
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(stepRevertAttempted());
+        store.dispatch(stepReverted());
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, {
@@ -148,7 +148,7 @@ describe("Site creation: soils contamination and friche accidents steps", () => 
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(stepRevertAttempted());
+        store.dispatch(stepReverted());
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, {

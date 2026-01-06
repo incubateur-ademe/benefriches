@@ -1,4 +1,4 @@
-import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
+import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 
@@ -41,7 +41,7 @@ export default function CreateModeSelectionFormContainer() {
         });
       }}
       onBack={() => {
-        dispatch(stepRevertAttempted());
+        dispatch(stepReverted());
       }}
       initialValues={createMode ? { createMode } : undefined}
       options={options}

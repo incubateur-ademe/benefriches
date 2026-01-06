@@ -1,4 +1,4 @@
-import { stepRevertAttempted } from "@/features/create-site/core/actions/revert.actions";
+import { stepReverted } from "@/features/create-site/core/actions/revert.action";
 import { yearlyExpensesStepCompleted } from "@/features/create-site/core/actions/siteManagement.actions";
 import { SiteYearlyExpensesConfig } from "@/features/create-site/core/expenses.functions";
 import { selectSiteYearlyExpensesViewData } from "@/features/create-site/core/selectors/expenses.selectors";
@@ -29,7 +29,7 @@ function SiteYearlyExpensesFormContainer() {
       hasTenant={hasTenant}
       initialValues={getInitialValues(expensesBaseconfig, expensesInStore, estimatedAmounts)}
       onBack={() => {
-        dispatch(stepRevertAttempted());
+        dispatch(stepReverted());
       }}
       onSubmit={(formData: FormValues) => {
         const expenses = mapFormDataToExpenses(formData, expensesBaseconfig);

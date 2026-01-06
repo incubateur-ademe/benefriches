@@ -13,7 +13,6 @@ import { ProjectCreationStep } from "../core/createProject.reducer";
 import { selectCurrentStep } from "../core/createProject.selectors";
 import { isRenewableEnergyCreationStep } from "../core/renewable-energy/creationSteps";
 import Stepper from "./Stepper";
-import StepRevertConfirmationModal from "./common-views/step-revert-confirmation-modal";
 import ProjectCreationIntroduction from "./introduction";
 import { HTML_MAIN_TITLE } from "./mainHtmlTitle";
 import PhotovoltaicPowerStationCreationWizard from "./photovoltaic-power-station/PhotovoltaicPowerStationCreationWizard";
@@ -77,7 +76,6 @@ function ProjectCreationWizard({ route }: Props) {
   if (isUrbanProjectCreationStep(currentStep)) {
     return (
       <ProjectFormProvider mode="create">
-        <StepRevertConfirmationModal />
         <UrbanProjectCreationWizard />
       </ProjectFormProvider>
     );
@@ -86,7 +84,6 @@ function ProjectCreationWizard({ route }: Props) {
   if (isRenewableEnergyCreationStep(currentStep)) {
     return (
       <ProjectFormProvider mode="create">
-        <StepRevertConfirmationModal />
         {currentStep === "RENEWABLE_ENERGY_TYPES" ? (
           <>
             <HtmlTitle>{`Système d'EnR - Type de projet - ${HTML_MAIN_TITLE}`}</HtmlTitle>
@@ -106,7 +103,6 @@ function ProjectCreationWizard({ route }: Props) {
   return (
     <>
       <HtmlTitle>{`Introduction - ${HTML_MAIN_TITLE}`}</HtmlTitle>
-      <StepRevertConfirmationModal />
       <ProjectCreationIntroductionWizard currentStep={currentStep} />
     </>
   );

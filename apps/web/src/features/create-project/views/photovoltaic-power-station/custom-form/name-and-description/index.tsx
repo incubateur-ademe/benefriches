@@ -1,4 +1,4 @@
-import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
+import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
 import { completeNaming } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
 import { selectNameAndDescriptionInitialValues } from "@/features/create-project/core/renewable-energy/selectors/renewableEnergy.selector";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
@@ -17,7 +17,7 @@ function ProjectNameAndDescriptionFormContainer() {
         dispatch(completeNaming(formData));
       }}
       onBack={() => {
-        dispatch(stepRevertAttempted());
+        dispatch(stepReverted());
       }}
     />
   );

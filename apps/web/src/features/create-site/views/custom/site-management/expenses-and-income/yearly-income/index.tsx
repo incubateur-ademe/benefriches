@@ -1,6 +1,6 @@
 import { SiteYearlyIncome } from "shared";
 
-import { stepRevertAttempted } from "@/features/create-site/core/actions/revert.actions";
+import { stepReverted } from "@/features/create-site/core/actions/revert.action";
 import { yearlyIncomeStepCompleted } from "@/features/create-site/core/actions/siteManagement.actions";
 import { selectEstimatedYearlyIncomesForSite } from "@/features/create-site/core/selectors/incomes.selectors";
 import { AppDispatch } from "@/shared/core/store-config/store";
@@ -17,7 +17,7 @@ const mapProps = (
   return {
     initialValues: getInitialValues(incomesInStore, estimatedIncomeAmounts),
     onBack: () => {
-      dispatch(stepRevertAttempted());
+      dispatch(stepReverted());
     },
     onSubmit: (formData: FormValues) => {
       dispatch(yearlyIncomeStepCompleted(mapFormDataToIncomes(formData)));

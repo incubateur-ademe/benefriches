@@ -1,5 +1,5 @@
 import { namingIntroductionStepCompleted, namingStepCompleted } from "../../actions/naming.actions";
-import { stepRevertAttempted } from "../../actions/revert.actions";
+import { stepReverted } from "../../actions/revert.action";
 import { siteWithExhaustiveData } from "../../siteData.mock";
 import {
   expectNewCurrentStep,
@@ -49,7 +49,7 @@ describe("Site creation: naming steps", () => {
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(stepRevertAttempted());
+        store.dispatch(stepReverted());
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, {

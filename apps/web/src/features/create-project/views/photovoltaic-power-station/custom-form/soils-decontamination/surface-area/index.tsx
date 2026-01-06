@@ -1,6 +1,6 @@
 import { roundToInteger } from "shared";
 
-import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
+import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
 import { selectSiteContaminatedSurfaceArea } from "@/features/create-project/core/createProject.selectors";
 import { completeSoilsDecontaminationSurfaceArea } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
 import { selectContaminatedSurfaceAreaPercentageToDecontaminate } from "@/features/create-project/core/renewable-energy/selectors/renewableEnergy.selector";
@@ -45,7 +45,7 @@ function SoilsDecontaminationSurfaceAreaContainer() {
       inputMode={inputMode}
       onInputModeChange={onInputModeChange}
       onSubmit={onSubmit}
-      onBack={() => dispatch(stepRevertAttempted())}
+      onBack={() => dispatch(stepReverted())}
     />
   );
 }

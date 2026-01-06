@@ -1,4 +1,4 @@
-import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
+import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
 import { selectSiteContaminatedSurfaceArea } from "@/features/create-project/core/createProject.selectors";
 import { completeSoilsDecontaminationIntroduction } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
@@ -12,7 +12,7 @@ function SoilsDecontaminationIntroductionContainer() {
     <SoilsDecontaminationIntroduction
       contaminatedSurfaceArea={contaminatedSurfaceArea}
       onNext={() => dispatch(completeSoilsDecontaminationIntroduction())}
-      onBack={() => dispatch(stepRevertAttempted())}
+      onBack={() => dispatch(stepReverted())}
     />
   );
 }
