@@ -14,10 +14,10 @@ import { ProjectFormSelectors } from "../projectForm.selectors";
 import { CurrentAndProjectedSoilsCarbonStorageResult } from "../soilsCarbonStorage.action";
 import { AnswersByStep, AnswerStepId, UrbanProjectCreationStep } from "./urbanProjectSteps";
 
-export const makeUrbanProjectFormActionType = (prefix: string, actionName: string) =>
+const makeUrbanProjectFormActionType = (prefix: string, actionName: string) =>
   makeProjectFormActionType(prefix, `urbanProject/${actionName}`);
 
-export const createUrbanProjectFormAction = <TPayload = void>(prefix: string, actionName: string) =>
+const createUrbanProjectFormAction = <TPayload = void>(prefix: string, actionName: string) =>
   createAction<TPayload>(makeUrbanProjectFormActionType(prefix, actionName));
 
 export type StepCompletionPayload<K extends AnswerStepId = AnswerStepId> = {

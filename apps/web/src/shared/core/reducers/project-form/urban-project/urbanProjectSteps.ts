@@ -47,7 +47,7 @@ export const isSummaryStep = (stepId: UrbanProjectCreationStep): stepId is Summa
   return SUMMARY_STEPS_SET.has(stepId as SummaryStep);
 };
 
-export const urbanProjectFormDataSchema = createReconversionProjectSchema(z.string()).omit({
+const urbanProjectFormDataSchema = createReconversionProjectSchema(z.string()).omit({
   createdBy: true,
   id: true,
   relatedSiteId: true,

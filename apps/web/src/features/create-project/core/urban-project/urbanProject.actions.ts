@@ -21,5 +21,3 @@ export const creationProjectFormUrbanActions = createUrbanProjectFormActions(
 export const makeUrbanProjectCreationActionType = (actionName: string) => {
   return makeProjectCreationActionType(`urbanProject/${actionName}`);
 };
-
-export default { creationProjectFormActions, creationProjectFormUrbanActions };

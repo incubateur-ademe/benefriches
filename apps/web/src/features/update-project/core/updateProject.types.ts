@@ -9,7 +9,7 @@ import z from "zod";
 
 import { siteOwnerSchema, siteTenantSchema } from "@/shared/core/stakeholder";
 
-export const siteViewSchema = z.object({
+const siteViewSchema = z.object({
   id: z.string(),
   name: z.string(),
   nature: siteNatureSchema,

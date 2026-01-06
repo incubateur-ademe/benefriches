@@ -8,7 +8,7 @@ import BaseStepperStep, {
 
 const CHECK_ICON = "fr-icon-check-line text-success-dark";
 
-export const FORM_STEPPER_STYLES: VariantStyleConfig = {
+const FORM_STEPPER_STYLES: VariantStyleConfig = {
   "current-empty": [
     SHARED_STYLES.numberMarker,
     "before:bg-benefriches-dark",

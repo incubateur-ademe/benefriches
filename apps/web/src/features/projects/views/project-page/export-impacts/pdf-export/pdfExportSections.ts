@@ -1,6 +1,6 @@
 import z from "zod";
 
-export const pdfExportSectionIdSchema = z.enum([
+const pdfExportSectionIdSchema = z.enum([
   "siteFeatures",
   "projectFeatures",
   "economicBalance",

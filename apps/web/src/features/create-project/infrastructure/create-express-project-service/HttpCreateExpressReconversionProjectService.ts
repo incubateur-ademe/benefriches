@@ -5,7 +5,7 @@ import { objectToQueryParams } from "@/shared/core/object-query-parameters/objec
 
 import { CreateExpressReconversionProjectGateway } from "../../core/actions/expressProjectSavedGateway";
 
-export type GetExpressReconversionProjectParams = {
+type GetExpressReconversionProjectParams = {
   reconversionProjectId: string;
   siteId: string;
   createdBy: string;

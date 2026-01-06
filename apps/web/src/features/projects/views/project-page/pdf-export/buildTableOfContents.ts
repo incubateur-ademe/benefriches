@@ -32,7 +32,7 @@ const impactsSubSections: SubSection[] = [
   },
 ];
 
-export const sectionsConfig: TopLevelSection[] = [
+const sectionsConfig: TopLevelSection[] = [
   { key: "siteFeatures", label: "Caractéristiques du site", pageId: "site-features" },
   { key: "projectFeatures", label: "Caractéristiques du projet", pageId: "project-features" },
   {
@@ -44,7 +44,7 @@ export const sectionsConfig: TopLevelSection[] = [
   { key: "aboutBenefriches", label: "Notice explicative", pageId: "explanatory-note" },
 ];
 
-export type TableOfContentEntry = {
+type TableOfContentEntry = {
   label: string;
   pageId: keyof typeof pageIds;
   subsections?: { label: string; pageId: keyof typeof pageIds }[];

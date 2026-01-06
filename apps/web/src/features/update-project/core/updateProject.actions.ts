@@ -15,7 +15,7 @@ import { UpdateProjectView } from "./updateProject.types";
 
 const UPDATE_PROJECT_STORE_KEY = "projectUpdate";
 
-export const makeProjectUpdateActionType = (actionName: string) => {
+const makeProjectUpdateActionType = (actionName: string) => {
   return `${UPDATE_PROJECT_STORE_KEY}/${actionName}`;
 };
 

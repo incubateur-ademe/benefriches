@@ -10,7 +10,7 @@ import {
   expressUrbanProjectSaved,
 } from "./urbanProjectExpressSaved.action";
 
-export const createUrbanProjectReducer = createReducer({} as ProjectCreationState, (builder) => {
+const createUrbanProjectReducer = createReducer({} as ProjectCreationState, (builder) => {
   // Form actions
   addUrbanProjectFormCasesToBuilder(builder, creationProjectFormUrbanActions);
 

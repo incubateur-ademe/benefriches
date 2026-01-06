@@ -20,10 +20,6 @@ export const expectNewCurrentStep = (
   ]);
 };
 
-export const expectCurrentStep = (state: RootState, step: SiteCreationStep) => {
-  expect(state.siteCreation.stepsHistory.at(-1)).toEqual(step);
-};
-
 export const expectStepReverted = (initialState: RootState, newState: RootState) => {
   expect(newState.siteCreation.stepsHistory).toEqual(
     initialState.siteCreation.stepsHistory.slice(0, -1),

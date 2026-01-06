@@ -20,10 +20,6 @@ export const expectNewCurrentStep = (
   ]);
 };
 
-export const expectCurrentStep = (state: RootState, step: ProjectCreationStep) => {
-  expect(state.projectCreation.stepsHistory.at(-1)).toEqual(step);
-};
-
 export class StoreBuilder {
   preloadedRootState: Pick<RootState, "projectCreation" | "currentUser" | "appSettings"> = {
     projectCreation: getInitialState(),

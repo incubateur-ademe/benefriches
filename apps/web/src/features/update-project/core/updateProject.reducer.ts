@@ -26,7 +26,8 @@ export type UrbanProjectUpdateStep = Exclude<
   | "URBAN_PROJECT_CREATE_MODE_SELECTION"
   | "URBAN_PROJECT_EXPRESS_TEMPLATE_SELECTION"
 >;
-export type ProjectUpdateState = ProjectFormState<UrbanProjectUpdateStep> & {
+
+type ProjectUpdateState = ProjectFormState<UrbanProjectUpdateStep> & {
   projectData: {
     id?: string;
     loadingState: "idle" | "success" | "error" | "loading";
@@ -37,7 +38,7 @@ export type ProjectUpdateState = ProjectFormState<UrbanProjectUpdateStep> & {
   };
 };
 
-export const getInitialState = (): ProjectUpdateState => {
+const getInitialState = (): ProjectUpdateState => {
   return {
     projectData: {
       loadingState: "idle",
