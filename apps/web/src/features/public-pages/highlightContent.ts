@@ -1,11 +1,11 @@
 export const BENEFRICHES_HIGHLIGHTS = [
-  "Jusqu'à 90 indicateurs calculés",
-  "Sur une durée de 1 à 50 ans",
-  "Possibilité de comparer les impacts du projet avec ceux d'autres projets",
+  "Nombreuses données pré-remplies grâce à l’adresse du site",
+  "Jusqu’à 90 indicateurs calculés sur une durée de 1 à 50 ans",
+  "Possibilité de comparer les impacts avec d’autres scénarii",
 ];
 
 export const MUTAFRICHES_HIGHLIGHTS = [
-  "7 usages potentiels analysés",
-  "Score de compatibilité entre votre friche et les usages",
-  "Impacts socio-économiques évaluables pour certains usages",
+  "Nombreuses données pré-remplies grâce à la parcelle de la friche",
+  "7 projets potentiels analysés",
+  "Podium de compatibilité avec score en %",
 ];
