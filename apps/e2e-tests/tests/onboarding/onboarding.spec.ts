@@ -52,8 +52,9 @@ test.describe("Onboarding", () => {
     // Navigate to homepage and start compatibility flow
     await homePage.goto();
     await expect(
-      page.getByText("J'ai une friche et je souhaite trouver l'usage le plus adapté."),
+      page.getByRole("heading", { name: "Je souhaite évaluer... la compatibilité de ma friche" }),
     ).toBeVisible();
+
     await homePage.clickAnalyzeCompatibility();
 
     // Create account
