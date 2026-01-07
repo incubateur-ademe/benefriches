@@ -88,7 +88,7 @@ export default function Step1({
         <li>
           Ayant la même superficie que{" "}
           {(() => {
-            switch (comparisonSiteData.nature) {
+            switch (baseSiteData.nature) {
               case "AGRICULTURAL_OPERATION":
                 return "l'exploitation agricole";
               case "FRICHE":
