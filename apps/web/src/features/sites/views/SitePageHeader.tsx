@@ -4,6 +4,7 @@ import { SiteNature } from "shared";
 import Badge from "@/shared/views/components/Badge/Badge";
 import TabItem from "@/shared/views/components/TabItem/TabItem";
 import { routes, useRoute } from "@/shared/views/router";
+import { getPictogramUrlForSiteNature } from "@/shared/views/siteNature";
 
 import { SiteRoute } from ".";
 
@@ -13,17 +14,6 @@ type Props = {
   siteNature: SiteNature;
   isExpressSite: boolean;
 };
-
-function getPictogramUrlForSiteNature(siteNature: SiteNature): string {
-  switch (siteNature) {
-    case "FRICHE":
-      return "/img/pictograms/site-nature/friche.svg";
-    case "AGRICULTURAL_OPERATION":
-      return "/img/pictograms/site-nature/agricultural-operation.svg";
-    case "NATURAL_AREA":
-      return "/img/pictograms/site-nature/natural-area.svg";
-  }
-}
 
 export default function SitePageHeader({ siteId, siteName, siteNature, isExpressSite }: Props) {
   const route = useRoute() as SiteRoute;

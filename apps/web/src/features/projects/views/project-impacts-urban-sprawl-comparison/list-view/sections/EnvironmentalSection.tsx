@@ -10,11 +10,9 @@ import ImpactComparisonTableSeparatorRow from "../layout/TableSeparatorRow";
 type Props = {
   baseCase: {
     impacts: UrbanSprawlComparisonImpacts;
-    siteName: string;
   };
   comparisonCase: {
     impacts: UrbanSprawlComparisonImpacts;
-    siteName: string;
   };
 };
 

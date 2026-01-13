@@ -2,13 +2,16 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { SiteNature } from "shared";
 
 import {
+  evaluationPeriodUpdated,
+  reconversionProjectImpactsRequested,
+} from "../project-impacts/actions";
+import {
   fetchUrbanSprawlImpactsComparison,
   UrbanSprawlImpactsComparisonObj,
 } from "./fetchUrbanSprawlImpactsComparison.action";
 
 type LoadingState = "idle" | "loading" | "success" | "error";
 
-const DEFAULT_EVALUATION_PERIOD_IN_YEARS = 20;
 const DEFAULT_VIEW_MODE = "summary";
 
 export type ViewMode = "charts" | "list" | "summary";
@@ -20,24 +23,22 @@ export type UrbanSprawlImpactsComparisonState = {
   comparisonCase?: UrbanSprawlImpactsComparisonObj["comparisonCase"];
   evaluationPeriod: number;
   currentViewMode: ViewMode;
-  comparisonSiteNature: SiteNature;
+  comparisonSiteNature?: SiteNature;
 };
 
-const getInitialState = (): UrbanSprawlImpactsComparisonState => {
-  return {
-    projectData: undefined,
-    baseCase: undefined,
-    comparisonCase: undefined,
-    dataLoadingState: "idle",
-    evaluationPeriod: DEFAULT_EVALUATION_PERIOD_IN_YEARS,
-    currentViewMode: DEFAULT_VIEW_MODE,
-    comparisonSiteNature: "AGRICULTURAL_OPERATION",
-  };
+const INITIAL_STATE: UrbanSprawlImpactsComparisonState = {
+  projectData: undefined,
+  baseCase: undefined,
+  comparisonCase: undefined,
+  dataLoadingState: "idle",
+  evaluationPeriod: 50,
+  currentViewMode: DEFAULT_VIEW_MODE,
+  comparisonSiteNature: undefined,
 };
 
 const urbanSprawlImpactsComparisonSlice = createSlice({
   name: "urban-sprawl-impacts-comparison",
-  initialState: getInitialState(),
+  initialState: INITIAL_STATE,
   reducers: {
     setEvaluationPeriod: (state, action: PayloadAction<number>) => {
       state.evaluationPeriod = action.payload;
@@ -54,6 +55,9 @@ const urbanSprawlImpactsComparisonSlice = createSlice({
         state.evaluationPeriod = action.payload.evaluationPeriod;
       }
     },
+    setComparisonSiteNature: (state, action: PayloadAction<SiteNature>) => {
+      state.comparisonSiteNature = action.payload;
+    },
   },
   extraReducers(builder) {
     builder.addCase(fetchUrbanSprawlImpactsComparison.pending, (state) => {
@@ -68,10 +72,18 @@ const urbanSprawlImpactsComparisonSlice = createSlice({
     builder.addCase(fetchUrbanSprawlImpactsComparison.rejected, (state) => {
       state.dataLoadingState = "error";
     });
+    builder.addCase(evaluationPeriodUpdated.fulfilled, (state, action) => {
+      state.evaluationPeriod = action.payload.evaluationPeriodInYears;
+    });
+    builder.addCase(reconversionProjectImpactsRequested.fulfilled, (state, action) => {
+      if (state.projectData && action.payload.id !== state.projectData.id) {
+        return INITIAL_STATE;
+      }
+    });
   },
 });
 
-export const { setEvaluationPeriod, setViewMode, setInitialParams } =
+export const { setEvaluationPeriod, setViewMode, setInitialParams, setComparisonSiteNature } =
   urbanSprawlImpactsComparisonSlice.actions;
 
 export default urbanSprawlImpactsComparisonSlice.reducer;

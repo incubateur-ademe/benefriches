@@ -21,9 +21,6 @@ const CreateProjectPage = lazy(
 const CreateSiteFoncierPage = lazy(() => import("@/features/create-site/views/SiteCreationWizard"));
 const MyEvaluationsPage = lazy(() => import("@/features/my-evaluations/views/my-evaluations-page"));
 const ProjectPage = lazy(() => import("@/features/projects/views/project-page"));
-const UrbanSprawlImpactsComparisonPage = lazy(
-  () => import("@/features/projects/views/project-impacts-urban-sprawl-comparison"),
-);
 const EvaluateReconversionCompatibilityPage = lazy(
   () =>
     import("@/features/reconversion-compatibility/views/evaluation/EvaluateReconversionCompatibilityPage"),
@@ -97,13 +94,12 @@ function FeaturesApp() {
                 return <MyEvaluationsPage />;
               case routes.projectImpacts.name:
               case routes.projectFeatures.name:
+              case routes.urbanSprawlImpactsComparison.name:
                 return <ProjectPage projectId={route.params.projectId} />;
               case routes.projectImpactsOnboarding.name:
                 return (
                   <ProjectImpactsOnboardingPage projectId={route.params.projectId} route={route} />
                 );
-              case routes.urbanSprawlImpactsComparison.name:
-                return <UrbanSprawlImpactsComparisonPage route={route} />;
               case routes.siteFeatures.name:
               case routes.siteEvaluatedProjects.name:
               case routes.siteActionsList.name:

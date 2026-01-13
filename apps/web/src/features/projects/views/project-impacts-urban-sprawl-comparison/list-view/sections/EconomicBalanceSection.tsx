@@ -18,11 +18,9 @@ type Props = {
   projectType: DevelopmentPlanType;
   baseCase: {
     impacts: UrbanSprawlComparisonImpacts;
-    siteName: string;
   };
   comparisonCase: {
     impacts: UrbanSprawlComparisonImpacts;
-    siteName: string;
   };
 };
 

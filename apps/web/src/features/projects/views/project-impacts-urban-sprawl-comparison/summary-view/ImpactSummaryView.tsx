@@ -1,8 +1,9 @@
-import { fr } from "@codegouvfr/react-dsfr";
 import React from "react";
+import { SiteNature } from "shared";
 
 import { KeyImpactIndicatorData } from "@/features/projects/domain/projectKeyImpactIndicators";
 import classNames from "@/shared/views/clsx";
+import { getPictogramUrlForSiteNature } from "@/shared/views/siteNature";
 
 import { getDialogControlButtonProps } from "../../project-page/impacts/list-view/dialogControlBtnProps";
 import KeyImpactIndicatorCard from "../../project-page/impacts/summary-view/KeyImpactIndicatorCard";
@@ -14,39 +15,54 @@ import ImpactComparisonModalDescription, {
 type Props = {
   baseCase: {
     indicators: KeyImpactIndicatorData[];
-    siteName: string;
+    siteNature: SiteNature;
   };
   comparisonCase: {
     indicators: KeyImpactIndicatorData[];
-    siteName: string;
+    siteNature: SiteNature;
   };
   modalData: ModalDataProps;
+};
+
+const getTextForSiteNature = (siteNature: SiteNature) => {
+  switch (siteNature) {
+    case "FRICHE":
+      return "la friche";
+    case "AGRICULTURAL_OPERATION":
+      return "l'exploitation agricole";
+    case "NATURAL_AREA":
+      return "l'espace de nature";
+  }
 };
 
 const ImpactSummaryView = ({ baseCase, comparisonCase, modalData }: Props) => {
   return (
     <div className="grid md:grid-cols-2 gap-6 mb-8">
-      {[baseCase, comparisonCase].map(({ siteName, indicators }, index) => {
-        const modalPrefix = index === 0 ? "base" : "comparison";
+      {[baseCase, comparisonCase].map(({ siteNature, indicators }, index) => {
+        const isBaseCase = index === 0;
+        const modalPrefix = isBaseCase ? "base" : "comparison";
+        const statuQuoSiteNature = isBaseCase ? comparisonCase.siteNature : baseCase.siteNature;
         return (
           <div
-            key={siteName}
-            className="flex flex-col gap-6 p-6 bg-(--background-raised-grey) rounded-2xl"
+            key={siteNature}
+            className="flex flex-col gap-6 p-6 border border-solid border-border-grey rounded-2xl"
           >
-            <h3
-              className={classNames(
-                index === 0
-                  ? "text-[#806922] dark:text-[#F6F1E1]"
-                  : "text-[#7F236B] dark:text-[#F6E1F1]",
-                "text-2xl",
-              )}
-            >
-              <span
-                className={fr.cx("fr-icon--sm", "fr-icon-map-pin-2-line", "fr-pr-1w")}
-                aria-hidden="true"
-              ></span>
-              {siteName}
-            </h3>
+            <div className="flex gap-4">
+              <img
+                src={getPictogramUrlForSiteNature(siteNature)}
+                aria-hidden={true}
+                alt=""
+                width="56"
+                height="56"
+              />
+              <h4 className={classNames("text-2xl", "flex flex-col", "mb-0")}>
+                Projet sur {getTextForSiteNature(siteNature)}
+                <span className="text-sm">
+                  et statu quo sur {getTextForSiteNature(statuQuoSiteNature)}
+                </span>
+              </h4>
+            </div>
+
             {indicators
               .toSorted(
                 ({ name: aName }, { name: bName }) =>

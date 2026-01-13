@@ -1,79 +1,64 @@
 import { useEffect } from "react";
-import { Route } from "type-route";
+import { SiteNature } from "shared";
 
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
-import { routes } from "@/shared/views/router";
 
 import { fetchUrbanSprawlImpactsComparison } from "../../application/project-impacts-urban-sprawl-comparison/fetchUrbanSprawlImpactsComparison.action";
 import {
+  setComparisonSiteNature,
   setEvaluationPeriod,
   setViewMode,
   ViewMode,
 } from "../../application/project-impacts-urban-sprawl-comparison/urbanSprawlComparison.reducer";
-import ImpactsComparisonPage from "./ImpactsComparisonPage";
-import UrbanSprawlImpactsComparisonIntroduction from "./introduction/Introduction";
+import ProjectImpactsUrbanSprawlImpactsComparisonView from "./ImpactsComparisonView";
 
 type Props = {
-  route: Route<typeof routes.urbanSprawlImpactsComparison>;
+  projectId: string;
 };
 
-function ImpactsComparisonPageContainer({ route }: Props) {
+function ImpactsComparisonPageContainer({ projectId }: Props) {
   const dispatch = useAppDispatch();
 
-  const comparisonState = useAppSelector((state) => state.urbanSprawlComparison);
+  const { comparisonSiteNature, evaluationPeriod, ...comparisonState } = useAppSelector(
+    (state) => state.urbanSprawlComparison,
+  );
+
+  const {
+    evaluationPeriod: projectImpactsEvaluationPeriod,
+    dataLoadingState: projectImpactsLoadingState,
+  } = useAppSelector((state) => state.projectImpacts);
+  const relatedSiteNature = useAppSelector((state) => state.projectImpacts.relatedSiteData?.nature);
 
   useEffect(() => {
-    void dispatch(
-      fetchUrbanSprawlImpactsComparison({
-        projectId: route.params.projectId,
-        evaluationPeriod: comparisonState.evaluationPeriod,
-        comparisonSiteNature: comparisonState.comparisonSiteNature,
-      }),
-    );
-  }, [
-    dispatch,
-    route.params.projectId,
-    comparisonState.evaluationPeriod,
-    comparisonState.comparisonSiteNature,
-  ]);
+    if (projectImpactsEvaluationPeriod) {
+      dispatch(setEvaluationPeriod(projectImpactsEvaluationPeriod));
+    }
+  }, [dispatch, projectImpactsEvaluationPeriod]);
 
-  if (route.params.page === "introduction") {
-    return (
-      <UrbanSprawlImpactsComparisonIntroduction
-        routeStep={route.params.etape}
-        onNextToStep={(step: string) => {
-          routes
-            .urbanSprawlImpactsComparison({
-              projectId: route.params.projectId,
-              page: "introduction",
-              etape: step,
-            })
-            .push();
-        }}
-        onBackToStep={(step: string) => {
-          routes
-            .urbanSprawlImpactsComparison({
-              projectId: route.params.projectId,
-              page: "introduction",
-              etape: step,
-            })
-            .replace();
-        }}
-        onFinalNext={() => {
-          routes.urbanSprawlImpactsComparison({ projectId: route.params.projectId }).push();
-        }}
-        dataLoadingState={comparisonState.dataLoadingState}
-        projectName={comparisonState.projectData?.name}
-        baseSiteData={comparisonState.baseCase?.conversionSiteData}
-        comparisonSiteData={comparisonState.comparisonCase?.conversionSiteData}
-      />
-    );
-  }
+  useEffect(() => {
+    if (comparisonSiteNature) {
+      void dispatch(
+        fetchUrbanSprawlImpactsComparison({
+          projectId: projectId,
+          evaluationPeriod,
+          comparisonSiteNature: comparisonSiteNature,
+        }),
+      );
+    }
+  }, [dispatch, projectId, evaluationPeriod, comparisonSiteNature]);
+
+  const onSelectComparisonSiteNature = (selectedSiteNature: SiteNature) => {
+    dispatch(setComparisonSiteNature(selectedSiteNature));
+  };
 
   return (
-    <ImpactsComparisonPage
-      projectId={route.params.projectId}
+    <ProjectImpactsUrbanSprawlImpactsComparisonView
+      projectId={projectId}
+      relatedSiteNature={relatedSiteNature!}
+      evaluationPeriod={evaluationPeriod}
+      projectImpactsLoadingState={projectImpactsLoadingState}
       {...comparisonState}
+      onSelectComparisonSiteNature={onSelectComparisonSiteNature}
       onEvaluationPeriodChange={(evaluationPeriod: number) =>
         dispatch(setEvaluationPeriod(evaluationPeriod))
       }

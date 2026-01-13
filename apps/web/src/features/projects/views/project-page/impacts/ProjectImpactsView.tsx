@@ -13,14 +13,12 @@ import {
 import { exportImpactsModal } from "../../project-page/export-impacts/createExportModal";
 import ProjectImpactsActionBar from "../../shared/actions/ProjectImpactsActionBar";
 import ExportImpactsModal from "../export-impacts/ExportModal";
-import { SITE_FEATURES_FOOTER_DIALOG_ID } from "../footer/FutherActionsSection";
 import ProjectImpactFooter from "../footer/ProjectImpactFooter";
 import ProjectPageHeader from "../header";
 import ImpactsAccuracyDisclaimer from "../impacts-accuracy-disclaimer/ImpactsAccuracyDisclaimer";
 import AboutImpactsModal from "./about-impacts-modal/AboutImpactsModal";
 import ImpactsChartsView from "./charts-view";
 import ImpactsListViewContainer from "./list-view";
-import SiteFeaturesModal from "./site-features-modal/";
 import ImpactsSummaryViewContainer from "./summary-view";
 
 type Props = {
@@ -100,7 +98,6 @@ const ProjectImpactsView = ({
           )}
           <ProjectImpactFooter
             siteId={projectContext.siteId}
-            siteNature={projectContext.siteNature!}
             projectId={projectId}
             evaluationPeriod={evaluationPeriod}
             isUpdateEnabled={
@@ -108,10 +105,6 @@ const ProjectImpactsView = ({
             }
           />
           <AboutImpactsModal />
-          <SiteFeaturesModal
-            dialogId={SITE_FEATURES_FOOTER_DIALOG_ID}
-            siteId={projectContext.siteId}
-          />
           <ExportImpactsModal projectId={projectId} siteId={projectContext.siteId} />
         </>
       )}

@@ -4,7 +4,7 @@ import { ReactNode, useState } from "react";
 import { ViewMode } from "@/features/projects/application/project-impacts/projectImpacts.reducer";
 import { ClassValue } from "@/shared/views/clsx";
 
-import ImpactsActionBar from "./ActionBar";
+import ImpactsActionBar, { ActionBarProps } from "./ActionBar";
 import StickyActionBar from "./StickyActionBar";
 
 type Props = {
@@ -14,7 +14,7 @@ type Props = {
   onEvaluationPeriodChange: (n: number) => void;
   onDownloadImpacts?: () => void;
   header: ReactNode;
-  disabledSegments?: ViewMode[];
+  segments?: ActionBarProps["segments"];
   className?: ClassValue;
 };
 
@@ -25,7 +25,7 @@ function ProjectImpactsActionBar({
   onEvaluationPeriodChange,
   onDownloadImpacts,
   header,
-  disabledSegments,
+  segments,
   className,
 }: Props) {
   const [isActionBarInViewport, setIsActionBarInViewPort] = useState(false);
@@ -58,7 +58,7 @@ function ProjectImpactsActionBar({
           evaluationPeriod={evaluationPeriod}
           onViewModeClick={onViewModeClick}
           onEvaluationPeriodChange={onEvaluationPeriodChange}
-          disabledSegments={disabledSegments}
+          segments={segments}
           className={className}
         />
         {onDownloadImpacts && (

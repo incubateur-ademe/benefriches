@@ -1,84 +1,96 @@
-import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
+import Alert from "@codegouvfr/react-dsfr/Alert";
+import { SiteNature } from "shared";
+
+import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
 import { UrbanSprawlImpactsComparisonState } from "../../application/project-impacts-urban-sprawl-comparison/urbanSprawlComparison.reducer";
 import { ViewMode } from "../../application/project-impacts/projectImpacts.reducer";
-import ProjectImpactsActionBar from "../shared/actions/ProjectImpactsActionBar";
-import ImpactsComparisonFooter from "./ImpactsComparisonFooter";
-import ImpactsComparisonHeader from "./ImpactsComparisonHeader";
-import ImpactComparisonListView from "./list-view/ImpactsComparisonListView";
-import ImpactsSummaryViewContainer from "./summary-view";
+import ImpactComparisonSelect from "./ImpactComparisonSelect";
+import ImpactsComparisonResult from "./ImpactsComparisonResult";
 
 type Props = {
   projectId: string;
+  relatedSiteNature: SiteNature;
+  projectImpactsLoadingState: "idle" | "success" | "error" | "loading";
   onEvaluationPeriodChange: (n: number) => void;
   onCurrentViewModeChange: (n: ViewMode) => void;
+  onSelectComparisonSiteNature: (n: SiteNature) => void;
 } & Pick<
-  Required<UrbanSprawlImpactsComparisonState>,
-  "baseCase" | "comparisonCase" | "currentViewMode" | "evaluationPeriod" | "projectData"
+  UrbanSprawlImpactsComparisonState,
+  | "baseCase"
+  | "comparisonCase"
+  | "currentViewMode"
+  | "dataLoadingState"
+  | "evaluationPeriod"
+  | "projectData"
 >;
 
-const ImpactsComparisonView = ({
-  evaluationPeriod,
-  currentViewMode,
+const ProjectImpactsUrbanSprawlImpactsComparisonView = ({
+  dataLoadingState,
   projectData,
   baseCase,
   comparisonCase,
+  projectId,
+  relatedSiteNature,
+  currentViewMode,
+  evaluationPeriod,
+  projectImpactsLoadingState,
   onCurrentViewModeChange,
   onEvaluationPeriodChange,
+  onSelectComparisonSiteNature,
 }: Props) => {
-  const headerProps = {
-    projectType: projectData.developmentPlan.type,
-    projectName: projectData.name,
-    baseSiteName: baseCase.conversionSiteData.name,
-    comparisonSiteName: comparisonCase.conversionSiteData.name,
-  };
+  if (projectImpactsLoadingState === "error") {
+    return (
+      <Alert
+        description="Une erreur s'est produite lors du chargement des données, veuillez réessayer."
+        severity="error"
+        title="Impossible de charger la comparaison des impacts du projet"
+        className="my-7"
+      />
+    );
+  }
 
+  if (projectImpactsLoadingState === "loading") {
+    return <LoadingSpinner />;
+  }
   return (
     <>
-      <ImpactsComparisonHeader {...headerProps} className="py-8" />
-
-      <div className="fr-container pb-14">
-        <ProjectImpactsActionBar
-          selectedViewMode={currentViewMode}
-          evaluationPeriod={evaluationPeriod}
-          onViewModeClick={onCurrentViewModeChange}
-          onEvaluationPeriodChange={onEvaluationPeriodChange}
-          header={<ImpactsComparisonHeader {...headerProps} />}
-          disabledSegments={["charts"]}
-          className="py-4 mb-2"
-        />
-
-        {currentViewMode === "summary" && (
-          <>
-            <HtmlTitle>{`Synthèse - ${projectData.name} - Comparaison des impacts`}</HtmlTitle>
-            <ImpactsSummaryViewContainer />
-          </>
-        )}
-        {currentViewMode === "list" && (
-          <>
-            <HtmlTitle>{`Liste - ${projectData.name} - Comparaison des impacts`}</HtmlTitle>
-            <ImpactComparisonListView
-              projectType={projectData.developmentPlan.type}
-              baseCase={{
-                siteName: baseCase.conversionSiteData.name,
-                impacts: baseCase.comparisonImpacts,
-              }}
-              comparisonCase={{
-                siteName: comparisonCase.conversionSiteData.name,
-                impacts: comparisonCase.comparisonImpacts,
-              }}
-            />
-          </>
-        )}
-        {currentViewMode === "charts" && <h2 className="py-10"> 🏗️️ Bientôt disponible...</h2>}
-        <ImpactsComparisonFooter
-          baseCaseSiteData={baseCase.conversionSiteData}
-          comparisonCaseSiteData={comparisonCase.conversionSiteData}
-          projectData={projectData}
+      <div className="flex justify-between items-end">
+        <h2 className="mb-0">Comparer les impacts avec...</h2>
+        <ImpactComparisonSelect
+          baseSiteNature={relatedSiteNature}
+          onSelectOption={onSelectComparisonSiteNature}
         />
       </div>
+
+      {dataLoadingState === "error" && (
+        <div className="py-6">
+          <h1 className="text-sm uppercase font-normal mb-1">Comparaison des impacts</h1>
+          <Alert
+            description="Une erreur s'est produite lors du chargement des données, veuillez réessayer."
+            severity="error"
+            title="Impossible de charger la comparaison des impacts du projet"
+            className="my-7"
+          />
+        </div>
+      )}
+
+      {dataLoadingState === "loading" && <LoadingSpinner />}
+
+      {dataLoadingState === "success" && (
+        <ImpactsComparisonResult
+          projectId={projectId}
+          currentViewMode={currentViewMode}
+          evaluationPeriod={evaluationPeriod}
+          onCurrentViewModeChange={onCurrentViewModeChange}
+          onEvaluationPeriodChange={onEvaluationPeriodChange}
+          projectData={projectData!}
+          baseCase={baseCase!}
+          comparisonCase={comparisonCase!}
+        />
+      )}
     </>
   );
 };
 
-export default ImpactsComparisonView;
+export default ProjectImpactsUrbanSprawlImpactsComparisonView;

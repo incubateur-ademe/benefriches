@@ -113,15 +113,15 @@ const ProjectPageHeader = ({
               className={classNames("z-40", "w-80", MENU_ITEMS_CLASSES)}
             >
               {hasUpdateFeature && (
-                <MenuItemButton iconId="fr-icon-edit-line" linkProps={updateProjectLinkProps}>
-                  Modifier les caractéristiques du projet
-                </MenuItemButton>
-              )}
-              <MenuSeparator className="my-1 h-px bg-border-grey mx-3" />
-              {hasUpdateFeature && (
-                <MenuItemButton iconId="ri-file-copy-line" onClick={onDuplicateProject}>
-                  Évaluer une variante du projet
-                </MenuItemButton>
+                <>
+                  <MenuItemButton iconId="fr-icon-edit-line" linkProps={updateProjectLinkProps}>
+                    Modifier les caractéristiques du projet
+                  </MenuItemButton>
+                  <MenuSeparator className="my-1 h-px bg-border-grey mx-3" />
+                  <MenuItemButton iconId="ri-file-copy-line" onClick={onDuplicateProject}>
+                    Évaluer une variante du projet
+                  </MenuItemButton>
+                </>
               )}
               <MenuItemButton iconId="fr-icon-file-add-line" linkProps={createProjectLinkProps}>
                 Évaluer un nouveau projet

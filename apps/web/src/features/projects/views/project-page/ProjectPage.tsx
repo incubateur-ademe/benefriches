@@ -3,7 +3,8 @@ import { Route } from "type-route";
 import classNames from "@/shared/views/clsx";
 import { routes, useRoute } from "@/shared/views/router.ts";
 
-import ProjectFeaturesViewContainer from "./features/index.tsx";
+import ProjectImpactsUrbanSprawlImpactsComparisonView from "../project-impacts-urban-sprawl-comparison";
+import ProjectFeaturesView from "./features/index.tsx";
 import ProjectPageTabs from "./header/ProjectPageTabs.tsx";
 import ProjectPageHeader from "./header/index.tsx";
 import ProjectImpactsView from "./impacts";
@@ -33,9 +34,11 @@ function ProjectPage({ projectId }: Props) {
         {(() => {
           switch (route.name) {
             case "projectFeatures":
-              return <ProjectFeaturesViewContainer projectId={projectId} />;
+              return <ProjectFeaturesView projectId={projectId} />;
             case "projectImpacts":
               return <ProjectImpactsView projectId={projectId} />;
+            case "urbanSprawlImpactsComparison":
+              return <ProjectImpactsUrbanSprawlImpactsComparisonView projectId={projectId} />;
           }
         })()}
       </div>

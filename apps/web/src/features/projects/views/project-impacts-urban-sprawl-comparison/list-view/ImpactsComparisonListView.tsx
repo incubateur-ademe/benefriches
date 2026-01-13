@@ -1,4 +1,4 @@
-import { DevelopmentPlanType, UrbanSprawlComparisonImpacts } from "shared";
+import { DevelopmentPlanType, SiteNature, UrbanSprawlComparisonImpacts } from "shared";
 
 import TableHeaderRow from "./layout/TableHeaderRow";
 import ImpactComparisonTableSeparatorRow from "./layout/TableSeparatorRow";
@@ -10,11 +10,11 @@ import ImpactComparisonListSocioEconomicSection from "./sections/SocioEconomicSe
 type Props = {
   baseCase: {
     impacts: UrbanSprawlComparisonImpacts;
-    siteName: string;
+    siteNature: SiteNature;
   };
   comparisonCase: {
     impacts: UrbanSprawlComparisonImpacts;
-    siteName: string;
+    siteNature: SiteNature;
   };
   projectType: DevelopmentPlanType;
 };
@@ -25,8 +25,8 @@ const ImpactComparisonListView = ({ baseCase, comparisonCase, projectType }: Pro
       <table className="w-full" cellSpacing="0" cellPadding="0">
         <thead>
           <TableHeaderRow
-            baseCaseSiteName={baseCase.siteName}
-            comparisonCaseSiteName={comparisonCase.siteName}
+            baseCaseSiteNature={baseCase.siteNature}
+            comparisonCaseSiteNature={comparisonCase.siteNature}
           />
         </thead>
         <tbody>

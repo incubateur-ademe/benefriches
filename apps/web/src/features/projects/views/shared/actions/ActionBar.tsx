@@ -1,4 +1,4 @@
-import { SegmentedControl } from "@codegouvfr/react-dsfr/SegmentedControl";
+import { SegmentedControl, SegmentedControlProps } from "@codegouvfr/react-dsfr/SegmentedControl";
 
 import { ViewMode } from "@/features/projects/application/project-impacts/projectImpacts.reducer";
 import classNames, { ClassValue } from "@/shared/views/clsx";
@@ -6,15 +6,15 @@ import { useIsSmallScreen } from "@/shared/views/hooks/useIsSmallScreen";
 
 import ImpactEvaluationPeriodSelect from "./ImpactEvaluationPeriodSelect";
 
-type Props = {
+export type ActionBarProps = {
   selectedViewMode: ViewMode;
   evaluationPeriod: number | undefined;
   onViewModeClick: (viewMode: ViewMode) => void;
   onEvaluationPeriodChange: (n: number) => void;
   small?: boolean;
-  ref?: React.Ref<HTMLElement>;
-  disabledSegments?: ViewMode[];
+  segments?: [ViewMode, ViewMode, ViewMode?, ViewMode?, ViewMode?];
   className?: ClassValue;
+  ref?: React.Ref<HTMLElement>;
 };
 
 function ImpactsActionBar({
@@ -22,20 +22,11 @@ function ImpactsActionBar({
   selectedViewMode,
   evaluationPeriod,
   onEvaluationPeriodChange,
-  ref,
-  disabledSegments,
+  segments = ["summary", "list", "charts"],
   className,
-}: Props) {
+  ref,
+}: ActionBarProps) {
   const isSmScreen = useIsSmallScreen();
-  const getViewSegmentInputProps = (value: ViewMode) => {
-    return {
-      disabled: disabledSegments?.includes(value),
-      checked: selectedViewMode === value,
-      onChange: () => {
-        onViewModeClick(value);
-      },
-    };
-  };
 
   return (
     <section ref={ref} className={classNames("flex", "flex-wrap", "gap-4", className)}>
@@ -49,23 +40,48 @@ function ImpactsActionBar({
         small={isSmScreen}
         legend="Filtres"
         hideLegend
-        segments={[
-          {
-            label: "Synthèse",
-            nativeInputProps: getViewSegmentInputProps("summary"),
-            iconId: "fr-icon-lightbulb-line",
-          },
-          {
-            label: "Liste",
-            nativeInputProps: getViewSegmentInputProps("list"),
-            iconId: "fr-icon-list-unordered",
-          },
-          {
-            label: "Graphique",
-            nativeInputProps: getViewSegmentInputProps("charts"),
-            iconId: "fr-icon-line-chart-fill",
-          },
-        ]}
+        segments={
+          segments.map((viewMode) => {
+            switch (viewMode) {
+              case "charts":
+                return {
+                  label: "Graphique",
+                  iconId: "fr-icon-line-chart-fill",
+
+                  nativeInputProps: {
+                    checked: selectedViewMode === "charts",
+                    onChange: () => {
+                      onViewModeClick("charts");
+                    },
+                  },
+                };
+              case "list":
+                return {
+                  label: "Liste",
+                  iconId: "fr-icon-list-unordered",
+
+                  nativeInputProps: {
+                    checked: selectedViewMode === "list",
+                    onChange: () => {
+                      onViewModeClick("list");
+                    },
+                  },
+                };
+              case "summary":
+                return {
+                  label: "Synthèse",
+                  iconId: "fr-icon-lightbulb-line",
+
+                  nativeInputProps: {
+                    checked: selectedViewMode === "summary",
+                    onChange: () => {
+                      onViewModeClick("summary");
+                    },
+                  },
+                };
+            }
+          }) as SegmentedControlProps["segments"]
+        }
       />
     </section>
   );
