@@ -2,6 +2,7 @@ import Alert from "@codegouvfr/react-dsfr/Alert";
 import { useState } from "react";
 import { SiteNature } from "shared";
 
+import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
 import { UrbanSprawlImpactsComparisonState } from "../../application/project-impacts-urban-sprawl-comparison/urbanSprawlComparison.reducer";
@@ -15,6 +16,7 @@ import UrbanSprawlImpactsComparisonIntroductionModal, {
 type Props = {
   projectId: string;
   relatedSiteNature: SiteNature;
+  projectName: string;
   projectImpactsLoadingState: "idle" | "success" | "error" | "loading";
   shouldDisplayOnBoarding: boolean;
   onCompleteOnBoarding: () => void;
@@ -38,6 +40,7 @@ const ProjectImpactsUrbanSprawlImpactsComparisonView = ({
   comparisonCase,
   projectId,
   relatedSiteNature,
+  projectName,
   currentViewMode,
   evaluationPeriod,
   projectImpactsLoadingState,
@@ -67,6 +70,8 @@ const ProjectImpactsUrbanSprawlImpactsComparisonView = ({
   return (
     <>
       <div className="flex justify-between items-end">
+        <HtmlTitle>{`${projectName} - Comparaison des impacts`}</HtmlTitle>
+
         <h2 className="mb-0">Comparer les impacts avec...</h2>
         <ImpactComparisonSelect
           baseSiteNature={relatedSiteNature}

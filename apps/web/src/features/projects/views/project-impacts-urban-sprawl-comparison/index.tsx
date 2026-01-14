@@ -31,6 +31,8 @@ function ImpactsComparisonPageContainer({ projectId }: Props) {
     evaluationPeriod: projectImpactsEvaluationPeriod,
     dataLoadingState: projectImpactsLoadingState,
   } = useAppSelector((state) => state.projectImpacts);
+
+  const projectName = useAppSelector((state) => state.projectImpacts.projectData?.name);
   const relatedSiteNature = useAppSelector((state) => state.projectImpacts.relatedSiteData?.nature);
 
   useEffect(() => {
@@ -63,6 +65,7 @@ function ImpactsComparisonPageContainer({ projectId }: Props) {
     <ProjectImpactsUrbanSprawlImpactsComparisonView
       projectId={projectId}
       relatedSiteNature={relatedSiteNature!}
+      projectName={projectName!}
       evaluationPeriod={evaluationPeriod}
       projectImpactsLoadingState={projectImpactsLoadingState}
       {...comparisonState}
