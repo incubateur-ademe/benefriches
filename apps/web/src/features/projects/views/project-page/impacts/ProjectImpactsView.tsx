@@ -16,7 +16,7 @@ import ExportImpactsModal from "../export-impacts/ExportModal";
 import ProjectImpactFooter from "../footer/ProjectImpactFooter";
 import ProjectPageHeader from "../header";
 import ImpactsAccuracyDisclaimer from "../impacts-accuracy-disclaimer/ImpactsAccuracyDisclaimer";
-import AboutImpactsModal from "./about-impacts-modal/AboutImpactsModal";
+import AboutImpactsModalButton from "./about-impacts-modal/AboutImpactsModalButton";
 import ImpactsChartsView from "./charts-view";
 import ImpactsListViewContainer from "./list-view";
 import ImpactsSummaryViewContainer from "./summary-view";
@@ -104,7 +104,21 @@ const ProjectImpactsView = ({
               projectContext.type === "URBAN_PROJECT" && !projectContext.isExpressProject
             }
           />
-          <AboutImpactsModal />
+
+          <div className="py-8">
+            💡 Comment sont calculés les indicateurs ? Qu’est-ce qu’un impact monétarisé ?
+            Bénéfriches répond à toutes vos questions dans sa
+            <AboutImpactsModalButton
+              buttonProps={{
+                className: "ml-2",
+                children: "FAQ",
+                iconId: "fr-icon-questionnaire-line",
+                size: "small",
+                priority: "tertiary",
+              }}
+            />
+            .
+          </div>
           <ExportImpactsModal projectId={projectId} siteId={projectContext.siteId} />
         </>
       )}

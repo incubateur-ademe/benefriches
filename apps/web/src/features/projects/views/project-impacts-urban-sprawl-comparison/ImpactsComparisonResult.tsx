@@ -5,6 +5,7 @@ import {
   ViewMode,
 } from "../../application/project-impacts-urban-sprawl-comparison/urbanSprawlComparison.reducer.ts";
 import ProjectPageHeader from "../project-page/header";
+import AboutImpactsModalButton from "../project-page/impacts/about-impacts-modal/AboutImpactsModalButton.tsx";
 import ProjectImpactsActionBar from "../shared/actions/ProjectImpactsActionBar";
 import ImpactComparisonListView from "./list-view/ImpactsComparisonListView";
 import ImpactsSummaryViewContainer from "./summary-view";
@@ -61,6 +62,20 @@ function ImpactsComparisonResult({
           />
         </>
       )}
+      <div className="py-8">
+        💡 Comment sont calculés les indicateurs ? Qu’est-ce qu’un impact monétarisé ? Bénéfriches
+        répond à toutes vos questions dans sa
+        <AboutImpactsModalButton
+          buttonProps={{
+            className: "ml-2",
+            children: "FAQ",
+            iconId: "fr-icon-questionnaire-line",
+            size: "small",
+            priority: "tertiary",
+          }}
+        />
+        .
+      </div>
     </>
   );
 }
