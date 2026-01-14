@@ -1,3 +1,5 @@
+import Button from "@codegouvfr/react-dsfr/Button";
+
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 
 import {
@@ -7,6 +9,7 @@ import {
 import ProjectPageHeader from "../project-page/header";
 import AboutImpactsModalButton from "../project-page/impacts/about-impacts-modal/AboutImpactsModalButton.tsx";
 import ProjectImpactsActionBar from "../shared/actions/ProjectImpactsActionBar";
+import { ONBOARDING_DIALOG_ID } from "./introduction/IntroModal.tsx";
 import ImpactComparisonListView from "./list-view/ImpactsComparisonListView";
 import ImpactsSummaryViewContainer from "./summary-view";
 
@@ -38,6 +41,18 @@ function ImpactsComparisonResult({
         header={<ProjectPageHeader projectId={projectData.id} />}
         segments={["summary", "list"]}
         className="py-12 mb-2"
+        actions={
+          <Button
+            priority="secondary"
+            iconId="fr-icon-question-mark"
+            nativeButtonProps={{
+              "aria-controls": ONBOARDING_DIALOG_ID,
+              "data-fr-opened": false,
+            }}
+          >
+            Revoir l'explication
+          </Button>
+        }
       />
 
       {currentViewMode === "summary" && (

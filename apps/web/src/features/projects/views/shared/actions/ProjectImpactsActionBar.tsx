@@ -1,8 +1,7 @@
-import Button from "@codegouvfr/react-dsfr/Button";
 import { ReactNode, useState } from "react";
 
 import { ViewMode } from "@/features/projects/application/project-impacts/projectImpacts.reducer";
-import { ClassValue } from "@/shared/views/clsx";
+import classNames, { ClassValue } from "@/shared/views/clsx";
 
 import ImpactsActionBar, { ActionBarProps } from "./ActionBar";
 import StickyActionBar from "./StickyActionBar";
@@ -12,10 +11,10 @@ type Props = {
   evaluationPeriod: number | undefined;
   onViewModeClick: (viewMode: ViewMode) => void;
   onEvaluationPeriodChange: (n: number) => void;
-  onDownloadImpacts?: () => void;
   header: ReactNode;
   segments?: ActionBarProps["segments"];
   className?: ClassValue;
+  actions?: ReactNode;
 };
 
 function ProjectImpactsActionBar({
@@ -23,7 +22,7 @@ function ProjectImpactsActionBar({
   selectedViewMode,
   evaluationPeriod,
   onEvaluationPeriodChange,
-  onDownloadImpacts,
+  actions,
   header,
   segments,
   className,
@@ -51,7 +50,7 @@ function ProjectImpactsActionBar({
           onEvaluationPeriodChange={onEvaluationPeriodChange}
         />
       )}
-      <div className="flex flex-wrap gap-2 justify-between">
+      <div className={classNames("flex flex-wrap gap-2 justify-between", className)}>
         <ImpactsActionBar
           ref={inlineActionBarRef}
           selectedViewMode={selectedViewMode}
@@ -59,17 +58,8 @@ function ProjectImpactsActionBar({
           onViewModeClick={onViewModeClick}
           onEvaluationPeriodChange={onEvaluationPeriodChange}
           segments={segments}
-          className={className}
         />
-        {onDownloadImpacts && (
-          <Button
-            priority="primary"
-            iconId="fr-icon-file-download-line"
-            onClick={onDownloadImpacts}
-          >
-            Télécharger les impacts
-          </Button>
-        )}
+        {actions}
       </div>
     </>
   );

@@ -1,4 +1,5 @@
 import Alert from "@codegouvfr/react-dsfr/Alert";
+import Button from "@codegouvfr/react-dsfr/Button";
 import { SiteNature } from "shared";
 
 import { ProjectDevelopmentPlanType } from "@/features/projects/domain/projects.types";
@@ -61,10 +62,18 @@ const ProjectImpactsView = ({
         onViewModeClick={onCurrentViewModeChange}
         onEvaluationPeriodChange={onEvaluationPeriodChange}
         header={<ProjectPageHeader projectId={projectId} />}
-        onDownloadImpacts={() => {
-          trackEvent(impactsExportModalOpened());
-          exportImpactsModal.open();
-        }}
+        actions={
+          <Button
+            priority="primary"
+            iconId="fr-icon-file-download-line"
+            onClick={() => {
+              trackEvent(impactsExportModalOpened());
+              exportImpactsModal.open();
+            }}
+          >
+            Télécharger les impacts
+          </Button>
+        }
       />
 
       {dataLoadingState === "error" && (
