@@ -26,7 +26,7 @@ const getTextFromSiteNature = (nature: SiteNature) => {
     case "AGRICULTURAL_OPERATION":
       return {
         projectText: `Projet sur exploitation agricole`,
-        conversion: "l'exploitation agricole est reconvertie",
+        conversion: "L'exploitation agricole est reconvertie",
         statuQuo: "l’exploitation agricole reste une exploitation",
       };
     case "FRICHE":
