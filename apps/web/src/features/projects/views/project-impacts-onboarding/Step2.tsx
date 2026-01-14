@@ -1,4 +1,4 @@
-import EmojiListItem from "./StepEmojiListItem";
+import EmojiListItem from "../shared/emoji-li-item/StepEmojiListItem";
 import StepView from "./StepView";
 
 type Props = {
@@ -8,7 +8,7 @@ type Props = {
   skipOnboarding: () => void;
 };
 
-const EMOJI_CLASSNAME = "bg-[#FCEEAC]";
+const EMOJI_CLASSES = { emoji: "bg-[#FCEEAC]" };
 
 export default function Step2({
   onNextClick,
@@ -33,16 +33,16 @@ export default function Step2({
         <li className="text-xl">
           Les acteurs liés au projet d'aménagement :
           <ul className="text-base list-none space-y-2">
-            <EmojiListItem emoji="👨‍🌾" emojiClassName={EMOJI_CLASSNAME}>
+            <EmojiListItem emoji="👨‍🌾" classes={EMOJI_CLASSES}>
               L'actuel propriétaire et/ou exploitant du site
             </EmojiListItem>
-            <EmojiListItem emoji="👨‍💼" emojiClassName={EMOJI_CLASSNAME}>
+            <EmojiListItem emoji="👨‍💼" classes={EMOJI_CLASSES}>
               Le futur propriétaire et/ou exploitant du site
             </EmojiListItem>
-            <EmojiListItem emoji="👷‍♀️" emojiClassName={EMOJI_CLASSNAME}>
+            <EmojiListItem emoji="👷‍♀️" classes={EMOJI_CLASSES}>
               L'aménageur ou le promoteur
             </EmojiListItem>
-            <EmojiListItem emoji="🏛️️" emojiClassName={EMOJI_CLASSNAME}>
+            <EmojiListItem emoji="🏛️️" classes={EMOJI_CLASSES}>
               La collectivité
             </EmojiListItem>
           </ul>
@@ -51,25 +51,25 @@ export default function Step2({
         <li className="text-xl">
           Les groupes de population pouvant être concernés par le projet ou ses retombées :
           <ul className="text-base list-none space-y-2">
-            <EmojiListItem emoji="🏘️️" emojiClassName={EMOJI_CLASSNAME}>
+            <EmojiListItem emoji="🏘️️" classes={EMOJI_CLASSES}>
               La population locale <span>→</span>{" "}
               <span className="font-normal">
                 Concernée, par exemple, par la valeur patrimoniale des bâtiments
               </span>
             </EmojiListItem>
-            <EmojiListItem emoji="🏬" emojiClassName={EMOJI_CLASSNAME}>
+            <EmojiListItem emoji="🏬" classes={EMOJI_CLASSES}>
               Les structures locales <span>→</span>{" "}
               <span className="font-normal">
                 Concernées, par exemple, par les dépenses de climatisation évitées
               </span>
             </EmojiListItem>
-            <EmojiListItem emoji="🇫🇷" emojiClassName={EMOJI_CLASSNAME}>
+            <EmojiListItem emoji="🇫🇷" classes={EMOJI_CLASSES}>
               La société française <span>→</span>{" "}
               <span className="font-normal">
                 Concernée, par exemple, par les dépenses de santé évitées
               </span>
             </EmojiListItem>
-            <EmojiListItem emoji="🌍" emojiClassName={EMOJI_CLASSNAME}>
+            <EmojiListItem emoji="🌍" classes={EMOJI_CLASSES}>
               La société humaine <span>→</span>{" "}
               <span className="font-normal">
                 Concernée, par exemple, par les services écosystémiques

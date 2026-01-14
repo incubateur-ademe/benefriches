@@ -1,12 +1,13 @@
-import Button from "@codegouvfr/react-dsfr/Button";
+import Button, { ButtonProps } from "@codegouvfr/react-dsfr/Button";
 import Select from "@codegouvfr/react-dsfr/SelectNext";
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { SiteNature } from "shared";
 
 type Props = {
-  onSelectOption: (comparisonSiteNature: SiteNature) => void;
+  onSubmit: (formData: FormValues) => void;
   baseSiteNature: SiteNature;
+  nativeSubmitButtonProps?: ButtonProps["nativeButtonProps"];
 };
 
 const COMPARE_SITE_OPTIONS = [
@@ -28,7 +29,7 @@ type FormValues = {
   comparisonSiteNature: "AGRICULTURAL_OPERATION" | "NATURAL_AREA" | "FRICHE";
 };
 
-function ImpactComparisonSelect({ onSelectOption, baseSiteNature }: Props) {
+function ImpactComparisonSelect({ onSubmit, baseSiteNature, nativeSubmitButtonProps }: Props) {
   const options = useMemo(
     () => COMPARE_SITE_OPTIONS.filter((siteNature) => siteNature.value !== baseSiteNature),
     [baseSiteNature],
@@ -39,12 +40,7 @@ function ImpactComparisonSelect({ onSelectOption, baseSiteNature }: Props) {
   });
 
   return (
-    <form
-      className="flex gap-2 items-end"
-      onSubmit={handleSubmit((formData) => {
-        onSelectOption(formData.comparisonSiteNature);
-      })}
-    >
+    <form className="flex gap-2 items-end" onSubmit={handleSubmit(onSubmit)}>
       <Select
         options={options.map(({ label, value }) => ({
           label,
@@ -59,7 +55,7 @@ function ImpactComparisonSelect({ onSelectOption, baseSiteNature }: Props) {
         }}
         className="grow mb-0 [&>label]:text-sm"
       />
-      <Button priority="primary" type="submit">
+      <Button priority="primary" type="submit" nativeButtonProps={nativeSubmitButtonProps}>
         Comparer
       </Button>
     </form>

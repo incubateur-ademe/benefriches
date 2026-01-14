@@ -1,4 +1,4 @@
-import Dialog from "@/shared/views/components/Dialog/A11yDialog";
+import Dialog from "@/shared/views/components/Dialog/DsfrA11yDialog";
 
 import AboutImpactsContent from "../../../shared/impacts/AboutImpactsContent";
 

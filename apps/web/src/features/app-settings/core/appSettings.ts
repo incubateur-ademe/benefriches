@@ -7,6 +7,7 @@ export type AppSettings = {
   displayImpactsAccuracyDisclaimer: boolean;
   askForConfirmationOnStepRevert: boolean;
   impactsOnboardingLastSeenAt: string | null;
+  urbanSprawlComparisonOnboardingLastSeenAt: string | null;
 };
 
 export const DEFAULT_APP_SETTINGS: AppSettings = {
@@ -14,6 +15,7 @@ export const DEFAULT_APP_SETTINGS: AppSettings = {
   displayImpactsAccuracyDisclaimer: true,
   askForConfirmationOnStepRevert: true,
   impactsOnboardingLastSeenAt: null,
+  urbanSprawlComparisonOnboardingLastSeenAt: null,
 };
 
 export const selectAppSettings = (state: RootState) => state.appSettings;

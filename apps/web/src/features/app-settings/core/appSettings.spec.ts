@@ -18,6 +18,7 @@ describe("App settings", () => {
       displayExpressSiteDisclaimer: true,
       displayImpactsAccuracyDisclaimer: true,
       impactsOnboardingLastSeenAt: null,
+      urbanSprawlComparisonOnboardingLastSeenAt: null,
     });
     const store = createStore(
       getTestAppDependencies({
@@ -30,6 +31,7 @@ describe("App settings", () => {
       displayExpressSiteDisclaimer: true,
       displayImpactsAccuracyDisclaimer: true,
       impactsOnboardingLastSeenAt: null,
+      urbanSprawlComparisonOnboardingLastSeenAt: null,
     });
   });
 

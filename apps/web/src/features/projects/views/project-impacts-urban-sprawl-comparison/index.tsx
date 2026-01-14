@@ -10,6 +10,8 @@ import {
   setViewMode,
   ViewMode,
 } from "../../application/project-impacts-urban-sprawl-comparison/urbanSprawlComparison.reducer";
+import { urbanSprawlComparisonOnboardingCompleted } from "../../application/project-impacts-urban-sprawl-comparison/urbanSprawlComparisonOnboardingSkip.action";
+import { selectDisplayOnboarding } from "../../application/project-impacts-urban-sprawl-comparison/urbanSprawlComparisonOnboardingSkip.selector";
 import ProjectImpactsUrbanSprawlImpactsComparisonView from "./ImpactsComparisonView";
 
 type Props = {
@@ -22,6 +24,8 @@ function ImpactsComparisonPageContainer({ projectId }: Props) {
   const { comparisonSiteNature, evaluationPeriod, ...comparisonState } = useAppSelector(
     (state) => state.urbanSprawlComparison,
   );
+
+  const shouldDisplayOnBoarding = useAppSelector(selectDisplayOnboarding);
 
   const {
     evaluationPeriod: projectImpactsEvaluationPeriod,
@@ -51,6 +55,10 @@ function ImpactsComparisonPageContainer({ projectId }: Props) {
     dispatch(setComparisonSiteNature(selectedSiteNature));
   };
 
+  const onCompleteOnBoarding = () => {
+    dispatch(urbanSprawlComparisonOnboardingCompleted());
+  };
+
   return (
     <ProjectImpactsUrbanSprawlImpactsComparisonView
       projectId={projectId}
@@ -58,6 +66,8 @@ function ImpactsComparisonPageContainer({ projectId }: Props) {
       evaluationPeriod={evaluationPeriod}
       projectImpactsLoadingState={projectImpactsLoadingState}
       {...comparisonState}
+      shouldDisplayOnBoarding={shouldDisplayOnBoarding}
+      onCompleteOnBoarding={onCompleteOnBoarding}
       onSelectComparisonSiteNature={onSelectComparisonSiteNature}
       onEvaluationPeriodChange={(evaluationPeriod: number) =>
         dispatch(setEvaluationPeriod(evaluationPeriod))

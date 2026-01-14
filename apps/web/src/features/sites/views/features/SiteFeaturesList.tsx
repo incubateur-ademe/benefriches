@@ -19,12 +19,14 @@ import { SiteFeatures } from "../../core/site.types";
 import ExpressSiteDisclaimer from "./ExpressSiteDisclaimer";
 import SiteFeaturesManagementSection from "./SiteFeaturesManagementSection";
 
-type Props = SiteFeatures;
+type Props = SiteFeatures & { withExpressDisclaimer?: boolean };
 
-export default function SiteFeaturesList(siteFeatures: Props) {
+export default function SiteFeaturesList({ withExpressDisclaimer = true, ...siteFeatures }: Props) {
   return (
     <>
-      {siteFeatures.isExpressSite && <ExpressSiteDisclaimer siteNature={siteFeatures.nature} />}
+      {withExpressDisclaimer && siteFeatures.isExpressSite && (
+        <ExpressSiteDisclaimer siteNature={siteFeatures.nature} />
+      )}
       <Section title="📍 Localisation">
         <DataLine label={<strong>Adresse du site</strong>} value={siteFeatures.address} />
       </Section>

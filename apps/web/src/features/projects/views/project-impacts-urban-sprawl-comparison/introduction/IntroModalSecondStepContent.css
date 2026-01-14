@@ -1,0 +1,19 @@
+@media only screen and (min-width: 800px) {
+  .onboarding-divider-svg::after {
+    content: "";
+    position: absolute;
+    --divider-width: 67px;
+    right: calc(var(--divider-width) / 2 * -1);
+    top: 0;
+    width: var(--divider-width);
+    height: 224px;
+
+    background-image: url("data:image/svg+xml,%3Csvg width='67' height='224' viewBox='0 0 67 224' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M63.6145 1.2997C63.8893 0.334804 64.8536 -0.212326 65.7681 0.0776878C66.6827 0.367716 67.2012 1.38505 66.9264 2.34995C66.6437 3.34198 66.3615 4.33019 59.351 30.9367C52.3463 57.5214 38.6252 109.682 28.0944 146.247C17.5552 182.84 10.624 202.244 3.34969 222.813C3.01585 223.757 2.01981 224.237 1.1251 223.884C0.230424 223.532 -0.224248 222.481 0.109542 221.537C7.37554 200.992 14.2774 181.671 24.7854 145.186C35.3017 108.672 49.0107 56.5583 56.0191 29.9595C63.0217 3.38293 63.3183 2.33924 63.6145 1.2997Z' fill='black'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+
+  .onboarding-divider-svg {
+    position: relative;
+  }
+}
