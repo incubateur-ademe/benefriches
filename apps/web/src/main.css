@@ -177,6 +177,11 @@ text.highcharts-data-label {
   border-radius: 16px;
 }
 
+/* prevent focus on modal content elements (like highcharts charts) when it is closed */
+.fr-modal:not(.fr-modal--opened) .fr-modal__body {
+  pointer-events: none;
+}
+
 .fr-icon--xl::before {
   --icon-size: 3rem;
 }

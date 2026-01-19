@@ -1,6 +1,7 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import { useIsModalOpen } from "@codegouvfr/react-dsfr/Modal/useIsModalOpen";
 import { ReactNode } from "react";
+import { createPortal } from "react-dom";
 
 import classNames from "../../clsx";
 import { DsfrDialogContext } from "./DsfrDialogContext";
@@ -13,7 +14,7 @@ type Props = {
 const DsfrDialogWrapper = ({ dialogId, children, size = "medium" }: Props) => {
   const isOpened = useIsModalOpen({ id: dialogId, isOpenedByDefault: false });
 
-  return (
+  return createPortal(
     <DsfrDialogContext.Provider value={{ isOpened, dialogId, dialogTitleId: `${dialogId}-title` }}>
       <dialog aria-labelledby={`${dialogId}-title`} id={dialogId} className={fr.cx("fr-modal")}>
         <div className={fr.cx("fr-container", "fr-container--fluid", "fr-container-md")}>
@@ -30,7 +31,8 @@ const DsfrDialogWrapper = ({ dialogId, children, size = "medium" }: Props) => {
           </div>
         </div>
       </dialog>
-    </DsfrDialogContext.Provider>
+    </DsfrDialogContext.Provider>,
+    document.body,
   );
 };
 

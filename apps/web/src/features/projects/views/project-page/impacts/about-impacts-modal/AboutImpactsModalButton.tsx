@@ -1,7 +1,7 @@
 import Button, { ButtonProps } from "@codegouvfr/react-dsfr/Button";
 import { useId } from "react";
 
-import Dialog from "@/shared/views/components/Dialog/DsfrA11yDialog";
+import DsfrA11yDialog from "@/shared/views/components/Dialog/DsfrA11yDialog";
 
 import AboutImpactsContent from "../../../shared/impacts/AboutImpactsContent";
 
@@ -27,10 +27,10 @@ function AboutImpactsModalButton({
           "data-fr-opened": false,
         }}
       />
-      <Dialog dialogId={dialogId} title="Comprendre les impacts" size="large">
+      <DsfrA11yDialog dialogId={dialogId} title="Comprendre les impacts" size="large">
         <h2 className="text-xl">Questions fréquentes</h2>
         <AboutImpactsContent />
-      </Dialog>
+      </DsfrA11yDialog>
     </>
   );
 }

@@ -116,6 +116,12 @@ export default function UrbanSprawlImpactsComparisonIntroductionModal({
               />
             </>
           );
+        } else {
+          return (
+            <DsfrDialogContent>
+              <DsfrDialogTitle>Comparaison des impacts</DsfrDialogTitle>
+            </DsfrDialogContent>
+          );
         }
       })()}
     </DsfrDialogWrapper>
