@@ -1,6 +1,6 @@
 # Feature Planning
 
-Create a plan in `specs/<feature-name>.md` for the `Feature` below.
+Create a plan in `specs/<current-timestamp>-<feature-name>.md` for the `Feature` below.
 
 ## Instructions
 
