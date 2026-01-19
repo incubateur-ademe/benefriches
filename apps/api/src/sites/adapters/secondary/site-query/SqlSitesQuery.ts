@@ -10,7 +10,7 @@ import {
   SqlSiteIncome,
   SqlSiteSoilsDistribution,
 } from "src/shared-kernel/adapters/sql-knex/tableTypes";
-import { SitesQuery } from "src/sites/core/gateways/SitesQuery";
+import { SitesQuery, SiteSurfaceAreaAndCityCode } from "src/sites/core/gateways/SitesQuery";
 import { SiteFeaturesView, SiteView } from "src/sites/core/models/views";
 
 export class SqlSitesQuery implements SitesQuery {
@@ -221,5 +221,22 @@ export class SqlSitesQuery implements SitesQuery {
       .first()) as { mutafriches_evaluation_id: string | null } | undefined;
 
     return latestCompatibilityEvaluationResult?.mutafriches_evaluation_id ?? null;
+  }
+
+  async getSiteSurfaceAreaAndCityCode(
+    siteId: string,
+  ): Promise<SiteSurfaceAreaAndCityCode | undefined> {
+    const result = (await this.sqlConnection("sites")
+      .where("sites.id", siteId)
+      .leftJoin("addresses", "sites.id", "addresses.site_id")
+      .select("sites.surface_area", "addresses.city_code")
+      .first()) as { surface_area: number; city_code: string } | undefined;
+
+    if (!result) return undefined;
+
+    return {
+      surfaceArea: result.surface_area,
+      cityCode: result.city_code,
+    };
   }
 }

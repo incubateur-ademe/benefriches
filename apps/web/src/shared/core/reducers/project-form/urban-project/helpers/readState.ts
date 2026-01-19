@@ -7,6 +7,7 @@ import {
   typedObjectEntries,
 } from "shared";
 
+import { DEFAULT_FUTURE_SITE_OWNER } from "../../helpers/stakeholders";
 import { ProjectFormState } from "../../projectForm.reducer";
 import { AnswersByStep, AnswerStepId, UrbanProjectFormData } from "../urbanProjectSteps";
 
@@ -58,11 +59,17 @@ export const ReadStateHelper = {
     return buildingsResalePlannedAfterDevelopment;
   },
 
+  getSiteResaleSelection(steps: ProjectFormState["urbanProject"]["steps"]) {
+    return this.getStepAnswers(steps, "URBAN_PROJECT_SITE_RESALE_SELECTION")?.siteResaleSelection;
+  },
+
   isSiteResalePlannedAfterDevelopment(steps: ProjectFormState["urbanProject"]["steps"]) {
-    return (
-      ReadStateHelper.getStepAnswers(steps, "URBAN_PROJECT_SITE_RESALE_SELECTION")
-        ?.siteResalePlannedAfterDevelopment === true
-    );
+    const selection = this.getSiteResaleSelection(steps);
+    return selection === "yes" || selection === "unknown";
+  },
+
+  isSiteResalePriceEstimated(steps: ProjectFormState["urbanProject"]["steps"]) {
+    return this.getSiteResaleSelection(steps) === "unknown";
   },
 
   getProjectSoilDistribution(steps: ProjectFormState["urbanProject"]["steps"]) {
@@ -183,7 +190,10 @@ export const ReadStateHelper = {
         steps.URBAN_PROJECT_SCHEDULE_PROJECTION?.payload?.reinstatementSchedule,
       operationsFirstYear: steps.URBAN_PROJECT_SCHEDULE_PROJECTION?.payload?.firstYearOfOperation,
       futureOperator: steps.URBAN_PROJECT_BUILDINGS_RESALE_SELECTION?.payload?.futureOperator,
-      futureSiteOwner: steps.URBAN_PROJECT_SITE_RESALE_SELECTION?.payload?.futureSiteOwner,
+      // When site resale is planned, future owner is unknown (will be determined at sale)
+      futureSiteOwner: this.isSiteResalePlannedAfterDevelopment(steps)
+        ? DEFAULT_FUTURE_SITE_OWNER
+        : undefined,
       developmentPlan: {
         type: "URBAN_PROJECT",
         developer: steps.URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER?.payload

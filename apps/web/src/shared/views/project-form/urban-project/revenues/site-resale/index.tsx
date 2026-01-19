@@ -4,9 +4,10 @@ import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 import SiteResaleRevenueForm from "./SiteResaleRevenueForm";
 
 function SiteResaleRevenueFormContainer() {
-  const { onBack, selectStepAnswers, onRequestStepCompletion } = useProjectForm();
-  const stepAnswers = useAppSelector(
-    selectStepAnswers("URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE"),
+  const { onBack, selectSiteResaleRevenueViewData, onRequestStepCompletion } = useProjectForm();
+
+  const { isPriceEstimated, initialSellingPrice, initialPropertyTransferDuties } = useAppSelector(
+    selectSiteResaleRevenueViewData,
   );
 
   return (
@@ -21,9 +22,10 @@ function SiteResaleRevenueFormContainer() {
         });
       }}
       onBack={onBack}
+      isPriceEstimated={isPriceEstimated}
       initialValues={{
-        sellingPrice: stepAnswers?.siteResaleExpectedSellingPrice,
-        propertyTransferDuties: stepAnswers?.siteResaleExpectedPropertyTransferDuties,
+        sellingPrice: initialSellingPrice,
+        propertyTransferDuties: initialPropertyTransferDuties,
       }}
     />
   );

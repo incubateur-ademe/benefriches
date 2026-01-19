@@ -11,7 +11,7 @@ type Props = {
 };
 
 type FormValues = {
-  siteResalePlanned: "yes" | "no" | null;
+  siteResalePlanned: "yes" | "no" | "unknown" | null;
 };
 
 function SiteResaleForm({ initialValues, onSubmit, onBack }: Props) {
@@ -46,6 +46,12 @@ function SiteResaleForm({ initialValues, onSubmit, onBack }: Props) {
             {
               label: "Non, l'aménageur restera entièrement propriétaire du site",
               value: "no",
+            },
+            {
+              label: "Je ne sais pas",
+              value: "unknown",
+              hintText:
+                "Bénéfriches considèrera que le foncier est revendu, ceci étant le cas le plus fréquent.",
             },
           ]}
           error={formState.errors.siteResalePlanned}

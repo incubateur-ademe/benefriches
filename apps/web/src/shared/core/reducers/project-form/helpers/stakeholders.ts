@@ -9,7 +9,7 @@ import { OwnerStructureType, TenantStructureType } from "@/shared/core/stakehold
 
 import { ProjectFormState } from "../projectForm.reducer";
 
-const DEFAULT_FUTURE_SITE_OWNER = {
+export const DEFAULT_FUTURE_SITE_OWNER = {
   name: "Futur propriétaire inconnu",
   structureType: "unknown",
 } as const satisfies ProjectStakeholder;

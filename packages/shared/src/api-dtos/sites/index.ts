@@ -8,3 +8,8 @@ export {
 } from "./getSiteFeatures.dto";
 
 export { getSiteViewResponseDtoSchema, type GetSiteViewResponseDto } from "./getSiteView.dto";
+
+export {
+  getSiteRealEstateValuationResponseDtoSchema,
+  type GetSiteRealEstateValuationResponseDto,
+} from "./getSiteRealEstateValuation.dto";

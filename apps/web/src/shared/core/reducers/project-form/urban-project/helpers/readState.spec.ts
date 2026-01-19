@@ -172,34 +172,61 @@ describe("ReadStateHelper", () => {
   });
 
   describe("isSiteResalePlannedAfterDevelopment", () => {
-    it("should return true when site resale is planned", () => {
+    it("should return true when siteResaleSelection is 'yes'", () => {
       const steps: ProjectFormState["urbanProject"]["steps"] = {
         URBAN_PROJECT_SITE_RESALE_SELECTION: {
           completed: true,
-          payload: {
-            siteResalePlannedAfterDevelopment: true,
-          },
+          payload: { siteResaleSelection: "yes" },
         },
       };
 
-      const result = ReadStateHelper.isSiteResalePlannedAfterDevelopment(steps);
-
-      expect(result).toBe(true);
+      expect(ReadStateHelper.isSiteResalePlannedAfterDevelopment(steps)).toBe(true);
     });
 
-    it("should return false when site resale is not planned", () => {
+    it("should return true when siteResaleSelection is 'unknown'", () => {
       const steps: ProjectFormState["urbanProject"]["steps"] = {
         URBAN_PROJECT_SITE_RESALE_SELECTION: {
           completed: true,
-          payload: {
-            siteResalePlannedAfterDevelopment: false,
-          },
+          payload: { siteResaleSelection: "unknown" },
         },
       };
 
-      const result = ReadStateHelper.isSiteResalePlannedAfterDevelopment(steps);
+      expect(ReadStateHelper.isSiteResalePlannedAfterDevelopment(steps)).toBe(true);
+    });
 
-      expect(result).toBe(false);
+    it("should return false when siteResaleSelection is 'no'", () => {
+      const steps: ProjectFormState["urbanProject"]["steps"] = {
+        URBAN_PROJECT_SITE_RESALE_SELECTION: {
+          completed: true,
+          payload: { siteResaleSelection: "no" },
+        },
+      };
+
+      expect(ReadStateHelper.isSiteResalePlannedAfterDevelopment(steps)).toBe(false);
+    });
+  });
+
+  describe("isSiteResalePriceEstimated", () => {
+    it("should return true when siteResaleSelection is 'unknown'", () => {
+      const steps: ProjectFormState["urbanProject"]["steps"] = {
+        URBAN_PROJECT_SITE_RESALE_SELECTION: {
+          completed: true,
+          payload: { siteResaleSelection: "unknown" },
+        },
+      };
+
+      expect(ReadStateHelper.isSiteResalePriceEstimated(steps)).toBe(true);
+    });
+
+    it("should return false when siteResaleSelection is 'yes'", () => {
+      const steps: ProjectFormState["urbanProject"]["steps"] = {
+        URBAN_PROJECT_SITE_RESALE_SELECTION: {
+          completed: true,
+          payload: { siteResaleSelection: "yes" },
+        },
+      };
+
+      expect(ReadStateHelper.isSiteResalePriceEstimated(steps)).toBe(false);
     });
   });
 

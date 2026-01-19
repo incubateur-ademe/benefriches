@@ -11,6 +11,7 @@ import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormL
 
 type Props = {
   initialValues?: FormValues;
+  isPriceEstimated?: boolean;
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
 };
@@ -20,7 +21,7 @@ type FormValues = {
   propertyTransferDuties?: number;
 };
 
-const SiteResaleRevenueForm = ({ initialValues, onSubmit, onBack }: Props) => {
+const SiteResaleRevenueForm = ({ initialValues, isPriceEstimated, onSubmit, onBack }: Props) => {
   const { handleSubmit, register, watch, setValue } = useForm<FormValues>({
     defaultValues: initialValues,
   });
@@ -34,7 +35,7 @@ const SiteResaleRevenueForm = ({ initialValues, onSubmit, onBack }: Props) => {
         <>
           <FormInfo>
             <p>
-              Il y aura peut-être une cession foncière suite à l’aménagement du site. Vous pouvez
+              Il y aura peut-être une cession foncière suite à l'aménagement du site. Vous pouvez
               renseigner ici le montant attendu de la vente. Sinon vous pouvez passer la question.
             </p>
             <p>
@@ -55,6 +56,16 @@ const SiteResaleRevenueForm = ({ initialValues, onSubmit, onBack }: Props) => {
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>
+        {isPriceEstimated && (
+          <div className="fr-alert fr-alert--info fr-mb-4w">
+            <p className="fr-alert__title">Montant pré-rempli automatiquement</p>
+            <p>
+              Vous avez indiqué ne pas savoir s'il y aurait une cession foncière. Bénéfriches a
+              considéré que ce serait le cas et estimé le montant de la vente à partir de la surface
+              du site. Vous pouvez modifier ces valeurs si l'estimation ne vous semble pas correcte.
+            </p>
+          </div>
+        )}
         <RowDecimalsNumericInput
           className="pt-4!"
           addonText="€"

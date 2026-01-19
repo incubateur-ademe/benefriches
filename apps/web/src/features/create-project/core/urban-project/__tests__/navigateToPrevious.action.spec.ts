@@ -196,7 +196,7 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
           },
           URBAN_PROJECT_SITE_RESALE_SELECTION: {
             completed: true,
-            payload: { siteResalePlannedAfterDevelopment: true },
+            payload: { siteResaleSelection: "yes" },
           },
           URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
             completed: true,
@@ -247,7 +247,7 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
             payload: { livingAndActivitySpacesDistribution: { BUILDINGS: 2000 } },
           },
           URBAN_PROJECT_SITE_RESALE_SELECTION: {
-            payload: { siteResalePlannedAfterDevelopment: true },
+            payload: { siteResaleSelection: "yes" },
             completed: true,
           },
           URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {

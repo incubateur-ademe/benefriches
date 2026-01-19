@@ -18,6 +18,7 @@ import { ReconversionCompatibilityEvaluationGateway } from "@/features/reconvers
 import { SiteGateway } from "@/features/sites/core/fetchSiteFeatures.action";
 import { UpdateProjectServiceGateway } from "@/features/update-project/core/updateProject.types";
 import { CreateFeatureAlertGateway } from "@/features/user-feature-alerts/core/CreateFeatureAlertGateway";
+import { RealEstateValuationGateway } from "@/shared/core/gateways/RealEstateValuationGateway";
 import { SiteMunicipalityDataGateway as CreateProjectMunicipalityDataGateway } from "@/shared/core/reducers/project-form/projectForm.actions";
 
 import { SoilsCarbonStorageGateway as SiteSoilsCarbonStorageGateway } from "../../../features/create-site/core/actions/siteSoilsCarbonStorage.actions";
@@ -47,6 +48,7 @@ export type AppDependencies = {
   urbanSprawlImpactsComparisonService: UrbanSprawlImpactsComparisonGateway;
   reconversionCompatibilityEvaluationService: ReconversionCompatibilityEvaluationGateway;
   updateProjectService: UpdateProjectServiceGateway;
+  realEstateValuationService: RealEstateValuationGateway;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

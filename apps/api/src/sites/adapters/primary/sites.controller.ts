@@ -17,6 +17,7 @@ import {
   type CreateExpressSiteDto,
   createSoilSurfaceAreaDistribution,
   type GetSiteFeaturesResponseDto,
+  type GetSiteRealEstateValuationResponseDto,
   type GetSiteViewResponseDto,
 } from "shared";
 
@@ -27,6 +28,7 @@ import {
 } from "src/sites/core/usecases/createNewExpressSite.usecase";
 import { CreateNewCustomSiteUseCase } from "src/sites/core/usecases/createNewSite.usecase";
 import { GetSiteByIdUseCase } from "src/sites/core/usecases/getSiteById.usecase";
+import { GetSiteRealEstateValuationUseCase } from "src/sites/core/usecases/getSiteRealEstateValuation.usecase";
 import { GetSiteViewByIdUseCase } from "src/sites/core/usecases/getSiteViewById.usecase";
 
 @Controller()
@@ -36,6 +38,7 @@ export class SitesController {
     private readonly createNewExpressSiteUseCase: CreateNewExpressSiteUseCase,
     private readonly getSiteByIdUseCase: GetSiteByIdUseCase,
     private readonly getSiteViewByIdUseCase: GetSiteViewByIdUseCase,
+    private readonly getSiteRealEstateValuationUseCase: GetSiteRealEstateValuationUseCase,
   ) {}
 
   @Post("/sites/create-custom")
@@ -120,5 +123,25 @@ export class SitesController {
     }
 
     return result.getData().site;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get("sites/:siteId/real-estate-valuation")
+  async getSiteRealEstateValuation(
+    @Param("siteId") siteId: string,
+  ): Promise<GetSiteRealEstateValuationResponseDto> {
+    const result = await this.getSiteRealEstateValuationUseCase.execute({ siteId });
+
+    if (result.isFailure()) {
+      switch (result.getError()) {
+        case "SiteNotFound":
+          throw new NotFoundException({
+            error: "SITE_NOT_FOUND",
+            message: `Site with ID ${siteId} not found`,
+          });
+      }
+    }
+
+    return result.getData();
   }
 }

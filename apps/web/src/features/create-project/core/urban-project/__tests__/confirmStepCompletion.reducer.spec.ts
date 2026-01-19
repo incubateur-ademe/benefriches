@@ -343,42 +343,6 @@ describe("urbanProject.reducer - confirmStepCompletion action", () => {
       });
     });
 
-    describe("Site resale changes", () => {
-      it("should delete site resale revenue when changing resale plan to false", () => {
-        const initialSteps = {
-          URBAN_PROJECT_SITE_RESALE_SELECTION: {
-            completed: true,
-            payload: {
-              siteResalePlannedAfterDevelopment: true,
-            },
-          },
-          URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE: {
-            completed: true,
-            payload: {
-              siteResaleExpectedSellingPrice: 100000,
-              siteResaleExpectedPropertyTransferDuties: 5000,
-            },
-          },
-        } satisfies ProjectCreationState["urbanProject"]["steps"];
-
-        const store = createTestStore({
-          steps: initialSteps,
-          currentStep: "URBAN_PROJECT_SITE_RESALE_SELECTION",
-        });
-
-        store.dispatch(
-          requestStepCompletion({
-            stepId: "URBAN_PROJECT_SITE_RESALE_SELECTION",
-            answers: { siteResalePlannedAfterDevelopment: false },
-          }),
-        );
-        store.dispatch(confirmStepCompletion());
-        const stepsState = store.getState().projectCreation.urbanProject.steps;
-
-        expect(stepsState.URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE).toEqual(undefined);
-      });
-    });
-
     describe("Decontamination changes", () => {
       it("should recompute system generated reinstatement expenses when changing decontamination settings", () => {
         const initialSteps = {

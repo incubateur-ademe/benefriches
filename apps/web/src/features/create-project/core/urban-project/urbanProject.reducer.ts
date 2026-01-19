@@ -1,8 +1,10 @@
 import { createReducer, UnknownAction } from "@reduxjs/toolkit";
 
+import { MutateStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/mutateState";
 import { addUrbanProjectFormCasesToBuilder } from "@/shared/core/reducers/project-form/urban-project/urbanProject.reducer";
 
 import { ProjectCreationState } from "../createProject.reducer";
+import { fetchEstimatedSiteResalePrice } from "./fetchEstimatedSiteResalePrice.action";
 import { creationProjectFormUrbanActions } from "./urbanProject.actions";
 import { customUrbanProjectSaved } from "./urbanProjectCustomSaved.action";
 import {
@@ -53,6 +55,14 @@ const createUrbanProjectReducer = createReducer({} as ProjectCreationState, (bui
       loadingState: "success",
       data: action.payload,
     };
+  });
+
+  // Fetch estimated site resale price
+  builder.addCase(fetchEstimatedSiteResalePrice.fulfilled, (state, action) => {
+    MutateStateHelper.setDefaultValues(state, "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE", {
+      siteResaleExpectedSellingPrice: action.payload.sellingPrice,
+      siteResaleExpectedPropertyTransferDuties: action.payload.propertyTransferDuties,
+    });
   });
 });
 

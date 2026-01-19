@@ -1,6 +1,5 @@
 import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
 
-import { getFutureSiteOwner } from "../../../helpers/stakeholders";
 import { AnswerStepHandler } from "../stepHandler.type";
 
 const STEP_ID = "URBAN_PROJECT_SITE_RESALE_SELECTION";
@@ -21,24 +20,16 @@ export const SiteResaleSelectionHandler: AnswerStepHandler<typeof STEP_ID> = {
   },
 
   getDependencyRules(state, newAnswers) {
+    const siteResalePlanned = newAnswers.siteResaleSelection !== "no";
+
     if (state.stepsState.URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE) {
       return [
         {
-          action: newAnswers.siteResalePlannedAfterDevelopment ? "invalidate" : "delete",
+          action: siteResalePlanned ? "invalidate" : "delete",
           stepId: "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE",
         },
       ];
     }
     return [];
-  },
-
-  updateAnswersMiddleware(context, answers) {
-    const { siteResalePlannedAfterDevelopment } = answers;
-    return {
-      siteResalePlannedAfterDevelopment,
-      futureSiteOwner: siteResalePlannedAfterDevelopment
-        ? getFutureSiteOwner(siteResalePlannedAfterDevelopment, context.siteData?.owner)
-        : undefined,
-    };
   },
 } as const;

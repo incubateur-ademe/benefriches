@@ -5,9 +5,7 @@ import SiteResaleForm from "./SiteResaleForm";
 
 export default function SiteResaleFormContainer() {
   const { onBack, selectStepAnswers, onRequestStepCompletion } = useProjectForm();
-  const siteResalePlannedAfterDevelopment = useAppSelector(
-    selectStepAnswers("URBAN_PROJECT_SITE_RESALE_SELECTION"),
-  )?.siteResalePlannedAfterDevelopment;
+  const stepAnswers = useAppSelector(selectStepAnswers("URBAN_PROJECT_SITE_RESALE_SELECTION"));
 
   return (
     <SiteResaleForm
@@ -15,15 +13,15 @@ export default function SiteResaleFormContainer() {
         onRequestStepCompletion({
           stepId: "URBAN_PROJECT_SITE_RESALE_SELECTION",
           answers: {
-            siteResalePlannedAfterDevelopment: formData.siteResalePlanned === "yes",
+            siteResaleSelection: formData.siteResalePlanned as "yes" | "no" | "unknown",
           },
         });
       }}
       onBack={onBack}
       initialValues={
-        siteResalePlannedAfterDevelopment === undefined
-          ? undefined
-          : { siteResalePlanned: siteResalePlannedAfterDevelopment ? "yes" : "no" }
+        stepAnswers?.siteResaleSelection
+          ? { siteResalePlanned: stepAnswers.siteResaleSelection }
+          : undefined
       }
     />
   );

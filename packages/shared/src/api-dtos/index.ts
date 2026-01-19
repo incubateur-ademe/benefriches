@@ -8,6 +8,8 @@ export {
   type GetSiteFeaturesResponseDto,
   getSiteViewResponseDtoSchema,
   type GetSiteViewResponseDto,
+  getSiteRealEstateValuationResponseDtoSchema,
+  type GetSiteRealEstateValuationResponseDto,
 } from "./sites";
 
 // Urban Sprawl Impacts Comparison DTOs

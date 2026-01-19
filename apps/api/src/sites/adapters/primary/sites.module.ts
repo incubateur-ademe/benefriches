@@ -19,6 +19,7 @@ import { SitesRepository } from "src/sites/core/gateways/SitesRepository";
 import { CreateNewExpressSiteUseCase } from "src/sites/core/usecases/createNewExpressSite.usecase";
 import { CreateNewCustomSiteUseCase } from "src/sites/core/usecases/createNewSite.usecase";
 import { GetSiteByIdUseCase } from "src/sites/core/usecases/getSiteById.usecase";
+import { GetSiteRealEstateValuationUseCase } from "src/sites/core/usecases/getSiteRealEstateValuation.usecase";
 import { GetSiteViewByIdUseCase } from "src/sites/core/usecases/getSiteViewById.usecase";
 
 import { SqlSitesQuery } from "../secondary/site-query/SqlSitesQuery";
@@ -76,6 +77,12 @@ import { SitesController } from "./sites.controller";
         mutabilityEvaluationQuery: MutabilityEvaluationQuery,
       ) => new GetSiteViewByIdUseCase(siteRepository, mutabilityEvaluationQuery),
       inject: [SqlSitesQuery, MutafrichesEvaluationQuery],
+    },
+    {
+      provide: GetSiteRealEstateValuationUseCase,
+      useFactory: (sitesQuery: SitesQuery, cityStatsProvider: CityStatsProvider) =>
+        new GetSiteRealEstateValuationUseCase(sitesQuery, cityStatsProvider),
+      inject: [SqlSitesQuery, SqlCityStatsQuery],
     },
     SqlSiteRepository,
     SqlSitesQuery,

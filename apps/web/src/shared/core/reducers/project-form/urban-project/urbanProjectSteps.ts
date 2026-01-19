@@ -136,8 +136,7 @@ export const answersByStepSchemas = {
   }),
 
   URBAN_PROJECT_SITE_RESALE_SELECTION: z.object({
-    siteResalePlannedAfterDevelopment: z.boolean(),
-    futureSiteOwner: projectStakeholderSchema.optional(),
+    siteResaleSelection: z.enum(["yes", "no", "unknown"]),
   }),
 
   URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: z.object({

@@ -17,6 +17,7 @@ import { HttpSiteService } from "@/features/sites/infra/site-service/HttpSiteSer
 import { HttpUpdateReconversionProjectService } from "@/features/update-project/infrastructure/update-project-service/HttpUpdateReconversionProjectService";
 import { CreateFeatureAlertService } from "@/features/user-feature-alerts/infrastructure/create-feature-alert-service/CreateFeatureAlertService";
 import { AdministrativeDivisionGeoApi } from "@/shared/infrastructure/administrative-division-service/administrativeDivisionGeoApi";
+import { HttpRealEstateValuationService } from "@/shared/infrastructure/real-estate-valuation-service/HttpRealEstateValuationService";
 import { SoilsCarbonStorageApi } from "@/shared/infrastructure/soils-carbon-storage-service/soilsCarbonStorageApi";
 
 import { AppDependencies } from "./store";
@@ -42,4 +43,5 @@ export const appDependencies: AppDependencies = {
   urbanSprawlImpactsComparisonService: new HttpUrbanSprawlImpactsComparisonService(),
   reconversionCompatibilityEvaluationService: new HttpReconversionCompatibilityEvaluation(),
   updateProjectService: new HttpUpdateReconversionProjectService(),
+  realEstateValuationService: new HttpRealEstateValuationService(),
 };

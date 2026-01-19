@@ -262,9 +262,7 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
       store.dispatch(
         requestStepCompletion({
           stepId: "URBAN_PROJECT_SITE_RESALE_SELECTION",
-          answers: {
-            siteResalePlannedAfterDevelopment: true,
-          },
+          answers: { siteResaleSelection: "yes" },
         }),
       );
 

@@ -1,10 +1,11 @@
-import { SitesQuery } from "src/sites/core/gateways/SitesQuery";
+import { SitesQuery, SiteSurfaceAreaAndCityCode } from "src/sites/core/gateways/SitesQuery";
 import { SiteFeaturesView, SiteView } from "src/sites/core/models/views";
 
 export class InMemorySitesQuery implements SitesQuery {
   sites: SiteFeaturesView[] = [];
   sitesWithProjects: SiteView[] = [];
   mutafrichesIds: Map<string, string | null> = new Map();
+  siteSurfaceAreaAndCityCodes: Map<string, SiteSurfaceAreaAndCityCode> = new Map();
 
   _setSites(sites: SiteFeaturesView[]) {
     this.sites = sites;
@@ -18,6 +19,10 @@ export class InMemorySitesQuery implements SitesQuery {
     this.mutafrichesIds.set(siteId, mutafrichesId);
   }
 
+  _setSiteSurfaceAreaAndCityCode(siteId: string, data: SiteSurfaceAreaAndCityCode) {
+    this.siteSurfaceAreaAndCityCodes.set(siteId, data);
+  }
+
   getSiteFeaturesById(siteId: string): Promise<SiteFeaturesView | undefined> {
     return Promise.resolve(this.sites.find(({ id }) => id === siteId));
   }
@@ -28,5 +33,9 @@ export class InMemorySitesQuery implements SitesQuery {
 
   getMutafrichesIdBySiteId(siteId: string): Promise<string | null> {
     return Promise.resolve(this.mutafrichesIds.get(siteId) ?? null);
+  }
+
+  getSiteSurfaceAreaAndCityCode(siteId: string): Promise<SiteSurfaceAreaAndCityCode | undefined> {
+    return Promise.resolve(this.siteSurfaceAreaAndCityCodes.get(siteId));
   }
 }

@@ -1,7 +1,9 @@
 import { ReinstatementExpensePurpose, UrbanProjectDevelopmentExpense } from "shared";
 
+import { DEFAULT_FUTURE_SITE_OWNER } from "../../helpers/stakeholders";
 import { ProjectFormState } from "../../projectForm.reducer";
 import { UrbanProjectCreationStep } from "../urbanProjectSteps";
+import { ReadStateHelper } from "./readState";
 
 export const getProjectSummary = (
   steps: ProjectFormState["urbanProject"]["steps"],
@@ -143,10 +145,11 @@ export const getProjectSummary = (
       shouldDisplay: stepsSequence.includes("URBAN_PROJECT_BUILDINGS_RESALE_SELECTION"),
     },
     futureSiteOwner: {
-      value: steps.URBAN_PROJECT_SITE_RESALE_SELECTION?.payload?.futureSiteOwner,
-      isAuto:
-        steps.URBAN_PROJECT_SITE_RESALE_SELECTION?.payload?.futureSiteOwner ===
-        steps.URBAN_PROJECT_SITE_RESALE_SELECTION?.defaultValues?.futureSiteOwner,
+      // when resale is planned, future owner is unknown
+      value: ReadStateHelper.isSiteResalePlannedAfterDevelopment(steps)
+        ? DEFAULT_FUTURE_SITE_OWNER
+        : undefined,
+      isAuto: true, // Always auto-derived from selection
     },
     developer: {
       value: steps.URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER?.payload?.projectDeveloper,

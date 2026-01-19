@@ -1,6 +1,11 @@
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { Knex } from "knex";
-import { CreateCustomSiteDto, CreateExpressSiteDto, GetSiteViewResponseDto } from "shared";
+import {
+  CreateCustomSiteDto,
+  CreateExpressSiteDto,
+  GetSiteRealEstateValuationResponseDto,
+  GetSiteViewResponseDto,
+} from "shared";
 import supertest from "supertest";
 import { authenticateUser, createTestApp } from "test/testApp";
 import { v4 as uuid } from "uuid";
@@ -1125,6 +1130,74 @@ describe("Sites controller", () => {
           ],
           reliabilityScore: 3,
         },
+      });
+    });
+  });
+
+  describe("GET /sites/:siteId/real-estate-valuation", () => {
+    it("gets a 401 error when no authentication is provided", async () => {
+      const siteId = uuid();
+      const response = await supertest(app.getHttpServer())
+        .get(`/api/sites/${siteId}/real-estate-valuation`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=nope`)
+        .send();
+
+      expect(response.status).toEqual(401);
+    });
+
+    it("gets a 404 error when site does not exist", async () => {
+      const user = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+
+      const siteId = uuid();
+      const response = await supertest(app.getHttpServer())
+        .get(`/api/sites/${siteId}/real-estate-valuation`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send();
+
+      expect(response.status).toEqual(404);
+    });
+
+    it("gets a 200 response with correct valuation for existing site", async () => {
+      const user = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+
+      const siteId = uuid();
+      // City code 75056 (Paris) has propertyValueMedianPricePerSquareMeters = 10540 €/m² in seeded city_stats
+      await sqlConnection("sites").insert({
+        id: siteId,
+        created_by: user.id,
+        name: "Test Site",
+        nature: "FRICHE",
+        surface_area: 1000, // 1000 m²
+        owner_structure_type: "company",
+        created_at: new Date(),
+        friche_activity: "INDUSTRY",
+      });
+
+      await sqlConnection("addresses").insert({
+        id: uuid(),
+        site_id: siteId,
+        value: "10 Rue Test 75001 Paris",
+        city: "Paris",
+        city_code: "75056", // Paris - 10540 €/m² from seeded city_stats
+        post_code: "75001",
+        ban_id: "75001_test",
+        lat: 48.856614,
+        long: 2.352222,
+      });
+
+      const response = await supertest(app.getHttpServer())
+        .get(`/api/sites/${siteId}/real-estate-valuation`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send();
+
+      expect(response.status).toEqual(200);
+      // sellingPrice = 1000 * 10540 = 10_540_000
+      // propertyTransferDuties = 10_540_000 * 0.0581 (TRANSFER_TAX_PERCENT_PER_TRANSACTION) = 612_374
+      expect(response.body).toEqual<GetSiteRealEstateValuationResponseDto>({
+        sellingPrice: 10_540_000,
+        propertyTransferDuties: 612_374,
       });
     });
   });

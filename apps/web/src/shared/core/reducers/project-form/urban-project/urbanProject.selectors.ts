@@ -158,6 +158,27 @@ export const createUrbanProjectFormSelectors = (
 
   const selectSaveState = createSelector([selectSelf], (state) => state.urbanProject.saveState);
 
+  type SiteResaleRevenueViewData = {
+    isPriceEstimated: boolean;
+    initialSellingPrice: number | undefined;
+    initialPropertyTransferDuties: number | undefined;
+  };
+
+  const selectSiteResaleRevenueViewData = createSelector(
+    [selectStepState],
+    (steps): SiteResaleRevenueViewData => {
+      const revenueAnswers =
+        ReadStateHelper.getStepAnswers(steps, "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE") ??
+        ReadStateHelper.getDefaultAnswers(steps, "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE");
+
+      return {
+        isPriceEstimated: ReadStateHelper.isSiteResalePriceEstimated(steps),
+        initialSellingPrice: revenueAnswers?.siteResaleExpectedSellingPrice,
+        initialPropertyTransferDuties: revenueAnswers?.siteResaleExpectedPropertyTransferDuties,
+      };
+    },
+  );
+
   return {
     selectStepState,
     selectProjectSoilsDistributionByType,
@@ -172,6 +193,7 @@ export const createUrbanProjectFormSelectors = (
     selectUrbanProjectAvailableLocalAuthoritiesStakeholders,
     selectPendingStepCompletion,
     selectSaveState,
+    selectSiteResaleRevenueViewData,
     ...selectors,
   };
 };

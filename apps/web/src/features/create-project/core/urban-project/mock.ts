@@ -90,8 +90,7 @@ export const MOCK = {
   URBAN_PROJECT_SITE_RESALE_SELECTION: {
     completed: true,
     payload: {
-      siteResalePlannedAfterDevelopment: true,
-      futureSiteOwner: { name: "Futur propriétaire inconnu", structureType: "unknown" },
+      siteResaleSelection: "yes",
     },
   },
   URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {

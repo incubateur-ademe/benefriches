@@ -240,8 +240,7 @@ export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProje
       case "URBAN_PROJECT_SITE_RESALE_SELECTION":
         steps["URBAN_PROJECT_SITE_RESALE_SELECTION"] = {
           payload: {
-            siteResalePlannedAfterDevelopment: Boolean(projectData.siteResaleExpectedSellingPrice),
-            futureSiteOwner: projectData.futureSiteOwner as ProjectStakeholder,
+            siteResaleSelection: projectData.siteResaleExpectedSellingPrice ? "yes" : "no",
           },
           completed: true,
         };
