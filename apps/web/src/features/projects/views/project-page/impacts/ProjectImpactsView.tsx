@@ -54,6 +54,20 @@ const ProjectImpactsView = ({
 }: Props) => {
   return (
     <>
+      <div className="flex justify-between items-center flex-wrap mb-10 gap-2">
+        <h3 className="text-2xl mb-0">Évaluation des impacts</h3>
+        <Button
+          priority="primary"
+          iconId="fr-icon-file-download-line"
+          onClick={() => {
+            trackEvent(impactsExportModalOpened());
+            exportImpactsModal.open();
+          }}
+        >
+          Télécharger les impacts
+        </Button>
+      </div>
+
       {displayImpactsAccuracyDisclaimer && <ImpactsAccuracyDisclaimer />}
 
       <ProjectImpactsActionBar
@@ -62,18 +76,6 @@ const ProjectImpactsView = ({
         onViewModeClick={onCurrentViewModeChange}
         onEvaluationPeriodChange={onEvaluationPeriodChange}
         header={<ProjectPageHeader projectId={projectId} />}
-        actions={
-          <Button
-            priority="primary"
-            iconId="fr-icon-file-download-line"
-            onClick={() => {
-              trackEvent(impactsExportModalOpened());
-              exportImpactsModal.open();
-            }}
-          >
-            Télécharger les impacts
-          </Button>
-        }
       />
 
       {dataLoadingState === "error" && (
