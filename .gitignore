@@ -10,6 +10,8 @@ logs
 .tmp-build
 *.tar.gz
 
+coverage/
+
 # IDEs and editors
 .vscode/*
 !.vscode/extensions.json
