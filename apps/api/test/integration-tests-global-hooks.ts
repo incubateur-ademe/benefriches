@@ -1,8 +1,11 @@
 import knex, { Knex } from "knex";
+import { vi } from "vitest";
 
 import knexConfig from "../src/shared-kernel/adapters/sql-knex/knexConfig";
 
 afterEach(async () => {
+  vi.restoreAllMocks();
+
   const sqlConnection: Knex = knex(knexConfig);
 
   const tablesToDelete = [
