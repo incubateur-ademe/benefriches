@@ -1,4 +1,3 @@
-import { setTimeout } from "timers/promises";
 import { describe, it } from "vitest";
 
 import { ProjectFormState } from "@/shared/core/reducers/project-form/projectForm.reducer";
@@ -199,8 +198,7 @@ describe("Urban project creation - Steps - site resale selection", () => {
     );
 
     // Wait for async thunk dispatched by listener to complete
-    // Using setTimeout to ensure all microtasks in the async thunk chain complete
-    await setTimeout(0);
+    await new Promise((resolve) => setTimeout(resolve, 0));
 
     expect(store.getState().projectCreation.urbanProject.steps).toEqual<
       ProjectFormState["urbanProject"]["steps"]
