@@ -9,7 +9,7 @@ export const BuildingsResaleSelectionHandler: AnswerStepHandler<typeof STEP_ID> 
   stepId: STEP_ID,
 
   getNextStepId() {
-    return "URBAN_PROJECT_EXPENSES_INTRODUCTION";
+    return "URBAN_PROJECT_REVENUE_INTRODUCTION";
   },
 
   getPreviousStepId() {

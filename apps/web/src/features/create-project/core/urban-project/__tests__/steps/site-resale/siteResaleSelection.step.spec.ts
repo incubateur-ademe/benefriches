@@ -123,7 +123,7 @@ describe("Urban project creation - Steps - site resale selection", () => {
       },
     });
     expect(state.stepsSequence.includes("URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE")).toBe(true);
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_EXPENSES_INTRODUCTION");
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_REVENUE_INTRODUCTION");
   });
 
   it("should complete step with 'no' and delete existing revenue step", () => {
@@ -166,7 +166,7 @@ describe("Urban project creation - Steps - site resale selection", () => {
       URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE: undefined,
     });
     expect(state.stepsSequence.includes("URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE")).toBe(false);
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_EXPENSES_INTRODUCTION");
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_REVENUE_INTRODUCTION");
   });
 
   it("should complete step with 'unknown' and pre-populate revenue step with estimated values", async () => {

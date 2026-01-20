@@ -15,7 +15,7 @@ export const UrbanProjectInstallationExpensesHandler: AnswerStepHandler<"URBAN_P
       ) {
         return "URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES";
       }
-      return "URBAN_PROJECT_REVENUE_INTRODUCTION";
+      return "URBAN_PROJECT_SCHEDULE_PROJECTION";
     },
 
     getPreviousStepId(context) {

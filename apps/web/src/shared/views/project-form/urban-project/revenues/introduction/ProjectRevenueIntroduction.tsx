@@ -16,7 +16,7 @@ const ProjectRevenueIntroduction = ({ onNext, onBack }: Props) => {
   return (
     <EditorialPageLayout>
       <EditorialPageIcon>💰</EditorialPageIcon>
-      <EditorialPageTitle>Votre projet peut aussi engendrer des recettes</EditorialPageTitle>
+      <EditorialPageTitle>Votre projet peut engendrer des recettes</EditorialPageTitle>
       <EditorialPageText>
         La cession de foncier aménagé, voire de bâtiments peuvent notamment générer des recettes
         financières.

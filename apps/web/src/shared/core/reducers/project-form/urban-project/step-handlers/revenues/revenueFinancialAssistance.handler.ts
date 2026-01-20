@@ -22,6 +22,6 @@ export const RevenueFinancialAssistanceHandler: AnswerStepHandler<"URBAN_PROJECT
     },
 
     getNextStepId() {
-      return "URBAN_PROJECT_SCHEDULE_PROJECTION";
+      return "URBAN_PROJECT_EXPENSES_INTRODUCTION";
     },
   };
