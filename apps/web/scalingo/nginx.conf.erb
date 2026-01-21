@@ -1,6 +1,6 @@
 set $CSP_DEFAULT "default-src 'self'";
 set $CSP_SCRIPT "script-src 'self' 'wasm-unsafe-eval' https://tally.so/widgets/embed.js https://stats.beta.gouv.fr";
-set $CSP_CONNECT "connect-src 'self' data: https://stats.beta.gouv.fr/matomo.php https://api-adresse.data.gouv.fr/search/ https://geo.api.gouv.fr/communes/ https://cdnjs.cloudflare.com/ajax/libs/twemoji/ <%= ENV['WEBAPP_MUTAFRICHES_FRAME_SRC'] %>";
+set $CSP_CONNECT "connect-src 'self' data: https://stats.beta.gouv.fr/matomo.php https://data.geopf.fr/geocodage/search/ https://geo.api.gouv.fr/communes/ https://cdnjs.cloudflare.com/ajax/libs/twemoji/ <%= ENV['WEBAPP_MUTAFRICHES_FRAME_SRC'] %>";
 set $CSP_STYLE "style-src 'self' 'unsafe-inline'";
 set $CSP_FONT "font-src 'self'";
 set $CSP_IMG "img-src 'self' blob: data:";

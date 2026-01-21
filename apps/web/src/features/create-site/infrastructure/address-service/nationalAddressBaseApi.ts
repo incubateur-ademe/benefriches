@@ -7,9 +7,9 @@ type AddressWithBanId = Address & {
   banId: string;
 };
 
-const BAN_API_URL = "https://api-adresse.data.gouv.fr/search/?";
+const BAN_API_URL = "https://data.geopf.fr/geocodage/search/?";
 
-// https://adresse.data.gouv.fr/api-doc/adresse
+// https://geoservices.ign.fr/documentation/services/services-geoplateforme/geocodage#71270
 type BanBaseAddress = {
   label: string;
   id: string;
