@@ -1,4 +1,5 @@
 import EmojiListItem from "../shared/emoji-li-item/StepEmojiListItem";
+import MonetizedImpactInfoModal from "./MonetizedImpactInfoModal";
 import StepView from "./StepView";
 
 type Props = {
@@ -46,6 +47,7 @@ export default function Step1({ onNextClick, canSkipOnboarding, skipOnboarding }
               <span className="font-normal">Exemple : dépenses de traitement de l'eau évitées</span>
             </EmojiListItem>
           </ul>
+          <MonetizedImpactInfoModal />
         </li>
 
         <li className="text-xl">

@@ -28,10 +28,9 @@ const renderListItem = (item: ListItem, index: number) => {
   return <li key={index}>{item.segments.map(renderTextSegment)}</li>;
 };
 
-const renderSection = (section: AboutSection) => {
+export const SectionContent = ({ section }: { section: AboutSection }) => {
   return (
-    <section key={section.id} className="mb-6">
-      <SectionTitle>{section.title}</SectionTitle>
+    <>
       {section.content.map((block, blockIndex) => {
         switch (block.type) {
           case "paragraph":
@@ -56,6 +55,15 @@ const renderSection = (section: AboutSection) => {
             }
         }
       })}
+    </>
+  );
+};
+
+const renderSection = (section: AboutSection) => {
+  return (
+    <section key={section.id} className="mb-6">
+      <SectionTitle>{section.title}</SectionTitle>
+      <SectionContent section={section} />
     </section>
   );
 };

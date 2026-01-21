@@ -311,6 +311,10 @@ export const COMPARISON_SECTION: AboutSection = {
   ],
 };
 
+export const MONETIZED_IMPACT_SECTION = ABOUT_SECTIONS.find(
+  (section) => section.id === "monetized-impact",
+) as AboutSection;
+
 export const LEARN_MORE_SECTION: AboutSection = {
   id: "learn-more",
   title: "Pour en savoir plus :",
