@@ -1,14 +1,17 @@
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
-import ScheduleProjectionForm from "@/shared/views/project-form/common/schedule/projection";
+import ScheduleProjectionForm from "@/shared/views/project-form/common/schedule/projection/ScheduleProjectionForm";
 import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 
 function ScheduleProjectionFormContainer() {
-  const { onBack, selectStepAnswers, onRequestStepCompletion } = useProjectForm();
+  const { onBack, selectStepAnswers, onRequestStepCompletion, selectIsSiteFriche } =
+    useProjectForm();
   const stepAnswers = useAppSelector(selectStepAnswers("URBAN_PROJECT_SCHEDULE_PROJECTION"));
+  const isSiteFriche = useAppSelector(selectIsSiteFriche);
 
   return (
     <ScheduleProjectionForm
       installationScheduleLabel="🏘️️ Aménagement du site"
+      hasReinstatement={isSiteFriche}
       onSubmit={(formData) => {
         onRequestStepCompletion({
           stepId: "URBAN_PROJECT_SCHEDULE_PROJECTION",

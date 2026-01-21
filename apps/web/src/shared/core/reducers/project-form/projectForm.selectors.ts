@@ -19,6 +19,7 @@ export type ProjectFormSelectors = {
     state: RootState,
   ) => AvailableLocalAuthorityStakeholder[];
   selectSiteContaminatedSurfaceArea: (state: RootState) => number;
+  selectIsSiteFriche: (state: RootState) => boolean;
 };
 
 export const createProjectFormSelectors = (entityName: "projectCreation" | "projectUpdate") => {
@@ -75,7 +76,13 @@ export const createProjectFormSelectors = (entityName: "projectCreation" | "proj
     (siteData): number => siteData?.contaminatedSoilSurface ?? 0,
   );
 
+  const selectIsSiteFriche = createSelector(
+    selectSiteData,
+    (siteData): boolean => siteData?.nature === "FRICHE",
+  );
+
   return {
+    selectIsSiteFriche,
     selectSiteAddress,
     selectSiteSoilsDistribution,
     selectProjectAvailableStakeholders,

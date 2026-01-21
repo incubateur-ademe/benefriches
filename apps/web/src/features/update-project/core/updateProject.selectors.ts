@@ -5,6 +5,7 @@ import { createUrbanProjectFormSelectors } from "@/shared/core/reducers/project-
 import { RootState } from "@/shared/core/store-config/store";
 
 const {
+  selectIsSiteFriche,
   selectSiteAddress,
   selectSiteSoilsDistribution,
   selectAvailableLocalAuthoritiesStakeholders,
@@ -22,6 +23,7 @@ export const updateUrbanProjectFormSelectors = createUrbanProjectFormSelectors("
   selectSiteSoilsDistribution,
   selectSiteSurfaceArea,
   selectSiteContaminatedSurfaceArea,
+  selectIsSiteFriche,
 });
 const { selectProjectSoilsDistributionByType } = updateUrbanProjectFormSelectors;
 export { selectProjectSoilsDistributionByType };

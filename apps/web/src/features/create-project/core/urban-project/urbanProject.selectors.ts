@@ -10,6 +10,7 @@ import {
   selectSiteSoilsDistribution,
   selectSiteSurfaceArea,
   selectSiteContaminatedSurfaceArea,
+  selectIsSiteFriche,
 } from "../createProject.selectors";
 
 export const creationProjectFormSelectors = createUrbanProjectFormSelectors("projectCreation", {
@@ -19,6 +20,7 @@ export const creationProjectFormSelectors = createUrbanProjectFormSelectors("pro
   selectSiteSoilsDistribution,
   selectSiteSurfaceArea,
   selectSiteContaminatedSurfaceArea,
+  selectIsSiteFriche,
 });
 
 const { selectStepState, selectProjectSoilsDistributionByType } = creationProjectFormSelectors;

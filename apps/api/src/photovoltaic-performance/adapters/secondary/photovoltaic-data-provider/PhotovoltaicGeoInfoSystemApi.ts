@@ -122,7 +122,7 @@ export class PhotovoltaicGeoInfoSystemApi implements PhotovoltaicDataProvider {
         )
         .pipe(
           catchError((axiosError: AxiosError) => {
-            const err = new Error(`Error response from GeoApiGouv API: ${axiosError.message}`);
+            const err = new Error(`Error response from PVGIS API: ${axiosError.message}`);
             if (axiosError.response?.data) {
               err.message.concat(` - ${axiosError.response.data as string}`);
             }
