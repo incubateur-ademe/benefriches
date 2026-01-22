@@ -6,6 +6,7 @@ import {
 
 export type StepGroupId =
   | "CREATION_MODE"
+  | "USES"
   | "SPACES"
   | "SPACES_DEVELOPMENT"
   | "SOILS_DECONTAMINATION"
@@ -21,6 +22,9 @@ export type StepGroupId =
   | "SUMMARY";
 
 export type StepSubGroupId =
+  | "USES_SELECTION"
+  | "USES_FOOTPRINT"
+  | "USES_FLOOR_AREA"
   | "SPACES_SELECTION"
   | "SPACES_SURFACES"
   | "RESIDENTIAL_SPACES"
@@ -49,7 +53,13 @@ export type StepSubGroupId =
 export const STEP_GROUP_LABELS: Record<StepGroupId | StepSubGroupId, string> = {
   CREATION_MODE: "Mode de création",
 
-  // Groupes
+  // Uses flow (new)
+  USES: "Usages",
+  USES_SELECTION: "Choix des usages",
+  USES_FOOTPRINT: "Emprise foncière",
+  USES_FLOOR_AREA: "Surfaces de plancher",
+
+  // Groupes (legacy spaces flow)
   SPACES: "Espaces",
   SPACES_SELECTION: "Choix des espaces",
   SPACES_SURFACES: "Surfaces",
@@ -105,7 +115,12 @@ export const STEP_TO_GROUP_MAPPING: StepToGroupMapping = {
   URBAN_PROJECT_EXPRESS_TEMPLATE_SELECTION: { groupId: "CREATION_MODE" },
   URBAN_PROJECT_EXPRESS_SUMMARY: { groupId: "SUMMARY" },
   URBAN_PROJECT_EXPRESS_CREATION_RESULT: { groupId: "SUMMARY" },
-  // Espaces
+  // Uses flow (new)
+  URBAN_PROJECT_USES_INTRODUCTION: { groupId: "USES" },
+  URBAN_PROJECT_USES_SELECTION: { groupId: "USES", subGroupId: "USES_SELECTION" },
+  URBAN_PROJECT_USES_FOOTPRINT_SURFACE_AREA: { groupId: "USES", subGroupId: "USES_FOOTPRINT" },
+  URBAN_PROJECT_USES_FLOOR_SURFACE_AREA: { groupId: "USES", subGroupId: "USES_FLOOR_AREA" },
+  // Espaces (legacy)
   URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION: { groupId: "SPACES" },
   URBAN_PROJECT_SPACES_CATEGORIES_SELECTION: { groupId: "SPACES", subGroupId: "SPACES_SELECTION" },
   URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA: {

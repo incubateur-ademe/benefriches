@@ -123,6 +123,18 @@ const PublicSpacesDistribution = lazy(
 const SpacesCategoriesSelection = lazy(
   () => import("@/shared/views/project-form/urban-project/spaces/selection"),
 );
+const UsesIntroduction = lazy(
+  () => import("@/shared/views/project-form/urban-project/uses/introduction"),
+);
+const UsesSelection = lazy(
+  () => import("@/shared/views/project-form/urban-project/uses/selection"),
+);
+const UsesFootprintSurfaceArea = lazy(
+  () => import("@/shared/views/project-form/urban-project/uses/footprint-surface-area"),
+);
+const UsesFloorSurfaceArea = lazy(
+  () => import("@/shared/views/project-form/urban-project/uses/floor-surface-area"),
+);
 const UrbanProjectSoilsCarbonStorage = lazy(
   () => import("@/shared/views/project-form/urban-project/spaces/soils-carbon-storage"),
 );
@@ -171,6 +183,34 @@ const getCurrentStepView = (step: UrbanProjectCreationStep): Exclude<ReactNode, 
         <>
           <HtmlTitle>{`Résultat - Projet urbain express - ${HTML_MAIN_TITLE}`}</HtmlTitle>
           <UrbanProjectExpressCreationResult />
+        </>
+      );
+    case "URBAN_PROJECT_USES_INTRODUCTION":
+      return (
+        <>
+          <HtmlTitle>{`Introduction - Usages - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
+          <UsesIntroduction />
+        </>
+      );
+    case "URBAN_PROJECT_USES_SELECTION":
+      return (
+        <>
+          <HtmlTitle>{`Sélection - Usages - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
+          <UsesSelection />
+        </>
+      );
+    case "URBAN_PROJECT_USES_FOOTPRINT_SURFACE_AREA":
+      return (
+        <>
+          <HtmlTitle>{`Emprise foncière - Usages - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
+          <UsesFootprintSurfaceArea />
+        </>
+      );
+    case "URBAN_PROJECT_USES_FLOOR_SURFACE_AREA":
+      return (
+        <>
+          <HtmlTitle>{`Surfaces de plancher - Usages - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
+          <UsesFloorSurfaceArea />
         </>
       );
     case "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION":

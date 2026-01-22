@@ -43,6 +43,10 @@ import { StakeholdersIntroductionHandler } from "./stakeholders/stakeholdersIntr
 import { StakeholdersProjectDeveloperHandler } from "./stakeholders/stakeholdersProjectDeveloper.handler";
 import { StakeholdersReinstatementContractOwnerHandler } from "./stakeholders/stakeholdersReinstatementContractOwner.handler";
 import { FinalSummaryHandler } from "./summary/finalSummary.handler";
+import { UsesFloorSurfaceAreaHandler } from "./uses/usesFloorSurfaceArea.handler";
+import { UsesFootprintSurfaceAreaHandler } from "./uses/usesFootprintSurfaceArea.handler";
+import { UsesIntroductionHandler } from "./uses/usesIntroduction.handler";
+import { UsesSelectionHandler } from "./uses/usesSelection.handler";
 
 export const stepHandlerRegistry = {
   URBAN_PROJECT_CREATE_MODE_SELECTION: CreationModeSelectionHandler,
@@ -50,7 +54,12 @@ export const stepHandlerRegistry = {
   URBAN_PROJECT_EXPRESS_TEMPLATE_SELECTION: ExpressTemplateSelectionHandler,
   URBAN_PROJECT_EXPRESS_SUMMARY: ExpressSummaryHandler,
   URBAN_PROJECT_EXPRESS_CREATION_RESULT: ExpressCreationResultHandler,
-  // custom
+  // custom - uses flow (new)
+  URBAN_PROJECT_USES_INTRODUCTION: UsesIntroductionHandler,
+  URBAN_PROJECT_USES_SELECTION: UsesSelectionHandler,
+  URBAN_PROJECT_USES_FOOTPRINT_SURFACE_AREA: UsesFootprintSurfaceAreaHandler,
+  URBAN_PROJECT_USES_FLOOR_SURFACE_AREA: UsesFloorSurfaceAreaHandler,
+  // custom - spaces flow (legacy)
   URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION: SpacesCategoriesIntroductionHandler,
   URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION: SpaceDevelopmentPlanIntroductionHandler,
   URBAN_PROJECT_GREEN_SPACES_INTRODUCTION: GreenSpacesIntroductionHandler,

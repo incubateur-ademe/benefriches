@@ -9,6 +9,7 @@ import {
   urbanProjectDevelopmentExpensePurposeSchema,
   urbanProjectSpacesCategories,
   urbanProjectTemplateSchema,
+  urbanProjectUseSchema,
   urbanPublicSpace,
   yearlyBuildingsOperationsExpensePurposeSchema,
   yearlyBuildingsOperationsRevenuePurposeSchema,
@@ -16,6 +17,7 @@ import {
 import z from "zod";
 
 export const INTRODUCTION_STEPS = [
+  "URBAN_PROJECT_USES_INTRODUCTION",
   "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION",
   "URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION",
   "URBAN_PROJECT_GREEN_SPACES_INTRODUCTION",
@@ -86,7 +88,20 @@ export const answersByStepSchemas = {
     projectTemplate: urbanProjectTemplateSchema,
   }),
 
-  // Custom
+  // Custom - Uses flow (new)
+  URBAN_PROJECT_USES_SELECTION: z.object({
+    usesSelection: z.array(urbanProjectUseSchema),
+  }),
+
+  URBAN_PROJECT_USES_FOOTPRINT_SURFACE_AREA: z.object({
+    usesFootprintSurfaceAreaDistribution: z.partialRecord(urbanProjectUseSchema, z.number()),
+  }),
+
+  URBAN_PROJECT_USES_FLOOR_SURFACE_AREA: z.object({
+    usesFloorSurfaceAreaDistribution: z.partialRecord(urbanProjectUseSchema, z.number()),
+  }),
+
+  // Custom - Spaces flow (legacy, will be removed)
   URBAN_PROJECT_SPACES_CATEGORIES_SELECTION: z.object({
     spacesCategories: z.array(urbanProjectSpacesCategories),
   }),

@@ -5,6 +5,7 @@ import {
   getSoilTypeForUrbanGreenSpace,
   UrbanGreenSpace,
   UrbanLivingAndActivitySpace,
+  UrbanProjectUse,
   UrbanPublicSpace,
   UrbanSpaceCategory,
 } from "shared";
@@ -229,4 +230,92 @@ export const getPictogramUrlForUrbanPublicSpace = (space: UrbanPublicSpace): str
 
 export const getColorForUrbanPublicSpace = (space: UrbanPublicSpace): string => {
   return getColorForSoilType(getSoilTypeForPublicSpace(space));
+};
+
+// Urban project uses (new flow combining building uses + non-building uses)
+export const getLabelForUrbanProjectUse = (use: UrbanProjectUse): string => {
+  switch (use) {
+    case "RESIDENTIAL":
+      return "Logements";
+    case "LOCAL_STORE":
+      return "Commerces";
+    case "LOCAL_SERVICES":
+      return "Services de proximité";
+    case "ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES":
+      return "Locaux artisanaux, industriels ou de stockage";
+    case "PUBLIC_FACILITIES":
+      return "Équipements publics";
+    case "OFFICES":
+      return "Bureaux";
+    case "CULTURAL_PLACE":
+      return "Lieu culturel";
+    case "SPORTS_FACILITIES":
+      return "Équipements sportifs";
+    case "MULTI_STORY_PARKING":
+      return "Parking à étage";
+    case "OTHER":
+      return "Autres";
+    case "PUBLIC_GREEN_SPACES":
+      return "Espaces verts";
+    case "OTHER_PUBLIC_SPACES":
+      return "Autres espaces publics";
+  }
+};
+
+export const getDescriptionForUrbanProjectUse = (use: UrbanProjectUse): string | undefined => {
+  switch (use) {
+    case "RESIDENTIAL":
+      return "Maisons, immeubles collectifs...";
+    case "LOCAL_STORE":
+      return "Boulangerie, supérette...";
+    case "MULTI_STORY_PARKING":
+      return "Parking voiture à étage";
+    case "ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES":
+      return "Usine, entrepôt, atelier...";
+    case "SPORTS_FACILITIES":
+      return "Stade, gymnase, piscine...";
+    case "LOCAL_SERVICES":
+      return "Banque, poste, restaurant...";
+    case "CULTURAL_PLACE":
+      return "Cinéma, théâtre, musée...";
+    case "OTHER":
+      return "Établissement éducatif, espace de santé...";
+    case "PUBLIC_GREEN_SPACES":
+      return "Parc, jardin public, forêt urbaine...";
+    case "OTHER_PUBLIC_SPACES":
+      return "Rues, places, pistes cyclables, parkings de surface...";
+    case "OFFICES":
+    case "PUBLIC_FACILITIES":
+      return undefined;
+  }
+};
+
+const URBAN_PROJECT_USE_PICTOGRAM_URL_BASE = "/img/pictograms";
+export const getPictogramUrlForUrbanProjectUse = (use: UrbanProjectUse): string => {
+  switch (use) {
+    case "RESIDENTIAL":
+      return `${URBAN_PROJECT_USE_PICTOGRAM_URL_BASE}/buildings-uses/residential.svg`;
+    case "LOCAL_STORE":
+      return `${URBAN_PROJECT_USE_PICTOGRAM_URL_BASE}/buildings-uses/economic-activity/local-store.svg`;
+    case "LOCAL_SERVICES":
+      return `${URBAN_PROJECT_USE_PICTOGRAM_URL_BASE}/buildings-uses/economic-activity/local-services.svg`;
+    case "ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES":
+      return `${URBAN_PROJECT_USE_PICTOGRAM_URL_BASE}/buildings-uses/economic-activity/industrial-and-artisanal-and-shipping-premises.svg`;
+    case "OFFICES":
+      return `${URBAN_PROJECT_USE_PICTOGRAM_URL_BASE}/buildings-uses/economic-activity/offices.svg`;
+    case "MULTI_STORY_PARKING":
+      return `${URBAN_PROJECT_USE_PICTOGRAM_URL_BASE}/buildings-uses/multi-story-parking.svg`;
+    case "SPORTS_FACILITIES":
+      return `${URBAN_PROJECT_USE_PICTOGRAM_URL_BASE}/buildings-uses/sports-facilities.svg`;
+    case "CULTURAL_PLACE":
+      return `${URBAN_PROJECT_USE_PICTOGRAM_URL_BASE}/buildings-uses/cultural-place.svg`;
+    case "PUBLIC_FACILITIES":
+      return `${URBAN_PROJECT_USE_PICTOGRAM_URL_BASE}/buildings-uses/public-buildings.svg`;
+    case "OTHER":
+      return `${URBAN_PROJECT_USE_PICTOGRAM_URL_BASE}/buildings-uses/other.svg`;
+    case "PUBLIC_GREEN_SPACES":
+      return `${URBAN_PROJECT_USE_PICTOGRAM_URL_BASE}/urban-project-spaces/green-spaces.svg`;
+    case "OTHER_PUBLIC_SPACES":
+      return `${URBAN_PROJECT_USE_PICTOGRAM_URL_BASE}/urban-project-spaces/public-spaces.svg`;
+  }
 };
