@@ -43,7 +43,7 @@ pnpm --filter web typecheck && pnpm --filter web lint && pnpm --filter web test
 ## Naming Conventions
 
 - **Actions**: Passive tense (events): `stepCompleted`, `dataFetched` (NOT `completeStep`, `fetchData`)
-- **Selectors**: `select{FeatureName}ViewData` - one per container returning composed object
+- **Selectors**: `select{Feature}ViewData` - one per container returning composed object
 - **Reducers**: Use `createReducer` for new code (`createSlice` is legacy - maintenance only)
 
 ---
@@ -60,15 +60,17 @@ pnpm --filter web typecheck && pnpm --filter web lint && pnpm --filter web test
 Container components access state through a **single selector** returning a composed `ViewData` object:
 
 ```typescript
-const viewData = useAppSelector(selectFeatureNameViewData);
+const dispatch = useAppDispatch();
+const viewData = useAppSelector(selectFeatureViewData);
 return <FeaturePage viewData={viewData} onAction={(data) => dispatch(actionCompleted(data))} />;
 ```
 
-### Gateway Pattern (3 steps)
+### Gateway Pattern
 
 1. **Interface** in `core/gateways/` - defines what domain needs
-2. **HTTP implementation** in `infrastructure/*/Http*.ts` - real API calls
-3. **InMemory mock** in `infrastructure/*/InMemory*.ts` - **required** for tests
+2. **HTTP implementation** in `infrastructure/*/Http*Service.ts` - real API calls
+3. **InMemory mock** in `infrastructure/*/InMemory*Service.ts` - required for tests
+4. **Register in store** via `extraArgument` for thunk access
 
 ### Dependency Injection
 
@@ -87,6 +89,43 @@ const result = await extra.featureService.doSomething(payload);
 
 - Use `useEffect` in components for most side effects
 - Use listener middleware sparingly for specific Redux action side effects
+
+---
+
+## Creation Checklists
+
+### Container Component Checklist
+
+When creating a new container component:
+
+1. **Create ViewData selector** in the relevant selectors file:
+   - Define typed `{Feature}ViewData` type with all data the container needs
+   - Create `select{Feature}ViewData` selector composing data from state
+   - Export the selector (directly, or via factory function for urban project forms)
+
+2. **Create container** (`index.tsx`):
+   - Get selector via direct import or hook (`useProjectForm()` for urban project forms)
+   - Use single `useAppSelector(select{Feature}ViewData)` call
+   - Destructure ViewData and pass to presentational component
+   - Handle actions with `useAppDispatch`
+
+3. **Reference examples** (simplest first):
+   - `src/features/create-project/core/createProject.selectors.ts` → `selectProjectSuggestionsViewData`
+   - `src/features/create-project/views/project-suggestions/index.tsx`
+   - `src/features/create-site/core/selectors/spaces.selectors.ts` → `selectSiteSoilsSummaryViewData`
+   - `src/features/create-site/views/custom/spaces-and-soils/soils-summary/index.tsx`
+   - Urban project form (factory pattern):
+     - `src/shared/core/reducers/project-form/urban-project/urbanProject.selectors.ts` → `selectUsesFootprintSurfaceAreaViewData`
+     - `src/shared/views/project-form/urban-project/uses/footprint-surface-area/index.tsx`
+
+### Gateway Checklist
+
+When adding a new external service integration:
+
+1. **Create interface** in `core/gateways/` - define methods the domain needs
+2. **Create HTTP implementation** in `infrastructure/*/Http*Service.ts` - real API calls
+3. **Create InMemory mock** in `infrastructure/*/InMemory*Service.ts` - required for tests
+4. **Register in store** via `extraArgument` for thunk access
 
 ---
 
@@ -122,7 +161,7 @@ feature-name/
 │   └── __tests__/*.spec.ts        # Unit tests
 ├── infrastructure/
 │   └── feature-service/
-│       ├── HttpFeatureApi.ts      # HTTP implementation
+│       ├── HttpFeatureService.ts      # HTTP implementation
 │       └── InMemoryFeatureService.ts  # Test mock (required)
 └── views/
     ├── index.tsx                  # Container (Redux-connected)
