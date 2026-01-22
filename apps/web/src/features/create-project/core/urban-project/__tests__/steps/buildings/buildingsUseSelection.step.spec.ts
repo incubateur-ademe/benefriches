@@ -4,10 +4,7 @@ import { ProjectFormState } from "@/shared/core/reducers/project-form/projectFor
 import { AnswersByStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 
 import { creationProjectFormUrbanActions } from "../../../urbanProject.actions";
-import { createTestStore } from "../../_testStoreHelpers";
-
-const getCurrentStep = (store: ReturnType<typeof createTestStore>) =>
-  store.getState().projectCreation.urbanProject.currentStep;
+import { createTestStore, getCurrentStep } from "../../_testStoreHelpers";
 
 describe("Urban project creation - Steps - Buildings use selection", () => {
   it("should complete step with selected buildings uses and go to URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION", () => {

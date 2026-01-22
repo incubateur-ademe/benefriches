@@ -1,12 +1,9 @@
 import { describe, it, expect, beforeEach } from "vitest";
 
 import { creationProjectFormUrbanActions } from "../urbanProject.actions";
-import { createTestStore } from "./_testStoreHelpers";
+import { createTestStore, getCurrentStep } from "./_testStoreHelpers";
 
 const { navigateToNext, requestStepCompletion } = creationProjectFormUrbanActions;
-
-const getCurrentStep = (store: ReturnType<typeof createTestStore>) =>
-  store.getState().projectCreation.urbanProject.currentStep;
 
 describe("urbanProject.reducer - requestStepCompletion without validation", () => {
   let store: ReturnType<typeof createTestStore>;

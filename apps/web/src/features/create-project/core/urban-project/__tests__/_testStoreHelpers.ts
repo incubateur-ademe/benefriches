@@ -1,9 +1,12 @@
 import { UrbanProjectCreationStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
-import { createStore } from "@/shared/core/store-config/store";
+import { createStore, RootState } from "@/shared/core/store-config/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import { getInitialState, ProjectCreationState } from "../../createProject.reducer";
 import { mockSiteData } from "./_siteData.mock";
+
+export const getCurrentStep = (store: { getState: () => RootState }): UrbanProjectCreationStep =>
+  store.getState().projectCreation.urbanProject.currentStep;
 
 const createTestState = (
   options: {
