@@ -1,3 +1,9 @@
+---
+name: plan-feature
+description: Create a detailed implementation plan for a new feature, exploring codebase and loading relevant architecture patterns
+user-invocable: true
+---
+
 # Feature Planning
 
 Create a plan in `specs/<current-timestamp>-<feature-name>.md` for the `Feature` below.
@@ -7,7 +13,7 @@ Create a plan in `specs/<current-timestamp>-<feature-name>.md` for the `Feature`
 1. **Declare scope first** - Determine if this is API-only, Web-only, Full-stack, or Shared
 2. **Load only relevant context** based on scope:
    - API: `<root>/.claude/context/api/00-overview.md` + specific patterns needed
-   - Web: `<root>/.claude/context/web/00-overview.md` + specific patterns needed
+   - Web: `<root>/apps/web/CLAUDE.md` + specific patterns needed
    - Full-stack: Both overviews + specific patterns as needed
 3. **Explore targeted directories** - Don't explore everything:
    - API: `<root>/apps/api/src/[relevant-module]/`
