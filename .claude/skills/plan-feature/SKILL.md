@@ -27,11 +27,11 @@ Create a plan in `specs/<current-timestamp>-<feature-name>.md` for the `Feature`
 
 ## Plan Format
 
-```md
+````md
 # Feature: <name>
 
-## Feature overview
-<describe the feature in detail, including its purpose and value to users. >
+## Feature Overview
+<describe the feature in detail, including its purpose and value to users>
 <How does the solution work? 2-3 sentences.>
 
 ## User Story
@@ -49,10 +49,32 @@ As a <user type>, I want to <goal> so that <benefit>.
 ## Relevant Files
 Use these files to implement the feature:
 
-<find and list the files that are relevant to the feature describe why they are relevant in bullet points. If there are new files that need to be created to implement the feature, list them in an h3 'New Files' section.>
+<find and list the files that are relevant to the feature, describe why they are relevant in bullet points>
+
+## Files to Deliver
+
+### Test Files
+<!-- List ALL test files that must be created. These are implemented FIRST. -->
+| File Path | Tests | Verifies |
+|-----------|-------|----------|
+| `path/to/file.spec.ts` | test case 1, test case 2 | `path/to/production-file.ts` |
+
+### Production Files
+<!-- List ALL production files to create or modify. Implemented AFTER tests. -->
+| File Path | Purpose |
+|-----------|---------|
+| `path/to/new-file.ts` | Description of what this file does |
+| `path/to/existing-file.ts` | What modifications are needed |
 
 ## Step by Step Tasks
-<list step by step tasks as h3 headers plus bullet points. use as many h3 headers as needed to implement the feature. Order matters, start with the foundational shared changes required then move on to the specific implementation. Include creating tests throughout the implementation process. Your last step should be running the `Validation Commands` to validate the feature works correctly with zero regressions.>
+<list step by step tasks as h3 headers plus bullet points. Order matters, start with foundational shared changes.
+
+IMPORTANT: For each step that creates new functionality:
+1. First list the test file(s) to create with their test cases
+2. Then list the production code to implement
+3. End with running tests to verify
+
+Your last step should be running the `Validation Commands`.>
 
 ## Acceptance Criteria
 <list specific, measurable criteria that must be met for the feature to be considered complete>
@@ -68,13 +90,12 @@ Use these files to implement the feature:
 ### Edge Cases
 <list edge cases that need to be tested - only if they catch distinct failure modes>
 
-
 ## Validation Commands
-<Specific commands to validate with 100% confidence the feature is implemented with zero regressions. Include commands to test the feature end-to-end. Start with the most specific commands (like running test on a file) and end with the broader ones (like running all tests for the codebase).>
+<Specific commands to validate with 100% confidence the feature is implemented with zero regressions. Start with the most specific commands and end with broader ones.>
 
 ## Notes
-<Optional: list any additional notes, future considerations, or context that are relevant to the feature that will be helpful to the developer>
-```
+<Optional: list any additional notes, future considerations, or context>
+````
 
 ## Feature
 $ARGUMENTS
