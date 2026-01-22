@@ -39,6 +39,9 @@ import { SpaceDevelopmentPlanIntroductionHandler } from "./spaces/spaceDevelopme
 import { SpacesCategoriesIntroductionHandler } from "./spaces/spacesCategoriesIntroduction.handler";
 import { UrbanProjectSpacesCategoriesSelectionHandler } from "./spaces/spacesCategoriesSelection.handler";
 import { UrbanProjectSpacesCategoriesSurfaceAreaHandler } from "./spaces/spacesCategoriesSurfaceArea.handler";
+import { SpacesIntroductionHandler } from "./spaces/spacesIntroduction.handler";
+import { SpacesSelectionHandler } from "./spaces/spacesSelection.handler";
+import { SpacesSurfaceAreaHandler } from "./spaces/spacesSurfaceArea.handler";
 import { StakeholdersIntroductionHandler } from "./stakeholders/stakeholdersIntroduction.handler";
 import { StakeholdersProjectDeveloperHandler } from "./stakeholders/stakeholdersProjectDeveloper.handler";
 import { StakeholdersReinstatementContractOwnerHandler } from "./stakeholders/stakeholdersReinstatementContractOwner.handler";
@@ -59,6 +62,10 @@ export const stepHandlerRegistry = {
   URBAN_PROJECT_USES_SELECTION: UsesSelectionHandler,
   URBAN_PROJECT_USES_FOOTPRINT_SURFACE_AREA: UsesFootprintSurfaceAreaHandler,
   URBAN_PROJECT_USES_FLOOR_SURFACE_AREA: UsesFloorSurfaceAreaHandler,
+  // custom - new spaces flow (uses flow)
+  URBAN_PROJECT_SPACES_INTRODUCTION: SpacesIntroductionHandler,
+  URBAN_PROJECT_SPACES_SELECTION: SpacesSelectionHandler,
+  URBAN_PROJECT_SPACES_SURFACE_AREA: SpacesSurfaceAreaHandler,
   // custom - spaces flow (legacy)
   URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION: SpacesCategoriesIntroductionHandler,
   URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION: SpaceDevelopmentPlanIntroductionHandler,

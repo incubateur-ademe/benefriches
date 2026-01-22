@@ -14,7 +14,7 @@ export const UsesFloorSurfaceAreaHandler: AnswerStepHandler<typeof STEP_ID> = {
   },
 
   getNextStepId() {
-    return "URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION";
+    return "URBAN_PROJECT_SPACES_INTRODUCTION";
   },
 
   getShortcut(context, answers) {
@@ -40,7 +40,7 @@ export const UsesFloorSurfaceAreaHandler: AnswerStepHandler<typeof STEP_ID> = {
       ) {
         return {
           complete: [],
-          next: "URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION",
+          next: "URBAN_PROJECT_SPACES_INTRODUCTION",
         };
       }
     }

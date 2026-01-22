@@ -77,10 +77,10 @@ export const UsesSelectionHandler: AnswerStepHandler<typeof STEP_ID> = {
         };
       }
 
-      // For non-building uses, skip floor area step entirely
+      // For non-building uses, skip floor area step entirely and go to spaces
       return {
         complete: [footprintAnswers],
-        next: "URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION",
+        next: "URBAN_PROJECT_SPACES_INTRODUCTION",
       };
     }
 

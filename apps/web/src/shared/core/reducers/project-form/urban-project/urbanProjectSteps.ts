@@ -4,6 +4,7 @@ import {
   financialAssistanceRevenueSourceSchema,
   livingAndActivitySpace,
   reinstatementExpensesPurposeSchema,
+  soilTypeSchema,
   typedObjectKeys,
   urbanGreenSpaces,
   urbanProjectDevelopmentExpensePurposeSchema,
@@ -18,6 +19,7 @@ import z from "zod";
 
 export const INTRODUCTION_STEPS = [
   "URBAN_PROJECT_USES_INTRODUCTION",
+  "URBAN_PROJECT_SPACES_INTRODUCTION",
   "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION",
   "URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION",
   "URBAN_PROJECT_GREEN_SPACES_INTRODUCTION",
@@ -99,6 +101,15 @@ export const answersByStepSchemas = {
 
   URBAN_PROJECT_USES_FLOOR_SURFACE_AREA: z.object({
     usesFloorSurfaceAreaDistribution: z.partialRecord(urbanProjectUseSchema, z.number()),
+  }),
+
+  // Custom - New Spaces flow (uses flow)
+  URBAN_PROJECT_SPACES_SELECTION: z.object({
+    spacesSelection: z.array(soilTypeSchema),
+  }),
+
+  URBAN_PROJECT_SPACES_SURFACE_AREA: z.object({
+    spacesSurfaceAreaDistribution: z.partialRecord(soilTypeSchema, z.number()),
   }),
 
   // Custom - Spaces flow (legacy, will be removed)

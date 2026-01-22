@@ -43,7 +43,7 @@ describe("Urban project creation - Steps - Uses footprint surface area", () => {
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_USES_FLOOR_SURFACE_AREA");
   });
 
-  it("should skip floor area step and go to URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION when only non-building uses are selected", () => {
+  it("should skip floor area step and go to URBAN_PROJECT_SPACES_INTRODUCTION when only non-building uses are selected", () => {
     const store = createTestStore({
       steps: {
         URBAN_PROJECT_USES_SELECTION: {
@@ -82,7 +82,7 @@ describe("Urban project creation - Steps - Uses footprint surface area", () => {
         },
       },
     });
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION");
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_INTRODUCTION");
   });
 
   it("should invalidate URBAN_PROJECT_USES_FLOOR_SURFACE_AREA when footprint distribution changes", () => {

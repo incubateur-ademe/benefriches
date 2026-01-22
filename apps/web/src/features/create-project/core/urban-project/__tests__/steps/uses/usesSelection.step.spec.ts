@@ -81,7 +81,7 @@ describe("Urban project creation - Steps - Uses selection", () => {
         payload: { usesFootprintSurfaceAreaDistribution: { PUBLIC_GREEN_SPACES: 10000 } },
       },
     });
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION");
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_INTRODUCTION");
   });
 
   it("should delete URBAN_PROJECT_USES_FOOTPRINT_SURFACE_AREA when uses selection changes", () => {

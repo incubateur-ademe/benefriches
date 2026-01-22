@@ -6,7 +6,7 @@ import { creationProjectFormUrbanActions } from "../../../urbanProject.actions";
 import { createTestStore, getCurrentStep } from "../../_testStoreHelpers";
 
 describe("Urban project creation - Steps - Uses floor surface area", () => {
-  it("should complete step with floor area distribution and go to URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION", () => {
+  it("should complete step with floor area distribution and go to URBAN_PROJECT_SPACES_INTRODUCTION", () => {
     const store = createTestStore({
       steps: {
         URBAN_PROJECT_USES_SELECTION: {
@@ -45,7 +45,7 @@ describe("Urban project creation - Steps - Uses floor surface area", () => {
         payload: { usesFloorSurfaceAreaDistribution: { RESIDENTIAL: 10000, OFFICES: 7500 } },
       },
     });
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION");
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_INTRODUCTION");
   });
 
   it("should complete step for a single building use", () => {
@@ -87,7 +87,7 @@ describe("Urban project creation - Steps - Uses floor surface area", () => {
         payload: { usesFloorSurfaceAreaDistribution: { RESIDENTIAL: 15000 } },
       },
     });
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION");
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_INTRODUCTION");
   });
 
   it("should complete step when mixed uses selected (only building uses should be in floor distribution)", () => {
@@ -141,7 +141,7 @@ describe("Urban project creation - Steps - Uses floor surface area", () => {
         payload: { usesFloorSurfaceAreaDistribution: { RESIDENTIAL: 8000, OFFICES: 6000 } },
       },
     });
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION");
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_INTRODUCTION");
   });
 
   it("should navigate to URBAN_PROJECT_USES_FOOTPRINT_SURFACE_AREA when going back", () => {

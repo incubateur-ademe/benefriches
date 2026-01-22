@@ -26,7 +26,7 @@ export const UsesFootprintSurfaceAreaHandler: AnswerStepHandler<typeof STEP_ID> 
     }
 
     // Skip floor area step when no building uses
-    return "URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION";
+    return "URBAN_PROJECT_SPACES_INTRODUCTION";
   },
 
   getDependencyRules(context, newAnswers) {

@@ -18,18 +18,21 @@ import SurfaceAreaPieChart from "./SurfaceAreaPieChart";
 
 type FormValues = SurfaceAreaDistributionJson<string>;
 
+type SurfaceConfig = {
+  name: string;
+  label: string;
+  hintText?: ReactNode;
+  imgSrc?: string;
+  color?: string;
+  maxSurfaceArea?: number;
+};
+
 type Props = {
   title: ReactNode;
   initialValues?: Partial<FormValues>;
   instructions?: ReactNode;
   totalSurfaceArea: number;
-  surfaces: {
-    name: string;
-    label: string;
-    hintText?: ReactNode;
-    imgSrc?: string;
-    color?: string;
-  }[];
+  surfaces: SurfaceConfig[];
   maxErrorMessage?: string;
   inputMode: "percentage" | "squareMeters";
   onInputModeChange: (inputMode: "percentage" | "squareMeters") => void;
@@ -98,7 +101,13 @@ function SurfaceAreaDistributionForm({
   onSubmit,
   onBack,
 }: Props) {
-  const { register, handleSubmit, watch, setValue } = useForm<FormValues>({
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useForm<FormValues>({
     defaultValues: initialValues,
   });
   const surfaceValues = watch();
@@ -169,23 +178,34 @@ function SurfaceAreaDistributionForm({
         })}
       >
         <InputModeSelect value={inputMode} onChange={handleInputModeChange} />
-        {surfaces.map(({ label, name, hintText, imgSrc }) => (
-          <RowNumericInput
-            key={name}
-            label={label}
-            hintText={hintText}
-            hintInputText={getHintInputText(surfaceValues[name])}
-            addonText={inputMode === "percentage" ? "%" : SQUARE_METERS_HTML_SYMBOL}
-            imgSrc={imgSrc}
-            nativeInputProps={register(name, {
-              ...optionalNumericFieldRegisterOptions,
-              max: {
-                value: targetSurfaceArea,
-                message: maxErrorMessage,
-              },
-            })}
-          />
-        ))}
+        {surfaces.map(({ label, name, hintText, imgSrc, maxSurfaceArea }) => {
+          const maxValue = maxSurfaceArea
+            ? inputMode === "percentage"
+              ? computePercentage(maxSurfaceArea, totalSurfaceArea)
+              : maxSurfaceArea
+            : targetSurfaceArea;
+          const fieldError = errors[name];
+
+          return (
+            <RowNumericInput
+              key={name}
+              label={label}
+              hintText={hintText}
+              hintInputText={getHintInputText(surfaceValues[name])}
+              addonText={inputMode === "percentage" ? "%" : SQUARE_METERS_HTML_SYMBOL}
+              imgSrc={imgSrc}
+              state={fieldError ? "error" : "default"}
+              stateRelatedMessage={fieldError?.message}
+              nativeInputProps={register(name, {
+                ...optionalNumericFieldRegisterOptions,
+                max: {
+                  value: maxValue,
+                  message: maxErrorMessage,
+                },
+              })}
+            />
+          );
+        })}
 
         <TotalAllocatedSurfaceAreaInput
           inputMode={inputMode}

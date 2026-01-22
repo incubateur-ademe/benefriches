@@ -1,16 +1,23 @@
-import {
+import type {
   BuildingsUse,
-  getSoilTypeForLivingAndActivitySpace,
-  getSoilTypeForPublicSpace,
-  getSoilTypeForUrbanGreenSpace,
+  SoilType,
   UrbanGreenSpace,
   UrbanLivingAndActivitySpace,
   UrbanProjectUse,
   UrbanPublicSpace,
   UrbanSpaceCategory,
 } from "shared";
+import {
+  getSoilTypeForLivingAndActivitySpace,
+  getSoilTypeForPublicSpace,
+  getSoilTypeForUrbanGreenSpace,
+} from "shared";
 
-import { getPictogramForSoilType } from "@/shared/core/label-mapping/soilTypeLabelMapping";
+import {
+  getDescriptionForSoilType,
+  getLabelForSoilType,
+  getPictogramForSoilType,
+} from "@/shared/core/label-mapping/soilTypeLabelMapping";
 import { getColorForSoilType } from "@/shared/core/soils";
 
 export const getLabelForSpaceCategory = (spaceCategory: UrbanSpaceCategory): string => {
@@ -318,4 +325,32 @@ export const getPictogramUrlForUrbanProjectUse = (use: UrbanProjectUse): string 
     case "OTHER_PUBLIC_SPACES":
       return `${URBAN_PROJECT_USE_PICTOGRAM_URL_BASE}/urban-project-spaces/public-spaces.svg`;
   }
+};
+
+// Spaces (soil types with custom labels for urban project context)
+const SPACE_LABELS: Partial<Record<SoilType, { label: string; description: string }>> = {
+  MINERAL_SOIL: {
+    label: "Allée ou parking imperméable",
+    description: "Bitume, pavé, ciment",
+  },
+  IMPERMEABLE_SOILS: {
+    label: "Allée ou parking perméable",
+    description: "Gravier, dalles alvéolées, sol nu...",
+  },
+  ARTIFICIAL_GRASS_OR_BUSHES_FILLED: {
+    label: "Espace végétalisé",
+    description: "Pelouse et buissons",
+  },
+  ARTIFICIAL_TREE_FILLED: {
+    label: "Espace arboré",
+    description: "Arbres plantés",
+  },
+};
+
+export const getLabelForSpace = (soilType: SoilType): string => {
+  return SPACE_LABELS[soilType]?.label ?? getLabelForSoilType(soilType);
+};
+
+export const getDescriptionForSpace = (soilType: SoilType): string | undefined => {
+  return SPACE_LABELS[soilType]?.description ?? getDescriptionForSoilType(soilType);
 };

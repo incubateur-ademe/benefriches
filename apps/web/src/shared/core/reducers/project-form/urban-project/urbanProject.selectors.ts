@@ -1,5 +1,11 @@
 import { createSelector } from "@reduxjs/toolkit";
-import type { UrbanProjectUse, UrbanProjectUseDistribution } from "shared";
+import { isConstrainedSoilType, ORDERED_SOIL_TYPES } from "shared";
+import type {
+  SoilsDistribution,
+  SoilType,
+  UrbanProjectUse,
+  UrbanProjectUseDistribution,
+} from "shared";
 
 import { RootState } from "@/shared/core/store-config/store";
 import { buildStepGroupsFromSequence } from "@/shared/views/project-form/stepper/stepperConfig";
@@ -238,6 +244,88 @@ export const createUrbanProjectFormSelectors = (
     },
   );
 
+  type SpacesSelectionViewData = {
+    selectedSpaces: SoilType[];
+    selectableSoils: SoilType[];
+  };
+
+  /**
+   * Computes the list of soils that can be selected for the project.
+   * Non-constrained soils (BUILDINGS, IMPERMEABLE_SOILS, MINERAL_SOIL, ARTIFICIAL_*)
+   * are always selectable. Constrained soils (forests, prairies, agricultural, wetlands)
+   * are only selectable if they already exist on the site.
+   */
+  const computeSelectableSoils = (siteSoilsDistribution: SoilsDistribution): SoilType[] => {
+    const siteSoils = Object.keys(siteSoilsDistribution) as SoilType[];
+
+    return ORDERED_SOIL_TYPES.filter((soilType) => {
+      // Non-constrained soils are always selectable
+      if (!isConstrainedSoilType(soilType)) {
+        return true;
+      }
+      // Constrained soils are only selectable if they exist on the site
+      return siteSoils.includes(soilType);
+    });
+  };
+
+  const selectSpacesSelectionViewData = createSelector(
+    [selectStepState, selectors.selectSiteSoilsDistribution],
+    (steps, siteSoilsDistribution): SpacesSelectionViewData => {
+      const spacesAnswers =
+        ReadStateHelper.getStepAnswers(steps, "URBAN_PROJECT_SPACES_SELECTION") ??
+        ReadStateHelper.getDefaultAnswers(steps, "URBAN_PROJECT_SPACES_SELECTION");
+
+      return {
+        selectedSpaces: spacesAnswers?.spacesSelection ?? [],
+        selectableSoils: computeSelectableSoils(siteSoilsDistribution),
+      };
+    },
+  );
+
+  type SpaceConstraint = {
+    soilType: SoilType;
+    maxSurfaceArea: number;
+  };
+
+  type SpacesSurfaceAreaViewData = {
+    selectedSpaces: SoilType[];
+    spacesSurfaceAreaDistribution: Partial<Record<SoilType, number>> | undefined;
+    siteSurfaceArea: number;
+    spacesWithConstraints: SpaceConstraint[];
+  };
+
+  const selectSpacesSurfaceAreaViewData = createSelector(
+    [selectStepState, selectors.selectSiteSurfaceArea, selectors.selectSiteSoilsDistribution],
+    (steps, siteSurfaceArea, siteSoilsDistribution): SpacesSurfaceAreaViewData => {
+      const surfaceAreaAnswers =
+        ReadStateHelper.getStepAnswers(steps, "URBAN_PROJECT_SPACES_SURFACE_AREA") ??
+        ReadStateHelper.getDefaultAnswers(steps, "URBAN_PROJECT_SPACES_SURFACE_AREA");
+
+      const spacesSelectionAnswers = ReadStateHelper.getStepAnswers(
+        steps,
+        "URBAN_PROJECT_SPACES_SELECTION",
+      );
+
+      const selectedSpaces = spacesSelectionAnswers?.spacesSelection ?? [];
+
+      // Compute constraints for constrained soils that exist on site
+      const spacesWithConstraints: SpaceConstraint[] = selectedSpaces
+        .filter((soilType) => isConstrainedSoilType(soilType))
+        .map((soilType) => ({
+          soilType,
+          maxSurfaceArea: siteSoilsDistribution[soilType] ?? 0,
+        }))
+        .filter((constraint) => constraint.maxSurfaceArea > 0);
+
+      return {
+        selectedSpaces,
+        spacesSurfaceAreaDistribution: surfaceAreaAnswers?.spacesSurfaceAreaDistribution,
+        siteSurfaceArea,
+        spacesWithConstraints,
+      };
+    },
+  );
+
   return {
     selectStepState,
     selectProjectSoilsDistributionByType,
@@ -255,6 +343,8 @@ export const createUrbanProjectFormSelectors = (
     selectSiteResaleRevenueViewData,
     selectUsesFootprintSurfaceAreaViewData,
     selectUsesFloorSurfaceAreaViewData,
+    selectSpacesSelectionViewData,
+    selectSpacesSurfaceAreaViewData,
     ...selectors,
   };
 };

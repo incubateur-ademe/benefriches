@@ -310,4 +310,110 @@ describe("SurfaceAreaDistributionForm", () => {
       expect(onInputModeChangeSpy).toHaveBeenCalledWith("squareMeters");
     });
   });
+
+  describe("with maxSurfaceArea constraint", () => {
+    it("should not submit when surface exceeds its maxSurfaceArea in square meters mode", async () => {
+      const onSubmitSpy = vi.fn();
+
+      render(
+        <SurfaceAreaDistributionForm
+          title="Test form"
+          surfaces={[
+            { name: "field1", label: "Field1", maxSurfaceArea: 20 },
+            { name: "field2", label: "Field2" },
+          ]}
+          inputMode="squareMeters"
+          onInputModeChange={vi.fn()}
+          totalSurfaceArea={100}
+          maxErrorMessage="Surface too large"
+          onBack={() => {}}
+          onSubmit={onSubmitSpy}
+        />,
+      );
+
+      const input1 = await screen.findByRole("textbox", { name: /field1/i });
+      const input2 = await screen.findByRole("textbox", { name: /field2/i });
+      const submitButton = await screen.findByRole("button", { name: /valider/i });
+
+      // Enter 30 in field1, which exceeds its max of 20
+      fireEvent.input(input1, { target: { value: 30 } });
+      fireEvent.input(input2, { target: { value: 70 } });
+      fireEvent.submit(submitButton);
+
+      await waitFor(() => {
+        // oxlint-disable-next-line no-standalone-expect
+        expect(screen.getByText("Surface too large")).toBeInTheDocument();
+      });
+      expect(onSubmitSpy).not.toHaveBeenCalled();
+    });
+
+    it("should submit when surface is within its maxSurfaceArea in square meters mode", async () => {
+      const onSubmitSpy = vi.fn();
+
+      render(
+        <SurfaceAreaDistributionForm
+          title="Test form"
+          surfaces={[
+            { name: "field1", label: "Field1", maxSurfaceArea: 20 },
+            { name: "field2", label: "Field2" },
+          ]}
+          inputMode="squareMeters"
+          onInputModeChange={vi.fn()}
+          totalSurfaceArea={100}
+          maxErrorMessage="Surface too large"
+          onBack={() => {}}
+          onSubmit={onSubmitSpy}
+        />,
+      );
+
+      const input1 = await screen.findByRole("textbox", { name: /field1/i });
+      const input2 = await screen.findByRole("textbox", { name: /field2/i });
+      const submitButton = await screen.findByRole("button", { name: /valider/i });
+
+      // Enter 20 in field1, which is within its max of 20
+      fireEvent.input(input1, { target: { value: 20 } });
+      fireEvent.input(input2, { target: { value: 80 } });
+      fireEvent.submit(submitButton);
+
+      await waitFor(() => {
+        // oxlint-disable-next-line no-standalone-expect
+        expect(onSubmitSpy).toHaveBeenCalledWith({ field1: 20, field2: 80 });
+      });
+    });
+
+    it("should not submit when surface exceeds maxSurfaceArea converted to percentage", async () => {
+      const onSubmitSpy = vi.fn();
+
+      render(
+        <SurfaceAreaDistributionForm
+          title="Test form"
+          surfaces={[
+            { name: "field1", label: "Field1", maxSurfaceArea: 25 },
+            { name: "field2", label: "Field2" },
+          ]}
+          inputMode="percentage"
+          onInputModeChange={vi.fn()}
+          totalSurfaceArea={100}
+          maxErrorMessage="Surface too large"
+          onBack={() => {}}
+          onSubmit={onSubmitSpy}
+        />,
+      );
+
+      const input1 = await screen.findByRole("textbox", { name: /field1/i });
+      const input2 = await screen.findByRole("textbox", { name: /field2/i });
+      const submitButton = await screen.findByRole("button", { name: /valider/i });
+
+      // Enter 30% in field1, which exceeds its max of 25% (25 m² / 100 m²)
+      fireEvent.input(input1, { target: { value: 30 } });
+      fireEvent.input(input2, { target: { value: 70 } });
+      fireEvent.submit(submitButton);
+
+      await waitFor(() => {
+        // oxlint-disable-next-line no-standalone-expect
+        expect(screen.getByText("Surface too large")).toBeInTheDocument();
+      });
+      expect(onSubmitSpy).not.toHaveBeenCalled();
+    });
+  });
 });

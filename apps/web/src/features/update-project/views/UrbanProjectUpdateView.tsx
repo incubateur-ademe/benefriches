@@ -132,6 +132,15 @@ const UsesFootprintSurfaceArea = lazy(
 const UsesFloorSurfaceArea = lazy(
   () => import("@/shared/views/project-form/urban-project/uses/floor-surface-area"),
 );
+const NewSpacesIntroduction = lazy(
+  () => import("@/shared/views/project-form/urban-project/spaces/new-introduction"),
+);
+const NewSpacesSelection = lazy(
+  () => import("@/shared/views/project-form/urban-project/spaces/new-selection"),
+);
+const NewSpacesSurfaceArea = lazy(
+  () => import("@/shared/views/project-form/urban-project/spaces/new-surface-area"),
+);
 const UrbanProjectSoilsCarbonStorage = lazy(
   () => import("@/shared/views/project-form/urban-project/spaces/soils-carbon-storage"),
 );
@@ -185,6 +194,27 @@ const getCurrentStepView = (step: UrbanProjectUpdateStep): Exclude<ReactNode, un
         <>
           <HtmlTitle>{`Surfaces de plancher - Usages - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
           <UsesFloorSurfaceArea />
+        </>
+      );
+    case "URBAN_PROJECT_SPACES_INTRODUCTION":
+      return (
+        <>
+          <HtmlTitle>{`Introduction - Nouveaux espaces - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
+          <NewSpacesIntroduction />
+        </>
+      );
+    case "URBAN_PROJECT_SPACES_SELECTION":
+      return (
+        <>
+          <HtmlTitle>{`Sélection - Nouveaux espaces - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
+          <NewSpacesSelection />
+        </>
+      );
+    case "URBAN_PROJECT_SPACES_SURFACE_AREA":
+      return (
+        <>
+          <HtmlTitle>{`Surfaces - Nouveaux espaces - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
+          <NewSpacesSurfaceArea />
         </>
       );
     case "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION":

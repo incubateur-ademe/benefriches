@@ -1,11 +1,17 @@
 import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
 
-import { InfoStepHandler } from "../stepHandler.type";
+import type { InfoStepHandler } from "../stepHandler.type";
 
 export const SoilsSummaryHandler: InfoStepHandler = {
   stepId: "URBAN_PROJECT_SPACES_SOILS_SUMMARY",
 
   getPreviousStepId(context) {
+    // Check if we came from the new spaces flow (uses flow)
+    if (ReadStateHelper.getStep(context.stepsState, "URBAN_PROJECT_SPACES_SURFACE_AREA")) {
+      return "URBAN_PROJECT_SPACES_SURFACE_AREA";
+    }
+
+    // Legacy spaces flow
     const spacesCategoriesDistribution = ReadStateHelper.getStepAnswers(
       context.stepsState,
       "URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA",
