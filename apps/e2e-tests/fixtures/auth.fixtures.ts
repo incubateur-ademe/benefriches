@@ -5,7 +5,9 @@
 
 import { test as base, request, type Page } from "@playwright/test";
 
-// todo: use /api/register body DTO type from shared package
+import { ApiClient } from "./helpers/api-client";
+import { extractCookieHeader, parseCookieString } from "./helpers/cookie.helpers";
+
 export type TestUser = {
   id: string;
   email: string;
@@ -19,6 +21,7 @@ export type TestUser = {
 type AuthFixtures = {
   testUser: TestUser;
   authenticatedPage: Page;
+  authenticatedApiClient: ApiClient;
 };
 
 /**
@@ -69,28 +72,6 @@ export async function createTestUserViaApi(baseURL: string, user: TestUser) {
   return { response, apiContext };
 }
 
-function parseCookieString(
-  setCookieHeader: string,
-  baseURL: string,
-): { name: string; value: string; domain: string; path: string } | null {
-  const parts = setCookieHeader.split(";").map((p) => p.trim());
-  const [nameValue] = parts;
-  if (!nameValue) return null;
-
-  const [name, value] = nameValue.split("=");
-  if (!name || !value) return null;
-
-  const url = new URL(baseURL);
-  const domain = url.hostname;
-
-  return {
-    name,
-    value,
-    domain,
-    path: "/",
-  };
-}
-
 export const test = base.extend<AuthFixtures>({
   // @ts-expect-error Playwright requires destructuring even if 'page' is unused
   // oxlint-disable-next-line no-unused-vars
@@ -126,6 +107,17 @@ export const test = base.extend<AuthFixtures>({
     await use(page);
     await apiContext.dispose();
   },
+
+  authenticatedApiClient: async ({ baseURL, authenticatedPage }, use) => {
+    if (!baseURL) {
+      throw new Error("baseURL is required for authenticatedApiClient fixture");
+    }
+    const cookieHeader = await extractCookieHeader(authenticatedPage);
+    const client = new ApiClient(baseURL, cookieHeader);
+    await use(client);
+    await client.dispose();
+  },
 });
 
 export { expect } from "@playwright/test";
+export { ApiClient } from "./helpers/api-client";

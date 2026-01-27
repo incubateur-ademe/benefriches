@@ -13,6 +13,8 @@ test.describe("my Evaluations - Site List", () => {
   testWithSites(
     "displays created sites for user with express and custom sites",
     async ({ myEvaluationsPage, testSites }) => {
+      // testSites fixture creates the sites via API before the test runs
+      void testSites;
       await myEvaluationsPage.goto();
 
       await myEvaluationsPage.expectCurrentPage();
@@ -20,10 +22,8 @@ test.describe("my Evaluations - Site List", () => {
 
       await myEvaluationsPage.expectSitesListVisible();
 
-      // Verify both sites appear in the list
-      for (const site of testSites) {
-        await myEvaluationsPage.expectSiteVisible(site.name);
-      }
+      await myEvaluationsPage.expectSiteVisible("Friche ferroviaire de Segré");
+      await myEvaluationsPage.expectSiteVisible("Friche ferroviaire de Blajan");
     },
   );
 });
