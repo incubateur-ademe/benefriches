@@ -10,6 +10,7 @@
 | ---------------------------- | ------------------------------------------------------ |
 | Add API feature              | [apps/api/CLAUDE.md](apps/api/CLAUDE.md)               |
 | Add Web feature              | [apps/web/CLAUDE.md](apps/web/CLAUDE.md)               |
+| Add E2E test                 | [apps/e2e-tests/CLAUDE.md](apps/e2e-tests/CLAUDE.md)   |
 | Add shared type/DTO          | [packages/shared/CLAUDE.md](packages/shared/CLAUDE.md) |
 | See complete feature example | [docs/feature-example.md](docs/feature-example.md)     |
 | Run quality checks           | [Standard Commands](#standard-commands)                |
@@ -239,6 +240,7 @@ Is this a new domain concept?
 1. **Follow patterns** from app-specific CLAUDE.md files:
    - Backend: @apps/api/CLAUDE.md
    - Frontend: @apps/web/CLAUDE.md
+   - E2E Tests: @apps/e2e-tests/CLAUDE.md
    - Shared: @packages/shared/CLAUDE.md
 2. **Reference real examples** in the codebase (use file links in responses)
 3. **Run checks after coding**: `typecheck` -> `lint` -> `test`
