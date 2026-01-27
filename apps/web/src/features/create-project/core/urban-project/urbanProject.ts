@@ -259,7 +259,7 @@ export const getLabelForUrbanProjectUse = (use: UrbanProjectUse): string => {
     case "SPORTS_FACILITIES":
       return "Équipements sportifs";
     case "MULTI_STORY_PARKING":
-      return "Parking à étage";
+      return "Parking silo";
     case "OTHER":
       return "Autres";
     case "PUBLIC_GREEN_SPACES":
