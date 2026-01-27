@@ -1,7 +1,7 @@
 import { test, expect } from "./onboarding.fixtures";
 
-test.describe("Onboarding", () => {
-  test("Impact evaluation: allows new user to create account and complete onboarding", async ({
+test.describe("onboarding", () => {
+  test("impact evaluation: allows new user to create account and complete onboarding", async ({
     page,
     homePage,
     accessBenefrichesPage,
@@ -42,7 +42,7 @@ test.describe("Onboarding", () => {
     await expect(page.getByText("Votre site est-il une friche")).toBeVisible();
   });
 
-  test("Compatibility evaluation: allows new user to create account and complete onboarding", async ({
+  test("compatibility evaluation: allows new user to create account and complete onboarding", async ({
     page,
     testUser,
     homePage,

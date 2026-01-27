@@ -1,6 +1,6 @@
 import { test, expect, waitForEmail, getMessagePlainText } from "./login.fixtures";
 
-test.describe("Login with email", () => {
+test.describe("login with email", () => {
   test("shows error when user enters unknown email", async ({
     homePage,
     accessBenefrichesPage,
@@ -68,8 +68,10 @@ test.describe("Login with email", () => {
     const urlMatch = loginEmailPlainText.match(/https?:\/\/[^\s]+/);
     const authLink = urlMatch?.[0];
 
+    expect(authLink, "Authentication link should be found in email").toBeDefined();
+
     // Navigate to the authentication link
-    await page.goto(authLink!);
+    await page.goto(authLink as string);
 
     // Expect to be logged in and redirected to "Mes évaluations" page
     await expect(page).toHaveURL((url) => url.pathname === "/mes-evaluations");

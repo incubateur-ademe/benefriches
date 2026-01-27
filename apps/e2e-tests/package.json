@@ -7,6 +7,7 @@
     "test:headed": "playwright test --headed",
     "test:ui": "playwright test --ui",
     "typecheck": "tsc --noEmit",
+    "lint": "oxlint .",
     "format:check": "prettier --check --cache \"./**/*.{js,ts,json}\" .",
     "format": "prettier --write --cache \"./**/*.{js,ts,json}\" ."
   },
@@ -15,6 +16,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.49.0",
-    "@types/node": "~24.10.1"
+    "@types/node": "~24.10.1",
+    "eslint-plugin-playwright": "~2.5.0"
   }
 }
