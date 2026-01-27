@@ -151,7 +151,7 @@ test.describe("Feature Name", () => {
 
 ```bash
 # Start the e2e stack (if not already running)
-docker compose --env-file apps/e2e-tests/.env.e2e -f docker-compose.e2e.yml up -d
+docker compose --env-file .env.e2e -f docker-compose.e2e.yml up -d
 
 # Run specific test file
 pnpm --filter e2e-tests test:e2e tests/[feature]/[feature].spec.ts

@@ -110,8 +110,8 @@ pnpm --filter api test:integration path/to/file.integration-spec.ts # for integr
 pnpm --filter web test path/to/file.spec.ts
 
 # E2E tests (requires docker-compose.e2e.yml running)
-docker compose --env-file apps/e2e-tests/.env.e2e -f docker-compose.e2e.yml up # Start full stack on port 3001
-pnpm --filter e2e-tests test:e2e                 # Run all E2E tests
+docker compose --env-file .env.e2e -f docker-compose.e2e.yml up # Start full stack on port 3001
+pnpm --filter e2e-tests test:e2e                 # Run all E2E tests in headless mode
 pnpm --filter e2e-tests test:headed              # Run with browser visible
 ```
 
