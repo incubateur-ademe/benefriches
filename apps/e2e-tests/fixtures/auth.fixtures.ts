@@ -52,8 +52,8 @@ export async function createTestUserViaApi(baseURL: string, user: TestUser) {
     data: {
       id: user.id,
       email: user.email,
-      firstname: user.firstName,
-      lastname: user.lastName,
+      firstName: user.firstName,
+      lastName: user.lastName,
       structureType: user.structureType,
       structureActivity: user.structureActivity,
       structureName: user.structureName,
@@ -65,6 +65,7 @@ export async function createTestUserViaApi(baseURL: string, user: TestUser) {
   });
 
   if (!response.ok()) {
+    console.log(await response.text());
     await apiContext.dispose();
     throw new Error(`Failed to create test user: ${response.status()} ${await response.text()}`);
   }
