@@ -65,9 +65,10 @@ export async function createTestUserViaApi(baseURL: string, user: TestUser) {
   });
 
   if (!response.ok()) {
-    console.log(await response.text());
+    const responseStatus = response.status();
+    const responseText = await response.text();
     await apiContext.dispose();
-    throw new Error(`Failed to create test user: ${response.status()} ${await response.text()}`);
+    throw new Error(`Failed to create test user: ${responseStatus} ${responseText}`);
   }
 
   return { response, apiContext };
