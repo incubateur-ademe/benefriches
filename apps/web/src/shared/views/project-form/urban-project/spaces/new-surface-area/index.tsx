@@ -15,7 +15,11 @@ export default function SpacesSurfaceAreaContainer() {
 
   const initialValues =
     spacesSurfaceAreaDistribution && inputMode === "percentage"
-      ? getSurfaceAreaDistributionWithUnit(spacesSurfaceAreaDistribution, "percentage").value
+      ? getSurfaceAreaDistributionWithUnit(
+          spacesSurfaceAreaDistribution,
+          "percentage",
+          siteSurfaceArea,
+        ).value
       : (spacesSurfaceAreaDistribution ?? {});
 
   return (

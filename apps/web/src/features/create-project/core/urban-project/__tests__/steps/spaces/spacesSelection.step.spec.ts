@@ -193,9 +193,16 @@ describe("Urban project creation - Steps - Spaces selection", () => {
 
     store.dispatch(creationProjectFormUrbanActions.confirmStepCompletion());
 
-    expect(
-      store.getState().projectCreation.urbanProject.steps.URBAN_PROJECT_SPACES_SURFACE_AREA,
-    ).toBeUndefined();
+    // Step is deleted (no payload) but default values are computed
+    const surfaceAreaStep =
+      store.getState().projectCreation.urbanProject.steps.URBAN_PROJECT_SPACES_SURFACE_AREA;
+    expect(surfaceAreaStep?.completed).toBe(false);
+    expect(surfaceAreaStep?.payload).toBeUndefined();
+    expect(surfaceAreaStep?.defaultValues).toEqual({
+      spacesSurfaceAreaDistribution: {
+        BUILDINGS: 10000,
+      },
+    });
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_SURFACE_AREA");
   });
 
