@@ -72,7 +72,7 @@ describe("Urban project creation - Steps - Spaces selection", () => {
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_INTRODUCTION");
   });
 
-  it("should have BUILDINGS and existing constrained soils in default answers when uses include building use", () => {
+  it("should have BUILDINGS in default answers when uses include building use", () => {
     const store = createTestStore({
       steps: {
         URBAN_PROJECT_USES_SELECTION: {
@@ -99,10 +99,8 @@ describe("Urban project creation - Steps - Spaces selection", () => {
 
     const state = store.getState().projectCreation.urbanProject.steps;
 
-    // mockSiteData has PRAIRIE_GRASS which is a constrained soil
-    // So default answers should include both BUILDINGS (due to building uses) and PRAIRIE_GRASS
     expect(state.URBAN_PROJECT_SPACES_SELECTION?.defaultValues).toEqual({
-      spacesSelection: ["BUILDINGS", "PRAIRIE_GRASS"],
+      spacesSelection: ["BUILDINGS"],
     });
   });
 
@@ -134,130 +132,8 @@ describe("Urban project creation - Steps - Spaces selection", () => {
 
     // Only constrained soils from site should be in default (PRAIRIE_GRASS exists in mockSiteData)
     expect(state.URBAN_PROJECT_SPACES_SELECTION?.defaultValues).toEqual({
-      spacesSelection: ["PRAIRIE_GRASS"],
+      spacesSelection: undefined,
     });
-  });
-
-  it("should include existing constrained soils from site in default answers", () => {
-    const store = createTestStore({
-      siteData: {
-        id: "test-site",
-        name: "Test Site",
-        address: {
-          value: "123 Test City",
-          city: "Test City",
-          cityCode: "12345",
-          postCode: "12345",
-          long: 0,
-          lat: 0,
-        },
-        isExpressSite: false,
-        surfaceArea: 10000,
-        nature: "FRICHE",
-        hasContaminatedSoils: false,
-        owner: { name: "Owner", structureType: "municipality" },
-        soilsDistribution: {
-          BUILDINGS: 2000,
-          PRAIRIE_GRASS: 3000,
-          FOREST_DECIDUOUS: 2000,
-          MINERAL_SOIL: 3000,
-        },
-      },
-      steps: {
-        URBAN_PROJECT_USES_SELECTION: {
-          completed: true,
-          payload: { usesSelection: ["PUBLIC_GREEN_SPACES"] },
-        },
-        URBAN_PROJECT_USES_FOOTPRINT_SURFACE_AREA: {
-          completed: true,
-          payload: { usesFootprintSurfaceAreaDistribution: { PUBLIC_GREEN_SPACES: 10000 } },
-        },
-      },
-    });
-
-    // Navigate to step to compute default values
-    store.dispatch(
-      creationProjectFormUrbanActions.navigateToStep({ stepId: "URBAN_PROJECT_SPACES_SELECTION" }),
-    );
-
-    const state = store.getState().projectCreation.urbanProject.steps;
-
-    // Should include both constrained soils that exist on site
-    expect(state.URBAN_PROJECT_SPACES_SELECTION?.defaultValues?.spacesSelection).toContain(
-      "PRAIRIE_GRASS",
-    );
-    expect(state.URBAN_PROJECT_SPACES_SELECTION?.defaultValues?.spacesSelection).toContain(
-      "FOREST_DECIDUOUS",
-    );
-    // Should NOT include non-constrained soils
-    expect(state.URBAN_PROJECT_SPACES_SELECTION?.defaultValues?.spacesSelection).not.toContain(
-      "BUILDINGS",
-    );
-    expect(state.URBAN_PROJECT_SPACES_SELECTION?.defaultValues?.spacesSelection).not.toContain(
-      "MINERAL_SOIL",
-    );
-  });
-
-  it("should include BUILDINGS AND existing constrained soils when building uses selected", () => {
-    const store = createTestStore({
-      siteData: {
-        id: "test-site",
-        name: "Test Site",
-        address: {
-          value: "123 Test City",
-          city: "Test City",
-          cityCode: "12345",
-          postCode: "12345",
-          long: 0,
-          lat: 0,
-        },
-        isExpressSite: false,
-        surfaceArea: 10000,
-        nature: "FRICHE",
-        hasContaminatedSoils: false,
-        owner: { name: "Owner", structureType: "municipality" },
-        soilsDistribution: {
-          BUILDINGS: 2000,
-          PRAIRIE_GRASS: 3000,
-          WET_LAND: 2000,
-          MINERAL_SOIL: 3000,
-        },
-      },
-      steps: {
-        URBAN_PROJECT_USES_SELECTION: {
-          completed: true,
-          payload: { usesSelection: ["RESIDENTIAL", "PUBLIC_GREEN_SPACES"] },
-        },
-        URBAN_PROJECT_USES_FOOTPRINT_SURFACE_AREA: {
-          completed: true,
-          payload: {
-            usesFootprintSurfaceAreaDistribution: { RESIDENTIAL: 5000, PUBLIC_GREEN_SPACES: 5000 },
-          },
-        },
-        URBAN_PROJECT_USES_FLOOR_SURFACE_AREA: {
-          completed: true,
-          payload: { usesFloorSurfaceAreaDistribution: { RESIDENTIAL: 8000 } },
-        },
-      },
-    });
-
-    // Navigate to step to compute default values
-    store.dispatch(
-      creationProjectFormUrbanActions.navigateToStep({ stepId: "URBAN_PROJECT_SPACES_SELECTION" }),
-    );
-
-    const state = store.getState().projectCreation.urbanProject.steps;
-
-    // Should include BUILDINGS (because of building uses) and constrained soils from site
-    expect(state.URBAN_PROJECT_SPACES_SELECTION?.defaultValues?.spacesSelection).toContain(
-      "BUILDINGS",
-    );
-    expect(state.URBAN_PROJECT_SPACES_SELECTION?.defaultValues?.spacesSelection).toContain(
-      "PRAIRIE_GRASS",
-    );
-    expect(state.URBAN_PROJECT_SPACES_SELECTION?.defaultValues?.spacesSelection).toContain(
-      "WET_LAND",
-    );
   });
 
   it("should delete surface area step when selection changes", () => {

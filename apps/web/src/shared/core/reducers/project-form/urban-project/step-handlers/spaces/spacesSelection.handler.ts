@@ -1,5 +1,4 @@
-import { isBuildingUse, isConstrainedSoilType, typedObjectKeys } from "shared";
-import type { SoilType } from "shared";
+import { isBuildingUse } from "shared";
 
 import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
 
@@ -25,20 +24,9 @@ export const SpacesSelectionHandler: AnswerStepHandler<typeof STEP_ID> = {
 
     const hasBuildingUses = selectedUses.some((use) => isBuildingUse(use));
 
-    // Get constrained soils that exist on the site
-    const siteSoils = typedObjectKeys(context.siteData?.soilsDistribution ?? {});
-    const existingConstrainedSoils = siteSoils.filter(isConstrainedSoilType);
-
-    const defaultSpaces: SoilType[] = [
-      ...(hasBuildingUses ? (["BUILDINGS"] as const) : []),
-      ...existingConstrainedSoils,
-    ];
-
-    if (defaultSpaces.length > 0) {
-      return { spacesSelection: defaultSpaces };
-    }
-
-    return undefined;
+    return {
+      spacesSelection: hasBuildingUses ? ["BUILDINGS"] : undefined,
+    };
   },
 
   getDependencyRules(context, newAnswers) {
