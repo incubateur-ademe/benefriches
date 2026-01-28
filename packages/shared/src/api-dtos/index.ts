@@ -1,3 +1,6 @@
+// Auth DTOs
+export { registerUserRequestDtoSchema, type RegisterUserRequestDto } from "./auth/register.dto";
+
 // Sites DTOs
 export {
   createCustomSiteDtoSchema,

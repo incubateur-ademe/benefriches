@@ -2,10 +2,10 @@ import { JwtService } from "@nestjs/jwt";
 import { NestExpressApplication } from "@nestjs/platform-express";
 import cookie from "cookie";
 import { Knex } from "knex";
+import { RegisterUserRequestDto } from "shared";
 import request from "supertest";
 import { createTestApp } from "test/testApp";
 import { vi } from "vitest";
-import { z } from "zod";
 
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import { UserBuilder } from "src/users/core/model/user.mock";
@@ -15,7 +15,6 @@ import { TokenAuthenticationAttempt } from "../core/tokenAuthenticationAttempt";
 import { AccessTokenPayload } from "./JwtAuthGuard";
 import { ACCESS_TOKEN_COOKIE_KEY } from "./access-token/accessTokenCookie";
 import { SmtpAuthLinkMailer } from "./auth-link-mailer/SmtpAuthLinkMailer";
-import { registerUserBodySchema, RegisterUserBodyDto } from "./auth.controller";
 import { FakeProConnectClient } from "./pro-connect/FakeProConnectClient";
 import { PRO_CONNECT_CLIENT_INJECTION_TOKEN } from "./pro-connect/ProConnectClient";
 import { RandomTokenGenerator } from "./token-generator/RandomTokenGenerator";
@@ -61,7 +60,7 @@ describe("Auth integration tests", () => {
   });
 
   describe("POST /auth/register", () => {
-    const buildRegisterUserPayload = (): RegisterUserBodyDto => ({
+    const buildRegisterUserPayload = (): RegisterUserRequestDto => ({
       id: "ecf6d4b1-d394-48c8-8208-fad936afe6ca",
       firstname: "John",
       lastname: "Doe",
@@ -82,12 +81,12 @@ describe("Auth integration tests", () => {
       "personalDataStorageConsented",
       "personalDataAnalyticsUseConsented",
       "subscribedToNewsletter",
-    ] as (keyof z.infer<typeof registerUserBodySchema>)[])(
+    ] as (keyof RegisterUserRequestDto)[])(
       "cannot register a user without field '%s'",
       async (mandatoryField) => {
         const requestBody = buildRegisterUserPayload();
         // oxlint-disable-next-line typescript/no-dynamic-delete
-        delete requestBody[mandatoryField];
+        delete (requestBody as unknown as Record<string, unknown>)[mandatoryField];
 
         const response = await request(app.getHttpServer())
           .post("/api/auth/register")

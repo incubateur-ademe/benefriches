@@ -20,7 +20,7 @@ import { ConfigService } from "@nestjs/config";
 import { Request, Response } from "express";
 import { createZodDto } from "nestjs-zod";
 import { randomUUID } from "node:crypto";
-import { z } from "zod";
+import { registerUserRequestDtoSchema } from "shared";
 
 import { CreateUserUseCase, UserProps } from "src/auth/core/createUser.usecase";
 import {
@@ -67,21 +67,7 @@ declare module "express-session" {
   }
 }
 
-export const registerUserBodySchema = z.object({
-  id: z.uuid(),
-  email: z.email(),
-  firstname: z.string(),
-  lastname: z.string(),
-  structureType: z.string(),
-  structureActivity: z.string(),
-  structureName: z.string().optional(),
-  personalDataStorageConsented: z.literal(true),
-  personalDataAnalyticsUseConsented: z.boolean(),
-  personalDataCommunicationUseConsented: z.boolean(),
-  subscribedToNewsletter: z.boolean(),
-});
-
-export class RegisterUserBodyDto extends createZodDto(registerUserBodySchema) {}
+export class RegisterUserBodyDto extends createZodDto(registerUserRequestDtoSchema) {}
 
 @Controller("auth")
 export class AuthController {
