@@ -329,6 +329,10 @@ export const getPictogramUrlForUrbanProjectUse = (use: UrbanProjectUse): string 
 
 // Spaces (soil types with custom labels for urban project context)
 const SPACE_LABELS: Partial<Record<SoilType, { label: string; description: string }>> = {
+  BUILDINGS: {
+    label: "Bâtiments",
+    description: "",
+  },
   MINERAL_SOIL: {
     label: "Allée ou parking imperméable",
     description: "Bitume, pavé, ciment",
