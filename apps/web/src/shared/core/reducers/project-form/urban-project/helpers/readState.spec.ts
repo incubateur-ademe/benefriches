@@ -1,9 +1,21 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
+
+import { BENEFRICHES_ENV } from "@/shared/views/envVars";
 
 import { ProjectFormState } from "../../projectForm.reducer";
 import { ReadStateHelper } from "./readState";
 
+vi.mock("@/shared/views/envVars", () => ({
+  BENEFRICHES_ENV: {
+    urbanProjectUsesFlowEnabled: false,
+  },
+}));
+
 describe("ReadStateHelper", () => {
+  beforeEach(() => {
+    vi.mocked(BENEFRICHES_ENV).urbanProjectUsesFlowEnabled = false;
+  });
+
   describe("getStep", () => {
     it("should return the step when it exists", () => {
       const steps: ProjectFormState["urbanProject"]["steps"] = {
@@ -231,89 +243,146 @@ describe("ReadStateHelper", () => {
   });
 
   describe("getProjectSoilDistribution", () => {
-    it("should aggregate soil distribution from all space types", () => {
-      const steps: ProjectFormState["urbanProject"]["steps"] = {
-        URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION: {
-          completed: true,
-          payload: {
-            publicSpacesDistribution: {
-              IMPERMEABLE_SURFACE: 500,
-              PERMEABLE_SURFACE: 300,
+    describe("with legacy spaces flow", () => {
+      it("should aggregate soil distribution from all space types", () => {
+        const steps: ProjectFormState["urbanProject"]["steps"] = {
+          URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION: {
+            completed: true,
+            payload: {
+              publicSpacesDistribution: {
+                IMPERMEABLE_SURFACE: 500,
+                PERMEABLE_SURFACE: 300,
+              },
             },
           },
-        },
-        URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION: {
-          completed: true,
-          payload: {
-            greenSpacesDistribution: {
-              LAWNS_AND_BUSHES: 400,
-              TREE_FILLED_SPACE: 200,
+          URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION: {
+            completed: true,
+            payload: {
+              greenSpacesDistribution: {
+                LAWNS_AND_BUSHES: 400,
+                TREE_FILLED_SPACE: 200,
+              },
             },
           },
-        },
-        URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION: {
-          completed: true,
-          payload: {
-            livingAndActivitySpacesDistribution: {
-              BUILDINGS: 1000,
-              IMPERMEABLE_SURFACE: 600,
+          URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION: {
+            completed: true,
+            payload: {
+              livingAndActivitySpacesDistribution: {
+                BUILDINGS: 1000,
+                IMPERMEABLE_SURFACE: 600,
+              },
             },
           },
-        },
-      };
+        };
 
-      const result = ReadStateHelper.getProjectSoilDistribution(steps);
-      expect(result).toEqual([
-        {
-          surfaceArea: 500,
-          soilType: "IMPERMEABLE_SOILS",
-          spaceCategory: "PUBLIC_SPACE",
-        },
-        {
-          surfaceArea: 300,
-          soilType: "MINERAL_SOIL",
-          spaceCategory: "PUBLIC_SPACE",
-        },
-        {
-          surfaceArea: 1000,
-          soilType: "BUILDINGS",
-          spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
-        },
-        {
-          surfaceArea: 600,
-          soilType: "IMPERMEABLE_SOILS",
-          spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
-        },
-        {
-          surfaceArea: 400,
-          soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
-          spaceCategory: "PUBLIC_GREEN_SPACE",
-        },
-        {
-          surfaceArea: 200,
-          soilType: "ARTIFICIAL_TREE_FILLED",
-          spaceCategory: "PUBLIC_GREEN_SPACE",
-        },
-      ]);
+        const result = ReadStateHelper.getProjectSoilDistribution(steps);
+        expect(result).toEqual([
+          {
+            surfaceArea: 500,
+            soilType: "IMPERMEABLE_SOILS",
+            spaceCategory: "PUBLIC_SPACE",
+          },
+          {
+            surfaceArea: 300,
+            soilType: "MINERAL_SOIL",
+            spaceCategory: "PUBLIC_SPACE",
+          },
+          {
+            surfaceArea: 1000,
+            soilType: "BUILDINGS",
+            spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+          },
+          {
+            surfaceArea: 600,
+            soilType: "IMPERMEABLE_SOILS",
+            spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+          },
+          {
+            surfaceArea: 400,
+            soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+            spaceCategory: "PUBLIC_GREEN_SPACE",
+          },
+          {
+            surfaceArea: 200,
+            soilType: "ARTIFICIAL_TREE_FILLED",
+            spaceCategory: "PUBLIC_GREEN_SPACE",
+          },
+        ]);
+      });
+
+      it("should filter out entries with no surface area", () => {
+        const steps: ProjectFormState["urbanProject"]["steps"] = {
+          URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION: {
+            completed: true,
+            payload: {
+              publicSpacesDistribution: {
+                IMPERMEABLE_SURFACE: 500,
+                PERMEABLE_SURFACE: 0,
+              },
+            },
+          },
+        };
+
+        const result = ReadStateHelper.getProjectSoilDistribution(steps);
+
+        expect(result).toHaveLength(1);
+        expect(result[0]?.surfaceArea).toBe(500);
+      });
     });
 
-    it("should filter out entries with no surface area", () => {
-      const steps: ProjectFormState["urbanProject"]["steps"] = {
-        URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION: {
-          completed: true,
-          payload: {
-            publicSpacesDistribution: {
-              IMPERMEABLE_SURFACE: 500,
-              PERMEABLE_SURFACE: 0,
+    describe("with new spaces selection flow", () => {
+      beforeEach(() => {
+        vi.mocked(BENEFRICHES_ENV).urbanProjectUsesFlowEnabled = true;
+      });
+
+      it("should return soil distribution from URBAN_PROJECT_SPACES_SURFACE_AREA step", () => {
+        const steps: ProjectFormState["urbanProject"]["steps"] = {
+          URBAN_PROJECT_SPACES_SURFACE_AREA: {
+            completed: true,
+            payload: {
+              spacesSurfaceAreaDistribution: {
+                BUILDINGS: 1000,
+                IMPERMEABLE_SOILS: 500,
+                ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 300,
+              },
             },
           },
-        },
-      };
+        };
 
-      const result = ReadStateHelper.getProjectSoilDistribution(steps);
+        const result = ReadStateHelper.getProjectSoilDistribution(steps);
 
-      expect(result).toHaveLength(1);
-      expect(result[0]?.surfaceArea).toBe(500);
+        expect(result).toEqual([
+          { surfaceArea: 1000, soilType: "BUILDINGS" },
+          { surfaceArea: 500, soilType: "IMPERMEABLE_SOILS" },
+          { surfaceArea: 300, soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED" },
+        ]);
+      });
+
+      it("should filter out entries with no surface area", () => {
+        const steps: ProjectFormState["urbanProject"]["steps"] = {
+          URBAN_PROJECT_SPACES_SURFACE_AREA: {
+            completed: true,
+            payload: {
+              spacesSurfaceAreaDistribution: {
+                BUILDINGS: 1000,
+                IMPERMEABLE_SOILS: 0,
+              },
+            },
+          },
+        };
+
+        const result = ReadStateHelper.getProjectSoilDistribution(steps);
+
+        expect(result).toEqual([{ surfaceArea: 1000, soilType: "BUILDINGS" }]);
+      });
+
+      it("should return empty array when step has no data", () => {
+        const steps: ProjectFormState["urbanProject"]["steps"] = {};
+
+        const result = ReadStateHelper.getProjectSoilDistribution(steps);
+
+        expect(result).toEqual([]);
+      });
     });
   });
 

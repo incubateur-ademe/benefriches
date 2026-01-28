@@ -7,6 +7,8 @@ import {
   typedObjectEntries,
 } from "shared";
 
+import { BENEFRICHES_ENV } from "@/shared/views/envVars";
+
 import { DEFAULT_FUTURE_SITE_OWNER } from "../../helpers/stakeholders";
 import { ProjectFormState } from "../../projectForm.reducer";
 import { AnswersByStep, AnswerStepId, UrbanProjectFormData } from "../urbanProjectSteps";
@@ -73,6 +75,20 @@ export const ReadStateHelper = {
   },
 
   getProjectSoilDistribution(steps: ProjectFormState["urbanProject"]["steps"]) {
+    if (BENEFRICHES_ENV.urbanProjectUsesFlowEnabled) {
+      const spacesSurfaceAreaDistribution = this.getStepAnswers(
+        steps,
+        "URBAN_PROJECT_SPACES_SURFACE_AREA",
+      )?.spacesSurfaceAreaDistribution;
+
+      return typedObjectEntries(spacesSurfaceAreaDistribution ?? {})
+        .filter(([_, surfaceArea]) => surfaceArea)
+        .map(([soilType, surfaceArea = 0]) => ({
+          surfaceArea,
+          soilType,
+        }));
+    }
+
     const publicSpacesDistribution = this.getStepAnswers(
       steps,
       "URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION",
