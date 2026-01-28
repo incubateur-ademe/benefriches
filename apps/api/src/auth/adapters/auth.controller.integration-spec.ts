@@ -62,8 +62,8 @@ describe("Auth integration tests", () => {
   describe("POST /auth/register", () => {
     const buildRegisterUserPayload = (): RegisterUserRequestDto => ({
       id: "ecf6d4b1-d394-48c8-8208-fad936afe6ca",
-      firstname: "John",
-      lastname: "Doe",
+      firstName: "John",
+      lastName: "Doe",
       email: "user@collectivite.fr",
       structureActivity: "urban_planner",
       structureType: "company",
@@ -146,8 +146,8 @@ describe("Auth integration tests", () => {
       expect(usersInDb[0]).toEqual({
         id: registerUserPayload.id,
         email: registerUserPayload.email,
-        firstname: registerUserPayload.firstname,
-        lastname: registerUserPayload.lastname,
+        firstname: registerUserPayload.firstName,
+        lastname: registerUserPayload.lastName,
         subscribed_to_newsletter: registerUserPayload.subscribedToNewsletter,
       });
 

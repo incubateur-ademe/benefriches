@@ -22,8 +22,8 @@ export type UserStructureType = z.infer<typeof structureTypeSchema>;
 export const userSchema = z.object({
   id: z.uuid(),
   email: z.email(),
-  firstname: z.string(),
-  lastname: z.string(),
+  firstName: z.string(),
+  lastName: z.string(),
   structureType: structureTypeSchema,
   structureActivity: structureActivitySchema,
   structureName: z.string().optional(),
@@ -44,8 +44,8 @@ export type UserStructure = {
 export type AuthenticatedUser = {
   id: string;
   email: string;
-  firstname: string;
-  lastname: string;
+  firstName: string;
+  lastName: string;
   structureType: UserStructureType;
   structureActivity: UserStructureActivity;
   structureName?: string;

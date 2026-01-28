@@ -4,8 +4,8 @@ export const buildUser = (props?: Partial<User>): User => {
   return {
     id: "301d0f47-3775-4320-8e06-381047bebbed",
     email: "john.doe@mail.com",
-    firstname: "John",
-    lastname: "Doe",
+    firstName: "John",
+    lastName: "Doe",
     personalDataAnalyticsUseConsented: true,
     personalDataCommunicationUseConsented: true,
     personalDataStorageConsented: true,

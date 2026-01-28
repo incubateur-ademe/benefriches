@@ -3,8 +3,8 @@ import { z } from "zod";
 export const registerUserRequestDtoSchema = z.object({
   id: z.uuid(),
   email: z.email(),
-  firstname: z.string(),
-  lastname: z.string(),
+  firstName: z.string(),
+  lastName: z.string(),
   structureType: z.string(),
   structureActivity: z.string(),
   structureName: z.string().optional(),

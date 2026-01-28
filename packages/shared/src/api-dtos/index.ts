@@ -1,5 +1,10 @@
 // Auth DTOs
-export { registerUserRequestDtoSchema, type RegisterUserRequestDto } from "./auth/register.dto";
+export {
+  registerUserRequestDtoSchema,
+  type RegisterUserRequestDto,
+  getCurrentUserResponseDtoSchema,
+  type GetCurrentUserResponseDto,
+} from "./auth";
 
 // Sites DTOs
 export {

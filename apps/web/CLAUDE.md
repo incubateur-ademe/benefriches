@@ -25,18 +25,19 @@ pnpm --filter web typecheck && pnpm --filter web lint && pnpm --filter web test
 
 ## Canonical Pattern Examples
 
-| Pattern                 | Reference File                                                                                                   |
-| ----------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| ViewData Selector       | `src/features/create-project/core/createProject.selectors.ts`                                                    |
-| Async Thunk             | `src/features/create-project/core/urban-project/fetchEstimatedSiteResalePrice.action.ts`                         |
-| Reducer (createReducer) | `src/features/create-site/core/createSite.reducer.ts`                                                            |
-| Container Component     | `src/features/create-project/views/photovoltaic-power-station/custom-form/stakeholders/site-purchased/index.tsx` |
-| Gateway Interface       | `src/shared/core/gateways/RealEstateValuationGateway.ts`                                                         |
-| HTTP Implementation     | `src/shared/infrastructure/real-estate-valuation-service/HttpRealEstateValuationService.ts`                      |
-| InMemory Mock           | `src/shared/infrastructure/real-estate-valuation-service/InMemoryRealEstateValuationService.ts`                  |
-| Test with Store Helper  | `src/features/create-project/core/urban-project/__tests__/steps/site-resale/siteResaleSelection.step.spec.ts`    |
-| Test Store Helper       | `src/features/create-project/core/urban-project/__tests__/_testStoreHelpers.ts`                                  |
-| Listener Middleware     | `src/features/create-project/core/listeners/projectCreationListeners.ts`                                         |
+| Pattern                  | Reference File                                                                                                   |
+| ------------------------ | ---------------------------------------------------------------------------------------------------------------- |
+| ViewData Selector        | `src/features/create-project/core/createProject.selectors.ts`                                                    |
+| Async Thunk              | `src/features/create-project/core/urban-project/fetchEstimatedSiteResalePrice.action.ts`                         |
+| Reducer (createReducer)  | `src/features/create-site/core/createSite.reducer.ts`                                                            |
+| Container Component      | `src/features/create-project/views/photovoltaic-power-station/custom-form/stakeholders/site-purchased/index.tsx` |
+| Gateway Interface        | `src/shared/core/gateways/RealEstateValuationGateway.ts`                                                         |
+| HTTP POST implementation | `src/features/onboarding/infrastructure/create-user-service/HttpCreateUserService.ts`                            |
+| HTTP GET implementation  | `src/features/onboarding/infrastructure/current-user-service/HttpCurrentUserService.ts`                          |
+| InMemory Mock            | `src/shared/infrastructure/real-estate-valuation-service/InMemoryRealEstateValuationService.ts`                  |
+| Test with Store Helper   | `src/features/create-project/core/urban-project/__tests__/steps/site-resale/siteResaleSelection.step.spec.ts`    |
+| Test Store Helper        | `src/features/create-project/core/urban-project/__tests__/_testStoreHelpers.ts`                                  |
+| Listener Middleware      | `src/features/create-project/core/listeners/projectCreationListeners.ts`                                         |
 
 ---
 
@@ -71,6 +72,8 @@ return <FeaturePage viewData={viewData} onAction={(data) => dispatch(actionCompl
 2. **HTTP implementation** in `infrastructure/*/Http*Service.ts` - real API calls
 3. **InMemory mock** in `infrastructure/*/InMemory*Service.ts` - required for tests
 4. **Register in store** via `extraArgument` for thunk access
+
+**DTO Validation**: HTTP services should validate request/response bodies using shared Zod schemas from `"shared"` with `safeParse()`. See `src/features/onboarding/infrastructure/create-user-service/HttpCreateUserService.ts` for reference.
 
 ### Dependency Injection
 

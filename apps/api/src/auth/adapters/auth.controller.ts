@@ -20,7 +20,7 @@ import { ConfigService } from "@nestjs/config";
 import { Request, Response } from "express";
 import { createZodDto } from "nestjs-zod";
 import { randomUUID } from "node:crypto";
-import { registerUserRequestDtoSchema } from "shared";
+import { registerUserRequestDtoSchema, type GetCurrentUserResponseDto } from "shared";
 
 import { CreateUserUseCase, UserProps } from "src/auth/core/createUser.usecase";
 import {
@@ -100,8 +100,8 @@ export class AuthController {
       structureType: createUserDto.structureType,
       structureActivity: createUserDto.structureActivity,
       structureName: createUserDto.structureName,
-      firstName: createUserDto.firstname,
-      lastName: createUserDto.lastname,
+      firstName: createUserDto.firstName,
+      lastName: createUserDto.lastName,
       personalDataAnalyticsUseConsented: createUserDto.personalDataAnalyticsUseConsented,
       personalDataCommunicationUseConsented: createUserDto.personalDataCommunicationUseConsented,
       personalDataStorageConsented: createUserDto.personalDataStorageConsented,
@@ -325,7 +325,10 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Get("me")
-  async me(@Req() req: RequestWithAuthenticatedUser, @Res() res: Response) {
+  async me(
+    @Req() req: RequestWithAuthenticatedUser,
+    @Res() res: Response<GetCurrentUserResponseDto>,
+  ) {
     const authenticatedUser = await this.usersRepository.getWithId(req.accessTokenPayload.userId);
 
     if (!authenticatedUser) throw new UnauthorizedException();

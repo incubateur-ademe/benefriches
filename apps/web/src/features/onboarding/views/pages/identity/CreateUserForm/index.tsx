@@ -49,8 +49,8 @@ function CreateUserFormContainer({ onSuccess }: Props) {
     void dispatch(
       createUser({
         email: data.email,
-        firstname: data.firstname,
-        lastname: data.lastname,
+        firstName: data.firstname,
+        lastName: data.lastname,
         structureType: data.structureCategory === "local_authority" ? "local_authority" : "company",
         structureActivity:
           data.structureCategory === "local_authority"
