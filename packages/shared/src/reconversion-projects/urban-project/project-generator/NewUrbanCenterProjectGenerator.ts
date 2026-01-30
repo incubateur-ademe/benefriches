@@ -4,6 +4,36 @@ import { ReconversionProjectSoilsDistribution } from "../../reconversionProjectS
 import { DEFAULT_RESALE_RATIO_PER_SQUARE_METERS } from "../expectedPostDevelopmentResale";
 import { UrbanProjectGenerator } from "./UrbanProjectGenerator";
 
+/**
+ * New Urban Center Project Generator
+ *
+ * Generates a mixed-use urban center project with the following distribution:
+ *
+ * SOILS DISTRIBUTION (example for 10,000 m² site):
+ * ┌─────────────────────────────────────────────────────────────────────────────┐
+ * │ Space Category          │ Soil Type                   │ %      │ Area       │
+ * ├─────────────────────────┼─────────────────────────────┼────────┼────────────┤
+ * │ LIVING_AND_ACTIVITY     │ BUILDINGS                   │ 29.25% │  2,925 m²  │
+ * │ LIVING_AND_ACTIVITY     │ IMPERMEABLE_SOILS           │  3.25% │    325 m²  │
+ * │ LIVING_AND_ACTIVITY     │ MINERAL_SOIL                │  3.25% │    325 m²  │
+ * │ LIVING_AND_ACTIVITY     │ ARTIFICIAL_GRASS_OR_BUSHES  │ 29.25% │  2,925 m²  │
+ * │ PUBLIC_GREEN_SPACE      │ ARTIFICIAL_GRASS_OR_BUSHES  │ 15%    │  1,500 m²  │
+ * │ PUBLIC_SPACE            │ IMPERMEABLE_SOILS           │ 10%    │  1,000 m²  │
+ * │ PUBLIC_SPACE            │ MINERAL_SOIL                │  5%    │    500 m²  │
+ * │ PUBLIC_SPACE            │ ARTIFICIAL_GRASS_OR_BUSHES  │  5%    │    500 m²  │
+ * ├─────────────────────────┴─────────────────────────────┼────────┼────────────┤
+ * │ TOTAL                                                 │ 100%   │ 10,000 m²  │
+ * └───────────────────────────────────────────────────────┴────────┴────────────┘
+ *
+ * BUILDINGS FLOOR AREA (80% of site area = 8,000 m²):
+ * - RESIDENTIAL:          62% × 8,000 = 4,960 m²
+ * - LOCAL_STORE:           2% × 8,000 =   160 m²
+ * - OFFICES:               4% × 8,000 =   320 m²
+ * - LOCAL_SERVICES:        8% × 8,000 =   640 m²
+ * - ARTISANAL/INDUSTRIAL:  2% × 8,000 =   160 m²
+ * - PUBLIC_FACILITIES:     2% × 8,000 =   160 m²
+ */
+
 const RESALE_RATIO_PER_SQUARE_METERS = {
   ...DEFAULT_RESALE_RATIO_PER_SQUARE_METERS,
   RESIDENTIAL: 220,

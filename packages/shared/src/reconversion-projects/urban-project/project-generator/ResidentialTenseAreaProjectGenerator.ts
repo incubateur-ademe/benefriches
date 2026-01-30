@@ -3,6 +3,34 @@ import { ReconversionProjectSoilsDistribution } from "../../reconversionProjectS
 import { computeExpectedPostDevelopmentResaleSellingPriceFromSurfacesInTenseArea } from "../expectedPostDevelopmentResale";
 import { UrbanProjectGenerator } from "./UrbanProjectGenerator";
 
+/**
+ * Residential Tense Area Project Generator
+ *
+ * Generates a residential project for tense housing markets (higher density) with the following distribution:
+ *
+ * SOILS DISTRIBUTION (example for 10,000 m² site):
+ * ┌─────────────────────────────────────────────────────────────────────────┐
+ * │ Space Category          │ Soil Type                   │ %    │ Area     │
+ * ├─────────────────────────┼─────────────────────────────┼──────┼──────────┤
+ * │ LIVING_AND_ACTIVITY     │ BUILDINGS                   │ 42%  │ 4,200 m² │
+ * │ LIVING_AND_ACTIVITY     │ IMPERMEABLE_SOILS           │ 3.5% │   350 m² │
+ * │ LIVING_AND_ACTIVITY     │ MINERAL_SOIL                │ 3.5% │   350 m² │
+ * │ LIVING_AND_ACTIVITY     │ ARTIFICIAL_GRASS_OR_BUSHES  │ 21%  │ 2,100 m² │
+ * │ PUBLIC_GREEN_SPACE      │ ARTIFICIAL_GRASS_OR_BUSHES  │ 15%  │ 1,500 m² │
+ * │ PUBLIC_SPACE            │ IMPERMEABLE_SOILS           │  7%  │   700 m² │
+ * │ PUBLIC_SPACE            │ MINERAL_SOIL                │  4%  │   400 m² │
+ * │ PUBLIC_SPACE            │ ARTIFICIAL_GRASS_OR_BUSHES  │  4%  │   400 m² │
+ * ├─────────────────────────┴─────────────────────────────┼──────┼──────────┤
+ * │ TOTAL                                                 │ 100% │10,000 m² │
+ * └───────────────────────────────────────────────────────┴──────┴──────────┘
+ *
+ * BUILDINGS FLOOR AREA (100% of site area = 10,000 m²):
+ * - RESIDENTIAL:     85% × 10,000 = 8,500 m²
+ * - LOCAL_STORE:      4% × 10,000 =   400 m²
+ * - OFFICES:          5% × 10,000 =   500 m²
+ * - LOCAL_SERVICES:   6% × 10,000 =   600 m²
+ */
+
 export class ResidentialTenseAreaProjectGenerator extends UrbanProjectGenerator {
   override name = "Résidentiel secteur tendu";
 

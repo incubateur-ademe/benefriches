@@ -2,6 +2,31 @@ import { roundTo2Digits } from "../../../services";
 import { ReconversionProjectSoilsDistribution } from "../../reconversionProjectSchemas";
 import { UrbanProjectGenerator } from "./UrbanProjectGenerator";
 
+/**
+ * Residential Project Generator (Relaxed Area)
+ *
+ * Generates a residential project for non-tense housing markets with the following distribution:
+ *
+ * SOILS DISTRIBUTION (example for 10,000 m² site):
+ * ┌─────────────────────────────────────────────────────────────────────────┐
+ * │ Space Category          │ Soil Type                   │ %    │ Area     │
+ * ├─────────────────────────┼─────────────────────────────┼──────┼──────────┤
+ * │ LIVING_AND_ACTIVITY     │ BUILDINGS                   │ 20%  │ 2,000 m² │
+ * │ LIVING_AND_ACTIVITY     │ IMPERMEABLE_SOILS           │  7%  │   700 m² │
+ * │ LIVING_AND_ACTIVITY     │ MINERAL_SOIL                │  2%  │   200 m² │
+ * │ LIVING_AND_ACTIVITY     │ ARTIFICIAL_GRASS_OR_BUSHES  │ 37%  │ 3,700 m² │
+ * │ PUBLIC_GREEN_SPACE      │ ARTIFICIAL_GRASS_OR_BUSHES  │ 19%  │ 1,900 m² │
+ * │ PUBLIC_SPACE            │ IMPERMEABLE_SOILS           │  9%  │   900 m² │
+ * │ PUBLIC_SPACE            │ MINERAL_SOIL                │  2%  │   200 m² │
+ * │ PUBLIC_SPACE            │ ARTIFICIAL_GRASS_OR_BUSHES  │  4%  │   400 m² │
+ * ├─────────────────────────┴─────────────────────────────┼──────┼──────────┤
+ * │ TOTAL                                                 │ 100% │10,000 m² │
+ * └───────────────────────────────────────────────────────┴──────┴──────────┘
+ *
+ * BUILDINGS FLOOR AREA (38% of site area):
+ * - RESIDENTIAL: 38% × site area = 3,800 m²
+ */
+
 export class ResidentialProjectGenerator extends UrbanProjectGenerator {
   override name = "Résidentiel secteur détendu";
 
