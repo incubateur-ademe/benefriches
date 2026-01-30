@@ -43,8 +43,23 @@ const options = [
     ],
   },
   {
-    category: "Loisir et culture",
-    options: ["CULTURAL_PLACE", "SPORTS_FACILITIES"],
+    category: "Établissements éducatifs",
+    options: ["KINDERGARTEN_OR_PRIMARY_SCHOOL", "SECONDARY_SCHOOL", "OTHER_EDUCATIONAL_FACILITY"],
+  },
+  {
+    category: "Structures sanitaires et sociales",
+    options: ["LOCAL_HEALTH_SERVICE", "HOSPITAL", "MEDICAL_SOCIAL_FACILITY"],
+  },
+  {
+    category: "Loisirs, sports et culture",
+    options: [
+      "CULTURAL_PLACE",
+      "CINEMA",
+      "MUSEUM",
+      "THEATER",
+      "RECREATIONAL_FACILITY",
+      "SPORTS_FACILITIES",
+    ],
   },
   {
     category: "Autres équipements",

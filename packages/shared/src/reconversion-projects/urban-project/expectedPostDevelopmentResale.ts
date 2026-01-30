@@ -18,6 +18,19 @@ export const DEFAULT_RESALE_RATIO_PER_SQUARE_METERS = {
   CULTURAL_PLACE: undefined,
   SPORTS_FACILITIES: undefined,
   OTHER: undefined,
+  // Educational facilities
+  KINDERGARTEN_OR_PRIMARY_SCHOOL: undefined,
+  SECONDARY_SCHOOL: undefined,
+  OTHER_EDUCATIONAL_FACILITY: undefined,
+  // Health facilities
+  LOCAL_HEALTH_SERVICE: undefined,
+  HOSPITAL: undefined,
+  MEDICAL_SOCIAL_FACILITY: undefined,
+  // Leisure and culture facilities
+  CINEMA: undefined,
+  MUSEUM: undefined,
+  THEATER: undefined,
+  RECREATIONAL_FACILITY: undefined,
 } satisfies BuildingsUseResaleRatioPerSquareMeters;
 
 export const computeExpectedPostDevelopmentResaleSellingPriceFromSurfaces = (
@@ -46,6 +59,19 @@ const TENSE_AREA_RESALE_RATIO_PER_SQUARE_METERS = {
   CULTURAL_PLACE: undefined,
   SPORTS_FACILITIES: undefined,
   OTHER: undefined,
+  // Educational facilities
+  KINDERGARTEN_OR_PRIMARY_SCHOOL: undefined,
+  SECONDARY_SCHOOL: undefined,
+  OTHER_EDUCATIONAL_FACILITY: undefined,
+  // Health facilities
+  LOCAL_HEALTH_SERVICE: undefined,
+  HOSPITAL: undefined,
+  MEDICAL_SOCIAL_FACILITY: undefined,
+  // Leisure and culture facilities
+  CINEMA: undefined,
+  MUSEUM: undefined,
+  THEATER: undefined,
+  RECREATIONAL_FACILITY: undefined,
 } satisfies BuildingsUseResaleRatioPerSquareMeters;
 
 export const computeExpectedPostDevelopmentResaleSellingPriceFromSurfacesInTenseArea = (

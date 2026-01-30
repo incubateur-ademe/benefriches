@@ -9,10 +9,23 @@ export const buildingsUseSchema = z.enum([
   "ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES",
   "PUBLIC_FACILITIES",
   "OFFICES",
-  "CULTURAL_PLACE",
-  "SPORTS_FACILITIES",
   "MULTI_STORY_PARKING",
   "OTHER",
+  // Health facilities
+  "LOCAL_HEALTH_SERVICE",
+  "HOSPITAL",
+  "MEDICAL_SOCIAL_FACILITY",
+  // Leisure and culture facilities
+  "CULTURAL_PLACE",
+  "CINEMA",
+  "MUSEUM",
+  "THEATER",
+  "SPORTS_FACILITIES",
+  "RECREATIONAL_FACILITY",
+  // Educational facilities
+  "KINDERGARTEN_OR_PRIMARY_SCHOOL",
+  "SECONDARY_SCHOOL",
+  "OTHER_EDUCATIONAL_FACILITY",
 ]);
 
 export const BUILDINGS_USE_LIST = buildingsUseSchema.options;

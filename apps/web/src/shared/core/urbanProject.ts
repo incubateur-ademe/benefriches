@@ -36,7 +36,7 @@ export const getLabelForBuildingsUse = (use: BuildingsUse): string => {
     case "LOCAL_SERVICES":
       return "Service de proximité";
     case "PUBLIC_FACILITIES":
-      return "Équipements publics";
+      return "Autres bâtiments publics";
     case "RESIDENTIAL":
       return "Logements";
     case "ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES":
@@ -50,7 +50,30 @@ export const getLabelForBuildingsUse = (use: BuildingsUse): string => {
     case "SPORTS_FACILITIES":
       return "Équipements sportifs";
     case "OTHER":
-      return "Autres usages";
+      return "Autres bâtiments";
+    // Educational facilities
+    case "KINDERGARTEN_OR_PRIMARY_SCHOOL":
+      return "Crèche, école maternelle ou élémentaire";
+    case "SECONDARY_SCHOOL":
+      return "Collège ou lycée";
+    case "OTHER_EDUCATIONAL_FACILITY":
+      return "Autre établissement éducatif";
+    // Health facilities
+    case "LOCAL_HEALTH_SERVICE":
+      return "Service de santé de proximité";
+    case "HOSPITAL":
+      return "Établissement hospitalier";
+    case "MEDICAL_SOCIAL_FACILITY":
+      return "Établissement médico-social";
+    // Leisure and culture facilities
+    case "CINEMA":
+      return "Cinéma";
+    case "MUSEUM":
+      return "Musée";
+    case "THEATER":
+      return "Théâtre";
+    case "RECREATIONAL_FACILITY":
+      return "Équipement récréatif";
   }
 };
 
@@ -76,6 +99,29 @@ export const getColorForBuildingsUse = (use: BuildingsUse): string => {
       return "#68699E";
     case "OTHER":
       return "#9D6B6B";
+    // Educational facilities
+    case "KINDERGARTEN_OR_PRIMARY_SCHOOL":
+      return "#4A90D9";
+    case "SECONDARY_SCHOOL":
+      return "#2E5F8A";
+    case "OTHER_EDUCATIONAL_FACILITY":
+      return "#6B9FCE";
+    // Health facilities
+    case "LOCAL_HEALTH_SERVICE":
+      return "#E55B5B";
+    case "HOSPITAL":
+      return "#C43C3C";
+    case "MEDICAL_SOCIAL_FACILITY":
+      return "#F08080";
+    // Leisure and culture facilities
+    case "CINEMA":
+      return "#D4A017";
+    case "MUSEUM":
+      return "#B8860B";
+    case "THEATER":
+      return "#DAA520";
+    case "RECREATIONAL_FACILITY":
+      return "#F4C430";
   }
 };
 

@@ -20,6 +20,19 @@ export const urbanProjectUseSchema = z.enum([
   "SPORTS_FACILITIES",
   "MULTI_STORY_PARKING",
   "OTHER",
+  // Educational facilities
+  "KINDERGARTEN_OR_PRIMARY_SCHOOL",
+  "SECONDARY_SCHOOL",
+  "OTHER_EDUCATIONAL_FACILITY",
+  // Health facilities
+  "LOCAL_HEALTH_SERVICE",
+  "HOSPITAL",
+  "MEDICAL_SOCIAL_FACILITY",
+  // Leisure and culture facilities
+  "CINEMA",
+  "MUSEUM",
+  "THEATER",
+  "RECREATIONAL_FACILITY",
   // Non-building uses
   "PUBLIC_GREEN_SPACES",
   "OTHER_PUBLIC_SPACES",
@@ -40,10 +53,23 @@ const USES_WITH_BUILDINGS = [
   "ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES",
   "PUBLIC_FACILITIES",
   "OFFICES",
-  "CULTURAL_PLACE",
-  "SPORTS_FACILITIES",
   "MULTI_STORY_PARKING",
   "OTHER",
+  // Educational facilities
+  "KINDERGARTEN_OR_PRIMARY_SCHOOL",
+  "SECONDARY_SCHOOL",
+  "OTHER_EDUCATIONAL_FACILITY",
+  // Health facilities
+  "LOCAL_HEALTH_SERVICE",
+  "HOSPITAL",
+  "MEDICAL_SOCIAL_FACILITY",
+  // Leisure and culture facilities
+  "CULTURAL_PLACE",
+  "CINEMA",
+  "MUSEUM",
+  "THEATER",
+  "RECREATIONAL_FACILITY",
+  "SPORTS_FACILITIES",
 ] as const satisfies UrbanProjectUse[];
 
 type UseWithBuilding = (typeof USES_WITH_BUILDINGS)[number];

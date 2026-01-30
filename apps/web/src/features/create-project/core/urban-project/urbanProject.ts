@@ -176,11 +176,24 @@ export const getDescriptionForBuildingsUse = (use: BuildingsUse): string => {
     case "LOCAL_SERVICES":
       return "Banque, poste, restaurant...";
     case "CULTURAL_PLACE":
-      return "Cinéma, théâtre, musée...";
+      return "Médiathèque, salle de concert...";
+    case "OTHER_EDUCATIONAL_FACILITY":
+      return "(université, centre de formation)";
+    case "LOCAL_HEALTH_SERVICE":
+      return "(médecin, pharmacie, laboratoire...)";
+    case "MEDICAL_SOCIAL_FACILITY":
+      return "(EHPAD, centre d'accueil...)";
+    case "RECREATIONAL_FACILITY":
+      return "(aire de jeux, bowling...)";
     case "OTHER":
-      return "Établissement éducatif, espace de santé...";
     case "OFFICES":
     case "PUBLIC_FACILITIES":
+    case "KINDERGARTEN_OR_PRIMARY_SCHOOL":
+    case "SECONDARY_SCHOOL":
+    case "HOSPITAL":
+    case "CINEMA":
+    case "MUSEUM":
+    case "THEATER":
       return "";
   }
 };
@@ -203,9 +216,20 @@ export const getPictogramUrlForBuildingsUse = (use: BuildingsUse): string => {
     case "SPORTS_FACILITIES":
       return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/sports-facilities.svg`;
     case "CULTURAL_PLACE":
+    case "CINEMA":
+    case "MUSEUM":
+    case "THEATER":
+    case "RECREATIONAL_FACILITY":
       return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/cultural-place.svg`;
     case "PUBLIC_FACILITIES":
+    case "KINDERGARTEN_OR_PRIMARY_SCHOOL":
+    case "SECONDARY_SCHOOL":
+    case "OTHER_EDUCATIONAL_FACILITY":
       return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/public-buildings.svg`;
+    case "LOCAL_HEALTH_SERVICE":
+    case "HOSPITAL":
+    case "MEDICAL_SOCIAL_FACILITY":
+      return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/other.svg`;
     case "OTHER":
       return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/other.svg`;
   }
@@ -251,7 +275,7 @@ export const getLabelForUrbanProjectUse = (use: UrbanProjectUse): string => {
     case "ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES":
       return "Locaux artisanaux, industriels ou de stockage";
     case "PUBLIC_FACILITIES":
-      return "Équipements publics";
+      return "Autres bâtiments publics";
     case "OFFICES":
       return "Bureaux";
     case "CULTURAL_PLACE":
@@ -261,11 +285,34 @@ export const getLabelForUrbanProjectUse = (use: UrbanProjectUse): string => {
     case "MULTI_STORY_PARKING":
       return "Parking silo";
     case "OTHER":
-      return "Autres";
+      return "Autres bâtiments";
     case "PUBLIC_GREEN_SPACES":
       return "Espaces verts";
     case "OTHER_PUBLIC_SPACES":
       return "Autres espaces publics";
+    // Educational facilities
+    case "KINDERGARTEN_OR_PRIMARY_SCHOOL":
+      return "Crèche, école maternelle ou élémentaire";
+    case "SECONDARY_SCHOOL":
+      return "Collège ou lycée";
+    case "OTHER_EDUCATIONAL_FACILITY":
+      return "Autre établissement éducatif";
+    // Health facilities
+    case "LOCAL_HEALTH_SERVICE":
+      return "Service de santé de proximité";
+    case "HOSPITAL":
+      return "Établissement hospitalier";
+    case "MEDICAL_SOCIAL_FACILITY":
+      return "Établissement médico-social";
+    // Leisure and culture facilities
+    case "CINEMA":
+      return "Cinéma";
+    case "MUSEUM":
+      return "Musée";
+    case "THEATER":
+      return "Théâtre";
+    case "RECREATIONAL_FACILITY":
+      return "Équipement récréatif";
   }
 };
 
@@ -284,15 +331,31 @@ export const getDescriptionForUrbanProjectUse = (use: UrbanProjectUse): string |
     case "LOCAL_SERVICES":
       return "Banque, poste, restaurant...";
     case "CULTURAL_PLACE":
-      return "Cinéma, théâtre, musée...";
-    case "OTHER":
-      return "Établissement éducatif, espace de santé...";
+      return "Salle de spectacle, salle de concert...";
     case "PUBLIC_GREEN_SPACES":
       return "Parc, jardin public, forêt urbaine...";
     case "OTHER_PUBLIC_SPACES":
       return "Rues, places, pistes cyclables, parkings de surface...";
+    // Educational facilities
+    case "OTHER_EDUCATIONAL_FACILITY":
+      return "(université, centre de formation)";
+    // Health facilities
+    case "LOCAL_HEALTH_SERVICE":
+      return "(médecin, pharmacie, laboratoire...)";
+    case "MEDICAL_SOCIAL_FACILITY":
+      return "(EHPAD, centre d'accueil...)";
+    // Leisure and culture facilities
+    case "RECREATIONAL_FACILITY":
+      return "(aire de jeux, bowling...)";
     case "OFFICES":
     case "PUBLIC_FACILITIES":
+    case "OTHER":
+    case "KINDERGARTEN_OR_PRIMARY_SCHOOL":
+    case "SECONDARY_SCHOOL":
+    case "HOSPITAL":
+    case "CINEMA":
+    case "MUSEUM":
+    case "THEATER":
       return undefined;
   }
 };
@@ -315,9 +378,20 @@ export const getPictogramUrlForUrbanProjectUse = (use: UrbanProjectUse): string 
     case "SPORTS_FACILITIES":
       return `${URBAN_PROJECT_USE_PICTOGRAM_URL_BASE}/buildings-uses/sports-facilities.svg`;
     case "CULTURAL_PLACE":
+    case "CINEMA":
+    case "MUSEUM":
+    case "THEATER":
+    case "RECREATIONAL_FACILITY":
       return `${URBAN_PROJECT_USE_PICTOGRAM_URL_BASE}/buildings-uses/cultural-place.svg`;
     case "PUBLIC_FACILITIES":
+    case "KINDERGARTEN_OR_PRIMARY_SCHOOL":
+    case "SECONDARY_SCHOOL":
+    case "OTHER_EDUCATIONAL_FACILITY":
       return `${URBAN_PROJECT_USE_PICTOGRAM_URL_BASE}/buildings-uses/public-buildings.svg`;
+    case "LOCAL_HEALTH_SERVICE":
+    case "HOSPITAL":
+    case "MEDICAL_SOCIAL_FACILITY":
+      return `${URBAN_PROJECT_USE_PICTOGRAM_URL_BASE}/buildings-uses/other.svg`;
     case "OTHER":
       return `${URBAN_PROJECT_USE_PICTOGRAM_URL_BASE}/buildings-uses/other.svg`;
     case "PUBLIC_GREEN_SPACES":
