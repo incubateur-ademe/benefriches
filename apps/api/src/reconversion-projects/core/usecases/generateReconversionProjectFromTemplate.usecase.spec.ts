@@ -423,7 +423,7 @@ describe("GenerateAndSaveReconversionProjectFromTemplateUseCase Use Case", () =>
               },
             ];
             expectedBuildingsFloorAreaDistribution = {
-              CULTURAL_PLACE: 6_000,
+              OTHER_CULTURAL_PLACE: 6_000,
             };
           } else if (template === "INDUSTRIAL_FACILITIES") {
             expectedSoilsDistribution = [

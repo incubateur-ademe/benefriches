@@ -51,7 +51,7 @@ export class TourismAndCultureProjectGenerator extends UrbanProjectGenerator {
 
   override get buildingsFloorAreaDistribution() {
     return {
-      CULTURAL_PLACE: this.buildingsFootprint,
+      OTHER_CULTURAL_PLACE: this.buildingsFootprint,
     };
   }
 }

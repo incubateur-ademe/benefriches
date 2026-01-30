@@ -56,7 +56,7 @@ describe("YearlyTravelRelatedImpacts", () => {
       });
       expect(yearlyTravelRelatedImpacts["influenceRadius"]).toEqual(200);
     });
-    it("returns influence radius of 500 meters with CULTURAL_PLACE", () => {
+    it("returns influence radius of 500 meters with OTHER_CULTURAL_PLACE", () => {
       const yearlyTravelRelatedImpacts = new YearlyTravelRelatedImpacts({
         ...props,
         buildingsFloorAreaDistribution: {
@@ -64,7 +64,21 @@ describe("YearlyTravelRelatedImpacts", () => {
           OFFICES: 250,
           LOCAL_STORE: 55,
           ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES: 200,
-          CULTURAL_PLACE: 30,
+          OTHER_CULTURAL_PLACE: 30,
+        },
+      });
+      expect(yearlyTravelRelatedImpacts["influenceRadius"]).toEqual(500);
+    });
+    it("returns influence radius of 500 meters with THEATER AND SPORTS_FACILITIES", () => {
+      const yearlyTravelRelatedImpacts = new YearlyTravelRelatedImpacts({
+        ...props,
+        buildingsFloorAreaDistribution: {
+          RESIDENTIAL: 10000,
+          OFFICES: 250,
+          LOCAL_STORE: 55,
+          ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES: 200,
+          THEATER: 30,
+          SPORTS_FACILITIES: 30,
         },
       });
       expect(yearlyTravelRelatedImpacts["influenceRadius"]).toEqual(500);
@@ -109,7 +123,7 @@ describe("YearlyTravelRelatedImpacts", () => {
         RESIDENTIAL: 1500,
         LOCAL_STORE: 1000,
         OFFICES: 1000,
-        CULTURAL_PLACE: 500,
+        OTHER_CULTURAL_PLACE: 500,
         SPORTS_FACILITIES: 1000,
       },
     });

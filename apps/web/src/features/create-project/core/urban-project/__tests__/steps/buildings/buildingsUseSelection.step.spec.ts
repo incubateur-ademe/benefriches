@@ -71,11 +71,11 @@ describe("Urban project creation - Steps - Buildings use selection", () => {
       steps: {
         URBAN_PROJECT_BUILDINGS_USE_SELECTION: {
           completed: true,
-          payload: { buildingsUsesSelection: ["RESIDENTIAL", "CULTURAL_PLACE"] },
+          payload: { buildingsUsesSelection: ["RESIDENTIAL", "OTHER_CULTURAL_PLACE"] },
         },
         URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION: {
           completed: true,
-          payload: { buildingsUsesDistribution: { RESIDENTIAL: 1500, CULTURAL_PLACE: 1000 } },
+          payload: { buildingsUsesDistribution: { RESIDENTIAL: 1500, OTHER_CULTURAL_PLACE: 1000 } },
         },
       },
     });

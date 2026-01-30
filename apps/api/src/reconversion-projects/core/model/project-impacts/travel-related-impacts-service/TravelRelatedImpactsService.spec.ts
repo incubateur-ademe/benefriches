@@ -67,7 +67,7 @@ describe("TravelRelatedImpactsService", () => {
         RESIDENTIAL: 1500,
         LOCAL_STORE: 1000,
         OFFICES: 1000,
-        CULTURAL_PLACE: 500,
+        OTHER_CULTURAL_PLACE: 500,
         SPORTS_FACILITIES: 1000,
       },
       sumOnEvolutionPeriodService: new SumOnEvolutionPeriodService({

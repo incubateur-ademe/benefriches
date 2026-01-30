@@ -45,11 +45,11 @@ export const getLabelForBuildingsUse = (use: BuildingsUse): string => {
       return "Bureaux";
     case "MULTI_STORY_PARKING":
       return "Parking silo";
-    case "CULTURAL_PLACE":
-      return "Lieux culturels";
+    case "OTHER_CULTURAL_PLACE":
+      return "Autres lieux culturels";
     case "SPORTS_FACILITIES":
       return "Équipements sportifs";
-    case "OTHER":
+    case "OTHER_BUILDING":
       return "Autres bâtiments";
     // Educational facilities
     case "KINDERGARTEN_OR_PRIMARY_SCHOOL":
@@ -91,13 +91,13 @@ export const getColorForBuildingsUse = (use: BuildingsUse): string => {
       return "#689E6A";
     case "LOCAL_SERVICES":
       return "#137FEB";
-    case "CULTURAL_PLACE":
+    case "OTHER_CULTURAL_PLACE":
       return "#EB7F14";
     case "OFFICES":
       return "#7A13EB";
     case "PUBLIC_FACILITIES":
       return "#68699E";
-    case "OTHER":
+    case "OTHER_BUILDING":
       return "#9D6B6B";
     // Educational facilities
     case "KINDERGARTEN_OR_PRIMARY_SCHOOL":

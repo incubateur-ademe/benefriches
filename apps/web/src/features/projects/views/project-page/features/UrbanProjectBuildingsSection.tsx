@@ -68,13 +68,13 @@ const UrbanProjectBuildingsSection = ({
                         return "les locaux industriels, artisanaux ou logistiques";
                       case "PUBLIC_FACILITIES":
                         return "les équipements publics";
-                      case "CULTURAL_PLACE":
+                      case "OTHER_CULTURAL_PLACE":
                         return "les lieux culturels";
                       case "SPORTS_FACILITIES":
                         return "les équipements sportifs";
                       case "MULTI_STORY_PARKING":
                         return "les parkings silo";
-                      case "OTHER":
+                      case "OTHER_BUILDING":
                         return "les autres types de bâtiments";
                     }
                   })()} occupent ${computePercentage(value, totalSurfaceArea)}} de la surface du site des lieux d’habitation et d’activité ; fonction du type de projet « ${urbanProjectCategoryLabel} ». Cette valeur est issue du retour d’expérience ADEME.`

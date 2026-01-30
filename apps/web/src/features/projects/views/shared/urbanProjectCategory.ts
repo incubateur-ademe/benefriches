@@ -11,7 +11,7 @@ import { UrbanProjectFeatures } from "../../domain/projects.types";
 
 const PUBLIC_FACILITIES = [
   "PUBLIC_FACILITIES",
-  "CULTURAL_PLACE",
+  "OTHER_CULTURAL_PLACE",
   "SPORTS_FACILITIES",
 ] as const satisfies BuildingsUse[];
 

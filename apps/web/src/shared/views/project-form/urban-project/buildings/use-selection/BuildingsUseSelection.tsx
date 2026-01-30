@@ -49,7 +49,7 @@ const options = [
   {
     category: "Loisir et culture",
     options: [
-      "CULTURAL_PLACE",
+      "OTHER_CULTURAL_PLACE",
       "CINEMA",
       "MUSEUM",
       "THEATER",
@@ -59,7 +59,7 @@ const options = [
   },
   {
     category: "Autres équipements",
-    options: ["PUBLIC_FACILITIES", "MULTI_STORY_PARKING", "OTHER"],
+    options: ["PUBLIC_FACILITIES", "MULTI_STORY_PARKING", "OTHER_BUILDING"],
   },
 ] as const satisfies BuildingsUseOptionsByCategory;
 

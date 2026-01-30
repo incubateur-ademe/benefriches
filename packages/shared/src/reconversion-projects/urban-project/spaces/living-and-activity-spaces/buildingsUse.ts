@@ -10,13 +10,13 @@ export const buildingsUseSchema = z.enum([
   "PUBLIC_FACILITIES",
   "OFFICES",
   "MULTI_STORY_PARKING",
-  "OTHER",
+  "OTHER_BUILDING",
   // Health facilities
   "LOCAL_HEALTH_SERVICE",
   "HOSPITAL",
   "MEDICAL_SOCIAL_FACILITY",
   // Leisure and culture facilities
-  "CULTURAL_PLACE",
+  "OTHER_CULTURAL_PLACE",
   "CINEMA",
   "MUSEUM",
   "THEATER",

@@ -3,6 +3,7 @@ import {
   BUILDINGS_ECONOMIC_ACTIVITY_USE,
   filterObjectWithKeys,
   sumObjectValues,
+  BuildingsUse,
 } from "shared";
 
 import { InfluenceAreaService } from "../influence-area-service/InfluenceAreaService";
@@ -25,6 +26,15 @@ const SEVERE_INJURY_EURO_VALUE = 484_633;
 const MINOR_INJURY_EURO_VALUE = 19_385;
 const FRENCH_TIME_EURO_VALUE_PER_HOUR = 9.97;
 const TRAVEL_COST_EURO_PER_KILOMETER = 0.12;
+
+const PUBLIC_CULTURAL_AND_SPORTS_FACILITIES: BuildingsUse[] = [
+  "OTHER_CULTURAL_PLACE",
+  "CINEMA",
+  "MUSEUM",
+  "THEATER",
+  "SPORTS_FACILITIES",
+  "RECREATIONAL_FACILITY",
+];
 
 type Props = {
   siteSquareMetersSurfaceArea: number;
@@ -50,12 +60,7 @@ export class YearlyTravelRelatedImpacts extends InfluenceAreaService {
       citySquareMetersSurfaceArea,
       cityPopulation,
     });
-    const {
-      RESIDENTIAL = 0,
-      OFFICES = 0,
-      CULTURAL_PLACE = 0,
-      SPORTS_FACILITIES = 0,
-    } = buildingsFloorAreaDistribution;
+    const { RESIDENTIAL = 0, OFFICES = 0 } = buildingsFloorAreaDistribution;
     this.projectHousingSurfaceArea = RESIDENTIAL;
     this.projectOfficesSurface = OFFICES;
 
@@ -65,7 +70,9 @@ export class YearlyTravelRelatedImpacts extends InfluenceAreaService {
     );
 
     this.projectOtherEconomicActivitySurface = sumObjectValues(economicActivityBuildings);
-    this.publicCulturalAndSportsFacilitiesSurface = SPORTS_FACILITIES + CULTURAL_PLACE;
+    this.publicCulturalAndSportsFacilitiesSurface = sumObjectValues(
+      filterObjectWithKeys(buildingsFloorAreaDistribution, PUBLIC_CULTURAL_AND_SPORTS_FACILITIES),
+    );
 
     this.influenceRadius = this.travelInfluenceRadius;
   }
