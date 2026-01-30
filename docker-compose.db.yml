@@ -19,3 +19,4 @@ services:
 
 volumes:
   benefriches_pg_data:
+    name: benefriches_pg_data
