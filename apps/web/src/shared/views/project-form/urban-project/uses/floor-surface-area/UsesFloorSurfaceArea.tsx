@@ -1,5 +1,9 @@
 import { useForm } from "react-hook-form";
-import { isBuildingUse, type SurfaceAreaDistributionJson, type UrbanProjectUse } from "shared";
+import {
+  doesUseIncludeBuildings,
+  type SurfaceAreaDistributionJson,
+  type UrbanProjectUse,
+} from "shared";
 
 import {
   getLabelForUrbanProjectUse,
@@ -40,7 +44,7 @@ function UsesFloorSurfaceArea({
   onSubmit,
   onBack,
 }: Props) {
-  const buildingUses = selectedUses.filter((use) => isBuildingUse(use));
+  const usesWithBuildings = selectedUses.filter((use) => doesUseIncludeBuildings(use));
 
   const { register, handleSubmit, formState } = useForm<FormValues>({
     defaultValues: initialValues,
@@ -59,7 +63,7 @@ function UsesFloorSurfaceArea({
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-        {buildingUses.map((use) => {
+        {usesWithBuildings.map((use) => {
           const footprint = footprintDistribution[use];
           return (
             <RowDecimalsNumericInput

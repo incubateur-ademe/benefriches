@@ -72,7 +72,7 @@ describe("Urban project creation - Steps - Spaces selection", () => {
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_INTRODUCTION");
   });
 
-  it("should have BUILDINGS in default answers when uses include building use", () => {
+  it("should have BUILDINGS in default answers when uses include building", () => {
     const store = createTestStore({
       steps: {
         URBAN_PROJECT_USES_SELECTION: {
@@ -193,16 +193,10 @@ describe("Urban project creation - Steps - Spaces selection", () => {
 
     store.dispatch(creationProjectFormUrbanActions.confirmStepCompletion());
 
-    // Step is deleted (no payload) but default values are computed
+    // Step is deleted - it no longer exists in state
     const surfaceAreaStep =
       store.getState().projectCreation.urbanProject.steps.URBAN_PROJECT_SPACES_SURFACE_AREA;
-    expect(surfaceAreaStep?.completed).toBe(false);
-    expect(surfaceAreaStep?.payload).toBeUndefined();
-    expect(surfaceAreaStep?.defaultValues).toEqual({
-      spacesSurfaceAreaDistribution: {
-        BUILDINGS: 10000,
-      },
-    });
+    expect(surfaceAreaStep).toBeUndefined();
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_SURFACE_AREA");
   });
 

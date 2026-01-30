@@ -1,4 +1,4 @@
-import { isBuildingUse } from "shared";
+import { doesUseIncludeBuildings } from "shared";
 
 import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
 
@@ -69,8 +69,8 @@ export const UsesSelectionHandler: AnswerStepHandler<typeof STEP_ID> = {
         },
       };
 
-      // If it's a building use, we need to go to floor area step
-      if (isBuildingUse(singleUse)) {
+      // If use includes buildings, we need to go to floor area step
+      if (doesUseIncludeBuildings(singleUse)) {
         return {
           complete: [footprintAnswers],
           next: "URBAN_PROJECT_USES_FLOOR_SURFACE_AREA",

@@ -9,7 +9,7 @@ import type { SurfaceAreaDistributionJson } from "../../../surface-area";
  * Non-building uses: Only require footprint surface area
  */
 export const urbanProjectUseSchema = z.enum([
-  // Building uses (from existing buildingsUse)
+  // includes buildings
   "RESIDENTIAL",
   "LOCAL_STORE",
   "LOCAL_SERVICES",
@@ -33,7 +33,7 @@ export const URBAN_PROJECT_USE_LIST = urbanProjectUseSchema.options;
  * Building uses that require floor surface area input.
  * These are uses where buildings are constructed and floor area matters.
  */
-export const BUILDING_USES = [
+const USES_WITH_BUILDINGS = [
   "RESIDENTIAL",
   "LOCAL_STORE",
   "LOCAL_SERVICES",
@@ -46,23 +46,14 @@ export const BUILDING_USES = [
   "OTHER",
 ] as const satisfies UrbanProjectUse[];
 
-export type BuildingUse = (typeof BUILDING_USES)[number];
+type UseWithBuilding = (typeof USES_WITH_BUILDINGS)[number];
 
 /**
- * Non-building uses that only require footprint surface area.
+ * Check if a use includes buildings (requires floor surface area).
+ * Note: Uses with buildings can also include other spaces like alleys, paths, gardens, etc.
  */
-export const NON_BUILDING_USES = [
-  "PUBLIC_GREEN_SPACES",
-  "OTHER_PUBLIC_SPACES",
-] as const satisfies UrbanProjectUse[];
-
-export type NonBuildingUse = (typeof NON_BUILDING_USES)[number];
-
-/**
- * Check if a use is a building use (requires floor surface area).
- */
-export const isBuildingUse = (use: UrbanProjectUse): use is BuildingUse => {
-  return (BUILDING_USES as readonly string[]).includes(use);
+export const doesUseIncludeBuildings = (use: UrbanProjectUse): use is UseWithBuilding => {
+  return (USES_WITH_BUILDINGS as readonly string[]).includes(use);
 };
 
 /**

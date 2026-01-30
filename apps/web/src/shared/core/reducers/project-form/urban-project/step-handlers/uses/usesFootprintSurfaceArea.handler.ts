@@ -1,4 +1,4 @@
-import { isBuildingUse } from "shared";
+import { doesUseIncludeBuildings } from "shared";
 
 import { isObjectsEqual } from "@/shared/core/isObjectsEqual/isObjectsEqual";
 import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
@@ -19,7 +19,7 @@ export const UsesFootprintSurfaceAreaHandler: AnswerStepHandler<typeof STEP_ID> 
       ReadStateHelper.getStepAnswers(context.stepsState, "URBAN_PROJECT_USES_SELECTION")
         ?.usesSelection ?? [];
 
-    const hasBuildingUses = selectedUses.some((use) => isBuildingUse(use));
+    const hasBuildingUses = selectedUses.some((use) => doesUseIncludeBuildings(use));
 
     if (hasBuildingUses) {
       return "URBAN_PROJECT_USES_FLOOR_SURFACE_AREA";

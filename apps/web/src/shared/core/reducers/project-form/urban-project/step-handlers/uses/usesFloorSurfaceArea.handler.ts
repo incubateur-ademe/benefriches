@@ -1,4 +1,4 @@
-import { isBuildingUse, type UrbanProjectUse } from "shared";
+import { doesUseIncludeBuildings, type UrbanProjectUse } from "shared";
 
 import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
 
@@ -21,11 +21,11 @@ export const UsesFloorSurfaceAreaHandler: AnswerStepHandler<typeof STEP_ID> = {
     const selectedUses =
       ReadStateHelper.getStepAnswers(context.stepsState, "URBAN_PROJECT_USES_SELECTION")
         ?.usesSelection ?? [];
-    const buildingUses = selectedUses.filter((use) => isBuildingUse(use));
+    const usesWithBuildings = selectedUses.filter((use) => doesUseIncludeBuildings(use));
 
     // If single building use, auto-complete with the footprint value
-    if (buildingUses.length === 1 && buildingUses[0]) {
-      const singleBuildingUse = buildingUses[0] as UrbanProjectUse;
+    if (usesWithBuildings.length === 1 && usesWithBuildings[0]) {
+      const singleBuildingUse = usesWithBuildings[0] as UrbanProjectUse;
       const footprintDistribution =
         ReadStateHelper.getStepAnswers(
           context.stepsState,

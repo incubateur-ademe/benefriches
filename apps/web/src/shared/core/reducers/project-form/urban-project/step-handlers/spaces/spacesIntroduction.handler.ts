@@ -1,4 +1,4 @@
-import { isBuildingUse } from "shared";
+import { doesUseIncludeBuildings } from "shared";
 
 import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
 
@@ -12,9 +12,7 @@ export const SpacesIntroductionHandler: InfoStepHandler = {
       ReadStateHelper.getStepAnswers(context.stepsState, "URBAN_PROJECT_USES_SELECTION")
         ?.usesSelection ?? [];
 
-    const hasBuildingUses = selectedUses.some((use) => isBuildingUse(use));
-
-    if (hasBuildingUses) {
+    if (selectedUses.some(doesUseIncludeBuildings)) {
       return "URBAN_PROJECT_USES_FLOOR_SURFACE_AREA";
     }
 
