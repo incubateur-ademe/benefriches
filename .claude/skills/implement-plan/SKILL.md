@@ -21,7 +21,12 @@ Before writing any code, extract ALL deliverables from the plan:
 
 1. Read the ENTIRE plan from start to finish
 2. Find the "Files to Deliver" section (or extract from "Step by Step Tasks" if not present)
-3. Create a structured inventory using TodoWrite:
+3. **Detect database work**: If the plan mentions any of these, use `/create-database-migration` skill:
+   - Database migrations (new tables, columns, schema changes)
+   - Updates to `tableTypes.d.ts`
+   - SQL schema modifications
+   - Data migrations
+4. Create a structured inventory using TodoWrite:
 
    **Test Files** (will be implemented first):
    - Create a todo for each test file with format: "Create test: `path/to/file.spec.ts`"
@@ -34,7 +39,7 @@ Before writing any code, extract ALL deliverables from the plan:
    **Validation**:
    - Create a todo for each validation command from the plan
 
-4. Review the inventory: Does it capture EVERYTHING from the plan? If not, add missing items.
+5. Review the inventory: Does it capture EVERYTHING from the plan? If not, add missing items.
 
 ---
 
