@@ -1,6 +1,4 @@
-import { createReducer, createSelector } from "@reduxjs/toolkit";
-
-import { RootState } from "@/shared/core/store-config/store";
+import { createReducer } from "@reduxjs/toolkit";
 
 import { fetchSiteFeatures } from "./fetchSiteFeatures.action";
 import { SiteFeatures } from "./site.types";
@@ -19,7 +17,7 @@ const getInitialState = (): SiteFeaturesState => {
   };
 };
 
-export const siteFeaturesReducer = createReducer(getInitialState(), (builder) => {
+const siteFeaturesReducer = createReducer(getInitialState(), (builder) => {
   builder
     .addCase(fetchSiteFeatures.pending, (state) => {
       state.dataLoadingState = "loading";
@@ -32,9 +30,5 @@ export const siteFeaturesReducer = createReducer(getInitialState(), (builder) =>
       state.dataLoadingState = "error";
     });
 });
-
-const selectSelf = (state: RootState) => state.siteFeatures;
-export const selectLoadingState = createSelector(selectSelf, (state) => state.dataLoadingState);
-export const selectSiteFeatures = createSelector(selectSelf, (state) => state.siteData);
 
 export default siteFeaturesReducer;

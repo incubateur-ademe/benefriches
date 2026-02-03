@@ -1,15 +1,11 @@
 import { stepReverted } from "@/features/create-site/core/actions/revert.action";
-import { selectSiteFeatures } from "@/features/sites/core/siteFeatures.reducer";
+import { selectSiteCreationResultViewData } from "@/features/create-site/core/selectors/createSite.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import SiteCreationResult from "./SiteCreationResult";
 
 function SiteCreationResultContainer() {
-  const { siteData: creationData, saveLoadingState: creationLoadingState } = useAppSelector(
-    (state) => state.siteCreation,
-  );
-  const siteData = useAppSelector(selectSiteFeatures);
-
+  const viewData = useAppSelector(selectSiteCreationResultViewData);
   const dispatch = useAppDispatch();
 
   const onBack = () => {
@@ -18,9 +14,9 @@ function SiteCreationResultContainer() {
 
   return (
     <SiteCreationResult
-      siteId={creationData.id}
-      siteName={siteData?.name ?? ""}
-      loadingState={creationLoadingState}
+      siteId={viewData.siteId}
+      siteName={viewData.siteName}
+      loadingState={viewData.loadingState}
       onBack={onBack}
     />
   );

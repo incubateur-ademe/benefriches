@@ -2,7 +2,7 @@ import Alert from "@codegouvfr/react-dsfr/Alert";
 import { useEffect } from "react";
 
 import { fetchSiteFeatures } from "@/features/sites/core/fetchSiteFeatures.action";
-import { selectLoadingState, selectSiteFeatures } from "@/features/sites/core/siteFeatures.reducer";
+import { selectSiteFeaturesViewData } from "@/features/sites/core/siteFeatures.selectors";
 import SiteFeaturesList from "@/features/sites/views/features/SiteFeaturesList";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
@@ -13,18 +13,17 @@ type Props = {
 
 export default function SiteFeaturesContainer({ siteId }: Props) {
   const dispatch = useAppDispatch();
-  const siteFeatures = useAppSelector(selectSiteFeatures);
-  const loadingState = useAppSelector(selectLoadingState);
+  const viewData = useAppSelector(selectSiteFeaturesViewData);
 
   useEffect(() => {
     void dispatch(fetchSiteFeatures({ siteId }));
   }, [dispatch, siteId]);
 
-  if (loadingState === "loading") {
+  if (viewData.loadingState === "loading") {
     return <LoadingSpinner />;
   }
 
-  if (loadingState === "error" || !siteFeatures) {
+  if (viewData.loadingState === "error" || !viewData.siteFeatures) {
     return (
       <Alert
         description="Une erreur s'est produite lors du chargement des caractéristiques du site... Veuillez réessayer."
@@ -35,5 +34,5 @@ export default function SiteFeaturesContainer({ siteId }: Props) {
     );
   }
 
-  return <SiteFeaturesList {...siteFeatures} />;
+  return <SiteFeaturesList {...viewData.siteFeatures} />;
 }

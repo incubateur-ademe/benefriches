@@ -1,6 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { Address, SoilsDistribution } from "shared";
 
+import { selectSiteFeaturesViewData } from "@/features/sites/core/siteFeatures.selectors";
 import { RootState } from "@/shared/core/store-config/store";
 
 const selectSelf = (state: RootState) => state.siteCreation;
@@ -49,3 +50,18 @@ export const selectSurfaceAreaInputMode = createSelector(
 );
 
 export const selectSiteOwner = createSelector(selectSelf, (state) => state.siteData.owner);
+
+type SiteCreationResultViewData = {
+  siteId: string;
+  siteName: string;
+  loadingState: "idle" | "loading" | "success" | "error";
+};
+
+export const selectSiteCreationResultViewData = createSelector(
+  [selectSelf, selectSiteFeaturesViewData],
+  (siteCreation, siteFeaturesViewData): SiteCreationResultViewData => ({
+    siteId: siteCreation.siteData.id,
+    siteName: siteFeaturesViewData.siteFeatures?.name ?? "",
+    loadingState: siteCreation.saveLoadingState,
+  }),
+);
