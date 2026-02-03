@@ -6,6 +6,10 @@ import { creationProjectFormUrbanActions } from "../../../urbanProject.actions";
 import { createTestStore, getCurrentStep } from "../../_testStoreHelpers";
 
 const INITIAL_STEPS: ProjectFormState["urbanProject"]["steps"] = {
+  URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER: {
+    completed: true,
+    payload: { projectDeveloper: { structureType: "municipality", name: "Mairie d'angers" } },
+  },
   URBAN_PROJECT_CREATE_MODE_SELECTION: {
     completed: true,
     payload: { createMode: "custom" },
@@ -85,6 +89,7 @@ describe("Urban project creation - Steps - buildings resale selection", () => {
         completed: true,
         payload: {
           buildingsResalePlannedAfterDevelopment: false,
+          futureOperator: { structureType: "municipality", name: "Mairie d'angers" },
         },
       },
     });
@@ -224,7 +229,7 @@ describe("Urban project creation - Steps - buildings resale selection", () => {
         completed: true,
         payload: {
           buildingsResalePlannedAfterDevelopment: false,
-          futureOperator: undefined,
+          futureOperator: { structureType: "municipality", name: "Mairie d'angers" },
         },
       },
       URBAN_PROJECT_REVENUE_BUILDINGS_RESALE: undefined,

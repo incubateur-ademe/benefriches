@@ -53,9 +53,10 @@ export const BuildingsResaleSelectionHandler: AnswerStepHandler<typeof STEP_ID> 
 
     return {
       buildingsResalePlannedAfterDevelopment,
-      futureOperator: buildingsResalePlannedAfterDevelopment
-        ? getFutureOperator(buildingsResalePlannedAfterDevelopment, projectDeveloper)
-        : undefined,
+      futureOperator:
+        buildingsResalePlannedAfterDevelopment !== undefined
+          ? getFutureOperator(buildingsResalePlannedAfterDevelopment, projectDeveloper)
+          : undefined,
     };
   },
 } as const;
