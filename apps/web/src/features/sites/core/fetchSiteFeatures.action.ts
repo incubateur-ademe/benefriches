@@ -1,11 +1,6 @@
 import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
 
-import { SiteFeatures, SiteView } from "./site.types";
-
-export interface SiteGateway {
-  getSiteFeatures(siteId: string): Promise<SiteFeatures>;
-  getSiteView(siteId: string): Promise<SiteView>;
-}
+import type { SiteFeatures } from "./site.types";
 
 export const fetchSiteFeatures = createAppAsyncThunk<SiteFeatures, { siteId: string }>(
   "siteFeatures/fetchSiteFeatures",

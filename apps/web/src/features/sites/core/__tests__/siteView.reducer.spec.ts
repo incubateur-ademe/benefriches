@@ -2,8 +2,8 @@ import { InMemorySiteService } from "@/features/sites/infra/site-service/InMemor
 import { createStore } from "@/shared/core/store-config/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
-import type { SiteGateway } from "../fetchSiteFeatures.action";
 import { fetchSiteView } from "../fetchSiteView.action";
+import type { SiteGateway } from "../gateways/SiteGateway";
 import type { SiteFeatures, SiteView } from "../site.types";
 import { selectSitePageViewModel } from "../siteView.reducer";
 

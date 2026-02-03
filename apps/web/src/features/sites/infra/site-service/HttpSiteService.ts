@@ -9,8 +9,8 @@ import {
   type GetSiteFeaturesResponseDto,
 } from "shared";
 
-import { SiteGateway } from "../../core/fetchSiteFeatures.action";
-import { SiteFeatures, SiteView } from "../../core/site.types";
+import type { SiteGateway } from "../../core/gateways/SiteGateway";
+import type { SiteFeatures, SiteView } from "../../core/site.types";
 
 const mapApiSiteFeaturesResponseToFeaturesView = (
   apiResponse: GetSiteFeaturesResponseDto,
