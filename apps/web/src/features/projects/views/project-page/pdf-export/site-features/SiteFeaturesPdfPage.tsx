@@ -85,7 +85,7 @@ export default function SiteFeaturesPdfPage({ siteFeatures }: Props) {
                     />
                     <DataLine
                       label="Blessés graves"
-                      value={siteFeatures.accidents.severyInjuries ?? "Non renseigné"}
+                      value={siteFeatures.accidents.severeInjuries ?? "Non renseigné"}
                     />
                     <DataLine
                       label="Tués"

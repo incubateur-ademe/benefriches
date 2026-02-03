@@ -24,7 +24,7 @@ const mapApiSiteFeaturesResponseToFeaturesView = (
     tenantName: apiResponse.tenant?.name || "",
     accidents: {
       minorInjuries: apiResponse.accidentsMinorInjuries || 0,
-      severyInjuries: apiResponse.accidentsSevereInjuries || 0,
+      severeInjuries: apiResponse.accidentsSevereInjuries || 0,
       accidentsDeaths: apiResponse.accidentsDeaths || 0,
     },
     expenses: apiResponse.yearlyExpenses as {

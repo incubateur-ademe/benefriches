@@ -21,7 +21,7 @@ export type SiteFeatures = {
   tenantName?: string;
   accidents: {
     minorInjuries?: number;
-    severyInjuries?: number;
+    severeInjuries?: number;
     accidentsDeaths?: number;
   };
   expenses: { amount: number; purpose: SiteYearlyExpensePurpose }[];

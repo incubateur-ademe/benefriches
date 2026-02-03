@@ -11,7 +11,7 @@ export class InMemorySiteService implements SiteGateway {
     accidents: {
       accidentsDeaths: 0,
       minorInjuries: 0,
-      severyInjuries: 0,
+      severeInjuries: 0,
     },
     expenses: [
       { amount: 15432, purpose: "maintenance" },

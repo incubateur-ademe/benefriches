@@ -143,7 +143,7 @@ La pollution à l'amiante des bâtiments n'est pas considérée ici."
                   />
                   <DataLine
                     label="Blessés graves"
-                    value={siteFeatures.accidents.severyInjuries ?? "Non renseigné"}
+                    value={siteFeatures.accidents.severeInjuries ?? "Non renseigné"}
                   />
                   <DataLine
                     label="Tués"
