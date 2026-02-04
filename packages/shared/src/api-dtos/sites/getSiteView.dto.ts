@@ -19,6 +19,7 @@ export const getSiteViewResponseDtoSchema = z.object({
       id: z.string(),
       name: z.string(),
       type: developmentPlanTypeSchema,
+      express: z.boolean(),
     }),
   ),
   compatibilityEvaluation: z

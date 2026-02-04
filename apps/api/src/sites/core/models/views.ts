@@ -49,6 +49,7 @@ export type SiteView = {
     id: string;
     name: string;
     type: DevelopmentPlanType;
+    express: boolean;
   }[];
   compatibilityEvaluation: {
     results: {

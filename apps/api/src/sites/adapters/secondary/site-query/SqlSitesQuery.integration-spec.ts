@@ -421,11 +421,13 @@ describe("SqlSitesQuery integration", () => {
             id: project1Id,
             name: "Photovoltaic Plant",
             type: "PHOTOVOLTAIC_POWER_PLANT",
+            express: false,
           },
           {
             id: project2Id,
             name: "Urban Development",
             type: "URBAN_PROJECT",
+            express: true,
           },
         ],
         compatibilityEvaluation: null,

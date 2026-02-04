@@ -83,6 +83,7 @@ function SitePage({ onPageLoad, viewModel, selectedTab, fromCompatibilityEvaluat
                   return (
                     <ProjectsList
                       siteId={siteView.features.id}
+                      siteName={siteView.features.name}
                       projects={siteView.reconversionProjects}
                     />
                   );

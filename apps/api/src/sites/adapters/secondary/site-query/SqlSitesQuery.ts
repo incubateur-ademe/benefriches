@@ -1,6 +1,12 @@
 import { Inject } from "@nestjs/common";
 import { Knex } from "knex";
-import { DevelopmentPlanType, SiteActionStatus, SiteActionType, SiteNature } from "shared";
+import {
+  DevelopmentPlanType,
+  ReconversionProjectCreationMode,
+  SiteActionStatus,
+  SiteActionType,
+  SiteNature,
+} from "shared";
 
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import {
@@ -180,16 +186,19 @@ export class SqlSitesQuery implements SitesQuery {
         "reconversion_projects.id",
         "reconversion_projects.name",
         "dev_plan.type as project_type",
+        "reconversion_projects.creation_mode",
       )) as {
       id: string;
       name: string;
       project_type: DevelopmentPlanType;
+      creation_mode: ReconversionProjectCreationMode;
     }[];
 
     const reconversionProjects = projectsResult.map((project) => ({
       id: project.id,
       name: project.name,
       type: project.project_type,
+      express: project.creation_mode === "express",
     }));
 
     const actionsResult = await this.sqlConnection("site_actions")

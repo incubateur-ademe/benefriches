@@ -1006,11 +1006,13 @@ describe("Sites controller", () => {
             id: project1Id,
             name: "Solar Project",
             type: "PHOTOVOLTAIC_POWER_PLANT",
+            express: false,
           },
           {
             id: project2Id,
             name: "Urban Project",
             type: "URBAN_PROJECT",
+            express: true,
           },
         ],
         compatibilityEvaluation: null,
