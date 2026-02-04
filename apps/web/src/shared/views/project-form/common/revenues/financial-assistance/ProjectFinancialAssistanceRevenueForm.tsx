@@ -3,8 +3,8 @@ import { typedObjectEntries } from "shared";
 import { sumObjectValues } from "shared";
 
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
-import RowDecimalsNumericInput from "@/shared/views/components/form/NumericInput/RowDecimalsNumericInput";
-import { optionalNumericFieldRegisterOptions } from "@/shared/views/components/form/NumericInput/registerOptions";
+import FormRowNumericInput from "@/shared/views/components/form/NumericInput/FormRowNumericInput";
+import RowNumericInput from "@/shared/views/components/form/NumericInput/RowNumericInput";
 import FormDefinition from "@/shared/views/layout/WizardFormLayout/FormDefinition";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
@@ -27,7 +27,7 @@ const ProjectFinancialAssistanceRevenueForm = ({
   onBack,
   submitLabel,
 }: Props) => {
-  const { handleSubmit, register, watch } = useForm<FormValues>({
+  const { handleSubmit, control, watch } = useForm<FormValues>({
     defaultValues: initialValues,
   });
 
@@ -57,35 +57,32 @@ const ProjectFinancialAssistanceRevenueForm = ({
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-        <RowDecimalsNumericInput
+        <FormRowNumericInput
+          controller={{ name: "localOrRegionalAuthorityAmount", control }}
           className="pt-4!"
           addonText="€"
           label="Participation des collectivités"
-          nativeInputProps={register(
-            "localOrRegionalAuthorityAmount",
-            optionalNumericFieldRegisterOptions,
-          )}
         />
 
-        <RowDecimalsNumericInput
+        <FormRowNumericInput
+          controller={{ name: "publicSubsidiesAmount", control }}
           className="pt-4!"
           addonText="€"
           label="Subventions publiques"
-          nativeInputProps={register("publicSubsidiesAmount", optionalNumericFieldRegisterOptions)}
         />
 
-        <RowDecimalsNumericInput
+        <FormRowNumericInput
+          controller={{ name: "otherAmount", control }}
           className="pt-4!"
           addonText="€"
           label="Autres ressources"
-          nativeInputProps={register("otherAmount", optionalNumericFieldRegisterOptions)}
         />
 
-        <RowDecimalsNumericInput
+        <RowNumericInput
           label={<span className="font-medium text-dsfr-text-label-grey">Total</span>}
           addonText="€"
           nativeInputProps={{
-            value: sumObjectValues(allRevenues),
+            value: new Intl.NumberFormat("fr-FR").format(sumObjectValues(allRevenues)),
           }}
           disabled
         />

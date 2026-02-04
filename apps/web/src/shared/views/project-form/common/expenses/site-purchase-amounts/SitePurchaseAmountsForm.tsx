@@ -1,10 +1,10 @@
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { computePropertyTransferDutiesFromSellingPrice } from "shared";
 
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
-import RowDecimalsNumericInput from "@/shared/views/components/form/NumericInput/RowDecimalsNumericInput";
-import { optionalNumericFieldRegisterOptions } from "@/shared/views/components/form/NumericInput/registerOptions";
+import FormRowNumericInput from "@/shared/views/components/form/NumericInput/FormRowNumericInput";
 import FormDefinition from "@/shared/views/layout/WizardFormLayout/FormDefinition";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
@@ -21,9 +21,19 @@ export type FormValues = {
 };
 
 const SitePurchaseAmountsForm = ({ initialValues, onSubmit, onBack }: Props) => {
-  const { handleSubmit, register, watch, setValue } = useForm<FormValues>({
+  const { handleSubmit, watch, setValue, control, formState } = useForm<FormValues>({
     defaultValues: initialValues,
   });
+
+  const sellingPrice = watch("sellingPrice");
+  useEffect(() => {
+    if (sellingPrice && !isNaN(sellingPrice) && formState.isReady) {
+      setValue(
+        "propertyTransferDuties",
+        computePropertyTransferDutiesFromSellingPrice(sellingPrice),
+      );
+    }
+  }, [sellingPrice, setValue, formState.isReady]);
 
   return (
     <WizardFormLayout
@@ -58,39 +68,21 @@ const SitePurchaseAmountsForm = ({ initialValues, onSubmit, onBack }: Props) => 
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-        <RowDecimalsNumericInput
+        <FormRowNumericInput
+          controller={{ name: "sellingPrice", control }}
           className="pt-4!"
           addonText="€"
           label="Prix d'acquisition"
-          nativeInputProps={(() => {
-            const registerProps = register("sellingPrice", optionalNumericFieldRegisterOptions);
-            return {
-              ...registerProps,
-              onChange: (e) => {
-                void registerProps.onChange(e);
-
-                const sellingPrice = parseFloat(e.target.value);
-                const propertyTransferDuties =
-                  sellingPrice && !isNaN(sellingPrice)
-                    ? computePropertyTransferDutiesFromSellingPrice(sellingPrice)
-                    : undefined;
-                setValue("propertyTransferDuties", propertyTransferDuties);
-              },
-            };
-          })()}
         />
 
-        <RowDecimalsNumericInput
+        <FormRowNumericInput
+          controller={{ name: "propertyTransferDuties", control }}
           className="pt-4!"
           addonText="€"
           label="Droit de mutation"
-          nativeInputProps={register("propertyTransferDuties", optionalNumericFieldRegisterOptions)}
         />
 
-        <BackNextButtonsGroup
-          onBack={onBack}
-          nextLabel={!watch("sellingPrice") ? "Passer" : "Valider"}
-        />
+        <BackNextButtonsGroup onBack={onBack} nextLabel={!sellingPrice ? "Passer" : "Valider"} />
       </form>
     </WizardFormLayout>
   );

@@ -3,8 +3,8 @@ import { typedObjectEntries } from "shared";
 import { sumObjectValues } from "shared";
 
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
-import RowDecimalsNumericInput from "@/shared/views/components/form/NumericInput/RowDecimalsNumericInput";
-import { optionalNumericFieldRegisterOptions } from "@/shared/views/components/form/NumericInput/registerOptions";
+import FormRowNumericInput from "@/shared/views/components/form/NumericInput/FormRowNumericInput";
+import RowNumericInput from "@/shared/views/components/form/NumericInput/RowNumericInput";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
@@ -112,7 +112,7 @@ const ReinstatementsExpensesForm = ({
   hasBuildings,
   hasImpermeableSoils,
 }: Props) => {
-  const { handleSubmit, register, watch } = useForm<FormValues>({
+  const { handleSubmit, control, watch } = useForm<FormValues>({
     defaultValues: initialValues
       ? {
           wasteCollectionAmount: initialValues.wasteCollectionAmount ?? 0,
@@ -155,19 +155,19 @@ const ReinstatementsExpensesForm = ({
     >
       <form onSubmit={handleSubmit(onSubmit)}>
         {getExpensesInputs(hasProjectedDecontamination).map(({ label, name }) => (
-          <RowDecimalsNumericInput
+          <FormRowNumericInput
+            controller={{ name, control }}
             key={name}
             addonText="€"
             label={label}
-            nativeInputProps={register(name, optionalNumericFieldRegisterOptions)}
           />
         ))}
 
-        <RowDecimalsNumericInput
+        <RowNumericInput
           label={<span className="font-medium text-dsfr-text-label-grey">Total</span>}
           addonText="€"
           nativeInputProps={{
-            value: sumObjectValues(allExpenses),
+            value: new Intl.NumberFormat("fr-FR").format(sumObjectValues(allExpenses)),
           }}
           disabled
         />

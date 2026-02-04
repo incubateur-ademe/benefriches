@@ -42,6 +42,7 @@ export type RowNumericInputInputProps = {
   state?: "success" | "error" | "default" | "warning";
   stateRelatedMessage?: ReactNode;
   nativeInputProps?: DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>;
+  required?: boolean;
 };
 
 const RowNumericInput = ({
@@ -56,6 +57,7 @@ const RowNumericInput = ({
   state = "default",
   stateRelatedMessage,
   nativeInputProps = {},
+  required,
 }: RowNumericInputInputProps) => {
   const domId = useId();
   const inputId = `input-${id ?? domId}`;
@@ -109,7 +111,6 @@ const RowNumericInput = ({
       <div className="w-full md:w-44">
         <WithAddon state={state} addon={addonText}>
           <input
-            {...nativeInputProps}
             className={classNames(
               "fr-input",
               state === "error" && "fr-input--error",
@@ -122,6 +123,9 @@ const RowNumericInput = ({
             id={inputId}
             inputMode="numeric"
             pattern="[0-9]*[.,]?[0-9]+"
+            aria-required={required}
+            aria-invalid={state === "error"}
+            {...nativeInputProps}
           />
         </WithAddon>
         {hintInputText && <span className="fr-hint-text mt-1!">{hintInputText}</span>}

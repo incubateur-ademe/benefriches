@@ -10,8 +10,7 @@ import {
 } from "@/features/create-site/core/expenses.functions";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
-import RowDecimalsNumericInput from "@/shared/views/components/form/NumericInput/RowDecimalsNumericInput";
-import { optionalNumericFieldRegisterOptions } from "@/shared/views/components/form/NumericInput/registerOptions";
+import FormRowNumericInput from "@/shared/views/components/form/NumericInput/FormRowNumericInput";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 import SiteYearlyExpensesFormInstructions from "./SiteYearlyExpensesFormInstructions";
@@ -149,7 +148,7 @@ export default function SiteYearlyExpensesForm({
   siteNature,
   initialValues,
 }: Props) {
-  const { handleSubmit, watch, register, formState } = useForm<FormValues>({
+  const { handleSubmit, watch, register, control, formState } = useForm<FormValues>({
     shouldUnregister: true,
     defaultValues: initialValues,
   });
@@ -185,16 +184,13 @@ export default function SiteYearlyExpensesForm({
           const bearerError = formState.errors[purpose]?.bearer;
           return (
             <React.Fragment key={purpose}>
-              <RowDecimalsNumericInput
+              <FormRowNumericInput
+                controller={{ name: `${purpose}.amount`, control }}
                 hintText={
                   fixedBearer && hasTenant ? getBearerLabel(fixedBearer, siteNature) : undefined
                 }
                 addonText="€ / an"
                 label={getLabelForExpense(purpose)}
-                nativeInputProps={register(
-                  `${purpose}.amount`,
-                  optionalNumericFieldRegisterOptions,
-                )}
               />
 
               {askForBearer && (
@@ -220,13 +216,10 @@ export default function SiteYearlyExpensesForm({
               const bearerError = formState.errors[purpose]?.bearer;
               return (
                 <React.Fragment key={purpose}>
-                  <RowDecimalsNumericInput
+                  <FormRowNumericInput
+                    controller={{ name: `${purpose}.amount`, control }}
                     state={amountError ? "error" : "default"}
                     stateRelatedMessage={amountError?.message}
-                    nativeInputProps={register(
-                      `${purpose}.amount`,
-                      optionalNumericFieldRegisterOptions,
-                    )}
                     label={getLabelForExpense(purpose)}
                     hintText={
                       hasTenant && fixedBearer ? getBearerLabel(fixedBearer, siteNature) : undefined

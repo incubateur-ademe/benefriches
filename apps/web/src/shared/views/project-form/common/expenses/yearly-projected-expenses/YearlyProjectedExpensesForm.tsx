@@ -4,8 +4,8 @@ import { typedObjectEntries } from "shared";
 import { sumObjectValues } from "shared";
 
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
-import RowDecimalsNumericInput from "@/shared/views/components/form/NumericInput/RowDecimalsNumericInput";
-import { optionalNumericFieldRegisterOptions } from "@/shared/views/components/form/NumericInput/registerOptions";
+import FormRowNumericInput from "@/shared/views/components/form/NumericInput/FormRowNumericInput";
+import RowNumericInput from "@/shared/views/components/form/NumericInput/RowNumericInput";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -30,7 +30,7 @@ const YearlyProjectedExpensesForm = ({
   title = "Dépenses annuelles",
   instructions,
 }: Props) => {
-  const { handleSubmit, register, watch } = useForm<FormValues>({
+  const { handleSubmit, control, watch } = useForm<FormValues>({
     defaultValues: initialValues,
   });
 
@@ -42,37 +42,37 @@ const YearlyProjectedExpensesForm = ({
   return (
     <WizardFormLayout title={title} instructions={instructions}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <RowDecimalsNumericInput
+        <FormRowNumericInput
+          controller={{ name: "rentAmount", control }}
           className="pt-4!"
           addonText="€ / an"
           label="Loyer"
-          nativeInputProps={register("rentAmount", optionalNumericFieldRegisterOptions)}
         />
-        <RowDecimalsNumericInput
+        <FormRowNumericInput
+          controller={{ name: "maintenanceAmount", control }}
           className="pt-4!"
           addonText="€ / an"
           label="Maintenance"
-          nativeInputProps={register("maintenanceAmount", optionalNumericFieldRegisterOptions)}
         />
-        <RowDecimalsNumericInput
+        <FormRowNumericInput
+          controller={{ name: "taxesAmount", control }}
           className="pt-4!"
           addonText="€ / an"
           label="Taxes et impôts"
-          nativeInputProps={register("taxesAmount", optionalNumericFieldRegisterOptions)}
         />
 
-        <RowDecimalsNumericInput
+        <FormRowNumericInput
+          controller={{ name: "otherAmount", control }}
           className="pt-4!"
           addonText="€ / an"
           label="Autres dépenses"
-          nativeInputProps={register("otherAmount", optionalNumericFieldRegisterOptions)}
         />
 
-        <RowDecimalsNumericInput
+        <RowNumericInput
           label={<span className="font-medium text-dsfr-text-label-grey">Total</span>}
           addonText="€"
           nativeInputProps={{
-            value: sumObjectValues(allExpenses),
+            value: new Intl.NumberFormat("fr-FR").format(sumObjectValues(allExpenses)),
           }}
           disabled
         />

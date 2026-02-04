@@ -4,8 +4,8 @@ import { typedObjectEntries } from "shared";
 import { sumObjectValues } from "shared";
 
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
-import RowDecimalsNumericInput from "@/shared/views/components/form/NumericInput/RowDecimalsNumericInput";
-import { optionalNumericFieldRegisterOptions } from "@/shared/views/components/form/NumericInput/registerOptions";
+import FormRowNumericInput from "@/shared/views/components/form/NumericInput/FormRowNumericInput";
+import RowNumericInput from "@/shared/views/components/form/NumericInput/RowNumericInput";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type FormValues<Fields extends readonly string[]> = {
@@ -31,7 +31,7 @@ export default function ProjectYearlyRevenuesForm<Fields extends readonly string
   initialValues,
   instructions,
 }: Props<Fields>) {
-  const { handleSubmit, register, watch } = useForm<FormValues<Fields>>({
+  const { handleSubmit, control, watch } = useForm<FormValues<Fields>>({
     defaultValues: initialValues ? (initialValues as DefaultValues<FormValues<Fields>>) : undefined,
   });
 
@@ -45,24 +45,21 @@ export default function ProjectYearlyRevenuesForm<Fields extends readonly string
       <form onSubmit={handleSubmit(onSubmit)}>
         {fields.map((field) => {
           return (
-            <RowDecimalsNumericInput
+            <FormRowNumericInput
+              controller={{ name: field as Path<FormValues<Fields>>, control }}
               className="pt-4!"
               addonText="€ / an"
               label={getFieldLabel(field)}
-              nativeInputProps={register(
-                field as Path<FormValues<Fields>>,
-                optionalNumericFieldRegisterOptions,
-              )}
               key={field}
             />
           );
         })}
 
-        <RowDecimalsNumericInput
+        <RowNumericInput
           label={<span className="font-medium text-dsfr-text-label-grey">Total</span>}
           addonText="€"
           nativeInputProps={{
-            value: sumObjectValues(allRevenues),
+            value: new Intl.NumberFormat("fr-FR").format(sumObjectValues(allRevenues)),
           }}
           disabled
         />
