@@ -17,6 +17,7 @@ type ProjectTileMenuProps = {
   onClose: () => void;
   menuRef: RefObject<HTMLDivElement | null>;
   buttonRef: RefObject<HTMLButtonElement | null>;
+  from: "evaluations" | "site";
 };
 
 function ProjectTileMenu({
@@ -29,8 +30,9 @@ function ProjectTileMenu({
   onClose,
   menuRef,
   buttonRef,
+  from,
 }: ProjectTileMenuProps) {
-  const { onDuplicateProject } = useDuplicateProject(projectId);
+  const { onDuplicateProject } = useDuplicateProject(projectId, from);
 
   return (
     <div
@@ -113,7 +115,7 @@ function ProjectTileMenu({
               className="py-1.5 px-4 w-full hover:bg-white hover:dark:bg-black"
               priority="tertiary no outline"
               size="small"
-              linkProps={{ ...routes.updateProject({ projectId }).link, role: "menuitem" }}
+              linkProps={{ ...routes.updateProject({ projectId, from }).link, role: "menuitem" }}
               title={`Modifier les caractéristiques du projet`}
             >
               Modifier

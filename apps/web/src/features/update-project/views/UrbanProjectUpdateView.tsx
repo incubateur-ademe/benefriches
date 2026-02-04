@@ -504,12 +504,13 @@ function UrbanProjectUpdateView() {
   const currentStep = useAppSelector(selectUrbanProjectCurrentStep);
   const projectId = useAppSelector((state) => state.projectUpdate.projectData.id);
   const projectName = useAppSelector((state) => state.projectUpdate.projectData.projectName ?? "");
+  const siteId = useAppSelector((state) => state.projectUpdate.siteData?.id);
 
   const { onSave, selectIsFormStatusValid, selectSaveState } = useProjectForm();
   const isFormValid = useAppSelector(selectIsFormStatusValid);
   const saveState = useAppSelector(selectSaveState);
 
-  const sidebarActions = useSidebarActions({ onSave, isFormValid, saveState, projectId });
+  const sidebarActions = useSidebarActions({ onSave, isFormValid, saveState, projectId, siteId });
 
   useSyncUpdateStepWithRouteQuery(URBAN_PROJECT_CREATION_STEP_QUERY_STRING_MAP[currentStep]);
   useEffect(() => {

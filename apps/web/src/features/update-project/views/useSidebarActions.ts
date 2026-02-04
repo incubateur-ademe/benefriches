@@ -2,15 +2,51 @@ import { useMemo } from "react";
 
 import { ProjectFormState } from "@/shared/core/reducers/project-form/projectForm.reducer";
 import { SidebarLayoutProps } from "@/shared/views/layout/SidebarLayout/SidebarLayout";
-import { routes } from "@/shared/views/router";
+import { routes, useRoute } from "@/shared/views/router";
 
 type Props = {
   projectId?: string;
+  siteId?: string;
   onSave: () => void;
   saveState: ProjectFormState["urbanProject"]["saveState"];
   isFormValid: boolean;
 };
-export const useSidebarActions = ({ projectId, onSave, saveState, isFormValid }: Props) => {
+export const useSidebarActions = ({ projectId, siteId, onSave, saveState, isFormValid }: Props) => {
+  const currentRoute = useRoute();
+
+  const goBackProps = useMemo(() => {
+    if (!projectId) {
+      return {
+        linkProps: routes.myEvaluations().link,
+        text: "Retour à mes évaluations",
+      };
+    }
+    if (currentRoute.name !== "updateProject" || !currentRoute.params.from) {
+      return {
+        linkProps: routes.projectImpacts({ projectId }).link,
+        text: "Retourner aux impacts",
+      };
+    }
+
+    if (currentRoute.params.from === "site" && siteId) {
+      return {
+        linkProps: routes.siteEvaluatedProjects({ siteId }).link,
+        text: "Retour aux détails du site",
+      };
+    }
+
+    if (currentRoute.params.from === "evaluations") {
+      return {
+        linkProps: routes.myEvaluations().link,
+        text: "Retour à mes évaluations",
+      };
+    }
+    return {
+      linkProps: routes.projectImpacts({ projectId }).link,
+      text: "Retourner aux impacts",
+    };
+  }, [currentRoute, siteId, projectId]);
+
   return useMemo((): SidebarLayoutProps["actions"] => {
     if (!projectId) {
       return undefined;
@@ -18,10 +54,9 @@ export const useSidebarActions = ({ projectId, onSave, saveState, isFormValid }:
 
     const actions: SidebarLayoutProps["actions"] = [
       {
-        linkProps: routes.projectImpacts({ projectId }).link,
+        ...goBackProps,
         iconId: "ri-bar-chart-box-line",
         priority: "secondary",
-        text: "Retourner aux impacts",
       },
     ];
 
@@ -68,5 +103,5 @@ export const useSidebarActions = ({ projectId, onSave, saveState, isFormValid }:
       },
       ...actions,
     ];
-  }, [isFormValid, onSave, projectId, saveState]);
+  }, [isFormValid, onSave, projectId, saveState, goBackProps]);
 };

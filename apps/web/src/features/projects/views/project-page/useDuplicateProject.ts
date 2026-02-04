@@ -5,7 +5,7 @@ import { routes } from "@/shared/views/router";
 
 import { HttpDuplicateProjectService } from "../../infrastructure/duplicate-project-service/HttpDuplicateProjectService";
 
-const useDuplicateProject = (projectId: string) => {
+const useDuplicateProject = (projectId: string, from: "evaluations" | "impacts" | "site") => {
   const [duplicationState, setIsDuplicationState] = useState<"idle" | "error" | "loading">("idle");
 
   const onDuplicateProject = useCallback(async () => {
@@ -14,12 +14,12 @@ const useDuplicateProject = (projectId: string) => {
       const duplicateService = new HttpDuplicateProjectService();
       const newProjectId = uuid();
       await duplicateService.duplicate({ newProjectId, reconversionProjectId: projectId });
-      routes.updateProject({ projectId: newProjectId }).push();
+      routes.updateProject({ projectId: newProjectId, from }).push();
     } catch (err) {
       console.error("Impossible de dupliquer le projet", err);
       setIsDuplicationState("error");
     }
-  }, [projectId]);
+  }, [projectId, from]);
 
   return { onDuplicateProject, duplicationState };
 };

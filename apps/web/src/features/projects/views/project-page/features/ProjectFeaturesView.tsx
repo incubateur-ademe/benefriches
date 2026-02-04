@@ -28,7 +28,7 @@ export default function ProjectFeaturesView({ projectData }: Props) {
         {!projectData.isExpress && projectData.developmentPlan.type === "URBAN_PROJECT" && (
           <Button
             iconId="fr-icon-edit-line"
-            linkProps={routes.updateProject({ projectId: projectData.id }).link}
+            linkProps={routes.updateProject({ projectId: projectData.id, from: "impacts" }).link}
           >
             Modifier le projet
           </Button>

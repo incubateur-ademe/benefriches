@@ -7,7 +7,7 @@ import ProjectPageHeader from "./ProjectPageHeader";
 
 const ProjectPageHeaderContainer = ({ projectId }: { projectId: string }) => {
   const projectContext = useAppSelector(selectProjectsImpactsViewData);
-  const { onDuplicateProject } = useDuplicateProject(projectId);
+  const { onDuplicateProject } = useDuplicateProject(projectId, "impacts");
 
   const headerProps = {
     projectType: projectContext.type,
@@ -16,7 +16,7 @@ const ProjectPageHeaderContainer = ({ projectId }: { projectId: string }) => {
     isExpressProject: projectContext.isExpressProject,
     siteFeaturesHref: routes.siteFeatures({ siteId: projectContext.siteId }).href,
     onDuplicateProject,
-    updateProjectLinkProps: routes.updateProject({ projectId }).link,
+    updateProjectLinkProps: routes.updateProject({ projectId, from: "impacts" }).link,
     createProjectLinkProps: routes.createProject({ siteId: projectContext.siteId }).link,
   };
 

@@ -110,6 +110,7 @@ function MyEvaluationItem({ evaluation }: Props) {
               .slice(0, projectLimit - 1)
               .map(({ projectType, name, id, isExpressProject }) => (
                 <ProjectOverviewTile
+                  from="evaluations"
                   projectType={projectType}
                   projectName={name}
                   siteName={siteName}
