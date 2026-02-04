@@ -1,22 +1,25 @@
-import { fr } from "@codegouvfr/react-dsfr";
 import * as Highcharts from "highcharts";
 import { Options } from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { MutabilityUsage } from "shared";
 
-import { getScenarioPictoUrl } from "@/features/projects/views/shared/scenarioType";
 import { formatPercentage } from "@/shared/core/format-number/formatNumber";
 import { getMutabilityUsageDisplayName } from "@/shared/core/reconversionCompatibility";
 import { withDefaultBarChartOptions } from "@/shared/views/charts";
+import classNames from "@/shared/views/clsx";
 import Badge from "@/shared/views/components/Badge/Badge";
+import NewProjectTile from "@/shared/views/components/ProjectTile/NewProjectTile";
+import ProjectOverviewTile from "@/shared/views/components/ProjectTile/ProjectOverviewTile";
+import ProjectTile from "@/shared/views/components/ProjectTile/ProjectTile";
 import { routes } from "@/shared/views/router";
 
 import { UserSiteEvaluation } from "../../domain/types";
-import MyEvaluationsProjectLinkTile from "./MyEvaluationsProjectLinkTile";
 
 type Props = {
   evaluation: UserSiteEvaluation;
 };
+
+const TILE_CLASSNAME = "w-[216px]";
 
 const barChartOptions: Options = withDefaultBarChartOptions({
   tooltip: {
@@ -55,7 +58,7 @@ function MyEvaluationItem({ evaluation }: Props) {
     <div className="rounded-2xl">
       <div className="rounded-t-2xl bg-(--background-alt-grey) p-6 flex flex-wrap justify-between items-center">
         <div className="flex items-center gap-4">
-          <a {...routes.siteFeatures({ siteId }).link} className="bg-none">
+          <a {...routes.siteActionsList({ siteId }).link} className="bg-none">
             <h2 className="mb-0 text-2xl">{siteName}</h2>
           </a>
           {isExpressSite && (
@@ -69,7 +72,7 @@ function MyEvaluationItem({ evaluation }: Props) {
       </div>
       <div className="rounded-b-2xl bg-(--background-default-grey) flex flex-wrap">
         {compatibilityEvaluation && (
-          <div className="flex flex-col border-r p-10">
+          <div className="flex flex-col border-r p-8">
             <h3 className="text-xl">Résultat de compatibilité</h3>
             <HighchartsReact
               highcharts={Highcharts}
@@ -100,42 +103,25 @@ function MyEvaluationItem({ evaluation }: Props) {
             />
           </div>
         )}
-        <div className="p-10 flex flex-col">
+        <div className="p-8 flex flex-col">
           <h3 className="text-xl">Projets évalués</h3>
-          <div className="flex flex-wrap gap-4 m-auto">
+          <div className="flex flex-wrap gap-3 m-auto">
             {reconversionProjects.lastProjects
               .slice(0, projectLimit - 1)
               .map(({ projectType, name, id, isExpressProject }) => (
-                <MyEvaluationsProjectLinkTile
+                <ProjectOverviewTile
+                  projectType={projectType}
+                  projectName={name}
+                  siteName={siteName}
+                  id={id}
+                  isExpressProject={isExpressProject}
                   key={id}
-                  justify="start"
-                  linkProps={
-                    routes.projectImpacts({
-                      projectId: id,
-                    }).link
-                  }
-                >
-                  <img
-                    className="fr-responsive-img w-20"
-                    src={getScenarioPictoUrl(projectType)}
-                    aria-hidden={true}
-                    alt=""
-                    width="80px"
-                    height="80px"
-                  />
-                  <h4 className="text-lg mb-0 text-center flex flex-col items-center">
-                    {name}
-                    {isExpressProject && (
-                      <Badge small className="mt-2" style="blue">
-                        Projet express
-                      </Badge>
-                    )}
-                  </h4>
-                </MyEvaluationsProjectLinkTile>
+                  className={TILE_CLASSNAME}
+                />
               ))}
             {nbOtherProjects > 0 && (
-              <MyEvaluationsProjectLinkTile
-                justify="center"
+              <ProjectTile
+                className={classNames("justify-center", TILE_CLASSNAME)}
                 linkProps={routes.siteEvaluatedProjects({ siteId }).link}
               >
                 <h4 className="text-lg mb-0 text-center flex flex-col">
@@ -151,17 +137,10 @@ function MyEvaluationItem({ evaluation }: Props) {
                     </>
                   )}
                 </h4>
-              </MyEvaluationsProjectLinkTile>
+              </ProjectTile>
             )}
 
-            <MyEvaluationsProjectLinkTile
-              linkProps={routes.createProject({ siteId: evaluation.siteId }).link}
-              border="dashed"
-              className="text-dsfr-title-blue text-lg"
-            >
-              <span aria-hidden="true" className={fr.cx("fr-icon--lg", "fr-icon-add-line")} />
-              Évaluer un nouveau projet sur ce site
-            </MyEvaluationsProjectLinkTile>
+            <NewProjectTile className={TILE_CLASSNAME} siteId={evaluation.siteId} />
           </div>
         </div>
       </div>

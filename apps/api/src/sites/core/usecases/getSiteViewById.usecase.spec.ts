@@ -58,11 +58,13 @@ describe("GetSiteViewById Use Case", () => {
           id: "project-1",
           name: "Solar Farm",
           type: "PHOTOVOLTAIC_POWER_PLANT",
+          express: false,
         },
         {
           id: "project-2",
           name: "Urban Center",
           type: "URBAN_PROJECT",
+          express: false,
         },
       ],
       compatibilityEvaluation: null,
