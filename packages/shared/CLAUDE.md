@@ -108,9 +108,9 @@ Run `pnpm --filter shared build` after:
 - Adding/modifying any file in `src/`
 - Changing exports in `index.ts`
 
-### Auto-rebuild
+### No auto-rebuild
 
-`postinstall` hook runs build automatically on `pnpm install`.
+There is no lifecycle hook — you must run `pnpm --filter shared build` manually after modifying the shared package.
 
 ### Verify Build Worked
 

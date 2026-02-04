@@ -10,12 +10,12 @@ WORKDIR /app
 # Dependencies stage - install all dependencies
 FROM base AS deps
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-# needed for base tsconfig used in shared package postinstall
+# needed for base tsconfig used in shared package build
 COPY .tooling ./.tooling/
 COPY packages/shared ./packages/shared/
 COPY apps/web ./apps/web
-# Install dependencies
-RUN pnpm install --frozen-lockfile
+# Install dependencies and build shared package
+RUN pnpm install --frozen-lockfile && pnpm --filter shared build
 
 # Build stage - build shared package and webapp
 FROM base AS build

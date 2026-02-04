@@ -12,7 +12,7 @@
 pnpm --filter web typecheck && pnpm --filter web lint && pnpm --filter web test
 ```
 
-**If modifying `shared` package**: Run `pnpm --filter web install` first (auto-builds shared), then web checks.
+**If modifying `shared` package**: Run `pnpm --filter shared build` first, then `pnpm --filter web install`, then web checks.
 
 ---
 

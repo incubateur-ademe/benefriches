@@ -71,11 +71,15 @@ pnpm --filter shared build      # Build shared package (required after changes!)
 
 ```bash
 # After modifying shared:
-pnpm --filter api install && pnpm --filter web install  # Reinstall (auto-builds shared)
+pnpm --filter shared build                              # Rebuild shared package
+pnpm --filter api install && pnpm --filter web install  # Reinstall in dependent apps
 pnpm -r typecheck && pnpm -r test
+
+# When actively developing shared (rebuilds on every change):
+pnpm --filter shared dev
 ```
 
-Note: We don't use monorepo dependency solutions (nx, turborepo). The `install` command triggers the shared package build via postinstall hook.
+Note: We don't use monorepo dependency solutions (nx, turborepo). You must manually run `pnpm --filter shared build` after modifying the shared package, or use `pnpm --filter shared dev` for watch mode.
 
 ---
 

@@ -25,10 +25,8 @@ jobs:
           cache: "pnpm"
       - name: Install dependencies
         run: pnpm install
-      - name: Build api
-        run: pnpm --filter=api build
       - name: Create Archive
-        run: ./apps/api/scripts/build-for-scalingo.sh
+        run: ./apps/api/scripts/build-for-scalingo-v2.sh
       - name: Archive dist
         uses: actions/upload-artifact@v4
         with:
