@@ -25,3 +25,6 @@ coverage/
 
 # plans writen by AI agents
 specs/
+
+# Claude Code local settings
+.claude/settings.local.json
