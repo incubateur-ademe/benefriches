@@ -20,8 +20,7 @@
     "typecheck": "tsc --noEmit",
     "lint": "oxlint --type-aware",
     "format": "prettier --write --cache \"./**/*.{js,ts,md,json}\" src/",
-    "format:check": "prettier --check --cache  \"./**/*.{js,ts,md,json}\" src/",
-    "postinstall": "pnpm run build"
+    "format:check": "prettier --check --cache  \"./**/*.{js,ts,md,json}\" src/"
   },
   "keywords": [],
   "author": "",

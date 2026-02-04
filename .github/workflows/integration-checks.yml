@@ -27,6 +27,7 @@ jobs:
           node-version: "24"
           cache: "pnpm"
       - run: pnpm install
+      - run: pnpm --filter shared build
       - run: pnpm typecheck
       - run: pnpm lint
       - run: pnpm format:check
@@ -43,6 +44,7 @@ jobs:
           node-version: "24"
           cache: "pnpm"
       - run: pnpm install
+      - run: pnpm --filter shared build
       - run: pnpm test
 
   build:

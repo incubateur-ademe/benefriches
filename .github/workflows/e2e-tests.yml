@@ -25,6 +25,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Build shared package
+        run: pnpm --filter shared build
+
       - name: Install Playwright Browsers
         run: pnpm --filter e2e-tests exec playwright install --with-deps
 
