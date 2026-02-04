@@ -15,7 +15,7 @@ type Props = {
 };
 
 function ProjectImpactFooter({ projectId, siteId, isUpdateEnabled }: Props) {
-  const { onDuplicateProject, duplicationState } = useDuplicateProject(projectId);
+  const { onDuplicateProject, duplicationState } = useDuplicateProject(projectId, "impacts");
 
   return (
     <div className="mt-6 grid grid-cols-2 gap-6">

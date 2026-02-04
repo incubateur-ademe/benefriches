@@ -61,6 +61,7 @@ const { RouteProvider, useRoute, routes, session } = createRouter({
   updateProject: defineRoute(
     {
       etape: param.query.optional.string,
+      from: param.query.optional.ofType<"impacts" | "evaluations" | "site">(),
       projectId: param.path.string,
     },
     (params) => `/mes-projets/${params.projectId}/modifier`,

@@ -17,6 +17,7 @@ type Props = {
   id: string;
   isExpressProject: boolean;
   className?: ClassValue;
+  from: "evaluations" | "site";
 };
 
 function ProjectOverviewTile({
@@ -26,6 +27,7 @@ function ProjectOverviewTile({
   id,
   isExpressProject,
   className,
+  from,
 }: Props) {
   const { isMenuOpened, openMenu, menuRef, menuButtonRef, closeMenu } = useProjectTileMenu();
 
@@ -87,6 +89,7 @@ function ProjectOverviewTile({
         onClose={closeMenu}
         menuRef={menuRef}
         buttonRef={menuButtonRef}
+        from={from}
       />
     </div>
   );

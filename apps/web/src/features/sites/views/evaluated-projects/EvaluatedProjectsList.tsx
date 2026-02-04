@@ -16,6 +16,7 @@ export default function EvaluatedProjectsList({ siteId, siteName, projects }: Pr
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {projects.map((project) => (
           <ProjectOverviewTile
+            from="site"
             key={project.id}
             id={project.id}
             projectName={project.name}
