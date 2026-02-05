@@ -1,15 +1,15 @@
 ---
-name: benefriches-react-best-practices
-description: React best practices and performance optimization for Benefriches (Vite + Redux). Reference when writing components, implementing Redux patterns, reviewing code quality, or optimizing performance.
+name: react-best-practices
+description: React best practices for Benefriches (Vite + Redux). Covers code quality, component patterns, state management, and performance. Use when writing, reviewing, or refactoring React components, debugging slow interactions, or implementing Redux patterns.
 ---
 
 # React Best Practices for Benefriches
 
-> **Performance optimization guidelines for React 19+ SPA with Vite + Redux**
+> **Guidelines for React 19+ SPA with Vite + Redux**
 >
-> **Based on**: [Vercel React Best Practices](https://github.com/vercel-labs/agent-skills/tree/main/skills/react-best-practices)
+> **Philosophy**: Code quality and maintainability first, performance optimization when measured
 >
-> **Adapted for**: Client-side rendering only
+> **Adapted for**: Client-side rendering with Redux + Clean Architecture
 
 ---
 
@@ -17,124 +17,162 @@ description: React best practices and performance optimization for Benefriches (
 
 Use these practices when:
 
-- ✅ Writing new React components
-- ✅ Implementing Redux thunks or selectors
-- ✅ Reviewing code for performance issues
-- ✅ Refactoring existing React code
-- ✅ Optimizing bundle size
-- ✅ Improving rendering performance
-- ✅ Debugging slow interactions or waterfalls
+- Writing new React components
+- Designing component architecture
+- Implementing Redux patterns (reducers, selectors, thunks)
+- Reviewing code for quality or performance issues
+- Refactoring existing React code
+- Debugging slow interactions
 
 ---
 
-## Rule Categories by Priority
+## Categories by Priority
 
-| Priority | Category                   | Rules | Impact                          |
-| -------- | -------------------------- | ----- | ------------------------------- |
-| 🔴       | **Bundle Size**            | 4     | 200-800ms import cost reduction |
-| 🟠       | **Async/Waterfall**        | 4     | 2-10× improvement               |
-| 🟡       | **Array/Data**             | 2     | Fast-fail + immutability        |
-| 🟢       | **Re-render**              | 12    | Prevent unnecessary renders     |
-| 🔵       | **Bundle (Continued)**     | 2     | Load on demand                  |
-| 🟣       | **Client Data**            | 2     | Scroll + storage optimization   |
-| ⚫       | **Rendering Performance**  | 7     | Static hoisting + transitions   |
-| ⚪       | **JavaScript Performance** | 11    | Caching + O(1) lookups          |
-| 🔘       | **Advanced Patterns**      | 2     | Singletons + stable refs        |
-
-**Total**: 31 applicable practices
+| Priority | Category                 | Focus Area                            |
+| -------- | ------------------------ | ------------------------------------- |
+| 🔴       | **Code Quality**         | Readability, maintainability, SRP     |
+| 🟠       | **Component Patterns**   | Container/Presentational, composition |
+| 🟡       | **State Management**     | Local-first, derived state, colocation|
+| 🟢       | **Anti-Patterns**        | Common mistakes to avoid              |
+| 🔵       | **Bundle Optimization**  | Lazy loading, dynamic imports         |
+| 🟣       | **Async Patterns**       | Parallel fetching, Suspense           |
+| ⚫       | **Performance (Measure!)**| Only when needed, after profiling    |
+| ⚪       | **React 19 & Future**    | React Compiler, new APIs              |
 
 ---
 
-## Quick Reference by Category
+## 🔴 CRITICAL: Code Quality & Readability
 
-### 🔴 CRITICAL: Bundle Size Optimization
+| Practice                     | Description                                      |
+| ---------------------------- | ------------------------------------------------ |
+| Single Responsibility        | Each component does ONE thing well               |
+| Component Size               | Keep components focused (< 200 lines)            |
+| Descriptive Naming           | Clear names for components, hooks, props         |
+| Props Destructuring          | Improve readability at function signature        |
+| Explicit over Implicit       | Avoid magic values, use named constants          |
+| Extract Custom Hooks         | Share logic via hooks, not copy-paste            |
 
-| Rule                             | Impact                 | Relevance                                 |
-| -------------------------------- | ---------------------- | ----------------------------------------- |
-| Avoid Barrel File Imports        | 200-800ms import cost  | Check `@/features` imports                |
-| Dynamic Imports for Heavy Comp.  | Reduce initial bundle  | Lazy-load maps, forms, charts             |
-| Promise.all() for Independence   | 2-10× parallel speedup | Redux thunks fetching multiple resources  |
-| Dependency-Based Parallelization | Start async ops ASAP   | Complex thunks with multiple dependencies |
+### Benefriches Examples
 
-### 🟠 HIGH: Async/Waterfall Optimization
+- ✅ **ViewData pattern**: Single selector per container
+- ✅ **Container/Presentational**: Separation in `views/` folders
+- ✅ **Clean Architecture**: Core has no framework dependencies
 
-| Rule                          | Impact                      | Relevance                             |
-| ----------------------------- | --------------------------- | ------------------------------------- |
-| Defer Await Until Needed      | Avoid blocking code paths   | Conditional logic in thunks           |
-| Strategic Suspense Boundaries | Show wrapper UI immediately | Feature pages with async requirements |
-| Conditional Module Loading    | Load heavy libs on demand   | Charts, PDFs, advanced map features   |
-| CSS content-visibility        | ~10× faster for long lists  | Site lists, project tables            |
+---
 
-### 🟡 MEDIUM-HIGH: Array/Data Optimization
+## 🟠 HIGH: Component Design Patterns
 
-| Rule                             | Impact                   | Relevance                         |
-| -------------------------------- | ------------------------ | --------------------------------- |
-| Early Length Check               | Fast-fail expensive ops  | Redux selectors, form validation  |
-| Use toSorted() Instead of sort() | Immutability (critical!) | ALL sorting in reducers/selectors |
+| Pattern                  | When to Use                                  |
+| ------------------------ | -------------------------------------------- |
+| Container/Presentational | Redux connection in `index.tsx`, pure render |
+| Component Composition    | Prefer over deep prop drilling               |
+| Children Pattern         | Flexible content injection                   |
+| Custom Hooks             | Extract reusable stateful logic              |
+| Render Props (rare)      | Dynamic child rendering needs                |
 
-### 🟢 MEDIUM: Re-render Optimization
+### Benefriches Already Follows
 
-| Rule                                   | Impact                          | Relevance                            |
-| -------------------------------------- | ------------------------------- | ------------------------------------ |
-| Calculate Derived State in Render      | Avoid redundant state           | Redux selectors                      |
-| Extract to Memoized Components         | Enable early returns            | Heavy presentational components      |
-| Functional setState Updates            | Prevent stale closures          | Already followed via Redux           |
-| Lazy State Initialization              | Compute expensive values once   | Local state with complex init        |
-| Use Transitions for Non-Urgent Updates | Maintain UI responsiveness      | Search/filter inputs                 |
-| Use useRef for Transient Values        | Avoid re-renders                | Animation values, scroll positions   |
-| Narrow Effect Dependencies             | Reduce effect re-runs           | Extract specific values from objects |
-| Put Logic in Event Handlers            | Avoid state + effect modeling   | Forms, user interactions             |
-| Subscribe to Derived State             | Boolean from continuous values  | Redux selectors for UI state         |
-| Defer State Reads to Usage Point       | Read dynamic state in callbacks | Event handlers                       |
-| Don't Wrap Simple Expressions          | Avoid over-optimization         | Simple calculations                  |
-| Extract Default Non-primitive Params   | Preserve memoization            | Memoized component props             |
+- ✅ Container components use single `selectViewData` selector
+- ✅ Presentational components receive all data via props
+- ✅ Gateway pattern for external services
 
-### 🔵 MEDIUM: Bundle Optimization (Continued)
+---
 
-| Rule                         | Impact                    | Relevance                   |
-| ---------------------------- | ------------------------- | --------------------------- |
-| Defer Non-Critical Libraries | Load after initialization | Analytics, error tracking   |
-| Preload Based on User Intent | Reduce perceived latency  | Heavy modals, project forms |
+## 🟡 HIGH: State Management Principles
 
-### 🟣 MEDIUM: Client Data Patterns
+| Principle             | Description                                        |
+| --------------------- | -------------------------------------------------- |
+| Local State First     | Don't lift state unless truly shared               |
+| Derived State         | Compute in selectors/render, don't store           |
+| Colocate State        | Keep state close to where it's used                |
+| Single Source         | One authoritative location per piece of data       |
+| Immutability          | Always use `toSorted()`, spread, not `sort()`      |
 
-| Rule                            | Impact                 | Relevance                      |
-| ------------------------------- | ---------------------- | ------------------------------ |
-| Passive Event Listeners         | Eliminate scroll delay | Infinite scroll, animations    |
-| Version + Minimize localStorage | Prevent breaks, reduce | Redux persistence, preferences |
+### Redux Specifics
 
-### ⚫ LOW-MEDIUM: Rendering Performance
+- ✅ Derived values in selectors (not duplicated in state)
+- ✅ Functional updates in reducers
+- ✅ Single ViewData selector per container
 
-| Rule                                  | Impact                 | Relevance                      |
-| ------------------------------------- | ---------------------- | ------------------------------ |
-| Hoist Static JSX                      | Avoid re-creation      | Empty states, error messages   |
-| Use Activity Component for Visibility | Preserve state/DOM     | Toggle forms/maps              |
-| Explicit Conditional Rendering        | Prevent rendering 0    | Count displays                 |
-| useTransition Over Manual Loading     | Built-in pending state | Replace useState loading flags |
-| Optimize SVG Precision                | Reduce file size       | Map icons, illustrations       |
-| Animate SVG Wrapper                   | Hardware acceleration  | Spinning icons                 |
+---
 
-### ⚪ LOW-MEDIUM: JavaScript Performance
+## 🟢 HIGH: Anti-Patterns to Avoid
 
-| Rule                           | Impact                  | Relevance                          |
-| ------------------------------ | ----------------------- | ---------------------------------- |
-| Cache Repeated Function Calls  | Module-level Maps       | Area calculations, transformations |
-| Build Index Maps               | O(1) vs O(n) lookups    | Redux selectors by ID              |
-| Use Set/Map for Lookups        | O(1) membership checks  | Selected IDs, uniqueness filtering |
-| Avoid Layout Thrashing         | Batch DOM reads/writes  | Animations, dynamic layouts        |
-| Cache Property Access in Loops | Hot path optimization   | Array iterations                   |
-| Cache Storage API Calls        | Avoid repeated reads    | localStorage access                |
-| Combine Array Iterations       | Single loop vs multiple | Chained filter/map operations      |
-| Early Return from Functions    | Skip unnecessary work   | Validation functions               |
-| Hoist RegExp Creation          | Don't create in render  | Email validation, parsing          |
-| Loop for Min/Max vs Sort       | O(n) vs O(n log n)      | Finding extremes                   |
+| Anti-Pattern              | Problem                    | Solution                         |
+| ------------------------- | -------------------------- | -------------------------------- |
+| Massive Components        | Hard to test/maintain      | Split into focused pieces        |
+| Prop Drilling             | Coupling, maintenance      | Use composition or context       |
+| Array Index as Key        | Bugs with reordering       | Use stable IDs                   |
+| Mutating State            | React won't re-render      | Immutable updates (`toSorted()`) |
+| Over-Engineering          | Complexity without benefit | YAGNI - only what's needed       |
+| Premature Optimization    | Wasted effort              | Measure first, then optimize     |
+| Effect for Derived State  | Sync issues, extra renders | Compute during render            |
 
-### 🔘 LOW: Advanced Patterns
+---
 
-| Rule                         | Impact               | Relevance                    |
-| ---------------------------- | -------------------- | ---------------------------- |
-| Initialize App Once          | Module-level guards  | Redux store, analytics setup |
-| Store Event Handlers in Refs | Stable subscriptions | Event bus listeners          |
+## 🔵 MEDIUM: Bundle Optimization
+
+| Practice                     | Impact                  | When to Apply                       |
+| ---------------------------- | ----------------------- | ----------------------------------- |
+| Avoid Barrel File Imports    | 200-800ms reduction     | Use direct `@/` path imports        |
+| Dynamic Imports (`lazy`)     | Reduce initial bundle   | Maps, charts, modals, forms         |
+| Defer Non-Critical Libraries | Faster initial load     | Analytics, error tracking           |
+| Preload on User Intent       | Reduce perceived delay  | Hover/focus before heavy action     |
+
+---
+
+## 🟣 MEDIUM: Async Patterns
+
+| Practice                   | Impact              | When to Apply                    |
+| -------------------------- | ------------------- | -------------------------------- |
+| `Promise.all()` Parallel   | 2-10x improvement   | Independent async operations     |
+| Defer Await Until Needed   | Skip wasted work    | Conditional logic before fetch   |
+| Strategic Suspense         | Progressive loading | Wrap data-dependent sections     |
+| Conditional Module Loading | On-demand bundles   | Charts, PDFs, advanced features  |
+
+---
+
+## ⚫ LOW: Performance Optimization (Measure First!)
+
+**CRITICAL**: Only apply these when you've **measured** a performance problem.
+
+### Memoization: Usually NOT Needed
+
+**Default stance**: Don't memoize. It adds complexity without benefit in most cases.
+
+| When NOT to Memoize                | Why                                   |
+| ---------------------------------- | ------------------------------------- |
+| Props change every render          | Memoization is wasted                 |
+| Component is already fast          | No perceptible benefit                |
+| Simple components                  | Overhead may exceed savings           |
+| Object/array literals as props     | Creates new reference each render     |
+
+| When to Consider Memoization       | Requirements                          |
+| ---------------------------------- | ------------------------------------- |
+| Measured lag during re-renders     | Profile first!                        |
+| Expensive rendering (long lists)   | And props rarely change               |
+| Heavy computations in render       | And dependencies stable               |
+
+### Better Alternatives to Memoization
+
+1. **Move state down**: Keep state in component that needs it
+2. **Lift content up**: Use children pattern for static content
+3. **Component composition**: Split into smaller, focused pieces
+4. **Selector optimization**: Derive booleans in selectors
+
+### React Compiler (Coming Soon)
+
+React Compiler will auto-memoize, making manual `useMemo`, `useCallback`, and `React.memo` largely redundant. Avoid adding new memoization unless solving a measured problem.
+
+---
+
+## ⚪ React 19 & Future
+
+| Feature              | Impact                                        |
+| -------------------- | --------------------------------------------- |
+| React Compiler       | Auto-memoization (manual memo becomes legacy) |
+| `useTransition`      | Non-blocking UI updates for heavy operations  |
+| `use()` hook         | Simplified async data fetching                |
 
 ---
 
@@ -142,52 +180,38 @@ Use these practices when:
 
 ### Redux Patterns
 
-**Already following these best practices:**
+**Already following best practices:**
 
-- ✅ Functional updates (reducers use immutable patterns)
-- ✅ Derived state in selectors (not duplicated in state)
-- ✅ Deferred state reads (useAppSelector in components)
+- ✅ Derived state in selectors (not duplicated)
+- ✅ Single ViewData selector per container
+- ✅ Functional updates in reducers
+- ✅ `toSorted()` for immutability
 
-**Apply these explicitly:**
+**Keep doing:**
 
-- 🟡 **Use `toSorted()`** instead of `sort()` in all reducers/selectors
-- 🟢 **Single ViewData selector** per container (already following)
+- 🟡 **Single selector per container** returning composed ViewData
 - 🔴 **Parallel async in thunks** with `Promise.all()`
+- 🟢 **Passive action names** (events: `stepCompleted`, not commands)
 
-### Clean Architecture Integration
+### Clean Architecture
 
-**Core layer** (business logic):
+- **Core layer**: Pure functions, no framework deps
+- **Infrastructure layer**: Gateways with InMemory mocks for tests
+- **Views layer**: Container/Presentational separation
 
-- ✅ Pure functions - already optimizable with caching/memoization
-- ✅ No framework deps - easy to extract heavy computations
+### Path Aliases
 
-**Infrastructure layer** (gateways):
-
-- 🟠 **Conditional module loading** - load heavy services on demand
-- 🔵 **Preload on intent** - import services before API calls
-
-**Views layer** (React components):
-
-- 🟢 **React.memo()** for heavy presentational components with lots of potential re-render (DO NOT pre-optimize when it's not necessary)
-- ⚫ **Hoist static JSX** - extract constants outside components
-- 🟠 **Suspense boundaries** - wrap data-dependent sections
-
-### Path Aliases (`@/`)
-
-When optimizing imports:
-
-- 🔴 **Avoid barrel files** - use direct paths with `@/` alias
+- 🔴 **Use `@/` for imports** - avoid barrel files
 - Example: `import { X } from '@/features/create-site/core/createSite.reducer'`
 
 ---
 
 ## See Also
 
-- **Full detailed guide**: `AGENTS.md` in this skill directory
+- **Code examples**: [examples.md](examples.md) in this skill directory
 - **Web app guide**: `apps/web/CLAUDE.md`
 - **Monorepo guide**: Root `CLAUDE.md`
-- **Original source**: [Vercel React Best Practices](https://github.com/vercel-labs/agent-skills/tree/main/skills/react-best-practices)
 
 ---
 
-**END OF QUICK REFERENCE** - For code examples and detailed patterns, see `AGENTS.md`.
+**END OF QUICK REFERENCE** - For code examples and detailed patterns, see [examples.md](examples.md).

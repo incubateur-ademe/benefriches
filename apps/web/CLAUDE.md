@@ -179,25 +179,9 @@ React 19+, Redux Toolkit 2+, Vite 7+, TypeScript 5+ (strict), Tailwind CSS + DSF
 
 ---
 
-## Performance Optimization
-
-For React performance best practices, see the skill: `.claude/skills/react-best-practices/`
-
-**Key areas covered** (31 applicable practices):
-
-- 🔴 **Bundle optimization** - Lazy loading, dynamic imports, avoid barrel files
-- 🟠 **Async/waterfall** - Promise.all(), suspense boundaries, conditional module loading
-- 🟡 **Array/data** - Use toSorted() for immutability (critical for Redux!)
-- 🟢 **Re-render optimization** - React.memo, useTransition, derived state in selectors
-- 🔵 **Client data** - Passive listeners, localStorage versioning
-- ⚫ **Rendering** - Hoist static JSX, CSS content-visibility for long lists
-- ⚪ **JavaScript** - Caching, Set/Map for O(1) lookups, avoid layout thrashing
-
----
-
 ## Related Documentation
 
 - **Monorepo Guide**: @CLAUDE.md
 - **API Guide**: @apps/api/CLAUDE.md
 - **Feature Example**: @docs/feature-example.md
-- **Performance**: @.claude/skills/react-best-practices/SKILL.md
+- **React Best Practices**: @.claude/skills/react-best-practices/SKILL.md
