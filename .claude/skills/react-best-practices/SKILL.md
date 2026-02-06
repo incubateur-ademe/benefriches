@@ -36,6 +36,9 @@ Use these practices when:
 | 🟢       | **Anti-Patterns**        | Common mistakes to avoid              |
 | 🔵       | **Bundle Optimization**  | Lazy loading, dynamic imports         |
 | 🟣       | **Async Patterns**       | Parallel fetching, Suspense           |
+| 🟤       | **Form Handling**        | react-hook-form patterns, DSFR        |
+| ⬜       | **Accessibility**        | Keyboard nav, ARIA, focus management  |
+| ⬛       | **Error Boundaries**     | Catch errors, prevent app crashes     |
 | ⚫       | **Performance (Measure!)**| Only when needed, after profiling    |
 | ⚪       | **React 19 & Future**    | React Compiler, new APIs              |
 
@@ -129,6 +132,145 @@ Use these practices when:
 | Defer Await Until Needed   | Skip wasted work    | Conditional logic before fetch   |
 | Strategic Suspense         | Progressive loading | Wrap data-dependent sections     |
 | Conditional Module Loading | On-demand bundles   | Charts, PDFs, advanced features  |
+
+---
+
+## 🟤 MEDIUM: Form Handling
+
+| Practice                     | Description                                      |
+| ---------------------------- | ------------------------------------------------ |
+| react-hook-form              | Preferred library for all forms                  |
+| DSFR Components              | Use @codegouvfr/react-dsfr for inputs            |
+| Validation in Schema         | Use react-hook-form validation rules             |
+| Error State Display          | Map formState.errors to DSFR error states        |
+| Controlled Inputs            | Prefer controlled via `register()`               |
+
+### Benefriches Form Pattern
+
+```typescript
+// Standard form component pattern
+import { useForm } from "react-hook-form";
+import { Input } from "@codegouvfr/react-dsfr/Input";
+
+type FormValues = { name: string; email: string };
+
+function MyForm({ onSubmit }: { onSubmit: (data: FormValues) => void }) {
+  const { register, handleSubmit, formState } = useForm<FormValues>();
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Input
+        label="Email"
+        state={formState.errors.email ? "error" : "default"}
+        stateRelatedMessage={formState.errors.email?.message}
+        nativeInputProps={{
+          ...register("email", {
+            required: "Email requis",
+            pattern: { value: /^[^@]+@[^@]+$/, message: "Email invalide" },
+          }),
+        }}
+      />
+    </form>
+  );
+}
+```
+
+### Reference Files
+
+- `src/features/onboarding/views/pages/identity/CreateUserForm/CreateUserForm.tsx`
+- `src/features/create-site/views/custom/naming/SiteNameAndDescription.tsx`
+
+---
+
+## ⬜ MEDIUM: Accessibility
+
+| Practice               | Description                                       |
+| ---------------------- | ------------------------------------------------- |
+| Semantic HTML          | Use appropriate elements (button, nav, main)      |
+| ARIA Labels            | Add when semantic HTML isn't sufficient           |
+| Keyboard Navigation    | Support Tab, Enter, Escape for interactive UI     |
+| Focus Management       | Manage focus for modals and dynamic content       |
+| Icon Accessibility     | Use `aria-hidden="true"` for decorative icons     |
+
+### Keyboard Navigation Example
+
+```typescript
+// Handle Escape key in modals/dropdowns
+function Modal({ onClose, children }) {
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [onClose]);
+
+  return <div role="dialog" aria-modal="true">{children}</div>;
+}
+```
+
+### Icon Accessibility
+
+```typescript
+// Decorative icons should be hidden from screen readers
+<i className="fr-icon-check-line" aria-hidden="true" />
+
+// Informative icons need labels
+<button aria-label="Fermer">
+  <i className="fr-icon-close-line" aria-hidden="true" />
+</button>
+```
+
+### DSFR Provides Accessibility
+
+DSFR components handle most accessibility concerns. Rely on:
+- Built-in ARIA attributes in DSFR components
+- Proper focus management in modals via `createModal()`
+- Keyboard support in form controls
+
+---
+
+## ⬛ CONSIDER: Error Boundaries
+
+Error boundaries catch JavaScript errors in component trees and display fallback UI.
+
+| When to Use               | Example                                  |
+| ------------------------- | ---------------------------------------- |
+| Async data sections       | Wrap data-fetching components            |
+| Third-party components    | Isolate potentially failing libraries    |
+| Feature boundaries        | Prevent one feature from crashing app    |
+
+### Basic Pattern
+
+```typescript
+import { Component, ErrorInfo, ReactNode } from "react";
+
+type Props = { children: ReactNode; fallback: ReactNode };
+type State = { hasError: boolean };
+
+class ErrorBoundary extends Component<Props, State> {
+  state = { hasError: false };
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: Error, info: ErrorInfo) {
+    console.error("Error boundary caught:", error, info);
+  }
+
+  render() {
+    return this.state.hasError ? this.props.fallback : this.props.children;
+  }
+}
+
+// Usage
+<ErrorBoundary fallback={<p>Une erreur est survenue</p>}>
+  <RiskyComponent />
+</ErrorBoundary>
+```
+
+**Note**: Not yet implemented in Benefriches. Consider adding for critical sections.
 
 ---
 

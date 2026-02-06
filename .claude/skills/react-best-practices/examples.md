@@ -307,8 +307,224 @@ const project = projectsById.get(projectId);
 
 ---
 
+## 9. Form Handling Examples (react-hook-form + DSFR)
+
+### Standard Form Pattern
+
+```typescript
+// src/features/create-site/views/custom/naming/SiteNameAndDescription.tsx pattern
+import { useForm } from "react-hook-form";
+import { Input } from "@codegouvfr/react-dsfr/Input";
+import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
+
+type FormValues = {
+  name: string;
+  description?: string;
+};
+
+function SiteNameForm({ onSubmit, defaultValues }: Props) {
+  const { register, handleSubmit, formState } = useForm<FormValues>({
+    defaultValues,
+  });
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Input
+        label="Nom du site"
+        state={formState.errors.name ? "error" : "default"}
+        stateRelatedMessage={formState.errors.name?.message}
+        nativeInputProps={{
+          ...register("name", { required: "Le nom est obligatoire" }),
+        }}
+      />
+      <Input
+        label="Description"
+        textArea
+        nativeTextAreaProps={{ ...register("description") }}
+      />
+      <ButtonsGroup
+        buttons={[{ children: "Valider", type: "submit" }]}
+      />
+    </form>
+  );
+}
+```
+
+### Email Validation Pattern
+
+```typescript
+// Pattern from CreateUserForm.tsx
+<Input
+  label="Email"
+  state={formState.errors.email ? "error" : "default"}
+  stateRelatedMessage={formState.errors.email?.message}
+  nativeInputProps={{
+    placeholder: "utilisateur@example.fr",
+    ...register("email", {
+      required: "Vous devez renseigner votre e-mail.",
+      pattern: {
+        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+        message: "Veuillez entrer une adresse email valide.",
+      },
+    }),
+  }}
+/>
+```
+
+### Checkbox with Validation
+
+```typescript
+import Checkbox from "@codegouvfr/react-dsfr/Checkbox";
+
+<Checkbox
+  state={formState.errors.consent ? "error" : "default"}
+  stateRelatedMessage={formState.errors.consent?.message}
+  options={[
+    {
+      label: "J'accepte les conditions",
+      nativeInputProps: {
+        value: "agreed",
+        ...register("consent", { required: "Vous devez accepter." }),
+      },
+    },
+  ]}
+/>
+```
+
+### Custom Numeric Input (RowNumericInput)
+
+For numeric inputs with labels and units, use the custom `RowNumericInput` component:
+
+```typescript
+// Usage with react-hook-form
+import RowNumericInput from "@/shared/views/components/form/NumericInput/RowNumericInput";
+
+<RowNumericInput
+  label="Surface"
+  hintText="en mètres carrés"
+  addonText="m²"
+  state={formState.errors.surface ? "error" : "default"}
+  stateRelatedMessage={formState.errors.surface?.message}
+  nativeInputProps={{
+    ...register("surface", { required: "La surface est obligatoire" }),
+  }}
+/>
+```
+
+Key features of RowNumericInput:
+- **Accessible by default**: `aria-describedby` links error messages, proper `htmlFor`/`id` association
+- **Numeric keyboard**: `inputMode="numeric"` shows number pad on mobile
+- **Unit addon**: `addonText` displays unit (m², €, kWh) visually attached to input
+- **State handling**: Supports `default`, `error`, `success`, `warning` states
+- **Optional image**: `imgSrc` for visual context (e.g., soil type icons)
+
+```typescript
+// With image and hint text
+<RowNumericInput
+  label="Bâtiments"
+  imgSrc="/icons/buildings.svg"
+  hintText="Surface au sol occupée par les bâtiments"
+  hintInputText="Laisser vide si inconnu"
+  addonText="m²"
+  nativeInputProps={{ ...register("buildingSurface") }}
+/>
+```
+
+Reference: `src/shared/views/components/form/NumericInput/RowNumericInput.tsx`
+
+---
+
+## 10. Accessibility Examples
+
+### Decorative vs Informative Icons
+
+```typescript
+// ✅ Decorative icon - hidden from screen readers
+<span className="inline-flex items-center gap-2">
+  <i className="fr-icon-check-line" aria-hidden="true" />
+  Validé
+</span>
+
+// ✅ Icon-only button needs aria-label
+<button aria-label="Supprimer" onClick={onDelete}>
+  <i className="fr-icon-delete-line" aria-hidden="true" />
+</button>
+
+// ❌ BAD - Icon with no accessible name
+<button onClick={onDelete}>
+  <i className="fr-icon-delete-line" />
+</button>
+```
+
+### Tab Navigation with Active State
+
+```typescript
+// Pattern from TabItem.tsx
+function TabItem({ isActive, label, linkProps, iconId }: TabItemProps) {
+  return (
+    <li role="presentation">
+      <a
+        role="tab"
+        aria-selected={isActive}
+        {...linkProps}
+      >
+        <i className={iconId} aria-hidden="true" />
+        {label}
+      </a>
+    </li>
+  );
+}
+```
+
+### Modal Focus Management
+
+```typescript
+// DSFR modals handle focus automatically via createModal()
+import { createModal } from "@codegouvfr/react-dsfr/Modal";
+
+const modal = createModal({
+  id: "confirmation-modal",
+  isOpenedByDefault: false,
+});
+
+// Usage - focus is managed automatically
+<button onClick={() => modal.open()}>Ouvrir</button>
+<modal.Component title="Confirmation" buttons={[...]}>
+  <p>Êtes-vous sûr ?</p>
+</modal.Component>
+```
+
+### Keyboard Event Handling
+
+```typescript
+// Handle keyboard interaction in custom components
+function DropdownItem({ onSelect, children }: Props) {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      onSelect();
+    }
+  };
+
+  return (
+    <div
+      role="option"
+      tabIndex={0}
+      onClick={onSelect}
+      onKeyDown={handleKeyDown}
+    >
+      {children}
+    </div>
+  );
+}
+```
+
+---
+
 ## References
 
 - [React.dev - memo](https://react.dev/reference/react/memo)
 - [React Compiler](https://react.dev/learn/react-compiler)
 - [TkDodo - Memoization](https://tkdodo.eu/blog/the-uphill-battle-of-memoization)
+- [DSFR Documentation](https://components.react-dsfr.codegouv.studio/)
+- [react-hook-form](https://react-hook-form.com/)
