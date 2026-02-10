@@ -126,6 +126,7 @@ describe("PhotovoltaicPowerPlantProjectGenerator", () => {
         createdAt: fakeNow,
         creationMode: "express",
         projectPhase: "setup",
+        status: "active",
         soilsDistribution: [
           {
             soilType: "IMPERMEABLE_SOILS",
@@ -260,6 +261,7 @@ describe("PhotovoltaicPowerPlantProjectGenerator", () => {
         createdBy: userData.id,
         createdAt: fakeNow,
         creationMode: "express",
+        status: "active",
         projectPhase: "setup",
         soilsDistribution: [
           {
