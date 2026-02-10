@@ -83,6 +83,13 @@ Note: We don't use monorepo dependency solutions (nx, turborepo). You must manua
 
 ---
 
+## Database Migrations
+
+- Always use the `/create-database-migration` skill when creating database migrations. Never create migration files manually.
+- Use the project's `pnpm` commands for migration generation, not raw SQL files.
+
+---
+
 ## Testing Strategy
 
 ### Test Types
@@ -247,7 +254,7 @@ Is this a new domain concept?
    - E2E Tests: @apps/e2e-tests/CLAUDE.md
    - Shared: @packages/shared/CLAUDE.md
 2. **Reference real examples** in the codebase (use file links in responses)
-3. **Run checks after coding**: `typecheck` -> `lint` -> `test`
+3. **Run checks after coding**: `typecheck` -> `lint` -> `format` -> `test`
 4. **For `shared` changes**: Reinstall in dependent apps, then verify both `api` and `web` pass checks
 
 ---
