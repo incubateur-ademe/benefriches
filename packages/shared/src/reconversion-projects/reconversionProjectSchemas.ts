@@ -53,6 +53,7 @@ export function createReconversionProjectSchema<T extends z.ZodTypeAny>(dateSche
 
   return z.object({
     id: z.uuid(),
+    status: z.enum(["active", "archived"]),
     createdBy: z.uuid(),
     createdAt: dateSchema,
     updatedAt: dateSchema.optional(),
@@ -94,7 +95,8 @@ export const reconversionProjectSchema = createReconversionProjectSchema(coerceT
 
 export type SpaceCategory = z.infer<typeof spaceCategorySchema>;
 
-export type ReconversionProjectDataView = z.infer<typeof reconversionProjectSchema>;
+const dataViewReconversionProjectSchema = reconversionProjectSchema.omit({ status: true });
+export type ReconversionProjectDataView = z.infer<typeof dataViewReconversionProjectSchema>;
 export type ReconversionProjectSoilsDistribution = ReconversionProjectDataView["soilsDistribution"];
 
 export const saveReconversionProjectSchema = reconversionProjectSchema;
@@ -102,6 +104,7 @@ export const saveReconversionProjectPropsSchema = saveReconversionProjectSchema.
   createdAt: true,
   updatedAt: true,
   creationMode: true,
+  status: true,
 });
 export type ReconversionProjectSaveDto = z.infer<typeof saveReconversionProjectSchema>;
 export type ReconversionProjectSavePropsDto = z.infer<typeof saveReconversionProjectPropsSchema>;
@@ -111,6 +114,7 @@ export const updateReconversionProjectSchema = reconversionProjectSchema.omit({
   creationMode: true,
   createdBy: true,
   relatedSiteId: true,
+  status: true,
 });
 export const updateReconversionProjectPropsSchema = updateReconversionProjectSchema.omit({
   id: true,

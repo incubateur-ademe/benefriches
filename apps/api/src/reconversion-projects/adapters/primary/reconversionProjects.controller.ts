@@ -24,6 +24,7 @@ import { z } from "zod";
 import { JwtAuthGuard, RequestWithAuthenticatedUser } from "src/auth/adapters/JwtAuthGuard";
 import { formatReconversionProjectInputToFeatures } from "src/reconversion-projects/core/model/formatProjectInputToFeatures";
 import { ReconversionProjectFeaturesView } from "src/reconversion-projects/core/model/reconversionProject";
+import { ArchiveReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/archiveReconversionProject.usecase";
 import { ComputeProjectUrbanSprawlImpactsComparisonUseCase } from "src/reconversion-projects/core/usecases/computeProjectUrbanSprawlImpactsComparison.usecase";
 import { ComputeReconversionProjectImpactsUseCase } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
 import { CreateReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/createReconversionProject.usecase";
@@ -90,6 +91,7 @@ export class ReconversionProjectController {
     private readonly quickComputeUrbanProjectImpactsOnFricheUseCase: QuickComputeUrbanProjectImpactsOnFricheUseCase,
     private readonly getProjectUrbanSprawlImpactsComparisonUseCase: ComputeProjectUrbanSprawlImpactsComparisonUseCase,
     private readonly duplicateReconversionProjectUseCase: DuplicateReconversionProjectUseCase,
+    private readonly archiveReconversionProjectUseCase: ArchiveReconversionProjectUseCase,
   ) {}
 
   @UseGuards(JwtAuthGuard)
@@ -185,6 +187,32 @@ export class ReconversionProjectController {
       const error = result.getError();
       switch (error) {
         case "SourceReconversionProjectNotFound":
+          throw new NotFoundException(
+            `Reconversion project with id ${reconversionProjectId} not found`,
+          );
+        case "UserNotAuthorized":
+          throw new ForbiddenException();
+      }
+    }
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post(":reconversionProjectId/archive")
+  async archiveReconversionProject(
+    @Param("reconversionProjectId") reconversionProjectId: string,
+    @Req() req: RequestWithAuthenticatedUser,
+  ) {
+    const authenticatedUserId = req.accessTokenPayload.userId;
+
+    const result = await this.archiveReconversionProjectUseCase.execute({
+      projectId: reconversionProjectId,
+      userId: authenticatedUserId,
+    });
+
+    if (result.isFailure()) {
+      const error = result.getError();
+      switch (error) {
+        case "ReconversionProjectNotFound":
           throw new NotFoundException(
             `Reconversion project with id ${reconversionProjectId} not found`,
           );

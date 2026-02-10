@@ -43,6 +43,7 @@ export class DuplicateReconversionProjectUseCase implements UseCase<
     const duplicatedProject: ReconversionProjectSaveDto = {
       ...sourceProject,
       id: newProjectId,
+      status: "active",
       name: `Copie de ${sourceProject.name}`,
       createdAt: this.dateProvider.now(),
       creationMode: "duplicated",

@@ -9,4 +9,8 @@ export interface ReconversionProjectRepository {
   getById(id: string): Promise<ReconversionProjectDataView | null>;
   save(reconversionProject: ReconversionProjectSaveDto): Promise<void>;
   update(reconversionProject: ReconversionProjectUpdateDto): Promise<void>;
+  patch(
+    reconversionProjectId: string,
+    { status, updatedAt }: { status: "active" | "archived"; updatedAt: Date },
+  ): Promise<void>;
 }

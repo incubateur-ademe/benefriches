@@ -177,6 +177,7 @@ export class SqlSitesQuery implements SitesQuery {
 
     const projectsResult = (await this.sqlConnection("reconversion_projects")
       .where("reconversion_projects.related_site_id", siteId)
+      .where("reconversion_projects.status", "=", "active")
       .leftJoin(
         "reconversion_project_development_plans as dev_plan",
         "reconversion_projects.id",

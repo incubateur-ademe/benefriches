@@ -105,6 +105,7 @@ export type SqlReconversionProject = {
   id: string;
   created_by: string;
   creation_mode: string;
+  status: "active" | "archived";
   name: string;
   description: string | null;
   related_site_id: string;

@@ -85,6 +85,7 @@ describe("SqlReconversionProjectRepository integration", () => {
             created_by: reconversionProject.createdBy,
             creation_mode: reconversionProject.creationMode,
             name: reconversionProject.name,
+            status: "active",
             related_site_id: siteId,
             created_at: now,
             updated_at: null,
@@ -126,6 +127,7 @@ describe("SqlReconversionProjectRepository integration", () => {
               id: reconversionProject.id,
               created_by: reconversionProject.createdBy,
               name: reconversionProject.name,
+              status: "active",
               related_site_id: siteId,
               created_at: now,
               updated_at: null,
@@ -382,6 +384,7 @@ describe("SqlReconversionProjectRepository integration", () => {
           id: uuid(),
           createdBy: uuid(),
           creationMode: "express",
+          status: "active",
           name: "Projet urbain",
           developmentPlan: {
             type: "URBAN_PROJECT",
@@ -461,6 +464,7 @@ describe("SqlReconversionProjectRepository integration", () => {
             id: reconversionProject.id,
             created_by: reconversionProject.createdBy,
             creation_mode: reconversionProject.creationMode,
+            status: "active",
             name: reconversionProject.name,
             related_site_id: reconversionProject.relatedSiteId,
             created_at: now,
@@ -1011,6 +1015,7 @@ describe("SqlReconversionProjectRepository integration", () => {
         const reconversionProject = {
           id: uuid(),
           createdBy: uuid(),
+          status: "active" as const,
           creationMode: "express" as const,
           name: "Projet urbain",
           developmentPlan: {
@@ -1076,6 +1081,33 @@ describe("SqlReconversionProjectRepository integration", () => {
         ).toBe(1500);
         expect(developmentPlanFeatures.buildingsFloorAreaDistribution.RESIDENTIAL).toBe(2500);
         expect(developmentPlanFeatures.buildingsFloorAreaDistribution.LOCAL_STORE).toBe(500);
+      });
+    });
+  });
+
+  describe("patch", () => {
+    it("Updates reconversion project status", async () => {
+      const siteId = await insertSiteInDb();
+      const reconversionProject = new UrbanProjectBuilder()
+        .withCreatedBy("9b3a4906-1db2-441d-97d5-7be287add907")
+        .withRelatedSiteId(siteId)
+        .build();
+      await reconversionProjectRepository.save(reconversionProject);
+
+      await reconversionProjectRepository.patch(reconversionProject.id, {
+        status: "archived",
+        updatedAt,
+      });
+
+      const result = await sqlConnection("reconversion_projects")
+        .select("*")
+        .where({ id: reconversionProject.id })
+        .first();
+
+      expect(result).toMatchObject({
+        id: reconversionProject.id,
+        status: "archived",
+        updated_at: updatedAt,
       });
     });
   });

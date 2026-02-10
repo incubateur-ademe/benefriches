@@ -594,4 +594,16 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
       }
     });
   }
+
+  async patch(
+    reconversionProjectId: string,
+    { status, updatedAt }: { status: "active" | "archived"; updatedAt: Date },
+  ): Promise<void> {
+    await this.sqlConnection.transaction(async (trx) => {
+      await trx("reconversion_projects").where({ id: reconversionProjectId }).update({
+        status,
+        updated_at: updatedAt,
+      });
+    });
+  }
 }

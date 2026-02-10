@@ -90,6 +90,7 @@ export class UrbanProjectGenerator extends DefaultProjectGenerator {
       id: this.reconversionProjectId,
       createdBy: this.createdBy,
       createdAt: this.dateProvider.now(),
+      status: "active",
       creationMode: "express",
       projectPhase: "planning",
       soilsDistribution: this.projectSoilsDistribution,

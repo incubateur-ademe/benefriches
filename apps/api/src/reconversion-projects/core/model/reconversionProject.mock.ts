@@ -131,6 +131,7 @@ export const buildReconversionProject = (
     ...buildMinimalReconversionProjectProps(),
     createdAt: new Date(),
     creationMode: "custom",
+  status: "active",
     ...props,
   };
 };
@@ -213,6 +214,7 @@ export class UrbanProjectBuilder {
   constructor() {
     this.props = {
       ...buildUrbanProjectReconversionProjectProps(),
+      status: "active",
       createdAt: new Date(),
       creationMode: "custom",
     };

@@ -322,6 +322,7 @@ describe("SqlSitesQuery integration", () => {
       const siteId = uuid();
       const project1Id = uuid();
       const project2Id = uuid();
+      const project3Id = uuid();
 
       await sqlConnection("sites").insert({
         id: siteId,
@@ -359,6 +360,7 @@ describe("SqlSitesQuery integration", () => {
           created_by: "d185b43f-e54a-4dd4-9c60-ba85775a01e7",
           creation_mode: "custom",
           created_at: now,
+          status: "active",
         },
         {
           id: project2Id,
@@ -367,6 +369,16 @@ describe("SqlSitesQuery integration", () => {
           created_by: "d185b43f-e54a-4dd4-9c60-ba85775a01e7",
           creation_mode: "express",
           created_at: now,
+          status: "active",
+        },
+        {
+          id: project3Id,
+          name: "Urban Development",
+          related_site_id: siteId,
+          created_by: "d185b43f-e54a-4dd4-9c60-ba85775a01e7",
+          creation_mode: "express",
+          created_at: now,
+          status: "archived",
         },
       ]);
 
@@ -382,6 +394,12 @@ describe("SqlSitesQuery integration", () => {
           id: uuid(),
           type: "URBAN_PROJECT",
           reconversion_project_id: project2Id,
+          features: {},
+        },
+        {
+          id: uuid(),
+          type: "URBAN_PROJECT",
+          reconversion_project_id: project3Id,
           features: {},
         },
       ]);

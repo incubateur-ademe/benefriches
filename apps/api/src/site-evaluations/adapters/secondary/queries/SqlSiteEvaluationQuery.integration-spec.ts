@@ -190,6 +190,15 @@ describe("SqlSiteEvaluationQuery integration", () => {
           created_at: new Date("2025-10-01"),
           creation_mode: "custom",
         },
+        {
+          id: uuid(),
+          created_by: userId,
+          name: "Projet urbain mixte",
+          related_site_id: siteInDb3.id,
+          created_at: new Date("2025-10-01"),
+          creation_mode: "custom",
+          status: "archived",
+        },
       ] as const;
 
       await sqlConnection("reconversion_projects").insert(testProjects);

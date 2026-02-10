@@ -42,7 +42,7 @@ export class SqlSiteEvaluationQuery implements SiteEvaluationQuery {
                 FROM reconversion_projects as rp3
                 LEFT JOIN reconversion_project_development_plans as rpdp3 
                   ON rp3.id = rpdp3.reconversion_project_id
-                WHERE rp3.related_site_id = sites.id
+                WHERE rp3.related_site_id = sites.id and rp3.status = 'active'
                 ORDER BY rp3.created_at DESC
                 LIMIT 4
               ) as sub
@@ -51,7 +51,7 @@ export class SqlSiteEvaluationQuery implements SiteEvaluationQuery {
           )
         )
         FROM reconversion_projects as rp2
-        WHERE rp2.related_site_id = sites.id
+        WHERE rp2.related_site_id = sites.id and rp2.status = 'active'
       ) as "reconversionProjects"
     `),
         this.sqlConnection.raw(`

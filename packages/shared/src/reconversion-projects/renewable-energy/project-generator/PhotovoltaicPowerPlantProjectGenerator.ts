@@ -203,6 +203,7 @@ export class PhotovoltaicPowerPlantProjectGenerator extends DefaultProjectGenera
       createdBy: this.userData.id,
       createdAt: this.dateProvider.now(),
       creationMode: "express",
+      status: "active",
       projectPhase: "setup",
       soilsDistribution: this.projectSoilsDistribution,
       decontaminatedSoilSurface: this.decontaminatedSoilSurface,

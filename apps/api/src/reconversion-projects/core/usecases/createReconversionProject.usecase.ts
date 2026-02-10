@@ -68,6 +68,7 @@ export class CreateReconversionProjectUseCase implements UseCase<
       ...parsedReconversionProject,
       createdAt: this.dateProvider.now(),
       creationMode: "custom",
+      status: "active",
     });
 
     await this.eventPublisher.publish(

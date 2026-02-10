@@ -158,7 +158,7 @@ describe("CreateReconversionProject Use Case", () => {
         const savedReconversionProjects = reconversionProjectRepository._getReconversionProjects();
 
         expect(savedReconversionProjects).toEqual<ReconversionProjectSaveDto[]>([
-          { ...props, createdAt: fakeNow, creationMode: "custom" },
+          { ...props, createdAt: fakeNow, creationMode: "custom", status: "active" },
         ]);
 
         // oxlint-disable-next-line no-non-null-assertion
@@ -203,7 +203,7 @@ describe("CreateReconversionProject Use Case", () => {
         const savedReconversionProjects = reconversionProjectRepository._getReconversionProjects();
 
         expect(savedReconversionProjects).toEqual<ReconversionProjectSaveDto[]>([
-          { ...props, createdAt: fakeNow, creationMode: "custom" },
+          { ...props, createdAt: fakeNow, creationMode: "custom", status: "active" },
         ]);
 
         // oxlint-disable-next-line no-non-null-assertion

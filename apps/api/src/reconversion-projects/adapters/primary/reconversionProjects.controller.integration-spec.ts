@@ -651,6 +651,7 @@ describe("ReconversionProjects controller", () => {
         id: newProjectId,
         name: "Copie de " + sourceUrbanProject.name,
         creation_mode: "duplicated",
+        status: "active",
         // oxlint-disable-next-line typescript/no-unsafe-assignment
         created_at: expect.any(Date),
         updated_at: sourceUrbanProject.updatedAt ?? null,
@@ -761,6 +762,7 @@ describe("ReconversionProjects controller", () => {
         id: uuid(),
         relatedSiteId: siteId,
         createdAt: new Date(),
+        status: "active",
         creationMode: "custom",
         name: "ébauche projet urbain",
         createdBy: authenticatedUser.id,
@@ -813,6 +815,7 @@ describe("ReconversionProjects controller", () => {
         id: newProjectId,
         name: "Copie de " + sourceUrbanProject.name,
         creation_mode: "duplicated",
+        status: "active",
         // oxlint-disable-next-line typescript/no-unsafe-assignment
         created_at: expect.any(Date),
         updated_at: sourceUrbanProject.updatedAt ?? null,
@@ -1084,7 +1087,7 @@ describe("ReconversionProjects controller", () => {
 
       await app.get(SqlReconversionProjectRepository).save(sourceUrbanProject);
 
-      const updateProps = new UrbanProjectBuilder()
+      const { status: _, ...updateProps } = new UrbanProjectBuilder()
         .withCreatedBy(user.id)
         .withRelatedSiteId(siteId)
         .withFutureOperator("Big real estate company", "company")
@@ -1126,6 +1129,119 @@ describe("ReconversionProjects controller", () => {
       expect(saveReconversionProjectPropsSchema.parseAsync(reconversionProjectUpdated)).toEqual(
         saveReconversionProjectPropsSchema.parseAsync(updateProps),
       );
+    });
+  });
+
+  describe("POST /reconversion-projects/:reconversionProjectId/archive", () => {
+    it("gets a 401 when not authenticated", async () => {
+      const response = await supertest(app.getHttpServer())
+        .post(`/api/reconversion-projects/${uuid()}/archive`)
+        .send();
+
+      expect(response.status).toEqual(401);
+    });
+
+    it("gets a 404 when project does not exist", async () => {
+      const userId = uuid();
+      const user = new UserBuilder().withId(userId).asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+
+      const response = await supertest(app.getHttpServer())
+        .post(`/api/reconversion-projects/${uuid()}/archive`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send();
+
+      expect(response.status).toEqual(404);
+    });
+
+    it("gets a 403 when user is not the creator of the project", async () => {
+      const siteId = uuid();
+
+      const authenticatedUser = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(authenticatedUser);
+
+      // Create a site
+      await sqlConnection("sites").insert({
+        id: siteId,
+        created_by: authenticatedUser.id,
+        name: "Site name",
+        surface_area: 14000,
+        owner_structure_type: "company",
+        created_at: new Date(),
+      });
+
+      const anotherUserId = uuid();
+      const urbanProject = new UrbanProjectBuilder()
+        .withCreatedBy(anotherUserId)
+        .withRelatedSiteId(siteId)
+        .build();
+      await app.get(SqlReconversionProjectRepository).save(urbanProject);
+
+      const response = await supertest(app.getHttpServer())
+        .post(`/api/reconversion-projects/${urbanProject.id}/archive`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send();
+
+      expect(response.status).toEqual(403);
+    });
+
+    it("successfully archive a project", async () => {
+      const siteId = uuid();
+
+      const authenticatedUser = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(authenticatedUser);
+
+      // Create a site
+      await sqlConnection("sites").insert({
+        id: siteId,
+        created_by: authenticatedUser.id,
+        name: "Site name",
+        surface_area: 14000,
+        owner_structure_type: "local_authority",
+        created_at: new Date(),
+      });
+
+      const urbanProject = new UrbanProjectBuilder()
+        .withCreatedBy(authenticatedUser.id)
+        .withRelatedSiteId(siteId)
+        .withFutureOperator("Big real estate company", "company")
+        .withDeveloper("Big real estate company", "company")
+        .withFutureSiteOwner("Big real estate company", "company")
+        .withYearlyExpenses([{ amount: 34_000, purpose: "maintenance" }])
+        .withYearlyRevenues([{ amount: 50_000, source: "rent" }])
+        .withSoilsDistribution([
+          {
+            soilType: "BUILDINGS",
+            surfaceArea: 14_000,
+            spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+          },
+          {
+            soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+            surfaceArea: 25_000,
+            spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+          },
+        ])
+        .withReinstatement({
+          contractOwner: { name: "City of Paris", structureType: "local_authority" },
+          costs: [{ amount: 95_000, purpose: "demolition" }],
+          schedule: { startDate: new Date("2032-06-01"), endDate: new Date("2032-12-31") },
+        })
+        .build();
+      await app.get(SqlReconversionProjectRepository).save(urbanProject);
+
+      const response = await supertest(app.getHttpServer())
+        .post(`/api/reconversion-projects/${urbanProject.id}/archive`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send();
+
+      expect(response.status).toEqual(201);
+
+      const projects = await sqlConnection("reconversion_projects")
+        .where({ id: urbanProject.id })
+        .select("*");
+
+      expect(projects).toHaveLength(1);
+      expect(projects[0]?.status).toEqual("archived");
     });
   });
 });

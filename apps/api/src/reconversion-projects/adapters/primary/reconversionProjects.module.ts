@@ -11,6 +11,7 @@ import { PhotovoltaicPerformanceModule } from "src/photovoltaic-performance/adap
 import { PhotovoltaicGeoInfoSystemApi } from "src/photovoltaic-performance/adapters/secondary/photovoltaic-data-provider/PhotovoltaicGeoInfoSystemApi";
 import { PhotovoltaicDataProvider } from "src/photovoltaic-performance/core/gateways/PhotovoltaicDataProvider";
 import { ReconversionProjectRepository } from "src/reconversion-projects/core/gateways/ReconversionProjectRepository";
+import { ArchiveReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/archiveReconversionProject.usecase";
 import { ComputeProjectUrbanSprawlImpactsComparisonUseCase } from "src/reconversion-projects/core/usecases/computeProjectUrbanSprawlImpactsComparison.usecase";
 import { ComputeReconversionProjectImpactsUseCase } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
 import {
@@ -238,6 +239,13 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
         RandomUuidGenerator,
         RealEventPublisher,
       ],
+    },
+    {
+      provide: ArchiveReconversionProjectUseCase,
+      useFactory(repository: ReconversionProjectRepository, dateProvider: DateProvider) {
+        return new ArchiveReconversionProjectUseCase(repository, dateProvider);
+      },
+      inject: [SqlReconversionProjectRepository, RealDateProvider],
     },
     SqlReconversionProjectRepository,
     SqlReconversionProjectQuery,

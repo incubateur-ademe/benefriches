@@ -25,6 +25,21 @@ export class InMemoryReconversionProjectRepository implements ReconversionProjec
     await Promise.resolve();
   }
 
+  async patch(
+    projectId: string,
+    { status, updatedAt }: { status: "active" | "archived"; updatedAt: Date },
+  ) {
+    const existing = this.reconversionProjects.find(({ id }) => id === projectId);
+    if (!existing) {
+      throw new Error(
+        "InMemoryReconversionProjectRepository > patch: reconversion project not found",
+      );
+    }
+    this.reconversionProjects = this.reconversionProjects.filter(({ id }) => id !== projectId);
+    this.reconversionProjects.push({ ...existing, status, updatedAt });
+    await Promise.resolve();
+  }
+
   getById(id: string): Promise<ReconversionProjectDataView | null> {
     const foundReconversionProject = this.reconversionProjects.find((project) => project.id === id);
     return Promise.resolve(foundReconversionProject ?? null);
