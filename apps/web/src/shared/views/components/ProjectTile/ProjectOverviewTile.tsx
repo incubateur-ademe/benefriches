@@ -35,9 +35,11 @@ function ProjectOverviewTile({
     <div className="relative">
       <ProjectTile
         className={classNames("justify-start", className)}
-        {...routes.projectImpacts({
-          projectId: id,
-        }).link}
+        linkProps={
+          routes.projectImpacts({
+            projectId: id,
+          }).link
+        }
         title={`Voir les impacts de « ${projectName} »`}
       >
         <Button

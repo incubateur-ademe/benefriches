@@ -13,7 +13,7 @@ type Props = {
 function NewProjectTile({ siteId, className }: Props) {
   return (
     <ProjectTile
-      {...routes.createProject({ siteId }).link}
+      linkProps={routes.createProject({ siteId }).link}
       variant="dashed"
       className={classNames(
         "justify-center text-blue-france dark:text-blue-light text-lg p-8",

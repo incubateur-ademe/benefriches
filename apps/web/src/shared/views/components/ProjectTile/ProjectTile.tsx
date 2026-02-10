@@ -1,22 +1,16 @@
+import { Link } from "type-route";
+
 import classNames, { ClassValue } from "../../clsx";
 
 type TileCardProps = {
   children: React.ReactNode;
   className?: ClassValue;
-  href?: string;
-  linkProps?: object;
+  linkProps?: Link;
   variant?: "solid" | "dashed";
   title?: string;
 };
 
-function ProjectTile({
-  children,
-  className,
-  href,
-  linkProps,
-  variant = "solid",
-  title,
-}: TileCardProps) {
+function ProjectTile({ children, className, variant = "solid", linkProps, title }: TileCardProps) {
   const baseClasses = classNames(
     "border rounded-lg flex flex-col items-center text-center",
     "hover:bg-grey-light hover:dark:bg-grey-dark bg-none",
@@ -27,9 +21,9 @@ function ProjectTile({
     className,
   );
 
-  if (href || linkProps) {
+  if (linkProps) {
     return (
-      <a {...linkProps} href={href} className={baseClasses} title={title}>
+      <a {...linkProps} className={baseClasses} title={title}>
         {children}
       </a>
     );
