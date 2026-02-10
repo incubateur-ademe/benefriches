@@ -131,7 +131,7 @@ export const buildReconversionProject = (
     ...buildMinimalReconversionProjectProps(),
     createdAt: new Date(),
     creationMode: "custom",
-  status: "active",
+    status: "active",
     ...props,
   };
 };
