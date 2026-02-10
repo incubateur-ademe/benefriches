@@ -6,6 +6,7 @@ import { SoilsDistribution, typedObjectEntries } from "shared";
 import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/core/format-number/formatNumber";
 import { getLabelForSoilType } from "@/shared/core/label-mapping/soilTypeLabelMapping";
 import { getColorForSoilType } from "@/shared/core/soils";
+import { sortByKey } from "@/shared/core/sort/sortByKey";
 
 import { withDefaultPieChartOptions } from "../../charts";
 import { useChartCustomPointColors } from "../../charts/useChartCustomColors";
@@ -35,13 +36,14 @@ const SurfaceAreaPieChart = ({
     ([, surfaceArea]) => (surfaceArea as number) > 0,
   );
 
-  const data = soilsEntries.map(([soilType, surfaceArea]) => {
-    return {
+  const data = sortByKey(
+    soilsEntries.map(([soilType, surfaceArea]) => ({
       name: getLabelForSoilType(soilType),
       y: surfaceArea,
       color: getColorForSoilType(soilType),
-    };
-  });
+    })),
+    "name",
+  );
 
   if (remainderSurfaceArea) {
     data.push({

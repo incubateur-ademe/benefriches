@@ -7,6 +7,7 @@ import { SoilType } from "shared";
 
 import { getLabelForSoilType } from "@/shared/core/label-mapping/soilTypeLabelMapping";
 import { getColorForCarbonStorageSoilType } from "@/shared/core/soils";
+import { sortByKey } from "@/shared/core/sort/sortByKey";
 
 import { withDefaultPieChartOptions } from "../../charts";
 import { useChartCustomPointColors } from "../../charts/useChartCustomColors";
@@ -36,7 +37,10 @@ const SoilsCarbonStorageChart = ({
 }: Props) => {
   const variablePieChartRef = useRef<HighchartsReact.RefObject>(null);
 
-  const soilsData = soilsCarbonStorage.filter(({ surfaceArea }) => surfaceArea > 0);
+  const soilsData = sortByKey(
+    soilsCarbonStorage.filter(({ surfaceArea }) => surfaceArea > 0),
+    "type",
+  );
 
   const variablePieChartOptions: Highcharts.Options = withDefaultPieChartOptions({
     chart: {
