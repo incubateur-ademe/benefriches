@@ -64,8 +64,8 @@ export default function ClimateAndBiodiversityImpactNotice({
           <PositiveImpactTitleAndIcon />
           <EditorialPageText>
             Vous allez sanctuariser{" "}
-            {formatSurfaceArea(futureBiodiversityAndClimateSensitiveSoilsSurfaceArea)} de forêt ou
-            de zone humide.
+            {formatSurfaceArea(futureBiodiversityAndClimateSensitiveSoilsSurfaceArea)} d'espace
+            naturel.
           </EditorialPageText>
         </>
       )}
