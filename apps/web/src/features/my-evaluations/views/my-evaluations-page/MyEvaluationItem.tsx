@@ -50,7 +50,7 @@ function MyEvaluationItem({ evaluation }: Props) {
   const { siteName, siteId, reconversionProjects, compatibilityEvaluation, isExpressSite } =
     evaluation;
 
-  const projectLimit = compatibilityEvaluation ? 2 : 4;
+  const projectLimit = compatibilityEvaluation ? 1 : 3;
 
   const nbOtherProjects = evaluation.reconversionProjects.total - projectLimit;
 
@@ -107,7 +107,7 @@ function MyEvaluationItem({ evaluation }: Props) {
           <h3 className="text-xl">Projets évalués</h3>
           <div className="flex flex-wrap gap-3 m-auto">
             {reconversionProjects.lastProjects
-              .slice(0, projectLimit - 1)
+              .slice(0, projectLimit)
               .map(({ projectType, name, id, isExpressProject }) => (
                 <ProjectOverviewTile
                   from="evaluations"
