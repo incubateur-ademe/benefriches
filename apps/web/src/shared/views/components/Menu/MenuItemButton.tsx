@@ -3,13 +3,19 @@ import { MenuItem } from "@headlessui/react";
 
 import classNames from "../../clsx";
 
-function MenuItemButton(buttonProps: ButtonProps) {
+function MenuItemButton({ className, ...buttonProps }: ButtonProps) {
   return (
     <MenuItem>
       {({ focus }) => (
         <Button
           size="small"
-          className={classNames("w-full", "font-normal", "py-2", focus && "bg-(--hover-tint)")}
+          className={classNames(
+            "w-full",
+            "font-normal",
+            "py-2",
+            focus && "bg-(--hover-tint)",
+            className,
+          )}
           priority="tertiary no outline"
           {...buttonProps}
         />

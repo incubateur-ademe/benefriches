@@ -2,10 +2,10 @@ import Button from "@codegouvfr/react-dsfr/Button";
 
 import { impactsExportModalOpened, trackEvent } from "@/shared/views/analytics";
 import classNames from "@/shared/views/clsx";
+import useDuplicateProject from "@/shared/views/project/useDuplicateProject";
 import { routes } from "@/shared/views/router";
 
 import { exportImpactsModal } from "../export-impacts/createExportModal";
-import useDuplicateProject from "../useDuplicateProject";
 
 type Props = {
   siteId: string;

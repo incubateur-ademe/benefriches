@@ -1,3 +1,5 @@
+import { createAction } from "@reduxjs/toolkit";
+
 import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
 
 import { UserSiteEvaluation } from "../domain/types";
@@ -12,4 +14,8 @@ export const fetchUserSiteEvaluations = createAppAsyncThunk<UserSiteEvaluation[]
     const result = await extra.siteEvaluationService.getUserList();
     return result;
   },
+);
+
+export const projectRemovedFromEvaluationList = createAction<{ siteId: string; projectId: string }>(
+  `siteEvaluations/projectRemoved`,
 );

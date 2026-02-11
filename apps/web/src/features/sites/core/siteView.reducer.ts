@@ -3,6 +3,7 @@ import { createReducer, createSelector } from "@reduxjs/toolkit";
 import { RootState } from "@/shared/core/store-config/store";
 
 import { fetchSiteView } from "./fetchSiteView.action";
+import { projectRemovedFromList } from "./removeProjectFromList.action";
 import { SiteView } from "./site.types";
 
 type SiteViewState = {
@@ -21,6 +22,14 @@ const getInitialState = (): SiteViewState => {
 
 export const siteViewReducer = createReducer(getInitialState(), (builder) => {
   builder
+    .addCase(projectRemovedFromList, (state, action) => {
+      const siteId = action.payload.siteId;
+      if (state.byId[siteId]?.data?.reconversionProjects) {
+        state.byId[siteId].data.reconversionProjects = state.byId[
+          siteId
+        ].data?.reconversionProjects.filter((project) => project.id !== action.payload.projectId);
+      }
+    })
     .addCase(fetchSiteView.pending, (state, action) => {
       const siteId = action.meta.arg.siteId;
       if (!state.byId[siteId]) {

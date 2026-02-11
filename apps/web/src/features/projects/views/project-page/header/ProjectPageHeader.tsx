@@ -4,6 +4,7 @@ import { Menu, MenuButton, MenuItems, MenuSeparator } from "@headlessui/react";
 import { Fragment } from "react/jsx-runtime";
 import { Link } from "type-route";
 
+import ArchiveProjectDialog from "@/features/archive-project/views/ArchiveProjectDialog";
 import { ProjectDevelopmentPlanType } from "@/features/projects/domain/projects.types";
 import classNames, { ClassValue } from "@/shared/views/clsx";
 import MenuItemButton from "@/shared/views/components/Menu/MenuItemButton";
@@ -22,6 +23,8 @@ type HeaderProps = {
   size?: "small" | "medium";
   className?: ClassValue;
   onDuplicateProject: () => void;
+  onSuccessArchiveProject: () => void;
+  projectId: string;
   updateProjectLinkProps: Link;
   createProjectLinkProps: Link;
 };
@@ -37,6 +40,8 @@ const ProjectPageHeader = ({
   updateProjectLinkProps,
   createProjectLinkProps,
   onDuplicateProject,
+  onSuccessArchiveProject,
+  projectId,
 }: HeaderProps) => {
   const isSmallScreen = useIsSmallScreen();
   const size = propsSize ?? (isSmallScreen ? "small" : "medium");
@@ -126,8 +131,25 @@ const ProjectPageHeader = ({
               <MenuItemButton iconId="fr-icon-file-add-line" linkProps={createProjectLinkProps}>
                 Évaluer un nouveau projet
               </MenuItemButton>
+
+              <MenuItemButton
+                iconId="fr-icon-delete-line"
+                className="text-error-ultradark"
+                nativeButtonProps={{
+                  "aria-controls": `archive-project-${projectId}`,
+                  "data-fr-opened": true,
+                }}
+              >
+                Supprimer le projet
+              </MenuItemButton>
             </MenuItems>
           </Menu>
+          <ArchiveProjectDialog
+            dialogId={`archive-project-${projectId}`}
+            projectId={projectId}
+            projectName={projectName}
+            onSuccess={onSuccessArchiveProject}
+          />
         </div>
       </div>
     </div>

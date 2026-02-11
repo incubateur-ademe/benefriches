@@ -1,8 +1,8 @@
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
+import useDuplicateProject from "@/shared/views/project/useDuplicateProject";
 import { routes } from "@/shared/views/router";
 
 import { selectProjectsImpactsViewData } from "../../../application/project-impacts/projectImpacts.reducer";
-import useDuplicateProject from "../useDuplicateProject";
 import ProjectPageHeader from "./ProjectPageHeader";
 
 const ProjectPageHeaderContainer = ({ projectId }: { projectId: string }) => {
@@ -16,6 +16,10 @@ const ProjectPageHeaderContainer = ({ projectId }: { projectId: string }) => {
     isExpressProject: projectContext.isExpressProject,
     siteFeaturesHref: routes.siteFeatures({ siteId: projectContext.siteId }).href,
     onDuplicateProject,
+    onSuccessArchiveProject: () => {
+      routes.myEvaluations().replace();
+    },
+    projectId,
     updateProjectLinkProps: routes.updateProject({ projectId, from: "impacts" }).link,
     createProjectLinkProps: routes.createProject({ siteId: projectContext.siteId }).link,
   };

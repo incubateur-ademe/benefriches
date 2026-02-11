@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks
 import { routes, useRoute } from "@/shared/views/router";
 
 import { fetchSiteView } from "../core/fetchSiteView.action";
+import { projectRemovedFromList } from "../core/removeProjectFromList.action";
 import { selectSitePageViewModel } from "../core/siteView.reducer";
 import SitePage, { SiteTab } from "./SitePage";
 
@@ -41,9 +42,17 @@ export default function SitesRouter() {
     void dispatch(fetchSiteView({ siteId }));
   }, [dispatch, siteId]);
 
+  const onRemoveProjectFromList = useCallback(
+    (projectId: string) => {
+      void dispatch(projectRemovedFromList({ siteId, projectId }));
+    },
+    [dispatch, siteId],
+  );
+
   return (
     <SitePage
       onPageLoad={onPageLoad}
+      onRemoveProjectFromList={onRemoveProjectFromList}
       viewModel={sitePageViewModel}
       selectedTab={selectedTab}
       fromCompatibilityEvaluation={route.params.fromCompatibilityEvaluation ?? false}

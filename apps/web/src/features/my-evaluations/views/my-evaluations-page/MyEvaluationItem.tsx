@@ -17,6 +17,7 @@ import { UserSiteEvaluation } from "../../domain/types";
 
 type Props = {
   evaluation: UserSiteEvaluation;
+  onRemoveProjectFromList: (props: { siteId: string; projectId: string }) => void;
 };
 
 const TILE_CLASSNAME = "w-[216px]";
@@ -46,7 +47,7 @@ const barChartOptions: Options = withDefaultBarChartOptions({
   },
 });
 
-function MyEvaluationItem({ evaluation }: Props) {
+function MyEvaluationItem({ evaluation, onRemoveProjectFromList }: Props) {
   const { siteName, siteId, reconversionProjects, compatibilityEvaluation, isExpressSite } =
     evaluation;
 
@@ -118,6 +119,9 @@ function MyEvaluationItem({ evaluation }: Props) {
                   isExpressProject={isExpressProject}
                   key={id}
                   className={TILE_CLASSNAME}
+                  onSuccessArchive={() => {
+                    onRemoveProjectFromList({ projectId: id, siteId });
+                  }}
                 />
               ))}
             {nbOtherProjects > 0 && (

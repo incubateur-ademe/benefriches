@@ -7,9 +7,15 @@ type Props = {
   siteId: string;
   siteName: string;
   projects: SiteView["reconversionProjects"];
+  onRemoveProjectFromList: (projectId: string) => void;
 };
 
-export default function EvaluatedProjectsList({ siteId, siteName, projects }: Props) {
+export default function EvaluatedProjectsList({
+  siteId,
+  siteName,
+  projects,
+  onRemoveProjectFromList,
+}: Props) {
   return (
     <section>
       <h3 className="text-2xl">Projets évalués</h3>
@@ -24,6 +30,9 @@ export default function EvaluatedProjectsList({ siteId, siteName, projects }: Pr
             siteName={siteName}
             isExpressProject={project.express}
             className="w-full h-60"
+            onSuccessArchive={() => {
+              onRemoveProjectFromList(project.id);
+            }}
           />
         ))}
         <NewProjectTile siteId={siteId} className="w-full h-60" />

@@ -9,10 +9,21 @@ import { DsfrDialogContext } from "./DsfrDialogContext";
 type Props = {
   dialogId: string;
   children: ReactNode;
+  onDisclose?: () => void;
+  onConceal?: () => void;
   size?: "small" | "medium" | "large";
 };
-const DsfrDialogWrapper = ({ dialogId, children, size = "medium" }: Props) => {
-  const isOpened = useIsModalOpen({ id: dialogId, isOpenedByDefault: false });
+const DsfrDialogWrapper = ({
+  dialogId,
+  children,
+  size = "medium",
+  onDisclose,
+  onConceal,
+}: Props) => {
+  const isOpened = useIsModalOpen(
+    { id: dialogId, isOpenedByDefault: false },
+    { onDisclose, onConceal },
+  );
 
   return createPortal(
     <DsfrDialogContext.Provider value={{ isOpened, dialogId, dialogTitleId: `${dialogId}-title` }}>

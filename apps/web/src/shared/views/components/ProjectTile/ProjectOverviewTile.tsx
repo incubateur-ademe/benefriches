@@ -18,6 +18,7 @@ type Props = {
   isExpressProject: boolean;
   className?: ClassValue;
   from: "evaluations" | "site";
+  onSuccessArchive: () => void;
 };
 
 function ProjectOverviewTile({
@@ -27,6 +28,7 @@ function ProjectOverviewTile({
   id,
   isExpressProject,
   className,
+  onSuccessArchive,
   from,
 }: Props) {
   const { isMenuOpened, openMenu, menuRef, menuButtonRef, closeMenu } = useProjectTileMenu();
@@ -92,6 +94,7 @@ function ProjectOverviewTile({
         menuRef={menuRef}
         buttonRef={menuButtonRef}
         from={from}
+        onSuccessArchive={onSuccessArchive}
       />
     </div>
   );

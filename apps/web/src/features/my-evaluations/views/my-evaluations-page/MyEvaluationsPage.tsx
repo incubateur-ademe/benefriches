@@ -11,9 +11,10 @@ import MyEvaluationsPageHeader from "./MyEvaluationsPageHeader";
 type Props = {
   loadingState: "idle" | "loading" | "error" | "success";
   evaluations: UserSiteEvaluation[];
+  onRemoveProjectFromList: (props: { siteId: string; projectId: string }) => void;
 };
 
-function MyEvaluationsPage({ loadingState, evaluations }: Props) {
+function MyEvaluationsPage({ loadingState, evaluations, onRemoveProjectFromList }: Props) {
   if (loadingState === "loading")
     return (
       <section className={fr.cx("fr-container", "fr-py-4w")}>
@@ -51,7 +52,11 @@ function MyEvaluationsPage({ loadingState, evaluations }: Props) {
           ) : (
             <div className="flex flex-col gap-10">
               {evaluations.map((evaluation) => (
-                <MyEvaluationItem key={evaluation.siteId} evaluation={evaluation} />
+                <MyEvaluationItem
+                  key={evaluation.siteId}
+                  evaluation={evaluation}
+                  onRemoveProjectFromList={onRemoveProjectFromList}
+                />
               ))}
             </div>
           )}

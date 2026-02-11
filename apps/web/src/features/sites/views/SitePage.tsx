@@ -19,12 +19,19 @@ export type SiteTab = "features" | "evaluatedProjects" | "actionsList" | "compat
 
 type Props = {
   onPageLoad: () => void;
+  onRemoveProjectFromList: (projectId: string) => void;
   viewModel: SitePageViewModel;
   selectedTab: SiteTab;
   fromCompatibilityEvaluation: boolean;
 };
 
-function SitePage({ onPageLoad, viewModel, selectedTab, fromCompatibilityEvaluation }: Props) {
+function SitePage({
+  onPageLoad,
+  onRemoveProjectFromList,
+  viewModel,
+  selectedTab,
+  fromCompatibilityEvaluation,
+}: Props) {
   useEffect(() => {
     onPageLoad();
   }, [onPageLoad]);
@@ -85,6 +92,7 @@ function SitePage({ onPageLoad, viewModel, selectedTab, fromCompatibilityEvaluat
                       siteId={siteView.features.id}
                       siteName={siteView.features.name}
                       projects={siteView.reconversionProjects}
+                      onRemoveProjectFromList={onRemoveProjectFromList}
                     />
                   );
                 case "compatibilityEvaluation":
