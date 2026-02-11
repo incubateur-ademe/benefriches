@@ -572,7 +572,7 @@ const addRevertStepActionCases = (builder: ActionReducerMapBuilder<ProjectCreati
         state.renewableEnergyProject.creationData.reinstatementSchedule = undefined;
         state.renewableEnergyProject.creationData.photovoltaicInstallationSchedule = undefined;
         break;
-      case "RENEWABLE_ENERGY_EXPRESS_FINAL_SUMMARY":
+      case "RENEWABLE_ENERGY_CREATE_MODE_SELECTION":
         state.renewableEnergyProject.createMode = undefined;
         break;
     }

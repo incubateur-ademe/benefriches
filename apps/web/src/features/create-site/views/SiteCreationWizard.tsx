@@ -10,6 +10,7 @@ import {
   SiteCreationState,
   SiteCreationStep,
 } from "../core/createSite.reducer";
+import NavigationBlockerDialog from "./NavigationBlockerDialog";
 import CreateModeSelectionForm from "./create-mode-selection";
 import SiteCreationCustomStepContent from "./custom/StepContent";
 import SiteCreationCustomStepper from "./custom/Stepper";
@@ -88,13 +89,21 @@ function SiteCreationWizard() {
       sidebarChildren={(() => {
         switch (createMode) {
           case "express":
-            return <SiteCreationExpressStepper step={currentStep as SiteCreationExpressStep} />;
+            return (
+              <>
+                <NavigationBlockerDialog />
+                <SiteCreationExpressStepper step={currentStep as SiteCreationExpressStep} />
+              </>
+            );
           case "custom":
             return (
-              <SiteCreationCustomStepper
-                isFriche={isFriche}
-                step={currentStep as SiteCreationCustomStep}
-              />
+              <>
+                <NavigationBlockerDialog />
+                <SiteCreationCustomStepper
+                  isFriche={isFriche}
+                  step={currentStep as SiteCreationCustomStep}
+                />
+              </>
             );
           default:
             return <FormStepper currentStepIndex={0} steps={["Introduction"]} isDone={false} />;

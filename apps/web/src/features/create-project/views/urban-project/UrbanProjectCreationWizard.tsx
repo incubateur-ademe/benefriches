@@ -8,6 +8,7 @@ import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 import BuildingsUseSelection from "@/shared/views/project-form/urban-project/buildings/use-selection";
 
 import { selectUrbanProjectCurrentStep } from "../../core/urban-project/urbanProject.selectors";
+import NavigationBlockerDialog from "../NavigationBlockerDialog";
 import { HTML_MAIN_TITLE } from "../mainHtmlTitle";
 import UrbanProjectCreationStepper from "./UrbanProjectCreationStepper";
 import CreateModeSelectionForm from "./create-mode-selection";
@@ -535,6 +536,7 @@ const getCurrentStepView = (step: UrbanProjectCreationStep): Exclude<ReactNode, 
 
 function UrbanProjectCreationWizard() {
   const currentStep = useAppSelector(selectUrbanProjectCurrentStep);
+  const saveState = useAppSelector((state) => state.projectCreation.urbanProject.saveState);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [currentStep]);
@@ -547,6 +549,7 @@ function UrbanProjectCreationWizard() {
         <Suspense fallback={<LoadingSpinner />}>
           {getCurrentStepView(currentStep)}
           <AnswerCascadingUpdateDialog />
+          <NavigationBlockerDialog shouldBlock={saveState !== "success"} />
         </Suspense>
       }
     />
