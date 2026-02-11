@@ -61,6 +61,9 @@ const projectUpdateReducer = createReducer(getInitialState(), (builder) => {
       return {
         ...getInitialState(),
         siteDataLoadingState: "loading",
+        projectData: {
+          loadingState: "loading",
+        },
       };
     })
     .addCase(reconversionProjectUpdateInitiated.fulfilled, (state, action) => {
@@ -86,6 +89,7 @@ const projectUpdateReducer = createReducer(getInitialState(), (builder) => {
     })
     .addCase(reconversionProjectUpdateInitiated.rejected, (state) => {
       state.siteDataLoadingState = "error";
+      state.projectData.loadingState = "error";
     });
 
   builder.addCase(reconversionProjectUpdateSaved.pending, (state) => {

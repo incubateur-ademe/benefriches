@@ -24,7 +24,7 @@ const siteViewSchema = z.object({
 });
 
 export const reconversionProjectSchemaUpdateView = z.object({
-  projectData: createReconversionProjectSchema(z.string()),
+  projectData: createReconversionProjectSchema(z.string()).omit({ status: true }),
   siteData: siteViewSchema,
 });
 
