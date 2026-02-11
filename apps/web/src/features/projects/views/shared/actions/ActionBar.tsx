@@ -22,7 +22,7 @@ function ImpactsActionBar({
   selectedViewMode,
   evaluationPeriod,
   onEvaluationPeriodChange,
-  segments = ["summary", "list", "charts"],
+  segments = ["summary", "charts", "list"],
   className,
   ref,
 }: ActionBarProps) {
