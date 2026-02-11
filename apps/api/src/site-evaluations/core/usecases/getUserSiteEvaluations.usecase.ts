@@ -41,22 +41,30 @@ export class GetUserSiteEvaluationsUseCase implements UseCase<Request, UserSiteE
     const userSiteEvaluations = await Promise.all(
       result.map(async (evaluation) => {
         if (evaluation.compatibilityEvaluation?.mutafrichesEvaluationId) {
-          const mutafrichesEvaluationResult = await this.mutafrichesEvaluationQuery.getEvaluation(
-            evaluation.compatibilityEvaluation.mutafrichesEvaluationId,
-          );
+          try {
+            const mutafrichesEvaluationResult = await this.mutafrichesEvaluationQuery.getEvaluation(
+              evaluation.compatibilityEvaluation.mutafrichesEvaluationId,
+            );
 
-          if (mutafrichesEvaluationResult) {
-            return {
-              siteId: evaluation.siteId,
-              siteName: evaluation.siteName,
-              isExpressSite: evaluation.isExpressSite,
-              siteNature: evaluation.siteNature,
-              reconversionProjects: evaluation.reconversionProjects,
-              compatibilityEvaluation: {
-                ...evaluation.compatibilityEvaluation,
-                top3Usages: mutafrichesEvaluationResult?.usages.slice(0, 3),
-              },
-            };
+            if (mutafrichesEvaluationResult) {
+              return {
+                siteId: evaluation.siteId,
+                siteName: evaluation.siteName,
+                isExpressSite: evaluation.isExpressSite,
+                siteNature: evaluation.siteNature,
+                reconversionProjects: evaluation.reconversionProjects,
+                compatibilityEvaluation: {
+                  ...evaluation.compatibilityEvaluation,
+                  top3Usages: mutafrichesEvaluationResult?.usages.slice(0, 3),
+                },
+              };
+            }
+          } catch (err) {
+            // oxlint-disable-next-line no-console
+            console.error(
+              `Fail to get mutafrichesEvaluationResult in GetUserSiteEvaluationsUseCase for siteId ${evaluation.siteId}`,
+              err,
+            );
           }
         }
         return {
