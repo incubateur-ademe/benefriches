@@ -126,9 +126,6 @@ const UsesIntroduction = lazy(
 const UsesSelection = lazy(
   () => import("@/shared/views/project-form/urban-project/uses/selection"),
 );
-const UsesFootprintSurfaceArea = lazy(
-  () => import("@/shared/views/project-form/urban-project/uses/footprint-surface-area"),
-);
 const UsesFloorSurfaceArea = lazy(
   () => import("@/shared/views/project-form/urban-project/uses/floor-surface-area"),
 );
@@ -180,13 +177,6 @@ const getCurrentStepView = (step: UrbanProjectUpdateStep): Exclude<ReactNode, un
         <>
           <HtmlTitle>{`Sélection - Usages - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
           <UsesSelection />
-        </>
-      );
-    case "URBAN_PROJECT_USES_FOOTPRINT_SURFACE_AREA":
-      return (
-        <>
-          <HtmlTitle>{`Emprise foncière - Usages - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
-          <UsesFootprintSurfaceArea />
         </>
       );
     case "URBAN_PROJECT_USES_FLOOR_SURFACE_AREA":

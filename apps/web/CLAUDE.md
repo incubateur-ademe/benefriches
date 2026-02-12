@@ -118,8 +118,8 @@ When creating a new container component:
    - `src/features/create-site/core/selectors/spaces.selectors.ts` → `selectSiteSoilsSummaryViewData`
    - `src/features/create-site/views/custom/spaces-and-soils/soils-summary/index.tsx`
    - Urban project form (factory pattern):
-     - `src/shared/core/reducers/project-form/urban-project/urbanProject.selectors.ts` → `selectUsesFootprintSurfaceAreaViewData`
-     - `src/shared/views/project-form/urban-project/uses/footprint-surface-area/index.tsx`
+     - `src/shared/core/reducers/project-form/urban-project/urbanProject.selectors.ts` → `selectUsesFloorSurfaceAreaViewData`
+     - `src/shared/views/project-form/urban-project/uses/floor-surface-area/index.tsx`
 
 ### Gateway Checklist
 

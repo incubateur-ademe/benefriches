@@ -6,7 +6,6 @@ export const URBAN_PROJECT_CREATION_STEP_QUERY_STRING_MAP = {
   // Uses flow (new)
   URBAN_PROJECT_USES_INTRODUCTION: "usages-introduction",
   URBAN_PROJECT_USES_SELECTION: "usages-selection",
-  URBAN_PROJECT_USES_FOOTPRINT_SURFACE_AREA: "usages-emprise-fonciere",
   URBAN_PROJECT_USES_FLOOR_SURFACE_AREA: "usages-surfaces-plancher",
   // New spaces flow (uses flow)
   URBAN_PROJECT_SPACES_INTRODUCTION: "nouveaux-espaces-introduction",

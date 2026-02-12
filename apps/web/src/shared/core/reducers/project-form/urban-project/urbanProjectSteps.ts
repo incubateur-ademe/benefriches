@@ -95,10 +95,6 @@ export const answersByStepSchemas = {
     usesSelection: z.array(urbanProjectUseSchema),
   }),
 
-  URBAN_PROJECT_USES_FOOTPRINT_SURFACE_AREA: z.object({
-    usesFootprintSurfaceAreaDistribution: z.partialRecord(urbanProjectUseSchema, z.number()),
-  }),
-
   URBAN_PROJECT_USES_FLOOR_SURFACE_AREA: z.object({
     usesFloorSurfaceAreaDistribution: z.partialRecord(urbanProjectUseSchema, z.number()),
   }),

@@ -15,12 +15,6 @@ describe("Urban project creation - Steps - Spaces selection", () => {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL", "PUBLIC_GREEN_SPACES"] },
         },
-        URBAN_PROJECT_USES_FOOTPRINT_SURFACE_AREA: {
-          completed: true,
-          payload: {
-            usesFootprintSurfaceAreaDistribution: { RESIDENTIAL: 5000, PUBLIC_GREEN_SPACES: 5000 },
-          },
-        },
         URBAN_PROJECT_USES_FLOOR_SURFACE_AREA: {
           completed: true,
           payload: { usesFloorSurfaceAreaDistribution: { RESIDENTIAL: 8000 } },
@@ -56,10 +50,6 @@ describe("Urban project creation - Steps - Spaces selection", () => {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL"] },
         },
-        URBAN_PROJECT_USES_FOOTPRINT_SURFACE_AREA: {
-          completed: true,
-          payload: { usesFootprintSurfaceAreaDistribution: { RESIDENTIAL: 10000 } },
-        },
         URBAN_PROJECT_USES_FLOOR_SURFACE_AREA: {
           completed: true,
           payload: { usesFloorSurfaceAreaDistribution: { RESIDENTIAL: 15000 } },
@@ -78,12 +68,6 @@ describe("Urban project creation - Steps - Spaces selection", () => {
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL", "PUBLIC_GREEN_SPACES"] },
-        },
-        URBAN_PROJECT_USES_FOOTPRINT_SURFACE_AREA: {
-          completed: true,
-          payload: {
-            usesFootprintSurfaceAreaDistribution: { RESIDENTIAL: 5000, PUBLIC_GREEN_SPACES: 5000 },
-          },
         },
         URBAN_PROJECT_USES_FLOOR_SURFACE_AREA: {
           completed: true,
@@ -111,15 +95,6 @@ describe("Urban project creation - Steps - Spaces selection", () => {
           completed: true,
           payload: { usesSelection: ["PUBLIC_GREEN_SPACES", "OTHER_PUBLIC_SPACES"] },
         },
-        URBAN_PROJECT_USES_FOOTPRINT_SURFACE_AREA: {
-          completed: true,
-          payload: {
-            usesFootprintSurfaceAreaDistribution: {
-              PUBLIC_GREEN_SPACES: 5000,
-              OTHER_PUBLIC_SPACES: 5000,
-            },
-          },
-        },
       },
     });
 
@@ -143,10 +118,6 @@ describe("Urban project creation - Steps - Spaces selection", () => {
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL"] },
-        },
-        URBAN_PROJECT_USES_FOOTPRINT_SURFACE_AREA: {
-          completed: true,
-          payload: { usesFootprintSurfaceAreaDistribution: { RESIDENTIAL: 10000 } },
         },
         URBAN_PROJECT_USES_FLOOR_SURFACE_AREA: {
           completed: true,
@@ -207,10 +178,6 @@ describe("Urban project creation - Steps - Spaces selection", () => {
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL"] },
-        },
-        URBAN_PROJECT_USES_FOOTPRINT_SURFACE_AREA: {
-          completed: true,
-          payload: { usesFootprintSurfaceAreaDistribution: { RESIDENTIAL: 10000 } },
         },
         URBAN_PROJECT_USES_FLOOR_SURFACE_AREA: {
           completed: true,

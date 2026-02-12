@@ -9,10 +9,7 @@ import {
   getLabelForUrbanProjectUse,
   getPictogramUrlForUrbanProjectUse,
 } from "@/features/create-project/core/urban-project/urbanProject";
-import {
-  formatSurfaceArea,
-  SQUARE_METERS_HTML_SYMBOL,
-} from "@/shared/core/format-number/formatNumber";
+import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/core/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RowDecimalsNumericInput from "@/shared/views/components/form/NumericInput/RowDecimalsNumericInput";
 import { requiredNumericFieldRegisterOptions } from "@/shared/views/components/form/NumericInput/registerOptions";
@@ -21,7 +18,6 @@ import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormL
 
 type Props = {
   initialValues: SurfaceAreaDistributionJson<UrbanProjectUse>;
-  footprintDistribution: SurfaceAreaDistributionJson<UrbanProjectUse>;
   selectedUses: UrbanProjectUse[];
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
@@ -29,21 +25,7 @@ type Props = {
 
 type FormValues = SurfaceAreaDistributionJson<UrbanProjectUse>;
 
-const formatInputHintText = (useFootprint: number | undefined) => {
-  const hintTextBase = "En surface de plancher.";
-  if (useFootprint) {
-    return `${hintTextBase} Emprise foncière : ${formatSurfaceArea(useFootprint)}`;
-  }
-  return hintTextBase;
-};
-
-function UsesFloorSurfaceArea({
-  selectedUses,
-  initialValues,
-  footprintDistribution,
-  onSubmit,
-  onBack,
-}: Props) {
+function UsesFloorSurfaceArea({ selectedUses, initialValues, onSubmit, onBack }: Props) {
   const usesWithBuildings = selectedUses.filter((use) => doesUseIncludeBuildings(use));
 
   const { register, handleSubmit, formState } = useForm<FormValues>({
@@ -64,13 +46,12 @@ function UsesFloorSurfaceArea({
     >
       <form onSubmit={handleSubmit(onSubmit)}>
         {usesWithBuildings.map((use) => {
-          const footprint = footprintDistribution[use];
           return (
             <RowDecimalsNumericInput
               key={use}
               addonText={SQUARE_METERS_HTML_SYMBOL}
               label={getLabelForUrbanProjectUse(use)}
-              hintText={formatInputHintText(footprint)}
+              hintText="En surface de plancher."
               imgSrc={getPictogramUrlForUrbanProjectUse(use)}
               nativeInputProps={register(use, requiredNumericFieldRegisterOptions)}
             />

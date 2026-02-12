@@ -13,8 +13,16 @@ export const UsesSelectionHandler: AnswerStepHandler<typeof STEP_ID> = {
     return "URBAN_PROJECT_USES_INTRODUCTION";
   },
 
-  getNextStepId() {
-    return "URBAN_PROJECT_USES_FOOTPRINT_SURFACE_AREA";
+  getNextStepId(_context, answers) {
+    const selectedUses = answers?.usesSelection ?? [];
+
+    const hasBuildingUses = selectedUses.some((use) => doesUseIncludeBuildings(use));
+
+    if (hasBuildingUses) {
+      return "URBAN_PROJECT_USES_FLOOR_SURFACE_AREA";
+    }
+
+    return "URBAN_PROJECT_SPACES_INTRODUCTION";
   },
 
   getDependencyRules(context, newAnswers) {
@@ -33,14 +41,6 @@ export const UsesSelectionHandler: AnswerStepHandler<typeof STEP_ID> = {
 
     const rules: StepInvalidationRule[] = [];
 
-    // If footprint step exists, delete it when selection changes
-    if (ReadStateHelper.getStep(context.stepsState, "URBAN_PROJECT_USES_FOOTPRINT_SURFACE_AREA")) {
-      rules.push({
-        stepId: "URBAN_PROJECT_USES_FOOTPRINT_SURFACE_AREA",
-        action: "delete",
-      });
-    }
-
     // If floor area step exists, delete it when selection changes
     if (ReadStateHelper.getStep(context.stepsState, "URBAN_PROJECT_USES_FLOOR_SURFACE_AREA")) {
       rules.push({
@@ -50,40 +50,5 @@ export const UsesSelectionHandler: AnswerStepHandler<typeof STEP_ID> = {
     }
 
     return rules;
-  },
-
-  getShortcut(context, answers) {
-    const selectedUses = answers.usesSelection ?? [];
-
-    // If single use selected, auto-complete footprint with full site area
-    if (selectedUses.length === 1 && selectedUses[0]) {
-      const singleUse = selectedUses[0];
-      const siteSurfaceArea = context.siteData?.surfaceArea;
-
-      const footprintAnswers = {
-        stepId: "URBAN_PROJECT_USES_FOOTPRINT_SURFACE_AREA" as const,
-        answers: {
-          usesFootprintSurfaceAreaDistribution: {
-            [singleUse]: siteSurfaceArea,
-          },
-        },
-      };
-
-      // If use includes buildings, we need to go to floor area step
-      if (doesUseIncludeBuildings(singleUse)) {
-        return {
-          complete: [footprintAnswers],
-          next: "URBAN_PROJECT_USES_FLOOR_SURFACE_AREA",
-        };
-      }
-
-      // For non-building uses, skip floor area step entirely and go to spaces
-      return {
-        complete: [footprintAnswers],
-        next: "URBAN_PROJECT_SPACES_INTRODUCTION",
-      };
-    }
-
-    return undefined;
   },
 };

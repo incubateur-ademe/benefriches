@@ -186,36 +186,8 @@ export const createUrbanProjectFormSelectors = (
     },
   );
 
-  type UsesFootprintSurfaceAreaViewData = {
-    usesFootprintSurfaceAreaDistribution: UrbanProjectUseDistribution | undefined;
-    selectedUses: UrbanProjectUse[];
-    siteSurfaceArea: number;
-  };
-
-  const selectUsesFootprintSurfaceAreaViewData = createSelector(
-    [selectStepState, selectors.selectSiteSurfaceArea],
-    (steps, siteSurfaceArea): UsesFootprintSurfaceAreaViewData => {
-      const footprintAnswers =
-        ReadStateHelper.getStepAnswers(steps, "URBAN_PROJECT_USES_FOOTPRINT_SURFACE_AREA") ??
-        ReadStateHelper.getDefaultAnswers(steps, "URBAN_PROJECT_USES_FOOTPRINT_SURFACE_AREA");
-
-      const selectionAnswers = ReadStateHelper.getStepAnswers(
-        steps,
-        "URBAN_PROJECT_USES_SELECTION",
-      );
-
-      return {
-        usesFootprintSurfaceAreaDistribution:
-          footprintAnswers?.usesFootprintSurfaceAreaDistribution,
-        selectedUses: selectionAnswers?.usesSelection ?? [],
-        siteSurfaceArea,
-      };
-    },
-  );
-
   type UsesFloorSurfaceAreaViewData = {
     usesFloorSurfaceAreaDistribution: UrbanProjectUseDistribution | undefined;
-    usesFootprintSurfaceAreaDistribution: UrbanProjectUseDistribution | undefined;
     selectedUses: UrbanProjectUse[];
   };
 
@@ -226,10 +198,6 @@ export const createUrbanProjectFormSelectors = (
         ReadStateHelper.getStepAnswers(steps, "URBAN_PROJECT_USES_FLOOR_SURFACE_AREA") ??
         ReadStateHelper.getDefaultAnswers(steps, "URBAN_PROJECT_USES_FLOOR_SURFACE_AREA");
 
-      const footprintAnswers =
-        ReadStateHelper.getStepAnswers(steps, "URBAN_PROJECT_USES_FOOTPRINT_SURFACE_AREA") ??
-        ReadStateHelper.getDefaultAnswers(steps, "URBAN_PROJECT_USES_FOOTPRINT_SURFACE_AREA");
-
       const selectionAnswers = ReadStateHelper.getStepAnswers(
         steps,
         "URBAN_PROJECT_USES_SELECTION",
@@ -237,8 +205,6 @@ export const createUrbanProjectFormSelectors = (
 
       return {
         usesFloorSurfaceAreaDistribution: floorAnswers?.usesFloorSurfaceAreaDistribution,
-        usesFootprintSurfaceAreaDistribution:
-          footprintAnswers?.usesFootprintSurfaceAreaDistribution,
         selectedUses: selectionAnswers?.usesSelection ?? [],
       };
     },
@@ -341,7 +307,6 @@ export const createUrbanProjectFormSelectors = (
     selectPendingStepCompletion,
     selectSaveState,
     selectSiteResaleRevenueViewData,
-    selectUsesFootprintSurfaceAreaViewData,
     selectUsesFloorSurfaceAreaViewData,
     selectSpacesSelectionViewData,
     selectSpacesSurfaceAreaViewData,

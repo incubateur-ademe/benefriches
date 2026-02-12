@@ -16,7 +16,7 @@ export const SpacesIntroductionHandler: InfoStepHandler = {
       return "URBAN_PROJECT_USES_FLOOR_SURFACE_AREA";
     }
 
-    return "URBAN_PROJECT_USES_FOOTPRINT_SURFACE_AREA";
+    return "URBAN_PROJECT_USES_SELECTION";
   },
 
   getNextStepId() {

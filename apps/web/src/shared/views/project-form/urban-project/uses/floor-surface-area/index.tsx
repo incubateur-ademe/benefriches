@@ -6,8 +6,9 @@ import UsesFloorSurfaceArea from "./UsesFloorSurfaceArea";
 export default function UsesFloorSurfaceAreaContainer() {
   const { onBack, onRequestStepCompletion, selectUsesFloorSurfaceAreaViewData } = useProjectForm();
 
-  const { usesFloorSurfaceAreaDistribution, usesFootprintSurfaceAreaDistribution, selectedUses } =
-    useAppSelector(selectUsesFloorSurfaceAreaViewData);
+  const { usesFloorSurfaceAreaDistribution, selectedUses } = useAppSelector(
+    selectUsesFloorSurfaceAreaViewData,
+  );
 
   return (
     <UsesFloorSurfaceArea
@@ -19,7 +20,6 @@ export default function UsesFloorSurfaceAreaContainer() {
       }}
       onBack={onBack}
       initialValues={usesFloorSurfaceAreaDistribution ?? {}}
-      footprintDistribution={usesFootprintSurfaceAreaDistribution ?? {}}
       selectedUses={selectedUses}
     />
   );

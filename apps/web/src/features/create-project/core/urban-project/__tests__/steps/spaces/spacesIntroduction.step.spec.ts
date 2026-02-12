@@ -12,12 +12,6 @@ describe("Urban project creation - Steps - Spaces introduction", () => {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL", "PUBLIC_GREEN_SPACES"] },
         },
-        URBAN_PROJECT_USES_FOOTPRINT_SURFACE_AREA: {
-          completed: true,
-          payload: {
-            usesFootprintSurfaceAreaDistribution: { RESIDENTIAL: 5000, PUBLIC_GREEN_SPACES: 5000 },
-          },
-        },
         URBAN_PROJECT_USES_FLOOR_SURFACE_AREA: {
           completed: true,
           payload: { usesFloorSurfaceAreaDistribution: { RESIDENTIAL: 8000 } },
@@ -38,12 +32,6 @@ describe("Urban project creation - Steps - Spaces introduction", () => {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL", "PUBLIC_GREEN_SPACES"] },
         },
-        URBAN_PROJECT_USES_FOOTPRINT_SURFACE_AREA: {
-          completed: true,
-          payload: {
-            usesFootprintSurfaceAreaDistribution: { RESIDENTIAL: 5000, PUBLIC_GREEN_SPACES: 5000 },
-          },
-        },
         URBAN_PROJECT_USES_FLOOR_SURFACE_AREA: {
           completed: true,
           payload: { usesFloorSurfaceAreaDistribution: { RESIDENTIAL: 8000 } },
@@ -56,7 +44,7 @@ describe("Urban project creation - Steps - Spaces introduction", () => {
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_USES_FLOOR_SURFACE_AREA");
   });
 
-  it("should go back to URBAN_PROJECT_USES_FOOTPRINT_SURFACE_AREA when only non-building uses exist", () => {
+  it("should go back to URBAN_PROJECT_USES_SELECTION when only non-building uses exist", () => {
     const store = createTestStore({
       currentStep: "URBAN_PROJECT_SPACES_INTRODUCTION",
       steps: {
@@ -64,20 +52,11 @@ describe("Urban project creation - Steps - Spaces introduction", () => {
           completed: true,
           payload: { usesSelection: ["PUBLIC_GREEN_SPACES", "OTHER_PUBLIC_SPACES"] },
         },
-        URBAN_PROJECT_USES_FOOTPRINT_SURFACE_AREA: {
-          completed: true,
-          payload: {
-            usesFootprintSurfaceAreaDistribution: {
-              PUBLIC_GREEN_SPACES: 5000,
-              OTHER_PUBLIC_SPACES: 5000,
-            },
-          },
-        },
       },
     });
 
     store.dispatch(creationProjectFormUrbanActions.navigateToPrevious());
 
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_USES_FOOTPRINT_SURFACE_AREA");
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_USES_SELECTION");
   });
 });
