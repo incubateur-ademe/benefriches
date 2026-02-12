@@ -55,8 +55,8 @@ export default function ClimateAndBiodiversityImpactNotice({
         <>
           <NegativeImpactTitleAndIcon />
           <EditorialPageText>
-            Vous envisagez de détruire {formatSurfaceArea(sensibleSurfaceAreaDestroyed)} de forêt ou
-            de zone humide.
+            Vous envisagez de détruire {formatSurfaceArea(sensibleSurfaceAreaDestroyed)} d'espace
+            naturel.
           </EditorialPageText>
         </>
       ) : (
