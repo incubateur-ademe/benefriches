@@ -31,7 +31,7 @@ export const useNavigationBlocker = ({ shouldBlockNavigation, allowRoute }: Prop
     }
 
     const unblock = session.block((blocker) => {
-      if (allowRoute && allowRoute(blocker.route)) {
+      if (allowRoute?.(blocker.route)) {
         return true;
       }
       setBlockedNavigation(() => ({

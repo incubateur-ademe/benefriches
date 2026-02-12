@@ -56,7 +56,10 @@ function SidebarLayoutFooter() {
       <div className={classNames(fr.cx("fr-footer__bottom"), "m-0", "px-4")}>
         <ul className={classNames(fr.cx("fr-footer__bottom-list"), "mx-auto w-auto")}>
           {bottomItems.map((bottomItem, i) => (
-            <li className={classNames(fr.cx("fr-footer__bottom-item"))} key={i}>
+            <li
+              className={classNames(fr.cx("fr-footer__bottom-item"))}
+              key={`footer-item-bottom-${i}`}
+            >
               <FooterBottomItem bottomItem={bottomItem} />
             </li>
           ))}

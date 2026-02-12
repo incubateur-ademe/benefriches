@@ -10,7 +10,7 @@ export const SpaceDevelopmentPlanIntroductionHandler: InfoStepHandler = {
       context.stepsState,
       "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION",
     )?.spacesCategories;
-    return spaceCategories && spaceCategories.length === 1
+    return spaceCategories?.length === 1
       ? "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION"
       : "URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA";
   },

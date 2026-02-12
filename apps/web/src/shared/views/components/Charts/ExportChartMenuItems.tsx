@@ -40,7 +40,7 @@ const downloadAsJpeg = ({ chartRef, exportConfig, colors, colorBySeries }: Props
   } else {
     svgChart.querySelectorAll<HTMLElement>(`.highcharts-point`).forEach((elem, elemIndex) => {
       elem.style.setProperty(`stroke`, "#ffffff");
-      if (!colors || !colors[elemIndex]) {
+      if (!colors?.[elemIndex]) {
         return;
       }
       elem.style.setProperty(`fill`, colors[elemIndex]);
@@ -49,7 +49,7 @@ const downloadAsJpeg = ({ chartRef, exportConfig, colors, colorBySeries }: Props
     svgChart
       .querySelectorAll<HTMLElement>(`.highcharts-data-label-connector`)
       .forEach((elem, elemIndex) => {
-        if (!colors || !colors[elemIndex]) {
+        if (!colors?.[elemIndex]) {
           return;
         }
         elem.style.setProperty(`stroke`, colors[elemIndex]);

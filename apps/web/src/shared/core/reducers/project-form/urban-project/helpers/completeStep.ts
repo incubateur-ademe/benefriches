@@ -128,12 +128,10 @@ export function applyStepChanges<T extends AnswerStepId>(
         MutateStateHelper.invalidateStep(state, stepId);
         break;
       case "recompute": {
-        const newValue =
-          stepHandlerRegistry[stepId].getRecomputedStepAnswers &&
-          stepHandlerRegistry[stepId].getRecomputedStepAnswers({
-            siteData: state.siteData,
-            stepsState: state.urbanProject.steps,
-          });
+        const newValue = stepHandlerRegistry[stepId].getRecomputedStepAnswers?.({
+          siteData: state.siteData,
+          stepsState: state.urbanProject.steps,
+        });
         if (newValue) {
           MutateStateHelper.recomputeStep(state, stepId, newValue);
         }

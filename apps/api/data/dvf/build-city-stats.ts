@@ -810,9 +810,7 @@ class DVFCommuneAnalyzer {
 
       const noTransactions = commune.dvf_nbtrans_cod111 === 0 && commune.dvf_nbtrans_cod121 === 0;
 
-      const noPrices =
-        (commune.dvf_pxm2_median_cod111 === null || commune.dvf_pxm2_median_cod111 === 0) &&
-        (commune.dvf_pxm2_median_cod121 === null || commune.dvf_pxm2_median_cod121 === 0);
+      const noPrices = !commune.dvf_pxm2_median_cod111 && !commune.dvf_pxm2_median_cod121;
 
       const noSurfaces = !commune.dvf_surface_median_cod111 && !commune.dvf_surface_median_cod121;
 

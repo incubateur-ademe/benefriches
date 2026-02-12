@@ -67,7 +67,6 @@ export type GetSiteViewResponseDto = z.infer<typeof getSiteViewResponseDtoSchema
 ```typescript
 // In apps/api (controller)
 import { getSiteViewResponseDtoSchema, type GetSiteViewResponseDto } from "shared";
-
 // In apps/web (API client)
 import type { GetSiteViewResponseDto } from "shared";
 ```

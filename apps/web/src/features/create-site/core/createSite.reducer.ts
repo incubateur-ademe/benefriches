@@ -25,7 +25,7 @@ import {
   naturalAreaTypeCompleted,
   siteCreationInitiated,
   siteNatureCompleted,
-  useMutabilityCompleted,
+  mutabilityOrImpactsSelectionCompleted,
 } from "./actions/introduction.actions";
 import { namingIntroductionStepCompleted, namingStepCompleted } from "./actions/naming.actions";
 import { stepReverted } from "./actions/revert.action";
@@ -166,7 +166,7 @@ const siteCreationReducer = createReducer(getInitialState(), (builder) => {
         state.stepsHistory.push("SITE_NATURE");
       }
     })
-    .addCase(useMutabilityCompleted, (state, action) => {
+    .addCase(mutabilityOrImpactsSelectionCompleted, (state, action) => {
       state.useMutability = action.payload.useMutability;
       if (!action.payload.useMutability) {
         state.stepsHistory.push("CREATE_MODE_SELECTION");

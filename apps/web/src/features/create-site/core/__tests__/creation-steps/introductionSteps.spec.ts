@@ -8,7 +8,7 @@ import {
   siteNatureCompleted,
   addressStepCompleted,
   siteCreationInitiated,
-  useMutabilityCompleted,
+  mutabilityOrImpactsSelectionCompleted,
 } from "../../actions/introduction.actions";
 import { stepReverted } from "../../actions/revert.action";
 import { siteWithExhaustiveData } from "../../siteData.mock";
@@ -109,7 +109,7 @@ describe("Site creation: introduction steps (intro, nature, creation mode, addre
       const store = new StoreBuilder().withStepsHistory(["INTRODUCTION", "IS_FRICHE"]).build();
       const initialRootState = store.getState();
 
-      store.dispatch(useMutabilityCompleted({ useMutability: false }));
+      store.dispatch(mutabilityOrImpactsSelectionCompleted({ useMutability: false }));
 
       const newState = store.getState();
       expectNewCurrentStep(initialRootState, newState, "CREATE_MODE_SELECTION");

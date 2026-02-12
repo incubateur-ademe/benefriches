@@ -20,9 +20,9 @@ export const createModeSelectionCompleted = createStepCompletedAction<{
 }>("CREATE_MODE_SELECTION");
 
 export const isFricheCompleted = createStepCompletedAction<{ isFriche: boolean }>("IS_FRICHE");
-export const useMutabilityCompleted = createStepCompletedAction<{ useMutability: boolean }>(
-  "USE_MUTABILITY",
-);
+export const mutabilityOrImpactsSelectionCompleted = createStepCompletedAction<{
+  useMutability: boolean;
+}>("USE_MUTABILITY");
 
 export const siteNatureCompleted = createStepCompletedAction<{ nature: SiteNature }>("SITE_NATURE");
 

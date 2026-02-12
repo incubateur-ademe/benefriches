@@ -87,12 +87,11 @@ Resolves to `packages/shared`. Use for monorepo-wide types.
 
 ```typescript
 // ✅ CORRECT: Shared package types
+// ❌ WRONG: Using @/ for shared package
+import type { Site } from "@/shared";
 import type { Site } from "shared";
 import type { UserId } from "shared";
 import { validateEmail } from "shared";
-
-// ❌ WRONG: Using @/ for shared package
-import type { Site } from "@/shared";
 
 // ❌ WRONG: Using relative paths to shared
 import type { Site } from "../../../packages/shared/src";

@@ -128,10 +128,10 @@ export const selectSitePurchasedViewData = createSelector(
   [selectCreationData, selectSiteData, selectCurrentUserStructure],
   (creationData, siteData, currentUserStructure): SitePurchasedViewData => {
     const isCurrentUserSiteOwner =
-      siteData !== undefined &&
-      currentUserStructure !== undefined &&
-      siteData.owner.name === currentUserStructure.name &&
-      siteData.owner.structureType === currentUserStructure.type;
+      siteData && currentUserStructure
+        ? siteData.owner.name === currentUserStructure.name &&
+          siteData.owner.structureType === currentUserStructure.type
+        : false;
 
     return {
       isCurrentUserSiteOwner,

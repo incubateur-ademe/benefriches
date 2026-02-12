@@ -564,9 +564,8 @@ export class ComputeProjectUrbanSprawlImpactsComparisonUseCase implements UseCas
     if (!reconversionProject) return fail("ReconversionProjectNotFound");
 
     if (
-      !reconversionProject.developmentPlan ||
-      !reconversionProject.developmentPlan.type ||
-      !reconversionProject.developmentPlan.features
+      !reconversionProject.developmentPlan?.type ||
+      !reconversionProject.developmentPlan?.features
     ) {
       return fail("NoDevelopmentPlanType");
     }
