@@ -30,7 +30,7 @@ test.describe("Friche", () => {
           name: "Le site « Friche de Blajan » est créé !",
         }),
       ).toBeVisible();
-      await page.getByRole("link", { name: "Renseigner mon projet sur ce site" }).click();
+      await page.getByRole("link", { name: "Evaluer un projet sur ce site" }).click();
     });
 
     test("Can create friche with custom mode", async ({ page }) => {
@@ -124,7 +124,7 @@ test.describe("Friche", () => {
           name: "Le site « Friche industrielle de Montluçon » est créé",
         }),
       ).toBeVisible();
-      await page.getByRole("link", { name: "Renseigner mon projet sur ce site" }).click();
+      await page.getByRole("link", { name: "Evaluer un projet sur ce site" }).click();
       await expect(
         page.getByRole("heading", {
           name: "Vous avez un projet d'aménagement",

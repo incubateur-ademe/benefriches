@@ -47,7 +47,7 @@ function SiteCreationResult({ siteId, siteName, loadingState, onBack }: Props) {
           <EditorialPageTitle>Le site « {siteName} » est créé&nbsp;!</EditorialPageTitle>
           <EditorialPageButtonsSection>
             <Button size="large" linkProps={routes.createProject({ siteId }).link}>
-              Renseigner mon projet sur ce site
+              Evaluer un projet sur ce site
             </Button>
           </EditorialPageButtonsSection>
         </EditorialPageLayout>

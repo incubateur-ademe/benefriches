@@ -64,7 +64,7 @@ function SiteCreationResult({ siteId, siteName, loadingState, onBack }: Props) {
           <SiteFeaturesModalView siteId={siteId} />
           <EditorialPageButtonsSection>
             <Button size="large" linkProps={routes.createProject({ siteId }).link}>
-              Renseigner mon projet sur ce site
+              Evaluer un projet sur ce site
             </Button>
           </EditorialPageButtonsSection>
           <p className="text-sm mt-5">
