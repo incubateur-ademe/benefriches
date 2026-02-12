@@ -7,7 +7,7 @@ import { creationProjectFormUrbanActions } from "../../../urbanProject.actions";
 import { createTestStore, getCurrentStep } from "../../_testStoreHelpers";
 
 describe("Urban project creation - Steps - Uses selection", () => {
-  it("should complete step with building uses and go to URBAN_PROJECT_USES_FLOOR_SURFACE_AREA", () => {
+  it("should complete step with PUBLIC_GREEN_SPACES and go to URBAN_PROJECT_USES_PUBLIC_GREEN_SPACES_SURFACE_AREA", () => {
     const store = createTestStore();
 
     store.dispatch(
@@ -27,10 +27,10 @@ describe("Urban project creation - Steps - Uses selection", () => {
         payload: { usesSelection: ["RESIDENTIAL", "PUBLIC_GREEN_SPACES"] },
       },
     });
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_USES_FLOOR_SURFACE_AREA");
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_USES_PUBLIC_GREEN_SPACES_SURFACE_AREA");
   });
 
-  it("should complete step with only non-building uses and go to URBAN_PROJECT_SPACES_INTRODUCTION", () => {
+  it("should complete step with only PUBLIC_GREEN_SPACES and go to URBAN_PROJECT_USES_PUBLIC_GREEN_SPACES_SURFACE_AREA", () => {
     const store = createTestStore();
 
     store.dispatch(
@@ -50,7 +50,22 @@ describe("Urban project creation - Steps - Uses selection", () => {
         payload: { usesSelection: ["PUBLIC_GREEN_SPACES"] },
       },
     });
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_INTRODUCTION");
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_USES_PUBLIC_GREEN_SPACES_SURFACE_AREA");
+  });
+
+  it("should complete step with only building uses (no PUBLIC_GREEN_SPACES) and go to URBAN_PROJECT_USES_FLOOR_SURFACE_AREA", () => {
+    const store = createTestStore();
+
+    store.dispatch(
+      creationProjectFormUrbanActions.requestStepCompletion({
+        stepId: "URBAN_PROJECT_USES_SELECTION",
+        answers: {
+          usesSelection: ["RESIDENTIAL", "OFFICES"],
+        },
+      }),
+    );
+
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_USES_FLOOR_SURFACE_AREA");
   });
 
   it("should delete URBAN_PROJECT_USES_FLOOR_SURFACE_AREA when uses selection changes", () => {
@@ -88,7 +103,7 @@ describe("Urban project creation - Steps - Uses selection", () => {
           answers: newAnswer,
         },
         cascadingChanges: [{ action: "delete", stepId: "URBAN_PROJECT_USES_FLOOR_SURFACE_AREA" }],
-        navigationTarget: "URBAN_PROJECT_USES_FLOOR_SURFACE_AREA",
+        navigationTarget: "URBAN_PROJECT_USES_PUBLIC_GREEN_SPACES_SURFACE_AREA",
       },
     });
 
@@ -102,7 +117,7 @@ describe("Urban project creation - Steps - Uses selection", () => {
         payload: newAnswer,
       },
     });
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_USES_FLOOR_SURFACE_AREA");
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_USES_PUBLIC_GREEN_SPACES_SURFACE_AREA");
   });
 
   it("should not trigger cascading changes when uses selection remains the same", () => {

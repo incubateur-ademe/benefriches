@@ -48,6 +48,7 @@ import { StakeholdersReinstatementContractOwnerHandler } from "./stakeholders/st
 import { FinalSummaryHandler } from "./summary/finalSummary.handler";
 import { UsesFloorSurfaceAreaHandler } from "./uses/usesFloorSurfaceArea.handler";
 import { UsesIntroductionHandler } from "./uses/usesIntroduction.handler";
+import { UsesPublicGreenSpacesSurfaceAreaHandler } from "./uses/usesPublicGreenSpacesSurfaceArea.handler";
 import { UsesSelectionHandler } from "./uses/usesSelection.handler";
 
 export const stepHandlerRegistry = {
@@ -59,6 +60,7 @@ export const stepHandlerRegistry = {
   // custom - uses flow (new)
   URBAN_PROJECT_USES_INTRODUCTION: UsesIntroductionHandler,
   URBAN_PROJECT_USES_SELECTION: UsesSelectionHandler,
+  URBAN_PROJECT_USES_PUBLIC_GREEN_SPACES_SURFACE_AREA: UsesPublicGreenSpacesSurfaceAreaHandler,
   URBAN_PROJECT_USES_FLOOR_SURFACE_AREA: UsesFloorSurfaceAreaHandler,
   // custom - new spaces flow (uses flow)
   URBAN_PROJECT_SPACES_INTRODUCTION: SpacesIntroductionHandler,

@@ -133,6 +133,9 @@ const UsesSelection = lazy(
 const UsesFloorSurfaceArea = lazy(
   () => import("@/shared/views/project-form/urban-project/uses/floor-surface-area"),
 );
+const UsesPublicGreenSpacesSurfaceArea = lazy(
+  () => import("@/shared/views/project-form/urban-project/uses/public-green-spaces-surface-area"),
+);
 const NewSpacesIntroduction = lazy(
   () => import("@/shared/views/project-form/urban-project/spaces/new-introduction"),
 );
@@ -204,6 +207,13 @@ const getCurrentStepView = (step: UrbanProjectCreationStep): Exclude<ReactNode, 
         <>
           <HtmlTitle>{`Sélection - Usages - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
           <UsesSelection />
+        </>
+      );
+    case "URBAN_PROJECT_USES_PUBLIC_GREEN_SPACES_SURFACE_AREA":
+      return (
+        <>
+          <HtmlTitle>{`Espaces verts publics - Usages - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
+          <UsesPublicGreenSpacesSurfaceArea />
         </>
       );
     case "URBAN_PROJECT_USES_FLOOR_SURFACE_AREA":

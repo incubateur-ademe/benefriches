@@ -186,6 +186,31 @@ export const createUrbanProjectFormSelectors = (
     },
   );
 
+  type PublicGreenSpacesSurfaceAreaViewData = {
+    publicGreenSpacesSurfaceArea: number | undefined;
+    siteSurfaceArea: number;
+  };
+
+  const selectPublicGreenSpacesSurfaceAreaViewData = createSelector(
+    [selectStepState, selectors.selectSiteSurfaceArea],
+    (steps, siteSurfaceArea): PublicGreenSpacesSurfaceAreaViewData => {
+      const answers =
+        ReadStateHelper.getStepAnswers(
+          steps,
+          "URBAN_PROJECT_USES_PUBLIC_GREEN_SPACES_SURFACE_AREA",
+        ) ??
+        ReadStateHelper.getDefaultAnswers(
+          steps,
+          "URBAN_PROJECT_USES_PUBLIC_GREEN_SPACES_SURFACE_AREA",
+        );
+
+      return {
+        publicGreenSpacesSurfaceArea: answers?.publicGreenSpacesSurfaceArea,
+        siteSurfaceArea,
+      };
+    },
+  );
+
   type UsesFloorSurfaceAreaViewData = {
     usesFloorSurfaceAreaDistribution: UrbanProjectUseDistribution | undefined;
     selectedUses: UrbanProjectUse[];
@@ -307,6 +332,7 @@ export const createUrbanProjectFormSelectors = (
     selectPendingStepCompletion,
     selectSaveState,
     selectSiteResaleRevenueViewData,
+    selectPublicGreenSpacesSurfaceAreaViewData,
     selectUsesFloorSurfaceAreaViewData,
     selectSpacesSelectionViewData,
     selectSpacesSurfaceAreaViewData,

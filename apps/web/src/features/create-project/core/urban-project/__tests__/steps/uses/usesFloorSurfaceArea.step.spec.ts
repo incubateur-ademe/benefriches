@@ -108,7 +108,7 @@ describe("Urban project creation - Steps - Uses floor surface area", () => {
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_INTRODUCTION");
   });
 
-  it("should navigate to URBAN_PROJECT_USES_SELECTION when going back", () => {
+  it("should navigate to URBAN_PROJECT_USES_SELECTION when going back without PUBLIC_GREEN_SPACES", () => {
     const store = createTestStore({
       currentStep: "URBAN_PROJECT_USES_FLOOR_SURFACE_AREA",
       steps: {
@@ -122,5 +122,25 @@ describe("Urban project creation - Steps - Uses floor surface area", () => {
     store.dispatch(creationProjectFormUrbanActions.navigateToPrevious());
 
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_USES_SELECTION");
+  });
+
+  it("should navigate to URBAN_PROJECT_USES_PUBLIC_GREEN_SPACES_SURFACE_AREA when going back with PUBLIC_GREEN_SPACES", () => {
+    const store = createTestStore({
+      currentStep: "URBAN_PROJECT_USES_FLOOR_SURFACE_AREA",
+      steps: {
+        URBAN_PROJECT_USES_SELECTION: {
+          completed: true,
+          payload: { usesSelection: ["RESIDENTIAL", "PUBLIC_GREEN_SPACES"] },
+        },
+        URBAN_PROJECT_USES_PUBLIC_GREEN_SPACES_SURFACE_AREA: {
+          completed: true,
+          payload: { publicGreenSpacesSurfaceArea: 5000 },
+        },
+      },
+    });
+
+    store.dispatch(creationProjectFormUrbanActions.navigateToPrevious());
+
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_USES_PUBLIC_GREEN_SPACES_SURFACE_AREA");
   });
 });
