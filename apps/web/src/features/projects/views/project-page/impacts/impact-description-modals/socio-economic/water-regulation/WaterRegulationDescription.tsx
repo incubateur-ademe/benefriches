@@ -53,7 +53,7 @@ const WaterRegulationDescription = ({
             ? {
                 state: impactData > 0 ? "success" : "error",
                 text: formatMonetaryImpact(impactData),
-                description: "pour l'humanité",
+                description: "pour la collectivité",
               }
             : undefined
         }
