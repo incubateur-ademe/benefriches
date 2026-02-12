@@ -216,20 +216,29 @@ export const getPictogramUrlForBuildingsUse = (use: BuildingsUse): string => {
     case "SPORTS_FACILITIES":
       return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/sports-facilities.svg`;
     case "OTHER_CULTURAL_PLACE":
+      return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/leisure-and-culture/other-cultural-place.svg`;
     case "CINEMA":
+      return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/leisure-and-culture/cinema.svg`;
     case "MUSEUM":
+      return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/leisure-and-culture/museum.svg`;
     case "THEATER":
+      return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/leisure-and-culture/theater.svg`;
     case "RECREATIONAL_FACILITY":
-      return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/cultural-place.svg`;
+      return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/leisure-and-culture/recreational-facility.svg`;
     case "PUBLIC_FACILITIES":
-    case "KINDERGARTEN_OR_PRIMARY_SCHOOL":
-    case "SECONDARY_SCHOOL":
-    case "OTHER_EDUCATIONAL_FACILITY":
       return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/public-buildings.svg`;
+    case "KINDERGARTEN_OR_PRIMARY_SCHOOL":
+      return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/education/kindergarten-or-primary-school.svg`;
+    case "SECONDARY_SCHOOL":
+      return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/education/secondary-school.svg`;
+    case "OTHER_EDUCATIONAL_FACILITY":
+      return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/education/other-educational-facility.svg`;
     case "LOCAL_HEALTH_SERVICE":
+      return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/health/local-health-service.svg`;
     case "HOSPITAL":
+      return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/health/hospital.svg`;
     case "MEDICAL_SOCIAL_FACILITY":
-      return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/other.svg`;
+      return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/health/medical-social-facility.svg`;
     case "OTHER_BUILDING":
       return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/other.svg`;
   }
@@ -279,7 +288,7 @@ export const getLabelForUrbanProjectUse = (use: UrbanProjectUse): string => {
     case "OFFICES":
       return "Bureaux";
     case "OTHER_CULTURAL_PLACE":
-      return "Lieu culturel";
+      return "Autre lieu culturel";
     case "SPORTS_FACILITIES":
       return "Équipements sportifs";
     case "MULTI_STORY_PARKING":
@@ -331,7 +340,7 @@ export const getDescriptionForUrbanProjectUse = (use: UrbanProjectUse): string |
     case "LOCAL_SERVICES":
       return "Banque, poste, restaurant...";
     case "OTHER_CULTURAL_PLACE":
-      return "Salle de spectacle, salle de concert...";
+      return "Médiathèque, salle de concert...";
     case "PUBLIC_GREEN_SPACES":
       return "Parc, jardin public, forêt urbaine...";
     case "OTHER_PUBLIC_SPACES":
@@ -378,20 +387,29 @@ export const getPictogramUrlForUrbanProjectUse = (use: UrbanProjectUse): string 
     case "SPORTS_FACILITIES":
       return `${URBAN_PROJECT_USE_PICTOGRAM_URL_BASE}/buildings-uses/sports-facilities.svg`;
     case "OTHER_CULTURAL_PLACE":
+      return `${URBAN_PROJECT_USE_PICTOGRAM_URL_BASE}/buildings-uses/leisure-and-culture/other-cultural-place.svg`;
     case "CINEMA":
+      return `${URBAN_PROJECT_USE_PICTOGRAM_URL_BASE}/buildings-uses/leisure-and-culture/cinema.svg`;
     case "MUSEUM":
+      return `${URBAN_PROJECT_USE_PICTOGRAM_URL_BASE}/buildings-uses/leisure-and-culture/museum.svg`;
     case "THEATER":
+      return `${URBAN_PROJECT_USE_PICTOGRAM_URL_BASE}/buildings-uses/leisure-and-culture/theater.svg`;
     case "RECREATIONAL_FACILITY":
-      return `${URBAN_PROJECT_USE_PICTOGRAM_URL_BASE}/buildings-uses/cultural-place.svg`;
+      return `${URBAN_PROJECT_USE_PICTOGRAM_URL_BASE}/buildings-uses/leisure-and-culture/recreational-facility.svg`;
     case "PUBLIC_FACILITIES":
-    case "KINDERGARTEN_OR_PRIMARY_SCHOOL":
-    case "SECONDARY_SCHOOL":
-    case "OTHER_EDUCATIONAL_FACILITY":
       return `${URBAN_PROJECT_USE_PICTOGRAM_URL_BASE}/buildings-uses/public-buildings.svg`;
+    case "KINDERGARTEN_OR_PRIMARY_SCHOOL":
+      return `${URBAN_PROJECT_USE_PICTOGRAM_URL_BASE}/buildings-uses/education/kindergarten-or-primary-school.svg`;
+    case "SECONDARY_SCHOOL":
+      return `${URBAN_PROJECT_USE_PICTOGRAM_URL_BASE}/buildings-uses/education/secondary-school.svg`;
+    case "OTHER_EDUCATIONAL_FACILITY":
+      return `${URBAN_PROJECT_USE_PICTOGRAM_URL_BASE}/buildings-uses/education/other-educational-facility.svg`;
     case "LOCAL_HEALTH_SERVICE":
+      return `${URBAN_PROJECT_USE_PICTOGRAM_URL_BASE}/buildings-uses/health/local-health-service.svg`;
     case "HOSPITAL":
+      return `${URBAN_PROJECT_USE_PICTOGRAM_URL_BASE}/buildings-uses/health/hospital.svg`;
     case "MEDICAL_SOCIAL_FACILITY":
-      return `${URBAN_PROJECT_USE_PICTOGRAM_URL_BASE}/buildings-uses/other.svg`;
+      return `${URBAN_PROJECT_USE_PICTOGRAM_URL_BASE}/buildings-uses/health/medical-social-facility.svg`;
     case "OTHER_BUILDING":
       return `${URBAN_PROJECT_USE_PICTOGRAM_URL_BASE}/buildings-uses/other.svg`;
     case "PUBLIC_GREEN_SPACES":
