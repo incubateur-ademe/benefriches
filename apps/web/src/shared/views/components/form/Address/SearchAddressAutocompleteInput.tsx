@@ -1,6 +1,8 @@
 import Input, { InputProps } from "@codegouvfr/react-dsfr/Input";
-import { ChangeEvent, useCallback, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { Address } from "shared";
+
+import { useDebounce } from "@/shared/views/hooks/useDebounce";
 
 import Autocomplete from "../../Autocomplete/Autocomplete";
 
@@ -35,6 +37,8 @@ const formatAddressOptionLabel = (
   }
 };
 
+const SEARCH_DEBOUNCE_DELAY_IN_MS = 300;
+
 const SearchAddressAutocompleteInput = ({
   searchInputProps,
   onSelectedAddressChange,
@@ -47,17 +51,15 @@ const SearchAddressAutocompleteInput = ({
   const [searchText, setSearchText] = useState(selectedAddress?.value ?? "");
   const [suggestions, setSuggestions] = useState<AddressWithBanId[]>([]);
 
-  const handleSearch = useCallback(
-    async (text: string) => {
-      // BAN API returns error if query is less than 3 characters
-      if (text.length <= 3) {
-        return;
-      }
-      const results = await addressService.search(text, { type: addressType });
-      setSuggestions(results);
-    },
-    [addressService, addressType],
-  );
+  const debouncedSearchText = useDebounce(searchText, SEARCH_DEBOUNCE_DELAY_IN_MS);
+
+  useEffect(() => {
+    // BAN API returns error if query is less than 3 characters
+    if (debouncedSearchText.length <= 3) {
+      return;
+    }
+    void addressService.search(debouncedSearchText, { type: addressType }).then(setSuggestions);
+  }, [debouncedSearchText, addressService, addressType]);
 
   const handleSelect = (banId: string) => {
     const address = suggestions.find((s) => s.banId === banId);
@@ -88,7 +90,6 @@ const SearchAddressAutocompleteInput = ({
           onChange: (e: ChangeEvent<HTMLInputElement>) => {
             setSearchText(e.target.value);
             onSelectedAddressChange(undefined);
-            void handleSearch(e.target.value);
           },
         }}
       />
