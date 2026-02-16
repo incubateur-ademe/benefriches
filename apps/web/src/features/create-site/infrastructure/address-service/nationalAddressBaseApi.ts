@@ -1,9 +1,10 @@
 import { Feature, FeatureCollection, Point } from "geojson";
 
-import {
-  type AddressService,
-  type AddressWithBanId,
-} from "@/shared/views/components/form/Address/SearchAddressAutocompleteInput";
+import type {
+  AddressSearchGateway,
+  AddressType,
+  AddressWithBanId,
+} from "@/shared/core/gateways/AddressSearchGateway";
 
 const BAN_API_URL = "https://data.geopf.fr/geocodage/search/?";
 
@@ -70,11 +71,11 @@ const mapNationalBaseAddressToAddress = (
 };
 
 type Options = {
-  type?: "municipality" | "street" | "housenumber" | "locality";
+  type?: AddressType;
 };
 
-export class NationalAddressBaseService implements AddressService {
-  async search(searchText: string, options?: Options) {
+export class NationalAddressBaseService implements AddressSearchGateway {
+  async search(searchText: string, options: Options) {
     const queryParams = new URLSearchParams({ q: searchText });
 
     if (options?.type) {
