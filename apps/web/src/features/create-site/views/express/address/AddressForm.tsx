@@ -1,4 +1,4 @@
-import { Controller, useForm } from "react-hook-form";
+import { useController, useForm } from "react-hook-form";
 import { Address, SiteNature } from "shared";
 
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
@@ -10,12 +10,11 @@ type Props = {
   onSubmit: (address: Address) => void;
   onBack: () => void;
   siteNature: SiteNature | undefined;
-  initialValues: Partial<FormValues>;
+  selectedAddress?: Address;
 };
 
 type FormValues = {
   selectedAddress?: Address;
-  searchText: string;
 };
 
 const getTitle = (siteNature: SiteNature | undefined) => {
@@ -31,21 +30,21 @@ const getTitle = (siteNature: SiteNature | undefined) => {
   }
 };
 
-function SiteAddressForm({ initialValues, onSubmit, siteNature, onBack }: Props) {
-  const { handleSubmit, formState, control, watch, setValue, register } = useForm<FormValues>({
-    defaultValues: initialValues,
+function SiteAddressForm({ selectedAddress: initialAddress, onSubmit, siteNature, onBack }: Props) {
+  const { handleSubmit, control } = useForm<FormValues>({
+    defaultValues: { selectedAddress: initialAddress },
   });
 
-  const error = formState.errors.selectedAddress;
+  const { field, fieldState } = useController({
+    name: "selectedAddress",
+    control,
+    rules: {
+      required:
+        "La commune est utilisée par Bénéfriches pour calculer les impacts à partir de données locales.",
+    },
+  });
 
   const title = getTitle(siteNature);
-
-  register("selectedAddress", {
-    required:
-      "La commune est utilisée par Bénéfriches pour calculer les impacts à partir de données locales.",
-  });
-
-  const selectedAddress = watch("selectedAddress");
 
   return (
     <WizardFormLayout title={title}>
@@ -54,31 +53,17 @@ function SiteAddressForm({ initialValues, onSubmit, siteNature, onBack }: Props)
           onSubmit(formData.selectedAddress!);
         })}
       >
-        <Controller
-          control={control}
-          name="searchText"
-          render={({ field }) => (
-            <SearchAddressAutocompleteContainer
-              addressType="municipality"
-              searchInputValue={field.value}
-              onSearchInputChange={(searchText: string) => {
-                field.onChange(searchText);
-                setValue("selectedAddress", undefined);
-              }}
-              selectedAddress={selectedAddress}
-              onSelect={(v) => {
-                setValue("selectedAddress", v);
-                setValue("searchText", v.value);
-              }}
-              searchInputProps={{
-                label: <RequiredLabel label="Commune ou code postal" />,
-                state: error ? "error" : "default",
-                stateRelatedMessage: error ? error.message : undefined,
-              }}
-            />
-          )}
+        <SearchAddressAutocompleteContainer
+          addressType="municipality"
+          selectedAddress={field.value}
+          onSelectedAddressChange={field.onChange}
+          searchInputProps={{
+            label: <RequiredLabel label="Commune ou code postal" />,
+            state: fieldState.error ? "error" : "default",
+            stateRelatedMessage: fieldState.error?.message,
+          }}
         />
-        <BackNextButtonsGroup onBack={onBack} disabled={!selectedAddress} nextLabel="Valider" />
+        <BackNextButtonsGroup onBack={onBack} disabled={!field.value} nextLabel="Valider" />
       </form>
     </WizardFormLayout>
   );

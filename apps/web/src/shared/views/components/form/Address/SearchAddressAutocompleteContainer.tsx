@@ -3,14 +3,20 @@ import { useMemo } from "react";
 import { NationalAddressBaseService } from "@/features/create-site/infrastructure/address-service/nationalAddressBaseApi";
 
 import SearchAddressAutocompleteInput, {
-  AddressService,
-  PropTypes,
+  type AddressService,
+  type SearchAddressAutocompleteInputProps,
 } from "./SearchAddressAutocompleteInput";
 
-function SearchAddressAutocompleteContainer(props: Omit<PropTypes, "addressService">) {
+type SearchAddressAutocompleteContainerProps = Omit<
+  SearchAddressAutocompleteInputProps,
+  "addressService"
+>;
+
+function SearchAddressAutocompleteContainer(props: SearchAddressAutocompleteContainerProps) {
   const addressService: AddressService = useMemo(() => new NationalAddressBaseService(), []);
 
   return <SearchAddressAutocompleteInput {...props} addressService={addressService} />;
 }
 
 export default SearchAddressAutocompleteContainer;
+export type { SearchAddressAutocompleteContainerProps };

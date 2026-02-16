@@ -1,10 +1,10 @@
 import Input, { InputProps } from "@codegouvfr/react-dsfr/Input";
-import { ChangeEvent, useState } from "react";
-import { Address, typedObjectEntries } from "shared";
+import { ChangeEvent, useCallback, useState } from "react";
+import { Address } from "shared";
 
 import Autocomplete from "../../Autocomplete/Autocomplete";
 
-type AddressWithBanId = Address & {
+export type AddressWithBanId = Address & {
   banId: string; // Addresses from AddressService always have banId
 };
 
@@ -15,28 +15,17 @@ export interface AddressService {
   ): Promise<AddressWithBanId[]>;
 }
 
-export type PropTypes = {
-  searchInputValue: string | undefined;
-  onSearchInputChange: (v: string) => void;
+export type SearchAddressAutocompleteInputProps = {
   searchInputProps: InputProps.RegularInput;
   selectedAddress?: Address;
-  onSelect: (v: Address) => void;
+  onSelectedAddressChange: (v: Address | undefined) => void;
   addressService: AddressService;
   addressType?: "municipality" | "street" | "housenumber" | "locality";
 };
 
-type BanId = string;
-type Options = Record<
-  BanId,
-  {
-    label: string;
-    properties: Address;
-  }
->;
-
 const formatAddressOptionLabel = (
   address: Address,
-  addressType: PropTypes["addressType"],
+  addressType: SearchAddressAutocompleteInputProps["addressType"],
 ): string => {
   switch (addressType) {
     case "municipality":
@@ -47,47 +36,40 @@ const formatAddressOptionLabel = (
 };
 
 const SearchAddressAutocompleteInput = ({
-  searchInputValue,
-  onSearchInputChange,
   searchInputProps,
-  onSelect,
+  onSelectedAddressChange,
   selectedAddress,
   addressService,
   addressType,
-}: PropTypes) => {
+}: SearchAddressAutocompleteInputProps) => {
   const autocompleteValue = selectedAddress?.banId;
 
-  const [suggestions, setSuggestions] = useState<Options>({});
+  const [searchText, setSearchText] = useState(selectedAddress?.value ?? "");
+  const [suggestions, setSuggestions] = useState<AddressWithBanId[]>([]);
 
-  const onSearch = async (text: string) => {
-    // BAN API returns error if query is less than 3 characters
-    if (text.length <= 3) {
-      return;
-    }
-    const options = await addressService.search(text, { type: addressType });
-    setSuggestions(
-      options.reduce<Options>((result, address) => {
-        return {
-          ...result,
-          [address.banId]: {
-            label: formatAddressOptionLabel(address, addressType),
-            properties: address,
-          },
-        };
-      }, {}),
-    );
-  };
+  const handleSearch = useCallback(
+    async (text: string) => {
+      // BAN API returns error if query is less than 3 characters
+      if (text.length <= 3) {
+        return;
+      }
+      const results = await addressService.search(text, { type: addressType });
+      setSuggestions(results);
+    },
+    [addressService, addressType],
+  );
 
-  const _onSelect = (value: string) => {
-    const properties = suggestions[value]?.properties;
-    if (properties) {
-      onSelect(properties);
+  const handleSelect = (banId: string) => {
+    const address = suggestions.find((s) => s.banId === banId);
+    if (address) {
+      setSearchText(address.value);
+      onSelectedAddressChange(address);
     }
   };
 
-  const options = typedObjectEntries(suggestions).map(([banId, { label }]) => ({
-    label: label,
-    value: banId,
+  const options = suggestions.map((address) => ({
+    label: formatAddressOptionLabel(address, addressType),
+    value: address.banId,
   }));
 
   return (
@@ -95,17 +77,18 @@ const SearchAddressAutocompleteInput = ({
       className="mb-4 pb-4"
       value={autocompleteValue}
       options={options}
-      onSelect={_onSelect}
+      onSelect={handleSelect}
     >
       <Input
         {...searchInputProps}
         nativeInputProps={{
           ...searchInputProps.nativeInputProps,
-          value: searchInputValue ?? "",
+          value: searchText,
           type: "search",
           onChange: (e: ChangeEvent<HTMLInputElement>) => {
-            onSearchInputChange(e.target.value);
-            void onSearch(e.target.value);
+            setSearchText(e.target.value);
+            onSelectedAddressChange(undefined);
+            void handleSearch(e.target.value);
           },
         }}
       />

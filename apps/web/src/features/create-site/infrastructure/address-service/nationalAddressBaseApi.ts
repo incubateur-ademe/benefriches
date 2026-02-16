@@ -1,11 +1,9 @@
 import { Feature, FeatureCollection, Point } from "geojson";
-import { Address } from "shared";
 
-import { AddressService } from "@/shared/views/components/form/Address/SearchAddressAutocompleteInput";
-
-type AddressWithBanId = Address & {
-  banId: string;
-};
+import {
+  type AddressService,
+  type AddressWithBanId,
+} from "@/shared/views/components/form/Address/SearchAddressAutocompleteInput";
 
 const BAN_API_URL = "https://data.geopf.fr/geocodage/search/?";
 

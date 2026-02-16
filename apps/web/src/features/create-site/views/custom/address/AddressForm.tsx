@@ -1,4 +1,4 @@
-import { Controller, useForm } from "react-hook-form";
+import { useController, useForm } from "react-hook-form";
 import { Address, SiteNature } from "shared";
 
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
@@ -8,7 +8,7 @@ import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
-  initialValues: FormValues;
+  selectedAddress?: Address;
   onSubmit: (address: Address) => void;
   onBack: () => void;
   siteNature: SiteNature | undefined;
@@ -16,7 +16,6 @@ type Props = {
 
 type FormValues = {
   selectedAddress?: Address;
-  searchText: string;
 };
 
 const getTitle = (siteNature: SiteNature | undefined) => {
@@ -32,20 +31,18 @@ const getTitle = (siteNature: SiteNature | undefined) => {
   }
 };
 
-function SiteAddressForm({ initialValues, onSubmit, siteNature, onBack }: Props) {
-  const { handleSubmit, formState, control, watch, setValue, register } = useForm<FormValues>({
-    defaultValues: initialValues,
+function SiteAddressForm({ selectedAddress: initialAddress, onSubmit, siteNature, onBack }: Props) {
+  const { handleSubmit, control } = useForm<FormValues>({
+    defaultValues: { selectedAddress: initialAddress },
   });
 
-  const error = formState.errors.selectedAddress;
+  const { field, fieldState } = useController({
+    name: "selectedAddress",
+    control,
+    rules: { required: "L'adresse est nécessaire pour les étapes suivantes" },
+  });
 
   const title = getTitle(siteNature);
-
-  register("selectedAddress", {
-    required: "L'adresse est nécessaire pour les étapes suivantes",
-  });
-
-  const selectedAddress = watch("selectedAddress");
 
   return (
     <WizardFormLayout
@@ -84,35 +81,21 @@ function SiteAddressForm({ initialValues, onSubmit, siteNature, onBack }: Props)
           onSubmit(formData.selectedAddress!);
         })}
       >
-        <Controller
-          control={control}
-          name="searchText"
-          render={({ field }) => (
-            <SearchAddressAutocomplete
-              searchInputValue={field.value}
-              onSearchInputChange={(searchText: string) => {
-                field.onChange(searchText);
-                setValue("selectedAddress", undefined);
-              }}
-              selectedAddress={selectedAddress}
-              onSelect={(v) => {
-                setValue("selectedAddress", v);
-                setValue("searchText", v.value);
-              }}
-              searchInputProps={{
-                label: <RequiredLabel label="Adresse" />,
-                state: error ? "error" : "default",
-                hintText: "Entrez le nom de la commune, le code postal ou l'adresse complète",
-                nativeInputProps: {
-                  placeholder: "Montrouge, 92120 etc.",
-                },
-                stateRelatedMessage: error ? error.message : undefined,
-              }}
-            />
-          )}
+        <SearchAddressAutocomplete
+          selectedAddress={field.value}
+          onSelectedAddressChange={field.onChange}
+          searchInputProps={{
+            label: <RequiredLabel label="Adresse" />,
+            state: fieldState.error ? "error" : "default",
+            hintText: "Entrez le nom de la commune, le code postal ou l'adresse complète",
+            nativeInputProps: {
+              placeholder: "Montrouge, 92120 etc.",
+            },
+            stateRelatedMessage: fieldState.error?.message,
+          }}
         />
         <div className="mt-4">
-          <BackNextButtonsGroup onBack={onBack} disabled={!selectedAddress} nextLabel="Valider" />
+          <BackNextButtonsGroup onBack={onBack} disabled={!field.value} nextLabel="Valider" />
         </div>
       </form>
     </WizardFormLayout>
