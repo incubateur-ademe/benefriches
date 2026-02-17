@@ -237,6 +237,8 @@ export const createUrbanProjectFormSelectors = (
   type SpacesSelectionViewData = {
     selectedSpaces: SoilType[];
     selectableSoils: SoilType[];
+    nonGreenSpacesUses: UrbanProjectUse[];
+    hasPublicGreenSpaces: boolean;
   };
 
   /**
@@ -265,9 +267,16 @@ export const createUrbanProjectFormSelectors = (
         ReadStateHelper.getStepAnswers(steps, "URBAN_PROJECT_SPACES_SELECTION") ??
         ReadStateHelper.getDefaultAnswers(steps, "URBAN_PROJECT_SPACES_SELECTION");
 
+      const selectedUses =
+        ReadStateHelper.getStepAnswers(steps, "URBAN_PROJECT_USES_SELECTION")?.usesSelection ?? [];
+
       return {
         selectedSpaces: spacesAnswers?.spacesSelection ?? [],
         selectableSoils: computeSelectableSoils(siteSoilsDistribution),
+        nonGreenSpacesUses: selectedUses.filter(
+          (use): use is UrbanProjectUse => use !== "PUBLIC_GREEN_SPACES",
+        ),
+        hasPublicGreenSpaces: selectedUses.includes("PUBLIC_GREEN_SPACES"),
       };
     },
   );
@@ -280,8 +289,10 @@ export const createUrbanProjectFormSelectors = (
   type SpacesSurfaceAreaViewData = {
     selectedSpaces: SoilType[];
     spacesSurfaceAreaDistribution: Partial<Record<SoilType, number>> | undefined;
-    siteSurfaceArea: number;
+    totalSurfaceArea: number;
     spacesWithConstraints: SpaceConstraint[];
+    nonGreenSpacesUses: UrbanProjectUse[];
+    hasPublicGreenSpaces: boolean;
   };
 
   const selectSpacesSurfaceAreaViewData = createSelector(
@@ -298,6 +309,13 @@ export const createUrbanProjectFormSelectors = (
 
       const selectedSpaces = spacesSelectionAnswers?.spacesSelection ?? [];
 
+      const selectedUses =
+        ReadStateHelper.getStepAnswers(steps, "URBAN_PROJECT_USES_SELECTION")?.usesSelection ?? [];
+
+      const publicGreenSpacesSurfaceArea =
+        ReadStateHelper.getStepAnswers(steps, "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA")
+          ?.publicGreenSpacesSurfaceArea ?? 0;
+
       // Compute constraints for constrained soils that exist on site
       const spacesWithConstraints: SpaceConstraint[] = selectedSpaces
         .filter((soilType) => isConstrainedSoilType(soilType))
@@ -310,8 +328,12 @@ export const createUrbanProjectFormSelectors = (
       return {
         selectedSpaces,
         spacesSurfaceAreaDistribution: surfaceAreaAnswers?.spacesSurfaceAreaDistribution,
-        siteSurfaceArea,
+        totalSurfaceArea: siteSurfaceArea - publicGreenSpacesSurfaceArea,
         spacesWithConstraints,
+        nonGreenSpacesUses: selectedUses.filter(
+          (use): use is UrbanProjectUse => use !== "PUBLIC_GREEN_SPACES",
+        ),
+        hasPublicGreenSpaces: selectedUses.includes("PUBLIC_GREEN_SPACES"),
       };
     },
   );

@@ -6,6 +6,7 @@ import {
   getSoilTypeForUrbanGreenSpace,
   typedObjectEntries,
 } from "shared";
+import type { SoilType } from "shared";
 
 import { BENEFRICHES_ENV } from "@/shared/views/envVars";
 
@@ -76,17 +77,38 @@ export const ReadStateHelper = {
 
   getProjectSoilDistribution(steps: ProjectFormState["urbanProject"]["steps"]) {
     if (BENEFRICHES_ENV.urbanProjectUsesFlowEnabled) {
+      const publicGreenSpacesSoilsDistribution = this.getStepAnswers(
+        steps,
+        "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION",
+      )?.publicGreenSpacesSoilsDistribution;
+
       const spacesSurfaceAreaDistribution = this.getStepAnswers(
         steps,
         "URBAN_PROJECT_SPACES_SURFACE_AREA",
       )?.spacesSurfaceAreaDistribution;
 
-      return typedObjectEntries(spacesSurfaceAreaDistribution ?? {})
-        .filter(([_, surfaceArea]) => surfaceArea)
-        .map(([soilType, surfaceArea = 0]) => ({
-          surfaceArea,
-          soilType,
-        }));
+      const merged = new Map<SoilType, number>();
+
+      for (const [soilType, surfaceArea] of typedObjectEntries(
+        publicGreenSpacesSoilsDistribution ?? {},
+      )) {
+        if (surfaceArea) {
+          merged.set(soilType, (merged.get(soilType) ?? 0) + surfaceArea);
+        }
+      }
+
+      for (const [soilType, surfaceArea] of typedObjectEntries(
+        spacesSurfaceAreaDistribution ?? {},
+      )) {
+        if (surfaceArea) {
+          merged.set(soilType, (merged.get(soilType) ?? 0) + surfaceArea);
+        }
+      }
+
+      return [...merged.entries()].map(([soilType, surfaceArea]) => ({
+        surfaceArea,
+        soilType,
+      }));
     }
 
     const publicSpacesDistribution = this.getStepAnswers(

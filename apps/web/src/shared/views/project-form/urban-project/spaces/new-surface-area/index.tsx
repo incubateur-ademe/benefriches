@@ -8,8 +8,14 @@ import SpacesSurfaceAreaForm from "./SpacesSurfaceAreaForm";
 export default function SpacesSurfaceAreaContainer() {
   const { onBack, onRequestStepCompletion, selectSpacesSurfaceAreaViewData } = useProjectForm();
 
-  const { spacesSurfaceAreaDistribution, selectedSpaces, siteSurfaceArea, spacesWithConstraints } =
-    useAppSelector(selectSpacesSurfaceAreaViewData);
+  const {
+    spacesSurfaceAreaDistribution,
+    selectedSpaces,
+    totalSurfaceArea,
+    spacesWithConstraints,
+    nonGreenSpacesUses,
+    hasPublicGreenSpaces,
+  } = useAppSelector(selectSpacesSurfaceAreaViewData);
 
   const { inputMode } = useSurfaceAreaInputMode();
 
@@ -18,7 +24,7 @@ export default function SpacesSurfaceAreaContainer() {
       ? getSurfaceAreaDistributionWithUnit(
           spacesSurfaceAreaDistribution,
           "percentage",
-          siteSurfaceArea,
+          totalSurfaceArea,
         ).value
       : (spacesSurfaceAreaDistribution ?? {});
 
@@ -32,9 +38,11 @@ export default function SpacesSurfaceAreaContainer() {
       }}
       onBack={onBack}
       initialValues={initialValues}
-      totalSurfaceArea={siteSurfaceArea}
+      totalSurfaceArea={totalSurfaceArea}
       selectedSpaces={selectedSpaces}
       spacesWithConstraints={spacesWithConstraints}
+      nonGreenSpacesUses={nonGreenSpacesUses}
+      hasPublicGreenSpaces={hasPublicGreenSpaces}
     />
   );
 }

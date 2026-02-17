@@ -42,7 +42,7 @@ describe("Urban project creation - Steps - Spaces selection", () => {
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_SURFACE_AREA");
   });
 
-  it("should return previous as URBAN_PROJECT_SPACES_INTRODUCTION", () => {
+  it("should return previous as URBAN_PROJECT_SPACES_INTRODUCTION when no public green spaces", () => {
     const store = createTestStore({
       currentStep: "URBAN_PROJECT_SPACES_SELECTION",
       steps: {
@@ -60,6 +60,39 @@ describe("Urban project creation - Steps - Spaces selection", () => {
     store.dispatch(creationProjectFormUrbanActions.navigateToPrevious());
 
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_INTRODUCTION");
+  });
+
+  it("should return previous as URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION when public green spaces selected", () => {
+    const store = createTestStore({
+      currentStep: "URBAN_PROJECT_SPACES_SELECTION",
+      steps: {
+        URBAN_PROJECT_USES_SELECTION: {
+          completed: true,
+          payload: { usesSelection: ["RESIDENTIAL", "PUBLIC_GREEN_SPACES"] },
+        },
+        URBAN_PROJECT_USES_FLOOR_SURFACE_AREA: {
+          completed: true,
+          payload: { usesFloorSurfaceAreaDistribution: { RESIDENTIAL: 8000 } },
+        },
+        URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA: {
+          completed: true,
+          payload: { publicGreenSpacesSurfaceArea: 5000 },
+        },
+        URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION: {
+          completed: true,
+          payload: {
+            publicGreenSpacesSoilsDistribution: {
+              PRAIRIE_GRASS: 2000,
+              ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 3000,
+            },
+          },
+        },
+      },
+    });
+
+    store.dispatch(creationProjectFormUrbanActions.navigateToPrevious());
+
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION");
   });
 
   it("should have BUILDINGS in default answers when uses include building", () => {

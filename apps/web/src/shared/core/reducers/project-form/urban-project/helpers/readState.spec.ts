@@ -383,6 +383,69 @@ describe("ReadStateHelper", () => {
 
         expect(result).toEqual([]);
       });
+
+      it("should merge public green spaces soils and other spaces soils", () => {
+        const steps: ProjectFormState["urbanProject"]["steps"] = {
+          URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION: {
+            completed: true,
+            payload: {
+              publicGreenSpacesSoilsDistribution: {
+                PRAIRIE_GRASS: 2000,
+                WATER: 500,
+              },
+            },
+          },
+          URBAN_PROJECT_SPACES_SURFACE_AREA: {
+            completed: true,
+            payload: {
+              spacesSurfaceAreaDistribution: {
+                BUILDINGS: 3000,
+                IMPERMEABLE_SOILS: 1500,
+              },
+            },
+          },
+        };
+
+        const result = ReadStateHelper.getProjectSoilDistribution(steps);
+
+        expect(result).toEqual([
+          { surfaceArea: 2000, soilType: "PRAIRIE_GRASS" },
+          { surfaceArea: 500, soilType: "WATER" },
+          { surfaceArea: 3000, soilType: "BUILDINGS" },
+          { surfaceArea: 1500, soilType: "IMPERMEABLE_SOILS" },
+        ]);
+      });
+
+      it("should combine surface areas for same soil type across both distributions", () => {
+        const steps: ProjectFormState["urbanProject"]["steps"] = {
+          URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION: {
+            completed: true,
+            payload: {
+              publicGreenSpacesSoilsDistribution: {
+                ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 1000,
+                WATER: 500,
+              },
+            },
+          },
+          URBAN_PROJECT_SPACES_SURFACE_AREA: {
+            completed: true,
+            payload: {
+              spacesSurfaceAreaDistribution: {
+                BUILDINGS: 2000,
+                ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 800,
+              },
+            },
+          },
+        };
+
+        const result = ReadStateHelper.getProjectSoilDistribution(steps);
+
+        expect(result).toEqual([
+          { surfaceArea: 1800, soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED" },
+          { surfaceArea: 500, soilType: "WATER" },
+          { surfaceArea: 2000, soilType: "BUILDINGS" },
+        ]);
+      });
     });
   });
 

@@ -1,8 +1,10 @@
-import type { SoilType, SurfaceAreaDistributionJson } from "shared";
+import type { ReactNode } from "react";
+import type { SoilType, SurfaceAreaDistributionJson, UrbanProjectUse } from "shared";
 
 import {
   getDescriptionForSpace,
   getLabelForSpace,
+  getLabelForUrbanProjectUse,
 } from "@/features/create-project/core/urban-project/urbanProject";
 import { useSurfaceAreaInputMode } from "@/features/create-project/views/useSurfaceAreaInputMode";
 import { formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
@@ -20,6 +22,8 @@ type Props = {
   totalSurfaceArea: number;
   selectedSpaces: SoilType[];
   spacesWithConstraints: SpaceConstraint[];
+  nonGreenSpacesUses: UrbanProjectUse[];
+  hasPublicGreenSpaces: boolean;
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
 };
@@ -38,11 +42,44 @@ const getHintTextForSoil = (
   return getDescriptionForSpace(soilType);
 };
 
+const getTitle = (
+  nonGreenSpacesUses: UrbanProjectUse[],
+  hasPublicGreenSpaces: boolean,
+): ReactNode => {
+  if (nonGreenSpacesUses.length === 1) {
+    const useName = getLabelForUrbanProjectUse(nonGreenSpacesUses[0]!);
+    return (
+      <>
+        Quelle sera la superficie des sols et espaces au sein de l'usage <strong>{useName}</strong>
+        &nbsp;?
+      </>
+    );
+  }
+
+  if (hasPublicGreenSpaces) {
+    return "Quelle sera la superficie des sols et espaces au sein des autres usages\u00a0?";
+  }
+
+  return "Quelle sera la superficie des sols et espaces au sein du projet urbain\u00a0?";
+};
+
+const getUsesDescription = (
+  nonGreenSpacesUses: UrbanProjectUse[],
+  hasPublicGreenSpaces: boolean,
+): ReactNode | undefined => {
+  if (!hasPublicGreenSpaces || nonGreenSpacesUses.length <= 1) {
+    return undefined;
+  }
+  return <p>{nonGreenSpacesUses.map(getLabelForUrbanProjectUse).join(", ")}</p>;
+};
+
 function SpacesSurfaceAreaForm({
   selectedSpaces,
   initialValues,
   totalSurfaceArea,
   spacesWithConstraints,
+  nonGreenSpacesUses,
+  hasPublicGreenSpaces,
   onSubmit,
   onBack,
 }: Props) {
@@ -51,11 +88,12 @@ function SpacesSurfaceAreaForm({
   return (
     <SurfaceAreaDistributionForm
       initialValues={initialValues}
-      title="Quelle sera la superficie de chaque type d'espace&nbsp;?"
+      title={getTitle(nonGreenSpacesUses, hasPublicGreenSpaces)}
       instructions={
         <FormInfo>
+          {getUsesDescription(nonGreenSpacesUses, hasPublicGreenSpaces)}
           <p>
-            La surface totale du site est de <strong>{formatSurfaceArea(totalSurfaceArea)}</strong>.
+            La surface totale est de <strong>{formatSurfaceArea(totalSurfaceArea)}</strong>.
           </p>
           <p>
             Pour les espaces naturels ou agricoles, la surface ne peut pas dépasser celle existant

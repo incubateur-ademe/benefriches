@@ -1,10 +1,12 @@
 import { fr } from "@codegouvfr/react-dsfr";
+import type { ReactNode } from "react";
 import { Controller, useForm } from "react-hook-form";
-import type { SoilType } from "shared";
+import type { SoilType, UrbanProjectUse } from "shared";
 
 import {
   getDescriptionForSpace,
   getLabelForSpace,
+  getLabelForUrbanProjectUse,
 } from "@/features/create-project/core/urban-project/urbanProject";
 import { getPictogramForSoilType } from "@/shared/core/label-mapping/soilTypeLabelMapping";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
@@ -21,6 +23,8 @@ type Props = {
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
   selectableSoils: SoilType[];
+  nonGreenSpacesUses: UrbanProjectUse[];
+  hasPublicGreenSpaces: boolean;
 };
 
 type SoilOptionsByCategory = { category: string; options: SoilType[] }[];
@@ -87,7 +91,45 @@ const SoilTypeTile = ({ soilType, isSelected, onChange }: SoilTypeTileProps) => 
   );
 };
 
-function SpacesSelectionForm({ initialValues, onSubmit, onBack, selectableSoils }: Props) {
+const getTitle = (
+  nonGreenSpacesUses: UrbanProjectUse[],
+  hasPublicGreenSpaces: boolean,
+): ReactNode => {
+  if (nonGreenSpacesUses.length === 1) {
+    const useName = getLabelForUrbanProjectUse(nonGreenSpacesUses[0]!);
+    return (
+      <>
+        Quels types de sols et espaces y aura-t-il au sein de l'usage <strong>{useName}</strong>
+        &nbsp;?
+      </>
+    );
+  }
+
+  if (hasPublicGreenSpaces) {
+    return "Quels types de sols et espaces y aura-t-il au sein des autres usages\u00a0?";
+  }
+
+  return "Quels types de sols et espaces y aura-t-il au sein du projet urbain\u00a0?";
+};
+
+const getUsesDescription = (
+  nonGreenSpacesUses: UrbanProjectUse[],
+  hasPublicGreenSpaces: boolean,
+): ReactNode | undefined => {
+  if (!hasPublicGreenSpaces || nonGreenSpacesUses.length <= 1) {
+    return undefined;
+  }
+  return <p>{nonGreenSpacesUses.map(getLabelForUrbanProjectUse).join(", ")}</p>;
+};
+
+function SpacesSelectionForm({
+  initialValues,
+  onSubmit,
+  onBack,
+  selectableSoils,
+  nonGreenSpacesUses,
+  hasPublicGreenSpaces,
+}: Props) {
   const { control, handleSubmit, formState } = useForm<FormValues>({
     defaultValues: { soils: initialValues },
   });
@@ -98,9 +140,10 @@ function SpacesSelectionForm({ initialValues, onSubmit, onBack, selectableSoils 
 
   return (
     <WizardFormLayout
-      title="Quels types d'espaces y aura-t-il au sein du projet urbain&nbsp;?"
+      title={getTitle(nonGreenSpacesUses, hasPublicGreenSpaces)}
       instructions={
         <FormInfo>
+          {getUsesDescription(nonGreenSpacesUses, hasPublicGreenSpaces)}
           <h3>Pourquoi est-ce important de bien renseigner les espaces ?</h3>
           <p>
             Pour connaître la typologie des sols et donc la quantité de carbone que pourra stocker

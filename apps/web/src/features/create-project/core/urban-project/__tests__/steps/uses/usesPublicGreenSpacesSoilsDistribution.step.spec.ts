@@ -6,7 +6,7 @@ import { creationProjectFormUrbanActions } from "../../../urbanProject.actions";
 import { createTestStore, getCurrentStep } from "../../_testStoreHelpers";
 
 describe("Urban project creation - Steps - public green spaces soils distribution", () => {
-  it("should complete step and navigate to URBAN_PROJECT_SPACES_SOILS_SUMMARY", () => {
+  it("should complete step and navigate to URBAN_PROJECT_SPACES_SELECTION", () => {
     const store = createTestStore({
       steps: {
         URBAN_PROJECT_USES_SELECTION: {
@@ -52,8 +52,12 @@ describe("Urban project creation - Steps - public green spaces soils distributio
           },
         },
       },
+      URBAN_PROJECT_SPACES_SELECTION: {
+        completed: false,
+        defaultValues: { spacesSelection: ["BUILDINGS"] },
+      },
     });
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_SOILS_SUMMARY");
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_SELECTION");
   });
 
   it("should navigate back to PUBLIC_GREEN_SPACES_INTRODUCTION when site has constrained soils", () => {

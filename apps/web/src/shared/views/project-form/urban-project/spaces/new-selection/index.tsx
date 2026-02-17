@@ -6,7 +6,8 @@ import SpacesSelectionForm from "./SpacesSelectionForm";
 export default function SpacesSelectionContainer() {
   const { onBack, onRequestStepCompletion, selectSpacesSelectionViewData } = useProjectForm();
 
-  const { selectedSpaces, selectableSoils } = useAppSelector(selectSpacesSelectionViewData);
+  const { selectedSpaces, selectableSoils, nonGreenSpacesUses, hasPublicGreenSpaces } =
+    useAppSelector(selectSpacesSelectionViewData);
 
   return (
     <SpacesSelectionForm
@@ -19,6 +20,8 @@ export default function SpacesSelectionContainer() {
       onBack={onBack}
       initialValues={selectedSpaces}
       selectableSoils={selectableSoils}
+      nonGreenSpacesUses={nonGreenSpacesUses}
+      hasPublicGreenSpaces={hasPublicGreenSpaces}
     />
   );
 }

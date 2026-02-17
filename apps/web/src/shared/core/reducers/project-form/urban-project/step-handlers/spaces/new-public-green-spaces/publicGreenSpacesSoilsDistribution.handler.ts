@@ -20,7 +20,7 @@ export const PublicGreenSpacesSoilsDistributionHandler: AnswerStepHandler<typeof
   },
 
   getNextStepId() {
-    return "URBAN_PROJECT_SPACES_SOILS_SUMMARY";
+    return "URBAN_PROJECT_SPACES_SELECTION";
   },
 
   getDefaultAnswers(context) {

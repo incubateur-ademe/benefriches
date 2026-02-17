@@ -9,7 +9,15 @@ const STEP_ID = "URBAN_PROJECT_SPACES_SELECTION";
 export const SpacesSelectionHandler: AnswerStepHandler<typeof STEP_ID> = {
   stepId: STEP_ID,
 
-  getPreviousStepId() {
+  getPreviousStepId(context) {
+    const selectedUses =
+      ReadStateHelper.getStepAnswers(context.stepsState, "URBAN_PROJECT_USES_SELECTION")
+        ?.usesSelection ?? [];
+
+    if (selectedUses.includes("PUBLIC_GREEN_SPACES")) {
+      return "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION";
+    }
+
     return "URBAN_PROJECT_SPACES_INTRODUCTION";
   },
 
