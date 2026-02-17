@@ -105,7 +105,7 @@ function ProjectTileMenu({
             <Button
               iconId="ri-file-copy-line"
               onClick={onDuplicateProject}
-              title={`Créer une variante du projet`}
+              title={`Évaluer une variante du projet`}
               className="py-1.5 px-4 w-full hover:bg-white hover:dark:bg-black"
               priority="tertiary no outline"
               size="small"

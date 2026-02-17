@@ -29,7 +29,7 @@ function ProjectImpactFooter({ projectId, siteId, isUpdateEnabled }: Props) {
           className={classNames("mb-2", "w-34 h-34")}
         />
         <div>
-          <h4>Partagez l’évaluation avec vos collègues, partenaires, élu·es...</h4>
+          <h4>Partagez l'évaluation avec vos collègues, partenaires, élu·es...</h4>
           <Button
             priority="primary"
             iconId="fr-icon-file-download-line"
@@ -52,7 +52,7 @@ function ProjectImpactFooter({ projectId, siteId, isUpdateEnabled }: Props) {
           className={classNames("mb-2", "w-34 h-34")}
         />
         <div>
-          <h4>Testez d’autres paramètres et obtenez des impacts différents</h4>
+          <h4>Testez d'autres paramètres et obtenez des impacts différents</h4>
           {isUpdateEnabled ? (
             <Button
               priority="secondary"
@@ -69,7 +69,7 @@ function ProjectImpactFooter({ projectId, siteId, isUpdateEnabled }: Props) {
               iconId="fr-icon-file-add-line"
               linkProps={routes.createProject({ siteId }).link}
             >
-              Créer un nouveau projet sur le site
+              Évaluer un nouveau projet sur le site
             </Button>
           )}
         </div>
