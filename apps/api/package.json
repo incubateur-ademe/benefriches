@@ -12,6 +12,7 @@
     "build": "nest build",
     "start": "nest start",
     "start:dev": "nest start --watch",
+    "dev": "pnpm start:dev",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/src/main",
     "typecheck": "tsc --noEmit",
