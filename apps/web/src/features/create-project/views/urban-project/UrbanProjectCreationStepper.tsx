@@ -59,7 +59,7 @@ function UrbanProjectCreationStepper({ step: currentStep }: Props) {
                   key={subStep.title}
                   title={subStep.title}
                   variant={subStep.variant}
-                  className="pl-6"
+                  className="text-xs pl-6"
                   isFormDisabled={isFormDisabled}
                   isNextAvailable={nextEmptyStepSubGroupId === subStep.subGroupId}
                   onClick={() => {
