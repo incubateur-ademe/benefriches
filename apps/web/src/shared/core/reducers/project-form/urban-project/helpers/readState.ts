@@ -1,4 +1,5 @@
 import {
+  doesUseIncludeBuildings,
   filterObject,
   getProjectSoilDistributionByType,
   getSoilTypeForLivingAndActivitySpace,
@@ -42,7 +43,17 @@ export const ReadStateHelper = {
     return this.getStep(steps, stepId)?.defaultValues;
   },
 
+  hasUsesWithBuildings(steps: ProjectFormState["urbanProject"]["steps"]) {
+    const selectedUses =
+      this.getStepAnswers(steps, "URBAN_PROJECT_USES_SELECTION")?.usesSelection ?? [];
+    return selectedUses.some((use) => doesUseIncludeBuildings(use));
+  },
+
   hasBuildings(steps: ProjectFormState["urbanProject"]["steps"]) {
+    if (this.hasUsesWithBuildings(steps)) {
+      return true;
+    }
+
     const livingAndActivitySpacesDistribution = this.getStepAnswers(
       steps,
       "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",

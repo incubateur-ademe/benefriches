@@ -1,3 +1,4 @@
+import { BENEFRICHES_ENV } from "@/shared/views/envVars";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 
@@ -15,6 +16,7 @@ export default function BuildingsIntroductionContainer() {
       onNext={onNext}
       onBack={onBack}
       buildingsFootprintSurfaceArea={livingAndActivitySpacesDistribution?.BUILDINGS ?? 0}
+      isUsesFlow={BENEFRICHES_ENV.urbanProjectUsesFlowEnabled}
     />
   );
 }

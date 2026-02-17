@@ -10,6 +10,10 @@ export const SoilsCarbonSummaryHandler: InfoStepHandler = {
   },
 
   getNextStepId(context) {
+    if (ReadStateHelper.hasUsesWithBuildings(context.stepsState)) {
+      return "URBAN_PROJECT_BUILDINGS_INTRODUCTION";
+    }
+
     if (context.siteData?.hasContaminatedSoils) {
       return "URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION";
     }

@@ -90,7 +90,7 @@ describe("Urban project creation - Steps - Spaces introduction", () => {
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_SELECTION");
   });
 
-  it("should go back to URBAN_PROJECT_USES_FLOOR_SURFACE_AREA when building uses exist", () => {
+  it("should go back to URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA when building uses exist with PUBLIC_GREEN_SPACES", () => {
     const store = createTestStore({
       currentStep: "URBAN_PROJECT_SPACES_INTRODUCTION",
       steps: {
@@ -98,16 +98,32 @@ describe("Urban project creation - Steps - Spaces introduction", () => {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL", "PUBLIC_GREEN_SPACES"] },
         },
-        URBAN_PROJECT_USES_FLOOR_SURFACE_AREA: {
+        URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA: {
           completed: true,
-          payload: { usesFloorSurfaceAreaDistribution: { RESIDENTIAL: 8000 } },
+          payload: { publicGreenSpacesSurfaceArea: 5000 },
         },
       },
     });
 
     store.dispatch(creationProjectFormUrbanActions.navigateToPrevious());
 
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_USES_FLOOR_SURFACE_AREA");
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA");
+  });
+
+  it("should go back to URBAN_PROJECT_USES_SELECTION when building uses exist without PUBLIC_GREEN_SPACES", () => {
+    const store = createTestStore({
+      currentStep: "URBAN_PROJECT_SPACES_INTRODUCTION",
+      steps: {
+        URBAN_PROJECT_USES_SELECTION: {
+          completed: true,
+          payload: { usesSelection: ["RESIDENTIAL"] },
+        },
+      },
+    });
+
+    store.dispatch(creationProjectFormUrbanActions.navigateToPrevious());
+
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_USES_SELECTION");
   });
 
   it("should go back to URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA when PUBLIC_GREEN_SPACES is selected without building uses", () => {

@@ -12,25 +12,37 @@ type Props = {
   onNext: () => void;
   onBack: () => void;
   buildingsFootprintSurfaceArea: number;
+  isUsesFlow?: boolean;
 };
 
-const BuildingsIntroduction = ({ onNext, onBack, buildingsFootprintSurfaceArea }: Props) => {
+const BuildingsIntroduction = ({
+  onNext,
+  onBack,
+  buildingsFootprintSurfaceArea,
+  isUsesFlow,
+}: Props) => {
   return (
     <EditorialPageLayout>
       <EditorialPageIcon>🏢</EditorialPageIcon>
       <EditorialPageTitle>
-        Nous allons maintenant parler des bâtiments qui composeront les lieux d'habitation et
-        d'activité.
+        {isUsesFlow
+          ? "Parlons maintenant des bâtiments."
+          : "Nous allons maintenant parler des bâtiments qui composeront les lieux d'habitation et d'activité."}
       </EditorialPageTitle>
-      <EditorialPageText>
-        Vous avez indiqué que les lieux d'habitation et d'activité comporteront{" "}
-        <strong>{formatSurfaceArea(buildingsFootprintSurfaceArea)}</strong> de surface au sol de
-        bâtiments.
-      </EditorialPageText>
-      <EditorialPageText>
-        Dans les étapes suivantes, vous allez pouvoir renseigner les interventions que vous aurez
-        sur les bâtiments, leurs surface de plancher, leurs usages, leurs équipements, etc.
-      </EditorialPageText>
+      {!isUsesFlow && (
+        <>
+          <EditorialPageText>
+            Vous avez indiqué que les lieux d'habitation et d'activité comporteront{" "}
+            <strong>{formatSurfaceArea(buildingsFootprintSurfaceArea)}</strong> de surface au sol de
+            bâtiments.
+          </EditorialPageText>
+          <EditorialPageText>
+            Dans les étapes suivantes, vous allez pouvoir renseigner les interventions que vous
+            aurez sur les bâtiments, leurs surface de plancher, leurs usages, leurs équipements,
+            etc.
+          </EditorialPageText>
+        </>
+      )}
       <EditorialPageButtonsSection>
         <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
       </EditorialPageButtonsSection>

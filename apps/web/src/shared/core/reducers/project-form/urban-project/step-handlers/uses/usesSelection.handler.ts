@@ -1,5 +1,3 @@
-import { doesUseIncludeBuildings } from "shared";
-
 import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
 
 import type { AnswerStepHandler, StepInvalidationRule } from "../stepHandler.type";
@@ -18,12 +16,6 @@ export const UsesSelectionHandler: AnswerStepHandler<typeof STEP_ID> = {
 
     if (selectedUses.includes("PUBLIC_GREEN_SPACES")) {
       return "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA";
-    }
-
-    const hasBuildingUses = selectedUses.some((use) => doesUseIncludeBuildings(use));
-
-    if (hasBuildingUses) {
-      return "URBAN_PROJECT_USES_FLOOR_SURFACE_AREA";
     }
 
     return "URBAN_PROJECT_SPACES_INTRODUCTION";

@@ -6,6 +6,10 @@ export const BuildingsIntroductionHandler: InfoStepHandler = {
   stepId: "URBAN_PROJECT_BUILDINGS_INTRODUCTION",
 
   getPreviousStepId(context) {
+    if (ReadStateHelper.hasUsesWithBuildings(context.stepsState)) {
+      return "URBAN_PROJECT_SOILS_CARBON_SUMMARY";
+    }
+
     const decontaminationPlan = ReadStateHelper.getStepAnswers(
       context.stepsState,
       "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
@@ -22,7 +26,11 @@ export const BuildingsIntroductionHandler: InfoStepHandler = {
     return "URBAN_PROJECT_SOILS_CARBON_SUMMARY";
   },
 
-  getNextStepId() {
+  getNextStepId(context) {
+    if (ReadStateHelper.hasUsesWithBuildings(context.stepsState)) {
+      return "URBAN_PROJECT_USES_FLOOR_SURFACE_AREA";
+    }
+
     return "URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA";
   },
 };

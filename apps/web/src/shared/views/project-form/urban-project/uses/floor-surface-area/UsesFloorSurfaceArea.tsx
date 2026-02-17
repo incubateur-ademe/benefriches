@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import {
   doesUseIncludeBuildings,
+  sumObjectValues,
   type SurfaceAreaDistributionJson,
   type UrbanProjectUse,
 } from "shared";
@@ -12,6 +13,7 @@ import {
 import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/core/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RowDecimalsNumericInput from "@/shared/views/components/form/NumericInput/RowDecimalsNumericInput";
+import RowNumericInput from "@/shared/views/components/form/NumericInput/RowNumericInput";
 import { requiredNumericFieldRegisterOptions } from "@/shared/views/components/form/NumericInput/registerOptions";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
@@ -28,13 +30,15 @@ type FormValues = SurfaceAreaDistributionJson<UrbanProjectUse>;
 function UsesFloorSurfaceArea({ selectedUses, initialValues, onSubmit, onBack }: Props) {
   const usesWithBuildings = selectedUses.filter((use) => doesUseIncludeBuildings(use));
 
-  const { register, handleSubmit, formState } = useForm<FormValues>({
+  const { register, handleSubmit, formState, watch } = useForm<FormValues>({
     defaultValues: initialValues,
   });
 
+  const totalAllocatedSurfaceArea = sumObjectValues(watch());
+
   return (
     <WizardFormLayout
-      title="Quelle surface de plancher feront les différents bâtiments du projet urbain&nbsp;?"
+      title="Quelle surface de plancher feront les différents usages&nbsp;?"
       instructions={
         <FormInfo>
           <p>
@@ -57,6 +61,14 @@ function UsesFloorSurfaceArea({ selectedUses, initialValues, onSubmit, onBack }:
             />
           );
         })}
+        <RowNumericInput
+          label="Total"
+          addonText={SQUARE_METERS_HTML_SYMBOL}
+          nativeInputProps={{
+            value: totalAllocatedSurfaceArea,
+          }}
+          disabled
+        />
         <BackNextButtonsGroup onBack={onBack} nextLabel="Valider" disabled={!formState.isValid} />
       </form>
     </WizardFormLayout>

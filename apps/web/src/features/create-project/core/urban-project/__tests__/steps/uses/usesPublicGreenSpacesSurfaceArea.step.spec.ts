@@ -6,7 +6,7 @@ import { creationProjectFormUrbanActions } from "../../../urbanProject.actions";
 import { createTestStore, getCurrentStep } from "../../_testStoreHelpers";
 
 describe("Urban project creation - Steps - public green spaces surface area", () => {
-  it("should complete step and go to URBAN_PROJECT_USES_FLOOR_SURFACE_AREA when building uses selected", () => {
+  it("should complete step and go to URBAN_PROJECT_SPACES_INTRODUCTION when building uses selected", () => {
     const store = createTestStore({
       steps: {
         URBAN_PROJECT_USES_SELECTION: {
@@ -37,7 +37,7 @@ describe("Urban project creation - Steps - public green spaces surface area", ()
         payload: { publicGreenSpacesSurfaceArea: 5000 },
       },
     });
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_USES_FLOOR_SURFACE_AREA");
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_INTRODUCTION");
   });
 
   it("should complete step and go to URBAN_PROJECT_SPACES_INTRODUCTION when no building uses selected", () => {

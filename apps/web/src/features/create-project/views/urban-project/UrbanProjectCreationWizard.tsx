@@ -241,7 +241,7 @@ const getCurrentStepView = (step: UrbanProjectCreationStep): Exclude<ReactNode, 
     case "URBAN_PROJECT_USES_FLOOR_SURFACE_AREA":
       return (
         <>
-          <HtmlTitle>{`Surfaces de plancher - Usages - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
+          <HtmlTitle>{`Surfaces de plancher - Bâtiments - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
           <UsesFloorSurfaceArea />
         </>
       );

@@ -53,7 +53,7 @@ describe("Urban project creation - Steps - Uses selection", () => {
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA");
   });
 
-  it("should complete step with only building uses (no PUBLIC_GREEN_SPACES) and go to URBAN_PROJECT_USES_FLOOR_SURFACE_AREA", () => {
+  it("should complete step with only building uses (no PUBLIC_GREEN_SPACES) and go to URBAN_PROJECT_SPACES_INTRODUCTION", () => {
     const store = createTestStore();
 
     store.dispatch(
@@ -65,7 +65,7 @@ describe("Urban project creation - Steps - Uses selection", () => {
       }),
     );
 
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_USES_FLOOR_SURFACE_AREA");
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_INTRODUCTION");
   });
 
   it("should delete URBAN_PROJECT_USES_FLOOR_SURFACE_AREA when uses selection changes", () => {
@@ -145,6 +145,6 @@ describe("Urban project creation - Steps - Uses selection", () => {
 
     // No cascading changes, direct completion
     expect(store.getState().projectCreation.urbanProject.pendingStepCompletion).toBeUndefined();
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_USES_FLOOR_SURFACE_AREA");
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_INTRODUCTION");
   });
 });

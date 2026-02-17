@@ -1,4 +1,4 @@
-import { doesUseIncludeBuildings, isNaturalSoil, typedObjectKeys } from "shared";
+import { isNaturalSoil, typedObjectKeys } from "shared";
 
 import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
 
@@ -11,10 +11,6 @@ export const SpacesIntroductionHandler: InfoStepHandler = {
     const selectedUses =
       ReadStateHelper.getStepAnswers(context.stepsState, "URBAN_PROJECT_USES_SELECTION")
         ?.usesSelection ?? [];
-
-    if (selectedUses.some(doesUseIncludeBuildings)) {
-      return "URBAN_PROJECT_USES_FLOOR_SURFACE_AREA";
-    }
 
     if (selectedUses.includes("PUBLIC_GREEN_SPACES")) {
       return "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA";

@@ -39,9 +39,16 @@ export const SoilsDecontaminationSelectionHandler: AnswerStepHandler<"URBAN_PROJ
     },
 
     getShortcut(context, answers) {
-      const nextStep = ReadStateHelper.hasBuildings(context.stepsState)
-        ? "URBAN_PROJECT_BUILDINGS_INTRODUCTION"
-        : "URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION";
+      const getNextStep = () => {
+        if (ReadStateHelper.hasUsesWithBuildings(context.stepsState)) {
+          return "URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION" as const;
+        }
+        if (ReadStateHelper.hasBuildings(context.stepsState)) {
+          return "URBAN_PROJECT_BUILDINGS_INTRODUCTION" as const;
+        }
+        return "URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION" as const;
+      };
+      const nextStep = getNextStep();
 
       const hasChanged =
         ReadStateHelper.getStepAnswers(

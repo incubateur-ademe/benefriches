@@ -23,6 +23,10 @@ export const SoilsDecontaminationSurfaceAreaHandler: AnswerStepHandler<"URBAN_PR
     },
 
     getNextStepId(context) {
+      if (ReadStateHelper.hasUsesWithBuildings(context.stepsState)) {
+        return "URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION";
+      }
+
       if (ReadStateHelper.hasBuildings(context.stepsState)) {
         return "URBAN_PROJECT_BUILDINGS_INTRODUCTION";
       }

@@ -134,7 +134,6 @@ export const STEP_TO_GROUP_MAPPING: StepToGroupMapping = {
     groupId: "SPACES",
     subGroupId: "SPACES_GREEN_SPACES_SOILS",
   },
-  URBAN_PROJECT_USES_FLOOR_SURFACE_AREA: { groupId: "USES", subGroupId: "USES_FLOOR_AREA" },
   // Espaces (new uses flow)
   URBAN_PROJECT_SPACES_INTRODUCTION: { groupId: "SPACES" },
   URBAN_PROJECT_SPACES_SELECTION: { groupId: "SPACES", subGroupId: "SPACES_SELECTION" },
@@ -195,6 +194,7 @@ export const STEP_TO_GROUP_MAPPING: StepToGroupMapping = {
 
   // Bâtiments
   URBAN_PROJECT_BUILDINGS_INTRODUCTION: { groupId: "BUILDINGS" },
+  URBAN_PROJECT_USES_FLOOR_SURFACE_AREA: { groupId: "BUILDINGS", subGroupId: "USES_FLOOR_AREA" },
   URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA: {
     groupId: "BUILDINGS",
     subGroupId: "FLOOR_SURFACE",
