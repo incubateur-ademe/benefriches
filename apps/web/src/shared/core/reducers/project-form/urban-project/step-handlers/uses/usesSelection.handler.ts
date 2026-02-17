@@ -17,7 +17,7 @@ export const UsesSelectionHandler: AnswerStepHandler<typeof STEP_ID> = {
     const selectedUses = answers?.usesSelection ?? [];
 
     if (selectedUses.includes("PUBLIC_GREEN_SPACES")) {
-      return "URBAN_PROJECT_USES_PUBLIC_GREEN_SPACES_SURFACE_AREA";
+      return "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA";
     }
 
     const hasBuildingUses = selectedUses.some((use) => doesUseIncludeBuildings(use));
@@ -47,13 +47,23 @@ export const UsesSelectionHandler: AnswerStepHandler<typeof STEP_ID> = {
 
     // If public green spaces surface area step exists, delete it when selection changes
     if (
+      ReadStateHelper.getStep(context.stepsState, "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA")
+    ) {
+      rules.push({
+        stepId: "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA",
+        action: "delete",
+      });
+    }
+
+    // If public green spaces soils distribution step exists, delete it when selection changes
+    if (
       ReadStateHelper.getStep(
         context.stepsState,
-        "URBAN_PROJECT_USES_PUBLIC_GREEN_SPACES_SURFACE_AREA",
+        "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION",
       )
     ) {
       rules.push({
-        stepId: "URBAN_PROJECT_USES_PUBLIC_GREEN_SPACES_SURFACE_AREA",
+        stepId: "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION",
         action: "delete",
       });
     }

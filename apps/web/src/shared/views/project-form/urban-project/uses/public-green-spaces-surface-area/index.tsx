@@ -15,7 +15,7 @@ export default function PublicGreenSpacesSurfaceAreaContainer() {
     <PublicGreenSpacesSurfaceArea
       onSubmit={(surfaceArea) => {
         onRequestStepCompletion({
-          stepId: "URBAN_PROJECT_USES_PUBLIC_GREEN_SPACES_SURFACE_AREA",
+          stepId: "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA",
           answers: { publicGreenSpacesSurfaceArea: surfaceArea },
         });
       }}

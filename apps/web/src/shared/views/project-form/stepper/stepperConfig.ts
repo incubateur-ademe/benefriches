@@ -26,6 +26,7 @@ export type StepSubGroupId =
   | "USES_GREEN_SPACES_AREA"
   | "USES_FLOOR_AREA"
   | "SPACES_SELECTION"
+  | "SPACES_GREEN_SPACES_SOILS"
   | "SPACES_SURFACES"
   | "RESIDENTIAL_SPACES"
   | "GREEN_SPACES"
@@ -58,6 +59,9 @@ export const STEP_GROUP_LABELS: Record<StepGroupId | StepSubGroupId, string> = {
   USES_SELECTION: "Choix des usages",
   USES_GREEN_SPACES_AREA: "Espaces verts publics",
   USES_FLOOR_AREA: "Surfaces de plancher",
+
+  // Spaces flow (new)
+  SPACES_GREEN_SPACES_SOILS: "Sols des espaces verts publics",
 
   // Groupes (legacy spaces flow)
   SPACES: "Espaces",
@@ -118,9 +122,17 @@ export const STEP_TO_GROUP_MAPPING: StepToGroupMapping = {
   // Uses flow (new)
   URBAN_PROJECT_USES_INTRODUCTION: { groupId: "USES" },
   URBAN_PROJECT_USES_SELECTION: { groupId: "USES", subGroupId: "USES_SELECTION" },
-  URBAN_PROJECT_USES_PUBLIC_GREEN_SPACES_SURFACE_AREA: {
+  URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA: {
     groupId: "USES",
     subGroupId: "USES_GREEN_SPACES_AREA",
+  },
+  URBAN_PROJECT_PUBLIC_GREEN_SPACES_INTRODUCTION: {
+    groupId: "SPACES",
+    subGroupId: "SPACES_GREEN_SPACES_SOILS",
+  },
+  URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION: {
+    groupId: "SPACES",
+    subGroupId: "SPACES_GREEN_SPACES_SOILS",
   },
   URBAN_PROJECT_USES_FLOOR_SURFACE_AREA: { groupId: "USES", subGroupId: "USES_FLOOR_AREA" },
   // Espaces (new uses flow)

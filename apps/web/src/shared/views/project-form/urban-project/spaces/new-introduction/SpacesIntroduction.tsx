@@ -16,7 +16,9 @@ const SpacesIntroduction = ({ onNext, onBack }: Props) => {
   return (
     <EditorialPageLayout>
       <EditorialPageIcon>🌾</EditorialPageIcon>
-      <EditorialPageTitle>Parlons ensuite des espaces au sein du projet urbain.</EditorialPageTitle>
+      <EditorialPageTitle>
+        Parlons maintenant des sols et espaces qui composeront le projet urbain.
+      </EditorialPageTitle>
       <EditorialPageText>
         Quels types de sols composeront votre projet ? Bâtiments, sols imperméables, espaces verts,
         prairies... Sélectionnez tous les types d'espaces prévus.

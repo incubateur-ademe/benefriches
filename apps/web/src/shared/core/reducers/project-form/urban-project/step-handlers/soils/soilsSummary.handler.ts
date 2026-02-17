@@ -6,7 +6,16 @@ export const SoilsSummaryHandler: InfoStepHandler = {
   stepId: "URBAN_PROJECT_SPACES_SOILS_SUMMARY",
 
   getPreviousStepId(context) {
-    // Check if we came from the new spaces flow (uses flow)
+    const selectedUses =
+      ReadStateHelper.getStepAnswers(context.stepsState, "URBAN_PROJECT_USES_SELECTION")
+        ?.usesSelection ?? [];
+
+    // New uses flow with public green spaces
+    if (selectedUses.includes("PUBLIC_GREEN_SPACES")) {
+      return "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION";
+    }
+
+    // New spaces flow (no public green spaces)
     if (ReadStateHelper.getStep(context.stepsState, "URBAN_PROJECT_SPACES_SURFACE_AREA")) {
       return "URBAN_PROJECT_SPACES_SURFACE_AREA";
     }

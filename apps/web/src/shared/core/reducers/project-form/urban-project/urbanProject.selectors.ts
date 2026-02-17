@@ -1,5 +1,10 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { isConstrainedSoilType, ORDERED_SOIL_TYPES } from "shared";
+import {
+  isConstrainedSoilType,
+  isNaturalSoil,
+  ORDERED_SOIL_TYPES,
+  typedObjectEntries,
+} from "shared";
 import type {
   SoilsDistribution,
   SoilType,
@@ -195,14 +200,8 @@ export const createUrbanProjectFormSelectors = (
     [selectStepState, selectors.selectSiteSurfaceArea],
     (steps, siteSurfaceArea): PublicGreenSpacesSurfaceAreaViewData => {
       const answers =
-        ReadStateHelper.getStepAnswers(
-          steps,
-          "URBAN_PROJECT_USES_PUBLIC_GREEN_SPACES_SURFACE_AREA",
-        ) ??
-        ReadStateHelper.getDefaultAnswers(
-          steps,
-          "URBAN_PROJECT_USES_PUBLIC_GREEN_SPACES_SURFACE_AREA",
-        );
+        ReadStateHelper.getStepAnswers(steps, "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA") ??
+        ReadStateHelper.getDefaultAnswers(steps, "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA");
 
       return {
         publicGreenSpacesSurfaceArea: answers?.publicGreenSpacesSurfaceArea,
@@ -317,6 +316,70 @@ export const createUrbanProjectFormSelectors = (
     },
   );
 
+  type PublicGreenSpacesSoilsDistributionViewData = {
+    availableSoilTypes: SoilType[];
+    publicGreenSpacesSoilsDistribution: Partial<Record<SoilType, number>> | undefined;
+    totalSurfaceArea: number;
+    existingNaturalSoilsConstraints: SpaceConstraint[];
+  };
+
+  const selectPublicGreenSpacesSoilsDistributionViewData = createSelector(
+    [selectStepState, selectors.selectSiteSoilsDistribution],
+    (steps, siteSoilsDistribution): PublicGreenSpacesSoilsDistributionViewData => {
+      const distributionAnswers =
+        ReadStateHelper.getStepAnswers(
+          steps,
+          "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION",
+        ) ??
+        ReadStateHelper.getDefaultAnswers(
+          steps,
+          "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION",
+        );
+
+      const totalSurfaceArea =
+        ReadStateHelper.getStepAnswers(steps, "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA")
+          ?.publicGreenSpacesSurfaceArea ?? 0;
+
+      const siteSoils = Object.keys(siteSoilsDistribution) as SoilType[];
+
+      // All soil types except BUILDINGS, with constrained soils filtered to only those on site
+      const availableSoilTypes = ORDERED_SOIL_TYPES.filter((soilType) => {
+        if (soilType === "BUILDINGS") return false;
+        if (!isConstrainedSoilType(soilType)) return true;
+        return siteSoils.includes(soilType);
+      });
+
+      const existingNaturalSoilsConstraints: SpaceConstraint[] = availableSoilTypes
+        .filter(isNaturalSoil)
+        .map((soilType) => ({
+          soilType,
+          maxSurfaceArea: siteSoilsDistribution[soilType] ?? 0,
+        }));
+
+      return {
+        availableSoilTypes,
+        publicGreenSpacesSoilsDistribution: distributionAnswers?.publicGreenSpacesSoilsDistribution,
+        totalSurfaceArea,
+        existingNaturalSoilsConstraints,
+      };
+    },
+  );
+
+  type PublicGreenSpacesIntroductionViewData = {
+    existingNaturalSoils: { soilType: SoilType; surfaceArea: number }[];
+  };
+
+  const selectPublicGreenSpacesIntroductionViewData = createSelector(
+    [selectors.selectSiteSoilsDistribution],
+    (siteSoilsDistribution): PublicGreenSpacesIntroductionViewData => {
+      const existingNaturalSoils = typedObjectEntries(siteSoilsDistribution)
+        .filter(([soilType]) => isNaturalSoil(soilType))
+        .map(([soilType, surfaceArea]) => ({ soilType, surfaceArea: surfaceArea ?? 0 }));
+
+      return { existingNaturalSoils };
+    },
+  );
+
   return {
     selectStepState,
     selectProjectSoilsDistributionByType,
@@ -336,6 +399,8 @@ export const createUrbanProjectFormSelectors = (
     selectUsesFloorSurfaceAreaViewData,
     selectSpacesSelectionViewData,
     selectSpacesSurfaceAreaViewData,
+    selectPublicGreenSpacesSoilsDistributionViewData,
+    selectPublicGreenSpacesIntroductionViewData,
     ...selectors,
   };
 };

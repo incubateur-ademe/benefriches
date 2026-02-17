@@ -1,0 +1,46 @@
+import { isNaturalSoil, typedObjectEntries, typedObjectKeys } from "shared";
+import type { SoilType } from "shared";
+
+import type { AnswerStepHandler } from "../../stepHandler.type";
+
+const STEP_ID = "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION";
+
+export const PublicGreenSpacesSoilsDistributionHandler: AnswerStepHandler<typeof STEP_ID> = {
+  stepId: STEP_ID,
+
+  getPreviousStepId(context) {
+    const siteSoilsDistribution = context.siteData?.soilsDistribution ?? {};
+    const hasExistingNaturalSoils = typedObjectKeys(siteSoilsDistribution).some(isNaturalSoil);
+
+    if (hasExistingNaturalSoils) {
+      return "URBAN_PROJECT_PUBLIC_GREEN_SPACES_INTRODUCTION";
+    }
+
+    return "URBAN_PROJECT_SPACES_INTRODUCTION";
+  },
+
+  getNextStepId() {
+    return "URBAN_PROJECT_SPACES_SOILS_SUMMARY";
+  },
+
+  getDefaultAnswers(context) {
+    const siteSoilsDistribution = context.siteData?.soilsDistribution ?? {};
+
+    const existingNaturalSoilsDistribution = typedObjectEntries(siteSoilsDistribution).filter(
+      ([soilType]) => isNaturalSoil(soilType),
+    );
+
+    if (existingNaturalSoilsDistribution.length === 0) {
+      return undefined;
+    }
+
+    const defaultDistribution: Partial<Record<SoilType, number>> = {};
+    for (const [soilType, surfaceArea] of existingNaturalSoilsDistribution) {
+      if (surfaceArea && surfaceArea > 0) {
+        defaultDistribution[soilType] = surfaceArea;
+      }
+    }
+
+    return { publicGreenSpacesSoilsDistribution: defaultDistribution };
+  },
+};

@@ -78,6 +78,14 @@ export const isWetLand = (soilType: SoilType) => {
   return "WET_LAND" === soilType;
 };
 
+const isWater = (soilType: SoilType) => {
+  return "WATER" === soilType;
+};
+
+export const isNaturalSoil = (soilType: SoilType) => {
+  return isForest(soilType) || isPrairie(soilType) || isWetLand(soilType) || isWater(soilType);
+};
+
 export const isSurfaceWithEcosystemBenefits = (soilType: SoilType) => {
   return [...FOREST_SOILS, ...PRAIRIE_SOILS, "ARTIFICIAL_TREE_FILLED", "WET_LAND"].includes(
     soilType,

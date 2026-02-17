@@ -7,6 +7,7 @@ import {
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RowDecimalsNumericInput from "@/shared/views/components/form/NumericInput/RowDecimalsNumericInput";
 import { requiredNumericFieldRegisterOptions } from "@/shared/views/components/form/NumericInput/registerOptions";
+import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -26,7 +27,14 @@ function PublicGreenSpacesSurfaceArea({ initialValue, siteSurfaceArea, onSubmit,
   });
 
   return (
-    <WizardFormLayout title="Quelle superficie feront les espaces verts publics&nbsp;?">
+    <WizardFormLayout
+      title="Quelle superficie feront les espaces verts publics&nbsp;?"
+      instructions={
+        <FormInfo>
+          La surface totale du site est de <strong>{formatSurfaceArea(siteSurfaceArea)}</strong>.
+        </FormInfo>
+      }
+    >
       <form
         onSubmit={handleSubmit(({ surfaceArea }) => {
           onSubmit(surfaceArea);

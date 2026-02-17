@@ -13,7 +13,7 @@ export const UsesFloorSurfaceAreaHandler: AnswerStepHandler<typeof STEP_ID> = {
         ?.usesSelection ?? [];
 
     if (selectedUses.includes("PUBLIC_GREEN_SPACES")) {
-      return "URBAN_PROJECT_USES_PUBLIC_GREEN_SPACES_SURFACE_AREA";
+      return "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA";
     }
 
     return "URBAN_PROJECT_USES_SELECTION";
