@@ -83,7 +83,7 @@ describe("RevenueIntroductionHandler", () => {
   });
 
   describe("getPreviousStepId", () => {
-    it("should return URBAN_PROJECT_BUILDINGS_RESALE_SELECTION when project has buildings", () => {
+    it("should return URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES when project has buildings and no buildings resale planned", () => {
       const stepsState: ProjectFormState["urbanProject"]["steps"] = {
         URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION: {
           completed: true,
@@ -91,14 +91,41 @@ describe("RevenueIntroductionHandler", () => {
             livingAndActivitySpacesDistribution: { BUILDINGS: 1000 },
           },
         },
+        URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
+          completed: true,
+          payload: {
+            buildingsResalePlannedAfterDevelopment: false,
+          },
+        },
       };
 
       const previousStep = RevenueIntroductionHandler.getPreviousStepId!({ stepsState });
 
-      expect(previousStep).toBe("URBAN_PROJECT_BUILDINGS_RESALE_SELECTION");
+      expect(previousStep).toBe("URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES");
     });
 
-    it("should return URBAN_PROJECT_SITE_RESALE_SELECTION when project has no buildings", () => {
+    it("should return URBAN_PROJECT_EXPENSES_INSTALLATION when project has buildings and buildings resale is planned", () => {
+      const stepsState: ProjectFormState["urbanProject"]["steps"] = {
+        URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION: {
+          completed: true,
+          payload: {
+            livingAndActivitySpacesDistribution: { BUILDINGS: 1000 },
+          },
+        },
+        URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
+          completed: true,
+          payload: {
+            buildingsResalePlannedAfterDevelopment: true,
+          },
+        },
+      };
+
+      const previousStep = RevenueIntroductionHandler.getPreviousStepId!({ stepsState });
+
+      expect(previousStep).toBe("URBAN_PROJECT_EXPENSES_INSTALLATION");
+    });
+
+    it("should return URBAN_PROJECT_EXPENSES_INSTALLATION when project has no buildings", () => {
       const stepsState: ProjectFormState["urbanProject"]["steps"] = {
         URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION: {
           completed: true,
@@ -110,7 +137,13 @@ describe("RevenueIntroductionHandler", () => {
 
       const previousStep = RevenueIntroductionHandler.getPreviousStepId!({ stepsState });
 
-      expect(previousStep).toBe("URBAN_PROJECT_SITE_RESALE_SELECTION");
+      expect(previousStep).toBe("URBAN_PROJECT_EXPENSES_INSTALLATION");
+    });
+
+    it("should return URBAN_PROJECT_EXPENSES_INSTALLATION when steps state is empty", () => {
+      const previousStep = RevenueIntroductionHandler.getPreviousStepId!({ stepsState: {} });
+
+      expect(previousStep).toBe("URBAN_PROJECT_EXPENSES_INSTALLATION");
     });
   });
 });

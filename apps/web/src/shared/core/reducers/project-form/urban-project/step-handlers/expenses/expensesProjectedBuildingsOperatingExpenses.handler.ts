@@ -9,6 +9,6 @@ export const ExpensesProjectedBuildingsOperatingExpensesHandler: AnswerStepHandl
     },
 
     getNextStepId() {
-      return "URBAN_PROJECT_SCHEDULE_PROJECTION";
+      return "URBAN_PROJECT_REVENUE_INTRODUCTION";
     },
   };

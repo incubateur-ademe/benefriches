@@ -1,3 +1,5 @@
+import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
+
 import { InfoStepHandler } from "../stepHandler.type";
 
 export const ExpensesIntroductionHandler: InfoStepHandler = {
@@ -7,7 +9,10 @@ export const ExpensesIntroductionHandler: InfoStepHandler = {
     return "URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS";
   },
 
-  getPreviousStepId() {
-    return "URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE";
+  getPreviousStepId(context) {
+    if (ReadStateHelper.hasBuildings(context.stepsState)) {
+      return "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION";
+    }
+    return "URBAN_PROJECT_SITE_RESALE_SELECTION";
   },
 } as const;

@@ -28,7 +28,7 @@ describe("UrbanProjectInstallationExpensesHandler", () => {
       expect(nextStep).toBe("URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES");
     });
 
-    it("should return URBAN_PROJECT_SCHEDULE_PROJECTION when project has buildings and buildings resale is planned", () => {
+    it("should return URBAN_PROJECT_REVENUE_INTRODUCTION when project has buildings and buildings resale is planned", () => {
       const stepsState: ProjectFormState["urbanProject"]["steps"] = {
         URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION: {
           completed: true,
@@ -48,10 +48,10 @@ describe("UrbanProjectInstallationExpensesHandler", () => {
         stepsState,
       });
 
-      expect(nextStep).toBe("URBAN_PROJECT_SCHEDULE_PROJECTION");
+      expect(nextStep).toBe("URBAN_PROJECT_REVENUE_INTRODUCTION");
     });
 
-    it("should return URBAN_PROJECT_SCHEDULE_PROJECTION when project has no buildings", () => {
+    it("should return URBAN_PROJECT_REVENUE_INTRODUCTION when project has no buildings", () => {
       const stepsState: ProjectFormState["urbanProject"]["steps"] = {
         URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION: {
           completed: true,
@@ -65,15 +65,15 @@ describe("UrbanProjectInstallationExpensesHandler", () => {
         stepsState,
       });
 
-      expect(nextStep).toBe("URBAN_PROJECT_SCHEDULE_PROJECTION");
+      expect(nextStep).toBe("URBAN_PROJECT_REVENUE_INTRODUCTION");
     });
 
-    it("should return URBAN_PROJECT_SCHEDULE_PROJECTION when steps state is empty", () => {
+    it("should return URBAN_PROJECT_REVENUE_INTRODUCTION when steps state is empty", () => {
       const nextStep = UrbanProjectInstallationExpensesHandler.getNextStepId({
         stepsState: {},
       });
 
-      expect(nextStep).toBe("URBAN_PROJECT_SCHEDULE_PROJECTION");
+      expect(nextStep).toBe("URBAN_PROJECT_REVENUE_INTRODUCTION");
     });
   });
 

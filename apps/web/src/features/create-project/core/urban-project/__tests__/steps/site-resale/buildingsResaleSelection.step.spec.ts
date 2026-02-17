@@ -64,7 +64,7 @@ describe("Urban project creation - Steps - buildings resale selection", () => {
           "URBAN_PROJECT_REVENUE_BUILDINGS_RESALE",
         ),
     ).toBe(true);
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_REVENUE_INTRODUCTION");
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_EXPENSES_INTRODUCTION");
   });
 
   it("should complete step with false, add steps related to buildings operations revenues and expenses to step sequences", () => {
@@ -100,7 +100,7 @@ describe("Urban project creation - Steps - buildings resale selection", () => {
     expect(
       state.stepsSequence.includes("URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES"),
     ).toBe(true);
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_REVENUE_INTRODUCTION");
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_EXPENSES_INTRODUCTION");
   });
 
   it("should complete step with true and remove steps related to building operation if exist", () => {
@@ -175,7 +175,7 @@ describe("Urban project creation - Steps - buildings resale selection", () => {
     expect(
       state.stepsSequence.includes("URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES"),
     ).toBe(false);
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_REVENUE_INTRODUCTION");
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_EXPENSES_INTRODUCTION");
   });
 
   it("should complete step with false and remove steps related to resale buildings revenue if exist", () => {
@@ -251,6 +251,6 @@ describe("Urban project creation - Steps - buildings resale selection", () => {
     expect(
       state.stepsSequence.includes("URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES"),
     ).toBe(true);
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_REVENUE_INTRODUCTION");
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_EXPENSES_INTRODUCTION");
   });
 });

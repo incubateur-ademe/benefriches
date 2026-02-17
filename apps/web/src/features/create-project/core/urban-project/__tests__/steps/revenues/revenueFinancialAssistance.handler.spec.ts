@@ -10,7 +10,7 @@ describe("RevenueFinancialAssistanceHandler", () => {
         stepsState: {},
       });
 
-      expect(nextStep).toBe("URBAN_PROJECT_EXPENSES_INTRODUCTION");
+      expect(nextStep).toBe("URBAN_PROJECT_SCHEDULE_PROJECTION");
     });
   });
 

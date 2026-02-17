@@ -12,7 +12,7 @@ export const SiteResaleSelectionHandler: AnswerStepHandler<typeof STEP_ID> = {
       return "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION";
     }
 
-    return "URBAN_PROJECT_REVENUE_INTRODUCTION";
+    return "URBAN_PROJECT_EXPENSES_INTRODUCTION";
   },
 
   getPreviousStepId() {

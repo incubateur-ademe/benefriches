@@ -275,45 +275,6 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
       );
 
       // Étape ----
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_REVENUE_INTRODUCTION");
-      store.dispatch(navigateToNext());
-
-      // Étape ----
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE");
-      store.dispatch(
-        requestStepCompletion({
-          stepId: "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE",
-          answers: {
-            siteResaleExpectedSellingPrice: 1000000,
-            siteResaleExpectedPropertyTransferDuties: 80000,
-          },
-        }),
-      );
-
-      // Étape ----
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_REVENUE_BUILDINGS_RESALE");
-      store.dispatch(
-        requestStepCompletion({
-          stepId: "URBAN_PROJECT_REVENUE_BUILDINGS_RESALE",
-          answers: {
-            buildingsResaleSellingPrice: 2000000,
-            buildingsResalePropertyTransferDuties: 150000,
-          },
-        }),
-      );
-
-      // Étape ----
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE");
-      store.dispatch(
-        requestStepCompletion({
-          stepId: "URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE",
-          answers: {
-            financialAssistanceRevenues: [{ source: "public_subsidies", amount: 200000 }],
-          },
-        }),
-      );
-
-      // Étape ----
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_EXPENSES_INTRODUCTION");
       store.dispatch(navigateToNext());
 
@@ -353,6 +314,45 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
               { purpose: "development_works", amount: 800000 },
               { purpose: "technical_studies", amount: 50000 },
             ],
+          },
+        }),
+      );
+
+      // Étape ----
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_REVENUE_INTRODUCTION");
+      store.dispatch(navigateToNext());
+
+      // Étape ----
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE");
+      store.dispatch(
+        requestStepCompletion({
+          stepId: "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE",
+          answers: {
+            siteResaleExpectedSellingPrice: 1000000,
+            siteResaleExpectedPropertyTransferDuties: 80000,
+          },
+        }),
+      );
+
+      // Étape ----
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_REVENUE_BUILDINGS_RESALE");
+      store.dispatch(
+        requestStepCompletion({
+          stepId: "URBAN_PROJECT_REVENUE_BUILDINGS_RESALE",
+          answers: {
+            buildingsResaleSellingPrice: 2000000,
+            buildingsResalePropertyTransferDuties: 150000,
+          },
+        }),
+      );
+
+      // Étape ----
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE");
+      store.dispatch(
+        requestStepCompletion({
+          stepId: "URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE",
+          answers: {
+            financialAssistanceRevenues: [{ source: "public_subsidies", amount: 200000 }],
           },
         }),
       );

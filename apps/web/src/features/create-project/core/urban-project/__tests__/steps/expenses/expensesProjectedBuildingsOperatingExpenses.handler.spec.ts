@@ -9,7 +9,7 @@ describe("ExpensesProjectedBuildingsOperatingExpensesHandler", () => {
         stepsState: {},
       });
 
-      expect(nextStep).toBe("URBAN_PROJECT_SCHEDULE_PROJECTION");
+      expect(nextStep).toBe("URBAN_PROJECT_REVENUE_INTRODUCTION");
     });
   });
 
