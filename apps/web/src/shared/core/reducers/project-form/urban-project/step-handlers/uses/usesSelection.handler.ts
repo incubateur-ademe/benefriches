@@ -61,9 +61,11 @@ export const UsesSelectionHandler: AnswerStepHandler<typeof STEP_ID> = {
     }
 
     // If floor area step exists, delete it when selection changes
-    if (ReadStateHelper.getStep(context.stepsState, "URBAN_PROJECT_USES_FLOOR_SURFACE_AREA")) {
+    if (
+      ReadStateHelper.getStep(context.stepsState, "URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA")
+    ) {
       rules.push({
-        stepId: "URBAN_PROJECT_USES_FLOOR_SURFACE_AREA",
+        stepId: "URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA",
         action: "delete",
       });
     }

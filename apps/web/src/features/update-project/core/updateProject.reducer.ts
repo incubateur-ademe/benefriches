@@ -43,9 +43,7 @@ const getInitialState = (): ProjectUpdateState => {
     projectData: {
       loadingState: "idle",
     },
-    ...getProjectFormInitialState<UrbanProjectUpdateStep>(
-      "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION",
-    ),
+    ...getProjectFormInitialState<UrbanProjectUpdateStep>("URBAN_PROJECT_USES_INTRODUCTION"),
   };
 };
 

@@ -1,86 +1,63 @@
 import { ProjectFormState } from "@/shared/core/reducers/project-form/projectForm.reducer";
 
 export const MOCK = {
-  URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION: { completed: true },
-  URBAN_PROJECT_SPACES_CATEGORIES_SELECTION: {
+  URBAN_PROJECT_USES_INTRODUCTION: { completed: true },
+  URBAN_PROJECT_USES_SELECTION: {
     completed: true,
     payload: {
-      spacesCategories: ["LIVING_AND_ACTIVITY_SPACES", "GREEN_SPACES", "PUBLIC_SPACES"],
+      usesSelection: ["RESIDENTIAL", "LOCAL_STORE", "PUBLIC_GREEN_SPACES", "OTHER_PUBLIC_SPACES"],
     },
   },
-  URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA: {
+  URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA: {
+    completed: true,
+    payload: { publicGreenSpacesSurfaceArea: 3750 },
+  },
+  URBAN_PROJECT_PUBLIC_GREEN_SPACES_INTRODUCTION: { completed: true },
+  URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION: {
     completed: true,
     payload: {
-      spacesCategoriesDistribution: {
-        LIVING_AND_ACTIVITY_SPACES: 3750,
-        GREEN_SPACES: 3750,
-        PUBLIC_SPACES: 3750,
+      publicGreenSpacesSoilsDistribution: {
+        PRAIRIE_GRASS: 1875,
+        ARTIFICIAL_TREE_FILLED: 937.5,
+        WATER: 937.5,
       },
     },
   },
-  URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION: { completed: true },
-  URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_INTRODUCTION: { completed: true },
-  URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION: {
+  URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA: {
     completed: true,
     payload: {
-      livingAndActivitySpacesDistribution: {
-        BUILDINGS: 937.5,
-        IMPERMEABLE_SURFACE: 937.5,
-        PERMEABLE_SURFACE: 937.5,
-        PRIVATE_GREEN_SPACES: 937.5,
+      usesFloorSurfaceAreaDistribution: {
+        RESIDENTIAL: 2500,
+        LOCAL_STORE: 2500,
       },
     },
   },
-  URBAN_PROJECT_PUBLIC_SPACES_INTRODUCTION: { completed: true },
-  URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION: {
+  URBAN_PROJECT_SPACES_INTRODUCTION: { completed: true },
+  URBAN_PROJECT_SPACES_SELECTION: {
     completed: true,
     payload: {
-      publicSpacesDistribution: {
-        IMPERMEABLE_SURFACE: 937.5,
-        PERMEABLE_SURFACE: 937.5,
-        GRASS_COVERED_SURFACE: 1875,
-      },
+      spacesSelection: [
+        "BUILDINGS",
+        "IMPERMEABLE_SOILS",
+        "MINERAL_SOIL",
+        "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+      ],
     },
   },
-  URBAN_PROJECT_GREEN_SPACES_INTRODUCTION: { completed: true },
-  URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION: {
+  URBAN_PROJECT_SPACES_SURFACE_AREA: {
     completed: true,
     payload: {
-      greenSpacesDistribution: {
-        LAWNS_AND_BUSHES: 937.5,
-        TREE_FILLED_SPACE: 937.5,
-        URBAN_POND_OR_LAKE: 937.5,
-        PAVED_ALLEY: 750,
-        GRAVEL_ALLEY: 187.5,
+      spacesSurfaceAreaDistribution: {
+        BUILDINGS: 2812.5,
+        IMPERMEABLE_SOILS: 2812.5,
+        MINERAL_SOIL: 2812.5,
+        ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 2812.5,
       },
     },
   },
   URBAN_PROJECT_SPACES_SOILS_SUMMARY: { completed: true },
   URBAN_PROJECT_SOILS_CARBON_SUMMARY: { completed: true },
   URBAN_PROJECT_BUILDINGS_INTRODUCTION: { completed: true },
-  URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA: {
-    completed: true,
-    payload: { buildingsFloorSurfaceArea: 5000 },
-  },
-  URBAN_PROJECT_BUILDINGS_USE_INTRODUCTION: { completed: true },
-  URBAN_PROJECT_BUILDINGS_USE_SELECTION: {
-    completed: true,
-    payload: {
-      buildingsUsesSelection: ["RESIDENTIAL", "LOCAL_STORE"],
-    },
-  },
-  URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION: {
-    completed: true,
-    payload: {
-      buildingsUsesDistribution: {
-        RESIDENTIAL: 1250,
-        LOCAL_STORE: 1250,
-        LOCAL_SERVICES: 1250,
-        ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES: 1000,
-        PUBLIC_FACILITIES: 250,
-      },
-    },
-  },
   URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION: { completed: true },
   URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER: {
     completed: true,

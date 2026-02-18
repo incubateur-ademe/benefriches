@@ -36,26 +36,10 @@ export const ReadStateHelper = {
     return this.getStep(steps, stepId)?.defaultValues;
   },
 
-  hasUsesWithBuildings(steps: ProjectFormState["urbanProject"]["steps"]) {
+  willHaveBuildings(steps: ProjectFormState["urbanProject"]["steps"]) {
     const selectedUses =
       this.getStepAnswers(steps, "URBAN_PROJECT_USES_SELECTION")?.usesSelection ?? [];
     return selectedUses.some((use) => doesUseIncludeBuildings(use));
-  },
-
-  hasBuildings(steps: ProjectFormState["urbanProject"]["steps"]) {
-    if (this.hasUsesWithBuildings(steps)) {
-      return true;
-    }
-
-    const livingAndActivitySpacesDistribution = this.getStepAnswers(
-      steps,
-      "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
-    )?.livingAndActivitySpacesDistribution;
-
-    return Boolean(
-      livingAndActivitySpacesDistribution?.BUILDINGS &&
-      livingAndActivitySpacesDistribution.BUILDINGS > 0,
-    );
   },
 
   hasBuildingsResalePlannedAfterDevelopment(steps: ProjectFormState["urbanProject"]["steps"]) {
@@ -156,8 +140,8 @@ export const ReadStateHelper = {
           steps.URBAN_PROJECT_SCHEDULE_PROJECTION?.payload?.installationSchedule,
         features: {
           buildingsFloorAreaDistribution:
-            steps.URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION?.payload
-              ?.buildingsUsesDistribution ?? {},
+            steps.URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA?.payload
+              ?.usesFloorSurfaceAreaDistribution ?? {},
         },
       },
       projectPhase: steps.URBAN_PROJECT_PROJECT_PHASE?.payload?.projectPhase,

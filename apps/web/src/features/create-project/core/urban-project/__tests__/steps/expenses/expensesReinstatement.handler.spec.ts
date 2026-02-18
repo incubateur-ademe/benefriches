@@ -27,14 +27,9 @@ describe("UrbanProjectReinstatementExpensesHandler", () => {
   describe("getDefaultAnswers", () => {
     it("should return default reinstatement expenses based on soils distribution", () => {
       const stepsState: ProjectFormState["urbanProject"]["steps"] = {
-        URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION: {
+        URBAN_PROJECT_USES_SELECTION: {
           completed: true,
-          payload: {
-            livingAndActivitySpacesDistribution: {
-              BUILDINGS: 1000,
-              IMPERMEABLE_SURFACE: 500,
-            },
-          },
+          payload: { usesSelection: ["RESIDENTIAL"] },
         },
         URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA: {
           completed: true,

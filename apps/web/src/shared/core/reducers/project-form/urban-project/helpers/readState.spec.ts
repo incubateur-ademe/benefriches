@@ -84,7 +84,7 @@ describe("ReadStateHelper", () => {
     });
   });
 
-  describe("hasUsesWithBuildings", () => {
+  describe("willHaveBuildings", () => {
     it("should return true when uses selection includes building uses", () => {
       const steps: ProjectFormState["urbanProject"]["steps"] = {
         URBAN_PROJECT_USES_SELECTION: {
@@ -93,7 +93,7 @@ describe("ReadStateHelper", () => {
         },
       };
 
-      expect(ReadStateHelper.hasUsesWithBuildings(steps)).toBe(true);
+      expect(ReadStateHelper.willHaveBuildings(steps)).toBe(true);
     });
 
     it("should return false when uses selection only includes non-building uses", () => {
@@ -104,73 +104,11 @@ describe("ReadStateHelper", () => {
         },
       };
 
-      expect(ReadStateHelper.hasUsesWithBuildings(steps)).toBe(false);
+      expect(ReadStateHelper.willHaveBuildings(steps)).toBe(false);
     });
 
     it("should return false when uses selection step does not exist", () => {
-      expect(ReadStateHelper.hasUsesWithBuildings({})).toBe(false);
-    });
-  });
-
-  describe("hasBuildings", () => {
-    it("should return true when buildings surface area is greater than 0", () => {
-      const steps: ProjectFormState["urbanProject"]["steps"] = {
-        URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION: {
-          completed: true,
-          payload: {
-            livingAndActivitySpacesDistribution: {
-              BUILDINGS: 1000,
-            },
-          },
-        },
-      };
-
-      const result = ReadStateHelper.hasBuildings(steps);
-
-      expect(result).toBe(true);
-    });
-
-    it("should return false when buildings surface area is 0", () => {
-      const steps: ProjectFormState["urbanProject"]["steps"] = {
-        URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION: {
-          completed: true,
-          payload: {
-            livingAndActivitySpacesDistribution: {
-              BUILDINGS: 0,
-            },
-          },
-        },
-      };
-
-      const result = ReadStateHelper.hasBuildings(steps);
-
-      expect(result).toBe(false);
-    });
-
-    it("should return false when buildings key does not exist", () => {
-      const steps: ProjectFormState["urbanProject"]["steps"] = {
-        URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION: {
-          completed: true,
-          payload: {
-            livingAndActivitySpacesDistribution: {},
-          },
-        },
-      };
-
-      const result = ReadStateHelper.hasBuildings(steps);
-      expect(result).toBe(false);
-      expect(ReadStateHelper.hasBuildings({})).toBe(false);
-    });
-
-    it("should return true when uses selection includes building uses", () => {
-      const steps: ProjectFormState["urbanProject"]["steps"] = {
-        URBAN_PROJECT_USES_SELECTION: {
-          completed: true,
-          payload: { usesSelection: ["RESIDENTIAL"] },
-        },
-      };
-
-      expect(ReadStateHelper.hasBuildings(steps)).toBe(true);
+      expect(ReadStateHelper.willHaveBuildings({})).toBe(false);
     });
   });
 

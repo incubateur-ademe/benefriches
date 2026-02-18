@@ -11,10 +11,10 @@ describe("MutateStateHelper", () => {
   beforeEach(() => {
     state = {
       urbanProject: {
-        currentStep: "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION",
+        currentStep: "URBAN_PROJECT_USES_INTRODUCTION",
         steps: {},
         stepsSequence: [],
-        firstSequenceStep: "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION",
+        firstSequenceStep: "URBAN_PROJECT_USES_INTRODUCTION",
         saveState: "idle",
       },
       siteData: mockSiteData,
@@ -31,7 +31,7 @@ describe("MutateStateHelper", () => {
     });
 
     it("should overwrite existing currentStep", () => {
-      state.urbanProject.currentStep = "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION";
+      state.urbanProject.currentStep = "URBAN_PROJECT_USES_INTRODUCTION";
 
       MutateStateHelper.navigateToStep(state, "URBAN_PROJECT_FINAL_SUMMARY");
 

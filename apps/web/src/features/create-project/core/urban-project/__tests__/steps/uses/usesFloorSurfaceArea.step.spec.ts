@@ -18,7 +18,7 @@ describe("Urban project creation - Steps - Uses floor surface area", () => {
 
     store.dispatch(
       creationProjectFormUrbanActions.requestStepCompletion({
-        stepId: "URBAN_PROJECT_USES_FLOOR_SURFACE_AREA",
+        stepId: "URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA",
         answers: {
           usesFloorSurfaceAreaDistribution: { RESIDENTIAL: 10000, OFFICES: 7500 },
         },
@@ -32,7 +32,7 @@ describe("Urban project creation - Steps - Uses floor surface area", () => {
         completed: true,
         payload: { usesSelection: ["RESIDENTIAL", "OFFICES"] },
       },
-      URBAN_PROJECT_USES_FLOOR_SURFACE_AREA: {
+      URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA: {
         completed: true,
         payload: { usesFloorSurfaceAreaDistribution: { RESIDENTIAL: 10000, OFFICES: 7500 } },
       },
@@ -81,7 +81,7 @@ describe("Urban project creation - Steps - Uses floor surface area", () => {
 
     store.dispatch(
       creationProjectFormUrbanActions.requestStepCompletion({
-        stepId: "URBAN_PROJECT_USES_FLOOR_SURFACE_AREA",
+        stepId: "URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA",
         answers: {
           usesFloorSurfaceAreaDistribution: { RESIDENTIAL: 15000 },
         },
@@ -93,7 +93,7 @@ describe("Urban project creation - Steps - Uses floor surface area", () => {
 
   it("should navigate to URBAN_PROJECT_BUILDINGS_INTRODUCTION when going back", () => {
     const store = createTestStore({
-      currentStep: "URBAN_PROJECT_USES_FLOOR_SURFACE_AREA",
+      currentStep: "URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA",
       steps: {
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,

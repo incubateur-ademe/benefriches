@@ -12,7 +12,7 @@ describe("Urban project creation - Steps - Spaces surface area", () => {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL", "PUBLIC_GREEN_SPACES"] },
         },
-        URBAN_PROJECT_USES_FLOOR_SURFACE_AREA: {
+        URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA: {
           completed: true,
           payload: { usesFloorSurfaceAreaDistribution: { RESIDENTIAL: 8000 } },
         },
@@ -65,7 +65,7 @@ describe("Urban project creation - Steps - Spaces surface area", () => {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL"] },
         },
-        URBAN_PROJECT_USES_FLOOR_SURFACE_AREA: {
+        URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA: {
           completed: true,
           payload: { usesFloorSurfaceAreaDistribution: { RESIDENTIAL: 15000 } },
         },

@@ -14,17 +14,13 @@ const INITIAL_STEPS: ProjectFormState["urbanProject"]["steps"] = {
     completed: true,
     payload: { createMode: "custom" },
   },
-  URBAN_PROJECT_SPACES_CATEGORIES_SELECTION: {
+  URBAN_PROJECT_USES_SELECTION: {
     completed: true,
-    payload: { spacesCategories: ["LIVING_AND_ACTIVITY_SPACES"] },
+    payload: { usesSelection: ["RESIDENTIAL"] },
   },
-  URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION: {
+  URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA: {
     completed: true,
-    payload: { livingAndActivitySpacesDistribution: { BUILDINGS: 15000 } },
-  },
-  URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA: {
-    completed: true,
-    payload: { buildingsFloorSurfaceArea: 15000 },
+    payload: { usesFloorSurfaceAreaDistribution: { RESIDENTIAL: 15000 } },
   },
 };
 

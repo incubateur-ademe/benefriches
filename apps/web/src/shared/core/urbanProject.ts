@@ -1,4 +1,4 @@
-import { BuildingsUse, UrbanProjectDevelopmentExpense, SoilType } from "shared";
+import { UrbanProjectUseWithBuilding, UrbanProjectDevelopmentExpense, SoilType } from "shared";
 
 export const getUrbanSpaceLabelForLivingAndActivitySpace = (soilType: SoilType): string => {
   switch (soilType) {
@@ -29,7 +29,7 @@ export const getUrbanSpaceLabelForPublicSpace = (soilType: SoilType): string => 
   }
 };
 
-export const getLabelForBuildingsUse = (use: BuildingsUse): string => {
+export const getLabelForBuildingsUse = (use: UrbanProjectUseWithBuilding): string => {
   switch (use) {
     case "LOCAL_STORE":
       return "Commerce de proximité";
@@ -77,7 +77,7 @@ export const getLabelForBuildingsUse = (use: BuildingsUse): string => {
   }
 };
 
-export const getColorForBuildingsUse = (use: BuildingsUse): string => {
+export const getColorForBuildingsUse = (use: UrbanProjectUseWithBuilding): string => {
   switch (use) {
     case "RESIDENTIAL":
       return "#EA1447";

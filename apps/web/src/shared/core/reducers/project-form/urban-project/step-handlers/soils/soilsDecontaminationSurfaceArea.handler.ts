@@ -22,15 +22,7 @@ export const SoilsDecontaminationSurfaceAreaHandler: AnswerStepHandler<"URBAN_PR
       return "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION";
     },
 
-    getNextStepId(context) {
-      if (ReadStateHelper.hasUsesWithBuildings(context.stepsState)) {
-        return "URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION";
-      }
-
-      if (ReadStateHelper.hasBuildings(context.stepsState)) {
-        return "URBAN_PROJECT_BUILDINGS_INTRODUCTION";
-      }
-
+    getNextStepId() {
       return "URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION";
     },
   };

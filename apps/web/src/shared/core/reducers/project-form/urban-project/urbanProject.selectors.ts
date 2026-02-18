@@ -219,8 +219,8 @@ export const createUrbanProjectFormSelectors = (
     [selectStepState],
     (steps): UsesFloorSurfaceAreaViewData => {
       const floorAnswers =
-        ReadStateHelper.getStepAnswers(steps, "URBAN_PROJECT_USES_FLOOR_SURFACE_AREA") ??
-        ReadStateHelper.getDefaultAnswers(steps, "URBAN_PROJECT_USES_FLOOR_SURFACE_AREA");
+        ReadStateHelper.getStepAnswers(steps, "URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA") ??
+        ReadStateHelper.getDefaultAnswers(steps, "URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA");
 
       const selectionAnswers = ReadStateHelper.getStepAnswers(
         steps,

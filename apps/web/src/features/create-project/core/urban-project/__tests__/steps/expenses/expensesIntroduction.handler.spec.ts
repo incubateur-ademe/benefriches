@@ -15,11 +15,9 @@ describe("ExpensesIntroductionHandler", () => {
   describe("getPreviousStepId", () => {
     it("should return URBAN_PROJECT_BUILDINGS_RESALE_SELECTION when project has buildings", () => {
       const stepsState: ProjectFormState["urbanProject"]["steps"] = {
-        URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION: {
+        URBAN_PROJECT_USES_SELECTION: {
           completed: true,
-          payload: {
-            livingAndActivitySpacesDistribution: { BUILDINGS: 1000 },
-          },
+          payload: { usesSelection: ["RESIDENTIAL"] },
         },
       };
 
@@ -30,11 +28,9 @@ describe("ExpensesIntroductionHandler", () => {
 
     it("should return URBAN_PROJECT_SITE_RESALE_SELECTION when project has no buildings", () => {
       const stepsState: ProjectFormState["urbanProject"]["steps"] = {
-        URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION: {
+        URBAN_PROJECT_USES_SELECTION: {
           completed: true,
-          payload: {
-            livingAndActivitySpacesDistribution: { IMPERMEABLE_SURFACE: 1000 },
-          },
+          payload: { usesSelection: ["PUBLIC_GREEN_SPACES"] },
         },
       };
 

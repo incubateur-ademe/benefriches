@@ -26,11 +26,10 @@ describe("navigateToStep action", () => {
       expect(Object.keys(initialSteps)).toHaveLength(0);
 
       // étape qui n'a pas de valeurs par défaut
-      store.dispatch(navigateToStep({ stepId: "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION" }));
+      store.dispatch(navigateToStep({ stepId: "URBAN_PROJECT_USES_SELECTION" }));
 
       expect(
-        store.getState().projectCreation.urbanProject.steps
-          .URBAN_PROJECT_SPACES_CATEGORIES_SELECTION,
+        store.getState().projectCreation.urbanProject.steps.URBAN_PROJECT_USES_SELECTION,
       ).toBeUndefined();
     });
 
@@ -154,33 +153,14 @@ describe("navigateToStep action", () => {
     it("should handle reinstatement expenses with soil distribution context", () => {
       const storeWithContext = createTestStore({
         steps: {
-          URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA: {
+          URBAN_PROJECT_SPACES_SURFACE_AREA: {
             completed: true,
             payload: {
-              spacesCategoriesDistribution: {
-                LIVING_AND_ACTIVITY_SPACES: 5000,
-                PUBLIC_SPACES: 5000,
-              },
-            },
-          },
-          URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION: {
-            completed: true,
-            payload: {
-              livingAndActivitySpacesDistribution: {
+              spacesSurfaceAreaDistribution: {
                 BUILDINGS: 2000,
-                IMPERMEABLE_SURFACE: 1500,
-                PERMEABLE_SURFACE: 1000,
-                PRIVATE_GREEN_SPACES: 500,
-              },
-            },
-          },
-          URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION: {
-            completed: true,
-            payload: {
-              publicSpacesDistribution: {
-                IMPERMEABLE_SURFACE: 2500,
-                PERMEABLE_SURFACE: 1500,
-                GRASS_COVERED_SURFACE: 1000,
+                IMPERMEABLE_SOILS: 4000,
+                MINERAL_SOIL: 2500,
+                ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 1500,
               },
             },
           },
@@ -211,17 +191,15 @@ describe("navigateToStep action", () => {
   });
 
   describe("LoadStep edge cases", () => {
-    it.each([
-      "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION",
-      "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
-      "URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION",
-      "URBAN_PROJECT_PROJECT_PHASE",
-    ] as const)("should handle navigateToStep for steps without default logic", (stepId) => {
-      const testStore = createTestStore();
-      testStore.dispatch(navigateToStep({ stepId: stepId }));
+    it.each(["URBAN_PROJECT_USES_SELECTION", "URBAN_PROJECT_PROJECT_PHASE"] as const)(
+      "should handle navigateToStep for steps without default logic",
+      (stepId) => {
+        const testStore = createTestStore();
+        testStore.dispatch(navigateToStep({ stepId: stepId }));
 
-      const steps = testStore.getState().projectCreation.urbanProject.steps;
-      expect(steps[stepId]).toBeUndefined();
-    });
+        const steps = testStore.getState().projectCreation.urbanProject.steps;
+        expect(steps[stepId]).toBeUndefined();
+      },
+    );
   });
 });

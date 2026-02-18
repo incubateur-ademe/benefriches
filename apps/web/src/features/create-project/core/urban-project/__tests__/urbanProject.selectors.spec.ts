@@ -10,27 +10,27 @@ describe("urbanProject.selectors", () => {
   describe("selectStepAnswers", () => {
     it("should return answer payload if exists", () => {
       const initialSteps = {
-        URBAN_PROJECT_SPACES_CATEGORIES_SELECTION: {
+        URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: {
-            spacesCategories: ["LIVING_AND_ACTIVITY_SPACES", "GREEN_SPACES"],
+            usesSelection: ["RESIDENTIAL", "PUBLIC_GREEN_SPACES"],
           },
         },
       } satisfies ProjectCreationState["urbanProject"]["steps"];
 
       const store = createTestStore({
         steps: initialSteps,
-        currentStep: "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION",
+        currentStep: "URBAN_PROJECT_USES_SELECTION",
       });
 
       const rootState = store.getState();
 
       const selector = creationProjectFormSelectors.selectStepAnswers(
-        "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION",
+        "URBAN_PROJECT_USES_SELECTION",
       );
 
       expect(selector(rootState)).toEqual({
-        spacesCategories: ["LIVING_AND_ACTIVITY_SPACES", "GREEN_SPACES"],
+        usesSelection: ["RESIDENTIAL", "PUBLIC_GREEN_SPACES"],
       });
     });
 
@@ -39,7 +39,7 @@ describe("urbanProject.selectors", () => {
       const rootState = store.getState();
 
       const selector = creationProjectFormSelectors.selectStepAnswers(
-        "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION",
+        "URBAN_PROJECT_USES_SELECTION",
       );
 
       expect(selector(rootState)).toBeUndefined();
@@ -48,34 +48,34 @@ describe("urbanProject.selectors", () => {
     it("should return default answers if exists and no payload answers", () => {
       const store = createTestStore({
         steps: {
-          URBAN_PROJECT_SPACES_CATEGORIES_SELECTION: {
+          URBAN_PROJECT_USES_SELECTION: {
             completed: true,
             defaultValues: {
-              spacesCategories: ["LIVING_AND_ACTIVITY_SPACES"],
+              usesSelection: ["RESIDENTIAL"],
             },
           },
         },
       });
       const rootState = store.getState();
       const selector = creationProjectFormSelectors.selectStepAnswers(
-        "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION",
+        "URBAN_PROJECT_USES_SELECTION",
       );
 
       expect(selector(rootState)).toEqual({
-        spacesCategories: ["LIVING_AND_ACTIVITY_SPACES"],
+        usesSelection: ["RESIDENTIAL"],
       });
     });
 
     it("should return payload answers even if there is default answers", () => {
       const store = createTestStore({
         steps: {
-          URBAN_PROJECT_SPACES_CATEGORIES_SELECTION: {
+          URBAN_PROJECT_USES_SELECTION: {
             completed: true,
             defaultValues: {
-              spacesCategories: ["LIVING_AND_ACTIVITY_SPACES"],
+              usesSelection: ["RESIDENTIAL"],
             },
             payload: {
-              spacesCategories: ["GREEN_SPACES"],
+              usesSelection: ["PUBLIC_GREEN_SPACES"],
             },
           },
         },
@@ -83,11 +83,11 @@ describe("urbanProject.selectors", () => {
       const rootState = store.getState();
 
       const selector = creationProjectFormSelectors.selectStepAnswers(
-        "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION" as AnswerStepId,
+        "URBAN_PROJECT_USES_SELECTION" as AnswerStepId,
       );
 
       expect(selector(rootState)).toEqual({
-        spacesCategories: ["GREEN_SPACES"],
+        usesSelection: ["PUBLIC_GREEN_SPACES"],
       });
     });
   });

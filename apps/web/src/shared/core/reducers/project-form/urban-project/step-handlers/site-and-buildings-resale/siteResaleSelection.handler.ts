@@ -8,7 +8,7 @@ export const SiteResaleSelectionHandler: AnswerStepHandler<typeof STEP_ID> = {
   stepId: STEP_ID,
 
   getNextStepId(context) {
-    if (ReadStateHelper.hasBuildings(context.stepsState)) {
+    if (ReadStateHelper.willHaveBuildings(context.stepsState)) {
       return "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION";
     }
 

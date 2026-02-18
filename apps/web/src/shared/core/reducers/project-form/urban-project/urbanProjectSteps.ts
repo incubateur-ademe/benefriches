@@ -1,17 +1,13 @@
 import {
-  buildingsUseSchema,
   createReconversionProjectSchema,
   financialAssistanceRevenueSourceSchema,
-  livingAndActivitySpace,
   reinstatementExpensesPurposeSchema,
   soilTypeSchema,
   typedObjectKeys,
-  urbanGreenSpaces,
+  urbanProjectBuildingsUseSchema,
   urbanProjectDevelopmentExpensePurposeSchema,
-  urbanProjectSpacesCategories,
   urbanProjectTemplateSchema,
   urbanProjectUseSchema,
-  urbanPublicSpace,
   yearlyBuildingsOperationsExpensePurposeSchema,
   yearlyBuildingsOperationsRevenuePurposeSchema,
 } from "shared";
@@ -20,15 +16,9 @@ import z from "zod";
 export const INTRODUCTION_STEPS = [
   "URBAN_PROJECT_USES_INTRODUCTION",
   "URBAN_PROJECT_SPACES_INTRODUCTION",
-  "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION",
-  "URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION",
-  "URBAN_PROJECT_GREEN_SPACES_INTRODUCTION",
-  "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_INTRODUCTION",
-  "URBAN_PROJECT_PUBLIC_SPACES_INTRODUCTION",
   "URBAN_PROJECT_PUBLIC_GREEN_SPACES_INTRODUCTION",
   "URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION",
   "URBAN_PROJECT_BUILDINGS_INTRODUCTION",
-  "URBAN_PROJECT_BUILDINGS_USE_INTRODUCTION",
   "URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION",
   "URBAN_PROJECT_SITE_RESALE_INTRODUCTION",
   "URBAN_PROJECT_EXPENSES_INTRODUCTION",
@@ -91,7 +81,7 @@ export const answersByStepSchemas = {
     projectTemplate: urbanProjectTemplateSchema,
   }),
 
-  // Custom - Uses flow (new)
+  // Custom - uses
   URBAN_PROJECT_USES_SELECTION: z.object({
     usesSelection: z.array(urbanProjectUseSchema),
   }),
@@ -104,38 +94,13 @@ export const answersByStepSchemas = {
     publicGreenSpacesSoilsDistribution: z.partialRecord(soilTypeSchema, z.number()),
   }),
 
-  URBAN_PROJECT_USES_FLOOR_SURFACE_AREA: z.object({
-    usesFloorSurfaceAreaDistribution: z.partialRecord(urbanProjectUseSchema, z.number()),
-  }),
-
-  // Custom - New Spaces flow (uses flow)
+  // Custom - spaces
   URBAN_PROJECT_SPACES_SELECTION: z.object({
     spacesSelection: z.array(soilTypeSchema),
   }),
 
   URBAN_PROJECT_SPACES_SURFACE_AREA: z.object({
     spacesSurfaceAreaDistribution: z.partialRecord(soilTypeSchema, z.number()),
-  }),
-
-  // Custom - Spaces flow (legacy, will be removed)
-  URBAN_PROJECT_SPACES_CATEGORIES_SELECTION: z.object({
-    spacesCategories: z.array(urbanProjectSpacesCategories),
-  }),
-
-  URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA: z.object({
-    spacesCategoriesDistribution: z.partialRecord(urbanProjectSpacesCategories, z.number()),
-  }),
-
-  URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION: z.object({
-    greenSpacesDistribution: z.partialRecord(urbanGreenSpaces, z.number()),
-  }),
-
-  URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION: z.object({
-    livingAndActivitySpacesDistribution: z.partialRecord(livingAndActivitySpace, z.number()),
-  }),
-
-  URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION: z.object({
-    publicSpacesDistribution: z.partialRecord(urbanPublicSpace, z.number()),
   }),
 
   URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION: z.object({
@@ -146,18 +111,12 @@ export const answersByStepSchemas = {
     decontaminatedSurfaceArea: z.number(),
   }),
 
-  URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA: z.object({
-    buildingsFloorSurfaceArea: z.number(),
+  // custom - buildings
+  URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA: z.object({
+    usesFloorSurfaceAreaDistribution: z.partialRecord(urbanProjectBuildingsUseSchema, z.number()),
   }),
 
-  URBAN_PROJECT_BUILDINGS_USE_SELECTION: z.object({
-    buildingsUsesSelection: z.array(buildingsUseSchema),
-  }),
-
-  URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION: z.object({
-    buildingsUsesDistribution: z.partialRecord(buildingsUseSchema, z.number()),
-  }),
-
+  // custom - stakeholders
   URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER: z.object({
     projectDeveloper: projectStakeholderSchema,
   }),
@@ -175,6 +134,7 @@ export const answersByStepSchemas = {
     futureOperator: projectStakeholderSchema.optional(),
   }),
 
+  // Custom - expenses
   URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS: z.object({
     sitePurchaseSellingPrice: z.number().optional(),
     sitePurchasePropertyTransferDuties: z.number().optional(),
@@ -207,6 +167,7 @@ export const answersByStepSchemas = {
     ),
   }),
 
+  // custom - revenues
   URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE: z.object({
     siteResaleExpectedSellingPrice: z.number().optional(),
     siteResaleExpectedPropertyTransferDuties: z.number().optional(),
@@ -235,6 +196,7 @@ export const answersByStepSchemas = {
     ),
   }),
 
+  // custom - schedule, naming, phase
   URBAN_PROJECT_SCHEDULE_PROJECTION: z.object({
     reinstatementSchedule: z
       .object({
@@ -271,9 +233,7 @@ export type AnswersByStep = {
 };
 
 export const BUILDINGS_STEPS = [
-  "URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA",
-  "URBAN_PROJECT_BUILDINGS_USE_SELECTION",
-  "URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION",
+  "URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA",
   "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION",
   "URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES",
   "URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES",

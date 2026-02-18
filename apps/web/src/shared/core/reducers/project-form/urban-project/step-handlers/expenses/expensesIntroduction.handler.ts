@@ -10,7 +10,7 @@ export const ExpensesIntroductionHandler: InfoStepHandler = {
   },
 
   getPreviousStepId(context) {
-    if (ReadStateHelper.hasBuildings(context.stepsState)) {
+    if (ReadStateHelper.willHaveBuildings(context.stepsState)) {
       return "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION";
     }
     return "URBAN_PROJECT_SITE_RESALE_SELECTION";

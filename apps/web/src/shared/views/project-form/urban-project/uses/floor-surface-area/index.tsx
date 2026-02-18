@@ -14,7 +14,7 @@ export default function UsesFloorSurfaceAreaContainer() {
     <UsesFloorSurfaceArea
       onSubmit={(formData) => {
         onRequestStepCompletion({
-          stepId: "URBAN_PROJECT_USES_FLOOR_SURFACE_AREA",
+          stepId: "URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA",
           answers: { usesFloorSurfaceAreaDistribution: formData },
         });
       }}

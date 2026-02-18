@@ -173,7 +173,7 @@ function UrbanProjectFormSummary({
 
         <Section
           title="🌾 Aménagement des espaces"
-          {...getSectionProps(stepsGroupedBySections.SPACES_DEVELOPMENT)}
+          {...getSectionProps(stepsGroupedBySections.SPACES)}
         >
           {totalLivingAndActivitiesSpaces > 0 && (
             <>
@@ -258,12 +258,7 @@ function UrbanProjectFormSummary({
         </Section>
 
         {projectSummary.buildingsFloorSurfaceArea.shouldDisplay && (
-          <Section
-            {...getSectionProps(
-              stepsGroupedBySections.BUILDINGS.concat(stepsGroupedBySections.BUILDINGS_USE),
-            )}
-            title="🏢 Bâtiments"
-          >
+          <Section {...getSectionProps(stepsGroupedBySections.BUILDINGS)} title="🏢 Bâtiments">
             <DataLine
               noBorder
               label={<strong>Surface de plancher des bâtiments</strong>}

@@ -100,15 +100,15 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_CARBON_SUMMARY");
       store.dispatch(navigateToNext());
 
-      // Étape ---- (hasUsesWithBuildings → buildings intro)
+      // Étape ---- (willHaveBuildings → buildings intro)
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_INTRODUCTION");
       store.dispatch(navigateToNext());
 
-      // Étape ---- (hasUsesWithBuildings → uses floor surface area)
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_USES_FLOOR_SURFACE_AREA");
+      // Étape ---- (willHaveBuildings → uses floor surface area)
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA");
       store.dispatch(
         requestStepCompletion({
-          stepId: "URBAN_PROJECT_USES_FLOOR_SURFACE_AREA",
+          stepId: "URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA",
           answers: {
             usesFloorSurfaceAreaDistribution: {
               RESIDENTIAL: 2500,
@@ -368,13 +368,13 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
       );
 
       store.dispatch(navigateToNext()); // soils summary
-      store.dispatch(navigateToNext()); // carbon summary → buildings intro (hasUsesWithBuildings)
+      store.dispatch(navigateToNext()); // carbon summary → buildings intro (willHaveBuildings)
       store.dispatch(navigateToNext()); // buildings intro → uses floor surface area
 
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_USES_FLOOR_SURFACE_AREA");
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA");
       store.dispatch(
         requestStepCompletion({
-          stepId: "URBAN_PROJECT_USES_FLOOR_SURFACE_AREA",
+          stepId: "URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA",
           answers: { usesFloorSurfaceAreaDistribution: { RESIDENTIAL: 2000 } },
         }),
       );

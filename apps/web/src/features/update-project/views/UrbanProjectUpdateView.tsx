@@ -5,7 +5,6 @@ import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
-import BuildingsUseSelection from "@/shared/views/project-form/urban-project/buildings/use-selection";
 import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 
 import { UrbanProjectUpdateStep } from "../core/updateProject.reducer";
@@ -18,19 +17,9 @@ import { useSyncUpdateStepWithRouteQuery } from "./useSyncUpdateStepWithRouteQue
 const AnswerCascadingUpdateDialog = lazy(
   () => import("@/shared/views/project-form/AnswerCascadingUpdateDialog"),
 );
-const BuildingsFloorSurfaceArea = lazy(
-  () => import("@/shared/views/project-form/urban-project/buildings/floor-surface-area"),
-);
 const BuildingsIntroduction = lazy(
   () => import("@/shared/views/project-form/urban-project/buildings/introduction"),
 );
-const BuildingsUseIntroduction = lazy(
-  () => import("@/shared/views/project-form/urban-project/buildings/use-introduction"),
-);
-const BuildingsUseSurfaceAreas = lazy(
-  () => import("@/shared/views/project-form/urban-project/buildings/use-surface-areas"),
-);
-//const ProjectCreationResult = lazy(() => import("./custom-forms/creation-result"));
 const InstallationExpensesForm = lazy(
   () => import("@/shared/views/project-form/urban-project/expenses/installation"),
 );
@@ -89,37 +78,6 @@ const SoilsDecontaminationSelection = lazy(
 const SoilsDecontaminationSurfaceArea = lazy(
   () => import("@/shared/views/project-form/urban-project/soils-decontamination/surface-area"),
 );
-const UrbanSpacesDevelopmentPlanIntroduction = lazy(
-  () => import("@/shared/views/project-form/urban-project/spaces/development-plan-introduction"),
-);
-const GreenSpacesIntroduction = lazy(
-  () => import("@/shared/views/project-form/urban-project/spaces/green-spaces/introduction"),
-);
-const UrbanGreenSpacesDistribution = lazy(
-  () =>
-    import("@/shared/views/project-form/urban-project/spaces/green-spaces/surface-area-distribution"),
-);
-const UrbanProjectSpacesIntroduction = lazy(
-  () => import("@/shared/views/project-form/urban-project/spaces/introduction"),
-);
-const LivingAndActivitySpacesIntroduction = lazy(
-  () =>
-    import("@/shared/views/project-form/urban-project/spaces/living-and-activity-spaces/introduction"),
-);
-const LivingAndActivitySpacesDistribution = lazy(
-  () =>
-    import("@/shared/views/project-form/urban-project/spaces/living-and-activity-spaces/surface-area-distribution"),
-);
-const PublicSpacesIntroduction = lazy(
-  () => import("@/shared/views/project-form/urban-project/spaces/public-spaces/introduction"),
-);
-const PublicSpacesDistribution = lazy(
-  () =>
-    import("@/shared/views/project-form/urban-project/spaces/public-spaces/surface-area-distribution"),
-);
-const SpacesCategoriesSelection = lazy(
-  () => import("@/shared/views/project-form/urban-project/spaces/selection"),
-);
 const UsesIntroduction = lazy(
   () => import("@/shared/views/project-form/urban-project/uses/introduction"),
 );
@@ -154,9 +112,6 @@ const UrbanProjectSoilsCarbonStorage = lazy(
 );
 const UrbanProjectSoilsSummary = lazy(
   () => import("@/shared/views/project-form/urban-project/spaces/soils-summary"),
-);
-const UrbanProjectSpaceCategoriesSurfaceAreaDistribution = lazy(
-  () => import("@/shared/views/project-form/urban-project/spaces/surface-area"),
 );
 const DeveloperForm = lazy(
   () => import("@/shared/views/project-form/urban-project/stakeholders/developer"),
@@ -211,7 +166,7 @@ const getCurrentStepView = (step: UrbanProjectUpdateStep): Exclude<ReactNode, un
           <PublicGreenSpacesSoilsDistribution />
         </>
       );
-    case "URBAN_PROJECT_USES_FLOOR_SURFACE_AREA":
+    case "URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA":
       return (
         <>
           <HtmlTitle>{`Surfaces de plancher - Usages - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
@@ -237,76 +192,6 @@ const getCurrentStepView = (step: UrbanProjectUpdateStep): Exclude<ReactNode, un
         <>
           <HtmlTitle>{`Surfaces - Nouveaux espaces - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
           <NewSpacesSurfaceArea />
-        </>
-      );
-    case "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION":
-      return (
-        <>
-          <HtmlTitle>{`Introduction - Espaces - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
-          <UrbanProjectSpacesIntroduction />
-        </>
-      );
-    case "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION":
-      return (
-        <>
-          <HtmlTitle>{`Sélection - Espaces - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
-          <SpacesCategoriesSelection />
-        </>
-      );
-    case "URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA":
-      return (
-        <>
-          <HtmlTitle>{`Répartition - Espaces  - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
-          <UrbanProjectSpaceCategoriesSurfaceAreaDistribution />
-        </>
-      );
-    case "URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION":
-      return (
-        <>
-          <HtmlTitle>{`Introduction - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
-          <UrbanSpacesDevelopmentPlanIntroduction />
-        </>
-      );
-    case "URBAN_PROJECT_GREEN_SPACES_INTRODUCTION":
-      return (
-        <>
-          <HtmlTitle>{`Introduction - Espaces verts - Espaces - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
-          <GreenSpacesIntroduction />
-        </>
-      );
-    case "URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION":
-      return (
-        <>
-          <HtmlTitle>{`Répartition - Espaces verts - Espaces - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
-          <UrbanGreenSpacesDistribution />
-        </>
-      );
-    case "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_INTRODUCTION":
-      return (
-        <>
-          <HtmlTitle>{`Introduction - Lieux d'habitation et d'activité - Espaces - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
-          <LivingAndActivitySpacesIntroduction />
-        </>
-      );
-    case "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION":
-      return (
-        <>
-          <HtmlTitle>{`Répartition - Lieux d'habitation et d'activité - Espaces - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
-          <LivingAndActivitySpacesDistribution />
-        </>
-      );
-    case "URBAN_PROJECT_PUBLIC_SPACES_INTRODUCTION":
-      return (
-        <>
-          <HtmlTitle>{`Introduction - Espaces publics - Espaces - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
-          <PublicSpacesIntroduction />
-        </>
-      );
-    case "URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION":
-      return (
-        <>
-          <HtmlTitle>{`Répartition - Espaces publics - Espaces - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
-          <PublicSpacesDistribution />
         </>
       );
     case "URBAN_PROJECT_SPACES_SOILS_SUMMARY":
@@ -349,34 +234,6 @@ const getCurrentStepView = (step: UrbanProjectUpdateStep): Exclude<ReactNode, un
         <>
           <HtmlTitle>{`Introduction - Bâtiments - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
           <BuildingsIntroduction />
-        </>
-      );
-    case "URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA":
-      return (
-        <>
-          <HtmlTitle>{`Surfaces - Bâtiments - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
-          <BuildingsFloorSurfaceArea />
-        </>
-      );
-    case "URBAN_PROJECT_BUILDINGS_USE_INTRODUCTION":
-      return (
-        <>
-          <HtmlTitle>{`Introduction - Usages - Bâtiments - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
-          <BuildingsUseIntroduction />
-        </>
-      );
-    case "URBAN_PROJECT_BUILDINGS_USE_SELECTION":
-      return (
-        <>
-          <HtmlTitle>{`Sélection - Usages - Bâtiments - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
-          <BuildingsUseSelection />
-        </>
-      );
-    case "URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION":
-      return (
-        <>
-          <HtmlTitle>{`Répartition - Usages - Bâtiments - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
-          <BuildingsUseSurfaceAreas />
         </>
       );
     case "URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION":

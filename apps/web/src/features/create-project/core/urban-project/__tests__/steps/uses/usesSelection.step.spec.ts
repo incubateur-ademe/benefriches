@@ -68,14 +68,14 @@ describe("Urban project creation - Steps - Uses selection", () => {
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_INTRODUCTION");
   });
 
-  it("should delete URBAN_PROJECT_USES_FLOOR_SURFACE_AREA when uses selection changes", () => {
+  it("should delete URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA when uses selection changes", () => {
     const store = createTestStore({
       steps: {
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL", "OFFICES"] },
         },
-        URBAN_PROJECT_USES_FLOOR_SURFACE_AREA: {
+        URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA: {
           completed: true,
           payload: { usesFloorSurfaceAreaDistribution: { RESIDENTIAL: 10000, OFFICES: 7500 } },
         },
@@ -102,7 +102,9 @@ describe("Urban project creation - Steps - Uses selection", () => {
           stepId: "URBAN_PROJECT_USES_SELECTION",
           answers: newAnswer,
         },
-        cascadingChanges: [{ action: "delete", stepId: "URBAN_PROJECT_USES_FLOOR_SURFACE_AREA" }],
+        cascadingChanges: [
+          { action: "delete", stepId: "URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA" },
+        ],
         navigationTarget: "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA",
       },
     });
@@ -127,7 +129,7 @@ describe("Urban project creation - Steps - Uses selection", () => {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL", "OFFICES"] },
         },
-        URBAN_PROJECT_USES_FLOOR_SURFACE_AREA: {
+        URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA: {
           completed: true,
           payload: { usesFloorSurfaceAreaDistribution: { RESIDENTIAL: 10000, OFFICES: 7500 } },
         },

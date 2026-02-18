@@ -1,11 +1,7 @@
 import {
   FinancialAssistanceRevenue,
-  getUrbanGreenSpaceFromSoilType,
-  getUrbanPublicSpaceFromSoilType,
   ReinstatementExpense,
   sumListWithKey,
-  sumObjectValues,
-  typedObjectEntries,
   typedObjectKeys,
   UrbanProjectDevelopmentExpense,
   UrbanProjectPhase,
@@ -34,24 +30,6 @@ export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProje
     return steps;
   }
 
-  const spacesCategoriesDistribution = {
-    PUBLIC_SPACES: sumListWithKey(
-      projectData.soilsDistribution.filter(({ spaceCategory }) => spaceCategory === "PUBLIC_SPACE"),
-      "surfaceArea",
-    ),
-    LIVING_AND_ACTIVITY_SPACES: sumListWithKey(
-      projectData.soilsDistribution.filter(
-        ({ spaceCategory }) => spaceCategory === "LIVING_AND_ACTIVITY_SPACE",
-      ),
-      "surfaceArea",
-    ),
-    GREEN_SPACES: sumListWithKey(
-      projectData.soilsDistribution.filter(
-        ({ spaceCategory }) => spaceCategory === "PUBLIC_GREEN_SPACE",
-      ),
-      "surfaceArea",
-    ),
-  };
   const developmentPlan = projectData.developmentPlan;
 
   const hasBuildings =
@@ -66,97 +44,6 @@ export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProje
 
   ANSWER_STEPS.forEach((stepId) => {
     switch (stepId) {
-      case "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION":
-        steps["URBAN_PROJECT_SPACES_CATEGORIES_SELECTION"] = {
-          payload: {
-            spacesCategories: typedObjectEntries(spacesCategoriesDistribution)
-              .filter(([, surfaceArea]) => surfaceArea > 0)
-              .map(([spaceType]) => spaceType),
-          },
-          completed: true,
-        };
-        break;
-      case "URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA":
-        steps["URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA"] = {
-          payload: {
-            spacesCategoriesDistribution: spacesCategoriesDistribution,
-          },
-          completed: true,
-        };
-        break;
-      case "URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION":
-        steps["URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION"] = {
-          payload: {
-            greenSpacesDistribution: Object.fromEntries(
-              projectData.soilsDistribution
-                .filter(({ spaceCategory }) => spaceCategory === "PUBLIC_GREEN_SPACE")
-                .map(({ soilType, surfaceArea }) => [
-                  getUrbanGreenSpaceFromSoilType(soilType),
-                  surfaceArea,
-                ]),
-            ),
-          },
-          completed: true,
-        };
-        break;
-      case "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION":
-        steps["URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION"] = {
-          payload: {
-            livingAndActivitySpacesDistribution: {
-              BUILDINGS: sumListWithKey(
-                projectData.soilsDistribution.filter(
-                  ({ spaceCategory, soilType }) =>
-                    spaceCategory === "LIVING_AND_ACTIVITY_SPACE" && soilType === "BUILDINGS",
-                ),
-                "surfaceArea",
-              ),
-              IMPERMEABLE_SURFACE: sumListWithKey(
-                projectData.soilsDistribution.filter(
-                  ({ spaceCategory, soilType }) =>
-                    spaceCategory === "LIVING_AND_ACTIVITY_SPACE" &&
-                    soilType === "IMPERMEABLE_SOILS",
-                ),
-                "surfaceArea",
-              ),
-              PERMEABLE_SURFACE: sumListWithKey(
-                projectData.soilsDistribution.filter(
-                  ({ spaceCategory, soilType }) =>
-                    spaceCategory === "LIVING_AND_ACTIVITY_SPACE" && soilType === "MINERAL_SOIL",
-                ),
-                "surfaceArea",
-              ),
-              PRIVATE_GREEN_SPACES: sumListWithKey(
-                projectData.soilsDistribution.filter(
-                  ({ spaceCategory, soilType }) =>
-                    spaceCategory === "LIVING_AND_ACTIVITY_SPACE" &&
-                    [
-                      "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
-                      "ARTIFICIAL_TREE_FILLED",
-                      "WATER",
-                    ].includes(soilType),
-                ),
-                "surfaceArea",
-              ),
-            },
-          },
-          completed: true,
-        };
-        break;
-      case "URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION":
-        steps["URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION"] = {
-          payload: {
-            publicSpacesDistribution: Object.fromEntries(
-              projectData.soilsDistribution
-                .filter(({ spaceCategory }) => spaceCategory === "PUBLIC_SPACE")
-                .map(({ soilType, surfaceArea }) => [
-                  getUrbanPublicSpaceFromSoilType(soilType),
-                  surfaceArea,
-                ]),
-            ),
-          },
-          completed: true,
-        };
-        break;
       case "URBAN_PROJECT_USES_SELECTION": {
         const usesSelection: UrbanProjectUse[] = [
           ...typedObjectKeys(developmentPlan.features.buildingsFloorAreaDistribution),
@@ -217,6 +104,17 @@ export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProje
           };
         }
         break;
+      case "URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA":
+        if (hasBuildings) {
+          steps["URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA"] = {
+            payload: {
+              usesFloorSurfaceAreaDistribution:
+                developmentPlan.features.buildingsFloorAreaDistribution,
+            },
+            completed: true,
+          };
+        }
+        break;
       case "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION": {
         if (siteData.nature === "FRICHE") {
           const contaminatedSoilSurface = siteData?.contaminatedSoilSurface ?? 0;
@@ -247,41 +145,6 @@ export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProje
         }
         break;
 
-      case "URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA":
-        if (hasBuildings) {
-          steps["URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA"] = {
-            payload: {
-              buildingsFloorSurfaceArea: sumObjectValues(
-                developmentPlan.features.buildingsFloorAreaDistribution,
-              ),
-            },
-            completed: true,
-          };
-        }
-
-        break;
-      case "URBAN_PROJECT_BUILDINGS_USE_SELECTION":
-        if (hasBuildings) {
-          steps["URBAN_PROJECT_BUILDINGS_USE_SELECTION"] = {
-            payload: {
-              buildingsUsesSelection: typedObjectKeys(
-                developmentPlan.features.buildingsFloorAreaDistribution,
-              ),
-            },
-            completed: true,
-          };
-        }
-        break;
-      case "URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION":
-        if (hasBuildings) {
-          steps["URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION"] = {
-            payload: {
-              buildingsUsesDistribution: developmentPlan.features.buildingsFloorAreaDistribution,
-            },
-            completed: true,
-          };
-        }
-        break;
       case "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER": {
         if (developmentPlan.developer) {
           steps["URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER"] = {

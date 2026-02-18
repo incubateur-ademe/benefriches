@@ -1,4 +1,8 @@
-import { ReinstatementExpensePurpose, UrbanProjectDevelopmentExpense } from "shared";
+import {
+  ReinstatementExpensePurpose,
+  sumObjectValues,
+  UrbanProjectDevelopmentExpense,
+} from "shared";
 
 import { DEFAULT_FUTURE_SITE_OWNER } from "../../helpers/stakeholders";
 import { ProjectFormState } from "../../projectForm.reducer";
@@ -170,23 +174,29 @@ export const getProjectSummary = (
     },
     buildingsUsesDistribution: {
       value:
-        steps.URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION?.payload
-          ?.buildingsUsesDistribution,
+        steps.URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA?.payload
+          ?.usesFloorSurfaceAreaDistribution,
       isAuto:
-        steps.URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION?.payload
-          ?.buildingsUsesDistribution ===
-        steps.URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION?.defaultValues
-          ?.buildingsUsesDistribution,
-      shouldDisplay: stepsSequence.includes(
-        "URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION",
-      ),
+        steps.URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA?.payload
+          ?.usesFloorSurfaceAreaDistribution ===
+        steps.URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA?.defaultValues
+          ?.usesFloorSurfaceAreaDistribution,
+      shouldDisplay: stepsSequence.includes("URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA"),
     },
     buildingsFloorSurfaceArea: {
-      value: steps.URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA?.payload?.buildingsFloorSurfaceArea,
+      value: steps.URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA?.payload
+        ?.usesFloorSurfaceAreaDistribution
+        ? sumObjectValues(
+            steps.URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA.payload
+              .usesFloorSurfaceAreaDistribution,
+          )
+        : undefined,
       isAuto:
-        steps.URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA?.payload?.buildingsFloorSurfaceArea ===
-        steps.URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA?.defaultValues?.buildingsFloorSurfaceArea,
-      shouldDisplay: stepsSequence.includes("URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA"),
+        steps.URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA?.payload
+          ?.usesFloorSurfaceAreaDistribution ===
+        steps.URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA?.defaultValues
+          ?.usesFloorSurfaceAreaDistribution,
+      shouldDisplay: stepsSequence.includes("URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA"),
     },
     buildingsResaleExpectedSellingPrice: {
       value: steps.URBAN_PROJECT_REVENUE_BUILDINGS_RESALE?.payload?.buildingsResaleSellingPrice,

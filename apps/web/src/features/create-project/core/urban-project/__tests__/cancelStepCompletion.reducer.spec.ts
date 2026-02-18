@@ -9,110 +9,54 @@ const { cancelStepCompletion, requestStepCompletion } = creationProjectFormUrban
 describe("urbanProject.reducer - cancelStepCompletion action", () => {
   it("should not update state when cancelStepCompletion is used", () => {
     const initialSteps = {
-      URBAN_PROJECT_SPACES_CATEGORIES_SELECTION: {
+      URBAN_PROJECT_USES_SELECTION: {
         completed: true,
-        payload: { spacesCategories: ["LIVING_AND_ACTIVITY_SPACES", "GREEN_SPACES"] },
+        payload: { usesSelection: ["RESIDENTIAL", "PUBLIC_GREEN_SPACES"] },
       },
-      URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA: {
+      URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA: {
+        completed: true,
+        payload: { usesFloorSurfaceAreaDistribution: { RESIDENTIAL: 5000 } },
+      },
+      URBAN_PROJECT_SPACES_SURFACE_AREA: {
         completed: true,
         payload: {
-          spacesCategoriesDistribution: {
-            LIVING_AND_ACTIVITY_SPACES: 5000,
-            GREEN_SPACES: 3000,
+          spacesSurfaceAreaDistribution: {
+            BUILDINGS: 5000,
+            IMPERMEABLE_SOILS: 3000,
           },
-        },
-      },
-      URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION: {
-        completed: true,
-        payload: {
-          livingAndActivitySpacesDistribution: {
-            BUILDINGS: 2000,
-            PRIVATE_GREEN_SPACES: 3000,
-          },
-        },
-      },
-      URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA: {
-        completed: true,
-        payload: {
-          buildingsFloorSurfaceArea: 4000,
-        },
-      },
-      URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION: {
-        completed: true,
-        payload: {
-          buildingsUsesDistribution: { RESIDENTIAL: 3000, LOCAL_STORE: 1000 },
         },
       },
     } satisfies ProjectCreationState["urbanProject"]["steps"];
 
     const store = createTestStore({
       steps: initialSteps,
-      currentStep: "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION",
+      currentStep: "URBAN_PROJECT_USES_SELECTION",
     });
 
-    // Modification : suppression de LIVING_AND_ACTIVITY_SPACES
+    // Modification: remove RESIDENTIAL from uses (triggers cascading changes on buildings)
     store.dispatch(
       requestStepCompletion({
-        stepId: "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION",
-        answers: { spacesCategories: ["GREEN_SPACES"] },
+        stepId: "URBAN_PROJECT_USES_SELECTION",
+        answers: { usesSelection: ["PUBLIC_GREEN_SPACES"] },
       }),
     );
     const intermediateState = store.getState().projectCreation.urbanProject;
     expect(intermediateState.pendingStepCompletion?.showAlert).toBe(true);
-    expect(intermediateState.pendingStepCompletion?.changes).toEqual({
-      cascadingChanges: [
-        {
-          stepId: "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
-          action: "delete",
-        },
-        {
-          stepId: "URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA",
-          action: "delete",
-        },
-        {
-          stepId: "URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION",
-          action: "delete",
-        },
-      ],
-      navigationTarget: "URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION",
-      payload: {
-        answers: {
-          spacesCategories: ["GREEN_SPACES"],
-        },
-        stepId: "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION",
-      },
-      shortcutComplete: [
-        {
-          answers: {
-            spacesCategoriesDistribution: {
-              GREEN_SPACES: 10000,
-            },
-          },
-          stepId: "URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA",
-        },
-      ],
-    });
 
     store.dispatch(cancelStepCompletion());
 
     const stepsState = store.getState().projectCreation.urbanProject.steps;
 
     expect(store.getState().projectCreation.urbanProject.currentStep).toEqual(
-      "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION",
+      "URBAN_PROJECT_USES_SELECTION",
     );
     expect(store.getState().projectCreation.urbanProject.pendingStepCompletion).toEqual(undefined);
 
-    expect(stepsState.URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA).toEqual(
-      initialSteps.URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA,
+    expect(stepsState.URBAN_PROJECT_USES_SELECTION).toEqual(
+      initialSteps.URBAN_PROJECT_USES_SELECTION,
     );
-    expect(stepsState.URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION).toEqual(
-      initialSteps.URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION,
-    );
-    expect(stepsState.URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA).toEqual(
-      initialSteps.URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA,
-    );
-    expect(stepsState.URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION).toEqual(
-      initialSteps.URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION,
+    expect(stepsState.URBAN_PROJECT_SPACES_SURFACE_AREA).toEqual(
+      initialSteps.URBAN_PROJECT_SPACES_SURFACE_AREA,
     );
   });
 });

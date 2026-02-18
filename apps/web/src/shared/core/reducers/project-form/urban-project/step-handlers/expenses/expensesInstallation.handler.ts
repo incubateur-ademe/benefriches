@@ -10,7 +10,7 @@ export const UrbanProjectInstallationExpensesHandler: AnswerStepHandler<"URBAN_P
 
     getNextStepId(context) {
       if (
-        ReadStateHelper.hasBuildings(context.stepsState) &&
+        ReadStateHelper.willHaveBuildings(context.stepsState) &&
         !ReadStateHelper.hasBuildingsResalePlannedAfterDevelopment(context.stepsState)
       ) {
         return "URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES";

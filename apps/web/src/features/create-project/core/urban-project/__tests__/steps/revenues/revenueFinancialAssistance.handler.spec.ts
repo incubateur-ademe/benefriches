@@ -17,11 +17,9 @@ describe("RevenueFinancialAssistanceHandler", () => {
   describe("getPreviousStepId", () => {
     it("should return URBAN_PROJECT_REVENUE_BUILDINGS_RESALE when project has buildings and buildings resale is planned", () => {
       const stepsState: ProjectFormState["urbanProject"]["steps"] = {
-        URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION: {
+        URBAN_PROJECT_USES_SELECTION: {
           completed: true,
-          payload: {
-            livingAndActivitySpacesDistribution: { BUILDINGS: 1000 },
-          },
+          payload: { usesSelection: ["RESIDENTIAL"] },
         },
         URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
           completed: true,
@@ -40,11 +38,9 @@ describe("RevenueFinancialAssistanceHandler", () => {
 
     it("should return URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES when project has buildings but no buildings resale planned", () => {
       const stepsState: ProjectFormState["urbanProject"]["steps"] = {
-        URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION: {
+        URBAN_PROJECT_USES_SELECTION: {
           completed: true,
-          payload: {
-            livingAndActivitySpacesDistribution: { BUILDINGS: 1000 },
-          },
+          payload: { usesSelection: ["RESIDENTIAL"] },
         },
         URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
           completed: true,
@@ -67,11 +63,9 @@ describe("RevenueFinancialAssistanceHandler", () => {
           completed: true,
           payload: { siteResaleSelection: "yes" },
         },
-        URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION: {
+        URBAN_PROJECT_USES_SELECTION: {
           completed: true,
-          payload: {
-            livingAndActivitySpacesDistribution: { IMPERMEABLE_SURFACE: 1000 },
-          },
+          payload: { usesSelection: ["PUBLIC_GREEN_SPACES"] },
         },
       };
 
@@ -88,11 +82,9 @@ describe("RevenueFinancialAssistanceHandler", () => {
           completed: true,
           payload: { siteResaleSelection: "unknown" },
         },
-        URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION: {
+        URBAN_PROJECT_USES_SELECTION: {
           completed: true,
-          payload: {
-            livingAndActivitySpacesDistribution: { IMPERMEABLE_SURFACE: 1000 },
-          },
+          payload: { usesSelection: ["PUBLIC_GREEN_SPACES"] },
         },
       };
 

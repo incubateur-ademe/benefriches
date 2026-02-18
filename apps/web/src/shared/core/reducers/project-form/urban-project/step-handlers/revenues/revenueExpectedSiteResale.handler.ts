@@ -11,7 +11,7 @@ export const RevenueExpectedSiteResaleHandler: AnswerStepHandler<"URBAN_PROJECT_
     },
 
     getNextStepId(context) {
-      if (ReadStateHelper.hasBuildings(context.stepsState)) {
+      if (ReadStateHelper.willHaveBuildings(context.stepsState)) {
         if (ReadStateHelper.hasBuildingsResalePlannedAfterDevelopment(context.stepsState)) {
           return "URBAN_PROJECT_REVENUE_BUILDINGS_RESALE";
         }

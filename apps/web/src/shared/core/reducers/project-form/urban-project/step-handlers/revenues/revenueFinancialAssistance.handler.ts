@@ -7,7 +7,7 @@ export const RevenueFinancialAssistanceHandler: AnswerStepHandler<"URBAN_PROJECT
     stepId: "URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE",
 
     getPreviousStepId(context) {
-      if (ReadStateHelper.hasBuildings(context.stepsState)) {
+      if (ReadStateHelper.willHaveBuildings(context.stepsState)) {
         if (ReadStateHelper.hasBuildingsResalePlannedAfterDevelopment(context.stepsState)) {
           return "URBAN_PROJECT_REVENUE_BUILDINGS_RESALE";
         }

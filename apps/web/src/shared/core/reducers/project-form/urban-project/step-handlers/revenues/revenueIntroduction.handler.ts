@@ -7,7 +7,7 @@ export const RevenueIntroductionHandler: InfoStepHandler = {
 
   getPreviousStepId(context) {
     if (
-      ReadStateHelper.hasBuildings(context.stepsState) &&
+      ReadStateHelper.willHaveBuildings(context.stepsState) &&
       !ReadStateHelper.hasBuildingsResalePlannedAfterDevelopment(context.stepsState)
     ) {
       return "URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES";
@@ -20,7 +20,7 @@ export const RevenueIntroductionHandler: InfoStepHandler = {
       return "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE";
     }
 
-    if (ReadStateHelper.hasBuildings(context.stepsState)) {
+    if (ReadStateHelper.willHaveBuildings(context.stepsState)) {
       if (ReadStateHelper.hasBuildingsResalePlannedAfterDevelopment(context.stepsState)) {
         return "URBAN_PROJECT_REVENUE_BUILDINGS_RESALE";
       }
