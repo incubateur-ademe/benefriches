@@ -219,5 +219,17 @@ export const getProjectSummary = (
         "unknown",
       shouldDisplay: stepsSequence.includes("URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA"),
     },
+    selectedUses: {
+      value: steps.URBAN_PROJECT_USES_SELECTION?.payload?.usesSelection ?? [],
+    },
+    publicGreenSpacesSurfaceArea: {
+      value:
+        steps.URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA?.payload?.publicGreenSpacesSurfaceArea,
+      shouldDisplay: stepsSequence.includes("URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA"),
+    },
+    decontaminationPlan: {
+      value: steps.URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION?.payload?.decontaminationPlan,
+      shouldDisplay: stepsSequence.includes("URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION"),
+    },
   };
 };

@@ -6,6 +6,7 @@ import {
   typedObjectKeys,
   urbanProjectBuildingsUseSchema,
   urbanProjectDevelopmentExpensePurposeSchema,
+  urbanProjectPhaseSchema,
   urbanProjectTemplateSchema,
   urbanProjectUseSchema,
   yearlyBuildingsOperationsExpensePurposeSchema,
@@ -217,7 +218,7 @@ export const answersByStepSchemas = {
   }),
 
   URBAN_PROJECT_PROJECT_PHASE: z.object({
-    projectPhase: z.string().optional(),
+    projectPhase: urbanProjectPhaseSchema.optional(),
   }),
 };
 

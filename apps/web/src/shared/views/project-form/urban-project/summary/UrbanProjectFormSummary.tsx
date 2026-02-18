@@ -6,27 +6,26 @@ import {
   typedObjectEntries,
 } from "shared";
 
+import { getLabelForUrbanProjectUse } from "@/features/create-project/core/urban-project/urbanProject";
+import { getLabelForSpace } from "@/features/create-project/core/urban-project/urbanProject";
 import { getLabelForDevelopmentPlanCategory } from "@/features/create-project/views/projectTypeLabelMapping";
-import SoilsDistribution from "@/features/projects/views/project-page/features/SoilsDistribution";
 import { formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
+import { getLabelForSoilType } from "@/shared/core/label-mapping/soilTypeLabelMapping";
+import { getLabelForUrbanProjectPhase } from "@/shared/core/projectPhase";
 import { getProjectSummary } from "@/shared/core/reducers/project-form/urban-project/helpers/projectSummary";
 import { UrbanProjectCreationStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
-import {
-  getLabelForBuildingsUse,
-  getUrbanSpaceLabelForLivingAndActivitySpace,
-  getUrbanSpaceLabelForPublicSpace,
-} from "@/shared/core/urbanProject";
+import { getLabelForBuildingsUse } from "@/shared/core/urbanProject";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import DataLine from "@/shared/views/components/FeaturesList/FeaturesListDataLine";
 import ScheduleDates from "@/shared/views/components/FeaturesList/FeaturesListScheduleDates";
 import Section from "@/shared/views/components/FeaturesList/FeaturesListSection";
-import InfoTooltip from "@/shared/views/components/InfoTooltip/InfoTooltip";
 import WizardFormLayout, {
   WizardFormLayoutProps,
 } from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 import { ProjectStepGroups } from "../../stepper/stepperConfig";
-import ExpensesAndRevenuesSection from "./UrbanProjectExpensesAndRevenuesSummary";
+import UrbanProjectExpensesSection from "./UrbanProjectExpensesSection";
+import UrbanProjectRevenuesSection from "./UrbanProjectRevenuesSection";
 
 export type UrbanProjectFormSummaryProps = {
   projectSummary: ReturnType<typeof getProjectSummary>;
@@ -52,33 +51,13 @@ function UrbanProjectFormSummary({
   stepsGroupedBySections,
   onNavigateToStep,
 }: UrbanProjectFormSummaryProps) {
-  const livingAndActivitiesSpaces = projectSoilsDistribution.filter(
-    ({ spaceCategory }) => spaceCategory === "LIVING_AND_ACTIVITY_SPACE",
+  const greenSpaces = projectSoilsDistribution.filter(
+    ({ spaceCategory }) => spaceCategory === "PUBLIC_GREEN_SPACE",
   );
-
-  const totalGrassPublicSpaces =
-    projectSoilsDistribution.find(
-      ({ spaceCategory, soilType }) =>
-        spaceCategory === "PUBLIC_SPACE" && soilType === "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
-    )?.surfaceArea ?? 0;
-
-  const otherPublicSpaces = projectSoilsDistribution.filter(
-    ({ spaceCategory, soilType }) =>
-      spaceCategory === "PUBLIC_SPACE" && soilType !== "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+  const nonGreenSpaces = projectSoilsDistribution.filter(
+    ({ spaceCategory }) => spaceCategory !== "PUBLIC_GREEN_SPACE",
   );
-
-  const totalPublicGreenSpaces = sumListWithKey(
-    projectSoilsDistribution.filter(({ spaceCategory }) => spaceCategory === "PUBLIC_GREEN_SPACE"),
-    "surfaceArea",
-  );
-
-  const totalLivingAndActivitiesSpaces = sumListWithKey(livingAndActivitiesSpaces, "surfaceArea");
-  const totalPublicGreenSpacesAndPublicGrassSpaces =
-    totalGrassPublicSpaces + totalPublicGreenSpaces;
-
-  const totalOtherPublicSpaces = sumListWithKey(otherPublicSpaces, "surfaceArea");
-
-  const totalSurfaceArea = sumListWithKey(projectSoilsDistribution, "surfaceArea");
+  const hasGreenSpaces = greenSpaces.length > 0;
 
   const getSectionProps = useCallback(
     (
@@ -105,6 +84,9 @@ function UrbanProjectFormSummary({
     [onNavigateToStep],
   );
 
+  const developerName = projectSummary.developer.value?.name;
+  const reinstatementContractOwnerName = projectSummary.reinstatementContractOwner.value?.name;
+
   return (
     <WizardFormLayout
       title="Récapitulatif du projet"
@@ -113,165 +95,106 @@ function UrbanProjectFormSummary({
       errors={errors}
     >
       <>
+        {/* 🏗️ Type de projet */}
         <Section title="🏗️ Type de projet">
           <DataLine
-            label={<strong>Type d'aménagement</strong>}
+            label={<strong>Type de projet</strong>}
             value={getLabelForDevelopmentPlanCategory("URBAN_PROJECT")}
           />
         </Section>
 
-        <Section title="🏘️ Espaces" {...getSectionProps(stepsGroupedBySections.SPACES)}>
+        {/* 🏙️ Usages */}
+        <Section title="🏙️ Usages" {...getSectionProps(stepsGroupedBySections.USES)}>
           <DataLine
-            label={<strong>Superficie du site</strong>}
-            value={<strong>{formatSurfaceArea(roundToInteger(totalSurfaceArea))}</strong>}
+            label={<strong>Usages</strong>}
+            value={
+              projectSummary.selectedUses.value.length > 0
+                ? projectSummary.selectedUses.value.map(getLabelForUrbanProjectUse).join(", ")
+                : "Non renseigné"
+            }
           />
-          {totalLivingAndActivitiesSpaces > 0 && (
+          {projectSummary.publicGreenSpacesSurfaceArea.shouldDisplay && (
             <DataLine
-              label="Lieux d'habitation et d’activité"
-              labelTooltip="Les lieux d'habitation et d’activité regroupent les lots dédiés aux logements, aux activités économiques, les emprises des équipements publics, en dehors des espaces verts publics et autres espaces publics de type rues, places, parking…"
-              value={formatSurfaceArea(roundToInteger(totalLivingAndActivitiesSpaces))}
-            />
-          )}
-          {totalOtherPublicSpaces > 0 && (
-            <DataLine
-              label="Espaces publics"
-              value={formatSurfaceArea(roundToInteger(totalOtherPublicSpaces))}
-            />
-          )}
-          {totalPublicGreenSpacesAndPublicGrassSpaces > 0 && (
-            <DataLine
-              label="Espaces verts publics"
-              labelTooltip="Il s’agit des espaces verts publics (parcs, jardins, forêt urbaines, alignements d’arbres, noues, etc.)."
-              value={formatSurfaceArea(roundToInteger(totalPublicGreenSpacesAndPublicGrassSpaces))}
-            />
-          )}
-        </Section>
-
-        {projectSummary.decontaminatedSoilSurface.shouldDisplay && (
-          <Section
-            {...getSectionProps(stepsGroupedBySections.SOILS_DECONTAMINATION)}
-            title="✨ Dépollution"
-            tooltip="Les sols de la friche nécessitent une dépollution pour permettre la réalisation du projet. La pollution à l’amiante des bâtiments n’est pas considérée ici."
-          >
-            <DataLine
-              label="Surface dépolluée"
+              label={<strong>Superficie des espaces verts</strong>}
               value={
-                projectSummary.decontaminatedSoilSurface.value
+                projectSummary.publicGreenSpacesSurfaceArea.value
                   ? formatSurfaceArea(
-                      roundToInteger(projectSummary.decontaminatedSoilSurface.value),
+                      roundToInteger(projectSummary.publicGreenSpacesSurfaceArea.value),
                     )
                   : "Non renseigné"
               }
-              valueTooltip={
-                projectSummary.decontaminatedSoilSurface.isAuto
-                  ? `Bénéfriches considère que 75% de la surface polluée est dépolluée. Cette valeur est issue du retour d’expérience ADEME.`
-                  : undefined
-              }
             />
-          </Section>
-        )}
-
-        <Section
-          title="🌾 Aménagement des espaces"
-          {...getSectionProps(stepsGroupedBySections.SPACES)}
-        >
-          {totalLivingAndActivitiesSpaces > 0 && (
-            <>
-              <DataLine
-                noBorder
-                label={<strong>Lieux d’habitation et d’activité</strong>}
-                value={
-                  <strong>
-                    {formatSurfaceArea(roundToInteger(totalLivingAndActivitiesSpaces))}
-                  </strong>
-                }
-              />
-              {livingAndActivitiesSpaces
-                .filter(({ surfaceArea }) => surfaceArea)
-                .map(({ spaceCategory, soilType, surfaceArea }) => {
-                  return (
-                    <DataLine
-                      label={getUrbanSpaceLabelForLivingAndActivitySpace(soilType)}
-                      value={formatSurfaceArea(roundToInteger(surfaceArea))}
-                      key={`${spaceCategory}-${soilType}`}
-                      isDetails
-                    />
-                  );
-                })}
-            </>
           )}
-          {totalPublicGreenSpacesAndPublicGrassSpaces > 0 && (
-            <>
-              <DataLine
-                noBorder
-                label={<strong>Espaces verts publics</strong>}
-                value={
-                  <strong>
-                    {formatSurfaceArea(roundToInteger(totalPublicGreenSpacesAndPublicGrassSpaces))}
-                  </strong>
-                }
-              />
-              {totalGrassPublicSpaces > 0 && (
-                <DataLine
-                  label="Voies, places, trottoirs enherbés"
-                  value={formatSurfaceArea(roundToInteger(totalGrassPublicSpaces))}
-                  isDetails
-                />
-              )}
-              {totalPublicGreenSpaces > 0 && (
-                <DataLine
-                  label="Espaces verts publics"
-                  value={formatSurfaceArea(roundToInteger(totalPublicGreenSpaces))}
-                  isDetails
-                />
-              )}
-            </>
-          )}
-          {totalOtherPublicSpaces > 0 && (
-            <>
-              <DataLine
-                noBorder
-                label={<strong>Espaces publics</strong>}
-                labelTooltip="Les espaces publics sont comptabilisés hors espaces verts."
-                value={<strong>{formatSurfaceArea(roundToInteger(totalOtherPublicSpaces))}</strong>}
-              />
-              {otherPublicSpaces
-                .filter(({ surfaceArea }) => surfaceArea)
-                .map(({ spaceCategory, soilType, surfaceArea }) => {
-                  return (
-                    <DataLine
-                      label={getUrbanSpaceLabelForPublicSpace(soilType)}
-                      value={formatSurfaceArea(roundToInteger(surfaceArea))}
-                      key={`${spaceCategory}-${soilType}`}
-                      isDetails
-                    />
-                  );
-                })}
-            </>
-          )}
-
-          <SoilsDistribution
-            isExpressProject={false}
-            projectType="URBAN_PROJECT"
-            soilsDistribution={projectSoilsDistribution}
-          />
         </Section>
 
+        {/* 🌾 Sols et espaces */}
+        <Section title="🌾 Sols et espaces" {...getSectionProps(stepsGroupedBySections.SPACES)}>
+          {hasGreenSpaces && (
+            <>
+              <DataLine
+                noBorder
+                label={<strong>Composition des espaces verts</strong>}
+                value={
+                  <strong>
+                    {formatSurfaceArea(roundToInteger(sumListWithKey(greenSpaces, "surfaceArea")))}
+                  </strong>
+                }
+              />
+              {greenSpaces
+                .filter(({ surfaceArea }) => surfaceArea)
+                .map(({ soilType, surfaceArea }) => (
+                  <DataLine
+                    label={getLabelForSoilType(soilType)}
+                    value={formatSurfaceArea(roundToInteger(surfaceArea))}
+                    key={`green-${soilType}`}
+                    isDetails
+                  />
+                ))}
+            </>
+          )}
+          {nonGreenSpaces.length > 0 && (
+            <>
+              <DataLine
+                noBorder
+                label={
+                  <strong>
+                    {hasGreenSpaces ? "Composition des autres usages" : "Composition des usages"}
+                  </strong>
+                }
+                value={
+                  <strong>
+                    {formatSurfaceArea(
+                      roundToInteger(sumListWithKey(nonGreenSpaces, "surfaceArea")),
+                    )}
+                  </strong>
+                }
+              />
+              {nonGreenSpaces
+                .filter(({ surfaceArea }) => surfaceArea)
+                .map(({ soilType, surfaceArea }) => (
+                  <DataLine
+                    label={getLabelForSpace(soilType)}
+                    value={formatSurfaceArea(roundToInteger(surfaceArea))}
+                    key={`space-${soilType}`}
+                    isDetails
+                  />
+                ))}
+            </>
+          )}
+        </Section>
+
+        {/* 🏢 Bâtiments */}
         {projectSummary.buildingsFloorSurfaceArea.shouldDisplay && (
-          <Section {...getSectionProps(stepsGroupedBySections.BUILDINGS)} title="🏢 Bâtiments">
+          <Section title="🏢 Bâtiments" {...getSectionProps(stepsGroupedBySections.BUILDINGS)}>
             <DataLine
               noBorder
-              label={<strong>Surface de plancher des bâtiments</strong>}
+              label={<strong>Surface de plancher des usages</strong>}
               value={
                 projectSummary.buildingsFloorSurfaceArea.value
                   ? formatSurfaceArea(projectSummary.buildingsFloorSurfaceArea.value)
                   : "Non renseignée"
               }
             />
-            <h4 className="text-base pb-2 pt-4 mb-0">
-              Usage des bâtiments{" "}
-              <InfoTooltip title="L’usage des bâtiments correspond à leur destination (logements, services de proximité, bureaux, équipements publics, etc.)" />
-            </h4>
             {typedObjectEntries(projectSummary.buildingsUsesDistribution.value ?? {}).map(
               ([use, value]) =>
                 value ? (
@@ -286,68 +209,113 @@ function UrbanProjectFormSummary({
           </Section>
         )}
 
-        <Section
-          title="👱 Acteurs"
-          tooltip="Il s’agit des entités ou personnes impliquées dans la réalisation du projet."
-          {...getSectionProps(stepsGroupedBySections.STAKEHOLDERS)}
-        >
-          <DataLine
-            label={<strong>Aménageur du site</strong>}
-            value={projectSummary.developer.value?.name ?? "Non renseigné"}
-          />
+        {/* 🚧 Travaux */}
+        {(projectSummary.reinstatementCosts.shouldDisplay ||
+          projectSummary.decontaminationPlan.shouldDisplay) && (
+          <Section
+            title="🚧 Travaux"
+            {...getSectionProps([...(stepsGroupedBySections.SOILS_DECONTAMINATION ?? [])])}
+          >
+            {projectSummary.reinstatementCosts.shouldDisplay && (
+              <DataLine
+                label={<strong>Travaux de remise en état</strong>}
+                value={projectSummary.reinstatementCosts.value ? "Oui" : "Non"}
+              />
+            )}
+            {projectSummary.decontaminationPlan.shouldDisplay && (
+              <>
+                <DataLine
+                  label={<strong>Travaux de dépollution</strong>}
+                  value={
+                    projectSummary.decontaminationPlan.value &&
+                    projectSummary.decontaminationPlan.value !== "none"
+                      ? "Oui"
+                      : "Non"
+                  }
+                />
+                {projectSummary.decontaminatedSoilSurface.value && (
+                  <DataLine
+                    label="Surface à dépolluer"
+                    value={formatSurfaceArea(
+                      roundToInteger(projectSummary.decontaminatedSoilSurface.value),
+                    )}
+                    isDetails
+                    valueTooltip={
+                      projectSummary.decontaminatedSoilSurface.isAuto
+                        ? `Bénéfriches considère que 75% de la surface polluée est dépolluée. Cette valeur est issue du retour d'expérience ADEME.`
+                        : undefined
+                    }
+                  />
+                )}
+              </>
+            )}
+          </Section>
+        )}
 
-          <DataLine
-            label={<strong>Maître d'ouvrage des travaux de remise en état de la friche</strong>}
-            value={projectSummary.reinstatementContractOwner.value?.name ?? "Non renseigné"}
-          />
-        </Section>
-
+        {/* 🔑 Cession foncière */}
         <Section
-          title="🏠 Cession foncière"
+          title="🔑 Cession foncière"
           {...getSectionProps(stepsGroupedBySections.SITE_RESALE)}
         >
           <DataLine
-            label={<strong>Cession du site</strong>}
+            label={<strong>Cession foncière</strong>}
             value={projectSummary.futureSiteOwner.value ? "Oui" : "Non"}
           />
-
           <DataLine
-            label={<strong>Cession des bâtiments</strong>}
-            value={projectSummary.futureOperator.value ? "Oui" : "Non"}
+            label={<strong>Revente des bâtiments</strong>}
+            value={
+              projectSummary.futureOperator.shouldDisplay
+                ? projectSummary.futureOperator.value
+                  ? "Oui"
+                  : "Non"
+                : "Non"
+            }
           />
+        </Section>
 
-          {projectSummary.futureOperator.value && (
+        {/* 👥 Acteurs */}
+        <Section
+          title="👥 Acteurs"
+          tooltip="Il s'agit des entités ou personnes impliquées dans la réalisation du projet."
+          {...getSectionProps(stepsGroupedBySections.STAKEHOLDERS)}
+        >
+          <DataLine label={<strong>Aménageur</strong>} value={developerName ?? "Non renseigné"} />
+          {projectSummary.reinstatementContractOwner.shouldDisplay && (
             <DataLine
-              label={<strong>Futur exploitant</strong>}
-              value={projectSummary.futureOperator.value?.name}
-              valueTooltip={
-                projectSummary.futureOperator.isAuto
-                  ? "Bénéfriches considère par défaut que le futur exploitant est l'aménageur du projet"
-                  : undefined
-              }
+              label={<strong>Maître d'ouvrage</strong>}
+              value={reinstatementContractOwnerName ?? "Non renseigné"}
             />
           )}
         </Section>
 
-        <ExpensesAndRevenuesSection
+        {/* 💸 Dépenses */}
+        <UrbanProjectExpensesSection
+          sitePurchaseTotalAmount={projectSummary.sitePurchaseTotalAmount}
+          sitePurchasePropertyTransferDuties={projectSummary.sitePurchasePropertyTransferDuties}
+          reinstatementCosts={projectSummary.reinstatementCosts}
           installationCosts={projectSummary.installationCosts}
           yearlyProjectedCosts={projectSummary.yearlyProjectedCosts}
-          yearlyProjectedRevenues={projectSummary.yearlyProjectedRevenues}
-          sitePurchaseTotalAmount={projectSummary.sitePurchaseTotalAmount}
-          siteResaleExpectedSellingPrice={projectSummary.siteResaleExpectedSellingPrice}
-          buildingsResaleExpectedSellingPrice={projectSummary.buildingsResaleExpectedSellingPrice}
-          financialAssistanceRevenues={projectSummary.financialAssistanceRevenues}
-          reinstatementCosts={projectSummary.reinstatementCosts}
-          buildingsFloorSurfaceArea={projectSummary.buildingsFloorSurfaceArea}
-          {...getSectionProps(
-            stepsGroupedBySections.EXPENSES.concat(stepsGroupedBySections.REVENUE),
-          )}
+          developerName={developerName}
+          reinstatementContractOwnerName={reinstatementContractOwnerName}
+          {...getSectionProps(stepsGroupedBySections.EXPENSES)}
         />
 
-        <Section title="📆 Calendrier" {...getSectionProps(stepsGroupedBySections.SCHEDULE)}>
+        {/* 💰 Recettes */}
+        <UrbanProjectRevenuesSection
+          siteResaleExpectedSellingPrice={projectSummary.siteResaleExpectedSellingPrice}
+          buildingsResaleExpectedSellingPrice={projectSummary.buildingsResaleExpectedSellingPrice}
+          yearlyProjectedRevenues={projectSummary.yearlyProjectedRevenues}
+          financialAssistanceRevenues={projectSummary.financialAssistanceRevenues}
+          buildingsFloorSurfaceArea={projectSummary.buildingsFloorSurfaceArea}
+          developerName={developerName}
+          {...getSectionProps(stepsGroupedBySections.REVENUE)}
+        />
+
+        {/* 📅 Calendrier */}
+        <Section title="📅 Calendrier" {...getSectionProps(stepsGroupedBySections.SCHEDULE)}>
           {projectSummary.reinstatementSchedule.shouldDisplay && (
             <DataLine
-              label={<strong>Travaux de remise en état de la friche</strong>}
+              label={<strong>Travaux de remise en état</strong>}
               valueTooltip={
                 projectSummary.reinstatementSchedule.isAuto
                   ? `Bénéfriches considère que les travaux de remise en état de la friche démarrent dans 1 an et durent 1 an.`
@@ -366,7 +334,7 @@ function UrbanProjectFormSummary({
             />
           )}
           <DataLine
-            label={<strong>Aménagement du site</strong>}
+            label={<strong>Travaux d'aménagement</strong>}
             value={
               projectSummary.installationSchedule.value ? (
                 <ScheduleDates
@@ -379,23 +347,44 @@ function UrbanProjectFormSummary({
             }
             valueTooltip={
               projectSummary.installationSchedule.isAuto
-                ? "Bénéfriches considère que les travaux d'aménagement  démarrent à l’issue des travaux de remise en état de la friche et durent 1 an."
+                ? "Bénéfriches considère que les travaux d'aménagement  démarrent à l'issue des travaux de remise en état de la friche et durent 1 an."
                 : undefined
             }
           />
-
           <DataLine
             label={<strong>Mise en service du site</strong>}
             value={projectSummary.operationsFirstYear.value ?? "Non renseigné"}
             valueTooltip={
               projectSummary.operationsFirstYear.isAuto
-                ? "Bénéfriches considère que la mise en service du site intervient l’année suivant la fin de l’aménagement."
+                ? "Bénéfriches considère que la mise en service du site intervient l'année suivant la fin de l'aménagement."
                 : undefined
             }
           />
         </Section>
+
+        {/* 📈 Avancement */}
+        {stepsGroupedBySections.PROJECT_PROGRESS && (
+          <Section
+            title="📈 Avancement"
+            {...getSectionProps(stepsGroupedBySections.PROJECT_PROGRESS)}
+          >
+            <DataLine
+              label={<strong>Phase du projet</strong>}
+              value={
+                projectSummary.projectPhase.value
+                  ? getLabelForUrbanProjectPhase(projectSummary.projectPhase.value)
+                  : "Non renseigné"
+              }
+            />
+          </Section>
+        )}
+
+        {/* ✍️ Dénomination */}
         <Section title="✍️ Dénomination" {...getSectionProps(stepsGroupedBySections.NAMING)}>
-          <DataLine label={<strong>Nom du projet</strong>} value={projectSummary.name.value} />
+          <DataLine
+            label={<strong>Nom du projet</strong>}
+            value={projectSummary.name.value ?? "Non renseigné"}
+          />
           <DataLine
             label={<strong>Description</strong>}
             value={projectSummary.description.value ?? "Non renseigné"}

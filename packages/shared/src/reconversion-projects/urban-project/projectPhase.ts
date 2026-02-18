@@ -1,6 +1,6 @@
 import z from "zod";
 
-const urbanProjectPhaseSchema = z.enum([
+export const urbanProjectPhaseSchema = z.enum([
   "setup",
   "planning",
   "design",
