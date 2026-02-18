@@ -1,3 +1,5 @@
+name: benefriches-e2e
+
 services:
   postgres:
     image: postgres:17-alpine
@@ -20,7 +22,7 @@ services:
     image: dockage/mailcatcher
     restart: always
     ports:
-      - '1080:1080'
+      - '${MAILCATCHER_UI_PORT:-1081}:1080'
       - '${SMTP_PORT}:1025'
 
   web:

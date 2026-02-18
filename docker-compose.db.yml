@@ -1,3 +1,5 @@
+name: benefriches-dev
+
 services:
   postgres:
     image: postgres:17-alpine
@@ -19,4 +21,4 @@ services:
 
 volumes:
   benefriches_pg_data:
-    name: benefriches_pg_data
+    external: true
