@@ -69,8 +69,8 @@ echo ""
 cd "$WORKTREE_PATH"
 
 # Install dependencies
-echo "Installing dependencies (pnpm install)..."
-pnpm install
+echo "Installing dependencies..."
+pnpm install -r
 echo "Dependencies installed."
 echo ""
 
