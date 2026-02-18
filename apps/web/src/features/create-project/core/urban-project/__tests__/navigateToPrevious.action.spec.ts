@@ -466,7 +466,7 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
 
       store.dispatch(navigateToNext());
       expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
-        "URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION",
+        "URBAN_PROJECT_USES_INTRODUCTION",
       );
     });
 

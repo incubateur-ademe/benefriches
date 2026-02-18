@@ -12,6 +12,7 @@ import {
   YearlyBuildingsOperationsRevenues,
   YearlyBuildingsOperationsExpenses,
 } from "shared";
+import type { UrbanProjectUse } from "shared";
 
 import { ProjectStakeholder } from "@/features/create-project/core/project.types";
 import { ProjectFormState } from "@/shared/core/reducers/project-form/projectForm.reducer";
@@ -55,6 +56,13 @@ export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProje
 
   const hasBuildings =
     typedObjectKeys(developmentPlan.features.buildingsFloorAreaDistribution).length > 0;
+
+  const publicGreenSpaceSoils = projectData.soilsDistribution.filter(
+    ({ spaceCategory }) => spaceCategory === "PUBLIC_GREEN_SPACE",
+  );
+  const otherSoils = projectData.soilsDistribution.filter(
+    ({ spaceCategory }) => spaceCategory !== "PUBLIC_GREEN_SPACE",
+  );
 
   ANSWER_STEPS.forEach((stepId) => {
     switch (stepId) {
@@ -148,6 +156,66 @@ export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProje
           },
           completed: true,
         };
+        break;
+      case "URBAN_PROJECT_USES_SELECTION": {
+        const usesSelection: UrbanProjectUse[] = [
+          ...typedObjectKeys(developmentPlan.features.buildingsFloorAreaDistribution),
+        ];
+        if (publicGreenSpaceSoils.length > 0) {
+          usesSelection.push("PUBLIC_GREEN_SPACES");
+        }
+        if (otherSoils.some(({ soilType }) => soilType !== "BUILDINGS")) {
+          usesSelection.push("OTHER_PUBLIC_SPACES");
+        }
+        steps["URBAN_PROJECT_USES_SELECTION"] = {
+          payload: { usesSelection },
+          completed: true,
+        };
+        break;
+      }
+      case "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA":
+        if (publicGreenSpaceSoils.length > 0) {
+          steps["URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA"] = {
+            payload: {
+              publicGreenSpacesSurfaceArea: sumListWithKey(publicGreenSpaceSoils, "surfaceArea"),
+            },
+            completed: true,
+          };
+        }
+        break;
+      case "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION":
+        if (publicGreenSpaceSoils.length > 0) {
+          steps["URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION"] = {
+            payload: {
+              publicGreenSpacesSoilsDistribution: Object.fromEntries(
+                publicGreenSpaceSoils.map(({ soilType, surfaceArea }) => [soilType, surfaceArea]),
+              ),
+            },
+            completed: true,
+          };
+        }
+        break;
+      case "URBAN_PROJECT_SPACES_SELECTION":
+        if (otherSoils.length > 0) {
+          steps["URBAN_PROJECT_SPACES_SELECTION"] = {
+            payload: {
+              spacesSelection: otherSoils.map(({ soilType }) => soilType),
+            },
+            completed: true,
+          };
+        }
+        break;
+      case "URBAN_PROJECT_SPACES_SURFACE_AREA":
+        if (otherSoils.length > 0) {
+          steps["URBAN_PROJECT_SPACES_SURFACE_AREA"] = {
+            payload: {
+              spacesSurfaceAreaDistribution: Object.fromEntries(
+                otherSoils.map(({ soilType, surfaceArea }) => [soilType, surfaceArea]),
+              ),
+            },
+            completed: true,
+          };
+        }
         break;
       case "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION": {
         if (siteData.nature === "FRICHE") {

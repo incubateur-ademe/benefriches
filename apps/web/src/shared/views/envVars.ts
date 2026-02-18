@@ -16,5 +16,4 @@ export const BENEFRICHES_ENV = {
     windowEnv.WEBAPP_ALLOWED_DEVELOPMENT_PLAN_CATEGORIES?.split(",") ?? [],
   mutafrichesUrl: windowEnv.WEBAPP_MUTAFRICHES_FRAME_SRC ?? "",
   mutafrichesIntegrator: windowEnv.WEBAPP_MUTAFRICHES_INTEGRATOR ?? "",
-  urbanProjectUsesFlowEnabled: windowEnv.WEBAPP_URBAN_PROJECT_USES_FLOW_ENABLED === "true",
 };

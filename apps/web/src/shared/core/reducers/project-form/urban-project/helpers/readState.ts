@@ -1,15 +1,8 @@
 import {
   doesUseIncludeBuildings,
-  filterObject,
   getProjectSoilDistributionByType,
-  getSoilTypeForLivingAndActivitySpace,
-  getSoilTypeForPublicSpace,
-  getSoilTypeForUrbanGreenSpace,
   typedObjectEntries,
 } from "shared";
-import type { SoilType } from "shared";
-
-import { BENEFRICHES_ENV } from "@/shared/views/envVars";
 
 import { DEFAULT_FUTURE_SITE_OWNER } from "../../helpers/stakeholders";
 import { ProjectFormState } from "../../projectForm.reducer";
@@ -87,124 +80,35 @@ export const ReadStateHelper = {
   },
 
   getProjectSoilDistribution(steps: ProjectFormState["urbanProject"]["steps"]) {
-    if (BENEFRICHES_ENV.urbanProjectUsesFlowEnabled) {
-      const publicGreenSpacesSoilsDistribution = this.getStepAnswers(
-        steps,
-        "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION",
-      )?.publicGreenSpacesSoilsDistribution;
-
-      const spacesSurfaceAreaDistribution = this.getStepAnswers(
-        steps,
-        "URBAN_PROJECT_SPACES_SURFACE_AREA",
-      )?.spacesSurfaceAreaDistribution;
-
-      const merged = new Map<SoilType, number>();
-
-      for (const [soilType, surfaceArea] of typedObjectEntries(
-        publicGreenSpacesSoilsDistribution ?? {},
-      )) {
-        if (surfaceArea) {
-          merged.set(soilType, (merged.get(soilType) ?? 0) + surfaceArea);
-        }
-      }
-
-      for (const [soilType, surfaceArea] of typedObjectEntries(
-        spacesSurfaceAreaDistribution ?? {},
-      )) {
-        if (surfaceArea) {
-          merged.set(soilType, (merged.get(soilType) ?? 0) + surfaceArea);
-        }
-      }
-
-      return [...merged.entries()].map(([soilType, surfaceArea]) => ({
-        surfaceArea,
-        soilType,
-      }));
-    }
-
-    const publicSpacesDistribution = this.getStepAnswers(
+    const publicGreenSpacesSoilsDistribution = this.getStepAnswers(
       steps,
-      "URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION",
-    )?.publicSpacesDistribution;
+      "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION",
+    )?.publicGreenSpacesSoilsDistribution;
 
-    const greenSpacesDistribution = this.getStepAnswers(
+    const spacesSurfaceAreaDistribution = this.getStepAnswers(
       steps,
-      "URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION",
-    )?.greenSpacesDistribution;
-
-    const livingAndActivitySpacesDistribution = this.getStepAnswers(
-      steps,
-      "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
-    )?.livingAndActivitySpacesDistribution;
+      "URBAN_PROJECT_SPACES_SURFACE_AREA",
+    )?.spacesSurfaceAreaDistribution;
 
     return [
-      ...typedObjectEntries(publicSpacesDistribution ?? {})
-        .filter(([_, surfaceArea]) => surfaceArea)
-        .map(([soil, surfaceArea = 0]) => ({
+      ...typedObjectEntries(publicGreenSpacesSoilsDistribution ?? {})
+        .filter(([, surfaceArea]) => surfaceArea)
+        .map(([soilType, surfaceArea = 0]) => ({
           surfaceArea,
-          soilType: getSoilTypeForPublicSpace(soil),
-          spaceCategory: "PUBLIC_SPACE" as const,
-        })),
-      ...typedObjectEntries(livingAndActivitySpacesDistribution ?? {})
-        .filter(([_, surfaceArea]) => surfaceArea)
-        .map(([soil, surfaceArea = 0]) => ({
-          surfaceArea,
-          soilType: getSoilTypeForLivingAndActivitySpace(soil),
-          spaceCategory: "LIVING_AND_ACTIVITY_SPACE" as const,
-        })),
-      ...typedObjectEntries(greenSpacesDistribution ?? {})
-        .filter(([_, surfaceArea]) => surfaceArea)
-        .map(([soil, surfaceArea = 0]) => ({
-          surfaceArea,
-          soilType: getSoilTypeForUrbanGreenSpace(soil),
+          soilType,
           spaceCategory: "PUBLIC_GREEN_SPACE" as const,
+        })),
+      ...typedObjectEntries(spacesSurfaceAreaDistribution ?? {})
+        .filter(([, surfaceArea]) => surfaceArea)
+        .map(([soilType, surfaceArea = 0]) => ({
+          surfaceArea,
+          soilType,
         })),
     ];
   },
 
   getProjectSoilDistributionBySoilType(steps: ProjectFormState["urbanProject"]["steps"]) {
     return getProjectSoilDistributionByType(this.getProjectSoilDistribution(steps));
-  },
-
-  getSpacesDistribution(steps: ProjectFormState["urbanProject"]["steps"]) {
-    const publicSpacesDistribution = this.getStepAnswers(
-      steps,
-      "URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION",
-    )?.publicSpacesDistribution;
-
-    const greenSpacesDistribution = this.getStepAnswers(
-      steps,
-      "URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION",
-    )?.greenSpacesDistribution;
-
-    const livingAndActivitySpacesDistribution = this.getStepAnswers(
-      steps,
-      "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
-    )?.livingAndActivitySpacesDistribution;
-
-    const publicGreenSpaces =
-      (greenSpacesDistribution?.URBAN_POND_OR_LAKE ?? 0) +
-      (greenSpacesDistribution?.LAWNS_AND_BUSHES ?? 0) +
-      (greenSpacesDistribution?.TREE_FILLED_SPACE ?? 0);
-
-    return filterObject(
-      {
-        BUILDINGS_FOOTPRINT: livingAndActivitySpacesDistribution?.BUILDINGS,
-        PRIVATE_PAVED_ALLEY_OR_PARKING_LOT:
-          livingAndActivitySpacesDistribution?.IMPERMEABLE_SURFACE,
-        PRIVATE_GRAVEL_ALLEY_OR_PARKING_LOT: livingAndActivitySpacesDistribution?.PERMEABLE_SURFACE,
-        PRIVATE_GARDEN_AND_GRASS_ALLEYS: livingAndActivitySpacesDistribution?.PRIVATE_GREEN_SPACES,
-        PUBLIC_GREEN_SPACES: publicGreenSpaces,
-        PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS:
-          (publicSpacesDistribution?.IMPERMEABLE_SURFACE ?? 0) +
-          (greenSpacesDistribution?.PAVED_ALLEY ?? 0),
-        PUBLIC_GRAVEL_ROAD_OR_SQUARES_OR_SIDEWALKS:
-          (publicSpacesDistribution?.PERMEABLE_SURFACE ?? 0) +
-          (greenSpacesDistribution?.GRAVEL_ALLEY ?? 0),
-        PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS: publicSpacesDistribution?.GRASS_COVERED_SURFACE,
-      },
-      ([, value]) => !!value && value > 0,
-    );
   },
 
   getProjectData(steps: ProjectFormState["urbanProject"]["steps"]): Partial<UrbanProjectFormData> {

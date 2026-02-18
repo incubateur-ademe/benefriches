@@ -19,119 +19,74 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
       store.dispatch(navigateToNext());
 
       // Étape ----
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_CATEGORIES_INTRODUCTION");
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_USES_INTRODUCTION");
       store.dispatch(navigateToNext());
 
       // Étape ----
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_CATEGORIES_SELECTION");
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_USES_SELECTION");
       store.dispatch(
         requestStepCompletion({
-          stepId: "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION",
+          stepId: "URBAN_PROJECT_USES_SELECTION",
           answers: {
-            spacesCategories: ["LIVING_AND_ACTIVITY_SPACES", "PUBLIC_SPACES", "GREEN_SPACES"],
+            usesSelection: ["RESIDENTIAL", "PUBLIC_GREEN_SPACES", "OTHER_PUBLIC_SPACES"],
           },
         }),
       );
-      const currentState = store.getState().projectCreation;
-      expect(
-        currentState.urbanProject.steps.URBAN_PROJECT_SPACES_CATEGORIES_SELECTION,
-      ).toBeDefined();
-      expect(
-        currentState.urbanProject.steps.URBAN_PROJECT_SPACES_CATEGORIES_SELECTION?.completed,
-      ).toBe(true);
-      expect(
-        currentState.urbanProject.steps.URBAN_PROJECT_SPACES_CATEGORIES_SELECTION?.payload,
-      ).toEqual({
-        spacesCategories: ["LIVING_AND_ACTIVITY_SPACES", "PUBLIC_SPACES", "GREEN_SPACES"],
-      });
 
       // Étape ----
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA");
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA");
       store.dispatch(
         requestStepCompletion({
-          stepId: "URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA",
+          stepId: "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA",
           answers: {
-            spacesCategoriesDistribution: {
-              LIVING_AND_ACTIVITY_SPACES: 4000,
-              PUBLIC_SPACES: 3000,
-              GREEN_SPACES: 3000,
+            publicGreenSpacesSurfaceArea: 3000,
+          },
+        }),
+      );
+
+      // Étape ----
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_INTRODUCTION");
+      store.dispatch(navigateToNext());
+
+      // Étape ---- (site has natural soils + PUBLIC_GREEN_SPACES selected)
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_PUBLIC_GREEN_SPACES_INTRODUCTION");
+      store.dispatch(navigateToNext());
+
+      // Étape ----
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION");
+      store.dispatch(
+        requestStepCompletion({
+          stepId: "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION",
+          answers: {
+            publicGreenSpacesSoilsDistribution: {
+              PRAIRIE_GRASS: 1500,
+              ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 1500,
             },
           },
         }),
       );
 
-      expect(
-        store.getState().projectCreation.urbanProject.steps
-          .URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA?.completed,
-      ).toBe(true);
-
       // Étape ----
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION");
-      store.dispatch(navigateToNext());
-
-      // Étape ----
-      expect(getCurrentStep(store)).toBe(
-        "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_INTRODUCTION",
-      );
-      store.dispatch(navigateToNext());
-
-      // Étape ----
-      expect(getCurrentStep(store)).toBe(
-        "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
-      );
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_SELECTION");
       store.dispatch(
         requestStepCompletion({
-          stepId: "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
+          stepId: "URBAN_PROJECT_SPACES_SELECTION",
           answers: {
-            livingAndActivitySpacesDistribution: {
+            spacesSelection: ["BUILDINGS", "IMPERMEABLE_SOILS", "MINERAL_SOIL"],
+          },
+        }),
+      );
+
+      // Étape ----
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_SURFACE_AREA");
+      store.dispatch(
+        requestStepCompletion({
+          stepId: "URBAN_PROJECT_SPACES_SURFACE_AREA",
+          answers: {
+            spacesSurfaceAreaDistribution: {
               BUILDINGS: 2000,
-              IMPERMEABLE_SURFACE: 1000,
-              PERMEABLE_SURFACE: 500,
-              PRIVATE_GREEN_SPACES: 500,
-            },
-          },
-        }),
-      );
-
-      expect(
-        store.getState().projectCreation.urbanProject.steps
-          .URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION?.completed,
-      ).toEqual(true);
-
-      // Étape ----
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_PUBLIC_SPACES_INTRODUCTION");
-      store.dispatch(navigateToNext());
-
-      // Étape ----
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION");
-      store.dispatch(
-        requestStepCompletion({
-          stepId: "URBAN_PROJECT_PUBLIC_SPACES_DISTRIBUTION",
-          answers: {
-            publicSpacesDistribution: {
-              IMPERMEABLE_SURFACE: 1500,
-              PERMEABLE_SURFACE: 1000,
-              GRASS_COVERED_SURFACE: 500,
-            },
-          },
-        }),
-      );
-
-      // Étape ----
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_GREEN_SPACES_INTRODUCTION");
-      store.dispatch(navigateToNext());
-
-      // Étape ----
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION");
-      store.dispatch(
-        requestStepCompletion({
-          stepId: "URBAN_PROJECT_GREEN_SPACES_SURFACE_AREA_DISTRIBUTION",
-          answers: {
-            greenSpacesDistribution: {
-              LAWNS_AND_BUSHES: 1500,
-              TREE_FILLED_SPACE: 1000,
-              PAVED_ALLEY: 300,
-              GRAVEL_ALLEY: 200,
+              IMPERMEABLE_SOILS: 3000,
+              MINERAL_SOIL: 2000,
             },
           },
         }),
@@ -145,7 +100,24 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_CARBON_SUMMARY");
       store.dispatch(navigateToNext());
 
-      // Étape ----
+      // Étape ---- (hasUsesWithBuildings → buildings intro)
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_INTRODUCTION");
+      store.dispatch(navigateToNext());
+
+      // Étape ---- (hasUsesWithBuildings → uses floor surface area)
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_USES_FLOOR_SURFACE_AREA");
+      store.dispatch(
+        requestStepCompletion({
+          stepId: "URBAN_PROJECT_USES_FLOOR_SURFACE_AREA",
+          answers: {
+            usesFloorSurfaceAreaDistribution: {
+              RESIDENTIAL: 2500,
+            },
+          },
+        }),
+      );
+
+      // Étape ---- (hasContaminatedSoils → decontamination)
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION");
       store.dispatch(navigateToNext());
 
@@ -167,53 +139,6 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
           stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA",
           answers: {
             decontaminatedSurfaceArea: 1500,
-          },
-        }),
-      );
-
-      // Étape ----
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_INTRODUCTION");
-      store.dispatch(navigateToNext());
-
-      // Étape ----
-      expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
-        "URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA",
-      );
-      store.dispatch(
-        requestStepCompletion({
-          stepId: "URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA",
-          answers: {
-            buildingsFloorSurfaceArea: 4000,
-          },
-        }),
-      );
-
-      // Étape ----
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_USE_INTRODUCTION");
-      store.dispatch(navigateToNext());
-
-      // Étape ----
-      // expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_USE_SELECTION");
-      store.dispatch(
-        requestStepCompletion({
-          stepId: "URBAN_PROJECT_BUILDINGS_USE_SELECTION",
-          answers: {
-            buildingsUsesSelection: ["RESIDENTIAL", "LOCAL_STORE", "OFFICES"],
-          },
-        }),
-      );
-
-      // Étape ----
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION");
-      store.dispatch(
-        requestStepCompletion({
-          stepId: "URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION",
-          answers: {
-            buildingsUsesDistribution: {
-              RESIDENTIAL: 2500,
-              LOCAL_STORE: 1000,
-              OFFICES: 500,
-            },
           },
         }),
       );
@@ -406,63 +331,58 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
       // Étape ----
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_CREATION_RESULT");
 
-      expect(Object.keys(store.getState().projectCreation.urbanProject.steps).length).toEqual(39);
-    });
-
-    it("should handle single category shortcut correctly", () => {
-      store.dispatch(navigateToNext());
-
-      store.dispatch(
-        requestStepCompletion({
-          stepId: "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION",
-          answers: {
-            spacesCategories: ["LIVING_AND_ACTIVITY_SPACES"],
-          },
-        }),
-      );
-
-      const currentState = store.getState().projectCreation;
-
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_DEVELOPMENT_PLAN_INTRODUCTION");
-
-      expect(
-        currentState.urbanProject.steps.URBAN_PROJECT_SPACES_CATEGORIES_SELECTION?.completed,
-      ).toEqual(true);
-      expect(
-        currentState.urbanProject.steps.URBAN_PROJECT_SPACES_CATEGORIES_SURFACE_AREA?.payload,
-      ).toEqual({
-        spacesCategoriesDistribution: {
-          LIVING_AND_ACTIVITY_SPACES: currentState.siteData?.surfaceArea,
-        },
-      });
+      expect(Object.keys(store.getState().projectCreation.urbanProject.steps).length).toEqual(34);
     });
 
     it('should handle decontamination plan "none" correctly', () => {
-      store.dispatch(navigateToNext());
+      store.dispatch(navigateToNext()); // → USES_INTRODUCTION
+      store.dispatch(navigateToNext()); // → USES_SELECTION
 
       store.dispatch(
         requestStepCompletion({
-          stepId: "URBAN_PROJECT_SPACES_CATEGORIES_SELECTION",
-          answers: { spacesCategories: ["LIVING_AND_ACTIVITY_SPACES"] },
-        }),
-      );
-
-      store.dispatch(navigateToNext());
-      store.dispatch(navigateToNext());
-
-      store.dispatch(
-        requestStepCompletion({
-          stepId: "URBAN_PROJECT_RESIDENTIAL_AND_ACTIVITY_SPACES_DISTRIBUTION",
+          stepId: "URBAN_PROJECT_USES_SELECTION",
           answers: {
-            livingAndActivitySpacesDistribution: { BUILDINGS: 2000 },
+            usesSelection: ["RESIDENTIAL"],
           },
         }),
       );
 
-      store.dispatch(navigateToNext());
-      store.dispatch(navigateToNext());
-      store.dispatch(navigateToNext());
+      // No PUBLIC_GREEN_SPACES → goes to SPACES_INTRODUCTION
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_INTRODUCTION");
+      store.dispatch(navigateToNext()); // → SPACES_SELECTION (no PUBLIC_GREEN_SPACES)
 
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_SELECTION");
+      store.dispatch(
+        requestStepCompletion({
+          stepId: "URBAN_PROJECT_SPACES_SELECTION",
+          answers: { spacesSelection: ["BUILDINGS"] },
+        }),
+      );
+
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_SURFACE_AREA");
+      store.dispatch(
+        requestStepCompletion({
+          stepId: "URBAN_PROJECT_SPACES_SURFACE_AREA",
+          answers: { spacesSurfaceAreaDistribution: { BUILDINGS: 2000 } },
+        }),
+      );
+
+      store.dispatch(navigateToNext()); // soils summary
+      store.dispatch(navigateToNext()); // carbon summary → buildings intro (hasUsesWithBuildings)
+      store.dispatch(navigateToNext()); // buildings intro → uses floor surface area
+
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_USES_FLOOR_SURFACE_AREA");
+      store.dispatch(
+        requestStepCompletion({
+          stepId: "URBAN_PROJECT_USES_FLOOR_SURFACE_AREA",
+          answers: { usesFloorSurfaceAreaDistribution: { RESIDENTIAL: 2000 } },
+        }),
+      );
+
+      // hasContaminatedSoils → decontamination intro
+      store.dispatch(navigateToNext()); // decontamination intro → selection
+
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION");
       store.dispatch(
         requestStepCompletion({
           stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
@@ -474,7 +394,8 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
 
       const currentState = store.getState().projectCreation;
 
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_INTRODUCTION");
+      // "none" shortcuts past surface area step → goes to stakeholders
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION");
 
       expect(
         currentState.urbanProject.steps.URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA,
