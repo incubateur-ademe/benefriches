@@ -69,7 +69,7 @@ fi
 if [[ -f "$WORKTREE_PATH/docker-compose.db.yml" ]]; then
     echo "Stopping Docker containers..."
     cd "$WORKTREE_PATH"
-    docker compose -f docker-compose.db.yml down 2>/dev/null || true
+    docker compose --env-file apps/api/.env -f docker-compose.db.yml down 2>/dev/null || true
 fi
 
 # Remove the worktree
