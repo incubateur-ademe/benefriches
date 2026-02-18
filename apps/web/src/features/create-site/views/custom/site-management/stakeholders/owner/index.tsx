@@ -1,20 +1,16 @@
 import { useEffect } from "react";
-import { LocalAuthority } from "shared";
+import type { LocalAuthority } from "shared";
 
 import { stepReverted } from "@/features/create-site/core/actions/revert.action";
 import { ownerStepCompleted } from "@/features/create-site/core/actions/siteManagement.actions";
 import { fetchSiteMunicipalityData } from "@/features/create-site/core/actions/siteMunicipalityData.actions";
-import { selectSiteOwner } from "@/features/create-site/core/selectors/createSite.selectors";
-import { Owner } from "@/features/create-site/core/siteFoncier.types";
-import {
-  AvailableLocalAuthority,
-  selectAvailableLocalAuthoritiesWithoutCurrentUser,
-} from "@/features/create-site/core/siteMunicipalityData.reducer";
-import { UserStructure } from "@/features/onboarding/core/user";
-import { selectCurrentUserStructure } from "@/features/onboarding/core/user.reducer";
+import { selectSiteOwnerFormViewData } from "@/features/create-site/core/selectors/viewData.selectors";
+import type { Owner } from "@/features/create-site/core/siteFoncier.types";
+import type { AvailableLocalAuthority } from "@/features/create-site/core/siteMunicipalityData.reducer";
+import type { UserStructure } from "@/features/onboarding/core/user";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import SiteOwnerForm, { FormValues } from "./SiteOwnerForm";
+import SiteOwnerForm, { type FormValues } from "./SiteOwnerForm";
 
 type LocalAuthoritiesList = {
   type: LocalAuthority;
@@ -100,12 +96,10 @@ const mapInitialValues = (
 };
 
 function SiteOwnerFormContainer() {
-  const currentUserStructure = useAppSelector(selectCurrentUserStructure);
-  const siteNature = useAppSelector((state) => state.siteCreation.siteData.nature);
-  const owner = useAppSelector(selectSiteOwner);
+  const { currentUserStructure, siteNature, owner, localAuthoritiesList } = useAppSelector(
+    selectSiteOwnerFormViewData,
+  );
   const dispatch = useAppDispatch();
-
-  const localAuthoritiesList = useAppSelector(selectAvailableLocalAuthoritiesWithoutCurrentUser);
 
   const onSubmit = (data: FormValues) => {
     dispatch(

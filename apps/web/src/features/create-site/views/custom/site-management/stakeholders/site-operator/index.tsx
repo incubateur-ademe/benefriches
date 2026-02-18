@@ -3,14 +3,12 @@ import { useEffect } from "react";
 import { stepReverted } from "@/features/create-site/core/actions/revert.action";
 import { operatorStepCompleted } from "@/features/create-site/core/actions/siteManagement.actions";
 import { fetchSiteMunicipalityData } from "@/features/create-site/core/actions/siteMunicipalityData.actions";
-import { Tenant } from "@/features/create-site/core/siteFoncier.types";
-import {
-  AvailableLocalAuthority,
-  selectAvailableLocalAuthoritiesWithoutCurrentOwner,
-} from "@/features/create-site/core/siteMunicipalityData.reducer";
+import { selectSiteOperatorFormViewData } from "@/features/create-site/core/selectors/viewData.selectors";
+import type { Tenant } from "@/features/create-site/core/siteFoncier.types";
+import type { AvailableLocalAuthority } from "@/features/create-site/core/siteMunicipalityData.reducer";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import SiteOperatorForm, { FormValues } from "./SiteOperatorForm";
+import SiteOperatorForm, { type FormValues } from "./SiteOperatorForm";
 
 const getTenant = (
   data: FormValues,
@@ -36,15 +34,14 @@ const getTenant = (
         structureType: data.localAuthority,
       };
     }
-    case "site_owner": // si l’exploitant est le propriétaire, alors il n’y a pas de locataire
+    case "site_owner": // si l'exploitant est le propriétaire, alors il n'y a pas de locataire
       return undefined;
   }
 };
 
 function SiteOperatorFormContainer() {
   const dispatch = useAppDispatch();
-  const siteOwner = useAppSelector((state) => state.siteCreation.siteData.owner);
-  const localAuthoritiesList = useAppSelector(selectAvailableLocalAuthoritiesWithoutCurrentOwner);
+  const { siteOwner, localAuthoritiesList } = useAppSelector(selectSiteOperatorFormViewData);
 
   useEffect(() => {
     void dispatch(fetchSiteMunicipalityData());

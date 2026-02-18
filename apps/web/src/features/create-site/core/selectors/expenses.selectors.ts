@@ -137,6 +137,7 @@ type SiteYearlyExpensesViewData = {
   estimatedAmounts: EstimatedSiteYearlyExpensesAmounts;
   managementExpensesConfig: SiteManagementYearlyExpensesConfig;
   securityExpensesConfig: FricheSecurityYearlyExpensesConfig;
+  expensesInStore: SiteCreationData["yearlyExpenses"];
 };
 
 export const selectSiteYearlyExpensesViewData = createSelector(
@@ -158,6 +159,7 @@ export const selectSiteYearlyExpensesViewData = createSelector(
       estimatedAmounts: estimatedYearlyExpenses,
       managementExpensesConfig,
       securityExpensesConfig,
+      expensesInStore: siteData.yearlyExpenses,
     };
   },
 );

@@ -1,14 +1,13 @@
 import { stepReverted } from "@/features/create-site/core/actions/revert.action";
 import { soilsSelectionStepCompleted } from "@/features/create-site/core/actions/spaces.actions";
-import { selectSiteSoils } from "@/features/create-site/core/selectors/createSite.selectors";
+import { selectSpacesSelectionFormViewData } from "@/features/create-site/core/selectors/createSite.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import SiteSpacesSelectionForm, { FormValues } from "./SpacesSelectionForm";
+import SiteSpacesSelectionForm, { type FormValues } from "./SpacesSelectionForm";
 
 const SiteSpacesSelectionFormContainer = () => {
   const dispatch = useAppDispatch();
-  const siteNature = useAppSelector((state) => state.siteCreation.siteData.nature);
-  const soils = useAppSelector(selectSiteSoils);
+  const { siteNature, soils } = useAppSelector(selectSpacesSelectionFormViewData);
 
   return (
     <SiteSpacesSelectionForm

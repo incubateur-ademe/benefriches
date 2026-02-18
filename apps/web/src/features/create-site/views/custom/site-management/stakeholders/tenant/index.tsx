@@ -3,14 +3,12 @@ import { useEffect } from "react";
 import { stepReverted } from "@/features/create-site/core/actions/revert.action";
 import { tenantStepCompleted } from "@/features/create-site/core/actions/siteManagement.actions";
 import { fetchSiteMunicipalityData } from "@/features/create-site/core/actions/siteMunicipalityData.actions";
-import { Tenant } from "@/features/create-site/core/siteFoncier.types";
-import {
-  AvailableLocalAuthority,
-  selectAvailableLocalAuthoritiesWithoutCurrentOwner,
-} from "@/features/create-site/core/siteMunicipalityData.reducer";
+import { selectSiteTenantFormViewData } from "@/features/create-site/core/selectors/viewData.selectors";
+import type { Tenant } from "@/features/create-site/core/siteFoncier.types";
+import type { AvailableLocalAuthority } from "@/features/create-site/core/siteMunicipalityData.reducer";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import FricheTenantForm, { FormValues } from "./SiteTenantForm";
+import FricheTenantForm, { type FormValues } from "./SiteTenantForm";
 
 const mapInitialValues = (tenant: Tenant | undefined): FormValues | undefined => {
   if (!tenant) return undefined;
@@ -72,16 +70,15 @@ const convertFormValuesForStore = (
 
 function FricheTenantFormContainer() {
   const dispatch = useAppDispatch();
-  const localAuthoritiesList = useAppSelector(selectAvailableLocalAuthoritiesWithoutCurrentOwner);
-  const tenant = useAppSelector((state) => state.siteCreation.siteData.tenant);
+  const { tenant, localAuthoritiesList } = useAppSelector(selectSiteTenantFormViewData);
 
   useEffect(() => {
     void dispatch(fetchSiteMunicipalityData());
   }, [dispatch]);
 
   const onSubmit = (data: FormValues) => {
-    const tenant = convertFormValuesForStore(data, localAuthoritiesList);
-    dispatch(tenantStepCompleted({ tenant }));
+    const tenantData = convertFormValuesForStore(data, localAuthoritiesList);
+    dispatch(tenantStepCompleted({ tenant: tenantData }));
   };
 
   const onBack = () => {

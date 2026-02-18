@@ -1,10 +1,10 @@
 import { stepReverted } from "@/features/create-site/core/actions/revert.action";
 import { yearlyExpensesStepCompleted } from "@/features/create-site/core/actions/siteManagement.actions";
-import { SiteYearlyExpensesConfig } from "@/features/create-site/core/expenses.functions";
+import type { SiteYearlyExpensesConfig } from "@/features/create-site/core/expenses.functions";
 import { selectSiteYearlyExpensesViewData } from "@/features/create-site/core/selectors/expenses.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import SiteYearlyExpensesForm, { FormValues } from "./SiteYearlyExpensesForm";
+import SiteYearlyExpensesForm, { type FormValues } from "./SiteYearlyExpensesForm";
 import { getInitialValues, mapFormDataToExpenses } from "./mappers";
 
 function SiteYearlyExpensesFormContainer() {
@@ -15,8 +15,8 @@ function SiteYearlyExpensesFormContainer() {
     estimatedAmounts,
     managementExpensesConfig,
     securityExpensesConfig,
+    expensesInStore,
   } = useAppSelector(selectSiteYearlyExpensesViewData);
-  const expensesInStore = useAppSelector((state) => state.siteCreation.siteData.yearlyExpenses);
 
   const expensesBaseconfig: SiteYearlyExpensesConfig = [
     ...managementExpensesConfig,

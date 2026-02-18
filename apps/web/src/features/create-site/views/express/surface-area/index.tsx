@@ -1,15 +1,14 @@
 import { expressSiteSaved } from "@/features/create-site/core/actions/finalStep.actions";
 import { stepReverted } from "@/features/create-site/core/actions/revert.action";
 import { siteSurfaceAreaStepCompleted } from "@/features/create-site/core/actions/spaces.actions";
-import { selectSiteSurfaceArea } from "@/features/create-site/core/selectors/createSite.selectors";
+import { selectSiteSurfaceAreaFormViewData } from "@/features/create-site/core/selectors/createSite.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import SiteSurfaceAreaForm from "../../common-views/SiteSurfaceAreaForm";
 
 function SiteSurfaceAreaFormContainer() {
   const dispatch = useAppDispatch();
-  const siteSurfaceArea = useAppSelector(selectSiteSurfaceArea);
-  const siteNature = useAppSelector((state) => state.siteCreation.siteData.nature);
+  const { siteSurfaceArea, siteNature } = useAppSelector(selectSiteSurfaceAreaFormViewData);
 
   return (
     <SiteSurfaceAreaForm

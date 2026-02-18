@@ -1,12 +1,9 @@
 import { stepReverted } from "@/features/create-site/core/actions/revert.action";
 import { soilsContaminationStepCompleted } from "@/features/create-site/core/actions/soilsContaminationAndAccidents.actions";
-import {
-  selectSiteSoilsContamination,
-  selectSiteSurfaceArea,
-} from "@/features/create-site/core/selectors/createSite.selectors";
+import { selectSoilContaminationFormViewData } from "@/features/create-site/core/selectors/createSite.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import SoilContaminationForm, { FormValues } from "./SoilContaminationForm";
+import SoilContaminationForm, { type FormValues } from "./SoilContaminationForm";
 
 const mapInitialValues = (siteContamination: {
   hasContaminatedSoils: boolean | undefined;
@@ -29,8 +26,9 @@ const mapInitialValues = (siteContamination: {
 
 function SoilContaminationFormController() {
   const dispatch = useAppDispatch();
-  const siteSurfaceArea = useAppSelector(selectSiteSurfaceArea);
-  const siteContamination = useAppSelector(selectSiteSoilsContamination);
+  const { siteSurfaceArea, siteContamination } = useAppSelector(
+    selectSoilContaminationFormViewData,
+  );
 
   return (
     <SoilContaminationForm
