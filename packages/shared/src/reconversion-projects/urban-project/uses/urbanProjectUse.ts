@@ -73,3 +73,16 @@ export const urbanProjectUseDistributionSchema = z.partialRecord(
   urbanProjectUseSchema,
   z.number().nonnegative(),
 );
+
+export type BuildingsUseDistribution = SurfaceAreaDistributionJson<UrbanProjectUseWithBuilding>;
+
+export const buildingsUseDistributionSchema = z.partialRecord(
+  urbanProjectBuildingsUseSchema,
+  z.number().nonnegative(),
+);
+export const BUILDINGS_ECONOMIC_ACTIVITY_USE = [
+  "LOCAL_STORE",
+  "OFFICES",
+  "LOCAL_SERVICES",
+  "ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES",
+] as const satisfies UrbanProjectUseWithBuilding[];

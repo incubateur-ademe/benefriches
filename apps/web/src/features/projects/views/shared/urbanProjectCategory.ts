@@ -1,6 +1,6 @@
 import {
   BUILDINGS_ECONOMIC_ACTIVITY_USE,
-  BuildingsUse,
+  UrbanProjectUseWithBuilding,
   ReconversionProjectSoilsDistribution,
   sumListWithKey,
   typedObjectEntries,
@@ -13,7 +13,7 @@ const PUBLIC_FACILITIES = [
   "PUBLIC_FACILITIES",
   "OTHER_CULTURAL_PLACE",
   "SPORTS_FACILITIES",
-] as const satisfies BuildingsUse[];
+] as const satisfies UrbanProjectUseWithBuilding[];
 
 type Props = {
   buildingsUseDistribution: UrbanProjectFeatures["buildingsFloorAreaDistribution"];

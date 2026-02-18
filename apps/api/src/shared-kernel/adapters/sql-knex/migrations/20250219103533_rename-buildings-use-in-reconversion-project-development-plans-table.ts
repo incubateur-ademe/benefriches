@@ -1,5 +1,5 @@
 import type { Knex } from "knex";
-import { BuildingsUse } from "shared";
+import { UrbanProjectUseWithBuilding } from "shared";
 
 import { UrbanProjectFeatures } from "src/reconversion-projects/core/model/urbanProjects";
 
@@ -18,7 +18,7 @@ const BUILDINGS_USE_MIGRATION_MAP = {
   OTHER_COMMERCIAL_OR_ARTISANAL_BUILDINGS: "ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES",
   TERTIARY_ACTIVITIES: "OFFICES",
   SOCIO_CULTURAL_PLACE: "OTHER_CULTURAL_PLACE",
-} as const satisfies Record<LegacyBuildingsUse, BuildingsUse>;
+} as const satisfies Record<LegacyBuildingsUse, UrbanProjectUseWithBuilding>;
 
 const REVERSE_BUILDINGS_USE_MIGRATION_MAP = {
   LOCAL_STORE: "GROUND_FLOOR_RETAIL",
@@ -26,7 +26,7 @@ const REVERSE_BUILDINGS_USE_MIGRATION_MAP = {
   ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES: "SHIPPING_OR_INDUSTRIAL_BUILDINGS",
   OFFICES: "TERTIARY_ACTIVITIES",
   OTHER_CULTURAL_PLACE: "SOCIO_CULTURAL_PLACE",
-} as const satisfies Partial<Record<BuildingsUse, LegacyBuildingsUse>>;
+} as const satisfies Partial<Record<UrbanProjectUseWithBuilding, LegacyBuildingsUse>>;
 
 export async function up(knex: Knex): Promise<void> {
   const rows = await knex("reconversion_project_development_plans")

@@ -10,7 +10,7 @@ import {
 } from "../../reconversionProjectSchemas";
 import { computeExpectedPostDevelopmentResaleSellingPriceFromSurfaces } from "../expectedPostDevelopmentResale";
 import { computeDefaultInstallationExpensesFromSiteSurfaceArea } from "../installationExpenses";
-import { BuildingsUseDistribution } from "../spaces/living-and-activity-spaces/buildingsUse";
+import { BuildingsUseDistribution } from "../uses/urbanProjectUse";
 
 export class UrbanProjectGenerator extends DefaultProjectGenerator {
   name;

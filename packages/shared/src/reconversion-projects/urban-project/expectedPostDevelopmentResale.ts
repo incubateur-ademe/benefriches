@@ -1,11 +1,11 @@
 import { typedObjectEntries } from "../../object-entries";
 import { roundToInteger } from "../../services";
-import {
-  BuildingsUse,
-  BuildingsUseDistribution,
-} from "./spaces/living-and-activity-spaces/buildingsUse";
+import { UrbanProjectUseWithBuilding, BuildingsUseDistribution } from "./uses/urbanProjectUse";
 
-type BuildingsUseResaleRatioPerSquareMeters = Record<BuildingsUse, number | undefined>;
+type BuildingsUseResaleRatioPerSquareMeters = Record<
+  UrbanProjectUseWithBuilding,
+  number | undefined
+>;
 
 export const DEFAULT_RESALE_RATIO_PER_SQUARE_METERS = {
   RESIDENTIAL: 150,

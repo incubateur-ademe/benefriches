@@ -3,7 +3,7 @@ import {
   BUILDINGS_ECONOMIC_ACTIVITY_USE,
   filterObjectWithKeys,
   sumObjectValues,
-  BuildingsUse,
+  UrbanProjectUseWithBuilding,
 } from "shared";
 
 import { InfluenceAreaService } from "../influence-area-service/InfluenceAreaService";
@@ -27,7 +27,7 @@ const MINOR_INJURY_EURO_VALUE = 19_385;
 const FRENCH_TIME_EURO_VALUE_PER_HOUR = 9.97;
 const TRAVEL_COST_EURO_PER_KILOMETER = 0.12;
 
-const PUBLIC_CULTURAL_AND_SPORTS_FACILITIES: BuildingsUse[] = [
+const PUBLIC_CULTURAL_AND_SPORTS_FACILITIES: UrbanProjectUseWithBuilding[] = [
   "OTHER_CULTURAL_PLACE",
   "CINEMA",
   "MUSEUM",

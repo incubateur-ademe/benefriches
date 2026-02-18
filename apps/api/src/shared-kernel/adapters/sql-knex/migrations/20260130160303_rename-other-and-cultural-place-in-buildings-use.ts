@@ -1,5 +1,5 @@
 import type { Knex } from "knex";
-import type { BuildingsUse } from "shared";
+import type { UrbanProjectUseWithBuilding } from "shared";
 
 import type { UrbanProjectFeatures } from "src/reconversion-projects/core/model/urbanProjects";
 
@@ -8,12 +8,12 @@ type LegacyBuildingsUse = "OTHER" | "CULTURAL_PLACE";
 const BUILDINGS_USE_MIGRATION_MAP = {
   OTHER: "OTHER_BUILDING",
   CULTURAL_PLACE: "OTHER_CULTURAL_PLACE",
-} as const satisfies Record<LegacyBuildingsUse, BuildingsUse>;
+} as const satisfies Record<LegacyBuildingsUse, UrbanProjectUseWithBuilding>;
 
 const REVERSE_BUILDINGS_USE_MIGRATION_MAP = {
   OTHER_BUILDING: "OTHER",
   OTHER_CULTURAL_PLACE: "CULTURAL_PLACE",
-} as const satisfies Partial<Record<BuildingsUse, LegacyBuildingsUse>>;
+} as const satisfies Partial<Record<UrbanProjectUseWithBuilding, LegacyBuildingsUse>>;
 
 export async function up(knex: Knex): Promise<void> {
   const rows = await knex("reconversion_project_development_plans")

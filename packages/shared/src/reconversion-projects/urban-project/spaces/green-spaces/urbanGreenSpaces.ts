@@ -26,20 +26,3 @@ export const getSoilTypeForUrbanGreenSpace = (publicSpace: UrbanGreenSpace): Soi
       return "WATER";
   }
 };
-
-export const getUrbanGreenSpaceFromSoilType = (soilType: SoilType): UrbanGreenSpace => {
-  switch (soilType) {
-    case "MINERAL_SOIL":
-      return "GRAVEL_ALLEY";
-    case "ARTIFICIAL_GRASS_OR_BUSHES_FILLED":
-      return "LAWNS_AND_BUSHES";
-    case "IMPERMEABLE_SOILS":
-      return "PAVED_ALLEY";
-    case "ARTIFICIAL_TREE_FILLED":
-      return "TREE_FILLED_SPACE";
-    case "WATER":
-      return "URBAN_POND_OR_LAKE";
-    default:
-      return "LAWNS_AND_BUSHES";
-  }
-};
