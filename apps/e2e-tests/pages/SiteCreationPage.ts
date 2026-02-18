@@ -199,9 +199,17 @@ export class SiteCreationPage {
 
     for (const soilType of soilTypes) {
       const label = spaceLabelMapping[soilType];
+
+      // Soil types are organized in DSFR accordion groups where only one can be
+      // expanded at a time. Always expand the containing accordion before clicking.
+      await this.expandAccordionForSoilType(soilType);
+
+      const textLocator = this.page.getByText(label, { exact: true });
+      await textLocator.waitFor({ state: "visible", timeout: 5000 });
+
       // Click the label to toggle the checkbox (CheckboxCard uses controlled inputs
       // where .check() fails because React reconciliation resets native state)
-      await this.page.getByText(label, { exact: true }).click();
+      await textLocator.click();
     }
     await this.submit();
   }
@@ -276,8 +284,24 @@ export class SiteCreationPage {
     await this.submit();
   }
 
+  async selectIsSiteOperated(value: "yes" | "no"): Promise<void> {
+    const label = value === "yes" ? "Oui" : "Non / Ne sait pas";
+    await this.page.getByRole("radio", { name: label, exact: true }).check({ force: true });
+    await this.submit();
+  }
+
+  async selectOperatorAsSiteOwner(): Promise<void> {
+    await this.page.getByRole("radio", { name: /propriétaire actuel/ }).check({ force: true });
+    await this.submit();
+  }
+
   async submitExpenses(): Promise<void> {
     // Expenses may be pre-filled (button says "Valider") or empty (button says "Passer")
+    await this.page.getByRole("button", { name: /Valider|Passer/ }).click();
+  }
+
+  async submitIncome(): Promise<void> {
+    // Income may be pre-filled (button says "Valider") or empty (button says "Passer")
     await this.page.getByRole("button", { name: /Valider|Passer/ }).click();
   }
 
@@ -299,5 +323,34 @@ export class SiteCreationPage {
 
   private async submit(): Promise<void> {
     await this.page.getByRole("button", { name: /Valider|Suivant/ }).click();
+  }
+
+  private static readonly SOIL_TYPE_ACCORDION_LABELS: Record<SoilType, RegExp> = {
+    BUILDINGS: /Espaces minéraux/,
+    IMPERMEABLE_SOILS: /Espaces minéraux/,
+    MINERAL_SOIL: /Espaces minéraux/,
+    ARTIFICIAL_GRASS_OR_BUSHES_FILLED: /végétalisés/,
+    ARTIFICIAL_TREE_FILLED: /végétalisés/,
+    PRAIRIE_GRASS: /Prairie naturelle/,
+    PRAIRIE_BUSHES: /Prairie naturelle/,
+    PRAIRIE_TREES: /Prairie naturelle/,
+    CULTIVATION: /Espaces agricoles/,
+    VINEYARD: /Espaces agricoles/,
+    ORCHARD: /Espaces agricoles/,
+    FOREST_DECIDUOUS: /^Forêt$/,
+    FOREST_CONIFER: /^Forêt$/,
+    FOREST_POPLAR: /^Forêt$/,
+    FOREST_MIXED: /^Forêt$/,
+    WET_LAND: /Autre espace/,
+    WATER: /Autre espace/,
+  };
+
+  private async expandAccordionForSoilType(soilType: SoilType): Promise<void> {
+    const pattern = SiteCreationPage.SOIL_TYPE_ACCORDION_LABELS[soilType];
+    // DSFR accordion buttons are inside heading elements (h4)
+    const button = this.page.locator("h4").getByRole("button", { name: pattern });
+    if ((await button.getAttribute("aria-expanded")) !== "true") {
+      await button.click();
+    }
   }
 }
