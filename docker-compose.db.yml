@@ -21,4 +21,3 @@ services:
 
 volumes:
   benefriches_pg_data:
-    external: true
