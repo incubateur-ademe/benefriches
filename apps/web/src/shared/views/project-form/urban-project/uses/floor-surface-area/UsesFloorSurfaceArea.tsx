@@ -10,7 +10,10 @@ import {
   getLabelForUrbanProjectUse,
   getPictogramUrlForUrbanProjectUse,
 } from "@/features/create-project/core/urban-project/urbanProject";
-import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/core/format-number/formatNumber";
+import {
+  formatSurfaceArea,
+  SQUARE_METERS_HTML_SYMBOL,
+} from "@/shared/core/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RowDecimalsNumericInput from "@/shared/views/components/form/NumericInput/RowDecimalsNumericInput";
 import RowNumericInput from "@/shared/views/components/form/NumericInput/RowNumericInput";
@@ -21,18 +24,25 @@ import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormL
 type Props = {
   initialValues: SurfaceAreaDistributionJson<UrbanProjectUse>;
   selectedUses: UrbanProjectUse[];
+  buildingsFootprintSurfaceArea: number | undefined;
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
 };
 
 type FormValues = SurfaceAreaDistributionJson<UrbanProjectUse>;
 
-function UsesFloorSurfaceArea({ selectedUses, initialValues, onSubmit, onBack }: Props) {
+function UsesFloorSurfaceArea({
+  selectedUses,
+  initialValues,
+  buildingsFootprintSurfaceArea,
+  onSubmit,
+  onBack,
+}: Props) {
   const usesWithBuildings = selectedUses.filter((use) => doesUseIncludeBuildings(use));
 
   const { register, handleSubmit, formState, watch } = useForm<FormValues>({
     defaultValues: initialValues,
-    mode: "onBlur",
+    mode: "onChange",
   });
 
   const totalAllocatedSurfaceArea = sumObjectValues(watch());
@@ -46,6 +56,12 @@ function UsesFloorSurfaceArea({ selectedUses, initialValues, onSubmit, onBack }:
             La surface de plancher correspond à la surface utile totale des bâtiments (tous étages
             confondus).
           </p>
+          {buildingsFootprintSurfaceArea !== undefined && (
+            <p>
+              Surface d'emprise au sol des bâtiments&nbsp;:{" "}
+              <strong>{formatSurfaceArea(buildingsFootprintSurfaceArea)}</strong>.
+            </p>
+          )}
         </FormInfo>
       }
     >

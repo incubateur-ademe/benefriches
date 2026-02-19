@@ -213,6 +213,7 @@ export const createUrbanProjectFormSelectors = (
   type UsesFloorSurfaceAreaViewData = {
     usesFloorSurfaceAreaDistribution: UrbanProjectUseDistribution | undefined;
     selectedUses: UrbanProjectUse[];
+    buildingsFootprintSurfaceArea: number | undefined;
   };
 
   const selectUsesFloorSurfaceAreaViewData = createSelector(
@@ -227,9 +228,14 @@ export const createUrbanProjectFormSelectors = (
         "URBAN_PROJECT_USES_SELECTION",
       );
 
+      const spacesAnswers =
+        ReadStateHelper.getStepAnswers(steps, "URBAN_PROJECT_SPACES_SURFACE_AREA") ??
+        ReadStateHelper.getDefaultAnswers(steps, "URBAN_PROJECT_SPACES_SURFACE_AREA");
+
       return {
         usesFloorSurfaceAreaDistribution: floorAnswers?.usesFloorSurfaceAreaDistribution,
         selectedUses: selectionAnswers?.usesSelection ?? [],
+        buildingsFootprintSurfaceArea: spacesAnswers?.spacesSurfaceAreaDistribution?.BUILDINGS,
       };
     },
   );
