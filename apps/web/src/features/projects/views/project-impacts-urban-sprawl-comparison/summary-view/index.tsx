@@ -1,21 +1,13 @@
-import { getSummaryIndicatorsComparison } from "@/features/projects/application/project-impacts-urban-sprawl-comparison/summary.selectors";
+import { selectUrbanSprawlSummaryViewData } from "@/features/projects/core/urbanSprawlComparison.selectors";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import ImpactSummaryView from "./ImpactSummaryView";
 
 const ImpactsSummaryViewContainer = () => {
-  const keyImpactIndicators = useAppSelector(getSummaryIndicatorsComparison);
-  const comparisonState = useAppSelector((state) => state.urbanSprawlComparison);
+  const { baseCase, comparisonCase, modalData } = useAppSelector(selectUrbanSprawlSummaryViewData);
 
   return (
-    <ImpactSummaryView
-      {...keyImpactIndicators}
-      modalData={{
-        baseCase: comparisonState.baseCase!,
-        comparisonCase: comparisonState.comparisonCase!,
-        projectData: comparisonState.projectData!,
-      }}
-    />
+    <ImpactSummaryView baseCase={baseCase} comparisonCase={comparisonCase} modalData={modalData} />
   );
 };
 

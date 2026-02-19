@@ -11,7 +11,7 @@ import {
   ViewMode,
 } from "../../application/project-impacts-urban-sprawl-comparison/urbanSprawlComparison.reducer";
 import { urbanSprawlComparisonOnboardingCompleted } from "../../application/project-impacts-urban-sprawl-comparison/urbanSprawlComparisonOnboardingSkip.action";
-import { selectDisplayOnboarding } from "../../application/project-impacts-urban-sprawl-comparison/urbanSprawlComparisonOnboardingSkip.selector";
+import { selectUrbanSprawlComparisonViewData } from "../../core/urbanSprawlComparison.selectors";
 import ProjectImpactsUrbanSprawlImpactsComparisonView from "./ImpactsComparisonView";
 
 type Props = {
@@ -21,19 +21,20 @@ type Props = {
 function ImpactsComparisonPageContainer({ projectId }: Props) {
   const dispatch = useAppDispatch();
 
-  const { comparisonSiteNature, evaluationPeriod, ...comparisonState } = useAppSelector(
-    (state) => state.urbanSprawlComparison,
-  );
-
-  const shouldDisplayOnBoarding = useAppSelector(selectDisplayOnboarding);
-
   const {
-    evaluationPeriod: projectImpactsEvaluationPeriod,
-    dataLoadingState: projectImpactsLoadingState,
-  } = useAppSelector((state) => state.projectImpacts);
-
-  const projectName = useAppSelector((state) => state.projectImpacts.projectData?.name);
-  const relatedSiteNature = useAppSelector((state) => state.projectImpacts.relatedSiteData?.nature);
+    comparisonSiteNature,
+    evaluationPeriod,
+    dataLoadingState,
+    projectData,
+    baseCase,
+    comparisonCase,
+    currentViewMode,
+    projectImpactsEvaluationPeriod,
+    projectImpactsLoadingState,
+    projectName,
+    relatedSiteNature,
+    shouldDisplayOnBoarding,
+  } = useAppSelector(selectUrbanSprawlComparisonViewData);
 
   useEffect(() => {
     if (projectImpactsEvaluationPeriod) {
@@ -68,7 +69,11 @@ function ImpactsComparisonPageContainer({ projectId }: Props) {
       projectName={projectName!}
       evaluationPeriod={evaluationPeriod}
       projectImpactsLoadingState={projectImpactsLoadingState}
-      {...comparisonState}
+      dataLoadingState={dataLoadingState}
+      projectData={projectData}
+      baseCase={baseCase}
+      comparisonCase={comparisonCase}
+      currentViewMode={currentViewMode}
       shouldDisplayOnBoarding={shouldDisplayOnBoarding}
       onCompleteOnBoarding={onCompleteOnBoarding}
       onSelectComparisonSiteNature={onSelectComparisonSiteNature}
