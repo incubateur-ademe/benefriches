@@ -24,6 +24,7 @@ type FormValues = {
 function PublicGreenSpacesSurfaceArea({ initialValue, siteSurfaceArea, onSubmit, onBack }: Props) {
   const { register, handleSubmit, formState } = useForm<FormValues>({
     defaultValues: { surfaceArea: initialValue },
+    mode: "onChange",
   });
 
   return (
@@ -43,6 +44,8 @@ function PublicGreenSpacesSurfaceArea({ initialValue, siteSurfaceArea, onSubmit,
         <RowDecimalsNumericInput
           addonText={SQUARE_METERS_HTML_SYMBOL}
           label="Superficie des espaces verts publics"
+          state={formState.errors.surfaceArea ? "error" : "default"}
+          stateRelatedMessage={formState.errors.surfaceArea?.message}
           nativeInputProps={register("surfaceArea", {
             ...requiredNumericFieldRegisterOptions,
             max: {

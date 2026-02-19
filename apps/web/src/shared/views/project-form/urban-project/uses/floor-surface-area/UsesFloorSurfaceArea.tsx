@@ -32,6 +32,7 @@ function UsesFloorSurfaceArea({ selectedUses, initialValues, onSubmit, onBack }:
 
   const { register, handleSubmit, formState, watch } = useForm<FormValues>({
     defaultValues: initialValues,
+    mode: "onChange",
   });
 
   const totalAllocatedSurfaceArea = sumObjectValues(watch());
@@ -57,6 +58,8 @@ function UsesFloorSurfaceArea({ selectedUses, initialValues, onSubmit, onBack }:
               label={getLabelForUrbanProjectUse(use)}
               hintText="En surface de plancher."
               imgSrc={getPictogramUrlForUrbanProjectUse(use)}
+              state={formState.errors[use] ? "error" : "default"}
+              stateRelatedMessage={formState.errors[use]?.message}
               nativeInputProps={register(use, requiredNumericFieldRegisterOptions)}
             />
           );
