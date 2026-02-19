@@ -1,7 +1,8 @@
 import { defineConfig, devices } from "@playwright/test";
 
 const BASE_URL = process.env.BASE_URL ?? "http://localhost:3001";
-const MAIL_CATCHER_URL = process.env.MAIL_CATCHER_URL ?? "http://localhost:1080";
+const MAILCATCHER_UI_PORT = process.env.MAILCATCHER_UI_PORT ?? "1081";
+const MAIL_CATCHER_URL = `http://localhost:${MAILCATCHER_UI_PORT}`;
 
 /**
  * Playwright configuration for E2E tests.
