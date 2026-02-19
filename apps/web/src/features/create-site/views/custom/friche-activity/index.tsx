@@ -1,6 +1,6 @@
-import { fricheActivityStepCompleted } from "@/features/create-site/core/actions/introduction.actions";
 import { stepReverted } from "@/features/create-site/core/actions/revert.action";
 import { selectFricheActivity } from "@/features/create-site/core/selectors/createSite.selectors";
+import { fricheActivityStepCompleted } from "@/features/create-site/core/steps/site-activity/siteActivity.actions";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import FricheActivityForm, { FormValues } from "./FricheActivityForm";

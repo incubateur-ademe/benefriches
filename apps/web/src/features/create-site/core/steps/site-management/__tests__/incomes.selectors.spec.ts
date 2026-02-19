@@ -1,5 +1,5 @@
-import { selectYearlyIncomeFormViewData } from "../selectors/incomes.selectors";
-import { StoreBuilder } from "./creation-steps/testUtils";
+import { StoreBuilder } from "../../../__tests__/creation-steps/testUtils";
+import { selectYearlyIncomeFormViewData } from "../siteManagement.selectors";
 
 describe("incomes ViewData selectors", () => {
   describe("selectYearlyIncomeFormViewData", () => {

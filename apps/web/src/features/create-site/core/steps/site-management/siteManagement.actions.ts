@@ -1,7 +1,7 @@
 import { SiteYearlyExpense, SiteYearlyIncome } from "shared";
 
-import { Owner, Tenant } from "../siteFoncier.types";
-import { createStepCompletedAction } from "./actionsUtils";
+import { createStepCompletedAction } from "../../actions/actionsUtils";
+import { Owner, Tenant } from "../../siteFoncier.types";
 
 export const managementIntroductionCompleted = createStepCompletedAction("MANAGEMENT_INTRODUCTION");
 

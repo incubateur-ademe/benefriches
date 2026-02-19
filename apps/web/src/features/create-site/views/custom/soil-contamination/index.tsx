@@ -1,6 +1,6 @@
 import { stepReverted } from "@/features/create-site/core/actions/revert.action";
-import { soilsContaminationStepCompleted } from "@/features/create-site/core/actions/soilsContaminationAndAccidents.actions";
-import { selectSoilContaminationFormViewData } from "@/features/create-site/core/selectors/createSite.selectors";
+import { soilsContaminationStepCompleted } from "@/features/create-site/core/steps/contamination-and-accidents/contaminationAndAccidents.actions";
+import { selectSoilContaminationFormViewData } from "@/features/create-site/core/steps/contamination-and-accidents/contaminationAndAccidents.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import SoilContaminationForm, { type FormValues } from "./SoilContaminationForm";

@@ -1,5 +1,5 @@
 import { stepReverted } from "@/features/create-site/core/actions/revert.action";
-import { managementIntroductionCompleted } from "@/features/create-site/core/actions/siteManagement.actions";
+import { managementIntroductionCompleted } from "@/features/create-site/core/steps/site-management/siteManagement.actions";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import SiteManagementIntroduction from "./SiteManagementIntroduction";

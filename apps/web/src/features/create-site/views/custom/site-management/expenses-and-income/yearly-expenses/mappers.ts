@@ -1,6 +1,6 @@
 import { SiteYearlyExpense, SiteYearlyExpensePurpose } from "shared";
 
-import { SiteYearlyExpensesConfig } from "@/features/create-site/core/expenses.functions";
+import { SiteYearlyExpensesConfig } from "@/features/create-site/core/steps/site-management/expenses.functions";
 
 import { FormValues } from "./SiteYearlyExpensesForm";
 

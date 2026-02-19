@@ -5,8 +5,15 @@ import {
   SurfaceAreaDistribution,
   SurfaceAreaDistributionJson,
 } from "shared";
+import type { SiteNature } from "shared";
 
 import { RootState } from "@/shared/core/store-config/store";
+
+import {
+  selectSiteNature,
+  selectSiteSoils,
+  selectSiteSurfaceArea,
+} from "../../selectors/createSite.selectors";
 
 type SurfaceAreaDistributionWithUnit<TSurface extends string> = {
   unit: "percentage" | "squareMeters";
@@ -64,4 +71,32 @@ export const selectSiteSoilsSummaryViewData = createSelector(
         siteCreation.siteData.spacesDistributionKnowledge === false,
     };
   },
+);
+
+// Site Surface Area Form ViewData
+type SiteSurfaceAreaFormViewData = {
+  siteSurfaceArea: number | undefined;
+  siteNature: SiteNature | undefined;
+};
+
+export const selectSiteSurfaceAreaFormViewData = createSelector(
+  [selectSiteSurfaceArea, selectSiteNature],
+  (siteSurfaceArea, siteNature): SiteSurfaceAreaFormViewData => ({
+    siteSurfaceArea,
+    siteNature,
+  }),
+);
+
+// Spaces Selection Form ViewData
+type SpacesSelectionFormViewData = {
+  siteNature: SiteNature | undefined;
+  soils: SoilType[];
+};
+
+export const selectSpacesSelectionFormViewData = createSelector(
+  [selectSiteNature, selectSiteSoils],
+  (siteNature, soils): SpacesSelectionFormViewData => ({
+    siteNature,
+    soils: soils ?? [],
+  }),
 );

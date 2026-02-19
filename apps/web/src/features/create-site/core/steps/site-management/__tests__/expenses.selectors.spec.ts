@@ -1,5 +1,5 @@
-import { selectSiteYearlyExpensesViewData } from "../selectors/expenses.selectors";
-import { StoreBuilder } from "./creation-steps/testUtils";
+import { StoreBuilder } from "../../../__tests__/creation-steps/testUtils";
+import { selectSiteYearlyExpensesViewData } from "../siteManagement.selectors";
 
 describe("expenses ViewData selectors", () => {
   describe("selectSiteYearlyExpensesViewData", () => {

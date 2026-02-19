@@ -7,7 +7,7 @@ import {
   getLabelForExpensePurpose,
   SiteManagementYearlyExpensesConfig,
   FricheSecurityYearlyExpensesConfig,
-} from "@/features/create-site/core/expenses.functions";
+} from "@/features/create-site/core/steps/site-management/expenses.functions";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
 import FormRowNumericInput from "@/shared/views/components/form/NumericInput/FormRowNumericInput";

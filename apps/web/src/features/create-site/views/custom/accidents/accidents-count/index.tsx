@@ -1,6 +1,6 @@
 import { stepReverted } from "@/features/create-site/core/actions/revert.action";
-import { fricheAccidentsStepCompleted } from "@/features/create-site/core/actions/soilsContaminationAndAccidents.actions";
 import { selectSiteAccidentsData } from "@/features/create-site/core/selectors/createSite.selectors";
+import { fricheAccidentsStepCompleted } from "@/features/create-site/core/steps/contamination-and-accidents/contaminationAndAccidents.actions";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import FricheAccidentsForm, { FormValues } from "./FricheAccidentsForm";

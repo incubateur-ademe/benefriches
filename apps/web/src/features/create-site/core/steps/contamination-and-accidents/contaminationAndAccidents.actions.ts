@@ -1,4 +1,4 @@
-import { createStepCompletedAction } from "./actionsUtils";
+import { createStepCompletedAction } from "../../actions/actionsUtils";
 
 export const soilsContaminationIntroductionStepCompleted = createStepCompletedAction(
   "SOILS_CONTAMINATION_INTRODUCTION",

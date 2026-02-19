@@ -1,5 +1,5 @@
-import { naturalAreaTypeCompleted } from "@/features/create-site/core/actions/introduction.actions";
 import { stepReverted } from "@/features/create-site/core/actions/revert.action";
+import { naturalAreaTypeCompleted } from "@/features/create-site/core/steps/site-activity/siteActivity.actions";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import NaturalAreaTypeForm, { FormValues } from "./NaturalAreaTypeForm";

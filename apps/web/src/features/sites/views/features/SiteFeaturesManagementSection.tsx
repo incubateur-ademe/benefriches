@@ -12,8 +12,8 @@ import {
   INCOMES_EURO_PER_HECTARE_PER_YEAR,
 } from "shared";
 
-import { getLabelForExpensePurpose } from "@/features/create-site/core/expenses.functions";
-import { getLabelForIncomeSource } from "@/features/create-site/core/incomes.functions";
+import { getLabelForExpensePurpose } from "@/features/create-site/core/steps/site-management/expenses.functions";
+import { getLabelForIncomeSource } from "@/features/create-site/core/steps/site-management/incomes.functions";
 import { formatNumberFr, formatPercentage } from "@/shared/core/format-number/formatNumber";
 import DataLine from "@/shared/views/components/FeaturesList/FeaturesListDataLine";
 import Section from "@/shared/views/components/FeaturesList/FeaturesListSection";

@@ -1,6 +1,6 @@
 import Button from "@codegouvfr/react-dsfr/Button";
 
-import { siteCreationInitiated } from "@/features/create-site/core/actions/introduction.actions";
+import { siteCreationInitiated } from "@/features/create-site/core/steps/introduction/introduction.actions";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 import OnboardingPageLayout from "@/shared/views/layout/OnboardingPageLayout/OnboardingPageLayout";

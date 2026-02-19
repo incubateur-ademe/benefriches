@@ -1,6 +1,6 @@
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
-import { introductionStepCompleted } from "../../core/actions/introduction.actions";
+import { introductionStepCompleted } from "../../core/steps/introduction/introduction.actions";
 import SiteCreationIntroduction from "./SiteCreationIntroduction";
 
 export default function SiteCreationIntroductionContainer() {

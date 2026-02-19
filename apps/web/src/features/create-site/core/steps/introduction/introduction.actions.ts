@@ -1,13 +1,6 @@
-import {
-  Address,
-  AgriculturalOperationActivity,
-  FricheActivity,
-  NaturalAreaType,
-  ReconversionProjectCreationMode,
-  SiteNature,
-} from "shared";
+import { ReconversionProjectCreationMode, SiteNature } from "shared";
 
-import { createSiteCreationAction, createStepCompletedAction } from "./actionsUtils";
+import { createSiteCreationAction, createStepCompletedAction } from "../../actions/actionsUtils";
 
 export const siteCreationInitiated = createSiteCreationAction<
   undefined | { skipIntroduction: boolean; skipUseMutability?: boolean }
@@ -25,16 +18,3 @@ export const mutabilityOrImpactsSelectionCompleted = createStepCompletedAction<{
 }>("USE_MUTABILITY");
 
 export const siteNatureCompleted = createStepCompletedAction<{ nature: SiteNature }>("SITE_NATURE");
-
-export const fricheActivityStepCompleted =
-  createStepCompletedAction<FricheActivity>("FRICHE_ACTIVITY");
-
-export const agriculturalOperationActivityCompleted = createStepCompletedAction<{
-  activity: AgriculturalOperationActivity;
-}>("AGRICULTURAL_OPERATION_ACTIVITY");
-
-export const naturalAreaTypeCompleted = createStepCompletedAction<{
-  naturalAreaType: NaturalAreaType;
-}>("NATURAL_AREA_TYPE");
-
-export const addressStepCompleted = createStepCompletedAction<{ address: Address }>("ADDRESS");

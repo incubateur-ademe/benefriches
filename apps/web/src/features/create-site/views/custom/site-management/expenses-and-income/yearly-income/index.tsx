@@ -1,8 +1,8 @@
 import type { SiteYearlyIncome } from "shared";
 
 import { stepReverted } from "@/features/create-site/core/actions/revert.action";
-import { yearlyIncomeStepCompleted } from "@/features/create-site/core/actions/siteManagement.actions";
-import { selectYearlyIncomeFormViewData } from "@/features/create-site/core/selectors/incomes.selectors";
+import { yearlyIncomeStepCompleted } from "@/features/create-site/core/steps/site-management/siteManagement.actions";
+import { selectYearlyIncomeFormViewData } from "@/features/create-site/core/steps/site-management/siteManagement.selectors";
 import type { AppDispatch } from "@/shared/core/store-config/store";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 

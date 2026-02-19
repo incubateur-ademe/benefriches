@@ -1,8 +1,8 @@
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { routes } from "@/shared/views/router";
 
-import { mutabilityOrImpactsSelectionCompleted } from "../../core/actions/introduction.actions";
 import { stepReverted } from "../../core/actions/revert.action";
+import { mutabilityOrImpactsSelectionCompleted } from "../../core/steps/introduction/introduction.actions";
 import UseMutabilityForm from "./UseMutabilityForm";
 
 function UseMutabilityFormContainer() {

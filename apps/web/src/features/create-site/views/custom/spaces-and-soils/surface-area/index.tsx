@@ -1,6 +1,6 @@
 import { stepReverted } from "@/features/create-site/core/actions/revert.action";
-import { siteSurfaceAreaStepCompleted } from "@/features/create-site/core/actions/spaces.actions";
-import { selectSiteSurfaceAreaFormViewData } from "@/features/create-site/core/selectors/createSite.selectors";
+import { siteSurfaceAreaStepCompleted } from "@/features/create-site/core/steps/spaces/spaces.actions";
+import { selectSiteSurfaceAreaFormViewData } from "@/features/create-site/core/steps/spaces/spaces.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import SiteSurfaceAreaForm from "../../../common-views/SiteSurfaceAreaForm";

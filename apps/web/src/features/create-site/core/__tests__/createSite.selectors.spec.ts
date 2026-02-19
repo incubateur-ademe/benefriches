@@ -2,19 +2,19 @@ import { buildUser } from "@/features/onboarding/core/user.mock";
 import { createStore, RootState } from "@/shared/core/store-config/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
+import { selectAddressFormViewData } from "../steps/address/address.selectors";
+import { selectSoilContaminationFormViewData } from "../steps/contamination-and-accidents/contaminationAndAccidents.selectors";
+import { selectExpressResultViewData } from "../steps/final/final.selectors";
 import {
-  selectAddressFormViewData,
-  selectExpressResultViewData,
   selectIsSiteOperatedFormViewData,
-  selectSiteSurfaceAreaFormViewData,
-  selectSoilContaminationFormViewData,
-  selectSpacesSelectionFormViewData,
-} from "../selectors/createSite.selectors";
-import {
   selectSiteOperatorFormViewData,
   selectSiteOwnerFormViewData,
   selectSiteTenantFormViewData,
-} from "../selectors/viewData.selectors";
+} from "../steps/site-management/siteManagement.selectors";
+import {
+  selectSiteSurfaceAreaFormViewData,
+  selectSpacesSelectionFormViewData,
+} from "../steps/spaces/spaces.selectors";
 import { StoreBuilder } from "./creation-steps/testUtils";
 
 const GRENOBLE_LOCAL_AUTHORITIES = {

@@ -8,7 +8,7 @@ import {
   sumListWithKey,
 } from "shared";
 
-import { getLabelForExpensePurpose } from "@/features/create-site/core/expenses.functions";
+import { getLabelForExpensePurpose } from "@/features/create-site/core/steps/site-management/expenses.functions";
 import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
 import { withDefaultChartOptions } from "@/shared/views/charts";
 

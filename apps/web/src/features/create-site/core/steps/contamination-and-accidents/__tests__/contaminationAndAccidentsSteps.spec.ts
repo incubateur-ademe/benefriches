@@ -1,18 +1,18 @@
-import { stepReverted } from "../../actions/revert.action";
-import {
-  fricheAccidentsIntroductionStepCompleted,
-  fricheAccidentsStepCompleted,
-  soilsContaminationIntroductionStepCompleted,
-  soilsContaminationStepCompleted,
-} from "../../actions/soilsContaminationAndAccidents.actions";
-import { siteWithExhaustiveData } from "../../siteData.mock";
 import {
   expectNewCurrentStep,
   expectSiteDataDiff,
   expectSiteDataUnchanged,
   expectStepReverted,
   StoreBuilder,
-} from "./testUtils";
+} from "../../../__tests__/creation-steps/testUtils";
+import { stepReverted } from "../../../actions/revert.action";
+import { siteWithExhaustiveData } from "../../../siteData.mock";
+import {
+  fricheAccidentsIntroductionStepCompleted,
+  fricheAccidentsStepCompleted,
+  soilsContaminationIntroductionStepCompleted,
+  soilsContaminationStepCompleted,
+} from "../contaminationAndAccidents.actions";
 
 describe("Site creation: soils contamination and friche accidents steps", () => {
   describe("SOILS_CONTAMINATION_INTRODUCTION", () => {

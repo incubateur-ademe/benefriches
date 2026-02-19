@@ -1,13 +1,13 @@
-import { namingIntroductionStepCompleted, namingStepCompleted } from "../../actions/naming.actions";
-import { stepReverted } from "../../actions/revert.action";
-import { siteWithExhaustiveData } from "../../siteData.mock";
 import {
   expectNewCurrentStep,
   expectSiteDataDiff,
   expectSiteDataUnchanged,
   expectStepReverted,
   StoreBuilder,
-} from "./testUtils";
+} from "../../../__tests__/creation-steps/testUtils";
+import { stepReverted } from "../../../actions/revert.action";
+import { siteWithExhaustiveData } from "../../../siteData.mock";
+import { namingIntroductionStepCompleted, namingStepCompleted } from "../naming.actions";
 
 describe("Site creation: naming steps", () => {
   describe("NAMING_INTRODUCTION", () => {

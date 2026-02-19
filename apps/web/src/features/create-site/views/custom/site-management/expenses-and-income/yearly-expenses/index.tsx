@@ -1,7 +1,7 @@
 import { stepReverted } from "@/features/create-site/core/actions/revert.action";
-import { yearlyExpensesStepCompleted } from "@/features/create-site/core/actions/siteManagement.actions";
-import type { SiteYearlyExpensesConfig } from "@/features/create-site/core/expenses.functions";
-import { selectSiteYearlyExpensesViewData } from "@/features/create-site/core/selectors/expenses.selectors";
+import type { SiteYearlyExpensesConfig } from "@/features/create-site/core/steps/site-management/expenses.functions";
+import { yearlyExpensesStepCompleted } from "@/features/create-site/core/steps/site-management/siteManagement.actions";
+import { selectSiteYearlyExpensesViewData } from "@/features/create-site/core/steps/site-management/siteManagement.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import SiteYearlyExpensesForm, { type FormValues } from "./SiteYearlyExpensesForm";

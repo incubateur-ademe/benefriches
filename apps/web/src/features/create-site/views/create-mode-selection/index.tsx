@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import { createModeSelectionCompleted } from "../../core/actions/introduction.actions";
 import { stepReverted } from "../../core/actions/revert.action";
+import { createModeSelectionCompleted } from "../../core/steps/introduction/introduction.actions";
 import CreateModeSelectionForm, { FormValues } from "./CreateModeSelectionForm";
 
 export default function CreateModeSelectionFormContainer() {

@@ -3,16 +3,20 @@ import { v4 as uuid } from "uuid";
 
 import { buildUser } from "@/features/onboarding/core/user.mock";
 
-import { InMemoryCreateSiteService } from "../../../infrastructure/create-site-service/inMemoryCreateSiteApi";
-import { customSiteSaved, expressSiteSaved } from "../../actions/finalStep.actions";
+import { InMemoryCreateSiteService } from "../../../../infrastructure/create-site-service/inMemoryCreateSiteApi";
+import {
+  expectNewCurrentStep,
+  expectSiteDataUnchanged,
+  StoreBuilder,
+} from "../../../__tests__/creation-steps/testUtils";
 import {
   expressFricheCreationData,
   fricheWithExhaustiveData,
   fricheWithMinimalData,
   siteWithMinimalData,
-} from "../../siteData.mock";
-import { SiteCreationData, SiteExpressCreationData } from "../../siteFoncier.types";
-import { expectNewCurrentStep, expectSiteDataUnchanged, StoreBuilder } from "./testUtils";
+} from "../../../siteData.mock";
+import { SiteCreationData, SiteExpressCreationData } from "../../../siteFoncier.types";
+import { customSiteSaved, expressSiteSaved } from "../final.actions";
 
 const BLAJAN_ADDRESS: Address = {
   banId: "31070_p4ur8e",

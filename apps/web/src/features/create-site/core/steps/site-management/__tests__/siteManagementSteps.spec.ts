@@ -1,4 +1,12 @@
-import { stepReverted } from "../../actions/revert.action";
+import {
+  expectNewCurrentStep,
+  expectSiteDataDiff,
+  expectSiteDataUnchanged,
+  expectStepReverted,
+  StoreBuilder,
+} from "../../../__tests__/creation-steps/testUtils";
+import { stepReverted } from "../../../actions/revert.action";
+import { siteWithExhaustiveData } from "../../../siteData.mock";
 import {
   isFricheLeasedStepCompleted,
   isSiteOperatedStepCompleted,
@@ -10,15 +18,7 @@ import {
   yearlyExpensesStepCompleted,
   yearlyExpensesSummaryCompleted,
   yearlyIncomeStepCompleted,
-} from "../../actions/siteManagement.actions";
-import { siteWithExhaustiveData } from "../../siteData.mock";
-import {
-  expectNewCurrentStep,
-  expectSiteDataDiff,
-  expectSiteDataUnchanged,
-  expectStepReverted,
-  StoreBuilder,
-} from "./testUtils";
+} from "../siteManagement.actions";
 
 describe("Site creation: site management steps", () => {
   describe("MANAGEMENT_INTRODUCTION", () => {

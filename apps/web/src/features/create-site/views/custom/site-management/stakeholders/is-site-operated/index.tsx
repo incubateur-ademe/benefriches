@@ -1,6 +1,6 @@
 import { stepReverted } from "@/features/create-site/core/actions/revert.action";
-import { isSiteOperatedStepCompleted } from "@/features/create-site/core/actions/siteManagement.actions";
-import { selectIsSiteOperatedFormViewData } from "@/features/create-site/core/selectors/createSite.selectors";
+import { isSiteOperatedStepCompleted } from "@/features/create-site/core/steps/site-management/siteManagement.actions";
+import { selectIsSiteOperatedFormViewData } from "@/features/create-site/core/steps/site-management/siteManagement.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import IsSiteOperatedForm, { type FormValues } from "./IsSiteOperatedForm";

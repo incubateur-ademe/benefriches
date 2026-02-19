@@ -1,8 +1,8 @@
 import { SiteYearlyIncome } from "shared";
 
 import { stepReverted } from "@/features/create-site/core/actions/revert.action";
-import { yearlyExpensesSummaryCompleted } from "@/features/create-site/core/actions/siteManagement.actions";
 import { hasTenant } from "@/features/create-site/core/site.functions";
+import { yearlyExpensesSummaryCompleted } from "@/features/create-site/core/steps/site-management/siteManagement.actions";
 import { AppDispatch, RootState } from "@/shared/core/store-config/store";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 

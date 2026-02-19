@@ -1,7 +1,7 @@
 import Button from "@codegouvfr/react-dsfr/Button";
 import React, { ReactNode } from "react";
 
-import { siteCreationInitiated } from "@/features/create-site/core/actions/introduction.actions";
+import { siteCreationInitiated } from "@/features/create-site/core/steps/introduction/introduction.actions";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 import OnboardingPageLayout from "@/shared/views/layout/OnboardingPageLayout/OnboardingPageLayout";
 import { routes } from "@/shared/views/router";

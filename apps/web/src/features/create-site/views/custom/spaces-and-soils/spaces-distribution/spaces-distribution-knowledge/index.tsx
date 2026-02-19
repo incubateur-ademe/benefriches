@@ -1,5 +1,5 @@
 import { stepReverted } from "@/features/create-site/core/actions/revert.action";
-import { spacesSurfaceAreaDistributionKnowledgeCompleted } from "@/features/create-site/core/actions/spaces.actions";
+import { spacesSurfaceAreaDistributionKnowledgeCompleted } from "@/features/create-site/core/steps/spaces/spaces.actions";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import SiteSpacesDistributionKnowledgeForm, {

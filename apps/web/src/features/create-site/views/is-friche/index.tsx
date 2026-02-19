@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import { isFricheCompleted } from "../../core/actions/introduction.actions";
 import { stepReverted } from "../../core/actions/revert.action";
+import { isFricheCompleted } from "../../core/steps/introduction/introduction.actions";
 import IsFricheForm from "./IsFricheForm";
 
 const mapIsFricheValue = (isFriche: boolean | undefined) => {

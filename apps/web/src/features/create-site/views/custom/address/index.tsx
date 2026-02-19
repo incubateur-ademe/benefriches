@@ -1,8 +1,8 @@
 import type { Address } from "shared";
 
-import { addressStepCompleted } from "@/features/create-site/core/actions/introduction.actions";
 import { stepReverted } from "@/features/create-site/core/actions/revert.action";
-import { selectAddressFormViewData } from "@/features/create-site/core/selectors/createSite.selectors";
+import { addressStepCompleted } from "@/features/create-site/core/steps/address/address.actions";
+import { selectAddressFormViewData } from "@/features/create-site/core/steps/address/address.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import AddressForm from "./AddressForm";

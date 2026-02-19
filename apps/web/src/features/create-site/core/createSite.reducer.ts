@@ -1,63 +1,30 @@
 import { createReducer, createSelector } from "@reduxjs/toolkit";
-import {
-  getSoilsDistributionForAgriculturalOperationActivity,
-  getSoilsDistributionForFricheActivity,
-  getSoilsDistributionForNaturalAreaType,
-  SoilsDistribution,
-  SoilType,
-  SurfaceAreaDistribution,
-  typedObjectKeys,
-} from "shared";
 import { v4 as uuid } from "uuid";
 
 import { SiteCreationData } from "@/features/create-site/core/siteFoncier.types";
-import { splitEvenly } from "@/shared/core/split-number/splitNumber";
 import { RootState } from "@/shared/core/store-config/store";
 
-import { customSiteSaved, expressSiteSaved } from "./actions/finalStep.actions";
-import {
-  addressStepCompleted,
-  agriculturalOperationActivityCompleted,
-  createModeSelectionCompleted,
-  fricheActivityStepCompleted,
-  introductionStepCompleted,
-  isFricheCompleted,
-  naturalAreaTypeCompleted,
-  siteCreationInitiated,
-  siteNatureCompleted,
-  mutabilityOrImpactsSelectionCompleted,
-} from "./actions/introduction.actions";
-import { namingIntroductionStepCompleted, namingStepCompleted } from "./actions/naming.actions";
 import { stepReverted } from "./actions/revert.action";
+import { revertAddressStep, registerAddressHandlers } from "./steps/address/address.handlers";
 import {
-  isFricheLeasedStepCompleted,
-  isSiteOperatedStepCompleted,
-  managementIntroductionCompleted,
-  operatorStepCompleted,
-  ownerStepCompleted,
-  tenantStepCompleted,
-  yearlyExpensesAndIncomeIntroductionCompleted,
-  yearlyExpensesStepCompleted,
-  yearlyExpensesSummaryCompleted,
-  yearlyIncomeStepCompleted,
-} from "./actions/siteManagement.actions";
+  revertContaminationAndAccidentsStep,
+  registerContaminationAndAccidentsHandlers,
+} from "./steps/contamination-and-accidents/contaminationAndAccidents.handlers";
+import { registerFinalHandlers } from "./steps/final/final.handlers";
 import {
-  fricheAccidentsIntroductionStepCompleted,
-  fricheAccidentsStepCompleted,
-  soilsContaminationIntroductionStepCompleted,
-  soilsContaminationStepCompleted,
-} from "./actions/soilsContaminationAndAccidents.actions";
+  revertIntroductionStep,
+  registerIntroductionHandlers,
+} from "./steps/introduction/introduction.handlers";
+import { revertNamingStep, registerNamingHandlers } from "./steps/naming/naming.handlers";
 import {
-  siteSurfaceAreaStepCompleted,
-  soilsCarbonStorageStepCompleted,
-  soilsDistributionStepCompleted,
-  soilsIntroductionStepCompleted,
-  soilsSelectionStepCompleted,
-  soilsSummaryStepCompleted,
-  spacesSurfaceAreaDistributionKnowledgeCompleted,
-  spacesKnowledgeStepCompleted,
-  surfaceAreaInputModeUpdated,
-} from "./actions/spaces.actions";
+  revertSiteActivityStep,
+  registerSiteActivityHandlers,
+} from "./steps/site-activity/siteActivity.handlers";
+import {
+  revertSiteManagementStep,
+  registerSiteManagementHandlers,
+} from "./steps/site-management/siteManagement.handlers";
+import { revertSpacesStep, registerSpacesHandlers } from "./steps/spaces/spaces.handlers";
 
 export type SiteCreationCustomStep =
   | "FRICHE_ACTIVITY"
@@ -143,358 +110,28 @@ export const getInitialState = (props?: {
 };
 
 const siteCreationReducer = createReducer(getInitialState(), (builder) => {
-  builder
-    .addCase(siteCreationInitiated, (_state, action) => {
-      return getInitialState({
-        initialStep: action.payload?.skipIntroduction ? "IS_FRICHE" : "INTRODUCTION",
-        skipUseMutability: action.payload?.skipUseMutability,
-      });
-    })
-    .addCase(introductionStepCompleted, (state) => {
-      state.stepsHistory.push("IS_FRICHE");
-    })
-    .addCase(isFricheCompleted, (state, action) => {
-      const { isFriche } = action.payload;
+  registerIntroductionHandlers(builder);
+  registerSiteActivityHandlers(builder);
+  registerAddressHandlers(builder);
+  registerSpacesHandlers(builder);
+  registerContaminationAndAccidentsHandlers(builder);
+  registerSiteManagementHandlers(builder);
+  registerNamingHandlers(builder);
+  registerFinalHandlers(builder);
 
-      state.siteData.isFriche = isFriche;
-      if (isFriche) {
-        state.siteData.nature = "FRICHE";
-        state.stepsHistory.push(
-          state.skipUseMutability ? "CREATE_MODE_SELECTION" : "USE_MUTABILITY",
-        );
-      } else {
-        state.stepsHistory.push("SITE_NATURE");
-      }
-    })
-    .addCase(mutabilityOrImpactsSelectionCompleted, (state, action) => {
-      state.useMutability = action.payload.useMutability;
-      if (!action.payload.useMutability) {
-        state.stepsHistory.push("CREATE_MODE_SELECTION");
-      }
-    })
-    .addCase(siteNatureCompleted, (state, action) => {
-      state.siteData.nature = action.payload.nature;
-      state.stepsHistory.push("CREATE_MODE_SELECTION");
-    })
-    .addCase(createModeSelectionCompleted, (state, action) => {
-      const { createMode } = action.payload;
-      state.createMode = createMode;
+  builder.addCase(stepReverted, (state) => {
+    revertIntroductionStep(state);
+    revertSiteActivityStep(state);
+    revertAddressStep(state);
+    revertSpacesStep(state);
+    revertContaminationAndAccidentsStep(state);
+    revertSiteManagementStep(state);
+    revertNamingStep(state);
 
-      switch (state.siteData.nature) {
-        case "FRICHE":
-          state.stepsHistory.push("FRICHE_ACTIVITY");
-          break;
-        case "AGRICULTURAL_OPERATION":
-          state.stepsHistory.push("AGRICULTURAL_OPERATION_ACTIVITY");
-          break;
-        case "NATURAL_AREA":
-          state.stepsHistory.push("NATURAL_AREA_TYPE");
-          break;
-        default:
-          break;
-      }
-    })
-    .addCase(fricheActivityStepCompleted, (state, action) => {
-      state.siteData.fricheActivity = action.payload;
-      state.stepsHistory.push("ADDRESS");
-    })
-    .addCase(agriculturalOperationActivityCompleted, (state, action) => {
-      state.siteData.agriculturalOperationActivity = action.payload.activity;
-      state.stepsHistory.push("ADDRESS");
-    })
-    .addCase(naturalAreaTypeCompleted, (state, action) => {
-      state.siteData.naturalAreaType = action.payload.naturalAreaType;
-      state.stepsHistory.push("ADDRESS");
-    })
-    .addCase(addressStepCompleted, (state, action) => {
-      state.siteData.address = action.payload.address;
-      state.stepsHistory.push(
-        state.createMode === "express" ? "SURFACE_AREA" : "SPACES_INTRODUCTION",
-      );
-    })
-    .addCase(soilsIntroductionStepCompleted, (state) => {
-      state.stepsHistory.push("SURFACE_AREA");
-    })
-    .addCase(siteSurfaceAreaStepCompleted, (state, action) => {
-      state.siteData.surfaceArea = action.payload.surfaceArea;
-      if (state.createMode === "custom") {
-        state.stepsHistory.push("SPACES_KNOWLEDGE");
-      }
-    })
-    .addCase(spacesKnowledgeStepCompleted, (state, action) => {
-      if (action.payload.knowsSpaces) {
-        state.stepsHistory.push("SPACES_SELECTION");
-      } else {
-        const surfaceArea = state.siteData.surfaceArea ?? 0;
-
-        switch (state.siteData.nature) {
-          case "FRICHE":
-            state.siteData.soilsDistribution = getSoilsDistributionForFricheActivity(
-              surfaceArea,
-              state.siteData.fricheActivity ?? "OTHER",
-            );
-            break;
-          case "AGRICULTURAL_OPERATION":
-            if (state.siteData.agriculturalOperationActivity) {
-              state.siteData.soilsDistribution =
-                getSoilsDistributionForAgriculturalOperationActivity(
-                  surfaceArea,
-                  state.siteData.agriculturalOperationActivity,
-                );
-            }
-            break;
-          case "NATURAL_AREA":
-            if (state.siteData.naturalAreaType) {
-              state.siteData.soilsDistribution = getSoilsDistributionForNaturalAreaType(
-                surfaceArea,
-                state.siteData.naturalAreaType,
-              );
-            }
-            break;
-        }
-        state.siteData.soils = typedObjectKeys(state.siteData.soilsDistribution ?? {});
-        state.stepsHistory.push("SOILS_SUMMARY");
-      }
-    })
-    .addCase(soilsSelectionStepCompleted, (state, action) => {
-      const { soils } = action.payload;
-      state.siteData.soils = soils;
-
-      if (soils.length === 1) {
-        const totalSurface = state.siteData.surfaceArea ?? 0;
-        const soilsDistribution = new SurfaceAreaDistribution();
-        soilsDistribution.addSurface(soils[0] as SoilType, totalSurface);
-
-        state.siteData.soilsDistribution = soilsDistribution.toJSON();
-        state.stepsHistory.push("SOILS_CARBON_STORAGE");
-      } else {
-        state.stepsHistory.push("SPACES_SURFACE_AREAS_DISTRIBUTION_KNOWLEDGE");
-      }
-    })
-    .addCase(spacesSurfaceAreaDistributionKnowledgeCompleted, (state, action) => {
-      const { knowsSurfaceAreas } = action.payload;
-      if (!knowsSurfaceAreas) {
-        const totalSurface = state.siteData.surfaceArea ?? 0;
-        const soils = state.siteData.soils;
-        const surfaceSplit = splitEvenly(totalSurface, soils.length);
-        const soilsDistribution: SoilsDistribution = {};
-        soils.forEach((soilType, index) => {
-          soilsDistribution[soilType] = surfaceSplit[index];
-        });
-        state.siteData.soilsDistribution = soilsDistribution;
-      }
-      state.siteData.spacesDistributionKnowledge = knowsSurfaceAreas;
-      const nextStep = knowsSurfaceAreas ? "SPACES_SURFACE_AREA_DISTRIBUTION" : "SOILS_SUMMARY";
-      state.stepsHistory.push(nextStep);
-    })
-    .addCase(soilsDistributionStepCompleted, (state, action) => {
-      state.siteData.soilsDistribution = action.payload.distribution;
-      state.stepsHistory.push("SOILS_SUMMARY");
-    })
-    .addCase(soilsSummaryStepCompleted, (state) => {
-      state.stepsHistory.push("SOILS_CARBON_STORAGE");
-    })
-    .addCase(soilsCarbonStorageStepCompleted, (state) => {
-      const nextStep = state.siteData.isFriche
-        ? "SOILS_CONTAMINATION_INTRODUCTION"
-        : "MANAGEMENT_INTRODUCTION";
-      state.stepsHistory.push(nextStep);
-    })
-    .addCase(soilsContaminationIntroductionStepCompleted, (state) => {
-      state.stepsHistory.push("SOILS_CONTAMINATION");
-    })
-    .addCase(soilsContaminationStepCompleted, (state, action) => {
-      const { hasContaminatedSoils, contaminatedSoilSurface } = action.payload;
-      state.siteData.hasContaminatedSoils = hasContaminatedSoils;
-
-      if (hasContaminatedSoils && contaminatedSoilSurface) {
-        state.siteData.contaminatedSoilSurface = contaminatedSoilSurface;
-      }
-      state.stepsHistory.push("FRICHE_ACCIDENTS_INTRODUCTION");
-    })
-    .addCase(managementIntroductionCompleted, (state) => {
-      state.stepsHistory.push("OWNER");
-    })
-    .addCase(ownerStepCompleted, (state, action) => {
-      state.siteData.owner = action.payload.owner;
-      switch (state.siteData.nature) {
-        case "FRICHE":
-          state.stepsHistory.push("IS_FRICHE_LEASED");
-          break;
-        case "AGRICULTURAL_OPERATION":
-          state.stepsHistory.push("IS_SITE_OPERATED");
-          break;
-        case "NATURAL_AREA":
-          state.stepsHistory.push("NAMING_INTRODUCTION");
-      }
-    })
-    .addCase(isFricheLeasedStepCompleted, (state, action) => {
-      const { isFricheLeased } = action.payload;
-      state.siteData.isFricheLeased = isFricheLeased;
-      state.stepsHistory.push(
-        isFricheLeased ? "TENANT" : "YEARLY_EXPENSES_AND_INCOME_INTRODUCTION",
-      );
-    })
-    .addCase(isSiteOperatedStepCompleted, (state, action) => {
-      const { isSiteOperated } = action.payload;
-      state.siteData.isSiteOperated = isSiteOperated;
-      state.stepsHistory.push(
-        isSiteOperated ? "OPERATOR" : "YEARLY_EXPENSES_AND_INCOME_INTRODUCTION",
-      );
-    })
-    .addCase(tenantStepCompleted, (state, action) => {
-      state.siteData.tenant = action.payload.tenant;
-      state.stepsHistory.push("YEARLY_EXPENSES_AND_INCOME_INTRODUCTION");
-    })
-    .addCase(operatorStepCompleted, (state, action) => {
-      const { tenant } = action.payload;
-      if (tenant) {
-        state.siteData.tenant = tenant;
-      }
-      state.stepsHistory.push("YEARLY_EXPENSES_AND_INCOME_INTRODUCTION");
-    })
-    .addCase(fricheAccidentsIntroductionStepCompleted, (state) => {
-      state.stepsHistory.push("FRICHE_ACCIDENTS");
-    })
-    .addCase(fricheAccidentsStepCompleted, (state, action) => {
-      const { hasRecentAccidents } = action.payload;
-      state.siteData.hasRecentAccidents = hasRecentAccidents;
-
-      if (hasRecentAccidents) {
-        state.siteData.accidentsMinorInjuries = action.payload.accidentsMinorInjuries ?? 0;
-        state.siteData.accidentsSevereInjuries = action.payload.accidentsSevereInjuries ?? 0;
-        state.siteData.accidentsDeaths = action.payload.accidentsDeaths ?? 0;
-      }
-      state.stepsHistory.push("MANAGEMENT_INTRODUCTION");
-    })
-    .addCase(yearlyExpensesAndIncomeIntroductionCompleted, (state) => {
-      state.stepsHistory.push("YEARLY_EXPENSES");
-    })
-    .addCase(yearlyExpensesStepCompleted, (state, action) => {
-      state.siteData.yearlyExpenses = action.payload;
-      state.stepsHistory.push(
-        state.siteData.isSiteOperated ? "YEARLY_INCOME" : "YEARLY_EXPENSES_SUMMARY",
-      );
-    })
-    .addCase(yearlyExpensesSummaryCompleted, (state) => {
-      state.stepsHistory.push("NAMING_INTRODUCTION");
-    })
-    .addCase(yearlyIncomeStepCompleted, (state, action) => {
-      state.siteData.yearlyIncomes = action.payload;
-      state.stepsHistory.push("YEARLY_EXPENSES_SUMMARY");
-    })
-    .addCase(namingIntroductionStepCompleted, (state) => {
-      state.stepsHistory.push("NAMING");
-    })
-    .addCase(namingStepCompleted, (state, action) => {
-      state.siteData.name = action.payload.name;
-
-      if (action.payload.description) state.siteData.description = action.payload.description;
-
-      state.stepsHistory.push("FINAL_SUMMARY");
-    })
-    .addCase(customSiteSaved.pending, (state) => {
-      state.stepsHistory.push("CREATION_RESULT");
-      state.saveLoadingState = "loading";
-    })
-    .addCase(customSiteSaved.fulfilled, (state) => {
-      state.saveLoadingState = "success";
-    })
-    .addCase(customSiteSaved.rejected, (state) => {
-      state.saveLoadingState = "error";
-    })
-    .addCase(expressSiteSaved.pending, (state) => {
-      state.stepsHistory.push("CREATION_RESULT");
-      state.saveLoadingState = "loading";
-    })
-    .addCase(expressSiteSaved.fulfilled, (state) => {
-      state.saveLoadingState = "success";
-    })
-    .addCase(expressSiteSaved.rejected, (state) => {
-      state.saveLoadingState = "error";
-    })
-    .addCase(stepReverted, (state) => {
-      switch (state.stepsHistory.at(-1)) {
-        case "IS_FRICHE":
-          state.siteData.isFriche = undefined;
-          break;
-        case "SITE_NATURE":
-          state.siteData.nature = undefined;
-          break;
-        case "FRICHE_ACTIVITY":
-          state.createMode = undefined;
-          state.siteData.fricheActivity = undefined;
-          break;
-        case "AGRICULTURAL_OPERATION_ACTIVITY":
-          state.createMode = undefined;
-          state.siteData.agriculturalOperationActivity = undefined;
-          break;
-        case "NATURAL_AREA_TYPE":
-          state.createMode = undefined;
-          state.siteData.naturalAreaType = undefined;
-          break;
-        case "ADDRESS":
-          state.siteData.address = undefined;
-          break;
-        case "SURFACE_AREA":
-          state.siteData.surfaceArea = undefined;
-          break;
-        case "SPACES_KNOWLEDGE":
-          state.siteData.soils = [];
-          state.siteData.soilsDistribution = undefined;
-          break;
-        case "SPACES_SELECTION":
-          state.siteData.soils = [];
-          break;
-        case "SPACES_SURFACE_AREAS_DISTRIBUTION_KNOWLEDGE":
-          state.siteData.spacesDistributionKnowledge = undefined;
-          state.siteData.soilsDistribution = undefined;
-          break;
-        case "SPACES_SURFACE_AREA_DISTRIBUTION":
-          state.siteData.soilsDistribution = undefined;
-          break;
-        case "OWNER":
-          state.siteData.owner = undefined;
-          break;
-        case "IS_FRICHE_LEASED":
-          state.siteData.isFricheLeased = undefined;
-          break;
-        case "IS_SITE_OPERATED":
-          state.siteData.isSiteOperated = undefined;
-          break;
-        case "TENANT":
-        case "OPERATOR":
-          state.siteData.tenant = undefined;
-          break;
-        case "YEARLY_EXPENSES":
-          state.siteData.yearlyExpenses = [];
-          break;
-        case "YEARLY_INCOME":
-          state.siteData.yearlyIncomes = [];
-          break;
-        case "SOILS_CONTAMINATION":
-          state.siteData.hasContaminatedSoils = undefined;
-          state.siteData.contaminatedSoilSurface = undefined;
-          break;
-        case "FRICHE_ACCIDENTS":
-          state.siteData.hasRecentAccidents = undefined;
-          state.siteData.accidentsMinorInjuries = undefined;
-          state.siteData.accidentsSevereInjuries = undefined;
-          state.siteData.accidentsDeaths = undefined;
-          break;
-        case "NAMING":
-          state.siteData.name = undefined;
-          state.siteData.description = undefined;
-          break;
-      }
-
-      if (state.stepsHistory.length > 1) {
-        state.stepsHistory = state.stepsHistory.slice(0, -1);
-      }
-    })
-    .addCase(surfaceAreaInputModeUpdated, (state, action) => {
-      state.surfaceAreaInputMode = action.payload;
-    });
+    if (state.stepsHistory.length > 1) {
+      state.stepsHistory = state.stepsHistory.slice(0, -1);
+    }
+  });
 });
 
 export const selectCurrentStep = createSelector(

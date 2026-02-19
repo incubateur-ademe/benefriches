@@ -1,6 +1,6 @@
 import { CreateExpressSiteDto } from "shared";
 
-import { CreateSiteGateway, CustomSitePayload } from "../../core/actions/finalStep.actions";
+import { CreateSiteGateway, CustomSitePayload } from "../../core/steps/final/final.actions";
 
 export class HttpCreateSiteApi implements CreateSiteGateway {
   async saveCustom(newSite: CustomSitePayload) {

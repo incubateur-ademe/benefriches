@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 
 import { stepReverted } from "@/features/create-site/core/actions/revert.action";
-import { tenantStepCompleted } from "@/features/create-site/core/actions/siteManagement.actions";
 import { fetchSiteMunicipalityData } from "@/features/create-site/core/actions/siteMunicipalityData.actions";
-import { selectSiteTenantFormViewData } from "@/features/create-site/core/selectors/viewData.selectors";
 import type { Tenant } from "@/features/create-site/core/siteFoncier.types";
 import type { AvailableLocalAuthority } from "@/features/create-site/core/siteMunicipalityData.reducer";
+import { tenantStepCompleted } from "@/features/create-site/core/steps/site-management/siteManagement.actions";
+import { selectSiteTenantFormViewData } from "@/features/create-site/core/steps/site-management/siteManagement.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import FricheTenantForm, { type FormValues } from "./SiteTenantForm";

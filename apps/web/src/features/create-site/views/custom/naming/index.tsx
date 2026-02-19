@@ -1,7 +1,7 @@
 import { generateSiteName } from "shared";
 
-import { namingStepCompleted } from "@/features/create-site/core/actions/naming.actions";
 import { stepReverted } from "@/features/create-site/core/actions/revert.action";
+import { namingStepCompleted } from "@/features/create-site/core/steps/naming/naming.actions";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import SiteNameAndDescriptionForm, { FormValues } from "./SiteNameAndDescription";
