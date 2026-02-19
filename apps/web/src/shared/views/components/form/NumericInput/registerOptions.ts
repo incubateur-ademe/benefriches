@@ -5,7 +5,7 @@ export const requiredNumericFieldRegisterOptions = {
   required: "Ce champ est nécessaire pour déterminer les questions suivantes",
   min: {
     value: 1,
-    message: "Veuillez entrer un montant valide",
+    message: "Veuillez entrer un nombre valide",
   },
 };
 
@@ -13,6 +13,6 @@ export const optionalNumericFieldRegisterOptions = {
   setValueAs: (v?: string) => (v ? stringToNumber(v) : undefined),
   min: {
     value: 0,
-    message: "Veuillez entrer un montant valide",
+    message: "Veuillez entrer un nombre valide",
   },
 };
