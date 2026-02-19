@@ -24,7 +24,7 @@ type FormValues = {
 function PublicGreenSpacesSurfaceArea({ initialValue, siteSurfaceArea, onSubmit, onBack }: Props) {
   const { register, handleSubmit, formState } = useForm<FormValues>({
     defaultValues: { surfaceArea: initialValue },
-    mode: "onChange",
+    mode: "onBlur",
   });
 
   return (

@@ -32,7 +32,7 @@ function UsesFloorSurfaceArea({ selectedUses, initialValues, onSubmit, onBack }:
 
   const { register, handleSubmit, formState, watch } = useForm<FormValues>({
     defaultValues: initialValues,
-    mode: "onChange",
+    mode: "onBlur",
   });
 
   const totalAllocatedSurfaceArea = sumObjectValues(watch());

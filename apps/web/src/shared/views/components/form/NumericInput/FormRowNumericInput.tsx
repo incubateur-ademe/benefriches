@@ -35,7 +35,7 @@ const FormRowNumericInput = <TFieldValues extends FieldValues = FieldValues>({
     <Controller
       rules={{ ...defaultRules, ...rules }}
       {...controllerProps}
-      render={({ field }) => (
+      render={({ field, fieldState }) => (
         <RowNumericInput
           nativeInputProps={{
             ...nativeInputProps,
@@ -47,6 +47,8 @@ const FormRowNumericInput = <TFieldValues extends FieldValues = FieldValues>({
             pattern: "[\\d\\s]*",
           }}
           required={Boolean(rules.required)}
+          state={fieldState.error ? "error" : "default"}
+          stateRelatedMessage={fieldState.error?.message}
           {...props}
         />
       )}
