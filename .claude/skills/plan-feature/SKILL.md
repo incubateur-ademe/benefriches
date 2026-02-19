@@ -6,7 +6,8 @@ user-invocable: true
 
 # Feature Planning
 
-Create a plan in `specs/<current-timestamp>-<feature-name>.md` for the `Feature` below.
+Create a plan in `specs/<current-date>-<feature-name>.md` for the `Feature` below.
+Example: `specs/2026-01-30-user-authentication-refactoring.md`
 
 ## Instructions
 
