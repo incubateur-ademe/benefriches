@@ -47,45 +47,45 @@ export type StepSubGroupId =
 export const STEP_GROUP_LABELS: Record<StepGroupId | StepSubGroupId, string> = {
   CREATION_MODE: "Mode de création",
 
-  // Uses flow (new)
+  // Usages
   USES: "Usages",
-  USES_SELECTION: "Choix des usages",
-  USES_GREEN_SPACES_AREA: "Espaces verts publics",
-  USES_FLOOR_AREA: "Surfaces de plancher",
+  USES_SELECTION: "Liste des usages",
+  USES_GREEN_SPACES_AREA: "Superficie des espaces verts",
+  USES_FLOOR_AREA: "Surface de plancher des usages",
 
-  // Spaces flow (new)
-  SPACES_GREEN_SPACES_SOILS: "Sols des espaces verts publics",
+  // Sols et espaces
+  SPACES_GREEN_SPACES_SOILS: "Liste des sols des espaces verts",
 
-  SPACES: "Espaces",
-  SPACES_SELECTION: "Choix des espaces",
-  SPACES_SURFACES: "Surfaces",
+  SPACES: "Sols et espaces",
+  SPACES_SELECTION: "Liste des sols et espaces des autres usages",
+  SPACES_SURFACES: "Superficie des sols et espaces des autres usages",
   SOILS_SUMMARY: "Récapitulatif des sols",
   CARBON_STORAGE: "Stockage de carbone",
-  SOILS_DECONTAMINATION: "Dépollution",
+  SOILS_DECONTAMINATION: "Travaux",
   DECONTAMINATION_SELECTION: "Choix de dépolluer",
-  DECONTAMINATION_SURFACE: "Surface",
+  DECONTAMINATION_SURFACE: "Surface à dépolluer",
   BUILDINGS: "Bâtiments",
-  FLOOR_SURFACE: "Surface de plancher",
+  FLOOR_SURFACE: "Surface de plancher des usages",
 
   STAKEHOLDERS: "Acteurs",
   STAKEHOLDERS_PROJECT_DEVELOPER: "Aménageur",
   STAKEHOLDERS_REINSTATEMENT_OWNER: "Maître d'ouvrage",
 
   SITE_RESALE: "Cession foncière",
-  SITE_CESSION: "Cession du site",
+  SITE_CESSION: "Cession du site aménagé",
   BUILDINGS_CESSION: "Revente des bâtiments",
 
   EXPENSES: "Dépenses",
-  EXPENSES_SITE_PURCHASE: "Acquisition du site",
-  EXPENSES_SITE_REINSTATEMENT: "Remise en état",
-  EXPENSES_SITE_INSTALLATION: "Aménagement",
+  EXPENSES_SITE_PURCHASE: "Acquisition foncière",
+  EXPENSES_SITE_REINSTATEMENT: "Remise en état du site",
+  EXPENSES_SITE_INSTALLATION: "Aménagement du site",
   EXPENSES_BUILDINGS_OPERATION: "Exploitation des bâtiments",
 
   REVENUE: "Recettes",
   REVENUE_BUILDINGS_OPERATION: "Exploitation des bâtiments",
   REVENUE_FINANCIAL_ASSISTANCE: "Aides financières",
-  REVENUE_SITE_RESALE: "Revente du site",
-  REVENUE_BUILDINGS_RESALE: "Revente des bâtiments",
+  REVENUE_SITE_RESALE: "Cession foncière",
+  REVENUE_BUILDINGS_RESALE: "Vente des bâtiments",
 
   SCHEDULE: "Calendrier",
   PROJECT_PROGRESS: "Avancement",

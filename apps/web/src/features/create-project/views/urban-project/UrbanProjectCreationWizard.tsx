@@ -176,28 +176,28 @@ const getCurrentStepView = (step: UrbanProjectCreationStep): Exclude<ReactNode, 
     case "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA":
       return (
         <>
-          <HtmlTitle>{`Espaces verts publics - Usages - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
+          <HtmlTitle>{`Superficie des espaces verts - Usages - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
           <PublicGreenSpacesSurfaceArea />
         </>
       );
     case "URBAN_PROJECT_PUBLIC_GREEN_SPACES_INTRODUCTION":
       return (
         <>
-          <HtmlTitle>{`Introduction - Sols des espaces verts publics - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
+          <HtmlTitle>{`Introduction - Liste des sols des espaces verts - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
           <PublicGreenSpacesIntroduction />
         </>
       );
     case "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION":
       return (
         <>
-          <HtmlTitle>{`Sols des espaces verts publics - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
+          <HtmlTitle>{`Liste des sols des espaces verts - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
           <PublicGreenSpacesSoilsDistribution />
         </>
       );
     case "URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA":
       return (
         <>
-          <HtmlTitle>{`Surfaces de plancher - Bâtiments - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
+          <HtmlTitle>{`Surface de plancher des usages - Bâtiments - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
           <UsesFloorSurfaceArea />
         </>
       );
@@ -239,21 +239,21 @@ const getCurrentStepView = (step: UrbanProjectCreationStep): Exclude<ReactNode, 
     case "URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION":
       return (
         <>
-          <HtmlTitle>{`Introduction - Dépollution - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
+          <HtmlTitle>{`Introduction - Travaux - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
           <SoilsDecontaminationIntroduction />
         </>
       );
     case "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION":
       return (
         <>
-          <HtmlTitle>{`Mode de saisie - Dépollution - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
+          <HtmlTitle>{`Choix de dépolluer - Travaux - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
           <SoilsDecontaminationSelection />
         </>
       );
     case "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA":
       return (
         <>
-          <HtmlTitle>{`Surface - Dépollution - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
+          <HtmlTitle>{`Surface à dépolluer - Travaux - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
           <SoilsDecontaminationSurfaceArea />
         </>
       );
@@ -295,14 +295,14 @@ const getCurrentStepView = (step: UrbanProjectCreationStep): Exclude<ReactNode, 
     case "URBAN_PROJECT_SITE_RESALE_SELECTION":
       return (
         <>
-          <HtmlTitle>{`Sélection - Revente - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
+          <HtmlTitle>{`Cession du site aménagé - Cession foncière - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
           <SiteResaleForm />
         </>
       );
     case "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION":
       return (
         <>
-          <HtmlTitle>{`Sélection - Revente des bâtiments - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
+          <HtmlTitle>{`Revente des bâtiments - Cession foncière - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
           <BuildingsResaleForm />
         </>
       );
@@ -316,63 +316,63 @@ const getCurrentStepView = (step: UrbanProjectCreationStep): Exclude<ReactNode, 
     case "URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS":
       return (
         <>
-          <HtmlTitle>{`Achat du site - Dépenses - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
+          <HtmlTitle>{`Acquisition foncière - Dépenses - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
           <SitePurchaseAmounts />
         </>
       );
     case "URBAN_PROJECT_EXPENSES_INSTALLATION":
       return (
         <>
-          <HtmlTitle>{`Aménagement - Dépenses - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
+          <HtmlTitle>{`Aménagement du site - Dépenses - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
           <InstallationExpensesForm />
         </>
       );
     case "URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES":
       return (
         <>
-          <HtmlTitle>{`Exploitation - Dépenses - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
+          <HtmlTitle>{`Exploitation des bâtiments - Dépenses - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
           <YearlyProjectedExpensesForm />
         </>
       );
     case "URBAN_PROJECT_EXPENSES_REINSTATEMENT":
       return (
         <>
-          <HtmlTitle>{`Remise en état - Dépenses - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
+          <HtmlTitle>{`Remise en état du site - Dépenses - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
           <ReinstatementExpensesForm />
         </>
       );
     case "URBAN_PROJECT_REVENUE_INTRODUCTION":
       return (
         <>
-          <HtmlTitle>{`Introduction - Revenus - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
+          <HtmlTitle>{`Introduction - Recettes - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
           <ProjectRevenueIntroduction />
         </>
       );
     case "URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE":
       return (
         <>
-          <HtmlTitle>{`Aides financières - Revenus - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
+          <HtmlTitle>{`Aides financières - Recettes - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
           <ProjectFinancialAssistanceRevenueForm />
         </>
       );
     case "URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES":
       return (
         <>
-          <HtmlTitle>{`Exploitation - Revenus - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
+          <HtmlTitle>{`Exploitation des bâtiments - Recettes - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
           <YearlyProjectedRevenueForm />
         </>
       );
     case "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE":
       return (
         <>
-          <HtmlTitle>{`Revente du site - Revenus - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
+          <HtmlTitle>{`Cession foncière - Recettes - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
           <SiteResaleRevenueForm />
         </>
       );
     case "URBAN_PROJECT_REVENUE_BUILDINGS_RESALE":
       return (
         <>
-          <HtmlTitle>{`Revente des bâtiments - Revenus - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
+          <HtmlTitle>{`Vente des bâtiments - Recettes - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
           <BuildingsResaleRevenueForm />
         </>
       );
