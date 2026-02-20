@@ -21,6 +21,28 @@ export const UsesSelectionHandler: AnswerStepHandler<typeof STEP_ID> = {
     return "URBAN_PROJECT_SPACES_INTRODUCTION";
   },
 
+  getShortcut(context, answers) {
+    const selectedUses = answers.usesSelection ?? [];
+    const isOnlyPublicGreenSpaces =
+      selectedUses.length === 1 && selectedUses[0] === "PUBLIC_GREEN_SPACES";
+
+    if (!isOnlyPublicGreenSpaces) {
+      return undefined;
+    }
+
+    const siteSurfaceArea = context.siteData?.surfaceArea ?? 0;
+
+    return {
+      complete: [
+        {
+          stepId: "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA",
+          answers: { publicGreenSpacesSurfaceArea: siteSurfaceArea },
+        },
+      ],
+      next: "URBAN_PROJECT_SPACES_INTRODUCTION",
+    };
+  },
+
   getDependencyRules(context, newAnswers) {
     const previousUses =
       ReadStateHelper.getStepAnswers(context.stepsState, STEP_ID)?.usesSelection ?? [];

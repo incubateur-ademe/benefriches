@@ -30,7 +30,7 @@ describe("Urban project creation - Steps - Uses selection", () => {
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA");
   });
 
-  it("should complete step with only PUBLIC_GREEN_SPACES and go to URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA", () => {
+  it("should complete step with only PUBLIC_GREEN_SPACES, skip surface area step and set it to site surface area", () => {
     const store = createTestStore();
 
     store.dispatch(
@@ -49,8 +49,12 @@ describe("Urban project creation - Steps - Uses selection", () => {
         completed: true,
         payload: { usesSelection: ["PUBLIC_GREEN_SPACES"] },
       },
+      URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA: {
+        completed: true,
+        payload: { publicGreenSpacesSurfaceArea: 10000 },
+      },
     });
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA");
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_INTRODUCTION");
   });
 
   it("should complete step with only building uses (no PUBLIC_GREEN_SPACES) and go to URBAN_PROJECT_SPACES_INTRODUCTION", () => {
