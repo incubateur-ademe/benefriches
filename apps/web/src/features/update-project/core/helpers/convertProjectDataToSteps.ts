@@ -45,9 +45,9 @@ export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProje
   ANSWER_STEPS.forEach((stepId) => {
     switch (stepId) {
       case "URBAN_PROJECT_USES_SELECTION": {
-        const usesSelection: UrbanProjectUse[] = [
-          ...typedObjectKeys(developmentPlan.features.buildingsFloorAreaDistribution),
-        ];
+        const usesSelection: UrbanProjectUse[] = typedObjectKeys(
+          developmentPlan.features.buildingsFloorAreaDistribution,
+        );
         if (publicGreenSpaceSoils.length > 0) {
           usesSelection.push("PUBLIC_GREEN_SPACES");
         }
@@ -84,9 +84,10 @@ export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProje
         break;
       case "URBAN_PROJECT_SPACES_SELECTION":
         if (otherSoils.length > 0) {
+          const uniqueSoilTypes = [...new Set(otherSoils.map(({ soilType }) => soilType))];
           steps["URBAN_PROJECT_SPACES_SELECTION"] = {
             payload: {
-              spacesSelection: otherSoils.map(({ soilType }) => soilType),
+              spacesSelection: uniqueSoilTypes,
             },
             completed: true,
           };
@@ -94,11 +95,14 @@ export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProje
         break;
       case "URBAN_PROJECT_SPACES_SURFACE_AREA":
         if (otherSoils.length > 0) {
+          const aggregatedDistribution: Record<string, number> = {};
+          for (const { soilType, surfaceArea } of otherSoils) {
+            aggregatedDistribution[soilType] =
+              (aggregatedDistribution[soilType] ?? 0) + surfaceArea;
+          }
           steps["URBAN_PROJECT_SPACES_SURFACE_AREA"] = {
             payload: {
-              spacesSurfaceAreaDistribution: Object.fromEntries(
-                otherSoils.map(({ soilType, surfaceArea }) => [soilType, surfaceArea]),
-              ),
+              spacesSurfaceAreaDistribution: aggregatedDistribution,
             },
             completed: true,
           };
