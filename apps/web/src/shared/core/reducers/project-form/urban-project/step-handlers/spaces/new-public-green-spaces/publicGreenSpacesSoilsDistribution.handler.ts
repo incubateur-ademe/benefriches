@@ -1,6 +1,8 @@
 import { isNaturalSoil, typedObjectEntries, typedObjectKeys } from "shared";
 import type { SoilType } from "shared";
 
+import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
+
 import type { AnswerStepHandler } from "../../stepHandler.type";
 
 const STEP_ID = "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION";
@@ -19,7 +21,18 @@ export const PublicGreenSpacesSoilsDistributionHandler: AnswerStepHandler<typeof
     return "URBAN_PROJECT_SPACES_INTRODUCTION";
   },
 
-  getNextStepId() {
+  getNextStepId(context) {
+    const selectedUses =
+      ReadStateHelper.getStepAnswers(context.stepsState, "URBAN_PROJECT_USES_SELECTION")
+        ?.usesSelection ?? [];
+
+    const isOnlyPublicGreenSpaces =
+      selectedUses.length === 1 && selectedUses[0] === "PUBLIC_GREEN_SPACES";
+
+    if (isOnlyPublicGreenSpaces) {
+      return "URBAN_PROJECT_SPACES_SOILS_SUMMARY";
+    }
+
     return "URBAN_PROJECT_SPACES_SELECTION";
   },
 

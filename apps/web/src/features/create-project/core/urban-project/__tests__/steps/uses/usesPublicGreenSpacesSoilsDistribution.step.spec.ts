@@ -6,7 +6,7 @@ import { creationProjectFormUrbanActions } from "../../../urbanProject.actions";
 import { createTestStore, getCurrentStep } from "../../_testStoreHelpers";
 
 describe("Urban project creation - Steps - public green spaces soils distribution", () => {
-  it("should complete step and navigate to URBAN_PROJECT_SPACES_SELECTION", () => {
+  it("should complete step and navigate to URBAN_PROJECT_SPACES_SELECTION when other uses are selected", () => {
     const store = createTestStore({
       steps: {
         URBAN_PROJECT_USES_SELECTION: {
@@ -58,6 +58,35 @@ describe("Urban project creation - Steps - public green spaces soils distributio
       },
     });
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_SELECTION");
+  });
+
+  it("should complete step and navigate to URBAN_PROJECT_SPACES_SOILS_SUMMARY when only public green spaces is selected", () => {
+    const store = createTestStore({
+      steps: {
+        URBAN_PROJECT_USES_SELECTION: {
+          completed: true,
+          payload: { usesSelection: ["PUBLIC_GREEN_SPACES"] },
+        },
+        URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA: {
+          completed: true,
+          payload: { publicGreenSpacesSurfaceArea: 10000 },
+        },
+      },
+    });
+
+    store.dispatch(
+      creationProjectFormUrbanActions.requestStepCompletion({
+        stepId: "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION",
+        answers: {
+          publicGreenSpacesSoilsDistribution: {
+            PRAIRIE_GRASS: 4000,
+            ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 6000,
+          },
+        },
+      }),
+    );
+
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_SOILS_SUMMARY");
   });
 
   it("should navigate back to PUBLIC_GREEN_SPACES_INTRODUCTION when site has constrained soils", () => {

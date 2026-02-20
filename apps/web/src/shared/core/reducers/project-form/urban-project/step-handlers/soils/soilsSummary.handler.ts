@@ -10,7 +10,10 @@ export const SoilsSummaryHandler: InfoStepHandler = {
       ReadStateHelper.getStepAnswers(context.stepsState, "URBAN_PROJECT_USES_SELECTION")
         ?.usesSelection ?? [];
 
-    if (selectedUses.includes("PUBLIC_GREEN_SPACES")) {
+    const isOnlyPublicGreenSpaces =
+      selectedUses.length === 1 && selectedUses[0] === "PUBLIC_GREEN_SPACES";
+
+    if (isOnlyPublicGreenSpaces) {
       return "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION";
     }
 
