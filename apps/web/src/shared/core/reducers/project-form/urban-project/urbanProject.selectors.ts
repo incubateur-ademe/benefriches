@@ -4,6 +4,7 @@ import {
   isNaturalSoil,
   ORDERED_SOIL_TYPES,
   typedObjectEntries,
+  typedObjectKeys,
 } from "shared";
 import type {
   SoilsDistribution,
@@ -368,13 +369,16 @@ export const createUrbanProjectFormSelectors = (
         ReadStateHelper.getStepAnswers(steps, "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA")
           ?.publicGreenSpacesSurfaceArea ?? 0;
 
-      const siteSoils = Object.keys(siteSoilsDistribution) as SoilType[];
+      const siteSoils = typedObjectKeys(siteSoilsDistribution);
+      const existingProjectSoils = typedObjectKeys(
+        distributionAnswers?.publicGreenSpacesSoilsDistribution ?? {},
+      );
 
-      // All soil types except BUILDINGS, with constrained soils filtered to only those on site
+      // All soil types except BUILDINGS, with constrained soils filtered to only those on site or already in project
       const availableSoilTypes = ORDERED_SOIL_TYPES.filter((soilType) => {
         if (soilType === "BUILDINGS") return false;
         if (!isConstrainedSoilType(soilType)) return true;
-        return siteSoils.includes(soilType);
+        return siteSoils.includes(soilType) || existingProjectSoils.includes(soilType);
       });
 
       const existingNaturalSoilsConstraints: SpaceConstraint[] = availableSoilTypes
