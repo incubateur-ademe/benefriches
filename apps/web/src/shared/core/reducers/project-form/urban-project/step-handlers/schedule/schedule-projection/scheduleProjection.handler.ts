@@ -1,6 +1,6 @@
 import { getDefaultScheduleForProject } from "shared";
 
-import { AnswerStepHandler } from "../stepHandler.type";
+import type { AnswerStepHandler } from "../../stepHandler.type";
 
 export const UrbanProjectScheduleProjectionHandler: AnswerStepHandler<"URBAN_PROJECT_SCHEDULE_PROJECTION"> =
   {

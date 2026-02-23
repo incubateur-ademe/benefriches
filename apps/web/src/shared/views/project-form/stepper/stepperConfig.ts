@@ -1,3 +1,9 @@
+import { creationModeSelectionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/creation-mode/creation-mode-selection/creationModeSelection.stepperConfig";
+import { namingStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/naming/naming/naming.stepperConfig";
+import { projectPhaseStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/project-phase/project-phase/projectPhase.stepperConfig";
+import { creationResultStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/result/creation-result/creationResult.stepperConfig";
+import { scheduleProjectionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/schedule/schedule-projection/scheduleProjection.stepperConfig";
+import { finalSummaryStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/summary/final-summary/finalSummary.stepperConfig";
 import { usesIntroductionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/uses/introduction/usesIntroduction.stepperConfig";
 import { publicGreenSpacesSurfaceAreaStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/uses/public-green-spaces-surface-area/publicGreenSpacesSurfaceArea.stepperConfig";
 import { usesSelectionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/uses/selection/usesSelection.stepperConfig";
@@ -102,7 +108,7 @@ export type StepStepperConfig = { groupId: StepGroupId; subGroupId?: StepSubGrou
 
 type StepToGroupMapping = Record<UrbanProjectCreationStep, StepStepperConfig>;
 export const STEP_TO_GROUP_MAPPING: StepToGroupMapping = {
-  URBAN_PROJECT_CREATE_MODE_SELECTION: { groupId: "CREATION_MODE" },
+  URBAN_PROJECT_CREATE_MODE_SELECTION: creationModeSelectionStepperConfig,
   URBAN_PROJECT_EXPRESS_TEMPLATE_SELECTION: { groupId: "CREATION_MODE" },
   URBAN_PROJECT_EXPRESS_SUMMARY: { groupId: "SUMMARY" },
   URBAN_PROJECT_EXPRESS_CREATION_RESULT: { groupId: "SUMMARY" },
@@ -210,15 +216,13 @@ export const STEP_TO_GROUP_MAPPING: StepToGroupMapping = {
   },
 
   // Calendrier et avancement
-  URBAN_PROJECT_SCHEDULE_PROJECTION: {
-    groupId: "SCHEDULE",
-  },
-  URBAN_PROJECT_PROJECT_PHASE: { groupId: "PROJECT_PROGRESS" },
+  URBAN_PROJECT_SCHEDULE_PROJECTION: scheduleProjectionStepperConfig,
+  URBAN_PROJECT_PROJECT_PHASE: projectPhaseStepperConfig,
 
   // Final
-  URBAN_PROJECT_NAMING: { groupId: "NAMING" },
-  URBAN_PROJECT_FINAL_SUMMARY: { groupId: "SUMMARY" },
-  URBAN_PROJECT_CREATION_RESULT: { groupId: "SUMMARY" },
+  URBAN_PROJECT_NAMING: namingStepperConfig,
+  URBAN_PROJECT_FINAL_SUMMARY: finalSummaryStepperConfig,
+  URBAN_PROJECT_CREATION_RESULT: creationResultStepperConfig,
 };
 
 export type ProjectStepGroups = Record<

@@ -6,13 +6,16 @@ import {
   typedObjectKeys,
   urbanProjectBuildingsUseSchema,
   urbanProjectDevelopmentExpensePurposeSchema,
-  urbanProjectPhaseSchema,
   urbanProjectTemplateSchema,
   yearlyBuildingsOperationsExpensePurposeSchema,
   yearlyBuildingsOperationsRevenuePurposeSchema,
 } from "shared";
 import z from "zod";
 
+import { creationModeSelectionSchema } from "./step-handlers/creation-mode/creation-mode-selection/creationModeSelection.schema";
+import { namingSchema } from "./step-handlers/naming/naming/naming.schema";
+import { projectPhaseSchema } from "./step-handlers/project-phase/project-phase/projectPhase.schema";
+import { scheduleProjectionSchema } from "./step-handlers/schedule/schedule-projection/scheduleProjection.schema";
 import { publicGreenSpacesSurfaceAreaSchema } from "./step-handlers/uses/public-green-spaces-surface-area/publicGreenSpacesSurfaceArea.schema";
 import { usesSelectionSchema } from "./step-handlers/uses/selection/usesSelection.schema";
 
@@ -75,9 +78,7 @@ const projectStakeholderSchema = z.object({
 
 export const answersByStepSchemas = {
   // Common
-  URBAN_PROJECT_CREATE_MODE_SELECTION: z.object({
-    createMode: z.enum(["custom", "express"]),
-  }),
+  URBAN_PROJECT_CREATE_MODE_SELECTION: creationModeSelectionSchema,
 
   // Express
   URBAN_PROJECT_EXPRESS_TEMPLATE_SELECTION: z.object({
@@ -196,28 +197,11 @@ export const answersByStepSchemas = {
   }),
 
   // custom - schedule, naming, phase
-  URBAN_PROJECT_SCHEDULE_PROJECTION: z.object({
-    reinstatementSchedule: z
-      .object({
-        startDate: z.string(),
-        endDate: z.string(),
-      })
-      .optional(),
-    installationSchedule: z.object({
-      startDate: z.string(),
-      endDate: z.string(),
-    }),
-    firstYearOfOperation: z.number(),
-  }),
+  URBAN_PROJECT_SCHEDULE_PROJECTION: scheduleProjectionSchema,
 
-  URBAN_PROJECT_NAMING: z.object({
-    name: z.string(),
-    description: z.string().optional(),
-  }),
+  URBAN_PROJECT_NAMING: namingSchema,
 
-  URBAN_PROJECT_PROJECT_PHASE: z.object({
-    projectPhase: urbanProjectPhaseSchema.optional(),
-  }),
+  URBAN_PROJECT_PROJECT_PHASE: projectPhaseSchema,
 };
 
 export const ANSWER_STEPS = typedObjectKeys(answersByStepSchemas);
