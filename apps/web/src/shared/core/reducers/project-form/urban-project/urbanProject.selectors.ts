@@ -6,13 +6,13 @@ import { buildStepGroupsFromSequence } from "@/shared/views/project-form/stepper
 import { createProjectFormSelectors } from "../projectForm.selectors";
 import { getProjectSummary } from "./helpers/projectSummary";
 import { ReadStateHelper } from "./helpers/readState";
-import { createSelectUsesFloorSurfaceAreaViewData } from "./step-handlers/buildings/buildingsUsesFloorSurfaceArea.selector";
+import { createSelectUsesFloorSurfaceAreaViewData } from "./step-handlers/buildings/buildings-uses-floor-surface-area/buildingsUsesFloorSurfaceArea.selector";
 import { createSelectSiteResaleRevenueViewData } from "./step-handlers/revenues/revenueExpectedSiteResale.selector";
-import { createSelectSoilsCarbonStorageDifference } from "./step-handlers/soils/soilsCarbonSummary.selector";
-import { createSelectPublicGreenSpacesIntroductionViewData } from "./step-handlers/spaces/new-public-green-spaces/publicGreenSpacesIntroduction.selector";
-import { createSelectPublicGreenSpacesSoilsDistributionViewData } from "./step-handlers/spaces/new-public-green-spaces/publicGreenSpacesSoilsDistribution.selector";
-import { createSelectSpacesSelectionViewData } from "./step-handlers/spaces/spacesSelection.selector";
-import { createSelectSpacesSurfaceAreaViewData } from "./step-handlers/spaces/spacesSurfaceArea.selector";
+import { createSelectSoilsCarbonStorageDifference } from "./step-handlers/soils/soils-carbon-summary/soilsCarbonSummary.selector";
+import { createSelectPublicGreenSpacesIntroductionViewData } from "./step-handlers/spaces/public-green-spaces-introduction/publicGreenSpacesIntroduction.selector";
+import { createSelectPublicGreenSpacesSoilsDistributionViewData } from "./step-handlers/spaces/public-green-spaces-soils-distribution/publicGreenSpacesSoilsDistribution.selector";
+import { createSelectSpacesSelectionViewData } from "./step-handlers/spaces/spaces-selection/spacesSelection.selector";
+import { createSelectSpacesSurfaceAreaViewData } from "./step-handlers/spaces/spaces-surface-area/spacesSurfaceArea.selector";
 import {
   createSelectUrbanProjectAvailableLocalAuthoritiesStakeholders,
   createSelectUrbanProjectAvailableStakeholders,

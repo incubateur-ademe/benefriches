@@ -2,9 +2,7 @@ import {
   createReconversionProjectSchema,
   financialAssistanceRevenueSourceSchema,
   reinstatementExpensesPurposeSchema,
-  soilTypeSchema,
   typedObjectKeys,
-  urbanProjectBuildingsUseSchema,
   urbanProjectDevelopmentExpensePurposeSchema,
   urbanProjectTemplateSchema,
   yearlyBuildingsOperationsExpensePurposeSchema,
@@ -12,10 +10,16 @@ import {
 } from "shared";
 import z from "zod";
 
+import { buildingsUsesFloorSurfaceAreaSchema } from "./step-handlers/buildings/buildings-uses-floor-surface-area/buildingsUsesFloorSurfaceArea.schema";
 import { creationModeSelectionSchema } from "./step-handlers/creation-mode/creation-mode-selection/creationModeSelection.schema";
 import { namingSchema } from "./step-handlers/naming/naming/naming.schema";
 import { projectPhaseSchema } from "./step-handlers/project-phase/project-phase/projectPhase.schema";
 import { scheduleProjectionSchema } from "./step-handlers/schedule/schedule-projection/scheduleProjection.schema";
+import { soilsDecontaminationSelectionSchema } from "./step-handlers/soils/soils-decontamination-selection/soilsDecontaminationSelection.schema";
+import { soilsDecontaminationSurfaceAreaSchema } from "./step-handlers/soils/soils-decontamination-surface-area/soilsDecontaminationSurfaceArea.schema";
+import { publicGreenSpacesSoilsDistributionSchema } from "./step-handlers/spaces/public-green-spaces-soils-distribution/publicGreenSpacesSoilsDistribution.schema";
+import { spacesSelectionSchema } from "./step-handlers/spaces/spaces-selection/spacesSelection.schema";
+import { spacesSurfaceAreaSchema } from "./step-handlers/spaces/spaces-surface-area/spacesSurfaceArea.schema";
 import { publicGreenSpacesSurfaceAreaSchema } from "./step-handlers/uses/public-green-spaces-surface-area/publicGreenSpacesSurfaceArea.schema";
 import { usesSelectionSchema } from "./step-handlers/uses/selection/usesSelection.schema";
 
@@ -90,31 +94,19 @@ export const answersByStepSchemas = {
 
   URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA: publicGreenSpacesSurfaceAreaSchema,
 
-  URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION: z.object({
-    publicGreenSpacesSoilsDistribution: z.partialRecord(soilTypeSchema, z.number()),
-  }),
+  URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION: publicGreenSpacesSoilsDistributionSchema,
 
   // Custom - spaces
-  URBAN_PROJECT_SPACES_SELECTION: z.object({
-    spacesSelection: z.array(soilTypeSchema),
-  }),
+  URBAN_PROJECT_SPACES_SELECTION: spacesSelectionSchema,
 
-  URBAN_PROJECT_SPACES_SURFACE_AREA: z.object({
-    spacesSurfaceAreaDistribution: z.partialRecord(soilTypeSchema, z.number()),
-  }),
+  URBAN_PROJECT_SPACES_SURFACE_AREA: spacesSurfaceAreaSchema,
 
-  URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION: z.object({
-    decontaminationPlan: z.enum(["partial", "none", "unknown"]),
-  }),
+  URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION: soilsDecontaminationSelectionSchema,
 
-  URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA: z.object({
-    decontaminatedSurfaceArea: z.number(),
-  }),
+  URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA: soilsDecontaminationSurfaceAreaSchema,
 
   // custom - buildings
-  URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA: z.object({
-    usesFloorSurfaceAreaDistribution: z.partialRecord(urbanProjectBuildingsUseSchema, z.number()),
-  }),
+  URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA: buildingsUsesFloorSurfaceAreaSchema,
 
   // custom - stakeholders
   URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER: z.object({

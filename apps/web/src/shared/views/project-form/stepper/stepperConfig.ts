@@ -1,8 +1,20 @@
+import { buildingsIntroductionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/buildings/buildings-introduction/buildingsIntroduction.stepperConfig";
+import { buildingsUsesFloorSurfaceAreaStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/buildings/buildings-uses-floor-surface-area/buildingsUsesFloorSurfaceArea.stepperConfig";
 import { creationModeSelectionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/creation-mode/creation-mode-selection/creationModeSelection.stepperConfig";
 import { namingStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/naming/naming/naming.stepperConfig";
 import { projectPhaseStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/project-phase/project-phase/projectPhase.stepperConfig";
 import { creationResultStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/result/creation-result/creationResult.stepperConfig";
 import { scheduleProjectionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/schedule/schedule-projection/scheduleProjection.stepperConfig";
+import { soilsCarbonSummaryStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/soils/soils-carbon-summary/soilsCarbonSummary.stepperConfig";
+import { soilsDecontaminationIntroductionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/soils/soils-decontamination-introduction/soilsDecontaminationIntroduction.stepperConfig";
+import { soilsDecontaminationSelectionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/soils/soils-decontamination-selection/soilsDecontaminationSelection.stepperConfig";
+import { soilsDecontaminationSurfaceAreaStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/soils/soils-decontamination-surface-area/soilsDecontaminationSurfaceArea.stepperConfig";
+import { soilsSummaryStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/soils/soils-summary/soilsSummary.stepperConfig";
+import { publicGreenSpacesIntroductionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/spaces/public-green-spaces-introduction/publicGreenSpacesIntroduction.stepperConfig";
+import { publicGreenSpacesSoilsDistributionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/spaces/public-green-spaces-soils-distribution/publicGreenSpacesSoilsDistribution.stepperConfig";
+import { spacesIntroductionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/spaces/spaces-introduction/spacesIntroduction.stepperConfig";
+import { spacesSelectionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/spaces/spaces-selection/spacesSelection.stepperConfig";
+import { spacesSurfaceAreaStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/spaces/spaces-surface-area/spacesSurfaceArea.stepperConfig";
 import { finalSummaryStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/summary/final-summary/finalSummary.stepperConfig";
 import { usesIntroductionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/uses/introduction/usesIntroduction.stepperConfig";
 import { publicGreenSpacesSurfaceAreaStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/uses/public-green-spaces-surface-area/publicGreenSpacesSurfaceArea.stepperConfig";
@@ -117,43 +129,23 @@ export const STEP_TO_GROUP_MAPPING: StepToGroupMapping = {
   URBAN_PROJECT_USES_SELECTION: usesSelectionStepperConfig,
   URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA: publicGreenSpacesSurfaceAreaStepperConfig,
   // Espaces
-  URBAN_PROJECT_SPACES_INTRODUCTION: { groupId: "SPACES" },
-  URBAN_PROJECT_PUBLIC_GREEN_SPACES_INTRODUCTION: {
-    groupId: "SPACES",
-    subGroupId: "SPACES_GREEN_SPACES_SOILS",
-  },
-  URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION: {
-    groupId: "SPACES",
-    subGroupId: "SPACES_GREEN_SPACES_SOILS",
-  },
-  URBAN_PROJECT_SPACES_SELECTION: { groupId: "SPACES", subGroupId: "SPACES_SELECTION" },
-  URBAN_PROJECT_SPACES_SURFACE_AREA: { groupId: "SPACES", subGroupId: "SPACES_SURFACES" },
-  URBAN_PROJECT_SPACES_SOILS_SUMMARY: {
-    groupId: "SPACES",
-    subGroupId: "SOILS_SUMMARY",
-  },
-  URBAN_PROJECT_SOILS_CARBON_SUMMARY: {
-    groupId: "SPACES",
-    subGroupId: "CARBON_STORAGE",
-  },
+  URBAN_PROJECT_SPACES_INTRODUCTION: spacesIntroductionStepperConfig,
+  URBAN_PROJECT_PUBLIC_GREEN_SPACES_INTRODUCTION: publicGreenSpacesIntroductionStepperConfig,
+  URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION:
+    publicGreenSpacesSoilsDistributionStepperConfig,
+  URBAN_PROJECT_SPACES_SELECTION: spacesSelectionStepperConfig,
+  URBAN_PROJECT_SPACES_SURFACE_AREA: spacesSurfaceAreaStepperConfig,
+  URBAN_PROJECT_SPACES_SOILS_SUMMARY: soilsSummaryStepperConfig,
+  URBAN_PROJECT_SOILS_CARBON_SUMMARY: soilsCarbonSummaryStepperConfig,
 
   // Dépollution des sols
-  URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION: { groupId: "SOILS_DECONTAMINATION" },
-  URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION: {
-    groupId: "SOILS_DECONTAMINATION",
-    subGroupId: "DECONTAMINATION_SELECTION",
-  },
-  URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA: {
-    groupId: "SOILS_DECONTAMINATION",
-    subGroupId: "DECONTAMINATION_SURFACE",
-  },
+  URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION: soilsDecontaminationIntroductionStepperConfig,
+  URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION: soilsDecontaminationSelectionStepperConfig,
+  URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA: soilsDecontaminationSurfaceAreaStepperConfig,
 
   // Bâtiments
-  URBAN_PROJECT_BUILDINGS_INTRODUCTION: { groupId: "BUILDINGS" },
-  URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA: {
-    groupId: "BUILDINGS",
-    subGroupId: "USES_FLOOR_AREA",
-  },
+  URBAN_PROJECT_BUILDINGS_INTRODUCTION: buildingsIntroductionStepperConfig,
+  URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA: buildingsUsesFloorSurfaceAreaStepperConfig,
 
   // Acteurs
   URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION: { groupId: "STAKEHOLDERS" },

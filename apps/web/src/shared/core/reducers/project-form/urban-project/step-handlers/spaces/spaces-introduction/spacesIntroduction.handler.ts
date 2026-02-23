@@ -2,7 +2,7 @@ import { isNaturalSoil, typedObjectKeys } from "shared";
 
 import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
 
-import type { InfoStepHandler } from "../stepHandler.type";
+import type { InfoStepHandler } from "../../stepHandler.type";
 
 export const SpacesIntroductionHandler: InfoStepHandler = {
   stepId: "URBAN_PROJECT_SPACES_INTRODUCTION",

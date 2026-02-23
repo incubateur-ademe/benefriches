@@ -1,4 +1,4 @@
-import type { AnswerStepHandler } from "../stepHandler.type";
+import type { AnswerStepHandler } from "../../stepHandler.type";
 
 const STEP_ID = "URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA";
 

@@ -1,4 +1,4 @@
-import { InfoStepHandler } from "../stepHandler.type";
+import type { InfoStepHandler } from "../../stepHandler.type";
 
 export const BuildingsIntroductionHandler: InfoStepHandler = {
   stepId: "URBAN_PROJECT_BUILDINGS_INTRODUCTION",

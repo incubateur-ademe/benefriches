@@ -1,7 +1,7 @@
 import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
 
-import { getReinstatementCostsRecomputationRules } from "../spaces/getCommonRules";
-import { AnswerStepHandler } from "../stepHandler.type";
+import { getReinstatementCostsRecomputationRules } from "../../spaces/getCommonRules";
+import type { AnswerStepHandler } from "../../stepHandler.type";
 
 export const SoilsDecontaminationSurfaceAreaHandler: AnswerStepHandler<"URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA"> =
   {
