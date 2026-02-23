@@ -475,7 +475,24 @@ Fix: How to resolve it
 - **MEDIUM**: Performance, maintainability, code quality
 - **LOW**: Style, minor improvements
 
-### 5. Summary
+### 5. ADR Check
+
+After reviewing code quality, evaluate whether the changes involve an architectural decision worth documenting:
+
+- New pattern or abstraction introduced
+- New library or tool adopted
+- Convention established that future code should follow
+- Significant structural change
+
+If any of these apply, add a note at the end of the review:
+
+```
+💡 **ADR suggestion**: These changes introduce [brief description]. Consider running `/adr` to document this architectural decision.
+```
+
+If changes follow existing patterns, skip this section silently.
+
+### 6. Summary
 
 End with a summary:
 
