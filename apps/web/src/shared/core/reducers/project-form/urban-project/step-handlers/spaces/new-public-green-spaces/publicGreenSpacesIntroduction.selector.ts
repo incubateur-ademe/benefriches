@@ -3,12 +3,14 @@ import type { Selector } from "@reduxjs/toolkit";
 import { isNaturalSoil, typedObjectEntries } from "shared";
 import type { SoilsDistribution, SoilType } from "shared";
 
+import type { RootState } from "@/shared/core/store-config/store";
+
 export type PublicGreenSpacesIntroductionViewData = {
   existingNaturalSoils: { soilType: SoilType; surfaceArea: number }[];
 };
 
-export const createSelectPublicGreenSpacesIntroductionViewData = <S>(
-  selectSiteSoilsDistribution: Selector<S, SoilsDistribution>,
+export const createSelectPublicGreenSpacesIntroductionViewData = (
+  selectSiteSoilsDistribution: Selector<RootState, SoilsDistribution>,
 ) =>
   createSelector(
     [selectSiteSoilsDistribution],

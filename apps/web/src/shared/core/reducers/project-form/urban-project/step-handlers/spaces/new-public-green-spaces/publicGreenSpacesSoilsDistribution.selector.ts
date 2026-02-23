@@ -5,6 +5,7 @@ import type { SoilsDistribution, SoilType } from "shared";
 
 import type { ProjectFormState } from "@/shared/core/reducers/project-form/projectForm.reducer";
 import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
+import type { RootState } from "@/shared/core/store-config/store";
 
 type SpaceConstraint = {
   soilType: SoilType;
@@ -18,9 +19,9 @@ export type PublicGreenSpacesSoilsDistributionViewData = {
   existingNaturalSoilsConstraints: SpaceConstraint[];
 };
 
-export const createSelectPublicGreenSpacesSoilsDistributionViewData = <S>(
-  selectStepState: Selector<S, ProjectFormState["urbanProject"]["steps"]>,
-  selectSiteSoilsDistribution: Selector<S, SoilsDistribution>,
+export const createSelectPublicGreenSpacesSoilsDistributionViewData = (
+  selectStepState: Selector<RootState, ProjectFormState["urbanProject"]["steps"]>,
+  selectSiteSoilsDistribution: Selector<RootState, SoilsDistribution>,
 ) =>
   createSelector(
     [selectStepState, selectSiteSoilsDistribution],

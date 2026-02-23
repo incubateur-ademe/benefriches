@@ -4,6 +4,7 @@ import type { UrbanProjectUse, UrbanProjectUseDistribution } from "shared";
 
 import type { ProjectFormState } from "@/shared/core/reducers/project-form/projectForm.reducer";
 import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
+import type { RootState } from "@/shared/core/store-config/store";
 
 export type UsesFloorSurfaceAreaViewData = {
   usesFloorSurfaceAreaDistribution: UrbanProjectUseDistribution | undefined;
@@ -11,8 +12,8 @@ export type UsesFloorSurfaceAreaViewData = {
   buildingsFootprintSurfaceArea: number | undefined;
 };
 
-export const createSelectUsesFloorSurfaceAreaViewData = <S>(
-  selectStepState: Selector<S, ProjectFormState["urbanProject"]["steps"]>,
+export const createSelectUsesFloorSurfaceAreaViewData = (
+  selectStepState: Selector<RootState, ProjectFormState["urbanProject"]["steps"]>,
 ) =>
   createSelector([selectStepState], (steps): UsesFloorSurfaceAreaViewData => {
     const floorAnswers =

@@ -1,11 +1,11 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { DevelopmentPlanCategory, getDefaultScheduleForProject, ProjectSchedule } from "shared";
 
-import { createProjectFormSelectors } from "@/shared/core/reducers/project-form/projectForm.selectors";
 import { RootState } from "@/shared/core/store-config/store";
 
 import { ProjectCreationState, ProjectCreationStep } from "./createProject.reducer";
 import { ProjectSuggestion } from "./project.types";
+import { creationProjectFormSelectors } from "./urban-project/urbanProject.selectors";
 
 const selectSelf = (state: RootState) => state.projectCreation;
 
@@ -49,19 +49,11 @@ export const selectDefaultSchedule = createSelector(
   },
 );
 
-const {
+export const {
   selectSiteAddress,
   selectSiteSoilsDistribution,
   selectAvailableLocalAuthoritiesStakeholders,
   selectProjectAvailableStakeholders,
   selectSiteSurfaceArea,
   selectSiteContaminatedSurfaceArea,
-} = createProjectFormSelectors("projectCreation");
-export {
-  selectSiteAddress,
-  selectSiteSoilsDistribution,
-  selectAvailableLocalAuthoritiesStakeholders,
-  selectProjectAvailableStakeholders,
-  selectSiteSurfaceArea,
-  selectSiteContaminatedSurfaceArea,
-};
+} = creationProjectFormSelectors;

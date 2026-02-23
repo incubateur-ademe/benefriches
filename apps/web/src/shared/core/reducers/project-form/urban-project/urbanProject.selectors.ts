@@ -1,20 +1,22 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { isConstrainedSoilType, ORDERED_SOIL_TYPES } from "shared";
-import type { SoilsDistribution, SoilType, UrbanProjectUse } from "shared";
 
 import { RootState } from "@/shared/core/store-config/store";
 import { buildStepGroupsFromSequence } from "@/shared/views/project-form/stepper/stepperConfig";
 
-import { ProjectFormSelectors } from "../projectForm.selectors";
+import { createProjectFormSelectors } from "../projectForm.selectors";
 import { getProjectSummary } from "./helpers/projectSummary";
 import { ReadStateHelper } from "./helpers/readState";
-import {
-  getUrbanProjectAvailableLocalAuthoritiesStakeholders,
-  getUrbanProjectAvailableStakeholders,
-} from "./helpers/stakeholders";
 import { createSelectUsesFloorSurfaceAreaViewData } from "./step-handlers/buildings/buildingsUsesFloorSurfaceArea.selector";
+import { createSelectSiteResaleRevenueViewData } from "./step-handlers/revenues/revenueExpectedSiteResale.selector";
+import { createSelectSoilsCarbonStorageDifference } from "./step-handlers/soils/soilsCarbonSummary.selector";
 import { createSelectPublicGreenSpacesIntroductionViewData } from "./step-handlers/spaces/new-public-green-spaces/publicGreenSpacesIntroduction.selector";
 import { createSelectPublicGreenSpacesSoilsDistributionViewData } from "./step-handlers/spaces/new-public-green-spaces/publicGreenSpacesSoilsDistribution.selector";
+import { createSelectSpacesSelectionViewData } from "./step-handlers/spaces/spacesSelection.selector";
+import { createSelectSpacesSurfaceAreaViewData } from "./step-handlers/spaces/spacesSurfaceArea.selector";
+import {
+  createSelectUrbanProjectAvailableLocalAuthoritiesStakeholders,
+  createSelectUrbanProjectAvailableStakeholders,
+} from "./step-handlers/stakeholders/stakeholders.selector";
 import { createSelectPublicGreenSpacesSurfaceAreaViewData } from "./step-handlers/uses/public-green-spaces-surface-area/publicGreenSpacesSurfaceArea.selector";
 import {
   answersByStepSchemas,
@@ -26,8 +28,8 @@ import {
 
 export const createUrbanProjectFormSelectors = (
   entityName: "projectCreation" | "projectUpdate",
-  selectors: ProjectFormSelectors,
 ) => {
+  const selectors = createProjectFormSelectors(entityName);
   const selectSelf = (state: RootState) => state[entityName];
 
   const selectStepState = createSelector(selectSelf, (state) => state.urbanProject.steps);
@@ -51,11 +53,8 @@ export const createUrbanProjectFormSelectors = (
       );
     });
 
-  const selectSoilsCarbonStorageDifference = createSelector([selectStepState], (steps) => ({
-    loadingState: steps.URBAN_PROJECT_SOILS_CARBON_SUMMARY?.loadingState ?? "idle",
-    current: steps.URBAN_PROJECT_SOILS_CARBON_SUMMARY?.data?.current,
-    projected: steps.URBAN_PROJECT_SOILS_CARBON_SUMMARY?.data?.projected,
-  }));
+  const selectSoilsCarbonStorageDifference =
+    createSelectSoilsCarbonStorageDifference(selectStepState);
 
   const selectProjectStepsSequence = createSelector(
     selectSelf,
@@ -112,50 +111,16 @@ export const createUrbanProjectFormSelectors = (
       )?.stepId,
   );
 
-  const selectProjectDeveloper = createSelector(
-    [selectStepState],
-    (steps) =>
-      ReadStateHelper.getStepAnswers(steps, "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER")
-        ?.projectDeveloper,
+  const selectUrbanProjectAvailableStakeholders = createSelectUrbanProjectAvailableStakeholders(
+    selectStepState,
+    selectors.selectProjectAvailableStakeholders,
   );
 
-  const selectReinstatementContractOwner = createSelector(
-    [selectStepState],
-    (steps) =>
-      ReadStateHelper.getStepAnswers(
-        steps,
-        "URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER",
-      )?.reinstatementContractOwner,
-  );
-
-  const selectUrbanProjectAvailableStakeholders = createSelector(
-    [
-      selectors.selectProjectAvailableStakeholders,
-      selectProjectDeveloper,
-      selectReinstatementContractOwner,
-    ],
-    (projectAvailableStakeholders, projectDeveloper, reinstatementContractOwner) =>
-      getUrbanProjectAvailableStakeholders({
-        projectAvailableStakeholders,
-        projectDeveloper,
-        reinstatementContractOwner,
-      }),
-  );
-
-  const selectUrbanProjectAvailableLocalAuthoritiesStakeholders = createSelector(
-    [
+  const selectUrbanProjectAvailableLocalAuthoritiesStakeholders =
+    createSelectUrbanProjectAvailableLocalAuthoritiesStakeholders(
+      selectStepState,
       selectors.selectAvailableLocalAuthoritiesStakeholders,
-      selectProjectDeveloper,
-      selectReinstatementContractOwner,
-    ],
-    (availableLocalAuthoritiesStakeholders, projectDeveloper, reinstatementContractOwner) => {
-      return getUrbanProjectAvailableLocalAuthoritiesStakeholders({
-        availableLocalAuthoritiesStakeholders,
-        projectDeveloper,
-        reinstatementContractOwner,
-      });
-    },
-  );
+    );
 
   const selectPendingStepCompletion = createSelector(
     [selectSelf],
@@ -164,26 +129,7 @@ export const createUrbanProjectFormSelectors = (
 
   const selectSaveState = createSelector([selectSelf], (state) => state.urbanProject.saveState);
 
-  type SiteResaleRevenueViewData = {
-    isPriceEstimated: boolean;
-    initialSellingPrice: number | undefined;
-    initialPropertyTransferDuties: number | undefined;
-  };
-
-  const selectSiteResaleRevenueViewData = createSelector(
-    [selectStepState],
-    (steps): SiteResaleRevenueViewData => {
-      const revenueAnswers =
-        ReadStateHelper.getStepAnswers(steps, "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE") ??
-        ReadStateHelper.getDefaultAnswers(steps, "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE");
-
-      return {
-        isPriceEstimated: ReadStateHelper.isSiteResalePriceEstimated(steps),
-        initialSellingPrice: revenueAnswers?.siteResaleExpectedSellingPrice,
-        initialPropertyTransferDuties: revenueAnswers?.siteResaleExpectedPropertyTransferDuties,
-      };
-    },
-  );
+  const selectSiteResaleRevenueViewData = createSelectSiteResaleRevenueViewData(selectStepState);
 
   const selectPublicGreenSpacesSurfaceAreaViewData =
     createSelectPublicGreenSpacesSurfaceAreaViewData(
@@ -194,108 +140,15 @@ export const createUrbanProjectFormSelectors = (
   const selectUsesFloorSurfaceAreaViewData =
     createSelectUsesFloorSurfaceAreaViewData(selectStepState);
 
-  /**
-   * Computes the list of soils that can be selected for the project.
-   * Non-constrained soils (BUILDINGS, IMPERMEABLE_SOILS, MINERAL_SOIL, ARTIFICIAL_*)
-   * are always selectable. Constrained soils (forests, prairies, agricultural, wetlands)
-   * are only selectable if they already exist on the site.
-   */
-  const computeSelectableSoils = (siteSoilsDistribution: SoilsDistribution): SoilType[] => {
-    const siteSoils = Object.keys(siteSoilsDistribution) as SoilType[];
-
-    return ORDERED_SOIL_TYPES.filter((soilType) => {
-      // Non-constrained soils are always selectable
-      if (!isConstrainedSoilType(soilType)) {
-        return true;
-      }
-      // Constrained soils are only selectable if they exist on the site
-      return siteSoils.includes(soilType);
-    });
-  };
-
-  type SpacesSelectionViewData = {
-    selectedSpaces: SoilType[];
-    selectableSoils: SoilType[];
-    nonGreenSpacesUses: UrbanProjectUse[];
-    hasPublicGreenSpaces: boolean;
-  };
-
-  const selectSpacesSelectionViewData = createSelector(
-    [selectStepState, selectors.selectSiteSoilsDistribution],
-    (steps, siteSoilsDistribution): SpacesSelectionViewData => {
-      const spacesAnswers =
-        ReadStateHelper.getStepAnswers(steps, "URBAN_PROJECT_SPACES_SELECTION") ??
-        ReadStateHelper.getDefaultAnswers(steps, "URBAN_PROJECT_SPACES_SELECTION");
-
-      const selectedUses =
-        ReadStateHelper.getStepAnswers(steps, "URBAN_PROJECT_USES_SELECTION")?.usesSelection ?? [];
-
-      return {
-        selectedSpaces: spacesAnswers?.spacesSelection ?? [],
-        selectableSoils: computeSelectableSoils(siteSoilsDistribution),
-        nonGreenSpacesUses: selectedUses.filter(
-          (use): use is UrbanProjectUse => use !== "PUBLIC_GREEN_SPACES",
-        ),
-        hasPublicGreenSpaces: selectedUses.includes("PUBLIC_GREEN_SPACES"),
-      };
-    },
+  const selectSpacesSelectionViewData = createSelectSpacesSelectionViewData(
+    selectStepState,
+    selectors.selectSiteSoilsDistribution,
   );
 
-  type SpaceConstraint = {
-    soilType: SoilType;
-    maxSurfaceArea: number;
-  };
-
-  type SpacesSurfaceAreaViewData = {
-    selectedSpaces: SoilType[];
-    spacesSurfaceAreaDistribution: Partial<Record<SoilType, number>> | undefined;
-    totalSurfaceArea: number;
-    spacesWithConstraints: SpaceConstraint[];
-    nonGreenSpacesUses: UrbanProjectUse[];
-    hasPublicGreenSpaces: boolean;
-  };
-
-  const selectSpacesSurfaceAreaViewData = createSelector(
-    [selectStepState, selectors.selectSiteSurfaceArea, selectors.selectSiteSoilsDistribution],
-    (steps, siteSurfaceArea, siteSoilsDistribution): SpacesSurfaceAreaViewData => {
-      const surfaceAreaAnswers =
-        ReadStateHelper.getStepAnswers(steps, "URBAN_PROJECT_SPACES_SURFACE_AREA") ??
-        ReadStateHelper.getDefaultAnswers(steps, "URBAN_PROJECT_SPACES_SURFACE_AREA");
-
-      const spacesSelectionAnswers = ReadStateHelper.getStepAnswers(
-        steps,
-        "URBAN_PROJECT_SPACES_SELECTION",
-      );
-
-      const selectedSpaces = spacesSelectionAnswers?.spacesSelection ?? [];
-
-      const selectedUses =
-        ReadStateHelper.getStepAnswers(steps, "URBAN_PROJECT_USES_SELECTION")?.usesSelection ?? [];
-
-      const publicGreenSpacesSurfaceArea =
-        ReadStateHelper.getStepAnswers(steps, "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA")
-          ?.publicGreenSpacesSurfaceArea ?? 0;
-
-      // Compute constraints for constrained soils that exist on site
-      const spacesWithConstraints: SpaceConstraint[] = selectedSpaces
-        .filter((soilType) => isConstrainedSoilType(soilType))
-        .map((soilType) => ({
-          soilType,
-          maxSurfaceArea: siteSoilsDistribution[soilType] ?? 0,
-        }))
-        .filter((constraint) => constraint.maxSurfaceArea > 0);
-
-      return {
-        selectedSpaces,
-        spacesSurfaceAreaDistribution: surfaceAreaAnswers?.spacesSurfaceAreaDistribution,
-        totalSurfaceArea: siteSurfaceArea - publicGreenSpacesSurfaceArea,
-        spacesWithConstraints,
-        nonGreenSpacesUses: selectedUses.filter(
-          (use): use is UrbanProjectUse => use !== "PUBLIC_GREEN_SPACES",
-        ),
-        hasPublicGreenSpaces: selectedUses.includes("PUBLIC_GREEN_SPACES"),
-      };
-    },
+  const selectSpacesSurfaceAreaViewData = createSelectSpacesSurfaceAreaViewData(
+    selectStepState,
+    selectors.selectSiteSurfaceArea,
+    selectors.selectSiteSoilsDistribution,
   );
 
   const selectPublicGreenSpacesSoilsDistributionViewData =

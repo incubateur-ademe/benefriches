@@ -3,15 +3,16 @@ import type { Selector } from "@reduxjs/toolkit";
 
 import type { ProjectFormState } from "@/shared/core/reducers/project-form/projectForm.reducer";
 import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
+import type { RootState } from "@/shared/core/store-config/store";
 
 export type PublicGreenSpacesSurfaceAreaViewData = {
   publicGreenSpacesSurfaceArea: number | undefined;
   siteSurfaceArea: number;
 };
 
-export const createSelectPublicGreenSpacesSurfaceAreaViewData = <S>(
-  selectStepState: Selector<S, ProjectFormState["urbanProject"]["steps"]>,
-  selectSiteSurfaceArea: Selector<S, number>,
+export const createSelectPublicGreenSpacesSurfaceAreaViewData = (
+  selectStepState: Selector<RootState, ProjectFormState["urbanProject"]["steps"]>,
+  selectSiteSurfaceArea: Selector<RootState, number>,
 ) =>
   createSelector(
     [selectStepState, selectSiteSurfaceArea],

@@ -1,32 +1,14 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import { createProjectFormSelectors } from "@/shared/core/reducers/project-form/projectForm.selectors";
 import { createUrbanProjectFormSelectors } from "@/shared/core/reducers/project-form/urban-project/urbanProject.selectors";
 import { RootState } from "@/shared/core/store-config/store";
 
-const {
-  selectIsSiteFriche,
-  selectSiteAddress,
-  selectSiteSoilsDistribution,
-  selectAvailableLocalAuthoritiesStakeholders,
-  selectProjectAvailableStakeholders,
-  selectSiteSurfaceArea,
-  selectSiteContaminatedSurfaceArea,
-} = createProjectFormSelectors("projectUpdate");
+export const updateUrbanProjectFormSelectors = createUrbanProjectFormSelectors("projectUpdate");
 
-export { selectSiteAddress, selectSiteSoilsDistribution };
+const { selectSiteAddress, selectSiteSoilsDistribution, selectProjectSoilsDistributionByType } =
+  updateUrbanProjectFormSelectors;
 
-export const updateUrbanProjectFormSelectors = createUrbanProjectFormSelectors("projectUpdate", {
-  selectAvailableLocalAuthoritiesStakeholders,
-  selectProjectAvailableStakeholders,
-  selectSiteAddress,
-  selectSiteSoilsDistribution,
-  selectSiteSurfaceArea,
-  selectSiteContaminatedSurfaceArea,
-  selectIsSiteFriche,
-});
-const { selectProjectSoilsDistributionByType } = updateUrbanProjectFormSelectors;
-export { selectProjectSoilsDistributionByType };
+export { selectSiteAddress, selectSiteSoilsDistribution, selectProjectSoilsDistributionByType };
 
 export const selectUrbanProjectCurrentStep = createSelector(
   [(state: RootState) => state.projectUpdate.urbanProject],
