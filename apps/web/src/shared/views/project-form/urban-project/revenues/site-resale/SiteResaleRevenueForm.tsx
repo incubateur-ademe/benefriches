@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import { computePropertyTransferDutiesFromSellingPrice } from "shared";
 
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
-import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import FormRowNumericInput from "@/shared/views/components/form/NumericInput/FormRowNumericInput";
 import { optionalNumericFieldRegisterOptions } from "@/shared/views/components/form/NumericInput/registerOptions";
 import FormDefinition from "@/shared/views/layout/WizardFormLayout/FormDefinition";
@@ -52,9 +51,6 @@ const SiteResaleRevenueForm = ({ initialValues, isPriceEstimated, onSubmit, onBa
               Les droits de mutation sont calculés automatiquement selon le prix de vente
               renseignés. Vous pouvez modifier ce montant.
             </p>
-            <ExternalLink href="https://explore.data.gouv.fr/fr/immobilier?onglet=carte&filtre=tous">
-              Explorateur de données de valeurs foncières
-            </ExternalLink>
           </FormInfo>
           <FormDefinition>
             <p>
