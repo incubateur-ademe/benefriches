@@ -1,6 +1,6 @@
 import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
 
-import type { AnswerStepHandler, StepInvalidationRule } from "../stepHandler.type";
+import type { AnswerStepHandler, StepInvalidationRule } from "../../stepHandler.type";
 
 const STEP_ID = "URBAN_PROJECT_USES_SELECTION";
 

@@ -1,3 +1,6 @@
+import { usesIntroductionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/uses/introduction/usesIntroduction.stepperConfig";
+import { publicGreenSpacesSurfaceAreaStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/uses/public-green-spaces-surface-area/publicGreenSpacesSurfaceArea.stepperConfig";
+import { usesSelectionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/uses/selection/usesSelection.stepperConfig";
 import {
   isAnswersStep,
   isSummaryStep,
@@ -95,22 +98,18 @@ export const STEP_GROUP_LABELS: Record<StepGroupId | StepSubGroupId, string> = {
   SUMMARY: "Récapitulatif",
 } as const;
 
-type StepToGroupMapping = Record<
-  UrbanProjectCreationStep,
-  { groupId: StepGroupId; subGroupId?: StepSubGroupId }
->;
+export type StepStepperConfig = { groupId: StepGroupId; subGroupId?: StepSubGroupId };
+
+type StepToGroupMapping = Record<UrbanProjectCreationStep, StepStepperConfig>;
 export const STEP_TO_GROUP_MAPPING: StepToGroupMapping = {
   URBAN_PROJECT_CREATE_MODE_SELECTION: { groupId: "CREATION_MODE" },
   URBAN_PROJECT_EXPRESS_TEMPLATE_SELECTION: { groupId: "CREATION_MODE" },
   URBAN_PROJECT_EXPRESS_SUMMARY: { groupId: "SUMMARY" },
   URBAN_PROJECT_EXPRESS_CREATION_RESULT: { groupId: "SUMMARY" },
   // Uses flow
-  URBAN_PROJECT_USES_INTRODUCTION: { groupId: "USES" },
-  URBAN_PROJECT_USES_SELECTION: { groupId: "USES", subGroupId: "USES_SELECTION" },
-  URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA: {
-    groupId: "USES",
-    subGroupId: "USES_GREEN_SPACES_AREA",
-  },
+  URBAN_PROJECT_USES_INTRODUCTION: usesIntroductionStepperConfig,
+  URBAN_PROJECT_USES_SELECTION: usesSelectionStepperConfig,
+  URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA: publicGreenSpacesSurfaceAreaStepperConfig,
   // Espaces
   URBAN_PROJECT_SPACES_INTRODUCTION: { groupId: "SPACES" },
   URBAN_PROJECT_PUBLIC_GREEN_SPACES_INTRODUCTION: {

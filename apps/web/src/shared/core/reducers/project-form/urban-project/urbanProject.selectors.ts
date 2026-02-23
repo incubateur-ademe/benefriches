@@ -23,6 +23,7 @@ import {
   getUrbanProjectAvailableLocalAuthoritiesStakeholders,
   getUrbanProjectAvailableStakeholders,
 } from "./helpers/stakeholders";
+import { createSelectPublicGreenSpacesSurfaceAreaViewData } from "./step-handlers/uses/public-green-spaces-surface-area/publicGreenSpacesSurfaceArea.selector";
 import {
   answersByStepSchemas,
   AnswerStepId,
@@ -192,24 +193,11 @@ export const createUrbanProjectFormSelectors = (
     },
   );
 
-  type PublicGreenSpacesSurfaceAreaViewData = {
-    publicGreenSpacesSurfaceArea: number | undefined;
-    siteSurfaceArea: number;
-  };
-
-  const selectPublicGreenSpacesSurfaceAreaViewData = createSelector(
-    [selectStepState, selectors.selectSiteSurfaceArea],
-    (steps, siteSurfaceArea): PublicGreenSpacesSurfaceAreaViewData => {
-      const answers =
-        ReadStateHelper.getStepAnswers(steps, "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA") ??
-        ReadStateHelper.getDefaultAnswers(steps, "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA");
-
-      return {
-        publicGreenSpacesSurfaceArea: answers?.publicGreenSpacesSurfaceArea,
-        siteSurfaceArea,
-      };
-    },
-  );
+  const selectPublicGreenSpacesSurfaceAreaViewData =
+    createSelectPublicGreenSpacesSurfaceAreaViewData(
+      selectStepState,
+      selectors.selectSiteSurfaceArea,
+    );
 
   type UsesFloorSurfaceAreaViewData = {
     usesFloorSurfaceAreaDistribution: UrbanProjectUseDistribution | undefined;

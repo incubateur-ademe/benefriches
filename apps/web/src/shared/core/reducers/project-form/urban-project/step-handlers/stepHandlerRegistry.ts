@@ -1,4 +1,5 @@
 import { BuildingsIntroductionHandler } from "./buildings/buildingsIntroduction.handler";
+import { BuildingsUsesFloorSurfaceAreaHandler } from "./buildings/buildingsUsesFloorSurfaceArea.handler";
 import { CreationModeSelectionHandler } from "./creation-mode/creationMode.handler";
 import { UrbanProjectInstallationExpensesHandler } from "./expenses/expensesInstallation.handler";
 import { ExpensesIntroductionHandler } from "./expenses/expensesIntroduction.handler";
@@ -27,7 +28,6 @@ import { SoilsDecontaminationSurfaceAreaHandler } from "./soils/soilsDecontamina
 import { SoilsSummaryHandler } from "./soils/soilsSummary.handler";
 import { PublicGreenSpacesIntroductionHandler } from "./spaces/new-public-green-spaces/publicGreenSpacesIntroduction.handler";
 import { PublicGreenSpacesSoilsDistributionHandler } from "./spaces/new-public-green-spaces/publicGreenSpacesSoilsDistribution.handler";
-import { PublicGreenSpacesSurfaceAreaHandler } from "./spaces/new-public-green-spaces/publicGreenSpacesSurfaceArea.handler";
 import { SpacesIntroductionHandler } from "./spaces/spacesIntroduction.handler";
 import { SpacesSelectionHandler } from "./spaces/spacesSelection.handler";
 import { SpacesSurfaceAreaHandler } from "./spaces/spacesSurfaceArea.handler";
@@ -35,9 +35,9 @@ import { StakeholdersIntroductionHandler } from "./stakeholders/stakeholdersIntr
 import { StakeholdersProjectDeveloperHandler } from "./stakeholders/stakeholdersProjectDeveloper.handler";
 import { StakeholdersReinstatementContractOwnerHandler } from "./stakeholders/stakeholdersReinstatementContractOwner.handler";
 import { FinalSummaryHandler } from "./summary/finalSummary.handler";
-import { UsesFloorSurfaceAreaHandler } from "./uses/usesFloorSurfaceArea.handler";
-import { UsesIntroductionHandler } from "./uses/usesIntroduction.handler";
-import { UsesSelectionHandler } from "./uses/usesSelection.handler";
+import { UsesIntroductionHandler } from "./uses/introduction/usesIntroduction.handler";
+import { PublicGreenSpacesSurfaceAreaHandler } from "./uses/public-green-spaces-surface-area/publicGreenSpacesSurfaceArea.handler";
+import { UsesSelectionHandler } from "./uses/selection/usesSelection.handler";
 
 export const stepHandlerRegistry = {
   URBAN_PROJECT_CREATE_MODE_SELECTION: CreationModeSelectionHandler,
@@ -49,7 +49,6 @@ export const stepHandlerRegistry = {
   URBAN_PROJECT_USES_INTRODUCTION: UsesIntroductionHandler,
   URBAN_PROJECT_USES_SELECTION: UsesSelectionHandler,
   URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA: PublicGreenSpacesSurfaceAreaHandler,
-  URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA: UsesFloorSurfaceAreaHandler,
   // custom - new spaces flow (uses flow)
   URBAN_PROJECT_SPACES_INTRODUCTION: SpacesIntroductionHandler,
   URBAN_PROJECT_PUBLIC_GREEN_SPACES_INTRODUCTION: PublicGreenSpacesIntroductionHandler,
@@ -60,6 +59,7 @@ export const stepHandlerRegistry = {
   URBAN_PROJECT_SOILS_CARBON_SUMMARY: SoilsCarbonSummaryHandler,
   // custom - buildings
   URBAN_PROJECT_BUILDINGS_INTRODUCTION: BuildingsIntroductionHandler,
+  URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA: BuildingsUsesFloorSurfaceAreaHandler,
   // custom - decontamination
   URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION: SoilsDecontaminationIntroductionHandler,
   URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION: SoilsDecontaminationSelectionHandler,

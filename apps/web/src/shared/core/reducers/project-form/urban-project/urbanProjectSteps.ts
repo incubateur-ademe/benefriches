@@ -8,11 +8,13 @@ import {
   urbanProjectDevelopmentExpensePurposeSchema,
   urbanProjectPhaseSchema,
   urbanProjectTemplateSchema,
-  urbanProjectUseSchema,
   yearlyBuildingsOperationsExpensePurposeSchema,
   yearlyBuildingsOperationsRevenuePurposeSchema,
 } from "shared";
 import z from "zod";
+
+import { publicGreenSpacesSurfaceAreaSchema } from "./step-handlers/uses/public-green-spaces-surface-area/publicGreenSpacesSurfaceArea.schema";
+import { usesSelectionSchema } from "./step-handlers/uses/selection/usesSelection.schema";
 
 export const INTRODUCTION_STEPS = [
   "URBAN_PROJECT_USES_INTRODUCTION",
@@ -83,13 +85,9 @@ export const answersByStepSchemas = {
   }),
 
   // Custom - uses
-  URBAN_PROJECT_USES_SELECTION: z.object({
-    usesSelection: z.array(urbanProjectUseSchema),
-  }),
+  URBAN_PROJECT_USES_SELECTION: usesSelectionSchema,
 
-  URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA: z.object({
-    publicGreenSpacesSurfaceArea: z.number(),
-  }),
+  URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA: publicGreenSpacesSurfaceAreaSchema,
 
   URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION: z.object({
     publicGreenSpacesSoilsDistribution: z.partialRecord(soilTypeSchema, z.number()),
