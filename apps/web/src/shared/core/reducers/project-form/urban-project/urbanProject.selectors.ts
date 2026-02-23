@@ -1,17 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
-import {
-  isConstrainedSoilType,
-  isNaturalSoil,
-  ORDERED_SOIL_TYPES,
-  typedObjectEntries,
-  typedObjectKeys,
-} from "shared";
-import type {
-  SoilsDistribution,
-  SoilType,
-  UrbanProjectUse,
-  UrbanProjectUseDistribution,
-} from "shared";
+import { isConstrainedSoilType, ORDERED_SOIL_TYPES } from "shared";
+import type { SoilsDistribution, SoilType, UrbanProjectUse } from "shared";
 
 import { RootState } from "@/shared/core/store-config/store";
 import { buildStepGroupsFromSequence } from "@/shared/views/project-form/stepper/stepperConfig";
@@ -23,6 +12,9 @@ import {
   getUrbanProjectAvailableLocalAuthoritiesStakeholders,
   getUrbanProjectAvailableStakeholders,
 } from "./helpers/stakeholders";
+import { createSelectUsesFloorSurfaceAreaViewData } from "./step-handlers/buildings/buildingsUsesFloorSurfaceArea.selector";
+import { createSelectPublicGreenSpacesIntroductionViewData } from "./step-handlers/spaces/new-public-green-spaces/publicGreenSpacesIntroduction.selector";
+import { createSelectPublicGreenSpacesSoilsDistributionViewData } from "./step-handlers/spaces/new-public-green-spaces/publicGreenSpacesSoilsDistribution.selector";
 import { createSelectPublicGreenSpacesSurfaceAreaViewData } from "./step-handlers/uses/public-green-spaces-surface-area/publicGreenSpacesSurfaceArea.selector";
 import {
   answersByStepSchemas,
@@ -199,42 +191,8 @@ export const createUrbanProjectFormSelectors = (
       selectors.selectSiteSurfaceArea,
     );
 
-  type UsesFloorSurfaceAreaViewData = {
-    usesFloorSurfaceAreaDistribution: UrbanProjectUseDistribution | undefined;
-    selectedUses: UrbanProjectUse[];
-    buildingsFootprintSurfaceArea: number | undefined;
-  };
-
-  const selectUsesFloorSurfaceAreaViewData = createSelector(
-    [selectStepState],
-    (steps): UsesFloorSurfaceAreaViewData => {
-      const floorAnswers =
-        ReadStateHelper.getStepAnswers(steps, "URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA") ??
-        ReadStateHelper.getDefaultAnswers(steps, "URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA");
-
-      const selectionAnswers = ReadStateHelper.getStepAnswers(
-        steps,
-        "URBAN_PROJECT_USES_SELECTION",
-      );
-
-      const spacesAnswers =
-        ReadStateHelper.getStepAnswers(steps, "URBAN_PROJECT_SPACES_SURFACE_AREA") ??
-        ReadStateHelper.getDefaultAnswers(steps, "URBAN_PROJECT_SPACES_SURFACE_AREA");
-
-      return {
-        usesFloorSurfaceAreaDistribution: floorAnswers?.usesFloorSurfaceAreaDistribution,
-        selectedUses: selectionAnswers?.usesSelection ?? [],
-        buildingsFootprintSurfaceArea: spacesAnswers?.spacesSurfaceAreaDistribution?.BUILDINGS,
-      };
-    },
-  );
-
-  type SpacesSelectionViewData = {
-    selectedSpaces: SoilType[];
-    selectableSoils: SoilType[];
-    nonGreenSpacesUses: UrbanProjectUse[];
-    hasPublicGreenSpaces: boolean;
-  };
+  const selectUsesFloorSurfaceAreaViewData =
+    createSelectUsesFloorSurfaceAreaViewData(selectStepState);
 
   /**
    * Computes the list of soils that can be selected for the project.
@@ -253,6 +211,13 @@ export const createUrbanProjectFormSelectors = (
       // Constrained soils are only selectable if they exist on the site
       return siteSoils.includes(soilType);
     });
+  };
+
+  type SpacesSelectionViewData = {
+    selectedSpaces: SoilType[];
+    selectableSoils: SoilType[];
+    nonGreenSpacesUses: UrbanProjectUse[];
+    hasPublicGreenSpaces: boolean;
   };
 
   const selectSpacesSelectionViewData = createSelector(
@@ -333,72 +298,14 @@ export const createUrbanProjectFormSelectors = (
     },
   );
 
-  type PublicGreenSpacesSoilsDistributionViewData = {
-    availableSoilTypes: SoilType[];
-    publicGreenSpacesSoilsDistribution: Partial<Record<SoilType, number>> | undefined;
-    totalSurfaceArea: number;
-    existingNaturalSoilsConstraints: SpaceConstraint[];
-  };
+  const selectPublicGreenSpacesSoilsDistributionViewData =
+    createSelectPublicGreenSpacesSoilsDistributionViewData(
+      selectStepState,
+      selectors.selectSiteSoilsDistribution,
+    );
 
-  const selectPublicGreenSpacesSoilsDistributionViewData = createSelector(
-    [selectStepState, selectors.selectSiteSoilsDistribution],
-    (steps, siteSoilsDistribution): PublicGreenSpacesSoilsDistributionViewData => {
-      const distributionAnswers =
-        ReadStateHelper.getStepAnswers(
-          steps,
-          "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION",
-        ) ??
-        ReadStateHelper.getDefaultAnswers(
-          steps,
-          "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION",
-        );
-
-      const totalSurfaceArea =
-        ReadStateHelper.getStepAnswers(steps, "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA")
-          ?.publicGreenSpacesSurfaceArea ?? 0;
-
-      const siteSoils = typedObjectKeys(siteSoilsDistribution);
-      const existingProjectSoils = typedObjectKeys(
-        distributionAnswers?.publicGreenSpacesSoilsDistribution ?? {},
-      );
-
-      // All soil types except BUILDINGS, with constrained soils filtered to only those on site or already in project
-      const availableSoilTypes = ORDERED_SOIL_TYPES.filter((soilType) => {
-        if (soilType === "BUILDINGS") return false;
-        if (!isConstrainedSoilType(soilType)) return true;
-        return siteSoils.includes(soilType) || existingProjectSoils.includes(soilType);
-      });
-
-      const existingNaturalSoilsConstraints: SpaceConstraint[] = availableSoilTypes
-        .filter(isNaturalSoil)
-        .map((soilType) => ({
-          soilType,
-          maxSurfaceArea: siteSoilsDistribution[soilType] ?? 0,
-        }));
-
-      return {
-        availableSoilTypes,
-        publicGreenSpacesSoilsDistribution: distributionAnswers?.publicGreenSpacesSoilsDistribution,
-        totalSurfaceArea,
-        existingNaturalSoilsConstraints,
-      };
-    },
-  );
-
-  type PublicGreenSpacesIntroductionViewData = {
-    existingNaturalSoils: { soilType: SoilType; surfaceArea: number }[];
-  };
-
-  const selectPublicGreenSpacesIntroductionViewData = createSelector(
-    [selectors.selectSiteSoilsDistribution],
-    (siteSoilsDistribution): PublicGreenSpacesIntroductionViewData => {
-      const existingNaturalSoils = typedObjectEntries(siteSoilsDistribution)
-        .filter(([soilType]) => isNaturalSoil(soilType))
-        .map(([soilType, surfaceArea]) => ({ soilType, surfaceArea: surfaceArea ?? 0 }));
-
-      return { existingNaturalSoils };
-    },
-  );
+  const selectPublicGreenSpacesIntroductionViewData =
+    createSelectPublicGreenSpacesIntroductionViewData(selectors.selectSiteSoilsDistribution);
 
   return {
     selectStepState,
