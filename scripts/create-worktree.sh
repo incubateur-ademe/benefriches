@@ -68,8 +68,13 @@ echo ""
 # Change to worktree directory
 cd "$WORKTREE_PATH"
 
-# Install dependencies
-echo "Installing dependencies..."
+# Install dependencies and build shared package
+echo "Installing root dependencies..."
+pnpm install
+echo "Installing and building shared package..."
+pnpm --filter shared install
+pnpm --filter shared build
+echo "Installing all workspace dependencies..."
 pnpm install -r
 echo "Dependencies installed."
 echo ""
