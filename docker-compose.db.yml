@@ -16,8 +16,9 @@ services:
     image: dockage/mailcatcher
     restart: always
     ports:
-      - '1080:1080'
+      - '${MAILCATCHER_HTTP_PORT}:1080'
       - '${SMTP_PORT}:1025'
 
 volumes:
   benefriches_pg_data:
+    name: ${PG_VOLUME_NAME:-benefriches_pg_data}
