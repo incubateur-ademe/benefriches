@@ -9,6 +9,6 @@ export const StakeholdersReinstatementContractOwnerHandler: AnswerStepHandler<"U
     },
 
     getNextStepId() {
-      return "URBAN_PROJECT_SITE_RESALE_INTRODUCTION";
+      return "URBAN_PROJECT_EXPENSES_INTRODUCTION";
     },
   };

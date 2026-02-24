@@ -40,7 +40,7 @@ describe("Urban project creation - Steps - Uses floor surface area", () => {
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION");
   });
 
-  it("should complete step and go to URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION when site has no contaminated soils", () => {
+  it("should complete step and go to URBAN_PROJECT_SITE_RESALE_INTRODUCTION when site has no contaminated soils", () => {
     const store = createTestStore({
       siteData: {
         id: "site-id",
@@ -88,7 +88,7 @@ describe("Urban project creation - Steps - Uses floor surface area", () => {
       }),
     );
 
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION");
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
   });
 
   it("should navigate to URBAN_PROJECT_BUILDINGS_INTRODUCTION when going back", () => {

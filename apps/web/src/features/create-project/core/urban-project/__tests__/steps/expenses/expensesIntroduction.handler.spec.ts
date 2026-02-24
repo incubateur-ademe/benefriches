@@ -1,6 +1,5 @@
 import { describe, expect, it } from "vitest";
 
-import { ProjectFormState } from "@/shared/core/reducers/project-form/projectForm.reducer";
 import { ExpensesIntroductionHandler } from "@/shared/core/reducers/project-form/urban-project/step-handlers/expenses/expenses-introduction/expensesIntroduction.handler";
 
 describe("ExpensesIntroductionHandler", () => {
@@ -13,36 +12,28 @@ describe("ExpensesIntroductionHandler", () => {
   });
 
   describe("getPreviousStepId", () => {
-    it("should return URBAN_PROJECT_BUILDINGS_RESALE_SELECTION when project has buildings", () => {
-      const stepsState: ProjectFormState["urbanProject"]["steps"] = {
-        URBAN_PROJECT_USES_SELECTION: {
-          completed: true,
-          payload: { usesSelection: ["RESIDENTIAL"] },
-        },
-      };
+    it("should return URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER when site is a friche", () => {
+      const previousStep = ExpensesIntroductionHandler.getPreviousStepId!({
+        stepsState: {},
+        siteData: { nature: "FRICHE" } as never,
+      });
 
-      const previousStep = ExpensesIntroductionHandler.getPreviousStepId!({ stepsState });
-
-      expect(previousStep).toBe("URBAN_PROJECT_BUILDINGS_RESALE_SELECTION");
+      expect(previousStep).toBe("URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER");
     });
 
-    it("should return URBAN_PROJECT_SITE_RESALE_SELECTION when project has no buildings", () => {
-      const stepsState: ProjectFormState["urbanProject"]["steps"] = {
-        URBAN_PROJECT_USES_SELECTION: {
-          completed: true,
-          payload: { usesSelection: ["PUBLIC_GREEN_SPACES"] },
-        },
-      };
+    it("should return URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER when site is not a friche", () => {
+      const previousStep = ExpensesIntroductionHandler.getPreviousStepId!({
+        stepsState: {},
+        siteData: { nature: "AGRICULTURAL" } as never,
+      });
 
-      const previousStep = ExpensesIntroductionHandler.getPreviousStepId!({ stepsState });
-
-      expect(previousStep).toBe("URBAN_PROJECT_SITE_RESALE_SELECTION");
+      expect(previousStep).toBe("URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER");
     });
 
-    it("should return URBAN_PROJECT_SITE_RESALE_SELECTION when steps state is empty", () => {
+    it("should return URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER when no site data", () => {
       const previousStep = ExpensesIntroductionHandler.getPreviousStepId!({ stepsState: {} });
 
-      expect(previousStep).toBe("URBAN_PROJECT_SITE_RESALE_SELECTION");
+      expect(previousStep).toBe("URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER");
     });
   });
 });

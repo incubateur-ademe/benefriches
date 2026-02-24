@@ -166,16 +166,16 @@ export const STEP_TO_GROUP_MAPPING: StepToGroupMapping = {
   URBAN_PROJECT_BUILDINGS_INTRODUCTION: buildingsIntroductionStepperConfig,
   URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA: buildingsUsesFloorSurfaceAreaStepperConfig,
 
+  // Cession foncière
+  URBAN_PROJECT_SITE_RESALE_INTRODUCTION: siteResaleIntroductionStepperConfig,
+  URBAN_PROJECT_SITE_RESALE_SELECTION: siteResaleSelectionStepperConfig,
+  URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: buildingsResaleSelectionStepperConfig,
+
   // Acteurs
   URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION: stakeholdersIntroductionStepperConfig,
   URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER: stakeholdersProjectDeveloperStepperConfig,
   URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER:
     stakeholdersReinstatementContractOwnerStepperConfig,
-
-  // Cession foncière
-  URBAN_PROJECT_SITE_RESALE_INTRODUCTION: siteResaleIntroductionStepperConfig,
-  URBAN_PROJECT_SITE_RESALE_SELECTION: siteResaleSelectionStepperConfig,
-  URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: buildingsResaleSelectionStepperConfig,
 
   // Dépenses
   URBAN_PROJECT_EXPENSES_INTRODUCTION: expensesIntroductionStepperConfig,

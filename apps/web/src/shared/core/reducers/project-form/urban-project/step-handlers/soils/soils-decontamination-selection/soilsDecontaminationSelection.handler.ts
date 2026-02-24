@@ -39,7 +39,7 @@ export const SoilsDecontaminationSelectionHandler: AnswerStepHandler<"URBAN_PROJ
     },
 
     getShortcut(context, answers) {
-      const nextStep = "URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION";
+      const nextStep = "URBAN_PROJECT_SITE_RESALE_INTRODUCTION";
 
       const hasChanged =
         ReadStateHelper.getStepAnswers(

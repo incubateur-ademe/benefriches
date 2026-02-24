@@ -13,6 +13,6 @@ export const StakeholdersProjectDeveloperHandler: AnswerStepHandler<"URBAN_PROJE
         return "URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER";
       }
 
-      return "URBAN_PROJECT_SITE_RESALE_INTRODUCTION";
+      return "URBAN_PROJECT_EXPENSES_INTRODUCTION";
     },
   };

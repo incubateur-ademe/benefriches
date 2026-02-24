@@ -144,6 +144,30 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
       );
 
       // Étape ----
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
+      store.dispatch(navigateToNext());
+
+      // Étape ----
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_SELECTION");
+      store.dispatch(
+        requestStepCompletion({
+          stepId: "URBAN_PROJECT_SITE_RESALE_SELECTION",
+          answers: { siteResaleSelection: "yes" },
+        }),
+      );
+
+      // Étape ----
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_RESALE_SELECTION");
+      store.dispatch(
+        requestStepCompletion({
+          stepId: "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION",
+          answers: {
+            buildingsResalePlannedAfterDevelopment: true,
+          },
+        }),
+      );
+
+      // Étape ----
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION");
       store.dispatch(navigateToNext());
 
@@ -171,30 +195,6 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
               name: "Entreprise de Remise en État",
               structureType: "company",
             },
-          },
-        }),
-      );
-
-      // Étape ----
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
-      store.dispatch(navigateToNext());
-
-      // Étape ----
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_SELECTION");
-      store.dispatch(
-        requestStepCompletion({
-          stepId: "URBAN_PROJECT_SITE_RESALE_SELECTION",
-          answers: { siteResaleSelection: "yes" },
-        }),
-      );
-
-      // Étape ----
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_RESALE_SELECTION");
-      store.dispatch(
-        requestStepCompletion({
-          stepId: "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION",
-          answers: {
-            buildingsResalePlannedAfterDevelopment: true,
           },
         }),
       );
@@ -394,8 +394,8 @@ describe("urbanProject.reducer - requestStepCompletion without validation", () =
 
       const currentState = store.getState().projectCreation;
 
-      // "none" shortcuts past surface area step → goes to stakeholders
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION");
+      // "none" shortcuts past surface area step → goes to site resale
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
 
       expect(
         currentState.urbanProject.steps.URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA,

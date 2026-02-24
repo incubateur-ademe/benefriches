@@ -105,7 +105,7 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
       );
 
       expect(storeNonFriche.getState().projectCreation.urbanProject.currentStep).toBe(
-        "URBAN_PROJECT_SITE_RESALE_INTRODUCTION",
+        "URBAN_PROJECT_EXPENSES_INTRODUCTION",
       );
     });
 

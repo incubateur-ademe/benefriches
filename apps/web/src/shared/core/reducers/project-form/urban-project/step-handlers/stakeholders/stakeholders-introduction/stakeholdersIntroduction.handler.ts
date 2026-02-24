@@ -10,23 +10,9 @@ export const StakeholdersIntroductionHandler: InfoStepHandler = {
   },
 
   getPreviousStepId(context) {
-    const decontaminationPlan = ReadStateHelper.getStepAnswers(
-      context.stepsState,
-      "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
-    )?.decontaminationPlan;
-
-    if (decontaminationPlan === "partial") {
-      return "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA";
-    }
-
-    if (context.siteData?.hasContaminatedSoils) {
-      return "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION";
-    }
-
     if (ReadStateHelper.willHaveBuildings(context.stepsState)) {
-      return "URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA";
+      return "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION";
     }
-
-    return "URBAN_PROJECT_SOILS_CARBON_SUMMARY";
+    return "URBAN_PROJECT_SITE_RESALE_SELECTION";
   },
 } as const;
