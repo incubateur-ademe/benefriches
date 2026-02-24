@@ -1,7 +1,7 @@
 # [ADR-0004] Colocate urban project step definitions
 
 - **Date**: 2026-02-23
-- **Status**: Accepted
+- **Status**: Accepted (migration completed 2026-02-24)
 
 ## Context
 
@@ -112,11 +112,11 @@ Steps are grouped into section folders matching their domain:
 - `express/` — express flow steps
 - `creation-mode/`, `result/`, `summary/` — common steps
 
-### Known edge cases for migration
+### Known edge cases (resolved)
 
-1. **Shared schemas**: `projectStakeholderSchema` is used by multiple steps (stakeholders, buildings resale). When those steps are migrated, extract it to a shared file (e.g., `step-handlers/shared/projectStakeholder.schema.ts`) rather than duplicating.
+1. **Shared schemas**: `projectStakeholderSchema` was extracted to `step-handlers/shared/projectStakeholder.schema.ts` — used by stakeholders (2 steps) + buildings-resale (1 step).
 
-2. **`spaces/new-public-green-spaces/`**: Two handlers remain there (`publicGreenSpacesIntroduction`, `publicGreenSpacesSoilsDistribution`). When migrated, they should move to `spaces/public-green-spaces-introduction/` and `spaces/public-green-spaces-soils-distribution/` respectively.
+2. **`spaces/new-public-green-spaces/`**: Handlers were moved to `spaces/public-green-spaces-introduction/` and `spaces/public-green-spaces-soils-distribution/` respectively.
 
 ## Options Considered
 
@@ -154,11 +154,10 @@ Add better comments/sections to the existing large files.
 
 - More files on disk (~4 files per step vs 1)
 - Aggregator files are boilerplate (import + re-export), though they shrink in complexity
-- During migration, the codebase has a mixed style (some steps colocated, some inline)
 
 ## Migration strategy
 
-Incremental, one step (or section) at a time:
+All 36 steps have been migrated. The per-step checklist used was:
 
 1. Create subfolder under `step-handlers/{section}/{step-name}/`
 2. Extract schema, stepper config, and selector (if applicable) into separate files
@@ -166,4 +165,3 @@ Incremental, one step (or section) at a time:
 4. Update the 4 aggregator files to import from the new location
 5. Run `pnpm --filter web typecheck && pnpm --filter web lint && pnpm --filter web test`
 6. Commit
-7. Repeat for next step
