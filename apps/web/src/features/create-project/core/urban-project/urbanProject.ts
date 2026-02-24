@@ -220,11 +220,11 @@ const SPACE_LABELS: Partial<Record<SoilType, { label: string; description: strin
     description: "",
   },
   MINERAL_SOIL: {
-    label: "Allée ou parking imperméable",
+    label: "Allée ou parking perméable",
     description: "Bitume, pavé, ciment",
   },
   IMPERMEABLE_SOILS: {
-    label: "Allée ou parking perméable",
+    label: "Allée ou parking imperméable",
     description: "Gravier, dalles alvéolées, sol nu...",
   },
   ARTIFICIAL_GRASS_OR_BUSHES_FILLED: {
