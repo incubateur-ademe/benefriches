@@ -1,4 +1,4 @@
-import { AnswerStepHandler } from "../stepHandler.type";
+import type { AnswerStepHandler } from "../../stepHandler.type";
 
 export const ExpressTemplateSelectionHandler: AnswerStepHandler<"URBAN_PROJECT_EXPRESS_TEMPLATE_SELECTION"> =
   {

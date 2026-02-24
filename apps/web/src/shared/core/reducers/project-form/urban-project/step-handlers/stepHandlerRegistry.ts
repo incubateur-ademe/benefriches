@@ -6,9 +6,9 @@ import { ExpensesIntroductionHandler } from "./expenses/expenses-introduction/ex
 import { ExpensesProjectedBuildingsOperatingExpensesHandler } from "./expenses/expenses-projected-buildings-operating-expenses/expensesProjectedBuildingsOperatingExpenses.handler";
 import { UrbanProjectReinstatementExpensesHandler } from "./expenses/expenses-reinstatement/expensesReinstatement.handler";
 import { ExpensesSitePurchaseAmountsHandler } from "./expenses/expenses-site-purchase-amounts/expensesSitePurchaseAmounts.handler";
-import { ExpressCreationResultHandler } from "./express/creationResult.handler";
-import { ExpressSummaryHandler } from "./express/expressSummary.handler";
-import { ExpressTemplateSelectionHandler } from "./express/expressTemplateSelection.handler";
+import { ExpressCreationResultHandler } from "./express/express-creation-result/expressCreationResult.handler";
+import { ExpressSummaryHandler } from "./express/express-summary/expressSummary.handler";
+import { ExpressTemplateSelectionHandler } from "./express/express-template-selection/expressTemplateSelection.handler";
 import { UrbanProjectNamingHandler } from "./naming/naming/naming.handler";
 import { ProjectPhaseHandler } from "./project-phase/project-phase/projectPhase.handler";
 import { CreationResultHandler } from "./result/creation-result/creationResult.handler";

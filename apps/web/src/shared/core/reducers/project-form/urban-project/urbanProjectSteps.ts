@@ -1,8 +1,4 @@
-import {
-  createReconversionProjectSchema,
-  typedObjectKeys,
-  urbanProjectTemplateSchema,
-} from "shared";
+import { createReconversionProjectSchema, typedObjectKeys } from "shared";
 import z from "zod";
 
 import { buildingsUsesFloorSurfaceAreaSchema } from "./step-handlers/buildings/buildings-uses-floor-surface-area/buildingsUsesFloorSurfaceArea.schema";
@@ -11,6 +7,7 @@ import { expensesInstallationSchema } from "./step-handlers/expenses/expenses-in
 import { expensesProjectedBuildingsOperatingExpensesSchema } from "./step-handlers/expenses/expenses-projected-buildings-operating-expenses/expensesProjectedBuildingsOperatingExpenses.schema";
 import { expensesReinstatementSchema } from "./step-handlers/expenses/expenses-reinstatement/expensesReinstatement.schema";
 import { expensesSitePurchaseAmountsSchema } from "./step-handlers/expenses/expenses-site-purchase-amounts/expensesSitePurchaseAmounts.schema";
+import { expressTemplateSelectionSchema } from "./step-handlers/express/express-template-selection/expressTemplateSelection.schema";
 import { namingSchema } from "./step-handlers/naming/naming/naming.schema";
 import { projectPhaseSchema } from "./step-handlers/project-phase/project-phase/projectPhase.schema";
 import { revenueBuildingsOperationsYearlyRevenuesSchema } from "./step-handlers/revenues/revenue-buildings-operations-yearly-revenues/revenueBuildingsOperationsYearlyRevenues.schema";
@@ -78,9 +75,7 @@ export const answersByStepSchemas = {
   URBAN_PROJECT_CREATE_MODE_SELECTION: creationModeSelectionSchema,
 
   // Express
-  URBAN_PROJECT_EXPRESS_TEMPLATE_SELECTION: z.object({
-    projectTemplate: urbanProjectTemplateSchema,
-  }),
+  URBAN_PROJECT_EXPRESS_TEMPLATE_SELECTION: expressTemplateSelectionSchema,
 
   // Custom - uses
   URBAN_PROJECT_USES_SELECTION: usesSelectionSchema,
