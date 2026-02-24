@@ -7,7 +7,7 @@ import { createProjectFormSelectors } from "../projectForm.selectors";
 import { getProjectSummary } from "./helpers/projectSummary";
 import { ReadStateHelper } from "./helpers/readState";
 import { createSelectUsesFloorSurfaceAreaViewData } from "./step-handlers/buildings/buildings-uses-floor-surface-area/buildingsUsesFloorSurfaceArea.selector";
-import { createSelectSiteResaleRevenueViewData } from "./step-handlers/revenues/revenueExpectedSiteResale.selector";
+import { createSelectSiteResaleRevenueViewData } from "./step-handlers/revenues/revenue-expected-site-resale/revenueExpectedSiteResale.selector";
 import { createSelectSoilsCarbonStorageDifference } from "./step-handlers/soils/soils-carbon-summary/soilsCarbonSummary.selector";
 import { createSelectPublicGreenSpacesIntroductionViewData } from "./step-handlers/spaces/public-green-spaces-introduction/publicGreenSpacesIntroduction.selector";
 import { createSelectPublicGreenSpacesSoilsDistributionViewData } from "./step-handlers/spaces/public-green-spaces-soils-distribution/publicGreenSpacesSoilsDistribution.selector";

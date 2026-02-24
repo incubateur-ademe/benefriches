@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { ExpensesProjectedBuildingsOperatingExpensesHandler } from "@/shared/core/reducers/project-form/urban-project/step-handlers/expenses/expensesProjectedBuildingsOperatingExpenses.handler";
+import { ExpensesProjectedBuildingsOperatingExpensesHandler } from "@/shared/core/reducers/project-form/urban-project/step-handlers/expenses/expenses-projected-buildings-operating-expenses/expensesProjectedBuildingsOperatingExpenses.handler";
 
 describe("ExpensesProjectedBuildingsOperatingExpensesHandler", () => {
   describe("getNextStepId", () => {

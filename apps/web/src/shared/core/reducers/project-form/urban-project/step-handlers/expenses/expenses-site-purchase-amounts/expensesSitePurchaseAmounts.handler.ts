@@ -1,4 +1,4 @@
-import { AnswerStepHandler } from "../stepHandler.type";
+import { AnswerStepHandler } from "../../stepHandler.type";
 
 export const ExpensesSitePurchaseAmountsHandler: AnswerStepHandler<"URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS"> =
   {

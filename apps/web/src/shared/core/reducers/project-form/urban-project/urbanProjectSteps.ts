@@ -1,19 +1,22 @@
 import {
   createReconversionProjectSchema,
-  financialAssistanceRevenueSourceSchema,
-  reinstatementExpensesPurposeSchema,
   typedObjectKeys,
-  urbanProjectDevelopmentExpensePurposeSchema,
   urbanProjectTemplateSchema,
-  yearlyBuildingsOperationsExpensePurposeSchema,
-  yearlyBuildingsOperationsRevenuePurposeSchema,
 } from "shared";
 import z from "zod";
 
 import { buildingsUsesFloorSurfaceAreaSchema } from "./step-handlers/buildings/buildings-uses-floor-surface-area/buildingsUsesFloorSurfaceArea.schema";
 import { creationModeSelectionSchema } from "./step-handlers/creation-mode/creation-mode-selection/creationModeSelection.schema";
+import { expensesInstallationSchema } from "./step-handlers/expenses/expenses-installation/expensesInstallation.schema";
+import { expensesProjectedBuildingsOperatingExpensesSchema } from "./step-handlers/expenses/expenses-projected-buildings-operating-expenses/expensesProjectedBuildingsOperatingExpenses.schema";
+import { expensesReinstatementSchema } from "./step-handlers/expenses/expenses-reinstatement/expensesReinstatement.schema";
+import { expensesSitePurchaseAmountsSchema } from "./step-handlers/expenses/expenses-site-purchase-amounts/expensesSitePurchaseAmounts.schema";
 import { namingSchema } from "./step-handlers/naming/naming/naming.schema";
 import { projectPhaseSchema } from "./step-handlers/project-phase/project-phase/projectPhase.schema";
+import { revenueBuildingsOperationsYearlyRevenuesSchema } from "./step-handlers/revenues/revenue-buildings-operations-yearly-revenues/revenueBuildingsOperationsYearlyRevenues.schema";
+import { revenueBuildingsResaleSchema } from "./step-handlers/revenues/revenue-buildings-resale/revenueBuildingsResale.schema";
+import { revenueExpectedSiteResaleSchema } from "./step-handlers/revenues/revenue-expected-site-resale/revenueExpectedSiteResale.schema";
+import { revenueFinancialAssistanceSchema } from "./step-handlers/revenues/revenue-financial-assistance/revenueFinancialAssistance.schema";
 import { scheduleProjectionSchema } from "./step-handlers/schedule/schedule-projection/scheduleProjection.schema";
 import { buildingsResaleSelectionSchema } from "./step-handlers/site-and-buildings-resale/buildings-resale-selection/buildingsResaleSelection.schema";
 import { siteResaleSelectionSchema } from "./step-handlers/site-and-buildings-resale/site-resale-selection/siteResaleSelection.schema";
@@ -109,66 +112,24 @@ export const answersByStepSchemas = {
   URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: buildingsResaleSelectionSchema,
 
   // Custom - expenses
-  URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS: z.object({
-    sitePurchaseSellingPrice: z.number().optional(),
-    sitePurchasePropertyTransferDuties: z.number().optional(),
-  }),
+  URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS: expensesSitePurchaseAmountsSchema,
 
-  URBAN_PROJECT_EXPENSES_REINSTATEMENT: z.object({
-    reinstatementExpenses: z.array(
-      z.object({
-        amount: z.number().nonnegative(),
-        purpose: reinstatementExpensesPurposeSchema,
-      }),
-    ),
-  }),
+  URBAN_PROJECT_EXPENSES_REINSTATEMENT: expensesReinstatementSchema,
 
-  URBAN_PROJECT_EXPENSES_INSTALLATION: z.object({
-    installationExpenses: z.array(
-      z.object({
-        amount: z.number().nonnegative(),
-        purpose: urbanProjectDevelopmentExpensePurposeSchema,
-      }),
-    ),
-  }),
+  URBAN_PROJECT_EXPENSES_INSTALLATION: expensesInstallationSchema,
 
-  URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES: z.object({
-    yearlyProjectedBuildingsOperationsExpenses: z.array(
-      z.object({
-        amount: z.number().nonnegative(),
-        purpose: yearlyBuildingsOperationsExpensePurposeSchema,
-      }),
-    ),
-  }),
+  URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES:
+    expensesProjectedBuildingsOperatingExpensesSchema,
 
   // custom - revenues
-  URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE: z.object({
-    siteResaleExpectedSellingPrice: z.number().optional(),
-    siteResaleExpectedPropertyTransferDuties: z.number().optional(),
-  }),
+  URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE: revenueExpectedSiteResaleSchema,
 
-  URBAN_PROJECT_REVENUE_BUILDINGS_RESALE: z.object({
-    buildingsResaleSellingPrice: z.number().optional(),
-    buildingsResalePropertyTransferDuties: z.number().optional(),
-  }),
+  URBAN_PROJECT_REVENUE_BUILDINGS_RESALE: revenueBuildingsResaleSchema,
 
-  URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES: z.object({
-    yearlyProjectedRevenues: z.array(
-      z.object({
-        amount: z.number().nonnegative(),
-        source: yearlyBuildingsOperationsRevenuePurposeSchema,
-      }),
-    ),
-  }),
+  URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES:
+    revenueBuildingsOperationsYearlyRevenuesSchema,
 
-  URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE: z.object({
-    financialAssistanceRevenues: z.array(
-      z.object({
-        amount: z.number().nonnegative(),
-        source: financialAssistanceRevenueSourceSchema,
-      }),
-    ),
-  }),
+  URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE: revenueFinancialAssistanceSchema,
 
   // custom - schedule, naming, phase
   URBAN_PROJECT_SCHEDULE_PROJECTION: scheduleProjectionSchema,

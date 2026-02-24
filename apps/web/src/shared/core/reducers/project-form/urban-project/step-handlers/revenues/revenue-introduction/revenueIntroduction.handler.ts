@@ -1,6 +1,6 @@
 import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
 
-import { InfoStepHandler } from "../stepHandler.type";
+import { InfoStepHandler } from "../../stepHandler.type";
 
 export const RevenueIntroductionHandler: InfoStepHandler = {
   stepId: "URBAN_PROJECT_REVENUE_INTRODUCTION",

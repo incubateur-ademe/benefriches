@@ -1,9 +1,19 @@
 import { buildingsIntroductionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/buildings/buildings-introduction/buildingsIntroduction.stepperConfig";
 import { buildingsUsesFloorSurfaceAreaStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/buildings/buildings-uses-floor-surface-area/buildingsUsesFloorSurfaceArea.stepperConfig";
 import { creationModeSelectionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/creation-mode/creation-mode-selection/creationModeSelection.stepperConfig";
+import { expensesInstallationStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/expenses/expenses-installation/expensesInstallation.stepperConfig";
+import { expensesIntroductionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/expenses/expenses-introduction/expensesIntroduction.stepperConfig";
+import { expensesProjectedBuildingsOperatingExpensesStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/expenses/expenses-projected-buildings-operating-expenses/expensesProjectedBuildingsOperatingExpenses.stepperConfig";
+import { expensesReinstatementStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/expenses/expenses-reinstatement/expensesReinstatement.stepperConfig";
+import { expensesSitePurchaseAmountsStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/expenses/expenses-site-purchase-amounts/expensesSitePurchaseAmounts.stepperConfig";
 import { namingStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/naming/naming/naming.stepperConfig";
 import { projectPhaseStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/project-phase/project-phase/projectPhase.stepperConfig";
 import { creationResultStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/result/creation-result/creationResult.stepperConfig";
+import { revenueBuildingsOperationsYearlyRevenuesStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/revenues/revenue-buildings-operations-yearly-revenues/revenueBuildingsOperationsYearlyRevenues.stepperConfig";
+import { revenueBuildingsResaleStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/revenues/revenue-buildings-resale/revenueBuildingsResale.stepperConfig";
+import { revenueExpectedSiteResaleStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/revenues/revenue-expected-site-resale/revenueExpectedSiteResale.stepperConfig";
+import { revenueFinancialAssistanceStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/revenues/revenue-financial-assistance/revenueFinancialAssistance.stepperConfig";
+import { revenueIntroductionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/revenues/revenue-introduction/revenueIntroduction.stepperConfig";
 import { scheduleProjectionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/schedule/schedule-projection/scheduleProjection.stepperConfig";
 import { buildingsResaleSelectionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/site-and-buildings-resale/buildings-resale-selection/buildingsResaleSelection.stepperConfig";
 import { siteResaleIntroductionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/site-and-buildings-resale/site-resale-introduction/siteResaleIntroduction.stepperConfig";
@@ -165,42 +175,20 @@ export const STEP_TO_GROUP_MAPPING: StepToGroupMapping = {
   URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: buildingsResaleSelectionStepperConfig,
 
   // Dépenses
-  URBAN_PROJECT_EXPENSES_INTRODUCTION: { groupId: "EXPENSES" },
-  URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS: {
-    groupId: "EXPENSES",
-    subGroupId: "EXPENSES_SITE_PURCHASE",
-  },
-  URBAN_PROJECT_EXPENSES_REINSTATEMENT: {
-    groupId: "EXPENSES",
-    subGroupId: "EXPENSES_SITE_REINSTATEMENT",
-  },
-  URBAN_PROJECT_EXPENSES_INSTALLATION: {
-    groupId: "EXPENSES",
-    subGroupId: "EXPENSES_SITE_INSTALLATION",
-  },
-  URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES: {
-    groupId: "EXPENSES",
-    subGroupId: "EXPENSES_BUILDINGS_OPERATION",
-  },
+  URBAN_PROJECT_EXPENSES_INTRODUCTION: expensesIntroductionStepperConfig,
+  URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS: expensesSitePurchaseAmountsStepperConfig,
+  URBAN_PROJECT_EXPENSES_REINSTATEMENT: expensesReinstatementStepperConfig,
+  URBAN_PROJECT_EXPENSES_INSTALLATION: expensesInstallationStepperConfig,
+  URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES:
+    expensesProjectedBuildingsOperatingExpensesStepperConfig,
 
   // Recettes
-  URBAN_PROJECT_REVENUE_INTRODUCTION: { groupId: "REVENUE" },
-  URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE: {
-    groupId: "REVENUE",
-    subGroupId: "REVENUE_SITE_RESALE",
-  },
-  URBAN_PROJECT_REVENUE_BUILDINGS_RESALE: {
-    groupId: "REVENUE",
-    subGroupId: "REVENUE_BUILDINGS_RESALE",
-  },
-  URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES: {
-    groupId: "REVENUE",
-    subGroupId: "REVENUE_BUILDINGS_OPERATION",
-  },
-  URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE: {
-    groupId: "REVENUE",
-    subGroupId: "REVENUE_FINANCIAL_ASSISTANCE",
-  },
+  URBAN_PROJECT_REVENUE_INTRODUCTION: revenueIntroductionStepperConfig,
+  URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE: revenueExpectedSiteResaleStepperConfig,
+  URBAN_PROJECT_REVENUE_BUILDINGS_RESALE: revenueBuildingsResaleStepperConfig,
+  URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES:
+    revenueBuildingsOperationsYearlyRevenuesStepperConfig,
+  URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE: revenueFinancialAssistanceStepperConfig,
 
   // Calendrier et avancement
   URBAN_PROJECT_SCHEDULE_PROJECTION: scheduleProjectionStepperConfig,

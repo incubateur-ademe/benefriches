@@ -1,6 +1,6 @@
 import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
 
-import { AnswerStepHandler } from "../stepHandler.type";
+import { AnswerStepHandler } from "../../stepHandler.type";
 
 export const RevenueExpectedSiteResaleHandler: AnswerStepHandler<"URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE"> =
   {

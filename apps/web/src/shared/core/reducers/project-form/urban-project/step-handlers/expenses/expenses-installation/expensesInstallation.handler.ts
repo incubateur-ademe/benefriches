@@ -2,7 +2,7 @@ import { computeDefaultInstallationExpensesFromSiteSurfaceArea } from "shared";
 
 import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
 
-import { AnswerStepHandler } from "../stepHandler.type";
+import { AnswerStepHandler } from "../../stepHandler.type";
 
 export const UrbanProjectInstallationExpensesHandler: AnswerStepHandler<"URBAN_PROJECT_EXPENSES_INSTALLATION"> =
   {

@@ -3,7 +3,7 @@ import { ComputedReinstatementExpenses, computeProjectReinstatementExpenses } fr
 import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
 import { AnswersByStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 
-import { AnswerStepHandler, StepContext } from "../stepHandler.type";
+import { AnswerStepHandler, StepContext } from "../../stepHandler.type";
 
 const getDefaultReinstatementExpenses = (context: StepContext) => {
   const soilsDistribution = ReadStateHelper.getProjectSoilDistributionBySoilType(

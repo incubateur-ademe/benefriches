@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { ProjectFormState } from "@/shared/core/reducers/project-form/projectForm.reducer";
-import { UrbanProjectInstallationExpensesHandler } from "@/shared/core/reducers/project-form/urban-project/step-handlers/expenses/expensesInstallation.handler";
+import { UrbanProjectInstallationExpensesHandler } from "@/shared/core/reducers/project-form/urban-project/step-handlers/expenses/expenses-installation/expensesInstallation.handler";
 
 describe("UrbanProjectInstallationExpensesHandler", () => {
   describe("getNextStepId", () => {
