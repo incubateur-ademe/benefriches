@@ -141,15 +141,15 @@ export const getDescriptionForUrbanProjectUse = (use: UrbanProjectUse): string |
       return "Rues, places, pistes cyclables, parkings de surface...";
     // Educational facilities
     case "OTHER_EDUCATIONAL_FACILITY":
-      return "(université, centre de formation)";
+      return "Université, centre de formation...";
     // Health facilities
     case "LOCAL_HEALTH_SERVICE":
-      return "(médecin, pharmacie, laboratoire...)";
+      return "Médecin, pharmacie, laboratoire...";
     case "MEDICAL_SOCIAL_FACILITY":
-      return "(EHPAD, centre d'accueil...)";
+      return "EHPAD, centre d'accueil...";
     // Leisure and culture facilities
     case "RECREATIONAL_FACILITY":
-      return "(aire de jeux, bowling...)";
+      return "Aire de jeux, bowling...";
     case "OFFICES":
     case "PUBLIC_FACILITIES":
     case "OTHER_BUILDING":
