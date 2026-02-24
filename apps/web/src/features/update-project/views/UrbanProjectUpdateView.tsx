@@ -62,22 +62,23 @@ const ScheduleProjectionForm = lazy(
   () => import("@/shared/views/project-form/urban-project/schedule/projection"),
 );
 const BuildingsResaleForm = lazy(
-  () => import("@/shared/views/project-form/urban-project/site-resale/buildings-resale"),
+  () =>
+    import("@/shared/views/project-form/urban-project/site-and-buildings-resale/buildings-resale"),
 );
 const SiteResaleIntroduction = lazy(
-  () => import("@/shared/views/project-form/urban-project/site-resale/introduction"),
+  () => import("@/shared/views/project-form/urban-project/site-and-buildings-resale/introduction"),
 );
 const SiteResaleForm = lazy(
-  () => import("@/shared/views/project-form/urban-project/site-resale/selection"),
+  () => import("@/shared/views/project-form/urban-project/site-and-buildings-resale/selection"),
 );
 const SoilsDecontaminationIntroduction = lazy(
-  () => import("@/shared/views/project-form/urban-project/soils-decontamination/introduction"),
+  () => import("@/shared/views/project-form/urban-project/soils/decontamination-introduction"),
 );
 const SoilsDecontaminationSelection = lazy(
-  () => import("@/shared/views/project-form/urban-project/soils-decontamination/selection"),
+  () => import("@/shared/views/project-form/urban-project/soils/decontamination-selection"),
 );
 const SoilsDecontaminationSurfaceArea = lazy(
-  () => import("@/shared/views/project-form/urban-project/soils-decontamination/surface-area"),
+  () => import("@/shared/views/project-form/urban-project/soils/decontamination-surface-area"),
 );
 const UsesIntroduction = lazy(
   () => import("@/shared/views/project-form/urban-project/uses/introduction"),
@@ -86,18 +87,17 @@ const UsesSelection = lazy(
   () => import("@/shared/views/project-form/urban-project/uses/selection"),
 );
 const UsesFloorSurfaceArea = lazy(
-  () => import("@/shared/views/project-form/urban-project/uses/floor-surface-area"),
+  () => import("@/shared/views/project-form/urban-project/buildings/uses-floor-surface-area"),
 );
 const PublicGreenSpacesSurfaceArea = lazy(
   () => import("@/shared/views/project-form/urban-project/uses/public-green-spaces-surface-area"),
 );
 const PublicGreenSpacesIntroduction = lazy(
-  () =>
-    import("@/shared/views/project-form/urban-project/uses/public-green-spaces-soils-distribution/introduction"),
+  () => import("@/shared/views/project-form/urban-project/spaces/public-green-spaces-introduction"),
 );
 const PublicGreenSpacesSoilsDistribution = lazy(
   () =>
-    import("@/shared/views/project-form/urban-project/uses/public-green-spaces-soils-distribution"),
+    import("@/shared/views/project-form/urban-project/spaces/public-green-spaces-soils-distribution"),
 );
 const SpacesIntroduction = lazy(
   () => import("@/shared/views/project-form/urban-project/spaces/introduction"),
@@ -109,10 +109,10 @@ const SpacesSurfaceArea = lazy(
   () => import("@/shared/views/project-form/urban-project/spaces/surface-area"),
 );
 const UrbanProjectSoilsCarbonStorage = lazy(
-  () => import("@/shared/views/project-form/urban-project/spaces/soils-carbon-summary"),
+  () => import("@/shared/views/project-form/urban-project/soils/carbon-summary"),
 );
 const UrbanProjectSoilsSummary = lazy(
-  () => import("@/shared/views/project-form/urban-project/spaces/soils-summary"),
+  () => import("@/shared/views/project-form/urban-project/soils/summary"),
 );
 const DeveloperForm = lazy(
   () => import("@/shared/views/project-form/urban-project/stakeholders/project-developer"),
