@@ -143,7 +143,6 @@ function SpacesSelectionForm({
       title={getTitle(nonGreenSpacesUses, hasPublicGreenSpaces)}
       instructions={
         <FormInfo>
-          {getUsesDescription(nonGreenSpacesUses, hasPublicGreenSpaces)}
           <h3>Pourquoi est-ce important de bien renseigner les espaces ?</h3>
           <p>
             Pour connaître la typologie des sols et donc la quantité de carbone que pourra stocker
@@ -152,6 +151,7 @@ function SpacesSelectionForm({
         </FormInfo>
       }
     >
+      {getUsesDescription(nonGreenSpacesUses, hasPublicGreenSpaces)}
       <form onSubmit={handleSubmit(onSubmit)}>
         {optionsByCategory.map(({ category, options }) => {
           return (

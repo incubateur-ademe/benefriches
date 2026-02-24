@@ -91,7 +91,6 @@ function SpacesSurfaceAreaForm({
       title={getTitle(nonGreenSpacesUses, hasPublicGreenSpaces)}
       instructions={
         <FormInfo>
-          {getUsesDescription(nonGreenSpacesUses, hasPublicGreenSpaces)}
           <p>
             La surface totale est de <strong>{formatSurfaceArea(totalSurfaceArea)}</strong>.
           </p>
@@ -114,7 +113,9 @@ function SpacesSurfaceAreaForm({
         imgSrc: getPictogramForSoilType(soilType),
         maxSurfaceArea: spacesWithConstraints.find((c) => c.soilType === soilType)?.maxSurfaceArea,
       }))}
-    />
+    >
+      {getUsesDescription(nonGreenSpacesUses, hasPublicGreenSpaces)}
+    </SurfaceAreaDistributionForm>
   );
 }
 

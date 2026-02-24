@@ -38,6 +38,7 @@ type Props = {
   onInputModeChange: (inputMode: "percentage" | "squareMeters") => void;
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
+  children?: ReactNode;
 };
 
 type TotalAllocatedSurfaceAreaInputProps = {
@@ -100,6 +101,7 @@ function SurfaceAreaDistributionForm({
   onInputModeChange,
   onSubmit,
   onBack,
+  children,
 }: Props) {
   const {
     register,
@@ -177,6 +179,7 @@ function SurfaceAreaDistributionForm({
           onSubmit(values);
         })}
       >
+        {children}
         <InputModeSelect value={inputMode} onChange={handleInputModeChange} />
         {surfaces.map(({ label, name, hintText, imgSrc, maxSurfaceArea }) => {
           const maxValue = maxSurfaceArea
