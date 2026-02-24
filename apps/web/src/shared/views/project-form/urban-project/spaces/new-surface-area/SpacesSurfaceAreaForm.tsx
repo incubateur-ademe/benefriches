@@ -9,6 +9,7 @@ import {
 import { useSurfaceAreaInputMode } from "@/features/create-project/views/useSurfaceAreaInputMode";
 import { formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 import { getPictogramForSoilType } from "@/shared/core/label-mapping/soilTypeLabelMapping";
+import { getColorForSoilType } from "@/shared/core/soils";
 import SurfaceAreaDistributionForm from "@/shared/views/components/form/SurfaceAreaDistributionForm/SurfaceAreaDistributionForm";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 
@@ -111,6 +112,7 @@ function SpacesSurfaceAreaForm({
         label: getLabelForSpace(soilType),
         hintText: getHintTextForSoil(soilType, spacesWithConstraints),
         imgSrc: getPictogramForSoilType(soilType),
+        color: getColorForSoilType(soilType),
         maxSurfaceArea: spacesWithConstraints.find((c) => c.soilType === soilType)?.maxSurfaceArea,
       }))}
     >
