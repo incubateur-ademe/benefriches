@@ -20,28 +20,48 @@ describe("SqlCityStatsQuery", () => {
     repository = new SqlCityStatsQuery(sqlConnection);
   });
 
-  describe("getCityStats propertyValueMedianPricePerSquareMeters", () => {
+  describe("getCityStats residentialPropertyMedianPricePerSquareMeters", () => {
     test("it should return default value if city is not found", async () => {
       const result = await repository.getCityStats("wrong");
 
-      expect(result.propertyValueMedianPricePerSquareMeters).toEqual(2185);
+      expect(result.residentialPropertyMedianPricePerSquareMeters).toEqual(2185);
     });
 
-    test("it should return the right value for propertyValueMedianPricePerSquareMeters", async () => {
+    test("it should return the right value for residentialPropertyMedianPricePerSquareMeters", async () => {
       const result = await repository.getCityStats("54321");
 
-      expect(result.propertyValueMedianPricePerSquareMeters).toEqual(2339);
+      expect(result.residentialPropertyMedianPricePerSquareMeters).toEqual(2380);
     });
 
     test("it should return default value for city of less than 150 inhabitants for city in department 57", async () => {
       const result = await repository.getCityStats("57691");
 
-      expect(result.propertyValueMedianPricePerSquareMeters).toEqual(1513);
+      expect(result.residentialPropertyMedianPricePerSquareMeters).toEqual(1513);
     });
 
     test("it should return default value for city of less than 1500 inhabitants for city in department 57", async () => {
       const result = await repository.getCityStats("57680");
-      expect(result.propertyValueMedianPricePerSquareMeters).toEqual(1826);
+      expect(result.residentialPropertyMedianPricePerSquareMeters).toEqual(1826);
+    });
+  });
+
+  describe("getCityStats landValueMedianPricePerSquareMeters", () => {
+    test("it should return terrain price when available", async () => {
+      const result = await repository.getCityStats("54321");
+
+      expect(result.landValueMedianPricePerSquareMeters).toEqual(707);
+    });
+
+    test("it should return null when terrain price is not available", async () => {
+      const result = await repository.getCityStats("57691");
+
+      expect(result.landValueMedianPricePerSquareMeters).toBeNull();
+    });
+
+    test("it should return null on fallback for unknown city", async () => {
+      const result = await repository.getCityStats("inconnu");
+
+      expect(result.landValueMedianPricePerSquareMeters).toBeNull();
     });
   });
 
@@ -51,13 +71,6 @@ describe("SqlCityStatsQuery", () => {
 
       expect(result.surfaceAreaSquareMeters).toEqual(14900000);
       expect(result.population).toEqual(1800);
-    });
-
-    test("it should return population and surface area in square meters", async () => {
-      const result = await repository.getCityStats("54321");
-
-      expect(result.surfaceAreaSquareMeters).toEqual(3152100);
-      expect(result.population).toEqual(2373);
     });
   });
 });

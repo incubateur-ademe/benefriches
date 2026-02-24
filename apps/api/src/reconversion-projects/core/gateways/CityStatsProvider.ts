@@ -1,6 +1,7 @@
 export type CityStats = {
   name: string;
-  propertyValueMedianPricePerSquareMeters: number;
+  residentialPropertyMedianPricePerSquareMeters: number;
+  landValueMedianPricePerSquareMeters: number | null;
   population: number;
   surfaceAreaSquareMeters: number;
 };

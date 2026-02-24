@@ -239,7 +239,7 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<
                   citySquareMetersSurfaceArea: cityStats.surfaceAreaSquareMeters,
                   cityPopulation: cityStats.population,
                   cityPropertyValuePerSquareMeter:
-                    cityStats.propertyValueMedianPricePerSquareMeters,
+                    cityStats.residentialPropertyMedianPricePerSquareMeters,
                 }
               : {
                   siteIsFriche: false,
