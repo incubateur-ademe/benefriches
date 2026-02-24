@@ -37,10 +37,11 @@ const SitePurchaseAmounts = lazy(
   () => import("@/shared/views/project-form/urban-project/expenses/site-purchase-amounts"),
 );
 const YearlyProjectedExpensesForm = lazy(
-  () => import("@/shared/views/project-form/urban-project/expenses/yearly-projected-costs"),
+  () =>
+    import("@/shared/views/project-form/urban-project/expenses/projected-buildings-operating-expenses"),
 );
 const ProjectNameAndDescriptionForm = lazy(
-  () => import("@/shared/views/project-form/urban-project/name-and-description"),
+  () => import("@/shared/views/project-form/urban-project/naming"),
 );
 const ProjectPhaseForm = lazy(
   () => import("@/shared/views/project-form/urban-project/project-phase"),
@@ -55,11 +56,11 @@ const ProjectRevenueIntroduction = lazy(
   () => import("@/shared/views/project-form/urban-project/revenues/introduction"),
 );
 const SiteResaleRevenueForm = lazy(
-  () => import("@/shared/views/project-form/urban-project/revenues/site-resale"),
+  () => import("@/shared/views/project-form/urban-project/revenues/expected-site-resale"),
 );
 const YearlyProjectedRevenueForm = lazy(
   () =>
-    import("@/shared/views/project-form/urban-project/revenues/yearly-buildings-operations-revenues"),
+    import("@/shared/views/project-form/urban-project/revenues/buildings-operations-yearly-revenues"),
 );
 
 const ScheduleProjectionForm = lazy(
@@ -75,7 +76,7 @@ const SiteResaleForm = lazy(
   () => import("@/shared/views/project-form/urban-project/site-resale/selection"),
 );
 const SoilsDecontaminationIntroduction = lazy(
-  () => import("@/shared/views/project-form/urban-project/soils-decontamination/intro"),
+  () => import("@/shared/views/project-form/urban-project/soils-decontamination/introduction"),
 );
 const SoilsDecontaminationSelection = lazy(
   () => import("@/shared/views/project-form/urban-project/soils-decontamination/selection"),
@@ -113,13 +114,13 @@ const SpacesSurfaceArea = lazy(
   () => import("@/shared/views/project-form/urban-project/spaces/surface-area"),
 );
 const UrbanProjectSoilsCarbonStorage = lazy(
-  () => import("@/shared/views/project-form/urban-project/spaces/soils-carbon-storage"),
+  () => import("@/shared/views/project-form/urban-project/spaces/soils-carbon-summary"),
 );
 const UrbanProjectSoilsSummary = lazy(
   () => import("@/shared/views/project-form/urban-project/spaces/soils-summary"),
 );
 const DeveloperForm = lazy(
-  () => import("@/shared/views/project-form/urban-project/stakeholders/developer"),
+  () => import("@/shared/views/project-form/urban-project/stakeholders/project-developer"),
 );
 const ProjectStakeholdersIntroduction = lazy(
   () => import("@/shared/views/project-form/urban-project/stakeholders/introduction"),
