@@ -58,7 +58,7 @@ pnpm --filter web <command>
 pnpm --filter shared <command>
 
 # Common commands
-pnpm --filter api start:dev     # Start API dev server
+pnpm --filter api dev     # Start API dev server
 pnpm --filter web dev           # Start web dev server
 pnpm --filter shared build      # Build shared package (required after changes!)
 ```

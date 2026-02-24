@@ -66,7 +66,7 @@ pnpm --filter api knex:seed-run # chargement des données nécessaires à l'appl
 
 ### Lancement de l'application en mode développement
 ```sh
-pnpm --filter api start:dev
+pnpm --filter api dev
 pnpm --filter web setup-env-vars
 pnpm --filter web dev
 ```
