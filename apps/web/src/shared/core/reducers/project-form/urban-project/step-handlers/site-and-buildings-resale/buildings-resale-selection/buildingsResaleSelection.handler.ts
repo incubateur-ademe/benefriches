@@ -1,7 +1,7 @@
 import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
 
-import { getFutureOperator } from "../../../helpers/stakeholders";
-import { AnswerStepHandler, StepInvalidationRule } from "../stepHandler.type";
+import { getFutureOperator } from "../../../../helpers/stakeholders";
+import { AnswerStepHandler, StepInvalidationRule } from "../../stepHandler.type";
 
 const STEP_ID = "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION";
 

@@ -18,9 +18,9 @@ import { RevenueExpectedSiteResaleHandler } from "./revenues/revenueExpectedSite
 import { RevenueFinancialAssistanceHandler } from "./revenues/revenueFinancialAssistance.handler";
 import { RevenueIntroductionHandler } from "./revenues/revenueIntroduction.handler";
 import { UrbanProjectScheduleProjectionHandler } from "./schedule/schedule-projection/scheduleProjection.handler";
-import { BuildingsResaleSelectionHandler } from "./site-and-buildings-resale/buildingsResaleSelection.handler";
-import { SiteResaleIntroductionHandler } from "./site-and-buildings-resale/siteResaleIntroduction.handler";
-import { SiteResaleSelectionHandler } from "./site-and-buildings-resale/siteResaleSelection.handler";
+import { BuildingsResaleSelectionHandler } from "./site-and-buildings-resale/buildings-resale-selection/buildingsResaleSelection.handler";
+import { SiteResaleIntroductionHandler } from "./site-and-buildings-resale/site-resale-introduction/siteResaleIntroduction.handler";
+import { SiteResaleSelectionHandler } from "./site-and-buildings-resale/site-resale-selection/siteResaleSelection.handler";
 import { SoilsCarbonSummaryHandler } from "./soils/soils-carbon-summary/soilsCarbonSummary.handler";
 import { SoilsDecontaminationIntroductionHandler } from "./soils/soils-decontamination-introduction/soilsDecontaminationIntroduction.handler";
 import { SoilsDecontaminationSelectionHandler } from "./soils/soils-decontamination-selection/soilsDecontaminationSelection.handler";
@@ -31,9 +31,9 @@ import { PublicGreenSpacesSoilsDistributionHandler } from "./spaces/public-green
 import { SpacesIntroductionHandler } from "./spaces/spaces-introduction/spacesIntroduction.handler";
 import { SpacesSelectionHandler } from "./spaces/spaces-selection/spacesSelection.handler";
 import { SpacesSurfaceAreaHandler } from "./spaces/spaces-surface-area/spacesSurfaceArea.handler";
-import { StakeholdersIntroductionHandler } from "./stakeholders/stakeholdersIntroduction.handler";
-import { StakeholdersProjectDeveloperHandler } from "./stakeholders/stakeholdersProjectDeveloper.handler";
-import { StakeholdersReinstatementContractOwnerHandler } from "./stakeholders/stakeholdersReinstatementContractOwner.handler";
+import { StakeholdersIntroductionHandler } from "./stakeholders/stakeholders-introduction/stakeholdersIntroduction.handler";
+import { StakeholdersProjectDeveloperHandler } from "./stakeholders/stakeholders-project-developer/stakeholdersProjectDeveloper.handler";
+import { StakeholdersReinstatementContractOwnerHandler } from "./stakeholders/stakeholders-reinstatement-contract-owner/stakeholdersReinstatementContractOwner.handler";
 import { FinalSummaryHandler } from "./summary/final-summary/finalSummary.handler";
 import { UsesIntroductionHandler } from "./uses/introduction/usesIntroduction.handler";
 import { PublicGreenSpacesSurfaceAreaHandler } from "./uses/public-green-spaces-surface-area/publicGreenSpacesSurfaceArea.handler";

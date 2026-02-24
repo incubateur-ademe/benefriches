@@ -15,11 +15,15 @@ import { creationModeSelectionSchema } from "./step-handlers/creation-mode/creat
 import { namingSchema } from "./step-handlers/naming/naming/naming.schema";
 import { projectPhaseSchema } from "./step-handlers/project-phase/project-phase/projectPhase.schema";
 import { scheduleProjectionSchema } from "./step-handlers/schedule/schedule-projection/scheduleProjection.schema";
+import { buildingsResaleSelectionSchema } from "./step-handlers/site-and-buildings-resale/buildings-resale-selection/buildingsResaleSelection.schema";
+import { siteResaleSelectionSchema } from "./step-handlers/site-and-buildings-resale/site-resale-selection/siteResaleSelection.schema";
 import { soilsDecontaminationSelectionSchema } from "./step-handlers/soils/soils-decontamination-selection/soilsDecontaminationSelection.schema";
 import { soilsDecontaminationSurfaceAreaSchema } from "./step-handlers/soils/soils-decontamination-surface-area/soilsDecontaminationSurfaceArea.schema";
 import { publicGreenSpacesSoilsDistributionSchema } from "./step-handlers/spaces/public-green-spaces-soils-distribution/publicGreenSpacesSoilsDistribution.schema";
 import { spacesSelectionSchema } from "./step-handlers/spaces/spaces-selection/spacesSelection.schema";
 import { spacesSurfaceAreaSchema } from "./step-handlers/spaces/spaces-surface-area/spacesSurfaceArea.schema";
+import { stakeholdersProjectDeveloperSchema } from "./step-handlers/stakeholders/stakeholders-project-developer/stakeholdersProjectDeveloper.schema";
+import { stakeholdersReinstatementContractOwnerSchema } from "./step-handlers/stakeholders/stakeholders-reinstatement-contract-owner/stakeholdersReinstatementContractOwner.schema";
 import { publicGreenSpacesSurfaceAreaSchema } from "./step-handlers/uses/public-green-spaces-surface-area/publicGreenSpacesSurfaceArea.schema";
 import { usesSelectionSchema } from "./step-handlers/uses/selection/usesSelection.schema";
 
@@ -66,20 +70,6 @@ export type UrbanProjectFormData = Omit<ReconversionProject, "developmentPlan"> 
   developmentPlan: Extract<ReconversionProject["developmentPlan"], { type: "URBAN_PROJECT" }>;
 };
 
-const projectStakeholderSchema = z.object({
-  name: z.string(),
-  structureType: z.enum([
-    "unknown",
-    "company",
-    "private_individual",
-    "municipality",
-    "epci",
-    "department",
-    "region",
-    "local_authority",
-  ]),
-});
-
 export const answersByStepSchemas = {
   // Common
   URBAN_PROJECT_CREATE_MODE_SELECTION: creationModeSelectionSchema,
@@ -109,22 +99,14 @@ export const answersByStepSchemas = {
   URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA: buildingsUsesFloorSurfaceAreaSchema,
 
   // custom - stakeholders
-  URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER: z.object({
-    projectDeveloper: projectStakeholderSchema,
-  }),
+  URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER: stakeholdersProjectDeveloperSchema,
 
-  URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER: z.object({
-    reinstatementContractOwner: projectStakeholderSchema,
-  }),
+  URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER:
+    stakeholdersReinstatementContractOwnerSchema,
 
-  URBAN_PROJECT_SITE_RESALE_SELECTION: z.object({
-    siteResaleSelection: z.enum(["yes", "no", "unknown"]),
-  }),
+  URBAN_PROJECT_SITE_RESALE_SELECTION: siteResaleSelectionSchema,
 
-  URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: z.object({
-    buildingsResalePlannedAfterDevelopment: z.boolean(),
-    futureOperator: projectStakeholderSchema.optional(),
-  }),
+  URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: buildingsResaleSelectionSchema,
 
   // Custom - expenses
   URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS: z.object({

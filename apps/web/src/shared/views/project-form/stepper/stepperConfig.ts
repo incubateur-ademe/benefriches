@@ -5,6 +5,9 @@ import { namingStepperConfig } from "@/shared/core/reducers/project-form/urban-p
 import { projectPhaseStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/project-phase/project-phase/projectPhase.stepperConfig";
 import { creationResultStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/result/creation-result/creationResult.stepperConfig";
 import { scheduleProjectionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/schedule/schedule-projection/scheduleProjection.stepperConfig";
+import { buildingsResaleSelectionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/site-and-buildings-resale/buildings-resale-selection/buildingsResaleSelection.stepperConfig";
+import { siteResaleIntroductionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/site-and-buildings-resale/site-resale-introduction/siteResaleIntroduction.stepperConfig";
+import { siteResaleSelectionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/site-and-buildings-resale/site-resale-selection/siteResaleSelection.stepperConfig";
 import { soilsCarbonSummaryStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/soils/soils-carbon-summary/soilsCarbonSummary.stepperConfig";
 import { soilsDecontaminationIntroductionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/soils/soils-decontamination-introduction/soilsDecontaminationIntroduction.stepperConfig";
 import { soilsDecontaminationSelectionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/soils/soils-decontamination-selection/soilsDecontaminationSelection.stepperConfig";
@@ -15,6 +18,9 @@ import { publicGreenSpacesSoilsDistributionStepperConfig } from "@/shared/core/r
 import { spacesIntroductionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/spaces/spaces-introduction/spacesIntroduction.stepperConfig";
 import { spacesSelectionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/spaces/spaces-selection/spacesSelection.stepperConfig";
 import { spacesSurfaceAreaStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/spaces/spaces-surface-area/spacesSurfaceArea.stepperConfig";
+import { stakeholdersIntroductionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/stakeholders/stakeholders-introduction/stakeholdersIntroduction.stepperConfig";
+import { stakeholdersProjectDeveloperStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/stakeholders/stakeholders-project-developer/stakeholdersProjectDeveloper.stepperConfig";
+import { stakeholdersReinstatementContractOwnerStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/stakeholders/stakeholders-reinstatement-contract-owner/stakeholdersReinstatementContractOwner.stepperConfig";
 import { finalSummaryStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/summary/final-summary/finalSummary.stepperConfig";
 import { usesIntroductionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/uses/introduction/usesIntroduction.stepperConfig";
 import { publicGreenSpacesSurfaceAreaStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/uses/public-green-spaces-surface-area/publicGreenSpacesSurfaceArea.stepperConfig";
@@ -148,26 +154,15 @@ export const STEP_TO_GROUP_MAPPING: StepToGroupMapping = {
   URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA: buildingsUsesFloorSurfaceAreaStepperConfig,
 
   // Acteurs
-  URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION: { groupId: "STAKEHOLDERS" },
-  URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER: {
-    groupId: "STAKEHOLDERS",
-    subGroupId: "STAKEHOLDERS_PROJECT_DEVELOPER",
-  },
-  URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER: {
-    groupId: "STAKEHOLDERS",
-    subGroupId: "STAKEHOLDERS_REINSTATEMENT_OWNER",
-  },
+  URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION: stakeholdersIntroductionStepperConfig,
+  URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER: stakeholdersProjectDeveloperStepperConfig,
+  URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER:
+    stakeholdersReinstatementContractOwnerStepperConfig,
 
   // Cession foncière
-  URBAN_PROJECT_SITE_RESALE_INTRODUCTION: { groupId: "SITE_RESALE" },
-  URBAN_PROJECT_SITE_RESALE_SELECTION: {
-    groupId: "SITE_RESALE",
-    subGroupId: "SITE_CESSION",
-  },
-  URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
-    groupId: "SITE_RESALE",
-    subGroupId: "BUILDINGS_CESSION",
-  },
+  URBAN_PROJECT_SITE_RESALE_INTRODUCTION: siteResaleIntroductionStepperConfig,
+  URBAN_PROJECT_SITE_RESALE_SELECTION: siteResaleSelectionStepperConfig,
+  URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: buildingsResaleSelectionStepperConfig,
 
   // Dépenses
   URBAN_PROJECT_EXPENSES_INTRODUCTION: { groupId: "EXPENSES" },
