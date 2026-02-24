@@ -103,14 +103,14 @@ const PublicGreenSpacesSoilsDistribution = lazy(
   () =>
     import("@/shared/views/project-form/urban-project/uses/public-green-spaces-soils-distribution"),
 );
-const NewSpacesIntroduction = lazy(
-  () => import("@/shared/views/project-form/urban-project/spaces/new-introduction"),
+const SpacesIntroduction = lazy(
+  () => import("@/shared/views/project-form/urban-project/spaces/introduction"),
 );
-const NewSpacesSelection = lazy(
-  () => import("@/shared/views/project-form/urban-project/spaces/new-selection"),
+const SpacesSelection = lazy(
+  () => import("@/shared/views/project-form/urban-project/spaces/selection"),
 );
-const NewSpacesSurfaceArea = lazy(
-  () => import("@/shared/views/project-form/urban-project/spaces/new-surface-area"),
+const SpacesSurfaceArea = lazy(
+  () => import("@/shared/views/project-form/urban-project/spaces/surface-area"),
 );
 const UrbanProjectSoilsCarbonStorage = lazy(
   () => import("@/shared/views/project-form/urban-project/spaces/soils-carbon-storage"),
@@ -205,21 +205,21 @@ const getCurrentStepView = (step: UrbanProjectCreationStep): Exclude<ReactNode, 
       return (
         <>
           <HtmlTitle>{`Introduction - Espaces - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
-          <NewSpacesIntroduction />
+          <SpacesIntroduction />
         </>
       );
     case "URBAN_PROJECT_SPACES_SELECTION":
       return (
         <>
           <HtmlTitle>{`Sélection - Espaces - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
-          <NewSpacesSelection />
+          <SpacesSelection />
         </>
       );
     case "URBAN_PROJECT_SPACES_SURFACE_AREA":
       return (
         <>
           <HtmlTitle>{`Répartition - Espaces - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
-          <NewSpacesSurfaceArea />
+          <SpacesSurfaceArea />
         </>
       );
     case "URBAN_PROJECT_SPACES_SOILS_SUMMARY":
