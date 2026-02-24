@@ -6,7 +6,7 @@ import { EvaluationCompletedPayload } from "../../core/actions/compatibilityEval
 import { ReconversionCompatibilityEvaluationResults } from "../../core/actions/compatibilityEvaluationResultsRequested.actions";
 import { ReconversionCompatibilityEvaluationGateway } from "../../core/actions/reconversionCompatibilityEvaluationGateway";
 
-export type MutafrichesEvaluationResultResponse = {
+type MutafrichesEvaluationResultResponse = {
   id: string;
   identifiantParcelle: string;
   enrichissement: {

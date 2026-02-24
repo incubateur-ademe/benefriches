@@ -7,12 +7,12 @@ import type { ProjectFormState } from "@/shared/core/reducers/project-form/proje
 import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
 import type { RootState } from "@/shared/core/store-config/store";
 
-export type SpaceConstraint = {
+type SpaceConstraint = {
   soilType: SoilType;
   maxSurfaceArea: number;
 };
 
-export type SpacesSurfaceAreaViewData = {
+type SpacesSurfaceAreaViewData = {
   selectedSpaces: SoilType[];
   spacesSurfaceAreaDistribution: Partial<Record<SoilType, number>> | undefined;
   totalSurfaceArea: number;

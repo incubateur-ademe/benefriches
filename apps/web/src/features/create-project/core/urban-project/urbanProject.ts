@@ -1,71 +1,9 @@
-import type {
-  UrbanProjectUseWithBuilding,
-  SoilType,
-  UrbanGreenSpace,
-  UrbanProjectUse,
-} from "shared";
-import { getSoilTypeForUrbanGreenSpace } from "shared";
+import type { SoilType, UrbanProjectUse } from "shared";
 
 import {
   getDescriptionForSoilType,
   getLabelForSoilType,
-  getPictogramForSoilType,
 } from "@/shared/core/label-mapping/soilTypeLabelMapping";
-import { getColorForSoilType } from "@/shared/core/soils";
-
-const BUILDINGS_USE_PICTOGRAM_URL_BASE = "/img/pictograms/buildings-uses";
-export const getPictogramUrlForBuildingsUse = (use: UrbanProjectUseWithBuilding): string => {
-  switch (use) {
-    case "RESIDENTIAL":
-      return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/residential.svg`;
-    case "LOCAL_STORE":
-      return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/economic-activity/local-store.svg`;
-    case "LOCAL_SERVICES":
-      return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/economic-activity/local-services.svg`;
-    case "ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES":
-      return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/economic-activity/industrial-and-artisanal-and-shipping-premises.svg`;
-    case "OFFICES":
-      return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/economic-activity/offices.svg`;
-    case "MULTI_STORY_PARKING":
-      return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/multi-story-parking.svg`;
-    case "SPORTS_FACILITIES":
-      return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/sports-facilities.svg`;
-    case "OTHER_CULTURAL_PLACE":
-      return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/leisure-and-culture/other-cultural-place.svg`;
-    case "CINEMA":
-      return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/leisure-and-culture/cinema.svg`;
-    case "MUSEUM":
-      return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/leisure-and-culture/museum.svg`;
-    case "THEATER":
-      return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/leisure-and-culture/theater.svg`;
-    case "RECREATIONAL_FACILITY":
-      return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/leisure-and-culture/recreational-facility.svg`;
-    case "PUBLIC_FACILITIES":
-      return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/public-buildings.svg`;
-    case "KINDERGARTEN_OR_PRIMARY_SCHOOL":
-      return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/education/kindergarten-or-primary-school.svg`;
-    case "SECONDARY_SCHOOL":
-      return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/education/secondary-school.svg`;
-    case "OTHER_EDUCATIONAL_FACILITY":
-      return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/education/other-educational-facility.svg`;
-    case "LOCAL_HEALTH_SERVICE":
-      return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/health/local-health-service.svg`;
-    case "HOSPITAL":
-      return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/health/hospital.svg`;
-    case "MEDICAL_SOCIAL_FACILITY":
-      return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/health/medical-social-facility.svg`;
-    case "OTHER_BUILDING":
-      return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/other.svg`;
-  }
-};
-
-export const getPictogramUrlForUrbanGreenSpace = (space: UrbanGreenSpace): string => {
-  return getPictogramForSoilType(getSoilTypeForUrbanGreenSpace(space));
-};
-
-export const getColorForUrbanGreenSpace = (space: UrbanGreenSpace): string => {
-  return getColorForSoilType(getSoilTypeForUrbanGreenSpace(space));
-};
 
 export const getLabelForUrbanProjectUse = (use: UrbanProjectUse): string => {
   switch (use) {

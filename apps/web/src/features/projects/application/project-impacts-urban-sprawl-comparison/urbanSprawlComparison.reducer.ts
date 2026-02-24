@@ -83,7 +83,7 @@ const urbanSprawlImpactsComparisonSlice = createSlice({
   },
 });
 
-export const { setEvaluationPeriod, setViewMode, setInitialParams, setComparisonSiteNature } =
+export const { setEvaluationPeriod, setViewMode, setComparisonSiteNature } =
   urbanSprawlImpactsComparisonSlice.actions;
 
 export default urbanSprawlImpactsComparisonSlice.reducer;

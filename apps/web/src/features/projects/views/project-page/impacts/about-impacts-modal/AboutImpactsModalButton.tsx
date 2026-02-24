@@ -5,7 +5,7 @@ import DsfrA11yDialog from "@/shared/views/components/Dialog/DsfrA11yDialog";
 
 import AboutImpactsContent from "../../../shared/impacts/AboutImpactsContent";
 
-export const ABOUT_IMPACTS_DIALOG_ID = "about-benefriches-impacts-modal";
+const ABOUT_IMPACTS_DIALOG_ID = "about-benefriches-impacts-modal";
 
 function AboutImpactsModalButton({
   buttonProps,

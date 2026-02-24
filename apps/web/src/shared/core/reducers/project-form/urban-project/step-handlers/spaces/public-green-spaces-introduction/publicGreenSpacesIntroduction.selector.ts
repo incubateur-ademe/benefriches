@@ -5,7 +5,7 @@ import type { SoilsDistribution, SoilType } from "shared";
 
 import type { RootState } from "@/shared/core/store-config/store";
 
-export type PublicGreenSpacesIntroductionViewData = {
+type PublicGreenSpacesIntroductionViewData = {
   existingNaturalSoils: { soilType: SoilType; surfaceArea: number }[];
 };
 

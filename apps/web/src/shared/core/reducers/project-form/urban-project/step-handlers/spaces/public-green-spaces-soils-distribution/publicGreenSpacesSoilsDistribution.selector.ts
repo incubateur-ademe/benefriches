@@ -12,7 +12,7 @@ type SpaceConstraint = {
   maxSurfaceArea: number;
 };
 
-export type PublicGreenSpacesSoilsDistributionViewData = {
+type PublicGreenSpacesSoilsDistributionViewData = {
   availableSoilTypes: SoilType[];
   publicGreenSpacesSoilsDistribution: Partial<Record<SoilType, number>> | undefined;
   totalSurfaceArea: number;

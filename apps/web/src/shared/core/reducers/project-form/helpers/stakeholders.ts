@@ -14,15 +14,6 @@ export const DEFAULT_FUTURE_SITE_OWNER = {
   structureType: "unknown",
 } as const satisfies ProjectStakeholder;
 
-export const getFutureSiteOwner = (
-  siteResalePlannedAfterDevelopment: boolean,
-  currentSiteOwner: ProjectStakeholder | undefined,
-): ProjectStakeholder => {
-  if (siteResalePlannedAfterDevelopment || !currentSiteOwner) return DEFAULT_FUTURE_SITE_OWNER;
-
-  return currentSiteOwner;
-};
-
 const DEFAULT_FUTURE_OPERATOR = {
   name: "Futur exploitant inconnu",
   structureType: "unknown",

@@ -6,7 +6,7 @@ import type { SiteFeatures } from "./site.types";
 
 const selectSelf = (state: RootState) => state.siteFeatures;
 
-export type SiteFeaturesViewData =
+type SiteFeaturesViewData =
   | { loadingState: "idle" | "loading" | "error"; siteFeatures: undefined }
   | { loadingState: "success"; siteFeatures: SiteFeatures };
 

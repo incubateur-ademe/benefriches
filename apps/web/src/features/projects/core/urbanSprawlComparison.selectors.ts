@@ -11,7 +11,7 @@ import type { KeyImpactIndicatorData } from "@/features/projects/domain/projectK
 import type { RootState } from "@/shared/core/store-config/store";
 
 // Page View
-export type UrbanSprawlComparisonViewData = {
+type UrbanSprawlComparisonViewData = {
   comparisonSiteNature: SiteNature | undefined;
   evaluationPeriod: number;
   dataLoadingState: UrbanSprawlImpactsComparisonState["dataLoadingState"];
@@ -52,7 +52,7 @@ export const selectUrbanSprawlComparisonViewData = createSelector(
 );
 
 // Summary View
-export type UrbanSprawlSummaryViewData = {
+type UrbanSprawlSummaryViewData = {
   baseCase: {
     indicators: KeyImpactIndicatorData[];
     siteNature: SiteNature;

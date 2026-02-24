@@ -59,7 +59,7 @@ const selectIsSiteOperated = createSelector(
 // ============================================================================
 
 // Owner Form ViewData
-export type SiteOwnerFormViewData = {
+type SiteOwnerFormViewData = {
   currentUserStructure: UserStructure | undefined;
   siteNature: SiteNature | undefined;
   owner: Owner | undefined;
@@ -82,7 +82,7 @@ export const selectSiteOwnerFormViewData = createSelector(
 );
 
 // Tenant Form ViewData
-export type SiteTenantFormViewData = {
+type SiteTenantFormViewData = {
   tenant: Tenant | undefined;
   localAuthoritiesList: AvailableLocalAuthority[];
 };
@@ -96,7 +96,7 @@ export const selectSiteTenantFormViewData = createSelector(
 );
 
 // Site Operator Form ViewData
-export type SiteOperatorFormViewData = {
+type SiteOperatorFormViewData = {
   siteOwner: Owner | undefined;
   localAuthoritiesList: AvailableLocalAuthority[];
 };
@@ -270,7 +270,7 @@ export const selectSiteYearlyExpensesViewData = createSelector(
 // Income ViewData Selectors
 // ============================================================================
 
-export const selectEstimatedYearlyIncomesForSite = createSelector(
+const selectEstimatedYearlyIncomesForSite = createSelector(
   selectSiteData,
   (siteData): SiteYearlyIncome[] => {
     const { surfaceArea, nature, agriculturalOperationActivity, isSiteOperated } = siteData;
@@ -295,7 +295,7 @@ export const selectEstimatedYearlyIncomesForSite = createSelector(
 );
 
 // ViewData Selector for Yearly Income Form
-export type YearlyIncomeFormViewData = {
+type YearlyIncomeFormViewData = {
   incomesInStore: SiteYearlyIncome[];
   estimatedIncomeAmounts: SiteYearlyIncome[];
 };

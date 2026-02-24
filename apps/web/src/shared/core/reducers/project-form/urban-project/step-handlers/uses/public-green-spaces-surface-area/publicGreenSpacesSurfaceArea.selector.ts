@@ -5,7 +5,7 @@ import type { ProjectFormState } from "@/shared/core/reducers/project-form/proje
 import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
 import type { RootState } from "@/shared/core/store-config/store";
 
-export type PublicGreenSpacesSurfaceAreaViewData = {
+type PublicGreenSpacesSurfaceAreaViewData = {
   publicGreenSpacesSurfaceArea: number | undefined;
   siteSurfaceArea: number;
 };

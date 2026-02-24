@@ -1,7 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { RootState } from "@/shared/core/store-config/store";
-
 import { featureAlertSubscribed } from "./createFeatureAlert.action";
 import { loadFeatureAlerts } from "./loadFeatureAlerts.action";
 import {
@@ -153,7 +151,5 @@ const userFeatureAlertSlice = createSlice({
     );
   },
 });
-
-export const selectUserFeaturesAlerts = (state: RootState) => state.userFeatureAlert;
 
 export default userFeatureAlertSlice.reducer;

@@ -27,7 +27,7 @@ import { ProjectStepGroups } from "../../stepper/stepperConfig";
 import UrbanProjectExpensesSection from "./UrbanProjectExpensesSection";
 import UrbanProjectRevenuesSection from "./UrbanProjectRevenuesSection";
 
-export type UrbanProjectFormSummaryProps = {
+type UrbanProjectFormSummaryProps = {
   projectSummary: ReturnType<typeof getProjectSummary>;
   projectSoilsDistribution: ReconversionProjectSoilsDistribution;
   onNext: () => void;

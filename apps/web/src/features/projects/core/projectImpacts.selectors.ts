@@ -37,7 +37,7 @@ import {
 import type { ModalDataProps } from "../views/project-page/impacts/impact-description-modals/ImpactModalDescription";
 
 // Charts View
-export type ImpactsChartsViewData = {
+type ImpactsChartsViewData = {
   projectName: string;
   economicBalance: EconomicBalance;
   socioEconomicTotalImpact: number;
@@ -77,7 +77,7 @@ export const selectImpactsChartsViewData = createSelector(
 );
 
 // List View
-export type ImpactsListViewData = {
+type ImpactsListViewData = {
   economicBalance: EconomicBalance;
   socioEconomicImpacts: SocioEconomicDetailedImpact;
   environmentImpacts: EnvironmentalImpact[];
@@ -109,7 +109,7 @@ export const selectImpactsListViewData = createSelector(
 );
 
 // Summary View
-export type ImpactsSummaryViewData = {
+type ImpactsSummaryViewData = {
   keyImpactIndicatorsList: KeyImpactIndicatorData[];
   modalData: ModalDataProps;
 };
@@ -123,7 +123,7 @@ export const selectImpactsSummaryViewData = createSelector(
 );
 
 // Page View
-export type ImpactsPageViewData = {
+type ImpactsPageViewData = {
   dataLoadingState: ProjectImpactsState["dataLoadingState"];
   evaluationPeriod: number | undefined;
   currentViewMode: ViewMode;

@@ -31,4 +31,3 @@ function SearchAddressAutocompleteContainer({
 }
 
 export default SearchAddressAutocompleteContainer;
-export type { SearchAddressAutocompleteContainerProps };

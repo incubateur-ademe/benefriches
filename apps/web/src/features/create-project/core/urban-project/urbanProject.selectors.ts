@@ -5,11 +5,11 @@ import { RootState } from "@/shared/core/store-config/store";
 
 export const creationProjectFormSelectors = createUrbanProjectFormSelectors("projectCreation");
 
-const { selectStepState, selectProjectSoilsDistributionByType } = creationProjectFormSelectors;
+const { selectProjectSoilsDistributionByType } = creationProjectFormSelectors;
 
 export const selectUrbanProjectCurrentStep = createSelector(
   [(state: RootState) => state.projectCreation.urbanProject],
   (state) => state.currentStep,
 );
 
-export { selectProjectSoilsDistributionByType, selectStepState };
+export { selectProjectSoilsDistributionByType };

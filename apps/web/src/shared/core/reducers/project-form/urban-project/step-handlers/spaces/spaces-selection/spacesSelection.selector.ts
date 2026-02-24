@@ -26,7 +26,7 @@ const computeSelectableSoils = (siteSoilsDistribution: SoilsDistribution): SoilT
   });
 };
 
-export type SpacesSelectionViewData = {
+type SpacesSelectionViewData = {
   selectedSpaces: SoilType[];
   selectableSoils: SoilType[];
   nonGreenSpacesUses: UrbanProjectUse[];
