@@ -8,45 +8,51 @@ import { mockSiteData } from "./_siteData.mock";
 export const getCurrentStep = (store: { getState: () => RootState }): UrbanProjectCreationStep =>
   store.getState().projectCreation.urbanProject.currentStep;
 
-const createTestState = (
-  options: {
-    siteData?: ProjectCreationState["siteData"];
-    steps?: ProjectCreationState["urbanProject"]["steps"];
-    currentStep?: UrbanProjectCreationStep;
-  } = {},
-): ProjectCreationState => ({
-  ...getInitialState(),
-  urbanProject: {
-    ...getInitialState().urbanProject,
-    steps: options.steps || {},
-    currentStep: options.currentStep || getInitialState().urbanProject.currentStep,
-  },
-  siteData: options.siteData || mockSiteData,
-});
+export class StoreBuilder {
+  preloadedRootState: Pick<RootState, "projectCreation"> = {
+    projectCreation: {
+      ...getInitialState(),
+      siteData: mockSiteData,
+    },
+  };
+  _appDependencies: AppDependencies = getTestAppDependencies();
 
-export const createTestStore = (
-  options: {
-    siteData?: ProjectCreationState["siteData"];
-    steps?: ProjectCreationState["urbanProject"]["steps"];
-    currentStep?: UrbanProjectCreationStep;
-  } = {},
-) => {
-  const store = createStore(getTestAppDependencies(), {
-    projectCreation: createTestState(options),
-  });
-  return store;
-};
+  withSteps(steps: ProjectCreationState["urbanProject"]["steps"]): this {
+    this.preloadedRootState.projectCreation = {
+      ...this.preloadedRootState.projectCreation,
+      urbanProject: {
+        ...this.preloadedRootState.projectCreation.urbanProject,
+        steps,
+      },
+    };
+    return this;
+  }
 
-export const createTestStoreWithDeps = (
-  options: {
-    siteData?: ProjectCreationState["siteData"];
-    steps?: ProjectCreationState["urbanProject"]["steps"];
-    currentStep?: UrbanProjectCreationStep;
-  } = {},
-  depsOverride: Partial<AppDependencies> = {},
-) => {
-  const store = createStore(getTestAppDependencies(depsOverride), {
-    projectCreation: createTestState(options),
-  });
-  return store;
-};
+  withCurrentStep(currentStep: UrbanProjectCreationStep): this {
+    this.preloadedRootState.projectCreation = {
+      ...this.preloadedRootState.projectCreation,
+      urbanProject: {
+        ...this.preloadedRootState.projectCreation.urbanProject,
+        currentStep,
+      },
+    };
+    return this;
+  }
+
+  withSiteData(siteData: ProjectCreationState["siteData"]): this {
+    this.preloadedRootState.projectCreation = {
+      ...this.preloadedRootState.projectCreation,
+      siteData,
+    };
+    return this;
+  }
+
+  withAppDependencies(appDependencies: Partial<AppDependencies>): this {
+    this._appDependencies = getTestAppDependencies(appDependencies);
+    return this;
+  }
+
+  build() {
+    return createStore(this._appDependencies, this.preloadedRootState);
+  }
+}

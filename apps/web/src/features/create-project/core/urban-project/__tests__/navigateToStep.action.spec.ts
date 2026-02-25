@@ -9,15 +9,15 @@ import { describe, it, expect, beforeEach } from "vitest";
 import { Schedule } from "../../project.types";
 import { creationProjectFormUrbanActions } from "../urbanProject.actions";
 import { mockSiteData } from "./_siteData.mock";
-import { createTestStore } from "./_testStoreHelpers";
+import { StoreBuilder } from "./_testStoreHelpers";
 
 const { navigateToStep, requestStepCompletion } = creationProjectFormUrbanActions;
 
 describe("navigateToStep action", () => {
-  let store: ReturnType<typeof createTestStore>;
+  let store: ReturnType<StoreBuilder["build"]>;
 
   beforeEach(() => {
-    store = createTestStore();
+    store = new StoreBuilder().build();
   });
 
   describe("Basic navigateToStep functionality", () => {
@@ -89,9 +89,9 @@ describe("navigateToStep action", () => {
     });
 
     it("should generate different schedule for non-FRICHE site", () => {
-      const storeNonFriche = createTestStore({
-        siteData: { ...mockSiteData, nature: "AGRICULTURAL_OPERATION" },
-      });
+      const storeNonFriche = new StoreBuilder()
+        .withSiteData({ ...mockSiteData, nature: "AGRICULTURAL_OPERATION" })
+        .build();
 
       storeNonFriche.dispatch(navigateToStep({ stepId: "URBAN_PROJECT_SCHEDULE_PROJECTION" }));
 
@@ -105,15 +105,15 @@ describe("navigateToStep action", () => {
     });
 
     it("should not generate defaults when default answers already exist", () => {
-      const storeWithExistingAnswer = createTestStore({
-        steps: {
+      const storeWithExistingAnswer = new StoreBuilder()
+        .withSteps({
           URBAN_PROJECT_NAMING: {
             completed: true,
             payload: { name: "Nom existant" },
             defaultValues: { name: "Projet PV" },
           },
-        },
-      });
+        })
+        .build();
 
       storeWithExistingAnswer.dispatch(navigateToStep({ stepId: "URBAN_PROJECT_NAMING" }));
 
@@ -151,8 +151,8 @@ describe("navigateToStep action", () => {
     });
 
     it("should handle reinstatement expenses with soil distribution context", () => {
-      const storeWithContext = createTestStore({
-        steps: {
+      const storeWithContext = new StoreBuilder()
+        .withSteps({
           URBAN_PROJECT_SPACES_SURFACE_AREA: {
             completed: true,
             payload: {
@@ -164,8 +164,8 @@ describe("navigateToStep action", () => {
               },
             },
           },
-        },
-      });
+        })
+        .build();
 
       storeWithContext.dispatch(navigateToStep({ stepId: "URBAN_PROJECT_EXPENSES_REINSTATEMENT" }));
 
@@ -194,7 +194,7 @@ describe("navigateToStep action", () => {
     it.each(["URBAN_PROJECT_USES_SELECTION", "URBAN_PROJECT_PROJECT_PHASE"] as const)(
       "should handle navigateToStep for steps without default logic",
       (stepId) => {
-        const testStore = createTestStore();
+        const testStore = new StoreBuilder().build();
         testStore.dispatch(navigateToStep({ stepId: stepId }));
 
         const steps = testStore.getState().projectCreation.urbanProject.steps;

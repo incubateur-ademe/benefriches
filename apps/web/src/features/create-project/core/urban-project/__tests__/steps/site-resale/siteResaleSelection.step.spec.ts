@@ -4,7 +4,7 @@ import { ProjectFormState } from "@/shared/core/reducers/project-form/projectFor
 import { DisabledRealEstateValuationService } from "@/shared/infrastructure/real-estate-valuation-service/DisabledRealEstateValuationService";
 
 import { creationProjectFormUrbanActions } from "../../../urbanProject.actions";
-import { createTestStore, createTestStoreWithDeps, getCurrentStep } from "../../_testStoreHelpers";
+import { getCurrentStep, StoreBuilder } from "../../_testStoreHelpers";
 
 const INITIAL_STEPS: ProjectFormState["urbanProject"]["steps"] = {
   URBAN_PROJECT_CREATE_MODE_SELECTION: {
@@ -19,7 +19,7 @@ const INITIAL_STEPS: ProjectFormState["urbanProject"]["steps"] = {
 
 describe("Urban project creation - Steps - site resale selection", () => {
   it("should complete step with 'yes' and add step resale revenue to stepSequence", () => {
-    const store = createTestStore({ steps: INITIAL_STEPS });
+    const store = new StoreBuilder().withSteps(INITIAL_STEPS).build();
 
     store.dispatch(
       creationProjectFormUrbanActions.requestStepCompletion({
@@ -44,7 +44,7 @@ describe("Urban project creation - Steps - site resale selection", () => {
   });
 
   it("should complete step with 'no'", () => {
-    const store = createTestStore({ steps: INITIAL_STEPS });
+    const store = new StoreBuilder().withSteps(INITIAL_STEPS).build();
 
     store.dispatch(
       creationProjectFormUrbanActions.requestStepCompletion({
@@ -69,8 +69,8 @@ describe("Urban project creation - Steps - site resale selection", () => {
   });
 
   it("should complete step with 'yes' and invalidate existing revenue step", () => {
-    const store = createTestStore({
-      steps: {
+    const store = new StoreBuilder()
+      .withSteps({
         URBAN_PROJECT_CREATE_MODE_SELECTION: {
           completed: true,
           payload: { createMode: "custom" },
@@ -83,8 +83,8 @@ describe("Urban project creation - Steps - site resale selection", () => {
           completed: true,
           payload: { siteResaleExpectedSellingPrice: 140000 },
         },
-      },
-    });
+      })
+      .build();
 
     store.dispatch(
       creationProjectFormUrbanActions.requestStepCompletion({
@@ -116,8 +116,8 @@ describe("Urban project creation - Steps - site resale selection", () => {
   });
 
   it("should complete step with 'no' and delete existing revenue step", () => {
-    const store = createTestStore({
-      steps: {
+    const store = new StoreBuilder()
+      .withSteps({
         URBAN_PROJECT_CREATE_MODE_SELECTION: {
           completed: true,
           payload: { createMode: "custom" },
@@ -130,8 +130,8 @@ describe("Urban project creation - Steps - site resale selection", () => {
           completed: true,
           payload: { siteResaleExpectedSellingPrice: 1000 },
         },
-      },
-    });
+      })
+      .build();
 
     store.dispatch(
       creationProjectFormUrbanActions.requestStepCompletion({
@@ -159,29 +159,27 @@ describe("Urban project creation - Steps - site resale selection", () => {
   });
 
   it("should handle estimation failure when 'unknown' is selected and valuation service returns error", async () => {
-    const store = createTestStoreWithDeps(
-      {
-        steps: INITIAL_STEPS,
-        siteData: {
-          id: "test-site",
-          name: "Test Site",
-          surfaceArea: 10000,
-          nature: "FRICHE",
-          isExpressSite: false,
-          owner: { name: "Test Owner", structureType: "company" },
-          soilsDistribution: {},
-          address: {
-            city: "Test City",
-            cityCode: "12345",
-            value: "Test Address",
-            postCode: "12345",
-            long: 0,
-            lat: 0,
-          },
+    const store = new StoreBuilder()
+      .withSteps(INITIAL_STEPS)
+      .withSiteData({
+        id: "test-site",
+        name: "Test Site",
+        surfaceArea: 10000,
+        nature: "FRICHE",
+        isExpressSite: false,
+        owner: { name: "Test Owner", structureType: "company" },
+        soilsDistribution: {},
+        address: {
+          city: "Test City",
+          cityCode: "12345",
+          value: "Test Address",
+          postCode: "12345",
+          long: 0,
+          lat: 0,
         },
-      },
-      { realEstateValuationService: new DisabledRealEstateValuationService() },
-    );
+      })
+      .withAppDependencies({ realEstateValuationService: new DisabledRealEstateValuationService() })
+      .build();
 
     store.dispatch(
       creationProjectFormUrbanActions.requestStepCompletion({
@@ -208,9 +206,9 @@ describe("Urban project creation - Steps - site resale selection", () => {
   });
 
   it("should complete step with 'unknown' and pre-populate revenue step with estimated values", async () => {
-    const store = createTestStore({
-      steps: INITIAL_STEPS,
-      siteData: {
+    const store = new StoreBuilder()
+      .withSteps(INITIAL_STEPS)
+      .withSiteData({
         id: "test-site",
         name: "Test Site",
         surfaceArea: 10000,
@@ -226,8 +224,8 @@ describe("Urban project creation - Steps - site resale selection", () => {
           long: 0,
           lat: 0,
         },
-      },
-    });
+      })
+      .build();
 
     store.dispatch(
       creationProjectFormUrbanActions.requestStepCompletion({

@@ -3,7 +3,7 @@ import { describe, it } from "vitest";
 import { ProjectFormState } from "@/shared/core/reducers/project-form/projectForm.reducer";
 
 import { creationProjectFormUrbanActions } from "../../../urbanProject.actions";
-import { createTestStore, getCurrentStep } from "../../_testStoreHelpers";
+import { getCurrentStep, StoreBuilder } from "../../_testStoreHelpers";
 
 const INITIAL_STEPS: ProjectFormState["urbanProject"]["steps"] = {
   URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER: {
@@ -26,7 +26,7 @@ const INITIAL_STEPS: ProjectFormState["urbanProject"]["steps"] = {
 
 describe("Urban project creation - Steps - buildings resale selection", () => {
   it("should complete step with true and automaticaly completed future site operator and add related step revenue to stepSequence", () => {
-    const store = createTestStore({ steps: INITIAL_STEPS });
+    const store = new StoreBuilder().withSteps(INITIAL_STEPS).build();
 
     store.dispatch(
       creationProjectFormUrbanActions.requestStepCompletion({
@@ -64,9 +64,7 @@ describe("Urban project creation - Steps - buildings resale selection", () => {
   });
 
   it("should complete step with false, add steps related to buildings operations revenues and expenses to step sequences", () => {
-    const store = createTestStore({
-      steps: INITIAL_STEPS,
-    });
+    const store = new StoreBuilder().withSteps(INITIAL_STEPS).build();
 
     store.dispatch(
       creationProjectFormUrbanActions.requestStepCompletion({
@@ -100,8 +98,8 @@ describe("Urban project creation - Steps - buildings resale selection", () => {
   });
 
   it("should complete step with true and remove steps related to building operation if exist", () => {
-    const store = createTestStore({
-      steps: {
+    const store = new StoreBuilder()
+      .withSteps({
         ...INITIAL_STEPS,
         URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
           completed: true,
@@ -128,8 +126,8 @@ describe("Urban project creation - Steps - buildings resale selection", () => {
             yearlyProjectedRevenues: [{ source: "rent", amount: 5000 }],
           },
         },
-      },
-    });
+      })
+      .build();
 
     store.dispatch(
       creationProjectFormUrbanActions.requestStepCompletion({
@@ -175,8 +173,8 @@ describe("Urban project creation - Steps - buildings resale selection", () => {
   });
 
   it("should complete step with false and remove steps related to resale buildings revenue if exist", () => {
-    const store = createTestStore({
-      steps: {
+    const store = new StoreBuilder()
+      .withSteps({
         ...INITIAL_STEPS,
         URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
           completed: true,
@@ -203,8 +201,8 @@ describe("Urban project creation - Steps - buildings resale selection", () => {
             yearlyProjectedRevenues: [],
           },
         },
-      },
-    });
+      })
+      .build();
 
     store.dispatch(
       creationProjectFormUrbanActions.requestStepCompletion({

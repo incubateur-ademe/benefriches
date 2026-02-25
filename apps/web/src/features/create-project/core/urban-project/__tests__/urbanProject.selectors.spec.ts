@@ -5,7 +5,7 @@ import { AnswerStepId } from "@/shared/core/reducers/project-form/urban-project/
 import { ProjectCreationState } from "../../createProject.reducer";
 import { creationProjectFormSelectors } from "../urbanProject.selectors";
 import { mockSiteData } from "./_siteData.mock";
-import { createTestStore } from "./_testStoreHelpers";
+import { StoreBuilder } from "./_testStoreHelpers";
 
 describe("urbanProject.selectors", () => {
   describe("selectStepAnswers", () => {
@@ -19,10 +19,10 @@ describe("urbanProject.selectors", () => {
         },
       } satisfies ProjectCreationState["urbanProject"]["steps"];
 
-      const store = createTestStore({
-        steps: initialSteps,
-        currentStep: "URBAN_PROJECT_USES_SELECTION",
-      });
+      const store = new StoreBuilder()
+        .withSteps(initialSteps)
+        .withCurrentStep("URBAN_PROJECT_USES_SELECTION")
+        .build();
 
       const rootState = store.getState();
 
@@ -36,7 +36,7 @@ describe("urbanProject.selectors", () => {
     });
 
     it("should return undefined when no answer", () => {
-      const store = createTestStore({ steps: {} });
+      const store = new StoreBuilder().withSteps({}).build();
       const rootState = store.getState();
 
       const selector = creationProjectFormSelectors.selectStepAnswers(
@@ -47,16 +47,16 @@ describe("urbanProject.selectors", () => {
     });
 
     it("should return default answers if exists and no payload answers", () => {
-      const store = createTestStore({
-        steps: {
+      const store = new StoreBuilder()
+        .withSteps({
           URBAN_PROJECT_USES_SELECTION: {
             completed: true,
             defaultValues: {
               usesSelection: ["RESIDENTIAL"],
             },
           },
-        },
-      });
+        })
+        .build();
       const rootState = store.getState();
       const selector = creationProjectFormSelectors.selectStepAnswers(
         "URBAN_PROJECT_USES_SELECTION",
@@ -68,8 +68,8 @@ describe("urbanProject.selectors", () => {
     });
 
     it("should return payload answers even if there is default answers", () => {
-      const store = createTestStore({
-        steps: {
+      const store = new StoreBuilder()
+        .withSteps({
           URBAN_PROJECT_USES_SELECTION: {
             completed: true,
             defaultValues: {
@@ -79,8 +79,8 @@ describe("urbanProject.selectors", () => {
               usesSelection: ["PUBLIC_GREEN_SPACES"],
             },
           },
-        },
-      });
+        })
+        .build();
       const rootState = store.getState();
 
       const selector = creationProjectFormSelectors.selectStepAnswers(
@@ -95,7 +95,7 @@ describe("urbanProject.selectors", () => {
 
   describe("selectProjectSoilsDistributionByType", () => {
     it("should return empty object when there is no space categories filled", () => {
-      const store = createTestStore();
+      const store = new StoreBuilder().build();
       const rootState = store.getState();
       const result = creationProjectFormSelectors.selectProjectSoilsDistributionByType(rootState);
 
@@ -105,15 +105,15 @@ describe("urbanProject.selectors", () => {
 
   describe("selectPublicGreenSpacesSoilsDistributionViewData", () => {
     it("should include constrained soil types from default answers even when not present on site", () => {
-      const store = createTestStore({
-        siteData: {
+      const store = new StoreBuilder()
+        .withSiteData({
           ...mockSiteData,
           soilsDistribution: {
             BUILDINGS: 2250,
             CULTIVATION: 42750,
           },
-        },
-        steps: {
+        })
+        .withSteps({
           URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA: {
             completed: true,
             payload: {
@@ -130,8 +130,8 @@ describe("urbanProject.selectors", () => {
               },
             },
           },
-        },
-      });
+        })
+        .build();
 
       const rootState = store.getState();
       const result =

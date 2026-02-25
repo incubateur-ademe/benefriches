@@ -3,7 +3,7 @@ import { describe, it, expect } from "vitest";
 
 import { creationProjectFormUrbanActions } from "../urbanProject.actions";
 import { mockSiteData } from "./_siteData.mock";
-import { createTestStore } from "./_testStoreHelpers";
+import { StoreBuilder } from "./_testStoreHelpers";
 
 const { navigateToNext, navigateToPrevious, requestStepCompletion } =
   creationProjectFormUrbanActions;
@@ -28,9 +28,9 @@ const testScenarios = {
 describe("urbanProject.reducer - Navigation Consistency Tests", () => {
   describe("Previous/Next consistency for each step", () => {
     it("should navigate from buildings introduction to soils carbon summary when uses include buildings", () => {
-      const storeWithBuildings = createTestStore({
-        siteData: testScenarios.withBuildingsAndContamination,
-        steps: {
+      const storeWithBuildings = new StoreBuilder()
+        .withSiteData(testScenarios.withBuildingsAndContamination)
+        .withSteps({
           URBAN_PROJECT_USES_SELECTION: {
             completed: true,
             payload: { usesSelection: ["RESIDENTIAL", "PUBLIC_GREEN_SPACES"] },
@@ -43,9 +43,9 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
             completed: true,
             payload: { decontaminatedSurfaceArea: 1500 },
           },
-        },
-        currentStep: "URBAN_PROJECT_BUILDINGS_INTRODUCTION",
-      });
+        })
+        .withCurrentStep("URBAN_PROJECT_BUILDINGS_INTRODUCTION")
+        .build();
 
       storeWithBuildings.dispatch(navigateToPrevious());
       expect(storeWithBuildings.getState().projectCreation.urbanProject.currentStep).toBe(
@@ -54,16 +54,16 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
     });
 
     it("should handle stakeholders navigation based on site nature", () => {
-      const storeFriche = createTestStore({
-        siteData: testScenarios.withBuildingsAndContamination,
-        steps: {
+      const storeFriche = new StoreBuilder()
+        .withSiteData(testScenarios.withBuildingsAndContamination)
+        .withSteps({
           URBAN_PROJECT_USES_SELECTION: {
             completed: true,
             payload: { usesSelection: ["RESIDENTIAL"] },
           },
-        },
-        currentStep: "URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION",
-      });
+        })
+        .withCurrentStep("URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION")
+        .build();
 
       storeFriche.dispatch(navigateToNext());
       expect(storeFriche.getState().projectCreation.urbanProject.currentStep).toBe(
@@ -85,16 +85,16 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
         "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER",
       );
 
-      const storeNonFriche = createTestStore({
-        siteData: testScenarios.nonFriche,
-        steps: {
+      const storeNonFriche = new StoreBuilder()
+        .withSiteData(testScenarios.nonFriche)
+        .withSteps({
           URBAN_PROJECT_USES_SELECTION: {
             completed: true,
             payload: { usesSelection: ["PUBLIC_GREEN_SPACES"] },
           },
-        },
-        currentStep: "URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION",
-      });
+        })
+        .withCurrentStep("URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION")
+        .build();
 
       storeNonFriche.dispatch(navigateToNext());
       storeNonFriche.dispatch(
@@ -110,9 +110,9 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
     });
 
     it("should handle expenses navigation based on site nature", () => {
-      const storeFriche = createTestStore({
-        siteData: testScenarios.withBuildingsAndContamination,
-        steps: {
+      const storeFriche = new StoreBuilder()
+        .withSiteData(testScenarios.withBuildingsAndContamination)
+        .withSteps({
           URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER: {
             completed: true,
             payload: { projectDeveloper: { name: "Test", structureType: "company" } },
@@ -129,9 +129,9 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
             completed: true,
             payload: { buildingsResalePlannedAfterDevelopment: false },
           },
-        },
-        currentStep: "URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS",
-      });
+        })
+        .withCurrentStep("URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS")
+        .build();
 
       storeFriche.dispatch(
         requestStepCompletion({
@@ -149,10 +149,10 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
         "URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS",
       );
 
-      const storeNonFriche = createTestStore({
-        siteData: testScenarios.nonFriche,
-        currentStep: "URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS",
-      });
+      const storeNonFriche = new StoreBuilder()
+        .withSiteData(testScenarios.nonFriche)
+        .withCurrentStep("URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS")
+        .build();
 
       storeNonFriche.dispatch(
         requestStepCompletion({
@@ -167,8 +167,8 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
     });
 
     it("should handle revenue navigation based on building and site resale decisions", () => {
-      const store = createTestStore({
-        steps: {
+      const store = new StoreBuilder()
+        .withSteps({
           URBAN_PROJECT_USES_SELECTION: {
             completed: true,
             payload: { usesSelection: ["RESIDENTIAL"] },
@@ -181,9 +181,9 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
             payload: { buildingsResalePlannedAfterDevelopment: false },
             completed: true,
           },
-        },
-        currentStep: "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE",
-      });
+        })
+        .withCurrentStep("URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE")
+        .build();
 
       store.dispatch(
         requestStepCompletion({
@@ -205,7 +205,7 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
 
   describe("Bidirectional navigation consistency", () => {
     it("should handle edge cases in navigation consistency", () => {
-      const store = createTestStore();
+      const store = new StoreBuilder().build();
 
       store.dispatch(navigateToNext());
 
@@ -222,9 +222,9 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
 
     it("should navigate from buildings introduction to soils carbon summary when uses include buildings", () => {
       // When uses include buildings, buildings introduction always goes back to soils carbon summary
-      const storeNone = createTestStore({
-        siteData: testScenarios.withBuildingsAndContamination,
-        steps: {
+      const storeNone = new StoreBuilder()
+        .withSiteData(testScenarios.withBuildingsAndContamination)
+        .withSteps({
           URBAN_PROJECT_USES_SELECTION: {
             completed: true,
             payload: { usesSelection: ["RESIDENTIAL"] },
@@ -237,9 +237,9 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
             completed: true,
             payload: { decontaminatedSurfaceArea: 0 },
           },
-        },
-        currentStep: "URBAN_PROJECT_BUILDINGS_INTRODUCTION",
-      });
+        })
+        .withCurrentStep("URBAN_PROJECT_BUILDINGS_INTRODUCTION")
+        .build();
 
       storeNone.dispatch(navigateToPrevious());
       expect(storeNone.getState().projectCreation.urbanProject.currentStep).toBe(

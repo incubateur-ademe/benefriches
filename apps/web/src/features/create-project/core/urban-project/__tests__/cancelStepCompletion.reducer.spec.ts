@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 
 import { ProjectCreationState } from "../../createProject.reducer";
 import { creationProjectFormUrbanActions } from "../urbanProject.actions";
-import { createTestStore } from "./_testStoreHelpers";
+import { StoreBuilder } from "./_testStoreHelpers";
 
 const { cancelStepCompletion, requestStepCompletion } = creationProjectFormUrbanActions;
 
@@ -28,10 +28,10 @@ describe("urbanProject.reducer - cancelStepCompletion action", () => {
       },
     } satisfies ProjectCreationState["urbanProject"]["steps"];
 
-    const store = createTestStore({
-      steps: initialSteps,
-      currentStep: "URBAN_PROJECT_USES_SELECTION",
-    });
+    const store = new StoreBuilder()
+      .withSteps(initialSteps)
+      .withCurrentStep("URBAN_PROJECT_USES_SELECTION")
+      .build();
 
     // Modification: remove RESIDENTIAL from uses (triggers cascading changes on buildings)
     store.dispatch(

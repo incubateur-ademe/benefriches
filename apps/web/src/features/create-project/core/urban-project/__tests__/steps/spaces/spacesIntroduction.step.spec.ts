@@ -1,14 +1,14 @@
 import { describe, it, expect } from "vitest";
 
 import { creationProjectFormUrbanActions } from "../../../urbanProject.actions";
-import { createTestStore, getCurrentStep } from "../../_testStoreHelpers";
+import { getCurrentStep, StoreBuilder } from "../../_testStoreHelpers";
 
 describe("Urban project creation - Steps - Spaces introduction", () => {
   it("should go to URBAN_PROJECT_PUBLIC_GREEN_SPACES_INTRODUCTION when PUBLIC_GREEN_SPACES selected and site has constrained soils", () => {
     // mockSiteData has PRAIRIE_GRASS: 2000 (constrained soil)
-    const store = createTestStore({
-      currentStep: "URBAN_PROJECT_SPACES_INTRODUCTION",
-      steps: {
+    const store = new StoreBuilder()
+      .withCurrentStep("URBAN_PROJECT_SPACES_INTRODUCTION")
+      .withSteps({
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL", "PUBLIC_GREEN_SPACES"] },
@@ -17,8 +17,8 @@ describe("Urban project creation - Steps - Spaces introduction", () => {
           completed: true,
           payload: { usesFloorSurfaceAreaDistribution: { RESIDENTIAL: 8000 } },
         },
-      },
-    });
+      })
+      .build();
 
     store.dispatch(creationProjectFormUrbanActions.navigateToNext());
 
@@ -26,9 +26,9 @@ describe("Urban project creation - Steps - Spaces introduction", () => {
   });
 
   it("should go to URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION when PUBLIC_GREEN_SPACES selected and site has no constrained soils", () => {
-    const store = createTestStore({
-      currentStep: "URBAN_PROJECT_SPACES_INTRODUCTION",
-      siteData: {
+    const store = new StoreBuilder()
+      .withCurrentStep("URBAN_PROJECT_SPACES_INTRODUCTION")
+      .withSiteData({
         id: "site-id",
         name: "Site without natural soils",
         address: {
@@ -56,14 +56,14 @@ describe("Urban project creation - Steps - Spaces introduction", () => {
           IMPERMEABLE_SOILS: 3000,
           MINERAL_SOIL: 3000,
         },
-      },
-      steps: {
+      })
+      .withSteps({
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["PUBLIC_GREEN_SPACES"] },
         },
-      },
-    });
+      })
+      .build();
 
     store.dispatch(creationProjectFormUrbanActions.navigateToNext());
 
@@ -71,9 +71,9 @@ describe("Urban project creation - Steps - Spaces introduction", () => {
   });
 
   it("should go to URBAN_PROJECT_SPACES_SELECTION when PUBLIC_GREEN_SPACES not selected", () => {
-    const store = createTestStore({
-      currentStep: "URBAN_PROJECT_SPACES_INTRODUCTION",
-      steps: {
+    const store = new StoreBuilder()
+      .withCurrentStep("URBAN_PROJECT_SPACES_INTRODUCTION")
+      .withSteps({
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL"] },
@@ -82,8 +82,8 @@ describe("Urban project creation - Steps - Spaces introduction", () => {
           completed: true,
           payload: { usesFloorSurfaceAreaDistribution: { RESIDENTIAL: 8000 } },
         },
-      },
-    });
+      })
+      .build();
 
     store.dispatch(creationProjectFormUrbanActions.navigateToNext());
 
@@ -91,9 +91,9 @@ describe("Urban project creation - Steps - Spaces introduction", () => {
   });
 
   it("should go back to URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA when building uses exist with PUBLIC_GREEN_SPACES", () => {
-    const store = createTestStore({
-      currentStep: "URBAN_PROJECT_SPACES_INTRODUCTION",
-      steps: {
+    const store = new StoreBuilder()
+      .withCurrentStep("URBAN_PROJECT_SPACES_INTRODUCTION")
+      .withSteps({
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL", "PUBLIC_GREEN_SPACES"] },
@@ -102,8 +102,8 @@ describe("Urban project creation - Steps - Spaces introduction", () => {
           completed: true,
           payload: { publicGreenSpacesSurfaceArea: 5000 },
         },
-      },
-    });
+      })
+      .build();
 
     store.dispatch(creationProjectFormUrbanActions.navigateToPrevious());
 
@@ -111,15 +111,15 @@ describe("Urban project creation - Steps - Spaces introduction", () => {
   });
 
   it("should go back to URBAN_PROJECT_USES_SELECTION when building uses exist without PUBLIC_GREEN_SPACES", () => {
-    const store = createTestStore({
-      currentStep: "URBAN_PROJECT_SPACES_INTRODUCTION",
-      steps: {
+    const store = new StoreBuilder()
+      .withCurrentStep("URBAN_PROJECT_SPACES_INTRODUCTION")
+      .withSteps({
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL"] },
         },
-      },
-    });
+      })
+      .build();
 
     store.dispatch(creationProjectFormUrbanActions.navigateToPrevious());
 
@@ -127,15 +127,15 @@ describe("Urban project creation - Steps - Spaces introduction", () => {
   });
 
   it("should go back to URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA when PUBLIC_GREEN_SPACES is selected without building uses", () => {
-    const store = createTestStore({
-      currentStep: "URBAN_PROJECT_SPACES_INTRODUCTION",
-      steps: {
+    const store = new StoreBuilder()
+      .withCurrentStep("URBAN_PROJECT_SPACES_INTRODUCTION")
+      .withSteps({
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["PUBLIC_GREEN_SPACES", "OTHER_PUBLIC_SPACES"] },
         },
-      },
-    });
+      })
+      .build();
 
     store.dispatch(creationProjectFormUrbanActions.navigateToPrevious());
 
@@ -143,15 +143,15 @@ describe("Urban project creation - Steps - Spaces introduction", () => {
   });
 
   it("should go back to URBAN_PROJECT_USES_SELECTION when no PUBLIC_GREEN_SPACES and no building uses", () => {
-    const store = createTestStore({
-      currentStep: "URBAN_PROJECT_SPACES_INTRODUCTION",
-      steps: {
+    const store = new StoreBuilder()
+      .withCurrentStep("URBAN_PROJECT_SPACES_INTRODUCTION")
+      .withSteps({
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["OTHER_PUBLIC_SPACES"] },
         },
-      },
-    });
+      })
+      .build();
 
     store.dispatch(creationProjectFormUrbanActions.navigateToPrevious());
 

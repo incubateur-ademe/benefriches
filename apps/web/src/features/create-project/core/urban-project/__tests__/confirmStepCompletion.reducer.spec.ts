@@ -3,7 +3,7 @@ import { describe, it, expect } from "vitest";
 import { ProjectCreationState } from "../../createProject.reducer";
 import { creationProjectFormUrbanActions } from "../urbanProject.actions";
 import { mockSiteData } from "./_siteData.mock";
-import { createTestStore } from "./_testStoreHelpers";
+import { StoreBuilder } from "./_testStoreHelpers";
 
 const { confirmStepCompletion, requestStepCompletion } = creationProjectFormUrbanActions;
 
@@ -28,7 +28,7 @@ describe("urbanProject.reducer - confirmStepCompletion action", () => {
           },
         } satisfies ProjectCreationState["urbanProject"]["steps"];
 
-        const store = createTestStore({ steps: initialSteps });
+        const store = new StoreBuilder().withSteps(initialSteps).build();
 
         store.dispatch(
           requestStepCompletion({
@@ -66,9 +66,7 @@ describe("urbanProject.reducer - confirmStepCompletion action", () => {
           },
         } satisfies ProjectCreationState["urbanProject"]["steps"];
 
-        const store = createTestStore({
-          steps: initialSteps,
-        });
+        const store = new StoreBuilder().withSteps(initialSteps).build();
 
         store.dispatch(
           requestStepCompletion({
@@ -110,9 +108,7 @@ describe("urbanProject.reducer - confirmStepCompletion action", () => {
           },
         } satisfies ProjectCreationState["urbanProject"]["steps"];
 
-        const store = createTestStore({
-          steps: initialSteps,
-        });
+        const store = new StoreBuilder().withSteps(initialSteps).build();
 
         store.dispatch(
           requestStepCompletion({
@@ -131,10 +127,10 @@ describe("urbanProject.reducer - confirmStepCompletion action", () => {
       });
 
       it('should automatically set decontamination surface area for "none" plan', () => {
-        const store = createTestStore({
-          currentStep: "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
-          siteData: { ...mockSiteData, hasContaminatedSoils: true },
-        });
+        const store = new StoreBuilder()
+          .withCurrentStep("URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION")
+          .withSiteData({ ...mockSiteData, hasContaminatedSoils: true })
+          .build();
 
         store.dispatch(
           requestStepCompletion({
@@ -153,14 +149,14 @@ describe("urbanProject.reducer - confirmStepCompletion action", () => {
 
       it('should automatically set decontamination surface area for "unknown" plan', () => {
         const contaminatedSoilSurface = 1000;
-        const store = createTestStore({
-          currentStep: "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
-          siteData: {
+        const store = new StoreBuilder()
+          .withCurrentStep("URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION")
+          .withSiteData({
             ...mockSiteData,
             hasContaminatedSoils: true,
             contaminatedSoilSurface,
-          },
-        });
+          })
+          .build();
 
         store.dispatch(
           requestStepCompletion({

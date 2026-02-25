@@ -3,12 +3,12 @@ import { describe, it, expect } from "vitest";
 import { ProjectFormState } from "@/shared/core/reducers/project-form/projectForm.reducer";
 
 import { creationProjectFormUrbanActions } from "../../../urbanProject.actions";
-import { createTestStore, getCurrentStep } from "../../_testStoreHelpers";
+import { getCurrentStep, StoreBuilder } from "../../_testStoreHelpers";
 
 describe("Urban project creation - Steps - public green spaces soils distribution", () => {
   it("should complete step and navigate to URBAN_PROJECT_SPACES_SELECTION when other uses are selected", () => {
-    const store = createTestStore({
-      steps: {
+    const store = new StoreBuilder()
+      .withSteps({
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL", "PUBLIC_GREEN_SPACES"] },
@@ -17,8 +17,8 @@ describe("Urban project creation - Steps - public green spaces soils distributio
           completed: true,
           payload: { publicGreenSpacesSurfaceArea: 5000 },
         },
-      },
-    });
+      })
+      .build();
 
     store.dispatch(
       creationProjectFormUrbanActions.requestStepCompletion({
@@ -61,8 +61,8 @@ describe("Urban project creation - Steps - public green spaces soils distributio
   });
 
   it("should complete step and navigate to URBAN_PROJECT_SPACES_SOILS_SUMMARY when only public green spaces is selected", () => {
-    const store = createTestStore({
-      steps: {
+    const store = new StoreBuilder()
+      .withSteps({
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["PUBLIC_GREEN_SPACES"] },
@@ -71,8 +71,8 @@ describe("Urban project creation - Steps - public green spaces soils distributio
           completed: true,
           payload: { publicGreenSpacesSurfaceArea: 10000 },
         },
-      },
-    });
+      })
+      .build();
 
     store.dispatch(
       creationProjectFormUrbanActions.requestStepCompletion({
@@ -91,9 +91,9 @@ describe("Urban project creation - Steps - public green spaces soils distributio
 
   it("should navigate back to PUBLIC_GREEN_SPACES_INTRODUCTION when site has constrained soils", () => {
     // mockSiteData has PRAIRIE_GRASS: 2000 (constrained soil)
-    const store = createTestStore({
-      currentStep: "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION",
-      steps: {
+    const store = new StoreBuilder()
+      .withCurrentStep("URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION")
+      .withSteps({
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["PUBLIC_GREEN_SPACES"] },
@@ -102,8 +102,8 @@ describe("Urban project creation - Steps - public green spaces soils distributio
           completed: true,
           payload: { publicGreenSpacesSurfaceArea: 5000 },
         },
-      },
-    });
+      })
+      .build();
 
     store.dispatch(creationProjectFormUrbanActions.navigateToPrevious());
 
@@ -111,9 +111,9 @@ describe("Urban project creation - Steps - public green spaces soils distributio
   });
 
   it("should navigate back to SPACES_INTRODUCTION when site has no constrained soils", () => {
-    const store = createTestStore({
-      currentStep: "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION",
-      siteData: {
+    const store = new StoreBuilder()
+      .withCurrentStep("URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION")
+      .withSiteData({
         id: "site-id",
         name: "Site without natural soils",
         address: {
@@ -141,8 +141,8 @@ describe("Urban project creation - Steps - public green spaces soils distributio
           IMPERMEABLE_SOILS: 3000,
           MINERAL_SOIL: 3000,
         },
-      },
-      steps: {
+      })
+      .withSteps({
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["PUBLIC_GREEN_SPACES"] },
@@ -151,8 +151,8 @@ describe("Urban project creation - Steps - public green spaces soils distributio
           completed: true,
           payload: { publicGreenSpacesSurfaceArea: 5000 },
         },
-      },
-    });
+      })
+      .build();
 
     store.dispatch(creationProjectFormUrbanActions.navigateToPrevious());
 

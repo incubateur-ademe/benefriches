@@ -4,13 +4,13 @@ import { ProjectFormState } from "@/shared/core/reducers/project-form/projectFor
 import type { AnswersByStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 
 import { creationProjectFormUrbanActions } from "../../../urbanProject.actions";
-import { createTestStore, getCurrentStep } from "../../_testStoreHelpers";
+import { getCurrentStep, StoreBuilder } from "../../_testStoreHelpers";
 
 describe("Urban project creation - Steps - Spaces selection", () => {
   it("should complete step with selected spaces and go to URBAN_PROJECT_SPACES_SURFACE_AREA", () => {
-    const store = createTestStore({
-      currentStep: "URBAN_PROJECT_SPACES_SELECTION",
-      steps: {
+    const store = new StoreBuilder()
+      .withCurrentStep("URBAN_PROJECT_SPACES_SELECTION")
+      .withSteps({
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL", "PUBLIC_GREEN_SPACES"] },
@@ -19,8 +19,8 @@ describe("Urban project creation - Steps - Spaces selection", () => {
           completed: true,
           payload: { usesFloorSurfaceAreaDistribution: { RESIDENTIAL: 8000 } },
         },
-      },
-    });
+      })
+      .build();
 
     store.dispatch(
       creationProjectFormUrbanActions.requestStepCompletion({
@@ -43,9 +43,9 @@ describe("Urban project creation - Steps - Spaces selection", () => {
   });
 
   it("should return previous as URBAN_PROJECT_SPACES_INTRODUCTION when no public green spaces", () => {
-    const store = createTestStore({
-      currentStep: "URBAN_PROJECT_SPACES_SELECTION",
-      steps: {
+    const store = new StoreBuilder()
+      .withCurrentStep("URBAN_PROJECT_SPACES_SELECTION")
+      .withSteps({
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL"] },
@@ -54,8 +54,8 @@ describe("Urban project creation - Steps - Spaces selection", () => {
           completed: true,
           payload: { usesFloorSurfaceAreaDistribution: { RESIDENTIAL: 15000 } },
         },
-      },
-    });
+      })
+      .build();
 
     store.dispatch(creationProjectFormUrbanActions.navigateToPrevious());
 
@@ -63,9 +63,9 @@ describe("Urban project creation - Steps - Spaces selection", () => {
   });
 
   it("should return previous as URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION when public green spaces selected", () => {
-    const store = createTestStore({
-      currentStep: "URBAN_PROJECT_SPACES_SELECTION",
-      steps: {
+    const store = new StoreBuilder()
+      .withCurrentStep("URBAN_PROJECT_SPACES_SELECTION")
+      .withSteps({
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL", "PUBLIC_GREEN_SPACES"] },
@@ -87,8 +87,8 @@ describe("Urban project creation - Steps - Spaces selection", () => {
             },
           },
         },
-      },
-    });
+      })
+      .build();
 
     store.dispatch(creationProjectFormUrbanActions.navigateToPrevious());
 
@@ -96,8 +96,8 @@ describe("Urban project creation - Steps - Spaces selection", () => {
   });
 
   it("should have BUILDINGS in default answers when uses include building", () => {
-    const store = createTestStore({
-      steps: {
+    const store = new StoreBuilder()
+      .withSteps({
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL", "PUBLIC_GREEN_SPACES"] },
@@ -106,8 +106,8 @@ describe("Urban project creation - Steps - Spaces selection", () => {
           completed: true,
           payload: { usesFloorSurfaceAreaDistribution: { RESIDENTIAL: 8000 } },
         },
-      },
-    });
+      })
+      .build();
 
     // Navigate to step to compute default values
     store.dispatch(
@@ -122,14 +122,14 @@ describe("Urban project creation - Steps - Spaces selection", () => {
   });
 
   it("should NOT have BUILDINGS in default answers when no building uses selected", () => {
-    const store = createTestStore({
-      steps: {
+    const store = new StoreBuilder()
+      .withSteps({
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["PUBLIC_GREEN_SPACES", "OTHER_PUBLIC_SPACES"] },
         },
-      },
-    });
+      })
+      .build();
 
     // Navigate to step to compute default values
     store.dispatch(
@@ -145,9 +145,9 @@ describe("Urban project creation - Steps - Spaces selection", () => {
   });
 
   it("should delete surface area step when selection changes", () => {
-    const store = createTestStore({
-      currentStep: "URBAN_PROJECT_SPACES_SELECTION",
-      steps: {
+    const store = new StoreBuilder()
+      .withCurrentStep("URBAN_PROJECT_SPACES_SELECTION")
+      .withSteps({
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL"] },
@@ -166,8 +166,8 @@ describe("Urban project creation - Steps - Spaces selection", () => {
             spacesSurfaceAreaDistribution: { BUILDINGS: 6000, IMPERMEABLE_SOILS: 4000 },
           },
         },
-      },
-    });
+      })
+      .build();
 
     const newAnswer = {
       spacesSelection: ["BUILDINGS", "MINERAL_SOIL"],
@@ -205,9 +205,9 @@ describe("Urban project creation - Steps - Spaces selection", () => {
   });
 
   it("should not trigger cascading changes when spaces selection remains the same", () => {
-    const store = createTestStore({
-      currentStep: "URBAN_PROJECT_SPACES_SELECTION",
-      steps: {
+    const store = new StoreBuilder()
+      .withCurrentStep("URBAN_PROJECT_SPACES_SELECTION")
+      .withSteps({
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL"] },
@@ -226,8 +226,8 @@ describe("Urban project creation - Steps - Spaces selection", () => {
             spacesSurfaceAreaDistribution: { BUILDINGS: 6000, IMPERMEABLE_SOILS: 4000 },
           },
         },
-      },
-    });
+      })
+      .build();
 
     store.dispatch(
       creationProjectFormUrbanActions.requestStepCompletion({

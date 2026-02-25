@@ -4,11 +4,11 @@ import { ProjectFormState } from "@/shared/core/reducers/project-form/projectFor
 import { AnswersByStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 
 import { creationProjectFormUrbanActions } from "../../../urbanProject.actions";
-import { createTestStore, getCurrentStep } from "../../_testStoreHelpers";
+import { getCurrentStep, StoreBuilder } from "../../_testStoreHelpers";
 
 describe("Urban project creation - Steps - Uses selection", () => {
   it("should complete step with PUBLIC_GREEN_SPACES and go to URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA", () => {
-    const store = createTestStore();
+    const store = new StoreBuilder().build();
 
     store.dispatch(
       creationProjectFormUrbanActions.requestStepCompletion({
@@ -31,7 +31,7 @@ describe("Urban project creation - Steps - Uses selection", () => {
   });
 
   it("should complete step with only PUBLIC_GREEN_SPACES, skip surface area step and set it to site surface area", () => {
-    const store = createTestStore();
+    const store = new StoreBuilder().build();
 
     store.dispatch(
       creationProjectFormUrbanActions.requestStepCompletion({
@@ -58,7 +58,7 @@ describe("Urban project creation - Steps - Uses selection", () => {
   });
 
   it("should complete step with only building uses (no PUBLIC_GREEN_SPACES) and go to URBAN_PROJECT_SPACES_INTRODUCTION", () => {
-    const store = createTestStore();
+    const store = new StoreBuilder().build();
 
     store.dispatch(
       creationProjectFormUrbanActions.requestStepCompletion({
@@ -73,8 +73,8 @@ describe("Urban project creation - Steps - Uses selection", () => {
   });
 
   it("should delete URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA when uses selection changes", () => {
-    const store = createTestStore({
-      steps: {
+    const store = new StoreBuilder()
+      .withSteps({
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL", "OFFICES"] },
@@ -83,8 +83,8 @@ describe("Urban project creation - Steps - Uses selection", () => {
           completed: true,
           payload: { usesFloorSurfaceAreaDistribution: { RESIDENTIAL: 10000, OFFICES: 7500 } },
         },
-      },
-    });
+      })
+      .build();
 
     const newAnswer = {
       usesSelection: ["RESIDENTIAL", "PUBLIC_GREEN_SPACES"],
@@ -127,8 +127,8 @@ describe("Urban project creation - Steps - Uses selection", () => {
   });
 
   it("should not trigger cascading changes when uses selection remains the same", () => {
-    const store = createTestStore({
-      steps: {
+    const store = new StoreBuilder()
+      .withSteps({
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL", "OFFICES"] },
@@ -137,8 +137,8 @@ describe("Urban project creation - Steps - Uses selection", () => {
           completed: true,
           payload: { usesFloorSurfaceAreaDistribution: { RESIDENTIAL: 10000, OFFICES: 7500 } },
         },
-      },
-    });
+      })
+      .build();
 
     store.dispatch(
       creationProjectFormUrbanActions.requestStepCompletion({

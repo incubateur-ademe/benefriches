@@ -3,11 +3,11 @@ import { describe, it } from "vitest";
 import { ProjectFormState } from "@/shared/core/reducers/project-form/projectForm.reducer";
 
 import { creationProjectFormUrbanActions } from "../../../urbanProject.actions";
-import { createTestStore, getCurrentStep } from "../../_testStoreHelpers";
+import { getCurrentStep, StoreBuilder } from "../../_testStoreHelpers";
 
 describe("Urban project creation - Steps - Decontamination plan selection", () => {
   it("should complete step with none and automaticaly completed next surface step with 0", () => {
-    const store = createTestStore();
+    const store = new StoreBuilder().build();
 
     store.dispatch(
       creationProjectFormUrbanActions.requestStepCompletion({
@@ -34,7 +34,7 @@ describe("Urban project creation - Steps - Decontamination plan selection", () =
   });
 
   it("should complete step with unknown and automaticaly completed next surface step with 25%", () => {
-    const store = createTestStore();
+    const store = new StoreBuilder().build();
 
     store.dispatch(
       creationProjectFormUrbanActions.requestStepCompletion({
@@ -61,7 +61,7 @@ describe("Urban project creation - Steps - Decontamination plan selection", () =
   });
 
   it("should complete step with partial and go to next surface step", () => {
-    const store = createTestStore();
+    const store = new StoreBuilder().build();
 
     store.dispatch(
       creationProjectFormUrbanActions.requestStepCompletion({
@@ -84,8 +84,8 @@ describe("Urban project creation - Steps - Decontamination plan selection", () =
   });
 
   it("should replace step with none and automaticaly completed next surface step with 0", () => {
-    const store = createTestStore({
-      steps: {
+    const store = new StoreBuilder()
+      .withSteps({
         URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION: {
           completed: true,
           payload: { decontaminationPlan: "unknown" },
@@ -94,8 +94,8 @@ describe("Urban project creation - Steps - Decontamination plan selection", () =
           completed: true,
           payload: { decontaminatedSurfaceArea: 500 },
         },
-      },
-    });
+      })
+      .build();
 
     store.dispatch(
       creationProjectFormUrbanActions.requestStepCompletion({
@@ -122,8 +122,8 @@ describe("Urban project creation - Steps - Decontamination plan selection", () =
   });
 
   it("should replace step with unknown and automaticaly completed next surface step with 25%", () => {
-    const store = createTestStore({
-      steps: {
+    const store = new StoreBuilder()
+      .withSteps({
         URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION: {
           completed: true,
           payload: { decontaminationPlan: "none" },
@@ -132,8 +132,8 @@ describe("Urban project creation - Steps - Decontamination plan selection", () =
           completed: true,
           payload: { decontaminatedSurfaceArea: 0 },
         },
-      },
-    });
+      })
+      .build();
 
     store.dispatch(
       creationProjectFormUrbanActions.requestStepCompletion({
@@ -160,9 +160,9 @@ describe("Urban project creation - Steps - Decontamination plan selection", () =
   });
 
   it("should display alert with pendingStepCompletion", () => {
-    const store = createTestStore({
-      currentStep: "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
-      steps: {
+    const store = new StoreBuilder()
+      .withCurrentStep("URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION")
+      .withSteps({
         URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION: {
           completed: true,
           payload: { decontaminationPlan: "unknown" },
@@ -171,8 +171,8 @@ describe("Urban project creation - Steps - Decontamination plan selection", () =
           completed: true,
           payload: { decontaminatedSurfaceArea: 500 },
         },
-      },
-    });
+      })
+      .build();
 
     store.dispatch(
       creationProjectFormUrbanActions.requestStepCompletion({

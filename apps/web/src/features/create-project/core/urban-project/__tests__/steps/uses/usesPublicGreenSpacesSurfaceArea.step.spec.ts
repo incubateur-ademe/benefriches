@@ -3,18 +3,18 @@ import { describe, it, expect } from "vitest";
 import { ProjectFormState } from "@/shared/core/reducers/project-form/projectForm.reducer";
 
 import { creationProjectFormUrbanActions } from "../../../urbanProject.actions";
-import { createTestStore, getCurrentStep } from "../../_testStoreHelpers";
+import { getCurrentStep, StoreBuilder } from "../../_testStoreHelpers";
 
 describe("Urban project creation - Steps - public green spaces surface area", () => {
   it("should complete step and go to URBAN_PROJECT_SPACES_INTRODUCTION when building uses selected", () => {
-    const store = createTestStore({
-      steps: {
+    const store = new StoreBuilder()
+      .withSteps({
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL", "PUBLIC_GREEN_SPACES"] },
         },
-      },
-    });
+      })
+      .build();
 
     store.dispatch(
       creationProjectFormUrbanActions.requestStepCompletion({
@@ -41,14 +41,14 @@ describe("Urban project creation - Steps - public green spaces surface area", ()
   });
 
   it("should complete step and go to URBAN_PROJECT_SPACES_INTRODUCTION when no building uses selected", () => {
-    const store = createTestStore({
-      steps: {
+    const store = new StoreBuilder()
+      .withSteps({
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["PUBLIC_GREEN_SPACES"] },
         },
-      },
-    });
+      })
+      .build();
 
     store.dispatch(
       creationProjectFormUrbanActions.requestStepCompletion({
@@ -63,15 +63,15 @@ describe("Urban project creation - Steps - public green spaces surface area", ()
   });
 
   it("should navigate to URBAN_PROJECT_USES_SELECTION when going back", () => {
-    const store = createTestStore({
-      currentStep: "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA",
-      steps: {
+    const store = new StoreBuilder()
+      .withCurrentStep("URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA")
+      .withSteps({
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["PUBLIC_GREEN_SPACES"] },
         },
-      },
-    });
+      })
+      .build();
 
     store.dispatch(creationProjectFormUrbanActions.navigateToPrevious());
 

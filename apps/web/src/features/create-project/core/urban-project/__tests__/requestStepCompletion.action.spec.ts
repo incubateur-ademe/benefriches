@@ -1,15 +1,15 @@
 import { describe, it, expect, beforeEach } from "vitest";
 
 import { creationProjectFormUrbanActions } from "../urbanProject.actions";
-import { createTestStore, getCurrentStep } from "./_testStoreHelpers";
+import { getCurrentStep, StoreBuilder } from "./_testStoreHelpers";
 
 const { navigateToNext, requestStepCompletion } = creationProjectFormUrbanActions;
 
 describe("urbanProject.reducer - requestStepCompletion without validation", () => {
-  let store: ReturnType<typeof createTestStore>;
+  let store: ReturnType<StoreBuilder["build"]>;
 
   beforeEach(() => {
-    store = createTestStore();
+    store = new StoreBuilder().build();
   });
 
   describe("Complete workflow from start to finish", () => {
