@@ -58,11 +58,18 @@ const createUrbanProjectReducer = createReducer({} as ProjectCreationState, (bui
   });
 
   // Fetch estimated site resale price
+  builder.addCase(fetchEstimatedSiteResalePrice.pending, (state) => {
+    state.urbanProject.siteResaleEstimationLoadingState = "loading";
+  });
   builder.addCase(fetchEstimatedSiteResalePrice.fulfilled, (state, action) => {
+    state.urbanProject.siteResaleEstimationLoadingState = "success";
     MutateStateHelper.setDefaultValues(state, "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE", {
       siteResaleExpectedSellingPrice: action.payload.sellingPrice,
       siteResaleExpectedPropertyTransferDuties: action.payload.propertyTransferDuties,
     });
+  });
+  builder.addCase(fetchEstimatedSiteResalePrice.rejected, (state) => {
+    state.urbanProject.siteResaleEstimationLoadingState = "error";
   });
 });
 

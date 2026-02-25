@@ -1,5 +1,5 @@
 import { UrbanProjectCreationStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
-import { createStore, RootState } from "@/shared/core/store-config/store";
+import { AppDependencies, createStore, RootState } from "@/shared/core/store-config/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import { getInitialState, ProjectCreationState } from "../../createProject.reducer";
@@ -32,6 +32,20 @@ export const createTestStore = (
   } = {},
 ) => {
   const store = createStore(getTestAppDependencies(), {
+    projectCreation: createTestState(options),
+  });
+  return store;
+};
+
+export const createTestStoreWithDeps = (
+  options: {
+    siteData?: ProjectCreationState["siteData"];
+    steps?: ProjectCreationState["urbanProject"]["steps"];
+    currentStep?: UrbanProjectCreationStep;
+  } = {},
+  depsOverride: Partial<AppDependencies> = {},
+) => {
+  const store = createStore(getTestAppDependencies(depsOverride), {
     projectCreation: createTestState(options),
   });
   return store;

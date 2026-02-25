@@ -42,6 +42,7 @@ export interface ProjectFormState<T extends UrbanProjectCreationStep = UrbanProj
   urbanProject: {
     currentStep: T;
     saveState: "idle" | "dirty" | "loading" | "success" | "error";
+    siteResaleEstimationLoadingState: LoadingState;
     pendingStepCompletion?: {
       changes: StepUpdateResult<AnswerStepId>;
       showAlert: boolean;
@@ -75,6 +76,7 @@ export const getProjectFormInitialState = <
     urbanProject: {
       currentStep: initialStep,
       saveState: "idle",
+      siteResaleEstimationLoadingState: "idle",
       steps: {},
       firstSequenceStep: initialStep,
       stepsSequence: computeProjectStepsSequence(

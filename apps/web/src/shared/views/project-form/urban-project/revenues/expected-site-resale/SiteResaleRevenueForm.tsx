@@ -11,7 +11,8 @@ import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormL
 
 type Props = {
   initialValues?: FormValues;
-  isPriceEstimated?: boolean;
+  shouldSiteResalePriceBeEstimated?: boolean;
+  estimationFailed?: boolean;
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
 };
@@ -21,7 +22,13 @@ type FormValues = {
   propertyTransferDuties?: number;
 };
 
-const SiteResaleRevenueForm = ({ initialValues, isPriceEstimated, onSubmit, onBack }: Props) => {
+const SiteResaleRevenueForm = ({
+  initialValues,
+  shouldSiteResalePriceBeEstimated,
+  estimationFailed,
+  onSubmit,
+  onBack,
+}: Props) => {
   const { handleSubmit, register, control, watch, setValue, formState } = useForm<FormValues>({
     defaultValues: initialValues,
   });
@@ -62,7 +69,17 @@ const SiteResaleRevenueForm = ({ initialValues, isPriceEstimated, onSubmit, onBa
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-        {isPriceEstimated && (
+        {estimationFailed && (
+          <div className="fr-alert fr-alert--warning fr-mb-4w">
+            <p className="fr-alert__title">Estimation indisponible</p>
+            <p>
+              Nous n'avons pas pu trouver de données pertinentes pour estimer le prix de revente du
+              site. Vous pouvez saisir les montants manuellement si vous les connaissez, ou passer
+              cette étape.
+            </p>
+          </div>
+        )}
+        {shouldSiteResalePriceBeEstimated && !estimationFailed && (
           <div className="fr-alert fr-alert--info fr-mb-4w">
             <p className="fr-alert__title">Montant pré-rempli automatiquement</p>
             <p>

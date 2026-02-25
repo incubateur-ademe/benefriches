@@ -183,7 +183,7 @@ describe("ReadStateHelper", () => {
     });
   });
 
-  describe("isSiteResalePriceEstimated", () => {
+  describe("shouldSiteResalePriceBeEstimated", () => {
     it("should return true when siteResaleSelection is 'unknown'", () => {
       const steps: ProjectFormState["urbanProject"]["steps"] = {
         URBAN_PROJECT_SITE_RESALE_SELECTION: {
@@ -192,7 +192,7 @@ describe("ReadStateHelper", () => {
         },
       };
 
-      expect(ReadStateHelper.isSiteResalePriceEstimated(steps)).toBe(true);
+      expect(ReadStateHelper.shouldSiteResalePriceBeEstimated(steps)).toBe(true);
     });
 
     it("should return false when siteResaleSelection is 'yes'", () => {
@@ -203,7 +203,7 @@ describe("ReadStateHelper", () => {
         },
       };
 
-      expect(ReadStateHelper.isSiteResalePriceEstimated(steps)).toBe(false);
+      expect(ReadStateHelper.shouldSiteResalePriceBeEstimated(steps)).toBe(false);
     });
   });
 

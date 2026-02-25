@@ -78,6 +78,7 @@ describe("Reconversion project suggestions step completed", () => {
     expect(newState.projectCreation.developmentPlanCategory).toEqual("URBAN_PROJECT");
     expect(newState.projectCreation.urbanProject).toEqual<ProjectFormState["urbanProject"]>({
       currentStep: "URBAN_PROJECT_EXPRESS_SUMMARY",
+      siteResaleEstimationLoadingState: "idle",
       pendingStepCompletion: undefined,
       steps: {
         URBAN_PROJECT_EXPRESS_TEMPLATE_SELECTION: {

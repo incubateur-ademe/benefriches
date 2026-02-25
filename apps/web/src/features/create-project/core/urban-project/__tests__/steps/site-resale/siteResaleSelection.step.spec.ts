@@ -1,9 +1,10 @@
 import { describe, it } from "vitest";
 
 import { ProjectFormState } from "@/shared/core/reducers/project-form/projectForm.reducer";
+import { DisabledRealEstateValuationService } from "@/shared/infrastructure/real-estate-valuation-service/DisabledRealEstateValuationService";
 
 import { creationProjectFormUrbanActions } from "../../../urbanProject.actions";
-import { createTestStore, getCurrentStep } from "../../_testStoreHelpers";
+import { createTestStore, createTestStoreWithDeps, getCurrentStep } from "../../_testStoreHelpers";
 
 const INITIAL_STEPS: ProjectFormState["urbanProject"]["steps"] = {
   URBAN_PROJECT_CREATE_MODE_SELECTION: {
@@ -155,6 +156,55 @@ describe("Urban project creation - Steps - site resale selection", () => {
     });
     expect(state.stepsSequence.includes("URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE")).toBe(false);
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION");
+  });
+
+  it("should handle estimation failure when 'unknown' is selected and valuation service returns error", async () => {
+    const store = createTestStoreWithDeps(
+      {
+        steps: INITIAL_STEPS,
+        siteData: {
+          id: "test-site",
+          name: "Test Site",
+          surfaceArea: 10000,
+          nature: "FRICHE",
+          isExpressSite: false,
+          owner: { name: "Test Owner", structureType: "company" },
+          soilsDistribution: {},
+          address: {
+            city: "Test City",
+            cityCode: "12345",
+            value: "Test Address",
+            postCode: "12345",
+            long: 0,
+            lat: 0,
+          },
+        },
+      },
+      { realEstateValuationService: new DisabledRealEstateValuationService() },
+    );
+
+    store.dispatch(
+      creationProjectFormUrbanActions.requestStepCompletion({
+        stepId: "URBAN_PROJECT_SITE_RESALE_SELECTION",
+        answers: { siteResaleSelection: "unknown" },
+      }),
+    );
+
+    // Wait for async thunk dispatched by listener to complete
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    const state = store.getState().projectCreation.urbanProject;
+
+    expect(state.steps).toEqual<ProjectFormState["urbanProject"]["steps"]>({
+      ...INITIAL_STEPS,
+      URBAN_PROJECT_SITE_RESALE_SELECTION: {
+        completed: true,
+        payload: { siteResaleSelection: "unknown" },
+      },
+    });
+    expect(state.siteResaleEstimationLoadingState).toBe("error");
+    expect(state.stepsSequence.includes("URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE")).toBe(true);
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_RESALE_SELECTION");
   });
 
   it("should complete step with 'unknown' and pre-populate revenue step with estimated values", async () => {

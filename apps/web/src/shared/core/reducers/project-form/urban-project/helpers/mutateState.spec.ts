@@ -16,6 +16,7 @@ describe("MutateStateHelper", () => {
         stepsSequence: [],
         firstSequenceStep: "URBAN_PROJECT_USES_INTRODUCTION",
         saveState: "idle",
+        siteResaleEstimationLoadingState: "idle",
       },
       siteData: mockSiteData,
       siteDataLoadingState: "success",

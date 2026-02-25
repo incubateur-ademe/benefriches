@@ -129,7 +129,15 @@ export const createUrbanProjectFormSelectors = (
 
   const selectSaveState = createSelector([selectSelf], (state) => state.urbanProject.saveState);
 
-  const selectSiteResaleRevenueViewData = createSelectSiteResaleRevenueViewData(selectStepState);
+  const selectSiteResaleEstimationLoadingState = createSelector(
+    [selectSelf],
+    (state) => state.urbanProject.siteResaleEstimationLoadingState,
+  );
+
+  const selectSiteResaleRevenueViewData = createSelectSiteResaleRevenueViewData(
+    selectStepState,
+    selectSiteResaleEstimationLoadingState,
+  );
 
   const selectPublicGreenSpacesSurfaceAreaViewData =
     createSelectPublicGreenSpacesSurfaceAreaViewData(

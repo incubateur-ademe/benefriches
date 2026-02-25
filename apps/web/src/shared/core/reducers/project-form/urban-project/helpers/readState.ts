@@ -59,7 +59,7 @@ export const ReadStateHelper = {
     return selection === "yes" || selection === "unknown";
   },
 
-  isSiteResalePriceEstimated(steps: ProjectFormState["urbanProject"]["steps"]) {
+  shouldSiteResalePriceBeEstimated(steps: ProjectFormState["urbanProject"]["steps"]) {
     return this.getSiteResaleSelection(steps) === "unknown";
   },
 

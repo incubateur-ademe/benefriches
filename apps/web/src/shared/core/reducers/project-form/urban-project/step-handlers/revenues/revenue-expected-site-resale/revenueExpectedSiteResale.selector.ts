@@ -6,22 +6,31 @@ import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-proje
 import type { RootState } from "@/shared/core/store-config/store";
 
 type SiteResaleRevenueViewData = {
-  isPriceEstimated: boolean;
+  shouldSiteResalePriceBeEstimated: boolean;
+  estimationFailed: boolean;
   initialSellingPrice: number | undefined;
   initialPropertyTransferDuties: number | undefined;
 };
 
 export const createSelectSiteResaleRevenueViewData = (
   selectStepState: Selector<RootState, ProjectFormState["urbanProject"]["steps"]>,
+  selectSiteResaleEstimationLoadingState: Selector<
+    RootState,
+    ProjectFormState["urbanProject"]["siteResaleEstimationLoadingState"]
+  >,
 ) =>
-  createSelector([selectStepState], (steps): SiteResaleRevenueViewData => {
-    const revenueAnswers =
-      ReadStateHelper.getStepAnswers(steps, "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE") ??
-      ReadStateHelper.getDefaultAnswers(steps, "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE");
+  createSelector(
+    [selectStepState, selectSiteResaleEstimationLoadingState],
+    (steps, siteResaleEstimationLoadingState): SiteResaleRevenueViewData => {
+      const revenueAnswers =
+        ReadStateHelper.getStepAnswers(steps, "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE") ??
+        ReadStateHelper.getDefaultAnswers(steps, "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE");
 
-    return {
-      isPriceEstimated: ReadStateHelper.isSiteResalePriceEstimated(steps),
-      initialSellingPrice: revenueAnswers?.siteResaleExpectedSellingPrice,
-      initialPropertyTransferDuties: revenueAnswers?.siteResaleExpectedPropertyTransferDuties,
-    };
-  });
+      return {
+        shouldSiteResalePriceBeEstimated: ReadStateHelper.shouldSiteResalePriceBeEstimated(steps),
+        estimationFailed: siteResaleEstimationLoadingState === "error",
+        initialSellingPrice: revenueAnswers?.siteResaleExpectedSellingPrice,
+        initialPropertyTransferDuties: revenueAnswers?.siteResaleExpectedPropertyTransferDuties,
+      };
+    },
+  );
