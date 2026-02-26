@@ -274,7 +274,7 @@ export class MyUseCase implements UseCase<Request, TResult<Response, Error>> {
 
 All SQL tables are automatically cleared after each integration test by a global hook configured in [`test/integration-tests-global-hooks.ts`](./test/integration-tests-global-hooks.ts). This ensures complete test isolation without manual cleanup in individual test files.
 
-**Tables cleared**: The hook clears all 30 API tables including `sites`, `reconversion_projects`, `domain_events`, etc.
+**Tables cleared**: The hook clears all 22 API tables including `sites`, `reconversion_projects`, `domain_events`, etc.
 
 ### Object Assertions: Prefer Single expect()
 
@@ -376,14 +376,14 @@ export type SqlExample = {
 
 ## 📦 Tech Stack Quick Ref
 
-See [root CLAUDE.md](../../CLAUDE.md#-tech-stack-summary) for full monorepo tech stack.
+See [root CLAUDE.md](../../CLAUDE.md) for full monorepo tech stack.
 
 **Backend-specific additions:**
 
 - **Validation**: Zod + nestjs-zod (runtime validation)
 - **Auth**: JWT + OpenID Connect
 - **Events**: @nestjs/event-emitter (domain event publishing)
-- **Testing**: Vitest + @testcontainers/postgresql (isolated DB testing)
+- **Testing**: Vitest + testcontainers (isolated DB testing)
 
 ---
 
@@ -426,7 +426,7 @@ For complete organization structure, naming patterns, and detailed examples, see
 
 ### After Code Generation - ALWAYS RUN:
 
-Follow the **API Testing Workflow** in [root CLAUDE.md → Testing Strategy → API Testing Workflow](../../CLAUDE.md#api-testing-workflow-after-code-generation).
+Follow the **API Testing Workflow** below.
 
 **Quick checklist**:
 

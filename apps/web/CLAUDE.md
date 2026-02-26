@@ -115,11 +115,11 @@ When creating a new container component:
 3. **Reference examples** (simplest first):
    - `src/features/create-project/core/createProject.selectors.ts` → `selectProjectSuggestionsViewData`
    - `src/features/create-project/views/project-suggestions/index.tsx`
-   - `src/features/create-site/core/selectors/spaces.selectors.ts` → `selectSiteSoilsSummaryViewData`
+   - `src/features/create-site/core/steps/spaces/spaces.selectors.ts` → `selectSiteSoilsSummaryViewData`
    - `src/features/create-site/views/custom/spaces-and-soils/soils-summary/index.tsx`
    - Urban project form (factory pattern):
      - `src/shared/core/reducers/project-form/urban-project/urbanProject.selectors.ts` → `selectUsesFloorSurfaceAreaViewData`
-     - `src/shared/views/project-form/urban-project/uses/floor-surface-area/index.tsx`
+     - `src/shared/views/project-form/urban-project/buildings/uses-floor-surface-area/index.tsx`
 
 ### Gateway Checklist
 
