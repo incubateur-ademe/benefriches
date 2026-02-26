@@ -24,7 +24,7 @@
 2. **Don't skip reinstalling `shared`** - Always reinstall in dependent apps after changes (see [Shared Package Workflow](#shared-package-workflow))
 3. **Don't add framework deps to `shared`** - Keep it pure TypeScript only
 4. **Don't skip cross-app testing** - Changes to `shared` can break both `api` and `web`
-5. **Don't commit without quality checks** - Husky pre-commit hooks enforce these
+5. **Don't commit without quality checks** - Husky pre-commit hooks enforce lint + format (tests must be run manually)
 6. **Don't use relative imports across apps** - Use workspace protocol: `import from "shared"`
 7. **Don't modify database without migration** - Create a Knex migration for all schema changes
 8. **Don't skip tests** - Tests are required before commit and merge
@@ -43,6 +43,8 @@ benefriches/
 ```
 
 **Getting Started**: See [README.md](README.md) for installation and setup.
+
+**Required**: Node 24 (`"engines": { "node": "24" }` in package.json).
 
 ---
 
