@@ -61,24 +61,24 @@ Quick reference - **For complete naming guide with examples, see [09-naming-conv
 
 Use these consistently for clean, maintainable imports:
 
-### `@/` - Absolute imports within API
+### `src/` - Absolute imports within API
 
 Resolves to `apps/api/src/`. Use for any cross-module import.
 
 ```typescript
 // ✅ CORRECT: Shared kernel imports
-import { UseCase } from "@/shared-kernel/usecase";
-import type { TResult } from "@/shared-kernel/result";
+import { UseCase } from "src/shared-kernel/usecase";
+import type { TResult } from "src/shared-kernel/result";
 
 // ✅ CORRECT: Other module imports
-import { CreateSiteUseCase } from "@/sites/core/usecases/createSite.usecase";
-import type { SitesRepository } from "@/sites/core/gateways/SitesRepository";
+import { CreateSiteUseCase } from "src/sites/core/usecases/createSite.usecase";
+import type { SitesRepository } from "src/sites/core/gateways/SitesRepository";
 
-// ❌ WRONG: Using relative paths for cross-module (use @/ instead)
+// ❌ WRONG: Using relative paths for cross-module (use src/ instead)
 import { CreateSiteUseCase } from "../../../../sites/core/usecases/createSite.usecase";
 
-// ❌ WRONG: Using @/ for shared package (use "shared" instead)
-import type { Site } from "@/shared";
+// ❌ WRONG: Using src/ for shared package (use "shared" instead)
+import type { Site } from "src/shared";
 ```
 
 ### `"shared"` - Shared package imports
@@ -87,11 +87,12 @@ Resolves to `packages/shared`. Use for monorepo-wide types.
 
 ```typescript
 // ✅ CORRECT: Shared package types
-// ❌ WRONG: Using @/ for shared package
-import type { Site } from "@/shared";
+// ❌ WRONG: Using src/ for shared package
 import type { Site } from "shared";
 import type { UserId } from "shared";
 import { validateEmail } from "shared";
+
+import type { Site } from "src/shared";
 
 // ❌ WRONG: Using relative paths to shared
 import type { Site } from "../../../packages/shared/src";
@@ -104,7 +105,7 @@ Use only for files within the same feature module:
 ```typescript
 // File: apps/api/src/sites/core/usecases/createSite.usecase.ts
 // ✅ CORRECT: Within same feature (sites module)
-// ❌ WRONG: Cross-module relative import (use @/ instead)
+// ❌ WRONG: Cross-module relative import (use src/ instead)
 import { CreateProjectUseCase } from "../../../reconversion-projects/core/usecases/...";
 import type { SitesRepository } from "../gateways/SitesRepository";
 import type { Site } from "../models/site";
@@ -112,11 +113,11 @@ import type { Site } from "../models/site";
 
 ### Rules Summary
 
-- ✅ Use `@/` for any cross-module import within API
+- ✅ Use `src/` for any cross-module import within API
 - ✅ Use `"shared"` for types/utilities from shared package
 - ✅ Use relative `./` or `../` **only** within same feature module
-- ❌ Never use `../../../` chains (use `@/` instead)
-- ❌ Never use `@/shared` (use `"shared"` instead)
+- ❌ Never use `../../../` chains (use `src/` instead)
+- ❌ Never use `"src/shared"` (use `"shared"` instead)
 
 ---
 
@@ -127,7 +128,7 @@ import type { Site } from "../models/site";
 Every usecase returns `TResult<Data, Error>` (success or failure). Use `fail("ErrorType")` for domain errors, `success(data)` for success:
 
 ```typescript
-import { fail, success, type TResult } from "@/shared-kernel/result";
+import { fail, success, type TResult } from "src/shared-kernel/result";
 
 export class MyUseCase implements UseCase<Request, TResult<Response, Error>> {
   async execute(request: Request): Promise<TResult<Response, Error>> {
