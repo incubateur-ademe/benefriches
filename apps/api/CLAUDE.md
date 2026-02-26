@@ -40,13 +40,13 @@ Quick reference - **For complete naming guide with examples, see [09-naming-conv
 
 ### File Naming (Quick Ref)
 
-| Type       | Pattern                   | Example                 |
-| ---------- | ------------------------- | ----------------------- |
-| UseCase    | `[verb][Noun].usecase.ts` | `createSite.usecase.ts` |
-| Repository | `Sql[Name]Repository.ts`  | `SqlSiteRepository.ts`  |
-| Query      | `Sql[Name]Query.ts`       | `SqlSitesQuery.ts`      |
-| Controller | `[module].controller.ts`  | `sites.controller.ts`   |
-| Module     | `[module].module.ts`      | `sites.module.ts`       |
+| Type       | Pattern                   | Example                                                     |
+| ---------- | ------------------------- | ----------------------------------------------------------- |
+| UseCase    | `[verb][Noun].usecase.ts` | `createSite.usecase.ts`                                     |
+| Repository | `Sql[Name]Repository.ts`  | `SqlSiteRepository.ts`                                      |
+| Query      | `Sql[Name]Query.ts`       | `SqlSitesQuery.ts`                                          |
+| Controller | `[module].controller.ts`  | `sites.controller.ts`, `reconversionProjects.controller.ts` |
+| Module     | `[module].module.ts`      | `sites.module.ts`, `reconversionProjects.module.ts`         |
 
 ### Database Naming
 
@@ -123,19 +123,24 @@ import type { Site } from "../models/site";
 
 ## ⬆️ Result Pattern (Core to API Design)
 
-**All usecases MUST implement `UseCase<Request, TResult<Data, Error>>`** - Type-safe error handling.
+**All usecases MUST implement `UseCase<Request, TResult<Data, Error, Issues?>>`** - Type-safe error handling.
 
-Every usecase returns `TResult<Data, Error>` (success or failure). Use `fail("ErrorType")` for domain errors, `success(data)` for success:
+Every usecase returns `TResult<TData, TError, TIssues?>` (success or failure). The third param `TIssues` (defaults to `undefined`) carries additional error context. Use `fail("ErrorType")` for domain errors, `success(data)` for success:
 
 ```typescript
 import { fail, success, type TResult } from "src/shared-kernel/result";
 
+// Basic (2 params — TIssues defaults to undefined)
 export class MyUseCase implements UseCase<Request, TResult<Response, Error>> {
   async execute(request: Request): Promise<TResult<Response, Error>> {
     if (errorCondition) return fail("ValidationFailed");
     return success({ id: "123", name: "Example" });
   }
 }
+
+// With issues (3 params — for validation errors with details)
+type Error = "ValidationError" | "SiteAlreadyExists";
+type Result = TResult<void, Error, unknown>;
 ```
 
 **For detailed patterns, advanced usage, and test examples, see [01-usecase-pattern.md](../../.claude/context/api/01-usecase-pattern.md).**
@@ -243,7 +248,7 @@ export class MyUseCase implements UseCase<Request, TResult<Response, Error>> {
     - Make integration test pass
 
 15. ✅ **Wire dependencies in NestJS module**
-    - Create `[module].module.ts` with factory pattern
+    - Create `adapters/primary/[module].module.ts` with factory pattern
     - Register all providers (UseCases, Repositories, Queries)
 
 16. ✅ **Update AppModule**: Add new module to `app.module.ts` imports
@@ -275,7 +280,7 @@ export class MyUseCase implements UseCase<Request, TResult<Response, Error>> {
 
 All SQL tables are automatically cleared after each integration test by a global hook configured in [`test/integration-tests-global-hooks.ts`](./test/integration-tests-global-hooks.ts). This ensures complete test isolation without manual cleanup in individual test files.
 
-**Tables cleared**: The hook clears all 22 API tables including `sites`, `reconversion_projects`, `domain_events`, etc.
+**Tables cleared**: The hook clears all 21 API tables including `sites`, `reconversion_projects`, `domain_events`, etc.
 
 ### Object Assertions: Prefer Single expect()
 
@@ -340,7 +345,7 @@ expect(result).toEqual({
 
 - **ID Generation**: `RandomUuidGenerator` (prod), `DeterministicIdGenerator` (tests)
 - **Date/Time**: `RealDateProvider` (prod), `DeterministicDateProvider` (tests)
-- **Database**: Inject `SQL_CONNECTION` into SQL repositories/queries
+- **Database**: Inject `SqlConnection` into SQL repositories/queries (from `src/shared-kernel/adapters/sql-knex/sqlConnection.module`)
 - **Events**: `DOMAIN_EVENT_PUBLISHER_INJECTION_TOKEN` for cross-module events
 
 Use **factory pattern** in NestJS modules to wire dependencies (see [08-dependency-injection.md](../../.claude/context/api/08-dependency-injection.md)).

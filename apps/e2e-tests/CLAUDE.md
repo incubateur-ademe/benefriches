@@ -9,7 +9,12 @@
 ```
 apps/e2e-tests/
 ├── pages/           # Page Objects (one per page/screen)
-├── fixtures/        # Base fixtures (auth, etc.)
+├── fixtures/
+│   ├── auth.fixtures.ts   # Base auth fixture
+│   └── helpers/           # Shared test helpers
+│       ├── api-client.ts          # Direct API calls for test data seeding
+│       ├── cookie.helpers.ts      # Cookie manipulation
+│       └── site-creation.helpers.ts  # Site creation shortcuts
 └── tests/
     └── [feature]/
         ├── [feature].fixtures.ts  # Feature-specific fixtures

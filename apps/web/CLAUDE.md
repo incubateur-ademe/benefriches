@@ -87,8 +87,8 @@ const result = await extra.featureService.doSomething(payload);
 
 ### Testing
 
-- **Builder pattern** for test state: `new StoreBuilder().withSiteData({...}).build()`
-- **InMemory services** for dependencies (no HTTP in unit tests)
+- **Store-based unit tests** (`.spec.ts`): `new StoreBuilder().withSiteData({...}).build()` with InMemory services
+- **Component tests** (`.spec.tsx`): Use `@testing-library/react` for DOM-level rendering tests
 
 ### Side Effects
 
@@ -168,26 +168,28 @@ Third-party services (Crisp, analytics SDKs, etc.) belong in the **infrastructur
 
 ```
 feature-name/
-├── core/
-│   ├── feature.types.ts           # Type definitions (single source of truth)
-│   ├── featureName.reducer.ts     # Reducer using createReducer
-│   ├── featureName.selectors.ts   # Selectors including ViewData
-│   ├── actions/*.ts               # Action creators (passive tense)
-│   └── __tests__/*.spec.ts        # Unit tests
+├── core/                              # Business logic (preferred name for new features)
+│   ├── feature.types.ts               # Type definitions (single source of truth)
+│   ├── featureName.reducer.ts         # Reducer using createReducer
+│   ├── featureName.selectors.ts       # Selectors including ViewData
+│   ├── actions/*.ts                   # Action creators (passive tense)
+│   └── __tests__/*.spec.ts            # Unit tests
 ├── infrastructure/
 │   └── feature-service/
 │       ├── HttpFeatureService.ts      # HTTP implementation
 │       └── InMemoryFeatureService.ts  # Test mock (required)
 └── views/
-    ├── index.tsx                  # Container (Redux-connected)
-    └── FeaturePage.tsx            # Presentational component
+    ├── index.tsx                      # Container (Redux-connected)
+    └── FeaturePage.tsx                # Presentational component
 ```
+
+**Note**: Some older features use `application/` instead of `core/` (e.g., `my-evaluations`, `projects`). Use `core/` for new features — `application/` is legacy naming.
 
 ---
 
 ## Tech Stack
 
-React 19+, Redux Toolkit 2+, Vite 7+, TypeScript 5+ (strict), Tailwind CSS + DSFR, type-route, react-hook-form
+React 19+, Redux Toolkit 2+, Vite 7+, TypeScript 5+ (strict), Tailwind CSS v4 (uses `@import "tailwindcss/..."` syntax, not v3 `@tailwind` directives) + DSFR, type-route, react-hook-form, Highcharts (impact charts), @react-pdf/renderer (PDF export)
 
 ---
 
