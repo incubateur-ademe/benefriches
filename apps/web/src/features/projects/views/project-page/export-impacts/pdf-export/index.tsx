@@ -2,11 +2,12 @@ import { usePDF } from "@react-pdf/renderer";
 import { useEffect } from "react";
 import { roundToInteger } from "shared";
 
+import { impactsExportDownloaded } from "@/features/analytics/core/analyticsEvents";
+import { eventTracked } from "@/features/analytics/core/eventTracked.action";
 import { fetchProjectFeatures } from "@/features/projects/application/project-features/projectFeatures.actions";
 import { selectExportImpactsView } from "@/features/projects/application/project-impacts/exportImpacts.selectors";
 import { fetchSiteFeatures } from "@/features/sites/core/fetchSiteFeatures.action";
 import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
-import { impactsExportDownloaded, trackEvent } from "@/shared/views/analytics";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import { Props as ImpactsPdfDocumentProps } from "../../pdf-export";
@@ -30,6 +31,7 @@ type Props = {
 
 type PdfDownloadProps = {
   onDownloadAvailable: () => void;
+  onExportDownloaded: () => void;
   selectedSections: PdfExportSectionSelection;
 } & ImpactsPdfDocumentProps;
 
@@ -40,6 +42,7 @@ const PdfDownload = ({
   evaluationPeriodInYears,
   selectedSections,
   onDownloadAvailable,
+  onExportDownloaded,
 }: PdfDownloadProps) => {
   const [instance] = usePDF({
     document: (
@@ -66,9 +69,7 @@ const PdfDownload = ({
       <a
         href={instance.url}
         download={`Export Bénéfriches ${new Date().toLocaleDateString()} - Projet ${projectFeatures.name}.pdf`}
-        onClick={() => {
-          trackEvent(impactsExportDownloaded("pdf"));
-        }}
+        onClick={onExportDownloaded}
       >
         Télécharger le document ({formatFileSize(instance.blob?.size ?? 0)})
       </a>
@@ -103,6 +104,7 @@ export default function PdfExportDownloadContainer({
       evaluationPeriodInYears={evaluationPeriodInYears as number}
       selectedSections={selectedSections}
       onDownloadAvailable={onDownloadAvailable}
+      onExportDownloaded={() => void dispatch(eventTracked(impactsExportDownloaded("pdf")))}
     />
   );
 }

@@ -1,3 +1,5 @@
+import { MatomoAnalytics } from "@/features/analytics/infrastructure/MatomoAnalytics";
+import { NoopAnalytics } from "@/features/analytics/infrastructure/NoopAnalytics";
 import { LocalStorageAppSettings } from "@/features/app-settings/infrastructure/LocalStorageAppSettings";
 import HttpCreateExpressReconversionProjectService from "@/features/create-project/infrastructure/create-express-project-service/HttpCreateExpressReconversionProjectService";
 import { ExpectedPhotovoltaicPerformanceApi } from "@/features/create-project/infrastructure/photovoltaic-performance-service/photovoltaicPerformanceApi";
@@ -50,4 +52,11 @@ export const appDependencies: AppDependencies = {
   supportChatService: BENEFRICHES_ENV.crispEnabled
     ? new CrispSupportChatService(BENEFRICHES_ENV.crispWebsiteId)
     : new NoopSupportChatService(),
+  analyticsService: (() => {
+    const service = BENEFRICHES_ENV.matomoTrackingEnabled
+      ? new MatomoAnalytics(BENEFRICHES_ENV.matomoSiteId, BENEFRICHES_ENV.matomoUrl)
+      : new NoopAnalytics();
+    service.init();
+    return service;
+  })(),
 };

@@ -1,3 +1,4 @@
+import { InMemoryAnalytics } from "@/features/analytics/infrastructure/InMemoryAnalytics";
 import { InMemoryAppSettings } from "@/features/app-settings/infrastructure/InMemoryAppSettings";
 import { InMemoryCreateExpressReconversionProjectService } from "@/features/create-project/infrastructure/create-express-project-service/InMemoryCreateExpressReconversionProjectService";
 import {
@@ -75,6 +76,7 @@ export const getTestAppDependencies = (
     updateProjectService: new InMemoryUpdateReconversionProjectService(),
     realEstateValuationService: new InMemoryRealEstateValuationService(),
     supportChatService: new InMemorySupportChatService(),
+    analyticsService: new InMemoryAnalytics(),
     ...depsOverride,
   };
 };

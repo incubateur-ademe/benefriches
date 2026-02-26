@@ -2,12 +2,10 @@ import { useEffect } from "react";
 import { createGroup } from "type-route";
 
 import FeaturesApp from "@/features/FeaturesApp";
+import { pageViewed } from "@/features/analytics/core/pageViewed.action";
 import { initCurrentUser } from "@/features/onboarding/core/initCurrentUser.action";
 
 import PublicApp from "../../features/public-pages/PublicApp";
-import MatomoContainer from "./MatomoContainer";
-import { trackPageView } from "./analytics";
-import { BENEFRICHES_ENV } from "./envVars";
 import { useAppDispatch } from "./hooks/store.hooks";
 import { routes, useRoute } from "./router";
 
@@ -32,9 +30,9 @@ function App() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const pathWillQueryParams = window.location.pathname + window.location.search;
-    trackPageView(pathWillQueryParams);
-  }, [route]);
+    const pathWithQueryParams = window.location.pathname + window.location.search;
+    void dispatch(pageViewed({ url: pathWithQueryParams }));
+  }, [route, dispatch]);
 
   useEffect(() => {
     void dispatch(initCurrentUser());
@@ -48,12 +46,6 @@ function App() {
         }
         return <FeaturesApp />;
       })()}
-      {BENEFRICHES_ENV.matomoTrackingEnabled && (
-        <MatomoContainer
-          siteId={BENEFRICHES_ENV.matomoSiteId}
-          matomoUrl={BENEFRICHES_ENV.matomoUrl}
-        />
-      )}
     </>
   );
 }

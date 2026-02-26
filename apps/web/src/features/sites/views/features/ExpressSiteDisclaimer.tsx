@@ -1,7 +1,8 @@
 import { SiteNature } from "shared";
 
+import { expressSiteDisclaimerHidden } from "@/features/analytics/core/analyticsEvents";
+import { eventTracked } from "@/features/analytics/core/eventTracked.action";
 import { appSettingUpdated, selectAppSettings } from "@/features/app-settings/core/appSettings";
-import { hideExpressSiteDisclaimerClicked, trackEvent } from "@/shared/views/analytics";
 import Disclaimer from "@/shared/views/components/Disclaimer/Disclaimer";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
@@ -14,7 +15,7 @@ export default function ExpressSiteDisclaimer({ siteNature }: Props) {
   const { displayExpressSiteDisclaimer } = useAppSelector(selectAppSettings);
 
   const onDismiss = () => {
-    trackEvent(hideExpressSiteDisclaimerClicked());
+    void dispatch(eventTracked(expressSiteDisclaimerHidden()));
     dispatch(appSettingUpdated({ field: "displayExpressSiteDisclaimer", value: false }));
   };
 

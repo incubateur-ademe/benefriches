@@ -3,7 +3,6 @@ import Button from "@codegouvfr/react-dsfr/Button";
 import { SiteNature } from "shared";
 
 import { ProjectDevelopmentPlanType } from "@/features/projects/domain/projects.types";
-import { impactsExportModalOpened, trackEvent } from "@/shared/views/analytics";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
@@ -38,6 +37,7 @@ type Props = {
   onEvaluationPeriodChange: (n: number) => void;
   evaluationPeriod: number | undefined;
   onCurrentViewModeChange: (n: ViewMode) => void;
+  onExportModalOpened: () => void;
   displayImpactsAccuracyDisclaimer: boolean;
 };
 
@@ -51,6 +51,7 @@ const ProjectImpactsView = ({
   onEvaluationPeriodChange,
   evaluationPeriod,
   onCurrentViewModeChange,
+  onExportModalOpened,
 }: Props) => {
   return (
     <>
@@ -60,7 +61,7 @@ const ProjectImpactsView = ({
           priority="primary"
           iconId="fr-icon-file-download-line"
           onClick={() => {
-            trackEvent(impactsExportModalOpened());
+            onExportModalOpened();
             exportImpactsModal.open();
           }}
         >
@@ -114,6 +115,7 @@ const ProjectImpactsView = ({
             isUpdateEnabled={
               projectContext.type === "URBAN_PROJECT" && !projectContext.isExpressProject
             }
+            onExportModalOpened={onExportModalOpened}
           />
 
           <div className="py-8">

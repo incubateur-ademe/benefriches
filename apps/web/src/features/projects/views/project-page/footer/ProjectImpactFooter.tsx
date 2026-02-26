@@ -1,6 +1,5 @@
 import Button from "@codegouvfr/react-dsfr/Button";
 
-import { impactsExportModalOpened, trackEvent } from "@/shared/views/analytics";
 import classNames from "@/shared/views/clsx";
 import useDuplicateProject from "@/shared/views/project/useDuplicateProject";
 import { routes } from "@/shared/views/router";
@@ -12,9 +11,10 @@ type Props = {
   projectId: string;
   evaluationPeriod?: number;
   isUpdateEnabled: boolean;
+  onExportModalOpened: () => void;
 };
 
-function ProjectImpactFooter({ projectId, siteId, isUpdateEnabled }: Props) {
+function ProjectImpactFooter({ projectId, siteId, isUpdateEnabled, onExportModalOpened }: Props) {
   const { onDuplicateProject, duplicationState } = useDuplicateProject(projectId, "impacts");
 
   return (
@@ -34,7 +34,7 @@ function ProjectImpactFooter({ projectId, siteId, isUpdateEnabled }: Props) {
             priority="primary"
             iconId="fr-icon-file-download-line"
             onClick={() => {
-              trackEvent(impactsExportModalOpened());
+              onExportModalOpened();
               exportImpactsModal.open();
             }}
           >

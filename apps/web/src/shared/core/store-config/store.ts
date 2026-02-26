@@ -1,5 +1,6 @@
 import { configureStore, Reducer } from "@reduxjs/toolkit";
 
+import type { AnalyticsGateway } from "@/features/analytics/core/gateways/AnalyticsGateway";
 import { AppSettingsGateway } from "@/features/app-settings/core/AppSettingsGateway";
 import { CreateExpressReconversionProjectGateway } from "@/features/create-project/core/actions/expressProjectSavedGateway";
 import { GetSitesByIdGateway } from "@/features/create-project/core/actions/reconversionProjectCreationInitiated.action";
@@ -51,6 +52,7 @@ export type AppDependencies = {
   updateProjectService: UpdateProjectServiceGateway;
   realEstateValuationService: RealEstateValuationGateway;
   supportChatService: SupportChatGateway;
+  analyticsService: AnalyticsGateway;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
