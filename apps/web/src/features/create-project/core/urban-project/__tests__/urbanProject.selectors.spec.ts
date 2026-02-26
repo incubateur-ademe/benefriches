@@ -105,20 +105,20 @@ describe("urbanProject.selectors", () => {
 
   describe("selectProjectDeveloperViewData", () => {
     it("returns composed view data with available stakeholders and project developer", () => {
-      const store = createTestStore({
-        siteData: {
+      const store = new StoreBuilder()
+        .withSiteData({
           ...mockSiteData,
           owner: { name: "Ville de Test", structureType: "municipality" as const },
-        },
-        steps: {
+        })
+        .withSteps({
           URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER: {
             completed: true,
             payload: {
               projectDeveloper: { name: "Mon entreprise", structureType: "company" },
             },
           },
-        },
-      });
+        })
+        .build();
 
       const rootState = store.getState();
       const result = creationProjectFormSelectors.selectProjectDeveloperViewData(rootState);
@@ -132,7 +132,7 @@ describe("urbanProject.selectors", () => {
     });
 
     it("returns undefined projectDeveloper when step has no answers", () => {
-      const store = createTestStore({ steps: {} });
+      const store = new StoreBuilder().withSteps({}).build();
       const rootState = store.getState();
       const result = creationProjectFormSelectors.selectProjectDeveloperViewData(rootState);
 
@@ -144,20 +144,20 @@ describe("urbanProject.selectors", () => {
 
   describe("selectReinstatementContractOwnerViewData", () => {
     it("returns composed view data with available stakeholders and reinstatement contract owner", () => {
-      const store = createTestStore({
-        siteData: {
+      const store = new StoreBuilder()
+        .withSiteData({
           ...mockSiteData,
           owner: { name: "Ville de Test", structureType: "municipality" as const },
-        },
-        steps: {
+        })
+        .withSteps({
           URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER: {
             completed: true,
             payload: {
               reinstatementContractOwner: { name: "Mon entreprise", structureType: "company" },
             },
           },
-        },
-      });
+        })
+        .build();
 
       const rootState = store.getState();
       const result =
@@ -172,7 +172,7 @@ describe("urbanProject.selectors", () => {
     });
 
     it("returns undefined reinstatementContractOwner when step has no answers", () => {
-      const store = createTestStore({ steps: {} });
+      const store = new StoreBuilder().withSteps({}).build();
       const rootState = store.getState();
       const result =
         creationProjectFormSelectors.selectReinstatementContractOwnerViewData(rootState);
@@ -185,7 +185,7 @@ describe("urbanProject.selectors", () => {
 
   describe("selectSoilsSummaryViewData", () => {
     it("returns site soils distribution and empty project soils distribution when no steps completed", () => {
-      const store = createTestStore({ steps: {} });
+      const store = new StoreBuilder().withSteps({}).build();
       const rootState = store.getState();
       const result = creationProjectFormSelectors.selectSoilsSummaryViewData(rootState);
 
@@ -198,13 +198,13 @@ describe("urbanProject.selectors", () => {
         BUILDINGS: 2000,
         IMPERMEABLE_SOILS: 3000,
       };
-      const store = createTestStore({
-        siteData: {
+      const store = new StoreBuilder()
+        .withSiteData({
           ...mockSiteData,
           soilsDistribution: customSoilsDistribution,
-        },
-        steps: {},
-      });
+        })
+        .withSteps({})
+        .build();
 
       const rootState = store.getState();
       const result = creationProjectFormSelectors.selectSoilsSummaryViewData(rootState);
@@ -268,8 +268,8 @@ describe("urbanProject.selectors", () => {
 
   describe("selectReinstatementExpensesViewData", () => {
     it("returns reinstatement expenses, decontaminated surface area and site soils distribution", () => {
-      const store = createTestStore({
-        steps: {
+      const store = new StoreBuilder()
+        .withSteps({
           URBAN_PROJECT_EXPENSES_REINSTATEMENT: {
             completed: true,
             payload: {
@@ -280,8 +280,8 @@ describe("urbanProject.selectors", () => {
             completed: true,
             payload: { decontaminatedSurfaceArea: 1500 },
           },
-        },
-      });
+        })
+        .build();
 
       const rootState = store.getState();
       const result = creationProjectFormSelectors.selectReinstatementExpensesViewData(rootState);
@@ -294,7 +294,7 @@ describe("urbanProject.selectors", () => {
     });
 
     it("returns undefined values when no steps completed", () => {
-      const store = createTestStore({ steps: {} });
+      const store = new StoreBuilder().withSteps({}).build();
       const rootState = store.getState();
       const result = creationProjectFormSelectors.selectReinstatementExpensesViewData(rootState);
 
@@ -306,8 +306,8 @@ describe("urbanProject.selectors", () => {
 
   describe("selectScheduleProjectionViewData", () => {
     it("returns step answers and isSiteFriche", () => {
-      const store = createTestStore({
-        steps: {
+      const store = new StoreBuilder()
+        .withSteps({
           URBAN_PROJECT_SCHEDULE_PROJECTION: {
             completed: true,
             payload: {
@@ -315,8 +315,8 @@ describe("urbanProject.selectors", () => {
               firstYearOfOperation: 2027,
             },
           },
-        },
-      });
+        })
+        .build();
 
       const rootState = store.getState();
       const result = creationProjectFormSelectors.selectScheduleProjectionViewData(rootState);
@@ -330,7 +330,7 @@ describe("urbanProject.selectors", () => {
     });
 
     it("returns undefined step answers when no steps completed", () => {
-      const store = createTestStore({ steps: {} });
+      const store = new StoreBuilder().withSteps({}).build();
       const rootState = store.getState();
       const result = creationProjectFormSelectors.selectScheduleProjectionViewData(rootState);
 
@@ -341,14 +341,14 @@ describe("urbanProject.selectors", () => {
 
   describe("selectSoilsDecontaminationSurfaceAreaViewData", () => {
     it("returns decontaminated surface area and site contaminated surface area", () => {
-      const store = createTestStore({
-        steps: {
+      const store = new StoreBuilder()
+        .withSteps({
           URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA: {
             completed: true,
             payload: { decontaminatedSurfaceArea: 1000 },
           },
-        },
-      });
+        })
+        .build();
 
       const rootState = store.getState();
       const result =
@@ -359,7 +359,7 @@ describe("urbanProject.selectors", () => {
     });
 
     it("returns undefined decontaminated surface area when no steps completed", () => {
-      const store = createTestStore({ steps: {} });
+      const store = new StoreBuilder().withSteps({}).build();
       const rootState = store.getState();
       const result =
         creationProjectFormSelectors.selectSoilsDecontaminationSurfaceAreaViewData(rootState);
@@ -371,7 +371,7 @@ describe("urbanProject.selectors", () => {
 
   describe("selectUrbanProjectSummaryViewData", () => {
     it("returns composed summary view data", () => {
-      const store = createTestStore({ steps: {} });
+      const store = new StoreBuilder().withSteps({}).build();
       const rootState = store.getState();
       const result = creationProjectFormSelectors.selectUrbanProjectSummaryViewData(rootState);
 
