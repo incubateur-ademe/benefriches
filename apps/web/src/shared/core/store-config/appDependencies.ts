@@ -14,11 +14,14 @@ import { HttpReconversionProjectImpactsApi } from "@/features/projects/infrastru
 import { HttpUrbanSprawlImpactsComparisonService } from "@/features/projects/infrastructure/urban-sprawl-impacts-comparison-service/HttpUrbanSprawlImpactsComparisonService";
 import { HttpReconversionCompatibilityEvaluation } from "@/features/reconversion-compatibility/infra/reconversion-compatibility-evaluation/HttpReconversionCompatibilityEvaluation";
 import { HttpSiteService } from "@/features/sites/infra/site-service/HttpSiteService";
+import { CrispSupportChatService } from "@/features/support/infrastructure/support-chat-service/CrispSupportChatService";
+import { NoopSupportChatService } from "@/features/support/infrastructure/support-chat-service/NoopSupportChatService";
 import { HttpUpdateReconversionProjectService } from "@/features/update-project/infrastructure/update-project-service/HttpUpdateReconversionProjectService";
 import { CreateFeatureAlertService } from "@/features/user-feature-alerts/infrastructure/create-feature-alert-service/CreateFeatureAlertService";
 import { AdministrativeDivisionGeoApi } from "@/shared/infrastructure/administrative-division-service/administrativeDivisionGeoApi";
 import { DisabledRealEstateValuationService } from "@/shared/infrastructure/real-estate-valuation-service/DisabledRealEstateValuationService";
 import { SoilsCarbonStorageApi } from "@/shared/infrastructure/soils-carbon-storage-service/soilsCarbonStorageApi";
+import { BENEFRICHES_ENV } from "@/shared/views/envVars";
 
 import { AppDependencies } from "./store";
 
@@ -44,4 +47,7 @@ export const appDependencies: AppDependencies = {
   reconversionCompatibilityEvaluationService: new HttpReconversionCompatibilityEvaluation(),
   updateProjectService: new HttpUpdateReconversionProjectService(),
   realEstateValuationService: new DisabledRealEstateValuationService(),
+  supportChatService: BENEFRICHES_ENV.crispEnabled
+    ? new CrispSupportChatService(BENEFRICHES_ENV.crispWebsiteId)
+    : new NoopSupportChatService(),
 };

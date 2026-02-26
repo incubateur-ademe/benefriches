@@ -1,12 +1,50 @@
+import Button from "@codegouvfr/react-dsfr/Button";
 import { useEffect } from "react";
 
 import { authenticateWithToken } from "@/features/onboarding/core/authenticateWithToken.action";
+import { authTokenErrorHelpRequested } from "@/features/support/core/authTokenErrorHelpRequested.action";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
+import { BENEFRICHES_ENV } from "@/shared/views/envVars";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { routes, useRoute } from "@/shared/views/router";
 
 const DELAY_BEFORE_AUTHENTICATION = 1000; // 1 second
+
+function AuthErrorHelp() {
+  const dispatch = useAppDispatch();
+
+  return (
+    <div className="mt-4">
+      <p className="mb-2">
+        Vous pouvez{" "}
+        <a className="fr-link" {...routes.accessBenefriches().link}>
+          demander un nouveau lien de connexion
+        </a>{" "}
+        ou contacter notre support.
+      </p>
+      {/* TODO: display a "Contacter le support" button leading to support email address */}
+      {/*  <a
+          className="fr-link"
+          href={`mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent("Lien de connexion expiré")}`}
+        >
+          Contacter le support par email
+        </a> */}
+      {BENEFRICHES_ENV.crispEnabled && (
+        <Button
+          type="button"
+          priority="secondary"
+          iconId="ri-chat-3-line"
+          onClick={() => {
+            void dispatch(authTokenErrorHelpRequested());
+          }}
+        >
+          Contacter le support
+        </Button>
+      )}
+    </div>
+  );
+}
 
 export default function AuthWithToken() {
   const currentRoute = useRoute();
@@ -40,7 +78,10 @@ export default function AuthWithToken() {
       <HtmlTitle>Authentification par token</HtmlTitle>
       <h1>Authentification</h1>
       {authenticationWithTokenState === "error" ? (
-        <p>Erreur lors de l'authentification.</p>
+        <>
+          <p>Erreur lors de l'authentification.</p>
+          <AuthErrorHelp />
+        </>
       ) : (
         <LoadingSpinner loadingText="Authentification en cours..." />
       )}

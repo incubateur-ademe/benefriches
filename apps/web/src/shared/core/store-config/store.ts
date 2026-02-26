@@ -16,6 +16,7 @@ import { ReconversionProjectImpactsGateway } from "@/features/projects/applicati
 import { QuickUrbanProjectImpactsGateway } from "@/features/projects/application/project-impacts/fetchQuickImpactsForUrbanProjectOnFriche.action";
 import { ReconversionCompatibilityEvaluationGateway } from "@/features/reconversion-compatibility/core/actions/reconversionCompatibilityEvaluationGateway";
 import type { SiteGateway } from "@/features/sites/core/gateways/SiteGateway";
+import type { SupportChatGateway } from "@/features/support/core/gateways/SupportChatGateway";
 import { UpdateProjectServiceGateway } from "@/features/update-project/core/updateProject.types";
 import { CreateFeatureAlertGateway } from "@/features/user-feature-alerts/core/CreateFeatureAlertGateway";
 import { RealEstateValuationGateway } from "@/shared/core/gateways/RealEstateValuationGateway";
@@ -49,6 +50,7 @@ export type AppDependencies = {
   reconversionCompatibilityEvaluationService: ReconversionCompatibilityEvaluationGateway;
   updateProjectService: UpdateProjectServiceGateway;
   realEstateValuationService: RealEstateValuationGateway;
+  supportChatService: SupportChatGateway;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

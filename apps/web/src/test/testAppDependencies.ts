@@ -17,6 +17,7 @@ import { MockReconversionProjectImpactsApi } from "@/features/projects/infrastru
 import { MockUrbanSprawlImpactsComparisonService } from "@/features/projects/infrastructure/urban-sprawl-impacts-comparison-service/MockUrbanSprawlImpactsComparisonService";
 import { InMemoryReconversionCompatibilityEvaluationService } from "@/features/reconversion-compatibility/infra/reconversion-compatibility-evaluation/InMemoryReconversionCompatibilityEvaluation";
 import { InMemorySiteService } from "@/features/sites/infra/site-service/InMemorySiteService";
+import { InMemorySupportChatService } from "@/features/support/infrastructure/support-chat-service/InMemorySupportChatService";
 import { InMemoryUpdateReconversionProjectService } from "@/features/update-project/infrastructure/update-project-service/InMemoryUpdateReconversionProjectService";
 import { InMemoryCreateFeatureAlertService } from "@/features/user-feature-alerts/infrastructure/create-feature-alert-service/InMemoryCreateFeatureAlertService";
 import { AppDependencies } from "@/shared/core/store-config/store";
@@ -73,6 +74,7 @@ export const getTestAppDependencies = (
       new InMemoryReconversionCompatibilityEvaluationService(),
     updateProjectService: new InMemoryUpdateReconversionProjectService(),
     realEstateValuationService: new InMemoryRealEstateValuationService(),
+    supportChatService: new InMemorySupportChatService(),
     ...depsOverride,
   };
 };

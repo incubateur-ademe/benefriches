@@ -16,4 +16,6 @@ export const BENEFRICHES_ENV = {
     windowEnv.WEBAPP_ALLOWED_DEVELOPMENT_PLAN_CATEGORIES?.split(",") ?? [],
   mutafrichesUrl: windowEnv.WEBAPP_MUTAFRICHES_FRAME_SRC ?? "",
   mutafrichesIntegrator: windowEnv.WEBAPP_MUTAFRICHES_INTEGRATOR ?? "",
+  crispEnabled: Boolean(windowEnv.WEBAPP_CRISP_WEBSITE_ID),
+  crispWebsiteId: windowEnv.WEBAPP_CRISP_WEBSITE_ID ?? "",
 };
