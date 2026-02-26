@@ -13,6 +13,7 @@ import { createSelectPublicGreenSpacesIntroductionViewData } from "./step-handle
 import { createSelectPublicGreenSpacesSoilsDistributionViewData } from "./step-handlers/spaces/public-green-spaces-soils-distribution/publicGreenSpacesSoilsDistribution.selector";
 import { createSelectSpacesSelectionViewData } from "./step-handlers/spaces/spaces-selection/spacesSelection.selector";
 import { createSelectSpacesSurfaceAreaViewData } from "./step-handlers/spaces/spaces-surface-area/spacesSurfaceArea.selector";
+import { createSelectProjectDeveloperViewData } from "./step-handlers/stakeholders/stakeholders-project-developer/stakeholdersProjectDeveloper.selector";
 import {
   createSelectUrbanProjectAvailableLocalAuthoritiesStakeholders,
   createSelectUrbanProjectAvailableStakeholders,
@@ -168,6 +169,12 @@ export const createUrbanProjectFormSelectors = (
   const selectPublicGreenSpacesIntroductionViewData =
     createSelectPublicGreenSpacesIntroductionViewData(selectors.selectSiteSoilsDistribution);
 
+  const selectProjectDeveloperViewData = createSelectProjectDeveloperViewData(
+    selectStepState,
+    selectUrbanProjectAvailableStakeholders,
+    selectUrbanProjectAvailableLocalAuthoritiesStakeholders,
+  );
+
   return {
     selectStepState,
     selectProjectSoilsDistributionByType,
@@ -189,6 +196,7 @@ export const createUrbanProjectFormSelectors = (
     selectSpacesSurfaceAreaViewData,
     selectPublicGreenSpacesSoilsDistributionViewData,
     selectPublicGreenSpacesIntroductionViewData,
+    selectProjectDeveloperViewData,
     ...selectors,
   };
 };

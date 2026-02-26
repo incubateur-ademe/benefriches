@@ -4,21 +4,9 @@ import StakeholderForm from "@/shared/views/project-form/common/stakeholder-form
 import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 
 function DeveloperFormContainer() {
-  const {
-    onBack,
-    onRequestStepCompletion,
-    selectStepAnswers,
-    selectUrbanProjectAvailableStakeholders,
-    selectUrbanProjectAvailableLocalAuthoritiesStakeholders,
-  } = useProjectForm();
-  const availableStakeholdersList = useAppSelector(selectUrbanProjectAvailableStakeholders);
-  const availableLocalAuthoritiesStakeholders = useAppSelector(
-    selectUrbanProjectAvailableLocalAuthoritiesStakeholders,
-  );
-
-  const projectDeveloper = useAppSelector(
-    selectStepAnswers("URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER"),
-  )?.projectDeveloper;
+  const { onBack, onRequestStepCompletion, selectProjectDeveloperViewData } = useProjectForm();
+  const { availableStakeholdersList, availableLocalAuthoritiesStakeholders, projectDeveloper } =
+    useAppSelector(selectProjectDeveloperViewData);
 
   return (
     <StakeholderForm
@@ -26,8 +14,8 @@ function DeveloperFormContainer() {
       instructions={
         <FormInfo>
           <p>
-            L’aménageur est l’acteur qui va engager la reconversion du site. Le bilan économique de
-            l’opération sera donc à sa charge.
+            L'aménageur est l'acteur qui va engager la reconversion du site. Le bilan économique de
+            l'opération sera donc à sa charge.
           </p>
         </FormInfo>
       }

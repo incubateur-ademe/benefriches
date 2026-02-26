@@ -103,6 +103,45 @@ describe("urbanProject.selectors", () => {
     });
   });
 
+  describe("selectProjectDeveloperViewData", () => {
+    it("returns composed view data with available stakeholders and project developer", () => {
+      const store = createTestStore({
+        siteData: {
+          ...mockSiteData,
+          owner: { name: "Ville de Test", structureType: "municipality" as const },
+        },
+        steps: {
+          URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER: {
+            completed: true,
+            payload: {
+              projectDeveloper: { name: "Mon entreprise", structureType: "company" },
+            },
+          },
+        },
+      });
+
+      const rootState = store.getState();
+      const result = creationProjectFormSelectors.selectProjectDeveloperViewData(rootState);
+
+      expect(result.projectDeveloper).toEqual({
+        name: "Mon entreprise",
+        structureType: "company",
+      });
+      expect(result.availableStakeholdersList).toBeDefined();
+      expect(result.availableLocalAuthoritiesStakeholders).toBeDefined();
+    });
+
+    it("returns undefined projectDeveloper when step has no answers", () => {
+      const store = createTestStore({ steps: {} });
+      const rootState = store.getState();
+      const result = creationProjectFormSelectors.selectProjectDeveloperViewData(rootState);
+
+      expect(result.projectDeveloper).toBeUndefined();
+      expect(result.availableStakeholdersList).toBeDefined();
+      expect(result.availableLocalAuthoritiesStakeholders).toBeDefined();
+    });
+  });
+
   describe("selectPublicGreenSpacesSoilsDistributionViewData", () => {
     it("should include constrained soil types from default answers even when not present on site", () => {
       const store = new StoreBuilder()
