@@ -1,16 +1,17 @@
 set $CSP_DEFAULT "default-src 'self'";
-set $CSP_SCRIPT "script-src 'self' 'wasm-unsafe-eval' https://tally.so/widgets/embed.js https://stats.beta.gouv.fr https://client.crisp.chat";
-set $CSP_CONNECT "connect-src 'self' data: https://stats.beta.gouv.fr/matomo.php https://data.geopf.fr/geocodage/search/ https://geo.api.gouv.fr/communes/ https://cdnjs.cloudflare.com/ajax/libs/twemoji/ <%= ENV['WEBAPP_MUTAFRICHES_FRAME_SRC'] %> https://client.relay.crisp.chat wss://client.relay.crisp.chat wss://stream.relay.crisp.chat";
-set $CSP_STYLE "style-src 'self' 'unsafe-inline'";
-set $CSP_FONT "font-src 'self' https://client.crisp.chat";
-set $CSP_IMG "img-src 'self' blob: data: https://image.crisp.chat https://client.crisp.chat https://storage.crisp.chat";
+set $CSP_SCRIPT "script-src 'self' 'wasm-unsafe-eval' https://tally.so/widgets/embed.js https://stats.beta.gouv.fr https://*.crisp.chat";
+set $CSP_CONNECT "connect-src 'self' data: https://stats.beta.gouv.fr/matomo.php https://data.geopf.fr/geocodage/search/ https://geo.api.gouv.fr/communes/ https://cdnjs.cloudflare.com/ajax/libs/twemoji/ <%= ENV['WEBAPP_MUTAFRICHES_FRAME_SRC'] %> https://*.crisp.chat wss://*.relay.crisp.chat wss://*.relay.rescue.crisp.chat";
+set $CSP_STYLE "style-src 'self' 'unsafe-inline' https://*.crisp.chat";
+set $CSP_FONT "font-src 'self' https://*.crisp.chat";
+set $CSP_IMG "img-src 'self' blob: data: https://*.crisp.chat";
+set $CSP_WORKER "worker-src blob: https://*.crisp.chat";
 set $CSP_FRAME "frame-ancestors 'none'";
 set $CSP_FRAME_SRC "frame-src https://tally.so https://benefriches-metabase.osc-secnum-fr1.scalingo.io <%= ENV['WEBAPP_MUTAFRICHES_FRAME_SRC'] %>";
 
 
 location / {
   root /app/dist;
-  add_header Content-Security-Policy "$CSP_DEFAULT; $CSP_SCRIPT; $CSP_CONNECT; $CSP_STYLE; $CSP_FONT; $CSP_IMG; $CSP_FRAME; $CSP_FRAME_SRC;";
+  add_header Content-Security-Policy "$CSP_DEFAULT; $CSP_SCRIPT; $CSP_CONNECT; $CSP_STYLE; $CSP_FONT; $CSP_IMG; $CSP_WORKER; $CSP_FRAME; $CSP_FRAME_SRC;";
   add_header X-Content-Type-Options "nosniff";
   add_header X-Frame-Options "DENY";
   try_files $uri $uri/ /index.html =404;
