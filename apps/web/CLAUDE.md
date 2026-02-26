@@ -38,6 +38,8 @@ pnpm --filter web typecheck && pnpm --filter web lint && pnpm --filter web test
 | Test with Store Helper   | `src/features/create-project/core/urban-project/__tests__/steps/site-resale/siteResaleSelection.step.spec.ts`    |
 | Test Store Helper        | `src/features/create-project/core/urban-project/__tests__/_testStoreHelpers.ts`                                  |
 | Listener Middleware      | `src/features/create-project/core/listeners/projectCreationListeners.ts`                                         |
+| Third-Party Gateway      | `src/features/support/core/gateways/SupportChatGateway.ts`                                                       |
+| Fire-and-forget Thunk    | `src/features/support/core/authLinkNotReceivedHelpRequested.action.ts`                                           |
 
 ---
 
@@ -129,6 +131,16 @@ When adding a new external service integration:
 2. **Create HTTP implementation** in `infrastructure/*/Http*Service.ts` - real API calls
 3. **Create InMemory mock** in `infrastructure/*/InMemory*Service.ts` - required for tests
 4. **Register in store** via `extraArgument` for thunk access
+
+### Third-Party Service Integration
+
+Third-party services (Crisp, analytics SDKs, etc.) belong in the **infrastructure layer**, not as React components.
+
+- Define gateway interface in `core/gateways/`
+- Implement in `infrastructure/` (real + InMemory + Noop)
+- Register in `AppDependencies` (not React context)
+- Views dispatch thunks that call `extra.service` — no direct SDK imports in views
+- Reference: `features/support/` (Crisp chat integration)
 
 ---
 
