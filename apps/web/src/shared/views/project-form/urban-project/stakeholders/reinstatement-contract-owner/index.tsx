@@ -4,21 +4,13 @@ import StakeholderForm from "@/shared/views/project-form/common/stakeholder-form
 import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 
 function SiteReinstatementContractOwnerFormContainer() {
+  const { onBack, onRequestStepCompletion, selectReinstatementContractOwnerViewData } =
+    useProjectForm();
   const {
-    onBack,
-    onRequestStepCompletion,
-    selectStepAnswers,
-    selectUrbanProjectAvailableStakeholders,
-    selectUrbanProjectAvailableLocalAuthoritiesStakeholders,
-  } = useProjectForm();
-  const availableStakeholdersList = useAppSelector(selectUrbanProjectAvailableStakeholders);
-  const availableLocalAuthoritiesStakeholders = useAppSelector(
-    selectUrbanProjectAvailableLocalAuthoritiesStakeholders,
-  );
-
-  const stepAnswers = useAppSelector(
-    selectStepAnswers("URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER"),
-  );
+    availableStakeholdersList,
+    availableLocalAuthoritiesStakeholders,
+    reinstatementContractOwner,
+  } = useAppSelector(selectReinstatementContractOwnerViewData);
 
   return (
     <StakeholderForm
@@ -31,7 +23,7 @@ function SiteReinstatementContractOwnerFormContainer() {
           </p>
         </FormInfo>
       }
-      initialValues={stepAnswers?.reinstatementContractOwner}
+      initialValues={reinstatementContractOwner}
       onSubmit={(formData) => {
         onRequestStepCompletion({
           stepId: "URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER",

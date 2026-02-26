@@ -7,17 +7,23 @@ import { createProjectFormSelectors } from "../projectForm.selectors";
 import { getProjectSummary } from "./helpers/projectSummary";
 import { ReadStateHelper } from "./helpers/readState";
 import { createSelectUsesFloorSurfaceAreaViewData } from "./step-handlers/buildings/buildings-uses-floor-surface-area/buildingsUsesFloorSurfaceArea.selector";
+import { createSelectReinstatementExpensesViewData } from "./step-handlers/expenses/expenses-reinstatement/expensesReinstatement.selector";
 import { createSelectSiteResaleRevenueViewData } from "./step-handlers/revenues/revenue-expected-site-resale/revenueExpectedSiteResale.selector";
+import { createSelectScheduleProjectionViewData } from "./step-handlers/schedule/schedule-projection/scheduleProjection.selector";
 import { createSelectSoilsCarbonStorageDifference } from "./step-handlers/soils/soils-carbon-summary/soilsCarbonSummary.selector";
+import { createSelectSoilsDecontaminationSurfaceAreaViewData } from "./step-handlers/soils/soils-decontamination-surface-area/soilsDecontaminationSurfaceArea.selector";
+import { createSelectSoilsSummaryViewData } from "./step-handlers/soils/soils-summary/soilsSummary.selector";
 import { createSelectPublicGreenSpacesIntroductionViewData } from "./step-handlers/spaces/public-green-spaces-introduction/publicGreenSpacesIntroduction.selector";
 import { createSelectPublicGreenSpacesSoilsDistributionViewData } from "./step-handlers/spaces/public-green-spaces-soils-distribution/publicGreenSpacesSoilsDistribution.selector";
 import { createSelectSpacesSelectionViewData } from "./step-handlers/spaces/spaces-selection/spacesSelection.selector";
 import { createSelectSpacesSurfaceAreaViewData } from "./step-handlers/spaces/spaces-surface-area/spacesSurfaceArea.selector";
 import { createSelectProjectDeveloperViewData } from "./step-handlers/stakeholders/stakeholders-project-developer/stakeholdersProjectDeveloper.selector";
+import { createSelectReinstatementContractOwnerViewData } from "./step-handlers/stakeholders/stakeholders-reinstatement-contract-owner/stakeholdersReinstatementContractOwner.selector";
 import {
   createSelectUrbanProjectAvailableLocalAuthoritiesStakeholders,
   createSelectUrbanProjectAvailableStakeholders,
 } from "./step-handlers/stakeholders/stakeholders.selector";
+import { createSelectUrbanProjectSummaryViewData } from "./step-handlers/summary/final-summary/finalSummary.selector";
 import { createSelectPublicGreenSpacesSurfaceAreaViewData } from "./step-handlers/uses/public-green-spaces-surface-area/publicGreenSpacesSurfaceArea.selector";
 import {
   answersByStepSchemas,
@@ -175,6 +181,41 @@ export const createUrbanProjectFormSelectors = (
     selectUrbanProjectAvailableLocalAuthoritiesStakeholders,
   );
 
+  const selectSoilsSummaryViewData = createSelectSoilsSummaryViewData(
+    selectors.selectSiteSoilsDistribution,
+    selectProjectSoilsDistributionByType,
+  );
+
+  const selectReinstatementContractOwnerViewData = createSelectReinstatementContractOwnerViewData(
+    selectStepState,
+    selectUrbanProjectAvailableStakeholders,
+    selectUrbanProjectAvailableLocalAuthoritiesStakeholders,
+  );
+
+  const selectReinstatementExpensesViewData = createSelectReinstatementExpensesViewData(
+    selectStepState,
+    selectors.selectSiteSoilsDistribution,
+  );
+
+  const selectUrbanProjectSummaryViewData = createSelectUrbanProjectSummaryViewData(
+    selectIsFormStatusValid,
+    selectProjectSummary,
+    selectProjectSoilsDistribution,
+    selectSaveState,
+    selectStepsGroupedBySections,
+  );
+
+  const selectScheduleProjectionViewData = createSelectScheduleProjectionViewData(
+    selectStepState,
+    selectors.selectIsSiteFriche,
+  );
+
+  const selectSoilsDecontaminationSurfaceAreaViewData =
+    createSelectSoilsDecontaminationSurfaceAreaViewData(
+      selectStepState,
+      selectors.selectSiteContaminatedSurfaceArea,
+    );
+
   return {
     selectStepState,
     selectProjectSoilsDistributionByType,
@@ -197,6 +238,12 @@ export const createUrbanProjectFormSelectors = (
     selectPublicGreenSpacesSoilsDistributionViewData,
     selectPublicGreenSpacesIntroductionViewData,
     selectProjectDeveloperViewData,
+    selectSoilsSummaryViewData,
+    selectReinstatementContractOwnerViewData,
+    selectReinstatementExpensesViewData,
+    selectUrbanProjectSummaryViewData,
+    selectScheduleProjectionViewData,
+    selectSoilsDecontaminationSurfaceAreaViewData,
     ...selectors,
   };
 };

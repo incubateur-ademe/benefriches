@@ -7,16 +7,9 @@ import {
 import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 
 function ReinstatementExpensesFormContainer() {
-  const { onBack, onRequestStepCompletion, selectStepAnswers, selectSiteSoilsDistribution } =
-    useProjectForm();
-
-  const reinstatementExpenses = useAppSelector(
-    selectStepAnswers("URBAN_PROJECT_EXPENSES_REINSTATEMENT"),
-  )?.reinstatementExpenses;
-  const decontaminatedSurfaceArea = useAppSelector(
-    selectStepAnswers("URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA"),
-  )?.decontaminatedSurfaceArea;
-  const siteSoilsDistribution = useAppSelector(selectSiteSoilsDistribution);
+  const { onBack, onRequestStepCompletion, selectReinstatementExpensesViewData } = useProjectForm();
+  const { reinstatementExpenses, decontaminatedSurfaceArea, siteSoilsDistribution } =
+    useAppSelector(selectReinstatementExpensesViewData);
 
   return (
     <ReinstatementsExpensesForm

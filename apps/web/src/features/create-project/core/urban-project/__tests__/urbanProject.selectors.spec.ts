@@ -142,6 +142,78 @@ describe("urbanProject.selectors", () => {
     });
   });
 
+  describe("selectReinstatementContractOwnerViewData", () => {
+    it("returns composed view data with available stakeholders and reinstatement contract owner", () => {
+      const store = createTestStore({
+        siteData: {
+          ...mockSiteData,
+          owner: { name: "Ville de Test", structureType: "municipality" as const },
+        },
+        steps: {
+          URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER: {
+            completed: true,
+            payload: {
+              reinstatementContractOwner: { name: "Mon entreprise", structureType: "company" },
+            },
+          },
+        },
+      });
+
+      const rootState = store.getState();
+      const result =
+        creationProjectFormSelectors.selectReinstatementContractOwnerViewData(rootState);
+
+      expect(result.reinstatementContractOwner).toEqual({
+        name: "Mon entreprise",
+        structureType: "company",
+      });
+      expect(result.availableStakeholdersList).toBeDefined();
+      expect(result.availableLocalAuthoritiesStakeholders).toBeDefined();
+    });
+
+    it("returns undefined reinstatementContractOwner when step has no answers", () => {
+      const store = createTestStore({ steps: {} });
+      const rootState = store.getState();
+      const result =
+        creationProjectFormSelectors.selectReinstatementContractOwnerViewData(rootState);
+
+      expect(result.reinstatementContractOwner).toBeUndefined();
+      expect(result.availableStakeholdersList).toBeDefined();
+      expect(result.availableLocalAuthoritiesStakeholders).toBeDefined();
+    });
+  });
+
+  describe("selectSoilsSummaryViewData", () => {
+    it("returns site soils distribution and empty project soils distribution when no steps completed", () => {
+      const store = createTestStore({ steps: {} });
+      const rootState = store.getState();
+      const result = creationProjectFormSelectors.selectSoilsSummaryViewData(rootState);
+
+      expect(result.siteSoilsDistribution).toEqual(mockSiteData.soilsDistribution);
+      expect(result.projectSoilsDistribution).toEqual({});
+    });
+
+    it("returns custom site soils distribution", () => {
+      const customSoilsDistribution = {
+        BUILDINGS: 2000,
+        IMPERMEABLE_SOILS: 3000,
+      };
+      const store = createTestStore({
+        siteData: {
+          ...mockSiteData,
+          soilsDistribution: customSoilsDistribution,
+        },
+        steps: {},
+      });
+
+      const rootState = store.getState();
+      const result = creationProjectFormSelectors.selectSoilsSummaryViewData(rootState);
+
+      expect(result.siteSoilsDistribution).toEqual(customSoilsDistribution);
+      expect(result.projectSoilsDistribution).toEqual({});
+    });
+  });
+
   describe("selectPublicGreenSpacesSoilsDistributionViewData", () => {
     it("should include constrained soil types from default answers even when not present on site", () => {
       const store = new StoreBuilder()
@@ -191,6 +263,123 @@ describe("urbanProject.selectors", () => {
         ARTIFICIAL_TREE_FILLED: 22500,
         WATER: 4500,
       });
+    });
+  });
+
+  describe("selectReinstatementExpensesViewData", () => {
+    it("returns reinstatement expenses, decontaminated surface area and site soils distribution", () => {
+      const store = createTestStore({
+        steps: {
+          URBAN_PROJECT_EXPENSES_REINSTATEMENT: {
+            completed: true,
+            payload: {
+              reinstatementExpenses: [{ amount: 50000, purpose: "waste_collection" as const }],
+            },
+          },
+          URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA: {
+            completed: true,
+            payload: { decontaminatedSurfaceArea: 1500 },
+          },
+        },
+      });
+
+      const rootState = store.getState();
+      const result = creationProjectFormSelectors.selectReinstatementExpensesViewData(rootState);
+
+      expect(result.reinstatementExpenses).toEqual([
+        { amount: 50000, purpose: "waste_collection" },
+      ]);
+      expect(result.decontaminatedSurfaceArea).toBe(1500);
+      expect(result.siteSoilsDistribution).toEqual(mockSiteData.soilsDistribution);
+    });
+
+    it("returns undefined values when no steps completed", () => {
+      const store = createTestStore({ steps: {} });
+      const rootState = store.getState();
+      const result = creationProjectFormSelectors.selectReinstatementExpensesViewData(rootState);
+
+      expect(result.reinstatementExpenses).toBeUndefined();
+      expect(result.decontaminatedSurfaceArea).toBeUndefined();
+      expect(result.siteSoilsDistribution).toEqual(mockSiteData.soilsDistribution);
+    });
+  });
+
+  describe("selectScheduleProjectionViewData", () => {
+    it("returns step answers and isSiteFriche", () => {
+      const store = createTestStore({
+        steps: {
+          URBAN_PROJECT_SCHEDULE_PROJECTION: {
+            completed: true,
+            payload: {
+              installationSchedule: { startDate: "2025-01-01", endDate: "2026-01-01" },
+              firstYearOfOperation: 2027,
+            },
+          },
+        },
+      });
+
+      const rootState = store.getState();
+      const result = creationProjectFormSelectors.selectScheduleProjectionViewData(rootState);
+
+      expect(result.stepAnswers?.installationSchedule).toEqual({
+        startDate: "2025-01-01",
+        endDate: "2026-01-01",
+      });
+      expect(result.stepAnswers?.firstYearOfOperation).toBe(2027);
+      expect(result.isSiteFriche).toBe(true);
+    });
+
+    it("returns undefined step answers when no steps completed", () => {
+      const store = createTestStore({ steps: {} });
+      const rootState = store.getState();
+      const result = creationProjectFormSelectors.selectScheduleProjectionViewData(rootState);
+
+      expect(result.stepAnswers).toBeUndefined();
+      expect(result.isSiteFriche).toBe(true);
+    });
+  });
+
+  describe("selectSoilsDecontaminationSurfaceAreaViewData", () => {
+    it("returns decontaminated surface area and site contaminated surface area", () => {
+      const store = createTestStore({
+        steps: {
+          URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA: {
+            completed: true,
+            payload: { decontaminatedSurfaceArea: 1000 },
+          },
+        },
+      });
+
+      const rootState = store.getState();
+      const result =
+        creationProjectFormSelectors.selectSoilsDecontaminationSurfaceAreaViewData(rootState);
+
+      expect(result.decontaminatedSurfaceArea).toBe(1000);
+      expect(result.siteContaminatedSurfaceArea).toBe(mockSiteData.contaminatedSoilSurface);
+    });
+
+    it("returns undefined decontaminated surface area when no steps completed", () => {
+      const store = createTestStore({ steps: {} });
+      const rootState = store.getState();
+      const result =
+        creationProjectFormSelectors.selectSoilsDecontaminationSurfaceAreaViewData(rootState);
+
+      expect(result.decontaminatedSurfaceArea).toBeUndefined();
+      expect(result.siteContaminatedSurfaceArea).toBe(mockSiteData.contaminatedSoilSurface);
+    });
+  });
+
+  describe("selectUrbanProjectSummaryViewData", () => {
+    it("returns composed summary view data", () => {
+      const store = createTestStore({ steps: {} });
+      const rootState = store.getState();
+      const result = creationProjectFormSelectors.selectUrbanProjectSummaryViewData(rootState);
+
+      expect(result.isFormValid).toBeDefined();
+      expect(result.projectSummary).toBeDefined();
+      expect(result.projectSoilsDistribution).toBeDefined();
+      expect(result.saveState).toBe("idle");
+      expect(result.stepsGroupedBySections).toBeDefined();
     });
   });
 });

@@ -3,10 +3,8 @@ import ScheduleProjectionForm from "@/shared/views/project-form/common/schedule/
 import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 
 function ScheduleProjectionFormContainer() {
-  const { onBack, selectStepAnswers, onRequestStepCompletion, selectIsSiteFriche } =
-    useProjectForm();
-  const stepAnswers = useAppSelector(selectStepAnswers("URBAN_PROJECT_SCHEDULE_PROJECTION"));
-  const isSiteFriche = useAppSelector(selectIsSiteFriche);
+  const { onBack, onRequestStepCompletion, selectScheduleProjectionViewData } = useProjectForm();
+  const { stepAnswers, isSiteFriche } = useAppSelector(selectScheduleProjectionViewData);
 
   return (
     <ScheduleProjectionForm

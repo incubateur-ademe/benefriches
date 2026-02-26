@@ -3,23 +3,14 @@ import UrbanProjectFormSummary from "@/shared/views/project-form/urban-project/s
 import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 
 function ProjectionCreationDataSummaryContainer() {
+  const { onBack, onSave, onNavigateToStep, selectUrbanProjectSummaryViewData } = useProjectForm();
   const {
-    onBack,
-    onSave,
-    selectIsFormStatusValid,
-    selectSaveState,
-    onNavigateToStep,
-    selectStepsGroupedBySections,
-    selectProjectSummary,
-    selectProjectSoilsDistribution,
-  } = useProjectForm();
-
-  const isFormValid = useAppSelector(selectIsFormStatusValid);
-  const projectSummary = useAppSelector(selectProjectSummary);
-  const projectSoilsDistribution = useAppSelector(selectProjectSoilsDistribution);
-  const saveState = useAppSelector(selectSaveState);
-
-  const stepsGroupedBySections = useAppSelector(selectStepsGroupedBySections);
+    isFormValid,
+    projectSummary,
+    projectSoilsDistribution,
+    saveState,
+    stepsGroupedBySections,
+  } = useAppSelector(selectUrbanProjectSummaryViewData);
 
   const warnings = isFormValid ? null : (
     <>

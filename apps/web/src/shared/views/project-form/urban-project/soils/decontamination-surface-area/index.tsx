@@ -6,22 +6,21 @@ import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 
 function SoilsDecontaminationSurfaceAreaContainer() {
   const { inputMode, onInputModeChange } = useSurfaceAreaInputMode();
-  const { onBack, onRequestStepCompletion, selectStepAnswers, selectSiteContaminatedSurfaceArea } =
+  const { onBack, onRequestStepCompletion, selectSoilsDecontaminationSurfaceAreaViewData } =
     useProjectForm();
-  const stepAnswers = useAppSelector(
-    selectStepAnswers("URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA"),
+  const { decontaminatedSurfaceArea, siteContaminatedSurfaceArea } = useAppSelector(
+    selectSoilsDecontaminationSurfaceAreaViewData,
   );
-  const siteContaminatedSurfaceArea = useAppSelector(selectSiteContaminatedSurfaceArea);
 
   const getInitialValues = () => {
-    if (!stepAnswers?.decontaminatedSurfaceArea) {
+    if (!decontaminatedSurfaceArea) {
       return undefined;
     }
     return {
       surfaceArea:
         inputMode === "percentage"
-          ? computePercentage(stepAnswers.decontaminatedSurfaceArea, siteContaminatedSurfaceArea)
-          : stepAnswers.decontaminatedSurfaceArea,
+          ? computePercentage(decontaminatedSurfaceArea, siteContaminatedSurfaceArea)
+          : decontaminatedSurfaceArea,
     };
   };
 
