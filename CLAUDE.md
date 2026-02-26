@@ -191,7 +191,7 @@ export class User {
 
 ```bash
 pnpm typecheck     # TypeScript type checking (required before commit)
-pnpm lint          # Linting with oxlint (required before commit)
+pnpm lint          # Linting with oxlint (required before commit) — suppress with `// eslint-disable-next-line <rule>`
 pnpm format        # Auto-format code with Prettier
 pnpm test          # Run all tests (required before commit)
 pnpm build         # Build for production

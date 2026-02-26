@@ -140,7 +140,7 @@ Third-party services (Crisp, analytics SDKs, etc.) belong in the **infrastructur
 - Implement in `infrastructure/` (real + InMemory + Noop)
 - Register in `AppDependencies` (not React context)
 - Views dispatch thunks that call `extra.service` — no direct SDK imports in views
-- Reference: `features/support/` (Crisp chat integration)
+- Reference: `features/support/` (Crisp chat), `features/analytics/` (Matomo analytics)
 
 ---
 
