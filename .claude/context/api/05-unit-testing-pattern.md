@@ -86,31 +86,7 @@ it("should return success with example id", async () => {
 
 ## Exhaustive Assertions
 
-**IMPORTANT**: Prefer `toEqual()` over `toMatchObject()` for exhaustive assertions.
-
-```typescript
-// ✅ PREFERRED - Exhaustive assertion (exact match)
-expect(repository._getExamples()).toEqual([
-  {
-    id: "1",
-    name: "Test",
-    description: "Description",
-    createdAt: new Date("2024-01-01"),
-  },
-]);
-
-// ⚠️ USE SPARINGLY - Partial match (only when object has many fields)
-expect(complexObject).toMatchObject({
-  importantField1: "value1",
-  importantField2: "value2",
-  // ... ignoring 20 other fields
-});
-```
-
-**Why exhaustive assertions**:
-- Catch unexpected fields or missing fields
-- More robust against regressions
-- Clearer test intent
+Prefer `toEqual()` over `toMatchObject()` for exhaustive assertions. See [API CLAUDE.md → Object Assertions](../../apps/api/CLAUDE.md#object-assertions-prefer-single-expect) for rationale and examples.
 
 ## Testing Success Paths
 
