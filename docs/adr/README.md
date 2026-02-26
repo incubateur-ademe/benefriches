@@ -29,3 +29,4 @@ An ADR is a short document that captures an important architectural decision mad
 | 0002 | [Redux event-based state management](0002-redux-event-based-state-management.md) | Accepted | 2026-02-23 |
 | 0003 | [Shared package for cross-app types](0003-shared-package-for-cross-app-types.md) | Accepted | 2026-02-23 |
 | 0004 | [Colocate urban project step definitions](0004-colocate-urban-project-step-definitions.md) | Accepted | 2026-02-23 |
+| 0005 | [Use gateway pattern for third-party browser SDKs](0005-gateway-pattern-for-third-party-browser-sdks.md) | Accepted | 2026-02-26 |
