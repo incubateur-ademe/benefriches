@@ -75,25 +75,27 @@ import type { GetSiteViewResponseDto } from "shared";
 
 ## Domain Value Objects
 
-Use `as const` pattern (no TypeScript enums):
+Use `z.enum()` with `as const` array (no TypeScript enums):
 
 ```typescript
-// src/soils/soilType.ts
-export const SOIL_TYPES = {
-  BUILDINGS: "BUILDINGS",
-  IMPERMEABLE_SOILS: "IMPERMEABLE_SOILS",
-  MINERAL_SOIL: "MINERAL_SOIL",
-  // ...
-} as const;
+// src/soils/index.ts
+import z from "zod";
 
-export type SoilType = (typeof SOIL_TYPES)[keyof typeof SOIL_TYPES];
-
-// Optional: Zod schema for validation
-export const soilTypeSchema = z.enum([
-  SOIL_TYPES.BUILDINGS,
-  SOIL_TYPES.IMPERMEABLE_SOILS,
+// 1. Define values as const array
+export const ORDERED_SOIL_TYPES = [
+  "BUILDINGS",
+  "IMPERMEABLE_SOILS",
+  "MINERAL_SOIL",
   // ...
-]);
+] as const;
+
+// 2. Create Zod schema from array
+export const soilTypeSchema = z.enum(ORDERED_SOIL_TYPES);
+
+// 3. Infer type from schema
+export type SoilType = z.infer<typeof soilTypeSchema>;
+
+// Access values: soilTypeSchema.options
 ```
 
 ---
@@ -159,15 +161,23 @@ packages/shared/
 ├── src/
 │   ├── index.ts                      # Main exports
 │   ├── api-dtos/                     # API request/response DTOs
-│   │   ├── sites/
+│   │   ├── auth/                     #   Auth DTOs (register, getCurrentUser)
+│   │   ├── sites/                    #   Site DTOs (create, view, features)
+│   │   ├── site-actions/             #   Site actions DTOs
+│   │   ├── site-evaluations/         #   Site evaluation DTOs
+│   │   ├── urban-sprawl-impacts-comparison/
 │   │   └── index.ts
-│   ├── soils/                        # Soil type definitions
-│   ├── site/                         # Site domain types
-│   ├── reconversion-projects/        # Project domain types
-│   ├── surface-area/                 # Area calculation utilities
-│   ├── financial/                    # Financial calculation types
 │   ├── adapters/                     # Port interfaces (IDateProvider)
-│   └── [other-domains]/
+│   ├── co2eq/                        # CO2 equivalent conversions
+│   ├── financial/                    # Financial calculation types
+│   ├── local-authority/              # Local authority types and formatting
+│   ├── reconversion-project-impacts/ # Impact types (socioeconomic, data views)
+│   ├── reconversion-projects/        # Project domain types
+│   ├── services/                     # Utility functions (math, strings, sum)
+│   ├── site/                         # Site domain types
+│   ├── soils/                        # Soil type definitions
+│   ├── surface-area/                 # Area calculation utilities
+│   └── urban-sprawl-impacts-comparison/
 ├── dist/                             # Built output (gitignored)
 ├── package.json
 └── tsconfig.json
