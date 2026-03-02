@@ -1,8 +1,7 @@
 import { useEffect } from "react";
 
-import { routes, useRoute } from "@/shared/views/router";
-
-import { useAppSelector } from "../../hooks/store.hooks";
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import { routes, useRoute } from "@/app/router";
 
 export default function RequireAuthenticatedUser({ children }: { children: React.ReactNode }) {
   const currentRoute = useRoute();

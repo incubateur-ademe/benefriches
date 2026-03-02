@@ -1,10 +1,10 @@
 import Button from "@codegouvfr/react-dsfr/Button";
 
+import { useAppDispatch } from "@/app/hooks/store.hooks";
+import { routes } from "@/app/router";
 import { siteCreationInitiated } from "@/features/create-site/core/steps/introduction/introduction.actions";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
-import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 import OnboardingPageLayout from "@/shared/views/layout/OnboardingPageLayout/OnboardingPageLayout";
-import { routes } from "@/shared/views/router";
 
 import { OnboardingVariant } from "../when-to-use/OnboardingWhenToUsePage";
 import UseCaseList from "../when-to-use/UseCaseList";

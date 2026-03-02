@@ -1,6 +1,6 @@
 import { MutabilityUsage } from "shared";
 
-import { BENEFRICHES_ENV } from "@/shared/views/envVars";
+import { BENEFRICHES_ENV } from "@/app/envVars";
 
 import { EvaluationCompletedPayload } from "../../core/actions/compatibilityEvaluationCompleted.actions";
 import { ReconversionCompatibilityEvaluationResults } from "../../core/actions/compatibilityEvaluationResultsRequested.actions";

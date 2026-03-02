@@ -1,9 +1,9 @@
 import { lazy, ReactNode, Suspense, useEffect } from "react";
 
+import { useAppSelector } from "@/app/hooks/store.hooks";
 import { UrbanProjectCreationStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
-import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
 import { selectUrbanProjectCurrentStep } from "../../core/urban-project/urbanProject.selectors";

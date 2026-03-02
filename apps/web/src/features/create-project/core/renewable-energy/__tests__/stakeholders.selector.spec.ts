@@ -1,6 +1,6 @@
+import { RootState } from "@/app/store/store";
 import { buildUser } from "@/features/onboarding/core/user.mock";
 import { getProjectFormInitialState } from "@/shared/core/reducers/project-form/projectForm.reducer";
-import { RootState } from "@/shared/core/store-config/store";
 
 import { relatedSiteData } from "../../__tests__/siteData.mock";
 import {

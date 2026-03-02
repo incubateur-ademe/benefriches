@@ -1,7 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 
+import { RootState } from "@/app/store/store";
 import { selectSiteFeaturesViewData } from "@/features/sites/core/siteFeatures.selectors";
-import { RootState } from "@/shared/core/store-config/store";
 
 const selectSelf = (state: RootState) => state.siteCreation;
 

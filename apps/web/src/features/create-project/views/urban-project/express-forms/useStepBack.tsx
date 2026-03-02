@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 
+import { useAppDispatch } from "@/app/hooks/store.hooks";
 import { creationProjectFormUrbanActions } from "@/features/create-project/core/urban-project/urbanProject.actions";
-import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 export const useStepBack = () => {
   const dispatch = useAppDispatch();

@@ -1,7 +1,7 @@
 import { isSameDay } from "date-fns";
 
+import type { RootState } from "@/app/store/store";
 import { selectAppSettings } from "@/features/app-settings/core/appSettings";
-import type { RootState } from "@/shared/core/store-config/store";
 
 export const selectDisplayOnboarding = (state: RootState): boolean => {
   const { urbanSprawlComparisonOnboardingLastSeenAt } = selectAppSettings(state);

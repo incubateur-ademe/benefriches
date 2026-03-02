@@ -1,6 +1,6 @@
 import Alert from "@codegouvfr/react-dsfr/Alert";
 
-import { routes } from "@/shared/views/router";
+import { routes } from "@/app/router";
 
 type Props = {
   errorKind: string;

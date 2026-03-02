@@ -2,11 +2,11 @@ import Button from "@codegouvfr/react-dsfr/Button";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import { Description, Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import { routes } from "@/app/router";
 import classNames from "@/shared/views/clsx";
-import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { useNavigationBlocker } from "@/shared/views/hooks/useNavigationBlocker";
 import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
-import { routes } from "@/shared/views/router";
 
 const DIALOG_DSFR_CSS = [
   "fixed inset-0",

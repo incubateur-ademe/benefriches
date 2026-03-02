@@ -1,8 +1,8 @@
 import Alert from "@codegouvfr/react-dsfr/Alert";
 import { useEffect } from "react";
 
+import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import { viewModeUpdated } from "../../application/project-impacts/actions";
 import { fetchQuickImpactsForUrbanProjectOnFriche } from "../../application/project-impacts/fetchQuickImpactsForUrbanProjectOnFriche.action";

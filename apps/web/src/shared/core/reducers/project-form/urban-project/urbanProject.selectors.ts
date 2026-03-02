@@ -1,6 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import { RootState } from "@/shared/core/store-config/store";
+import { RootState } from "@/app/store/store";
 import { buildStepGroupsFromSequence } from "@/shared/views/project-form/stepper/stepperConfig";
 
 import { createProjectFormSelectors } from "../projectForm.selectors";

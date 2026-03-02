@@ -1,5 +1,6 @@
 import Button from "@codegouvfr/react-dsfr/Button";
 
+import { routes } from "@/app/router";
 import {
   getLabelForDevelopmentPlanCategory,
   getLabelForRenewableEnergyProductionType,
@@ -9,7 +10,6 @@ import DataLine from "@/shared/views/components/FeaturesList/FeaturesListDataLin
 import ScheduleDates from "@/shared/views/components/FeaturesList/FeaturesListScheduleDates";
 import Section from "@/shared/views/components/FeaturesList/FeaturesListSection";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
-import { routes } from "@/shared/views/router";
 
 import DevelopmentPlanFeatures from "./DevelopmentPlanFeatures";
 import ExpensesAndRevenuesSection from "./ExpensesAndRevenues";

@@ -1,6 +1,6 @@
 import { MutabilityUsage } from "shared";
 
-import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
+import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
 
 import { ACTION_PREFIX } from ".";
 

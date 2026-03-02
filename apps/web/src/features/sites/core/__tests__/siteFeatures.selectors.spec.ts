@@ -1,5 +1,5 @@
-import type { RootState } from "@/shared/core/store-config/store";
-import { createStore } from "@/shared/core/store-config/store";
+import type { RootState } from "@/app/store/store";
+import { createStore } from "@/app/store/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import { selectSiteFeaturesViewData } from "../siteFeatures.selectors";

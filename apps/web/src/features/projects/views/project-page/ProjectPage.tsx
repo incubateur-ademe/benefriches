@@ -1,7 +1,7 @@
 import { Route } from "type-route";
 
+import { routes, useRoute } from "@/app/router.ts";
 import classNames from "@/shared/views/clsx";
-import { routes, useRoute } from "@/shared/views/router.ts";
 
 import ProjectImpactsUrbanSprawlImpactsComparisonView from "../project-impacts-urban-sprawl-comparison";
 import ProjectFeaturesView from "./features/index.tsx";

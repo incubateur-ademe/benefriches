@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Route } from "type-route";
 
-import { routes, session } from "../router";
+import { routes, session } from "@/app/router";
 
 type BlockedNavigationState =
   | {

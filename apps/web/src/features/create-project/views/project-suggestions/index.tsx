@@ -1,4 +1,4 @@
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 
 import { projectSuggestionsCompleted } from "../../core/actions/projectSuggestionCompleted.action";
 import { selectProjectSuggestionsViewData } from "../../core/createProject.selectors";

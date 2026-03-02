@@ -1,7 +1,7 @@
+import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { stepReverted } from "@/features/create-site/core/actions/revert.action";
 import { soilsSelectionStepCompleted } from "@/features/create-site/core/steps/spaces/spaces.actions";
 import { selectSpacesSelectionFormViewData } from "@/features/create-site/core/steps/spaces/spaces.selectors";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import SiteSpacesSelectionForm, { type FormValues } from "./SpacesSelectionForm";
 

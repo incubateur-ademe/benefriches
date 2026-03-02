@@ -1,8 +1,8 @@
 import Button from "@codegouvfr/react-dsfr/Button";
 import { ReactNode, useContext } from "react";
 
+import { routes } from "@/app/router";
 import classNames from "@/shared/views/clsx";
-import { routes } from "@/shared/views/router";
 
 import { SidebarLayoutContext } from "./SidebarLayoutContext";
 

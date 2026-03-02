@@ -1,6 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 import type { SiteNature } from "shared";
 
+import type { RootState } from "@/app/store/store";
 import { getSummaryIndicatorsComparison } from "@/features/projects/application/project-impacts-urban-sprawl-comparison/summary.selectors";
 import type {
   UrbanSprawlImpactsComparisonState,
@@ -8,7 +9,6 @@ import type {
 } from "@/features/projects/application/project-impacts-urban-sprawl-comparison/urbanSprawlComparison.reducer";
 import { selectDisplayOnboarding } from "@/features/projects/application/project-impacts-urban-sprawl-comparison/urbanSprawlComparisonOnboardingSkip.selector";
 import type { KeyImpactIndicatorData } from "@/features/projects/domain/projectKeyImpactIndicators";
-import type { RootState } from "@/shared/core/store-config/store";
 
 // Page View
 type UrbanSprawlComparisonViewData = {

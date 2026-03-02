@@ -1,8 +1,8 @@
+import { useAppDispatch } from "@/app/hooks/store.hooks";
 import { impactsAccuracyDisclaimerHidden } from "@/features/analytics/core/analyticsEvents";
 import { eventTracked } from "@/features/analytics/core/eventTracked.action";
 import { appSettingUpdated } from "@/features/app-settings/core/appSettings";
 import Disclaimer from "@/shared/views/components/Disclaimer/Disclaimer";
-import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 export default function ImpactsAccuracyDisclaimer() {
   const dispatch = useAppDispatch();

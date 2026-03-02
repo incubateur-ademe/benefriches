@@ -1,8 +1,8 @@
 import { useContext } from "react";
 
+import { useAppSelector } from "@/app/hooks/store.hooks";
 import { UrbanProjectCreationStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 import classNames from "@/shared/views/clsx";
-import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { SidebarLayoutContext } from "@/shared/views/layout/SidebarLayout/SidebarLayoutContext";
 import FormStepperWrapper from "@/shared/views/layout/WizardFormLayout/FormStepperWrapper";
 import { useBuildStepperNavigationItems } from "@/shared/views/project-form/stepper/useBuildStepperNavigationItems";

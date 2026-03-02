@@ -5,7 +5,7 @@ import {
 } from "shared";
 import z from "zod";
 
-import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
+import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
 
 const customSiteSchema = createCustomSiteDtoSchema;
 export type CustomSitePayload = z.infer<typeof customSiteSchema>;

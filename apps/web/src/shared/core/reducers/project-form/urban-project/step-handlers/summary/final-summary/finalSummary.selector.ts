@@ -2,9 +2,9 @@ import { createSelector } from "@reduxjs/toolkit";
 import type { Selector } from "@reduxjs/toolkit";
 import type { ReconversionProjectSoilsDistribution } from "shared";
 
+import type { RootState } from "@/app/store/store";
 import type { ProjectFormState } from "@/shared/core/reducers/project-form/projectForm.reducer";
 import type { getProjectSummary } from "@/shared/core/reducers/project-form/urban-project/helpers/projectSummary";
-import type { RootState } from "@/shared/core/store-config/store";
 import type { ProjectStepGroups } from "@/shared/views/project-form/stepper/stepperConfig";
 
 type UrbanProjectSummaryViewData = {

@@ -1,6 +1,6 @@
+import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { stepReverted } from "@/features/create-site/core/actions/revert.action";
 import { selectSiteCreationResultViewData } from "@/features/create-site/core/steps/final/final.selectors";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import SiteCreationResult from "./SiteCreationResult";
 

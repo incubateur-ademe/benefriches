@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 
+import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
+import { routes, useRoute } from "@/app/router";
 import { fricheFromCompatibilityEvaluationSaved } from "@/features/analytics/core/analyticsEvents";
 import { eventTracked } from "@/features/analytics/core/eventTracked.action";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
-import { routes, useRoute } from "@/shared/views/router";
 
 import { reconversionCompatibilityEvaluationReset } from "../../core/actions/compatibilityEvaluationReset.actions";
 import { reconversionCompatibilityEvaluationResultsRequested } from "../../core/actions/compatibilityEvaluationResultsRequested.actions";

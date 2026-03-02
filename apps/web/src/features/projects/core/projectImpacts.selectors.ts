@@ -1,5 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 
+import type { RootState } from "@/app/store/store";
 import {
   selectEnvironmentalAreaChartImpactsData,
   selectSocialAreaChartImpactsData,
@@ -25,7 +26,6 @@ import type {
   SocioEconomicImpactByActor,
 } from "@/features/projects/domain/projectImpactsSocioEconomic";
 import type { KeyImpactIndicatorData } from "@/features/projects/domain/projectKeyImpactIndicators";
-import type { RootState } from "@/shared/core/store-config/store";
 
 import {
   selectModalData,

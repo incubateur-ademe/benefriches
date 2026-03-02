@@ -1,4 +1,4 @@
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 
 import { stepReverted } from "../../core/actions/revert.action";
 import { createModeSelectionCompleted } from "../../core/steps/introduction/introduction.actions";

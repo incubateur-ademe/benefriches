@@ -1,6 +1,6 @@
 import { isUrbanProjectTemplate } from "shared";
 
-import { AppStartListening } from "@/shared/core/store-config/listenerMiddleware";
+import { AppStartListening } from "@/app/store/listenerMiddleware";
 
 import { projectSuggestionsCompleted } from "../actions/projectSuggestionCompleted.action";
 import { expressPhotovoltaicProjectCreated } from "../renewable-energy/actions/expressProjectSaved.action";

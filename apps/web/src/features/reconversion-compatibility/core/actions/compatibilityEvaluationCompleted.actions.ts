@@ -1,5 +1,5 @@
-import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
-import { routes } from "@/shared/views/router";
+import { routes } from "@/app/router";
+import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
 
 import { ACTION_PREFIX } from ".";
 

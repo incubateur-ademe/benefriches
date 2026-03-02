@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { Route } from "type-route";
 
+import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
+import { routes } from "@/app/router";
 import { impactsOnboardingCompleted } from "@/features/projects/application/project-impacts/impactsOnboardingSkip.actions";
 import { selectCanSkipImpactsOnboarding } from "@/features/projects/application/project-impacts/impactsOnboardingSkip.selectors";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
-import { routes } from "@/shared/views/router";
 
 import ProjectImpactsOnboardingPage from "./ProjectImpactsOnboardingPage";
 import { DEFAULT_STEP } from "./steps";

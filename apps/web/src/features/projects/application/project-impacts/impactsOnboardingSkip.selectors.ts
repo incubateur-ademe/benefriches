@@ -1,5 +1,5 @@
+import type { RootState } from "@/app/store/store";
 import { selectAppSettings } from "@/features/app-settings/core/appSettings";
-import type { RootState } from "@/shared/core/store-config/store";
 
 import { canSkipImpactsOnboarding, hasSeenOnboardingToday } from "./impactsOnboardingSkip";
 

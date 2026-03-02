@@ -11,9 +11,9 @@ import {
   computeSecurityDefaultCost,
 } from "shared";
 
+import { RootState } from "@/app/store/store";
 import type { UserStructure } from "@/features/onboarding/core/user";
 import { selectCurrentUserStructure } from "@/features/onboarding/core/user.reducer";
-import { RootState } from "@/shared/core/store-config/store";
 
 import type { Owner, Tenant } from "../../siteFoncier.types";
 import type { SiteCreationData } from "../../siteFoncier.types";

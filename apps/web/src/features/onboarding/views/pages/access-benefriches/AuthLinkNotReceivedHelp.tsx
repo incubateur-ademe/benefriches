@@ -1,8 +1,8 @@
 import Button from "@codegouvfr/react-dsfr/Button";
 
+import { BENEFRICHES_ENV } from "@/app/envVars";
+import { useAppDispatch } from "@/app/hooks/store.hooks";
 import { authLinkNotReceivedHelpRequested } from "@/features/support/core/authLinkNotReceivedHelpRequested.action";
-import { BENEFRICHES_ENV } from "@/shared/views/envVars";
-import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 type Props = {
   email: string;

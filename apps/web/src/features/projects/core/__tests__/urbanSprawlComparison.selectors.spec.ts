@@ -1,7 +1,7 @@
+import { createStore } from "@/app/store/store";
 import { DEFAULT_APP_SETTINGS } from "@/features/app-settings/core/appSettings";
 import type { UrbanSprawlImpactsComparisonState } from "@/features/projects/application/project-impacts-urban-sprawl-comparison/urbanSprawlComparison.reducer";
 import type { ProjectImpactsState } from "@/features/projects/application/project-impacts/projectImpacts.reducer";
-import { createStore } from "@/shared/core/store-config/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import {

@@ -1,3 +1,4 @@
+import { AppDependencies } from "@/app/store/store";
 import { InMemoryAnalytics } from "@/features/analytics/infrastructure/InMemoryAnalytics";
 import { InMemoryAppSettings } from "@/features/app-settings/infrastructure/InMemoryAppSettings";
 import { InMemoryCreateExpressReconversionProjectService } from "@/features/create-project/infrastructure/create-express-project-service/InMemoryCreateExpressReconversionProjectService";
@@ -21,7 +22,6 @@ import { InMemorySiteService } from "@/features/sites/infra/site-service/InMemor
 import { InMemorySupportChatService } from "@/features/support/infrastructure/support-chat-service/InMemorySupportChatService";
 import { InMemoryUpdateReconversionProjectService } from "@/features/update-project/infrastructure/update-project-service/InMemoryUpdateReconversionProjectService";
 import { InMemoryCreateFeatureAlertService } from "@/features/user-feature-alerts/infrastructure/create-feature-alert-service/InMemoryCreateFeatureAlertService";
-import { AppDependencies } from "@/shared/core/store-config/store";
 import { AdministrativeDivisionMock } from "@/shared/infrastructure/administrative-division-service/administrativeDivisionMock";
 import { InMemoryRealEstateValuationService } from "@/shared/infrastructure/real-estate-valuation-service/InMemoryRealEstateValuationService";
 import { SoilsCarbonStorageMock } from "@/shared/infrastructure/soils-carbon-storage-service/soilsCarbonStorageMock";

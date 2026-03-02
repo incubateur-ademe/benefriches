@@ -1,6 +1,7 @@
 import { ReactNode, useEffect } from "react";
 import { LocalAuthority } from "shared";
 
+import { useAppDispatch } from "@/app/hooks/store.hooks";
 import {
   ProjectStakeholder,
   ProjectStakeholderStructure,
@@ -9,7 +10,6 @@ import {
   AvailableLocalAuthorityStakeholder,
   AvailableProjectStakeholder,
 } from "@/shared/core/reducers/project-form/helpers/stakeholders";
-import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 import { useProjectForm } from "../../useProjectForm";
 import StakeholderForm, { FormValues } from "./StakeholderForm";

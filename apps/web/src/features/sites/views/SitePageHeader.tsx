@@ -1,9 +1,9 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import { SiteNature } from "shared";
 
+import { routes, useRoute } from "@/app/router";
 import Badge from "@/shared/views/components/Badge/Badge";
 import TabItem from "@/shared/views/components/TabItem/TabItem";
-import { routes, useRoute } from "@/shared/views/router";
 import { getPictogramUrlForSiteNature } from "@/shared/views/siteNature";
 
 import { SiteRoute } from ".";

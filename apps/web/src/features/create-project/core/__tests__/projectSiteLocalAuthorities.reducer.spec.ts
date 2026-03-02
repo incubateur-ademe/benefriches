@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { Address } from "shared";
 
-import { createStore, RootState } from "@/shared/core/store-config/store";
+import { createStore, RootState } from "@/app/store/store";
 import { AdministrativeDivisionMock } from "@/shared/infrastructure/administrative-division-service/administrativeDivisionMock";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 

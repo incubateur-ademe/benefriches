@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 
+import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 import SoilsCarbonStorageComparison from "@/shared/views/project-form/common/soils-carbon-storage-comparison/SoilsCarbonStorageComparison";
 import { useProjectForm } from "@/shared/views/project-form/useProjectForm";

@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 
+import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { impactsExportModalOpened } from "@/features/analytics/core/analyticsEvents";
 import { eventTracked } from "@/features/analytics/core/eventTracked.action";
 import { selectImpactsPageViewData } from "@/features/projects/core/projectImpacts.selectors";
 import { loadFeatureAlerts } from "@/features/user-feature-alerts/core/loadFeatureAlerts.action";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import {
   evaluationPeriodUpdated,

@@ -1,10 +1,10 @@
 import { PhotovoltaicInstallationExpense, typedObjectEntries } from "shared";
 
+import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
 import { completePhotovoltaicPanelsInstallationExpenses } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
 import { selectPhotovoltaicPowerStationInstallationExpensesInitialValues } from "@/features/create-project/core/renewable-energy/selectors/expenses.selectors";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import InstallationExpensesForm, {
   FormValues,

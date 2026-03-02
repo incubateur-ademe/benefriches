@@ -3,9 +3,9 @@ import type { Selector } from "@reduxjs/toolkit";
 import { isConstrainedSoilType, isNaturalSoil, ORDERED_SOIL_TYPES, typedObjectKeys } from "shared";
 import type { SoilsDistribution, SoilType } from "shared";
 
+import type { RootState } from "@/app/store/store";
 import type { ProjectFormState } from "@/shared/core/reducers/project-form/projectForm.reducer";
 import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
-import type { RootState } from "@/shared/core/store-config/store";
 
 type SpaceConstraint = {
   soilType: SoilType;

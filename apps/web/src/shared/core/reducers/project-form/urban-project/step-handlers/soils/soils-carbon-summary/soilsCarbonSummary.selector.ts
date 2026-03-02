@@ -1,8 +1,8 @@
 import { createSelector } from "@reduxjs/toolkit";
 import type { Selector } from "@reduxjs/toolkit";
 
+import type { RootState } from "@/app/store/store";
 import type { ProjectFormState } from "@/shared/core/reducers/project-form/projectForm.reducer";
-import type { RootState } from "@/shared/core/store-config/store";
 
 export const createSelectSoilsCarbonStorageDifference = (
   selectStepState: Selector<RootState, ProjectFormState["urbanProject"]["steps"]>,

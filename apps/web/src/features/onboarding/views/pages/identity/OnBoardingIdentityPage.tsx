@@ -1,5 +1,5 @@
+import { routes, useRoute } from "@/app/router";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
-import { routes, useRoute } from "@/shared/views/router";
 
 import CreateUserFormContainer from "./CreateUserForm";
 

@@ -1,9 +1,9 @@
 import Button from "@codegouvfr/react-dsfr/Button";
 import ProConnectButton from "@codegouvfr/react-dsfr/ProConnectButton";
 
+import { routes, useRoute } from "@/app/router";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
-import { routes, useRoute } from "@/shared/views/router";
 
 import AuthLinkModal from "./AuthLinkModal";
 import { authLinkModal } from "./createAuthLinkModal";

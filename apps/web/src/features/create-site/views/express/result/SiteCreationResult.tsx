@@ -1,6 +1,7 @@
 import Alert from "@codegouvfr/react-dsfr/Alert";
 import Button from "@codegouvfr/react-dsfr/Button";
 
+import { routes } from "@/app/router";
 import classNames from "@/shared/views/clsx";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import {
@@ -10,7 +11,6 @@ import {
   EditorialPageButtonsSection,
 } from "@/shared/views/layout/EditorialPageLayout";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
-import { routes } from "@/shared/views/router";
 
 import SiteFeaturesModalView from "./SiteFeaturesContainer";
 

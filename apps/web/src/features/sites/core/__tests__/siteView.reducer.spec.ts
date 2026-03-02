@@ -1,5 +1,5 @@
+import { createStore } from "@/app/store/store";
 import { InMemorySiteService } from "@/features/sites/infra/site-service/InMemorySiteService";
-import { createStore } from "@/shared/core/store-config/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import { fetchSiteView } from "../fetchSiteView.action";

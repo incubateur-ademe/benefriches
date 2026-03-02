@@ -1,5 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 
+import { RootState } from "@/app/store/store";
 import { selectCurrentUserStructure } from "@/features/onboarding/core/user.reducer";
 import {
   AvailableProjectStakeholder,
@@ -7,7 +8,6 @@ import {
   getProjectAvailableStakeholders,
   hasStakeholder,
 } from "@/shared/core/reducers/project-form/helpers/stakeholders";
-import { RootState } from "@/shared/core/store-config/store";
 
 import { selectSiteData } from "../../createProject.selectors";
 import { ProjectStakeholder } from "../../project.types";

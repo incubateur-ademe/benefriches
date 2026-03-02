@@ -1,4 +1,4 @@
-import { useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { useAppSelector } from "@/app/hooks/store.hooks";
 import UrbanProjectFormSummary from "@/shared/views/project-form/urban-project/summary/UrbanProjectFormSummary";
 import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 

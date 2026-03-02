@@ -7,7 +7,7 @@ import {
 } from "shared";
 import type { SiteNature } from "shared";
 
-import { RootState } from "@/shared/core/store-config/store";
+import { RootState } from "@/app/store/store";
 
 import {
   selectSiteNature,

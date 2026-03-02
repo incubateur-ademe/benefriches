@@ -1,6 +1,6 @@
 import { SiteNature, UrbanSprawlImpactsComparisonResultDto } from "shared";
 
-import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
+import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
 
 type Props = {
   reconversionProjectId: string;

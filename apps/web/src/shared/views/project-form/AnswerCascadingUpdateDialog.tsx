@@ -2,9 +2,9 @@ import { fr } from "@codegouvfr/react-dsfr";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 
+import { useAppSelector } from "@/app/hooks/store.hooks";
 import { AnswerStepId } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 import classNames from "@/shared/views/clsx";
-import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 
 import { STEP_GROUP_LABELS, STEP_TO_GROUP_MAPPING } from "./stepper/stepperConfig";

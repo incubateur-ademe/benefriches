@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
+import { createStore } from "@/app/store/store";
 import { InMemoryAnalytics } from "@/features/analytics/infrastructure/InMemoryAnalytics";
-import { createStore } from "@/shared/core/store-config/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import {

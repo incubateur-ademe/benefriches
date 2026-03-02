@@ -1,4 +1,4 @@
-import { useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { useAppSelector } from "@/app/hooks/store.hooks";
 import ProjectNameAndDescriptionForm from "@/shared/views/project-form/common/name-and-description/ProjectNameAndDescriptionForm";
 import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 

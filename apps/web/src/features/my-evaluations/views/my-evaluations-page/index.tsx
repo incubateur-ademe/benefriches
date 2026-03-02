@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
+import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { selectCurrentUserId } from "@/features/onboarding/core/user.reducer";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import {
   fetchUserSiteEvaluations,

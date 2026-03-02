@@ -1,6 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 import type { Selector } from "@reduxjs/toolkit";
 
+import type { RootState } from "@/app/store/store";
 import type { ProjectStakeholder } from "@/features/create-project/core/project.types";
 import type {
   AvailableLocalAuthorityStakeholder,
@@ -8,7 +9,6 @@ import type {
 } from "@/shared/core/reducers/project-form/helpers/stakeholders";
 import type { ProjectFormState } from "@/shared/core/reducers/project-form/projectForm.reducer";
 import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
-import type { RootState } from "@/shared/core/store-config/store";
 
 type ReinstatementContractOwnerViewData = {
   availableStakeholdersList: AvailableProjectStakeholder[];

@@ -1,7 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 
+import { RootState } from "@/app/store/store";
 import { SiteFeatures } from "@/features/sites/core/site.types";
-import { RootState } from "@/shared/core/store-config/store";
 
 import { EconomicBalance } from "../../domain/projectImpactsEconomicBalance";
 import { EnvironmentalImpact } from "../../domain/projectImpactsEnvironmental";

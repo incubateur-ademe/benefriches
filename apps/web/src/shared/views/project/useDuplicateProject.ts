@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import { v4 as uuid } from "uuid";
 
-import { routes } from "@/shared/views/router";
+import { routes } from "@/app/router";
 
 import { HttpDuplicateProjectService } from "../../infrastructure/duplicate-project-service/HttpDuplicateProjectService";
 

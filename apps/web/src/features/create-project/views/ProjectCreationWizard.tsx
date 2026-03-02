@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import { Route } from "type-route";
 
+import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
+import { routes } from "@/app/router";
 import { isUrbanProjectCreationStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 import { ProjectFormProvider } from "@/shared/views/project-form/ProjectFormProvider";
-import { routes } from "@/shared/views/router";
 
 import { reconversionProjectCreationInitiated } from "../core/actions/reconversionProjectCreationInitiated.action";
 import { ProjectCreationStep } from "../core/createProject.reducer";

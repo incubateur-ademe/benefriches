@@ -1,10 +1,10 @@
+import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
 import { ProjectStakeholder } from "@/features/create-project/core/project.types";
 import { futureOperatorCompleted } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
 import { selectCreationData } from "@/features/create-project/core/renewable-energy/selectors/renewableEnergy.selector";
 import { UserStructure } from "@/features/onboarding/core/user";
 import { selectCurrentUserStructure } from "@/features/onboarding/core/user.reducer";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import FutureOperatorForm, { FormValues } from "./FutureOperatorForm";
 

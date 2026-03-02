@@ -2,6 +2,7 @@ import Alert from "@codegouvfr/react-dsfr/Alert";
 import Button from "@codegouvfr/react-dsfr/Button";
 import { useState } from "react";
 
+import { useAppSelector } from "@/app/hooks/store.hooks";
 import { selectCurrentUserEmail } from "@/features/onboarding/core/user.reducer";
 import DsfrDialogContent from "@/shared/views/components/Dialog/DsfrDialogContent";
 import DsfrDialogFooter from "@/shared/views/components/Dialog/DsfrDialogFooter";
@@ -9,7 +10,6 @@ import DsfrDialogHeader from "@/shared/views/components/Dialog/DsfrDialogHeader"
 import DsfrDialogTitle from "@/shared/views/components/Dialog/DsfrDialogTitle";
 import DsfrDialogWrapper from "@/shared/views/components/Dialog/DsfrDialogWrapper";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
-import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import { HttpArchiveProjectService } from "../infrastructure/HttpArchiveProjectService";
 

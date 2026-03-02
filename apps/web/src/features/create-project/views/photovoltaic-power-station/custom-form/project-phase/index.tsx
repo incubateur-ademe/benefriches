@@ -1,5 +1,6 @@
 import { RENEWABLE_ENERGY_PROJECT_PHASE_VALUES } from "shared";
 
+import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
 import { completeProjectPhaseStep } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
 import {
@@ -7,7 +8,6 @@ import {
   getLabelForRenewableEnergyProjectPhase,
   getPictogramForProjectPhase,
 } from "@/shared/core/projectPhase";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import ProjectPhaseForm from "@/shared/views/project-form/common/project-phase/ProjectPhaseForm";
 
 function ProjectPhaseFormContainer() {

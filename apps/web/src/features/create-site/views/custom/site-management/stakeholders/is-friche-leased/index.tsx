@@ -1,6 +1,6 @@
+import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { stepReverted } from "@/features/create-site/core/actions/revert.action";
 import { isFricheLeasedStepCompleted } from "@/features/create-site/core/steps/site-management/siteManagement.actions";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import IsFricheLeasedForm, { FormValues } from "./IsFricheLeasedForm";
 

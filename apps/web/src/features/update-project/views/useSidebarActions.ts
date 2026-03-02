@@ -1,8 +1,8 @@
 import { useMemo } from "react";
 
+import { routes, useRoute } from "@/app/router";
 import { ProjectFormState } from "@/shared/core/reducers/project-form/projectForm.reducer";
 import { SidebarLayoutProps } from "@/shared/views/layout/SidebarLayout/SidebarLayout";
-import { routes, useRoute } from "@/shared/views/router";
 
 type Props = {
   projectId?: string;

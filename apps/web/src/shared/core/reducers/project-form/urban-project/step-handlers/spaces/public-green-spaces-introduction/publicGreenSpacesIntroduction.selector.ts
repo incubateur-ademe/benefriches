@@ -3,7 +3,7 @@ import type { Selector } from "@reduxjs/toolkit";
 import { isNaturalSoil, typedObjectEntries } from "shared";
 import type { SoilsDistribution, SoilType } from "shared";
 
-import type { RootState } from "@/shared/core/store-config/store";
+import type { RootState } from "@/app/store/store";
 
 type PublicGreenSpacesIntroductionViewData = {
   existingNaturalSoils: { soilType: SoilType; surfaceArea: number }[];

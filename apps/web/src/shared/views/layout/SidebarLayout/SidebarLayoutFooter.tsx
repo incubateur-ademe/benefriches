@@ -3,11 +3,10 @@ import { headerFooterDisplayItem } from "@codegouvfr/react-dsfr/Display";
 import Display from "@codegouvfr/react-dsfr/Display/Display";
 import { FooterBottomItem } from "@codegouvfr/react-dsfr/Footer";
 
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import { routes } from "@/app/router";
 import { selectCurrentUserEmail } from "@/features/onboarding/core/user.reducer";
 import classNames from "@/shared/views/clsx";
-import { routes } from "@/shared/views/router";
-
-import { useAppSelector } from "../../hooks/store.hooks";
 
 function SidebarLayoutFooter() {
   const currentUserEmail = useAppSelector(selectCurrentUserEmail);

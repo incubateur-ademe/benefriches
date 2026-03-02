@@ -1,7 +1,7 @@
 import Alert from "@codegouvfr/react-dsfr/Alert";
 
+import { useAppSelector } from "@/app/hooks/store.hooks";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
-import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
 function UnavailableFeatureView() {

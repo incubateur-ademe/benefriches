@@ -7,13 +7,13 @@ import { useMemo } from "react";
 import { Fragment } from "react/jsx-runtime";
 import { Link } from "type-route";
 
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import { routes, useRoute } from "@/app/router";
 import AboutImpactsContent from "@/features/projects/views/shared/impacts/AboutImpactsContent";
-import { routes, useRoute } from "@/shared/views/router";
 
 import classNames from "../../clsx";
 import DsfrA11yDialog from "../../components/Dialog/DsfrA11yDialog";
 import MenuItemButton from "../../components/Menu/MenuItemButton";
-import { useAppSelector } from "../../hooks/store.hooks";
 // oxlint-disable-next-line no-unassigned-import
 import "./BenefrichesHeader.css";
 

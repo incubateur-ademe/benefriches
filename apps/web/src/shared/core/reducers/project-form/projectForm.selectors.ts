@@ -1,7 +1,8 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { Address, SoilsDistribution } from "shared";
 
-import { RootState } from "../../store-config/store";
+import { RootState } from "@/app/store/store";
+
 import {
   AvailableLocalAuthorityStakeholder,
   AvailableProjectStakeholder,

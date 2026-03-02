@@ -1,6 +1,6 @@
-import { useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import { routes } from "@/app/router";
 import useDuplicateProject from "@/shared/views/project/useDuplicateProject";
-import { routes } from "@/shared/views/router";
 
 import { selectProjectsImpactsViewData } from "../../../application/project-impacts/projectImpacts.reducer";
 import ProjectPageHeader from "./ProjectPageHeader";

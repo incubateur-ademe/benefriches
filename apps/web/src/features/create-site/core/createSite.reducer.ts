@@ -1,8 +1,8 @@
 import { createReducer, createSelector } from "@reduxjs/toolkit";
 import { v4 as uuid } from "uuid";
 
+import { RootState } from "@/app/store/store";
 import { SiteCreationData } from "@/features/create-site/core/siteFoncier.types";
-import { RootState } from "@/shared/core/store-config/store";
 
 import { stepReverted } from "./actions/revert.action";
 import { revertAddressStep, registerAddressHandlers } from "./steps/address/address.handlers";

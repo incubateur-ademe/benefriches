@@ -1,4 +1,4 @@
-import { AppDependencies, createStore, RootState } from "@/shared/core/store-config/store";
+import { AppDependencies, createStore, RootState } from "@/app/store/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import { getInitialState } from "../projectImpacts.reducer";

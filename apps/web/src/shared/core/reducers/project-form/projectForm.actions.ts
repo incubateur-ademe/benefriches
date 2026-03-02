@@ -1,6 +1,6 @@
 import { AsyncThunk, AsyncThunkConfig } from "@reduxjs/toolkit";
 
-import { createAppAsyncThunk } from "../../store-config/appAsyncThunk";
+import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
 
 export const makeProjectFormActionType = (prefix: string, actionName: string) => {
   return `${prefix}/projectForm/${actionName}`;
