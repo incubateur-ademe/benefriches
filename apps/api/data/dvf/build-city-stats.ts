@@ -8,8 +8,31 @@ import * as path from "node:path";
 import { pipeline } from "node:stream";
 import { promisify } from "node:util";
 import * as zlib from "node:zlib";
+import z from "zod";
 
 promisify(pipeline);
+
+// oxlint-disable-next-line typescript/no-unnecessary-condition
+const SCRIPT_DIR = typeof __dirname !== "undefined" ? __dirname : path.dirname(process.argv[1]!);
+
+const validResidentialTransactionSchema = z.object({
+  annee: z.number(),
+  id_mutation: z.string(),
+  code_commune: z.string().min(1),
+  type_local: z.string(),
+  valeur_fonciere: z.number().positive(),
+  surface_reelle_bati: z.number().min(10).max(500),
+  prix_m2: z.number().min(500).max(25000),
+});
+
+const validTerrainTransactionSchema = z.object({
+  annee: z.number(),
+  id_mutation: z.string(),
+  code_commune: z.string().min(1),
+  valeur_fonciere: z.number().positive(),
+  surface_terrain: z.number().positive(),
+  prix_m2: z.number().positive().max(25000),
+});
 
 interface Commune {
   code: string;
@@ -18,13 +41,22 @@ interface Commune {
   surface?: number;
 }
 
-interface DVFTransaction {
+interface DVFResidentialTransaction {
   annee: number | null;
   id_mutation: string;
   code_commune: string;
   type_local: string;
   valeur_fonciere: number;
   surface_reelle_bati: number;
+  prix_m2: number;
+}
+
+interface DVFTerrainTransaction {
+  annee: number | null;
+  id_mutation: string;
+  code_commune: string;
+  valeur_fonciere: number;
+  surface_terrain: number;
   prix_m2: number;
 }
 
@@ -36,6 +68,8 @@ interface RawDVFRow {
   type_local: string;
   date_mutation?: string;
   id_mutation: string;
+  nature_culture: string;
+  surface_terrain: string;
 }
 
 interface CommuneStats {
@@ -43,15 +77,18 @@ interface CommuneStats {
   da_name: string;
   da_population: number | null;
   da_surface_ha: number | null;
-  dvf_surface_median: number | null;
-  dvf_pxm2_median: number | null;
-  dvf_nbtrans: number;
+  dvf_surface_median_residential: number | null;
+  dvf_pxm2_median_residential: number | null;
+  dvf_nbtrans_residential: number;
   dvf_nbtrans_cod111: number;
   dvf_pxm2_median_cod111: number | null;
   dvf_nbtrans_cod121: number;
   dvf_pxm2_median_cod121: number | null;
   dvf_surface_median_cod111: number | null;
   dvf_surface_median_cod121: number | null;
+  dvf_nbtrans_terrain: number;
+  dvf_pxm2_median_terrain: number | null;
+  dvf_surface_median_terrain: number | null;
 }
 
 interface TypeStats {
@@ -67,8 +104,9 @@ interface YearRange {
 }
 
 interface DVFGroupedData {
-  maisons: DVFTransaction[];
-  appartements: DVFTransaction[];
+  maisons: DVFResidentialTransaction[];
+  appartements: DVFResidentialTransaction[];
+  terrains: DVFTerrainTransaction[];
 }
 
 interface WeightedAverageResult {
@@ -80,7 +118,8 @@ interface WeightedAverageResult {
 class DVFCommuneAnalyzer {
   private readonly dataPath: string;
   private communes: Commune[] | null = null;
-  private dvfData: DVFTransaction[] | null = null;
+  private residentialData: DVFResidentialTransaction[] | null = null;
+  private terrainData: DVFTerrainTransaction[] | null = null;
   private stats: CommuneStats[] | null = null;
   private yearRange: YearRange | null = null;
 
@@ -133,7 +172,7 @@ class DVFCommuneAnalyzer {
 
   private readonly arrondissementCodes: string[];
 
-  constructor(dataPath = "./downloaded_sources") {
+  constructor(dataPath = path.join(SCRIPT_DIR, "downloaded_sources")) {
     this.dataPath = dataPath;
     this.ensureDataDirectory();
     this.arrondissementCodes = Object.values(this.cityArrondissements).flat();
@@ -153,15 +192,20 @@ class DVFCommuneAnalyzer {
       console.log("\n");
 
       // 3. Charger les données DVF
-      const rawDvfData = await this.loadDVFData(filePaths);
-      if (!rawDvfData) return null;
+      const rawDvfResult = await this.loadDVFData(filePaths);
+      if (!rawDvfResult) return null;
       console.log("\n");
 
       // 4. Nettoyer les données DVF
-      this.dvfData = this.cleanData(rawDvfData);
+      this.residentialData = this.cleanResidentialData(rawDvfResult.residentialTransactions);
+      this.terrainData = this.cleanTerrainData(rawDvfResult.terrainTransactions);
 
       // 5. Calculer les statistiques par commune
-      this.stats = this.calculateCommuneStats(this.communes, this.dvfData);
+      this.stats = this.calculateCommuneStats(
+        this.communes,
+        this.residentialData,
+        this.terrainData,
+      );
 
       // 6. Exporter les résultats
       this.exportResults(this.stats);
@@ -361,11 +405,15 @@ class DVFCommuneAnalyzer {
     });
   }
 
-  private async loadDVFData(filePaths: string[]): Promise<DVFTransaction[] | null> {
+  private async loadDVFData(filePaths: string[]): Promise<{
+    residentialTransactions: DVFResidentialTransaction[];
+    terrainTransactions: DVFTerrainTransaction[];
+  } | null> {
     console.log(` ⏳ Chargement des données DVF depuis ${filePaths.length} fichier(s)...`);
 
     try {
-      let allData: DVFTransaction[] = [];
+      let allResidentialData: DVFResidentialTransaction[] = [];
+      let allTerrainData: DVFTerrainTransaction[] = [];
       const years: number[] = [];
 
       for (const filePath of filePaths) {
@@ -373,9 +421,12 @@ class DVFCommuneAnalyzer {
         if (year) years.push(year);
 
         console.log(`      📂 Traitement de ${path.basename(filePath)}...`);
-        const data = await this.parseCSV(filePath);
-        console.log(`         → ${data.length} transactions chargées`);
-        allData = allData.concat(data);
+        const { residentialTransactions, terrainTransactions } = await this.parseCSV(filePath);
+        console.log(
+          `         → ${residentialTransactions.length} transactions résidentielles + ${terrainTransactions.length} transactions terrain chargées`,
+        );
+        allResidentialData = allResidentialData.concat(residentialTransactions);
+        allTerrainData = allTerrainData.concat(terrainTransactions);
       }
 
       this.yearRange = {
@@ -385,18 +436,22 @@ class DVFCommuneAnalyzer {
       };
 
       console.log(
-        ` ✅ Total données chargées : ${allData.length} transactions (${this.yearRange.min}-${this.yearRange.max})`,
+        ` ✅ Total données chargées : ${allResidentialData.length} transactions résidentielles + ${allTerrainData.length} transactions terrain (${this.yearRange.min}-${this.yearRange.max})`,
       );
-      return allData;
+      return { residentialTransactions: allResidentialData, terrainTransactions: allTerrainData };
     } catch (error) {
       console.error(` ❌ Erreur lors du chargement : ${(error as Error).message}`);
       return null;
     }
   }
 
-  private parseCSV(filePath: string): Promise<DVFTransaction[]> {
+  private parseCSV(filePath: string): Promise<{
+    residentialTransactions: DVFResidentialTransaction[];
+    terrainTransactions: DVFTerrainTransaction[];
+  }> {
     return new Promise((resolve, reject) => {
-      const data: DVFTransaction[] = [];
+      const residentialData: DVFResidentialTransaction[] = [];
+      const terrainData: DVFTerrainTransaction[] = [];
       let headers: (keyof RawDVFRow)[] = [];
       let isFirstRow = true;
       let buffer = "";
@@ -405,64 +460,43 @@ class DVFCommuneAnalyzer {
         ? createReadStream(filePath).pipe(zlib.createGunzip())
         : createReadStream(filePath);
 
+      const processLine = (line: string) => {
+        if (line.trim() === "") return;
+
+        if (isFirstRow) {
+          headers = this.parseCSVLine(line) as (keyof RawDVFRow)[];
+          isFirstRow = false;
+          return;
+        }
+
+        const values = this.parseCSVLine(line);
+        if (values.length === headers.length) {
+          const row: Partial<RawDVFRow> = {};
+          headers.forEach((header, index) => {
+            row[header] = values[index];
+          });
+
+          if (this.isRelevantResidentialRow(row)) {
+            residentialData.push(this.processResidentialRow(row as RawDVFRow));
+          }
+          if (this.isRelevantTerrainRow(row)) {
+            terrainData.push(this.processTerrainRow(row as RawDVFRow));
+          }
+        }
+      };
+
       stream.on("data", (chunk: Buffer) => {
         buffer += chunk.toString();
         const lines = buffer.split("\n");
         buffer = lines.pop() ?? "";
-
-        lines.forEach((line) => {
-          if (line.trim() === "") return;
-
-          if (isFirstRow) {
-            headers = this.parseCSVLine(line) as (keyof RawDVFRow)[];
-            isFirstRow = false;
-            return;
-          }
-
-          const values = this.parseCSVLine(line);
-          if (values.length === headers.length) {
-            const row: Partial<RawDVFRow> = {
-              nature_mutation: undefined,
-              valeur_fonciere: undefined,
-              surface_reelle_bati: undefined,
-              code_commune: undefined,
-              type_local: undefined,
-              date_mutation: undefined,
-              id_mutation: undefined,
-            };
-            headers.forEach((header, index) => {
-              row[header] = values[index];
-            });
-
-            if (this.isRelevantRow(row)) {
-              data.push(this.processRow(row as RawDVFRow));
-            }
-          }
-        });
+        lines.forEach(processLine);
       });
 
       stream.on("end", () => {
         if (buffer.trim()) {
-          const values = this.parseCSVLine(buffer);
-          if (values.length === headers.length) {
-            const row: Partial<RawDVFRow> = {
-              nature_mutation: undefined,
-              valeur_fonciere: undefined,
-              surface_reelle_bati: undefined,
-              code_commune: undefined,
-              type_local: undefined,
-              date_mutation: undefined,
-              id_mutation: undefined,
-            };
-            headers.forEach((header, index) => {
-              row[header] = values[index];
-            });
-            if (this.isRelevantRow(row)) {
-              data.push(this.processRow(row as RawDVFRow));
-            }
-          }
+          processLine(buffer);
         }
-        resolve(data);
+        resolve({ residentialTransactions: residentialData, terrainTransactions: terrainData });
       });
 
       stream.on("error", reject);
@@ -489,7 +523,7 @@ class DVFCommuneAnalyzer {
     return result;
   }
 
-  private isRelevantRow(row: Partial<RawDVFRow>): boolean {
+  private isRelevantResidentialRow(row: Partial<RawDVFRow>): boolean {
     return (
       row.nature_mutation === "Vente" &&
       !!row.valeur_fonciere &&
@@ -499,7 +533,19 @@ class DVFCommuneAnalyzer {
     );
   }
 
-  private processRow(row: RawDVFRow): DVFTransaction {
+  private isRelevantTerrainRow(row: Partial<RawDVFRow>): boolean {
+    return (
+      row.nature_mutation === "Vente" &&
+      row.nature_culture === "terrains a bâtir" &&
+      !!row.valeur_fonciere &&
+      parseFloat(row.valeur_fonciere) > 0 &&
+      !!row.surface_terrain &&
+      parseFloat(row.surface_terrain) > 0 &&
+      !!row.code_commune
+    );
+  }
+
+  private processResidentialRow(row: RawDVFRow): DVFResidentialTransaction {
     const prixM2 = parseFloat(row.valeur_fonciere) / parseFloat(row.surface_reelle_bati);
     const annee = row.date_mutation ? new Date(row.date_mutation).getFullYear() : null;
 
@@ -514,29 +560,30 @@ class DVFCommuneAnalyzer {
     };
   }
 
-  private cleanData(data: DVFTransaction[]): DVFTransaction[] {
-    console.log(" 🧹 Nettoyage des données DVF...");
+  private processTerrainRow(row: RawDVFRow): DVFTerrainTransaction {
+    const surfaceTerrain = parseFloat(row.surface_terrain);
+    const valeurFonciere = parseFloat(row.valeur_fonciere);
+    const prixM2 = valeurFonciere / surfaceTerrain;
+    const annee = row.date_mutation ? new Date(row.date_mutation).getFullYear() : null;
+
+    return {
+      annee,
+      id_mutation: row.id_mutation,
+      code_commune: row.code_commune,
+      valeur_fonciere: valeurFonciere,
+      surface_terrain: surfaceTerrain,
+      prix_m2: prixM2,
+    };
+  }
+
+  private cleanResidentialData(data: DVFResidentialTransaction[]): DVFResidentialTransaction[] {
+    console.log(" 🧹 Nettoyage des données DVF résidentielles...");
 
     const initialCount = data.length;
 
-    const cleanedData = data.filter((row) => {
-      // Supprimer les valeurs invalides
-      if (!row.valeur_fonciere || !row.surface_reelle_bati || !row.code_commune || !row.annee) {
-        return false;
-      }
-
-      // Filtrer les surfaces réalistes (entre 10 et 500 m²)
-      if (row.surface_reelle_bati < 10 || row.surface_reelle_bati > 500) {
-        return false;
-      }
-
-      // Filtrer les prix au m² réalistes (entre 500 et 25000 €/m²)
-      if (row.prix_m2 < 500 || row.prix_m2 > 25000) {
-        return false;
-      }
-
-      return true;
-    });
+    const cleanedData = data.filter(
+      (row) => validResidentialTransactionSchema.safeParse(row).success,
+    );
 
     const seen: Record<string, boolean> = {};
     const deduplicatedMutations = cleanedData.filter((item) => {
@@ -551,7 +598,31 @@ class DVFCommuneAnalyzer {
     return deduplicatedMutations;
   }
 
-  private calculateCommuneStats(communes: Commune[], dvfData: DVFTransaction[]): CommuneStats[] {
+  private cleanTerrainData(data: DVFTerrainTransaction[]): DVFTerrainTransaction[] {
+    console.log(" 🧹 Nettoyage des données DVF terrains à bâtir...");
+
+    const initialCount = data.length;
+
+    const cleanedData = data.filter((row) => validTerrainTransactionSchema.safeParse(row).success);
+
+    const seen: Record<string, boolean> = {};
+    const deduplicatedMutations = cleanedData.filter((item) => {
+      return seen[item.id_mutation] ? false : (seen[item.id_mutation] = true);
+    });
+
+    const finalCount = deduplicatedMutations.length;
+    console.log(
+      `     → Données nettoyées : ${initialCount} → ${finalCount} transactions (${((finalCount / initialCount) * 100).toFixed(1)}%)\n`,
+    );
+
+    return deduplicatedMutations;
+  }
+
+  private calculateCommuneStats(
+    communes: Commune[],
+    residentialData: DVFResidentialTransaction[],
+    terrainData: DVFTerrainTransaction[],
+  ): CommuneStats[] {
     console.log(" 📉 Calcul des statistiques par commune...");
 
     // Créer un index des communes par code
@@ -562,12 +633,13 @@ class DVFCommuneAnalyzer {
 
     // Grouper les données DVF par commune et type
     const dvfGrouped: Record<string, DVFGroupedData> = {};
-    dvfData.forEach((row) => {
+    residentialData.forEach((row) => {
       const key = row.code_commune;
 
       dvfGrouped[key] ??= {
         maisons: [],
         appartements: [],
+        terrains: [],
       };
 
       if (row.type_local === "Maison") {
@@ -577,34 +649,57 @@ class DVFCommuneAnalyzer {
       }
     });
 
+    // Grouper les données terrain par commune
+    terrainData.forEach((row) => {
+      const key = row.code_commune;
+      dvfGrouped[key] ??= {
+        maisons: [],
+        appartements: [],
+        terrains: [],
+      };
+      dvfGrouped[key].terrains.push(row);
+    });
+
     // Calculer les statistiques pour chaque commune
     const stats: CommuneStats[] = [];
 
     communes.forEach((commune) => {
-      const dvfCommune = dvfGrouped[commune.code] ?? { maisons: [], appartements: [] };
+      const dvfCommune = dvfGrouped[commune.code] ?? {
+        maisons: [],
+        appartements: [],
+        terrains: [],
+      };
 
       // Statistiques maisons
-      const maisons = this.calculateTypeStats(dvfCommune.maisons);
+      const maisons = this.calculateResidentialTypeStats(dvfCommune.maisons);
 
       // Statistiques appartements
-      const appartements = this.calculateTypeStats(dvfCommune.appartements);
+      const appartements = this.calculateResidentialTypeStats(dvfCommune.appartements);
 
-      const total = this.calculateTypeStats(dvfCommune.maisons.concat(dvfCommune.appartements));
+      const residential = this.calculateResidentialTypeStats(
+        dvfCommune.maisons.concat(dvfCommune.appartements),
+      );
+
+      // Statistiques terrains à bâtir
+      const terrains = this.calculateTerrainStats(dvfCommune.terrains);
 
       stats.push({
         city_code: commune.code,
         da_name: commune.nom,
         da_population: commune.population ?? null,
         da_surface_ha: commune.surface ?? null,
-        dvf_surface_median: total.surface_mediane,
-        dvf_pxm2_median: total.prix_median_m2,
-        dvf_nbtrans: total.nb_transactions,
+        dvf_surface_median_residential: residential.surface_mediane,
+        dvf_pxm2_median_residential: residential.prix_median_m2,
+        dvf_nbtrans_residential: residential.nb_transactions,
         dvf_nbtrans_cod111: maisons.nb_transactions,
         dvf_pxm2_median_cod111: maisons.prix_median_m2,
         dvf_nbtrans_cod121: appartements.nb_transactions,
         dvf_pxm2_median_cod121: appartements.prix_median_m2,
         dvf_surface_median_cod111: maisons.surface_mediane,
         dvf_surface_median_cod121: appartements.surface_mediane,
+        dvf_nbtrans_terrain: terrains.nb_transactions,
+        dvf_pxm2_median_terrain: terrains.prix_median_m2,
+        dvf_surface_median_terrain: terrains.surface_mediane,
       });
     });
 
@@ -616,7 +711,7 @@ class DVFCommuneAnalyzer {
     return stats;
   }
 
-  private calculateTypeStats(transactions: DVFTransaction[]): TypeStats {
+  private calculateResidentialTypeStats(transactions: DVFResidentialTransaction[]): TypeStats {
     if (transactions.length === 0) {
       return {
         nb_transactions: 0,
@@ -628,7 +723,7 @@ class DVFCommuneAnalyzer {
     // Trier par année décroissante, puis essayer les 3 années les plus récentes
     transactions.sort((a, b) => (b.annee ?? 0) - (a.annee ?? 0));
 
-    let selectedTransactions: DVFTransaction[] = [];
+    let selectedTransactions: DVFResidentialTransaction[] = [];
     const recentYears = new Set(
       [...new Set(transactions.map((t) => t.annee).filter(Boolean))].slice(0, 3),
     );
@@ -665,6 +760,51 @@ class DVFCommuneAnalyzer {
     };
   }
 
+  private calculateTerrainStats(transactions: DVFTerrainTransaction[]): TypeStats {
+    if (transactions.length === 0) {
+      return {
+        nb_transactions: 0,
+        prix_median_m2: null,
+        surface_mediane: null,
+      };
+    }
+
+    // Trier par année décroissante, puis essayer les 3 années les plus récentes
+    transactions.sort((a, b) => (b.annee ?? 0) - (a.annee ?? 0));
+
+    let selectedTransactions: DVFTerrainTransaction[] = [];
+    const recentYears = new Set(
+      [...new Set(transactions.map((t) => t.annee).filter(Boolean))].slice(0, 3),
+    );
+
+    selectedTransactions = transactions.filter((t) => t.annee && recentYears.has(t.annee));
+
+    if (selectedTransactions.length < 5 && transactions.length >= 5) {
+      const allYears = [...new Set(transactions.map((t) => t.annee).filter(Boolean))];
+      let yearIndex = 3;
+      while (selectedTransactions.length < 5 && yearIndex < allYears.length) {
+        const additionalTransactions = transactions.filter((t) => t.annee === allYears[yearIndex]);
+        selectedTransactions.push(...additionalTransactions);
+        yearIndex++;
+      }
+    }
+
+    if (selectedTransactions.length < 5) {
+      selectedTransactions = transactions;
+    }
+
+    const prixM2Sorted = selectedTransactions.map((t) => t.prix_m2).toSorted((a, b) => a - b);
+    const surfacesSorted = selectedTransactions
+      .map((t) => t.surface_terrain)
+      .toSorted((a, b) => a - b);
+
+    return {
+      nb_transactions: selectedTransactions.length,
+      prix_median_m2: Math.round(this.median(prixM2Sorted)),
+      surface_mediane: Math.round(this.median(surfacesSorted)),
+    };
+  }
+
   private addAggregatedCityWithArrondissementsStats(stats: CommuneStats[]): void {
     Object.entries(this.cityArrondissements).forEach(([cityCode, arrondissements]) => {
       // Trouver les stats des arrondissements
@@ -692,6 +832,9 @@ class DVFCommuneAnalyzer {
     );
     const validAppartements = arrondissementStats.filter(
       (stat) => stat.dvf_nbtrans_cod121 > 0 && stat.dvf_pxm2_median_cod121 !== null,
+    );
+    const validTerrains = arrondissementStats.filter(
+      (stat) => stat.dvf_nbtrans_terrain > 0 && stat.dvf_pxm2_median_terrain !== null,
     );
 
     // Calculer les moyennes pondérées par le nombre de transactions
@@ -747,9 +890,16 @@ class DVFCommuneAnalyzer {
 
     const totalAvg = calculateWeightedAverage(
       arrondissementStats,
-      "dvf_nbtrans",
-      "dvf_pxm2_median",
-      "dvf_surface_median",
+      "dvf_nbtrans_residential",
+      "dvf_pxm2_median_residential",
+      "dvf_surface_median_residential",
+    );
+
+    const terrainsAvg = calculateWeightedAverage(
+      validTerrains,
+      "dvf_nbtrans_terrain",
+      "dvf_pxm2_median_terrain",
+      "dvf_surface_median_terrain",
     );
 
     return {
@@ -759,9 +909,12 @@ class DVFCommuneAnalyzer {
       dvf_nbtrans_cod121: appartementsAvg.transactions,
       dvf_pxm2_median_cod121: appartementsAvg.price,
       dvf_surface_median_cod121: appartementsAvg.surface,
-      dvf_nbtrans: totalAvg.transactions,
-      dvf_pxm2_median: totalAvg.price,
-      dvf_surface_median: totalAvg.surface,
+      dvf_nbtrans_residential: totalAvg.transactions,
+      dvf_pxm2_median_residential: totalAvg.price,
+      dvf_surface_median_residential: totalAvg.surface,
+      dvf_nbtrans_terrain: terrainsAvg.transactions,
+      dvf_pxm2_median_terrain: terrainsAvg.price,
+      dvf_surface_median_terrain: terrainsAvg.surface,
     };
   }
 
@@ -993,7 +1146,7 @@ class DVFCommuneAnalyzer {
   }
 
   private exportResults(stats: CommuneStats[], filename = "cityStats.csv"): string {
-    const outputPath = path.join("./", filename);
+    const outputPath = path.join(SCRIPT_DIR, filename);
 
     // Créer le contenu CSV
     const headers = [
@@ -1001,15 +1154,18 @@ class DVFCommuneAnalyzer {
       "da_name",
       "da_population",
       "da_surface_ha",
-      "dvf_nbtrans",
-      "dvf_pxm2_median",
-      "dvf_surface_median",
+      "dvf_nbtrans_residential",
+      "dvf_pxm2_median_residential",
+      "dvf_surface_median_residential",
       "dvf_nbtrans_cod111",
       "dvf_pxm2_median_cod111",
       "dvf_nbtrans_cod121",
       "dvf_pxm2_median_cod121",
       "dvf_surface_median_cod111",
       "dvf_surface_median_cod121",
+      "dvf_nbtrans_terrain",
+      "dvf_pxm2_median_terrain",
+      "dvf_surface_median_terrain",
     ] as const;
 
     const csvContent = [
@@ -1063,14 +1219,14 @@ class DVFCommuneAnalyzer {
     const medianTotal = Math.round(
       this.weightedMedian(
         statsForNationalComputation.map((s) => ({
-          weight: s.dvf_nbtrans,
-          value: s.dvf_pxm2_median!,
+          weight: s.dvf_nbtrans_residential,
+          value: s.dvf_pxm2_median_residential!,
         })),
       ),
     );
 
     const totalTransactions = statsForNationalComputation.reduce(
-      (sum, s) => sum + s.dvf_nbtrans,
+      (sum, s) => sum + s.dvf_nbtrans_residential,
       0,
     );
     const totalTransactionsMaisons = statsForNationalComputation.reduce(
@@ -1079,6 +1235,25 @@ class DVFCommuneAnalyzer {
     );
     const totalTransactionsAppartements = statsForNationalComputation.reduce(
       (sum, s) => sum + s.dvf_nbtrans_cod121,
+      0,
+    );
+
+    const statsAvecTerrains = statsForNationalComputation.filter(
+      (s) => s.dvf_pxm2_median_terrain !== null,
+    );
+    const medianTerrains =
+      statsAvecTerrains.length > 0
+        ? Math.round(
+            this.weightedMedian(
+              statsAvecTerrains.map((s) => ({
+                weight: s.dvf_nbtrans_terrain,
+                value: s.dvf_pxm2_median_terrain!,
+              })),
+            ),
+          )
+        : "Non disponible";
+    const totalTransactionsTerrains = statsForNationalComputation.reduce(
+      (sum, s) => sum + s.dvf_nbtrans_terrain,
       0,
     );
 
@@ -1095,14 +1270,18 @@ class DVFCommuneAnalyzer {
         pxm2_median: medianAppartements,
         transactions: totalTransactionsAppartements,
       },
+      terrains: {
+        pxm2_median: medianTerrains,
+        transactions: totalTransactionsTerrains,
+      },
       byPopulation: {
         ["0-500"]: Math.round(
           this.weightedMedian(
             statsForNationalComputation
               .filter(({ da_population }) => da_population && da_population < 501)
               .map((s) => ({
-                weight: s.dvf_nbtrans,
-                value: s.dvf_pxm2_median!,
+                weight: s.dvf_nbtrans_residential,
+                value: s.dvf_pxm2_median_residential!,
               })),
           ),
         ),
@@ -1113,8 +1292,8 @@ class DVFCommuneAnalyzer {
                 ({ da_population }) => da_population && da_population > 500 && da_population < 1501,
               )
               .map((s) => ({
-                weight: s.dvf_nbtrans,
-                value: s.dvf_pxm2_median!,
+                weight: s.dvf_nbtrans_residential,
+                value: s.dvf_pxm2_median_residential!,
               })),
           ),
         ),
@@ -1126,8 +1305,8 @@ class DVFCommuneAnalyzer {
                   da_population && da_population > 1500 && da_population < 3001,
               )
               .map((s) => ({
-                weight: s.dvf_nbtrans,
-                value: s.dvf_pxm2_median!,
+                weight: s.dvf_nbtrans_residential,
+                value: s.dvf_pxm2_median_residential!,
               })),
           ),
         ),
@@ -1139,8 +1318,8 @@ class DVFCommuneAnalyzer {
                   da_population && da_population > 3000 && da_population < 10001,
               )
               .map((s) => ({
-                weight: s.dvf_nbtrans,
-                value: s.dvf_pxm2_median!,
+                weight: s.dvf_nbtrans_residential,
+                value: s.dvf_pxm2_median_residential!,
               })),
           ),
         ),
@@ -1152,8 +1331,8 @@ class DVFCommuneAnalyzer {
                   da_population && da_population > 10000 && da_population < 50001,
               )
               .map((s) => ({
-                weight: s.dvf_nbtrans,
-                value: s.dvf_pxm2_median!,
+                weight: s.dvf_nbtrans_residential,
+                value: s.dvf_pxm2_median_residential!,
               })),
           ),
         ),
@@ -1165,8 +1344,8 @@ class DVFCommuneAnalyzer {
                   da_population && da_population > 50000 && da_population < 100001,
               )
               .map((s) => ({
-                weight: s.dvf_nbtrans,
-                value: s.dvf_pxm2_median!,
+                weight: s.dvf_nbtrans_residential,
+                value: s.dvf_pxm2_median_residential!,
               })),
           ),
         ),
@@ -1175,8 +1354,8 @@ class DVFCommuneAnalyzer {
             statsForNationalComputation
               .filter(({ da_population }) => da_population && da_population > 100000)
               .map((s) => ({
-                weight: s.dvf_nbtrans,
-                value: s.dvf_pxm2_median!,
+                weight: s.dvf_nbtrans_residential,
+                value: s.dvf_pxm2_median_residential!,
               })),
           ),
         ),
@@ -1185,7 +1364,7 @@ class DVFCommuneAnalyzer {
   }
 
   private generateAboutFile(stats: CommuneStats[]): string {
-    const readmePath = path.join("./", "README.md");
+    const readmePath = path.join(SCRIPT_DIR, "README.md");
 
     // Compter les arrondissements
     const arrondissements = stats.filter((s) => this.arrondissementCodes.includes(s.city_code));
@@ -1201,7 +1380,7 @@ class DVFCommuneAnalyzer {
 ## Utilisation
 
 \`\`\`sh
-npx ts-node build-city-stats.ts
+node build-city-stats.ts
 \`\`\`
 
 ## Méthodologie
@@ -1218,7 +1397,7 @@ Le script combine les données de **Demandes de Valeurs Foncières (DVF)** avec 
 
 2. **[DVF - data.gouv.fr](https://www.data.gouv.fr/datasets/demandes-de-valeurs-foncieres-geolocalisees/)**
    - Transactions immobilières (ventes uniquement)
-   - Types de biens : Maisons (cod111) et Appartements (cod121)
+   - Types de biens : Maisons (cod111), Appartements (cod121) et Terrains à bâtir
    - Surface et prix de vente
 
 ### Couverture géographique
@@ -1239,19 +1418,25 @@ Pour chaque commune et type de bien :
 
 1. **Priorité aux données récentes** : Les prix médians sont calculés prioritairement sur les 3 années les plus récentes
 2. **Seuil de fiabilité** : Si moins de 5 transactions sont trouvées sur 3 ans, l'analyse remonte plus loin dans le temps
-3. **Filtrage des données** :
+3. **Filtrage des données résidentielles** :
    - Surfaces entre 10 et 500 m²
    - Prix au m² entre 500 et 25 000 €/m²
    - Ventes uniquement (pas de donations, etc.)
+4. **Filtrage des terrains à bâtir** :
+   - Surface positive
+   - Prix au m² positif et inférieur à 25 000 €/m²
+   - Nature de culture : "terrains a bâtir"
 
 ### Statistiques nationales
 
 - **Prix médian national** : ${nationalStats.total.pxm2_median} €/m²
   - **Prix médian national (maisons)** : ${nationalStats.maisons.pxm2_median} €/m²
   - **Prix médian national (appartements)** : ${nationalStats.appartements.pxm2_median} €/m²
+  - **Prix médian national (terrains à bâtir)** : ${nationalStats.terrains.pxm2_median} €/m²
 - **Total transactions analysées** : ${nationalStats.total.transactions.toLocaleString()}
   - **Total transactions maisons analysées** : ${nationalStats.maisons.transactions.toLocaleString()}
   - **Total transactions appartements analysées** : ${nationalStats.appartements.transactions.toLocaleString()}
+  - **Total transactions terrains à bâtir analysées** : ${nationalStats.terrains.transactions.toLocaleString()}
 - **Prix médian par tailles de communes** :
   - **Communes de moins de 500 habitants** : ${nationalStats.byPopulation["0-500"]} €/m²
   - **Communes de moins de 501 à 1500 habitants** : ${nationalStats.byPopulation["501-1500"]} €/m²
@@ -1270,15 +1455,18 @@ Pour chaque commune et type de bien :
 | \`da_name\`                   | Nom de la commune ou arrondissement        |
 | \`da_population\`             | Population de la commune                   |
 | \`da_surface_ha\`             | Surface de la commune en hectares          |
-| \`dvf_nbtrans\`               | Nombre de transactions total               |
-| \`dvf_pxm2_median\`           | Prix médian au m² (€/m²)                   |
-| \`dvf_surface_median\`        | Surface médiane (m²)                       |
+| \`dvf_nbtrans_residential\`    | Nombre de transactions résidentielles      |
+| \`dvf_pxm2_median_residential\` | Prix médian au m² résidentiel (€/m²)     |
+| \`dvf_surface_median_residential\` | Surface médiane résidentielle (m²)         |
 | \`dvf_nbtrans_cod111\`        | Nombre de transactions de maisons          |
 | \`dvf_pxm2_median_cod111\`    | Prix médian au m² des maisons (€/m²)       |
 | \`dvf_nbtrans_cod121\`        | Nombre de transactions d'appartements      |
 | \`dvf_pxm2_median_cod121\`    | Prix médian au m² des appartements (€/m²)  |
 | \`dvf_surface_median_cod111\` | Surface médiane des maisons (m²)           |
 | \`dvf_surface_median_cod121\` | Surface médiane des appartements (m²)      |
+| \`dvf_nbtrans_terrain\`       | Nombre de transactions de terrains à bâtir |
+| \`dvf_pxm2_median_terrain\`   | Prix médian au m² des terrains à bâtir     |
+| \`dvf_surface_median_terrain\` | Surface médiane des terrains à bâtir (m²) |
 
 ### Limites
 
@@ -1345,6 +1533,7 @@ ${missingAnalysis}
     console.log(` 💰 Prix médian toute transactions : ${nationalStats.total.pxm2_median} €/m²`);
     console.log(`     🏡 Maisons : ${nationalStats.maisons.pxm2_median} €/m²`);
     console.log(`     🏘️️ Appartements : ${nationalStats.appartements.pxm2_median} €/m²`);
+    console.log(`     🏗️ Terrains à bâtir : ${nationalStats.terrains.pxm2_median} €/m²`);
 
     console.log("\n=== 💾 FICHIERS GÉNÉRÉS ===\n");
     console.log(" - cityStats.csv");

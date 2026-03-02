@@ -3,6 +3,7 @@ import knex, { Knex } from "knex";
 import fs from "node:fs";
 import path from "node:path";
 import readline from "node:readline";
+import { setTimeout } from "node:timers/promises";
 
 import knexConfig from "../../sql-knex/knexConfig";
 import { CityStats } from "../tableTypes";
@@ -62,15 +63,18 @@ const processChunk = async (
         "da_name",
         "da_population",
         "da_surface_ha",
-        "dvf_nbtrans",
-        "dvf_pxm2_median",
-        "dvf_surface_median",
+        "dvf_nbtrans_residential",
+        "dvf_pxm2_median_residential",
+        "dvf_surface_median_residential",
         "dvf_nbtrans_cod111",
         "dvf_pxm2_median_cod111",
         "dvf_nbtrans_cod121",
         "dvf_pxm2_median_cod121",
         "dvf_surface_median_cod111",
         "dvf_surface_median_cod121",
+        "dvf_nbtrans_terrain",
+        "dvf_pxm2_median_terrain",
+        "dvf_surface_median_terrain",
         "updated_at",
       ]);
 
@@ -143,7 +147,7 @@ async function initializeCityStatsData() {
 
           // Pause pour éviter de surcharger la DB
           if (i < chunks.length - 1) {
-            await new Promise((resolve) => setTimeout(resolve, 10));
+            await setTimeout(10);
           }
         } catch (chunkError) {
           console.error(

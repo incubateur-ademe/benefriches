@@ -54,8 +54,12 @@ export class QuickComputeUrbanProjectImpactsOnFricheUseCase implements UseCase<
     siteCityCode,
     siteSurfaceArea,
   }: Request): Promise<QuickComputeUrbanProjectImpactsOnFricheResult> {
-    const { name, surfaceAreaSquareMeters, population, propertyValueMedianPricePerSquareMeters } =
-      await this.cityStatsQuery.getCityStats(siteCityCode);
+    const {
+      name,
+      surfaceAreaSquareMeters,
+      population,
+      residentialPropertyMedianPricePerSquareMeters,
+    } = await this.cityStatsQuery.getCityStats(siteCityCode);
 
     const city = {
       name: name,
@@ -121,7 +125,7 @@ export class QuickComputeUrbanProjectImpactsOnFricheUseCase implements UseCase<
         siteIsFriche: true,
         citySquareMetersSurfaceArea: city.surfaceArea,
         cityPopulation: city.population,
-        cityPropertyValuePerSquareMeter: propertyValueMedianPricePerSquareMeters,
+        cityPropertyValuePerSquareMeter: residentialPropertyMedianPricePerSquareMeters,
       },
       relatedSite: siteData,
       evaluationPeriodInYears,

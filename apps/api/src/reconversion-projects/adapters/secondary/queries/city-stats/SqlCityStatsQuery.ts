@@ -39,7 +39,13 @@ export class SqlCityStatsQuery implements CityStatsProvider {
   async getCityStats(cityCode: string): Promise<CityStats> {
     try {
       const stats = await this.sqlConnection("city_stats")
-        .select("da_name", "da_population", "da_surface_ha", "dvf_pxm2_median")
+        .select(
+          "da_name",
+          "da_population",
+          "da_surface_ha",
+          "dvf_pxm2_median_residential",
+          "dvf_pxm2_median_terrain",
+        )
         .where("city_code", cityCode)
         .first();
 
@@ -56,10 +62,14 @@ export class SqlCityStatsQuery implements CityStatsProvider {
         name: stats.da_name,
         surfaceAreaSquareMeters,
         population,
-        propertyValueMedianPricePerSquareMeters:
-          stats.dvf_pxm2_median && stats.dvf_pxm2_median !== 0
-            ? stats.dvf_pxm2_median
+        residentialPropertyMedianPricePerSquareMeters:
+          stats.dvf_pxm2_median_residential && stats.dvf_pxm2_median_residential !== 0
+            ? stats.dvf_pxm2_median_residential
             : getDefaultMedianPriceFromPopulation(population),
+        landValueMedianPricePerSquareMeters:
+          stats.dvf_pxm2_median_terrain && stats.dvf_pxm2_median_terrain !== 0
+            ? stats.dvf_pxm2_median_terrain
+            : null,
       };
     } catch (err) {
       // oxlint-disable-next-line no-console
@@ -68,9 +78,10 @@ export class SqlCityStatsQuery implements CityStatsProvider {
         name: "",
         surfaceAreaSquareMeters: FRANCE_AVERAGE_CITY_SQUARE_METERS_AREA,
         population: FRANCE_AVERAGE_CITY_POPULATION,
-        propertyValueMedianPricePerSquareMeters: getDefaultMedianPriceFromPopulation(
+        residentialPropertyMedianPricePerSquareMeters: getDefaultMedianPriceFromPopulation(
           FRANCE_AVERAGE_CITY_POPULATION,
         ),
+        landValueMedianPricePerSquareMeters: null,
       };
     }
   }

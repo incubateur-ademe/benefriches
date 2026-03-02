@@ -25,7 +25,7 @@ Initialisation ou mise à jour des données de la table `city_stats`.
 ### Dev
 
 ```sh
-npx ts-node src/shared-kernel/adapters/sql-knex/scripts/initialize-or-update-city-stats.ts
+node src/shared-kernel/adapters/sql-knex/scripts/initialize-or-update-city-stats.ts
 ```
 
 ### Prod

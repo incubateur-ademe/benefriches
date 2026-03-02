@@ -12,7 +12,7 @@ describe("GetSiteRealEstateValuationUseCase", () => {
     const siteId = "site-123";
     sitesQuery._setSiteSurfaceAreaAndCityCode(siteId, {
       surfaceArea: 1000,
-      cityCode: "75056", // Paris - has propertyValueMedianPricePerSquareMeters of 8000 in InMemory
+      cityCode: "75056", // Paris - has landValueMedianPricePerSquareMeters of 500 in InMemory
     });
 
     const useCase = new GetSiteRealEstateValuationUseCase(sitesQuery, cityStatsQuery);
@@ -20,8 +20,8 @@ describe("GetSiteRealEstateValuationUseCase", () => {
 
     expect(result.isSuccess()).toBe(true);
     expect((result as SuccessResult<unknown>).getData()).toEqual({
-      sellingPrice: 8_000_000, // 1000 * 8000
-      propertyTransferDuties: 464_800, // 8_000_000 * 0.0581 (TRANSFER_TAX_PERCENT_PER_TRANSACTION)
+      sellingPrice: 500_000, // 1000 * 500
+      propertyTransferDuties: 29_050, // 500_000 * 0.0581 (TRANSFER_TAX_PERCENT_PER_TRANSACTION)
     });
   });
 
@@ -34,5 +34,22 @@ describe("GetSiteRealEstateValuationUseCase", () => {
 
     expect(result.isFailure()).toBe(true);
     expect((result as FailureResult).getError()).toBe("SiteNotFound");
+  });
+
+  it("should return ValuationDataNotAvailable when land price data is missing", async () => {
+    const sitesQuery = new InMemorySitesQuery();
+    const cityStatsQuery = new InMemoryCityStatsQuery();
+
+    const siteId = "site-456";
+    sitesQuery._setSiteSurfaceAreaAndCityCode(siteId, {
+      surfaceArea: 1000,
+      cityCode: "38375", // Saint-Christophe-en-Oisans - has no landValueMedianPricePerSquareMeters
+    });
+
+    const useCase = new GetSiteRealEstateValuationUseCase(sitesQuery, cityStatsQuery);
+    const result = await useCase.execute({ siteId });
+
+    expect(result.isFailure()).toBe(true);
+    expect((result as FailureResult).getError()).toBe("ValuationDataNotAvailable");
   });
 });
