@@ -8,6 +8,10 @@ export class InMemorySupportChatService implements SupportChatGateway {
     this._userEmail = email;
   }
 
+  unsetUserEmail(): void {
+    this._userEmail = undefined;
+  }
+
   openWithMessage(message: string): void {
     this._messages.push(message);
   }

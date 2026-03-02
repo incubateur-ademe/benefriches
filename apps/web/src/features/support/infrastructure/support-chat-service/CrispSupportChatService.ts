@@ -12,6 +12,11 @@ export class CrispSupportChatService implements SupportChatGateway {
     Crisp.user.setEmail(email);
   }
 
+  unsetUserEmail(): void {
+    if (!Crisp.isCrispInjected()) return;
+    Crisp.session.reset();
+  }
+
   openWithMessage(message: string): void {
     if (!Crisp.isCrispInjected()) return;
     Crisp.load();

@@ -5,6 +5,10 @@ export class NoopSupportChatService implements SupportChatGateway {
     // No-op: support chat is not configured
   }
 
+  unsetUserEmail(): void {
+    // No-op: support chat is not configured
+  }
+
   openWithMessage(): void {
     // No-op: support chat is not configured
   }
