@@ -1,8 +1,8 @@
-import Input from "@codegouvfr/react-dsfr/Input";
 import { Control, Controller, useFormState, useWatch } from "react-hook-form";
 
 import { getFormattedDuration } from "@/shared/core/dates";
 import Fieldset from "@/shared/views/components/form/Fieldset/Fieldset";
+import MonthYearInput from "@/shared/views/components/form/MonthYearInput/MonthYearInput";
 
 import { FormValues } from "./ScheduleProjectionForm";
 
@@ -46,17 +46,16 @@ function ScheduleField({ label, scheduleName, control, onStartDateChange }: Prop
             name={`${scheduleName}.startDate`}
             control={control}
             render={({ field }) => (
-              <Input
+              <MonthYearInput
                 label="Début des travaux"
                 className="w-full"
-                nativeInputProps={{
-                  ...field,
-                  onChange: (ev) => {
-                    field.onChange(ev);
-                    onStartDateChange();
-                  },
-                  type: "date",
+                value={field.value ?? ""}
+                onChange={(dateString) => {
+                  field.onChange(dateString);
+                  onStartDateChange();
                 }}
+                onBlur={field.onBlur}
+                name={field.name}
               />
             )}
           />
@@ -64,15 +63,25 @@ function ScheduleField({ label, scheduleName, control, onStartDateChange }: Prop
           <Controller
             name={`${scheduleName}.endDate`}
             control={control}
+            rules={{
+              validate: (value) => {
+                if (!value || !startDateValue) return true;
+                if (value < startDateValue) {
+                  return "La date de fin doit être après la date de début";
+                }
+                return true;
+              },
+            }}
             render={({ field }) => (
-              <Input
+              <MonthYearInput
                 label="Fin des travaux"
                 className="w-full"
-                nativeInputProps={{
-                  ...field,
-                  type: "date",
-                  min: startDateValue,
+                value={field.value ?? ""}
+                onChange={(dateString) => {
+                  field.onChange(dateString);
                 }}
+                onBlur={field.onBlur}
+                name={field.name}
               />
             )}
           />

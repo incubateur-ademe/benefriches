@@ -95,6 +95,10 @@ const result = await extra.featureService.doSomething(payload);
 - Use `useEffect` in components for most side effects
 - Use listener middleware sparingly for specific Redux action side effects
 
+### Component Encapsulation
+
+Internal representation is an implementation detail — don't expose it through props. Design component APIs from the consumer's perspective. If every consumer would need the same adapter code (format conversion, mapping, etc.), that logic belongs inside the component.
+
 ---
 
 ## Creation Checklists

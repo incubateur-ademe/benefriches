@@ -13,7 +13,7 @@ import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormL
 import ScheduleField from "./ScheduleField";
 
 function formatDateForInput(date: Date) {
-  return format(date, "yyyy-MM-dd");
+  return format(date, "yyyy-MM") + "-01";
 }
 
 type Props = {
