@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
 
+import { createStore } from "@/app/store/store";
 import { initCurrentUser } from "@/features/onboarding/core/initCurrentUser.action";
 import { InMemoryCurrentUserService } from "@/features/onboarding/infrastructure/current-user-service/inMemoryCurrentUserService";
 import { InMemorySupportChatService } from "@/features/support/infrastructure/support-chat-service/InMemorySupportChatService";
-import { createStore } from "@/shared/core/store-config/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 describe("supportChatListeners", () => {
