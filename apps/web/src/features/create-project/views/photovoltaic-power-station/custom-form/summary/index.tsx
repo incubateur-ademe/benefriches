@@ -1,17 +1,13 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
 import { saveReconversionProject } from "@/features/create-project/core/renewable-energy/actions/customProjectSaved.action";
-import { selectCreationData } from "@/features/create-project/core/renewable-energy/selectors/renewableEnergy.selector";
+import { selectPhotovoltaicSummaryViewData } from "@/features/create-project/core/renewable-energy/selectors/photovoltaicPowerStation.selectors";
 
 import ProjectionCreationDataSummary from "./ProjectCreationDataSummary";
 
 function ProjectionCreationDataSummaryContainer() {
-  const projectData = useAppSelector(selectCreationData);
-  const siteData = useAppSelector((state) => state.projectCreation.siteData);
-
-  const { current: siteSoilsCarbonStorage, projected: projectSoilsCarbonStorage } = useAppSelector(
-    (state) => state.projectCreation.renewableEnergyProject.soilsCarbonStorage,
-  );
+  const { projectData, siteData, siteSoilsCarbonStorage, projectSoilsCarbonStorage } =
+    useAppSelector(selectPhotovoltaicSummaryViewData);
 
   const dispatch = useAppDispatch();
 

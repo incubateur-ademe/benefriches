@@ -2,19 +2,14 @@ import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
 import { ProjectStakeholderStructure } from "@/features/create-project/core/project.types";
 import { completeProjectDeveloper } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
-import {
-  getRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders,
-  getRenewableEnergyProjectAvailableStakeholders,
-} from "@/features/create-project/core/renewable-energy/selectors/stakeholders.selectors";
+import { selectPVDeveloperViewData } from "@/features/create-project/core/renewable-energy/selectors/stakeholders.selectors";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import StakeholderForm from "@/shared/views/project-form/common/stakeholder-form//";
 
 function DeveloperFormContainer() {
   const dispatch = useAppDispatch();
-  const availableStakeholdersList = useAppSelector(getRenewableEnergyProjectAvailableStakeholders);
-  const availableLocalAuthoritiesStakeholders = useAppSelector(
-    getRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders,
-  );
+  const { availableStakeholdersList, availableLocalAuthoritiesStakeholders } =
+    useAppSelector(selectPVDeveloperViewData);
 
   const onSubmit = (data: { structureType: ProjectStakeholderStructure; name: string }) => {
     dispatch(completeProjectDeveloper(data));

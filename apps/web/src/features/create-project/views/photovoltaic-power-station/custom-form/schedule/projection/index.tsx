@@ -1,14 +1,12 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
-import { selectIsSiteFriche } from "@/features/create-project/core/createProject.selectors";
 import { completeScheduleStep } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
-import { selectPhotovoltaicPowerStationScheduleInitialValues } from "@/features/create-project/core/renewable-energy/selectors/renewableEnergy.selector";
+import { selectPVScheduleProjectionViewData } from "@/features/create-project/core/renewable-energy/selectors/renewableEnergy.selector";
 import ScheduleProjectionForm from "@/shared/views/project-form/common/schedule/projection/ScheduleProjectionForm";
 
 function ScheduleProjectionFormContainer() {
   const dispatch = useAppDispatch();
-  const initialValues = useAppSelector(selectPhotovoltaicPowerStationScheduleInitialValues);
-  const siteIsFriche = useAppSelector(selectIsSiteFriche);
+  const { initialValues, siteIsFriche } = useAppSelector(selectPVScheduleProjectionViewData);
 
   return (
     <ScheduleProjectionForm

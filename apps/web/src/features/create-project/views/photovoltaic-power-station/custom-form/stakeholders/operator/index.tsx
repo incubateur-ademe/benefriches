@@ -2,9 +2,8 @@ import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
 import { ProjectStakeholder } from "@/features/create-project/core/project.types";
 import { futureOperatorCompleted } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
-import { selectCreationData } from "@/features/create-project/core/renewable-energy/selectors/renewableEnergy.selector";
+import { selectPVOperatorViewData } from "@/features/create-project/core/renewable-energy/selectors/stakeholders.selectors";
 import { UserStructure } from "@/features/onboarding/core/user";
-import { selectCurrentUserStructure } from "@/features/onboarding/core/user.reducer";
 
 import FutureOperatorForm, { FormValues } from "./FutureOperatorForm";
 
@@ -25,8 +24,7 @@ const mapInitialValues = (
 
 function FutureOperatorFormContainer() {
   const dispatch = useAppDispatch();
-  const currentUser = useAppSelector(selectCurrentUserStructure);
-  const initialValue = useAppSelector(selectCreationData).futureOperator;
+  const { currentUser, initialValue } = useAppSelector(selectPVOperatorViewData);
 
   const onSubmit = (data: FormValues) => {
     const futureOperator: ProjectStakeholder =

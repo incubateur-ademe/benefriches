@@ -2,24 +2,25 @@ import { ReinstatementExpense } from "shared";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
-import { selectSiteData } from "@/features/create-project/core/createProject.selectors";
 import { completeReinstatementExpenses } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
-import { selectCreationData } from "@/features/create-project/core/renewable-energy/selectors/renewableEnergy.selector";
+import { selectPVReinstatementExpensesViewData } from "@/features/create-project/core/renewable-energy/selectors/expenses.selectors";
 import ReinstatementsExpensesForm from "@/shared/views/project-form/common/expenses/reinstatement";
 
 function ReinstatementExpensesFormContainer() {
   const dispatch = useAppDispatch();
-
-  const siteData = useAppSelector(selectSiteData);
-  const projectData = useAppSelector(selectCreationData);
-  const initialValues = projectData.reinstatementExpenses;
+  const {
+    siteSoilsDistribution,
+    projectSoilsDistribution,
+    decontaminatedSurfaceArea,
+    reinstatementExpenses: initialValues,
+  } = useAppSelector(selectPVReinstatementExpensesViewData);
 
   return (
     <ReinstatementsExpensesForm
       preEnteredData={initialValues}
-      siteSoilsDistribution={siteData?.soilsDistribution ?? {}}
-      projectSoilsDistribution={projectData.soilsDistribution ?? {}}
-      decontaminatedSurfaceArea={projectData.decontaminatedSurfaceArea ?? 0}
+      siteSoilsDistribution={siteSoilsDistribution}
+      projectSoilsDistribution={projectSoilsDistribution}
+      decontaminatedSurfaceArea={decontaminatedSurfaceArea}
       onBack={() => {
         dispatch(stepReverted());
       }}

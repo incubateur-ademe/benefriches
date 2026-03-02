@@ -1,15 +1,14 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
 import { completeNonSuitableSoilsNoticeStep } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
-import { selectPhotovoltaicPanelsSurfaceArea } from "@/features/create-project/core/renewable-energy/selectors/photovoltaicPowerStation.selectors";
-import { selectSuitableSurfaceAreaForPhotovoltaicPanels } from "@/features/create-project/core/renewable-energy/selectors/soilsTransformation.selectors";
+import { selectPVNonSuitableSoilsNoticeViewData } from "@/features/create-project/core/renewable-energy/selectors/soilsTransformation.selectors";
 
 import NonSuitableSoilsNotice from "./NonSuitableSoilsNotice";
 
 function NonSuitableSoilsNoticeContainer() {
   const dispatch = useAppDispatch();
-  const photovoltaicPanelsSurfaceAre = useAppSelector(selectPhotovoltaicPanelsSurfaceArea);
-  const suitableSurfaceArea = useAppSelector(selectSuitableSurfaceAreaForPhotovoltaicPanels);
+  const { photovoltaicPanelsSurfaceArea: photovoltaicPanelsSurfaceAre, suitableSurfaceArea } =
+    useAppSelector(selectPVNonSuitableSoilsNoticeViewData);
 
   return (
     <NonSuitableSoilsNotice

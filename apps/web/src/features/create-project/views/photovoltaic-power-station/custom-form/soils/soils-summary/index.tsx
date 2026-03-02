@@ -1,6 +1,7 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
 import { completeSoilsSummaryStep } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
+import { selectPVSoilsSummaryViewData } from "@/features/create-project/core/renewable-energy/selectors/soilsTransformation.selectors";
 
 import ProjectSoilsSummary from "./ProjectSoilsSummary";
 
@@ -12,11 +13,8 @@ function ProjectSoilsSummaryContainer() {
   const onBack = () => {
     dispatch(stepReverted());
   };
-  const siteSoilsDistribution = useAppSelector(
-    (state) => state.projectCreation.siteData?.soilsDistribution ?? {},
-  );
-  const projectSoilsDistribution = useAppSelector(
-    (state) => state.projectCreation.renewableEnergyProject.creationData.soilsDistribution ?? {},
+  const { siteSoilsDistribution, projectSoilsDistribution } = useAppSelector(
+    selectPVSoilsSummaryViewData,
   );
 
   return (

@@ -3,7 +3,7 @@ import { RecurringRevenue } from "shared";
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
 import { completeYearlyProjectedRevenue } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
-import { selectPhotovoltaicPowerStationYearlyRevenueInitialValues } from "@/features/create-project/core/renewable-energy/selectors/revenues.selectors";
+import { selectPVYearlyProjectedRevenueViewData } from "@/features/create-project/core/renewable-energy/selectors/revenues.selectors";
 import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
 import { getLabelForRecurringRevenueSource } from "@/shared/core/reconversionProject";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
@@ -14,11 +14,8 @@ const fields = ["operations", "other"] as const;
 
 function YearlyProjectedRevenueFormContainer() {
   const dispatch = useAppDispatch();
-  const initialValues = useAppSelector(selectPhotovoltaicPowerStationYearlyRevenueInitialValues);
-  const photovoltaicExpectedAnnualProduction = useAppSelector(
-    (state) =>
-      state.projectCreation.renewableEnergyProject.creationData
-        .photovoltaicExpectedAnnualProduction,
+  const { initialValues, photovoltaicExpectedAnnualProduction } = useAppSelector(
+    selectPVYearlyProjectedRevenueViewData,
   );
 
   return (

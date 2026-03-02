@@ -25,6 +25,19 @@ export const selectPhotovoltaicPowerStationYearlyRevenueInitialValues = createSe
   },
 );
 
+type PVYearlyProjectedRevenueViewData = {
+  initialValues: ReturnType<typeof selectPhotovoltaicPowerStationYearlyRevenueInitialValues>;
+  photovoltaicExpectedAnnualProduction: number | undefined;
+};
+
+export const selectPVYearlyProjectedRevenueViewData = createSelector(
+  [selectPhotovoltaicPowerStationYearlyRevenueInitialValues, selectCreationData],
+  (initialValues, creationData): PVYearlyProjectedRevenueViewData => ({
+    initialValues,
+    photovoltaicExpectedAnnualProduction: creationData.photovoltaicExpectedAnnualProduction,
+  }),
+);
+
 export const selectPhotovoltaicPowerStationFinancialAssistanceRevenueInitialValues = createSelector(
   [selectCreationData],
   (creationData) => {

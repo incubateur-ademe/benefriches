@@ -163,3 +163,52 @@ export const selectFutureBiodiversityAndClimateSensibleSoilsSurfaceArea = create
     return sumSoilsSurfaceAreasWhere(futureSoilsDistribution, isBiodiversityAndClimateSensibleSoil);
   },
 );
+
+type PVSoilsSummaryViewData = {
+  siteSoilsDistribution: SoilsDistribution;
+  projectSoilsDistribution: SoilsDistribution;
+};
+
+export const selectPVSoilsSummaryViewData = createSelector(
+  [selectSiteSoilsDistribution, selectProjectSoilsDistribution],
+  (siteSoilsDistribution, projectSoilsDistribution): PVSoilsSummaryViewData => ({
+    siteSoilsDistribution,
+    projectSoilsDistribution,
+  }),
+);
+
+type PVNonSuitableSoilsNoticeViewData = {
+  photovoltaicPanelsSurfaceArea: number;
+  suitableSurfaceArea: number;
+};
+
+export const selectPVNonSuitableSoilsNoticeViewData = createSelector(
+  [selectPhotovoltaicPanelsSurfaceArea, selectSuitableSurfaceAreaForPhotovoltaicPanels],
+  (photovoltaicPanelsSurfaceArea, suitableSurfaceArea): PVNonSuitableSoilsNoticeViewData => ({
+    photovoltaicPanelsSurfaceArea,
+    suitableSurfaceArea,
+  }),
+);
+
+type PVClimateAndBiodiversityImpactNoticeViewData = {
+  hasTransformationNegativeImpact: boolean;
+  biodiversityAndClimateSensitiveSoilsSurfaceAreaDestroyed: number;
+  futureBiodiversityAndClimateSensitiveSoilsSurfaceArea: number;
+};
+
+export const selectPVClimateAndBiodiversityImpactNoticeViewData = createSelector(
+  [
+    selectWillSoilsTransformationHaveNegativeImpactOnBiodiversityAndClimate,
+    selectBiodiversityAndClimateSensibleSoilsSurfaceAreaDestroyed,
+    selectFutureBiodiversityAndClimateSensibleSoilsSurfaceArea,
+  ],
+  (
+    hasTransformationNegativeImpact,
+    biodiversityAndClimateSensitiveSoilsSurfaceAreaDestroyed,
+    futureBiodiversityAndClimateSensitiveSoilsSurfaceArea,
+  ): PVClimateAndBiodiversityImpactNoticeViewData => ({
+    hasTransformationNegativeImpact,
+    biodiversityAndClimateSensitiveSoilsSurfaceAreaDestroyed,
+    futureBiodiversityAndClimateSensitiveSoilsSurfaceArea,
+  }),
+);

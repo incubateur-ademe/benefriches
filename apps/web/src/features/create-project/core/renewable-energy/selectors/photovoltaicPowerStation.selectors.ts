@@ -4,7 +4,9 @@ import {
   getRecommendedPowerKWcFromPhotovoltaicPanelsSurfaceArea,
 } from "shared";
 
-import { selectSiteSurfaceArea } from "../../createProject.selectors";
+import { RootState } from "@/app/store/store";
+
+import { selectSiteData, selectSiteSurfaceArea } from "../../createProject.selectors";
 import { selectCreationData } from "./renewableEnergy.selector";
 
 export const selectPhotovoltaicPanelsSurfaceArea = createSelector(
@@ -76,6 +78,19 @@ type PhotovoltaicSurfaceAreaViewData =
       recommendedSurfaceArea: number;
       electricalPowerKWc: number;
     };
+
+const selectSoilsCarbonStorage = (state: RootState) =>
+  state.projectCreation.renewableEnergyProject.soilsCarbonStorage;
+
+export const selectPhotovoltaicSummaryViewData = createSelector(
+  [selectCreationData, selectSiteData, selectSoilsCarbonStorage],
+  (projectData, siteData, soilsCarbonStorage) => ({
+    projectData,
+    siteData,
+    siteSoilsCarbonStorage: soilsCarbonStorage.current,
+    projectSoilsCarbonStorage: soilsCarbonStorage.projected,
+  }),
+);
 
 export const selectPhotovoltaicSurfaceViewData = createSelector(
   [selectCreationData, selectSiteSurfaceArea],

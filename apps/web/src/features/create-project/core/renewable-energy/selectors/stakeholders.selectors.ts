@@ -124,6 +124,43 @@ type SitePurchasedViewData = {
   siteOwnerName: string | undefined;
 };
 
+type PVStakeholderFormViewData = {
+  availableStakeholdersList: AvailableProjectStakeholder[];
+  availableLocalAuthoritiesStakeholders: ReturnType<
+    typeof getRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders
+  >;
+};
+
+export const selectPVDeveloperViewData = createSelector(
+  [
+    getRenewableEnergyProjectAvailableStakeholders,
+    getRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders,
+  ],
+  (
+    availableStakeholdersList,
+    availableLocalAuthoritiesStakeholders,
+  ): PVStakeholderFormViewData => ({
+    availableStakeholdersList,
+    availableLocalAuthoritiesStakeholders,
+  }),
+);
+
+export const selectPVFutureSiteOwnerViewData = selectPVDeveloperViewData;
+export const selectPVReinstatementContractOwnerViewData = selectPVDeveloperViewData;
+
+type PVOperatorViewData = {
+  currentUser: ReturnType<typeof selectCurrentUserStructure>;
+  initialValue: ProjectStakeholder | undefined;
+};
+
+export const selectPVOperatorViewData = createSelector(
+  [selectCurrentUserStructure, selectCreationData],
+  (currentUser, creationData): PVOperatorViewData => ({
+    currentUser,
+    initialValue: creationData.futureOperator,
+  }),
+);
+
 export const selectSitePurchasedViewData = createSelector(
   [selectCreationData, selectSiteData, selectCurrentUserStructure],
   (creationData, siteData, currentUserStructure): SitePurchasedViewData => {

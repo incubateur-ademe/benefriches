@@ -7,7 +7,12 @@ import { RenewableEnergyDevelopmentPlanType } from "@/shared/core/reconversionPr
 
 import { generateRenewableEnergyProjectName } from "../../../../../shared/core/reducers/project-form/helpers/projectName";
 import { ProjectCreationState } from "../../createProject.reducer";
-import { selectDefaultSchedule, selectSiteData } from "../../createProject.selectors";
+import {
+  selectDefaultSchedule,
+  selectIsSiteFriche,
+  selectSiteContaminatedSurfaceArea,
+  selectSiteData,
+} from "../../createProject.selectors";
 import { RenewableEnergyProjectState } from "../renewableEnergy.reducer";
 
 const selectSelf = (state: RootState) => state.projectCreation;
@@ -73,6 +78,35 @@ export const selectPhotovoltaicPowerStationScheduleInitialValues = createSelecto
 
     return defaultSchedule;
   },
+);
+
+type PVDecontaminationSurfaceAreaViewData = {
+  contaminatedSurfaceArea: number;
+  surfaceAreaToDecontaminateInPercentage: number;
+};
+
+export const selectPVDecontaminationSurfaceAreaViewData = createSelector(
+  [selectSiteContaminatedSurfaceArea, selectContaminatedSurfaceAreaPercentageToDecontaminate],
+  (
+    contaminatedSurfaceArea,
+    surfaceAreaToDecontaminateInPercentage,
+  ): PVDecontaminationSurfaceAreaViewData => ({
+    contaminatedSurfaceArea,
+    surfaceAreaToDecontaminateInPercentage,
+  }),
+);
+
+type PVScheduleProjectionViewData = {
+  initialValues: ReturnType<typeof selectPhotovoltaicPowerStationScheduleInitialValues>;
+  siteIsFriche: boolean;
+};
+
+export const selectPVScheduleProjectionViewData = createSelector(
+  [selectPhotovoltaicPowerStationScheduleInitialValues, selectIsSiteFriche],
+  (initialValues, siteIsFriche): PVScheduleProjectionViewData => ({
+    initialValues,
+    siteIsFriche,
+  }),
 );
 
 export const selectNameAndDescriptionInitialValues = createSelector(

@@ -1,10 +1,11 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { TExpense } from "shared";
+import { ReinstatementExpense, SoilsDistribution, TExpense } from "shared";
 import {
   computePhotovoltaicPowerStationInstallationExpensesFromElectricalPower,
   computePhotovoltaicPowerStationYearlyExpensesFromElectricalPower,
 } from "shared";
 
+import { selectSiteData } from "../../createProject.selectors";
 import { selectCreationData } from "./renewableEnergy.selector";
 
 const getExpenseAmountByPurpose = <TExpenses extends TExpense<string>[]>(
@@ -36,6 +37,23 @@ export const selectPhotovoltaicPowerStationInstallationExpensesInitialValues = c
       electricalPowerKWc ?? 0,
     );
   },
+);
+
+type PVReinstatementExpensesViewData = {
+  siteSoilsDistribution: SoilsDistribution;
+  projectSoilsDistribution: SoilsDistribution;
+  decontaminatedSurfaceArea: number;
+  reinstatementExpenses: ReinstatementExpense[] | undefined;
+};
+
+export const selectPVReinstatementExpensesViewData = createSelector(
+  [selectSiteData, selectCreationData],
+  (siteData, projectData): PVReinstatementExpensesViewData => ({
+    siteSoilsDistribution: siteData?.soilsDistribution ?? {},
+    projectSoilsDistribution: projectData.soilsDistribution ?? {},
+    decontaminatedSurfaceArea: projectData.decontaminatedSurfaceArea ?? 0,
+    reinstatementExpenses: projectData.reinstatementExpenses,
+  }),
 );
 
 type PhotovoltaicPowerStationYearlyExpensesInitialValues = {
