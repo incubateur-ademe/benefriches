@@ -1,6 +1,6 @@
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import { RootState } from "@/app/store/store";
 import { selectShouldGoThroughOnboarding } from "@/features/projects/application/project-impacts/impactsOnboardingSkip.selectors";
-import { RootState } from "@/shared/core/store-config/store";
-import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 
 import ProjectCreationResult from "../../../common-views/result/ProjectCreationResult";

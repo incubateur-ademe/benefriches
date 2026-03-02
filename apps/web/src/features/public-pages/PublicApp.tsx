@@ -1,10 +1,10 @@
 import { lazy, Suspense } from "react";
 
+import { routes, useRoute } from "@/app/router";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import HeaderFooterLayout from "@/shared/views/layout/HeaderFooterLayout/HeaderFooterLayout";
 
 import NotFoundScreen from "../../shared/views/components/NotFound/NotFound";
-import { routes, useRoute } from "../../shared/views/router";
 import AccessBenefrichesPage from "../onboarding/views/pages/access-benefriches";
 import AuthWithToken from "../onboarding/views/pages/auth-with-token/AuthWithToken";
 import OnBoardingIdentityPage from "../onboarding/views/pages/identity/OnBoardingIdentityPage";

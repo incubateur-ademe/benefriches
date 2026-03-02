@@ -1,8 +1,8 @@
 import Button from "@codegouvfr/react-dsfr/Button";
 
+import { routes } from "@/app/router";
 import classNames from "@/shared/views/clsx";
 import useDuplicateProject from "@/shared/views/project/useDuplicateProject";
-import { routes } from "@/shared/views/router";
 
 import { exportImpactsModal } from "../export-impacts/createExportModal";
 

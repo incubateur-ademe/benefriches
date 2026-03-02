@@ -1,6 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import { RootState } from "@/shared/core/store-config/store";
+import { RootState } from "@/app/store/store";
 
 import type { SiteFeatures } from "./site.types";
 

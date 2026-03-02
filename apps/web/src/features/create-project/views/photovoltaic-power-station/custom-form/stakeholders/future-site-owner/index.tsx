@@ -1,3 +1,4 @@
+import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
 import { ProjectStakeholderStructure } from "@/features/create-project/core/project.types";
 import { completeFutureSiteOwner } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
@@ -5,7 +6,6 @@ import {
   getRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders,
   getRenewableEnergyProjectAvailableStakeholders,
 } from "@/features/create-project/core/renewable-energy/selectors/stakeholders.selectors";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import StakeholderForm from "@/shared/views/project-form/common/stakeholder-form";
 
 function FutureOwnerFormContainer() {

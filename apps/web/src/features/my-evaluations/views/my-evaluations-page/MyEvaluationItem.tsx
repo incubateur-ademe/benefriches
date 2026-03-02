@@ -3,6 +3,7 @@ import { Options } from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { MutabilityUsage } from "shared";
 
+import { routes } from "@/app/router";
 import { formatPercentage } from "@/shared/core/format-number/formatNumber";
 import { getMutabilityUsageDisplayName } from "@/shared/core/reconversionCompatibility";
 import { withDefaultBarChartOptions } from "@/shared/views/charts";
@@ -11,7 +12,6 @@ import Badge from "@/shared/views/components/Badge/Badge";
 import NewProjectTile from "@/shared/views/components/ProjectTile/NewProjectTile";
 import ProjectOverviewTile from "@/shared/views/components/ProjectTile/ProjectOverviewTile";
 import ProjectTile from "@/shared/views/components/ProjectTile/ProjectTile";
-import { routes } from "@/shared/views/router";
 
 import { UserSiteEvaluation } from "../../domain/types";
 

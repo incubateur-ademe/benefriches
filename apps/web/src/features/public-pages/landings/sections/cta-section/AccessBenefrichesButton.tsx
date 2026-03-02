@@ -1,6 +1,6 @@
 import Button, { ButtonProps } from "@codegouvfr/react-dsfr/Button";
 
-import { routes } from "@/shared/views/router";
+import { routes } from "@/app/router";
 
 export default function BenefrichesButton(buttonProps: Partial<ButtonProps.Common>) {
   return (

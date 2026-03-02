@@ -1,13 +1,13 @@
 import { lazy, Suspense } from "react";
 import { createGroup } from "type-route";
 
+import { routes, useRoute } from "@/app/router";
 import NotFoundScreen from "@/shared/views/components/NotFound/NotFound";
 import RequireAuthenticatedUser from "@/shared/views/components/RequireAuthenticatedUser/RequireAuthenticatedUser";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import HeaderFooterLayout from "@/shared/views/layout/HeaderFooterLayout/HeaderFooterLayout";
 import SidebarContainerLayout from "@/shared/views/layout/SidebarLayout/SidebarContainerLayout";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
-import { routes, useRoute } from "@/shared/views/router";
 
 import OnBoardingIntroductionHow from "./onboarding/views/pages/how-it-works/HowItWorksPage";
 import OnboardingWhenNotToUsePage from "./onboarding/views/pages/when-not-to-use/OnboardingWhenNotToUsePage";

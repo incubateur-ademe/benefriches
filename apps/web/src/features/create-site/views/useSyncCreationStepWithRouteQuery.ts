@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { useAppSelector } from "@/app/hooks/store.hooks";
 
 import { selectCurrentStep } from "../core/createSite.reducer";
 import { getRouteFromCreationStep } from "./routes";

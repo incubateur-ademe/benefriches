@@ -1,9 +1,9 @@
 import { createSoilSurfaceAreaDistribution } from "shared";
 
+import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { stepReverted } from "@/features/create-site/core/actions/revert.action";
 import { soilsDistributionStepCompleted } from "@/features/create-site/core/steps/spaces/spaces.actions";
 import { selectSiteSoilsDistributionViewData } from "@/features/create-site/core/steps/spaces/spaces.selectors";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import SiteSpacesDistributionForm, { FormValues } from "./SiteSpacesDistributionForm";
 

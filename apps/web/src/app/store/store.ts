@@ -7,7 +7,9 @@ import { GetSitesByIdGateway } from "@/features/create-project/core/actions/reco
 import { SaveReconversionProjectGateway } from "@/features/create-project/core/actions/saveReconversionProject.action";
 import { PhotovoltaicPerformanceGateway } from "@/features/create-project/core/renewable-energy/actions/getPhotovoltaicExpectedPerformance.action";
 import { SiteMunicipalityDataGateway as CreateSiteMunicipalityDataGateway } from "@/features/create-site/core/actions/siteMunicipalityData.actions";
+import { SoilsCarbonStorageGateway as SiteSoilsCarbonStorageGateway } from "@/features/create-site/core/actions/siteSoilsCarbonStorage.actions";
 import { CreateSiteGateway } from "@/features/create-site/core/steps/final/final.actions";
+import { SiteEvaluationGateway } from "@/features/my-evaluations/application/evaluationsList.actions";
 import { AuthenticationGateway } from "@/features/onboarding/core/AuthenticationGateway";
 import { CreateUserGateway } from "@/features/onboarding/core/createUser.action";
 import { CurrentUserGateway } from "@/features/onboarding/core/initCurrentUser.action";
@@ -22,10 +24,8 @@ import { UpdateProjectServiceGateway } from "@/features/update-project/core/upda
 import { CreateFeatureAlertGateway } from "@/features/user-feature-alerts/core/CreateFeatureAlertGateway";
 import { RealEstateValuationGateway } from "@/shared/core/gateways/RealEstateValuationGateway";
 import { SiteMunicipalityDataGateway as CreateProjectMunicipalityDataGateway } from "@/shared/core/reducers/project-form/projectForm.actions";
+import { SoilsCarbonStorageGateway as ProjectSoilsCarbonStorageGateway } from "@/shared/core/reducers/project-form/soilsCarbonStorage.action";
 
-import { SoilsCarbonStorageGateway as SiteSoilsCarbonStorageGateway } from "../../../features/create-site/core/actions/siteSoilsCarbonStorage.actions";
-import { SiteEvaluationGateway } from "../../../features/my-evaluations/application/evaluationsList.actions";
-import { SoilsCarbonStorageGateway as ProjectSoilsCarbonStorageGateway } from "../reducers/project-form/soilsCarbonStorage.action";
 import { getListener, setupAllListeners } from "./listenerMiddleware";
 import { rootReducer } from "./rootReducer";
 

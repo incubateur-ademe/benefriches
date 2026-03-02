@@ -1,4 +1,4 @@
-import { useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { useAppSelector } from "@/app/hooks/store.hooks";
 import SoilsDecontaminationSelection from "@/shared/views/project-form/common/soils-decontamination/selection/SoilsDecontaminationSelection";
 import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 

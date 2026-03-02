@@ -7,11 +7,11 @@ import { createRouter, defineRoute, param } from "type-route";
 
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
+import { appDependencies } from "./app/store/appDependencies.ts";
+import { createStore } from "./app/store/store.ts";
 import QuickImpactsEmbedView from "./features/projects/views/quick-impacts-embed-view/index.tsx";
 // oxlint-disable-next-line no-unassigned-import
 import "./main.css";
-import { appDependencies } from "./shared/core/store-config/appDependencies.ts";
-import { createStore } from "./shared/core/store-config/store.ts";
 
 startReactDsfr({ defaultColorScheme: "system" });
 

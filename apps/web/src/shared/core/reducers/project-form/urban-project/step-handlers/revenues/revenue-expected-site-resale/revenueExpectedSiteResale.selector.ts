@@ -1,9 +1,9 @@
 import { createSelector } from "@reduxjs/toolkit";
 import type { Selector } from "@reduxjs/toolkit";
 
+import type { RootState } from "@/app/store/store";
 import type { ProjectFormState } from "@/shared/core/reducers/project-form/projectForm.reducer";
 import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
-import type { RootState } from "@/shared/core/store-config/store";
 
 type SiteResaleRevenueViewData = {
   shouldSiteResalePriceBeEstimated: boolean;

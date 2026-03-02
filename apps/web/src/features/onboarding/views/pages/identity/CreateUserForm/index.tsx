@@ -1,10 +1,10 @@
 import { useEffect, useMemo } from "react";
 import { LocalAuthority } from "shared";
 
+import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
+import { routes, useRoute } from "@/app/router";
 import { createUser } from "@/features/onboarding/core/createUser.action";
 import { AdministrativeDivisionGeoApi } from "@/shared/infrastructure/administrative-division-service/administrativeDivisionGeoApi";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
-import { routes, useRoute } from "@/shared/views/router";
 
 import CreateUserForm, { FormValues } from "./CreateUserForm";
 

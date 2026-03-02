@@ -1,7 +1,7 @@
 import { headerFooterDisplayItem } from "@codegouvfr/react-dsfr/Display";
 import { Footer } from "@codegouvfr/react-dsfr/Footer";
 
-import { routes } from "@/shared/views/router";
+import { routes } from "@/app/router";
 
 import ExternalLink from "../../components/ExternalLink/ExternalLink";
 

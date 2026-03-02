@@ -1,4 +1,4 @@
-import { useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { useAppSelector } from "@/app/hooks/store.hooks";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import StakeholderForm from "@/shared/views/project-form/common/stakeholder-form";
 import { useProjectForm } from "@/shared/views/project-form/useProjectForm";

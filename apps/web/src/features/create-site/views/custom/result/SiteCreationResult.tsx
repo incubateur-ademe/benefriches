@@ -1,6 +1,7 @@
 import Alert from "@codegouvfr/react-dsfr/Alert";
 import Button from "@codegouvfr/react-dsfr/Button";
 
+import { routes } from "@/app/router";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import {
   EditorialPageIcon,
@@ -9,7 +10,6 @@ import {
   EditorialPageButtonsSection,
 } from "@/shared/views/layout/EditorialPageLayout";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
-import { routes } from "@/shared/views/router";
 
 type Props = {
   siteId: string;

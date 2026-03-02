@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
+import { useAppDispatch } from "@/app/hooks/store.hooks";
 
 import { reconversionProjectImpactsRequested } from "../../application/project-impacts/actions";
 import ProjectPage from "./ProjectPage";

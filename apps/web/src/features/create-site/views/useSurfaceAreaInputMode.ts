@@ -1,5 +1,5 @@
+import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { selectSurfaceAreaInputMode } from "@/features/create-site/core/selectors/createSite.selectors";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import { surfaceAreaInputModeUpdated } from "../core/steps/spaces/spaces.actions";
 

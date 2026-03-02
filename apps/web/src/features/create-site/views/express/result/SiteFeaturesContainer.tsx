@@ -1,11 +1,11 @@
 import Alert from "@codegouvfr/react-dsfr/Alert";
 import { useEffect } from "react";
 
+import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { fetchSiteFeatures } from "@/features/sites/core/fetchSiteFeatures.action";
 import { selectSiteFeaturesViewData } from "@/features/sites/core/siteFeatures.selectors";
 import SiteFeaturesList from "@/features/sites/views/features/SiteFeaturesList";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 type Props = {
   siteId: string;

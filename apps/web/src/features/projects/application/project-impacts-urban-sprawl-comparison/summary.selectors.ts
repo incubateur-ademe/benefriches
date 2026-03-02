@@ -1,7 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { SiteNature } from "shared";
 
-import { RootState } from "@/shared/core/store-config/store";
+import { RootState } from "@/app/store/store";
 
 import { getUrbanSprawlComparisonImpactIndicatorsList } from "../../domain/projectKeyImpactIndicators";
 

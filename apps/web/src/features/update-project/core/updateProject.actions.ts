@@ -1,10 +1,10 @@
 import { updateReconversionProjectPropsSchema } from "shared";
 import z from "zod";
 
+import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
 import { createProjectFormActions } from "@/shared/core/reducers/project-form/projectForm.actions";
 import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
 import { createUrbanProjectFormActions } from "@/shared/core/reducers/project-form/urban-project/urbanProject.actions";
-import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
 
 import {
   selectProjectSoilsDistributionByType,

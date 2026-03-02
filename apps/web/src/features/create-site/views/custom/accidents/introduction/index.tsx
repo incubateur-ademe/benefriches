@@ -1,6 +1,6 @@
+import { useAppDispatch } from "@/app/hooks/store.hooks";
 import { stepReverted } from "@/features/create-site/core/actions/revert.action";
 import { fricheAccidentsIntroductionStepCompleted } from "@/features/create-site/core/steps/contamination-and-accidents/contaminationAndAccidents.actions";
-import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 import FricheAccidentsIntroduction from "./FricheAccidentsIntroduction";
 

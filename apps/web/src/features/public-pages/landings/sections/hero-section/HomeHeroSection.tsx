@@ -1,6 +1,6 @@
 import Button from "@codegouvfr/react-dsfr/Button";
 
-import { routes } from "@/shared/views/router";
+import { routes } from "@/app/router";
 
 import HeroSection from "./HeroSection";
 import { HERO_CTA_BUTTON_CLASSNAMES } from "./buttonClassNames";

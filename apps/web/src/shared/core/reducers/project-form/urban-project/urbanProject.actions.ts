@@ -6,8 +6,8 @@ import {
 } from "@reduxjs/toolkit";
 import { SoilsDistribution } from "shared";
 
-import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
-import { RootState } from "@/shared/core/store-config/store";
+import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
+import { RootState } from "@/app/store/store";
 
 import { makeProjectFormActionType } from "../projectForm.actions";
 import { ProjectFormSelectors } from "../projectForm.selectors";

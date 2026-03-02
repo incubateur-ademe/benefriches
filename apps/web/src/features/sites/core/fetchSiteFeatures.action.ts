@@ -1,4 +1,4 @@
-import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
+import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
 
 import type { SiteFeatures } from "./site.types";
 

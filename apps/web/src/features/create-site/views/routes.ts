@@ -1,6 +1,6 @@
 import { Route } from "type-route";
 
-import { routes } from "@/shared/views/router";
+import { routes } from "@/app/router";
 
 import { SiteCreationStep } from "../core/createSite.reducer";
 

@@ -3,7 +3,7 @@ import {
   YearlyBuildingsOperationsRevenues,
 } from "shared";
 
-import { useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { useAppSelector } from "@/app/hooks/store.hooks";
 import ProjectYearlyRevenuesForm from "@/shared/views/project-form/common/revenues/yearly-projected-revenue/ProjectYearlyRevenueForm";
 import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 

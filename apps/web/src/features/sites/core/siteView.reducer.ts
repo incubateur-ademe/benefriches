@@ -1,6 +1,6 @@
 import { createReducer, createSelector } from "@reduxjs/toolkit";
 
-import { RootState } from "@/shared/core/store-config/store";
+import { RootState } from "@/app/store/store";
 
 import { fetchSiteView } from "./fetchSiteView.action";
 import { projectRemovedFromList } from "./removeProjectFromList.action";

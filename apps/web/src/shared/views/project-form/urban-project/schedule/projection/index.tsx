@@ -1,4 +1,4 @@
-import { useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { useAppSelector } from "@/app/hooks/store.hooks";
 import ScheduleProjectionForm from "@/shared/views/project-form/common/schedule/projection/ScheduleProjectionForm";
 import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 

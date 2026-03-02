@@ -1,6 +1,6 @@
 import { v4 as uuid } from "uuid";
 
-import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
+import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
 
 import { UserFeatureAlert } from "./userFeatureAlert";
 

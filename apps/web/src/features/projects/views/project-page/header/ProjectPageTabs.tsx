@@ -1,8 +1,8 @@
 import { fr } from "@codegouvfr/react-dsfr";
 
+import { routes, useRoute } from "@/app/router";
 import classNames from "@/shared/views/clsx";
 import TabItem from "@/shared/views/components/TabItem/TabItem";
-import { routes, useRoute } from "@/shared/views/router";
 
 import { ProjectRoute } from "../ProjectPage";
 

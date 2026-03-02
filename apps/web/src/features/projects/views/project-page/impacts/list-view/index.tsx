@@ -1,5 +1,5 @@
+import { useAppSelector } from "@/app/hooks/store.hooks";
 import { selectImpactsListViewData } from "@/features/projects/core/projectImpacts.selectors";
-import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import ImpactsListView from "./ImpactsListView";
 

@@ -1,4 +1,4 @@
-import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
+import { useAppDispatch } from "@/app/hooks/store.hooks";
 
 import { introductionStepCompleted } from "../../core/steps/introduction/introduction.actions";
 import SiteCreationIntroduction from "./SiteCreationIntroduction";

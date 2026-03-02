@@ -1,9 +1,9 @@
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 
+import { useAppDispatch } from "@/app/hooks/store.hooks";
+import { routes } from "@/app/router";
 import { siteCreationInitiated } from "@/features/create-site/core/steps/introduction/introduction.actions";
-import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 import OnboardingPageLayout from "@/shared/views/layout/OnboardingPageLayout/OnboardingPageLayout";
-import { routes } from "@/shared/views/router";
 
 import UseCaseList from "./UseCaseList";
 import UseItem from "./UseItem";

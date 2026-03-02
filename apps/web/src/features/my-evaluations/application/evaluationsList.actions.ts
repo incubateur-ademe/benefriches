@@ -1,6 +1,6 @@
 import { createAction } from "@reduxjs/toolkit";
 
-import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
+import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
 
 import { UserSiteEvaluation } from "../domain/types";
 

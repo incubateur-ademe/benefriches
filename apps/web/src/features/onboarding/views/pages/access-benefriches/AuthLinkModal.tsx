@@ -4,9 +4,9 @@ import Input from "@codegouvfr/react-dsfr/Input";
 import { useIsModalOpen } from "@codegouvfr/react-dsfr/Modal/useIsModalOpen";
 import { useForm, useWatch } from "react-hook-form";
 
+import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { authLinkRequestReset } from "@/features/onboarding/core/authLinkRequestReset.action";
 import { authLinkRequested } from "@/features/onboarding/core/authLinkRequested.action";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { useDelayed } from "@/shared/views/hooks/useDelayed";
 
 import AuthLinkNotReceivedHelp from "./AuthLinkNotReceivedHelp";

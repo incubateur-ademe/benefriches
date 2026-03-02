@@ -3,10 +3,10 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { Provider as ReduxProvider } from "react-redux";
 
-import { appDependencies } from "./shared/core/store-config/appDependencies.ts";
-import { createStore } from "./shared/core/store-config/store.ts";
-import App from "./shared/views/App.tsx";
-import { RouteProvider } from "./shared/views/router.ts";
+import App from "./app/App.tsx";
+import { RouteProvider } from "./app/router.ts";
+import { appDependencies } from "./app/store/appDependencies.ts";
+import { createStore } from "./app/store/store.ts";
 
 startReactDsfr({ defaultColorScheme: "system" });
 

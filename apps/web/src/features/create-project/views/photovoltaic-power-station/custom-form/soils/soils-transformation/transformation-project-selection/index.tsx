@@ -1,6 +1,6 @@
+import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
 import { completeSoilsTransformationProjectSelectionStep } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import SoilsTransformationProjectForm, { FormValues } from "./SoilsTransformationProjectForm";
 

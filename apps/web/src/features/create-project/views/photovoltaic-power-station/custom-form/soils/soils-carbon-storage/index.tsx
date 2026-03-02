@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 
+import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
 import { completeSoilsCarbonStorageStep } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
 import { fetchCurrentAndProjectedSoilsCarbonStorage } from "@/features/create-project/core/renewable-energy/actions/soilsCarbonStorage.actions";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import SoilsCarbonStorageComparison from "@/shared/views/project-form/common/soils-carbon-storage-comparison";
 
 function ProjectSoilsCarbonStorageContainer() {

@@ -1,10 +1,10 @@
 import { SiteNature } from "shared";
 
+import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { expressSiteDisclaimerHidden } from "@/features/analytics/core/analyticsEvents";
 import { eventTracked } from "@/features/analytics/core/eventTracked.action";
 import { appSettingUpdated, selectAppSettings } from "@/features/app-settings/core/appSettings";
 import Disclaimer from "@/shared/views/components/Disclaimer/Disclaimer";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 type Props = {
   siteNature: SiteNature;

@@ -1,7 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { DevelopmentPlanCategory, getDefaultScheduleForProject, ProjectSchedule } from "shared";
 
-import { RootState } from "@/shared/core/store-config/store";
+import { RootState } from "@/app/store/store";
 
 import { ProjectCreationState, ProjectCreationStep } from "./createProject.reducer";
 import { ProjectSuggestion } from "./project.types";

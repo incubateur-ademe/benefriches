@@ -1,6 +1,6 @@
+import { useAppSelector } from "@/app/hooks/store.hooks";
 import { selectProjectId } from "@/features/create-project/core/createProject.selectors";
 import { selectShouldGoThroughOnboarding } from "@/features/projects/application/project-impacts/impactsOnboardingSkip.selectors";
-import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import ProjectCreationResult from "./ProjectCreationResult";
 

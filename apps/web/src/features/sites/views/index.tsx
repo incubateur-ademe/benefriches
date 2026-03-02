@@ -1,8 +1,8 @@
 import { useCallback } from "react";
 import { Route } from "type-route";
 
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
-import { routes, useRoute } from "@/shared/views/router";
+import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
+import { routes, useRoute } from "@/app/router";
 
 import { fetchSiteView } from "../core/fetchSiteView.action";
 import { projectRemovedFromList } from "../core/removeProjectFromList.action";

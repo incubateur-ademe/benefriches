@@ -1,5 +1,5 @@
+import { useAppSelector } from "@/app/hooks/store.hooks";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
-import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import { selectCurrentStep } from "../../core/createSite.reducer";
 import { HTML_MAIN_TITLE } from "../SiteCreationWizard";

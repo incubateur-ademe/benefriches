@@ -4,8 +4,8 @@ import { createGroup } from "type-route";
 import FeaturesApp from "@/features/FeaturesApp";
 import { pageViewed } from "@/features/analytics/core/pageViewed.action";
 import { initCurrentUser } from "@/features/onboarding/core/initCurrentUser.action";
+import PublicApp from "@/features/public-pages/PublicApp";
 
-import PublicApp from "../../features/public-pages/PublicApp";
 import { useAppDispatch } from "./hooks/store.hooks";
 import { routes, useRoute } from "./router";
 

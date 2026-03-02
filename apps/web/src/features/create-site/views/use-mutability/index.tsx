@@ -1,5 +1,5 @@
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
-import { routes } from "@/shared/views/router";
+import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
+import { routes } from "@/app/router";
 
 import { stepReverted } from "../../core/actions/revert.action";
 import { mutabilityOrImpactsSelectionCompleted } from "../../core/steps/introduction/introduction.actions";

@@ -1,6 +1,6 @@
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import { RootState } from "@/app/store/store";
 import { UrbanProjectCreationStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
-import { RootState } from "@/shared/core/store-config/store";
-import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 import FormStepperStep from "@/shared/views/layout/WizardFormLayout/FormStepperStep";
 import FormStepperWrapper from "@/shared/views/layout/WizardFormLayout/FormStepperWrapper";
 import StepperLiItem from "@/shared/views/project-form/stepper/StepperItem";

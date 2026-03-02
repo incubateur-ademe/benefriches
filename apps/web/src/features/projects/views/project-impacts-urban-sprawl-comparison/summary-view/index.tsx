@@ -1,5 +1,5 @@
+import { useAppSelector } from "@/app/hooks/store.hooks";
 import { selectUrbanSprawlSummaryViewData } from "@/features/projects/core/urbanSprawlComparison.selectors";
-import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import ImpactSummaryView from "./ImpactSummaryView";
 

@@ -2,7 +2,7 @@ import { createSelector } from "@reduxjs/toolkit";
 import type { Selector } from "@reduxjs/toolkit";
 import type { SoilsDistribution } from "shared";
 
-import type { RootState } from "@/shared/core/store-config/store";
+import type { RootState } from "@/app/store/store";
 
 type SoilsSummaryViewData = {
   siteSoilsDistribution: SoilsDistribution;

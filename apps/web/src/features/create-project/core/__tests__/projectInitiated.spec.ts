@@ -1,4 +1,4 @@
-import { createStore } from "@/shared/core/store-config/store";
+import { createStore } from "@/app/store/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import { InMemorySitesService } from "../../infrastructure/sites-service/InMemorySitesService";

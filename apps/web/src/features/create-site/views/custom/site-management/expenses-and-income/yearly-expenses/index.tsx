@@ -1,8 +1,8 @@
+import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { stepReverted } from "@/features/create-site/core/actions/revert.action";
 import type { SiteYearlyExpensesConfig } from "@/features/create-site/core/steps/site-management/expenses.functions";
 import { yearlyExpensesStepCompleted } from "@/features/create-site/core/steps/site-management/siteManagement.actions";
 import { selectSiteYearlyExpensesViewData } from "@/features/create-site/core/steps/site-management/siteManagement.selectors";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import SiteYearlyExpensesForm, { type FormValues } from "./SiteYearlyExpensesForm";
 import { getInitialValues, mapFormDataToExpenses } from "./mappers";

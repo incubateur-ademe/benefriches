@@ -1,8 +1,8 @@
 import { createReducer, createSelector, isAnyOf, PayloadAction } from "@reduxjs/toolkit";
 import { FricheActivity, SiteNature, SoilsDistribution } from "shared";
 
+import { RootState } from "@/app/store/store";
 import { selectAppSettings } from "@/features/app-settings/core/appSettings";
-import { RootState } from "@/shared/core/store-config/store";
 
 import { ProjectDevelopmentPlanType } from "../../domain/projects.types";
 import { ModalDataProps } from "../../views/project-page/impacts/impact-description-modals/ImpactModalDescription";

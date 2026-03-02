@@ -1,9 +1,9 @@
 import { expect } from "vitest";
 
+import { AppDependencies, createStore, RootState } from "@/app/store/store";
 import { DEFAULT_APP_SETTINGS } from "@/features/app-settings/core/appSettings";
 import { User } from "@/features/onboarding/core/user";
 import { initialState } from "@/features/onboarding/core/user.reducer";
-import { AppDependencies, createStore, RootState } from "@/shared/core/store-config/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import { getInitialState, ProjectCreationStep } from "../createProject.reducer";

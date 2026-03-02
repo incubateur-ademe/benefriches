@@ -146,11 +146,11 @@ Third-party services (Crisp, analytics SDKs, etc.) belong in the **infrastructur
 
 ## Import Conventions
 
-| Import Type             | Pattern       | Example                                                             |
-| ----------------------- | ------------- | ------------------------------------------------------------------- |
-| **Within web app**      | `@/` alias    | `import { useAppSelector } from "@/shared/views/hooks/store.hooks"` |
-| **From shared package** | `shared`      | `import type { GetSiteViewResponseDto } from "shared"`              |
-| **Relative**            | `./` or `../` | Only within same feature folder                                     |
+| Import Type             | Pattern       | Example                                                    |
+| ----------------------- | ------------- | ---------------------------------------------------------- |
+| **Within web app**      | `@/` alias    | `import { useAppSelector } from "@/app/hooks/store.hooks"` |
+| **From shared package** | `shared`      | `import type { GetSiteViewResponseDto } from "shared"`     |
+| **Relative**            | `./` or `../` | Only within same feature folder                            |
 
 ---
 
@@ -160,11 +160,30 @@ Third-party services (Crisp, analytics SDKs, etc.) belong in the **infrastructur
 - **Don't call multiple selectors** in containers (compose into single ViewData selector)
 - **Don't import infrastructure in core** (violates Clean Architecture)
 - **Don't skip InMemory implementations** (required for tests)
-- **Don't use untyped Redux hooks** - always use `useAppSelector`/`useAppDispatch` from `@/shared/views/hooks/store.hooks`
+- **Don't use untyped Redux hooks** - always use `useAppSelector`/`useAppDispatch` from `@/app/hooks/store.hooks`
 
 ---
 
 ## Feature Structure
+
+### App-Level (Composition Root)
+
+```
+app/                                   # Composition root — app bootstrap & wiring
+├── App.tsx                            # Root component (route dispatch)
+├── envVars.ts                         # Environment variables
+├── router.ts                          # Route definitions (type-route)
+├── hooks/
+│   └── store.hooks.ts                 # Typed useAppSelector/useAppDispatch
+└── store/
+    ├── store.ts                       # createStore + AppDependencies type + RootState/AppDispatch
+    ├── rootReducer.ts                 # Combined reducer
+    ├── appDependencies.ts             # Production dependency wiring
+    ├── appAsyncThunk.ts               # Typed createAsyncThunk
+    └── listenerMiddleware.ts          # Listener middleware setup
+```
+
+### Feature-Level
 
 ```
 feature-name/

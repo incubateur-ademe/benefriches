@@ -3,7 +3,7 @@ import { PropsWithChildren } from "react";
 import { Provider } from "react-redux";
 import { expect, vi } from "vitest";
 
-import { createStore } from "@/shared/core/store-config/store";
+import { createStore } from "@/app/store/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import ExportImpactsModal from "./ExportModal";

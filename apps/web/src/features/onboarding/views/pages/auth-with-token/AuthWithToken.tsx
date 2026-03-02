@@ -1,13 +1,13 @@
 import Button from "@codegouvfr/react-dsfr/Button";
 import { useEffect } from "react";
 
+import { BENEFRICHES_ENV } from "@/app/envVars";
+import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
+import { routes, useRoute } from "@/app/router";
 import { authenticateWithToken } from "@/features/onboarding/core/authenticateWithToken.action";
 import { authTokenErrorHelpRequested } from "@/features/support/core/authTokenErrorHelpRequested.action";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
-import { BENEFRICHES_ENV } from "@/shared/views/envVars";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
-import { routes, useRoute } from "@/shared/views/router";
 
 const DELAY_BEFORE_AUTHENTICATION = 1000; // 1 second
 

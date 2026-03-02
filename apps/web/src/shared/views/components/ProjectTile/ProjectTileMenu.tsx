@@ -2,11 +2,11 @@ import Button from "@codegouvfr/react-dsfr/Button";
 import { RefObject } from "react";
 import { DevelopmentPlanType } from "shared";
 
+import { routes } from "@/app/router";
 import ArchiveProjectDialogButton from "@/features/archive-project/views/ArchiveProjectDialogButton";
 import useDuplicateProject from "@/shared/views/project/useDuplicateProject";
 
 import classNames from "../../clsx";
-import { routes } from "../../router";
 
 type ProjectTileMenuProps = {
   isOpen: boolean;

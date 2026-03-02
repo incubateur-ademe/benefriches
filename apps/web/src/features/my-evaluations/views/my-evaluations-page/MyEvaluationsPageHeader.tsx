@@ -1,10 +1,10 @@
 import Button from "@codegouvfr/react-dsfr/Button";
 
+import { useAppDispatch } from "@/app/hooks/store.hooks";
+import { routes } from "@/app/router";
 import { siteCreationInitiated } from "@/features/create-site/core/steps/introduction/introduction.actions";
 import classNames from "@/shared/views/clsx";
-import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 import { useIsSmallScreen } from "@/shared/views/hooks/useIsSmallScreen";
-import { routes } from "@/shared/views/router";
 
 function MyEvaluationsPageHeader() {
   const isSmScreen = useIsSmallScreen();

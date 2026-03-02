@@ -1,7 +1,7 @@
 import { saveReconversionProjectPropsSchema } from "shared";
 
+import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
 import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
-import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
 
 import { makeUrbanProjectCreationActionType } from "./urbanProject.actions";
 

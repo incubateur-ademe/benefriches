@@ -1,11 +1,11 @@
 import { URBAN_PROJECT_PHASE_VALUES } from "shared";
 
+import { useAppSelector } from "@/app/hooks/store.hooks";
 import {
   getHintTextForUrbanProjectPhase,
   getLabelForUrbanProjectPhase,
   getPictogramForProjectPhase,
 } from "@/shared/core/projectPhase";
-import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 
 import ProjectPhaseForm from "../../common/project-phase/ProjectPhaseForm";

@@ -1,12 +1,12 @@
 import { roundToInteger } from "shared";
 
+import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
 import { selectSiteContaminatedSurfaceArea } from "@/features/create-project/core/createProject.selectors";
 import { completeSoilsDecontaminationSurfaceArea } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
 import { selectContaminatedSurfaceAreaPercentageToDecontaminate } from "@/features/create-project/core/renewable-energy/selectors/renewableEnergy.selector";
 import { useSurfaceAreaInputMode } from "@/features/create-project/views/useSurfaceAreaInputMode";
 import { computeValueFromPercentage } from "@/shared/core/percentage/percentage";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import SoilsDecontaminationSurfaceArea from "@/shared/views/project-form/common/soils-decontamination/surface-area/SoilsDecontaminationSurfaceArea";
 
 function SoilsDecontaminationSurfaceAreaContainer() {

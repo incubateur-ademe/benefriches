@@ -1,6 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 import type { Selector } from "@reduxjs/toolkit";
 
+import type { RootState } from "@/app/store/store";
 import type {
   AvailableLocalAuthorityStakeholder,
   AvailableProjectStakeholder,
@@ -11,7 +12,6 @@ import {
   getUrbanProjectAvailableLocalAuthoritiesStakeholders,
   getUrbanProjectAvailableStakeholders,
 } from "@/shared/core/reducers/project-form/urban-project/helpers/stakeholders";
-import type { RootState } from "@/shared/core/store-config/store";
 
 const createSelectProjectDeveloper = (
   selectStepState: Selector<RootState, ProjectFormState["urbanProject"]["steps"]>,

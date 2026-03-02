@@ -1,5 +1,5 @@
+import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 
 import CreateModeSelectionForm from "../../common-views/create-mode-selection/CreateModeSelectionForm";

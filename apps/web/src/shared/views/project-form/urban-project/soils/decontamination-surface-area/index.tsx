@@ -1,6 +1,6 @@
+import { useAppSelector } from "@/app/hooks/store.hooks";
 import { useSurfaceAreaInputMode } from "@/features/create-project/views/useSurfaceAreaInputMode";
 import { computePercentage } from "@/shared/core/percentage/percentage";
-import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 import SoilsDecontaminationSurfaceArea from "@/shared/views/project-form/common/soils-decontamination/surface-area/SoilsDecontaminationSurfaceArea";
 import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 

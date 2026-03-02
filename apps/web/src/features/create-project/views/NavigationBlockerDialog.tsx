@@ -1,9 +1,9 @@
 import Button from "@codegouvfr/react-dsfr/Button";
 import { Description, Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 
+import { routes } from "@/app/router";
 import classNames from "@/shared/views/clsx";
 import { useNavigationBlocker } from "@/shared/views/hooks/useNavigationBlocker";
-import { routes } from "@/shared/views/router";
 
 const DIALOG_DSFR_CSS = [
   "fixed inset-0",

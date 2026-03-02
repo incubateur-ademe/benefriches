@@ -1,3 +1,4 @@
+import { BENEFRICHES_ENV } from "@/app/envVars";
 import { MatomoAnalytics } from "@/features/analytics/infrastructure/MatomoAnalytics";
 import { NoopAnalytics } from "@/features/analytics/infrastructure/NoopAnalytics";
 import { LocalStorageAppSettings } from "@/features/app-settings/infrastructure/LocalStorageAppSettings";
@@ -23,7 +24,6 @@ import { CreateFeatureAlertService } from "@/features/user-feature-alerts/infras
 import { AdministrativeDivisionGeoApi } from "@/shared/infrastructure/administrative-division-service/administrativeDivisionGeoApi";
 import { DisabledRealEstateValuationService } from "@/shared/infrastructure/real-estate-valuation-service/DisabledRealEstateValuationService";
 import { SoilsCarbonStorageApi } from "@/shared/infrastructure/soils-carbon-storage-service/soilsCarbonStorageApi";
-import { BENEFRICHES_ENV } from "@/shared/views/envVars";
 
 import { AppDependencies } from "./store";
 

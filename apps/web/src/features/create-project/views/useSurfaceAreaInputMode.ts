@@ -1,4 +1,4 @@
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 
 import { surfaceAreaInputModeUpdated } from "../core/actions/surfaceAreaInputModeUpdated.action";
 

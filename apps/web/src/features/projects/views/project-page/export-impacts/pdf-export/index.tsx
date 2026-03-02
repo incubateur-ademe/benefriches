@@ -2,13 +2,13 @@ import { usePDF } from "@react-pdf/renderer";
 import { useEffect } from "react";
 import { roundToInteger } from "shared";
 
+import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { impactsExportDownloaded } from "@/features/analytics/core/analyticsEvents";
 import { eventTracked } from "@/features/analytics/core/eventTracked.action";
 import { fetchProjectFeatures } from "@/features/projects/application/project-features/projectFeatures.actions";
 import { selectExportImpactsView } from "@/features/projects/application/project-impacts/exportImpacts.selectors";
 import { fetchSiteFeatures } from "@/features/sites/core/fetchSiteFeatures.action";
 import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import { Props as ImpactsPdfDocumentProps } from "../../pdf-export";
 import PdfExportDocument from "../../pdf-export";

@@ -1,7 +1,7 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
 import { formatLocalAuthorityName, LocalAuthority } from "shared";
 
-import { RootState } from "@/shared/core/store-config/store";
+import { RootState } from "@/app/store/store";
 
 import { fetchSiteMunicipalityData } from "./actions/siteMunicipalityData.actions";
 import { selectSiteOwner } from "./selectors/createSite.selectors";

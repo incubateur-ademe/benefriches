@@ -1,10 +1,10 @@
 import Button from "@codegouvfr/react-dsfr/Button";
 import React, { ReactNode } from "react";
 
+import { useAppDispatch } from "@/app/hooks/store.hooks";
+import { routes } from "@/app/router";
 import { siteCreationInitiated } from "@/features/create-site/core/steps/introduction/introduction.actions";
-import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 import OnboardingPageLayout from "@/shared/views/layout/OnboardingPageLayout/OnboardingPageLayout";
-import { routes } from "@/shared/views/router";
 
 import { OnboardingVariant } from "../when-to-use/OnboardingWhenToUsePage";
 import Step from "./HowItWorksStep";

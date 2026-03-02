@@ -1,6 +1,6 @@
+import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { stepReverted } from "@/features/create-site/core/actions/revert.action";
 import { yearlyExpensesAndIncomeIntroductionCompleted } from "@/features/create-site/core/steps/site-management/siteManagement.actions";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import SiteExpensesAndIncomeIntroduction from "./SiteExpensesAndIncomeIntroduction";
 

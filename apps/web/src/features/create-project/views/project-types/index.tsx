@@ -1,7 +1,7 @@
 import { DevelopmentPlanCategory } from "shared";
 
-import { BENEFRICHES_ENV } from "@/shared/views/envVars";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { BENEFRICHES_ENV } from "@/app/envVars";
+import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 
 import { developmentPlanCategoriesCompleted } from "../../core/actions/introductionStep.actions";
 import { selectProjectDevelopmentPlanCategory } from "../../core/createProject.selectors";

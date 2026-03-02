@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 
+import { useAppSelector } from "@/app/hooks/store.hooks";
 import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
-import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import ProjectCreationResult from "../../../common-views/result";
 

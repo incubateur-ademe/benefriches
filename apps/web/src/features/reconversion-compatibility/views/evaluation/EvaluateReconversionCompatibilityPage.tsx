@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
-import { BENEFRICHES_ENV } from "@/shared/views/envVars";
-import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
+import { BENEFRICHES_ENV } from "@/app/envVars";
+import { useAppDispatch } from "@/app/hooks/store.hooks";
 
 import { reconversionCompatibilityEvaluationCompleted } from "../../core/actions/compatibilityEvaluationCompleted.actions";
 import { reconversionCompatibilityEvaluationStarted } from "../../core/actions/compatibilityEvaluationStarted.actions";

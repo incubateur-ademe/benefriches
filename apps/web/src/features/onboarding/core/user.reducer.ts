@@ -1,6 +1,6 @@
 import { createReducer, createSelector, PayloadAction } from "@reduxjs/toolkit";
 
-import { RootState } from "@/shared/core/store-config/store";
+import { RootState } from "@/app/store/store";
 
 import { createUser } from "./createUser.action";
 import { initCurrentUser } from "./initCurrentUser.action";
