@@ -35,7 +35,7 @@ const userData = {
 describe("PhotovoltaicPowerPlantProjectGenerator", () => {
   let dateProvider: IDateProvider;
   let photovoltaicPerformanceService: MockPhotovoltaicPerformanceService;
-  const fakeNow = new Date("2024-01-05");
+  const fakeNow = new Date("2024-01-05T13:00:00");
 
   beforeEach(() => {
     dateProvider = new DeterministicDateProvider(fakeNow);
@@ -195,14 +195,14 @@ describe("PhotovoltaicPowerPlantProjectGenerator", () => {
           },
         ],
         reinstatementSchedule: {
-          startDate: new Date("2025-01-05"),
-          endDate: new Date("2026-01-05"),
+          startDate: new Date("2025-07-05T13:00:00"),
+          endDate: new Date("2027-01-05T13:00:00"),
         },
         reinstatementContractOwner: {
           structureType: userData.structureType,
           name: userData.structureName,
         },
-        operationsFirstYear: 2028,
+        operationsFirstYear: 2029,
         name: "Centrale photovoltaïque",
         developmentPlan: {
           developer: {
@@ -216,8 +216,8 @@ describe("PhotovoltaicPowerPlantProjectGenerator", () => {
             contractDuration: 20,
           },
           installationSchedule: {
-            startDate: new Date("2026-01-06"),
-            endDate: new Date("2027-01-06"),
+            startDate: new Date("2027-01-06T13:00:00"),
+            endDate: new Date("2028-01-06T13:00:00"),
           },
           type: "PHOTOVOLTAIC_POWER_PLANT",
           costs: [
@@ -330,8 +330,8 @@ describe("PhotovoltaicPowerPlantProjectGenerator", () => {
             contractDuration: 20,
           },
           installationSchedule: {
-            startDate: new Date("2024-01-05"),
-            endDate: new Date("2025-01-05"),
+            startDate: new Date("2024-01-05T13:00:00"),
+            endDate: new Date("2025-01-05T13:00:00"),
           },
           type: "PHOTOVOLTAIC_POWER_PLANT",
           costs: [

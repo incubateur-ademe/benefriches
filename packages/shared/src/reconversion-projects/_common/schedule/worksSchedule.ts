@@ -1,12 +1,12 @@
-import { addDays, addYears, isValid } from "date-fns";
+import { addDays, addMonths, addYears, isValid } from "date-fns";
 
 import { IDateProvider } from "../../../adapters/IDateProvider";
 
 export const computeDefaultReinstatementSchedule = (
   dateProvider: IDateProvider,
 ): { startDate: Date; endDate: Date } => {
-  const startDate = addYears(dateProvider.now(), 1);
-  const endDate = addYears(startDate, 1);
+  const startDate = addMonths(dateProvider.now(), 18);
+  const endDate = addMonths(startDate, 18);
   return { startDate, endDate };
 };
 

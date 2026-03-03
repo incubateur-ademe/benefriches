@@ -140,7 +140,7 @@ describe("GenerateAndSaveReconversionProjectFromTemplateUseCase Use Case", () =>
     );
 
     test.each(reconversionProjectTemplateSchema.options)(
-      "should create a %s project with reinstatement scheduled 1 year after current date, installation works 1 year after reinstatement and first operations 1 year after",
+      "should create a %s project with reinstatement scheduled 1.5 years after current date, installation works 1.5 years after reinstatement and first operations 1 year after",
       async (template) => {
         dateProvider = new DeterministicDateProvider(new Date("2024-09-01T13:00:00"));
 
@@ -161,14 +161,14 @@ describe("GenerateAndSaveReconversionProjectFromTemplateUseCase Use Case", () =>
         expect(result.isSuccess()).toBe(true);
         const data = (result as SuccessResult<ReconversionProjectSaveDto>).getData();
         expect(data.reinstatementSchedule).toEqual({
-          startDate: new Date("2025-09-01T13:00:00"),
-          endDate: new Date("2026-09-01T13:00:00"),
+          startDate: new Date("2026-03-01T13:00:00"),
+          endDate: new Date("2027-09-01T13:00:00"),
         });
         expect(data.developmentPlan.installationSchedule).toEqual({
-          startDate: new Date("2026-09-02T13:00:00"),
-          endDate: new Date("2027-09-02T13:00:00"),
+          startDate: new Date("2027-09-02T13:00:00"),
+          endDate: new Date("2028-09-02T13:00:00"),
         });
-        expect(data.operationsFirstYear).toEqual(2028);
+        expect(data.operationsFirstYear).toEqual(2029);
       },
     );
 
