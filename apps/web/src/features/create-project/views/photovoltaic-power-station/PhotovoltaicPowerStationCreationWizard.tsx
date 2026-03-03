@@ -3,10 +3,7 @@ import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 import FormStepper from "@/shared/views/layout/WizardFormLayout/FormStepper";
 
-import {
-  RenewableEnergyCreationStep,
-  RenewableEnergyCustomCreationStep,
-} from "../../core/renewable-energy/creationSteps";
+import type { AllRenewableEnergyStep } from "../../core/renewable-energy/renewableEnergySteps";
 import NavigationBlockerDialog from "../NavigationBlockerDialog";
 import { HTML_MAIN_TITLE } from "../mainHtmlTitle";
 import PhotovoltaicPowerStationStepper from "./PhotovoltaicPowerStationStepper";
@@ -16,15 +13,17 @@ import PhotovoltaicExpressCreationResult from "./express-form/PhotovoltaicExpres
 import ProjectExpressSummary from "./express-form/PhotovoltaicExpressSummary";
 
 type Props = {
-  currentStep: RenewableEnergyCreationStep;
+  currentStep: AllRenewableEnergyStep;
 };
 
 export const HTML_PV_PROJECT_FORM_MAIN_TITLE = `Projet photovoltaïque - ${HTML_MAIN_TITLE}`;
 
 function PhotovoltaicPowerStationCreationWizard({ currentStep }: Props) {
-  const { createMode, saveState } = useAppSelector(
-    (state) => state.projectCreation.renewableEnergyProject,
-  );
+  const {
+    createMode,
+    saveState,
+    currentStep: customCurrentStep,
+  } = useAppSelector((state) => state.projectCreation.renewableEnergyProject);
 
   switch (createMode) {
     case undefined:
@@ -67,9 +66,7 @@ function PhotovoltaicPowerStationCreationWizard({ currentStep }: Props) {
     case "custom":
       return (
         <>
-          <PhotovoltaicPowerStationCustomCreationWizard
-            currentStep={currentStep as RenewableEnergyCustomCreationStep}
-          />
+          <PhotovoltaicPowerStationCustomCreationWizard currentStep={customCurrentStep} />
           <NavigationBlockerDialog shouldBlock={saveState !== "success"} />
         </>
       );

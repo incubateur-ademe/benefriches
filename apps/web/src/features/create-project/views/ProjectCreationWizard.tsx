@@ -11,7 +11,7 @@ import { ProjectFormProvider } from "@/shared/views/project-form/ProjectFormProv
 import { reconversionProjectCreationInitiated } from "../core/actions/reconversionProjectCreationInitiated.action";
 import { ProjectCreationStep } from "../core/createProject.reducer";
 import { selectCurrentStep } from "../core/createProject.selectors";
-import { isRenewableEnergyCreationStep } from "../core/renewable-energy/creationSteps";
+import { isRenewableEnergyCreationStep } from "../core/renewable-energy/renewableEnergySteps";
 import Stepper from "./Stepper";
 import ProjectCreationIntroduction from "./introduction";
 import { HTML_MAIN_TITLE } from "./mainHtmlTitle";

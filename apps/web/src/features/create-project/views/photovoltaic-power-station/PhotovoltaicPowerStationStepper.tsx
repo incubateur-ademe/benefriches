@@ -1,11 +1,11 @@
 import FormStepper from "@/shared/views/layout/WizardFormLayout/FormStepper";
 
-import { RenewableEnergyCreationStep } from "../../core/renewable-energy/creationSteps";
+import type { AllRenewableEnergyStep } from "../../core/renewable-energy/renewableEnergySteps";
 
 const stepCategories = ["Type de projet", "Mode de création"] as const;
 
 type Props = {
-  step: RenewableEnergyCreationStep;
+  step: AllRenewableEnergyStep;
 };
 
 function PhotovoltaicPowerStationStepper({ step }: Props) {
@@ -14,11 +14,7 @@ function PhotovoltaicPowerStationStepper({ step }: Props) {
   const isDone = step === "RENEWABLE_ENERGY_CREATION_RESULT";
 
   return (
-    <FormStepper
-      currentStepIndex={currentStepIndex}
-      steps={stepCategories.map((step) => step)}
-      isDone={isDone}
-    />
+    <FormStepper currentStepIndex={currentStepIndex} steps={[...stepCategories]} isDone={isDone} />
   );
 }
 

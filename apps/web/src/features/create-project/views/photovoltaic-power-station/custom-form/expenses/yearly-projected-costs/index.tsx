@@ -1,9 +1,11 @@
 import { RecurringExpense } from "shared";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
-import { completeYearlyProjectedExpenses } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
-import { selectPhotovoltaicPowerStationYearlyExpensesInitialValues } from "@/features/create-project/core/renewable-energy/selectors/expenses.selectors";
+import {
+  navigateToPrevious,
+  requestStepCompletion,
+} from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
+import { selectPhotovoltaicPowerStationYearlyExpensesInitialValues } from "@/features/create-project/core/renewable-energy/step-handlers/expenses/expenses-yearly-projected/expensesYearlyProjected.selector";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import YearlyProjectedExpensesForm from "@/shared/views/project-form/common/expenses/yearly-projected-expenses";
@@ -35,10 +37,15 @@ function YearlyProjectedExpensesFormContainer() {
         </FormInfo>
       }
       onSubmit={(expenses: RecurringExpense[]) => {
-        dispatch(completeYearlyProjectedExpenses(expenses));
+        dispatch(
+          requestStepCompletion({
+            stepId: "RENEWABLE_ENERGY_EXPENSES_PROJECTED_YEARLY_EXPENSES",
+            answers: { yearlyProjectedExpenses: expenses },
+          }),
+        );
       }}
       onBack={() => {
-        dispatch(stepReverted());
+        dispatch(navigateToPrevious());
       }}
     />
   );

@@ -1,8 +1,10 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
 import { ProjectStakeholderStructure } from "@/features/create-project/core/project.types";
-import { completeReinstatementContractOwner } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
-import { selectPVReinstatementContractOwnerViewData } from "@/features/create-project/core/renewable-energy/selectors/stakeholders.selectors";
+import {
+  navigateToPrevious,
+  requestStepCompletion,
+} from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
+import { selectPVReinstatementContractOwnerViewData } from "@/features/create-project/core/renewable-energy/step-handlers/stakeholders/stakeholders-project-developer/stakeholdersProjectDeveloper.selector";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import StakeholderForm from "@/shared/views/project-form/common/stakeholder-form";
 
@@ -13,11 +15,16 @@ function SiteReinstatementContractOwnerFormContainer() {
   );
 
   const onSubmit = (data: { structureType: ProjectStakeholderStructure; name: string }) => {
-    dispatch(completeReinstatementContractOwner(data));
+    dispatch(
+      requestStepCompletion({
+        stepId: "RENEWABLE_ENERGY_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER",
+        answers: { reinstatementContractOwner: data },
+      }),
+    );
   };
 
   const onBack = () => {
-    dispatch(stepReverted());
+    dispatch(navigateToPrevious());
   };
 
   return (

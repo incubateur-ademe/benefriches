@@ -1,4 +1,4 @@
-import { RenewableEnergyCreationStep } from "../../../core/renewable-energy/creationSteps";
+import type { AllRenewableEnergyStep } from "../../../core/renewable-energy/renewableEnergySteps";
 
 export const RENEWABLE_ENERGY_PROJECT_CREATION_STEP_QUERY_STRING_MAP = {
   RENEWABLE_ENERGY_TYPES: "type-systeme-energie-renouvelable",
@@ -46,4 +46,4 @@ export const RENEWABLE_ENERGY_PROJECT_CREATION_STEP_QUERY_STRING_MAP = {
   RENEWABLE_ENERGY_FINAL_SUMMARY: "recapitulatif-final",
   RENEWABLE_ENERGY_EXPRESS_FINAL_SUMMARY: "recapitulatif-express",
   RENEWABLE_ENERGY_CREATION_RESULT: "fin",
-} as const satisfies Record<RenewableEnergyCreationStep, string>;
+} as const satisfies Record<AllRenewableEnergyStep, string>;

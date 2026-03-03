@@ -2,18 +2,12 @@ import { createSelector } from "@reduxjs/toolkit";
 import { ProjectSchedule, ProjectScheduleBuilder, SoilsDistribution } from "shared";
 
 import { RootState } from "@/app/store/store";
-import { computePercentage } from "@/shared/core/percentage/percentage";
 import { RenewableEnergyDevelopmentPlanType } from "@/shared/core/reconversionProject";
 
-import { generateRenewableEnergyProjectName } from "../../../../../shared/core/reducers/project-form/helpers/projectName";
 import { ProjectCreationState } from "../../createProject.reducer";
-import {
-  selectDefaultSchedule,
-  selectIsSiteFriche,
-  selectSiteContaminatedSurfaceArea,
-  selectSiteData,
-} from "../../createProject.selectors";
-import { RenewableEnergyProjectState } from "../renewableEnergy.reducer";
+import { selectDefaultSchedule } from "../../createProject.selectors";
+import { ReadStateHelper } from "../helpers/readState";
+import type { RenewableEnergyStepsState } from "../step-handlers/stepHandler.type";
 
 const selectSelf = (state: RootState) => state.projectCreation;
 
@@ -22,102 +16,50 @@ const selectRenewableEnergyData = createSelector(
   (state): ProjectCreationState["renewableEnergyProject"] => state.renewableEnergyProject,
 );
 
-export const selectCreationData = createSelector(
+export const selectSteps = createSelector(
   selectRenewableEnergyData,
-  (state): RenewableEnergyProjectState["creationData"] => state.creationData,
+  (state): RenewableEnergyStepsState => state.steps,
 );
 
 export const selectRenewableEnergyType = createSelector(
-  [selectCreationData],
-  (creationData): RenewableEnergyDevelopmentPlanType | undefined => {
-    return creationData.renewableEnergyType;
+  [selectRenewableEnergyData],
+  (state): RenewableEnergyDevelopmentPlanType | undefined => {
+    return state.creationData.renewableEnergyType;
   },
 );
 
 export const selectProjectSoilsDistribution = createSelector(
-  selectRenewableEnergyData,
-  (state): SoilsDistribution => state.creationData.soilsDistribution ?? {},
-);
+  selectSteps,
+  (steps): SoilsDistribution => {
+    // Check custom surface area allocation first, then project selection
+    const customAllocation = ReadStateHelper.getStepAnswers(
+      steps,
+      "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CUSTOM_SURFACE_AREA_ALLOCATION",
+    );
+    if (customAllocation?.soilsDistribution) return customAllocation.soilsDistribution;
 
-export const selectContaminatedSurfaceAreaPercentageToDecontaminate = createSelector(
-  [selectCreationData, selectSiteData],
-  (creationData, siteData) => {
-    const surfaceToDecontaminate = creationData.decontaminatedSurfaceArea;
-    const contaminatedSurfaceArea = siteData?.contaminatedSoilSurface;
-    if (!contaminatedSurfaceArea || !surfaceToDecontaminate) return 0;
+    const projectSelection = ReadStateHelper.getStepAnswers(
+      steps,
+      "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_PROJECT_SELECTION",
+    );
+    if (projectSelection?.soilsDistribution) return projectSelection.soilsDistribution;
 
-    return computePercentage(surfaceToDecontaminate, contaminatedSurfaceArea);
-  },
-);
-
-type SitePurchaseAmounts = {
-  sellingPrice: number;
-  propertyTransferDuties: number;
-};
-export const selectSitePurchaseAmounts = createSelector(
-  [selectCreationData],
-  (creationData): SitePurchaseAmounts | undefined => {
-    if (!creationData.sitePurchaseSellingPrice) return undefined;
-    return {
-      sellingPrice: creationData.sitePurchaseSellingPrice ?? 0,
-      propertyTransferDuties: creationData.sitePurchasePropertyTransferDuties ?? 0,
-    };
+    return {};
   },
 );
 
 export const selectPhotovoltaicPowerStationScheduleInitialValues = createSelector(
-  [selectCreationData, selectDefaultSchedule],
-  (creationData, defaultSchedule): ProjectSchedule => {
-    if (creationData.photovoltaicInstallationSchedule && creationData.firstYearOfOperation) {
+  [selectSteps, selectDefaultSchedule],
+  (steps, defaultSchedule): ProjectSchedule => {
+    const schedule = ReadStateHelper.getStepAnswers(steps, "RENEWABLE_ENERGY_SCHEDULE_PROJECTION");
+    if (schedule?.photovoltaicInstallationSchedule && schedule?.firstYearOfOperation) {
       return new ProjectScheduleBuilder()
-        .withInstallation(creationData.photovoltaicInstallationSchedule)
-        .withFirstYearOfOperations(creationData.firstYearOfOperation)
-        .withReinstatement(creationData.reinstatementSchedule)
+        .withInstallation(schedule.photovoltaicInstallationSchedule)
+        .withFirstYearOfOperations(schedule.firstYearOfOperation)
+        .withReinstatement(schedule.reinstatementSchedule)
         .build();
     }
 
     return defaultSchedule;
-  },
-);
-
-type PVDecontaminationSurfaceAreaViewData = {
-  contaminatedSurfaceArea: number;
-  surfaceAreaToDecontaminateInPercentage: number;
-};
-
-export const selectPVDecontaminationSurfaceAreaViewData = createSelector(
-  [selectSiteContaminatedSurfaceArea, selectContaminatedSurfaceAreaPercentageToDecontaminate],
-  (
-    contaminatedSurfaceArea,
-    surfaceAreaToDecontaminateInPercentage,
-  ): PVDecontaminationSurfaceAreaViewData => ({
-    contaminatedSurfaceArea,
-    surfaceAreaToDecontaminateInPercentage,
-  }),
-);
-
-type PVScheduleProjectionViewData = {
-  initialValues: ReturnType<typeof selectPhotovoltaicPowerStationScheduleInitialValues>;
-  siteIsFriche: boolean;
-};
-
-export const selectPVScheduleProjectionViewData = createSelector(
-  [selectPhotovoltaicPowerStationScheduleInitialValues, selectIsSiteFriche],
-  (initialValues, siteIsFriche): PVScheduleProjectionViewData => ({
-    initialValues,
-    siteIsFriche,
-  }),
-);
-
-export const selectNameAndDescriptionInitialValues = createSelector(
-  selectCreationData,
-  (creationData) => {
-    if (creationData.name) {
-      return { name: creationData.name, description: creationData.description };
-    }
-    if (creationData.renewableEnergyType) {
-      return { name: generateRenewableEnergyProjectName(creationData.renewableEnergyType) };
-    }
-    return undefined;
   },
 );

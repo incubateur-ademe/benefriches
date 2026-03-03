@@ -1,13 +1,12 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
 import { saveReconversionProject } from "@/features/create-project/core/renewable-energy/actions/customProjectSaved.action";
-import { selectPhotovoltaicSummaryViewData } from "@/features/create-project/core/renewable-energy/selectors/photovoltaicPowerStation.selectors";
+import { navigateToPrevious } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
+import { selectPhotovoltaicFinalSummaryViewData } from "@/features/create-project/core/renewable-energy/step-handlers/summary/summary-final/summaryFinal.selector";
 
 import ProjectionCreationDataSummary from "./ProjectCreationDataSummary";
 
 function ProjectionCreationDataSummaryContainer() {
-  const { projectData, siteData, siteSoilsCarbonStorage, projectSoilsCarbonStorage } =
-    useAppSelector(selectPhotovoltaicSummaryViewData);
+  const { projectData, siteData } = useAppSelector(selectPhotovoltaicFinalSummaryViewData);
 
   const dispatch = useAppDispatch();
 
@@ -16,48 +15,15 @@ function ProjectionCreationDataSummaryContainer() {
   };
 
   const onBack = () => {
-    dispatch(stepReverted());
+    dispatch(navigateToPrevious());
   };
 
   return (
     <ProjectionCreationDataSummary
       onNext={onNext}
       onBack={onBack}
-      projectData={{
-        name: projectData.name ?? "",
-        description: projectData.description,
-        developmentPlanCategory: "RENEWABLE_ENERGY",
-        renewableEnergy: projectData.renewableEnergyType!,
-        photovoltaicElectricalPowerKWc: projectData.photovoltaicInstallationElectricalPowerKWc ?? 0,
-        photovoltaicSurfaceArea: projectData.photovoltaicInstallationSurfaceSquareMeters ?? 0,
-        photovoltaicExpectedAnnualProduction: projectData.photovoltaicExpectedAnnualProduction ?? 0,
-        photovoltaicContractDuration: projectData.photovoltaicContractDuration ?? 0,
-        soilsDistribution: projectData.soilsDistribution ?? {},
-        soilsCarbonStorage: projectSoilsCarbonStorage,
-        projectDeveloper: projectData.projectDeveloper?.name,
-        futureOwner: projectData.futureSiteOwner?.name,
-        futureOperator: projectData.futureOperator?.name,
-        reinstatementContractOwner: projectData.reinstatementContractOwner?.name,
-        sitePurchaseTotalCost: projectData.sitePurchaseSellingPrice
-          ? projectData.sitePurchaseSellingPrice +
-            (projectData.sitePurchasePropertyTransferDuties ?? 0)
-          : 0,
-        financialAssistanceRevenues: projectData.financialAssistanceRevenues,
-        reinstatementExpenses: projectData.reinstatementExpenses ?? [],
-        photovoltaicPanelsInstallationExpenses: projectData.photovoltaicPanelsInstallationExpenses,
-        yearlyProjectedExpenses: projectData.yearlyProjectedExpenses ?? [],
-        yearlyProjectedRevenues: projectData.yearlyProjectedRevenues ?? [],
-        reinstatementSchedule: projectData.reinstatementSchedule,
-        photovoltaticInstallationSchedule: projectData.photovoltaicInstallationSchedule,
-        decontaminatedSurfaceArea: projectData.decontaminatedSurfaceArea,
-        firstYearOfOperation: projectData.firstYearOfOperation,
-      }}
-      siteData={{
-        surfaceArea: siteData?.surfaceArea ?? 0,
-        soilsDistribution: siteData?.soilsDistribution ?? {},
-        soilsCarbonStorage: siteSoilsCarbonStorage,
-        name: siteData?.name ?? "",
-      }}
+      projectData={projectData}
+      siteData={siteData}
     />
   );
 }

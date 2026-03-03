@@ -1,5 +1,5 @@
 /** Date string in "YYYY-MM-DD" format, e.g. "2027-01-01" */
-export type DateString = string & { readonly __brand: "DateString" };
+type DateString = string & { readonly __brand: "DateString" };
 
 /** Regular expression to match month/year display format "MM/YYYY" */
 const MONTH_YEAR_DISPLAY_REGEX = /^(\d{2})\/(\d{4})$/;

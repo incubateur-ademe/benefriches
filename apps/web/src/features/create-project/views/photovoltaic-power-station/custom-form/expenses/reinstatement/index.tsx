@@ -1,9 +1,11 @@
 import { ReinstatementExpense } from "shared";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
-import { completeReinstatementExpenses } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
-import { selectPVReinstatementExpensesViewData } from "@/features/create-project/core/renewable-energy/selectors/expenses.selectors";
+import {
+  navigateToPrevious,
+  requestStepCompletion,
+} from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
+import { selectPVReinstatementExpensesViewData } from "@/features/create-project/core/renewable-energy/step-handlers/expenses/expenses-reinstatement/expensesReinstatement.selector";
 import ReinstatementsExpensesForm from "@/shared/views/project-form/common/expenses/reinstatement";
 
 function ReinstatementExpensesFormContainer() {
@@ -22,10 +24,15 @@ function ReinstatementExpensesFormContainer() {
       projectSoilsDistribution={projectSoilsDistribution}
       decontaminatedSurfaceArea={decontaminatedSurfaceArea}
       onBack={() => {
-        dispatch(stepReverted());
+        dispatch(navigateToPrevious());
       }}
       onSubmit={(expenses: ReinstatementExpense[]) => {
-        dispatch(completeReinstatementExpenses(expenses));
+        dispatch(
+          requestStepCompletion({
+            stepId: "RENEWABLE_ENERGY_EXPENSES_REINSTATEMENT",
+            answers: { reinstatementExpenses: expenses },
+          }),
+        );
       }}
     />
   );

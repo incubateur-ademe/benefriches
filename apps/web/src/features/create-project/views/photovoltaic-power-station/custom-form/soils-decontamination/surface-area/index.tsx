@@ -1,9 +1,11 @@
 import { roundToInteger } from "shared";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
-import { completeSoilsDecontaminationSurfaceArea } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
-import { selectPVDecontaminationSurfaceAreaViewData } from "@/features/create-project/core/renewable-energy/selectors/renewableEnergy.selector";
+import {
+  navigateToPrevious,
+  requestStepCompletion,
+} from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
+import { selectPVDecontaminationSurfaceAreaViewData } from "@/features/create-project/core/renewable-energy/step-handlers/soils-decontamination/soils-decontamination-surface-area/soilsDecontaminationSurfaceArea.selector";
 import { useSurfaceAreaInputMode } from "@/features/create-project/views/useSurfaceAreaInputMode";
 import { computeValueFromPercentage } from "@/shared/core/percentage/percentage";
 import SoilsDecontaminationSurfaceArea from "@/shared/views/project-form/common/soils-decontamination/surface-area/SoilsDecontaminationSurfaceArea";
@@ -16,7 +18,12 @@ function SoilsDecontaminationSurfaceAreaContainer() {
   );
 
   const onSubmit = (surfaceArea: number) => {
-    dispatch(completeSoilsDecontaminationSurfaceArea(surfaceArea));
+    dispatch(
+      requestStepCompletion({
+        stepId: "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SURFACE_AREA",
+        answers: { decontaminatedSurfaceArea: surfaceArea },
+      }),
+    );
   };
 
   const getInitialValues = () => {
@@ -43,7 +50,7 @@ function SoilsDecontaminationSurfaceAreaContainer() {
       inputMode={inputMode}
       onInputModeChange={onInputModeChange}
       onSubmit={onSubmit}
-      onBack={() => dispatch(stepReverted())}
+      onBack={() => dispatch(navigateToPrevious())}
     />
   );
 }

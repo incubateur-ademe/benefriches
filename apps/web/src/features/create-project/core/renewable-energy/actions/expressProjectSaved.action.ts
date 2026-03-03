@@ -4,7 +4,7 @@ import {
   ExpressReconversionProjectResult,
   saveExpressProjectSchema,
 } from "../../actions/expressProjectSavedGateway";
-import { makeRenewableEnergyProjectCreationActionType } from "./renewableEnergy.actions";
+import { makeRenewableEnergyProjectCreationActionType } from "../renewableEnergy.actions";
 
 export const expressPhotovoltaicProjectSaved = createAppAsyncThunk(
   makeRenewableEnergyProjectCreationActionType("expressPhotovoltaicProjectSaved"),

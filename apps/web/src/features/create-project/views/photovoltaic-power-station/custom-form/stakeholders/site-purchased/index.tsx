@@ -1,7 +1,9 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
-import { completeSitePurchase } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
-import { selectSitePurchasedViewData } from "@/features/create-project/core/renewable-energy/selectors/stakeholders.selectors";
+import {
+  navigateToPrevious,
+  requestStepCompletion,
+} from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
+import { selectSitePurchasedViewData } from "@/features/create-project/core/renewable-energy/step-handlers/stakeholders/stakeholders-site-purchase/stakeholdersSitePurchase.selector";
 
 import SitePurchasedForm, { FormValues } from "./SitePurchasedForm";
 
@@ -12,12 +14,16 @@ function SitePurchasedFormContainer() {
   );
 
   const onSubmit = (data: FormValues) => {
-    const willSiteBePurchased = data.willSiteBePurchased === "yes";
-    dispatch(completeSitePurchase(willSiteBePurchased));
+    dispatch(
+      requestStepCompletion({
+        stepId: "RENEWABLE_ENERGY_STAKEHOLDERS_SITE_PURCHASE",
+        answers: { willSiteBePurchased: data.willSiteBePurchased === "yes" },
+      }),
+    );
   };
 
   const onBack = () => {
-    dispatch(stepReverted());
+    dispatch(navigateToPrevious());
   };
 
   return (

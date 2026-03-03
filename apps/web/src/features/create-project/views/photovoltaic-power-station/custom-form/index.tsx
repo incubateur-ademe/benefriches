@@ -1,10 +1,7 @@
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
-import {
-  RenewableEnergyCreationStep,
-  RenewableEnergyCustomCreationStep,
-} from "../../../core/renewable-energy/creationSteps";
+import type { RenewableEnergyCreationStep } from "../../../core/renewable-energy/renewableEnergySteps";
 import { HTML_PV_PROJECT_FORM_MAIN_TITLE } from "../PhotovoltaicPowerStationCreationWizard";
 import PhotovoltaicPowerStationStepper from "./PhotovoltaicPowerStationStepper";
 import PhotovoltaicPanelsInstallationExpensesForm from "./expenses/installation";
@@ -310,7 +307,7 @@ const getCurrentStepView = (currentStep: RenewableEnergyCreationStep) => {
 };
 
 type Props = {
-  currentStep: RenewableEnergyCustomCreationStep;
+  currentStep: RenewableEnergyCreationStep;
 };
 
 function PhotovoltaicPowerStationCustomCreationWizard({ currentStep }: Props) {

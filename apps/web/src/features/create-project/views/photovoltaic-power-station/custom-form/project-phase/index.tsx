@@ -1,8 +1,11 @@
 import { RENEWABLE_ENERGY_PROJECT_PHASE_VALUES } from "shared";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
-import { completeProjectPhaseStep } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
+import {
+  navigateToPrevious,
+  requestStepCompletion,
+} from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
+import { selectProjectPhaseViewData } from "@/features/create-project/core/renewable-energy/step-handlers/project-phase/project-phase/projectPhase.selectors";
 import {
   getHintTextForRenewableEnergyProjectPhase,
   getLabelForRenewableEnergyProjectPhase,
@@ -12,9 +15,7 @@ import ProjectPhaseForm from "@/shared/views/project-form/common/project-phase/P
 
 function ProjectPhaseFormContainer() {
   const dispatch = useAppDispatch();
-  const initialValue = useAppSelector(
-    (state) => state.projectCreation.renewableEnergyProject.creationData.projectPhase,
-  );
+  const { initialValues } = useAppSelector(selectProjectPhaseViewData);
 
   const options = RENEWABLE_ENERGY_PROJECT_PHASE_VALUES.map((phase) => ({
     value: phase,
@@ -25,13 +26,18 @@ function ProjectPhaseFormContainer() {
 
   return (
     <ProjectPhaseForm
-      initialValues={initialValue && { phase: initialValue }}
+      initialValues={initialValues}
       projectPhaseOptions={options}
       onSubmit={({ phase }) => {
-        dispatch(completeProjectPhaseStep({ phase: phase ?? "unknown" }));
+        dispatch(
+          requestStepCompletion({
+            stepId: "RENEWABLE_ENERGY_PROJECT_PHASE",
+            answers: { phase: phase ?? "unknown" },
+          }),
+        );
       }}
       onBack={() => {
-        dispatch(stepReverted());
+        dispatch(navigateToPrevious());
       }}
     />
   );

@@ -1,23 +1,29 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
-import { completeSoilsTransformationProjectSelectionStep } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
+import {
+  navigateToPrevious,
+  requestStepCompletion,
+} from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
+import { selectSoilsTransformationProjectSelectionViewData } from "@/features/create-project/core/renewable-energy/step-handlers/soils-transformation/soils-transformation-project-selection/soilsTransformationProjectSelection.selectors";
 
 import SoilsTransformationProjectForm, { FormValues } from "./SoilsTransformationProjectForm";
 
 function SoilsTransformationProjectFormContainer() {
-  const initialValue = useAppSelector(
-    (state) => state.projectCreation.renewableEnergyProject.creationData.soilsTransformationProject,
-  );
+  const { initialValues } = useAppSelector(selectSoilsTransformationProjectSelectionViewData);
   const dispatch = useAppDispatch();
 
   return (
     <SoilsTransformationProjectForm
-      initialValues={initialValue ? { soilsTransformationProject: initialValue } : undefined}
+      initialValues={initialValues}
       onSubmit={(data: FormValues) => {
-        dispatch(completeSoilsTransformationProjectSelectionStep(data.soilsTransformationProject));
+        dispatch(
+          requestStepCompletion({
+            stepId: "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_PROJECT_SELECTION",
+            answers: { soilsTransformationProject: data.soilsTransformationProject },
+          }),
+        );
       }}
       onBack={() => {
-        dispatch(stepReverted());
+        dispatch(navigateToPrevious());
       }}
     />
   );

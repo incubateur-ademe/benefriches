@@ -1,7 +1,9 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
-import { completeScheduleStep } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
-import { selectPVScheduleProjectionViewData } from "@/features/create-project/core/renewable-energy/selectors/renewableEnergy.selector";
+import {
+  navigateToPrevious,
+  requestStepCompletion,
+} from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
+import { selectPVScheduleProjectionViewData } from "@/features/create-project/core/renewable-energy/step-handlers/schedule/schedule-projection/scheduleProjection.selector";
 import ScheduleProjectionForm from "@/shared/views/project-form/common/schedule/projection/ScheduleProjectionForm";
 
 function ScheduleProjectionFormContainer() {
@@ -14,14 +16,17 @@ function ScheduleProjectionFormContainer() {
       installationScheduleLabel="⚡️ Installation de la centrale photovoltaïque"
       hasReinstatement={siteIsFriche}
       onBack={() => {
-        dispatch(stepReverted());
+        dispatch(navigateToPrevious());
       }}
       onSubmit={(data) => {
         dispatch(
-          completeScheduleStep({
-            firstYearOfOperation: data.firstYearOfOperation,
-            photovoltaicInstallationSchedule: data.installationSchedule,
-            reinstatementSchedule: data.reinstatementSchedule,
+          requestStepCompletion({
+            stepId: "RENEWABLE_ENERGY_SCHEDULE_PROJECTION",
+            answers: {
+              firstYearOfOperation: data.firstYearOfOperation,
+              photovoltaicInstallationSchedule: data.installationSchedule,
+              reinstatementSchedule: data.reinstatementSchedule,
+            },
           }),
         );
       }}

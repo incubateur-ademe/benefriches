@@ -1,28 +1,19 @@
-import { useDispatch } from "react-redux";
-
-import { useAppSelector } from "@/app/hooks/store.hooks";
-import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
+import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
+import { navigateToPrevious } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
+import { selectCreationResultViewData } from "@/features/create-project/core/renewable-energy/step-handlers/summary/summary-creation-result/summaryCreationResult.selector";
 
 import ProjectCreationResult from "../../../common-views/result";
 
 function ProjectCreationResultContainer() {
-  const { creationData, saveState } = useAppSelector(
-    (state) => state.projectCreation.renewableEnergyProject,
-  );
+  const { projectName, saveState } = useAppSelector(selectCreationResultViewData);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const onBack = () => {
-    dispatch(stepReverted());
+    dispatch(navigateToPrevious());
   };
 
-  return (
-    <ProjectCreationResult
-      projectName={creationData.name ?? ""}
-      saveState={saveState}
-      onBack={onBack}
-    />
-  );
+  return <ProjectCreationResult projectName={projectName} saveState={saveState} onBack={onBack} />;
 }
 
 export default ProjectCreationResultContainer;

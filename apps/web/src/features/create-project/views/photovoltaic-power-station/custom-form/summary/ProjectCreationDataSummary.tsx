@@ -64,7 +64,7 @@ type Props = {
     yearlyProjectedExpenses: RecurringExpense[];
     yearlyProjectedRevenues: RecurringRevenue[];
     reinstatementSchedule?: Schedule;
-    photovoltaticInstallationSchedule?: Schedule;
+    photovoltaicInstallationSchedule?: Schedule;
     firstYearOfOperation?: number;
   };
   siteData: {
@@ -376,13 +376,13 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
               }
             />
           )}
-          {projectData.photovoltaticInstallationSchedule && (
+          {projectData.photovoltaicInstallationSchedule && (
             <DataLine
               label={<strong>Travaux d'installation des panneaux</strong>}
               value={
                 <ScheduleDates
-                  startDateString={projectData.photovoltaticInstallationSchedule.startDate}
-                  endDateString={projectData.photovoltaticInstallationSchedule.endDate}
+                  startDateString={projectData.photovoltaicInstallationSchedule.startDate}
+                  endDateString={projectData.photovoltaicInstallationSchedule.endDate}
                 />
               }
             />

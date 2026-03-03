@@ -52,8 +52,6 @@ export const selectDefaultSchedule = createSelector(
 export const {
   selectSiteAddress,
   selectSiteSoilsDistribution,
-  selectAvailableLocalAuthoritiesStakeholders,
-  selectProjectAvailableStakeholders,
   selectSiteSurfaceArea,
   selectSiteContaminatedSurfaceArea,
 } = creationProjectFormSelectors;

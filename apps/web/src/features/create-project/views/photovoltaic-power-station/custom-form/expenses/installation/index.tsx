@@ -1,9 +1,11 @@
 import { PhotovoltaicInstallationExpense, typedObjectEntries } from "shared";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
-import { completePhotovoltaicPanelsInstallationExpenses } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
-import { selectPhotovoltaicPowerStationInstallationExpensesInitialValues } from "@/features/create-project/core/renewable-energy/selectors/expenses.selectors";
+import {
+  navigateToPrevious,
+  requestStepCompletion,
+} from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
+import { selectPhotovoltaicPowerStationInstallationExpensesInitialValues } from "@/features/create-project/core/renewable-energy/step-handlers/expenses/expenses-installation/expensesInstallation.selector";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import InstallationExpensesForm, {
@@ -56,10 +58,15 @@ function PhotovoltaicPanelsInstallationExpensesFormContainer() {
             amount: amount as number,
             purpose: purposeMapKeys[purpose],
           }));
-        dispatch(completePhotovoltaicPanelsInstallationExpenses(expenses));
+        dispatch(
+          requestStepCompletion({
+            stepId: "RENEWABLE_ENERGY_EXPENSES_PHOTOVOLTAIC_PANELS_INSTALLATION",
+            answers: { photovoltaicPanelsInstallationExpenses: expenses },
+          }),
+        );
       }}
       onBack={() => {
-        dispatch(stepReverted());
+        dispatch(navigateToPrevious());
       }}
     />
   );
