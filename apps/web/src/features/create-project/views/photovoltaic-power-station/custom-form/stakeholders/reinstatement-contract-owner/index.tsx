@@ -4,7 +4,7 @@ import {
   navigateToPrevious,
   requestStepCompletion,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
-import { selectPVReinstatementContractOwnerViewData } from "@/features/create-project/core/renewable-energy/selectors/stakeholders.selectors";
+import { selectPVReinstatementContractOwnerViewData } from "@/features/create-project/core/renewable-energy/step-handlers/stakeholders/projectDeveloper.selector";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import StakeholderForm from "@/shared/views/project-form/common/stakeholder-form";
 

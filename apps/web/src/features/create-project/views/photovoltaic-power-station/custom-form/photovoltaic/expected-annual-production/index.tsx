@@ -6,6 +6,7 @@ import {
   navigateToPrevious,
   requestStepCompletion,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
+import { selectExpectedAnnualProductionViewData } from "@/features/create-project/core/renewable-energy/step-handlers/photovoltaic/expectedAnnualProduction.selector";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
 import PhotovoltaicExpectedAnnualProductionForm from "./ExpectedAnnualProductionForm";
@@ -14,7 +15,7 @@ function PhotovoltaicExpectedAnnualProductionContainer() {
   const dispatch = useAppDispatch();
 
   const { loadingState, expectedPerformanceMwhPerYear } = useAppSelector(
-    (state) => state.projectCreation.renewableEnergyProject.expectedPhotovoltaicPerformance,
+    selectExpectedAnnualProductionViewData,
   );
 
   useEffect(() => {

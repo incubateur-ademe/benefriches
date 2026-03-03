@@ -5,7 +5,7 @@ import {
   navigateToPrevious,
   requestStepCompletion,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
-import { selectPhotovoltaicPowerStationYearlyExpensesInitialValues } from "@/features/create-project/core/renewable-energy/selectors/expenses.selectors";
+import { selectPhotovoltaicPowerStationYearlyExpensesInitialValues } from "@/features/create-project/core/renewable-energy/step-handlers/expenses/yearlyProjectedExpenses.selector";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import YearlyProjectedExpensesForm from "@/shared/views/project-form/common/expenses/yearly-projected-expenses";

@@ -3,7 +3,7 @@ import {
   navigateToPrevious,
   requestStepCompletion,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
-import { selectNonSuitableSelectionViewData } from "@/features/create-project/core/renewable-energy/selectors/soilsTransformation.selectors";
+import { selectNonSuitableSelectionViewData } from "@/features/create-project/core/renewable-energy/step-handlers/soils-transformation/nonSuitableSoilsSelection.selector";
 
 import NonSuitableSoilsSelection, { FormValues } from "./NonSuitableSoilsSelection";
 

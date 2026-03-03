@@ -6,8 +6,8 @@ import {
 
 import { relatedSiteData } from "../../__tests__/siteData.mock";
 import {
-  getRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders,
-  getRenewableEnergyProjectAvailableStakeholders,
+  selectRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders,
+  selectRenewableEnergyProjectAvailableStakeholders,
 } from "../selectors/stakeholders.selectors";
 import type { RenewableEnergyStepsState } from "../step-handlers/stepHandler.type";
 import { exhaustiveSteps, minimalSteps } from "./projectData.mock";
@@ -56,7 +56,7 @@ describe("Project Stakeholders selector", () => {
         currentUser: USER,
       });
 
-      const stakeholders = getRenewableEnergyProjectAvailableStakeholders.resultFunc(
+      const stakeholders = selectRenewableEnergyProjectAvailableStakeholders.resultFunc(
         availableProjectStakeholder,
         exhaustiveSteps,
       );
@@ -124,7 +124,7 @@ describe("Project Stakeholders selector", () => {
         siteTenant: siteData.tenant,
         currentUser: buildUser(),
       });
-      const stakeholders = getRenewableEnergyProjectAvailableStakeholders.resultFunc(
+      const stakeholders = selectRenewableEnergyProjectAvailableStakeholders.resultFunc(
         availableProjectStakeholder,
         exhaustiveSteps,
       );
@@ -186,7 +186,7 @@ describe("Project Stakeholders selector", () => {
         siteTenant: undefined,
         currentUser: USER,
       });
-      const stakeholders = getRenewableEnergyProjectAvailableStakeholders.resultFunc(
+      const stakeholders = selectRenewableEnergyProjectAvailableStakeholders.resultFunc(
         availableProjectStakeholder,
         minimalSteps,
       );
@@ -251,7 +251,7 @@ describe("Project Stakeholders selector", () => {
         }),
       };
 
-      const stakeholders = getRenewableEnergyProjectAvailableStakeholders.resultFunc(
+      const stakeholders = selectRenewableEnergyProjectAvailableStakeholders.resultFunc(
         availableProjectStakeholder,
         stepsWithOverrides,
       );
@@ -324,7 +324,7 @@ describe("Project Stakeholders selector", () => {
       };
 
       const localAuthorities =
-        getRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders.resultFunc(
+        selectRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders.resultFunc(
           availableLocalAuthoritiesStakeholders,
           stepsWithLocalAuthorities,
         );
@@ -342,7 +342,7 @@ describe("Project Stakeholders selector", () => {
         availableProjectStakeholder,
       );
       const localAuthorities =
-        getRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders.resultFunc(
+        selectRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders.resultFunc(
           availableLocalAuthoritiesStakeholders,
           exhaustiveSteps,
         );
@@ -368,7 +368,7 @@ describe("Project Stakeholders selector", () => {
         availableProjectStakeholder,
       );
       const localAuthorities =
-        getRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders.resultFunc(
+        selectRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders.resultFunc(
           availableLocalAuthoritiesStakeholders,
           exhaustiveSteps,
         );
@@ -400,7 +400,7 @@ describe("Project Stakeholders selector", () => {
           availableProjectStakeholder,
         );
       const localAuthoritiesWithNoEpci =
-        getRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders.resultFunc(
+        selectRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders.resultFunc(
           availableLocalAuthoritiesStakeholdersWithNoEpci,
           exhaustiveSteps,
         );
@@ -428,7 +428,7 @@ describe("Project Stakeholders selector", () => {
         availableProjectStakeholder,
       );
       const localAuthorities =
-        getRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders.resultFunc(
+        selectRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders.resultFunc(
           availableLocalAuthoritiesStakeholders,
           exhaustiveSteps,
         );
@@ -455,7 +455,7 @@ describe("Project Stakeholders selector", () => {
         availableProjectStakeholder,
       );
       const localAuthorities =
-        getRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders.resultFunc(
+        selectRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders.resultFunc(
           availableLocalAuthoritiesStakeholders,
           exhaustiveSteps,
         );

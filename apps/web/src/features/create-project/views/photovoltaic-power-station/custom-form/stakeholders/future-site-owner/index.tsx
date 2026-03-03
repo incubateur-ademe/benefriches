@@ -4,7 +4,7 @@ import {
   navigateToPrevious,
   requestStepCompletion,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
-import { selectPVFutureSiteOwnerViewData } from "@/features/create-project/core/renewable-energy/selectors/stakeholders.selectors";
+import { selectPVFutureSiteOwnerViewData } from "@/features/create-project/core/renewable-energy/step-handlers/stakeholders/projectDeveloper.selector";
 import StakeholderForm from "@/shared/views/project-form/common/stakeholder-form";
 
 function FutureOwnerFormContainer() {

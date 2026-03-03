@@ -3,7 +3,7 @@ import {
   navigateToPrevious,
   requestStepCompletion,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
-import { selectPhotovoltaicPlantFeaturesKeyParameter } from "@/features/create-project/core/renewable-energy/selectors/photovoltaicPowerStation.selectors";
+import { selectPhotovoltaicPlantFeaturesKeyParameter } from "@/features/create-project/core/renewable-energy/step-handlers/photovoltaic/keyParameter.selector";
 
 import PhotovoltaicKeyParameterForm from "./KeyParameterForm";
 

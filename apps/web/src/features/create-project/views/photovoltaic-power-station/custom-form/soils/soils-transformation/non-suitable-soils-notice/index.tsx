@@ -3,7 +3,7 @@ import {
   navigateToNext,
   navigateToPrevious,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
-import { selectPVNonSuitableSoilsNoticeViewData } from "@/features/create-project/core/renewable-energy/selectors/soilsTransformation.selectors";
+import { selectPVNonSuitableSoilsNoticeViewData } from "@/features/create-project/core/renewable-energy/step-handlers/soils-transformation/nonSuitableSoilsNotice.selector";
 
 import NonSuitableSoilsNotice from "./NonSuitableSoilsNotice";
 

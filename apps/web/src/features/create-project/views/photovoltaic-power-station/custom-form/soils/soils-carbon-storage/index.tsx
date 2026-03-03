@@ -6,28 +6,27 @@ import {
   navigateToNext,
   navigateToPrevious,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
+import { selectSoilsCarbonStorageViewData } from "@/features/create-project/core/renewable-energy/step-handlers/summary/soilsCarbonStorage.selector";
 import SoilsCarbonStorageComparison from "@/shared/views/project-form/common/soils-carbon-storage-comparison";
 
 function ProjectSoilsCarbonStorageContainer() {
   const dispatch = useAppDispatch();
-  const state = useAppSelector(
-    (state) => state.projectCreation.renewableEnergyProject.soilsCarbonStorage,
-  );
+  const viewData = useAppSelector(selectSoilsCarbonStorageViewData);
 
   useEffect(() => {
     void dispatch(fetchCurrentAndProjectedSoilsCarbonStorage());
   }, [dispatch]);
 
-  if (state.loadingState === "success") {
+  if (viewData.loadingState === "success") {
     return (
       <SoilsCarbonStorageComparison
         onNext={() => {
           dispatch(navigateToNext());
         }}
         onBack={() => dispatch(navigateToPrevious())}
-        loadingState={state.loadingState}
-        currentCarbonStorage={state.current}
-        projectedCarbonStorage={state.projected}
+        loadingState={viewData.loadingState}
+        currentCarbonStorage={viewData.current}
+        projectedCarbonStorage={viewData.projected}
       />
     );
   }
@@ -38,7 +37,7 @@ function ProjectSoilsCarbonStorageContainer() {
         dispatch(navigateToNext());
       }}
       onBack={() => dispatch(navigateToPrevious())}
-      loadingState={state.loadingState}
+      loadingState={viewData.loadingState}
       currentCarbonStorage={undefined}
       projectedCarbonStorage={undefined}
     />

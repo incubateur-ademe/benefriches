@@ -3,7 +3,7 @@ import {
   navigateToPrevious,
   requestStepCompletion,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
-import { selectPhotovoltaicSurfaceViewData } from "@/features/create-project/core/renewable-energy/selectors/photovoltaicPowerStation.selectors";
+import { selectPhotovoltaicSurfaceViewData } from "@/features/create-project/core/renewable-energy/step-handlers/photovoltaic/surface.selector";
 
 import PhotovoltaicSurfaceForm from "./SurfaceForm";
 import PhotovoltaicSurfaceFromPowerForm from "./SurfaceFromPowerForm";

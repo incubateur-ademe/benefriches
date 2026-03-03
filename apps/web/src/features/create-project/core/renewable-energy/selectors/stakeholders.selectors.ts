@@ -1,7 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 
 import { RootState } from "@/app/store/store";
-import { selectCurrentUserStructure } from "@/features/onboarding/core/user.reducer";
 import {
   AvailableProjectStakeholder,
   getAvailableLocalAuthoritiesStakeholders,
@@ -38,7 +37,7 @@ const selectAvailableLocalAuthoritiesStakeholders = createSelector(
   },
 );
 
-export const getRenewableEnergyProjectAvailableStakeholders = createSelector(
+export const selectRenewableEnergyProjectAvailableStakeholders = createSelector(
   [selectProjectAvailableStakeholders, selectSteps],
   (projectAvailableStakeholders, steps) => {
     const stakeholders: AvailableProjectStakeholder[] = projectAvailableStakeholders;
@@ -95,7 +94,7 @@ export const getRenewableEnergyProjectAvailableStakeholders = createSelector(
   },
 );
 
-export const getRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders = createSelector(
+export const selectRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders = createSelector(
   [selectAvailableLocalAuthoritiesStakeholders, selectSteps],
   (availableLocalAuthoritiesStakeholders, steps) => {
     const projectDeveloper = ReadStateHelper.getStepAnswers(
@@ -138,80 +137,5 @@ export const getRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders = cr
             currentLocalAuthority.name === addressLocalAuthority.name,
         ),
     );
-  },
-);
-
-type SitePurchasedViewData = {
-  isCurrentUserSiteOwner: boolean;
-  initialValues:
-    | {
-        willSiteBePurchased: boolean;
-      }
-    | undefined;
-  siteOwnerName: string | undefined;
-};
-
-type PVStakeholderFormViewData = {
-  availableStakeholdersList: AvailableProjectStakeholder[];
-  availableLocalAuthoritiesStakeholders: ReturnType<
-    typeof getRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders
-  >;
-};
-
-export const selectPVDeveloperViewData = createSelector(
-  [
-    getRenewableEnergyProjectAvailableStakeholders,
-    getRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders,
-  ],
-  (
-    availableStakeholdersList,
-    availableLocalAuthoritiesStakeholders,
-  ): PVStakeholderFormViewData => ({
-    availableStakeholdersList,
-    availableLocalAuthoritiesStakeholders,
-  }),
-);
-
-export const selectPVFutureSiteOwnerViewData = selectPVDeveloperViewData;
-export const selectPVReinstatementContractOwnerViewData = selectPVDeveloperViewData;
-
-type PVOperatorViewData = {
-  currentUser: ReturnType<typeof selectCurrentUserStructure>;
-  initialValue: ProjectStakeholder | undefined;
-};
-
-export const selectPVOperatorViewData = createSelector(
-  [selectCurrentUserStructure, selectSteps],
-  (currentUser, steps): PVOperatorViewData => ({
-    currentUser,
-    initialValue: ReadStateHelper.getStepAnswers(
-      steps,
-      "RENEWABLE_ENERGY_STAKEHOLDERS_FUTURE_OPERATOR",
-    )?.futureOperator,
-  }),
-);
-
-export const selectSitePurchasedViewData = createSelector(
-  [selectSteps, selectSiteData, selectCurrentUserStructure],
-  (steps, siteData, currentUserStructure): SitePurchasedViewData => {
-    const isCurrentUserSiteOwner =
-      siteData && currentUserStructure
-        ? siteData.owner.name === currentUserStructure.name &&
-          siteData.owner.structureType === currentUserStructure.type
-        : false;
-
-    const sitePurchase = ReadStateHelper.getStepAnswers(
-      steps,
-      "RENEWABLE_ENERGY_STAKEHOLDERS_SITE_PURCHASE",
-    );
-
-    return {
-      isCurrentUserSiteOwner,
-      initialValues:
-        sitePurchase?.willSiteBePurchased !== undefined
-          ? { willSiteBePurchased: sitePurchase.willSiteBePurchased }
-          : undefined,
-      siteOwnerName: siteData ? siteData.owner.name : undefined,
-    };
   },
 );

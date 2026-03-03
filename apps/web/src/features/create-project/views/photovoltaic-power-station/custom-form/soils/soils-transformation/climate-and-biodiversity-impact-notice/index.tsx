@@ -3,7 +3,7 @@ import {
   navigateToNext,
   navigateToPrevious,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
-import { selectPVClimateAndBiodiversityImpactNoticeViewData } from "@/features/create-project/core/renewable-energy/selectors/soilsTransformation.selectors";
+import { selectPVClimateAndBiodiversityImpactNoticeViewData } from "@/features/create-project/core/renewable-energy/step-handlers/soils-transformation/climateAndBiodiversityImpactNotice.selector";
 
 import ClimateAndBiodiversityImpactNotice from "./ClimateAndBiodiversityImpactNotice";
 

@@ -3,22 +3,15 @@ import { getProjectFormInitialState } from "@/shared/core/reducers/project-form/
 
 import { relatedSiteData } from "../../__tests__/siteData.mock";
 import { INITIAL_STATE } from "../renewableEnergy.reducer";
-import { selectPVReinstatementExpensesViewData } from "../selectors/expenses.selectors";
-import { selectPhotovoltaicSummaryViewData } from "../selectors/photovoltaicPowerStation.selectors";
-import {
-  selectPVDecontaminationSurfaceAreaViewData,
-  selectPVScheduleProjectionViewData,
-} from "../selectors/renewableEnergy.selector";
-import { selectPVYearlyProjectedRevenueViewData } from "../selectors/revenues.selectors";
-import {
-  selectPVClimateAndBiodiversityImpactNoticeViewData,
-  selectPVNonSuitableSoilsNoticeViewData,
-  selectPVSoilsSummaryViewData,
-} from "../selectors/soilsTransformation.selectors";
-import {
-  selectPVDeveloperViewData,
-  selectPVOperatorViewData,
-} from "../selectors/stakeholders.selectors";
+import { selectPVReinstatementExpensesViewData } from "../step-handlers/expenses/reinstatement.selector";
+import { selectPVYearlyProjectedRevenueViewData } from "../step-handlers/revenue/yearlyProjectedRevenue.selector";
+import { selectPVScheduleProjectionViewData } from "../step-handlers/schedule/scheduleProjection.selector";
+import { selectPVDecontaminationSurfaceAreaViewData } from "../step-handlers/soils-decontamination/surfaceArea.selector";
+import { selectPVClimateAndBiodiversityImpactNoticeViewData } from "../step-handlers/soils-transformation/climateAndBiodiversityImpactNotice.selector";
+import { selectPVNonSuitableSoilsNoticeViewData } from "../step-handlers/soils-transformation/nonSuitableSoilsNotice.selector";
+import { selectPVSoilsSummaryViewData } from "../step-handlers/soils-transformation/soilsSummary.selector";
+import { selectPVOperatorViewData } from "../step-handlers/stakeholders/futureOperator.selector";
+import { selectPVDeveloperViewData } from "../step-handlers/stakeholders/projectDeveloper.selector";
 import type { RenewableEnergyStepsState } from "../step-handlers/stepHandler.type";
 import { exhaustiveSteps } from "./projectData.mock";
 
@@ -71,37 +64,27 @@ describe("Photovoltaic ViewData selectors", () => {
   describe("selectPVDeveloperViewData", () => {
     it("returns available stakeholders lists", () => {
       const viewData = selectPVDeveloperViewData(MOCK_STATE);
-      expect(viewData).toHaveProperty("availableStakeholdersList");
-      expect(viewData).toHaveProperty("availableLocalAuthoritiesStakeholders");
-      expect(Array.isArray(viewData.availableStakeholdersList)).toBe(true);
-      expect(Array.isArray(viewData.availableLocalAuthoritiesStakeholders)).toBe(true);
+      expect(viewData).toEqual({
+        availableStakeholdersList: expect.any(Array),
+        availableLocalAuthoritiesStakeholders: expect.any(Array),
+      });
+      expect(viewData.availableStakeholdersList.length).toBeGreaterThan(0);
     });
   });
 
   describe("selectPVOperatorViewData", () => {
     it("returns currentUser structure and futureOperator initialValue", () => {
       const viewData = selectPVOperatorViewData(MOCK_STATE);
-      expect(viewData.currentUser).toEqual({
-        name: "My company",
-        type: "company",
-        activity: undefined,
-      });
-      expect(viewData.initialValue).toEqual({
-        name: "Future operating company name",
-        structureType: "company",
-      });
-    });
-  });
-
-  describe("selectPhotovoltaicSummaryViewData", () => {
-    it("returns steps, siteData, renewableEnergyType and soils carbon storage", () => {
-      const viewData = selectPhotovoltaicSummaryViewData(MOCK_STATE);
       expect(viewData).toEqual({
-        steps: MOCK_STATE.projectCreation.renewableEnergyProject.steps,
-        siteData,
-        renewableEnergyType: "PHOTOVOLTAIC_POWER_PLANT",
-        siteSoilsCarbonStorage: undefined,
-        projectSoilsCarbonStorage: undefined,
+        currentUser: {
+          name: "My company",
+          type: "company",
+          activity: undefined,
+        },
+        initialValue: {
+          name: "Future operating company name",
+          structureType: "company",
+        },
       });
     });
   });
@@ -125,19 +108,21 @@ describe("Photovoltaic ViewData selectors", () => {
   describe("selectPVNonSuitableSoilsNoticeViewData", () => {
     it("returns photovoltaic panels surface area and suitable surface area", () => {
       const viewData = selectPVNonSuitableSoilsNoticeViewData(MOCK_STATE);
-      expect(viewData).toHaveProperty("photovoltaicPanelsSurfaceArea");
-      expect(viewData).toHaveProperty("suitableSurfaceArea");
-      expect(typeof viewData.photovoltaicPanelsSurfaceArea).toBe("number");
-      expect(typeof viewData.suitableSurfaceArea).toBe("number");
+      expect(viewData).toEqual({
+        photovoltaicPanelsSurfaceArea: 40000,
+        suitableSurfaceArea: 15000,
+      });
     });
   });
 
   describe("selectPVClimateAndBiodiversityImpactNoticeViewData", () => {
     it("returns biodiversity impact data", () => {
       const viewData = selectPVClimateAndBiodiversityImpactNoticeViewData(MOCK_STATE);
-      expect(viewData).toHaveProperty("hasTransformationNegativeImpact");
-      expect(viewData).toHaveProperty("biodiversityAndClimateSensitiveSoilsSurfaceAreaDestroyed");
-      expect(viewData).toHaveProperty("futureBiodiversityAndClimateSensitiveSoilsSurfaceArea");
+      expect(viewData).toEqual({
+        hasTransformationNegativeImpact: expect.any(Boolean),
+        biodiversityAndClimateSensitiveSoilsSurfaceAreaDestroyed: expect.any(Number),
+        futureBiodiversityAndClimateSensitiveSoilsSurfaceArea: expect.any(Number),
+      });
     });
   });
 
@@ -154,8 +139,10 @@ describe("Photovoltaic ViewData selectors", () => {
   describe("selectPVScheduleProjectionViewData", () => {
     it("returns schedule initial values and whether site is friche", () => {
       const viewData = selectPVScheduleProjectionViewData(MOCK_STATE);
-      expect(viewData).toHaveProperty("initialValues");
-      expect(viewData.siteIsFriche).toBe(true);
+      expect(viewData).toEqual({
+        initialValues: expect.any(Object),
+        siteIsFriche: true,
+      });
     });
   });
 
@@ -180,8 +167,10 @@ describe("Photovoltaic ViewData selectors", () => {
   describe("selectPVYearlyProjectedRevenueViewData", () => {
     it("returns initial values and photovoltaic expected annual production", () => {
       const viewData = selectPVYearlyProjectedRevenueViewData(MOCK_STATE);
-      expect(viewData).toHaveProperty("initialValues");
-      expect(viewData.photovoltaicExpectedAnnualProduction).toBe(50000);
+      expect(viewData).toEqual({
+        initialValues: expect.any(Object),
+        photovoltaicExpectedAnnualProduction: 50000,
+      });
     });
   });
 });

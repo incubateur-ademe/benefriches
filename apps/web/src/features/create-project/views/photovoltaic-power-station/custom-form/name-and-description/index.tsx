@@ -3,7 +3,7 @@ import {
   navigateToPrevious,
   requestStepCompletion,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
-import { selectNameAndDescriptionInitialValues } from "@/features/create-project/core/renewable-energy/selectors/renewableEnergy.selector";
+import { selectNameAndDescriptionInitialValues } from "@/features/create-project/core/renewable-energy/step-handlers/naming/naming.selector";
 import ProjectNameAndDescriptionForm, {
   FormValues,
 } from "@/shared/views/project-form/common/name-and-description/ProjectNameAndDescriptionForm";

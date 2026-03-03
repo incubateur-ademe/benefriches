@@ -4,7 +4,7 @@ import {
   navigateToPrevious,
   requestStepCompletion,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
-import { selectPVOperatorViewData } from "@/features/create-project/core/renewable-energy/selectors/stakeholders.selectors";
+import { selectPVOperatorViewData } from "@/features/create-project/core/renewable-energy/step-handlers/stakeholders/futureOperator.selector";
 import { UserStructure } from "@/features/onboarding/core/user";
 
 import FutureOperatorForm, { FormValues } from "./FutureOperatorForm";
