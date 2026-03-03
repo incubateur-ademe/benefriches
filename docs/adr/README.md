@@ -30,3 +30,4 @@ An ADR is a short document that captures an important architectural decision mad
 | 0003 | [Shared package for cross-app types](0003-shared-package-for-cross-app-types.md) | Accepted | 2026-02-23 |
 | 0004 | [Colocate urban project step definitions](0004-colocate-urban-project-step-definitions.md) | Accepted | 2026-02-23 |
 | 0005 | [Use gateway pattern for third-party browser SDKs](0005-gateway-pattern-for-third-party-browser-sdks.md) | Accepted | 2026-02-26 |
+| 0006 | [Use step handler pattern for renewable energy wizard](0006-step-handler-pattern-for-renewable-energy-wizard.md) | Accepted | 2026-03-03 |
