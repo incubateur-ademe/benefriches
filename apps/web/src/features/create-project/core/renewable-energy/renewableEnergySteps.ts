@@ -106,10 +106,7 @@ const renewableEnergyCreationSteps = z.enum([
 ]);
 
 // Express steps stay separate (not part of step handler flow)
-const renewableEnergyExpressCreationStep = z.enum([
-  "RENEWABLE_ENERGY_EXPRESS_FINAL_SUMMARY",
-  "RENEWABLE_ENERGY_CREATION_RESULT",
-]);
+const renewableEnergyExpressCreationStep = z.enum(["RENEWABLE_ENERGY_EXPRESS_FINAL_SUMMARY"]);
 
 export type RenewableEnergyExpressCreationStep = z.infer<typeof renewableEnergyExpressCreationStep>;
 
