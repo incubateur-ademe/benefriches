@@ -6,7 +6,8 @@ import {
 } from "shared";
 
 import { selectSiteData } from "../../createProject.selectors";
-import { selectCreationData } from "./renewableEnergy.selector";
+import { ReadStateHelper } from "../helpers/readState";
+import { selectProjectSoilsDistribution, selectSteps } from "./renewableEnergy.selector";
 
 const getExpenseAmountByPurpose = <TExpenses extends TExpense<string>[]>(
   expenses: TExpenses,
@@ -21,9 +22,13 @@ type PhotovoltaicPowerStationInstallationExpensesInitialValues = {
   other: number;
 };
 export const selectPhotovoltaicPowerStationInstallationExpensesInitialValues = createSelector(
-  selectCreationData,
-  (creationData): PhotovoltaicPowerStationInstallationExpensesInitialValues => {
-    const enteredExpenses = creationData.photovoltaicPanelsInstallationExpenses;
+  selectSteps,
+  (steps): PhotovoltaicPowerStationInstallationExpensesInitialValues => {
+    const installationStep = ReadStateHelper.getStepAnswers(
+      steps,
+      "RENEWABLE_ENERGY_EXPENSES_PHOTOVOLTAIC_PANELS_INSTALLATION",
+    );
+    const enteredExpenses = installationStep?.photovoltaicPanelsInstallationExpenses;
     if (enteredExpenses?.length) {
       return {
         technicalStudy: getExpenseAmountByPurpose(enteredExpenses, "technical_studies") ?? 0,
@@ -32,9 +37,11 @@ export const selectPhotovoltaicPowerStationInstallationExpensesInitialValues = c
       };
     }
 
-    const { photovoltaicInstallationElectricalPowerKWc: electricalPowerKWc } = creationData;
+    const electricalPowerKWc =
+      ReadStateHelper.getStepAnswers(steps, "RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER")
+        ?.photovoltaicInstallationElectricalPowerKWc ?? 0;
     return computePhotovoltaicPowerStationInstallationExpensesFromElectricalPower(
-      electricalPowerKWc ?? 0,
+      electricalPowerKWc,
     );
   },
 );
@@ -47,13 +54,30 @@ type PVReinstatementExpensesViewData = {
 };
 
 export const selectPVReinstatementExpensesViewData = createSelector(
-  [selectSiteData, selectCreationData],
-  (siteData, projectData): PVReinstatementExpensesViewData => ({
-    siteSoilsDistribution: siteData?.soilsDistribution ?? {},
-    projectSoilsDistribution: projectData.soilsDistribution ?? {},
-    decontaminatedSurfaceArea: projectData.decontaminatedSurfaceArea ?? 0,
-    reinstatementExpenses: projectData.reinstatementExpenses,
-  }),
+  [selectSiteData, selectSteps, selectProjectSoilsDistribution],
+  (siteData, steps, projectSoilsDistribution): PVReinstatementExpensesViewData => {
+    const decontaminationSelection = ReadStateHelper.getStepAnswers(
+      steps,
+      "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION",
+    );
+    const decontaminationSurface = ReadStateHelper.getStepAnswers(
+      steps,
+      "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SURFACE_AREA",
+    );
+    const reinstatementStep = ReadStateHelper.getStepAnswers(
+      steps,
+      "RENEWABLE_ENERGY_EXPENSES_REINSTATEMENT",
+    );
+    return {
+      siteSoilsDistribution: siteData?.soilsDistribution ?? {},
+      projectSoilsDistribution,
+      decontaminatedSurfaceArea:
+        decontaminationSurface?.decontaminatedSurfaceArea ??
+        decontaminationSelection?.decontaminatedSurfaceArea ??
+        0,
+      reinstatementExpenses: reinstatementStep?.reinstatementExpenses,
+    };
+  },
 );
 
 type PhotovoltaicPowerStationYearlyExpensesInitialValues = {
@@ -63,9 +87,13 @@ type PhotovoltaicPowerStationYearlyExpensesInitialValues = {
   other: number;
 };
 export const selectPhotovoltaicPowerStationYearlyExpensesInitialValues = createSelector(
-  [selectCreationData],
-  (creationData): PhotovoltaicPowerStationYearlyExpensesInitialValues => {
-    const enteredExpenses = creationData.yearlyProjectedExpenses;
+  [selectSteps],
+  (steps): PhotovoltaicPowerStationYearlyExpensesInitialValues => {
+    const yearlyStep = ReadStateHelper.getStepAnswers(
+      steps,
+      "RENEWABLE_ENERGY_EXPENSES_PROJECTED_YEARLY_EXPENSES",
+    );
+    const enteredExpenses = yearlyStep?.yearlyProjectedExpenses;
     if (enteredExpenses?.length) {
       return {
         rent: getExpenseAmountByPurpose(enteredExpenses, "rent") ?? 0,
@@ -75,9 +103,9 @@ export const selectPhotovoltaicPowerStationYearlyExpensesInitialValues = createS
       };
     }
 
-    const { photovoltaicInstallationElectricalPowerKWc: electricalPowerKWc } = creationData;
-    return computePhotovoltaicPowerStationYearlyExpensesFromElectricalPower(
-      electricalPowerKWc ?? 0,
-    );
+    const electricalPowerKWc =
+      ReadStateHelper.getStepAnswers(steps, "RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER")
+        ?.photovoltaicInstallationElectricalPowerKWc ?? 0;
+    return computePhotovoltaicPowerStationYearlyExpensesFromElectricalPower(electricalPowerKWc);
   },
 );

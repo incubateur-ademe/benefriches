@@ -1,22 +1,99 @@
+import type {
+  FinancialAssistanceRevenue,
+  PhotovoltaicInstallationExpense,
+  RecurringExpense,
+  RecurringRevenue,
+  ReinstatementExpense,
+} from "shared";
+
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
 import { saveReconversionProject } from "@/features/create-project/core/renewable-energy/actions/customProjectSaved.action";
+import { ReadStateHelper } from "@/features/create-project/core/renewable-energy/helpers/readState";
+import { navigateToPrevious } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 import { selectPhotovoltaicSummaryViewData } from "@/features/create-project/core/renewable-energy/selectors/photovoltaicPowerStation.selectors";
+import { selectProjectSoilsDistribution } from "@/features/create-project/core/renewable-energy/selectors/renewableEnergy.selector";
 
 import ProjectionCreationDataSummary from "./ProjectCreationDataSummary";
 
 function ProjectionCreationDataSummaryContainer() {
-  const { projectData, siteData, siteSoilsCarbonStorage, projectSoilsCarbonStorage } =
-    useAppSelector(selectPhotovoltaicSummaryViewData);
+  const {
+    steps,
+    siteData,
+    renewableEnergyType,
+    siteSoilsCarbonStorage,
+    projectSoilsCarbonStorage,
+  } = useAppSelector(selectPhotovoltaicSummaryViewData);
+  const soilsDistribution = useAppSelector(selectProjectSoilsDistribution);
 
   const dispatch = useAppDispatch();
+
+  const naming = ReadStateHelper.getStepAnswers(steps, "RENEWABLE_ENERGY_NAMING");
+  const power = ReadStateHelper.getStepAnswers(steps, "RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER");
+  const surface = ReadStateHelper.getStepAnswers(steps, "RENEWABLE_ENERGY_PHOTOVOLTAIC_SURFACE");
+  const annualProduction = ReadStateHelper.getStepAnswers(
+    steps,
+    "RENEWABLE_ENERGY_PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION",
+  );
+  const contractDuration = ReadStateHelper.getStepAnswers(
+    steps,
+    "RENEWABLE_ENERGY_PHOTOVOLTAIC_CONTRACT_DURATION",
+  );
+  const developer = ReadStateHelper.getStepAnswers(
+    steps,
+    "RENEWABLE_ENERGY_STAKEHOLDERS_PROJECT_DEVELOPER",
+  );
+  const futureOwner = ReadStateHelper.getStepAnswers(
+    steps,
+    "RENEWABLE_ENERGY_STAKEHOLDERS_FUTURE_SITE_OWNER",
+  );
+  const operator = ReadStateHelper.getStepAnswers(
+    steps,
+    "RENEWABLE_ENERGY_STAKEHOLDERS_FUTURE_OPERATOR",
+  );
+  const reinstatementOwner = ReadStateHelper.getStepAnswers(
+    steps,
+    "RENEWABLE_ENERGY_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER",
+  );
+  const sitePurchase = ReadStateHelper.getStepAnswers(
+    steps,
+    "RENEWABLE_ENERGY_EXPENSES_SITE_PURCHASE_AMOUNTS",
+  );
+  const financialAssistance = ReadStateHelper.getStepAnswers(
+    steps,
+    "RENEWABLE_ENERGY_REVENUE_FINANCIAL_ASSISTANCE",
+  );
+  const reinstatementExpenses = ReadStateHelper.getStepAnswers(
+    steps,
+    "RENEWABLE_ENERGY_EXPENSES_REINSTATEMENT",
+  );
+  const installationExpenses = ReadStateHelper.getStepAnswers(
+    steps,
+    "RENEWABLE_ENERGY_EXPENSES_PHOTOVOLTAIC_PANELS_INSTALLATION",
+  );
+  const yearlyExpenses = ReadStateHelper.getStepAnswers(
+    steps,
+    "RENEWABLE_ENERGY_EXPENSES_PROJECTED_YEARLY_EXPENSES",
+  );
+  const yearlyRevenues = ReadStateHelper.getStepAnswers(
+    steps,
+    "RENEWABLE_ENERGY_REVENUE_PROJECTED_YEARLY_REVENUE",
+  );
+  const schedule = ReadStateHelper.getStepAnswers(steps, "RENEWABLE_ENERGY_SCHEDULE_PROJECTION");
+  const decontamination = ReadStateHelper.getStepAnswers(
+    steps,
+    "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SURFACE_AREA",
+  );
+  const decontaminationSelection = ReadStateHelper.getStepAnswers(
+    steps,
+    "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION",
+  );
 
   const onNext = () => {
     void dispatch(saveReconversionProject());
   };
 
   const onBack = () => {
-    dispatch(stepReverted());
+    dispatch(navigateToPrevious());
   };
 
   return (
@@ -24,33 +101,44 @@ function ProjectionCreationDataSummaryContainer() {
       onNext={onNext}
       onBack={onBack}
       projectData={{
-        name: projectData.name ?? "",
-        description: projectData.description,
+        name: naming?.name ?? "",
+        description: naming?.description,
         developmentPlanCategory: "RENEWABLE_ENERGY",
-        renewableEnergy: projectData.renewableEnergyType!,
-        photovoltaicElectricalPowerKWc: projectData.photovoltaicInstallationElectricalPowerKWc ?? 0,
-        photovoltaicSurfaceArea: projectData.photovoltaicInstallationSurfaceSquareMeters ?? 0,
-        photovoltaicExpectedAnnualProduction: projectData.photovoltaicExpectedAnnualProduction ?? 0,
-        photovoltaicContractDuration: projectData.photovoltaicContractDuration ?? 0,
-        soilsDistribution: projectData.soilsDistribution ?? {},
+        renewableEnergy: renewableEnergyType!,
+        photovoltaicElectricalPowerKWc: power?.photovoltaicInstallationElectricalPowerKWc ?? 0,
+        photovoltaicSurfaceArea: surface?.photovoltaicInstallationSurfaceSquareMeters ?? 0,
+        photovoltaicExpectedAnnualProduction:
+          annualProduction?.photovoltaicExpectedAnnualProduction ?? 0,
+        photovoltaicContractDuration: contractDuration?.photovoltaicContractDuration ?? 0,
+        soilsDistribution,
         soilsCarbonStorage: projectSoilsCarbonStorage,
-        projectDeveloper: projectData.projectDeveloper?.name,
-        futureOwner: projectData.futureSiteOwner?.name,
-        futureOperator: projectData.futureOperator?.name,
-        reinstatementContractOwner: projectData.reinstatementContractOwner?.name,
-        sitePurchaseTotalCost: projectData.sitePurchaseSellingPrice
-          ? projectData.sitePurchaseSellingPrice +
-            (projectData.sitePurchasePropertyTransferDuties ?? 0)
+        projectDeveloper: developer?.projectDeveloper?.name,
+        futureOwner: futureOwner?.futureSiteOwner?.name,
+        futureOperator: operator?.futureOperator?.name,
+        reinstatementContractOwner: reinstatementOwner?.reinstatementContractOwner?.name,
+        sitePurchaseTotalCost: sitePurchase?.sellingPrice
+          ? sitePurchase.sellingPrice + (sitePurchase.propertyTransferDuties ?? 0)
           : 0,
-        financialAssistanceRevenues: projectData.financialAssistanceRevenues,
-        reinstatementExpenses: projectData.reinstatementExpenses ?? [],
-        photovoltaicPanelsInstallationExpenses: projectData.photovoltaicPanelsInstallationExpenses,
-        yearlyProjectedExpenses: projectData.yearlyProjectedExpenses ?? [],
-        yearlyProjectedRevenues: projectData.yearlyProjectedRevenues ?? [],
-        reinstatementSchedule: projectData.reinstatementSchedule,
-        photovoltaticInstallationSchedule: projectData.photovoltaicInstallationSchedule,
-        decontaminatedSurfaceArea: projectData.decontaminatedSurfaceArea,
-        firstYearOfOperation: projectData.firstYearOfOperation,
+        financialAssistanceRevenues: financialAssistance?.financialAssistanceRevenues as
+          | FinancialAssistanceRevenue[]
+          | undefined,
+        reinstatementExpenses:
+          (reinstatementExpenses?.reinstatementExpenses as ReinstatementExpense[] | undefined) ??
+          [],
+        photovoltaicPanelsInstallationExpenses:
+          installationExpenses?.photovoltaicPanelsInstallationExpenses as
+            | PhotovoltaicInstallationExpense[]
+            | undefined,
+        yearlyProjectedExpenses:
+          (yearlyExpenses?.yearlyProjectedExpenses as RecurringExpense[] | undefined) ?? [],
+        yearlyProjectedRevenues:
+          (yearlyRevenues?.yearlyProjectedRevenues as RecurringRevenue[] | undefined) ?? [],
+        reinstatementSchedule: schedule?.reinstatementSchedule,
+        photovoltaicInstallationSchedule: schedule?.photovoltaicInstallationSchedule,
+        decontaminatedSurfaceArea:
+          decontamination?.decontaminatedSurfaceArea ??
+          decontaminationSelection?.decontaminatedSurfaceArea,
+        firstYearOfOperation: schedule?.firstYearOfOperation,
       }}
       siteData={{
         surfaceArea: siteData?.surfaceArea ?? 0,

@@ -2,6 +2,7 @@ import { RootState } from "@/app/store/store";
 import { getProjectFormInitialState } from "@/shared/core/reducers/project-form/projectForm.reducer";
 
 import { relatedSiteData } from "../../__tests__/siteData.mock";
+import { INITIAL_STATE } from "../renewableEnergy.reducer";
 import { selectPVReinstatementExpensesViewData } from "../selectors/expenses.selectors";
 import { selectPhotovoltaicSummaryViewData } from "../selectors/photovoltaicPowerStation.selectors";
 import {
@@ -18,7 +19,8 @@ import {
   selectPVDeveloperViewData,
   selectPVOperatorViewData,
 } from "../selectors/stakeholders.selectors";
-import { projectWithExhaustiveData } from "./projectData.mock";
+import type { RenewableEnergyStepsState } from "../step-handlers/stepHandler.type";
+import { exhaustiveSteps } from "./projectData.mock";
 
 const siteData = {
   ...relatedSiteData,
@@ -33,7 +35,7 @@ const siteData = {
 };
 
 const buildState = (
-  overrides: Partial<typeof projectWithExhaustiveData> = {},
+  stepOverrides: Partial<RenewableEnergyStepsState> = {},
 ): RootState["projectCreation"] =>
   ({
     stepsHistory: ["PROJECT_TYPE_SELECTION"],
@@ -42,16 +44,10 @@ const buildState = (
     siteDataLoadingState: "success",
     siteRelatedLocalAuthorities: { loadingState: "idle" },
     renewableEnergyProject: {
-      expressData: { loadingState: "idle" },
+      ...INITIAL_STATE,
       createMode: "custom",
-      creationData: { ...projectWithExhaustiveData, ...overrides },
-      expectedPhotovoltaicPerformance: { loadingState: "idle" },
-      saveState: "idle",
-      soilsCarbonStorage: {
-        loadingState: "idle",
-        current: undefined,
-        projected: undefined,
-      },
+      creationData: { renewableEnergyType: "PHOTOVOLTAIC_POWER_PLANT" },
+      steps: { ...exhaustiveSteps, ...stepOverrides },
     },
     urbanProject: getProjectFormInitialState("URBAN_PROJECT_CREATE_MODE_SELECTION").urbanProject,
     surfaceAreaInputMode: "percentage",
@@ -90,16 +86,20 @@ describe("Photovoltaic ViewData selectors", () => {
         type: "company",
         activity: undefined,
       });
-      expect(viewData.initialValue).toEqual(projectWithExhaustiveData.futureOperator);
+      expect(viewData.initialValue).toEqual({
+        name: "Future operating company name",
+        structureType: "company",
+      });
     });
   });
 
   describe("selectPhotovoltaicSummaryViewData", () => {
-    it("returns projectData, siteData and soils carbon storage", () => {
+    it("returns steps, siteData, renewableEnergyType and soils carbon storage", () => {
       const viewData = selectPhotovoltaicSummaryViewData(MOCK_STATE);
       expect(viewData).toEqual({
-        projectData: projectWithExhaustiveData,
+        steps: MOCK_STATE.projectCreation.renewableEnergyProject.steps,
         siteData,
+        renewableEnergyType: "PHOTOVOLTAIC_POWER_PLANT",
         siteSoilsCarbonStorage: undefined,
         projectSoilsCarbonStorage: undefined,
       });
@@ -111,7 +111,13 @@ describe("Photovoltaic ViewData selectors", () => {
       const viewData = selectPVSoilsSummaryViewData(MOCK_STATE);
       expect(viewData).toEqual({
         siteSoilsDistribution: siteData.soilsDistribution,
-        projectSoilsDistribution: projectWithExhaustiveData.soilsDistribution,
+        projectSoilsDistribution: {
+          BUILDINGS: 3000,
+          ARTIFICIAL_TREE_FILLED: 5000,
+          FOREST_MIXED: 60000,
+          MINERAL_SOIL: 5000,
+          IMPERMEABLE_SOILS: 1300,
+        },
       });
     });
   });
@@ -158,9 +164,15 @@ describe("Photovoltaic ViewData selectors", () => {
       const viewData = selectPVReinstatementExpensesViewData(MOCK_STATE);
       expect(viewData).toEqual({
         siteSoilsDistribution: siteData.soilsDistribution,
-        projectSoilsDistribution: projectWithExhaustiveData.soilsDistribution,
-        decontaminatedSurfaceArea: projectWithExhaustiveData.decontaminatedSurfaceArea,
-        reinstatementExpenses: projectWithExhaustiveData.reinstatementExpenses,
+        projectSoilsDistribution: {
+          BUILDINGS: 3000,
+          ARTIFICIAL_TREE_FILLED: 5000,
+          FOREST_MIXED: 60000,
+          MINERAL_SOIL: 5000,
+          IMPERMEABLE_SOILS: 1300,
+        },
+        decontaminatedSurfaceArea: 1000,
+        reinstatementExpenses: [{ amount: 34500, purpose: "demolition" }],
       });
     });
   });
@@ -169,9 +181,7 @@ describe("Photovoltaic ViewData selectors", () => {
     it("returns initial values and photovoltaic expected annual production", () => {
       const viewData = selectPVYearlyProjectedRevenueViewData(MOCK_STATE);
       expect(viewData).toHaveProperty("initialValues");
-      expect(viewData.photovoltaicExpectedAnnualProduction).toBe(
-        projectWithExhaustiveData.photovoltaicExpectedAnnualProduction,
-      );
+      expect(viewData.photovoltaicExpectedAnnualProduction).toBe(50000);
     });
   });
 });

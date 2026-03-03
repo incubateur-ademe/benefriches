@@ -6,7 +6,7 @@ import { InMemorySaveReconversionProjectService } from "../../../infrastructure/
 import { relatedSiteData } from "../../__tests__/siteData.mock";
 import { getInitialState } from "../../createProject.reducer";
 import { saveReconversionProject } from "../actions/customProjectSaved.action";
-import { projectWithExhaustiveData, projectWithMinimalData } from "./projectData.mock";
+import { exhaustiveSteps, minimalSteps, withStepPayload } from "./projectData.mock";
 
 describe("renewableEnergy.reducer.spec reducer", () => {
   describe("saveReconversionProject action", () => {
@@ -15,7 +15,7 @@ describe("renewableEnergy.reducer.spec reducer", () => {
         ...getInitialState(),
         renewableEnergyProject: {
           ...getInitialState().renewableEnergyProject,
-          creationData: projectWithMinimalData,
+          steps: minimalSteps,
         },
       };
 
@@ -37,6 +37,7 @@ describe("renewableEnergy.reducer.spec reducer", () => {
       expect(state.projectCreation.renewableEnergyProject).toEqual({
         ...initialState.renewableEnergyProject,
         saveState: "error",
+        currentStep: "RENEWABLE_ENERGY_CREATION_RESULT",
       });
     });
 
@@ -46,7 +47,7 @@ describe("renewableEnergy.reducer.spec reducer", () => {
         siteData: relatedSiteData,
         renewableEnergyProject: {
           ...getInitialState().renewableEnergyProject,
-          creationData: projectWithMinimalData,
+          steps: minimalSteps,
         },
       };
 
@@ -68,6 +69,7 @@ describe("renewableEnergy.reducer.spec reducer", () => {
       expect(state.projectCreation.renewableEnergyProject).toEqual({
         ...initialState.renewableEnergyProject,
         saveState: "error",
+        currentStep: "RENEWABLE_ENERGY_CREATION_RESULT",
       });
     });
 
@@ -78,7 +80,7 @@ describe("renewableEnergy.reducer.spec reducer", () => {
         projectId: "",
         renewableEnergyProject: {
           ...getInitialState().renewableEnergyProject,
-          creationData: projectWithMinimalData,
+          steps: minimalSteps,
         },
       };
 
@@ -100,113 +102,144 @@ describe("renewableEnergy.reducer.spec reducer", () => {
       expect(state.projectCreation.renewableEnergyProject).toEqual({
         ...initialState.renewableEnergyProject,
         saveState: "error",
+        currentStep: "RENEWABLE_ENERGY_CREATION_RESULT",
       });
     });
 
     it.each([
-      { case: "no name", dataProp: "name", invalidValue: undefined },
-      { case: "no projectPhase", dataProp: "projectPhase", invalidValue: undefined },
+      {
+        case: "no name",
+        stepId: "RENEWABLE_ENERGY_NAMING" as const,
+        invalidPayload: undefined,
+      },
+      {
+        case: "no projectPhase",
+        stepId: "RENEWABLE_ENERGY_PROJECT_PHASE" as const,
+        invalidPayload: undefined,
+      },
       {
         case: "no development plan developer",
-        dataProp: "projectDeveloper",
-        invalidValue: undefined,
+        stepId: "RENEWABLE_ENERGY_STAKEHOLDERS_PROJECT_DEVELOPER" as const,
+        invalidPayload: undefined,
       },
       {
         case: "negative amount in photovoltaic installation expenses",
-        dataProp: "photovoltaicPanelsInstallationExpenses",
-        invalidValue: [{ amount: -1, purpose: "installation_works" }],
+        stepId: "RENEWABLE_ENERGY_EXPENSES_PHOTOVOLTAIC_PANELS_INSTALLATION" as const,
+        invalidPayload: {
+          photovoltaicPanelsInstallationExpenses: [{ amount: -1, purpose: "installation_works" }],
+        },
       },
       {
         case: "no development plan surface area",
-        dataProp: "photovoltaicInstallationSurfaceSquareMeters",
-        invalidValue: undefined,
+        stepId: "RENEWABLE_ENERGY_PHOTOVOLTAIC_SURFACE" as const,
+        invalidPayload: undefined,
       },
       {
         case: "no development plan photovoltaicInstallationElectricalPowerKWc",
-        dataProp: "photovoltaicInstallationElectricalPowerKWc",
-        invalidValue: undefined,
+        stepId: "RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER" as const,
+        invalidPayload: undefined,
       },
       {
         case: "no development plan photovoltaicExpectedAnnualProduction",
-        dataProp: "photovoltaicExpectedAnnualProduction",
-        invalidValue: undefined,
+        stepId: "RENEWABLE_ENERGY_PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION" as const,
+        invalidPayload: undefined,
       },
       {
         case: "no development plan photovoltaicContractDuration",
-        dataProp: "photovoltaicContractDuration",
-        invalidValue: undefined,
+        stepId: "RENEWABLE_ENERGY_PHOTOVOLTAIC_CONTRACT_DURATION" as const,
+        invalidPayload: undefined,
       },
       {
         case: "no yearlyProjectedExpenses",
-        dataProp: "yearlyProjectedExpenses",
-        invalidValue: undefined,
+        stepId: "RENEWABLE_ENERGY_EXPENSES_PROJECTED_YEARLY_EXPENSES" as const,
+        invalidPayload: undefined,
       },
       {
         case: "negative amount in yearlyProjectedExpenses",
-        dataProp: "yearlyProjectedExpenses",
-        invalidValue: [{ amount: -1, purpose: "rent" }],
+        stepId: "RENEWABLE_ENERGY_EXPENSES_PROJECTED_YEARLY_EXPENSES" as const,
+        invalidPayload: {
+          yearlyProjectedExpenses: [{ amount: -1, purpose: "rent" }],
+        },
       },
       {
         case: "no yearlyProjectedRevenues",
-        dataProp: "yearlyProjectedRevenues",
-        invalidValue: undefined,
+        stepId: "RENEWABLE_ENERGY_REVENUE_PROJECTED_YEARLY_REVENUE" as const,
+        invalidPayload: undefined,
       },
       {
         case: "negative amount in yearlyProjectedRevenues",
-        dataProp: "yearlyProjectedRevenues",
-        invalidValue: [{ amount: -1, source: "operations" }],
+        stepId: "RENEWABLE_ENERGY_REVENUE_PROJECTED_YEARLY_REVENUE" as const,
+        invalidPayload: {
+          yearlyProjectedRevenues: [{ amount: -1, source: "operations" }],
+        },
       },
       {
         case: "negative amount in financialAssistanceRevenues",
-        dataProp: "financialAssistanceRevenues",
-        invalidValue: [{ amount: -1, source: "public_subsidies" }],
+        stepId: "RENEWABLE_ENERGY_REVENUE_FINANCIAL_ASSISTANCE" as const,
+        invalidPayload: {
+          financialAssistanceRevenues: [{ amount: -1, source: "public_subsidies" }],
+        },
       },
       {
         case: "invalid soilsDistribution",
-        dataProp: "soilsDistribution",
-        invalidValue: [{ soilType: "unknown" }],
+        stepId: "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_PROJECT_SELECTION" as const,
+        invalidPayload: {
+          soilsTransformationProject: "custom",
+          soilsDistribution: [{ soilType: "unknown" }],
+        },
       },
       {
         case: "negative sitePurchaseSellingPrice",
-        dataProp: "sitePurchaseSellingPrice",
-        invalidValue: -1,
+        stepId: "RENEWABLE_ENERGY_EXPENSES_SITE_PURCHASE_AMOUNTS" as const,
+        invalidPayload: { sellingPrice: -1 },
       },
       {
         case: "negative sitePurchasePropertyTransferDuties",
-        dataProp: "sitePurchasePropertyTransferDuties",
-        invalidValue: -1,
+        stepId: "RENEWABLE_ENERGY_EXPENSES_SITE_PURCHASE_AMOUNTS" as const,
+        invalidPayload: { sellingPrice: 100, propertyTransferDuties: -1 },
       },
       {
         case: "negative amount in reinstatementExpenses",
-        dataProp: "reinstatementExpenses",
-        invalidValue: [{ amount: -1, purpose: "demolition" }],
+        stepId: "RENEWABLE_ENERGY_EXPENSES_REINSTATEMENT" as const,
+        invalidPayload: {
+          reinstatementExpenses: [{ amount: -1, purpose: "demolition" }],
+        },
       },
       {
         case: "invalid reinstatementSchedule",
-        dataProp: "reinstatementSchedule",
-        invalidValue: { invalidSchedule: true },
+        stepId: "RENEWABLE_ENERGY_SCHEDULE_PROJECTION" as const,
+        invalidPayload: { reinstatementSchedule: { invalidSchedule: true } },
       },
-      { case: "negative operationsFirstYear", dataProp: "firstYearOfOperation", invalidValue: -1 },
-      { case: "invalid futureOperator", dataProp: "futureOperator", invalidValue: { name: "" } },
-      { case: "invalid futureSiteOwner", dataProp: "futureSiteOwner", invalidValue: { name: "" } },
+      {
+        case: "negative operationsFirstYear",
+        stepId: "RENEWABLE_ENERGY_SCHEDULE_PROJECTION" as const,
+        invalidPayload: { firstYearOfOperation: -1 },
+      },
+      {
+        case: "invalid futureOperator",
+        stepId: "RENEWABLE_ENERGY_STAKEHOLDERS_FUTURE_OPERATOR" as const,
+        invalidPayload: { futureOperator: { name: "" } },
+      },
+      {
+        case: "invalid futureSiteOwner",
+        stepId: "RENEWABLE_ENERGY_STAKEHOLDERS_FUTURE_SITE_OWNER" as const,
+        invalidPayload: { futureSiteOwner: { name: "" } },
+      },
       {
         case: "invalid reinstatementContractOwner",
-        dataProp: "reinstatementContractOwner",
-        invalidValue: { name: "" },
+        stepId: "RENEWABLE_ENERGY_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER" as const,
+        invalidPayload: { reinstatementContractOwner: { name: "" } },
       },
     ])(
       "should result in error state when invalid project data: $case",
-      async ({ dataProp, invalidValue }) => {
-        const projectCreationData = {
-          ...projectWithMinimalData,
-          [dataProp]: invalidValue,
-        };
+      async ({ stepId, invalidPayload }) => {
+        const steps = withStepPayload(minimalSteps, stepId, invalidPayload);
         const initialState: RootState["projectCreation"] = {
           ...getInitialState(),
           siteData: relatedSiteData,
           renewableEnergyProject: {
             ...getInitialState().renewableEnergyProject,
-            creationData: projectCreationData,
+            steps,
           },
         };
 
@@ -228,6 +261,7 @@ describe("renewableEnergy.reducer.spec reducer", () => {
         expect(state.projectCreation.renewableEnergyProject).toEqual({
           ...initialState.renewableEnergyProject,
           saveState: "error",
+          currentStep: "RENEWABLE_ENERGY_CREATION_RESULT",
         });
         expect(
           (actionResult as typeof actionResult & { error: { name: string } }).error.name,
@@ -241,7 +275,7 @@ describe("renewableEnergy.reducer.spec reducer", () => {
         siteData: relatedSiteData,
         renewableEnergyProject: {
           ...getInitialState().renewableEnergyProject,
-          creationData: projectWithMinimalData,
+          steps: minimalSteps,
         },
       };
 
@@ -269,19 +303,20 @@ describe("renewableEnergy.reducer.spec reducer", () => {
       expect(state.projectCreation.renewableEnergyProject).toEqual({
         ...initialState.renewableEnergyProject,
         saveState: "error",
+        currentStep: "RENEWABLE_ENERGY_CREATION_RESULT",
       });
     });
 
     it.each([
-      { case: "reconversion project with minimal data", data: projectWithMinimalData },
-      { case: "reconversion project with exaustive data", data: projectWithExhaustiveData },
-    ])("should be in success state when everything went ok", async () => {
+      { case: "reconversion project with minimal data", steps: minimalSteps },
+      { case: "reconversion project with exhaustive data", steps: exhaustiveSteps },
+    ])("should be in success state when everything went ok: $case", async ({ steps }) => {
       const initialState: RootState["projectCreation"] = {
         ...getInitialState(),
         siteData: relatedSiteData,
         renewableEnergyProject: {
           ...getInitialState().renewableEnergyProject,
-          creationData: projectWithMinimalData,
+          steps,
         },
       };
 
@@ -303,6 +338,7 @@ describe("renewableEnergy.reducer.spec reducer", () => {
       expect(state.projectCreation.renewableEnergyProject).toEqual({
         ...initialState.renewableEnergyProject,
         saveState: "success",
+        currentStep: "RENEWABLE_ENERGY_CREATION_RESULT",
       });
     });
   });

@@ -1,6 +1,8 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
-import { completeCustomSoilsSurfaceAreaAllocationStep } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
+import {
+  navigateToPrevious,
+  requestStepCompletion,
+} from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 import { selectFutureSoilsSurfaceAreasViewData } from "@/features/create-project/core/renewable-energy/selectors/soilsTransformation.selectors";
 
 import FutureSoilsSurfaceAreaForm, { FormValues } from "./FutureSoilsSurfaceAreaForm";
@@ -23,10 +25,15 @@ function FutureSoilsSurfaceAreaFormContainer() {
       currentSoilsDistribution={baseSoilsDistribution}
       photovoltaicPanelsSurfaceArea={photovoltaicPanelsSurfaceArea}
       onSubmit={(data: FormValues) => {
-        dispatch(completeCustomSoilsSurfaceAreaAllocationStep(data));
+        dispatch(
+          requestStepCompletion({
+            stepId: "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CUSTOM_SURFACE_AREA_ALLOCATION",
+            answers: { soilsDistribution: data },
+          }),
+        );
       }}
       onBack={() => {
-        dispatch(stepReverted());
+        dispatch(navigateToPrevious());
       }}
     />
   );

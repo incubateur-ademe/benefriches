@@ -10,8 +10,9 @@ import {
 } from "@/shared/core/reducers/project-form/helpers/stakeholders";
 
 import { selectSiteData } from "../../createProject.selectors";
-import { ProjectStakeholder } from "../../project.types";
-import { selectCreationData } from "./renewableEnergy.selector";
+import type { ProjectStakeholder } from "../../project.types";
+import { ReadStateHelper } from "../helpers/readState";
+import { selectSteps } from "./renewableEnergy.selector";
 
 const selectProjectAvailableStakeholders = createSelector(
   [selectSiteData, (state: RootState) => state.currentUser.currentUser],
@@ -38,11 +39,14 @@ const selectAvailableLocalAuthoritiesStakeholders = createSelector(
 );
 
 export const getRenewableEnergyProjectAvailableStakeholders = createSelector(
-  [selectProjectAvailableStakeholders, selectCreationData],
-  (projectAvailableStakeholders, creationData) => {
+  [selectProjectAvailableStakeholders, selectSteps],
+  (projectAvailableStakeholders, steps) => {
     const stakeholders: AvailableProjectStakeholder[] = projectAvailableStakeholders;
 
-    const projectDeveloper = creationData.projectDeveloper;
+    const projectDeveloper = ReadStateHelper.getStepAnswers(
+      steps,
+      "RENEWABLE_ENERGY_STAKEHOLDERS_PROJECT_DEVELOPER",
+    )?.projectDeveloper;
     if (projectDeveloper && !hasStakeholder(projectDeveloper, stakeholders)) {
       stakeholders.push({
         name: projectDeveloper.name,
@@ -51,7 +55,10 @@ export const getRenewableEnergyProjectAvailableStakeholders = createSelector(
       });
     }
 
-    const futureOperator = creationData.futureOperator;
+    const futureOperator = ReadStateHelper.getStepAnswers(
+      steps,
+      "RENEWABLE_ENERGY_STAKEHOLDERS_FUTURE_OPERATOR",
+    )?.futureOperator;
     if (futureOperator && !hasStakeholder(futureOperator, stakeholders)) {
       stakeholders.push({
         name: futureOperator.name,
@@ -60,7 +67,10 @@ export const getRenewableEnergyProjectAvailableStakeholders = createSelector(
       });
     }
 
-    const reinstatementContractOwner = creationData.reinstatementContractOwner;
+    const reinstatementContractOwner = ReadStateHelper.getStepAnswers(
+      steps,
+      "RENEWABLE_ENERGY_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER",
+    )?.reinstatementContractOwner;
     if (reinstatementContractOwner && !hasStakeholder(reinstatementContractOwner, stakeholders)) {
       stakeholders.push({
         name: reinstatementContractOwner.name,
@@ -69,7 +79,10 @@ export const getRenewableEnergyProjectAvailableStakeholders = createSelector(
       });
     }
 
-    const futureSiteOwner = creationData.futureSiteOwner;
+    const futureSiteOwner = ReadStateHelper.getStepAnswers(
+      steps,
+      "RENEWABLE_ENERGY_STAKEHOLDERS_FUTURE_SITE_OWNER",
+    )?.futureSiteOwner;
     if (futureSiteOwner && !hasStakeholder(futureSiteOwner, stakeholders)) {
       stakeholders.push({
         name: futureSiteOwner.name,
@@ -83,10 +96,24 @@ export const getRenewableEnergyProjectAvailableStakeholders = createSelector(
 );
 
 export const getRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders = createSelector(
-  [selectAvailableLocalAuthoritiesStakeholders, selectCreationData],
-  (availableLocalAuthoritiesStakeholders, creationData) => {
-    const { projectDeveloper, futureOperator, reinstatementContractOwner, futureSiteOwner } =
-      creationData;
+  [selectAvailableLocalAuthoritiesStakeholders, selectSteps],
+  (availableLocalAuthoritiesStakeholders, steps) => {
+    const projectDeveloper = ReadStateHelper.getStepAnswers(
+      steps,
+      "RENEWABLE_ENERGY_STAKEHOLDERS_PROJECT_DEVELOPER",
+    )?.projectDeveloper;
+    const futureOperator = ReadStateHelper.getStepAnswers(
+      steps,
+      "RENEWABLE_ENERGY_STAKEHOLDERS_FUTURE_OPERATOR",
+    )?.futureOperator;
+    const reinstatementContractOwner = ReadStateHelper.getStepAnswers(
+      steps,
+      "RENEWABLE_ENERGY_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER",
+    )?.reinstatementContractOwner;
+    const futureSiteOwner = ReadStateHelper.getStepAnswers(
+      steps,
+      "RENEWABLE_ENERGY_STAKEHOLDERS_FUTURE_SITE_OWNER",
+    )?.futureSiteOwner;
 
     const projectLocalAuthorities = [
       projectDeveloper,
@@ -154,27 +181,36 @@ type PVOperatorViewData = {
 };
 
 export const selectPVOperatorViewData = createSelector(
-  [selectCurrentUserStructure, selectCreationData],
-  (currentUser, creationData): PVOperatorViewData => ({
+  [selectCurrentUserStructure, selectSteps],
+  (currentUser, steps): PVOperatorViewData => ({
     currentUser,
-    initialValue: creationData.futureOperator,
+    initialValue: ReadStateHelper.getStepAnswers(
+      steps,
+      "RENEWABLE_ENERGY_STAKEHOLDERS_FUTURE_OPERATOR",
+    )?.futureOperator,
   }),
 );
 
 export const selectSitePurchasedViewData = createSelector(
-  [selectCreationData, selectSiteData, selectCurrentUserStructure],
-  (creationData, siteData, currentUserStructure): SitePurchasedViewData => {
+  [selectSteps, selectSiteData, selectCurrentUserStructure],
+  (steps, siteData, currentUserStructure): SitePurchasedViewData => {
     const isCurrentUserSiteOwner =
       siteData && currentUserStructure
         ? siteData.owner.name === currentUserStructure.name &&
           siteData.owner.structureType === currentUserStructure.type
         : false;
 
+    const sitePurchase = ReadStateHelper.getStepAnswers(
+      steps,
+      "RENEWABLE_ENERGY_STAKEHOLDERS_SITE_PURCHASE",
+    );
+
     return {
       isCurrentUserSiteOwner,
-      initialValues: creationData.willSiteBePurchased
-        ? { willSiteBePurchased: creationData.willSiteBePurchased }
-        : undefined,
+      initialValues:
+        sitePurchase?.willSiteBePurchased !== undefined
+          ? { willSiteBePurchased: sitePurchase.willSiteBePurchased }
+          : undefined,
       siteOwnerName: siteData ? siteData.owner.name : undefined,
     };
   },

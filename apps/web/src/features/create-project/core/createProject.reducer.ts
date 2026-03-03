@@ -20,12 +20,12 @@ import { projectSuggestionsCompleted } from "./actions/projectSuggestionComplete
 import { reconversionProjectCreationInitiated } from "./actions/reconversionProjectCreationInitiated.action";
 import { surfaceAreaInputModeUpdated } from "./actions/surfaceAreaInputModeUpdated.action";
 import { ProjectSuggestion } from "./project.types";
-import { RenewableEnergyCreationStep } from "./renewable-energy/creationSteps";
 import {
   RenewableEnergyProjectState,
   INITIAL_STATE as renenewableEnergyProjectInitialState,
   renewableEnergyProjectReducer,
 } from "./renewable-energy/renewableEnergy.reducer";
+import type { AllRenewableEnergyStep } from "./renewable-energy/renewableEnergySteps";
 import urbanProjectReducer from "./urban-project/urbanProject.reducer";
 
 export type ProjectCreationState = ProjectFormState & {
@@ -42,7 +42,7 @@ export type ProjectCreationStep =
   | "PROJECT_TYPE_SELECTION"
   | "PROJECT_SUGGESTIONS"
   | UrbanProjectCreationStep
-  | RenewableEnergyCreationStep;
+  | AllRenewableEnergyStep;
 
 export const getInitialState = (): ProjectCreationState => {
   return {

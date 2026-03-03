@@ -2,12 +2,23 @@ import { createSelector } from "@reduxjs/toolkit";
 import { getRevenueAmountByPurpose } from "shared";
 import { computeDefaultPhotovoltaicYearlyRecurringRevenueAmount } from "shared";
 
-import { selectCreationData } from "./renewableEnergy.selector";
+import { ReadStateHelper } from "../helpers/readState";
+import { selectSteps } from "./renewableEnergy.selector";
 
 export const selectPhotovoltaicPowerStationYearlyRevenueInitialValues = createSelector(
-  selectCreationData,
-  (creationData) => {
-    const { photovoltaicExpectedAnnualProduction, yearlyProjectedRevenues } = creationData;
+  selectSteps,
+  (steps) => {
+    const revenueStep = ReadStateHelper.getStepAnswers(
+      steps,
+      "RENEWABLE_ENERGY_REVENUE_PROJECTED_YEARLY_REVENUE",
+    );
+    const productionStep = ReadStateHelper.getStepAnswers(
+      steps,
+      "RENEWABLE_ENERGY_PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION",
+    );
+    const yearlyProjectedRevenues = revenueStep?.yearlyProjectedRevenues;
+    const photovoltaicExpectedAnnualProduction =
+      productionStep?.photovoltaicExpectedAnnualProduction;
 
     if (yearlyProjectedRevenues?.length) {
       return {
@@ -31,17 +42,24 @@ type PVYearlyProjectedRevenueViewData = {
 };
 
 export const selectPVYearlyProjectedRevenueViewData = createSelector(
-  [selectPhotovoltaicPowerStationYearlyRevenueInitialValues, selectCreationData],
-  (initialValues, creationData): PVYearlyProjectedRevenueViewData => ({
+  [selectPhotovoltaicPowerStationYearlyRevenueInitialValues, selectSteps],
+  (initialValues, steps): PVYearlyProjectedRevenueViewData => ({
     initialValues,
-    photovoltaicExpectedAnnualProduction: creationData.photovoltaicExpectedAnnualProduction,
+    photovoltaicExpectedAnnualProduction: ReadStateHelper.getStepAnswers(
+      steps,
+      "RENEWABLE_ENERGY_PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION",
+    )?.photovoltaicExpectedAnnualProduction,
   }),
 );
 
 export const selectPhotovoltaicPowerStationFinancialAssistanceRevenueInitialValues = createSelector(
-  [selectCreationData],
-  (creationData) => {
-    const { financialAssistanceRevenues } = creationData;
+  [selectSteps],
+  (steps) => {
+    const financialStep = ReadStateHelper.getStepAnswers(
+      steps,
+      "RENEWABLE_ENERGY_REVENUE_FINANCIAL_ASSISTANCE",
+    );
+    const financialAssistanceRevenues = financialStep?.financialAssistanceRevenues;
     if (financialAssistanceRevenues?.length) {
       return {
         localOrRegionalAuthority:

@@ -18,8 +18,9 @@ import {
   selectSiteSoilsDistribution,
   selectSiteSurfaceArea,
 } from "../../createProject.selectors";
+import { ReadStateHelper } from "../helpers/readState";
 import { selectPhotovoltaicPanelsSurfaceArea } from "./photovoltaicPowerStation.selectors";
-import { selectCreationData, selectProjectSoilsDistribution } from "./renewableEnergy.selector";
+import { selectProjectSoilsDistribution, selectSteps } from "./renewableEnergy.selector";
 
 export const selectSuitableSurfaceAreaForPhotovoltaicPanels = createSelector(
   selectSiteData,
@@ -41,15 +42,15 @@ type NonSuitableSoilsSelectionViewData = {
   missingSuitableSurfaceArea: number;
 };
 export const selectNonSuitableSelectionViewData = createSelector(
-  [selectCreationData, selectSiteSoilsDistribution, selectMissingSuitableSurfaceArea],
-  (
-    creationData,
-    siteSoilsDistribution,
-    missingSuitableSurfaceArea,
-  ): NonSuitableSoilsSelectionViewData => {
+  [selectSteps, selectSiteSoilsDistribution, selectMissingSuitableSurfaceArea],
+  (steps, siteSoilsDistribution, missingSuitableSurfaceArea): NonSuitableSoilsSelectionViewData => {
     const nonSuitableSoils = getNonSuitableSoilsForPhotovoltaicPanels(siteSoilsDistribution);
+    const selection = ReadStateHelper.getStepAnswers(
+      steps,
+      "RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SELECTION",
+    );
     return {
-      initialValues: { soils: creationData.nonSuitableSoilsToTransform ?? [] },
+      initialValues: { soils: selection?.nonSuitableSoilsToTransform ?? [] },
       nonSuitableSoils,
       missingSuitableSurfaceArea,
     };
@@ -62,23 +63,30 @@ type NonSuitableSoilsSurfaceAreaToTransformViewData = {
   missingSuitableSurfaceArea: number;
 };
 export const selectNonSuitableSoilsSurfaceAreaToTransformViewData = createSelector(
-  [selectCreationData, selectSiteSoilsDistribution, selectMissingSuitableSurfaceArea],
+  [selectSteps, selectSiteSoilsDistribution, selectMissingSuitableSurfaceArea],
   (
-    creationData,
+    steps,
     siteSoilsDistribution,
     missingSuitableSurfaceArea,
   ): NonSuitableSoilsSurfaceAreaToTransformViewData => {
     const nonSuitableSoilsSurfaceAreas =
       getNonSuitableSoilsForPhotovoltaicPanels(siteSoilsDistribution);
-    // set every surface area to 0 if user hasn't entered data
+    const surfaceStep = ReadStateHelper.getStepAnswers(
+      steps,
+      "RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SURFACE",
+    );
+    const selectionStep = ReadStateHelper.getStepAnswers(
+      steps,
+      "RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SELECTION",
+    );
     const initialValues =
-      creationData.nonSuitableSoilsSurfaceAreaToTransform ??
+      surfaceStep?.nonSuitableSoilsSurfaceAreaToTransform ??
       typedObjectKeys(nonSuitableSoilsSurfaceAreas).reduce<SoilsDistribution>((acc, soilType) => {
         acc[soilType] = 0;
         return acc;
       }, {});
 
-    const soilsToTransform = (creationData.nonSuitableSoilsToTransform ?? []).map((soilType) => {
+    const soilsToTransform = (selectionStep?.nonSuitableSoilsToTransform ?? []).map((soilType) => {
       return { soilType, currentSurfaceArea: nonSuitableSoilsSurfaceAreas[soilType] ?? 0 };
     });
     return {
@@ -95,17 +103,27 @@ type FutureSoilsSelectionViewData = {
   baseSoilsDistribution: SoilsDistribution;
 };
 export const selectFutureSoilsSelectionViewData = createSelector(
-  [selectCreationData, selectSiteSoilsDistribution],
-  (creationData, siteSoilsDistribution): FutureSoilsSelectionViewData => {
+  [selectSteps, selectSiteSoilsDistribution],
+  (steps, siteSoilsDistribution): FutureSoilsSelectionViewData => {
+    const nonSuitableSoilsSurfaceStep = ReadStateHelper.getStepAnswers(
+      steps,
+      "RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SURFACE",
+    );
+    const customSoilsSelectionStep = ReadStateHelper.getStepAnswers(
+      steps,
+      "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CUSTOM_SOILS_SELECTION",
+    );
+    const baseSoilsDistribution =
+      nonSuitableSoilsSurfaceStep?.baseSoilsDistributionForTransformation ?? siteSoilsDistribution;
     const selectableSoils = getSuitableSoilsForTransformation(
-      typedObjectKeys(creationData.baseSoilsDistributionForTransformation ?? siteSoilsDistribution),
+      typedObjectKeys(baseSoilsDistribution),
     );
     const initialValues =
-      creationData.futureSoilsSelection ?? REQUIRED_SOILS_FOR_PHOTOVOLTAIC_PANELS;
+      customSoilsSelectionStep?.futureSoilsSelection ?? REQUIRED_SOILS_FOR_PHOTOVOLTAIC_PANELS;
     return {
       initialValues,
       selectableSoils,
-      baseSoilsDistribution: creationData.baseSoilsDistributionForTransformation ?? {},
+      baseSoilsDistribution,
     };
   },
 );
@@ -118,12 +136,29 @@ type FutureSoilsSurfaceAreasViewData = {
   baseSoilsDistribution: SoilsDistribution;
 };
 export const selectFutureSoilsSurfaceAreasViewData = createSelector(
-  [selectCreationData, selectSiteSurfaceArea, selectSiteSoilsDistribution],
-  (creationData, siteSurfaceArea, siteSoilsDistribution): FutureSoilsSurfaceAreasViewData => {
-    const initialValues = creationData.soilsDistribution;
-    const selectedSoils = creationData.futureSoilsSelection ?? [];
+  [selectSteps, selectSiteSurfaceArea, selectSiteSoilsDistribution],
+  (steps, siteSurfaceArea, siteSoilsDistribution): FutureSoilsSurfaceAreasViewData => {
+    const customAllocation = ReadStateHelper.getStepAnswers(
+      steps,
+      "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CUSTOM_SURFACE_AREA_ALLOCATION",
+    );
+    const customSoilsSelection = ReadStateHelper.getStepAnswers(
+      steps,
+      "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CUSTOM_SOILS_SELECTION",
+    );
+    const nonSuitableSoilsSurface = ReadStateHelper.getStepAnswers(
+      steps,
+      "RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SURFACE",
+    );
+    const surfaceStep = ReadStateHelper.getStepAnswers(
+      steps,
+      "RENEWABLE_ENERGY_PHOTOVOLTAIC_SURFACE",
+    );
+
+    const initialValues = customAllocation?.soilsDistribution;
+    const selectedSoils = customSoilsSelection?.futureSoilsSelection ?? [];
     const photovoltaicPanelsSurfaceArea =
-      creationData.photovoltaicInstallationSurfaceSquareMeters ?? 0;
+      surfaceStep?.photovoltaicInstallationSurfaceSquareMeters ?? 0;
 
     return {
       initialValues,
@@ -131,7 +166,7 @@ export const selectFutureSoilsSurfaceAreasViewData = createSelector(
       photovoltaicPanelsSurfaceArea,
       siteSurfaceArea,
       baseSoilsDistribution:
-        creationData.baseSoilsDistributionForTransformation ?? siteSoilsDistribution,
+        nonSuitableSoilsSurface?.baseSoilsDistributionForTransformation ?? siteSoilsDistribution,
     };
   },
 );

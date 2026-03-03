@@ -1,8 +1,10 @@
 import { RecurringRevenue } from "shared";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
-import { completeYearlyProjectedRevenue } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
+import {
+  navigateToPrevious,
+  requestStepCompletion,
+} from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 import { selectPVYearlyProjectedRevenueViewData } from "@/features/create-project/core/renewable-energy/selectors/revenues.selectors";
 import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
 import { getLabelForRecurringRevenueSource } from "@/shared/core/reconversionProject";
@@ -48,7 +50,7 @@ function YearlyProjectedRevenueFormContainer() {
         other: initialValues.other,
       }}
       onBack={() => {
-        dispatch(stepReverted());
+        dispatch(navigateToPrevious());
       }}
       onSubmit={(formData) => {
         const yearlyProjectedRevenues: RecurringRevenue[] = [];
@@ -60,7 +62,12 @@ function YearlyProjectedRevenueFormContainer() {
             });
           }
         }
-        dispatch(completeYearlyProjectedRevenue(yearlyProjectedRevenues));
+        dispatch(
+          requestStepCompletion({
+            stepId: "RENEWABLE_ENERGY_REVENUE_PROJECTED_YEARLY_REVENUE",
+            answers: { yearlyProjectedRevenues },
+          }),
+        );
       }}
     />
   );

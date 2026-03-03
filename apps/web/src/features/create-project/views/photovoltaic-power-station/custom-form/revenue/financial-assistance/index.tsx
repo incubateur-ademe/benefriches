@@ -1,6 +1,8 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
-import { completeFinancialAssistanceRevenues } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
+import {
+  navigateToPrevious,
+  requestStepCompletion,
+} from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 import { selectPhotovoltaicPowerStationFinancialAssistanceRevenueInitialValues } from "@/features/create-project/core/renewable-energy/selectors/revenues.selectors";
 import ProjectFinancialAssistanceRevenueForm from "@/shared/views/project-form/common/revenues/financial-assistance";
 
@@ -14,10 +16,15 @@ function ProjectFinancialAssistanceRevenueFormContainer() {
     <ProjectFinancialAssistanceRevenueForm
       initialValues={initialValues}
       onBack={() => {
-        dispatch(stepReverted());
+        dispatch(navigateToPrevious());
       }}
       onSubmit={(revenues) => {
-        dispatch(completeFinancialAssistanceRevenues(revenues));
+        dispatch(
+          requestStepCompletion({
+            stepId: "RENEWABLE_ENERGY_REVENUE_FINANCIAL_ASSISTANCE",
+            answers: { financialAssistanceRevenues: revenues },
+          }),
+        );
       }}
     />
   );

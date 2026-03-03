@@ -1,25 +1,27 @@
-import { AVERAGE_PHOTOVOLTAIC_CONTRACT_DURATION_IN_YEARS } from "shared";
-
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
-import { completePhotovoltaicContractDuration } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
-import { selectCreationData } from "@/features/create-project/core/renewable-energy/selectors/renewableEnergy.selector";
+import {
+  navigateToPrevious,
+  requestStepCompletion,
+} from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
+import { selectContractDurationViewData } from "@/features/create-project/core/renewable-energy/step-handlers/photovoltaic/contractDuration.selectors";
 
 import PhotovoltaicContractDurationForm from "./ContractDurationForm";
 
 function PhotovoltaicContractDurationContainer() {
   const dispatch = useAppDispatch();
-  const { photovoltaicContractDuration: initialValue } = useAppSelector(selectCreationData);
+  const { initialValues } = useAppSelector(selectContractDurationViewData);
   return (
     <PhotovoltaicContractDurationForm
-      initialValues={{
-        photovoltaicContractDuration:
-          initialValue ?? AVERAGE_PHOTOVOLTAIC_CONTRACT_DURATION_IN_YEARS,
-      }}
+      initialValues={initialValues}
       onSubmit={(data) => {
-        dispatch(completePhotovoltaicContractDuration(data.photovoltaicContractDuration));
+        dispatch(
+          requestStepCompletion({
+            stepId: "RENEWABLE_ENERGY_PHOTOVOLTAIC_CONTRACT_DURATION",
+            answers: { photovoltaicContractDuration: data.photovoltaicContractDuration },
+          }),
+        );
       }}
-      onBack={() => dispatch(stepReverted())}
+      onBack={() => dispatch(navigateToPrevious())}
     />
   );
 }

@@ -1,6 +1,8 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
-import { completeCustomSoilsSelectionStep } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
+import {
+  navigateToPrevious,
+  requestStepCompletion,
+} from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 import { selectFutureSoilsSelectionViewData } from "@/features/create-project/core/renewable-energy/selectors/soilsTransformation.selectors";
 
 import FutureSoilsSelectionForm, { FormValues } from "./FutureSoilsSelectionForm";
@@ -17,10 +19,15 @@ function FutureSoilsSelectionFormContainer() {
       selectableSoils={selectableSoils}
       currentSoilsDistribution={baseSoilsDistribution}
       onSubmit={(data: FormValues) => {
-        dispatch(completeCustomSoilsSelectionStep(data.soils));
+        dispatch(
+          requestStepCompletion({
+            stepId: "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CUSTOM_SOILS_SELECTION",
+            answers: { futureSoilsSelection: data.soils },
+          }),
+        );
       }}
       onBack={() => {
-        dispatch(stepReverted());
+        dispatch(navigateToPrevious());
       }}
     />
   );

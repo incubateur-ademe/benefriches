@@ -7,10 +7,10 @@ import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import { reconversionProjectCreationInitiated } from "../../actions/reconversionProjectCreationInitiated.action";
 import {
-  fetchPhotovoltaicExpectedAnnulPowerPerformanceForLocation,
+  fetchPhotovoltaicExpectedAnnualPowerPerformanceForLocation,
   PhotovoltaicPerformanceApiResult,
 } from "../actions/getPhotovoltaicExpectedPerformance.action";
-import { completePhotovoltaicInstallationElectricalPower } from "../actions/renewableEnergy.actions";
+import { requestStepCompletion } from "../renewableEnergy.actions";
 
 const API_MOCKED_RESULT = {
   expectedPerformance: {
@@ -54,7 +54,7 @@ describe("Photovoltaic expected performance reducer", () => {
       }),
     );
 
-    await store.dispatch(fetchPhotovoltaicExpectedAnnulPowerPerformanceForLocation());
+    await store.dispatch(fetchPhotovoltaicExpectedAnnualPowerPerformanceForLocation());
 
     const state = store.getState();
     expect(state.projectCreation.renewableEnergyProject.expectedPhotovoltaicPerformance).toEqual({
@@ -76,8 +76,13 @@ describe("Photovoltaic expected performance reducer", () => {
     await store.dispatch(
       reconversionProjectCreationInitiated({ relatedSiteId: SITE_MOCKED_RESULT["id"] }),
     );
-    store.dispatch(completePhotovoltaicInstallationElectricalPower(3));
-    await store.dispatch(fetchPhotovoltaicExpectedAnnulPowerPerformanceForLocation());
+    store.dispatch(
+      requestStepCompletion({
+        stepId: "RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER",
+        answers: { photovoltaicInstallationElectricalPowerKWc: 3 },
+      }),
+    );
+    await store.dispatch(fetchPhotovoltaicExpectedAnnualPowerPerformanceForLocation());
 
     expect(mockSpy.getExpectedPhotovoltaicPerformance).toHaveBeenCalledTimes(1);
     expect(mockSpy.getExpectedPhotovoltaicPerformance).toHaveBeenCalledWith({
@@ -98,8 +103,13 @@ describe("Photovoltaic expected performance reducer", () => {
     await store.dispatch(
       reconversionProjectCreationInitiated({ relatedSiteId: SITE_MOCKED_RESULT["id"] }),
     );
-    store.dispatch(completePhotovoltaicInstallationElectricalPower(3.0));
-    await store.dispatch(fetchPhotovoltaicExpectedAnnulPowerPerformanceForLocation());
+    store.dispatch(
+      requestStepCompletion({
+        stepId: "RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER",
+        answers: { photovoltaicInstallationElectricalPowerKWc: 3.0 },
+      }),
+    );
+    await store.dispatch(fetchPhotovoltaicExpectedAnnualPowerPerformanceForLocation());
 
     const state = store.getState();
     expect(state.projectCreation.renewableEnergyProject.expectedPhotovoltaicPerformance).toEqual({
@@ -122,8 +132,13 @@ describe("Photovoltaic expected performance reducer", () => {
     await store.dispatch(
       reconversionProjectCreationInitiated({ relatedSiteId: SITE_MOCKED_RESULT["id"] }),
     );
-    store.dispatch(completePhotovoltaicInstallationElectricalPower(3.0));
-    await store.dispatch(fetchPhotovoltaicExpectedAnnulPowerPerformanceForLocation());
+    store.dispatch(
+      requestStepCompletion({
+        stepId: "RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER",
+        answers: { photovoltaicInstallationElectricalPowerKWc: 3.0 },
+      }),
+    );
+    await store.dispatch(fetchPhotovoltaicExpectedAnnualPowerPerformanceForLocation());
 
     const state = store.getState();
     expect(state.projectCreation.renewableEnergyProject.expectedPhotovoltaicPerformance).toEqual({

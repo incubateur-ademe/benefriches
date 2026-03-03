@@ -1,6 +1,7 @@
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
 
-import { makeRenewableEnergyProjectCreationActionType } from "./renewableEnergy.actions";
+import { ReadStateHelper } from "../helpers/readState";
+import { makeRenewableEnergyProjectCreationActionType } from "../renewableEnergy.actions";
 
 export type PhotovoltaicPerformanceApiResult = {
   expectedPerformance: {
@@ -32,7 +33,7 @@ type FetchResult = {
   expectedPerformanceMwhPerYear: number;
 };
 
-export const fetchPhotovoltaicExpectedAnnulPowerPerformanceForLocation =
+export const fetchPhotovoltaicExpectedAnnualPowerPerformanceForLocation =
   createAppAsyncThunk<FetchResult>(
     makeRenewableEnergyProjectCreationActionType(
       "fetchPhotovoltaicExpectedAnnualPowerPerformanceForLocation",
@@ -40,9 +41,10 @@ export const fetchPhotovoltaicExpectedAnnulPowerPerformanceForLocation =
     async (_, { extra, getState }) => {
       const { projectCreation } = getState();
       const { lat, long } = projectCreation.siteData?.address ?? {};
-      const peakPower =
-        projectCreation.renewableEnergyProject.creationData
-          .photovoltaicInstallationElectricalPowerKWc;
+      const peakPower = ReadStateHelper.getStepAnswers(
+        projectCreation.renewableEnergyProject.steps,
+        "RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER",
+      )?.photovoltaicInstallationElectricalPowerKWc;
 
       if (!lat || !long || !peakPower) {
         return Promise.reject(

@@ -1,6 +1,8 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
-import { completePhotovoltaicInstallationElectricalPower } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
+import {
+  navigateToPrevious,
+  requestStepCompletion,
+} from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 import { selectPhotovoltaicPowerViewData } from "@/features/create-project/core/renewable-energy/selectors/photovoltaicPowerStation.selectors";
 
 import PhotovoltaicPowerForm from "./PowerForm";
@@ -18,14 +20,18 @@ function PhotovoltaicPowerContainer() {
 
   const onSubmit = (data: { photovoltaicInstallationElectricalPowerKWc: number }) => {
     dispatch(
-      completePhotovoltaicInstallationElectricalPower(
-        data.photovoltaicInstallationElectricalPowerKWc,
-      ),
+      requestStepCompletion({
+        stepId: "RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER",
+        answers: {
+          photovoltaicInstallationElectricalPowerKWc:
+            data.photovoltaicInstallationElectricalPowerKWc,
+        },
+      }),
     );
   };
 
   const onBack = () => {
-    dispatch(stepReverted());
+    dispatch(navigateToPrevious());
   };
 
   if (keyParameter === "SURFACE") {

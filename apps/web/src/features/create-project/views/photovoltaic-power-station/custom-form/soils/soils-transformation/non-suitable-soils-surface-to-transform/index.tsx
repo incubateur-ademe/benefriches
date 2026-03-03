@@ -1,6 +1,8 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
-import { completeNonSuitableSoilsSurfaceStep } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
+import {
+  navigateToPrevious,
+  requestStepCompletion,
+} from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 import { selectNonSuitableSoilsSurfaceAreaToTransformViewData } from "@/features/create-project/core/renewable-energy/selectors/soilsTransformation.selectors";
 
 import NonSuitableSoilsSurfaceForm, { FormValues } from "./NonSuitableSoilsSurfaceToTransformForm";
@@ -17,10 +19,15 @@ function NonSuitableSoilsSurfaceFormContainer() {
       soilsToTransform={soilsToTransform}
       missingSuitableSurfaceArea={missingSuitableSurfaceArea}
       onSubmit={(data: FormValues) => {
-        dispatch(completeNonSuitableSoilsSurfaceStep(data.soilsTransformation));
+        dispatch(
+          requestStepCompletion({
+            stepId: "RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SURFACE",
+            answers: { nonSuitableSoilsSurfaceAreaToTransform: data.soilsTransformation },
+          }),
+        );
       }}
       onBack={() => {
-        dispatch(stepReverted());
+        dispatch(navigateToPrevious());
       }}
     />
   );

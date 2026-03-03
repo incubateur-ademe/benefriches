@@ -1,9 +1,11 @@
 import { useEffect } from "react";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
-import { fetchPhotovoltaicExpectedAnnulPowerPerformanceForLocation } from "@/features/create-project/core/renewable-energy/actions/getPhotovoltaicExpectedPerformance.action";
-import { completePhotovoltaicExpectedAnnualProduction } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
+import { fetchPhotovoltaicExpectedAnnualPowerPerformanceForLocation } from "@/features/create-project/core/renewable-energy/actions/getPhotovoltaicExpectedPerformance.action";
+import {
+  navigateToPrevious,
+  requestStepCompletion,
+} from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
 import PhotovoltaicExpectedAnnualProductionForm from "./ExpectedAnnualProductionForm";
@@ -16,7 +18,7 @@ function PhotovoltaicExpectedAnnualProductionContainer() {
   );
 
   useEffect(() => {
-    void dispatch(fetchPhotovoltaicExpectedAnnulPowerPerformanceForLocation());
+    void dispatch(fetchPhotovoltaicExpectedAnnualPowerPerformanceForLocation());
   }, [dispatch]);
 
   if (loadingState === "loading") {
@@ -28,10 +30,15 @@ function PhotovoltaicExpectedAnnualProductionContainer() {
       expectedPerformanceMwhPerYear={expectedPerformanceMwhPerYear}
       onSubmit={(data) => {
         dispatch(
-          completePhotovoltaicExpectedAnnualProduction(data.photovoltaicExpectedAnnualProduction),
+          requestStepCompletion({
+            stepId: "RENEWABLE_ENERGY_PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION",
+            answers: {
+              photovoltaicExpectedAnnualProduction: data.photovoltaicExpectedAnnualProduction,
+            },
+          }),
         );
       }}
-      onBack={() => dispatch(stepReverted())}
+      onBack={() => dispatch(navigateToPrevious())}
     />
   );
 }
