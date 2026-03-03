@@ -7,7 +7,7 @@ import { MutateStateHelper } from "./mutateState";
 import { navigateToAndLoadStep } from "./navigateToStep";
 import { computeStepsSequence } from "./stepsSequence";
 
-export type StepUpdateResult<T extends AnswerStepId> = {
+type StepUpdateResult<T extends AnswerStepId> = {
   payload: StepCompletionPayload<T>;
   navigationTarget?: RenewableEnergyCreationStep;
 };

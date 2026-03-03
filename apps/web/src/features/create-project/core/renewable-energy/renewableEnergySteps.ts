@@ -48,11 +48,6 @@ export const SUMMARY_STEPS = [
 export type SummaryStep = (typeof SUMMARY_STEPS)[number];
 export type IntroductionStep = (typeof INTRODUCTION_STEPS)[number];
 
-const SUMMARY_STEPS_SET = new Set<SummaryStep>(SUMMARY_STEPS);
-export const isSummaryStep = (stepId: RenewableEnergyCreationStep): stepId is SummaryStep => {
-  return SUMMARY_STEPS_SET.has(stepId as SummaryStep);
-};
-
 export const answersByStepSchemas = {
   RENEWABLE_ENERGY_PHOTOVOLTAIC_KEY_PARAMETER: photovoltaicKeyParameterSchema,
   RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER: photovoltaicPowerSchema,
@@ -108,9 +103,9 @@ const renewableEnergyCreationSteps = z.enum([
 // Express steps stay separate (not part of step handler flow)
 const renewableEnergyExpressCreationStep = z.enum(["RENEWABLE_ENERGY_EXPRESS_FINAL_SUMMARY"]);
 
-export type RenewableEnergyExpressCreationStep = z.infer<typeof renewableEnergyExpressCreationStep>;
+type RenewableEnergyExpressCreationStep = z.infer<typeof renewableEnergyExpressCreationStep>;
 
-export const isRenewableEnergyExpressCreationStep = (
+const isRenewableEnergyExpressCreationStep = (
   step: string,
 ): step is RenewableEnergyExpressCreationStep => {
   return renewableEnergyExpressCreationStep.safeParse(step).success;
