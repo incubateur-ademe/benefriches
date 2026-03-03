@@ -12,6 +12,8 @@ import {
   expressUrbanProjectSaved,
 } from "./urbanProjectExpressSaved.action";
 
+// Sub-reducer composed via reduce-reducers in createProject.reducer.ts.
+// Initial state is always provided by the parent reducer; this placeholder is never used.
 const createUrbanProjectReducer = createReducer({} as ProjectCreationState, (builder) => {
   // Form actions
   addUrbanProjectFormCasesToBuilder(builder, creationProjectFormUrbanActions);

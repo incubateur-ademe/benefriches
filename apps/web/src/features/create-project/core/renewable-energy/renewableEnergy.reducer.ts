@@ -242,6 +242,8 @@ const addRevertStepCases = (builder: ActionReducerMapBuilder<ProjectCreationStat
   });
 };
 
+// Sub-reducer composed via reduce-reducers in createProject.reducer.ts.
+// Initial state is always provided by the parent reducer; this placeholder is never used.
 export const renewableEnergyProjectReducer = createReducer(
   {} as ProjectCreationState,
   (builder) => {

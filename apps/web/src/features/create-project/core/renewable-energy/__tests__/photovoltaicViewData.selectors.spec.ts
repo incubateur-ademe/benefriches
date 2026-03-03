@@ -1,4 +1,5 @@
-import { RootState } from "@/app/store/store";
+import { rootReducer } from "@/app/store/rootReducer";
+import type { RootState } from "@/app/store/store";
 import { getProjectFormInitialState } from "@/shared/core/reducers/project-form/projectForm.reducer";
 
 import { relatedSiteData } from "../../__tests__/siteData.mock";
@@ -27,6 +28,8 @@ const siteData = {
   },
 };
 
+const initialRootState = rootReducer(undefined, { type: "@@INIT" });
+
 const buildState = (
   stepOverrides: Partial<RenewableEnergyStepsState> = {},
 ): RootState["projectCreation"] =>
@@ -46,19 +49,23 @@ const buildState = (
     surfaceAreaInputMode: "percentage",
   }) satisfies RootState["projectCreation"];
 
-const MOCK_STATE = {
+const MOCK_STATE: RootState = {
+  ...initialRootState,
   projectCreation: buildState(),
   currentUser: {
     currentUser: {
       id: "user-1",
       email: "test@example.com",
+      firstName: "John",
+      lastName: "Doe",
       structureName: "My company",
       structureType: "company" as const,
+      structureActivity: "other" as const,
     },
-    currentUserLoaded: true,
+    currentUserState: "authenticated" as const,
     createUserState: "success" as const,
   },
-} as unknown as RootState;
+};
 
 describe("Photovoltaic ViewData selectors", () => {
   describe("selectPVDeveloperViewData", () => {
@@ -79,7 +86,7 @@ describe("Photovoltaic ViewData selectors", () => {
         currentUser: {
           name: "My company",
           type: "company",
-          activity: undefined,
+          activity: "other",
         },
         initialValue: {
           name: "Future operating company name",
