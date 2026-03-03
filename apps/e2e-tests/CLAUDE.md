@@ -73,3 +73,14 @@ For complete patterns and examples, see the skill: `.claude/skills/create-e2e-te
 - **Accessibility-first selectors** - Prefer `getByRole()` over CSS selectors
 - **One fixture file per feature** - Compose page objects there
 - **Import shared types** - Use `import type { SiteNature } from "shared"` when needed
+
+---
+
+## Gotchas
+
+- **DSFR radio/checkbox inputs require `{ force: true }`** - DSFR labels overlay native inputs, causing "intercepts pointer events" errors with `.check()`
+- **`test.describe` titles must start with lowercase** - oxlint rule `playwright/prefer-lowercase-title`
+- **`CreateCustomSiteDto` is a discriminated union** - Use `Extract<CreateCustomSiteDto, { nature: "AGRICULTURAL_OPERATION" }>` to narrow, not `Omit<>` on the full union
+- **Custom `MonthYearInput` needs `pressSequentially`** - Formats as you type, so `fill()` doesn't work; use `pressSequentially("092027")` for "09/2027"
+- **Form buttons depend on pre-filled values** - Many wizard forms (expenses, revenue) are pre-filled with calculated defaults, showing "Valider" instead of "Passer"
+- **Read actual component files for exact French labels** - Don't guess form labels; check the `.tsx` source for the exact `label` prop text
