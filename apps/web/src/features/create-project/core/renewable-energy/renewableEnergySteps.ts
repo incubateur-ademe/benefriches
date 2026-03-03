@@ -1,8 +1,32 @@
-import { reinstatementExpensesPurposeSchema, soilTypeSchema, typedObjectKeys } from "shared";
-import type { SoilsDistribution, SoilType } from "shared";
+import { typedObjectKeys } from "shared";
 import z from "zod";
 
-import { projectStakeholderSchema } from "./step-handlers/shared/projectStakeholder.schema";
+import { expensesInstallationSchema } from "./step-handlers/expenses/installation.schema";
+import { expensesReinstatementSchema } from "./step-handlers/expenses/reinstatement.schema";
+import { expensesSitePurchaseAmountsSchema } from "./step-handlers/expenses/sitePurchaseAmounts.schema";
+import { expensesYearlyProjectedExpensesSchema } from "./step-handlers/expenses/yearlyProjectedExpenses.schema";
+import { namingSchema } from "./step-handlers/naming/naming.schema";
+import { photovoltaicContractDurationSchema } from "./step-handlers/photovoltaic/contractDuration.schema";
+import { photovoltaicExpectedAnnualProductionSchema } from "./step-handlers/photovoltaic/expectedAnnualProduction.schema";
+import { photovoltaicKeyParameterSchema } from "./step-handlers/photovoltaic/keyParameter.schema";
+import { photovoltaicPowerSchema } from "./step-handlers/photovoltaic/power.schema";
+import { photovoltaicSurfaceSchema } from "./step-handlers/photovoltaic/surface.schema";
+import { projectPhaseSchema } from "./step-handlers/project-phase/projectPhase.schema";
+import { revenueFinancialAssistanceSchema } from "./step-handlers/revenue/financialAssistance.schema";
+import { revenueYearlyProjectedRevenueSchema } from "./step-handlers/revenue/yearlyProjectedRevenue.schema";
+import { scheduleProjectionSchema } from "./step-handlers/schedule/scheduleProjection.schema";
+import { soilsDecontaminationSelectionSchema } from "./step-handlers/soils-decontamination/selection.schema";
+import { soilsDecontaminationSurfaceAreaSchema } from "./step-handlers/soils-decontamination/surfaceArea.schema";
+import { customSoilsSelectionSchema } from "./step-handlers/soils-transformation/customSoilsSelection.schema";
+import { customSurfaceAreaAllocationSchema } from "./step-handlers/soils-transformation/customSurfaceAreaAllocation.schema";
+import { nonSuitableSoilsSelectionSchema } from "./step-handlers/soils-transformation/nonSuitableSoilsSelection.schema";
+import { nonSuitableSoilsSurfaceSchema } from "./step-handlers/soils-transformation/nonSuitableSoilsSurface.schema";
+import { soilsTransformationProjectSelectionSchema } from "./step-handlers/soils-transformation/projectSelection.schema";
+import { stakeholdersFutureOperatorSchema } from "./step-handlers/stakeholders/futureOperator.schema";
+import { stakeholdersFutureSiteOwnerSchema } from "./step-handlers/stakeholders/futureSiteOwner.schema";
+import { stakeholdersProjectDeveloperSchema } from "./step-handlers/stakeholders/projectDeveloper.schema";
+import { stakeholdersReinstatementContractOwnerSchema } from "./step-handlers/stakeholders/reinstatementContractOwner.schema";
+import { stakeholdersSitePurchaseSchema } from "./step-handlers/stakeholders/sitePurchase.schema";
 
 export const INTRODUCTION_STEPS = [
   "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_INTRODUCTION",
@@ -29,102 +53,37 @@ export const isSummaryStep = (stepId: RenewableEnergyCreationStep): stepId is Su
   return SUMMARY_STEPS_SET.has(stepId as SummaryStep);
 };
 
-const soilsDistributionSchema: z.ZodType<SoilsDistribution> = z.record(soilTypeSchema, z.number());
-const soilTypeArraySchema: z.ZodType<SoilType[]> = z.array(soilTypeSchema);
-const soilsTransformationProjectSchema = z.enum(["renaturation", "preserveCurrentSoils", "custom"]);
-
 export const answersByStepSchemas = {
-  RENEWABLE_ENERGY_PHOTOVOLTAIC_KEY_PARAMETER: z.object({
-    photovoltaicKeyParameter: z.enum(["POWER", "SURFACE"]),
-  }),
-  RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER: z.object({
-    photovoltaicInstallationElectricalPowerKWc: z.number(),
-  }),
-  RENEWABLE_ENERGY_PHOTOVOLTAIC_SURFACE: z.object({
-    photovoltaicInstallationSurfaceSquareMeters: z.number(),
-  }),
-  RENEWABLE_ENERGY_PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION: z.object({
-    photovoltaicExpectedAnnualProduction: z.number(),
-  }),
-  RENEWABLE_ENERGY_PHOTOVOLTAIC_CONTRACT_DURATION: z.object({
-    photovoltaicContractDuration: z.number(),
-  }),
-  RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION: z.object({
-    decontaminationPlan: z.enum(["partial", "none", "unknown"]),
-    decontaminatedSurfaceArea: z.number().optional(),
-  }),
-  RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SURFACE_AREA: z.object({
-    decontaminatedSurfaceArea: z.number(),
-  }),
-  RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SELECTION: z.object({
-    nonSuitableSoilsToTransform: soilTypeArraySchema,
-  }),
-  RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SURFACE: z.object({
-    nonSuitableSoilsSurfaceAreaToTransform: soilsDistributionSchema,
-    baseSoilsDistributionForTransformation: soilsDistributionSchema.optional(),
-  }),
-  RENEWABLE_ENERGY_SOILS_TRANSFORMATION_PROJECT_SELECTION: z.object({
-    soilsTransformationProject: soilsTransformationProjectSchema,
-    soilsDistribution: soilsDistributionSchema.optional(),
-  }),
-  RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CUSTOM_SOILS_SELECTION: z.object({
-    futureSoilsSelection: soilTypeArraySchema,
-  }),
-  RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CUSTOM_SURFACE_AREA_ALLOCATION: z.object({
-    soilsDistribution: soilsDistributionSchema,
-  }),
-  RENEWABLE_ENERGY_STAKEHOLDERS_PROJECT_DEVELOPER: z.object({
-    projectDeveloper: projectStakeholderSchema,
-  }),
-  RENEWABLE_ENERGY_STAKEHOLDERS_FUTURE_OPERATOR: z.object({
-    futureOperator: projectStakeholderSchema,
-  }),
-  RENEWABLE_ENERGY_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER: z.object({
-    reinstatementContractOwner: projectStakeholderSchema,
-  }),
-  RENEWABLE_ENERGY_STAKEHOLDERS_SITE_PURCHASE: z.object({
-    willSiteBePurchased: z.boolean(),
-  }),
-  RENEWABLE_ENERGY_STAKEHOLDERS_FUTURE_SITE_OWNER: z.object({
-    futureSiteOwner: projectStakeholderSchema,
-  }),
-  RENEWABLE_ENERGY_EXPENSES_SITE_PURCHASE_AMOUNTS: z.object({
-    sellingPrice: z.number(),
-    propertyTransferDuties: z.number().optional(),
-  }),
-  RENEWABLE_ENERGY_EXPENSES_REINSTATEMENT: z.object({
-    reinstatementExpenses: z.array(
-      z.object({ amount: z.number(), purpose: reinstatementExpensesPurposeSchema }),
-    ),
-  }),
-  RENEWABLE_ENERGY_EXPENSES_PHOTOVOLTAIC_PANELS_INSTALLATION: z.object({
-    photovoltaicPanelsInstallationExpenses: z.array(
-      z.object({ amount: z.number(), purpose: z.string() }),
-    ),
-  }),
-  RENEWABLE_ENERGY_EXPENSES_PROJECTED_YEARLY_EXPENSES: z.object({
-    yearlyProjectedExpenses: z.array(z.object({ amount: z.number(), purpose: z.string() })),
-  }),
-  RENEWABLE_ENERGY_REVENUE_PROJECTED_YEARLY_REVENUE: z.object({
-    yearlyProjectedRevenues: z.array(z.object({ amount: z.number(), source: z.string() })),
-  }),
-  RENEWABLE_ENERGY_REVENUE_FINANCIAL_ASSISTANCE: z.object({
-    financialAssistanceRevenues: z.array(z.object({ amount: z.number(), source: z.string() })),
-  }),
-  RENEWABLE_ENERGY_SCHEDULE_PROJECTION: z.object({
-    firstYearOfOperation: z.number().optional(),
-    photovoltaicInstallationSchedule: z
-      .object({ startDate: z.string(), endDate: z.string() })
-      .optional(),
-    reinstatementSchedule: z.object({ startDate: z.string(), endDate: z.string() }).optional(),
-  }),
-  RENEWABLE_ENERGY_PROJECT_PHASE: z.object({
-    phase: z.string(),
-  }),
-  RENEWABLE_ENERGY_NAMING: z.object({
-    name: z.string(),
-    description: z.string().optional(),
-  }),
+  RENEWABLE_ENERGY_PHOTOVOLTAIC_KEY_PARAMETER: photovoltaicKeyParameterSchema,
+  RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER: photovoltaicPowerSchema,
+  RENEWABLE_ENERGY_PHOTOVOLTAIC_SURFACE: photovoltaicSurfaceSchema,
+  RENEWABLE_ENERGY_PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION:
+    photovoltaicExpectedAnnualProductionSchema,
+  RENEWABLE_ENERGY_PHOTOVOLTAIC_CONTRACT_DURATION: photovoltaicContractDurationSchema,
+  RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION: soilsDecontaminationSelectionSchema,
+  RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SURFACE_AREA: soilsDecontaminationSurfaceAreaSchema,
+  RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SELECTION: nonSuitableSoilsSelectionSchema,
+  RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SURFACE: nonSuitableSoilsSurfaceSchema,
+  RENEWABLE_ENERGY_SOILS_TRANSFORMATION_PROJECT_SELECTION:
+    soilsTransformationProjectSelectionSchema,
+  RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CUSTOM_SOILS_SELECTION: customSoilsSelectionSchema,
+  RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CUSTOM_SURFACE_AREA_ALLOCATION:
+    customSurfaceAreaAllocationSchema,
+  RENEWABLE_ENERGY_STAKEHOLDERS_PROJECT_DEVELOPER: stakeholdersProjectDeveloperSchema,
+  RENEWABLE_ENERGY_STAKEHOLDERS_FUTURE_OPERATOR: stakeholdersFutureOperatorSchema,
+  RENEWABLE_ENERGY_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER:
+    stakeholdersReinstatementContractOwnerSchema,
+  RENEWABLE_ENERGY_STAKEHOLDERS_SITE_PURCHASE: stakeholdersSitePurchaseSchema,
+  RENEWABLE_ENERGY_STAKEHOLDERS_FUTURE_SITE_OWNER: stakeholdersFutureSiteOwnerSchema,
+  RENEWABLE_ENERGY_EXPENSES_SITE_PURCHASE_AMOUNTS: expensesSitePurchaseAmountsSchema,
+  RENEWABLE_ENERGY_EXPENSES_REINSTATEMENT: expensesReinstatementSchema,
+  RENEWABLE_ENERGY_EXPENSES_PHOTOVOLTAIC_PANELS_INSTALLATION: expensesInstallationSchema,
+  RENEWABLE_ENERGY_EXPENSES_PROJECTED_YEARLY_EXPENSES: expensesYearlyProjectedExpensesSchema,
+  RENEWABLE_ENERGY_REVENUE_PROJECTED_YEARLY_REVENUE: revenueYearlyProjectedRevenueSchema,
+  RENEWABLE_ENERGY_REVENUE_FINANCIAL_ASSISTANCE: revenueFinancialAssistanceSchema,
+  RENEWABLE_ENERGY_SCHEDULE_PROJECTION: scheduleProjectionSchema,
+  RENEWABLE_ENERGY_PROJECT_PHASE: projectPhaseSchema,
+  RENEWABLE_ENERGY_NAMING: namingSchema,
 };
 
 export const ANSWER_STEPS = typedObjectKeys(answersByStepSchemas);
