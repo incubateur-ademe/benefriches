@@ -3,7 +3,7 @@ import {
   navigateToPrevious,
   requestStepCompletion,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
-import { selectFutureSoilsSelectionViewData } from "@/features/create-project/core/renewable-energy/step-handlers/soils-transformation/futureSoilsSelection.selector";
+import { selectFutureSoilsSelectionViewData } from "@/features/create-project/core/renewable-energy/step-handlers/soils-transformation/soils-transformation-future-soils-selection/soilsTransformationFutureSoilsSelection.selector";
 
 import FutureSoilsSelectionForm, { FormValues } from "./FutureSoilsSelectionForm";
 

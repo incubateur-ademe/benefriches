@@ -3,7 +3,7 @@ import {
   navigateToPrevious,
   requestStepCompletion,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
-import { selectSitePurchasedViewData } from "@/features/create-project/core/renewable-energy/step-handlers/stakeholders/sitePurchase.selector";
+import { selectSitePurchasedViewData } from "@/features/create-project/core/renewable-energy/step-handlers/stakeholders/stakeholders-site-purchase/stakeholdersSitePurchase.selector";
 
 import SitePurchasedForm, { FormValues } from "./SitePurchasedForm";
 

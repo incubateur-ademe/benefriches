@@ -6,7 +6,7 @@ import {
   navigateToPrevious,
   requestStepCompletion,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
-import { selectExpectedAnnualProductionViewData } from "@/features/create-project/core/renewable-energy/step-handlers/photovoltaic/expectedAnnualProduction.selector";
+import { selectExpectedAnnualProductionViewData } from "@/features/create-project/core/renewable-energy/step-handlers/photovoltaic/photovoltaic-expected-annual-production/photovoltaicExpectedAnnualProduction.selector";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
 import PhotovoltaicExpectedAnnualProductionForm from "./ExpectedAnnualProductionForm";

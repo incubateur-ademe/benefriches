@@ -5,7 +5,7 @@ import {
   navigateToPrevious,
   requestStepCompletion,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
-import { selectProjectPhaseViewData } from "@/features/create-project/core/renewable-energy/step-handlers/project-phase/projectPhase.selectors";
+import { selectProjectPhaseViewData } from "@/features/create-project/core/renewable-energy/step-handlers/project-phase/project-phase/projectPhase.selectors";
 import {
   getHintTextForRenewableEnergyProjectPhase,
   getLabelForRenewableEnergyProjectPhase,

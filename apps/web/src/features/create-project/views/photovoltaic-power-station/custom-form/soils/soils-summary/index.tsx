@@ -3,7 +3,7 @@ import {
   navigateToNext,
   navigateToPrevious,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
-import { selectPVSoilsSummaryViewData } from "@/features/create-project/core/renewable-energy/step-handlers/soils-transformation/soilsSummary.selector";
+import { selectPVSoilsSummaryViewData } from "@/features/create-project/core/renewable-energy/step-handlers/soils-transformation/soils-transformation-soils-summary/soilsTransformationSoilsSummary.selector";
 
 import ProjectSoilsSummary from "./ProjectSoilsSummary";
 

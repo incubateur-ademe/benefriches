@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { navigateToPrevious } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
-import { selectCreationResultViewData } from "@/features/create-project/core/renewable-energy/step-handlers/summary/creationResult.selector";
+import { selectCreationResultViewData } from "@/features/create-project/core/renewable-energy/step-handlers/summary/summary-creation-result/summaryCreationResult.selector";
 
 import ProjectCreationResult from "../../../common-views/result";
 

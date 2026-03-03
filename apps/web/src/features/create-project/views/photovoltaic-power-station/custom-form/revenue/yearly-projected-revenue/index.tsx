@@ -5,7 +5,7 @@ import {
   navigateToPrevious,
   requestStepCompletion,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
-import { selectPVYearlyProjectedRevenueViewData } from "@/features/create-project/core/renewable-energy/step-handlers/revenue/yearlyProjectedRevenue.selector";
+import { selectPVYearlyProjectedRevenueViewData } from "@/features/create-project/core/renewable-energy/step-handlers/revenue/revenue-yearly-projected/revenueYearlyProjected.selector";
 import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
 import { getLabelForRecurringRevenueSource } from "@/shared/core/reconversionProject";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";

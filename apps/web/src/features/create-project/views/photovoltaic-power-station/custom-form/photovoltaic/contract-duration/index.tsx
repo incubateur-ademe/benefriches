@@ -3,7 +3,7 @@ import {
   navigateToPrevious,
   requestStepCompletion,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
-import { selectContractDurationViewData } from "@/features/create-project/core/renewable-energy/step-handlers/photovoltaic/contractDuration.selectors";
+import { selectContractDurationViewData } from "@/features/create-project/core/renewable-energy/step-handlers/photovoltaic/photovoltaic-contract-duration/photovoltaicContractDuration.selectors";
 
 import PhotovoltaicContractDurationForm from "./ContractDurationForm";
 

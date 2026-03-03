@@ -5,7 +5,7 @@ import {
   navigateToPrevious,
   requestStepCompletion,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
-import { selectPVDecontaminationSurfaceAreaViewData } from "@/features/create-project/core/renewable-energy/step-handlers/soils-decontamination/surfaceArea.selector";
+import { selectPVDecontaminationSurfaceAreaViewData } from "@/features/create-project/core/renewable-energy/step-handlers/soils-decontamination/soils-decontamination-surface-area/soilsDecontaminationSurfaceArea.selector";
 import { useSurfaceAreaInputMode } from "@/features/create-project/views/useSurfaceAreaInputMode";
 import { computeValueFromPercentage } from "@/shared/core/percentage/percentage";
 import SoilsDecontaminationSurfaceArea from "@/shared/views/project-form/common/soils-decontamination/surface-area/SoilsDecontaminationSurfaceArea";

@@ -1,32 +1,32 @@
 import { typedObjectKeys } from "shared";
 import z from "zod";
 
-import { expensesInstallationSchema } from "./step-handlers/expenses/installation.schema";
-import { expensesReinstatementSchema } from "./step-handlers/expenses/reinstatement.schema";
-import { expensesSitePurchaseAmountsSchema } from "./step-handlers/expenses/sitePurchaseAmounts.schema";
-import { expensesYearlyProjectedExpensesSchema } from "./step-handlers/expenses/yearlyProjectedExpenses.schema";
-import { namingSchema } from "./step-handlers/naming/naming.schema";
-import { photovoltaicContractDurationSchema } from "./step-handlers/photovoltaic/contractDuration.schema";
-import { photovoltaicExpectedAnnualProductionSchema } from "./step-handlers/photovoltaic/expectedAnnualProduction.schema";
-import { photovoltaicKeyParameterSchema } from "./step-handlers/photovoltaic/keyParameter.schema";
-import { photovoltaicPowerSchema } from "./step-handlers/photovoltaic/power.schema";
-import { photovoltaicSurfaceSchema } from "./step-handlers/photovoltaic/surface.schema";
-import { projectPhaseSchema } from "./step-handlers/project-phase/projectPhase.schema";
-import { revenueFinancialAssistanceSchema } from "./step-handlers/revenue/financialAssistance.schema";
-import { revenueYearlyProjectedRevenueSchema } from "./step-handlers/revenue/yearlyProjectedRevenue.schema";
-import { scheduleProjectionSchema } from "./step-handlers/schedule/scheduleProjection.schema";
-import { soilsDecontaminationSelectionSchema } from "./step-handlers/soils-decontamination/selection.schema";
-import { soilsDecontaminationSurfaceAreaSchema } from "./step-handlers/soils-decontamination/surfaceArea.schema";
-import { customSoilsSelectionSchema } from "./step-handlers/soils-transformation/customSoilsSelection.schema";
-import { customSurfaceAreaAllocationSchema } from "./step-handlers/soils-transformation/customSurfaceAreaAllocation.schema";
-import { nonSuitableSoilsSelectionSchema } from "./step-handlers/soils-transformation/nonSuitableSoilsSelection.schema";
-import { nonSuitableSoilsSurfaceSchema } from "./step-handlers/soils-transformation/nonSuitableSoilsSurface.schema";
-import { soilsTransformationProjectSelectionSchema } from "./step-handlers/soils-transformation/projectSelection.schema";
-import { stakeholdersFutureOperatorSchema } from "./step-handlers/stakeholders/futureOperator.schema";
-import { stakeholdersFutureSiteOwnerSchema } from "./step-handlers/stakeholders/futureSiteOwner.schema";
-import { stakeholdersProjectDeveloperSchema } from "./step-handlers/stakeholders/projectDeveloper.schema";
-import { stakeholdersReinstatementContractOwnerSchema } from "./step-handlers/stakeholders/reinstatementContractOwner.schema";
-import { stakeholdersSitePurchaseSchema } from "./step-handlers/stakeholders/sitePurchase.schema";
+import { expensesInstallationSchema } from "./step-handlers/expenses/expenses-installation/expensesInstallation.schema";
+import { expensesReinstatementSchema } from "./step-handlers/expenses/expenses-reinstatement/expensesReinstatement.schema";
+import { expensesSitePurchaseAmountsSchema } from "./step-handlers/expenses/expenses-site-purchase-amounts/expensesSitePurchaseAmounts.schema";
+import { expensesYearlyProjectedExpensesSchema } from "./step-handlers/expenses/expenses-yearly-projected/expensesYearlyProjected.schema";
+import { namingSchema } from "./step-handlers/naming/naming/naming.schema";
+import { photovoltaicContractDurationSchema } from "./step-handlers/photovoltaic/photovoltaic-contract-duration/photovoltaicContractDuration.schema";
+import { photovoltaicExpectedAnnualProductionSchema } from "./step-handlers/photovoltaic/photovoltaic-expected-annual-production/photovoltaicExpectedAnnualProduction.schema";
+import { photovoltaicKeyParameterSchema } from "./step-handlers/photovoltaic/photovoltaic-key-parameter/photovoltaicKeyParameter.schema";
+import { photovoltaicPowerSchema } from "./step-handlers/photovoltaic/photovoltaic-power/photovoltaicPower.schema";
+import { photovoltaicSurfaceSchema } from "./step-handlers/photovoltaic/photovoltaic-surface/photovoltaicSurface.schema";
+import { projectPhaseSchema } from "./step-handlers/project-phase/project-phase/projectPhase.schema";
+import { revenueFinancialAssistanceSchema } from "./step-handlers/revenue/revenue-financial-assistance/revenueFinancialAssistance.schema";
+import { revenueYearlyProjectedRevenueSchema } from "./step-handlers/revenue/revenue-yearly-projected/revenueYearlyProjected.schema";
+import { scheduleProjectionSchema } from "./step-handlers/schedule/schedule-projection/scheduleProjection.schema";
+import { soilsDecontaminationSelectionSchema } from "./step-handlers/soils-decontamination/soils-decontamination-selection/soilsDecontaminationSelection.schema";
+import { soilsDecontaminationSurfaceAreaSchema } from "./step-handlers/soils-decontamination/soils-decontamination-surface-area/soilsDecontaminationSurfaceArea.schema";
+import { customSoilsSelectionSchema } from "./step-handlers/soils-transformation/soils-transformation-custom-soils-selection/soilsTransformationCustomSoilsSelection.schema";
+import { customSurfaceAreaAllocationSchema } from "./step-handlers/soils-transformation/soils-transformation-custom-surface-area-allocation/soilsTransformationCustomSurfaceAreaAllocation.schema";
+import { nonSuitableSoilsSelectionSchema } from "./step-handlers/soils-transformation/soils-transformation-non-suitable-soils-selection/soilsTransformationNonSuitableSoilsSelection.schema";
+import { nonSuitableSoilsSurfaceSchema } from "./step-handlers/soils-transformation/soils-transformation-non-suitable-soils-surface/soilsTransformationNonSuitableSoilsSurface.schema";
+import { soilsTransformationProjectSelectionSchema } from "./step-handlers/soils-transformation/soils-transformation-project-selection/soilsTransformationProjectSelection.schema";
+import { stakeholdersFutureOperatorSchema } from "./step-handlers/stakeholders/stakeholders-future-operator/stakeholdersFutureOperator.schema";
+import { stakeholdersFutureSiteOwnerSchema } from "./step-handlers/stakeholders/stakeholders-future-site-owner/stakeholdersFutureSiteOwner.schema";
+import { stakeholdersProjectDeveloperSchema } from "./step-handlers/stakeholders/stakeholders-project-developer/stakeholdersProjectDeveloper.schema";
+import { stakeholdersReinstatementContractOwnerSchema } from "./step-handlers/stakeholders/stakeholders-reinstatement-contract-owner/stakeholdersReinstatementContractOwner.schema";
+import { stakeholdersSitePurchaseSchema } from "./step-handlers/stakeholders/stakeholders-site-purchase/stakeholdersSitePurchase.schema";
 
 export const INTRODUCTION_STEPS = [
   "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_INTRODUCTION",

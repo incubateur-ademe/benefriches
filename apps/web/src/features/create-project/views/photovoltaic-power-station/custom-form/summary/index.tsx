@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { saveReconversionProject } from "@/features/create-project/core/renewable-energy/actions/customProjectSaved.action";
 import { navigateToPrevious } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
-import { selectPhotovoltaicFinalSummaryViewData } from "@/features/create-project/core/renewable-energy/step-handlers/summary/finalSummary.selector";
+import { selectPhotovoltaicFinalSummaryViewData } from "@/features/create-project/core/renewable-energy/step-handlers/summary/summary-final/summaryFinal.selector";
 
 import ProjectionCreationDataSummary from "./ProjectCreationDataSummary";
 

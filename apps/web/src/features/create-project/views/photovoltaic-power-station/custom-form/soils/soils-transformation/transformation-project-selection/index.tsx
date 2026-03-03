@@ -3,7 +3,7 @@ import {
   navigateToPrevious,
   requestStepCompletion,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
-import { selectSoilsTransformationProjectSelectionViewData } from "@/features/create-project/core/renewable-energy/step-handlers/soils-transformation/projectSelection.selectors";
+import { selectSoilsTransformationProjectSelectionViewData } from "@/features/create-project/core/renewable-energy/step-handlers/soils-transformation/soils-transformation-project-selection/soilsTransformationProjectSelection.selectors";
 
 import SoilsTransformationProjectForm, { FormValues } from "./SoilsTransformationProjectForm";
 
