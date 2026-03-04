@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { selectCurrentUserId } from "@/features/onboarding/core/user.reducer";
+import { selectMyEvaluationsViewData } from "@/features/my-evaluations/core/myEvaluations.selectors";
 
 import {
   fetchUserSiteEvaluations,
@@ -11,8 +11,9 @@ import MyEvaluationsPage from "./MyEvaluationsPage";
 
 function MyEvaluationsPageContainer() {
   const dispatch = useAppDispatch();
-  const { siteEvaluations, loadingState } = useAppSelector((state) => state.evaluationsList);
-  const currentUserId = useAppSelector(selectCurrentUserId);
+  const { siteEvaluations, loadingState, currentUserId } = useAppSelector(
+    selectMyEvaluationsViewData,
+  );
 
   useEffect(() => {
     if (currentUserId) {
