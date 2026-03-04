@@ -3,10 +3,7 @@ import { useEffect } from "react";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { fetchProjectFeatures } from "@/features/projects/application/project-features/projectFeatures.actions";
-import {
-  selectProjectFeatures,
-  selectProjectFeaturesLoadingState,
-} from "@/features/projects/application/project-features/projectFeatures.reducer";
+import { selectProjectFeaturesViewData } from "@/features/projects/core/projectFeatures.selectors";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
@@ -17,8 +14,7 @@ type Props = {
 };
 
 const ProjectFeaturesViewContainer = ({ projectId }: Props) => {
-  const projectFeatures = useAppSelector(selectProjectFeatures);
-  const loadingState = useAppSelector(selectProjectFeaturesLoadingState);
+  const { projectFeatures, loadingState } = useAppSelector(selectProjectFeaturesViewData);
 
   const dispatch = useAppDispatch();
 
