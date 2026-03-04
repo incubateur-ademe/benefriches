@@ -11,7 +11,7 @@ import { useDelayed } from "@/shared/views/hooks/useDelayed";
 
 import AuthLinkNotReceivedHelp from "./AuthLinkNotReceivedHelp";
 import AuthLinkRequestError from "./AuthLinkRequestError";
-import { authLinkModal } from "./createAuthLinkModal";
+import { requestAuthLinkModal } from "./createRequestAuthLinkModal";
 
 const HELP_DELAY_MS = 3_000;
 
@@ -46,9 +46,9 @@ type Props = {
   postLoginRedirectTo?: string;
 };
 
-export default function AuthLinkModal({ postLoginRedirectTo }: Props) {
+export default function RequstAuthLinkModal({ postLoginRedirectTo }: Props) {
   const dispatch = useAppDispatch();
-  useIsModalOpen(authLinkModal, {
+  useIsModalOpen(requestAuthLinkModal, {
     onConceal: () => {
       dispatch(authLinkRequestReset());
     },
@@ -57,7 +57,7 @@ export default function AuthLinkModal({ postLoginRedirectTo }: Props) {
   const email = useWatch({ control, name: "email", defaultValue: "" });
 
   return (
-    <authLinkModal.Component size="medium" title="Demande de lien de connexion">
+    <requestAuthLinkModal.Component size="medium" title="Demande de lien de connexion">
       <form
         onSubmit={handleSubmit((data) => {
           void dispatch(authLinkRequested({ email: data.email, postLoginRedirectTo }));
@@ -74,6 +74,6 @@ export default function AuthLinkModal({ postLoginRedirectTo }: Props) {
         </div>
         <RequestResult email={email} />
       </form>
-    </authLinkModal.Component>
+    </requestAuthLinkModal.Component>
   );
 }

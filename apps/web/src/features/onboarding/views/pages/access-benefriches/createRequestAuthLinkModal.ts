@@ -1,6 +1,6 @@
 import { createModal } from "@codegouvfr/react-dsfr/Modal";
 
-export const authLinkModal = createModal({
+export const requestAuthLinkModal = createModal({
   id: "request-auth-link-modal",
   isOpenedByDefault: false,
 });

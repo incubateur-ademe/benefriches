@@ -5,8 +5,8 @@ import { routes, useRoute } from "@/app/router";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 
-import AuthLinkModal from "./AuthLinkModal";
-import { authLinkModal } from "./createAuthLinkModal";
+import RequestAuthLinkModal from "./RequestAuthLinkModal";
+import { requestAuthLinkModal } from "./createRequestAuthLinkModal";
 
 export default function AccessBenefrichesPage() {
   const currentRoute = useRoute();
@@ -38,7 +38,7 @@ export default function AccessBenefrichesPage() {
             <Button
               priority="secondary"
               onClick={() => {
-                authLinkModal.open();
+                requestAuthLinkModal.open();
               }}
             >
               Continuer avec mon adresse e-mail
@@ -75,7 +75,7 @@ export default function AccessBenefrichesPage() {
           </ExternalLink>
         </div>
       </div>
-      <AuthLinkModal postLoginRedirectTo={postLoginRedirectTo} />
+      <RequestAuthLinkModal postLoginRedirectTo={postLoginRedirectTo} />
     </section>
   );
 }

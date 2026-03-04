@@ -10,7 +10,7 @@ import RequiredLabel from "@/shared/views/components/form/RequiredLabel/Required
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 import { AdministrativeDivisionService } from ".";
-import AuthLinkModal from "../../access-benefriches/AuthLinkModal";
+import RequestAuthLinkModal from "../../access-benefriches/RequestAuthLinkModal";
 import CreateUserErrorMessage from "./CreateUserErrorMessage";
 import UserStructureForm, { StructureFormValues } from "./CreateUserStructureForm";
 
@@ -145,7 +145,7 @@ function CreateUserForm({
           />
         </form>
 
-        <AuthLinkModal />
+        <RequestAuthLinkModal />
         <modal.Component
           size="large"
           title="Politique de confidentialité"
