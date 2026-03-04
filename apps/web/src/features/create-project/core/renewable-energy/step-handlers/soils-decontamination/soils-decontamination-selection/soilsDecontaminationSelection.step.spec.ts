@@ -18,11 +18,13 @@ describe("Renewable energy creation - Steps - soils decontamination selection", 
           answers: { decontaminationPlan: "partial" },
         }),
       );
-      expect(store.getState().projectCreation.renewableEnergyProject.steps).toMatchObject({
-        RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION: {
-          completed: true,
-          payload: { decontaminationPlan: "partial" },
-        },
+      expect(
+        store.getState().projectCreation.renewableEnergyProject.steps[
+          "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION"
+        ],
+      ).toEqual({
+        completed: true,
+        payload: { decontaminationPlan: "partial" },
       });
       expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SURFACE_AREA");
     });
@@ -35,11 +37,13 @@ describe("Renewable energy creation - Steps - soils decontamination selection", 
           answers: { decontaminationPlan: "none" },
         }),
       );
-      expect(store.getState().projectCreation.renewableEnergyProject.steps).toMatchObject({
-        RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION: {
-          completed: true,
-          payload: { decontaminationPlan: "none", decontaminatedSurfaceArea: 0 },
-        },
+      expect(
+        store.getState().projectCreation.renewableEnergyProject.steps[
+          "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION"
+        ],
+      ).toEqual({
+        completed: true,
+        payload: { decontaminationPlan: "none", decontaminatedSurfaceArea: 0 },
       });
       expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_TRANSFORMATION_INTRODUCTION");
     });
@@ -52,11 +56,13 @@ describe("Renewable energy creation - Steps - soils decontamination selection", 
           answers: { decontaminationPlan: "unknown" },
         }),
       );
-      expect(store.getState().projectCreation.renewableEnergyProject.steps).toMatchObject({
-        RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION: {
-          completed: true,
-          payload: { decontaminationPlan: "unknown", decontaminatedSurfaceArea: 0 },
-        },
+      expect(
+        store.getState().projectCreation.renewableEnergyProject.steps[
+          "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION"
+        ],
+      ).toEqual({
+        completed: true,
+        payload: { decontaminationPlan: "unknown", decontaminatedSurfaceArea: 0 },
       });
       expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_TRANSFORMATION_INTRODUCTION");
     });

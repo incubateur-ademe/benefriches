@@ -24,11 +24,13 @@ describe("Renewable energy creation - Steps - photovoltaic power", () => {
           answers: { photovoltaicInstallationElectricalPowerKWc: 10000 },
         }),
       );
-      expect(store.getState().projectCreation.renewableEnergyProject.steps).toMatchObject({
-        RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER: {
-          completed: true,
-          payload: { photovoltaicInstallationElectricalPowerKWc: 10000 },
-        },
+      expect(
+        store.getState().projectCreation.renewableEnergyProject.steps[
+          "RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER"
+        ],
+      ).toEqual({
+        completed: true,
+        payload: { photovoltaicInstallationElectricalPowerKWc: 10000 },
       });
       expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_PHOTOVOLTAIC_SURFACE");
     });
@@ -48,11 +50,13 @@ describe("Renewable energy creation - Steps - photovoltaic power", () => {
           answers: { photovoltaicInstallationElectricalPowerKWc: 10000 },
         }),
       );
-      expect(store.getState().projectCreation.renewableEnergyProject.steps).toMatchObject({
-        RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER: {
-          completed: true,
-          payload: { photovoltaicInstallationElectricalPowerKWc: 10000 },
-        },
+      expect(
+        store.getState().projectCreation.renewableEnergyProject.steps[
+          "RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER"
+        ],
+      ).toEqual({
+        completed: true,
+        payload: { photovoltaicInstallationElectricalPowerKWc: 10000 },
       });
       expect(getCurrentStep(store)).toBe(
         "RENEWABLE_ENERGY_PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION",

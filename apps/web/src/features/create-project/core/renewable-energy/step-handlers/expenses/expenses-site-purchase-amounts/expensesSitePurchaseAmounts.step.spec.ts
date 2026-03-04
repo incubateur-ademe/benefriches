@@ -19,11 +19,13 @@ describe("Renewable energy creation - Steps - expenses site purchase amounts", (
           answers: { sellingPrice: 150000, propertyTransferDuties: 12000 },
         }),
       );
-      expect(store.getState().projectCreation.renewableEnergyProject.steps).toMatchObject({
-        RENEWABLE_ENERGY_EXPENSES_SITE_PURCHASE_AMOUNTS: {
-          completed: true,
-          payload: { sellingPrice: 150000, propertyTransferDuties: 12000 },
-        },
+      expect(
+        store.getState().projectCreation.renewableEnergyProject.steps[
+          "RENEWABLE_ENERGY_EXPENSES_SITE_PURCHASE_AMOUNTS"
+        ],
+      ).toEqual({
+        completed: true,
+        payload: { sellingPrice: 150000, propertyTransferDuties: 12000 },
       });
       expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_EXPENSES_REINSTATEMENT");
     });
@@ -38,11 +40,13 @@ describe("Renewable energy creation - Steps - expenses site purchase amounts", (
           answers: { sellingPrice: 150000, propertyTransferDuties: 12000 },
         }),
       );
-      expect(store.getState().projectCreation.renewableEnergyProject.steps).toMatchObject({
-        RENEWABLE_ENERGY_EXPENSES_SITE_PURCHASE_AMOUNTS: {
-          completed: true,
-          payload: { sellingPrice: 150000, propertyTransferDuties: 12000 },
-        },
+      expect(
+        store.getState().projectCreation.renewableEnergyProject.steps[
+          "RENEWABLE_ENERGY_EXPENSES_SITE_PURCHASE_AMOUNTS"
+        ],
+      ).toEqual({
+        completed: true,
+        payload: { sellingPrice: 150000, propertyTransferDuties: 12000 },
       });
       expect(getCurrentStep(store)).toBe(
         "RENEWABLE_ENERGY_EXPENSES_PHOTOVOLTAIC_PANELS_INSTALLATION",

@@ -18,11 +18,13 @@ describe("Renewable energy creation - Steps - soils transformation project selec
           answers: { soilsTransformationProject: "custom" },
         }),
       );
-      expect(store.getState().projectCreation.renewableEnergyProject.steps).toMatchObject({
-        RENEWABLE_ENERGY_SOILS_TRANSFORMATION_PROJECT_SELECTION: {
-          completed: true,
-          payload: { soilsTransformationProject: "custom" },
-        },
+      expect(
+        store.getState().projectCreation.renewableEnergyProject.steps[
+          "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_PROJECT_SELECTION"
+        ],
+      ).toEqual({
+        completed: true,
+        payload: { soilsTransformationProject: "custom" },
       });
       expect(getCurrentStep(store)).toBe(
         "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CUSTOM_SOILS_SELECTION",
@@ -38,11 +40,14 @@ describe("Renewable energy creation - Steps - soils transformation project selec
           answers: { soilsTransformationProject: "renaturation", soilsDistribution: {} },
         }),
       );
-      expect(store.getState().projectCreation.renewableEnergyProject.steps).toMatchObject({
-        RENEWABLE_ENERGY_SOILS_TRANSFORMATION_PROJECT_SELECTION: {
-          completed: true,
-          payload: { soilsTransformationProject: "renaturation", soilsDistribution: {} },
-        },
+      expect(
+        store.getState().projectCreation.renewableEnergyProject.steps[
+          "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_PROJECT_SELECTION"
+        ],
+      ).toEqual({
+        completed: true,
+        // updateAnswersMiddleware computes soilsDistribution from site data
+        payload: expect.objectContaining({ soilsTransformationProject: "renaturation" }),
       });
       expect(getCurrentStep(store)).toBe(
         "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CLIMATE_AND_BIODIVERSITY_IMPACT_NOTICE",
@@ -63,11 +68,14 @@ describe("Renewable energy creation - Steps - soils transformation project selec
           answers: { soilsTransformationProject: "renaturation", soilsDistribution: {} },
         }),
       );
-      expect(store.getState().projectCreation.renewableEnergyProject.steps).toMatchObject({
-        RENEWABLE_ENERGY_SOILS_TRANSFORMATION_PROJECT_SELECTION: {
-          completed: true,
-          payload: { soilsTransformationProject: "renaturation", soilsDistribution: {} },
-        },
+      expect(
+        store.getState().projectCreation.renewableEnergyProject.steps[
+          "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_PROJECT_SELECTION"
+        ],
+      ).toEqual({
+        completed: true,
+        // updateAnswersMiddleware computes soilsDistribution from site data
+        payload: expect.objectContaining({ soilsTransformationProject: "renaturation" }),
       });
       expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_SUMMARY");
     });

@@ -16,11 +16,13 @@ describe("Renewable energy creation - Steps - expenses reinstatement", () => {
         answers: { reinstatementExpenses: [{ amount: 34500, purpose: "demolition" }] },
       }),
     );
-    expect(store.getState().projectCreation.renewableEnergyProject.steps).toMatchObject({
-      RENEWABLE_ENERGY_EXPENSES_REINSTATEMENT: {
-        completed: true,
-        payload: { reinstatementExpenses: [{ amount: 34500, purpose: "demolition" }] },
-      },
+    expect(
+      store.getState().projectCreation.renewableEnergyProject.steps[
+        "RENEWABLE_ENERGY_EXPENSES_REINSTATEMENT"
+      ],
+    ).toEqual({
+      completed: true,
+      payload: { reinstatementExpenses: [{ amount: 34500, purpose: "demolition" }] },
     });
     expect(getCurrentStep(store)).toBe(
       "RENEWABLE_ENERGY_EXPENSES_PHOTOVOLTAIC_PANELS_INSTALLATION",

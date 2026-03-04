@@ -16,11 +16,13 @@ describe("Renewable energy creation - Steps - stakeholders future site owner", (
         answers: { futureSiteOwner: { name: "Owner", structureType: "company" } },
       }),
     );
-    expect(store.getState().projectCreation.renewableEnergyProject.steps).toMatchObject({
-      RENEWABLE_ENERGY_STAKEHOLDERS_FUTURE_SITE_OWNER: {
-        completed: true,
-        payload: { futureSiteOwner: { name: "Owner", structureType: "company" } },
-      },
+    expect(
+      store.getState().projectCreation.renewableEnergyProject.steps[
+        "RENEWABLE_ENERGY_STAKEHOLDERS_FUTURE_SITE_OWNER"
+      ],
+    ).toEqual({
+      completed: true,
+      payload: { futureSiteOwner: { name: "Owner", structureType: "company" } },
     });
     expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_EXPENSES_INTRODUCTION");
   });

@@ -16,11 +16,13 @@ describe("Renewable energy creation - Steps - photovoltaic expected annual produ
         answers: { photovoltaicExpectedAnnualProduction: 50000 },
       }),
     );
-    expect(store.getState().projectCreation.renewableEnergyProject.steps).toMatchObject({
-      RENEWABLE_ENERGY_PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION: {
-        completed: true,
-        payload: { photovoltaicExpectedAnnualProduction: 50000 },
-      },
+    expect(
+      store.getState().projectCreation.renewableEnergyProject.steps[
+        "RENEWABLE_ENERGY_PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION"
+      ],
+    ).toEqual({
+      completed: true,
+      payload: { photovoltaicExpectedAnnualProduction: 50000 },
     });
     expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_PHOTOVOLTAIC_CONTRACT_DURATION");
   });

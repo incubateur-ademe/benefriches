@@ -16,11 +16,13 @@ describe("Renewable energy creation - Steps - expenses yearly projected", () => 
         answers: { yearlyProjectedExpenses: [{ purpose: "rent", amount: 12000 }] },
       }),
     );
-    expect(store.getState().projectCreation.renewableEnergyProject.steps).toMatchObject({
-      RENEWABLE_ENERGY_EXPENSES_PROJECTED_YEARLY_EXPENSES: {
-        completed: true,
-        payload: { yearlyProjectedExpenses: [{ purpose: "rent", amount: 12000 }] },
-      },
+    expect(
+      store.getState().projectCreation.renewableEnergyProject.steps[
+        "RENEWABLE_ENERGY_EXPENSES_PROJECTED_YEARLY_EXPENSES"
+      ],
+    ).toEqual({
+      completed: true,
+      payload: { yearlyProjectedExpenses: [{ purpose: "rent", amount: 12000 }] },
     });
     expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_REVENUE_INTRODUCTION");
   });

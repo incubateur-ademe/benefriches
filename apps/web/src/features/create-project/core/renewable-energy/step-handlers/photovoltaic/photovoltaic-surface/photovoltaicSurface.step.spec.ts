@@ -24,11 +24,13 @@ describe("Renewable energy creation - Steps - photovoltaic surface", () => {
           answers: { photovoltaicInstallationSurfaceSquareMeters: 40000 },
         }),
       );
-      expect(store.getState().projectCreation.renewableEnergyProject.steps).toMatchObject({
-        RENEWABLE_ENERGY_PHOTOVOLTAIC_SURFACE: {
-          completed: true,
-          payload: { photovoltaicInstallationSurfaceSquareMeters: 40000 },
-        },
+      expect(
+        store.getState().projectCreation.renewableEnergyProject.steps[
+          "RENEWABLE_ENERGY_PHOTOVOLTAIC_SURFACE"
+        ],
+      ).toEqual({
+        completed: true,
+        payload: { photovoltaicInstallationSurfaceSquareMeters: 40000 },
       });
       expect(getCurrentStep(store)).toBe(
         "RENEWABLE_ENERGY_PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION",
@@ -50,11 +52,13 @@ describe("Renewable energy creation - Steps - photovoltaic surface", () => {
           answers: { photovoltaicInstallationSurfaceSquareMeters: 40000 },
         }),
       );
-      expect(store.getState().projectCreation.renewableEnergyProject.steps).toMatchObject({
-        RENEWABLE_ENERGY_PHOTOVOLTAIC_SURFACE: {
-          completed: true,
-          payload: { photovoltaicInstallationSurfaceSquareMeters: 40000 },
-        },
+      expect(
+        store.getState().projectCreation.renewableEnergyProject.steps[
+          "RENEWABLE_ENERGY_PHOTOVOLTAIC_SURFACE"
+        ],
+      ).toEqual({
+        completed: true,
+        payload: { photovoltaicInstallationSurfaceSquareMeters: 40000 },
       });
       expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER");
     });

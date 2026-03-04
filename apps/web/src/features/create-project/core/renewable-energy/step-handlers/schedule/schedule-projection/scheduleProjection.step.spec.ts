@@ -19,11 +19,13 @@ describe("Renewable energy creation - Steps - schedule projection", () => {
           },
         }),
       );
-      expect(store.getState().projectCreation.renewableEnergyProject.steps).toMatchObject({
-        RENEWABLE_ENERGY_SCHEDULE_PROJECTION: {
-          completed: true,
-          payload: { firstYearOfOperation: 2031 },
-        },
+      expect(
+        store.getState().projectCreation.renewableEnergyProject.steps[
+          "RENEWABLE_ENERGY_SCHEDULE_PROJECTION"
+        ],
+      ).toEqual({
+        completed: true,
+        payload: { firstYearOfOperation: 2031 },
       });
       expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_PROJECT_PHASE");
     });
@@ -46,19 +48,21 @@ describe("Renewable energy creation - Steps - schedule projection", () => {
           },
         }),
       );
-      expect(store.getState().projectCreation.renewableEnergyProject.steps).toMatchObject({
-        RENEWABLE_ENERGY_SCHEDULE_PROJECTION: {
-          completed: true,
-          payload: {
-            firstYearOfOperation: 2031,
-            photovoltaicInstallationSchedule: {
-              startDate: "2029-01-01",
-              endDate: "2030-06-30",
-            },
-            reinstatementSchedule: {
-              startDate: "2028-03-01",
-              endDate: "2028-12-31",
-            },
+      expect(
+        store.getState().projectCreation.renewableEnergyProject.steps[
+          "RENEWABLE_ENERGY_SCHEDULE_PROJECTION"
+        ],
+      ).toEqual({
+        completed: true,
+        payload: {
+          firstYearOfOperation: 2031,
+          photovoltaicInstallationSchedule: {
+            startDate: "2029-01-01",
+            endDate: "2030-06-30",
+          },
+          reinstatementSchedule: {
+            startDate: "2028-03-01",
+            endDate: "2028-12-31",
           },
         },
       });

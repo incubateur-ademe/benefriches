@@ -16,11 +16,13 @@ describe("Renewable energy creation - Steps - revenue yearly projected", () => {
         answers: { yearlyProjectedRevenues: [{ source: "operations", amount: 13000 }] },
       }),
     );
-    expect(store.getState().projectCreation.renewableEnergyProject.steps).toMatchObject({
-      RENEWABLE_ENERGY_REVENUE_PROJECTED_YEARLY_REVENUE: {
-        completed: true,
-        payload: { yearlyProjectedRevenues: [{ source: "operations", amount: 13000 }] },
-      },
+    expect(
+      store.getState().projectCreation.renewableEnergyProject.steps[
+        "RENEWABLE_ENERGY_REVENUE_PROJECTED_YEARLY_REVENUE"
+      ],
+    ).toEqual({
+      completed: true,
+      payload: { yearlyProjectedRevenues: [{ source: "operations", amount: 13000 }] },
     });
     expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_REVENUE_FINANCIAL_ASSISTANCE");
   });

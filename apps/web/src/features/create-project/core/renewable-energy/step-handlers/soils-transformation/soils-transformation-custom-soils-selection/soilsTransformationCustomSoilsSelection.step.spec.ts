@@ -16,11 +16,13 @@ describe("Renewable energy creation - Steps - soils transformation custom soils 
         answers: { futureSoilsSelection: [] },
       }),
     );
-    expect(store.getState().projectCreation.renewableEnergyProject.steps).toMatchObject({
-      RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CUSTOM_SOILS_SELECTION: {
-        completed: true,
-        payload: { futureSoilsSelection: [] },
-      },
+    expect(
+      store.getState().projectCreation.renewableEnergyProject.steps[
+        "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CUSTOM_SOILS_SELECTION"
+      ],
+    ).toEqual({
+      completed: true,
+      payload: { futureSoilsSelection: [] },
     });
     expect(getCurrentStep(store)).toBe(
       "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CUSTOM_SURFACE_AREA_ALLOCATION",

@@ -155,20 +155,12 @@ export const selectPhotovoltaicFinalSummaryViewData = createSelector(
         sitePurchaseTotalCost: sitePurchase?.sellingPrice
           ? sitePurchase.sellingPrice + (sitePurchase.propertyTransferDuties ?? 0)
           : 0,
-        financialAssistanceRevenues: financialAssistance?.financialAssistanceRevenues as
-          | FinancialAssistanceRevenue[]
-          | undefined,
-        reinstatementExpenses:
-          (reinstatementExpenses?.reinstatementExpenses as ReinstatementExpense[] | undefined) ??
-          [],
+        financialAssistanceRevenues: financialAssistance?.financialAssistanceRevenues,
+        reinstatementExpenses: reinstatementExpenses?.reinstatementExpenses ?? [],
         photovoltaicPanelsInstallationExpenses:
-          installationExpenses?.photovoltaicPanelsInstallationExpenses as
-            | PhotovoltaicInstallationExpense[]
-            | undefined,
-        yearlyProjectedExpenses:
-          (yearlyExpenses?.yearlyProjectedExpenses as RecurringExpense[] | undefined) ?? [],
-        yearlyProjectedRevenues:
-          (yearlyRevenues?.yearlyProjectedRevenues as RecurringRevenue[] | undefined) ?? [],
+          installationExpenses?.photovoltaicPanelsInstallationExpenses,
+        yearlyProjectedExpenses: yearlyExpenses?.yearlyProjectedExpenses ?? [],
+        yearlyProjectedRevenues: yearlyRevenues?.yearlyProjectedRevenues ?? [],
         reinstatementSchedule: schedule?.reinstatementSchedule,
         photovoltaicInstallationSchedule: schedule?.photovoltaicInstallationSchedule,
         decontaminatedSurfaceArea:

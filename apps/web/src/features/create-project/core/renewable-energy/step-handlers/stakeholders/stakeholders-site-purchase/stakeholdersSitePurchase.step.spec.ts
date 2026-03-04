@@ -17,11 +17,13 @@ describe("Renewable energy creation - Steps - stakeholders site purchase", () =>
           answers: { willSiteBePurchased: true },
         }),
       );
-      expect(store.getState().projectCreation.renewableEnergyProject.steps).toMatchObject({
-        RENEWABLE_ENERGY_STAKEHOLDERS_SITE_PURCHASE: {
-          completed: true,
-          payload: { willSiteBePurchased: true },
-        },
+      expect(
+        store.getState().projectCreation.renewableEnergyProject.steps[
+          "RENEWABLE_ENERGY_STAKEHOLDERS_SITE_PURCHASE"
+        ],
+      ).toEqual({
+        completed: true,
+        payload: { willSiteBePurchased: true },
       });
       expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_STAKEHOLDERS_FUTURE_SITE_OWNER");
     });
@@ -34,11 +36,13 @@ describe("Renewable energy creation - Steps - stakeholders site purchase", () =>
           answers: { willSiteBePurchased: false },
         }),
       );
-      expect(store.getState().projectCreation.renewableEnergyProject.steps).toMatchObject({
-        RENEWABLE_ENERGY_STAKEHOLDERS_SITE_PURCHASE: {
-          completed: true,
-          payload: { willSiteBePurchased: false },
-        },
+      expect(
+        store.getState().projectCreation.renewableEnergyProject.steps[
+          "RENEWABLE_ENERGY_STAKEHOLDERS_SITE_PURCHASE"
+        ],
+      ).toEqual({
+        completed: true,
+        payload: { willSiteBePurchased: false },
       });
       expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_EXPENSES_INTRODUCTION");
     });

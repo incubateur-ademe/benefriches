@@ -19,11 +19,13 @@ describe("Renewable energy creation - Steps - soils transformation custom surfac
           answers: { soilsDistribution: { MINERAL_SOIL: 5000, BUILDINGS: 3000 } },
         }),
       );
-      expect(store.getState().projectCreation.renewableEnergyProject.steps).toMatchObject({
-        RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CUSTOM_SURFACE_AREA_ALLOCATION: {
-          completed: true,
-          payload: { soilsDistribution: { MINERAL_SOIL: 5000, BUILDINGS: 3000 } },
-        },
+      expect(
+        store.getState().projectCreation.renewableEnergyProject.steps[
+          "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CUSTOM_SURFACE_AREA_ALLOCATION"
+        ],
+      ).toEqual({
+        completed: true,
+        payload: { soilsDistribution: { MINERAL_SOIL: 5000, BUILDINGS: 3000 } },
       });
       expect(getCurrentStep(store)).toBe(
         "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CLIMATE_AND_BIODIVERSITY_IMPACT_NOTICE",
@@ -44,11 +46,13 @@ describe("Renewable energy creation - Steps - soils transformation custom surfac
           answers: { soilsDistribution: { MINERAL_SOIL: 5000, BUILDINGS: 3000 } },
         }),
       );
-      expect(store.getState().projectCreation.renewableEnergyProject.steps).toMatchObject({
-        RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CUSTOM_SURFACE_AREA_ALLOCATION: {
-          completed: true,
-          payload: { soilsDistribution: { MINERAL_SOIL: 5000, BUILDINGS: 3000 } },
-        },
+      expect(
+        store.getState().projectCreation.renewableEnergyProject.steps[
+          "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CUSTOM_SURFACE_AREA_ALLOCATION"
+        ],
+      ).toEqual({
+        completed: true,
+        payload: { soilsDistribution: { MINERAL_SOIL: 5000, BUILDINGS: 3000 } },
       });
       expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_SUMMARY");
     });

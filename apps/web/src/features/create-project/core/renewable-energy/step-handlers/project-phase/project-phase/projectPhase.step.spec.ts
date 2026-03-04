@@ -16,8 +16,13 @@ describe("Renewable energy creation - Steps - project phase", () => {
         answers: { phase: "design" },
       }),
     );
-    expect(store.getState().projectCreation.renewableEnergyProject.steps).toMatchObject({
-      RENEWABLE_ENERGY_PROJECT_PHASE: { completed: true, payload: { phase: "design" } },
+    expect(
+      store.getState().projectCreation.renewableEnergyProject.steps[
+        "RENEWABLE_ENERGY_PROJECT_PHASE"
+      ],
+    ).toEqual({
+      completed: true,
+      payload: { phase: "design" },
     });
     expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_NAMING");
   });

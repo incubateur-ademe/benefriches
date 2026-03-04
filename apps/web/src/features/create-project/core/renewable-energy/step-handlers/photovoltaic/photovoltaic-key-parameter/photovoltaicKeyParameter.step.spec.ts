@@ -17,11 +17,13 @@ describe("Renewable energy creation - Steps - key parameter", () => {
           answers: { photovoltaicKeyParameter: "POWER" },
         }),
       );
-      expect(store.getState().projectCreation.renewableEnergyProject.steps).toMatchObject({
-        RENEWABLE_ENERGY_PHOTOVOLTAIC_KEY_PARAMETER: {
-          completed: true,
-          payload: { photovoltaicKeyParameter: "POWER" },
-        },
+      expect(
+        store.getState().projectCreation.renewableEnergyProject.steps[
+          "RENEWABLE_ENERGY_PHOTOVOLTAIC_KEY_PARAMETER"
+        ],
+      ).toEqual({
+        completed: true,
+        payload: { photovoltaicKeyParameter: "POWER" },
       });
       expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER");
     });
@@ -34,11 +36,13 @@ describe("Renewable energy creation - Steps - key parameter", () => {
           answers: { photovoltaicKeyParameter: "SURFACE" },
         }),
       );
-      expect(store.getState().projectCreation.renewableEnergyProject.steps).toMatchObject({
-        RENEWABLE_ENERGY_PHOTOVOLTAIC_KEY_PARAMETER: {
-          completed: true,
-          payload: { photovoltaicKeyParameter: "SURFACE" },
-        },
+      expect(
+        store.getState().projectCreation.renewableEnergyProject.steps[
+          "RENEWABLE_ENERGY_PHOTOVOLTAIC_KEY_PARAMETER"
+        ],
+      ).toEqual({
+        completed: true,
+        payload: { photovoltaicKeyParameter: "SURFACE" },
       });
       expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_PHOTOVOLTAIC_SURFACE");
     });

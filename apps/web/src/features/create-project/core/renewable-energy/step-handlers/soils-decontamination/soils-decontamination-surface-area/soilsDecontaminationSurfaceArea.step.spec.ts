@@ -16,11 +16,13 @@ describe("Renewable energy creation - Steps - soils decontamination surface area
         answers: { decontaminatedSurfaceArea: 1000 },
       }),
     );
-    expect(store.getState().projectCreation.renewableEnergyProject.steps).toMatchObject({
-      RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SURFACE_AREA: {
-        completed: true,
-        payload: { decontaminatedSurfaceArea: 1000 },
-      },
+    expect(
+      store.getState().projectCreation.renewableEnergyProject.steps[
+        "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SURFACE_AREA"
+      ],
+    ).toEqual({
+      completed: true,
+      payload: { decontaminatedSurfaceArea: 1000 },
     });
     expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_TRANSFORMATION_INTRODUCTION");
   });

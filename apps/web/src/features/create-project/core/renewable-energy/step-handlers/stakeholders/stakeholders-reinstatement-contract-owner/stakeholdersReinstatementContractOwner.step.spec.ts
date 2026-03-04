@@ -16,11 +16,13 @@ describe("Renewable energy creation - Steps - stakeholders reinstatement contrac
         answers: { reinstatementContractOwner: { name: "RC", structureType: "company" } },
       }),
     );
-    expect(store.getState().projectCreation.renewableEnergyProject.steps).toMatchObject({
-      RENEWABLE_ENERGY_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER: {
-        completed: true,
-        payload: { reinstatementContractOwner: { name: "RC", structureType: "company" } },
-      },
+    expect(
+      store.getState().projectCreation.renewableEnergyProject.steps[
+        "RENEWABLE_ENERGY_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER"
+      ],
+    ).toEqual({
+      completed: true,
+      payload: { reinstatementContractOwner: { name: "RC", structureType: "company" } },
     });
     expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_STAKEHOLDERS_SITE_PURCHASE");
   });

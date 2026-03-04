@@ -20,14 +20,14 @@ describe("Renewable energy creation - Steps - expenses photovoltaic panels insta
         },
       }),
     );
-    expect(store.getState().projectCreation.renewableEnergyProject.steps).toMatchObject({
-      RENEWABLE_ENERGY_EXPENSES_PHOTOVOLTAIC_PANELS_INSTALLATION: {
-        completed: true,
-        payload: {
-          photovoltaicPanelsInstallationExpenses: [
-            { amount: 20000, purpose: "installation_works" },
-          ],
-        },
+    expect(
+      store.getState().projectCreation.renewableEnergyProject.steps[
+        "RENEWABLE_ENERGY_EXPENSES_PHOTOVOLTAIC_PANELS_INSTALLATION"
+      ],
+    ).toEqual({
+      completed: true,
+      payload: {
+        photovoltaicPanelsInstallationExpenses: [{ amount: 20000, purpose: "installation_works" }],
       },
     });
     expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_EXPENSES_PROJECTED_YEARLY_EXPENSES");

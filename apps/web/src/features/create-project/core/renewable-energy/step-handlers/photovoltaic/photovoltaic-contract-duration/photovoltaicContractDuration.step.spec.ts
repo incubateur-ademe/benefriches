@@ -24,11 +24,13 @@ describe("Renewable energy creation - Steps - photovoltaic contract duration", (
           answers: { photovoltaicContractDuration: 20 },
         }),
       );
-      expect(store.getState().projectCreation.renewableEnergyProject.steps).toMatchObject({
-        RENEWABLE_ENERGY_PHOTOVOLTAIC_CONTRACT_DURATION: {
-          completed: true,
-          payload: { photovoltaicContractDuration: 20 },
-        },
+      expect(
+        store.getState().projectCreation.renewableEnergyProject.steps[
+          "RENEWABLE_ENERGY_PHOTOVOLTAIC_CONTRACT_DURATION"
+        ],
+      ).toEqual({
+        completed: true,
+        payload: { photovoltaicContractDuration: 20 },
       });
       expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_DECONTAMINATION_INTRODUCTION");
     });
@@ -41,11 +43,13 @@ describe("Renewable energy creation - Steps - photovoltaic contract duration", (
           answers: { photovoltaicContractDuration: 20 },
         }),
       );
-      expect(store.getState().projectCreation.renewableEnergyProject.steps).toMatchObject({
-        RENEWABLE_ENERGY_PHOTOVOLTAIC_CONTRACT_DURATION: {
-          completed: true,
-          payload: { photovoltaicContractDuration: 20 },
-        },
+      expect(
+        store.getState().projectCreation.renewableEnergyProject.steps[
+          "RENEWABLE_ENERGY_PHOTOVOLTAIC_CONTRACT_DURATION"
+        ],
+      ).toEqual({
+        completed: true,
+        payload: { photovoltaicContractDuration: 20 },
       });
       expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_TRANSFORMATION_INTRODUCTION");
     });

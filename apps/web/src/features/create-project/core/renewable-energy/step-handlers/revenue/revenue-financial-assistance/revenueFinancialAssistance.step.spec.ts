@@ -16,11 +16,13 @@ describe("Renewable energy creation - Steps - revenue financial assistance", () 
         answers: { financialAssistanceRevenues: [] },
       }),
     );
-    expect(store.getState().projectCreation.renewableEnergyProject.steps).toMatchObject({
-      RENEWABLE_ENERGY_REVENUE_FINANCIAL_ASSISTANCE: {
-        completed: true,
-        payload: { financialAssistanceRevenues: [] },
-      },
+    expect(
+      store.getState().projectCreation.renewableEnergyProject.steps[
+        "RENEWABLE_ENERGY_REVENUE_FINANCIAL_ASSISTANCE"
+      ],
+    ).toEqual({
+      completed: true,
+      payload: { financialAssistanceRevenues: [] },
     });
     expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SCHEDULE_PROJECTION");
   });

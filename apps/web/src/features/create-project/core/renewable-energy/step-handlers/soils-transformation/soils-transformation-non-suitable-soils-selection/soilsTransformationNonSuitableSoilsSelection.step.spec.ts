@@ -16,11 +16,13 @@ describe("Renewable energy creation - Steps - non suitable soils selection", () 
         answers: { nonSuitableSoilsToTransform: [] },
       }),
     );
-    expect(store.getState().projectCreation.renewableEnergyProject.steps).toMatchObject({
-      RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SELECTION: {
-        completed: true,
-        payload: { nonSuitableSoilsToTransform: [] },
-      },
+    expect(
+      store.getState().projectCreation.renewableEnergyProject.steps[
+        "RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SELECTION"
+      ],
+    ).toEqual({
+      completed: true,
+      payload: { nonSuitableSoilsToTransform: [] },
     });
     expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SURFACE");
   });

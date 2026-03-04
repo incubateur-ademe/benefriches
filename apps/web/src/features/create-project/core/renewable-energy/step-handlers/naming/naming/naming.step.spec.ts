@@ -17,8 +17,11 @@ describe("Renewable energy creation - Steps - naming", () => {
           answers: { name: "Ma centrale" },
         }),
       );
-      expect(store.getState().projectCreation.renewableEnergyProject.steps).toMatchObject({
-        RENEWABLE_ENERGY_NAMING: { completed: true, payload: { name: "Ma centrale" } },
+      expect(
+        store.getState().projectCreation.renewableEnergyProject.steps["RENEWABLE_ENERGY_NAMING"],
+      ).toEqual({
+        completed: true,
+        payload: { name: "Ma centrale" },
       });
       expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_FINAL_SUMMARY");
     });
@@ -31,11 +34,11 @@ describe("Renewable energy creation - Steps - naming", () => {
           answers: { name: "Ma centrale", description: "Une centrale photovoltaïque" },
         }),
       );
-      expect(store.getState().projectCreation.renewableEnergyProject.steps).toMatchObject({
-        RENEWABLE_ENERGY_NAMING: {
-          completed: true,
-          payload: { name: "Ma centrale", description: "Une centrale photovoltaïque" },
-        },
+      expect(
+        store.getState().projectCreation.renewableEnergyProject.steps["RENEWABLE_ENERGY_NAMING"],
+      ).toEqual({
+        completed: true,
+        payload: { name: "Ma centrale", description: "Une centrale photovoltaïque" },
       });
       expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_FINAL_SUMMARY");
     });

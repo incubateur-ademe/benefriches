@@ -19,11 +19,13 @@ describe("Renewable energy creation - Steps - stakeholders future operator", () 
           answers: { futureOperator: { name: "Op", structureType: "company" } },
         }),
       );
-      expect(store.getState().projectCreation.renewableEnergyProject.steps).toMatchObject({
-        RENEWABLE_ENERGY_STAKEHOLDERS_FUTURE_OPERATOR: {
-          completed: true,
-          payload: { futureOperator: { name: "Op", structureType: "company" } },
-        },
+      expect(
+        store.getState().projectCreation.renewableEnergyProject.steps[
+          "RENEWABLE_ENERGY_STAKEHOLDERS_FUTURE_OPERATOR"
+        ],
+      ).toEqual({
+        completed: true,
+        payload: { futureOperator: { name: "Op", structureType: "company" } },
       });
       expect(getCurrentStep(store)).toBe(
         "RENEWABLE_ENERGY_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER",
@@ -40,11 +42,13 @@ describe("Renewable energy creation - Steps - stakeholders future operator", () 
           answers: { futureOperator: { name: "Op", structureType: "company" } },
         }),
       );
-      expect(store.getState().projectCreation.renewableEnergyProject.steps).toMatchObject({
-        RENEWABLE_ENERGY_STAKEHOLDERS_FUTURE_OPERATOR: {
-          completed: true,
-          payload: { futureOperator: { name: "Op", structureType: "company" } },
-        },
+      expect(
+        store.getState().projectCreation.renewableEnergyProject.steps[
+          "RENEWABLE_ENERGY_STAKEHOLDERS_FUTURE_OPERATOR"
+        ],
+      ).toEqual({
+        completed: true,
+        payload: { futureOperator: { name: "Op", structureType: "company" } },
       });
       expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_STAKEHOLDERS_SITE_PURCHASE");
     });

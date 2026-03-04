@@ -17,17 +17,19 @@ describe("Renewable energy creation - Steps - non suitable soils surface", () =>
         answers: { nonSuitableSoilsSurfaceAreaToTransform: {} },
       }),
     );
-    expect(store.getState().projectCreation.renewableEnergyProject.steps).toMatchObject({
-      RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SURFACE: {
-        completed: true,
-        payload: {
-          nonSuitableSoilsSurfaceAreaToTransform: {},
-          baseSoilsDistributionForTransformation: {
-            BUILDINGS: 3000,
-            MINERAL_SOIL: 5000,
-            ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 10000,
-            FOREST_DECIDUOUS: 12000,
-          },
+    expect(
+      store.getState().projectCreation.renewableEnergyProject.steps[
+        "RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SURFACE"
+      ],
+    ).toEqual({
+      completed: true,
+      payload: {
+        nonSuitableSoilsSurfaceAreaToTransform: {},
+        baseSoilsDistributionForTransformation: {
+          BUILDINGS: 3000,
+          MINERAL_SOIL: 5000,
+          ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 10000,
+          FOREST_DECIDUOUS: 12000,
         },
       },
     });
