@@ -4,6 +4,8 @@ import { BENEFRICHES_ENV } from "@/app/envVars";
 import { useAppDispatch } from "@/app/hooks/store.hooks";
 import { authLinkNotReceivedHelpRequested } from "@/features/support/core/authLinkNotReceivedHelpRequested.action";
 
+import { requestAuthLinkModal } from "./createRequestAuthLinkModal";
+
 type Props = {
   email: string;
 };
@@ -25,6 +27,7 @@ export default function AuthLinkNotReceivedHelp({ email }: Props) {
           priority="secondary"
           iconId="ri-chat-3-line"
           onClick={() => {
+            requestAuthLinkModal.close();
             void dispatch(authLinkNotReceivedHelpRequested({ email }));
           }}
         >
