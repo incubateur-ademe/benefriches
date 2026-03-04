@@ -30,6 +30,13 @@ Extract step-specific logic into **step handler objects** registered in a `stepH
 5. **Helpers** (`completeStep.ts`, `mutateState.ts`, `navigateToStep.ts`, `stepsSequence.ts`) — shared reducer logic
 6. **Co-located selectors** — Each handler directory contains a `*.selector.ts` file with the ViewData selector for its container, replacing the former central selector files (`expenses.selectors.ts`, `revenues.selectors.ts`, etc.)
 7. **Co-located stepper config** — Each handler directory contains a `*.stepperConfig.ts` declaring `{ groupId }`. A central `renewableEnergyStepperConfig.ts` aggregates them into a `RENEWABLE_ENERGY_STEP_TO_GROUP` mapping, replacing the former 66-case switch in the stepper component with a data-driven lookup
+8. **Co-located step tests** — Each handler directory contains a `*.step.spec.ts` file covering forward navigation (all branches), backward navigation, and `updateAnswersMiddleware` transformations
+
+### Backward navigation
+
+`navigateToPrevious` derives the previous step from `stepsSequence` — the same forward sequence built by chaining `getNextStepId` calls. It finds the current step's index in the sequence and navigates to `index - 1`. No handler needs to declare a `getPreviousStepId` method.
+
+This differs from the urban project wizard, where backward navigation is explicit: each handler declares `getPreviousStepId(context)`. That is appropriate there because dependency cascades and recomputations mean a handler may need state context to determine its predecessor. The PV wizard has no such complexity.
 
 ### Directory structure
 
@@ -42,18 +49,21 @@ step-handlers/
 │   │   ├── keyParameter.handler.ts
 │   │   ├── keyParameter.schema.ts
 │   │   ├── keyParameter.selector.ts
-│   │   └── keyParameter.stepperConfig.ts
+│   │   ├── keyParameter.stepperConfig.ts
+│   │   └── keyParameter.step.spec.ts
 │   └── surface/
 │       ├── surface.handler.ts
 │       ├── surface.schema.ts
 │       ├── surface.selector.ts
-│       └── surface.stepperConfig.ts
+│       ├── surface.stepperConfig.ts
+│       └── surface.step.spec.ts
 ├── stakeholders/
 │   └── site-purchase/
 │       ├── sitePurchase.handler.ts
 │       ├── sitePurchase.schema.ts
 │       ├── sitePurchase.selector.ts
-│       └── sitePurchase.stepperConfig.ts
+│       ├── sitePurchase.stepperConfig.ts
+│       └── sitePurchase.step.spec.ts
 ├── shared/
 │   ├── soils.schema.ts              # Shared Zod schemas (soilsDistribution, soilType[])
 │   └── projectStakeholder.schema.ts # Shared stakeholder schema
@@ -88,23 +98,30 @@ Split the reducer into multiple files by section (stakeholders, expenses, etc.).
 - **Pros**: No new abstractions, minimal learning curve
 - **Cons**: Doesn't reduce repetition, just moves it around; the fundamental pattern (one action per step) remains
 
+### Backward navigation: derive from stepsSequence vs. explicit getPreviousStepId (chosen: derive)
+
+- **Derive from stepsSequence**: No per-handler boilerplate; the forward chain already encodes all needed information; consistent with the PV wizard's simpler model
+- **Explicit getPreviousStepId per handler** (urban project approach): Self-contained and explicit, but requires ~35 handlers each to repeat their predecessor; any sequence change requires updating both directions
+
 ## Consequences
 
 ### Positive
 
 - Reducer reduced from ~500 lines of case-by-case handling to a generic dispatcher
-- Adding a new step is self-contained: create a handler directory with handler, schema, selector, and stepperConfig, then register
-- Navigation logic, schema, ViewData selector, and stepper config are all colocated with the step they belong to
+- Adding a new step is self-contained: create a handler directory with handler, schema, selector, stepperConfig, and step test, then register
+- Navigation logic, schema, ViewData selector, stepper config, and tests are all colocated with the step they belong to
 - Containers become simpler: dispatch `requestStepCompletion({ stepId, answers })` instead of a step-specific action
-- Step sequence is computed dynamically from handler chain, enabling easier reordering
+- Step sequence is the single source of truth for navigation in both directions
 - Consistent pattern with urban project wizard (ADR-0004)
 
 ### Negative
 
 - All ~40 container components need updating to dispatch the generic action
-- Higher file count (~90 files across nested directories vs. a few central files)
+- Higher file count (~130 files across nested directories vs. a few central files)
 - Handler registry file has many imports (one per step)
 - The discriminated union payload type (`StepCompletionPayload`) requires careful typing to maintain type safety
+- Backward navigation silently does nothing if `stepsSequence` is empty; step tests must seed it explicitly via `StoreBuilder.withStepsSequence`
+- The derived backward navigation only holds while no step needs context-dependent backward branching; if that changes, explicit `getPreviousStepId` declarations would be needed
 
 ## Links
 

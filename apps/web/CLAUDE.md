@@ -25,21 +25,31 @@ pnpm --filter web typecheck && pnpm --filter web lint && pnpm --filter web test
 
 ## Canonical Pattern Examples
 
-| Pattern                  | Reference File                                                                                                   |
-| ------------------------ | ---------------------------------------------------------------------------------------------------------------- |
-| ViewData Selector        | `src/features/create-project/core/createProject.selectors.ts`                                                    |
-| Async Thunk              | `src/features/create-project/core/urban-project/fetchEstimatedSiteResalePrice.action.ts`                         |
-| Reducer (createReducer)  | `src/features/create-site/core/createSite.reducer.ts`                                                            |
-| Container Component      | `src/features/create-project/views/photovoltaic-power-station/custom-form/stakeholders/site-purchased/index.tsx` |
-| Gateway Interface        | `src/shared/core/gateways/RealEstateValuationGateway.ts`                                                         |
-| HTTP POST implementation | `src/features/onboarding/infrastructure/create-user-service/HttpCreateUserService.ts`                            |
-| HTTP GET implementation  | `src/features/onboarding/infrastructure/current-user-service/HttpCurrentUserService.ts`                          |
-| InMemory Mock            | `src/shared/infrastructure/real-estate-valuation-service/InMemoryRealEstateValuationService.ts`                  |
-| Test with Store Helper   | `src/features/create-project/core/urban-project/__tests__/steps/site-resale/siteResaleSelection.step.spec.ts`    |
-| Test Store Helper        | `src/features/create-project/core/urban-project/__tests__/_testStoreHelpers.ts`                                  |
-| Listener Middleware      | `src/features/create-project/core/listeners/projectCreationListeners.ts`                                         |
-| Third-Party Gateway      | `src/features/support/core/gateways/SupportChatGateway.ts`                                                       |
-| Fire-and-forget Thunk    | `src/features/support/core/authLinkNotReceivedHelpRequested.action.ts`                                           |
+| Pattern                         | Reference File                                                                                                                                          |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Step Handler (registry)         | `src/features/create-project/core/renewable-energy/step-handlers/stepHandlerRegistry.ts`                                                                |
+| Step Handler (answer)           | `src/features/create-project/core/renewable-energy/step-handlers/photovoltaic/photovoltaic-surface/photovoltaicSurface.handler.ts`                      |
+| Step Handler (selector)         | `src/features/create-project/core/renewable-energy/step-handlers/photovoltaic/photovoltaic-contract-duration/photovoltaicContractDuration.selectors.ts` |
+| Step Handler (schema)           | `src/features/create-project/core/renewable-energy/step-handlers/photovoltaic/photovoltaic-surface/photovoltaicSurface.schema.ts`                       |
+| Step Handler (stepper config)   | `src/features/create-project/core/renewable-energy/step-handlers/photovoltaic/photovoltaic-surface/photovoltaicSurface.stepperConfig.ts`                |
+| Stepper Config (registry)       | `src/features/create-project/core/renewable-energy/step-handlers/renewableEnergyStepperConfig.ts`                                                       |
+| Step Handler (urban, with deps) | `src/shared/core/reducers/project-form/urban-project/step-handlers/uses/selection/usesSelection.handler.ts`                                             |
+| Step Handler (urban, registry)  | `src/shared/core/reducers/project-form/urban-project/step-handlers/stepHandlerRegistry.ts`                                                              |
+| ViewData Selector               | `src/features/create-project/core/createProject.selectors.ts`                                                                                           |
+| Async Thunk                     | `src/features/create-project/core/urban-project/fetchEstimatedSiteResalePrice.action.ts`                                                                |
+| Reducer (createReducer)         | `src/features/create-site/core/createSite.reducer.ts`                                                                                                   |
+| Container Component             | `src/features/create-project/views/photovoltaic-power-station/custom-form/stakeholders/site-purchased/index.tsx`                                        |
+| Gateway Interface               | `src/shared/core/gateways/RealEstateValuationGateway.ts`                                                                                                |
+| HTTP POST implementation        | `src/features/onboarding/infrastructure/create-user-service/HttpCreateUserService.ts`                                                                   |
+| HTTP GET implementation         | `src/features/onboarding/infrastructure/current-user-service/HttpCurrentUserService.ts`                                                                 |
+| InMemory Mock                   | `src/shared/infrastructure/real-estate-valuation-service/InMemoryRealEstateValuationService.ts`                                                         |
+| Step Handler (test, RE)         | `src/features/create-project/core/renewable-energy/step-handlers/photovoltaic/photovoltaic-surface/photovoltaicSurface.step.spec.ts`                    |
+| Test Store Helper (RE)          | `src/features/create-project/core/renewable-energy/__tests__/_testStoreHelpers.ts`                                                                      |
+| Test with Store Helper (urban)  | `src/features/create-project/core/urban-project/__tests__/steps/site-resale/siteResaleSelection.step.spec.ts`                                           |
+| Test Store Helper (urban)       | `src/features/create-project/core/urban-project/__tests__/_testStoreHelpers.ts`                                                                         |
+| Listener Middleware             | `src/features/create-project/core/listeners/projectCreationListeners.ts`                                                                                |
+| Third-Party Gateway             | `src/features/support/core/gateways/SupportChatGateway.ts`                                                                                              |
+| Fire-and-forget Thunk           | `src/features/support/core/authLinkNotReceivedHelpRequested.action.ts`                                                                                  |
 
 ---
 
@@ -95,6 +105,34 @@ const result = await extra.featureService.doSomething(payload);
 - Use `useEffect` in components for most side effects
 - Use listener middleware sparingly for specific Redux action side effects
 
+### Step Handler Pattern
+
+Multi-step wizards use a **step handler registry** instead of per-step actions and large reducers. Two implementations exist:
+
+**Common to both:**
+
+- **Registry** (`stepHandlerRegistry.ts`): Maps step IDs to handler objects
+- **`AnswerStepHandler<T>`**: Data-entry steps with `getNextStepId()`, optional `getDefaultAnswers()`, `updateAnswersMiddleware()`
+- **`InfoStepHandler`**: Navigation-only steps (intros, summaries)
+- **Generic action**: `requestStepCompletion({ stepId, answers })` replaces individual per-step actions
+- **Colocated files**: Each step has `*.handler.ts`, `*.schema.ts`, `*.selectors.ts`, `*.stepperConfig.ts`
+
+**Renewable Energy** (simpler, creation only — [ADR-0006](../../docs/adr/0006-step-handler-pattern-for-renewable-energy-wizard.md)):
+
+- Location: `src/features/create-project/core/renewable-energy/step-handlers/`
+- Nested per-step directories (e.g., `photovoltaic/photovoltaic-surface/photovoltaicSurface.handler.ts`)
+- Steps are independent (no cascading updates)
+
+**Urban Project** (complex, creation + update — [ADR-0004](../../docs/adr/0004-colocate-urban-project-step-definitions.md)):
+
+- Location: `src/shared/core/reducers/project-form/urban-project/step-handlers/`
+- Nested per-step folders (e.g., `uses/selection/usesSelection.handler.ts`)
+- **Dependency rules**: `getDependencyRules()` returns `delete`/`invalidate`/`recompute` actions on dependent steps
+- **Shortcuts**: `getShortcut()` auto-completes multiple steps when conditions are met
+- **Recomputation**: `getRecomputedStepAnswers()` recalculates values while preserving user edits
+- **Confirmation dialogs**: Cascading changes trigger user confirmation before applying
+- **Factory actions**: `createUrbanProjectFormActions(prefix)` supports both `"projectCreation"` and `"projectUpdate"` modes
+
 ### Component Encapsulation
 
 Internal representation is an implementation detail — don't expose it through props. Design component APIs from the consumer's perspective. If every consumer would need the same adapter code (format conversion, mapping, etc.), that logic belongs inside the component.
@@ -126,6 +164,20 @@ When creating a new container component:
    - Urban project form (factory pattern):
      - `src/shared/core/reducers/project-form/urban-project/urbanProject.selectors.ts` → `selectUsesFloorSurfaceAreaViewData`
      - `src/shared/views/project-form/urban-project/buildings/uses-floor-surface-area/index.tsx`
+
+### Step Handler Checklist (Renewable Energy)
+
+When adding a new step to the renewable energy wizard:
+
+1. **Create step directory**: `step-handlers/{group}/{step-id}/`
+2. **Create colocated files**:
+   - `{stepId}.handler.ts` — implement `AnswerStepHandler<T>` or `InfoStepHandler`
+   - `{stepId}.schema.ts` — Zod schema for step answers (if `AnswerStepHandler`)
+   - `{stepId}.selectors.ts` — selector returning step `ViewData`
+   - `{stepId}.stepperConfig.ts` — label + optional group for the stepper UI
+3. **Register in registry**: Add to `step-handlers/stepHandlerRegistry.ts`
+4. **Add step ID** to `renewableEnergySteps.ts` union type
+5. **Write colocated test**: `{stepId}.step.spec.ts` using `StoreBuilder` from `__tests__/_testStoreHelpers.ts`
 
 ### Gateway Checklist
 

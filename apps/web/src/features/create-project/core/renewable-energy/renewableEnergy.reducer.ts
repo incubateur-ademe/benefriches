@@ -155,8 +155,14 @@ const addStepHandlerCases = (builder: ActionReducerMapBuilder<ProjectCreationSta
       });
       navigateToAndLoadStep(state, previousStep);
     } else {
-      // Fall back to stepsHistory for pre-custom navigation
-      if (state.stepsHistory.length > 1) {
+      // Use stepsSequence for backward navigation in the custom flow
+      const stepsSequence = state.renewableEnergyProject.stepsSequence;
+      const currentIndex = stepsSequence.indexOf(currentStep);
+      const previousStep = currentIndex > 0 ? stepsSequence[currentIndex - 1] : undefined;
+      if (previousStep) {
+        navigateToAndLoadStep(state, previousStep);
+      } else if (state.stepsHistory.length > 1) {
+        // Fall back to stepsHistory when at the first step of the sequence
         state.stepsHistory = state.stepsHistory.slice(0, -1);
       }
     }

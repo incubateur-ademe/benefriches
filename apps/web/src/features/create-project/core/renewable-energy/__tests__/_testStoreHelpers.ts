@@ -40,6 +40,21 @@ export class StoreBuilder {
     return this;
   }
 
+  // Also sets currentStep to the last element of the sequence, since the current step
+  // is always the last step reached in the navigation sequence.
+  withStepsSequence(stepsSequence: RenewableEnergyCreationStep[]): this {
+    const currentStep = stepsSequence.at(-1);
+    this.preloadedRootState.projectCreation = {
+      ...this.preloadedRootState.projectCreation,
+      renewableEnergyProject: {
+        ...this.preloadedRootState.projectCreation.renewableEnergyProject,
+        stepsSequence,
+        ...(currentStep && { currentStep }),
+      },
+    };
+    return this;
+  }
+
   withSiteData(siteData: ProjectCreationState["siteData"]): this {
     this.preloadedRootState.projectCreation = {
       ...this.preloadedRootState.projectCreation,
