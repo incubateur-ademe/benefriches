@@ -1,6 +1,5 @@
 import { useAppSelector } from "@/app/hooks/store.hooks";
-import { selectProjectId } from "@/features/create-project/core/createProject.selectors";
-import { selectShouldGoThroughOnboarding } from "@/features/projects/application/project-impacts/impactsOnboardingSkip.selectors";
+import { selectCommonResultViewData } from "@/features/create-project/core/createProject.selectors";
 
 import ProjectCreationResult from "./ProjectCreationResult";
 
@@ -11,8 +10,7 @@ type Props = {
 };
 
 function ProjectCreationResultContainer({ onBack, projectName, saveState }: Props) {
-  const projectId = useAppSelector(selectProjectId);
-  const shouldGoThroughOnboarding = useAppSelector(selectShouldGoThroughOnboarding);
+  const { projectId, shouldGoThroughOnboarding } = useAppSelector(selectCommonResultViewData);
 
   return (
     <ProjectCreationResult

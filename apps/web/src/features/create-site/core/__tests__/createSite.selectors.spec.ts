@@ -2,6 +2,7 @@ import { createStore, RootState } from "@/app/store/store";
 import { buildUser } from "@/features/onboarding/core/user.mock";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
+import { selectExpressAddressFormViewData } from "../selectors/createSite.selectors";
 import { selectAddressFormViewData } from "../steps/address/address.selectors";
 import { selectSoilContaminationFormViewData } from "../steps/contamination-and-accidents/contaminationAndAccidents.selectors";
 import { selectExpressResultViewData } from "../steps/final/final.selectors";
@@ -292,6 +293,36 @@ describe("createSite ViewData selectors", () => {
       expect(viewData).toEqual({
         siteId,
         saveLoadingState: "idle",
+      });
+    });
+  });
+
+  describe("selectExpressAddressFormViewData", () => {
+    it("returns address and siteNature from state", () => {
+      const state = new StoreBuilder()
+        .withCreationData({
+          address: GRENOBLE_ADDRESS,
+          nature: "FRICHE",
+        })
+        .build()
+        .getState();
+
+      const viewData = selectExpressAddressFormViewData(state);
+
+      expect(viewData).toEqual({
+        address: GRENOBLE_ADDRESS,
+        siteNature: "FRICHE",
+      });
+    });
+
+    it("returns undefined address and siteNature when not yet set", () => {
+      const state = createStore(getTestAppDependencies()).getState();
+
+      const viewData = selectExpressAddressFormViewData(state);
+
+      expect(viewData).toEqual({
+        address: undefined,
+        siteNature: undefined,
       });
     });
   });

@@ -2,7 +2,9 @@ import { createSelector } from "@reduxjs/toolkit";
 import { DevelopmentPlanCategory, getDefaultScheduleForProject, ProjectSchedule } from "shared";
 
 import { RootState } from "@/app/store/store";
+import { selectShouldGoThroughOnboarding } from "@/features/projects/application/project-impacts/impactsOnboardingSkip.selectors";
 
+import type { ExpressReconversionProjectResult } from "./actions/expressProjectSavedGateway";
 import { ProjectCreationState, ProjectCreationStep } from "./createProject.reducer";
 import { ProjectSuggestion } from "./project.types";
 import { creationProjectFormSelectors } from "./urban-project/urbanProject.selectors";
@@ -55,3 +57,36 @@ export const {
   selectSiteSurfaceArea,
   selectSiteContaminatedSurfaceArea,
 } = creationProjectFormSelectors;
+
+type UrbanProjectExpressSummaryViewData = {
+  loadingState: "idle" | "loading" | "success" | "error";
+  data: ExpressReconversionProjectResult | undefined;
+  siteName: string;
+};
+
+export const selectUrbanProjectExpressSummaryViewData = createSelector(
+  selectSelf,
+  selectSiteData,
+  (state, siteData): UrbanProjectExpressSummaryViewData => {
+    const stepState = state.urbanProject.steps.URBAN_PROJECT_EXPRESS_SUMMARY;
+    return {
+      loadingState: stepState?.loadingState ?? "idle",
+      data: stepState?.data,
+      siteName: siteData?.name ?? "",
+    };
+  },
+);
+
+type CommonResultViewData = {
+  projectId: string;
+  shouldGoThroughOnboarding: boolean;
+};
+
+export const selectCommonResultViewData = createSelector(
+  selectProjectId,
+  selectShouldGoThroughOnboarding,
+  (projectId, shouldGoThroughOnboarding): CommonResultViewData => ({
+    projectId,
+    shouldGoThroughOnboarding,
+  }),
+);

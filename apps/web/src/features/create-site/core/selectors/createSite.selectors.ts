@@ -57,3 +57,17 @@ export const selectSurfaceAreaInputMode = createSelector(
 );
 
 export const selectSiteOwner = createSelector(selectSelf, (state) => state.siteData.owner);
+
+type ExpressAddressFormViewData = {
+  address: Address | undefined;
+  siteNature: SiteNature | undefined;
+};
+
+export const selectExpressAddressFormViewData = createSelector(
+  selectSiteAddress,
+  selectSiteNature,
+  (address, siteNature): ExpressAddressFormViewData => ({
+    address,
+    siteNature,
+  }),
+);
