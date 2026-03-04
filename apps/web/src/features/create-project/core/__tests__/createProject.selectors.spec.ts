@@ -5,6 +5,8 @@ import { getTestAppDependencies } from "@/test/testAppDependencies";
 import { getInitialState } from "../createProject.reducer";
 import {
   selectCommonResultViewData,
+  selectCustomCreationResultViewData,
+  selectExpressCreationResultViewData,
   selectUrbanProjectExpressSummaryViewData,
 } from "../createProject.selectors";
 import { relatedSiteData } from "./siteData.mock";
@@ -55,6 +57,36 @@ describe("createProject ViewData selectors", () => {
 
       expect(viewData).toEqual({
         projectId: expect.any(String),
+        shouldGoThroughOnboarding: true,
+      });
+    });
+  });
+
+  describe("selectExpressCreationResultViewData", () => {
+    it("returns default idle state when express summary step not yet loaded", () => {
+      const store = createStore(getTestAppDependencies());
+
+      const viewData = selectExpressCreationResultViewData(store.getState());
+
+      expect(viewData).toEqual({
+        projectId: expect.any(String),
+        projectName: "",
+        saveState: "idle",
+        shouldGoThroughOnboarding: true,
+      });
+    });
+  });
+
+  describe("selectCustomCreationResultViewData", () => {
+    it("returns default idle state when naming step not yet completed", () => {
+      const store = createStore(getTestAppDependencies());
+
+      const viewData = selectCustomCreationResultViewData(store.getState());
+
+      expect(viewData).toEqual({
+        projectId: expect.any(String),
+        projectName: "",
+        saveState: "idle",
         shouldGoThroughOnboarding: true,
       });
     });

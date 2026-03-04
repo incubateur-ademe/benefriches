@@ -90,3 +90,49 @@ export const selectCommonResultViewData = createSelector(
     shouldGoThroughOnboarding,
   }),
 );
+
+type ExpressCreationResultViewData = {
+  projectId: string;
+  projectName: string;
+  saveState: "idle" | "loading" | "success" | "error" | "dirty";
+  shouldGoThroughOnboarding: boolean;
+};
+
+export const selectExpressCreationResultViewData = createSelector(
+  selectSelf,
+  selectShouldGoThroughOnboarding,
+  (state, shouldGoThroughOnboarding): ExpressCreationResultViewData => ({
+    projectId: state.projectId,
+    projectName: state.urbanProject.steps.URBAN_PROJECT_EXPRESS_SUMMARY?.data?.name ?? "",
+    saveState: state.urbanProject.saveState,
+    shouldGoThroughOnboarding,
+  }),
+);
+
+const selectNamingStepAnswers =
+  creationProjectFormSelectors.selectStepAnswers("URBAN_PROJECT_NAMING");
+
+type CustomCreationResultViewData = {
+  projectId: string;
+  projectName: string;
+  saveState: "idle" | "loading" | "success" | "error" | "dirty";
+  shouldGoThroughOnboarding: boolean;
+};
+
+export const selectCustomCreationResultViewData = createSelector(
+  selectProjectId,
+  creationProjectFormSelectors.selectSaveState,
+  selectNamingStepAnswers,
+  selectShouldGoThroughOnboarding,
+  (
+    projectId,
+    saveState,
+    namingAnswers,
+    shouldGoThroughOnboarding,
+  ): CustomCreationResultViewData => ({
+    projectId,
+    projectName: namingAnswers?.name ?? "",
+    saveState,
+    shouldGoThroughOnboarding,
+  }),
+);

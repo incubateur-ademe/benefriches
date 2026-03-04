@@ -1,24 +1,21 @@
 import { useAppSelector } from "@/app/hooks/store.hooks";
-import { selectShouldGoThroughOnboarding } from "@/features/projects/application/project-impacts/impactsOnboardingSkip.selectors";
+import { selectExpressCreationResultViewData } from "@/features/create-project/core/createProject.selectors";
 
 import ProjectCreationResult from "../../../common-views/result/ProjectCreationResult";
 import { useStepBack } from "../useStepBack";
 
 function UrbanProjectExpressCreationResultContainer() {
-  const { urbanProject, projectId } = useAppSelector((state) => state.projectCreation);
-
-  const { URBAN_PROJECT_EXPRESS_SUMMARY } = useAppSelector(
-    (state) => state.projectCreation.urbanProject.steps,
+  const { projectId, projectName, saveState, shouldGoThroughOnboarding } = useAppSelector(
+    selectExpressCreationResultViewData,
   );
-  const shouldGoThroughOnboarding = useAppSelector(selectShouldGoThroughOnboarding);
 
   const onBack = useStepBack();
 
   return (
     <ProjectCreationResult
       projectId={projectId}
-      projectName={URBAN_PROJECT_EXPRESS_SUMMARY?.data?.name ?? ""}
-      loadingState={urbanProject.saveState}
+      projectName={projectName}
+      loadingState={saveState}
       onBack={onBack}
       shouldGoThroughOnboarding={shouldGoThroughOnboarding}
     />
