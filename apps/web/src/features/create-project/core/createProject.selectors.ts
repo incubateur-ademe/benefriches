@@ -7,7 +7,10 @@ import { selectShouldGoThroughOnboarding } from "@/features/projects/application
 import type { ExpressReconversionProjectResult } from "./actions/expressProjectSavedGateway";
 import { ProjectCreationState, ProjectCreationStep } from "./createProject.reducer";
 import { ProjectSuggestion } from "./project.types";
-import { creationProjectFormSelectors } from "./urban-project/urbanProject.selectors";
+import {
+  creationProjectFormSelectors,
+  selectUrbanProjectCurrentStep,
+} from "./urban-project/urbanProject.selectors";
 
 const selectSelf = (state: RootState) => state.projectCreation;
 
@@ -118,6 +121,38 @@ type CustomCreationResultViewData = {
   saveState: "idle" | "loading" | "success" | "error" | "dirty";
   shouldGoThroughOnboarding: boolean;
 };
+
+type UrbanProjectCreationWizardViewData = {
+  currentStep: ReturnType<typeof selectUrbanProjectCurrentStep>;
+  saveState: "idle" | "loading" | "success" | "error" | "dirty";
+};
+
+export const selectUrbanProjectCreationWizardViewData = createSelector(
+  selectUrbanProjectCurrentStep,
+  selectSelf,
+  (currentStep, state): UrbanProjectCreationWizardViewData => ({
+    currentStep,
+    saveState: state.urbanProject.saveState,
+  }),
+);
+
+type PVExpressCreationResultViewData = {
+  projectId: string;
+  projectName: string;
+  saveState: "idle" | "loading" | "success" | "error";
+  shouldGoThroughOnboarding: boolean;
+};
+
+export const selectPVExpressCreationResultViewData = createSelector(
+  selectSelf,
+  selectShouldGoThroughOnboarding,
+  (state, shouldGoThroughOnboarding): PVExpressCreationResultViewData => ({
+    projectId: state.projectId,
+    projectName: state.renewableEnergyProject.expressData.projectData?.name ?? "",
+    saveState: state.renewableEnergyProject.saveState,
+    shouldGoThroughOnboarding,
+  }),
+);
 
 export const selectCustomCreationResultViewData = createSelector(
   selectProjectId,

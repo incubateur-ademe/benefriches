@@ -216,6 +216,23 @@ export const createUrbanProjectFormSelectors = (
       selectors.selectSiteContaminatedSurfaceArea,
     );
 
+  const selectNavigationBlockerDialogViewData = createSelector(
+    selectSaveState,
+    selectIsFormStatusValid,
+    (saveState, isFormValid) => ({ saveState, isFormValid }),
+  );
+
+  const selectUrbanProjectCreationStepperViewData = createSelector(
+    selectStepsGroupedBySections,
+    selectNextEmptyStep,
+    selectSaveState,
+    (stepsGroupedBySections, nextEmptyStep, saveState) => ({
+      stepsGroupedBySections,
+      nextEmptyStep,
+      saveState,
+    }),
+  );
+
   return {
     selectStepState,
     selectProjectSoilsDistributionByType,
@@ -230,6 +247,8 @@ export const createUrbanProjectFormSelectors = (
     selectUrbanProjectAvailableLocalAuthoritiesStakeholders,
     selectPendingStepCompletion,
     selectSaveState,
+    selectNavigationBlockerDialogViewData,
+    selectUrbanProjectCreationStepperViewData,
     selectSiteResaleRevenueViewData,
     selectPublicGreenSpacesSurfaceAreaViewData,
     selectUsesFloorSurfaceAreaViewData,

@@ -2,7 +2,10 @@ import { createStore, RootState } from "@/app/store/store";
 import { buildUser } from "@/features/onboarding/core/user.mock";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
-import { selectExpressAddressFormViewData } from "../selectors/createSite.selectors";
+import {
+  selectExpressAddressFormViewData,
+  selectSiteCreationWizardViewData,
+} from "../selectors/createSite.selectors";
 import { selectAddressFormViewData } from "../steps/address/address.selectors";
 import { selectSoilContaminationFormViewData } from "../steps/contamination-and-accidents/contaminationAndAccidents.selectors";
 import { selectExpressResultViewData } from "../steps/final/final.selectors";
@@ -323,6 +326,36 @@ describe("createSite ViewData selectors", () => {
       expect(viewData).toEqual({
         address: undefined,
         siteNature: undefined,
+      });
+    });
+  });
+
+  describe("selectSiteCreationWizardViewData", () => {
+    it("returns current step, isFriche and createMode from state", () => {
+      const state = new StoreBuilder()
+        .withCreationData({ isFriche: true })
+        .withCreateMode("custom")
+        .build()
+        .getState();
+
+      const viewData = selectSiteCreationWizardViewData(state);
+
+      expect(viewData).toEqual({
+        currentStep: expect.any(String),
+        isFriche: true,
+        createMode: "custom",
+      });
+    });
+
+    it("returns undefined createMode and isFriche by default", () => {
+      const state = createStore(getTestAppDependencies()).getState();
+
+      const viewData = selectSiteCreationWizardViewData(state);
+
+      expect(viewData).toEqual({
+        currentStep: expect.any(String),
+        isFriche: undefined,
+        createMode: undefined,
       });
     });
   });

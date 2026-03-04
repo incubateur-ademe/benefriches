@@ -3,6 +3,8 @@ import type { Address, SiteNature, SoilType } from "shared";
 
 import { RootState } from "@/app/store/store";
 
+import { selectCurrentStep, type SiteCreationStep } from "../createSite.reducer";
+
 const selectSelf = (state: RootState) => state.siteCreation;
 
 export const selectSiteAddress = createSelector(
@@ -58,6 +60,11 @@ export const selectSurfaceAreaInputMode = createSelector(
 
 export const selectSiteOwner = createSelector(selectSelf, (state) => state.siteData.owner);
 
+export const selectCreateMode = createSelector(
+  selectSelf,
+  (state): "express" | "custom" | undefined => state.createMode,
+);
+
 type ExpressAddressFormViewData = {
   address: Address | undefined;
   siteNature: SiteNature | undefined;
@@ -69,5 +76,21 @@ export const selectExpressAddressFormViewData = createSelector(
   (address, siteNature): ExpressAddressFormViewData => ({
     address,
     siteNature,
+  }),
+);
+
+type SiteCreationWizardViewData = {
+  currentStep: SiteCreationStep;
+  isFriche: boolean | undefined;
+  createMode: "express" | "custom" | undefined;
+};
+
+export const selectSiteCreationWizardViewData = createSelector(
+  selectCurrentStep,
+  selectSelf,
+  (currentStep, siteCreation): SiteCreationWizardViewData => ({
+    currentStep,
+    isFriche: siteCreation.siteData.isFriche,
+    createMode: siteCreation.createMode,
   }),
 );

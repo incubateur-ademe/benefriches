@@ -6,7 +6,7 @@ import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
-import { selectUrbanProjectCurrentStep } from "../../core/urban-project/urbanProject.selectors";
+import { selectUrbanProjectCreationWizardViewData } from "../../core/createProject.selectors";
 import NavigationBlockerDialog from "../NavigationBlockerDialog";
 import { HTML_MAIN_TITLE } from "../mainHtmlTitle";
 import UrbanProjectCreationStepper from "./UrbanProjectCreationStepper";
@@ -416,8 +416,7 @@ const getCurrentStepView = (step: UrbanProjectCreationStep): Exclude<ReactNode, 
 };
 
 function UrbanProjectCreationWizard() {
-  const currentStep = useAppSelector(selectUrbanProjectCurrentStep);
-  const saveState = useAppSelector((state) => state.projectCreation.urbanProject.saveState);
+  const { currentStep, saveState } = useAppSelector(selectUrbanProjectCreationWizardViewData);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [currentStep]);

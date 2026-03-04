@@ -4,12 +4,12 @@ import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 import FormStepper from "@/shared/views/layout/WizardFormLayout/FormStepper";
 
 import {
-  selectCurrentStep,
   SiteCreationCustomStep,
   SiteCreationExpressStep,
   SiteCreationState,
   SiteCreationStep,
 } from "../core/createSite.reducer";
+import { selectSiteCreationWizardViewData } from "../core/selectors/createSite.selectors";
 import NavigationBlockerDialog from "./NavigationBlockerDialog";
 import CreateModeSelectionForm from "./create-mode-selection";
 import SiteCreationCustomStepContent from "./custom/StepContent";
@@ -76,9 +76,7 @@ const getMainChildren = (
 };
 
 function SiteCreationWizard() {
-  const currentStep = useAppSelector(selectCurrentStep);
-  const { isFriche } = useAppSelector((state) => state.siteCreation.siteData);
-  const createMode = useAppSelector((state) => state.siteCreation.createMode);
+  const { currentStep, isFriche, createMode } = useAppSelector(selectSiteCreationWizardViewData);
 
   useSyncCreationStepWithRouteQuery();
 

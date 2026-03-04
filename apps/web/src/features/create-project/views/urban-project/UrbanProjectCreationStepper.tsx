@@ -1,5 +1,4 @@
 import { useAppSelector } from "@/app/hooks/store.hooks";
-import { RootState } from "@/app/store/store";
 import { UrbanProjectCreationStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 import FormStepperStep from "@/shared/views/layout/WizardFormLayout/FormStepperStep";
 import FormStepperWrapper from "@/shared/views/layout/WizardFormLayout/FormStepperWrapper";
@@ -13,18 +12,11 @@ type Props = {
 };
 
 function UrbanProjectCreationStepper({ step: currentStep }: Props) {
-  const {
-    selectStepsGroupedBySections,
-    selectNextEmptyStep,
-    onNavigateToStep,
-    onNavigateToStepperGroup,
-  } = useProjectForm();
+  const { selectUrbanProjectCreationStepperViewData, onNavigateToStep, onNavigateToStepperGroup } =
+    useProjectForm();
 
-  const stepsGroupedBySections = useAppSelector(selectStepsGroupedBySections);
-  const nextEmptyStep = useAppSelector(selectNextEmptyStep);
-
-  const saveState = useAppSelector(
-    (state: RootState) => state.projectCreation.urbanProject.saveState,
+  const { stepsGroupedBySections, nextEmptyStep, saveState } = useAppSelector(
+    selectUrbanProjectCreationStepperViewData,
   );
 
   const stepGroupsList = useBuildStepperNavigationItems(stepsGroupedBySections, currentStep);

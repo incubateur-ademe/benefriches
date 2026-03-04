@@ -1,14 +1,14 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { stepReverted } from "@/features/create-project/core/actions/actionsUtils";
-import { selectShouldGoThroughOnboarding } from "@/features/projects/application/project-impacts/impactsOnboardingSkip.selectors";
+import { selectPVExpressCreationResultViewData } from "@/features/create-project/core/createProject.selectors";
 
 import ProjectCreationResult from "../../common-views/result/ProjectCreationResult";
 
 function PhotovoltaicExpressCreationResultContainer() {
   const dispatch = useAppDispatch();
-  const { projectId, renewableEnergyProject } = useAppSelector((state) => state.projectCreation);
-  const { saveState, expressData } = renewableEnergyProject;
-  const shouldGoThroughOnboarding = useAppSelector(selectShouldGoThroughOnboarding);
+  const { projectId, projectName, saveState, shouldGoThroughOnboarding } = useAppSelector(
+    selectPVExpressCreationResultViewData,
+  );
 
   const onBack = () => {
     dispatch(stepReverted());
@@ -17,7 +17,7 @@ function PhotovoltaicExpressCreationResultContainer() {
   return (
     <ProjectCreationResult
       projectId={projectId}
-      projectName={expressData.projectData?.name ?? ""}
+      projectName={projectName}
       loadingState={saveState}
       onBack={onBack}
       shouldGoThroughOnboarding={shouldGoThroughOnboarding}

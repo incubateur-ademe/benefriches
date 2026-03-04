@@ -17,10 +17,9 @@ const DIALOG_DSFR_CSS = [
 ];
 
 export default function NavigationBlockerDialog() {
-  const { selectSaveState, selectIsFormStatusValid, onSave } = useProjectForm();
+  const { selectNavigationBlockerDialogViewData, onSave } = useProjectForm();
 
-  const saveState = useAppSelector(selectSaveState);
-  const isFormValid = useAppSelector(selectIsFormStatusValid);
+  const { saveState, isFormValid } = useAppSelector(selectNavigationBlockerDialogViewData);
 
   const { isModalOpened, onConfirmNavigation, onCancelNavigation } = useNavigationBlocker({
     shouldBlockNavigation: saveState === "dirty",
