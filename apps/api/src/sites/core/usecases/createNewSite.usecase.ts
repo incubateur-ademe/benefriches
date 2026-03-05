@@ -1,10 +1,3 @@
-import {
-  createAgriculturalOrNaturalSite,
-  CreateAgriculturalOrNaturalSiteProps,
-  createFriche,
-  CreateFricheProps,
-} from "shared";
-
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerator";
 import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
@@ -13,6 +6,12 @@ import { UseCase } from "src/shared-kernel/usecase";
 
 import { createSiteCreatedEvent } from "../events/siteCreated.event";
 import { SitesRepository } from "../gateways/SitesRepository";
+import {
+  createAgriculturalOrNaturalSite,
+  CreateAgriculturalOrNaturalSiteProps,
+  createFriche,
+  CreateFricheProps,
+} from "../models/site";
 import { SiteEntity } from "../models/siteEntity";
 
 type Request = {

@@ -1,4 +1,4 @@
-import { Site } from "shared";
+import type { Site } from "./site";
 
 export type SiteEntity = Site & {
   createdAt: Date;

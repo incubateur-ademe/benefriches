@@ -1,47 +1,25 @@
-import { v4 as uuid } from "uuid";
-
 import {
-  City,
-  FricheActivity,
-  generateSiteName,
-  SiteGenerationProps,
-  SiteGenerator,
-  SiteYearlyExpense,
-} from "..";
-import { computeEstimatedPropertyTaxesAmount } from "../../financial";
-import { formatMunicipalityName } from "../../local-authority";
-import { createSoilSurfaceAreaDistribution } from "../../soils";
-import { getSoilsDistributionForFricheActivity } from "../friche/spaces";
-import { createFriche, Friche } from "../site";
-import {
+  computeEstimatedPropertyTaxesAmount,
   computeIllegalDumpingDefaultCost,
   computeMaintenanceDefaultCost,
   computeSecurityDefaultCost,
-} from "../yearlyExpenses";
+  createSoilSurfaceAreaDistribution,
+  FricheActivity,
+  formatMunicipalityName,
+  generateSiteName,
+  getContaminatedPercentageFromFricheActivity,
+  getSoilsDistributionForFricheActivity,
+  SiteYearlyExpense,
+} from "shared";
+import { v4 as uuid } from "uuid";
+
+import { createFriche, type Friche } from "./site";
+import { type City, type SiteGenerationProps, type SiteGenerator } from "./siteGeneration";
 
 type FricheGenerationProps = SiteGenerationProps & {
   fricheActivity: FricheActivity;
   builtSurfaceArea?: number;
   hasContaminatedSoils?: boolean;
-};
-
-export const getContaminatedPercentageFromFricheActivity = (fricheActivity: FricheActivity) => {
-  switch (fricheActivity) {
-    case "INDUSTRY":
-      return 0.5;
-    case "MILITARY":
-      return 0.05;
-    case "RAILWAY":
-      return 0.1;
-    case "PORT":
-      return 0.15;
-    case "TIP_OR_RECYCLING_SITE":
-      return 0.05;
-    case "AGRICULTURE":
-    case "BUILDING":
-    case "OTHER":
-      return 0;
-  }
 };
 
 function getContaminatedSoilSurfaceFromFricheActivity(

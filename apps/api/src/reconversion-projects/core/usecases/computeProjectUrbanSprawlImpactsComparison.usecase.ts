@@ -1,12 +1,9 @@
 import {
-  AgriculturalOperationGenerator,
   ComparisonRoadAndUtilitiesConstructionImpact,
   ComparisonRoadAndUtilitiesMaintenanceImpact,
   computeProjectReinstatementExpenses,
-  FricheGenerator,
   getProjectSoilDistributionByType,
   Impact,
-  NaturalAreaGenerator,
   ReconversionProjectImpacts,
   ReconversionProjectImpactsDataView,
   ReinstatementExpensePurpose,
@@ -25,6 +22,9 @@ import { v4 as uuid } from "uuid";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { TResult, fail, success } from "src/shared-kernel/result";
 import { UseCase } from "src/shared-kernel/usecase";
+import { AgriculturalOperationGenerator } from "src/sites/core/models/agriculturalOperationGenerator";
+import { FricheGenerator } from "src/sites/core/models/fricheGenerator";
+import { NaturalAreaGenerator } from "src/sites/core/models/naturalAreaGenerator";
 
 import { CityStatsProvider } from "../gateways/CityStatsProvider";
 import {

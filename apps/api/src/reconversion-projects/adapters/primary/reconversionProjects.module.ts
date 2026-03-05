@@ -1,7 +1,6 @@
 import { HttpModule } from "@nestjs/axios";
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
-import { FricheGenerator } from "shared";
 
 import { AuthModule } from "src/auth/adapters/auth.module";
 import { CarbonStorageModule } from "src/carbon-storage/adapters/primary/carbonStorage.module";
@@ -41,6 +40,7 @@ import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
 import { SqlSitesQuery } from "src/sites/adapters/secondary/site-query/SqlSitesQuery";
 import { SqlSiteRepository } from "src/sites/adapters/secondary/site-repository/SqlSiteRepository";
 import { SitesQuery } from "src/sites/core/gateways/SitesQuery";
+import { FricheGenerator } from "src/sites/core/models/fricheGenerator";
 import { SqlUserQuery } from "src/users/adapters/secondary/user-query/SqlUserQuery";
 import { UserQuery } from "src/users/core/gateways/UserQuery";
 

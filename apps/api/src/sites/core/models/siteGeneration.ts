@@ -1,4 +1,6 @@
-import { Address, Site } from "../site";
+import type { Address } from "shared";
+
+import type { Site } from "./site";
 
 export type City = {
   name: string;

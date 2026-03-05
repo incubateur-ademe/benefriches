@@ -1,4 +1,5 @@
-import { createSoilSurfaceAreaDistribution } from "../soils";
+import { createSoilSurfaceAreaDistribution } from "shared";
+
 import {
   AgriculturalOrNaturalSite,
   createAgriculturalOrNaturalSite,
