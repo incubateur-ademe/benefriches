@@ -1,12 +1,13 @@
+import { createSoilSurfaceAreaDistribution } from "shared";
+
 import {
   AgriculturalOrNaturalSite,
   createAgriculturalOrNaturalSite,
   CreateAgriculturalOrNaturalSiteProps,
   createFriche,
   CreateFricheProps,
-  createSoilSurfaceAreaDistribution,
   Friche,
-} from "shared";
+} from "./site";
 
 export const buildAgriculturalOperationSiteProps = (
   propsOverride?: Partial<CreateAgriculturalOrNaturalSiteProps>,

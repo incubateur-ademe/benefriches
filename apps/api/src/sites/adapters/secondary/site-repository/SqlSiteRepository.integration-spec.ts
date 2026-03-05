@@ -1,13 +1,13 @@
 import knex, { Knex } from "knex";
-import {
-  CreateAgriculturalOrNaturalSiteProps,
-  CreateFricheProps,
-  createSoilSurfaceAreaDistribution,
-} from "shared";
+import { createSoilSurfaceAreaDistribution } from "shared";
 import { v4 as uuid } from "uuid";
 
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
 import { SqlSite } from "src/shared-kernel/adapters/sql-knex/tableTypes";
+import {
+  CreateAgriculturalOrNaturalSiteProps,
+  CreateFricheProps,
+} from "src/sites/core/models/site";
 import { buildAgriculturalOrNaturalSite, buildFriche } from "src/sites/core/models/site.mock";
 import { SiteEntity } from "src/sites/core/models/siteEntity";
 

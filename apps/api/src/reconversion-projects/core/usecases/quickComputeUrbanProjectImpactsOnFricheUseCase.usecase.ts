@@ -1,18 +1,17 @@
 import {
   DevelopmentPlanInstallationExpenses,
   FinancialAssistanceRevenue,
-  Friche,
   NewUrbanCenterProjectGenerator,
   RecurringExpense,
   RecurringRevenue,
   ReinstatementExpense,
-  Site,
 } from "shared";
 import { v4 as uuid } from "uuid";
 
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { TResult, success } from "src/shared-kernel/result";
 import { UseCase } from "src/shared-kernel/usecase";
+import type { Friche, Site } from "src/sites/core/models/site";
 
 import { CityStatsProvider } from "../gateways/CityStatsProvider";
 import { GetCarbonStorageFromSoilDistributionService } from "../gateways/SoilsCarbonStorageService";

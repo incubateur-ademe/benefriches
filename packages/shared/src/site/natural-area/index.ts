@@ -1,2 +1,2 @@
 export * from "./naturalAreaType";
-export * from "./naturalAreaGenerator";
+export * from "./soilsDistribution";

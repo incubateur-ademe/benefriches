@@ -1,13 +1,4 @@
-import {
-  Address,
-  AgriculturalOperationActivity,
-  AgriculturalOperationGenerator,
-  FricheActivity,
-  FricheGenerator,
-  NaturalAreaGenerator,
-  NaturalAreaType,
-  Site,
-} from "shared";
+import { Address, AgriculturalOperationActivity, FricheActivity, NaturalAreaType } from "shared";
 
 import { CityStatsProvider } from "src/reconversion-projects/core/gateways/CityStatsProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
@@ -18,6 +9,10 @@ import { UseCase } from "src/shared-kernel/usecase";
 
 import { createSiteCreatedEvent } from "../events/siteCreated.event";
 import { SitesRepository } from "../gateways/SitesRepository";
+import { AgriculturalOperationGenerator } from "../models/agriculturalOperationGenerator";
+import { FricheGenerator } from "../models/fricheGenerator";
+import { NaturalAreaGenerator } from "../models/naturalAreaGenerator";
+import type { Site } from "../models/site";
 import { SiteEntity } from "../models/siteEntity";
 
 export type ExpressSiteProps = {
