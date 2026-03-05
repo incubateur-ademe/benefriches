@@ -41,6 +41,12 @@ const getTextFromSiteNature = (nature: SiteNature) => {
         conversion: "L'espace naturel est reconverti",
         statuQuo: "l'espace naturel reste en l'état",
       };
+    case "URBAN_ZONE":
+      return {
+        projectText: `Projet sur zone urbaine`,
+        conversion: "La zone urbaine est reconvertie",
+        statuQuo: "la zone urbaine reste en l'état",
+      };
   }
 };
 

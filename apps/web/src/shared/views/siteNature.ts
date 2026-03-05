@@ -8,5 +8,7 @@ export const getPictogramUrlForSiteNature = (siteNature: SiteNature): string => 
       return "/img/pictograms/site-nature/agricultural-operation.svg";
     case "NATURAL_AREA":
       return "/img/pictograms/site-nature/natural-area.svg";
+    case "URBAN_ZONE":
+      return "/img/pictograms/site-nature/urban-zone.svg";
   }
 };

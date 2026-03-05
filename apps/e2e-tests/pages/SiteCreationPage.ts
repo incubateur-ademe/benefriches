@@ -65,6 +65,7 @@ export class SiteCreationPage {
       FRICHE: "Friche", // Not used, since friche is selected via isFriche=yes
       AGRICULTURAL_OPERATION: "Exploitation agricole",
       NATURAL_AREA: "Espace naturel",
+      URBAN_ZONE: "Zone urbaine",
     };
     await this.page.getByLabel(labels[nature]).check({ force: true });
 

@@ -136,6 +136,8 @@ const getTitle = (siteNature: SiteNature): string => {
       return `${baseTitle} à l'exploitation`;
     case "NATURAL_AREA":
       return `${baseTitle} à l'espace naturel`;
+    case "URBAN_ZONE":
+      return `${baseTitle} à la zone urbaine`;
   }
 };
 

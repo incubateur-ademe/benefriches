@@ -2,6 +2,7 @@ import { fr } from "@codegouvfr/react-dsfr";
 import { Controller, useForm } from "react-hook-form";
 import { SiteNature } from "shared";
 
+import { BENEFRICHES_ENV } from "@/app/envVars";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import Badge from "@/shared/views/components/Badge/Badge";
 import CheckableTile from "@/shared/views/components/CheckableTile/CheckableTile";
@@ -18,7 +19,7 @@ export type FormValues = {
 };
 
 type Option = {
-  value: SiteNature | "URBAN_ZONE";
+  value: SiteNature;
   title: string;
   description: string;
   imgSrc: string;
@@ -43,9 +44,9 @@ const options: Option[] = [
   {
     value: "URBAN_ZONE",
     title: "Zone urbaine",
-    description: "Zone d'activité économique, d'habitation, espace public ou mixte",
+    description: "Zone d'activités économiques, d'habitation, espace public ou mixte",
     imgSrc: "/img/pictograms/site-nature/urban-zone.svg",
-    disabled: true,
+    disabled: !BENEFRICHES_ENV.urbanZoneEnabled,
   },
 ] as const satisfies Option[];
 

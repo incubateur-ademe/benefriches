@@ -40,6 +40,26 @@ const SITE_CREATION_STEP_ROUTE_QUERY_STRING_MAP = {
   NAMING: "denomination",
   FINAL_SUMMARY: "recapitulatif-final",
   CREATION_RESULT: "fin",
+  // urban zone old-pattern step
+  URBAN_ZONE_TYPE: "type-de-zone-urbaine",
+  // urban zone step handler steps
+  URBAN_ZONE_SOILS_CONTAMINATION_INTRODUCTION: "zone-urbaine-pollution-introduction",
+  URBAN_ZONE_MANAGEMENT_INTRODUCTION: "zone-urbaine-gestion-introduction",
+  URBAN_ZONE_NAMING_INTRODUCTION: "zone-urbaine-denomination-introduction",
+  URBAN_ZONE_SOILS_SUMMARY: "zone-urbaine-recapitulatif-sols",
+  URBAN_ZONE_FINAL_SUMMARY: "zone-urbaine-recapitulatif",
+  URBAN_ZONE_CREATION_RESULT: "zone-urbaine-fin",
+  URBAN_ZONE_LAND_PARCELS_SELECTION: "zone-urbaine-selection-parcelles",
+  URBAN_ZONE_LAND_PARCELS_SURFACE_DISTRIBUTION: "zone-urbaine-superficie-parcelles",
+  URBAN_ZONE_LAND_PARCEL_SOILS_SELECTION: "zone-urbaine-selection-sols-parcelle",
+  URBAN_ZONE_LAND_PARCEL_SOILS_DISTRIBUTION: "zone-urbaine-superficie-sols-parcelle",
+  URBAN_ZONE_LAND_PARCEL_BUILDINGS_FLOOR_AREA: "zone-urbaine-surface-plancher-batiments",
+  URBAN_ZONE_SOILS_CONTAMINATION: "zone-urbaine-pollution",
+  URBAN_ZONE_MANAGER: "zone-urbaine-gestionnaire",
+  URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FOOTPRINT: "zone-urbaine-emprise-locaux-vacants",
+  URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FLOOR_AREA: "zone-urbaine-surface-locaux-vacants",
+  URBAN_ZONE_FULL_TIME_JOBS_EQUIVALENT: "zone-urbaine-emplois-temps-plein",
+  URBAN_ZONE_NAMING: "zone-urbaine-denomination",
 } as const satisfies Record<SiteCreationStep, string>;
 
 export const getRouteFromCreationStep = (

@@ -115,6 +115,8 @@ const formatSiteDataForImpactsService = ({
         ...commonData,
         nature: "NATURAL_AREA",
       };
+    case "URBAN_ZONE":
+      throw new Error("Impact calculations are not supported for urban zone sites");
   }
 };
 
@@ -603,6 +605,8 @@ export class ComputeProjectUrbanSprawlImpactsComparisonUseCase implements UseCas
             cityPopulation: population,
             naturalAreaType: "PRAIRIE",
           });
+        case "URBAN_ZONE":
+          throw new Error("Urban zone sites are not supported in urban sprawl comparison");
       }
     })();
 

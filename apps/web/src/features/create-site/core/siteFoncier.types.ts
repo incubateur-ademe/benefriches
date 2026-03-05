@@ -8,6 +8,7 @@ import {
   SiteYearlyIncome,
   SoilsDistribution,
   SoilType,
+  UrbanZoneType,
 } from "shared";
 
 import { OwnerStructureType, TenantStructureType } from "@/shared/core/stakeholder";
@@ -42,6 +43,8 @@ export type SiteCreationData = {
   fricheActivity?: FricheActivity;
   agriculturalOperationActivity?: AgriculturalOperationActivity;
   naturalAreaType?: NaturalAreaType;
+  // urban zone
+  urbanZoneType?: UrbanZoneType;
 };
 
 export type SiteExpressCreationData = {

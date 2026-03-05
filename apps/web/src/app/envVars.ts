@@ -18,4 +18,5 @@ export const BENEFRICHES_ENV = {
   mutafrichesIntegrator: windowEnv.WEBAPP_MUTAFRICHES_INTEGRATOR ?? "",
   crispEnabled: Boolean(windowEnv.WEBAPP_CRISP_WEBSITE_ID),
   crispWebsiteId: windowEnv.WEBAPP_CRISP_WEBSITE_ID ?? "",
+  urbanZoneEnabled: Boolean(windowEnv.WEBAPP_ENABLE_SITE_URBAN_ZONE),
 };

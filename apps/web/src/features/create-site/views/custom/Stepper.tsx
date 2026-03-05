@@ -22,6 +22,7 @@ const getCurrentStepCategory = (step: SiteCreationCustomStep): StepCategory => {
     case "FRICHE_ACTIVITY":
     case "AGRICULTURAL_OPERATION_ACTIVITY":
     case "NATURAL_AREA_TYPE":
+    case "URBAN_ZONE_TYPE":
       return "Introduction";
     case "ADDRESS":
       return "Adresse";

@@ -198,6 +198,8 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<
             ...commonData,
             nature: "NATURAL_AREA",
           };
+        case "URBAN_ZONE":
+          throw new Error("Impact calculations are not supported for urban zone sites");
       }
     })();
 

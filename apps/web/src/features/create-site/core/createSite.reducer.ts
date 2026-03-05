@@ -1,4 +1,5 @@
 import { createReducer, createSelector } from "@reduxjs/toolkit";
+import type { UrbanZoneLandParcelType, SoilsDistribution } from "shared";
 import { v4 as uuid } from "uuid";
 
 import { RootState } from "@/app/store/store";
@@ -25,6 +26,7 @@ import {
   registerSiteManagementHandlers,
 } from "./steps/site-management/siteManagement.handlers";
 import { revertSpacesStep, registerSpacesHandlers } from "./steps/spaces/spaces.handlers";
+import type { UrbanZoneSiteCreationStep, UrbanZoneStepsState } from "./urban-zone/urbanZoneSteps";
 
 export type SiteCreationCustomStep =
   | "FRICHE_ACTIVITY"
@@ -61,7 +63,9 @@ export type SiteCreationCustomStep =
   | "NAMING"
   // SUMARRY
   | "FINAL_SUMMARY"
-  | "CREATION_RESULT";
+  | "CREATION_RESULT"
+  // urban zone (old-pattern step, handled before step handler system)
+  | "URBAN_ZONE_TYPE";
 
 export type SiteCreationExpressStep =
   | "FRICHE_ACTIVITY"
@@ -78,7 +82,37 @@ export type SiteCreationStep =
   | "SITE_NATURE"
   | "CREATE_MODE_SELECTION"
   | SiteCreationExpressStep
-  | SiteCreationCustomStep;
+  | SiteCreationCustomStep
+  | UrbanZoneSiteCreationStep;
+
+type PartialLandParcel = {
+  type: UrbanZoneLandParcelType;
+  surfaceArea?: number;
+  soilsDistribution?: SoilsDistribution;
+  buildingsFloorSurfaceArea?: number;
+};
+
+const FIRST_URBAN_ZONE_STEP: UrbanZoneSiteCreationStep = "URBAN_ZONE_LAND_PARCELS_SELECTION";
+
+export type UrbanZoneSiteCreationState = {
+  currentStep: UrbanZoneSiteCreationStep;
+  stepsSequence: UrbanZoneSiteCreationStep[];
+  firstSequenceStep: UrbanZoneSiteCreationStep;
+  steps: UrbanZoneStepsState;
+  saveState: "idle" | "loading" | "success" | "error";
+  landParcels: PartialLandParcel[];
+  currentLandParcelIndex: number;
+};
+
+const INITIAL_URBAN_ZONE_STATE: UrbanZoneSiteCreationState = {
+  currentStep: FIRST_URBAN_ZONE_STEP,
+  stepsSequence: [],
+  firstSequenceStep: FIRST_URBAN_ZONE_STEP,
+  steps: {},
+  saveState: "idle",
+  landParcels: [],
+  currentLandParcelIndex: 0,
+};
 
 export type SiteCreationState = {
   stepsHistory: SiteCreationStep[];
@@ -88,6 +122,7 @@ export type SiteCreationState = {
   skipUseMutability: boolean;
   saveLoadingState: "idle" | "loading" | "success" | "error";
   surfaceAreaInputMode: "percentage" | "squareMeters";
+  urbanZone: UrbanZoneSiteCreationState;
 };
 
 export const getInitialState = (props?: {
@@ -106,6 +141,7 @@ export const getInitialState = (props?: {
       yearlyIncomes: [],
     },
     surfaceAreaInputMode: "percentage",
+    urbanZone: INITIAL_URBAN_ZONE_STATE,
   } as const;
 };
 

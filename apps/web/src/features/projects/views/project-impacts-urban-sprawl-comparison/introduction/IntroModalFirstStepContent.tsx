@@ -32,6 +32,7 @@ const STYLES_BY_SITE_NATURE = {
     AGRICULTURAL_OPERATION: "bg-[#F1EAD0]",
     FRICHE: "bg-[#E4D7E5]",
     NATURAL_AREA: "bg-[#D9E7DA]",
+    URBAN_ZONE: "bg-[#E0E4F5]",
   },
 } as const;
 
@@ -69,6 +70,8 @@ export default function IntroModalFirstStepContent({
                 return "une friche fictive";
               case "NATURAL_AREA":
                 return "un espace naturel fictif";
+              case "URBAN_ZONE":
+                return "une zone urbaine fictive";
             }
           })()}
         </span>
@@ -120,6 +123,14 @@ export default function IntroModalFirstStepContent({
                   </span>
                 </EmojiListItem>
               );
+            case "URBAN_ZONE":
+              return (
+                <EmojiListItem emoji="🏙️" size="large" classes={emojiClassName}>
+                  <span className="flex flex-col">
+                    <strong>Zone d'activités économiques</strong>
+                  </span>
+                </EmojiListItem>
+              );
           }
         })()}
 
@@ -135,6 +146,8 @@ export default function IntroModalFirstStepContent({
                     return "Même commune que la friche";
                   case "NATURAL_AREA":
                     return "Même commune que l'espace naturel";
+                  case "URBAN_ZONE":
+                    return "Même commune que la zone urbaine";
                 }
               })()}
             </span>
@@ -156,6 +169,8 @@ export default function IntroModalFirstStepContent({
                     return "Même superficie que la friche";
                   case "NATURAL_AREA":
                     return "Même superficie que l'espace naturel";
+                  case "URBAN_ZONE":
+                    return "Même superficie que la zone urbaine";
                 }
               })()}
             </span>
@@ -174,6 +189,8 @@ export default function IntroModalFirstStepContent({
               return "cette friche";
             case "NATURAL_AREA":
               return "cet espace naturel";
+            case "URBAN_ZONE":
+              return "cette zone urbaine";
           }
         })()}
         .
@@ -188,6 +205,8 @@ export default function IntroModalFirstStepContent({
               return "Caractéristiques détaillées de la friche";
             case "NATURAL_AREA":
               return "Caractéristiques détaillées de l’espace naturel";
+            case "URBAN_ZONE":
+              return "Caractéristiques détaillées de la zone urbaine";
           }
         })()}
       >

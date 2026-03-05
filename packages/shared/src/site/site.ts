@@ -1,6 +1,11 @@
 import { z } from "zod";
 
-export const siteNatureSchema = z.enum(["FRICHE", "AGRICULTURAL_OPERATION", "NATURAL_AREA"]);
+export const siteNatureSchema = z.enum([
+  "FRICHE",
+  "AGRICULTURAL_OPERATION",
+  "NATURAL_AREA",
+  "URBAN_ZONE",
+]);
 export type SiteNature = z.infer<typeof siteNatureSchema>;
 
 export const addressSchema = z.object({

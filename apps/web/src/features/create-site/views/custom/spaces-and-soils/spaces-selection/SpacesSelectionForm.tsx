@@ -134,6 +134,8 @@ const getOptionsForSiteNature = (siteNature: SiteNature): SoilOptionsByCategory 
       return AGRICULTURAL_OPERATION_OPTIONS;
     case "NATURAL_AREA":
       return NATURAL_AREA_OPTIONS;
+    case "URBAN_ZONE":
+      return [];
   }
 };
 
