@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import {
-  navigateToPrevious,
-  requestStepCompletion,
+  previousStepRequested,
+  stepCompletionRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 import { selectPhotovoltaicPowerViewData } from "@/features/create-project/core/renewable-energy/step-handlers/photovoltaic/photovoltaic-power/photovoltaicPower.selector";
 
@@ -20,7 +20,7 @@ function PhotovoltaicPowerContainer() {
 
   const onSubmit = (data: { photovoltaicInstallationElectricalPowerKWc: number }) => {
     dispatch(
-      requestStepCompletion({
+      stepCompletionRequested({
         stepId: "RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER",
         answers: {
           photovoltaicInstallationElectricalPowerKWc:
@@ -31,7 +31,7 @@ function PhotovoltaicPowerContainer() {
   };
 
   const onBack = () => {
-    dispatch(navigateToPrevious());
+    dispatch(previousStepRequested());
   };
 
   if (keyParameter === "SURFACE") {

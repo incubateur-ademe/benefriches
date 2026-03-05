@@ -3,8 +3,8 @@ import {
   StoreBuilder,
 } from "@/features/create-project/core/renewable-energy/__tests__/_testStoreHelpers";
 import {
-  navigateToPrevious,
-  requestStepCompletion,
+  previousStepRequested,
+  stepCompletionRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 
 describe("Renewable energy creation - Steps - naming", () => {
@@ -12,7 +12,7 @@ describe("Renewable energy creation - Steps - naming", () => {
     it("should complete step with name only and navigate to final summary", () => {
       const store = new StoreBuilder().build();
       store.dispatch(
-        requestStepCompletion({
+        stepCompletionRequested({
           stepId: "RENEWABLE_ENERGY_NAMING",
           answers: { name: "Ma centrale" },
         }),
@@ -29,7 +29,7 @@ describe("Renewable energy creation - Steps - naming", () => {
     it("should complete step with name and description and navigate to final summary", () => {
       const store = new StoreBuilder().build();
       store.dispatch(
-        requestStepCompletion({
+        stepCompletionRequested({
           stepId: "RENEWABLE_ENERGY_NAMING",
           answers: { name: "Ma centrale", description: "Une centrale photovoltaïque" },
         }),
@@ -49,7 +49,7 @@ describe("Renewable energy creation - Steps - naming", () => {
       const store = new StoreBuilder()
         .withStepsSequence(["RENEWABLE_ENERGY_PROJECT_PHASE", "RENEWABLE_ENERGY_NAMING"])
         .build();
-      store.dispatch(navigateToPrevious());
+      store.dispatch(previousStepRequested());
       expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_PROJECT_PHASE");
     });
   });

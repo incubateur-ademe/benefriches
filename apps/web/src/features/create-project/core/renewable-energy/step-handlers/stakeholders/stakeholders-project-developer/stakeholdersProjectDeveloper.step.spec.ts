@@ -3,15 +3,15 @@ import {
   StoreBuilder,
 } from "@/features/create-project/core/renewable-energy/__tests__/_testStoreHelpers";
 import {
-  navigateToPrevious,
-  requestStepCompletion,
+  previousStepRequested,
+  stepCompletionRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 
 describe("Renewable energy creation - Steps - stakeholders project developer", () => {
   it("should complete step and navigate to stakeholders future operator", () => {
     const store = new StoreBuilder().build();
     store.dispatch(
-      requestStepCompletion({
+      stepCompletionRequested({
         stepId: "RENEWABLE_ENERGY_STAKEHOLDERS_PROJECT_DEVELOPER",
         answers: { projectDeveloper: { name: "Dev", structureType: "company" } },
       }),
@@ -34,7 +34,7 @@ describe("Renewable energy creation - Steps - stakeholders project developer", (
         "RENEWABLE_ENERGY_STAKEHOLDERS_PROJECT_DEVELOPER",
       ])
       .build();
-    store.dispatch(navigateToPrevious());
+    store.dispatch(previousStepRequested());
     expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_STAKEHOLDERS_INTRODUCTION");
   });
 });

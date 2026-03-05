@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import {
-  navigateToPrevious,
-  requestStepCompletion,
+  previousStepRequested,
+  stepCompletionRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 import { selectPhotovoltaicPowerStationFinancialAssistanceRevenueInitialValues } from "@/features/create-project/core/renewable-energy/step-handlers/revenue/revenue-financial-assistance/revenueFinancialAssistance.selector";
 import ProjectFinancialAssistanceRevenueForm from "@/shared/views/project-form/common/revenues/financial-assistance";
@@ -16,11 +16,11 @@ function ProjectFinancialAssistanceRevenueFormContainer() {
     <ProjectFinancialAssistanceRevenueForm
       initialValues={initialValues}
       onBack={() => {
-        dispatch(navigateToPrevious());
+        dispatch(previousStepRequested());
       }}
       onSubmit={(revenues) => {
         dispatch(
-          requestStepCompletion({
+          stepCompletionRequested({
             stepId: "RENEWABLE_ENERGY_REVENUE_FINANCIAL_ASSISTANCE",
             answers: { financialAssistanceRevenues: revenues },
           }),

@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import {
-  navigateToPrevious,
-  requestStepCompletion,
+  previousStepRequested,
+  stepCompletionRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 import { selectSoilsTransformationProjectSelectionViewData } from "@/features/create-project/core/renewable-energy/step-handlers/soils-transformation/soils-transformation-project-selection/soilsTransformationProjectSelection.selectors";
 
@@ -16,14 +16,14 @@ function SoilsTransformationProjectFormContainer() {
       initialValues={initialValues}
       onSubmit={(data: FormValues) => {
         dispatch(
-          requestStepCompletion({
+          stepCompletionRequested({
             stepId: "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_PROJECT_SELECTION",
             answers: { soilsTransformationProject: data.soilsTransformationProject },
           }),
         );
       }}
       onBack={() => {
-        dispatch(navigateToPrevious());
+        dispatch(previousStepRequested());
       }}
     />
   );

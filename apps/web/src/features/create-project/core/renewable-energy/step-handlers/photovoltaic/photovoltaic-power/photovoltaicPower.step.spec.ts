@@ -3,8 +3,8 @@ import {
   StoreBuilder,
 } from "@/features/create-project/core/renewable-energy/__tests__/_testStoreHelpers";
 import {
-  navigateToPrevious,
-  requestStepCompletion,
+  previousStepRequested,
+  stepCompletionRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 
 describe("Renewable energy creation - Steps - photovoltaic power", () => {
@@ -19,7 +19,7 @@ describe("Renewable energy creation - Steps - photovoltaic power", () => {
         })
         .build();
       store.dispatch(
-        requestStepCompletion({
+        stepCompletionRequested({
           stepId: "RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER",
           answers: { photovoltaicInstallationElectricalPowerKWc: 10000 },
         }),
@@ -45,7 +45,7 @@ describe("Renewable energy creation - Steps - photovoltaic power", () => {
         })
         .build();
       store.dispatch(
-        requestStepCompletion({
+        stepCompletionRequested({
           stepId: "RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER",
           answers: { photovoltaicInstallationElectricalPowerKWc: 10000 },
         }),
@@ -72,7 +72,7 @@ describe("Renewable energy creation - Steps - photovoltaic power", () => {
           "RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER",
         ])
         .build();
-      store.dispatch(navigateToPrevious());
+      store.dispatch(previousStepRequested());
       expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_PHOTOVOLTAIC_KEY_PARAMETER");
     });
   });

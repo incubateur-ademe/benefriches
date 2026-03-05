@@ -37,7 +37,7 @@ export const expressUrbanProjectCreated = createAppAsyncThunk<
     const { projectCreation, currentUser } = getState();
 
     void dispatch(
-      creationProjectFormUrbanActions.requestStepCompletion({
+      creationProjectFormUrbanActions.stepCompletionRequested({
         stepId: "URBAN_PROJECT_EXPRESS_TEMPLATE_SELECTION",
         answers: { projectTemplate: urbanProjectTemplate },
       }),

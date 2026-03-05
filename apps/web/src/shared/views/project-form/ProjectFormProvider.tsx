@@ -47,7 +47,7 @@ export const ProjectFormProvider: React.FC<ProjectFormProviderProps> = ({ childr
 
   const stepsSequenceGroupedBySections = useAppSelector(selectors.selectStepsGroupedBySections);
 
-  const onNext = useCallback(() => dispatch(actions.navigateToNext()), [dispatch, actions]);
+  const onNext = useCallback(() => dispatch(actions.nextStepRequested()), [dispatch, actions]);
 
   const onSave = useCallback(async () => {
     await dispatch(saveAction());
@@ -57,16 +57,16 @@ export const ProjectFormProvider: React.FC<ProjectFormProviderProps> = ({ childr
   }, [dispatch, saveAction, onNext, mode]);
 
   const onBack = useCallback(() => {
-    dispatch(actions.navigateToPrevious());
+    dispatch(actions.previousStepRequested());
   }, [dispatch, actions]);
 
   const onRequestStepCompletion = useCallback(
-    (payload: StepCompletionPayload) => dispatch(actions.requestStepCompletion(payload)),
+    (payload: StepCompletionPayload) => dispatch(actions.stepCompletionRequested(payload)),
     [dispatch, actions],
   );
 
   const onNavigateToStep = useCallback(
-    (stepId: UrbanProjectCreationStep) => dispatch(actions.navigateToStep({ stepId })),
+    (stepId: UrbanProjectCreationStep) => dispatch(actions.stepNavigationRequested({ stepId })),
     [dispatch, actions],
   );
 
@@ -78,7 +78,7 @@ export const ProjectFormProvider: React.FC<ProjectFormProviderProps> = ({ childr
       )?.stepId;
       const nextStep = nextStepToFill ?? firstStepId;
       if (nextStep) {
-        dispatch(actions.navigateToStep({ stepId: nextStep }));
+        dispatch(actions.stepNavigationRequested({ stepId: nextStep }));
       } else {
         console.error(`Cannot find nextStepId for group section ${stepGroupId}`);
       }
@@ -97,12 +97,12 @@ export const ProjectFormProvider: React.FC<ProjectFormProviderProps> = ({ childr
   );
 
   const onCancelStepCompletion = useCallback(
-    () => dispatch(actions.cancelStepCompletion()),
+    () => dispatch(actions.stepCompletionCancelled()),
     [dispatch, actions],
   );
 
   const onConfirmStepCompletion = useCallback(
-    () => dispatch(actions.confirmStepCompletion()),
+    () => dispatch(actions.stepCompletionConfirmed()),
     [dispatch, actions],
   );
 

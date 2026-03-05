@@ -2,8 +2,8 @@ import { RecurringExpense } from "shared";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import {
-  navigateToPrevious,
-  requestStepCompletion,
+  previousStepRequested,
+  stepCompletionRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 import { selectPhotovoltaicPowerStationYearlyExpensesInitialValues } from "@/features/create-project/core/renewable-energy/step-handlers/expenses/expenses-yearly-projected/expensesYearlyProjected.selector";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
@@ -38,14 +38,14 @@ function YearlyProjectedExpensesFormContainer() {
       }
       onSubmit={(expenses: RecurringExpense[]) => {
         dispatch(
-          requestStepCompletion({
+          stepCompletionRequested({
             stepId: "RENEWABLE_ENERGY_EXPENSES_PROJECTED_YEARLY_EXPENSES",
             answers: { yearlyProjectedExpenses: expenses },
           }),
         );
       }}
       onBack={() => {
-        dispatch(navigateToPrevious());
+        dispatch(previousStepRequested());
       }}
     />
   );

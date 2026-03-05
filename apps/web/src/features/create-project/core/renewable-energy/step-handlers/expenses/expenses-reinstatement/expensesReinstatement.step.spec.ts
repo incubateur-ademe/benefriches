@@ -3,15 +3,15 @@ import {
   StoreBuilder,
 } from "@/features/create-project/core/renewable-energy/__tests__/_testStoreHelpers";
 import {
-  navigateToPrevious,
-  requestStepCompletion,
+  previousStepRequested,
+  stepCompletionRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 
 describe("Renewable energy creation - Steps - expenses reinstatement", () => {
   it("should complete step and navigate to photovoltaic panels installation", () => {
     const store = new StoreBuilder().build();
     store.dispatch(
-      requestStepCompletion({
+      stepCompletionRequested({
         stepId: "RENEWABLE_ENERGY_EXPENSES_REINSTATEMENT",
         answers: { reinstatementExpenses: [{ amount: 34500, purpose: "demolition" }] },
       }),
@@ -36,7 +36,7 @@ describe("Renewable energy creation - Steps - expenses reinstatement", () => {
         "RENEWABLE_ENERGY_EXPENSES_REINSTATEMENT",
       ])
       .build();
-    store.dispatch(navigateToPrevious());
+    store.dispatch(previousStepRequested());
     expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_EXPENSES_INTRODUCTION");
   });
 
@@ -47,7 +47,7 @@ describe("Renewable energy creation - Steps - expenses reinstatement", () => {
         "RENEWABLE_ENERGY_EXPENSES_REINSTATEMENT",
       ])
       .build();
-    store.dispatch(navigateToPrevious());
+    store.dispatch(previousStepRequested());
     expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_EXPENSES_SITE_PURCHASE_AMOUNTS");
   });
 });

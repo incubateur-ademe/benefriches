@@ -3,8 +3,8 @@ import {
   StoreBuilder,
 } from "@/features/create-project/core/renewable-energy/__tests__/_testStoreHelpers";
 import {
-  navigateToPrevious,
-  navigateToNext,
+  previousStepRequested,
+  nextStepRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 
 describe("Renewable energy creation - Steps - soils transformation introduction", () => {
@@ -20,7 +20,7 @@ describe("Renewable energy creation - Steps - soils transformation introduction"
         })
         .withStepsSequence(["RENEWABLE_ENERGY_SOILS_TRANSFORMATION_INTRODUCTION"])
         .build();
-      store.dispatch(navigateToNext());
+      store.dispatch(nextStepRequested());
       expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_TRANSFORMATION_PROJECT_SELECTION");
     });
 
@@ -34,7 +34,7 @@ describe("Renewable energy creation - Steps - soils transformation introduction"
         })
         .withStepsSequence(["RENEWABLE_ENERGY_SOILS_TRANSFORMATION_INTRODUCTION"])
         .build();
-      store.dispatch(navigateToNext());
+      store.dispatch(nextStepRequested());
       expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_NON_SUITABLE_SOILS_NOTICE");
     });
   });
@@ -47,7 +47,7 @@ describe("Renewable energy creation - Steps - soils transformation introduction"
           "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_INTRODUCTION",
         ])
         .build();
-      store.dispatch(navigateToPrevious());
+      store.dispatch(previousStepRequested());
       expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_PHOTOVOLTAIC_CONTRACT_DURATION");
     });
 
@@ -58,7 +58,7 @@ describe("Renewable energy creation - Steps - soils transformation introduction"
           "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_INTRODUCTION",
         ])
         .build();
-      store.dispatch(navigateToPrevious());
+      store.dispatch(previousStepRequested());
       expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SURFACE_AREA");
     });
   });

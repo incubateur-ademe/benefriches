@@ -114,7 +114,7 @@ Multi-step wizards use a **step handler registry** instead of per-step actions a
 - **Registry** (`stepHandlerRegistry.ts`): Maps step IDs to handler objects
 - **`AnswerStepHandler<T>`**: Data-entry steps with `getNextStepId()`, optional `getDefaultAnswers()`, `updateAnswersMiddleware()`
 - **`InfoStepHandler`**: Navigation-only steps (intros, summaries)
-- **Generic action**: `requestStepCompletion({ stepId, answers })` replaces individual per-step actions
+- **Generic action**: `stepCompletionRequested({ stepId, answers })` replaces individual per-step actions
 - **Colocated files**: Each step has `*.handler.ts`, `*.schema.ts`, `*.selectors.ts`, `*.stepperConfig.ts`
 
 **Renewable Energy** (simpler, creation only — [ADR-0006](../../docs/adr/0006-step-handler-pattern-for-renewable-energy-wizard.md)):

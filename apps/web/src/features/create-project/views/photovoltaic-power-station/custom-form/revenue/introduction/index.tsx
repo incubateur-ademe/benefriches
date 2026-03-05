@@ -1,7 +1,7 @@
 import { useAppDispatch } from "@/app/hooks/store.hooks";
 import {
-  navigateToNext,
-  navigateToPrevious,
+  nextStepRequested,
+  previousStepRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 
 import ProjectRevenueIntroduction from "./ProjectRevenueIntroduction";
@@ -12,10 +12,10 @@ function ProjectRevenueIntroductionContainer() {
   return (
     <ProjectRevenueIntroduction
       onNext={() => {
-        dispatch(navigateToNext());
+        dispatch(nextStepRequested());
       }}
       onBack={() => {
-        dispatch(navigateToPrevious());
+        dispatch(previousStepRequested());
       }}
     />
   );

@@ -22,7 +22,7 @@ describe("Urban project creation - Steps - site resale selection", () => {
     const store = new StoreBuilder().withSteps(INITIAL_STEPS).build();
 
     store.dispatch(
-      creationProjectFormUrbanActions.requestStepCompletion({
+      creationProjectFormUrbanActions.stepCompletionRequested({
         stepId: "URBAN_PROJECT_SITE_RESALE_SELECTION",
         answers: { siteResaleSelection: "yes" },
       }),
@@ -47,7 +47,7 @@ describe("Urban project creation - Steps - site resale selection", () => {
     const store = new StoreBuilder().withSteps(INITIAL_STEPS).build();
 
     store.dispatch(
-      creationProjectFormUrbanActions.requestStepCompletion({
+      creationProjectFormUrbanActions.stepCompletionRequested({
         stepId: "URBAN_PROJECT_SITE_RESALE_SELECTION",
         answers: { siteResaleSelection: "no" },
       }),
@@ -87,12 +87,12 @@ describe("Urban project creation - Steps - site resale selection", () => {
       .build();
 
     store.dispatch(
-      creationProjectFormUrbanActions.requestStepCompletion({
+      creationProjectFormUrbanActions.stepCompletionRequested({
         stepId: "URBAN_PROJECT_SITE_RESALE_SELECTION",
         answers: { siteResaleSelection: "yes" },
       }),
     );
-    store.dispatch(creationProjectFormUrbanActions.confirmStepCompletion());
+    store.dispatch(creationProjectFormUrbanActions.stepCompletionConfirmed());
 
     const state = store.getState().projectCreation.urbanProject;
 
@@ -134,12 +134,12 @@ describe("Urban project creation - Steps - site resale selection", () => {
       .build();
 
     store.dispatch(
-      creationProjectFormUrbanActions.requestStepCompletion({
+      creationProjectFormUrbanActions.stepCompletionRequested({
         stepId: "URBAN_PROJECT_SITE_RESALE_SELECTION",
         answers: { siteResaleSelection: "no" },
       }),
     );
-    store.dispatch(creationProjectFormUrbanActions.confirmStepCompletion());
+    store.dispatch(creationProjectFormUrbanActions.stepCompletionConfirmed());
 
     const state = store.getState().projectCreation.urbanProject;
 
@@ -182,7 +182,7 @@ describe("Urban project creation - Steps - site resale selection", () => {
       .build();
 
     store.dispatch(
-      creationProjectFormUrbanActions.requestStepCompletion({
+      creationProjectFormUrbanActions.stepCompletionRequested({
         stepId: "URBAN_PROJECT_SITE_RESALE_SELECTION",
         answers: { siteResaleSelection: "unknown" },
       }),
@@ -228,7 +228,7 @@ describe("Urban project creation - Steps - site resale selection", () => {
       .build();
 
     store.dispatch(
-      creationProjectFormUrbanActions.requestStepCompletion({
+      creationProjectFormUrbanActions.stepCompletionRequested({
         stepId: "URBAN_PROJECT_SITE_RESALE_SELECTION",
         answers: { siteResaleSelection: "unknown" },
       }),

@@ -10,7 +10,7 @@ describe("Urban project creation - Steps - Creation mode selection", () => {
     const store = new StoreBuilder().build();
 
     store.dispatch(
-      creationProjectFormUrbanActions.requestStepCompletion({
+      creationProjectFormUrbanActions.stepCompletionRequested({
         stepId: "URBAN_PROJECT_CREATE_MODE_SELECTION",
         answers: {
           createMode: "express",
@@ -33,7 +33,7 @@ describe("Urban project creation - Steps - Creation mode selection", () => {
     const store = new StoreBuilder().build();
 
     store.dispatch(
-      creationProjectFormUrbanActions.requestStepCompletion({
+      creationProjectFormUrbanActions.stepCompletionRequested({
         stepId: "URBAN_PROJECT_CREATE_MODE_SELECTION",
         answers: {
           createMode: "custom",

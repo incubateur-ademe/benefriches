@@ -4,8 +4,8 @@ import {
   StoreBuilder,
 } from "@/features/create-project/core/renewable-energy/__tests__/_testStoreHelpers";
 import {
-  navigateToPrevious,
-  requestStepCompletion,
+  previousStepRequested,
+  stepCompletionRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 
 describe("Renewable energy creation - Steps - expenses site purchase amounts", () => {
@@ -14,7 +14,7 @@ describe("Renewable energy creation - Steps - expenses site purchase amounts", (
       // relatedSiteData is FRICHE by default
       const store = new StoreBuilder().build();
       store.dispatch(
-        requestStepCompletion({
+        stepCompletionRequested({
           stepId: "RENEWABLE_ENERGY_EXPENSES_SITE_PURCHASE_AMOUNTS",
           answers: { sellingPrice: 150000, propertyTransferDuties: 12000 },
         }),
@@ -35,7 +35,7 @@ describe("Renewable energy creation - Steps - expenses site purchase amounts", (
         .withSiteData({ ...relatedSiteData, nature: "AGRICULTURAL_OPERATION" })
         .build();
       store.dispatch(
-        requestStepCompletion({
+        stepCompletionRequested({
           stepId: "RENEWABLE_ENERGY_EXPENSES_SITE_PURCHASE_AMOUNTS",
           answers: { sellingPrice: 150000, propertyTransferDuties: 12000 },
         }),
@@ -62,7 +62,7 @@ describe("Renewable energy creation - Steps - expenses site purchase amounts", (
           "RENEWABLE_ENERGY_EXPENSES_SITE_PURCHASE_AMOUNTS",
         ])
         .build();
-      store.dispatch(navigateToPrevious());
+      store.dispatch(previousStepRequested());
       expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_EXPENSES_INTRODUCTION");
     });
   });

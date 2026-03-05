@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import {
-  navigateToPrevious,
-  requestStepCompletion,
+  previousStepRequested,
+  stepCompletionRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 import { selectSitePurchaseAmounts } from "@/features/create-project/core/renewable-energy/step-handlers/expenses/expenses-site-purchase-amounts/expensesSitePurchaseAmounts.selector";
 import SitePurchaseAmountsForm, {
@@ -17,7 +17,7 @@ function SitePurchaseAmountsContainer() {
       initialValues={initialValues}
       onSubmit={(data: FormValues) => {
         dispatch(
-          requestStepCompletion({
+          stepCompletionRequested({
             stepId: "RENEWABLE_ENERGY_EXPENSES_SITE_PURCHASE_AMOUNTS",
             answers: {
               sellingPrice: data.sellingPrice ?? 0,
@@ -27,7 +27,7 @@ function SitePurchaseAmountsContainer() {
         );
       }}
       onBack={() => {
-        dispatch(navigateToPrevious());
+        dispatch(previousStepRequested());
       }}
     />
   );

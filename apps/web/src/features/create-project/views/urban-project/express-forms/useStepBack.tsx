@@ -7,7 +7,7 @@ export const useStepBack = () => {
   const dispatch = useAppDispatch();
 
   const onBack = useCallback(() => {
-    dispatch(creationProjectFormUrbanActions.navigateToPrevious());
+    dispatch(creationProjectFormUrbanActions.previousStepRequested());
   }, [dispatch]);
 
   return onBack;

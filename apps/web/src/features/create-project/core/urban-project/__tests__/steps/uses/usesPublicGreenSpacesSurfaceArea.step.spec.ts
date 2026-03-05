@@ -17,7 +17,7 @@ describe("Urban project creation - Steps - public green spaces surface area", ()
       .build();
 
     store.dispatch(
-      creationProjectFormUrbanActions.requestStepCompletion({
+      creationProjectFormUrbanActions.stepCompletionRequested({
         stepId: "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA",
         answers: {
           publicGreenSpacesSurfaceArea: 5000,
@@ -51,7 +51,7 @@ describe("Urban project creation - Steps - public green spaces surface area", ()
       .build();
 
     store.dispatch(
-      creationProjectFormUrbanActions.requestStepCompletion({
+      creationProjectFormUrbanActions.stepCompletionRequested({
         stepId: "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA",
         answers: {
           publicGreenSpacesSurfaceArea: 3000,
@@ -73,7 +73,7 @@ describe("Urban project creation - Steps - public green spaces surface area", ()
       })
       .build();
 
-    store.dispatch(creationProjectFormUrbanActions.navigateToPrevious());
+    store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
 
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_USES_SELECTION");
   });

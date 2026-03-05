@@ -3,15 +3,15 @@ import {
   StoreBuilder,
 } from "@/features/create-project/core/renewable-energy/__tests__/_testStoreHelpers";
 import {
-  navigateToPrevious,
-  requestStepCompletion,
+  previousStepRequested,
+  stepCompletionRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 
 describe("Renewable energy creation - Steps - soils decontamination surface area", () => {
   it("should complete step and navigate to soils transformation introduction", () => {
     const store = new StoreBuilder().build();
     store.dispatch(
-      requestStepCompletion({
+      stepCompletionRequested({
         stepId: "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SURFACE_AREA",
         answers: { decontaminatedSurfaceArea: 1000 },
       }),
@@ -34,7 +34,7 @@ describe("Renewable energy creation - Steps - soils decontamination surface area
         "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SURFACE_AREA",
       ])
       .build();
-    store.dispatch(navigateToPrevious());
+    store.dispatch(previousStepRequested());
     expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION");
   });
 });

@@ -21,7 +21,7 @@ describe("Urban project creation - Steps - public green spaces soils distributio
       .build();
 
     store.dispatch(
-      creationProjectFormUrbanActions.requestStepCompletion({
+      creationProjectFormUrbanActions.stepCompletionRequested({
         stepId: "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION",
         answers: {
           publicGreenSpacesSoilsDistribution: {
@@ -75,7 +75,7 @@ describe("Urban project creation - Steps - public green spaces soils distributio
       .build();
 
     store.dispatch(
-      creationProjectFormUrbanActions.requestStepCompletion({
+      creationProjectFormUrbanActions.stepCompletionRequested({
         stepId: "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION",
         answers: {
           publicGreenSpacesSoilsDistribution: {
@@ -105,7 +105,7 @@ describe("Urban project creation - Steps - public green spaces soils distributio
       })
       .build();
 
-    store.dispatch(creationProjectFormUrbanActions.navigateToPrevious());
+    store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
 
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_PUBLIC_GREEN_SPACES_INTRODUCTION");
   });
@@ -154,7 +154,7 @@ describe("Urban project creation - Steps - public green spaces soils distributio
       })
       .build();
 
-    store.dispatch(creationProjectFormUrbanActions.navigateToPrevious());
+    store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
 
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_INTRODUCTION");
   });

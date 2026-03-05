@@ -23,7 +23,7 @@ describe("Urban project creation - Steps - Spaces selection", () => {
       .build();
 
     store.dispatch(
-      creationProjectFormUrbanActions.requestStepCompletion({
+      creationProjectFormUrbanActions.stepCompletionRequested({
         stepId: "URBAN_PROJECT_SPACES_SELECTION",
         answers: {
           spacesSelection: ["BUILDINGS", "IMPERMEABLE_SOILS", "ARTIFICIAL_GRASS_OR_BUSHES_FILLED"],
@@ -57,7 +57,7 @@ describe("Urban project creation - Steps - Spaces selection", () => {
       })
       .build();
 
-    store.dispatch(creationProjectFormUrbanActions.navigateToPrevious());
+    store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
 
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_INTRODUCTION");
   });
@@ -90,7 +90,7 @@ describe("Urban project creation - Steps - Spaces selection", () => {
       })
       .build();
 
-    store.dispatch(creationProjectFormUrbanActions.navigateToPrevious());
+    store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
 
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION");
   });
@@ -111,7 +111,9 @@ describe("Urban project creation - Steps - Spaces selection", () => {
 
     // Navigate to step to compute default values
     store.dispatch(
-      creationProjectFormUrbanActions.navigateToStep({ stepId: "URBAN_PROJECT_SPACES_SELECTION" }),
+      creationProjectFormUrbanActions.stepNavigationRequested({
+        stepId: "URBAN_PROJECT_SPACES_SELECTION",
+      }),
     );
 
     const state = store.getState().projectCreation.urbanProject.steps;
@@ -133,7 +135,9 @@ describe("Urban project creation - Steps - Spaces selection", () => {
 
     // Navigate to step to compute default values
     store.dispatch(
-      creationProjectFormUrbanActions.navigateToStep({ stepId: "URBAN_PROJECT_SPACES_SELECTION" }),
+      creationProjectFormUrbanActions.stepNavigationRequested({
+        stepId: "URBAN_PROJECT_SPACES_SELECTION",
+      }),
     );
 
     const state = store.getState().projectCreation.urbanProject.steps;
@@ -174,7 +178,7 @@ describe("Urban project creation - Steps - Spaces selection", () => {
     } satisfies AnswersByStep["URBAN_PROJECT_SPACES_SELECTION"];
 
     store.dispatch(
-      creationProjectFormUrbanActions.requestStepCompletion({
+      creationProjectFormUrbanActions.stepCompletionRequested({
         stepId: "URBAN_PROJECT_SPACES_SELECTION",
         answers: newAnswer,
       }),
@@ -195,7 +199,7 @@ describe("Urban project creation - Steps - Spaces selection", () => {
       },
     });
 
-    store.dispatch(creationProjectFormUrbanActions.confirmStepCompletion());
+    store.dispatch(creationProjectFormUrbanActions.stepCompletionConfirmed());
 
     // Step is deleted - it no longer exists in state
     const surfaceAreaStep =
@@ -230,7 +234,7 @@ describe("Urban project creation - Steps - Spaces selection", () => {
       .build();
 
     store.dispatch(
-      creationProjectFormUrbanActions.requestStepCompletion({
+      creationProjectFormUrbanActions.stepCompletionRequested({
         stepId: "URBAN_PROJECT_SPACES_SELECTION",
         answers: {
           spacesSelection: ["IMPERMEABLE_SOILS", "BUILDINGS"], // Same spaces, different order

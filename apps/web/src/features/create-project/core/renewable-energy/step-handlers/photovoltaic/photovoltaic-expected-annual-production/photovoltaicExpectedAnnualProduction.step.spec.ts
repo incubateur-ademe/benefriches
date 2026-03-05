@@ -3,15 +3,15 @@ import {
   StoreBuilder,
 } from "@/features/create-project/core/renewable-energy/__tests__/_testStoreHelpers";
 import {
-  navigateToPrevious,
-  requestStepCompletion,
+  previousStepRequested,
+  stepCompletionRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 
 describe("Renewable energy creation - Steps - photovoltaic expected annual production", () => {
   it("should complete step and navigate to contract duration", () => {
     const store = new StoreBuilder().build();
     store.dispatch(
-      requestStepCompletion({
+      stepCompletionRequested({
         stepId: "RENEWABLE_ENERGY_PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION",
         answers: { photovoltaicExpectedAnnualProduction: 50000 },
       }),
@@ -34,7 +34,7 @@ describe("Renewable energy creation - Steps - photovoltaic expected annual produ
         "RENEWABLE_ENERGY_PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION",
       ])
       .build();
-    store.dispatch(navigateToPrevious());
+    store.dispatch(previousStepRequested());
     expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_PHOTOVOLTAIC_SURFACE");
   });
 });

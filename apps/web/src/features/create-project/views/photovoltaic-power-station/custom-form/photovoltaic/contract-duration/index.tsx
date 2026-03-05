@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import {
-  navigateToPrevious,
-  requestStepCompletion,
+  previousStepRequested,
+  stepCompletionRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 import { selectContractDurationViewData } from "@/features/create-project/core/renewable-energy/step-handlers/photovoltaic/photovoltaic-contract-duration/photovoltaicContractDuration.selectors";
 
@@ -15,13 +15,13 @@ function PhotovoltaicContractDurationContainer() {
       initialValues={initialValues}
       onSubmit={(data) => {
         dispatch(
-          requestStepCompletion({
+          stepCompletionRequested({
             stepId: "RENEWABLE_ENERGY_PHOTOVOLTAIC_CONTRACT_DURATION",
             answers: { photovoltaicContractDuration: data.photovoltaicContractDuration },
           }),
         );
       }}
-      onBack={() => dispatch(navigateToPrevious())}
+      onBack={() => dispatch(previousStepRequested())}
     />
   );
 }

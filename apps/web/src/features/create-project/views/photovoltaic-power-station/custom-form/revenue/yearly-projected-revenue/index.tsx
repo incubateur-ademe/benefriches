@@ -2,8 +2,8 @@ import { RecurringRevenue } from "shared";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import {
-  navigateToPrevious,
-  requestStepCompletion,
+  previousStepRequested,
+  stepCompletionRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 import { selectPVYearlyProjectedRevenueViewData } from "@/features/create-project/core/renewable-energy/step-handlers/revenue/revenue-yearly-projected/revenueYearlyProjected.selector";
 import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
@@ -50,7 +50,7 @@ function YearlyProjectedRevenueFormContainer() {
         other: initialValues.other,
       }}
       onBack={() => {
-        dispatch(navigateToPrevious());
+        dispatch(previousStepRequested());
       }}
       onSubmit={(formData) => {
         const yearlyProjectedRevenues: RecurringRevenue[] = [];
@@ -63,7 +63,7 @@ function YearlyProjectedRevenueFormContainer() {
           }
         }
         dispatch(
-          requestStepCompletion({
+          stepCompletionRequested({
             stepId: "RENEWABLE_ENERGY_REVENUE_PROJECTED_YEARLY_REVENUE",
             answers: { yearlyProjectedRevenues },
           }),

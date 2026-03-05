@@ -3,8 +3,8 @@ import {
   StoreBuilder,
 } from "@/features/create-project/core/renewable-energy/__tests__/_testStoreHelpers";
 import {
-  navigateToPrevious,
-  requestStepCompletion,
+  previousStepRequested,
+  stepCompletionRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 
 describe("Renewable energy creation - Steps - photovoltaic surface", () => {
@@ -19,7 +19,7 @@ describe("Renewable energy creation - Steps - photovoltaic surface", () => {
         })
         .build();
       store.dispatch(
-        requestStepCompletion({
+        stepCompletionRequested({
           stepId: "RENEWABLE_ENERGY_PHOTOVOLTAIC_SURFACE",
           answers: { photovoltaicInstallationSurfaceSquareMeters: 40000 },
         }),
@@ -47,7 +47,7 @@ describe("Renewable energy creation - Steps - photovoltaic surface", () => {
         })
         .build();
       store.dispatch(
-        requestStepCompletion({
+        stepCompletionRequested({
           stepId: "RENEWABLE_ENERGY_PHOTOVOLTAIC_SURFACE",
           answers: { photovoltaicInstallationSurfaceSquareMeters: 40000 },
         }),
@@ -72,7 +72,7 @@ describe("Renewable energy creation - Steps - photovoltaic surface", () => {
           "RENEWABLE_ENERGY_PHOTOVOLTAIC_SURFACE",
         ])
         .build();
-      store.dispatch(navigateToPrevious());
+      store.dispatch(previousStepRequested());
       expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_PHOTOVOLTAIC_KEY_PARAMETER");
     });
 
@@ -84,7 +84,7 @@ describe("Renewable energy creation - Steps - photovoltaic surface", () => {
           "RENEWABLE_ENERGY_PHOTOVOLTAIC_SURFACE",
         ])
         .build();
-      store.dispatch(navigateToPrevious());
+      store.dispatch(previousStepRequested());
       expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER");
     });
   });

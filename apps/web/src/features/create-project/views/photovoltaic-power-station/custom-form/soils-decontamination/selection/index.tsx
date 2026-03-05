@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import {
-  navigateToPrevious,
-  requestStepCompletion,
+  previousStepRequested,
+  stepCompletionRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 import { selectSoilsDecontaminationSelectionViewData } from "@/features/create-project/core/renewable-energy/step-handlers/soils-decontamination/soils-decontamination-selection/soilsDecontaminationSelection.selectors";
 import SoilsDecontaminationSelection, {
@@ -17,13 +17,13 @@ function SoilsDecontaminationSelectionContainer() {
       initialValues={initialValues}
       onSubmit={(data: FormValues) => {
         dispatch(
-          requestStepCompletion({
+          stepCompletionRequested({
             stepId: "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION",
             answers: { decontaminationPlan: data.decontaminationSelection ?? "unknown" },
           }),
         );
       }}
-      onBack={() => dispatch(navigateToPrevious())}
+      onBack={() => dispatch(previousStepRequested())}
     />
   );
 }

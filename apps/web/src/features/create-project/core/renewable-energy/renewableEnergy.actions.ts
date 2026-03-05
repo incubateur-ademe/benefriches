@@ -14,14 +14,14 @@ export type StepCompletionPayload<K extends AnswerStepId = AnswerStepId> = {
   };
 }[K];
 
-export const requestStepCompletion = createAction<StepCompletionPayload>(
-  makeRenewableEnergyProjectCreationActionType("requestStepCompletion"),
+export const stepCompletionRequested = createAction<StepCompletionPayload>(
+  makeRenewableEnergyProjectCreationActionType("stepCompletionRequested"),
 );
 
-export const navigateToPrevious = createAction(
-  makeRenewableEnergyProjectCreationActionType("navigateToPrevious"),
+export const previousStepRequested = createAction(
+  makeRenewableEnergyProjectCreationActionType("previousStepRequested"),
 );
 
-export const navigateToNext = createAction(
-  makeRenewableEnergyProjectCreationActionType("navigateToNext"),
+export const nextStepRequested = createAction(
+  makeRenewableEnergyProjectCreationActionType("nextStepRequested"),
 );

@@ -11,7 +11,7 @@ describe("Urban project creation - Steps - Uses selection", () => {
     const store = new StoreBuilder().build();
 
     store.dispatch(
-      creationProjectFormUrbanActions.requestStepCompletion({
+      creationProjectFormUrbanActions.stepCompletionRequested({
         stepId: "URBAN_PROJECT_USES_SELECTION",
         answers: {
           usesSelection: ["RESIDENTIAL", "PUBLIC_GREEN_SPACES"],
@@ -34,7 +34,7 @@ describe("Urban project creation - Steps - Uses selection", () => {
     const store = new StoreBuilder().build();
 
     store.dispatch(
-      creationProjectFormUrbanActions.requestStepCompletion({
+      creationProjectFormUrbanActions.stepCompletionRequested({
         stepId: "URBAN_PROJECT_USES_SELECTION",
         answers: {
           usesSelection: ["PUBLIC_GREEN_SPACES"],
@@ -61,7 +61,7 @@ describe("Urban project creation - Steps - Uses selection", () => {
     const store = new StoreBuilder().build();
 
     store.dispatch(
-      creationProjectFormUrbanActions.requestStepCompletion({
+      creationProjectFormUrbanActions.stepCompletionRequested({
         stepId: "URBAN_PROJECT_USES_SELECTION",
         answers: {
           usesSelection: ["RESIDENTIAL", "OFFICES"],
@@ -91,7 +91,7 @@ describe("Urban project creation - Steps - Uses selection", () => {
     } satisfies AnswersByStep["URBAN_PROJECT_USES_SELECTION"];
 
     store.dispatch(
-      creationProjectFormUrbanActions.requestStepCompletion({
+      creationProjectFormUrbanActions.stepCompletionRequested({
         stepId: "URBAN_PROJECT_USES_SELECTION",
         answers: newAnswer,
       }),
@@ -113,7 +113,7 @@ describe("Urban project creation - Steps - Uses selection", () => {
       },
     });
 
-    store.dispatch(creationProjectFormUrbanActions.confirmStepCompletion());
+    store.dispatch(creationProjectFormUrbanActions.stepCompletionConfirmed());
 
     expect(store.getState().projectCreation.urbanProject.steps).toEqual<
       ProjectFormState["urbanProject"]["steps"]
@@ -141,7 +141,7 @@ describe("Urban project creation - Steps - Uses selection", () => {
       .build();
 
     store.dispatch(
-      creationProjectFormUrbanActions.requestStepCompletion({
+      creationProjectFormUrbanActions.stepCompletionRequested({
         stepId: "URBAN_PROJECT_USES_SELECTION",
         answers: {
           usesSelection: ["OFFICES", "RESIDENTIAL"], // Same uses, different order

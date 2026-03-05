@@ -3,15 +3,15 @@ import {
   StoreBuilder,
 } from "@/features/create-project/core/renewable-energy/__tests__/_testStoreHelpers";
 import {
-  navigateToPrevious,
-  requestStepCompletion,
+  previousStepRequested,
+  stepCompletionRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 
 describe("Renewable energy creation - Steps - expenses yearly projected", () => {
   it("should complete step and navigate to revenue introduction", () => {
     const store = new StoreBuilder().build();
     store.dispatch(
-      requestStepCompletion({
+      stepCompletionRequested({
         stepId: "RENEWABLE_ENERGY_EXPENSES_PROJECTED_YEARLY_EXPENSES",
         answers: { yearlyProjectedExpenses: [{ purpose: "rent", amount: 12000 }] },
       }),
@@ -34,7 +34,7 @@ describe("Renewable energy creation - Steps - expenses yearly projected", () => 
         "RENEWABLE_ENERGY_EXPENSES_PROJECTED_YEARLY_EXPENSES",
       ])
       .build();
-    store.dispatch(navigateToPrevious());
+    store.dispatch(previousStepRequested());
     expect(getCurrentStep(store)).toBe(
       "RENEWABLE_ENERGY_EXPENSES_PHOTOVOLTAIC_PANELS_INSTALLATION",
     );

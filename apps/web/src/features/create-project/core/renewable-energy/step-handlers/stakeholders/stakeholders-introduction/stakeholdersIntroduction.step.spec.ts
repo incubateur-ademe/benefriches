@@ -3,8 +3,8 @@ import {
   StoreBuilder,
 } from "@/features/create-project/core/renewable-energy/__tests__/_testStoreHelpers";
 import {
-  navigateToPrevious,
-  navigateToNext,
+  previousStepRequested,
+  nextStepRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 
 describe("Renewable energy creation - Steps - stakeholders introduction", () => {
@@ -12,7 +12,7 @@ describe("Renewable energy creation - Steps - stakeholders introduction", () => 
     const store = new StoreBuilder()
       .withStepsSequence(["RENEWABLE_ENERGY_STAKEHOLDERS_INTRODUCTION"])
       .build();
-    store.dispatch(navigateToNext());
+    store.dispatch(nextStepRequested());
     expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_STAKEHOLDERS_PROJECT_DEVELOPER");
   });
 
@@ -23,7 +23,7 @@ describe("Renewable energy creation - Steps - stakeholders introduction", () => 
         "RENEWABLE_ENERGY_STAKEHOLDERS_INTRODUCTION",
       ])
       .build();
-    store.dispatch(navigateToPrevious());
+    store.dispatch(previousStepRequested());
     expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_CARBON_STORAGE");
   });
 });

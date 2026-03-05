@@ -20,7 +20,7 @@ describe("Urban project creation - Steps - Spaces introduction", () => {
       })
       .build();
 
-    store.dispatch(creationProjectFormUrbanActions.navigateToNext());
+    store.dispatch(creationProjectFormUrbanActions.nextStepRequested());
 
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_PUBLIC_GREEN_SPACES_INTRODUCTION");
   });
@@ -65,7 +65,7 @@ describe("Urban project creation - Steps - Spaces introduction", () => {
       })
       .build();
 
-    store.dispatch(creationProjectFormUrbanActions.navigateToNext());
+    store.dispatch(creationProjectFormUrbanActions.nextStepRequested());
 
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION");
   });
@@ -85,7 +85,7 @@ describe("Urban project creation - Steps - Spaces introduction", () => {
       })
       .build();
 
-    store.dispatch(creationProjectFormUrbanActions.navigateToNext());
+    store.dispatch(creationProjectFormUrbanActions.nextStepRequested());
 
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_SELECTION");
   });
@@ -105,7 +105,7 @@ describe("Urban project creation - Steps - Spaces introduction", () => {
       })
       .build();
 
-    store.dispatch(creationProjectFormUrbanActions.navigateToPrevious());
+    store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
 
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA");
   });
@@ -121,7 +121,7 @@ describe("Urban project creation - Steps - Spaces introduction", () => {
       })
       .build();
 
-    store.dispatch(creationProjectFormUrbanActions.navigateToPrevious());
+    store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
 
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_USES_SELECTION");
   });
@@ -137,7 +137,7 @@ describe("Urban project creation - Steps - Spaces introduction", () => {
       })
       .build();
 
-    store.dispatch(creationProjectFormUrbanActions.navigateToPrevious());
+    store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
 
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA");
   });
@@ -153,7 +153,7 @@ describe("Urban project creation - Steps - Spaces introduction", () => {
       })
       .build();
 
-    store.dispatch(creationProjectFormUrbanActions.navigateToPrevious());
+    store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
 
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_USES_SELECTION");
   });

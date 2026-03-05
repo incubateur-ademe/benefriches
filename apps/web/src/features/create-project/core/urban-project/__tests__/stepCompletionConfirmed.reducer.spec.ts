@@ -5,9 +5,9 @@ import { creationProjectFormUrbanActions } from "../urbanProject.actions";
 import { mockSiteData } from "./_siteData.mock";
 import { StoreBuilder } from "./_testStoreHelpers";
 
-const { confirmStepCompletion, requestStepCompletion } = creationProjectFormUrbanActions;
+const { stepCompletionConfirmed, stepCompletionRequested } = creationProjectFormUrbanActions;
 
-describe("urbanProject.reducer - confirmStepCompletion action", () => {
+describe("urbanProject.reducer - stepCompletionConfirmed action", () => {
   describe("Changes answers to step already completed", () => {
     describe("Buildings-related changes", () => {
       it("should delete operating expenses when changing buildings resale to true", () => {
@@ -31,12 +31,12 @@ describe("urbanProject.reducer - confirmStepCompletion action", () => {
         const store = new StoreBuilder().withSteps(initialSteps).build();
 
         store.dispatch(
-          requestStepCompletion({
+          stepCompletionRequested({
             stepId: "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION",
             answers: { buildingsResalePlannedAfterDevelopment: true },
           }),
         );
-        store.dispatch(confirmStepCompletion());
+        store.dispatch(stepCompletionConfirmed());
 
         const stepsState = store.getState().projectCreation.urbanProject.steps;
 
@@ -69,12 +69,12 @@ describe("urbanProject.reducer - confirmStepCompletion action", () => {
         const store = new StoreBuilder().withSteps(initialSteps).build();
 
         store.dispatch(
-          requestStepCompletion({
+          stepCompletionRequested({
             stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
             answers: { decontaminationPlan: "none" },
           }),
         );
-        store.dispatch(confirmStepCompletion());
+        store.dispatch(stepCompletionConfirmed());
 
         const stepsState = store.getState().projectCreation.urbanProject.steps;
 
@@ -111,12 +111,12 @@ describe("urbanProject.reducer - confirmStepCompletion action", () => {
         const store = new StoreBuilder().withSteps(initialSteps).build();
 
         store.dispatch(
-          requestStepCompletion({
+          stepCompletionRequested({
             stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
             answers: { decontaminationPlan: "none" },
           }),
         );
-        store.dispatch(confirmStepCompletion());
+        store.dispatch(stepCompletionConfirmed());
 
         const stepsState = store.getState().projectCreation.urbanProject.steps;
 
@@ -133,12 +133,12 @@ describe("urbanProject.reducer - confirmStepCompletion action", () => {
           .build();
 
         store.dispatch(
-          requestStepCompletion({
+          stepCompletionRequested({
             stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
             answers: { decontaminationPlan: "none" },
           }),
         );
-        store.dispatch(confirmStepCompletion());
+        store.dispatch(stepCompletionConfirmed());
         const stepsState = store.getState().projectCreation.urbanProject.steps;
 
         expect(stepsState.URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA).toEqual({
@@ -159,12 +159,12 @@ describe("urbanProject.reducer - confirmStepCompletion action", () => {
           .build();
 
         store.dispatch(
-          requestStepCompletion({
+          stepCompletionRequested({
             stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
             answers: { decontaminationPlan: "unknown" },
           }),
         );
-        store.dispatch(confirmStepCompletion());
+        store.dispatch(stepCompletionConfirmed());
 
         const stepsState = store.getState().projectCreation.urbanProject.steps;
 

@@ -3,8 +3,8 @@ import {
   StoreBuilder,
 } from "@/features/create-project/core/renewable-energy/__tests__/_testStoreHelpers";
 import {
-  navigateToPrevious,
-  requestStepCompletion,
+  previousStepRequested,
+  stepCompletionRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 
 describe("Renewable energy creation - Steps - schedule projection", () => {
@@ -12,7 +12,7 @@ describe("Renewable energy creation - Steps - schedule projection", () => {
     it("should complete step with only firstYearOfOperation and navigate to project phase", () => {
       const store = new StoreBuilder().build();
       store.dispatch(
-        requestStepCompletion({
+        stepCompletionRequested({
           stepId: "RENEWABLE_ENERGY_SCHEDULE_PROJECTION",
           answers: {
             firstYearOfOperation: 2031,
@@ -33,7 +33,7 @@ describe("Renewable energy creation - Steps - schedule projection", () => {
     it("should complete step with full schedule data and navigate to project phase", () => {
       const store = new StoreBuilder().build();
       store.dispatch(
-        requestStepCompletion({
+        stepCompletionRequested({
           stepId: "RENEWABLE_ENERGY_SCHEDULE_PROJECTION",
           answers: {
             firstYearOfOperation: 2031,
@@ -78,7 +78,7 @@ describe("Renewable energy creation - Steps - schedule projection", () => {
           "RENEWABLE_ENERGY_SCHEDULE_PROJECTION",
         ])
         .build();
-      store.dispatch(navigateToPrevious());
+      store.dispatch(previousStepRequested());
       expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_REVENUE_FINANCIAL_ASSISTANCE");
     });
   });

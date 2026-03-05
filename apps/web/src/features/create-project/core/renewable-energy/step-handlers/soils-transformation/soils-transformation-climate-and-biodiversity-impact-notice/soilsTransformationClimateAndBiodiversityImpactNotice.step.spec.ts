@@ -3,8 +3,8 @@ import {
   StoreBuilder,
 } from "@/features/create-project/core/renewable-energy/__tests__/_testStoreHelpers";
 import {
-  navigateToPrevious,
-  navigateToNext,
+  previousStepRequested,
+  nextStepRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 
 describe("Renewable energy creation - Steps - soils transformation climate and biodiversity impact notice", () => {
@@ -14,7 +14,7 @@ describe("Renewable energy creation - Steps - soils transformation climate and b
         "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CLIMATE_AND_BIODIVERSITY_IMPACT_NOTICE",
       ])
       .build();
-    store.dispatch(navigateToNext());
+    store.dispatch(nextStepRequested());
     expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_SUMMARY");
   });
 
@@ -25,7 +25,7 @@ describe("Renewable energy creation - Steps - soils transformation climate and b
         "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CLIMATE_AND_BIODIVERSITY_IMPACT_NOTICE",
       ])
       .build();
-    store.dispatch(navigateToPrevious());
+    store.dispatch(previousStepRequested());
     expect(getCurrentStep(store)).toBe(
       "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CUSTOM_SURFACE_AREA_ALLOCATION",
     );

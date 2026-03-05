@@ -5,7 +5,7 @@ import { creationProjectFormUrbanActions } from "../urbanProject.actions";
 import { mockSiteData } from "./_siteData.mock";
 import { StoreBuilder } from "./_testStoreHelpers";
 
-const { navigateToNext, navigateToPrevious, requestStepCompletion } =
+const { nextStepRequested, previousStepRequested, stepCompletionRequested } =
   creationProjectFormUrbanActions;
 
 const testScenarios = {
@@ -47,7 +47,7 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
         .withCurrentStep("URBAN_PROJECT_BUILDINGS_INTRODUCTION")
         .build();
 
-      storeWithBuildings.dispatch(navigateToPrevious());
+      storeWithBuildings.dispatch(previousStepRequested());
       expect(storeWithBuildings.getState().projectCreation.urbanProject.currentStep).toBe(
         "URBAN_PROJECT_SOILS_CARBON_SUMMARY",
       );
@@ -65,13 +65,13 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
         .withCurrentStep("URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION")
         .build();
 
-      storeFriche.dispatch(navigateToNext());
+      storeFriche.dispatch(nextStepRequested());
       expect(storeFriche.getState().projectCreation.urbanProject.currentStep).toBe(
         "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER",
       );
 
       storeFriche.dispatch(
-        requestStepCompletion({
+        stepCompletionRequested({
           stepId: "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER",
           answers: { projectDeveloper: { name: "Test", structureType: "company" } },
         }),
@@ -80,7 +80,7 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
         "URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER",
       );
 
-      storeFriche.dispatch(navigateToPrevious());
+      storeFriche.dispatch(previousStepRequested());
       expect(storeFriche.getState().projectCreation.urbanProject.currentStep).toBe(
         "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER",
       );
@@ -96,9 +96,9 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
         .withCurrentStep("URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION")
         .build();
 
-      storeNonFriche.dispatch(navigateToNext());
+      storeNonFriche.dispatch(nextStepRequested());
       storeNonFriche.dispatch(
-        requestStepCompletion({
+        stepCompletionRequested({
           stepId: "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER",
           answers: { projectDeveloper: { name: "Test", structureType: "company" } },
         }),
@@ -134,7 +134,7 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
         .build();
 
       storeFriche.dispatch(
-        requestStepCompletion({
+        stepCompletionRequested({
           stepId: "URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS",
           answers: { sitePurchaseSellingPrice: 500000, sitePurchasePropertyTransferDuties: 50000 },
         }),
@@ -144,7 +144,7 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
         "URBAN_PROJECT_EXPENSES_REINSTATEMENT",
       );
 
-      storeFriche.dispatch(navigateToPrevious());
+      storeFriche.dispatch(previousStepRequested());
       expect(storeFriche.getState().projectCreation.urbanProject.currentStep).toBe(
         "URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS",
       );
@@ -155,7 +155,7 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
         .build();
 
       storeNonFriche.dispatch(
-        requestStepCompletion({
+        stepCompletionRequested({
           stepId: "URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS",
           answers: { sitePurchaseSellingPrice: 500000 },
         }),
@@ -186,7 +186,7 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
         .build();
 
       store.dispatch(
-        requestStepCompletion({
+        stepCompletionRequested({
           stepId: "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE",
           answers: { siteResaleExpectedSellingPrice: 1000000 },
         }),
@@ -196,7 +196,7 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
         "URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES",
       );
 
-      store.dispatch(navigateToPrevious());
+      store.dispatch(previousStepRequested());
       expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
         "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE",
       );
@@ -207,14 +207,14 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
     it("should handle edge cases in navigation consistency", () => {
       const store = new StoreBuilder().build();
 
-      store.dispatch(navigateToNext());
+      store.dispatch(nextStepRequested());
 
-      store.dispatch(navigateToPrevious());
+      store.dispatch(previousStepRequested());
       expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
         "URBAN_PROJECT_CREATE_MODE_SELECTION",
       );
 
-      store.dispatch(navigateToNext());
+      store.dispatch(nextStepRequested());
       expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
         "URBAN_PROJECT_USES_INTRODUCTION",
       );
@@ -241,7 +241,7 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
         .withCurrentStep("URBAN_PROJECT_BUILDINGS_INTRODUCTION")
         .build();
 
-      storeNone.dispatch(navigateToPrevious());
+      storeNone.dispatch(previousStepRequested());
       expect(storeNone.getState().projectCreation.urbanProject.currentStep).toBe(
         "URBAN_PROJECT_SOILS_CARBON_SUMMARY",
       );

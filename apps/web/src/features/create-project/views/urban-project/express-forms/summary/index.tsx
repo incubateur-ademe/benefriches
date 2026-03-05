@@ -12,7 +12,7 @@ function ProjectExpressSummaryContainer() {
 
   const onNext = () => {
     void dispatch(expressUrbanProjectSaved());
-    void dispatch(creationProjectFormUrbanActions.navigateToNext());
+    void dispatch(creationProjectFormUrbanActions.nextStepRequested());
   };
   const onBack = useStepBack();
 

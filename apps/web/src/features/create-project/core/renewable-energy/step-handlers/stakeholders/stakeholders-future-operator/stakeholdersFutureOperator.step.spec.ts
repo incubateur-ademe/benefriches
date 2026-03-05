@@ -4,8 +4,8 @@ import {
   StoreBuilder,
 } from "@/features/create-project/core/renewable-energy/__tests__/_testStoreHelpers";
 import {
-  navigateToPrevious,
-  requestStepCompletion,
+  previousStepRequested,
+  stepCompletionRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 
 describe("Renewable energy creation - Steps - stakeholders future operator", () => {
@@ -14,7 +14,7 @@ describe("Renewable energy creation - Steps - stakeholders future operator", () 
       // relatedSiteData.nature is "FRICHE" by default
       const store = new StoreBuilder().build();
       store.dispatch(
-        requestStepCompletion({
+        stepCompletionRequested({
           stepId: "RENEWABLE_ENERGY_STAKEHOLDERS_FUTURE_OPERATOR",
           answers: { futureOperator: { name: "Op", structureType: "company" } },
         }),
@@ -37,7 +37,7 @@ describe("Renewable energy creation - Steps - stakeholders future operator", () 
         .withSiteData({ ...relatedSiteData, nature: "AGRICULTURAL_OPERATION" })
         .build();
       store.dispatch(
-        requestStepCompletion({
+        stepCompletionRequested({
           stepId: "RENEWABLE_ENERGY_STAKEHOLDERS_FUTURE_OPERATOR",
           answers: { futureOperator: { name: "Op", structureType: "company" } },
         }),
@@ -62,7 +62,7 @@ describe("Renewable energy creation - Steps - stakeholders future operator", () 
           "RENEWABLE_ENERGY_STAKEHOLDERS_FUTURE_OPERATOR",
         ])
         .build();
-      store.dispatch(navigateToPrevious());
+      store.dispatch(previousStepRequested());
       expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_STAKEHOLDERS_PROJECT_DEVELOPER");
     });
   });

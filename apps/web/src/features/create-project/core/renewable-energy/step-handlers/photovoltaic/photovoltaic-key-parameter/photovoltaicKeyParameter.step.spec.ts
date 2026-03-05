@@ -3,8 +3,8 @@ import {
   StoreBuilder,
 } from "@/features/create-project/core/renewable-energy/__tests__/_testStoreHelpers";
 import {
-  navigateToPrevious,
-  requestStepCompletion,
+  previousStepRequested,
+  stepCompletionRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 
 describe("Renewable energy creation - Steps - key parameter", () => {
@@ -12,7 +12,7 @@ describe("Renewable energy creation - Steps - key parameter", () => {
     it("should complete step with POWER and navigate to photovoltaic power", () => {
       const store = new StoreBuilder().build();
       store.dispatch(
-        requestStepCompletion({
+        stepCompletionRequested({
           stepId: "RENEWABLE_ENERGY_PHOTOVOLTAIC_KEY_PARAMETER",
           answers: { photovoltaicKeyParameter: "POWER" },
         }),
@@ -31,7 +31,7 @@ describe("Renewable energy creation - Steps - key parameter", () => {
     it("should complete step with SURFACE and navigate to photovoltaic surface", () => {
       const store = new StoreBuilder().build();
       store.dispatch(
-        requestStepCompletion({
+        stepCompletionRequested({
           stepId: "RENEWABLE_ENERGY_PHOTOVOLTAIC_KEY_PARAMETER",
           answers: { photovoltaicKeyParameter: "SURFACE" },
         }),
@@ -53,7 +53,7 @@ describe("Renewable energy creation - Steps - key parameter", () => {
       const store = new StoreBuilder()
         .withStepsSequence(["RENEWABLE_ENERGY_PHOTOVOLTAIC_KEY_PARAMETER"])
         .build();
-      store.dispatch(navigateToPrevious());
+      store.dispatch(previousStepRequested());
       expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_PHOTOVOLTAIC_KEY_PARAMETER");
     });
   });

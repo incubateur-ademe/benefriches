@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import {
-  navigateToNext,
-  navigateToPrevious,
+  nextStepRequested,
+  previousStepRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 import { selectPVSoilsSummaryViewData } from "@/features/create-project/core/renewable-energy/step-handlers/soils-transformation/soils-transformation-soils-summary/soilsTransformationSoilsSummary.selector";
 
@@ -10,10 +10,10 @@ import ProjectSoilsSummary from "./ProjectSoilsSummary";
 function ProjectSoilsSummaryContainer() {
   const dispatch = useAppDispatch();
   const onNext = () => {
-    dispatch(navigateToNext());
+    dispatch(nextStepRequested());
   };
   const onBack = () => {
-    dispatch(navigateToPrevious());
+    dispatch(previousStepRequested());
   };
   const { siteSoilsDistribution, projectSoilsDistribution } = useAppSelector(
     selectPVSoilsSummaryViewData,

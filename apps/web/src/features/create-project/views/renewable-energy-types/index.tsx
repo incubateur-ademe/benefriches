@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { completeRenewableEnergyType } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
+import { renewableEnergyTypeCompleted } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
 import { selectRenewableEnergyType } from "@/features/create-project/core/renewable-energy/selectors/renewableEnergy.selector";
 
 import { stepReverted } from "../../core/actions/actionsUtils";
@@ -13,7 +13,7 @@ function ProjectRenewableEnergyTypesFormContainer() {
     <RenewableEnergyTypeForm
       initialValues={initialValue ? { renewableEnergyType: initialValue } : undefined}
       onSubmit={({ renewableEnergyType }) => {
-        dispatch(completeRenewableEnergyType(renewableEnergyType));
+        dispatch(renewableEnergyTypeCompleted(renewableEnergyType));
       }}
       onBack={() => dispatch(stepReverted())}
     />

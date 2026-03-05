@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import {
-  navigateToPrevious,
-  requestStepCompletion,
+  previousStepRequested,
+  stepCompletionRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 import { selectNameAndDescriptionInitialValues } from "@/features/create-project/core/renewable-energy/step-handlers/naming/naming/naming.selector";
 import ProjectNameAndDescriptionForm, {
@@ -17,14 +17,14 @@ function ProjectNameAndDescriptionFormContainer() {
       initialValues={initialValues}
       onSubmit={(formData: FormValues) => {
         dispatch(
-          requestStepCompletion({
+          stepCompletionRequested({
             stepId: "RENEWABLE_ENERGY_NAMING",
             answers: formData,
           }),
         );
       }}
       onBack={() => {
-        dispatch(navigateToPrevious());
+        dispatch(previousStepRequested());
       }}
     />
   );

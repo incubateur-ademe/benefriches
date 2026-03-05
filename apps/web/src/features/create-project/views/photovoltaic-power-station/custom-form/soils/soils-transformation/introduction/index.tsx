@@ -1,7 +1,7 @@
 import { useAppDispatch } from "@/app/hooks/store.hooks";
 import {
-  navigateToNext,
-  navigateToPrevious,
+  nextStepRequested,
+  previousStepRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 
 import SoilsTransformationIntroduction from "./SoilsTransformationIntroduction";
@@ -11,8 +11,8 @@ function SoilsTransformationIntroductionContainer() {
 
   return (
     <SoilsTransformationIntroduction
-      onNext={() => dispatch(navigateToNext())}
-      onBack={() => dispatch(navigateToPrevious())}
+      onNext={() => dispatch(nextStepRequested())}
+      onBack={() => dispatch(previousStepRequested())}
     />
   );
 }

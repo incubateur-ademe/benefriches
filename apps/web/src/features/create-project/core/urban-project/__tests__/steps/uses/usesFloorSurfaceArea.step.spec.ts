@@ -17,7 +17,7 @@ describe("Urban project creation - Steps - Uses floor surface area", () => {
       .build();
 
     store.dispatch(
-      creationProjectFormUrbanActions.requestStepCompletion({
+      creationProjectFormUrbanActions.stepCompletionRequested({
         stepId: "URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA",
         answers: {
           usesFloorSurfaceAreaDistribution: { RESIDENTIAL: 10000, OFFICES: 7500 },
@@ -80,7 +80,7 @@ describe("Urban project creation - Steps - Uses floor surface area", () => {
       .build();
 
     store.dispatch(
-      creationProjectFormUrbanActions.requestStepCompletion({
+      creationProjectFormUrbanActions.stepCompletionRequested({
         stepId: "URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA",
         answers: {
           usesFloorSurfaceAreaDistribution: { RESIDENTIAL: 15000 },
@@ -102,7 +102,7 @@ describe("Urban project creation - Steps - Uses floor surface area", () => {
       })
       .build();
 
-    store.dispatch(creationProjectFormUrbanActions.navigateToPrevious());
+    store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
 
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_INTRODUCTION");
   });

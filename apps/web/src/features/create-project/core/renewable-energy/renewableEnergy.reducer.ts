@@ -14,7 +14,7 @@ import {
 } from "./actions/expressProjectSaved.action";
 import { fetchPhotovoltaicExpectedAnnualPowerPerformanceForLocation } from "./actions/getPhotovoltaicExpectedPerformance.action";
 import {
-  completeRenewableEnergyType,
+  renewableEnergyTypeCompleted,
   customCreateModeSelected,
 } from "./actions/renewableEnergy.actions";
 import { fetchCurrentAndProjectedSoilsCarbonStorage } from "./actions/soilsCarbonStorage.actions";
@@ -22,9 +22,9 @@ import { applyStepChanges, computeStepChanges } from "./helpers/completeStep";
 import { navigateToAndLoadStep } from "./helpers/navigateToStep";
 import { computeStepsSequence } from "./helpers/stepsSequence";
 import {
-  navigateToNext,
-  navigateToPrevious,
-  requestStepCompletion,
+  nextStepRequested,
+  previousStepRequested,
+  stepCompletionRequested,
 } from "./renewableEnergy.actions";
 import type { RenewableEnergyCreationStep } from "./renewableEnergySteps";
 import type { RenewableEnergyStepsState } from "./step-handlers/stepHandler.type";
@@ -94,7 +94,7 @@ const addPreCustomStepCases = (builder: ActionReducerMapBuilder<ProjectCreationS
       state.renewableEnergyProject.createMode = "express";
     }
   });
-  builder.addCase(completeRenewableEnergyType, (state, action) => {
+  builder.addCase(renewableEnergyTypeCompleted, (state, action) => {
     state.renewableEnergyProject.creationData.renewableEnergyType = action.payload;
     state.stepsHistory.push("RENEWABLE_ENERGY_CREATE_MODE_SELECTION");
   });
@@ -139,12 +139,12 @@ const addExpressFlowCases = (builder: ActionReducerMapBuilder<ProjectCreationSta
 
 // Step handler pattern: generic step completion + navigation
 const addStepHandlerCases = (builder: ActionReducerMapBuilder<ProjectCreationState>) => {
-  builder.addCase(requestStepCompletion, (state, action) => {
+  builder.addCase(stepCompletionRequested, (state, action) => {
     const changes = computeStepChanges(state, action.payload);
     applyStepChanges(state, changes);
   });
 
-  builder.addCase(navigateToPrevious, (state) => {
+  builder.addCase(previousStepRequested, (state) => {
     const currentStep = state.renewableEnergyProject.currentStep;
     const handler = stepHandlerRegistry[currentStep];
 
@@ -168,7 +168,7 @@ const addStepHandlerCases = (builder: ActionReducerMapBuilder<ProjectCreationSta
     }
   });
 
-  builder.addCase(navigateToNext, (state) => {
+  builder.addCase(nextStepRequested, (state) => {
     const currentStep = state.renewableEnergyProject.currentStep;
     const handler = stepHandlerRegistry[currentStep];
     const context = {

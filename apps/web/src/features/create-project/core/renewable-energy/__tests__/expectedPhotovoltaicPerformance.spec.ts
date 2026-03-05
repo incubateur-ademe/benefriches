@@ -10,7 +10,7 @@ import {
   fetchPhotovoltaicExpectedAnnualPowerPerformanceForLocation,
   PhotovoltaicPerformanceApiResult,
 } from "../actions/getPhotovoltaicExpectedPerformance.action";
-import { requestStepCompletion } from "../renewableEnergy.actions";
+import { stepCompletionRequested } from "../renewableEnergy.actions";
 
 const API_MOCKED_RESULT = {
   expectedPerformance: {
@@ -77,7 +77,7 @@ describe("Photovoltaic expected performance reducer", () => {
       reconversionProjectCreationInitiated({ relatedSiteId: SITE_MOCKED_RESULT["id"] }),
     );
     store.dispatch(
-      requestStepCompletion({
+      stepCompletionRequested({
         stepId: "RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER",
         answers: { photovoltaicInstallationElectricalPowerKWc: 3 },
       }),
@@ -104,7 +104,7 @@ describe("Photovoltaic expected performance reducer", () => {
       reconversionProjectCreationInitiated({ relatedSiteId: SITE_MOCKED_RESULT["id"] }),
     );
     store.dispatch(
-      requestStepCompletion({
+      stepCompletionRequested({
         stepId: "RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER",
         answers: { photovoltaicInstallationElectricalPowerKWc: 3.0 },
       }),
@@ -133,7 +133,7 @@ describe("Photovoltaic expected performance reducer", () => {
       reconversionProjectCreationInitiated({ relatedSiteId: SITE_MOCKED_RESULT["id"] }),
     );
     store.dispatch(
-      requestStepCompletion({
+      stepCompletionRequested({
         stepId: "RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER",
         answers: { photovoltaicInstallationElectricalPowerKWc: 3.0 },
       }),

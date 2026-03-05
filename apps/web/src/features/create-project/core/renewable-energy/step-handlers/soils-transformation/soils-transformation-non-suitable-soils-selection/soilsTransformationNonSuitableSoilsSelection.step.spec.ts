@@ -3,15 +3,15 @@ import {
   StoreBuilder,
 } from "@/features/create-project/core/renewable-energy/__tests__/_testStoreHelpers";
 import {
-  navigateToPrevious,
-  requestStepCompletion,
+  previousStepRequested,
+  stepCompletionRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 
 describe("Renewable energy creation - Steps - non suitable soils selection", () => {
   it("should complete step and navigate to non suitable soils surface", () => {
     const store = new StoreBuilder().build();
     store.dispatch(
-      requestStepCompletion({
+      stepCompletionRequested({
         stepId: "RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SELECTION",
         answers: { nonSuitableSoilsToTransform: [] },
       }),
@@ -34,7 +34,7 @@ describe("Renewable energy creation - Steps - non suitable soils selection", () 
         "RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SELECTION",
       ])
       .build();
-    store.dispatch(navigateToPrevious());
+    store.dispatch(previousStepRequested());
     expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_NON_SUITABLE_SOILS_NOTICE");
   });
 });

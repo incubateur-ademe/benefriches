@@ -3,14 +3,14 @@ import {
   StoreBuilder,
 } from "@/features/create-project/core/renewable-energy/__tests__/_testStoreHelpers";
 import {
-  navigateToPrevious,
-  navigateToNext,
+  previousStepRequested,
+  nextStepRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 
 describe("Renewable energy creation - Steps - soils summary", () => {
   it("should navigate to soils carbon storage", () => {
     const store = new StoreBuilder().withStepsSequence(["RENEWABLE_ENERGY_SOILS_SUMMARY"]).build();
-    store.dispatch(navigateToNext());
+    store.dispatch(nextStepRequested());
     expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_CARBON_STORAGE");
   });
 
@@ -21,7 +21,7 @@ describe("Renewable energy creation - Steps - soils summary", () => {
         "RENEWABLE_ENERGY_SOILS_SUMMARY",
       ])
       .build();
-    store.dispatch(navigateToPrevious());
+    store.dispatch(previousStepRequested());
     expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_TRANSFORMATION_PROJECT_SELECTION");
   });
 
@@ -32,7 +32,7 @@ describe("Renewable energy creation - Steps - soils summary", () => {
         "RENEWABLE_ENERGY_SOILS_SUMMARY",
       ])
       .build();
-    store.dispatch(navigateToPrevious());
+    store.dispatch(previousStepRequested());
     expect(getCurrentStep(store)).toBe(
       "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CLIMATE_AND_BIODIVERSITY_IMPACT_NOTICE",
     );

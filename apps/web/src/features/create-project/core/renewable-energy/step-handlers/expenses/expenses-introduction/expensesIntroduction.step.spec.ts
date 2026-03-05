@@ -4,8 +4,8 @@ import {
   StoreBuilder,
 } from "@/features/create-project/core/renewable-energy/__tests__/_testStoreHelpers";
 import {
-  navigateToPrevious,
-  navigateToNext,
+  previousStepRequested,
+  nextStepRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 
 describe("Renewable energy creation - Steps - expenses introduction", () => {
@@ -20,7 +20,7 @@ describe("Renewable energy creation - Steps - expenses introduction", () => {
         })
         .withStepsSequence(["RENEWABLE_ENERGY_EXPENSES_INTRODUCTION"])
         .build();
-      store.dispatch(navigateToNext());
+      store.dispatch(nextStepRequested());
       expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_EXPENSES_SITE_PURCHASE_AMOUNTS");
     });
 
@@ -35,7 +35,7 @@ describe("Renewable energy creation - Steps - expenses introduction", () => {
         })
         .withStepsSequence(["RENEWABLE_ENERGY_EXPENSES_INTRODUCTION"])
         .build();
-      store.dispatch(navigateToNext());
+      store.dispatch(nextStepRequested());
       expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_EXPENSES_REINSTATEMENT");
     });
 
@@ -50,7 +50,7 @@ describe("Renewable energy creation - Steps - expenses introduction", () => {
         })
         .withStepsSequence(["RENEWABLE_ENERGY_EXPENSES_INTRODUCTION"])
         .build();
-      store.dispatch(navigateToNext());
+      store.dispatch(nextStepRequested());
       expect(getCurrentStep(store)).toBe(
         "RENEWABLE_ENERGY_EXPENSES_PHOTOVOLTAIC_PANELS_INSTALLATION",
       );
@@ -65,7 +65,7 @@ describe("Renewable energy creation - Steps - expenses introduction", () => {
           "RENEWABLE_ENERGY_EXPENSES_INTRODUCTION",
         ])
         .build();
-      store.dispatch(navigateToPrevious());
+      store.dispatch(previousStepRequested());
       expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_STAKEHOLDERS_FUTURE_SITE_OWNER");
     });
 
@@ -76,7 +76,7 @@ describe("Renewable energy creation - Steps - expenses introduction", () => {
           "RENEWABLE_ENERGY_EXPENSES_INTRODUCTION",
         ])
         .build();
-      store.dispatch(navigateToPrevious());
+      store.dispatch(previousStepRequested());
       expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_STAKEHOLDERS_SITE_PURCHASE");
     });
   });

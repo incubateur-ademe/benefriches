@@ -11,22 +11,22 @@ import { creationProjectFormUrbanActions } from "../urbanProject.actions";
 import { mockSiteData } from "./_siteData.mock";
 import { StoreBuilder } from "./_testStoreHelpers";
 
-const { navigateToStep, requestStepCompletion } = creationProjectFormUrbanActions;
+const { stepNavigationRequested, stepCompletionRequested } = creationProjectFormUrbanActions;
 
-describe("navigateToStep action", () => {
+describe("stepNavigationRequested action", () => {
   let store: ReturnType<StoreBuilder["build"]>;
 
   beforeEach(() => {
     store = new StoreBuilder().build();
   });
 
-  describe("Basic navigateToStep functionality", () => {
+  describe("Basic stepNavigationRequested functionality", () => {
     it("should not change state when loaded step without existing answers", () => {
       const initialSteps = store.getState().projectCreation.urbanProject.steps;
       expect(Object.keys(initialSteps)).toHaveLength(0);
 
       // étape qui n'a pas de valeurs par défaut
-      store.dispatch(navigateToStep({ stepId: "URBAN_PROJECT_USES_SELECTION" }));
+      store.dispatch(stepNavigationRequested({ stepId: "URBAN_PROJECT_USES_SELECTION" }));
 
       expect(
         store.getState().projectCreation.urbanProject.steps.URBAN_PROJECT_USES_SELECTION,
@@ -35,14 +35,14 @@ describe("navigateToStep action", () => {
 
     it("should generate default answers for steps that have them", () => {
       // étape qui génère des valeurs par défaut
-      store.dispatch(navigateToStep({ stepId: "URBAN_PROJECT_NAMING" }));
+      store.dispatch(stepNavigationRequested({ stepId: "URBAN_PROJECT_NAMING" }));
 
       const step = store.getState().projectCreation.urbanProject.steps.URBAN_PROJECT_NAMING;
       expect(step?.defaultValues).toEqual({ name: expect.any(String) as string });
     });
 
     it("should generate default expenses for installation step", () => {
-      store.dispatch(navigateToStep({ stepId: "URBAN_PROJECT_EXPENSES_INSTALLATION" }));
+      store.dispatch(stepNavigationRequested({ stepId: "URBAN_PROJECT_EXPENSES_INSTALLATION" }));
 
       const steps = store.getState().projectCreation.urbanProject.steps;
       expect(steps.URBAN_PROJECT_EXPENSES_INSTALLATION).toBeDefined();
@@ -67,7 +67,7 @@ describe("navigateToStep action", () => {
     });
 
     it("should generate default schedule when loading schedule projection", () => {
-      store.dispatch(navigateToStep({ stepId: "URBAN_PROJECT_SCHEDULE_PROJECTION" }));
+      store.dispatch(stepNavigationRequested({ stepId: "URBAN_PROJECT_SCHEDULE_PROJECTION" }));
 
       const steps = store.getState().projectCreation.urbanProject.steps;
       expect(steps.URBAN_PROJECT_SCHEDULE_PROJECTION).toEqual({
@@ -93,7 +93,9 @@ describe("navigateToStep action", () => {
         .withSiteData({ ...mockSiteData, nature: "AGRICULTURAL_OPERATION" })
         .build();
 
-      storeNonFriche.dispatch(navigateToStep({ stepId: "URBAN_PROJECT_SCHEDULE_PROJECTION" }));
+      storeNonFriche.dispatch(
+        stepNavigationRequested({ stepId: "URBAN_PROJECT_SCHEDULE_PROJECTION" }),
+      );
 
       const steps = storeNonFriche.getState().projectCreation.urbanProject.steps;
       expect(
@@ -115,7 +117,7 @@ describe("navigateToStep action", () => {
         })
         .build();
 
-      storeWithExistingAnswer.dispatch(navigateToStep({ stepId: "URBAN_PROJECT_NAMING" }));
+      storeWithExistingAnswer.dispatch(stepNavigationRequested({ stepId: "URBAN_PROJECT_NAMING" }));
 
       const steps = storeWithExistingAnswer.getState().projectCreation.urbanProject.steps;
 
@@ -127,7 +129,7 @@ describe("navigateToStep action", () => {
     });
 
     it("should handle complex default values correctly for installation expenses", () => {
-      store.dispatch(navigateToStep({ stepId: "URBAN_PROJECT_EXPENSES_INSTALLATION" }));
+      store.dispatch(stepNavigationRequested({ stepId: "URBAN_PROJECT_EXPENSES_INSTALLATION" }));
 
       const afterLoadStep =
         store.getState().projectCreation.urbanProject.steps.URBAN_PROJECT_EXPENSES_INSTALLATION;
@@ -135,7 +137,7 @@ describe("navigateToStep action", () => {
 
       // same values than default
       store.dispatch(
-        requestStepCompletion({
+        stepCompletionRequested({
           stepId: "URBAN_PROJECT_EXPENSES_INSTALLATION",
           answers: { installationExpenses: defaultExpenses },
         }),
@@ -167,7 +169,9 @@ describe("navigateToStep action", () => {
         })
         .build();
 
-      storeWithContext.dispatch(navigateToStep({ stepId: "URBAN_PROJECT_EXPENSES_REINSTATEMENT" }));
+      storeWithContext.dispatch(
+        stepNavigationRequested({ stepId: "URBAN_PROJECT_EXPENSES_REINSTATEMENT" }),
+      );
 
       const afterLoadSteps = storeWithContext.getState().projectCreation.urbanProject.steps;
 
@@ -192,10 +196,10 @@ describe("navigateToStep action", () => {
 
   describe("LoadStep edge cases", () => {
     it.each(["URBAN_PROJECT_USES_SELECTION", "URBAN_PROJECT_PROJECT_PHASE"] as const)(
-      "should handle navigateToStep for steps without default logic",
+      "should handle stepNavigationRequested for steps without default logic",
       (stepId) => {
         const testStore = new StoreBuilder().build();
-        testStore.dispatch(navigateToStep({ stepId: stepId }));
+        testStore.dispatch(stepNavigationRequested({ stepId: stepId }));
 
         const steps = testStore.getState().projectCreation.urbanProject.steps;
         expect(steps[stepId]).toBeUndefined();

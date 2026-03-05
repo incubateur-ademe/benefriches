@@ -30,7 +30,7 @@ describe("Urban project creation - Steps - Spaces surface area", () => {
       .build();
 
     store.dispatch(
-      creationProjectFormUrbanActions.requestStepCompletion({
+      creationProjectFormUrbanActions.stepCompletionRequested({
         stepId: "URBAN_PROJECT_SPACES_SURFACE_AREA",
         answers: {
           spacesSurfaceAreaDistribution: {
@@ -76,7 +76,7 @@ describe("Urban project creation - Steps - Spaces surface area", () => {
       })
       .build();
 
-    store.dispatch(creationProjectFormUrbanActions.navigateToPrevious());
+    store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
 
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SPACES_SELECTION");
   });

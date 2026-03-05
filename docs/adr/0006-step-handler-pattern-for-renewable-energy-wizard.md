@@ -16,7 +16,7 @@ The urban project wizard already adopted a step handler pattern (see ADR-0004), 
 
 ## Decision
 
-Extract step-specific logic into **step handler objects** registered in a `stepHandlerRegistry`, and replace the ~40 per-step actions with a single generic `requestStepCompletion` action carrying a discriminated union payload (`{ stepId, answers }`).
+Extract step-specific logic into **step handler objects** registered in a `stepHandlerRegistry`, and replace the ~40 per-step actions with a single generic `stepCompletionRequested` action carrying a discriminated union payload (`{ stepId, answers }`).
 
 ### Key components
 
@@ -26,7 +26,7 @@ Extract step-specific logic into **step handler objects** registered in a `stepH
    - `getDefaultAnswers?(context)` — pre-fill defaults
    - `updateAnswersMiddleware?(context, answers)` — transform answers before storing
 3. **`stepHandlerRegistry.ts`** — maps every step ID to its handler
-4. **`renewableEnergy.actions.ts`** — 3 generic actions: `requestStepCompletion`, `navigateToNext`, `navigateToPrevious`
+4. **`renewableEnergy.actions.ts`** — 3 generic actions: `stepCompletionRequested`, `nextStepRequested`, `previousStepRequested`
 5. **Helpers** (`completeStep.ts`, `mutateState.ts`, `navigateToStep.ts`, `stepsSequence.ts`) — shared reducer logic
 6. **Co-located selectors** — Each handler directory contains a `*.selector.ts` file with the ViewData selector for its container, replacing the former central selector files (`expenses.selectors.ts`, `revenues.selectors.ts`, etc.)
 7. **Co-located stepper config** — Each handler directory contains a `*.stepperConfig.ts` declaring `{ groupId }`. A central `renewableEnergyStepperConfig.ts` aggregates them into a `RENEWABLE_ENERGY_STEP_TO_GROUP` mapping, replacing the former 66-case switch in the stepper component with a data-driven lookup
@@ -34,7 +34,7 @@ Extract step-specific logic into **step handler objects** registered in a `stepH
 
 ### Backward navigation
 
-`navigateToPrevious` derives the previous step from `stepsSequence` — the same forward sequence built by chaining `getNextStepId` calls. It finds the current step's index in the sequence and navigates to `index - 1`. No handler needs to declare a `getPreviousStepId` method.
+`previousStepRequested` derives the previous step from `stepsSequence` — the same forward sequence built by chaining `getNextStepId` calls. It finds the current step's index in the sequence and navigates to `index - 1`. No handler needs to declare a `getPreviousStepId` method.
 
 This differs from the urban project wizard, where backward navigation is explicit: each handler declares `getPreviousStepId(context)`. That is appropriate there because dependency cascades and recomputations mean a handler may need state context to determine its predecessor. The PV wizard has no such complexity.
 
@@ -73,13 +73,13 @@ step-handlers/
 
 Not every step has all files — introduction steps have only a handler and stepperConfig, answer steps without dedicated selectors omit the selector file.
 
-The reducer becomes a thin dispatcher: receive `requestStepCompletion`, look up the handler, apply changes, compute next step.
+The reducer becomes a thin dispatcher: receive `stepCompletionRequested`, look up the handler, apply changes, compute next step.
 
 ## Options Considered
 
 ### Option 1: Step handler registry with generic actions (chosen)
 
-Extract step logic into handler objects, use a single `requestStepCompletion` action with discriminated payload.
+Extract step logic into handler objects, use a single `stepCompletionRequested` action with discriminated payload.
 
 - **Pros**: Dramatic reducer simplification (500+ → ~100 lines of reducer logic), type-safe payload via discriminated union, adding a step = create handler + register, aligns with urban project wizard pattern
 - **Cons**: New abstraction to learn, handler registry imports grow, requires migrating all containers to dispatch the generic action
@@ -110,7 +110,7 @@ Split the reducer into multiple files by section (stakeholders, expenses, etc.).
 - Reducer reduced from ~500 lines of case-by-case handling to a generic dispatcher
 - Adding a new step is self-contained: create a handler directory with handler, schema, selector, stepperConfig, and step test, then register
 - Navigation logic, schema, ViewData selector, stepper config, and tests are all colocated with the step they belong to
-- Containers become simpler: dispatch `requestStepCompletion({ stepId, answers })` instead of a step-specific action
+- Containers become simpler: dispatch `stepCompletionRequested({ stepId, answers })` instead of a step-specific action
 - Step sequence is the single source of truth for navigation in both directions
 - Consistent pattern with urban project wizard (ADR-0004)
 

@@ -3,8 +3,8 @@ import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { fetchCurrentAndProjectedSoilsCarbonStorage } from "@/features/create-project/core/renewable-energy/actions/soilsCarbonStorage.actions";
 import {
-  navigateToNext,
-  navigateToPrevious,
+  nextStepRequested,
+  previousStepRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 import { selectSoilsCarbonStorageViewData } from "@/features/create-project/core/renewable-energy/step-handlers/summary/summary-soils-carbon-storage/summarySoilsCarbonStorage.selector";
 import SoilsCarbonStorageComparison from "@/shared/views/project-form/common/soils-carbon-storage-comparison";
@@ -21,9 +21,9 @@ function ProjectSoilsCarbonStorageContainer() {
     return (
       <SoilsCarbonStorageComparison
         onNext={() => {
-          dispatch(navigateToNext());
+          dispatch(nextStepRequested());
         }}
-        onBack={() => dispatch(navigateToPrevious())}
+        onBack={() => dispatch(previousStepRequested())}
         loadingState={viewData.loadingState}
         currentCarbonStorage={viewData.current}
         projectedCarbonStorage={viewData.projected}
@@ -34,9 +34,9 @@ function ProjectSoilsCarbonStorageContainer() {
   return (
     <SoilsCarbonStorageComparison
       onNext={() => {
-        dispatch(navigateToNext());
+        dispatch(nextStepRequested());
       }}
-      onBack={() => dispatch(navigateToPrevious())}
+      onBack={() => dispatch(previousStepRequested())}
       loadingState={viewData.loadingState}
       currentCarbonStorage={undefined}
       projectedCarbonStorage={undefined}

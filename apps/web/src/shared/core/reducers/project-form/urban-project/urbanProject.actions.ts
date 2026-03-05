@@ -28,12 +28,12 @@ export type StepCompletionPayload<K extends AnswerStepId = AnswerStepId> = {
 }[K];
 
 export type UrbanProjectFormReducerActions = {
-  requestStepCompletion: ActionCreatorWithPayload<StepCompletionPayload>;
-  confirmStepCompletion: ActionCreatorWithPayload<void>;
-  cancelStepCompletion: ActionCreatorWithPayload<void>;
-  navigateToPrevious: ActionCreatorWithPayload<void>;
-  navigateToNext: ActionCreatorWithPayload<void>;
-  navigateToStep: ActionCreatorWithPayload<{
+  stepCompletionRequested: ActionCreatorWithPayload<StepCompletionPayload>;
+  stepCompletionConfirmed: ActionCreatorWithPayload<void>;
+  stepCompletionCancelled: ActionCreatorWithPayload<void>;
+  previousStepRequested: ActionCreatorWithPayload<void>;
+  nextStepRequested: ActionCreatorWithPayload<void>;
+  stepNavigationRequested: ActionCreatorWithPayload<{
     stepId: UrbanProjectCreationStep;
   }>;
   fetchSoilsCarbonStorageDifference: AsyncThunk<
@@ -52,16 +52,16 @@ export const createUrbanProjectFormActions = (
   selectors: Selectors,
 ): UrbanProjectFormReducerActions => {
   return {
-    confirmStepCompletion: createUrbanProjectFormAction(prefix, "confirmStepCompletion"),
-    cancelStepCompletion: createUrbanProjectFormAction(prefix, "cancelStepCompletion"),
-    navigateToPrevious: createUrbanProjectFormAction(prefix, "navigateToPrevious"),
-    navigateToNext: createUrbanProjectFormAction(prefix, "navigateToNext"),
-    navigateToStep: createUrbanProjectFormAction<{
+    stepCompletionConfirmed: createUrbanProjectFormAction(prefix, "stepCompletionConfirmed"),
+    stepCompletionCancelled: createUrbanProjectFormAction(prefix, "stepCompletionCancelled"),
+    previousStepRequested: createUrbanProjectFormAction(prefix, "previousStepRequested"),
+    nextStepRequested: createUrbanProjectFormAction(prefix, "nextStepRequested"),
+    stepNavigationRequested: createUrbanProjectFormAction<{
       stepId: UrbanProjectCreationStep;
-    }>(prefix, "navigateToStep"),
-    requestStepCompletion: createUrbanProjectFormAction<StepCompletionPayload>(
+    }>(prefix, "stepNavigationRequested"),
+    stepCompletionRequested: createUrbanProjectFormAction<StepCompletionPayload>(
       prefix,
-      "requestStepCompletion",
+      "stepCompletionRequested",
     ),
     fetchSoilsCarbonStorageDifference:
       createAppAsyncThunk<CurrentAndProjectedSoilsCarbonStorageResult>(

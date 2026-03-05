@@ -10,7 +10,7 @@ describe("Urban project creation - Steps - Decontamination plan selection", () =
     const store = new StoreBuilder().build();
 
     store.dispatch(
-      creationProjectFormUrbanActions.requestStepCompletion({
+      creationProjectFormUrbanActions.stepCompletionRequested({
         stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
         answers: {
           decontaminationPlan: "none",
@@ -37,7 +37,7 @@ describe("Urban project creation - Steps - Decontamination plan selection", () =
     const store = new StoreBuilder().build();
 
     store.dispatch(
-      creationProjectFormUrbanActions.requestStepCompletion({
+      creationProjectFormUrbanActions.stepCompletionRequested({
         stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
         answers: {
           decontaminationPlan: "unknown",
@@ -64,7 +64,7 @@ describe("Urban project creation - Steps - Decontamination plan selection", () =
     const store = new StoreBuilder().build();
 
     store.dispatch(
-      creationProjectFormUrbanActions.requestStepCompletion({
+      creationProjectFormUrbanActions.stepCompletionRequested({
         stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
         answers: {
           decontaminationPlan: "partial",
@@ -98,7 +98,7 @@ describe("Urban project creation - Steps - Decontamination plan selection", () =
       .build();
 
     store.dispatch(
-      creationProjectFormUrbanActions.requestStepCompletion({
+      creationProjectFormUrbanActions.stepCompletionRequested({
         stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
         answers: {
           decontaminationPlan: "none",
@@ -136,7 +136,7 @@ describe("Urban project creation - Steps - Decontamination plan selection", () =
       .build();
 
     store.dispatch(
-      creationProjectFormUrbanActions.requestStepCompletion({
+      creationProjectFormUrbanActions.stepCompletionRequested({
         stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
         answers: {
           decontaminationPlan: "unknown",
@@ -175,7 +175,7 @@ describe("Urban project creation - Steps - Decontamination plan selection", () =
       .build();
 
     store.dispatch(
-      creationProjectFormUrbanActions.requestStepCompletion({
+      creationProjectFormUrbanActions.stepCompletionRequested({
         stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
         answers: {
           decontaminationPlan: "partial",

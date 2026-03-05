@@ -1,8 +1,8 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { selectSiteContaminatedSurfaceArea } from "@/features/create-project/core/createProject.selectors";
 import {
-  navigateToNext,
-  navigateToPrevious,
+  nextStepRequested,
+  previousStepRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 import SoilsDecontaminationIntroduction from "@/shared/views/project-form/common/soils-decontamination/introduction/SoilsDecontaminationIntroduction";
 
@@ -13,8 +13,8 @@ function SoilsDecontaminationIntroductionContainer() {
   return (
     <SoilsDecontaminationIntroduction
       contaminatedSurfaceArea={contaminatedSurfaceArea}
-      onNext={() => dispatch(navigateToNext())}
-      onBack={() => dispatch(navigateToPrevious())}
+      onNext={() => dispatch(nextStepRequested())}
+      onBack={() => dispatch(previousStepRequested())}
     />
   );
 }

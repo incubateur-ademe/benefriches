@@ -1,8 +1,8 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { ProjectStakeholder } from "@/features/create-project/core/project.types";
 import {
-  navigateToPrevious,
-  requestStepCompletion,
+  previousStepRequested,
+  stepCompletionRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 import { selectPVOperatorViewData } from "@/features/create-project/core/renewable-energy/step-handlers/stakeholders/stakeholders-future-operator/stakeholdersFutureOperator.selector";
 import { UserStructure } from "@/features/onboarding/core/user";
@@ -40,7 +40,7 @@ function FutureOperatorFormContainer() {
             structureType: "company",
           };
     dispatch(
-      requestStepCompletion({
+      stepCompletionRequested({
         stepId: "RENEWABLE_ENERGY_STAKEHOLDERS_FUTURE_OPERATOR",
         answers: { futureOperator },
       }),
@@ -48,7 +48,7 @@ function FutureOperatorFormContainer() {
   };
 
   const onBack = () => {
-    dispatch(navigateToPrevious());
+    dispatch(previousStepRequested());
   };
 
   return (

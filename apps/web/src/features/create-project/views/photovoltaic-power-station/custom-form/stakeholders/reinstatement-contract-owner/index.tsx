@@ -1,8 +1,8 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { ProjectStakeholderStructure } from "@/features/create-project/core/project.types";
 import {
-  navigateToPrevious,
-  requestStepCompletion,
+  previousStepRequested,
+  stepCompletionRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 import { selectPVReinstatementContractOwnerViewData } from "@/features/create-project/core/renewable-energy/step-handlers/stakeholders/stakeholders-project-developer/stakeholdersProjectDeveloper.selector";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
@@ -16,7 +16,7 @@ function SiteReinstatementContractOwnerFormContainer() {
 
   const onSubmit = (data: { structureType: ProjectStakeholderStructure; name: string }) => {
     dispatch(
-      requestStepCompletion({
+      stepCompletionRequested({
         stepId: "RENEWABLE_ENERGY_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER",
         answers: { reinstatementContractOwner: data },
       }),
@@ -24,7 +24,7 @@ function SiteReinstatementContractOwnerFormContainer() {
   };
 
   const onBack = () => {
-    dispatch(navigateToPrevious());
+    dispatch(previousStepRequested());
   };
 
   return (

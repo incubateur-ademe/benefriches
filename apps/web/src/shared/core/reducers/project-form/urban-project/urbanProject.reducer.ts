@@ -22,7 +22,7 @@ export const addUrbanProjectFormCasesToBuilder = <S extends ProjectFormState>(
   actions: UrbanProjectFormReducerActions,
   config: FormReducerConfig = { stepChangesNextMode: "step_order" },
 ) => {
-  builder.addCase(actions.requestStepCompletion, (state, action) => {
+  builder.addCase(actions.stepCompletionRequested, (state, action) => {
     const formState = asFormState(state);
     const changes = computeStepChanges(formState, action.payload);
 
@@ -36,7 +36,7 @@ export const addUrbanProjectFormCasesToBuilder = <S extends ProjectFormState>(
     }
   });
 
-  builder.addCase(actions.confirmStepCompletion, (state) => {
+  builder.addCase(actions.stepCompletionConfirmed, (state) => {
     const formState = asFormState(state);
     const pending = state.urbanProject.pendingStepCompletion;
     if (pending) {
@@ -45,11 +45,11 @@ export const addUrbanProjectFormCasesToBuilder = <S extends ProjectFormState>(
     }
   });
 
-  builder.addCase(actions.cancelStepCompletion, (state) => {
+  builder.addCase(actions.stepCompletionCancelled, (state) => {
     state.urbanProject.pendingStepCompletion = undefined;
   });
 
-  builder.addCase(actions.navigateToPrevious, (state) => {
+  builder.addCase(actions.previousStepRequested, (state) => {
     const formState = asFormState(state);
     const stepId = state.urbanProject.currentStep;
     const handler = stepHandlerRegistry[stepId];
@@ -65,7 +65,7 @@ export const addUrbanProjectFormCasesToBuilder = <S extends ProjectFormState>(
     }
   });
 
-  builder.addCase(actions.navigateToNext, (state) => {
+  builder.addCase(actions.nextStepRequested, (state) => {
     const formState = asFormState(state);
     const stepId = state.urbanProject.currentStep;
     const handler = stepHandlerRegistry[stepId];
@@ -89,7 +89,7 @@ export const addUrbanProjectFormCasesToBuilder = <S extends ProjectFormState>(
     }
   });
 
-  builder.addCase(actions.navigateToStep, (state, action) => {
+  builder.addCase(actions.stepNavigationRequested, (state, action) => {
     const formState = asFormState(state);
     navigateToAndLoadStep(formState, action.payload.stepId);
   });

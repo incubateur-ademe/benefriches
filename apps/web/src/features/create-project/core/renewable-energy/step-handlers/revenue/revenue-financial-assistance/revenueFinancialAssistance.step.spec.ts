@@ -3,15 +3,15 @@ import {
   StoreBuilder,
 } from "@/features/create-project/core/renewable-energy/__tests__/_testStoreHelpers";
 import {
-  navigateToPrevious,
-  requestStepCompletion,
+  previousStepRequested,
+  stepCompletionRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 
 describe("Renewable energy creation - Steps - revenue financial assistance", () => {
   it("should complete step and navigate to schedule projection", () => {
     const store = new StoreBuilder().build();
     store.dispatch(
-      requestStepCompletion({
+      stepCompletionRequested({
         stepId: "RENEWABLE_ENERGY_REVENUE_FINANCIAL_ASSISTANCE",
         answers: { financialAssistanceRevenues: [] },
       }),
@@ -34,7 +34,7 @@ describe("Renewable energy creation - Steps - revenue financial assistance", () 
         "RENEWABLE_ENERGY_REVENUE_FINANCIAL_ASSISTANCE",
       ])
       .build();
-    store.dispatch(navigateToPrevious());
+    store.dispatch(previousStepRequested());
     expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_REVENUE_PROJECTED_YEARLY_REVENUE");
   });
 });

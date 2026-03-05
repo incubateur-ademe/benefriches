@@ -4,10 +4,10 @@ import { ProjectCreationState } from "../../createProject.reducer";
 import { creationProjectFormUrbanActions } from "../urbanProject.actions";
 import { StoreBuilder } from "./_testStoreHelpers";
 
-const { cancelStepCompletion, requestStepCompletion } = creationProjectFormUrbanActions;
+const { stepCompletionCancelled, stepCompletionRequested } = creationProjectFormUrbanActions;
 
-describe("urbanProject.reducer - cancelStepCompletion action", () => {
-  it("should not update state when cancelStepCompletion is used", () => {
+describe("urbanProject.reducer - stepCompletionCancelled action", () => {
+  it("should not update state when stepCompletionCancelled is used", () => {
     const initialSteps = {
       URBAN_PROJECT_USES_SELECTION: {
         completed: true,
@@ -35,7 +35,7 @@ describe("urbanProject.reducer - cancelStepCompletion action", () => {
 
     // Modification: remove RESIDENTIAL from uses (triggers cascading changes on buildings)
     store.dispatch(
-      requestStepCompletion({
+      stepCompletionRequested({
         stepId: "URBAN_PROJECT_USES_SELECTION",
         answers: { usesSelection: ["PUBLIC_GREEN_SPACES"] },
       }),
@@ -43,7 +43,7 @@ describe("urbanProject.reducer - cancelStepCompletion action", () => {
     const intermediateState = store.getState().projectCreation.urbanProject;
     expect(intermediateState.pendingStepCompletion?.showAlert).toBe(true);
 
-    store.dispatch(cancelStepCompletion());
+    store.dispatch(stepCompletionCancelled());
 
     const stepsState = store.getState().projectCreation.urbanProject.steps;
 

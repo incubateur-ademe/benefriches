@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import {
-  navigateToPrevious,
-  requestStepCompletion,
+  previousStepRequested,
+  stepCompletionRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 import { selectPhotovoltaicPlantFeaturesKeyParameter } from "@/features/create-project/core/renewable-energy/step-handlers/photovoltaic/photovoltaic-key-parameter/photovoltaicKeyParameter.selector";
 
@@ -16,13 +16,13 @@ function PhotovoltaicKeyParameterContainer() {
       initialValues={initialValue ? { photovoltaicKeyParameter: initialValue } : undefined}
       onSubmit={(data) => {
         dispatch(
-          requestStepCompletion({
+          stepCompletionRequested({
             stepId: "RENEWABLE_ENERGY_PHOTOVOLTAIC_KEY_PARAMETER",
             answers: { photovoltaicKeyParameter: data.photovoltaicKeyParameter },
           }),
         );
       }}
-      onBack={() => dispatch(navigateToPrevious())}
+      onBack={() => dispatch(previousStepRequested())}
     />
   );
 }

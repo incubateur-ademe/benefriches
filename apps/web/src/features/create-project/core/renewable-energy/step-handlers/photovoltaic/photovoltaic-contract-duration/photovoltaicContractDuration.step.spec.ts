@@ -4,8 +4,8 @@ import {
   StoreBuilder,
 } from "@/features/create-project/core/renewable-energy/__tests__/_testStoreHelpers";
 import {
-  navigateToPrevious,
-  requestStepCompletion,
+  previousStepRequested,
+  stepCompletionRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 
 describe("Renewable energy creation - Steps - photovoltaic contract duration", () => {
@@ -19,7 +19,7 @@ describe("Renewable energy creation - Steps - photovoltaic contract duration", (
         })
         .build();
       store.dispatch(
-        requestStepCompletion({
+        stepCompletionRequested({
           stepId: "RENEWABLE_ENERGY_PHOTOVOLTAIC_CONTRACT_DURATION",
           answers: { photovoltaicContractDuration: 20 },
         }),
@@ -38,7 +38,7 @@ describe("Renewable energy creation - Steps - photovoltaic contract duration", (
     it("should navigate to soils transformation introduction when site has no contaminated soil", () => {
       const store = new StoreBuilder().build();
       store.dispatch(
-        requestStepCompletion({
+        stepCompletionRequested({
           stepId: "RENEWABLE_ENERGY_PHOTOVOLTAIC_CONTRACT_DURATION",
           answers: { photovoltaicContractDuration: 20 },
         }),
@@ -63,7 +63,7 @@ describe("Renewable energy creation - Steps - photovoltaic contract duration", (
           "RENEWABLE_ENERGY_PHOTOVOLTAIC_CONTRACT_DURATION",
         ])
         .build();
-      store.dispatch(navigateToPrevious());
+      store.dispatch(previousStepRequested());
       expect(getCurrentStep(store)).toBe(
         "RENEWABLE_ENERGY_PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION",
       );

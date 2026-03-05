@@ -4,8 +4,8 @@ import {
   StoreBuilder,
 } from "@/features/create-project/core/renewable-energy/__tests__/_testStoreHelpers";
 import {
-  navigateToPrevious,
-  requestStepCompletion,
+  previousStepRequested,
+  stepCompletionRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 
 describe("Renewable energy creation - Steps - soils transformation custom surface area allocation", () => {
@@ -14,7 +14,7 @@ describe("Renewable energy creation - Steps - soils transformation custom surfac
       // relatedSiteData has FOREST_DECIDUOUS: 12000 which triggers biodiversity check
       const store = new StoreBuilder().build();
       store.dispatch(
-        requestStepCompletion({
+        stepCompletionRequested({
           stepId: "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CUSTOM_SURFACE_AREA_ALLOCATION",
           answers: { soilsDistribution: { MINERAL_SOIL: 5000, BUILDINGS: 3000 } },
         }),
@@ -41,7 +41,7 @@ describe("Renewable energy creation - Steps - soils transformation custom surfac
         })
         .build();
       store.dispatch(
-        requestStepCompletion({
+        stepCompletionRequested({
           stepId: "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CUSTOM_SURFACE_AREA_ALLOCATION",
           answers: { soilsDistribution: { MINERAL_SOIL: 5000, BUILDINGS: 3000 } },
         }),
@@ -60,7 +60,7 @@ describe("Renewable energy creation - Steps - soils transformation custom surfac
     it("should strip empty surfaces from soilsDistribution", () => {
       const store = new StoreBuilder().build();
       store.dispatch(
-        requestStepCompletion({
+        stepCompletionRequested({
           stepId: "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CUSTOM_SURFACE_AREA_ALLOCATION",
           answers: { soilsDistribution: { MINERAL_SOIL: 5000, BUILDINGS: 0 } },
         }),
@@ -80,7 +80,7 @@ describe("Renewable energy creation - Steps - soils transformation custom surfac
           "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CUSTOM_SURFACE_AREA_ALLOCATION",
         ])
         .build();
-      store.dispatch(navigateToPrevious());
+      store.dispatch(previousStepRequested());
       expect(getCurrentStep(store)).toBe(
         "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CUSTOM_SOILS_SELECTION",
       );

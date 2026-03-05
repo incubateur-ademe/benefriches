@@ -1,8 +1,8 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { ProjectStakeholderStructure } from "@/features/create-project/core/project.types";
 import {
-  navigateToPrevious,
-  requestStepCompletion,
+  previousStepRequested,
+  stepCompletionRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 import { selectPVFutureSiteOwnerViewData } from "@/features/create-project/core/renewable-energy/step-handlers/stakeholders/stakeholders-project-developer/stakeholdersProjectDeveloper.selector";
 import StakeholderForm from "@/shared/views/project-form/common/stakeholder-form";
@@ -15,7 +15,7 @@ function FutureOwnerFormContainer() {
 
   const onSubmit = (data: { structureType: ProjectStakeholderStructure; name: string }) => {
     dispatch(
-      requestStepCompletion({
+      stepCompletionRequested({
         stepId: "RENEWABLE_ENERGY_STAKEHOLDERS_FUTURE_SITE_OWNER",
         answers: { futureSiteOwner: data },
       }),
@@ -23,7 +23,7 @@ function FutureOwnerFormContainer() {
   };
 
   const onBack = () => {
-    dispatch(navigateToPrevious());
+    dispatch(previousStepRequested());
   };
 
   return (

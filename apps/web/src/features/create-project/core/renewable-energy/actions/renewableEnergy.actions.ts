@@ -15,5 +15,5 @@ const createRenewableEnergyAction = <TPayload = void>(actionName: string) =>
 
 export const customCreateModeSelected = createRenewableEnergyAction("customCreateModeSelected");
 
-export const completeRenewableEnergyType =
-  createRenewableEnergyAction<RenewableEnergyDevelopmentPlanType>("completeRenewableEnergyType");
+export const renewableEnergyTypeCompleted =
+  createRenewableEnergyAction<RenewableEnergyDevelopmentPlanType>("renewableEnergyTypeCompleted");

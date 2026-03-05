@@ -3,8 +3,8 @@ import {
   StoreBuilder,
 } from "@/features/create-project/core/renewable-energy/__tests__/_testStoreHelpers";
 import {
-  navigateToPrevious,
-  requestStepCompletion,
+  previousStepRequested,
+  stepCompletionRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 
 describe("Renewable energy creation - Steps - stakeholders site purchase", () => {
@@ -12,7 +12,7 @@ describe("Renewable energy creation - Steps - stakeholders site purchase", () =>
     it("should navigate to future site owner when site will be purchased", () => {
       const store = new StoreBuilder().build();
       store.dispatch(
-        requestStepCompletion({
+        stepCompletionRequested({
           stepId: "RENEWABLE_ENERGY_STAKEHOLDERS_SITE_PURCHASE",
           answers: { willSiteBePurchased: true },
         }),
@@ -31,7 +31,7 @@ describe("Renewable energy creation - Steps - stakeholders site purchase", () =>
     it("should navigate to expenses introduction when site will not be purchased", () => {
       const store = new StoreBuilder().build();
       store.dispatch(
-        requestStepCompletion({
+        stepCompletionRequested({
           stepId: "RENEWABLE_ENERGY_STAKEHOLDERS_SITE_PURCHASE",
           answers: { willSiteBePurchased: false },
         }),
@@ -56,7 +56,7 @@ describe("Renewable energy creation - Steps - stakeholders site purchase", () =>
           "RENEWABLE_ENERGY_STAKEHOLDERS_SITE_PURCHASE",
         ])
         .build();
-      store.dispatch(navigateToPrevious());
+      store.dispatch(previousStepRequested());
       expect(getCurrentStep(store)).toBe(
         "RENEWABLE_ENERGY_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER",
       );
@@ -69,7 +69,7 @@ describe("Renewable energy creation - Steps - stakeholders site purchase", () =>
           "RENEWABLE_ENERGY_STAKEHOLDERS_SITE_PURCHASE",
         ])
         .build();
-      store.dispatch(navigateToPrevious());
+      store.dispatch(previousStepRequested());
       expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_STAKEHOLDERS_FUTURE_OPERATOR");
     });
   });

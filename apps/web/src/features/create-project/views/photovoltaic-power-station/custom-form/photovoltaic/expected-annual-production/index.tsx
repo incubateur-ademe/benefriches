@@ -3,8 +3,8 @@ import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { fetchPhotovoltaicExpectedAnnualPowerPerformanceForLocation } from "@/features/create-project/core/renewable-energy/actions/getPhotovoltaicExpectedPerformance.action";
 import {
-  navigateToPrevious,
-  requestStepCompletion,
+  previousStepRequested,
+  stepCompletionRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 import { selectExpectedAnnualProductionViewData } from "@/features/create-project/core/renewable-energy/step-handlers/photovoltaic/photovoltaic-expected-annual-production/photovoltaicExpectedAnnualProduction.selector";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
@@ -31,7 +31,7 @@ function PhotovoltaicExpectedAnnualProductionContainer() {
       expectedPerformanceMwhPerYear={expectedPerformanceMwhPerYear}
       onSubmit={(data) => {
         dispatch(
-          requestStepCompletion({
+          stepCompletionRequested({
             stepId: "RENEWABLE_ENERGY_PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION",
             answers: {
               photovoltaicExpectedAnnualProduction: data.photovoltaicExpectedAnnualProduction,
@@ -39,7 +39,7 @@ function PhotovoltaicExpectedAnnualProductionContainer() {
           }),
         );
       }}
-      onBack={() => dispatch(navigateToPrevious())}
+      onBack={() => dispatch(previousStepRequested())}
     />
   );
 }

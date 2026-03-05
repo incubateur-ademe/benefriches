@@ -2,8 +2,8 @@ import { ReinstatementExpense } from "shared";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import {
-  navigateToPrevious,
-  requestStepCompletion,
+  previousStepRequested,
+  stepCompletionRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 import { selectPVReinstatementExpensesViewData } from "@/features/create-project/core/renewable-energy/step-handlers/expenses/expenses-reinstatement/expensesReinstatement.selector";
 import ReinstatementsExpensesForm from "@/shared/views/project-form/common/expenses/reinstatement";
@@ -24,11 +24,11 @@ function ReinstatementExpensesFormContainer() {
       projectSoilsDistribution={projectSoilsDistribution}
       decontaminatedSurfaceArea={decontaminatedSurfaceArea}
       onBack={() => {
-        dispatch(navigateToPrevious());
+        dispatch(previousStepRequested());
       }}
       onSubmit={(expenses: ReinstatementExpense[]) => {
         dispatch(
-          requestStepCompletion({
+          stepCompletionRequested({
             stepId: "RENEWABLE_ENERGY_EXPENSES_REINSTATEMENT",
             answers: { reinstatementExpenses: expenses },
           }),

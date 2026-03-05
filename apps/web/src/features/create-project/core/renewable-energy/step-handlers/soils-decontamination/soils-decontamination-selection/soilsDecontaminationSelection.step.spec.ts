@@ -4,8 +4,8 @@ import {
   StoreBuilder,
 } from "@/features/create-project/core/renewable-energy/__tests__/_testStoreHelpers";
 import {
-  navigateToPrevious,
-  requestStepCompletion,
+  previousStepRequested,
+  stepCompletionRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 
 describe("Renewable energy creation - Steps - soils decontamination selection", () => {
@@ -13,7 +13,7 @@ describe("Renewable energy creation - Steps - soils decontamination selection", 
     it("should navigate to decontamination surface area when plan is partial", () => {
       const store = new StoreBuilder().build();
       store.dispatch(
-        requestStepCompletion({
+        stepCompletionRequested({
           stepId: "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION",
           answers: { decontaminationPlan: "partial" },
         }),
@@ -32,7 +32,7 @@ describe("Renewable energy creation - Steps - soils decontamination selection", 
     it("should navigate to soils transformation introduction when plan is none", () => {
       const store = new StoreBuilder().build();
       store.dispatch(
-        requestStepCompletion({
+        stepCompletionRequested({
           stepId: "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION",
           answers: { decontaminationPlan: "none" },
         }),
@@ -51,7 +51,7 @@ describe("Renewable energy creation - Steps - soils decontamination selection", 
     it("should navigate to soils transformation introduction when plan is unknown", () => {
       const store = new StoreBuilder().build();
       store.dispatch(
-        requestStepCompletion({
+        stepCompletionRequested({
           stepId: "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION",
           answers: { decontaminationPlan: "unknown" },
         }),
@@ -70,7 +70,7 @@ describe("Renewable energy creation - Steps - soils decontamination selection", 
     it("should set decontaminatedSurfaceArea to 0 when plan is none", () => {
       const store = new StoreBuilder().build();
       store.dispatch(
-        requestStepCompletion({
+        stepCompletionRequested({
           stepId: "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION",
           answers: { decontaminationPlan: "none" },
         }),
@@ -90,7 +90,7 @@ describe("Renewable energy creation - Steps - soils decontamination selection", 
         })
         .build();
       store.dispatch(
-        requestStepCompletion({
+        stepCompletionRequested({
           stepId: "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION",
           answers: { decontaminationPlan: "unknown" },
         }),
@@ -110,7 +110,7 @@ describe("Renewable energy creation - Steps - soils decontamination selection", 
           "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION",
         ])
         .build();
-      store.dispatch(navigateToPrevious());
+      store.dispatch(previousStepRequested());
       expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_DECONTAMINATION_INTRODUCTION");
     });
   });

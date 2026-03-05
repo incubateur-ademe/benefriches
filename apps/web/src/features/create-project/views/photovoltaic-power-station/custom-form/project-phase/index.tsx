@@ -2,8 +2,8 @@ import { RENEWABLE_ENERGY_PROJECT_PHASE_VALUES } from "shared";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import {
-  navigateToPrevious,
-  requestStepCompletion,
+  previousStepRequested,
+  stepCompletionRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 import { selectProjectPhaseViewData } from "@/features/create-project/core/renewable-energy/step-handlers/project-phase/project-phase/projectPhase.selectors";
 import {
@@ -30,14 +30,14 @@ function ProjectPhaseFormContainer() {
       projectPhaseOptions={options}
       onSubmit={({ phase }) => {
         dispatch(
-          requestStepCompletion({
+          stepCompletionRequested({
             stepId: "RENEWABLE_ENERGY_PROJECT_PHASE",
             answers: { phase: phase ?? "unknown" },
           }),
         );
       }}
       onBack={() => {
-        dispatch(navigateToPrevious());
+        dispatch(previousStepRequested());
       }}
     />
   );

@@ -17,7 +17,7 @@ export const setupProjectCreationListeners = (startAppListening: AppStartListeni
       }
       if (isUrbanProjectTemplate(action.payload.selectedOption)) {
         listenerApi.dispatch(
-          creationProjectFormUrbanActions.requestStepCompletion({
+          creationProjectFormUrbanActions.stepCompletionRequested({
             stepId: "URBAN_PROJECT_CREATE_MODE_SELECTION",
             answers: { createMode: "express" },
           }),
@@ -29,7 +29,7 @@ export const setupProjectCreationListeners = (startAppListening: AppStartListeni
 
   // Listen for site resale step completion to auto-compute price when "unknown" is selected
   startAppListening({
-    actionCreator: creationProjectFormUrbanActions.requestStepCompletion,
+    actionCreator: creationProjectFormUrbanActions.stepCompletionRequested,
     effect: (action, listenerApi) => {
       if (action.payload.stepId !== "URBAN_PROJECT_SITE_RESALE_SELECTION") {
         return;

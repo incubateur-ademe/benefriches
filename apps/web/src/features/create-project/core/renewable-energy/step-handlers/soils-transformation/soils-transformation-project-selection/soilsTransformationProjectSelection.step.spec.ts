@@ -4,8 +4,8 @@ import {
   StoreBuilder,
 } from "@/features/create-project/core/renewable-energy/__tests__/_testStoreHelpers";
 import {
-  navigateToPrevious,
-  requestStepCompletion,
+  previousStepRequested,
+  stepCompletionRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 
 describe("Renewable energy creation - Steps - soils transformation project selection", () => {
@@ -13,7 +13,7 @@ describe("Renewable energy creation - Steps - soils transformation project selec
     it("should navigate to custom soils selection when project is custom", () => {
       const store = new StoreBuilder().build();
       store.dispatch(
-        requestStepCompletion({
+        stepCompletionRequested({
           stepId: "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_PROJECT_SELECTION",
           answers: { soilsTransformationProject: "custom" },
         }),
@@ -35,7 +35,7 @@ describe("Renewable energy creation - Steps - soils transformation project selec
       // relatedSiteData has FOREST_DECIDUOUS: 12000 which triggers biodiversity check
       const store = new StoreBuilder().build();
       store.dispatch(
-        requestStepCompletion({
+        stepCompletionRequested({
           stepId: "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_PROJECT_SELECTION",
           answers: { soilsTransformationProject: "renaturation", soilsDistribution: {} },
         }),
@@ -63,7 +63,7 @@ describe("Renewable energy creation - Steps - soils transformation project selec
         })
         .build();
       store.dispatch(
-        requestStepCompletion({
+        stepCompletionRequested({
           stepId: "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_PROJECT_SELECTION",
           answers: { soilsTransformationProject: "renaturation", soilsDistribution: {} },
         }),
@@ -89,7 +89,7 @@ describe("Renewable energy creation - Steps - soils transformation project selec
           "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_PROJECT_SELECTION",
         ])
         .build();
-      store.dispatch(navigateToPrevious());
+      store.dispatch(previousStepRequested());
       expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_TRANSFORMATION_INTRODUCTION");
     });
   });

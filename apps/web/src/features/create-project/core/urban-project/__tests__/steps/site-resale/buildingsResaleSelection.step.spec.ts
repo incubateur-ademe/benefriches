@@ -29,7 +29,7 @@ describe("Urban project creation - Steps - buildings resale selection", () => {
     const store = new StoreBuilder().withSteps(INITIAL_STEPS).build();
 
     store.dispatch(
-      creationProjectFormUrbanActions.requestStepCompletion({
+      creationProjectFormUrbanActions.stepCompletionRequested({
         stepId: "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION",
         answers: {
           buildingsResalePlannedAfterDevelopment: true,
@@ -67,7 +67,7 @@ describe("Urban project creation - Steps - buildings resale selection", () => {
     const store = new StoreBuilder().withSteps(INITIAL_STEPS).build();
 
     store.dispatch(
-      creationProjectFormUrbanActions.requestStepCompletion({
+      creationProjectFormUrbanActions.stepCompletionRequested({
         stepId: "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION",
         answers: {
           buildingsResalePlannedAfterDevelopment: false,
@@ -130,7 +130,7 @@ describe("Urban project creation - Steps - buildings resale selection", () => {
       .build();
 
     store.dispatch(
-      creationProjectFormUrbanActions.requestStepCompletion({
+      creationProjectFormUrbanActions.stepCompletionRequested({
         stepId: "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION",
         answers: {
           buildingsResalePlannedAfterDevelopment: true,
@@ -138,7 +138,7 @@ describe("Urban project creation - Steps - buildings resale selection", () => {
       }),
     );
 
-    store.dispatch(creationProjectFormUrbanActions.confirmStepCompletion());
+    store.dispatch(creationProjectFormUrbanActions.stepCompletionConfirmed());
 
     const state = store.getState().projectCreation.urbanProject;
 
@@ -205,7 +205,7 @@ describe("Urban project creation - Steps - buildings resale selection", () => {
       .build();
 
     store.dispatch(
-      creationProjectFormUrbanActions.requestStepCompletion({
+      creationProjectFormUrbanActions.stepCompletionRequested({
         stepId: "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION",
         answers: {
           buildingsResalePlannedAfterDevelopment: false,
@@ -213,7 +213,7 @@ describe("Urban project creation - Steps - buildings resale selection", () => {
       }),
     );
 
-    store.dispatch(creationProjectFormUrbanActions.confirmStepCompletion());
+    store.dispatch(creationProjectFormUrbanActions.stepCompletionConfirmed());
 
     const state = store.getState().projectCreation.urbanProject;
 

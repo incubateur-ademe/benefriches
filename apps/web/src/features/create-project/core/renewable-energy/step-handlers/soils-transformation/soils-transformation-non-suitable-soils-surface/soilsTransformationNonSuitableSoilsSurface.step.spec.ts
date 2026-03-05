@@ -3,15 +3,15 @@ import {
   StoreBuilder,
 } from "@/features/create-project/core/renewable-energy/__tests__/_testStoreHelpers";
 import {
-  navigateToPrevious,
-  requestStepCompletion,
+  previousStepRequested,
+  stepCompletionRequested,
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 
 describe("Renewable energy creation - Steps - non suitable soils surface", () => {
   it("should complete step and navigate to soils transformation project selection", () => {
     const store = new StoreBuilder().build();
     store.dispatch(
-      requestStepCompletion({
+      stepCompletionRequested({
         stepId: "RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SURFACE",
         // empty input: middleware returns site soils unchanged
         answers: { nonSuitableSoilsSurfaceAreaToTransform: {} },
@@ -39,7 +39,7 @@ describe("Renewable energy creation - Steps - non suitable soils surface", () =>
   it("should compute baseSoilsDistributionForTransformation by applying the requested soil transformations", () => {
     const store = new StoreBuilder().build();
     store.dispatch(
-      requestStepCompletion({
+      stepCompletionRequested({
         stepId: "RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SURFACE",
         // transform all BUILDINGS (3000) → MINERAL_SOIL
         answers: { nonSuitableSoilsSurfaceAreaToTransform: { BUILDINGS: 3000 } },
@@ -64,7 +64,7 @@ describe("Renewable energy creation - Steps - non suitable soils surface", () =>
         "RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SURFACE",
       ])
       .build();
-    store.dispatch(navigateToPrevious());
+    store.dispatch(previousStepRequested());
     expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SELECTION");
   });
 });
