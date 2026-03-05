@@ -79,18 +79,14 @@ pnpm install -r
 echo "Dependencies installed."
 echo ""
 
-# Copy environment files
+# Copy environment files and generate env vars
 echo "Setting up environment files..."
-
-if [[ -f "apps/web/.env.example" && ! -f "apps/web/.env" ]]; then
-    cp apps/web/.env.example apps/web/.env
-    echo "  Created apps/web/.env"
-fi
-
-if [[ -f "apps/api/.env.example" && ! -f "apps/api/.env" ]]; then
-    cp apps/api/.env.example apps/api/.env
-    echo "  Created apps/api/.env"
-fi
+cp apps/web/.env.example apps/web/.env
+echo "  Created apps/web/.env"
+cp apps/api/.env.example apps/api/.env
+echo "  Created apps/api/.env"
+echo "  Generating web env-vars.js..."
+pnpm --filter web setup-env-vars
 
 echo ""
 echo "=== Setup Complete ==="
@@ -109,4 +105,4 @@ echo "  pnpm --filter api knex:seed-run"
 echo ""
 echo "To start development:"
 echo "  pnpm --filter api dev"
-echo "  pnpm --filter web setup-env-vars && pnpm --filter web dev"
+echo "  pnpm --filter web dev"
