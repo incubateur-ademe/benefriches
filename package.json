@@ -3,10 +3,10 @@
   "license": "MIT",
   "engines": {
     "node": "24",
-    "pnpm": "10.24.0"
+    "pnpm": "10.31.0"
   },
   "version": "1.0.0",
-  "packageManager": "pnpm@10.24.0",
+  "packageManager": "pnpm@10.31.0",
   "scripts": {
     "prepare": "husky || true",
     "lint": "pnpm run -r lint",
