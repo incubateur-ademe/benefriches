@@ -8,7 +8,7 @@ import {
 
 import type { RootState } from "@/app/store/store";
 
-import { ReadStateHelper } from "../../../helpers/readState";
+import { getSelectedParcelTypes, ReadStateHelper } from "../../../helpers/stateHelpers";
 import { getParcelStepIds } from "../../per-parcel-soils/parcelStepMapping";
 
 export type UrbanZoneSoilsSummaryViewData = {
@@ -22,9 +22,7 @@ export const selectUrbanZoneSoilsSummaryViewData = createSelector(
     (state: RootState) => state.siteCreation.siteData.surfaceArea,
   ],
   (steps, totalSurfaceArea): UrbanZoneSoilsSummaryViewData => {
-    const selectedTypes =
-      ReadStateHelper.getStepAnswers(steps, "URBAN_ZONE_LAND_PARCELS_SELECTION")?.landParcelTypes ??
-      [];
+    const selectedTypes = getSelectedParcelTypes(steps);
 
     // Aggregate soils distribution across all parcel distribution steps
     const aggregated = new SurfaceAreaDistribution<SoilType>();

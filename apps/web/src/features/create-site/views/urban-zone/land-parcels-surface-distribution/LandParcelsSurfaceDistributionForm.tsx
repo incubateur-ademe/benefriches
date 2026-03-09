@@ -4,7 +4,7 @@ import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/core/format-number/formatNum
 import SurfaceAreaDistributionForm from "@/shared/views/components/form/SurfaceAreaDistributionForm/SurfaceAreaDistributionForm";
 
 import { useSurfaceAreaInputMode } from "../../useSurfaceAreaInputMode";
-import { PARCEL_TYPE_LABELS } from "../parcelTypeLabels";
+import { PARCEL_TYPE_DESCRIPTIONS, PARCEL_TYPE_LABELS } from "../parcelTypeLabels";
 
 export type FormValues = Partial<Record<UrbanZoneLandParcelType, number>>;
 
@@ -27,7 +27,7 @@ function LandParcelsSurfaceDistributionForm({
 
   return (
     <SurfaceAreaDistributionForm
-      title="Quelle superficie font les différentes parcelles ?"
+      title="Quelle superficie occupe chaque  surface foncière ?"
       totalSurfaceArea={totalSurfaceArea}
       maxErrorMessage="La superficie ne peut pas être supérieure à la superficie totale du site"
       initialValues={initialValues}
@@ -38,6 +38,7 @@ function LandParcelsSurfaceDistributionForm({
       surfaces={selectedParcelTypes.map((type) => ({
         name: type,
         label: PARCEL_TYPE_LABELS[type],
+        hintText: PARCEL_TYPE_DESCRIPTIONS[type],
         addonText: SQUARE_METERS_HTML_SYMBOL,
       }))}
     />

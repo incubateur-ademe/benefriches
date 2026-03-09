@@ -6,16 +6,35 @@ import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/Back
 import CheckableTile from "@/shared/views/components/CheckableTile/CheckableTile";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
+import { PARCEL_TYPE_DESCRIPTIONS, PARCEL_TYPE_LABELS } from "../parcelTypeLabels";
+
 type Option = {
   value: UrbanZoneLandParcelType;
   label: string;
+  description: string;
 };
 
 const OPTIONS: Option[] = [
-  { value: "COMMERCIAL_ACTIVITY_AREA", label: "Surface d'activité" },
-  { value: "PUBLIC_SPACES", label: "Espaces publics" },
-  { value: "SERVICED_SURFACE", label: "Surface viabilisée" },
-  { value: "RESERVED_SURFACE", label: "Surface réservée" },
+  {
+    value: "COMMERCIAL_ACTIVITY_AREA",
+    label: PARCEL_TYPE_LABELS.COMMERCIAL_ACTIVITY_AREA,
+    description: PARCEL_TYPE_DESCRIPTIONS.COMMERCIAL_ACTIVITY_AREA,
+  },
+  {
+    value: "PUBLIC_SPACES",
+    label: PARCEL_TYPE_LABELS.PUBLIC_SPACES,
+    description: PARCEL_TYPE_DESCRIPTIONS.PUBLIC_SPACES,
+  },
+  {
+    value: "SERVICED_SURFACE",
+    label: PARCEL_TYPE_LABELS.SERVICED_SURFACE,
+    description: PARCEL_TYPE_DESCRIPTIONS.SERVICED_SURFACE,
+  },
+  {
+    value: "RESERVED_SURFACE",
+    label: PARCEL_TYPE_LABELS.RESERVED_SURFACE,
+    description: PARCEL_TYPE_DESCRIPTIONS.RESERVED_SURFACE,
+  },
 ];
 
 export type FormValues = {
@@ -36,7 +55,7 @@ function LandParcelsSelectionForm({ initialValues, onSubmit, onBack }: Props) {
   const validationError = formState.errors.landParcelTypes;
 
   return (
-    <WizardFormLayout title="Quelles sont les parcelles présentes sur la zone ?">
+    <WizardFormLayout title="Quels types de surfaces foncières y a-t-il au sein de la zone commerciale ?">
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid sm:grid-cols-2 gap-4 my-6">
           {OPTIONS.map((option) => (
@@ -50,6 +69,7 @@ function LandParcelsSelectionForm({ initialValues, onSubmit, onBack }: Props) {
                 return (
                   <CheckableTile
                     title={option.label}
+                    description={option.description}
                     checkType="checkbox"
                     imgSrc=""
                     checked={isSelected}

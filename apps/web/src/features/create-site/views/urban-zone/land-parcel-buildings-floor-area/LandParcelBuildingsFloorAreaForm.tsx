@@ -3,6 +3,7 @@ import type { UrbanZoneLandParcelType } from "shared";
 
 import {
   formatNumberFr,
+  formatSurfaceArea,
   SQUARE_METERS_HTML_SYMBOL,
 } from "@/shared/core/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
@@ -17,6 +18,7 @@ export type FormValues = {
 
 type Props = {
   currentParcelType: UrbanZoneLandParcelType;
+  buildingsFootprintSurfaceArea: number;
   initialValue?: number;
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
@@ -24,6 +26,7 @@ type Props = {
 
 function LandParcelBuildingsFloorAreaForm({
   currentParcelType,
+  buildingsFootprintSurfaceArea,
   initialValue,
   onSubmit,
   onBack,
@@ -39,6 +42,7 @@ function LandParcelBuildingsFloorAreaForm({
   return (
     <WizardFormLayout
       title={`Surface de plancher des bâtiments de la ${parcelLabel.toLowerCase()}`}
+      instructions={`Pour rappel, la surface au sol des bâtiments est de ${formatSurfaceArea(buildingsFootprintSurfaceArea)}`}
     >
       <form onSubmit={handleSubmit(onSubmit)}>
         <RowNumericInput

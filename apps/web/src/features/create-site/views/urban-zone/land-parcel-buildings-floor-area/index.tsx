@@ -23,12 +23,14 @@ function LandParcelBuildingsFloorAreaContainer({ parcelType }: Props) {
     () => createParcelBuildingsFloorAreaSelector(parcelType),
     [parcelType],
   );
-  const { initialBuildingsFloorSurfaceArea } = useAppSelector(selectViewData);
+  const { initialBuildingsFloorSurfaceArea, buildingsFootprintSurfaceArea } =
+    useAppSelector(selectViewData);
   const stepId = getParcelStepIds(parcelType).buildingsFloorArea;
 
   return (
     <LandParcelBuildingsFloorAreaForm
       currentParcelType={parcelType}
+      buildingsFootprintSurfaceArea={buildingsFootprintSurfaceArea}
       initialValue={initialBuildingsFloorSurfaceArea}
       onSubmit={(data: FormValues) => {
         dispatch(
