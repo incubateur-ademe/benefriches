@@ -40,7 +40,7 @@ export class UrbanProjectCreationPage {
 
   async selectCreateMode(mode: CreateMode): Promise<void> {
     const labels: Record<CreateMode, string> = {
-      express: "Mode express",
+      express: "Mode démo",
       custom: "Mode personnalisé",
     };
     await this.page.getByText(labels[mode]).click();

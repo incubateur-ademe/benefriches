@@ -74,7 +74,7 @@ export class SiteCreationPage {
 
   async selectCreateMode(mode: CreateMode): Promise<void> {
     const labels: Record<CreateMode, string> = {
-      express: "Mode express",
+      express: "Mode démo",
       custom: "Mode personnalisé",
     };
     await this.page.getByLabel(labels[mode]).check({ force: true });
