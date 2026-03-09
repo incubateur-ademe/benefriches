@@ -8,9 +8,11 @@ export const registerAddressHandlers = (
 ): void => {
   builder.addCase(addressStepCompleted, (state, action) => {
     state.siteData.address = action.payload.address;
-    state.stepsHistory.push(
-      state.createMode === "express" ? "SURFACE_AREA" : "SPACES_INTRODUCTION",
-    );
+    if (state.createMode === "express" || state.siteData.nature === "URBAN_ZONE") {
+      state.stepsHistory.push("SURFACE_AREA");
+    } else {
+      state.stepsHistory.push("SPACES_INTRODUCTION");
+    }
   });
 };
 

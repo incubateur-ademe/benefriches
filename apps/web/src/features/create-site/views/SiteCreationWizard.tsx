@@ -10,6 +10,7 @@ import {
   SiteCreationStep,
 } from "../core/createSite.reducer";
 import { selectSiteCreationWizardViewData } from "../core/selectors/createSite.selectors";
+import { isUrbanZoneStepHandlerStep } from "../core/urban-zone/urbanZoneSteps";
 import NavigationBlockerDialog from "./NavigationBlockerDialog";
 import CreateModeSelectionForm from "./create-mode-selection";
 import SiteCreationCustomStepContent from "./custom/StepContent";
@@ -19,6 +20,8 @@ import SiteCreationExpressStepper from "./express/Stepper";
 import SiteCreationIntroduction from "./introduction";
 import IsFricheForm from "./is-friche";
 import SiteNatureForm from "./site-nature";
+import UrbanZoneTypeForm from "./urban-zone-type";
+import SiteCreationUrbanZoneStepContent from "./urban-zone/StepContent";
 import UseMutabilityForm from "./use-mutability";
 import { useSyncCreationStepWithRouteQuery } from "./useSyncCreationStepWithRouteQuery";
 
@@ -64,7 +67,17 @@ const getMainChildren = (
           <CreateModeSelectionForm />
         </>
       );
+    case "URBAN_ZONE_TYPE":
+      return (
+        <>
+          <HtmlTitle>{`Type de zone urbaine - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <UrbanZoneTypeForm />
+        </>
+      );
     default:
+      if (isUrbanZoneStepHandlerStep(currentStep)) {
+        return <SiteCreationUrbanZoneStepContent />;
+      }
       switch (createMode) {
         case "express":
           return <SiteCreationExpressStepContent />;

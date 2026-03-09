@@ -1,4 +1,5 @@
 import { createReducer, createSelector } from "@reduxjs/toolkit";
+import reduceReducers from "reduce-reducers";
 import type { UrbanZoneLandParcelType, SoilsDistribution } from "shared";
 import { v4 as uuid } from "uuid";
 
@@ -26,7 +27,16 @@ import {
   registerSiteManagementHandlers,
 } from "./steps/site-management/siteManagement.handlers";
 import { revertSpacesStep, registerSpacesHandlers } from "./steps/spaces/spaces.handlers";
-import type { UrbanZoneSiteCreationStep, UrbanZoneStepsState } from "./urban-zone/urbanZoneSteps";
+import {
+  revertUrbanZoneStep,
+  registerUrbanZoneHandlers,
+} from "./steps/urban-zone/urbanZone.handlers";
+import { urbanZoneSiteCreationReducer } from "./urban-zone/urbanZone.reducer";
+import {
+  isUrbanZoneStepHandlerStep,
+  type UrbanZoneSiteCreationStep,
+  type UrbanZoneStepsState,
+} from "./urban-zone/urbanZoneSteps";
 
 export type SiteCreationCustomStep =
   | "FRICHE_ACTIVITY"
@@ -154,6 +164,7 @@ const siteCreationReducer = createReducer(getInitialState(), (builder) => {
   registerSiteManagementHandlers(builder);
   registerNamingHandlers(builder);
   registerFinalHandlers(builder);
+  registerUrbanZoneHandlers(builder);
 
   builder.addCase(stepReverted, (state) => {
     revertIntroductionStep(state);
@@ -163,6 +174,7 @@ const siteCreationReducer = createReducer(getInitialState(), (builder) => {
     revertContaminationAndAccidentsStep(state);
     revertSiteManagementStep(state);
     revertNamingStep(state);
+    revertUrbanZoneStep(state);
 
     if (state.stepsHistory.length > 1) {
       state.stepsHistory = state.stepsHistory.slice(0, -1);
@@ -173,8 +185,20 @@ const siteCreationReducer = createReducer(getInitialState(), (builder) => {
 export const selectCurrentStep = createSelector(
   [(state: RootState) => state.siteCreation],
   (state): SiteCreationStep => {
-    return state.stepsHistory.at(-1) || "IS_FRICHE";
+    const lastStep = state.stepsHistory.at(-1) || "IS_FRICHE";
+    // When the last old-pattern step is an urban zone step handler sentinel,
+    // return the urban zone sub-state's current step instead
+    if (isUrbanZoneStepHandlerStep(lastStep)) {
+      return state.urbanZone.currentStep;
+    }
+    return lastStep;
   },
 );
 
-export default siteCreationReducer;
+const siteCreationRootReducer = reduceReducers<SiteCreationState>(
+  getInitialState(),
+  siteCreationReducer,
+  urbanZoneSiteCreationReducer,
+);
+
+export default siteCreationRootReducer;

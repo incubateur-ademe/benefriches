@@ -45,7 +45,11 @@ export const registerIntroductionHandlers = (
     })
     .addCase(siteNatureCompleted, (state, action) => {
       state.siteData.nature = action.payload.nature;
-      state.stepsHistory.push("CREATE_MODE_SELECTION");
+      if (action.payload.nature === "URBAN_ZONE") {
+        state.stepsHistory.push("URBAN_ZONE_TYPE");
+      } else {
+        state.stepsHistory.push("CREATE_MODE_SELECTION");
+      }
     })
     .addCase(createModeSelectionCompleted, (state, action) => {
       const { createMode } = action.payload;
@@ -60,6 +64,9 @@ export const registerIntroductionHandlers = (
           break;
         case "NATURAL_AREA":
           state.stepsHistory.push("NATURAL_AREA_TYPE");
+          break;
+        case "URBAN_ZONE":
+          state.stepsHistory.push("ADDRESS");
           break;
         default:
           break;

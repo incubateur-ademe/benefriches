@@ -33,9 +33,10 @@ export const registerSpacesHandlers = (
     })
     .addCase(siteSurfaceAreaStepCompleted, (state, action) => {
       state.siteData.surfaceArea = action.payload.surfaceArea;
-      if (state.createMode === "custom") {
+      if (state.createMode === "custom" && state.siteData.nature !== "URBAN_ZONE") {
         state.stepsHistory.push("SPACES_KNOWLEDGE");
       }
+      // URBAN_ZONE: dead-end here — Phase 3 will advance to LAND_PARCELS_SELECTION
     })
     .addCase(spacesKnowledgeStepCompleted, (state, action) => {
       if (action.payload.knowsSpaces) {

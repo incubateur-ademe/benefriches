@@ -12,6 +12,7 @@ export const SUMMARY_STEPS = [
   "URBAN_ZONE_CREATION_RESULT",
 ] as const;
 
+// All planned answer step IDs — drives the step union type and navigation
 export const ANSWER_STEP_IDS = [
   "URBAN_ZONE_LAND_PARCELS_SELECTION",
   "URBAN_ZONE_LAND_PARCELS_SURFACE_DISTRIBUTION",
@@ -28,6 +29,8 @@ export const ANSWER_STEP_IDS = [
 
 export type UrbanZoneIntroductionStep = (typeof INTRODUCTION_STEPS)[number];
 export type UrbanZoneSummaryStep = (typeof SUMMARY_STEPS)[number];
+
+// All planned answer step IDs (drives SiteCreationStep union and navigation)
 export type UrbanZoneAnswerStepId = (typeof ANSWER_STEP_IDS)[number];
 
 export type UrbanZoneSiteCreationStep =
@@ -35,17 +38,30 @@ export type UrbanZoneSiteCreationStep =
   | UrbanZoneSummaryStep
   | UrbanZoneAnswerStepId;
 
-// Schemas will be added here as steps are implemented in phases 3-5
+// Schemas registered here as each step is implemented (Phase 3+)
+// Keys must be a subset of UrbanZoneAnswerStepId
 export const answersByStepSchemas = {} as const;
 
+// Step IDs that currently have registered schemas
+export type SchematizedAnswerStepId = keyof typeof answersByStepSchemas;
+
 export type AnswersByStep = {
-  [K in keyof typeof answersByStepSchemas]: z.infer<(typeof answersByStepSchemas)[K]>;
+  [K in SchematizedAnswerStepId]: z.infer<(typeof answersByStepSchemas)[K]>;
 };
 
 export type UrbanZoneStepsState = Partial<{
-  [K in keyof AnswersByStep]: {
+  [K in SchematizedAnswerStepId]: {
     completed: boolean;
     payload?: AnswersByStep[K];
     defaultValues?: AnswersByStep[K];
   };
 }>;
+
+const URBAN_ZONE_STEP_HANDLER_STEPS_SET: ReadonlySet<string> = new Set([
+  ...INTRODUCTION_STEPS,
+  ...SUMMARY_STEPS,
+  ...ANSWER_STEP_IDS,
+]);
+
+export const isUrbanZoneStepHandlerStep = (stepId: string): stepId is UrbanZoneSiteCreationStep =>
+  URBAN_ZONE_STEP_HANDLER_STEPS_SET.has(stepId);
