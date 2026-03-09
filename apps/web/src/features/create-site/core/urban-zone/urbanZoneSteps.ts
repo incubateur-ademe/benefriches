@@ -1,5 +1,8 @@
 import z from "zod";
 
+import { landParcelsSelectionSchema } from "./steps/land-parcels/land-parcels-selection/landParcelsSelection.schema";
+import { landParcelsSurfaceDistributionSchema } from "./steps/land-parcels/land-parcels-surface-distribution/landParcelsSurfaceDistribution.schema";
+
 export const INTRODUCTION_STEPS = [
   "URBAN_ZONE_SOILS_CONTAMINATION_INTRODUCTION",
   "URBAN_ZONE_MANAGEMENT_INTRODUCTION",
@@ -40,7 +43,10 @@ export type UrbanZoneSiteCreationStep =
 
 // Schemas registered here as each step is implemented (Phase 3+)
 // Keys must be a subset of UrbanZoneAnswerStepId
-export const answersByStepSchemas = {} as const;
+export const answersByStepSchemas = {
+  URBAN_ZONE_LAND_PARCELS_SELECTION: landParcelsSelectionSchema,
+  URBAN_ZONE_LAND_PARCELS_SURFACE_DISTRIBUTION: landParcelsSurfaceDistributionSchema,
+} as const;
 
 // Step IDs that currently have registered schemas
 export type SchematizedAnswerStepId = keyof typeof answersByStepSchemas;

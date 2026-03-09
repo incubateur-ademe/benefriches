@@ -34,6 +34,15 @@ export type InfoStepHandler = StepHandler & {
   readonly stepId: UrbanZoneSummaryStep | UrbanZoneIntroductionStep;
 };
 
+type StepAnswerPayload<K extends SchematizedAnswerStepId = SchematizedAnswerStepId> = {
+  [P in K]: { stepId: P; answers: AnswersByStep[P] };
+}[K];
+
+export type ShortcutResult = {
+  complete: StepAnswerPayload[];
+  next: UrbanZoneSiteCreationStep;
+};
+
 export type AnswerStepHandler<T extends SchematizedAnswerStepId> = Omit<
   StepHandler,
   "getNextStepId"
@@ -45,6 +54,10 @@ export type AnswerStepHandler<T extends SchematizedAnswerStepId> = Omit<
   ): UrbanZoneSiteCreationStep;
   getPreviousStepId?(context: UrbanZoneStepContext): UrbanZoneSiteCreationStep;
   getDefaultAnswers?(context: UrbanZoneStepContext): AnswersByStep[T] | undefined;
+  getShortcut?(
+    context: UrbanZoneStepContext,
+    answers: AnswersByStep[T],
+  ): ShortcutResult | undefined;
   updateAnswersMiddleware?(
     context: UrbanZoneStepContext,
     answers: AnswersByStep[T],

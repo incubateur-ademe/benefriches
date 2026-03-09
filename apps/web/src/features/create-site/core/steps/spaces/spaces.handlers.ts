@@ -33,10 +33,13 @@ export const registerSpacesHandlers = (
     })
     .addCase(siteSurfaceAreaStepCompleted, (state, action) => {
       state.siteData.surfaceArea = action.payload.surfaceArea;
-      if (state.createMode === "custom" && state.siteData.nature !== "URBAN_ZONE") {
+      if (state.createMode === "custom" && state.siteData.nature === "URBAN_ZONE") {
+        // Enter the step handler system for urban zone
+        state.urbanZone.currentStep = state.urbanZone.firstSequenceStep;
+        state.stepsHistory.push(state.urbanZone.firstSequenceStep);
+      } else if (state.createMode === "custom") {
         state.stepsHistory.push("SPACES_KNOWLEDGE");
       }
-      // URBAN_ZONE: dead-end here — Phase 3 will advance to LAND_PARCELS_SELECTION
     })
     .addCase(spacesKnowledgeStepCompleted, (state, action) => {
       if (action.payload.knowsSpaces) {

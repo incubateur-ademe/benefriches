@@ -1,5 +1,3 @@
-import { expect } from "@playwright/test";
-
 import { test } from "./urban-zone-site-creation.fixtures";
 
 test.describe("site creation (urban zone)", () => {
@@ -19,24 +17,20 @@ test.describe("site creation (urban zone)", () => {
     await siteCreationPage.fillAddress("Chartres");
     await siteCreationPage.fillSurfaceArea(15_000);
 
-    // Dead-end: wizard stops at SURFACE_AREA until Phase 3 is implemented
-    await expect(
-      siteCreationPage.page.getByRole("heading", {
-        name: "Quelle est la superficie totale du site ?",
-      }),
-    ).toBeVisible();
+    // --- Phase 3: land parcels ---
+    await urbanZoneSiteCreationPage.selectLandParcels([
+      "COMMERCIAL_ACTIVITY_AREA",
+      "PUBLIC_SPACES",
+    ]);
+    await urbanZoneSiteCreationPage.fillLandParcelsSurfaceDistribution({
+      COMMERCIAL_ACTIVITY_AREA: 12_000,
+      PUBLIC_SPACES: 3_000,
+    });
 
-    // --- Phase 3 and beyond: uncomment as each phase is implemented ---
+    // Wizard reaches Phase 4 dead-end (no view yet for LAND_PARCEL_SOILS_SELECTION)
+
+    // --- Phase 4 and beyond: uncomment as each phase is implemented ---
     /*
-     * // --- Phase 3: land parcels ---
-     * await urbanZoneSiteCreationPage.selectLandParcels([
-     *   "COMMERCIAL_ACTIVITY_AREA",
-     *   "PUBLIC_SPACES",
-     * ]);
-     * await urbanZoneSiteCreationPage.fillLandParcelsSurfaceDistribution({
-     *   COMMERCIAL_ACTIVITY_AREA: 12_000,
-     *   PUBLIC_SPACES: 3_000,
-     * });
      *
      * // --- Phase 4: per-parcel soils (parcel 1: COMMERCIAL_ACTIVITY_AREA) ---
      * await urbanZoneSiteCreationPage.selectSoilsForCurrentParcel(["BUILDINGS", "IMPERMEABLE_SOILS"]);

@@ -147,8 +147,8 @@ describe("Site creation: urban zone steps", () => {
     });
   });
 
-  describe("SURFACE_AREA dead-end for URBAN_ZONE", () => {
-    it("does not advance to next step when surface area is completed for urban zone (dead-end)", () => {
+  describe("SURFACE_AREA → LAND_PARCELS_SELECTION for URBAN_ZONE", () => {
+    it("advances to land parcels selection when surface area is completed for urban zone", () => {
       const store = new StoreBuilder()
         .withStepsHistory(["SURFACE_AREA"])
         .withCreateMode("custom")
@@ -160,10 +160,12 @@ describe("Site creation: urban zone steps", () => {
 
       const newState = store.getState();
       expectSiteDataDiff(initialRootState, newState, { surfaceArea: 15000 });
-      // Steps history should not change (dead-end)
-      expect(newState.siteCreation.stepsHistory).toEqual(
-        initialRootState.siteCreation.stepsHistory,
-      );
+      // Steps history should include the urban zone step handler entry
+      expect(newState.siteCreation.stepsHistory).toEqual([
+        "SURFACE_AREA",
+        "URBAN_ZONE_LAND_PARCELS_SELECTION",
+      ]);
+      expect(newState.siteCreation.urbanZone.currentStep).toBe("URBAN_ZONE_LAND_PARCELS_SELECTION");
     });
 
     it("still goes to SPACES_KNOWLEDGE for non-urban-zone custom sites", () => {
