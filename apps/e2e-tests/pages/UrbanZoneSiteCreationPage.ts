@@ -31,7 +31,7 @@ export class UrbanZoneSiteCreationPage {
       PUBLIC_FACILITY: "Équipement public",
       MIXED_URBAN_ZONE: "Zone urbaine mixte",
     };
-    await this.page.getByLabel(labels[type], { exact: true }).check({ force: true });
+    await this.page.getByLabel(labels[type]).first().check({ force: true });
     await this.submit();
   }
 
@@ -59,6 +59,9 @@ export class UrbanZoneSiteCreationPage {
       SERVICED_SURFACE: "Surface viabilisée",
       RESERVED_SURFACE: "Surface réservée",
     };
+    // Switch to m² input mode (defaults to %)
+    await this.page.getByLabel("㎡").check({ force: true });
+
     for (const [type, area] of Object.entries(distribution) as [
       UrbanZoneLandParcelType,
       number,
