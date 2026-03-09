@@ -10,7 +10,7 @@ import CreateModeSelectionForm, {
 const options = [
   {
     value: "express" as const,
-    title: "Mode express",
+    title: "Mode démo",
     description:
       "Un projet de centrale photovoltaïque sera créé automatiquement. Bénéfriches affectera des données par défaut sur la puissance et la surface de l'installation, les dépenses et recettes, les emplois mobilisés, etc.",
     badgeText: "Le plus rapide",

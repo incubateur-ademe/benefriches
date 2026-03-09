@@ -4,7 +4,7 @@ import InfoTooltip from "@/shared/views/components/InfoTooltip/InfoTooltip";
 const ExpressProjectTooltipBadge = () => {
   return (
     <Badge small className="my-2 shrink-1 sm:ml-3 py-0.5" style="blue">
-      <span className="mr-1 whitespace-nowrap">Projet express</span>
+      <span className="mr-1 whitespace-nowrap">Projet démo</span>
       <InfoTooltip
         title="⚠️ Attention, cette évaluation comporte des limites.
             Bénéfriches a complété automatiquement certaines caractéristiques concernant votre friche

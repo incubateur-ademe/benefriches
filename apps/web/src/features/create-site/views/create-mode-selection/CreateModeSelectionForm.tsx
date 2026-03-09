@@ -31,7 +31,7 @@ const getOptions = (siteNature: SiteNature): Option[] => {
   return [
     {
       value: "express",
-      title: "Mode express",
+      title: "Mode démo",
       description: `Renseignez seulement 3 infos : le type de ${siteNature === "FRICHE" ? "friche" : "site"}, sa commune et sa superficie. Bénéfriches affectera des données par défaut sur la répartition des sols, les dépenses de gestion, etc.`,
       badgeText: "Le plus rapide",
       badgeColor: "green-tilleul",

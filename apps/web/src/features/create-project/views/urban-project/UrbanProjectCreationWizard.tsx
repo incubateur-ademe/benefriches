@@ -142,21 +142,21 @@ const getCurrentStepView = (step: UrbanProjectCreationStep): Exclude<ReactNode, 
     case "URBAN_PROJECT_EXPRESS_TEMPLATE_SELECTION":
       return (
         <>
-          <HtmlTitle>{`Typologie de projet - Projet urbain express - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <HtmlTitle>{`Typologie de projet - Projet urbain démo - ${HTML_MAIN_TITLE}`}</HtmlTitle>
           <UrbanProjectExpressTemplateSelection />
         </>
       );
     case "URBAN_PROJECT_EXPRESS_SUMMARY":
       return (
         <>
-          <HtmlTitle>{`Récapitulatif - Projet urbain express - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <HtmlTitle>{`Récapitulatif - Projet urbain démo - ${HTML_MAIN_TITLE}`}</HtmlTitle>
           <ProjectExpressSummary />
         </>
       );
     case "URBAN_PROJECT_EXPRESS_CREATION_RESULT":
       return (
         <>
-          <HtmlTitle>{`Résultat - Projet urbain express - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <HtmlTitle>{`Résultat - Projet urbain démo - ${HTML_MAIN_TITLE}`}</HtmlTitle>
           <UrbanProjectExpressCreationResult />
         </>
       );

@@ -7,7 +7,7 @@ import CreateModeSelectionForm from "../../common-views/create-mode-selection/Cr
 const options = [
   {
     value: "express" as const,
-    title: "Mode express",
+    title: "Mode démo",
     description:
       "Un projet d'aménagement urbain sera créé automatiquement. Bénéfriches affectera des données par défaut sur l'aménagement des espaces, les bâtiments, les dépenses et recettes, les emplois mobilisés, etc.",
     badgeText: "Le plus rapide",

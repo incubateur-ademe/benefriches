@@ -40,7 +40,7 @@ function PhotovoltaicPowerStationCreationWizard({ currentStep }: Props) {
     case "express":
       return (
         <>
-          <HtmlTitle>{`Résultat - express - ${HTML_PV_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
+          <HtmlTitle>{`Résultat - démo - ${HTML_PV_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
           <SidebarLayout
             mainChildren={
               currentStep === "RENEWABLE_ENERGY_EXPRESS_FINAL_SUMMARY" ? (

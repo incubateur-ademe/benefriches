@@ -18,7 +18,7 @@ function UnavailableFeatureView() {
             <Alert
               severity="warning"
               title="⏳ Fonctionnalité en construction"
-              description="La modification de projet express ou photovoltaïque n'est pas encore disponible."
+              description="La modification de projet démo ou photovoltaïque n'est pas encore disponible."
             />
           </div>
         }

@@ -68,7 +68,7 @@ function SiteCreationResult({ siteId, siteName, loadingState, onBack }: Props) {
             </Button>
           </EditorialPageButtonsSection>
           <p className="text-sm mt-5">
-            Attention, le site ayant été créé en mode "express", c'est-à-dire avec des données
+            Attention, le site ayant été créé en mode "démo", c'est-à-dire avec des données
             moyennes, les impacts du projet que vous allez renseigner peuvent ne pas refléter la
             réalité.
           </p>
