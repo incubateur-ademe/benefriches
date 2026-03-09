@@ -130,7 +130,7 @@ const { RouteProvider, useRoute, routes, session } = createRouter({
   ),
   // PAGES
   budget: defineRoute("/budget"),
-  stats: defineRoute("/stats"),
+  stats: defineRoute("/statistiques"),
   mentionsLegales: defineRoute("/mentions-legales"),
   accessibilite: defineRoute("/accessibilite"),
   politiqueConfidentialite: defineRoute("/politique-de-confidentialite"),
