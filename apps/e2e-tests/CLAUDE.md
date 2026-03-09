@@ -84,3 +84,4 @@ For complete patterns and examples, see the skill: `.claude/skills/create-e2e-te
 - **Custom `MonthYearInput` needs `pressSequentially`** - Formats as you type, so `fill()` doesn't work; use `pressSequentially("092027")` for "09/2027"
 - **Form buttons depend on pre-filled values** - Many wizard forms (expenses, revenue) are pre-filled with calculated defaults, showing "Valider" instead of "Passer"
 - **Read actual component files for exact French labels** - Don't guess form labels; check the `.tsx` source for the exact `label` prop text
+- **Feature flags must be explicitly forwarded** - `docker-compose.e2e.yml` must list each `WEBAPP_ENABLE_*` var under the web service `environment:` block; vars in `.env.e2e` are not automatically passed to the container

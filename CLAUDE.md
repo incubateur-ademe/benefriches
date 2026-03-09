@@ -28,7 +28,7 @@
 6. **Don't use relative imports across apps** - Use workspace protocol: `import from "shared"`
 7. **Don't modify database without migration** - Create a Knex migration for all schema changes
 8. **Don't skip tests** - Tests are required before commit and merge
-9. **Don't add an env var without updating env files** - Add to the relevant app's `.env.example` (empty/off) AND to `.env.e2e` at the repo root (with the value needed for e2e tests)
+9. **Don't add an env var without updating env files** - Add to the relevant app's `.env.example` (empty/off), `.env.e2e` at the repo root (with the value needed for e2e tests), AND `docker-compose.e2e.yml` under the relevant service's `environment:` block
 
 ---
 
