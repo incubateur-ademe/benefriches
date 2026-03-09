@@ -124,6 +124,7 @@ export const getSpaceLabelForSoilTypeAndSiteNature = (
 ): string => {
   switch (siteNature) {
     case "FRICHE":
+    case "URBAN_ZONE":
       return FRICHE_SPACE_SOIL_TYPE_LABEL_MAPPING[soil];
     default:
       return BASE_SPACE_SOIL_TYPE_LABEL_MAPPING[soil];
@@ -148,6 +149,7 @@ export const getSpaceDescriptionForSoilTypeAndSiteNature = (
 ): string | undefined => {
   switch (siteNature) {
     case "FRICHE":
+    case "URBAN_ZONE":
       return FRICHE_SPACE_SOIL_TYPE_DESCRIPTION_MAPPING[
         soil as keyof typeof FRICHE_SPACE_SOIL_TYPE_DESCRIPTION_MAPPING
       ];

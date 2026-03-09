@@ -1,5 +1,3 @@
-import type { SoilsDistribution } from "shared";
-
 import type { SiteCreationData } from "../../siteFoncier.types";
 import type {
   AnswersByStep,
@@ -10,18 +8,9 @@ import type {
   UrbanZoneStepsState,
 } from "../urbanZoneSteps";
 
-type PartialLandParcel = {
-  type: string;
-  surfaceArea?: number;
-  soilsDistribution?: SoilsDistribution;
-  buildingsFloorSurfaceArea?: number;
-};
-
 export type UrbanZoneStepContext = {
   siteData: SiteCreationData;
   stepsState: UrbanZoneStepsState;
-  landParcels: PartialLandParcel[];
-  currentLandParcelIndex: number;
 };
 
 type StepHandler = {

@@ -1,0 +1,30 @@
+import { ReadStateHelper } from "../../../helpers/readState";
+import type { InfoStepHandler } from "../../../step-handlers/stepHandler.type";
+import { getParcelStepIds } from "../../per-parcel-soils/parcelStepMapping";
+
+export const UrbanZoneSoilsSummaryHandler: InfoStepHandler = {
+  stepId: "URBAN_ZONE_SOILS_SUMMARY",
+
+  getNextStepId() {
+    // Phase 5 will implement contamination — dead-end for now
+    return "URBAN_ZONE_SOILS_CONTAMINATION_INTRODUCTION";
+  },
+
+  getPreviousStepId(context) {
+    const selectedTypes =
+      ReadStateHelper.getStepAnswers(context.stepsState, "URBAN_ZONE_LAND_PARCELS_SELECTION")
+        ?.landParcelTypes ?? [];
+
+    const lastType = selectedTypes[selectedTypes.length - 1];
+    if (!lastType) return "URBAN_ZONE_LAND_PARCELS_SURFACE_DISTRIBUTION";
+
+    const lastStepIds = getParcelStepIds(lastType);
+    const lastBuildingsStep = ReadStateHelper.getStep(
+      context.stepsState,
+      lastStepIds.buildingsFloorArea,
+    );
+    return lastBuildingsStep?.completed
+      ? lastStepIds.buildingsFloorArea
+      : lastStepIds.soilsDistribution;
+  },
+};

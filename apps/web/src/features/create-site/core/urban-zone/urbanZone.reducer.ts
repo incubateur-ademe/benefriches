@@ -4,7 +4,11 @@ import type { SiteCreationState } from "../createSite.reducer";
 import { applyStepChanges, computeStepChanges } from "./helpers/completeStep";
 import { navigateToAndLoadStep } from "./helpers/navigateToStep";
 import { urbanZoneStepHandlerRegistry } from "./step-handlers/stepHandlerRegistry";
-import { previousStepRequested, stepCompletionRequested } from "./urban-zone.actions";
+import {
+  nextStepRequested,
+  previousStepRequested,
+  stepCompletionRequested,
+} from "./urban-zone.actions";
 
 // Sub-reducer composed via reduce-reducers in createSite.reducer.ts.
 // Initial state is always provided by the parent reducer; this placeholder is never used.
@@ -12,6 +16,20 @@ export const urbanZoneSiteCreationReducer = createReducer({} as SiteCreationStat
   builder.addCase(stepCompletionRequested, (state, action) => {
     const changes = computeStepChanges(state, action.payload);
     applyStepChanges(state, changes);
+  });
+
+  // For info steps (intros, summaries) that only need forward navigation
+  builder.addCase(nextStepRequested, (state) => {
+    const currentStep = state.urbanZone.currentStep;
+    const handler = urbanZoneStepHandlerRegistry[currentStep];
+    if (!handler?.getNextStepId) return;
+
+    const context = {
+      siteData: state.siteData,
+      stepsState: state.urbanZone.steps,
+    };
+    const nextStep = handler.getNextStepId(context);
+    navigateToAndLoadStep(state, nextStep);
   });
 
   builder.addCase(previousStepRequested, (state) => {
@@ -22,8 +40,6 @@ export const urbanZoneSiteCreationReducer = createReducer({} as SiteCreationStat
       const context = {
         siteData: state.siteData,
         stepsState: state.urbanZone.steps,
-        landParcels: state.urbanZone.landParcels,
-        currentLandParcelIndex: state.urbanZone.currentLandParcelIndex,
       };
       const previousStep = handler.getPreviousStepId(context);
       navigateToAndLoadStep(state, previousStep);

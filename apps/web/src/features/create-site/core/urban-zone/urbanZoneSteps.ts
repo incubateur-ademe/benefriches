@@ -2,6 +2,8 @@ import z from "zod";
 
 import { landParcelsSelectionSchema } from "./steps/land-parcels/land-parcels-selection/landParcelsSelection.schema";
 import { landParcelsSurfaceDistributionSchema } from "./steps/land-parcels/land-parcels-surface-distribution/landParcelsSurfaceDistribution.schema";
+import { landParcelBuildingsFloorAreaSchema } from "./steps/per-parcel-soils/land-parcel-buildings-floor-area/landParcelBuildingsFloorArea.schema";
+import { landParcelSoilsDistributionSchema } from "./steps/per-parcel-soils/land-parcel-soils-distribution/landParcelSoilsDistribution.schema";
 
 export const INTRODUCTION_STEPS = [
   "URBAN_ZONE_SOILS_CONTAMINATION_INTRODUCTION",
@@ -19,9 +21,16 @@ export const SUMMARY_STEPS = [
 export const ANSWER_STEP_IDS = [
   "URBAN_ZONE_LAND_PARCELS_SELECTION",
   "URBAN_ZONE_LAND_PARCELS_SURFACE_DISTRIBUTION",
-  "URBAN_ZONE_LAND_PARCEL_SOILS_SELECTION",
-  "URBAN_ZONE_LAND_PARCEL_SOILS_DISTRIBUTION",
-  "URBAN_ZONE_LAND_PARCEL_BUILDINGS_FLOOR_AREA",
+  // Per-parcel soils distribution (one per parcel type)
+  "URBAN_ZONE_COMMERCIAL_ACTIVITY_AREA_SOILS_DISTRIBUTION",
+  "URBAN_ZONE_PUBLIC_SPACES_SOILS_DISTRIBUTION",
+  "URBAN_ZONE_SERVICED_SURFACE_SOILS_DISTRIBUTION",
+  "URBAN_ZONE_RESERVED_SURFACE_SOILS_DISTRIBUTION",
+  // Per-parcel buildings floor area (one per parcel type)
+  "URBAN_ZONE_COMMERCIAL_ACTIVITY_AREA_BUILDINGS_FLOOR_AREA",
+  "URBAN_ZONE_PUBLIC_SPACES_BUILDINGS_FLOOR_AREA",
+  "URBAN_ZONE_SERVICED_SURFACE_BUILDINGS_FLOOR_AREA",
+  "URBAN_ZONE_RESERVED_SURFACE_BUILDINGS_FLOOR_AREA",
   "URBAN_ZONE_SOILS_CONTAMINATION",
   "URBAN_ZONE_MANAGER",
   "URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FOOTPRINT",
@@ -46,6 +55,16 @@ export type UrbanZoneSiteCreationStep =
 export const answersByStepSchemas = {
   URBAN_ZONE_LAND_PARCELS_SELECTION: landParcelsSelectionSchema,
   URBAN_ZONE_LAND_PARCELS_SURFACE_DISTRIBUTION: landParcelsSurfaceDistributionSchema,
+  // Per-parcel soils distribution — all share the same schema
+  URBAN_ZONE_COMMERCIAL_ACTIVITY_AREA_SOILS_DISTRIBUTION: landParcelSoilsDistributionSchema,
+  URBAN_ZONE_PUBLIC_SPACES_SOILS_DISTRIBUTION: landParcelSoilsDistributionSchema,
+  URBAN_ZONE_SERVICED_SURFACE_SOILS_DISTRIBUTION: landParcelSoilsDistributionSchema,
+  URBAN_ZONE_RESERVED_SURFACE_SOILS_DISTRIBUTION: landParcelSoilsDistributionSchema,
+  // Per-parcel buildings floor area — all share the same schema
+  URBAN_ZONE_COMMERCIAL_ACTIVITY_AREA_BUILDINGS_FLOOR_AREA: landParcelBuildingsFloorAreaSchema,
+  URBAN_ZONE_PUBLIC_SPACES_BUILDINGS_FLOOR_AREA: landParcelBuildingsFloorAreaSchema,
+  URBAN_ZONE_SERVICED_SURFACE_BUILDINGS_FLOOR_AREA: landParcelBuildingsFloorAreaSchema,
+  URBAN_ZONE_RESERVED_SURFACE_BUILDINGS_FLOOR_AREA: landParcelBuildingsFloorAreaSchema,
 } as const;
 
 // Step IDs that currently have registered schemas

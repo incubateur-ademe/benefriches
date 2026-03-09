@@ -4,13 +4,7 @@ import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/core/format-number/formatNum
 import SurfaceAreaDistributionForm from "@/shared/views/components/form/SurfaceAreaDistributionForm/SurfaceAreaDistributionForm";
 
 import { useSurfaceAreaInputMode } from "../../useSurfaceAreaInputMode";
-
-const PARCEL_TYPE_LABELS: Record<UrbanZoneLandParcelType, string> = {
-  COMMERCIAL_ACTIVITY_AREA: "Surface d'activité",
-  PUBLIC_SPACES: "Espaces publics",
-  SERVICED_SURFACE: "Surface viabilisée",
-  RESERVED_SURFACE: "Surface réservée",
-};
+import { PARCEL_TYPE_LABELS } from "../parcelTypeLabels";
 
 export type FormValues = Partial<Record<UrbanZoneLandParcelType, number>>;
 

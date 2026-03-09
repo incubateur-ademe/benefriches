@@ -22,8 +22,6 @@ export function computeStepChanges<T extends SchematizedAnswerStepId>(
   const context = {
     siteData: state.siteData,
     stepsState: state.urbanZone.steps,
-    landParcels: state.urbanZone.landParcels,
-    currentLandParcelIndex: state.urbanZone.currentLandParcelIndex,
   };
 
   const newPayload = {
@@ -68,8 +66,6 @@ export function applyStepChanges<T extends SchematizedAnswerStepId>(
     {
       siteData: state.siteData,
       stepsState: state.urbanZone.steps,
-      landParcels: state.urbanZone.landParcels,
-      currentLandParcelIndex: state.urbanZone.currentLandParcelIndex,
     },
     state.urbanZone.firstSequenceStep,
   );

@@ -1,6 +1,5 @@
 import { createReducer, createSelector } from "@reduxjs/toolkit";
 import reduceReducers from "reduce-reducers";
-import type { UrbanZoneLandParcelType, SoilsDistribution } from "shared";
 import { v4 as uuid } from "uuid";
 
 import { RootState } from "@/app/store/store";
@@ -95,13 +94,6 @@ export type SiteCreationStep =
   | SiteCreationCustomStep
   | UrbanZoneSiteCreationStep;
 
-type PartialLandParcel = {
-  type: UrbanZoneLandParcelType;
-  surfaceArea?: number;
-  soilsDistribution?: SoilsDistribution;
-  buildingsFloorSurfaceArea?: number;
-};
-
 const FIRST_URBAN_ZONE_STEP: UrbanZoneSiteCreationStep = "URBAN_ZONE_LAND_PARCELS_SELECTION";
 
 export type UrbanZoneSiteCreationState = {
@@ -110,8 +102,6 @@ export type UrbanZoneSiteCreationState = {
   firstSequenceStep: UrbanZoneSiteCreationStep;
   steps: UrbanZoneStepsState;
   saveState: "idle" | "loading" | "success" | "error";
-  landParcels: PartialLandParcel[];
-  currentLandParcelIndex: number;
 };
 
 const INITIAL_URBAN_ZONE_STATE: UrbanZoneSiteCreationState = {
@@ -120,8 +110,6 @@ const INITIAL_URBAN_ZONE_STATE: UrbanZoneSiteCreationState = {
   firstSequenceStep: FIRST_URBAN_ZONE_STEP,
   steps: {},
   saveState: "idle",
-  landParcels: [],
-  currentLandParcelIndex: 0,
 };
 
 export type SiteCreationState = {

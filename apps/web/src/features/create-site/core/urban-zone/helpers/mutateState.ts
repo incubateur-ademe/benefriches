@@ -20,4 +20,16 @@ export const MutateStateHelper = {
       payload: answers,
     };
   },
+
+  setDefaultAnswers<K extends SchematizedAnswerStepId>(
+    state: SiteCreationState,
+    stepId: K,
+    defaultValues: AnswersByStep[K],
+  ) {
+    const existing = (state.urbanZone.steps as Record<string, unknown>)[stepId];
+    (state.urbanZone.steps as Record<string, unknown>)[stepId] = {
+      ...(typeof existing === "object" && existing !== null ? existing : {}),
+      defaultValues,
+    };
+  },
 };

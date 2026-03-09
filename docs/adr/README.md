@@ -32,3 +32,4 @@ An ADR is a short document that captures an important architectural decision mad
 | 0005 | [Use gateway pattern for third-party browser SDKs](0005-gateway-pattern-for-third-party-browser-sdks.md) | Accepted | 2026-02-26 |
 | 0006 | [Use step handler pattern for renewable energy wizard](0006-step-handler-pattern-for-renewable-energy-wizard.md) | Accepted | 2026-03-03 |
 | 0007 | [Keep `shared` lean: move API-only domain code to `api`](0007-move-api-only-domain-code-out-of-shared.md) | Accepted | 2026-03-05 |
+| 0008 | [Static per-parcel-type step IDs for urban zone](0008-static-per-parcel-type-step-ids-for-urban-zone.md) | Accepted | 2026-03-09 |

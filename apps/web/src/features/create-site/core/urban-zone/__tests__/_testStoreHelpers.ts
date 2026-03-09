@@ -1,11 +1,7 @@
 import { AppDependencies, createStore, RootState } from "@/app/store/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
-import {
-  getInitialState,
-  SiteCreationState,
-  UrbanZoneSiteCreationState,
-} from "../../createSite.reducer";
+import { getInitialState, SiteCreationState } from "../../createSite.reducer";
 import type { UrbanZoneSiteCreationStep, UrbanZoneStepsState } from "../urbanZoneSteps";
 
 export const getCurrentStep = (store: { getState: () => RootState }): UrbanZoneSiteCreationStep =>
@@ -48,17 +44,6 @@ export class StoreBuilder {
         ...this.preloadedRootState.siteCreation.urbanZone,
         stepsSequence,
         ...(currentStep && { currentStep }),
-      },
-    };
-    return this;
-  }
-
-  withLandParcels(landParcels: UrbanZoneSiteCreationState["landParcels"]): this {
-    this.preloadedRootState.siteCreation = {
-      ...this.preloadedRootState.siteCreation,
-      urbanZone: {
-        ...this.preloadedRootState.siteCreation.urbanZone,
-        landParcels,
       },
     };
     return this;

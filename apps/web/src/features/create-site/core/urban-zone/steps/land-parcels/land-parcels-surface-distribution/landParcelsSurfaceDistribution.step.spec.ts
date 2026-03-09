@@ -9,7 +9,7 @@ import {
 
 describe("Urban zone - LAND_PARCELS_SURFACE_DISTRIBUTION step", () => {
   describe("completion", () => {
-    it("should store surface distribution and initialize landParcels array", () => {
+    it("should store surface distribution answers", () => {
       const store = new StoreBuilder()
         .withUrbanZoneSteps({
           URBAN_ZONE_LAND_PARCELS_SELECTION: {
@@ -46,15 +46,12 @@ describe("Urban zone - LAND_PARCELS_SURFACE_DISTRIBUTION step", () => {
       });
     });
 
-    it("should navigate to next step (dead-end in Phase 3 — no next handler registered)", () => {
-      // In Phase 3, the next step after LAND_PARCELS_SURFACE_DISTRIBUTION is not registered yet.
-      // The handler returns "URBAN_ZONE_LAND_PARCEL_SOILS_SELECTION" (Phase 4 step),
-      // so we just verify the navigation target is correct.
+    it("should navigate to first selected parcel's soils distribution step", () => {
       const store = new StoreBuilder()
         .withUrbanZoneSteps({
           URBAN_ZONE_LAND_PARCELS_SELECTION: {
             completed: true,
-            payload: { landParcelTypes: ["COMMERCIAL_ACTIVITY_AREA"] },
+            payload: { landParcelTypes: ["COMMERCIAL_ACTIVITY_AREA", "PUBLIC_SPACES"] },
           },
         })
         .build();
@@ -62,11 +59,35 @@ describe("Urban zone - LAND_PARCELS_SURFACE_DISTRIBUTION step", () => {
       store.dispatch(
         stepCompletionRequested({
           stepId: "URBAN_ZONE_LAND_PARCELS_SURFACE_DISTRIBUTION",
-          answers: { surfaceAreas: { COMMERCIAL_ACTIVITY_AREA: 15000 } },
+          answers: {
+            surfaceAreas: { COMMERCIAL_ACTIVITY_AREA: 12000, PUBLIC_SPACES: 3000 },
+          },
         }),
       );
 
-      expect(getCurrentStep(store)).toBe("URBAN_ZONE_LAND_PARCEL_SOILS_SELECTION");
+      expect(getCurrentStep(store)).toBe("URBAN_ZONE_COMMERCIAL_ACTIVITY_AREA_SOILS_DISTRIBUTION");
+    });
+
+    it("should navigate to first selected parcel's soils distribution step (other parcels selection)", () => {
+      const store = new StoreBuilder()
+        .withUrbanZoneSteps({
+          URBAN_ZONE_LAND_PARCELS_SELECTION: {
+            completed: true,
+            payload: { landParcelTypes: ["PUBLIC_SPACES", "RESERVED_SURFACE"] },
+          },
+        })
+        .build();
+
+      store.dispatch(
+        stepCompletionRequested({
+          stepId: "URBAN_ZONE_LAND_PARCELS_SURFACE_DISTRIBUTION",
+          answers: {
+            surfaceAreas: { PUBLIC_SPACES: 3000, RESERVED_SURFACE: 2000 },
+          },
+        }),
+      );
+
+      expect(getCurrentStep(store)).toBe("URBAN_ZONE_PUBLIC_SPACES_SOILS_DISTRIBUTION");
     });
   });
 

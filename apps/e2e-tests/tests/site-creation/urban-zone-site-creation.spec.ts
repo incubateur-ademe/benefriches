@@ -27,32 +27,25 @@ test.describe("site creation (urban zone)", () => {
       PUBLIC_SPACES: 3_000,
     });
 
-    // Wizard reaches Phase 4 dead-end (no view yet for LAND_PARCEL_SOILS_SELECTION)
+    // --- Phase 4: per-parcel soils (parcel 1: COMMERCIAL_ACTIVITY_AREA) ---
+    // Soils selection step removed — users enter soils distribution directly
+    await urbanZoneSiteCreationPage.fillSoilsDistributionForCurrentParcel({
+      BUILDINGS: 8_000,
+      IMPERMEABLE_SOILS: 4_000,
+    });
+    await urbanZoneSiteCreationPage.fillBuildingsFloorAreaForCurrentParcel(6_000);
 
-    // --- Phase 4 and beyond: uncomment as each phase is implemented ---
+    // per-parcel soils (parcel 2: PUBLIC_SPACES)
+    await urbanZoneSiteCreationPage.fillSoilsDistributionForCurrentParcel({
+      MINERAL_SOIL: 2_000,
+      ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 1_000,
+    });
+
+    // soils summary
+    await urbanZoneSiteCreationPage.goToNextStep();
+
+    // --- Phase 5 and beyond: uncomment as each phase is implemented ---
     /*
-     *
-     * // --- Phase 4: per-parcel soils (parcel 1: COMMERCIAL_ACTIVITY_AREA) ---
-     * await urbanZoneSiteCreationPage.selectSoilsForCurrentParcel(["BUILDINGS", "IMPERMEABLE_SOILS"]);
-     * await urbanZoneSiteCreationPage.fillSoilsDistributionForCurrentParcel({
-     *   BUILDINGS: 8_000,
-     *   IMPERMEABLE_SOILS: 4_000,
-     * });
-     * await urbanZoneSiteCreationPage.fillBuildingsFloorAreaForCurrentParcel(6_000);
-     *
-     * // per-parcel soils (parcel 2: PUBLIC_SPACES)
-     * await urbanZoneSiteCreationPage.selectSoilsForCurrentParcel([
-     *   "MINERAL_SOIL",
-     *   "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
-     * ]);
-     * await urbanZoneSiteCreationPage.fillSoilsDistributionForCurrentParcel({
-     *   MINERAL_SOIL: 2_000,
-     *   ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 1_000,
-     * });
-     *
-     * // soils summary
-     * await siteCreationPage.goToNextStep();
-     *
      * // --- Phase 5: contamination ---
      * await siteCreationPage.goToNextStep(); // contamination introduction
      * await urbanZoneSiteCreationPage.selectSoilsContamination("no");
