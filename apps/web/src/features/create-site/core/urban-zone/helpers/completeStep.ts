@@ -3,8 +3,8 @@ import type { AnswerStepHandler } from "../step-handlers/stepHandler.type";
 import { urbanZoneStepHandlerRegistry } from "../step-handlers/stepHandlerRegistry";
 import type { StepCompletionPayload } from "../urban-zone.actions";
 import type { SchematizedAnswerStepId, UrbanZoneSiteCreationStep } from "../urbanZoneSteps";
-import { MutateStateHelper } from "./mutateState";
 import { navigateToAndLoadStep } from "./navigateToStep";
+import { MutateStateHelper } from "./stateHelpers";
 import { computeStepsSequence } from "./stepsSequence";
 
 type StepUpdateResult<T extends SchematizedAnswerStepId> = {

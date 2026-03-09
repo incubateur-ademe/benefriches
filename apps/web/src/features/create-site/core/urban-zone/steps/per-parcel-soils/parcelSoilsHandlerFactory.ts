@@ -1,7 +1,7 @@
 import type { UrbanZoneLandParcelType } from "shared";
 
-import { ReadStateHelper } from "../../helpers/readState";
-import type { AnswerStepHandler, UrbanZoneStepContext } from "../../step-handlers/stepHandler.type";
+import { getSelectedParcelTypes, ReadStateHelper } from "../../helpers/stateHelpers";
+import type { AnswerStepHandler } from "../../step-handlers/stepHandler.type";
 import {
   type ParcelBuildingsFloorAreaStepId,
   type ParcelSoilsDistributionStepId,
@@ -9,13 +9,6 @@ import {
   getParcelStepIds,
   getPreviousParcelType,
 } from "./parcelStepMapping";
-
-function getSelectedParcelTypes(context: UrbanZoneStepContext): UrbanZoneLandParcelType[] {
-  return (
-    ReadStateHelper.getStepAnswers(context.stepsState, "URBAN_ZONE_LAND_PARCELS_SELECTION")
-      ?.landParcelTypes ?? []
-  );
-}
 
 export function createParcelSoilsDistributionHandler(
   parcelType: UrbanZoneLandParcelType,
@@ -34,7 +27,7 @@ export function createParcelSoilsDistributionHandler(
         return parcelStepIds.buildingsFloorArea;
       }
 
-      const selectedTypes = getSelectedParcelTypes(context);
+      const selectedTypes = getSelectedParcelTypes(context.stepsState);
       const nextType = getNextParcelType(selectedTypes, parcelType);
       if (nextType) {
         return getParcelStepIds(nextType).soilsDistribution;
@@ -43,7 +36,7 @@ export function createParcelSoilsDistributionHandler(
     },
 
     getPreviousStepId(context) {
-      const selectedTypes = getSelectedParcelTypes(context);
+      const selectedTypes = getSelectedParcelTypes(context.stepsState);
       const prevType = getPreviousParcelType(selectedTypes, parcelType);
       if (prevType) {
         // Go back to previous parcel's last step
@@ -76,7 +69,7 @@ export function createParcelBuildingsFloorAreaHandler(
     stepId: stepIds.buildingsFloorArea,
 
     getNextStepId(context) {
-      const selectedTypes = getSelectedParcelTypes(context);
+      const selectedTypes = getSelectedParcelTypes(context.stepsState);
       const nextType = getNextParcelType(selectedTypes, parcelType);
       if (nextType) {
         return getParcelStepIds(nextType).soilsDistribution;

@@ -1,4 +1,4 @@
-import { ReadStateHelper } from "../../../helpers/readState";
+import { getSelectedParcelTypes, ReadStateHelper } from "../../../helpers/stateHelpers";
 import type { InfoStepHandler } from "../../../step-handlers/stepHandler.type";
 import { getParcelStepIds } from "../../per-parcel-soils/parcelStepMapping";
 
@@ -11,9 +11,7 @@ export const UrbanZoneSoilsSummaryHandler: InfoStepHandler = {
   },
 
   getPreviousStepId(context) {
-    const selectedTypes =
-      ReadStateHelper.getStepAnswers(context.stepsState, "URBAN_ZONE_LAND_PARCELS_SELECTION")
-        ?.landParcelTypes ?? [];
+    const selectedTypes = getSelectedParcelTypes(context.stepsState);
 
     const lastType = selectedTypes[selectedTypes.length - 1];
     if (!lastType) return "URBAN_ZONE_LAND_PARCELS_SURFACE_DISTRIBUTION";

@@ -2,7 +2,7 @@ import type { SiteCreationState } from "../../createSite.reducer";
 import type { UrbanZoneStepContext } from "../step-handlers/stepHandler.type";
 import { urbanZoneStepHandlerRegistry } from "../step-handlers/stepHandlerRegistry";
 import type { UrbanZoneSiteCreationStep } from "../urbanZoneSteps";
-import { MutateStateHelper } from "./mutateState";
+import { MutateStateHelper } from "./stateHelpers";
 
 export const navigateToAndLoadStep = (
   state: SiteCreationState,

@@ -3,7 +3,7 @@ import type { UrbanZoneLandParcelType } from "shared";
 
 import type { RootState } from "@/app/store/store";
 
-import { ReadStateHelper } from "../../../helpers/readState";
+import { ReadStateHelper } from "../../../helpers/stateHelpers";
 
 export type LandParcelsSurfaceDistributionViewData = {
   selectedParcelTypes: UrbanZoneLandParcelType[];

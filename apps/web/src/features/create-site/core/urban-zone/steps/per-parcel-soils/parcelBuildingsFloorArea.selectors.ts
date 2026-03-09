@@ -3,11 +3,12 @@ import type { UrbanZoneLandParcelType } from "shared";
 
 import type { RootState } from "@/app/store/store";
 
-import { ReadStateHelper } from "../../helpers/readState";
+import { ReadStateHelper } from "../../helpers/stateHelpers";
 import { getParcelStepIds } from "./parcelStepMapping";
 
 export type ParcelBuildingsFloorAreaViewData = {
   parcelType: UrbanZoneLandParcelType;
+  buildingsFootprintSurfaceArea: number;
   initialBuildingsFloorSurfaceArea: number | undefined;
 };
 
@@ -20,6 +21,9 @@ export function createParcelBuildingsFloorAreaSelector(parcelType: UrbanZoneLand
       const defaultValues = ReadStateHelper.getDefaultAnswers(steps, stepIds.buildingsFloorArea);
       return {
         parcelType,
+        buildingsFootprintSurfaceArea:
+          ReadStateHelper.getStepAnswers(steps, stepIds.soilsDistribution)?.soilsDistribution
+            ?.BUILDINGS ?? 0,
         initialBuildingsFloorSurfaceArea: (
           defaultValues as { buildingsFloorSurfaceArea?: number } | undefined
         )?.buildingsFloorSurfaceArea,
