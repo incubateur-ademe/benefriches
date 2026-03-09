@@ -31,7 +31,7 @@ export class UrbanZoneSiteCreationPage {
       PUBLIC_FACILITY: "Équipement public",
       MIXED_URBAN_ZONE: "Zone urbaine mixte",
     };
-    await this.page.getByLabel(labels[type]).check({ force: true });
+    await this.page.getByLabel(labels[type], { exact: true }).check({ force: true });
     await this.submit();
   }
 
