@@ -213,8 +213,9 @@ Third-party services (Crisp, analytics SDKs, etc.) belong in the **infrastructur
 ## Critical DON'Ts
 
 - **Don't use `createSlice`** for new code (legacy - maintenance only)
-- **Don't call multiple selectors** in containers (compose into single ViewData selector)
 - **Don't import infrastructure in core** (violates Clean Architecture)
+- **Don't put selectors in `views/`** — selectors are core logic; always place in `core/` (Clean Architecture dependency rule)
+- **Don't call multiple selectors** in containers (compose into single ViewData selector)
 - **Don't skip InMemory implementations** (required for tests)
 - **Don't use untyped Redux hooks** - always use `useAppSelector`/`useAppDispatch` from `@/app/hooks/store.hooks`
 
