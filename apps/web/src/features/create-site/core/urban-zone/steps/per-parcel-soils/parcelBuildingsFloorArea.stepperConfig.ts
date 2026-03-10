@@ -1,4 +1,6 @@
+import type { UrbanZoneStepStepperConfig } from "../../step-handlers/urbanZoneStepperConfig";
+
 export const parcelBuildingsFloorAreaStepperConfig = {
-  groupId: "LAND_PARCELS",
+  groupId: "SOILS_AND_SPACES",
   label: "Surface de plancher des bâtiments",
-} as const;
+} as const satisfies UrbanZoneStepStepperConfig;

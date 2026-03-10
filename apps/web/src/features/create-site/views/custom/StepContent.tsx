@@ -5,6 +5,7 @@ import { selectCurrentStep } from "../../core/createSite.reducer";
 import { HTML_MAIN_TITLE } from "../SiteCreationWizard";
 import AgriculturalOperationActivityForm from "../common-views/agricultural-operation-activity";
 import NaturalAreaTypeForm from "../common-views/natural-area-type";
+import LandParcelsIntroductionContainer from "../urban-zone/land-parcels-introduction";
 import FricheAccidentsForm from "./accidents/accidents-count";
 import FricheAccidentsIntroduction from "./accidents/introduction";
 import AddressForm from "./address";
@@ -64,6 +65,13 @@ function SiteCreationCustomStepContent() {
         <>
           <HtmlTitle>{`Adresse - ${HTML_MAIN_TITLE}`}</HtmlTitle>
           <AddressForm />
+        </>
+      );
+    case "URBAN_ZONE_LAND_PARCELS_INTRODUCTION":
+      return (
+        <>
+          <HtmlTitle>{`Introduction - Surfaces foncières - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <LandParcelsIntroductionContainer />
         </>
       );
     case "SPACES_INTRODUCTION":

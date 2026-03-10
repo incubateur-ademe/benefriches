@@ -1,4 +1,6 @@
+import type { UrbanZoneStepStepperConfig } from "../../step-handlers/urbanZoneStepperConfig";
+
 export const parcelSoilsDistributionStepperConfig = {
-  groupId: "LAND_PARCELS",
+  groupId: "SOILS_AND_SPACES",
   label: "Superficie des sols",
-} as const;
+} as const satisfies UrbanZoneStepStepperConfig;

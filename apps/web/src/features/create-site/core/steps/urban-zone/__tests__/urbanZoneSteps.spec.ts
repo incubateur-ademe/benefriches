@@ -82,8 +82,8 @@ describe("Site creation: urban zone steps", () => {
     });
   });
 
-  describe("ADDRESS → SURFACE_AREA routing for URBAN_ZONE", () => {
-    it("goes to SURFACE_AREA step when address is completed for urban zone", () => {
+  describe("ADDRESS → URBAN_ZONE_LAND_PARCELS_INTRODUCTION routing for URBAN_ZONE", () => {
+    it("goes to URBAN_ZONE_LAND_PARCELS_INTRODUCTION step when address is completed for urban zone", () => {
       const store = new StoreBuilder()
         .withStepsHistory(["ADDRESS"])
         .withCreateMode("custom")
@@ -99,6 +99,32 @@ describe("Site creation: urban zone steps", () => {
             long: 2.3322,
           },
         })
+        .build();
+      const initialRootState = store.getState();
+
+      store.dispatch(
+        addressStepCompleted({
+          address: {
+            value: "1 rue de la Paix, 75001 Paris",
+            city: "Paris",
+            cityCode: "75001",
+            postCode: "75001",
+            banId: "75056_9575_00001",
+            lat: 48.8698,
+            long: 2.3322,
+          },
+        }),
+      );
+
+      const newState = store.getState();
+      expectNewCurrentStep(initialRootState, newState, "URBAN_ZONE_LAND_PARCELS_INTRODUCTION");
+    });
+
+    it("goes to SURFACE_AREA for express mode", () => {
+      const store = new StoreBuilder()
+        .withStepsHistory(["ADDRESS"])
+        .withCreateMode("express")
+        .withCreationData({ nature: "FRICHE" })
         .build();
       const initialRootState = store.getState();
 

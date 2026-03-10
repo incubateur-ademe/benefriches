@@ -73,8 +73,9 @@ export type SiteCreationCustomStep =
   // SUMARRY
   | "FINAL_SUMMARY"
   | "CREATION_RESULT"
-  // urban zone (old-pattern step, handled before step handler system)
-  | "URBAN_ZONE_TYPE";
+  // urban zone (old-pattern steps, handled before step handler system)
+  | "URBAN_ZONE_TYPE"
+  | "URBAN_ZONE_LAND_PARCELS_INTRODUCTION";
 
 export type SiteCreationExpressStep =
   | "FRICHE_ACTIVITY"

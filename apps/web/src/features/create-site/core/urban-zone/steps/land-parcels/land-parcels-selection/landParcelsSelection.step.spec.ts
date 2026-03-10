@@ -45,7 +45,7 @@ describe("Urban zone - LAND_PARCELS_SELECTION step", () => {
       completed: true,
       payload: { surfaceAreas: { COMMERCIAL_ACTIVITY_AREA: 15000 } },
     });
-    expect(getCurrentStep(store)).toBe("URBAN_ZONE_COMMERCIAL_ACTIVITY_AREA_SOILS_DISTRIBUTION");
+    expect(getCurrentStep(store)).toBe("URBAN_ZONE_SOILS_AND_SPACES_INTRODUCTION");
   });
 
   describe("back navigation", () => {

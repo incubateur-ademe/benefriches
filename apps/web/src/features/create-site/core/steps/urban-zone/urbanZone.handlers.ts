@@ -1,15 +1,22 @@
 import type { ActionReducerMapBuilder } from "@reduxjs/toolkit";
 
 import type { SiteCreationState } from "../../createSite.reducer";
-import { urbanZoneTypeCompleted } from "./urbanZone.actions";
+import {
+  urbanZoneLandParcelsIntroductionCompleted,
+  urbanZoneTypeCompleted,
+} from "./urbanZone.actions";
 
 export const registerUrbanZoneHandlers = (
   builder: ActionReducerMapBuilder<SiteCreationState>,
 ): void => {
-  builder.addCase(urbanZoneTypeCompleted, (state, action) => {
-    state.siteData.urbanZoneType = action.payload.urbanZoneType;
-    state.stepsHistory.push("CREATE_MODE_SELECTION");
-  });
+  builder
+    .addCase(urbanZoneTypeCompleted, (state, action) => {
+      state.siteData.urbanZoneType = action.payload.urbanZoneType;
+      state.stepsHistory.push("CREATE_MODE_SELECTION");
+    })
+    .addCase(urbanZoneLandParcelsIntroductionCompleted, (state) => {
+      state.stepsHistory.push("SURFACE_AREA");
+    });
 };
 
 export const revertUrbanZoneStep = (state: SiteCreationState): void => {

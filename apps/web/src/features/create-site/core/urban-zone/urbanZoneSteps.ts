@@ -6,6 +6,7 @@ import { landParcelBuildingsFloorAreaSchema } from "./steps/per-parcel-soils/lan
 import { landParcelSoilsDistributionSchema } from "./steps/per-parcel-soils/land-parcel-soils-distribution/landParcelSoilsDistribution.schema";
 
 export const INTRODUCTION_STEPS = [
+  "URBAN_ZONE_SOILS_AND_SPACES_INTRODUCTION",
   "URBAN_ZONE_SOILS_CONTAMINATION_INTRODUCTION",
   "URBAN_ZONE_MANAGEMENT_INTRODUCTION",
   "URBAN_ZONE_NAMING_INTRODUCTION",

@@ -46,7 +46,7 @@ describe("Urban zone - LAND_PARCELS_SURFACE_DISTRIBUTION step", () => {
       });
     });
 
-    it("should navigate to first selected parcel's soils distribution step", () => {
+    it("should navigate to soils and spaces introduction step", () => {
       const store = new StoreBuilder()
         .withUrbanZoneSteps({
           URBAN_ZONE_LAND_PARCELS_SELECTION: {
@@ -65,29 +65,7 @@ describe("Urban zone - LAND_PARCELS_SURFACE_DISTRIBUTION step", () => {
         }),
       );
 
-      expect(getCurrentStep(store)).toBe("URBAN_ZONE_COMMERCIAL_ACTIVITY_AREA_SOILS_DISTRIBUTION");
-    });
-
-    it("should navigate to first selected parcel's soils distribution step (other parcels selection)", () => {
-      const store = new StoreBuilder()
-        .withUrbanZoneSteps({
-          URBAN_ZONE_LAND_PARCELS_SELECTION: {
-            completed: true,
-            payload: { landParcelTypes: ["PUBLIC_SPACES", "RESERVED_SURFACE"] },
-          },
-        })
-        .build();
-
-      store.dispatch(
-        stepCompletionRequested({
-          stepId: "URBAN_ZONE_LAND_PARCELS_SURFACE_DISTRIBUTION",
-          answers: {
-            surfaceAreas: { PUBLIC_SPACES: 3000, RESERVED_SURFACE: 2000 },
-          },
-        }),
-      );
-
-      expect(getCurrentStep(store)).toBe("URBAN_ZONE_PUBLIC_SPACES_SOILS_DISTRIBUTION");
+      expect(getCurrentStep(store)).toBe("URBAN_ZONE_SOILS_AND_SPACES_INTRODUCTION");
     });
   });
 

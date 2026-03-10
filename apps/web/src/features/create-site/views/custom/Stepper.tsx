@@ -34,6 +34,7 @@ const getCurrentStepCategory = (step: SiteCreationCustomStep): StepCategory => {
     case "SPACES_SURFACE_AREA_DISTRIBUTION":
     case "SOILS_SUMMARY":
     case "SOILS_CARBON_STORAGE":
+    case "URBAN_ZONE_LAND_PARCELS_INTRODUCTION":
       return "Espaces";
     case "SOILS_CONTAMINATION_INTRODUCTION":
     case "SOILS_CONTAMINATION":

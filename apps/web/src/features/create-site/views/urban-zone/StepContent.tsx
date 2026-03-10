@@ -8,12 +8,20 @@ import LandParcelBuildingsFloorAreaContainer from "./land-parcel-buildings-floor
 import LandParcelSoilsDistributionContainer from "./land-parcel-soils-distribution";
 import LandParcelsSelectionContainer from "./land-parcels-selection";
 import LandParcelsSurfaceDistributionContainer from "./land-parcels-surface-distribution";
+import SoilsAndSpacesIntroductionContainer from "./soils-and-spaces-introduction";
 import UrbanZoneSoilsSummaryContainer from "./soils-summary";
 
 function SiteCreationUrbanZoneStepContent() {
   const currentStep = useAppSelector(selectCurrentStep);
 
   switch (currentStep) {
+    case "URBAN_ZONE_SOILS_AND_SPACES_INTRODUCTION":
+      return (
+        <>
+          <HtmlTitle>{`Introduction - Sols et espaces - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <SoilsAndSpacesIntroductionContainer />
+        </>
+      );
     case "URBAN_ZONE_LAND_PARCELS_SELECTION":
       return (
         <>

@@ -15,6 +15,7 @@ test.describe("site creation (urban zone)", () => {
     await urbanZoneSiteCreationPage.selectUrbanZoneType("ECONOMIC_ACTIVITY_ZONE");
     await siteCreationPage.selectCreateMode("custom");
     await siteCreationPage.fillAddress("Chartres");
+    await urbanZoneSiteCreationPage.goToNextStep(); // land parcels introduction
     await siteCreationPage.fillSurfaceArea(15_000);
 
     // --- Phase 3: land parcels ---
@@ -28,7 +29,7 @@ test.describe("site creation (urban zone)", () => {
     });
 
     // --- Phase 4: per-parcel soils (parcel 1: COMMERCIAL_ACTIVITY_AREA) ---
-    // Soils selection step removed — users enter soils distribution directly
+    await urbanZoneSiteCreationPage.goToNextStep(); // soils and spaces introduction
     await urbanZoneSiteCreationPage.fillSoilsDistributionForCurrentParcel({
       BUILDINGS: 8_000,
       IMPERMEABLE_SOILS: 4_000,

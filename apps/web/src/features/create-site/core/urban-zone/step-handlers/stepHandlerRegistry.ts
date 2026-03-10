@@ -4,6 +4,7 @@ import {
   createParcelBuildingsFloorAreaHandler,
   createParcelSoilsDistributionHandler,
 } from "../steps/per-parcel-soils/parcelSoilsHandlerFactory";
+import { SoilsAndSpacesIntroductionHandler } from "../steps/soils-and-spaces-introduction/soilsAndSpacesIntroduction.handler";
 import { UrbanZoneSoilsSummaryHandler } from "../steps/summary/soils-summary/soilsSummary.handler";
 import type { SchematizedAnswerStepId, UrbanZoneSiteCreationStep } from "../urbanZoneSteps";
 import type { AnswerStepHandler, InfoStepHandler } from "./stepHandler.type";
@@ -35,6 +36,8 @@ export const urbanZoneStepHandlerRegistry: UrbanZoneStepHandlerRegistry = {
     createParcelBuildingsFloorAreaHandler("SERVICED_SURFACE"),
   URBAN_ZONE_RESERVED_SURFACE_BUILDINGS_FLOOR_AREA:
     createParcelBuildingsFloorAreaHandler("RESERVED_SURFACE"),
+  // Introduction
+  URBAN_ZONE_SOILS_AND_SPACES_INTRODUCTION: SoilsAndSpacesIntroductionHandler,
   // Summary
   URBAN_ZONE_SOILS_SUMMARY: UrbanZoneSoilsSummaryHandler,
 };

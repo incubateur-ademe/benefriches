@@ -1,7 +1,6 @@
 import type { UrbanZoneLandParcelType } from "shared";
 
 import type { AnswerStepHandler } from "../../../step-handlers/stepHandler.type";
-import { getParcelStepIds } from "../../per-parcel-soils/parcelStepMapping";
 
 export const LandParcelsSelectionHandler: AnswerStepHandler<"URBAN_ZONE_LAND_PARCELS_SELECTION"> = {
   stepId: "URBAN_ZONE_LAND_PARCELS_SELECTION",
@@ -24,7 +23,7 @@ export const LandParcelsSelectionHandler: AnswerStepHandler<"URBAN_ZONE_LAND_PAR
           answers: { surfaceAreas: { [singleType]: totalSurfaceArea } },
         },
       ],
-      next: getParcelStepIds(singleType).soilsDistribution,
+      next: "URBAN_ZONE_SOILS_AND_SPACES_INTRODUCTION",
     };
   },
 };
