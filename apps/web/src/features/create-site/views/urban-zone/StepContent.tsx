@@ -43,6 +43,9 @@ function SiteCreationUrbanZoneStepContent() {
           <UrbanZoneSoilsSummaryContainer />
         </>
       );
+    // key={parcelType} forces React to remount the form when switching between parcel types.
+    // Without it, react-hook-form's useForm keeps its internal state from the previous parcel
+    // because defaultValues is only read on mount.
     default: {
       const parcelType = getParcelTypeFromStepId(currentStep);
       if (parcelType) {
@@ -50,7 +53,7 @@ function SiteCreationUrbanZoneStepContent() {
           return (
             <>
               <HtmlTitle>{`Superficie des sols - Zone urbaine - ${HTML_MAIN_TITLE}`}</HtmlTitle>
-              <LandParcelSoilsDistributionContainer parcelType={parcelType} />
+              <LandParcelSoilsDistributionContainer key={parcelType} parcelType={parcelType} />
             </>
           );
         }
@@ -58,7 +61,7 @@ function SiteCreationUrbanZoneStepContent() {
           return (
             <>
               <HtmlTitle>{`Surface de plancher - Zone urbaine - ${HTML_MAIN_TITLE}`}</HtmlTitle>
-              <LandParcelBuildingsFloorAreaContainer parcelType={parcelType} />
+              <LandParcelBuildingsFloorAreaContainer key={parcelType} parcelType={parcelType} />
             </>
           );
         }

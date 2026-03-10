@@ -416,4 +416,52 @@ describe("SurfaceAreaDistributionForm", () => {
       expect(onSubmitSpy).not.toHaveBeenCalled();
     });
   });
+
+  describe("remounting with key change", () => {
+    // useForm's defaultValues only applies on mount, so the component must be
+    // remounted (via key) when switching between different entities.
+    // This is how StepContent.tsx uses key={parcelType} to reset the form.
+    // oxlint-disable-next-line unicorn/consistent-function-scoping
+    function Wrapper({
+      id,
+      initialValues,
+      totalSurfaceArea,
+    }: {
+      id: string;
+      initialValues: Partial<Record<string, number>>;
+      totalSurfaceArea: number;
+    }) {
+      return (
+        <SurfaceAreaDistributionForm
+          key={id}
+          title="Test form"
+          surfaces={[
+            { name: "field1", label: "Field1" },
+            { name: "field2", label: "Field2" },
+          ]}
+          initialValues={initialValues}
+          inputMode="squareMeters"
+          onInputModeChange={vi.fn()}
+          totalSurfaceArea={totalSurfaceArea}
+          onBack={() => {}}
+          onSubmit={() => {}}
+        />
+      );
+    }
+
+    it("should reset form values when remounted with a different key and empty initialValues", async () => {
+      const { rerender } = render(
+        <Wrapper id="parcel-A" initialValues={{ field1: 30, field2: 20 }} totalSurfaceArea={50} />,
+      );
+
+      expect(await screen.findByRole("textbox", { name: /field1/i })).toHaveDisplayValue("30");
+      expect(screen.getByRole("textbox", { name: /field2/i })).toHaveDisplayValue("20");
+
+      rerender(<Wrapper id="parcel-B" initialValues={{}} totalSurfaceArea={100} />);
+
+      // After key change, component is remounted so inputs must be re-queried
+      expect(await screen.findByRole("textbox", { name: /field1/i })).toHaveDisplayValue("");
+      expect(screen.getByRole("textbox", { name: /field2/i })).toHaveDisplayValue("");
+    });
+  });
 });
