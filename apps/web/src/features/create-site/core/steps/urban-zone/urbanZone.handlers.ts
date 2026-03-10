@@ -12,7 +12,8 @@ export const registerUrbanZoneHandlers = (
   builder
     .addCase(urbanZoneTypeCompleted, (state, action) => {
       state.siteData.urbanZoneType = action.payload.urbanZoneType;
-      state.stepsHistory.push("CREATE_MODE_SELECTION");
+      state.createMode = "custom";
+      state.stepsHistory.push("ADDRESS");
     })
     .addCase(urbanZoneLandParcelsIntroductionCompleted, (state) => {
       state.stepsHistory.push("SURFACE_AREA");

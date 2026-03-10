@@ -13,7 +13,6 @@ test.describe("site creation (urban zone)", () => {
     await siteCreationPage.selectIsFriche("no");
     await siteCreationPage.selectSiteNature("URBAN_ZONE");
     await urbanZoneSiteCreationPage.selectUrbanZoneType("ECONOMIC_ACTIVITY_ZONE");
-    await siteCreationPage.selectCreateMode("custom");
     await siteCreationPage.fillAddress("Chartres");
     await urbanZoneSiteCreationPage.goToNextStep(); // land parcels introduction
     await siteCreationPage.fillSurfaceArea(15_000);

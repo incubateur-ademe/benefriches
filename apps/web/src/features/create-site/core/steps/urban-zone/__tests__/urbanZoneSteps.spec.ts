@@ -6,10 +6,7 @@ import {
 } from "../../../__tests__/creation-steps/testUtils";
 import { stepReverted } from "../../../actions/revert.action";
 import { addressStepCompleted } from "../../address/address.actions";
-import {
-  createModeSelectionCompleted,
-  siteNatureCompleted,
-} from "../../introduction/introduction.actions";
+import { siteNatureCompleted } from "../../introduction/introduction.actions";
 import { siteSurfaceAreaStepCompleted } from "../../spaces/spaces.actions";
 import { urbanZoneTypeCompleted } from "../urbanZone.actions";
 
@@ -38,7 +35,7 @@ describe("Site creation: urban zone steps", () => {
   });
 
   describe("URBAN_ZONE_TYPE", () => {
-    it("goes to CREATE_MODE_SELECTION step when urban zone type is selected", () => {
+    it("goes to ADDRESS step and sets createMode to custom when urban zone type is selected", () => {
       const store = new StoreBuilder()
         .withStepsHistory(["SITE_NATURE", "URBAN_ZONE_TYPE"])
         .withCreationData({ nature: "URBAN_ZONE" })
@@ -49,7 +46,8 @@ describe("Site creation: urban zone steps", () => {
 
       const newState = store.getState();
       expectSiteDataDiff(initialRootState, newState, { urbanZoneType: "ECONOMIC_ACTIVITY_ZONE" });
-      expectNewCurrentStep(initialRootState, newState, "CREATE_MODE_SELECTION");
+      expectNewCurrentStep(initialRootState, newState, "ADDRESS");
+      expect(newState.siteCreation.createMode).toBe("custom");
     });
 
     it("goes to previous step and unsets urban zone type when step is reverted", () => {
@@ -64,21 +62,6 @@ describe("Site creation: urban zone steps", () => {
       const newState = store.getState();
       expectSiteDataDiff(initialRootState, newState, { urbanZoneType: undefined });
       expectStepReverted(initialRootState, newState);
-    });
-  });
-
-  describe("CREATE_MODE_SELECTION → ADDRESS routing for URBAN_ZONE", () => {
-    it("goes to ADDRESS step when custom mode is selected and site is urban zone", () => {
-      const store = new StoreBuilder()
-        .withStepsHistory(["URBAN_ZONE_TYPE", "CREATE_MODE_SELECTION"])
-        .withCreationData({ nature: "URBAN_ZONE" })
-        .build();
-      const initialRootState = store.getState();
-
-      store.dispatch(createModeSelectionCompleted({ createMode: "custom" }));
-
-      const newState = store.getState();
-      expectNewCurrentStep(initialRootState, newState, "ADDRESS");
     });
   });
 
