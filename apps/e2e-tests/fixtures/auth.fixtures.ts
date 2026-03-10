@@ -28,9 +28,10 @@ type AuthFixtures = {
  * Creates test user data with a unique email based on prefix and timestamp.
  */
 export function createTestUserData(prefix: string): TestUser {
+  const uniqueId = crypto.randomUUID();
   return {
-    id: crypto.randomUUID(),
-    email: `e2e-tests-${prefix}-${Date.now()}@mail.com`,
+    id: uniqueId,
+    email: `e2e-tests-${prefix}-${uniqueId}@mail.com`,
     firstName: "Jean",
     lastName: "Dupont",
     structureType: "other",
