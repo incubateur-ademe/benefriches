@@ -67,6 +67,7 @@ const SITE_CREATION_STEP_ROUTE_QUERY_STRING_MAP = {
   URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FOOTPRINT: "zone-urbaine-emprise-locaux-vacants",
   URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FLOOR_AREA: "zone-urbaine-surface-locaux-vacants",
   URBAN_ZONE_FULL_TIME_JOBS_EQUIVALENT: "zone-urbaine-emplois-temps-plein",
+  URBAN_ZONE_SOILS_CARBON_STORAGE: "zone-urbaine-stockage-carbone-par-les-sols",
   URBAN_ZONE_NAMING: "zone-urbaine-denomination",
 } as const satisfies Record<SiteCreationStep, string>;
 

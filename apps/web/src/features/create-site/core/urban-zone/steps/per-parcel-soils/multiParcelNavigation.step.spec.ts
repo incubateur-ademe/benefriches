@@ -115,6 +115,6 @@ describe("Urban zone - multi-parcel navigation", () => {
 
     store.dispatch(nextStepRequested());
 
-    expect(getCurrentStep(store)).toBe("URBAN_ZONE_SOILS_CONTAMINATION_INTRODUCTION");
+    expect(getCurrentStep(store)).toBe("URBAN_ZONE_SOILS_CARBON_STORAGE");
   });
 });

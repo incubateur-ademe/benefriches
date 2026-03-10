@@ -6,8 +6,7 @@ export const UrbanZoneSoilsSummaryHandler: InfoStepHandler = {
   stepId: "URBAN_ZONE_SOILS_SUMMARY",
 
   getNextStepId() {
-    // Phase 5 will implement contamination — dead-end for now
-    return "URBAN_ZONE_SOILS_CONTAMINATION_INTRODUCTION";
+    return "URBAN_ZONE_SOILS_CARBON_STORAGE";
   },
 
   getPreviousStepId(context) {

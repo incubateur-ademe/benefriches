@@ -5,6 +5,7 @@ import { landParcelsSurfaceDistributionStepperConfig } from "../steps/land-parce
 import { parcelBuildingsFloorAreaStepperConfig } from "../steps/per-parcel-soils/parcelBuildingsFloorArea.stepperConfig";
 import { parcelSoilsDistributionStepperConfig } from "../steps/per-parcel-soils/parcelSoilsDistribution.stepperConfig";
 import { soilsAndSpacesIntroductionStepperConfig } from "../steps/soils-and-spaces-introduction/soilsAndSpacesIntroduction.stepperConfig";
+import { soilsCarbonStorageStepperConfig } from "../steps/summary/soils-carbon-storage/soilsCarbonStorage.stepperConfig";
 import { soilsSummaryStepperConfig } from "../steps/summary/soils-summary/soilsSummary.stepperConfig";
 import type { UrbanZoneSiteCreationStep } from "../urbanZoneSteps";
 
@@ -60,8 +61,9 @@ export const URBAN_ZONE_STEP_TO_GROUP: Record<
   URBAN_ZONE_SERVICED_SURFACE_BUILDINGS_FLOOR_AREA: parcelBuildingsFloorAreaStepperConfig,
   URBAN_ZONE_RESERVED_SURFACE_BUILDINGS_FLOOR_AREA: parcelBuildingsFloorAreaStepperConfig,
 
-  // Soils summary
+  // Soils summary and carbon storage
   URBAN_ZONE_SOILS_SUMMARY: soilsSummaryStepperConfig,
+  URBAN_ZONE_SOILS_CARBON_STORAGE: soilsCarbonStorageStepperConfig,
 
   // Contamination (not yet implemented)
   URBAN_ZONE_SOILS_CONTAMINATION_INTRODUCTION: { groupId: "CONTAMINATION" },

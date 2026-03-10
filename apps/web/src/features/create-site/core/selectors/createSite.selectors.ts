@@ -1,9 +1,12 @@
 import { createSelector } from "@reduxjs/toolkit";
-import type { Address, SiteNature, SoilType } from "shared";
+import type { Address, SiteNature, SoilType, SoilsDistribution } from "shared";
+import { SurfaceAreaDistribution, typedObjectEntries } from "shared";
 
 import { RootState } from "@/app/store/store";
 
 import { selectCurrentStep, type SiteCreationStep } from "../createSite.reducer";
+import { getSelectedParcelTypes, ReadStateHelper } from "../urban-zone/helpers/stateHelpers";
+import { getParcelStepIds } from "../urban-zone/steps/per-parcel-soils/parcelStepMapping";
 
 const selectSelf = (state: RootState) => state.siteCreation;
 
@@ -14,7 +17,25 @@ export const selectSiteAddress = createSelector(
 
 export const selectSiteSoilsDistribution = createSelector(
   selectSelf,
-  (state) => state.siteData.soilsDistribution ?? {},
+  (state): SoilsDistribution => {
+    if (state.siteData.nature === "URBAN_ZONE") {
+      const aggregated = new SurfaceAreaDistribution<SoilType>();
+      for (const parcelType of getSelectedParcelTypes(state.urbanZone.steps)) {
+        const stepId = getParcelStepIds(parcelType).soilsDistribution;
+        const stepAnswers = ReadStateHelper.getStepAnswers(state.urbanZone.steps, stepId);
+        const soilsDistribution = (
+          stepAnswers as { soilsDistribution?: SoilsDistribution } | undefined
+        )?.soilsDistribution;
+        if (soilsDistribution) {
+          for (const [soilType, area] of typedObjectEntries(soilsDistribution)) {
+            aggregated.addSurface(soilType, area ?? 0);
+          }
+        }
+      }
+      return aggregated.toJSON();
+    }
+    return state.siteData.soilsDistribution ?? {};
+  },
 );
 
 export const selectFricheActivity = createSelector(

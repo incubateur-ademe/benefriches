@@ -25,31 +25,33 @@ pnpm --filter web typecheck && pnpm --filter web lint && pnpm --filter web test
 
 ## Canonical Pattern Examples
 
-| Pattern                         | Reference File                                                                                                                                          |
-| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Step Handler (registry)         | `src/features/create-project/core/renewable-energy/step-handlers/stepHandlerRegistry.ts`                                                                |
-| Step Handler (answer)           | `src/features/create-project/core/renewable-energy/step-handlers/photovoltaic/photovoltaic-surface/photovoltaicSurface.handler.ts`                      |
-| Step Handler (selector)         | `src/features/create-project/core/renewable-energy/step-handlers/photovoltaic/photovoltaic-contract-duration/photovoltaicContractDuration.selectors.ts` |
-| Step Handler (schema)           | `src/features/create-project/core/renewable-energy/step-handlers/photovoltaic/photovoltaic-surface/photovoltaicSurface.schema.ts`                       |
-| Step Handler (stepper config)   | `src/features/create-project/core/renewable-energy/step-handlers/photovoltaic/photovoltaic-surface/photovoltaicSurface.stepperConfig.ts`                |
-| Stepper Config (registry)       | `src/features/create-project/core/renewable-energy/step-handlers/renewableEnergyStepperConfig.ts`                                                       |
-| Step Handler (urban, with deps) | `src/shared/core/reducers/project-form/urban-project/step-handlers/uses/selection/usesSelection.handler.ts`                                             |
-| Step Handler (urban, registry)  | `src/shared/core/reducers/project-form/urban-project/step-handlers/stepHandlerRegistry.ts`                                                              |
-| ViewData Selector               | `src/features/create-project/core/createProject.selectors.ts`                                                                                           |
-| Async Thunk                     | `src/features/create-project/core/urban-project/fetchEstimatedSiteResalePrice.action.ts`                                                                |
-| Reducer (createReducer)         | `src/features/create-site/core/createSite.reducer.ts`                                                                                                   |
-| Container Component             | `src/features/create-project/views/photovoltaic-power-station/custom-form/stakeholders/site-purchased/index.tsx`                                        |
-| Gateway Interface               | `src/shared/core/gateways/RealEstateValuationGateway.ts`                                                                                                |
-| HTTP POST implementation        | `src/features/onboarding/infrastructure/create-user-service/HttpCreateUserService.ts`                                                                   |
-| HTTP GET implementation         | `src/features/onboarding/infrastructure/current-user-service/HttpCurrentUserService.ts`                                                                 |
-| InMemory Mock                   | `src/shared/infrastructure/real-estate-valuation-service/InMemoryRealEstateValuationService.ts`                                                         |
-| Step Handler (test, RE)         | `src/features/create-project/core/renewable-energy/step-handlers/photovoltaic/photovoltaic-surface/photovoltaicSurface.step.spec.ts`                    |
-| Test Store Helper (RE)          | `src/features/create-project/core/renewable-energy/__tests__/_testStoreHelpers.ts`                                                                      |
-| Test with Store Helper (urban)  | `src/features/create-project/core/urban-project/__tests__/steps/site-resale/siteResaleSelection.step.spec.ts`                                           |
-| Test Store Helper (urban)       | `src/features/create-project/core/urban-project/__tests__/_testStoreHelpers.ts`                                                                         |
-| Listener Middleware             | `src/features/create-project/core/listeners/projectCreationListeners.ts`                                                                                |
-| Third-Party Gateway             | `src/features/support/core/gateways/SupportChatGateway.ts`                                                                                              |
-| Fire-and-forget Thunk           | `src/features/support/core/authLinkNotReceivedHelpRequested.action.ts`                                                                                  |
+| Pattern                                  | Reference File                                                                                                                                          |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Step Handler (registry)                  | `src/features/create-project/core/renewable-energy/step-handlers/stepHandlerRegistry.ts`                                                                |
+| Step Handler (answer)                    | `src/features/create-project/core/renewable-energy/step-handlers/photovoltaic/photovoltaic-surface/photovoltaicSurface.handler.ts`                      |
+| Step Handler (selector)                  | `src/features/create-project/core/renewable-energy/step-handlers/photovoltaic/photovoltaic-contract-duration/photovoltaicContractDuration.selectors.ts` |
+| Step Handler (schema)                    | `src/features/create-project/core/renewable-energy/step-handlers/photovoltaic/photovoltaic-surface/photovoltaicSurface.schema.ts`                       |
+| Step Handler (stepper config)            | `src/features/create-project/core/renewable-energy/step-handlers/photovoltaic/photovoltaic-surface/photovoltaicSurface.stepperConfig.ts`                |
+| Stepper Config (registry)                | `src/features/create-project/core/renewable-energy/step-handlers/renewableEnergyStepperConfig.ts`                                                       |
+| Step Handler (urban project, with deps)  | `src/shared/core/reducers/project-form/urban-project/step-handlers/uses/selection/usesSelection.handler.ts`                                             |
+| Step Handler (urban project, registry)   | `src/shared/core/reducers/project-form/urban-project/step-handlers/stepHandlerRegistry.ts`                                                              |
+| Step Handler (urban zone site, registry) | `src/features/create-site/core/urban-zone/step-handlers/stepHandlerRegistry.ts`                                                                         |
+| Test Store Helper (urban zone site)      | `src/features/create-site/core/urban-zone/__tests__/_testStoreHelpers.ts`                                                                               |
+| ViewData Selector                        | `src/features/create-project/core/createProject.selectors.ts`                                                                                           |
+| Async Thunk                              | `src/features/create-project/core/urban-project/fetchEstimatedSiteResalePrice.action.ts`                                                                |
+| Reducer (createReducer)                  | `src/features/create-site/core/createSite.reducer.ts`                                                                                                   |
+| Container Component                      | `src/features/create-project/views/photovoltaic-power-station/custom-form/stakeholders/site-purchased/index.tsx`                                        |
+| Gateway Interface                        | `src/shared/core/gateways/RealEstateValuationGateway.ts`                                                                                                |
+| HTTP POST implementation                 | `src/features/onboarding/infrastructure/create-user-service/HttpCreateUserService.ts`                                                                   |
+| HTTP GET implementation                  | `src/features/onboarding/infrastructure/current-user-service/HttpCurrentUserService.ts`                                                                 |
+| InMemory Mock                            | `src/shared/infrastructure/real-estate-valuation-service/InMemoryRealEstateValuationService.ts`                                                         |
+| Step Handler (test, RE)                  | `src/features/create-project/core/renewable-energy/step-handlers/photovoltaic/photovoltaic-surface/photovoltaicSurface.step.spec.ts`                    |
+| Test Store Helper (RE)                   | `src/features/create-project/core/renewable-energy/__tests__/_testStoreHelpers.ts`                                                                      |
+| Test with Store Helper (urban)           | `src/features/create-project/core/urban-project/__tests__/steps/site-resale/siteResaleSelection.step.spec.ts`                                           |
+| Test Store Helper (urban)                | `src/features/create-project/core/urban-project/__tests__/_testStoreHelpers.ts`                                                                         |
+| Listener Middleware                      | `src/features/create-project/core/listeners/projectCreationListeners.ts`                                                                                |
+| Third-Party Gateway                      | `src/features/support/core/gateways/SupportChatGateway.ts`                                                                                              |
+| Fire-and-forget Thunk                    | `src/features/support/core/authLinkNotReceivedHelpRequested.action.ts`                                                                                  |
 
 ---
 

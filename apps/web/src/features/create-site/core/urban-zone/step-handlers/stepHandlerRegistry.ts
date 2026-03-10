@@ -5,6 +5,7 @@ import {
   createParcelSoilsDistributionHandler,
 } from "../steps/per-parcel-soils/parcelSoilsHandlerFactory";
 import { SoilsAndSpacesIntroductionHandler } from "../steps/soils-and-spaces-introduction/soilsAndSpacesIntroduction.handler";
+import { UrbanZoneSoilsCarbonStorageHandler } from "../steps/summary/soils-carbon-storage/soilsCarbonStorage.handler";
 import { UrbanZoneSoilsSummaryHandler } from "../steps/summary/soils-summary/soilsSummary.handler";
 import type { SchematizedAnswerStepId, UrbanZoneSiteCreationStep } from "../urbanZoneSteps";
 import type { AnswerStepHandler, InfoStepHandler } from "./stepHandler.type";
@@ -40,4 +41,5 @@ export const urbanZoneStepHandlerRegistry: UrbanZoneStepHandlerRegistry = {
   URBAN_ZONE_SOILS_AND_SPACES_INTRODUCTION: SoilsAndSpacesIntroductionHandler,
   // Summary
   URBAN_ZONE_SOILS_SUMMARY: UrbanZoneSoilsSummaryHandler,
+  URBAN_ZONE_SOILS_CARBON_STORAGE: UrbanZoneSoilsCarbonStorageHandler,
 };

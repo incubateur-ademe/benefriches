@@ -5,6 +5,7 @@ import { getTestAppDependencies } from "@/test/testAppDependencies";
 import {
   selectExpressAddressFormViewData,
   selectSiteCreationWizardViewData,
+  selectSiteSoilsDistribution,
 } from "../selectors/createSite.selectors";
 import { selectAddressFormViewData } from "../steps/address/address.selectors";
 import { selectSoilContaminationFormViewData } from "../steps/contamination-and-accidents/contaminationAndAccidents.selectors";
@@ -19,6 +20,7 @@ import {
   selectSiteSurfaceAreaFormViewData,
   selectSpacesSelectionFormViewData,
 } from "../steps/spaces/spaces.selectors";
+import { StoreBuilder as UrbanZoneStoreBuilder } from "../urban-zone/__tests__/_testStoreHelpers";
 import { StoreBuilder } from "./creation-steps/testUtils";
 
 const GRENOBLE_LOCAL_AUTHORITIES = {
@@ -327,6 +329,59 @@ describe("createSite ViewData selectors", () => {
         address: undefined,
         siteNature: undefined,
       });
+    });
+  });
+
+  describe("selectSiteSoilsDistribution", () => {
+    it("returns siteData.soilsDistribution for non-urban-zone sites", () => {
+      const state = new StoreBuilder()
+        .withCreationData({
+          nature: "FRICHE",
+          soilsDistribution: { BUILDINGS: 3000, IMPERMEABLE_SOILS: 1000 },
+        })
+        .build()
+        .getState();
+
+      expect(selectSiteSoilsDistribution(state)).toEqual({
+        BUILDINGS: 3000,
+        IMPERMEABLE_SOILS: 1000,
+      });
+    });
+
+    it("aggregates soils from all parcel steps for urban zone", () => {
+      const state = new UrbanZoneStoreBuilder()
+        .withSiteData({ nature: "URBAN_ZONE" })
+        .withUrbanZoneSteps({
+          URBAN_ZONE_LAND_PARCELS_SELECTION: {
+            completed: true,
+            payload: { landParcelTypes: ["COMMERCIAL_ACTIVITY_AREA", "PUBLIC_SPACES"] },
+          },
+          URBAN_ZONE_COMMERCIAL_ACTIVITY_AREA_SOILS_DISTRIBUTION: {
+            completed: true,
+            payload: { soilsDistribution: { BUILDINGS: 2000, IMPERMEABLE_SOILS: 1000 } },
+          },
+          URBAN_ZONE_PUBLIC_SPACES_SOILS_DISTRIBUTION: {
+            completed: true,
+            payload: { soilsDistribution: { MINERAL_SOIL: 500, IMPERMEABLE_SOILS: 500 } },
+          },
+        })
+        .build()
+        .getState();
+
+      expect(selectSiteSoilsDistribution(state)).toEqual({
+        BUILDINGS: 2000,
+        IMPERMEABLE_SOILS: 1500,
+        MINERAL_SOIL: 500,
+      });
+    });
+
+    it("returns empty object when no parcel steps completed for urban zone", () => {
+      const state = new UrbanZoneStoreBuilder()
+        .withSiteData({ nature: "URBAN_ZONE" })
+        .build()
+        .getState();
+
+      expect(selectSiteSoilsDistribution(state)).toEqual({});
     });
   });
 
