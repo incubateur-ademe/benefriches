@@ -19,6 +19,7 @@ test.describe("site creation (urban zone)", () => {
     await siteCreationPage.fillSurfaceArea(15_000);
 
     // --- Phase 3: land parcels ---
+    await siteCreationPage.expectStepperCurrentStep("Surfaces foncières");
     await urbanZoneSiteCreationPage.selectLandParcels([
       "COMMERCIAL_ACTIVITY_AREA",
       "PUBLIC_SPACES",
@@ -29,6 +30,7 @@ test.describe("site creation (urban zone)", () => {
     });
 
     // --- Phase 4: per-parcel soils (parcel 1: COMMERCIAL_ACTIVITY_AREA) ---
+    await siteCreationPage.expectStepperCurrentStep("Sols et espaces");
     await urbanZoneSiteCreationPage.goToNextStep(); // soils and spaces introduction
     await urbanZoneSiteCreationPage.fillSoilsDistributionForCurrentParcel({
       BUILDINGS: 8_000,
@@ -43,6 +45,7 @@ test.describe("site creation (urban zone)", () => {
     });
 
     // soils summary
+    await siteCreationPage.expectStepperCurrentStep("Sols et espaces");
     await urbanZoneSiteCreationPage.goToNextStep();
 
     // --- Phase 5 and beyond: uncomment as each phase is implemented ---

@@ -22,6 +22,7 @@ import IsFricheForm from "./is-friche";
 import SiteNatureForm from "./site-nature";
 import UrbanZoneTypeForm from "./urban-zone-type";
 import SiteCreationUrbanZoneStepContent from "./urban-zone/StepContent";
+import UrbanZoneStepper from "./urban-zone/UrbanZoneStepper";
 import UseMutabilityForm from "./use-mutability";
 import { useSyncCreationStepWithRouteQuery } from "./useSyncCreationStepWithRouteQuery";
 
@@ -98,6 +99,14 @@ function SiteCreationWizard() {
       mainChildren={getMainChildren(currentStep, createMode)}
       title="Renseignement du site"
       sidebarChildren={(() => {
+        if (isUrbanZoneStepHandlerStep(currentStep)) {
+          return (
+            <>
+              <NavigationBlockerDialog />
+              <UrbanZoneStepper step={currentStep} />
+            </>
+          );
+        }
         switch (createMode) {
           case "express":
             return (

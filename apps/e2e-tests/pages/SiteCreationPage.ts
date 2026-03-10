@@ -322,6 +322,10 @@ export class SiteCreationPage {
     await this.goToNextStep();
   }
 
+  async expectStepperCurrentStep(label: string): Promise<void> {
+    await expect(this.page.locator('[aria-current="step"]')).toContainText(label);
+  }
+
   private async submit(): Promise<void> {
     await this.page.getByRole("button", { name: /Valider|Suivant/ }).click();
   }
