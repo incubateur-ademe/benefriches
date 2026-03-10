@@ -24,10 +24,11 @@ docker compose --env-file .env.e2e -f docker-compose.e2e.yml up -d --build
 
 ### 2. Wait for the stack to be ready
 
-Poll the web app until it responds (max 120s, every 5s):
+Run the wait script (max 120s, every second):
 
 ```bash
-timeout=120; elapsed=0; until curl -sf http://localhost:3001 > /dev/null 2>&1; do sleep 5; elapsed=$((elapsed+5)); if [ $elapsed -ge $timeout ]; then echo "Timed out waiting for stack"; exit 1; fi; echo "Waiting for stack... ${elapsed}s"; done; echo "Stack is ready"
+cd $PROJECT_ROOT
+node apps/e2e-tests/scripts/wait-for-stack.js
 ```
 
 If timeout is reached, run `docker compose --env-file .env.e2e -f docker-compose.e2e.yml logs --tail=50` to show recent logs, then stop.
