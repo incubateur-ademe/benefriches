@@ -57,7 +57,7 @@
     "@nestjs/core": "~11.1.14",
     "@nestjs/event-emitter": "^3.0.1",
     "@nestjs/jwt": "^11.0.2",
-    "@nestjs/platform-express": "~11.1.16",
+    "@nestjs/platform-express": "~11.1.14",
     "axios": "~1.13.6",
     "bcrypt": "^6.0.0",
     "cookie-parser": "^1.4.7",
