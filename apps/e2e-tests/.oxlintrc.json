@@ -49,7 +49,7 @@
     "playwright/no-element-handle": "error",
     "playwright/no-eval": "error",
     "playwright/no-focused-test": "error",
-    "playwright/no-force-option": "warn",
+    "playwright/no-force-option": "off",
     "playwright/no-nested-step": "error",
     "playwright/no-networkidle": "error",
     "playwright/no-page-pause": "warn",
