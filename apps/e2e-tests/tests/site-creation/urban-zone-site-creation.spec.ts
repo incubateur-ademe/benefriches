@@ -44,15 +44,25 @@ test.describe("site creation (urban zone)", () => {
     });
 
     // soils summary
+    await siteCreationPage.expectStepTitle("Récapitulatif de l'occupation des sols");
     await siteCreationPage.expectStepperCurrentStep("Sols et espaces");
     await urbanZoneSiteCreationPage.goToNextStep();
 
+    // soils carbon storage
+    await siteCreationPage.expectStepTitle("Stockage du carbone par les sols");
+    await siteCreationPage.expectStepperCurrentStep("Sols et espaces");
+    await urbanZoneSiteCreationPage.goToNextStep();
+
+    // --- Phase 5: contamination ---
+    await siteCreationPage.expectStepTitle("Les sols de la zone urbaine sont peut-être pollués.");
+    await siteCreationPage.expectStepperCurrentStep("Pollution");
+    await siteCreationPage.goToNextStep(); // contamination introduction
+
+    await siteCreationPage.expectStepTitle("Les sols de la zone sont-ils pollués ?");
+    await urbanZoneSiteCreationPage.selectSoilsContamination("yes", 3000);
+
     // --- Phase 5 and beyond: uncomment as each phase is implemented ---
     /*
-     * // --- Phase 5: contamination ---
-     * await siteCreationPage.goToNextStep(); // contamination introduction
-     * await urbanZoneSiteCreationPage.selectSoilsContamination("no");
-     *
      * // --- Phase 5: management ---
      * await siteCreationPage.goToNextStep(); // management introduction
      * await urbanZoneSiteCreationPage.selectManager("activity_park_manager");

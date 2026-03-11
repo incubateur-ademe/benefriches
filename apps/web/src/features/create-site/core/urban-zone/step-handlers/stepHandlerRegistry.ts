@@ -1,3 +1,5 @@
+import { UrbanZoneSoilsContaminationHandler } from "../steps/contamination/soilsContamination.handler";
+import { UrbanZoneSoilsContaminationIntroductionHandler } from "../steps/contamination/soilsContaminationIntroduction.handler";
 import { LandParcelsSelectionHandler } from "../steps/land-parcels/land-parcels-selection/landParcelsSelection.handler";
 import { LandParcelsSurfaceDistributionHandler } from "../steps/land-parcels/land-parcels-surface-distribution/landParcelsSurfaceDistribution.handler";
 import {
@@ -42,4 +44,7 @@ export const urbanZoneStepHandlerRegistry: UrbanZoneStepHandlerRegistry = {
   // Summary
   URBAN_ZONE_SOILS_SUMMARY: UrbanZoneSoilsSummaryHandler,
   URBAN_ZONE_SOILS_CARBON_STORAGE: UrbanZoneSoilsCarbonStorageHandler,
+  // Contamination
+  URBAN_ZONE_SOILS_CONTAMINATION_INTRODUCTION: UrbanZoneSoilsContaminationIntroductionHandler,
+  URBAN_ZONE_SOILS_CONTAMINATION: UrbanZoneSoilsContaminationHandler,
 };

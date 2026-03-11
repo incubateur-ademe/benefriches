@@ -10,6 +10,8 @@ import LandParcelsSelectionContainer from "./land-parcels-selection";
 import LandParcelsSurfaceDistributionContainer from "./land-parcels-surface-distribution";
 import SoilsAndSpacesIntroductionContainer from "./soils-and-spaces-introduction";
 import UrbanZoneSoilsCarbonStorageContainer from "./soils-carbon-storage";
+import SoilsContaminationContainer from "./soils-contamination";
+import SoilsContaminationIntroductionContainer from "./soils-contamination-introduction";
 import UrbanZoneSoilsSummaryContainer from "./soils-summary";
 
 function SiteCreationUrbanZoneStepContent() {
@@ -49,6 +51,20 @@ function SiteCreationUrbanZoneStepContent() {
         <>
           <HtmlTitle>{`Stockage du carbone par les sols - Sols et espaces - Zone urbaine - ${HTML_MAIN_TITLE}`}</HtmlTitle>
           <UrbanZoneSoilsCarbonStorageContainer />
+        </>
+      );
+    case "URBAN_ZONE_SOILS_CONTAMINATION_INTRODUCTION":
+      return (
+        <>
+          <HtmlTitle>{`Introduction - Pollution - Zone urbaine - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <SoilsContaminationIntroductionContainer />
+        </>
+      );
+    case "URBAN_ZONE_SOILS_CONTAMINATION":
+      return (
+        <>
+          <HtmlTitle>{`Pollution des sols - Zone urbaine - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <SoilsContaminationContainer />
         </>
       );
     // key={parcelType} forces React to remount the form when switching between parcel types.

@@ -40,6 +40,10 @@ export class SiteCreationPage {
     ).toBeVisible();
   }
 
+  async expectStepTitle(title: string): Promise<void> {
+    await expect(this.page.getByRole("heading", { name: title })).toBeVisible();
+  }
+
   async clickStart(): Promise<void> {
     await this.page.getByRole("button", { name: "Commencer" }).click();
   }

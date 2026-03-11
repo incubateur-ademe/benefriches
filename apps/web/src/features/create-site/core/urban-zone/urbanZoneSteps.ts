@@ -1,5 +1,6 @@
 import z from "zod";
 
+import { soilsContaminationSchema } from "./steps/contamination/soilsContamination.schema";
 import { landParcelsSelectionSchema } from "./steps/land-parcels/land-parcels-selection/landParcelsSelection.schema";
 import { landParcelsSurfaceDistributionSchema } from "./steps/land-parcels/land-parcels-surface-distribution/landParcelsSurfaceDistribution.schema";
 import { landParcelBuildingsFloorAreaSchema } from "./steps/per-parcel-soils/land-parcel-buildings-floor-area/landParcelBuildingsFloorArea.schema";
@@ -67,6 +68,8 @@ export const answersByStepSchemas = {
   URBAN_ZONE_PUBLIC_SPACES_BUILDINGS_FLOOR_AREA: landParcelBuildingsFloorAreaSchema,
   URBAN_ZONE_SERVICED_SURFACE_BUILDINGS_FLOOR_AREA: landParcelBuildingsFloorAreaSchema,
   URBAN_ZONE_RESERVED_SURFACE_BUILDINGS_FLOOR_AREA: landParcelBuildingsFloorAreaSchema,
+  // Contamination
+  URBAN_ZONE_SOILS_CONTAMINATION: soilsContaminationSchema,
 } as const;
 
 // Step IDs that currently have registered schemas
