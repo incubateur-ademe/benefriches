@@ -12,7 +12,7 @@ apps/e2e-tests/
 ├── fixtures/
 │   ├── auth.fixtures.ts   # Base auth fixture
 │   └── helpers/           # Shared test helpers
-│       ├── api-client.ts          # Direct API calls for test data seeding
+│       ├── api-client.ts          # Seed DB state via direct API calls (bypasses UI; use in beforeEach for pre-conditions)
 │       ├── cookie.helpers.ts      # Cookie manipulation
 │       └── site-creation.helpers.ts  # Site creation shortcuts
 └── tests/

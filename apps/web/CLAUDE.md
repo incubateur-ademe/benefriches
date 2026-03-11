@@ -10,6 +10,8 @@
 
 ```bash
 pnpm --filter web typecheck && pnpm --filter web lint && pnpm --filter web test
+# Run a single test file
+pnpm --filter web test path/to/file.spec.ts
 ```
 
 **If modifying `shared` package**: Run `pnpm --filter shared build` first, then `pnpm --filter web install`, then web checks.
