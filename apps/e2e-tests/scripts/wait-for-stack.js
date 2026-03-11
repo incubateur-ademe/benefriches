@@ -9,7 +9,7 @@ const url = "http://localhost:3001";
 
 const startTime = Date.now();
 
-async function checkStack() {
+function checkStack() {
   return new Promise((resolve) => {
     const req = http.get(url, { timeout: 5000 }, (res) => {
       resolve(res.statusCode < 500);
