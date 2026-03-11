@@ -135,6 +135,14 @@ Multi-step wizards use a **step handler registry** instead of per-step actions a
 - **Confirmation dialogs**: Cascading changes trigger user confirmation before applying
 - **Factory actions**: `createUrbanProjectFormActions(prefix)` supports both `"projectCreation"` and `"projectUpdate"` modes
 
+### Component Discovery (lookup order)
+
+Before creating a new UI component, always check these sources in order:
+
+1. **`src/shared/views/components/`** — internal shared components (e.g., `RadioButtons`, `CheckableTile`, `BackNextButtons`, `Dialog`, `Spinner`)
+2. **`@codegouvfr/react-dsfr`** — DSFR component library (buttons, inputs, badges, modals, etc.)
+3. Only if neither has what you need: create a new component
+
 ### Component Encapsulation
 
 Internal representation is an implementation detail — don't expose it through props. Design component APIs from the consumer's perspective. If every consumer would need the same adapter code (format conversion, mapping, etc.), that logic belongs inside the component.
