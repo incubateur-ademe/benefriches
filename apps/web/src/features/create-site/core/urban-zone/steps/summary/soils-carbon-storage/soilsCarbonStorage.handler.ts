@@ -1,6 +1,6 @@
 import type { InfoStepHandler } from "../../../step-handlers/stepHandler.type";
 
-export const UrbanZoneSoilsCarbonStorageHandler: InfoStepHandler = {
+export const UrbanZoneSoilsCarbonStorageHandler = {
   stepId: "URBAN_ZONE_SOILS_CARBON_STORAGE",
 
   getNextStepId() {
@@ -10,4 +10,4 @@ export const UrbanZoneSoilsCarbonStorageHandler: InfoStepHandler = {
   getPreviousStepId() {
     return "URBAN_ZONE_SOILS_SUMMARY";
   },
-};
+} satisfies InfoStepHandler;

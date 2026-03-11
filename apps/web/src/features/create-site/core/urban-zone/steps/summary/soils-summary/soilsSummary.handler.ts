@@ -2,7 +2,7 @@ import { getSelectedParcelTypes, ReadStateHelper } from "../../../helpers/stateH
 import type { InfoStepHandler } from "../../../step-handlers/stepHandler.type";
 import { getParcelStepIds } from "../../per-parcel-soils/parcelStepMapping";
 
-export const UrbanZoneSoilsSummaryHandler: InfoStepHandler = {
+export const UrbanZoneSoilsSummaryHandler = {
   stepId: "URBAN_ZONE_SOILS_SUMMARY",
 
   getNextStepId() {
@@ -24,4 +24,4 @@ export const UrbanZoneSoilsSummaryHandler: InfoStepHandler = {
       ? lastStepIds.buildingsFloorArea
       : lastStepIds.soilsDistribution;
   },
-};
+} satisfies InfoStepHandler;

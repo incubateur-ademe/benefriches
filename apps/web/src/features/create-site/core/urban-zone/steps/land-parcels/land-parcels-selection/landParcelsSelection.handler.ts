@@ -2,7 +2,7 @@ import type { UrbanZoneLandParcelType } from "shared";
 
 import type { AnswerStepHandler } from "../../../step-handlers/stepHandler.type";
 
-export const LandParcelsSelectionHandler: AnswerStepHandler<"URBAN_ZONE_LAND_PARCELS_SELECTION"> = {
+export const LandParcelsSelectionHandler = {
   stepId: "URBAN_ZONE_LAND_PARCELS_SELECTION",
 
   getNextStepId() {
@@ -26,4 +26,4 @@ export const LandParcelsSelectionHandler: AnswerStepHandler<"URBAN_ZONE_LAND_PAR
       next: "URBAN_ZONE_SOILS_AND_SPACES_INTRODUCTION",
     };
   },
-};
+} satisfies AnswerStepHandler<"URBAN_ZONE_LAND_PARCELS_SELECTION">;
