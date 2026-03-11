@@ -1,4 +1,5 @@
 import Button from "@codegouvfr/react-dsfr/Button";
+import Tooltip from "@codegouvfr/react-dsfr/Tooltip";
 
 import { routes } from "@/app/router";
 import {
@@ -25,14 +26,26 @@ export default function ProjectFeaturesView({ projectData }: Props) {
 
       <div className="flex justify-between items-center">
         <h2 className="text-2xl mb-0">Caractéristiques du projet</h2>
-        {!projectData.isExpress && projectData.developmentPlan.type === "URBAN_PROJECT" && (
-          <Button
-            iconId="fr-icon-edit-line"
-            linkProps={routes.updateProject({ projectId: projectData.id, from: "impacts" }).link}
-          >
-            Modifier le projet
-          </Button>
-        )}
+        {projectData.developmentPlan.type === "URBAN_PROJECT" &&
+          (projectData.isExpress ? (
+            <Tooltip kind="hover" title="Les projets démo ne sont pas modifiables">
+              <Button
+                disabled
+                className="bg-warning-ultralight text-text-dark font-normal"
+                iconId="fr-icon-information-line"
+                iconPosition="right"
+              >
+                Projet non modifiable
+              </Button>
+            </Tooltip>
+          ) : (
+            <Button
+              iconId="fr-icon-edit-line"
+              linkProps={routes.updateProject({ projectId: projectData.id, from: "impacts" }).link}
+            >
+              Modifier le projet
+            </Button>
+          ))}
       </div>
       <div className="max-w-5xl mx-auto mt-10">
         <Section title="🏗️ Type de projet">
