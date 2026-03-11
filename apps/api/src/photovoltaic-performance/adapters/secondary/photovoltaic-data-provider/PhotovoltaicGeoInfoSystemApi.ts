@@ -5,7 +5,7 @@ import { catchError, lastValueFrom, map } from "rxjs";
 
 import { PhotovoltaicDataProvider } from "src/photovoltaic-performance/core/gateways/PhotovoltaicDataProvider";
 
-const API_VERSION = "v5_2";
+const API_VERSION = "v5_3";
 const TOOL_NAME = "PVcalc";
 
 const API_URL = `https://re.jrc.ec.europa.eu/api/${API_VERSION}/${TOOL_NAME}?outputformat=json`;
