@@ -2,6 +2,8 @@ import { UrbanZoneSoilsContaminationHandler } from "../steps/contamination/soils
 import { UrbanZoneSoilsContaminationIntroductionHandler } from "../steps/contamination/soilsContaminationIntroduction.handler";
 import { LandParcelsSelectionHandler } from "../steps/land-parcels/land-parcels-selection/landParcelsSelection.handler";
 import { LandParcelsSurfaceDistributionHandler } from "../steps/land-parcels/land-parcels-surface-distribution/landParcelsSurfaceDistribution.handler";
+import { UrbanZoneManagementIntroductionHandler } from "../steps/management/management-introduction/managementIntroduction.handler";
+import { UrbanZoneManagerHandler } from "../steps/management/manager/manager.handler";
 import {
   createParcelBuildingsFloorAreaHandler,
   createParcelSoilsDistributionHandler,
@@ -47,4 +49,7 @@ export const urbanZoneStepHandlerRegistry: UrbanZoneStepHandlerRegistry = {
   // Contamination
   URBAN_ZONE_SOILS_CONTAMINATION_INTRODUCTION: UrbanZoneSoilsContaminationIntroductionHandler,
   URBAN_ZONE_SOILS_CONTAMINATION: UrbanZoneSoilsContaminationHandler,
+  // Management
+  URBAN_ZONE_MANAGEMENT_INTRODUCTION: UrbanZoneManagementIntroductionHandler,
+  URBAN_ZONE_MANAGER: UrbanZoneManagerHandler,
 };

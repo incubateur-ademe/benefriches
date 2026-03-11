@@ -4,6 +4,8 @@ import { soilsContaminationStepperConfig } from "../steps/contamination/soilsCon
 import { soilsContaminationIntroductionStepperConfig } from "../steps/contamination/soilsContaminationIntroduction.stepperConfig";
 import { landParcelsSelectionStepperConfig } from "../steps/land-parcels/land-parcels-selection/landParcelsSelection.stepperConfig";
 import { landParcelsSurfaceDistributionStepperConfig } from "../steps/land-parcels/land-parcels-surface-distribution/landParcelsSurfaceDistribution.stepperConfig";
+import { managementIntroductionStepperConfig } from "../steps/management/management-introduction/managementIntroduction.stepperConfig";
+import { managerStepperConfig } from "../steps/management/manager/manager.stepperConfig";
 import { parcelBuildingsFloorAreaStepperConfig } from "../steps/per-parcel-soils/parcelBuildingsFloorArea.stepperConfig";
 import { parcelSoilsDistributionStepperConfig } from "../steps/per-parcel-soils/parcelSoilsDistribution.stepperConfig";
 import { soilsAndSpacesIntroductionStepperConfig } from "../steps/soils-and-spaces-introduction/soilsAndSpacesIntroduction.stepperConfig";
@@ -71,9 +73,9 @@ export const URBAN_ZONE_STEP_TO_GROUP: Record<
   URBAN_ZONE_SOILS_CONTAMINATION_INTRODUCTION: soilsContaminationIntroductionStepperConfig,
   URBAN_ZONE_SOILS_CONTAMINATION: soilsContaminationStepperConfig,
 
-  // Management (not yet implemented)
-  URBAN_ZONE_MANAGEMENT_INTRODUCTION: { groupId: "MANAGEMENT" },
-  URBAN_ZONE_MANAGER: { groupId: "MANAGEMENT" },
+  // Management
+  URBAN_ZONE_MANAGEMENT_INTRODUCTION: managementIntroductionStepperConfig,
+  URBAN_ZONE_MANAGER: managerStepperConfig,
   URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FOOTPRINT: { groupId: "MANAGEMENT" },
   URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FLOOR_AREA: { groupId: "MANAGEMENT" },
   URBAN_ZONE_FULL_TIME_JOBS_EQUIVALENT: { groupId: "MANAGEMENT" },

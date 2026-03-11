@@ -3,6 +3,7 @@ import z from "zod";
 import { soilsContaminationSchema } from "./steps/contamination/soilsContamination.schema";
 import { landParcelsSelectionSchema } from "./steps/land-parcels/land-parcels-selection/landParcelsSelection.schema";
 import { landParcelsSurfaceDistributionSchema } from "./steps/land-parcels/land-parcels-surface-distribution/landParcelsSurfaceDistribution.schema";
+import { managerSchema } from "./steps/management/manager/manager.schema";
 import { landParcelBuildingsFloorAreaSchema } from "./steps/per-parcel-soils/land-parcel-buildings-floor-area/landParcelBuildingsFloorArea.schema";
 import { landParcelSoilsDistributionSchema } from "./steps/per-parcel-soils/land-parcel-soils-distribution/landParcelSoilsDistribution.schema";
 
@@ -70,6 +71,8 @@ export const answersByStepSchemas = {
   URBAN_ZONE_RESERVED_SURFACE_BUILDINGS_FLOOR_AREA: landParcelBuildingsFloorAreaSchema,
   // Contamination
   URBAN_ZONE_SOILS_CONTAMINATION: soilsContaminationSchema,
+  // Management
+  URBAN_ZONE_MANAGER: managerSchema,
 } as const;
 
 // Step IDs that currently have registered schemas

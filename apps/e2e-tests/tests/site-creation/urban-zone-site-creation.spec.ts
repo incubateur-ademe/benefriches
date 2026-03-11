@@ -61,11 +61,17 @@ test.describe("site creation (urban zone)", () => {
     await siteCreationPage.expectStepTitle("Les sols de la zone sont-ils pollués ?");
     await urbanZoneSiteCreationPage.selectSoilsContamination("yes", 3000);
 
+    // --- Phase 5: management ---
+    await siteCreationPage.expectStepTitle("Parlons de la gestion et de l'activité du site");
+    await siteCreationPage.expectStepperCurrentStep("Gestion et activité");
+    await siteCreationPage.goToNextStep(); // management introduction
+
+    await siteCreationPage.expectStepTitle("Qui est le gestionnaire de la zone commerciale ?");
+    await siteCreationPage.expectStepperCurrentStep("Gestion et activité");
+    await urbanZoneSiteCreationPage.selectManager("activity_park_manager");
+
     // --- Phase 5 and beyond: uncomment as each phase is implemented ---
     /*
-     * // --- Phase 5: management ---
-     * await siteCreationPage.goToNextStep(); // management introduction
-     * await urbanZoneSiteCreationPage.selectManager("activity_park_manager");
      * await siteCreationPage.goToNextStep(); // vacant premises footprint (skip)
      * await siteCreationPage.goToNextStep(); // vacant premises floor area (skip)
      * await siteCreationPage.goToNextStep(); // FTE (skip)
