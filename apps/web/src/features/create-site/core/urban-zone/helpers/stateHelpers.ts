@@ -1,6 +1,7 @@
 import type { UrbanZoneLandParcelType } from "shared";
 
 import type { SiteCreationState } from "../../createSite.reducer";
+import type { StepCompletionPayload } from "../urban-zone.actions";
 import type {
   AnswersByStep,
   SchematizedAnswerStepId,
@@ -10,13 +11,7 @@ import type {
 
 export const ReadStateHelper = {
   getStep<K extends SchematizedAnswerStepId>(steps: UrbanZoneStepsState, stepId: K) {
-    return steps[stepId] as
-      | {
-          completed: boolean;
-          payload?: AnswersByStep[K];
-          defaultValues?: AnswersByStep[K];
-        }
-      | undefined;
+    return steps[stepId];
   },
 
   getStepAnswers<K extends SchematizedAnswerStepId>(steps: UrbanZoneStepsState, stepId: K) {
@@ -41,6 +36,15 @@ export const MutateStateHelper = {
     (state.urbanZone.steps as Record<string, unknown>)[stepId] = {
       completed: true,
       payload: answers,
+    };
+  },
+
+  // Accepts a bundled payload (discriminated union) — preserves the stepId/answers
+  // correlation that is lost when destructuring union members into separate arguments.
+  completeStepFromPayload(state: SiteCreationState, payload: StepCompletionPayload) {
+    (state.urbanZone.steps as Record<string, unknown>)[payload.stepId] = {
+      completed: true,
+      payload: payload.answers,
     };
   },
 

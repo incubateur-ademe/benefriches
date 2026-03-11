@@ -1,4 +1,5 @@
 import type { SiteCreationData } from "../../siteFoncier.types";
+import type { StepCompletionPayload } from "../urban-zone.actions";
 import type {
   AnswersByStep,
   SchematizedAnswerStepId,
@@ -23,12 +24,8 @@ export type InfoStepHandler = StepHandler & {
   readonly stepId: UrbanZoneSummaryStep | UrbanZoneIntroductionStep;
 };
 
-type StepAnswerPayload<K extends SchematizedAnswerStepId = SchematizedAnswerStepId> = {
-  [P in K]: { stepId: P; answers: AnswersByStep[P] };
-}[K];
-
 export type ShortcutResult = {
-  complete: StepAnswerPayload[];
+  complete: StepCompletionPayload[];
   next: UrbanZoneSiteCreationStep;
 };
 

@@ -1,6 +1,5 @@
 import type { SiteCreationState } from "../../createSite.reducer";
-import type { AnswerStepHandler } from "../step-handlers/stepHandler.type";
-import { urbanZoneStepHandlerRegistry } from "../step-handlers/stepHandlerRegistry";
+import { answerStepHandlers } from "../step-handlers/stepHandlerRegistry";
 import type { StepCompletionPayload } from "../urban-zone.actions";
 import type { SchematizedAnswerStepId, UrbanZoneSiteCreationStep } from "../urbanZoneSteps";
 import { navigateToAndLoadStep } from "./navigateToStep";
@@ -9,7 +8,7 @@ import { computeStepsSequence } from "./stepsSequence";
 
 type StepUpdateResult<T extends SchematizedAnswerStepId> = {
   payload: StepCompletionPayload<T>;
-  shortcutComplete?: StepCompletionPayload<SchematizedAnswerStepId>[];
+  shortcutComplete?: StepCompletionPayload[];
   navigationTarget?: UrbanZoneSiteCreationStep;
 };
 
@@ -17,8 +16,9 @@ export function computeStepChanges<T extends SchematizedAnswerStepId>(
   state: SiteCreationState,
   payload: StepCompletionPayload<T>,
 ): StepUpdateResult<T> {
-  // Cast is safe: the registry key matches the handler's generic parameter
-  const handler = urbanZoneStepHandlerRegistry[payload.stepId] as AnswerStepHandler<T>;
+  const handler = answerStepHandlers[payload.stepId];
+  if (!handler) throw new Error(`No handler registered for step ${String(payload.stepId)}`);
+
   const context = {
     siteData: state.siteData,
     stepsState: state.urbanZone.steps,
@@ -36,7 +36,7 @@ export function computeStepChanges<T extends SchematizedAnswerStepId>(
     if (shortcut) {
       return {
         payload: newPayload,
-        shortcutComplete: shortcut.complete as StepCompletionPayload<SchematizedAnswerStepId>[],
+        shortcutComplete: shortcut.complete,
         navigationTarget: shortcut.next,
       };
     }
@@ -59,7 +59,7 @@ export function applyStepChanges<T extends SchematizedAnswerStepId>(
   MutateStateHelper.completeStep(state, payload.stepId, payload.answers);
 
   changes.shortcutComplete?.forEach((shortcutPayload) => {
-    MutateStateHelper.completeStep(state, shortcutPayload.stepId, shortcutPayload.answers);
+    MutateStateHelper.completeStepFromPayload(state, shortcutPayload);
   });
 
   state.urbanZone.stepsSequence = computeStepsSequence(

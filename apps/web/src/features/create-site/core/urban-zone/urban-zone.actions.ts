@@ -2,10 +2,9 @@ import { createAction } from "@reduxjs/toolkit";
 
 import type { AnswersByStep, SchematizedAnswerStepId } from "./urbanZoneSteps";
 
-export type StepCompletionPayload<T extends SchematizedAnswerStepId> = {
-  stepId: T;
-  answers: AnswersByStep[T];
-};
+export type StepCompletionPayload<T extends SchematizedAnswerStepId = SchematizedAnswerStepId> = {
+  [K in T]: { stepId: K; answers: AnswersByStep[K] };
+}[T];
 
 export const previousStepRequested = createAction("siteCreation/urbanZone/previousStepRequested");
 
@@ -13,5 +12,5 @@ export const nextStepRequested = createAction("siteCreation/urbanZone/nextStepRe
 
 export const stepCompletionRequested = createAction(
   "siteCreation/urbanZone/stepCompletionRequested",
-  <T extends SchematizedAnswerStepId>(payload: StepCompletionPayload<T>) => ({ payload }),
+  (payload: StepCompletionPayload) => ({ payload }),
 );

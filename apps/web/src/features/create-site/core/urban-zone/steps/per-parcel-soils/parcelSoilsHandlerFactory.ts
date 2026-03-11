@@ -3,16 +3,20 @@ import type { UrbanZoneLandParcelType } from "shared";
 import { getSelectedParcelTypes, ReadStateHelper } from "../../helpers/stateHelpers";
 import type { AnswerStepHandler } from "../../step-handlers/stepHandler.type";
 import {
-  type ParcelBuildingsFloorAreaStepId,
-  type ParcelSoilsDistributionStepId,
+  PARCEL_STEP_IDS,
   getNextParcelType,
   getParcelStepIds,
   getPreviousParcelType,
 } from "./parcelStepMapping";
 
-export function createParcelSoilsDistributionHandler(
-  parcelType: UrbanZoneLandParcelType,
-): AnswerStepHandler<ParcelSoilsDistributionStepId> {
+type SoilsDistributionStepId<P extends UrbanZoneLandParcelType> =
+  (typeof PARCEL_STEP_IDS)[P]["soilsDistribution"];
+type BuildingsFloorAreaStepId<P extends UrbanZoneLandParcelType> =
+  (typeof PARCEL_STEP_IDS)[P]["buildingsFloorArea"];
+
+export function createParcelSoilsDistributionHandler<P extends UrbanZoneLandParcelType>(
+  parcelType: P,
+): AnswerStepHandler<SoilsDistributionStepId<P>> {
   const parcelStepIds = getParcelStepIds(parcelType);
 
   return {
@@ -39,7 +43,6 @@ export function createParcelSoilsDistributionHandler(
       const selectedTypes = getSelectedParcelTypes(context.stepsState);
       const prevType = getPreviousParcelType(selectedTypes, parcelType);
       if (prevType) {
-        // Go back to previous parcel's last step
         const prevStepIds = getParcelStepIds(prevType);
         const prevStep = ReadStateHelper.getStep(
           context.stepsState,
@@ -60,9 +63,9 @@ export function createParcelSoilsDistributionHandler(
   };
 }
 
-export function createParcelBuildingsFloorAreaHandler(
-  parcelType: UrbanZoneLandParcelType,
-): AnswerStepHandler<ParcelBuildingsFloorAreaStepId> {
+export function createParcelBuildingsFloorAreaHandler<P extends UrbanZoneLandParcelType>(
+  parcelType: P,
+): AnswerStepHandler<BuildingsFloorAreaStepId<P>> {
   const stepIds = getParcelStepIds(parcelType);
 
   return {

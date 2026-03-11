@@ -17,11 +17,13 @@ import { UrbanZoneSoilsSummaryHandler } from "../steps/summary/soils-summary/soi
 import type { SchematizedAnswerStepId, UrbanZoneSiteCreationStep } from "../urbanZoneSteps";
 import type { AnswerStepHandler, InfoStepHandler } from "./stepHandler.type";
 
-export type UrbanZoneStepHandlerRegistry = Partial<
-  Record<UrbanZoneSiteCreationStep, InfoStepHandler | AnswerStepHandler<SchematizedAnswerStepId>>
->;
+// Correlated mapped type: each key K maps to AnswerStepHandler<K>.
+// Lookups with a generic T return AnswerStepHandler<T> without a cast.
+type AnswerStepHandlerMap = {
+  [K in SchematizedAnswerStepId]: AnswerStepHandler<K>;
+};
 
-export const urbanZoneStepHandlerRegistry: UrbanZoneStepHandlerRegistry = {
+export const answerStepHandlers: Partial<AnswerStepHandlerMap> = {
   URBAN_ZONE_LAND_PARCELS_SELECTION: LandParcelsSelectionHandler,
   URBAN_ZONE_LAND_PARCELS_SURFACE_DISTRIBUTION: LandParcelsSurfaceDistributionHandler,
   // Per-parcel soils distribution
@@ -44,18 +46,29 @@ export const urbanZoneStepHandlerRegistry: UrbanZoneStepHandlerRegistry = {
     createParcelBuildingsFloorAreaHandler("SERVICED_SURFACE"),
   URBAN_ZONE_RESERVED_SURFACE_BUILDINGS_FLOOR_AREA:
     createParcelBuildingsFloorAreaHandler("RESERVED_SURFACE"),
+  // Contamination
+  URBAN_ZONE_SOILS_CONTAMINATION: UrbanZoneSoilsContaminationHandler,
+  // Management
+  URBAN_ZONE_MANAGER: UrbanZoneManagerHandler,
+  URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FOOTPRINT: VacantCommercialPremisesFootprintHandler,
+  URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FLOOR_AREA: VacantCommercialPremisesFloorAreaHandler,
+  URBAN_ZONE_FULL_TIME_JOBS_EQUIVALENT: FullTimeJobsEquivalentHandler,
+};
+
+// General-purpose registry for navigation and info step lookups.
+export type UrbanZoneStepHandlerRegistry = Partial<
+  Record<UrbanZoneSiteCreationStep, InfoStepHandler | AnswerStepHandler<SchematizedAnswerStepId>>
+>;
+
+export const urbanZoneStepHandlerRegistry: UrbanZoneStepHandlerRegistry = {
+  ...answerStepHandlers,
   // Introduction
   URBAN_ZONE_SOILS_AND_SPACES_INTRODUCTION: SoilsAndSpacesIntroductionHandler,
   // Summary
   URBAN_ZONE_SOILS_SUMMARY: UrbanZoneSoilsSummaryHandler,
   URBAN_ZONE_SOILS_CARBON_STORAGE: UrbanZoneSoilsCarbonStorageHandler,
-  // Contamination
+  // Contamination introduction
   URBAN_ZONE_SOILS_CONTAMINATION_INTRODUCTION: UrbanZoneSoilsContaminationIntroductionHandler,
-  URBAN_ZONE_SOILS_CONTAMINATION: UrbanZoneSoilsContaminationHandler,
-  // Management
+  // Management introduction
   URBAN_ZONE_MANAGEMENT_INTRODUCTION: UrbanZoneManagementIntroductionHandler,
-  URBAN_ZONE_MANAGER: UrbanZoneManagerHandler,
-  URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FOOTPRINT: VacantCommercialPremisesFootprintHandler,
-  URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FLOOR_AREA: VacantCommercialPremisesFloorAreaHandler,
-  URBAN_ZONE_FULL_TIME_JOBS_EQUIVALENT: FullTimeJobsEquivalentHandler,
 };
