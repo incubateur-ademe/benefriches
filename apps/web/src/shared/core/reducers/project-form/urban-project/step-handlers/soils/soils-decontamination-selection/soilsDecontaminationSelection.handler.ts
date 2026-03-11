@@ -1,3 +1,5 @@
+import { computeDefaultDecontaminatedSurfaceArea } from "shared";
+
 import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
 
 import { getReinstatementCostsRecomputationRules } from "../../spaces/getCommonRules";
@@ -65,7 +67,10 @@ export const SoilsDecontaminationSelectionHandler: AnswerStepHandler<"URBAN_PROJ
           complete: [
             {
               stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA",
-              answers: { decontaminatedSurfaceArea: contaminatedSoilSurface * 0.25 },
+              answers: {
+                decontaminatedSurfaceArea:
+                  computeDefaultDecontaminatedSurfaceArea(contaminatedSoilSurface),
+              },
             },
           ],
           next: nextStep,

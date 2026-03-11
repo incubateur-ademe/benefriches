@@ -1,3 +1,5 @@
+import { computeDefaultDecontaminatedSurfaceArea } from "shared";
+
 import type { AnswerStepHandler } from "../../stepHandler.type";
 
 export const SoilsDecontaminationSelectionHandler: AnswerStepHandler<"RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION"> =
@@ -17,7 +19,11 @@ export const SoilsDecontaminationSelectionHandler: AnswerStepHandler<"RENEWABLE_
       }
       if (answers.decontaminationPlan === "unknown") {
         const contaminatedSoilSurface = context.siteData?.contaminatedSoilSurface ?? 0;
-        return { ...answers, decontaminatedSurfaceArea: contaminatedSoilSurface * 0.25 };
+        return {
+          ...answers,
+          decontaminatedSurfaceArea:
+            computeDefaultDecontaminatedSurfaceArea(contaminatedSoilSurface),
+        };
       }
       return answers;
     },

@@ -1,4 +1,5 @@
 import {
+  computeDefaultDecontaminatedSurfaceArea,
   FinancialAssistanceRevenue,
   ReinstatementExpense,
   sumListWithKey,
@@ -122,7 +123,7 @@ export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProje
       case "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION": {
         if (siteData.nature === "FRICHE") {
           const contaminatedSoilSurface = siteData?.contaminatedSoilSurface ?? 0;
-          const defaultValue = contaminatedSoilSurface * 0.25;
+          const defaultValue = computeDefaultDecontaminatedSurfaceArea(contaminatedSoilSurface);
           steps["URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION"] = {
             payload: {
               decontaminationPlan:
