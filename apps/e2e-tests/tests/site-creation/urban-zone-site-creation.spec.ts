@@ -70,12 +70,26 @@ test.describe("site creation (urban zone)", () => {
     await siteCreationPage.expectStepperCurrentStep("Gestion et activité");
     await urbanZoneSiteCreationPage.selectManager("activity_park_manager");
 
-    // --- Phase 5 and beyond: uncomment as each phase is implemented ---
+    await siteCreationPage.expectStepTitle(
+      "Quelle est l'emprise foncière des locaux commerciaux vacants ou en friche ?",
+    );
+    await siteCreationPage.expectStepperCurrentStep("Gestion et activité");
+    await urbanZoneSiteCreationPage.fillVacantCommercialPremisesFootprint(500);
+
+    await siteCreationPage.expectStepTitle(
+      "Quelle est la surface de plancher des locaux commerciaux vacants ou en friche ?",
+    );
+    await siteCreationPage.expectStepperCurrentStep("Gestion et activité");
+
+    await urbanZoneSiteCreationPage.fillVacantCommercialPremisesFloorArea(1_000);
+    await siteCreationPage.expectStepTitle(
+      "Combien y a t-il d'emplois équivalents temps plein dans la zone d'activité commerciale ?",
+    );
+    await siteCreationPage.expectStepperCurrentStep("Gestion et activité");
+    await urbanZoneSiteCreationPage.fillFullTimeJobsEquivalent(10);
+
+    // --- Phase 6 and beyond: uncomment as each phase is implemented ---
     /*
-     * await siteCreationPage.goToNextStep(); // vacant premises footprint (skip)
-     * await siteCreationPage.goToNextStep(); // vacant premises floor area (skip)
-     * await siteCreationPage.goToNextStep(); // FTE (skip)
-     *
      * // --- Phase 6: naming ---
      * await siteCreationPage.goToNextStep(); // naming introduction
      * await urbanZoneSiteCreationPage.fillSiteNameAndDescription("Zone d'activités de Chartres");

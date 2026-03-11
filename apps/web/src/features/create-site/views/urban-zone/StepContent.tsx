@@ -4,6 +4,7 @@ import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import { selectCurrentStep } from "../../core/createSite.reducer";
 import { getParcelTypeFromStepId } from "../../core/urban-zone/steps/per-parcel-soils/parcelStepMapping";
 import { HTML_MAIN_TITLE } from "../SiteCreationWizard";
+import FullTimeJobsEquivalentContainer from "./full-time-jobs-equivalent";
 import LandParcelBuildingsFloorAreaContainer from "./land-parcel-buildings-floor-area";
 import LandParcelSoilsDistributionContainer from "./land-parcel-soils-distribution";
 import LandParcelsSelectionContainer from "./land-parcels-selection";
@@ -15,6 +16,8 @@ import UrbanZoneSoilsCarbonStorageContainer from "./soils-carbon-storage";
 import SoilsContaminationContainer from "./soils-contamination";
 import SoilsContaminationIntroductionContainer from "./soils-contamination-introduction";
 import UrbanZoneSoilsSummaryContainer from "./soils-summary";
+import VacantCommercialPremisesFloorAreaContainer from "./vacant-commercial-premises-floor-area";
+import VacantCommercialPremisesFootprintContainer from "./vacant-commercial-premises-footprint";
 
 function SiteCreationUrbanZoneStepContent() {
   const currentStep = useAppSelector(selectCurrentStep);
@@ -81,6 +84,27 @@ function SiteCreationUrbanZoneStepContent() {
         <>
           <HtmlTitle>{`Gestionnaire - Zone urbaine - ${HTML_MAIN_TITLE}`}</HtmlTitle>
           <ManagerContainer />
+        </>
+      );
+    case "URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FOOTPRINT":
+      return (
+        <>
+          <HtmlTitle>{`Emprise foncière des locaux vacants - Zone urbaine - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <VacantCommercialPremisesFootprintContainer />
+        </>
+      );
+    case "URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FLOOR_AREA":
+      return (
+        <>
+          <HtmlTitle>{`Surface de plancher des locaux vacants - Zone urbaine - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <VacantCommercialPremisesFloorAreaContainer />
+        </>
+      );
+    case "URBAN_ZONE_FULL_TIME_JOBS_EQUIVALENT":
+      return (
+        <>
+          <HtmlTitle>{`Emplois en équivalent temps plein - Zone urbaine - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <FullTimeJobsEquivalentContainer />
         </>
       );
     // key={parcelType} forces React to remount the form when switching between parcel types.

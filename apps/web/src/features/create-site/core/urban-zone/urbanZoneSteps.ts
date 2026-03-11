@@ -3,7 +3,10 @@ import z from "zod";
 import { soilsContaminationSchema } from "./steps/contamination/soilsContamination.schema";
 import { landParcelsSelectionSchema } from "./steps/land-parcels/land-parcels-selection/landParcelsSelection.schema";
 import { landParcelsSurfaceDistributionSchema } from "./steps/land-parcels/land-parcels-surface-distribution/landParcelsSurfaceDistribution.schema";
+import { fullTimeJobsEquivalentSchema } from "./steps/management/full-time-jobs-equivalent/fullTimeJobsEquivalent.schema";
 import { managerSchema } from "./steps/management/manager/manager.schema";
+import { vacantCommercialPremisesFloorAreaSchema } from "./steps/management/vacant-commercial-premises-floor-area/vacantCommercialPremisesFloorArea.schema";
+import { vacantCommercialPremisesFootprintSchema } from "./steps/management/vacant-commercial-premises-footprint/vacantCommercialPremisesFootprint.schema";
 import { landParcelBuildingsFloorAreaSchema } from "./steps/per-parcel-soils/land-parcel-buildings-floor-area/landParcelBuildingsFloorArea.schema";
 import { landParcelSoilsDistributionSchema } from "./steps/per-parcel-soils/land-parcel-soils-distribution/landParcelSoilsDistribution.schema";
 
@@ -73,6 +76,9 @@ export const answersByStepSchemas = {
   URBAN_ZONE_SOILS_CONTAMINATION: soilsContaminationSchema,
   // Management
   URBAN_ZONE_MANAGER: managerSchema,
+  URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FOOTPRINT: vacantCommercialPremisesFootprintSchema,
+  URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FLOOR_AREA: vacantCommercialPremisesFloorAreaSchema,
+  URBAN_ZONE_FULL_TIME_JOBS_EQUIVALENT: fullTimeJobsEquivalentSchema,
 } as const;
 
 // Step IDs that currently have registered schemas

@@ -47,7 +47,7 @@ function LandParcelBuildingsFloorAreaForm({
       <form onSubmit={handleSubmit(onSubmit)}>
         <RowNumericInput
           label="Surface de plancher"
-          hintText={`en ${SQUARE_METERS_HTML_SYMBOL}`}
+          addonText={SQUARE_METERS_HTML_SYMBOL}
           nativeInputProps={register("buildingsFloorSurfaceArea", {
             required: "Ce champ est requis.",
             min: { value: 1, message: "La surface doit être supérieure à 0." },

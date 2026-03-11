@@ -2,8 +2,11 @@ import { UrbanZoneSoilsContaminationHandler } from "../steps/contamination/soils
 import { UrbanZoneSoilsContaminationIntroductionHandler } from "../steps/contamination/soilsContaminationIntroduction.handler";
 import { LandParcelsSelectionHandler } from "../steps/land-parcels/land-parcels-selection/landParcelsSelection.handler";
 import { LandParcelsSurfaceDistributionHandler } from "../steps/land-parcels/land-parcels-surface-distribution/landParcelsSurfaceDistribution.handler";
+import { FullTimeJobsEquivalentHandler } from "../steps/management/full-time-jobs-equivalent/fullTimeJobsEquivalent.handler";
 import { UrbanZoneManagementIntroductionHandler } from "../steps/management/management-introduction/managementIntroduction.handler";
 import { UrbanZoneManagerHandler } from "../steps/management/manager/manager.handler";
+import { VacantCommercialPremisesFloorAreaHandler } from "../steps/management/vacant-commercial-premises-floor-area/vacantCommercialPremisesFloorArea.handler";
+import { VacantCommercialPremisesFootprintHandler } from "../steps/management/vacant-commercial-premises-footprint/vacantCommercialPremisesFootprint.handler";
 import {
   createParcelBuildingsFloorAreaHandler,
   createParcelSoilsDistributionHandler,
@@ -52,4 +55,7 @@ export const urbanZoneStepHandlerRegistry: UrbanZoneStepHandlerRegistry = {
   // Management
   URBAN_ZONE_MANAGEMENT_INTRODUCTION: UrbanZoneManagementIntroductionHandler,
   URBAN_ZONE_MANAGER: UrbanZoneManagerHandler,
+  URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FOOTPRINT: VacantCommercialPremisesFootprintHandler,
+  URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FLOOR_AREA: VacantCommercialPremisesFloorAreaHandler,
+  URBAN_ZONE_FULL_TIME_JOBS_EQUIVALENT: FullTimeJobsEquivalentHandler,
 };
