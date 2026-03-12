@@ -35,9 +35,12 @@ function processShortcutInvalidations(
       );
 
       if (shortcutDependencyRules) {
-        newRules
-          .filter((r) => !shortcutDependencyRules.find((sdr) => sdr.stepId === r.stepId))
-          .push(...shortcutDependencyRules);
+        return [
+          ...newRules.filter(
+            (r) => !shortcutDependencyRules.find((sdr) => sdr.stepId === r.stepId),
+          ),
+          ...shortcutDependencyRules,
+        ];
       }
       return newRules;
     },
