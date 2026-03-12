@@ -21,10 +21,10 @@ Run the following command based on the arguments:
 
 ```bash
 # For new branches (default behavior)
-./scripts/create-worktree.sh <branch-name> --new-branch
+scripts/create-worktree.sh <branch-name> --new-branch
 
 # For existing branches (if user specifies --existing)
-./scripts/create-worktree.sh <branch-name>
+scripts/create-worktree.sh <branch-name>
 ```
 
 ### Branch Naming Convention
