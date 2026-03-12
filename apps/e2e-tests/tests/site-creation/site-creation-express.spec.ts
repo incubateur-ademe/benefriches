@@ -21,12 +21,18 @@ test.describe("site creation (express mode)", () => {
     await siteCreationPage.selectCreateMode("express");
 
     // Type de friche
+    await siteCreationPage.expectStepTitle("De quel type de friche s'agit-il ?");
+    await siteCreationPage.expectStepperCurrentStep("Introduction");
     await siteCreationPage.selectFricheActivity("INDUSTRY");
 
     // Adresse
+    await siteCreationPage.expectStepTitle("Où est située la friche ?");
+    await siteCreationPage.expectStepperCurrentStep("Adresse");
     await siteCreationPage.fillAddress("Blajan");
 
     // Surface du site
+    await siteCreationPage.expectStepTitle("Quelle est la superficie totale de la friche ?");
+    await siteCreationPage.expectStepperCurrentStep("Superficie");
     await siteCreationPage.fillSurfaceArea(10000);
 
     // Succès
@@ -61,12 +67,18 @@ test.describe("site creation (express mode)", () => {
     await siteCreationPage.selectCreateMode("express");
 
     // Type d'exploitation agricole
+    await siteCreationPage.expectStepTitle("De quel type d'exploitation agricole s'agit-il");
+    await siteCreationPage.expectStepperCurrentStep("Introduction");
     await siteCreationPage.selectAgriculturalActivity("POLYCULTURE_AND_LIVESTOCK");
 
     // Adresse
+    await siteCreationPage.expectStepTitle("Où est située l'exploitation agricole ?");
+    await siteCreationPage.expectStepperCurrentStep("Adresse");
     await siteCreationPage.fillAddress("Lyon");
 
     // Surface du site
+    await siteCreationPage.expectStepTitle("Quelle est la superficie totale de l'exploitation ?");
+    await siteCreationPage.expectStepperCurrentStep("Superficie");
     await siteCreationPage.fillSurfaceArea(50000);
 
     // Succès
@@ -100,12 +112,18 @@ test.describe("site creation (express mode)", () => {
     await siteCreationPage.selectCreateMode("express");
 
     // Type d'espace naturel
+    await siteCreationPage.expectStepTitle("De quel type d'espace naturel s'agit-il ?");
+    await siteCreationPage.expectStepperCurrentStep("Introduction");
     await siteCreationPage.selectNaturalAreaType("FOREST");
 
     // Adresse
+    await siteCreationPage.expectStepTitle("Où est situé l'espace naturel ?");
+    await siteCreationPage.expectStepperCurrentStep("Adresse");
     await siteCreationPage.fillAddress("Fontainebleau");
 
     // Surface du site
+    await siteCreationPage.expectStepTitle("Quelle est la superficie totale de l'espace naturel ?");
+    await siteCreationPage.expectStepperCurrentStep("Superficie");
     await siteCreationPage.fillSurfaceArea(25000);
 
     // Succès
