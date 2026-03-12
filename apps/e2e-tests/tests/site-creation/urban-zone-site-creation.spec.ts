@@ -88,16 +88,21 @@ test.describe("site creation (urban zone)", () => {
     await siteCreationPage.expectStepperCurrentStep("Gestion et activité");
     await urbanZoneSiteCreationPage.fillFullTimeJobsEquivalent(10);
 
-    // --- Phase 6 and beyond: uncomment as each phase is implemented ---
-    /*
-     * // --- Phase 6: naming ---
-     * await siteCreationPage.goToNextStep(); // naming introduction
-     * await urbanZoneSiteCreationPage.fillSiteNameAndDescription("Zone d'activités de Chartres");
-     *
-     * // --- Phase 6: final summary + creation ---
-     * await urbanZoneSiteCreationPage.expectFinalSummary();
-     * await urbanZoneSiteCreationPage.createSite();
-     * await urbanZoneSiteCreationPage.expectCreationSuccess("Zone d'activités de Chartres");
-     */
+    // --- Phase 6: naming ---
+    await siteCreationPage.expectStepTitle("Quelle est l'identité de ce site ?");
+    await siteCreationPage.expectStepperCurrentStep("Dénomination");
+    await siteCreationPage.goToNextStep();
+
+    await siteCreationPage.expectStepTitle("Dénomination du site");
+    await siteCreationPage.expectGeneratedSiteName("Zone urbaine de Chartres");
+    await urbanZoneSiteCreationPage.fillSiteNameAndDescription(
+      "ZAE Chartres",
+      "Zone d'activités économiques sur la commune de Chartres.",
+    );
+
+    // --- Phase 6: final summary + creation ---
+    await urbanZoneSiteCreationPage.expectFinalSummary();
+    await urbanZoneSiteCreationPage.createSite();
+    await urbanZoneSiteCreationPage.expectCreationSuccess("ZAE Chartres");
   });
 });

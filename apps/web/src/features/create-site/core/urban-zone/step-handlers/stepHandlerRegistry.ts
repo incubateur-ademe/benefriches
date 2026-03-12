@@ -1,5 +1,7 @@
 import { UrbanZoneSoilsContaminationHandler } from "../steps/contamination/soilsContamination.handler";
 import { UrbanZoneSoilsContaminationIntroductionHandler } from "../steps/contamination/soilsContaminationIntroduction.handler";
+import { UrbanZoneCreationResultHandler } from "../steps/creation-result/creationResult.handler";
+import { UrbanZoneFinalSummaryHandler } from "../steps/final-summary/finalSummary.handler";
 import { LandParcelsSelectionHandler } from "../steps/land-parcels/land-parcels-selection/landParcelsSelection.handler";
 import { LandParcelsSurfaceDistributionHandler } from "../steps/land-parcels/land-parcels-surface-distribution/landParcelsSurfaceDistribution.handler";
 import { FullTimeJobsEquivalentHandler } from "../steps/management/full-time-jobs-equivalent/fullTimeJobsEquivalent.handler";
@@ -7,6 +9,8 @@ import { UrbanZoneManagementIntroductionHandler } from "../steps/management/mana
 import { UrbanZoneManagerHandler } from "../steps/management/manager/manager.handler";
 import { VacantCommercialPremisesFloorAreaHandler } from "../steps/management/vacant-commercial-premises-floor-area/vacantCommercialPremisesFloorArea.handler";
 import { VacantCommercialPremisesFootprintHandler } from "../steps/management/vacant-commercial-premises-footprint/vacantCommercialPremisesFootprint.handler";
+import { UrbanZoneNamingHandler } from "../steps/naming/naming.handler";
+import { UrbanZoneNamingIntroductionHandler } from "../steps/naming/namingIntroduction.handler";
 import {
   createParcelBuildingsFloorAreaHandler,
   createParcelSoilsDistributionHandler,
@@ -53,6 +57,8 @@ export const answerStepHandlers: Partial<AnswerStepHandlerMap> = {
   URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FOOTPRINT: VacantCommercialPremisesFootprintHandler,
   URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FLOOR_AREA: VacantCommercialPremisesFloorAreaHandler,
   URBAN_ZONE_FULL_TIME_JOBS_EQUIVALENT: FullTimeJobsEquivalentHandler,
+  // Naming
+  URBAN_ZONE_NAMING: UrbanZoneNamingHandler,
 };
 
 // General-purpose registry for navigation and info step lookups.
@@ -71,4 +77,9 @@ export const urbanZoneStepHandlerRegistry: UrbanZoneStepHandlerRegistry = {
   URBAN_ZONE_SOILS_CONTAMINATION_INTRODUCTION: UrbanZoneSoilsContaminationIntroductionHandler,
   // Management introduction
   URBAN_ZONE_MANAGEMENT_INTRODUCTION: UrbanZoneManagementIntroductionHandler,
+  // Naming introduction
+  URBAN_ZONE_NAMING_INTRODUCTION: UrbanZoneNamingIntroductionHandler,
+  // Final summary and creation result
+  URBAN_ZONE_FINAL_SUMMARY: UrbanZoneFinalSummaryHandler,
+  URBAN_ZONE_CREATION_RESULT: UrbanZoneCreationResultHandler,
 };

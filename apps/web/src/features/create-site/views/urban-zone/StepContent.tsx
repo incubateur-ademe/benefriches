@@ -4,6 +4,8 @@ import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import { selectCurrentStep } from "../../core/createSite.reducer";
 import { getParcelTypeFromStepId } from "../../core/urban-zone/steps/per-parcel-soils/parcelStepMapping";
 import { HTML_MAIN_TITLE } from "../SiteCreationWizard";
+import UrbanZoneCreationResultContainer from "./creation-result";
+import UrbanZoneFinalSummaryContainer from "./final-summary";
 import FullTimeJobsEquivalentContainer from "./full-time-jobs-equivalent";
 import LandParcelBuildingsFloorAreaContainer from "./land-parcel-buildings-floor-area";
 import LandParcelSoilsDistributionContainer from "./land-parcel-soils-distribution";
@@ -11,6 +13,8 @@ import LandParcelsSelectionContainer from "./land-parcels-selection";
 import LandParcelsSurfaceDistributionContainer from "./land-parcels-surface-distribution";
 import ManagementIntroductionContainer from "./management-introduction";
 import ManagerContainer from "./manager";
+import NamingContainer from "./naming";
+import NamingIntroductionContainer from "./naming-introduction";
 import SoilsAndSpacesIntroductionContainer from "./soils-and-spaces-introduction";
 import UrbanZoneSoilsCarbonStorageContainer from "./soils-carbon-storage";
 import SoilsContaminationContainer from "./soils-contamination";
@@ -105,6 +109,34 @@ function SiteCreationUrbanZoneStepContent() {
         <>
           <HtmlTitle>{`Emplois en équivalent temps plein - Zone urbaine - ${HTML_MAIN_TITLE}`}</HtmlTitle>
           <FullTimeJobsEquivalentContainer />
+        </>
+      );
+    case "URBAN_ZONE_NAMING_INTRODUCTION":
+      return (
+        <>
+          <HtmlTitle>{`Introduction - Dénomination - Zone urbaine - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <NamingIntroductionContainer />
+        </>
+      );
+    case "URBAN_ZONE_NAMING":
+      return (
+        <>
+          <HtmlTitle>{`Dénomination du site - Zone urbaine - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <NamingContainer />
+        </>
+      );
+    case "URBAN_ZONE_FINAL_SUMMARY":
+      return (
+        <>
+          <HtmlTitle>{`Récapitulatif - Zone urbaine - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <UrbanZoneFinalSummaryContainer />
+        </>
+      );
+    case "URBAN_ZONE_CREATION_RESULT":
+      return (
+        <>
+          <HtmlTitle>{`Création du site - Zone urbaine - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <UrbanZoneCreationResultContainer />
         </>
       );
     // key={parcelType} forces React to remount the form when switching between parcel types.

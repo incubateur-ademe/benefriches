@@ -310,6 +310,10 @@ export class SiteCreationPage {
     await this.page.getByRole("button", { name: /Valider|Passer/ }).click();
   }
 
+  async expectGeneratedSiteName(name: string): Promise<void> {
+    await expect(this.page.getByLabel("Nom du site")).toHaveValue(name);
+  }
+
   async fillSiteNameAndDescription(name: string, description?: string): Promise<void> {
     await this.page.getByLabel("Nom du site").fill(name);
     if (description) {

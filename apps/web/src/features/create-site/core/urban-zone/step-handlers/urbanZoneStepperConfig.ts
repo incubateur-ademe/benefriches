@@ -2,6 +2,8 @@ import z from "zod";
 
 import { soilsContaminationStepperConfig } from "../steps/contamination/soilsContamination.stepperConfig";
 import { soilsContaminationIntroductionStepperConfig } from "../steps/contamination/soilsContaminationIntroduction.stepperConfig";
+import { creationResultStepperConfig } from "../steps/creation-result/creationResult.stepperConfig";
+import { finalSummaryStepperConfig } from "../steps/final-summary/finalSummary.stepperConfig";
 import { landParcelsSelectionStepperConfig } from "../steps/land-parcels/land-parcels-selection/landParcelsSelection.stepperConfig";
 import { landParcelsSurfaceDistributionStepperConfig } from "../steps/land-parcels/land-parcels-surface-distribution/landParcelsSurfaceDistribution.stepperConfig";
 import { fullTimeJobsEquivalentStepperConfig } from "../steps/management/full-time-jobs-equivalent/fullTimeJobsEquivalent.stepperConfig";
@@ -9,6 +11,8 @@ import { managementIntroductionStepperConfig } from "../steps/management/managem
 import { managerStepperConfig } from "../steps/management/manager/manager.stepperConfig";
 import { vacantCommercialPremisesFloorAreaStepperConfig } from "../steps/management/vacant-commercial-premises-floor-area/vacantCommercialPremisesFloorArea.stepperConfig";
 import { vacantCommercialPremisesFootprintStepperConfig } from "../steps/management/vacant-commercial-premises-footprint/vacantCommercialPremisesFootprint.stepperConfig";
+import { namingStepperConfig } from "../steps/naming/naming.stepperConfig";
+import { namingIntroductionStepperConfig } from "../steps/naming/namingIntroduction.stepperConfig";
 import { parcelBuildingsFloorAreaStepperConfig } from "../steps/per-parcel-soils/parcelBuildingsFloorArea.stepperConfig";
 import { parcelSoilsDistributionStepperConfig } from "../steps/per-parcel-soils/parcelSoilsDistribution.stepperConfig";
 import { soilsAndSpacesIntroductionStepperConfig } from "../steps/soils-and-spaces-introduction/soilsAndSpacesIntroduction.stepperConfig";
@@ -83,11 +87,11 @@ export const URBAN_ZONE_STEP_TO_GROUP: Record<
   URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FLOOR_AREA: vacantCommercialPremisesFloorAreaStepperConfig,
   URBAN_ZONE_FULL_TIME_JOBS_EQUIVALENT: fullTimeJobsEquivalentStepperConfig,
 
-  // Naming (not yet implemented)
-  URBAN_ZONE_NAMING_INTRODUCTION: { groupId: "NAMING" },
-  URBAN_ZONE_NAMING: { groupId: "NAMING" },
+  // Naming
+  URBAN_ZONE_NAMING_INTRODUCTION: namingIntroductionStepperConfig,
+  URBAN_ZONE_NAMING: namingStepperConfig,
 
-  // Summary (not yet implemented)
-  URBAN_ZONE_FINAL_SUMMARY: { groupId: "SUMMARY" },
-  URBAN_ZONE_CREATION_RESULT: { groupId: "SUMMARY" },
+  // Summary
+  URBAN_ZONE_FINAL_SUMMARY: finalSummaryStepperConfig,
+  URBAN_ZONE_CREATION_RESULT: creationResultStepperConfig,
 };

@@ -172,7 +172,6 @@ export class UrbanZoneSiteCreationPage {
   }
 
   // --- Phase 6: naming + summary ---
-
   async fillSiteNameAndDescription(name: string, description?: string): Promise<void> {
     await this.page.getByLabel("Nom du site").fill(name);
     if (description) {

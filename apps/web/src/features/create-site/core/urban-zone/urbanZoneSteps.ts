@@ -7,6 +7,7 @@ import { fullTimeJobsEquivalentSchema } from "./steps/management/full-time-jobs-
 import { managerSchema } from "./steps/management/manager/manager.schema";
 import { vacantCommercialPremisesFloorAreaSchema } from "./steps/management/vacant-commercial-premises-floor-area/vacantCommercialPremisesFloorArea.schema";
 import { vacantCommercialPremisesFootprintSchema } from "./steps/management/vacant-commercial-premises-footprint/vacantCommercialPremisesFootprint.schema";
+import { namingSchema } from "./steps/naming/naming.schema";
 import { landParcelBuildingsFloorAreaSchema } from "./steps/per-parcel-soils/land-parcel-buildings-floor-area/landParcelBuildingsFloorArea.schema";
 import { landParcelSoilsDistributionSchema } from "./steps/per-parcel-soils/land-parcel-soils-distribution/landParcelSoilsDistribution.schema";
 
@@ -79,6 +80,8 @@ export const answersByStepSchemas = {
   URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FOOTPRINT: vacantCommercialPremisesFootprintSchema,
   URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FLOOR_AREA: vacantCommercialPremisesFloorAreaSchema,
   URBAN_ZONE_FULL_TIME_JOBS_EQUIVALENT: fullTimeJobsEquivalentSchema,
+  // Naming
+  URBAN_ZONE_NAMING: namingSchema,
 } as const;
 
 // Step IDs that currently have registered schemas

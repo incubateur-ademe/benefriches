@@ -22,7 +22,7 @@ const SiteNamingIntroduction = ({ onNext, onBack }: Props) => {
       </EditorialPageText>
       <EditorialPageButtonsSection>
         <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
-      </EditorialPageButtonsSection>{" "}
+      </EditorialPageButtonsSection>
     </EditorialPageLayout>
   );
 };
