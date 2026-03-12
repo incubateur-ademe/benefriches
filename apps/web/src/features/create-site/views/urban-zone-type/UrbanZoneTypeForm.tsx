@@ -1,4 +1,5 @@
 import { Controller, useForm } from "react-hook-form";
+import { getLabelForUrbanZoneType } from "shared";
 import type { UrbanZoneType } from "shared";
 
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
@@ -16,28 +17,28 @@ type Option = {
 const options: Option[] = [
   {
     value: "ECONOMIC_ACTIVITY_ZONE",
-    title: "Zone d'activités économiques",
+    title: getLabelForUrbanZoneType("ECONOMIC_ACTIVITY_ZONE"),
     description: "Industrielle, commerciale, tertiaire ou mixte",
     imgSrc: "/img/pictograms/urban-zone-types/economic-activity-zone.svg",
     disabled: false,
   },
   {
     value: "RESIDENTIAL_ZONE",
-    title: "Zone d'habitation",
+    title: getLabelForUrbanZoneType("RESIDENTIAL_ZONE"),
     description: "Pavillons, grand ensemble, îlot ancien dégradé",
     imgSrc: "/img/pictograms/urban-zone-types/residential-zone.svg",
     disabled: true,
   },
   {
     value: "PUBLIC_FACILITY",
-    title: "Équipement public",
+    title: getLabelForUrbanZoneType("PUBLIC_FACILITY"),
     description: "Établissement scolaire, équipement sportif, bâtiment public...",
     imgSrc: "/img/pictograms/urban-zone-types/public-facility.svg",
     disabled: true,
   },
   {
     value: "MIXED_URBAN_ZONE",
-    title: "Zone urbaine mixte",
+    title: getLabelForUrbanZoneType("MIXED_URBAN_ZONE"),
     description: "Zone d'activités économiques, d'habitation, équipement public...",
     imgSrc: "/img/pictograms/urban-zone-types/mixed-urban-zone.svg",
     disabled: true,
