@@ -58,4 +58,33 @@ describe("Site name generation", () => {
       }),
     ).toEqual("Friche du Mans");
   });
+
+  it("should generate 'Zone urbaine de Chartres' when no urban zone type provided", () => {
+    expect(
+      generateSiteName({
+        nature: "URBAN_ZONE",
+        cityName: "Chartres",
+      }),
+    ).toEqual("Zone urbaine de Chartres");
+  });
+
+  it("should generate 'Zone d'activités économiques de Chartres' for economic activity zone", () => {
+    expect(
+      generateSiteName({
+        nature: "URBAN_ZONE",
+        urbanZone: "ECONOMIC_ACTIVITY_ZONE",
+        cityName: "Chartres",
+      }),
+    ).toEqual("Zone d'activités économiques de Chartres");
+  });
+
+  it("should generate 'Zone d'habitation d'Angers' for residential zone", () => {
+    expect(
+      generateSiteName({
+        nature: "URBAN_ZONE",
+        urbanZone: "RESIDENTIAL_ZONE",
+        cityName: "Angers",
+      }),
+    ).toEqual("Zone d'habitation d'Angers");
+  });
 });
