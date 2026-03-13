@@ -1165,7 +1165,7 @@ describe("Sites controller", () => {
       const { accessToken } = await authenticateUser(app)(user);
 
       const siteId = uuid();
-      // City code 75056 (Paris) has propertyValueMedianPricePerSquareMeters = 10540 €/m² in seeded city_stats
+      // City code 75056 (Paris) has dvf_pxm2_median_terrain = 6785 €/m² in seeded city_stats
       await sqlConnection("sites").insert({
         id: siteId,
         created_by: user.id,
@@ -1182,7 +1182,7 @@ describe("Sites controller", () => {
         site_id: siteId,
         value: "10 Rue Test 75001 Paris",
         city: "Paris",
-        city_code: "75056", // Paris - 10540 €/m² from seeded city_stats
+        city_code: "75056", // Paris - 6785 €/m² terrain price from seeded city_stats
         post_code: "75001",
         ban_id: "75001_test",
         lat: 48.856614,
@@ -1195,11 +1195,108 @@ describe("Sites controller", () => {
         .send();
 
       expect(response.status).toEqual(200);
-      // sellingPrice = 1000 * 10540 = 10_540_000
-      // propertyTransferDuties = 10_540_000 * 0.0581 (TRANSFER_TAX_PERCENT_PER_TRANSACTION) = 612_374
+      // sellingPrice = 1000 * 6785 = 6_785_000
+      // propertyTransferDuties = Math.round(6_785_000 * 0.0581) = 394_209
       expect(response.body).toEqual<GetSiteRealEstateValuationResponseDto>({
-        sellingPrice: 10_540_000,
-        propertyTransferDuties: 612_374,
+        sellingPrice: 6_785_000,
+        propertyTransferDuties: 394_209,
+      });
+    });
+
+    it("gets a 200 response with land valuation when terrain data exists", async () => {
+      const user = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+
+      const siteId = uuid();
+      const cityCode = "75056"; // Paris
+
+      // Seed terrain data for Paris
+      await sqlConnection("city_stats")
+        .where("city_code", cityCode)
+        .update({ dvf_pxm2_median_terrain: 800 });
+
+      await sqlConnection("sites").insert({
+        id: siteId,
+        created_by: user.id,
+        name: "Test Site Land",
+        nature: "FRICHE",
+        surface_area: 1000,
+        owner_structure_type: "company",
+        created_at: new Date(),
+        friche_activity: "INDUSTRY",
+      });
+
+      await sqlConnection("addresses").insert({
+        id: uuid(),
+        site_id: siteId,
+        value: "10 Rue Test 75001 Paris",
+        city: "Paris",
+        city_code: cityCode,
+        post_code: "75001",
+        ban_id: "75001_test",
+        lat: 48.856614,
+        long: 2.352222,
+      });
+
+      const response = await supertest(app.getHttpServer())
+        .get(`/api/sites/${siteId}/real-estate-valuation`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send();
+
+      expect(response.status).toEqual(200);
+      // sellingPrice = 1000 * 800 = 800_000
+      // propertyTransferDuties = 800_000 * 0.0581 = 46_480
+      expect(response.body).toEqual<GetSiteRealEstateValuationResponseDto>({
+        sellingPrice: 800_000,
+        propertyTransferDuties: 46_480,
+      });
+    });
+
+    it("gets a 404 response when no terrain data is available", async () => {
+      const user = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+
+      const siteId = uuid();
+      const cityCode = "75056"; // Paris
+
+      // Ensure no terrain data - use raw to set NULL since Knex rejects undefined
+      await sqlConnection.raw(
+        "UPDATE city_stats SET dvf_pxm2_median_terrain = NULL WHERE city_code = ?",
+        [cityCode],
+      );
+
+      await sqlConnection("sites").insert({
+        id: siteId,
+        created_by: user.id,
+        name: "Test Site No Land",
+        nature: "FRICHE",
+        surface_area: 1000,
+        owner_structure_type: "company",
+        created_at: new Date(),
+        friche_activity: "INDUSTRY",
+      });
+
+      await sqlConnection("addresses").insert({
+        id: uuid(),
+        site_id: siteId,
+        value: "10 Rue Test 75001 Paris",
+        city: "Paris",
+        city_code: cityCode,
+        post_code: "75001",
+        ban_id: "75001_test",
+        lat: 48.856614,
+        long: 2.352222,
+      });
+
+      const response = await supertest(app.getHttpServer())
+        .get(`/api/sites/${siteId}/real-estate-valuation`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send();
+
+      expect(response.status).toEqual(404);
+      expect(response.body).toEqual({
+        error: "VALUATION_DATA_NOT_AVAILABLE",
+        message: `Valuation data for site with ID ${siteId} not available`,
       });
     });
   });

@@ -576,7 +576,7 @@ export class ComputeProjectUrbanSprawlImpactsComparisonUseCase implements UseCas
 
     if (!relatedSite) return fail("SiteNotFound");
 
-    const { surfaceAreaSquareMeters, population, propertyValueMedianPricePerSquareMeters } =
+    const { surfaceAreaSquareMeters, population, residentialPropertyMedianPricePerSquareMeters } =
       await this.cityStatsQuery.getCityStats(relatedSite.address.cityCode);
 
     const comparisonSite = (() => {
@@ -703,7 +703,7 @@ export class ComputeProjectUrbanSprawlImpactsComparisonUseCase implements UseCas
     const siteCityData = {
       citySquareMetersSurfaceArea: surfaceAreaSquareMeters,
       cityPopulation: population,
-      cityPropertyValuePerSquareMeter: propertyValueMedianPricePerSquareMeters,
+      cityPropertyValuePerSquareMeter: residentialPropertyMedianPricePerSquareMeters,
     };
 
     const baseSiteCityData: SiteCityDataProps = (() => {

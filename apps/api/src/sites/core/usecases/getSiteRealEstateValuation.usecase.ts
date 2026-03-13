@@ -13,7 +13,7 @@ type Request = {
 
 type GetSiteRealEstateValuationResult = TResult<
   GetSiteRealEstateValuationResponseDto,
-  "SiteNotFound"
+  "SiteNotFound" | "ValuationDataNotAvailable"
 >;
 
 export class GetSiteRealEstateValuationUseCase implements UseCase<
@@ -34,7 +34,11 @@ export class GetSiteRealEstateValuationUseCase implements UseCase<
 
     const cityStats = await this.cityStatsProvider.getCityStats(siteData.cityCode);
 
-    const sellingPrice = siteData.surfaceArea * cityStats.propertyValueMedianPricePerSquareMeters;
+    if (!cityStats.landValueMedianPricePerSquareMeters) {
+      return fail("ValuationDataNotAvailable");
+    }
+
+    const sellingPrice = siteData.surfaceArea * cityStats.landValueMedianPricePerSquareMeters;
     const propertyTransferDuties = computePropertyTransferDutiesFromSellingPrice(sellingPrice);
 
     return success({
