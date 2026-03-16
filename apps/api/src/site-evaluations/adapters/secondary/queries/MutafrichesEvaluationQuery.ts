@@ -28,7 +28,7 @@ export class MutafrichesEvaluationQuery implements MutabilityEvaluationQuery {
     return lastValueFrom(
       this.httpService
         .get(
-          `${this.configService.getOrThrow<string>("MUTAFRICHES_API_URL")}/friches/evaluations/${mutafrichesId}`,
+          `${this.configService.getOrThrow<string>("MUTAFRICHES_API_URL")}/evaluation/${mutafrichesId}`,
         )
         .pipe(
           map(({ data: result }: { data: MutafrichesEvaluationResultResponse }) => {

@@ -68,9 +68,7 @@ export class HttpReconversionCompatibilityEvaluation implements ReconversionComp
   async getEvaluationResults(
     mutafrichesId: string,
   ): Promise<ReconversionCompatibilityEvaluationResults | null> {
-    const response = await fetch(
-      `${BENEFRICHES_ENV.mutafrichesUrl}/friches/evaluations/${mutafrichesId}`,
-    );
+    const response = await fetch(`${BENEFRICHES_ENV.mutafrichesUrl}/evaluation/${mutafrichesId}`);
     if (!response.ok) return null;
 
     const json = (await response.json()) as MutafrichesEvaluationResultResponse;
