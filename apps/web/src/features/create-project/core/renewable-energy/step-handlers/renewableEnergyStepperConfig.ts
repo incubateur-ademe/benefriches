@@ -39,7 +39,7 @@ import { summarySoilsStepperConfig } from "./summary/summary-soils/summarySoils.
 
 export type RenewableEnergyStepGroupId =
   | "PHOTOVOLTAIC_PARAMETERS"
-  | "SOILS_TRANSFORMATION"
+  | "SITE_WORKS"
   | "STAKEHOLDERS"
   | "EXPENSES_AND_REVENUE"
   | "SCHEDULE"
@@ -49,7 +49,7 @@ export type RenewableEnergyStepGroupId =
 
 export const RENEWABLE_ENERGY_STEP_GROUP_IDS = [
   "PHOTOVOLTAIC_PARAMETERS",
-  "SOILS_TRANSFORMATION",
+  "SITE_WORKS",
   "STAKEHOLDERS",
   "EXPENSES_AND_REVENUE",
   "SCHEDULE",
@@ -60,7 +60,7 @@ export const RENEWABLE_ENERGY_STEP_GROUP_IDS = [
 
 export const RENEWABLE_ENERGY_STEP_GROUP_LABELS: Record<RenewableEnergyStepGroupId, string> = {
   PHOTOVOLTAIC_PARAMETERS: "Paramètres du projet",
-  SOILS_TRANSFORMATION: "Transformation des sols",
+  SITE_WORKS: "Travaux",
   STAKEHOLDERS: "Acteurs",
   EXPENSES_AND_REVENUE: "Dépenses et recettes",
   SCHEDULE: "Calendrier",
