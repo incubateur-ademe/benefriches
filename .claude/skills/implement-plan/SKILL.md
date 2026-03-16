@@ -1,6 +1,10 @@
 ---
 name: implement-plan
-description: Implement a feature plan from a spec file, following test-first methodology and tracking all deliverables
+description: >
+  Implement a feature plan from a spec file, following test-first methodology and tracking all
+  deliverables. Use this skill whenever the user says "implement this plan", "start working on
+  specs/...", "let's build the feature from the spec", "execute the plan", or points at a plan
+  file and says to build it. Don't wait for explicit "implement-plan" keywords.
 user-invocable: true
 ---
 
@@ -15,79 +19,60 @@ $ARGUMENTS
 
 ---
 
-## Phase 1: Parse Deliverables
+## Phase 1: Understand Before Acting
 
-Before writing any code, extract ALL deliverables from the plan:
+Before writing any code:
 
-1. Read the ENTIRE plan from start to finish
-2. Find the "Files to Deliver" section (or extract from "Step by Step Tasks" if not present)
-3. **Detect database work**: If the plan mentions any of these, use `/create-database-migration` skill:
-   - Database migrations (new tables, columns, schema changes)
-   - Updates to `tableTypes.d.ts`
-   - SQL schema modifications
-   - Data migrations
-4. Create a structured inventory using TodoWrite:
-
-   **Test Files** (will be implemented first):
-   - Create a todo for each test file with format: "Create test: `path/to/file.spec.ts`"
-   - Under each test file, note the test cases it must contain
-
-   **Production Files** (will be implemented after tests):
-   - Create a todo for each new file: "Create: `path/to/file.ts`"
-   - Create a todo for each modification: "Modify: `path/to/file.ts` - <what to change>"
-
-   **Validation**:
-   - Create a todo for each validation command from the plan
-
-5. Review the inventory: Does it capture EVERYTHING from the plan? If not, add missing items.
+1. **Read the ENTIRE plan** from start to finish
+2. **Determine scope** from the plan's Scope section (API-only / Web-only / Full-stack / Shared)
+3. **Load relevant context** based on scope — this is critical to implementing patterns correctly:
+   - API scope: read `<root>/.claude/context/api/00-overview.md` + any specific pattern files the plan references
+   - Web scope: read `<root>/apps/web/CLAUDE.md`
+   - Full-stack: read both
+   - Shared: read `<root>/packages/shared/CLAUDE.md`
+4. **Detect database work**: if the plan mentions migrations, new tables, schema changes, or `tableTypes.d.ts` — flag this now. You'll need to invoke `/create-database-migration` at the appropriate step (never create migration files manually).
+5. **Build a todo inventory** using TodoWrite, based on the "Step by Step Tasks" section (preferred) or "Files to Deliver" as fallback:
+   - One todo per step from the plan (not per file — preserve the plan's ordering intent)
+   - Add a final todo: "Final verification"
 
 ---
 
-## Phase 2: Implement Tests First
+## Phase 2: Implement Step by Step
 
-For each test file in your inventory:
+Work through the plan's **Step by Step Tasks** in order. For each step:
 
-1. Mark the test todo as `in_progress`
-2. Create the test file with ALL test cases described in the plan
-3. Tests should initially fail (production code doesn't exist yet) - this is expected
-4. Mark the test todo as `completed`
+1. Mark the step todo as `in_progress`
+2. **If the step introduces new functionality:**
+   - Write the test(s) first — they should fail initially (no production code yet)
+   - Implement the production code to make the tests pass
+   - Run the step's specific test command from the plan
+3. **If the step is structural** (adding types, registering handlers, updating config with no new logic):
+   - Implement directly, no test file needed
+4. Run the incremental quality check for the affected app after each step:
+   - Web: `pnpm --filter web typecheck && pnpm --filter web lint`
+   - API: `pnpm --filter api typecheck && pnpm --filter api lint`
+   - Shared: `pnpm --filter shared build && pnpm --filter api typecheck && pnpm --filter web typecheck`
+5. Fix any type or lint errors before moving to the next step
+6. Mark the step todo as `completed`
 
-WHY TESTS FIRST:
-- Tests act as a contract that forces production code to exist
-- Forgotten tests = forgotten functionality (caught immediately)
-- Provides deterministic verification that all production code is generated
-
----
-
-## Phase 3: Implement Production Code
-
-For each production file in your inventory:
-
-1. Mark the file todo as `in_progress`
-2. Implement the code following the plan's specifications
-3. Run related tests to verify the implementation
-4. Tests should now pass - if they don't, fix the implementation
-5. Mark the file todo as `completed`
-
-Continue until all production todos are complete AND all tests pass.
+The reason to work step by step (rather than writing all tests then all production code) is that the plan's ordering encodes real dependencies — implementing out of order causes cascading failures that are harder to debug.
 
 ---
 
-## Phase 4: Final Verification
+## Phase 3: Final Verification
 
-Before reporting:
-
-1. Re-read the plan's "Files to Deliver" or "Step by Step Tasks" section
-2. Cross-check: Does every listed file exist?
-3. Cross-check: Does every listed test case exist and pass?
-4. Run ALL validation commands from the plan
+1. Re-read the plan's "Files to Deliver" section
+2. Cross-check: does every listed file exist?
+3. Cross-check: does every listed test case exist and pass?
+4. Run ALL validation commands from the plan's "Validation Commands" section
 5. If anything is missing, go back and complete it
+6. Invoke the `code-reviewer` skill
 
 ---
 
 ## Report
 
-Only after Phase 4 is complete:
+Only after Phase 3 is complete:
 
 1. Summarize the work in a concise bullet point list
 2. Show files and lines changed: `git diff --stat`
