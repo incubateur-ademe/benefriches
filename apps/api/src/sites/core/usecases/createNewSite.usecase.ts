@@ -48,6 +48,7 @@ export class CreateNewCustomSiteUseCase implements UseCase<Request, CreateNewCus
       creationMode: "custom",
       createdAt: this.dateProvider.now(),
       createdBy,
+      status: "active",
     };
 
     await this.sitesRepository.save(siteEntity);

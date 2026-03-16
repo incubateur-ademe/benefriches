@@ -56,6 +56,7 @@ describe("CreateNewExpressSite Use case", () => {
         createdBy: "blabla",
         creationMode: "custom",
         createdAt: new Date(),
+        status: "active",
       },
     ]);
 
@@ -147,6 +148,7 @@ describe("CreateNewExpressSite Use case", () => {
           createdAt: fakeNow,
           createdBy: "user-id-123",
           creationMode: "express",
+          status: "active",
           nature: "AGRICULTURAL_OPERATION",
           agriculturalOperationActivity: siteProps.activity,
           isSiteOperated: true,
@@ -234,6 +236,7 @@ describe("CreateNewExpressSite Use case", () => {
           createdAt: fakeNow,
           createdBy: "user-id-123",
           creationMode: "express",
+          status: "active",
           nature: "NATURAL_AREA",
           naturalAreaType: siteProps.type,
           soilsDistribution: createSoilSurfaceAreaDistribution({
@@ -287,6 +290,7 @@ describe("CreateNewExpressSite Use case", () => {
           createdAt: fakeNow,
           createdBy: "user-id-123",
           creationMode: "express",
+          status: "active",
           nature: "FRICHE",
           name: "Friche de Montrouge",
           description: undefined,
@@ -355,6 +359,7 @@ describe("CreateNewExpressSite Use case", () => {
           createdAt: fakeNow,
           createdBy: "user-id-123",
           creationMode: "express",
+          status: "active",
           nature: "FRICHE",
           name: "Friche industrielle de Montrouge",
           description: undefined,
@@ -422,6 +427,7 @@ describe("CreateNewExpressSite Use case", () => {
           createdAt: fakeNow,
           createdBy: "user-id-123",
           creationMode: "express",
+          status: "active",
           nature: "FRICHE",
           name: "Friche industrielle de Montrouge",
           description: undefined,

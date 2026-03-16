@@ -16,6 +16,7 @@ import { MutafrichesEvaluationQuery } from "src/site-evaluations/adapters/second
 import type { MutabilityEvaluationQuery } from "src/site-evaluations/core/gateways/MutabilityEvaluationQuery";
 import { SitesQuery } from "src/sites/core/gateways/SitesQuery";
 import { SitesRepository } from "src/sites/core/gateways/SitesRepository";
+import { ArchiveSiteUseCase } from "src/sites/core/usecases/archiveSite.usecase";
 import { CreateNewExpressSiteUseCase } from "src/sites/core/usecases/createNewExpressSite.usecase";
 import { CreateNewCustomSiteUseCase } from "src/sites/core/usecases/createNewSite.usecase";
 import { GetSiteByIdUseCase } from "src/sites/core/usecases/getSiteById.usecase";
@@ -83,6 +84,13 @@ import { SitesController } from "./sites.controller";
       useFactory: (sitesQuery: SitesQuery, cityStatsProvider: CityStatsProvider) =>
         new GetSiteRealEstateValuationUseCase(sitesQuery, cityStatsProvider),
       inject: [SqlSitesQuery, SqlCityStatsQuery],
+    },
+    {
+      provide: ArchiveSiteUseCase,
+      useFactory(repository: SitesRepository, dateProvider: DateProvider) {
+        return new ArchiveSiteUseCase(repository, dateProvider);
+      },
+      inject: [SqlSiteRepository, RealDateProvider],
     },
     SqlSiteRepository,
     SqlSitesQuery,

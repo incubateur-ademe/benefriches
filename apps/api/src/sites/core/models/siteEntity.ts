@@ -4,4 +4,6 @@ export type SiteEntity = Site & {
   createdAt: Date;
   createdBy: string;
   creationMode: "express" | "custom";
+  status: "active" | "archived";
+  updatedAt?: Date;
 };

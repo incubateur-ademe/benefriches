@@ -84,6 +84,7 @@ export class CreateNewExpressSiteUseCase implements UseCase<Request, CreateNewEx
       createdAt: this.dateProvider.now(),
       createdBy,
       creationMode: "express",
+      status: "active",
     };
 
     await this.sitesRepository.save(siteEntity);

@@ -358,6 +358,8 @@ describe("Sites controller", () => {
         friche_activity: null,
         friche_contaminated_soil_surface_area: null,
         friche_has_contaminated_soils: null,
+        status: "active",
+        updated_at: null,
       });
 
       const siteAddressInDb = await sqlConnection("addresses").select("value", "site_id");
@@ -452,6 +454,8 @@ describe("Sites controller", () => {
         friche_contaminated_soil_surface_area: null,
         friche_has_contaminated_soils: null,
         is_operated: null,
+        status: "active",
+        updated_at: null,
       });
 
       const siteAddressInDb = await sqlConnection("addresses").select("value", "site_id");
@@ -539,6 +543,8 @@ describe("Sites controller", () => {
         agricultural_operation_activity: null,
         natural_area_type: null,
         is_operated: null,
+        status: "active",
+        updated_at: null,
       });
 
       const siteAddressInDb = await sqlConnection("addresses").select("value", "site_id");
@@ -1201,6 +1207,83 @@ describe("Sites controller", () => {
         sellingPrice: 10_540_000,
         propertyTransferDuties: 612_374,
       });
+    });
+  });
+
+  describe("POST /sites/:siteId/archive", () => {
+    it("gets a 401 when not authenticated", async () => {
+      const response = await supertest(app.getHttpServer())
+        .post(`/api/sites/${uuid()}/archive`)
+        .send();
+
+      expect(response.status).toEqual(401);
+    });
+
+    it("gets a 404 when site does not exist", async () => {
+      const userId = uuid();
+      const user = new UserBuilder().withId(userId).asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+
+      const response = await supertest(app.getHttpServer())
+        .post(`/api/sites/${uuid()}/archive`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send();
+
+      expect(response.status).toEqual(404);
+    });
+
+    it("gets a 403 when user is not the creator of the site", async () => {
+      const siteId = uuid();
+
+      const authenticatedUser = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(authenticatedUser);
+
+      // Create a site
+      await sqlConnection("sites").insert({
+        id: siteId,
+        created_by: uuid(),
+        name: "Site name",
+        surface_area: 14000,
+        owner_structure_type: "company",
+        created_at: new Date(),
+      });
+
+      const response = await supertest(app.getHttpServer())
+        .post(`/api/sites/${siteId}/archive`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send();
+
+      expect(response.status).toEqual(403);
+    });
+
+    it("successfully archive a site", async () => {
+      const siteId = uuid();
+
+      const authenticatedUser = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(authenticatedUser);
+
+      // Create a site
+      await sqlConnection("sites").insert({
+        id: siteId,
+        created_by: authenticatedUser.id,
+        name: "Site name",
+        surface_area: 14000,
+        owner_structure_type: "local_authority",
+        created_at: new Date(),
+      });
+
+      const response = await supertest(app.getHttpServer())
+        .post(`/api/sites/${siteId}/archive`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send();
+
+      expect(response.status).toEqual(201);
+
+      const sites = await sqlConnection("sites").where({ id: siteId }).select("*");
+
+      expect(sites).toHaveLength(1);
+      expect(sites[0]?.status).toEqual("archived");
+      expect(sites[0]?.updated_at).toBeDefined();
     });
   });
 });

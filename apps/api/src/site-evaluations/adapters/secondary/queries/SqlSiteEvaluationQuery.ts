@@ -12,6 +12,7 @@ export class SqlSiteEvaluationQuery implements SiteEvaluationQuery {
   async getUserSiteEvaluations(userId: string): Promise<SiteEvaluationDataView[]> {
     const result = await this.sqlConnection("sites")
       .where("sites.created_by", userId)
+      .where("sites.status", "=", "active")
       .leftJoin(
         "reconversion_compatibility_evaluations as rce",
         "sites.id",

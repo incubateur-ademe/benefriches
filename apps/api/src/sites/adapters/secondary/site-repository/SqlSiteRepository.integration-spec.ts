@@ -24,6 +24,7 @@ describe("SqlSiteRepository integration", () => {
       createdAt: now,
       createdBy: uuid(),
       creationMode: "custom",
+      status: "active",
     };
   }
 
@@ -35,6 +36,7 @@ describe("SqlSiteRepository integration", () => {
       createdAt: now,
       createdBy: uuid(),
       creationMode: "custom",
+      status: "active",
     };
   }
 
@@ -115,6 +117,8 @@ describe("SqlSiteRepository integration", () => {
           agricultural_operation_activity: "FLOWERS_AND_HORTICULTURE",
           is_operated: true,
           natural_area_type: null,
+          status: "active",
+          updated_at: null,
         },
       ]);
     });
@@ -162,6 +166,8 @@ describe("SqlSiteRepository integration", () => {
           agricultural_operation_activity: "FLOWERS_AND_HORTICULTURE",
           is_operated: false,
           natural_area_type: null,
+          status: "active",
+          updated_at: null,
         },
       ]);
     });
@@ -212,6 +218,8 @@ describe("SqlSiteRepository integration", () => {
           agricultural_operation_activity: null,
           natural_area_type: null,
           is_operated: null,
+          status: "active",
+          updated_at: null,
         },
       ]);
     });
@@ -272,6 +280,35 @@ describe("SqlSiteRepository integration", () => {
         { amount: 20000.0, source: "operations" },
         { amount: 32740.3, source: "other" },
       ]);
+    });
+  });
+
+  describe("patch", () => {
+    it("Updates site status", async () => {
+      const site: SiteEntity = buildAgriculturalOrNaturalSiteEntity({
+        yearlyExpenses: [{ amount: 45000, bearer: "owner", purpose: "security" }],
+        yearlyIncomes: [
+          { amount: 20000, source: "operations" },
+          { amount: 32740.3, source: "other" },
+        ],
+      });
+
+      await siteRepository.save(site);
+
+      const updatedAt = new Date();
+
+      await siteRepository.patch(site.id, {
+        status: "archived",
+        updatedAt,
+      });
+
+      const result = await sqlConnection("sites").select("*").where({ id: site.id }).first();
+
+      expect(result).toMatchObject({
+        id: site.id,
+        status: "archived",
+        updated_at: updatedAt,
+      });
     });
   });
 });

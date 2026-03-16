@@ -8,6 +8,8 @@ import {
   Param,
   Post,
   UseGuards,
+  Req,
+  ForbiddenException,
 } from "@nestjs/common";
 import { ZodValidationPipe } from "nestjs-zod";
 import {
@@ -21,7 +23,8 @@ import {
   type GetSiteViewResponseDto,
 } from "shared";
 
-import { JwtAuthGuard } from "src/auth/adapters/JwtAuthGuard";
+import { JwtAuthGuard, RequestWithAuthenticatedUser } from "src/auth/adapters/JwtAuthGuard";
+import { ArchiveSiteUseCase } from "src/sites/core/usecases/archiveSite.usecase";
 import {
   CreateNewExpressSiteUseCase,
   ExpressSiteProps,
@@ -39,6 +42,7 @@ export class SitesController {
     private readonly getSiteByIdUseCase: GetSiteByIdUseCase,
     private readonly getSiteViewByIdUseCase: GetSiteViewByIdUseCase,
     private readonly getSiteRealEstateValuationUseCase: GetSiteRealEstateValuationUseCase,
+    private readonly archiveSiteUseCase: ArchiveSiteUseCase,
   ) {}
 
   @Post("/sites/create-custom")
@@ -143,5 +147,29 @@ export class SitesController {
     }
 
     return result.getData();
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post("sites/:siteId/archive")
+  async archiveReconversionProject(
+    @Param("siteId") siteId: string,
+    @Req() req: RequestWithAuthenticatedUser,
+  ) {
+    const authenticatedUserId = req.accessTokenPayload.userId;
+
+    const result = await this.archiveSiteUseCase.execute({
+      siteId: siteId,
+      userId: authenticatedUserId,
+    });
+
+    if (result.isFailure()) {
+      const error = result.getError();
+      switch (error) {
+        case "SiteNotFound":
+          throw new NotFoundException(`Site with id ${siteId} not found`);
+        case "UserNotAuthorized":
+          throw new ForbiddenException();
+      }
+    }
   }
 }

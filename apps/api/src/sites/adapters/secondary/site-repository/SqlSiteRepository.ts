@@ -124,4 +124,24 @@ export class SqlSiteRepository implements SitesRepository {
       .first();
     return !!exists;
   }
+
+  async getCreatedById(siteId: string): Promise<string | undefined> {
+    const exists = await this.sqlConnection<SqlSite>("sites")
+      .select("created_by")
+      .where({ id: siteId })
+      .first();
+    return exists?.created_by;
+  }
+
+  async patch(
+    siteId: string,
+    { status, updatedAt }: { status: "active" | "archived"; updatedAt: Date },
+  ): Promise<void> {
+    await this.sqlConnection.transaction(async (trx) => {
+      await trx("sites").where({ id: siteId }).update({
+        status,
+        updated_at: updatedAt,
+      });
+    });
+  }
 }

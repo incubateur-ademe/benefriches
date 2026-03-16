@@ -66,6 +66,7 @@ describe("CreateNewSite Use Case", () => {
         createdBy: "blabla",
         creationMode: "custom",
         createdAt: new Date(),
+        status: "active",
       },
     ]);
 
@@ -108,6 +109,7 @@ describe("CreateNewSite Use Case", () => {
           createdAt: fakeNow,
           createdBy: "user-id-123",
           creationMode: "custom",
+          status: "active",
         },
       ]);
 
@@ -158,6 +160,7 @@ describe("CreateNewSite Use Case", () => {
           createdAt: fakeNow,
           createdBy: "user-id-123",
           creationMode: "custom",
+          status: "active",
         },
       ]);
 
@@ -200,6 +203,7 @@ describe("CreateNewSite Use Case", () => {
           createdAt: fakeNow,
           createdBy: "user-id-123",
           creationMode: "custom",
+          status: "active",
         },
       ]);
 
@@ -252,6 +256,7 @@ describe("CreateNewSite Use Case", () => {
           createdAt: fakeNow,
           createdBy: "user-id-123",
           creationMode: "custom",
+          status: "active",
         },
       ]);
 

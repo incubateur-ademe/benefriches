@@ -103,6 +103,7 @@ describe("CreateReconversionProject Use Case", () => {
         createdAt: fakeNow,
         createdBy: "user-123",
         creationMode: "custom",
+        status: "active",
       };
       siteRepository._setSites([siteEntity]);
       reconversionProjectRepository._setReconversionProjects([
@@ -142,6 +143,7 @@ describe("CreateReconversionProject Use Case", () => {
           createdAt: fakeNow,
           createdBy: "user-123",
           creationMode: "custom",
+          status: "active",
         };
         siteRepository._setSites([siteEntity]);
 
@@ -187,6 +189,7 @@ describe("CreateReconversionProject Use Case", () => {
           createdAt: fakeNow,
           createdBy: "user-123",
           creationMode: "custom",
+          status: "active",
         };
         siteRepository._setSites([siteEntity]);
 

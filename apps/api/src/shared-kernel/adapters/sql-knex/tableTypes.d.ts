@@ -51,6 +51,9 @@ type SqlSite = {
   natural_area_type: string | null;
   // dates
   created_at: Date;
+  updated_at: Date | null;
+
+  status: "active" | "archived";
 };
 
 type SqlAddress = {
