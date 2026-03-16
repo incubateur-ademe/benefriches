@@ -1,3 +1,4 @@
+import { useIsDark } from "@codegouvfr/react-dsfr/useIsDark";
 import { useEffect } from "react";
 import { createGroup } from "type-route";
 
@@ -5,6 +6,7 @@ import FeaturesApp from "@/features/FeaturesApp";
 import { pageViewed } from "@/features/analytics/core/pageViewed.action";
 import { initCurrentUser } from "@/features/onboarding/core/initCurrentUser.action";
 import PublicApp from "@/features/public-pages/PublicApp";
+import classNames from "@/shared/views/clsx";
 
 import { useAppDispatch } from "./hooks/store.hooks";
 import { routes, useRoute } from "./router";
@@ -38,15 +40,26 @@ function App() {
     void dispatch(initCurrentUser());
   }, [dispatch]);
 
+  const { isDark } = useIsDark();
+
   return (
-    <>
+    <div
+      className={classNames(
+        "flex",
+        "flex-col",
+        "h-screen",
+        // Force highchart à suivre la config dsfr pour le dark mode,
+        // sinon la lib suit la config du navigateur "prefers-color-scheme"
+        isDark ? "highcharts-dark" : "highcharts-light",
+      )}
+    >
       {(() => {
         if (groups.public.has(route)) {
           return <PublicApp />;
         }
         return <FeaturesApp />;
       })()}
-    </>
+    </div>
   );
 }
 

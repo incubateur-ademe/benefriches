@@ -5,7 +5,7 @@ import { routes, useRoute } from "@/app/router";
 import NotFoundScreen from "@/shared/views/components/NotFound/NotFound";
 import RequireAuthenticatedUser from "@/shared/views/components/RequireAuthenticatedUser/RequireAuthenticatedUser";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
-import HeaderFooterLayout from "@/shared/views/layout/HeaderFooterLayout/HeaderFooterLayout";
+import AppLayout from "@/shared/views/layout/AppLayout/AppLayout";
 import SidebarContainerLayout from "@/shared/views/layout/SidebarLayout/SidebarContainerLayout";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
@@ -76,7 +76,25 @@ function FeaturesApp() {
   }
 
   return (
-    <HeaderFooterLayout>
+    <AppLayout
+      headerProps={{
+        title: (() => {
+          switch (route.name) {
+            case routes.projectImpacts.name:
+            case routes.projectFeatures.name:
+            case routes.urbanSprawlImpactsComparison.name:
+              return "Mon projet d'aménagement";
+            default:
+              return undefined;
+          }
+        })(),
+        homeLinkProps: routes.home().link,
+        myEvaluationsConfig: {
+          link: routes.myEvaluations().link,
+          isCurrent: route.name === routes.myEvaluations().name,
+        },
+      }}
+    >
       <RequireAuthenticatedUser>
         <Suspense fallback={<LoadingSpinner />}>
           {(() => {
@@ -116,7 +134,7 @@ function FeaturesApp() {
           })()}
         </Suspense>
       </RequireAuthenticatedUser>
-    </HeaderFooterLayout>
+    </AppLayout>
   );
 }
 

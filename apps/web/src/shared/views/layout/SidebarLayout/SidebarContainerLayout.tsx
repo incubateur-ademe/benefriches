@@ -1,4 +1,3 @@
-import { useIsDark } from "@codegouvfr/react-dsfr/useIsDark";
 import { ReactNode } from "react";
 
 import classNames from "@/shared/views/clsx";
@@ -8,20 +7,8 @@ type FormLayoutProps = {
 };
 
 function SidebarContainerLayout({ children }: FormLayoutProps) {
-  const { isDark } = useIsDark();
   return (
-    <section
-      className={classNames(
-        "flex",
-        "h-full",
-        "items-center",
-        "justify-center",
-        "w-full",
-        // Force highchart à suivre la config dsfr pour le dark mode,
-        // sinon la lib suit la config du navigateur "prefers-color-scheme"
-        isDark ? "highcharts-dark" : "highcharts-light",
-      )}
-    >
+    <section className={classNames("flex", "h-full", "items-center", "justify-center", "w-full")}>
       {children}
     </section>
   );

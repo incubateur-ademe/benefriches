@@ -1,13 +1,26 @@
 import { headerFooterDisplayItem } from "@codegouvfr/react-dsfr/Display";
 import { Footer } from "@codegouvfr/react-dsfr/Footer";
+import { Link } from "type-route";
 
 import { routes } from "@/app/router";
 
 import ExternalLink from "../../components/ExternalLink/ExternalLink";
 
-function BenefrichesFooter() {
+type Props = { homeLinkPropsHref?: Link["href"] };
+function BenefrichesFooter({ homeLinkPropsHref = routes.home().href }: Props) {
   return (
     <Footer
+      brandTop={
+        <>
+          RÉPUBLIQUE
+          <br />
+          FRANÇAISE
+        </>
+      }
+      homeLinkProps={{
+        href: homeLinkPropsHref,
+        title: "Accueil - Bénéfriches",
+      }}
       id="footer"
       accessibility="non compliant"
       contentDescription={

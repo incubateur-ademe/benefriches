@@ -2,7 +2,7 @@ import { lazy, Suspense } from "react";
 
 import { routes, useRoute } from "@/app/router";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
-import HeaderFooterLayout from "@/shared/views/layout/HeaderFooterLayout/HeaderFooterLayout";
+import PublicPageLayout from "@/shared/views/layout/PublicPageLayout/HeaderFooterLayout";
 
 import NotFoundScreen from "../../shared/views/components/NotFound/NotFound";
 import AccessBenefrichesPage from "../onboarding/views/pages/access-benefriches";
@@ -28,7 +28,7 @@ const StatsPage = lazy(() => import("@/features/public-pages/stats/StatsPage"));
 function PublicApp() {
   const route = useRoute();
   return (
-    <HeaderFooterLayout>
+    <PublicPageLayout>
       <Suspense fallback={<LoadingSpinner />}>
         {(() => {
           switch (route.name) {
@@ -60,7 +60,7 @@ function PublicApp() {
           }
         })()}
       </Suspense>
-    </HeaderFooterLayout>
+    </PublicPageLayout>
   );
 }
 

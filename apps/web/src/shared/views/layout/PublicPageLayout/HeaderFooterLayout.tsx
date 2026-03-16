@@ -1,12 +1,9 @@
 import { HeaderProps } from "@codegouvfr/react-dsfr/Header";
 import { SkipLinks } from "@codegouvfr/react-dsfr/SkipLinks";
-import { useIsDark } from "@codegouvfr/react-dsfr/useIsDark";
 import { ReactNode } from "react";
 import { Link } from "type-route";
 
-import classNames from "@/shared/views/clsx";
-
-import BenefrichesFooter from "./BenefrichesFooter";
+import BenefrichesFooter from "../BenefrichesFooter/BenefrichesFooter";
 import BenefrichesHeader from "./BenefrichesHeader";
 
 type HeaderFooterLayoutProps = {
@@ -18,18 +15,8 @@ type HeaderFooterLayoutProps = {
 };
 
 function HeaderFooterLayout({ children, headerProps = {} }: HeaderFooterLayoutProps) {
-  const { isDark } = useIsDark();
   return (
-    <div
-      className={classNames(
-        "flex",
-        "flex-col",
-        "h-screen",
-        // Force highchart à suivre la config dsfr pour le dark mode,
-        // sinon la lib suit la config du navigateur "prefers-color-scheme"
-        isDark ? "highcharts-dark" : "highcharts-light",
-      )}
-    >
+    <>
       <SkipLinks
         links={[
           {
@@ -47,7 +34,7 @@ function HeaderFooterLayout({ children, headerProps = {} }: HeaderFooterLayoutPr
         {children}
       </main>
       <BenefrichesFooter />
-    </div>
+    </>
   );
 }
 
