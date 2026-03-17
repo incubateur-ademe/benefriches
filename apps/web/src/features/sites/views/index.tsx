@@ -53,6 +53,9 @@ export default function SitesRouter() {
     <SitePage
       onPageLoad={onPageLoad}
       onRemoveProjectFromList={onRemoveProjectFromList}
+      onSuccessArchiveSite={() => {
+        routes.myEvaluations().replace();
+      }}
       viewModel={sitePageViewModel}
       selectedTab={selectedTab}
       fromCompatibilityEvaluation={route.params.fromCompatibilityEvaluation ?? false}

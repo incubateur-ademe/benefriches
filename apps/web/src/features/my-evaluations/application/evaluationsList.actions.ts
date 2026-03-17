@@ -19,3 +19,5 @@ export const fetchUserSiteEvaluations = createAppAsyncThunk<UserSiteEvaluation[]
 export const projectRemovedFromEvaluationList = createAction<{ siteId: string; projectId: string }>(
   `siteEvaluations/projectRemoved`,
 );
+
+export const siteRemovedFromEvaluationList = createAction<string>(`siteEvaluations/siteRemoved`);

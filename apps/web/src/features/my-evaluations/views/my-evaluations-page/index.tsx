@@ -6,6 +6,7 @@ import { selectMyEvaluationsViewData } from "@/features/my-evaluations/core/myEv
 import {
   fetchUserSiteEvaluations,
   projectRemovedFromEvaluationList,
+  siteRemovedFromEvaluationList,
 } from "../../application/evaluationsList.actions";
 import MyEvaluationsPage from "./MyEvaluationsPage";
 
@@ -25,11 +26,16 @@ function MyEvaluationsPageContainer() {
     dispatch(projectRemovedFromEvaluationList(props));
   };
 
+  const onRemoveSiteFromList = (siteId: string) => {
+    dispatch(siteRemovedFromEvaluationList(siteId));
+  };
+
   return (
     <MyEvaluationsPage
       evaluations={siteEvaluations}
       loadingState={loadingState}
       onRemoveProjectFromList={onRemoveProjectFromList}
+      onRemoveSiteFromList={onRemoveSiteFromList}
     />
   );
 }

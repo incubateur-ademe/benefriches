@@ -1,14 +1,20 @@
+import Button from "@codegouvfr/react-dsfr/Button";
+import { Menu, MenuButton, MenuItems } from "@headlessui/react";
 import * as Highcharts from "highcharts";
 import { Options } from "highcharts";
 import HighchartsReact from "highcharts-react-official";
+import { Fragment } from "react/jsx-runtime";
 import { MutabilityUsage } from "shared";
 
 import { routes } from "@/app/router";
+import ArchiveSiteDialog from "@/features/archive-site/views/ArchiveSiteDialog";
 import { formatPercentage } from "@/shared/core/format-number/formatNumber";
 import { getMutabilityUsageDisplayName } from "@/shared/core/reconversionCompatibility";
 import { withDefaultBarChartOptions } from "@/shared/views/charts";
 import classNames from "@/shared/views/clsx";
 import Badge from "@/shared/views/components/Badge/Badge";
+import MenuItemButton from "@/shared/views/components/Menu/MenuItemButton";
+import { MENU_ITEMS_CLASSES } from "@/shared/views/components/Menu/classes";
 import NewProjectTile from "@/shared/views/components/ProjectTile/NewProjectTile";
 import ProjectOverviewTile from "@/shared/views/components/ProjectTile/ProjectOverviewTile";
 import ProjectTile from "@/shared/views/components/ProjectTile/ProjectTile";
@@ -18,6 +24,7 @@ import { UserSiteEvaluation } from "../../domain/types";
 type Props = {
   evaluation: UserSiteEvaluation;
   onRemoveProjectFromList: (props: { siteId: string; projectId: string }) => void;
+  onRemoveSiteFromList: () => void;
 };
 
 const TILE_CLASSNAME = "w-[216px]";
@@ -47,7 +54,7 @@ const barChartOptions: Options = withDefaultBarChartOptions({
   },
 });
 
-function MyEvaluationItem({ evaluation, onRemoveProjectFromList }: Props) {
+function MyEvaluationItem({ evaluation, onRemoveProjectFromList, onRemoveSiteFromList }: Props) {
   const { siteName, siteId, reconversionProjects, compatibilityEvaluation, isExpressSite } =
     evaluation;
 
@@ -69,7 +76,44 @@ function MyEvaluationItem({ evaluation, onRemoveProjectFromList }: Props) {
           )}
         </div>
 
-        <a {...routes.siteFeatures({ siteId }).link}>Voir toutes les données du site</a>
+        <div className="flex items-center justify-center gap-2">
+          <a {...routes.siteFeatures({ siteId }).link}>Voir toutes les données du site</a>
+
+          <Menu>
+            <MenuButton as={Fragment}>
+              {({ active, hover }) => (
+                <Button
+                  className="text-text-light hover:bg-white hover:dark:bg-black"
+                  priority={active || hover ? "tertiary" : "tertiary no outline"}
+                  iconId="fr-icon-more-fill"
+                  title="Voir plus de fonctionnalités"
+                />
+              )}
+            </MenuButton>
+            <MenuItems
+              anchor="bottom end"
+              transition
+              className={classNames("z-40", MENU_ITEMS_CLASSES)}
+            >
+              <MenuItemButton
+                iconId="fr-icon-delete-line"
+                className="text-error-ultradark"
+                nativeButtonProps={{
+                  "aria-controls": `archive-site-${siteId}`,
+                  "data-fr-opened": true,
+                }}
+              >
+                Supprimer le site
+              </MenuItemButton>
+            </MenuItems>
+          </Menu>
+          <ArchiveSiteDialog
+            dialogId={`archive-site-${siteId}`}
+            siteId={siteId}
+            siteName={siteName}
+            onSuccess={onRemoveSiteFromList}
+          />
+        </div>
       </div>
       <div className="rounded-b-2xl bg-(--background-default-grey) flex flex-wrap">
         {compatibilityEvaluation && (

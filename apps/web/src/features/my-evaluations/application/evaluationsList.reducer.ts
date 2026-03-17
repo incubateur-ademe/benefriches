@@ -4,6 +4,7 @@ import { UserSiteEvaluation } from "../domain/types";
 import {
   fetchUserSiteEvaluations,
   projectRemovedFromEvaluationList,
+  siteRemovedFromEvaluationList,
 } from "./evaluationsList.actions";
 
 type LoadingState = "idle" | "loading" | "success" | "error";
@@ -32,6 +33,11 @@ const userSiteEvaluationsList = createSlice({
     });
     builder.addCase(fetchUserSiteEvaluations.rejected, (state) => {
       state.loadingState = "error";
+    });
+    builder.addCase(siteRemovedFromEvaluationList, (state, action) => {
+      state.siteEvaluations = state.siteEvaluations.filter(
+        ({ siteId }) => siteId !== action.payload,
+      );
     });
     builder.addCase(projectRemovedFromEvaluationList, (state, action) => {
       const index = state.siteEvaluations.findIndex(

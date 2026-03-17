@@ -20,6 +20,7 @@ export type SiteTab = "features" | "evaluatedProjects" | "actionsList" | "compat
 type Props = {
   onPageLoad: () => void;
   onRemoveProjectFromList: (projectId: string) => void;
+  onSuccessArchiveSite: () => void;
   viewModel: SitePageViewModel;
   selectedTab: SiteTab;
   fromCompatibilityEvaluation: boolean;
@@ -28,6 +29,7 @@ type Props = {
 function SitePage({
   onPageLoad,
   onRemoveProjectFromList,
+  onSuccessArchiveSite,
   viewModel,
   selectedTab,
   fromCompatibilityEvaluation,
@@ -71,6 +73,7 @@ function SitePage({
             siteName={siteView.features.name}
             siteNature={siteView.features.nature}
             isExpressSite={siteView.features.isExpressSite}
+            onSuccessArchiveSite={onSuccessArchiveSite}
           />
           <section className={classNames(fr.cx("fr-container"), "py-6 md:py-10")}>
             {(() => {

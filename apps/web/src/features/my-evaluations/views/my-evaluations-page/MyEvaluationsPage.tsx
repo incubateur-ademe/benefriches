@@ -12,9 +12,15 @@ type Props = {
   loadingState: "idle" | "loading" | "error" | "success";
   evaluations: UserSiteEvaluation[];
   onRemoveProjectFromList: (props: { siteId: string; projectId: string }) => void;
+  onRemoveSiteFromList: (siteId: string) => void;
 };
 
-function MyEvaluationsPage({ loadingState, evaluations, onRemoveProjectFromList }: Props) {
+function MyEvaluationsPage({
+  loadingState,
+  evaluations,
+  onRemoveProjectFromList,
+  onRemoveSiteFromList,
+}: Props) {
   if (loadingState === "loading")
     return (
       <section className={fr.cx("fr-container", "fr-py-4w")}>
@@ -56,6 +62,9 @@ function MyEvaluationsPage({ loadingState, evaluations, onRemoveProjectFromList 
                   key={evaluation.siteId}
                   evaluation={evaluation}
                   onRemoveProjectFromList={onRemoveProjectFromList}
+                  onRemoveSiteFromList={() => {
+                    onRemoveSiteFromList(evaluation.siteId);
+                  }}
                 />
               ))}
             </div>
