@@ -9,11 +9,14 @@ import VacantCommercialPremisesFloorAreaForm from "./VacantCommercialPremisesFlo
 
 function VacantCommercialPremisesFloorAreaContainer() {
   const dispatch = useAppDispatch();
-  const { initialValue } = useAppSelector(selectVacantCommercialPremisesFloorAreaViewData);
+  const { initialValue, vacantPremisesFootprintSurfaceArea } = useAppSelector(
+    selectVacantCommercialPremisesFloorAreaViewData,
+  );
 
   return (
     <VacantCommercialPremisesFloorAreaForm
       initialValue={initialValue}
+      buildingsFootprintSurfaceArea={vacantPremisesFootprintSurfaceArea}
       onSubmit={({ surfaceArea }) => {
         dispatch(
           stepCompletionRequested({
