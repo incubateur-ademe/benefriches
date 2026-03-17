@@ -48,6 +48,7 @@ function ScheduleProjectionForm({
   onBack,
 }: Props) {
   const { handleSubmit, control, formState, register, setValue } = useForm<FormValues>({
+    mode: "onBlur",
     defaultValues: {
       firstYearOfOperation: initialValues?.firstYearOfOperations,
       installationSchedule: initialValues?.installation
@@ -115,6 +116,8 @@ function ScheduleProjectionForm({
           // 50% width minus half the right arrow width and half the gap between inputs
           className="sm:w-[calc(50%-28px)]"
           label={<RequiredLabel label="Année de mise en service" />}
+          state={formState.errors.firstYearOfOperation ? "error" : "default"}
+          stateRelatedMessage={formState.errors.firstYearOfOperation?.message}
           nativeInputProps={{
             inputMode: "numeric",
             ...register("firstYearOfOperation", {
