@@ -1,6 +1,12 @@
 import { UrbanZoneSoilsContaminationHandler } from "../steps/contamination/soilsContamination.handler";
 import { UrbanZoneSoilsContaminationIntroductionHandler } from "../steps/contamination/soilsContaminationIntroduction.handler";
 import { UrbanZoneCreationResultHandler } from "../steps/creation-result/creationResult.handler";
+import { ExpensesAndIncomeIntroductionHandler } from "../steps/expenses/expenses-introduction/expensesAndIncomeIntroduction.handler";
+import { ExpensesAndIncomeSummaryHandler } from "../steps/expenses/expenses-summary/expensesAndIncomeSummary.handler";
+import { LocalAuthorityExpensesHandler } from "../steps/expenses/local-authority-expenses/localAuthorityExpenses.handler";
+import { VacantPremisesExpensesHandler } from "../steps/expenses/vacant-premises-expenses/vacantPremisesExpenses.handler";
+import { ZoneManagementExpensesHandler } from "../steps/expenses/zone-management-expenses/zoneManagementExpenses.handler";
+import { ZoneManagementIncomeHandler } from "../steps/expenses/zone-management-income/zoneManagementIncome.handler";
 import { UrbanZoneFinalSummaryHandler } from "../steps/final-summary/finalSummary.handler";
 import { LandParcelsSelectionHandler } from "../steps/land-parcels/land-parcels-selection/landParcelsSelection.handler";
 import { LandParcelsSurfaceDistributionHandler } from "../steps/land-parcels/land-parcels-surface-distribution/landParcelsSurfaceDistribution.handler";
@@ -57,6 +63,11 @@ export const answerStepHandlers: Partial<AnswerStepHandlerMap> = {
   URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FOOTPRINT: VacantCommercialPremisesFootprintHandler,
   URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FLOOR_AREA: VacantCommercialPremisesFloorAreaHandler,
   URBAN_ZONE_FULL_TIME_JOBS_EQUIVALENT: FullTimeJobsEquivalentHandler,
+  // Expenses and incomes
+  URBAN_ZONE_VACANT_PREMISES_EXPENSES: VacantPremisesExpensesHandler,
+  URBAN_ZONE_ZONE_MANAGEMENT_EXPENSES: ZoneManagementExpensesHandler,
+  URBAN_ZONE_ZONE_MANAGEMENT_INCOME: ZoneManagementIncomeHandler,
+  URBAN_ZONE_LOCAL_AUTHORITY_EXPENSES: LocalAuthorityExpensesHandler,
   // Naming
   URBAN_ZONE_NAMING: UrbanZoneNamingHandler,
 };
@@ -79,6 +90,9 @@ export const urbanZoneStepHandlerRegistry: UrbanZoneStepHandlerRegistry = {
   URBAN_ZONE_MANAGEMENT_INTRODUCTION: UrbanZoneManagementIntroductionHandler,
   // Naming introduction
   URBAN_ZONE_NAMING_INTRODUCTION: UrbanZoneNamingIntroductionHandler,
+  // Expenses and incomes introduction and summary
+  URBAN_ZONE_EXPENSES_AND_INCOME_INTRODUCTION: ExpensesAndIncomeIntroductionHandler,
+  URBAN_ZONE_EXPENSES_AND_INCOME_SUMMARY: ExpensesAndIncomeSummaryHandler,
   // Final summary and creation result
   URBAN_ZONE_FINAL_SUMMARY: UrbanZoneFinalSummaryHandler,
   URBAN_ZONE_CREATION_RESULT: UrbanZoneCreationResultHandler,

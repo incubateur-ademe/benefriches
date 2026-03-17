@@ -1,0 +1,109 @@
+import { typedObjectEntries, type SiteYearlyExpense, type SiteYearlyIncome } from "shared";
+
+import type { RootState } from "@/app/store/store";
+
+import { ReadStateHelper } from "../../../helpers/stateHelpers";
+
+export type ExpensesAndIncomeSummaryViewData = {
+  expenses: SiteYearlyExpense[];
+  incomes: SiteYearlyIncome[];
+};
+
+function toExpenses(
+  amounts: Record<string, number | undefined>,
+  bearer: "owner" | "tenant",
+  purposeMap: Record<string, string>,
+): SiteYearlyExpense[] {
+  return typedObjectEntries(amounts).reduce<SiteYearlyExpense[]>((acc, [key, amount]) => {
+    const purpose = purposeMap[key];
+    if (typeof amount === "number" && amount > 0 && purpose !== undefined) {
+      acc.push({ purpose: purpose as SiteYearlyExpense["purpose"], amount, bearer });
+    }
+    return acc;
+  }, []);
+}
+
+export const selectExpensesAndIncomeSummaryViewData = (
+  state: RootState,
+): ExpensesAndIncomeSummaryViewData => {
+  const stepsState = state.siteCreation.urbanZone.steps;
+
+  const vacantExpenses = ReadStateHelper.getStepAnswers(
+    stepsState,
+    "URBAN_ZONE_VACANT_PREMISES_EXPENSES",
+  );
+  const zoneExpenses = ReadStateHelper.getStepAnswers(
+    stepsState,
+    "URBAN_ZONE_ZONE_MANAGEMENT_EXPENSES",
+  );
+  const zoneIncome = ReadStateHelper.getStepAnswers(
+    stepsState,
+    "URBAN_ZONE_ZONE_MANAGEMENT_INCOME",
+  );
+  const localAuthorityExpenses = ReadStateHelper.getStepAnswers(
+    stepsState,
+    "URBAN_ZONE_LOCAL_AUTHORITY_EXPENSES",
+  );
+
+  const ownerPurposeMap: Record<string, string> = {
+    ownerPropertyTaxes: "propertyTaxes",
+    ownerMaintenance: "maintenance",
+    ownerSecurity: "security",
+    ownerIllegalDumpingCost: "illegalDumpingCost",
+    ownerOtherManagementCosts: "otherManagementCosts",
+    propertyTaxes: "propertyTaxes",
+    maintenance: "maintenance",
+    security: "security",
+    illegalDumpingCost: "illegalDumpingCost",
+    otherManagementCosts: "otherManagementCosts",
+  };
+
+  const tenantPurposeMap: Record<string, string> = {
+    tenantRent: "rent",
+    tenantOperationsTaxes: "operationsTaxes",
+    tenantOtherOperationsCosts: "otherOperationsCosts",
+  };
+
+  const incomePurposeMap: Record<string, string> = {
+    rent: "rent",
+    subsidies: "subsidies",
+    otherIncome: "other",
+  };
+
+  const expenses: SiteYearlyExpense[] = [
+    ...toExpenses(
+      {
+        ownerPropertyTaxes: vacantExpenses?.ownerPropertyTaxes,
+        ownerMaintenance: vacantExpenses?.ownerMaintenance,
+        ownerSecurity: vacantExpenses?.ownerSecurity,
+        ownerIllegalDumpingCost: vacantExpenses?.ownerIllegalDumpingCost,
+        ownerOtherManagementCosts: vacantExpenses?.ownerOtherManagementCosts,
+      },
+      "owner",
+      ownerPurposeMap,
+    ),
+    ...toExpenses(
+      {
+        tenantRent: vacantExpenses?.tenantRent,
+        tenantOperationsTaxes: vacantExpenses?.tenantOperationsTaxes,
+        tenantOtherOperationsCosts: vacantExpenses?.tenantOtherOperationsCosts,
+      },
+      "tenant",
+      tenantPurposeMap,
+    ),
+    ...toExpenses(zoneExpenses ?? {}, "owner", ownerPurposeMap),
+    ...toExpenses(localAuthorityExpenses ?? {}, "owner", ownerPurposeMap),
+  ];
+
+  const incomes: SiteYearlyIncome[] = typedObjectEntries(zoneIncome ?? {}).reduce<
+    SiteYearlyIncome[]
+  >((acc, [key, amount]) => {
+    const source = incomePurposeMap[key] as SiteYearlyIncome["source"] | undefined;
+    if (typeof amount === "number" && amount > 0 && source !== undefined) {
+      acc.push({ source, amount });
+    }
+    return acc;
+  }, []);
+
+  return { expenses, incomes };
+};

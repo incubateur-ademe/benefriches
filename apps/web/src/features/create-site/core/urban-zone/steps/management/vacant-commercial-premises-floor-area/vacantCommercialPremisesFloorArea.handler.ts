@@ -12,7 +12,7 @@ export const VacantCommercialPremisesFloorAreaHandler = {
     const siteSurfaceArea = context.siteData.surfaceArea;
 
     if (footprintSurfaceArea !== undefined && footprintSurfaceArea === siteSurfaceArea) {
-      return "URBAN_ZONE_NAMING_INTRODUCTION";
+      return "URBAN_ZONE_EXPENSES_AND_INCOME_INTRODUCTION";
     }
     return "URBAN_ZONE_FULL_TIME_JOBS_EQUIVALENT";
   },

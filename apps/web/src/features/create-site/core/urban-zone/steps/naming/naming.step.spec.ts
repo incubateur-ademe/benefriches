@@ -17,34 +17,52 @@ describe("Urban zone - NAMING_INTRODUCTION step", () => {
     expect(getCurrentStep(store)).toBe("URBAN_ZONE_NAMING");
   });
 
-  it("should navigate back to full time jobs equivalent when that step was visited", () => {
-    const store = new StoreBuilder()
-      .withStepsSequence(["URBAN_ZONE_FULL_TIME_JOBS_EQUIVALENT", "URBAN_ZONE_NAMING_INTRODUCTION"])
-      .build();
-
-    store.dispatch(previousStepRequested());
-
-    expect(getCurrentStep(store)).toBe("URBAN_ZONE_FULL_TIME_JOBS_EQUIVALENT");
-  });
-
-  it("should navigate back to vacant commercial premises floor area when footprint equals site surface area", () => {
+  it("should navigate back to expenses summary when manager is activity park manager", () => {
     const store = new StoreBuilder()
       .withStepsSequence([
-        "URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FLOOR_AREA",
+        "URBAN_ZONE_EXPENSES_AND_INCOME_SUMMARY",
         "URBAN_ZONE_NAMING_INTRODUCTION",
       ])
-      .withSiteData({ surfaceArea: 1000 })
       .withUrbanZoneSteps({
-        URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FOOTPRINT: {
+        URBAN_ZONE_MANAGER: {
           completed: true,
-          payload: { surfaceArea: 1000 },
+          payload: { structureType: "activity_park_manager" },
         },
       })
       .build();
 
     store.dispatch(previousStepRequested());
 
-    expect(getCurrentStep(store)).toBe("URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FLOOR_AREA");
+    expect(getCurrentStep(store)).toBe("URBAN_ZONE_EXPENSES_AND_INCOME_SUMMARY");
+  });
+
+  it("should navigate back to local authority expenses when manager is local authority", () => {
+    const store = new StoreBuilder()
+      .withStepsSequence(["URBAN_ZONE_LOCAL_AUTHORITY_EXPENSES", "URBAN_ZONE_NAMING_INTRODUCTION"])
+      .withUrbanZoneSteps({
+        URBAN_ZONE_MANAGER: {
+          completed: true,
+          payload: { structureType: "local_authority" },
+        },
+      })
+      .build();
+
+    store.dispatch(previousStepRequested());
+
+    expect(getCurrentStep(store)).toBe("URBAN_ZONE_LOCAL_AUTHORITY_EXPENSES");
+  });
+
+  it("should navigate back to expenses intro when no manager type set", () => {
+    const store = new StoreBuilder()
+      .withStepsSequence([
+        "URBAN_ZONE_EXPENSES_AND_INCOME_INTRODUCTION",
+        "URBAN_ZONE_NAMING_INTRODUCTION",
+      ])
+      .build();
+
+    store.dispatch(previousStepRequested());
+
+    expect(getCurrentStep(store)).toBe("URBAN_ZONE_EXPENSES_AND_INCOME_INTRODUCTION");
   });
 });
 

@@ -67,6 +67,12 @@ const SITE_CREATION_STEP_ROUTE_QUERY_STRING_MAP = {
   URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FOOTPRINT: "zone-urbaine-emprise-locaux-vacants",
   URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FLOOR_AREA: "zone-urbaine-surface-locaux-vacants",
   URBAN_ZONE_FULL_TIME_JOBS_EQUIVALENT: "zone-urbaine-emplois-temps-plein",
+  URBAN_ZONE_EXPENSES_AND_INCOME_INTRODUCTION: "zone-urbaine-depenses-recettes-introduction",
+  URBAN_ZONE_VACANT_PREMISES_EXPENSES: "zone-urbaine-depenses-locaux-vacants",
+  URBAN_ZONE_ZONE_MANAGEMENT_EXPENSES: "zone-urbaine-depenses-gestion-zone",
+  URBAN_ZONE_ZONE_MANAGEMENT_INCOME: "zone-urbaine-recettes-gestion-zone",
+  URBAN_ZONE_EXPENSES_AND_INCOME_SUMMARY: "zone-urbaine-recapitulatif-depenses-recettes",
+  URBAN_ZONE_LOCAL_AUTHORITY_EXPENSES: "zone-urbaine-depenses-collectivite",
   URBAN_ZONE_SOILS_CARBON_STORAGE: "zone-urbaine-stockage-carbone-par-les-sols",
   URBAN_ZONE_NAMING: "zone-urbaine-denomination",
 } as const satisfies Record<SiteCreationStep, string>;

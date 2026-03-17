@@ -3,6 +3,12 @@ import z from "zod";
 import { soilsContaminationStepperConfig } from "../steps/contamination/soilsContamination.stepperConfig";
 import { soilsContaminationIntroductionStepperConfig } from "../steps/contamination/soilsContaminationIntroduction.stepperConfig";
 import { creationResultStepperConfig } from "../steps/creation-result/creationResult.stepperConfig";
+import { expensesAndIncomeIntroductionStepperConfig } from "../steps/expenses/expenses-introduction/expensesAndIncomeIntroduction.stepperConfig";
+import { expensesAndIncomeSummaryStepperConfig } from "../steps/expenses/expenses-summary/expensesAndIncomeSummary.stepperConfig";
+import { localAuthorityExpensesStepperConfig } from "../steps/expenses/local-authority-expenses/localAuthorityExpenses.stepperConfig";
+import { vacantPremisesExpensesStepperConfig } from "../steps/expenses/vacant-premises-expenses/vacantPremisesExpenses.stepperConfig";
+import { zoneManagementExpensesStepperConfig } from "../steps/expenses/zone-management-expenses/zoneManagementExpenses.stepperConfig";
+import { zoneManagementIncomeStepperConfig } from "../steps/expenses/zone-management-income/zoneManagementIncome.stepperConfig";
 import { finalSummaryStepperConfig } from "../steps/final-summary/finalSummary.stepperConfig";
 import { landParcelsSelectionStepperConfig } from "../steps/land-parcels/land-parcels-selection/landParcelsSelection.stepperConfig";
 import { landParcelsSurfaceDistributionStepperConfig } from "../steps/land-parcels/land-parcels-surface-distribution/landParcelsSurfaceDistribution.stepperConfig";
@@ -25,6 +31,7 @@ const urbanZoneStepGroupIdSchema = z.enum([
   "SOILS_AND_SPACES",
   "CONTAMINATION",
   "MANAGEMENT",
+  "EXPENSES",
   "NAMING",
   "SUMMARY",
 ]);
@@ -40,6 +47,7 @@ export const URBAN_ZONE_STEP_GROUP_LABELS: Record<UrbanZoneStepGroupId, string> 
   SOILS_AND_SPACES: "Sols et espaces",
   CONTAMINATION: "Pollution",
   MANAGEMENT: "Gestion et activité",
+  EXPENSES: "Dépenses et recettes",
   NAMING: "Dénomination",
   SUMMARY: "Récapitulatif",
 };
@@ -86,6 +94,16 @@ export const URBAN_ZONE_STEP_TO_GROUP: Record<
   URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FOOTPRINT: vacantCommercialPremisesFootprintStepperConfig,
   URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FLOOR_AREA: vacantCommercialPremisesFloorAreaStepperConfig,
   URBAN_ZONE_FULL_TIME_JOBS_EQUIVALENT: fullTimeJobsEquivalentStepperConfig,
+
+  // Expenses and incomes
+  URBAN_ZONE_EXPENSES_AND_INCOME_INTRODUCTION: expensesAndIncomeIntroductionStepperConfig,
+  // Activity park manager flow
+  URBAN_ZONE_VACANT_PREMISES_EXPENSES: vacantPremisesExpensesStepperConfig,
+  URBAN_ZONE_ZONE_MANAGEMENT_EXPENSES: zoneManagementExpensesStepperConfig,
+  URBAN_ZONE_ZONE_MANAGEMENT_INCOME: zoneManagementIncomeStepperConfig,
+  URBAN_ZONE_EXPENSES_AND_INCOME_SUMMARY: expensesAndIncomeSummaryStepperConfig,
+  // Local authority flow
+  URBAN_ZONE_LOCAL_AUTHORITY_EXPENSES: localAuthorityExpensesStepperConfig,
 
   // Naming
   URBAN_ZONE_NAMING_INTRODUCTION: namingIntroductionStepperConfig,

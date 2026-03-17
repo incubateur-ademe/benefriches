@@ -5,12 +5,15 @@ import { selectCurrentStep } from "../../core/createSite.reducer";
 import { getParcelTypeFromStepId } from "../../core/urban-zone/steps/per-parcel-soils/parcelStepMapping";
 import { HTML_MAIN_TITLE } from "../SiteCreationWizard";
 import UrbanZoneCreationResultContainer from "./creation-result";
+import ExpensesAndIncomeIntroductionContainer from "./expenses-and-income-introduction";
+import ExpensesAndIncomeSummaryContainer from "./expenses-and-income-summary";
 import UrbanZoneFinalSummaryContainer from "./final-summary";
 import FullTimeJobsEquivalentContainer from "./full-time-jobs-equivalent";
 import LandParcelBuildingsFloorAreaContainer from "./land-parcel-buildings-floor-area";
 import LandParcelSoilsDistributionContainer from "./land-parcel-soils-distribution";
 import LandParcelsSelectionContainer from "./land-parcels-selection";
 import LandParcelsSurfaceDistributionContainer from "./land-parcels-surface-distribution";
+import LocalAuthorityExpensesContainer from "./local-authority-expenses";
 import ManagementIntroductionContainer from "./management-introduction";
 import ManagerContainer from "./manager";
 import NamingContainer from "./naming";
@@ -22,6 +25,9 @@ import SoilsContaminationIntroductionContainer from "./soils-contamination-intro
 import UrbanZoneSoilsSummaryContainer from "./soils-summary";
 import VacantCommercialPremisesFloorAreaContainer from "./vacant-commercial-premises-floor-area";
 import VacantCommercialPremisesFootprintContainer from "./vacant-commercial-premises-footprint";
+import VacantPremisesExpensesContainer from "./vacant-premises-expenses";
+import ZoneManagementExpensesContainer from "./zone-management-expenses";
+import ZoneManagementIncomeContainer from "./zone-management-income";
 
 function SiteCreationUrbanZoneStepContent() {
   const currentStep = useAppSelector(selectCurrentStep);
@@ -109,6 +115,48 @@ function SiteCreationUrbanZoneStepContent() {
         <>
           <HtmlTitle>{`Emplois en équivalent temps plein - Zone urbaine - ${HTML_MAIN_TITLE}`}</HtmlTitle>
           <FullTimeJobsEquivalentContainer />
+        </>
+      );
+    case "URBAN_ZONE_EXPENSES_AND_INCOME_INTRODUCTION":
+      return (
+        <>
+          <HtmlTitle>{`Introduction - Dépenses et recettes - Zone urbaine - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <ExpensesAndIncomeIntroductionContainer />
+        </>
+      );
+    case "URBAN_ZONE_VACANT_PREMISES_EXPENSES":
+      return (
+        <>
+          <HtmlTitle>{`Dépenses locaux vacants - Zone urbaine - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <VacantPremisesExpensesContainer />
+        </>
+      );
+    case "URBAN_ZONE_ZONE_MANAGEMENT_EXPENSES":
+      return (
+        <>
+          <HtmlTitle>{`Dépenses de gestion - Zone urbaine - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <ZoneManagementExpensesContainer />
+        </>
+      );
+    case "URBAN_ZONE_ZONE_MANAGEMENT_INCOME":
+      return (
+        <>
+          <HtmlTitle>{`Recettes - Zone urbaine - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <ZoneManagementIncomeContainer />
+        </>
+      );
+    case "URBAN_ZONE_EXPENSES_AND_INCOME_SUMMARY":
+      return (
+        <>
+          <HtmlTitle>{`Récapitulatif dépenses et recettes - Zone urbaine - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <ExpensesAndIncomeSummaryContainer />
+        </>
+      );
+    case "URBAN_ZONE_LOCAL_AUTHORITY_EXPENSES":
+      return (
+        <>
+          <HtmlTitle>{`Dépenses collectivité - Zone urbaine - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <LocalAuthorityExpensesContainer />
         </>
       );
     case "URBAN_ZONE_NAMING_INTRODUCTION":

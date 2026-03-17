@@ -96,7 +96,7 @@ describe("Urban zone - VACANT_COMMERCIAL_PREMISES_FLOOR_AREA step", () => {
       expect(getCurrentStep(store)).toBe("URBAN_ZONE_FULL_TIME_JOBS_EQUIVALENT");
     });
 
-    it("should skip full-time jobs and navigate to naming introduction when footprint equals total site surface", () => {
+    it("should skip full-time jobs and navigate to expenses introduction when footprint equals total site surface", () => {
       const store = new StoreBuilder()
         .withSiteData({ surfaceArea: 10_000 })
         .withUrbanZoneSteps({
@@ -115,7 +115,7 @@ describe("Urban zone - VACANT_COMMERCIAL_PREMISES_FLOOR_AREA step", () => {
         }),
       );
 
-      expect(getCurrentStep(store)).toBe("URBAN_ZONE_NAMING_INTRODUCTION");
+      expect(getCurrentStep(store)).toBe("URBAN_ZONE_EXPENSES_AND_INCOME_INTRODUCTION");
     });
   });
 
@@ -137,7 +137,7 @@ describe("Urban zone - VACANT_COMMERCIAL_PREMISES_FLOOR_AREA step", () => {
 
 describe("Urban zone - FULL_TIME_JOBS_EQUIVALENT step", () => {
   describe("completion", () => {
-    it("should store full-time jobs data and navigate to naming introduction", () => {
+    it("should store full-time jobs data and navigate to expenses introduction", () => {
       const store = new StoreBuilder()
         .withCurrentStep("URBAN_ZONE_FULL_TIME_JOBS_EQUIVALENT")
         .build();
@@ -155,7 +155,7 @@ describe("Urban zone - FULL_TIME_JOBS_EQUIVALENT step", () => {
         completed: true,
         payload: { fullTimeJobs: 42 },
       });
-      expect(getCurrentStep(store)).toBe("URBAN_ZONE_NAMING_INTRODUCTION");
+      expect(getCurrentStep(store)).toBe("URBAN_ZONE_EXPENSES_AND_INCOME_INTRODUCTION");
     });
   });
 

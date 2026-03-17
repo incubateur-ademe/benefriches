@@ -1,5 +1,5 @@
-import { ReadStateHelper } from "../../helpers/stateHelpers";
 import type { InfoStepHandler, UrbanZoneStepContext } from "../../step-handlers/stepHandler.type";
+import { isActivityParkManager, isLocalAuthority } from "../expenses/expensesConditions";
 
 export const UrbanZoneNamingIntroductionHandler = {
   stepId: "URBAN_ZONE_NAMING_INTRODUCTION",
@@ -9,17 +9,12 @@ export const UrbanZoneNamingIntroductionHandler = {
   },
 
   getPreviousStepId(context: UrbanZoneStepContext) {
-    const footprintSurfaceArea = ReadStateHelper.getStepAnswers(
-      context.stepsState,
-      "URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FOOTPRINT",
-    )?.surfaceArea;
-
-    if (
-      footprintSurfaceArea !== undefined &&
-      footprintSurfaceArea === context.siteData.surfaceArea
-    ) {
-      return "URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FLOOR_AREA";
+    if (isActivityParkManager(context)) {
+      return "URBAN_ZONE_EXPENSES_AND_INCOME_SUMMARY";
     }
-    return "URBAN_ZONE_FULL_TIME_JOBS_EQUIVALENT";
+    if (isLocalAuthority(context)) {
+      return "URBAN_ZONE_LOCAL_AUTHORITY_EXPENSES";
+    }
+    return "URBAN_ZONE_EXPENSES_AND_INCOME_INTRODUCTION";
   },
 } satisfies InfoStepHandler;

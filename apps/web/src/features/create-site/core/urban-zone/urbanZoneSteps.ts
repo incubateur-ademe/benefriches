@@ -1,6 +1,10 @@
 import z from "zod";
 
 import { soilsContaminationSchema } from "./steps/contamination/soilsContamination.schema";
+import { localAuthorityExpensesSchema } from "./steps/expenses/local-authority-expenses/localAuthorityExpenses.schema";
+import { vacantPremisesExpensesSchema } from "./steps/expenses/vacant-premises-expenses/vacantPremisesExpenses.schema";
+import { zoneManagementExpensesSchema } from "./steps/expenses/zone-management-expenses/zoneManagementExpenses.schema";
+import { zoneManagementIncomeSchema } from "./steps/expenses/zone-management-income/zoneManagementIncome.schema";
 import { landParcelsSelectionSchema } from "./steps/land-parcels/land-parcels-selection/landParcelsSelection.schema";
 import { landParcelsSurfaceDistributionSchema } from "./steps/land-parcels/land-parcels-surface-distribution/landParcelsSurfaceDistribution.schema";
 import { fullTimeJobsEquivalentSchema } from "./steps/management/full-time-jobs-equivalent/fullTimeJobsEquivalent.schema";
@@ -15,12 +19,14 @@ export const INTRODUCTION_STEPS = [
   "URBAN_ZONE_SOILS_AND_SPACES_INTRODUCTION",
   "URBAN_ZONE_SOILS_CONTAMINATION_INTRODUCTION",
   "URBAN_ZONE_MANAGEMENT_INTRODUCTION",
+  "URBAN_ZONE_EXPENSES_AND_INCOME_INTRODUCTION",
   "URBAN_ZONE_NAMING_INTRODUCTION",
 ] as const;
 
 export const SUMMARY_STEPS = [
   "URBAN_ZONE_SOILS_SUMMARY",
   "URBAN_ZONE_SOILS_CARBON_STORAGE",
+  "URBAN_ZONE_EXPENSES_AND_INCOME_SUMMARY",
   "URBAN_ZONE_FINAL_SUMMARY",
   "URBAN_ZONE_CREATION_RESULT",
 ] as const;
@@ -44,6 +50,12 @@ export const ANSWER_STEP_IDS = [
   "URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FOOTPRINT",
   "URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FLOOR_AREA",
   "URBAN_ZONE_FULL_TIME_JOBS_EQUIVALENT",
+  // Expenses and incomes
+  "URBAN_ZONE_VACANT_PREMISES_EXPENSES",
+  "URBAN_ZONE_ZONE_MANAGEMENT_EXPENSES",
+  "URBAN_ZONE_ZONE_MANAGEMENT_INCOME",
+  "URBAN_ZONE_LOCAL_AUTHORITY_EXPENSES",
+  // Naming
   "URBAN_ZONE_NAMING",
 ] as const;
 
@@ -80,6 +92,11 @@ export const answersByStepSchemas = {
   URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FOOTPRINT: vacantCommercialPremisesFootprintSchema,
   URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FLOOR_AREA: vacantCommercialPremisesFloorAreaSchema,
   URBAN_ZONE_FULL_TIME_JOBS_EQUIVALENT: fullTimeJobsEquivalentSchema,
+  // Expenses and incomes
+  URBAN_ZONE_VACANT_PREMISES_EXPENSES: vacantPremisesExpensesSchema,
+  URBAN_ZONE_ZONE_MANAGEMENT_EXPENSES: zoneManagementExpensesSchema,
+  URBAN_ZONE_ZONE_MANAGEMENT_INCOME: zoneManagementIncomeSchema,
+  URBAN_ZONE_LOCAL_AUTHORITY_EXPENSES: localAuthorityExpensesSchema,
   // Naming
   URBAN_ZONE_NAMING: namingSchema,
 } as const;

@@ -5,7 +5,7 @@ export const FullTimeJobsEquivalentHandler = {
   stepId: "URBAN_ZONE_FULL_TIME_JOBS_EQUIVALENT",
 
   getNextStepId() {
-    return "URBAN_ZONE_NAMING_INTRODUCTION";
+    return "URBAN_ZONE_EXPENSES_AND_INCOME_INTRODUCTION";
   },
 
   getPreviousStepId(context) {

@@ -13,7 +13,9 @@ import type { SoilType, UrbanZoneLandParcelType, UrbanZoneType } from "shared";
  *            fillBuildingsFloorAreaForCurrentParcel
  * - Phase 5: selectSoilsContamination, selectManager, fillVacantCommercialPremisesFootprint,
  *            fillVacantCommercialPremisesFloorArea, fillFullTimeJobsEquivalent
- * - Phase 6: fillSiteNameAndDescription, expectFinalSummary, createSite, expectCreationSuccess
+ * - Phase 6.5: passExpensesAndIncomeIntroduction, fillActivityParkManagerExpenses,
+ *              passExpensesAndIncomeSummary, fillLocalAuthorityExpenses
+ * - Phase 7: fillSiteNameAndDescription, expectFinalSummary, createSite, expectCreationSuccess
  */
 export class UrbanZoneSiteCreationPage {
   readonly page: Page;
@@ -171,7 +173,127 @@ export class UrbanZoneSiteCreationPage {
     await this.submit();
   }
 
-  // --- Phase 6: naming + summary ---
+  // --- Phase 6.5: expenses and income ---
+
+  async fillActivityParkManagerExpenses(values: {
+    vacantPremisesExpenses?: {
+      ownerPropertyTaxes?: number;
+      ownerMaintenance?: number;
+      ownerSecurity?: number;
+      ownerIllegalDumpingCost?: number;
+      ownerOtherManagementCosts?: number;
+      tenantRent?: number;
+      tenantOperationsTaxes?: number;
+      tenantOtherOperationsCosts?: number;
+    };
+    zoneManagementExpenses?: {
+      maintenance?: number;
+      security?: number;
+      illegalDumpingCost?: number;
+      otherManagementCosts?: number;
+    };
+    zoneManagementIncome?: {
+      rent?: number;
+      subsidies?: number;
+      otherIncome?: number;
+    };
+  }): Promise<void> {
+    // Vacant premises expenses form — only shown when hasVacantPremises
+    if (values.vacantPremisesExpenses !== undefined) {
+      const v = values.vacantPremisesExpenses;
+      if (v.ownerPropertyTaxes !== undefined)
+        await this.page
+          .getByRole("textbox", { name: "Taxe foncière" })
+          .first()
+          .fill(v.ownerPropertyTaxes.toString());
+      if (v.ownerMaintenance !== undefined)
+        await this.page
+          .getByRole("textbox", { name: "Entretien et maintenance" })
+          .first()
+          .fill(v.ownerMaintenance.toString());
+      if (v.ownerSecurity !== undefined)
+        await this.page
+          .getByRole("textbox", { name: "Gardiennage" })
+          .fill(v.ownerSecurity.toString());
+      if (v.ownerIllegalDumpingCost !== undefined)
+        await this.page
+          .getByRole("textbox", { name: "Débarras de dépôt sauvage" })
+          .first()
+          .fill(v.ownerIllegalDumpingCost.toString());
+      if (v.ownerOtherManagementCosts !== undefined)
+        await this.page
+          .getByRole("textbox", { name: "Autres charges" })
+          .first()
+          .fill(v.ownerOtherManagementCosts.toString());
+      if (v.tenantRent !== undefined)
+        await this.page.getByRole("textbox", { name: "Loyer" }).fill(v.tenantRent.toString());
+      if (v.tenantOperationsTaxes !== undefined)
+        await this.page
+          .getByRole("textbox", { name: "Impôts et taxes" })
+          .fill(v.tenantOperationsTaxes.toString());
+      if (v.tenantOtherOperationsCosts !== undefined)
+        await this.page
+          .getByRole("textbox", { name: "Autres charges" })
+          .last()
+          .fill(v.tenantOtherOperationsCosts.toString());
+      await this.submit();
+    }
+
+    // Zone management expenses form — only shown when hasActivity
+    if (values.zoneManagementExpenses !== undefined) {
+      const v = values.zoneManagementExpenses;
+      if (v.maintenance !== undefined)
+        await this.page
+          .getByRole("textbox", { name: "Entretien et maintenance" })
+          .fill(v.maintenance.toString());
+      if (v.security !== undefined)
+        await this.page.getByRole("textbox", { name: "Gardiennage" }).fill(v.security.toString());
+      if (v.illegalDumpingCost !== undefined)
+        await this.page
+          .getByRole("textbox", { name: "Débarras de dépôt sauvage" })
+          .fill(v.illegalDumpingCost.toString());
+      if (v.otherManagementCosts !== undefined)
+        await this.page
+          .getByRole("textbox", { name: "Autres charges" })
+          .fill(v.otherManagementCosts.toString());
+      await this.submit();
+    }
+
+    // Zone management income form — only shown when hasActivity
+    if (values.zoneManagementIncome !== undefined) {
+      const v = values.zoneManagementIncome;
+      if (v.rent !== undefined)
+        await this.page.getByRole("textbox", { name: "Revenus locatifs" }).fill(v.rent.toString());
+      if (v.subsidies !== undefined)
+        await this.page.getByRole("textbox", { name: "Subventions" }).fill(v.subsidies.toString());
+      if (v.otherIncome !== undefined)
+        await this.page
+          .getByRole("textbox", { name: "Autres recettes" })
+          .fill(v.otherIncome.toString());
+      await this.submit();
+    }
+  }
+
+  async passExpensesAndIncomeSummary(): Promise<void> {
+    await this.page.getByRole("button", { name: "Suivant" }).click();
+  }
+
+  async fillLocalAuthorityExpenses(values: {
+    maintenance?: number;
+    otherManagementCosts?: number;
+  }): Promise<void> {
+    if (values.maintenance !== undefined)
+      await this.page
+        .getByRole("textbox", { name: "Entretien et maintenance" })
+        .fill(values.maintenance.toString());
+    if (values.otherManagementCosts !== undefined)
+      await this.page
+        .getByRole("textbox", { name: "Autres charges" })
+        .fill(values.otherManagementCosts.toString());
+    await this.submit();
+  }
+
+  // --- Phase 7: naming + summary ---
   async fillSiteNameAndDescription(name: string, description?: string): Promise<void> {
     await this.page.getByLabel("Nom du site").fill(name);
     if (description) {
