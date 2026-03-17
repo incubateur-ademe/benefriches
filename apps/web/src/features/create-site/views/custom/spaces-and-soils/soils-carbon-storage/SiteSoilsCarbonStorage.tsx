@@ -1,3 +1,4 @@
+import { Alert } from "@codegouvfr/react-dsfr/Alert";
 import { useEffect } from "react";
 
 import { SiteCarbonStorage } from "@/features/create-site/core/siteSoilsCarbonStorage.reducer";
@@ -14,7 +15,7 @@ import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormL
 type Props = {
   onNext: () => void;
   onBack: () => void;
-  loading: boolean;
+  loadingState: "idle" | "loading" | "success" | "error";
   siteCarbonStorage?: SiteCarbonStorage;
   fetchSiteCarbonStorage: () => void;
 };
@@ -22,7 +23,7 @@ type Props = {
 const SiteSoilsCarbonStorage = ({
   onNext,
   onBack,
-  loading,
+  loadingState,
   siteCarbonStorage,
   fetchSiteCarbonStorage,
 }: Props) => {
@@ -46,7 +47,7 @@ const SiteSoilsCarbonStorage = ({
         <FormDefinition hideDivider>
           <p>
             Le sol est un milieu composé de minéraux (ex : pierre, argile, calcaire) mais également,
-            lorsque sa partie supérieure (”terre végétale”) est présente, de matière organique,
+            lorsque sa partie supérieure ("terre végétale") est présente, de matière organique,
             issue de la dégradation de végétaux (ex : l'humus des forêts) et d'organismes vivants :
             faune, flore, champignons, micro-organismes.
           </p>
@@ -91,7 +92,17 @@ const SiteSoilsCarbonStorage = ({
         </FormDefinition>
       }
     >
-      {loading && <LoadingSpinner loadingText="Calcul du stockage de carbone du site..." />}
+      {loadingState === "loading" && (
+        <LoadingSpinner loadingText="Calcul du stockage de carbone du site..." />
+      )}
+      {loadingState === "error" && (
+        <Alert
+          description="Une erreur s'est produite lors du calcul du pouvoir de stockage de carbone par les sols..."
+          severity="error"
+          title="Erreur"
+          className="my-7"
+        />
+      )}
       {siteCarbonStorage && (
         <>
           <p>

@@ -20,7 +20,7 @@ function SiteSoilsCarbonStorageContainer() {
       fetchSiteCarbonStorage={async () => {
         await dispatch(fetchSiteSoilsCarbonStorage());
       }}
-      loading={loadingState === "loading"}
+      loadingState={loadingState}
       siteCarbonStorage={carbonStorage}
     />
   );
