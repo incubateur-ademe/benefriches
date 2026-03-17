@@ -4,7 +4,6 @@ import { ReadStateHelper } from "../../../helpers/stateHelpers";
 
 export type ZoneManagementExpensesViewData = {
   initialValues: {
-    propertyTaxes?: number;
     maintenance?: number;
     security?: number;
     illegalDumpingCost?: number;
