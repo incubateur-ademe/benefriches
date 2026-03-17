@@ -124,11 +124,9 @@ test.describe("site creation (urban zone)", () => {
     await siteCreationPage.fillSurfaceArea(10_000);
 
     // --- land parcels ---
+    // Note: single parcel → surface distribution step is auto-skipped (shortcut assigns 100% to the single parcel)
     await siteCreationPage.expectStepperCurrentStep("Surfaces foncières");
     await urbanZoneSiteCreationPage.selectLandParcels(["COMMERCIAL_ACTIVITY_AREA"]);
-    await urbanZoneSiteCreationPage.fillLandParcelsSurfaceDistribution({
-      COMMERCIAL_ACTIVITY_AREA: 10_000,
-    });
 
     // --- soils ---
     await siteCreationPage.expectStepperCurrentStep("Sols et espaces");
@@ -208,11 +206,9 @@ test.describe("site creation (urban zone)", () => {
     await siteCreationPage.fillSurfaceArea(10_000);
 
     // --- land parcels ---
+    // Note: single parcel → surface distribution step is auto-skipped (shortcut assigns 100% to the single parcel)
     await siteCreationPage.expectStepperCurrentStep("Surfaces foncières");
     await urbanZoneSiteCreationPage.selectLandParcels(["COMMERCIAL_ACTIVITY_AREA"]);
-    await urbanZoneSiteCreationPage.fillLandParcelsSurfaceDistribution({
-      COMMERCIAL_ACTIVITY_AREA: 10_000,
-    });
 
     // --- soils ---
     await siteCreationPage.expectStepperCurrentStep("Sols et espaces");

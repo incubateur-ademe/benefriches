@@ -62,7 +62,7 @@ export class UrbanZoneSiteCreationPage {
       RESERVED_SURFACE: "Surface réservée",
     };
     // Switch to m² input mode (defaults to %)
-    await this.page.getByLabel("㎡").check({ force: true });
+    await this.page.getByRole("radio", { name: "㎡" }).check({ force: true });
 
     for (const [type, area] of Object.entries(distribution) as [
       UrbanZoneLandParcelType,
@@ -104,6 +104,8 @@ export class UrbanZoneSiteCreationPage {
   async fillSoilsDistributionForCurrentParcel(
     distribution: Partial<Record<SoilType, number>>,
   ): Promise<void> {
+    // Switch to m² input mode
+    await this.page.getByRole("radio", { name: "㎡" }).check({ force: true });
     const labels: Record<SoilType, string> = {
       BUILDINGS: "Bâtiments",
       IMPERMEABLE_SOILS: "Sols imperméabilisés",
