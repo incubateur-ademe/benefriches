@@ -32,10 +32,11 @@ function ScheduleField({ label, scheduleName, control, onStartDateChange }: Prop
       state={hasError ? "error" : "default"}
       stateRelatedMessage={
         hasError ? (
-          <ul className="m-0">
-            {errorStartDate && <li>{errorStartDate.message ?? ""}</li>}
-            {errorEndDate && <li>{errorEndDate.message ?? ""}</li>}
-          </ul>
+          <>
+            {errorStartDate?.message}
+            {errorStartDate && errorEndDate && <br />}
+            {errorEndDate?.message}
+          </>
         ) : undefined
       }
     >
