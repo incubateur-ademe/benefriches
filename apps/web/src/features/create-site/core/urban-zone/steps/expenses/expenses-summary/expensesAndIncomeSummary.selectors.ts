@@ -12,12 +12,12 @@ export type ExpensesAndIncomeSummaryViewData = {
 function toExpenses(
   amounts: Record<string, number | undefined>,
   bearer: "owner" | "tenant",
-  purposeMap: Record<string, string>,
+  purposeMap: Record<string, SiteYearlyExpense["purpose"]>,
 ): SiteYearlyExpense[] {
   return typedObjectEntries(amounts).reduce<SiteYearlyExpense[]>((acc, [key, amount]) => {
     const purpose = purposeMap[key];
     if (typeof amount === "number" && amount > 0 && purpose !== undefined) {
-      acc.push({ purpose: purpose as SiteYearlyExpense["purpose"], amount, bearer });
+      acc.push({ purpose, amount, bearer });
     }
     return acc;
   }, []);
@@ -45,7 +45,7 @@ export const selectExpensesAndIncomeSummaryViewData = (
     "URBAN_ZONE_LOCAL_AUTHORITY_EXPENSES",
   );
 
-  const ownerPurposeMap: Record<string, string> = {
+  const ownerPurposeMap: Record<string, SiteYearlyExpense["purpose"]> = {
     ownerPropertyTaxes: "propertyTaxes",
     ownerMaintenance: "maintenance",
     ownerSecurity: "security",
@@ -58,13 +58,13 @@ export const selectExpensesAndIncomeSummaryViewData = (
     otherManagementCosts: "otherManagementCosts",
   };
 
-  const tenantPurposeMap: Record<string, string> = {
+  const tenantPurposeMap: Record<string, SiteYearlyExpense["purpose"]> = {
     tenantRent: "rent",
     tenantOperationsTaxes: "operationsTaxes",
     tenantOtherOperationsCosts: "otherOperationsCosts",
   };
 
-  const incomePurposeMap: Record<string, string> = {
+  const incomePurposeMap: Record<string, SiteYearlyIncome["source"]> = {
     rent: "rent",
     subsidies: "subsidies",
     otherIncome: "other",
@@ -98,7 +98,7 @@ export const selectExpensesAndIncomeSummaryViewData = (
   const incomes: SiteYearlyIncome[] = typedObjectEntries(zoneIncome ?? {}).reduce<
     SiteYearlyIncome[]
   >((acc, [key, amount]) => {
-    const source = incomePurposeMap[key] as SiteYearlyIncome["source"] | undefined;
+    const source = incomePurposeMap[key];
     if (typeof amount === "number" && amount > 0 && source !== undefined) {
       acc.push({ source, amount });
     }
