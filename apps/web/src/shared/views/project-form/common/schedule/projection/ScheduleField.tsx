@@ -86,7 +86,7 @@ function ScheduleField({ label, scheduleName, control, onStartDateChange }: Prop
             )}
           />
         </div>
-        {startDateValue && endDateValue ? (
+        {startDateValue && endDateValue && !hasError ? (
           <p>
             Soit{" "}
             <strong>
