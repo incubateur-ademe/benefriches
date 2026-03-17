@@ -29,5 +29,6 @@ export function hasActivity(context: UrbanZoneStepContext): boolean {
     "URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FOOTPRINT",
   )?.surfaceArea;
   const totalSurfaceArea = context.siteData.surfaceArea;
+  // Infinity ensures the comparison always passes when surfaceArea is unknown
   return footprint !== undefined && footprint < (totalSurfaceArea ?? Infinity);
 }
