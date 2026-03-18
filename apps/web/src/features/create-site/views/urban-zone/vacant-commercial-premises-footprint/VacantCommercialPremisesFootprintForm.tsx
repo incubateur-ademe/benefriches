@@ -30,7 +30,7 @@ function VacantCommercialPremisesFootprintForm({
     defaultValues: {
       surfaceArea: initialValue,
     },
-    mode: "onBlur",
+    mode: "onChange",
   });
 
   return (
