@@ -14,12 +14,12 @@ jobs:
   build-and-deploy-web-artifact:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v6
         with:
           version: 10.31.0
       - name: Use Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: "24"
           cache: "pnpm"
@@ -32,7 +32,7 @@ jobs:
       - name: Create Archive
         run: mkdir -p scalingo/web && cp -r apps/web/dist "$_" && cp -r apps/web/scalingo/* "$_" && cp apps/web/scalingo/.buildpacks "$_" && cp apps/web/scripts/generateEnvVarsJsFile.sh "$_" && tar -czf web-scalingo.tar.gz scalingo
       - name: Archive dist
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: web-scalingo-${{ inputs.tag }}
           path: web-scalingo.tar.gz
