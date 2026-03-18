@@ -1,4 +1,4 @@
-import { test } from "./photovoltaic-project-creation.fixtures";
+import { test } from "./photovoltaic.fixtures";
 
 const PROJECT_NAME = "Centrale photovoltaïque de Meylan";
 

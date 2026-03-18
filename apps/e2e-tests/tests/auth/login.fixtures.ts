@@ -44,6 +44,6 @@ export const test = base.extend<LoginFixtures>({
 });
 
 // Re-export MailCatcher utilities for use in login tests
-export { waitForEmail, getMessagePlainText } from "./mail-catcher";
+export { waitForEmail, getMessagePlainText } from "../../fixtures/helpers/mail-catcher";
 
 export { expect } from "@playwright/test";

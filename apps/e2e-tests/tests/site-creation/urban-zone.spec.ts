@@ -1,4 +1,4 @@
-import { test } from "./urban-zone-site-creation.fixtures";
+import { test } from "./urban-zone.fixtures";
 
 test.describe("site creation (urban zone)", () => {
   test("allows authenticated user to create an urban zone site with activity park manager", async ({
