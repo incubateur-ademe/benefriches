@@ -230,7 +230,7 @@ test.describe("site creation (urban zone)", () => {
     await siteCreationPage.expectStepperCurrentStep("Gestion et activité");
     await siteCreationPage.goToNextStep(); // management introduction
     await siteCreationPage.expectStepTitle("Qui est le gestionnaire de la zone commerciale ?");
-    await urbanZoneSiteCreationPage.selectManager("local_authority");
+    await urbanZoneSiteCreationPage.selectManager("local_authority", "municipality");
     await siteCreationPage.expectStepTitle(
       "Quelle est l'emprise foncière des locaux commerciaux vacants ou en friche ?",
     );

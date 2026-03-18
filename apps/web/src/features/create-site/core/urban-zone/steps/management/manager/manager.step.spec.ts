@@ -53,13 +53,13 @@ describe("Urban zone - MANAGER step", () => {
       store.dispatch(
         stepCompletionRequested({
           stepId: "URBAN_ZONE_MANAGER",
-          answers: { structureType: "local_authority" },
+          answers: { structureType: "local_authority", localAuthority: "municipality" },
         }),
       );
 
       expect(store.getState().siteCreation.urbanZone.steps["URBAN_ZONE_MANAGER"]).toEqual({
         completed: true,
-        payload: { structureType: "local_authority" },
+        payload: { structureType: "local_authority", localAuthority: "municipality" },
       });
       expect(getCurrentStep(store)).toBe("URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FOOTPRINT");
     });

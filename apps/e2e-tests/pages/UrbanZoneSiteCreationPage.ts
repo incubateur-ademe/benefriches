@@ -1,5 +1,5 @@
 import { expect, type Page } from "@playwright/test";
-import type { SoilType, UrbanZoneLandParcelType, UrbanZoneType } from "shared";
+import type { LocalAuthority, SoilType, UrbanZoneLandParcelType, UrbanZoneType } from "shared";
 
 /**
  * Page object for urban zone site creation steps.
@@ -151,12 +151,22 @@ export class UrbanZoneSiteCreationPage {
 
   // --- Phase 5: management ---
 
-  async selectManager(type: "activity_park_manager" | "local_authority"): Promise<void> {
+  async selectManager(
+    type: "activity_park_manager" | "local_authority",
+    localAuthority?: LocalAuthority,
+  ): Promise<void> {
     const labels: Record<typeof type, string> = {
       activity_park_manager: "Un gestionnaire de parc d'activité",
-      local_authority: "La collectivité",
+      local_authority: "Une collectivité",
     };
     await this.page.getByRole("radio", { name: labels[type] }).check({ force: true });
+
+    if (type === "local_authority" && localAuthority) {
+      await this.page
+        .getByRole("combobox", { name: /type de collectivité/i })
+        .selectOption(localAuthority);
+    }
+
     await this.submit();
   }
 
