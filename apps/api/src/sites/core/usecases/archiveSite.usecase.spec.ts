@@ -12,6 +12,7 @@ describe("ArchiveSite use case", () => {
   let dateProvider: DateProvider;
   let siteRepository: InMemorySitesRepository;
   const fakeNow = new Date("2024-01-10T13:00:00");
+  const createdAt = new Date("2024-01-05T10:00:00");
 
   beforeEach(() => {
     dateProvider = new DeterministicDateProvider(fakeNow);
@@ -27,7 +28,7 @@ describe("ArchiveSite use case", () => {
     siteRepository._setSites([
       {
         ...site,
-        createdAt: new Date(),
+        createdAt,
         creationMode: "express",
         createdBy: uuid(),
         status: "active",
@@ -71,7 +72,7 @@ describe("ArchiveSite use case", () => {
     siteRepository._setSites([
       {
         ...site,
-        createdAt: new Date(),
+        createdAt,
         creationMode: "express",
         createdBy: userId,
         status: "active",
@@ -90,7 +91,7 @@ describe("ArchiveSite use case", () => {
 
     expect(sites[0]).toEqual({
       ...site,
-      createdAt: new Date(),
+      createdAt,
       creationMode: "express",
       createdBy: userId,
       status: "archived",
