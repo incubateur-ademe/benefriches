@@ -5,10 +5,11 @@ export type RecurringExpensePurpose = "rent" | "maintenance" | "taxes" | "other"
 // todo: rename to YearlyExpense
 export type RecurringExpense = TExpense<RecurringExpensePurpose>;
 
+// All data from Comité de régulation de l'énergie 2026
 const PHOTOVOLTAIC_POWER_PLANT_ECONOMICAL_RATIO_EURO_PER_KWC_PER_YEAR = {
-  rent: 4,
-  maintenance: 11,
-  taxes: 4.394,
+  rent: 7,
+  maintenance: 18,
+  taxes: 3.542,
 };
 
 const computeDefaultPhotovoltaicYearlyRentAmount = (electricalPowerKWc: number) => {

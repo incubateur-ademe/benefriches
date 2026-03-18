@@ -4,10 +4,11 @@ export type PhotovoltaicInstallationExpense = TExpense<
   "technical_studies" | "installation_works" | "other"
 >;
 
+// All data from Comité de régulation de l'énergie 2026
 export const PHOTOVOLTAIC_POWER_PLANT_ECONOMICAL_RATIO_EURO_PER_KWC = {
-  works: 740,
-  technicalStudyAmount: 35,
-  other: 75,
+  works: 830,
+  technicalStudyAmount: 40,
+  other: 85,
 };
 
 const computeDefaultPhotovoltaicWorksAmountExpenses = (electricalPowerKWc: number) => {

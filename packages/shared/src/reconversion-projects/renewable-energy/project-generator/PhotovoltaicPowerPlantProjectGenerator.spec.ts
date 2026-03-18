@@ -148,15 +148,15 @@ describe("PhotovoltaicPowerPlantProjectGenerator", () => {
         decontaminatedSoilSurface: 3750,
         yearlyProjectedCosts: [
           {
-            amount: 6000,
+            amount: 10_500,
             purpose: "rent",
           },
           {
-            amount: 16500,
+            amount: 27_000,
             purpose: "maintenance",
           },
           {
-            amount: 6591,
+            amount: 5_313,
             purpose: "taxes",
           },
           {
@@ -166,7 +166,7 @@ describe("PhotovoltaicPowerPlantProjectGenerator", () => {
         ],
         yearlyProjectedRevenues: [
           {
-            amount: 146445,
+            amount: 168_975,
             source: "operations",
           },
         ],
@@ -222,15 +222,15 @@ describe("PhotovoltaicPowerPlantProjectGenerator", () => {
           type: "PHOTOVOLTAIC_POWER_PLANT",
           costs: [
             {
-              amount: 52500,
+              amount: 60_000,
               purpose: "technical_studies",
             },
             {
-              amount: 1110000,
+              amount: 1_245_000,
               purpose: "installation_works",
             },
             {
-              amount: 112500,
+              amount: 127_500,
               purpose: "other",
             },
           ],
@@ -285,15 +285,15 @@ describe("PhotovoltaicPowerPlantProjectGenerator", () => {
         decontaminatedSoilSurface: undefined,
         yearlyProjectedCosts: [
           {
-            amount: 6000,
+            amount: 10500,
             purpose: "rent",
           },
           {
-            amount: 16500,
+            amount: 27000,
             purpose: "maintenance",
           },
           {
-            amount: 6591,
+            amount: 5313,
             purpose: "taxes",
           },
           {
@@ -303,7 +303,7 @@ describe("PhotovoltaicPowerPlantProjectGenerator", () => {
         ],
         yearlyProjectedRevenues: [
           {
-            amount: 146445,
+            amount: 168_975,
             source: "operations",
           },
         ],
@@ -336,15 +336,15 @@ describe("PhotovoltaicPowerPlantProjectGenerator", () => {
           type: "PHOTOVOLTAIC_POWER_PLANT",
           costs: [
             {
-              amount: 52500,
+              amount: 60_000,
               purpose: "technical_studies",
             },
             {
-              amount: 1110000,
+              amount: 1_245_000,
               purpose: "installation_works",
             },
             {
-              amount: 112500,
+              amount: 127_500,
               purpose: "other",
             },
           ],
