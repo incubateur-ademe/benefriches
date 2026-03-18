@@ -16,7 +16,7 @@ function VacantCommercialPremisesFloorAreaContainer() {
   return (
     <VacantCommercialPremisesFloorAreaForm
       initialValue={initialValue}
-      buildingsFootprintSurfaceArea={vacantPremisesFootprintSurfaceArea}
+      vacantFootprintSurfaceArea={vacantPremisesFootprintSurfaceArea}
       onSubmit={({ surfaceArea }) => {
         dispatch(
           stepCompletionRequested({

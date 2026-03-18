@@ -15,14 +15,14 @@ type FormValues = {
 
 type Props = {
   initialValue?: number;
-  buildingsFootprintSurfaceArea?: number;
+  vacantFootprintSurfaceArea?: number;
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
 };
 
 function VacantCommercialPremisesFloorAreaForm({
   initialValue,
-  buildingsFootprintSurfaceArea,
+  vacantFootprintSurfaceArea,
   onSubmit,
   onBack,
 }: Props) {
@@ -36,11 +36,11 @@ function VacantCommercialPremisesFloorAreaForm({
     <WizardFormLayout
       title="Quelle est la surface de plancher des locaux commerciaux vacants ou en friche ?"
       instructions={
-        buildingsFootprintSurfaceArea !== undefined ? (
+        vacantFootprintSurfaceArea !== undefined ? (
           <FormInfo>
             <p>
-              Surface d'emprise au sol des bâtiments&nbsp;:{" "}
-              <strong>{formatSurfaceArea(buildingsFootprintSurfaceArea)}</strong>.
+              Emprise foncière des locaux commerciaux vacants ou en friche&nbsp;:{" "}
+              <strong>{formatSurfaceArea(vacantFootprintSurfaceArea)}</strong>.
             </p>
           </FormInfo>
         ) : undefined
