@@ -9,11 +9,14 @@ import VacantCommercialPremisesFootprintForm from "./VacantCommercialPremisesFoo
 
 function VacantCommercialPremisesFootprintContainer() {
   const dispatch = useAppDispatch();
-  const { initialValue } = useAppSelector(selectVacantCommercialPremisesFootprintViewData);
+  const { initialValue, siteSurfaceArea } = useAppSelector(
+    selectVacantCommercialPremisesFootprintViewData,
+  );
 
   return (
     <VacantCommercialPremisesFootprintForm
       initialValue={initialValue}
+      siteSurfaceArea={siteSurfaceArea}
       onSubmit={({ surfaceArea }) => {
         dispatch(
           stepCompletionRequested({
