@@ -22,11 +22,11 @@ function ManagerContainer() {
     <ManagerForm
       initialValues={initialValues}
       localAuthoritiesList={localAuthoritiesList}
-      onSubmit={({ structureType, localAuthority }) => {
+      onSubmit={(data) => {
         dispatch(
           stepCompletionRequested({
             stepId: "URBAN_ZONE_MANAGER",
-            answers: { structureType, localAuthority },
+            answers: data,
           }),
         );
       }}

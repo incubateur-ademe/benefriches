@@ -162,9 +162,10 @@ export class UrbanZoneSiteCreationPage {
     await this.page.getByRole("radio", { name: labels[type] }).check({ force: true });
 
     if (type === "local_authority" && localAuthority) {
-      await this.page
-        .getByRole("combobox", { name: /type de collectivité/i })
-        .selectOption(localAuthority);
+      const combobox = this.page.getByRole("combobox", { name: /type de collectivité/i });
+      // Wait for municipality data to load (fallback labels like "Mairie" or "Département" are replaced with actual names)
+      await expect(combobox.locator("option[value='municipality']")).not.toHaveText("Mairie");
+      await combobox.selectOption(localAuthority);
     }
 
     await this.submit();
@@ -316,6 +317,11 @@ export class UrbanZoneSiteCreationPage {
 
   async expectFinalSummary(): Promise<void> {
     await expect(this.page.getByRole("heading", { name: "Récapitulatif du site" })).toBeVisible();
+  }
+
+  async expectFinalSummaryManagerLabel(expectedLabel: string): Promise<void> {
+    const managerRow = this.page.locator("dl", { hasText: "Gestionnaire" });
+    await expect(managerRow.locator("dt")).toHaveText(expectedLabel);
   }
 
   async createSite(): Promise<void> {

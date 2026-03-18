@@ -47,19 +47,27 @@ describe("Urban zone - MANAGER step", () => {
       expect(getCurrentStep(store)).toBe("URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FOOTPRINT");
     });
 
-    it("should store manager data and navigate to next step when local authority is selected", () => {
+    it("should store manager data with local authority name and navigate to next step when local authority is selected", () => {
       const store = new StoreBuilder().withCurrentStep("URBAN_ZONE_MANAGER").build();
 
       store.dispatch(
         stepCompletionRequested({
           stepId: "URBAN_ZONE_MANAGER",
-          answers: { structureType: "local_authority", localAuthority: "municipality" },
+          answers: {
+            structureType: "local_authority",
+            localAuthority: "municipality",
+            localAuthorityName: "Mairie de Lyon",
+          },
         }),
       );
 
       expect(store.getState().siteCreation.urbanZone.steps["URBAN_ZONE_MANAGER"]).toEqual({
         completed: true,
-        payload: { structureType: "local_authority", localAuthority: "municipality" },
+        payload: {
+          structureType: "local_authority",
+          localAuthority: "municipality",
+          localAuthorityName: "Mairie de Lyon",
+        },
       });
       expect(getCurrentStep(store)).toBe("URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FOOTPRINT");
     });

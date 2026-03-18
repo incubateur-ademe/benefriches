@@ -101,7 +101,11 @@ describe("Urban zone - EXPENSES_AND_INCOME_INTRODUCTION step", () => {
         .withUrbanZoneSteps({
           URBAN_ZONE_MANAGER: {
             completed: true,
-            payload: { structureType: "local_authority" },
+            payload: {
+              structureType: "local_authority",
+              localAuthority: "municipality",
+              localAuthorityName: "Mairie de Lyon",
+            },
           },
         })
         .build();

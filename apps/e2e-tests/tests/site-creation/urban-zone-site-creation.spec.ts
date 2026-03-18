@@ -103,6 +103,9 @@ test.describe("site creation (urban zone)", () => {
 
     // --- summary and creation ---
     await urbanZoneSiteCreationPage.expectFinalSummary();
+    await urbanZoneSiteCreationPage.expectFinalSummaryManagerLabel(
+      "Gestionnaire de parc d'activité",
+    );
     await urbanZoneSiteCreationPage.createSite();
     await urbanZoneSiteCreationPage.expectCreationSuccess("ZAE Chartres");
   });
@@ -185,6 +188,9 @@ test.describe("site creation (urban zone)", () => {
 
     // --- summary and creation ---
     await urbanZoneSiteCreationPage.expectFinalSummary();
+    await urbanZoneSiteCreationPage.expectFinalSummaryManagerLabel(
+      "Gestionnaire de parc d'activité",
+    );
     await urbanZoneSiteCreationPage.createSite();
     await urbanZoneSiteCreationPage.expectCreationSuccess("ZAE Sans Vacants");
   });
@@ -260,6 +266,7 @@ test.describe("site creation (urban zone)", () => {
 
     // --- summary and creation ---
     await urbanZoneSiteCreationPage.expectFinalSummary();
+    await urbanZoneSiteCreationPage.expectFinalSummaryManagerLabel("Mairie de Chartres");
     await urbanZoneSiteCreationPage.createSite();
     await urbanZoneSiteCreationPage.expectCreationSuccess("ZAE Collectivite");
   });

@@ -30,6 +30,7 @@ function UrbanZoneFinalSummary({
   hasContaminatedSoils,
   contaminatedSoilSurface,
   managerStructureType,
+  managerName,
   vacantPremisesFootprint,
   vacantPremisesFloorArea,
   fullTimeJobs,
@@ -99,7 +100,7 @@ function UrbanZoneFinalSummary({
         {managerStructureType && (
           <DataLine
             label={<strong>Gestionnaire</strong>}
-            value={MANAGER_LABELS[managerStructureType] ?? managerStructureType}
+            value={managerName ?? MANAGER_LABELS[managerStructureType] ?? "Non renseigné"}
           />
         )}
         {vacantPremisesFootprint !== undefined && (

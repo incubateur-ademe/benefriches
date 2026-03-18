@@ -42,7 +42,11 @@ describe("Urban zone - NAMING_INTRODUCTION step", () => {
       .withUrbanZoneSteps({
         URBAN_ZONE_MANAGER: {
           completed: true,
-          payload: { structureType: "local_authority" },
+          payload: {
+            structureType: "local_authority",
+            localAuthority: "municipality",
+            localAuthorityName: "Mairie de Lyon",
+          },
         },
       })
       .build();

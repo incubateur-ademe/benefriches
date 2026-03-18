@@ -24,6 +24,7 @@ export type UrbanZoneFinalSummaryViewData = {
   hasContaminatedSoils: boolean;
   contaminatedSoilSurface?: number;
   managerStructureType?: ManagerStructureType;
+  managerName?: string;
   vacantPremisesFootprint?: number;
   vacantPremisesFloorArea?: number;
   fullTimeJobs?: number;
@@ -80,6 +81,8 @@ export const selectUrbanZoneFinalSummaryViewData = createSelector(
       hasContaminatedSoils: contamination?.hasContaminatedSoils ?? false,
       contaminatedSoilSurface: contamination?.contaminatedSoilSurface,
       managerStructureType: manager?.structureType,
+      managerName:
+        manager?.structureType === "local_authority" ? manager.localAuthorityName : undefined,
       vacantPremisesFootprint: vacantFootprint?.surfaceArea,
       vacantPremisesFloorArea: vacantFloorArea?.surfaceArea,
       fullTimeJobs: fullTimeJobs?.fullTimeJobs,

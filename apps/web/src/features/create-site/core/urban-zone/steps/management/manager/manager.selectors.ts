@@ -24,7 +24,8 @@ export const selectManagerViewData = createSelector(
     return {
       initialValues: {
         structureType: answers?.structureType,
-        localAuthority: answers?.localAuthority,
+        localAuthority:
+          answers?.structureType === "local_authority" ? answers.localAuthority : undefined,
       },
       localAuthoritiesList,
     };

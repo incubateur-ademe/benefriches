@@ -21,10 +21,15 @@ type Props = {
     localAuthority: LocalAuthority | undefined;
   };
   localAuthoritiesList: { type: LocalAuthority; name: string }[];
-  onSubmit: (data: {
-    structureType: ManagerStructureType;
-    localAuthority?: LocalAuthority;
-  }) => void;
+  onSubmit: (
+    data:
+      | { structureType: "activity_park_manager" }
+      | {
+          structureType: "local_authority";
+          localAuthority: LocalAuthority;
+          localAuthorityName: string;
+        },
+  ) => void;
   onBack: () => void;
 };
 
@@ -44,11 +49,13 @@ function ManagerForm({ initialValues, localAuthoritiesList, onSubmit, onBack }: 
     <WizardFormLayout title="Qui est le gestionnaire de la zone commerciale ?">
       <form
         onSubmit={handleSubmit(({ structureType, localAuthority }) => {
-          if (structureType) {
-            onSubmit({
-              structureType,
-              localAuthority: localAuthority || undefined,
-            });
+          if (!structureType) return;
+          if (structureType === "local_authority" && localAuthority) {
+            const localAuthorityName =
+              localAuthoritiesList.find((la) => la.type === localAuthority)?.name ?? "";
+            onSubmit({ structureType, localAuthority, localAuthorityName });
+          } else {
+            onSubmit({ structureType: "activity_park_manager" });
           }
         })}
       >
