@@ -2,7 +2,8 @@ import type {
   InfoStepHandler,
   UrbanZoneStepContext,
 } from "../../../step-handlers/stepHandler.type";
-import { hasActivity, hasVacantPremises } from "../expensesConditions";
+import { hasVacantPremises } from "../../management/managementReaders";
+import { hasActivity } from "../activityReaders";
 
 export const ExpensesAndIncomeSummaryHandler = {
   stepId: "URBAN_ZONE_EXPENSES_AND_INCOME_SUMMARY",

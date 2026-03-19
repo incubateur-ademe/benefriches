@@ -1,5 +1,5 @@
 import type { InfoStepHandler, UrbanZoneStepContext } from "../../step-handlers/stepHandler.type";
-import { isActivityParkManager, isLocalAuthority } from "../expenses/expensesConditions";
+import { isActivityParkManager, isLocalAuthority } from "../management/managementReaders";
 
 export const UrbanZoneNamingIntroductionHandler = {
   stepId: "URBAN_ZONE_NAMING_INTRODUCTION",

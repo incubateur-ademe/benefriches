@@ -1,5 +1,5 @@
 import type { AnswerStepHandler } from "../../../step-handlers/stepHandler.type";
-import { hasActivity } from "../expensesConditions";
+import { hasActivity } from "../activityReaders";
 
 export const VacantPremisesExpensesHandler = {
   stepId: "URBAN_ZONE_VACANT_PREMISES_EXPENSES",

@@ -1,14 +1,11 @@
-import { ReadStateHelper } from "../../../helpers/stateHelpers";
 import type { AnswerStepHandler } from "../../../step-handlers/stepHandler.type";
+import { getVacantPremisesFootprintSurfaceArea } from "../managementReaders";
 
 export const VacantCommercialPremisesFloorAreaHandler = {
   stepId: "URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FLOOR_AREA",
 
   getNextStepId(context) {
-    const footprintSurfaceArea = ReadStateHelper.getStepAnswers(
-      context.stepsState,
-      "URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FOOTPRINT",
-    )?.surfaceArea;
+    const footprintSurfaceArea = getVacantPremisesFootprintSurfaceArea(context.stepsState);
     const siteSurfaceArea = context.siteData.surfaceArea;
 
     if (footprintSurfaceArea !== undefined && footprintSurfaceArea === siteSurfaceArea) {

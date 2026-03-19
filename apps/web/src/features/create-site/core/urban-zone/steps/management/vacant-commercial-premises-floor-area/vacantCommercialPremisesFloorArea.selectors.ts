@@ -3,6 +3,7 @@ import { createSelector } from "@reduxjs/toolkit";
 import type { RootState } from "@/app/store/store";
 
 import { ReadStateHelper } from "../../../helpers/stateHelpers";
+import { getVacantPremisesFootprintSurfaceArea } from "../managementReaders";
 
 type VacantCommercialPremisesFloorAreaViewData = {
   initialValue?: number;
@@ -16,13 +17,9 @@ export const selectVacantCommercialPremisesFloorAreaViewData = createSelector(
       steps,
       "URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FLOOR_AREA",
     );
-    const footprintAnswers = ReadStateHelper.getStepAnswers(
-      steps,
-      "URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FOOTPRINT",
-    );
     return {
       initialValue: answers?.surfaceArea,
-      vacantPremisesFootprintSurfaceArea: footprintAnswers?.surfaceArea,
+      vacantPremisesFootprintSurfaceArea: getVacantPremisesFootprintSurfaceArea(steps),
     };
   },
 );

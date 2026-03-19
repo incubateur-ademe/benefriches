@@ -3,11 +3,11 @@ import type {
   UrbanZoneStepContext,
 } from "../../../step-handlers/stepHandler.type";
 import {
-  hasActivity,
   hasVacantPremises,
   isActivityParkManager,
   isLocalAuthority,
-} from "../expensesConditions";
+} from "../../management/managementReaders";
+import { hasActivity } from "../activityReaders";
 
 export const ExpensesAndIncomeIntroductionHandler = {
   stepId: "URBAN_ZONE_EXPENSES_AND_INCOME_INTRODUCTION",

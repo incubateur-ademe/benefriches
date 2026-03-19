@@ -1,17 +1,17 @@
 import { createSelector } from "@reduxjs/toolkit";
-import {
-  type SoilsDistribution,
-  type SoilType,
-  type UrbanZoneLandParcelType,
-  type UrbanZoneType,
-  SurfaceAreaDistribution,
-  typedObjectEntries,
-} from "shared";
+import { type SoilsDistribution, type UrbanZoneLandParcelType, type UrbanZoneType } from "shared";
 
 import type { RootState } from "@/app/store/store";
 
-import { ReadStateHelper, getSelectedParcelTypes } from "../../helpers/stateHelpers";
-import { getParcelStepIds } from "../per-parcel-soils/parcelStepMapping";
+import { ReadStateHelper } from "../../helpers/stateHelpers";
+import {
+  getFullTimeJobs,
+  getManagerName,
+  getManagerStructureType,
+  getVacantPremisesFloorArea,
+  getVacantPremisesFootprintSurfaceArea,
+} from "../management/managementReaders";
+import { aggregateSoilsDistribution } from "../summary/soilsReaders";
 
 type ManagerStructureType = "activity_park_manager" | "local_authority";
 
@@ -38,38 +38,11 @@ export const selectUrbanZoneFinalSummaryViewData = createSelector(
     (state: RootState) => state.siteCreation.siteData,
   ],
   (steps, siteData): UrbanZoneFinalSummaryViewData => {
-    const selectedTypes = getSelectedParcelTypes(steps);
-
     const parcelSurfaceAreas =
       ReadStateHelper.getStepAnswers(steps, "URBAN_ZONE_LAND_PARCELS_SURFACE_DISTRIBUTION")
         ?.surfaceAreas ?? {};
 
-    const aggregated = new SurfaceAreaDistribution<SoilType>();
-    for (const parcelType of selectedTypes) {
-      const stepId = getParcelStepIds(parcelType).soilsDistribution;
-      const stepAnswers = ReadStateHelper.getStepAnswers(steps, stepId);
-      const soilsDistribution = stepAnswers?.soilsDistribution;
-      if (soilsDistribution) {
-        for (const [soilType, area] of typedObjectEntries(soilsDistribution)) {
-          aggregated.addSurface(soilType, area ?? 0);
-        }
-      }
-    }
-
     const contamination = ReadStateHelper.getStepAnswers(steps, "URBAN_ZONE_SOILS_CONTAMINATION");
-    const manager = ReadStateHelper.getStepAnswers(steps, "URBAN_ZONE_MANAGER");
-    const vacantFootprint = ReadStateHelper.getStepAnswers(
-      steps,
-      "URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FOOTPRINT",
-    );
-    const vacantFloorArea = ReadStateHelper.getStepAnswers(
-      steps,
-      "URBAN_ZONE_VACANT_COMMERCIAL_PREMISES_FLOOR_AREA",
-    );
-    const fullTimeJobs = ReadStateHelper.getStepAnswers(
-      steps,
-      "URBAN_ZONE_FULL_TIME_JOBS_EQUIVALENT",
-    );
     const naming = ReadStateHelper.getStepAnswers(steps, "URBAN_ZONE_NAMING");
 
     return {
@@ -77,15 +50,14 @@ export const selectUrbanZoneFinalSummaryViewData = createSelector(
       urbanZoneType: siteData.urbanZoneType,
       totalSurfaceArea: siteData.surfaceArea ?? 0,
       parcelSurfaceAreas,
-      soilsDistribution: aggregated.toJSON(),
+      soilsDistribution: aggregateSoilsDistribution(steps),
       hasContaminatedSoils: contamination?.hasContaminatedSoils ?? false,
       contaminatedSoilSurface: contamination?.contaminatedSoilSurface,
-      managerStructureType: manager?.structureType,
-      managerName:
-        manager?.structureType === "local_authority" ? manager.localAuthorityName : undefined,
-      vacantPremisesFootprint: vacantFootprint?.surfaceArea,
-      vacantPremisesFloorArea: vacantFloorArea?.surfaceArea,
-      fullTimeJobs: fullTimeJobs?.fullTimeJobs,
+      managerStructureType: getManagerStructureType(steps),
+      managerName: getManagerName(steps),
+      vacantPremisesFootprint: getVacantPremisesFootprintSurfaceArea(steps),
+      vacantPremisesFloorArea: getVacantPremisesFloorArea(steps),
+      fullTimeJobs: getFullTimeJobs(steps),
       siteName: naming?.name ?? "",
       siteDescription: naming?.description,
     };
