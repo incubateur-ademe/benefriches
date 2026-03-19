@@ -1,5 +1,5 @@
-import type { SiteCreationData } from "../../siteFoncier.types";
-import type { StepCompletionPayload } from "../urban-zone.actions";
+import type { SiteCreationData } from "../siteFoncier.types";
+import type { StepCompletionPayload } from "./urban-zone.actions";
 import type {
   AnswersByStep,
   SchematizedAnswerStepId,
@@ -7,7 +7,7 @@ import type {
   UrbanZoneSiteCreationStep,
   UrbanZoneSummaryStep,
   UrbanZoneStepsState,
-} from "../urbanZoneSteps";
+} from "./urbanZoneSteps";
 
 export type UrbanZoneStepContext = {
   siteData: SiteCreationData;

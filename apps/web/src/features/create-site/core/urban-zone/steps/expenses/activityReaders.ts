@@ -1,4 +1,4 @@
-import type { UrbanZoneStepContext } from "../../step-handlers/stepHandler.type";
+import type { UrbanZoneStepContext } from "../../stepHandler.type";
 import { getVacantPremisesFootprintSurfaceArea } from "../management/managementReaders";
 
 export function hasActivity(context: UrbanZoneStepContext): boolean {

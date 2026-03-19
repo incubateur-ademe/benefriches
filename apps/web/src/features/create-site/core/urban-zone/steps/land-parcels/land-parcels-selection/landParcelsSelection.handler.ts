@@ -1,6 +1,6 @@
 import type { UrbanZoneLandParcelType } from "shared";
 
-import type { AnswerStepHandler } from "../../../step-handlers/stepHandler.type";
+import type { AnswerStepHandler } from "../../../stepHandler.type";
 
 export const LandParcelsSelectionHandler = {
   stepId: "URBAN_ZONE_LAND_PARCELS_SELECTION",

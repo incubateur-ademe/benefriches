@@ -1,7 +1,7 @@
 import type { UrbanZoneLandParcelType } from "shared";
 
-import { getSelectedParcelTypes, ReadStateHelper } from "../../helpers/stateHelpers";
-import type { AnswerStepHandler } from "../../step-handlers/stepHandler.type";
+import { getSelectedParcelTypes, ReadStateHelper } from "../../stateHelpers";
+import type { AnswerStepHandler } from "../../stepHandler.type";
 import {
   PARCEL_STEP_IDS,
   getNextParcelType,

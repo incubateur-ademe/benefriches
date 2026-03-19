@@ -1,31 +1,31 @@
-import { UrbanZoneSoilsContaminationHandler } from "../steps/contamination/soilsContamination.handler";
-import { UrbanZoneSoilsContaminationIntroductionHandler } from "../steps/contamination/soilsContaminationIntroduction.handler";
-import { UrbanZoneCreationResultHandler } from "../steps/creation-result/creationResult.handler";
-import { ExpensesAndIncomeIntroductionHandler } from "../steps/expenses/expenses-introduction/expensesAndIncomeIntroduction.handler";
-import { ExpensesAndIncomeSummaryHandler } from "../steps/expenses/expenses-summary/expensesAndIncomeSummary.handler";
-import { LocalAuthorityExpensesHandler } from "../steps/expenses/local-authority-expenses/localAuthorityExpenses.handler";
-import { VacantPremisesExpensesHandler } from "../steps/expenses/vacant-premises-expenses/vacantPremisesExpenses.handler";
-import { ZoneManagementExpensesHandler } from "../steps/expenses/zone-management-expenses/zoneManagementExpenses.handler";
-import { ZoneManagementIncomeHandler } from "../steps/expenses/zone-management-income/zoneManagementIncome.handler";
-import { UrbanZoneFinalSummaryHandler } from "../steps/final-summary/finalSummary.handler";
-import { LandParcelsSelectionHandler } from "../steps/land-parcels/land-parcels-selection/landParcelsSelection.handler";
-import { LandParcelsSurfaceDistributionHandler } from "../steps/land-parcels/land-parcels-surface-distribution/landParcelsSurfaceDistribution.handler";
-import { FullTimeJobsEquivalentHandler } from "../steps/management/full-time-jobs-equivalent/fullTimeJobsEquivalent.handler";
-import { UrbanZoneManagementIntroductionHandler } from "../steps/management/management-introduction/managementIntroduction.handler";
-import { UrbanZoneManagerHandler } from "../steps/management/manager/manager.handler";
-import { VacantCommercialPremisesFloorAreaHandler } from "../steps/management/vacant-commercial-premises-floor-area/vacantCommercialPremisesFloorArea.handler";
-import { VacantCommercialPremisesFootprintHandler } from "../steps/management/vacant-commercial-premises-footprint/vacantCommercialPremisesFootprint.handler";
-import { UrbanZoneNamingHandler } from "../steps/naming/naming.handler";
-import { UrbanZoneNamingIntroductionHandler } from "../steps/naming/namingIntroduction.handler";
+import type { AnswerStepHandler, InfoStepHandler } from "./stepHandler.type";
+import { UrbanZoneSoilsContaminationHandler } from "./steps/contamination/soilsContamination.handler";
+import { UrbanZoneSoilsContaminationIntroductionHandler } from "./steps/contamination/soilsContaminationIntroduction.handler";
+import { UrbanZoneCreationResultHandler } from "./steps/creation-result/creationResult.handler";
+import { ExpensesAndIncomeIntroductionHandler } from "./steps/expenses/expenses-introduction/expensesAndIncomeIntroduction.handler";
+import { ExpensesAndIncomeSummaryHandler } from "./steps/expenses/expenses-summary/expensesAndIncomeSummary.handler";
+import { LocalAuthorityExpensesHandler } from "./steps/expenses/local-authority-expenses/localAuthorityExpenses.handler";
+import { VacantPremisesExpensesHandler } from "./steps/expenses/vacant-premises-expenses/vacantPremisesExpenses.handler";
+import { ZoneManagementExpensesHandler } from "./steps/expenses/zone-management-expenses/zoneManagementExpenses.handler";
+import { ZoneManagementIncomeHandler } from "./steps/expenses/zone-management-income/zoneManagementIncome.handler";
+import { UrbanZoneFinalSummaryHandler } from "./steps/final-summary/finalSummary.handler";
+import { LandParcelsSelectionHandler } from "./steps/land-parcels/land-parcels-selection/landParcelsSelection.handler";
+import { LandParcelsSurfaceDistributionHandler } from "./steps/land-parcels/land-parcels-surface-distribution/landParcelsSurfaceDistribution.handler";
+import { FullTimeJobsEquivalentHandler } from "./steps/management/full-time-jobs-equivalent/fullTimeJobsEquivalent.handler";
+import { UrbanZoneManagementIntroductionHandler } from "./steps/management/management-introduction/managementIntroduction.handler";
+import { UrbanZoneManagerHandler } from "./steps/management/manager/manager.handler";
+import { VacantCommercialPremisesFloorAreaHandler } from "./steps/management/vacant-commercial-premises-floor-area/vacantCommercialPremisesFloorArea.handler";
+import { VacantCommercialPremisesFootprintHandler } from "./steps/management/vacant-commercial-premises-footprint/vacantCommercialPremisesFootprint.handler";
+import { UrbanZoneNamingHandler } from "./steps/naming/naming.handler";
+import { UrbanZoneNamingIntroductionHandler } from "./steps/naming/namingIntroduction.handler";
 import {
   createParcelBuildingsFloorAreaHandler,
   createParcelSoilsDistributionHandler,
-} from "../steps/per-parcel-soils/parcelSoilsHandlerFactory";
-import { SoilsAndSpacesIntroductionHandler } from "../steps/soils-and-spaces-introduction/soilsAndSpacesIntroduction.handler";
-import { UrbanZoneSoilsCarbonStorageHandler } from "../steps/summary/soils-carbon-storage/soilsCarbonStorage.handler";
-import { UrbanZoneSoilsSummaryHandler } from "../steps/summary/soils-summary/soilsSummary.handler";
-import type { SchematizedAnswerStepId, UrbanZoneSiteCreationStep } from "../urbanZoneSteps";
-import type { AnswerStepHandler, InfoStepHandler } from "./stepHandler.type";
+} from "./steps/per-parcel-soils/parcelSoilsHandlerFactory";
+import { SoilsAndSpacesIntroductionHandler } from "./steps/soils-and-spaces-introduction/soilsAndSpacesIntroduction.handler";
+import { UrbanZoneSoilsCarbonStorageHandler } from "./steps/summary/soils-carbon-storage/soilsCarbonStorage.handler";
+import { UrbanZoneSoilsSummaryHandler } from "./steps/summary/soils-summary/soilsSummary.handler";
+import type { SchematizedAnswerStepId, UrbanZoneSiteCreationStep } from "./urbanZoneSteps";
 
 // Correlated mapped type: each key K maps to AnswerStepHandler<K>.
 // Lookups with a generic T return AnswerStepHandler<T> without a cast.

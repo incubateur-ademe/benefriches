@@ -1,6 +1,6 @@
 import type { RootState } from "@/app/store/store";
 
-import { ReadStateHelper } from "../../../helpers/stateHelpers";
+import { ReadStateHelper } from "../../../stateHelpers";
 
 export type ZoneManagementIncomeViewData = {
   initialValues: {

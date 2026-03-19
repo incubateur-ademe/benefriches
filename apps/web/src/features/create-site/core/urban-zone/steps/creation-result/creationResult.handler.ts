@@ -1,4 +1,4 @@
-import type { InfoStepHandler } from "../../step-handlers/stepHandler.type";
+import type { InfoStepHandler } from "../../stepHandler.type";
 
 export const UrbanZoneCreationResultHandler = {
   stepId: "URBAN_ZONE_CREATION_RESULT",

@@ -1,4 +1,4 @@
-import type { AnswerStepHandler } from "../../../step-handlers/stepHandler.type";
+import type { AnswerStepHandler } from "../../../stepHandler.type";
 
 export const LocalAuthorityExpensesHandler = {
   stepId: "URBAN_ZONE_LOCAL_AUTHORITY_EXPENSES",

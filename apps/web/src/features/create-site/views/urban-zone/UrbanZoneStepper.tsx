@@ -4,7 +4,7 @@ import {
   URBAN_ZONE_STEP_GROUP_IDS,
   URBAN_ZONE_STEP_GROUP_LABELS,
   URBAN_ZONE_STEP_TO_GROUP,
-} from "../../core/urban-zone/step-handlers/urbanZoneStepperConfig";
+} from "../../core/urban-zone/urbanZoneStepperConfig";
 import type { UrbanZoneSiteCreationStep } from "../../core/urban-zone/urbanZoneSteps";
 
 const PRE_STEP_LABELS = ["Type de site", "Adresse"] as const;

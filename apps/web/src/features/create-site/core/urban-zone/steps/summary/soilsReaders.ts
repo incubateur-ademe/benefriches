@@ -5,7 +5,7 @@ import {
   typedObjectEntries,
 } from "shared";
 
-import { ReadStateHelper, getSelectedParcelTypes } from "../../helpers/stateHelpers";
+import { ReadStateHelper, getSelectedParcelTypes } from "../../stateHelpers";
 import type { UrbanZoneStepsState } from "../../urbanZoneSteps";
 import { getParcelStepIds } from "../per-parcel-soils/parcelStepMapping";
 

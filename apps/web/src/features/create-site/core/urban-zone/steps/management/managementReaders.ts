@@ -1,5 +1,5 @@
-import { ReadStateHelper } from "../../helpers/stateHelpers";
-import type { UrbanZoneStepContext } from "../../step-handlers/stepHandler.type";
+import { ReadStateHelper } from "../../stateHelpers";
+import type { UrbanZoneStepContext } from "../../stepHandler.type";
 import type { UrbanZoneStepsState } from "../../urbanZoneSteps";
 
 export function getManagerStructureType(

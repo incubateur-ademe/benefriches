@@ -1,13 +1,13 @@
 import type { UrbanZoneLandParcelType } from "shared";
 
-import type { SiteCreationState } from "../../createSite.reducer";
-import type { StepCompletionPayload } from "../urban-zone.actions";
+import type { SiteCreationState } from "../createSite.reducer";
+import type { StepCompletionPayload } from "./urban-zone.actions";
 import type {
   AnswersByStep,
   SchematizedAnswerStepId,
   UrbanZoneSiteCreationStep,
   UrbanZoneStepsState,
-} from "../urbanZoneSteps";
+} from "./urbanZoneSteps";
 
 export const ReadStateHelper = {
   getStep<K extends SchematizedAnswerStepId>(steps: UrbanZoneStepsState, stepId: K) {

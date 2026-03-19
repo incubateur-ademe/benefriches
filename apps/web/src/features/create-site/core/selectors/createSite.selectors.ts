@@ -5,7 +5,7 @@ import { SurfaceAreaDistribution, typedObjectEntries } from "shared";
 import { RootState } from "@/app/store/store";
 
 import { selectCurrentStep, type SiteCreationStep } from "../createSite.reducer";
-import { getSelectedParcelTypes, ReadStateHelper } from "../urban-zone/helpers/stateHelpers";
+import { getSelectedParcelTypes, ReadStateHelper } from "../urban-zone/stateHelpers";
 import { getParcelStepIds } from "../urban-zone/steps/per-parcel-soils/parcelStepMapping";
 
 const selectSelf = (state: RootState) => state.siteCreation;

@@ -1,7 +1,4 @@
-import type {
-  InfoStepHandler,
-  UrbanZoneStepContext,
-} from "../../../step-handlers/stepHandler.type";
+import type { InfoStepHandler, UrbanZoneStepContext } from "../../../stepHandler.type";
 import { hasVacantPremises } from "../../management/managementReaders";
 import { hasActivity } from "../activityReaders";
 

@@ -1,6 +1,6 @@
-import type { UrbanZoneStepContext } from "../step-handlers/stepHandler.type";
-import { urbanZoneStepHandlerRegistry } from "../step-handlers/stepHandlerRegistry";
-import type { UrbanZoneSiteCreationStep } from "../urbanZoneSteps";
+import type { UrbanZoneStepContext } from "./stepHandler.type";
+import { urbanZoneStepHandlerRegistry } from "./stepHandlerRegistry";
+import type { UrbanZoneSiteCreationStep } from "./urbanZoneSteps";
 
 const MAX_STEPS_NUMBER = 30;
 

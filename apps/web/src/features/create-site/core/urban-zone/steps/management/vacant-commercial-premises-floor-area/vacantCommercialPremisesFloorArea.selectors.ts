@@ -2,7 +2,7 @@ import { createSelector } from "@reduxjs/toolkit";
 
 import type { RootState } from "@/app/store/store";
 
-import { ReadStateHelper } from "../../../helpers/stateHelpers";
+import { ReadStateHelper } from "../../../stateHelpers";
 import { getVacantPremisesFootprintSurfaceArea } from "../managementReaders";
 
 type VacantCommercialPremisesFloorAreaViewData = {

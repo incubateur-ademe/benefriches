@@ -1,10 +1,10 @@
-import type { SiteCreationState } from "../../createSite.reducer";
-import { answerStepHandlers } from "../step-handlers/stepHandlerRegistry";
-import type { StepCompletionPayload } from "../urban-zone.actions";
-import type { SchematizedAnswerStepId, UrbanZoneSiteCreationStep } from "../urbanZoneSteps";
+import type { SiteCreationState } from "../createSite.reducer";
 import { navigateToAndLoadStep } from "./navigateToStep";
 import { MutateStateHelper } from "./stateHelpers";
+import { answerStepHandlers } from "./stepHandlerRegistry";
 import { computeStepsSequence } from "./stepsSequence";
+import type { StepCompletionPayload } from "./urban-zone.actions";
+import type { SchematizedAnswerStepId, UrbanZoneSiteCreationStep } from "./urbanZoneSteps";
 
 type StepUpdateResult<T extends SchematizedAnswerStepId> = {
   payload: StepCompletionPayload<T>;

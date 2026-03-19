@@ -1,5 +1,5 @@
-import { getSelectedParcelTypes } from "../../helpers/stateHelpers";
-import type { InfoStepHandler } from "../../step-handlers/stepHandler.type";
+import { getSelectedParcelTypes } from "../../stateHelpers";
+import type { InfoStepHandler } from "../../stepHandler.type";
 import { getParcelStepIds } from "../per-parcel-soils/parcelStepMapping";
 
 export const SoilsAndSpacesIntroductionHandler = {

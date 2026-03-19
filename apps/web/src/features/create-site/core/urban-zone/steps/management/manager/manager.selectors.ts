@@ -7,7 +7,7 @@ import {
   type AvailableLocalAuthority,
 } from "@/features/create-site/core/siteMunicipalityData.reducer";
 
-import { ReadStateHelper } from "../../../helpers/stateHelpers";
+import { ReadStateHelper } from "../../../stateHelpers";
 
 type ManagerViewData = {
   initialValues: {

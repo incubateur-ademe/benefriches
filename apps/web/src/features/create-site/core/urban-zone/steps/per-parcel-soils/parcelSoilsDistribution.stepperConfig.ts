@@ -1,4 +1,4 @@
-import type { UrbanZoneStepStepperConfig } from "../../step-handlers/urbanZoneStepperConfig";
+import type { UrbanZoneStepStepperConfig } from "../../urbanZoneStepperConfig";
 
 export const parcelSoilsDistributionStepperConfig = {
   groupId: "SOILS_AND_SPACES",

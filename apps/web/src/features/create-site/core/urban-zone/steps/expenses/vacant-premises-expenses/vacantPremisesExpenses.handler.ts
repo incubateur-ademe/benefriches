@@ -1,4 +1,4 @@
-import type { AnswerStepHandler } from "../../../step-handlers/stepHandler.type";
+import type { AnswerStepHandler } from "../../../stepHandler.type";
 import { hasActivity } from "../activityReaders";
 
 export const VacantPremisesExpensesHandler = {

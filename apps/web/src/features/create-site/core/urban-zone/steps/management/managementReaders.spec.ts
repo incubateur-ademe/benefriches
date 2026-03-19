@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import type { UrbanZoneStepContext } from "../../step-handlers/stepHandler.type";
+import type { UrbanZoneStepContext } from "../../stepHandler.type";
 import type { UrbanZoneStepsState } from "../../urbanZoneSteps";
 import {
   getFullTimeJobs,

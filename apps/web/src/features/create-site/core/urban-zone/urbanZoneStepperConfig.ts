@@ -1,30 +1,30 @@
 import z from "zod";
 
-import { soilsContaminationStepperConfig } from "../steps/contamination/soilsContamination.stepperConfig";
-import { soilsContaminationIntroductionStepperConfig } from "../steps/contamination/soilsContaminationIntroduction.stepperConfig";
-import { creationResultStepperConfig } from "../steps/creation-result/creationResult.stepperConfig";
-import { expensesAndIncomeIntroductionStepperConfig } from "../steps/expenses/expenses-introduction/expensesAndIncomeIntroduction.stepperConfig";
-import { expensesAndIncomeSummaryStepperConfig } from "../steps/expenses/expenses-summary/expensesAndIncomeSummary.stepperConfig";
-import { localAuthorityExpensesStepperConfig } from "../steps/expenses/local-authority-expenses/localAuthorityExpenses.stepperConfig";
-import { vacantPremisesExpensesStepperConfig } from "../steps/expenses/vacant-premises-expenses/vacantPremisesExpenses.stepperConfig";
-import { zoneManagementExpensesStepperConfig } from "../steps/expenses/zone-management-expenses/zoneManagementExpenses.stepperConfig";
-import { zoneManagementIncomeStepperConfig } from "../steps/expenses/zone-management-income/zoneManagementIncome.stepperConfig";
-import { finalSummaryStepperConfig } from "../steps/final-summary/finalSummary.stepperConfig";
-import { landParcelsSelectionStepperConfig } from "../steps/land-parcels/land-parcels-selection/landParcelsSelection.stepperConfig";
-import { landParcelsSurfaceDistributionStepperConfig } from "../steps/land-parcels/land-parcels-surface-distribution/landParcelsSurfaceDistribution.stepperConfig";
-import { fullTimeJobsEquivalentStepperConfig } from "../steps/management/full-time-jobs-equivalent/fullTimeJobsEquivalent.stepperConfig";
-import { managementIntroductionStepperConfig } from "../steps/management/management-introduction/managementIntroduction.stepperConfig";
-import { managerStepperConfig } from "../steps/management/manager/manager.stepperConfig";
-import { vacantCommercialPremisesFloorAreaStepperConfig } from "../steps/management/vacant-commercial-premises-floor-area/vacantCommercialPremisesFloorArea.stepperConfig";
-import { vacantCommercialPremisesFootprintStepperConfig } from "../steps/management/vacant-commercial-premises-footprint/vacantCommercialPremisesFootprint.stepperConfig";
-import { namingStepperConfig } from "../steps/naming/naming.stepperConfig";
-import { namingIntroductionStepperConfig } from "../steps/naming/namingIntroduction.stepperConfig";
-import { parcelBuildingsFloorAreaStepperConfig } from "../steps/per-parcel-soils/parcelBuildingsFloorArea.stepperConfig";
-import { parcelSoilsDistributionStepperConfig } from "../steps/per-parcel-soils/parcelSoilsDistribution.stepperConfig";
-import { soilsAndSpacesIntroductionStepperConfig } from "../steps/soils-and-spaces-introduction/soilsAndSpacesIntroduction.stepperConfig";
-import { soilsCarbonStorageStepperConfig } from "../steps/summary/soils-carbon-storage/soilsCarbonStorage.stepperConfig";
-import { soilsSummaryStepperConfig } from "../steps/summary/soils-summary/soilsSummary.stepperConfig";
-import type { UrbanZoneSiteCreationStep } from "../urbanZoneSteps";
+import { soilsContaminationStepperConfig } from "./steps/contamination/soilsContamination.stepperConfig";
+import { soilsContaminationIntroductionStepperConfig } from "./steps/contamination/soilsContaminationIntroduction.stepperConfig";
+import { creationResultStepperConfig } from "./steps/creation-result/creationResult.stepperConfig";
+import { expensesAndIncomeIntroductionStepperConfig } from "./steps/expenses/expenses-introduction/expensesAndIncomeIntroduction.stepperConfig";
+import { expensesAndIncomeSummaryStepperConfig } from "./steps/expenses/expenses-summary/expensesAndIncomeSummary.stepperConfig";
+import { localAuthorityExpensesStepperConfig } from "./steps/expenses/local-authority-expenses/localAuthorityExpenses.stepperConfig";
+import { vacantPremisesExpensesStepperConfig } from "./steps/expenses/vacant-premises-expenses/vacantPremisesExpenses.stepperConfig";
+import { zoneManagementExpensesStepperConfig } from "./steps/expenses/zone-management-expenses/zoneManagementExpenses.stepperConfig";
+import { zoneManagementIncomeStepperConfig } from "./steps/expenses/zone-management-income/zoneManagementIncome.stepperConfig";
+import { finalSummaryStepperConfig } from "./steps/final-summary/finalSummary.stepperConfig";
+import { landParcelsSelectionStepperConfig } from "./steps/land-parcels/land-parcels-selection/landParcelsSelection.stepperConfig";
+import { landParcelsSurfaceDistributionStepperConfig } from "./steps/land-parcels/land-parcels-surface-distribution/landParcelsSurfaceDistribution.stepperConfig";
+import { fullTimeJobsEquivalentStepperConfig } from "./steps/management/full-time-jobs-equivalent/fullTimeJobsEquivalent.stepperConfig";
+import { managementIntroductionStepperConfig } from "./steps/management/management-introduction/managementIntroduction.stepperConfig";
+import { managerStepperConfig } from "./steps/management/manager/manager.stepperConfig";
+import { vacantCommercialPremisesFloorAreaStepperConfig } from "./steps/management/vacant-commercial-premises-floor-area/vacantCommercialPremisesFloorArea.stepperConfig";
+import { vacantCommercialPremisesFootprintStepperConfig } from "./steps/management/vacant-commercial-premises-footprint/vacantCommercialPremisesFootprint.stepperConfig";
+import { namingStepperConfig } from "./steps/naming/naming.stepperConfig";
+import { namingIntroductionStepperConfig } from "./steps/naming/namingIntroduction.stepperConfig";
+import { parcelBuildingsFloorAreaStepperConfig } from "./steps/per-parcel-soils/parcelBuildingsFloorArea.stepperConfig";
+import { parcelSoilsDistributionStepperConfig } from "./steps/per-parcel-soils/parcelSoilsDistribution.stepperConfig";
+import { soilsAndSpacesIntroductionStepperConfig } from "./steps/soils-and-spaces-introduction/soilsAndSpacesIntroduction.stepperConfig";
+import { soilsCarbonStorageStepperConfig } from "./steps/summary/soils-carbon-storage/soilsCarbonStorage.stepperConfig";
+import { soilsSummaryStepperConfig } from "./steps/summary/soils-summary/soilsSummary.stepperConfig";
+import type { UrbanZoneSiteCreationStep } from "./urbanZoneSteps";
 
 const urbanZoneStepGroupIdSchema = z.enum([
   "LAND_PARCELS",

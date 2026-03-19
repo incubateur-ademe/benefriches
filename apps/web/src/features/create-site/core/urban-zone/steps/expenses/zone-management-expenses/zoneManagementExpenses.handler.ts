@@ -1,4 +1,4 @@
-import type { AnswerStepHandler } from "../../../step-handlers/stepHandler.type";
+import type { AnswerStepHandler } from "../../../stepHandler.type";
 import { hasVacantPremises } from "../../management/managementReaders";
 
 export const ZoneManagementExpensesHandler = {

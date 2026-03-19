@@ -1,9 +1,9 @@
 import { createReducer } from "@reduxjs/toolkit";
 
 import type { SiteCreationState } from "../createSite.reducer";
-import { applyStepChanges, computeStepChanges } from "./helpers/completeStep";
-import { navigateToAndLoadStep } from "./helpers/navigateToStep";
-import { urbanZoneStepHandlerRegistry } from "./step-handlers/stepHandlerRegistry";
+import { applyStepChanges, computeStepChanges } from "./completeStep";
+import { navigateToAndLoadStep } from "./navigateToStep";
+import { urbanZoneStepHandlerRegistry } from "./stepHandlerRegistry";
 import {
   nextStepRequested,
   previousStepRequested,

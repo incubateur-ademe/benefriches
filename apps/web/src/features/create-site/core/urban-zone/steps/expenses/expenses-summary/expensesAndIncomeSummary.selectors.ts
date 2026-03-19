@@ -2,7 +2,7 @@ import { typedObjectEntries, type SiteYearlyExpense, type SiteYearlyIncome } fro
 
 import type { RootState } from "@/app/store/store";
 
-import { ReadStateHelper } from "../../../helpers/stateHelpers";
+import { ReadStateHelper } from "../../../stateHelpers";
 
 export type ExpensesAndIncomeSummaryViewData = {
   expenses: SiteYearlyExpense[];
