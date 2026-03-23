@@ -37,7 +37,7 @@ pnpm --filter web test path/to/file.spec.ts
 | Stepper Config (registry)                | `src/features/create-project/core/renewable-energy/step-handlers/renewableEnergyStepperConfig.ts`                                                       |
 | Step Handler (urban project, with deps)  | `src/shared/core/reducers/project-form/urban-project/step-handlers/uses/selection/usesSelection.handler.ts`                                             |
 | Step Handler (urban project, registry)   | `src/shared/core/reducers/project-form/urban-project/step-handlers/stepHandlerRegistry.ts`                                                              |
-| Step Handler (urban zone site, registry) | `src/features/create-site/core/urban-zone/step-handlers/stepHandlerRegistry.ts`                                                                         |
+| Step Handler (urban zone site, registry) | `src/features/create-site/core/urban-zone/stepHandlerRegistry.ts`                                                                                       |
 | Test Store Helper (urban zone site)      | `src/features/create-site/core/urban-zone/__tests__/_testStoreHelpers.ts`                                                                               |
 | ViewData Selector                        | `src/features/create-project/core/createProject.selectors.ts`                                                                                           |
 | Async Thunk                              | `src/features/create-project/core/urban-project/fetchEstimatedSiteResalePrice.action.ts`                                                                |
