@@ -4,7 +4,7 @@ import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-proje
 
 import type { InfoStepHandler } from "../../stepHandler.type";
 
-export const SpacesIntroductionHandler: InfoStepHandler = {
+export const SpacesIntroductionHandler = {
   stepId: "URBAN_PROJECT_SPACES_INTRODUCTION",
 
   getPreviousStepId(context) {
@@ -37,4 +37,4 @@ export const SpacesIntroductionHandler: InfoStepHandler = {
 
     return "URBAN_PROJECT_SPACES_SELECTION";
   },
-};
+} satisfies InfoStepHandler;

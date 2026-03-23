@@ -1,8 +1,8 @@
 import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
 
-import { InfoStepHandler } from "../../stepHandler.type";
+import type { InfoStepHandler } from "../../stepHandler.type";
 
-export const SiteResaleIntroductionHandler: InfoStepHandler = {
+export const SiteResaleIntroductionHandler = {
   stepId: "URBAN_PROJECT_SITE_RESALE_INTRODUCTION",
 
   getPreviousStepId(context) {
@@ -29,4 +29,4 @@ export const SiteResaleIntroductionHandler: InfoStepHandler = {
   getNextStepId() {
     return "URBAN_PROJECT_SITE_RESALE_SELECTION";
   },
-};
+} satisfies InfoStepHandler;

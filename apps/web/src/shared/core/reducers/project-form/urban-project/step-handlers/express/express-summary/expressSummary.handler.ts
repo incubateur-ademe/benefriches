@@ -1,6 +1,6 @@
 import type { InfoStepHandler } from "../../stepHandler.type";
 
-export const ExpressSummaryHandler: InfoStepHandler = {
+export const ExpressSummaryHandler = {
   stepId: "URBAN_PROJECT_EXPRESS_SUMMARY",
 
   getPreviousStepId() {
@@ -10,4 +10,4 @@ export const ExpressSummaryHandler: InfoStepHandler = {
   getNextStepId() {
     return "URBAN_PROJECT_EXPRESS_CREATION_RESULT";
   },
-} as const;
+} satisfies InfoStepHandler;

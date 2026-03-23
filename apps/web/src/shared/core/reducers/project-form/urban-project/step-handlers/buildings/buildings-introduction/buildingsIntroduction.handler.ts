@@ -1,6 +1,6 @@
 import type { InfoStepHandler } from "../../stepHandler.type";
 
-export const BuildingsIntroductionHandler: InfoStepHandler = {
+export const BuildingsIntroductionHandler = {
   stepId: "URBAN_PROJECT_BUILDINGS_INTRODUCTION",
 
   getPreviousStepId() {
@@ -10,4 +10,4 @@ export const BuildingsIntroductionHandler: InfoStepHandler = {
   getNextStepId() {
     return "URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA";
   },
-};
+} satisfies InfoStepHandler;

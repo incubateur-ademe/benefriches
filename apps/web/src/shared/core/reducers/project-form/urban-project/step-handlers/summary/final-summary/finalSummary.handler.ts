@@ -1,6 +1,6 @@
 import type { InfoStepHandler } from "../../stepHandler.type";
 
-export const FinalSummaryHandler: InfoStepHandler = {
+export const FinalSummaryHandler = {
   stepId: "URBAN_PROJECT_FINAL_SUMMARY",
 
   getNextStepId() {
@@ -10,4 +10,4 @@ export const FinalSummaryHandler: InfoStepHandler = {
   getPreviousStepId() {
     return "URBAN_PROJECT_NAMING";
   },
-} as const;
+} satisfies InfoStepHandler;
