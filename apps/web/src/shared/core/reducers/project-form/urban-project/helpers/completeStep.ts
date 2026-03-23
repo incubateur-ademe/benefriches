@@ -119,7 +119,7 @@ export function applyStepChanges<T extends AnswerStepId>(
   MutateStateHelper.completeStep(state, payload.stepId, payload.answers);
 
   shortcutComplete?.forEach((stepShortcut) => {
-    MutateStateHelper.completeStep(state, stepShortcut.stepId, stepShortcut.answers);
+    MutateStateHelper.completeStepFromPayload(state, stepShortcut);
   });
 
   cascadingChanges?.forEach(({ stepId, action }) => {
