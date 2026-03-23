@@ -1,6 +1,14 @@
+import { buildingsDemolitionInfoStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/buildings/buildings-demolition-info/buildingsDemolitionInfo.stepperConfig";
+import { buildingsExistingBuildingsUsesFloorSurfaceAreaStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/buildings/buildings-existing-buildings-uses-floor-surface-area/buildingsExistingBuildingsUsesFloorSurfaceArea.stepperConfig";
+import { buildingsFootprintToReuseStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/buildings/buildings-footprint-to-reuse/buildingsFootprintToReuse.stepperConfig";
 import { buildingsIntroductionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/buildings/buildings-introduction/buildingsIntroduction.stepperConfig";
+import { buildingsNewBuildingsUsesFloorSurfaceAreaStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/buildings/buildings-new-buildings-uses-floor-surface-area/buildingsNewBuildingsUsesFloorSurfaceArea.stepperConfig";
+import { buildingsNewConstructionInfoStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/buildings/buildings-new-construction-info/buildingsNewConstructionInfo.stepperConfig";
+import { buildingsNewConstructionIntroductionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/buildings/buildings-new-construction-introduction/buildingsNewConstructionIntroduction.stepperConfig";
+import { buildingsReuseIntroductionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/buildings/buildings-reuse-introduction/buildingsReuseIntroduction.stepperConfig";
 import { buildingsUsesFloorSurfaceAreaStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/buildings/buildings-uses-floor-surface-area/buildingsUsesFloorSurfaceArea.stepperConfig";
 import { creationModeSelectionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/creation-mode/creation-mode-selection/creationModeSelection.stepperConfig";
+import { expensesBuildingsConstructionAndRehabilitationStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/expenses/expenses-buildings-construction-and-rehabilitation/expensesBuildingsConstructionAndRehabilitation.stepperConfig";
 import { expensesInstallationStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/expenses/expenses-installation/expensesInstallation.stepperConfig";
 import { expensesIntroductionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/expenses/expenses-introduction/expensesIntroduction.stepperConfig";
 import { expensesProjectedBuildingsOperatingExpensesStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/expenses/expenses-projected-buildings-operating-expenses/expensesProjectedBuildingsOperatingExpenses.stepperConfig";
@@ -31,6 +39,7 @@ import { publicGreenSpacesSoilsDistributionStepperConfig } from "@/shared/core/r
 import { spacesIntroductionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/spaces/spaces-introduction/spacesIntroduction.stepperConfig";
 import { spacesSelectionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/spaces/spaces-selection/spacesSelection.stepperConfig";
 import { spacesSurfaceAreaStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/spaces/spaces-surface-area/spacesSurfaceArea.stepperConfig";
+import { stakeholdersBuildingsDeveloperStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/stakeholders/stakeholders-buildings-developer/stakeholdersBuildingsDeveloper.stepperConfig";
 import { stakeholdersIntroductionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/stakeholders/stakeholders-introduction/stakeholdersIntroduction.stepperConfig";
 import { stakeholdersProjectDeveloperStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/stakeholders/stakeholders-project-developer/stakeholdersProjectDeveloper.stepperConfig";
 import { stakeholdersReinstatementContractOwnerStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/stakeholders/stakeholders-reinstatement-contract-owner/stakeholdersReinstatementContractOwner.stepperConfig";
@@ -81,6 +90,11 @@ export type StepSubGroupId =
   | "REVENUE_FINANCIAL_ASSISTANCE"
   | "REVENUE_SITE_RESALE"
   | "REVENUE_BUILDINGS_RESALE"
+  | "BUILDINGS_REUSE"
+  | "BUILDINGS_EXISTING_USES"
+  | "BUILDINGS_NEW_USES"
+  | "STAKEHOLDERS_BUILDINGS_DEVELOPER"
+  | "EXPENSES_BUILDINGS_CONSTRUCTION"
   | "SITE_CESSION"
   | "BUILDINGS_CESSION";
 
@@ -106,9 +120,13 @@ export const STEP_GROUP_LABELS: Record<StepGroupId | StepSubGroupId, string> = {
   DECONTAMINATION_SURFACE: "Surface à dépolluer",
   BUILDINGS: "Bâtiments",
   FLOOR_SURFACE: "Surface de plancher des usages",
+  BUILDINGS_REUSE: "Réutilisation des bâtiments",
+  BUILDINGS_EXISTING_USES: "Usages des bâtiments existants",
+  BUILDINGS_NEW_USES: "Usages des nouveaux bâtiments",
 
   STAKEHOLDERS: "Acteurs",
   STAKEHOLDERS_PROJECT_DEVELOPER: "Aménageur",
+  STAKEHOLDERS_BUILDINGS_DEVELOPER: "Constructeur des bâtiments",
   STAKEHOLDERS_REINSTATEMENT_OWNER: "Maître d'ouvrage",
 
   SITE_RESALE: "Cession foncière",
@@ -119,6 +137,7 @@ export const STEP_GROUP_LABELS: Record<StepGroupId | StepSubGroupId, string> = {
   EXPENSES_SITE_PURCHASE: "Acquisition foncière",
   EXPENSES_SITE_REINSTATEMENT: "Remise en état du site",
   EXPENSES_SITE_INSTALLATION: "Aménagement du site",
+  EXPENSES_BUILDINGS_CONSTRUCTION: "Construction et réhabilitation",
   EXPENSES_BUILDINGS_OPERATION: "Exploitation des bâtiments",
 
   REVENUE: "Recettes",
@@ -165,6 +184,16 @@ export const STEP_TO_GROUP_MAPPING: StepToGroupMapping = {
   // Bâtiments
   URBAN_PROJECT_BUILDINGS_INTRODUCTION: buildingsIntroductionStepperConfig,
   URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA: buildingsUsesFloorSurfaceAreaStepperConfig,
+  URBAN_PROJECT_BUILDINGS_REUSE_INTRODUCTION: buildingsReuseIntroductionStepperConfig,
+  URBAN_PROJECT_BUILDINGS_NEW_CONSTRUCTION_INTRODUCTION:
+    buildingsNewConstructionIntroductionStepperConfig,
+  URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE: buildingsFootprintToReuseStepperConfig,
+  URBAN_PROJECT_BUILDINGS_DEMOLITION_INFO: buildingsDemolitionInfoStepperConfig,
+  URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA:
+    buildingsExistingBuildingsUsesFloorSurfaceAreaStepperConfig,
+  URBAN_PROJECT_BUILDINGS_NEW_CONSTRUCTION_INFO: buildingsNewConstructionInfoStepperConfig,
+  URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA:
+    buildingsNewBuildingsUsesFloorSurfaceAreaStepperConfig,
 
   // Cession foncière
   URBAN_PROJECT_SITE_RESALE_INTRODUCTION: siteResaleIntroductionStepperConfig,
@@ -174,6 +203,7 @@ export const STEP_TO_GROUP_MAPPING: StepToGroupMapping = {
   // Acteurs
   URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION: stakeholdersIntroductionStepperConfig,
   URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER: stakeholdersProjectDeveloperStepperConfig,
+  URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER: stakeholdersBuildingsDeveloperStepperConfig,
   URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER:
     stakeholdersReinstatementContractOwnerStepperConfig,
 
@@ -182,6 +212,8 @@ export const STEP_TO_GROUP_MAPPING: StepToGroupMapping = {
   URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS: expensesSitePurchaseAmountsStepperConfig,
   URBAN_PROJECT_EXPENSES_REINSTATEMENT: expensesReinstatementStepperConfig,
   URBAN_PROJECT_EXPENSES_INSTALLATION: expensesInstallationStepperConfig,
+  URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION:
+    expensesBuildingsConstructionAndRehabilitationStepperConfig,
   URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES:
     expensesProjectedBuildingsOperatingExpensesStepperConfig,
 

@@ -20,8 +20,19 @@ export const URBAN_PROJECT_CREATION_STEP_QUERY_STRING_MAP = {
   URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION: "selection-depollution-sols",
   URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA: "surface-depollution-sols",
   URBAN_PROJECT_BUILDINGS_INTRODUCTION: "introduction-batiments",
+  URBAN_PROJECT_BUILDINGS_REUSE_INTRODUCTION: "introduction-reutilisation-batiments",
+  URBAN_PROJECT_BUILDINGS_NEW_CONSTRUCTION_INTRODUCTION:
+    "introduction-construction-nouveaux-batiments",
+  URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE: "emprise-batiments-a-reutiliser",
+  URBAN_PROJECT_BUILDINGS_DEMOLITION_INFO: "information-demolition-batiments",
+  URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA:
+    "usages-surface-plancher-batiments-existants",
+  URBAN_PROJECT_BUILDINGS_NEW_CONSTRUCTION_INFO: "information-construction-nouveaux-batiments",
+  URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA:
+    "usages-surface-plancher-nouveaux-batiments",
   URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION: "acteurs-introduction",
   URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER: "acteurs-amenageur",
+  URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER: "acteurs-constructeur-batiments",
   URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER: "acteurs-maitre-ouvrage-remise-en-etat",
   URBAN_PROJECT_SITE_RESALE_INTRODUCTION: "introduction-cession-fonciere",
   URBAN_PROJECT_SITE_RESALE_SELECTION: "cession-fonciere-prevue",
@@ -30,6 +41,8 @@ export const URBAN_PROJECT_CREATION_STEP_QUERY_STRING_MAP = {
   URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS: "montant-acquisition-site",
   URBAN_PROJECT_EXPENSES_REINSTATEMENT: "depenses-remise-en-etat",
   URBAN_PROJECT_EXPENSES_INSTALLATION: "depenses-amenagement",
+  URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION:
+    "depenses-construction-rehabilitation-batiments",
   URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES:
     "depenses-annuelles-exploitation-batiments",
   URBAN_PROJECT_REVENUE_INTRODUCTION: "introduction-recettes",

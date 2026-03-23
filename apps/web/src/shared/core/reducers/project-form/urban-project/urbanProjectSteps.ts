@@ -1,8 +1,12 @@
 import { createReconversionProjectSchema, typedObjectKeys } from "shared";
 import z from "zod";
 
+import { buildingsExistingBuildingsUsesFloorSurfaceAreaSchema } from "./step-handlers/buildings/buildings-existing-buildings-uses-floor-surface-area/buildingsExistingBuildingsUsesFloorSurfaceArea.schema";
+import { buildingsFootprintToReuseSchema } from "./step-handlers/buildings/buildings-footprint-to-reuse/buildingsFootprintToReuse.schema";
+import { buildingsNewBuildingsUsesFloorSurfaceAreaSchema } from "./step-handlers/buildings/buildings-new-buildings-uses-floor-surface-area/buildingsNewBuildingsUsesFloorSurfaceArea.schema";
 import { buildingsUsesFloorSurfaceAreaSchema } from "./step-handlers/buildings/buildings-uses-floor-surface-area/buildingsUsesFloorSurfaceArea.schema";
 import { creationModeSelectionSchema } from "./step-handlers/creation-mode/creation-mode-selection/creationModeSelection.schema";
+import { expensesBuildingsConstructionAndRehabilitationSchema } from "./step-handlers/expenses/expenses-buildings-construction-and-rehabilitation/expensesBuildingsConstructionAndRehabilitation.schema";
 import { expensesInstallationSchema } from "./step-handlers/expenses/expenses-installation/expensesInstallation.schema";
 import { expensesProjectedBuildingsOperatingExpensesSchema } from "./step-handlers/expenses/expenses-projected-buildings-operating-expenses/expensesProjectedBuildingsOperatingExpenses.schema";
 import { expensesReinstatementSchema } from "./step-handlers/expenses/expenses-reinstatement/expensesReinstatement.schema";
@@ -22,6 +26,7 @@ import { soilsDecontaminationSurfaceAreaSchema } from "./step-handlers/soils/soi
 import { publicGreenSpacesSoilsDistributionSchema } from "./step-handlers/spaces/public-green-spaces-soils-distribution/publicGreenSpacesSoilsDistribution.schema";
 import { spacesSelectionSchema } from "./step-handlers/spaces/spaces-selection/spacesSelection.schema";
 import { spacesSurfaceAreaSchema } from "./step-handlers/spaces/spaces-surface-area/spacesSurfaceArea.schema";
+import { stakeholdersBuildingsDeveloperSchema } from "./step-handlers/stakeholders/stakeholders-buildings-developer/stakeholdersBuildingsDeveloper.schema";
 import { stakeholdersProjectDeveloperSchema } from "./step-handlers/stakeholders/stakeholders-project-developer/stakeholdersProjectDeveloper.schema";
 import { stakeholdersReinstatementContractOwnerSchema } from "./step-handlers/stakeholders/stakeholders-reinstatement-contract-owner/stakeholdersReinstatementContractOwner.schema";
 import { publicGreenSpacesSurfaceAreaSchema } from "./step-handlers/uses/public-green-spaces-surface-area/publicGreenSpacesSurfaceArea.schema";
@@ -33,6 +38,10 @@ export const INTRODUCTION_STEPS = [
   "URBAN_PROJECT_PUBLIC_GREEN_SPACES_INTRODUCTION",
   "URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION",
   "URBAN_PROJECT_BUILDINGS_INTRODUCTION",
+  "URBAN_PROJECT_BUILDINGS_REUSE_INTRODUCTION",
+  "URBAN_PROJECT_BUILDINGS_NEW_CONSTRUCTION_INTRODUCTION",
+  "URBAN_PROJECT_BUILDINGS_DEMOLITION_INFO",
+  "URBAN_PROJECT_BUILDINGS_NEW_CONSTRUCTION_INFO",
   "URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION",
   "URBAN_PROJECT_SITE_RESALE_INTRODUCTION",
   "URBAN_PROJECT_EXPENSES_INTRODUCTION",
@@ -95,9 +104,15 @@ export const answersByStepSchemas = {
 
   // custom - buildings
   URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA: buildingsUsesFloorSurfaceAreaSchema,
+  URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE: buildingsFootprintToReuseSchema,
+  URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA:
+    buildingsExistingBuildingsUsesFloorSurfaceAreaSchema,
+  URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA:
+    buildingsNewBuildingsUsesFloorSurfaceAreaSchema,
 
   // custom - stakeholders
   URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER: stakeholdersProjectDeveloperSchema,
+  URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER: stakeholdersBuildingsDeveloperSchema,
 
   URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER:
     stakeholdersReinstatementContractOwnerSchema,
@@ -112,6 +127,9 @@ export const answersByStepSchemas = {
   URBAN_PROJECT_EXPENSES_REINSTATEMENT: expensesReinstatementSchema,
 
   URBAN_PROJECT_EXPENSES_INSTALLATION: expensesInstallationSchema,
+
+  URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION:
+    expensesBuildingsConstructionAndRehabilitationSchema,
 
   URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES:
     expensesProjectedBuildingsOperatingExpensesSchema,
@@ -147,6 +165,9 @@ export type AnswersByStep = {
 
 export const BUILDINGS_STEPS = [
   "URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA",
+  "URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE",
+  "URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA",
+  "URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA",
   "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION",
   "URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES",
   "URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES",

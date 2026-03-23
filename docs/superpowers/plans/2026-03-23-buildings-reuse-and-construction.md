@@ -104,7 +104,7 @@ All paths relative to repo root. `SH` = `apps/web/src/shared/core/reducers/proje
 
 ### Reader functions
 
-- [ ] **Step 1: Write failing tests for `buildingsReaders`**
+- [x] **Step 1: Write failing tests for `buildingsReaders`**
 
 Create `SH/buildings/__tests__/buildingsReaders.spec.ts`. Test each reader function against the scenario table from the spec:
 
@@ -124,12 +124,12 @@ Create `SH/buildings/__tests__/buildingsReaders.spec.ts`. Test each reader funct
 
 Use `ReadStateHelper` pattern from `managementReaders.ts`. Construct minimal step state objects for each test (no store needed — these are pure functions).
 
-- [ ] **Step 2: Run tests to verify they fail**
+- [x] **Step 2: Run tests to verify they fail**
 
 Run: `pnpm --filter web test SH/buildings/__tests__/buildingsReaders.spec.ts`
 Expected: FAIL — functions don't exist yet.
 
-- [ ] **Step 3: Implement `buildingsReaders.ts`**
+- [x] **Step 3: Implement `buildingsReaders.ts`**
 
 Create `SH/buildings/buildingsReaders.ts`:
 
@@ -227,12 +227,12 @@ export function getLastBuildingsChapterStep(context: StepContext): UrbanProjectC
 }
 ```
 
-- [ ] **Step 4: Run tests to verify they pass**
+- [x] **Step 4: Run tests to verify they pass**
 
 Run: `pnpm --filter web test SH/buildings/__tests__/buildingsReaders.spec.ts`
 Expected: PASS
 
-- [ ] **Step 5: Create `stakeholdersReaders.ts`**
+- [x] **Step 5: Create `stakeholdersReaders.ts`**
 
 Create `SH/stakeholders/stakeholdersReaders.ts`:
 
@@ -251,7 +251,7 @@ export function isDeveloperBuildingsConstructor(stepsState: StepsState): boolean
 
 ### Step registration
 
-- [ ] **Step 6: Add schemas and step IDs to `urbanProjectSteps.ts`**
+- [x] **Step 6: Add schemas and step IDs to `urbanProjectSteps.ts`**
 
 Add to `INTRODUCTION_STEPS` array:
 ```typescript
@@ -281,7 +281,7 @@ Also add `URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER` and `URBAN_PROJECT_EXP
 
 Create the 5 schema files (minimal — just the Zod schema object and type export). Reference patterns from existing schema files (e.g., `buildingsUsesFloorSurfaceArea.schema.ts`, `expensesInstallation.schema.ts`).
 
-- [ ] **Step 7: Update stepper config registry, query string map, and view routing stubs**
+- [x] **Step 7: Update stepper config registry, query string map, and view routing stubs**
 
 **`apps/web/src/shared/views/project-form/stepper/stepperConfig.ts`**: Add 9 entries to `STEP_TO_GROUP_MAPPING`. For answer steps, add new `StepSubGroupId` values and corresponding labels in `STEP_GROUP_LABELS`:
 - `"BUILDINGS_REUSE"` → "Réutilisation des bâtiments"
@@ -296,7 +296,7 @@ Create the 5 schema files (minimal — just the Zod schema object and type expor
 
 **`apps/web/src/features/update-project/views/UrbanProjectUpdateView.tsx`**: Add 9 switch cases (same pattern as creation wizard).
 
-- [ ] **Step 8: Run typecheck**
+- [x] **Step 8: Run typecheck**
 
 Run: `pnpm --filter web typecheck`
 Expected: PASS (all `Record<UrbanProjectCreationStep, ...>` mappings have entries for every step ID)
