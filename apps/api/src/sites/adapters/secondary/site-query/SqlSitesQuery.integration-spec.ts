@@ -23,7 +23,7 @@ describe("SqlSitesQuery integration", () => {
     sitesQuery = new SqlSitesQuery(sqlConnection);
   });
 
-  describe("getById", () => {
+  describe("getSiteFeaturesById", () => {
     it("gets friche with exhaustive data and address, soils distribution and yearly expenses", async () => {
       const siteId = uuid();
       await sqlConnection("sites").insert({
@@ -204,12 +204,73 @@ describe("SqlSitesQuery integration", () => {
       expect(result).toEqual(expectedResult);
     });
 
+    it("gets natural area site with required data", async () => {
+      const siteId = uuid();
+      await sqlConnection("sites").insert({
+        id: siteId,
+        created_by: "d185b43f-e54a-4dd4-9c60-ba85775a01e7",
+        name: "Forêt de Fontainebleau",
+        description: "A natural forest area",
+        nature: "NATURAL_AREA",
+        surface_area: 50000,
+        owner_structure_type: "municipality",
+        created_at: now,
+        natural_area_type: "FOREST",
+      });
+
+      await sqlConnection("addresses").insert({
+        id: uuid(),
+        site_id: siteId,
+        city: "Fontainebleau",
+        city_code: "77186",
+        post_code: "77300",
+        ban_id: "77186_abc",
+        lat: 48.4,
+        long: 2.7,
+        value: "Fontainebleau",
+      });
+
+      await sqlConnection("site_soils_distributions").insert([
+        { id: uuid(), site_id: siteId, soil_type: "FOREST_DECIDUOUS", surface_area: 50000 },
+      ]);
+
+      const result = await sitesQuery.getSiteFeaturesById(siteId);
+
+      const expectedResult: SiteFeaturesView = {
+        id: siteId,
+        name: "Forêt de Fontainebleau",
+        nature: "NATURAL_AREA",
+        isExpressSite: false,
+        description: "A natural forest area",
+        surfaceArea: 50000,
+        owner: { structureType: "municipality" },
+        yearlyExpenses: [],
+        yearlyIncomes: [],
+        address: {
+          city: "Fontainebleau",
+          cityCode: "77186",
+          postCode: "77300",
+          banId: "77186_abc",
+          lat: 48.4,
+          long: 2.7,
+          value: "Fontainebleau",
+        },
+        soilsDistribution: {
+          FOREST_DECIDUOUS: 50000,
+        },
+        naturalAreaType: "FOREST",
+      };
+
+      expect(result).toEqual(expectedResult);
+    });
+
     it("gets site when no expenses, no soils_distribution, no address", async () => {
       const siteId = uuid();
       await sqlConnection("sites").insert({
         id: siteId,
         created_by: "d185b43f-e54a-4dd4-9c60-ba85775a01e7",
         name: "Site 456",
+        nature: "FRICHE",
         surface_area: 14000,
         owner_structure_type: "company",
         created_at: now,
@@ -588,6 +649,49 @@ describe("SqlSitesQuery integration", () => {
 
         expect(result).toEqual(null);
       });
+    });
+  });
+
+  describe("getSiteSurfaceAreaAndCityCode", () => {
+    it("returns surface area and city code for existing site", async () => {
+      const siteId = uuid();
+      await sqlConnection("sites").insert({
+        id: siteId,
+        created_by: "d185b43f-e54a-4dd4-9c60-ba85775a01e7",
+        name: "Site with address",
+        nature: "FRICHE",
+        surface_area: 14000,
+        owner_structure_type: "company",
+        created_at: now,
+        friche_activity: "INDUSTRY",
+      });
+
+      await sqlConnection("addresses").insert({
+        id: uuid(),
+        site_id: siteId,
+        city: "Paris",
+        city_code: "75109",
+        post_code: "75009",
+        ban_id: "123abc",
+        lat: 48.876517,
+        long: 2.330785,
+        value: "1 rue de Londres, 75009 Paris",
+      });
+
+      const result = await sitesQuery.getSiteSurfaceAreaAndCityCode(siteId);
+
+      expect(result).toEqual({
+        surfaceArea: 14000,
+        cityCode: "75109",
+      });
+    });
+
+    it("returns undefined for non-existent site", async () => {
+      const nonExistentSiteId = uuid();
+
+      const result = await sitesQuery.getSiteSurfaceAreaAndCityCode(nonExistentSiteId);
+
+      expect(result).toEqual(undefined);
     });
   });
 });
