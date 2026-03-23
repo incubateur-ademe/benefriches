@@ -5,7 +5,7 @@ import { selectCurrentStep } from "../../core/createSite.reducer";
 import { HTML_MAIN_TITLE } from "../SiteCreationWizard";
 import AgriculturalOperationActivityForm from "../common-views/agricultural-operation-activity";
 import NaturalAreaTypeForm from "../common-views/natural-area-type";
-import FricheActivityForm from "../custom/friche-activity";
+import FricheActivityForm from "../friche/friche-activity";
 import AddressForm from "./address";
 import SiteCreationResult from "./result";
 import SiteSurfaceAreaForm from "./surface-area";

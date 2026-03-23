@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { selectUrbanZoneCreationResultViewData } from "@/features/create-site/core/urban-zone/steps/creation-result/creationResult.selectors";
 import { previousStepRequested } from "@/features/create-site/core/urban-zone/urban-zone.actions";
-import SiteCreationResult from "@/features/create-site/views/custom/result/SiteCreationResult";
+import SiteCreationResult from "@/features/create-site/views/common-views/result/SiteCreationResult";
 
 function UrbanZoneCreationResultContainer() {
   const dispatch = useAppDispatch();

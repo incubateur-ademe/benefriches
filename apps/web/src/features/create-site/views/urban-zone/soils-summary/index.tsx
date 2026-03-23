@@ -4,7 +4,7 @@ import {
   nextStepRequested,
   previousStepRequested,
 } from "@/features/create-site/core/urban-zone/urban-zone.actions";
-import SiteSoilsSummary from "@/features/create-site/views/custom/spaces-and-soils/soils-summary/SiteSoilsSummary";
+import SiteSoilsSummary from "@/features/create-site/views/common-views/spaces-and-soils/soils-summary/SiteSoilsSummary";
 
 function UrbanZoneSoilsSummaryContainer() {
   const dispatch = useAppDispatch();

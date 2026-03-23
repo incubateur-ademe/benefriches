@@ -3,7 +3,7 @@ import {
   nextStepRequested,
   previousStepRequested,
 } from "@/features/create-site/core/urban-zone/urban-zone.actions";
-import SiteNamingIntroduction from "@/features/create-site/views/custom/naming/introduction/SiteNamingIntroduction";
+import SiteNamingIntroduction from "@/features/create-site/views/common-views/naming/introduction/SiteNamingIntroduction";
 
 function UrbanZoneNamingIntroductionContainer() {
   const dispatch = useAppDispatch();

@@ -3,7 +3,7 @@ import { stepReverted } from "@/features/create-site/core/actions/revert.action"
 import { siteSurfaceAreaStepCompleted } from "@/features/create-site/core/steps/spaces/spaces.actions";
 import { selectSiteSurfaceAreaFormViewData } from "@/features/create-site/core/steps/spaces/spaces.selectors";
 
-import SiteSurfaceAreaForm from "../../../common-views/SiteSurfaceAreaForm";
+import SiteSurfaceAreaForm from "../../SiteSurfaceAreaForm";
 
 function SiteSurfaceAreaFormContainer() {
   const dispatch = useAppDispatch();

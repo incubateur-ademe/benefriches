@@ -4,7 +4,7 @@ import {
   previousStepRequested,
   stepCompletionRequested,
 } from "@/features/create-site/core/urban-zone/urban-zone.actions";
-import SoilContaminationForm from "@/features/create-site/views/custom/soil-contamination/SoilContaminationForm";
+import SoilContaminationForm from "@/features/create-site/views/friche/soil-contamination/SoilContaminationForm";
 
 function SoilsContaminationContainer() {
   const dispatch = useAppDispatch();
