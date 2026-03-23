@@ -7,17 +7,13 @@ import { useForm, useWatch } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { authLinkRequestReset } from "@/features/onboarding/core/authLinkRequestReset.action";
 import { authLinkRequested } from "@/features/onboarding/core/authLinkRequested.action";
-import { useDelayed } from "@/shared/views/hooks/useDelayed";
 
 import AuthLinkNotReceivedHelp from "./AuthLinkNotReceivedHelp";
 import AuthLinkRequestError from "./AuthLinkRequestError";
 import { requestAuthLinkModal } from "./createRequestAuthLinkModal";
 
-const HELP_DELAY_MS = 3_000;
-
 function RequestResult({ email }: { email: string }) {
   const { authLinkRequestState, authLinkRequestError } = useAppSelector((state) => state.auth);
-  const showHelp = useDelayed(authLinkRequestState === "success", HELP_DELAY_MS);
 
   switch (authLinkRequestState) {
     case "loading":
@@ -32,7 +28,7 @@ function RequestResult({ email }: { email: string }) {
             className="mt-4"
             small
           />
-          {showHelp && <AuthLinkNotReceivedHelp email={email} />}
+          <AuthLinkNotReceivedHelp email={email} />
         </>
       );
     case "error":
