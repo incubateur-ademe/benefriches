@@ -3,7 +3,7 @@ import { ComputedReinstatementExpenses, computeProjectReinstatementExpenses } fr
 import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
 import { AnswersByStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 
-import { AnswerStepHandler, StepContext } from "../../stepHandler.type";
+import { type AnswerStepHandler, type StepContext } from "../../stepHandler.type";
 
 const getDefaultReinstatementExpenses = (context: StepContext) => {
   const soilsDistribution = ReadStateHelper.getProjectSoilDistributionBySoilType(
@@ -38,58 +38,56 @@ const formatDefaultValue = (
   };
 };
 
-export const UrbanProjectReinstatementExpensesHandler: AnswerStepHandler<"URBAN_PROJECT_EXPENSES_REINSTATEMENT"> =
-  {
-    stepId: "URBAN_PROJECT_EXPENSES_REINSTATEMENT",
+export const UrbanProjectReinstatementExpensesHandler = {
+  stepId: "URBAN_PROJECT_EXPENSES_REINSTATEMENT",
 
-    getDefaultAnswers(context) {
-      return formatDefaultValue(getDefaultReinstatementExpenses(context));
-    },
+  getDefaultAnswers(context) {
+    return formatDefaultValue(getDefaultReinstatementExpenses(context));
+  },
 
-    getRecomputedStepAnswers(context) {
-      const oldStepState = ReadStateHelper.getStep(
-        context.stepsState,
-        "URBAN_PROJECT_EXPENSES_REINSTATEMENT",
-      );
-      const expenses = getDefaultReinstatementExpenses(context);
+  getRecomputedStepAnswers(context) {
+    const oldStepState = ReadStateHelper.getStep(
+      context.stepsState,
+      "URBAN_PROJECT_EXPENSES_REINSTATEMENT",
+    );
+    const expenses = getDefaultReinstatementExpenses(context);
 
-      if (!oldStepState) {
-        return formatDefaultValue(expenses);
-      }
+    if (!oldStepState) {
+      return formatDefaultValue(expenses);
+    }
 
-      const oldDefaultValuesMap = new Map(
-        oldStepState.defaultValues?.reinstatementExpenses?.map((e) => [e.purpose, e.amount]) ?? [],
-      );
+    const oldDefaultValuesMap = new Map(
+      oldStepState.defaultValues?.reinstatementExpenses?.map((e) => [e.purpose, e.amount]) ?? [],
+    );
 
-      const newDefaultExpensesMap = new Map([
-        ["asbestos_removal", expenses.asbestosRemoval ?? 0],
-        ["deimpermeabilization", expenses.deimpermeabilization ?? 0],
-        ["demolition", expenses.demolition ?? 0],
-        ["sustainable_soils_reinstatement", expenses.sustainableSoilsReinstatement ?? 0],
-        ["remediation", expenses.remediation ?? 0],
-      ]);
+    const newDefaultExpensesMap = new Map([
+      ["asbestos_removal", expenses.asbestosRemoval ?? 0],
+      ["deimpermeabilization", expenses.deimpermeabilization ?? 0],
+      ["demolition", expenses.demolition ?? 0],
+      ["sustainable_soils_reinstatement", expenses.sustainableSoilsReinstatement ?? 0],
+      ["remediation", expenses.remediation ?? 0],
+    ]);
 
-      const reinstatementExpenses =
-        oldStepState.payload?.reinstatementExpenses?.map((oldExpense) => {
-          const oldValueIsDefault =
-            oldExpense.amount === oldDefaultValuesMap.get(oldExpense.purpose);
+    const reinstatementExpenses =
+      oldStepState.payload?.reinstatementExpenses?.map((oldExpense) => {
+        const oldValueIsDefault = oldExpense.amount === oldDefaultValuesMap.get(oldExpense.purpose);
 
-          if (oldValueIsDefault) {
-            const newAmount = newDefaultExpensesMap.get(oldExpense.purpose);
-            return { purpose: oldExpense.purpose, amount: newAmount ?? 0 };
-          }
+        if (oldValueIsDefault) {
+          const newAmount = newDefaultExpensesMap.get(oldExpense.purpose);
+          return { purpose: oldExpense.purpose, amount: newAmount ?? 0 };
+        }
 
-          return oldExpense;
-        }) ?? [];
+        return oldExpense;
+      }) ?? [];
 
-      return { reinstatementExpenses };
-    },
+    return { reinstatementExpenses };
+  },
 
-    getPreviousStepId() {
-      return "URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS";
-    },
+  getPreviousStepId() {
+    return "URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS";
+  },
 
-    getNextStepId() {
-      return "URBAN_PROJECT_EXPENSES_INSTALLATION";
-    },
-  };
+  getNextStepId() {
+    return "URBAN_PROJECT_EXPENSES_INSTALLATION";
+  },
+} satisfies AnswerStepHandler<"URBAN_PROJECT_EXPENSES_REINSTATEMENT">;

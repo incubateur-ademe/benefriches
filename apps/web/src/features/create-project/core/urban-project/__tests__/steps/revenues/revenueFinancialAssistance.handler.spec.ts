@@ -6,9 +6,7 @@ import { RevenueFinancialAssistanceHandler } from "@/shared/core/reducers/projec
 describe("RevenueFinancialAssistanceHandler", () => {
   describe("getNextStepId", () => {
     it("should return URBAN_PROJECT_EXPENSES_INTRODUCTION", () => {
-      const nextStep = RevenueFinancialAssistanceHandler.getNextStepId({
-        stepsState: {},
-      });
+      const nextStep = RevenueFinancialAssistanceHandler.getNextStepId();
 
       expect(nextStep).toBe("URBAN_PROJECT_SCHEDULE_PROJECTION");
     });
@@ -29,7 +27,7 @@ describe("RevenueFinancialAssistanceHandler", () => {
         },
       };
 
-      const previousStep = RevenueFinancialAssistanceHandler.getPreviousStepId!({
+      const previousStep = RevenueFinancialAssistanceHandler.getPreviousStepId({
         stepsState,
       });
 
@@ -50,7 +48,7 @@ describe("RevenueFinancialAssistanceHandler", () => {
         },
       };
 
-      const previousStep = RevenueFinancialAssistanceHandler.getPreviousStepId!({
+      const previousStep = RevenueFinancialAssistanceHandler.getPreviousStepId({
         stepsState,
       });
 
@@ -69,7 +67,7 @@ describe("RevenueFinancialAssistanceHandler", () => {
         },
       };
 
-      const previousStep = RevenueFinancialAssistanceHandler.getPreviousStepId!({
+      const previousStep = RevenueFinancialAssistanceHandler.getPreviousStepId({
         stepsState,
       });
 
@@ -88,7 +86,7 @@ describe("RevenueFinancialAssistanceHandler", () => {
         },
       };
 
-      const previousStep = RevenueFinancialAssistanceHandler.getPreviousStepId!({
+      const previousStep = RevenueFinancialAssistanceHandler.getPreviousStepId({
         stepsState,
       });
 
@@ -103,7 +101,7 @@ describe("RevenueFinancialAssistanceHandler", () => {
         },
       };
 
-      const previousStep = RevenueFinancialAssistanceHandler.getPreviousStepId!({
+      const previousStep = RevenueFinancialAssistanceHandler.getPreviousStepId({
         stepsState,
       });
 
@@ -111,7 +109,7 @@ describe("RevenueFinancialAssistanceHandler", () => {
     });
 
     it("should return URBAN_PROJECT_REVENUE_INTRODUCTION when steps state is empty", () => {
-      const previousStep = RevenueFinancialAssistanceHandler.getPreviousStepId!({
+      const previousStep = RevenueFinancialAssistanceHandler.getPreviousStepId({
         stepsState: {},
       });
 

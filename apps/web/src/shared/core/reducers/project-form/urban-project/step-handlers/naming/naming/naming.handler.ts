@@ -1,7 +1,7 @@
 import { generateUrbanProjectName } from "../../../../helpers/projectName";
 import type { AnswerStepHandler } from "../../stepHandler.type";
 
-export const UrbanProjectNamingHandler: AnswerStepHandler<"URBAN_PROJECT_NAMING"> = {
+export const UrbanProjectNamingHandler = {
   stepId: "URBAN_PROJECT_NAMING",
 
   getDefaultAnswers() {
@@ -17,4 +17,4 @@ export const UrbanProjectNamingHandler: AnswerStepHandler<"URBAN_PROJECT_NAMING"
   getNextStepId() {
     return "URBAN_PROJECT_FINAL_SUMMARY";
   },
-};
+} satisfies AnswerStepHandler<"URBAN_PROJECT_NAMING">;

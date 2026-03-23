@@ -5,78 +5,77 @@ import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-proje
 import { getReinstatementCostsRecomputationRules } from "../../spaces/getCommonRules";
 import type { AnswerStepHandler } from "../../stepHandler.type";
 
-export const SoilsDecontaminationSelectionHandler: AnswerStepHandler<"URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION"> =
-  {
-    stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
+export const SoilsDecontaminationSelectionHandler = {
+  stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
 
-    getDependencyRules(context, newAnswers) {
-      const existingAnswers = ReadStateHelper.getStepAnswers(
+  getDependencyRules(context, newAnswers) {
+    const existingAnswers = ReadStateHelper.getStepAnswers(
+      context.stepsState,
+      "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
+    );
+
+    if (
+      !existingAnswers ||
+      existingAnswers?.decontaminationPlan === newAnswers.decontaminationPlan
+    ) {
+      return [];
+    }
+
+    const reinstatementRules = getReinstatementCostsRecomputationRules(context);
+    if (newAnswers.decontaminationPlan === "partial") {
+      return [
+        ...reinstatementRules,
+        { stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA", action: "delete" },
+      ];
+    }
+    return getReinstatementCostsRecomputationRules(context);
+  },
+
+  getPreviousStepId() {
+    return "URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION";
+  },
+
+  getNextStepId() {
+    return "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA";
+  },
+
+  getShortcut(context, answers) {
+    const nextStep = "URBAN_PROJECT_SITE_RESALE_INTRODUCTION";
+
+    const hasChanged =
+      ReadStateHelper.getStepAnswers(
         context.stepsState,
         "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
-      );
+      )?.decontaminationPlan !== answers.decontaminationPlan;
 
-      if (
-        !existingAnswers ||
-        existingAnswers?.decontaminationPlan === newAnswers.decontaminationPlan
-      ) {
-        return [];
-      }
+    if (answers.decontaminationPlan === "none" && hasChanged) {
+      return {
+        complete: [
+          {
+            stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA",
+            answers: { decontaminatedSurfaceArea: 0 },
+          },
+        ],
+        next: nextStep,
+      };
+    }
 
-      const reinstatementRules = getReinstatementCostsRecomputationRules(context);
-      if (newAnswers.decontaminationPlan === "partial") {
-        return [
-          ...reinstatementRules,
-          { stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA", action: "delete" },
-        ];
-      }
-      return getReinstatementCostsRecomputationRules(context);
-    },
-
-    getPreviousStepId() {
-      return "URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION";
-    },
-
-    getNextStepId() {
-      return "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA";
-    },
-
-    getShortcut(context, answers) {
-      const nextStep = "URBAN_PROJECT_SITE_RESALE_INTRODUCTION";
-
-      const hasChanged =
-        ReadStateHelper.getStepAnswers(
-          context.stepsState,
-          "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
-        )?.decontaminationPlan !== answers.decontaminationPlan;
-
-      if (answers.decontaminationPlan === "none" && hasChanged) {
-        return {
-          complete: [
-            {
-              stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA",
-              answers: { decontaminatedSurfaceArea: 0 },
+    if (answers.decontaminationPlan === "unknown" && hasChanged) {
+      const contaminatedSoilSurface = context.siteData?.contaminatedSoilSurface ?? 0;
+      return {
+        complete: [
+          {
+            stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA",
+            answers: {
+              decontaminatedSurfaceArea:
+                computeDefaultDecontaminatedSurfaceArea(contaminatedSoilSurface),
             },
-          ],
-          next: nextStep,
-        };
-      }
+          },
+        ],
+        next: nextStep,
+      };
+    }
 
-      if (answers.decontaminationPlan === "unknown" && hasChanged) {
-        const contaminatedSoilSurface = context.siteData?.contaminatedSoilSurface ?? 0;
-        return {
-          complete: [
-            {
-              stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA",
-              answers: {
-                decontaminatedSurfaceArea:
-                  computeDefaultDecontaminatedSurfaceArea(contaminatedSoilSurface),
-              },
-            },
-          ],
-          next: nextStep,
-        };
-      }
-
-      return undefined;
-    },
-  };
+    return undefined;
+  },
+} satisfies AnswerStepHandler<"URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION">;

@@ -6,9 +6,7 @@ import { RevenueBuildingsOperationsYearlyRevenuesHandler } from "@/shared/core/r
 describe("RevenueBuildingsOperationsYearlyRevenuesHandler", () => {
   describe("getNextStepId", () => {
     it("should return URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE", () => {
-      const nextStep = RevenueBuildingsOperationsYearlyRevenuesHandler.getNextStepId({
-        stepsState: {},
-      });
+      const nextStep = RevenueBuildingsOperationsYearlyRevenuesHandler.getNextStepId();
 
       expect(nextStep).toBe("URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE");
     });
@@ -23,7 +21,7 @@ describe("RevenueBuildingsOperationsYearlyRevenuesHandler", () => {
         },
       };
 
-      const previousStep = RevenueBuildingsOperationsYearlyRevenuesHandler.getPreviousStepId!({
+      const previousStep = RevenueBuildingsOperationsYearlyRevenuesHandler.getPreviousStepId({
         stepsState,
       });
 
@@ -38,7 +36,7 @@ describe("RevenueBuildingsOperationsYearlyRevenuesHandler", () => {
         },
       };
 
-      const previousStep = RevenueBuildingsOperationsYearlyRevenuesHandler.getPreviousStepId!({
+      const previousStep = RevenueBuildingsOperationsYearlyRevenuesHandler.getPreviousStepId({
         stepsState,
       });
 
@@ -53,7 +51,7 @@ describe("RevenueBuildingsOperationsYearlyRevenuesHandler", () => {
         },
       };
 
-      const previousStep = RevenueBuildingsOperationsYearlyRevenuesHandler.getPreviousStepId!({
+      const previousStep = RevenueBuildingsOperationsYearlyRevenuesHandler.getPreviousStepId({
         stepsState,
       });
 
@@ -61,7 +59,7 @@ describe("RevenueBuildingsOperationsYearlyRevenuesHandler", () => {
     });
 
     it("should return URBAN_PROJECT_REVENUE_INTRODUCTION when steps state is empty", () => {
-      const previousStep = RevenueBuildingsOperationsYearlyRevenuesHandler.getPreviousStepId!({
+      const previousStep = RevenueBuildingsOperationsYearlyRevenuesHandler.getPreviousStepId({
         stepsState: {},
       });
 
