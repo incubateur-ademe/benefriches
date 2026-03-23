@@ -79,7 +79,7 @@ function SitePage({
             {(() => {
               switch (selectedTab) {
                 case "features":
-                  return <SiteFeaturesList {...siteView.features} />;
+                  return <SiteFeaturesList siteFeatures={siteView.features} />;
                 case "actionsList":
                   return (
                     <SiteActionsList

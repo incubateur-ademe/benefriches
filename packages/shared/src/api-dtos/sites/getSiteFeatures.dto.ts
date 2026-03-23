@@ -1,12 +1,16 @@
 import z from "zod";
 
-import { addressSchema, siteNatureSchema, urbanZoneLandParcelSchema } from "../../site";
+import {
+  addressSchema,
+  siteNatureSchema,
+  urbanZoneLandParcelSchema,
+  urbanZoneTypeSchema,
+} from "../../site";
 import { soilsDistributionSchema } from "../../soils";
 
-export const getSiteFeaturesResponseDtoSchema = z.object({
+const baseSiteFeaturesSchema = z.object({
   id: z.string(),
   name: z.string(),
-  nature: siteNatureSchema,
   isExpressSite: z.boolean(),
   owner: z.object({
     name: z.string().optional(),
@@ -18,14 +22,9 @@ export const getSiteFeaturesResponseDtoSchema = z.object({
       structureType: z.string().optional(),
     })
     .optional(),
-  hasContaminatedSoils: z.boolean().optional(),
-  contaminatedSoilSurface: z.number().optional(),
   soilsDistribution: soilsDistributionSchema,
   surfaceArea: z.number().nonnegative(),
   address: addressSchema,
-  accidentsMinorInjuries: z.number().optional(),
-  accidentsSevereInjuries: z.number().optional(),
-  accidentsDeaths: z.number().optional(),
   yearlyExpenses: z
     .array(
       z.object({
@@ -42,16 +41,46 @@ export const getSiteFeaturesResponseDtoSchema = z.object({
       }),
     )
     .default([]),
-  fricheActivity: z.string().optional(),
-  agriculturalOperationActivity: z.string().optional(),
-  naturalAreaType: z.string().optional(),
   description: z.string().optional(),
-  urbanZoneType: z.string().optional(),
-  landParcels: urbanZoneLandParcelSchema.array().optional(),
+});
+
+const fricheSiteFeaturesResponseDtoSchema = baseSiteFeaturesSchema.extend({
+  nature: siteNatureSchema.extract(["FRICHE"]),
+  fricheActivity: z.string().optional(),
+  hasContaminatedSoils: z.boolean().optional(),
+  contaminatedSoilSurface: z.number().optional(),
+  accidentsMinorInjuries: z.number().optional(),
+  accidentsSevereInjuries: z.number().optional(),
+  accidentsDeaths: z.number().optional(),
+});
+
+const agriculturalOperationSiteFeaturesResponseDtoSchema = baseSiteFeaturesSchema.extend({
+  nature: siteNatureSchema.extract(["AGRICULTURAL_OPERATION"]),
+  agriculturalOperationActivity: z.string(),
+});
+
+const naturalAreaSiteFeaturesResponseDtoSchema = baseSiteFeaturesSchema.extend({
+  nature: siteNatureSchema.extract(["NATURAL_AREA"]),
+  naturalAreaType: z.string(),
+});
+
+const urbanZoneSiteFeaturesResponseDtoSchema = baseSiteFeaturesSchema.extend({
+  nature: siteNatureSchema.extract(["URBAN_ZONE"]),
+  urbanZoneType: urbanZoneTypeSchema,
+  landParcels: urbanZoneLandParcelSchema.array(),
+  hasContaminatedSoils: z.boolean().optional(),
+  contaminatedSoilSurface: z.number().optional(),
   manager: z.object({ structureType: z.string(), name: z.string() }).optional(),
   vacantCommercialPremisesFootprint: z.number().optional(),
   vacantCommercialPremisesFloorArea: z.number().optional(),
   fullTimeJobsEquivalent: z.number().optional(),
 });
+
+export const getSiteFeaturesResponseDtoSchema = z.discriminatedUnion("nature", [
+  fricheSiteFeaturesResponseDtoSchema,
+  agriculturalOperationSiteFeaturesResponseDtoSchema,
+  naturalAreaSiteFeaturesResponseDtoSchema,
+  urbanZoneSiteFeaturesResponseDtoSchema,
+]);
 
 export type GetSiteFeaturesResponseDto = z.infer<typeof getSiteFeaturesResponseDtoSchema>;

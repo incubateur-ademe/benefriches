@@ -19,9 +19,9 @@ import { SiteFeatures } from "../../core/site.types";
 import ExpressSiteDisclaimer from "./ExpressSiteDisclaimer";
 import SiteFeaturesManagementSection from "./SiteFeaturesManagementSection";
 
-type Props = SiteFeatures & { withExpressDisclaimer?: boolean };
+type Props = { siteFeatures: SiteFeatures; withExpressDisclaimer?: boolean };
 
-export default function SiteFeaturesList({ withExpressDisclaimer = true, ...siteFeatures }: Props) {
+export default function SiteFeaturesList({ withExpressDisclaimer = true, siteFeatures }: Props) {
   return (
     <>
       {withExpressDisclaimer && siteFeatures.isExpressSite && (
@@ -157,26 +157,35 @@ La pollution à l'amiante des bâtiments n'est pas considérée ici."
       )}
       <SiteFeaturesManagementSection {...siteFeatures} />
       <Section title="✍ Dénomination">
-        {siteFeatures.fricheActivity ? (
-          <DataLine
-            label={<strong>Type de friche</strong>}
-            value={getFricheActivityLabel(siteFeatures.fricheActivity)}
-          />
-        ) : null}
-        {siteFeatures.agriculturalOperationActivity ? (
-          <DataLine
-            label={<strong>Type d'exploitation</strong>}
-            value={getLabelForAgriculturalOperationActivity(
-              siteFeatures.agriculturalOperationActivity,
-            )}
-          />
-        ) : null}
-        {siteFeatures.naturalAreaType ? (
-          <DataLine
-            label={<strong>Nature du site</strong>}
-            value={getLabelForNaturalAreaType(siteFeatures.naturalAreaType)}
-          />
-        ) : null}
+        {(() => {
+          switch (siteFeatures.nature) {
+            case "FRICHE":
+              return siteFeatures.fricheActivity ? (
+                <DataLine
+                  label={<strong>Type de friche</strong>}
+                  value={getFricheActivityLabel(siteFeatures.fricheActivity)}
+                />
+              ) : null;
+            case "AGRICULTURAL_OPERATION":
+              return (
+                <DataLine
+                  label={<strong>Type d'exploitation</strong>}
+                  value={getLabelForAgriculturalOperationActivity(
+                    siteFeatures.agriculturalOperationActivity,
+                  )}
+                />
+              );
+            case "NATURAL_AREA":
+              return (
+                <DataLine
+                  label={<strong>Nature du site</strong>}
+                  value={getLabelForNaturalAreaType(siteFeatures.naturalAreaType)}
+                />
+              );
+            default:
+              return null;
+          }
+        })()}
         <DataLine label={<strong>Nom du site</strong>} value={siteFeatures.name} />
         {siteFeatures.description && (
           <DataLine label={<strong>Description</strong>} value={siteFeatures.description} />

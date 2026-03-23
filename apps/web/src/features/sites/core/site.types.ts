@@ -1,4 +1,4 @@
-import {
+import type {
   AgriculturalOperationActivity,
   DevelopmentPlanType,
   FricheActivity,
@@ -6,35 +6,56 @@ import {
   NaturalAreaType,
   SiteActionStatus,
   SiteActionType,
-  SiteNature,
   SiteYearlyExpensePurpose,
   SiteYearlyIncome,
   SoilsDistribution,
 } from "shared";
 
-export type SiteFeatures = {
+type BaseSiteFeatures = {
   id: string;
-  nature: SiteNature;
   isExpressSite: boolean;
   address: string;
   ownerName: string;
   tenantName?: string;
+  expenses: { amount: number; purpose: SiteYearlyExpensePurpose }[];
+  incomes: { amount: number; source: SiteYearlyIncome["source"] }[];
+  surfaceArea: number;
+  soilsDistribution: SoilsDistribution;
+  name: string;
+  description?: string;
+};
+
+type FricheSiteFeatures = BaseSiteFeatures & {
+  nature: "FRICHE";
+  contaminatedSurfaceArea?: number;
   accidents: {
     minorInjuries?: number;
     severeInjuries?: number;
     accidentsDeaths?: number;
   };
-  expenses: { amount: number; purpose: SiteYearlyExpensePurpose }[];
-  incomes: { amount: number; source: SiteYearlyIncome["source"] }[];
-  surfaceArea: number;
-  soilsDistribution: SoilsDistribution;
-  contaminatedSurfaceArea?: number;
-  name: string;
-  description?: string;
   fricheActivity?: FricheActivity;
-  agriculturalOperationActivity?: AgriculturalOperationActivity;
-  naturalAreaType?: NaturalAreaType;
 };
+
+type AgriculturalOperationSiteFeatures = BaseSiteFeatures & {
+  nature: "AGRICULTURAL_OPERATION";
+  agriculturalOperationActivity: AgriculturalOperationActivity;
+};
+
+type NaturalAreaSiteFeatures = BaseSiteFeatures & {
+  nature: "NATURAL_AREA";
+  naturalAreaType: NaturalAreaType;
+};
+
+type UrbanZoneSiteFeatures = BaseSiteFeatures & {
+  nature: "URBAN_ZONE";
+  contaminatedSurfaceArea?: number;
+};
+
+export type SiteFeatures =
+  | FricheSiteFeatures
+  | AgriculturalOperationSiteFeatures
+  | NaturalAreaSiteFeatures
+  | UrbanZoneSiteFeatures;
 
 export type SiteView = {
   id: string;

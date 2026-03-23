@@ -84,9 +84,7 @@ describe("SqlSitesQuery integration", () => {
 
       const result = await sitesQuery.getSiteFeaturesById(siteId);
 
-      const expectedResult: Required<
-        Omit<SiteFeaturesView, "agriculturalOperationActivity" | "naturalAreaType">
-      > = {
+      const expectedResult: SiteFeaturesView = {
         id: siteId,
         name: "Site 123",
         nature: "FRICHE",

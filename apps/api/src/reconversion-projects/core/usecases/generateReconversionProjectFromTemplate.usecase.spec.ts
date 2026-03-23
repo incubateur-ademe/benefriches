@@ -780,13 +780,13 @@ describe("GenerateAndSaveReconversionProjectFromTemplateUseCase Use Case", () =>
       isExpressSite: true,
       name: "Base site",
       surfaceArea: 50000,
+      agriculturalOperationActivity: "CATTLE_FARMING",
       soilsDistribution: {
         PRAIRIE_GRASS: 30000,
         FOREST_MIXED: 18900,
         WATER: 600,
         MINERAL_SOIL: 500,
       },
-      contaminatedSoilSurface: 0,
       address: {
         city: "Montrouge",
         streetName: "Avenue Pierre Brossolette",

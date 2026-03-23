@@ -34,5 +34,5 @@ export default function SiteFeaturesContainer({ siteId }: Props) {
     );
   }
 
-  return <SiteFeaturesList {...viewData.siteFeatures} />;
+  return <SiteFeaturesList siteFeatures={viewData.siteFeatures} />;
 }

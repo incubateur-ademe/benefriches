@@ -7,7 +7,11 @@ import type { SiteGateway } from "../gateways/SiteGateway";
 import type { SiteFeatures, SiteView } from "../site.types";
 import { selectSiteFeaturesViewData } from "../siteFeatures.selectors";
 
-const createMockSiteFeatures = (overrides: Partial<SiteFeatures> = {}): SiteFeatures => ({
+type FricheSiteFeatures = Extract<SiteFeatures, { nature: "FRICHE" }>;
+
+const createMockSiteFeatures = (
+  overrides: Partial<FricheSiteFeatures> = {},
+): FricheSiteFeatures => ({
   id: "site-123",
   name: "Test Site",
   address: "1 rue de Test, 75001 Paris",

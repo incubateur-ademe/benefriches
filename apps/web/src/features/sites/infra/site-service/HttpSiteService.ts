@@ -15,18 +15,12 @@ import type { SiteFeatures, SiteView } from "../../core/site.types";
 const mapApiSiteFeaturesResponseToFeaturesView = (
   apiResponse: GetSiteFeaturesResponseDto,
 ): SiteFeatures => {
-  return {
+  const baseSiteFeatures = {
     id: apiResponse.id,
-    nature: apiResponse.nature,
     isExpressSite: apiResponse.isExpressSite,
     address: apiResponse.address.value,
     ownerName: apiResponse.owner.name || "",
     tenantName: apiResponse.tenant?.name || "",
-    accidents: {
-      minorInjuries: apiResponse.accidentsMinorInjuries || 0,
-      severeInjuries: apiResponse.accidentsSevereInjuries || 0,
-      accidentsDeaths: apiResponse.accidentsDeaths || 0,
-    },
     expenses: apiResponse.yearlyExpenses as {
       amount: number;
       purpose: SiteYearlyExpensePurpose;
@@ -37,15 +31,43 @@ const mapApiSiteFeaturesResponseToFeaturesView = (
     }[],
     surfaceArea: apiResponse.surfaceArea,
     soilsDistribution: apiResponse.soilsDistribution,
-    contaminatedSurfaceArea: apiResponse.contaminatedSoilSurface,
-    fricheActivity: apiResponse.fricheActivity as FricheActivity | undefined,
-    agriculturalOperationActivity: apiResponse.agriculturalOperationActivity as
-      | AgriculturalOperationActivity
-      | undefined,
-    naturalAreaType: apiResponse.naturalAreaType as NaturalAreaType | undefined,
     name: apiResponse.name,
     description: apiResponse.description || "",
   };
+
+  switch (apiResponse.nature) {
+    case "FRICHE":
+      return {
+        ...baseSiteFeatures,
+        nature: "FRICHE",
+        contaminatedSurfaceArea: apiResponse.contaminatedSoilSurface,
+        accidents: {
+          minorInjuries: apiResponse.accidentsMinorInjuries || 0,
+          severeInjuries: apiResponse.accidentsSevereInjuries || 0,
+          accidentsDeaths: apiResponse.accidentsDeaths || 0,
+        },
+        fricheActivity: apiResponse.fricheActivity as FricheActivity | undefined,
+      };
+    case "AGRICULTURAL_OPERATION":
+      return {
+        ...baseSiteFeatures,
+        nature: "AGRICULTURAL_OPERATION",
+        agriculturalOperationActivity:
+          apiResponse.agriculturalOperationActivity as AgriculturalOperationActivity,
+      };
+    case "NATURAL_AREA":
+      return {
+        ...baseSiteFeatures,
+        nature: "NATURAL_AREA",
+        naturalAreaType: apiResponse.naturalAreaType as NaturalAreaType,
+      };
+    case "URBAN_ZONE":
+      return {
+        ...baseSiteFeatures,
+        nature: "URBAN_ZONE",
+        contaminatedSurfaceArea: apiResponse.contaminatedSoilSurface,
+      };
+  }
 };
 
 export class HttpSiteService implements SiteGateway {

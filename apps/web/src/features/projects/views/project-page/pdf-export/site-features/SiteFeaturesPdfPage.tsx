@@ -196,7 +196,7 @@ export default function SiteFeaturesPdfPage({ siteFeatures }: Props) {
           </>
         </FeaturesSection>
         <FeaturesSection title="✍️ Dénomination">
-          {siteFeatures.fricheActivity ? (
+          {siteFeatures.nature === "FRICHE" && siteFeatures.fricheActivity ? (
             <DataLine
               label="Type de friche"
               labelClassName="font-bold"

@@ -212,7 +212,7 @@ export default function IntroModalFirstStepContent({
       >
         <SiteFeaturesList
           withExpressDisclaimer={false}
-          {...formatSiteDataAsFeatures(comparisonSiteData)}
+          siteFeatures={formatSiteDataAsFeatures(comparisonSiteData)}
         />
       </IntroModalAccordion>
     </>

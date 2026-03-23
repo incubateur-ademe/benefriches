@@ -4,7 +4,7 @@ import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import { fetchSiteView } from "../fetchSiteView.action";
 import type { SiteGateway } from "../gateways/SiteGateway";
-import type { SiteFeatures, SiteView } from "../site.types";
+import type { SiteView } from "../site.types";
 import { selectSitePageViewModel } from "../siteView.reducer";
 
 const createMockSiteView = (overrides: Partial<SiteView> = {}): SiteView => ({
@@ -29,10 +29,10 @@ const createMockSiteView = (overrides: Partial<SiteView> = {}): SiteView => ({
 });
 
 class InMemorySiteServiceWithError implements SiteGateway {
-  getSiteFeatures(): Promise<SiteFeatures> {
+  getSiteFeatures(): Promise<never> {
     return Promise.reject(new Error("Service error"));
   }
-  getSiteView(): Promise<SiteView> {
+  getSiteView(): Promise<never> {
     return Promise.reject(new Error("Service error"));
   }
 }

@@ -703,7 +703,7 @@ describe("Sites controller", () => {
         id: siteId,
         created_by: user.id,
         name: "Viticulture Amiens",
-        nature: "AGRICULTURAL_OPERATIONS",
+        nature: "AGRICULTURAL_OPERATION",
         agricultural_operation_activity: "CATTLE_FARMING",
         description: "Description of site",
         surface_area: 14000,
@@ -760,7 +760,7 @@ describe("Sites controller", () => {
       expect(response.body).toEqual({
         id: siteId,
         name: "Viticulture Amiens",
-        nature: "AGRICULTURAL_OPERATIONS",
+        nature: "AGRICULTURAL_OPERATION",
         agriculturalOperationActivity: "CATTLE_FARMING",
         isExpressSite: false,
         surfaceArea: 14000,

@@ -124,15 +124,10 @@ export class SqlSitesQuery implements SitesQuery {
     const sqlSite = sqlResult?.[0];
     if (!sqlSite) return undefined;
 
-    return {
+    const baseSiteFeatures = {
       id: sqlSite.id,
       name: sqlSite.name,
-      nature: sqlSite.nature as SiteNature,
       isExpressSite: sqlSite.creation_mode === "express",
-      description: sqlSite.description ?? undefined,
-      fricheActivity: sqlSite.friche_activity ?? undefined,
-      agriculturalOperationActivity: sqlSite.agricultural_operation_activity ?? undefined,
-      naturalAreaType: sqlSite.natural_area_type ?? undefined,
       owner: {
         name: sqlSite.owner_name ?? undefined,
         structureType: sqlSite.owner_structure_type,
@@ -140,8 +135,6 @@ export class SqlSitesQuery implements SitesQuery {
       tenant: sqlSite.tenant_structure_type
         ? { name: sqlSite.tenant_name ?? undefined, structureType: sqlSite.tenant_structure_type }
         : undefined,
-      hasContaminatedSoils: sqlSite.friche_has_contaminated_soils ?? undefined,
-      contaminatedSoilSurface: sqlSite.friche_contaminated_soil_surface_area ?? undefined,
       surfaceArea: sqlSite.surface_area,
       address: {
         banId: sqlSite.address_ban_id ?? undefined,
@@ -163,12 +156,52 @@ export class SqlSitesQuery implements SitesQuery {
         },
         {},
       ),
-      accidentsMinorInjuries: sqlSite.friche_accidents_minor_injuries ?? undefined,
-      accidentsSevereInjuries: sqlSite.friche_accidents_severe_injuries ?? undefined,
-      accidentsDeaths: sqlSite.friche_accidents_deaths ?? undefined,
       yearlyExpenses: sqlSite.yearly_expenses ?? [],
       yearlyIncomes: sqlSite.yearly_incomes ?? [],
     };
+
+    switch (sqlSite.nature as SiteNature) {
+      case "FRICHE":
+        return {
+          ...baseSiteFeatures,
+          nature: "FRICHE",
+          description: sqlSite.description ?? undefined,
+          hasContaminatedSoils: sqlSite.friche_has_contaminated_soils ?? undefined,
+          contaminatedSoilSurface: sqlSite.friche_contaminated_soil_surface_area ?? undefined,
+          fricheActivity: sqlSite.friche_activity ?? undefined,
+          accidentsMinorInjuries: sqlSite.friche_accidents_minor_injuries ?? undefined,
+          accidentsSevereInjuries: sqlSite.friche_accidents_severe_injuries ?? undefined,
+          accidentsDeaths: sqlSite.friche_accidents_deaths ?? undefined,
+        };
+      case "AGRICULTURAL_OPERATION":
+        if (!sqlSite.agricultural_operation_activity) {
+          throw new Error("Missing agricultural operation activity for agricultural site");
+        }
+        return {
+          ...baseSiteFeatures,
+          nature: "AGRICULTURAL_OPERATION",
+          description: sqlSite.description ?? undefined,
+          agriculturalOperationActivity: sqlSite.agricultural_operation_activity,
+        };
+      case "NATURAL_AREA":
+        if (!sqlSite.natural_area_type) {
+          throw new Error("Missing natural area type for natural area site");
+        }
+        return {
+          ...baseSiteFeatures,
+          nature: "NATURAL_AREA",
+          description: sqlSite.description ?? undefined,
+          naturalAreaType: sqlSite.natural_area_type,
+        };
+      case "URBAN_ZONE":
+        return {
+          ...baseSiteFeatures,
+          nature: "URBAN_ZONE",
+          description: sqlSite.description ?? undefined,
+          urbanZoneType: "MIXED_URBAN_ZONE",
+          landParcels: [],
+        };
+    }
   }
 
   async getViewById(siteId: string): Promise<SiteView | undefined> {
