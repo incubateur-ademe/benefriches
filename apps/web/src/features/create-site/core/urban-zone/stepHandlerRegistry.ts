@@ -33,7 +33,7 @@ type AnswerStepHandlerMap = {
   [K in SchematizedAnswerStepId]: AnswerStepHandler<K>;
 };
 
-export const answerStepHandlers: Partial<AnswerStepHandlerMap> = {
+export const answerStepHandlers: AnswerStepHandlerMap = {
   URBAN_ZONE_LAND_PARCELS_SELECTION: LandParcelsSelectionHandler,
   URBAN_ZONE_LAND_PARCELS_SURFACE_DISTRIBUTION: LandParcelsSurfaceDistributionHandler,
   // Per-parcel soils distribution
@@ -73,8 +73,9 @@ export const answerStepHandlers: Partial<AnswerStepHandlerMap> = {
 };
 
 // General-purpose registry for navigation and info step lookups.
-export type UrbanZoneStepHandlerRegistry = Partial<
-  Record<UrbanZoneSiteCreationStep, InfoStepHandler | AnswerStepHandler<SchematizedAnswerStepId>>
+export type UrbanZoneStepHandlerRegistry = Record<
+  UrbanZoneSiteCreationStep,
+  InfoStepHandler | AnswerStepHandler<SchematizedAnswerStepId>
 >;
 
 export const urbanZoneStepHandlerRegistry: UrbanZoneStepHandlerRegistry = {
