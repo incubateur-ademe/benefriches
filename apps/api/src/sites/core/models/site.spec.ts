@@ -6,7 +6,10 @@ import {
   CreateAgriculturalOrNaturalSiteProps,
   createFriche,
   CreateFricheProps,
+  createUrbanZoneSite,
+  CreateUrbanZoneSiteProps,
   Friche,
+  UrbanZoneSite,
 } from "./site";
 
 describe("Site core logic", () => {
@@ -27,11 +30,11 @@ describe("Site core logic", () => {
         long: 2.3522,
       },
       yearlyExpenses: [],
-      soilsDistribution: createSoilSurfaceAreaDistribution({
+      soilsDistribution: {
         BUILDINGS: 150,
         ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 400,
         MINERAL_SOIL: 250,
-      }),
+      },
     };
     it("cannot create a friche with an invalid friche activity", () => {
       const result = createFriche({
@@ -47,7 +50,7 @@ describe("Site core logic", () => {
     it("cannot create a friche with empty soils distribution", () => {
       const result = createFriche({
         ...minimalProps,
-        soilsDistribution: createSoilSurfaceAreaDistribution({}),
+        soilsDistribution: {},
       });
       expect(result.success).toBe(false);
       const errorResult = result as FricheErrorResult;
@@ -64,10 +67,10 @@ describe("Site core logic", () => {
     });
 
     it("should set surface area from soils distribution", () => {
-      const soilsDistribution = createSoilSurfaceAreaDistribution({
+      const soilsDistribution = {
         BUILDINGS: 1200,
         ARTIFICIAL_TREE_FILLED: 10000,
-      });
+      };
       const result = createFriche({ ...minimalProps, soilsDistribution }) as FricheSuccessResult;
       expect(result.success).toBe(true);
       expect(result.site.surfaceArea).toBe(11200);
@@ -129,7 +132,7 @@ describe("Site core logic", () => {
           structureType: "department",
           name: "Le département Paris",
         },
-        soilsDistribution: createSoilSurfaceAreaDistribution({ ARTIFICIAL_TREE_FILLED: 14000 }),
+        soilsDistribution: { ARTIFICIAL_TREE_FILLED: 14000 },
         yearlyExpenses: [{ purpose: "maintenance", bearer: "owner", amount: 150000 }],
         address: {
           city: "Paris",
@@ -216,14 +219,14 @@ describe("Site core logic", () => {
       },
       yearlyExpenses: [],
       yearlyIncomes: [],
-      soilsDistribution: createSoilSurfaceAreaDistribution({}),
+      soilsDistribution: {},
     };
 
     it("should set surface area from soils distribution", () => {
-      const soilsDistribution = createSoilSurfaceAreaDistribution({
+      const soilsDistribution = {
         BUILDINGS: 1200,
         ARTIFICIAL_TREE_FILLED: 10000,
-      });
+      };
       const result = createAgriculturalOrNaturalSite({
         ...minimalProps,
         soilsDistribution,
@@ -283,7 +286,7 @@ describe("Site core logic", () => {
           structureType: "department",
           name: "Le département Nord",
         },
-        soilsDistribution: createSoilSurfaceAreaDistribution({ PRAIRIE_BUSHES: 14000 }),
+        soilsDistribution: { PRAIRIE_BUSHES: 14000 },
         yearlyExpenses: [{ purpose: "maintenance", bearer: "owner", amount: 150000 }],
         yearlyIncomes: [{ source: "other", amount: 10000 }],
         address: {
@@ -332,6 +335,141 @@ describe("Site core logic", () => {
           structureType: "company",
           name: "Tenant SARL",
         },
+      });
+    });
+  });
+
+  describe("createUrbanZoneSite", () => {
+    type UrbanZoneSuccessResult = Extract<
+      ReturnType<typeof createUrbanZoneSite>,
+      { success: true }
+    >;
+    type UrbanZoneErrorResult = Extract<ReturnType<typeof createUrbanZoneSite>, { success: false }>;
+
+    const minimalProps: CreateUrbanZoneSiteProps = {
+      id: "e869d8db-3d63-4fd5-93ab-7728c1c19a1e",
+      name: "Urban zone test",
+      address: {
+        city: "Lyon",
+        cityCode: "69123",
+        postCode: "69001",
+        value: "Lyon",
+        banId: "abc123",
+        lat: 45.764,
+        long: 4.8357,
+      },
+      yearlyExpenses: [],
+      yearlyIncomes: [],
+      urbanZoneType: "ECONOMIC_ACTIVITY_ZONE",
+      manager: { structureType: "activity_park_manager", name: "Gestionnaire ZAE" },
+      vacantCommercialPremisesFootprint: 0,
+      landParcels: [
+        {
+          type: "COMMERCIAL_ACTIVITY_AREA",
+          surfaceArea: 5000,
+          soilsDistribution: { BUILDINGS: 3000, IMPERMEABLE_SOILS: 2000 },
+        },
+        {
+          type: "PUBLIC_SPACES",
+          surfaceArea: 2000,
+          soilsDistribution: { MINERAL_SOIL: 1000, ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 1000 },
+        },
+      ],
+    };
+
+    it("creates urban zone site with minimal data", () => {
+      const result = createUrbanZoneSite(minimalProps) as UrbanZoneSuccessResult;
+      expect(result.success).toBe(true);
+      expect(result.site.nature).toBe("URBAN_ZONE");
+      expect(result.site.urbanZoneType).toBe("ECONOMIC_ACTIVITY_ZONE");
+      expect(result.site.landParcels).toHaveLength(2);
+      expect(result.site.soilsDistribution).toEqual(
+        createSoilSurfaceAreaDistribution({
+          BUILDINGS: 3000,
+          IMPERMEABLE_SOILS: 2000,
+          MINERAL_SOIL: 1000,
+          ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 1000,
+        }),
+      );
+      expect(result.site.surfaceArea).toBe(7000);
+    });
+
+    it("cannot create urban zone site with non-uuid id", () => {
+      const result = createUrbanZoneSite({
+        ...minimalProps,
+        id: "not-a-uuid",
+      }) as UrbanZoneErrorResult;
+      expect(result.success).toBe(false);
+      expect(result.error.fieldErrors.id).toHaveLength(1);
+    });
+
+    it("cannot create urban zone site with empty land parcels", () => {
+      const result = createUrbanZoneSite({
+        ...minimalProps,
+        landParcels: [],
+      }) as UrbanZoneErrorResult;
+      expect(result.success).toBe(false);
+      expect(result.error.fieldErrors.landParcels).toHaveLength(1);
+    });
+
+    it("should set default owner when none provided", () => {
+      const result = createUrbanZoneSite({
+        ...minimalProps,
+        owner: undefined,
+      }) as UrbanZoneSuccessResult;
+      expect(result.success).toBe(true);
+      expect(result.site.owner).toEqual({ name: "Propriétaire inconnu", structureType: "unknown" });
+    });
+
+    it("creates urban zone site with complete data", () => {
+      const completeProps: CreateUrbanZoneSiteProps = {
+        ...minimalProps,
+        description: "A complete urban zone",
+        owner: { structureType: "municipality", name: "Mairie de Lyon" },
+        hasContaminatedSoils: true,
+        contaminatedSoilSurface: 500,
+        manager: { structureType: "company", name: "Manager SARL" },
+        vacantCommercialPremisesFootprint: 1000,
+        vacantCommercialPremisesFloorArea: 800,
+        fullTimeJobsEquivalent: 42.5,
+      };
+      const result = createUrbanZoneSite(completeProps) as UrbanZoneSuccessResult;
+      expect(result.success).toBe(true);
+      expect(result.site).toEqual<UrbanZoneSite>({
+        id: "e869d8db-3d63-4fd5-93ab-7728c1c19a1e",
+        name: "Urban zone test",
+        nature: "URBAN_ZONE",
+        description: "A complete urban zone",
+        address: minimalProps.address,
+        soilsDistribution: createSoilSurfaceAreaDistribution({
+          BUILDINGS: 3000,
+          IMPERMEABLE_SOILS: 2000,
+          MINERAL_SOIL: 1000,
+          ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 1000,
+        }),
+        surfaceArea: 7000,
+        owner: { structureType: "municipality", name: "Mairie de Lyon" },
+        yearlyExpenses: [],
+        yearlyIncomes: [],
+        urbanZoneType: "ECONOMIC_ACTIVITY_ZONE",
+        landParcels: [
+          {
+            type: "COMMERCIAL_ACTIVITY_AREA",
+            surfaceArea: 5000,
+            soilsDistribution: { BUILDINGS: 3000, IMPERMEABLE_SOILS: 2000 },
+          },
+          {
+            type: "PUBLIC_SPACES",
+            surfaceArea: 2000,
+            soilsDistribution: { MINERAL_SOIL: 1000, ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 1000 },
+          },
+        ],
+        hasContaminatedSoils: true,
+        contaminatedSoilSurface: 500,
+        manager: { structureType: "company", name: "Manager SARL" },
+        vacantCommercialPremisesFootprint: 1000,
+        vacantCommercialPremisesFloorArea: 800,
+        fullTimeJobsEquivalent: 42.5,
       });
     });
   });

@@ -92,6 +92,20 @@ type SqlSiteIncome = {
   amount: number;
 };
 
+type SqlSiteUrbanZoneFeatures = {
+  id: string;
+  site_id: string;
+  urban_zone_type: string;
+  land_parcels: unknown;
+  has_contaminated_soils: boolean | null;
+  contaminated_soil_surface: number | null;
+  manager_structure_type: string;
+  manager_name: string;
+  vacant_commercial_premises_footprint: number;
+  vacant_commercial_premises_floor_area: number | null;
+  full_time_jobs_equivalent: number | null;
+};
+
 type SqlSiteAction = {
   id: string;
   site_id: string;
@@ -229,6 +243,7 @@ declare module "knex/types/tables" {
     site_soils_distributions: SqlSiteSoilsDistribution;
     site_expenses: SqlSiteExpense;
     site_incomes: SqlSiteIncome;
+    site_urban_zone_features: SqlSiteUrbanZoneFeatures;
     site_actions: SqlSiteAction;
 
     // users

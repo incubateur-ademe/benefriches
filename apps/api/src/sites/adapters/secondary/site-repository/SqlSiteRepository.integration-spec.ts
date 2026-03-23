@@ -1,5 +1,4 @@
 import knex, { Knex } from "knex";
-import { createSoilSurfaceAreaDistribution } from "shared";
 import { v4 as uuid } from "uuid";
 
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
@@ -79,9 +78,9 @@ describe("SqlSiteRepository integration", () => {
       const site: SiteEntity = {
         ...buildAgriculturalOrNaturalSiteEntity({
           name: "Integration test site",
-          soilsDistribution: createSoilSurfaceAreaDistribution({
+          soilsDistribution: {
             PRAIRIE_GRASS: 1000,
-          }),
+          },
           owner: {
             name: "Le département Doubs",
             structureType: "department",
@@ -127,9 +126,9 @@ describe("SqlSiteRepository integration", () => {
       const site: SiteEntity = buildAgriculturalOrNaturalSiteEntity({
         name: "Integration test site",
         description: "Description of site",
-        soilsDistribution: createSoilSurfaceAreaDistribution({
+        soilsDistribution: {
           PRAIRIE_GRASS: 1000,
-        }),
+        },
         owner: {
           name: "Le département Doubs",
           structureType: "department",
@@ -176,11 +175,11 @@ describe("SqlSiteRepository integration", () => {
       const site: SiteEntity = buildFricheEntity({
         name: "Integration test friche",
         description: "Description of friche",
-        soilsDistribution: createSoilSurfaceAreaDistribution({
+        soilsDistribution: {
           BUILDINGS: 1000,
           MINERAL_SOIL: 500,
           ARTIFICIAL_TREE_FILLED: 1500,
-        }),
+        },
         owner: {
           name: "Le département Nord",
           structureType: "department",
@@ -226,13 +225,13 @@ describe("SqlSiteRepository integration", () => {
 
     it("Saves given agricultural operation with minimal data in sites, soils distribution, address tables", async () => {
       const site: SiteEntity = buildAgriculturalOrNaturalSiteEntity({
-        soilsDistribution: createSoilSurfaceAreaDistribution({
+        soilsDistribution: {
           BUILDINGS: 3000,
           ARTIFICIAL_TREE_FILLED: 5000,
           FOREST_MIXED: 60000,
           MINERAL_SOIL: 5000,
           IMPERMEABLE_SOILS: 1300,
-        }),
+        },
       });
 
       await siteRepository.save(site);

@@ -6,6 +6,8 @@ import {
   siteNatureSchema,
   siteYearlyExpenseSchema,
   siteYearlyIncomeSchema,
+  urbanZoneLandParcelSchema,
+  urbanZoneTypeSchema,
 } from "../../site";
 import { soilsDistributionSchema } from "../../soils";
 
@@ -54,10 +56,25 @@ const naturalCustomSiteDtoSchema = baseSchema.extend({
   naturalAreaType: z.enum(["PRAIRIE", "FOREST", "WET_LAND", "MIXED_NATURAL_AREA"]),
 });
 
+const urbanZoneCustomSiteDtoSchema = baseSchema.extend({
+  nature: siteNatureSchema.extract(["URBAN_ZONE"]),
+  // soils distribution is derived from land parcels
+  soilsDistribution: z.never(),
+  urbanZoneType: urbanZoneTypeSchema,
+  landParcels: urbanZoneLandParcelSchema.array().nonempty(),
+  hasContaminatedSoils: z.boolean().optional(),
+  contaminatedSoilSurface: z.number().optional(),
+  manager: z.object({ structureType: z.string(), name: z.string() }),
+  vacantCommercialPremisesFootprint: z.number(),
+  vacantCommercialPremisesFloorArea: z.number().optional(),
+  fullTimeJobsEquivalent: z.number().optional(),
+});
+
 export const createCustomSiteDtoSchema = z.discriminatedUnion("nature", [
   fricheCustomDtoSchema,
   agriculturalCustomSiteDtoSchema,
   naturalCustomSiteDtoSchema,
+  urbanZoneCustomSiteDtoSchema,
 ]);
 
 export type CreateCustomSiteDto = z.infer<typeof createCustomSiteDtoSchema>;

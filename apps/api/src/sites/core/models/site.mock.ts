@@ -1,12 +1,13 @@
-import { createSoilSurfaceAreaDistribution } from "shared";
-
 import {
   AgriculturalOrNaturalSite,
   createAgriculturalOrNaturalSite,
   CreateAgriculturalOrNaturalSiteProps,
   createFriche,
   CreateFricheProps,
+  createUrbanZoneSite,
+  CreateUrbanZoneSiteProps,
   Friche,
+  UrbanZoneSite,
 } from "./site";
 
 export const buildAgriculturalOperationSiteProps = (
@@ -21,11 +22,11 @@ export const buildAgriculturalOperationSiteProps = (
       structureType: "department",
       name: "Le département Paris",
     },
-    soilsDistribution: createSoilSurfaceAreaDistribution({
+    soilsDistribution: {
       ARTIFICIAL_TREE_FILLED: 5000,
       FOREST_MIXED: 60000,
       MINERAL_SOIL: 5000,
-    }),
+    },
     address: {
       city: "Paris",
       cityCode: "75109",
@@ -53,11 +54,11 @@ export const buildFricheProps = (propsOverride?: Partial<CreateFricheProps>): Cr
       structureType: "department",
       name: "Le département Paris",
     },
-    soilsDistribution: createSoilSurfaceAreaDistribution({
+    soilsDistribution: {
       ARTIFICIAL_TREE_FILLED: 5000,
       FOREST_MIXED: 60000,
       MINERAL_SOIL: 5000,
-    }),
+    },
     address: {
       banId: "31070_p4ur8e",
       value: "Sendere 31350 Blajan",
@@ -88,6 +89,57 @@ export const buildAgriculturalOrNaturalSite = (
   );
   if (!result.success) {
     throw new Error("Failed to create agricultural/natural site in mock");
+  }
+  return result.site;
+};
+
+export const buildUrbanZoneSiteProps = (
+  propsOverride?: Partial<CreateUrbanZoneSiteProps>,
+): CreateUrbanZoneSiteProps => {
+  return {
+    id: "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
+    name: "Zone d'activités test",
+    yearlyExpenses: [],
+    yearlyIncomes: [],
+    owner: {
+      structureType: "municipality",
+      name: "Mairie de Lyon",
+    },
+    address: {
+      city: "Lyon",
+      cityCode: "69123",
+      postCode: "69001",
+      banId: "69123_abc",
+      lat: 45.764,
+      long: 4.8357,
+      value: "1 rue de la République, 69001 Lyon",
+      streetName: "rue de la République",
+    },
+    urbanZoneType: "ECONOMIC_ACTIVITY_ZONE",
+    manager: { structureType: "activity_park_manager", name: "Gestionnaire ZAE" },
+    vacantCommercialPremisesFootprint: 1000,
+    landParcels: [
+      {
+        type: "COMMERCIAL_ACTIVITY_AREA",
+        surfaceArea: 5000,
+        soilsDistribution: { BUILDINGS: 3000, MINERAL_SOIL: 1500, IMPERMEABLE_SOILS: 2000 },
+      },
+      {
+        type: "PUBLIC_SPACES",
+        surfaceArea: 2000,
+        soilsDistribution: { MINERAL_SOIL: 1000, ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 1000 },
+      },
+    ],
+    ...propsOverride,
+  };
+};
+
+export const buildUrbanZoneSite = (
+  propsOverride?: Partial<CreateUrbanZoneSiteProps>,
+): UrbanZoneSite => {
+  const result = createUrbanZoneSite(buildUrbanZoneSiteProps(propsOverride));
+  if (!result.success) {
+    throw new Error("Failed to create urban zone site in mock");
   }
   return result.site;
 };

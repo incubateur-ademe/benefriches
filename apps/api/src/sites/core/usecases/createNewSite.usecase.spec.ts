@@ -13,6 +13,8 @@ import {
   buildAgriculturalOperationSiteProps,
   buildFriche,
   buildFricheProps,
+  buildUrbanZoneSite,
+  buildUrbanZoneSiteProps,
 } from "../models/site.mock";
 import { SiteEntity } from "../models/siteEntity";
 import { CreateNewCustomSiteUseCase } from "./createNewSite.usecase";
@@ -271,6 +273,71 @@ describe("CreateNewSite Use Case", () => {
           createdBy: "user-id-123",
         },
       });
+    });
+  });
+
+  describe("Urban zone", () => {
+    it("Can create a new urban zone site", async () => {
+      const urbanZoneProps = buildUrbanZoneSiteProps();
+      const siteProps = { nature: "URBAN_ZONE" as const, ...urbanZoneProps };
+
+      const usecase = new CreateNewCustomSiteUseCase(
+        siteRepository,
+        dateProvider,
+        uuidGenerator,
+        eventPublisher,
+      );
+
+      await usecase.execute({
+        createdBy: "user-id-123",
+        siteProps,
+      });
+
+      const savedSites = siteRepository._getSites();
+
+      expect(savedSites).toEqual<SiteEntity[]>([
+        {
+          ...buildUrbanZoneSite(urbanZoneProps),
+          createdAt: fakeNow,
+          createdBy: "user-id-123",
+          creationMode: "custom",
+          status: "active",
+        },
+      ]);
+
+      // oxlint-disable-next-line no-non-null-assertion
+      const siteId = savedSites[0]!.id;
+      expect(eventPublisher.events).toHaveLength(1);
+      expect(eventPublisher.events[0]).toEqual<SiteCreatedEvent>({
+        id: expect.any(String),
+        name: SITE_CREATED,
+        payload: {
+          siteId,
+          createdBy: "user-id-123",
+        },
+      });
+    });
+
+    it("Cannot create an urban zone site with invalid props", async () => {
+      const urbanZoneProps = buildUrbanZoneSiteProps({ landParcels: [] });
+      const siteProps = { nature: "URBAN_ZONE" as const, ...urbanZoneProps };
+
+      const usecase = new CreateNewCustomSiteUseCase(
+        siteRepository,
+        dateProvider,
+        uuidGenerator,
+        eventPublisher,
+      );
+      const result = await usecase.execute({
+        siteProps,
+        createdBy: "user-123",
+      });
+
+      expect(result.isFailure()).toBe(true);
+      expect((result as FailureResult<"ValidationError", unknown>).getError()).toBe(
+        "ValidationError",
+      );
+      expect(eventPublisher.events).toHaveLength(0);
     });
   });
 });

@@ -2,6 +2,7 @@ import {
   Address,
   addressSchema,
   AgriculturalOperationActivity,
+  createSoilSurfaceAreaDistribution,
   FricheActivity,
   fricheActivitySchema,
   NaturalAreaType,
@@ -11,7 +12,11 @@ import {
   SiteYearlyIncome,
   SoilType,
   SurfaceAreaDistribution,
+  typedObjectEntries,
+  urbanZoneLandParcelSchema,
+  urbanZoneTypeSchema,
 } from "shared";
+import type { SoilsDistribution, UrbanZoneLandParcel, UrbanZoneType } from "shared";
 import { z } from "zod";
 import { $ZodFlattenedError } from "zod/v4/core";
 
@@ -130,7 +135,7 @@ type CreateAgriculturalOrNaturalSiteCommonProps = {
   name: string;
   description?: string;
   address: Address;
-  soilsDistribution: SurfaceAreaDistribution<SoilType>;
+  soilsDistribution: SoilsDistribution;
   owner?: { structureType: string; name: string };
   tenant?: { structureType: string; name: string };
   yearlyExpenses: SiteYearlyExpense[];
@@ -145,7 +150,8 @@ export function createAgriculturalOrNaturalSite(
   props: CreateAgriculturalOrNaturalSiteProps,
 ): AgriculturalOperationCreationResult | NaturalAreaCreationResult {
   const owner = props.owner ?? { name: "Propriétaire inconnu", structureType: "unknown" };
-  const surfaceArea = props.soilsDistribution.getTotalSurfaceArea();
+  const soilsDistribution = createSoilSurfaceAreaDistribution(props.soilsDistribution);
+  const surfaceArea = soilsDistribution.getTotalSurfaceArea();
 
   const candidate = {
     id: props.id,
@@ -153,7 +159,7 @@ export function createAgriculturalOrNaturalSite(
     nature: props.nature,
     description: props.description,
     address: props.address,
-    soilsDistribution: props.soilsDistribution,
+    soilsDistribution,
     owner,
     tenant: props.tenant,
     yearlyExpenses: props.yearlyExpenses,
@@ -202,7 +208,7 @@ export type CreateFricheProps = {
   name: string;
   description?: string;
   address: Address;
-  soilsDistribution: SurfaceAreaDistribution<SoilType>;
+  soilsDistribution: SoilsDistribution;
   owner?: { structureType: string; name: string };
   tenant?: { structureType: string; name: string };
   fricheActivity?: FricheActivity;
@@ -220,7 +226,8 @@ type FricheCreationResult =
 export function createFriche(props: CreateFricheProps): FricheCreationResult {
   const fricheActivity = props.fricheActivity ?? "OTHER";
   const owner = props.owner ?? { name: "Propriétaire inconnu", structureType: "unknown" };
-  const surfaceArea = props.soilsDistribution.getTotalSurfaceArea();
+  const soilsDistribution = createSoilSurfaceAreaDistribution(props.soilsDistribution);
+  const surfaceArea = soilsDistribution.getTotalSurfaceArea();
   const hasContaminatedSoils = !!props.contaminatedSoilSurface;
 
   if (surfaceArea === 0) {
@@ -239,7 +246,7 @@ export function createFriche(props: CreateFricheProps): FricheCreationResult {
     nature: "FRICHE",
     description: props.description,
     address: props.address,
-    soilsDistribution: props.soilsDistribution,
+    soilsDistribution,
     owner,
     tenant: props.tenant,
     yearlyExpenses: props.yearlyExpenses,
@@ -267,4 +274,102 @@ export function createFriche(props: CreateFricheProps): FricheCreationResult {
       };
 }
 
-export type Site = Friche | AgriculturalOperationSite | NaturalAreaSite;
+export interface UrbanZoneSite extends BaseSite {
+  nature: "URBAN_ZONE";
+  urbanZoneType: UrbanZoneType;
+  landParcels: UrbanZoneLandParcel[];
+  hasContaminatedSoils?: boolean;
+  contaminatedSoilSurface?: number;
+  manager: { structureType: string; name: string };
+  vacantCommercialPremisesFootprint: number;
+  vacantCommercialPremisesFloorArea?: number;
+  fullTimeJobsEquivalent?: number;
+}
+
+const urbanZoneSiteSchema = baseSiteSchema.extend({
+  nature: z.literal("URBAN_ZONE"),
+  urbanZoneType: urbanZoneTypeSchema,
+  landParcels: urbanZoneLandParcelSchema.array().nonempty(),
+  hasContaminatedSoils: z.boolean().optional(),
+  contaminatedSoilSurface: z.number().nonnegative().optional(),
+  manager: z.object({ structureType: z.string(), name: z.string() }),
+  vacantCommercialPremisesFootprint: z.number().nonnegative(),
+  vacantCommercialPremisesFloorArea: z.number().nonnegative().optional(),
+  fullTimeJobsEquivalent: z.number().nonnegative().optional(),
+});
+
+export type CreateUrbanZoneSiteProps = {
+  id: string;
+  name: string;
+  description?: string;
+  address: Address;
+  owner?: { structureType: string; name: string };
+  yearlyExpenses: SiteYearlyExpense[];
+  yearlyIncomes: SiteYearlyIncome[];
+  urbanZoneType: UrbanZoneType;
+  landParcels: UrbanZoneLandParcel[];
+  hasContaminatedSoils?: boolean;
+  contaminatedSoilSurface?: number;
+  manager: { structureType: string; name: string };
+  vacantCommercialPremisesFootprint: number;
+  vacantCommercialPremisesFloorArea?: number;
+  fullTimeJobsEquivalent?: number;
+};
+
+type UrbanZoneSiteCreationResult =
+  | { success: true; site: UrbanZoneSite }
+  | { success: false; error: $ZodFlattenedError<z.infer<typeof urbanZoneSiteSchema>> };
+
+function aggregateSoilsFromParcels(
+  landParcels: UrbanZoneLandParcel[],
+): SurfaceAreaDistribution<SoilType> {
+  const aggregated = new SurfaceAreaDistribution<SoilType>();
+  for (const parcel of landParcels) {
+    for (const [soilType, area] of typedObjectEntries(parcel.soilsDistribution)) {
+      aggregated.addSurface(soilType, area ?? 0);
+    }
+  }
+  return aggregated;
+}
+
+export function createUrbanZoneSite(props: CreateUrbanZoneSiteProps): UrbanZoneSiteCreationResult {
+  const owner = props.owner ?? { name: "Propriétaire inconnu", structureType: "unknown" };
+  const soilsDistribution = aggregateSoilsFromParcels(props.landParcels);
+  const surfaceArea = soilsDistribution.getTotalSurfaceArea();
+
+  const candidate = {
+    id: props.id,
+    name: props.name,
+    nature: "URBAN_ZONE",
+    description: props.description,
+    address: props.address,
+    soilsDistribution,
+    owner,
+    yearlyExpenses: props.yearlyExpenses,
+    yearlyIncomes: props.yearlyIncomes ?? [],
+    surfaceArea,
+    urbanZoneType: props.urbanZoneType,
+    landParcels: props.landParcels,
+    hasContaminatedSoils: props.hasContaminatedSoils,
+    contaminatedSoilSurface: props.contaminatedSoilSurface,
+    manager: props.manager,
+    vacantCommercialPremisesFootprint: props.vacantCommercialPremisesFootprint,
+    vacantCommercialPremisesFloorArea: props.vacantCommercialPremisesFloorArea,
+    fullTimeJobsEquivalent: props.fullTimeJobsEquivalent,
+  };
+
+  const result = urbanZoneSiteSchema.safeParse(candidate);
+
+  return result.success
+    ? {
+        success: true,
+        // oxlint-disable-next-line typescript/no-unsafe-type-assertion
+        site: result.data as unknown as UrbanZoneSite,
+      }
+    : {
+        success: false,
+        error: z.flattenError(result.error),
+      };
+}
+
+export type Site = Friche | AgriculturalOperationSite | NaturalAreaSite | UrbanZoneSite;

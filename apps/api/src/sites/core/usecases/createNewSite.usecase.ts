@@ -11,11 +11,16 @@ import {
   CreateAgriculturalOrNaturalSiteProps,
   createFriche,
   CreateFricheProps,
+  createUrbanZoneSite,
+  CreateUrbanZoneSiteProps,
 } from "../models/site";
 import { SiteEntity } from "../models/siteEntity";
 
 type Request = {
-  siteProps: CreateAgriculturalOrNaturalSiteProps | (CreateFricheProps & { nature: "FRICHE" });
+  siteProps:
+    | CreateAgriculturalOrNaturalSiteProps
+    | (CreateFricheProps & { nature: "FRICHE" })
+    | (CreateUrbanZoneSiteProps & { nature: "URBAN_ZONE" });
   createdBy: string;
 };
 
@@ -30,10 +35,16 @@ export class CreateNewCustomSiteUseCase implements UseCase<Request, CreateNewCus
   ) {}
 
   async execute({ siteProps, createdBy }: Request): Promise<CreateNewCustomSiteResult> {
-    const result =
-      siteProps.nature === "FRICHE"
-        ? createFriche(siteProps)
-        : createAgriculturalOrNaturalSite(siteProps);
+    const result = (() => {
+      switch (siteProps.nature) {
+        case "FRICHE":
+          return createFriche(siteProps);
+        case "URBAN_ZONE":
+          return createUrbanZoneSite(siteProps);
+        default:
+          return createAgriculturalOrNaturalSite(siteProps);
+      }
+    })();
 
     if (!result.success) {
       return fail("ValidationError", result.error.fieldErrors);

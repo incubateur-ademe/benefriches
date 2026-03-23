@@ -17,7 +17,6 @@ import {
   type CreateCustomSiteDto,
   createExpressSiteDtoSchema,
   type CreateExpressSiteDto,
-  createSoilSurfaceAreaDistribution,
   type GetSiteFeaturesResponseDto,
   type GetSiteRealEstateValuationResponseDto,
   type GetSiteViewResponseDto,
@@ -49,11 +48,7 @@ export class SitesController {
   async createNewCustomSite(
     @Body(new ZodValidationPipe(createCustomSiteDtoSchema)) createSiteDto: CreateCustomSiteDto,
   ) {
-    const { createdBy, ...jsonSiteProps } = createSiteDto;
-    const siteProps = {
-      ...jsonSiteProps,
-      soilsDistribution: createSoilSurfaceAreaDistribution(jsonSiteProps.soilsDistribution),
-    } as const;
+    const { createdBy, ...siteProps } = createSiteDto;
     const result = await this.createNewSiteUseCase.execute({ siteProps, createdBy });
 
     if (result.isFailure()) {

@@ -3,7 +3,6 @@ import {
   computeIllegalDumpingDefaultCost,
   computeMaintenanceDefaultCost,
   computeSecurityDefaultCost,
-  createSoilSurfaceAreaDistribution,
   FricheActivity,
   formatMunicipalityName,
   generateSiteName,
@@ -85,7 +84,7 @@ export class FricheGenerator implements SiteGenerator<FricheGenerationProps> {
     const result = createFriche({
       id,
       address,
-      soilsDistribution: createSoilSurfaceAreaDistribution(soilsDistribution),
+      soilsDistribution,
       contaminatedSoilSurface,
       owner: {
         structureType: "municipality",

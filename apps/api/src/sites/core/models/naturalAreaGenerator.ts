@@ -1,5 +1,4 @@
 import {
-  createSoilSurfaceAreaDistribution,
   formatMunicipalityName,
   generateSiteName,
   getLabelForNaturalAreaType,
@@ -25,7 +24,7 @@ export class NaturalAreaGenerator implements SiteGenerator<NaturalAreaGeneration
       address,
       nature: "NATURAL_AREA",
       naturalAreaType,
-      soilsDistribution: createSoilSurfaceAreaDistribution(soilsDistribution),
+      soilsDistribution,
       owner: {
         structureType: "municipality",
         name: formatMunicipalityName(address.city),

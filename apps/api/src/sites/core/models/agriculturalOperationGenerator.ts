@@ -2,7 +2,6 @@ import {
   AgriculturalOperationActivity,
   computeAgriculturalOperationYearlyExpenses,
   computeAgriculturalOperationYearlyIncomes,
-  createSoilSurfaceAreaDistribution,
   formatMunicipalityName,
   generateSiteName,
   getLabelForAgriculturalOperationActivity,
@@ -33,7 +32,7 @@ export class AgriculturalOperationGenerator implements SiteGenerator<Agricultura
       nature: "AGRICULTURAL_OPERATION",
       agriculturalOperationActivity: operationActivity,
       isSiteOperated: true,
-      soilsDistribution: createSoilSurfaceAreaDistribution(soilsDistribution),
+      soilsDistribution,
       owner: {
         structureType: "municipality",
         name: formatMunicipalityName(address.city),

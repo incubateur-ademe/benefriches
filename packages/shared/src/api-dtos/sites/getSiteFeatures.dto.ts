@@ -1,6 +1,6 @@
 import z from "zod";
 
-import { addressSchema, siteNatureSchema } from "../../site";
+import { addressSchema, siteNatureSchema, urbanZoneLandParcelSchema } from "../../site";
 import { soilsDistributionSchema } from "../../soils";
 
 export const getSiteFeaturesResponseDtoSchema = z.object({
@@ -46,6 +46,12 @@ export const getSiteFeaturesResponseDtoSchema = z.object({
   agriculturalOperationActivity: z.string().optional(),
   naturalAreaType: z.string().optional(),
   description: z.string().optional(),
+  urbanZoneType: z.string().optional(),
+  landParcels: urbanZoneLandParcelSchema.array().optional(),
+  manager: z.object({ structureType: z.string(), name: z.string() }).optional(),
+  vacantCommercialPremisesFootprint: z.number().optional(),
+  vacantCommercialPremisesFloorArea: z.number().optional(),
+  fullTimeJobsEquivalent: z.number().optional(),
 });
 
 export type GetSiteFeaturesResponseDto = z.infer<typeof getSiteFeaturesResponseDtoSchema>;
