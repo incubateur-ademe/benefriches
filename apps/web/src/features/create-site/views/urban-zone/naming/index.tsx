@@ -4,7 +4,7 @@ import {
   previousStepRequested,
   stepCompletionRequested,
 } from "@/features/create-site/core/urban-zone/urban-zone.actions";
-import SiteNameAndDescriptionForm from "@/features/create-site/views/custom/naming/SiteNameAndDescription";
+import SiteNameAndDescriptionForm from "@/features/create-site/views/common-views/naming/SiteNameAndDescription";
 
 function UrbanZoneNamingContainer() {
   const dispatch = useAppDispatch();

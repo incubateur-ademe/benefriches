@@ -15,15 +15,15 @@ import NavigationBlockerDialog from "./NavigationBlockerDialog";
 import CreateModeSelectionForm from "./create-mode-selection";
 import SiteCreationCustomStepContent from "./custom/StepContent";
 import SiteCreationCustomStepper from "./custom/Stepper";
-import SiteCreationExpressStepContent from "./express/StepContent";
-import SiteCreationExpressStepper from "./express/Stepper";
+import SiteCreationExpressStepContent from "./demo/StepContent";
+import SiteCreationExpressStepper from "./demo/Stepper";
+import UseMutabilityForm from "./friche/use-mutability";
 import SiteCreationIntroduction from "./introduction";
 import IsFricheForm from "./is-friche";
 import SiteNatureForm from "./site-nature";
 import UrbanZoneTypeForm from "./urban-zone-type";
 import SiteCreationUrbanZoneStepContent from "./urban-zone/StepContent";
 import UrbanZoneStepper from "./urban-zone/UrbanZoneStepper";
-import UseMutabilityForm from "./use-mutability";
 import { useSyncCreationStepWithRouteQuery } from "./useSyncCreationStepWithRouteQuery";
 
 export const HTML_MAIN_TITLE = "Renseignement du site";

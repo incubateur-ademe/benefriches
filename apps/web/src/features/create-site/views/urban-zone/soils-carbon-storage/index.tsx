@@ -4,7 +4,7 @@ import {
   nextStepRequested,
   previousStepRequested,
 } from "@/features/create-site/core/urban-zone/urban-zone.actions";
-import SiteSoilsCarbonStorage from "@/features/create-site/views/custom/spaces-and-soils/soils-carbon-storage/SiteSoilsCarbonStorage";
+import SiteSoilsCarbonStorage from "@/features/create-site/views/common-views/spaces-and-soils/soils-carbon-storage/SiteSoilsCarbonStorage";
 
 function UrbanZoneSoilsCarbonStorageContainer() {
   const dispatch = useAppDispatch();
