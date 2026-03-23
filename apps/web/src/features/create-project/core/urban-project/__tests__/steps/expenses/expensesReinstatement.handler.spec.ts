@@ -6,19 +6,14 @@ import { UrbanProjectReinstatementExpensesHandler } from "@/shared/core/reducers
 describe("UrbanProjectReinstatementExpensesHandler", () => {
   describe("getNextStepId", () => {
     it("should return URBAN_PROJECT_EXPENSES_INSTALLATION", () => {
-      const nextStep = UrbanProjectReinstatementExpensesHandler.getNextStepId({
-        stepsState: {},
-      });
-
+      const nextStep = UrbanProjectReinstatementExpensesHandler.getNextStepId();
       expect(nextStep).toBe("URBAN_PROJECT_EXPENSES_INSTALLATION");
     });
   });
 
   describe("getPreviousStepId", () => {
     it("should return URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS", () => {
-      const previousStep = UrbanProjectReinstatementExpensesHandler.getPreviousStepId!({
-        stepsState: {},
-      });
+      const previousStep = UrbanProjectReinstatementExpensesHandler.getPreviousStepId();
 
       expect(previousStep).toBe("URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS");
     });
@@ -60,7 +55,7 @@ describe("UrbanProjectReinstatementExpensesHandler", () => {
         },
       };
 
-      const defaultAnswers = UrbanProjectReinstatementExpensesHandler.getDefaultAnswers!({
+      const defaultAnswers = UrbanProjectReinstatementExpensesHandler.getDefaultAnswers({
         stepsState,
         siteData,
       });
@@ -79,7 +74,7 @@ describe("UrbanProjectReinstatementExpensesHandler", () => {
     });
 
     it("should return default values with zero amounts when no soils distribution", () => {
-      const defaultAnswers = UrbanProjectReinstatementExpensesHandler.getDefaultAnswers!({
+      const defaultAnswers = UrbanProjectReinstatementExpensesHandler.getDefaultAnswers({
         stepsState: {},
         siteData: {
           id: "test-site",

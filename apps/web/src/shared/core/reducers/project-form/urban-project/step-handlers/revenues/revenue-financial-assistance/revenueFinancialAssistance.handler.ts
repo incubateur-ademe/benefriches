@@ -1,27 +1,30 @@
-import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
+import {
+  willHaveBuildings,
+  hasBuildingsResalePlannedAfterDevelopment,
+} from "@/shared/core/reducers/project-form/urban-project/helpers/readers/buildingsReaders";
+import { isSiteResalePlannedAfterDevelopment } from "@/shared/core/reducers/project-form/urban-project/helpers/readers/siteResaleReaders";
 
-import { AnswerStepHandler } from "../../stepHandler.type";
+import type { AnswerStepHandler } from "../../stepHandler.type";
 
-export const RevenueFinancialAssistanceHandler: AnswerStepHandler<"URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE"> =
-  {
-    stepId: "URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE",
+export const RevenueFinancialAssistanceHandler = {
+  stepId: "URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE",
 
-    getPreviousStepId(context) {
-      if (ReadStateHelper.willHaveBuildings(context.stepsState)) {
-        if (ReadStateHelper.hasBuildingsResalePlannedAfterDevelopment(context.stepsState)) {
-          return "URBAN_PROJECT_REVENUE_BUILDINGS_RESALE";
-        }
-        return "URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES";
+  getPreviousStepId(context) {
+    if (willHaveBuildings(context.stepsState)) {
+      if (hasBuildingsResalePlannedAfterDevelopment(context.stepsState)) {
+        return "URBAN_PROJECT_REVENUE_BUILDINGS_RESALE";
       }
+      return "URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES";
+    }
 
-      if (ReadStateHelper.isSiteResalePlannedAfterDevelopment(context.stepsState)) {
-        return "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE";
-      }
+    if (isSiteResalePlannedAfterDevelopment(context.stepsState)) {
+      return "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE";
+    }
 
-      return "URBAN_PROJECT_REVENUE_INTRODUCTION";
-    },
+    return "URBAN_PROJECT_REVENUE_INTRODUCTION";
+  },
 
-    getNextStepId() {
-      return "URBAN_PROJECT_SCHEDULE_PROJECTION";
-    },
-  };
+  getNextStepId() {
+    return "URBAN_PROJECT_SCHEDULE_PROJECTION";
+  },
+} satisfies AnswerStepHandler<"URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE">;

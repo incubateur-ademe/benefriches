@@ -1,3 +1,4 @@
+import type { AnswerStepId, UrbanProjectCreationStep } from "../urbanProjectSteps";
 import { BuildingsIntroductionHandler } from "./buildings/buildings-introduction/buildingsIntroduction.handler";
 import { BuildingsUsesFloorSurfaceAreaHandler } from "./buildings/buildings-uses-floor-surface-area/buildingsUsesFloorSurfaceArea.handler";
 import { CreationModeSelectionHandler } from "./creation-mode/creation-mode-selection/creationModeSelection.handler";
@@ -34,41 +35,34 @@ import { SpacesSurfaceAreaHandler } from "./spaces/spaces-surface-area/spacesSur
 import { StakeholdersIntroductionHandler } from "./stakeholders/stakeholders-introduction/stakeholdersIntroduction.handler";
 import { StakeholdersProjectDeveloperHandler } from "./stakeholders/stakeholders-project-developer/stakeholdersProjectDeveloper.handler";
 import { StakeholdersReinstatementContractOwnerHandler } from "./stakeholders/stakeholders-reinstatement-contract-owner/stakeholdersReinstatementContractOwner.handler";
+import type { AnswerStepHandler, InfoStepHandler } from "./stepHandler.type";
 import { FinalSummaryHandler } from "./summary/final-summary/finalSummary.handler";
 import { UsesIntroductionHandler } from "./uses/introduction/usesIntroduction.handler";
 import { PublicGreenSpacesSurfaceAreaHandler } from "./uses/public-green-spaces-surface-area/publicGreenSpacesSurfaceArea.handler";
 import { UsesSelectionHandler } from "./uses/selection/usesSelection.handler";
 
-export const stepHandlerRegistry = {
+// Correlated mapped type: lookup with generic T yields AnswerStepHandler<T>
+type AnswerStepHandlerMap = {
+  [K in AnswerStepId]: AnswerStepHandler<K>;
+};
+
+export const answerStepHandlers: AnswerStepHandlerMap = {
   URBAN_PROJECT_CREATE_MODE_SELECTION: CreationModeSelectionHandler,
   // express
   URBAN_PROJECT_EXPRESS_TEMPLATE_SELECTION: ExpressTemplateSelectionHandler,
-  URBAN_PROJECT_EXPRESS_SUMMARY: ExpressSummaryHandler,
-  URBAN_PROJECT_EXPRESS_CREATION_RESULT: ExpressCreationResultHandler,
   // custom - uses
-  URBAN_PROJECT_USES_INTRODUCTION: UsesIntroductionHandler,
   URBAN_PROJECT_USES_SELECTION: UsesSelectionHandler,
   URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA: PublicGreenSpacesSurfaceAreaHandler,
   // custom - new spaces flow (uses flow)
-  URBAN_PROJECT_SPACES_INTRODUCTION: SpacesIntroductionHandler,
-  URBAN_PROJECT_PUBLIC_GREEN_SPACES_INTRODUCTION: PublicGreenSpacesIntroductionHandler,
   URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION: PublicGreenSpacesSoilsDistributionHandler,
   URBAN_PROJECT_SPACES_SELECTION: SpacesSelectionHandler,
   URBAN_PROJECT_SPACES_SURFACE_AREA: SpacesSurfaceAreaHandler,
-  URBAN_PROJECT_SPACES_SOILS_SUMMARY: SoilsSummaryHandler,
-  URBAN_PROJECT_SOILS_CARBON_SUMMARY: SoilsCarbonSummaryHandler,
   // custom - buildings
-  URBAN_PROJECT_BUILDINGS_INTRODUCTION: BuildingsIntroductionHandler,
   URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA: BuildingsUsesFloorSurfaceAreaHandler,
   // custom - decontamination
-  URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION: SoilsDecontaminationIntroductionHandler,
   URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION: SoilsDecontaminationSelectionHandler,
   URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA: SoilsDecontaminationSurfaceAreaHandler,
   // stakeholders and site/buildings resale
-  URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION: StakeholdersIntroductionHandler,
-  URBAN_PROJECT_SITE_RESALE_INTRODUCTION: SiteResaleIntroductionHandler,
-  URBAN_PROJECT_EXPENSES_INTRODUCTION: ExpensesIntroductionHandler,
-  URBAN_PROJECT_REVENUE_INTRODUCTION: RevenueIntroductionHandler,
   URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER: StakeholdersProjectDeveloperHandler,
   URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER:
     StakeholdersReinstatementContractOwnerHandler,
@@ -90,7 +84,33 @@ export const stepHandlerRegistry = {
   URBAN_PROJECT_SCHEDULE_PROJECTION: UrbanProjectScheduleProjectionHandler,
   URBAN_PROJECT_PROJECT_PHASE: ProjectPhaseHandler,
   URBAN_PROJECT_NAMING: UrbanProjectNamingHandler,
+};
 
+// Combined registry for navigation (step sequence walk, back navigation)
+export const stepHandlerRegistry: Record<
+  UrbanProjectCreationStep,
+  InfoStepHandler | AnswerStepHandler<AnswerStepId>
+> = {
+  ...answerStepHandlers,
+  // express
+  URBAN_PROJECT_EXPRESS_SUMMARY: ExpressSummaryHandler,
+  URBAN_PROJECT_EXPRESS_CREATION_RESULT: ExpressCreationResultHandler,
+  // custom - uses
+  URBAN_PROJECT_USES_INTRODUCTION: UsesIntroductionHandler,
+  // custom - new spaces flow (uses flow)
+  URBAN_PROJECT_SPACES_INTRODUCTION: SpacesIntroductionHandler,
+  URBAN_PROJECT_PUBLIC_GREEN_SPACES_INTRODUCTION: PublicGreenSpacesIntroductionHandler,
+  URBAN_PROJECT_SPACES_SOILS_SUMMARY: SoilsSummaryHandler,
+  URBAN_PROJECT_SOILS_CARBON_SUMMARY: SoilsCarbonSummaryHandler,
+  // custom - buildings
+  URBAN_PROJECT_BUILDINGS_INTRODUCTION: BuildingsIntroductionHandler,
+  // custom - decontamination
+  URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION: SoilsDecontaminationIntroductionHandler,
+  // stakeholders and site/buildings resale
+  URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION: StakeholdersIntroductionHandler,
+  URBAN_PROJECT_SITE_RESALE_INTRODUCTION: SiteResaleIntroductionHandler,
+  URBAN_PROJECT_EXPENSES_INTRODUCTION: ExpensesIntroductionHandler,
+  URBAN_PROJECT_REVENUE_INTRODUCTION: RevenueIntroductionHandler,
   URBAN_PROJECT_FINAL_SUMMARY: FinalSummaryHandler,
   URBAN_PROJECT_CREATION_RESULT: CreationResultHandler,
-} as const;
+};

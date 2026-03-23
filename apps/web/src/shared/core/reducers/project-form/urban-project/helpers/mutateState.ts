@@ -1,4 +1,5 @@
 import { ProjectFormState } from "../../projectForm.reducer";
+import type { StepCompletionPayload } from "../urbanProject.actions";
 import { AnswersByStep, AnswerStepId, UrbanProjectCreationStep } from "../urbanProjectSteps";
 
 export const MutateStateHelper = {
@@ -60,5 +61,11 @@ export const MutateStateHelper = {
       return;
     }
     state.urbanProject.steps[stepId] = undefined;
+  },
+
+  completeStepFromPayload(state: ProjectFormState, payload: StepCompletionPayload) {
+    const step = this.ensureStepExists(state, payload.stepId, true);
+    step.completed = true;
+    step.payload = payload.answers;
   },
 };

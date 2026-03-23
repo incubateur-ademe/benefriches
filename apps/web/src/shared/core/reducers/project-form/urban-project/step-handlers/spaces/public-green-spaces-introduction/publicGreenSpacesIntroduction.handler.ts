@@ -1,6 +1,6 @@
 import type { InfoStepHandler } from "../../stepHandler.type";
 
-export const PublicGreenSpacesIntroductionHandler: InfoStepHandler = {
+export const PublicGreenSpacesIntroductionHandler = {
   stepId: "URBAN_PROJECT_PUBLIC_GREEN_SPACES_INTRODUCTION",
 
   getPreviousStepId() {
@@ -10,4 +10,4 @@ export const PublicGreenSpacesIntroductionHandler: InfoStepHandler = {
   getNextStepId() {
     return "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION";
   },
-};
+} satisfies InfoStepHandler;

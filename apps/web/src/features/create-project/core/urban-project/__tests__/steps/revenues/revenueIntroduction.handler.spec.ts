@@ -13,7 +13,7 @@ describe("RevenueIntroductionHandler", () => {
         },
       };
 
-      const nextStep = RevenueIntroductionHandler.getNextStepId!({ stepsState });
+      const nextStep = RevenueIntroductionHandler.getNextStepId({ stepsState });
 
       expect(nextStep).toBe("URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE");
     });
@@ -36,7 +36,7 @@ describe("RevenueIntroductionHandler", () => {
         },
       };
 
-      const nextStep = RevenueIntroductionHandler.getNextStepId!({ stepsState });
+      const nextStep = RevenueIntroductionHandler.getNextStepId({ stepsState });
 
       expect(nextStep).toBe("URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE");
     });
@@ -59,7 +59,7 @@ describe("RevenueIntroductionHandler", () => {
         },
       };
 
-      const nextStep = RevenueIntroductionHandler.getNextStepId!({ stepsState });
+      const nextStep = RevenueIntroductionHandler.getNextStepId({ stepsState });
 
       expect(nextStep).toBe("URBAN_PROJECT_REVENUE_BUILDINGS_RESALE");
     });
@@ -72,7 +72,7 @@ describe("RevenueIntroductionHandler", () => {
         },
       };
 
-      const nextStep = RevenueIntroductionHandler.getNextStepId!({ stepsState });
+      const nextStep = RevenueIntroductionHandler.getNextStepId({ stepsState });
 
       expect(nextStep).toBe("URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE");
     });
@@ -93,7 +93,7 @@ describe("RevenueIntroductionHandler", () => {
         },
       };
 
-      const previousStep = RevenueIntroductionHandler.getPreviousStepId!({ stepsState });
+      const previousStep = RevenueIntroductionHandler.getPreviousStepId({ stepsState });
 
       expect(previousStep).toBe("URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES");
     });
@@ -112,7 +112,7 @@ describe("RevenueIntroductionHandler", () => {
         },
       };
 
-      const previousStep = RevenueIntroductionHandler.getPreviousStepId!({ stepsState });
+      const previousStep = RevenueIntroductionHandler.getPreviousStepId({ stepsState });
 
       expect(previousStep).toBe("URBAN_PROJECT_EXPENSES_INSTALLATION");
     });
@@ -125,13 +125,13 @@ describe("RevenueIntroductionHandler", () => {
         },
       };
 
-      const previousStep = RevenueIntroductionHandler.getPreviousStepId!({ stepsState });
+      const previousStep = RevenueIntroductionHandler.getPreviousStepId({ stepsState });
 
       expect(previousStep).toBe("URBAN_PROJECT_EXPENSES_INSTALLATION");
     });
 
     it("should return URBAN_PROJECT_EXPENSES_INSTALLATION when steps state is empty", () => {
-      const previousStep = RevenueIntroductionHandler.getPreviousStepId!({ stepsState: {} });
+      const previousStep = RevenueIntroductionHandler.getPreviousStepId({ stepsState: {} });
 
       expect(previousStep).toBe("URBAN_PROJECT_EXPENSES_INSTALLATION");
     });

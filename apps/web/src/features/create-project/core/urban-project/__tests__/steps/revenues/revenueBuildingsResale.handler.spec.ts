@@ -6,9 +6,7 @@ import { RevenueBuildingsResaleHandler } from "@/shared/core/reducers/project-fo
 describe("RevenueBuildingsResaleHandler", () => {
   describe("getNextStepId", () => {
     it("should return URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE", () => {
-      const nextStep = RevenueBuildingsResaleHandler.getNextStepId({
-        stepsState: {},
-      });
+      const nextStep = RevenueBuildingsResaleHandler.getNextStepId();
 
       expect(nextStep).toBe("URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE");
     });
@@ -23,7 +21,7 @@ describe("RevenueBuildingsResaleHandler", () => {
         },
       };
 
-      const previousStep = RevenueBuildingsResaleHandler.getPreviousStepId!({
+      const previousStep = RevenueBuildingsResaleHandler.getPreviousStepId({
         stepsState,
       });
 
@@ -38,7 +36,7 @@ describe("RevenueBuildingsResaleHandler", () => {
         },
       };
 
-      const previousStep = RevenueBuildingsResaleHandler.getPreviousStepId!({
+      const previousStep = RevenueBuildingsResaleHandler.getPreviousStepId({
         stepsState,
       });
 
@@ -53,7 +51,7 @@ describe("RevenueBuildingsResaleHandler", () => {
         },
       };
 
-      const previousStep = RevenueBuildingsResaleHandler.getPreviousStepId!({
+      const previousStep = RevenueBuildingsResaleHandler.getPreviousStepId({
         stepsState,
       });
 
@@ -61,7 +59,7 @@ describe("RevenueBuildingsResaleHandler", () => {
     });
 
     it("should return URBAN_PROJECT_REVENUE_INTRODUCTION when steps state is empty", () => {
-      const previousStep = RevenueBuildingsResaleHandler.getPreviousStepId!({
+      const previousStep = RevenueBuildingsResaleHandler.getPreviousStepId({
         stepsState: {},
       });
 

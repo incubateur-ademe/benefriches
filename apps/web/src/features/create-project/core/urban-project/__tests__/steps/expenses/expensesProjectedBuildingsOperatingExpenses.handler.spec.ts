@@ -5,9 +5,7 @@ import { ExpensesProjectedBuildingsOperatingExpensesHandler } from "@/shared/cor
 describe("ExpensesProjectedBuildingsOperatingExpensesHandler", () => {
   describe("getNextStepId", () => {
     it("should return URBAN_PROJECT_SCHEDULE_PROJECTION", () => {
-      const nextStep = ExpensesProjectedBuildingsOperatingExpensesHandler.getNextStepId({
-        stepsState: {},
-      });
+      const nextStep = ExpensesProjectedBuildingsOperatingExpensesHandler.getNextStepId();
 
       expect(nextStep).toBe("URBAN_PROJECT_REVENUE_INTRODUCTION");
     });
@@ -15,9 +13,7 @@ describe("ExpensesProjectedBuildingsOperatingExpensesHandler", () => {
 
   describe("getPreviousStepId", () => {
     it("should return URBAN_PROJECT_EXPENSES_INSTALLATION", () => {
-      const previousStep = ExpensesProjectedBuildingsOperatingExpensesHandler.getPreviousStepId!({
-        stepsState: {},
-      });
+      const previousStep = ExpensesProjectedBuildingsOperatingExpensesHandler.getPreviousStepId();
 
       expect(previousStep).toBe("URBAN_PROJECT_EXPENSES_INSTALLATION");
     });

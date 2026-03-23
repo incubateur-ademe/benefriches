@@ -73,9 +73,7 @@ describe("RevenueExpectedSiteResaleHandler", () => {
 
   describe("getPreviousStepId", () => {
     it("should return URBAN_PROJECT_REVENUE_INTRODUCTION", () => {
-      const previousStep = RevenueExpectedSiteResaleHandler.getPreviousStepId!({
-        stepsState: {},
-      });
+      const previousStep = RevenueExpectedSiteResaleHandler.getPreviousStepId();
 
       expect(previousStep).toBe("URBAN_PROJECT_REVENUE_INTRODUCTION");
     });

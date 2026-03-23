@@ -7,7 +7,7 @@ import type { AnswerStepHandler } from "../../stepHandler.type";
 
 const STEP_ID = "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SOILS_DISTRIBUTION";
 
-export const PublicGreenSpacesSoilsDistributionHandler: AnswerStepHandler<typeof STEP_ID> = {
+export const PublicGreenSpacesSoilsDistributionHandler = {
   stepId: STEP_ID,
 
   getPreviousStepId(context) {
@@ -56,4 +56,4 @@ export const PublicGreenSpacesSoilsDistributionHandler: AnswerStepHandler<typeof
 
     return { publicGreenSpacesSoilsDistribution: defaultDistribution };
   },
-};
+} satisfies AnswerStepHandler<typeof STEP_ID>;

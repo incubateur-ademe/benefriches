@@ -1,14 +1,13 @@
-import { AnswerStepHandler } from "../../stepHandler.type";
+import type { AnswerStepHandler } from "../../stepHandler.type";
 
-export const StakeholdersReinstatementContractOwnerHandler: AnswerStepHandler<"URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER"> =
-  {
-    stepId: "URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER",
+export const StakeholdersReinstatementContractOwnerHandler = {
+  stepId: "URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER",
 
-    getPreviousStepId() {
-      return "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER";
-    },
+  getPreviousStepId() {
+    return "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER";
+  },
 
-    getNextStepId() {
-      return "URBAN_PROJECT_EXPENSES_INTRODUCTION";
-    },
-  };
+  getNextStepId() {
+    return "URBAN_PROJECT_EXPENSES_INTRODUCTION";
+  },
+} satisfies AnswerStepHandler<"URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER">;

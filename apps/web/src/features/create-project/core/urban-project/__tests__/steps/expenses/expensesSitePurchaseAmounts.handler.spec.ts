@@ -66,9 +66,7 @@ describe("ExpensesSitePurchaseAmountsHandler", () => {
 
   describe("getPreviousStepId", () => {
     it("should return URBAN_PROJECT_EXPENSES_INTRODUCTION", () => {
-      const previousStep = ExpensesSitePurchaseAmountsHandler.getPreviousStepId!({
-        stepsState: {},
-      });
+      const previousStep = ExpensesSitePurchaseAmountsHandler.getPreviousStepId();
 
       expect(previousStep).toBe("URBAN_PROJECT_EXPENSES_INTRODUCTION");
     });

@@ -4,6 +4,7 @@ import type { Selector } from "@reduxjs/toolkit";
 import type { RootState } from "@/app/store/store";
 import type { ProjectFormState } from "@/shared/core/reducers/project-form/projectForm.reducer";
 import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
+import { shouldSiteResalePriceBeEstimated } from "@/shared/core/reducers/project-form/urban-project/helpers/readers/siteResaleReaders";
 
 type SiteResaleRevenueViewData = {
   shouldSiteResalePriceBeEstimated: boolean;
@@ -27,7 +28,7 @@ export const createSelectSiteResaleRevenueViewData = (
         ReadStateHelper.getDefaultAnswers(steps, "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE");
 
       return {
-        shouldSiteResalePriceBeEstimated: ReadStateHelper.shouldSiteResalePriceBeEstimated(steps),
+        shouldSiteResalePriceBeEstimated: shouldSiteResalePriceBeEstimated(steps),
         estimationFailed: siteResaleEstimationLoadingState === "error",
         initialSellingPrice: revenueAnswers?.siteResaleExpectedSellingPrice,
         initialPropertyTransferDuties: revenueAnswers?.siteResaleExpectedPropertyTransferDuties,

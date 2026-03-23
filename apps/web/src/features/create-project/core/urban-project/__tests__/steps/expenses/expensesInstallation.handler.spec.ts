@@ -73,7 +73,7 @@ describe("UrbanProjectInstallationExpensesHandler", () => {
 
   describe("getPreviousStepId", () => {
     it("should return URBAN_PROJECT_EXPENSES_REINSTATEMENT when site is a friche", () => {
-      const previousStep = UrbanProjectInstallationExpensesHandler.getPreviousStepId!({
+      const previousStep = UrbanProjectInstallationExpensesHandler.getPreviousStepId({
         stepsState: {},
         siteData: {
           id: "test-site",
@@ -98,7 +98,7 @@ describe("UrbanProjectInstallationExpensesHandler", () => {
     });
 
     it("should return URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS when site is not a friche", () => {
-      const previousStep = UrbanProjectInstallationExpensesHandler.getPreviousStepId!({
+      const previousStep = UrbanProjectInstallationExpensesHandler.getPreviousStepId({
         stepsState: {},
         siteData: {
           id: "test-site",
@@ -123,7 +123,7 @@ describe("UrbanProjectInstallationExpensesHandler", () => {
     });
 
     it("should return URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS when siteData is undefined", () => {
-      const previousStep = UrbanProjectInstallationExpensesHandler.getPreviousStepId!({
+      const previousStep = UrbanProjectInstallationExpensesHandler.getPreviousStepId({
         stepsState: {},
         siteData: undefined,
       });
@@ -134,7 +134,7 @@ describe("UrbanProjectInstallationExpensesHandler", () => {
 
   describe("getDefaultAnswers", () => {
     it("should return default installation expenses based on site surface area", () => {
-      const defaultAnswers = UrbanProjectInstallationExpensesHandler.getDefaultAnswers!({
+      const defaultAnswers = UrbanProjectInstallationExpensesHandler.getDefaultAnswers({
         stepsState: {},
         siteData: {
           id: "test-site",
@@ -170,7 +170,7 @@ describe("UrbanProjectInstallationExpensesHandler", () => {
     });
 
     it("should return undefined when site surface area is not available", () => {
-      const defaultAnswers = UrbanProjectInstallationExpensesHandler.getDefaultAnswers!({
+      const defaultAnswers = UrbanProjectInstallationExpensesHandler.getDefaultAnswers({
         stepsState: {},
         siteData: undefined,
       });

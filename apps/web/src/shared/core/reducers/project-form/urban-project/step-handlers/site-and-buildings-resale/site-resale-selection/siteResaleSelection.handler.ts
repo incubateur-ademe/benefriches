@@ -1,14 +1,14 @@
-import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
+import { willHaveBuildings } from "@/shared/core/reducers/project-form/urban-project/helpers/readers/buildingsReaders";
 
-import { AnswerStepHandler } from "../../stepHandler.type";
+import type { AnswerStepHandler } from "../../stepHandler.type";
 
 const STEP_ID = "URBAN_PROJECT_SITE_RESALE_SELECTION";
 
-export const SiteResaleSelectionHandler: AnswerStepHandler<typeof STEP_ID> = {
+export const SiteResaleSelectionHandler = {
   stepId: STEP_ID,
 
   getNextStepId(context) {
-    if (ReadStateHelper.willHaveBuildings(context.stepsState)) {
+    if (willHaveBuildings(context.stepsState)) {
       return "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION";
     }
 
@@ -32,4 +32,4 @@ export const SiteResaleSelectionHandler: AnswerStepHandler<typeof STEP_ID> = {
     }
     return [];
   },
-} as const;
+} satisfies AnswerStepHandler<typeof STEP_ID>;

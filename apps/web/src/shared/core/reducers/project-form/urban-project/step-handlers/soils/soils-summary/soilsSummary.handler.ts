@@ -2,7 +2,7 @@ import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-proje
 
 import type { InfoStepHandler } from "../../stepHandler.type";
 
-export const SoilsSummaryHandler: InfoStepHandler = {
+export const SoilsSummaryHandler = {
   stepId: "URBAN_PROJECT_SPACES_SOILS_SUMMARY",
 
   getPreviousStepId(context) {
@@ -23,4 +23,4 @@ export const SoilsSummaryHandler: InfoStepHandler = {
   getNextStepId() {
     return "URBAN_PROJECT_SOILS_CARBON_SUMMARY";
   },
-};
+} satisfies InfoStepHandler;

@@ -1,6 +1,6 @@
 import type { AnswerStepHandler } from "../../stepHandler.type";
 
-export const ProjectPhaseHandler: AnswerStepHandler<"URBAN_PROJECT_PROJECT_PHASE"> = {
+export const ProjectPhaseHandler = {
   stepId: "URBAN_PROJECT_PROJECT_PHASE",
 
   getPreviousStepId() {
@@ -10,4 +10,4 @@ export const ProjectPhaseHandler: AnswerStepHandler<"URBAN_PROJECT_PROJECT_PHASE
   getNextStepId() {
     return "URBAN_PROJECT_NAMING";
   },
-};
+} satisfies AnswerStepHandler<"URBAN_PROJECT_PROJECT_PHASE">;

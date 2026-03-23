@@ -2,7 +2,7 @@ import type { AnswerStepHandler } from "../../stepHandler.type";
 
 const STEP_ID = "URBAN_PROJECT_SPACES_SURFACE_AREA";
 
-export const SpacesSurfaceAreaHandler: AnswerStepHandler<typeof STEP_ID> = {
+export const SpacesSurfaceAreaHandler = {
   stepId: STEP_ID,
 
   getPreviousStepId() {
@@ -12,4 +12,4 @@ export const SpacesSurfaceAreaHandler: AnswerStepHandler<typeof STEP_ID> = {
   getNextStepId() {
     return "URBAN_PROJECT_SPACES_SOILS_SUMMARY";
   },
-};
+} satisfies AnswerStepHandler<typeof STEP_ID>;

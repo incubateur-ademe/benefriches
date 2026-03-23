@@ -4,7 +4,7 @@ import type { AnswerStepHandler, StepInvalidationRule } from "../../stepHandler.
 
 const STEP_ID = "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA";
 
-export const PublicGreenSpacesSurfaceAreaHandler: AnswerStepHandler<typeof STEP_ID> = {
+export const PublicGreenSpacesSurfaceAreaHandler = {
   stepId: STEP_ID,
 
   getPreviousStepId() {
@@ -38,4 +38,4 @@ export const PublicGreenSpacesSurfaceAreaHandler: AnswerStepHandler<typeof STEP_
 
     return rules;
   },
-};
+} satisfies AnswerStepHandler<typeof STEP_ID>;

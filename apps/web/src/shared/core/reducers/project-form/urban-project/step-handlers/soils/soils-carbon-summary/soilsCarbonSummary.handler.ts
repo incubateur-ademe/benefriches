@@ -1,8 +1,8 @@
-import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
+import { willHaveBuildings } from "@/shared/core/reducers/project-form/urban-project/helpers/readers/buildingsReaders";
 
 import type { InfoStepHandler } from "../../stepHandler.type";
 
-export const SoilsCarbonSummaryHandler: InfoStepHandler = {
+export const SoilsCarbonSummaryHandler = {
   stepId: "URBAN_PROJECT_SOILS_CARBON_SUMMARY",
 
   getPreviousStepId() {
@@ -10,7 +10,7 @@ export const SoilsCarbonSummaryHandler: InfoStepHandler = {
   },
 
   getNextStepId(context) {
-    if (ReadStateHelper.willHaveBuildings(context.stepsState)) {
+    if (willHaveBuildings(context.stepsState)) {
       return "URBAN_PROJECT_BUILDINGS_INTRODUCTION";
     }
 
@@ -20,4 +20,4 @@ export const SoilsCarbonSummaryHandler: InfoStepHandler = {
 
     return "URBAN_PROJECT_SITE_RESALE_INTRODUCTION";
   },
-};
+} satisfies InfoStepHandler;
