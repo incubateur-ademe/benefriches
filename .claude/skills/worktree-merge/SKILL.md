@@ -1,5 +1,6 @@
 ---
 name: worktree-merge
+effort: low
 description: Merge a worktree branch into main, remove the worktree, and delete the branch. Lists active worktrees for selection.
 user-invocable: true
 ---

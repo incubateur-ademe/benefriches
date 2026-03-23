@@ -1,5 +1,6 @@
 ---
 name: worktree
+effort: low
 description: Create a git worktree and prime the development environment for a new feature or refactor
 user-invocable: true
 ---

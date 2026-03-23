@@ -1,5 +1,6 @@
 ---
 name: run-e2e-tests
+effort: medium
 description: "Run Benefriches end-to-end tests with automatic Docker stack lifecycle management. Starts the e2e docker-compose stack, waits for readiness, runs Playwright tests, and tears down the stack on success. Use when the user asks to run e2e tests, end-to-end tests, or invokes /run-e2e-tests. Accepts an optional argument to focus on specific tests (e.g., tests/create-site/ or a specific spec file)."
 ---
 
