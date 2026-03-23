@@ -1,6 +1,6 @@
 import { ProjectFormState } from "../../projectForm.reducer";
 import { ShortcutResult, StepInvalidationRule } from "../step-handlers/stepHandler.type";
-import { stepHandlerRegistry } from "../step-handlers/stepHandlerRegistry";
+import { answerStepHandlers } from "../step-handlers/stepHandlerRegistry";
 import { StepCompletionPayload } from "../urbanProject.actions";
 import { AnswerStepId, isAnswersStep, UrbanProjectCreationStep } from "../urbanProjectSteps";
 import { MutateStateHelper } from "./mutateState";
@@ -28,7 +28,7 @@ function processShortcutInvalidations(
       // replace or remove current completed step from invalidation rules
       const newRules = rules.filter((r) => r.stepId !== completeStepShortcut.stepId);
 
-      const shortcutHandler = stepHandlerRegistry[completeStepShortcut.stepId];
+      const shortcutHandler = answerStepHandlers[completeStepShortcut.stepId];
       const shortcutDependencyRules = shortcutHandler.getDependencyRules?.(
         handlerContext,
         completeStepShortcut.answers,
@@ -63,7 +63,7 @@ export function computeStepChanges<T extends AnswerStepId>(
   state: ProjectFormState,
   payload: StepCompletionPayload<T>,
 ): StepUpdateResult<T> {
-  const handler = stepHandlerRegistry[payload.stepId];
+  const handler = answerStepHandlers[payload.stepId];
   const handlerContext = { siteData: state.siteData, stepsState: state.urbanProject.steps };
 
   const newPayload = {
@@ -131,7 +131,7 @@ export function applyStepChanges<T extends AnswerStepId>(
         MutateStateHelper.invalidateStep(state, stepId);
         break;
       case "recompute": {
-        const newValue = stepHandlerRegistry[stepId].getRecomputedStepAnswers?.({
+        const newValue = answerStepHandlers[stepId].getRecomputedStepAnswers?.({
           siteData: state.siteData,
           stepsState: state.urbanProject.steps,
         });

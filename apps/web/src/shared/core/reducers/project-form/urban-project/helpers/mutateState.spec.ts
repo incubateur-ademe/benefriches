@@ -200,4 +200,27 @@ describe("MutateStateHelper", () => {
       expect(state.urbanProject.steps.URBAN_PROJECT_NAMING).toBeUndefined();
     });
   });
+
+  describe("completeStepFromPayload", () => {
+    it("should mark step as completed and set payload from bundled payload", () => {
+      MutateStateHelper.completeStepFromPayload(state, {
+        stepId: "URBAN_PROJECT_NAMING",
+        answers: { name: "Project Name", description: "Project Description" },
+      });
+
+      expect(state.urbanProject.steps.URBAN_PROJECT_NAMING).toEqual({
+        completed: true,
+        payload: { name: "Project Name", description: "Project Description" },
+      });
+    });
+
+    it("should create step if it does not exist", () => {
+      MutateStateHelper.completeStepFromPayload(state, {
+        stepId: "URBAN_PROJECT_NAMING",
+        answers: { name: "Test", description: "Test" },
+      });
+
+      expect(state.urbanProject.steps.URBAN_PROJECT_NAMING).toBeDefined();
+    });
+  });
 });

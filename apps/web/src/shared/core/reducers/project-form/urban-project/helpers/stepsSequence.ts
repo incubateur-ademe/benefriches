@@ -1,5 +1,5 @@
 import { StepContext } from "../step-handlers/stepHandler.type";
-import { stepHandlerRegistry } from "../step-handlers/stepHandlerRegistry";
+import { answerStepHandlers, stepHandlerRegistry } from "../step-handlers/stepHandlerRegistry";
 import {
   ANSWER_STEPS,
   INTRODUCTION_STEPS,
@@ -23,7 +23,7 @@ export const computeProjectStepsSequence = (
       if (!stepsState.URBAN_PROJECT_CREATE_MODE_SELECTION?.payload) {
         break;
       }
-      currentStep = stepHandlerRegistry[currentStep].getNextStepId(
+      currentStep = answerStepHandlers[currentStep].getNextStepId(
         { siteData, stepsState },
         stepsState.URBAN_PROJECT_CREATE_MODE_SELECTION?.payload,
       );
