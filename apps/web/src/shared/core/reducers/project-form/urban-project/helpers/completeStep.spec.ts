@@ -4,10 +4,12 @@ import type { ProjectFormState } from "../../projectForm.reducer";
 import type { StepInvalidationRule } from "../step-handlers/stepHandler.type";
 import type { AnswerStepId, AnswersByStep } from "../urbanProjectSteps";
 
-// Mock the step handler registry
-vi.mock("../step-handlers/stepHandlerRegistry", () => ({
-  stepHandlerRegistry: {},
-}));
+// Mock the step handler registry — both exports share the same mutable object
+// so that populating one is immediately visible to the other.
+vi.mock("../step-handlers/stepHandlerRegistry", () => {
+  const registry = {};
+  return { answerStepHandlers: registry, stepHandlerRegistry: registry };
+});
 
 // Import after mock setup
 const { stepHandlerRegistry } = await import("../step-handlers/stepHandlerRegistry");
