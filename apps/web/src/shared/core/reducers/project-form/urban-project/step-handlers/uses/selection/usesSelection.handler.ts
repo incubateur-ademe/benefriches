@@ -4,7 +4,7 @@ import type { AnswerStepHandler, StepInvalidationRule } from "../../stepHandler.
 
 const STEP_ID = "URBAN_PROJECT_USES_SELECTION";
 
-export const UsesSelectionHandler: AnswerStepHandler<typeof STEP_ID> = {
+export const UsesSelectionHandler = {
   stepId: STEP_ID,
 
   getPreviousStepId() {
@@ -94,4 +94,4 @@ export const UsesSelectionHandler: AnswerStepHandler<typeof STEP_ID> = {
 
     return rules;
   },
-};
+} satisfies AnswerStepHandler<typeof STEP_ID>;
