@@ -1,6 +1,9 @@
 import { computeDefaultInstallationExpensesFromSiteSurfaceArea } from "shared";
 
-import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
+import {
+  willHaveBuildings,
+  hasBuildingsResalePlannedAfterDevelopment,
+} from "@/shared/core/reducers/project-form/urban-project/helpers/readers/buildingsReaders";
 
 import type { AnswerStepHandler } from "../../stepHandler.type";
 
@@ -9,8 +12,8 @@ export const UrbanProjectInstallationExpensesHandler = {
 
   getNextStepId(context) {
     if (
-      ReadStateHelper.willHaveBuildings(context.stepsState) &&
-      !ReadStateHelper.hasBuildingsResalePlannedAfterDevelopment(context.stepsState)
+      willHaveBuildings(context.stepsState) &&
+      !hasBuildingsResalePlannedAfterDevelopment(context.stepsState)
     ) {
       return "URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES";
     }

@@ -1,14 +1,13 @@
 import { ComputedReinstatementExpenses, computeProjectReinstatementExpenses } from "shared";
 
 import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
+import { getProjectSoilDistributionBySoilType } from "@/shared/core/reducers/project-form/urban-project/helpers/readers/soilsReaders";
 import { AnswersByStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 
 import { type AnswerStepHandler, type StepContext } from "../../stepHandler.type";
 
 const getDefaultReinstatementExpenses = (context: StepContext) => {
-  const soilsDistribution = ReadStateHelper.getProjectSoilDistributionBySoilType(
-    context.stepsState,
-  );
+  const soilsDistribution = getProjectSoilDistributionBySoilType(context.stepsState);
   const decontaminatedSurface = ReadStateHelper.getStepAnswers(
     context.stepsState,
     "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA",

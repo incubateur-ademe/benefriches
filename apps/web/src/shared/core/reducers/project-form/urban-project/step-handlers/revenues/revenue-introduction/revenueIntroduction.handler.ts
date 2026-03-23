@@ -1,4 +1,8 @@
-import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
+import {
+  willHaveBuildings,
+  hasBuildingsResalePlannedAfterDevelopment,
+} from "@/shared/core/reducers/project-form/urban-project/helpers/readers/buildingsReaders";
+import { isSiteResalePlannedAfterDevelopment } from "@/shared/core/reducers/project-form/urban-project/helpers/readers/siteResaleReaders";
 
 import type { InfoStepHandler } from "../../stepHandler.type";
 
@@ -7,8 +11,8 @@ export const RevenueIntroductionHandler = {
 
   getPreviousStepId(context) {
     if (
-      ReadStateHelper.willHaveBuildings(context.stepsState) &&
-      !ReadStateHelper.hasBuildingsResalePlannedAfterDevelopment(context.stepsState)
+      willHaveBuildings(context.stepsState) &&
+      !hasBuildingsResalePlannedAfterDevelopment(context.stepsState)
     ) {
       return "URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES";
     }
@@ -16,12 +20,12 @@ export const RevenueIntroductionHandler = {
   },
 
   getNextStepId(context) {
-    if (ReadStateHelper.isSiteResalePlannedAfterDevelopment(context.stepsState)) {
+    if (isSiteResalePlannedAfterDevelopment(context.stepsState)) {
       return "URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE";
     }
 
-    if (ReadStateHelper.willHaveBuildings(context.stepsState)) {
-      if (ReadStateHelper.hasBuildingsResalePlannedAfterDevelopment(context.stepsState)) {
+    if (willHaveBuildings(context.stepsState)) {
+      if (hasBuildingsResalePlannedAfterDevelopment(context.stepsState)) {
         return "URBAN_PROJECT_REVENUE_BUILDINGS_RESALE";
       }
       return "URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES";

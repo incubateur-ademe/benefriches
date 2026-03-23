@@ -1,4 +1,7 @@
-import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
+import {
+  willHaveBuildings,
+  hasBuildingsResalePlannedAfterDevelopment,
+} from "@/shared/core/reducers/project-form/urban-project/helpers/readers/buildingsReaders";
 
 import type { AnswerStepHandler } from "../../stepHandler.type";
 
@@ -10,8 +13,8 @@ export const RevenueExpectedSiteResaleHandler = {
   },
 
   getNextStepId(context) {
-    if (ReadStateHelper.willHaveBuildings(context.stepsState)) {
-      if (ReadStateHelper.hasBuildingsResalePlannedAfterDevelopment(context.stepsState)) {
+    if (willHaveBuildings(context.stepsState)) {
+      if (hasBuildingsResalePlannedAfterDevelopment(context.stepsState)) {
         return "URBAN_PROJECT_REVENUE_BUILDINGS_RESALE";
       }
       return "URBAN_PROJECT_REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES";

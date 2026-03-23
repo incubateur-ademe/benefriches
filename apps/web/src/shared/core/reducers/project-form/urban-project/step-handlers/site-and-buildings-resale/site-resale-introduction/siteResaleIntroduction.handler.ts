@@ -1,4 +1,5 @@
 import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
+import { willHaveBuildings } from "@/shared/core/reducers/project-form/urban-project/helpers/readers/buildingsReaders";
 
 import type { InfoStepHandler } from "../../stepHandler.type";
 
@@ -19,7 +20,7 @@ export const SiteResaleIntroductionHandler = {
       return "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION";
     }
 
-    if (ReadStateHelper.willHaveBuildings(context.stepsState)) {
+    if (willHaveBuildings(context.stepsState)) {
       return "URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA";
     }
 

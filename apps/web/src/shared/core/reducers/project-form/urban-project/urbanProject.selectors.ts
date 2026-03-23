@@ -6,6 +6,10 @@ import { buildStepGroupsFromSequence } from "@/shared/views/project-form/stepper
 import { createProjectFormSelectors } from "../projectForm.selectors";
 import { getProjectSummary } from "./helpers/projectSummary";
 import { ReadStateHelper } from "./helpers/readState";
+import {
+  getProjectSoilDistribution,
+  getProjectSoilDistributionBySoilType,
+} from "./helpers/readers/soilsReaders";
 import { createSelectUsesFloorSurfaceAreaViewData } from "./step-handlers/buildings/buildings-uses-floor-surface-area/buildingsUsesFloorSurfaceArea.selector";
 import { createSelectReinstatementExpensesViewData } from "./step-handlers/expenses/expenses-reinstatement/expensesReinstatement.selector";
 import { createSelectSiteResaleRevenueViewData } from "./step-handlers/revenues/revenue-expected-site-resale/revenueExpectedSiteResale.selector";
@@ -42,11 +46,11 @@ export const createUrbanProjectFormSelectors = (
   const selectStepState = createSelector(selectSelf, (state) => state.urbanProject.steps);
 
   const selectProjectSoilsDistributionByType = createSelector(selectStepState, (state) =>
-    ReadStateHelper.getProjectSoilDistributionBySoilType(state),
+    getProjectSoilDistributionBySoilType(state),
   );
 
   const selectProjectSoilsDistribution = createSelector(selectStepState, (state) =>
-    ReadStateHelper.getProjectSoilDistribution(state),
+    getProjectSoilDistribution(state),
   );
 
   const selectStepAnswers = <T extends AnswerStepId>(stepId: T) =>

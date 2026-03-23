@@ -1,4 +1,4 @@
-import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
+import { willHaveBuildings } from "@/shared/core/reducers/project-form/urban-project/helpers/readers/buildingsReaders";
 
 import type { InfoStepHandler } from "../../stepHandler.type";
 
@@ -10,7 +10,7 @@ export const StakeholdersIntroductionHandler = {
   },
 
   getPreviousStepId(context) {
-    if (ReadStateHelper.willHaveBuildings(context.stepsState)) {
+    if (willHaveBuildings(context.stepsState)) {
       return "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION";
     }
     return "URBAN_PROJECT_SITE_RESALE_SELECTION";

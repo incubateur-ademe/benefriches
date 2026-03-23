@@ -1,7 +1,7 @@
 import { saveReconversionProjectPropsSchema } from "shared";
 
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
-import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
+import { getProjectData } from "@/shared/core/reducers/project-form/urban-project/helpers/readers/projectDataReaders";
 
 import { makeUrbanProjectCreationActionType } from "./urbanProject.actions";
 
@@ -11,7 +11,7 @@ export const customUrbanProjectSaved = createAppAsyncThunk(
     const { projectCreation, currentUser } = getState();
     const { urbanProject, siteData, projectId } = projectCreation;
 
-    const creationData = ReadStateHelper.getProjectData(urbanProject.steps);
+    const creationData = getProjectData(urbanProject.steps);
 
     const mappedProjectData = {
       id: projectId,

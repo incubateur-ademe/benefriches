@@ -3,7 +3,7 @@ import z from "zod";
 
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
 import { createProjectFormActions } from "@/shared/core/reducers/project-form/projectForm.actions";
-import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
+import { getProjectData } from "@/shared/core/reducers/project-form/urban-project/helpers/readers/projectDataReaders";
 import { createUrbanProjectFormActions } from "@/shared/core/reducers/project-form/urban-project/urbanProject.actions";
 
 import {
@@ -46,7 +46,7 @@ export const reconversionProjectUpdateSaved = createAppAsyncThunk(
     const { projectUpdate } = getState();
     const { urbanProject, projectData } = projectUpdate;
 
-    const updateData = ReadStateHelper.getProjectData(urbanProject.steps);
+    const updateData = getProjectData(urbanProject.steps);
 
     const projectId = z.string().parse(projectData?.id);
     const projectToSave = updateReconversionProjectPropsSchema.parse(updateData);

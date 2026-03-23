@@ -7,7 +7,7 @@ import {
 import { DEFAULT_FUTURE_SITE_OWNER } from "../../helpers/stakeholders";
 import { ProjectFormState } from "../../projectForm.reducer";
 import { UrbanProjectCreationStep } from "../urbanProjectSteps";
-import { ReadStateHelper } from "./readState";
+import { isSiteResalePlannedAfterDevelopment } from "./readers/siteResaleReaders";
 
 export const getProjectSummary = (
   steps: ProjectFormState["urbanProject"]["steps"],
@@ -150,9 +150,7 @@ export const getProjectSummary = (
     },
     futureSiteOwner: {
       // when resale is planned, future owner is unknown
-      value: ReadStateHelper.isSiteResalePlannedAfterDevelopment(steps)
-        ? DEFAULT_FUTURE_SITE_OWNER
-        : undefined,
+      value: isSiteResalePlannedAfterDevelopment(steps) ? DEFAULT_FUTURE_SITE_OWNER : undefined,
       isAuto: true, // Always auto-derived from selection
     },
     developer: {
