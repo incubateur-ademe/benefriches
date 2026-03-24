@@ -9,22 +9,21 @@ test.describe("site creation (express mode)", () => {
     // Navigate to site creation page
     await siteCreationPage.goto();
 
-    // Introduction step
-    await siteCreationPage.expectIntroductionStep();
-    await siteCreationPage.clickStart();
-
-    // Votre site est-il une friche ?
-    await siteCreationPage.selectIsFriche("yes");
-
-    // Que souhaitez-vous évaluer ?
-    await siteCreationPage.selectWhatToEvaluate("impacts");
-
     // Mode de création
     await siteCreationPage.selectCreateMode("express");
 
+    // Introduction step
+    await siteCreationPage.expectDemoIntroductionStep();
+    await siteCreationPage.expectStepperCurrentStep("Introduction");
+    await siteCreationPage.clickStart();
+
+    // Nature du site
+    await siteCreationPage.selectSiteNature("FRICHE");
+
     // Type de friche
     await siteCreationPage.expectStepTitle("De quel type de friche s'agit-il ?");
-    await siteCreationPage.expectStepperCurrentStep("Introduction");
+    await siteCreationPage.expectStepperCurrentStep("Type de site");
+
     await siteCreationPage.selectFricheActivity("INDUSTRY");
 
     // Adresse
@@ -67,22 +66,20 @@ test.describe("site creation (express mode)", () => {
     // Navigate to site creation page
     await siteCreationPage.goto();
 
-    // Introduction
-    await siteCreationPage.expectIntroductionStep();
-    await siteCreationPage.clickStart();
+    // Mode de création
+    await siteCreationPage.selectCreateMode("express");
 
-    // Friche ?
-    await siteCreationPage.selectIsFriche("no");
+    // Introduction
+    await siteCreationPage.expectDemoIntroductionStep();
+    await siteCreationPage.expectStepperCurrentStep("Introduction");
+    await siteCreationPage.clickStart();
 
     // Nature du site
     await siteCreationPage.selectSiteNature("AGRICULTURAL_OPERATION");
 
-    // Mode de création
-    await siteCreationPage.selectCreateMode("express");
-
     // Type d'exploitation agricole
     await siteCreationPage.expectStepTitle("De quel type d'exploitation agricole s'agit-il");
-    await siteCreationPage.expectStepperCurrentStep("Introduction");
+    await siteCreationPage.expectStepperCurrentStep("Type de site");
     await siteCreationPage.selectAgriculturalActivity("POLYCULTURE_AND_LIVESTOCK");
 
     // Adresse
@@ -124,22 +121,20 @@ test.describe("site creation (express mode)", () => {
     // Navigate to site creation page
     await siteCreationPage.goto();
 
-    // Introduction
-    await siteCreationPage.expectIntroductionStep();
-    await siteCreationPage.clickStart();
+    // Mode de création
+    await siteCreationPage.selectCreateMode("express");
 
-    // Friche ?
-    await siteCreationPage.selectIsFriche("no");
+    // Introduction
+    await siteCreationPage.expectDemoIntroductionStep();
+    await siteCreationPage.expectStepperCurrentStep("Introduction");
+    await siteCreationPage.clickStart();
 
     // Nature du site
     await siteCreationPage.selectSiteNature("NATURAL_AREA");
 
-    // Mode de création
-    await siteCreationPage.selectCreateMode("express");
-
     // Type d'espace naturel
     await siteCreationPage.expectStepTitle("De quel type d'espace naturel s'agit-il ?");
-    await siteCreationPage.expectStepperCurrentStep("Introduction");
+    await siteCreationPage.expectStepperCurrentStep("Type de site");
     await siteCreationPage.selectNaturalAreaType("FOREST");
 
     // Adresse

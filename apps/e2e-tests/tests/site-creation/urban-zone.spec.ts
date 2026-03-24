@@ -8,6 +8,10 @@ test.describe("site creation (urban zone)", () => {
     urbanZoneSiteCreationPage,
   }) => {
     await siteCreationPage.goto();
+
+    // Mode de création
+    await siteCreationPage.selectCreateMode("custom");
+
     await siteCreationPage.expectIntroductionStep();
     await siteCreationPage.clickStart();
 
@@ -140,6 +144,10 @@ test.describe("site creation (urban zone)", () => {
     urbanZoneSiteCreationPage,
   }) => {
     await siteCreationPage.goto();
+
+    // Mode de création
+    await siteCreationPage.selectCreateMode("custom");
+
     await siteCreationPage.expectIntroductionStep();
     await siteCreationPage.clickStart();
 
@@ -244,6 +252,10 @@ test.describe("site creation (urban zone)", () => {
     urbanZoneSiteCreationPage,
   }) => {
     await siteCreationPage.goto();
+
+    // Mode de création
+    await siteCreationPage.selectCreateMode("custom");
+
     await siteCreationPage.expectIntroductionStep();
     await siteCreationPage.clickStart();
 

@@ -1,25 +1,23 @@
+// useSiteCreationWizardLayout.tsx
+import { useMemo } from "react";
+
 import { useAppSelector } from "@/app/hooks/store.hooks";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 import FormStepper from "@/shared/views/layout/WizardFormLayout/FormStepper";
 
-import {
-  SiteCreationCustomStep,
-  SiteCreationExpressStep,
-  SiteCreationState,
-  SiteCreationStep,
-} from "../core/createSite.reducer";
+import type { SiteCreationCustomStep, SiteCreationStep } from "../core/createSite.reducer";
 import { selectSiteCreationWizardViewData } from "../core/selectors/createSite.selectors";
 import { isUrbanZoneStepHandlerStep } from "../core/urban-zone/urbanZoneSteps";
-import NavigationBlockerDialog from "./NavigationBlockerDialog";
 import CreateModeSelectionForm from "./create-mode-selection";
 import SiteCreationCustomStepContent from "./custom/StepContent";
 import SiteCreationCustomStepper from "./custom/Stepper";
-import SiteCreationExpressStepContent from "./demo/StepContent";
+import SiteCreationExpressStepContent from "./demo";
 import SiteCreationExpressStepper from "./demo/Stepper";
 import UseMutabilityForm from "./friche/use-mutability";
 import SiteCreationIntroduction from "./introduction";
 import IsFricheForm from "./is-friche";
+import NavigationBlockerDialog from "./navigation-blocker";
 import SiteNatureForm from "./site-nature";
 import UrbanZoneTypeForm from "./urban-zone-type";
 import SiteCreationUrbanZoneStepContent from "./urban-zone/StepContent";
@@ -28,108 +26,91 @@ import { useSyncCreationStepWithRouteQuery } from "./useSyncCreationStepWithRout
 
 export const HTML_MAIN_TITLE = "Renseignement du site";
 
-const getMainChildren = (
-  currentStep: SiteCreationStep,
-  createMode: SiteCreationState["createMode"],
-) => {
-  switch (currentStep) {
-    case "INTRODUCTION":
-      return (
-        <>
-          <HtmlTitle>{`Introduction - ${HTML_MAIN_TITLE}`}</HtmlTitle>
-          <SiteCreationIntroduction />
-        </>
-      );
-    case "IS_FRICHE":
-      return (
-        <>
-          <HtmlTitle>{`Type de site - ${HTML_MAIN_TITLE}`}</HtmlTitle>
-          <IsFricheForm />
-        </>
-      );
-    case "USE_MUTABILITY":
-      return (
-        <>
-          <HtmlTitle>{`Type d'évaluation - ${HTML_MAIN_TITLE}`}</HtmlTitle>
-          <UseMutabilityForm />
-        </>
-      );
-    case "SITE_NATURE":
-      return (
-        <>
-          <HtmlTitle>{`Catégorie du site - ${HTML_MAIN_TITLE}`}</HtmlTitle>
-          <SiteNatureForm />
-        </>
-      );
-    case "CREATE_MODE_SELECTION":
-      return (
-        <>
-          <HtmlTitle>{`Mode de création - ${HTML_MAIN_TITLE}`}</HtmlTitle>
-          <CreateModeSelectionForm />
-        </>
-      );
-    case "URBAN_ZONE_TYPE":
-      return (
-        <>
-          <HtmlTitle>{`Type de zone urbaine - ${HTML_MAIN_TITLE}`}</HtmlTitle>
-          <UrbanZoneTypeForm />
-        </>
-      );
-    default:
-      if (isUrbanZoneStepHandlerStep(currentStep)) {
-        return <SiteCreationUrbanZoneStepContent />;
-      }
-      switch (createMode) {
-        case "express":
-          return <SiteCreationExpressStepContent />;
-        case "custom":
-          return <SiteCreationCustomStepContent />;
-        case undefined:
-      }
-  }
-};
+const STEP_CONFIG: Partial<Record<SiteCreationStep, { title: string; content: React.ReactNode }>> =
+  {
+    INTRODUCTION: { title: "Introduction", content: <SiteCreationIntroduction /> },
+    IS_FRICHE: { title: "Type de site", content: <IsFricheForm /> },
+    USE_MUTABILITY: { title: "Type d'évaluation", content: <UseMutabilityForm /> },
+    SITE_NATURE: { title: "Catégorie du site", content: <SiteNatureForm /> },
+    URBAN_ZONE_TYPE: { title: "Type de zone urbaine", content: <UrbanZoneTypeForm /> },
+  };
 
-function SiteCreationWizard() {
+export function useSiteCreationWizardLayout() {
   const { currentStep, isFriche, createMode } = useAppSelector(selectSiteCreationWizardViewData);
 
-  useSyncCreationStepWithRouteQuery();
+  return useMemo(() => {
+    if (createMode === "express") {
+      return {
+        htmlTitle: HTML_MAIN_TITLE,
+        sidebarChildren: <SiteCreationExpressStepper />,
+        mainChildren: <SiteCreationExpressStepContent />,
+      };
+    }
 
-  return (
-    <SidebarLayout
-      mainChildren={getMainChildren(currentStep, createMode)}
-      title="Renseignement du site"
-      sidebarChildren={(() => {
-        if (isUrbanZoneStepHandlerStep(currentStep)) {
-          return (
+    if (createMode === "custom") {
+      if (isUrbanZoneStepHandlerStep(currentStep)) {
+        return {
+          htmlTitle: HTML_MAIN_TITLE,
+          mainChildren: <SiteCreationUrbanZoneStepContent />,
+          sidebarChildren: (
             <>
               <NavigationBlockerDialog />
               <UrbanZoneStepper step={currentStep} />
             </>
-          );
-        }
-        switch (createMode) {
-          case "express":
-            return (
-              <>
-                <NavigationBlockerDialog />
-                <SiteCreationExpressStepper step={currentStep as SiteCreationExpressStep} />
-              </>
-            );
-          case "custom":
-            return (
-              <>
-                <NavigationBlockerDialog />
-                <SiteCreationCustomStepper
-                  isFriche={isFriche}
-                  step={currentStep as SiteCreationCustomStep}
-                />
-              </>
-            );
-          default:
-            return <FormStepper currentStepIndex={0} steps={["Introduction"]} isDone={false} />;
-        }
-      })()}
-    />
+          ),
+        };
+      }
+
+      const stepConfig = STEP_CONFIG[currentStep];
+      if (stepConfig) {
+        return {
+          htmlTitle: `${stepConfig.title} - ${HTML_MAIN_TITLE}`,
+          mainChildren: stepConfig.content,
+          sidebarChildren: (
+            <FormStepper currentStepIndex={0} steps={["Introduction"]} isDone={false} />
+          ),
+        };
+      }
+
+      return {
+        htmlTitle: HTML_MAIN_TITLE,
+        mainChildren: (
+          <>
+            <NavigationBlockerDialog />
+            <SiteCreationCustomStepContent />
+          </>
+        ),
+        sidebarChildren: (
+          <SiteCreationCustomStepper
+            isFriche={isFriche}
+            step={currentStep as SiteCreationCustomStep}
+          />
+        ),
+      };
+    }
+
+    return {
+      htmlTitle: `Mode de création - ${HTML_MAIN_TITLE}`,
+      mainChildren: <CreateModeSelectionForm />,
+      sidebarChildren: <FormStepper currentStepIndex={0} steps={["Introduction"]} isDone={false} />,
+    };
+  }, [currentStep, createMode, isFriche]);
+}
+
+function SiteCreationWizard() {
+  useSyncCreationStepWithRouteQuery();
+
+  const { htmlTitle, mainChildren, sidebarChildren } = useSiteCreationWizardLayout();
+
+  return (
+    <>
+      <HtmlTitle>{htmlTitle}</HtmlTitle>
+      <SidebarLayout
+        title="Renseignement du site"
+        mainChildren={mainChildren}
+        sidebarChildren={sidebarChildren}
+      />
+    </>
   );
 }
 

@@ -1,41 +1,23 @@
-import { SiteCreationExpressStep } from "@/features/create-site/core/createSite.reducer";
+import { useAppSelector } from "@/app/hooks/store.hooks";
 import FormStepper from "@/shared/views/layout/WizardFormLayout/FormStepper";
 
-const STEPS_CATEGORIES = ["Introduction", "Adresse", "Superficie", "Récapitulatif"] as const;
+import { selectDemoUseCaseContentWizardViewData } from "../../core/demo/demo.selectors";
+import {
+  DEMO_STEP_GROUP_IDS,
+  DEMO_STEP_GROUP_LABELS,
+  DEMO_STEP_TO_GROUP,
+} from "../../core/demo/demoStepperConfig";
 
-type StepCategory = (typeof STEPS_CATEGORIES)[number];
+const stepCategories = DEMO_STEP_GROUP_IDS.map((id) => DEMO_STEP_GROUP_LABELS[id]);
 
-const getCurrentStepCategory = (step: SiteCreationExpressStep): StepCategory => {
-  switch (step) {
-    case "AGRICULTURAL_OPERATION_ACTIVITY":
-    case "NATURAL_AREA_TYPE":
-    case "FRICHE_ACTIVITY":
-      return "Introduction";
-    case "ADDRESS":
-      return "Adresse";
-    case "SURFACE_AREA":
-      return "Superficie";
-    case "CREATION_RESULT":
-      return "Récapitulatif";
-  }
-};
+function DemoSiteCreationStepper() {
+  const { currentStep } = useAppSelector(selectDemoUseCaseContentWizardViewData);
 
-type Props = {
-  step: SiteCreationExpressStep;
-};
+  const { groupId } = DEMO_STEP_TO_GROUP[currentStep];
+  const currentStepIndex = DEMO_STEP_GROUP_IDS.indexOf(groupId);
+  const isDone = currentStep === "DEMO_CREATION_RESULT";
 
-function SiteCreationExpressStepper({ step }: Props) {
-  const currentStepCategory = getCurrentStepCategory(step);
-
-  const currentStepIndex = STEPS_CATEGORIES.findIndex((step) => step === currentStepCategory);
-
-  return (
-    <FormStepper
-      currentStepIndex={currentStepIndex}
-      steps={[...STEPS_CATEGORIES]}
-      isDone={step === "CREATION_RESULT"}
-    />
-  );
+  return <FormStepper currentStepIndex={currentStepIndex} steps={stepCategories} isDone={isDone} />;
 }
 
-export default SiteCreationExpressStepper;
+export default DemoSiteCreationStepper;

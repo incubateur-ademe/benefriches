@@ -1,15 +1,20 @@
-export type AgriculturalOperationActivity =
-  | "CEREALS_AND_OILSEEDS_CULTIVATION"
-  | "LARGE_VEGETABLE_CULTIVATION"
-  | "MARKET_GARDENING"
-  | "FLOWERS_AND_HORTICULTURE"
-  | "VITICULTURE"
-  | "FRUITS_AND_OTHER_PERMANENT_CROPS"
-  | "CATTLE_FARMING"
-  | "PIG_FARMING"
-  | "POULTRY_FARMING"
-  | "SHEEP_AND_GOAT_FARMING"
-  | "POLYCULTURE_AND_LIVESTOCK";
+import z from "zod";
+
+export const agriculturalOperationActivitySchema = z.enum([
+  "CEREALS_AND_OILSEEDS_CULTIVATION",
+  "LARGE_VEGETABLE_CULTIVATION",
+  "MARKET_GARDENING",
+  "FLOWERS_AND_HORTICULTURE",
+  "VITICULTURE",
+  "FRUITS_AND_OTHER_PERMANENT_CROPS",
+  "CATTLE_FARMING",
+  "PIG_FARMING",
+  "POULTRY_FARMING",
+  "SHEEP_AND_GOAT_FARMING",
+  "POLYCULTURE_AND_LIVESTOCK",
+]);
+
+export type AgriculturalOperationActivity = z.infer<typeof agriculturalOperationActivitySchema>;
 
 export function getLabelForAgriculturalOperationActivity(
   operationActivity: AgriculturalOperationActivity,

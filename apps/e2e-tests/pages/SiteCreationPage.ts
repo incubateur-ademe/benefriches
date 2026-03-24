@@ -40,6 +40,14 @@ export class SiteCreationPage {
     ).toBeVisible();
   }
 
+  async expectDemoIntroductionStep(): Promise<void> {
+    await expect(
+      this.page.getByRole("heading", {
+        name: "Vous allez faire une évaluation demo d’impacts socio-économiques d’un projet sur un site",
+      }),
+    ).toBeVisible();
+  }
+
   async expectStepTitle(title: string): Promise<void> {
     await expect(this.page.getByRole("heading", { name: title })).toBeVisible();
   }

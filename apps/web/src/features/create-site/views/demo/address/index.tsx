@@ -1,25 +1,27 @@
 import { Address } from "shared";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { stepReverted } from "@/features/create-site/core/actions/revert.action";
-import { selectExpressAddressFormViewData } from "@/features/create-site/core/selectors/createSite.selectors";
-import { addressStepCompleted } from "@/features/create-site/core/steps/address/address.actions";
+import {
+  previousStepRequested,
+  stepCompletionRequested,
+} from "@/features/create-site/core/demo/demoFactory";
+import { selectSiteAddressViewData } from "@/features/create-site/core/demo/steps/address/address.selectors";
 
 import AddressForm from "./AddressForm";
 
 function AddressFormContainer() {
   const dispatch = useAppDispatch();
-  const { address, siteNature } = useAppSelector(selectExpressAddressFormViewData);
+  const { initialValues, siteNature } = useAppSelector(selectSiteAddressViewData);
 
   return (
     <AddressForm
-      selectedAddress={address}
+      selectedAddress={initialValues?.address}
       siteNature={siteNature}
       onSubmit={(address: Address) => {
-        dispatch(addressStepCompleted({ address }));
+        dispatch(stepCompletionRequested({ stepId: "DEMO_SITE_ADDRESS", answers: { address } }));
       }}
       onBack={() => {
-        dispatch(stepReverted());
+        dispatch(previousStepRequested());
       }}
     />
   );

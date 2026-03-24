@@ -17,7 +17,7 @@ export const registerIntroductionHandlers = (
   builder
     .addCase(siteCreationInitiated, (_state, action) => {
       return getInitialState({
-        initialStep: action.payload?.skipIntroduction ? "IS_FRICHE" : "INTRODUCTION",
+        initialStep: action.payload?.skipIntroduction ? "IS_FRICHE" : undefined,
         skipUseMutability: action.payload?.skipUseMutability,
       });
     })
@@ -30,9 +30,7 @@ export const registerIntroductionHandlers = (
       state.siteData.isFriche = isFriche;
       if (isFriche) {
         state.siteData.nature = "FRICHE";
-        state.stepsHistory.push(
-          state.skipUseMutability ? "CREATE_MODE_SELECTION" : "USE_MUTABILITY",
-        );
+        state.stepsHistory.push(state.skipUseMutability ? "FRICHE_ACTIVITY" : "USE_MUTABILITY");
       } else {
         state.stepsHistory.push("SITE_NATURE");
       }
@@ -40,22 +38,12 @@ export const registerIntroductionHandlers = (
     .addCase(mutabilityOrImpactsSelectionCompleted, (state, action) => {
       state.useMutability = action.payload.useMutability;
       if (!action.payload.useMutability) {
-        state.stepsHistory.push("CREATE_MODE_SELECTION");
+        state.stepsHistory.push("FRICHE_ACTIVITY");
       }
     })
     .addCase(siteNatureCompleted, (state, action) => {
       state.siteData.nature = action.payload.nature;
-      if (action.payload.nature === "URBAN_ZONE") {
-        state.stepsHistory.push("URBAN_ZONE_TYPE");
-      } else {
-        state.stepsHistory.push("CREATE_MODE_SELECTION");
-      }
-    })
-    .addCase(createModeSelectionCompleted, (state, action) => {
-      const { createMode } = action.payload;
-      state.createMode = createMode;
-
-      switch (state.siteData.nature) {
+      switch (action.payload.nature) {
         case "FRICHE":
           state.stepsHistory.push("FRICHE_ACTIVITY");
           break;
@@ -66,11 +54,15 @@ export const registerIntroductionHandlers = (
           state.stepsHistory.push("NATURAL_AREA_TYPE");
           break;
         case "URBAN_ZONE":
-          state.stepsHistory.push("ADDRESS");
+          state.stepsHistory.push("URBAN_ZONE_TYPE");
           break;
         default:
           break;
       }
+    })
+    .addCase(createModeSelectionCompleted, (state, action) => {
+      state.createMode = action.payload.createMode;
+      state.stepsHistory.push("INTRODUCTION");
     });
 };
 
