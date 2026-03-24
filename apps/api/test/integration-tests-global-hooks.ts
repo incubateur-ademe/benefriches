@@ -22,6 +22,7 @@ afterEach(async () => {
     "site_expenses",
     "site_incomes",
     "site_soils_distributions",
+    "site_urban_zone_features",
     "site_actions",
     "sites",
     "users_feature_alerts",

@@ -10,6 +10,7 @@ import {
   SqlSiteExpense,
   SqlSiteIncome,
   SqlSiteSoilsDistribution,
+  SqlSiteUrbanZoneFeatures,
 } from "src/shared-kernel/adapters/sql-knex/tableTypes";
 import { SitesRepository } from "src/sites/core/gateways/SitesRepository";
 import { SiteEntity } from "src/sites/core/models/siteEntity";
@@ -40,6 +41,8 @@ export class SqlSiteRepository implements SitesRepository {
             return {
               natural_area_type: site.naturalAreaType,
             };
+          case "URBAN_ZONE":
+            return {};
         }
       })();
       const [insertedSite] = await trx<SqlSite>("sites").insert(
@@ -77,19 +80,35 @@ export class SqlSiteRepository implements SitesRepository {
         site_id: insertedSite.id,
       });
 
-      const soilsDistributionToInsert: SqlSiteSoilsDistribution[] = Object.entries(
-        site.soilsDistribution.toJSON(),
-      ).map(([soilType, surfaceArea]) => {
-        return {
+      if (site.nature === "URBAN_ZONE") {
+        await trx<SqlSiteUrbanZoneFeatures>("site_urban_zone_features").insert({
           id: uuid(),
-          soil_type: soilType as SoilType,
-          surface_area: surfaceArea,
           site_id: insertedSite.id,
-        };
-      });
-      await trx<SqlSiteSoilsDistribution[]>("site_soils_distributions").insert(
-        soilsDistributionToInsert,
-      );
+          urban_zone_type: site.urbanZoneType,
+          land_parcels: JSON.stringify(site.landParcels),
+          has_contaminated_soils: site.hasContaminatedSoils ?? null,
+          contaminated_soil_surface: site.contaminatedSoilSurface ?? null,
+          manager_structure_type: site.manager.structureType,
+          manager_name: site.manager.name,
+          vacant_commercial_premises_footprint: site.vacantCommercialPremisesFootprint,
+          vacant_commercial_premises_floor_area: site.vacantCommercialPremisesFloorArea ?? null,
+          full_time_jobs_equivalent: site.fullTimeJobsEquivalent ?? null,
+        });
+      } else {
+        const soilsDistributionToInsert: SqlSiteSoilsDistribution[] = Object.entries(
+          site.soilsDistribution.toJSON(),
+        ).map(([soilType, surfaceArea]) => {
+          return {
+            id: uuid(),
+            soil_type: soilType as SoilType,
+            surface_area: surfaceArea,
+            site_id: insertedSite.id,
+          };
+        });
+        await trx<SqlSiteSoilsDistribution[]>("site_soils_distributions").insert(
+          soilsDistributionToInsert,
+        );
+      }
 
       if (site.yearlyExpenses.length > 0) {
         const siteExpensesToInsert: SqlSiteExpense[] = site.yearlyExpenses.map((expense) => {

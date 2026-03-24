@@ -246,7 +246,7 @@ describe("Sites controller", () => {
       "soilsDistribution",
       "yearlyExpenses",
       "yearlyIncomes",
-    ] satisfies (keyof CreateCustomSiteDto)[])(
+    ] satisfies (keyof Extract<CreateCustomSiteDto, { nature: "AGRICULTURAL_OPERATION" }>)[])(
       "can't create a site without mandatory field %s",
       async (mandatoryField) => {
         const requestBody = {
@@ -573,6 +573,138 @@ describe("Sites controller", () => {
 
       const incomesInDb = await sqlConnection("site_incomes").select("amount", "source");
       expect(incomesInDb).toEqual([]);
+    });
+
+    it("can create an urban zone site", async () => {
+      const urbanZoneDto: Extract<CreateCustomSiteDto, { nature: "URBAN_ZONE" }> = {
+        id: "9fef4ed1-61cd-4787-b48c-20d7b419f3d3",
+        createdBy: "74ac340f-0654-4887-9449-3dbb43ce35b5",
+        nature: "URBAN_ZONE",
+        urbanZoneType: "ECONOMIC_ACTIVITY_ZONE",
+        name: "Zone d'activites des Chenes",
+        description: "Zone urbaine avec ilots d'activite et espaces publics",
+        owner: { name: "Ville de Paris", structureType: "municipality" },
+        address: {
+          city: "Paris",
+          cityCode: "75109",
+          postCode: "75009",
+          banId: "123abc",
+          lat: 48.876517,
+          long: 2.330785,
+          value: "1 rue de Londres, 75009 Paris",
+          streetName: "rue de Londres",
+        },
+        landParcels: [
+          {
+            type: "COMMERCIAL_ACTIVITY_AREA",
+            surfaceArea: 5000,
+            buildingsFloorSurfaceArea: 3200,
+            soilsDistribution: {
+              BUILDINGS: 2500,
+              IMPERMEABLE_SOILS: 1500,
+              MINERAL_SOIL: 1000,
+            },
+          },
+          {
+            type: "PUBLIC_SPACES",
+            surfaceArea: 2000,
+            soilsDistribution: {
+              MINERAL_SOIL: 1200,
+              ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 800,
+            },
+          },
+        ],
+        hasContaminatedSoils: true,
+        contaminatedSoilSurface: 150,
+        manager: { structureType: "activity_park_manager", name: "Gestionnaire ZAE" },
+        vacantCommercialPremisesFootprint: 900,
+        vacantCommercialPremisesFloorArea: 1200,
+        fullTimeJobsEquivalent: 42,
+        yearlyExpenses: [
+          {
+            amount: 45000,
+            bearer: "owner",
+            purpose: "maintenance",
+          },
+        ],
+        yearlyIncomes: [
+          {
+            amount: 12000,
+            source: "other",
+          },
+        ],
+      };
+
+      const response = await supertest(app.getHttpServer())
+        .post("/api/sites/create-custom")
+        .send(urbanZoneDto);
+
+      expect(response.status).toEqual(201);
+
+      const sitesInDb = await sqlConnection("sites").select("*");
+      expect(sitesInDb).toEqual<SqlSite[]>([
+        {
+          id: urbanZoneDto.id,
+          created_by: urbanZoneDto.createdBy,
+          creation_mode: "custom",
+          name: "Zone d'activites des Chenes",
+          owner_structure_type: "municipality",
+          owner_name: "Ville de Paris",
+          tenant_structure_type: null,
+          tenant_name: null,
+          surface_area: 7000,
+          // oxlint-disable-next-line typescript/no-unsafe-assignment
+          created_at: expect.any(Date),
+          description: "Zone urbaine avec ilots d'activite et espaces publics",
+          nature: "URBAN_ZONE",
+          friche_contaminated_soil_surface_area: null,
+          friche_has_contaminated_soils: null,
+          friche_activity: null,
+          friche_accidents_deaths: null,
+          friche_accidents_severe_injuries: null,
+          friche_accidents_minor_injuries: null,
+          agricultural_operation_activity: null,
+          natural_area_type: null,
+          is_operated: null,
+          status: "active",
+          updated_at: null,
+        },
+      ]);
+
+      const urbanZoneFeaturesInDb = await sqlConnection("site_urban_zone_features").select(
+        "site_id",
+        "urban_zone_type",
+        "land_parcels",
+        "has_contaminated_soils",
+        "contaminated_soil_surface",
+        "manager_structure_type",
+        "manager_name",
+        "vacant_commercial_premises_footprint",
+        "vacant_commercial_premises_floor_area",
+        "full_time_jobs_equivalent",
+      );
+      expect(urbanZoneFeaturesInDb).toEqual([
+        {
+          site_id: urbanZoneDto.id,
+          urban_zone_type: "ECONOMIC_ACTIVITY_ZONE",
+          land_parcels: urbanZoneDto.landParcels,
+          has_contaminated_soils: true,
+          contaminated_soil_surface: 150.0,
+          manager_structure_type: "activity_park_manager",
+          manager_name: "Gestionnaire ZAE",
+          vacant_commercial_premises_footprint: 900.0,
+          vacant_commercial_premises_floor_area: 1200.0,
+          full_time_jobs_equivalent: 42.0,
+        },
+      ]);
+
+      const siteAddressInDb = await sqlConnection("addresses").select("value", "site_id");
+      expect(siteAddressInDb).toEqual([
+        { value: urbanZoneDto.address.value, site_id: urbanZoneDto.id },
+      ]);
+
+      const soilsDistributionInDb = await sqlConnection("site_soils_distributions").select("*");
+      expect(soilsDistributionInDb).toEqual([]);
     });
   });
 

@@ -17,7 +17,6 @@ const baseSchema = z.object({
   name: z.string(),
   description: z.string().optional(),
   address: addressSchema,
-  soilsDistribution: soilsDistributionSchema,
   owner: z.object({ structureType: z.string(), name: z.string() }).optional(),
   tenant: z.object({ structureType: z.string(), name: z.string() }).optional(),
   yearlyExpenses: siteYearlyExpenseSchema.array(),
@@ -27,6 +26,7 @@ const baseSchema = z.object({
 const fricheCustomDtoSchema = baseSchema.extend({
   nature: siteNatureSchema.extract(["FRICHE"]),
   fricheActivity: fricheActivitySchema.optional(),
+  soilsDistribution: soilsDistributionSchema,
   contaminatedSoilSurface: z.number().optional(),
   accidentsMinorInjuries: z.number().optional(),
   accidentsSevereInjuries: z.number().optional(),
@@ -48,18 +48,18 @@ const agriculturalCustomSiteDtoSchema = baseSchema.extend({
     "SHEEP_AND_GOAT_FARMING",
     "POLYCULTURE_AND_LIVESTOCK",
   ]),
+  soilsDistribution: soilsDistributionSchema,
   isSiteOperated: z.boolean(),
 });
 
 const naturalCustomSiteDtoSchema = baseSchema.extend({
   nature: siteNatureSchema.extract(["NATURAL_AREA"]),
   naturalAreaType: z.enum(["PRAIRIE", "FOREST", "WET_LAND", "MIXED_NATURAL_AREA"]),
+  soilsDistribution: soilsDistributionSchema,
 });
 
 const urbanZoneCustomSiteDtoSchema = baseSchema.extend({
   nature: siteNatureSchema.extract(["URBAN_ZONE"]),
-  // soils distribution is derived from land parcels
-  soilsDistribution: z.never(),
   urbanZoneType: urbanZoneTypeSchema,
   landParcels: urbanZoneLandParcelSchema.array().nonempty(),
   hasContaminatedSoils: z.boolean().optional(),

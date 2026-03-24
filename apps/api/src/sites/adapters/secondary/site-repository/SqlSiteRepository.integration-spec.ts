@@ -6,8 +6,13 @@ import { SqlSite } from "src/shared-kernel/adapters/sql-knex/tableTypes";
 import {
   CreateAgriculturalOrNaturalSiteProps,
   CreateFricheProps,
+  CreateUrbanZoneSiteProps,
 } from "src/sites/core/models/site";
-import { buildAgriculturalOrNaturalSite, buildFriche } from "src/sites/core/models/site.mock";
+import {
+  buildAgriculturalOrNaturalSite,
+  buildFriche,
+  buildUrbanZoneSite,
+} from "src/sites/core/models/site.mock";
 import { SiteEntity } from "src/sites/core/models/siteEntity";
 
 import { SqlSiteRepository } from "./SqlSiteRepository";
@@ -32,6 +37,16 @@ describe("SqlSiteRepository integration", () => {
   ): SiteEntity {
     return {
       ...buildAgriculturalOrNaturalSite(props),
+      createdAt: now,
+      createdBy: uuid(),
+      creationMode: "custom",
+      status: "active",
+    };
+  }
+
+  function buildUrbanZoneSiteEntity(props?: Partial<CreateUrbanZoneSiteProps>): SiteEntity {
+    return {
+      ...buildUrbanZoneSite(props),
       createdAt: now,
       createdBy: uuid(),
       creationMode: "custom",
@@ -278,6 +293,155 @@ describe("SqlSiteRepository integration", () => {
       expect(incomesResult).toEqual([
         { amount: 20000.0, source: "operations" },
         { amount: 32740.3, source: "other" },
+      ]);
+    });
+
+    it("Saves given urban zone in sites, urban zone features and address tables without site soils distributions", async () => {
+      const site: SiteEntity = buildUrbanZoneSiteEntity({
+        description: "Zone d'activites avec plusieurs ilots",
+        vacantCommercialPremisesFootprint: 900,
+        vacantCommercialPremisesFloorArea: 1200,
+        fullTimeJobsEquivalent: 42,
+        yearlyExpenses: [{ amount: 45000, bearer: "owner", purpose: "maintenance" }],
+        yearlyIncomes: [{ amount: 12000, source: "other" }],
+        hasContaminatedSoils: true,
+        contaminatedSoilSurface: 150,
+        landParcels: [
+          {
+            type: "COMMERCIAL_ACTIVITY_AREA",
+            surfaceArea: 5000,
+            buildingsFloorSurfaceArea: 3200,
+            soilsDistribution: {
+              BUILDINGS: 2500,
+              IMPERMEABLE_SOILS: 1500,
+              MINERAL_SOIL: 1000,
+            },
+          },
+          {
+            type: "PUBLIC_SPACES",
+            surfaceArea: 2000,
+            soilsDistribution: {
+              MINERAL_SOIL: 1200,
+              ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 800,
+            },
+          },
+        ],
+      });
+
+      await siteRepository.save(site);
+
+      const sitesResult = await sqlConnection("sites").select("*");
+      expect(sitesResult).toEqual<SqlSite[]>([
+        {
+          id: site.id,
+          created_by: site.createdBy,
+          creation_mode: "custom",
+          nature: "URBAN_ZONE",
+          name: site.name,
+          created_at: now,
+          owner_name: "Mairie de Lyon",
+          owner_structure_type: "municipality",
+          surface_area: 7000.0,
+          description: "Zone d'activites avec plusieurs ilots",
+          friche_accidents_deaths: null,
+          friche_accidents_severe_injuries: null,
+          friche_accidents_minor_injuries: null,
+          friche_activity: null,
+          friche_contaminated_soil_surface_area: null,
+          friche_has_contaminated_soils: null,
+          tenant_name: null,
+          tenant_structure_type: null,
+          agricultural_operation_activity: null,
+          is_operated: null,
+          natural_area_type: null,
+          status: "active",
+          updated_at: null,
+        },
+      ]);
+
+      const addressResult = await sqlConnection("addresses").select("value", "site_id");
+      expect(addressResult).toEqual([{ value: site.address.value, site_id: site.id }]);
+
+      const urbanZoneResult = await sqlConnection("site_urban_zone_features")
+        .select(
+          "site_id",
+          "urban_zone_type",
+          "land_parcels",
+          "has_contaminated_soils",
+          "contaminated_soil_surface",
+          "manager_structure_type",
+          "manager_name",
+          "vacant_commercial_premises_footprint",
+          "vacant_commercial_premises_floor_area",
+          "full_time_jobs_equivalent",
+        )
+        .where({ site_id: site.id });
+
+      expect(urbanZoneResult).toEqual([
+        {
+          site_id: site.id,
+          urban_zone_type: "ECONOMIC_ACTIVITY_ZONE",
+          land_parcels: [
+            {
+              type: "COMMERCIAL_ACTIVITY_AREA",
+              surfaceArea: 5000,
+              buildingsFloorSurfaceArea: 3200,
+              soilsDistribution: {
+                BUILDINGS: 2500,
+                IMPERMEABLE_SOILS: 1500,
+                MINERAL_SOIL: 1000,
+              },
+            },
+            {
+              type: "PUBLIC_SPACES",
+              surfaceArea: 2000,
+              soilsDistribution: {
+                MINERAL_SOIL: 1200,
+                ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 800,
+              },
+            },
+          ],
+          has_contaminated_soils: true,
+          contaminated_soil_surface: 150.0,
+          manager_structure_type: "activity_park_manager",
+          manager_name: "Gestionnaire ZAE",
+          vacant_commercial_premises_footprint: 900.0,
+          vacant_commercial_premises_floor_area: 1200.0,
+          full_time_jobs_equivalent: 42.0,
+        },
+      ]);
+
+      const soilsDistributionResult = await sqlConnection("site_soils_distributions")
+        .select("site_id")
+        .where({ site_id: site.id });
+      expect(soilsDistributionResult).toEqual([]);
+
+      const expensesResult = await sqlConnection("site_expenses").select(
+        "amount",
+        "purpose",
+        "bearer",
+        "site_id",
+      );
+      expect(expensesResult).toEqual([
+        {
+          amount: 45000.0,
+          purpose: "maintenance",
+          bearer: "owner",
+          site_id: site.id,
+        },
+      ]);
+
+      const incomesResult = await sqlConnection("site_incomes").select(
+        "amount",
+        "source",
+        "site_id",
+      );
+      expect(incomesResult).toEqual([
+        {
+          amount: 12000.0,
+          source: "other",
+          site_id: site.id,
+        },
       ]);
     });
   });
