@@ -1,4 +1,13 @@
-export type NaturalAreaType = "PRAIRIE" | "FOREST" | "WET_LAND" | "MIXED_NATURAL_AREA";
+import z from "zod";
+
+export const naturalAreaTypeSchema = z.enum([
+  "PRAIRIE",
+  "FOREST",
+  "WET_LAND",
+  "MIXED_NATURAL_AREA",
+]);
+
+export type NaturalAreaType = z.infer<typeof naturalAreaTypeSchema>;
 
 export function getLabelForNaturalAreaType(naturalAreaType: NaturalAreaType): string {
   switch (naturalAreaType) {

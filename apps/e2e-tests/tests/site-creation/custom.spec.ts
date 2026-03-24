@@ -9,6 +9,9 @@ test.describe("site creation (custom mode)", () => {
     // Navigate to site creation page
     await siteCreationPage.goto();
 
+    // Mode de création
+    await siteCreationPage.selectCreateMode("custom");
+
     // Introduction step
     await siteCreationPage.expectIntroductionStep();
     await siteCreationPage.clickStart();
@@ -18,9 +21,6 @@ test.describe("site creation (custom mode)", () => {
 
     // Que souhaitez-vous évaluer ?
     await siteCreationPage.selectWhatToEvaluate("impacts");
-
-    // Mode de création
-    await siteCreationPage.selectCreateMode("custom");
 
     // Type de friche
     await siteCreationPage.expectStepTitle("De quel type de friche s'agit-il ?");
@@ -211,6 +211,9 @@ test.describe("site creation (custom mode)", () => {
     // Navigate to site creation page
     await siteCreationPage.goto();
 
+    // Mode de création
+    await siteCreationPage.selectCreateMode("custom");
+
     // Introduction step
     await siteCreationPage.expectIntroductionStep();
     await siteCreationPage.clickStart();
@@ -220,9 +223,6 @@ test.describe("site creation (custom mode)", () => {
 
     // Quel est le type de site ?
     await siteCreationPage.selectSiteNature("AGRICULTURAL_OPERATION");
-
-    // Mode de création
-    await siteCreationPage.selectCreateMode("custom");
 
     // Type d'exploitation agricole
     await siteCreationPage.expectStepTitle("De quel type d'exploitation agricole s'agit-il");

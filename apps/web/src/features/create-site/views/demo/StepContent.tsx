@@ -1,62 +1,57 @@
-import { useAppSelector } from "@/app/hooks/store.hooks";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 
-import { selectCurrentStep } from "../../core/createSite.reducer";
+import { DemoSiteCreationStep } from "../../core/demo/demoSteps";
 import { HTML_MAIN_TITLE } from "../SiteCreationWizard";
-import AgriculturalOperationActivityForm from "../common-views/agricultural-operation-activity";
-import NaturalAreaTypeForm from "../common-views/natural-area-type";
-import FricheActivityForm from "../friche/friche-activity";
 import AddressForm from "./address";
-import SiteCreationResult from "./result";
+import DemoSiteIntroductionContainer from "./introduction";
+import DemoSiteCreationResultContainer from "./result";
+import SiteActivitySelectionFormContainer from "./site-activity";
+import SiteNatureFormContainer from "./site-nature";
 import SiteSurfaceAreaForm from "./surface-area";
 
-function SiteCreationExpressStepContent() {
-  const currentStep = useAppSelector(selectCurrentStep);
+type Props = { currentStep: DemoSiteCreationStep };
 
+function DemoSiteCreationStepContent({ currentStep }: Props) {
   switch (currentStep) {
-    case "ADDRESS":
+    case "DEMO_INTRODUCTION":
+      return (
+        <>
+          <HtmlTitle>{`Introduction - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <DemoSiteIntroductionContainer />
+        </>
+      );
+    case "DEMO_SITE_NATURE_SELECTION":
+      return (
+        <>
+          <HtmlTitle>{`Type de site - ${HTML_MAIN_TITLE}`}</HtmlTitle>
+          <SiteNatureFormContainer />
+        </>
+      );
+    case "DEMO_SITE_ADDRESS":
       return (
         <>
           <HtmlTitle>{`Adresse - ${HTML_MAIN_TITLE}`}</HtmlTitle>
           <AddressForm />
         </>
       );
-    case "SURFACE_AREA":
+    case "DEMO_SITE_SURFACE_AREA":
       return (
         <>
           <HtmlTitle>{`Surface du site - ${HTML_MAIN_TITLE}`}</HtmlTitle>
           <SiteSurfaceAreaForm />
         </>
       );
-    case "FRICHE_ACTIVITY":
-      return (
-        <>
-          <HtmlTitle>{`Ancienne activité - ${HTML_MAIN_TITLE}`}</HtmlTitle>
-          <FricheActivityForm />
-        </>
-      );
-    case "AGRICULTURAL_OPERATION_ACTIVITY":
-      return (
-        <>
-          <HtmlTitle>{`Activité de l'exploitation - ${HTML_MAIN_TITLE}`}</HtmlTitle>
-          <AgriculturalOperationActivityForm />
-        </>
-      );
-    case "NATURAL_AREA_TYPE":
-      return (
-        <>
-          <HtmlTitle>{`Type de surface de nature - ${HTML_MAIN_TITLE}`}</HtmlTitle>
-          <NaturalAreaTypeForm />
-        </>
-      );
-    case "CREATION_RESULT":
+    case "DEMO_SITE_ACTIVITY_SELECTION":
+      return <SiteActivitySelectionFormContainer />;
+
+    case "DEMO_CREATION_RESULT":
       return (
         <>
           <HtmlTitle>{`Résultat - ${HTML_MAIN_TITLE}`}</HtmlTitle>
-          <SiteCreationResult />
+          <DemoSiteCreationResultContainer />
         </>
       );
   }
 }
 
-export default SiteCreationExpressStepContent;
+export default DemoSiteCreationStepContent;

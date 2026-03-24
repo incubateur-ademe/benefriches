@@ -39,7 +39,7 @@ test.describe("onboarding", () => {
 
     // Verify landing on site creation page
     await expect(page).toHaveURL((url) => url.pathname === "/creer-site-foncier");
-    await expect(page.getByText("Votre site est-il une friche")).toBeVisible();
+    await expect(page.getByText("Renseignement du site")).toBeVisible();
   });
 
   test("compatibility evaluation: allows new user to create account and complete onboarding", async ({

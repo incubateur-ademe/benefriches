@@ -1,25 +1,29 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { stepReverted } from "@/features/create-site/core/actions/revert.action";
-import { expressSiteSaved } from "@/features/create-site/core/steps/final/final.actions";
-import { siteSurfaceAreaStepCompleted } from "@/features/create-site/core/steps/spaces/spaces.actions";
-import { selectSiteSurfaceAreaFormViewData } from "@/features/create-site/core/steps/spaces/spaces.selectors";
+import {
+  previousStepRequested,
+  stepCompletionRequested,
+} from "@/features/create-site/core/demo/demoFactory";
+import { demoSiteSaved } from "@/features/create-site/core/demo/demoSiteSaved.action";
+import { selectSiteSurfaceAreaFormViewData } from "@/features/create-site/core/demo/steps/surface-area/surfaceArea.selectors";
 
 import SiteSurfaceAreaForm from "../../common-views/SiteSurfaceAreaForm";
 
 function SiteSurfaceAreaFormContainer() {
   const dispatch = useAppDispatch();
-  const { siteSurfaceArea, siteNature } = useAppSelector(selectSiteSurfaceAreaFormViewData);
+  const { initialValues, siteNature } = useAppSelector(selectSiteSurfaceAreaFormViewData);
 
   return (
     <SiteSurfaceAreaForm
-      initialValues={{ surfaceArea: siteSurfaceArea }}
+      initialValues={initialValues ?? {}}
       siteNature={siteNature}
-      onSubmit={(formData: { surfaceArea: number }) => {
-        dispatch(siteSurfaceAreaStepCompleted({ surfaceArea: formData.surfaceArea }));
-        void dispatch(expressSiteSaved());
+      onSubmit={({ surfaceArea }) => {
+        dispatch(
+          stepCompletionRequested({ stepId: "DEMO_SITE_SURFACE_AREA", answers: { surfaceArea } }),
+        );
+        void dispatch(demoSiteSaved());
       }}
       onBack={() => {
-        dispatch(stepReverted());
+        dispatch(previousStepRequested());
       }}
     />
   );

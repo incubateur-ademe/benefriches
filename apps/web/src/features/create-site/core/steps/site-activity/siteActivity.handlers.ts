@@ -28,15 +28,12 @@ export const registerSiteActivityHandlers = (
 export const revertSiteActivityStep = (state: SiteCreationState): void => {
   switch (state.stepsHistory.at(-1)) {
     case "FRICHE_ACTIVITY":
-      state.createMode = undefined;
       state.siteData.fricheActivity = undefined;
       break;
     case "AGRICULTURAL_OPERATION_ACTIVITY":
-      state.createMode = undefined;
       state.siteData.agriculturalOperationActivity = undefined;
       break;
     case "NATURAL_AREA_TYPE":
-      state.createMode = undefined;
       state.siteData.naturalAreaType = undefined;
       break;
   }

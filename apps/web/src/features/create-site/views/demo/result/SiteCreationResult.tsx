@@ -1,5 +1,6 @@
 import Alert from "@codegouvfr/react-dsfr/Alert";
 import Button from "@codegouvfr/react-dsfr/Button";
+import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 
 import { routes } from "@/app/router";
 import classNames from "@/shared/views/clsx";
@@ -18,10 +19,10 @@ type Props = {
   siteId: string;
   siteName: string;
   loadingState: "idle" | "loading" | "success" | "error";
-  onBack: () => void;
+  onErrorBack: () => void;
 };
 
-function SiteCreationResult({ siteId, siteName, loadingState, onBack }: Props) {
+function SiteCreationResult({ siteId, siteName, loadingState, onErrorBack }: Props) {
   switch (loadingState) {
     case "idle":
       return null;
@@ -36,7 +37,7 @@ function SiteCreationResult({ siteId, siteName, loadingState, onBack }: Props) {
             title="Le site n'a pas pu être enregistré"
             className="my-7"
           />
-          <Button onClick={onBack} priority="secondary">
+          <Button onClick={onErrorBack} priority="secondary">
             Précédent
           </Button>
         </WizardFormLayout>
@@ -63,15 +64,22 @@ function SiteCreationResult({ siteId, siteName, loadingState, onBack }: Props) {
 
           <SiteFeaturesModalView siteId={siteId} />
           <EditorialPageButtonsSection>
-            <Button size="large" linkProps={routes.createProject({ siteId }).link}>
-              Evaluer un projet sur ce site
-            </Button>
+            <ButtonsGroup
+              inlineLayoutWhen="always"
+              alignment="between"
+              buttons={[
+                {
+                  linkProps: routes.myEvaluations().link,
+                  priority: "secondary",
+                  children: "Retour à mes évaluations",
+                },
+                {
+                  linkProps: routes.createProject({ siteId }).link,
+                  children: "Evaluer un projet sur ce site",
+                },
+              ]}
+            />
           </EditorialPageButtonsSection>
-          <p className="text-sm mt-5">
-            Attention, le site ayant été créé en mode "démo", c'est-à-dire avec des données
-            moyennes, les impacts du projet que vous allez renseigner peuvent ne pas refléter la
-            réalité.
-          </p>
         </EditorialPageLayout>
       );
   }

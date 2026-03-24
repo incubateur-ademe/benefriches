@@ -1,0 +1,57 @@
+import type { z } from "zod";
+
+import { SiteCreationState } from "../createSite.reducer";
+import { AnswerStepHandlerMap, NavigationHandlerRegistry } from "./handlerRegistry.types";
+
+export type StepData<T> = {
+  completed: boolean;
+  payload?: T;
+  defaultValues?: T;
+};
+
+export type StepsState<Schemas extends Record<string, z.ZodTypeAny>> = Partial<{
+  [K in keyof Schemas]: StepData<z.infer<Schemas[K]>>;
+}>;
+
+export type AnswersByStep<Schemas extends Record<string, z.ZodTypeAny>> = {
+  [K in keyof Schemas]: z.infer<Schemas[K]>;
+};
+
+export type StepCompletionPayload<
+  Schemas extends Record<string, z.ZodTypeAny>,
+  K extends keyof Schemas = keyof Schemas,
+> = { [P in K]: { stepId: P; answers: AnswersByStep<Schemas>[P] } }[K];
+
+export type SiteSlice<Schemas extends Record<string, z.ZodTypeAny>, CreationStep extends string> = {
+  currentStep: CreationStep;
+  steps: StepsState<Schemas>;
+  stepsSequence: CreationStep[];
+  firstSequenceStep: CreationStep;
+};
+
+export type SiteFactoryConfig<
+  Schemas extends Record<string, z.ZodTypeAny>,
+  IntroStep extends string,
+  SummaryStep extends string,
+  AnswerStepId extends string,
+  TStepContext,
+> = {
+  introductionSteps: readonly IntroStep[];
+  summarySteps: readonly SummaryStep[];
+  answerStepIds: readonly AnswerStepId[];
+  // Contrainte : keyof Schemas ⊆ AnswerStepId
+  schemas: Schemas &
+    Record<keyof Schemas extends AnswerStepId ? keyof Schemas : never, z.ZodTypeAny>;
+  getSlice: (
+    state: SiteCreationState,
+  ) => SiteSlice<Schemas, IntroStep | SummaryStep | AnswerStepId>;
+  buildContext: (state: SiteCreationState) => TStepContext;
+  answerStepHandlers: Partial<
+    AnswerStepHandlerMap<Schemas, IntroStep | SummaryStep | AnswerStepId, TStepContext>
+  >;
+  navigationHandlerRegistry: NavigationHandlerRegistry<
+    IntroStep | SummaryStep | AnswerStepId,
+    TStepContext
+  >;
+  actionPrefix: string;
+};

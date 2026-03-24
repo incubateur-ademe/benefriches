@@ -1,7 +1,6 @@
 import Button from "@codegouvfr/react-dsfr/Button";
 import { Description, Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 
-import { useAppSelector } from "@/app/hooks/store.hooks";
 import { routes } from "@/app/router";
 import classNames from "@/shared/views/clsx";
 import { useNavigationBlocker } from "@/shared/views/hooks/useNavigationBlocker";
@@ -14,9 +13,8 @@ const DIALOG_DSFR_CSS = [
   "bg-[var(--grey-50-1000)]/[0.64] dark:bg-[var(--grey-1000-100)]/[0.64]",
 ];
 
-export default function NavigationBlockerDialog() {
-  const saveState = useAppSelector((state) => state.siteCreation.saveLoadingState);
-
+type Props = { saveState: "idle" | "loading" | "success" | "error" };
+export default function NavigationBlockerDialog({ saveState }: Props) {
   const { isModalOpened, onConfirmNavigation, onCancelNavigation } = useNavigationBlocker({
     shouldBlockNavigation: saveState !== "success",
     allowRoute: (route) => route.name === routes.createSite.name,

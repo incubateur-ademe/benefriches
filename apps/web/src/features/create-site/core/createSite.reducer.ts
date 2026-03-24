@@ -6,6 +6,8 @@ import { RootState } from "@/app/store/store";
 import { SiteCreationData } from "@/features/create-site/core/siteFoncier.types";
 
 import { stepReverted } from "./actions/revert.action";
+import { demoSiteCreationReducer } from "./demo/demoFactory";
+import { DemoSiteCreationStep, DemoStepsState } from "./demo/demoSteps";
 import { revertAddressStep, registerAddressHandlers } from "./steps/address/address.handlers";
 import {
   revertContaminationAndAccidentsStep,
@@ -113,6 +115,23 @@ const INITIAL_URBAN_ZONE_STATE: UrbanZoneSiteCreationState = {
   saveState: "idle",
 };
 
+export type DemoSiteCreationState = {
+  currentStep: DemoSiteCreationStep;
+  stepsSequence: DemoSiteCreationStep[];
+  firstSequenceStep: DemoSiteCreationStep;
+  steps: DemoStepsState;
+  saveState: "idle" | "loading" | "success" | "error";
+};
+
+const FIRST_DEMO_STEP: DemoSiteCreationStep = "DEMO_INTRODUCTION";
+const INITIAL_DEMO_STATE: DemoSiteCreationState = {
+  currentStep: FIRST_DEMO_STEP,
+  stepsSequence: [],
+  firstSequenceStep: FIRST_DEMO_STEP,
+  steps: {},
+  saveState: "idle",
+};
+
 export type SiteCreationState = {
   stepsHistory: SiteCreationStep[];
   siteData: SiteCreationData;
@@ -122,6 +141,7 @@ export type SiteCreationState = {
   saveLoadingState: "idle" | "loading" | "success" | "error";
   surfaceAreaInputMode: "percentage" | "squareMeters";
   urbanZone: UrbanZoneSiteCreationState;
+  demo: DemoSiteCreationState;
 };
 
 export const getInitialState = (props?: {
@@ -129,7 +149,7 @@ export const getInitialState = (props?: {
   skipUseMutability?: boolean;
 }): SiteCreationState => {
   return {
-    stepsHistory: [props?.initialStep ?? "INTRODUCTION"],
+    stepsHistory: [props?.initialStep ?? "CREATE_MODE_SELECTION"],
     saveLoadingState: "idle",
     createMode: undefined,
     skipUseMutability: props?.skipUseMutability ? props?.skipUseMutability : false,
@@ -141,6 +161,7 @@ export const getInitialState = (props?: {
     },
     surfaceAreaInputMode: "percentage",
     urbanZone: INITIAL_URBAN_ZONE_STATE,
+    demo: INITIAL_DEMO_STATE,
   } as const;
 };
 
@@ -188,6 +209,7 @@ const siteCreationRootReducer = reduceReducers<SiteCreationState>(
   getInitialState(),
   siteCreationReducer,
   urbanZoneSiteCreationReducer,
+  demoSiteCreationReducer,
 );
 
 export default siteCreationRootReducer;

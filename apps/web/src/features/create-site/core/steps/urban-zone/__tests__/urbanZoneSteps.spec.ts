@@ -23,14 +23,14 @@ describe("Site creation: urban zone steps", () => {
       expectNewCurrentStep(initialRootState, newState, "URBAN_ZONE_TYPE");
     });
 
-    it("still goes to CREATE_MODE_SELECTION step for non-urban-zone natures", () => {
+    it("goes to AGRICULTURAL_OPERATION_ACTIVITY step for AGRICULTURAL_OPERATION site", () => {
       const store = new StoreBuilder().withStepsHistory(["SITE_NATURE"]).build();
       const initialRootState = store.getState();
 
       store.dispatch(siteNatureCompleted({ nature: "AGRICULTURAL_OPERATION" }));
 
       const newState = store.getState();
-      expectNewCurrentStep(initialRootState, newState, "CREATE_MODE_SELECTION");
+      expectNewCurrentStep(initialRootState, newState, "AGRICULTURAL_OPERATION_ACTIVITY");
     });
   });
 
@@ -103,31 +103,33 @@ describe("Site creation: urban zone steps", () => {
       expectNewCurrentStep(initialRootState, newState, "URBAN_ZONE_LAND_PARCELS_INTRODUCTION");
     });
 
-    it("goes to SURFACE_AREA for express mode", () => {
-      const store = new StoreBuilder()
-        .withStepsHistory(["ADDRESS"])
-        .withCreateMode("express")
-        .withCreationData({ nature: "FRICHE" })
-        .build();
-      const initialRootState = store.getState();
+    it.each(["FRICHE", "AGRICULTURAL_OPERATION", "NATURAL_AREA"] as const)(
+      "goes to SPACES_INTRODUCTION for site nature: %s",
+      (siteNature) => {
+        const store = new StoreBuilder()
+          .withStepsHistory(["ADDRESS"])
+          .withCreationData({ nature: siteNature })
+          .build();
+        const initialRootState = store.getState();
 
-      store.dispatch(
-        addressStepCompleted({
-          address: {
-            value: "1 rue de la Paix, 75001 Paris",
-            city: "Paris",
-            cityCode: "75001",
-            postCode: "75001",
-            banId: "75056_9575_00001",
-            lat: 48.8698,
-            long: 2.3322,
-          },
-        }),
-      );
+        store.dispatch(
+          addressStepCompleted({
+            address: {
+              value: "1 rue de la Paix, 75001 Paris",
+              city: "Paris",
+              cityCode: "75001",
+              postCode: "75001",
+              banId: "75056_9575_00001",
+              lat: 48.8698,
+              long: 2.3322,
+            },
+          }),
+        );
 
-      const newState = store.getState();
-      expectNewCurrentStep(initialRootState, newState, "SURFACE_AREA");
-    });
+        const newState = store.getState();
+        expectNewCurrentStep(initialRootState, newState, "SPACES_INTRODUCTION");
+      },
+    );
 
     it("still goes to SPACES_INTRODUCTION for non-urban-zone custom sites", () => {
       const store = new StoreBuilder()
