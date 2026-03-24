@@ -138,6 +138,7 @@ describe("ReconversionProjects controller", () => {
       await sqlConnection("sites").insert({
         id: siteId,
         name: "Site name",
+        nature: "FRICHE",
         surface_area: 14000,
         owner_structure_type: "company",
         created_at: new Date(),
@@ -223,6 +224,7 @@ describe("ReconversionProjects controller", () => {
       await sqlConnection("sites").insert({
         id: siteId,
         name: "Site name",
+        nature: "FRICHE",
         surface_area: 14000,
         owner_structure_type: "company",
         created_at: new Date(),
