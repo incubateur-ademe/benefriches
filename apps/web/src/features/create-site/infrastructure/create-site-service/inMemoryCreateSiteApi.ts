@@ -1,6 +1,6 @@
 import { CreateExpressSiteDto } from "shared";
 
-import { CreateSiteGateway, CustomSitePayload } from "../../core/steps/final/final.actions";
+import { CreateSiteGateway, CustomSitePayload } from "../../core/createSiteGateway";
 
 export class InMemoryCreateSiteService implements CreateSiteGateway {
   _customSites: CustomSitePayload[] = [];

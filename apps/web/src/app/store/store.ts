@@ -8,7 +8,7 @@ import { SaveReconversionProjectGateway } from "@/features/create-project/core/a
 import { PhotovoltaicPerformanceGateway } from "@/features/create-project/core/renewable-energy/actions/getPhotovoltaicExpectedPerformance.action";
 import { SiteMunicipalityDataGateway as CreateSiteMunicipalityDataGateway } from "@/features/create-site/core/actions/siteMunicipalityData.actions";
 import { SoilsCarbonStorageGateway as SiteSoilsCarbonStorageGateway } from "@/features/create-site/core/actions/siteSoilsCarbonStorage.actions";
-import { CreateSiteGateway } from "@/features/create-site/core/steps/final/final.actions";
+import { CreateSiteGateway } from "@/features/create-site/core/createSiteGateway";
 import { SiteEvaluationGateway } from "@/features/my-evaluations/application/evaluationsList.actions";
 import { AuthenticationGateway } from "@/features/onboarding/core/AuthenticationGateway";
 import { CreateUserGateway } from "@/features/onboarding/core/createUser.action";

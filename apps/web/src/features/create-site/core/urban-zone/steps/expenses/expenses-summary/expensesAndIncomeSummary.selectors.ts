@@ -3,6 +3,7 @@ import { typedObjectEntries, type SiteYearlyExpense, type SiteYearlyIncome } fro
 import type { RootState } from "@/app/store/store";
 
 import { ReadStateHelper } from "../../../stateHelpers";
+import type { UrbanZoneStepsState } from "../../../urbanZoneSteps";
 
 export type ExpensesAndIncomeSummaryViewData = {
   expenses: SiteYearlyExpense[];
@@ -23,11 +24,9 @@ function toExpenses(
   }, []);
 }
 
-export const selectExpensesAndIncomeSummaryViewData = (
-  state: RootState,
+export const getExpensesAndIncomeSummaryViewData = (
+  stepsState: UrbanZoneStepsState,
 ): ExpensesAndIncomeSummaryViewData => {
-  const stepsState = state.siteCreation.urbanZone.steps;
-
   const vacantExpenses = ReadStateHelper.getStepAnswers(
     stepsState,
     "URBAN_ZONE_VACANT_PREMISES_EXPENSES",
@@ -106,4 +105,10 @@ export const selectExpensesAndIncomeSummaryViewData = (
   }, []);
 
   return { expenses, incomes };
+};
+
+export const selectExpensesAndIncomeSummaryViewData = (
+  state: RootState,
+): ExpensesAndIncomeSummaryViewData => {
+  return getExpensesAndIncomeSummaryViewData(state.siteCreation.urbanZone.steps);
 };

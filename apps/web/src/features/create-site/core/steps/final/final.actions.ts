@@ -1,19 +1,10 @@
-import {
-  createCustomSiteDtoSchema,
-  createExpressSiteDtoSchema,
-  CreateExpressSiteDto,
-} from "shared";
-import z from "zod";
+import { createExpressSiteDtoSchema, CreateExpressSiteDto } from "shared";
 
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
-
-const customSiteSchema = createCustomSiteDtoSchema;
-export type CustomSitePayload = z.infer<typeof customSiteSchema>;
-
-export interface CreateSiteGateway {
-  saveCustom(siteData: CustomSitePayload): Promise<void>;
-  saveExpress(siteData: CreateExpressSiteDto): Promise<void>;
-}
+import {
+  customSiteSchema,
+  type CustomSitePayload,
+} from "@/features/create-site/core/createSiteGateway";
 
 export const customSiteSaved = createAppAsyncThunk(
   "siteCreation/customSiteSaved",

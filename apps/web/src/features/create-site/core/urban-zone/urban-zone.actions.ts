@@ -6,11 +6,14 @@ export type StepCompletionPayload<T extends SchematizedAnswerStepId = Schematize
   [K in T]: { stepId: K; answers: AnswersByStep[K] };
 }[T];
 
-export const previousStepRequested = createAction("siteCreation/urbanZone/previousStepRequested");
+export const makeUrbanZoneActionType = (actionName: string) =>
+  `siteCreation/urbanZone/${actionName}`;
 
-export const nextStepRequested = createAction("siteCreation/urbanZone/nextStepRequested");
+export const previousStepRequested = createAction(makeUrbanZoneActionType("previousStepRequested"));
+
+export const nextStepRequested = createAction(makeUrbanZoneActionType("nextStepRequested"));
 
 export const stepCompletionRequested = createAction(
-  "siteCreation/urbanZone/stepCompletionRequested",
+  makeUrbanZoneActionType("stepCompletionRequested"),
   (payload: StepCompletionPayload) => ({ payload }),
 );

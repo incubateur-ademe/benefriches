@@ -1,17 +1,17 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { selectUrbanZoneNamingViewData } from "@/features/create-site/core/urban-zone/steps/naming/naming.selectors";
+import { selectUrbanZoneCreationResultViewData } from "@/features/create-site/core/urban-zone/steps/creation-result/creationResult.selectors";
 import { previousStepRequested } from "@/features/create-site/core/urban-zone/urban-zone.actions";
 import SiteCreationResult from "@/features/create-site/views/custom/result/SiteCreationResult";
 
 function UrbanZoneCreationResultContainer() {
   const dispatch = useAppDispatch();
-  const { siteId, initialValues } = useAppSelector(selectUrbanZoneNamingViewData);
+  const viewData = useAppSelector(selectUrbanZoneCreationResultViewData);
 
   return (
     <SiteCreationResult
-      siteId={siteId}
-      siteName={initialValues.name}
-      loadingState="success"
+      siteId={viewData.siteId}
+      siteName={viewData.siteName}
+      loadingState={viewData.saveState}
       onBack={() => dispatch(previousStepRequested())}
     />
   );

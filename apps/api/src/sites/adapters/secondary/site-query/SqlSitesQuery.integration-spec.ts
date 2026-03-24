@@ -2,13 +2,17 @@ import knex, { Knex } from "knex";
 import { v4 as uuid } from "uuid";
 
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
+import { buildUrbanZoneSite } from "src/sites/core/models/site.mock";
+import { SiteEntity } from "src/sites/core/models/siteEntity";
 import { SiteFeaturesView, SiteView } from "src/sites/core/models/views";
 
+import { SqlSiteRepository } from "../site-repository/SqlSiteRepository";
 import { SqlSitesQuery } from "./SqlSitesQuery";
 
 describe("SqlSitesQuery integration", () => {
   let sqlConnection: Knex;
   let sitesQuery: SqlSitesQuery;
+  let siteRepository: SqlSiteRepository;
   const now = new Date();
 
   beforeAll(() => {
@@ -21,6 +25,7 @@ describe("SqlSitesQuery integration", () => {
 
   beforeEach(() => {
     sitesQuery = new SqlSitesQuery(sqlConnection);
+    siteRepository = new SqlSiteRepository(sqlConnection);
   });
 
   describe("getSiteFeaturesById", () => {
@@ -306,6 +311,88 @@ describe("SqlSitesQuery integration", () => {
       const result = await sitesQuery.getSiteFeaturesById(nonExistingSiteId);
 
       expect(result).toEqual(undefined);
+    });
+
+    it("gets urban zone with aggregated soils distribution and urban zone fields", async () => {
+      const site: SiteEntity = {
+        ...buildUrbanZoneSite({
+          description: "Zone d'activites economiques",
+          owner: { structureType: "municipality", name: "Ville de Lyon" },
+          manager: { structureType: "activity_park_manager", name: "Gestionnaire ZAE" },
+          vacantCommercialPremisesFootprint: 900,
+          vacantCommercialPremisesFloorArea: 1200,
+          fullTimeJobsEquivalent: 42,
+          hasContaminatedSoils: true,
+          contaminatedSoilSurface: 150,
+          landParcels: [
+            {
+              type: "COMMERCIAL_ACTIVITY_AREA",
+              surfaceArea: 5000,
+              buildingsFloorSurfaceArea: 3200,
+              soilsDistribution: {
+                BUILDINGS: 2500,
+                IMPERMEABLE_SOILS: 1500,
+                MINERAL_SOIL: 1000,
+              },
+            },
+            {
+              type: "PUBLIC_SPACES",
+              surfaceArea: 2000,
+              soilsDistribution: {
+                MINERAL_SOIL: 1200,
+                ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 800,
+              },
+            },
+          ],
+        }),
+        createdAt: now,
+        createdBy: uuid(),
+        creationMode: "custom",
+        status: "active",
+      };
+
+      await siteRepository.save(site);
+
+      const result = await sitesQuery.getSiteFeaturesById(site.id);
+
+      const expectedResult: SiteFeaturesView = {
+        id: site.id,
+        name: site.name,
+        nature: "URBAN_ZONE",
+        isExpressSite: false,
+        description: "Zone d'activites economiques",
+        surfaceArea: 7000,
+        owner: { structureType: "municipality", name: "Ville de Lyon" },
+        yearlyExpenses: [],
+        yearlyIncomes: [],
+        address: {
+          city: site.address.city,
+          cityCode: site.address.cityCode,
+          postCode: site.address.postCode,
+          banId: site.address.banId,
+          lat: site.address.lat,
+          long: site.address.long,
+          value: site.address.value,
+          streetName: site.address.streetName,
+          streetNumber: site.address.streetNumber,
+        },
+        soilsDistribution: {
+          BUILDINGS: 2500,
+          IMPERMEABLE_SOILS: 1500,
+          MINERAL_SOIL: 2200,
+          ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 800,
+        },
+        urbanZoneType: site.urbanZoneType,
+        landParcels: site.landParcels,
+        hasContaminatedSoils: true,
+        contaminatedSoilSurface: 150,
+        manager: { structureType: "activity_park_manager", name: "Gestionnaire ZAE" },
+        vacantCommercialPremisesFootprint: 900,
+        vacantCommercialPremisesFloorArea: 1200,
+        fullTimeJobsEquivalent: 42,
+      };
+
+      expect(result).toEqual(expectedResult);
     });
   });
 

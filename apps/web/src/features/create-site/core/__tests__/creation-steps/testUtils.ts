@@ -8,6 +8,10 @@ import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import { getInitialState, SiteCreationStep } from "../../createSite.reducer";
 import { SiteCreationData } from "../../siteFoncier.types";
+import type {
+  UrbanZoneSiteCreationStep,
+  UrbanZoneStepsState,
+} from "../../urban-zone/urbanZoneSteps";
 
 export const expectNewCurrentStep = (
   initialState: RootState,
@@ -64,6 +68,28 @@ export class StoreBuilder {
     this.preloadedRootState.siteCreation.siteData = {
       ...this.preloadedRootState.siteCreation.siteData,
       ...creationData,
+    };
+    return this;
+  }
+
+  withUrbanZoneSteps(steps: UrbanZoneStepsState) {
+    this.preloadedRootState.siteCreation = {
+      ...this.preloadedRootState.siteCreation,
+      urbanZone: {
+        ...this.preloadedRootState.siteCreation.urbanZone,
+        steps,
+      },
+    };
+    return this;
+  }
+
+  withUrbanZoneCurrentStep(currentStep: UrbanZoneSiteCreationStep) {
+    this.preloadedRootState.siteCreation = {
+      ...this.preloadedRootState.siteCreation,
+      urbanZone: {
+        ...this.preloadedRootState.siteCreation.urbanZone,
+        currentStep,
+      },
     };
     return this;
   }

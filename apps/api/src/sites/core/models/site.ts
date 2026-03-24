@@ -320,7 +320,7 @@ type UrbanZoneSiteCreationResult =
   | { success: true; site: UrbanZoneSite }
   | { success: false; error: $ZodFlattenedError<z.infer<typeof urbanZoneSiteSchema>> };
 
-function aggregateSoilsFromParcels(
+export function aggregateSoilsFromParcels(
   landParcels: UrbanZoneLandParcel[],
 ): SurfaceAreaDistribution<SoilType> {
   const aggregated = new SurfaceAreaDistribution<SoilType>();

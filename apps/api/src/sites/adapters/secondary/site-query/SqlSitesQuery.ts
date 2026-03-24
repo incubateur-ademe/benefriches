@@ -6,6 +6,10 @@ import {
   SiteActionStatus,
   SiteActionType,
   SiteNature,
+  SurfaceAreaDistribution,
+  type SoilType,
+  type UrbanZoneLandParcel,
+  type UrbanZoneType,
 } from "shared";
 
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
@@ -15,12 +19,25 @@ import {
   SqlSiteExpense,
   SqlSiteIncome,
   SqlSiteSoilsDistribution,
+  SqlSiteUrbanZoneFeatures,
 } from "src/shared-kernel/adapters/sql-knex/tableTypes";
 import { SitesQuery, SiteSurfaceAreaAndCityCode } from "src/sites/core/gateways/SitesQuery";
+import { aggregateSoilsFromParcels } from "src/sites/core/models/site";
 import { SiteFeaturesView, SiteView } from "src/sites/core/models/views";
 
 export class SqlSitesQuery implements SitesQuery {
   constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}
+
+  private parseUrbanZoneLandParcels(
+    landParcels: SqlSiteUrbanZoneFeatures["land_parcels"],
+  ): UrbanZoneLandParcel[] {
+    if (!landParcels) return [];
+    if (typeof landParcels === "string") {
+      return JSON.parse(landParcels) as UrbanZoneLandParcel[];
+    }
+
+    return landParcels as UrbanZoneLandParcel[];
+  }
 
   async getSiteFeaturesById(siteId: string): Promise<SiteFeaturesView | undefined> {
     const sqlResult = (await this.sqlConnection("sites")
@@ -32,6 +49,11 @@ export class SqlSitesQuery implements SitesQuery {
         "site_soils_distributions as soils_distribution",
         "sites.id",
         "soils_distribution.site_id",
+      )
+      .leftJoin(
+        "site_urban_zone_features as urban_zone_features",
+        "sites.id",
+        "urban_zone_features.site_id",
       )
       .select(
         "sites.id",
@@ -61,6 +83,15 @@ export class SqlSitesQuery implements SitesQuery {
         "address.long as address_long",
         "address.street_name as address_street_name",
         "address.street_number as address_street_number",
+        "urban_zone_features.urban_zone_type",
+        "urban_zone_features.land_parcels",
+        "urban_zone_features.has_contaminated_soils",
+        "urban_zone_features.contaminated_soil_surface",
+        "urban_zone_features.manager_structure_type",
+        "urban_zone_features.manager_name",
+        "urban_zone_features.vacant_commercial_premises_footprint",
+        "urban_zone_features.vacant_commercial_premises_floor_area",
+        "urban_zone_features.full_time_jobs_equivalent",
         this.sqlConnection.raw(`
           jsonb_agg(
             distinct jsonb_build_object(
@@ -84,9 +115,9 @@ export class SqlSitesQuery implements SitesQuery {
               'surface_area', soils_distribution.surface_area
             )
           ) FILTER (WHERE soils_distribution.id IS NOT NULL) AS "soils_distribution"
-    `),
+        `),
       )
-      .groupBy("sites.id", "address.id")) as
+      .groupBy("sites.id", "address.id", "urban_zone_features.id")) as
       | undefined
       | {
           id: SqlSite["id"];
@@ -116,6 +147,19 @@ export class SqlSitesQuery implements SitesQuery {
           address_long: SqlAddress["long"];
           address_street_name: SqlAddress["street_name"];
           address_street_number: SqlAddress["street_number"];
+          urban_zone_type: SqlSiteUrbanZoneFeatures["urban_zone_type"] | null;
+          land_parcels: SqlSiteUrbanZoneFeatures["land_parcels"];
+          has_contaminated_soils: SqlSiteUrbanZoneFeatures["has_contaminated_soils"];
+          contaminated_soil_surface: SqlSiteUrbanZoneFeatures["contaminated_soil_surface"];
+          manager_structure_type: SqlSiteUrbanZoneFeatures["manager_structure_type"] | null;
+          manager_name: SqlSiteUrbanZoneFeatures["manager_name"] | null;
+          vacant_commercial_premises_footprint:
+            | SqlSiteUrbanZoneFeatures["vacant_commercial_premises_footprint"]
+            | null;
+          vacant_commercial_premises_floor_area:
+            | SqlSiteUrbanZoneFeatures["vacant_commercial_premises_floor_area"]
+            | null;
+          full_time_jobs_equivalent: SqlSiteUrbanZoneFeatures["full_time_jobs_equivalent"] | null;
           soils_distribution: Pick<SqlSiteSoilsDistribution, "soil_type" | "surface_area">[] | null;
           yearly_expenses: Pick<SqlSiteExpense, "amount" | "purpose">[] | null;
           yearly_incomes: Pick<SqlSiteIncome, "amount" | "source">[] | null;
@@ -123,6 +167,15 @@ export class SqlSitesQuery implements SitesQuery {
 
     const sqlSite = sqlResult?.[0];
     if (!sqlSite) return undefined;
+
+    const urbanZoneLandParcels = this.parseUrbanZoneLandParcels(sqlSite.land_parcels);
+    const soilsDistribution: SurfaceAreaDistribution<SoilType> =
+      sqlSite.nature === "URBAN_ZONE"
+        ? aggregateSoilsFromParcels(urbanZoneLandParcels)
+        : (sqlSite.soils_distribution ?? []).reduce((acc, { soil_type, surface_area }) => {
+            acc.addSurface(soil_type, surface_area);
+            return acc;
+          }, new SurfaceAreaDistribution<SoilType>());
 
     const baseSiteFeatures = {
       id: sqlSite.id,
@@ -147,15 +200,7 @@ export class SqlSitesQuery implements SitesQuery {
         streetName: sqlSite.address_street_name ?? undefined,
         streetNumber: sqlSite.address_street_number ?? undefined,
       },
-      soilsDistribution: (sqlSite.soils_distribution ?? []).reduce(
-        (acc, { soil_type, surface_area }) => {
-          return {
-            ...acc,
-            [soil_type]: surface_area,
-          };
-        },
-        {},
-      ),
+      soilsDistribution: soilsDistribution.toJSON(),
       yearlyExpenses: sqlSite.yearly_expenses ?? [],
       yearlyIncomes: sqlSite.yearly_incomes ?? [],
     };
@@ -194,12 +239,29 @@ export class SqlSitesQuery implements SitesQuery {
           naturalAreaType: sqlSite.natural_area_type,
         };
       case "URBAN_ZONE":
+        if (!sqlSite.urban_zone_type) {
+          throw new Error("Missing urban zone type for urban zone site");
+        }
         return {
           ...baseSiteFeatures,
           nature: "URBAN_ZONE",
           description: sqlSite.description ?? undefined,
-          urbanZoneType: "MIXED_URBAN_ZONE",
-          landParcels: [],
+          urbanZoneType: sqlSite.urban_zone_type as UrbanZoneType,
+          landParcels: urbanZoneLandParcels,
+          hasContaminatedSoils: sqlSite.has_contaminated_soils ?? undefined,
+          contaminatedSoilSurface: sqlSite.contaminated_soil_surface ?? undefined,
+          manager:
+            sqlSite.manager_structure_type && sqlSite.manager_name
+              ? {
+                  structureType: sqlSite.manager_structure_type,
+                  name: sqlSite.manager_name,
+                }
+              : undefined,
+          vacantCommercialPremisesFootprint:
+            sqlSite.vacant_commercial_premises_footprint ?? undefined,
+          vacantCommercialPremisesFloorArea:
+            sqlSite.vacant_commercial_premises_floor_area ?? undefined,
+          fullTimeJobsEquivalent: sqlSite.full_time_jobs_equivalent ?? undefined,
         };
     }
   }
