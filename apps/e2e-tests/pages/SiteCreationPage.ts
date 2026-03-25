@@ -137,9 +137,12 @@ export class SiteCreationPage {
     expectedDataList: [label: string, value: string][],
   ): Promise<void> {
     for (const [label, value] of expectedDataList) {
-      await expect(this.page.locator("dl").filter({ hasText: label }).locator("dt")).toHaveText(
-        value,
-      );
+      await expect(
+        this.page
+          .locator("dl")
+          .filter({ has: this.page.locator("dd", { hasText: label }) })
+          .locator("dt"),
+      ).toHaveText(value);
     }
   }
 
