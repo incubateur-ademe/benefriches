@@ -7,8 +7,6 @@ test.describe("photovoltaic project creation - custom mode", () => {
     pvProjectCreationPage,
     testSite,
   }) => {
-    test.setTimeout(120_000);
-
     // Navigate to project creation
     await pvProjectCreationPage.goto(testSite.id);
 

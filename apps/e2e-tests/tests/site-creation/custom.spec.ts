@@ -1,8 +1,6 @@
 import { test } from "./site-creation.fixtures";
 
 test.describe("site creation (custom mode)", () => {
-  test.setTimeout(60_000);
-
   test("allows authenticated user to create a friche site via custom mode", async ({
     myEvaluationsPage,
     siteCreationPage,
