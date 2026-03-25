@@ -38,6 +38,7 @@ export default function ProjectPdfExport({
   return (
     <ExportImpactsContext
       value={{
+        withDemoWatermark: siteFeatures.isExpressSite || projectFeatures.isExpress,
         projectName: projectFeatures.name,
         siteName: siteFeatures.name,
         selectedSections,

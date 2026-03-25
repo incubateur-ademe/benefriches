@@ -11,12 +11,14 @@ type ExportImpactsContextValue = {
   projectName: string;
   siteName: string;
   selectedSections: PdfExportSectionSelection;
+  withDemoWatermark: boolean;
 };
 
 const defaultContextValue: ExportImpactsContextValue = {
   projectName: "",
   siteName: "",
   selectedSections: getDefaultSectionSelection(),
+  withDemoWatermark: true,
 };
 
 export const ExportImpactsContext = createContext<ExportImpactsContextValue>(defaultContextValue);
