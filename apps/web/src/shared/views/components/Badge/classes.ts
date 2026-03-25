@@ -11,6 +11,7 @@ export const smallBadgeClasses: ClassValue[] = ["fr-badge--sm"];
 
 export const badgeStyleClasses = {
   ["default"]: "bg-white text-[#161616]",
+  ["grey"]: "bg-background-light text-text-light",
   ["green-emeraude"]: "bg-[#E3FDEB] text-[#297254]",
   ["green-tilleul"]: "bg-[#FEF7DA] text-[#66673D]",
   ["blue"]: "bg-[#DEE5FD] text-[#2F4077]",

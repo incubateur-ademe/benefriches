@@ -1,14 +1,33 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 import { useAppSelector } from "@/app/hooks/store.hooks";
+import { routes, useRoute } from "@/app/router";
 
-import { selectCurrentStep } from "../core/createSite.reducer";
-import { getRouteFromCreationStep } from "./routes";
+import { selectDemoCurrentStep } from "../core/demo/demo.selectors";
+import { selectSiteCreationWizardViewData } from "../core/selectors/createSite.selectors";
+import { getRouteFromCreationStep, getRouteFromDemoCreationStep } from "./routes";
 
 export const useSyncCreationStepWithRouteQuery = () => {
-  const currentStep = useAppSelector(selectCurrentStep);
+  const { currentStep, createMode } = useAppSelector(selectSiteCreationWizardViewData);
+  const currentDemoStep = useAppSelector(selectDemoCurrentStep);
+
+  const currentRoute = useRoute();
+
+  // Ref pour avoir toujours les params à jour sans déclencher l'effet
+  const currentRouteParamsRef = useRef(currentRoute.params);
+  currentRouteParamsRef.current = currentRoute.params;
 
   useEffect(() => {
-    getRouteFromCreationStep(currentStep).push();
-  }, [currentStep]);
+    if (currentRoute.name !== routes.createSite.name) return;
+
+    routes
+      .createSite({
+        ...currentRouteParamsRef.current,
+        etape:
+          createMode === "express"
+            ? getRouteFromDemoCreationStep(currentDemoStep)
+            : getRouteFromCreationStep(currentStep),
+      })
+      .push();
+  }, [currentRoute.name, currentStep, createMode, currentDemoStep]);
 };

@@ -17,8 +17,8 @@ export const registerIntroductionHandlers = (
   builder
     .addCase(siteCreationInitiated, (_state, action) => {
       return getInitialState({
-        initialStep: action.payload?.skipIntroduction ? "IS_FRICHE" : undefined,
-        skipUseMutability: action.payload?.skipUseMutability,
+        skipUseMutability: action.payload?.evaluationMode === "impacts",
+        createMode: action.payload?.createMode,
       });
     })
     .addCase(introductionStepCompleted, (state) => {

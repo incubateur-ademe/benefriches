@@ -25,18 +25,27 @@ describe("Site creation: introduction steps (intro, nature, creation mode)", () 
       expect(store.getState().siteCreation.stepsHistory).toEqual(["CREATE_MODE_SELECTION"]);
     });
 
-    it("starts with IS_FRICHE step when asked to skip intro", () => {
+    it("starts with INTRODUCTION step when asked to use custom mode", () => {
       const store = new StoreBuilder().build();
 
-      store.dispatch(siteCreationInitiated({ skipIntroduction: true }));
+      store.dispatch(siteCreationInitiated({ createMode: "custom" }));
 
-      expect(store.getState().siteCreation.stepsHistory).toEqual(["IS_FRICHE"]);
+      expect(store.getState().siteCreation.createMode).toEqual("custom");
+      expect(store.getState().siteCreation.stepsHistory).toEqual(["INTRODUCTION"]);
+    });
+
+    it("starts with demo steps when asked to use express mode", () => {
+      const store = new StoreBuilder().build();
+
+      store.dispatch(siteCreationInitiated({ createMode: "express" }));
+      expect(store.getState().siteCreation.createMode).toEqual("express");
+      expect(store.getState().siteCreation.stepsHistory).toEqual([]);
     });
 
     it("sets true to skipUseMutability in store", () => {
       const store = new StoreBuilder().build();
 
-      store.dispatch(siteCreationInitiated({ skipIntroduction: true, skipUseMutability: true }));
+      store.dispatch(siteCreationInitiated({ evaluationMode: "impacts" }));
 
       expect(store.getState().siteCreation.skipUseMutability).toEqual(true);
     });

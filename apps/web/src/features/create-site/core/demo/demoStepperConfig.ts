@@ -14,8 +14,6 @@ export type DemoStepGroupId = z.infer<typeof demoStepGroupIdSchema>;
 
 export const DEMO_STEP_GROUP_IDS = demoStepGroupIdSchema.options;
 
-// Each step's group assignment is colocated with its handler in *.stepperConfig.ts files
-// This file defines the group labels for the urban zone stepper sidebar
 export const DEMO_STEP_GROUP_LABELS: Record<DemoStepGroupId, string> = {
   INTRODUCTION: "Introduction",
   SITE_NATURE: "Type de site",

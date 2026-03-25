@@ -79,21 +79,12 @@ export type SiteCreationCustomStep =
   | "URBAN_ZONE_TYPE"
   | "URBAN_ZONE_LAND_PARCELS_INTRODUCTION";
 
-export type SiteCreationExpressStep =
-  | "FRICHE_ACTIVITY"
-  | "AGRICULTURAL_OPERATION_ACTIVITY"
-  | "NATURAL_AREA_TYPE"
-  | "ADDRESS"
-  | "SURFACE_AREA"
-  | "CREATION_RESULT";
-
 export type SiteCreationStep =
   | "INTRODUCTION"
   | "IS_FRICHE"
   | "USE_MUTABILITY"
   | "SITE_NATURE"
   | "CREATE_MODE_SELECTION"
-  | SiteCreationExpressStep
   | SiteCreationCustomStep
   | UrbanZoneSiteCreationStep;
 
@@ -145,13 +136,15 @@ export type SiteCreationState = {
 };
 
 export const getInitialState = (props?: {
-  initialStep?: SiteCreationStep;
+  createMode?: SiteCreationState["createMode"];
   skipUseMutability?: boolean;
 }): SiteCreationState => {
+  const initialStep: SiteCreationStep =
+    props?.createMode === "custom" ? "INTRODUCTION" : "CREATE_MODE_SELECTION";
   return {
-    stepsHistory: [props?.initialStep ?? "CREATE_MODE_SELECTION"],
+    stepsHistory: props?.createMode === "express" ? [] : [initialStep],
     saveLoadingState: "idle",
-    createMode: undefined,
+    createMode: props?.createMode,
     skipUseMutability: props?.skipUseMutability ? props?.skipUseMutability : false,
     siteData: {
       id: uuid(),

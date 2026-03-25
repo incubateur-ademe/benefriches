@@ -1,16 +1,14 @@
 import Button from "@codegouvfr/react-dsfr/Button";
-import React, { ReactNode } from "react";
+import React, { ReactNode, useMemo } from "react";
 
-import { useAppDispatch } from "@/app/hooks/store.hooks";
 import { routes } from "@/app/router";
-import { siteCreationInitiated } from "@/features/create-site/core/steps/introduction/introduction.actions";
 import OnboardingPageLayout from "@/shared/views/layout/OnboardingPageLayout/OnboardingPageLayout";
 
 import { OnboardingVariant } from "../when-to-use/OnboardingWhenToUsePage";
 import Step from "./HowItWorksStep";
 
 type Props = {
-  variant: OnboardingVariant;
+  variant?: OnboardingVariant;
 };
 
 type HowItWorksStepDefinition = {
@@ -99,18 +97,18 @@ const mutabiliteEvaluationSteps: HowItWorksStepDefinition[] = [
 ];
 
 function HowItWorksPage({ variant }: Props) {
-  const dispatch = useAppDispatch();
   const stepsToUse =
-    variant === "evaluation-impacts" ? impactsEvaluationSteps : mutabiliteEvaluationSteps;
+    variant === "evaluation-mutabilite" ? mutabiliteEvaluationSteps : impactsEvaluationSteps;
 
-  const finishIntroduction = () => {
-    if (variant === "evaluation-mutabilite") {
-      routes.evaluateReconversionCompatibility().push();
-    } else {
-      dispatch(siteCreationInitiated({ skipIntroduction: true, skipUseMutability: true }));
-      routes.createSite().push();
+  const finishIntroductionLinkProps = useMemo(() => {
+    if (variant === "evaluation-impacts") {
+      return routes.createSite({ evaluationMode: "impacts" }).link;
     }
-  };
+    if (variant === "evaluation-mutabilite") {
+      return routes.evaluateReconversionCompatibility().link;
+    }
+    return routes.myEvaluations().link;
+  }, [variant]);
 
   return (
     <OnboardingPageLayout
@@ -123,10 +121,10 @@ function HowItWorksPage({ variant }: Props) {
           >
             Retour
           </Button>
-          <Button priority="secondary" className="ml-auto" onClick={finishIntroduction}>
+          <Button priority="secondary" className="ml-auto" linkProps={finishIntroductionLinkProps}>
             Passer l'intro
           </Button>
-          <Button priority="primary" onClick={finishIntroduction}>
+          <Button priority="primary" linkProps={finishIntroductionLinkProps}>
             C'est parti
           </Button>
         </div>

@@ -1,8 +1,7 @@
 import Button from "@codegouvfr/react-dsfr/Button";
+import { useMemo } from "react";
 
-import { useAppDispatch } from "@/app/hooks/store.hooks";
 import { routes } from "@/app/router";
-import { siteCreationInitiated } from "@/features/create-site/core/steps/introduction/introduction.actions";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import OnboardingPageLayout from "@/shared/views/layout/OnboardingPageLayout/OnboardingPageLayout";
 
@@ -11,27 +10,29 @@ import UseCaseList from "../when-to-use/UseCaseList";
 import UseItem from "../when-to-use/UseItem";
 
 type Props = {
-  variant: OnboardingVariant;
+  variant?: OnboardingVariant;
 };
 
 function OnboardingWhenNotToUsePage({ variant }: Props) {
-  const dispatch = useAppDispatch();
-
-  const onNextClick = () => {
-    routes.onBoardingIntroductionHow({ fonctionnalite: variant }).push();
-  };
-  const skipIntroduction = () => {
-    if (variant === "evaluation-mutabilite") {
-      routes.evaluateReconversionCompatibility().push();
-    } else {
-      dispatch(siteCreationInitiated({ skipIntroduction: true, skipUseMutability: true }));
-      routes.createSite().push();
+  const { htmlTitle, skipIntroductionLinkProps } = useMemo(() => {
+    if (variant === "evaluation-impacts") {
+      return {
+        htmlTitle: `Pourquoi Bénéfriches (évaluation des impacts) - Introduction`,
+        skipIntroductionLinkProps: routes.createSite({ evaluationMode: "impacts" }).link,
+      };
     }
-  };
+    if (variant === "evaluation-mutabilite") {
+      return {
+        htmlTitle: `Pourquoi Bénéfriches (évaluation de la mutabilité) - Introduction`,
+        skipIntroductionLinkProps: routes.evaluateReconversionCompatibility().link,
+      };
+    }
 
-  const htmlTitle = `Pourquoi Bénéfriches (${
-    variant === "evaluation-impacts" ? "évaluation des impacts" : "évaluation de la mutabilité"
-  }) - Introduction`;
+    return {
+      htmlTitle: `Pourquoi Bénéfriches - Introduction`,
+      skipIntroductionLinkProps: routes.myEvaluations().link,
+    };
+  }, [variant]);
 
   return (
     <OnboardingPageLayout
@@ -44,10 +45,13 @@ function OnboardingWhenNotToUsePage({ variant }: Props) {
           >
             Retour
           </Button>
-          <Button priority="secondary" className="ml-auto" onClick={skipIntroduction}>
+          <Button priority="secondary" className="ml-auto" linkProps={skipIntroductionLinkProps}>
             Passer l'intro
           </Button>
-          <Button priority="primary" onClick={onNextClick}>
+          <Button
+            priority="primary"
+            linkProps={routes.onBoardingIntroductionHow({ fonctionnalite: variant }).link}
+          >
             Suivant
           </Button>
         </div>

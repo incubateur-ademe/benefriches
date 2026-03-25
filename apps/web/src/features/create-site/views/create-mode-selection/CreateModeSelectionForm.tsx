@@ -17,7 +17,7 @@ export type FormValues = {
 type Option = {
   value: FormValues["createMode"];
   title: string;
-  description: string;
+  description?: string;
   imgSrc: string;
   badgeText: string;
   badgeColor: "blue" | "green-tilleul";
@@ -25,29 +25,26 @@ type Option = {
 
 const options: Option[] = [
   {
-    value: "express",
-    title: "Mode démo",
-    description: `Renseignez seulement 3 infos : le type de site, sa commune et sa superficie. Bénéfriches affectera des données par défaut sur la répartition des sols, les dépenses de gestion, etc.`,
-    badgeText: "Le plus rapide",
+    value: "custom",
+    title: "Évaluer mon site",
+    badgeText: "Analyse des impacts socio-économiques",
     badgeColor: "green-tilleul",
-    imgSrc: "/img/pictograms/creation-mode/express-creation.svg",
+    imgSrc: "/img/pictograms/creation-mode/custom-creation.svg",
   },
   {
-    value: "custom",
-    title: "Mode personnalisé",
-    description: `Renseignez les infos dont vous disposez : type de site, superficie, adresse, répartition des sols, acteurs, dépenses de gestion, etc. Si certaines infos vous manquent, Bénéfriches vous proposera des données automatiques.`,
-    badgeText: "Le plus précis",
+    value: "express",
+    title: "Évaluer un site et un projet demo",
+    badgeText: "Découverte de l’outil en 30 secondes",
     badgeColor: "blue",
-    imgSrc: "/img/pictograms/creation-mode/custom-creation.svg",
+    imgSrc: "/img/icons/demo.svg",
   },
 ];
 
 function CreateModeSelectionForm({ onSubmit }: Props) {
   const { control, handleSubmit, formState } = useForm<FormValues>();
   const validationError = formState.errors.createMode;
-
   return (
-    <WizardFormLayout title="Comment souhaitez-vous renseigner les informations du site ?">
+    <WizardFormLayout title="Que souhaitez-vous évaluer&nbsp;?">
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-10">
           <div className="grid sm:grid-cols-2 gap-4">
@@ -60,6 +57,7 @@ function CreateModeSelectionForm({ onSubmit }: Props) {
                   rules={{ required: "Veuillez sélectionner un mode de création." }}
                   render={({ field }) => {
                     const isSelected = field.value === option.value;
+
                     return (
                       <CheckableTile
                         title={option.title}

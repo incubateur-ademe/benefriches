@@ -3,7 +3,7 @@ import { ReconversionProjectCreationMode, SiteNature } from "shared";
 import { createSiteCreationAction, createStepCompletedAction } from "../../actions/actionsUtils";
 
 export const siteCreationInitiated = createSiteCreationAction<
-  undefined | { skipIntroduction: boolean; skipUseMutability?: boolean }
+  undefined | { createMode?: "custom" | "express"; evaluationMode?: "impacts" }
 >("init");
 
 export const introductionStepCompleted = createStepCompletedAction("INTRODUCTION");

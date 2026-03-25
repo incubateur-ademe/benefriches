@@ -1,7 +1,7 @@
 import { test, expect } from "./onboarding.fixtures";
 
 test.describe("onboarding", () => {
-  test("impact evaluation: allows new user to create account and complete onboarding", async ({
+  test("main call to action: allows new user to create account and complete onboarding", async ({
     page,
     homePage,
     accessBenefrichesPage,
@@ -31,15 +31,15 @@ test.describe("onboarding", () => {
       (url) => url.pathname === "/premiers-pas/quand-ne-pas-utiliser-benefriches",
     );
 
-    await page.getByRole("button", { name: "Suivant" }).click();
+    await page.getByRole("link", { name: "Suivant" }).click();
 
     await expect(page).toHaveURL((url) => url.pathname === "/premiers-pas/comment-ca-marche");
 
-    await page.getByRole("button", { name: "C'est parti" }).click();
+    await page.getByRole("link", { name: "C'est parti" }).click();
 
     // Verify landing on site creation page
-    await expect(page).toHaveURL((url) => url.pathname === "/creer-site-foncier");
-    await expect(page.getByText("Renseignement du site")).toBeVisible();
+    await expect(page).toHaveURL((url) => url.pathname === "/mes-evaluations");
+    await expect(page.getByText("Mes évaluations")).toBeVisible();
   });
 
   test("compatibility evaluation: allows new user to create account and complete onboarding", async ({
@@ -71,13 +71,62 @@ test.describe("onboarding", () => {
 
     await expect(page.getByRole("heading", { name: "En revanche, Bénéfriches n'" })).toBeVisible();
 
-    await page.getByRole("button", { name: "Suivant" }).click();
+    await page.getByRole("link", { name: "Suivant" }).click();
 
     await expect(page.getByRole("heading", { name: "Bénéfriches, comment ça" })).toBeVisible();
 
-    await page.getByRole("button", { name: "C'est parti" }).click();
+    await page.getByRole("link", { name: "C'est parti" }).click();
 
     // Verify landing on compatibility analysis page
     await expect(page.getByRole("heading", { name: "Analyse de la compatibilité" })).toBeVisible();
+  });
+
+  test("impacts evaluation: allows new user to create account and complete onboarding", async ({
+    page,
+    testUser,
+    homePage,
+    accessBenefrichesPage,
+    signupPage,
+  }) => {
+    // Navigate to homepage and start compatibility flow
+    await homePage.goto();
+    await expect(
+      page.getByRole("heading", {
+        name: "Je souhaite évaluer... Les impacts socio-économiques d’un projet sur mon site",
+      }),
+    ).toBeVisible();
+
+    await homePage.clickEvaluateImpacts();
+
+    // Create account
+    await accessBenefrichesPage.expectCurrentPage();
+    await accessBenefrichesPage.clickCreateAccount();
+
+    await signupPage.expectCurrentPage();
+    await signupPage.completeSignup(testUser);
+
+    // Complete onboarding steps
+    await expect(page.getByRole("heading", { name: "Bienvenue sur Bénéfriches !" })).toBeVisible();
+
+    await page.getByRole("link", { name: "Suivant" }).click();
+
+    await expect(page.getByRole("heading", { name: "En revanche, Bénéfriches n'" })).toBeVisible();
+
+    await page.getByRole("link", { name: "Suivant" }).click();
+
+    await expect(page.getByRole("heading", { name: "Bénéfriches, comment ça" })).toBeVisible();
+
+    await page.getByRole("link", { name: "C'est parti" }).click();
+
+    // Verify landing on form page
+    await expect(page).toHaveURL((url) => url.pathname === "/creer-site-foncier");
+    await expect(page).toHaveURL((url) => {
+      const params = url.searchParams;
+      return (
+        params.get("etape") === "mode-de-creation" && params.get("evaluationMode") === "impacts"
+      );
+    });
+    await expect(page.getByText("Renseignement du site")).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Que souhaitez-vous évaluer ?" })).toBeVisible();
   });
 });
