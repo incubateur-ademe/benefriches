@@ -66,6 +66,11 @@ const mapApiSiteFeaturesResponseToFeaturesView = (
         ...baseSiteFeatures,
         nature: "URBAN_ZONE",
         contaminatedSurfaceArea: apiResponse.contaminatedSoilSurface,
+        urbanZoneType: apiResponse.urbanZoneType,
+        managerName: apiResponse.manager?.name,
+        vacantCommercialPremisesFootprint: apiResponse.vacantCommercialPremisesFootprint,
+        vacantCommercialPremisesFloorArea: apiResponse.vacantCommercialPremisesFloorArea,
+        fullTimeJobsEquivalent: apiResponse.fullTimeJobsEquivalent,
       };
   }
 };

@@ -9,6 +9,7 @@ import type {
   SiteYearlyExpensePurpose,
   SiteYearlyIncome,
   SoilsDistribution,
+  UrbanZoneType,
 } from "shared";
 
 type BaseSiteFeatures = {
@@ -49,6 +50,11 @@ type NaturalAreaSiteFeatures = BaseSiteFeatures & {
 type UrbanZoneSiteFeatures = BaseSiteFeatures & {
   nature: "URBAN_ZONE";
   contaminatedSurfaceArea?: number;
+  urbanZoneType?: UrbanZoneType;
+  managerName?: string;
+  vacantCommercialPremisesFootprint?: number;
+  vacantCommercialPremisesFloorArea?: number;
+  fullTimeJobsEquivalent?: number;
 };
 
 export type SiteFeatures =

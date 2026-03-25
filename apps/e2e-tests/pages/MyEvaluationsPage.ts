@@ -33,4 +33,11 @@ export class MyEvaluationsPage {
       this.page.getByRole("link", { name: "Voir toutes les données du site" }).first(),
     ).toBeVisible();
   }
+
+  async openSiteFeatures(siteName: string): Promise<void> {
+    const evaluationCard = this.page.locator("div.rounded-2xl").filter({
+      has: this.page.getByRole("heading", { name: siteName, level: 2 }),
+    });
+    await evaluationCard.getByRole("link", { name: "Voir toutes les données du site" }).click();
+  }
 }

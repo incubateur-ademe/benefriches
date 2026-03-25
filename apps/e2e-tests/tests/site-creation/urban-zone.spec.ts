@@ -2,7 +2,9 @@ import { test } from "./urban-zone.fixtures";
 
 test.describe("site creation (urban zone)", () => {
   test("allows authenticated user to create an urban zone site with activity park manager", async ({
+    myEvaluationsPage,
     siteCreationPage,
+    siteFeaturesPage,
     urbanZoneSiteCreationPage,
   }) => {
     await siteCreationPage.goto();
@@ -108,10 +110,33 @@ test.describe("site creation (urban zone)", () => {
     );
     await urbanZoneSiteCreationPage.createSite();
     await urbanZoneSiteCreationPage.expectCreationSuccess("ZAE Chartres");
+
+    await myEvaluationsPage.goto();
+    await myEvaluationsPage.expectCurrentPage();
+    await myEvaluationsPage.expectSiteVisible("ZAE Chartres");
+    await myEvaluationsPage.openSiteFeatures("ZAE Chartres");
+
+    await siteFeaturesPage.expectCurrentPage();
+    await siteFeaturesPage.expectSiteHeading("ZAE Chartres");
+    await siteFeaturesPage.expectFeaturesDataLines([
+      ["Nom du site", "ZAE Chartres"],
+      ["Type de zone urbaine", "Zone d'activités économiques"],
+      ["Adresse du site", "Chartres"],
+      ["Gestionnaire", "Gestionnaire de parc d'activité"],
+      ["Emprise foncière des locaux commerciaux vacants ou en friche", "500 ㎡"],
+      ["Surface de plancher des locaux commerciaux vacants ou en friche", "1 000 ㎡"],
+      ["Emplois équivalents temps plein", "10"],
+      ["Bâtiments", "8 000 ㎡"],
+      ["Sols imperméabilisés", "4 000 ㎡"],
+      ["Sols perméables minéraux", "2 000 ㎡"],
+      ["Sols enherbés et arbustifs", "1 000 ㎡"],
+    ]);
   });
 
   test("allows authenticated user to create an urban zone site with no vacant premises", async ({
+    myEvaluationsPage,
     siteCreationPage,
+    siteFeaturesPage,
     urbanZoneSiteCreationPage,
   }) => {
     await siteCreationPage.goto();
@@ -193,10 +218,29 @@ test.describe("site creation (urban zone)", () => {
     );
     await urbanZoneSiteCreationPage.createSite();
     await urbanZoneSiteCreationPage.expectCreationSuccess("ZAE Sans Vacants");
+
+    await myEvaluationsPage.goto();
+    await myEvaluationsPage.expectCurrentPage();
+    await myEvaluationsPage.expectSiteVisible("ZAE Sans Vacants");
+    await myEvaluationsPage.openSiteFeatures("ZAE Sans Vacants");
+
+    await siteFeaturesPage.expectCurrentPage();
+    await siteFeaturesPage.expectSiteHeading("ZAE Sans Vacants");
+    await siteFeaturesPage.expectFeaturesDataLines([
+      ["Nom du site", "ZAE Sans Vacants"],
+      ["Type de zone urbaine", "Zone d'activités économiques"],
+      ["Adresse du site", "Chartres"],
+      ["Gestionnaire", "Gestionnaire de parc d'activité"],
+      ["Emplois équivalents temps plein", "40"],
+      ["Bâtiments", "5 000 ㎡"],
+      ["Sols imperméabilisés", "5 000 ㎡"],
+    ]);
   });
 
   test("allows authenticated user to create an urban zone site with local authority manager", async ({
+    myEvaluationsPage,
     siteCreationPage,
+    siteFeaturesPage,
     urbanZoneSiteCreationPage,
   }) => {
     await siteCreationPage.goto();
@@ -269,5 +313,22 @@ test.describe("site creation (urban zone)", () => {
     await urbanZoneSiteCreationPage.expectFinalSummaryManagerLabel("Mairie de Chartres");
     await urbanZoneSiteCreationPage.createSite();
     await urbanZoneSiteCreationPage.expectCreationSuccess("ZAE Collectivite");
+
+    await myEvaluationsPage.goto();
+    await myEvaluationsPage.expectCurrentPage();
+    await myEvaluationsPage.expectSiteVisible("ZAE Collectivite");
+    await myEvaluationsPage.openSiteFeatures("ZAE Collectivite");
+
+    await siteFeaturesPage.expectCurrentPage();
+    await siteFeaturesPage.expectSiteHeading("ZAE Collectivite");
+    await siteFeaturesPage.expectFeaturesDataLines([
+      ["Nom du site", "ZAE Collectivite"],
+      ["Type de zone urbaine", "Zone d'activités économiques"],
+      ["Adresse du site", "Chartres"],
+      ["Gestionnaire", "Mairie de Chartres"],
+      ["Emplois équivalents temps plein", "5"],
+      ["Bâtiments", "5 000 ㎡"],
+      ["Sols imperméabilisés", "5 000 ㎡"],
+    ]);
   });
 });

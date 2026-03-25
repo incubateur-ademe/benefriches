@@ -4,11 +4,16 @@ import {
   getFricheActivityLabel,
   getLabelForNaturalAreaType,
   getLabelForAgriculturalOperationActivity,
+  getLabelForUrbanZoneType,
   getContaminatedPercentageFromFricheActivity,
   roundToInteger,
 } from "shared";
 
-import { formatPercentage, formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
+import {
+  formatNumberFr,
+  formatPercentage,
+  formatSurfaceArea,
+} from "@/shared/core/format-number/formatNumber";
 import classNames from "@/shared/views/clsx";
 import SurfaceAreaPieChart from "@/shared/views/components/Charts/SurfaceAreaPieChart";
 import DataLine from "@/shared/views/components/FeaturesList/FeaturesListDataLine";
@@ -104,6 +109,43 @@ export default function SiteFeaturesList({ withExpressDisclaimer = true, siteFea
           </div>
         </div>
       </Section>
+      {siteFeatures.nature === "URBAN_ZONE" && (
+        <Section title="🏙️ Zone urbaine">
+          {siteFeatures.urbanZoneType && (
+            <DataLine
+              label={<strong>Type de zone urbaine</strong>}
+              value={getLabelForUrbanZoneType(siteFeatures.urbanZoneType)}
+            />
+          )}
+          {siteFeatures.managerName && (
+            <DataLine label={<strong>Gestionnaire</strong>} value={siteFeatures.managerName} />
+          )}
+          {siteFeatures.vacantCommercialPremisesFootprint !== undefined && (
+            <DataLine
+              label={<strong>Emprise foncière des locaux commerciaux vacants ou en friche</strong>}
+              value={formatSurfaceArea(
+                roundToInteger(siteFeatures.vacantCommercialPremisesFootprint),
+              )}
+            />
+          )}
+          {siteFeatures.vacantCommercialPremisesFloorArea !== undefined && (
+            <DataLine
+              label={
+                <strong>Surface de plancher des locaux commerciaux vacants ou en friche</strong>
+              }
+              value={formatSurfaceArea(
+                roundToInteger(siteFeatures.vacantCommercialPremisesFloorArea),
+              )}
+            />
+          )}
+          {siteFeatures.fullTimeJobsEquivalent !== undefined && (
+            <DataLine
+              label={<strong>Emplois équivalents temps plein</strong>}
+              value={formatNumberFr(siteFeatures.fullTimeJobsEquivalent)}
+            />
+          )}
+        </Section>
+      )}
       {siteFeatures.nature === "FRICHE" && (
         <>
           <Section title="☣️ Pollution">
