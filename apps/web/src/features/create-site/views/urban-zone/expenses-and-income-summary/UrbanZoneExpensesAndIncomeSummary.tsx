@@ -1,6 +1,6 @@
 import type { SiteYearlyExpense, SiteYearlyIncome } from "shared";
 
-import ExpensesIncomeBarChart from "@/features/create-site/views/custom/site-management/expenses-and-income/expenses-income-summary/ExpensesIncomeBarChart";
+import ExpensesIncomeBarChart from "@/features/create-site/views/common-views/site-management/expenses-and-income/expenses-income-summary/ExpensesIncomeBarChart";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 
 type Props = {
