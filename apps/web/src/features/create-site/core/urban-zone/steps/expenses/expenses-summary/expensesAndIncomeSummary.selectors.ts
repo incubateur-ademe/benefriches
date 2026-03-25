@@ -8,6 +8,8 @@ import type { UrbanZoneStepsState } from "../../../urbanZoneSteps";
 export type ExpensesAndIncomeSummaryViewData = {
   expenses: SiteYearlyExpense[];
   incomes: SiteYearlyIncome[];
+  ownerExpenses: SiteYearlyExpense[];
+  ownerIncome: SiteYearlyIncome[];
 };
 
 function toExpenses(
@@ -104,7 +106,13 @@ export const getExpensesAndIncomeSummaryViewData = (
     return acc;
   }, []);
 
-  return { expenses, incomes };
+  const ownerExpenses = expenses.filter((e) => e.bearer === "owner");
+  const tenantRentAsIncome: SiteYearlyIncome[] = expenses
+    .filter((e) => e.bearer === "tenant" && e.purpose === "rent")
+    .map((e) => ({ source: "rent" as const, amount: e.amount }));
+  const ownerIncome = [...incomes, ...tenantRentAsIncome];
+
+  return { expenses, incomes, ownerExpenses, ownerIncome };
 };
 
 export const selectExpensesAndIncomeSummaryViewData = (

@@ -9,12 +9,12 @@ import UrbanZoneExpensesAndIncomeSummary from "./UrbanZoneExpensesAndIncomeSumma
 
 function ExpensesAndIncomeSummaryContainer() {
   const dispatch = useAppDispatch();
-  const { expenses, incomes } = useAppSelector(selectExpensesAndIncomeSummaryViewData);
+  const { ownerExpenses, ownerIncome } = useAppSelector(selectExpensesAndIncomeSummaryViewData);
 
   return (
     <UrbanZoneExpensesAndIncomeSummary
-      expenses={expenses}
-      incomes={incomes}
+      ownerExpenses={ownerExpenses}
+      ownerIncome={ownerIncome}
       onNext={() => dispatch(nextStepRequested())}
       onBack={() => dispatch(previousStepRequested())}
     />

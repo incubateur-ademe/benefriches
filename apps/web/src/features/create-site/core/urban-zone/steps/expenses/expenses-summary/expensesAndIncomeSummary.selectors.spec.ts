@@ -8,7 +8,7 @@ describe("selectExpensesAndIncomeSummaryViewData", () => {
 
     const result = selectExpensesAndIncomeSummaryViewData(store.getState());
 
-    expect(result).toEqual({ expenses: [], incomes: [] });
+    expect(result).toEqual({ expenses: [], incomes: [], ownerExpenses: [], ownerIncome: [] });
   });
 
   describe("vacantPremisesExpenses", () => {

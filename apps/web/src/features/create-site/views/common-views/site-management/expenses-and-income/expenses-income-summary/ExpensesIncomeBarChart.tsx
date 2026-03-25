@@ -19,6 +19,7 @@ type Props = {
   tenantIncome: SiteYearlyIncome[];
   ownerName?: string;
   tenantName?: string;
+  showTenant?: boolean;
 };
 
 const getColorForPurpose = (purpose: SiteYearlyExpensePurpose) => {
@@ -79,6 +80,7 @@ const ExpensesIncomeBarChart = ({
   tenantIncome,
   ownerName,
   tenantName,
+  showTenant = true,
 }: Props) => {
   const barChartRef = useRef<HighchartsReact.RefObject>(null);
 
@@ -87,11 +89,28 @@ const ExpensesIncomeBarChart = ({
   const tenantIncomeTotal = sumListWithKey(tenantIncome, "amount");
   const ownerIncomeTotal = sumListWithKey(ownerIncome, "amount");
 
-  const expenses = [
+  const categories = [
+    `<strong>DÉPENSES<br>${ownerName}</strong><br>${formatNumberFr(-ownerExpensesTotal)} €/an`,
+    `<strong>RECETTES<br>${ownerName}</strong><br>${formatNumberFr(ownerIncomeTotal)} €/an`,
+    ...(showTenant
+      ? [
+          `<strong>DÉPENSES<br>${tenantName}</strong><br>${formatNumberFr(-tenantExpensesTotal)} €/an`,
+          `<strong>RECETTES<br>${tenantName}</strong><br>${formatNumberFr(tenantIncomeTotal)} €/an`,
+        ]
+      : []),
+  ];
+
+  const makePointData = (index: number, amount: number) => {
+    const values = Array.from({ length: categories.length }, () => 0);
+    values[index] = amount;
+    return values;
+  };
+
+  const series = [
     ...ownerExpenses.map(({ purpose, amount }) => {
       return {
         name: getLabelForExpensePurpose(purpose),
-        data: [-amount],
+        data: makePointData(0, -amount),
         type: "column",
         color: getColorForPurpose(purpose),
       };
@@ -99,37 +118,36 @@ const ExpensesIncomeBarChart = ({
     ...ownerIncome.map(({ source, amount }) => {
       return {
         name: getLabelForOperationsRevenueSource(source),
-        data: [0, amount],
+        data: makePointData(1, amount),
         type: "column",
         color: getColorForSourceIncome(source),
       };
     }),
-    ...tenantExpenses.map(({ purpose, amount }) => {
-      return {
-        name: getLabelForExpensePurpose(purpose),
-        data: [0, 0, -amount],
-        type: "column",
-        color: getColorForPurpose(purpose),
-      };
-    }),
-    ...tenantIncome.map(({ source, amount }) => {
-      return {
-        name: getLabelForOperationsRevenueSource(source),
-        data: [0, 0, 0, amount],
-        type: "column",
-        color: getColorForSourceIncome(source),
-      };
-    }),
+    ...(showTenant
+      ? tenantExpenses.map(({ purpose, amount }) => {
+          return {
+            name: getLabelForExpensePurpose(purpose),
+            data: makePointData(2, -amount),
+            type: "column",
+            color: getColorForPurpose(purpose),
+          };
+        })
+      : []),
+    ...(showTenant
+      ? tenantIncome.map(({ source, amount }) => {
+          return {
+            name: getLabelForOperationsRevenueSource(source),
+            data: makePointData(3, amount),
+            type: "column",
+            color: getColorForSourceIncome(source),
+          };
+        })
+      : []),
   ];
 
   const barChartOptions: Highcharts.Options = withDefaultChartOptions({
     xAxis: {
-      categories: [
-        `<strong>DÉPENSES<br>${ownerName}</strong><br>${formatNumberFr(-ownerExpensesTotal)} €/an`,
-        `<strong>RECETTES<br>${ownerName}</strong><br>${formatNumberFr(ownerIncomeTotal)} €/an`,
-        `<strong>DÉPENSES<br>${tenantName}</strong><br>${formatNumberFr(-tenantExpensesTotal)} €/an`,
-        `<strong>RECETTES<br>${tenantName}</strong><br>${formatNumberFr(tenantIncomeTotal)} €/an`,
-      ],
+      categories,
       lineWidth: 0,
       type: "category",
       opposite: true,
@@ -168,13 +186,13 @@ const ExpensesIncomeBarChart = ({
       width: "33%",
       verticalAlign: "middle",
     },
-    series: expenses as Highcharts.SeriesOptionsType[],
+    series: series as Highcharts.SeriesOptionsType[],
   });
 
   return (
     <div
       className="w-full"
-      style={expenses.reduce(
+      style={series.reduce(
         (style, { color }, index) => ({
           ...style,
           [`--highcharts-color-${index}`]: color,

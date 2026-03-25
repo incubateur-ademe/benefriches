@@ -1,21 +1,22 @@
 import type { SiteYearlyExpense, SiteYearlyIncome } from "shared";
 
+import ExpensesIncomeBarChart from "@/features/create-site/views/custom/site-management/expenses-and-income/expenses-income-summary/ExpensesIncomeBarChart";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 
 type Props = {
-  expenses: SiteYearlyExpense[];
-  incomes: SiteYearlyIncome[];
+  ownerExpenses: SiteYearlyExpense[];
+  ownerIncome: SiteYearlyIncome[];
   onNext: () => void;
   onBack: () => void;
 };
 
-const formatAmount = (amount: number) =>
-  new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format(amount);
-
-const UrbanZoneExpensesAndIncomeSummary = ({ expenses, incomes, onNext, onBack }: Props) => {
-  const totalExpenses = expenses.reduce((sum, e) => sum + e.amount, 0);
-  const totalIncomes = incomes.reduce((sum, i) => sum + i.amount, 0);
-  const hasData = expenses.length > 0 || incomes.length > 0;
+const UrbanZoneExpensesAndIncomeSummary = ({
+  ownerExpenses,
+  ownerIncome,
+  onNext,
+  onBack,
+}: Props) => {
+  const hasData = ownerExpenses.length > 0 || ownerIncome.length > 0;
 
   return (
     <>
@@ -24,19 +25,16 @@ const UrbanZoneExpensesAndIncomeSummary = ({ expenses, incomes, onNext, onBack }
       {!hasData ? (
         <p>Aucune dépense ni recette renseignée pour ce site.</p>
       ) : (
-        <div className="my-8">
-          {expenses.length > 0 && (
-            <div className="mb-6">
-              <h3>Dépenses annuelles</h3>
-              <p className="text-xl font-bold">{formatAmount(totalExpenses)} / an</p>
-            </div>
-          )}
-          {incomes.length > 0 && (
-            <div>
-              <h3>Recettes annuelles</h3>
-              <p className="text-xl font-bold">{formatAmount(totalIncomes)} / an</p>
-            </div>
-          )}
+        <div className="my-8 flex justify-around border border-solid border-border-grey p-4 pt-6">
+          <ExpensesIncomeBarChart
+            ownerExpenses={ownerExpenses}
+            tenantExpenses={[]}
+            ownerIncome={ownerIncome}
+            tenantIncome={[]}
+            ownerName="Gestionnaire de parc d'activité"
+            tenantName=""
+            showTenant={false}
+          />
         </div>
       )}
 
