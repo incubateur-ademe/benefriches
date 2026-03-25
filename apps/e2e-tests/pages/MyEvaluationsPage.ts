@@ -40,4 +40,8 @@ export class MyEvaluationsPage {
     });
     await evaluationCard.getByRole("link", { name: "Voir toutes les données du site" }).click();
   }
+
+  async openFirstSiteFeatures(): Promise<void> {
+    await this.page.getByRole("link", { name: "Voir toutes les données du site" }).first().click();
+  }
 }

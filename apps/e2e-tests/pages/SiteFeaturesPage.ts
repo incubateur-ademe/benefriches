@@ -19,10 +19,13 @@ export class SiteFeaturesPage {
 
   async expectFeaturesDataLines(expectedDataList: [label: string, value: string][]): Promise<void> {
     for (const [label, value] of expectedDataList) {
+      // Use case-sensitive regex to avoid matching tooltip text that may contain lowercase variants
+      // e.g. "Bâtiments" label should not match tooltip text containing "bâtiments"
+      const labelRegex = new RegExp(label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
       await expect(
         this.page
           .locator("dl")
-          .filter({ has: this.page.locator("dd", { hasText: label }) })
+          .filter({ has: this.page.locator("dd", { hasText: labelRegex }) })
           .locator("dt"),
       ).toHaveText(value);
     }

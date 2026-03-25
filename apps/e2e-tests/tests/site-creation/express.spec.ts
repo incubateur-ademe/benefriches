@@ -1,8 +1,12 @@
 import { test } from "./site-creation.fixtures";
 
 test.describe("site creation (express mode)", () => {
+  test.setTimeout(60_000);
+
   test("allows authenticated user to create a friche site via express mode", async ({
+    myEvaluationsPage,
     siteCreationPage,
+    siteFeaturesPage,
   }) => {
     // Navigate to site creation page
     await siteCreationPage.goto();
@@ -45,10 +49,22 @@ test.describe("site creation (express mode)", () => {
     await siteCreationPage.expectExpressCreationDisclaimer();
     await siteCreationPage.hideExpressCreationDisclaimer();
     await siteCreationPage.expectCreateProjectLink();
+
+    await myEvaluationsPage.goto();
+    await myEvaluationsPage.expectCurrentPage();
+    await myEvaluationsPage.openFirstSiteFeatures();
+
+    await siteFeaturesPage.expectCurrentPage();
+    await siteFeaturesPage.expectFeaturesDataLines([
+      ["Adresse du site", "Blajan"],
+      ["Type de friche", "Friche industrielle"],
+    ]);
   });
 
   test("allows authenticated user to create an agricultural site via express mode", async ({
+    myEvaluationsPage,
     siteCreationPage,
+    siteFeaturesPage,
   }) => {
     // Navigate to site creation page
     await siteCreationPage.goto();
@@ -90,10 +106,22 @@ test.describe("site creation (express mode)", () => {
     await siteCreationPage.expectExpressCreationDisclaimer();
     await siteCreationPage.hideExpressCreationDisclaimer();
     await siteCreationPage.expectCreateProjectLink();
+
+    await myEvaluationsPage.goto();
+    await myEvaluationsPage.expectCurrentPage();
+    await myEvaluationsPage.openFirstSiteFeatures();
+
+    await siteFeaturesPage.expectCurrentPage();
+    await siteFeaturesPage.expectFeaturesDataLines([
+      ["Adresse du site", "Lyon"],
+      ["Type d'exploitation", "Polyculture / polyélevage"],
+    ]);
   });
 
   test("allows authenticated user to create a natural area site via express mode", async ({
+    myEvaluationsPage,
     siteCreationPage,
+    siteFeaturesPage,
   }) => {
     // Navigate to site creation page
     await siteCreationPage.goto();
@@ -135,5 +163,15 @@ test.describe("site creation (express mode)", () => {
     await siteCreationPage.expectExpressCreationDisclaimer();
     await siteCreationPage.hideExpressCreationDisclaimer();
     await siteCreationPage.expectCreateProjectLink();
+
+    await myEvaluationsPage.goto();
+    await myEvaluationsPage.expectCurrentPage();
+    await myEvaluationsPage.openFirstSiteFeatures();
+
+    await siteFeaturesPage.expectCurrentPage();
+    await siteFeaturesPage.expectFeaturesDataLines([
+      ["Adresse du site", "Fontainebleau"],
+      ["Nature du site", "Forêt"],
+    ]);
   });
 });

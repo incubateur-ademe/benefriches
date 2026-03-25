@@ -4,7 +4,9 @@ test.describe("site creation (custom mode)", () => {
   test.setTimeout(60_000);
 
   test("allows authenticated user to create a friche site via custom mode", async ({
+    myEvaluationsPage,
     siteCreationPage,
+    siteFeaturesPage,
   }) => {
     // Navigate to site creation page
     await siteCreationPage.goto();
@@ -183,10 +185,30 @@ test.describe("site creation (custom mode)", () => {
     // Vérifier le succès
     await siteCreationPage.expectCreationSuccess("Friche industrielle de Blajan");
     await siteCreationPage.expectCreateProjectLink();
+
+    await myEvaluationsPage.goto();
+    await myEvaluationsPage.expectCurrentPage();
+    await myEvaluationsPage.openSiteFeatures("Friche industrielle de Blajan");
+
+    await siteFeaturesPage.expectCurrentPage();
+    await siteFeaturesPage.expectSiteHeading("Friche industrielle de Blajan");
+    await siteFeaturesPage.expectFeaturesDataLines([
+      ["Nom du site", "Friche industrielle de Blajan"],
+      ["Type de friche", "Friche industrielle"],
+      ["Propriétaire actuel", "Mairie de Blajan"],
+      ["Superficie polluée", "5 000 ㎡"],
+      ["Accidents survenus sur le site depuis 5 ans", "Aucun"],
+      ["Bâtiments", "3 000 ㎡"],
+      ["Sols imperméabilisés", "2 000 ㎡"],
+      ["Sols perméables minéraux", "3 000 ㎡"],
+      ["Sols enherbés et arbustifs", "2 000 ㎡"],
+    ]);
   });
 
   test("allows authenticated user to create an agricultural site via custom mode", async ({
+    myEvaluationsPage,
     siteCreationPage,
+    siteFeaturesPage,
   }) => {
     // Navigate to site creation page
     await siteCreationPage.goto();
@@ -350,5 +372,22 @@ test.describe("site creation (custom mode)", () => {
     // Vérifier le succès
     await siteCreationPage.expectCreationSuccess("Exploitation céréalière de Chartres");
     await siteCreationPage.expectCreateProjectLink();
+
+    await myEvaluationsPage.goto();
+    await myEvaluationsPage.expectCurrentPage();
+    await myEvaluationsPage.openSiteFeatures("Exploitation céréalière de Chartres");
+
+    await siteFeaturesPage.expectCurrentPage();
+    await siteFeaturesPage.expectSiteHeading("Exploitation céréalière de Chartres");
+    await siteFeaturesPage.expectFeaturesDataLines([
+      ["Nom du site", "Exploitation céréalière de Chartres"],
+      ["Type d'exploitation", "Grandes cultures de céréales et oléagineux"],
+      ["Adresse du site", "Chartres"],
+      ["Propriétaire actuel", "Mairie de Chartres"],
+      ["Culture", "20 000 ㎡"],
+      ["Prairie herbacée", "2 500 ㎡"],
+      ["Prairie arbustive", "1 000 ㎡"],
+      ["Bâtiments", "1 500 ㎡"],
+    ]);
   });
 });
