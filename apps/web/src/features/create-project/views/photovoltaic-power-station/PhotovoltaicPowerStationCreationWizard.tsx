@@ -6,9 +6,11 @@ import FormStepper from "@/shared/views/layout/WizardFormLayout/FormStepper";
 import type { AllRenewableEnergyStep } from "../../core/renewable-energy/renewableEnergySteps";
 import NavigationBlockerDialog from "../NavigationBlockerDialog";
 import { HTML_MAIN_TITLE } from "../mainHtmlTitle";
+import { useSyncCreationStepWithRouteQuery } from "../useSyncCreationStepWithRouteQuery";
 import PhotovoltaicPowerStationStepper from "./PhotovoltaicPowerStationStepper";
 import CreateModeSelectionForm from "./create-mode-selection";
 import PhotovoltaicPowerStationCustomCreationWizard from "./custom-form";
+import { RENEWABLE_ENERGY_PROJECT_CREATION_STEP_QUERY_STRING_MAP } from "./custom-form/creationStepQueryStringMap";
 import PhotovoltaicExpressCreationResult from "./express-form/PhotovoltaicExpressCreationResult";
 import ProjectExpressSummary from "./express-form/PhotovoltaicExpressSummary";
 
@@ -24,6 +26,12 @@ function PhotovoltaicPowerStationCreationWizard({ currentStep }: Props) {
     saveState,
     currentStep: customCurrentStep,
   } = useAppSelector((state) => state.projectCreation.renewableEnergyProject);
+
+  useSyncCreationStepWithRouteQuery(
+    RENEWABLE_ENERGY_PROJECT_CREATION_STEP_QUERY_STRING_MAP[
+      createMode === "custom" ? customCurrentStep : currentStep
+    ],
+  );
 
   switch (createMode) {
     case undefined:

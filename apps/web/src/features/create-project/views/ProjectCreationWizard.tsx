@@ -3,7 +3,10 @@ import { Route } from "type-route";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { routes } from "@/app/router";
-import { isUrbanProjectCreationStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
+import {
+  isUrbanProjectCreationStep,
+  UrbanProjectCreationStep,
+} from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 import { ProjectFormProvider } from "@/shared/views/project-form/ProjectFormProvider";
@@ -11,17 +14,18 @@ import { ProjectFormProvider } from "@/shared/views/project-form/ProjectFormProv
 import { reconversionProjectCreationInitiated } from "../core/actions/reconversionProjectCreationInitiated.action";
 import { ProjectCreationStep } from "../core/createProject.reducer";
 import { selectCurrentStep } from "../core/createProject.selectors";
-import { isRenewableEnergyCreationStep } from "../core/renewable-energy/renewableEnergySteps";
+import {
+  AllRenewableEnergyStep,
+  isRenewableEnergyCreationStep,
+} from "../core/renewable-energy/renewableEnergySteps";
 import Stepper from "./Stepper";
 import ProjectCreationIntroduction from "./introduction";
 import { HTML_MAIN_TITLE } from "./mainHtmlTitle";
 import PhotovoltaicPowerStationCreationWizard from "./photovoltaic-power-station/PhotovoltaicPowerStationCreationWizard";
-import { RENEWABLE_ENERGY_PROJECT_CREATION_STEP_QUERY_STRING_MAP } from "./photovoltaic-power-station/custom-form/creationStepQueryStringMap";
 import ProjectSuggestionsForm from "./project-suggestions";
 import ProjectTypesForm from "./project-types";
 import RenewableEnergyTypesForm from "./renewable-energy-types";
 import UrbanProjectCreationWizard from "./urban-project/UrbanProjectCreationWizard";
-import { URBAN_PROJECT_CREATION_STEP_QUERY_STRING_MAP } from "./urban-project/creationStepQueryStringMap";
 import { useSyncCreationStepWithRouteQuery } from "./useSyncCreationStepWithRouteQuery";
 
 type Props = {
@@ -31,15 +35,18 @@ const PROJECT_CREATION_STEP_QUERY_STRING_MAP = {
   INTRODUCTION: "introduction",
   PROJECT_TYPE_SELECTION: "type-de-projet",
   PROJECT_SUGGESTIONS: "projets-suggeres",
-  ...URBAN_PROJECT_CREATION_STEP_QUERY_STRING_MAP,
-  ...RENEWABLE_ENERGY_PROJECT_CREATION_STEP_QUERY_STRING_MAP,
-} as const satisfies Record<ProjectCreationStep, string>;
+} as const satisfies Record<
+  Exclude<ProjectCreationStep, UrbanProjectCreationStep | AllRenewableEnergyStep>,
+  string
+>;
 
 const ProjectCreationIntroductionWizard = ({
   currentStep,
 }: {
-  currentStep: ProjectCreationStep;
+  currentStep: Exclude<ProjectCreationStep, UrbanProjectCreationStep | AllRenewableEnergyStep>;
 }) => {
+  useSyncCreationStepWithRouteQuery(PROJECT_CREATION_STEP_QUERY_STRING_MAP[currentStep]);
+
   const getStepComponent = () => {
     switch (currentStep) {
       case "INTRODUCTION":
@@ -70,8 +77,6 @@ function ProjectCreationWizard({ route }: Props) {
       : { relatedSiteId };
     void dispatch(reconversionProjectCreationInitiated(payload));
   }, [dispatch, route.params.siteId, route.params.projectSuggestions]);
-
-  useSyncCreationStepWithRouteQuery(PROJECT_CREATION_STEP_QUERY_STRING_MAP[currentStep]);
 
   if (isUrbanProjectCreationStep(currentStep)) {
     return (

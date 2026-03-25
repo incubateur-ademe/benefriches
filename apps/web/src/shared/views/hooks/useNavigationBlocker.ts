@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Route } from "type-route";
 
 import { routes, session } from "@/app/router";
@@ -7,6 +7,7 @@ type BlockedNavigationState =
   | {
       retry: () => void;
       targetRoute: Route<typeof routes>;
+      needConfirm: boolean;
     }
   | undefined;
 
@@ -20,6 +21,23 @@ export const useNavigationBlocker = ({ shouldBlockNavigation, allowRoute }: Prop
 
   const unblockRef = useRef<(() => void) | null>(null);
 
+  const onConfirmNavigation = useCallback(() => {
+    if (blockedNavigation?.retry) {
+      if (unblockRef.current) {
+        unblockRef.current();
+        unblockRef.current = null;
+      }
+      blockedNavigation.retry();
+    }
+    setBlockedNavigation(undefined);
+  }, [blockedNavigation]);
+
+  useEffect(() => {
+    if (!blockedNavigation?.needConfirm) {
+      onConfirmNavigation();
+    }
+  }, [blockedNavigation, onConfirmNavigation]);
+
   useEffect(() => {
     if (!shouldBlockNavigation) {
       if (unblockRef.current) {
@@ -31,14 +49,11 @@ export const useNavigationBlocker = ({ shouldBlockNavigation, allowRoute }: Prop
     }
 
     const unblock = session.block((blocker) => {
-      if (allowRoute?.(blocker.route)) {
-        return true;
-      }
       setBlockedNavigation(() => ({
         retry: blocker.retry,
         targetRoute: blocker.route,
+        needConfirm: allowRoute?.(blocker.route) === false,
       }));
-      return false;
     });
 
     unblockRef.current = unblock;
@@ -50,17 +65,8 @@ export const useNavigationBlocker = ({ shouldBlockNavigation, allowRoute }: Prop
   }, [shouldBlockNavigation, allowRoute]);
 
   return {
-    isModalOpened: blockedNavigation !== undefined,
-    onConfirmNavigation: () => {
-      if (blockedNavigation?.retry) {
-        if (unblockRef.current) {
-          unblockRef.current();
-          unblockRef.current = null;
-        }
-        blockedNavigation.retry();
-      }
-      setBlockedNavigation(undefined);
-    },
+    isModalOpened: blockedNavigation?.needConfirm === true,
+    onConfirmNavigation,
     onCancelNavigation: () => {
       setBlockedNavigation(undefined);
     },

@@ -9,8 +9,10 @@ import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 import { selectUrbanProjectCreationWizardViewData } from "../../core/createProject.selectors";
 import NavigationBlockerDialog from "../NavigationBlockerDialog";
 import { HTML_MAIN_TITLE } from "../mainHtmlTitle";
+import { useSyncCreationStepWithRouteQuery } from "../useSyncCreationStepWithRouteQuery";
 import UrbanProjectCreationStepper from "./UrbanProjectCreationStepper";
 import CreateModeSelectionForm from "./create-mode-selection";
+import { URBAN_PROJECT_CREATION_STEP_QUERY_STRING_MAP } from "./creationStepQueryStringMap";
 
 const ProjectExpressSummary = lazy(() => import("./express-forms/summary"));
 const UrbanProjectExpressTemplateSelection = lazy(
@@ -420,6 +422,8 @@ function UrbanProjectCreationWizard() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [currentStep]);
+
+  useSyncCreationStepWithRouteQuery(URBAN_PROJECT_CREATION_STEP_QUERY_STRING_MAP[currentStep]);
 
   return (
     <SidebarLayout
