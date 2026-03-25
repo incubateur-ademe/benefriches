@@ -129,6 +129,7 @@ function BenefrichesHeader({
   return (
     <>
       <Header
+        disableDisplay
         brandTop={
           <>
             RÉPUBLIQUE
