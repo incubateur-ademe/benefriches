@@ -47,7 +47,24 @@ function SiteAddressForm({ selectedAddress: initialAddress, onSubmit, siteNature
   const title = getTitle(siteNature);
 
   return (
-    <WizardFormLayout title={title}>
+    <WizardFormLayout
+      title={title}
+      instructions={
+        <div className="flex flex-col gap-4">
+          <span className="text-3xl!" aria-hidden="true" role="img">
+            📍
+          </span>
+          <strong className="text-xl">Pourquoi renseigner la commune&nbsp;?</strong>
+          En fonction de la région mais aussi du type de zone (urbaine, périurbaine, rurale),
+          certains indicateurs n’auront pas les mêmes valeurs, comme par exemple:
+          <ul>
+            <li>Recettes fiscales</li>
+            <li>Temps passé par les riverains dans les transports</li>
+            <li>Services écosystémiques</li>
+          </ul>
+        </div>
+      }
+    >
       <form
         onSubmit={handleSubmit((formData: FormValues) => {
           onSubmit(formData.selectedAddress!);

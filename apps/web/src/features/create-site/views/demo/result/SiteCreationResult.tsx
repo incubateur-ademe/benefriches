@@ -1,6 +1,14 @@
 import Alert from "@codegouvfr/react-dsfr/Alert";
 import Button from "@codegouvfr/react-dsfr/Button";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
+import {
+  AgriculturalOperationActivity,
+  FricheActivity,
+  getFricheActivityLabel,
+  getLabelForAgriculturalOperationActivity,
+  getLabelForNaturalAreaType,
+  NaturalAreaType,
+} from "shared";
 
 import { routes } from "@/app/router";
 import classNames from "@/shared/views/clsx";
@@ -20,9 +28,46 @@ type Props = {
   siteName: string;
   loadingState: "idle" | "loading" | "success" | "error";
   onErrorBack: () => void;
+  siteAddress: {
+    postCode?: string;
+    cityName?: string;
+  };
+  siteActivity?:
+    | {
+        type: "AGRICULTURAL_OPERATION";
+        agriculturalOperationActivity: AgriculturalOperationActivity;
+      }
+    | {
+        type: "NATURAL_AREA";
+        naturalAreaType: NaturalAreaType;
+      }
+    | {
+        type: "FRICHE";
+        fricheActivity: FricheActivity;
+      };
 };
 
-function SiteCreationResult({ siteId, siteName, loadingState, onErrorBack }: Props) {
+const getSiteActivityDisclaimerText = (siteActivity: Props["siteActivity"]) => {
+  switch (siteActivity?.type) {
+    case "AGRICULTURAL_OPERATION":
+      return `ce type d'exploitation agricole (${getLabelForAgriculturalOperationActivity(siteActivity.agriculturalOperationActivity).toLocaleLowerCase()})`;
+    case "NATURAL_AREA":
+      return `ce type d'espace naturel (${getLabelForNaturalAreaType(siteActivity.naturalAreaType).toLocaleLowerCase()})`;
+    case "FRICHE":
+      return `ce type de friche (${getFricheActivityLabel(siteActivity.fricheActivity).toLocaleLowerCase()})`;
+    default:
+      return "ce type de site";
+  }
+};
+
+function SiteCreationResult({
+  siteId,
+  siteName,
+  loadingState,
+  onErrorBack,
+  siteActivity,
+  siteAddress,
+}: Props) {
   switch (loadingState) {
     case "idle":
       return null;
@@ -58,8 +103,9 @@ function SiteCreationResult({ siteId, siteName, loadingState, onErrorBack }: Pro
               "mb-8",
             )}
           >
-            💡 Bénéfriches a affecté des données par défaut, notamment pour la répartition des sols
-            et les dépenses de gestion.
+            💡 Bénéfriches a affecté des données par défaut, en se basant sur les moyennes observées
+            sur {getSiteActivityDisclaimerText(siteActivity)} dans cette zone géographique (
+            {siteAddress.postCode}&nbsp;{siteAddress.cityName})
           </div>
 
           <SiteFeaturesModalView siteId={siteId} />
@@ -75,7 +121,7 @@ function SiteCreationResult({ siteId, siteName, loadingState, onErrorBack }: Pro
                 },
                 {
                   linkProps: routes.createProject({ siteId }).link,
-                  children: "Evaluer un projet sur ce site",
+                  children: "Évaluer un projet sur ce site",
                 },
               ]}
             />

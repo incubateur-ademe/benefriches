@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { useForm } from "react-hook-form";
 import { FricheActivity } from "shared";
 
@@ -48,12 +49,13 @@ type Props = {
   initialValues: Partial<FormValues>;
   onSubmit: (formData: FormValues) => void;
   onBack: () => void;
+  instructions?: ReactNode;
 };
 
 const requiredMessage =
   "Si vous ne savez pas qualifier l'activité de la friche, sélectionner « Autre / Ne sait pas ». Vous pourrez revenir plus tard préciser votre réponse.";
 
-function FricheActivityForm({ initialValues, onSubmit, onBack }: Props) {
+function FricheActivityForm({ initialValues, onSubmit, onBack, instructions }: Props) {
   const {
     register,
     handleSubmit,
@@ -63,7 +65,7 @@ function FricheActivityForm({ initialValues, onSubmit, onBack }: Props) {
   const error = errors.activity;
 
   return (
-    <WizardFormLayout title="De quel type de friche s'agit-il ?">
+    <WizardFormLayout title="De quel type de friche s'agit-il ?" instructions={instructions}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <RadioButtons
           {...register("activity", {

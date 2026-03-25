@@ -34,6 +34,23 @@ function SiteActivitySelectionFormContainer() {
               }),
             );
           }}
+          instructions={
+            <div className="flex flex-col gap-4">
+              <span className="text-3xl!" aria-hidden="true" role="img">
+                🌽
+              </span>
+              <strong className="text-xl">
+                Pourquoi renseigner le type d'exploitation agricole&nbsp;?
+              </strong>
+              En fonction du type d'exploitation agricole, certains indicateurs n’auront pas les
+              mêmes valeurs, comme par exemple :
+              <ul>
+                <li>Emploi</li>
+                <li>Dépenses et recettes d'exploitation</li>
+                <li>Affectation des sols</li>
+              </ul>
+            </div>
+          }
           initialValues={{ activity: agriculturalOperationActivity }}
         />
       </>
@@ -54,6 +71,21 @@ function SiteActivitySelectionFormContainer() {
               }),
             );
           }}
+          instructions={
+            <div className="flex flex-col gap-4">
+              <span className="text-3xl!" aria-hidden="true" role="img">
+                🏭
+              </span>
+              <strong className="text-xl">Pourquoi renseigner le type de friche&nbsp;?</strong>
+              En fonction du type de friche, certains indicateurs n’auront pas les mêmes valeurs,
+              comme par exemple :
+              <ul>
+                <li>Surface polluée</li>
+                <li>Dépenses de gestion et de sécurisation de la friche</li>
+                <li>Valeur patrimoniale des bâtiments alentour</li>
+              </ul>
+            </div>
+          }
           initialValues={{ activity: fricheActivity }}
         />
       </>
@@ -75,6 +107,21 @@ function SiteActivitySelectionFormContainer() {
             );
           }}
           initialValues={{ type: naturalAreaType }}
+          instructions={
+            <div className="flex flex-col gap-4">
+              <span className="text-3xl!" aria-hidden="true" role="img">
+                🌲
+              </span>
+              <strong className="text-xl">
+                Pourquoi renseigner le type d'espace naturel&nbsp;?
+              </strong>
+              En fonction du type type d'espace naturel, certains indicateurs n’auront pas les mêmes
+              valeurs, comme par exemple :
+              <ul>
+                <li>Affectation des sols</li>
+              </ul>
+            </div>
+          }
         />
       </>
     );

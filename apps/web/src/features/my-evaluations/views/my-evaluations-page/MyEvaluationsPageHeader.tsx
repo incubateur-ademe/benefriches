@@ -36,7 +36,7 @@ function MyEvaluationsPageHeader({ displayActions }: Props) {
               className={classNames("z-40", MENU_ITEMS_CLASSES)}
             >
               <MenuItemButton
-                iconId="fr-icon-add-line"
+                iconId="ri-sparkling-2-fill"
                 linkProps={routes.createSite({ creationMode: "demo" }).link}
               >
                 Évaluer un site démo

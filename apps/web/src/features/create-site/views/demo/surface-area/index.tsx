@@ -15,6 +15,15 @@ function SiteSurfaceAreaFormContainer() {
   return (
     <SiteSurfaceAreaForm
       initialValues={initialValues ?? {}}
+      instructions={
+        <div className="flex flex-col gap-4">
+          <span className="text-3xl!" aria-hidden="true" role="img">
+            📏
+          </span>
+          <strong className="text-xl">Pourquoi renseigner la superficie&nbsp;?</strong>
+          L’ampleur des impacts sera fonction de la superficie de la friche.
+        </div>
+      }
       siteNature={siteNature}
       onSubmit={({ surfaceArea }) => {
         dispatch(

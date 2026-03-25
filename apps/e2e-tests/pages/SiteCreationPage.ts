@@ -173,7 +173,7 @@ export class SiteCreationPage {
 
   async expectCreateProjectLink() {
     await expect(
-      this.page.getByRole("link", { name: "Evaluer un projet sur ce site" }),
+      this.page.getByRole("link", { name: "Évaluer un projet sur ce site" }),
     ).toBeVisible();
   }
 

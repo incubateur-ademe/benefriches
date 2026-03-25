@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { useForm } from "react-hook-form";
 import { AgriculturalOperationActivity, getLabelForAgriculturalOperationActivity } from "shared";
 
@@ -19,12 +20,18 @@ type Props = {
   initialValues?: Partial<FormValues>;
   onSubmit: (formData: FormValues) => void;
   onBack: () => void;
+  instructions?: ReactNode;
 };
 
 const requiredMessage =
   "Si vous ne savez pas qualifier l'activité de l'exploitation agricole, sélectionnez « Polyculture / polyélevage ».";
 
-function AgriculturalOperationActivityForm({ initialValues, onSubmit, onBack }: Props) {
+function AgriculturalOperationActivityForm({
+  initialValues,
+  onSubmit,
+  onBack,
+  instructions,
+}: Props) {
   const {
     register,
     handleSubmit,
@@ -34,7 +41,10 @@ function AgriculturalOperationActivityForm({ initialValues, onSubmit, onBack }: 
   const error = errors.activity;
 
   return (
-    <WizardFormLayout title="De quel type d'exploitation agricole s'agit-il&nbsp;?">
+    <WizardFormLayout
+      title="De quel type d'exploitation agricole s'agit-il&nbsp;?"
+      instructions={instructions}
+    >
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-6">
           <h4>Culture</h4>

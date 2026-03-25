@@ -5,7 +5,9 @@ import { selectDemoSiteCreationResultViewData } from "@/features/create-site/cor
 import SiteCreationResult from "./SiteCreationResult";
 
 function DemoSiteCreationResultContainer() {
-  const { saveState, siteName, siteId } = useAppSelector(selectDemoSiteCreationResultViewData);
+  const { saveState, siteName, siteId, siteActivity, siteAddress } = useAppSelector(
+    selectDemoSiteCreationResultViewData,
+  );
   const dispatch = useAppDispatch();
 
   const onBack = () => {
@@ -18,6 +20,8 @@ function DemoSiteCreationResultContainer() {
       siteName={siteName}
       loadingState={saveState}
       onErrorBack={onBack}
+      siteActivity={siteActivity}
+      siteAddress={siteAddress}
     />
   );
 }

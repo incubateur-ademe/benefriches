@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { NaturalAreaType, getLabelForNaturalAreaType } from "shared";
 
@@ -47,19 +48,20 @@ type Props = {
   initialValues?: Partial<FormValues>;
   onSubmit: (formData: FormValues) => void;
   onBack: () => void;
+  instructions?: ReactNode;
 };
 
 const requiredMessage =
   "Si vous ne savez pas qualifier l'espace naturel, sélectionnez « Espace naturel mixte ».";
 
-function NaturalAreaTypeForm({ initialValues, onSubmit, onBack }: Props) {
+function NaturalAreaTypeForm({ initialValues, onSubmit, onBack, instructions }: Props) {
   const { control, handleSubmit, formState } = useForm<FormValues>({
     defaultValues: initialValues,
   });
   const error = formState.errors.type;
 
   return (
-    <WizardFormLayout title="De quel type d'espace naturel s'agit-il ?">
+    <WizardFormLayout title="De quel type d'espace naturel s'agit-il ?" instructions={instructions}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="my-10">
           <div className="grid sm:grid-cols-2 gap-4">
