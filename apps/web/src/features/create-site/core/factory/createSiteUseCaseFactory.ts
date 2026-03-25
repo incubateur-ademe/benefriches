@@ -10,6 +10,8 @@ import type {
   StepsState,
 } from "./siteFactory.types";
 
+// Garde fou pour éviter de boucler à l'infini dans computeStepChanges,
+// à faire évoluer en fonction du parcours avec le plus grand nombre d'étapes
 const MAX_STEPS_NUMBER = 30;
 
 export function createSiteFactory<
@@ -30,15 +32,12 @@ export function createSiteFactory<
   const ReadStateHelper = {
     getStep<K extends SchematizedStepId>(steps: State, stepId: K) {
       return steps[stepId];
-      // StepData<z.infer<Schemas[K]>> | undefined
     },
     getStepAnswers<K extends SchematizedStepId>(steps: State, stepId: K) {
       return steps[stepId]?.payload;
-      // z.infer<Schemas[K]> | undefined
     },
     getDefaultAnswers<K extends SchematizedStepId>(steps: State, stepId: K) {
       return steps[stepId]?.defaultValues;
-      // z.infer<Schemas[K]> | undefined
     },
   };
 
@@ -48,7 +47,6 @@ export function createSiteFactory<
     navigateToStep(state: SiteCreationState, stepId: CreationStep) {
       cfg.getSlice(state).currentStep = stepId;
     },
-    // Reçoit un payload entier pour préserver la corrélation stepId/answers
     completeStep<K extends SchematizedStepId>(state: SiteCreationState, payload: Payload<K>) {
       (cfg.getSlice(state).steps as Record<string, unknown>)[payload.stepId as string] = {
         completed: true,
@@ -76,33 +74,39 @@ export function createSiteFactory<
   };
 
   // ── Navigation ────────────────────────────────────────────────────────────
-
   function computeStepsSequence(context: TStepContext, initialStep: CreationStep): CreationStep[] {
     const sequence: CreationStep[] = [];
+
     let current: CreationStep = initialStep;
     let i = 0;
+
     while (i < MAX_STEPS_NUMBER) {
       sequence.push(current);
+
       const handler = cfg.navigationHandlerRegistry[current];
       if (!handler?.getNextStepId) break;
+
       const next = handler.getNextStepId(context);
       if (!next) break;
+
       current = next;
       i++;
     }
+
     return sequence;
   }
 
   function navigateToAndLoadStep(state: SiteCreationState, stepId: CreationStep) {
     MutateStateHelper.navigateToStep(state, stepId);
+
     const handler = cfg.navigationHandlerRegistry[stepId];
+
     if (!handler?.getDefaultAnswers) return;
+
     const context = cfg.buildContext(state);
     const defaultAnswers = handler.getDefaultAnswers(context);
     if (defaultAnswers === undefined) return;
-    // getDefaultAnswers sur les answer steps retourne le bon type.
-    // NavigationHandler est délibérément non-paramétré sur les valeurs
-    // (intro/summary steps n'ont pas de schema) — cast localisé ici.
+
     MutateStateHelper.setDefaultAnswers(
       state,
       handler.stepId as SchematizedStepId,
@@ -122,8 +126,6 @@ export function createSiteFactory<
     state: SiteCreationState,
     payload: Payload<K>,
   ): StepUpdateResult<K> {
-    // Cast localisé : l'indexation du registry avec un type générique retourne
-    // AnswerStepHandler<..., keyof Schemas>, perdant K. On restaure K ici.
     const handler = cfg.answerStepHandlers[payload.stepId] as
       | AnswerStepHandler<Schemas, CreationStep, TStepContext, K>
       | undefined;
@@ -162,11 +164,14 @@ export function createSiteFactory<
     changes: StepUpdateResult<K>,
   ): void {
     MutateStateHelper.completeStep(state, changes.payload);
+
     changes.shortcutComplete?.forEach((p) => {
       MutateStateHelper.completeStepFromPayload(state, p);
     });
+
     const slice = cfg.getSlice(state);
     slice.stepsSequence = computeStepsSequence(cfg.buildContext(state), slice.firstSequenceStep);
+
     if (changes.navigationTarget) {
       navigateToAndLoadStep(state, changes.navigationTarget);
     }

@@ -26,4 +26,8 @@ export class HomePage {
   async clickAnalyzeCompatibility(): Promise<void> {
     await this.page.getByRole("link", { name: "Analyser la compatibilité de" }).click();
   }
+
+  async clickEvaluateImpacts(): Promise<void> {
+    await this.page.getByRole("link", { name: "Évaluer les impacts de mon projet" }).click();
+  }
 }

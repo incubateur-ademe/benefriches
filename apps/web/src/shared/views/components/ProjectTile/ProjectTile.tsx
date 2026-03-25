@@ -13,7 +13,7 @@ type TileCardProps = {
 function ProjectTile({ children, className, variant = "solid", linkProps, title }: TileCardProps) {
   const baseClasses = classNames(
     "border rounded-lg flex flex-col items-center text-center",
-    "hover:bg-grey-light hover:dark:bg-grey-dark bg-none",
+    "hover:bg-grey-light hover:dark:bg-grey-dark bg-none bg-white dark:bg-black",
     "h-56 w-56 gap-2",
     "text-lg p-3",
     variant === "dashed" && "border-dashed border-blue-france dark:border-blue-light",

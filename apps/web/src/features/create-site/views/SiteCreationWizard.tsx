@@ -1,13 +1,20 @@
 // useSiteCreationWizardLayout.tsx
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
+import { Route } from "type-route";
 
-import { useAppSelector } from "@/app/hooks/store.hooks";
+import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
+import { routes, useRoute } from "@/app/router";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 import FormStepper from "@/shared/views/layout/WizardFormLayout/FormStepper";
 
-import type { SiteCreationCustomStep, SiteCreationStep } from "../core/createSite.reducer";
+import type {
+  SiteCreationCustomStep,
+  SiteCreationState,
+  SiteCreationStep,
+} from "../core/createSite.reducer";
 import { selectSiteCreationWizardViewData } from "../core/selectors/createSite.selectors";
+import { siteCreationInitiated } from "../core/steps/introduction/introduction.actions";
 import { isUrbanZoneStepHandlerStep } from "../core/urban-zone/urbanZoneSteps";
 import CreateModeSelectionForm from "./create-mode-selection";
 import SiteCreationCustomStepContent from "./custom/StepContent";
@@ -35,9 +42,16 @@ const STEP_CONFIG: Partial<Record<SiteCreationStep, { title: string; content: Re
     URBAN_ZONE_TYPE: { title: "Type de zone urbaine", content: <UrbanZoneTypeForm /> },
   };
 
-export function useSiteCreationWizardLayout() {
-  const { currentStep, isFriche, createMode } = useAppSelector(selectSiteCreationWizardViewData);
-
+type UseSiteCreationWizardLayoutProps = {
+  isFriche: boolean | undefined;
+  currentStep: SiteCreationStep;
+  createMode: SiteCreationState["createMode"];
+};
+export function useSiteCreationWizardLayout({
+  currentStep,
+  createMode,
+  isFriche,
+}: UseSiteCreationWizardLayoutProps) {
   return useMemo(() => {
     if (createMode === "express") {
       return {
@@ -98,15 +112,33 @@ export function useSiteCreationWizardLayout() {
 }
 
 function SiteCreationWizard() {
+  const dispatch = useAppDispatch();
+  const { currentStep, isFriche, createMode } = useAppSelector(selectSiteCreationWizardViewData);
+
   useSyncCreationStepWithRouteQuery();
 
-  const { htmlTitle, mainChildren, sidebarChildren } = useSiteCreationWizardLayout();
+  const route = useRoute() as Route<typeof routes.createSite>;
+
+  useEffect(() => {
+    void dispatch(
+      siteCreationInitiated({
+        createMode: route.params.creationMode === "demo" ? "express" : route.params.creationMode,
+        evaluationMode: route.params.evaluationMode,
+      }),
+    );
+  }, [dispatch, route.params.creationMode, route.params.evaluationMode]);
+
+  const { htmlTitle, mainChildren, sidebarChildren } = useSiteCreationWizardLayout({
+    currentStep,
+    isFriche,
+    createMode,
+  });
 
   return (
     <>
       <HtmlTitle>{htmlTitle}</HtmlTitle>
       <SidebarLayout
-        title="Renseignement du site"
+        title={createMode === "express" ? "Évaluation démo" : "Renseignement du site"}
         mainChildren={mainChildren}
         sidebarChildren={sidebarChildren}
       />

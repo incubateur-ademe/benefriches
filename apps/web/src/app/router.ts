@@ -1,9 +1,26 @@
-import { createRouter, defineRoute, param } from "type-route";
+import { createRouter, defineRoute, noMatch, param, ValueSerializer } from "type-route";
 
 import { ProjectSuggestion } from "@/features/create-project/core/project.types";
 import { OnboardingVariant } from "@/features/onboarding/views/pages/when-to-use/OnboardingWhenToUsePage";
 
 const onBoarding = defineRoute("/premiers-pas");
+
+const getEnumValueSerializer = <T extends string>(values: T[]): ValueSerializer<T> => ({
+  parse(raw): T | typeof noMatch {
+    if ((values as string[]).includes(raw)) {
+      return raw as T;
+    }
+    return noMatch;
+  },
+  stringify(value) {
+    return value;
+  },
+});
+
+const onBoardingFeatureSerializer = getEnumValueSerializer([
+  "evaluation-mutabilite",
+  "evaluation-impacts",
+] as OnboardingVariant[]);
 
 const { RouteProvider, useRoute, routes, session } = createRouter({
   home: defineRoute("/"),
@@ -20,15 +37,15 @@ const { RouteProvider, useRoute, routes, session } = createRouter({
     () => "/identite",
   ),
   onBoardingWhenToUse: onBoarding.extend(
-    { fonctionnalite: param.query.ofType<OnboardingVariant>() },
+    { fonctionnalite: param.query.optional.ofType(onBoardingFeatureSerializer) },
     () => "/quand-utiliser-benefriches",
   ),
   onBoardingWhenNotToUse: onBoarding.extend(
-    { fonctionnalite: param.query.ofType<OnboardingVariant>() },
+    { fonctionnalite: param.query.optional.ofType(onBoardingFeatureSerializer) },
     () => "/quand-ne-pas-utiliser-benefriches",
   ),
   onBoardingIntroductionHow: onBoarding.extend(
-    { fonctionnalite: param.query.ofType<OnboardingVariant>() },
+    { fonctionnalite: param.query.optional.ofType(onBoardingFeatureSerializer) },
     () => "/comment-ca-marche",
   ),
   accessBenefriches: defineRoute(
@@ -41,7 +58,16 @@ const { RouteProvider, useRoute, routes, session } = createRouter({
     () => "/authentification/token",
   ),
   // FORMS
-  createSite: defineRoute({ etape: param.query.optional.string }, () => "/creer-site-foncier"),
+  createSite: defineRoute(
+    {
+      etape: param.query.optional.string,
+      creationMode: param.path.trailing.optional.ofType(
+        getEnumValueSerializer(["custom", "demo"] as const),
+      ),
+      evaluationMode: param.query.optional.ofType(getEnumValueSerializer(["impacts"] as const)),
+    },
+    (p) => `/creer-site-foncier/${p.creationMode}`,
+  ),
   createProject: defineRoute(
     {
       siteId: param.query.string,

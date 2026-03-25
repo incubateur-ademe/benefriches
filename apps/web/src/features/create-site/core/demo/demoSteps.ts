@@ -19,13 +19,10 @@ export const ANSWER_STEP_IDS = [
 export type DemoIntroductionStep = (typeof INTRODUCTION_STEPS)[number];
 export type DemoSummaryStep = (typeof SUMMARY_STEPS)[number];
 
-// All planned answer step IDs (drives SiteCreationStep union and navigation)
 export type DemoAnswerStepId = (typeof ANSWER_STEP_IDS)[number];
 
 export type DemoSiteCreationStep = DemoIntroductionStep | DemoSummaryStep | DemoAnswerStepId;
 
-// Schemas registered here as each step is implemented (Phase 3+)
-// Keys must be a subset of DemoAnswerStepId
 export const answersByStepSchemas = {
   DEMO_SITE_NATURE_SELECTION: siteNatureSelectionSchema,
   DEMO_SITE_ACTIVITY_SELECTION: siteActivitySelectionSchema,
@@ -33,7 +30,6 @@ export const answersByStepSchemas = {
   DEMO_SITE_SURFACE_AREA: siteSurfaceAreaSchema,
 } as const;
 
-// Step IDs that currently have registered schemas
 export type SchematizedAnswerStepId = keyof typeof answersByStepSchemas;
 
 export type AnswersByStep = {

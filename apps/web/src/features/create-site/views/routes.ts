@@ -1,8 +1,5 @@
-import { Route } from "type-route";
-
-import { routes } from "@/app/router";
-
 import { SiteCreationStep } from "../core/createSite.reducer";
+import { DemoSiteCreationStep } from "../core/demo/demoSteps";
 
 const SITE_CREATION_STEP_ROUTE_QUERY_STRING_MAP = {
   INTRODUCTION: "introduction",
@@ -77,8 +74,18 @@ const SITE_CREATION_STEP_ROUTE_QUERY_STRING_MAP = {
   URBAN_ZONE_NAMING: "zone-urbaine-denomination",
 } as const satisfies Record<SiteCreationStep, string>;
 
-export const getRouteFromCreationStep = (
-  step: SiteCreationStep,
-): Route<typeof routes.createSite> => {
-  return routes.createSite({ etape: SITE_CREATION_STEP_ROUTE_QUERY_STRING_MAP[step] });
+export const getRouteFromCreationStep = (step: SiteCreationStep): string =>
+  SITE_CREATION_STEP_ROUTE_QUERY_STRING_MAP[step];
+
+const DEMO_SITE_CREATION_STEP_ROUTE_QUERY_STRING_MAP = {
+  DEMO_INTRODUCTION: "demo-introduction",
+  DEMO_SITE_NATURE_SELECTION: "demo-nature-du-site",
+  DEMO_SITE_ACTIVITY_SELECTION: "demo-type-du-site",
+  DEMO_SITE_ADDRESS: "demo-adresse-du-site",
+  DEMO_SITE_SURFACE_AREA: "demo-superficie",
+  DEMO_CREATION_RESULT: "demo-recapitulatif",
+} as const satisfies Record<DemoSiteCreationStep, string>;
+
+export const getRouteFromDemoCreationStep = (step: DemoSiteCreationStep): string => {
+  return DEMO_SITE_CREATION_STEP_ROUTE_QUERY_STRING_MAP[step];
 };

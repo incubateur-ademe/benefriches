@@ -39,7 +39,6 @@ export type SiteFactoryConfig<
   introductionSteps: readonly IntroStep[];
   summarySteps: readonly SummaryStep[];
   answerStepIds: readonly AnswerStepId[];
-  // Contrainte : keyof Schemas ⊆ AnswerStepId
   schemas: Schemas &
     Record<keyof Schemas extends AnswerStepId ? keyof Schemas : never, z.ZodTypeAny>;
   getSlice: (

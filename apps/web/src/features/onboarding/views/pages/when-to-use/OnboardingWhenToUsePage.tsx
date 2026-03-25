@@ -1,8 +1,7 @@
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
+import { useMemo } from "react";
 
-import { useAppDispatch } from "@/app/hooks/store.hooks";
 import { routes } from "@/app/router";
-import { siteCreationInitiated } from "@/features/create-site/core/steps/introduction/introduction.actions";
 import OnboardingPageLayout from "@/shared/views/layout/OnboardingPageLayout/OnboardingPageLayout";
 
 import UseCaseList from "./UseCaseList";
@@ -11,24 +10,29 @@ import UseItem from "./UseItem";
 export type OnboardingVariant = "evaluation-mutabilite" | "evaluation-impacts";
 
 type Props = {
-  variant: OnboardingVariant;
+  variant?: OnboardingVariant;
 };
 
 function OnboardingWhenToUsePage({ variant }: Props) {
-  const dispatch = useAppDispatch();
-
-  const skipIntroduction = () => {
-    if (variant === "evaluation-mutabilite") {
-      routes.evaluateReconversionCompatibility().push();
-    } else {
-      dispatch(siteCreationInitiated({ skipIntroduction: true, skipUseMutability: true }));
-      routes.createSite().push();
+  const { htmlTitle, skipIntroductionLinkProps } = useMemo(() => {
+    if (variant === "evaluation-impacts") {
+      return {
+        htmlTitle: `Pourquoi Bénéfriches (évaluation des impacts) - Introduction`,
+        skipIntroductionLinkProps: routes.createSite({ evaluationMode: "impacts" }).link,
+      };
     }
-  };
+    if (variant === "evaluation-mutabilite") {
+      return {
+        htmlTitle: `Pourquoi Bénéfriches (évaluation de la mutabilité) - Introduction`,
+        skipIntroductionLinkProps: routes.evaluateReconversionCompatibility().link,
+      };
+    }
 
-  const htmlTitle = `Pourquoi Bénéfriches (${
-    variant === "evaluation-impacts" ? "évaluation des impacts" : "évaluation de la mutabilité"
-  }) - Introduction`;
+    return {
+      htmlTitle: `Pourquoi Bénéfriches - Introduction`,
+      skipIntroductionLinkProps: routes.myEvaluations().link,
+    };
+  }, [variant]);
 
   return (
     <OnboardingPageLayout
@@ -42,7 +46,7 @@ function OnboardingWhenToUsePage({ variant }: Props) {
               children: "Passer l'intro",
               className: "mb-0",
               priority: "secondary",
-              onClick: skipIntroduction,
+              linkProps: skipIntroductionLinkProps,
             },
             {
               className: "mb-0",
@@ -56,7 +60,7 @@ function OnboardingWhenToUsePage({ variant }: Props) {
     >
       <h2 className="mb-8">Bienvenue sur Bénéfriches ! Vous êtes au bon endroit si :</h2>
 
-      {variant === "evaluation-mutabilite" && (
+      {variant === "evaluation-mutabilite" ? (
         <UseCaseList>
           <UseItem icon="check">
             Vous souhaitez connaître <strong>les usages les plus adaptés</strong> pour une friche ;
@@ -66,8 +70,7 @@ function OnboardingWhenToUsePage({ variant }: Props) {
             souhaitez savoir laquelle est la plus adaptée.
           </UseItem>
         </UseCaseList>
-      )}
-      {variant === "evaluation-impacts" && (
+      ) : (
         <UseCaseList>
           <UseItem icon="check">
             Vous hésitez sur <strong>l'emplacement</strong> de votre projet d'aménagement, entre une
