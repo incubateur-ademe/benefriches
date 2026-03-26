@@ -164,11 +164,22 @@ const getLocalPropertyValueIncrease = (
 
 export type KeyImpactIndicatorData =
   | {
-      name:
-        | "taxesIncomesImpact"
-        | "localPropertyValueIncrease"
-        | "householdsPoweredByRenewableEnergy"
-        | "avoidedCo2eqEmissions";
+      name: "taxesIncomesImpact";
+      isSuccess: boolean;
+      value: number;
+    }
+  | {
+      name: "localPropertyValueIncrease";
+      isSuccess: boolean;
+      value: number;
+    }
+  | {
+      name: "householdsPoweredByRenewableEnergy";
+      isSuccess: boolean;
+      value: number;
+    }
+  | {
+      name: "avoidedCo2eqEmissions";
       isSuccess: boolean;
       value: number;
     }
@@ -182,7 +193,12 @@ export type KeyImpactIndicatorData =
       };
     }
   | {
-      name: "fullTimeJobs" | "permeableSurfaceArea";
+      name: "fullTimeJobs";
+      isSuccess: boolean;
+      value: { difference: number; percentageEvolution: number };
+    }
+  | {
+      name: "permeableSurfaceArea";
       isSuccess: boolean;
       value: { difference: number; percentageEvolution: number };
     }

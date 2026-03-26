@@ -1,5 +1,6 @@
 import { useContext } from "react";
 
+import type { KeyImpactIndicatorData } from "@/features/projects/domain/projectKeyImpactIndicators";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { ImpactModalDescriptionContext } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
 import ModalBody from "@/features/projects/views/shared/impacts/modals/ModalBody";
@@ -12,13 +13,7 @@ import ImpactItemDetails from "../../../../project-page/impacts/list-view/Impact
 import ImpactItemGroup from "../../../../project-page/impacts/list-view/ImpactItemGroup";
 
 type Props = {
-  impactData: {
-    isSuccess: boolean;
-    value: {
-      economicBalanceTotal: number;
-      socioEconomicMonetaryImpactsTotal: number;
-    };
-  };
+  impactData: Extract<KeyImpactIndicatorData, { name: "projectImpactBalance" }>;
 };
 
 const SummaryProjectBalanceDescription = ({ impactData }: Props) => {

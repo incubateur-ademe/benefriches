@@ -1,5 +1,6 @@
 import { useContext } from "react";
 
+import type { KeyImpactIndicatorData } from "@/features/projects/domain/projectKeyImpactIndicators";
 import { ImpactModalDescriptionContext } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
 import ModalBody from "@/features/projects/views/shared/impacts/modals/ModalBody";
 import ModalContent from "@/features/projects/views/shared/impacts/modals/ModalContent";
@@ -10,13 +11,7 @@ import ImpactItemDetails from "../../../../project-page/impacts/list-view/Impact
 import ImpactItemGroup from "../../../../project-page/impacts/list-view/ImpactItemGroup";
 
 type Props = {
-  impactData: {
-    isSuccess: boolean;
-    value: {
-      percentageEvolution: number;
-      difference: number;
-    };
-  };
+  impactData: Extract<KeyImpactIndicatorData, { name: "fullTimeJobs" }>;
 };
 
 const SummaryFullTimeJobsDescription = ({ impactData }: Props) => {

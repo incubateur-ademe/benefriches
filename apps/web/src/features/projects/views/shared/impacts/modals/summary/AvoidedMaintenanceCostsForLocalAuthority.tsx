@@ -1,5 +1,6 @@
 import { useContext } from "react";
 
+import type { KeyImpactIndicatorData } from "@/features/projects/domain/projectKeyImpactIndicators";
 import ImpactItemDetails from "@/features/projects/views/project-page/impacts/list-view/ImpactItemDetails";
 import ImpactItemGroup from "@/features/projects/views/project-page/impacts/list-view/ImpactItemGroup";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
@@ -10,24 +11,7 @@ import ModalHeader from "@/features/projects/views/shared/impacts/modals/ModalHe
 import { ImpactModalDescriptionContext } from "../ImpactModalDescriptionContext";
 
 type Props = {
-  impactData: {
-    isSuccess: boolean;
-    value:
-      | {
-          amount: number;
-          avoidedRoadAndUtilitiesMaintenance: number;
-          avoidedFricheCosts: number;
-          roadAndUtilitiesMaintenance?: undefined;
-          fricheCosts?: undefined;
-        }
-      | {
-          amount: number;
-          roadAndUtilitiesMaintenance: number;
-          fricheCosts: number;
-          avoidedRoadAndUtilitiesMaintenance?: undefined;
-          avoidedFricheCosts?: undefined;
-        };
-  };
+  impactData: Extract<KeyImpactIndicatorData, { name: "avoidedMaintenanceCostsForLocalAuthority" }>;
 };
 
 const SummaryAvoidedMaintenanceCostsForLocalAuthorityDescription = ({ impactData }: Props) => {
