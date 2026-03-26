@@ -100,9 +100,9 @@ Constraints:
   - Done note: split registry into typed `answerStepHandlers` + `infoStepHandlers` and composed `stepHandlerRegistry` from both.
   - Check: `pnpm --filter web typecheck`
 
-- [ ] **B2** Fix `expensesBuildingsConstructionAndRehabilitation.handler.ts` imports to use proper readers (`willHaveBuildings`/`hasBuildingsResalePlannedAfterDevelopment`).
+- [x] **B2** Fix `expensesBuildingsConstructionAndRehabilitation.handler.ts` imports to use proper readers (`willHaveBuildings`/`hasBuildingsResalePlannedAfterDevelopment`).
   - Spec ref: `Navigation` + `Expense step condition clarification`
-  - Done note:
+  - Done note: switched to canonical `@/shared/.../helpers/readers/buildingsReaders` import for both readers and validated with targeted + full web checks.
   - Check: `pnpm --filter web test src/features/create-project/core/urban-project/__tests__/steps/expenses/expensesInstallation.handler.spec.ts`
 
 - [ ] **B3** Apply remaining navigation updates to existing handlers.

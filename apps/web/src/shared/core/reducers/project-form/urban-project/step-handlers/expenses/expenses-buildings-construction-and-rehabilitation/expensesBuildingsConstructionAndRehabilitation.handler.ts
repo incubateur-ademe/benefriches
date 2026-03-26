@@ -1,7 +1,8 @@
 import {
   hasBuildingsResalePlannedAfterDevelopment,
   willHaveBuildings,
-} from "../../../helpers/readers/buildingsReaders";
+} from "@/shared/core/reducers/project-form/urban-project/helpers/readers/buildingsReaders";
+
 import type { AnswerStepHandler } from "../../stepHandler.type";
 
 const STEP_ID = "URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION";
