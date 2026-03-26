@@ -39,10 +39,15 @@ export class StoreBuilder {
     return this;
   }
 
-  withSiteData(siteData: ProjectCreationState["siteData"]): this {
+  withSiteData(siteData: Partial<ProjectCreationState["siteData"]>): this {
+    const currentSiteData = this.preloadedRootState.projectCreation.siteData ?? mockSiteData;
+
     this.preloadedRootState.projectCreation = {
       ...this.preloadedRootState.projectCreation,
-      siteData,
+      siteData: {
+        ...currentSiteData,
+        ...siteData,
+      },
     };
     return this;
   }
