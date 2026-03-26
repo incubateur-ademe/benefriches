@@ -8,6 +8,11 @@ if (!windowEnv)
     "window._benefriches_env is not defined, you need to generate env var js file first (see setup-env-vars in package.json)",
   );
 
+const parseBooleanFlag = (value: string | undefined): boolean => {
+  const normalized = value?.trim().toLowerCase();
+  return normalized === "1" || normalized === "true";
+};
+
 export const BENEFRICHES_ENV = {
   matomoTrackingEnabled: Boolean(windowEnv.WEBAPP_MATOMO_SITE_ID),
   matomoSiteId: windowEnv.WEBAPP_MATOMO_SITE_ID ?? "",
@@ -19,4 +24,7 @@ export const BENEFRICHES_ENV = {
   crispEnabled: Boolean(windowEnv.WEBAPP_CRISP_WEBSITE_ID),
   crispWebsiteId: windowEnv.WEBAPP_CRISP_WEBSITE_ID ?? "",
   urbanZoneEnabled: Boolean(windowEnv.WEBAPP_ENABLE_SITE_URBAN_ZONE),
+  urbanProjectBuildingsReuseChapterEnabled: parseBooleanFlag(
+    windowEnv.WEBAPP_ENABLE_URBAN_PROJECT_BUILDINGS_REUSE_CHAPTER,
+  ),
 };

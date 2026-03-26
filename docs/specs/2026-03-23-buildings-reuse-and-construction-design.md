@@ -52,6 +52,12 @@ Note: if a user selects building-related uses but does not allocate `BUILDINGS` 
 
 ### Full Buildings Chapter Sequence
 
+Precondition at `SOILS_CARBON_SUMMARY`:
+- feature flag OFF: enter buildings chapter only when `willHaveBuildings(stepsState)` is `true` (legacy behavior)
+- feature flag ON: enter buildings chapter when `siteHasBuildings(siteData)` is `true` OR `willHaveBuildings(stepsState)` is `true`
+
+With feature flag ON, users skip this chapter only when both are `false` (no buildings on site and no buildings planned in project).
+
 ```
 BUILDINGS_INTRODUCTION (existing)
   -> BUILDINGS_USES_FLOOR_SURFACE_AREA (existing, overall)
@@ -228,7 +234,11 @@ The `getLastBuildingsChapterStep` helper (companion to `getNextStepAfterBuilding
 
 ### No-buildings shortcut
 
-When site has NO buildings, the flow is: `BUILDINGS_USES_FLOOR_SURFACE_AREA` -> `BUILDINGS_NEW_CONSTRUCTION_INTRODUCTION` -> next section. No reuse input, no breakdown steps, no stakeholder builder question (since there's no notion of "developer is builder" — construction is implicit). The overall floor area from the existing step is treated as entirely new construction.
+When site has NO buildings (and the buildings chapter is entered), the flow is:
+`BUILDINGS_USES_FLOOR_SURFACE_AREA` -> `BUILDINGS_NEW_CONSTRUCTION_INTRODUCTION` -> next section.
+No reuse input, no breakdown steps, no stakeholder builder question (since there's no notion of "developer is builder" — construction is implicit).
+
+If site has no buildings AND `willHaveBuildings` is `false`, users do not enter the buildings chapter at all (feature flag ON behavior).
 
 ## Stepper Configuration
 
@@ -308,6 +318,18 @@ New Answer steps must have their schema added to `answersByStepSchemas` in `urba
 - Shared package changes (no new DTOs)
 - Express flow changes (only custom flow affected)
 
+### Feature Flag Rollout Note
+
+For incremental rollout, gate the entry to the new buildings chapter in
+`BUILDINGS_USES_FLOOR_SURFACE_AREA.getNextStepId` using
+`BENEFRICHES_ENV.urbanProjectBuildingsReuseChapterEnabled` (from
+`apps/web/src/app/envVars.ts`):
+
+- flag OFF: keep legacy route (`SOILS_DECONTAMINATION_INTRODUCTION` or `SITE_RESALE_INTRODUCTION`)
+- flag ON: route to new chapter (`BUILDINGS_REUSE_INTRODUCTION` or `BUILDINGS_NEW_CONSTRUCTION_INTRODUCTION`)
+
+This rollout note does not require injecting feature flags into shared step context.
+
 ## E2E Tests
 
 E2E tests cover only nominal, most common user flows. Exhaustive scenario coverage belongs in integration tests (step handler `__tests__/` files).
@@ -336,6 +358,7 @@ Exhaustive scenario coverage via step handler tests (following the pattern in `a
 | Scenario | Site buildings | Project buildings | Key assertions |
 |---|---|---|---|
 | No buildings on site | 0 | > 0 | Skips reuse, goes to new construction intro |
+| Buildings on site, no buildings planned in project (feature flag ON) | > 0 | 0 | Chapter is entered, reuse step shown, demolition info shown when reuse < site |
 | Full reuse, same size | > 0 | = site | No demolition, no new construction |
 | Partial reuse with demolition only | > 0 | < site | Demolition shown, no new construction |
 | Full reuse with new construction | > 0 | > site | No demolition, existing + new uses breakdown |

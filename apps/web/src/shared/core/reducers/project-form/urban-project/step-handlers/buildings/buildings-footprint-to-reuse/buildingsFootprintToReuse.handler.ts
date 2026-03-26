@@ -1,10 +1,8 @@
 import type { AnswerStepHandler, StepInvalidationRule } from "../../stepHandler.type";
 import {
-  getBuildingsFootprintToReuse,
   getNextStepAfterBuildings,
   getProjectBuildingsFootprint,
-  willConstructNewBuildings,
-  willDemolishBuildings,
+  getSiteBuildingsFootprint,
 } from "../buildingsReaders";
 
 const STEP_ID = "URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE";
@@ -16,23 +14,25 @@ export const BuildingsFootprintToReuseHandler: AnswerStepHandler<typeof STEP_ID>
     return "URBAN_PROJECT_BUILDINGS_REUSE_INTRODUCTION";
   },
 
-  getNextStepId(context) {
+  getNextStepId(context, answers) {
     const siteData = context.siteData;
     if (!siteData) return getNextStepAfterBuildings(context);
 
-    if (willDemolishBuildings(siteData, context.stepsState)) {
-      return "URBAN_PROJECT_BUILDINGS_DEMOLITION_INFO";
-    }
-
-    const reuse = getBuildingsFootprintToReuse(context.stepsState) ?? 0;
+    // Use answers (not stepsState) because state hasn't been updated yet when this runs
+    const reuse = answers?.buildingsFootprintToReuse ?? 0;
+    const siteBuildings = getSiteBuildingsFootprint(siteData);
+    const demolished = siteBuildings - reuse;
     const projectBuildings = getProjectBuildingsFootprint(context.stepsState);
     const newConstruction = Math.max(0, projectBuildings - reuse);
     const hasBoth = reuse > 0 && newConstruction > 0;
 
+    if (demolished > 0) {
+      return "URBAN_PROJECT_BUILDINGS_DEMOLITION_INFO";
+    }
     if (hasBoth) {
       return "URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA";
     }
-    if (willConstructNewBuildings(context.stepsState)) {
+    if (newConstruction > 0) {
       return "URBAN_PROJECT_BUILDINGS_NEW_CONSTRUCTION_INFO";
     }
     return getNextStepAfterBuildings(context);

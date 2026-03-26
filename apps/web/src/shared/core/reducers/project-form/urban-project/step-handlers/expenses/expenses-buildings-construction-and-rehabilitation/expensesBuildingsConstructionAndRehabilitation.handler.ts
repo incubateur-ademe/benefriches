@@ -1,4 +1,7 @@
-import { ReadStateHelper } from "../../../helpers/readState";
+import {
+  hasBuildingsResalePlannedAfterDevelopment,
+  willHaveBuildings,
+} from "../../../helpers/readers/buildingsReaders";
 import type { AnswerStepHandler } from "../../stepHandler.type";
 
 const STEP_ID = "URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION";
@@ -12,8 +15,8 @@ export const ExpensesBuildingsConstructionAndRehabilitationHandler: AnswerStepHa
   },
   getNextStepId(context) {
     if (
-      ReadStateHelper.willHaveBuildings(context.stepsState) &&
-      !ReadStateHelper.hasBuildingsResalePlannedAfterDevelopment(context.stepsState)
+      willHaveBuildings(context.stepsState) &&
+      !hasBuildingsResalePlannedAfterDevelopment(context.stepsState)
     ) {
       return "URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES";
     }

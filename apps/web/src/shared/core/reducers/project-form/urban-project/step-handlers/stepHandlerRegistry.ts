@@ -68,14 +68,9 @@ export const answerStepHandlers: AnswerStepHandlerMap = {
   URBAN_PROJECT_SPACES_SURFACE_AREA: SpacesSurfaceAreaHandler,
   // custom - buildings
   URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA: BuildingsUsesFloorSurfaceAreaHandler,
-  URBAN_PROJECT_BUILDINGS_REUSE_INTRODUCTION: BuildingsReuseIntroductionHandler,
-  URBAN_PROJECT_BUILDINGS_NEW_CONSTRUCTION_INTRODUCTION:
-    BuildingsNewConstructionIntroductionHandler,
   URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE: BuildingsFootprintToReuseHandler,
-  URBAN_PROJECT_BUILDINGS_DEMOLITION_INFO: BuildingsDemolitionInfoHandler,
   URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA:
     BuildingsExistingBuildingsUsesFloorSurfaceAreaHandler,
-  URBAN_PROJECT_BUILDINGS_NEW_CONSTRUCTION_INFO: BuildingsNewConstructionInfoHandler,
   URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA:
     BuildingsNewBuildingsUsesFloorSurfaceAreaHandler,
   // custom - decontamination
@@ -126,6 +121,11 @@ export const stepHandlerRegistry: Record<
   URBAN_PROJECT_SOILS_CARBON_SUMMARY: SoilsCarbonSummaryHandler,
   // custom - buildings
   URBAN_PROJECT_BUILDINGS_INTRODUCTION: BuildingsIntroductionHandler,
+  URBAN_PROJECT_BUILDINGS_REUSE_INTRODUCTION: BuildingsReuseIntroductionHandler,
+  URBAN_PROJECT_BUILDINGS_NEW_CONSTRUCTION_INTRODUCTION:
+    BuildingsNewConstructionIntroductionHandler,
+  URBAN_PROJECT_BUILDINGS_DEMOLITION_INFO: BuildingsDemolitionInfoHandler,
+  URBAN_PROJECT_BUILDINGS_NEW_CONSTRUCTION_INFO: BuildingsNewConstructionInfoHandler,
   // custom - decontamination
   URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION: SoilsDecontaminationIntroductionHandler,
   // stakeholders and site/buildings resale

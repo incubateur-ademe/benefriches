@@ -1,5 +1,7 @@
+import { BENEFRICHES_ENV } from "@/app/envVars";
 import { willHaveBuildings } from "@/shared/core/reducers/project-form/urban-project/helpers/readers/buildingsReaders";
 
+import { siteHasBuildings } from "../../buildings/buildingsReaders";
 import type { InfoStepHandler } from "../../stepHandler.type";
 
 export const SoilsCarbonSummaryHandler = {
@@ -10,7 +12,12 @@ export const SoilsCarbonSummaryHandler = {
   },
 
   getNextStepId(context) {
-    if (willHaveBuildings(context.stepsState)) {
+    const willProjectHaveBuildings = willHaveBuildings(context.stepsState);
+    const hasSiteBuildings = context.siteData ? siteHasBuildings(context.siteData) : false;
+    if (
+      willProjectHaveBuildings ||
+      (BENEFRICHES_ENV.urbanProjectBuildingsReuseChapterEnabled && hasSiteBuildings)
+    ) {
       return "URBAN_PROJECT_BUILDINGS_INTRODUCTION";
     }
 
