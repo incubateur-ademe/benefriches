@@ -307,8 +307,6 @@ New Answer steps must have their schema added to `answersByStepSchemas` in `urba
 - Unit tests for all handlers and readers
 - Stepper configuration
 
-- E2E tests covering the new buildings reuse/construction flows
-
 - E2E tests covering nominal flows
 - Integration tests (step handler tests) covering exhaustive scenario matrix
 
@@ -371,25 +369,3 @@ Additional step handler tests:
 - Uses breakdown constraints: sum validation, available uses filtering
 - Stakeholder builder question: only shown when new construction > 0
 - Expense step: conditional fields based on reuse/new construction
-
-## E2E Tests
-
-E2E tests should cover the key user flows through the new buildings chapter. Tests use the existing Playwright + Page Object pattern.
-
-### Scenarios to cover
-
-| Scenario | Site buildings | Project buildings | Key assertions |
-|---|---|---|---|
-| No buildings on site | 0 | > 0 | "X m2 a construire" editorial shown, no reuse input, no stakeholder builder question |
-| Full reuse, same size | > 0 | = site | "Bonne nouvelle" shown, reuse = 100%, no demolition info, no new construction info |
-| Partial reuse with demolition only | > 0 | < site | Reuse input, demolition editorial shown, no new construction |
-| Full reuse with new construction | > 0 | > site | Reuse = 100%, no demolition, existing + new uses breakdown shown, stakeholder builder question shown |
-| Partial reuse with both demolition and new construction | > 0 | > 0 | Full flow: reuse input, demolition info, existing uses, new construction info, new uses, stakeholder builder, expenses |
-| No reuse at all | > 0 | > 0 | Reuse = 0, demolition shown, new construction shown, no existing uses breakdown |
-
-### Page objects to create/update
-
-- New page object for the buildings reuse/construction steps (reuse input form, uses breakdown forms)
-- Update existing urban project creation page objects to navigate through the new steps
-- New page object for the stakeholder builder question
-- Update expenses page object for the new construction/rehabilitation expense step
