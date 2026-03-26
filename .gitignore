@@ -4,6 +4,7 @@ node_modules
 .env.local
 storage
 logs
+.local/
 .eslintcache
 
 # used to build api
@@ -22,9 +23,6 @@ coverage/
 *.launch
 .settings/
 *.sublime-workspace
-
-# plans writen by AI agents
-specs/
 
 # Claude Code local settings
 .claude/settings.local.json
