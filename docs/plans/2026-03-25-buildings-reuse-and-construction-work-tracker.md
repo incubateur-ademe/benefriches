@@ -26,11 +26,14 @@ When prompted with: `read <this-tracker>.md and execute it`
      - API changes: `pnpm --filter api test`
      - Shared changes: `pnpm --filter shared build && pnpm --filter api install && pnpm --filter web install && pnpm -r typecheck && pnpm -r test`
 7. Run the `code-reviewer` skill on the resulting diff.
-8. Ask user validation of the completed task.
-9. Only after explicit validation, mark the task as done in this tracker:
+8. Before asking validation:
+   - for `S1` to `S12`, list the sequencing test files created/updated in `step-handlers/buildings/__tests__/sequencing/`
+   - for `S13` and `S14`, list non-sequencing tests/e2e specs created/updated
+9. Ask user validation of the completed task.
+10. Only after explicit validation, mark the task as done in this tracker:
    - switch `[ ]` to `[x]`
    - add a 1-line `Done note`.
-10. Stop and wait for the next instruction (do not auto-start the next task).
+11. Stop and wait for the next instruction (do not auto-start the next task).
 
 Prompt template:
 
@@ -41,6 +44,7 @@ Constraints:
 - ask approval before implementation,
 - run checks from the tracker + CLAUDE.md,
 - run code-reviewer,
+- for S1-S12, update sequencing tests and list modified sequencing files before asking validation,
 - ask my validation,
 - then mark task done.
 ```
@@ -65,181 +69,136 @@ Constraints:
 - [ ] E2E tests/page objects for new chapter flows.
 - [ ] Type-level cleanup in `stepHandlerRegistry.ts` and one handler import issue (`ReadStateHelper.willHaveBuildings` usage).
 
-## Work Groups
+## Definition of Done (mandatory for each unchecked task)
 
-## Group A — Feature Flag and Safety Gate (done)
+1. Implement the task scope in production code (handler logic, selectors/view-data, UI page, wizard/update wiring as applicable).
+2. For `S1` to `S12`, add or update sequencing tests using the urban-zone approach:
+   - one `*.step.spec.ts` file per scenario
+   - each scenario file contains forward and backward navigation assertions
+3. For `S13` and `S14`, sequencing-test updates are optional; e2e and release validation are mandatory.
+4. Run task-targeted tests listed in the task.
+5. Run quality guards from `CLAUDE.md` for impacted scope.
+6. Run the `code-reviewer` skill on the diff.
+7. Validate manually with the feature flag ON for the impacted path.
 
-- [x] **A1** Add env flag `WEBAPP_ENABLE_URBAN_PROJECT_BUILDINGS_REUSE_CHAPTER` in:
-  - `apps/web/.env.example`
-  - `apps/web/.env`
-  - `.env.e2e`
-  - `docker-compose.e2e.yml`
-  - Done note: added in all 4 files (`.env.e2e` default `false`).
-  - Check: `rg -n "WEBAPP_ENABLE_URBAN_PROJECT_BUILDINGS_REUSE_CHAPTER" apps/web/.env.example apps/web/.env .env.e2e docker-compose.e2e.yml`
+## Sequencing Tests Contract (new mandatory approach for this epic)
 
-- [x] **A2** Expose flag in `apps/web/src/app/envVars.ts` as `urbanProjectBuildingsReuseChapterEnabled`.
-  - Done note: exposed from `window._benefriches_env.WEBAPP_ENABLE_URBAN_PROJECT_BUILDINGS_REUSE_CHAPTER`.
-  - Check: `pnpm --filter web typecheck`
+- Test directory: `apps/web/src/shared/core/reducers/project-form/urban-project/step-handlers/buildings/__tests__/sequencing/`
+- File pattern: one file per scenario (example names):
+  - `withoutBuildings.step.spec.ts`
+  - `reuseOnlyNoDemolition.step.spec.ts`
+  - `reuseOnlyWithDemolition.step.spec.ts`
+  - `reuseAndNewConstruction.step.spec.ts`
+  - `newConstructionOnlyWithDemolition.step.spec.ts`
+- Scope: each scenario file asserts both forward and reverse navigation for the chapter slice it touches.
+- Command baseline: `pnpm --filter web test src/shared/core/reducers/project-form/urban-project/step-handlers/buildings/__tests__/sequencing`
 
-- [x] **A3** Use direct env var read in routing handler (no `StepContext` injection).
-  - Files:
-    - `apps/web/src/shared/core/reducers/project-form/urban-project/step-handlers/buildings/buildings-uses-floor-surface-area/buildingsUsesFloorSurfaceArea.handler.ts`
-  - Done note: imported `envVars` directly in handler.
-  - Check: `pnpm --filter web test src/features/create-project/core/urban-project/__tests__/steps/uses/buildingsUsesFloorSurfaceArea.handler.spec.ts`
+## Historical Done (kept for traceability)
 
-- [x] **A4** Gate chapter entry in `buildingsUsesFloorSurfaceArea.handler.ts`:
-  - flag OFF: legacy route
-  - flag ON: new chapter route
-  - Done note: branch implemented and covered by tests (OFF + ON).
-  - Check: `pnpm --filter web test src/features/create-project/core/urban-project/__tests__/steps/uses/usesFloorSurfaceArea.step.spec.ts`
+- [x] **HIST-1** Feature flag foundation (`A1` to `A4`) is implemented and tested.
+- [x] **HIST-2** Registry typing cleanup and reader-import fix (`B1`, `B2`) are implemented and tested.
 
-## Group B — Core Flow Completion (no UI yet)
+## Incremental User-Centric Flow Tasks
 
-- [x] **B1** Fix `stepHandlerRegistry.ts` typing: intro/info handlers must not be in `answerStepHandlers`.
-  - Spec ref: `Step Type Registration`
-  - Done note: split registry into typed `answerStepHandlers` + `infoStepHandlers` and composed `stepHandlerRegistry` from both.
-  - Check: `pnpm --filter web typecheck`
+- [ ] **S1** Chapter entry branch from `BUILDINGS_USES_FLOOR_SURFACE_AREA`.
+  - Spec ref: `Navigation` (entry branch, flag ON behavior)
+  - Includes: finalize any remaining entry/previous-step routing updates linked to chapter entry.
+  - Targeted checks:
+    - `pnpm --filter web test src/features/create-project/core/urban-project/__tests__/steps/uses/usesFloorSurfaceArea.step.spec.ts`
+    - `pnpm --filter web test src/features/create-project/core/urban-project/__tests__/steps/uses/buildingsUsesFloorSurfaceArea.handler.spec.ts`
 
-- [x] **B2** Fix `expensesBuildingsConstructionAndRehabilitation.handler.ts` imports to use proper readers (`willHaveBuildings`/`hasBuildingsResalePlannedAfterDevelopment`).
-  - Spec ref: `Navigation` + `Expense step condition clarification`
-  - Done note: switched to canonical `@/shared/.../helpers/readers/buildingsReaders` import for both readers and validated with targeted + full web checks.
-  - Check: `pnpm --filter web test src/features/create-project/core/urban-project/__tests__/steps/expenses/expensesInstallation.handler.spec.ts`
+- [ ] **S2** Info step: `BUILDINGS_REUSE_INTRODUCTION` + branch `BUILDINGS_NEW_CONSTRUCTION_INTRODUCTION`.
+  - Spec ref: `View Components` + `Navigation`
+  - Includes: containers + wizard wiring + sequencing scenarios touching both introductions.
+  - Targeted checks:
+    - `pnpm --filter web test src/shared/core/reducers/project-form/urban-project/step-handlers/buildings/__tests__/sequencing`
 
-- [ ] **B3** Apply remaining navigation updates to existing handlers.
-  - Spec ref: `Navigation` (forward + reverse updates and chapter exit routing)
-  - Files:
-    - `buildings-uses-floor-surface-area`
-    - `stakeholders-project-developer`
-    - `stakeholders-reinstatement-contract-owner`
-    - `expenses-introduction`
-    - `expenses-installation`
-    - `soils-decontamination-introduction`
-    - `site-resale-introduction`
-  - Done note:
-  - Checks:
-    - `pnpm --filter web test src/features/create-project/core/urban-project/__tests__/steps/expenses/expensesIntroduction.handler.spec.ts`
-    - `pnpm --filter web test src/features/create-project/core/urban-project/__tests__/steps/expenses/expensesInstallation.handler.spec.ts`
+- [ ] **S3** Answer step: `BUILDINGS_FOOTPRINT_TO_REUSE`.
+  - Spec ref: `Answer Schemas` + `Dependency Rules` + `Navigation`
+  - Includes: page wiring, selector wiring, dependency invalidation behavior.
+  - Targeted checks:
+    - `pnpm --filter web test src/shared/core/reducers/project-form/urban-project/step-handlers/buildings/__tests__/buildingsReuseAndConstruction.step.spec.ts`
+    - `pnpm --filter web test src/shared/core/reducers/project-form/urban-project/step-handlers/buildings/__tests__/sequencing`
+
+- [ ] **S4** Info step: `BUILDINGS_DEMOLITION_INFO`.
+  - Spec ref: `View Components` + `Navigation`
+  - Includes: conditional route after footprint submission + backward links.
+  - Targeted checks:
+    - `pnpm --filter web test src/shared/core/reducers/project-form/urban-project/step-handlers/buildings/__tests__/sequencing`
+
+- [ ] **S5** Answer step: `BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA`.
+  - Spec ref: `Uses Breakdown Constraints` + `Navigation`
+  - Includes: selector factory + page + handler behavior + backward links.
+  - Targeted checks:
+    - `pnpm --filter web test src/shared/core/reducers/project-form/urban-project/step-handlers/buildings/__tests__/sequencing`
+    - `pnpm --filter web test src/features/create-project/core/urban-project/__tests__/urbanProject.selectors.spec.ts`
+
+- [ ] **S6** Info step: `BUILDINGS_NEW_CONSTRUCTION_INFO`.
+  - Spec ref: `View Components` + `Navigation`
+  - Includes: conditional display and previous-step routing chain.
+  - Targeted checks:
+    - `pnpm --filter web test src/shared/core/reducers/project-form/urban-project/step-handlers/buildings/__tests__/sequencing`
+
+- [ ] **S7** Answer step: `BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA`.
+  - Spec ref: `Uses Breakdown Constraints` + `Navigation`
+  - Includes: selector factory + page + remaining surface-area constraints.
+  - Targeted checks:
+    - `pnpm --filter web test src/shared/core/reducers/project-form/urban-project/step-handlers/buildings/__tests__/sequencing`
+    - `pnpm --filter web test src/features/create-project/core/urban-project/__tests__/urbanProject.selectors.spec.ts`
+
+- [ ] **S8** Answer step: `STAKEHOLDERS_BUILDINGS_DEVELOPER`.
+  - Spec ref: `Answer Schemas` + `Navigation` (stakeholders transitions)
+  - Includes: page + selector + routing updates in `stakeholders-project-developer` and `stakeholders-reinstatement-contract-owner`.
+  - Targeted checks:
+    - `pnpm --filter web test src/shared/core/reducers/project-form/urban-project/step-handlers/buildings/__tests__/sequencing`
     - `pnpm --filter web test src/features/create-project/core/urban-project/__tests__/previousStepRequested.action.spec.ts`
 
-- [ ] **B4** Complete dependency/cascading deletion rules when buildings are removed.
-  - Spec ref: `Dependency Rules` + `Upstream cascading: when buildings are removed from the project`
-  - Done note:
-  - Check: `pnpm --filter web test src/features/create-project/core/urban-project/__tests__/steps/uses/usesSelection.step.spec.ts`
+- [ ] **S9** Answer step: `EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION`.
+  - Spec ref: `Answer Schemas` + `Expense step condition clarification` + `Navigation`
+  - Includes: page + selector + routing updates in `expenses-installation` and `expenses-introduction`.
+  - Targeted checks:
+    - `pnpm --filter web test src/features/create-project/core/urban-project/__tests__/steps/expenses/expensesInstallation.handler.spec.ts`
+    - `pnpm --filter web test src/features/create-project/core/urban-project/__tests__/steps/expenses/expensesIntroduction.handler.spec.ts`
+    - `pnpm --filter web test src/shared/core/reducers/project-form/urban-project/step-handlers/buildings/__tests__/sequencing`
 
-## Group C — Selectors and View Data
+- [ ] **S10** Chapter exit integration from buildings to next sections.
+  - Spec ref: `Navigation` (chapter exit routing)
+  - Includes: `soils-decontamination-introduction` + `site-resale-introduction` previous-step alignment via last-chapter-step logic.
+  - Targeted checks:
+    - `pnpm --filter web test src/features/create-project/core/urban-project/__tests__/previousStepRequested.action.spec.ts`
+    - `pnpm --filter web test src/features/create-project/core/urban-project/__tests__/stepCompletionRequested.action.spec.ts`
+    - `pnpm --filter web test src/shared/core/reducers/project-form/urban-project/step-handlers/buildings/__tests__/sequencing`
 
-- [ ] **C1** Add missing selector factories.
-  - Spec ref: `View Components` + answer schemas
-  - Files:
-    - `buildingsExistingBuildingsUsesFloorSurfaceArea.selector.ts`
-    - `buildingsNewBuildingsUsesFloorSurfaceArea.selector.ts`
-    - `stakeholdersBuildingsDeveloper.selector.ts`
-    - `expensesBuildingsConstructionAndRehabilitation.selector.ts`
-  - Done note:
-  - Check: `pnpm --filter web typecheck`
+- [ ] **S11** Cascading deletion when buildings disappear from project.
+  - Spec ref: `Upstream cascading: when buildings are removed from the project`
+  - Includes: deletion/invalidation rules for all new answer steps.
+  - Targeted checks:
+    - `pnpm --filter web test src/features/create-project/core/urban-project/__tests__/steps/uses/usesSelection.step.spec.ts`
+    - `pnpm --filter web test src/shared/core/reducers/project-form/urban-project/step-handlers/buildings/__tests__/buildingsReuseAndConstruction.step.spec.ts`
 
-- [ ] **C2** Export selectors via `urbanProject.selectors.ts` and context consumers (`useProjectForm` path).
-  - Spec ref: `View Components`
-  - Done note:
-  - Check: `pnpm --filter web test src/features/create-project/core/urban-project/__tests__/urbanProject.selectors.spec.ts`
+- [ ] **S12** Sequencing matrix completion (file-per-scenario final pass).
+  - Spec ref: `Integration Tests` scenario table
+  - Includes: complete scenario coverage in `step-handlers/buildings/__tests__/sequencing/` with one file per scenario and forward/backward assertions.
+  - Targeted checks:
+    - `pnpm --filter web test src/shared/core/reducers/project-form/urban-project/step-handlers/buildings/__tests__/sequencing`
 
-## Group D — UI Steps (chapter order)
+- [ ] **S13** E2E coverage update for nominal flows.
+  - Spec ref: `E2E Tests`
+  - Includes:
+    - extend `apps/e2e-tests/pages/UrbanProjectCreationPage.ts`
+    - add scenarios: `site without buildings`, `no reuse`, `full reuse with new construction`
+  - Targeted checks:
+    - `pnpm --filter e2e-tests test --list`
+    - run each new/updated spec
 
-- [ ] **D1** Create info pages.
-  - Spec ref: `View Components` table
-  - Steps:
-    - `buildings/reuse-introduction`
-    - `buildings/new-construction-introduction`
-    - `buildings/demolition-info`
-    - `buildings/new-construction-info`
-  - Done note:
-  - Check: `pnpm --filter web typecheck`
-
-- [ ] **D2** Create form page for `BUILDINGS_FOOTPRINT_TO_REUSE`.
-  - Spec ref: `Answer Schemas` + `View Components`
-  - Done note:
-  - Check: `pnpm --filter web typecheck`
-
-- [ ] **D3** Create form page for `BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA`.
-  - Spec ref: `Uses Breakdown Constraints`
-  - Done note:
-  - Check: `pnpm --filter web typecheck`
-
-- [ ] **D4** Create form page for `BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA`.
-  - Spec ref: `Uses Breakdown Constraints`
-  - Done note:
-  - Check: `pnpm --filter web typecheck`
-
-- [ ] **D5** Create form page for `STAKEHOLDERS_BUILDINGS_DEVELOPER`.
-  - Spec ref: `View Components` + `Answer Schemas`
-  - Done note:
-  - Check: `pnpm --filter web typecheck`
-
-- [ ] **D6** Create form page for `EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION`.
-  - Spec ref: `Answer Schemas` + `View Components`
-  - Done note:
-  - Check: `pnpm --filter web typecheck`
-
-## Group E — Wizard Wiring
-
-- [ ] **E1** Replace all `TODO` switch cases with lazy-loaded containers.
-  - Spec ref: `View Components`
-  - Files:
-    - `UrbanProjectCreationWizard.tsx`
-    - `UrbanProjectUpdateView.tsx`
-  - Done note:
-  - Check: `pnpm --filter web typecheck`
-
-## Group F — Integration Tests (step handlers)
-
-- [ ] **F1** Expand buildings flow integration tests to cover the complete scenario matrix.
-  - Spec ref: `Integration Tests` (scenario table)
-  - Done note:
-  - Check: `pnpm --filter web test src/shared/core/reducers/project-form/urban-project/step-handlers/buildings/__tests__/buildingsReuseAndConstruction.step.spec.ts`
-
-- [ ] **F2** Add handler-focused tests for modified existing handlers (Group B3).
-  - Spec ref: `Navigation` + `Reverse navigation updates to existing handlers`
-  - Done note:
-  - Check: `pnpm --filter web test src/features/create-project/core/urban-project/__tests__/steps/expenses/expensesIntroduction.handler.spec.ts && pnpm --filter web test src/features/create-project/core/urban-project/__tests__/steps/expenses/expensesInstallation.handler.spec.ts`
-
-- [ ] **F3** Update action-level navigation tests impacted by new flow.
-  - Spec ref: `Navigation`
-  - Files:
-    - `stepCompletionRequested.action.spec.ts`
-    - `previousStepRequested.action.spec.ts`
-  - Done note:
-  - Check: `pnpm --filter web test src/features/create-project/core/urban-project/__tests__/stepCompletionRequested.action.spec.ts && pnpm --filter web test src/features/create-project/core/urban-project/__tests__/previousStepRequested.action.spec.ts`
-
-## Group G — E2E (nominal user flows)
-
-- [ ] **G1** Extend `apps/e2e-tests/pages/UrbanProjectCreationPage.ts` for custom urban chapter interactions.
-  - Spec ref: `E2E Tests` -> `Page objects to create/update`
-  - Done note:
-  - Check: `pnpm --filter e2e-tests test --list`
-
-- [ ] **G2** Add e2e scenario for “site without buildings”.
-  - Spec ref: `E2E Tests` (nominal scenarios table)
-  - Done note:
-  - Check: run that single e2e spec
-
-- [ ] **G3** Add e2e scenario for “no reuse”.
-  - Spec ref: `E2E Tests` (nominal scenarios table)
-  - Done note:
-  - Check: run that single e2e spec
-
-- [ ] **G4** Add e2e scenario for “full reuse with new construction”.
-  - Spec ref: `E2E Tests` (nominal scenarios table)
-  - Done note:
-  - Check: run that single e2e spec
-
-## Group H — Release and Enablement
-
-- [ ] **H1** Keep feature flag OFF by default; merge and deploy safely.
-- [ ] **H2** Enable flag in staging and run full QA on chapter.
-- [ ] **H3** Enable flag in production after Group F + G are green.
+- [ ] **S14** Release and enablement.
+  - Includes:
+    - keep feature flag OFF by default for merge/deploy
+    - enable in staging with QA
+    - enable in production after sequencing + e2e are green
 
 ## Recommended Loop Order
-`A1 -> A2 -> A3 -> A4 -> B1 -> B2 -> B3 -> B4 -> C1 -> C2 -> D1 -> D2 -> D3 -> D4 -> D5 -> D6 -> E1 -> F1 -> F2 -> F3 -> G1 -> G2 -> G3 -> G4 -> H1 -> H2 -> H3`
+`HIST-1 -> HIST-2 -> S1 -> S2 -> S3 -> S4 -> S5 -> S6 -> S7 -> S8 -> S9 -> S10 -> S11 -> S12 -> S13 -> S14`
 
 ## Notes
 - New chapter step IDs are already introduced in multiple registries, so gating before full flow activation avoids exposing incomplete `TODO` screens.
