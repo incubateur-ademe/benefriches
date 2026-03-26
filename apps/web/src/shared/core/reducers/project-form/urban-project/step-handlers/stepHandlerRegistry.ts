@@ -50,10 +50,13 @@ import { UsesIntroductionHandler } from "./uses/introduction/usesIntroduction.ha
 import { PublicGreenSpacesSurfaceAreaHandler } from "./uses/public-green-spaces-surface-area/publicGreenSpacesSurfaceArea.handler";
 import { UsesSelectionHandler } from "./uses/selection/usesSelection.handler";
 
-// Correlated mapped type: lookup with generic T yields AnswerStepHandler<T>
+type InfoStepId = Exclude<UrbanProjectCreationStep, AnswerStepId>;
+
+// Correlated mapped type: lookup with generic T yields AnswerStepHandler<T>.
 type AnswerStepHandlerMap = {
   [K in AnswerStepId]: AnswerStepHandler<K>;
 };
+type InfoStepHandlerMap = Record<InfoStepId, InfoStepHandler>;
 
 export const answerStepHandlers: AnswerStepHandlerMap = {
   URBAN_PROJECT_CREATE_MODE_SELECTION: CreationModeSelectionHandler,
@@ -103,12 +106,7 @@ export const answerStepHandlers: AnswerStepHandlerMap = {
   URBAN_PROJECT_NAMING: UrbanProjectNamingHandler,
 };
 
-// Combined registry for navigation (step sequence walk, back navigation)
-export const stepHandlerRegistry: Record<
-  UrbanProjectCreationStep,
-  InfoStepHandler | AnswerStepHandler<AnswerStepId>
-> = {
-  ...answerStepHandlers,
+const infoStepHandlers: InfoStepHandlerMap = {
   // express
   URBAN_PROJECT_EXPRESS_SUMMARY: ExpressSummaryHandler,
   URBAN_PROJECT_EXPRESS_CREATION_RESULT: ExpressCreationResultHandler,
@@ -135,4 +133,13 @@ export const stepHandlerRegistry: Record<
   URBAN_PROJECT_REVENUE_INTRODUCTION: RevenueIntroductionHandler,
   URBAN_PROJECT_FINAL_SUMMARY: FinalSummaryHandler,
   URBAN_PROJECT_CREATION_RESULT: CreationResultHandler,
+};
+
+// Combined registry for navigation (step sequence walk, back navigation)
+export const stepHandlerRegistry: Record<
+  UrbanProjectCreationStep,
+  InfoStepHandler | AnswerStepHandler<AnswerStepId>
+> = {
+  ...answerStepHandlers,
+  ...infoStepHandlers,
 };

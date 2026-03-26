@@ -95,9 +95,9 @@ Constraints:
 
 ## Group B — Core Flow Completion (no UI yet)
 
-- [ ] **B1** Fix `stepHandlerRegistry.ts` typing: intro/info handlers must not be in `answerStepHandlers`.
+- [x] **B1** Fix `stepHandlerRegistry.ts` typing: intro/info handlers must not be in `answerStepHandlers`.
   - Spec ref: `Step Type Registration`
-  - Done note:
+  - Done note: split registry into typed `answerStepHandlers` + `infoStepHandlers` and composed `stepHandlerRegistry` from both.
   - Check: `pnpm --filter web typecheck`
 
 - [ ] **B2** Fix `expensesBuildingsConstructionAndRehabilitation.handler.ts` imports to use proper readers (`willHaveBuildings`/`hasBuildingsResalePlannedAfterDevelopment`).
