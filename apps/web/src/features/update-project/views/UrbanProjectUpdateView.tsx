@@ -20,6 +20,9 @@ const AnswerCascadingUpdateDialog = lazy(
 const BuildingsIntroduction = lazy(
   () => import("@/shared/views/project-form/urban-project/buildings/introduction"),
 );
+const BuildingsFootprintToReuse = lazy(
+  () => import("@/shared/views/project-form/urban-project/buildings/footprint-to-reuse"),
+);
 const InstallationExpensesForm = lazy(
   () => import("@/shared/views/project-form/urban-project/expenses/installation"),
 );
@@ -242,7 +245,12 @@ const getCurrentStepView = (step: UrbanProjectUpdateStep): Exclude<ReactNode, un
     case "URBAN_PROJECT_BUILDINGS_NEW_CONSTRUCTION_INTRODUCTION":
       return <div>TODO: Buildings new construction introduction</div>;
     case "URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE":
-      return <div>TODO: Buildings footprint to reuse</div>;
+      return (
+        <>
+          <HtmlTitle>{`Réutilisation des bâtiments - Bâtiments - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
+          <BuildingsFootprintToReuse />
+        </>
+      );
     case "URBAN_PROJECT_BUILDINGS_DEMOLITION_INFO":
       return <div>TODO: Buildings demolition info</div>;
     case "URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA":

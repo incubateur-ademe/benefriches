@@ -130,9 +130,10 @@ Constraints:
   - Targeted checks:
     - `pnpm --filter web test src/shared/core/reducers/project-form/urban-project/step-handlers/buildings/__tests__/sequencing`
 
-- [ ] **S3** Answer step: `BUILDINGS_FOOTPRINT_TO_REUSE`.
+- [x] **S3** Answer step: `BUILDINGS_FOOTPRINT_TO_REUSE`.
   - Spec ref: `Answer Schemas` + `Dependency Rules` + `Navigation`
   - Includes: page wiring, selector wiring, dependency invalidation behavior.
+  - Done note: Added footprint-to-reuse form + container, wired create/update wizard screens, and completed sequencing tests in renamed `*.sequence.spec.ts` files with split forward/backward routes.
   - Targeted checks:
     - `pnpm --filter web test src/shared/core/reducers/project-form/urban-project/step-handlers/buildings/__tests__/buildingsReuseAndConstruction.step.spec.ts`
     - `pnpm --filter web test src/shared/core/reducers/project-form/urban-project/step-handlers/buildings/__tests__/sequencing`

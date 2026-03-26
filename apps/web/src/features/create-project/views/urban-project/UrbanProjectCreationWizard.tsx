@@ -31,6 +31,9 @@ const BuildingsReuseIntroduction = lazy(
 const BuildingsNewConstructionIntroduction = lazy(
   () => import("@/shared/views/project-form/urban-project/buildings/new-construction-introduction"),
 );
+const BuildingsFootprintToReuse = lazy(
+  () => import("@/shared/views/project-form/urban-project/buildings/footprint-to-reuse"),
+);
 const ProjectCreationResult = lazy(() => import("./custom-forms/creation-result"));
 const InstallationExpensesForm = lazy(
   () => import("@/shared/views/project-form/urban-project/expenses/installation"),
@@ -288,7 +291,12 @@ const getCurrentStepView = (step: UrbanProjectCreationStep): Exclude<ReactNode, 
         </>
       );
     case "URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE":
-      return <div>TODO: Buildings footprint to reuse</div>;
+      return (
+        <>
+          <HtmlTitle>{`Réutilisation des bâtiments - Bâtiments - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
+          <BuildingsFootprintToReuse />
+        </>
+      );
     case "URBAN_PROJECT_BUILDINGS_DEMOLITION_INFO":
       return <div>TODO: Buildings demolition info</div>;
     case "URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA":
