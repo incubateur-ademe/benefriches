@@ -124,6 +124,14 @@ const getPermeableSurfaceArea = (impactsData?: ReconversionProjectImpacts["envir
   };
 };
 
+const getArtificializedSurfaceArea = (permeableSurfaceAreaDifference?: number): number => {
+  if (permeableSurfaceAreaDifference === undefined || permeableSurfaceAreaDifference >= 0) {
+    return 0;
+  }
+
+  return Math.abs(permeableSurfaceAreaDifference);
+};
+
 const getNonContaminatedSurfaceArea = (
   impactsData: ReconversionProjectImpacts["environmental"],
   relatedSiteData: SiteData,
@@ -198,6 +206,7 @@ export type KeyImpactIndicatorData =
       value: {
         isAgriculturalFriche?: boolean;
         permeableSurfaceAreaDifference?: number;
+        artificializedSurfaceArea: number;
       };
     }
   | {
@@ -258,6 +267,8 @@ export const getKeyImpactIndicatorsList = (
   const localPropertyValueIncrease = getLocalPropertyValueIncrease(
     impactsData.socioeconomic.impacts,
   );
+  const permeableSurfaceAreaDifference = permeableSurfaceArea?.difference;
+  const artificializedSurfaceArea = getArtificializedSurfaceArea(permeableSurfaceAreaDifference);
 
   const impacts: KeyImpactIndicatorData[] = [];
 
@@ -267,6 +278,8 @@ export const getKeyImpactIndicatorsList = (
       isSuccess: !isAgriculturalFriche,
       value: {
         isAgriculturalFriche,
+        permeableSurfaceAreaDifference,
+        artificializedSurfaceArea,
       },
     });
   } else {
@@ -274,7 +287,8 @@ export const getKeyImpactIndicatorsList = (
       name: "zanCompliance",
       isSuccess: false,
       value: {
-        permeableSurfaceAreaDifference: permeableSurfaceArea?.difference,
+        permeableSurfaceAreaDifference,
+        artificializedSurfaceArea,
       },
     });
   }
@@ -448,6 +462,8 @@ export const getUrbanSprawlComparisonImpactIndicatorsList = (
   const localPropertyValueIncrease = impactsData.socioeconomic.impacts.find(
     ({ impact }) => impact === "local_property_value_increase",
   )?.amount;
+  const permeableSurfaceAreaDifference = permeableSurfaceArea?.difference;
+  const artificializedSurfaceArea = getArtificializedSurfaceArea(permeableSurfaceAreaDifference);
 
   const impacts: KeyImpactIndicatorData[] = [];
 
@@ -457,6 +473,8 @@ export const getUrbanSprawlComparisonImpactIndicatorsList = (
       isSuccess: !isAgriculturalFriche,
       value: {
         isAgriculturalFriche,
+        permeableSurfaceAreaDifference,
+        artificializedSurfaceArea,
       },
     });
   } else {
@@ -464,7 +482,8 @@ export const getUrbanSprawlComparisonImpactIndicatorsList = (
       name: "zanCompliance",
       isSuccess: false,
       value: {
-        permeableSurfaceAreaDifference: permeableSurfaceArea?.difference,
+        permeableSurfaceAreaDifference,
+        artificializedSurfaceArea,
       },
     });
   }
