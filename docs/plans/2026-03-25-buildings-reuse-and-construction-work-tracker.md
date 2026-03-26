@@ -22,7 +22,7 @@ When prompted with: `read <this-tracker>.md and execute it`
 6. Run checks:
    - The task targeted check(s) listed below.
    - Quality guards from `CLAUDE.md` for affected scope:
-     - Web changes: `pnpm --filter web typecheck && pnpm --filter web lint && pnpm --filter web test`
+     - Web changes: `pnpm --filter web typecheck && pnpm --filter web lint && pnpm --filter web format && pnpm --filter web test`
      - API changes: `pnpm --filter api test`
      - Shared changes: `pnpm --filter shared build && pnpm --filter api install && pnpm --filter web install && pnpm -r typecheck && pnpm -r test`
 7. Run the `code-reviewer` skill on the resulting diff.
@@ -33,7 +33,8 @@ When prompted with: `read <this-tracker>.md and execute it`
 10. Only after explicit validation, mark the task as done in this tracker:
    - switch `[ ]` to `[x]`
    - add a 1-line `Done note`.
-11. Stop and wait for the next instruction (do not auto-start the next task).
+11. Run the `generate-commit-message` skill
+12. Stop and wait for the next instruction (do not auto-start the next task).
 
 Prompt template:
 
@@ -100,9 +101,10 @@ Constraints:
 
 ## Incremental User-Centric Flow Tasks
 
-- [ ] **S1** Chapter entry branch from `BUILDINGS_USES_FLOOR_SURFACE_AREA`.
+- [x] **S1** Chapter entry branch from `BUILDINGS_USES_FLOOR_SURFACE_AREA`.
   - Spec ref: `Navigation` (entry branch, flag ON behavior)
   - Includes: finalize any remaining entry/previous-step routing updates linked to chapter entry.
+  - Done note: Added S1 branch coverage in action + sequencing tests for no-buildings and reuse-intro forward/backward paths.
   - Targeted checks:
     - `pnpm --filter web test src/features/create-project/core/urban-project/__tests__/steps/uses/usesFloorSurfaceArea.step.spec.ts`
     - `pnpm --filter web test src/features/create-project/core/urban-project/__tests__/steps/uses/buildingsUsesFloorSurfaceArea.handler.spec.ts`

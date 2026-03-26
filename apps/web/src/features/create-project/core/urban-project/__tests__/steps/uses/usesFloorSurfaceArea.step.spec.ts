@@ -1,11 +1,23 @@
-import { describe, it, expect } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { ProjectFormState } from "@/shared/core/reducers/project-form/projectForm.reducer";
 
 import { creationProjectFormUrbanActions } from "../../../urbanProject.actions";
 import { getCurrentStep, StoreBuilder } from "../../_testStoreHelpers";
 
+const mockedEnvVarsModule = vi.hoisted(() => ({
+  BENEFRICHES_ENV: {
+    urbanProjectBuildingsReuseChapterEnabled: false,
+  },
+}));
+
+vi.mock("@/app/envVars", () => mockedEnvVarsModule);
+
 describe("Urban project creation - Steps - Uses floor surface area", () => {
+  beforeEach(() => {
+    mockedEnvVarsModule.BENEFRICHES_ENV.urbanProjectBuildingsReuseChapterEnabled = false;
+  });
+
   it("should complete step and go to URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION when site has contaminated soils", () => {
     const store = new StoreBuilder()
       .withSteps({
@@ -105,5 +117,61 @@ describe("Urban project creation - Steps - Uses floor surface area", () => {
     store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
 
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_INTRODUCTION");
+  });
+
+  it("should complete step and go to URBAN_PROJECT_BUILDINGS_REUSE_INTRODUCTION when feature flag is ON and site has buildings", () => {
+    mockedEnvVarsModule.BENEFRICHES_ENV.urbanProjectBuildingsReuseChapterEnabled = true;
+
+    const store = new StoreBuilder()
+      .withSiteData({
+        soilsDistribution: { BUILDINGS: 2500 },
+        hasContaminatedSoils: false,
+      } as never)
+      .withSteps({
+        URBAN_PROJECT_USES_SELECTION: {
+          completed: true,
+          payload: { usesSelection: ["RESIDENTIAL"] },
+        },
+      })
+      .build();
+
+    store.dispatch(
+      creationProjectFormUrbanActions.stepCompletionRequested({
+        stepId: "URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA",
+        answers: {
+          usesFloorSurfaceAreaDistribution: { RESIDENTIAL: 15000 },
+        },
+      }),
+    );
+
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_REUSE_INTRODUCTION");
+  });
+
+  it("should complete step and go to URBAN_PROJECT_BUILDINGS_NEW_CONSTRUCTION_INTRODUCTION when feature flag is ON and site has no buildings", () => {
+    mockedEnvVarsModule.BENEFRICHES_ENV.urbanProjectBuildingsReuseChapterEnabled = true;
+
+    const store = new StoreBuilder()
+      .withSiteData({
+        soilsDistribution: { BUILDINGS: 0 },
+        hasContaminatedSoils: false,
+      } as never)
+      .withSteps({
+        URBAN_PROJECT_USES_SELECTION: {
+          completed: true,
+          payload: { usesSelection: ["RESIDENTIAL"] },
+        },
+      })
+      .build();
+
+    store.dispatch(
+      creationProjectFormUrbanActions.stepCompletionRequested({
+        stepId: "URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA",
+        answers: {
+          usesFloorSurfaceAreaDistribution: { RESIDENTIAL: 15000 },
+        },
+      }),
+    );
+
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_NEW_CONSTRUCTION_INTRODUCTION");
   });
 });
