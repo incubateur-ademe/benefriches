@@ -18,7 +18,7 @@ When prompted with: `read <this-tracker>.md and execute it`
 2. Pick exactly one task ID (first unchecked task in `Recommended Loop Order`).
 3. Build a quick implementation plan (3-6 bullets) with spec section references.
 4. Ask for approval before coding (`Approve task <TASK_ID>?`).
-5. After approval, implement only that task.
+5. After approval, run the `test-driven-development` skill, then implement only that task.
 6. Run checks:
    - The task targeted check(s) listed below.
    - Quality guards from `CLAUDE.md` for affected scope:
@@ -43,6 +43,7 @@ Read docs/plans/2026-03-25-buildings-reuse-and-construction-work-tracker.md and 
 Constraints:
 - pick only one unchecked task,
 - ask approval before implementation,
+- run `test-driven-development` before coding,
 - run checks from the tracker + CLAUDE.md,
 - run code-reviewer,
 - for S1-S12, update sequencing tests and list modified sequencing files before asking validation,
@@ -72,7 +73,7 @@ Constraints:
 
 ## Definition of Done (mandatory for each unchecked task)
 
-1. Implement the task scope in production code (handler logic, selectors/view-data, UI page, wizard/update wiring as applicable).
+1. Run the `test-driven-development` skill, then implement the task scope in production code (handler logic, selectors/view-data, UI page, wizard/update wiring as applicable).
 2. For `S1` to `S12`, add or update sequencing tests using the urban-zone approach:
    - one `*.step.spec.ts` file per scenario
    - each scenario file contains forward and backward navigation assertions
