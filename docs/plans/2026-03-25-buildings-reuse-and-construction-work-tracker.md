@@ -86,7 +86,7 @@ Constraints:
 
 - Test directory: `apps/web/src/shared/core/reducers/project-form/urban-project/step-handlers/buildings/__tests__/sequencing/`
 - File pattern: one file per scenario (example names):
-  - `withoutBuildings.step.spec.ts`
+  - `withNoExistingBuildings.step.spec.ts`
   - `reuseOnlyNoDemolition.step.spec.ts`
   - `reuseOnlyWithDemolition.step.spec.ts`
   - `reuseAndNewConstruction.step.spec.ts`
@@ -109,9 +109,10 @@ Constraints:
     - `pnpm --filter web test src/features/create-project/core/urban-project/__tests__/steps/uses/usesFloorSurfaceArea.step.spec.ts`
     - `pnpm --filter web test src/features/create-project/core/urban-project/__tests__/steps/uses/buildingsUsesFloorSurfaceArea.handler.spec.ts`
 
-- [ ] **S2** Info step: `BUILDINGS_REUSE_INTRODUCTION` + branch `BUILDINGS_NEW_CONSTRUCTION_INTRODUCTION`.
+- [x] **S2** Info step: `BUILDINGS_REUSE_INTRODUCTION` + branch `BUILDINGS_NEW_CONSTRUCTION_INTRODUCTION`.
   - Spec ref: `View Components` + `Navigation`
   - Includes: containers + wizard wiring + sequencing scenarios touching both introductions.
+  - Done note: Added both introduction containers/views with wizard wiring and sequencing coverage for no-existing-buildings and reuse-introduction navigation paths.
   - Targeted checks:
     - `pnpm --filter web test src/shared/core/reducers/project-form/urban-project/step-handlers/buildings/__tests__/sequencing`
 

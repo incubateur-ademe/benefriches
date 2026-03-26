@@ -19,7 +19,7 @@ describe("Urban project buildings sequencing - without buildings", () => {
     mockedEnvVarsModule.BENEFRICHES_ENV.urbanProjectBuildingsReuseChapterEnabled = true;
   });
 
-  it("forward navigation follows the no-buildings branch", () => {
+  it("should navigate forward: uses floor surface area -> new-construction introduction -> site resale introduction", () => {
     const store = new StoreBuilder()
       .withCurrentStep("URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA")
       .withSiteData({
@@ -48,7 +48,36 @@ describe("Urban project buildings sequencing - without buildings", () => {
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
   });
 
-  it("backward navigation returns through the no-buildings branch", () => {
+  it("should navigate forward: uses floor surface area -> new-construction introduction -> soils decontamination introduction", () => {
+    const store = new StoreBuilder()
+      .withCurrentStep("URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA")
+      .withSiteData({
+        soilsDistribution: { BUILDINGS: 0 },
+        hasContaminatedSoils: true,
+      } as never)
+      .withSteps({
+        URBAN_PROJECT_USES_SELECTION: {
+          completed: true,
+          payload: { usesSelection: ["RESIDENTIAL"] },
+        },
+      })
+      .build();
+
+    store.dispatch(
+      creationProjectFormUrbanActions.stepCompletionRequested({
+        stepId: "URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA",
+        answers: {
+          usesFloorSurfaceAreaDistribution: { RESIDENTIAL: 10000 },
+        },
+      }),
+    );
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_NEW_CONSTRUCTION_INTRODUCTION");
+
+    store.dispatch(creationProjectFormUrbanActions.nextStepRequested());
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION");
+  });
+
+  it("should navigate backward: new-construction introduction -> uses floor surface area", () => {
     const store = new StoreBuilder()
       .withCurrentStep("URBAN_PROJECT_BUILDINGS_NEW_CONSTRUCTION_INTRODUCTION")
       .withSiteData({

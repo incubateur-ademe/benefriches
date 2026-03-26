@@ -19,7 +19,7 @@ describe("Urban project buildings sequencing - reuse only without demolition", (
     mockedEnvVarsModule.BENEFRICHES_ENV.urbanProjectBuildingsReuseChapterEnabled = true;
   });
 
-  it("forward navigation follows the reuse-only path without demolition info", () => {
+  it("should navigate forward: uses floor surface area -> reuse introduction -> footprint to reuse", () => {
     const store = new StoreBuilder()
       .withCurrentStep("URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA")
       .withSiteData({
@@ -48,7 +48,7 @@ describe("Urban project buildings sequencing - reuse only without demolition", (
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE");
   });
 
-  it("backward navigation returns through the reuse-only path without demolition info", () => {
+  it("should navigate backward: reuse introduction -> uses floor surface area", () => {
     const store = new StoreBuilder()
       .withCurrentStep("URBAN_PROJECT_BUILDINGS_REUSE_INTRODUCTION")
       .withSiteData({
@@ -59,4 +59,23 @@ describe("Urban project buildings sequencing - reuse only without demolition", (
     store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA");
   });
+
+  it("should navigate backward: footprint to reuse -> reuse introduction", () => {
+    const store = new StoreBuilder()
+      .withCurrentStep("URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE")
+      .withSiteData({
+        soilsDistribution: { BUILDINGS: 2500 },
+      } as never)
+      .build();
+
+    store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_REUSE_INTRODUCTION");
+  });
+
+  it.todo(
+    "should navigate forward: footprint to reuse (full reuse, no new construction) -> site resale introduction",
+  );
+  it.todo(
+    "should navigate forward: footprint to reuse (full reuse, no new construction, contaminated soils) -> soils decontamination introduction",
+  );
 });

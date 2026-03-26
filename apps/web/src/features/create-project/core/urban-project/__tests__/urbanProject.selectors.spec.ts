@@ -369,6 +369,38 @@ describe("urbanProject.selectors", () => {
     });
   });
 
+  describe("selectBuildingsNewConstructionIntroductionViewData", () => {
+    it("returns project buildings footprint from spaces distribution", () => {
+      const store = new StoreBuilder()
+        .withSteps({
+          URBAN_PROJECT_SPACES_SURFACE_AREA: {
+            completed: true,
+            payload: {
+              spacesSurfaceAreaDistribution: {
+                BUILDINGS: 3200,
+                IMPERMEABLE_SOILS: 1800,
+              },
+            },
+          },
+        })
+        .build();
+      const rootState = store.getState();
+      const result =
+        creationProjectFormSelectors.selectBuildingsNewConstructionIntroductionViewData(rootState);
+
+      expect(result).toEqual({ buildingsFootprintToConstruct: 3200 });
+    });
+
+    it("returns zero when spaces distribution is missing", () => {
+      const store = new StoreBuilder().withSteps({}).build();
+      const rootState = store.getState();
+      const result =
+        creationProjectFormSelectors.selectBuildingsNewConstructionIntroductionViewData(rootState);
+
+      expect(result).toEqual({ buildingsFootprintToConstruct: 0 });
+    });
+  });
+
   describe("selectUrbanProjectSummaryViewData", () => {
     it("returns composed summary view data", () => {
       const store = new StoreBuilder().withSteps({}).build();

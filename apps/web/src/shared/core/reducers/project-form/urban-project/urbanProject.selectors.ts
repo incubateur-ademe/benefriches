@@ -11,6 +11,7 @@ import {
   getProjectSoilDistributionBySoilType,
 } from "./helpers/readers/soilsReaders";
 import { createSelectBuildingsFootprintToReuseViewData } from "./step-handlers/buildings/buildings-footprint-to-reuse/buildingsFootprintToReuse.selector";
+import { createSelectBuildingsNewConstructionIntroductionViewData } from "./step-handlers/buildings/buildings-new-construction-introduction/buildingsNewConstructionIntroduction.selector";
 import { createSelectUsesFloorSurfaceAreaViewData } from "./step-handlers/buildings/buildings-uses-floor-surface-area/buildingsUsesFloorSurfaceArea.selector";
 import { createSelectReinstatementExpensesViewData } from "./step-handlers/expenses/expenses-reinstatement/expensesReinstatement.selector";
 import { createSelectSiteResaleRevenueViewData } from "./step-handlers/revenues/revenue-expected-site-resale/revenueExpectedSiteResale.selector";
@@ -164,6 +165,8 @@ export const createUrbanProjectFormSelectors = (
     selectStepState,
     selectors.selectSiteSoilsDistribution,
   );
+  const selectBuildingsNewConstructionIntroductionViewData =
+    createSelectBuildingsNewConstructionIntroductionViewData(selectStepState);
 
   const selectSpacesSelectionViewData = createSelectSpacesSelectionViewData(
     selectStepState,
@@ -263,6 +266,7 @@ export const createUrbanProjectFormSelectors = (
     selectPublicGreenSpacesSurfaceAreaViewData,
     selectUsesFloorSurfaceAreaViewData,
     selectBuildingsFootprintToReuseViewData,
+    selectBuildingsNewConstructionIntroductionViewData,
     selectSpacesSelectionViewData,
     selectSpacesSurfaceAreaViewData,
     selectPublicGreenSpacesSoilsDistributionViewData,
