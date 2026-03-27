@@ -207,15 +207,18 @@ type CityStats = {
   da_population: number;
   da_surface_ha: number;
   // Données DVF
-  dvf_nbtrans?: number;
-  dvf_pxm2_median?: number;
-  dvf_surface_median?: number;
+  dvf_nbtrans_residential?: number;
+  dvf_pxm2_median_residential?: number;
+  dvf_surface_median_residential?: number;
   dvf_nbtrans_cod111?: number;
   dvf_pxm2_median_cod111?: number;
   dvf_surface_median_cod111?: number;
   dvf_nbtrans_cod121?: number;
   dvf_pxm2_median_cod121?: number;
   dvf_surface_median_cod121?: number;
+  dvf_nbtrans_terrain?: number;
+  dvf_pxm2_median_terrain?: number;
+  dvf_surface_median_terrain?: number;
   updated_at: Date;
 };
 

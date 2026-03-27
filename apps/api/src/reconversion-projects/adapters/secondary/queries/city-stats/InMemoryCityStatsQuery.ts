@@ -9,28 +9,32 @@ const SAMPLES = [
     surfaceArea: 118.3 * 10000,
     population: 471941,
     cityCode: "54321",
-    propertyValueMedianPricePerSquareMeters: 2500,
+    residentialPropertyMedianPricePerSquareMeters: 2500,
+    landValueMedianPricePerSquareMeters: 200,
   },
   {
     name: "Béon",
     cityCode: "01039",
     population: undefined,
     surfaceArea: undefined,
-    propertyValueMedianPricePerSquareMeters: 2500,
+    residentialPropertyMedianPricePerSquareMeters: 2500,
+    landValueMedianPricePerSquareMeters: undefined,
   },
   {
     name: "Saint-Christophe-en-Oisans",
     cityCode: "38375",
     population: 106,
     surfaceArea: 123.5 * 10000,
-    propertyValueMedianPricePerSquareMeters: undefined,
+    residentialPropertyMedianPricePerSquareMeters: undefined,
+    landValueMedianPricePerSquareMeters: undefined,
   },
   {
     name: "Paris",
     cityCode: "75056",
     population: 2145906,
     surfaceArea: 10540 * 10000,
-    propertyValueMedianPricePerSquareMeters: 8000,
+    residentialPropertyMedianPricePerSquareMeters: 8000,
+    landValueMedianPricePerSquareMeters: 500,
   },
 ];
 
@@ -51,7 +55,8 @@ export class InMemoryCityStatsQuery implements CityStatsProvider {
         name: "",
         surfaceAreaSquareMeters: 14900000,
         population: 1800,
-        propertyValueMedianPricePerSquareMeters: 3064,
+        residentialPropertyMedianPricePerSquareMeters: 3064,
+        landValueMedianPricePerSquareMeters: null,
       });
     }
 
@@ -59,8 +64,9 @@ export class InMemoryCityStatsQuery implements CityStatsProvider {
       name: result.name,
       surfaceAreaSquareMeters: result.surfaceArea ?? 14900000,
       population: result.population ?? 1800,
-      propertyValueMedianPricePerSquareMeters:
-        result.propertyValueMedianPricePerSquareMeters ?? 3064,
+      residentialPropertyMedianPricePerSquareMeters:
+        result.residentialPropertyMedianPricePerSquareMeters ?? 3064,
+      landValueMedianPricePerSquareMeters: result.landValueMedianPricePerSquareMeters ?? null,
     });
   }
 }

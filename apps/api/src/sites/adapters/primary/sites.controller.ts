@@ -138,6 +138,11 @@ export class SitesController {
             error: "SITE_NOT_FOUND",
             message: `Site with ID ${siteId} not found`,
           });
+        case "ValuationDataNotAvailable":
+          throw new NotFoundException({
+            error: "VALUATION_DATA_NOT_AVAILABLE",
+            message: `Valuation data for site with ID ${siteId} not available`,
+          });
       }
     }
 

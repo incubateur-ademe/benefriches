@@ -532,9 +532,10 @@ describe("ReconversionProjects controller", () => {
       expect(result.projectData).toBeDefined();
       expect(result.siteData.cityStats).toEqual({
         name: "Mont-de-Marsan",
-        population: 31455,
-        propertyValueMedianPricePerSquareMeters: 2179,
+        population: 31592,
+        residentialPropertyMedianPricePerSquareMeters: 2128,
         surfaceAreaSquareMeters: 36595400,
+        landValueMedianPricePerSquareMeters: 155,
       });
     });
   });
