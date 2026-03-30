@@ -7,6 +7,8 @@ description: >
   "write a plan for...". Don't wait for explicit "plan" or "spec" keywords. This skill explores
   the codebase, loads relevant architecture patterns, and produces a structured markdown plan
   with TDD-ordered tasks, file lists, and validation commands.
+effort: high
+allowed-tools: Read, Write, Glob, Grep, Bash
 user-invocable: true
 ---
 

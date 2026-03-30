@@ -1,6 +1,8 @@
 ---
 name: create-e2e-test
-description: Create end-to-end tests using Playwright with page objects and fixtures following project conventions
+description: Create end-to-end tests using Playwright with page objects and fixtures following project conventions. Use when the user asks to add e2e tests for a feature or user flow.
+effort: medium
+allowed-tools: Bash, Read, Write, Glob, Grep
 user-invocable: true
 ---
 

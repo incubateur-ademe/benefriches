@@ -1,6 +1,8 @@
 ---
 name: react-best-practices
 description: React best practices for Benefriches (Vite + Redux). Covers code quality, component patterns, state management, and performance. Use when writing, reviewing, or refactoring React components, debugging slow interactions, or implementing Redux patterns.
+effort: medium
+allowed-tools: Read, Grep, Glob
 ---
 
 # React Best Practices for Benefriches

@@ -1,7 +1,8 @@
 ---
 name: worktree
 effort: low
-description: Create a git worktree and prime the development environment for a new feature or refactor
+description: Create a git worktree and prime the development environment for a new feature or refactor. Use when starting isolated feature work or needing a separate working copy.
+allowed-tools: Bash
 user-invocable: true
 ---
 

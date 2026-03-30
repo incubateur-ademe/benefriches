@@ -1,6 +1,8 @@
 ---
 name: create-database-migration
 description: Create Knex database migrations for the Benefriches API. Use when adding, modifying, or removing database columns/tables. Handles schema changes (create table, add/drop/rename columns), data migrations, and updates to tableTypes.d.ts.
+effort: low
+allowed-tools: Bash, Read, Write
 ---
 
 # Create Database Migration

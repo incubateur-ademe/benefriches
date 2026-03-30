@@ -1,6 +1,8 @@
 ---
 name: security-review
 description: Comprehensive security audit for authentication, input validation, secrets, and API security. Use for pre-deployment audits or targeted security analysis.
+effort: high
+allowed-tools: Bash, Read, Grep, Glob
 ---
 
 # Security Review

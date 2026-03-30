@@ -1,6 +1,8 @@
 ---
 name: adr
-description: Evaluate whether session changes warrant an Architecture Decision Record, and create one if justified.
+description: Evaluate whether session changes warrant an Architecture Decision Record, and create one if justified. Use when significant architectural decisions have been made, new patterns introduced, or after major refactors.
+effort: medium
+allowed-tools: Bash, Read, Write, Glob
 user-invocable: true
 ---
 

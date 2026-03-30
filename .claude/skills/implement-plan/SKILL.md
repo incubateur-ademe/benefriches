@@ -5,6 +5,8 @@ description: >
   deliverables. Use this skill whenever the user says "implement this plan", "start working on
   specs/...", "let's build the feature from the spec", "execute the plan", or points at a plan
   file and says to build it. Don't wait for explicit "implement-plan" keywords.
+effort: high
+allowed-tools: Bash, Read, Write, Edit, Glob, Grep, Skill
 user-invocable: true
 ---
 

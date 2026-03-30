@@ -1,6 +1,8 @@
 ---
 name: code-reviewer
 description: Reviews code for bugs, security vulnerabilities, and quality issues. MUST be invoked automatically after completing a coding task (feature, bug fix, or refactor) - do not wait for user to request it.
+effort: medium
+allowed-tools: Bash, Read, Grep, Glob
 user-invocable: true
 ---
 

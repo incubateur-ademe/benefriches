@@ -1,7 +1,8 @@
 ---
 name: worktree-merge
 effort: low
-description: Merge a worktree branch into main, remove the worktree, and delete the branch. Lists active worktrees for selection.
+description: Merge a worktree branch into main, remove the worktree, and delete the branch. Use when done with a worktree and ready to integrate or discard the work.
+allowed-tools: Bash
 user-invocable: true
 ---
 
