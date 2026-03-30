@@ -249,4 +249,41 @@ describe("Urban project buildings sequencing - reuse and new construction", () =
     store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_INTRODUCTION");
   });
+
+  it("URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA -> URBAN_PROJECT_BUILDINGS_NEW_CONSTRUCTION_INFO -> URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA", () => {
+    const store = new StoreBuilder()
+      .withCurrentStep("URBAN_PROJECT_BUILDINGS_NEW_CONSTRUCTION_INFO")
+      .withSiteData({
+        soilsDistribution: { ...mockSiteData.soilsDistribution, BUILDINGS: 2000 },
+        hasContaminatedSoils: false,
+      })
+      .withSteps({
+        URBAN_PROJECT_USES_SELECTION: {
+          completed: true,
+          payload: { usesSelection: ["RESIDENTIAL", "OFFICES"] },
+        },
+        URBAN_PROJECT_SPACES_SURFACE_AREA: {
+          completed: true,
+          payload: {
+            spacesSurfaceAreaDistribution: { BUILDINGS: 3000, IMPERMEABLE_SOILS: 7000 },
+          },
+        },
+        URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE: {
+          completed: true,
+          payload: { buildingsFootprintToReuse: 1500 },
+        },
+        URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA: {
+          completed: true,
+          payload: {
+            existingBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 1000, OFFICES: 500 },
+          },
+        },
+      })
+      .build();
+
+    store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
+    expect(getCurrentStep(store)).toBe(
+      "URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA",
+    );
+  });
 });

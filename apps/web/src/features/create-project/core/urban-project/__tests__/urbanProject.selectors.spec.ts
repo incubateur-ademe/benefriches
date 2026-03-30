@@ -401,6 +401,62 @@ describe("urbanProject.selectors", () => {
     });
   });
 
+  describe("selectBuildingsNewConstructionInfoViewData", () => {
+    it("returns the remaining buildings footprint to construct after reuse", () => {
+      const store = new StoreBuilder()
+        .withSteps({
+          URBAN_PROJECT_SPACES_SURFACE_AREA: {
+            completed: true,
+            payload: {
+              spacesSurfaceAreaDistribution: {
+                BUILDINGS: 3200,
+                IMPERMEABLE_SOILS: 1800,
+              },
+            },
+          },
+          URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE: {
+            completed: true,
+            payload: {
+              buildingsFootprintToReuse: 1400,
+            },
+          },
+        })
+        .build();
+      const rootState = store.getState();
+      const result =
+        creationProjectFormSelectors.selectBuildingsNewConstructionInfoViewData(rootState);
+
+      expect(result).toEqual({ buildingsFootprintToConstruct: 1800 });
+    });
+
+    it("returns zero when reuse covers the whole project buildings footprint", () => {
+      const store = new StoreBuilder()
+        .withSteps({
+          URBAN_PROJECT_SPACES_SURFACE_AREA: {
+            completed: true,
+            payload: {
+              spacesSurfaceAreaDistribution: {
+                BUILDINGS: 1200,
+                IMPERMEABLE_SOILS: 1800,
+              },
+            },
+          },
+          URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE: {
+            completed: true,
+            payload: {
+              buildingsFootprintToReuse: 1200,
+            },
+          },
+        })
+        .build();
+      const rootState = store.getState();
+      const result =
+        creationProjectFormSelectors.selectBuildingsNewConstructionInfoViewData(rootState);
+
+      expect(result).toEqual({ buildingsFootprintToConstruct: 0 });
+    });
+  });
+
   describe("selectBuildingsFootprintToReuseViewData", () => {
     it("returns max footprint to reuse as min(site buildings, project buildings)", () => {
       const store = new StoreBuilder()

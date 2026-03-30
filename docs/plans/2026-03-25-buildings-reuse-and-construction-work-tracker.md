@@ -155,9 +155,10 @@ Constraints:
     - `pnpm --filter web test src/shared/core/reducers/project-form/urban-project/step-handlers/buildings/__tests__/sequencing`
     - `pnpm --filter web test src/features/create-project/core/urban-project/__tests__/urbanProject.selectors.spec.ts`
 
-- [ ] **S6** Info step: `BUILDINGS_NEW_CONSTRUCTION_INFO`.
+- [x] **S6** Info step: `BUILDINGS_NEW_CONSTRUCTION_INFO`.
   - Spec ref: `View Components` + `Navigation`
   - Includes: conditional display and previous-step routing chain.
+  - Done note: Added the new-construction info selector and screen wiring in create/update flows, with sequencing coverage for both previous-step branches.
   - Targeted checks:
     - `pnpm --filter web test src/shared/core/reducers/project-form/urban-project/step-handlers/buildings/__tests__/sequencing`
 

@@ -13,6 +13,7 @@ import {
 import { createSelectBuildingsDemolitionInfoViewData } from "./step-handlers/buildings/buildings-demolition-info/buildingsDemolitionInfo.selector";
 import { createSelectExistingBuildingsUsesFloorSurfaceAreaViewData } from "./step-handlers/buildings/buildings-existing-buildings-uses-floor-surface-area/buildingsExistingBuildingsUsesFloorSurfaceArea.selector";
 import { createSelectBuildingsFootprintToReuseViewData } from "./step-handlers/buildings/buildings-footprint-to-reuse/buildingsFootprintToReuse.selector";
+import { createSelectBuildingsNewConstructionInfoViewData } from "./step-handlers/buildings/buildings-new-construction-info/buildingsNewConstructionInfo.selector";
 import { createSelectBuildingsNewConstructionIntroductionViewData } from "./step-handlers/buildings/buildings-new-construction-introduction/buildingsNewConstructionIntroduction.selector";
 import { createSelectUsesFloorSurfaceAreaViewData } from "./step-handlers/buildings/buildings-uses-floor-surface-area/buildingsUsesFloorSurfaceArea.selector";
 import { createSelectReinstatementExpensesViewData } from "./step-handlers/expenses/expenses-reinstatement/expensesReinstatement.selector";
@@ -175,6 +176,8 @@ export const createUrbanProjectFormSelectors = (
     createSelectExistingBuildingsUsesFloorSurfaceAreaViewData(selectStepState);
   const selectBuildingsNewConstructionIntroductionViewData =
     createSelectBuildingsNewConstructionIntroductionViewData(selectStepState);
+  const selectBuildingsNewConstructionInfoViewData =
+    createSelectBuildingsNewConstructionInfoViewData(selectStepState);
 
   const selectSpacesSelectionViewData = createSelectSpacesSelectionViewData(
     selectStepState,
@@ -277,6 +280,7 @@ export const createUrbanProjectFormSelectors = (
     selectBuildingsDemolitionInfoViewData,
     selectExistingBuildingsUsesFloorSurfaceAreaViewData,
     selectBuildingsNewConstructionIntroductionViewData,
+    selectBuildingsNewConstructionInfoViewData,
     selectSpacesSelectionViewData,
     selectSpacesSurfaceAreaViewData,
     selectPublicGreenSpacesSoilsDistributionViewData,
