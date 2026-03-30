@@ -147,9 +147,10 @@ Constraints:
   - Targeted checks:
     - `pnpm --filter web test src/shared/core/reducers/project-form/urban-project/step-handlers/buildings/__tests__/sequencing`
 
-- [ ] **S5** Answer step: `BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA`.
+- [x] **S5** Answer step: `BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA`.
   - Spec ref: `Uses Breakdown Constraints` + `Navigation`
   - Includes: selector factory + page + handler behavior + backward links.
+  - Done note: Added the existing-buildings uses selector and form, wired both urban project wizards, and extended sequencing coverage with mixed-use reuse/new-construction allocations.
   - Targeted checks:
     - `pnpm --filter web test src/shared/core/reducers/project-form/urban-project/step-handlers/buildings/__tests__/sequencing`
     - `pnpm --filter web test src/features/create-project/core/urban-project/__tests__/urbanProject.selectors.spec.ts`

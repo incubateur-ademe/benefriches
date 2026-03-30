@@ -26,6 +26,10 @@ const BuildingsFootprintToReuse = lazy(
 const BuildingsDemolitionInfo = lazy(
   () => import("@/shared/views/project-form/urban-project/buildings/demolition-info"),
 );
+const BuildingsExistingBuildingsUsesFloorSurfaceArea = lazy(
+  () =>
+    import("@/shared/views/project-form/urban-project/buildings/existing-buildings-uses-floor-surface-area"),
+);
 const InstallationExpensesForm = lazy(
   () => import("@/shared/views/project-form/urban-project/expenses/installation"),
 );
@@ -262,7 +266,12 @@ const getCurrentStepView = (step: UrbanProjectUpdateStep): Exclude<ReactNode, un
         </>
       );
     case "URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA":
-      return <div>TODO: Existing buildings uses floor surface area</div>;
+      return (
+        <>
+          <HtmlTitle>{`Usages des bâtiments existants - Bâtiments - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
+          <BuildingsExistingBuildingsUsesFloorSurfaceArea />
+        </>
+      );
     case "URBAN_PROJECT_BUILDINGS_NEW_CONSTRUCTION_INFO":
       return <div>TODO: Buildings new construction info</div>;
     case "URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA":

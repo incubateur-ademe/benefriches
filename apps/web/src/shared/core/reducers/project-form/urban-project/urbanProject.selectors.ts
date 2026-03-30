@@ -11,6 +11,7 @@ import {
   getProjectSoilDistributionBySoilType,
 } from "./helpers/readers/soilsReaders";
 import { createSelectBuildingsDemolitionInfoViewData } from "./step-handlers/buildings/buildings-demolition-info/buildingsDemolitionInfo.selector";
+import { createSelectExistingBuildingsUsesFloorSurfaceAreaViewData } from "./step-handlers/buildings/buildings-existing-buildings-uses-floor-surface-area/buildingsExistingBuildingsUsesFloorSurfaceArea.selector";
 import { createSelectBuildingsFootprintToReuseViewData } from "./step-handlers/buildings/buildings-footprint-to-reuse/buildingsFootprintToReuse.selector";
 import { createSelectBuildingsNewConstructionIntroductionViewData } from "./step-handlers/buildings/buildings-new-construction-introduction/buildingsNewConstructionIntroduction.selector";
 import { createSelectUsesFloorSurfaceAreaViewData } from "./step-handlers/buildings/buildings-uses-floor-surface-area/buildingsUsesFloorSurfaceArea.selector";
@@ -170,6 +171,8 @@ export const createUrbanProjectFormSelectors = (
     selectStepState,
     selectors.selectSiteData,
   );
+  const selectExistingBuildingsUsesFloorSurfaceAreaViewData =
+    createSelectExistingBuildingsUsesFloorSurfaceAreaViewData(selectStepState);
   const selectBuildingsNewConstructionIntroductionViewData =
     createSelectBuildingsNewConstructionIntroductionViewData(selectStepState);
 
@@ -272,6 +275,7 @@ export const createUrbanProjectFormSelectors = (
     selectUsesFloorSurfaceAreaViewData,
     selectBuildingsFootprintToReuseViewData,
     selectBuildingsDemolitionInfoViewData,
+    selectExistingBuildingsUsesFloorSurfaceAreaViewData,
     selectBuildingsNewConstructionIntroductionViewData,
     selectSpacesSelectionViewData,
     selectSpacesSurfaceAreaViewData,

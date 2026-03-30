@@ -449,6 +449,105 @@ describe("urbanProject.selectors", () => {
     });
   });
 
+  describe("selectExistingBuildingsUsesFloorSurfaceAreaViewData", () => {
+    it("returns current answers, building uses only, and overall floor surface distribution", () => {
+      const store = new StoreBuilder()
+        .withSteps({
+          URBAN_PROJECT_USES_SELECTION: {
+            completed: true,
+            payload: {
+              usesSelection: ["RESIDENTIAL", "OFFICES", "PUBLIC_GREEN_SPACES"],
+            },
+          },
+          URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA: {
+            completed: true,
+            payload: {
+              usesFloorSurfaceAreaDistribution: {
+                RESIDENTIAL: 2400,
+                OFFICES: 600,
+              },
+            },
+          },
+          URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA: {
+            completed: true,
+            payload: {
+              existingBuildingsUsesFloorSurfaceArea: {
+                RESIDENTIAL: 1800,
+              },
+            },
+          },
+        })
+        .build();
+
+      const rootState = store.getState();
+      const result =
+        creationProjectFormSelectors.selectExistingBuildingsUsesFloorSurfaceAreaViewData(rootState);
+
+      expect(result).toEqual({
+        existingBuildingsUsesFloorSurfaceArea: {
+          RESIDENTIAL: 1800,
+        },
+        selectedUses: ["RESIDENTIAL", "OFFICES"],
+        usesFloorSurfaceAreaDistribution: {
+          RESIDENTIAL: 2400,
+          OFFICES: 600,
+        },
+      });
+    });
+
+    it("returns empty defaults when buildings answers are missing", () => {
+      const store = new StoreBuilder()
+        .withSteps({
+          URBAN_PROJECT_USES_SELECTION: {
+            completed: true,
+            payload: {
+              usesSelection: ["RESIDENTIAL", "PUBLIC_GREEN_SPACES"],
+            },
+          },
+        })
+        .build();
+
+      const rootState = store.getState();
+      const result =
+        creationProjectFormSelectors.selectExistingBuildingsUsesFloorSurfaceAreaViewData(rootState);
+
+      expect(result).toEqual({
+        existingBuildingsUsesFloorSurfaceArea: undefined,
+        selectedUses: ["RESIDENTIAL"],
+        usesFloorSurfaceAreaDistribution: {},
+      });
+    });
+
+    it("falls back to default answers for existing buildings uses", () => {
+      const store = new StoreBuilder()
+        .withSteps({
+          URBAN_PROJECT_USES_SELECTION: {
+            completed: true,
+            payload: {
+              usesSelection: ["RESIDENTIAL"],
+            },
+          },
+          URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA: {
+            completed: true,
+            defaultValues: {
+              existingBuildingsUsesFloorSurfaceArea: {
+                RESIDENTIAL: 1200,
+              },
+            },
+          },
+        })
+        .build();
+
+      const rootState = store.getState();
+      const result =
+        creationProjectFormSelectors.selectExistingBuildingsUsesFloorSurfaceAreaViewData(rootState);
+
+      expect(result.existingBuildingsUsesFloorSurfaceArea).toEqual({
+        RESIDENTIAL: 1200,
+      });
+    });
+  });
+
   describe("selectUrbanProjectSummaryViewData", () => {
     it("returns composed summary view data", () => {
       const store = new StoreBuilder().withSteps({}).build();

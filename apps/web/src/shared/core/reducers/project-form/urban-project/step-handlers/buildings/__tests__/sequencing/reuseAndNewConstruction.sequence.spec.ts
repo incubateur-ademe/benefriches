@@ -30,7 +30,7 @@ describe("Urban project buildings sequencing - reuse and new construction", () =
       .withSteps({
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
-          payload: { usesSelection: ["RESIDENTIAL"] },
+          payload: { usesSelection: ["RESIDENTIAL", "OFFICES"] },
         },
         URBAN_PROJECT_SPACES_SURFACE_AREA: {
           completed: true,
@@ -47,7 +47,7 @@ describe("Urban project buildings sequencing - reuse and new construction", () =
     store.dispatch(
       creationProjectFormUrbanActions.stepCompletionRequested({
         stepId: "URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA",
-        answers: { usesFloorSurfaceAreaDistribution: { RESIDENTIAL: 3000 } },
+        answers: { usesFloorSurfaceAreaDistribution: { RESIDENTIAL: 2400, OFFICES: 600 } },
       }),
     );
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_REUSE_INTRODUCTION");
@@ -70,7 +70,7 @@ describe("Urban project buildings sequencing - reuse and new construction", () =
     store.dispatch(
       creationProjectFormUrbanActions.stepCompletionRequested({
         stepId: "URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA",
-        answers: { existingBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 2000 } },
+        answers: { existingBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 1600, OFFICES: 400 } },
       }),
     );
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_NEW_CONSTRUCTION_INFO");
@@ -83,7 +83,7 @@ describe("Urban project buildings sequencing - reuse and new construction", () =
     store.dispatch(
       creationProjectFormUrbanActions.stepCompletionRequested({
         stepId: "URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA",
-        answers: { newBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 1000 } },
+        answers: { newBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 800, OFFICES: 200 } },
       }),
     );
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
@@ -102,7 +102,7 @@ describe("Urban project buildings sequencing - reuse and new construction", () =
       .withSteps({
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
-          payload: { usesSelection: ["RESIDENTIAL"] },
+          payload: { usesSelection: ["RESIDENTIAL", "OFFICES"] },
         },
         URBAN_PROJECT_SPACES_SURFACE_AREA: {
           completed: true,
@@ -116,11 +116,13 @@ describe("Urban project buildings sequencing - reuse and new construction", () =
         },
         URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA: {
           completed: true,
-          payload: { existingBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 2000 } },
+          payload: {
+            existingBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 1600, OFFICES: 400 },
+          },
         },
         URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA: {
           completed: true,
-          payload: { newBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 1000 } },
+          payload: { newBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 800, OFFICES: 200 } },
         },
       })
       .build();
@@ -142,7 +144,7 @@ describe("Urban project buildings sequencing - reuse and new construction", () =
       .withSteps({
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
-          payload: { usesSelection: ["RESIDENTIAL"] },
+          payload: { usesSelection: ["RESIDENTIAL", "OFFICES"] },
         },
         URBAN_PROJECT_SPACES_SURFACE_AREA: {
           completed: true,
@@ -159,7 +161,7 @@ describe("Urban project buildings sequencing - reuse and new construction", () =
     store.dispatch(
       creationProjectFormUrbanActions.stepCompletionRequested({
         stepId: "URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA",
-        answers: { usesFloorSurfaceAreaDistribution: { RESIDENTIAL: 3000 } },
+        answers: { usesFloorSurfaceAreaDistribution: { RESIDENTIAL: 2400, OFFICES: 600 } },
       }),
     );
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_REUSE_INTRODUCTION");
@@ -184,7 +186,7 @@ describe("Urban project buildings sequencing - reuse and new construction", () =
     store.dispatch(
       creationProjectFormUrbanActions.stepCompletionRequested({
         stepId: "URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA",
-        answers: { existingBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 1500 } },
+        answers: { existingBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 1000, OFFICES: 500 } },
       }),
     );
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_NEW_CONSTRUCTION_INFO");
@@ -197,7 +199,7 @@ describe("Urban project buildings sequencing - reuse and new construction", () =
     store.dispatch(
       creationProjectFormUrbanActions.stepCompletionRequested({
         stepId: "URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA",
-        answers: { newBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 1500 } },
+        answers: { newBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 1400, OFFICES: 100 } },
       }),
     );
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION");
@@ -216,7 +218,7 @@ describe("Urban project buildings sequencing - reuse and new construction", () =
       .withSteps({
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
-          payload: { usesSelection: ["RESIDENTIAL"] },
+          payload: { usesSelection: ["RESIDENTIAL", "OFFICES"] },
         },
         URBAN_PROJECT_SPACES_SURFACE_AREA: {
           completed: true,
@@ -230,11 +232,13 @@ describe("Urban project buildings sequencing - reuse and new construction", () =
         },
         URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA: {
           completed: true,
-          payload: { existingBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 1500 } },
+          payload: {
+            existingBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 1000, OFFICES: 500 },
+          },
         },
         URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA: {
           completed: true,
-          payload: { newBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 1500 } },
+          payload: { newBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 1400, OFFICES: 100 } },
         },
       })
       .build();
