@@ -138,9 +138,10 @@ Constraints:
     - `pnpm --filter web test src/shared/core/reducers/project-form/urban-project/step-handlers/buildings/__tests__/buildingsReuseAndConstruction.step.spec.ts`
     - `pnpm --filter web test src/shared/core/reducers/project-form/urban-project/step-handlers/buildings/__tests__/sequencing`
 
-- [ ] **S4** Info step: `BUILDINGS_DEMOLITION_INFO`.
+- [x] **S4** Info step: `BUILDINGS_DEMOLITION_INFO`.
   - Spec ref: `View Components` + `Navigation`
   - Includes: conditional route after footprint submission + backward links.
+  - Done note: Added demolition info selector + page wiring in create/update wizards, and reorganized sequencing tests into forward/backward describe blocks with scenario descriptions.
   - Targeted checks:
     - `pnpm --filter web test src/shared/core/reducers/project-form/urban-project/step-handlers/buildings/__tests__/sequencing`
 

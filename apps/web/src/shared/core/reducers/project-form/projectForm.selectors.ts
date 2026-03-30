@@ -12,6 +12,7 @@ import {
 import { ProjectSiteView } from "./projectForm.types";
 
 export type ProjectFormSelectors = {
+  selectSiteData: (state: RootState) => ProjectSiteView | undefined;
   selectSiteAddress: (state: RootState) => ProjectSiteView["address"] | undefined;
   selectSiteSoilsDistribution: (state: RootState) => SoilsDistribution;
   selectSiteSurfaceArea: (state: RootState) => number;
@@ -83,6 +84,7 @@ export const createProjectFormSelectors = (entityName: "projectCreation" | "proj
   );
 
   return {
+    selectSiteData,
     selectIsSiteFriche,
     selectSiteAddress,
     selectSiteSoilsDistribution,
