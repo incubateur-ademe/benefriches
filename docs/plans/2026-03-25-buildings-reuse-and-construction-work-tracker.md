@@ -48,8 +48,8 @@ Constraints:
 - run code-reviewer,
 - for S1-S12, update sequencing tests and list modified sequencing files before asking validation,
 - for S1-S12, make each sequencing `it()` a full route from `URBAN_PROJECT_BUILDINGS_INTRODUCTION` to chapter exit,
-- for S1-S12, name each sequencing `it()` with the exact step chain (`STEP_A -> STEP_B -> ...`),
-- for S1-S12, keep forward and backward routes in separate `it()` tests (no mixed assertions in one test),
+- for S1-S12, use human-readable `it()` descriptions with a stripped step-chain comment inside the test body,
+- for S1-S12, group tests under `describe("forward navigation")` and `describe("backward navigation")`,
 - ask my validation,
 - then mark task done.
 ```
@@ -65,7 +65,7 @@ Constraints:
 - [x] Wizard and update switch cases include the new step IDs (currently `TODO` placeholders).
 - [x] A first integration test file exists for `BUILDINGS_FOOTPRINT_TO_REUSE` dependency/navigation logic.
 - [x] Sequencing suite renamed to `*.sequence.spec.ts` and no longer uses `it.todo`.
-- [x] Sequencing scenarios now use explicit step-chain `it()` titles and split forward/backward routes into separate tests.
+- [x] Sequencing scenarios use human-readable `it()` descriptions with step-chain comments, grouped under `describe("forward navigation")` / `describe("backward navigation")`.
 
 ### Still Missing / Incomplete
 - [x] Align `URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE` max constraint with spec update: `max = min(site buildings footprint, project buildings footprint)`.
@@ -84,9 +84,9 @@ Constraints:
 2. For `S1` to `S12`, add or update sequencing tests using the urban-zone approach:
    - one `*.sequence.spec.ts` file per scenario
    - each scenario file contains forward and backward navigation assertions
-   - each sequencing `it()` starts at `URBAN_PROJECT_BUILDINGS_INTRODUCTION` and reaches a chapter exit step (`URBAN_PROJECT_SITE_RESALE_INTRODUCTION` or `URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION`)
-   - each sequencing `it()` title is the exact step chain (e.g. `STEP_A -> STEP_B -> STEP_C`)
-   - forward and backward routes are asserted in separate `it()` tests
+   - tests are grouped under `describe("forward navigation")` and `describe("backward navigation")`
+   - each `it()` uses a human-readable description with a stripped step-chain comment in the test body
+   - each forward `it()` starts at `URBAN_PROJECT_BUILDINGS_INTRODUCTION` and reaches a chapter exit step
 3. For `S13` and `S14`, sequencing-test updates are optional; e2e and release validation are mandatory.
 4. Run task-targeted tests listed in the task.
 5. Run quality guards from `CLAUDE.md` for impacted scope.
@@ -104,10 +104,10 @@ Constraints:
   - `reuseAndNewConstruction.sequence.spec.ts`
   - `newConstructionOnlyWithDemolition.sequence.spec.ts`
 - Scope:
-  - each scenario file asserts both forward and reverse navigation
-  - each sequencing `it()` starts at `URBAN_PROJECT_BUILDINGS_INTRODUCTION`, reaches a chapter exit step, and checks reverse navigation on the same route
-  - each sequencing `it()` title is the exact step chain being asserted
-  - forward and backward routes must be split into distinct `it()` tests
+  - each scenario file groups tests under `describe("forward navigation")` and `describe("backward navigation")`
+  - each sequencing `it()` uses a human-readable description (e.g., `"skips reuse steps and goes directly to new construction"`)
+  - each test body starts with a stripped step-chain comment (e.g., `// INTRO -> FLOOR_AREA -> NEW_CONSTRUCTION_INTRO -> SITE_RESALE_INTRO`)
+  - each sequencing `it()` starts at `URBAN_PROJECT_BUILDINGS_INTRODUCTION` (forward) or a chapter exit step (backward), reaching the opposite end
 - Command baseline: `pnpm --filter web test src/shared/core/reducers/project-form/urban-project/step-handlers/buildings/__tests__/sequencing`
 
 ## Historical Done (kept for traceability)
@@ -202,8 +202,8 @@ Constraints:
 - [ ] **S12** Sequencing matrix completion (file-per-scenario final pass).
   - Spec ref: `Integration Tests` scenario table
   - Includes: complete scenario coverage in `step-handlers/buildings/__tests__/sequencing/` with one file per scenario and forward/backward assertions.
-  - Sequencing rule: each `it()` must start at `URBAN_PROJECT_BUILDINGS_INTRODUCTION`, end at chapter exit, and assert reverse navigation for that exact route.
-  - Test style rule: each `it()` title is the exact step chain; forward and backward routes are separate tests.
+  - Sequencing rule: each forward `it()` must start at `URBAN_PROJECT_BUILDINGS_INTRODUCTION` and end at a chapter exit step.
+  - Test style rule: human-readable `it()` descriptions with step-chain comments; `describe("forward navigation")` / `describe("backward navigation")` grouping.
   - Targeted checks:
     - `pnpm --filter web test src/shared/core/reducers/project-form/urban-project/step-handlers/buildings/__tests__/sequencing`
 

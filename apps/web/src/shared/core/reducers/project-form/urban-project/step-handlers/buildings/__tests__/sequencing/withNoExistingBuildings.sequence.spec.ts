@@ -20,113 +20,119 @@ describe("Urban project buildings sequencing - without buildings", () => {
     mockedEnvVarsModule.BENEFRICHES_ENV.urbanProjectBuildingsReuseChapterEnabled = true;
   });
 
-  it("URBAN_PROJECT_BUILDINGS_INTRODUCTION -> URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA -> URBAN_PROJECT_BUILDINGS_NEW_CONSTRUCTION_INTRODUCTION -> URBAN_PROJECT_SITE_RESALE_INTRODUCTION", () => {
-    const store = new StoreBuilder()
-      .withCurrentStep("URBAN_PROJECT_BUILDINGS_INTRODUCTION")
-      .withSiteData({
-        soilsDistribution: { ...mockSiteData.soilsDistribution, BUILDINGS: 0 },
-        hasContaminatedSoils: false,
-      })
-      .withSteps({
-        URBAN_PROJECT_USES_SELECTION: {
-          completed: true,
-          payload: { usesSelection: ["RESIDENTIAL"] },
-        },
-      })
-      .build();
+  describe("forward navigation", () => {
+    it("skips reuse steps and goes directly to new construction then site resale (non-contaminated)", () => {
+      // INTRO -> FLOOR_AREA -> NEW_CONSTRUCTION_INTRO -> SITE_RESALE_INTRO
+      const store = new StoreBuilder()
+        .withCurrentStep("URBAN_PROJECT_BUILDINGS_INTRODUCTION")
+        .withSiteData({
+          soilsDistribution: { ...mockSiteData.soilsDistribution, BUILDINGS: 0 },
+          hasContaminatedSoils: false,
+        })
+        .withSteps({
+          URBAN_PROJECT_USES_SELECTION: {
+            completed: true,
+            payload: { usesSelection: ["RESIDENTIAL"] },
+          },
+        })
+        .build();
 
-    store.dispatch(creationProjectFormUrbanActions.nextStepRequested());
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA");
+      store.dispatch(creationProjectFormUrbanActions.nextStepRequested());
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA");
 
-    store.dispatch(
-      creationProjectFormUrbanActions.stepCompletionRequested({
-        stepId: "URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA",
-        answers: { usesFloorSurfaceAreaDistribution: { RESIDENTIAL: 10000 } },
-      }),
-    );
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_NEW_CONSTRUCTION_INTRODUCTION");
+      store.dispatch(
+        creationProjectFormUrbanActions.stepCompletionRequested({
+          stepId: "URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA",
+          answers: { usesFloorSurfaceAreaDistribution: { RESIDENTIAL: 10000 } },
+        }),
+      );
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_NEW_CONSTRUCTION_INTRODUCTION");
 
-    store.dispatch(creationProjectFormUrbanActions.nextStepRequested());
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
+      store.dispatch(creationProjectFormUrbanActions.nextStepRequested());
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
+    });
+
+    it("exits to decontamination instead of resale when site has contaminated soils", () => {
+      // INTRO -> FLOOR_AREA -> NEW_CONSTRUCTION_INTRO -> SOILS_DECONTAMINATION_INTRO
+      const store = new StoreBuilder()
+        .withCurrentStep("URBAN_PROJECT_BUILDINGS_INTRODUCTION")
+        .withSiteData({
+          soilsDistribution: { ...mockSiteData.soilsDistribution, BUILDINGS: 0 },
+          hasContaminatedSoils: true,
+        })
+        .withSteps({
+          URBAN_PROJECT_USES_SELECTION: {
+            completed: true,
+            payload: { usesSelection: ["RESIDENTIAL"] },
+          },
+        })
+        .build();
+
+      store.dispatch(creationProjectFormUrbanActions.nextStepRequested());
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA");
+
+      store.dispatch(
+        creationProjectFormUrbanActions.stepCompletionRequested({
+          stepId: "URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA",
+          answers: { usesFloorSurfaceAreaDistribution: { RESIDENTIAL: 10000 } },
+        }),
+      );
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_NEW_CONSTRUCTION_INTRODUCTION");
+
+      store.dispatch(creationProjectFormUrbanActions.nextStepRequested());
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION");
+    });
   });
 
-  // TODO(S10): backward route is incomplete — currently skips intermediate steps because
-  // SITE_RESALE_INTRODUCTION / SOILS_DECONTAMINATION_INTRODUCTION getPreviousStepId hasn't been
-  // updated yet. Will be expanded to full reverse chain when S10 is implemented.
-  it("URBAN_PROJECT_SITE_RESALE_INTRODUCTION -> URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA -> URBAN_PROJECT_BUILDINGS_INTRODUCTION", () => {
-    const store = new StoreBuilder()
-      .withCurrentStep("URBAN_PROJECT_SITE_RESALE_INTRODUCTION")
-      .withSiteData({
-        soilsDistribution: { ...mockSiteData.soilsDistribution, BUILDINGS: 0 },
-        hasContaminatedSoils: false,
-      })
-      .withSteps({
-        URBAN_PROJECT_USES_SELECTION: {
-          completed: true,
-          payload: { usesSelection: ["RESIDENTIAL"] },
-        },
-      })
-      .build();
+  describe("backward navigation", () => {
+    // TODO(S10): backward route is incomplete — currently skips intermediate steps because
+    // SITE_RESALE_INTRODUCTION / SOILS_DECONTAMINATION_INTRODUCTION getPreviousStepId hasn't been
+    // updated yet. Will be expanded to full reverse chain when S10 is implemented.
+    it("goes back from site resale to introduction (non-contaminated)", () => {
+      // SITE_RESALE_INTRO -> FLOOR_AREA -> INTRO
+      const store = new StoreBuilder()
+        .withCurrentStep("URBAN_PROJECT_SITE_RESALE_INTRODUCTION")
+        .withSiteData({
+          soilsDistribution: { ...mockSiteData.soilsDistribution, BUILDINGS: 0 },
+          hasContaminatedSoils: false,
+        })
+        .withSteps({
+          URBAN_PROJECT_USES_SELECTION: {
+            completed: true,
+            payload: { usesSelection: ["RESIDENTIAL"] },
+          },
+        })
+        .build();
 
-    store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA");
+      store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA");
 
-    store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_INTRODUCTION");
-  });
+      store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_INTRODUCTION");
+    });
 
-  it("URBAN_PROJECT_BUILDINGS_INTRODUCTION -> URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA -> URBAN_PROJECT_BUILDINGS_NEW_CONSTRUCTION_INTRODUCTION -> URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION", () => {
-    const store = new StoreBuilder()
-      .withCurrentStep("URBAN_PROJECT_BUILDINGS_INTRODUCTION")
-      .withSiteData({
-        soilsDistribution: { ...mockSiteData.soilsDistribution, BUILDINGS: 0 },
-        hasContaminatedSoils: true,
-      })
-      .withSteps({
-        URBAN_PROJECT_USES_SELECTION: {
-          completed: true,
-          payload: { usesSelection: ["RESIDENTIAL"] },
-        },
-      })
-      .build();
+    // TODO(S10): backward route is incomplete — see above
+    it("goes back from decontamination to introduction (contaminated)", () => {
+      // SOILS_DECONTAMINATION_INTRO -> FLOOR_AREA -> INTRO
+      const store = new StoreBuilder()
+        .withCurrentStep("URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION")
+        .withSiteData({
+          soilsDistribution: { ...mockSiteData.soilsDistribution, BUILDINGS: 0 },
+          hasContaminatedSoils: true,
+        })
+        .withSteps({
+          URBAN_PROJECT_USES_SELECTION: {
+            completed: true,
+            payload: { usesSelection: ["RESIDENTIAL"] },
+          },
+        })
+        .build();
 
-    store.dispatch(creationProjectFormUrbanActions.nextStepRequested());
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA");
+      store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA");
 
-    store.dispatch(
-      creationProjectFormUrbanActions.stepCompletionRequested({
-        stepId: "URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA",
-        answers: { usesFloorSurfaceAreaDistribution: { RESIDENTIAL: 10000 } },
-      }),
-    );
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_NEW_CONSTRUCTION_INTRODUCTION");
-
-    store.dispatch(creationProjectFormUrbanActions.nextStepRequested());
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION");
-  });
-
-  // TODO(S10): backward route is incomplete — currently skips intermediate steps because
-  // SITE_RESALE_INTRODUCTION / SOILS_DECONTAMINATION_INTRODUCTION getPreviousStepId hasn't been
-  // updated yet. Will be expanded to full reverse chain when S10 is implemented.
-  it("URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION -> URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA -> URBAN_PROJECT_BUILDINGS_INTRODUCTION", () => {
-    const store = new StoreBuilder()
-      .withCurrentStep("URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION")
-      .withSiteData({
-        soilsDistribution: { ...mockSiteData.soilsDistribution, BUILDINGS: 0 },
-        hasContaminatedSoils: true,
-      })
-      .withSteps({
-        URBAN_PROJECT_USES_SELECTION: {
-          completed: true,
-          payload: { usesSelection: ["RESIDENTIAL"] },
-        },
-      })
-      .build();
-
-    store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA");
-
-    store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_INTRODUCTION");
+      store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_INTRODUCTION");
+    });
   });
 });

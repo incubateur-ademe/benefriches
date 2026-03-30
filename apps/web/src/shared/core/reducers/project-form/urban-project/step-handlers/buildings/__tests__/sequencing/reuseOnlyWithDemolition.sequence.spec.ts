@@ -21,7 +21,8 @@ describe("Urban project buildings sequencing - reuse only with demolition", () =
   });
 
   describe("forward navigation", () => {
-    it("URBAN_PROJECT_BUILDINGS_INTRODUCTION -> URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA -> URBAN_PROJECT_BUILDINGS_REUSE_INTRODUCTION -> URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE -> URBAN_PROJECT_BUILDINGS_DEMOLITION_INFO -> URBAN_PROJECT_SITE_RESALE_INTRODUCTION | non-contaminated site exits to resale", () => {
+    it("shows demolition info after partial reuse then exits to site resale (non-contaminated)", () => {
+      // INTRO -> FLOOR_AREA -> REUSE_INTRO -> FOOTPRINT -> DEMOLITION_INFO -> SITE_RESALE_INTRO
       const store = new StoreBuilder()
         .withCurrentStep("URBAN_PROJECT_BUILDINGS_INTRODUCTION")
         .withSiteData({
@@ -70,7 +71,8 @@ describe("Urban project buildings sequencing - reuse only with demolition", () =
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
     });
 
-    it("URBAN_PROJECT_BUILDINGS_INTRODUCTION -> URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA -> URBAN_PROJECT_BUILDINGS_REUSE_INTRODUCTION -> URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE -> URBAN_PROJECT_BUILDINGS_DEMOLITION_INFO -> URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION | contaminated site exits to decontamination", () => {
+    it("exits to decontamination instead of resale when site has contaminated soils", () => {
+      // INTRO -> FLOOR_AREA -> REUSE_INTRO -> FOOTPRINT -> DEMOLITION_INFO -> SOILS_DECONTAMINATION_INTRO
       const store = new StoreBuilder()
         .withCurrentStep("URBAN_PROJECT_BUILDINGS_INTRODUCTION")
         .withSiteData({
@@ -120,7 +122,8 @@ describe("Urban project buildings sequencing - reuse only with demolition", () =
   });
 
   describe("backward navigation", () => {
-    it("URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE -> URBAN_PROJECT_BUILDINGS_DEMOLITION_INFO -> URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE | demolition step goes back to footprint", () => {
+    it("goes back from demolition info to footprint-to-reuse", () => {
+      // DEMOLITION_INFO -> FOOTPRINT
       const store = new StoreBuilder()
         .withCurrentStep("URBAN_PROJECT_BUILDINGS_DEMOLITION_INFO")
         .withSiteData({
@@ -152,7 +155,8 @@ describe("Urban project buildings sequencing - reuse only with demolition", () =
     // TODO(S10): backward route is incomplete — currently skips intermediate steps because
     // SITE_RESALE_INTRODUCTION / SOILS_DECONTAMINATION_INTRODUCTION getPreviousStepId hasn't been
     // updated yet. Will be expanded to full reverse chain when S10 is implemented.
-    it("URBAN_PROJECT_SITE_RESALE_INTRODUCTION -> URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA -> URBAN_PROJECT_BUILDINGS_INTRODUCTION | resale intro currently jumps back to buildings uses", () => {
+    it("goes back from site resale to introduction (non-contaminated)", () => {
+      // SITE_RESALE_INTRO -> FLOOR_AREA -> INTRO
       const store = new StoreBuilder()
         .withCurrentStep("URBAN_PROJECT_SITE_RESALE_INTRODUCTION")
         .withSiteData({
@@ -184,10 +188,9 @@ describe("Urban project buildings sequencing - reuse only with demolition", () =
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_INTRODUCTION");
     });
 
-    // TODO(S10): backward route is incomplete — currently skips intermediate steps because
-    // SITE_RESALE_INTRODUCTION / SOILS_DECONTAMINATION_INTRODUCTION getPreviousStepId hasn't been
-    // updated yet. Will be expanded to full reverse chain when S10 is implemented.
-    it("URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION -> URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA -> URBAN_PROJECT_BUILDINGS_INTRODUCTION | decontamination intro currently jumps back to buildings uses", () => {
+    // TODO(S10): backward route is incomplete — see above
+    it("goes back from decontamination to introduction (contaminated)", () => {
+      // SOILS_DECONTAMINATION_INTRO -> FLOOR_AREA -> INTRO
       const store = new StoreBuilder()
         .withCurrentStep("URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION")
         .withSiteData({
