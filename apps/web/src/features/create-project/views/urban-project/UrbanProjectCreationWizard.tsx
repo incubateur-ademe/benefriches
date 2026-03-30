@@ -44,6 +44,10 @@ const BuildingsExistingBuildingsUsesFloorSurfaceArea = lazy(
 const BuildingsNewConstructionInfo = lazy(
   () => import("@/shared/views/project-form/urban-project/buildings/new-construction-info"),
 );
+const BuildingsNewBuildingsUsesFloorSurfaceArea = lazy(
+  () =>
+    import("@/shared/views/project-form/urban-project/buildings/new-buildings-uses-floor-surface-area"),
+);
 const ProjectCreationResult = lazy(() => import("./custom-forms/creation-result"));
 const InstallationExpensesForm = lazy(
   () => import("@/shared/views/project-form/urban-project/expenses/installation"),
@@ -329,7 +333,12 @@ const getCurrentStepView = (step: UrbanProjectCreationStep): Exclude<ReactNode, 
         </>
       );
     case "URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA":
-      return <div>TODO: New buildings uses floor surface area</div>;
+      return (
+        <>
+          <HtmlTitle>{`Usages des nouveaux bâtiments - Bâtiments - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
+          <BuildingsNewBuildingsUsesFloorSurfaceArea />
+        </>
+      );
     case "URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER":
       return <div>TODO: Stakeholders buildings developer</div>;
     case "URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION":

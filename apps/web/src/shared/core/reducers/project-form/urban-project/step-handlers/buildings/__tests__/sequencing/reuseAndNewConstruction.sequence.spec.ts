@@ -21,7 +21,7 @@ describe("Urban project buildings sequencing - reuse and new construction", () =
   });
 
   describe("forward navigation", () => {
-    it("includes existing buildings uses and new buildings uses when partially reusing without demolition (non-contaminated)", () => {
+    it("includes existing buildings uses and new buildings uses when fully reusing without demolition (non-contaminated)", () => {
       // INTRO -> FLOOR_AREA -> REUSE_INTRO -> FOOTPRINT -> EXISTING_USES -> NEW_CONSTRUCTION_INFO -> NEW_USES -> SITE_RESALE_INTRO
       const store = new StoreBuilder()
         .withCurrentStep("URBAN_PROJECT_BUILDINGS_INTRODUCTION")
@@ -88,11 +88,17 @@ describe("Urban project buildings sequencing - reuse and new construction", () =
           answers: { newBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 800, OFFICES: 200 } },
         }),
       );
+      expect(
+        store.getState().projectCreation.urbanProject.steps
+          .URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA?.payload,
+      ).toEqual({
+        newBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 800, OFFICES: 200 },
+      });
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
     });
 
     it("includes demolition info when partially reusing with remaining footprint demolished (contaminated)", () => {
-      // INTRO -> FLOOR_AREA -> REUSE_INTRO -> FOOTPRINT -> DEMOLITION_INFO -> EXISTING_USES -> NEW_CONSTRUCTION_INFO -> NEW_USES -> SOILS_DECONTAMINATION_INTRO
+      // INTRO -> FLOOR_AREA -> REUSE_INTRO -> REUSE_FOOTPRINT -> DEMOLITION_INFO -> EXISTING_USES -> NEW_CONSTRUCTION_INFO -> NEW_USES -> SOILS_DECONTAMINATION_INTRO
       const store = new StoreBuilder()
         .withCurrentStep("URBAN_PROJECT_BUILDINGS_INTRODUCTION")
         .withSiteData({
@@ -160,6 +166,12 @@ describe("Urban project buildings sequencing - reuse and new construction", () =
           answers: { newBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 1400, OFFICES: 100 } },
         }),
       );
+      expect(
+        store.getState().projectCreation.urbanProject.steps
+          .URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA?.payload,
+      ).toEqual({
+        newBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 1400, OFFICES: 100 },
+      });
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION");
     });
   });
@@ -291,6 +303,46 @@ describe("Urban project buildings sequencing - reuse and new construction", () =
       expect(getCurrentStep(store)).toBe(
         "URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA",
       );
+    });
+
+    it("goes back from new buildings uses to new construction info", () => {
+      // NEW_USES -> NEW_CONSTRUCTION_INFO
+      const store = new StoreBuilder()
+        .withCurrentStep("URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA")
+        .withSiteData({
+          soilsDistribution: { ...mockSiteData.soilsDistribution, BUILDINGS: 2000 },
+          hasContaminatedSoils: false,
+        })
+        .withSteps({
+          URBAN_PROJECT_USES_SELECTION: {
+            completed: true,
+            payload: { usesSelection: ["RESIDENTIAL", "OFFICES"] },
+          },
+          URBAN_PROJECT_SPACES_SURFACE_AREA: {
+            completed: true,
+            payload: {
+              spacesSurfaceAreaDistribution: { BUILDINGS: 3000, IMPERMEABLE_SOILS: 7000 },
+            },
+          },
+          URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE: {
+            completed: true,
+            payload: { buildingsFootprintToReuse: 1500 },
+          },
+          URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA: {
+            completed: true,
+            payload: {
+              existingBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 1000, OFFICES: 500 },
+            },
+          },
+          URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA: {
+            completed: true,
+            payload: { newBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 1400, OFFICES: 100 } },
+          },
+        })
+        .build();
+
+      store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_NEW_CONSTRUCTION_INFO");
     });
   });
 });

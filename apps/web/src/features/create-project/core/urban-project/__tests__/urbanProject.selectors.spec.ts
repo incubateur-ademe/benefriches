@@ -604,6 +604,114 @@ describe("urbanProject.selectors", () => {
     });
   });
 
+  describe("selectNewBuildingsUsesFloorSurfaceAreaViewData", () => {
+    it("returns current answers, building uses only, and remaining floor surface distribution after existing allocation", () => {
+      const store = new StoreBuilder()
+        .withSteps({
+          URBAN_PROJECT_USES_SELECTION: {
+            completed: true,
+            payload: {
+              usesSelection: ["RESIDENTIAL", "OFFICES", "PUBLIC_GREEN_SPACES"],
+            },
+          },
+          URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA: {
+            completed: true,
+            payload: {
+              usesFloorSurfaceAreaDistribution: {
+                RESIDENTIAL: 2400,
+                OFFICES: 600,
+              },
+            },
+          },
+          URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA: {
+            completed: true,
+            payload: {
+              existingBuildingsUsesFloorSurfaceArea: {
+                RESIDENTIAL: 1600,
+                OFFICES: 400,
+              },
+            },
+          },
+          URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA: {
+            completed: true,
+            payload: {
+              newBuildingsUsesFloorSurfaceArea: {
+                RESIDENTIAL: 800,
+                OFFICES: 200,
+              },
+            },
+          },
+        })
+        .build();
+
+      const rootState = store.getState();
+      const result =
+        creationProjectFormSelectors.selectNewBuildingsUsesFloorSurfaceAreaViewData(rootState);
+
+      expect(result).toEqual({
+        newBuildingsUsesFloorSurfaceArea: {
+          RESIDENTIAL: 800,
+          OFFICES: 200,
+        },
+        selectedUses: ["RESIDENTIAL", "OFFICES"],
+        usesFloorSurfaceAreaDistribution: {
+          RESIDENTIAL: 2400,
+          OFFICES: 600,
+        },
+        remainingUsesFloorSurfaceAreaDistribution: {
+          RESIDENTIAL: 800,
+          OFFICES: 200,
+        },
+      });
+    });
+
+    it("falls back to default answers and treats missing existing allocation as zero", () => {
+      const store = new StoreBuilder()
+        .withSteps({
+          URBAN_PROJECT_USES_SELECTION: {
+            completed: true,
+            payload: {
+              usesSelection: ["RESIDENTIAL"],
+            },
+          },
+          URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA: {
+            completed: true,
+            payload: {
+              usesFloorSurfaceAreaDistribution: {
+                RESIDENTIAL: 1200,
+              },
+            },
+          },
+          URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA: {
+            completed: true,
+            defaultValues: {
+              newBuildingsUsesFloorSurfaceArea: {
+                RESIDENTIAL: 1200,
+              },
+            },
+          },
+        })
+        .build();
+
+      const rootState = store.getState();
+      const result =
+        creationProjectFormSelectors.selectNewBuildingsUsesFloorSurfaceAreaViewData(rootState);
+
+      expect(result).toEqual({
+        newBuildingsUsesFloorSurfaceArea: {
+          RESIDENTIAL: 1200,
+        },
+        selectedUses: ["RESIDENTIAL"],
+        usesFloorSurfaceAreaDistribution: {
+          RESIDENTIAL: 1200,
+        },
+        remainingUsesFloorSurfaceAreaDistribution: {
+          RESIDENTIAL: 1200,
+        },
+      });
+    });
+  });
+
   describe("selectUrbanProjectSummaryViewData", () => {
     it("returns composed summary view data", () => {
       const store = new StoreBuilder().withSteps({}).build();

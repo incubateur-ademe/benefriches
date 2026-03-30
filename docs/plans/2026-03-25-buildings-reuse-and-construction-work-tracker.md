@@ -162,9 +162,10 @@ Constraints:
   - Targeted checks:
     - `pnpm --filter web test src/shared/core/reducers/project-form/urban-project/step-handlers/buildings/__tests__/sequencing`
 
-- [ ] **S7** Answer step: `BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA`.
+- [x] **S7** Answer step: `BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA`.
   - Spec ref: `Uses Breakdown Constraints` + `Navigation`
   - Includes: selector factory + page + remaining surface-area constraints.
+  - Done note: Added the new-buildings uses selector and form, wired both urban project wizards, and extended sequencing coverage for the new-buildings step submission/backward path.
   - Targeted checks:
     - `pnpm --filter web test src/shared/core/reducers/project-form/urban-project/step-handlers/buildings/__tests__/sequencing`
     - `pnpm --filter web test src/features/create-project/core/urban-project/__tests__/urbanProject.selectors.spec.ts`

@@ -13,6 +13,7 @@ import {
 import { createSelectBuildingsDemolitionInfoViewData } from "./step-handlers/buildings/buildings-demolition-info/buildingsDemolitionInfo.selector";
 import { createSelectExistingBuildingsUsesFloorSurfaceAreaViewData } from "./step-handlers/buildings/buildings-existing-buildings-uses-floor-surface-area/buildingsExistingBuildingsUsesFloorSurfaceArea.selector";
 import { createSelectBuildingsFootprintToReuseViewData } from "./step-handlers/buildings/buildings-footprint-to-reuse/buildingsFootprintToReuse.selector";
+import { createSelectNewBuildingsUsesFloorSurfaceAreaViewData } from "./step-handlers/buildings/buildings-new-buildings-uses-floor-surface-area/buildingsNewBuildingsUsesFloorSurfaceArea.selector";
 import { createSelectBuildingsNewConstructionInfoViewData } from "./step-handlers/buildings/buildings-new-construction-info/buildingsNewConstructionInfo.selector";
 import { createSelectBuildingsNewConstructionIntroductionViewData } from "./step-handlers/buildings/buildings-new-construction-introduction/buildingsNewConstructionIntroduction.selector";
 import { createSelectUsesFloorSurfaceAreaViewData } from "./step-handlers/buildings/buildings-uses-floor-surface-area/buildingsUsesFloorSurfaceArea.selector";
@@ -174,6 +175,8 @@ export const createUrbanProjectFormSelectors = (
   );
   const selectExistingBuildingsUsesFloorSurfaceAreaViewData =
     createSelectExistingBuildingsUsesFloorSurfaceAreaViewData(selectStepState);
+  const selectNewBuildingsUsesFloorSurfaceAreaViewData =
+    createSelectNewBuildingsUsesFloorSurfaceAreaViewData(selectStepState);
   const selectBuildingsNewConstructionIntroductionViewData =
     createSelectBuildingsNewConstructionIntroductionViewData(selectStepState);
   const selectBuildingsNewConstructionInfoViewData =
@@ -279,6 +282,7 @@ export const createUrbanProjectFormSelectors = (
     selectBuildingsFootprintToReuseViewData,
     selectBuildingsDemolitionInfoViewData,
     selectExistingBuildingsUsesFloorSurfaceAreaViewData,
+    selectNewBuildingsUsesFloorSurfaceAreaViewData,
     selectBuildingsNewConstructionIntroductionViewData,
     selectBuildingsNewConstructionInfoViewData,
     selectSpacesSelectionViewData,
