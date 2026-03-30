@@ -22,7 +22,7 @@ describe("Urban project buildings sequencing - reuse only with demolition", () =
 
   describe("forward navigation", () => {
     it("shows demolition info after partial reuse then exits to site resale (non-contaminated)", () => {
-      // INTRO -> FLOOR_AREA -> REUSE_INTRO -> FOOTPRINT -> DEMOLITION_INFO -> SITE_RESALE_INTRO
+      // INTRO -> FLOOR_AREA -> REUSE_INTRO -> REUSE_FOOTPRINT -> DEMOLITION_INFO -> SITE_RESALE_INTRO
       const store = new StoreBuilder()
         .withCurrentStep("URBAN_PROJECT_BUILDINGS_INTRODUCTION")
         .withSiteData({
@@ -72,7 +72,7 @@ describe("Urban project buildings sequencing - reuse only with demolition", () =
     });
 
     it("exits to decontamination instead of resale when site has contaminated soils", () => {
-      // INTRO -> FLOOR_AREA -> REUSE_INTRO -> FOOTPRINT -> DEMOLITION_INFO -> SOILS_DECONTAMINATION_INTRO
+      // INTRO -> FLOOR_AREA -> REUSE_INTRO -> REUSE_FOOTPRINT -> DEMOLITION_INFO -> SOILS_DECONTAMINATION_INTRO
       const store = new StoreBuilder()
         .withCurrentStep("URBAN_PROJECT_BUILDINGS_INTRODUCTION")
         .withSiteData({
@@ -123,7 +123,7 @@ describe("Urban project buildings sequencing - reuse only with demolition", () =
 
   describe("backward navigation", () => {
     it("goes back from demolition info to footprint-to-reuse", () => {
-      // DEMOLITION_INFO -> FOOTPRINT
+      // DEMOLITION_INFO -> REUSE_FOOTPRINT
       const store = new StoreBuilder()
         .withCurrentStep("URBAN_PROJECT_BUILDINGS_DEMOLITION_INFO")
         .withSiteData({

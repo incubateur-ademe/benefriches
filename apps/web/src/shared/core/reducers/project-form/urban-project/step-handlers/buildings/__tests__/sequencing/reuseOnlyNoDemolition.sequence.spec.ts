@@ -22,7 +22,7 @@ describe("Urban project buildings sequencing - reuse only without demolition", (
 
   describe("forward navigation", () => {
     it("skips demolition and new construction when all buildings are reused, exits to site resale (non-contaminated)", () => {
-      // INTRO -> FLOOR_AREA -> REUSE_INTRO -> FOOTPRINT -> SITE_RESALE_INTRO
+      // INTRO -> FLOOR_AREA -> REUSE_INTRO -> REUSE_FOOTPRINT -> SITE_RESALE_INTRO
       const store = new StoreBuilder()
         .withCurrentStep("URBAN_PROJECT_BUILDINGS_INTRODUCTION")
         .withSiteData({
@@ -69,7 +69,7 @@ describe("Urban project buildings sequencing - reuse only without demolition", (
     });
 
     it("exits to decontamination instead of resale when site has contaminated soils", () => {
-      // INTRO -> FLOOR_AREA -> REUSE_INTRO -> FOOTPRINT -> SOILS_DECONTAMINATION_INTRO
+      // INTRO -> FLOOR_AREA -> REUSE_INTRO -> REUSE_FOOTPRINT -> SOILS_DECONTAMINATION_INTRO
       const store = new StoreBuilder()
         .withCurrentStep("URBAN_PROJECT_BUILDINGS_INTRODUCTION")
         .withSiteData({

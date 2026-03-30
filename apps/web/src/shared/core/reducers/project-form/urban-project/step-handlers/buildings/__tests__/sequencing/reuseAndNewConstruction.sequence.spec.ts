@@ -22,7 +22,7 @@ describe("Urban project buildings sequencing - reuse and new construction", () =
 
   describe("forward navigation", () => {
     it("includes existing buildings uses and new buildings uses when fully reusing without demolition (non-contaminated)", () => {
-      // INTRO -> FLOOR_AREA -> REUSE_INTRO -> FOOTPRINT -> EXISTING_USES -> NEW_CONSTRUCTION_INFO -> NEW_USES -> SITE_RESALE_INTRO
+      // INTRO -> FLOOR_AREA -> REUSE_INTRO -> REUSE_FOOTPRINT -> EXISTING_USES -> NEW_CONSTRUCTION_INFO -> NEW_USES -> SITE_RESALE_INTRO
       const store = new StoreBuilder()
         .withCurrentStep("URBAN_PROJECT_BUILDINGS_INTRODUCTION")
         .withSiteData({

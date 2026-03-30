@@ -22,7 +22,7 @@ describe("Urban project buildings sequencing - new construction only with demoli
 
   describe("forward navigation", () => {
     it("demolishes all existing buildings then shows new construction info before site resale (non-contaminated)", () => {
-      // INTRO -> FLOOR_AREA -> REUSE_INTRO -> FOOTPRINT(0) -> DEMOLITION_INFO -> NEW_CONSTRUCTION_INFO -> SITE_RESALE_INTRO
+      // INTRO -> FLOOR_AREA -> REUSE_INTRO -> REUSE_FOOTPRINT(0) -> DEMOLITION_INFO -> NEW_CONSTRUCTION_INFO -> SITE_RESALE_INTRO
       const store = new StoreBuilder()
         .withCurrentStep("URBAN_PROJECT_BUILDINGS_INTRODUCTION")
         .withSiteData({
@@ -75,7 +75,7 @@ describe("Urban project buildings sequencing - new construction only with demoli
     });
 
     it("exits to decontamination instead of resale when site has contaminated soils", () => {
-      // INTRO -> FLOOR_AREA -> REUSE_INTRO -> FOOTPRINT(0) -> DEMOLITION_INFO -> NEW_CONSTRUCTION_INFO -> SOILS_DECONTAMINATION_INTRO
+      // INTRO -> FLOOR_AREA -> REUSE_INTRO -> REUSE_FOOTPRINT(0) -> DEMOLITION_INFO -> NEW_CONSTRUCTION_INFO -> SOILS_DECONTAMINATION_INTRO
       const store = new StoreBuilder()
         .withCurrentStep("URBAN_PROJECT_BUILDINGS_INTRODUCTION")
         .withSiteData({
