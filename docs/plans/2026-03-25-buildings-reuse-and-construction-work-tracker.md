@@ -68,6 +68,8 @@ Constraints:
 - [x] Sequencing scenarios now use explicit step-chain `it()` titles and split forward/backward routes into separate tests.
 
 ### Still Missing / Incomplete
+- [x] Align `URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE` max constraint with spec update: `max = min(site buildings footprint, project buildings footprint)`.
+  - Done note: Updated spec wording + selector/form max display/validation and added focused tests for min(site, project) behavior.
 - [ ] Existing handler updates required by spec navigation rules.
 - [ ] Cascading deletion updates for new answer steps when buildings disappear from project.
 - [ ] View-data selectors for 4 new answer steps (only footprint-to-reuse selector exists).

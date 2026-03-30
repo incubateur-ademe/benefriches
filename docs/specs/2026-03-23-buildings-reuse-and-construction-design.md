@@ -15,7 +15,11 @@ Note: if a user selects building-related uses but does not allocate `BUILDINGS` 
 
 ## Core Logic
 
-**Reuse** is user-input (m² or %, switchable). From this single input, two values are derived:
+**Reuse** is user-input (m² or %, switchable), constrained by:
+
+- **0 <= reuse <= min(site buildings footprint, project buildings footprint)**
+
+From this single input, two values are derived:
 
 - **Demolished** = site buildings footprint - reuse
 - **New construction** = max(0, project buildings footprint - reuse)
@@ -77,7 +81,7 @@ BUILDINGS_INTRODUCTION (existing)
 ### `URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE`
 
 ```typescript
-{ buildingsFootprintToReuse: number } // in m2, max = site buildings footprint
+{ buildingsFootprintToReuse: number } // in m2, max = min(site buildings footprint, project buildings footprint)
 ```
 
 ### `URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA`
@@ -264,7 +268,7 @@ All views in `shared/views/project-form/urban-project/`.
 |---|---|---|
 | `BUILDINGS_REUSE_INTRODUCTION` | "Bonne nouvelle ! Le site comporte deja des batiments" | "Vous pouvez utiliser tout ou partie de ce bati dans votre projet d'amenagement." |
 | `BUILDINGS_NEW_CONSTRUCTION_INTRODUCTION` | "X m2 de surface au sol de nouveaux batiments seront a construire pour le projet urbain" | — |
-| `BUILDINGS_FOOTPRINT_TO_REUSE` | "Quelle surface du bati existant disponible sera utilisee pour le projet urbain ?" | m2 input with % toggle, max = site buildings footprint, hint showing site buildings footprint |
+| `BUILDINGS_FOOTPRINT_TO_REUSE` | "Quelle surface du bati existant disponible sera utilisee pour le projet urbain ?" | m2 input with % toggle, max = min(site buildings footprint, project buildings footprint), hint showing site buildings footprint |
 | `BUILDINGS_DEMOLITION_INFO` | "X m2 de batiments seront demolis" | "Il s'agit de la surface des batiments existants que vous ne prevoyez pas d'utiliser dans votre projet." |
 | `BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA` | "Quels usages accueilleront les batiments existants ?" | Recap of assigned uses from overall floor area step, constrained to selected uses |
 | `BUILDINGS_NEW_CONSTRUCTION_INFO` | "X m2 de surface au sol de nouveaux batiments seront a construire pour le projet urbain" | — |

@@ -19,6 +19,7 @@ type FormValues = {
 
 type Props = {
   siteBuildingsFootprint: number;
+  maxBuildingsFootprintToReuse: number;
   initialValue: number | undefined;
   onSubmit: (data: { buildingsFootprintToReuse: number }) => void;
   onBack: () => void;
@@ -26,10 +27,11 @@ type Props = {
 
 const REQUIRED_ERROR_MESSAGE = "Ce champ est nécessaire pour déterminer les questions suivantes";
 const MAX_ERROR_MESSAGE =
-  "La surface réutilisée ne peut pas être supérieure à la surface de bâtiments existants disponible";
+  "La surface réutilisée ne peut pas être supérieure à la surface de bâti existant disponible et celle prévue dans le projet";
 
 function BuildingsFootprintToReuse({
   siteBuildingsFootprint,
+  maxBuildingsFootprintToReuse,
   initialValue,
   onSubmit,
   onBack,
@@ -53,8 +55,8 @@ function BuildingsFootprintToReuse({
     const currentValue = value ?? 0;
     const convertedValue =
       newInputMode === "percentage"
-        ? computePercentage(currentValue, siteBuildingsFootprint)
-        : Math.round(computeValueFromPercentage(currentValue, siteBuildingsFootprint));
+        ? computePercentage(currentValue, maxBuildingsFootprintToReuse)
+        : Math.round(computeValueFromPercentage(currentValue, maxBuildingsFootprintToReuse));
 
     setValue("buildingsFootprintToReuse", convertedValue, {
       shouldTouch: true,
@@ -65,7 +67,7 @@ function BuildingsFootprintToReuse({
 
   const hintInputText =
     inputMode === "percentage" && value
-      ? `Soit ${formatSurfaceArea(computeValueFromPercentage(value, siteBuildingsFootprint))}`
+      ? `Soit ${formatSurfaceArea(computeValueFromPercentage(value, maxBuildingsFootprintToReuse))}`
       : undefined;
 
   return (
@@ -87,7 +89,7 @@ function BuildingsFootprintToReuse({
               ? Math.round(
                   computeValueFromPercentage(
                     formData.buildingsFootprintToReuse ?? 0,
-                    siteBuildingsFootprint,
+                    maxBuildingsFootprintToReuse,
                   ),
                 )
               : (formData.buildingsFootprintToReuse ?? 0);
@@ -100,7 +102,7 @@ function BuildingsFootprintToReuse({
         <RowNumericInput
           label="Surface à réutiliser"
           addonText={inputMode === "percentage" ? "%" : SQUARE_METERS_HTML_SYMBOL}
-          hintText={`Max ${formatSurfaceArea(siteBuildingsFootprint)}`}
+          hintText={`Max ${formatSurfaceArea(maxBuildingsFootprintToReuse)}`}
           hintInputText={hintInputText}
           state={errors.buildingsFootprintToReuse ? "error" : "default"}
           stateRelatedMessage={errors.buildingsFootprintToReuse?.message}
@@ -108,7 +110,7 @@ function BuildingsFootprintToReuse({
             ...optionalNumericFieldRegisterOptions,
             required: REQUIRED_ERROR_MESSAGE,
             max: {
-              value: inputMode === "percentage" ? 100 : siteBuildingsFootprint,
+              value: inputMode === "percentage" ? 100 : maxBuildingsFootprintToReuse,
               message: MAX_ERROR_MESSAGE,
             },
           })}

@@ -7,7 +7,7 @@ export default function BuildingsFootprintToReuseContainer() {
   const { onBack, onRequestStepCompletion, selectBuildingsFootprintToReuseViewData } =
     useProjectForm();
 
-  const { currentValue, siteBuildingsFootprint } = useAppSelector(
+  const { currentValue, siteBuildingsFootprint, maxBuildingsFootprintToReuse } = useAppSelector(
     selectBuildingsFootprintToReuseViewData,
   );
 
@@ -15,6 +15,7 @@ export default function BuildingsFootprintToReuseContainer() {
     <BuildingsFootprintToReuse
       initialValue={currentValue}
       siteBuildingsFootprint={siteBuildingsFootprint}
+      maxBuildingsFootprintToReuse={maxBuildingsFootprintToReuse}
       onBack={onBack}
       onSubmit={(answers) => {
         onRequestStepCompletion({

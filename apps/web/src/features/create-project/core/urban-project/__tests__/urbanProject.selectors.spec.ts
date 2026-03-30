@@ -401,6 +401,54 @@ describe("urbanProject.selectors", () => {
     });
   });
 
+  describe("selectBuildingsFootprintToReuseViewData", () => {
+    it("returns max footprint to reuse as min(site buildings, project buildings)", () => {
+      const store = new StoreBuilder()
+        .withSiteData({
+          ...mockSiteData,
+          soilsDistribution: { ...mockSiteData.soilsDistribution, BUILDINGS: 1000 },
+        })
+        .withSteps({
+          URBAN_PROJECT_SPACES_SURFACE_AREA: {
+            completed: true,
+            payload: {
+              spacesSurfaceAreaDistribution: {
+                BUILDINGS: 900,
+                IMPERMEABLE_SOILS: 9100,
+              },
+            },
+          },
+        })
+        .build();
+
+      const rootState = store.getState();
+      const result =
+        creationProjectFormSelectors.selectBuildingsFootprintToReuseViewData(rootState);
+
+      expect(result).toEqual({
+        siteBuildingsFootprint: 1000,
+        maxBuildingsFootprintToReuse: 900,
+        currentValue: undefined,
+      });
+    });
+
+    it("falls back to site buildings footprint as max when spaces step is missing", () => {
+      const store = new StoreBuilder()
+        .withSiteData({
+          ...mockSiteData,
+          soilsDistribution: { ...mockSiteData.soilsDistribution, BUILDINGS: 1200 },
+        })
+        .withSteps({})
+        .build();
+
+      const rootState = store.getState();
+      const result =
+        creationProjectFormSelectors.selectBuildingsFootprintToReuseViewData(rootState);
+
+      expect(result.maxBuildingsFootprintToReuse).toBe(1200);
+    });
+  });
+
   describe("selectUrbanProjectSummaryViewData", () => {
     it("returns composed summary view data", () => {
       const store = new StoreBuilder().withSteps({}).build();

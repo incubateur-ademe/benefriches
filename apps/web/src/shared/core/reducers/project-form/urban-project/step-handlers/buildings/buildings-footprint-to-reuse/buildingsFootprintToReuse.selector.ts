@@ -8,6 +8,7 @@ import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-proje
 
 type BuildingsFootprintToReuseViewData = {
   siteBuildingsFootprint: number;
+  maxBuildingsFootprintToReuse: number;
   currentValue: number | undefined;
 };
 
@@ -17,11 +18,23 @@ export const createSelectBuildingsFootprintToReuseViewData = (
 ) =>
   createSelector(
     [selectStepState, selectSiteSoilsDistribution],
-    (steps, soilsDistribution): BuildingsFootprintToReuseViewData => ({
-      siteBuildingsFootprint: soilsDistribution.BUILDINGS ?? 0,
-      currentValue: ReadStateHelper.getStepAnswers(
+    (steps, soilsDistribution): BuildingsFootprintToReuseViewData => {
+      const siteBuildingsFootprint = soilsDistribution.BUILDINGS ?? 0;
+      const projectBuildingsFootprint = ReadStateHelper.getStepAnswers(
         steps,
-        "URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE",
-      )?.buildingsFootprintToReuse,
-    }),
+        "URBAN_PROJECT_SPACES_SURFACE_AREA",
+      )?.spacesSurfaceAreaDistribution?.BUILDINGS;
+
+      return {
+        siteBuildingsFootprint,
+        maxBuildingsFootprintToReuse:
+          projectBuildingsFootprint === undefined
+            ? siteBuildingsFootprint
+            : Math.min(siteBuildingsFootprint, projectBuildingsFootprint),
+        currentValue: ReadStateHelper.getStepAnswers(
+          steps,
+          "URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE",
+        )?.buildingsFootprintToReuse,
+      };
+    },
   );

@@ -1,10 +1,13 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
+import { formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
+
 import BuildingsFootprintToReuse from "./BuildingsFootprintToReuse";
 
 describe("BuildingsFootprintToReuse", () => {
   const defaultProps = {
     siteBuildingsFootprint: 2000,
+    maxBuildingsFootprintToReuse: 2000,
     initialValue: undefined,
     onSubmit: vi.fn(),
     onBack: vi.fn(),
@@ -35,18 +38,26 @@ describe("BuildingsFootprintToReuse", () => {
     });
   });
 
-  it("should not submit when value exceeds site buildings footprint", async () => {
+  it("should not submit when value exceeds max footprint to reuse", async () => {
     const onSubmit = vi.fn();
-    render(<BuildingsFootprintToReuse {...defaultProps} onSubmit={onSubmit} />);
+    render(
+      <BuildingsFootprintToReuse
+        {...defaultProps}
+        siteBuildingsFootprint={1000}
+        maxBuildingsFootprintToReuse={900}
+        onSubmit={onSubmit}
+      />,
+    );
 
-    fireEvent.change(screen.getByRole("textbox"), { target: { value: "2500" } });
+    fireEvent.change(screen.getByRole("textbox"), { target: { value: "950" } });
     fireEvent.submit(screen.getByRole("button", { name: /valider/i }));
 
     expect(
       await screen.findByText(
-        "La surface réutilisée ne peut pas être supérieure à la surface de bâtiments existants disponible",
+        "La surface réutilisée ne peut pas être supérieure à la surface de bâti existant disponible et celle prévue dans le projet",
       ),
     ).toBeInTheDocument();
+    expect(screen.getByText(`Max ${formatSurfaceArea(900)}`)).toBeInTheDocument();
     expect(onSubmit).not.toHaveBeenCalled();
   });
 

@@ -19,10 +19,10 @@ export const BuildingsFootprintToReuseHandler: AnswerStepHandler<typeof STEP_ID>
     if (!siteData) return getNextStepAfterBuildings(context);
 
     // Use answers (not stepsState) because state hasn't been updated yet when this runs
-    const reuse = answers?.buildingsFootprintToReuse ?? 0;
     const siteBuildings = getSiteBuildingsFootprint(siteData);
-    const demolished = siteBuildings - reuse;
     const projectBuildings = getProjectBuildingsFootprint(context.stepsState);
+    const reuse = answers?.buildingsFootprintToReuse ?? 0;
+    const demolished = siteBuildings - reuse;
     const newConstruction = Math.max(0, projectBuildings - reuse);
     const hasBoth = reuse > 0 && newConstruction > 0;
 
@@ -43,8 +43,8 @@ export const BuildingsFootprintToReuseHandler: AnswerStepHandler<typeof STEP_ID>
     if (!siteData) return [];
 
     const rules: StepInvalidationRule[] = [];
-    const newReuse = answers.buildingsFootprintToReuse ?? 0;
     const projectBuildingsFootprint = getProjectBuildingsFootprint(context.stepsState);
+    const newReuse = answers.buildingsFootprintToReuse ?? 0;
     const newConstruction = Math.max(0, projectBuildingsFootprint - newReuse);
     const hasBoth = newReuse > 0 && newConstruction > 0;
 
