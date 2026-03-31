@@ -109,6 +109,76 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
       );
     });
 
+    it("should go back from reinstatement contract owner to buildings developer when new construction exists", () => {
+      const store = new StoreBuilder()
+        .withSiteData(testScenarios.withBuildingsAndContamination)
+        .withSteps({
+          URBAN_PROJECT_USES_SELECTION: {
+            completed: true,
+            payload: { usesSelection: ["RESIDENTIAL"] },
+          },
+          URBAN_PROJECT_SPACES_SURFACE_AREA: {
+            completed: true,
+            payload: {
+              spacesSurfaceAreaDistribution: { BUILDINGS: 3000, IMPERMEABLE_SOILS: 7000 },
+            },
+          },
+          URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE: {
+            completed: true,
+            payload: { buildingsFootprintToReuse: 1000 },
+          },
+          URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER: {
+            completed: true,
+            payload: { projectDeveloper: { name: "Test", structureType: "company" } },
+          },
+          URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER: {
+            completed: true,
+            payload: { developerWillBeBuildingsConstructor: true },
+          },
+        })
+        .withCurrentStep("URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER")
+        .build();
+
+      store.dispatch(previousStepRequested());
+
+      expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
+        "URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER",
+      );
+    });
+
+    it("should go back from expenses introduction to buildings developer on non-friche site with new construction", () => {
+      const store = new StoreBuilder()
+        .withSiteData(testScenarios.nonFriche)
+        .withSteps({
+          URBAN_PROJECT_SPACES_SURFACE_AREA: {
+            completed: true,
+            payload: {
+              spacesSurfaceAreaDistribution: { BUILDINGS: 3000 },
+            },
+          },
+          URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE: {
+            completed: true,
+            payload: { buildingsFootprintToReuse: 1000 },
+          },
+          URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER: {
+            completed: true,
+            payload: { projectDeveloper: { name: "Test", structureType: "company" } },
+          },
+          URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER: {
+            completed: true,
+            payload: { developerWillBeBuildingsConstructor: true },
+          },
+        })
+        .withCurrentStep("URBAN_PROJECT_EXPENSES_INTRODUCTION")
+        .build();
+
+      store.dispatch(previousStepRequested());
+
+      expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
+        "URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER",
+      );
+    });
+
     it("should handle expenses navigation based on site nature", () => {
       const storeFriche = new StoreBuilder()
         .withSiteData(testScenarios.withBuildingsAndContamination)

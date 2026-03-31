@@ -170,9 +170,10 @@ Constraints:
     - `pnpm --filter web test src/shared/core/reducers/project-form/urban-project/step-handlers/buildings/__tests__/sequencing`
     - `pnpm --filter web test src/features/create-project/core/urban-project/__tests__/urbanProject.selectors.spec.ts`
 
-- [ ] **S8** Answer step: `STAKEHOLDERS_BUILDINGS_DEVELOPER`.
+- [x] **S8** Answer step: `STAKEHOLDERS_BUILDINGS_DEVELOPER`.
   - Spec ref: `Answer Schemas` + `Navigation` (stakeholders transitions)
   - Includes: page + selector + routing updates in `stakeholders-project-developer` and `stakeholders-reinstatement-contract-owner`.
+  - Done note: Added the buildings-developer selector and yes/no form in create/update wizards, with focused adjacent navigation coverage for forward and backward stakeholder transitions.
   - Targeted checks:
     - `pnpm --filter web test src/shared/core/reducers/project-form/urban-project/step-handlers/buildings/__tests__/sequencing`
     - `pnpm --filter web test src/features/create-project/core/urban-project/__tests__/previousStepRequested.action.spec.ts`

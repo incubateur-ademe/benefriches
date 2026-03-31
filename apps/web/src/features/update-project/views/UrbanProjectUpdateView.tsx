@@ -134,6 +134,9 @@ const UrbanProjectSoilsSummary = lazy(
 const DeveloperForm = lazy(
   () => import("@/shared/views/project-form/urban-project/stakeholders/project-developer"),
 );
+const BuildingsDeveloperForm = lazy(
+  () => import("@/shared/views/project-form/urban-project/stakeholders/buildings-developer"),
+);
 const ProjectStakeholdersIntroduction = lazy(
   () => import("@/shared/views/project-form/urban-project/stakeholders/introduction"),
 );
@@ -294,7 +297,12 @@ const getCurrentStepView = (step: UrbanProjectUpdateStep): Exclude<ReactNode, un
         </>
       );
     case "URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER":
-      return <div>TODO: Stakeholders buildings developer</div>;
+      return (
+        <>
+          <HtmlTitle>{`Constructeur des bâtiments - Acteurs - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
+          <BuildingsDeveloperForm />
+        </>
+      );
     case "URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION":
       return <div>TODO: Expenses buildings construction and rehabilitation</div>;
     case "URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION":

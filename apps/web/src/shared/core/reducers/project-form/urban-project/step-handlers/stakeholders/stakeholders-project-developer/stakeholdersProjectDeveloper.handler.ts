@@ -1,3 +1,4 @@
+import { willConstructNewBuildings } from "../../buildings/buildingsReaders";
 import type { AnswerStepHandler } from "../../stepHandler.type";
 
 export const StakeholdersProjectDeveloperHandler = {
@@ -8,6 +9,10 @@ export const StakeholdersProjectDeveloperHandler = {
   },
 
   getNextStepId(context) {
+    if (willConstructNewBuildings(context.stepsState)) {
+      return "URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER";
+    }
+
     if (context.siteData?.nature === "FRICHE") {
       return "URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER";
     }

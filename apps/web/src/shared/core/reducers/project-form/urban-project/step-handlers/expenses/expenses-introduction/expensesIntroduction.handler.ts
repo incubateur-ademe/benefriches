@@ -1,3 +1,4 @@
+import { willConstructNewBuildings } from "../../buildings/buildingsReaders";
 import type { InfoStepHandler } from "../../stepHandler.type";
 
 export const ExpensesIntroductionHandler = {
@@ -10,6 +11,9 @@ export const ExpensesIntroductionHandler = {
   getPreviousStepId(context) {
     if (context.siteData?.nature === "FRICHE") {
       return "URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER";
+    }
+    if (willConstructNewBuildings(context.stepsState)) {
+      return "URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER";
     }
     return "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER";
   },

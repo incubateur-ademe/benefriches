@@ -27,6 +27,7 @@ import { createSelectPublicGreenSpacesIntroductionViewData } from "./step-handle
 import { createSelectPublicGreenSpacesSoilsDistributionViewData } from "./step-handlers/spaces/public-green-spaces-soils-distribution/publicGreenSpacesSoilsDistribution.selector";
 import { createSelectSpacesSelectionViewData } from "./step-handlers/spaces/spaces-selection/spacesSelection.selector";
 import { createSelectSpacesSurfaceAreaViewData } from "./step-handlers/spaces/spaces-surface-area/spacesSurfaceArea.selector";
+import { createSelectBuildingsDeveloperViewData } from "./step-handlers/stakeholders/stakeholders-buildings-developer/stakeholdersBuildingsDeveloper.selector";
 import { createSelectProjectDeveloperViewData } from "./step-handlers/stakeholders/stakeholders-project-developer/stakeholdersProjectDeveloper.selector";
 import { createSelectReinstatementContractOwnerViewData } from "./step-handlers/stakeholders/stakeholders-reinstatement-contract-owner/stakeholdersReinstatementContractOwner.selector";
 import {
@@ -207,6 +208,7 @@ export const createUrbanProjectFormSelectors = (
     selectUrbanProjectAvailableStakeholders,
     selectUrbanProjectAvailableLocalAuthoritiesStakeholders,
   );
+  const selectBuildingsDeveloperViewData = createSelectBuildingsDeveloperViewData(selectStepState);
 
   const selectSoilsSummaryViewData = createSelectSoilsSummaryViewData(
     selectors.selectSiteSoilsDistribution,
@@ -290,6 +292,7 @@ export const createUrbanProjectFormSelectors = (
     selectPublicGreenSpacesSoilsDistributionViewData,
     selectPublicGreenSpacesIntroductionViewData,
     selectProjectDeveloperViewData,
+    selectBuildingsDeveloperViewData,
     selectSoilsSummaryViewData,
     selectReinstatementContractOwnerViewData,
     selectReinstatementExpensesViewData,

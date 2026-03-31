@@ -13,7 +13,11 @@ export const StakeholdersBuildingsDeveloperHandler: AnswerStepHandler<typeof STE
     }
     return "URBAN_PROJECT_EXPENSES_INTRODUCTION";
   },
-  getDependencyRules() {
+  getDependencyRules(context) {
+    if (!context.stepsState.URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION) {
+      return [];
+    }
+
     return [
       {
         stepId: "URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION",

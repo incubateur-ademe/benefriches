@@ -186,6 +186,17 @@ describe("urbanProject.reducer - stepCompletionRequested without validation", ()
       );
 
       // Étape ----
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER");
+      store.dispatch(
+        stepCompletionRequested({
+          stepId: "URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER",
+          answers: {
+            developerWillBeBuildingsConstructor: true,
+          },
+        }),
+      );
+
+      // Étape ----
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER");
       store.dispatch(
         stepCompletionRequested({
@@ -331,7 +342,7 @@ describe("urbanProject.reducer - stepCompletionRequested without validation", ()
       // Étape ----
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_CREATION_RESULT");
 
-      expect(Object.keys(store.getState().projectCreation.urbanProject.steps).length).toEqual(34);
+      expect(Object.keys(store.getState().projectCreation.urbanProject.steps).length).toEqual(35);
     });
 
     it('should handle decontamination plan "none" correctly', () => {
@@ -404,6 +415,47 @@ describe("urbanProject.reducer - stepCompletionRequested without validation", ()
         currentState.urbanProject.steps.URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA?.payload
           ?.decontaminatedSurfaceArea,
       ).toBe(0);
+    });
+  });
+
+  describe("stakeholders adjacent navigation", () => {
+    it("routes from project developer to buildings developer when new buildings will be constructed", () => {
+      const store = new StoreBuilder()
+        .withSiteData({
+          nature: "AGRICULTURAL_OPERATION",
+        } as never)
+        .withCurrentStep("URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER")
+        .withSteps({
+          URBAN_PROJECT_SPACES_SURFACE_AREA: {
+            completed: true,
+            payload: {
+              spacesSurfaceAreaDistribution: {
+                BUILDINGS: 3000,
+              },
+            },
+          },
+          URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE: {
+            completed: true,
+            payload: {
+              buildingsFootprintToReuse: 1000,
+            },
+          },
+        })
+        .build();
+
+      store.dispatch(
+        stepCompletionRequested({
+          stepId: "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER",
+          answers: {
+            projectDeveloper: {
+              name: "Promoteur Test",
+              structureType: "company",
+            },
+          },
+        }),
+      );
+
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER");
     });
   });
 });
