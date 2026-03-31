@@ -5,6 +5,72 @@ import { UrbanProjectInstallationExpensesHandler } from "@/shared/core/reducers/
 
 describe("UrbanProjectInstallationExpensesHandler", () => {
   describe("getNextStepId", () => {
+    it("should return URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION when developer will build the new buildings", () => {
+      const stepsState: ProjectFormState["urbanProject"]["steps"] = {
+        URBAN_PROJECT_USES_SELECTION: {
+          completed: true,
+          payload: { usesSelection: ["RESIDENTIAL"] },
+        },
+        URBAN_PROJECT_SPACES_SURFACE_AREA: {
+          completed: true,
+          payload: {
+            spacesSurfaceAreaDistribution: { BUILDINGS: 3000, IMPERMEABLE_SOILS: 7000 },
+          },
+        },
+        URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE: {
+          completed: true,
+          payload: { buildingsFootprintToReuse: 0 },
+        },
+        URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER: {
+          completed: true,
+          payload: { developerWillBeBuildingsConstructor: true },
+        },
+        URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
+          completed: true,
+          payload: {
+            buildingsResalePlannedAfterDevelopment: false,
+          },
+        },
+      };
+
+      const nextStep = UrbanProjectInstallationExpensesHandler.getNextStepId({
+        stepsState,
+      });
+
+      expect(nextStep).toBe("URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION");
+    });
+
+    it("should return URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION when buildings are reused", () => {
+      const stepsState: ProjectFormState["urbanProject"]["steps"] = {
+        URBAN_PROJECT_USES_SELECTION: {
+          completed: true,
+          payload: { usesSelection: ["RESIDENTIAL"] },
+        },
+        URBAN_PROJECT_SPACES_SURFACE_AREA: {
+          completed: true,
+          payload: {
+            spacesSurfaceAreaDistribution: { BUILDINGS: 2500, IMPERMEABLE_SOILS: 7500 },
+          },
+        },
+        URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE: {
+          completed: true,
+          payload: { buildingsFootprintToReuse: 2500 },
+        },
+        URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
+          completed: true,
+          payload: {
+            buildingsResalePlannedAfterDevelopment: true,
+          },
+        },
+      };
+
+      const nextStep = UrbanProjectInstallationExpensesHandler.getNextStepId({
+        stepsState,
+      });
+
+      expect(nextStep).toBe("URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION");
+    });
+
     it("should return URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES when project has buildings but no buildings resale planned", () => {
       const stepsState: ProjectFormState["urbanProject"]["steps"] = {
         URBAN_PROJECT_USES_SELECTION: {

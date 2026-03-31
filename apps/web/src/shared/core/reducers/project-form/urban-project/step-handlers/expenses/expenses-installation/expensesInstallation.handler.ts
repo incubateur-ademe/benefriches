@@ -1,9 +1,11 @@
 import { computeDefaultInstallationExpensesFromSiteSurfaceArea } from "shared";
 
 import {
-  willHaveBuildings,
   hasBuildingsResalePlannedAfterDevelopment,
+  willHaveBuildings,
 } from "@/shared/core/reducers/project-form/urban-project/helpers/readers/buildingsReaders";
+import { willReuseExistingBuildings } from "@/shared/core/reducers/project-form/urban-project/step-handlers/buildings/buildingsReaders";
+import { isDeveloperBuildingsConstructor } from "@/shared/core/reducers/project-form/urban-project/step-handlers/stakeholders/stakeholdersReaders";
 
 import type { AnswerStepHandler } from "../../stepHandler.type";
 
@@ -11,6 +13,13 @@ export const UrbanProjectInstallationExpensesHandler = {
   stepId: "URBAN_PROJECT_EXPENSES_INSTALLATION",
 
   getNextStepId(context) {
+    if (
+      isDeveloperBuildingsConstructor(context.stepsState) ||
+      willReuseExistingBuildings(context.stepsState)
+    ) {
+      return "URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION";
+    }
+
     if (
       willHaveBuildings(context.stepsState) &&
       !hasBuildingsResalePlannedAfterDevelopment(context.stepsState)

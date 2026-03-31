@@ -8,7 +8,7 @@ type StepsState = ProjectFormState["urbanProject"]["steps"];
 type SiteData = NonNullable<ProjectFormState["siteData"]>;
 
 export function siteHasBuildings(siteData: SiteData): boolean {
-  return (siteData.soilsDistribution.BUILDINGS ?? 0) > 0;
+  return getSiteBuildingsFootprint(siteData) > 0;
 }
 
 export function getSiteBuildingsFootprint(siteData: SiteData): number {
@@ -48,9 +48,12 @@ export function willConstructNewBuildings(stepsState: StepsState): boolean {
   return getBuildingsFootprintToConstruct(stepsState) > 0;
 }
 
+export function willReuseExistingBuildings(stepsState: StepsState): boolean {
+  return (getBuildingsFootprintToReuse(stepsState) ?? 0) > 0;
+}
+
 export function hasBothReuseAndNewConstruction(stepsState: StepsState): boolean {
-  const reuse = getBuildingsFootprintToReuse(stepsState) ?? 0;
-  return reuse > 0 && willConstructNewBuildings(stepsState);
+  return willReuseExistingBuildings(stepsState) && willConstructNewBuildings(stepsState);
 }
 
 export function getNextStepAfterBuildings(context: StepContext): UrbanProjectCreationStep {

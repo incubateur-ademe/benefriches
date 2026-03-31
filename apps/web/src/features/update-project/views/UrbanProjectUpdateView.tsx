@@ -43,6 +43,10 @@ const InstallationExpensesForm = lazy(
 const ProjectExpensesIntroduction = lazy(
   () => import("@/shared/views/project-form/urban-project/expenses/introduction"),
 );
+const BuildingsConstructionAndRehabilitationExpensesForm = lazy(
+  () =>
+    import("@/shared/views/project-form/urban-project/expenses/buildings-construction-and-rehabilitation"),
+);
 const ReinstatementExpensesForm = lazy(
   () => import("@/shared/views/project-form/urban-project/expenses/reinstatement"),
 );
@@ -304,7 +308,12 @@ const getCurrentStepView = (step: UrbanProjectUpdateStep): Exclude<ReactNode, un
         </>
       );
     case "URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION":
-      return <div>TODO: Expenses buildings construction and rehabilitation</div>;
+      return (
+        <>
+          <HtmlTitle>{`Construction et réhabilitation des bâtiments - Dépenses - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
+          <BuildingsConstructionAndRehabilitationExpensesForm />
+        </>
+      );
     case "URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION":
       return (
         <>

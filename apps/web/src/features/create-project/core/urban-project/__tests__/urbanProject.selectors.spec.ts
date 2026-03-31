@@ -304,6 +304,100 @@ describe("urbanProject.selectors", () => {
     });
   });
 
+  describe("selectExpensesBuildingsConstructionAndRehabilitationViewData", () => {
+    it("returns current answers and the construction and rehabilitation visibility flags", () => {
+      const store = new StoreBuilder()
+        .withSiteData({
+          ...mockSiteData,
+          soilsDistribution: {
+            ...mockSiteData.soilsDistribution,
+            BUILDINGS: 2000,
+          },
+        })
+        .withSteps({
+          URBAN_PROJECT_SPACES_SURFACE_AREA: {
+            completed: true,
+            payload: {
+              spacesSurfaceAreaDistribution: { BUILDINGS: 3000, IMPERMEABLE_SOILS: 7000 },
+            },
+          },
+          URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE: {
+            completed: true,
+            payload: { buildingsFootprintToReuse: 1500 },
+          },
+          URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION: {
+            completed: true,
+            payload: {
+              technicalStudiesAndFees: 10000,
+              buildingsConstructionWorks: 20000,
+              buildingsRehabilitationWorks: 30000,
+              otherConstructionExpenses: 40000,
+            },
+          },
+        })
+        .build();
+
+      const rootState = store.getState();
+      const result =
+        creationProjectFormSelectors.selectExpensesBuildingsConstructionAndRehabilitationViewData(
+          rootState,
+        );
+
+      expect(result).toEqual({
+        technicalStudiesAndFees: 10000,
+        buildingsConstructionWorks: 20000,
+        buildingsRehabilitationWorks: 30000,
+        otherConstructionExpenses: 40000,
+        hasConstruction: true,
+        hasRehabilitation: true,
+      });
+    });
+
+    it("hides construction and rehabilitation fields when neither new buildings nor reuse is present", () => {
+      const store = new StoreBuilder()
+        .withSiteData({
+          ...mockSiteData,
+          soilsDistribution: {
+            ...mockSiteData.soilsDistribution,
+            BUILDINGS: 0,
+          },
+        })
+        .withSteps({
+          URBAN_PROJECT_SPACES_SURFACE_AREA: {
+            completed: true,
+            payload: {
+              spacesSurfaceAreaDistribution: { BUILDINGS: 0, IMPERMEABLE_SOILS: 10000 },
+            },
+          },
+          URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION: {
+            completed: false,
+            payload: {
+              technicalStudiesAndFees: 12000,
+              buildingsConstructionWorks: 22000,
+              buildingsRehabilitationWorks: 32000,
+              otherConstructionExpenses: 42000,
+            },
+          },
+        })
+        .build();
+
+      const rootState = store.getState();
+      const result =
+        creationProjectFormSelectors.selectExpensesBuildingsConstructionAndRehabilitationViewData(
+          rootState,
+        );
+
+      expect(result).toEqual({
+        technicalStudiesAndFees: 12000,
+        buildingsConstructionWorks: undefined,
+        buildingsRehabilitationWorks: undefined,
+        otherConstructionExpenses: 42000,
+        hasConstruction: false,
+        hasRehabilitation: false,
+      });
+    });
+  });
+
   describe("selectScheduleProjectionViewData", () => {
     it("returns step answers and isSiteFriche", () => {
       const store = new StoreBuilder()

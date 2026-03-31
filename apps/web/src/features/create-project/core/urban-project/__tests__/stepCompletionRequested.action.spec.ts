@@ -255,6 +255,21 @@ describe("urbanProject.reducer - stepCompletionRequested without validation", ()
       );
 
       // Étape ----
+      expect(getCurrentStep(store)).toBe(
+        "URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION",
+      );
+      store.dispatch(
+        stepCompletionRequested({
+          stepId: "URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION",
+          answers: {
+            technicalStudiesAndFees: 30000,
+            buildingsConstructionWorks: 400000,
+            otherConstructionExpenses: 20000,
+          },
+        }),
+      );
+
+      // Étape ----
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_REVENUE_INTRODUCTION");
       store.dispatch(nextStepRequested());
 
@@ -342,7 +357,7 @@ describe("urbanProject.reducer - stepCompletionRequested without validation", ()
       // Étape ----
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_CREATION_RESULT");
 
-      expect(Object.keys(store.getState().projectCreation.urbanProject.steps).length).toEqual(35);
+      expect(Object.keys(store.getState().projectCreation.urbanProject.steps).length).toEqual(36);
     });
 
     it('should handle decontamination plan "none" correctly', () => {

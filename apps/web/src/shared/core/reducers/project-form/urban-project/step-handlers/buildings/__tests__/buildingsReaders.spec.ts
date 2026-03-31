@@ -12,6 +12,7 @@ import {
   siteHasBuildings,
   willConstructNewBuildings,
   willDemolishBuildings,
+  willReuseExistingBuildings,
 } from "../buildingsReaders";
 
 type SiteData = NonNullable<ProjectFormState["siteData"]>;
@@ -182,6 +183,34 @@ describe("willConstructNewBuildings", () => {
       },
     } as StepsState;
     expect(willConstructNewBuildings(stepsState)).toBe(false);
+  });
+});
+
+describe("willReuseExistingBuildings", () => {
+  it("returns true when reuse is greater than 0", () => {
+    const stepsState = {
+      URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE: {
+        completed: true,
+        payload: { buildingsFootprintToReuse: 1200 },
+      },
+    } as StepsState;
+
+    expect(willReuseExistingBuildings(stepsState)).toBe(true);
+  });
+
+  it("returns false when reuse is 0", () => {
+    const stepsState = {
+      URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE: {
+        completed: true,
+        payload: { buildingsFootprintToReuse: 0 },
+      },
+    } as StepsState;
+
+    expect(willReuseExistingBuildings(stepsState)).toBe(false);
+  });
+
+  it("returns false when reuse step is missing", () => {
+    expect(willReuseExistingBuildings({} as StepsState)).toBe(false);
   });
 });
 

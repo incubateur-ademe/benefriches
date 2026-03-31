@@ -178,9 +178,10 @@ Constraints:
     - `pnpm --filter web test src/shared/core/reducers/project-form/urban-project/step-handlers/buildings/__tests__/sequencing`
     - `pnpm --filter web test src/features/create-project/core/urban-project/__tests__/previousStepRequested.action.spec.ts`
 
-- [ ] **S9** Answer step: `EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION`.
+- [x] **S9** Answer step: `EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION`.
   - Spec ref: `Answer Schemas` + `Expense step condition clarification` + `Navigation`
   - Includes: page + selector + routing updates in `expenses-installation` and `expenses-introduction`.
+  - Done note: Added the buildings construction/rehabilitation expense selector and form, wired create/update expense screens, and inserted the step into the validated expenses flow with focused handler, selector, and workflow coverage.
   - Targeted checks:
     - `pnpm --filter web test src/features/create-project/core/urban-project/__tests__/steps/expenses/expensesInstallation.handler.spec.ts`
     - `pnpm --filter web test src/features/create-project/core/urban-project/__tests__/steps/expenses/expensesIntroduction.handler.spec.ts`

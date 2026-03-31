@@ -17,6 +17,7 @@ import { createSelectNewBuildingsUsesFloorSurfaceAreaViewData } from "./step-han
 import { createSelectBuildingsNewConstructionInfoViewData } from "./step-handlers/buildings/buildings-new-construction-info/buildingsNewConstructionInfo.selector";
 import { createSelectBuildingsNewConstructionIntroductionViewData } from "./step-handlers/buildings/buildings-new-construction-introduction/buildingsNewConstructionIntroduction.selector";
 import { createSelectUsesFloorSurfaceAreaViewData } from "./step-handlers/buildings/buildings-uses-floor-surface-area/buildingsUsesFloorSurfaceArea.selector";
+import { createSelectExpensesBuildingsConstructionAndRehabilitationViewData } from "./step-handlers/expenses/expenses-buildings-construction-and-rehabilitation/expensesBuildingsConstructionAndRehabilitation.selector";
 import { createSelectReinstatementExpensesViewData } from "./step-handlers/expenses/expenses-reinstatement/expensesReinstatement.selector";
 import { createSelectSiteResaleRevenueViewData } from "./step-handlers/revenues/revenue-expected-site-resale/revenueExpectedSiteResale.selector";
 import { createSelectScheduleProjectionViewData } from "./step-handlers/schedule/schedule-projection/scheduleProjection.selector";
@@ -225,6 +226,8 @@ export const createUrbanProjectFormSelectors = (
     selectStepState,
     selectors.selectSiteSoilsDistribution,
   );
+  const selectExpensesBuildingsConstructionAndRehabilitationViewData =
+    createSelectExpensesBuildingsConstructionAndRehabilitationViewData(selectStepState);
 
   const selectUrbanProjectSummaryViewData = createSelectUrbanProjectSummaryViewData(
     selectIsFormStatusValid,
@@ -296,6 +299,7 @@ export const createUrbanProjectFormSelectors = (
     selectSoilsSummaryViewData,
     selectReinstatementContractOwnerViewData,
     selectReinstatementExpensesViewData,
+    selectExpensesBuildingsConstructionAndRehabilitationViewData,
     selectUrbanProjectSummaryViewData,
     selectScheduleProjectionViewData,
     selectSoilsDecontaminationSurfaceAreaViewData,
