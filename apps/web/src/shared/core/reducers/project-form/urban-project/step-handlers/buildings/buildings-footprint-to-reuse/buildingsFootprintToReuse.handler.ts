@@ -1,3 +1,5 @@
+import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
+
 import type { AnswerStepHandler, StepInvalidationRule } from "../../stepHandler.type";
 import {
   getNextStepAfterBuildings,
@@ -48,22 +50,46 @@ export const BuildingsFootprintToReuseHandler: AnswerStepHandler<typeof STEP_ID>
     const newConstruction = Math.max(0, projectBuildingsFootprint - newReuse);
     const hasBoth = newReuse > 0 && newConstruction > 0;
 
-    rules.push({
-      stepId: "URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION",
-      action: "invalidate",
-    });
+    if (
+      ReadStateHelper.getStep(
+        context.stepsState,
+        "URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION",
+      )
+    ) {
+      rules.push({
+        stepId: "URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION",
+        action: "invalidate",
+      });
+    }
 
-    rules.push({
-      stepId: "URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA",
-      action: hasBoth ? "invalidate" : "delete",
-    });
+    if (
+      ReadStateHelper.getStep(
+        context.stepsState,
+        "URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA",
+      )
+    ) {
+      rules.push({
+        stepId: "URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA",
+        action: hasBoth ? "invalidate" : "delete",
+      });
+    }
 
-    rules.push({
-      stepId: "URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA",
-      action: hasBoth ? "invalidate" : "delete",
-    });
+    if (
+      ReadStateHelper.getStep(
+        context.stepsState,
+        "URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA",
+      )
+    ) {
+      rules.push({
+        stepId: "URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA",
+        action: hasBoth ? "invalidate" : "delete",
+      });
+    }
 
-    if (newConstruction === 0) {
+    if (
+      newConstruction === 0 &&
+      ReadStateHelper.getStep(context.stepsState, "URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER")
+    ) {
       rules.push({
         stepId: "URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER",
         action: "delete",

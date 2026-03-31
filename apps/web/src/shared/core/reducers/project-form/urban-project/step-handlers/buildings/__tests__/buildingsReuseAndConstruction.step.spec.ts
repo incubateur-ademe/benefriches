@@ -136,6 +136,28 @@ describe("URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE handler", () => {
   });
 
   describe("getDependencyRules", () => {
+    it("does not trigger cascading confirmation when no dependent steps have been answered yet", () => {
+      const steps: ProjectFormState["urbanProject"]["steps"] = makeBaseSteps(3000);
+
+      const store = new StoreBuilder()
+        .withSiteData(makeSiteData())
+        .withSteps(steps)
+        .withCurrentStep("URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE")
+        .build();
+
+      store.dispatch(
+        creationProjectFormUrbanActions.stepCompletionRequested({
+          stepId: "URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE",
+          answers: { buildingsFootprintToReuse: 2000 },
+        }),
+      );
+
+      expect(store.getState().projectCreation.urbanProject.pendingStepCompletion).toBeUndefined();
+      expect(getCurrentStep(store)).toBe(
+        "URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA",
+      );
+    });
+
     it("deletes existing/new uses steps and stakeholder builder when new construction becomes 0", () => {
       // site=2000, project=2000, reuse=2000 → new=0
       // Previously had uses steps completed
