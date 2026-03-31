@@ -1,6 +1,6 @@
 import type { z } from "zod";
 
-import type { AnswersByStep, StepsState, StepCompletionPayload } from "./siteFactory.types";
+import type { AnswersByStep, StepsState, StepCompletionPayload } from "./formFactory.types";
 
 export type StepContext<Schemas extends Record<string, z.ZodTypeAny>, SiteData> = {
   siteData: SiteData;

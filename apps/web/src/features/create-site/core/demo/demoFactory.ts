@@ -1,5 +1,5 @@
+import { createFormFactory } from "../../../../shared/core/reducers/form-factory/createFormUseCaseFactory";
 import type { SiteCreationState } from "../createSite.reducer";
-import { createSiteFactory } from "../factory/createSiteUseCaseFactory";
 import { demoSiteSaved } from "./demoSiteSaved.action";
 import {
   answersByStepSchemas,
@@ -9,7 +9,7 @@ import {
 } from "./demoSteps";
 import { answerStepHandlers, demoStepHandlerRegistry } from "./stepHandlerRegistry";
 
-export const demoFactory = createSiteFactory({
+export const demoFactory = createFormFactory({
   introductionSteps: INTRODUCTION_STEPS,
   summarySteps: SUMMARY_STEPS,
   answerStepIds: ANSWER_STEP_IDS,
@@ -22,6 +22,11 @@ export const demoFactory = createSiteFactory({
   answerStepHandlers: answerStepHandlers,
   navigationHandlerRegistry: demoStepHandlerRegistry,
   actionPrefix: "siteCreation/demo",
+  onPreviousStepFallback: (state) => {
+    if (state.stepsHistory.length > 1) {
+      state.stepsHistory = state.stepsHistory.slice(0, -1);
+    }
+  },
 });
 
 export const { ReadStateHelper } = demoFactory;
@@ -29,7 +34,7 @@ export const { ReadStateHelper } = demoFactory;
 export const { previousStepRequested, nextStepRequested, stepCompletionRequested } =
   demoFactory.actions;
 
-export const demoSiteCreationReducer = demoFactory.createSiteUseCaseReducer((builder) => {
+export const demoSiteCreationReducer = demoFactory.createFormUseCaseReducer((builder) => {
   builder.addCase(demoSiteSaved.pending, (state) => {
     state.demo.saveState = "loading";
   });

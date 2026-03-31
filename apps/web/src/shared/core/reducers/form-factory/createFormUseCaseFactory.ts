@@ -1,26 +1,26 @@
 import { ActionReducerMapBuilder, createAction, createReducer } from "@reduxjs/toolkit";
 import type { z } from "zod";
 
-import { SiteCreationState } from "../createSite.reducer";
-import { AnswerStepHandler } from "./handlerRegistry.types";
 import type {
   AnswersByStep,
-  SiteFactoryConfig,
+  FormFactoryConfig,
   StepCompletionPayload,
   StepsState,
-} from "./siteFactory.types";
+} from "./formFactory.types";
+import { AnswerStepHandler } from "./handlerRegistry.types";
 
 // Garde fou pour éviter de boucler à l'infini dans computeStepChanges,
 // à faire évoluer en fonction du parcours avec le plus grand nombre d'étapes
 const MAX_STEPS_NUMBER = 30;
 
-export function createSiteFactory<
+export function createFormFactory<
   Schemas extends Record<string, z.ZodTypeAny>,
   IntroStep extends string,
   SummaryStep extends string,
   AnswerStepId extends string,
   TStepContext,
->(cfg: SiteFactoryConfig<Schemas, IntroStep, SummaryStep, AnswerStepId, TStepContext>) {
+  TState,
+>(cfg: FormFactoryConfig<Schemas, IntroStep, SummaryStep, AnswerStepId, TStepContext, TState>) {
   type SchematizedStepId = keyof Schemas;
   type CreationStep = IntroStep | SummaryStep | AnswerStepId;
   type State = StepsState<Schemas>;
@@ -44,23 +44,23 @@ export function createSiteFactory<
   // ── Mutate ────────────────────────────────────────────────────────────────
 
   const MutateStateHelper = {
-    navigateToStep(state: SiteCreationState, stepId: CreationStep) {
+    navigateToStep(state: TState, stepId: CreationStep) {
       cfg.getSlice(state).currentStep = stepId;
     },
-    completeStep<K extends SchematizedStepId>(state: SiteCreationState, payload: Payload<K>) {
+    completeStep<K extends SchematizedStepId>(state: TState, payload: Payload<K>) {
       (cfg.getSlice(state).steps as Record<string, unknown>)[payload.stepId as string] = {
         completed: true,
         payload: payload.answers,
       };
     },
-    completeStepFromPayload(state: SiteCreationState, payload: Payload) {
+    completeStepFromPayload(state: TState, payload: Payload) {
       (cfg.getSlice(state).steps as Record<string, unknown>)[payload.stepId as string] = {
         completed: true,
         payload: payload.answers,
       };
     },
     setDefaultAnswers<K extends SchematizedStepId>(
-      state: SiteCreationState,
+      state: TState,
       stepId: K,
       defaultValues: Answers[K],
     ) {
@@ -74,6 +74,7 @@ export function createSiteFactory<
   };
 
   // ── Navigation ────────────────────────────────────────────────────────────
+
   function computeStepsSequence(context: TStepContext, initialStep: CreationStep): CreationStep[] {
     const sequence: CreationStep[] = [];
 
@@ -96,7 +97,7 @@ export function createSiteFactory<
     return sequence;
   }
 
-  function navigateToAndLoadStep(state: SiteCreationState, stepId: CreationStep) {
+  function navigateToAndLoadStep(state: TState, stepId: CreationStep) {
     MutateStateHelper.navigateToStep(state, stepId);
 
     const handler = cfg.navigationHandlerRegistry[stepId];
@@ -123,7 +124,7 @@ export function createSiteFactory<
   };
 
   function computeStepChanges<K extends SchematizedStepId>(
-    state: SiteCreationState,
+    state: TState,
     payload: Payload<K>,
   ): StepUpdateResult<K> {
     const handler = cfg.answerStepHandlers[payload.stepId] as
@@ -160,7 +161,7 @@ export function createSiteFactory<
   }
 
   function applyStepChanges<K extends SchematizedStepId>(
-    state: SiteCreationState,
+    state: TState,
     changes: StepUpdateResult<K>,
   ): void {
     MutateStateHelper.completeStep(state, changes.payload);
@@ -188,31 +189,29 @@ export function createSiteFactory<
 
   // ── Reducer ───────────────────────────────────────────────────────────────
 
-  type CreateSiteUseCaseReducerCallback = (
-    builder: ActionReducerMapBuilder<SiteCreationState>,
-  ) => void;
-  const createSiteUseCaseReducer = (callback: CreateSiteUseCaseReducerCallback) =>
-    createReducer({} as SiteCreationState, (builder) => {
+  type CreateFormUseCaseReducerCallback = (builder: ActionReducerMapBuilder<TState>) => void;
+  const createFormUseCaseReducer = (callback?: CreateFormUseCaseReducerCallback) =>
+    createReducer({} as TState, (builder) => {
       builder.addCase(stepCompletionRequested, (state, action) => {
-        const changes = computeStepChanges(state, action.payload);
-        applyStepChanges(state, changes);
+        const changes = computeStepChanges(state as TState, action.payload);
+        applyStepChanges(state as TState, changes);
       });
 
       builder.addCase(nextStepRequested, (state) => {
-        const slice = cfg.getSlice(state);
+        const slice = cfg.getSlice(state as TState);
         const handler = cfg.navigationHandlerRegistry[slice.currentStep];
         if (!handler?.getNextStepId) return;
-        const nextStep = handler.getNextStepId(cfg.buildContext(state));
-        if (nextStep) navigateToAndLoadStep(state, nextStep);
+        const nextStep = handler.getNextStepId(cfg.buildContext(state as TState));
+        if (nextStep) navigateToAndLoadStep(state as TState, nextStep);
       });
 
       builder.addCase(previousStepRequested, (state) => {
-        const slice = cfg.getSlice(state);
+        const slice = cfg.getSlice(state as TState);
         const handler = cfg.navigationHandlerRegistry[slice.currentStep];
 
         if (handler?.getPreviousStepId) {
-          const previousStep = handler.getPreviousStepId(cfg.buildContext(state));
-          if (previousStep) navigateToAndLoadStep(state, previousStep);
+          const previousStep = handler.getPreviousStepId(cfg.buildContext(state as TState));
+          if (previousStep) navigateToAndLoadStep(state as TState, previousStep);
           return;
         }
 
@@ -220,13 +219,13 @@ export function createSiteFactory<
         const previousStep = currentIndex > 0 ? slice.stepsSequence[currentIndex - 1] : undefined;
 
         if (previousStep) {
-          navigateToAndLoadStep(state, previousStep);
-        } else if (state.stepsHistory.length > 1) {
-          state.stepsHistory = state.stepsHistory.slice(0, -1);
+          navigateToAndLoadStep(state as TState, previousStep);
+        } else {
+          cfg.onPreviousStepFallback?.(state as TState);
         }
       });
 
-      callback(builder);
+      callback?.(builder);
     });
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -243,6 +242,6 @@ export function createSiteFactory<
       nextStepRequested,
       stepCompletionRequested,
     },
-    createSiteUseCaseReducer,
+    createFormUseCaseReducer,
   };
 }

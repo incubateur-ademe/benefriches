@@ -1,6 +1,5 @@
 import type { z } from "zod";
 
-import { SiteCreationState } from "../createSite.reducer";
 import { AnswerStepHandlerMap, NavigationHandlerRegistry } from "./handlerRegistry.types";
 
 export type StepData<T> = {
@@ -22,29 +21,28 @@ export type StepCompletionPayload<
   K extends keyof Schemas = keyof Schemas,
 > = { [P in K]: { stepId: P; answers: AnswersByStep<Schemas>[P] } }[K];
 
-export type SiteSlice<Schemas extends Record<string, z.ZodTypeAny>, CreationStep extends string> = {
+export type FormSlice<Schemas extends Record<string, z.ZodTypeAny>, CreationStep extends string> = {
   currentStep: CreationStep;
   steps: StepsState<Schemas>;
   stepsSequence: CreationStep[];
   firstSequenceStep: CreationStep;
 };
 
-export type SiteFactoryConfig<
+export type FormFactoryConfig<
   Schemas extends Record<string, z.ZodTypeAny>,
   IntroStep extends string,
   SummaryStep extends string,
   AnswerStepId extends string,
   TStepContext,
+  TState,
 > = {
   introductionSteps: readonly IntroStep[];
   summarySteps: readonly SummaryStep[];
   answerStepIds: readonly AnswerStepId[];
   schemas: Schemas &
     Record<keyof Schemas extends AnswerStepId ? keyof Schemas : never, z.ZodTypeAny>;
-  getSlice: (
-    state: SiteCreationState,
-  ) => SiteSlice<Schemas, IntroStep | SummaryStep | AnswerStepId>;
-  buildContext: (state: SiteCreationState) => TStepContext;
+  getSlice: (state: TState) => FormSlice<Schemas, IntroStep | SummaryStep | AnswerStepId>;
+  buildContext: (state: TState) => TStepContext;
   answerStepHandlers: Partial<
     AnswerStepHandlerMap<Schemas, IntroStep | SummaryStep | AnswerStepId, TStepContext>
   >;
@@ -53,4 +51,10 @@ export type SiteFactoryConfig<
     TStepContext
   >;
   actionPrefix: string;
+  /**
+   * Appelé lors d'un "previousStep" quand aucune étape précédente n'existe dans
+   * la séquence courante. Permet de gérer la navigation hors-séquence (ex: historique)
+   * sans coupler la factory à un type de state spécifique.
+   */
+  onPreviousStepFallback?: (state: TState) => void;
 };

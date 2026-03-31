@@ -5,7 +5,8 @@ import type {
   ShortcutResult as GenericShortcutResult,
   NavigationHandlerRegistry,
   StepContext,
-} from "../factory/handlerRegistry.types";
+} from "@/shared/core/reducers/form-factory/handlerRegistry.types";
+
 import { SiteCreationData } from "../siteFoncier.types";
 import type {
   SchematizedAnswerStepId,
