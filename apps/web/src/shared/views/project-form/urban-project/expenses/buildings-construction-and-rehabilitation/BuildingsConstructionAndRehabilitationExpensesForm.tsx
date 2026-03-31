@@ -8,7 +8,7 @@ import RowNumericInput from "@/shared/views/components/form/NumericInput/RowNume
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
-export type BuildingsConstructionAndRehabilitationExpensesFormValues = {
+type BuildingsConstructionAndRehabilitationExpensesFormValues = {
   technicalStudiesAndFees?: number;
   buildingsConstructionWorks?: number;
   buildingsRehabilitationWorks?: number;

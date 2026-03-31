@@ -5,7 +5,7 @@ import type { RootState } from "@/app/store/store";
 import { ReadStateHelper } from "../../../stateHelpers";
 import type { UrbanZoneStepsState } from "../../../urbanZoneSteps";
 
-export type ExpensesAndIncomeSummaryViewData = {
+type ExpensesAndIncomeSummaryViewData = {
   expenses: SiteYearlyExpense[];
   incomes: SiteYearlyIncome[];
   ownerExpenses: SiteYearlyExpense[];

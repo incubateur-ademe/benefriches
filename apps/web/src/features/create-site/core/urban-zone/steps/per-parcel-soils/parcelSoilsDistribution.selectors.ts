@@ -6,7 +6,7 @@ import type { RootState } from "@/app/store/store";
 import { ReadStateHelper } from "../../stateHelpers";
 import { getParcelStepIds } from "./parcelStepMapping";
 
-export type ParcelSoilsDistributionViewData = {
+type ParcelSoilsDistributionViewData = {
   parcelType: UrbanZoneLandParcelType;
   totalSurfaceArea: number;
   initialSoilsDistribution: SoilsDistribution;

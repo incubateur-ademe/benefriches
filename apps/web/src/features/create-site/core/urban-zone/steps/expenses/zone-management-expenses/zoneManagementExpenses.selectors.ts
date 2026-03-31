@@ -2,7 +2,7 @@ import type { RootState } from "@/app/store/store";
 
 import { ReadStateHelper } from "../../../stateHelpers";
 
-export type ZoneManagementExpensesViewData = {
+type ZoneManagementExpensesViewData = {
   initialValues: {
     maintenance?: number;
     security?: number;

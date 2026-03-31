@@ -5,7 +5,7 @@ import type { RootState } from "@/app/store/store";
 
 import { aggregateSoilsDistribution } from "../soilsReaders";
 
-export type UrbanZoneSoilsSummaryViewData = {
+type UrbanZoneSoilsSummaryViewData = {
   soilsDistribution: SoilsDistribution;
   totalSurfaceArea: number;
 };

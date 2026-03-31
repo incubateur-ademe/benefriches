@@ -12,7 +12,7 @@ import SurfaceAreaDistributionForm from "@/shared/views/components/form/SurfaceA
 import { useSurfaceAreaInputMode } from "../../useSurfaceAreaInputMode";
 import { PARCEL_TYPE_LABELS } from "../landParcelTypeMetadata";
 
-export type FormValues = SoilsDistribution;
+type FormValues = SoilsDistribution;
 
 const URBAN_ZONE_SOIL_TYPES: SoilType[] = [
   "BUILDINGS",

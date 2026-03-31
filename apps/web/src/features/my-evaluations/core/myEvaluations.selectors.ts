@@ -7,7 +7,7 @@ import type { UserSiteEvaluation } from "../domain/types";
 
 type LoadingState = "idle" | "loading" | "success" | "error";
 
-export type MyEvaluationsViewData = {
+type MyEvaluationsViewData = {
   siteEvaluations: UserSiteEvaluation[];
   loadingState: LoadingState;
   currentUserId: string | undefined;

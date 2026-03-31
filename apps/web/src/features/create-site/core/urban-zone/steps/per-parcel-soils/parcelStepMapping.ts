@@ -24,12 +24,6 @@ export const PARCEL_STEP_IDS = {
   { soilsDistribution: SchematizedAnswerStepId; buildingsFloorArea: SchematizedAnswerStepId }
 >;
 
-export type ParcelSoilsDistributionStepId =
-  (typeof PARCEL_STEP_IDS)[UrbanZoneLandParcelType]["soilsDistribution"];
-export type ParcelBuildingsFloorAreaStepId =
-  (typeof PARCEL_STEP_IDS)[UrbanZoneLandParcelType]["buildingsFloorArea"];
-export type ParcelStepId = ParcelSoilsDistributionStepId | ParcelBuildingsFloorAreaStepId;
-
 export const getParcelStepIds = <P extends UrbanZoneLandParcelType>(
   parcelType: P,
 ): (typeof PARCEL_STEP_IDS)[P] => PARCEL_STEP_IDS[parcelType];
@@ -60,11 +54,3 @@ export const getPreviousParcelType = (
   const currentIndex = selectedTypes.indexOf(currentType);
   return currentIndex > 0 ? selectedTypes[currentIndex - 1] : undefined;
 };
-
-export const getOrderedParcelSoilsSteps = (
-  selectedParcelTypes: UrbanZoneLandParcelType[],
-): ParcelStepId[] =>
-  selectedParcelTypes.flatMap((type) => {
-    const ids = PARCEL_STEP_IDS[type];
-    return [ids.soilsDistribution, ids.buildingsFloorArea];
-  });

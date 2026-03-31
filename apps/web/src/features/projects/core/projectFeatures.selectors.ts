@@ -8,7 +8,7 @@ import type { ProjectFeatures } from "../domain/projects.types";
 
 type LoadingState = "idle" | "loading" | "success" | "error";
 
-export type ProjectFeaturesViewData = {
+type ProjectFeaturesViewData = {
   projectFeatures: ProjectFeatures | undefined;
   loadingState: LoadingState;
 };

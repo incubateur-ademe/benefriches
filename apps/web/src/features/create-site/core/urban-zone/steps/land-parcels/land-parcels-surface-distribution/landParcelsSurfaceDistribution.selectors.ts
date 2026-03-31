@@ -5,7 +5,7 @@ import type { RootState } from "@/app/store/store";
 
 import { ReadStateHelper } from "../../../stateHelpers";
 
-export type LandParcelsSurfaceDistributionViewData = {
+type LandParcelsSurfaceDistributionViewData = {
   selectedParcelTypes: UrbanZoneLandParcelType[];
   totalSurfaceArea: number;
   initialSurfaceAreas: Partial<Record<UrbanZoneLandParcelType, number>>;
