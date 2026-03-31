@@ -6,12 +6,17 @@ import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/Back
 import CheckableTile from "@/shared/views/components/CheckableTile/CheckableTile";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
-import { PARCEL_TYPE_DESCRIPTIONS, PARCEL_TYPE_LABELS } from "../parcelTypeLabels";
+import {
+  getPictogramForUrbanZoneLandParcelType,
+  PARCEL_TYPE_DESCRIPTIONS,
+  PARCEL_TYPE_LABELS,
+} from "../landParcelTypeMetadata";
 
 type Option = {
   value: UrbanZoneLandParcelType;
   label: string;
   description: string;
+  imgSrc: string;
 };
 
 const OPTIONS: Option[] = [
@@ -19,21 +24,25 @@ const OPTIONS: Option[] = [
     value: "COMMERCIAL_ACTIVITY_AREA",
     label: PARCEL_TYPE_LABELS.COMMERCIAL_ACTIVITY_AREA,
     description: PARCEL_TYPE_DESCRIPTIONS.COMMERCIAL_ACTIVITY_AREA,
+    imgSrc: getPictogramForUrbanZoneLandParcelType("COMMERCIAL_ACTIVITY_AREA"),
   },
   {
     value: "PUBLIC_SPACES",
     label: PARCEL_TYPE_LABELS.PUBLIC_SPACES,
     description: PARCEL_TYPE_DESCRIPTIONS.PUBLIC_SPACES,
+    imgSrc: getPictogramForUrbanZoneLandParcelType("PUBLIC_SPACES"),
   },
   {
     value: "SERVICED_SURFACE",
     label: PARCEL_TYPE_LABELS.SERVICED_SURFACE,
     description: PARCEL_TYPE_DESCRIPTIONS.SERVICED_SURFACE,
+    imgSrc: getPictogramForUrbanZoneLandParcelType("SERVICED_SURFACE"),
   },
   {
     value: "RESERVED_SURFACE",
     label: PARCEL_TYPE_LABELS.RESERVED_SURFACE,
     description: PARCEL_TYPE_DESCRIPTIONS.RESERVED_SURFACE,
+    imgSrc: getPictogramForUrbanZoneLandParcelType("RESERVED_SURFACE"),
   },
 ];
 
@@ -71,7 +80,7 @@ function LandParcelsSelectionForm({ initialValues, onSubmit, onBack }: Props) {
                     title={option.label}
                     description={option.description}
                     checkType="checkbox"
-                    imgSrc=""
+                    imgSrc={option.imgSrc}
                     checked={isSelected}
                     onChange={() => {
                       field.onChange(

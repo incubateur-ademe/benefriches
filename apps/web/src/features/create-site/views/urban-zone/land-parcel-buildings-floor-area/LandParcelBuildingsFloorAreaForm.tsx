@@ -10,7 +10,7 @@ import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/Back
 import RowNumericInput from "@/shared/views/components/form/NumericInput/RowNumericInput";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
-import { PARCEL_TYPE_LABELS } from "../parcelTypeLabels";
+import { PARCEL_TYPE_LABELS } from "../landParcelTypeMetadata";
 
 export type FormValues = {
   buildingsFloorSurfaceArea: number;

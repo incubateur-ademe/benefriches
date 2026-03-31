@@ -10,7 +10,7 @@ import { getColorForSoilType } from "@/shared/core/soils";
 import SurfaceAreaDistributionForm from "@/shared/views/components/form/SurfaceAreaDistributionForm/SurfaceAreaDistributionForm";
 
 import { useSurfaceAreaInputMode } from "../../useSurfaceAreaInputMode";
-import { PARCEL_TYPE_LABELS } from "../parcelTypeLabels";
+import { PARCEL_TYPE_LABELS } from "../landParcelTypeMetadata";
 
 export type FormValues = SoilsDistribution;
 

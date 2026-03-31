@@ -9,7 +9,7 @@ import SoilTypeLabelWithColorSquare from "@/shared/views/components/FeaturesList
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 import type { UrbanZoneFinalSummaryViewData } from "../../../core/urban-zone/steps/final-summary/finalSummary.selectors";
-import { PARCEL_TYPE_LABELS } from "../parcelTypeLabels";
+import { PARCEL_TYPE_LABELS } from "../landParcelTypeMetadata";
 
 const MANAGER_LABELS: Record<string, string> = {
   activity_park_manager: "Gestionnaire de parc d'activité",

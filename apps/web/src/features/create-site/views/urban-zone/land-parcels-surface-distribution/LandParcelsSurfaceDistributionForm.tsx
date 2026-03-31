@@ -1,10 +1,14 @@
 import type { UrbanZoneLandParcelType } from "shared";
 
-import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/core/format-number/formatNumber";
 import SurfaceAreaDistributionForm from "@/shared/views/components/form/SurfaceAreaDistributionForm/SurfaceAreaDistributionForm";
 
 import { useSurfaceAreaInputMode } from "../../useSurfaceAreaInputMode";
-import { PARCEL_TYPE_DESCRIPTIONS, PARCEL_TYPE_LABELS } from "../parcelTypeLabels";
+import {
+  getColorForLandParcelType,
+  getPictogramForUrbanZoneLandParcelType,
+  PARCEL_TYPE_DESCRIPTIONS,
+  PARCEL_TYPE_LABELS,
+} from "../landParcelTypeMetadata";
 
 export type FormValues = Partial<Record<UrbanZoneLandParcelType, number>>;
 
@@ -39,7 +43,8 @@ function LandParcelsSurfaceDistributionForm({
         name: type,
         label: PARCEL_TYPE_LABELS[type],
         hintText: PARCEL_TYPE_DESCRIPTIONS[type],
-        addonText: SQUARE_METERS_HTML_SYMBOL,
+        imgSrc: getPictogramForUrbanZoneLandParcelType(type),
+        color: getColorForLandParcelType(type),
       }))}
     />
   );

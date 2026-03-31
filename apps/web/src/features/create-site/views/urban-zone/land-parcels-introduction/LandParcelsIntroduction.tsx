@@ -16,7 +16,8 @@ const LandParcelsIntroduction = ({ onNext, onBack }: Props) => {
     <EditorialPageLayout>
       <EditorialPageIcon>🛣️️</EditorialPageIcon>
       <EditorialPageTitle>
-        Parlons d'abord des surfaces qui existent actuellement au sein de la zone commerciale.
+        Parlons d'abord des surfaces qui existent actuellement au sein de la zone d'activités
+        économiques.
       </EditorialPageTitle>
       <EditorialPageButtonsSection>
         <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
