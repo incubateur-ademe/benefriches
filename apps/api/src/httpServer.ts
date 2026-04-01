@@ -17,7 +17,7 @@ export function configureServer(app: NestExpressApplication) {
       cookie: {
         secure: configService.get("NODE_ENV") === "production",
         httpOnly: true,
-        sameSite: "lax",
+        sameSite: "none",
       },
     }),
   );
