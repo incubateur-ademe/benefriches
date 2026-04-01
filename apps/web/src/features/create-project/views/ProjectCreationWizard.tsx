@@ -10,6 +10,7 @@ import { ProjectFormProvider } from "@/shared/views/project-form/ProjectFormProv
 
 import { reconversionProjectCreationInitiated } from "../core/actions/reconversionProjectCreationInitiated.action";
 import { selectProjectCreationWizardViewData } from "../core/createProject.selectors";
+import ProjectCreationStepper from "./ProjectCreationStepper";
 import DemoProjectCreationWizard from "./demo/DemoProjectCreationWizard";
 import PhotovoltaicPowerStationCreationWizard from "./photovoltaic-power-station";
 import UrbanProjectCreationWizard from "./urban-project/UrbanProjectCreationWizard";
@@ -20,7 +21,7 @@ type Props = {
 };
 
 function ProjectCreationWizard({ route }: Props) {
-  const { currentStepGroup, loadingState } = useAppSelector(selectProjectCreationWizardViewData);
+  const { currentProjectFlow, loadingState } = useAppSelector(selectProjectCreationWizardViewData);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -31,49 +32,42 @@ function ProjectCreationWizard({ route }: Props) {
     void dispatch(reconversionProjectCreationInitiated(payload));
   }, [dispatch, route.params.siteId, route.params.projectSuggestions]);
 
-  if (loadingState !== "success") {
-    return (
+  return (
+    <ProjectFormProvider mode="create">
       <SidebarLayout
         title="Renseignement du projet"
-        sidebarChildren={null}
+        sidebarChildren={<ProjectCreationStepper />}
         mainChildren={(() => {
-          switch (loadingState) {
-            case "error":
-              return (
-                <Alert
-                  description="Une erreur s'est produite lors de la récupération des informations du site"
-                  severity="error"
-                  title="Impossible de charger les informations du site"
-                  className="my-7"
-                />
-              );
-            case "loading":
-              return <LoadingSpinner />;
-            case "idle":
-              return null;
+          if (loadingState === "error") {
+            return (
+              <Alert
+                description="Une erreur s'est produite lors de la récupération des informations du site"
+                severity="error"
+                title="Impossible de charger les informations du site"
+                className="my-7"
+              />
+            );
+          }
+          if (loadingState === "loading") return <LoadingSpinner />;
+
+          if (loadingState === "idle") {
+            return null;
+          }
+
+          switch (currentProjectFlow) {
+            case "URBAN_PROJECT":
+              return <UrbanProjectCreationWizard />;
+            case "PHOTOVOLTAIC_POWER_PLANT":
+              return <PhotovoltaicPowerStationCreationWizard />;
+            case "DEMO":
+              return <DemoProjectCreationWizard />;
+            case "USE_CASE_SELECTION":
+              return <UseCaseSelectionProjectCreationWizard />;
           }
         })()}
       />
-    );
-  }
-
-  switch (currentStepGroup) {
-    case "URBAN_PROJECT":
-    case "PHOTOVOLTAIC_POWER_PLANT":
-      return (
-        <ProjectFormProvider mode="create">
-          {currentStepGroup === "URBAN_PROJECT" ? (
-            <UrbanProjectCreationWizard />
-          ) : (
-            <PhotovoltaicPowerStationCreationWizard />
-          )}
-        </ProjectFormProvider>
-      );
-    case "DEMO":
-      return <DemoProjectCreationWizard />;
-    case "USE_CASE_SELECTION":
-      return <UseCaseSelectionProjectCreationWizard />;
-  }
+    </ProjectFormProvider>
+  );
 }
 
 export default ProjectCreationWizard;

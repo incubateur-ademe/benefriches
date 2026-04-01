@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
+import { demoProjectSaved } from "@/features/create-project/core/demo/demoProject.actions";
 import { nextStepRequested } from "@/features/create-project/core/demo/demoProject.reducer";
 import { selectDemoProjectSummaryViewData } from "@/features/create-project/core/demo/demoProject.selectors";
-import { demoProjectSaved } from "@/features/create-project/core/demo/demoProjectSaved.action";
 
 import { useStepBack } from "../useStepBack";
 import DemoProjectSummary from "./DemoProjectSummary";

@@ -31,7 +31,7 @@ export class StoreBuilder {
   withCurrentUrbanProjectGroupStep(): this {
     this.preloadedRootState.projectCreation = {
       ...this.preloadedRootState.projectCreation,
-      currentStepGroup: "URBAN_PROJECT",
+      currentProjectFlow: "URBAN_PROJECT",
     };
     return this;
   }

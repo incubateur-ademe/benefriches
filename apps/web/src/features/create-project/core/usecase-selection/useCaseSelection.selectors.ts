@@ -1,13 +1,15 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { DevelopmentPlanCategory, typedObjectEntries } from "shared";
+import { DevelopmentPlanCategory } from "shared";
 
 import { RootState } from "@/app/store/store";
 
+import { ProjectCreationState } from "../createProject.reducer";
 import { UseCaseSelectionStep } from "./useCaseSelection.reducer";
 import {
   USE_CASE_SELECTION_STEP_GROUP_IDS,
   USE_CASE_SELECTION_STEP_GROUP_LABELS,
   USE_CASE_SELECTION_STEP_TO_GROUP,
+  UseCaseSelectionStepGroupId,
 } from "./useCaseSelectionStepperConfig";
 
 type UseCaseSelectionWizardViewData = {
@@ -20,20 +22,45 @@ export const selectUseCaseSelectionWizardViewData = createSelector(
   }),
 );
 
+type UseCaseSelectionStepperViewData = {
+  currentStep: UseCaseSelectionStep;
+  currentProjectFlow: ProjectCreationState["currentProjectFlow"];
+  stepCategories: { title: string; targetStepId: UseCaseSelectionStep }[];
+};
+
+const getFirstStepOfGroup = (
+  stepsSequence: UseCaseSelectionStep[],
+  groupId: UseCaseSelectionStepGroupId,
+): UseCaseSelectionStep | undefined =>
+  stepsSequence.find((stepId) => USE_CASE_SELECTION_STEP_TO_GROUP[stepId].groupId === groupId);
+
+const getAvailableGroupIds = (
+  stepsSequence: UseCaseSelectionStep[],
+): Set<UseCaseSelectionStepGroupId> =>
+  new Set(stepsSequence.map((stepId) => USE_CASE_SELECTION_STEP_TO_GROUP[stepId].groupId));
+
 export const selectUseCaseSelectionStepperViewData = createSelector(
   (state: RootState) => state.projectCreation,
-  (state) => {
-    const availableGroupIds = new Set(
-      typedObjectEntries(USE_CASE_SELECTION_STEP_TO_GROUP)
-        .filter(([stepId]) => state.useCaseSelection.stepsSequence.includes(stepId))
-        .map(([, { groupId }]) => groupId),
-    );
+  (state): UseCaseSelectionStepperViewData => {
+    const { stepsSequence, currentStep } = state.useCaseSelection;
+
+    const availableGroupIds = getAvailableGroupIds(stepsSequence);
+
+    const stepCategories = USE_CASE_SELECTION_STEP_GROUP_IDS.filter((groupId) =>
+      availableGroupIds.has(groupId),
+    ).map((groupId) => {
+      const targetStepId = getFirstStepOfGroup(stepsSequence, groupId);
+      if (!targetStepId) throw new Error(`No step found for group "${groupId}"`);
+      return {
+        title: USE_CASE_SELECTION_STEP_GROUP_LABELS[groupId],
+        targetStepId,
+      };
+    });
 
     return {
-      currentStep: state.useCaseSelection.currentStep,
-      stepCategories: USE_CASE_SELECTION_STEP_GROUP_IDS.filter((id) =>
-        availableGroupIds.has(id),
-      ).map((id) => USE_CASE_SELECTION_STEP_GROUP_LABELS[id]),
+      currentProjectFlow: state.currentProjectFlow,
+      currentStep,
+      stepCategories,
     };
   },
 );

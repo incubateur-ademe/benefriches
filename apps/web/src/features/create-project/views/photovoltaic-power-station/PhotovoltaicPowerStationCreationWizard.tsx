@@ -1,9 +1,7 @@
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
-import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
 import { RenewableEnergyCreationStep } from "../../core/renewable-energy/renewableEnergySteps";
 import { HTML_MAIN_TITLE } from "../mainHtmlTitle";
-import PhotovoltaicPowerStationStepper from "./PhotovoltaicPowerStationStepper";
 import PhotovoltaicPanelsInstallationExpensesForm from "./expenses/installation";
 import ProjectExpensesIntroduction from "./expenses/introduction";
 import ReinstatementsExpensesForm from "./expenses/reinstatement";
@@ -44,7 +42,11 @@ import ProjectionCreationDataSummaryContainer from "./summary";
 
 const HTML_PV_PROJECT_FORM_MAIN_TITLE = `Projet photovoltaïque - ${HTML_MAIN_TITLE}`;
 
-const getCurrentStepView = (currentStep: RenewableEnergyCreationStep) => {
+type Props = {
+  currentStep: RenewableEnergyCreationStep;
+};
+
+function PhotovoltaicPowerStationCustomCreationWizard({ currentStep }: Props) {
   switch (currentStep) {
     case "RENEWABLE_ENERGY_STAKEHOLDERS_INTRODUCTION":
       return (
@@ -306,20 +308,6 @@ const getCurrentStepView = (currentStep: RenewableEnergyCreationStep) => {
         </>
       );
   }
-};
-
-type Props = {
-  currentStep: RenewableEnergyCreationStep;
-};
-
-function PhotovoltaicPowerStationCustomCreationWizard({ currentStep }: Props) {
-  return (
-    <SidebarLayout
-      mainChildren={getCurrentStepView(currentStep)}
-      title="Renseignement du projet"
-      sidebarChildren={<PhotovoltaicPowerStationStepper step={currentStep} />}
-    />
-  );
 }
 
 export default PhotovoltaicPowerStationCustomCreationWizard;

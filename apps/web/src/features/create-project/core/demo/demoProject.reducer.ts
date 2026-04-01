@@ -1,7 +1,11 @@
 import { createFormFactory } from "@/shared/core/reducers/form-factory/createFormUseCaseFactory";
 
 import { ProjectCreationState } from "../createProject.reducer";
-import { demoProjectCreated, demoProjectSaved } from "./demoProjectSaved.action";
+import {
+  demoProjectCreated,
+  demoProjectSaved,
+  demoStepGroupNavigated,
+} from "./demoProject.actions.ts";
 import {
   answersByStepSchemas,
   DemoAnswerStepId,
@@ -56,7 +60,7 @@ export const demoFactory = createFormFactory<
   navigationHandlerRegistry: demoStepHandlerRegistry,
   actionPrefix: "projectCreation/demo",
   onPreviousStepFallback: (state) => {
-    state.currentStepGroup = "USE_CASE_SELECTION";
+    state.currentProjectFlow = "USE_CASE_SELECTION";
   },
 });
 
@@ -93,5 +97,9 @@ export const demoProjectCreationReducer = demoFactory.createFormUseCaseReducer((
       loadingState: "success",
       data: action.payload,
     };
+  });
+  builder.addCase(demoStepGroupNavigated, (state, action) => {
+    state.currentProjectFlow = "DEMO";
+    state.demoProject.currentStep = action.payload;
   });
 });

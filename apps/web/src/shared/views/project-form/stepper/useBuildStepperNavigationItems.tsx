@@ -6,17 +6,23 @@ import { UrbanProjectCreationStep } from "@/shared/core/reducers/project-form/ur
 import { StepVariant } from "../../layout/WizardFormLayout/FormBaseStepperStep";
 import { ProjectStepGroups, STEP_GROUP_LABELS, STEP_TO_GROUP_MAPPING } from "./stepperConfig";
 
-export const useBuildStepperNavigationItems = (
-  projectStepGroups: ProjectStepGroups,
-  currentStep: UrbanProjectCreationStep,
-) => {
+type UseBuildStepperNavigationItemsProps = {
+  projectStepGroups: ProjectStepGroups;
+  currentStep: UrbanProjectCreationStep;
+  disableCurrent?: boolean;
+};
+export const useBuildStepperNavigationItems = ({
+  projectStepGroups,
+  currentStep,
+  disableCurrent,
+}: UseBuildStepperNavigationItemsProps) => {
   return useMemo(() => {
     const { groupId: currentGroupId, subGroupId: currentSubGroupId } =
       STEP_TO_GROUP_MAPPING[currentStep];
 
     return typedObjectEntries(projectStepGroups).map(([groupId, subGroups]) => {
       const isGroupCompleted = subGroups.every(({ isStepCompleted }) => isStepCompleted);
-      const isCurrentGroup = currentGroupId === groupId;
+      const isCurrentGroup = disableCurrent === true ? false : currentGroupId === groupId;
 
       return {
         groupId,
@@ -48,5 +54,5 @@ export const useBuildStepperNavigationItems = (
           }),
       };
     }, []);
-  }, [projectStepGroups, currentStep]);
+  }, [projectStepGroups, currentStep, disableCurrent]);
 };

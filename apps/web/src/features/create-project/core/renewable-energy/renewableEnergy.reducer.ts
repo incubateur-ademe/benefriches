@@ -86,7 +86,7 @@ const addStepHandlerCases = (builder: ActionReducerMapBuilder<ProjectCreationSta
       if (previousStep) {
         navigateToAndLoadStep(state, previousStep);
       } else {
-        state.currentStepGroup = "USE_CASE_SELECTION";
+        state.currentProjectFlow = "USE_CASE_SELECTION";
       }
     }
   });

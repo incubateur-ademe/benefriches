@@ -15,7 +15,7 @@ const createUrbanProjectReducer = createReducer({} as ProjectCreationState, (bui
   addUrbanProjectFormCasesToBuilder(builder, creationProjectFormUrbanActions, {
     stepChangesNextMode: "step_order",
     onPreviousStepFallback: (state) => {
-      state.currentStepGroup = "USE_CASE_SELECTION";
+      state.currentProjectFlow = "USE_CASE_SELECTION";
     },
   });
 

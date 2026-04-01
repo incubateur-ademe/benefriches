@@ -49,7 +49,7 @@ const buildState = (
     surfaceAreaInputMode: "percentage",
     demoProject: DEMO_INITIAL_STATE,
     useCaseSelection: USE_CASE_SELECTION_INITIAL_STATE,
-    currentStepGroup: "USE_CASE_SELECTION",
+    currentProjectFlow: "USE_CASE_SELECTION",
   }) satisfies RootState["projectCreation"];
 
 const MOCK_STATE: RootState = {
