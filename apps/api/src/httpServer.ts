@@ -14,6 +14,11 @@ export function configureServer(app: NestExpressApplication) {
       resave: false,
       saveUninitialized: false,
       rolling: true,
+      cookie: {
+        secure: configService.get("NODE_ENV") === "production",
+        httpOnly: true,
+        sameSite: "strict",
+      },
     }),
   );
   app.set("query parser", "extended"); // allow nested query params like arrays and objects
