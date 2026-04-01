@@ -11,7 +11,7 @@ import { ProjectFormProvider } from "@/shared/views/project-form/ProjectFormProv
 import { reconversionProjectCreationInitiated } from "../core/actions/reconversionProjectCreationInitiated.action";
 import { selectProjectCreationWizardViewData } from "../core/createProject.selectors";
 import DemoProjectCreationWizard from "./demo/DemoProjectCreationWizard";
-import PhotovoltaicPowerStationCreationWizard from "./photovoltaic-power-station/PhotovoltaicPowerStationCreationWizard";
+import PhotovoltaicPowerStationCreationWizard from "./photovoltaic-power-station";
 import UrbanProjectCreationWizard from "./urban-project/UrbanProjectCreationWizard";
 import UseCaseSelectionProjectCreationWizard from "./usecase-selection/UseCaseSelectionProjectCreationWizard";
 

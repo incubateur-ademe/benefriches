@@ -38,7 +38,7 @@ import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormL
 import {
   getLabelForDevelopmentPlanCategory,
   getLabelForRenewableEnergyProductionType,
-} from "../../../projectTypeLabelMapping";
+} from "../../projectTypeLabelMapping";
 
 type Props = {
   projectData: {
