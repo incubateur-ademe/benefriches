@@ -1,0 +1,3 @@
+# Project Instructions
+
+@CLAUDE.md
