@@ -1,17 +1,19 @@
-import { test } from "./urban-zone.fixtures";
+import { test } from "../fixtures";
 
-test.describe("site creation (urban zone)", () => {
+test.describe("site creation - urban zone - custom mode", () => {
   test("allows authenticated user to create an urban zone site with activity park manager", async ({
     myEvaluationsPage,
     siteCreationPage,
     siteFeaturesPage,
     urbanZoneSiteCreationPage,
   }) => {
+    // Navigate to site creation page
     await siteCreationPage.goto();
 
     // Mode de création
     await siteCreationPage.selectCreateMode("custom");
 
+    // Introduction step
     await siteCreationPage.expectIntroductionStep();
     await siteCreationPage.clickStart();
 
@@ -143,11 +145,13 @@ test.describe("site creation (urban zone)", () => {
     siteFeaturesPage,
     urbanZoneSiteCreationPage,
   }) => {
+    // Navigate to site creation page
     await siteCreationPage.goto();
 
     // Mode de création
     await siteCreationPage.selectCreateMode("custom");
 
+    // Introduction step
     await siteCreationPage.expectIntroductionStep();
     await siteCreationPage.clickStart();
 
@@ -251,11 +255,13 @@ test.describe("site creation (urban zone)", () => {
     siteFeaturesPage,
     urbanZoneSiteCreationPage,
   }) => {
+    // Navigate to site creation page
     await siteCreationPage.goto();
 
     // Mode de création
     await siteCreationPage.selectCreateMode("custom");
 
+    // Introduction step
     await siteCreationPage.expectIntroductionStep();
     await siteCreationPage.clickStart();
 
