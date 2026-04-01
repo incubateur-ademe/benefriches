@@ -1,9 +1,9 @@
-import { test as authTest } from "../../fixtures/auth.fixtures";
+import { test as authTest } from "../../../fixtures/auth.fixtures";
 import {
   createExpressSiteViaApi,
   type TestSite,
-} from "../../fixtures/helpers/site-creation.helpers";
-import { UrbanProjectCreationPage } from "../../pages/UrbanProjectCreationPage";
+} from "../../../fixtures/helpers/site-creation.helpers";
+import { UrbanProjectCreationPage } from "../../../pages/UrbanProjectCreationPage";
 
 type UrbanProjectCreationFixtures = {
   urbanProjectCreationPage: UrbanProjectCreationPage;

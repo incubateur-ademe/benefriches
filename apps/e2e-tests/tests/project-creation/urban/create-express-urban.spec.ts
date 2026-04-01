@@ -1,4 +1,4 @@
-import { test } from "./urban.fixtures";
+import { test } from "./fixtures";
 
 test.describe("urban project creation - Express mode", () => {
   test("allows authenticated user to create an urban project via express mode", async ({

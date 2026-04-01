@@ -1,11 +1,11 @@
 import type { CreateCustomSiteDto } from "shared";
 
-import { test as authTest } from "../../fixtures/auth.fixtures";
+import { test as authTest } from "../../../fixtures/auth.fixtures";
 import {
   createCustomSiteViaApi,
   type TestSite,
-} from "../../fixtures/helpers/site-creation.helpers";
-import { PhotovoltaicProjectCreationPage } from "../../pages/PhotovoltaicProjectCreationPage";
+} from "../../../fixtures/helpers/site-creation.helpers";
+import { PhotovoltaicProjectCreationPage } from "../../../pages/PhotovoltaicProjectCreationPage";
 
 type AgriculturalCustomSiteDto = Extract<CreateCustomSiteDto, { nature: "AGRICULTURAL_OPERATION" }>;
 
