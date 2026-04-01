@@ -6,7 +6,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".claude/hooks/format-check.sh"
+            "command": ".claude/hooks/format-check.sh",
+            "statusMessage": "Formatting code with Prettier..."
           }
         ]
       }
