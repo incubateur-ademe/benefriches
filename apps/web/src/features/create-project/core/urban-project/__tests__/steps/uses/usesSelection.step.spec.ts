@@ -126,6 +126,82 @@ describe("Urban project creation - Steps - Uses selection", () => {
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA");
   });
 
+  it("should delete all persisted building answer steps when building uses are removed", () => {
+    const store = new StoreBuilder()
+      .withSteps({
+        URBAN_PROJECT_USES_SELECTION: {
+          completed: true,
+          payload: { usesSelection: ["RESIDENTIAL", "OFFICES"] },
+        },
+        URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA: {
+          completed: true,
+          payload: { usesFloorSurfaceAreaDistribution: { RESIDENTIAL: 10000, OFFICES: 7500 } },
+        },
+        URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE: {
+          completed: true,
+          payload: { buildingsFootprintToReuse: 1200 },
+        },
+        URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA: {
+          completed: true,
+          payload: { existingBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 1200 } },
+        },
+        URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA: {
+          completed: true,
+          payload: { newBuildingsUsesFloorSurfaceArea: { OFFICES: 800 } },
+        },
+        URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER: {
+          completed: true,
+          payload: { developerWillBeBuildingsConstructor: true },
+        },
+        URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION: {
+          completed: true,
+          payload: { buildingsConstructionWorks: 90000 },
+        },
+      })
+      .build();
+
+    const newAnswer = {
+      usesSelection: ["OTHER_PUBLIC_SPACES"],
+    } satisfies AnswersByStep["URBAN_PROJECT_USES_SELECTION"];
+
+    store.dispatch(
+      creationProjectFormUrbanActions.stepCompletionRequested({
+        stepId: "URBAN_PROJECT_USES_SELECTION",
+        answers: newAnswer,
+      }),
+    );
+
+    expect(store.getState().projectCreation.urbanProject.pendingStepCompletion).toEqual<
+      ProjectFormState["urbanProject"]["pendingStepCompletion"]
+    >({
+      showAlert: true,
+      changes: {
+        payload: {
+          stepId: "URBAN_PROJECT_USES_SELECTION",
+          answers: newAnswer,
+        },
+        cascadingChanges: [
+          { action: "delete", stepId: "URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA" },
+          { action: "delete", stepId: "URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE" },
+          {
+            action: "delete",
+            stepId: "URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA",
+          },
+          {
+            action: "delete",
+            stepId: "URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA",
+          },
+          { action: "delete", stepId: "URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER" },
+          {
+            action: "delete",
+            stepId: "URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION",
+          },
+        ],
+        navigationTarget: "URBAN_PROJECT_SPACES_INTRODUCTION",
+      },
+    });
+  });
+
   it("should not trigger cascading changes when uses selection remains the same", () => {
     const store = new StoreBuilder()
       .withSteps({

@@ -71,7 +71,8 @@ Constraints:
 - [x] Align `URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE` max constraint with spec update: `max = min(site buildings footprint, project buildings footprint)`.
   - Done note: Updated spec wording + selector/form max display/validation and added focused tests for min(site, project) behavior.
 - [ ] Existing handler updates required by spec navigation rules.
-- [ ] Cascading deletion updates for new answer steps when buildings disappear from project.
+- [x] Cascading deletion updates for new answer steps when buildings disappear from project.
+  - Done note: Extended upstream uses/spaces cascades to delete persisted buildings answers when buildings disappear, and invalidated reuse entry on building-footprint updates so update flows revisit the buildings chapter.
 - [ ] View-data selectors for 4 new answer steps (only footprint-to-reuse selector exists).
 - [ ] UI components for the 9 new steps (wizard still renders `TODO` placeholders).
 - [ ] Integration tests for complete matrix and reverse navigation.
@@ -196,9 +197,10 @@ Constraints:
     - `pnpm --filter web test src/features/create-project/core/urban-project/__tests__/stepCompletionRequested.action.spec.ts`
     - `pnpm --filter web test src/shared/core/reducers/project-form/urban-project/step-handlers/buildings/__tests__/sequencing`
 
-- [ ] **S11** Cascading deletion when buildings disappear from project.
+- [x] **S11** Cascading deletion when buildings disappear from project.
   - Spec ref: `Upstream cascading: when buildings are removed from the project`
   - Includes: deletion/invalidation rules for all new answer steps.
+  - Done note: Extended upstream uses/spaces cascades to delete persisted buildings answers when buildings disappear, and invalidated reuse entry on building-footprint updates so update flows revisit the buildings chapter.
   - Targeted checks:
     - `pnpm --filter web test src/features/create-project/core/urban-project/__tests__/steps/uses/usesSelection.step.spec.ts`
     - `pnpm --filter web test src/shared/core/reducers/project-form/urban-project/step-handlers/buildings/__tests__/buildingsReuseAndConstruction.step.spec.ts`

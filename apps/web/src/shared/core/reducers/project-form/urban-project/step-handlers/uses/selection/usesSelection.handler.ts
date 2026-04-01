@@ -1,5 +1,8 @@
+import { doesUseIncludeBuildings } from "shared";
+
 import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
 
+import { getDeleteBuildingsRules } from "../../spaces/getCommonRules";
 import type { AnswerStepHandler, StepInvalidationRule } from "../../stepHandler.type";
 
 const STEP_ID = "URBAN_PROJECT_USES_SELECTION";
@@ -47,6 +50,8 @@ export const UsesSelectionHandler = {
     const previousUses =
       ReadStateHelper.getStepAnswers(context.stepsState, STEP_ID)?.usesSelection ?? [];
     const newUses = newAnswers.usesSelection ?? [];
+    const hadBuildings = previousUses.some(doesUseIncludeBuildings);
+    const willHaveBuildings = newUses.some(doesUseIncludeBuildings);
 
     const noChanges =
       previousUses.length === newUses.length &&
@@ -89,6 +94,14 @@ export const UsesSelectionHandler = {
       rules.push({
         stepId: "URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA",
         action: "delete",
+      });
+    }
+
+    if (hadBuildings && !willHaveBuildings) {
+      getDeleteBuildingsRules(context).forEach((rule) => {
+        if (!rules.some((existingRule) => existingRule.stepId === rule.stepId)) {
+          rules.push(rule);
+        }
       });
     }
 
