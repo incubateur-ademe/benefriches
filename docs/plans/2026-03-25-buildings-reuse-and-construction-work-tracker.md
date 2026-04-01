@@ -187,9 +187,10 @@ Constraints:
     - `pnpm --filter web test src/features/create-project/core/urban-project/__tests__/steps/expenses/expensesIntroduction.handler.spec.ts`
     - `pnpm --filter web test src/shared/core/reducers/project-form/urban-project/step-handlers/buildings/__tests__/sequencing`
 
-- [ ] **S10** Chapter exit integration from buildings to next sections.
+- [x] **S10** Chapter exit integration from buildings to next sections.
   - Spec ref: `Navigation` (chapter exit routing)
   - Includes: `soils-decontamination-introduction` + `site-resale-introduction` previous-step alignment via last-chapter-step logic.
+  - Done note: Aligned chapter-exit reverse routing with last-buildings-step logic and added focused action plus sequencing coverage for all exit scenarios.
   - Targeted checks:
     - `pnpm --filter web test src/features/create-project/core/urban-project/__tests__/previousStepRequested.action.spec.ts`
     - `pnpm --filter web test src/features/create-project/core/urban-project/__tests__/stepCompletionRequested.action.spec.ts`

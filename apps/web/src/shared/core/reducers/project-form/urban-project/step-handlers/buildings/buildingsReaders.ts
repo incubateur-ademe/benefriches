@@ -1,4 +1,6 @@
+import { BENEFRICHES_ENV } from "@/app/envVars";
 import type { ProjectFormState } from "@/shared/core/reducers/project-form/projectForm.reducer";
+import { willHaveBuildings } from "@/shared/core/reducers/project-form/urban-project/helpers/readers/buildingsReaders";
 
 import { ReadStateHelper } from "../../helpers/readState";
 import type { UrbanProjectCreationStep } from "../../urbanProjectSteps";
@@ -62,7 +64,21 @@ export function getNextStepAfterBuildings(context: StepContext): UrbanProjectCre
     : "URBAN_PROJECT_SITE_RESALE_INTRODUCTION";
 }
 
+export function shouldEnterBuildingsChapter(context: StepContext): boolean {
+  const willProjectHaveBuildings = willHaveBuildings(context.stepsState);
+  const hasSiteBuildings = context.siteData ? siteHasBuildings(context.siteData) : false;
+
+  return (
+    willProjectHaveBuildings ||
+    (BENEFRICHES_ENV.urbanProjectBuildingsReuseChapterEnabled && hasSiteBuildings)
+  );
+}
+
 export function getLastBuildingsChapterStep(context: StepContext): UrbanProjectCreationStep {
+  if (!BENEFRICHES_ENV.urbanProjectBuildingsReuseChapterEnabled) {
+    return "URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA";
+  }
+
   const { siteData, stepsState } = context;
   if (!siteData || !siteHasBuildings(siteData)) {
     return "URBAN_PROJECT_BUILDINGS_NEW_CONSTRUCTION_INTRODUCTION";

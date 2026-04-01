@@ -177,11 +177,8 @@ describe("Urban project buildings sequencing - reuse and new construction", () =
   });
 
   describe("backward navigation", () => {
-    // TODO(S10): backward route is incomplete — currently skips intermediate steps because
-    // SITE_RESALE_INTRODUCTION / SOILS_DECONTAMINATION_INTRODUCTION getPreviousStepId hasn't been
-    // updated yet. Will be expanded to full reverse chain when S10 is implemented.
     it("goes back from site resale to introduction (non-contaminated)", () => {
-      // SITE_RESALE_INTRO -> FLOOR_AREA -> INTRO
+      // SITE_RESALE_INTRO -> NEW_USES -> NEW_CONSTRUCTION_INFO -> EXISTING_USES -> REUSE_FOOTPRINT -> REUSE_INTRO -> FLOOR_AREA -> INTRO
       const store = new StoreBuilder()
         .withCurrentStep("URBAN_PROJECT_SITE_RESALE_INTRODUCTION")
         .withSiteData({
@@ -217,15 +214,33 @@ describe("Urban project buildings sequencing - reuse and new construction", () =
         .build();
 
       store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
+      expect(getCurrentStep(store)).toBe(
+        "URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA",
+      );
+
+      store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_NEW_CONSTRUCTION_INFO");
+
+      store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
+      expect(getCurrentStep(store)).toBe(
+        "URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA",
+      );
+
+      store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE");
+
+      store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_REUSE_INTRODUCTION");
+
+      store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA");
 
       store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_INTRODUCTION");
     });
 
-    // TODO(S10): backward route is incomplete — see above
     it("goes back from decontamination to introduction (contaminated)", () => {
-      // SOILS_DECONTAMINATION_INTRO -> FLOOR_AREA -> INTRO
+      // SOILS_DECONTAMINATION_INTRO -> NEW_USES -> NEW_CONSTRUCTION_INFO -> EXISTING_USES -> DEMOLITION_INFO -> REUSE_FOOTPRINT -> REUSE_INTRO -> FLOOR_AREA -> INTRO
       const store = new StoreBuilder()
         .withCurrentStep("URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION")
         .withSiteData({
@@ -259,6 +274,28 @@ describe("Urban project buildings sequencing - reuse and new construction", () =
           },
         })
         .build();
+
+      store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
+      expect(getCurrentStep(store)).toBe(
+        "URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA",
+      );
+
+      store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_NEW_CONSTRUCTION_INFO");
+
+      store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
+      expect(getCurrentStep(store)).toBe(
+        "URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA",
+      );
+
+      store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_DEMOLITION_INFO");
+
+      store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE");
+
+      store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_REUSE_INTRODUCTION");
 
       store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA");

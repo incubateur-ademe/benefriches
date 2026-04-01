@@ -1,9 +1,17 @@
 import { SiteNature } from "shared";
-import { describe, it, expect } from "vitest";
+import { beforeEach, describe, it, expect, vi } from "vitest";
 
 import { creationProjectFormUrbanActions } from "../urbanProject.actions";
 import { mockSiteData } from "./_siteData.mock";
 import { StoreBuilder } from "./_testStoreHelpers";
+
+const mockedEnvVarsModule = vi.hoisted(() => ({
+  BENEFRICHES_ENV: {
+    urbanProjectBuildingsReuseChapterEnabled: false,
+  },
+}));
+
+vi.mock("@/app/envVars", () => mockedEnvVarsModule);
 
 const { nextStepRequested, previousStepRequested, stepCompletionRequested } =
   creationProjectFormUrbanActions;
@@ -26,6 +34,10 @@ const testScenarios = {
 };
 
 describe("urbanProject.reducer - Navigation Consistency Tests", () => {
+  beforeEach(() => {
+    mockedEnvVarsModule.BENEFRICHES_ENV.urbanProjectBuildingsReuseChapterEnabled = false;
+  });
+
   describe("Previous/Next consistency for each step", () => {
     it("should navigate from buildings introduction to soils carbon summary when uses include buildings", () => {
       const storeWithBuildings = new StoreBuilder()
@@ -314,6 +326,78 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
       storeNone.dispatch(previousStepRequested());
       expect(storeNone.getState().projectCreation.urbanProject.currentStep).toBe(
         "URBAN_PROJECT_SOILS_CARBON_SUMMARY",
+      );
+    });
+
+    it("should go back from site resale introduction to the last buildings step before resale (flag ON)", () => {
+      mockedEnvVarsModule.BENEFRICHES_ENV.urbanProjectBuildingsReuseChapterEnabled = true;
+      const store = new StoreBuilder()
+        .withSiteData(testScenarios.withoutContamination)
+        .withSteps({
+          URBAN_PROJECT_USES_SELECTION: {
+            completed: true,
+            payload: { usesSelection: ["RESIDENTIAL", "OFFICES"] },
+          },
+          URBAN_PROJECT_SPACES_SURFACE_AREA: {
+            completed: true,
+            payload: {
+              spacesSurfaceAreaDistribution: { BUILDINGS: 3000, IMPERMEABLE_SOILS: 7000 },
+            },
+          },
+          URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE: {
+            completed: true,
+            payload: { buildingsFootprintToReuse: 2000 },
+          },
+          URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA: {
+            completed: true,
+            payload: {
+              existingBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 1600, OFFICES: 400 },
+            },
+          },
+          URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA: {
+            completed: true,
+            payload: {
+              newBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 800, OFFICES: 200 },
+            },
+          },
+        })
+        .withCurrentStep("URBAN_PROJECT_SITE_RESALE_INTRODUCTION")
+        .build();
+
+      store.dispatch(previousStepRequested());
+
+      expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
+        "URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA",
+      );
+    });
+
+    it("should go back from decontamination introduction to the last buildings step before decontamination (flag ON)", () => {
+      mockedEnvVarsModule.BENEFRICHES_ENV.urbanProjectBuildingsReuseChapterEnabled = true;
+      const store = new StoreBuilder()
+        .withSiteData(testScenarios.withBuildingsAndContamination)
+        .withSteps({
+          URBAN_PROJECT_USES_SELECTION: {
+            completed: true,
+            payload: { usesSelection: ["RESIDENTIAL"] },
+          },
+          URBAN_PROJECT_SPACES_SURFACE_AREA: {
+            completed: true,
+            payload: {
+              spacesSurfaceAreaDistribution: { BUILDINGS: 1500, IMPERMEABLE_SOILS: 8500 },
+            },
+          },
+          URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE: {
+            completed: true,
+            payload: { buildingsFootprintToReuse: 1500 },
+          },
+        })
+        .withCurrentStep("URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION")
+        .build();
+
+      store.dispatch(previousStepRequested());
+
+      expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
+        "URBAN_PROJECT_BUILDINGS_DEMOLITION_INFO",
       );
     });
   });

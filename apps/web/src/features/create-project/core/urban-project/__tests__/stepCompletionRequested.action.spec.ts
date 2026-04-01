@@ -1,7 +1,15 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach, vi } from "vitest";
 
 import { creationProjectFormUrbanActions } from "../urbanProject.actions";
 import { getCurrentStep, StoreBuilder } from "./_testStoreHelpers";
+
+const mockedEnvVarsModule = vi.hoisted(() => ({
+  BENEFRICHES_ENV: {
+    urbanProjectBuildingsReuseChapterEnabled: false,
+  },
+}));
+
+vi.mock("@/app/envVars", () => mockedEnvVarsModule);
 
 const { nextStepRequested, stepCompletionRequested } = creationProjectFormUrbanActions;
 
@@ -434,6 +442,10 @@ describe("urbanProject.reducer - stepCompletionRequested without validation", ()
   });
 
   describe("stakeholders adjacent navigation", () => {
+    beforeEach(() => {
+      mockedEnvVarsModule.BENEFRICHES_ENV.urbanProjectBuildingsReuseChapterEnabled = true;
+    });
+
     it("routes from project developer to buildings developer when new buildings will be constructed", () => {
       const store = new StoreBuilder()
         .withSiteData({
@@ -471,6 +483,92 @@ describe("urbanProject.reducer - stepCompletionRequested without validation", ()
       );
 
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER");
+    });
+  });
+
+  describe("buildings chapter exit routing", () => {
+    beforeEach(() => {
+      mockedEnvVarsModule.BENEFRICHES_ENV.urbanProjectBuildingsReuseChapterEnabled = true;
+    });
+
+    it("routes from the last buildings step to site resale when the site is not contaminated", () => {
+      const store = new StoreBuilder()
+        .withSiteData({
+          hasContaminatedSoils: false,
+        } as never)
+        .withCurrentStep("URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA")
+        .withSteps({
+          URBAN_PROJECT_USES_SELECTION: {
+            completed: true,
+            payload: { usesSelection: ["RESIDENTIAL", "OFFICES"] },
+          },
+          URBAN_PROJECT_SPACES_SURFACE_AREA: {
+            completed: true,
+            payload: {
+              spacesSurfaceAreaDistribution: { BUILDINGS: 3000, IMPERMEABLE_SOILS: 7000 },
+            },
+          },
+          URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE: {
+            completed: true,
+            payload: { buildingsFootprintToReuse: 2000 },
+          },
+          URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA: {
+            completed: true,
+            payload: {
+              existingBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 1600, OFFICES: 400 },
+            },
+          },
+        })
+        .build();
+
+      store.dispatch(
+        stepCompletionRequested({
+          stepId: "URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA",
+          answers: { newBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 800, OFFICES: 200 } },
+        }),
+      );
+
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
+    });
+
+    it("routes from the last buildings step to decontamination when the site is contaminated", () => {
+      const store = new StoreBuilder()
+        .withSiteData({
+          hasContaminatedSoils: true,
+        } as never)
+        .withCurrentStep("URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA")
+        .withSteps({
+          URBAN_PROJECT_USES_SELECTION: {
+            completed: true,
+            payload: { usesSelection: ["RESIDENTIAL", "OFFICES"] },
+          },
+          URBAN_PROJECT_SPACES_SURFACE_AREA: {
+            completed: true,
+            payload: {
+              spacesSurfaceAreaDistribution: { BUILDINGS: 3000, IMPERMEABLE_SOILS: 7000 },
+            },
+          },
+          URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE: {
+            completed: true,
+            payload: { buildingsFootprintToReuse: 1500 },
+          },
+          URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA: {
+            completed: true,
+            payload: {
+              existingBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 1000, OFFICES: 500 },
+            },
+          },
+        })
+        .build();
+
+      store.dispatch(
+        stepCompletionRequested({
+          stepId: "URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA",
+          answers: { newBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 1400, OFFICES: 100 } },
+        }),
+      );
+
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION");
     });
   });
 });
