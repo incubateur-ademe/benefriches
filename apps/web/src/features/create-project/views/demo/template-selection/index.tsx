@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
+import { demoProjectCreated } from "@/features/create-project/core/demo/demoProject.actions";
 import { selectDemoProjectTemplateViewData } from "@/features/create-project/core/demo/demoProject.selectors";
-import { demoProjectCreated } from "@/features/create-project/core/demo/demoProjectSaved.action";
 
 import { useStepBack } from "../useStepBack";
 import DemoProjectTemplate, { FormValues } from "./DemoProjectTemplate";

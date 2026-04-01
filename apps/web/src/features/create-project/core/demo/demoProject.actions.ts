@@ -1,3 +1,4 @@
+import { createAction } from "@reduxjs/toolkit";
 import { RenewableEnergyTemplate, UrbanProjectTemplate } from "shared";
 import {
   BaseReconversionProjectFeaturesView,
@@ -10,6 +11,7 @@ import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
 
 import { makeProjectCreationActionType } from "../actions/actionsUtils";
 import { stepCompletionRequested } from "./demoProject.reducer";
+import { DemoProjectCreationStep } from "./demoSteps";
 
 const makeDemoProjectCreationActionType = (actionName: string) => {
   return makeProjectCreationActionType(`demo/${actionName}`);
@@ -74,4 +76,8 @@ export const demoProjectCreated = createAppAsyncThunk<
 
     return extra.createExpressReconversionProjectService.get(expressProjectPayload);
   },
+);
+
+export const demoStepGroupNavigated = createAction<DemoProjectCreationStep>(
+  makeDemoProjectCreationActionType("demoStepGroupNavigated"),
 );

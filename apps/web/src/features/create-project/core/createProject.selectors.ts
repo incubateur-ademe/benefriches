@@ -15,7 +15,7 @@ const selectSelf = (state: RootState) => state.projectCreation;
 
 export const selectProjectCreationWizardViewData = createSelector(selectSelf, (state) => {
   return {
-    currentStepGroup: state.currentStepGroup,
+    currentProjectFlow: state.currentProjectFlow,
     loadingState: state.siteDataLoadingState,
   };
 });
@@ -113,3 +113,8 @@ export const selectCustomCreationResultViewData = createSelector(
     shouldGoThroughOnboarding,
   }),
 );
+
+export const selectMainStepperViewData = createSelector(selectSelf, (state) => ({
+  creationMode: state.useCaseSelection.creationMode,
+  developmentPlanType: state.useCaseSelection.projectDevelopmentPlan?.type,
+}));

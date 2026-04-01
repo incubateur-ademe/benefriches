@@ -1,7 +1,7 @@
 import {
   ExpressReconversionProjectResult,
   CreateExpressReconversionProjectGateway,
-} from "../../core/demo/demoProjectSaved.action";
+} from "../../core/demo/demoProject.actions";
 import { SaveExpressReconversionProjectPayload } from "./HttpCreateExpressReconversionProjectService";
 
 export class InMemoryCreateExpressReconversionProjectService implements CreateExpressReconversionProjectGateway {

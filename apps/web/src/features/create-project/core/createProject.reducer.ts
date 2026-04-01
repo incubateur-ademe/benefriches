@@ -9,6 +9,7 @@ import {
 } from "@/shared/core/reducers/project-form/projectForm.reducer";
 import { UrbanProjectCreationStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 
+import { currentProjectFlowUpdated } from "./actions/currentProjectFlowUpdated.action.ts";
 import { fetchSiteRelatedLocalAuthorities } from "./actions/getSiteLocalAuthorities.action";
 import { reconversionProjectCreationInitiated } from "./actions/reconversionProjectCreationInitiated.action";
 import { surfaceAreaInputModeUpdated } from "./actions/surfaceAreaInputModeUpdated.action";
@@ -32,9 +33,15 @@ import {
   UseCaseSelectionStep,
 } from "./usecase-selection/useCaseSelection.reducer";
 
+export type CurrentProjectFlow =
+  | "USE_CASE_SELECTION"
+  | "DEMO"
+  | "PHOTOVOLTAIC_POWER_PLANT"
+  | "URBAN_PROJECT";
+
 export type ProjectCreationState = ProjectFormState & {
   projectId: string;
-  currentStepGroup: "USE_CASE_SELECTION" | "DEMO" | "PHOTOVOLTAIC_POWER_PLANT" | "URBAN_PROJECT";
+  currentProjectFlow: CurrentProjectFlow;
   useCaseSelection: UseCaseSelectionState;
   renewableEnergyProject: RenewableEnergyProjectState;
   demoProject: DemoProjectCreationState;
@@ -50,7 +57,7 @@ export type ProjectCreationStep =
 export const getInitialState = (): ProjectCreationState => {
   return {
     projectId: uuid(),
-    currentStepGroup: "USE_CASE_SELECTION",
+    currentProjectFlow: "USE_CASE_SELECTION",
     useCaseSelection: USE_CASE_SELECTION_INITIAL_STATE,
     demoProject: DEMO_INITIAL_STATE,
     renewableEnergyProject: renenewableEnergyProjectInitialState,
@@ -80,7 +87,7 @@ const projectCreationReducer = createReducer(getInitialState(), (builder) => {
       // TODO : supprimer !state.useCaseSelection.projectSuggestions quand on pourra créer des sites custom post mutafriches
       if (action.payload.isExpressSite && !state.useCaseSelection.projectSuggestions) {
         state.useCaseSelection.stepsSequence = [];
-        state.currentStepGroup = "DEMO";
+        state.currentProjectFlow = "DEMO";
         state.useCaseSelection.creationMode = "express";
       }
 
@@ -91,6 +98,9 @@ const projectCreationReducer = createReducer(getInitialState(), (builder) => {
     })
     .addCase(surfaceAreaInputModeUpdated, (state, action) => {
       state.surfaceAreaInputMode = action.payload;
+    })
+    .addCase(currentProjectFlowUpdated, (state, action) => {
+      state.currentProjectFlow = action.payload;
     });
 });
 

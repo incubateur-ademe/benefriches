@@ -52,7 +52,10 @@ function UrbanProjectUpdateStepper({ step: currentStep }: Props) {
 
   const stepsGroupedBySections = useAppSelector(selectStepsGroupedBySections);
 
-  const stepGroupsList = useBuildStepperNavigationItems(stepsGroupedBySections, currentStep);
+  const stepGroupsList = useBuildStepperNavigationItems({
+    projectStepGroups: stepsGroupedBySections,
+    currentStep,
+  });
 
   const summary = stepGroupsList.find(({ groupId }) => groupId === "SUMMARY");
 

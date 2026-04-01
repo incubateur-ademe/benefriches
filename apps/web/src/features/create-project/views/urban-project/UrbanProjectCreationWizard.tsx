@@ -4,13 +4,11 @@ import { useAppSelector } from "@/app/hooks/store.hooks";
 import { UrbanProjectCreationStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
-import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
 import { selectUrbanProjectCreationWizardViewData } from "../../core/createProject.selectors";
 import NavigationBlockerDialog from "../NavigationBlockerDialog";
 import { HTML_MAIN_TITLE } from "../mainHtmlTitle";
 import { useSyncCreationStepWithRouteQuery } from "../useSyncCreationStepWithRouteQuery";
-import UrbanProjectCreationStepper from "./UrbanProjectCreationStepper";
 import { URBAN_PROJECT_CREATION_STEP_QUERY_STRING_MAP } from "./creationStepQueryStringMap";
 
 const AnswerCascadingUpdateDialog = lazy(
@@ -490,17 +488,11 @@ function UrbanProjectCreationWizard() {
   useSyncCreationStepWithRouteQuery(URBAN_PROJECT_CREATION_STEP_QUERY_STRING_MAP[currentStep]);
 
   return (
-    <SidebarLayout
-      title="Renseignement du projet"
-      sidebarChildren={<UrbanProjectCreationStepper step={currentStep} />}
-      mainChildren={
-        <Suspense fallback={<LoadingSpinner />}>
-          {getCurrentStepView(currentStep)}
-          <AnswerCascadingUpdateDialog />
-          <NavigationBlockerDialog shouldBlock={saveState !== "success"} />
-        </Suspense>
-      }
-    />
+    <Suspense fallback={<LoadingSpinner />}>
+      {getCurrentStepView(currentStep)}
+      <AnswerCascadingUpdateDialog />
+      <NavigationBlockerDialog shouldBlock={saveState !== "success"} />
+    </Suspense>
   );
 }
 

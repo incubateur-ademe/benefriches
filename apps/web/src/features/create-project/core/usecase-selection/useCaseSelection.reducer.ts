@@ -11,6 +11,7 @@ import { ProjectSuggestion } from "../project.types";
 import {
   createModeCompleted,
   developmentPlanCategoriesCompleted,
+  projectUseCaseSelectionStepGroupNavigated,
   renewableEnergyTypeCompleted,
   stepReverted,
 } from "./useCaseSelection.actions";
@@ -50,7 +51,7 @@ export const useCaseSelectionProjectCreationReducer = createReducer(
 
       switch (action.payload) {
         case "URBAN_PROJECT":
-          state.currentStepGroup = "URBAN_PROJECT";
+          state.currentProjectFlow = "URBAN_PROJECT";
           state.useCaseSelection.projectDevelopmentPlan.type = action.payload;
           state.useCaseSelection.stepsSequence = [
             "USE_CASE_SELECTION_CREATION_MODE",
@@ -76,7 +77,7 @@ export const useCaseSelectionProjectCreationReducer = createReducer(
           "USE_CASE_SELECTION_PROJECT_TYPE_SELECTION",
         ];
       } else {
-        state.currentStepGroup = "DEMO";
+        state.currentProjectFlow = "DEMO";
         state.useCaseSelection.stepsSequence = ["USE_CASE_SELECTION_CREATION_MODE"];
       }
     });
@@ -87,7 +88,7 @@ export const useCaseSelectionProjectCreationReducer = createReducer(
         type:
           action.payload === "PHOTOVOLTAIC_POWER_PLANT" ? "PHOTOVOLTAIC_POWER_PLANT" : undefined,
       };
-      state.currentStepGroup = "PHOTOVOLTAIC_POWER_PLANT";
+      state.currentProjectFlow = "PHOTOVOLTAIC_POWER_PLANT";
     });
 
     builder.addCase(stepReverted, (state) => {
@@ -99,6 +100,11 @@ export const useCaseSelectionProjectCreationReducer = createReducer(
       if (previousStep) {
         state.useCaseSelection.currentStep = previousStep;
       }
+    });
+
+    builder.addCase(projectUseCaseSelectionStepGroupNavigated, (state, action) => {
+      state.currentProjectFlow = "USE_CASE_SELECTION";
+      state.useCaseSelection.currentStep = action.payload;
     });
   },
 );

@@ -12,4 +12,12 @@ export const selectUrbanProjectCurrentStep = createSelector(
   (state) => state.currentStep,
 );
 
+export const selectUrbanProjectCreationStepperDataView = createSelector(
+  [(state: RootState) => state.projectCreation],
+  (state) => ({
+    currentStep: state.urbanProject.currentStep,
+    currentProjectFlow: state.currentProjectFlow,
+  }),
+);
+
 export { selectProjectSoilsDistributionByType };

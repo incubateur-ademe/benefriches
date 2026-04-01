@@ -1,30 +1,14 @@
-import FormStepper from "@/shared/views/layout/WizardFormLayout/FormStepper";
+import { useAppSelector } from "@/app/hooks/store.hooks";
+import FormStepperStep from "@/shared/views/layout/WizardFormLayout/FormStepperStep";
 
-import { RenewableEnergyCreationStep } from "../../core/renewable-energy/renewableEnergySteps";
-import {
-  RENEWABLE_ENERGY_STEP_GROUP_IDS,
-  RENEWABLE_ENERGY_STEP_GROUP_LABELS,
-  RENEWABLE_ENERGY_STEP_TO_GROUP,
-} from "../../core/renewable-energy/step-handlers/renewableEnergyStepperConfig";
+import { selectPhotovoltaicPowerPlantStepperDataView } from "../../core/renewable-energy/selectors/stepper.selector";
 
-const PRE_CUSTOM_LABELS = ["Type de projet", "Mode de création"] as const;
+function PhotovoltaicPowerPlantCreationStepperSteps() {
+  const { stepCategories } = useAppSelector(selectPhotovoltaicPowerPlantStepperDataView);
 
-const stepCategories = [
-  ...PRE_CUSTOM_LABELS,
-  ...RENEWABLE_ENERGY_STEP_GROUP_IDS.map((id) => RENEWABLE_ENERGY_STEP_GROUP_LABELS[id]),
-];
-
-type Props = {
-  step: RenewableEnergyCreationStep;
-};
-
-function PhotovoltaicPowerStationStepper({ step }: Props) {
-  const { groupId } = RENEWABLE_ENERGY_STEP_TO_GROUP[step];
-  const currentStepIndex =
-    RENEWABLE_ENERGY_STEP_GROUP_IDS.indexOf(groupId) + PRE_CUSTOM_LABELS.length;
-  const isDone = step === "RENEWABLE_ENERGY_CREATION_RESULT";
-
-  return <FormStepper currentStepIndex={currentStepIndex} steps={stepCategories} isDone={isDone} />;
+  return stepCategories.map(({ title, validation, activity }) => (
+    <FormStepperStep key={title} title={title} variant={{ validation, activity }} />
+  ));
 }
 
-export default PhotovoltaicPowerStationStepper;
+export default PhotovoltaicPowerPlantCreationStepperSteps;

@@ -34,7 +34,7 @@ describe("Reconversion project creation initialization", () => {
         stepsSequence: ["USE_CASE_SELECTION_CREATION_MODE"],
         currentStep: "USE_CASE_SELECTION_CREATION_MODE",
       },
-      currentStepGroup: "USE_CASE_SELECTION",
+      currentProjectFlow: "USE_CASE_SELECTION",
     });
   });
 
@@ -64,7 +64,7 @@ describe("Reconversion project creation initialization", () => {
         stepsSequence: ["USE_CASE_SELECTION_CREATION_MODE"],
         currentStep: "USE_CASE_SELECTION_CREATION_MODE",
       },
-      currentStepGroup: "USE_CASE_SELECTION",
+      currentProjectFlow: "USE_CASE_SELECTION",
     });
   });
 
@@ -103,7 +103,7 @@ describe("Reconversion project creation initialization", () => {
         currentStep: "USE_CASE_SELECTION_CREATION_MODE",
         projectSuggestions: projectSuggestions,
       },
-      currentStepGroup: "USE_CASE_SELECTION",
+      currentProjectFlow: "USE_CASE_SELECTION",
     });
   });
 });
