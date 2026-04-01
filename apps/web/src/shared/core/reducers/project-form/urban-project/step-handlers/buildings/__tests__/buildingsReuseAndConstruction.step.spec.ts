@@ -33,10 +33,6 @@ const makeSiteData = (
 });
 
 const makeBaseSteps = (spacesBuildings: number): ProjectFormState["urbanProject"]["steps"] => ({
-  URBAN_PROJECT_CREATE_MODE_SELECTION: {
-    completed: true,
-    payload: { createMode: "custom" },
-  },
   URBAN_PROJECT_USES_SELECTION: {
     completed: true,
     payload: { usesSelection: ["RESIDENTIAL"] },

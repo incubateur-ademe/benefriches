@@ -3,6 +3,8 @@ import type { RootState } from "@/app/store/store";
 import { getProjectFormInitialState } from "@/shared/core/reducers/project-form/projectForm.reducer";
 
 import { relatedSiteData } from "../../__tests__/siteData.mock";
+import { DEMO_INITIAL_STATE } from "../../demo/demoProject.reducer";
+import { USE_CASE_SELECTION_INITIAL_STATE } from "../../usecase-selection/useCaseSelection.reducer";
 import { INITIAL_STATE } from "../renewableEnergy.reducer";
 import { selectPVReinstatementExpensesViewData } from "../step-handlers/expenses/expenses-reinstatement/expensesReinstatement.selector";
 import { selectPVYearlyProjectedRevenueViewData } from "../step-handlers/revenue/revenue-yearly-projected/revenueYearlyProjected.selector";
@@ -34,7 +36,6 @@ const buildState = (
   stepOverrides: Partial<RenewableEnergyStepsState> = {},
 ): RootState["projectCreation"] =>
   ({
-    stepsHistory: ["PROJECT_TYPE_SELECTION"],
     projectId: "",
     siteData,
     siteDataLoadingState: "success",
@@ -42,11 +43,13 @@ const buildState = (
     renewableEnergyProject: {
       ...INITIAL_STATE,
       createMode: "custom",
-      creationData: { renewableEnergyType: "PHOTOVOLTAIC_POWER_PLANT" },
       steps: { ...exhaustiveSteps, ...stepOverrides },
     },
-    urbanProject: getProjectFormInitialState("URBAN_PROJECT_CREATE_MODE_SELECTION").urbanProject,
+    urbanProject: getProjectFormInitialState("URBAN_PROJECT_USES_INTRODUCTION").urbanProject,
     surfaceAreaInputMode: "percentage",
+    demoProject: DEMO_INITIAL_STATE,
+    useCaseSelection: USE_CASE_SELECTION_INITIAL_STATE,
+    currentStepGroup: "USE_CASE_SELECTION",
   }) satisfies RootState["projectCreation"];
 
 const MOCK_STATE: RootState = {

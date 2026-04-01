@@ -286,6 +286,16 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
   });
 
   describe("Bidirectional navigation consistency", () => {
+    it("should handle first step correctly", () => {
+      const store = new StoreBuilder().withCurrentUrbanProjectGroupStep().build();
+      expect(store.getState().projectCreation.currentStepGroup).toBe("URBAN_PROJECT");
+
+      store.dispatch(previousStepRequested());
+      const newState = store.getState().projectCreation;
+      expect(newState.urbanProject.currentStep).toBe("URBAN_PROJECT_USES_INTRODUCTION");
+      expect(newState.currentStepGroup).toBe("USE_CASE_SELECTION");
+    });
+
     it("should handle edge cases in navigation consistency", () => {
       const store = new StoreBuilder().build();
 
@@ -293,12 +303,12 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
 
       store.dispatch(previousStepRequested());
       expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
-        "URBAN_PROJECT_CREATE_MODE_SELECTION",
+        "URBAN_PROJECT_USES_INTRODUCTION",
       );
 
       store.dispatch(nextStepRequested());
       expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
-        "URBAN_PROJECT_USES_INTRODUCTION",
+        "URBAN_PROJECT_USES_SELECTION",
       );
     });
 

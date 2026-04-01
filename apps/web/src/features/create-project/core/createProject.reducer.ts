@@ -1,6 +1,5 @@
 import { createReducer } from "@reduxjs/toolkit";
 import reduceReducers from "reduce-reducers";
-import { DevelopmentPlanCategory, isUrbanProjectTemplate } from "shared";
 import { v4 as uuid } from "uuid";
 
 import {
@@ -10,16 +9,15 @@ import {
 } from "@/shared/core/reducers/project-form/projectForm.reducer";
 import { UrbanProjectCreationStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 
-import { stepReverted } from "./actions/actionsUtils";
 import { fetchSiteRelatedLocalAuthorities } from "./actions/getSiteLocalAuthorities.action";
-import {
-  developmentPlanCategoriesCompleted,
-  introductionStepCompleted,
-} from "./actions/introductionStep.actions";
-import { projectSuggestionsCompleted } from "./actions/projectSuggestionCompleted.action";
 import { reconversionProjectCreationInitiated } from "./actions/reconversionProjectCreationInitiated.action";
 import { surfaceAreaInputModeUpdated } from "./actions/surfaceAreaInputModeUpdated.action";
-import { ProjectSuggestion } from "./project.types";
+import {
+  DEMO_INITIAL_STATE,
+  demoProjectCreationReducer,
+  DemoProjectCreationState,
+} from "./demo/demoProject.reducer";
+import { DemoProjectCreationStep } from "./demo/demoSteps.ts";
 import {
   RenewableEnergyProjectState,
   INITIAL_STATE as renenewableEnergyProjectInitialState,
@@ -27,32 +25,37 @@ import {
 } from "./renewable-energy/renewableEnergy.reducer";
 import type { AllRenewableEnergyStep } from "./renewable-energy/renewableEnergySteps";
 import urbanProjectReducer from "./urban-project/urbanProject.reducer";
+import {
+  USE_CASE_SELECTION_INITIAL_STATE,
+  useCaseSelectionProjectCreationReducer,
+  UseCaseSelectionState,
+  UseCaseSelectionStep,
+} from "./usecase-selection/useCaseSelection.reducer";
 
 export type ProjectCreationState = ProjectFormState & {
-  stepsHistory: ProjectCreationStep[];
   projectId: string;
-  developmentPlanCategory?: DevelopmentPlanCategory;
+  currentStepGroup: "USE_CASE_SELECTION" | "DEMO" | "PHOTOVOLTAIC_POWER_PLANT" | "URBAN_PROJECT";
+  useCaseSelection: UseCaseSelectionState;
   renewableEnergyProject: RenewableEnergyProjectState;
-  projectSuggestions?: ProjectSuggestion[];
+  demoProject: DemoProjectCreationState;
   surfaceAreaInputMode: "percentage" | "squareMeters";
 };
 
 export type ProjectCreationStep =
-  | "INTRODUCTION"
-  | "PROJECT_TYPE_SELECTION"
-  | "PROJECT_SUGGESTIONS"
+  | UseCaseSelectionStep
+  | DemoProjectCreationStep
   | UrbanProjectCreationStep
   | AllRenewableEnergyStep;
 
 export const getInitialState = (): ProjectCreationState => {
   return {
-    stepsHistory: ["INTRODUCTION"],
     projectId: uuid(),
-    developmentPlanCategory: undefined,
-    projectSuggestions: undefined,
+    currentStepGroup: "USE_CASE_SELECTION",
+    useCaseSelection: USE_CASE_SELECTION_INITIAL_STATE,
+    demoProject: DEMO_INITIAL_STATE,
     renewableEnergyProject: renenewableEnergyProjectInitialState,
     surfaceAreaInputMode: "percentage",
-    ...getProjectFormInitialState("URBAN_PROJECT_CREATE_MODE_SELECTION"),
+    ...getProjectFormInitialState("URBAN_PROJECT_USES_INTRODUCTION"),
   };
 };
 
@@ -60,58 +63,31 @@ const projectCreationReducer = createReducer(getInitialState(), (builder) => {
   addProjectFormCasesToBuilder(builder, { fetchSiteRelatedLocalAuthorities });
 
   builder
-    .addCase(introductionStepCompleted, (state) => {
-      state.stepsHistory.push("PROJECT_TYPE_SELECTION");
-    })
-    .addCase(developmentPlanCategoriesCompleted, (state, action) => {
-      state.developmentPlanCategory = action.payload;
-
-      switch (action.payload) {
-        case "URBAN_PROJECT":
-          state.stepsHistory.push("URBAN_PROJECT_CREATE_MODE_SELECTION");
-          break;
-        case "RENEWABLE_ENERGY":
-          state.stepsHistory.push("RENEWABLE_ENERGY_TYPES");
-          break;
-      }
-    })
     .addCase(reconversionProjectCreationInitiated.pending, (_state, action) => {
-      if (action.meta.arg?.projectSuggestions) {
-        return {
-          ...getInitialState(),
-          stepsHistory: ["PROJECT_SUGGESTIONS"],
-          projectSuggestions: action.meta.arg.projectSuggestions,
-        };
-      }
-
+      const { useCaseSelection, ...initialState } = getInitialState();
       return {
-        ...getInitialState(),
+        ...initialState,
         siteDataLoadingState: "loading",
+        useCaseSelection: {
+          ...useCaseSelection,
+          projectSuggestions: action.meta.arg.projectSuggestions,
+        },
       };
     })
     .addCase(reconversionProjectCreationInitiated.fulfilled, (state, action) => {
-      state.siteDataLoadingState = "success";
       state.siteData = action.payload;
+
+      // TODO : supprimer !state.useCaseSelection.projectSuggestions quand on pourra créer des sites custom post mutafriches
+      if (action.payload.isExpressSite && !state.useCaseSelection.projectSuggestions) {
+        state.useCaseSelection.stepsSequence = [];
+        state.currentStepGroup = "DEMO";
+        state.useCaseSelection.creationMode = "express";
+      }
+
+      state.siteDataLoadingState = "success";
     })
     .addCase(reconversionProjectCreationInitiated.rejected, (state) => {
       state.siteDataLoadingState = "error";
-    })
-    .addCase(projectSuggestionsCompleted, (state, action) => {
-      if (action.payload.selectedOption === "none") {
-        state.stepsHistory.push("PROJECT_TYPE_SELECTION");
-      }
-      if (action.payload.selectedOption === "PHOTOVOLTAIC_POWER_PLANT") {
-        state.developmentPlanCategory = "RENEWABLE_ENERGY";
-      }
-      if (isUrbanProjectTemplate(action.payload.selectedOption)) {
-        state.developmentPlanCategory = "URBAN_PROJECT";
-        state.stepsHistory.push("URBAN_PROJECT_EXPRESS_SUMMARY");
-      }
-    })
-    .addCase(stepReverted, (state) => {
-      if (state.stepsHistory.length > 1) {
-        state.stepsHistory = state.stepsHistory.slice(0, -1);
-      }
     })
     .addCase(surfaceAreaInputModeUpdated, (state, action) => {
       state.surfaceAreaInputMode = action.payload;
@@ -123,6 +99,8 @@ const projectCreationRootReducer = reduceReducers<ProjectCreationState>(
   projectCreationReducer,
   urbanProjectReducer,
   renewableEnergyProjectReducer,
+  demoProjectCreationReducer,
+  useCaseSelectionProjectCreationReducer,
 );
 
 export default projectCreationRootReducer;

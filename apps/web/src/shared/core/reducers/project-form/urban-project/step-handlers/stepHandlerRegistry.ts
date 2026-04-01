@@ -8,16 +8,12 @@ import { BuildingsNewConstructionInfoHandler } from "./buildings/buildings-new-c
 import { BuildingsNewConstructionIntroductionHandler } from "./buildings/buildings-new-construction-introduction/buildingsNewConstructionIntroduction.handler";
 import { BuildingsReuseIntroductionHandler } from "./buildings/buildings-reuse-introduction/buildingsReuseIntroduction.handler";
 import { BuildingsUsesFloorSurfaceAreaHandler } from "./buildings/buildings-uses-floor-surface-area/buildingsUsesFloorSurfaceArea.handler";
-import { CreationModeSelectionHandler } from "./creation-mode/creation-mode-selection/creationModeSelection.handler";
 import { ExpensesBuildingsConstructionAndRehabilitationHandler } from "./expenses/expenses-buildings-construction-and-rehabilitation/expensesBuildingsConstructionAndRehabilitation.handler";
 import { UrbanProjectInstallationExpensesHandler } from "./expenses/expenses-installation/expensesInstallation.handler";
 import { ExpensesIntroductionHandler } from "./expenses/expenses-introduction/expensesIntroduction.handler";
 import { ExpensesProjectedBuildingsOperatingExpensesHandler } from "./expenses/expenses-projected-buildings-operating-expenses/expensesProjectedBuildingsOperatingExpenses.handler";
 import { UrbanProjectReinstatementExpensesHandler } from "./expenses/expenses-reinstatement/expensesReinstatement.handler";
 import { ExpensesSitePurchaseAmountsHandler } from "./expenses/expenses-site-purchase-amounts/expensesSitePurchaseAmounts.handler";
-import { ExpressCreationResultHandler } from "./express/express-creation-result/expressCreationResult.handler";
-import { ExpressSummaryHandler } from "./express/express-summary/expressSummary.handler";
-import { ExpressTemplateSelectionHandler } from "./express/express-template-selection/expressTemplateSelection.handler";
 import { UrbanProjectNamingHandler } from "./naming/naming/naming.handler";
 import { ProjectPhaseHandler } from "./project-phase/project-phase/projectPhase.handler";
 import { CreationResultHandler } from "./result/creation-result/creationResult.handler";
@@ -59,9 +55,6 @@ type AnswerStepHandlerMap = {
 type InfoStepHandlerMap = Record<InfoStepId, InfoStepHandler>;
 
 export const answerStepHandlers: AnswerStepHandlerMap = {
-  URBAN_PROJECT_CREATE_MODE_SELECTION: CreationModeSelectionHandler,
-  // express
-  URBAN_PROJECT_EXPRESS_TEMPLATE_SELECTION: ExpressTemplateSelectionHandler,
   // custom - uses
   URBAN_PROJECT_USES_SELECTION: UsesSelectionHandler,
   URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA: PublicGreenSpacesSurfaceAreaHandler,
@@ -107,9 +100,6 @@ export const answerStepHandlers: AnswerStepHandlerMap = {
 };
 
 const infoStepHandlers: InfoStepHandlerMap = {
-  // express
-  URBAN_PROJECT_EXPRESS_SUMMARY: ExpressSummaryHandler,
-  URBAN_PROJECT_EXPRESS_CREATION_RESULT: ExpressCreationResultHandler,
   // custom - uses
   URBAN_PROJECT_USES_INTRODUCTION: UsesIntroductionHandler,
   // custom - new spaces flow (uses flow)

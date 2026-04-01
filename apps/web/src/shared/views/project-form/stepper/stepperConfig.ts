@@ -7,16 +7,12 @@ import { buildingsNewConstructionInfoStepperConfig } from "@/shared/core/reducer
 import { buildingsNewConstructionIntroductionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/buildings/buildings-new-construction-introduction/buildingsNewConstructionIntroduction.stepperConfig";
 import { buildingsReuseIntroductionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/buildings/buildings-reuse-introduction/buildingsReuseIntroduction.stepperConfig";
 import { buildingsUsesFloorSurfaceAreaStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/buildings/buildings-uses-floor-surface-area/buildingsUsesFloorSurfaceArea.stepperConfig";
-import { creationModeSelectionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/creation-mode/creation-mode-selection/creationModeSelection.stepperConfig";
 import { expensesBuildingsConstructionAndRehabilitationStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/expenses/expenses-buildings-construction-and-rehabilitation/expensesBuildingsConstructionAndRehabilitation.stepperConfig";
 import { expensesInstallationStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/expenses/expenses-installation/expensesInstallation.stepperConfig";
 import { expensesIntroductionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/expenses/expenses-introduction/expensesIntroduction.stepperConfig";
 import { expensesProjectedBuildingsOperatingExpensesStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/expenses/expenses-projected-buildings-operating-expenses/expensesProjectedBuildingsOperatingExpenses.stepperConfig";
 import { expensesReinstatementStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/expenses/expenses-reinstatement/expensesReinstatement.stepperConfig";
 import { expensesSitePurchaseAmountsStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/expenses/expenses-site-purchase-amounts/expensesSitePurchaseAmounts.stepperConfig";
-import { expressCreationResultStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/express/express-creation-result/expressCreationResult.stepperConfig";
-import { expressSummaryStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/express/express-summary/expressSummary.stepperConfig";
-import { expressTemplateSelectionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/express/express-template-selection/expressTemplateSelection.stepperConfig";
 import { namingStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/naming/naming/naming.stepperConfig";
 import { projectPhaseStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/project-phase/project-phase/projectPhase.stepperConfig";
 import { creationResultStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/result/creation-result/creationResult.stepperConfig";
@@ -158,10 +154,6 @@ export type StepStepperConfig = { groupId: StepGroupId; subGroupId?: StepSubGrou
 
 type StepToGroupMapping = Record<UrbanProjectCreationStep, StepStepperConfig>;
 export const STEP_TO_GROUP_MAPPING: StepToGroupMapping = {
-  URBAN_PROJECT_CREATE_MODE_SELECTION: creationModeSelectionStepperConfig,
-  URBAN_PROJECT_EXPRESS_TEMPLATE_SELECTION: expressTemplateSelectionStepperConfig,
-  URBAN_PROJECT_EXPRESS_SUMMARY: expressSummaryStepperConfig,
-  URBAN_PROJECT_EXPRESS_CREATION_RESULT: expressCreationResultStepperConfig,
   // Uses flow
   URBAN_PROJECT_USES_INTRODUCTION: usesIntroductionStepperConfig,
   URBAN_PROJECT_USES_SELECTION: usesSelectionStepperConfig,

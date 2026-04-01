@@ -15,20 +15,6 @@ export class PhotovoltaicProjectCreationPage {
     await this.page.goto(`/creer-projet?siteId=${siteId}`);
   }
 
-  // --- Introduction ---
-
-  async expectIntroductionStep(siteName: string): Promise<void> {
-    await expect(
-      this.page.getByRole("heading", {
-        name: `Vous souhaitez évaluer un projet d'aménagement sur le site "${siteName}".`,
-      }),
-    ).toBeVisible();
-  }
-
-  async clickStart(): Promise<void> {
-    await this.page.getByRole("button", { name: "Commencer" }).click();
-  }
-
   // --- Project type selection ---
 
   async selectProjectType(): Promise<void> {
@@ -51,6 +37,11 @@ export class PhotovoltaicProjectCreationPage {
       custom: "Mode personnalisé",
     };
     await this.page.getByText(labels[mode]).click();
+    await this.submit();
+  }
+
+  async selectProjectTemplate(): Promise<void> {
+    await this.page.getByText("Centrale photovoltaïque").click();
     await this.submit();
   }
 
@@ -197,5 +188,13 @@ export class PhotovoltaicProjectCreationPage {
 
   private async submit(): Promise<void> {
     await this.page.getByRole("button", { name: /Valider|Suivant/ }).click();
+  }
+
+  async clickViewImportantInfo(): Promise<void> {
+    await this.page.getByRole("link", { name: "Voir les infos importantes" }).click();
+  }
+
+  async expectOnboardingStep1(): Promise<void> {
+    await expect(this.page.getByText("Bénéfriches calcule 6 types d'impacts.")).toBeVisible();
   }
 }

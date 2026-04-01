@@ -1,5 +1,5 @@
 import { StepContext } from "../step-handlers/stepHandler.type";
-import { answerStepHandlers, stepHandlerRegistry } from "../step-handlers/stepHandlerRegistry";
+import { stepHandlerRegistry } from "../step-handlers/stepHandlerRegistry";
 import {
   ANSWER_STEPS,
   INTRODUCTION_STEPS,
@@ -19,21 +19,11 @@ export const computeProjectStepsSequence = (
   while (iterationCount < MAX_STEPS_NUMBER) {
     stepsSequence.push(currentStep);
 
-    if (currentStep === "URBAN_PROJECT_CREATE_MODE_SELECTION") {
-      if (!stepsState.URBAN_PROJECT_CREATE_MODE_SELECTION?.payload) {
-        break;
-      }
-      currentStep = answerStepHandlers[currentStep].getNextStepId(
-        { siteData, stepsState },
-        stepsState.URBAN_PROJECT_CREATE_MODE_SELECTION?.payload,
-      );
-    } else {
-      const getNextStepId = stepHandlerRegistry[currentStep].getNextStepId;
-      if (!getNextStepId) {
-        break;
-      }
-      currentStep = getNextStepId({ siteData, stepsState });
+    const getNextStepId = stepHandlerRegistry[currentStep].getNextStepId;
+    if (!getNextStepId) {
+      break;
     }
+    currentStep = getNextStepId({ siteData, stepsState });
 
     iterationCount++;
   }

@@ -7,16 +7,17 @@ import { ProjectCreationState } from "../createProject.reducer";
 import { fetchEstimatedSiteResalePrice } from "./fetchEstimatedSiteResalePrice.action";
 import { creationProjectFormUrbanActions } from "./urbanProject.actions";
 import { customUrbanProjectSaved } from "./urbanProjectCustomSaved.action";
-import {
-  expressUrbanProjectCreated,
-  expressUrbanProjectSaved,
-} from "./urbanProjectExpressSaved.action";
 
 // Sub-reducer composed via reduce-reducers in createProject.reducer.ts.
 // Initial state is always provided by the parent reducer; this placeholder is never used.
 const createUrbanProjectReducer = createReducer({} as ProjectCreationState, (builder) => {
   // Form actions
-  addUrbanProjectFormCasesToBuilder(builder, creationProjectFormUrbanActions);
+  addUrbanProjectFormCasesToBuilder(builder, creationProjectFormUrbanActions, {
+    stepChangesNextMode: "step_order",
+    onPreviousStepFallback: (state) => {
+      state.currentStepGroup = "USE_CASE_SELECTION";
+    },
+  });
 
   // Custom create Save
   builder.addCase(customUrbanProjectSaved.pending, (state) => {
@@ -28,37 +29,6 @@ const createUrbanProjectReducer = createReducer({} as ProjectCreationState, (bui
   builder.addCase(customUrbanProjectSaved.rejected, (state) => {
     state.urbanProject.saveState = "error";
   });
-
-  // Express create Get & Save
-  builder.addCase(expressUrbanProjectSaved.pending, (state) => {
-    state.urbanProject.saveState = "loading";
-  });
-  builder.addCase(expressUrbanProjectSaved.rejected, (state) => {
-    state.urbanProject.saveState = "error";
-  });
-  builder.addCase(expressUrbanProjectSaved.fulfilled, (state) => {
-    state.urbanProject.saveState = "success";
-  });
-  builder.addCase(expressUrbanProjectCreated.pending, (state) => {
-    state.urbanProject.steps.URBAN_PROJECT_EXPRESS_SUMMARY = {
-      completed: false,
-      loadingState: "loading",
-    };
-  });
-  builder.addCase(expressUrbanProjectCreated.rejected, (state) => {
-    state.urbanProject.steps.URBAN_PROJECT_EXPRESS_SUMMARY = {
-      completed: false,
-      loadingState: "error",
-    };
-  });
-  builder.addCase(expressUrbanProjectCreated.fulfilled, (state, action) => {
-    state.urbanProject.steps.URBAN_PROJECT_EXPRESS_SUMMARY = {
-      completed: false,
-      loadingState: "success",
-      data: action.payload,
-    };
-  });
-
   // Fetch estimated site resale price
   builder.addCase(fetchEstimatedSiteResalePrice.pending, (state) => {
     state.urbanProject.siteResaleEstimationLoadingState = "loading";

@@ -18,18 +18,6 @@ export class UrbanProjectCreationPage {
     await this.page.goto(`/creer-projet?siteId=${siteId}`);
   }
 
-  async expectIntroductionStep(siteName: string): Promise<void> {
-    await expect(
-      this.page.getByRole("heading", {
-        name: `Vous souhaitez évaluer un projet d'aménagement sur le site "${siteName}".`,
-      }),
-    ).toBeVisible();
-  }
-
-  async clickStart(): Promise<void> {
-    await this.page.getByRole("button", { name: "Commencer" }).click();
-  }
-
   async selectProjectType(type: "URBAN_PROJECT"): Promise<void> {
     const labels: Record<typeof type, string> = {
       URBAN_PROJECT: "Autre projet d'aménagement",

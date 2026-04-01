@@ -10,18 +10,14 @@ test.describe("photovoltaic project creation - custom mode", () => {
     // Navigate to project creation
     await pvProjectCreationPage.goto(testSite.id);
 
-    // Introduction step
-    await pvProjectCreationPage.expectIntroductionStep(testSite.name);
-    await pvProjectCreationPage.clickStart();
+    // Create mode selection
+    await pvProjectCreationPage.selectCreateMode("custom");
 
     // Project type selection
     await pvProjectCreationPage.selectProjectType();
 
     // Renewable energy type selection
     await pvProjectCreationPage.selectRenewableEnergyType();
-
-    // Create mode selection
-    await pvProjectCreationPage.selectCreateMode("custom");
 
     // --- Photovoltaic parameters ---
 
@@ -115,5 +111,33 @@ test.describe("photovoltaic project creation - custom mode", () => {
     // --- Creation result ---
 
     await pvProjectCreationPage.expectCreationSuccess(PROJECT_NAME);
+  });
+});
+
+test.describe("photovoltaic project creation - demo mode", () => {
+  test("allows authenticated user to create an urban project via express mode", async ({
+    pvProjectCreationPage,
+    testSite,
+  }) => {
+    // Navigate to project creation with the test site
+    await pvProjectCreationPage.goto(testSite.id);
+
+    // Create mode selection step
+    await pvProjectCreationPage.selectCreateMode("express");
+
+    // Urban project template selection step
+    await pvProjectCreationPage.selectProjectTemplate();
+
+    // Summary step
+
+    await pvProjectCreationPage.expectFinalSummary();
+    await pvProjectCreationPage.submitFinalSummary();
+
+    // Creation result
+    await pvProjectCreationPage.expectCreationSuccess("Centrale photovoltaïque");
+
+    // View important info (onboarding)
+    await pvProjectCreationPage.clickViewImportantInfo();
+    await pvProjectCreationPage.expectOnboardingStep1();
   });
 });

@@ -2,7 +2,6 @@ import { createSelector } from "@reduxjs/toolkit";
 import { ProjectSchedule, ProjectScheduleBuilder, SoilsDistribution } from "shared";
 
 import { RootState } from "@/app/store/store";
-import { RenewableEnergyDevelopmentPlanType } from "@/shared/core/reconversionProject";
 
 import { ProjectCreationState } from "../../createProject.reducer";
 import { selectDefaultSchedule } from "../../createProject.selectors";
@@ -19,13 +18,6 @@ const selectRenewableEnergyData = createSelector(
 export const selectSteps = createSelector(
   selectRenewableEnergyData,
   (state): RenewableEnergyStepsState => state.steps,
-);
-
-export const selectRenewableEnergyType = createSelector(
-  [selectRenewableEnergyData],
-  (state): RenewableEnergyDevelopmentPlanType | undefined => {
-    return state.creationData.renewableEnergyType;
-  },
 );
 
 export const selectProjectSoilsDistribution = createSelector(
