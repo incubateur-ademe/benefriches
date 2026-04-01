@@ -17,8 +17,11 @@ apps/e2e-tests/
 │       └── site-creation.helpers.ts  # Site creation shortcuts
 └── tests/
     └── [feature]/
-        ├── [feature].fixtures.ts  # Feature-specific fixtures
-        └── [feature].spec.ts      # Test specifications
+        ├── fixtures.ts              # Shared feature fixtures (when sub-types exist)
+        ├── [feature].fixtures.ts    # Feature fixtures (simple features, no sub-types)
+        ├── [feature].spec.ts        # Single spec (simple features)
+        └── [type]/                  # Sub-type folder (when feature has multiple types/modes)
+            └── [mode]-[type].spec.ts  # e.g. create-custom-friche.spec.ts
 ```
 
 ---
@@ -32,11 +35,13 @@ docker compose --env-file .env.e2e -f docker-compose.e2e.yml up -d
 # Run tests
 pnpm --filter e2e-tests test:e2e                              # All tests (headless)
 pnpm --filter e2e-tests test:e2e tests/[feature]/             # Specific feature
+pnpm --filter e2e-tests test:e2e tests/[feature]/[type]/      # Specific sub-type (e.g. site-creation/friche/)
 pnpm --filter e2e-tests test:headed tests/[feature]/          # With browser visible
 
 # Quality checks
 pnpm --filter e2e-tests typecheck
 pnpm --filter e2e-tests lint
+pnpm --filter e2e-tests format:check
 ```
 
 ---
@@ -49,21 +54,32 @@ pnpm --filter e2e-tests lint
 - Methods: `goto()`, `expect*()` (assertions), action verbs (`click*`, `fill*`, `select*`)
 - Use accessibility-first selectors: `getByRole()` > `getByLabel()` > `getByText()` > `locator()`
 
-### Fixtures (`tests/[feature]/[feature].fixtures.ts`)
+### Fixtures
 
+- Simple features: `tests/[feature]/[feature].fixtures.ts`
+- Features with sub-types: shared `tests/[feature]/fixtures.ts`
 - Extend `authTest` for authenticated flows, `base` test otherwise
 - Compose page objects into feature fixtures
 
-### Test Files (`tests/[feature]/[feature].spec.ts`)
+### Test Files
 
+- Sub-type specs: `tests/[feature]/[type]/[mode]-[type].spec.ts`
+- Simple specs: `tests/[feature]/[feature].spec.ts`
 - Import `test` from local fixtures
 - Descriptive test names: "allows user to..." / "shows error when..."
+
+### API Client (pre-condition seeding)
+
+- Use `api-client.ts` in `beforeEach` to seed DB state without going through the UI
+- Use for pre-conditions only (e.g. create a site before testing project creation)
+- Don't use for the flow under test — that must go through the UI
 
 ---
 
 ## Reference
 
-For complete patterns and examples, see the skill: `.claude/skills/create-e2e-test/SKILL.md`
+**Adding a new test?** Use the `/create-e2e-test` skill — it covers page objects, fixtures, and spec structure.
+**Debugging a failing test?** Run with `--headed` or add `--debug` for step-by-step Playwright inspector.
 
 ---
 
