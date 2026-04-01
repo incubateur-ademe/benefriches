@@ -205,11 +205,12 @@ Constraints:
     - `pnpm --filter web test src/features/create-project/core/urban-project/__tests__/steps/uses/usesSelection.step.spec.ts`
     - `pnpm --filter web test src/shared/core/reducers/project-form/urban-project/step-handlers/buildings/__tests__/buildingsReuseAndConstruction.step.spec.ts`
 
-- [ ] **S12** Sequencing matrix completion (file-per-scenario final pass).
+- [x] **S12** Sequencing matrix completion (file-per-scenario final pass).
   - Spec ref: `Integration Tests` scenario table
   - Includes: complete scenario coverage in `step-handlers/buildings/__tests__/sequencing/` with one file per scenario and forward/backward assertions.
   - Sequencing rule: each forward `it()` must start at `URBAN_PROJECT_BUILDINGS_INTRODUCTION` and end at a chapter exit step.
   - Test style rule: human-readable `it()` descriptions with step-chain comments; `describe("forward navigation")` / `describe("backward navigation")` grouping.
+  - Done note: Split the mixed reuse-and-new-construction sequencing suite into separate full-reuse and partial-reuse scenario files, keeping file-per-scenario forward/backward coverage aligned with the spec matrix.
   - Targeted checks:
     - `pnpm --filter web test src/shared/core/reducers/project-form/urban-project/step-handlers/buildings/__tests__/sequencing`
 
