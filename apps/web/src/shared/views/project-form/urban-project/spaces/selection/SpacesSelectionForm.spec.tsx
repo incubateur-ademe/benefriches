@@ -120,7 +120,7 @@ describe("SpacesSelectionForm", () => {
   });
 
   describe("selection", () => {
-    it("should pre-select initial values", () => {
+    it("should pre-select initial values", async () => {
       render(
         <SpacesSelectionForm
           {...defaultProps}
@@ -129,8 +129,11 @@ describe("SpacesSelectionForm", () => {
         />,
       );
 
-      const inputs = getCheckboxInputs();
-      expect(inputs.filter((input) => input.checked)).toHaveLength(1);
+      await waitFor(() => {
+        const inputs = getCheckboxInputs();
+        // oxlint-disable-next-line no-standalone-expect
+        expect(inputs.filter((input) => input.checked)).toHaveLength(1);
+      });
     });
 
     it("should toggle soil selection on click", async () => {

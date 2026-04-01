@@ -17,9 +17,13 @@ describe("BuildingsExistingBuildingsUsesFloorSurfaceArea", () => {
     onBack: vi.fn(),
   };
 
-  it("renders the selected building uses and overall floor surface recap", () => {
+  it("renders the selected building uses and overall floor surface recap", async () => {
     render(<BuildingsExistingBuildingsUsesFloorSurfaceArea {...defaultProps} />);
 
+    await waitFor(() => {
+      // oxlint-disable-next-line no-standalone-expect
+      expect(screen.getAllByRole("textbox")).toHaveLength(3);
+    });
     expect(
       screen.getByRole("heading", {
         name: "Quels usages accueilleront les bâtiments existants ?",
@@ -28,7 +32,6 @@ describe("BuildingsExistingBuildingsUsesFloorSurfaceArea", () => {
     expect(screen.getByText("Logements")).toBeInTheDocument();
     expect(screen.getByText("Bureaux")).toBeInTheDocument();
     expect(screen.getByText("Répartition globale prévue :")).toBeInTheDocument();
-    expect(screen.getAllByRole("textbox")).toHaveLength(3);
   });
 
   it("submits the existing buildings uses distribution", async () => {

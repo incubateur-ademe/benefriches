@@ -37,7 +37,10 @@ describe("SoilsDecontaminationSurfaceArea", () => {
       const input = await screen.findByRole("textbox", { name: /part à dépolluer/i });
       fireEvent.input(input, { target: { value: 50 } });
 
-      expect(screen.getByText(/Soit/)).toContainHTML("Soit <strong>500 ㎡</strong>");
+      await waitFor(() => {
+        // oxlint-disable-next-line no-standalone-expect
+        expect(screen.getByText(/Soit/)).toContainHTML("Soit <strong>500 ㎡</strong>");
+      });
     });
 
     it("should convert percentage to square meters on submit", async () => {
@@ -85,7 +88,10 @@ describe("SoilsDecontaminationSurfaceArea", () => {
       const input = await screen.findByRole("textbox", { name: /part à dépolluer/i });
       fireEvent.input(input, { target: { value: 50 } });
 
-      expect(screen.getByText(/Soit/)).toContainHTML("Soit <strong>5%</strong>");
+      await waitFor(() => {
+        // oxlint-disable-next-line no-standalone-expect
+        expect(screen.getByText(/Soit/)).toContainHTML("Soit <strong>5%</strong>");
+      });
     });
 
     it("should submit value directly in square meters mode", async () => {
@@ -140,7 +146,10 @@ describe("SoilsDecontaminationSurfaceArea", () => {
       fireEvent.input(input, { target: { value: 50 } });
       fireEvent.click(squareMetersModeButton);
 
-      expect(input).toHaveDisplayValue("500");
+      await waitFor(() => {
+        // oxlint-disable-next-line no-standalone-expect
+        expect(input).toHaveDisplayValue("500");
+      });
       expect(onInputModeChangeSpy).toHaveBeenCalledWith("squareMeters");
     });
 
@@ -160,7 +169,10 @@ describe("SoilsDecontaminationSurfaceArea", () => {
       fireEvent.input(input, { target: { value: 500 } });
       fireEvent.click(percentModeButton);
 
-      expect(input).toHaveDisplayValue("50");
+      await waitFor(() => {
+        // oxlint-disable-next-line no-standalone-expect
+        expect(input).toHaveDisplayValue("50");
+      });
       expect(onInputModeChangeSpy).toHaveBeenCalledWith("percentage");
     });
 
