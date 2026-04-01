@@ -314,10 +314,11 @@ New Answer steps must have their schema added to `answersByStepSchemas` in `urba
 - E2E tests covering nominal flows
 - Integration tests (step handler tests) covering exhaustive scenario matrix
 
-### Out of scope
+### Out of scope (current phase)
 
-- Backend/API changes (new data stays in frontend form state)
-- Shared package changes (no new DTOs)
+- Backend/API changes (new data stays in frontend form state) — see [API Persistence](#api-persistence-follow-up)
+- Shared package changes (no new DTOs) — see [API Persistence](#api-persistence-follow-up)
+- Update flow data mapping — see [Update Flow Mapping](#update-flow-mapping-follow-up)
 - Express flow changes (only custom flow affected)
 
 ### Feature Flag Rollout Note
@@ -331,6 +332,65 @@ For incremental rollout, gate the entry to the new buildings chapter in
 - flag ON: route to new chapter (`BUILDINGS_REUSE_INTRODUCTION` or `BUILDINGS_NEW_CONSTRUCTION_INTRODUCTION`)
 
 This rollout note does not require injecting feature flags into shared step context.
+
+## API Persistence (follow-up)
+
+The current phase keeps all new data in frontend form state only. A follow-up phase must persist the collected data so that impact calculations can distinguish reuse from new construction, and so that the update flow can restore previously entered values.
+
+### New fields on the reconversion project
+
+These fields do not exist in the current `reconversionProjectSchemas.ts` and need to be added:
+
+| Field | Type | Condition |
+|---|---|---|
+| `buildingsFootprintToReuse` | `number` (m2) | site has buildings |
+| `existingBuildingsUsesFloorSurfaceArea` | `Partial<Record<UrbanProjectUseWithBuilding, number>>` | reuse > 0 AND new construction > 0 |
+| `newBuildingsUsesFloorSurfaceArea` | `Partial<Record<UrbanProjectUseWithBuilding, number>>` | reuse > 0 AND new construction > 0 |
+| `developerWillBeBuildingsConstructor` | `boolean` | new construction > 0 |
+| `buildingsConstructionAndRehabilitationExpenses` | `Array<{ purpose: string; amount: number }>` | developer is builder OR reuse > 0 |
+
+Notes:
+- `buildingsConstructionAndRehabilitationExpenses` uses the same `{ purpose, amount }` shape as existing `developmentPlan.costs` and `reinstatementCosts`. Purposes: `"technical_studies_and_fees"`, `"buildings_construction_works"`, `"buildings_rehabilitation_works"`, `"other_construction_expenses"`.
+- `developerWillBeBuildingsConstructor` is a boolean (not a stakeholder object), since the question is whether the already-known developer also acts as builder — no new stakeholder identity is collected.
+- The existing `developmentPlan.features.buildingsFloorAreaDistribution` continues to store the *overall* use distribution. The two new breakdown fields split that total into existing vs. new buildings.
+
+### Scope of API changes
+
+- **Shared package**: new optional fields on the creation/update DTOs, new Zod schemas
+- **API backend**: accept, store, and return the new fields (migration + repository + query updates)
+- **Web frontend**: include the new fields in the project submission payload (creation + update thunks)
+
+### Display views to update (after API returns the new fields)
+
+Several views display project expenses from API data and must be extended to show construction/rehabilitation expenses:
+
+| View | File | What to add |
+|---|---|---|
+| Project features page | `features/projects/views/project-page/features/ExpensesAndRevenues.tsx` | New section for construction/rehabilitation expenses (between reinstatement and installation costs) |
+| Installation expenses sub-component | `features/projects/views/project-page/features/DevelopmentPlanInstallationExpenses.tsx` | May need companion `BuildingsConstructionExpenses.tsx` or integration into existing component |
+| PDF export | `features/projects/views/project-page/pdf-export/project-features/expenses-and-incomes/ProjectExpensesAndIncomesPdf.tsx` | Mirror web view changes |
+| Economic balance | `features/projects/domain/projectImpactsEconomicBalance.ts` | Include construction/rehabilitation expenses in cost aggregation |
+| Label function | `shared/core/urbanProject.ts` | New `getLabelForBuildingsConstructionExpensePurpose()` for the 4 purposes |
+
+### Wizard summary (current phase)
+
+The wizard summary step (`shared/views/project-form/urban-project/summary/UrbanProjectExpensesSection.tsx`) displays expenses from form state during creation. It should already include the new construction/rehabilitation expenses collected in `EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION` — this is a gap in the current phase (does not depend on API persistence).
+
+## Update Flow Mapping (follow-up)
+
+`convertProjectDataToSteps` in `apps/web/src/features/update-project/core/helpers/convertProjectDataToSteps.ts` maps persisted API data back into form state so the update wizard can pre-populate previously entered values. Once the API persists the new fields (see above), this function must handle the 5 new answer steps:
+
+| Step ID | Source field | Mapping |
+|---|---|---|
+| `URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE` | `projectData.buildingsFootprintToReuse` | `{ buildingsFootprintToReuse }` |
+| `URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA` | `projectData.existingBuildingsUsesFloorSurfaceArea` | `{ existingBuildingsUsesFloorSurfaceArea }` |
+| `URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA` | `projectData.newBuildingsUsesFloorSurfaceArea` | `{ newBuildingsUsesFloorSurfaceArea }` |
+| `URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER` | `projectData.developerWillBeBuildingsConstructor` | `{ developerWillBeBuildingsConstructor }` |
+| `URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION` | `projectData.buildingsConstructionAndRehabilitationExpenses` | Map purposes to the 4 expense fields |
+
+Condition: each step is only populated when the source field is present in the API response (the API omits fields when the corresponding wizard step was skipped).
+
+Info steps (`BUILDINGS_REUSE_INTRODUCTION`, `BUILDINGS_NEW_CONSTRUCTION_INTRODUCTION`, `BUILDINGS_DEMOLITION_INFO`, `BUILDINGS_NEW_CONSTRUCTION_INFO`) are already covered by the existing `[...INTRODUCTION_STEPS].forEach` loop that marks all intro steps as completed.
 
 ## E2E Tests
 

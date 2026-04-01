@@ -223,14 +223,52 @@ Constraints:
     - `pnpm --filter e2e-tests test --list`
     - run each new/updated spec
 
+- [ ] **S13b** Wizard summary: display construction/rehabilitation expenses.
+  - Spec ref: `Wizard summary (current phase)`
+  - Includes:
+    - update `shared/views/project-form/urban-project/summary/UrbanProjectExpensesSection.tsx` to include construction/rehabilitation expenses from form state
+    - add label function for the 4 expense purposes in `shared/core/urbanProject.ts`
+  - Targeted checks:
+    - `pnpm --filter web typecheck && pnpm --filter web test`
+
 - [ ] **S14** Release and enablement.
   - Includes:
     - keep feature flag OFF by default for merge/deploy
     - enable in staging with QA
     - enable in production after sequencing + e2e are green
 
+- [ ] **S15** API persistence for new buildings reuse data.
+  - Spec ref: `API Persistence (follow-up)`
+  - Includes:
+    - new optional fields on creation/update DTOs in `packages/shared/` (`buildingsFootprintToReuse`, `existingBuildingsUsesFloorSurfaceArea`, `newBuildingsUsesFloorSurfaceArea`, `developerWillBeBuildingsConstructor`, `buildingsConstructionAndRehabilitationExpenses`)
+    - database migration to store the new fields
+    - repository/query updates in `apps/api/`
+    - web submission thunks send the new fields on project creation and update
+  - Targeted checks:
+    - `pnpm --filter shared build && pnpm --filter api install && pnpm --filter web install && pnpm -r typecheck && pnpm -r test`
+
+- [ ] **S16** Update flow data mapping in `convertProjectDataToSteps`.
+  - Spec ref: `Update Flow Mapping (follow-up)`
+  - Depends on: S15 (API must return the new fields)
+  - Includes:
+    - map the 5 new answer step payloads from API response to form state in `convertProjectDataToSteps.ts`
+    - verify update wizard pre-populates the new steps correctly
+  - Targeted checks:
+    - `pnpm --filter web test src/features/update-project/`
+    - `pnpm --filter web typecheck`
+
+- [ ] **S17** Display views: show construction/rehabilitation expenses from API data.
+  - Spec ref: `Display views to update (after API returns the new fields)`
+  - Depends on: S15 (API must return the new fields)
+  - Includes:
+    - `ExpensesAndRevenues.tsx` — new section for construction/rehabilitation expenses
+    - `ProjectExpensesAndIncomesPdf.tsx` — mirror web view changes
+    - `projectImpactsEconomicBalance.ts` — include in cost aggregation
+  - Targeted checks:
+    - `pnpm --filter web typecheck && pnpm --filter web test`
+
 ## Recommended Loop Order
-`HIST-1 -> HIST-2 -> S1 -> S2 -> S3 -> S4 -> S5 -> S6 -> S7 -> S8 -> S9 -> S10 -> S11 -> S12 -> S13 -> S14`
+`HIST-1 -> HIST-2 -> S1 -> S2 -> S3 -> S4 -> S5 -> S6 -> S7 -> S8 -> S9 -> S10 -> S11 -> S12 -> S13 -> S13b -> S14 -> S15 -> S16 -> S17`
 
 ## Notes
 - New chapter step IDs are already introduced in multiple registries, so gating before full flow activation avoids exposing incomplete `TODO` screens.
