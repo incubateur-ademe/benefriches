@@ -10,10 +10,6 @@ const INITIAL_STEPS: ProjectFormState["urbanProject"]["steps"] = {
     completed: true,
     payload: { projectDeveloper: { structureType: "municipality", name: "Mairie d'angers" } },
   },
-  URBAN_PROJECT_CREATE_MODE_SELECTION: {
-    completed: true,
-    payload: { createMode: "custom" },
-  },
   URBAN_PROJECT_USES_SELECTION: {
     completed: true,
     payload: { usesSelection: ["RESIDENTIAL"] },

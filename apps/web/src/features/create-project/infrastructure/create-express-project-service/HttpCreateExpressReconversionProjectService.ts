@@ -3,7 +3,7 @@ import { ReconversionProjectTemplate } from "shared";
 import { ProjectFeatures } from "@/features/projects/domain/projects.types";
 import { objectToQueryParams } from "@/shared/core/object-query-parameters/objectToQueryParameters";
 
-import { CreateExpressReconversionProjectGateway } from "../../core/actions/expressProjectSavedGateway";
+import { CreateExpressReconversionProjectGateway } from "../../core/demo/demoProjectSaved.action";
 
 type GetExpressReconversionProjectParams = {
   reconversionProjectId: string;

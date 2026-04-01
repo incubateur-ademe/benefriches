@@ -8,16 +8,6 @@ test.describe("urban project creation - Express mode", () => {
     // Navigate to project creation with the test site
     await urbanProjectCreationPage.goto(testSite.id);
 
-    // Introduction step
-    await urbanProjectCreationPage.expectIntroductionStep(testSite.name);
-    await urbanProjectCreationPage.clickStart();
-
-    // Project type selection step
-    await urbanProjectCreationPage.selectProjectType("URBAN_PROJECT");
-
-    // Create mode selection step
-    await urbanProjectCreationPage.selectCreateMode("express");
-
     // Urban project template selection step
     await urbanProjectCreationPage.selectUrbanProjectTemplate("PUBLIC_FACILITIES");
 

@@ -7,10 +7,6 @@ import { creationProjectFormUrbanActions } from "../../../urbanProject.actions";
 import { getCurrentStep, StoreBuilder } from "../../_testStoreHelpers";
 
 const INITIAL_STEPS: ProjectFormState["urbanProject"]["steps"] = {
-  URBAN_PROJECT_CREATE_MODE_SELECTION: {
-    completed: true,
-    payload: { createMode: "custom" },
-  },
   URBAN_PROJECT_USES_SELECTION: {
     completed: true,
     payload: { usesSelection: ["RESIDENTIAL"] },
@@ -71,10 +67,6 @@ describe("Urban project creation - Steps - site resale selection", () => {
   it("should complete step with 'yes' and invalidate existing revenue step", () => {
     const store = new StoreBuilder()
       .withSteps({
-        URBAN_PROJECT_CREATE_MODE_SELECTION: {
-          completed: true,
-          payload: { createMode: "custom" },
-        },
         URBAN_PROJECT_SITE_RESALE_SELECTION: {
           completed: false,
           payload: undefined,
@@ -97,10 +89,6 @@ describe("Urban project creation - Steps - site resale selection", () => {
     const state = store.getState().projectCreation.urbanProject;
 
     expect(state.steps).toEqual<ProjectFormState["urbanProject"]["steps"]>({
-      URBAN_PROJECT_CREATE_MODE_SELECTION: {
-        completed: true,
-        payload: { createMode: "custom" },
-      },
       URBAN_PROJECT_SITE_RESALE_SELECTION: {
         completed: true,
         payload: { siteResaleSelection: "yes" },
@@ -118,10 +106,6 @@ describe("Urban project creation - Steps - site resale selection", () => {
   it("should complete step with 'no' and delete existing revenue step", () => {
     const store = new StoreBuilder()
       .withSteps({
-        URBAN_PROJECT_CREATE_MODE_SELECTION: {
-          completed: true,
-          payload: { createMode: "custom" },
-        },
         URBAN_PROJECT_SITE_RESALE_SELECTION: {
           completed: true,
           payload: { siteResaleSelection: "yes" },
@@ -144,10 +128,6 @@ describe("Urban project creation - Steps - site resale selection", () => {
     const state = store.getState().projectCreation.urbanProject;
 
     expect(state.steps).toEqual<ProjectFormState["urbanProject"]["steps"]>({
-      URBAN_PROJECT_CREATE_MODE_SELECTION: {
-        completed: true,
-        payload: { createMode: "custom" },
-      },
       URBAN_PROJECT_SITE_RESALE_SELECTION: {
         completed: true,
         payload: { siteResaleSelection: "no" },

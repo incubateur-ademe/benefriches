@@ -17,7 +17,6 @@ import type { Schedule } from "../../../../project.types";
 import { ReadStateHelper } from "../../../helpers/readState";
 import {
   selectProjectSoilsDistribution,
-  selectRenewableEnergyType,
   selectSteps,
 } from "../../../selectors/renewableEnergy.selector";
 
@@ -60,20 +59,8 @@ type FinalSummaryViewData = {
 };
 
 export const selectPhotovoltaicFinalSummaryViewData = createSelector(
-  [
-    selectSteps,
-    selectSiteData,
-    selectSoilsCarbonStorage,
-    selectRenewableEnergyType,
-    selectProjectSoilsDistribution,
-  ],
-  (
-    steps,
-    siteData,
-    soilsCarbonStorage,
-    renewableEnergyType,
-    soilsDistribution,
-  ): FinalSummaryViewData => {
+  [selectSteps, selectSiteData, selectSoilsCarbonStorage, selectProjectSoilsDistribution],
+  (steps, siteData, soilsCarbonStorage, soilsDistribution): FinalSummaryViewData => {
     const naming = ReadStateHelper.getStepAnswers(steps, "RENEWABLE_ENERGY_NAMING");
     const power = ReadStateHelper.getStepAnswers(steps, "RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER");
     const surface = ReadStateHelper.getStepAnswers(steps, "RENEWABLE_ENERGY_PHOTOVOLTAIC_SURFACE");
@@ -140,7 +127,7 @@ export const selectPhotovoltaicFinalSummaryViewData = createSelector(
         name: naming?.name ?? "",
         description: naming?.description,
         developmentPlanCategory: "RENEWABLE_ENERGY",
-        renewableEnergy: renewableEnergyType!,
+        renewableEnergy: "PHOTOVOLTAIC_POWER_PLANT",
         photovoltaicElectricalPowerKWc: power?.photovoltaicInstallationElectricalPowerKWc ?? 0,
         photovoltaicSurfaceArea: surface?.photovoltaicInstallationSurfaceSquareMeters ?? 0,
         photovoltaicExpectedAnnualProduction:

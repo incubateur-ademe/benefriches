@@ -1,73 +1,26 @@
+import Alert from "@codegouvfr/react-dsfr/Alert";
 import { useEffect } from "react";
 import { Route } from "type-route";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { routes } from "@/app/router";
-import {
-  isUrbanProjectCreationStep,
-  UrbanProjectCreationStep,
-} from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
-import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
+import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 import { ProjectFormProvider } from "@/shared/views/project-form/ProjectFormProvider";
 
 import { reconversionProjectCreationInitiated } from "../core/actions/reconversionProjectCreationInitiated.action";
-import { ProjectCreationStep } from "../core/createProject.reducer";
-import { selectCurrentStep } from "../core/createProject.selectors";
-import {
-  AllRenewableEnergyStep,
-  isRenewableEnergyCreationStep,
-} from "../core/renewable-energy/renewableEnergySteps";
-import Stepper from "./Stepper";
-import ProjectCreationIntroduction from "./introduction";
-import { HTML_MAIN_TITLE } from "./mainHtmlTitle";
+import { selectProjectCreationWizardViewData } from "../core/createProject.selectors";
+import DemoProjectCreationWizard from "./demo/DemoProjectCreationWizard";
 import PhotovoltaicPowerStationCreationWizard from "./photovoltaic-power-station/PhotovoltaicPowerStationCreationWizard";
-import ProjectSuggestionsForm from "./project-suggestions";
-import ProjectTypesForm from "./project-types";
-import RenewableEnergyTypesForm from "./renewable-energy-types";
 import UrbanProjectCreationWizard from "./urban-project/UrbanProjectCreationWizard";
-import { useSyncCreationStepWithRouteQuery } from "./useSyncCreationStepWithRouteQuery";
+import UseCaseSelectionProjectCreationWizard from "./usecase-selection/UseCaseSelectionProjectCreationWizard";
 
 type Props = {
   route: Route<typeof routes.createProject>;
 };
-const PROJECT_CREATION_STEP_QUERY_STRING_MAP = {
-  INTRODUCTION: "introduction",
-  PROJECT_TYPE_SELECTION: "type-de-projet",
-  PROJECT_SUGGESTIONS: "projets-suggeres",
-} as const satisfies Record<
-  Exclude<ProjectCreationStep, UrbanProjectCreationStep | AllRenewableEnergyStep>,
-  string
->;
-
-const ProjectCreationIntroductionWizard = ({
-  currentStep,
-}: {
-  currentStep: Exclude<ProjectCreationStep, UrbanProjectCreationStep | AllRenewableEnergyStep>;
-}) => {
-  useSyncCreationStepWithRouteQuery(PROJECT_CREATION_STEP_QUERY_STRING_MAP[currentStep]);
-
-  const getStepComponent = () => {
-    switch (currentStep) {
-      case "INTRODUCTION":
-        return <ProjectCreationIntroduction />;
-      case "PROJECT_TYPE_SELECTION":
-        return <ProjectTypesForm />;
-      case "PROJECT_SUGGESTIONS":
-        return <ProjectSuggestionsForm />;
-    }
-  };
-  return (
-    <SidebarLayout
-      mainChildren={getStepComponent()}
-      title="Renseignement du projet"
-      sidebarChildren={<Stepper />}
-    />
-  );
-};
 
 function ProjectCreationWizard({ route }: Props) {
-  const currentStep = useAppSelector(selectCurrentStep);
+  const { currentStepGroup, loadingState } = useAppSelector(selectProjectCreationWizardViewData);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -78,39 +31,49 @@ function ProjectCreationWizard({ route }: Props) {
     void dispatch(reconversionProjectCreationInitiated(payload));
   }, [dispatch, route.params.siteId, route.params.projectSuggestions]);
 
-  if (isUrbanProjectCreationStep(currentStep)) {
+  if (loadingState !== "success") {
     return (
-      <ProjectFormProvider mode="create">
-        <UrbanProjectCreationWizard />
-      </ProjectFormProvider>
+      <SidebarLayout
+        title="Renseignement du projet"
+        sidebarChildren={null}
+        mainChildren={(() => {
+          switch (loadingState) {
+            case "error":
+              return (
+                <Alert
+                  description="Une erreur s'est produite lors de la récupération des informations du site"
+                  severity="error"
+                  title="Impossible de charger les informations du site"
+                  className="my-7"
+                />
+              );
+            case "loading":
+              return <LoadingSpinner />;
+            case "idle":
+              return null;
+          }
+        })()}
+      />
     );
   }
 
-  if (isRenewableEnergyCreationStep(currentStep)) {
-    return (
-      <ProjectFormProvider mode="create">
-        {currentStep === "RENEWABLE_ENERGY_TYPES" ? (
-          <>
-            <HtmlTitle>{`Système d'EnR - Type de projet - ${HTML_MAIN_TITLE}`}</HtmlTitle>
-            <SidebarLayout
-              mainChildren={<RenewableEnergyTypesForm />}
-              title="Renseignement du projet"
-              sidebarChildren={<Stepper />}
-            />
-          </>
-        ) : (
-          <PhotovoltaicPowerStationCreationWizard currentStep={currentStep} />
-        )}
-      </ProjectFormProvider>
-    );
+  switch (currentStepGroup) {
+    case "URBAN_PROJECT":
+    case "PHOTOVOLTAIC_POWER_PLANT":
+      return (
+        <ProjectFormProvider mode="create">
+          {currentStepGroup === "URBAN_PROJECT" ? (
+            <UrbanProjectCreationWizard />
+          ) : (
+            <PhotovoltaicPowerStationCreationWizard />
+          )}
+        </ProjectFormProvider>
+      );
+    case "DEMO":
+      return <DemoProjectCreationWizard />;
+    case "USE_CASE_SELECTION":
+      return <UseCaseSelectionProjectCreationWizard />;
   }
-
-  return (
-    <>
-      <HtmlTitle>{`Introduction - ${HTML_MAIN_TITLE}`}</HtmlTitle>
-      <ProjectCreationIntroductionWizard currentStep={currentStep} />
-    </>
-  );
 }
 
 export default ProjectCreationWizard;

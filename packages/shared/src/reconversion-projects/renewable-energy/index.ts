@@ -6,3 +6,4 @@ export * from "./projectPhase";
 export * from "./surfaceAreas";
 export * from "./soilsTransformation";
 export * from "./project-generator";
+export * from "./templates";

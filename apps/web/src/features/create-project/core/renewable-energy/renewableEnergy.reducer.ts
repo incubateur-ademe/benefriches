@@ -1,26 +1,12 @@
 import { ActionReducerMapBuilder, createReducer } from "@reduxjs/toolkit";
 
-import { RenewableEnergyDevelopmentPlanType } from "@/shared/core/reconversionProject";
-
 import { SoilsCarbonStorageResult } from "../../../../shared/core/reducers/project-form/soilsCarbonStorage.action";
-import { stepReverted } from "../actions/actionsUtils";
-import { ExpressReconversionProjectResult } from "../actions/expressProjectSavedGateway";
-import { projectSuggestionsCompleted } from "../actions/projectSuggestionCompleted.action";
 import { ProjectCreationState } from "../createProject.reducer";
 import { saveReconversionProject } from "./actions/customProjectSaved.action";
-import {
-  expressPhotovoltaicProjectCreated,
-  expressPhotovoltaicProjectSaved,
-} from "./actions/expressProjectSaved.action";
 import { fetchPhotovoltaicExpectedAnnualPowerPerformanceForLocation } from "./actions/getPhotovoltaicExpectedPerformance.action";
-import {
-  renewableEnergyTypeCompleted,
-  customCreateModeSelected,
-} from "./actions/renewableEnergy.actions";
 import { fetchCurrentAndProjectedSoilsCarbonStorage } from "./actions/soilsCarbonStorage.actions";
 import { applyStepChanges, computeStepChanges } from "./helpers/completeStep";
 import { navigateToAndLoadStep } from "./helpers/navigateToStep";
-import { computeStepsSequence } from "./helpers/stepsSequence";
 import {
   nextStepRequested,
   previousStepRequested,
@@ -37,13 +23,6 @@ export type RenewableEnergyProjectState = {
   stepsSequence: RenewableEnergyCreationStep[];
   firstSequenceStep: RenewableEnergyCreationStep;
   steps: RenewableEnergyStepsState;
-  creationData: {
-    renewableEnergyType?: RenewableEnergyDevelopmentPlanType;
-  };
-  expressData: {
-    loadingState: "idle" | "loading" | "success" | "error";
-    projectData?: ExpressReconversionProjectResult;
-  };
   soilsCarbonStorage:
     | {
         loadingState: "idle" | "loading" | "error";
@@ -70,11 +49,6 @@ export const INITIAL_STATE: RenewableEnergyProjectState = {
   stepsSequence: [],
   firstSequenceStep: FIRST_CUSTOM_STEP,
   steps: {},
-  creationData: {},
-  expressData: {
-    loadingState: "idle",
-    projectData: undefined,
-  },
   saveState: "idle",
   soilsCarbonStorage: {
     loadingState: "idle",
@@ -85,56 +59,6 @@ export const INITIAL_STATE: RenewableEnergyProjectState = {
     loadingState: "idle",
     expectedPerformanceMwhPerYear: undefined,
   },
-};
-
-// Pre-custom steps (handled outside step handler pattern)
-const addPreCustomStepCases = (builder: ActionReducerMapBuilder<ProjectCreationState>) => {
-  builder.addCase(projectSuggestionsCompleted, (state, action) => {
-    if (action.payload.selectedOption === "PHOTOVOLTAIC_POWER_PLANT") {
-      state.renewableEnergyProject.createMode = "express";
-    }
-  });
-  builder.addCase(renewableEnergyTypeCompleted, (state, action) => {
-    state.renewableEnergyProject.creationData.renewableEnergyType = action.payload;
-    state.stepsHistory.push("RENEWABLE_ENERGY_CREATE_MODE_SELECTION");
-  });
-  builder.addCase(customCreateModeSelected, (state) => {
-    state.renewableEnergyProject.createMode = "custom";
-    state.renewableEnergyProject.currentStep = FIRST_CUSTOM_STEP;
-    state.renewableEnergyProject.stepsSequence = computeStepsSequence(
-      { siteData: state.siteData, stepsState: state.renewableEnergyProject.steps },
-      FIRST_CUSTOM_STEP,
-    );
-    state.stepsHistory.push("RENEWABLE_ENERGY_PHOTOVOLTAIC_KEY_PARAMETER");
-  });
-};
-
-// Express flow (stays as-is)
-const addExpressFlowCases = (builder: ActionReducerMapBuilder<ProjectCreationState>) => {
-  builder.addCase(expressPhotovoltaicProjectCreated.pending, (state) => {
-    state.renewableEnergyProject.createMode = "express";
-    state.renewableEnergyProject.expressData = { loadingState: "loading" };
-    state.stepsHistory.push("RENEWABLE_ENERGY_EXPRESS_FINAL_SUMMARY");
-  });
-  builder.addCase(expressPhotovoltaicProjectCreated.rejected, (state) => {
-    state.renewableEnergyProject.expressData = { loadingState: "error" };
-  });
-  builder.addCase(expressPhotovoltaicProjectCreated.fulfilled, (state, action) => {
-    state.renewableEnergyProject.expressData = {
-      projectData: action.payload,
-      loadingState: "success",
-    };
-  });
-  builder.addCase(expressPhotovoltaicProjectSaved.pending, (state) => {
-    state.renewableEnergyProject.saveState = "loading";
-    state.stepsHistory.push("RENEWABLE_ENERGY_CREATION_RESULT");
-  });
-  builder.addCase(expressPhotovoltaicProjectSaved.rejected, (state) => {
-    state.renewableEnergyProject.saveState = "error";
-  });
-  builder.addCase(expressPhotovoltaicProjectSaved.fulfilled, (state) => {
-    state.renewableEnergyProject.saveState = "success";
-  });
 };
 
 // Step handler pattern: generic step completion + navigation
@@ -161,9 +85,8 @@ const addStepHandlerCases = (builder: ActionReducerMapBuilder<ProjectCreationSta
       const previousStep = currentIndex > 0 ? stepsSequence[currentIndex - 1] : undefined;
       if (previousStep) {
         navigateToAndLoadStep(state, previousStep);
-      } else if (state.stepsHistory.length > 1) {
-        // Fall back to stepsHistory when at the first step of the sequence
-        state.stepsHistory = state.stepsHistory.slice(0, -1);
+      } else {
+        state.currentStepGroup = "USE_CASE_SELECTION";
       }
     }
   });
@@ -193,12 +116,10 @@ const addSaveReconversionProjectCases = (
   builder.addCase(saveReconversionProject.fulfilled, (state) => {
     state.renewableEnergyProject.saveState = "success";
     state.renewableEnergyProject.currentStep = "RENEWABLE_ENERGY_CREATION_RESULT";
-    state.stepsHistory.push("RENEWABLE_ENERGY_CREATION_RESULT");
   });
   builder.addCase(saveReconversionProject.rejected, (state) => {
     state.renewableEnergyProject.saveState = "error";
     state.renewableEnergyProject.currentStep = "RENEWABLE_ENERGY_CREATION_RESULT";
-    state.stepsHistory.push("RENEWABLE_ENERGY_CREATION_RESULT");
   });
 };
 
@@ -234,30 +155,13 @@ const addAsyncThunkCases = (builder: ActionReducerMapBuilder<ProjectCreationStat
   });
 };
 
-// Back navigation for pre-custom steps (still uses stepsHistory)
-const addRevertStepCases = (builder: ActionReducerMapBuilder<ProjectCreationState>) => {
-  builder.addCase(stepReverted, (state) => {
-    const lastStep = state.stepsHistory.at(-1);
-    // Only clear createMode when going back from the create mode selection step
-    if (lastStep === "RENEWABLE_ENERGY_CREATE_MODE_SELECTION") {
-      state.renewableEnergyProject.createMode = undefined;
-    }
-    if (lastStep === "RENEWABLE_ENERGY_TYPES") {
-      state.renewableEnergyProject.creationData.renewableEnergyType = undefined;
-    }
-  });
-};
-
 // Sub-reducer composed via reduce-reducers in createProject.reducer.ts.
 // Initial state is always provided by the parent reducer; this placeholder is never used.
 export const renewableEnergyProjectReducer = createReducer(
   {} as ProjectCreationState,
   (builder) => {
-    addPreCustomStepCases(builder);
-    addExpressFlowCases(builder);
     addStepHandlerCases(builder);
     addSaveReconversionProjectCases(builder);
     addAsyncThunkCases(builder);
-    addRevertStepCases(builder);
   },
 );

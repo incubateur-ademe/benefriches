@@ -8,7 +8,7 @@ import { ProjectSuggestion } from "../project.types";
 import { relatedSiteData } from "./siteData.mock";
 
 describe("Reconversion project creation initialization", () => {
-  it("should fetch related site data and start flow from introduction step when reconversion project creation is initiated", async () => {
+  it("should fetch related site data and start flow from creation mode step when reconversion project creation is initiated", async () => {
     const fakeSiteService = new InMemorySitesService([relatedSiteData]);
     const store = createStore(
       getTestAppDependencies({
@@ -22,16 +22,19 @@ describe("Reconversion project creation initialization", () => {
 
     const projectCreationState = store.getState().projectCreation;
     expect(projectCreationState).toEqual<ProjectCreationState>({
-      stepsHistory: ["INTRODUCTION"],
       projectId: expect.any(String),
-      developmentPlanCategory: undefined,
-      projectSuggestions: undefined,
       siteDataLoadingState: "success",
       siteData: relatedSiteData,
       siteRelatedLocalAuthorities: { loadingState: "idle" },
       urbanProject: expect.any(Object),
       renewableEnergyProject: expect.any(Object),
       surfaceAreaInputMode: "percentage",
+      demoProject: expect.any(Object),
+      useCaseSelection: {
+        stepsSequence: ["USE_CASE_SELECTION_CREATION_MODE"],
+        currentStep: "USE_CASE_SELECTION_CREATION_MODE",
+      },
+      currentStepGroup: "USE_CASE_SELECTION",
     });
   });
 
@@ -49,20 +52,23 @@ describe("Reconversion project creation initialization", () => {
 
     const projectCreationState = store.getState().projectCreation;
     expect(projectCreationState).toEqual<ProjectCreationState>({
-      stepsHistory: ["INTRODUCTION"],
       projectId: expect.any(String),
-      developmentPlanCategory: undefined,
-      projectSuggestions: undefined,
       siteDataLoadingState: "error",
       siteData: undefined,
       siteRelatedLocalAuthorities: { loadingState: "idle" },
       urbanProject: expect.any(Object),
       renewableEnergyProject: expect.any(Object),
       surfaceAreaInputMode: "percentage",
+      demoProject: expect.any(Object),
+      useCaseSelection: {
+        stepsSequence: ["USE_CASE_SELECTION_CREATION_MODE"],
+        currentStep: "USE_CASE_SELECTION_CREATION_MODE",
+      },
+      currentStepGroup: "USE_CASE_SELECTION",
     });
   });
 
-  it("should start from project suggestions step when initiated with project suggestions", async () => {
+  it("should store project suggestions step when initiated with project suggestions", async () => {
     const fakeSiteService = new InMemorySitesService([relatedSiteData]);
     const store = createStore(
       getTestAppDependencies({
@@ -84,16 +90,20 @@ describe("Reconversion project creation initialization", () => {
     );
 
     expect(store.getState().projectCreation).toEqual<ProjectCreationState>({
-      stepsHistory: ["PROJECT_SUGGESTIONS"],
       projectId: expect.any(String),
-      developmentPlanCategory: undefined,
-      projectSuggestions,
       siteDataLoadingState: "success",
       siteData: relatedSiteData,
       siteRelatedLocalAuthorities: { loadingState: "idle" },
       urbanProject: expect.any(Object),
       renewableEnergyProject: expect.any(Object),
       surfaceAreaInputMode: "percentage",
+      demoProject: expect.any(Object),
+      useCaseSelection: {
+        stepsSequence: ["USE_CASE_SELECTION_CREATION_MODE"],
+        currentStep: "USE_CASE_SELECTION_CREATION_MODE",
+        projectSuggestions: projectSuggestions,
+      },
+      currentStepGroup: "USE_CASE_SELECTION",
     });
   });
 });

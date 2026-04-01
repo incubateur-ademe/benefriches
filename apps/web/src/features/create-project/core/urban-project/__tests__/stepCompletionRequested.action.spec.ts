@@ -23,10 +23,6 @@ describe("urbanProject.reducer - stepCompletionRequested without validation", ()
   describe("Complete workflow from start to finish", () => {
     it("should navigate through all steps correctly", () => {
       // Étape ----
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_CREATE_MODE_SELECTION");
-      store.dispatch(nextStepRequested());
-
-      // Étape ----
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_USES_INTRODUCTION");
       store.dispatch(nextStepRequested());
 
@@ -365,7 +361,7 @@ describe("urbanProject.reducer - stepCompletionRequested without validation", ()
       // Étape ----
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_CREATION_RESULT");
 
-      expect(Object.keys(store.getState().projectCreation.urbanProject.steps).length).toEqual(36);
+      expect(Object.keys(store.getState().projectCreation.urbanProject.steps).length).toEqual(35);
     });
 
     it('should handle decontamination plan "none" correctly', () => {

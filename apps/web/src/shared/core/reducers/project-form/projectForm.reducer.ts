@@ -1,6 +1,5 @@
 import { ActionReducerMapBuilder } from "@reduxjs/toolkit";
 
-import { ExpressReconversionProjectResult } from "@/features/create-project/core/actions/expressProjectSavedGateway";
 import { CurrentAndProjectedSoilsCarbonStorageResult } from "@/shared/core/reducers/project-form/soilsCarbonStorage.action";
 
 import { ProjectFormReducerActions } from "./projectForm.actions";
@@ -51,7 +50,6 @@ export interface ProjectFormState<T extends UrbanProjectCreationStep = UrbanProj
     firstSequenceStep: UrbanProjectCreationStep;
     steps: Partial<
       {
-        URBAN_PROJECT_EXPRESS_SUMMARY?: SummaryStepState<ExpressReconversionProjectResult>;
         URBAN_PROJECT_SOILS_CARBON_SUMMARY?: SummaryStepState<CurrentAndProjectedSoilsCarbonStorageResult>;
       } & {
         [K in AnswerStepId]: AnswerStepState<K>;

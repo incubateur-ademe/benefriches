@@ -1,4 +1,4 @@
-import { ActionReducerMapBuilder } from "@reduxjs/toolkit";
+import { ActionReducerMapBuilder, Draft } from "@reduxjs/toolkit";
 
 import { stepHandlerRegistry } from "@/shared/core/reducers/project-form/urban-project/step-handlers/stepHandlerRegistry";
 
@@ -7,8 +7,9 @@ import { applyStepChanges, computeStepChanges } from "./helpers/completeStep";
 import { navigateToAndLoadStep } from "./helpers/navigateToStep";
 import { UrbanProjectFormReducerActions } from "./urbanProject.actions";
 
-type FormReducerConfig = {
+type FormReducerConfig<S extends ProjectFormState> = {
   stepChangesNextMode: "step_order" | "next_empty";
+  onPreviousStepFallback?: (state: Draft<S>) => void;
 };
 
 // Helper to cast Immer draft state to ProjectFormState for helper functions
@@ -20,7 +21,7 @@ const asFormState = <S extends ProjectFormState>(state: S): ProjectFormState => 
 export const addUrbanProjectFormCasesToBuilder = <S extends ProjectFormState>(
   builder: ActionReducerMapBuilder<S>,
   actions: UrbanProjectFormReducerActions,
-  config: FormReducerConfig = { stepChangesNextMode: "step_order" },
+  config: FormReducerConfig<S> = { stepChangesNextMode: "step_order" },
 ) => {
   builder.addCase(actions.stepCompletionRequested, (state, action) => {
     const formState = asFormState(state);
@@ -62,6 +63,8 @@ export const addUrbanProjectFormCasesToBuilder = <S extends ProjectFormState>(
           stepsState: state.urbanProject.steps,
         }),
       );
+    } else {
+      config.onPreviousStepFallback?.(state);
     }
   });
 

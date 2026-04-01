@@ -11,14 +11,8 @@ import NavigationBlockerDialog from "../NavigationBlockerDialog";
 import { HTML_MAIN_TITLE } from "../mainHtmlTitle";
 import { useSyncCreationStepWithRouteQuery } from "../useSyncCreationStepWithRouteQuery";
 import UrbanProjectCreationStepper from "./UrbanProjectCreationStepper";
-import CreateModeSelectionForm from "./create-mode-selection";
 import { URBAN_PROJECT_CREATION_STEP_QUERY_STRING_MAP } from "./creationStepQueryStringMap";
 
-const ProjectExpressSummary = lazy(() => import("./express-forms/summary"));
-const UrbanProjectExpressTemplateSelection = lazy(
-  () => import("./express-forms/express-template-selection"),
-);
-const UrbanProjectExpressCreationResult = lazy(() => import("./express-forms/creation-result"));
 const AnswerCascadingUpdateDialog = lazy(
   () => import("@/shared/views/project-form/AnswerCascadingUpdateDialog"),
 );
@@ -48,7 +42,7 @@ const BuildingsNewBuildingsUsesFloorSurfaceArea = lazy(
   () =>
     import("@/shared/views/project-form/urban-project/buildings/new-buildings-uses-floor-surface-area"),
 );
-const ProjectCreationResult = lazy(() => import("./custom-forms/creation-result"));
+const ProjectCreationResult = lazy(() => import("./creation-result"));
 const InstallationExpensesForm = lazy(
   () => import("@/shared/views/project-form/urban-project/expenses/installation"),
 );
@@ -169,29 +163,6 @@ const HTML_URBAN_PROJECT_FORM_MAIN_TITLE = `Projet urbain - ${HTML_MAIN_TITLE}`;
 
 const getCurrentStepView = (step: UrbanProjectCreationStep): Exclude<ReactNode, undefined> => {
   switch (step) {
-    case "URBAN_PROJECT_CREATE_MODE_SELECTION":
-      return <CreateModeSelectionForm />;
-    case "URBAN_PROJECT_EXPRESS_TEMPLATE_SELECTION":
-      return (
-        <>
-          <HtmlTitle>{`Typologie de projet - Projet urbain démo - ${HTML_MAIN_TITLE}`}</HtmlTitle>
-          <UrbanProjectExpressTemplateSelection />
-        </>
-      );
-    case "URBAN_PROJECT_EXPRESS_SUMMARY":
-      return (
-        <>
-          <HtmlTitle>{`Récapitulatif - Projet urbain démo - ${HTML_MAIN_TITLE}`}</HtmlTitle>
-          <ProjectExpressSummary />
-        </>
-      );
-    case "URBAN_PROJECT_EXPRESS_CREATION_RESULT":
-      return (
-        <>
-          <HtmlTitle>{`Résultat - Projet urbain démo - ${HTML_MAIN_TITLE}`}</HtmlTitle>
-          <UrbanProjectExpressCreationResult />
-        </>
-      );
     case "URBAN_PROJECT_USES_INTRODUCTION":
       return (
         <>

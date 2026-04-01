@@ -5,13 +5,11 @@ import { buildingsExistingBuildingsUsesFloorSurfaceAreaSchema } from "./step-han
 import { buildingsFootprintToReuseSchema } from "./step-handlers/buildings/buildings-footprint-to-reuse/buildingsFootprintToReuse.schema";
 import { buildingsNewBuildingsUsesFloorSurfaceAreaSchema } from "./step-handlers/buildings/buildings-new-buildings-uses-floor-surface-area/buildingsNewBuildingsUsesFloorSurfaceArea.schema";
 import { buildingsUsesFloorSurfaceAreaSchema } from "./step-handlers/buildings/buildings-uses-floor-surface-area/buildingsUsesFloorSurfaceArea.schema";
-import { creationModeSelectionSchema } from "./step-handlers/creation-mode/creation-mode-selection/creationModeSelection.schema";
 import { expensesBuildingsConstructionAndRehabilitationSchema } from "./step-handlers/expenses/expenses-buildings-construction-and-rehabilitation/expensesBuildingsConstructionAndRehabilitation.schema";
 import { expensesInstallationSchema } from "./step-handlers/expenses/expenses-installation/expensesInstallation.schema";
 import { expensesProjectedBuildingsOperatingExpensesSchema } from "./step-handlers/expenses/expenses-projected-buildings-operating-expenses/expensesProjectedBuildingsOperatingExpenses.schema";
 import { expensesReinstatementSchema } from "./step-handlers/expenses/expenses-reinstatement/expensesReinstatement.schema";
 import { expensesSitePurchaseAmountsSchema } from "./step-handlers/expenses/expenses-site-purchase-amounts/expensesSitePurchaseAmounts.schema";
-import { expressTemplateSelectionSchema } from "./step-handlers/express/express-template-selection/expressTemplateSelection.schema";
 import { namingSchema } from "./step-handlers/naming/naming/naming.schema";
 import { projectPhaseSchema } from "./step-handlers/project-phase/project-phase/projectPhase.schema";
 import { revenueBuildingsOperationsYearlyRevenuesSchema } from "./step-handlers/revenues/revenue-buildings-operations-yearly-revenues/revenueBuildingsOperationsYearlyRevenues.schema";
@@ -53,8 +51,6 @@ export const SUMMARY_STEPS = [
   "URBAN_PROJECT_SOILS_CARBON_SUMMARY",
   "URBAN_PROJECT_FINAL_SUMMARY",
   "URBAN_PROJECT_CREATION_RESULT",
-  "URBAN_PROJECT_EXPRESS_CREATION_RESULT",
-  "URBAN_PROJECT_EXPRESS_SUMMARY",
 ] as const;
 
 export type SummaryStep = (typeof SUMMARY_STEPS)[number];
@@ -80,12 +76,6 @@ export type UrbanProjectFormData = Omit<ReconversionProject, "developmentPlan"> 
 };
 
 export const answersByStepSchemas = {
-  // Common
-  URBAN_PROJECT_CREATE_MODE_SELECTION: creationModeSelectionSchema,
-
-  // Express
-  URBAN_PROJECT_EXPRESS_TEMPLATE_SELECTION: expressTemplateSelectionSchema,
-
   // Custom - uses
   URBAN_PROJECT_USES_SELECTION: usesSelectionSchema,
 

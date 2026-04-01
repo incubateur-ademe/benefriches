@@ -30,10 +30,9 @@ describe("renewableEnergy.reducer.spec reducer", () => {
       await store.dispatch(saveReconversionProject());
 
       const state = store.getState();
-      expect(state.projectCreation.stepsHistory).toEqual([
-        ...initialState.stepsHistory,
+      expect(state.projectCreation.renewableEnergyProject.currentStep).toEqual(
         "RENEWABLE_ENERGY_CREATION_RESULT",
-      ]);
+      );
       expect(state.projectCreation.renewableEnergyProject).toEqual({
         ...initialState.renewableEnergyProject,
         saveState: "error",
@@ -62,10 +61,6 @@ describe("renewableEnergy.reducer.spec reducer", () => {
       await store.dispatch(saveReconversionProject());
 
       const state = store.getState();
-      expect(state.projectCreation.stepsHistory).toEqual([
-        ...initialState.stepsHistory,
-        "RENEWABLE_ENERGY_CREATION_RESULT",
-      ]);
       expect(state.projectCreation.renewableEnergyProject).toEqual({
         ...initialState.renewableEnergyProject,
         saveState: "error",
@@ -95,10 +90,6 @@ describe("renewableEnergy.reducer.spec reducer", () => {
       await store.dispatch(saveReconversionProject());
 
       const state = store.getState();
-      expect(state.projectCreation.stepsHistory).toEqual([
-        ...initialState.stepsHistory,
-        "RENEWABLE_ENERGY_CREATION_RESULT",
-      ]);
       expect(state.projectCreation.renewableEnergyProject).toEqual({
         ...initialState.renewableEnergyProject,
         saveState: "error",
@@ -254,10 +245,6 @@ describe("renewableEnergy.reducer.spec reducer", () => {
         const actionResult = await store.dispatch(saveReconversionProject());
 
         const state = store.getState();
-        expect(state.projectCreation.stepsHistory).toEqual([
-          ...initialState.stepsHistory,
-          "RENEWABLE_ENERGY_CREATION_RESULT",
-        ]);
         expect(state.projectCreation.renewableEnergyProject).toEqual({
           ...initialState.renewableEnergyProject,
           saveState: "error",
@@ -296,10 +283,6 @@ describe("renewableEnergy.reducer.spec reducer", () => {
       await store.dispatch(saveReconversionProject());
 
       const state = store.getState();
-      expect(state.projectCreation.stepsHistory).toEqual([
-        ...initialState.stepsHistory,
-        "RENEWABLE_ENERGY_CREATION_RESULT",
-      ]);
       expect(state.projectCreation.renewableEnergyProject).toEqual({
         ...initialState.renewableEnergyProject,
         saveState: "error",
@@ -331,10 +314,6 @@ describe("renewableEnergy.reducer.spec reducer", () => {
       await store.dispatch(saveReconversionProject());
 
       const state = store.getState();
-      expect(state.projectCreation.stepsHistory).toEqual([
-        ...initialState.stepsHistory,
-        "RENEWABLE_ENERGY_CREATION_RESULT",
-      ]);
       expect(state.projectCreation.renewableEnergyProject).toEqual({
         ...initialState.renewableEnergyProject,
         saveState: "success",

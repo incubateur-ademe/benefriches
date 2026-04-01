@@ -28,6 +28,14 @@ export class StoreBuilder {
     return this;
   }
 
+  withCurrentUrbanProjectGroupStep(): this {
+    this.preloadedRootState.projectCreation = {
+      ...this.preloadedRootState.projectCreation,
+      currentStepGroup: "URBAN_PROJECT",
+    };
+    return this;
+  }
+
   withCurrentStep(currentStep: UrbanProjectCreationStep): this {
     this.preloadedRootState.projectCreation = {
       ...this.preloadedRootState.projectCreation,
