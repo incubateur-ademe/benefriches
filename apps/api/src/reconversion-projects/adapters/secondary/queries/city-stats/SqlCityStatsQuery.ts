@@ -1,4 +1,4 @@
-import { Inject } from "@nestjs/common";
+import { Inject, Logger } from "@nestjs/common";
 import { Knex } from "knex";
 import { convertHectaresToSquareMeters } from "shared";
 
@@ -34,6 +34,8 @@ const getDefaultMedianPriceFromPopulation = (population: number) => {
 };
 
 export class SqlCityStatsQuery implements CityStatsProvider {
+  private readonly logger = new Logger(SqlCityStatsQuery.name);
+
   constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}
 
   async getCityStats(cityCode: string): Promise<CityStats> {
@@ -62,8 +64,7 @@ export class SqlCityStatsQuery implements CityStatsProvider {
             : getDefaultMedianPriceFromPopulation(population),
       };
     } catch (err) {
-      // oxlint-disable-next-line no-console
-      console.warn(err);
+      this.logger.warn(String(err));
       return {
         name: "",
         surfaceAreaSquareMeters: FRANCE_AVERAGE_CITY_SQUARE_METERS_AREA,

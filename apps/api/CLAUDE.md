@@ -172,6 +172,7 @@ type Result = TResult<void, Error, unknown>;
 6. ❌ Skip unit tests - See [05-unit-testing-pattern.md](../../.claude/context/api/05-unit-testing-pattern.md)
 7. ❌ Modify DB without migration - See [07-database-patterns.md](../../.claude/context/api/07-database-patterns.md)
 8. ❌ Return domain entities from controllers - Use ViewModels instead, see [02-controller-pattern.md](../../.claude/context/api/02-controller-pattern.md)
+9. ❌ Use `console.*` for logging — use `AppLogger` in core, NestJS `Logger` in adapters (`no-console` lint rule enforced)
 
 ---
 
@@ -345,6 +346,7 @@ expect(result).toEqual({
 
 - **ID Generation**: `RandomUuidGenerator` (prod), `DeterministicIdGenerator` (tests)
 - **Date/Time**: `RealDateProvider` (prod), `DeterministicDateProvider` (tests)
+- **Logging**: `NestJsAppLogger` (prod), `SilentLogger` (tests) — implements `AppLogger` from `src/shared-kernel/logger`
 - **Database**: Inject `SqlConnection` into SQL repositories/queries (from `src/shared-kernel/adapters/sql-knex/sqlConnection.module`)
 - **Events**: `DOMAIN_EVENT_PUBLISHER_INJECTION_TOKEN` for cross-module events
 

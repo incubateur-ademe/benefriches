@@ -6,6 +6,7 @@ import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/Deter
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { InMemoryEventPublisher } from "src/shared-kernel/adapters/events/publisher/InMemoryEventPublisher";
 import { DeterministicUuidGenerator } from "src/shared-kernel/adapters/id-generator/DeterministicIdGenerator";
+import { SilentLogger } from "src/shared-kernel/adapters/logger/SilentLogger";
 import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
 import { FailureResult } from "src/shared-kernel/result";
 import { InMemorySitesRepository } from "src/sites/adapters/secondary/site-repository/InMemorySiteRepository";
@@ -66,6 +67,7 @@ describe("CreateNewExpressSite Use case", () => {
       cityStatsQuery,
       uuidGenerator,
       eventPublisher,
+      new SilentLogger(),
     );
     const result = await usecase.execute({
       siteProps: {
@@ -92,6 +94,7 @@ describe("CreateNewExpressSite Use case", () => {
       failingCityDataProvider,
       uuidGenerator,
       eventPublisher,
+      new SilentLogger(),
     );
 
     const siteProps = {
@@ -126,6 +129,7 @@ describe("CreateNewExpressSite Use case", () => {
         cityStatsQuery,
         uuidGenerator,
         eventPublisher,
+        new SilentLogger(),
       );
 
       const siteProps = {
@@ -213,6 +217,7 @@ describe("CreateNewExpressSite Use case", () => {
         cityStatsQuery,
         uuidGenerator,
         eventPublisher,
+        new SilentLogger(),
       );
 
       const siteProps = {
@@ -269,6 +274,7 @@ describe("CreateNewExpressSite Use case", () => {
         cityStatsQuery,
         uuidGenerator,
         eventPublisher,
+        new SilentLogger(),
       );
 
       const fricheProps = {
@@ -337,6 +343,7 @@ describe("CreateNewExpressSite Use case", () => {
         cityStatsQuery,
         uuidGenerator,
         eventPublisher,
+        new SilentLogger(),
       );
 
       const fricheProps = {
@@ -404,6 +411,7 @@ describe("CreateNewExpressSite Use case", () => {
         cityStatsQuery,
         uuidGenerator,
         eventPublisher,
+        new SilentLogger(),
       );
 
       const fricheProps = {

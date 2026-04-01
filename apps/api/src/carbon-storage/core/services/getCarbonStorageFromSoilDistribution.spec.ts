@@ -1,6 +1,7 @@
 import { roundTo2Digits } from "shared";
 
 import { LocalCarbonStorageQuery } from "src/carbon-storage/adapters/secondary/carbon-storage-query/LocalCarbonStorageQuery.mock";
+import { SilentLogger } from "src/shared-kernel/adapters/logger/SilentLogger";
 
 import { CarbonStorageQuery } from "../gateways/CarbonStorageQuery";
 import { GetCarbonStorageFromSoilDistributionService } from "./getCarbonStorageFromSoilDistribution";
@@ -13,7 +14,10 @@ describe("GetCarbonStorageFromSoilDistributionService", () => {
   });
 
   test("it should return undefined if city is not found", async () => {
-    const service = new GetCarbonStorageFromSoilDistributionService(carbonStorageQuery);
+    const service = new GetCarbonStorageFromSoilDistributionService(
+      carbonStorageQuery,
+      new SilentLogger(),
+    );
     const result = await service.execute({
       cityCode: "62127",
       soilsDistribution: {
@@ -26,7 +30,10 @@ describe("GetCarbonStorageFromSoilDistributionService", () => {
   });
 
   test("it should compute the right total: simple example without forest", async () => {
-    const service = new GetCarbonStorageFromSoilDistributionService(carbonStorageQuery);
+    const service = new GetCarbonStorageFromSoilDistributionService(
+      carbonStorageQuery,
+      new SilentLogger(),
+    );
     const result = await service.execute({
       cityCode: "01026",
       soilsDistribution: {
@@ -47,7 +54,10 @@ describe("GetCarbonStorageFromSoilDistributionService", () => {
   });
 
   test("it should compute the right total: example with forest", async () => {
-    const service = new GetCarbonStorageFromSoilDistributionService(carbonStorageQuery);
+    const service = new GetCarbonStorageFromSoilDistributionService(
+      carbonStorageQuery,
+      new SilentLogger(),
+    );
     const result = await service.execute({
       cityCode: "01027",
       soilsDistribution: {

@@ -3,6 +3,7 @@ import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 
 import { AuthModule } from "src/auth/adapters/auth.module";
+import { NestJsAppLogger } from "src/shared-kernel/adapters/logger/NestJsAppLogger";
 import { MutabilityEvaluationQuery } from "src/site-evaluations/core/gateways/MutabilityEvaluationQuery";
 import { SiteEvaluationQuery } from "src/site-evaluations/core/gateways/SiteEvaluationQuery";
 import { GetUserSiteEvaluationsUseCase } from "src/site-evaluations/core/usecases/getUserSiteEvaluations.usecase";
@@ -20,7 +21,12 @@ import { SiteEvaluationController } from "./siteEvaluations.controller";
       useFactory: (
         siteEvaluationQuery: SiteEvaluationQuery,
         mutafrichesEvaluationQuery: MutabilityEvaluationQuery,
-      ) => new GetUserSiteEvaluationsUseCase(siteEvaluationQuery, mutafrichesEvaluationQuery),
+      ) =>
+        new GetUserSiteEvaluationsUseCase(
+          siteEvaluationQuery,
+          mutafrichesEvaluationQuery,
+          new NestJsAppLogger(GetUserSiteEvaluationsUseCase.name),
+        ),
       inject: [SqlSiteEvaluationQuery, MutafrichesEvaluationQuery],
     },
     SqlSiteEvaluationQuery,

@@ -1,5 +1,7 @@
 import { roundTo2Digits, SoilsDistribution, SoilType, sumObjectValues } from "shared";
 
+import type { AppLogger } from "src/shared-kernel/logger";
+
 import { CarbonStorageQuery } from "../gateways/CarbonStorageQuery";
 import { mapSoilTypeToRepositorySoilCategory } from "../models/soilCategory";
 
@@ -13,7 +15,10 @@ type Response = {
 } & Partial<Record<SoilType, number>>;
 
 export class GetCarbonStorageFromSoilDistributionService {
-  constructor(private readonly carbonStorageQuery: CarbonStorageQuery) {}
+  constructor(
+    private readonly carbonStorageQuery: CarbonStorageQuery,
+    private readonly logger: AppLogger,
+  ) {}
 
   async execute({ cityCode, soilsDistribution = {} }: Request): Promise<Response | undefined> {
     try {
@@ -44,8 +49,7 @@ export class GetCarbonStorageFromSoilDistributionService {
         ...soilsCarbonStorage,
       };
     } catch (err) {
-      // oxlint-disable-next-line no-console
-      console.error("Failed to compute soils carbon storage impact", err);
+      this.logger.error("Failed to compute soils carbon storage impact", err);
       return undefined;
     }
   }

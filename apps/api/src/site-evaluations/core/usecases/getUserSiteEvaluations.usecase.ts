@@ -1,5 +1,6 @@
 import { MutabilityUsage } from "shared";
 
+import type { AppLogger } from "src/shared-kernel/logger";
 import { TResult, fail, success } from "src/shared-kernel/result";
 import { UseCase } from "src/shared-kernel/usecase";
 
@@ -29,6 +30,7 @@ export class GetUserSiteEvaluationsUseCase implements UseCase<Request, UserSiteE
   constructor(
     private readonly siteEvaluationQuery: SiteEvaluationQuery,
     private readonly mutafrichesEvaluationQuery: MutabilityEvaluationQuery,
+    private readonly logger: AppLogger,
   ) {}
 
   async execute({ userId }: Request): Promise<UserSiteEvaluationResult> {
@@ -60,9 +62,8 @@ export class GetUserSiteEvaluationsUseCase implements UseCase<Request, UserSiteE
               };
             }
           } catch (err) {
-            // oxlint-disable-next-line no-console
-            console.error(
-              `Fail to get mutafrichesEvaluationResult in GetUserSiteEvaluationsUseCase for siteId ${evaluation.siteId}`,
+            this.logger.error(
+              `Failed to get mutafriches evaluation for siteId ${evaluation.siteId}`,
               err,
             );
           }

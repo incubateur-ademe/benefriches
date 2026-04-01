@@ -1,5 +1,6 @@
 import { vi } from "vitest";
 
+import { SilentLogger } from "src/shared-kernel/adapters/logger/SilentLogger";
 import { FailureResult, SuccessResult } from "src/shared-kernel/result";
 import { InMemoryMutabilityEvaluationQuery } from "src/site-evaluations/adapters/secondary/queries/InMemoryMutabilityEvaluationQuery";
 import { InMemorySiteEvaluationQuery } from "src/site-evaluations/adapters/secondary/queries/InMemorySiteEvaluationQuery";
@@ -15,6 +16,7 @@ describe("GetUserSiteEvaluationsUseCase", () => {
     const usecase = new GetUserSiteEvaluationsUseCase(
       new InMemorySiteEvaluationQuery(),
       new InMemoryMutabilityEvaluationQuery(),
+      new SilentLogger(),
     );
 
     // @ts-expect-error userId is required
@@ -68,7 +70,11 @@ describe("GetUserSiteEvaluationsUseCase", () => {
     vi.spyOn(evalutionQuery, "getUserSiteEvaluations");
     vi.spyOn(mutabilityQuery, "getEvaluation");
 
-    const usecase = new GetUserSiteEvaluationsUseCase(evalutionQuery, mutabilityQuery);
+    const usecase = new GetUserSiteEvaluationsUseCase(
+      evalutionQuery,
+      mutabilityQuery,
+      new SilentLogger(),
+    );
     const result = await usecase.execute({ userId });
     expect(result.isSuccess()).toBe(true);
     expect((result as SuccessResult<UserSiteEvaluation[]>).getData()).toEqual([

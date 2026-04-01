@@ -10,6 +10,7 @@ import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvid
 import { RealEventPublisher } from "src/shared-kernel/adapters/events/publisher/RealEventPublisher";
 import { RandomUuidGenerator } from "src/shared-kernel/adapters/id-generator/RandomUuidGenerator";
 import { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerator";
+import { NestJsAppLogger } from "src/shared-kernel/adapters/logger/NestJsAppLogger";
 import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
 import { SiteEvaluationsModule } from "src/site-evaluations/adapters/primary/siteEvaluations.module";
 import { MutafrichesEvaluationQuery } from "src/site-evaluations/adapters/secondary/queries/MutafrichesEvaluationQuery";
@@ -57,6 +58,7 @@ import { SitesController } from "./sites.controller";
           cityStatsQuery,
           uuidGenerator,
           eventPublisher,
+          new NestJsAppLogger(CreateNewExpressSiteUseCase.name),
         ),
       inject: [
         SqlSiteRepository,

@@ -4,6 +4,7 @@ import { CityStatsProvider } from "src/reconversion-projects/core/gateways/CityS
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerator";
 import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
+import type { AppLogger } from "src/shared-kernel/logger";
 import { TResult, fail, success } from "src/shared-kernel/result";
 import { UseCase } from "src/shared-kernel/usecase";
 
@@ -61,6 +62,7 @@ export class CreateNewExpressSiteUseCase implements UseCase<Request, CreateNewEx
     private readonly cityStatsQuery: CityStatsProvider,
     private readonly uuidGenerator: UidGenerator,
     private readonly eventPublisher: DomainEventPublisher,
+    private readonly logger: AppLogger,
   ) {}
 
   async execute({ siteProps, createdBy }: Request): Promise<CreateNewExpressSiteResult> {
@@ -69,8 +71,7 @@ export class CreateNewExpressSiteUseCase implements UseCase<Request, CreateNewEx
       const { population } = await this.cityStatsQuery.getCityStats(siteProps.address.cityCode);
       siteCityPopulation = population;
     } catch (error) {
-      // oxlint-disable-next-line no-console
-      console.error(error);
+      this.logger.error("Failed to get city population", error);
     }
 
     const site = createSite({ ...siteProps, cityPopulation: siteCityPopulation });
