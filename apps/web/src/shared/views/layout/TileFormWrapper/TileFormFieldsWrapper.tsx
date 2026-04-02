@@ -17,7 +17,7 @@ function TileFormFieldsWrapper({ children, small = false }: Props) {
           : [
               "grid-cols-[repeat(auto-fill,300px)]",
               "sm:grid-cols-[repeat(auto-fill,357px)]",
-              "lg:grid-cols-[repeat(2,357px)]",
+              "lg:max-w-[774px]", // 2 par lignes maximum
             ],
         "gap-x-4",
         "mb-4",

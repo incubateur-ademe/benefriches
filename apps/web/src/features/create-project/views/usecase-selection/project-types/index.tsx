@@ -15,7 +15,7 @@ function ProjectTypesFormContainer() {
   const allowedDevelopmentPlanCategories =
     BENEFRICHES_ENV.allowedDevelopmentPlanCategories as DevelopmentPlanCategory[];
 
-  const developmentPlanCategory = useAppSelector(selectProjectTypeViewData);
+  const { developmentPlanCategory, projectSuggestions } = useAppSelector(selectProjectTypeViewData);
 
   return (
     <ProjectTypeForm
@@ -25,6 +25,7 @@ function ProjectTypesFormContainer() {
       }}
       onBack={() => dispatch(stepReverted())}
       allowedDevelopmentPlanCategories={allowedDevelopmentPlanCategories}
+      projectSuggestions={projectSuggestions}
     />
   );
 }

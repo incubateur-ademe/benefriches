@@ -13,13 +13,16 @@ function DemoProjectTemplateContainerSelection() {
   };
 
   const onBack = useStepBack();
-  const { projectTemplate, hasStepBack } = useAppSelector(selectDemoProjectTemplateViewData);
+  const { projectTemplate, hasStepBack, projectSuggestions } = useAppSelector(
+    selectDemoProjectTemplateViewData,
+  );
 
   return (
     <DemoProjectTemplate
       initialValues={projectTemplate ? { projectTemplate } : undefined}
       onSubmit={onSubmit}
       onBack={hasStepBack ? onBack : undefined}
+      projectSuggestions={projectSuggestions}
     />
   );
 }

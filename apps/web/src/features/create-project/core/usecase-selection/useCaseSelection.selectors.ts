@@ -4,6 +4,7 @@ import { DevelopmentPlanCategory } from "shared";
 import { RootState } from "@/app/store/store";
 
 import { ProjectCreationState } from "../createProject.reducer";
+import { ProjectSuggestion } from "../project.types";
 import { UseCaseSelectionStep } from "./useCaseSelection.reducer";
 import {
   USE_CASE_SELECTION_STEP_GROUP_IDS,
@@ -79,8 +80,14 @@ export const selectRenewableEnergyTypeViewData = createSelector(
   }),
 );
 
+type ProjectTypeViewData = {
+  developmentPlanCategory?: DevelopmentPlanCategory;
+  projectSuggestions?: ProjectSuggestion[];
+};
 export const selectProjectTypeViewData = createSelector(
   (state: RootState) => state.projectCreation,
-  (state): DevelopmentPlanCategory | undefined =>
-    state.useCaseSelection.projectDevelopmentPlan?.category,
+  (state): ProjectTypeViewData => ({
+    developmentPlanCategory: state.useCaseSelection.projectDevelopmentPlan?.category,
+    projectSuggestions: state.useCaseSelection.projectSuggestions,
+  }),
 );
