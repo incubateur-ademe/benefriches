@@ -34,7 +34,7 @@ export function createTestUserData(prefix: string): TestUser {
     email: `e2e-tests-${prefix}-${uniqueId}@mail.com`,
     firstName: "Jean",
     lastName: "Dupont",
-    structureType: "other",
+    structureType: "company",
     structureActivity: "other",
     structureName: "ADEME",
   };

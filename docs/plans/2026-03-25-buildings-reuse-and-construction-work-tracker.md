@@ -214,11 +214,12 @@ Constraints:
   - Targeted checks:
     - `pnpm --filter web test src/shared/core/reducers/project-form/urban-project/step-handlers/buildings/__tests__/sequencing`
 
-- [ ] **S13** E2E coverage update for nominal flows.
+- [x] **S13** E2E coverage update for nominal flows.
   - Spec ref: `E2E Tests`
   - Includes:
     - extend `apps/e2e-tests/pages/UrbanProjectCreationPage.ts`
     - add scenarios: `site without buildings`, `no reuse`, `full reuse with new construction`
+  - Done note: Added dedicated express/custom urban-project e2e specs with realistic multi-use buildings scenarios and page-object support for the buildings reuse/construction chapter.
   - Targeted checks:
     - `pnpm --filter e2e-tests test --list`
     - run each new/updated spec
