@@ -70,9 +70,6 @@ export const minimalSteps: RenewableEnergyStepsState = {
     financialAssistanceRevenues: [],
   }),
   RENEWABLE_ENERGY_SCHEDULE_PROJECTION: makeStep({}),
-  RENEWABLE_ENERGY_PROJECT_PHASE: makeStep({
-    phase: "design",
-  }),
   RENEWABLE_ENERGY_NAMING: makeStep({
     name: "Centrale photovoltaique",
   }),
@@ -122,9 +119,6 @@ export const exhaustiveSteps: RenewableEnergyStepsState = {
       endDate: "2028-09-30T00:00:00.000Z",
     },
     firstYearOfOperation: 2029,
-  }),
-  RENEWABLE_ENERGY_PROJECT_PHASE: makeStep({
-    phase: "design",
   }),
   RENEWABLE_ENERGY_NAMING: makeStep({
     name: "Centrale photovoltaique",

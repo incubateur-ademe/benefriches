@@ -97,15 +97,39 @@ describe("renewableEnergy.reducer.spec reducer", () => {
       });
     });
 
+    it("should result in error state when no projectPhase in store", async () => {
+      const initialState: RootState["projectCreation"] = {
+        ...getInitialState(),
+        siteData: relatedSiteData,
+        projectId: "",
+        renewableEnergyProject: {
+          ...getInitialState().renewableEnergyProject,
+          steps: minimalSteps,
+        },
+      };
+
+      const store = createStore(getTestAppDependencies(), {
+        projectCreation: initialState,
+        currentUser: {
+          currentUser: null,
+          createUserState: "idle",
+          currentUserState: "authenticated",
+        },
+      });
+      await store.dispatch(saveReconversionProject());
+
+      const state = store.getState();
+      expect(state.projectCreation.renewableEnergyProject).toEqual({
+        ...initialState.renewableEnergyProject,
+        saveState: "error",
+        currentStep: "RENEWABLE_ENERGY_CREATION_RESULT",
+      });
+    });
+
     it.each([
       {
         case: "no name",
         stepId: "RENEWABLE_ENERGY_NAMING" as const,
-        invalidPayload: undefined,
-      },
-      {
-        case: "no projectPhase",
-        stepId: "RENEWABLE_ENERGY_PROJECT_PHASE" as const,
         invalidPayload: undefined,
       },
       {
@@ -296,6 +320,11 @@ describe("renewableEnergy.reducer.spec reducer", () => {
     ])("should be in success state when everything went ok: $case", async ({ steps }) => {
       const initialState: RootState["projectCreation"] = {
         ...getInitialState(),
+        useCaseSelection: {
+          projectPhase: "planning",
+          stepsSequence: [],
+          currentStep: "USE_CASE_SELECTION_CREATION_MODE",
+        },
         siteData: relatedSiteData,
         renewableEnergyProject: {
           ...getInitialState().renewableEnergyProject,

@@ -5,13 +5,13 @@ import {
   demoProjectCreated,
   demoProjectSaved,
   demoStepGroupNavigated,
-} from "./demoProject.actions.ts";
+} from "./demoProject.actions";
 import {
   answersByStepSchemas,
   DemoAnswerStepId,
   DemoProjectStepsState,
   DemoSummaryStep,
-} from "./demoSteps.ts";
+} from "./demoSteps";
 import {
   answerStepHandlers,
   DemoStepContext,

@@ -5,6 +5,6 @@ export const ScheduleProjectionHandler: AnswerStepHandler<"RENEWABLE_ENERGY_SCHE
     stepId: "RENEWABLE_ENERGY_SCHEDULE_PROJECTION",
 
     getNextStepId() {
-      return "RENEWABLE_ENERGY_PROJECT_PHASE";
+      return "RENEWABLE_ENERGY_NAMING";
     },
   };

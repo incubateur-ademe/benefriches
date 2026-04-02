@@ -10,7 +10,6 @@ import { photovoltaicExpectedAnnualProductionStepperConfig } from "./photovoltai
 import { photovoltaicKeyParameterStepperConfig } from "./photovoltaic/photovoltaic-key-parameter/photovoltaicKeyParameter.stepperConfig";
 import { photovoltaicPowerStepperConfig } from "./photovoltaic/photovoltaic-power/photovoltaicPower.stepperConfig";
 import { photovoltaicSurfaceStepperConfig } from "./photovoltaic/photovoltaic-surface/photovoltaicSurface.stepperConfig";
-import { projectPhaseStepperConfig } from "./project-phase/project-phase/projectPhase.stepperConfig";
 import { revenueFinancialAssistanceStepperConfig } from "./revenue/revenue-financial-assistance/revenueFinancialAssistance.stepperConfig";
 import { revenueIntroductionStepperConfig } from "./revenue/revenue-introduction/revenueIntroduction.stepperConfig";
 import { revenueYearlyProjectedStepperConfig } from "./revenue/revenue-yearly-projected/revenueYearlyProjected.stepperConfig";
@@ -43,7 +42,6 @@ export type RenewableEnergyStepGroupId =
   | "STAKEHOLDERS"
   | "EXPENSES_AND_REVENUE"
   | "SCHEDULE"
-  | "PROJECT_PHASE"
   | "NAMING"
   | "SUMMARY";
 
@@ -53,7 +51,6 @@ export const RENEWABLE_ENERGY_STEP_GROUP_IDS = [
   "STAKEHOLDERS",
   "EXPENSES_AND_REVENUE",
   "SCHEDULE",
-  "PROJECT_PHASE",
   "NAMING",
   "SUMMARY",
 ] as const satisfies readonly RenewableEnergyStepGroupId[];
@@ -64,7 +61,6 @@ export const RENEWABLE_ENERGY_STEP_GROUP_LABELS: Record<RenewableEnergyStepGroup
   STAKEHOLDERS: "Acteurs",
   EXPENSES_AND_REVENUE: "Dépenses et recettes",
   SCHEDULE: "Calendrier",
-  PROJECT_PHASE: "Avancement",
   NAMING: "Dénomination",
   SUMMARY: "Récapitulatif",
 };
@@ -133,6 +129,5 @@ export const RENEWABLE_ENERGY_STEP_TO_GROUP: Record<
 
   // Schedule, phase, naming
   RENEWABLE_ENERGY_SCHEDULE_PROJECTION: scheduleProjectionStepperConfig,
-  RENEWABLE_ENERGY_PROJECT_PHASE: projectPhaseStepperConfig,
   RENEWABLE_ENERGY_NAMING: namingStepperConfig,
 };

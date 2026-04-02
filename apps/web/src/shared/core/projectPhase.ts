@@ -1,15 +1,15 @@
-import { RenewableEnergyProjectPhase, UrbanProjectPhase } from "shared";
+import { ProjectPhase } from "shared";
 
-export const getLabelForUrbanProjectPhase = (projectPhase: UrbanProjectPhase): string => {
+export const getLabelForProjectPhase = (projectPhase: ProjectPhase): string => {
   switch (projectPhase) {
     case "setup":
-      return "Montage";
+      return "Montage / Développement";
     case "planning":
       return "Programmation";
     case "design":
-      return "Conception";
+      return "Conception / Ingénierie";
     case "construction":
-      return "Réalisation";
+      return "Réalisation / Construction";
     case "completed":
       return "Projet achevé";
     case "unknown":
@@ -17,41 +17,7 @@ export const getLabelForUrbanProjectPhase = (projectPhase: UrbanProjectPhase): s
   }
 };
 
-export const getLabelForRenewableEnergyProjectPhase = (
-  projectPhase: RenewableEnergyProjectPhase,
-): string => {
-  switch (projectPhase) {
-    case "setup":
-      return "Développement";
-    case "design":
-      return "Ingénierie";
-    case "construction":
-      return "Construction";
-    case "completed":
-      return "Projet achevé";
-    case "unknown":
-      return "Autre/Ne sait pas";
-  }
-};
-
-export const getHintTextForRenewableEnergyProjectPhase = (
-  projectPhase: RenewableEnergyProjectPhase,
-): string | undefined => {
-  switch (projectPhase) {
-    case "setup":
-      return "Recherche de site, faisabilité, concertation locale, éude d'impact, dépôt de permis";
-    case "design":
-      return "Choix des équipements et des matériels, établissement du calendrier et du budget du projet, définition des tâches et des responsabilités, etc.";
-    case "construction":
-      return "Travaux de remise en état, d'aménagement ou de construction de la centrale";
-    default:
-      return undefined;
-  }
-};
-
-export const getHintTextForUrbanProjectPhase = (
-  projectPhase: UrbanProjectPhase,
-): string | undefined => {
+export const getHintTextForProjectPhase = (projectPhase: ProjectPhase): string | undefined => {
   switch (projectPhase) {
     case "setup":
       return "Prospection, étude d'opportunité de l'opération, identification et analyses de la faisabilité des différents scénarii, choix d'un scenario et de son processus de mise en oeuvre";
@@ -60,15 +26,13 @@ export const getHintTextForUrbanProjectPhase = (
     case "design":
       return "Esquisse, avant-projet sommaire, avant-projet définitif, PRO, dépôt de permis, passation marchés, etc.";
     case "construction":
-      return "Travaux de reconversion ou d'aménagement du site";
+      return "Travaux de remise en état, de construction ou d'aménagement du site";
     default:
       return undefined;
   }
 };
 
-export const getPictogramForProjectPhase = (
-  projectPhase: UrbanProjectPhase | RenewableEnergyProjectPhase,
-): string | undefined => {
+export const getPictogramForProjectPhase = (projectPhase: ProjectPhase): string | undefined => {
   switch (projectPhase) {
     case "setup":
       return "/img/pictograms/project-phase/setup-phase.svg";

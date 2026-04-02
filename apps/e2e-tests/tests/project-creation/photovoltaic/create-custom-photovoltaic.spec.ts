@@ -10,6 +10,9 @@ test.describe("photovoltaic project creation - custom mode", () => {
     // Navigate to project creation
     await pvProjectCreationPage.goto(testSite.id);
 
+    // --- Project phase ---
+    await pvProjectCreationPage.selectProjectPhase("Montage / Développement");
+
     // Create mode selection
     await pvProjectCreationPage.selectCreateMode("custom");
 
@@ -95,10 +98,6 @@ test.describe("photovoltaic project creation - custom mode", () => {
     // First year of operation: 2029
     await pvProjectCreationPage.fillSchedule("09/2027", "03/2029", 2029);
 
-    // --- Project phase ---
-
-    await pvProjectCreationPage.selectProjectPhase("Développement");
-
     // --- Name and description ---
 
     await pvProjectCreationPage.fillNameAndDescription(PROJECT_NAME);
@@ -122,6 +121,9 @@ test.describe("photovoltaic project creation - demo mode", () => {
     // Navigate to project creation with the test site
     await pvProjectCreationPage.goto(testSite.id);
 
+    // --- Project phase ---
+    await pvProjectCreationPage.selectProjectPhase("Montage");
+
     // Create mode selection step
     await pvProjectCreationPage.selectCreateMode("express");
 
@@ -139,5 +141,29 @@ test.describe("photovoltaic project creation - demo mode", () => {
     // View important info (onboarding)
     await pvProjectCreationPage.clickViewImportantInfo();
     await pvProjectCreationPage.expectOnboardingStep1();
+  });
+});
+
+test.describe("photovoltaic project creation - automatic custom mode", () => {
+  test("allows authenticated user to create an urban project via express mode", async ({
+    pvProjectCreationPage,
+    testSite,
+  }) => {
+    // Navigate to project creation with the test site
+    await pvProjectCreationPage.goto(testSite.id);
+
+    // --- Project phase ---
+    await pvProjectCreationPage.selectProjectPhase("Programmation");
+
+    // Project type selection
+    await pvProjectCreationPage.selectProjectType();
+
+    // Renewable energy type selection
+    await pvProjectCreationPage.selectRenewableEnergyType();
+
+    // --- Photovoltaic parameters ---
+
+    // Key parameter: power
+    await pvProjectCreationPage.selectKeyParameter("POWER");
   });
 });

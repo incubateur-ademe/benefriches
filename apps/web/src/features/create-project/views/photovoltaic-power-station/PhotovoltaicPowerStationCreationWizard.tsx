@@ -13,7 +13,6 @@ import PhotovoltaicExpectedAnnualProductionContainer from "./photovoltaic/expect
 import PhotovoltaicKeyParameter from "./photovoltaic/key-parameter";
 import PhotovoltaicPower from "./photovoltaic/power";
 import PhotovoltaicSurface from "./photovoltaic/surface";
-import ProjectPhaseForm from "./project-phase";
 import ProjectCreationResult from "./result";
 import ProjectFinancialAssistanceRevenueForm from "./revenue/financial-assistance";
 import ProjectRevenueIntroduction from "./revenue/introduction";
@@ -284,13 +283,6 @@ function PhotovoltaicPowerStationCustomCreationWizard({ currentStep }: Props) {
         <>
           <HtmlTitle>{`Saisie - Calendrier- ${HTML_PV_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
           <ProjectScheduleProjectionFormContainer />
-        </>
-      );
-    case "RENEWABLE_ENERGY_PROJECT_PHASE":
-      return (
-        <>
-          <HtmlTitle>{`Avancement - ${HTML_PV_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
-          <ProjectPhaseForm />
         </>
       );
     case "RENEWABLE_ENERGY_FINAL_SUMMARY":

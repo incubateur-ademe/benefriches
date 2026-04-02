@@ -9,7 +9,7 @@ import {
 } from "@/shared/core/reducers/project-form/projectForm.reducer";
 import { UrbanProjectCreationStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 
-import { currentProjectFlowUpdated } from "./actions/currentProjectFlowUpdated.action.ts";
+import { currentProjectFlowUpdated } from "./actions/currentProjectFlowUpdated.action";
 import { fetchSiteRelatedLocalAuthorities } from "./actions/getSiteLocalAuthorities.action";
 import { reconversionProjectCreationInitiated } from "./actions/reconversionProjectCreationInitiated.action";
 import { surfaceAreaInputModeUpdated } from "./actions/surfaceAreaInputModeUpdated.action";
@@ -18,7 +18,7 @@ import {
   demoProjectCreationReducer,
   DemoProjectCreationState,
 } from "./demo/demoProject.reducer";
-import { DemoProjectCreationStep } from "./demo/demoSteps.ts";
+import { DemoProjectCreationStep } from "./demo/demoSteps";
 import {
   RenewableEnergyProjectState,
   INITIAL_STATE as renenewableEnergyProjectInitialState,

@@ -195,7 +195,10 @@ describe("stepNavigationRequested action", () => {
   });
 
   describe("LoadStep edge cases", () => {
-    it.each(["URBAN_PROJECT_USES_SELECTION", "URBAN_PROJECT_PROJECT_PHASE"] as const)(
+    it.each([
+      "URBAN_PROJECT_USES_SELECTION",
+      "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
+    ] as const)(
       "should handle stepNavigationRequested for steps without default logic",
       (stepId) => {
         const testStore = new StoreBuilder().build();

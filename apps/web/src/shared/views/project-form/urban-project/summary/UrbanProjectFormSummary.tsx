@@ -11,7 +11,6 @@ import { getLabelForSpace } from "@/features/create-project/core/urban-project/u
 import { getLabelForDevelopmentPlanCategory } from "@/features/create-project/views/projectTypeLabelMapping";
 import { formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 import { getLabelForSoilType } from "@/shared/core/label-mapping/soilTypeLabelMapping";
-import { getLabelForUrbanProjectPhase } from "@/shared/core/projectPhase";
 import { getProjectSummary } from "@/shared/core/reducers/project-form/urban-project/helpers/projectSummary";
 import { UrbanProjectCreationStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 import { getLabelForBuildingsUse } from "@/shared/core/urbanProject";
@@ -361,23 +360,6 @@ function UrbanProjectFormSummary({
             }
           />
         </Section>
-
-        {/* 📈 Avancement */}
-        {stepsGroupedBySections.PROJECT_PROGRESS && (
-          <Section
-            title="📈 Avancement"
-            {...getSectionProps(stepsGroupedBySections.PROJECT_PROGRESS)}
-          >
-            <DataLine
-              label={<strong>Phase du projet</strong>}
-              value={
-                projectSummary.projectPhase.value
-                  ? getLabelForUrbanProjectPhase(projectSummary.projectPhase.value)
-                  : "Non renseigné"
-              }
-            />
-          </Section>
-        )}
 
         {/* ✍️ Dénomination */}
         <Section title="✍️ Dénomination" {...getSectionProps(stepsGroupedBySections.NAMING)}>

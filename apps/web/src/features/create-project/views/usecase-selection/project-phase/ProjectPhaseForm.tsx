@@ -1,19 +1,30 @@
+import Button from "@codegouvfr/react-dsfr/Button";
 import { Controller, useForm } from "react-hook-form";
+import { PROJECT_PHASE_VALUES, ProjectPhase } from "shared";
 
-import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
+import {
+  getHintTextForProjectPhase,
+  getLabelForProjectPhase,
+  getPictogramForProjectPhase,
+} from "@/shared/core/projectPhase";
 import HorizontalCheckableTile from "@/shared/views/components/CheckableTile/HorizontalCheckableTile";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
-type Props<T> = {
-  initialValues?: FormValues<T>;
-  projectPhaseOptions: { value: T; label: string; hintText?: string; pictogram?: string }[];
-  onSubmit: (data: FormValues<T>) => void;
-  onBack: () => void;
+type Props = {
+  initialValues?: FormValues;
+  onSubmit: (data: FormValues) => void;
 };
 
-type FormValues<T> = {
-  phase?: T;
+type FormValues = {
+  phase?: ProjectPhase;
 };
+
+const options = PROJECT_PHASE_VALUES.map((phase) => ({
+  value: phase,
+  label: getLabelForProjectPhase(phase),
+  hintText: getHintTextForProjectPhase(phase),
+  pictogram: getPictogramForProjectPhase(phase),
+}));
 
 type ProjectPhaseOptionProps = {
   label: string;
@@ -42,20 +53,15 @@ const ProjectPhaseOption = ({
   );
 };
 
-function ProjectPhaseForm<TProjectPhase extends string>({
-  initialValues,
-  projectPhaseOptions,
-  onSubmit,
-  onBack,
-}: Props<TProjectPhase>) {
-  const { handleSubmit, watch, control } = useForm<FormValues<TProjectPhase>>({
+function ProjectPhaseForm({ initialValues, onSubmit }: Props) {
+  const { handleSubmit, watch, control } = useForm<FormValues>({
     defaultValues: initialValues,
   });
 
   return (
     <WizardFormLayout title="A quelle phase du projet êtes-vous ?">
       <form onSubmit={handleSubmit(onSubmit)}>
-        {projectPhaseOptions.map((option) => {
+        {options.map((option) => {
           return (
             <div key={option.value} className="mb-4">
               <Controller
@@ -79,7 +85,9 @@ function ProjectPhaseForm<TProjectPhase extends string>({
             </div>
           );
         })}
-        <BackNextButtonsGroup onBack={onBack} nextLabel={watch("phase") ? "Valider" : "Passer"} />
+        <Button className="float-right" type="submit">
+          {watch("phase") ? "Valider" : "Passer"}
+        </Button>
       </form>
     </WizardFormLayout>
   );

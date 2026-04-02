@@ -9,8 +9,9 @@ export const saveReconversionProject = createAppAsyncThunk(
   makeRenewableEnergyProjectCreationActionType("saved"),
   async (_, { getState, extra }) => {
     const { projectCreation, currentUser } = getState();
-    const { renewableEnergyProject, siteData, projectId } = projectCreation;
+    const { renewableEnergyProject, siteData, projectId, useCaseSelection } = projectCreation;
     const { steps } = renewableEnergyProject;
+    const phase = useCaseSelection.projectPhase;
 
     const power = ReadStateHelper.getStepAnswers(steps, "RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER");
     const surface = ReadStateHelper.getStepAnswers(steps, "RENEWABLE_ENERGY_PHOTOVOLTAIC_SURFACE");
@@ -63,7 +64,6 @@ export const saveReconversionProject = createAppAsyncThunk(
       "RENEWABLE_ENERGY_EXPENSES_PHOTOVOLTAIC_PANELS_INSTALLATION",
     );
     const schedule = ReadStateHelper.getStepAnswers(steps, "RENEWABLE_ENERGY_SCHEDULE_PROJECTION");
-    const phase = ReadStateHelper.getStepAnswers(steps, "RENEWABLE_ENERGY_PROJECT_PHASE");
     const naming = ReadStateHelper.getStepAnswers(steps, "RENEWABLE_ENERGY_NAMING");
     const decontaminationSelection = ReadStateHelper.getStepAnswers(
       steps,
@@ -116,7 +116,7 @@ export const saveReconversionProject = createAppAsyncThunk(
           contractDuration: contract?.photovoltaicContractDuration,
         },
       },
-      projectPhase: phase?.phase,
+      projectPhase: phase,
       decontaminatedSoilSurface:
         decontaminationSurface?.decontaminatedSurfaceArea ??
         decontaminationSelection?.decontaminatedSurfaceArea,

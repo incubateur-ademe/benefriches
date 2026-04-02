@@ -14,7 +14,6 @@ import { expensesProjectedBuildingsOperatingExpensesStepperConfig } from "@/shar
 import { expensesReinstatementStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/expenses/expenses-reinstatement/expensesReinstatement.stepperConfig";
 import { expensesSitePurchaseAmountsStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/expenses/expenses-site-purchase-amounts/expensesSitePurchaseAmounts.stepperConfig";
 import { namingStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/naming/naming/naming.stepperConfig";
-import { projectPhaseStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/project-phase/project-phase/projectPhase.stepperConfig";
 import { creationResultStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/result/creation-result/creationResult.stepperConfig";
 import { revenueBuildingsOperationsYearlyRevenuesStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/revenues/revenue-buildings-operations-yearly-revenues/revenueBuildingsOperationsYearlyRevenues.stepperConfig";
 import { revenueBuildingsResaleStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/revenues/revenue-buildings-resale/revenueBuildingsResale.stepperConfig";
@@ -60,7 +59,6 @@ export type StepGroupId =
   | "EXPENSES"
   | "REVENUE"
   | "SCHEDULE"
-  | "PROJECT_PROGRESS"
   | "NAMING"
   | "SUMMARY";
 
@@ -143,7 +141,6 @@ export const STEP_GROUP_LABELS: Record<StepGroupId | StepSubGroupId, string> = {
   REVENUE_BUILDINGS_RESALE: "Vente des bâtiments",
 
   SCHEDULE: "Calendrier",
-  PROJECT_PROGRESS: "Avancement",
 
   NAMING: "Dénomination",
 
@@ -219,7 +216,6 @@ export const STEP_TO_GROUP_MAPPING: StepToGroupMapping = {
 
   // Calendrier et avancement
   URBAN_PROJECT_SCHEDULE_PROJECTION: scheduleProjectionStepperConfig,
-  URBAN_PROJECT_PROJECT_PHASE: projectPhaseStepperConfig,
 
   // Final
   URBAN_PROJECT_NAMING: namingStepperConfig,

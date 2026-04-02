@@ -27,7 +27,7 @@ describe("Renewable energy creation - Steps - schedule projection", () => {
         completed: true,
         payload: { firstYearOfOperation: 2031 },
       });
-      expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_PROJECT_PHASE");
+      expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_NAMING");
     });
 
     it("should complete step with full schedule data and navigate to project phase", () => {
@@ -66,7 +66,7 @@ describe("Renewable energy creation - Steps - schedule projection", () => {
           },
         },
       });
-      expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_PROJECT_PHASE");
+      expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_NAMING");
     });
   });
 

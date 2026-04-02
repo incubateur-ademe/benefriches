@@ -9,6 +9,9 @@ test.describe("photovoltaic project creation -  with mutability results in url",
     // Navigate to project creation
     await pvProjectCreationPage.gotoWithProjectSuggestions(testSite.id);
 
+    // Project phase
+    await pvProjectCreationPage.selectProjectPhase("Montage / Développement");
+
     // Create mode selection
     await pvProjectCreationPage.selectCreateMode("custom");
 

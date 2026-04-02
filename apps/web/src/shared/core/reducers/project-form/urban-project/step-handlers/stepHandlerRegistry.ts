@@ -15,7 +15,6 @@ import { ExpensesProjectedBuildingsOperatingExpensesHandler } from "./expenses/e
 import { UrbanProjectReinstatementExpensesHandler } from "./expenses/expenses-reinstatement/expensesReinstatement.handler";
 import { ExpensesSitePurchaseAmountsHandler } from "./expenses/expenses-site-purchase-amounts/expensesSitePurchaseAmounts.handler";
 import { UrbanProjectNamingHandler } from "./naming/naming/naming.handler";
-import { ProjectPhaseHandler } from "./project-phase/project-phase/projectPhase.handler";
 import { CreationResultHandler } from "./result/creation-result/creationResult.handler";
 import { RevenueBuildingsOperationsYearlyRevenuesHandler } from "./revenues/revenue-buildings-operations-yearly-revenues/revenueBuildingsOperationsYearlyRevenues.handler";
 import { RevenueBuildingsResaleHandler } from "./revenues/revenue-buildings-resale/revenueBuildingsResale.handler";
@@ -95,7 +94,6 @@ export const answerStepHandlers: AnswerStepHandlerMap = {
   URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE: RevenueFinancialAssistanceHandler,
   // schedule, phase and naming
   URBAN_PROJECT_SCHEDULE_PROJECTION: UrbanProjectScheduleProjectionHandler,
-  URBAN_PROJECT_PROJECT_PHASE: ProjectPhaseHandler,
   URBAN_PROJECT_NAMING: UrbanProjectNamingHandler,
 };
 

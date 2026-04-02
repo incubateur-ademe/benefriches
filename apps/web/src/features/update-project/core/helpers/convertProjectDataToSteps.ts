@@ -5,7 +5,6 @@ import {
   sumListWithKey,
   typedObjectKeys,
   UrbanProjectDevelopmentExpense,
-  UrbanProjectPhase,
   YearlyBuildingsOperationsRevenues,
   YearlyBuildingsOperationsExpenses,
 } from "shared";
@@ -279,14 +278,6 @@ export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProje
           payload: {
             name: projectData.name,
             description: projectData.description,
-          },
-          completed: true,
-        };
-        break;
-      case "URBAN_PROJECT_PROJECT_PHASE":
-        steps["URBAN_PROJECT_PROJECT_PHASE"] = {
-          payload: {
-            projectPhase: projectData.projectPhase as UrbanProjectPhase,
           },
           completed: true,
         };

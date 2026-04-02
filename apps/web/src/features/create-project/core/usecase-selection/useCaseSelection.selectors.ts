@@ -1,9 +1,9 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { DevelopmentPlanCategory } from "shared";
+import { DevelopmentPlanCategory, ProjectPhase } from "shared";
 
 import { RootState } from "@/app/store/store";
+import { StepVariant } from "@/shared/views/layout/WizardFormLayout/FormBaseStepperStep";
 
-import { ProjectCreationState } from "../createProject.reducer";
 import { ProjectSuggestion } from "../project.types";
 import { UseCaseSelectionStep } from "./useCaseSelection.reducer";
 import {
@@ -24,9 +24,7 @@ export const selectUseCaseSelectionWizardViewData = createSelector(
 );
 
 type UseCaseSelectionStepperViewData = {
-  currentStep: UseCaseSelectionStep;
-  currentProjectFlow: ProjectCreationState["currentProjectFlow"];
-  stepCategories: { title: string; targetStepId: UseCaseSelectionStep }[];
+  stepCategories: { title: string; targetStepId: UseCaseSelectionStep; variant: StepVariant }[];
 };
 
 const getFirstStepOfGroup = (
@@ -47,20 +45,35 @@ export const selectUseCaseSelectionStepperViewData = createSelector(
 
     const availableGroupIds = getAvailableGroupIds(stepsSequence);
 
-    const stepCategories = USE_CASE_SELECTION_STEP_GROUP_IDS.filter((groupId) =>
+    const stepCategoriesIds = USE_CASE_SELECTION_STEP_GROUP_IDS.filter((groupId) =>
       availableGroupIds.has(groupId),
-    ).map((groupId) => {
-      const targetStepId = getFirstStepOfGroup(stepsSequence, groupId);
-      if (!targetStepId) throw new Error(`No step found for group "${groupId}"`);
-      return {
-        title: USE_CASE_SELECTION_STEP_GROUP_LABELS[groupId],
-        targetStepId,
-      };
-    });
+    );
+
+    const { groupId: currentGroupId } = USE_CASE_SELECTION_STEP_TO_GROUP[currentStep];
+    const currentStepIndex = stepCategoriesIds.indexOf(currentGroupId);
+
+    const stepCategories: UseCaseSelectionStepperViewData["stepCategories"] = stepCategoriesIds.map(
+      (groupId, index) => {
+        const targetStepId = getFirstStepOfGroup(stepsSequence, groupId);
+        if (!targetStepId) throw new Error(`No step found for group "${groupId}"`);
+        return {
+          title: USE_CASE_SELECTION_STEP_GROUP_LABELS[groupId],
+          targetStepId,
+          variant: {
+            activity:
+              state.currentProjectFlow === "USE_CASE_SELECTION" && index === currentStepIndex
+                ? "current"
+                : "inactive",
+            validation:
+              state.currentProjectFlow !== "USE_CASE_SELECTION" || currentStepIndex > index
+                ? "completed"
+                : "empty",
+          },
+        };
+      },
+    );
 
     return {
-      currentProjectFlow: state.currentProjectFlow,
-      currentStep,
       stepCategories,
     };
   },
@@ -89,5 +102,15 @@ export const selectProjectTypeViewData = createSelector(
   (state): ProjectTypeViewData => ({
     developmentPlanCategory: state.useCaseSelection.projectDevelopmentPlan?.category,
     projectSuggestions: state.useCaseSelection.projectSuggestions,
+  }),
+);
+
+type ProjectPhaseViewData = {
+  projectPhase?: ProjectPhase;
+};
+export const selectProjectPhaseViewData = createSelector(
+  (state: RootState) => state.projectCreation,
+  (state): ProjectPhaseViewData => ({
+    projectPhase: state.useCaseSelection.projectPhase,
   }),
 );

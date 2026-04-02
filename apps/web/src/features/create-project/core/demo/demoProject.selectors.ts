@@ -3,16 +3,16 @@ import { createSelector } from "@reduxjs/toolkit";
 import { RootState } from "@/app/store/store";
 import { selectShouldGoThroughOnboarding } from "@/features/projects/application/project-impacts/impactsOnboardingSkip.selectors";
 
-import { ProjectCreationState } from "../createProject.reducer.ts";
+import { ProjectCreationState } from "../createProject.reducer";
 import { selectSiteData } from "../createProject.selectors";
-import type { ExpressReconversionProjectResult } from "./demoProject.actions.ts";
-import { DEMO_INITIAL_STATE } from "./demoProject.reducer.ts";
+import type { ExpressReconversionProjectResult } from "./demoProject.actions";
+import { DEMO_INITIAL_STATE } from "./demoProject.reducer";
 import {
   DEMO_STEP_GROUP_IDS,
   DEMO_STEP_GROUP_LABELS,
   DEMO_STEP_TO_GROUP,
-} from "./demoStepperConfig.ts";
-import { DemoProjectCreationStep } from "./demoSteps.ts";
+} from "./demoStepperConfig";
+import { DemoProjectCreationStep } from "./demoSteps";
 
 const selectSelf = (state: RootState) => state.projectCreation;
 

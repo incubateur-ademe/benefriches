@@ -11,10 +11,6 @@ describe("projectDataReaders", () => {
           completed: true,
           payload: { name: "Test Project", description: "Description" },
         },
-        URBAN_PROJECT_PROJECT_PHASE: {
-          completed: true,
-          payload: { projectPhase: "planning" },
-        },
         URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER: {
           completed: true,
           payload: {
@@ -27,7 +23,6 @@ describe("projectDataReaders", () => {
 
       expect(result.name).toBe("Test Project");
       expect(result.description).toBe("Description");
-      expect(result.projectPhase).toBe("planning");
       expect(result.developmentPlan?.developer).toEqual({
         structureType: "company",
         name: "Dev Corp",

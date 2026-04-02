@@ -13,7 +13,7 @@ import type {
   DemoProjectCreationStep,
   answersByStepSchemas,
   DemoSummaryStep,
-} from "./demoSteps.ts";
+} from "./demoSteps";
 
 export type DemoStepContext = StepContext<
   typeof answersByStepSchemas,
