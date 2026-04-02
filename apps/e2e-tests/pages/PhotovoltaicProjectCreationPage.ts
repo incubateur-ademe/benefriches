@@ -38,11 +38,13 @@ export class PhotovoltaicProjectCreationPage {
   // --- Create mode selection ---
 
   async selectCreateMode(mode: CreateMode): Promise<void> {
-    const labels: Record<CreateMode, string> = {
-      express: "Mode démo",
-      custom: "Mode personnalisé",
+    const labels: Record<CreateMode, RegExp> = {
+      express: /J.ai pas ou peu de données/,
+      custom: /J.ai des données précises/,
     };
-    await this.page.getByText(labels[mode]).click();
+
+    await this.page.locator('[role="radio"]').filter({ hasText: labels[mode] }).click();
+
     await this.submit();
   }
 

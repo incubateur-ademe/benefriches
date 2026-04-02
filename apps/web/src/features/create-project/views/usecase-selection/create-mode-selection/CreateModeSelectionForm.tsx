@@ -3,17 +3,12 @@ import { Controller, useForm } from "react-hook-form";
 import { ReconversionProjectCreationMode } from "shared";
 
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
-import Badge from "@/shared/views/components/Badge/Badge";
-import CheckableTile from "@/shared/views/components/CheckableTile/CheckableTile";
-import TileFormFieldWrapper from "@/shared/views/layout/TileFormWrapper/TileFormFieldWrapper";
-import TileFormFieldsWrapper from "@/shared/views/layout/TileFormWrapper/TileFormFieldsWrapper";
-import TileFormFooterWrapper from "@/shared/views/layout/TileFormWrapper/TileFormFooterWrapper";
+import HorizontalCheckableTile from "@/shared/views/components/CheckableTile/HorizontalCheckableTile";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
-  options: Option[];
   initialValues?: FormValues;
 };
 
@@ -26,62 +21,64 @@ type Option = {
   title: string;
   description: string;
   imgSrc: string;
-  badgeText: string;
 };
+const options: Option[] = [
+  {
+    value: "custom" as const,
+    title: "J'ai des données précises ou approximatives",
+    description:
+      "Bénéfriches réalisera une évaluation au plus près de la réalité de votre projet. S’il vous manque des données, pas de panique, Bénéfriches vous proposera des données préremplies. Vous pourrez aussi revenir plus tard modifier ces données.",
+    imgSrc: "/img/pictograms/creation-mode/custom-creation.svg",
+  },
+  {
+    value: "express" as const,
+    title: "J'ai pas ou peu de données ou ne sais pas encore ce que je veux faire.",
+    description: "Bénéfriches réalisera une évaluation d’un projet d’aménagement “démo”.",
+    imgSrc: "/img/icons/demo.svg",
+  },
+];
 
-function CreateModeSelectionForm({ onSubmit, onBack, options, initialValues }: Props) {
+function CreateModeSelectionForm({ onSubmit, onBack, initialValues }: Props) {
   const { control, handleSubmit, formState } = useForm<FormValues>({
     defaultValues: initialValues,
   });
   const validationError = formState.errors.createMode;
 
   return (
-    <WizardFormLayout title="Comment souhaitez-vous créer votre projet ?" fullScreen>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <TileFormFieldsWrapper>
+    <WizardFormLayout title="Que savez vous de votre projet ?">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-8">
+        <div className="flex flex-col gap-3">
           {options.map((option) => {
             return (
-              <TileFormFieldWrapper key={option.value}>
-                <Controller
-                  control={control}
-                  name="createMode"
-                  rules={{ required: "Veuillez sélectionner un mode de création." }}
-                  render={({ field }) => {
-                    const isSelected = field.value === option.value;
-                    return (
-                      <CheckableTile
-                        title={option.title}
-                        description={
-                          <>
-                            <div>{option.description}</div>
-                            <Badge className="mt-3" style="green-tilleul">
-                              {option.badgeText}
-                            </Badge>
-                          </>
-                        }
-                        checked={isSelected}
-                        onChange={() => {
-                          field.onChange(option.value);
-                        }}
-                        imgSrc={option.imgSrc}
-                      />
-                    );
-                  }}
-                />
-              </TileFormFieldWrapper>
+              <Controller
+                key={option.title}
+                control={control}
+                name="createMode"
+                rules={{ required: "Veuillez sélectionner un mode de création." }}
+                render={({ field }) => {
+                  const isSelected = field.value === option.value;
+                  return (
+                    <HorizontalCheckableTile
+                      title={option.title}
+                      description={option.description}
+                      checked={isSelected}
+                      onChange={() => {
+                        field.onChange(option.value);
+                      }}
+                      imgSrc={option.imgSrc}
+                    />
+                  );
+                }}
+              />
             );
           })}
-          <TileFormFooterWrapper tileCount={options.length}>
-            {validationError && (
-              <p className={fr.cx("fr-error-text", "fr-mb-2w")}>{validationError.message}</p>
-            )}
-            <BackNextButtonsGroup
-              onBack={onBack}
-              nextLabel="Valider"
-              disabled={!formState.isValid}
-            />
-          </TileFormFooterWrapper>
-        </TileFormFieldsWrapper>
+        </div>
+
+        {validationError && (
+          <p className={fr.cx("fr-error-text", "fr-mb-2w")}>{validationError.message}</p>
+        )}
+
+        <BackNextButtonsGroup onBack={onBack} nextLabel="Valider" disabled={!formState.isValid} />
       </form>
     </WizardFormLayout>
   );

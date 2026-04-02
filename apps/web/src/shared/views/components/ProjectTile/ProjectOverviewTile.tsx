@@ -78,7 +78,7 @@ function ProjectOverviewTile({
 
         {isExpressProject && (
           <Badge small className="mt-2" style="blue">
-            Projet express
+            Projet démo
           </Badge>
         )}
       </ProjectTile>

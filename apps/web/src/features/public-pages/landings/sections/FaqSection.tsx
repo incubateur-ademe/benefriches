@@ -63,9 +63,9 @@ const faqData: FaqItem[] = [
           votre site et votre projet.
         </p>
         <p>
-          Et si vous manquez vraiment d'info, vous pouvez même créer un site express et un projet
-          express en seulement 3 questions (sur la base du retour d'expérience de l'ADEME et de
-          données de référence) !
+          Et si vous manquez vraiment d'info, vous pouvez même créer un site démo et un projet démo
+          en seulement 3 questions (sur la base du retour d'expérience de l'ADEME et de données de
+          référence) !
         </p>
       </>
     ),
