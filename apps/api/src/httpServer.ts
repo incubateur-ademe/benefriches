@@ -7,6 +7,7 @@ export function configureServer(app: NestExpressApplication) {
   const configService = app.get(ConfigService);
 
   app.setGlobalPrefix("api");
+  app.set("trust proxy", 1);
   app.use(cookieParser());
   app.use(
     session({
