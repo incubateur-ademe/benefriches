@@ -1,6 +1,7 @@
 // oxlint-disable no-console
 /* oxlint-disable typescript/no-non-null-assertion */
 /* oxlint-disable typescript/no-unsafe-assignment */
+/* oxlint-disable no-control-regex */
 import { createReadStream, createWriteStream } from "node:fs";
 import * as fs from "node:fs";
 import * as https from "node:https";
@@ -10,6 +11,9 @@ import { promisify } from "node:util";
 import * as zlib from "node:zlib";
 
 promisify(pipeline);
+
+// Strips ASCII control characters from external values before logging to prevent log injection
+const stripControlChars = (s: string) => s.replace(/[\x00-\x1F\x7F]/g, " ");
 
 interface Commune {
   code: string;
@@ -243,7 +247,7 @@ class DVFCommuneAnalyzer {
         await new Promise((resolve) => setTimeout(resolve, 100));
       } catch (error) {
         console.warn(
-          `      ❌ Impossible de récupérer l'arrondissement ${codeInsee} : ${(error as Error).message}`,
+          `      ❌ Impossible de récupérer l'arrondissement ${codeInsee} : ${stripControlChars((error as Error).message)}`,
         );
       }
     }
@@ -909,7 +913,11 @@ class DVFCommuneAnalyzer {
       }
       sortedCommunes.slice(0, displayLimit + 1).forEach((commune) => {
         console.log(
-          `        | ${[`${commune.city_code}    `, commune.da_name, commune.da_population].join(" | ")} |`,
+          `        | ${[
+            `${commune.city_code}    `,
+            stripControlChars(commune.da_name),
+            commune.da_population,
+          ].join(" | ")} |`,
         );
       });
 
