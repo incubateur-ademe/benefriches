@@ -5,7 +5,6 @@ import { RootState } from "@/app/store/store";
 import { selectShouldGoThroughOnboarding } from "@/features/projects/application/project-impacts/impactsOnboardingSkip.selectors";
 
 import { ProjectCreationState } from "./createProject.reducer";
-import { ProjectSuggestion } from "./project.types";
 import {
   creationProjectFormSelectors,
   selectUrbanProjectCurrentStep,
@@ -23,17 +22,6 @@ export const selectProjectCreationWizardViewData = createSelector(selectSelf, (s
 export const selectProjectId = createSelector(selectSelf, (state): string => {
   return state.projectId;
 });
-
-type ProjectSuggestionsViewData = {
-  projectSuggestions: ProjectSuggestion[];
-};
-
-export const selectProjectSuggestionsViewData = createSelector(
-  selectSelf,
-  (state): ProjectSuggestionsViewData => ({
-    projectSuggestions: state.useCaseSelection.projectSuggestions ?? [],
-  }),
-);
 
 export const selectSiteData = createSelector(
   selectSelf,

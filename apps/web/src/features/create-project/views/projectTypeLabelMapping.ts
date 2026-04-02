@@ -1,5 +1,9 @@
-import { DevelopmentPlanCategory } from "shared";
+import { DevelopmentPlanCategory, ReconversionProjectTemplate } from "shared";
 
+import {
+  getLabelForUrbanProjectCategory,
+  getPictogramForUrbanProjectCategory,
+} from "@/features/projects/views/shared/urbanProjectCategory";
 import { RenewableEnergyDevelopmentPlanType } from "@/shared/core/reconversionProject";
 
 export const getLabelForDevelopmentPlanCategory = (value: DevelopmentPlanCategory): string => {
@@ -87,4 +91,22 @@ export const getPictogramForRenewableEnergy = (
   value: RenewableEnergyDevelopmentPlanType,
 ): string => {
   return renewableEnergyPictogramMap[value];
+};
+
+export const getLabelForReconversionProjectTemplate = (
+  template: ReconversionProjectTemplate,
+): string => {
+  if (template === "PHOTOVOLTAIC_POWER_PLANT") {
+    return "Centrale photovoltaïque";
+  }
+  return getLabelForUrbanProjectCategory(template);
+};
+
+export const getPictogramSrcForReconversionProjectTemplate = (
+  usage: ReconversionProjectTemplate,
+): string => {
+  if (usage === "PHOTOVOLTAIC_POWER_PLANT")
+    return "/img/pictograms/development-plans/renewable-energy-production.svg";
+
+  return getPictogramForUrbanProjectCategory(usage);
 };

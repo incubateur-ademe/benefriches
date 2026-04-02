@@ -57,6 +57,7 @@ export const selectDemoProjectTemplateViewData = createSelector(selectSelf, (sta
   hasStepBack: state.useCaseSelection.stepsSequence.length > 0,
   projectTemplate:
     state.demoProject.steps.DEMO_PROJECT_TEMPLATE_SELECTION?.payload?.projectTemplate,
+  projectSuggestions: state.useCaseSelection.projectSuggestions,
 }));
 
 type DemoProjectCreationWizardViewData = {
