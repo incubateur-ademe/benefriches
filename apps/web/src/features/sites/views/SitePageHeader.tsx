@@ -47,7 +47,7 @@ export default function SitePageHeader({
           <h2 className="my-0">{siteName}</h2>
           {isExpressSite && (
             <Badge small className="my-2 md:mx-3" style="blue">
-              Site express
+              Site démo
             </Badge>
           )}
           <div className="grow" aria-hidden="true"></div>

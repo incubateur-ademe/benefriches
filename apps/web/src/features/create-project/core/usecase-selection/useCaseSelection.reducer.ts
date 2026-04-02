@@ -78,6 +78,7 @@ export const useCaseSelectionProjectCreationReducer = createReducer(
         ];
       } else {
         state.currentProjectFlow = "DEMO";
+        state.demoProject.currentStep = "DEMO_PROJECT_TEMPLATE_SELECTION";
         state.useCaseSelection.stepsSequence = ["USE_CASE_SELECTION_CREATION_MODE"];
       }
     });

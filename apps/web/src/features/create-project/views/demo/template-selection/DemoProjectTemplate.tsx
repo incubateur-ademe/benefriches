@@ -110,7 +110,7 @@ function DemoProjectTemplate({ onSubmit, onBack, initialValues, projectSuggestio
   ];
 
   return (
-    <WizardFormLayout title="Quel type de projet demo souhaitez-vous évaluer ?" fullScreen>
+    <WizardFormLayout title="Quel type de projet démo souhaitez-vous évaluer ?" fullScreen>
       <form onSubmit={handleSubmit(onSubmit)}>
         <TileFormFieldsWrapper>
           {options.map((option) => {

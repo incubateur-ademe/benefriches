@@ -71,7 +71,7 @@ function MyEvaluationItem({ evaluation, onRemoveProjectFromList, onRemoveSiteFro
           </a>
           {isExpressSite && (
             <Badge small style="blue">
-              Site express
+              Site démo
             </Badge>
           )}
         </div>
