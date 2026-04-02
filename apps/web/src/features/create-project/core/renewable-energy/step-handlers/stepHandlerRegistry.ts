@@ -10,7 +10,6 @@ import { ExpectedAnnualProductionHandler } from "./photovoltaic/photovoltaic-exp
 import { KeyParameterHandler } from "./photovoltaic/photovoltaic-key-parameter/photovoltaicKeyParameter.handler";
 import { PowerHandler } from "./photovoltaic/photovoltaic-power/photovoltaicPower.handler";
 import { SurfaceHandler } from "./photovoltaic/photovoltaic-surface/photovoltaicSurface.handler";
-import { ProjectPhaseHandler } from "./project-phase/project-phase/projectPhase.handler";
 import { FinancialAssistanceHandler } from "./revenue/revenue-financial-assistance/revenueFinancialAssistance.handler";
 import { RevenueIntroductionHandler } from "./revenue/revenue-introduction/revenueIntroduction.handler";
 import { YearlyProjectedRevenueHandler } from "./revenue/revenue-yearly-projected/revenueYearlyProjected.handler";
@@ -91,7 +90,6 @@ export const stepHandlerRegistry = {
 
   // Schedule, phase, naming
   RENEWABLE_ENERGY_SCHEDULE_PROJECTION: ScheduleProjectionHandler,
-  RENEWABLE_ENERGY_PROJECT_PHASE: ProjectPhaseHandler,
   RENEWABLE_ENERGY_NAMING: NamingHandler,
 } as const satisfies Record<
   RenewableEnergyCreationStep,

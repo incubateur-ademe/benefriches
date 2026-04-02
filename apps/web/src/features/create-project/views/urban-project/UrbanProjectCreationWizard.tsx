@@ -64,9 +64,6 @@ const YearlyProjectedExpensesForm = lazy(
 const ProjectNameAndDescriptionForm = lazy(
   () => import("@/shared/views/project-form/urban-project/naming"),
 );
-const ProjectPhaseForm = lazy(
-  () => import("@/shared/views/project-form/urban-project/project-phase"),
-);
 const BuildingsResaleRevenueForm = lazy(
   () => import("@/shared/views/project-form/urban-project/revenues/buildings-resale"),
 );
@@ -446,13 +443,6 @@ const getCurrentStepView = (step: UrbanProjectCreationStep): Exclude<ReactNode, 
         <>
           <HtmlTitle>{`Saisie - Calendrier - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
           <ScheduleProjectionForm />
-        </>
-      );
-    case "URBAN_PROJECT_PROJECT_PHASE":
-      return (
-        <>
-          <HtmlTitle>{`Avancement - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
-          <ProjectPhaseForm />
         </>
       );
     case "URBAN_PROJECT_NAMING":

@@ -332,17 +332,6 @@ describe("urbanProject.reducer - stepCompletionRequested without validation", ()
       );
 
       // Étape ----
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_PROJECT_PHASE");
-      store.dispatch(
-        stepCompletionRequested({
-          stepId: "URBAN_PROJECT_PROJECT_PHASE",
-          answers: {
-            projectPhase: "planning",
-          },
-        }),
-      );
-
-      // Étape ----
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_NAMING");
       store.dispatch(
         stepCompletionRequested({
@@ -361,7 +350,7 @@ describe("urbanProject.reducer - stepCompletionRequested without validation", ()
       // Étape ----
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_CREATION_RESULT");
 
-      expect(Object.keys(store.getState().projectCreation.urbanProject.steps).length).toEqual(35);
+      expect(Object.keys(store.getState().projectCreation.urbanProject.steps).length).toEqual(34);
     });
 
     it('should handle decontamination plan "none" correctly', () => {

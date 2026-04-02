@@ -32,6 +32,6 @@ export const UrbanProjectScheduleProjectionHandler = {
   },
 
   getNextStepId() {
-    return "URBAN_PROJECT_PROJECT_PHASE";
+    return "URBAN_PROJECT_NAMING";
   },
 } satisfies AnswerStepHandler<"URBAN_PROJECT_SCHEDULE_PROJECTION">;

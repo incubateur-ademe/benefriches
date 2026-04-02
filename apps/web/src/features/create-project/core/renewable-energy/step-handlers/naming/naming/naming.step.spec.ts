@@ -45,12 +45,12 @@ describe("Renewable energy creation - Steps - naming", () => {
   });
 
   describe("back navigation", () => {
-    it("should navigate back to project phase", () => {
+    it("should navigate back to schedule phase", () => {
       const store = new StoreBuilder()
-        .withStepsSequence(["RENEWABLE_ENERGY_PROJECT_PHASE", "RENEWABLE_ENERGY_NAMING"])
+        .withStepsSequence(["RENEWABLE_ENERGY_SCHEDULE_PROJECTION", "RENEWABLE_ENERGY_NAMING"])
         .build();
       store.dispatch(previousStepRequested());
-      expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_PROJECT_PHASE");
+      expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SCHEDULE_PROJECTION");
     });
   });
 });

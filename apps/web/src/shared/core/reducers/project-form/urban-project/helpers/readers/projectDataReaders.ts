@@ -54,7 +54,6 @@ export function getProjectData(steps: Steps): Partial<UrbanProjectFormData> {
             ?.usesFloorSurfaceAreaDistribution ?? {},
       },
     },
-    projectPhase: steps.URBAN_PROJECT_PROJECT_PHASE?.payload?.projectPhase,
     decontaminatedSoilSurface:
       steps.URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA?.payload?.decontaminatedSurfaceArea,
     buildingsResaleExpectedPropertyTransferDuties:

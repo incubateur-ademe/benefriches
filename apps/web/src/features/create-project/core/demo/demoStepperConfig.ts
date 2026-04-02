@@ -1,6 +1,6 @@
 import z from "zod";
 
-import type { DemoProjectCreationStep } from "./demoSteps.ts";
+import type { DemoProjectCreationStep } from "./demoSteps";
 
 const demoStepGroupIdSchema = z.enum(["PROJECT_TEMPLATE", "SUMMARY"]);
 

@@ -11,7 +11,6 @@ import { expensesProjectedBuildingsOperatingExpensesSchema } from "./step-handle
 import { expensesReinstatementSchema } from "./step-handlers/expenses/expenses-reinstatement/expensesReinstatement.schema";
 import { expensesSitePurchaseAmountsSchema } from "./step-handlers/expenses/expenses-site-purchase-amounts/expensesSitePurchaseAmounts.schema";
 import { namingSchema } from "./step-handlers/naming/naming/naming.schema";
-import { projectPhaseSchema } from "./step-handlers/project-phase/project-phase/projectPhase.schema";
 import { revenueBuildingsOperationsYearlyRevenuesSchema } from "./step-handlers/revenues/revenue-buildings-operations-yearly-revenues/revenueBuildingsOperationsYearlyRevenues.schema";
 import { revenueBuildingsResaleSchema } from "./step-handlers/revenues/revenue-buildings-resale/revenueBuildingsResale.schema";
 import { revenueExpectedSiteResaleSchema } from "./step-handlers/revenues/revenue-expected-site-resale/revenueExpectedSiteResale.schema";
@@ -138,8 +137,6 @@ export const answersByStepSchemas = {
   URBAN_PROJECT_SCHEDULE_PROJECTION: scheduleProjectionSchema,
 
   URBAN_PROJECT_NAMING: namingSchema,
-
-  URBAN_PROJECT_PROJECT_PHASE: projectPhaseSchema,
 };
 
 export const ANSWER_STEPS = typedObjectKeys(answersByStepSchemas);

@@ -31,8 +31,8 @@ describe("Reconversion project creation initialization", () => {
       surfaceAreaInputMode: "percentage",
       demoProject: expect.any(Object),
       useCaseSelection: {
-        stepsSequence: ["USE_CASE_SELECTION_CREATION_MODE"],
-        currentStep: "USE_CASE_SELECTION_CREATION_MODE",
+        stepsSequence: ["USE_CASE_SELECTION_PROJECT_PHASE"],
+        currentStep: "USE_CASE_SELECTION_PROJECT_PHASE",
       },
       currentProjectFlow: "USE_CASE_SELECTION",
     });
@@ -61,8 +61,8 @@ describe("Reconversion project creation initialization", () => {
       surfaceAreaInputMode: "percentage",
       demoProject: expect.any(Object),
       useCaseSelection: {
-        stepsSequence: ["USE_CASE_SELECTION_CREATION_MODE"],
-        currentStep: "USE_CASE_SELECTION_CREATION_MODE",
+        stepsSequence: ["USE_CASE_SELECTION_PROJECT_PHASE"],
+        currentStep: "USE_CASE_SELECTION_PROJECT_PHASE",
       },
       currentProjectFlow: "USE_CASE_SELECTION",
     });
@@ -99,8 +99,8 @@ describe("Reconversion project creation initialization", () => {
       surfaceAreaInputMode: "percentage",
       demoProject: expect.any(Object),
       useCaseSelection: {
-        stepsSequence: ["USE_CASE_SELECTION_CREATION_MODE"],
-        currentStep: "USE_CASE_SELECTION_CREATION_MODE",
+        stepsSequence: ["USE_CASE_SELECTION_PROJECT_PHASE"],
+        currentStep: "USE_CASE_SELECTION_PROJECT_PHASE",
         projectSuggestions: projectSuggestions,
       },
       currentProjectFlow: "USE_CASE_SELECTION",

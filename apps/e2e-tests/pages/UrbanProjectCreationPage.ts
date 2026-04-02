@@ -43,6 +43,11 @@ export class UrbanProjectCreationPage {
     await this.submit();
   }
 
+  async selectProjectPhase(label: string): Promise<void> {
+    await this.page.getByText(label).click();
+    await this.submit();
+  }
+
   async selectUrbanProjectTemplate(template: ExpressUrbanProjectTemplate): Promise<void> {
     const label = getLabelForUrbanProjectCategory(template);
     await this.page.getByText(label).click();

@@ -203,12 +203,6 @@ export const getProjectSummary = (
         steps.URBAN_PROJECT_REVENUE_BUILDINGS_RESALE?.defaultValues?.buildingsResaleSellingPrice,
       shouldDisplay: stepsSequence.includes("URBAN_PROJECT_REVENUE_BUILDINGS_RESALE"),
     },
-    projectPhase: {
-      value: steps.URBAN_PROJECT_PROJECT_PHASE?.payload?.projectPhase,
-      isAuto:
-        steps.URBAN_PROJECT_PROJECT_PHASE?.payload?.projectPhase ===
-        steps.URBAN_PROJECT_PROJECT_PHASE?.defaultValues?.projectPhase,
-    },
     decontaminatedSoilSurface: {
       value:
         steps.URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA?.payload?.decontaminatedSurfaceArea,

@@ -11,7 +11,6 @@ import { photovoltaicExpectedAnnualProductionSchema } from "./step-handlers/phot
 import { photovoltaicKeyParameterSchema } from "./step-handlers/photovoltaic/photovoltaic-key-parameter/photovoltaicKeyParameter.schema";
 import { photovoltaicPowerSchema } from "./step-handlers/photovoltaic/photovoltaic-power/photovoltaicPower.schema";
 import { photovoltaicSurfaceSchema } from "./step-handlers/photovoltaic/photovoltaic-surface/photovoltaicSurface.schema";
-import { projectPhaseSchema } from "./step-handlers/project-phase/project-phase/projectPhase.schema";
 import { revenueFinancialAssistanceSchema } from "./step-handlers/revenue/revenue-financial-assistance/revenueFinancialAssistance.schema";
 import { revenueYearlyProjectedRevenueSchema } from "./step-handlers/revenue/revenue-yearly-projected/revenueYearlyProjected.schema";
 import { scheduleProjectionSchema } from "./step-handlers/schedule/schedule-projection/scheduleProjection.schema";
@@ -77,7 +76,6 @@ export const answersByStepSchemas = {
   RENEWABLE_ENERGY_REVENUE_PROJECTED_YEARLY_REVENUE: revenueYearlyProjectedRevenueSchema,
   RENEWABLE_ENERGY_REVENUE_FINANCIAL_ASSISTANCE: revenueFinancialAssistanceSchema,
   RENEWABLE_ENERGY_SCHEDULE_PROJECTION: scheduleProjectionSchema,
-  RENEWABLE_ENERGY_PROJECT_PHASE: projectPhaseSchema,
   RENEWABLE_ENERGY_NAMING: namingSchema,
 };
 

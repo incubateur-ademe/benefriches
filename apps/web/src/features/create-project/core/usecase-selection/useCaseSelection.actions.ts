@@ -1,5 +1,5 @@
 import { createAction } from "@reduxjs/toolkit";
-import { DevelopmentPlanCategory } from "shared";
+import { DevelopmentPlanCategory, ProjectPhase } from "shared";
 
 import { RenewableEnergyDevelopmentPlanType } from "@/shared/core/reconversionProject";
 
@@ -27,3 +27,6 @@ export const stepReverted = createUseCaseSelectionAction("stepReverted");
 
 export const projectUseCaseSelectionStepGroupNavigated =
   createUseCaseSelectionAction<UseCaseSelectionStep>("useCaseSelectionStepGroupNavigated");
+
+export const projectPhaseCompleted =
+  createUseCaseSelectionAction<ProjectPhase>("projectPhaseCompleted");

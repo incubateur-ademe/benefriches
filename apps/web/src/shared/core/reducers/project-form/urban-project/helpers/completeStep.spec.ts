@@ -107,7 +107,7 @@ describe("computeStepChanges", () => {
         "URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA",
         {
           getDependencyRules: () => [
-            { stepId: "URBAN_PROJECT_PROJECT_PHASE", action: "delete" as const },
+            { stepId: "URBAN_PROJECT_EXPENSES_INSTALLATION", action: "delete" as const },
           ],
         },
       ),
@@ -122,7 +122,7 @@ describe("computeStepChanges", () => {
     expect(result.cascadingChanges).toEqual(
       expect.arrayContaining([
         { stepId: "URBAN_PROJECT_NAMING", action: "invalidate" },
-        { stepId: "URBAN_PROJECT_PROJECT_PHASE", action: "delete" },
+        { stepId: "URBAN_PROJECT_EXPENSES_INSTALLATION", action: "delete" },
       ]),
     );
     expect(result.cascadingChanges).toHaveLength(2);

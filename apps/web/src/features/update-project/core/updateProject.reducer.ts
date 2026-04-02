@@ -1,5 +1,5 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { DevelopmentPlanType } from "shared";
+import { DevelopmentPlanType, ProjectPhase } from "shared";
 
 import {
   addProjectFormCasesToBuilder,
@@ -35,6 +35,7 @@ type ProjectUpdateState = ProjectFormState<UrbanProjectUpdateStep> & {
     projectName?: string;
     isExpress?: boolean;
     projectType?: DevelopmentPlanType;
+    projectPhase?: ProjectPhase;
   };
 };
 
@@ -74,6 +75,7 @@ const projectUpdateReducer = createReducer(getInitialState(), (builder) => {
         projectName: action.payload.projectData.name,
         isExpress: action.payload.projectData.creationMode === "express",
         projectType: action.payload.projectData.developmentPlan.type,
+        projectPhase: action.payload.projectData.projectPhase as ProjectPhase,
       };
 
       state.urbanProject.steps = convertProjectDataToSteps(action.payload);

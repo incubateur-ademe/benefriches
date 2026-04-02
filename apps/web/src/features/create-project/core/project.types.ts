@@ -4,11 +4,11 @@ import {
   RecurringExpense,
   RecurringRevenue,
   ReinstatementExpense,
-  RenewableEnergyProjectPhase,
   SoilsDistribution,
   SoilType,
   SoilsTransformationProject,
   ReconversionProjectTemplate,
+  ProjectPhase,
 } from "shared";
 
 import { UserStructureType } from "@/features/onboarding/core/user";
@@ -67,7 +67,7 @@ export type ReconversionProjectCreationData = {
   photovoltaicInstallationSchedule?: Schedule;
   firstYearOfOperation?: number;
   // project phase
-  projectPhase?: RenewableEnergyProjectPhase;
+  projectPhase?: ProjectPhase;
 };
 
 export type ProjectStakeholderStructure =

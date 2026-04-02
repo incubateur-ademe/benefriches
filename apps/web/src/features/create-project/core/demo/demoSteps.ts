@@ -1,7 +1,7 @@
 import { renewableEnergyTemplateSchema, urbanProjectTemplateSchema } from "shared";
 import z from "zod";
 
-import { ExpressReconversionProjectResult } from "./demoProject.actions.ts";
+import { ExpressReconversionProjectResult } from "./demoProject.actions";
 
 export const SUMMARY_STEPS = ["DEMO_PROJECT_SUMMARY", "DEMO_PROJECT_CREATION_RESULT"] as const;
 

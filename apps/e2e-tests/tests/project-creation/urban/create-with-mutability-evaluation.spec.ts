@@ -7,6 +7,10 @@ test.describe("urban project creation - with mutability results in url", () => {
   }) => {
     // Navigate to project creation with the test site
     await urbanProjectCreationPage.gotoWithProjectSuggestions(testSite.id);
+
+    // --- Project phase ---
+    await urbanProjectCreationPage.selectProjectPhase("Montage / Développement");
+
     await urbanProjectCreationPage.selectCreateMode("express");
 
     // Urban project template selection step

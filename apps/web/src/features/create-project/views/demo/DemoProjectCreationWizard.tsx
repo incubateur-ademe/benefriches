@@ -5,7 +5,7 @@ import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
 import { selectDemoProjectCreationWizardViewData } from "../../core/demo/demoProject.selectors";
-import { DemoProjectCreationStep } from "../../core/demo/demoSteps.ts";
+import { DemoProjectCreationStep } from "../../core/demo/demoSteps";
 import { HTML_MAIN_TITLE } from "../mainHtmlTitle";
 import { useSyncCreationStepWithRouteQuery } from "../useSyncCreationStepWithRouteQuery";
 
