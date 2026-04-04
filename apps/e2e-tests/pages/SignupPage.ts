@@ -20,7 +20,7 @@ export class SignupPage {
     await this.page.getByLabel("Email").fill(user.email);
     await this.page.getByLabel("Prénom").fill(user.firstName);
     await this.page.getByLabel("Nom", { exact: true }).fill(user.lastName);
-    await this.page.getByLabel("Type de structure").selectOption(user.structureType);
+    await this.page.getByLabel("Type de structure").selectOption(user.structureCategory);
     await this.page.getByLabel("Nom de la structure").fill(user.structureName);
   }
 

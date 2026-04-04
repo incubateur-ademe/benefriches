@@ -13,6 +13,7 @@ export type TestUser = {
   email: string;
   firstName: string;
   lastName: string;
+  structureCategory: string;
   structureType: string;
   structureActivity: string;
   structureName: string;
@@ -34,6 +35,11 @@ export function createTestUserData(prefix: string): TestUser {
     email: `e2e-tests-${prefix}-${uniqueId}@mail.com`,
     firstName: "Jean",
     lastName: "Dupont",
+    // structureCategory is the UI form field ("Type de structure" dropdown).
+    // The form transforms it into structureType + structureActivity for the API:
+    // "other" → structureType "company" + structureActivity "other"
+    // "local_authority" → structureType "local_authority" + structureActivity <selected-type>
+    structureCategory: "other",
     structureType: "company",
     structureActivity: "other",
     structureName: "ADEME",
