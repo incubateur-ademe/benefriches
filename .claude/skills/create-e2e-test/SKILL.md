@@ -156,7 +156,7 @@ test.describe("Feature Name", () => {
 docker compose --env-file .env.e2e -f docker-compose.e2e.yml up -d
 
 # Run specific test file
-pnpm --filter e2e-tests test:e2e tests/[feature]/[feature].spec.ts
+pnpm --filter e2e-tests test:headless tests/[feature]/[feature].spec.ts
 
 # Run with browser visible (for debugging)
 pnpm --filter e2e-tests test:headed tests/[feature]/[feature].spec.ts
@@ -172,7 +172,7 @@ Before completing, ensure you have created/updated:
 - [ ] Page object(s) in `apps/e2e-tests/pages/[PageName].ts`
 - [ ] Fixtures in `apps/e2e-tests/tests/[feature]/[feature].fixtures.ts`
 - [ ] Test file in `apps/e2e-tests/tests/[feature]/[feature].spec.ts`
-- [ ] Tests pass: `pnpm --filter e2e-tests test:e2e tests/[feature]/`
+- [ ] Tests pass: `pnpm --filter e2e-tests test:headless tests/[feature]/`
 - [ ] Type check passes: `pnpm --filter e2e-tests typecheck`
 
 ## Patterns Reference

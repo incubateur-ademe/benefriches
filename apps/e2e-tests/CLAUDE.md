@@ -33,9 +33,9 @@ apps/e2e-tests/
 docker compose --env-file .env.e2e -f docker-compose.e2e.yml up -d
 
 # Run tests
-pnpm --filter e2e-tests test:e2e                              # All tests (headless)
-pnpm --filter e2e-tests test:e2e tests/[feature]/             # Specific feature
-pnpm --filter e2e-tests test:e2e tests/[feature]/[type]/      # Specific sub-type (e.g. site-creation/friche/)
+pnpm --filter e2e-tests test:headless                              # All tests (headless)
+pnpm --filter e2e-tests test:headless tests/[feature]/             # Specific feature
+pnpm --filter e2e-tests test:headless tests/[feature]/[type]/      # Specific sub-type (e.g. site-creation/friche/)
 pnpm --filter e2e-tests test:headed tests/[feature]/          # With browser visible
 
 # Quality checks

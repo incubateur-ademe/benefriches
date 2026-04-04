@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "test:e2e": "playwright test",
+    "test:headless": "playwright test",
     "test:headed": "playwright test --headed",
     "test:ui": "playwright test --ui",
     "typecheck": "tsc --noEmit",

@@ -40,13 +40,13 @@ If timeout is reached, run `docker compose --env-file .env.e2e -f docker-compose
 If `$ARGUMENTS` is provided:
 
 ```bash
-pnpm --filter e2e-tests test:e2e $ARGUMENTS
+pnpm --filter e2e-tests test:headless $ARGUMENTS
 ```
 
 Otherwise:
 
 ```bash
-pnpm --filter e2e-tests test:e2e
+pnpm --filter e2e-tests test:headless
 ```
 
 ### 4. Tear down the stack

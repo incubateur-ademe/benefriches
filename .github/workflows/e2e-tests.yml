@@ -38,7 +38,7 @@ jobs:
         run: docker compose --env-file .env.e2e -f docker-compose.e2e.yml up -d --wait
 
       - name: Run Playwright tests
-        run: pnpm --filter e2e-tests test:e2e
+        run: pnpm --filter e2e-tests test:headless
 
       - name: Stop E2E stack
         if: always()
