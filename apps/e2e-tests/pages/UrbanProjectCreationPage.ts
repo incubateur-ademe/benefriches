@@ -18,6 +18,14 @@ export class UrbanProjectCreationPage {
     await this.page.goto(`/creer-projet?siteId=${siteId}`);
   }
 
+  async expectStepTitle(title: string): Promise<void> {
+    await expect(this.page.getByRole("heading", { name: title })).toBeVisible();
+  }
+
+  async expectStepperCurrentStep(label: string): Promise<void> {
+    await expect(this.page.locator('[aria-current="step"]')).toContainText(label);
+  }
+
   async gotoWithProjectSuggestions(siteId: string): Promise<void> {
     await this.page.goto(
       `/creer-projet?siteId=${siteId}&projectSuggestions[]={"type"%3A"INDUSTRIAL_FACILITIES"%2C"compatibilityScore"%3A59.5},{"type"%3A"RENATURATION"%2C"compatibilityScore"%3A59.3},{"type"%3A"OFFICES"%2C"compatibilityScore"%3A52.7},{"type"%3A"RESIDENTIAL_NORMAL_AREA"%2C"compatibilityScore"%3A43.2},{"type"%3A"TOURISM_AND_CULTURAL_FACILITIES"%2C"compatibilityScore"%3A42},{"type"%3A"PUBLIC_FACILITIES"%2C"compatibilityScore"%3A40.5},{"type"%3A"PHOTOVOLTAIC_POWER_PLANT"%2C"compatibilityScore"%3A38.5}`,

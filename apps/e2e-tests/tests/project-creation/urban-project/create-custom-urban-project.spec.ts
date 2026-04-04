@@ -98,15 +98,24 @@ test.describe("urban project creation - custom mode", () => {
 
       await urbanProjectCreationPage.goto(testSite.id);
 
-      // --- Use case selection ---
+      // --- avancement du projet ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Avancement du projet");
+      await urbanProjectCreationPage.expectStepTitle("A quelle phase du projet êtes-vous");
       await urbanProjectCreationPage.selectProjectPhase("Montage / Développement");
+
+      // --- connaissance du projet ---
       await urbanProjectCreationPage.selectCreateMode("custom");
       await urbanProjectCreationPage.selectProjectType("URBAN_PROJECT");
 
-      // --- Urban project wizard ---
-      await urbanProjectCreationPage.goToNextStep();
+      // --- usages ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Usages");
+      await urbanProjectCreationPage.goToNextStep(); // uses introduction
+      await urbanProjectCreationPage.expectStepTitle("Quels usages offrira le projet urbain");
       await urbanProjectCreationPage.selectUrbanProjectUses(["Logements", "Commerces"]);
-      await urbanProjectCreationPage.goToNextStep();
+
+      // --- sols et espaces ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Sols et espaces");
+      await urbanProjectCreationPage.goToNextStep(); // spaces introduction
       await urbanProjectCreationPage.selectProjectSpaces([
         "Bâtiments",
         "Allée ou parking imperméable",
@@ -115,33 +124,70 @@ test.describe("urban project creation - custom mode", () => {
         Bâtiments: 3000,
         "Allée ou parking imperméable": 2000,
       });
-      await urbanProjectCreationPage.goToNextStep();
-      await urbanProjectCreationPage.goToNextStep();
-      await urbanProjectCreationPage.goToNextStep();
+      await urbanProjectCreationPage.expectStepTitle("Récapitulatif de l'occupation des sols");
+      await urbanProjectCreationPage.goToNextStep(); // soils summary
+      await urbanProjectCreationPage.expectStepTitle(
+        "Stockage du carbone par les sols après aménagement",
+      );
+      await urbanProjectCreationPage.goToNextStep(); // carbon storage
+
+      // --- bâtiments ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Bâtiments");
+      await urbanProjectCreationPage.goToNextStep(); // buildings introduction
+      await urbanProjectCreationPage.expectStepTitle(
+        "Quelle surface de plancher feront les différents usages",
+      );
       await urbanProjectCreationPage.fillUsesFloorSurfaceArea({
         Logements: 2200,
         Commerces: 800,
       });
-
       await urbanProjectCreationPage.expectBuildingsNewConstructionIntroduction("3 000 ㎡");
-      await urbanProjectCreationPage.goToNextStep();
-      await urbanProjectCreationPage.goToNextStep();
+      await urbanProjectCreationPage.goToNextStep(); // new construction introduction
+
+      // --- cession foncière ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Cession foncière");
+      await urbanProjectCreationPage.goToNextStep(); // site resale introduction
+      await urbanProjectCreationPage.expectStepTitle(
+        "Y aura-t-il une cession foncière suite à l'aménagement du site",
+      );
       await urbanProjectCreationPage.selectSiteResale(false);
+      await urbanProjectCreationPage.expectStepTitle("les bâtiments seront-ils revendus");
       await urbanProjectCreationPage.selectBuildingsResale(true);
-      await urbanProjectCreationPage.goToNextStep();
+
+      // --- acteurs ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Acteurs");
+      await urbanProjectCreationPage.goToNextStep(); // stakeholders introduction
+      await urbanProjectCreationPage.expectStepTitle("Qui sera l'aménageur du site");
       await urbanProjectCreationPage.selectStakeholder(/Ma structure/);
+      await urbanProjectCreationPage.expectStepTitle("le constructeur des nouveaux bâtiments");
       await urbanProjectCreationPage.selectBuildingsDeveloper(true);
-      await urbanProjectCreationPage.goToNextStep();
+
+      // --- dépenses ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Dépenses");
+      await urbanProjectCreationPage.goToNextStep(); // expenses introduction
       await urbanProjectCreationPage.submitOrSkipStep();
       await urbanProjectCreationPage.submitOrSkipStep();
       await urbanProjectCreationPage.submitOrSkipStep();
-      await urbanProjectCreationPage.goToNextStep();
+
+      // --- recettes ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Recettes");
+      await urbanProjectCreationPage.goToNextStep(); // revenue introduction
       await urbanProjectCreationPage.submitOrSkipStep();
       await urbanProjectCreationPage.submitOrSkipStep();
+
+      // --- calendrier ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Calendrier");
+      await urbanProjectCreationPage.expectStepTitle("Calendrier");
       await urbanProjectCreationPage.fillSchedule("09/2027", "03/2029", 2029);
+
+      // --- dénomination ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Dénomination");
+      await urbanProjectCreationPage.expectStepTitle("Dénomination du projet");
       await urbanProjectCreationPage.fillNameAndDescription(
         "Projet urbain sans bâtiments existants",
       );
+
+      // --- récapitulatif ---
       await urbanProjectCreationPage.expectFinalSummary();
       await urbanProjectCreationPage.submitFinalSummary();
       await urbanProjectCreationPage.expectCreationSuccess(
@@ -164,32 +210,70 @@ test.describe("urban project creation - custom mode", () => {
 
       await urbanProjectCreationPage.goto(testSite.id);
 
-      // --- Use case selection ---
+      // --- avancement du projet ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Avancement du projet");
+      await urbanProjectCreationPage.expectStepTitle("A quelle phase du projet êtes-vous");
       await urbanProjectCreationPage.selectProjectPhase("Montage / Développement");
+
+      // --- connaissance du projet ---
       await urbanProjectCreationPage.selectCreateMode("custom");
       await urbanProjectCreationPage.selectProjectType("URBAN_PROJECT");
 
-      // --- Urban project wizard ---
-      await urbanProjectCreationPage.goToNextStep();
+      // --- usages ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Usages");
+      await urbanProjectCreationPage.goToNextStep(); // uses introduction
       await urbanProjectCreationPage.selectUrbanProjectUse("Espaces verts");
-      await urbanProjectCreationPage.goToNextStep();
+
+      // --- sols et espaces ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Sols et espaces");
+      await urbanProjectCreationPage.goToNextStep(); // spaces introduction
       await urbanProjectCreationPage.fillProjectSpacesSurfaceArea({
         "Allée ou parking perméable": 1500,
         "Espace végétalisé": 3500,
       });
-      await urbanProjectCreationPage.goToNextStep();
-      await urbanProjectCreationPage.goToNextStep();
-      await urbanProjectCreationPage.goToNextStep();
+      await urbanProjectCreationPage.expectStepTitle("Récapitulatif de l'occupation des sols");
+      await urbanProjectCreationPage.goToNextStep(); // soils summary
+      await urbanProjectCreationPage.expectStepTitle(
+        "Stockage du carbone par les sols après aménagement",
+      );
+      await urbanProjectCreationPage.goToNextStep(); // carbon storage
+
+      // --- cession foncière ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Cession foncière");
+      await urbanProjectCreationPage.goToNextStep(); // site resale introduction
+      await urbanProjectCreationPage.expectStepTitle(
+        "Y aura-t-il une cession foncière suite à l'aménagement du site",
+      );
       await urbanProjectCreationPage.selectSiteResale(false);
-      await urbanProjectCreationPage.goToNextStep();
+
+      // --- acteurs ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Acteurs");
+      await urbanProjectCreationPage.goToNextStep(); // stakeholders introduction
+      await urbanProjectCreationPage.expectStepTitle("Qui sera l'aménageur du site");
       await urbanProjectCreationPage.selectStakeholder(/Ma structure/);
-      await urbanProjectCreationPage.goToNextStep();
+
+      // --- dépenses ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Dépenses");
+      await urbanProjectCreationPage.goToNextStep(); // expenses introduction
       await urbanProjectCreationPage.submitOrSkipStep();
       await urbanProjectCreationPage.submitOrSkipStep();
-      await urbanProjectCreationPage.goToNextStep();
+
+      // --- recettes ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Recettes");
+      await urbanProjectCreationPage.goToNextStep(); // revenue introduction
       await urbanProjectCreationPage.submitOrSkipStep();
+
+      // --- calendrier ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Calendrier");
+      await urbanProjectCreationPage.expectStepTitle("Calendrier");
       await urbanProjectCreationPage.fillSchedule("09/2027", "03/2029", 2029);
+
+      // --- dénomination ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Dénomination");
+      await urbanProjectCreationPage.expectStepTitle("Dénomination du projet");
       await urbanProjectCreationPage.fillNameAndDescription("Projet de parc public");
+
+      // --- récapitulatif ---
       await urbanProjectCreationPage.expectFinalSummary();
       await urbanProjectCreationPage.submitFinalSummary();
       await urbanProjectCreationPage.expectCreationSuccess("Projet de parc public");
@@ -213,15 +297,24 @@ test.describe("urban project creation - custom mode", () => {
 
       await urbanProjectCreationPage.goto(testSite.id);
 
-      // --- Use case selection ---
+      // --- avancement du projet ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Avancement du projet");
+      await urbanProjectCreationPage.expectStepTitle("A quelle phase du projet êtes-vous");
       await urbanProjectCreationPage.selectProjectPhase("Montage / Développement");
+
+      // --- connaissance du projet ---
       await urbanProjectCreationPage.selectCreateMode("custom");
       await urbanProjectCreationPage.selectProjectType("URBAN_PROJECT");
 
-      // --- Urban project wizard ---
-      await urbanProjectCreationPage.goToNextStep();
+      // --- usages ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Usages");
+      await urbanProjectCreationPage.goToNextStep(); // uses introduction
+      await urbanProjectCreationPage.expectStepTitle("Quels usages offrira le projet urbain");
       await urbanProjectCreationPage.selectUrbanProjectUses(["Logements", "Commerces"]);
-      await urbanProjectCreationPage.goToNextStep();
+
+      // --- sols et espaces ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Sols et espaces");
+      await urbanProjectCreationPage.goToNextStep(); // spaces introduction
       await urbanProjectCreationPage.selectProjectSpaces([
         "Bâtiments",
         "Allée ou parking imperméable",
@@ -230,38 +323,75 @@ test.describe("urban project creation - custom mode", () => {
         Bâtiments: 3000,
         "Allée ou parking imperméable": 2000,
       });
-      await urbanProjectCreationPage.goToNextStep();
-      await urbanProjectCreationPage.goToNextStep();
-      await urbanProjectCreationPage.goToNextStep();
+      await urbanProjectCreationPage.expectStepTitle("Récapitulatif de l'occupation des sols");
+      await urbanProjectCreationPage.goToNextStep(); // soils summary
+      await urbanProjectCreationPage.expectStepTitle(
+        "Stockage du carbone par les sols après aménagement",
+      );
+      await urbanProjectCreationPage.goToNextStep(); // carbon storage
+
+      // --- bâtiments ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Bâtiments");
+      await urbanProjectCreationPage.goToNextStep(); // buildings introduction
+      await urbanProjectCreationPage.expectStepTitle(
+        "Quelle surface de plancher feront les différents usages",
+      );
       await urbanProjectCreationPage.fillUsesFloorSurfaceArea({
         Logements: 2200,
         Commerces: 800,
       });
-
       await urbanProjectCreationPage.expectBuildingsReuseIntroduction();
-      await urbanProjectCreationPage.goToNextStep();
+      await urbanProjectCreationPage.goToNextStep(); // reuse introduction
       await urbanProjectCreationPage.fillBuildingsFootprintToReuse(0);
       await urbanProjectCreationPage.expectBuildingsDemolitionInfo("2 000 ㎡");
-      await urbanProjectCreationPage.goToNextStep();
+      await urbanProjectCreationPage.goToNextStep(); // demolition info
       await urbanProjectCreationPage.expectBuildingsNewConstructionInfo("3 000 ㎡");
-      await urbanProjectCreationPage.goToNextStep();
-      await urbanProjectCreationPage.goToNextStep();
+      await urbanProjectCreationPage.goToNextStep(); // new construction info
+
+      // --- cession foncière ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Cession foncière");
+      await urbanProjectCreationPage.goToNextStep(); // site resale introduction
+      await urbanProjectCreationPage.expectStepTitle(
+        "Y aura-t-il une cession foncière suite à l'aménagement du site",
+      );
       await urbanProjectCreationPage.selectSiteResale(false);
+      await urbanProjectCreationPage.expectStepTitle("les bâtiments seront-ils revendus");
       await urbanProjectCreationPage.selectBuildingsResale(true);
-      await urbanProjectCreationPage.goToNextStep();
+
+      // --- acteurs ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Acteurs");
+      await urbanProjectCreationPage.goToNextStep(); // stakeholders introduction
+      await urbanProjectCreationPage.expectStepTitle("Qui sera l'aménageur du site");
       await urbanProjectCreationPage.selectStakeholder(/Ma structure/);
+      await urbanProjectCreationPage.expectStepTitle("le constructeur des nouveaux bâtiments");
       await urbanProjectCreationPage.selectBuildingsDeveloper(true);
       await urbanProjectCreationPage.selectStakeholder(/Ma structure/);
-      await urbanProjectCreationPage.goToNextStep();
+
+      // --- dépenses ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Dépenses");
+      await urbanProjectCreationPage.goToNextStep(); // expenses introduction
       await urbanProjectCreationPage.submitOrSkipStep();
       await urbanProjectCreationPage.submitOrSkipStep();
       await urbanProjectCreationPage.submitOrSkipStep();
       await urbanProjectCreationPage.submitOrSkipStep();
-      await urbanProjectCreationPage.goToNextStep();
+
+      // --- recettes ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Recettes");
+      await urbanProjectCreationPage.goToNextStep(); // revenue introduction
       await urbanProjectCreationPage.submitOrSkipStep();
       await urbanProjectCreationPage.submitOrSkipStep();
+
+      // --- calendrier ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Calendrier");
+      await urbanProjectCreationPage.expectStepTitle("Calendrier");
       await urbanProjectCreationPage.fillSchedule("09/2027", "03/2029", 2029);
+
+      // --- dénomination ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Dénomination");
+      await urbanProjectCreationPage.expectStepTitle("Dénomination du projet");
       await urbanProjectCreationPage.fillNameAndDescription("Projet urbain sans réutilisation");
+
+      // --- récapitulatif ---
       await urbanProjectCreationPage.expectFinalSummary();
       await urbanProjectCreationPage.submitFinalSummary();
       await urbanProjectCreationPage.expectCreationSuccess("Projet urbain sans réutilisation");
@@ -283,15 +413,24 @@ test.describe("urban project creation - custom mode", () => {
 
       await urbanProjectCreationPage.goto(testSite.id);
 
-      // --- Use case selection ---
+      // --- avancement du projet ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Avancement du projet");
+      await urbanProjectCreationPage.expectStepTitle("A quelle phase du projet êtes-vous");
       await urbanProjectCreationPage.selectProjectPhase("Montage / Développement");
+
+      // --- connaissance du projet ---
       await urbanProjectCreationPage.selectCreateMode("custom");
       await urbanProjectCreationPage.selectProjectType("URBAN_PROJECT");
 
-      // --- Urban project wizard ---
-      await urbanProjectCreationPage.goToNextStep();
+      // --- usages ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Usages");
+      await urbanProjectCreationPage.goToNextStep(); // uses introduction
+      await urbanProjectCreationPage.expectStepTitle("Quels usages offrira le projet urbain");
       await urbanProjectCreationPage.selectUrbanProjectUses(["Logements", "Commerces"]);
-      await urbanProjectCreationPage.goToNextStep();
+
+      // --- sols et espaces ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Sols et espaces");
+      await urbanProjectCreationPage.goToNextStep(); // spaces introduction
       await urbanProjectCreationPage.selectProjectSpaces([
         "Bâtiments",
         "Allée ou parking imperméable",
@@ -300,46 +439,83 @@ test.describe("urban project creation - custom mode", () => {
         Bâtiments: 3000,
         "Allée ou parking imperméable": 2000,
       });
-      await urbanProjectCreationPage.goToNextStep();
-      await urbanProjectCreationPage.goToNextStep();
-      await urbanProjectCreationPage.goToNextStep();
+      await urbanProjectCreationPage.expectStepTitle("Récapitulatif de l'occupation des sols");
+      await urbanProjectCreationPage.goToNextStep(); // soils summary
+      await urbanProjectCreationPage.expectStepTitle(
+        "Stockage du carbone par les sols après aménagement",
+      );
+      await urbanProjectCreationPage.goToNextStep(); // carbon storage
+
+      // --- bâtiments ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Bâtiments");
+      await urbanProjectCreationPage.goToNextStep(); // buildings introduction
+      await urbanProjectCreationPage.expectStepTitle(
+        "Quelle surface de plancher feront les différents usages",
+      );
       await urbanProjectCreationPage.fillUsesFloorSurfaceArea({
         Logements: 2200,
         Commerces: 800,
       });
-
       await urbanProjectCreationPage.expectBuildingsReuseIntroduction();
-      await urbanProjectCreationPage.goToNextStep();
+      await urbanProjectCreationPage.goToNextStep(); // reuse introduction
       await urbanProjectCreationPage.fillBuildingsFootprintToReuse(2000);
       await urbanProjectCreationPage.fillExistingBuildingsUsesFloorSurfaceArea({
         Logements: 1500,
         Commerces: 500,
       });
       await urbanProjectCreationPage.expectBuildingsNewConstructionInfo("1 000 ㎡");
-      await urbanProjectCreationPage.goToNextStep();
+      await urbanProjectCreationPage.goToNextStep(); // new construction info
       await urbanProjectCreationPage.fillNewBuildingsUsesFloorSurfaceArea({
         Logements: 700,
         Commerces: 300,
       });
-      await urbanProjectCreationPage.goToNextStep();
+
+      // --- cession foncière ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Cession foncière");
+      await urbanProjectCreationPage.goToNextStep(); // site resale introduction
+      await urbanProjectCreationPage.expectStepTitle(
+        "Y aura-t-il une cession foncière suite à l'aménagement du site",
+      );
       await urbanProjectCreationPage.selectSiteResale(false);
+      await urbanProjectCreationPage.expectStepTitle("les bâtiments seront-ils revendus");
       await urbanProjectCreationPage.selectBuildingsResale(true);
-      await urbanProjectCreationPage.goToNextStep();
+
+      // --- acteurs ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Acteurs");
+      await urbanProjectCreationPage.goToNextStep(); // stakeholders introduction
+      await urbanProjectCreationPage.expectStepTitle("Qui sera l'aménageur du site");
       await urbanProjectCreationPage.selectStakeholder(/Ma structure/);
+      await urbanProjectCreationPage.expectStepTitle("le constructeur des nouveaux bâtiments");
       await urbanProjectCreationPage.selectBuildingsDeveloper(true);
       await urbanProjectCreationPage.selectStakeholder(/Ma structure/);
-      await urbanProjectCreationPage.goToNextStep();
+
+      // --- dépenses ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Dépenses");
+      await urbanProjectCreationPage.goToNextStep(); // expenses introduction
       await urbanProjectCreationPage.submitOrSkipStep();
       await urbanProjectCreationPage.submitOrSkipStep();
       await urbanProjectCreationPage.submitOrSkipStep();
       await urbanProjectCreationPage.submitOrSkipStep();
-      await urbanProjectCreationPage.goToNextStep();
+
+      // --- recettes ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Recettes");
+      await urbanProjectCreationPage.goToNextStep(); // revenue introduction
       await urbanProjectCreationPage.submitOrSkipStep();
       await urbanProjectCreationPage.submitOrSkipStep();
+
+      // --- calendrier ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Calendrier");
+      await urbanProjectCreationPage.expectStepTitle("Calendrier");
       await urbanProjectCreationPage.fillSchedule("09/2027", "03/2029", 2029);
+
+      // --- dénomination ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Dénomination");
+      await urbanProjectCreationPage.expectStepTitle("Dénomination du projet");
       await urbanProjectCreationPage.fillNameAndDescription(
         "Projet urbain avec réutilisation complète des bâtiments existants",
       );
+
+      // --- récapitulatif ---
       await urbanProjectCreationPage.expectFinalSummary();
       await urbanProjectCreationPage.submitFinalSummary();
       await urbanProjectCreationPage.expectCreationSuccess(
