@@ -44,7 +44,8 @@ export class UrbanProjectCreationPage {
   }
 
   async selectProjectPhase(label: string): Promise<void> {
-    await this.page.getByText(label).click();
+    // Scope to label elements to avoid matching stepper nav items with the same text
+    await this.page.locator("label").getByText(label, { exact: true }).click();
     await this.submit();
   }
 
@@ -271,12 +272,6 @@ export class UrbanProjectCreationPage {
     const yearInput = this.page.getByLabel(/Année de mise en service/i);
     await yearInput.fill(String(firstYearOfOperation));
     await yearInput.press("Tab"); // blur → triggers validation, enabling the submit button
-    await this.submit();
-  }
-
-  async selectProjectPhase(label: string): Promise<void> {
-    // Scope to label elements to avoid matching stepper nav items with the same text
-    await this.page.locator("label").getByText(label, { exact: true }).click();
     await this.submit();
   }
 

@@ -8,6 +8,8 @@ test.describe("urban project creation - Express mode", () => {
     // Navigate to project creation with the test site
     await urbanProjectCreationPage.goto(testSite.id);
 
+    // Express sites auto-skip to demo flow (no project phase or creation mode steps)
+
     // Urban project template selection step
     await urbanProjectCreationPage.selectUrbanProjectTemplate("PUBLIC_FACILITIES");
 

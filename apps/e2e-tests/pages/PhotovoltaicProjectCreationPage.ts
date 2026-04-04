@@ -160,7 +160,8 @@ export class PhotovoltaicProjectCreationPage {
   // --- Project phase ---
 
   async selectProjectPhase(label: string): Promise<void> {
-    await this.page.getByText(label).click();
+    // Scope to label elements to avoid matching stepper nav items with the same text
+    await this.page.locator("label").getByText(label, { exact: true }).click();
     await this.submit();
   }
 

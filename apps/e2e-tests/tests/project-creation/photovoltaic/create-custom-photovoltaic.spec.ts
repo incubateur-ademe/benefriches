@@ -122,7 +122,7 @@ test.describe("photovoltaic project creation - demo mode", () => {
     await pvProjectCreationPage.goto(testSite.id);
 
     // --- Project phase ---
-    await pvProjectCreationPage.selectProjectPhase("Montage");
+    await pvProjectCreationPage.selectProjectPhase("Montage / Développement");
 
     // Create mode selection step
     await pvProjectCreationPage.selectCreateMode("express");

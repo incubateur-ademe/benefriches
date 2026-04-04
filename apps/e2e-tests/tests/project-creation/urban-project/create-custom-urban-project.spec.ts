@@ -97,11 +97,13 @@ test.describe("urban project creation - custom mode", () => {
       });
 
       await urbanProjectCreationPage.goto(testSite.id);
-      await urbanProjectCreationPage.expectIntroductionStep(testSite.name);
 
-      await urbanProjectCreationPage.clickStart();
-      await urbanProjectCreationPage.selectProjectType("URBAN_PROJECT");
+      // --- Use case selection ---
+      await urbanProjectCreationPage.selectProjectPhase("Montage / Développement");
       await urbanProjectCreationPage.selectCreateMode("custom");
+      await urbanProjectCreationPage.selectProjectType("URBAN_PROJECT");
+
+      // --- Urban project wizard ---
       await urbanProjectCreationPage.goToNextStep();
       await urbanProjectCreationPage.selectUrbanProjectUses(["Logements", "Commerces"]);
       await urbanProjectCreationPage.goToNextStep();
@@ -137,7 +139,6 @@ test.describe("urban project creation - custom mode", () => {
       await urbanProjectCreationPage.submitOrSkipStep();
       await urbanProjectCreationPage.submitOrSkipStep();
       await urbanProjectCreationPage.fillSchedule("09/2027", "03/2029", 2029);
-      await urbanProjectCreationPage.selectProjectPhase("Montage");
       await urbanProjectCreationPage.fillNameAndDescription(
         "Projet urbain sans bâtiments existants",
       );
@@ -162,11 +163,13 @@ test.describe("urban project creation - custom mode", () => {
       });
 
       await urbanProjectCreationPage.goto(testSite.id);
-      await urbanProjectCreationPage.expectIntroductionStep(testSite.name);
 
-      await urbanProjectCreationPage.clickStart();
-      await urbanProjectCreationPage.selectProjectType("URBAN_PROJECT");
+      // --- Use case selection ---
+      await urbanProjectCreationPage.selectProjectPhase("Montage / Développement");
       await urbanProjectCreationPage.selectCreateMode("custom");
+      await urbanProjectCreationPage.selectProjectType("URBAN_PROJECT");
+
+      // --- Urban project wizard ---
       await urbanProjectCreationPage.goToNextStep();
       await urbanProjectCreationPage.selectUrbanProjectUse("Espaces verts");
       await urbanProjectCreationPage.goToNextStep();
@@ -186,7 +189,6 @@ test.describe("urban project creation - custom mode", () => {
       await urbanProjectCreationPage.goToNextStep();
       await urbanProjectCreationPage.submitOrSkipStep();
       await urbanProjectCreationPage.fillSchedule("09/2027", "03/2029", 2029);
-      await urbanProjectCreationPage.selectProjectPhase("Montage");
       await urbanProjectCreationPage.fillNameAndDescription("Projet de parc public");
       await urbanProjectCreationPage.expectFinalSummary();
       await urbanProjectCreationPage.submitFinalSummary();
@@ -210,11 +212,13 @@ test.describe("urban project creation - custom mode", () => {
       });
 
       await urbanProjectCreationPage.goto(testSite.id);
-      await urbanProjectCreationPage.expectIntroductionStep(testSite.name);
 
-      await urbanProjectCreationPage.clickStart();
-      await urbanProjectCreationPage.selectProjectType("URBAN_PROJECT");
+      // --- Use case selection ---
+      await urbanProjectCreationPage.selectProjectPhase("Montage / Développement");
       await urbanProjectCreationPage.selectCreateMode("custom");
+      await urbanProjectCreationPage.selectProjectType("URBAN_PROJECT");
+
+      // --- Urban project wizard ---
       await urbanProjectCreationPage.goToNextStep();
       await urbanProjectCreationPage.selectUrbanProjectUses(["Logements", "Commerces"]);
       await urbanProjectCreationPage.goToNextStep();
@@ -257,7 +261,6 @@ test.describe("urban project creation - custom mode", () => {
       await urbanProjectCreationPage.submitOrSkipStep();
       await urbanProjectCreationPage.submitOrSkipStep();
       await urbanProjectCreationPage.fillSchedule("09/2027", "03/2029", 2029);
-      await urbanProjectCreationPage.selectProjectPhase("Montage");
       await urbanProjectCreationPage.fillNameAndDescription("Projet urbain sans réutilisation");
       await urbanProjectCreationPage.expectFinalSummary();
       await urbanProjectCreationPage.submitFinalSummary();
@@ -279,11 +282,13 @@ test.describe("urban project creation - custom mode", () => {
       });
 
       await urbanProjectCreationPage.goto(testSite.id);
-      await urbanProjectCreationPage.expectIntroductionStep(testSite.name);
 
-      await urbanProjectCreationPage.clickStart();
-      await urbanProjectCreationPage.selectProjectType("URBAN_PROJECT");
+      // --- Use case selection ---
+      await urbanProjectCreationPage.selectProjectPhase("Montage / Développement");
       await urbanProjectCreationPage.selectCreateMode("custom");
+      await urbanProjectCreationPage.selectProjectType("URBAN_PROJECT");
+
+      // --- Urban project wizard ---
       await urbanProjectCreationPage.goToNextStep();
       await urbanProjectCreationPage.selectUrbanProjectUses(["Logements", "Commerces"]);
       await urbanProjectCreationPage.goToNextStep();
@@ -332,7 +337,6 @@ test.describe("urban project creation - custom mode", () => {
       await urbanProjectCreationPage.submitOrSkipStep();
       await urbanProjectCreationPage.submitOrSkipStep();
       await urbanProjectCreationPage.fillSchedule("09/2027", "03/2029", 2029);
-      await urbanProjectCreationPage.selectProjectPhase("Montage");
       await urbanProjectCreationPage.fillNameAndDescription(
         "Projet urbain avec réutilisation complète des bâtiments existants",
       );
