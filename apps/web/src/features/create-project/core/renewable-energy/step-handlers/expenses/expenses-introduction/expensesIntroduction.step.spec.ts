@@ -64,6 +64,12 @@ describe("Renewable energy creation - Steps - expenses introduction", () => {
           "RENEWABLE_ENERGY_STAKEHOLDERS_FUTURE_SITE_OWNER",
           "RENEWABLE_ENERGY_EXPENSES_INTRODUCTION",
         ])
+        .withSteps({
+          RENEWABLE_ENERGY_STAKEHOLDERS_SITE_PURCHASE: {
+            completed: true,
+            payload: { willSiteBePurchased: true },
+          },
+        })
         .build();
       store.dispatch(previousStepRequested());
       expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_STAKEHOLDERS_FUTURE_SITE_OWNER");
@@ -71,6 +77,12 @@ describe("Renewable energy creation - Steps - expenses introduction", () => {
 
     it("should navigate back to site purchase when site was not purchased", () => {
       const store = new StoreBuilder()
+        .withSteps({
+          RENEWABLE_ENERGY_STAKEHOLDERS_SITE_PURCHASE: {
+            completed: true,
+            payload: { willSiteBePurchased: false },
+          },
+        })
         .withStepsSequence([
           "RENEWABLE_ENERGY_STAKEHOLDERS_SITE_PURCHASE",
           "RENEWABLE_ENERGY_EXPENSES_INTRODUCTION",

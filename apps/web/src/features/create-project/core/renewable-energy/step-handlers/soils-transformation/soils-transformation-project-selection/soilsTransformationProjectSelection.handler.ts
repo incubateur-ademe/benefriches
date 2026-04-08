@@ -1,4 +1,5 @@
 import {
+  canSiteAccomodatePhotovoltaicPanels,
   getRecommendedPhotovoltaicPanelsAccessPathSurfaceArea,
   getRecommendedPhotovoltaicPanelsFoundationsSurfaceArea,
   hasSiteSignificantBiodiversityAndClimateSensibleSoils,
@@ -13,6 +14,19 @@ import type { AnswerStepHandler } from "../../stepHandler.type";
 export const ProjectSelectionHandler: AnswerStepHandler<"RENEWABLE_ENERGY_SOILS_TRANSFORMATION_PROJECT_SELECTION"> =
   {
     stepId: "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_PROJECT_SELECTION",
+
+    getPreviousStepId(context) {
+      const surfaceArea =
+        ReadStateHelper.getStepAnswers(context.stepsState, "RENEWABLE_ENERGY_PHOTOVOLTAIC_SURFACE")
+          ?.photovoltaicInstallationSurfaceSquareMeters ?? 0;
+
+      return canSiteAccomodatePhotovoltaicPanels(
+        context.siteData?.soilsDistribution ?? {},
+        surfaceArea,
+      )
+        ? "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_INTRODUCTION"
+        : "RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SURFACE";
+    },
 
     getNextStepId(context, answers) {
       if (answers?.soilsTransformationProject === "custom") {

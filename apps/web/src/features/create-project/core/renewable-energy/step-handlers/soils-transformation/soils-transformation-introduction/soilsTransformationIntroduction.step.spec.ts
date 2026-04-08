@@ -1,3 +1,4 @@
+import { relatedSiteData } from "@/features/create-project/core/__tests__/siteData.mock";
 import {
   getCurrentStep,
   StoreBuilder,
@@ -46,6 +47,7 @@ describe("Renewable energy creation - Steps - soils transformation introduction"
           "RENEWABLE_ENERGY_PHOTOVOLTAIC_CONTRACT_DURATION",
           "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_INTRODUCTION",
         ])
+        .withSiteData({ ...relatedSiteData, contaminatedSoilSurface: undefined })
         .build();
       store.dispatch(previousStepRequested());
       expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_PHOTOVOLTAIC_CONTRACT_DURATION");
@@ -53,13 +55,37 @@ describe("Renewable energy creation - Steps - soils transformation introduction"
 
     it("should navigate back to decontamination surface area when decontamination was done", () => {
       const store = new StoreBuilder()
+        .withSiteData({ ...relatedSiteData, contaminatedSoilSurface: 5000 })
         .withStepsSequence([
           "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SURFACE_AREA",
           "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_INTRODUCTION",
         ])
+        .withSteps({
+          RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION: {
+            completed: true,
+            payload: { decontaminationPlan: "partial" },
+          },
+        })
         .build();
       store.dispatch(previousStepRequested());
       expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SURFACE_AREA");
+    });
+
+    it("should navigate back to contract duration when decontamination is computed with default", () => {
+      const store = new StoreBuilder()
+        .withStepsSequence([
+          "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SURFACE_AREA",
+          "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_INTRODUCTION",
+        ])
+        .withSteps({
+          RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION: {
+            completed: true,
+            payload: { decontaminationPlan: "unknown" },
+          },
+        })
+        .build();
+      store.dispatch(previousStepRequested());
+      expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_PHOTOVOLTAIC_CONTRACT_DURATION");
     });
   });
 });

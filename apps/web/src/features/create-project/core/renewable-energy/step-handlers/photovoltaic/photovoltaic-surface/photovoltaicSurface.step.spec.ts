@@ -67,6 +67,12 @@ describe("Renewable energy creation - Steps - photovoltaic surface", () => {
   describe("back navigation", () => {
     it("should navigate back to key parameter when key=SURFACE (surface is first step)", () => {
       const store = new StoreBuilder()
+        .withSteps({
+          RENEWABLE_ENERGY_PHOTOVOLTAIC_KEY_PARAMETER: {
+            completed: true,
+            payload: { photovoltaicKeyParameter: "SURFACE" },
+          },
+        })
         .withStepsSequence([
           "RENEWABLE_ENERGY_PHOTOVOLTAIC_KEY_PARAMETER",
           "RENEWABLE_ENERGY_PHOTOVOLTAIC_SURFACE",
@@ -78,6 +84,12 @@ describe("Renewable energy creation - Steps - photovoltaic surface", () => {
 
     it("should navigate back to power when key=POWER (power comes before surface)", () => {
       const store = new StoreBuilder()
+        .withSteps({
+          RENEWABLE_ENERGY_PHOTOVOLTAIC_KEY_PARAMETER: {
+            completed: true,
+            payload: { photovoltaicKeyParameter: "POWER" },
+          },
+        })
         .withStepsSequence([
           "RENEWABLE_ENERGY_PHOTOVOLTAIC_KEY_PARAMETER",
           "RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER",

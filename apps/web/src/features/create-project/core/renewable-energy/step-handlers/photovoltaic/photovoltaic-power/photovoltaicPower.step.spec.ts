@@ -65,15 +65,37 @@ describe("Renewable energy creation - Steps - photovoltaic power", () => {
   });
 
   describe("back navigation", () => {
-    it("should navigate back to key parameter", () => {
+    it("should navigate back to key parameter if key parameter is POWER", () => {
       const store = new StoreBuilder()
         .withStepsSequence([
           "RENEWABLE_ENERGY_PHOTOVOLTAIC_KEY_PARAMETER",
           "RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER",
         ])
+        .withSteps({
+          RENEWABLE_ENERGY_PHOTOVOLTAIC_KEY_PARAMETER: {
+            completed: true,
+            payload: { photovoltaicKeyParameter: "POWER" },
+          },
+        })
         .build();
       store.dispatch(previousStepRequested());
       expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_PHOTOVOLTAIC_KEY_PARAMETER");
+    });
+    it("should navigate back to surface if key parameter is SURFACE", () => {
+      const store = new StoreBuilder()
+        .withStepsSequence([
+          "RENEWABLE_ENERGY_PHOTOVOLTAIC_KEY_PARAMETER",
+          "RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER",
+        ])
+        .withSteps({
+          RENEWABLE_ENERGY_PHOTOVOLTAIC_KEY_PARAMETER: {
+            completed: true,
+            payload: { photovoltaicKeyParameter: "SURFACE" },
+          },
+        })
+        .build();
+      store.dispatch(previousStepRequested());
+      expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_PHOTOVOLTAIC_SURFACE");
     });
   });
 });

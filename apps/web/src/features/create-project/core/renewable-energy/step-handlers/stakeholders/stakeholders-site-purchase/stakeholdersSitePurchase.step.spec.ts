@@ -1,3 +1,4 @@
+import { relatedSiteData } from "@/features/create-project/core/__tests__/siteData.mock";
 import {
   getCurrentStep,
   StoreBuilder,
@@ -64,6 +65,7 @@ describe("Renewable energy creation - Steps - stakeholders site purchase", () =>
 
     it("should navigate back to future operator when site is not FRICHE", () => {
       const store = new StoreBuilder()
+        .withSiteData({ ...relatedSiteData, nature: "AGRICULTURAL_OPERATION" })
         .withStepsSequence([
           "RENEWABLE_ENERGY_STAKEHOLDERS_FUTURE_OPERATOR",
           "RENEWABLE_ENERGY_STAKEHOLDERS_SITE_PURCHASE",

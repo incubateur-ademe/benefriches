@@ -4,6 +4,17 @@ import type { AnswerStepHandler } from "../../stepHandler.type";
 export const PowerHandler: AnswerStepHandler<"RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER"> = {
   stepId: "RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER",
 
+  getPreviousStepId(context) {
+    const keyParameter = ReadStateHelper.getStepAnswers(
+      context.stepsState,
+      "RENEWABLE_ENERGY_PHOTOVOLTAIC_KEY_PARAMETER",
+    )?.photovoltaicKeyParameter;
+
+    return keyParameter === "POWER"
+      ? "RENEWABLE_ENERGY_PHOTOVOLTAIC_KEY_PARAMETER"
+      : "RENEWABLE_ENERGY_PHOTOVOLTAIC_SURFACE";
+  },
+
   getNextStepId(context) {
     const keyParameter = ReadStateHelper.getStepAnswers(
       context.stepsState,

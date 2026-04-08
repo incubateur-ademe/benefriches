@@ -1,3 +1,4 @@
+import { relatedSiteData } from "@/features/create-project/core/__tests__/siteData.mock";
 import {
   getCurrentStep,
   StoreBuilder,
@@ -50,6 +51,7 @@ describe("Renewable energy creation - Steps - expenses photovoltaic panels insta
         "RENEWABLE_ENERGY_EXPENSES_INTRODUCTION",
         "RENEWABLE_ENERGY_EXPENSES_PHOTOVOLTAIC_PANELS_INSTALLATION",
       ])
+      .withSiteData({ ...relatedSiteData, nature: "AGRICULTURAL_OPERATION" })
       .build();
     store.dispatch(previousStepRequested());
     expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_EXPENSES_INTRODUCTION");

@@ -1,3 +1,4 @@
+import { relatedSiteData } from "@/features/create-project/core/__tests__/siteData.mock";
 import {
   getCurrentStep,
   StoreBuilder,
@@ -20,6 +21,12 @@ describe("Renewable energy creation - Steps - soils summary", () => {
         "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_PROJECT_SELECTION",
         "RENEWABLE_ENERGY_SOILS_SUMMARY",
       ])
+      .withSiteData({
+        ...relatedSiteData,
+        soilsDistribution: {
+          ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 30000,
+        },
+      })
       .build();
     store.dispatch(previousStepRequested());
     expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_TRANSFORMATION_PROJECT_SELECTION");
@@ -31,6 +38,14 @@ describe("Renewable energy creation - Steps - soils summary", () => {
         "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CLIMATE_AND_BIODIVERSITY_IMPACT_NOTICE",
         "RENEWABLE_ENERGY_SOILS_SUMMARY",
       ])
+      .withSiteData({
+        ...relatedSiteData,
+        soilsDistribution: {
+          FOREST_CONIFER: 1000,
+          WET_LAND: 1000,
+          PRAIRIE_BUSHES: 28000,
+        },
+      })
       .build();
     store.dispatch(previousStepRequested());
     expect(getCurrentStep(store)).toBe(

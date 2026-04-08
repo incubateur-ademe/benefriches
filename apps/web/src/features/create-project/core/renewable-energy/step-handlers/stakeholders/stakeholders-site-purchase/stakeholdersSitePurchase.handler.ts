@@ -4,6 +4,12 @@ export const SitePurchaseHandler: AnswerStepHandler<"RENEWABLE_ENERGY_STAKEHOLDE
   {
     stepId: "RENEWABLE_ENERGY_STAKEHOLDERS_SITE_PURCHASE",
 
+    getPreviousStepId(context) {
+      return context.siteData?.nature === "FRICHE"
+        ? "RENEWABLE_ENERGY_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER"
+        : "RENEWABLE_ENERGY_STAKEHOLDERS_FUTURE_OPERATOR";
+    },
+
     getNextStepId(_context, answers) {
       return answers?.willSiteBePurchased
         ? "RENEWABLE_ENERGY_STAKEHOLDERS_FUTURE_SITE_OWNER"

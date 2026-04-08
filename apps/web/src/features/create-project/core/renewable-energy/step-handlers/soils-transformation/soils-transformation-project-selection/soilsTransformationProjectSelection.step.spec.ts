@@ -92,5 +92,27 @@ describe("Renewable energy creation - Steps - soils transformation project selec
       store.dispatch(previousStepRequested());
       expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_TRANSFORMATION_INTRODUCTION");
     });
+
+    it("should navigate back to non suitable soils notice", () => {
+      const store = new StoreBuilder()
+        .withStepsSequence([
+          "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_INTRODUCTION",
+          "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_PROJECT_SELECTION",
+        ])
+        .withSteps({
+          RENEWABLE_ENERGY_PHOTOVOLTAIC_SURFACE: {
+            completed: true,
+            payload: { photovoltaicInstallationSurfaceSquareMeters: 8000 },
+          },
+        })
+        .withSiteData({
+          ...relatedSiteData,
+          soilsDistribution: { BUILDINGS: 3000, FOREST_CONIFER: 5000 },
+          surfaceArea: 8000,
+        })
+        .build();
+      store.dispatch(previousStepRequested());
+      expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SURFACE");
+    });
   });
 });

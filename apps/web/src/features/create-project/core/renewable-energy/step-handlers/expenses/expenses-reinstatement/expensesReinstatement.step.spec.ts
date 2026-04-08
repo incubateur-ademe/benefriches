@@ -35,6 +35,12 @@ describe("Renewable energy creation - Steps - expenses reinstatement", () => {
         "RENEWABLE_ENERGY_EXPENSES_INTRODUCTION",
         "RENEWABLE_ENERGY_EXPENSES_REINSTATEMENT",
       ])
+      .withSteps({
+        RENEWABLE_ENERGY_STAKEHOLDERS_SITE_PURCHASE: {
+          completed: true,
+          payload: { willSiteBePurchased: false },
+        },
+      })
       .build();
     store.dispatch(previousStepRequested());
     expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_EXPENSES_INTRODUCTION");
@@ -46,6 +52,12 @@ describe("Renewable energy creation - Steps - expenses reinstatement", () => {
         "RENEWABLE_ENERGY_EXPENSES_SITE_PURCHASE_AMOUNTS",
         "RENEWABLE_ENERGY_EXPENSES_REINSTATEMENT",
       ])
+      .withSteps({
+        RENEWABLE_ENERGY_STAKEHOLDERS_SITE_PURCHASE: {
+          completed: true,
+          payload: { willSiteBePurchased: true },
+        },
+      })
       .build();
     store.dispatch(previousStepRequested());
     expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_EXPENSES_SITE_PURCHASE_AMOUNTS");
