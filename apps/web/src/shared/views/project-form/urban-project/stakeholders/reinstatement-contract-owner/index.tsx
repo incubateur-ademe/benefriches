@@ -1,5 +1,4 @@
 import { useAppSelector } from "@/app/hooks/store.hooks";
-import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import StakeholderForm from "@/shared/views/project-form/common/stakeholder-form";
 import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 
@@ -14,15 +13,7 @@ function SiteReinstatementContractOwnerFormContainer() {
 
   return (
     <StakeholderForm
-      title="Qui sera le maître d'ouvrage des travaux de remise en état de la friche ?"
-      instructions={
-        <FormInfo>
-          <p>
-            Les travaux de remise en état incluent la désimperméabilisation des sols, la
-            dépollution, l'enlèvement des déchets, la déconstruction, etc.
-          </p>
-        </FormInfo>
-      }
+      title="Qui sera le maître d'ouvrage des travaux de remise en état de la friche&nbsp;?"
       initialValues={reinstatementContractOwner}
       onSubmit={(formData) => {
         onRequestStepCompletion({

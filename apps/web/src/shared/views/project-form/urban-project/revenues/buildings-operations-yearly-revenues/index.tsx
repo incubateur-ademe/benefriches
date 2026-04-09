@@ -18,11 +18,6 @@ export default function YearlyBuildingsOperationsRevenuesForm() {
   return (
     <ProjectYearlyRevenuesForm
       title="Recettes annuelles d'exploitation des bâtiments"
-      instructions={
-        <p>
-          Les montants sont exprimés en <strong>€ HT</strong>.
-        </p>
-      }
       fields={fields}
       getFieldLabel={getLabelForYearlyBuildingsOperationsRevenues}
       onSubmit={(formData) => {

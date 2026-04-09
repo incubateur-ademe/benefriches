@@ -5,8 +5,8 @@ import { computePropertyTransferDutiesFromSellingPrice } from "shared";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import FormRowNumericInput from "@/shared/views/components/form/NumericInput/FormRowNumericInput";
 import { optionalNumericFieldRegisterOptions } from "@/shared/views/components/form/NumericInput/registerOptions";
-import FormDefinition from "@/shared/views/layout/WizardFormLayout/FormDefinition";
-import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
+import FormAutoInfo from "@/shared/views/layout/WizardFormLayout/FormAutoInfo";
+import FormWarning from "@/shared/views/layout/WizardFormLayout/FormWarning";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -48,47 +48,27 @@ const SiteResaleRevenueForm = ({
     <WizardFormLayout
       title="Montant de la vente du foncier aménagé"
       instructions={
-        <>
-          <FormInfo>
-            <p>
-              Il y aura peut-être une cession foncière suite à l'aménagement du site. Vous pouvez
-              renseigner ici le montant attendu de la vente. Sinon vous pouvez passer la question.
-            </p>
-            <p>
-              Les droits de mutation sont calculés automatiquement selon le prix de vente
-              renseignés. Vous pouvez modifier ce montant.
-            </p>
-          </FormInfo>
-          <FormDefinition>
-            <p>
-              Les droits de mutation sont les taxes perçues par les collectivités et l’Etat lorsque
-              qu’un patrimoine change de propriétaire.
-            </p>
-          </FormDefinition>
-        </>
-      }
-    >
-      <form onSubmit={handleSubmit(onSubmit)}>
-        {estimationFailed && (
-          <div className="fr-alert fr-alert--warning fr-mb-4w">
-            <p className="fr-alert__title">Estimation indisponible</p>
+        estimationFailed ? (
+          <FormWarning>
+            Estimation indisponible
             <p>
               Nous n'avons pas pu trouver de données pertinentes pour estimer le prix de revente du
               site. Vous pouvez saisir les montants manuellement si vous les connaissez, ou passer
               cette étape.
             </p>
-          </div>
-        )}
-        {shouldSiteResalePriceBeEstimated && !estimationFailed && (
-          <div className="fr-alert fr-alert--info fr-mb-4w">
-            <p className="fr-alert__title">Montant pré-rempli automatiquement</p>
+          </FormWarning>
+        ) : shouldSiteResalePriceBeEstimated ? (
+          <FormAutoInfo>
+            D’où viennent les montants préremplis ?
             <p>
-              Vous avez indiqué ne pas savoir s'il y aurait une cession foncière. Bénéfriches a
-              considéré que ce serait le cas et estimé le montant de la vente à partir de la surface
-              du site. Vous pouvez modifier ces valeurs si l'estimation ne vous semble pas correcte.
+              Montants calculés d’après le prix moyen / hectare d’une friche dans cette zone
+              géographique
             </p>
-          </div>
-        )}
+          </FormAutoInfo>
+        ) : undefined
+      }
+    >
+      <form onSubmit={handleSubmit(onSubmit)}>
         <FormRowNumericInput
           controller={{ name: "sellingPrice", control }}
           className="pt-4!"

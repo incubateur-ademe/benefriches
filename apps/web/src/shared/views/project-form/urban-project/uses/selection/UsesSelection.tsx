@@ -9,7 +9,6 @@ import {
 } from "@/features/create-project/core/urban-project/urbanProject";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import CheckableTile from "@/shared/views/components/CheckableTile/CheckableTile";
-import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type FormValues = {
@@ -98,14 +97,7 @@ function UsesSelection({ initialValues, onSubmit, onBack }: Props) {
   const validationError = formState.errors.uses;
 
   return (
-    <WizardFormLayout
-      title="Quels usages offrira le projet urbain&nbsp;?"
-      instructions={
-        <FormInfo>
-          <p>Plusieurs réponses possibles.</p>
-        </FormInfo>
-      }
-    >
+    <WizardFormLayout title="Quels usages offrira le projet urbain&nbsp;?">
       <form onSubmit={handleSubmit(onSubmit)}>
         {options.map(({ category, options: categoryOptions }) => {
           return (

@@ -60,13 +60,10 @@ function PublicGreenSpacesSoilsDistribution({
       }
       instructions={
         <FormInfo>
+          Pourquoi est-ce important de bien renseigner la composition des espaces verts ?
           <p>
-            La surface totale des espaces verts publics est de{" "}
-            <strong>{formatSurfaceArea(totalSurfaceArea)}</strong>.
-          </p>
-          <p>
-            Pour les espaces naturels, la surface ne peut pas dépasser celle existant actuellement
-            sur le site.
+            Pour connaître la typologie des sols et donc la quantité de carbone que pourra stocker
+            le site, et l’eau qu’il pourra absorber.
           </p>
         </FormInfo>
       }

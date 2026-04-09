@@ -11,7 +11,6 @@ import { formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 import { getPictogramForSoilType } from "@/shared/core/label-mapping/soilTypeLabelMapping";
 import { getColorForSoilType } from "@/shared/core/soils";
 import SurfaceAreaDistributionForm from "@/shared/views/components/form/SurfaceAreaDistributionForm/SurfaceAreaDistributionForm";
-import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 
 type SpaceConstraint = {
   soilType: SoilType;
@@ -90,17 +89,6 @@ function SpacesSurfaceAreaForm({
     <SurfaceAreaDistributionForm
       initialValues={initialValues}
       title={getTitle(nonGreenSpacesUses, hasPublicGreenSpaces)}
-      instructions={
-        <FormInfo>
-          <p>
-            La surface totale est de <strong>{formatSurfaceArea(totalSurfaceArea)}</strong>.
-          </p>
-          <p>
-            Pour les espaces naturels ou agricoles, la surface ne peut pas dépasser celle existant
-            actuellement sur le site.
-          </p>
-        </FormInfo>
-      }
       inputMode={inputMode}
       onInputModeChange={onInputModeChange}
       onBack={onBack}

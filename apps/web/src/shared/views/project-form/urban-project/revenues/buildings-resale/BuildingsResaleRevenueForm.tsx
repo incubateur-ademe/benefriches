@@ -5,8 +5,7 @@ import { computePropertyTransferDutiesFromSellingPrice } from "shared";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import FormRowNumericInput from "@/shared/views/components/form/NumericInput/FormRowNumericInput";
-import FormDefinition from "@/shared/views/layout/WizardFormLayout/FormDefinition";
-import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
+import FormAutoInfo from "@/shared/views/layout/WizardFormLayout/FormAutoInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -40,27 +39,16 @@ const BuildingsResaleRevenueForm = ({ initialValues, onSubmit, onBack }: Props) 
     <WizardFormLayout
       title="Montant de la vente des bâtiments"
       instructions={
-        <>
-          <FormInfo>
-            <p>
-              Vous pouvez renseigner ici le montant attendu de la vente des bâtiments. Sinon vous
-              pouvez passer la question.
-            </p>
-            <p>
-              Les droits de mutation sont calculés automatiquement selon le prix de vente
-              renseignés. Vous pouvez modifier ce montant.
-            </p>
-            <ExternalLink href="https://explore.data.gouv.fr/fr/immobilier?onglet=carte&filtre=tous">
-              Explorateur de données de valeurs foncières
-            </ExternalLink>
-          </FormInfo>
-          <FormDefinition>
-            <p>
-              Les droits de mutation sont les taxes perçues par les collectivités et l'Etat lorsque
-              qu'un patrimoine change de propriétaire.
-            </p>
-          </FormDefinition>
-        </>
+        <FormAutoInfo>
+          D’où viennent les montants préremplis ?
+          <p>
+            Montants calculés d’après le prix moyen / hectare d’une friche dans cette zone
+            géographique (consulter la grille des prix)
+          </p>
+          <ExternalLink href="https://explore.data.gouv.fr/fr/immobilier?onglet=carte&filtre=tous">
+            Explorateur de données de valeurs foncières
+          </ExternalLink>
+        </FormAutoInfo>
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>
