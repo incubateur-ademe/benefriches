@@ -9,7 +9,7 @@ import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/Back
 import SoilsCarbonStorageChart from "@/shared/views/components/Charts/SoilsCarbonStorageChart";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
-import FormAutoInfo from "@/shared/views/layout/WizardFormLayout/FormAutoInfo";
+import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -44,8 +44,10 @@ const SiteSoilsCarbonStorage = ({
     <WizardFormLayout
       title="Stockage du carbone par les sols"
       instructions={
-        <FormAutoInfo>
-          <p>Comment est calculé le stockage du carbone des sols de mon site&nbsp;?</p>
+        <FormInfo emoji="auto">
+          <span className="title">
+            Comment est calculé le stockage du carbone des sols de mon site&nbsp;?
+          </span>
           <p>
             Les calculs sont réalisés à partir des données de référence, exprimées en tonne
             d'équivalent carbone par hectare de sol sur une durée de 50 ans, de l’outil ALDO
@@ -70,7 +72,7 @@ const SiteSoilsCarbonStorage = ({
               </ExternalLink>
             </li>
           </ul>
-        </FormAutoInfo>
+        </FormInfo>
       }
     >
       {loadingState === "loading" && (

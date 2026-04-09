@@ -10,7 +10,7 @@ import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/Back
 import RowDecimalsNumericInput from "@/shared/views/components/form/NumericInput/RowDecimalsNumericInput";
 import { requiredNumericFieldRegisterOptions } from "@/shared/views/components/form/NumericInput/registerOptions";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
-import FormAutoInfo from "@/shared/views/layout/WizardFormLayout/FormAutoInfo";
+import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -41,15 +41,16 @@ function PhotovoltaicSurfaceForm({ initialValues, onSubmit, siteSurfaceArea, onB
     <WizardFormLayout
       title="Quelle superficie du site occuperont les panneaux photovoltaïques&nbsp;?"
       instructions={
-        <FormAutoInfo>
-          D’où vient la surface pré-remplie ?
+        <FormInfo emoji="auto">
+          <span className="title">D’où vient la surface pré-remplie ?</span>
+
           <p>
             Le ratio superficie / puissance d'installation considéré est de{" "}
             <strong>
               {formatSurfaceArea(PHOTOVOLTAIC_RATIO_M2_PER_KWC * 1000)} pour 1 000 kWc.
             </strong>
           </p>
-        </FormAutoInfo>
+        </FormInfo>
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>

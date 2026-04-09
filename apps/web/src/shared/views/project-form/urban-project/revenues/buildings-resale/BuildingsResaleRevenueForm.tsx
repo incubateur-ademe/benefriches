@@ -5,7 +5,7 @@ import { computePropertyTransferDutiesFromSellingPrice } from "shared";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import FormRowNumericInput from "@/shared/views/components/form/NumericInput/FormRowNumericInput";
-import FormAutoInfo from "@/shared/views/layout/WizardFormLayout/FormAutoInfo";
+import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -39,8 +39,8 @@ const BuildingsResaleRevenueForm = ({ initialValues, onSubmit, onBack }: Props) 
     <WizardFormLayout
       title="Montant de la vente des bâtiments"
       instructions={
-        <FormAutoInfo>
-          D’où viennent les montants préremplis ?
+        <FormInfo emoji="auto">
+          <span className="title">D’où viennent les montants préremplis ?</span>
           <p>
             Montants calculés d’après le prix moyen / hectare d’une friche dans cette zone
             géographique (consulter la grille des prix)
@@ -48,7 +48,7 @@ const BuildingsResaleRevenueForm = ({ initialValues, onSubmit, onBack }: Props) 
           <ExternalLink href="https://explore.data.gouv.fr/fr/immobilier?onglet=carte&filtre=tous">
             Explorateur de données de valeurs foncières
           </ExternalLink>
-        </FormAutoInfo>
+        </FormInfo>
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>

@@ -41,7 +41,7 @@ export function SpacesKnowledgeForm({ onSubmit, onBack, siteNature }: Props) {
       title={getTitle(siteNature)}
       instructions={
         <FormInfo>
-          <p>Pourquoi renseigner les types d’espaces&nbsp;?</p>
+          <span className="title">Pourquoi renseigner les types d’espaces&nbsp;?</span>
 
           <p>
             Les types d’espace (bâtiments, voies d’accès ou parking, espace végétal, prairie...)

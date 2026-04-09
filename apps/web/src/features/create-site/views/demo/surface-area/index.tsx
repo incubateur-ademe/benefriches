@@ -5,6 +5,7 @@ import {
 } from "@/features/create-site/core/demo/demoFactory";
 import { demoSiteSaved } from "@/features/create-site/core/demo/demoSiteSaved.action";
 import { selectSiteSurfaceAreaFormViewData } from "@/features/create-site/core/demo/steps/surface-area/surfaceArea.selectors";
+import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 
 import SiteSurfaceAreaForm from "../../common-views/SiteSurfaceAreaForm";
 
@@ -16,13 +17,10 @@ function SiteSurfaceAreaFormContainer() {
     <SiteSurfaceAreaForm
       initialValues={initialValues ?? {}}
       instructions={
-        <div className="flex flex-col gap-4">
-          <span className="text-3xl!" aria-hidden="true" role="img">
-            📏
-          </span>
-          <strong className="text-xl">Pourquoi renseigner la superficie&nbsp;?</strong>
+        <FormInfo emoji="📏">
+          <span className="title">Pourquoi renseigner la superficie&nbsp;?</span>
           L’ampleur des impacts sera fonction de la superficie de la friche.
-        </div>
+        </FormInfo>
       }
       siteNature={siteNature}
       onSubmit={({ surfaceArea }) => {

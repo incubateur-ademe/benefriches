@@ -57,7 +57,7 @@ function MutabilitySuggestions({
 
   return (
     <FormInfo>
-      <span className="font-bold mb-4">Résultat de l'évaluation de mutabilité du site</span>
+      <span className="title">Résultat de l'évaluation de mutabilité du site</span>
       <ol className="my-2 p-0 list-none">
         {sortedSuggestions.map(({ type, compatibilityScore }, index) => (
           <li key={type} className="flex items-center gap-1 py-2">

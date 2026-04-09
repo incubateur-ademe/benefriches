@@ -4,9 +4,9 @@ import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import {
   AgriculturalOperationActivity,
   FricheActivity,
-  getFricheActivityLabel,
-  getLabelForAgriculturalOperationActivity,
+  getFricheActivityShortLabel,
   getLabelForNaturalAreaType,
+  getShortLabelForAgriculturalOperationActivity,
   NaturalAreaType,
 } from "shared";
 
@@ -50,11 +50,11 @@ type Props = {
 const getSiteActivityDisclaimerText = (siteActivity: Props["siteActivity"]) => {
   switch (siteActivity?.type) {
     case "AGRICULTURAL_OPERATION":
-      return `ce type d'exploitation agricole (${getLabelForAgriculturalOperationActivity(siteActivity.agriculturalOperationActivity).toLocaleLowerCase()})`;
+      return `ce type d'exploitation agricole (${getShortLabelForAgriculturalOperationActivity(siteActivity.agriculturalOperationActivity).toLocaleLowerCase()})`;
     case "NATURAL_AREA":
       return `ce type d'espace naturel (${getLabelForNaturalAreaType(siteActivity.naturalAreaType).toLocaleLowerCase()})`;
     case "FRICHE":
-      return `ce type de friche (${getFricheActivityLabel(siteActivity.fricheActivity).toLocaleLowerCase()})`;
+      return `ce type de friche (${getFricheActivityShortLabel(siteActivity.fricheActivity).toLocaleLowerCase()})`;
     default:
       return "ce type de site";
   }
@@ -121,7 +121,7 @@ function SiteCreationResult({
                 },
                 {
                   linkProps: routes.createProject({ siteId }).link,
-                  children: "Évaluer un projet sur ce site",
+                  children: "Évaluer un projet démo sur ce site",
                 },
               ]}
             />

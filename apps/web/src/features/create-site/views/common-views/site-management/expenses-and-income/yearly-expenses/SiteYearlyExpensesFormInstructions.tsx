@@ -1,12 +1,13 @@
 import { SiteNature } from "shared";
 
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
-import FormAutoInfo from "@/shared/views/layout/WizardFormLayout/FormAutoInfo";
+import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 
 function SiteYearlyExpensesFormInstructions({ siteNature }: { siteNature: SiteNature }) {
   return (
-    <FormAutoInfo>
-      D’où viennent les montants pré-remplis&nbsp;?
+    <FormInfo emoji="auto">
+      <span className="title">D’où viennent les montants pré-remplis&nbsp;?</span>
+
       <p>
         Montants calculés d’après les informations que vous avez renseigné et les dépenses
         financiers moyens en France de chaque poste de dépense.
@@ -38,7 +39,7 @@ function SiteYearlyExpensesFormInstructions({ siteNature }: { siteNature: SiteNa
           </li>
         </ul>
       )}
-    </FormAutoInfo>
+    </FormInfo>
   );
 }
 

@@ -40,10 +40,7 @@ function UrbanZoneFinalSummary({
   onBack,
 }: Props) {
   return (
-    <WizardFormLayout
-      title="Récapitulatif du site"
-      instructions="Si des données sont erronées, vous pouvez revenir en arrière pour les modifier."
-    >
+    <WizardFormLayout title="Récapitulatif du site">
       <Section title="📍 Localisation">
         <DataLine label={<strong>Adresse du site</strong>} value={address} />
         {urbanZoneType && (

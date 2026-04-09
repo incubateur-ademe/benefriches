@@ -55,6 +55,7 @@ function WizardFormLayout({
               <div
                 className={classNames(
                   "border-border-grey",
+                  "bg-[#FEF7DA] dark:bg-[#3E3B32]",
                   "border-solid",
                   "border",
                   "shadow-md",

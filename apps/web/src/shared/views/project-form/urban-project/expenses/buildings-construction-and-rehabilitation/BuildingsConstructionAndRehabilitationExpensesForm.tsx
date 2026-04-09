@@ -5,7 +5,6 @@ import { formatMoney } from "@/shared/core/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import FormRowNumericInput from "@/shared/views/components/form/NumericInput/FormRowNumericInput";
 import RowNumericInput from "@/shared/views/components/form/NumericInput/RowNumericInput";
-import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type BuildingsConstructionAndRehabilitationExpensesFormValues = {
@@ -41,17 +40,7 @@ export default function BuildingsConstructionAndRehabilitationExpensesForm({
     typedObjectEntries(allExpenses).filter(([, value]) => typeof value === "number").length === 0;
 
   return (
-    <WizardFormLayout
-      title="Dépenses de construction et de réhabilitation des bâtiments"
-      instructions={
-        <FormInfo>
-          <p>
-            Les montants sont exprimés en <strong>€ HT</strong>.
-          </p>
-          <p>Renseignez ici les dépenses liées à la construction et à la réhabilitation.</p>
-        </FormInfo>
-      }
-    >
+    <WizardFormLayout title="Dépenses de construction et de réhabilitation des bâtiments">
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormRowNumericInput
           controller={{ name: "technicalStudiesAndFees", control }}

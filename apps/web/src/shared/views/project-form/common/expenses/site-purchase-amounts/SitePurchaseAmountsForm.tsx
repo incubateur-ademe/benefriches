@@ -5,7 +5,6 @@ import { computePropertyTransferDutiesFromSellingPrice } from "shared";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import FormRowNumericInput from "@/shared/views/components/form/NumericInput/FormRowNumericInput";
-import FormDefinition from "@/shared/views/layout/WizardFormLayout/FormDefinition";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
@@ -39,19 +38,11 @@ const SitePurchaseAmountsForm = ({ initialValues, onSubmit, onBack }: Props) => 
     <WizardFormLayout
       title="Montant de l'acquisition foncière"
       instructions={
-        <>
-          <FormInfo>
-            <ExternalLink href="https://explore.data.gouv.fr/fr/immobilier?onglet=carte&filtre=tous">
-              Explorateur de données de valeurs foncières
-            </ExternalLink>
-          </FormInfo>
-          <FormDefinition>
-            <p>
-              Les droits de mutation sont les taxes perçues par les collectivités et l’Etat lorsque
-              qu’un patrimoine change de propriétaire.
-            </p>
-          </FormDefinition>
-        </>
+        <FormInfo>
+          <ExternalLink href="https://explore.data.gouv.fr/fr/immobilier?onglet=carte&filtre=tous">
+            Explorateur de données de valeurs foncières
+          </ExternalLink>
+        </FormInfo>
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>

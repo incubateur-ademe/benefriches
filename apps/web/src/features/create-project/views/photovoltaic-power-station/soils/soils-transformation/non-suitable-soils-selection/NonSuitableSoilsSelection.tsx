@@ -66,10 +66,10 @@ function NonSuitableSoilsSelection({
       title="Quels espaces souhaitez-vous supprimer ?"
       instructions={
         <FormInfo>
-          <p>
+          <span className="title">
             Vous devez rendre compatible au moins{" "}
             <strong>{formatSurfaceArea(missingSuitableSurfaceArea)}</strong> de sol.
-          </p>
+          </span>
           <p>
             Les bâtiments seront démolis et deviendront un <strong>sol perméable minéral</strong>.
           </p>

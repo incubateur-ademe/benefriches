@@ -89,10 +89,7 @@ type Props = {
 
 function SiteDataSummary({ siteData, onNext, onBack }: Props) {
   return (
-    <WizardFormLayout
-      title="Récapitulatif du site"
-      instructions="Si des données sont erronées, vous pouvez revenir en arrière pour les modifier."
-    >
+    <WizardFormLayout title="Récapitulatif du site">
       <SiteFeaturesList siteFeatures={toSiteFeatures(siteData)} />
       <div className="mt-8">
         <BackNextButtonsGroup onBack={onBack} onNext={onNext} />

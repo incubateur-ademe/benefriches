@@ -4,6 +4,7 @@ import { Address, SiteNature } from "shared";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import SearchAddressAutocompleteContainer from "@/shared/views/components/form/Address/SearchAddressAutocompleteContainer";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
+import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -50,11 +51,8 @@ function SiteAddressForm({ selectedAddress: initialAddress, onSubmit, siteNature
     <WizardFormLayout
       title={title}
       instructions={
-        <div className="flex flex-col gap-4">
-          <span className="text-3xl!" aria-hidden="true" role="img">
-            📍
-          </span>
-          <strong className="text-xl">Pourquoi renseigner la commune&nbsp;?</strong>
+        <FormInfo emoji="📍">
+          <span className="title">Pourquoi renseigner la commune&nbsp;?</span>
           En fonction de la région mais aussi du type de zone (urbaine, périurbaine, rurale),
           certains indicateurs n’auront pas les mêmes valeurs, comme par exemple:
           <ul>
@@ -62,7 +60,7 @@ function SiteAddressForm({ selectedAddress: initialAddress, onSubmit, siteNature
             <li>Temps passé par les riverains dans les transports</li>
             <li>Services écosystémiques</li>
           </ul>
-        </div>
+        </FormInfo>
       }
     >
       <form

@@ -1,5 +1,5 @@
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
-import FormAutoInfo from "@/shared/views/layout/WizardFormLayout/FormAutoInfo";
+import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 
 type Props = {
   expectedPerformanceMwhPerYear?: number;
@@ -7,8 +7,8 @@ type Props = {
 
 function ExpectedAnnualProductionHint({ expectedPerformanceMwhPerYear }: Props) {
   return expectedPerformanceMwhPerYear ? (
-    <FormAutoInfo>
-      D’où vient la production annuelle pré-remplie ?
+    <FormInfo emoji="auto">
+      <span className="title">D’où vient la production annuelle pré-remplie ?</span>
       <p>
         Production calculée à partir de la puissance, de la superficie au sol et du taux
         d’ensoleillement moyen dans la zone géographique du site.
@@ -21,7 +21,7 @@ function ExpectedAnnualProductionHint({ expectedPerformanceMwhPerYear }: Props) 
           En savoir plus
         </ExternalLink>
       </p>
-    </FormAutoInfo>
+    </FormInfo>
   ) : (
     <p>
       Nous n'avons pas réussi à pré-calculer votre potentielle production annuelle. Vous pouvez

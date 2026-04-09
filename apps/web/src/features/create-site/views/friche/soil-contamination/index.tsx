@@ -17,7 +17,8 @@ function SoilContaminationFormController() {
       title="Les sols de la friche sont-ils pollués ?"
       instructions={
         <FormInfo>
-          Quid de l’amiante&nbsp;?
+          <span className="title">Quid de l’amiante&nbsp;?</span>
+
           <p>
             La présence d’amiante des bâtiments n'est pas à considérer ici, mais un poste de dépense
             "désamiantage" pourra être alloué dans la partie “création d'un projet sur la friche”

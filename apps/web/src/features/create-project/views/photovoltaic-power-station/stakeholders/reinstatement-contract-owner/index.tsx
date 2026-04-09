@@ -32,7 +32,8 @@ function SiteReinstatementContractOwnerFormContainer() {
       title="Qui sera le maître d'ouvrage des travaux de remise en état de la friche ?"
       instructions={
         <FormInfo>
-          La remise en état du site, kézako ?
+          <span className="title">La remise en état du site, kézako ?</span>
+
           <p>
             Les travaux de remise en état incluent la désimperméabilisation des sols, la
             dépollution, l’enlèvement des déchets, la déconstruction, etc.

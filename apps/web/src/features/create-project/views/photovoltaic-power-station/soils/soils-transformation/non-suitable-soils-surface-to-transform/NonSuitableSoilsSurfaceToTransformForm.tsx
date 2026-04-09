@@ -49,7 +49,7 @@ function NonSuitableSoilsSurfaceToTransformForm({
       title="Quelle proportion de chaque espace souhaitez-vous supprimer ?"
       instructions={
         <FormInfo>
-          <p>
+          <p className="title">
             Vous devez rendre compatible au moins{" "}
             <strong>{formatSurfaceArea(missingSuitableSurfaceArea)}</strong> de sol.
           </p>

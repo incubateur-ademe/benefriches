@@ -8,6 +8,7 @@ import {
 } from "@/shared/core/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RowNumericInput from "@/shared/views/components/form/NumericInput/RowNumericInput";
+import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 import { PARCEL_TYPE_LABELS } from "../landParcelTypeMetadata";
@@ -42,7 +43,12 @@ function LandParcelBuildingsFloorAreaForm({
   return (
     <WizardFormLayout
       title={`Surface de plancher des bâtiments de la ${parcelLabel.toLowerCase()}`}
-      instructions={`Pour rappel, la surface au sol des bâtiments est de ${formatSurfaceArea(buildingsFootprintSurfaceArea)}`}
+      instructions={
+        <FormInfo>
+          Pour rappel, la surface au sol des bâtiments est de $
+          {formatSurfaceArea(buildingsFootprintSurfaceArea)}
+        </FormInfo>
+      }
     >
       <form onSubmit={handleSubmit(onSubmit)}>
         <RowNumericInput

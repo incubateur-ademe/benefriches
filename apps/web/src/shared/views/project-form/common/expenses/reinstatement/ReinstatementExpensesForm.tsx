@@ -5,7 +5,7 @@ import { sumObjectValues } from "shared";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import FormRowNumericInput from "@/shared/views/components/form/NumericInput/FormRowNumericInput";
 import RowNumericInput from "@/shared/views/components/form/NumericInput/RowNumericInput";
-import FormAutoInfo from "@/shared/views/layout/WizardFormLayout/FormAutoInfo";
+import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 import SustainableSoilsReinstatementInfoButton from "./SustainableSoilsReinstatementInfoButton";
@@ -80,13 +80,14 @@ const ReinstatementsExpensesForm = ({
     <WizardFormLayout
       title="Dépenses de travaux de remise en état de la friche"
       instructions={
-        <FormAutoInfo>
-          D’où viennent les montants préremplis ?
+        <FormInfo emoji="auto">
+          <span className="title">D’où viennent les montants préremplis ?</span>
+
           <p>
             Montants calculés d’après les informations que vous avez renseigné et les dépenses
             financiers moyens en France de chaque poste de dépense.
           </p>
-        </FormAutoInfo>
+        </FormInfo>
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>

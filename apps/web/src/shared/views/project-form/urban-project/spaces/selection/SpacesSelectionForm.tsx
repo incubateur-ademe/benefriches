@@ -143,7 +143,7 @@ function SpacesSelectionForm({
       title={getTitle(nonGreenSpacesUses, hasPublicGreenSpaces)}
       instructions={
         <FormInfo>
-          <h3>Pourquoi est-ce important de bien renseigner les espaces ?</h3>
+          <span className="title">Pourquoi est-ce important de bien renseigner les espaces ?</span>
           <p>
             Pour connaître la typologie des sols et donc la quantité de carbone que pourra stocker
             le site, et l'eau qu'il pourra absorber.

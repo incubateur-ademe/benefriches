@@ -75,7 +75,7 @@ function SoilsTransformationProjectForm({ initialValues, onSubmit, onBack }: Pro
       title="Que souhaitez-vous faire des sols du site ?"
       instructions={
         <FormInfo>
-          Renaturation, kézako ?
+          <span className="title">Renaturation, kézako ?</span>
           <p>
             La renaturation des sols artificiels, ou restauration écologique des sols, consiste à «
             réparer » ou recréer les processus écologiques préexistants en termes de composition

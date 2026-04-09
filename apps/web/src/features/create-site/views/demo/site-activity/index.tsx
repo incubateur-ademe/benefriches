@@ -5,6 +5,7 @@ import {
 } from "@/features/create-site/core/demo/demoFactory";
 import { selectSiteActivityViewData } from "@/features/create-site/core/demo/steps/site-activity/siteActivity.selectors";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
+import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 
 import { HTML_MAIN_TITLE } from "../../SiteCreationWizard";
 import AgriculturalOperationActivityForm from "../../common-views/agricultural-operation-activity/AgriculturalOperationActivityForm";
@@ -35,13 +36,10 @@ function SiteActivitySelectionFormContainer() {
             );
           }}
           instructions={
-            <div className="flex flex-col gap-4">
-              <span className="text-3xl!" aria-hidden="true" role="img">
-                🌽
-              </span>
-              <strong className="text-xl">
+            <FormInfo emoji="🌽">
+              <span className="title">
                 Pourquoi renseigner le type d'exploitation agricole&nbsp;?
-              </strong>
+              </span>
               En fonction du type d'exploitation agricole, certains indicateurs n’auront pas les
               mêmes valeurs, comme par exemple :
               <ul>
@@ -49,7 +47,7 @@ function SiteActivitySelectionFormContainer() {
                 <li>Dépenses et recettes d'exploitation</li>
                 <li>Affectation des sols</li>
               </ul>
-            </div>
+            </FormInfo>
           }
           initialValues={{ activity: agriculturalOperationActivity }}
         />
@@ -72,11 +70,8 @@ function SiteActivitySelectionFormContainer() {
             );
           }}
           instructions={
-            <div className="flex flex-col gap-4">
-              <span className="text-3xl!" aria-hidden="true" role="img">
-                🏭
-              </span>
-              <strong className="text-xl">Pourquoi renseigner le type de friche&nbsp;?</strong>
+            <FormInfo emoji="🏭">
+              <span className="title">Pourquoi renseigner le type de friche&nbsp;?</span>
               En fonction du type de friche, certains indicateurs n’auront pas les mêmes valeurs,
               comme par exemple :
               <ul>
@@ -84,7 +79,7 @@ function SiteActivitySelectionFormContainer() {
                 <li>Dépenses de gestion et de sécurisation de la friche</li>
                 <li>Valeur patrimoniale des bâtiments alentour</li>
               </ul>
-            </div>
+            </FormInfo>
           }
           initialValues={{ activity: fricheActivity }}
         />
@@ -108,19 +103,14 @@ function SiteActivitySelectionFormContainer() {
           }}
           initialValues={{ type: naturalAreaType }}
           instructions={
-            <div className="flex flex-col gap-4">
-              <span className="text-3xl!" aria-hidden="true" role="img">
-                🌲
-              </span>
-              <strong className="text-xl">
-                Pourquoi renseigner le type d'espace naturel&nbsp;?
-              </strong>
+            <FormInfo emoji="🌲">
+              <span className="title">Pourquoi renseigner le type d'espace naturel&nbsp;?</span>
               En fonction du type type d'espace naturel, certains indicateurs n’auront pas les mêmes
               valeurs, comme par exemple :
               <ul>
                 <li>Affectation des sols</li>
               </ul>
-            </div>
+            </FormInfo>
           }
         />
       </>

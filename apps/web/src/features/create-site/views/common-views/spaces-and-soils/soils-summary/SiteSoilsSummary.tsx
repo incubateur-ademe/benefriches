@@ -16,7 +16,7 @@ import {
 import { formatNumberFr, formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import SurfaceAreaPieChart from "@/shared/views/components/Charts/SurfaceAreaPieChart";
-import FormAutoInfo from "@/shared/views/layout/WizardFormLayout/FormAutoInfo";
+import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -76,14 +76,15 @@ const SiteSoilsSummary = ({
       title="Récapitulatif de l'occupation des sols"
       instructions={
         wasSoilsDistributionAssignedByBenefriches ? (
-          <FormAutoInfo>
-            D’où vient cette répartition&nbsp;?
+          <FormInfo emoji="auto">
+            <span className="title">D’où vient cette répartition&nbsp;?</span>
+
             <p>
               Les types de sols et leur répartition ont été affecté automatiquement par Bénéfriches
               en se basant sur les valeurs représentatives observées pour ce type de{" "}
               {siteNatureAndActivityText}.
             </p>
-          </FormAutoInfo>
+          </FormInfo>
         ) : null
       }
     >

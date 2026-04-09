@@ -4,7 +4,7 @@ import { typedObjectEntries } from "shared";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import FormRowNumericInput from "@/shared/views/components/form/NumericInput/FormRowNumericInput";
-import FormAutoInfo from "@/shared/views/layout/WizardFormLayout/FormAutoInfo";
+import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -29,10 +29,13 @@ function SiteYearlyIncomeForm({ onSubmit, onBack, initialValues }: Props) {
     <WizardFormLayout
       title="Recettes annuelles liées à l'exploitation"
       instructions={
-        <FormAutoInfo>
-          D’où viennent les montants pré-remplis ? Montants calculés d’après les informations que
-          vous avez renseigné et les dépenses financiers moyens en France de chaque poste de
-          dépense. En savoir plus
+        <FormInfo emoji="auto">
+          <span className="title">D’où viennent les montants pré-remplis&nbsp;?</span>
+
+          <p>
+            Montants calculés d’après les informations que vous avez renseigné et les dépenses
+            financiers moyens en France de chaque poste de dépense.
+          </p>
           <span>Sources&nbsp;:</span>
           <ul>
             <li>
@@ -42,7 +45,7 @@ function SiteYearlyIncomeForm({ onSubmit, onBack, initialValues }: Props) {
               </ExternalLink>
             </li>
           </ul>
-        </FormAutoInfo>
+        </FormInfo>
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>

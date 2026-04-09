@@ -5,7 +5,7 @@ import { computePropertyTransferDutiesFromSellingPrice } from "shared";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import FormRowNumericInput from "@/shared/views/components/form/NumericInput/FormRowNumericInput";
 import { optionalNumericFieldRegisterOptions } from "@/shared/views/components/form/NumericInput/registerOptions";
-import FormAutoInfo from "@/shared/views/layout/WizardFormLayout/FormAutoInfo";
+import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import FormWarning from "@/shared/views/layout/WizardFormLayout/FormWarning";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
@@ -47,8 +47,8 @@ const SiteResaleRevenueForm = ({
   return (
     <WizardFormLayout
       title="Montant de la vente du foncier aménagé"
-      instructions={
-        estimationFailed ? (
+      warnings={
+        estimationFailed && (
           <FormWarning>
             Estimation indisponible
             <p>
@@ -57,15 +57,19 @@ const SiteResaleRevenueForm = ({
               cette étape.
             </p>
           </FormWarning>
-        ) : shouldSiteResalePriceBeEstimated ? (
-          <FormAutoInfo>
-            D’où viennent les montants préremplis ?
+        )
+      }
+      instructions={
+        shouldSiteResalePriceBeEstimated &&
+        !estimationFailed && (
+          <FormInfo emoji="auto">
+            <span className="title">D’où viennent les montants préremplis ?</span>
             <p>
               Montants calculés d’après le prix moyen / hectare d’une friche dans cette zone
               géographique
             </p>
-          </FormAutoInfo>
-        ) : undefined
+          </FormInfo>
+        )
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>

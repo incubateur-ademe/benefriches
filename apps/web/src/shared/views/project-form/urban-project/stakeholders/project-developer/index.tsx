@@ -13,7 +13,8 @@ function DeveloperFormContainer() {
       title="Qui sera l'aménageur du site ?"
       instructions={
         <FormInfo>
-          Aménageur, kézaco ?
+          <span className="title">Aménageur, kézaco ?</span>
+
           <p>
             L’aménageur est le porteur du projet, celui qui va engager la reconversion du site. Le
             bilan économique de l’opération sera donc à sa charge.

@@ -1,5 +1,5 @@
 import { useAppSelector } from "@/app/hooks/store.hooks";
-import FormAutoInfo from "@/shared/views/layout/WizardFormLayout/FormAutoInfo";
+import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import InstallationExpensesForm from "@/shared/views/project-form/common/expenses/installation-expenses/InstallationExpensesForm";
 import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 
@@ -20,13 +20,14 @@ function InstallationExpensesFormContainer() {
         otherAmount: "Autres dépenses d'aménagement",
       }}
       instructions={
-        <FormAutoInfo>
-          D’où viennent les montants préremplis ?
+        <FormInfo emoji="auto">
+          <span className="title">D’où viennent les montants préremplis ?</span>
+
           <p>
             Montants calculés d’après les informations que vous avez renseigné et les montants
             représentatifs en France pour ce type de dépense.
           </p>
-        </FormAutoInfo>
+        </FormInfo>
       }
       onSubmit={(formData) => {
         onRequestStepCompletion({

@@ -33,6 +33,7 @@ import DataLine from "@/shared/views/components/FeaturesList/FeaturesListDataLin
 import ScheduleDates from "@/shared/views/components/FeaturesList/FeaturesListScheduleDates";
 import Section from "@/shared/views/components/FeaturesList/FeaturesListSection";
 import SoilTypeLabelWithColorSquare from "@/shared/views/components/FeaturesList/FeaturesListSoilTypeLabel";
+import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 import {
@@ -81,7 +82,11 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
   return (
     <WizardFormLayout
       title="Récapitulatif du projet"
-      instructions="Si des données sont erronées, vous pouvez revenir en arrière pour les modifier."
+      instructions={
+        <FormInfo>
+          Si des données sont erronées, vous pouvez revenir en arrière pour les modifier.
+        </FormInfo>
+      }
     >
       <>
         <Section title="🏗️ Type de projet">
