@@ -194,10 +194,12 @@ function SiteSpacesSelectionForm({ initialValues, onSubmit, onBack, siteNature }
       title={getTitle(siteNature)}
       instructions={
         <FormInfo>
-          <p>Plusieurs réponses possibles.</p>
+          <p>Pourquoi renseigner les types d’espaces&nbsp;?</p>
+
           <p>
-            Il est important de définir les espaces présents sur le site pour connaître la typologie
-            des sols et ainsi la quantité de carbone stocké par le site.
+            Les types d’espace (bâtiments, voies d’accès ou parking, espace végétal, prairie...)
+            vont servir à Bénéfriches à définir la composition des sols et donc à calculer des
+            impacts environnementaux.
           </p>
         </FormInfo>
       }

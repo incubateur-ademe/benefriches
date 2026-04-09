@@ -44,3 +44,32 @@ export function getLabelForAgriculturalOperationActivity(
       return "Polyculture / polyélevage";
   }
 }
+
+export function getShortLabelForAgriculturalOperationActivity(
+  operationActivity: AgriculturalOperationActivity,
+): string {
+  switch (operationActivity) {
+    case "CEREALS_AND_OILSEEDS_CULTIVATION":
+      return "céréales et oléagineux";
+    case "LARGE_VEGETABLE_CULTIVATION":
+      return "cultures légumières";
+    case "MARKET_GARDENING":
+      return "maraîchage";
+    case "FLOWERS_AND_HORTICULTURE":
+      return "horticulture";
+    case "VITICULTURE":
+      return "viticulture";
+    case "FRUITS_AND_OTHER_PERMANENT_CROPS":
+      return "fruits ou cultures permanentes";
+    case "CATTLE_FARMING":
+      return "élevage bovin";
+    case "PIG_FARMING":
+      return "élevage porcin";
+    case "POULTRY_FARMING":
+      return "élevage volailles et granivores";
+    case "SHEEP_AND_GOAT_FARMING":
+      return "élevage ovin et caprin";
+    case "POLYCULTURE_AND_LIVESTOCK":
+      return "polyculture ou polyélevage";
+  }
+}

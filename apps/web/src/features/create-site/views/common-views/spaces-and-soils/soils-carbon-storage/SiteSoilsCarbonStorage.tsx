@@ -9,7 +9,7 @@ import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/Back
 import SoilsCarbonStorageChart from "@/shared/views/components/Charts/SoilsCarbonStorageChart";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
-import FormDefinition from "@/shared/views/layout/WizardFormLayout/FormDefinition";
+import FormAutoInfo from "@/shared/views/layout/WizardFormLayout/FormAutoInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -44,22 +44,12 @@ const SiteSoilsCarbonStorage = ({
     <WizardFormLayout
       title="Stockage du carbone par les sols"
       instructions={
-        <FormDefinition hideDivider>
-          <p>
-            Le sol est un milieu composé de minéraux (ex : pierre, argile, calcaire) mais également,
-            lorsque sa partie supérieure ("terre végétale") est présente, de matière organique,
-            issue de la dégradation de végétaux (ex : l'humus des forêts) et d'organismes vivants :
-            faune, flore, champignons, micro-organismes.
-          </p>
-          <p>
-            Le sol est ainsi un milieu qui contient une certaine quantité de carbone à un moment
-            donné (notion de stock) et qui varie dans le temps (notion de flux). Flux et stock
-            dépendent notamment du type de sol mais également du climat.
-          </p>
+        <FormAutoInfo>
+          <p>Comment est calculé le stockage du carbone des sols de mon site&nbsp;?</p>
           <p>
             Les calculs sont réalisés à partir des données de référence, exprimées en tonne
-            d'équivalent carbone par hectare de sol sur une durée de 50 ans, de l'outil ALDO
-            développé par l'ADEME. Dans un souci de simplification, seules les valeurs de stocks
+            d'équivalent carbone par hectare de sol sur une durée de 50 ans, de l’outil ALDO
+            développé par l’ADEME. Dans un souci de simplification, seules les valeurs de stocks
             sont utilisées (on ne considère pas les flux).
           </p>
           Sources&nbsp;:
@@ -70,7 +60,7 @@ const SiteSoilsCarbonStorage = ({
                 title="Documentation d'ALDO - ouvre une nouvelle fenêtre"
                 href="https://aldo-carbone.ademe.fr/"
               >
-                ALDO
+                outil ALDO
               </ExternalLink>
             </li>
             <li>
@@ -79,17 +69,8 @@ const SiteSoilsCarbonStorage = ({
                 Définitions ALDO
               </ExternalLink>
             </li>
-            <li>
-              Empreinte carbone moyenne annuelle d'un.e français.e&nbsp;:{" "}
-              <ExternalLink
-                title="L'empreinte carbone de la France de 1995 à 2022 sur statistiques.developpement-durable.gouv.fr - ouvre une nouvelle fenêtre"
-                href="https://www.statistiques.developpement-durable.gouv.fr/lempreinte-carbone-de-la-france-de-1995-2022"
-              >
-                9,2 tCO2eq
-              </ExternalLink>
-            </li>
           </ul>
-        </FormDefinition>
+        </FormAutoInfo>
       }
     >
       {loadingState === "loading" && (

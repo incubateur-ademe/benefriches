@@ -5,7 +5,13 @@ import {
   SurfaceAreaDistribution,
   SurfaceAreaDistributionJson,
 } from "shared";
-import type { SiteNature } from "shared";
+import type {
+  AgriculturalOperationActivity,
+  FricheActivity,
+  NaturalAreaType,
+  SiteNature,
+  UrbanZoneType,
+} from "shared";
 
 import { RootState } from "@/app/store/store";
 
@@ -59,6 +65,11 @@ type SiteSoilsSummaryViewData = {
   totalSurfaceArea: number;
   soilsDistribution: SoilsDistribution;
   wasSoilsDistributionAssignedByBenefriches: boolean;
+  siteNature?: SiteNature;
+  agriculturalOperationActivity?: AgriculturalOperationActivity;
+  fricheActivity?: FricheActivity;
+  naturalAreaType?: NaturalAreaType;
+  urbanZoneType?: UrbanZoneType;
 };
 
 export const selectSiteSoilsSummaryViewData = createSelector(
@@ -69,6 +80,11 @@ export const selectSiteSoilsSummaryViewData = createSelector(
       soilsDistribution: siteCreation.siteData.soilsDistribution ?? {},
       wasSoilsDistributionAssignedByBenefriches:
         siteCreation.siteData.spacesDistributionKnowledge === false,
+      siteNature: siteCreation.siteData.nature,
+      agriculturalOperationActivity: siteCreation.siteData.agriculturalOperationActivity,
+      fricheActivity: siteCreation.siteData.fricheActivity,
+      naturalAreaType: siteCreation.siteData.naturalAreaType,
+      urbanZoneType: siteCreation.siteData.urbanZoneType,
     };
   },
 );

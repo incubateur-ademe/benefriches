@@ -7,8 +7,16 @@ import SiteSoilsSummary from "./SiteSoilsSummary";
 
 function SiteSoilsSummaryContainer() {
   const dispatch = useAppDispatch();
-  const { soilsDistribution, totalSurfaceArea, wasSoilsDistributionAssignedByBenefriches } =
-    useAppSelector(selectSiteSoilsSummaryViewData);
+  const {
+    soilsDistribution,
+    totalSurfaceArea,
+    wasSoilsDistributionAssignedByBenefriches,
+    siteNature,
+    agriculturalOperationActivity,
+    naturalAreaType,
+    fricheActivity,
+    urbanZoneType,
+  } = useAppSelector(selectSiteSoilsSummaryViewData);
 
   return (
     <SiteSoilsSummary
@@ -19,6 +27,11 @@ function SiteSoilsSummaryContainer() {
       soilsDistribution={soilsDistribution}
       totalSurfaceArea={totalSurfaceArea}
       wasSoilsDistributionAssignedByBenefriches={wasSoilsDistributionAssignedByBenefriches}
+      siteNature={siteNature}
+      agriculturalOperationActivity={agriculturalOperationActivity}
+      naturalAreaType={naturalAreaType}
+      fricheActivity={fricheActivity}
+      urbanZoneType={urbanZoneType}
     />
   );
 }

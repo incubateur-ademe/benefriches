@@ -5,7 +5,6 @@ import Fieldset from "@/shared/views/components/form/Fieldset/Fieldset";
 import RowNumericInput from "@/shared/views/components/form/NumericInput/RowNumericInput";
 import { optionalNumericFieldRegisterOptions } from "@/shared/views/components/form/NumericInput/registerOptions";
 import RadioButton from "@/shared/views/components/form/RadioButton/RadioButton";
-import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -44,14 +43,7 @@ function FricheAccidentsForm({ initialValues, onSubmit, onBack }: Props) {
     : true;
 
   return (
-    <WizardFormLayout
-      title="Y a-t-il eu des accidents sur la friche ces 5 dernières années ?"
-      instructions={
-        <FormInfo>
-          <p>Personnes entrées illégalement sur la friche et s'étant blessées ou tuées.</p>
-        </FormInfo>
-      }
-    >
+    <WizardFormLayout title="Y a-t-il eu des accidents sur la friche ces 5 dernières années&nbsp;?">
       <form onSubmit={handleSubmit(onSubmit)}>
         <Fieldset
           state={hasRecentAccidentsError ? "error" : "default"}

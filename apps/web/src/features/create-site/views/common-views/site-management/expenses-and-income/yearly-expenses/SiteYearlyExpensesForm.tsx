@@ -172,7 +172,10 @@ export default function SiteYearlyExpensesForm({
       .length === 0;
 
   return (
-    <WizardFormLayout title={title} instructions={<SiteYearlyExpensesFormInstructions />}>
+    <WizardFormLayout
+      title={title}
+      instructions={<SiteYearlyExpensesFormInstructions siteNature={siteNature} />}
+    >
       <form onSubmit={handleSubmit(onSubmit)}>
         {siteSecurityExpensesConfig.length > 0 && (
           <h3 className="mb-0!">

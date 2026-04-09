@@ -3,6 +3,7 @@ import { SiteNature } from "shared";
 
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
+import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -39,22 +40,15 @@ export function SpacesKnowledgeForm({ onSubmit, onBack, siteNature }: Props) {
     <WizardFormLayout
       title={getTitle(siteNature)}
       instructions={
-        <>
-          <p>Les types d'espaces serviront à définir la composition des sols.</p>
-          <p>Les espaces peuvent être :</p>
-          <ul>
-            <li>des espaces minéraux (bâtiments, sol imperméabilisé, sol perméable minéral)</li>
-            <li>des espaces végétalisés artificiels (enherbés et arbustifs ou arborés)</li>
-            <li>des prairies (herbacées, arbustives ou arborées)</li>
-            <li>des espaces agricoles (culture, vigne, verger)</li>
-            <li>des forêts (de feuillus, conifères, peupliers, mixte)</li>
-            <li>d'autres espaces naturels (plan d'eau, zone humide)</li>
-          </ul>
+        <FormInfo>
+          <p>Pourquoi renseigner les types d’espaces&nbsp;?</p>
+
           <p>
-            Si vous savez lesquels de ces espaces sont présents sur le site, vous pourrez les
-            sélectionner lors de l'étape suivante.
+            Les types d’espace (bâtiments, voies d’accès ou parking, espace végétal, prairie...)
+            vont servir à Bénéfriches à définir la composition des sols et donc à calculer des
+            impacts environnementaux.
           </p>
-        </>
+        </FormInfo>
       }
     >
       <form onSubmit={_onSubmit}>

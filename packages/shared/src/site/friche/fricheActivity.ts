@@ -33,3 +33,24 @@ export const getFricheActivityLabel = (fricheActivity: FricheActivity): string =
       return "Friche";
   }
 };
+
+export const getFricheActivityShortLabel = (fricheActivity: FricheActivity): string => {
+  switch (fricheActivity) {
+    case "AGRICULTURE":
+      return "agricole";
+    case "INDUSTRY":
+      return "industrielle";
+    case "MILITARY":
+      return "militaire";
+    case "RAILWAY":
+      return "ferroviaire";
+    case "PORT":
+      return "portuaire";
+    case "TIP_OR_RECYCLING_SITE":
+      return "ancienne décharge ou site de recyclage";
+    case "BUILDING":
+      return "ancien bâtiment";
+    case "OTHER":
+      return "autre";
+  }
+};

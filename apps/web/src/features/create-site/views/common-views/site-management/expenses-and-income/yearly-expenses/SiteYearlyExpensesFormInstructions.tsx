@@ -1,16 +1,18 @@
-import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
-import FormDefinition from "@/shared/views/layout/WizardFormLayout/FormDefinition";
-import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
+import { SiteNature } from "shared";
 
-function SiteYearlyExpensesFormInstructions() {
+import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
+import FormAutoInfo from "@/shared/views/layout/WizardFormLayout/FormAutoInfo";
+
+function SiteYearlyExpensesFormInstructions({ siteNature }: { siteNature: SiteNature }) {
   return (
-    <>
-      <FormInfo>
-        <p>
-          Les montants pré-remplis (exprimés en € HT) le sont d'après les informations de surface
-          que vous avez renseigné et les dépenses moyennes observées.
-        </p>
-        <span>Sources&nbsp;:</span>
+    <FormAutoInfo>
+      D’où viennent les montants pré-remplis&nbsp;?
+      <p>
+        Montants calculés d’après les informations que vous avez renseigné et les dépenses
+        financiers moyens en France de chaque poste de dépense.
+      </p>
+      <span>Sources&nbsp;:</span>
+      {siteNature === "FRICHE" && (
         <ul>
           <li>
             <ExternalLink href="https://www.idfriches-auvergnerhonealpes.fr/sites/default/files/gabarit_-_fiche_pedagogique_optimisation_du_temps_vff.pdf">
@@ -26,33 +28,17 @@ function SiteYearlyExpensesFormInstructions() {
             ;
           </li>
         </ul>
-        <p>Vous pouvez modifier ces montants.</p>
-        <p>
-          Si vous ne connaissez pas le détail des dépenses mais seulement le coût total, vous pouvez
-          le saisir dans "Autres dépenses de gestion" ou "Autres dépenses de sécurisation".
-        </p>
-      </FormInfo>
-
-      <FormDefinition>
-        <p>Un site qui reste en l'état, sans intervention, c'est un site qui coûte.</p>
+      )}
+      {siteNature === "AGRICULTURAL_OPERATION" && (
         <ul>
-          <li>De manière directe, via la fiscalité locale (ex&nbsp;: taxe foncière)</li>
           <li>
-            De manière indirecte car lorsqu'aucun moyen de préservation n'est mis en œuvre sur un
-            site (clôture, gardiennage, taille, etc.), celui-ci se dégrade de manière naturelle ou
-            par l'intermédiaire de dégradation volontaire ou de vandalisme (ex&nbsp;: vol de métaux,
-            casse de vitres, incendie, dépôts sauvages) ou de squats, engendrant une perte
-            financière (valeur du bien) voire une augmentation des dépenses de réhabilitation
-            (source&nbsp;:{" "}
-            <ExternalLink href="https://www.idfriches-auvergnerhonealpes.fr/sites/default/files/gabarit_-_fiche_pedagogique_optimisation_du_temps_vff.pdf">
-              IDFriches, le coût de l'inaction, 2020
+            <ExternalLink href="https://agreste.agriculture.gouv.fr/agreste-web/download/publication/publie/Chd2418/cd2024-18_Rica2023-v2.pdf">
+              Résultats économiques des exploitations agricoles en France - Chiffres clés 2023 RICA
             </ExternalLink>
-            )
           </li>
         </ul>
-        <p>La taxe foncière est due par le propriétaire foncier.</p>
-      </FormDefinition>
-    </>
+      )}
+    </FormAutoInfo>
   );
 }
 

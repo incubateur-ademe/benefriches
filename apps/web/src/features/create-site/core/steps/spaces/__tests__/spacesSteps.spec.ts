@@ -119,6 +119,7 @@ describe("Site creation: spaces steps", () => {
             IMPERMEABLE_SOILS: 10,
             ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 10,
           },
+          spacesDistributionKnowledge: false,
         });
         expectNewCurrentStep(initialRootState, newState, "SOILS_SUMMARY");
       });
@@ -140,6 +141,7 @@ describe("Site creation: spaces steps", () => {
         expectSiteDataDiff(initialRootState, newState, {
           soils: ["CULTIVATION", "BUILDINGS"],
           soilsDistribution: { BUILDINGS: 5, CULTIVATION: 95 },
+          spacesDistributionKnowledge: false,
         });
         expectNewCurrentStep(initialRootState, newState, "SOILS_SUMMARY");
       });

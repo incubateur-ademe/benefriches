@@ -42,6 +42,7 @@ export const registerSpacesHandlers = (
       }
     })
     .addCase(spacesKnowledgeStepCompleted, (state, action) => {
+      state.siteData.spacesDistributionKnowledge = action.payload.knowsSpaces;
       if (action.payload.knowsSpaces) {
         state.stepsHistory.push("SPACES_SELECTION");
       } else {
