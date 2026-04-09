@@ -36,7 +36,7 @@ test.describe("site creation - friche - express mode", () => {
 
     await siteCreationPage.expectExpressCreationDisclaimer();
     await siteCreationPage.hideExpressCreationDisclaimer();
-    await siteCreationPage.expectCreateProjectLink();
+    await siteCreationPage.expectCreateDemoProjectLink();
 
     await myEvaluationsPage.goto();
     await myEvaluationsPage.expectCurrentPage();

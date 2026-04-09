@@ -177,6 +177,12 @@ export class SiteCreationPage {
     ).toBeVisible();
   }
 
+  async expectCreateDemoProjectLink() {
+    await expect(
+      this.page.getByRole("link", { name: "Évaluer un projet démo sur ce site" }),
+    ).toBeVisible();
+  }
+
   // --- Custom mode steps ---
 
   async goToNextStep(): Promise<void> {
