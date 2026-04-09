@@ -175,11 +175,10 @@ describe("Photovoltaic ViewData selectors", () => {
   });
 
   describe("selectPVYearlyProjectedRevenueViewData", () => {
-    it("returns initial values and photovoltaic expected annual production", () => {
+    it("returns initial values", () => {
       const viewData = selectPVYearlyProjectedRevenueViewData(MOCK_STATE);
       expect(viewData).toEqual({
         initialValues: expect.any(Object),
-        photovoltaicExpectedAnnualProduction: 50000,
       });
     });
   });

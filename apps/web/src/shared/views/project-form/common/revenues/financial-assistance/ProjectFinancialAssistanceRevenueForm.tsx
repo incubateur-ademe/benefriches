@@ -5,7 +5,6 @@ import { sumObjectValues } from "shared";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import FormRowNumericInput from "@/shared/views/components/form/NumericInput/FormRowNumericInput";
 import RowNumericInput from "@/shared/views/components/form/NumericInput/RowNumericInput";
-import FormDefinition from "@/shared/views/layout/WizardFormLayout/FormDefinition";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -37,25 +36,7 @@ const ProjectFinancialAssistanceRevenueForm = ({
     typedObjectEntries(allRevenues).filter(([, value]) => typeof value === "number").length === 0;
 
   return (
-    <WizardFormLayout
-      title="Aides financières"
-      instructions={
-        <FormDefinition hideDivider>
-          <p>
-            Les montants sont exprimés en <strong>€ HT</strong>.
-          </p>
-          <p>Les aides financières de l'opération peuvent avoir différentes origines&nbsp;:</p>
-          <ul>
-            <li>
-              Les subventions publiques (État, Région, ADEME, etc.) attribuées pour financer
-              certaines dépenses (remise en état) ou pour soutenir le financement participatif,
-            </li>
-
-            <li>D'autres ressources le cas échéant.</li>
-          </ul>
-        </FormDefinition>
-      }
-    >
+    <WizardFormLayout title="Aides financières">
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormRowNumericInput
           controller={{ name: "localOrRegionalAuthorityAmount", control }}

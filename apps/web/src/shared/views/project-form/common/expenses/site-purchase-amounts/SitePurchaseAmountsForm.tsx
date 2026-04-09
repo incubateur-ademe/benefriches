@@ -41,19 +41,6 @@ const SitePurchaseAmountsForm = ({ initialValues, onSubmit, onBack }: Props) => 
       instructions={
         <>
           <FormInfo>
-            <p>
-              Le site sera peut-être racheté avant de procéder à l'aménagement. Vous pouvez
-              renseigner ici le montant de la transaction ou passer la question.
-            </p>
-            <p>
-              Les droits de mutation sont calculés automatiquement selon le prix de vente
-              renseignés. Vous pouvez modifier ces montants.
-            </p>
-            <p>
-              Si les démarches d'acquisition ne sont pas suffisamment avancées, il est possible
-              d'estimer le prix du terrain en consultant les transactions immobilières récentes à
-              proximité de votre site.
-            </p>
             <ExternalLink href="https://explore.data.gouv.fr/fr/immobilier?onglet=carte&filtre=tous">
               Explorateur de données de valeurs foncières
             </ExternalLink>

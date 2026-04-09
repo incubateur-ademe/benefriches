@@ -75,31 +75,19 @@ function SoilsTransformationProjectForm({ initialValues, onSubmit, onBack }: Pro
       title="Que souhaitez-vous faire des sols du site ?"
       instructions={
         <FormInfo>
+          Renaturation, kézako ?
           <p>
-            Les sols qui accueilleront les panneaux photovoltaïques peuvent être transformés avant
-            l'installation.
-          </p>
+            La renaturation des sols artificiels, ou restauration écologique des sols, consiste à «
+            réparer » ou recréer les processus écologiques préexistants en termes de composition
+            spécifique ou de structures des communautés végétale et animale.
+          </p>{" "}
           <p>
-            Par exemple, il peut être intéressant d'en profiter pour renaturer les sols au maximum,
-            en désimperméabilisant puis en mettant en oeuvre une restauration écologique des sols.
+            Concrètement, il s’agit d’appliquer des techniques soit de : génie écologique par
+            décompaction du sol, puis léger apport en matière organique, inoculation en
+            micro-organismes et semis ou plantations, génie pédologique afin de créer des sols
+            fertiles à l’aide de matériaux qui pour la plupart sont issus de déchets urbains (ex :
+            compost).
           </p>
-          <p>
-            La restauration écologique des sols consiste donc à « réparer » ou recréer les processus
-            écologiques préexistants en termes de composition spécifique ou de structures des
-            communautés végétale et animale.
-            <br />
-          </p>
-          <p> Concrètement, il s'agit d'appliquer des techniques soit de :</p>
-          <ul>
-            <li>
-              génie écologique par décompaction du sol, puis léger apport en matière organique,
-              inoculation en micro-organismes et semis ou plantations
-            </li>
-            <li>
-              génie pédologique afin de créer des sols fertiles à l'aide de matériaux qui pour la
-              plupart sont issus de déchets urbains (ex : compost)
-            </li>
-          </ul>
         </FormInfo>
       }
     >

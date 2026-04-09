@@ -8,8 +8,9 @@ import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 
 function ReinstatementExpensesFormContainer() {
   const { onBack, onRequestStepCompletion, selectReinstatementExpensesViewData } = useProjectForm();
-  const { reinstatementExpenses, decontaminatedSurfaceArea, siteSoilsDistribution } =
-    useAppSelector(selectReinstatementExpensesViewData);
+  const { reinstatementExpenses, decontaminatedSurfaceArea } = useAppSelector(
+    selectReinstatementExpensesViewData,
+  );
 
   return (
     <ReinstatementsExpensesForm
@@ -22,15 +23,9 @@ function ReinstatementExpensesFormContainer() {
           },
         });
       }}
-      hasBuildings={Boolean(siteSoilsDistribution.BUILDINGS && siteSoilsDistribution.BUILDINGS > 0)}
       hasProjectedDecontamination={Boolean(
         decontaminatedSurfaceArea && decontaminatedSurfaceArea > 0,
       )}
-      hasImpermeableSoils={
-        Boolean(
-          siteSoilsDistribution.IMPERMEABLE_SOILS && siteSoilsDistribution.IMPERMEABLE_SOILS > 0,
-        ) || Boolean(siteSoilsDistribution.MINERAL_SOIL && siteSoilsDistribution.MINERAL_SOIL > 0)
-      }
       initialValues={
         reinstatementExpenses
           ? mapReinstatementExpensesToFormValues(reinstatementExpenses)

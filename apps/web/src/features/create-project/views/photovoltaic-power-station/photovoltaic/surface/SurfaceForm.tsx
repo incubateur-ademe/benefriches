@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { convertSquareMetersToHectares } from "shared";
+import { convertSquareMetersToHectares, PHOTOVOLTAIC_RATIO_M2_PER_KWC } from "shared";
 
 import {
   formatNumberFr,
@@ -10,8 +10,7 @@ import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/Back
 import RowDecimalsNumericInput from "@/shared/views/components/form/NumericInput/RowDecimalsNumericInput";
 import { requiredNumericFieldRegisterOptions } from "@/shared/views/components/form/NumericInput/registerOptions";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
-import FormDefinition from "@/shared/views/layout/WizardFormLayout/FormDefinition";
-import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
+import FormAutoInfo from "@/shared/views/layout/WizardFormLayout/FormAutoInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -40,31 +39,17 @@ function PhotovoltaicSurfaceForm({ initialValues, onSubmit, siteSurfaceArea, onB
 
   return (
     <WizardFormLayout
-      title="Quelle superficie du site occuperont les panneaux photovoltaïques ?"
+      title="Quelle superficie du site occuperont les panneaux photovoltaïques&nbsp;?"
       instructions={
-        <>
-          <FormInfo>
-            <p>
-              La superficie d'installation des panneaux ne peut être supérieure à la superficie
-              totale de la friche (<strong>{formatSurfaceArea(siteSurfaceArea)}</strong>).
-            </p>
-          </FormInfo>
-
-          <FormDefinition>
-            <p>
-              Une centrale au sol peut facilement être implantée sur des espaces imperméabilisés
-              (non bâtis) ou minéralisés, mais également sur des espaces enherbés ou avec de la
-              végétation basse (broussailles, garrigue, etc.) qu'ils soient artificialisés ou
-              naturels.
-            </p>
-            <p>
-              Dès lors que de la végétation haute est présente (sols artificiels ou prairies
-              arborés, forêts), l'implantation nécessite des investissements (coupes) et est à
-              éviter (pour des raisons de biodiversité et de puits de carbone).
-            </p>
-            <p>Le devenir des sols sera abordé plus loin dans le formulaire.</p>
-          </FormDefinition>
-        </>
+        <FormAutoInfo>
+          D’où vient la surface pré-remplie ?
+          <p>
+            Le ratio superficie / puissance d'installation considéré est de{" "}
+            <strong>
+              {formatSurfaceArea(PHOTOVOLTAIC_RATIO_M2_PER_KWC * 1000)} pour 1 000 kWc.
+            </strong>
+          </p>
+        </FormAutoInfo>
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>

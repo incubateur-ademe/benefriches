@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RowNumericInput from "@/shared/views/components/form/NumericInput/RowNumericInput";
 import { requiredNumericFieldRegisterOptions } from "@/shared/views/components/form/NumericInput/registerOptions";
-import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 import ExpectedAnnualProductionHint from "./ExpectedAnnualProductionHint";
@@ -31,13 +30,11 @@ function PhotovoltaicAnnualProductionForm({
 
   return (
     <WizardFormLayout
-      title="Quelle est la production annuelle attendue de l'installation ?"
+      title="Quelle est la production annuelle attendue de l'installation&nbsp;?"
       instructions={
-        <FormInfo>
-          <ExpectedAnnualProductionHint
-            expectedPerformanceMwhPerYear={expectedPerformanceMwhPerYear}
-          />
-        </FormInfo>
+        <ExpectedAnnualProductionHint
+          expectedPerformanceMwhPerYear={expectedPerformanceMwhPerYear}
+        />
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>

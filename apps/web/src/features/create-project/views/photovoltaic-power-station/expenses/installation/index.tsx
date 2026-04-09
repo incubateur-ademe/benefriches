@@ -7,7 +7,7 @@ import {
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 import { selectPhotovoltaicPowerStationInstallationExpensesInitialValues } from "@/features/create-project/core/renewable-energy/step-handlers/expenses/expenses-installation/expensesInstallation.selector";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
-import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
+import FormAutoInfo from "@/shared/views/layout/WizardFormLayout/FormAutoInfo";
 import InstallationExpensesForm, {
   FormValues,
 } from "@/shared/views/project-form/common/expenses/installation-expenses/InstallationExpensesForm";
@@ -28,13 +28,11 @@ function PhotovoltaicPanelsInstallationExpensesFormContainer() {
     <InstallationExpensesForm
       title="Dépenses d'installation de la centrale photovoltaïque"
       instructions={
-        <FormInfo>
+        <FormAutoInfo>
+          D’où viennent les montants préremplis ?
           <p>
-            Les montants sont exprimés en <strong>€ HT</strong>.
-          </p>
-          <p>
-            Les montants pré-remplis le sont d'après la puissance d'installation que vous avez
-            renseignées (exprimée en kWc) et les dépenses moyennes observées.
+            Montants calculés d’après les informations que vous avez renseigné et les dépenses
+            financiers moyens en France de chaque poste de dépense.
           </p>
           <p>
             <strong>Source&nbsp;: </strong>
@@ -43,8 +41,7 @@ function PhotovoltaicPanelsInstallationExpensesFormContainer() {
               Commission de régulation de l'énergie
             </ExternalLink>
           </p>
-          <p>Vous pouvez modifier ces montants.</p>
-        </FormInfo>
+        </FormAutoInfo>
       }
       initialValues={{
         worksAmount: initialValues.works,

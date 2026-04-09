@@ -1,10 +1,8 @@
 import { useForm } from "react-hook-form";
-import { AVERAGE_PHOTOVOLTAIC_CONTRACT_DURATION_IN_YEARS } from "shared";
 
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RowNumericInput from "@/shared/views/components/form/NumericInput/RowNumericInput";
 import { requiredNumericFieldRegisterOptions } from "@/shared/views/components/form/NumericInput/registerOptions";
-import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -23,18 +21,7 @@ function PhotovoltaicAnnualProductionForm({ initialValues, onSubmit, onBack }: P
   });
 
   return (
-    <WizardFormLayout
-      title="Quelle sera la durée prévisionnelle du contrat de la revente d'énergie au distributeur ?"
-      instructions={
-        <FormInfo>
-          <p>
-            La durée moyenne des contrats de rachat d'électricité photovoltaïque est de{" "}
-            {AVERAGE_PHOTOVOLTAIC_CONTRACT_DURATION_IN_YEARS} ans.
-          </p>
-          <p>Vous pouvez modifier cette durée.</p>
-        </FormInfo>
-      }
-    >
+    <WizardFormLayout title="Quelle sera la durée prévisionnelle du contrat de la revente d'énergie au distributeur&nbsp;?">
       <form onSubmit={handleSubmit(onSubmit)}>
         <RowNumericInput
           nativeInputProps={register("photovoltaicContractDuration", {

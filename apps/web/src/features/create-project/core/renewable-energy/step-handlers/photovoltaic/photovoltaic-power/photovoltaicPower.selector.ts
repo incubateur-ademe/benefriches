@@ -52,7 +52,7 @@ export const selectPhotovoltaicPowerViewData = createSelector(
     const recommendedPowerKWc =
       getRecommendedPowerKWcFromPhotovoltaicPanelsSurfaceArea(siteSurfaceArea);
     return {
-      initialValue: powerKWc,
+      initialValue: powerKWc ?? recommendedPowerKWc,
       keyParameter: "POWER",
       recommendedPowerKWc,
       photovoltaicInstallationSurfaceArea: undefined,

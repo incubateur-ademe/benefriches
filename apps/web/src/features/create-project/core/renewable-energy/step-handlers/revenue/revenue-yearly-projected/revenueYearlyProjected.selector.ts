@@ -40,16 +40,11 @@ const selectPhotovoltaicPowerStationYearlyRevenueInitialValues = createSelector(
 
 type PVYearlyProjectedRevenueViewData = {
   initialValues: ReturnType<typeof selectPhotovoltaicPowerStationYearlyRevenueInitialValues>;
-  photovoltaicExpectedAnnualProduction: number | undefined;
 };
 
 export const selectPVYearlyProjectedRevenueViewData = createSelector(
-  [selectPhotovoltaicPowerStationYearlyRevenueInitialValues, selectSteps],
-  (initialValues, steps): PVYearlyProjectedRevenueViewData => ({
+  [selectPhotovoltaicPowerStationYearlyRevenueInitialValues],
+  (initialValues): PVYearlyProjectedRevenueViewData => ({
     initialValues,
-    photovoltaicExpectedAnnualProduction: ReadStateHelper.getStepAnswers(
-      steps,
-      "RENEWABLE_ENERGY_PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION",
-    )?.photovoltaicExpectedAnnualProduction,
   }),
 );

@@ -74,7 +74,7 @@ function SoilsDecontaminationSurfaceArea({
   };
 
   return (
-    <WizardFormLayout title="Quelle part des sols pollués sera dépolluée ?">
+    <WizardFormLayout title="Quelle part des sols pollués sera dépolluée&nbsp;?">
       <form
         onSubmit={handleSubmit(() => {
           onSubmit(surfaceAreaInSquareMeters);

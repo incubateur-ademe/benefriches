@@ -7,7 +7,7 @@ import {
 } from "@/features/create-project/core/renewable-energy/renewableEnergy.actions";
 import { selectPhotovoltaicPowerStationYearlyExpensesInitialValues } from "@/features/create-project/core/renewable-energy/step-handlers/expenses/expenses-yearly-projected/expensesYearlyProjected.selector";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
-import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
+import FormAutoInfo from "@/shared/views/layout/WizardFormLayout/FormAutoInfo";
 import YearlyProjectedExpensesForm from "@/shared/views/project-form/common/expenses/yearly-projected-expenses";
 
 function YearlyProjectedExpensesFormContainer() {
@@ -18,13 +18,11 @@ function YearlyProjectedExpensesFormContainer() {
     <YearlyProjectedExpensesForm
       initialValues={initialValues}
       instructions={
-        <FormInfo>
+        <FormAutoInfo>
+          D’où viennent les montants préremplis ?
           <p>
-            Les montants sont exprimés en <strong>€ HT</strong>.
-          </p>
-          <p>
-            Les montants pré-remplis le sont d'après la puissance d'installation que vous avez
-            renseigné (exprimée en kWc) et les dépenses moyennes observées.
+            Montants calculés d’après les informations que vous avez renseigné et les dépenses
+            financiers moyens en France de chaque poste de dépense.
           </p>
           <p>
             <strong>Source&nbsp;: </strong>
@@ -33,8 +31,7 @@ function YearlyProjectedExpensesFormContainer() {
               Commission de régulation de l'énergie
             </ExternalLink>
           </p>
-          <p>Vous pouvez modifier ces montants.</p>
-        </FormInfo>
+        </FormAutoInfo>
       }
       onSubmit={(expenses: RecurringExpense[]) => {
         dispatch(

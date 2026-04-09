@@ -7,7 +7,6 @@ import { Schedule } from "@/features/create-project/core/project.types";
 import { stringToNumber } from "@/shared/core/number-conversion/numberConversion";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
-import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 import ScheduleField from "./ScheduleField";
@@ -67,21 +66,7 @@ function ScheduleProjectionForm({
   });
 
   return (
-    <WizardFormLayout
-      title="Calendrier"
-      instructions={
-        <FormInfo>
-          <p>
-            Les dates de début et fin des travaux sont proposés par défaut avec une durée d'un an.
-          </p>
-          <p>
-            L'année de mise en service est proposée par défaut à l'année correspondant à la fin des
-            travaux.
-          </p>
-          <p>Vous pouvez modifier ces dates.</p>
-        </FormInfo>
-      }
-    >
+    <WizardFormLayout title="Calendrier">
       <form
         onSubmit={handleSubmit((formData: FormValues) => {
           onSubmit({

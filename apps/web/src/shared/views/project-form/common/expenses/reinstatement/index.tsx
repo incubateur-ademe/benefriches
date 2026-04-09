@@ -4,17 +4,8 @@ import {
   SoilsDistribution,
 } from "shared";
 
-import { ProjectSite } from "@/features/create-project/core/project.types";
-
 import ReinstatementExpensesForm, { FormValues } from "./ReinstatementExpensesForm";
 import { mapFormValuesToReinstatementExpenses, mapInitialValues } from "./mappers";
-
-const hasBuildings = (soilsDistribution: ProjectSite["soilsDistribution"]) =>
-  soilsDistribution.BUILDINGS ? soilsDistribution.BUILDINGS > 0 : false;
-const hasImpermeableSoils = (soilsDistribution: ProjectSite["soilsDistribution"]) =>
-  soilsDistribution.IMPERMEABLE_SOILS ? soilsDistribution.IMPERMEABLE_SOILS > 0 : false;
-const hasMineralSoils = (soilsDistribution: ProjectSite["soilsDistribution"]) =>
-  soilsDistribution.MINERAL_SOIL ? soilsDistribution.MINERAL_SOIL > 0 : false;
 
 type Props = {
   preEnteredData?: ReinstatementExpense[];
@@ -33,8 +24,6 @@ function ReinstatementExpensesFormContainer({
   projectSoilsDistribution,
   decontaminatedSurfaceArea,
 }: Props) {
-  const hasImpermeableOrMineralSoils =
-    hasImpermeableSoils(siteSoilsDistribution) || hasMineralSoils(siteSoilsDistribution);
   const hasProjectedDecontamination = !!(
     decontaminatedSurfaceArea && decontaminatedSurfaceArea > 0
   );
@@ -55,9 +44,7 @@ function ReinstatementExpensesFormContainer({
         onSubmit(mapFormValuesToReinstatementExpenses(data));
       }}
       initialValues={initialValues}
-      hasBuildings={hasBuildings(siteSoilsDistribution)}
       hasProjectedDecontamination={hasProjectedDecontamination}
-      hasImpermeableSoils={hasImpermeableOrMineralSoils}
     />
   );
 }

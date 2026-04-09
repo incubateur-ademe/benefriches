@@ -1,5 +1,5 @@
-import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
+import FormAutoInfo from "@/shared/views/layout/WizardFormLayout/FormAutoInfo";
 
 type Props = {
   expectedPerformanceMwhPerYear?: number;
@@ -7,24 +7,21 @@ type Props = {
 
 function ExpectedAnnualProductionHint({ expectedPerformanceMwhPerYear }: Props) {
   return expectedPerformanceMwhPerYear ? (
-    <>
+    <FormAutoInfo>
+      D’où vient la production annuelle pré-remplie ?
       <p>
-        D'après la puissance de crête de l'installation et sa situation géographique (adresse), vous
-        pouvez espérer produire en moyenne {formatNumberFr(expectedPerformanceMwhPerYear)} MWh par
-        an.
+        Production calculée à partir de la puissance, de la superficie au sol et du taux
+        d’ensoleillement moyen dans la zone géographique du site.
       </p>
       <p>
-        La valeur qui vous est proposée a été calculée à partir des données de l'outil{" "}
         <ExternalLink
           title="Site du Photovoltaic Geographical Information System - ouvre une nouvelle fenêtre"
           href="https://re.jrc.ec.europa.eu/pvg_tools/fr/"
         >
-          PVGIS
+          En savoir plus
         </ExternalLink>
       </p>
-
-      <p>Vous pouvez modifier cette valeur.</p>
-    </>
+    </FormAutoInfo>
   ) : (
     <p>
       Nous n'avons pas réussi à pré-calculer votre potentielle production annuelle. Vous pouvez

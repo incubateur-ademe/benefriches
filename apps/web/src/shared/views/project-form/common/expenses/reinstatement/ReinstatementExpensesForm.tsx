@@ -5,7 +5,7 @@ import { sumObjectValues } from "shared";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import FormRowNumericInput from "@/shared/views/components/form/NumericInput/FormRowNumericInput";
 import RowNumericInput from "@/shared/views/components/form/NumericInput/RowNumericInput";
-import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
+import FormAutoInfo from "@/shared/views/layout/WizardFormLayout/FormAutoInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 import SustainableSoilsReinstatementInfoButton from "./SustainableSoilsReinstatementInfoButton";
@@ -14,9 +14,7 @@ type Props = {
   initialValues?: FormValues;
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
-  hasBuildings: boolean;
   hasProjectedDecontamination: boolean;
-  hasImpermeableSoils: boolean;
 };
 
 export type FormValues = {
@@ -27,58 +25,6 @@ export type FormValues = {
   deimpermeabilizationAmount?: number;
   sustainableSoilsReinstatementAmount?: number;
   otherReinstatementExpenseAmount?: number;
-};
-
-const ReinstatementExpensesFormExplanation = ({
-  hasProjectedDecontamination,
-  hasImpermeableSurface,
-}: {
-  hasProjectedDecontamination: boolean;
-  hasImpermeableSurface: boolean;
-}) => {
-  if (hasProjectedDecontamination) {
-    if (hasImpermeableSurface) {
-      return (
-        <section>
-          <p>
-            Le site que vous allez aménager est une friche partiellement imperméable et
-            partiellement polluée.
-          </p>
-          <p>
-            Vous allez donc potentiellement engager des travaux de déconstruction (bâtiments
-            obsolètes, désimperméabilisation de parking et voiries etc...) et des travaux de
-            dépollution.
-          </p>
-        </section>
-      );
-    }
-    return (
-      <section>
-        <p>Le site que vous allez aménager est une friche partiellement polluée.</p>
-        <p>Vous allez engager des travaux de dépollution.</p>
-      </section>
-    );
-  } else {
-    if (hasImpermeableSurface) {
-      return (
-        <section>
-          <p>Le site que vous allez aménager est une friche partiellement imperméable.</p>
-          <p>
-            Vous allez donc potentiellement engager des travaux de déconstruction (bâtiments
-            obsolètes, désimperméabilisation de parking et voiries etc...)
-          </p>
-        </section>
-      );
-    }
-    return (
-      <section>
-        <p>
-          Le site que vous allez aménager est une friche. Vous allez donc potentiellement engager
-          des travaux de remise en état pour la rendre exploitable.
-        </p>
-      </section>
-    );
-  }
 };
 
 const getExpensesInputs = (hasProjectedDecontamination: boolean) => {
@@ -109,8 +55,6 @@ const ReinstatementsExpensesForm = ({
   onSubmit,
   onBack,
   hasProjectedDecontamination,
-  hasBuildings,
-  hasImpermeableSoils,
 }: Props) => {
   const { handleSubmit, control, watch } = useForm<FormValues>({
     defaultValues: initialValues
@@ -129,8 +73,6 @@ const ReinstatementsExpensesForm = ({
 
   const allExpenses = watch();
 
-  const hasImpermeableSurface = hasBuildings || hasImpermeableSoils;
-
   const hasNoValuesFilled =
     typedObjectEntries(allExpenses).filter(([, value]) => typeof value === "number").length === 0;
 
@@ -138,19 +80,13 @@ const ReinstatementsExpensesForm = ({
     <WizardFormLayout
       title="Dépenses de travaux de remise en état de la friche"
       instructions={
-        <FormInfo>
+        <FormAutoInfo>
+          D’où viennent les montants préremplis ?
           <p>
-            Les montants sont exprimés en <strong>€ HT</strong>.
+            Montants calculés d’après les informations que vous avez renseigné et les dépenses
+            financiers moyens en France de chaque poste de dépense.
           </p>
-          <p>
-            Les montants pré-remplis le sont d'après les informations de surface que vous avez
-            renseigné et les dépenses moyens observés. Vous pouvez modifier ces montants.
-          </p>
-          <ReinstatementExpensesFormExplanation
-            hasProjectedDecontamination={hasProjectedDecontamination}
-            hasImpermeableSurface={hasImpermeableSurface}
-          />
-        </FormInfo>
+        </FormAutoInfo>
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>

@@ -21,7 +21,6 @@ import { optionalNumericFieldRegisterOptions } from "@/shared/views/components/f
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 import AllocatedSurfaceAreaControlInput from "./AllocatedSurfaceAreaControlInput";
-import FutureSoilsSurfaceAreaInstructions from "./FutureSoilsSurfaceAreaInstructions";
 import SuitableSurfaceAreaControlInput from "./SuitableSurfaceAreaControlInput";
 
 type Props = {
@@ -58,10 +57,7 @@ function FutureSoilsSurfaceAreaForm({
     getSuitableSurfaceAreaForPhotovoltaicPanels(allocatedSoilsDistribution);
 
   return (
-    <WizardFormLayout
-      title="Quelles seront les superficies des sols ?"
-      instructions={<FutureSoilsSurfaceAreaInstructions />}
-    >
+    <WizardFormLayout title="Quelles seront les superficies des sols ?">
       <form onSubmit={handleSubmit(onSubmit)}>
         {selectedSoils.map((soilType) => {
           const existingSoilSurfaceArea = currentSoilsDistribution[soilType];
