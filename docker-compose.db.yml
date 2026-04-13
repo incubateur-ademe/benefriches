@@ -7,9 +7,9 @@ services:
     ports:
       - '${DATABASE_PORT}:5432'
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: secret
-      POSTGRES_DB: benefriches_db
+      POSTGRES_USER: ${DATABASE_USER:-postgres}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-secret}
+      POSTGRES_DB: ${DATABASE_DB_NAME:-benefriches_db}
     volumes:
       - benefriches_pg_data:/var/lib/postgresql/data
   mailcatcher:
