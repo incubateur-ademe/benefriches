@@ -33,4 +33,5 @@ jobs:
     with:
       tag: "v${{ github.run_number }}"
       environment: production
-    secrets: inherit
+    secrets:
+      SCALINGO_API_TOKEN: ${{ secrets.SCALINGO_API_TOKEN }}
