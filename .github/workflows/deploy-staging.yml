@@ -3,10 +3,6 @@ name: "Deploy staging"
 permissions:
   contents: read
 
-concurrency:
-  group: deploy-staging
-  cancel-in-progress: false
-
 on:
   workflow_dispatch:
   workflow_call:
