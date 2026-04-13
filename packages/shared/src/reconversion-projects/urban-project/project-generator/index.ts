@@ -11,5 +11,6 @@ export {
   type UrbanProjectTemplate,
   urbanProjectTemplateSchema,
   isUrbanProjectTemplate,
+  urbanProjectTemplates,
 } from "./templates";
 export { type UrbanProjectCategory } from "../category";

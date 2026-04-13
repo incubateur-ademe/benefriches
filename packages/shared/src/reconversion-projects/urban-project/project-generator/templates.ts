@@ -11,6 +11,8 @@ export const urbanProjectTemplateSchema = z.enum([
   "RENATURATION",
 ]);
 
+export const urbanProjectTemplates = urbanProjectTemplateSchema.options;
+
 export function isUrbanProjectTemplate(template: unknown): template is UrbanProjectTemplate {
   return urbanProjectTemplateSchema.safeParse(template).success;
 }
