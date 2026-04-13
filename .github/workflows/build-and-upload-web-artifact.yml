@@ -27,3 +27,4 @@ jobs:
         with:
           name: web-scalingo-${{ inputs.tag }}
           path: web-scalingo.tar.gz
+          retention-days: 1
