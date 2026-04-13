@@ -6,6 +6,9 @@ permissions:
 on:
   workflow_dispatch:
   workflow_call:
+    secrets:
+      SCALINGO_API_TOKEN:
+        required: true
 
 jobs:
   integration-checks:
@@ -33,4 +36,5 @@ jobs:
     with:
       tag: "v${{ github.run_number }}"
       environment: staging
-    secrets: inherit
+    secrets:
+      SCALINGO_API_TOKEN: ${{ secrets.SCALINGO_API_TOKEN }}
