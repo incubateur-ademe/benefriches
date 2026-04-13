@@ -3,6 +3,10 @@ name: "Deploy production"
 permissions:
   contents: read
 
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
 # Run when push occurs on main branch
 on:
   workflow_dispatch:
