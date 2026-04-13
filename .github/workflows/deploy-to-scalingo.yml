@@ -45,3 +45,9 @@ jobs:
           run: |
             echo "Deploying API on app ${{ vars.SCALINGO_API_APP_NAME }}"
             scalingo --region ${{vars.SCALINGO_APP_REGION}} --app ${{ vars.SCALINGO_API_APP_NAME }} deploy api-scalingo.tar.gz
+        - name: Wait for deployment to stabilize
+          run: sleep 30
+        - name: Verify API health
+          run: |
+            echo "Checking API health at https://${{ vars.SCALINGO_API_APP_NAME }}.osc-secnum-fr1.scalingo.io/api/health"
+            curl --retry 3 --retry-delay 10 --retry-all-errors -sf "https://${{ vars.SCALINGO_API_APP_NAME }}.osc-secnum-fr1.scalingo.io/api/health" || echo "::warning::API health check failed — deployment may need manual verification"
