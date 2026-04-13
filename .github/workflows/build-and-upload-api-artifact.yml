@@ -15,16 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320
-        with:
-          version: 10.31.0
-      - name: Use Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: "24"
-          cache: "pnpm"
-      - name: Install dependencies
-        run: pnpm install
+      - uses: ./.github/actions/setup-pnpm
       - name: Create Archive
         run: ./apps/api/scripts/build-for-scalingo-v2.sh
       - name: Archive dist

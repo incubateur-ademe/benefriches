@@ -19,14 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320
-        with:
-          version: 10.31.0
-      - uses: actions/setup-node@v6
-        with:
-          node-version: "24"
-          cache: "pnpm"
-      - run: pnpm install
+      - uses: ./.github/actions/setup-pnpm
       - run: pnpm --filter shared build
       - run: pnpm typecheck
       - run: pnpm lint
@@ -36,14 +29,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320
-        with:
-          version: 10.31.0
-      - uses: actions/setup-node@v6
-        with:
-          node-version: "24"
-          cache: "pnpm"
-      - run: pnpm install
+      - uses: ./.github/actions/setup-pnpm
       - run: pnpm --filter shared build
       - run: pnpm test
 
@@ -51,14 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320
-        with:
-          version: 10.31.0
-      - uses: actions/setup-node@v6
-        with:
-          node-version: "24"
-          cache: "pnpm"
-      - run: pnpm install
+      - uses: ./.github/actions/setup-pnpm
       - run: pnpm build
 
   e2e-tests:
