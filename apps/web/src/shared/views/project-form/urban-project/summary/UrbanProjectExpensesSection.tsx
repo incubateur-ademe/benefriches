@@ -6,6 +6,7 @@ import {
   EURO_PER_SQUARE_METERS_FOR_REMEDIATION,
   EURO_PER_SQUARE_METERS_FOR_SUSTAINABLE_SOILS_REINSTATEMENT,
   sumListWithKey,
+  typedObjectEntries,
   URBAN_PROJECT_EURO_PER_SQUARE_METERS_FOR_DEVELOPMENT_WORKS,
   URBAN_PROJECT_EURO_PER_SQUARE_METERS_FOR_TECHNICAL_STUDIES,
 } from "shared";
@@ -16,7 +17,10 @@ import {
   getLabelForReinstatementExpensePurpose,
 } from "@/shared/core/reconversionProject";
 import { getProjectSummary } from "@/shared/core/reducers/project-form/urban-project/helpers/projectSummary";
-import { getLabelForUrbanProjectDevelopmentExpense } from "@/shared/core/urbanProject";
+import {
+  getLabelForBuildingsConstructionExpense,
+  getLabelForUrbanProjectDevelopmentExpense,
+} from "@/shared/core/urbanProject";
 import DataLine from "@/shared/views/components/FeaturesList/FeaturesListDataLine";
 import Section from "@/shared/views/components/FeaturesList/FeaturesListSection";
 
@@ -28,6 +32,7 @@ type Props = {
   sitePurchaseTotalAmount: ProjectSummary["sitePurchaseTotalAmount"];
   sitePurchasePropertyTransferDuties: ProjectSummary["sitePurchasePropertyTransferDuties"];
   reinstatementCosts: ProjectSummary["reinstatementCosts"];
+  buildingsConstructionAndRehabilitationCosts: ProjectSummary["buildingsConstructionAndRehabilitationCosts"];
   installationCosts: ProjectSummary["installationCosts"];
   yearlyProjectedCosts: ProjectSummary["yearlyProjectedCosts"];
   developerName: string | undefined;
@@ -40,6 +45,7 @@ export default function UrbanProjectExpensesSection({
   sitePurchaseTotalAmount,
   sitePurchasePropertyTransferDuties,
   reinstatementCosts,
+  buildingsConstructionAndRehabilitationCosts,
   installationCosts,
   yearlyProjectedCosts,
   developerName,
@@ -48,6 +54,8 @@ export default function UrbanProjectExpensesSection({
   const hasExpenses =
     (sitePurchaseTotalAmount.shouldDisplay && sitePurchaseTotalAmount.value !== undefined) ||
     (reinstatementCosts.shouldDisplay && reinstatementCosts.value !== undefined) ||
+    (buildingsConstructionAndRehabilitationCosts.shouldDisplay &&
+      buildingsConstructionAndRehabilitationCosts.value !== undefined) ||
     installationCosts.value.length > 0 ||
     yearlyProjectedCosts.value.length > 0;
 
@@ -58,6 +66,14 @@ export default function UrbanProjectExpensesSection({
       </Section>
     );
   }
+
+  const totalBuildingsConstructionCosts =
+    buildingsConstructionAndRehabilitationCosts.value !== undefined
+      ? Object.values(buildingsConstructionAndRehabilitationCosts.value).reduce(
+          (total, amount) => total + (amount ?? 0),
+          0,
+        )
+      : undefined;
 
   const sitePurchaseSellingPrice =
     sitePurchaseTotalAmount.value !== undefined &&
@@ -136,6 +152,33 @@ export default function UrbanProjectExpensesSection({
           ))}
         </>
       )}
+
+      {buildingsConstructionAndRehabilitationCosts.shouldDisplay &&
+        buildingsConstructionAndRehabilitationCosts.value !== undefined && (
+          <>
+            <DataLine
+              noBorder
+              label={
+                <>
+                  <strong>Construction / réhabilitation des bâtiments</strong> (à la charge de{" "}
+                  {developerName})
+                </>
+              }
+              value={<strong>{formatMoney(totalBuildingsConstructionCosts ?? 0)}</strong>}
+            />
+            {typedObjectEntries(buildingsConstructionAndRehabilitationCosts.value).map(
+              ([purpose, amount]) =>
+                amount !== undefined && (
+                  <DataLine
+                    label={getLabelForBuildingsConstructionExpense(purpose)}
+                    value={formatMoney(amount)}
+                    isDetails
+                    key={purpose}
+                  />
+                ),
+            )}
+          </>
+        )}
 
       {installationCosts.value.length > 0 && (
         <>

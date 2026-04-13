@@ -292,6 +292,9 @@ function UrbanProjectFormSummary({
           sitePurchaseTotalAmount={projectSummary.sitePurchaseTotalAmount}
           sitePurchasePropertyTransferDuties={projectSummary.sitePurchasePropertyTransferDuties}
           reinstatementCosts={projectSummary.reinstatementCosts}
+          buildingsConstructionAndRehabilitationCosts={
+            projectSummary.buildingsConstructionAndRehabilitationCosts
+          }
           installationCosts={projectSummary.installationCosts}
           yearlyProjectedCosts={projectSummary.yearlyProjectedCosts}
           developerName={developerName}

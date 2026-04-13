@@ -137,3 +137,22 @@ export const getLabelForUrbanProjectDevelopmentExpense = (
       return "🏘️️ Autres dépenses d'aménagement";
   }
 };
+
+export const getLabelForBuildingsConstructionExpense = (
+  expensePurpose:
+    | "technicalStudiesAndFees"
+    | "buildingsConstructionWorks"
+    | "buildingsRehabilitationWorks"
+    | "otherConstructionExpenses",
+): string => {
+  switch (expensePurpose) {
+    case "technicalStudiesAndFees":
+      return "Études et honoraires techniques";
+    case "buildingsConstructionWorks":
+      return "Travaux de construction des bâtiments";
+    case "buildingsRehabilitationWorks":
+      return "Travaux de réhabilitation des bâtiments";
+    case "otherConstructionExpenses":
+      return "Autres dépenses de construction ou de réhabilitation";
+  }
+};

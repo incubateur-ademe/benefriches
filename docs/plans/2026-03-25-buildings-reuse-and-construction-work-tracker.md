@@ -224,11 +224,12 @@ Constraints:
     - `pnpm --filter e2e-tests test --list`
     - run each new/updated spec
 
-- [ ] **S13b** Wizard summary: display construction/rehabilitation expenses.
+- [x] **S13b** Wizard summary: display construction/rehabilitation expenses.
   - Spec ref: `Wizard summary (current phase)`
   - Includes:
     - update `shared/views/project-form/urban-project/summary/UrbanProjectExpensesSection.tsx` to include construction/rehabilitation expenses from form state
     - add label function for the 4 expense purposes in `shared/core/urbanProject.ts`
+  - Done note: Added construction/rehabilitation expenses to wizard summary with total + per-purpose detail lines, label function for all 4 expense purposes, and component test.
   - Targeted checks:
     - `pnpm --filter web typecheck && pnpm --filter web test`
 

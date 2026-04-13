@@ -164,6 +164,12 @@ export const getProjectSummary = (
       isAuto: autoInstallationCostsValues?.length !== 0,
       autoValues: autoInstallationCostsValues,
     },
+    buildingsConstructionAndRehabilitationCosts: {
+      value: steps.URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION?.payload,
+      shouldDisplay: stepsSequence.includes(
+        "URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION",
+      ),
+    },
     installationSchedule: {
       value: steps.URBAN_PROJECT_SCHEDULE_PROJECTION?.payload?.installationSchedule,
       isAuto:
