@@ -50,5 +50,5 @@ jobs:
         - name: Verify API health
           run: |
             API_URL="https://${{ vars.SCALINGO_API_APP_NAME }}.${{ vars.SCALINGO_APP_REGION }}.scalingo.io"
-            echo "Checking API health at ${API_URL}/api/health"
-            curl --retry 3 --retry-delay 10 --retry-all-errors -sf "${API_URL}/api/health" || echo "::warning::API health check failed — deployment may need manual verification"
+            echo "Checking API health at ${API_URL}/api/healthcheck"
+            curl --retry 3 --retry-delay 10 --retry-all-errors -sf "${API_URL}/api/healthcheck" || echo "::warning::API health check failed — deployment may need manual verification"
