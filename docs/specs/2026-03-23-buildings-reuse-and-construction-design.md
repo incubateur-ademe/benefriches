@@ -45,7 +45,7 @@ From this single input, two values are derived:
 | `URBAN_PROJECT_BUILDINGS_DEMOLITION_INFO` | Info | demolished > 0 |
 | `URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA` | Answer | reuse > 0 AND new construction > 0 |
 | `URBAN_PROJECT_BUILDINGS_NEW_CONSTRUCTION_INFO` | Info | new construction > 0 |
-| `URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA` | Answer | reuse > 0 AND new construction > 0 |
+| `URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA` | Answer | reuse > 0 AND new construction > 0; also revisit it when new construction > 0 and the step had already been answered before the reuse change |
 
 ### Other Sections (2 new steps)
 
@@ -71,7 +71,7 @@ BUILDINGS_INTRODUCTION (existing)
            -> [demolished > 0?] -> BUILDINGS_DEMOLITION_INFO
            -> [reuse > 0 AND new > 0?] -> BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA
            -> [new > 0?] -> BUILDINGS_NEW_CONSTRUCTION_INFO ("X m2 a construire")
-           -> [reuse > 0 AND new > 0?] -> BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA
+           -> [reuse > 0 AND new > 0, OR revisit needed because the step already existed?] -> BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA
       NO  -> BUILDINGS_NEW_CONSTRUCTION_INTRODUCTION ("X m2 a construire")
   -> [next section: decontamination or resale]
 ```
@@ -127,6 +127,7 @@ function siteHasBuildings(siteData): boolean
 function willDemolishBuildings(siteData, stepsState): boolean
 function willConstructNewBuildings(siteData, stepsState): boolean
 function hasBothReuseAndNewConstruction(siteData, stepsState): boolean
+function shouldRouteToNewBuildingsUsesFloorSurfaceArea(stepsState): boolean
 ```
 
 New file: `step-handlers/stakeholders/stakeholdersReaders.ts`
@@ -148,6 +149,10 @@ function isDeveloperBuildingsConstructor(stepsState): boolean
 | reuse becomes 0 (was > 0) | `BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA` | **delete** |
 | reuse changes (still > 0) | `BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA` | **invalidate** |
 | any change | `EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION` | **invalidate** |
+
+Revisit clarification:
+- If `BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA` already exists because the flow previously had both reuse and new construction, and the user edits reuse down to `0` while `new construction` stays `> 0`, the step must be **invalidated, not deleted**.
+- Rationale: the previous new-buildings allocation no longer matches the new situation (`new = overall - existing`, and existing is now `0`), so the user must revisit that step before saving.
 
 ### `STAKEHOLDERS_BUILDINGS_DEVELOPER`
 
@@ -216,6 +221,7 @@ Multiple steps can be the "last step" in the buildings chapter depending on cond
 | reuse > 0, new = 0, demolition > 0 | `BUILDINGS_DEMOLITION_INFO` |
 | reuse > 0, new > 0 | `BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA` |
 | reuse = 0, new > 0, demolition > 0 | `BUILDINGS_NEW_CONSTRUCTION_INFO` (after demolition info, no existing uses breakdown) |
+| revisit flow: reuse = 0, new > 0, and `BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA` already existed | `BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA` |
 
 Exit logic: if site has contaminated soils -> `SOILS_DECONTAMINATION_INTRODUCTION`, else -> `SITE_RESALE_INTRODUCTION`. Extract this as a shared helper (e.g., `getNextStepAfterBuildings` in `buildingsReaders.ts`) to avoid duplicating the logic across 5 handlers.
 
@@ -244,7 +250,7 @@ Each new step implements `getPreviousStepId` with the same conditional logic in 
 - **`SOILS_DECONTAMINATION_INTRODUCTION`** (`getPreviousStepId`): currently returns `BUILDINGS_USES_FLOOR_SURFACE_AREA` — must be updated to return the last step of the buildings chapter (use `getLastBuildingsChapterStep` helper)
 - **`SITE_RESALE_INTRODUCTION`** (`getPreviousStepId`): currently returns `BUILDINGS_USES_FLOOR_SURFACE_AREA` when buildings exist — must be updated to return the last step of the buildings chapter (use `getLastBuildingsChapterStep` helper)
 
-The `getLastBuildingsChapterStep` helper (companion to `getNextStepAfterBuildings`) encapsulates the conditional logic from the exit routing table to determine which step is last in the buildings chapter given the current context.
+The `getLastBuildingsChapterStep` helper (companion to `getNextStepAfterBuildings`) encapsulates the conditional logic from the exit routing table to determine which step is last in the buildings chapter given the current context. It must also account for the persisted-but-invalidated `BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA` revisit case above.
 
 ### No-buildings shortcut
 

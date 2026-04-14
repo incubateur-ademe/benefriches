@@ -82,7 +82,7 @@ export const BuildingsFootprintToReuseHandler: AnswerStepHandler<typeof STEP_ID>
     ) {
       rules.push({
         stepId: "URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA",
-        action: hasBoth ? "invalidate" : "delete",
+        action: newConstruction > 0 ? "invalidate" : "delete",
       });
     }
 

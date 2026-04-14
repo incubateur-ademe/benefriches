@@ -10,6 +10,7 @@ import {
   getSiteBuildingsFootprint,
   hasBothReuseAndNewConstruction,
   siteHasBuildings,
+  shouldRouteToNewBuildingsUsesFloorSurfaceArea,
   willConstructNewBuildings,
   willDemolishBuildings,
   willReuseExistingBuildings,
@@ -255,5 +256,40 @@ describe("hasBothReuseAndNewConstruction", () => {
       },
     } as StepsState;
     expect(hasBothReuseAndNewConstruction(stepsState)).toBe(false);
+  });
+});
+
+describe("shouldRouteToNewBuildingsUsesFloorSurfaceArea", () => {
+  it("returns true when new construction remains and the new buildings step already exists", () => {
+    const stepsState = {
+      URBAN_PROJECT_SPACES_SURFACE_AREA: {
+        completed: true,
+        payload: { spacesSurfaceAreaDistribution: { BUILDINGS: 3000 } },
+      },
+      URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE: {
+        completed: true,
+        payload: { buildingsFootprintToReuse: 0 },
+      },
+      URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA: {
+        completed: false,
+      },
+    } as StepsState;
+
+    expect(shouldRouteToNewBuildingsUsesFloorSurfaceArea(stepsState)).toBe(true);
+  });
+
+  it("returns false when reuse is 0 and the new buildings step does not already exist", () => {
+    const stepsState = {
+      URBAN_PROJECT_SPACES_SURFACE_AREA: {
+        completed: true,
+        payload: { spacesSurfaceAreaDistribution: { BUILDINGS: 3000 } },
+      },
+      URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE: {
+        completed: true,
+        payload: { buildingsFootprintToReuse: 0 },
+      },
+    } as StepsState;
+
+    expect(shouldRouteToNewBuildingsUsesFloorSurfaceArea(stepsState)).toBe(false);
   });
 });

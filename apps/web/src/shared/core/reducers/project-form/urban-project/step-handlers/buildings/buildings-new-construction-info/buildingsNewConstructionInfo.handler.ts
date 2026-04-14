@@ -2,6 +2,7 @@ import type { InfoStepHandler } from "../../stepHandler.type";
 import {
   getNextStepAfterBuildings,
   hasBothReuseAndNewConstruction,
+  shouldRouteToNewBuildingsUsesFloorSurfaceArea,
   willDemolishBuildings,
 } from "../buildingsReaders";
 
@@ -17,7 +18,7 @@ export const BuildingsNewConstructionInfoHandler: InfoStepHandler = {
     return "URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE";
   },
   getNextStepId(context) {
-    if (hasBothReuseAndNewConstruction(context.stepsState)) {
+    if (shouldRouteToNewBuildingsUsesFloorSurfaceArea(context.stepsState)) {
       return "URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA";
     }
     return getNextStepAfterBuildings(context);

@@ -58,6 +58,23 @@ export function hasBothReuseAndNewConstruction(stepsState: StepsState): boolean 
   return willReuseExistingBuildings(stepsState) && willConstructNewBuildings(stepsState);
 }
 
+function hasNewBuildingsUsesFloorSurfaceAreaStep(stepsState: StepsState): boolean {
+  return Boolean(
+    ReadStateHelper.getStep(
+      stepsState,
+      "URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA",
+    ),
+  );
+}
+
+export function shouldRouteToNewBuildingsUsesFloorSurfaceArea(stepsState: StepsState): boolean {
+  return (
+    willConstructNewBuildings(stepsState) &&
+    (hasBothReuseAndNewConstruction(stepsState) ||
+      hasNewBuildingsUsesFloorSurfaceAreaStep(stepsState))
+  );
+}
+
 export function getNextStepAfterBuildings(context: StepContext): UrbanProjectCreationStep {
   return context.siteData?.hasContaminatedSoils
     ? "URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION"
@@ -83,7 +100,7 @@ export function getLastBuildingsChapterStep(context: StepContext): UrbanProjectC
   if (!siteData || !siteHasBuildings(siteData)) {
     return "URBAN_PROJECT_BUILDINGS_NEW_CONSTRUCTION_INTRODUCTION";
   }
-  if (hasBothReuseAndNewConstruction(stepsState)) {
+  if (shouldRouteToNewBuildingsUsesFloorSurfaceArea(stepsState)) {
     return "URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA";
   }
   if (willConstructNewBuildings(stepsState)) {
