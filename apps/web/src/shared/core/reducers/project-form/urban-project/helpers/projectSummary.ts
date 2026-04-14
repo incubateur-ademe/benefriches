@@ -4,7 +4,7 @@ import {
   UrbanProjectDevelopmentExpense,
 } from "shared";
 
-import { DEFAULT_FUTURE_SITE_OWNER } from "../../helpers/stakeholders";
+import { DEFAULT_FUTURE_SITE_OWNER, getFutureOperator } from "../../helpers/stakeholders";
 import { ProjectFormState } from "../../projectForm.reducer";
 import { UrbanProjectCreationStep } from "../urbanProjectSteps";
 import { isSiteResalePlannedAfterDevelopment } from "./readers/siteResaleReaders";
@@ -142,10 +142,16 @@ export const getProjectSummary = (
         steps.URBAN_PROJECT_SCHEDULE_PROJECTION?.defaultValues?.firstYearOfOperation,
     },
     futureOperator: {
-      value: steps.URBAN_PROJECT_BUILDINGS_RESALE_SELECTION?.payload?.futureOperator,
-      isAuto:
-        steps.URBAN_PROJECT_BUILDINGS_RESALE_SELECTION?.payload?.futureOperator ===
-        steps.URBAN_PROJECT_BUILDINGS_RESALE_SELECTION?.defaultValues?.futureOperator,
+      value:
+        steps.URBAN_PROJECT_BUILDINGS_RESALE_SELECTION?.payload
+          ?.buildingsResalePlannedAfterDevelopment !== undefined
+          ? getFutureOperator(
+              steps.URBAN_PROJECT_BUILDINGS_RESALE_SELECTION.payload
+                .buildingsResalePlannedAfterDevelopment,
+              steps.URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER?.payload?.projectDeveloper,
+            )
+          : undefined,
+      isAuto: true, // Always auto-derived from resale selection + project developer
       shouldDisplay: stepsSequence.includes("URBAN_PROJECT_BUILDINGS_RESALE_SELECTION"),
     },
     futureSiteOwner: {

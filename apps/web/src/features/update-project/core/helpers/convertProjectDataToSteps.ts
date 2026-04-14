@@ -187,7 +187,6 @@ export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProje
             buildingsResalePlannedAfterDevelopment: Boolean(
               projectData.buildingsResaleExpectedSellingPrice,
             ),
-            futureOperator: projectData.futureOperator as ProjectStakeholder,
           },
           completed: true,
         };

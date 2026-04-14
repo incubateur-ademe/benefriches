@@ -41,10 +41,6 @@ describe("Urban project creation - Steps - buildings resale selection", () => {
         completed: true,
         payload: {
           buildingsResalePlannedAfterDevelopment: true,
-          futureOperator: {
-            name: "Futur exploitant inconnu",
-            structureType: "unknown",
-          },
         },
       },
     });
@@ -79,7 +75,6 @@ describe("Urban project creation - Steps - buildings resale selection", () => {
         completed: true,
         payload: {
           buildingsResalePlannedAfterDevelopment: false,
-          futureOperator: { structureType: "municipality", name: "Mairie d'angers" },
         },
       },
     });
@@ -144,10 +139,6 @@ describe("Urban project creation - Steps - buildings resale selection", () => {
         completed: true,
         payload: {
           buildingsResalePlannedAfterDevelopment: true,
-          futureOperator: {
-            name: "Futur exploitant inconnu",
-            structureType: "unknown",
-          },
         },
       },
       URBAN_PROJECT_REVENUE_BUILDINGS_RESALE: {
@@ -219,7 +210,6 @@ describe("Urban project creation - Steps - buildings resale selection", () => {
         completed: true,
         payload: {
           buildingsResalePlannedAfterDevelopment: false,
-          futureOperator: { structureType: "municipality", name: "Mairie d'angers" },
         },
       },
       URBAN_PROJECT_REVENUE_BUILDINGS_RESALE: undefined,

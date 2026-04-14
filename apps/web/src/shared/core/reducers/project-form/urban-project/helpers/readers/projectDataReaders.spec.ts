@@ -127,5 +127,56 @@ describe("projectDataReaders", () => {
       expect(result.yearlyProjectedCosts).toEqual([]);
       expect(result.yearlyProjectedRevenues).toEqual([]);
     });
+
+    describe("futureOperator", () => {
+      it("should return project developer as future operator when buildings resale is not planned", () => {
+        const steps: ProjectFormState["urbanProject"]["steps"] = {
+          URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
+            completed: true,
+            payload: { buildingsResalePlannedAfterDevelopment: false },
+          },
+          URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER: {
+            completed: true,
+            payload: {
+              projectDeveloper: { structureType: "company", name: "Dev Corp" },
+            },
+          },
+        };
+
+        const result = getProjectData(steps);
+
+        expect(result.futureOperator).toEqual({ structureType: "company", name: "Dev Corp" });
+      });
+
+      it("should return default unknown operator when buildings resale is planned", () => {
+        const steps: ProjectFormState["urbanProject"]["steps"] = {
+          URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
+            completed: true,
+            payload: { buildingsResalePlannedAfterDevelopment: true },
+          },
+          URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER: {
+            completed: true,
+            payload: {
+              projectDeveloper: { structureType: "company", name: "Dev Corp" },
+            },
+          },
+        };
+
+        const result = getProjectData(steps);
+
+        expect(result.futureOperator).toEqual({
+          name: "Futur exploitant inconnu",
+          structureType: "unknown",
+        });
+      });
+
+      it("should return undefined when buildings resale selection step is not completed", () => {
+        const steps: ProjectFormState["urbanProject"]["steps"] = {};
+
+        const result = getProjectData(steps);
+
+        expect(result.futureOperator).toBeUndefined();
+      });
+    });
   });
 });

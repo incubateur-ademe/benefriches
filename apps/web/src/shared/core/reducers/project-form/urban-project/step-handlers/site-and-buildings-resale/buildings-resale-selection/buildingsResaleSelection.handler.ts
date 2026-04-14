@@ -1,6 +1,3 @@
-import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
-
-import { getFutureOperator } from "../../../../helpers/stakeholders";
 import type { AnswerStepHandler, StepInvalidationRule } from "../../stepHandler.type";
 
 const STEP_ID = "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION";
@@ -41,22 +38,5 @@ export const BuildingsResaleSelectionHandler = {
     }
 
     return rules;
-  },
-
-  updateAnswersMiddleware(context, answers) {
-    const { buildingsResalePlannedAfterDevelopment } = answers;
-
-    const projectDeveloper = ReadStateHelper.getStepAnswers(
-      context.stepsState,
-      "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER",
-    )?.projectDeveloper;
-
-    return {
-      buildingsResalePlannedAfterDevelopment,
-      futureOperator:
-        buildingsResalePlannedAfterDevelopment !== undefined
-          ? getFutureOperator(buildingsResalePlannedAfterDevelopment, projectDeveloper)
-          : undefined,
-    };
   },
 } satisfies AnswerStepHandler<typeof STEP_ID>;
