@@ -239,6 +239,8 @@ Each new step implements `getPreviousStepId` with the same conditional logic in 
 
 - **`STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER`** (`getPreviousStepId`): currently hardcodes `STAKEHOLDERS_PROJECT_DEVELOPER` — must be updated to return `STAKEHOLDERS_BUILDINGS_DEVELOPER` when new construction > 0
 - **`EXPENSES_INTRODUCTION`** (`getPreviousStepId`): currently returns `STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER` (friche) or `STAKEHOLDERS_PROJECT_DEVELOPER` — must also consider `STAKEHOLDERS_BUILDINGS_DEVELOPER` when new construction > 0 and site is not friche
+- **`EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES`** (`getPreviousStepId`): must return `EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION` when reuse > 0 or `STAKEHOLDERS_BUILDINGS_DEVELOPER` applies, otherwise `EXPENSES_INSTALLATION`
+- **`REVENUE_INTRODUCTION`** (`getPreviousStepId`): when projected operating expenses are skipped but `EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION` exists, must return that step instead of jumping back to the earlier expenses flow
 - **`SOILS_DECONTAMINATION_INTRODUCTION`** (`getPreviousStepId`): currently returns `BUILDINGS_USES_FLOOR_SURFACE_AREA` — must be updated to return the last step of the buildings chapter (use `getLastBuildingsChapterStep` helper)
 - **`SITE_RESALE_INTRODUCTION`** (`getPreviousStepId`): currently returns `BUILDINGS_USES_FLOOR_SURFACE_AREA` when buildings exist — must be updated to return the last step of the buildings chapter (use `getLastBuildingsChapterStep` helper)
 

@@ -5,7 +5,8 @@ import { RevenueIntroductionHandler } from "@/shared/core/reducers/project-form/
 
 describe("RevenueIntroductionHandler", () => {
   describe("getNextStepId", () => {
-    it("should return URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE when site resale is planned (yes)", () => {
+    it("returns expected site resale when site resale is planned", () => {
+      // Arrange
       const stepsState: ProjectFormState["urbanProject"]["steps"] = {
         URBAN_PROJECT_SITE_RESALE_SELECTION: {
           completed: true,
@@ -13,12 +14,15 @@ describe("RevenueIntroductionHandler", () => {
         },
       };
 
+      // Act
       const nextStep = RevenueIntroductionHandler.getNextStepId({ stepsState });
 
+      // Assert
       expect(nextStep).toBe("URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE");
     });
 
-    it("should return URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE when site resale is unknown (user can modify estimated values)", () => {
+    it("returns expected site resale when site resale remains unknown", () => {
+      // Arrange
       const stepsState: ProjectFormState["urbanProject"]["steps"] = {
         URBAN_PROJECT_SITE_RESALE_SELECTION: {
           completed: true,
@@ -36,12 +40,15 @@ describe("RevenueIntroductionHandler", () => {
         },
       };
 
+      // Act
       const nextStep = RevenueIntroductionHandler.getNextStepId({ stepsState });
 
+      // Assert
       expect(nextStep).toBe("URBAN_PROJECT_REVENUE_EXPECTED_SITE_RESALE");
     });
 
-    it("should return URBAN_PROJECT_REVENUE_BUILDINGS_RESALE when site resale not planned but buildings resale is planned", () => {
+    it("returns buildings resale when site resale is skipped but buildings resale is planned", () => {
+      // Arrange
       const stepsState: ProjectFormState["urbanProject"]["steps"] = {
         URBAN_PROJECT_SITE_RESALE_SELECTION: {
           completed: true,
@@ -59,12 +66,15 @@ describe("RevenueIntroductionHandler", () => {
         },
       };
 
+      // Act
       const nextStep = RevenueIntroductionHandler.getNextStepId({ stepsState });
 
+      // Assert
       expect(nextStep).toBe("URBAN_PROJECT_REVENUE_BUILDINGS_RESALE");
     });
 
-    it("should return URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE when no resale is planned", () => {
+    it("returns financial assistance when no resale revenue applies", () => {
+      // Arrange
       const stepsState: ProjectFormState["urbanProject"]["steps"] = {
         URBAN_PROJECT_SITE_RESALE_SELECTION: {
           completed: true,
@@ -72,14 +82,17 @@ describe("RevenueIntroductionHandler", () => {
         },
       };
 
+      // Act
       const nextStep = RevenueIntroductionHandler.getNextStepId({ stepsState });
 
+      // Assert
       expect(nextStep).toBe("URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE");
     });
   });
 
   describe("getPreviousStepId", () => {
-    it("should return URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES when project has buildings and no buildings resale planned", () => {
+    it("returns projected operating expenses when going back without buildings resale", () => {
+      // Arrange
       const stepsState: ProjectFormState["urbanProject"]["steps"] = {
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
@@ -93,16 +106,25 @@ describe("RevenueIntroductionHandler", () => {
         },
       };
 
+      // Act
       const previousStep = RevenueIntroductionHandler.getPreviousStepId({ stepsState });
 
+      // Assert
       expect(previousStep).toBe("URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES");
     });
 
-    it("should return URBAN_PROJECT_EXPENSES_INSTALLATION when project has buildings and buildings resale is planned", () => {
+    it("returns construction and rehabilitation when reuse exists and buildings resale is planned", () => {
+      // Arrange
       const stepsState: ProjectFormState["urbanProject"]["steps"] = {
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
           payload: { usesSelection: ["RESIDENTIAL"] },
+        },
+        URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE: {
+          completed: true,
+          payload: {
+            buildingsFootprintToReuse: 1200,
+          },
         },
         URBAN_PROJECT_BUILDINGS_RESALE_SELECTION: {
           completed: true,
@@ -112,12 +134,15 @@ describe("RevenueIntroductionHandler", () => {
         },
       };
 
+      // Act
       const previousStep = RevenueIntroductionHandler.getPreviousStepId({ stepsState });
 
-      expect(previousStep).toBe("URBAN_PROJECT_EXPENSES_INSTALLATION");
+      // Assert
+      expect(previousStep).toBe("URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION");
     });
 
-    it("should return URBAN_PROJECT_EXPENSES_INSTALLATION when project has no buildings", () => {
+    it("returns installation when the project has no buildings", () => {
+      // Arrange
       const stepsState: ProjectFormState["urbanProject"]["steps"] = {
         URBAN_PROJECT_USES_SELECTION: {
           completed: true,
@@ -125,14 +150,18 @@ describe("RevenueIntroductionHandler", () => {
         },
       };
 
+      // Act
       const previousStep = RevenueIntroductionHandler.getPreviousStepId({ stepsState });
 
+      // Assert
       expect(previousStep).toBe("URBAN_PROJECT_EXPENSES_INSTALLATION");
     });
 
-    it("should return URBAN_PROJECT_EXPENSES_INSTALLATION when steps state is empty", () => {
+    it("returns installation when no prior expense information is available", () => {
+      // Act
       const previousStep = RevenueIntroductionHandler.getPreviousStepId({ stepsState: {} });
 
+      // Assert
       expect(previousStep).toBe("URBAN_PROJECT_EXPENSES_INSTALLATION");
     });
   });

@@ -70,7 +70,8 @@ Constraints:
 ### Still Missing / Incomplete
 - [x] Align `URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE` max constraint with spec update: `max = min(site buildings footprint, project buildings footprint)`.
   - Done note: Updated spec wording + selector/form max display/validation and added focused tests for min(site, project) behavior.
-- [ ] Existing handler updates required by spec navigation rules.
+- [x] Existing handler updates required by spec navigation rules.
+  - Done note: Fixed the stale reverse-navigation fallbacks in projected operating expenses and revenue introduction so reuse / constructor paths go back through construction and rehabilitation, with focused handler regression tests.
 - [x] Cascading deletion updates for new answer steps when buildings disappear from project.
   - Done note: Extended upstream uses/spaces cascades to delete persisted buildings answers when buildings disappear, and invalidated reuse entry on building-footprint updates so update flows revisit the buildings chapter.
 - [ ] View-data selectors for 4 new answer steps (only footprint-to-reuse selector exists).
