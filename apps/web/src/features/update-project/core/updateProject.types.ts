@@ -4,6 +4,7 @@ import {
   ReconversionProjectUpdatePropsDto,
   siteNatureSchema,
   soilTypeSchema,
+  surfaceAreaSchema,
 } from "shared";
 import z from "zod";
 
@@ -17,9 +18,9 @@ const siteViewSchema = z.object({
   owner: siteOwnerSchema,
   tenant: siteTenantSchema.optional(),
   hasContaminatedSoils: z.boolean().optional(),
-  contaminatedSoilSurface: z.number().nonnegative().optional(),
-  soilsDistribution: z.partialRecord(soilTypeSchema, z.number().nonnegative()),
-  surfaceArea: z.number().nonnegative(),
+  contaminatedSoilSurface: surfaceAreaSchema.optional(),
+  soilsDistribution: z.partialRecord(soilTypeSchema, surfaceAreaSchema),
+  surfaceArea: surfaceAreaSchema,
   address: addressSchema,
 });
 

@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import type { SurfaceAreaDistributionJson } from "../../../surface-area";
+import { surfaceAreaSchema, type SurfaceAreaDistributionJson } from "../../../surface-area";
 
 /**
  * Urban project uses schema combining building uses with non-building uses.
@@ -71,14 +71,14 @@ export type UrbanProjectUseDistribution = SurfaceAreaDistributionJson<UrbanProje
 
 export const urbanProjectUseDistributionSchema = z.partialRecord(
   urbanProjectUseSchema,
-  z.number().nonnegative(),
+  surfaceAreaSchema,
 );
 
 export type BuildingsUseDistribution = SurfaceAreaDistributionJson<UrbanProjectUseWithBuilding>;
 
 export const buildingsUseDistributionSchema = z.partialRecord(
   urbanProjectBuildingsUseSchema,
-  z.number().nonnegative(),
+  surfaceAreaSchema,
 );
 export const BUILDINGS_ECONOMIC_ACTIVITY_USE = [
   "LOCAL_STORE",

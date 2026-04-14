@@ -6,14 +6,15 @@
 
 ## What Goes Here
 
-| Category                   | Examples                                        | Notes                                      |
-| -------------------------- | ----------------------------------------------- | ------------------------------------------ |
-| **API DTOs**               | `CreateSiteDto`, `GetSiteViewResponseDto`       | Request/response schemas for API endpoints |
-| **Domain Value Objects**   | `SoilType`, `SiteNature`, `DevelopmentPlanType` | Shared domain vocabulary                   |
-| **Zod Schemas**            | `createSiteDtoSchema`, `soilTypeSchema`         | Runtime validation + TypeScript types      |
-| **Utility Types**          | `ObjectEntries<T>`, typed `Object.keys()`       | Type-safe object utilities                 |
-| **Adapter Interfaces**     | `IDateProvider`                                 | Port interfaces for dependency injection   |
-| **Pure Utility Functions** | Date formatting, area calculations              | No side effects, no framework deps         |
+| Category                   | Examples                                        | Notes                                                                     |
+| -------------------------- | ----------------------------------------------- | ------------------------------------------------------------------------- |
+| **API DTOs**               | `CreateSiteDto`, `GetSiteViewResponseDto`       | Request/response schemas for API endpoints                                |
+| **Domain Value Objects**   | `SoilType`, `SiteNature`, `DevelopmentPlanType` | Shared domain vocabulary                                                  |
+| **Zod Schemas**            | `createSiteDtoSchema`, `soilTypeSchema`         | Runtime validation + TypeScript types                                     |
+| **Zod Field Schemas**      | `surfaceAreaSchema`, `soilsDistributionSchema`  | Reusable field validators — prefer over inline `z.number().nonnegative()` |
+| **Utility Types**          | `ObjectEntries<T>`, typed `Object.keys()`       | Type-safe object utilities                                                |
+| **Adapter Interfaces**     | `IDateProvider`                                 | Port interfaces for dependency injection                                  |
+| **Pure Utility Functions** | Date formatting, area calculations              | No side effects, no framework deps                                        |
 
 ---
 

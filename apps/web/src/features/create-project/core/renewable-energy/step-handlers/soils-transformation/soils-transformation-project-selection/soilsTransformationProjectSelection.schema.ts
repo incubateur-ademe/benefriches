@@ -1,9 +1,7 @@
+import { soilsDistributionSchema } from "shared";
 import z from "zod";
 
-import {
-  soilsDistributionSchema,
-  soilsTransformationProjectSchema,
-} from "../../shared/soils.schema";
+import { soilsTransformationProjectSchema } from "../../shared/soils.schema";
 
 export const soilsTransformationProjectSelectionSchema = z.object({
   soilsTransformationProject: soilsTransformationProjectSchema,

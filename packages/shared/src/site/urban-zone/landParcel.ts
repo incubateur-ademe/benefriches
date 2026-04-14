@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { soilsDistributionSchema } from "../../soils";
+import { surfaceAreaSchema } from "../../surface-area";
 
 export const urbanZoneLandParcelTypeSchema = z.enum([
   "COMMERCIAL_ACTIVITY_AREA",
@@ -13,9 +14,9 @@ export type UrbanZoneLandParcelType = z.infer<typeof urbanZoneLandParcelTypeSche
 
 export const urbanZoneLandParcelSchema = z.object({
   type: urbanZoneLandParcelTypeSchema,
-  surfaceArea: z.number().nonnegative(),
+  surfaceArea: surfaceAreaSchema,
   soilsDistribution: soilsDistributionSchema,
-  buildingsFloorSurfaceArea: z.number().nonnegative().optional(),
+  buildingsFloorSurfaceArea: surfaceAreaSchema.optional(),
 });
 
 export type UrbanZoneLandParcel = z.infer<typeof urbanZoneLandParcelSchema>;

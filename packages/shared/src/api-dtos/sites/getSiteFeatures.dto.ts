@@ -7,6 +7,7 @@ import {
   urbanZoneTypeSchema,
 } from "../../site";
 import { soilsDistributionSchema } from "../../soils";
+import { surfaceAreaSchema } from "../../surface-area";
 
 const baseSiteFeaturesSchema = z.object({
   id: z.string(),
@@ -23,7 +24,7 @@ const baseSiteFeaturesSchema = z.object({
     })
     .optional(),
   soilsDistribution: soilsDistributionSchema,
-  surfaceArea: z.number().nonnegative(),
+  surfaceArea: surfaceAreaSchema,
   address: addressSchema,
   yearlyExpenses: z
     .array(

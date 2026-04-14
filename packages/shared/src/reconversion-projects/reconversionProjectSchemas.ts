@@ -2,12 +2,13 @@ import z from "zod";
 
 import { DevelopmentPlanInstallationExpenses } from "../reconversion-project-impacts";
 import { soilTypeSchema } from "../soils";
+import { surfaceAreaSchema } from "../surface-area";
 import { FinancialAssistanceRevenue, ReinstatementExpense } from "./_common";
 import { RecurringExpense, RecurringRevenue } from "./renewable-energy";
 import { BuildingsUseDistribution, buildingsUseDistributionSchema } from "./urban-project";
 
 export const photovoltaicPowerStationFeaturesSchema = z.object({
-  surfaceArea: z.number().nonnegative(),
+  surfaceArea: surfaceAreaSchema,
   electricalPowerKWc: z.number().nonnegative(),
   expectedAnnualProduction: z.number().nonnegative(),
   contractDuration: z.number().nonnegative(),
@@ -62,7 +63,7 @@ export function createReconversionProjectSchema<T extends z.ZodTypeAny>(dateSche
     description: z.string().optional(),
     relatedSiteId: z.uuid(),
     developmentPlan: developmentPlanSchema,
-    decontaminatedSoilSurface: z.number().nonnegative().optional(),
+    decontaminatedSoilSurface: surfaceAreaSchema.optional(),
     futureOperator: z.object({ name: z.string(), structureType: z.string() }).optional(),
     futureSiteOwner: z.object({ name: z.string(), structureType: z.string() }).optional(),
     reinstatementContractOwner: z
@@ -78,7 +79,7 @@ export function createReconversionProjectSchema<T extends z.ZodTypeAny>(dateSche
       z.object({
         soilType: soilTypeSchema,
         spaceCategory: spaceCategorySchema,
-        surfaceArea: z.number().nonnegative(),
+        surfaceArea: surfaceAreaSchema,
       }),
     ),
     reinstatementSchedule: scheduleSchema.optional(),
@@ -88,7 +89,7 @@ export function createReconversionProjectSchema<T extends z.ZodTypeAny>(dateSche
     siteResaleExpectedPropertyTransferDuties: z.number().nonnegative().optional(),
     buildingsResaleExpectedSellingPrice: z.number().nonnegative().optional(),
     buildingsResaleExpectedPropertyTransferDuties: z.number().nonnegative().optional(),
-    buildingsFootprintToReuse: z.number().nonnegative().optional(),
+    buildingsFootprintToReuse: surfaceAreaSchema.optional(),
     existingBuildingsUsesFloorSurfaceArea: buildingsUseDistributionSchema.optional(),
     newBuildingsUsesFloorSurfaceArea: buildingsUseDistributionSchema.optional(),
     developerWillBeBuildingsConstructor: z.boolean().optional(),

@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { surfaceAreaSchema } from "../surface-area";
+
 export const ORDERED_SOIL_TYPES = [
   "BUILDINGS",
   "IMPERMEABLE_SOILS",
@@ -25,7 +27,7 @@ export const soilTypes = soilTypeSchema.options;
 
 export type SoilType = z.infer<typeof soilTypeSchema>;
 
-export const soilsDistributionSchema = z.partialRecord(soilTypeSchema, z.number().nonnegative());
+export const soilsDistributionSchema = z.partialRecord(soilTypeSchema, surfaceAreaSchema);
 
 export const isImpermeableSoil = (soilType: SoilType) => {
   return ["BUILDINGS", "IMPERMEABLE_SOILS"].includes(soilType);

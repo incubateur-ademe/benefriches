@@ -1,11 +1,12 @@
 import z from "zod";
 
 import { addressSchema, fricheActivitySchema, siteNatureSchema } from "../../site";
+import { surfaceAreaSchema } from "../../surface-area";
 
 const baseExpressSiteDtoSchema = z.object({
   id: z.string(),
   createdBy: z.string(),
-  surfaceArea: z.number().nonnegative(),
+  surfaceArea: surfaceAreaSchema,
   address: addressSchema,
   nature: siteNatureSchema,
 });
@@ -14,7 +15,7 @@ export const createExpressSiteDtoSchema = z.discriminatedUnion("nature", [
   baseExpressSiteDtoSchema.extend({
     nature: z.literal("FRICHE"),
     fricheActivity: fricheActivitySchema,
-    builtSurfaceArea: z.number().nonnegative().optional(),
+    builtSurfaceArea: surfaceAreaSchema.optional(),
     hasContaminatedSoils: z.boolean().optional(),
   }),
   baseExpressSiteDtoSchema.extend({
