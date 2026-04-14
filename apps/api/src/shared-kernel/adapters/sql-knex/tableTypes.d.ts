@@ -236,6 +236,7 @@ declare module "knex/types/tables" {
     reconversion_project_yearly_revenues: SqlRevenue;
     reconversion_project_reinstatement_costs: SqlReinstatementCost;
     reconversion_project_financial_assistance_revenues: SqlRevenue;
+    reconversion_project_development_plan_costs: SqlDevelopmentPlanCost;
 
     // sites
     sites: SqlSite;

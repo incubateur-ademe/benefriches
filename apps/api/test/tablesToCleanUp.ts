@@ -1,0 +1,26 @@
+// All application tables that must be cleaned between integration tests.
+// Order matters: child tables (with foreign keys) must come before parent tables.
+export const tablesToCleanUp = [
+  "reconversion_compatibility_evaluations",
+  "reconversion_project_yearly_expenses",
+  "reconversion_project_yearly_revenues",
+  "reconversion_project_reinstatement_costs",
+  "reconversion_project_soils_distributions",
+  "reconversion_project_development_plan_costs",
+  "reconversion_project_development_plans",
+  "reconversion_project_financial_assistance_revenues",
+  "reconversion_projects",
+  "addresses",
+  "site_expenses",
+  "site_incomes",
+  "site_soils_distributions",
+  "site_urban_zone_features",
+  "site_actions",
+  "sites",
+  "users_feature_alerts",
+  "users",
+  "token_authentication_attempts",
+  "auth_external_user_identities",
+  "verified_emails",
+  "domain_events",
+] as const;

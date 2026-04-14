@@ -16,7 +16,32 @@ Generate timestamped Knex migrations following project conventions.
    - Creates timestamped file in `apps/api/src/shared-kernel/adapters/sql-knex/migrations/`
 2. Implement `up()` and `down()` functions in the generated file
 3. Update `apps/api/src/shared-kernel/adapters/sql-knex/tableTypes.d.ts` if schema changes
-4. Run: `pnpm --filter api knex:migrate-latest`
+4. If **new table created**: add table name to `tablesToDelete` in `apps/api/test/integration-tests-global-hooks.ts` (child tables before parent tables)
+5. Run: `pnpm --filter api knex:migrate-latest`
+
+## Transaction Handling
+
+Knex automatically wraps each migration in a transaction — the `knex` parameter in `up()`/`down()` is already a transaction object. Do NOT call `knex.transaction()` inside migrations.
+
+```typescript
+// WRONG — redundant nested transaction
+export async function up(knex: Knex): Promise<void> {
+  await knex.transaction(async (trx) => {
+    await trx.schema.createTable("example", (table) => { /* ... */ });
+  });
+}
+
+// CORRECT — knex is already a transaction
+export async function up(knex: Knex): Promise<void> {
+  await knex.schema.createTable("example", (table) => { /* ... */ });
+}
+```
+
+To opt out of auto-transaction for a specific migration (e.g., DDL that can't run in a transaction):
+
+```typescript
+export const config = { transaction: false };
+```
 
 ## File Naming
 
@@ -197,6 +222,7 @@ declare module "knex/types/tables" {
 1. [ ] Migration created with `pnpm --filter api knex:new-migration {description}`
 2. [ ] `up()` implements forward migration
 3. [ ] `down()` reverses migration (or returns void if not possible)
-4. [ ] `tableTypes.d.ts` updated for schema changes
-5. [ ] Migration tested: `pnpm --filter api knex:migrate-latest`
-6. [ ] Rollback tested: `pnpm --filter api knex:migrate-rollback`
+4. [ ] `tableTypes.d.ts` updated for schema changes (new table → add `SqlXxx` type + register in `Tables` interface)
+5. [ ] If **new table created**: add table name to `tablesToDelete` array in `apps/api/test/integration-tests-global-hooks.ts` (respecting deletion order: child tables before parent tables)
+6. [ ] Migration tested: `pnpm --filter api knex:migrate-latest`
+7. [ ] Rollback tested: `pnpm --filter api knex:migrate-rollback`
