@@ -3,10 +3,6 @@ name: "Continuous Delivery"
 permissions:
   contents: read
 
-concurrency:
-  group: deploy-staging
-  cancel-in-progress: false
-
 # Run when push occurs on main branch
 on:
   push:

@@ -32,6 +32,11 @@ jobs:
     name: Deploy staging
     # jobs are run in parallel by default, we want them to run sequentially
     needs: [build-and-upload-web-artifact, build-and-upload-api-artifact]
+    # Serialize deploys so only one runs at a time; queued runs wait rather than cancel.
+    # Scoped to the deploy job only — integration checks and builds run for every commit.
+    concurrency:
+      group: deploy-staging
+      cancel-in-progress: false
     uses: ./.github/workflows/deploy-to-scalingo.yml
     with:
       tag: "v${{ github.run_number }}"
