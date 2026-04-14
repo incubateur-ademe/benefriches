@@ -4,7 +4,9 @@ import { SoilsCarbonSummaryHandler } from "@/shared/core/reducers/project-form/u
 
 const mockedEnvVarsModule = vi.hoisted(() => ({
   BENEFRICHES_ENV: {
-    urbanProjectBuildingsReuseChapterEnabled: false,
+    featureFlags: {
+      urbanProjectBuildingsReuseChapterEnabled: false,
+    },
   },
 }));
 
@@ -12,7 +14,7 @@ vi.mock("@/app/envVars", () => mockedEnvVarsModule);
 
 describe("SoilsCarbonSummaryHandler", () => {
   beforeEach(() => {
-    mockedEnvVarsModule.BENEFRICHES_ENV.urbanProjectBuildingsReuseChapterEnabled = false;
+    mockedEnvVarsModule.BENEFRICHES_ENV.featureFlags.urbanProjectBuildingsReuseChapterEnabled = false;
   });
 
   describe("getNextStepId", () => {
@@ -34,7 +36,7 @@ describe("SoilsCarbonSummaryHandler", () => {
     });
 
     it("routes to BUILDINGS_INTRODUCTION when site has existing buildings and feature flag is ON even if willHaveBuildings is false", () => {
-      mockedEnvVarsModule.BENEFRICHES_ENV.urbanProjectBuildingsReuseChapterEnabled = true;
+      mockedEnvVarsModule.BENEFRICHES_ENV.featureFlags.urbanProjectBuildingsReuseChapterEnabled = true;
 
       const nextStep = SoilsCarbonSummaryHandler.getNextStepId({
         stepsState: {

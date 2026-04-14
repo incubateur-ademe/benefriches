@@ -12,8 +12,8 @@ import ProjectTypeForm from "./ProjectTypesForm";
 
 function ProjectTypesFormContainer() {
   const dispatch = useAppDispatch();
-  const allowedDevelopmentPlanCategories =
-    BENEFRICHES_ENV.allowedDevelopmentPlanCategories as DevelopmentPlanCategory[];
+  const allowedDevelopmentPlanCategories = BENEFRICHES_ENV.featureFlags
+    .allowedDevelopmentPlanCategories as DevelopmentPlanCategory[];
 
   const { developmentPlanCategory, projectSuggestions } = useAppSelector(selectProjectTypeViewData);
 

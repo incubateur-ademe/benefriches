@@ -17,14 +17,16 @@ export const BENEFRICHES_ENV = {
   matomoTrackingEnabled: Boolean(windowEnv.WEBAPP_MATOMO_SITE_ID),
   matomoSiteId: windowEnv.WEBAPP_MATOMO_SITE_ID ?? "",
   matomoUrl: windowEnv.WEBAPP_MATOMO_URL ?? "",
-  allowedDevelopmentPlanCategories:
-    windowEnv.WEBAPP_ALLOWED_DEVELOPMENT_PLAN_CATEGORIES?.split(",") ?? [],
   mutafrichesUrl: windowEnv.WEBAPP_MUTAFRICHES_FRAME_SRC ?? "",
   mutafrichesIntegrator: windowEnv.WEBAPP_MUTAFRICHES_INTEGRATOR ?? "",
   crispEnabled: Boolean(windowEnv.WEBAPP_CRISP_WEBSITE_ID),
   crispWebsiteId: windowEnv.WEBAPP_CRISP_WEBSITE_ID ?? "",
-  urbanZoneEnabled: Boolean(windowEnv.WEBAPP_ENABLE_SITE_URBAN_ZONE),
-  urbanProjectBuildingsReuseChapterEnabled: parseBooleanFlag(
-    windowEnv.WEBAPP_ENABLE_URBAN_PROJECT_BUILDINGS_REUSE_CHAPTER,
-  ),
+  featureFlags: {
+    allowedDevelopmentPlanCategories:
+      windowEnv.WEBAPP_FF_ALLOWED_DEVELOPMENT_PLAN_CATEGORIES?.split(",") ?? [],
+    urbanZoneEnabled: parseBooleanFlag(windowEnv.WEBAPP_FF_SITE_URBAN_ZONE_ENABLED),
+    urbanProjectBuildingsReuseChapterEnabled: parseBooleanFlag(
+      windowEnv.WEBAPP_FF_URBAN_PROJECT_BUILDINGS_REUSE_CHAPTER_ENABLED,
+    ),
+  },
 };

@@ -9,7 +9,9 @@ import { creationProjectFormUrbanActions } from "@/features/create-project/core/
 
 const mockedEnvVarsModule = vi.hoisted(() => ({
   BENEFRICHES_ENV: {
-    urbanProjectBuildingsReuseChapterEnabled: true,
+    featureFlags: {
+      urbanProjectBuildingsReuseChapterEnabled: true,
+    },
   },
 }));
 
@@ -17,7 +19,7 @@ vi.mock("@/app/envVars", () => mockedEnvVarsModule);
 
 describe("Urban project buildings sequencing - new construction only with demolition", () => {
   beforeEach(() => {
-    mockedEnvVarsModule.BENEFRICHES_ENV.urbanProjectBuildingsReuseChapterEnabled = true;
+    mockedEnvVarsModule.BENEFRICHES_ENV.featureFlags.urbanProjectBuildingsReuseChapterEnabled = true;
   });
 
   describe("forward navigation", () => {

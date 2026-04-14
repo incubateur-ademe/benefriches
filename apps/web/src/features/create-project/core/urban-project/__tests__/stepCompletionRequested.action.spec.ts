@@ -5,7 +5,9 @@ import { getCurrentStep, StoreBuilder } from "./_testStoreHelpers";
 
 const mockedEnvVarsModule = vi.hoisted(() => ({
   BENEFRICHES_ENV: {
-    urbanProjectBuildingsReuseChapterEnabled: false,
+    featureFlags: {
+      urbanProjectBuildingsReuseChapterEnabled: false,
+    },
   },
 }));
 
@@ -428,7 +430,7 @@ describe("urbanProject.reducer - stepCompletionRequested without validation", ()
 
   describe("stakeholders adjacent navigation", () => {
     beforeEach(() => {
-      mockedEnvVarsModule.BENEFRICHES_ENV.urbanProjectBuildingsReuseChapterEnabled = true;
+      mockedEnvVarsModule.BENEFRICHES_ENV.featureFlags.urbanProjectBuildingsReuseChapterEnabled = true;
     });
 
     it("routes from project developer to buildings developer when new buildings will be constructed", () => {
@@ -473,7 +475,7 @@ describe("urbanProject.reducer - stepCompletionRequested without validation", ()
 
   describe("buildings chapter exit routing", () => {
     beforeEach(() => {
-      mockedEnvVarsModule.BENEFRICHES_ENV.urbanProjectBuildingsReuseChapterEnabled = true;
+      mockedEnvVarsModule.BENEFRICHES_ENV.featureFlags.urbanProjectBuildingsReuseChapterEnabled = true;
     });
 
     it("routes from the last buildings step to site resale when the site is not contaminated", () => {

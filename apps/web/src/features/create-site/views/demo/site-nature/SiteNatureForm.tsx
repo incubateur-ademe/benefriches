@@ -52,7 +52,7 @@ const options: Option[] = [
   //   title: "Zone urbaine",
   //   description: "Zone d'activités économiques, d'habitation, espace public ou mixte",
   //   imgSrc: "/img/pictograms/site-nature/urban-zone.svg",
-  //   disabled: !BENEFRICHES_ENV.urbanZoneEnabled,
+  //   disabled: !BENEFRICHES_ENV.featureFlags.urbanZoneEnabled,
   // },
 ] as const satisfies Option[];
 

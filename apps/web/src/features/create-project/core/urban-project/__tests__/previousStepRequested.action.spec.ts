@@ -7,7 +7,9 @@ import { StoreBuilder } from "./_testStoreHelpers";
 
 const mockedEnvVarsModule = vi.hoisted(() => ({
   BENEFRICHES_ENV: {
-    urbanProjectBuildingsReuseChapterEnabled: false,
+    featureFlags: {
+      urbanProjectBuildingsReuseChapterEnabled: false,
+    },
   },
 }));
 
@@ -35,7 +37,7 @@ const testScenarios = {
 
 describe("urbanProject.reducer - Navigation Consistency Tests", () => {
   beforeEach(() => {
-    mockedEnvVarsModule.BENEFRICHES_ENV.urbanProjectBuildingsReuseChapterEnabled = false;
+    mockedEnvVarsModule.BENEFRICHES_ENV.featureFlags.urbanProjectBuildingsReuseChapterEnabled = false;
   });
 
   describe("Previous/Next consistency for each step", () => {
@@ -340,7 +342,7 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
     });
 
     it("should go back from site resale introduction to the last buildings step before resale (flag ON)", () => {
-      mockedEnvVarsModule.BENEFRICHES_ENV.urbanProjectBuildingsReuseChapterEnabled = true;
+      mockedEnvVarsModule.BENEFRICHES_ENV.featureFlags.urbanProjectBuildingsReuseChapterEnabled = true;
       const store = new StoreBuilder()
         .withSiteData(testScenarios.withoutContamination)
         .withSteps({
@@ -382,7 +384,7 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
     });
 
     it("should go back from decontamination introduction to the last buildings step before decontamination (flag ON)", () => {
-      mockedEnvVarsModule.BENEFRICHES_ENV.urbanProjectBuildingsReuseChapterEnabled = true;
+      mockedEnvVarsModule.BENEFRICHES_ENV.featureFlags.urbanProjectBuildingsReuseChapterEnabled = true;
       const store = new StoreBuilder()
         .withSiteData(testScenarios.withBuildingsAndContamination)
         .withSteps({

@@ -4,7 +4,9 @@ import { BuildingsUsesFloorSurfaceAreaHandler } from "@/shared/core/reducers/pro
 
 const mockedEnvVarsModule = vi.hoisted(() => ({
   BENEFRICHES_ENV: {
-    urbanProjectBuildingsReuseChapterEnabled: false,
+    featureFlags: {
+      urbanProjectBuildingsReuseChapterEnabled: false,
+    },
   },
 }));
 
@@ -12,7 +14,7 @@ vi.mock("@/app/envVars", () => mockedEnvVarsModule);
 
 describe("BuildingsUsesFloorSurfaceAreaHandler", () => {
   beforeEach(() => {
-    mockedEnvVarsModule.BENEFRICHES_ENV.urbanProjectBuildingsReuseChapterEnabled = false;
+    mockedEnvVarsModule.BENEFRICHES_ENV.featureFlags.urbanProjectBuildingsReuseChapterEnabled = false;
   });
 
   describe("feature flag OFF", () => {
@@ -37,7 +39,7 @@ describe("BuildingsUsesFloorSurfaceAreaHandler", () => {
 
   describe("feature flag ON", () => {
     it("routes to BUILDINGS_REUSE_INTRODUCTION when site has existing buildings", () => {
-      mockedEnvVarsModule.BENEFRICHES_ENV.urbanProjectBuildingsReuseChapterEnabled = true;
+      mockedEnvVarsModule.BENEFRICHES_ENV.featureFlags.urbanProjectBuildingsReuseChapterEnabled = true;
 
       const nextStep = BuildingsUsesFloorSurfaceAreaHandler.getNextStepId({
         stepsState: {},
@@ -48,7 +50,7 @@ describe("BuildingsUsesFloorSurfaceAreaHandler", () => {
     });
 
     it("routes to BUILDINGS_NEW_CONSTRUCTION_INTRODUCTION when site has no buildings", () => {
-      mockedEnvVarsModule.BENEFRICHES_ENV.urbanProjectBuildingsReuseChapterEnabled = true;
+      mockedEnvVarsModule.BENEFRICHES_ENV.featureFlags.urbanProjectBuildingsReuseChapterEnabled = true;
 
       const nextStep = BuildingsUsesFloorSurfaceAreaHandler.getNextStepId({
         stepsState: {},

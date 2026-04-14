@@ -9,7 +9,9 @@ import updateProjectReducer from "./updateProject.reducer";
 
 const mockedEnvVarsModule = vi.hoisted(() => ({
   BENEFRICHES_ENV: {
-    urbanProjectBuildingsReuseChapterEnabled: false,
+    featureFlags: {
+      urbanProjectBuildingsReuseChapterEnabled: false,
+    },
   },
 }));
 
@@ -17,7 +19,7 @@ vi.mock("@/app/envVars", () => mockedEnvVarsModule);
 
 describe("update project reducer", () => {
   beforeEach(() => {
-    mockedEnvVarsModule.BENEFRICHES_ENV.urbanProjectBuildingsReuseChapterEnabled = true;
+    mockedEnvVarsModule.BENEFRICHES_ENV.featureFlags.urbanProjectBuildingsReuseChapterEnabled = true;
   });
 
   it("redirects to buildings footprint to reuse when project building footprint changes", () => {

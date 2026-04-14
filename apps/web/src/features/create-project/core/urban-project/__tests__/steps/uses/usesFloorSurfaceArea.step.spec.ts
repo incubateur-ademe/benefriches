@@ -7,7 +7,9 @@ import { getCurrentStep, StoreBuilder } from "../../_testStoreHelpers";
 
 const mockedEnvVarsModule = vi.hoisted(() => ({
   BENEFRICHES_ENV: {
-    urbanProjectBuildingsReuseChapterEnabled: false,
+    featureFlags: {
+      urbanProjectBuildingsReuseChapterEnabled: false,
+    },
   },
 }));
 
@@ -15,7 +17,7 @@ vi.mock("@/app/envVars", () => mockedEnvVarsModule);
 
 describe("Urban project creation - Steps - Uses floor surface area", () => {
   beforeEach(() => {
-    mockedEnvVarsModule.BENEFRICHES_ENV.urbanProjectBuildingsReuseChapterEnabled = false;
+    mockedEnvVarsModule.BENEFRICHES_ENV.featureFlags.urbanProjectBuildingsReuseChapterEnabled = false;
   });
 
   it("should complete step and go to URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION when site has contaminated soils", () => {
@@ -120,7 +122,7 @@ describe("Urban project creation - Steps - Uses floor surface area", () => {
   });
 
   it("should complete step and go to URBAN_PROJECT_BUILDINGS_REUSE_INTRODUCTION when feature flag is ON and site has buildings", () => {
-    mockedEnvVarsModule.BENEFRICHES_ENV.urbanProjectBuildingsReuseChapterEnabled = true;
+    mockedEnvVarsModule.BENEFRICHES_ENV.featureFlags.urbanProjectBuildingsReuseChapterEnabled = true;
 
     const store = new StoreBuilder()
       .withSiteData({
@@ -148,7 +150,7 @@ describe("Urban project creation - Steps - Uses floor surface area", () => {
   });
 
   it("should complete step and go to URBAN_PROJECT_BUILDINGS_NEW_CONSTRUCTION_INTRODUCTION when feature flag is ON and site has no buildings", () => {
-    mockedEnvVarsModule.BENEFRICHES_ENV.urbanProjectBuildingsReuseChapterEnabled = true;
+    mockedEnvVarsModule.BENEFRICHES_ENV.featureFlags.urbanProjectBuildingsReuseChapterEnabled = true;
 
     const store = new StoreBuilder()
       .withSiteData({

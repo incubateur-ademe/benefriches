@@ -13,7 +13,7 @@ export const BuildingsUsesFloorSurfaceAreaHandler = {
   },
 
   getNextStepId(context) {
-    if (BENEFRICHES_ENV.urbanProjectBuildingsReuseChapterEnabled) {
+    if (BENEFRICHES_ENV.featureFlags.urbanProjectBuildingsReuseChapterEnabled) {
       if (context.siteData && siteHasBuildings(context.siteData)) {
         return "URBAN_PROJECT_BUILDINGS_REUSE_INTRODUCTION";
       }

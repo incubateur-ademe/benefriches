@@ -333,7 +333,7 @@ New Answer steps must have their schema added to `answersByStepSchemas` in `urba
 
 For incremental rollout, gate the entry to the new buildings chapter in
 `BUILDINGS_USES_FLOOR_SURFACE_AREA.getNextStepId` using
-`BENEFRICHES_ENV.urbanProjectBuildingsReuseChapterEnabled` (from
+`BENEFRICHES_ENV.featureFlags.urbanProjectBuildingsReuseChapterEnabled` (from
 `apps/web/src/app/envVars.ts`):
 
 - flag OFF: keep legacy route (`SOILS_DECONTAMINATION_INTRODUCTION` or `SITE_RESALE_INTRODUCTION`)

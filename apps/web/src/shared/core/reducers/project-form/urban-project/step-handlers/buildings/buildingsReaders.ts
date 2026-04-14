@@ -70,12 +70,12 @@ export function shouldEnterBuildingsChapter(context: StepContext): boolean {
 
   return (
     willProjectHaveBuildings ||
-    (BENEFRICHES_ENV.urbanProjectBuildingsReuseChapterEnabled && hasSiteBuildings)
+    (BENEFRICHES_ENV.featureFlags.urbanProjectBuildingsReuseChapterEnabled && hasSiteBuildings)
   );
 }
 
 export function getLastBuildingsChapterStep(context: StepContext): UrbanProjectCreationStep {
-  if (!BENEFRICHES_ENV.urbanProjectBuildingsReuseChapterEnabled) {
+  if (!BENEFRICHES_ENV.featureFlags.urbanProjectBuildingsReuseChapterEnabled) {
     return "URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA";
   }
 
