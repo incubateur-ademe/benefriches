@@ -293,6 +293,28 @@ export class UrbanProjectBuilder {
     return this;
   }
 
+  withBuildingsReuse({
+    buildingsFootprintToReuse,
+    existingBuildingsUsesFloorSurfaceArea,
+    newBuildingsUsesFloorSurfaceArea,
+    developerWillBeBuildingsConstructor,
+    buildingsConstructionAndRehabilitationExpenses,
+  }: {
+    buildingsFootprintToReuse?: number;
+    existingBuildingsUsesFloorSurfaceArea?: Record<string, number>;
+    newBuildingsUsesFloorSurfaceArea?: Record<string, number>;
+    developerWillBeBuildingsConstructor?: boolean;
+    buildingsConstructionAndRehabilitationExpenses?: { purpose: string; amount: number }[];
+  }): this {
+    this.props.buildingsFootprintToReuse = buildingsFootprintToReuse;
+    this.props.existingBuildingsUsesFloorSurfaceArea = existingBuildingsUsesFloorSurfaceArea;
+    this.props.newBuildingsUsesFloorSurfaceArea = newBuildingsUsesFloorSurfaceArea;
+    this.props.developerWillBeBuildingsConstructor = developerWillBeBuildingsConstructor;
+    this.props.buildingsConstructionAndRehabilitationExpenses =
+      buildingsConstructionAndRehabilitationExpenses;
+    return this;
+  }
+
   build(): ReconversionProjectSaveDto {
     return this.props;
   }

@@ -7,6 +7,7 @@ export const tablesToCleanUp = [
   "reconversion_project_reinstatement_costs",
   "reconversion_project_soils_distributions",
   "reconversion_project_development_plan_costs",
+  "reconversion_project_buildings_construction_costs",
   "reconversion_project_development_plans",
   "reconversion_project_financial_assistance_revenues",
   "reconversion_projects",

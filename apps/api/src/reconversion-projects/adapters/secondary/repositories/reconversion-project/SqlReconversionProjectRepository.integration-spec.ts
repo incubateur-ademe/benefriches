@@ -511,8 +511,160 @@ describe("SqlReconversionProjectRepository integration", () => {
             schedule_start_date:
               reconversionProject.developmentPlan.installationSchedule?.startDate,
             schedule_end_date: reconversionProject.developmentPlan.installationSchedule?.endDate,
+            developer_will_be_buildings_constructor: null,
           },
         ]);
+      });
+    });
+
+    describe("Urban project with buildings reuse data", () => {
+      it("Saves buildings reuse fields and retrieves them via getById", async () => {
+        const siteId = await insertSiteInDb();
+        const reconversionProject = new UrbanProjectBuilder()
+          .withCreatedBy("9b3a4906-1db2-441d-97d5-7be287add907")
+          .withRelatedSiteId(siteId)
+          .withBuildingsReuse({
+            buildingsFootprintToReuse: 800,
+            existingBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 500, LOCAL_STORE: 300 },
+            newBuildingsUsesFloorSurfaceArea: { OFFICES: 400, SPORTS_FACILITIES: 200 },
+            developerWillBeBuildingsConstructor: true,
+            buildingsConstructionAndRehabilitationExpenses: [
+              { purpose: "construction", amount: 150000 },
+              { purpose: "rehabilitation", amount: 80000 },
+            ],
+          })
+          .build();
+
+        await reconversionProjectRepository.save(reconversionProject);
+
+        const result = await reconversionProjectRepository.getById(reconversionProject.id);
+
+        expect(result).toBeDefined();
+        expect(result?.buildingsFootprintToReuse).toEqual(800);
+        expect(result?.existingBuildingsUsesFloorSurfaceArea).toEqual({
+          RESIDENTIAL: 500,
+          LOCAL_STORE: 300,
+        });
+        expect(result?.newBuildingsUsesFloorSurfaceArea).toEqual({
+          OFFICES: 400,
+          SPORTS_FACILITIES: 200,
+        });
+        expect(result?.developerWillBeBuildingsConstructor).toEqual(true);
+        expect(result?.buildingsConstructionAndRehabilitationExpenses).toEqual([
+          { purpose: "construction", amount: 150000 },
+          { purpose: "rehabilitation", amount: 80000 },
+        ]);
+      });
+
+      it("Saves developer_will_be_buildings_constructor in development plan table", async () => {
+        const siteId = await insertSiteInDb();
+        const reconversionProject = new UrbanProjectBuilder()
+          .withCreatedBy("9b3a4906-1db2-441d-97d5-7be287add907")
+          .withRelatedSiteId(siteId)
+          .withBuildingsReuse({
+            developerWillBeBuildingsConstructor: false,
+          })
+          .build();
+
+        await reconversionProjectRepository.save(reconversionProject);
+
+        const result = await sqlConnection("reconversion_project_development_plans")
+          .select("developer_will_be_buildings_constructor")
+          .where({ reconversion_project_id: reconversionProject.id })
+          .first();
+        expect(result?.developer_will_be_buildings_constructor).toEqual(false);
+      });
+
+      it("Saves buildings reuse fields in features JSON column", async () => {
+        const siteId = await insertSiteInDb();
+        const reconversionProject = new UrbanProjectBuilder()
+          .withCreatedBy("9b3a4906-1db2-441d-97d5-7be287add907")
+          .withRelatedSiteId(siteId)
+          .withBuildingsReuse({
+            buildingsFootprintToReuse: 800,
+            existingBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 500 },
+            newBuildingsUsesFloorSurfaceArea: { OFFICES: 400 },
+          })
+          .build();
+
+        await reconversionProjectRepository.save(reconversionProject);
+
+        const result = await sqlConnection("reconversion_project_development_plans")
+          .select("features")
+          .where({ reconversion_project_id: reconversionProject.id })
+          .first();
+        const features = result?.features as Record<string, unknown>;
+        expect(features.buildingsFootprintToReuse).toEqual(800);
+        expect(features.existingBuildingsUsesFloorSurfaceArea).toEqual({ RESIDENTIAL: 500 });
+        expect(features.newBuildingsUsesFloorSurfaceArea).toEqual({ OFFICES: 400 });
+      });
+
+      it("Saves right data in table reconversion_project_buildings_construction_costs", async () => {
+        const siteId = await insertSiteInDb();
+        const buildingsConstructionAndRehabilitationExpenses = [
+          { purpose: "construction", amount: 150000 },
+          { purpose: "rehabilitation", amount: 80000 },
+        ];
+        const reconversionProject = new UrbanProjectBuilder()
+          .withCreatedBy("9b3a4906-1db2-441d-97d5-7be287add907")
+          .withRelatedSiteId(siteId)
+          .withBuildingsReuse({
+            buildingsConstructionAndRehabilitationExpenses,
+          })
+          .build();
+
+        await reconversionProjectRepository.save(reconversionProject);
+
+        const developmentPlan = await sqlConnection("reconversion_project_development_plans")
+          .select("id")
+          .where({ reconversion_project_id: reconversionProject.id })
+          .first();
+
+        const result = await sqlConnection("reconversion_project_buildings_construction_costs")
+          .select("purpose", "amount", "development_plan_id")
+          .where({ development_plan_id: developmentPlan?.id });
+
+        expect(result).toEqual(
+          buildingsConstructionAndRehabilitationExpenses.map(({ purpose, amount }) => ({
+            purpose,
+            amount,
+            development_plan_id: developmentPlan?.id,
+          })),
+        );
+      });
+
+      it("Does not save buildings construction costs when not provided", async () => {
+        const siteId = await insertSiteInDb();
+        const reconversionProject = new UrbanProjectBuilder()
+          .withCreatedBy("9b3a4906-1db2-441d-97d5-7be287add907")
+          .withRelatedSiteId(siteId)
+          .build();
+
+        await reconversionProjectRepository.save(reconversionProject);
+
+        const result = await sqlConnection(
+          "reconversion_project_buildings_construction_costs",
+        ).select("*");
+        expect(result).toEqual([]);
+      });
+
+      it("Returns undefined for buildings reuse fields when not set via getById", async () => {
+        const siteId = await insertSiteInDb();
+        const reconversionProject = new UrbanProjectBuilder()
+          .withCreatedBy("9b3a4906-1db2-441d-97d5-7be287add907")
+          .withRelatedSiteId(siteId)
+          .build();
+
+        await reconversionProjectRepository.save(reconversionProject);
+
+        const result = await reconversionProjectRepository.getById(reconversionProject.id);
+
+        expect(result).toBeDefined();
+        expect(result?.buildingsFootprintToReuse).toBeUndefined();
+        expect(result?.existingBuildingsUsesFloorSurfaceArea).toBeUndefined();
+        expect(result?.newBuildingsUsesFloorSurfaceArea).toBeUndefined();
+        expect(result?.developerWillBeBuildingsConstructor).toBeUndefined();
+        expect(result?.buildingsConstructionAndRehabilitationExpenses).toBeUndefined();
       });
     });
   });
@@ -1081,6 +1233,117 @@ describe("SqlReconversionProjectRepository integration", () => {
         ).toBe(1500);
         expect(developmentPlanFeatures.buildingsFloorAreaDistribution.RESIDENTIAL).toBe(2500);
         expect(developmentPlanFeatures.buildingsFloorAreaDistribution.LOCAL_STORE).toBe(500);
+      });
+
+      it("Updates buildings reuse fields", async () => {
+        const siteId = await insertSiteInDb();
+        const reconversionProject = new UrbanProjectBuilder()
+          .withCreatedBy("9b3a4906-1db2-441d-97d5-7be287add907")
+          .withRelatedSiteId(siteId)
+          .build();
+        await reconversionProjectRepository.save(reconversionProject);
+
+        const updatedProject: ReconversionProjectUpdateDto = {
+          ...reconversionProject,
+          buildingsFootprintToReuse: 1200,
+          existingBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 600, LOCAL_STORE: 400 },
+          newBuildingsUsesFloorSurfaceArea: { OFFICES: 500 },
+          developerWillBeBuildingsConstructor: true,
+          buildingsConstructionAndRehabilitationExpenses: [
+            { purpose: "construction", amount: 200000 },
+            { purpose: "rehabilitation", amount: 100000 },
+          ],
+          updatedAt,
+        };
+
+        await reconversionProjectRepository.update(updatedProject);
+
+        const result = await reconversionProjectRepository.getById(reconversionProject.id);
+
+        expect(result?.buildingsFootprintToReuse).toEqual(1200);
+        expect(result?.existingBuildingsUsesFloorSurfaceArea).toEqual({
+          RESIDENTIAL: 600,
+          LOCAL_STORE: 400,
+        });
+        expect(result?.newBuildingsUsesFloorSurfaceArea).toEqual({ OFFICES: 500 });
+        expect(result?.developerWillBeBuildingsConstructor).toEqual(true);
+        expect(result?.buildingsConstructionAndRehabilitationExpenses).toEqual([
+          { purpose: "construction", amount: 200000 },
+          { purpose: "rehabilitation", amount: 100000 },
+        ]);
+      });
+
+      it("Updates buildings construction costs by deleting old and inserting new", async () => {
+        const siteId = await insertSiteInDb();
+        const reconversionProject = new UrbanProjectBuilder()
+          .withCreatedBy("9b3a4906-1db2-441d-97d5-7be287add907")
+          .withRelatedSiteId(siteId)
+          .withBuildingsReuse({
+            buildingsConstructionAndRehabilitationExpenses: [
+              { purpose: "construction", amount: 150000 },
+            ],
+          })
+          .build();
+        await reconversionProjectRepository.save(reconversionProject);
+
+        const updatedProject: ReconversionProjectUpdateDto = {
+          ...reconversionProject,
+          buildingsConstructionAndRehabilitationExpenses: [
+            { purpose: "new_construction", amount: 250000 },
+            { purpose: "new_rehabilitation", amount: 120000 },
+          ],
+          updatedAt,
+        };
+
+        await reconversionProjectRepository.update(updatedProject);
+
+        const developmentPlan = await sqlConnection("reconversion_project_development_plans")
+          .select("id")
+          .where({ reconversion_project_id: reconversionProject.id })
+          .first();
+
+        const costsResult = await sqlConnection("reconversion_project_buildings_construction_costs")
+          .select("amount", "purpose")
+          .where({ development_plan_id: developmentPlan?.id })
+          .orderBy("amount");
+
+        expect(costsResult).toEqual([
+          { amount: 120000, purpose: "new_rehabilitation" },
+          { amount: 250000, purpose: "new_construction" },
+        ]);
+      });
+
+      it("Handles empty buildings construction costs by deleting all", async () => {
+        const siteId = await insertSiteInDb();
+        const reconversionProject = new UrbanProjectBuilder()
+          .withCreatedBy("9b3a4906-1db2-441d-97d5-7be287add907")
+          .withRelatedSiteId(siteId)
+          .withBuildingsReuse({
+            buildingsConstructionAndRehabilitationExpenses: [
+              { purpose: "construction", amount: 150000 },
+            ],
+          })
+          .build();
+        await reconversionProjectRepository.save(reconversionProject);
+
+        const updatedProject: ReconversionProjectUpdateDto = {
+          ...reconversionProject,
+          buildingsConstructionAndRehabilitationExpenses: undefined,
+          updatedAt,
+        };
+
+        await reconversionProjectRepository.update(updatedProject);
+
+        const developmentPlan = await sqlConnection("reconversion_project_development_plans")
+          .select("id")
+          .where({ reconversion_project_id: reconversionProject.id })
+          .first();
+
+        const costsResult = await sqlConnection("reconversion_project_buildings_construction_costs")
+          .select("*")
+          .where({ development_plan_id: developmentPlan?.id });
+
+        expect(costsResult).toEqual([]);
       });
     });
   });

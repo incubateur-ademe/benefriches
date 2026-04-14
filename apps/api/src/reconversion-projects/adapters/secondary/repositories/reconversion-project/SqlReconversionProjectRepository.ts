@@ -14,6 +14,7 @@ import {
 import { UrbanProjectFeatures } from "src/reconversion-projects/core/model/urbanProjects";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import {
+  SqlBuildingsConstructionCost,
   SqlDevelopmentPlan,
   SqlDevelopmentPlanCost,
   SqlReconversionProject,
@@ -25,6 +26,30 @@ import {
 
 const mapSqlSchedule = (startDate: Date | null, endDate: Date | null): Schedule | undefined => {
   return startDate && endDate ? { startDate, endDate } : undefined;
+};
+
+/**
+ * Extracts buildings reuse fields from the development plan features JSON column.
+ * These fields are stored alongside UrbanProjectFeatures in the JSON blob
+ * but are top-level properties on ReconversionProjectDataView.
+ */
+const getBuildingsReuseFields = (
+  features: unknown,
+): Pick<
+  ReconversionProjectDataView,
+  | "buildingsFootprintToReuse"
+  | "existingBuildingsUsesFloorSurfaceArea"
+  | "newBuildingsUsesFloorSurfaceArea"
+> => {
+  const featuresRecord = features as Record<string, unknown> | undefined;
+  return {
+    buildingsFootprintToReuse: (featuresRecord?.buildingsFootprintToReuse as number) ?? undefined,
+    existingBuildingsUsesFloorSurfaceArea:
+      (featuresRecord?.existingBuildingsUsesFloorSurfaceArea as Record<string, number>) ??
+      undefined,
+    newBuildingsUsesFloorSurfaceArea:
+      (featuresRecord?.newBuildingsUsesFloorSurfaceArea as Record<string, number>) ?? undefined,
+  };
 };
 
 const mapRevenuesToSqlStruct = (
@@ -90,6 +115,8 @@ type ReconversionProjectSqlResult = {
     schedule_start_date: Date | null;
     schedule_end_date: Date | null;
     costs: { amount: number; purpose: string }[] | null;
+    developer_will_be_buildings_constructor: boolean | null;
+    buildings_construction_costs: { purpose: string; amount: number }[] | null;
   };
   yearly_projected_expenses: { purpose: string; amount: number }[] | null;
   yearly_projected_revenues: { source: string; amount: number }[] | null;
@@ -153,17 +180,30 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
       await trx("reconversion_project_soils_distributions").insert(soilsDistributionToInsert);
 
       // development plan
+      const features =
+        reconversionProject.developmentPlan.type === "URBAN_PROJECT"
+          ? {
+              ...reconversionProject.developmentPlan.features,
+              buildingsFootprintToReuse: reconversionProject.buildingsFootprintToReuse,
+              existingBuildingsUsesFloorSurfaceArea:
+                reconversionProject.existingBuildingsUsesFloorSurfaceArea,
+              newBuildingsUsesFloorSurfaceArea:
+                reconversionProject.newBuildingsUsesFloorSurfaceArea,
+            }
+          : reconversionProject.developmentPlan.features;
       const developmentPlanToInsert: SqlDevelopmentPlan = {
         id: uuid(),
         type: reconversionProject.developmentPlan.type,
         developer_name: reconversionProject.developmentPlan.developer.name,
         developer_structure_type: reconversionProject.developmentPlan.developer.structureType,
-        features: reconversionProject.developmentPlan.features,
+        features,
         schedule_start_date:
           reconversionProject.developmentPlan.installationSchedule?.startDate ?? null,
         schedule_end_date:
           reconversionProject.developmentPlan.installationSchedule?.endDate ?? null,
         reconversion_project_id: insertedReconversionProject.id,
+        developer_will_be_buildings_constructor:
+          reconversionProject.developerWillBeBuildingsConstructor ?? null,
       };
       await trx("reconversion_project_development_plans").insert(developmentPlanToInsert);
       if (reconversionProject.developmentPlan.costs.length > 0) {
@@ -224,6 +264,19 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
         await trx("reconversion_project_financial_assistance_revenues").insert(
           financialAssistanceRevenuesToInsert,
         );
+      }
+
+      if (reconversionProject.buildingsConstructionAndRehabilitationExpenses?.length) {
+        const costsToInsert: SqlBuildingsConstructionCost[] =
+          reconversionProject.buildingsConstructionAndRehabilitationExpenses.map(
+            ({ amount, purpose }) => ({
+              id: uuid(),
+              amount,
+              purpose,
+              development_plan_id: developmentPlanToInsert.id,
+            }),
+          );
+        await trx("reconversion_project_buildings_construction_costs").insert(costsToInsert);
       }
     });
   }
@@ -318,6 +371,7 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
               FROM (
                 SELECT
                   dp.developer_name, dp.developer_structure_type, dp.schedule_start_date, dp.schedule_end_date, dp.type, dp.features,
+                  dp.developer_will_be_buildings_constructor,
                   (
                     SELECT json_agg(row_to_json(development_plan_costs_rows))
                     FROM (
@@ -325,7 +379,15 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
                       FROM reconversion_project_development_plan_costs
                       WHERE development_plan_id = dp.id
                     ) development_plan_costs_rows
-                  ) as costs
+                  ) as costs,
+                  (
+                    SELECT json_agg(row_to_json(buildings_construction_costs_rows))
+                    FROM (
+                      SELECT amount, purpose
+                      FROM reconversion_project_buildings_construction_costs
+                      WHERE development_plan_id = dp.id
+                    ) buildings_construction_costs_rows
+                  ) as buildings_construction_costs
                 FROM reconversion_project_development_plans dp
                 WHERE dp.reconversion_project_id = ?
                 LIMIT 1
@@ -438,6 +500,12 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
         sqlResult.buildings_resale_expected_selling_price ?? undefined,
       buildingsResaleExpectedPropertyTransferDuties:
         sqlResult.buildings_resale_expected_property_transfer_duties ?? undefined,
+      // buildings reuse and construction (stored in development plan features JSON column)
+      ...getBuildingsReuseFields(sqlResult.development_plan.features),
+      developerWillBeBuildingsConstructor:
+        sqlResult.development_plan.developer_will_be_buildings_constructor ?? undefined,
+      buildingsConstructionAndRehabilitationExpenses:
+        sqlResult.development_plan.buildings_construction_costs ?? undefined,
       relatedSiteId: sqlResult.related_site_id,
       projectPhase: sqlResult.project_phase,
       createdBy: sqlResult.created_by,
@@ -499,11 +567,23 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
           type: reconversionProject.developmentPlan.type,
           developer_name: reconversionProject.developmentPlan.developer.name,
           developer_structure_type: reconversionProject.developmentPlan.developer.structureType,
-          features: reconversionProject.developmentPlan.features,
+          features:
+            reconversionProject.developmentPlan.type === "URBAN_PROJECT"
+              ? {
+                  ...reconversionProject.developmentPlan.features,
+                  buildingsFootprintToReuse: reconversionProject.buildingsFootprintToReuse,
+                  existingBuildingsUsesFloorSurfaceArea:
+                    reconversionProject.existingBuildingsUsesFloorSurfaceArea,
+                  newBuildingsUsesFloorSurfaceArea:
+                    reconversionProject.newBuildingsUsesFloorSurfaceArea,
+                }
+              : reconversionProject.developmentPlan.features,
           schedule_start_date:
             reconversionProject.developmentPlan.installationSchedule?.startDate ?? null,
           schedule_end_date:
             reconversionProject.developmentPlan.installationSchedule?.endDate ?? null,
+          developer_will_be_buildings_constructor:
+            reconversionProject.developerWillBeBuildingsConstructor ?? null,
         });
 
       // Get development plan id for costs update
@@ -591,6 +671,28 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
         await trx("reconversion_project_financial_assistance_revenues").insert(
           financialAssistanceRevenuesToInsert,
         );
+      }
+
+      // Delete and recreate buildings construction costs
+      if (developmentPlan) {
+        await trx("reconversion_project_buildings_construction_costs")
+          .where({ development_plan_id: developmentPlan.id })
+          .delete();
+
+        if (reconversionProject.buildingsConstructionAndRehabilitationExpenses?.length) {
+          const buildingsCostsToInsert: SqlBuildingsConstructionCost[] =
+            reconversionProject.buildingsConstructionAndRehabilitationExpenses.map(
+              ({ amount, purpose }) => ({
+                id: uuid(),
+                amount,
+                purpose,
+                development_plan_id: developmentPlan.id,
+              }),
+            );
+          await trx("reconversion_project_buildings_construction_costs").insert(
+            buildingsCostsToInsert,
+          );
+        }
       }
     });
   }

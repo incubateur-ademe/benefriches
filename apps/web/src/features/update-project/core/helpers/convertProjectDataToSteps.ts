@@ -12,6 +12,7 @@ import type { UrbanProjectUse } from "shared";
 
 import { ProjectStakeholder } from "@/features/create-project/core/project.types";
 import { ProjectFormState } from "@/shared/core/reducers/project-form/projectForm.reducer";
+import { EXPENSE_PURPOSE_TO_FIELD } from "@/shared/core/reducers/project-form/urban-project/step-handlers/expenses/expenses-buildings-construction-and-rehabilitation/expensesBuildingsConstructionAndRehabilitation.schema";
 import {
   ANSWER_STEPS,
   INTRODUCTION_STEPS,
@@ -282,6 +283,65 @@ export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProje
           completed: true,
         };
         break;
+      case "URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE":
+        if (projectData.buildingsFootprintToReuse !== undefined) {
+          steps["URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE"] = {
+            payload: { buildingsFootprintToReuse: projectData.buildingsFootprintToReuse },
+            completed: true,
+          };
+        }
+        break;
+      case "URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA":
+        if (projectData.existingBuildingsUsesFloorSurfaceArea) {
+          steps["URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA"] = {
+            payload: {
+              existingBuildingsUsesFloorSurfaceArea:
+                projectData.existingBuildingsUsesFloorSurfaceArea,
+            },
+            completed: true,
+          };
+        }
+        break;
+      case "URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA":
+        if (projectData.newBuildingsUsesFloorSurfaceArea) {
+          steps["URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA"] = {
+            payload: {
+              newBuildingsUsesFloorSurfaceArea: projectData.newBuildingsUsesFloorSurfaceArea,
+            },
+            completed: true,
+          };
+        }
+        break;
+      case "URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER":
+        if (projectData.developerWillBeBuildingsConstructor !== undefined) {
+          steps["URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER"] = {
+            payload: {
+              developerWillBeBuildingsConstructor: projectData.developerWillBeBuildingsConstructor,
+            },
+            completed: true,
+          };
+        }
+        break;
+      case "URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION": {
+        if (projectData.buildingsConstructionAndRehabilitationExpenses?.length) {
+          const expensesPayload: Record<string, number> = {};
+          for (const {
+            purpose,
+            amount,
+          } of projectData.buildingsConstructionAndRehabilitationExpenses) {
+            const field =
+              EXPENSE_PURPOSE_TO_FIELD[purpose as keyof typeof EXPENSE_PURPOSE_TO_FIELD];
+            if (field) {
+              expensesPayload[field] = amount;
+            }
+          }
+          steps["URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION"] = {
+            payload: expensesPayload,
+            completed: true,
+          };
+        }
+        break;
+      }
     }
   });
 

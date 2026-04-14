@@ -155,6 +155,14 @@ function isDeveloperBuildingsConstructor(stepsState): boolean
 |---|---|---|
 | any change | `EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION` | **invalidate** |
 
+### `BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA`
+
+When the existing buildings use allocation changes, the new buildings allocation becomes stale (new = overall - existing):
+
+| When allocation changes... | Affected step | Action |
+|---|---|---|
+| any change | `BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA` | **invalidate** |
+
 ### `BUILDINGS_USES_FLOOR_SURFACE_AREA` (existing overall step)
 
 When the overall floor area distribution changes, the breakdown steps become invalid:

@@ -88,6 +88,11 @@ export function createReconversionProjectSchema<T extends z.ZodTypeAny>(dateSche
     siteResaleExpectedPropertyTransferDuties: z.number().nonnegative().optional(),
     buildingsResaleExpectedSellingPrice: z.number().nonnegative().optional(),
     buildingsResaleExpectedPropertyTransferDuties: z.number().nonnegative().optional(),
+    buildingsFootprintToReuse: z.number().nonnegative().optional(),
+    existingBuildingsUsesFloorSurfaceArea: buildingsUseDistributionSchema.optional(),
+    newBuildingsUsesFloorSurfaceArea: buildingsUseDistributionSchema.optional(),
+    developerWillBeBuildingsConstructor: z.boolean().optional(),
+    buildingsConstructionAndRehabilitationExpenses: z.array(expenseSchema).optional(),
   });
 }
 

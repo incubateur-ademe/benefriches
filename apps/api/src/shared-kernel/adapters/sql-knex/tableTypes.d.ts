@@ -170,6 +170,7 @@ type SqlDevelopmentPlan = {
   reconversion_project_id: string;
   schedule_start_date: Date | null;
   schedule_end_date: Date | null;
+  developer_will_be_buildings_constructor: boolean | null;
 };
 
 type SqlDevelopmentPlanCost = {
@@ -198,6 +199,13 @@ type SqlReinstatementCost = {
   purpose: string;
   amount: number;
   reconversion_project_id: string;
+};
+
+type SqlBuildingsConstructionCost = {
+  id: string;
+  purpose: string;
+  amount: number;
+  development_plan_id: string;
 };
 
 type CityStats = {
@@ -237,6 +245,7 @@ declare module "knex/types/tables" {
     reconversion_project_reinstatement_costs: SqlReinstatementCost;
     reconversion_project_financial_assistance_revenues: SqlRevenue;
     reconversion_project_development_plan_costs: SqlDevelopmentPlanCost;
+    reconversion_project_buildings_construction_costs: SqlBuildingsConstructionCost;
 
     // sites
     sites: SqlSite;

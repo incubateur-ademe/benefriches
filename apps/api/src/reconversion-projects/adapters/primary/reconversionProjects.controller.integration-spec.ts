@@ -634,6 +634,16 @@ describe("ReconversionProjects controller", () => {
           costs: [{ amount: 95_000, purpose: "demolition" }],
           schedule: { startDate: new Date("2032-06-01"), endDate: new Date("2032-12-31") },
         })
+        .withBuildingsReuse({
+          buildingsFootprintToReuse: 900,
+          existingBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 500, LOCAL_STORE: 300 },
+          newBuildingsUsesFloorSurfaceArea: { OFFICES: 400 },
+          developerWillBeBuildingsConstructor: true,
+          buildingsConstructionAndRehabilitationExpenses: [
+            { purpose: "construction", amount: 200000 },
+            { purpose: "rehabilitation", amount: 100000 },
+          ],
+        })
         .build();
       await app.get(SqlReconversionProjectRepository).save(sourceUrbanProject);
 
@@ -701,9 +711,17 @@ describe("ReconversionProjects controller", () => {
           developer_name: sourceUrbanProject.developmentPlan.developer.name,
           developer_structure_type: sourceUrbanProject.developmentPlan.developer.structureType,
           reconversion_project_id: newProjectId,
-          features: sourceUrbanProject.developmentPlan.features,
+          features: {
+            ...sourceUrbanProject.developmentPlan.features,
+            buildingsFootprintToReuse: sourceUrbanProject.buildingsFootprintToReuse,
+            existingBuildingsUsesFloorSurfaceArea:
+              sourceUrbanProject.existingBuildingsUsesFloorSurfaceArea,
+            newBuildingsUsesFloorSurfaceArea: sourceUrbanProject.newBuildingsUsesFloorSurfaceArea,
+          },
           schedule_end_date: sourceUrbanProject.developmentPlan.installationSchedule!.endDate,
           schedule_start_date: sourceUrbanProject.developmentPlan.installationSchedule!.startDate,
+          developer_will_be_buildings_constructor:
+            sourceUrbanProject.developerWillBeBuildingsConstructor ?? null,
         },
       ]);
       // development plan costs
@@ -713,6 +731,15 @@ describe("ReconversionProjects controller", () => {
         .where("development_plan_id", duplicatedDevelopmentPlans[0]?.id)
         .select("amount", "purpose");
       expect(duplicatedDevelopmentPlanCosts).toEqual(sourceUrbanProject.developmentPlan.costs);
+      // buildings construction costs
+      const duplicatedBuildingsConstructionCosts = await sqlConnection(
+        "reconversion_project_buildings_construction_costs",
+      )
+        .where("development_plan_id", duplicatedDevelopmentPlans[0]?.id)
+        .select("amount", "purpose");
+      expect(duplicatedBuildingsConstructionCosts).toEqual(
+        sourceUrbanProject.buildingsConstructionAndRehabilitationExpenses,
+      );
       // reinstatement costs
       const duplicatedReinstatementCosts = await sqlConnection(
         "reconversion_project_reinstatement_costs",
@@ -865,6 +892,7 @@ describe("ReconversionProjects controller", () => {
             sourceUrbanProject.developmentPlan.installationSchedule?.endDate ?? null,
           schedule_start_date:
             sourceUrbanProject.developmentPlan.installationSchedule?.startDate ?? null,
+          developer_will_be_buildings_constructor: null,
         },
       ]);
       // development plan costs
@@ -874,6 +902,13 @@ describe("ReconversionProjects controller", () => {
         .where("development_plan_id", duplicatedDevelopmentPlans[0]?.id)
         .select("amount", "purpose");
       expect(duplicatedDevelopmentPlanCosts).toEqual(sourceUrbanProject.developmentPlan.costs);
+      // buildings construction costs (none for minimal project)
+      const duplicatedBuildingsConstructionCosts = await sqlConnection(
+        "reconversion_project_buildings_construction_costs",
+      )
+        .where("development_plan_id", duplicatedDevelopmentPlans[0]?.id)
+        .select("amount", "purpose");
+      expect(duplicatedBuildingsConstructionCosts).toEqual([]);
       // reinstatement costs
       const duplicatedReinstatementCosts = await sqlConnection(
         "reconversion_project_reinstatement_costs",

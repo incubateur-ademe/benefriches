@@ -1,10 +1,29 @@
+import { typedObjectEntries } from "shared";
+
 import { DEFAULT_FUTURE_SITE_OWNER } from "../../../helpers/stakeholders";
 import type { ProjectFormState } from "../../../projectForm.reducer";
+import { EXPENSE_FIELD_TO_PURPOSE } from "../../step-handlers/expenses/expenses-buildings-construction-and-rehabilitation/expensesBuildingsConstructionAndRehabilitation.schema";
 import type { UrbanProjectFormData } from "../../urbanProjectSteps";
 import { isSiteResalePlannedAfterDevelopment } from "./siteResaleReaders";
 import { getProjectSoilDistribution } from "./soilsReaders";
 
 type Steps = ProjectFormState["urbanProject"]["steps"];
+
+function getBuildingsConstructionExpenses(
+  steps: Steps,
+): { purpose: string; amount: number }[] | undefined {
+  const payload = steps.URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION?.payload;
+  if (!payload) return undefined;
+
+  const expenses: { purpose: string; amount: number }[] = [];
+  for (const [key, purpose] of typedObjectEntries(EXPENSE_FIELD_TO_PURPOSE)) {
+    const amount = payload[key];
+    if (amount !== undefined) {
+      expenses.push({ purpose, amount });
+    }
+  }
+  return expenses.length > 0 ? expenses : undefined;
+}
 
 export function getProjectData(steps: Steps): Partial<UrbanProjectFormData> {
   return {
@@ -60,5 +79,18 @@ export function getProjectData(steps: Steps): Partial<UrbanProjectFormData> {
       steps.URBAN_PROJECT_REVENUE_BUILDINGS_RESALE?.payload?.buildingsResalePropertyTransferDuties,
     buildingsResaleExpectedSellingPrice:
       steps.URBAN_PROJECT_REVENUE_BUILDINGS_RESALE?.payload?.buildingsResaleSellingPrice,
+    // buildings reuse and construction
+    buildingsFootprintToReuse:
+      steps.URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE?.payload?.buildingsFootprintToReuse,
+    existingBuildingsUsesFloorSurfaceArea:
+      steps.URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA?.payload
+        ?.existingBuildingsUsesFloorSurfaceArea,
+    newBuildingsUsesFloorSurfaceArea:
+      steps.URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA?.payload
+        ?.newBuildingsUsesFloorSurfaceArea,
+    developerWillBeBuildingsConstructor:
+      steps.URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER?.payload
+        ?.developerWillBeBuildingsConstructor,
+    buildingsConstructionAndRehabilitationExpenses: getBuildingsConstructionExpenses(steps),
   };
 }

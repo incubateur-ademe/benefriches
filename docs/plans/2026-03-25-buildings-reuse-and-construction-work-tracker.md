@@ -233,44 +233,51 @@ Constraints:
   - Targeted checks:
     - `pnpm --filter web typecheck && pnpm --filter web test`
 
-- [ ] **S14** Release and enablement.
-  - Includes:
-    - keep feature flag OFF by default for merge/deploy
-    - enable in staging with QA
-    - enable in production after sequencing + e2e are green
-
-- [ ] **S15** API persistence for new buildings reuse data.
+- [x] **S15** API persistence for new buildings reuse data.
   - Spec ref: `API Persistence (follow-up)`
   - Includes:
     - new optional fields on creation/update DTOs in `packages/shared/` (`buildingsFootprintToReuse`, `existingBuildingsUsesFloorSurfaceArea`, `newBuildingsUsesFloorSurfaceArea`, `developerWillBeBuildingsConstructor`, `buildingsConstructionAndRehabilitationExpenses`)
     - database migration to store the new fields
     - repository/query updates in `apps/api/`
     - web submission thunks send the new fields on project creation and update
+  - Done note: Added 5 optional fields to shared DTOs, stored buildings features in development plan JSONB + constructor as dev plan columns + construction costs in child table with FK to development_plan_id. Updated repository save/getById/update and integration test assertions.
   - Targeted checks:
     - `pnpm --filter shared build && pnpm --filter api install && pnpm --filter web install && pnpm -r typecheck && pnpm -r test`
 
-- [ ] **S16** Update flow data mapping in `convertProjectDataToSteps`.
+- [x] **S16** Update flow data mapping in `convertProjectDataToSteps`.
   - Spec ref: `Update Flow Mapping (follow-up)`
   - Depends on: S15 (API must return the new fields)
   - Includes:
     - map the 5 new answer step payloads from API response to form state in `convertProjectDataToSteps.ts`
     - verify update wizard pre-populates the new steps correctly
+  - Done note: Added reverse mapping for all 5 fields with expense purpose-to-field conversion, plus getProjectData reader with field-to-purpose conversion and developer-as-constructor logic. Added unit tests for both directions.
   - Targeted checks:
     - `pnpm --filter web test src/features/update-project/`
     - `pnpm --filter web typecheck`
 
-- [ ] **S17** Display views: show construction/rehabilitation expenses from API data.
+- [ ] **S17** Display views: show buildings reuse data and construction/rehabilitation expenses from API data.
   - Spec ref: `Display views to update (after API returns the new fields)`
   - Depends on: S15 (API must return the new fields)
   - Includes:
     - `ExpensesAndRevenues.tsx` — new section for construction/rehabilitation expenses
     - `ProjectExpensesAndIncomesPdf.tsx` — mirror web view changes
     - `projectImpactsEconomicBalance.ts` — include in cost aggregation
+    - `BaseReconversionProjectFeaturesView` — extend with buildings reuse surface areas (`buildingsFootprintToReuse`, `existingBuildingsUsesFloorSurfaceArea`, `newBuildingsUsesFloorSurfaceArea`, `developerWillBeBuildingsConstructor`)
+    - Project features page — display buildings reuse/demolition/construction surface area breakdown
+    - PDF export — mirror buildings surface area display
   - Targeted checks:
     - `pnpm --filter web typecheck && pnpm --filter web test`
 
+- [ ] **S14** Release and enablement.
+  - Depends on: S15, S16, S17 (feature must be 100% functional — data persisted, update flow working, display views complete)
+  - Includes:
+    - remove feature flag (enable by default)
+    - QA in staging
+    - deploy to production
+
 ## Recommended Loop Order
-`HIST-1 -> HIST-2 -> S1 -> S2 -> S3 -> S4 -> S5 -> S6 -> S7 -> S8 -> S9 -> S10 -> S11 -> S12 -> S13 -> S13b -> S14 -> S15 -> S16 -> S17`
+`HIST-1 -> HIST-2 -> S1 -> S2 -> S3 -> S4 -> S5 -> S6 -> S7 -> S8 -> S9 -> S10 -> S11 -> S12 -> S13 -> S13b -> S15 -> S16 -> S17 -> S14`
 
 ## Notes
 - New chapter step IDs are already introduced in multiple registries, so gating before full flow activation avoids exposing incomplete `TODO` screens.
+- S14 (release) moved to end: feature must be fully functional (API persistence + update flow + display views) before enabling in production.
