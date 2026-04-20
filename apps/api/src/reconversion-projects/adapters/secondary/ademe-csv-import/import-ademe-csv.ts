@@ -4,20 +4,13 @@ import knex from "knex";
 import fs from "node:fs";
 import path from "node:path";
 
-import { SqlCarbonStorageQuery } from "src/carbon-storage/adapters/secondary/carbon-storage-query/SqlCarbonStorageQuery";
-import { GetCarbonStorageFromSoilDistributionService } from "src/carbon-storage/core/services/getCarbonStorageFromSoilDistribution";
-import { ComputeReconversionProjectImpactsUseCase } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
-import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
-import { SilentLogger } from "src/shared-kernel/adapters/logger/SilentLogger";
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
 import { SqlSiteRepository } from "src/sites/adapters/secondary/site-repository/SqlSiteRepository";
 
-import { SqlCityStatsQuery } from "../queries/city-stats/SqlCityStatsQuery";
-import { SqlReconversionProjectImpactsQuery } from "../queries/reconversion-project-impacts/SqlReconversionProjectImpactsQuery";
-import { SqlSiteImpactsQuery } from "../queries/site-impacts/SqlSiteImpactsQuery";
 import { SqlReconversionProjectRepository } from "../repositories/reconversion-project/SqlReconversionProjectRepository";
 import { BanAddressSearchGateway } from "./BaseAdresseNationaleClient";
 import { CachedAddressSearchGateway } from "./CachedAddressSearchGateway";
+import { buildAdemeScriptComputeImpactsUseCase } from "./ademeScriptDeps";
 import { importAdemeProjects } from "./importAdemeProjects";
 
 const dotEnvPath = path.resolve(process.cwd(), ".env");
@@ -31,11 +24,11 @@ const includeDepartmentsArg = process.argv[4];
 
 if (!csvPath || !userId) {
   console.error(
-    "Usage: npx tsx apps/api/src/reconversion-projects/adapters/secondary/ademe-csv-import/import-ademe-csv.ts <csv-path> <user-id>",
+    "Usage: pnpm exec tsx src/reconversion-projects/adapters/secondary/ademe-csv-import/import-ademe-csv.ts <csv-path> <user-id>",
   );
   console.error("\nExample:");
   console.error(
-    '  npx tsx apps/api/src/reconversion-projects/adapters/secondary/ademe-csv-import/import-ademe-csv.ts ./ademe-projects.csv "user-123"',
+    '  pnpm exec tsx src/reconversion-projects/adapters/secondary/ademe-csv-import/import-ademe-csv.ts ./ademe-projects.csv "user-123"',
   );
   process.exit(1);
 }
@@ -51,24 +44,7 @@ if (!csvPath || !userId) {
     const cacheFilePath = path.resolve(__dirname, "address-cache.json");
     const addressApi = new CachedAddressSearchGateway(new BanAddressSearchGateway(), cacheFilePath);
 
-    // compute impacts dependencies
-    const reconversionProjectImpactsQuery = new SqlReconversionProjectImpactsQuery(db);
-    const siteImpactsQuery = new SqlSiteImpactsQuery(db);
-    const dateProvider = new RealDateProvider();
-    const cityStatsRepository = new SqlCityStatsQuery(db);
-    const sqlCarbonStorageQuery = new SqlCarbonStorageQuery(db);
-    const getCarbonStorageFromSoilDistribution = new GetCarbonStorageFromSoilDistributionService(
-      sqlCarbonStorageQuery,
-      new SilentLogger(),
-    );
-
-    const computeImpactsUseCase = new ComputeReconversionProjectImpactsUseCase(
-      reconversionProjectImpactsQuery,
-      siteImpactsQuery,
-      cityStatsRepository,
-      getCarbonStorageFromSoilDistribution,
-      dateProvider,
-    );
+    const computeImpactsUseCase = buildAdemeScriptComputeImpactsUseCase(db);
     await importAdemeProjects({
       csvFilePath: csvPath,
       createdByUserId: userId,
@@ -82,14 +58,13 @@ if (!csvPath || !userId) {
     });
     // oxlint-disable-next-line no-explicit-any
   } catch (error: any) {
+    process.exitCode = 1;
     console.error("Fatal error:", error);
     if (error.errors) {
       console.error(error.errors);
     }
-    process.exit(1);
   } finally {
     console.error("Destroying database connection...");
     await db.destroy();
-    process.exit(0);
   }
 })();
