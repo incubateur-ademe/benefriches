@@ -154,8 +154,8 @@ importers:
         specifier: ~7.2.2
         version: 7.2.2
       testcontainers:
-        specifier: ~11.12.0
-        version: 11.12.0
+        specifier: ~11.14.0
+        version: 11.14.0
       ts-node:
         specifier: ~10.9.2
         version: 10.9.2(@swc/core@1.15.24(@swc/helpers@0.5.19))(@types/node@25.3.5)(typescript@5.9.3)
@@ -4737,8 +4737,8 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
-  testcontainers@11.12.0:
-    resolution: {integrity: sha512-VWtH+UQejVYYvb53ohEZRbx2naxyDvwO9lQ6A0VgmVE2Oh8r9EF09I+BfmrXpd9N9ntpzhao9di2yNwibSz5KA==}
+  testcontainers@11.14.0:
+    resolution: {integrity: sha512-r9pniwv/iwzyHaI7gwAvAm4Y+IvjJg3vBWdjrUCaDMc2AXIr4jKbq7jJO18Mw2ybs73pZy1Aj7p/4RVBGMRWjg==}
 
   text-decoder@1.2.7:
     resolution: {integrity: sha512-vlLytXkeP4xvEq2otHeJfSQIRyWxo/oZGEbXrtEEF9Hnmrdly59sUbzZ/QgyWuLYHctCHxFF4tRQZNQ9k60ExQ==}
@@ -9743,7 +9743,7 @@ snapshots:
       commander: 2.20.3
       source-map-support: 0.5.21
 
-  testcontainers@11.12.0:
+  testcontainers@11.14.0:
     dependencies:
       '@balena/dockerignore': 1.0.2
       '@types/dockerode': 4.0.1
