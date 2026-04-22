@@ -10,7 +10,11 @@ import {
   UseGuards,
   Req,
   ForbiddenException,
+  Query,
+  ParseFloatPipe,
+  InternalServerErrorException,
 } from "@nestjs/common";
+import { Throttle } from "@nestjs/throttler";
 import { ZodValidationPipe } from "nestjs-zod";
 import {
   createCustomSiteDtoSchema,
@@ -20,10 +24,12 @@ import {
   type GetSiteFeaturesResponseDto,
   type GetSiteRealEstateValuationResponseDto,
   type GetSiteViewResponseDto,
+  type GetFricheInactionCostDto,
 } from "shared";
 
 import { JwtAuthGuard, RequestWithAuthenticatedUser } from "src/auth/adapters/JwtAuthGuard";
 import { ArchiveSiteUseCase } from "src/sites/core/usecases/archiveSite.usecase";
+import { ComputeFricheInactionCostUseCase } from "src/sites/core/usecases/computeFricheInactionCost.usecase";
 import {
   CreateNewExpressSiteUseCase,
   ExpressSiteProps,
@@ -42,6 +48,7 @@ export class SitesController {
     private readonly getSiteViewByIdUseCase: GetSiteViewByIdUseCase,
     private readonly getSiteRealEstateValuationUseCase: GetSiteRealEstateValuationUseCase,
     private readonly archiveSiteUseCase: ArchiveSiteUseCase,
+    private readonly computeFricheInactionCostUseCase: ComputeFricheInactionCostUseCase,
   ) {}
 
   @Post("/sites/create-custom")
@@ -166,5 +173,50 @@ export class SitesController {
           throw new ForbiddenException();
       }
     }
+  }
+
+  @Get("friches/cout-inaction")
+  @Throttle({ default: { ttl: 60_000, limit: 10 } })
+  async computeFricheInactionCost(
+    @Query("code_insee") codeInsee: string,
+    @Query("superficie_m2", ParseFloatPipe) surfaceMetresCarres: number,
+  ): Promise<GetFricheInactionCostDto> {
+    if (!codeInsee || !/^\d{5}$/.test(codeInsee)) {
+      throw new BadRequestException("code_insee invalide (format attendu : 5 chiffres)");
+    }
+
+    if (!surfaceMetresCarres || surfaceMetresCarres <= 0) {
+      throw new BadRequestException("superficie_m2 doit être un nombre positif");
+    }
+
+    const result = await this.computeFricheInactionCostUseCase.execute({
+      siteCityCode: codeInsee,
+      siteSurfaceArea: surfaceMetresCarres,
+    });
+
+    if (!result.isSuccess()) {
+      throw new InternalServerErrorException("Erreur lors du calcul du coût d'inaction");
+    }
+
+    const { security, illegalDumpingCost, siteCityData } = result.getData();
+
+    const description =
+      siteCityData.accuracy === "city"
+        ? "Bénéfriches a calculé le coût de l'inaction à partir de données moyennes, de la superficie et des données communales de votre friche"
+        : "Bénéfriches a calculé le coût de l'inaction à partir de données moyennes françaises et de la superficie de votre friche";
+
+    return {
+      cout_annuel_securisation: security,
+      cout_annuel_debarras_depot_illegal: illegalDumpingCost,
+      description,
+      commune_data:
+        siteCityData.accuracy === "city"
+          ? {
+              population: siteCityData.population,
+              superficie: siteCityData.surfaceAreaSquareMeters,
+              nom: siteCityData.name,
+            }
+          : undefined,
+    };
   }
 }

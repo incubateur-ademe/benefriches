@@ -13,3 +13,5 @@ export {
   getSiteRealEstateValuationResponseDtoSchema,
   type GetSiteRealEstateValuationResponseDto,
 } from "./getSiteRealEstateValuation.dto";
+
+export { type GetFricheInactionCostDto } from "./getFricheInactionCost";

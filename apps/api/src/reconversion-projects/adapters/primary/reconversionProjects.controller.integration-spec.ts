@@ -531,6 +531,7 @@ describe("ReconversionProjects controller", () => {
       expect(result.impacts).toBeDefined();
       expect(result.projectData).toBeDefined();
       expect(result.siteData.cityStats).toEqual({
+        accuracy: "city",
         name: "Mont-de-Marsan",
         population: 31455,
         propertyValueMedianPricePerSquareMeters: 2179,

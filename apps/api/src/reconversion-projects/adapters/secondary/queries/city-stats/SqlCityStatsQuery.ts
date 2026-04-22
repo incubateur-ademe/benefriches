@@ -55,6 +55,7 @@ export class SqlCityStatsQuery implements CityStatsProvider {
       const population = stats.da_population;
 
       return {
+        accuracy: "city",
         name: stats.da_name,
         surfaceAreaSquareMeters,
         population,
@@ -66,6 +67,7 @@ export class SqlCityStatsQuery implements CityStatsProvider {
     } catch (err) {
       this.logger.warn(String(err));
       return {
+        accuracy: "france",
         name: "",
         surfaceAreaSquareMeters: FRANCE_AVERAGE_CITY_SQUARE_METERS_AREA,
         population: FRANCE_AVERAGE_CITY_POPULATION,

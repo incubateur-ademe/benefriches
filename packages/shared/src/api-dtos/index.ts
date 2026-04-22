@@ -18,6 +18,7 @@ export {
   type GetSiteViewResponseDto,
   getSiteRealEstateValuationResponseDtoSchema,
   type GetSiteRealEstateValuationResponseDto,
+  type GetFricheInactionCostDto,
 } from "./sites";
 
 // Urban Sprawl Impacts Comparison DTOs

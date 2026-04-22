@@ -3,6 +3,7 @@ import { Knex } from "knex";
 import {
   CreateCustomSiteDto,
   CreateExpressSiteDto,
+  GetFricheInactionCostDto,
   GetSiteRealEstateValuationResponseDto,
   GetSiteViewResponseDto,
 } from "shared";
@@ -1416,6 +1417,87 @@ describe("Sites controller", () => {
       expect(sites).toHaveLength(1);
       expect(sites[0]?.status).toEqual("archived");
       expect(sites[0]?.updated_at).toBeDefined();
+    });
+  });
+  describe("GET /friches/cout-inaction", () => {
+    it("gets a 400 error when code_insee is missing", async () => {
+      const response = await supertest(app.getHttpServer())
+        .get(`/api/friches/cout-inaction`)
+        .query({ superficie_m2: 5000 })
+        .send();
+      expect(response.status).toEqual(400);
+    });
+
+    it("gets a 400 error when code_insee has wrong format", async () => {
+      const response = await supertest(app.getHttpServer())
+        .get(`/api/friches/cout-inaction`)
+        .query({ code_insee: "750", superficie_m2: 5000 })
+        .send();
+      expect(response.status).toEqual(400);
+    });
+
+    it("gets a 400 error when superficie_m2 is missing", async () => {
+      const response = await supertest(app.getHttpServer())
+        .get(`/api/friches/cout-inaction`)
+        .query({ code_insee: "31070" })
+        .send();
+      expect(response.status).toEqual(400);
+    });
+
+    it("gets a 400 error when superficie_m2 is negative", async () => {
+      const response = await supertest(app.getHttpServer())
+        .get(`/api/friches/cout-inaction`)
+        .query({ code_insee: "31070", superficie_m2: -100 })
+        .send();
+      expect(response.status).toEqual(400);
+    });
+
+    it("gets a 200 response with city data when city code exists in database", async () => {
+      const response = await supertest(app.getHttpServer())
+        .get(`/api/friches/cout-inaction`)
+        .query({ code_insee: "31070", superficie_m2: 5000 })
+        .send();
+
+      expect(response.status).toEqual(200);
+      expect(response.body).toEqual<GetFricheInactionCostDto>({
+        commune_data: {
+          nom: "Blajan",
+          population: 433,
+          superficie: 12773900.000000002,
+        },
+        description:
+          "Bénéfriches a calculé le coût de l'inaction à partir de données moyennes, de la superficie et des données communales de votre friche",
+        cout_annuel_debarras_depot_illegal: 18,
+        cout_annuel_securisation: 11000,
+      });
+    });
+
+    it("gets a 200 response with france fallback data when city code does not exist", async () => {
+      // Code INSEE inexistant → fallback données moyennes France
+      const response = await supertest(app.getHttpServer())
+        .get(`/api/friches/cout-inaction`)
+        .query({ code_insee: "00000", superficie_m2: 5000 })
+        .send();
+
+      expect(response.status).toEqual(200);
+      expect(response.body).toEqual<GetFricheInactionCostDto>({
+        cout_annuel_securisation: expect.any(Number) as number,
+        cout_annuel_debarras_depot_illegal: expect.any(Number) as number,
+        description:
+          "Bénéfriches a calculé le coût de l'inaction à partir de données moyennes françaises et de la superficie de votre friche",
+        commune_data: undefined,
+      });
+    });
+
+    it("gets a 200 response with correct costs for known city and surface", async () => {
+      const response = await supertest(app.getHttpServer())
+        .get(`/api/friches/cout-inaction`)
+        .query({ code_insee: "31070", superficie_m2: 1000 })
+        .send();
+
+      expect(response.status).toEqual(200);
+      expect(response.body.cout_annuel_securisation).toBeGreaterThan(0);
+      expect(response.body.cout_annuel_debarras_depot_illegal).toBeGreaterThan(0);
     });
   });
 });

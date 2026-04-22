@@ -48,6 +48,7 @@ export class InMemoryCityStatsQuery implements CityStatsProvider {
 
     if (!result) {
       return Promise.resolve({
+        accuracy: "france",
         name: "",
         surfaceAreaSquareMeters: 14900000,
         population: 1800,
@@ -56,6 +57,7 @@ export class InMemoryCityStatsQuery implements CityStatsProvider {
     }
 
     return Promise.resolve({
+      accuracy: "city",
       name: result.name,
       surfaceAreaSquareMeters: result.surfaceArea ?? 14900000,
       population: result.population ?? 1800,

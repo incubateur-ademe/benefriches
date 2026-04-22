@@ -18,6 +18,7 @@ import type { MutabilityEvaluationQuery } from "src/site-evaluations/core/gatewa
 import { SitesQuery } from "src/sites/core/gateways/SitesQuery";
 import { SitesRepository } from "src/sites/core/gateways/SitesRepository";
 import { ArchiveSiteUseCase } from "src/sites/core/usecases/archiveSite.usecase";
+import { ComputeFricheInactionCostUseCase } from "src/sites/core/usecases/computeFricheInactionCost.usecase";
 import { CreateNewExpressSiteUseCase } from "src/sites/core/usecases/createNewExpressSite.usecase";
 import { CreateNewCustomSiteUseCase } from "src/sites/core/usecases/createNewSite.usecase";
 import { GetSiteByIdUseCase } from "src/sites/core/usecases/getSiteById.usecase";
@@ -93,6 +94,12 @@ import { SitesController } from "./sites.controller";
         return new ArchiveSiteUseCase(repository, dateProvider);
       },
       inject: [SqlSiteRepository, RealDateProvider],
+    },
+    {
+      provide: ComputeFricheInactionCostUseCase,
+      useFactory: (cityStatsProvider: CityStatsProvider) =>
+        new ComputeFricheInactionCostUseCase(cityStatsProvider),
+      inject: [SqlCityStatsQuery],
     },
     SqlSiteRepository,
     SqlSitesQuery,
