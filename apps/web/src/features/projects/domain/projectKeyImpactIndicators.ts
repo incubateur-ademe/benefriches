@@ -43,7 +43,7 @@ const getAvoidedFricheCostsForLocalAuthority = (
   const siteOwnerStructureType = siteOwner?.structureType ?? "";
   const isOwnerLocalAuthority = isLocalAuthority(siteOwnerStructureType);
 
-  if (!avoidedFricheCosts || !isOwnerLocalAuthority) {
+  if (!avoidedFricheCosts?.amount || !isOwnerLocalAuthority) {
     return undefined;
   }
 

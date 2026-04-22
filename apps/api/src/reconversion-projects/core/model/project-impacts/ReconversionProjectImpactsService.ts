@@ -247,30 +247,32 @@ export class ReconversionProjectImpactsService implements ImpactsServiceInterfac
 
     const siteTenantName = this.relatedSite.tenantName ?? "Ancien locataire du site";
 
-    return Object.entries(groupedByBearer).map(([bearer, costs]) => {
-      const details: AvoidedFricheCostsImpact["details"] = costs.map(({ amount, purpose }) => {
-        const totalAmount = this.sumOnEvolutionPeriodService.sumWithDiscountFactor(amount);
-        switch (purpose) {
-          case "maintenance":
-            return { amount: totalAmount, impact: "avoided_maintenance_costs" };
-          case "security":
-            return { amount: totalAmount, impact: "avoided_security_costs" };
-          case "accidentsCost":
-            return { amount: totalAmount, impact: "avoided_accidents_costs" };
-          case "illegalDumpingCost":
-            return { amount: totalAmount, impact: "avoided_illegal_dumping_costs" };
-          case "otherSecuringCosts":
-            return { amount: totalAmount, impact: "avoided_other_securing_costs" };
-        }
-      });
-      return {
-        amount: sumListWithKey(details, "amount"),
-        actor: bearer === "owner" ? this.relatedSite.ownerName : siteTenantName,
-        impact: "avoided_friche_costs",
-        impactCategory: "economic_direct",
-        details,
-      };
-    });
+    return typedObjectEntries(groupedByBearer)
+      .map(([bearer, costs]) => {
+        const details: AvoidedFricheCostsImpact["details"] = costs.map(({ amount, purpose }) => {
+          const totalAmount = this.sumOnEvolutionPeriodService.sumWithDiscountFactor(amount);
+          switch (purpose) {
+            case "maintenance":
+              return { amount: totalAmount, impact: "avoided_maintenance_costs" };
+            case "security":
+              return { amount: totalAmount, impact: "avoided_security_costs" };
+            case "accidentsCost":
+              return { amount: totalAmount, impact: "avoided_accidents_costs" };
+            case "illegalDumpingCost":
+              return { amount: totalAmount, impact: "avoided_illegal_dumping_costs" };
+            case "otherSecuringCosts":
+              return { amount: totalAmount, impact: "avoided_other_securing_costs" };
+          }
+        });
+        return {
+          amount: sumListWithKey(details, "amount"),
+          actor: bearer === "owner" ? this.relatedSite.ownerName : siteTenantName,
+          impact: "avoided_friche_costs",
+          impactCategory: "economic_direct",
+          details,
+        } as AvoidedFricheCostsImpact;
+      })
+      .filter(({ amount }) => amount !== 0);
   }
 
   protected get rentImpacts() {
