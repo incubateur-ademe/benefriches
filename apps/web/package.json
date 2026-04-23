@@ -27,18 +27,18 @@
     "prebuild": "react-dsfr update-icons"
   },
   "dependencies": {
-    "@codegouvfr/react-dsfr": "~1.31.1",
-    "@headlessui/react": "^2.2.9",
-    "@react-pdf/renderer": "^4.3.2",
+    "@codegouvfr/react-dsfr": "~1.32.0",
+    "@headlessui/react": "^2.2.10",
+    "@react-pdf/renderer": "^4.5.1",
     "@reduxjs/toolkit": "~2.11.2",
     "clsx": "~2.1.1",
-    "crisp-sdk-web": "1.0.27",
+    "crisp-sdk-web": "1.1.0",
     "date-fns": "~4.1.0",
-    "highcharts": "12.2.0",
-    "highcharts-react-official": "3.2.2",
-    "react": "~19.2.4",
-    "react-dom": "~19.2.4",
-    "react-hook-form": "~7.71.2",
+    "highcharts": "12.6.0",
+    "highcharts-react-official": "3.2.3",
+    "react": "~19.2.5",
+    "react-dom": "~19.2.5",
+    "react-hook-form": "~7.72.1",
     "react-pdf-tailwind": "^3.0.0",
     "react-redux": "~9.2.0",
     "reduce-reducers": "~1.0.4",
@@ -48,7 +48,7 @@
     "zod": "~4.3.6"
   },
   "devDependencies": {
-    "@tailwindcss/vite": "^4.2.1",
+    "@tailwindcss/vite": "^4.2.2",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@trivago/prettier-plugin-sort-imports": "~6.0.2",
@@ -56,10 +56,10 @@
     "@types/react": "~19.2.14",
     "@types/react-dom": "~19.2.3",
     "@vitejs/plugin-react": "~5.1.4",
-    "globals": "~17.4.0",
+    "globals": "~17.5.0",
     "jsdom": "~28.1.0",
-    "tailwindcss": "~4.2.1",
-    "vite": "~7.3.1",
+    "tailwindcss": "~4.2.2",
+    "vite": "~7.3.2",
     "vite-plugin-node-polyfills": "~0.25.0"
   }
 }

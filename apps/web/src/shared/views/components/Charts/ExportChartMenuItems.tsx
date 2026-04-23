@@ -58,15 +58,10 @@ const downloadAsJpeg = ({ chartRef, exportConfig, colors, colorBySeries }: Props
 
   /** Handle custom colors **/
 
-  Highcharts.downloadSVGLocal(
-    svgChart.documentElement.outerHTML,
-    {
-      type: "image/jpeg",
-      ...exportConfig,
-    },
-    () => {}, // error
-    () => {}, // success
-  );
+  Highcharts.downloadSVGLocal(svgChart.documentElement.outerHTML, {
+    type: "image/jpeg",
+    ...exportConfig,
+  });
 };
 
 const ExportChartMenuItems = ({ chartRef, exportConfig, colors, colorBySeries = false }: Props) => {

@@ -67,7 +67,7 @@ export function withDefaultBarChartOptions({
       tickAmount: 1,
       tickPositions: [0],
       title: {
-        text: null,
+        text: undefined,
       },
       maxPadding: 0.1,
     },

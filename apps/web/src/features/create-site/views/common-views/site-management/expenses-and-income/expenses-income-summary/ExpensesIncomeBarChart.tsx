@@ -170,7 +170,7 @@ const ExpensesIncomeBarChart = ({
     },
     yAxis: {
       title: {
-        text: null,
+        text: undefined,
       },
       labels: {
         enabled: false,
