@@ -1463,7 +1463,7 @@ describe("Sites controller", () => {
         commune_data: {
           nom: "Blajan",
           population: 433,
-          superficie: 12773900.000000002,
+          superficie_m2: 12773900.000000002,
         },
         description:
           "Bénéfriches a calculé le coût de l'inaction à partir de données moyennes, de la superficie et des données communales de votre friche",
