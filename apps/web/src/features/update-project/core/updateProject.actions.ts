@@ -1,4 +1,4 @@
-import { updateReconversionProjectPropsSchema } from "shared";
+import { httpUpdateReconversionProjectPropsSchema } from "shared";
 import z from "zod";
 
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
@@ -49,7 +49,7 @@ export const reconversionProjectUpdateSaved = createAppAsyncThunk(
     const updateData = getProjectData(urbanProject.steps);
 
     const projectId = z.string().parse(projectData?.id);
-    const projectToSave = updateReconversionProjectPropsSchema.parse({
+    const projectToSave = httpUpdateReconversionProjectPropsSchema.parse({
       ...updateData,
       projectPhase: projectData.projectPhase,
     });

@@ -58,6 +58,7 @@
     "@nestjs/event-emitter": "^3.0.1",
     "@nestjs/jwt": "^11.0.2",
     "@nestjs/platform-express": "~11.1.19",
+    "@nestjs/swagger": "~11.3.0",
     "@nestjs/throttler": "~6.5.0",
     "axios": "~1.15.0",
     "bcrypt": "^6.0.0",

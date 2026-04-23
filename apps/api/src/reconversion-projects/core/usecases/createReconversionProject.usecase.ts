@@ -10,7 +10,7 @@ import { createReconversionProjectCreatedEvent } from "../events/reconversionPro
 import { ReconversionProjectRepository } from "../gateways/ReconversionProjectRepository";
 import {
   ReconversionProjectSavePropsDto,
-  saveReconversionProjectPropsSchema,
+  domainSaveReconversionProjectPropsSchema,
 } from "../model/reconversionProject";
 
 export interface SiteRepository {
@@ -41,7 +41,7 @@ export class CreateReconversionProjectUseCase implements UseCase<
 
   async execute({ reconversionProjectProps }: Request): Promise<CreateReconversionProjectResult> {
     const parseResult =
-      await saveReconversionProjectPropsSchema.safeParseAsync(reconversionProjectProps);
+      await domainSaveReconversionProjectPropsSchema.safeParseAsync(reconversionProjectProps);
     if (!parseResult.success) {
       return fail("ValidationError", {
         fieldErrors: z.flattenError(parseResult.error).fieldErrors,

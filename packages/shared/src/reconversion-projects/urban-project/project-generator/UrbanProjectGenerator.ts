@@ -5,8 +5,8 @@ import { computeDefaultSitePurchaseFromSiteSurfaceArea } from "../../_common";
 import { DefaultProjectGenerator } from "../../_common/project-generator/DefaultProjectGenerator";
 import { ReconversionProject, SiteData } from "../../_common/project-generator/types";
 import {
+  domainSaveReconversionProjectSchema,
   ReconversionProjectSoilsDistribution,
-  saveReconversionProjectSchema,
 } from "../../reconversionProjectSchemas";
 import { computeExpectedPostDevelopmentResaleSellingPriceFromSurfaces } from "../expectedPostDevelopmentResale";
 import { computeDefaultInstallationExpensesFromSiteSurfaceArea } from "../installationExpenses";
@@ -86,7 +86,7 @@ export class UrbanProjectGenerator extends DefaultProjectGenerator {
   }
 
   getReconversionProject(): ReconversionProject {
-    return saveReconversionProjectSchema.parse({
+    return domainSaveReconversionProjectSchema.parse({
       id: this.reconversionProjectId,
       createdBy: this.createdBy,
       createdAt: this.dateProvider.now(),

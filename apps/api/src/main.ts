@@ -2,6 +2,7 @@
 import { ConfigService } from "@nestjs/config";
 import { NestFactory } from "@nestjs/core";
 import { NestExpressApplication } from "@nestjs/platform-express";
+import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { Knex } from "knex";
 
 import { AppModule } from "./app.module";
@@ -22,6 +23,26 @@ async function bootstrap() {
     await sqlConnection.destroy();
     process.exit(1);
   }
+
+  // Swagger
+  const config = new DocumentBuilder()
+    .setTitle("API Bénéfriches")
+    .setDescription("Calcul des coûts d'inaction sur les friches")
+    .setVersion("1.0")
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  const publicPaths = new Set(["/api/friches/cout-inaction"]);
+  const publicDocument = {
+    ...document,
+    paths: Object.fromEntries(
+      Object.entries(document.paths).filter(([path]) => {
+        return publicPaths.has(path);
+      }),
+    ),
+    components: {},
+  };
+
+  SwaggerModule.setup("api/docs", app, publicDocument);
 
   // run http server
   const configService = app.get(ConfigService);

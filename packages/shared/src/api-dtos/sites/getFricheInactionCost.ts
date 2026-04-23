@@ -4,7 +4,7 @@ export type GetFricheInactionCostDto = {
   description: string;
   commune_data?: {
     population: number;
-    superficie: number;
+    superficie_m2: number;
     nom: string;
   };
 };

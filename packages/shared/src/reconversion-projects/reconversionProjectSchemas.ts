@@ -27,7 +27,6 @@ const spaceCategorySchema = z
   .enum(["PUBLIC_GREEN_SPACE", "PUBLIC_SPACE", "LIVING_AND_ACTIVITY_SPACE"])
   .optional();
 
-const coerceToDate = z.string().or(z.date()).pipe(z.coerce.date());
 export function createReconversionProjectSchema<T extends z.ZodTypeAny>(dateSchema: T) {
   const scheduleSchema = z.object({
     startDate: dateSchema,
@@ -97,38 +96,63 @@ export function createReconversionProjectSchema<T extends z.ZodTypeAny>(dateSche
   });
 }
 
-export const reconversionProjectSchema = createReconversionProjectSchema(coerceToDate);
+export const domainReconversionProjectSchema = createReconversionProjectSchema(z.date());
+export const httpReconversionProjectSchema = createReconversionProjectSchema(
+  z.string().pipe(z.coerce.date()),
+);
 
 export type SpaceCategory = z.infer<typeof spaceCategorySchema>;
 
-const dataViewReconversionProjectSchema = reconversionProjectSchema.omit({ status: true });
+const dataViewReconversionProjectSchema = domainReconversionProjectSchema.omit({ status: true });
 export type ReconversionProjectDataView = z.infer<typeof dataViewReconversionProjectSchema>;
 export type ReconversionProjectSoilsDistribution = ReconversionProjectDataView["soilsDistribution"];
 
-export const saveReconversionProjectSchema = reconversionProjectSchema;
-export const saveReconversionProjectPropsSchema = saveReconversionProjectSchema.omit({
+export const httpSaveReconversionProjectSchema = httpReconversionProjectSchema;
+export const domainSaveReconversionProjectSchema = domainReconversionProjectSchema;
+export const httpSaveReconversionProjectPropsSchema = httpSaveReconversionProjectSchema.omit({
   createdAt: true,
   updatedAt: true,
   creationMode: true,
   status: true,
 });
-export type ReconversionProjectSaveDto = z.infer<typeof saveReconversionProjectSchema>;
-export type ReconversionProjectSavePropsDto = z.infer<typeof saveReconversionProjectPropsSchema>;
+export const domainSaveReconversionProjectPropsSchema = domainSaveReconversionProjectSchema.omit({
+  createdAt: true,
+  updatedAt: true,
+  creationMode: true,
+  status: true,
+});
+export type ReconversionProjectSaveDto = z.infer<typeof httpSaveReconversionProjectSchema>;
+export type ReconversionProjectSavePropsDto = z.infer<
+  typeof httpSaveReconversionProjectPropsSchema
+>;
 
-export const updateReconversionProjectSchema = reconversionProjectSchema.omit({
+export const httpUpdateReconversionProjectSchema = httpReconversionProjectSchema.omit({
   createdAt: true,
   creationMode: true,
   createdBy: true,
   relatedSiteId: true,
   status: true,
 });
-export const updateReconversionProjectPropsSchema = updateReconversionProjectSchema.omit({
+export const domainUpdateReconversionProjectSchema = domainReconversionProjectSchema.omit({
+  createdAt: true,
+  creationMode: true,
+  createdBy: true,
+  relatedSiteId: true,
+  status: true,
+});
+export const httpUpdateReconversionProjectPropsSchema = httpUpdateReconversionProjectSchema.omit({
   id: true,
   updatedAt: true,
 });
-export type ReconversionProjectUpdateDto = z.infer<typeof updateReconversionProjectSchema>;
+
+export const domainUpdateReconversionProjectPropsSchema =
+  domainUpdateReconversionProjectSchema.omit({
+    id: true,
+    updatedAt: true,
+  });
+export type ReconversionProjectUpdateDto = z.infer<typeof domainUpdateReconversionProjectSchema>;
 export type ReconversionProjectUpdatePropsDto = z.infer<
-  typeof updateReconversionProjectPropsSchema
+  typeof domainUpdateReconversionProjectPropsSchema
 >;
 
 type ScheduleString = {

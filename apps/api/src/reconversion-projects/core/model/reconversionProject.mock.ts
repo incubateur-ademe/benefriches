@@ -318,4 +318,26 @@ export class UrbanProjectBuilder {
   build(): ReconversionProjectSaveDto {
     return this.props;
   }
+
+  buildWithDateString() {
+    return {
+      ...this.props,
+      createdAt: this.props.createdAt.toISOString(),
+      reinstatementSchedule: this.props.reinstatementSchedule
+        ? {
+            startDate: this.props.reinstatementSchedule?.startDate.toISOString(),
+            endDate: this.props.reinstatementSchedule?.endDate.toISOString(),
+          }
+        : undefined,
+      developmentPlan: {
+        ...this.props.developmentPlan,
+        installationSchedule: this.props.developmentPlan.installationSchedule
+          ? {
+              startDate: this.props.developmentPlan.installationSchedule?.startDate.toISOString(),
+              endDate: this.props.developmentPlan.installationSchedule?.endDate.toISOString(),
+            }
+          : undefined,
+      },
+    };
+  }
 }

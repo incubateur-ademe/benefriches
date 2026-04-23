@@ -1,4 +1,4 @@
-import { updateReconversionProjectPropsSchema } from "shared";
+import { domainUpdateReconversionProjectPropsSchema } from "shared";
 import { z } from "zod";
 
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
@@ -40,7 +40,7 @@ export class UpdateReconversionProjectUseCase implements UseCase<
     if (sourceProject.createdBy !== userId) return fail("UserNotAuthorized");
 
     const parseResult =
-      await updateReconversionProjectPropsSchema.safeParseAsync(reconversionProjectProps);
+      await domainUpdateReconversionProjectPropsSchema.safeParseAsync(reconversionProjectProps);
 
     if (!parseResult.success) {
       return fail("ValidationError", {

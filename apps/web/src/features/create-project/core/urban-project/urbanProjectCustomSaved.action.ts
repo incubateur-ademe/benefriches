@@ -1,4 +1,4 @@
-import { saveReconversionProjectPropsSchema } from "shared";
+import { httpSaveReconversionProjectPropsSchema } from "shared";
 
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
 import { getProjectData } from "@/shared/core/reducers/project-form/urban-project/helpers/readers/projectDataReaders";
@@ -21,7 +21,7 @@ export const customUrbanProjectSaved = createAppAsyncThunk(
       ...creationData,
     };
 
-    const projectToSave = saveReconversionProjectPropsSchema.parse(mappedProjectData);
+    const projectToSave = httpSaveReconversionProjectPropsSchema.parse(mappedProjectData);
 
     await extra.saveReconversionProjectService.save(projectToSave);
   },

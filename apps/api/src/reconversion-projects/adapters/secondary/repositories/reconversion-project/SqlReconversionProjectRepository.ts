@@ -25,7 +25,9 @@ import {
 } from "src/shared-kernel/adapters/sql-knex/tableTypes";
 
 const mapSqlSchedule = (startDate: Date | null, endDate: Date | null): Schedule | undefined => {
-  return startDate && endDate ? { startDate, endDate } : undefined;
+  return startDate && endDate
+    ? { startDate: new Date(startDate), endDate: new Date(endDate) }
+    : undefined;
 };
 
 /**

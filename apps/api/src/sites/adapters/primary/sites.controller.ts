@@ -14,6 +14,7 @@ import {
   ParseFloatPipe,
   InternalServerErrorException,
 } from "@nestjs/common";
+import { ApiOperation, ApiQuery, ApiResponse } from "@nestjs/swagger";
 import { Throttle } from "@nestjs/throttler";
 import { ZodValidationPipe } from "nestjs-zod";
 import {
@@ -177,6 +178,11 @@ export class SitesController {
 
   @Get("friches/cout-inaction")
   @Throttle({ default: { ttl: 60_000, limit: 10 } })
+  @ApiOperation({ summary: "Calcul du coût d'inaction d'une friche" })
+  @ApiQuery({ name: "code_insee", example: "49007" })
+  @ApiQuery({ name: "superficie_m2", example: 5000, type: Number })
+  @ApiResponse({ status: 200, description: "Coûts annuels estimés" })
+  @ApiResponse({ status: 400, description: "Paramètres invalides" })
   async computeFricheInactionCost(
     @Query("code_insee") codeInsee: string,
     @Query("superficie_m2", ParseFloatPipe) surfaceMetresCarres: number,
@@ -213,7 +219,7 @@ export class SitesController {
         siteCityData.accuracy === "city"
           ? {
               population: siteCityData.population,
-              superficie: siteCityData.surfaceAreaSquareMeters,
+              superficie_m2: siteCityData.surfaceAreaSquareMeters,
               nom: siteCityData.name,
             }
           : undefined,

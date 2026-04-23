@@ -1,4 +1,4 @@
-import { saveReconversionProjectPropsSchema, soilsDistributionObjToArray } from "shared";
+import { httpSaveReconversionProjectPropsSchema, soilsDistributionObjToArray } from "shared";
 
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
 
@@ -122,7 +122,7 @@ export const saveReconversionProject = createAppAsyncThunk(
         decontaminationSelection?.decontaminatedSurfaceArea,
     };
 
-    const projectToSave = saveReconversionProjectPropsSchema.parse(mappedProjectData);
+    const projectToSave = httpSaveReconversionProjectPropsSchema.parse(mappedProjectData);
 
     await extra.saveReconversionProjectService.save(projectToSave);
   },

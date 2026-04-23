@@ -1,7 +1,11 @@
 /* oxlint-disable typescript/no-non-null-assertion */
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { Knex } from "knex";
-import { reconversionProjectTemplateSchema, saveReconversionProjectPropsSchema } from "shared";
+import {
+  reconversionProjectTemplateSchema,
+  httpSaveReconversionProjectPropsSchema,
+  domainSaveReconversionProjectPropsSchema,
+} from "shared";
 import supertest from "supertest";
 import { authenticateUser, createTestApp } from "test/testApp";
 import { v4 as uuid } from "uuid";
@@ -68,7 +72,7 @@ describe("ReconversionProjects controller", () => {
         "yearlyProjectedCosts",
         "yearlyProjectedRevenues",
         "projectPhase",
-      ] satisfies (keyof z.infer<typeof saveReconversionProjectPropsSchema>)[])(
+      ] satisfies (keyof z.infer<typeof httpSaveReconversionProjectPropsSchema>)[])(
         "can't create a reconversion project without mandatory field %s",
         async (mandatoryField) => {
           const requestBody = buildMinimalReconversionProjectProps();
@@ -1150,7 +1154,7 @@ describe("ReconversionProjects controller", () => {
           costs: [{ amount: 95_000, purpose: "demolition" }],
           schedule: { startDate: new Date("2032-06-01"), endDate: new Date("2032-12-31") },
         })
-        .build();
+        .buildWithDateString();
 
       const response = await supertest(app.getHttpServer())
         .put(`/api/reconversion-projects/${sourceUrbanProject.id}`)
@@ -1164,9 +1168,9 @@ describe("ReconversionProjects controller", () => {
         .getById(sourceUrbanProject.id);
 
       expect(reconversionProjectUpdated).toBeDefined();
-      expect(saveReconversionProjectPropsSchema.parseAsync(reconversionProjectUpdated)).toEqual(
-        saveReconversionProjectPropsSchema.parseAsync(updateProps),
-      );
+      expect(
+        domainSaveReconversionProjectPropsSchema.parseAsync(reconversionProjectUpdated),
+      ).toEqual(httpSaveReconversionProjectPropsSchema.parseAsync(updateProps));
     });
   });
 

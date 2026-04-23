@@ -15,9 +15,9 @@ import {
 import { createZodDto } from "nestjs-zod";
 import {
   reconversionProjectTemplateSchema,
-  saveReconversionProjectPropsSchema,
-  updateReconversionProjectPropsSchema,
+  httpUpdateReconversionProjectPropsSchema,
   getUrbanSprawlImpactsComparisonDtoSchema,
+  httpSaveReconversionProjectPropsSchema,
 } from "shared";
 import { z } from "zod";
 
@@ -37,8 +37,12 @@ import { GetUserReconversionProjectsBySiteUseCase } from "src/reconversion-proje
 import { QuickComputeUrbanProjectImpactsOnFricheUseCase } from "src/reconversion-projects/core/usecases/quickComputeUrbanProjectImpactsOnFricheUseCase.usecase";
 import { UpdateReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/updateReconversionProject.usecase";
 
-class CreateReconversionProjectBodyDto extends createZodDto(saveReconversionProjectPropsSchema) {}
-class UpdateReconversionProjectBodyDto extends createZodDto(updateReconversionProjectPropsSchema) {}
+class CreateReconversionProjectBodyDto extends createZodDto(
+  httpSaveReconversionProjectPropsSchema,
+) {}
+class UpdateReconversionProjectBodyDto extends createZodDto(
+  httpUpdateReconversionProjectPropsSchema,
+) {}
 
 class GenerateReconversionProjectFromTemplateQueryDto extends createZodDto(
   z.object({

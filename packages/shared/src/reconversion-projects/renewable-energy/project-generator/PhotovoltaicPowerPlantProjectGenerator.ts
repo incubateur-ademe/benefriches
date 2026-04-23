@@ -3,7 +3,7 @@ import { typedObjectEntries } from "../../../object-entries";
 import { SoilsDistribution } from "../../../soils";
 import { DefaultProjectGenerator } from "../../_common/project-generator/DefaultProjectGenerator";
 import { ReconversionProject, SiteData } from "../../_common/project-generator/types";
-import { saveReconversionProjectSchema } from "../../reconversionProjectSchemas";
+import { domainSaveReconversionProjectSchema } from "../../reconversionProjectSchemas";
 import { computePhotovoltaicPowerStationInstallationExpensesFromElectricalPower } from "../installationExpenses";
 import {
   computePhotovoltaicPowerStationYearlyExpensesFromElectricalPower,
@@ -198,7 +198,7 @@ export class PhotovoltaicPowerPlantProjectGenerator extends DefaultProjectGenera
       featuresExpectedAnnualProduction,
     );
 
-    return saveReconversionProjectSchema.parse({
+    return domainSaveReconversionProjectSchema.parse({
       id: this.reconversionProjectId,
       createdBy: this.userData.id,
       createdAt: this.dateProvider.now(),

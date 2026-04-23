@@ -1,6 +1,7 @@
 import {
-  saveReconversionProjectSchema,
-  saveReconversionProjectPropsSchema,
+  httpSaveReconversionProjectSchema,
+  httpSaveReconversionProjectPropsSchema,
+  domainSaveReconversionProjectPropsSchema,
   photovoltaicPowerStationFeaturesSchema,
   BaseReconversionProjectFeaturesView,
   ReconversionProjectSaveDto,
@@ -24,8 +25,9 @@ export type Schedule = {
 export type ReconversionProjectFeaturesView = BaseReconversionProjectFeaturesView<Schedule>;
 
 export {
-  saveReconversionProjectPropsSchema,
-  saveReconversionProjectSchema,
+  httpSaveReconversionProjectPropsSchema,
+  httpSaveReconversionProjectSchema,
+  domainSaveReconversionProjectPropsSchema,
   ReconversionProjectSaveDto,
   ReconversionProjectSavePropsDto,
   ReconversionProjectUpdateDto,
