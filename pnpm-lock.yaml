@@ -24,8 +24,8 @@ importers:
         specifier: ^0.11.4
         version: 0.11.4
       prettier:
-        specifier: ~3.8.1
-        version: 3.8.1
+        specifier: ~3.8.3
+        version: 3.8.3
       typescript:
         specifier: ~5.9.3
         version: 5.9.3
@@ -113,10 +113,10 @@ importers:
     devDependencies:
       '@nestjs/cli':
         specifier: ~11.0.21
-        version: 11.0.21(@swc/core@1.15.26(@swc/helpers@0.5.21))(@types/node@25.6.0)(prettier@3.8.1)
+        version: 11.0.21(@swc/core@1.15.26(@swc/helpers@0.5.21))(@types/node@25.6.0)(prettier@3.8.3)
       '@nestjs/schematics':
         specifier: ~11.1.0
-        version: 11.1.0(chokidar@4.0.3)(prettier@3.8.1)(typescript@5.9.3)
+        version: 11.1.0(chokidar@4.0.3)(prettier@3.8.3)(typescript@5.9.3)
       '@nestjs/testing':
         specifier: ~11.1.19
         version: 11.1.19(@nestjs/common@11.1.19(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(@nestjs/platform-express@11.1.19)
@@ -125,7 +125,7 @@ importers:
         version: 1.15.26(@swc/helpers@0.5.21)
       '@trivago/prettier-plugin-sort-imports':
         specifier: ~6.0.2
-        version: 6.0.2(prettier@3.8.1)
+        version: 6.0.2(prettier@3.8.3)
       '@types/cookie-parser':
         specifier: ^1.4.10
         version: 1.4.10(@types/express@5.0.6)
@@ -256,7 +256,7 @@ importers:
         version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       '@trivago/prettier-plugin-sort-imports':
         specifier: ~6.0.2
-        version: 6.0.2(prettier@3.8.1)
+        version: 6.0.2(prettier@3.8.3)
       '@types/geojson':
         specifier: ~7946.0.16
         version: 7946.0.16
@@ -299,7 +299,7 @@ importers:
     devDependencies:
       '@trivago/prettier-plugin-sort-imports':
         specifier: ~6.0.2
-        version: 6.0.2(prettier@3.8.1)
+        version: 6.0.2(prettier@3.8.3)
       tsdown:
         specifier: ^0.21.8
         version: 0.21.8(typescript@5.9.3)
@@ -4219,8 +4219,8 @@ packages:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
 
-  prettier@3.8.1:
-    resolution: {integrity: sha512-UOnG6LftzbdaHZcKoPFtOcCKztrQ57WkHDeRD9t/PTQtmT0NHSeWWepj6pS0z/N7+08BHFDQVUrfmfMRcZwbMg==}
+  prettier@3.8.3:
+    resolution: {integrity: sha512-7igPTM53cGHMW8xWuVTydi2KO233VFiTNyF5hLJqpilHfmn8C8gPf+PS7dUT64YcXFbiMGZxS9pCSxL/Dxm/Jw==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -5945,13 +5945,13 @@ snapshots:
       axios: 1.15.0
       rxjs: 7.8.2
 
-  '@nestjs/cli@11.0.21(@swc/core@1.15.26(@swc/helpers@0.5.21))(@types/node@25.6.0)(prettier@3.8.1)':
+  '@nestjs/cli@11.0.21(@swc/core@1.15.26(@swc/helpers@0.5.21))(@types/node@25.6.0)(prettier@3.8.3)':
     dependencies:
       '@angular-devkit/core': 19.2.24(chokidar@4.0.3)
       '@angular-devkit/schematics': 19.2.24(chokidar@4.0.3)
       '@angular-devkit/schematics-cli': 19.2.24(@types/node@25.6.0)(chokidar@4.0.3)
       '@inquirer/prompts': 7.10.1(@types/node@25.6.0)
-      '@nestjs/schematics': 11.1.0(chokidar@4.0.3)(prettier@3.8.1)(typescript@5.9.3)
+      '@nestjs/schematics': 11.1.0(chokidar@4.0.3)(prettier@3.8.3)(typescript@5.9.3)
       ansis: 4.2.0
       chokidar: 4.0.3
       cli-table3: 0.6.5
@@ -6038,7 +6038,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@nestjs/schematics@11.1.0(chokidar@4.0.3)(prettier@3.8.1)(typescript@5.9.3)':
+  '@nestjs/schematics@11.1.0(chokidar@4.0.3)(prettier@3.8.3)(typescript@5.9.3)':
     dependencies:
       '@angular-devkit/core': 19.2.24(chokidar@4.0.3)
       '@angular-devkit/schematics': 19.2.24(chokidar@4.0.3)
@@ -6047,7 +6047,7 @@ snapshots:
       pluralize: 8.0.0
       typescript: 5.9.3
     optionalDependencies:
-      prettier: 3.8.1
+      prettier: 3.8.3
     transitivePeerDependencies:
       - chokidar
 
@@ -6634,7 +6634,7 @@ snapshots:
 
   '@tokenizer/token@0.3.0': {}
 
-  '@trivago/prettier-plugin-sort-imports@6.0.2(prettier@3.8.1)':
+  '@trivago/prettier-plugin-sort-imports@6.0.2(prettier@3.8.3)':
     dependencies:
       '@babel/generator': 7.29.1
       '@babel/parser': 7.29.2
@@ -6644,7 +6644,7 @@ snapshots:
       lodash-es: 4.18.1
       minimatch: 9.0.9
       parse-imports-exports: 0.2.4
-      prettier: 3.8.1
+      prettier: 3.8.3
     transitivePeerDependencies:
       - supports-color
 
@@ -9111,7 +9111,7 @@ snapshots:
 
   prelude-ls@1.2.1: {}
 
-  prettier@3.8.1: {}
+  prettier@3.8.3: {}
 
   pretty-format@27.5.1:
     dependencies:
