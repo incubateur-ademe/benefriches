@@ -3,3 +3,4 @@ node_modules/
 .git/
 .idea/
 coverage/
+src/libs/highcharts/index.ts
