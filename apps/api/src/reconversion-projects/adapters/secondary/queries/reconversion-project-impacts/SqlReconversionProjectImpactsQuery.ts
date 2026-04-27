@@ -39,9 +39,12 @@ export class SqlReconversionProjectImpactsQuery implements ReconversionProjectIm
         "related_site_id",
         "reinstatement_schedule_start_date",
         "reinstatement_schedule_end_date",
+        "future_operator_structure_type",
         "future_operator_name",
         "future_site_owner_name",
+        "future_site_owner_structure_type",
         "reinstatement_contract_owner_name",
+        "reinstatement_contract_owner_structure_type",
         "site_purchase_selling_price",
         "site_purchase_property_transfer_duties",
         "operations_first_year",
@@ -158,7 +161,12 @@ export class SqlReconversionProjectImpactsQuery implements ReconversionProjectIm
       conversionSchedule,
       reinstatementSchedule,
       futureOperatorName: reconversionProject.future_operator_name ?? undefined,
+      futureOperatorStructureType: reconversionProject.future_operator_structure_type ?? undefined,
       futureSiteOwnerName: reconversionProject.future_site_owner_name ?? undefined,
+      futureSiteOwnerStructureType:
+        reconversionProject.future_site_owner_structure_type ?? undefined,
+      reinstatementContractOwnerStructureType:
+        reconversionProject.reinstatement_contract_owner_structure_type ?? undefined,
       reinstatementContractOwnerName:
         reconversionProject.reinstatement_contract_owner_name ?? undefined,
       sitePurchaseTotalAmount,

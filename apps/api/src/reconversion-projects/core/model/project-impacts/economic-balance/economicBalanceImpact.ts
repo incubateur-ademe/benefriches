@@ -1,6 +1,7 @@
 import { pipe } from "rxjs";
 import {
   DevelopmentPlanInstallationExpenses,
+  DevelopmentPlanType,
   EconomicBalanceImpactResult,
   FinancialAssistanceRevenue,
   RecurringExpense,
@@ -12,6 +13,7 @@ import {
 import { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 
 type ProjectProps = {
+  developmentPlanType: DevelopmentPlanType;
   financialAssistanceRevenues?: FinancialAssistanceRevenue[];
   reinstatementCosts: ReinstatementExpense[];
   developmentPlanInstallationCosts: DevelopmentPlanInstallationExpenses[];
@@ -27,6 +29,7 @@ type ProjectProps = {
 };
 
 type ReconversionProjectInstallationCostsInput = {
+  developmentPlanType: DevelopmentPlanType;
   financialAssistanceRevenues?: FinancialAssistanceRevenue[];
   reinstatementCosts: ReinstatementExpense[];
   developmentPlanInstallationCosts: DevelopmentPlanInstallationExpenses[];
@@ -82,6 +85,7 @@ const withBuildingsResaleRevenues =
   };
 
 export const getEconomicResultsOfProjectInstallation = ({
+  developmentPlanType,
   financialAssistanceRevenues,
   reinstatementCosts,
   developmentPlanInstallationCosts,
@@ -109,7 +113,10 @@ export const getEconomicResultsOfProjectInstallation = ({
     };
   }
 
-  if (isDeveloperFutureSiteOwner && sitePurchaseTotalAmount) {
+  const shouldCountSitePurchase =
+    (developmentPlanType === "PHOTOVOLTAIC_POWER_PLANT" && isDeveloperFutureSiteOwner) ||
+    developmentPlanType === "URBAN_PROJECT";
+  if (shouldCountSitePurchase && sitePurchaseTotalAmount) {
     costDetails.sitePurchase = sitePurchaseTotalAmount;
   }
   const costs = {
@@ -175,6 +182,7 @@ export const getEconomicResultsOfProjectExploitationForDuration = (
 
 export const computeEconomicBalanceImpact = (
   {
+    developmentPlanType,
     financialAssistanceRevenues,
     reinstatementCosts,
     developmentPlanInstallationCosts,
@@ -195,6 +203,7 @@ export const computeEconomicBalanceImpact = (
     costs,
     revenues,
   } = getEconomicResultsOfProjectInstallation({
+    developmentPlanType,
     financialAssistanceRevenues,
     reinstatementCosts,
     developmentPlanInstallationCosts,

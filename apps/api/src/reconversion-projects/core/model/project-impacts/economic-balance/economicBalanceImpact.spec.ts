@@ -12,6 +12,7 @@ describe("EconomicBalance impact", () => {
     it("should return zero costs and revenues in balance when none", () => {
       expect(
         getEconomicResultsOfProjectInstallation({
+          developmentPlanType: "URBAN_PROJECT",
           financialAssistanceRevenues: [],
           reinstatementCosts: [],
           developmentPlanInstallationCosts: [],
@@ -34,6 +35,7 @@ describe("EconomicBalance impact", () => {
     it("should return all costs and revenues in balance if developer is new site owner and reinstatement cost owner", () => {
       expect(
         getEconomicResultsOfProjectInstallation({
+          developmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
           financialAssistanceRevenues: [
             { amount: 45000, source: "public_subsidies" },
             { amount: 5000, source: "other" },
@@ -85,9 +87,64 @@ describe("EconomicBalance impact", () => {
       });
     });
 
+    it("should return all costs and revenues in balance if developer is and reinstatement cost owner and is urban project", () => {
+      expect(
+        getEconomicResultsOfProjectInstallation({
+          developmentPlanType: "URBAN_PROJECT",
+          financialAssistanceRevenues: [
+            { amount: 45000, source: "public_subsidies" },
+            { amount: 5000, source: "other" },
+          ],
+          reinstatementCosts: [
+            { amount: 10000, purpose: "waste_collection" },
+            { amount: 39999, purpose: "deimpermeabilization" },
+          ],
+          developmentPlanInstallationCosts: [
+            { amount: 50000, purpose: "installation_works" },
+            { amount: 45000, purpose: "technical_studies" },
+          ],
+          sitePurchaseTotalAmount: 100000,
+          futureOperatorName: "Mairie de Blajan",
+          developmentPlanDeveloperName: "Mairie de Blajan",
+          reinstatementContractOwnerName: "Mairie de Blajan",
+        }),
+      ).toEqual({
+        total: 50000 - (49999 + 95000 + 100000),
+        costs: {
+          total: 49999 + 95000 + 100000,
+          siteReinstatement: {
+            total: 49999,
+            costs: [
+              { amount: 10000, purpose: "waste_collection" },
+              { amount: 39999, purpose: "deimpermeabilization" },
+            ],
+          },
+          developmentPlanInstallation: {
+            total: 95000,
+            costs: [
+              { amount: 50000, purpose: "installation_works" },
+              { amount: 45000, purpose: "technical_studies" },
+            ],
+          },
+          sitePurchase: 100000,
+        },
+        revenues: {
+          total: 50000,
+          financialAssistance: {
+            total: 50000,
+            revenues: [
+              { amount: 45000, source: "public_subsidies" },
+              { amount: 5000, source: "other" },
+            ],
+          },
+        },
+      });
+    });
+
     it("should not use real estate transaction in balance if developer is not the new site owner", () => {
       expect(
         getEconomicResultsOfProjectInstallation({
+          developmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
           financialAssistanceRevenues: [
             { amount: 45000, source: "public_subsidies" },
             { amount: 5000, source: "other" },
@@ -141,6 +198,7 @@ describe("EconomicBalance impact", () => {
     it("should not use reinstatement cost and financial assistance revenues in balance if developer is not the reinstatement cost owner", () => {
       expect(
         getEconomicResultsOfProjectInstallation({
+          developmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
           financialAssistanceRevenues: [
             { amount: 45000, source: "public_subsidies" },
             { amount: 5000, source: "other" },
@@ -269,6 +327,8 @@ describe("EconomicBalance impact", () => {
       expect(
         computeEconomicBalanceImpact(
           {
+            developmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
+
             reinstatementCosts: [
               { amount: 10000, purpose: "waste_collection" },
               { amount: 39999, purpose: "deimpermeabilization" },
@@ -323,6 +383,8 @@ describe("EconomicBalance impact", () => {
       expect<EconomicBalanceImpactResult>(
         computeEconomicBalanceImpact(
           {
+            developmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
+
             financialAssistanceRevenues: [
               { amount: 45000, source: "public_subsidies" },
               { amount: 5000, source: "other" },
@@ -408,6 +470,7 @@ describe("EconomicBalance impact", () => {
       expect(
         computeEconomicBalanceImpact(
           {
+            developmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
             reinstatementCosts: [
               { amount: 10000, purpose: "waste_collection" },
               { amount: 39999, purpose: "deimpermeabilization" },
@@ -450,6 +513,8 @@ describe("EconomicBalance impact", () => {
       expect(
         computeEconomicBalanceImpact(
           {
+            developmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
+
             financialAssistanceRevenues: [
               { amount: 45000, source: "public_subsidies" },
               { amount: 5000, source: "other" },

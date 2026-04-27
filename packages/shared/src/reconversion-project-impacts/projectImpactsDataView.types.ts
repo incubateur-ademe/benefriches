@@ -33,9 +33,12 @@ export type ReconversionProjectImpactsDataView<TSchedule> = {
   isExpressProject: boolean;
   conversionSchedule?: TSchedule;
   reinstatementSchedule?: TSchedule;
+  futureOperatorStructureType?: string;
   futureOperatorName?: string;
   futureSiteOwnerName?: string;
+  futureSiteOwnerStructureType?: string;
   reinstatementContractOwnerName?: string;
+  reinstatementContractOwnerStructureType?: string;
   sitePurchaseTotalAmount?: number;
   sitePurchasePropertyTransferDutiesAmount?: number;
   reinstatementExpenses: ReinstatementExpense[];
@@ -46,6 +49,7 @@ export type ReconversionProjectImpactsDataView<TSchedule> = {
     installationCosts: DevelopmentPlanInstallationExpenses[];
     installationSchedule?: TSchedule;
     developerName?: string;
+    developerStructureType: string;
   } & DevelopmentPlanFeatures;
   operationsFirstYear?: number;
   siteResaleSellingPrice?: number;

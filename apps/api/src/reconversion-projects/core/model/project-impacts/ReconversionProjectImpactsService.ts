@@ -157,6 +157,7 @@ export class ReconversionProjectImpactsService implements ImpactsServiceInterfac
   protected get economicBalance() {
     return computeEconomicBalanceImpact(
       {
+        developmentPlanType: this.reconversionProject.developmentPlanType,
         developmentPlanDeveloperName: this.reconversionProject.developmentPlanDeveloperName,
         futureOperatorName: this.reconversionProject.futureOperatorName,
         futureSiteOwnerName: this.reconversionProject.futureSiteOwnerName,

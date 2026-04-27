@@ -35,6 +35,7 @@ export class SqlSiteImpactsQuery implements SiteImpactsQuery {
         "friche_accidents_deaths",
         "owner_name",
         "owner_structure_type",
+        "tenant_structure_type",
         "tenant_name",
       )
       .where("id", siteId)
@@ -91,6 +92,7 @@ export class SqlSiteImpactsQuery implements SiteImpactsQuery {
       accidentsMinorInjuries: sqlSite.friche_accidents_minor_injuries ?? undefined,
       ownerName: sqlSite.owner_name ?? "",
       ownerStructureType: sqlSite.owner_structure_type,
+      tenantStructureType: sqlSite.tenant_structure_type ?? undefined,
       tenantName: sqlSite.tenant_name ?? undefined,
       yearlyExpenses: sqlYearlyExpenses as SiteYearlyExpense[],
       yearlyIncomes: sqlYearlyIncomes as SiteYearlyIncome[],

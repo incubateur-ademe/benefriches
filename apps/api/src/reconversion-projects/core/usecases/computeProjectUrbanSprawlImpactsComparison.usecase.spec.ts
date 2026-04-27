@@ -29,6 +29,7 @@ const projectData: ReconversionProjectImpactsDataView<Schedule> = {
       { amount: 81000, purpose: "other" },
     ],
     developerName: "Mairie de Blajan",
+    developerStructureType: "municipality",
     installationSchedule: {
       startDate: new Date("2025-06-17"),
       endDate: new Date("2026-06-17"),
@@ -121,6 +122,7 @@ const friche = {
   ownerName: "Current owner",
   ownerStructureType: "company",
   tenantName: "Current tenant",
+  tenantStructureType: "company",
   accidentsDeaths: 0,
   accidentsMinorInjuries: 1,
   accidentsSevereInjuries: 2,
@@ -751,6 +753,7 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
       reinstatementExpenses: [{ amount: 500000, purpose: "demolition" }],
       developmentPlan: {
         developerName: "Mairie de Blajan",
+        developerStructureType: "municipality",
         type: "PHOTOVOLTAIC_POWER_PLANT",
         features: {
           electricalPowerKWc: 258,

@@ -106,6 +106,7 @@ describe("SqlSiteImpactsQuery integration", () => {
         ownerStructureType: "company",
         ownerName: "Current site owner",
         tenantName: "Current tenant",
+        tenantStructureType: "company",
         yearlyExpenses: [{ amount: 100, bearer: "tenant", purpose: "rent" }],
         yearlyIncomes: [],
         isExpressSite: false,

@@ -23,6 +23,7 @@ export type SiteImpactsDataView = {
   contaminatedSoilSurface?: number;
   ownerStructureType: string;
   ownerName: string;
+  tenantStructureType?: string;
   tenantName?: string;
   surfaceArea: number;
   soilsDistribution: SoilsDistribution;

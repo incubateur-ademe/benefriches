@@ -165,6 +165,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         },
         type: "PHOTOVOLTAIC_POWER_PLANT",
         developerName: "Mairie de Blajan",
+        developerStructureType: "municipality",
       },
       financialAssistanceRevenues: [{ amount: 150000, source: "public_subsidies" }],
       yearlyProjectedExpenses: [
@@ -207,6 +208,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       ownerName: "Current owner",
       ownerStructureType: "company",
       tenantName: "Current tenant",
+      tenantStructureType: "company",
       accidentsDeaths: 0,
       accidentsMinorInjuries: 1,
       accidentsSevereInjuries: 2,
@@ -606,6 +608,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       reinstatementExpenses: [{ amount: 500000, purpose: "demolition" }],
       developmentPlan: {
         developerName: "Mairie de Blajan",
+        developerStructureType: "municipality",
         type: "PHOTOVOLTAIC_POWER_PLANT",
         features: {
           electricalPowerKWc: 258,
