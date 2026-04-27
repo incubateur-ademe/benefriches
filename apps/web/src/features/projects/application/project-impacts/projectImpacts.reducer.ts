@@ -1,12 +1,18 @@
 import { createReducer, createSelector, isAnyOf, PayloadAction } from "@reduxjs/toolkit";
-import { FricheActivity, SiteNature, SoilsDistribution } from "shared";
+import {
+  FricheActivity,
+  ReconversionProjectImpactsBreakEvenLevel,
+  SiteNature,
+  SoilsDistribution,
+  sumListWithKey,
+} from "shared";
 
 import { RootState } from "@/app/store/store";
 import { selectAppSettings } from "@/features/app-settings/core/appSettings";
 
 import { ProjectDevelopmentPlanType } from "../../domain/projects.types";
 import { ModalDataProps } from "../../views/project-page/impacts/impact-description-modals/ImpactModalDescription";
-import { viewModeUpdated } from "./actions";
+import { reconversionProjectImpactsBreakEvenLevelRequested, viewModeUpdated } from "./actions";
 import {
   evaluationPeriodUpdated,
   reconversionProjectImpactsRequested,
@@ -58,6 +64,7 @@ export type ProjectImpactsState = {
     };
   };
   impactsData?: ReconversionProjectImpactsResult["impacts"];
+  betaImpactsData?: ReconversionProjectImpactsBreakEvenLevel;
   evaluationPeriod: number | undefined;
   currentViewMode: ViewMode;
 };
@@ -88,6 +95,19 @@ export const projectImpactsReducer = createReducer(getInitialState(), (builder) 
   builder.addCase(reconversionProjectImpactsRequested.rejected, (state) => {
     state.dataLoadingState = "error";
   });
+
+  /* fetch reconversion project impacts break even level */
+  builder.addCase(reconversionProjectImpactsBreakEvenLevelRequested.pending, (state) => {
+    state.dataLoadingState = "loading";
+  });
+  builder.addCase(reconversionProjectImpactsBreakEvenLevelRequested.rejected, (state) => {
+    state.dataLoadingState = "error";
+  });
+  builder.addCase(reconversionProjectImpactsBreakEvenLevelRequested.fulfilled, (state, action) => {
+    state.dataLoadingState = "success";
+    state.betaImpactsData = action.payload;
+  });
+
   /* fetch quick impacts for urban project on friche */
   builder.addCase(fetchQuickImpactsForUrbanProjectOnFriche.pending, (state) => {
     state.dataLoadingState = "loading";
@@ -174,4 +194,52 @@ export const selectModalData = createSelector(
     siteData: state.relatedSiteData!,
     impactsData: state.impactsData!,
   }),
+);
+
+const selectBreakEvenLevel = (state: RootState) => state.projectImpacts.betaImpactsData;
+
+const selectEvaluationPeriodInYears = (state: RootState) => state.projectImpacts.evaluationPeriod;
+
+export const selectBreakEvenLevelByEvaluationPeriod = createSelector(
+  [selectBreakEvenLevel, selectEvaluationPeriodInYears],
+  (
+    breakEvenLevel,
+    evaluationPeriodInYears,
+  ): ReconversionProjectImpactsBreakEvenLevel | undefined => {
+    if (!breakEvenLevel) {
+      return breakEvenLevel;
+    }
+    const cropAndSum = <T extends { total: number }>(
+      details: T[],
+    ): { total: number; details: T[] } => {
+      const croppedDetails = details.slice(0, evaluationPeriodInYears);
+      return {
+        total: sumListWithKey(croppedDetails, "total"),
+        details: croppedDetails,
+      };
+    };
+
+    const croppedProjectionYears = breakEvenLevel?.projectionYears.slice(
+      0,
+      evaluationPeriodInYears,
+    );
+
+    const croppedCumulativeBalanceByYear = breakEvenLevel?.cumulativeBalanceByYear.slice(
+      0,
+      evaluationPeriodInYears,
+    );
+
+    const croppedEconomicBalance = cropAndSum(breakEvenLevel?.economicBalance.details);
+    const croppedIndirectEconomicImpacts = cropAndSum(
+      breakEvenLevel?.indirectEconomicImpacts.details,
+    );
+
+    return {
+      ...breakEvenLevel,
+      projectionYears: croppedProjectionYears,
+      cumulativeBalanceByYear: croppedCumulativeBalanceByYear,
+      economicBalance: croppedEconomicBalance,
+      indirectEconomicImpacts: croppedIndirectEconomicImpacts,
+    };
+  },
 );

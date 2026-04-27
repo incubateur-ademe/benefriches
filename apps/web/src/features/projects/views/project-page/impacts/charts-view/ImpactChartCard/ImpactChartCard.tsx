@@ -13,7 +13,7 @@ type ChartCardProps = {
   title: string;
   subtitle?: string;
   options: HighchartsReact.Props["options"];
-  dialogId: string;
+  dialogId?: string;
   containerProps?: {
     className?: ClassValue;
     id?: string;
@@ -72,18 +72,20 @@ const ImpactChartCard = ({
         </div>
 
         <div className="flex">
-          <Button
-            title="Menu"
-            priority="tertiary no outline"
-            iconId="fr-icon-information-line"
-            className="text-text-light"
-            aria-controls={dialogId}
-            data-fr-opened="false"
-            ref={buttonControlsDialogRef}
-            onClick={(e) => {
-              e.stopPropagation();
-            }}
-          />
+          {dialogId && (
+            <Button
+              title="Menu"
+              priority="tertiary no outline"
+              iconId="fr-icon-information-line"
+              className="text-text-light"
+              aria-controls={dialogId}
+              data-fr-opened="false"
+              ref={buttonControlsDialogRef}
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            />
+          )}
           <Menu>
             <MenuButton as={Fragment}>
               <Button

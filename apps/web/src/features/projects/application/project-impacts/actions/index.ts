@@ -1,5 +1,11 @@
 import { createAction } from "@reduxjs/toolkit";
-import { FricheActivity, ReconversionProjectImpacts, SiteNature, SoilsDistribution } from "shared";
+import {
+  FricheActivity,
+  ReconversionProjectImpacts,
+  ReconversionProjectImpactsBreakEvenLevel,
+  SiteNature,
+  SoilsDistribution,
+} from "shared";
 
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
 
@@ -20,6 +26,9 @@ export interface ReconversionProjectImpactsGateway {
     reconversionProjectId: string,
     evaluationPeriodInYears?: number,
   ): Promise<ReconversionProjectImpactsResult>;
+  getReconversionProjectImpactsBreakEvenLevel(
+    reconversionProjectId: string,
+  ): Promise<ReconversionProjectImpactsBreakEvenLevel>;
 }
 
 export type ReconversionProjectImpactsResult = {
@@ -85,6 +94,18 @@ export const evaluationPeriodUpdated = createAppAsyncThunk<
       projectImpacts.projectData?.id ?? "",
       evaluationPeriodInYears,
     );
+    return data;
+  },
+);
+
+export const reconversionProjectImpactsBreakEvenLevelRequested = createAppAsyncThunk<
+  ReconversionProjectImpactsBreakEvenLevel,
+  { projectId: string }
+>(
+  createProjectImpactsActionName("reconversionProjectImpactsBreakEvenLevelRequested"),
+  async ({ projectId }, { extra }) => {
+    const data =
+      await extra.reconversionProjectImpacts.getReconversionProjectImpactsBreakEvenLevel(projectId);
     return data;
   },
 );

@@ -9,9 +9,9 @@ import {
   SoilsDistribution,
   SoilType,
   UrbanZoneType,
+  type OwnerStructureType,
+  type TenantStructureType,
 } from "shared";
-
-import { OwnerStructureType, TenantStructureType } from "@/shared/core/stakeholder";
 
 export type SiteCreationData = {
   id: string;

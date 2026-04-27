@@ -19,6 +19,13 @@ const ProjectPageTabs = () => {
           linkProps={routes.projectImpacts(route.params).link}
         />
         <TabItem
+          isActive={route.name === routes.projectImpactsBreakEvenLevel.name}
+          iconId="fr-icon-money-euro-box-line"
+          label="Analyse coût-bénéfice"
+          beta
+          linkProps={routes.projectImpactsBreakEvenLevel(route.params).link}
+        />
+        <TabItem
           isActive={route.name === routes.urbanSprawlImpactsComparison.name}
           iconId="fr-icon-scales-3-line"
           label="Comparaison des impacts"

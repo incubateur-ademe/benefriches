@@ -1,5 +1,6 @@
-import { LOCAL_AUTHORITIES } from "shared";
 import z from "zod";
+
+import { LOCAL_AUTHORITIES } from "../local-authority";
 
 const siteStakeholdersStructureTypeSchema = z.enum([
   "company",

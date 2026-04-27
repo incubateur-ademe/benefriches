@@ -1,6 +1,9 @@
-import { getSiteFeaturesResponseDtoSchema, type GetSiteFeaturesResponseDto } from "shared";
-
-import type { OwnerStructureType, TenantStructureType } from "@/shared/core/stakeholder";
+import {
+  getSiteFeaturesResponseDtoSchema,
+  type GetSiteFeaturesResponseDto,
+  type OwnerStructureType,
+  type TenantStructureType,
+} from "shared";
 
 import { GetSitesByIdGateway } from "../../core/actions/reconversionProjectCreationInitiated.action";
 import { ProjectSite } from "../../core/project.types";

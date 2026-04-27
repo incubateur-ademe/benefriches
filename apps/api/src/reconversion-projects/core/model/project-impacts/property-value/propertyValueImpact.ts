@@ -1,4 +1,4 @@
-import { TRANSFER_TAX_PERCENT_PER_TRANSACTION } from "shared";
+import { roundToInteger, sumList, TRANSFER_TAX_PERCENT_PER_TRANSACTION } from "shared";
 
 import { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import { InfluenceAreaService } from "../influence-area-service/InfluenceAreaService";
@@ -74,14 +74,24 @@ export const computePropertyValueImpact = (
     TRANSFER_TAX_PERCENT_PER_TRANSACTION *
     (1 - SOCIAL_HOUSING_SHARE);
 
-  return {
-    propertyValueIncrease: sumOnEvolutionPeriodService.sumWithDiscountFactor(
-      propertyValueIncreaseForOneYear,
-      { startYearIndex: 1, endYearIndex: 6 },
-    ),
-    propertyTransferDutiesIncrease: sumOnEvolutionPeriodService.sumWithDiscountFactor(
+  const propertyValueIncreaseDetailsByYear = sumOnEvolutionPeriodService.getWeightedYearlyValues(
+    propertyValueIncreaseForOneYear,
+    ["discount"],
+    { startYearIndex: 1, endYearIndex: 6 },
+  );
+  const propertyTransferDutiesIncreaseDetailsByYear =
+    sumOnEvolutionPeriodService.getWeightedYearlyValues(
       propertyTransferDutiesIncreaseForOneYear,
+      ["discount"],
       { startYearIndex: 1, endYearIndex: 34 },
+    );
+
+  return {
+    propertyValueIncrease: roundToInteger(sumList(propertyValueIncreaseDetailsByYear)),
+    propertyValueIncreaseDetailsByYear,
+    propertyTransferDutiesIncrease: roundToInteger(
+      sumList(propertyTransferDutiesIncreaseDetailsByYear),
     ),
+    propertyTransferDutiesIncreaseDetailsByYear,
   };
 };

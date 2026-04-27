@@ -1,11 +1,15 @@
-import { formatLocalAuthorityName, LocalAuthority } from "shared";
+import {
+  formatLocalAuthorityName,
+  LocalAuthority,
+  type OwnerStructureType,
+  type TenantStructureType,
+} from "shared";
 
 import {
   ProjectStakeholder,
   ProjectStakeholderStructure,
 } from "@/features/create-project/core/project.types";
 import { UserStructureActivity, UserStructureType } from "@/features/onboarding/core/user";
-import { OwnerStructureType, TenantStructureType } from "@/shared/core/stakeholder";
 
 import { ProjectFormState } from "../projectForm.reducer";
 

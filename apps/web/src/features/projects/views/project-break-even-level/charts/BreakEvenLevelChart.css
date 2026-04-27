@@ -1,0 +1,59 @@
+#container {
+  height: 400px;
+}
+.breakeven-graph .highcharts-grid-line {
+  stroke-width: 0;
+}
+/* Zone : bleu clair avec ligne visible */
+.highcharts-area {
+  fill: #7dd3f0;
+  fill-opacity: 0.5;
+}
+
+.breakeven-graph .highcharts-graph {
+  stroke: #0ea5e9;
+  stroke-width: 2px;
+}
+
+/* Ligne pointillée breakeven */
+.highcharts-plot-line.breakeven-plotline {
+  stroke: #1a3a5c;
+  stroke-width: 1px;
+  stroke-dasharray: 4px, 4px;
+}
+
+/* Marqueur rond sur la courbe */
+.breakeven-marker,
+.highcharts-a11y-marker-visible {
+  stroke: #1a3a5c;
+  fill: #1a3a5c;
+  stroke-width: 10;
+}
+
+/* Badge année */
+.breakeven-badge {
+  background: white;
+  border: 2px solid #e0e8f0;
+  border-radius: 10px;
+  padding: 6px 12px;
+  font-weight: bold;
+  font-size: 14px;
+  color: #1a3a5c;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
+}
+
+.breakeven-badge__check {
+  background: #3ab0e0;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 12px;
+}

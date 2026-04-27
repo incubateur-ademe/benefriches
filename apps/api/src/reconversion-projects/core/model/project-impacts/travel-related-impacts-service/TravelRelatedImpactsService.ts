@@ -3,6 +3,7 @@ import {
   roundTo2Digits,
   roundToInteger,
   SocioEconomicImpact,
+  sumList,
 } from "shared";
 
 import { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
@@ -74,23 +75,18 @@ export class TravelRelatedImpactsService extends YearlyTravelRelatedImpacts {
     return roundTo2Digits(
       this.sumOnEvolutionPeriodService.sumWithCO2EqEmittedPerVehiculeKilometerEvolution(
         this.avoidedKilometersPerVehiculePerYear,
-      ) / 1000000,
+      ),
     );
   }
 
   getAvoidedTrafficCO2EmissionsMonetaryValue() {
-    return this.sumOnEvolutionPeriodService.sumWithCustomFn(
+    return roundToInteger(sumList(this.getAvoidedTrafficCO2EmissionsMonetaryValueDetailsByYear()));
+  }
+
+  getAvoidedTrafficCO2EmissionsMonetaryValueDetailsByYear() {
+    return this.sumOnEvolutionPeriodService.getWeightedYearlyValues(
       this.avoidedKilometersPerVehiculePerYear,
-      (value, yearIndex, { operationsFirstYear }) => {
-        const year = operationsFirstYear + yearIndex;
-        const avoidedCo2EqForYearInGrams =
-          value * SumOnEvolutionPeriodService.getYearCO2EqEmittedPerVehiculeKilometerValue(year);
-        return (
-          (avoidedCo2EqForYearInGrams / 1000000) *
-          SumOnEvolutionPeriodService.getYearCO2MonetaryValue(year) *
-          SumOnEvolutionPeriodService.getDiscountFactor(yearIndex)
-        );
-      },
+      ["co2_emitted_per_vehicule", "co2_value", "discount"],
     );
   }
 

@@ -117,19 +117,18 @@ describe("SumOnEvolutionPeriodService", () => {
       evaluationPeriodInYears: 50,
       operationsFirstYear: 2025,
     });
-    expect(service.sumWithCO2EqEmittedPerVehiculeKilometerEvolution(190000)).toEqual(930403742);
+    expect(service.sumWithCO2EqEmittedPerVehiculeKilometerEvolution(190000)).toEqual(930);
   });
 
-  it("returns value actualised with custom function for 50 years", () => {
+  it("returns array of values actualised with discount rate for 10 years", () => {
     const service = new SumOnEvolutionPeriodService({
-      evaluationPeriodInYears: 50,
+      evaluationPeriodInYears: 10,
       operationsFirstYear: 2025,
     });
-    expect(
-      service.sumWithCustomFn(10, (value, yearIndex, { operationsFirstYear }) => {
-        return value + operationsFirstYear + yearIndex;
-      }),
-    ).toEqual(102975);
+    const values = service.getWeightedYearlyValues(190000, ["discount"]);
+    expect(values[0]).toEqual(190000);
+    expect(values.length).toEqual(10);
+    expect(values.toSorted((a, b) => b - a)).toEqual(values);
   });
 
   it("should replace evaluationPeriodInYears by max or min value if wrong value is passed to service", () => {

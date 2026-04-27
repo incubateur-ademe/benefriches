@@ -333,4 +333,36 @@ export class YearlyTravelRelatedImpacts extends InfluenceAreaService {
       this.avoidedAccidentsSevereInjuriesExpensesPerYear
     );
   }
+
+  getAvoidedPropertyDamageExpensesPerYear() {
+    return this.avoidedPropertyDamageExpensesPerYear;
+  }
+
+  getAvoidedCarRelatedExpensesPerYear() {
+    return this.avoidedKilometersPerVehiculeExpensesPerYear;
+  }
+
+  getTravelTimeSavedPerTravelerExpensesPerYear() {
+    return this.travelTimeAvoidedCostsPerTravelerPerYear;
+  }
+
+  getAvoidedTrafficCO2EmissionsInTonsPerYear() {
+    return this.avoidedKilometersPerVehiculePerYear;
+  }
+
+  getAvoidedAirPollutionHealthExpensesPerYear() {
+    return this.avoidedAirPollutionHealthExpensesPerYear;
+  }
+
+  getAvoidedAccidentsMinorInjuriesExpensesPerYear() {
+    return this.avoidedAccidentsMinorInjuriesExpensesPerYear;
+  }
+
+  getAvoidedAccidentsSevereInjuriesExpensesPerYear() {
+    return this.avoidedAccidentsSevereInjuriesExpensesPerYear;
+  }
+
+  getAvoidedAccidentsDeathsExpensesPerYear() {
+    return this.avoidedAccidentsDeathsExpensesPerYear;
+  }
 }

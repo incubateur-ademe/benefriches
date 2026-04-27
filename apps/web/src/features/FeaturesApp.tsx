@@ -83,6 +83,7 @@ function FeaturesApp() {
             case routes.projectImpacts.name:
             case routes.projectFeatures.name:
             case routes.urbanSprawlImpactsComparison.name:
+            case routes.projectImpactsBreakEvenLevel.name:
               return "Mon projet d'aménagement";
             default:
               return undefined;
@@ -113,6 +114,7 @@ function FeaturesApp() {
               case routes.projectImpacts.name:
               case routes.projectFeatures.name:
               case routes.urbanSprawlImpactsComparison.name:
+              case routes.projectImpactsBreakEvenLevel.name:
                 return <ProjectPage projectId={route.params.projectId} />;
               case routes.projectImpactsOnboarding.name:
                 return (

@@ -103,7 +103,7 @@ describe("TravelRelatedImpactsService", () => {
       },
     ]);
     expect(travelRelatedImpactsService.getAvoidedTrafficCO2Emissions()).toEqual({
-      inTons: 239.78,
+      inTons: 240,
       monetaryValue: 45308,
     });
     expect(travelRelatedImpactsService.getTravelTimeSavedPerTraveler()).toEqual(79000.75);

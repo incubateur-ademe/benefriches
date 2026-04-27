@@ -93,6 +93,10 @@ const { RouteProvider, useRoute, routes, session } = createRouter({
     (params) => `/mes-projets/${params.projectId}/modifier`,
   ),
   // PROJECT IMPACTS
+  projectImpactsBreakEvenLevel: defineRoute(
+    { projectId: param.path.string },
+    (params) => `/mes-projets/${params.projectId}/analyse-couts-benefices`,
+  ),
   projectImpacts: defineRoute(
     { projectId: param.path.string },
     (params) => `/mes-projets/${params.projectId}/impacts`,

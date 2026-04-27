@@ -233,6 +233,20 @@ export class NatureConservationImpactsService {
       this.sumOnEvolutionPeriodService.sumWithDiscountFactorAndGDPEvolution(value);
   }
 
+  getAll() {
+    return {
+      storedCo2Eq: this.storedCo2Eq,
+      natureRelatedWelnessAndLeisure: this.natureRelatedWelnessAndLeisure,
+      forestRelatedProduct: this.forestRelatedProduct,
+      pollination: this.pollination,
+      invasiveSpeciesRegulation: this.invasiveSpeciesRegulation,
+      waterCycle: this.waterCycle,
+      nitrogenCycle: this.nitrogenCycle,
+      soilErosion: this.soilErosion,
+      waterRegulation: this.waterRegulation,
+    };
+  }
+
   getEcosystemServicesMonetaryImpact() {
     return {
       storedCo2Eq: this.storedCo2Eq.computeTotal(),

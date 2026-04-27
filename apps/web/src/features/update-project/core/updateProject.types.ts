@@ -5,10 +5,10 @@ import {
   siteNatureSchema,
   soilTypeSchema,
   surfaceAreaSchema,
+  siteOwnerSchema,
+  siteTenantSchema,
 } from "shared";
 import z from "zod";
-
-import { siteOwnerSchema, siteTenantSchema } from "@/shared/core/stakeholder";
 
 const siteViewSchema = z.object({
   id: z.string(),

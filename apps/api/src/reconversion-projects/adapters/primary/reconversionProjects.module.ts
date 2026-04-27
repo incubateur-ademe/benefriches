@@ -12,6 +12,7 @@ import { PhotovoltaicDataProvider } from "src/photovoltaic-performance/core/gate
 import { ReconversionProjectRepository } from "src/reconversion-projects/core/gateways/ReconversionProjectRepository";
 import { ArchiveReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/archiveReconversionProject.usecase";
 import { ComputeProjectUrbanSprawlImpactsComparisonUseCase } from "src/reconversion-projects/core/usecases/computeProjectUrbanSprawlImpactsComparison.usecase";
+import { ComputeReconversionProjectBreakEvenLevelUseCase } from "src/reconversion-projects/core/usecases/computeReconversionProjectBreakEvenLevel.usecase";
 import { ComputeReconversionProjectImpactsUseCase } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
 import {
   CreateReconversionProjectUseCase,
@@ -167,6 +168,31 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
         SqlSiteImpactsQuery,
         SqlCityStatsQuery,
         GetCarbonStorageFromSoilDistributionService,
+        RealDateProvider,
+      ],
+    },
+    {
+      provide: ComputeReconversionProjectBreakEvenLevelUseCase,
+      useFactory(
+        reconversionProjectRepo: SqlReconversionProjectImpactsQuery,
+        siteRepo: SqlSiteImpactsQuery,
+        getCarbonStorageFromSoilDistribution: GetCarbonStorageFromSoilDistributionService,
+        cityStatsRepo: SqlCityStatsQuery,
+        dateProvider: DateProvider,
+      ) {
+        return new ComputeReconversionProjectBreakEvenLevelUseCase(
+          reconversionProjectRepo,
+          siteRepo,
+          getCarbonStorageFromSoilDistribution,
+          cityStatsRepo,
+          dateProvider,
+        );
+      },
+      inject: [
+        SqlReconversionProjectImpactsQuery,
+        SqlSiteImpactsQuery,
+        GetCarbonStorageFromSoilDistributionService,
+        SqlCityStatsQuery,
         RealDateProvider,
       ],
     },

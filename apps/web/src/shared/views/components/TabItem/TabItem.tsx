@@ -3,15 +3,17 @@ import { Link } from "type-route";
 
 import classNames from "../../clsx";
 import { useIsSmallScreen } from "../../hooks/useIsSmallScreen";
+import Badge from "../Badge/Badge";
 
 type TabItemProps = {
   isActive: boolean;
   label: string;
   linkProps: Link;
   iconId: FrIconClassName;
+  beta?: boolean;
 };
 
-function TabItem({ isActive, iconId, label, linkProps }: TabItemProps) {
+function TabItem({ isActive, iconId, label, beta, linkProps }: TabItemProps) {
   const isSmallScreen = useIsSmallScreen();
   return (
     <li
@@ -35,6 +37,11 @@ function TabItem({ isActive, iconId, label, linkProps }: TabItemProps) {
           aria-hidden="true"
         />
         {!isSmallScreen && label}
+        {beta && (
+          <Badge small style="green-tilleul">
+            bêta
+          </Badge>
+        )}
       </a>
     </li>
   );

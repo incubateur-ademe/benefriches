@@ -26,6 +26,7 @@ import { formatReconversionProjectInputToFeatures } from "src/reconversion-proje
 import { ReconversionProjectFeaturesView } from "src/reconversion-projects/core/model/reconversionProject";
 import { ArchiveReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/archiveReconversionProject.usecase";
 import { ComputeProjectUrbanSprawlImpactsComparisonUseCase } from "src/reconversion-projects/core/usecases/computeProjectUrbanSprawlImpactsComparison.usecase";
+import { ComputeReconversionProjectBreakEvenLevelUseCase } from "src/reconversion-projects/core/usecases/computeReconversionProjectBreakEvenLevel.usecase";
 import { ComputeReconversionProjectImpactsUseCase } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
 import { CreateReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/createReconversionProject.usecase";
 import { DuplicateReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/duplicateReconversionProject.usecase";
@@ -89,6 +90,7 @@ export class ReconversionProjectController {
     private readonly getReconversionProjectUseCase: GetReconversionProjectUseCase,
     private readonly getReconversionProjectsBySite: GetUserReconversionProjectsBySiteUseCase,
     private readonly getReconversionProjectImpactsUseCase: ComputeReconversionProjectImpactsUseCase,
+    private readonly getReconversionProjectImpactsBreakEvenLevelUseCase: ComputeReconversionProjectBreakEvenLevelUseCase,
     private readonly generateReconversionProjectFromTemplateUseCase: GenerateReconversionProjectFromTemplateUseCase,
     private readonly generateAndSaveReconversionProjectFromTemplateUseCase: GenerateAndSaveReconversionProjectFromTemplateUseCase,
     private readonly getReconversionProjectFeaturesUseCase: GetReconversionProjectFeaturesUseCase,
@@ -247,6 +249,27 @@ export class ReconversionProjectController {
     const result = await this.getReconversionProjectImpactsUseCase.execute({
       reconversionProjectId,
       evaluationPeriodInYears,
+    });
+
+    if (result.isFailure()) {
+      const error = result.getError();
+      switch (error) {
+        case "ReconversionProjectNotFound":
+        case "SiteNotFound":
+        case "NoDevelopmentPlanType":
+          throw new NotFoundException(error);
+      }
+    }
+    return result.getData();
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get(":reconversionProjectId/impacts/break-even-level")
+  async getProjectImpactsBreakEvenLevel(
+    @Param("reconversionProjectId") reconversionProjectId: string,
+  ) {
+    const result = await this.getReconversionProjectImpactsBreakEvenLevelUseCase.execute({
+      reconversionProjectId,
     });
 
     if (result.isFailure()) {

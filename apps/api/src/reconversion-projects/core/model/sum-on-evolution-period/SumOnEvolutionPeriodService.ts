@@ -103,78 +103,63 @@ export class SumOnEvolutionPeriodService {
     options?: { startYearIndex?: number; endYearIndex?: number },
   ) {
     return roundToInteger(
-      sumList(
-        Array(this.evaluationPeriodInYears)
-          .fill(firstYearValue, options?.startYearIndex, options?.endYearIndex)
-          .map(
-            (value, yearIndex) => value * SumOnEvolutionPeriodService.getDiscountFactor(yearIndex),
-          ),
-      ),
+      sumList(this.getWeightedYearlyValues(firstYearValue, ["discount"], options)),
     );
   }
 
   sumWithDiscountFactorAndGDPEvolution(firstYearValue: number) {
     return roundToInteger(
-      sumList(
-        Array(this.evaluationPeriodInYears)
-          .fill(firstYearValue)
-          .map(
-            (value, yearIndex) =>
-              value *
-              SumOnEvolutionPeriodService.getDiscountFactor(yearIndex) *
-              SumOnEvolutionPeriodService.getYearGrossDomesticProductPerCapitaEvolution(
-                this.operationsFirstYear + yearIndex,
-              ),
-          ),
-      ),
+      sumList(this.getWeightedYearlyValues(firstYearValue, ["discount", "gdp_evolution"])),
     );
   }
 
   sumWithDiscountFactorAndCO2ValueEvolution(firstYearValue: number) {
     return roundToInteger(
-      sumList(
-        Array(this.evaluationPeriodInYears)
-          .fill(firstYearValue)
-          .map(
-            (value, yearIndex) =>
-              value *
-              SumOnEvolutionPeriodService.getDiscountFactor(yearIndex) *
-              SumOnEvolutionPeriodService.getYearCO2MonetaryValue(
-                this.operationsFirstYear + yearIndex,
-              ),
-          ),
-      ),
+      sumList(this.getWeightedYearlyValues(firstYearValue, ["discount", "co2_value"])),
     );
   }
 
   sumWithCO2EqEmittedPerVehiculeKilometerEvolution(firstYearValue: number) {
     return roundToInteger(
-      sumList(
-        Array(this.evaluationPeriodInYears)
-          .fill(firstYearValue)
-          .map(
-            (value, yearIndex) =>
-              value *
-              SumOnEvolutionPeriodService.getYearCO2EqEmittedPerVehiculeKilometerValue(
-                this.operationsFirstYear + yearIndex,
-              ),
-          ),
-      ),
+      sumList(this.getWeightedYearlyValues(firstYearValue, ["co2_emitted_per_vehicule"])),
     );
   }
 
-  sumWithCustomFn(
+  getWeightedYearlyValues(
     firstYearValue: number,
-    customFn: (value: number, index: number, context: { operationsFirstYear: number }) => number,
+    factors: ("discount" | "gdp_evolution" | "co2_value" | "co2_emitted_per_vehicule")[],
+    options?: { startYearIndex?: number; endYearIndex?: number },
   ) {
-    return roundToInteger(
-      sumList(
-        Array(this.evaluationPeriodInYears)
-          .fill(firstYearValue)
-          .map((value: number, yearIndex: number) =>
-            customFn(value, yearIndex, { operationsFirstYear: this.operationsFirstYear }),
-          ),
-      ),
-    );
+    return Array(this.evaluationPeriodInYears)
+      .fill(0)
+      .fill(firstYearValue, options?.startYearIndex, options?.endYearIndex)
+      .map((value: number, yearIndex: number) => {
+        const absoluteYear = this.operationsFirstYear + yearIndex;
+        const coefficient = factors.reduce((tmpCoeff, factor) => {
+          switch (factor) {
+            case "discount":
+              return tmpCoeff * SumOnEvolutionPeriodService.getDiscountFactor(yearIndex);
+            case "co2_value":
+              return tmpCoeff * SumOnEvolutionPeriodService.getYearCO2MonetaryValue(absoluteYear);
+            case "gdp_evolution":
+              return (
+                tmpCoeff *
+                SumOnEvolutionPeriodService.getYearGrossDomesticProductPerCapitaEvolution(
+                  absoluteYear,
+                )
+              );
+
+            case "co2_emitted_per_vehicule":
+              return (
+                (tmpCoeff *
+                  SumOnEvolutionPeriodService.getYearCO2EqEmittedPerVehiculeKilometerValue(
+                    absoluteYear,
+                  )) /
+                1000000
+              );
+          }
+        }, 1);
+        return value * coefficient;
+      });
   }
 }
