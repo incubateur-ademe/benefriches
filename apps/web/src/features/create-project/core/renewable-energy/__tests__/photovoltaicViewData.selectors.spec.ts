@@ -157,17 +157,9 @@ describe("Photovoltaic ViewData selectors", () => {
   });
 
   describe("selectPVReinstatementExpensesViewData", () => {
-    it("returns soils distributions, decontaminated surface area and reinstatement expenses", () => {
+    it("returns decontaminated surface area and reinstatement expenses", () => {
       const viewData = selectPVReinstatementExpensesViewData(MOCK_STATE);
       expect(viewData).toEqual({
-        siteSoilsDistribution: siteData.soilsDistribution,
-        projectSoilsDistribution: {
-          BUILDINGS: 3000,
-          ARTIFICIAL_TREE_FILLED: 5000,
-          FOREST_MIXED: 60000,
-          MINERAL_SOIL: 5000,
-          IMPERMEABLE_SOILS: 1300,
-        },
         decontaminatedSurfaceArea: 1000,
         reinstatementExpenses: [{ amount: 34500, purpose: "demolition" }],
       });
