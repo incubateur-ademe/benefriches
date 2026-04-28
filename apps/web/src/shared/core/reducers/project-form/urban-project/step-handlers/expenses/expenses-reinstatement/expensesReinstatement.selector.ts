@@ -19,10 +19,11 @@ export const createSelectReinstatementExpensesViewData = (
   createSelector(
     [selectStepState, selectSiteSoilsDistribution],
     (steps, siteSoilsDistribution): ReinstatementExpensesViewData => ({
-      reinstatementExpenses: ReadStateHelper.getStepAnswers(
-        steps,
-        "URBAN_PROJECT_EXPENSES_REINSTATEMENT",
-      )?.reinstatementExpenses,
+      reinstatementExpenses:
+        ReadStateHelper.getStepAnswers(steps, "URBAN_PROJECT_EXPENSES_REINSTATEMENT")
+          ?.reinstatementExpenses ??
+        ReadStateHelper.getDefaultAnswers(steps, "URBAN_PROJECT_EXPENSES_REINSTATEMENT")
+          ?.reinstatementExpenses,
       decontaminatedSurfaceArea: ReadStateHelper.getStepAnswers(
         steps,
         "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA",
