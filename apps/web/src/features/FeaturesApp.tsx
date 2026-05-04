@@ -80,6 +80,7 @@ function FeaturesApp() {
       headerProps={{
         title: (() => {
           switch (route.name) {
+            case routes.projectImpactsSummary.name:
             case routes.projectImpacts.name:
             case routes.projectFeatures.name:
             case routes.urbanSprawlImpactsComparison.name:
@@ -115,6 +116,7 @@ function FeaturesApp() {
               case routes.projectFeatures.name:
               case routes.urbanSprawlImpactsComparison.name:
               case routes.projectImpactsBreakEvenLevel.name:
+              case routes.projectImpactsSummary.name:
                 return <ProjectPage projectId={route.params.projectId} />;
               case routes.projectImpactsOnboarding.name:
                 return (

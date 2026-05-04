@@ -1,13 +1,14 @@
 import { Route } from "type-route";
 
-import { routes, useRoute } from "@/app/router.ts";
+import { routes, useRoute } from "@/app/router";
 import classNames from "@/shared/views/clsx";
 
 import ProjectBreakEvenLevelTabContainer from "../project-break-even-level";
 import ProjectImpactsUrbanSprawlImpactsComparisonView from "../project-impacts-urban-sprawl-comparison";
-import ProjectFeaturesView from "./features/index.tsx";
-import ProjectPageTabs from "./header/ProjectPageTabs.tsx";
-import ProjectPageHeader from "./header/index.tsx";
+import ProjectSummaryTab from "../project-summary/";
+import ProjectFeaturesView from "./features/index";
+import ProjectPageHeader from "./header/";
+import ProjectPageTabs from "./header/ProjectPageTabs";
 import ProjectImpactsView from "./impacts";
 
 type Props = {
@@ -15,6 +16,7 @@ type Props = {
 };
 
 export type ProjectRoute =
+  | Route<typeof routes.projectImpactsSummary>
   | Route<typeof routes.projectImpacts>
   | Route<typeof routes.projectFeatures>
   | Route<typeof routes.projectImpactsBreakEvenLevel>
@@ -43,6 +45,8 @@ function ProjectPage({ projectId }: Props) {
               return <ProjectImpactsUrbanSprawlImpactsComparisonView projectId={projectId} />;
             case "projectImpactsBreakEvenLevel":
               return <ProjectBreakEvenLevelTabContainer projectId={projectId} />;
+            case "projectImpactsSummary":
+              return <ProjectSummaryTab projectId={projectId} />;
           }
         })()}
       </div>

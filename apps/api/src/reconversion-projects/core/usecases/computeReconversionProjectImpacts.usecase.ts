@@ -64,6 +64,8 @@ export type ComputedImpacts = {
   };
   siteData: {
     addressLabel: string;
+    addressLat?: number;
+    addressLong?: number;
     contaminatedSoilSurface: number;
     soilsDistribution: SoilsDistribution;
     surfaceArea: number;
@@ -143,6 +145,8 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<
       },
       siteData: {
         addressLabel: relatedSite.address.value,
+        addressLat: relatedSite.address.lat,
+        addressLong: relatedSite.address.long,
         contaminatedSoilSurface: relatedSite.contaminatedSoilSurface ?? 0,
         soilsDistribution: relatedSite.soilsDistribution,
         surfaceArea: relatedSite.surfaceArea,

@@ -38,7 +38,7 @@ function ProjectOverviewTile({
       <ProjectTile
         className={classNames("justify-start", className)}
         linkProps={
-          routes.projectImpacts({
+          routes.projectImpactsSummary({
             projectId: id,
           }).link
         }

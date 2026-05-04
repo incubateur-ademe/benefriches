@@ -12,7 +12,7 @@ type Props = {
   className?: ClassValue;
 };
 
-function BreakEvenLevalImpactsActionBar({
+function BreakEvenLevelImpactsActionBar({
   evaluationPeriod,
   onEvaluationPeriodChange,
   header,
@@ -53,4 +53,4 @@ function BreakEvenLevalImpactsActionBar({
   );
 }
 
-export default BreakEvenLevalImpactsActionBar;
+export default BreakEvenLevelImpactsActionBar;

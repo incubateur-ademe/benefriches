@@ -4,7 +4,6 @@ import {
   ReconversionProjectImpactsBreakEvenLevel,
   SiteNature,
   SoilsDistribution,
-  sumListWithKey,
 } from "shared";
 
 import { RootState } from "@/app/store/store";
@@ -53,6 +52,8 @@ export type ProjectImpactsState = {
     name: string;
     isExpressSite: boolean;
     addressLabel: string;
+    addressLat?: number;
+    addressLong?: number;
     contaminatedSoilSurface: number;
     soilsDistribution: SoilsDistribution;
     surfaceArea: number;
@@ -194,52 +195,4 @@ export const selectModalData = createSelector(
     siteData: state.relatedSiteData!,
     impactsData: state.impactsData!,
   }),
-);
-
-const selectBreakEvenLevel = (state: RootState) => state.projectImpacts.betaImpactsData;
-
-const selectEvaluationPeriodInYears = (state: RootState) => state.projectImpacts.evaluationPeriod;
-
-export const selectBreakEvenLevelByEvaluationPeriod = createSelector(
-  [selectBreakEvenLevel, selectEvaluationPeriodInYears],
-  (
-    breakEvenLevel,
-    evaluationPeriodInYears,
-  ): ReconversionProjectImpactsBreakEvenLevel | undefined => {
-    if (!breakEvenLevel) {
-      return breakEvenLevel;
-    }
-    const cropAndSum = <T extends { total: number }>(
-      details: T[],
-    ): { total: number; details: T[] } => {
-      const croppedDetails = details.slice(0, evaluationPeriodInYears);
-      return {
-        total: sumListWithKey(croppedDetails, "total"),
-        details: croppedDetails,
-      };
-    };
-
-    const croppedProjectionYears = breakEvenLevel?.projectionYears.slice(
-      0,
-      evaluationPeriodInYears,
-    );
-
-    const croppedCumulativeBalanceByYear = breakEvenLevel?.cumulativeBalanceByYear.slice(
-      0,
-      evaluationPeriodInYears,
-    );
-
-    const croppedEconomicBalance = cropAndSum(breakEvenLevel?.economicBalance.details);
-    const croppedIndirectEconomicImpacts = cropAndSum(
-      breakEvenLevel?.indirectEconomicImpacts.details,
-    );
-
-    return {
-      ...breakEvenLevel,
-      projectionYears: croppedProjectionYears,
-      cumulativeBalanceByYear: croppedCumulativeBalanceByYear,
-      economicBalance: croppedEconomicBalance,
-      indirectEconomicImpacts: croppedIndirectEconomicImpacts,
-    };
-  },
 );

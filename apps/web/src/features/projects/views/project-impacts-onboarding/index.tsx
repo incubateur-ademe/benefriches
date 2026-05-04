@@ -30,7 +30,7 @@ function ProjectImpactsOnboardingPageContainer({ projectId, route }: Props) {
 
   const handleOnboardingExit = () => {
     dispatch(impactsOnboardingCompleted());
-    routes.projectImpacts({ projectId }).push();
+    routes.projectImpactsSummary({ projectId }).push();
   };
 
   return (

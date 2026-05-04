@@ -81,7 +81,7 @@ function ProjectTileMenu({
         className="rounded-b-lg bg-grey-light dark:bg-grey-dark text-left gap-1 grow"
       >
         <Button
-          linkProps={{ ...routes.projectImpacts({ projectId }).link, role: "menuitem" }}
+          linkProps={{ ...routes.projectImpactsSummary({ projectId }).link, role: "menuitem" }}
           iconId="fr-icon-add-line"
           className="py-1.5 px-4 w-full hover:bg-white hover:dark:bg-black"
           priority="tertiary no outline"

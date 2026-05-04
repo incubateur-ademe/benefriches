@@ -13,6 +13,12 @@ const ProjectPageTabs = () => {
     <div className={classNames(fr.cx("fr-container"))}>
       <ul role="navigation" className="list-none inline-flex gap-2 m-0 p-0">
         <TabItem
+          isActive={route.name === routes.projectImpactsSummary.name}
+          iconId="fr-icon-table-line"
+          label="Aperçu"
+          linkProps={routes.projectImpactsSummary(route.params).link}
+        />
+        <TabItem
           isActive={route.name === routes.projectImpacts.name}
           iconId="fr-icon-bar-chart-box-line"
           label="Évaluation des impacts"

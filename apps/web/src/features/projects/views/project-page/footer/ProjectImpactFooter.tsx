@@ -18,7 +18,7 @@ function ProjectImpactFooter({ projectId, siteId, isUpdateEnabled, onExportModal
   const { onDuplicateProject, duplicationState } = useDuplicateProject(projectId, "impacts");
 
   return (
-    <div className="mt-6 grid grid-cols-2 gap-6">
+    <div className="mt-6 grid md:grid-cols-2 gap-6">
       <section className="bg-background-ultralight rounded-lg mt-6 p-6 flex  gap-4 justify-between">
         <img
           src="/img/pictograms/further-actions.svg"

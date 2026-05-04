@@ -1,0 +1,11 @@
+.leaflet-control-zoom a {
+  background-image: none;
+}
+
+.leaflet-container {
+  border-radius: 24px;
+}
+
+.leaflet-pane {
+  z-index: 25;
+}

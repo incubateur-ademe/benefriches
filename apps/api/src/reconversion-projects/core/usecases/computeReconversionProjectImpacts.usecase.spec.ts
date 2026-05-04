@@ -200,8 +200,8 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         banId: "",
         city: "Blajan",
         postCode: "23456",
-        long: 0,
-        lat: 0,
+        lat: 2.347,
+        long: 48.859,
       },
       isExpressSite: false,
       yearlyIncomes: [],
@@ -270,6 +270,8 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
           },
         },
         siteData: {
+          addressLat: 2.347,
+          addressLong: 48.859,
           addressLabel: "Blajan",
           contaminatedSoilSurface: 20000,
           soilsDistribution: {

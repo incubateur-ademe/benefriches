@@ -2,7 +2,10 @@ import { useEffect } from "react";
 
 import { useAppDispatch } from "@/app/hooks/store.hooks";
 
-import { reconversionProjectImpactsRequested } from "../../application/project-impacts/actions";
+import {
+  reconversionProjectImpactsBreakEvenLevelRequested,
+  reconversionProjectImpactsRequested,
+} from "../../application/project-impacts/actions";
 import ProjectPage from "./ProjectPage";
 
 type Props = {
@@ -14,6 +17,7 @@ export default function ProjectPageContainer({ projectId }: Props) {
 
   useEffect(() => {
     void dispatch(reconversionProjectImpactsRequested({ projectId }));
+    void dispatch(reconversionProjectImpactsBreakEvenLevelRequested({ projectId }));
   }, [projectId, dispatch]);
 
   return <ProjectPage projectId={projectId} />;

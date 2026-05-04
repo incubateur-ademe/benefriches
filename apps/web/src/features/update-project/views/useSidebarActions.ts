@@ -23,7 +23,7 @@ export const useSidebarActions = ({ projectId, siteId, onSave, saveState, isForm
     }
     if (currentRoute.name !== "updateProject" || !currentRoute.params.from) {
       return {
-        linkProps: routes.projectImpacts({ projectId }).link,
+        linkProps: routes.projectImpactsSummary({ projectId }).link,
         text: "Retourner aux impacts",
       };
     }
@@ -42,7 +42,7 @@ export const useSidebarActions = ({ projectId, siteId, onSave, saveState, isForm
       };
     }
     return {
-      linkProps: routes.projectImpacts({ projectId }).link,
+      linkProps: routes.projectImpactsSummary({ projectId }).link,
       text: "Retourner aux impacts",
     };
   }, [currentRoute, siteId, projectId]);

@@ -73,7 +73,7 @@ function ProjectCreationResult({
             </>
           ) : (
             <EditorialPageButtonsSection>
-              <Button size="large" linkProps={routes.projectImpacts({ projectId }).link}>
+              <Button size="large" linkProps={routes.projectImpactsSummary({ projectId }).link}>
                 Consulter les impacts
               </Button>
             </EditorialPageButtonsSection>

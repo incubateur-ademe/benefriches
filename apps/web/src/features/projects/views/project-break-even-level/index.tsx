@@ -1,10 +1,6 @@
-import { useEffect } from "react";
 import { useSelector } from "react-redux";
 
-import { useAppDispatch } from "@/app/hooks/store.hooks";
-
-import { reconversionProjectImpactsBreakEvenLevelRequested } from "../../application/project-impacts/actions";
-import { selectBreakEvenLevelByEvaluationPeriod } from "../../application/project-impacts/projectImpacts.reducer";
+import { selectBreakEvenLevelTabDataView } from "../../application/project-impacts/projectBreakEvenLevel.selectors";
 import ProjectBreakEvenLevelTab from "./ProjectBreakEvenLevelTab";
 
 type Props = {
@@ -12,13 +8,7 @@ type Props = {
 };
 
 export default function ProjectBreakEvenLevelTabContainer({ projectId }: Props) {
-  const dispatch = useAppDispatch();
-
-  const breakEvenLevelView = useSelector(selectBreakEvenLevelByEvaluationPeriod);
-
-  useEffect(() => {
-    void dispatch(reconversionProjectImpactsBreakEvenLevelRequested({ projectId }));
-  }, [projectId, dispatch]);
+  const breakEvenLevelView = useSelector(selectBreakEvenLevelTabDataView);
 
   if (!breakEvenLevelView) {
     return null;
