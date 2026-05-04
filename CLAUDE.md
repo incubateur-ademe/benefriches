@@ -98,8 +98,8 @@ Note: We don't use monorepo dependency solutions (nx, turborepo). You must manua
 
 ### Test Types
 
-- **Unit tests** (`.spec.ts` in `core/`): Core logic with InMemory mocks - no database, no HTTP
-- **Integration tests** (`.integration-spec.ts` in `adapters/`): Real database or HTTP calls
+- **Unit tests** (`.spec.ts`): No real I/O. Lives next to the code under test, in `core/` or `adapters/`. HTTP adapter tests with mocked transport (e.g., `vi.fn()` on `HttpService`) belong here — they verify request/response mapping without booting testcontainers.
+- **Integration tests** (`.integration-spec.ts` in `adapters/`): Real database or real network calls. Boots testcontainers.
 - **E2E tests** (`.spec.ts` in `e2e-tests/tests/`): Full user flows with Playwright against running stack
 
 ### Testing Principles

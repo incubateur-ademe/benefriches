@@ -1,0 +1,8 @@
+{
+  "jobs": [
+    {
+      "command": "0 4 * * * cd apps/api && node ./dist/src/marketing/adapters/primary/syncNewsletterSubscriptions.script.js",
+      "size": "S"
+    }
+  ]
+}

@@ -9,6 +9,10 @@ export class NestJsAppLogger implements AppLogger {
     this.logger = new Logger(context);
   }
 
+  info(message: string): void {
+    this.logger.log(message);
+  }
+
   warn(message: string, error?: unknown): void {
     this.logger.warn(error instanceof Error ? `${message}: ${error.message}` : message);
   }

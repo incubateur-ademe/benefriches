@@ -34,3 +34,4 @@ An ADR is a short document that captures an important architectural decision mad
 | 0007 | [Keep `shared` lean: move API-only domain code to `api`](0007-move-api-only-domain-code-out-of-shared.md) | Accepted | 2026-03-05 |
 | 0008 | [Static per-parcel-type step IDs for urban zone](0008-static-per-parcel-type-step-ids-for-urban-zone.md) | Accepted | 2026-03-09 |
 | 0009 | [Align urban project engine typing with urban zone patterns](0009-align-urban-project-engine-typing-with-urban-zone-patterns.md) | Accepted | 2026-03-23 |
+| 0010 | [Scheduled tasks as primary adapters within their owning module](0010-scheduled-tasks-as-primary-adapters.md) | Accepted | 2026-05-04 |

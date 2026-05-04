@@ -7,7 +7,12 @@ export type NewContactProps = {
   subscribedToNewsletter: boolean;
 };
 
+export type CrmContact = {
+  subscribedToNewsletter: boolean;
+};
+
 export interface CRMGateway {
   createContact(props: NewContactProps): Promise<void>;
   updateContactLastLoginDate(email: string, loginDate: Date): Promise<void>;
+  findContactByEmail(email: string): Promise<CrmContact | null>;
 }
