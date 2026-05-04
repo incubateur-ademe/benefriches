@@ -1,5 +1,11 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { ReconversionProjectImpactsBreakEvenLevel, sumListWithKey } from "shared";
+import {
+  IndirectEconomicImpact,
+  ProjectOperatingEconomicBalanceItem,
+  ReconversionProjectImpactsBreakEvenLevel,
+  sumList,
+  sumListWithKey,
+} from "shared";
 
 import { RootState } from "@/app/store/store";
 
@@ -7,24 +13,27 @@ const selectBreakEvenLevel = (state: RootState) => state.projectImpacts.betaImpa
 
 const selectEvaluationPeriodInYears = (state: RootState) => state.projectImpacts.evaluationPeriod;
 
+const cropAndSum = <T extends IndirectEconomicImpact | ProjectOperatingEconomicBalanceItem>(
+  item: T,
+  evaluationPeriodInYears: number,
+) => {
+  const croppedDetailsByYear = item.detailsByYear.slice(0, evaluationPeriodInYears);
+  return {
+    ...item,
+    total: sumList(croppedDetailsByYear),
+    cumulativeByYear: item.cumulativeByYear.slice(0, evaluationPeriodInYears),
+  };
+};
+
 export const selectBreakEvenLevelByEvaluationPeriod = createSelector(
   [selectBreakEvenLevel, selectEvaluationPeriodInYears],
   (
     breakEvenLevel,
     evaluationPeriodInYears,
   ): ReconversionProjectImpactsBreakEvenLevel | undefined => {
-    if (!breakEvenLevel) {
+    if (!breakEvenLevel || !evaluationPeriodInYears) {
       return breakEvenLevel;
     }
-    const cropAndSum = <T extends { total: number }>(
-      details: T[],
-    ): { total: number; details: T[] } => {
-      const croppedDetails = details.slice(0, evaluationPeriodInYears);
-      return {
-        total: sumListWithKey(croppedDetails, "total"),
-        details: croppedDetails,
-      };
-    };
 
     const croppedProjectionYears = breakEvenLevel?.projectionYears.slice(
       0,
@@ -36,17 +45,29 @@ export const selectBreakEvenLevelByEvaluationPeriod = createSelector(
       evaluationPeriodInYears,
     );
 
-    const croppedEconomicBalance = cropAndSum(breakEvenLevel?.economicBalance.details);
-    const croppedIndirectEconomicImpacts = cropAndSum(
-      breakEvenLevel?.indirectEconomicImpacts.details,
-    );
+    const croppedEconomicBalance = breakEvenLevel?.economicBalance.details.map((item) => {
+      return item.name === "projectOperatingEconomicBalance"
+        ? cropAndSum(item, evaluationPeriodInYears)
+        : item;
+    });
+
+    const croppedIndirectEconomicImpactsDetails =
+      breakEvenLevel?.indirectEconomicImpacts.details.map((item) =>
+        cropAndSum(item, evaluationPeriodInYears),
+      );
 
     return {
       ...breakEvenLevel,
       projectionYears: croppedProjectionYears,
       cumulativeBalanceByYear: croppedCumulativeBalanceByYear,
-      economicBalance: croppedEconomicBalance,
-      indirectEconomicImpacts: croppedIndirectEconomicImpacts,
+      economicBalance: {
+        details: croppedEconomicBalance,
+        total: sumListWithKey(croppedEconomicBalance, "total"),
+      },
+      indirectEconomicImpacts: {
+        details: croppedIndirectEconomicImpactsDetails,
+        total: sumListWithKey(croppedIndirectEconomicImpactsDetails, "total"),
+      },
     };
   },
 );
