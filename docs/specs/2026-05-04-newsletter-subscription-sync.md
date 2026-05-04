@@ -90,9 +90,19 @@ Errors per user are caught and logged; the use case never aborts the run partway
 
 ### Dry-run mode
 
-When `dryRun` is `true`, all reads and decisions happen identically (CRM is queried, drift is detected, counters are incremented the same way) but the users write (`updateSubscriptionStatus`) is **not called**. The final summary log line is prefixed `[DRY RUN]` so it's unambiguous in Scalingo logs.
+When `dryRun` is `true`, all reads and decisions happen identically (CRM is queried, drift is detected, counters are incremented the same way) but the users write (`updateSubscriptionStatus`) is **not called**. The start, per-drift, and summary log lines are all prefixed `[DRY RUN]` so they're unambiguous in Scalingo logs.
 
 Dry-run is the way to audit drift before turning the daily cron on, and to investigate suspected drift later without mutating data.
+
+### Logging
+
+The use case emits the following log lines on every run (real or dry-run):
+
+- One `info` line at start: `Newsletter subscription sync started`.
+- One `info` line per drifted user (CRM contact found and value differs from DB), including the email and both values: `Drift detected: email=<email>, db=<bool>, crm=<bool>`. Drift logs are the primary signal for auditing what would change in dry-run and what was changed in a real run.
+- One `warn` line per user missing in CRM, including the email and userId.
+- One `error` line per user whose CRM call failed, including the email, userId, and the original error.
+- One final `info` summary line including all counters and the run duration in milliseconds (`durationMs=<n>`).
 
 ### Dependencies
 
@@ -105,14 +115,14 @@ Dry-run is the way to audit drift before turning the daily cron on, and to inves
 
 | # | User column | CRM contact | CRM subscribed | Expected DB write | Counter incremented | Log |
 |---|-------------|-------------|----------------|-------------------|---------------------|-----|
-| 1 | `false` | found | `true` | set to `true` | `updated` | — |
-| 2 | `true` | found | `false` | set to `false` | `updated` | — |
+| 1 | `false` | found | `true` | set to `true` | `updated` | `info`: drift detected (email + db + crm) |
+| 2 | `true` | found | `false` | set to `false` | `updated` | `info`: drift detected (email + db + crm) |
 | 3 | `true` | found | `true` | none | `unchanged` | — |
 | 4 | `false` | found | `false` | none | `unchanged` | — |
 | 5 | `true` | not found | — | set to `false` | `missingInCrm` | `warn`: contact missing in CRM (email + userId) |
 | 6 | `false` | not found | — | none (already false) | `missingInCrm` | `warn`: contact missing in CRM (email + userId) |
 | 7 | any | API error | — | none | `errored` | `error`: CRM call failed (email + userId + error) |
-| 8 | — | — | — | — | summary at end | `info`: summary with all counters |
+| 8 | — | — | — | — | summary at end | `info`: summary with all counters and `durationMs` |
 
 Plus:
 
@@ -175,7 +185,7 @@ scalingo run cd apps/api && node ./dist/src/marketing/adapters/primary/syncNewsl
 
 - `0 4 * * *` — every day at 04:00 UTC (early morning Paris time, off-peak).
 - `size: S` — sufficient for a sequential run over ~1200 users.
-- Output goes to Scalingo logs; the summary log line at the end of the use case is the primary observability surface.
+- Output goes to Scalingo logs. The summary line at the end of the run is the at-a-glance health check; the per-drift `info` lines emitted during the run provide the audit trail of which subscriptions changed.
 
 ## Documentation
 

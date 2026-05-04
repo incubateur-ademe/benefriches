@@ -225,8 +225,8 @@ describe("SyncNewsletterSubscriptions Use case", () => {
     expect(usersRepository._updates).toEqual([{ userId: "u1", subscribed: true }]);
   });
 
-  // Scenario 8: end of run → single info log line summarizing all counters
-  it("emits a final info summary log line with all counters", async () => {
+  // Scenario 8: end of run → final info log line summarizing all counters
+  it("emits a final info summary log line with all counters and a duration", async () => {
     const { usecase, usersQuery, crm, logger } = setup();
     usersQuery._setUsers([
       { id: "u1", email: "a@b.fr", subscribedToNewsletter: false },
@@ -237,14 +237,49 @@ describe("SyncNewsletterSubscriptions Use case", () => {
 
     await usecase.execute();
 
-    expect(logger._info).toHaveLength(1);
-    const summaryLine = logger._info[0] ?? "";
+    const summaryLine = logger._info.find((line) => line.includes("sync summary")) ?? "";
     expect(summaryLine).toContain("total=2");
     expect(summaryLine).toContain("updated=1");
     expect(summaryLine).toContain("unchanged=1");
     expect(summaryLine).toContain("missingInCrm=0");
     expect(summaryLine).toContain("errored=0");
+    expect(summaryLine).toMatch(/durationMs=\d+/);
     expect(summaryLine).not.toContain("[DRY RUN]");
+  });
+
+  // Logs the start of the run with a single info line
+  it("emits an info log line when the sync starts", async () => {
+    const { usecase, logger } = setup();
+
+    await usecase.execute();
+
+    const startLine = logger._info.find((line) => line.includes("sync started")) ?? "";
+    expect(startLine).toContain("Newsletter subscription sync started");
+    expect(startLine).not.toContain("[DRY RUN]");
+  });
+
+  // Logs every drifted email with both the DB value and the CRM value
+  it("logs an info line per drifted email with db and crm values", async () => {
+    const { usecase, usersQuery, crm, logger } = setup();
+    usersQuery._setUsers([
+      { id: "u1", email: "a@b.fr", subscribedToNewsletter: false },
+      { id: "u2", email: "c@b.fr", subscribedToNewsletter: true },
+      { id: "u3", email: "d@b.fr", subscribedToNewsletter: true },
+    ]);
+    crm._setContact("a@b.fr", true);
+    crm._setContact("c@b.fr", false);
+    crm._setContact("d@b.fr", true);
+
+    await usecase.execute();
+
+    const driftLines = logger._info.filter((line) => line.includes("Drift detected"));
+    expect(driftLines).toHaveLength(2);
+    expect(driftLines).toEqual(
+      expect.arrayContaining([
+        expect.stringContaining("email=a@b.fr, db=false, crm=true"),
+        expect.stringContaining("email=c@b.fr, db=true, crm=false"),
+      ]),
+    );
   });
 
   // Scenario 11: dry-run with drift → counters as if real, no writes, summary prefixed [DRY RUN]
@@ -264,8 +299,8 @@ describe("SyncNewsletterSubscriptions Use case", () => {
       dryRun: true,
     });
     expect(usersRepository._updates).toEqual([]);
-    expect(logger._info).toHaveLength(1);
-    expect(logger._info[0]).toContain("[DRY RUN]");
+    expect(logger._info.every((line) => line.includes("[DRY RUN]"))).toBe(true);
+    expect(logger._info.some((line) => line.includes("sync summary"))).toBe(true);
   });
 
   // Scenario 11 (missing-in-CRM variant): dry-run, DB=true, contact missing → no write, [DRY RUN] summary
@@ -284,7 +319,7 @@ describe("SyncNewsletterSubscriptions Use case", () => {
       dryRun: true,
     });
     expect(usersRepository._updates).toEqual([]);
-    expect(logger._info).toHaveLength(1);
-    expect(logger._info[0]).toContain("[DRY RUN]");
+    expect(logger._info.every((line) => line.includes("[DRY RUN]"))).toBe(true);
+    expect(logger._info.some((line) => line.includes("sync summary"))).toBe(true);
   });
 });

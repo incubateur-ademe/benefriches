@@ -28,6 +28,11 @@ export class SyncNewsletterSubscriptionsUseCase implements UseCase<Request, Resu
 
   async execute(request: Request = { dryRun: false }): Promise<Result> {
     const dryRun = request.dryRun;
+    const prefix = dryRun ? "[DRY RUN] " : "";
+    const startedAt = Date.now();
+
+    this.logger.info(`${prefix}Newsletter subscription sync started`);
+
     const users = await this.usersQuery.listAll();
     const summary: SyncNewsletterSubscriptionsSummary = {
       totalUsers: users.length,
@@ -58,6 +63,10 @@ export class SyncNewsletterSubscriptionsUseCase implements UseCase<Request, Resu
           continue;
         }
 
+        this.logger.info(
+          `${prefix}Drift detected: email=${user.email}, db=${user.subscribedToNewsletter}, crm=${contact.subscribedToNewsletter}`,
+        );
+
         if (!dryRun) {
           await this.usersRepository.updateSubscriptionStatus(
             user.id,
@@ -71,9 +80,9 @@ export class SyncNewsletterSubscriptionsUseCase implements UseCase<Request, Resu
       }
     }
 
-    const prefix = dryRun ? "[DRY RUN] " : "";
+    const durationMs = Date.now() - startedAt;
     this.logger.info(
-      `${prefix}Newsletter subscription sync summary: total=${summary.totalUsers}, updated=${summary.updated}, unchanged=${summary.unchanged}, missingInCrm=${summary.missingInCrm}, errored=${summary.errored}`,
+      `${prefix}Newsletter subscription sync summary (durationMs=${durationMs}): total=${summary.totalUsers}, updated=${summary.updated}, unchanged=${summary.unchanged}, missingInCrm=${summary.missingInCrm}, errored=${summary.errored}`,
     );
 
     return success(summary);
