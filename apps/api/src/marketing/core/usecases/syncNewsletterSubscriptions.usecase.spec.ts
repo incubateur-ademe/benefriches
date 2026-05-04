@@ -1,32 +1,13 @@
 import { FakeCrm } from "src/marketing/adapters/secondary/FakeCrm";
 import { InMemoryMarketingUsersQuery } from "src/marketing/adapters/secondary/users-query/InMemoryMarketingUsersQuery";
 import { InMemoryMarketingUsersRepository } from "src/marketing/adapters/secondary/users-repository/InMemoryMarketingUsersRepository";
-import type { AppLogger } from "src/shared-kernel/logger";
+import { SpyLogger } from "src/shared-kernel/adapters/logger/SpyLogger";
 import type { SuccessResult, TResult } from "src/shared-kernel/result";
 
 import { SyncNewsletterSubscriptionsUseCase } from "./syncNewsletterSubscriptions.usecase";
 
 // Scenarios are defined in docs/specs/2026-05-04-newsletter-subscription-sync.md
 // (section "Scenarios (one unit test per row)").
-
-// todo: move to its own file along NestJsAppLoger and SilentLogger
-class SpyLogger implements AppLogger {
-  readonly _info: string[] = [];
-  readonly _warn: { message: string; error?: unknown }[] = [];
-  readonly _error: { message: string; error?: unknown }[] = [];
-
-  info(message: string): void {
-    this._info.push(message);
-  }
-
-  warn(message: string, error?: unknown): void {
-    this._warn.push({ message, error });
-  }
-
-  error(message: string, error?: unknown): void {
-    this._error.push({ message, error });
-  }
-}
 
 const getSuccessData = <TData>(result: TResult<TData, never>): TData =>
   (result as SuccessResult<TData>).getData();
