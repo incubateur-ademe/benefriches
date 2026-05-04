@@ -4,6 +4,16 @@
 
 Bénéfriches runs scheduled background tasks on Scalingo via the platform's `cron.json` mechanism. Each scheduled task is executed in a one-shot container — there is no long-running worker process. The container starts, runs the script, and exits.
 
+## Listing cron tasks
+
+To list the cron tasks currently registered for an app:
+
+```bash
+scalingo --region <region> --app <app-name> cron-tasks
+```
+
+This shows each job's schedule and command, as picked up from `cron.json` at deploy time.
+
 ## File location
 
 `apps/api/scalingo/cron.json` — sibling to the existing `apps/api/scalingo/Procfile`.
@@ -55,13 +65,13 @@ We deliberately do not use a top-level `apps/api/src/scripts/` directory: keepin
 Scheduled tasks can be run on demand via Scalingo one-off containers using `scalingo run`. The newsletter-sync script accepts a `--dry-run` flag that performs all reads and decisions but skips the write step — the canonical example of a manual invocation:
 
 ```bash
-scalingo run --app benefriches-staging cd apps/api && node ./dist/src/marketing/adapters/primary/syncNewsletterSubscriptions.script.js --dry-run
+scalingo --region <region> run --app <app-name> "cd apps/api && node ./dist/src/marketing/adapters/primary/syncNewsletterSubscriptions.script.js --dry-run"
 ```
 
 Without `--dry-run`, the same command performs the real run.
 
 ## Observability
 
-Output from each run goes to the Scalingo logs, viewable in the Scalingo dashboard or via `scalingo logs --app <app-name>`.
+Output from each run goes to the Scalingo logs, viewable in the Scalingo dashboard or via `scalingo --region <region> logs --app <app-name>`.
 
 The recommended pattern is to emit a single summary `info` log line at the end of each task with the key counters for the run (e.g., total processed, updated, errored). This makes it easy to spot anomalies (an unexpected spike in errors, zero processed, etc.) without paging through per-record logs.
