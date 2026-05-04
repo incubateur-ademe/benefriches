@@ -3,7 +3,7 @@ set $CSP_SCRIPT "script-src 'self' 'wasm-unsafe-eval' https://tally.so/widgets/e
 set $CSP_CONNECT "connect-src 'self' data: https://stats.beta.gouv.fr/matomo.php https://data.geopf.fr/geocodage/search/ https://geo.api.gouv.fr/communes/ https://cdnjs.cloudflare.com/ajax/libs/twemoji/ <%= ENV['WEBAPP_MUTAFRICHES_FRAME_SRC'] %> https://*.crisp.chat wss://*.relay.crisp.chat wss://*.relay.rescue.crisp.chat";
 set $CSP_STYLE "style-src 'self' 'unsafe-inline' https://*.crisp.chat";
 set $CSP_FONT "font-src 'self' https://*.crisp.chat";
-set $CSP_IMG "img-src 'self' blob: data: https://*.crisp.chat";
+set $CSP_IMG "img-src 'self' blob: data: https://*.crisp.chat https://a.tile.openstreetmap.org https://b.tile.openstreetmap.org https://c.tile.openstreetmap.org";
 set $CSP_WORKER "worker-src blob: https://*.crisp.chat";
 set $CSP_FRAME "frame-ancestors 'none'";
 set $CSP_FRAME_SRC "frame-src https://tally.so https://benefriches-metabase.osc-secnum-fr1.scalingo.io <%= ENV['WEBAPP_MUTAFRICHES_FRAME_SRC'] %>";

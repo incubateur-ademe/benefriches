@@ -82,6 +82,11 @@ export default function MentionsLegalesPage() {
         <ExternalLink href="https://tally.so">Tally</ExternalLink>.
       </p>
 
+      <p>
+        Les cartes interactives sont fournies par{" "}
+        <ExternalLink href="https://www.openstreetmap.org">OpenStreet Maps</ExternalLink>
+      </p>
+
       <h2>2. Acceptation des conditions d’utilisation du site et des services proposés</h2>
 
       <p>
