@@ -29,3 +29,7 @@ coverage/
 
 # Codex
 .codex/
+
+# Short-lived implementation plans (not versioned)
+docs/plans/
+docs/superpowers/
