@@ -68,5 +68,3 @@ Keep shared step IDs but store answers keyed by parcel index in a `byParcel` map
 ## Links
 
 - Related ADRs: [ADR-0004 — Colocate urban project step definitions](0004-colocate-urban-project-step-definitions.md), [ADR-0006 — Step handler pattern for renewable energy wizard](0006-step-handler-pattern-for-renewable-energy-wizard.md)
-- Spec: [urban-zone-mvp/SPEC.md](../../urban-zone-mvp/SPEC.md)
-- Refactoring plan: [specs/2026-03-09-urban-zone-static-parcel-step-ids.md](../../specs/2026-03-09-urban-zone-static-parcel-step-ids.md)
