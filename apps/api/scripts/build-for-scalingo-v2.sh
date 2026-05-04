@@ -19,7 +19,7 @@ cp -rv apps/api/src apps/api/package.json apps/api/tsconfig.json apps/api/tsconf
 cp -rv apps/api/data .tmp-build/apps/api/
 
 # Copy scalingo specific files
-cp -v apps/api/scalingo/.buildpacks apps/api/scalingo/Procfile .tmp-build/
+cp -v apps/api/scalingo/.buildpacks apps/api/scalingo/Procfile apps/api/scalingo/cron.json .tmp-build/
 
 # Make archive to upload the packaged built api
 tar -czf api-scalingo.tar.gz .tmp-build
