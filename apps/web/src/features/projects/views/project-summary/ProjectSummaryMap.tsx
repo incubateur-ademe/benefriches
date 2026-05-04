@@ -1,4 +1,5 @@
 import Button from "@codegouvfr/react-dsfr/Button";
+import L from "leaflet";
 // oxlint-disable-next-line import/no-unassigned-import
 import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
@@ -15,11 +16,19 @@ type Props = {
   siteName: string;
   siteId: string;
 };
+
+const customIcon = L.divIcon({
+  html: `<span class="fr-icon fr-icon--xl fr-icon-map-pin-2-fill text-blue-ultradark"'></span>`,
+  iconAnchor: [16, 32],
+  popupAnchor: [0, -35],
+  className: "",
+});
+
 export function ProjectSummaryMap({ lat, long, addressLabel, siteName, siteId }: Props) {
   return (
     <MapContainer center={[lat, long]} zoom={25} className="z-0 h-full w-full">
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-      <Marker position={[lat, long]}>
+      <Marker icon={customIcon} position={[lat, long]}>
         <Popup>
           <strong>{siteName}</strong>
           <br />
