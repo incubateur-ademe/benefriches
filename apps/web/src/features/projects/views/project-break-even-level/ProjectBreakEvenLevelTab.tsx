@@ -52,7 +52,7 @@ export default function ProjectBreakEvenLevelTab({
             <>
               <span
                 className={classNames(
-                  "bg-blue-ultralight",
+                  "bg-blue-ultralight dark:bg-blue-ultradark",
                   `fr-badge`,
                   "text-[32px]",
                   "px-3",

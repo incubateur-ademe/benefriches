@@ -5,7 +5,7 @@
   stroke-width: 0;
 }
 /* Zone : bleu clair avec ligne visible */
-.highcharts-area {
+.breakeven-graph .highcharts-area {
   fill: #7dd3f0;
   fill-opacity: 0.5;
 }

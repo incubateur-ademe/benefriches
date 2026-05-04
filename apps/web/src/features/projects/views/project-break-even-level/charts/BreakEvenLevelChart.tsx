@@ -24,9 +24,7 @@ type Props = {
 
 const BreakEvenLevelChart = ({ values, xValues, breakEvenIndex, breakEvenYear }: Props) => {
   const chartRef = useRef<HighchartsReact.RefObject>(null);
-  const buttonControlsDialogRef = useRef<HTMLButtonElement>(null);
-
-  const exportConfig = useExportConfig({});
+  const exportConfig = useExportConfig({ title: "📈 Évolution de la balance coût-bénéfice" });
 
   return (
     <div
@@ -53,16 +51,6 @@ const BreakEvenLevelChart = ({ values, xValues, breakEvenIndex, breakEvenYear }:
         </div>
 
         <div className="flex">
-          <Button
-            title="Menu"
-            priority="tertiary no outline"
-            iconId="fr-icon-information-line"
-            className="text-text-light"
-            ref={buttonControlsDialogRef}
-            onClick={(e) => {
-              e.stopPropagation();
-            }}
-          />
           <Menu>
             <MenuButton as={Fragment}>
               <Button

@@ -1,8 +1,9 @@
 import { Options } from "highcharts";
-import { useMemo } from "react";
+import { useId, useMemo } from "react";
 import { ReconversionProjectImpactsBreakEvenLevel, typedObjectEntries } from "shared";
 
 import { withDefaultBarChartOptions } from "@/shared/views/charts";
+import { useChartCustomPointColors } from "@/shared/views/charts/useChartCustomColors";
 import { getPositiveNegativeTextClassesFromValue } from "@/shared/views/classes/positiveNegativeTextClasses";
 
 import ImpactChartCard from "../../project-page/impacts/charts-view/ImpactChartCard/ImpactChartCard";
@@ -50,10 +51,12 @@ const getLabelForBearer = (name: Bearer) => {
   }
 };
 
+type IndirectEconomicImpactsName =
+  ReconversionProjectImpactsBreakEvenLevel["indirectEconomicImpacts"]["details"][number]["name"];
 const isLocalAuthority = (structureType?: string) => structureType === "local_authority";
 
 const getBearerForImpact = (
-  name: ReconversionProjectImpactsBreakEvenLevel["indirectEconomicImpacts"]["details"][number]["name"],
+  name: IndirectEconomicImpactsName,
   stakeholders: Props["stakeholders"],
 ): Bearer => {
   switch (name) {
@@ -114,6 +117,16 @@ const getBearerForImpact = (
       return "humanity";
   }
 };
+const getColorForBearer = (name: Bearer) => {
+  switch (name) {
+    case "local_authority":
+      return "#1D5DA2";
+    case "local_people_or_company":
+      return "#FD7CC5";
+    case "humanity":
+      return "#9EE24B";
+  }
+};
 
 export default function IndirectEconomicImpactsChart({
   indirectEconomicImpacts,
@@ -130,16 +143,27 @@ export default function IndirectEconomicImpactsChart({
     );
 
     return typedObjectEntries(totalByBearer)
-      .map(([bearer, total]) => ({ name: getLabelForBearer(bearer), y: total }))
+      .map(([bearer, total]) => ({
+        name: getLabelForBearer(bearer),
+        y: total,
+        color: getColorForBearer(bearer),
+      }))
       .filter(({ y }) => y !== 0);
   }, [indirectEconomicImpacts.details, stakeholders]);
+
+  const chartContainerId = useId();
+
+  const colors = data.map(({ color }) => color);
+
+  useChartCustomPointColors(chartContainerId, colors);
 
   return (
     <ImpactChartCard
       containerProps={{
         className: "highcharts-no-xaxis",
+        id: chartContainerId,
       }}
-      title="🌍 Impacts socio-économiques"
+      title="👥 Impacts socio-économiques"
       options={
         {
           ...barChartOptions,
@@ -169,6 +193,7 @@ export default function IndirectEconomicImpactsChart({
       }
       exportingOptions={{
         chartOptions: { xAxis: { lineWidth: 0 } },
+        colors,
       }}
     />
   );

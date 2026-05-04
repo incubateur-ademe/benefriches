@@ -1,8 +1,9 @@
 import { Options } from "highcharts";
-import { useMemo } from "react";
+import { useId, useMemo } from "react";
 import { ReconversionProjectImpactsBreakEvenLevel, sumListWithKey } from "shared";
 
 import { withDefaultBarChartOptions } from "@/shared/views/charts";
+import { useChartCustomPointColors } from "@/shared/views/charts/useChartCustomColors";
 import { getPositiveNegativeTextClassesFromValue } from "@/shared/views/classes/positiveNegativeTextClasses";
 
 import ImpactChartCard from "../../project-page/impacts/charts-view/ImpactChartCard/ImpactChartCard";
@@ -54,6 +55,24 @@ const getLabelForName = (name: Props["economicBalance"]["details"][number]["name
   }
 };
 
+export const getColorForName = (name: Props["economicBalance"]["details"][number]["name"]) => {
+  switch (name) {
+    case "projectInstallation":
+      return "#E02727";
+    case "sitePurchase":
+      return "#B4D21E";
+    case "buildingsResaleRevenue":
+      return "#B4D21E";
+    case "financialAssistanceRevenues":
+      return "#1BBB36";
+    case "siteReinstatement":
+      return "#E02727";
+    case "siteResaleRevenue":
+      return "#1BBB36";
+    case "projectOperatingEconomicBalance":
+      return "#E0A227";
+  }
+};
 const sumForCategory = (
   data: Props["economicBalance"]["details"],
   name: Props["economicBalance"]["details"][number]["name"],
@@ -75,14 +94,21 @@ export default function EconomicBalanceChart({ economicBalance }: Props) {
       categories.map((category) => ({
         name: getLabelForName(category),
         y: sumForCategory(economicBalance.details, category),
+        color: getColorForName(category),
       })),
     [categories, economicBalance],
   );
+  const chartContainerId = useId();
+
+  const colors = data.map(({ color }) => color);
+
+  useChartCustomPointColors(chartContainerId, colors);
 
   return (
     <ImpactChartCard
       containerProps={{
         className: "highcharts-no-xaxis",
+        id: chartContainerId,
       }}
       title="💰 Bilan de l’opération"
       options={
@@ -114,6 +140,7 @@ export default function EconomicBalanceChart({ economicBalance }: Props) {
       }
       exportingOptions={{
         chartOptions: { xAxis: { lineWidth: 0 } },
+        colors,
       }}
     />
   );
