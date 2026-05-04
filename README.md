@@ -60,7 +60,7 @@ Lancer PostgreSQL et créer l’utilisateur et la base de données :
 
 ```sh
 postgres=\# CREATE USER <USERNAME> WITH ENCRYPTED PASSWORD '<YOUR_PASSWORD>';
-postgres=\# CREATE DATABASE benefriches_db WITH OWNER = claire;
+postgres=\# CREATE DATABASE benefriches_db WITH OWNER = <USERNAME>;
 ```
 
 ### Initialisation de la base de données
@@ -71,6 +71,8 @@ pnpm --filter api knex:seed-run # chargement des données nécessaires à l'appl
 ```
 
 ### Lancement de l'application en mode développement
+
+La commande `setup-env-vars` génère le fichier `public/js/env-vars.js` à partir des variables `WEBAPP_*` du `.env`, afin de les exposer au navigateur au runtime.
 
 ```sh
 pnpm --filter api dev
