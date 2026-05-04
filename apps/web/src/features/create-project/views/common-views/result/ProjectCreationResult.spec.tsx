@@ -52,7 +52,7 @@ describe("ProjectCreationResult", () => {
     ).not.toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Consulter les impacts" })).toHaveAttribute(
       "href",
-      "/mes-projets/project-123/impacts",
+      "/mes-projets/project-123/apercu",
     );
   });
 });
