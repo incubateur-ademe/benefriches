@@ -1,16 +1,18 @@
 #container {
   height: 400px;
 }
+
 .breakeven-graph .highcharts-grid-line {
   stroke-width: 0;
 }
+
 /* Zone : bleu clair avec ligne visible */
 .breakeven-graph .highcharts-area {
   fill: #7dd3f0;
   fill-opacity: 0.5;
 }
 
-.breakeven-graph .highcharts-graph {
+.breakeven-graph .highcharts-series .highcharts-graph {
   stroke: #0ea5e9;
   stroke-width: 2px;
 }
@@ -23,11 +25,14 @@
 }
 
 /* Marqueur rond sur la courbe */
-.breakeven-marker,
-.highcharts-a11y-marker-visible {
+.breakeven-graph .highcharts-legend-item .highcharts-point {
+  stroke-width: 0;
+  fill: transparent;
+}
+
+.breakeven-graph .highcharts-markers .highcharts-point {
   stroke: #1a3a5c;
   fill: #1a3a5c;
-  stroke-width: 10;
 }
 
 /* Badge année */
