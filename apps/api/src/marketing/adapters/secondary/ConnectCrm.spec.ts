@@ -31,17 +31,6 @@ const buildAxiosError = (status: number): AxiosError => {
   return error;
 };
 
-const buildConfigService = (): ConfigService => {
-  return {
-    get: (key: string) => (key === "CONNECT_CRM_HOST" ? "https://crm.example.com" : undefined),
-    getOrThrow: <T>(key: string): T => {
-      if (key === "CONNECT_CRM_CLIENT_ID") return "client-id" as T;
-      if (key === "CONNECT_CRM_CLIENT_SECRET") return "client-secret" as T;
-      throw new Error(`Missing config key: ${key}`);
-    },
-  } as unknown as ConfigService;
-};
-
 const expectedAuthHeaders = {
   client_id: "client-id",
   client_secret: "client-secret",
@@ -57,7 +46,12 @@ describe("ConnectCrm", () => {
 
   beforeEach(() => {
     httpService = { get: vi.fn(), post: vi.fn(), put: vi.fn() };
-    crm = new ConnectCrm(httpService as unknown as HttpService, buildConfigService());
+    const configService = new ConfigService({
+      CONNECT_CRM_HOST: "https://crm.example.com",
+      CONNECT_CRM_CLIENT_ID: "client-id",
+      CONNECT_CRM_CLIENT_SECRET: "client-secret",
+    });
+    crm = new ConnectCrm(httpService as unknown as HttpService, configService);
   });
 
   describe("findContactByEmail", () => {
