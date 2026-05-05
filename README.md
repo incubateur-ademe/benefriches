@@ -135,6 +135,8 @@ pnpm run -r build
 
 ## Documentation
 
+> **Convention linguistique** : ce README (orienté grand public et contributeurs externes) est en français. La documentation interne destinée aux développeurs et aux assistants IA — `CLAUDE.md`, ADR, specs — est rédigée en anglais.
+
 - [Architecture Decision Records](./docs/adr/) — décisions d'architecture importantes
 - [Spécifications](./docs/specs/) — spécifications de fonctionnalités
 - [Tâches planifiées](./docs/scheduled-tasks.md) — tâches programmées (cron) exécutées sur Scalingo
