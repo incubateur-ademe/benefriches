@@ -43,8 +43,8 @@ const CATEGORIES: { label: string; color: string; impacts: LocalAuthorityCategor
     color: "#B4D21E",
   },
   {
-    label: "🚰  Dépenses communales évitées",
-    impacts: ["waterRegulation"],
+    label: "👷 Dépenses communales",
+    impacts: ["waterRegulation", "fricheRoadsAndUtilitiesExpenses"],
     color: "#6145DE",
   },
 ];

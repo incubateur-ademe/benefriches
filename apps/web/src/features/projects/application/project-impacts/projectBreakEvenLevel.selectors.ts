@@ -91,7 +91,8 @@ export type LocalAuthorityCategory =
   | "waterRegulation"
   | "projectNewHousesTaxesIncome"
   | "projectNewCompanyTaxationIncome"
-  | "projectPhotovoltaicTaxesIncome";
+  | "projectPhotovoltaicTaxesIncome"
+  | "fricheRoadsAndUtilitiesExpenses";
 
 export type LocalPeopleOrCompanyCategory =
   | OwnerRelatedCategory
@@ -151,6 +152,7 @@ const getBearerForImpact = (
     case "projectNewHousesTaxesIncome":
     case "projectNewCompanyTaxationIncome":
     case "projectPhotovoltaicTaxesIncome":
+    case "fricheRoadsAndUtilitiesExpenses":
       return "local_authority";
 
     case "localPropertyValueIncrease":

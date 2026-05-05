@@ -93,7 +93,7 @@ export const getFricheRoadsAndUtilitiesExpensesImpact = ({
     total: sumList(detailsByYear),
     detailsByYear: detailsByYear,
     cumulativeByYear: computeCumulativeByYear(detailsByYear),
-    name: "previousSiteOperationBenefitLoss",
+    name: "fricheRoadsAndUtilitiesExpenses",
   };
 };
 

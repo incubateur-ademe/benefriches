@@ -91,7 +91,8 @@ type SocioEconomicMonetaryImpactName =
   | "avoidedAccidentsDeathsExpenses"
   | "projectedRentalIncome"
   | "projectedRentalIncomeIncrease"
-  | "oldRentalIncomeLoss";
+  | "oldRentalIncomeLoss"
+  | "fricheRoadsAndUtilitiesExpenses";
 
 export type IndirectEconomicImpact = {
   total: number;
