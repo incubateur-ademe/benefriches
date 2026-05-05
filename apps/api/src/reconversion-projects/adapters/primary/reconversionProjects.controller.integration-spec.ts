@@ -20,6 +20,7 @@ import {
 import {
   buildExhaustiveReconversionProjectProps,
   buildMinimalReconversionProjectProps,
+  buildReconversionProject,
   buildUrbanProjectReconversionProjectProps,
   UrbanProjectBuilder,
 } from "src/reconversion-projects/core/model/reconversionProject.mock";
@@ -465,8 +466,27 @@ describe("ReconversionProjects controller", () => {
   });
 
   describe("GET /reconversion-projects/:reconversionProjectId/features", () => {
-    // todo-agent: cover more cases here, this is currently only covering the urban project reuse and construction fields but we should also cover the other fields returned by this endpoint
-    it("returns persisted urban-project buildings reuse and construction fields", async () => {
+    it("responds with a 401 when no access token is provided", async () => {
+      const response = await supertest(app.getHttpServer())
+        .get(`/api/reconversion-projects/${uuid()}/features`)
+        .send();
+
+      expect(response.status).toEqual(401);
+    });
+
+    it("responds with a 404 when reconversion project does not exist", async () => {
+      const user = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+
+      const response = await supertest(app.getHttpServer())
+        .get(`/api/reconversion-projects/${uuid()}/features`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send();
+
+      expect(response.status).toEqual(404);
+    });
+
+    it("returns urban project features with mixed buildings reuse and new construction", async () => {
       const authenticatedUser = new UserBuilder().asLocalAuthority().build();
       const { accessToken } = await authenticateUser(app)(authenticatedUser);
       const siteId = uuid();
@@ -590,6 +610,160 @@ describe("ReconversionProjects controller", () => {
         sitePurchaseTotalAmount: 162000,
         siteResaleSellingPrice: 2000000,
         buildingsResaleSellingPrice: 149000,
+      });
+    });
+
+    it("returns urban project features with full buildings reuse and no new construction", async () => {
+      const authenticatedUser = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(authenticatedUser);
+      const siteId = uuid();
+      const reconversionProjectId = uuid();
+
+      await sqlConnection("sites").insert({
+        id: siteId,
+        created_by: authenticatedUser.id,
+        name: "Site name",
+        surface_area: 14000,
+        owner_structure_type: "company",
+        created_at: new Date(),
+      });
+
+      const urbanProject = new UrbanProjectBuilder()
+        .withId(reconversionProjectId)
+        .withCreatedBy(authenticatedUser.id)
+        .withRelatedSiteId(siteId)
+        .withBuildingsReuse({
+          buildingsFootprintToReuse: 1500,
+          existingBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 3000, OFFICES: 1000 },
+          developerWillBeBuildingsConstructor: false,
+          buildingsConstructionAndRehabilitationExpenses: [
+            { purpose: "buildings_rehabilitation_works", amount: 50000 },
+          ],
+        })
+        .build();
+      await app.get(SqlReconversionProjectRepository).save(urbanProject);
+
+      const response = await supertest(app.getHttpServer())
+        .get(`/api/reconversion-projects/${reconversionProjectId}/features`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send();
+
+      expect(response.status).toEqual(200);
+      const body = response.body as ReconversionProjectFeaturesView;
+      expect(body.developmentPlan).toMatchObject({
+        type: "URBAN_PROJECT",
+        developerName: "developer company name",
+        installationCosts: [
+          { amount: 130000, purpose: "development_works" },
+          { amount: 59999, purpose: "technical_studies" },
+        ],
+        installationSchedule: {
+          startDate: "2028-07-01T00:00:00.000Z",
+          endDate: "2029-03-01T00:00:00.000Z",
+        },
+        buildingsFootprintToReuse: 1500,
+        existingBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 3000, OFFICES: 1000 },
+        developerWillBeBuildingsConstructor: false,
+        buildingsConstructionAndRehabilitationExpenses: [
+          { purpose: "buildings_rehabilitation_works", amount: 50000 },
+        ],
+      });
+    });
+
+    it("returns urban project features with no buildings reuse data", async () => {
+      const authenticatedUser = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(authenticatedUser);
+      const siteId = uuid();
+      const reconversionProjectId = uuid();
+
+      await sqlConnection("sites").insert({
+        id: siteId,
+        created_by: authenticatedUser.id,
+        name: "Site name",
+        surface_area: 14000,
+        owner_structure_type: "company",
+        created_at: new Date(),
+      });
+
+      const urbanProject = new UrbanProjectBuilder()
+        .withId(reconversionProjectId)
+        .withCreatedBy(authenticatedUser.id)
+        .withRelatedSiteId(siteId)
+        .build();
+      await app.get(SqlReconversionProjectRepository).save(urbanProject);
+
+      const response = await supertest(app.getHttpServer())
+        .get(`/api/reconversion-projects/${reconversionProjectId}/features`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send();
+
+      expect(response.status).toEqual(200);
+      const body = response.body as ReconversionProjectFeaturesView;
+      expect(body.developmentPlan).toEqual({
+        type: "URBAN_PROJECT",
+        developerName: "developer company name",
+        installationCosts: [
+          { amount: 130000, purpose: "development_works" },
+          { amount: 59999, purpose: "technical_studies" },
+        ],
+        installationSchedule: {
+          startDate: "2028-07-01T00:00:00.000Z",
+          endDate: "2029-03-01T00:00:00.000Z",
+        },
+        buildingsFloorAreaDistribution: {
+          RESIDENTIAL: 250,
+          LOCAL_STORE: 250,
+          ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES: 250,
+          MULTI_STORY_PARKING: 250,
+        },
+      });
+    });
+
+    it("returns photovoltaic power plant features", async () => {
+      const authenticatedUser = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(authenticatedUser);
+      const siteId = uuid();
+      const reconversionProjectId = uuid();
+
+      await sqlConnection("sites").insert({
+        id: siteId,
+        created_by: authenticatedUser.id,
+        name: "Site name",
+        surface_area: 14000,
+        owner_structure_type: "company",
+        created_at: new Date(),
+      });
+
+      const photovoltaicProject = buildReconversionProject({
+        ...buildExhaustiveReconversionProjectProps(),
+        id: reconversionProjectId,
+        createdBy: authenticatedUser.id,
+        relatedSiteId: siteId,
+      });
+      await app.get(SqlReconversionProjectRepository).save(photovoltaicProject);
+
+      const response = await supertest(app.getHttpServer())
+        .get(`/api/reconversion-projects/${reconversionProjectId}/features`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send();
+
+      expect(response.status).toEqual(200);
+      const body = response.body as ReconversionProjectFeaturesView;
+      expect(body.developmentPlan).toEqual({
+        type: "PHOTOVOLTAIC_POWER_PLANT",
+        developerName: "developer company name",
+        electricalPowerKWc: 10000,
+        surfaceArea: 1200,
+        expectedAnnualProduction: 12000,
+        contractDuration: 25,
+        installationCosts: [
+          { amount: 130000, purpose: "installation_works" },
+          { amount: 59999, purpose: "technical_studies" },
+        ],
+        installationSchedule: {
+          startDate: "2028-07-01T00:00:00.000Z",
+          endDate: "2029-03-01T00:00:00.000Z",
+        },
       });
     });
   });
