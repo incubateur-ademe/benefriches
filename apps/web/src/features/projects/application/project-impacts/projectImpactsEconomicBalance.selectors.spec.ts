@@ -109,5 +109,51 @@ describe("projectImpactsEconomicBalance selectors", () => {
         }),
       );
     });
+
+    it("should expose buildings construction and rehabilitation costs as a dedicated group for urban projects", () => {
+      const store = createStore(getTestAppDependencies(), {
+        projectImpacts: {
+          ...MOCK_STATES.projectImpacts,
+          impactsData: {
+            ...urbanProjectImpactMock.impacts,
+            economicBalance: {
+              ...urbanProjectImpactMock.impacts.economicBalance,
+              costs: {
+                ...urbanProjectImpactMock.impacts.economicBalance.costs,
+                buildingsConstructionAndRehabilitation: {
+                  total: 365000,
+                  costs: [
+                    { amount: 30000, purpose: "technical_studies_and_fees" },
+                    { amount: 250000, purpose: "buildings_construction_works" },
+                    { amount: 80000, purpose: "buildings_rehabilitation_works" },
+                    { amount: 5000, purpose: "other_construction_expenses" },
+                  ],
+                },
+              },
+            },
+          },
+          projectData: {
+            name: "Urban project 1",
+            id: "aaa-bbb-111",
+            ...urbanProjectImpactMock.projectData,
+          },
+        },
+      });
+      const rootState = store.getState();
+      const economicBalance = selectEconomicBalanceProjectImpacts(rootState);
+
+      expect(economicBalance.economicBalance).toContainEqual(
+        expect.objectContaining({
+          name: "urban_project_buildings_construction_and_rehabilitation",
+          value: -365000,
+          details: [
+            { value: -30000, name: "technical_studies_and_fees" },
+            { value: -250000, name: "buildings_construction_works" },
+            { value: -80000, name: "buildings_rehabilitation_works" },
+            { value: -5000, name: "other_construction_expenses" },
+          ],
+        }),
+      );
+    });
   });
 });

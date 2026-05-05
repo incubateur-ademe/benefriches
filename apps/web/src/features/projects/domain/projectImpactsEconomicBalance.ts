@@ -1,4 +1,5 @@
 import {
+  BuildingsConstructionExpensePurpose,
   DevelopmentPlanInstallationExpenses,
   FinancialAssistanceRevenue,
   RecurringExpense,
@@ -20,6 +21,7 @@ export type EconomicBalanceMainName =
   | "development_plan_installation"
   | "photovoltaic_development_plan_installation"
   | "urban_project_development_plan_installation"
+  | "urban_project_buildings_construction_and_rehabilitation"
   | "site_resale"
   | "buildings_resale";
 
@@ -37,7 +39,8 @@ export type EconomicBalanceDetailsName =
   | RecurringRevenue["source"]
   | ReinstatementExpensePurpose
   | FinancialAssistanceRevenue["source"]
-  | DevelopmentPlanInstallationExpenseName;
+  | DevelopmentPlanInstallationExpenseName
+  | BuildingsConstructionExpensePurpose;
 
 export type EconomicBalance = {
   total: number;
@@ -125,6 +128,19 @@ export const getEconomicBalanceProjectImpacts = (
         ({ purpose, amount }) => ({
           value: -amount,
           name: getDevelopmentPlanDetailsName(purpose, projectType) as EconomicBalanceDetailsName,
+        }),
+      ),
+    });
+  }
+
+  if (economicBalance.costs.buildingsConstructionAndRehabilitation?.total) {
+    impacts.push({
+      name: "urban_project_buildings_construction_and_rehabilitation",
+      value: -economicBalance.costs.buildingsConstructionAndRehabilitation.total,
+      details: economicBalance.costs.buildingsConstructionAndRehabilitation.costs.map(
+        ({ purpose, amount }) => ({
+          value: -amount,
+          name: purpose,
         }),
       ),
     });

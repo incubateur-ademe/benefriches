@@ -59,6 +59,8 @@ export const getEconomicBalanceImpactColor = (name: EconomicBalanceMainName): st
       return "#FF9700";
     case "urban_project_development_plan_installation":
       return "#E4D1AF";
+    case "urban_project_buildings_construction_and_rehabilitation":
+      return "#854C1B";
     case "operations_costs":
       return "#F5E900";
     case "operations_revenues":

@@ -1,5 +1,6 @@
 import {
   AvoidedFricheCostsImpact,
+  BuildingsConstructionExpense,
   SocioEconomicImpact,
   sumListWithKey,
   SiteYearlyExpense,
@@ -102,6 +103,7 @@ export type InputReconversionProjectData = {
   futureSiteOwnerName?: string;
   reinstatementContractOwnerName?: string;
   reinstatementExpenses: ReinstatementExpense[];
+  buildingsConstructionAndRehabilitationExpenses?: BuildingsConstructionExpense[];
   yearlyProjectedExpenses: RecurringExpense[];
   yearlyProjectedRevenues: RecurringRevenue[];
   sitePurchaseTotalAmount?: number;
@@ -163,6 +165,8 @@ export class ReconversionProjectImpactsService implements ImpactsServiceInterfac
         futureSiteOwnerName: this.reconversionProject.futureSiteOwnerName,
         reinstatementContractOwnerName: this.reconversionProject.reinstatementContractOwnerName,
         reinstatementCosts: this.reconversionProject.reinstatementExpenses,
+        buildingsConstructionAndRehabilitationCosts:
+          this.reconversionProject.buildingsConstructionAndRehabilitationExpenses,
         yearlyProjectedCosts: this.reconversionProject.yearlyProjectedExpenses,
         yearlyProjectedRevenues: this.reconversionProject.yearlyProjectedRevenues,
         sitePurchaseTotalAmount: this.reconversionProject.sitePurchaseTotalAmount,

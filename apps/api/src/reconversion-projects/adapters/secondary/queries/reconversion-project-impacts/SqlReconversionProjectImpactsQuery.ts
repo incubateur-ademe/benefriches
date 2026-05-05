@@ -137,6 +137,12 @@ export class SqlReconversionProjectImpactsQuery implements ReconversionProjectIm
       .select("amount", "purpose")
       .where("reconversion_project_id", reconversionProjectId);
 
+    const sqlBuildingsConstructionCosts = sqlDevelopmentPlan?.id
+      ? await this.sqlConnection("reconversion_project_buildings_construction_costs")
+          .select("amount", "purpose")
+          .where("development_plan_id", sqlDevelopmentPlan.id)
+      : [];
+
     const sqlFinancialAssistanceRevenues = await this.sqlConnection(
       "reconversion_project_financial_assistance_revenues",
     )
@@ -173,6 +179,9 @@ export class SqlReconversionProjectImpactsQuery implements ReconversionProjectIm
       sitePurchasePropertyTransferDutiesAmount:
         reconversionProject.site_purchase_property_transfer_duties ?? undefined,
       reinstatementExpenses: sqlReinstatementCosts,
+      buildingsConstructionAndRehabilitationExpenses: sqlBuildingsConstructionCosts.length
+        ? sqlBuildingsConstructionCosts
+        : undefined,
       financialAssistanceRevenues: sqlFinancialAssistanceRevenues,
       yearlyProjectedExpenses: sqlExpenses,
       yearlyProjectedRevenues: sqlRevenues,

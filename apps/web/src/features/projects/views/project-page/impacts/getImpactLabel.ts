@@ -1,4 +1,5 @@
 import {
+  BuildingsConstructionExpensePurpose,
   FinancialAssistanceRevenue,
   RecurringExpense,
   RecurringRevenue,
@@ -18,6 +19,7 @@ import {
 } from "@/features/projects/domain/projectImpactsEnvironmental";
 import { SocialImpactName } from "@/features/projects/domain/projectImpactsSocial";
 import { SocioEconomicImpactName } from "@/features/projects/domain/projectImpactsSocioEconomic";
+import { getLabelForBuildingsConstructionExpenseFromApiPurpose } from "@/shared/core/urbanProject";
 
 export const getEnvironmentalImpactLabel = (name: EnvironmentalMainImpactName) => {
   switch (name) {
@@ -205,6 +207,8 @@ export const getEconomicBalanceImpactLabel = (name: EconomicBalanceMainName): st
       return "⚡️ Installation des panneaux photovoltaïques";
     case "urban_project_development_plan_installation":
       return "🏘️️ Aménagement du site";
+    case "urban_project_buildings_construction_and_rehabilitation":
+      return "🏗️ Construction et réhabilitation des bâtiments";
     case "operations_costs":
       return "💸️ Charges d'exploitation";
     case "operations_revenues":
@@ -235,6 +239,10 @@ export const getEconomicBalanceDetailsImpactLabel = (
     case "urban_project_development_plan_installation":
     case "development_plan_installation":
       return getEconomicBalanceInstallationLabel(name as DevelopmentPlanInstallationExpenseName);
+    case "urban_project_buildings_construction_and_rehabilitation":
+      return getLabelForBuildingsConstructionExpenseFromApiPurpose(
+        name as BuildingsConstructionExpensePurpose,
+      );
     default:
       return "Autre";
   }

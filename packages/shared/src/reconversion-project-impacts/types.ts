@@ -4,6 +4,7 @@ import {
   RecurringRevenue,
   ReinstatementExpense,
 } from "../reconversion-projects";
+import { BuildingsConstructionExpense } from "../reconversion-projects/urban-project/buildingsConstructionExpenses";
 import { SoilType } from "../soils";
 import { SocioEconomicImpact } from "./socioEconomic.types";
 
@@ -24,6 +25,7 @@ export type EconomicBalanceImpactResult = {
     total: number;
     operationsCosts?: ExpensesDetailledTotal<RecurringExpense>;
     developmentPlanInstallation?: ExpensesDetailledTotal<DevelopmentPlanInstallationExpenses>;
+    buildingsConstructionAndRehabilitation?: ExpensesDetailledTotal<BuildingsConstructionExpense>;
     siteReinstatement?: ExpensesDetailledTotal<ReinstatementExpense>;
     sitePurchase?: number;
   };

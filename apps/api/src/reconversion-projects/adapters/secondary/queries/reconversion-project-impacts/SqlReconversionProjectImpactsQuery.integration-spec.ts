@@ -122,6 +122,20 @@ describe("SqlReconversionProjectImpactsQuery integration", () => {
           purpose: "deimpermeabilization",
         },
       ]);
+      await sqlConnection("reconversion_project_buildings_construction_costs").insert([
+        {
+          id: uuid(),
+          development_plan_id: developmentPlanId,
+          amount: 30000,
+          purpose: "technical_studies_and_fees",
+        },
+        {
+          id: uuid(),
+          development_plan_id: developmentPlanId,
+          amount: 250000,
+          purpose: "buildings_construction_works",
+        },
+      ]);
       await sqlConnection("reconversion_project_financial_assistance_revenues").insert([
         {
           id: uuid(),
@@ -165,6 +179,10 @@ describe("SqlReconversionProjectImpactsQuery integration", () => {
         reinstatementExpenses: [
           { purpose: "waste_collection", amount: 1000 },
           { purpose: "deimpermeabilization", amount: 500 },
+        ],
+        buildingsConstructionAndRehabilitationExpenses: [
+          { purpose: "technical_studies_and_fees", amount: 30000 },
+          { purpose: "buildings_construction_works", amount: 250000 },
         ],
         futureOperatorName: "Mairie de Blajan",
         futureSiteOwnerStructureType: "municipality",

@@ -466,6 +466,45 @@ describe("EconomicBalance impact", () => {
       });
     });
 
+    it("should expose buildings construction and rehabilitation costs as a dedicated cost group for urban projects", () => {
+      const result = computeEconomicBalanceImpact(
+        {
+          developmentPlanType: "URBAN_PROJECT",
+          reinstatementCosts: [],
+          developmentPlanInstallationCosts: [{ amount: 50000, purpose: "development_works" }],
+          buildingsConstructionAndRehabilitationCosts: [
+            { amount: 30000, purpose: "technical_studies_and_fees" },
+            { amount: 250000, purpose: "buildings_construction_works" },
+            { amount: 80000, purpose: "buildings_rehabilitation_works" },
+            { amount: 5000, purpose: "other_construction_expenses" },
+          ],
+          sitePurchaseTotalAmount: 100000,
+          futureOperatorName: "Mairie de Blajan",
+          developmentPlanDeveloperName: "Mairie de Blajan",
+          futureSiteOwnerName: "Mairie de Blajan",
+          reinstatementContractOwnerName: "Mairie de Blajan",
+          yearlyProjectedCosts: [],
+          yearlyProjectedRevenues: [],
+        },
+        new SumOnEvolutionPeriodService({
+          evaluationPeriodInYears: 1,
+          operationsFirstYear: 2025,
+        }),
+      );
+
+      expect(result.costs.buildingsConstructionAndRehabilitation).toEqual({
+        total: 365000,
+        costs: [
+          { amount: 30000, purpose: "technical_studies_and_fees" },
+          { amount: 250000, purpose: "buildings_construction_works" },
+          { amount: 80000, purpose: "buildings_rehabilitation_works" },
+          { amount: 5000, purpose: "other_construction_expenses" },
+        ],
+      });
+      expect(result.costs.total).toEqual(50000 + 365000 + 100000);
+      expect(result.total).toEqual(-(50000 + 365000 + 100000));
+    });
+
     it("should sum installation and reinstatement result only if projectDeveloper is not futureOperator", () => {
       expect(
         computeEconomicBalanceImpact(

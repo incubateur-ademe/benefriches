@@ -28,7 +28,7 @@ When prompted with: `read <this-tracker>.md and execute it`
 7. Run the `code-reviewer` skill on the resulting diff.
 8. Before asking validation:
    - for `S1` to `S12`, list the sequencing test files created/updated in `step-handlers/buildings/__tests__/sequencing/`
-   - for `S13` and `S14`, list non-sequencing tests/e2e specs created/updated
+   - for `S13`, `S14`, and `S18`, list non-sequencing tests/e2e specs created/updated
 9. Ask user validation of the completed task.
 10. Only after explicit validation, mark the task as done in this tracker:
    - switch `[ ]` to `[x]`
@@ -89,7 +89,7 @@ Constraints:
    - tests are grouped under `describe("forward navigation")` and `describe("backward navigation")`
    - each `it()` uses a human-readable description with a stripped step-chain comment in the test body
    - each forward `it()` starts at `URBAN_PROJECT_BUILDINGS_INTRODUCTION` and reaches a chapter exit step
-3. For `S13` and `S14`, sequencing-test updates are optional; e2e and release validation are mandatory.
+3. For `S13`, `S14`, and `S18`, sequencing-test updates are optional; e2e and release validation are mandatory.
 4. Run task-targeted tests listed in the task.
 5. Run quality guards from `CLAUDE.md` for impacted scope.
 6. Run the `code-reviewer` skill on the diff.
@@ -256,29 +256,41 @@ Constraints:
     - `pnpm --filter web test src/features/update-project/`
     - `pnpm --filter web typecheck`
 
-- [ ] **S17** Display views: show buildings reuse data and construction/rehabilitation expenses from API data.
+- [x] **S17** Display views: show buildings reuse data and construction/rehabilitation expenses from API data.
   - Spec ref: `Display views to update (after API returns the new fields)`
   - Depends on: S15 (API must return the new fields)
   - Includes:
     - `ExpensesAndRevenues.tsx` — new section for construction/rehabilitation expenses
     - `ProjectExpensesAndIncomesPdf.tsx` — mirror web view changes
-    - `projectImpactsEconomicBalance.ts` — include in cost aggregation
-    - `BaseReconversionProjectFeaturesView` — extend with buildings reuse surface areas (`buildingsFootprintToReuse`, `existingBuildingsUsesFloorSurfaceArea`, `newBuildingsUsesFloorSurfaceArea`, `developerWillBeBuildingsConstructor`)
-    - Project features page — display buildings reuse/demolition/construction surface area breakdown
+    - `BaseReconversionProjectFeaturesView` — expose urban-only buildings reuse/construction fields under `developmentPlan.type === "URBAN_PROJECT"`
+    - Project features page — display buildings reuse/construction surface area breakdown
     - PDF export — mirror buildings surface area display
+  - Done note: Returned the persisted buildings reuse/construction fields from the API features view, nested them under the urban-project development plan contract, and rendered them in the web/PDF project features and expense sections with focused regression coverage.
   - Targeted checks:
     - `pnpm --filter web typecheck && pnpm --filter web test`
 
+- [x] **S18** Economic balance impacts: include buildings construction/rehabilitation expenses in cost aggregation.
+  - Depends on: S15 (API persistence), S17 (display contract settled)
+  - Includes:
+    - `packages/shared/src/reconversion-project-impacts/types.ts` — extend impacts contract with a dedicated buildings construction/rehabilitation cost block
+    - `apps/api/src/reconversion-projects/core/model/project-impacts/economic-balance/economicBalanceImpact.ts` — compute and expose those costs in the economic balance result
+    - `apps/web/src/features/projects/domain/projectImpactsEconomicBalance.ts` — add the corresponding aggregation names/details for urban projects
+    - impacts UI/tests — render and validate the new economic balance cost group
+  - Done note: Added a dedicated `buildingsConstructionAndRehabilitation` cost block on the shared `EconomicBalanceImpactResult`, plumbed it through the API economic balance computation and SQL impacts query, and surfaced a new `urban_project_buildings_construction_and_rehabilitation` aggregation in the web economic-balance selector with matching label/color helpers and unit/integration tests.
+  - Targeted checks:
+    - `pnpm --filter api test`
+    - `pnpm --filter web test src/features/projects/`
+
 - [ ] **S14** Release and enablement.
-  - Depends on: S15, S16, S17 (feature must be 100% functional — data persisted, update flow working, display views complete)
+  - Depends on: S15, S16, S17, S18 (feature must be 100% functional — data persisted, update flow working, display views complete, impacts complete)
   - Includes:
     - remove feature flag (enable by default)
     - QA in staging
     - deploy to production
 
 ## Recommended Loop Order
-`HIST-1 -> HIST-2 -> S1 -> S2 -> S3 -> S4 -> S5 -> S6 -> S7 -> S8 -> S9 -> S10 -> S11 -> S12 -> S13 -> S13b -> S15 -> S16 -> S17 -> S14`
+`HIST-1 -> HIST-2 -> S1 -> S2 -> S3 -> S4 -> S5 -> S6 -> S7 -> S8 -> S9 -> S10 -> S11 -> S12 -> S13 -> S13b -> S15 -> S16 -> S17 -> S18 -> S14`
 
 ## Notes
 - New chapter step IDs are already introduced in multiple registries, so gating before full flow activation avoids exposing incomplete `TODO` screens.
-- S14 (release) moved to end: feature must be fully functional (API persistence + update flow + display views) before enabling in production.
+- S14 (release) moved to end: feature must be fully functional (API persistence + update flow + display views + impacts) before enabling in production.

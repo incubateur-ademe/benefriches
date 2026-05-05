@@ -1,5 +1,6 @@
 import { pipe } from "rxjs";
 import {
+  BuildingsConstructionExpense,
   DevelopmentPlanInstallationExpenses,
   DevelopmentPlanType,
   EconomicBalanceImpactResult,
@@ -17,6 +18,7 @@ type ProjectProps = {
   financialAssistanceRevenues?: FinancialAssistanceRevenue[];
   reinstatementCosts: ReinstatementExpense[];
   developmentPlanInstallationCosts: DevelopmentPlanInstallationExpenses[];
+  buildingsConstructionAndRehabilitationCosts?: BuildingsConstructionExpense[];
   sitePurchaseTotalAmount?: number;
   developmentPlanDeveloperName?: string;
   futureOperatorName?: string;
@@ -33,6 +35,7 @@ type ReconversionProjectInstallationCostsInput = {
   financialAssistanceRevenues?: FinancialAssistanceRevenue[];
   reinstatementCosts: ReinstatementExpense[];
   developmentPlanInstallationCosts: DevelopmentPlanInstallationExpenses[];
+  buildingsConstructionAndRehabilitationCosts?: BuildingsConstructionExpense[];
   sitePurchaseTotalAmount: number;
   developmentPlanDeveloperName?: string;
   futureOperatorName?: string;
@@ -45,6 +48,10 @@ type ReconversionProjectInstallationEconomicResult = {
   costs: {
     total: number;
     developmentPlanInstallation?: { total: number; costs: DevelopmentPlanInstallationExpenses[] };
+    buildingsConstructionAndRehabilitation?: {
+      total: number;
+      costs: BuildingsConstructionExpense[];
+    };
     siteReinstatement?: { total: number; costs: ReinstatementExpense[] };
     sitePurchase?: number;
   };
@@ -89,6 +96,7 @@ export const getEconomicResultsOfProjectInstallation = ({
   financialAssistanceRevenues,
   reinstatementCosts,
   developmentPlanInstallationCosts,
+  buildingsConstructionAndRehabilitationCosts,
   sitePurchaseTotalAmount,
   developmentPlanDeveloperName,
   futureSiteOwnerName,
@@ -104,6 +112,12 @@ export const getEconomicResultsOfProjectInstallation = ({
     costDetails.developmentPlanInstallation = {
       total: sumListWithKey(developmentPlanInstallationCosts, "amount"),
       costs: developmentPlanInstallationCosts,
+    };
+  }
+  if (buildingsConstructionAndRehabilitationCosts?.length) {
+    costDetails.buildingsConstructionAndRehabilitation = {
+      total: sumListWithKey(buildingsConstructionAndRehabilitationCosts, "amount"),
+      costs: buildingsConstructionAndRehabilitationCosts,
     };
   }
   if (isDeveloperOwnerOfReinstatement && reinstatementCosts.length > 0) {
@@ -122,6 +136,7 @@ export const getEconomicResultsOfProjectInstallation = ({
   const costs = {
     total:
       (costDetails.developmentPlanInstallation?.total ?? 0) +
+      (costDetails.buildingsConstructionAndRehabilitation?.total ?? 0) +
       (costDetails.sitePurchase ?? 0) +
       (costDetails.siteReinstatement?.total ?? 0),
     ...costDetails,
@@ -186,6 +201,7 @@ export const computeEconomicBalanceImpact = (
     financialAssistanceRevenues,
     reinstatementCosts,
     developmentPlanInstallationCosts,
+    buildingsConstructionAndRehabilitationCosts,
     sitePurchaseTotalAmount = 0,
     reinstatementContractOwnerName,
     futureSiteOwnerName,
@@ -207,6 +223,7 @@ export const computeEconomicBalanceImpact = (
     financialAssistanceRevenues,
     reinstatementCosts,
     developmentPlanInstallationCosts,
+    buildingsConstructionAndRehabilitationCosts,
     sitePurchaseTotalAmount,
     developmentPlanDeveloperName,
     futureSiteOwnerName,

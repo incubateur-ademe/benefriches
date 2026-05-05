@@ -152,13 +152,13 @@ export const getLabelForBuildingsConstructionExpense = (
 ): string => {
   switch (expensePurpose) {
     case "technicalStudiesAndFees":
-      return "Études et honoraires techniques";
+      return "📋 Études et honoraires techniques";
     case "buildingsConstructionWorks":
-      return "Travaux de construction des bâtiments";
+      return "🧱 Travaux de construction des bâtiments";
     case "buildingsRehabilitationWorks":
-      return "Travaux de réhabilitation des bâtiments";
+      return "🏚 Travaux de réhabilitation des bâtiments";
     case "otherConstructionExpenses":
-      return "Autres dépenses de construction ou de réhabilitation";
+      return "🏗️ Autres dépenses de construction ou de réhabilitation";
   }
 };
 

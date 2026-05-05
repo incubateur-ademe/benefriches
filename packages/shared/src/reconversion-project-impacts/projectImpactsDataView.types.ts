@@ -7,6 +7,7 @@ import {
   RecurringRevenue,
   ReinstatementExpense,
 } from "../reconversion-projects";
+import { BuildingsConstructionExpense } from "../reconversion-projects/urban-project/buildingsConstructionExpenses";
 import { SiteStakeholderStructureType } from "../site";
 import { DevelopmentPlanInstallationExpenses } from "./types";
 
@@ -44,6 +45,7 @@ export type ReconversionProjectImpactsDataView<TSchedule> = {
   sitePurchaseTotalAmount?: number;
   sitePurchasePropertyTransferDutiesAmount?: number;
   reinstatementExpenses: ReinstatementExpense[];
+  buildingsConstructionAndRehabilitationExpenses?: BuildingsConstructionExpense[];
   financialAssistanceRevenues: FinancialAssistanceRevenue[];
   yearlyProjectedExpenses: RecurringExpense[];
   yearlyProjectedRevenues: RecurringRevenue[];
