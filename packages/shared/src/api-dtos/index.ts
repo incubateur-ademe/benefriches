@@ -29,3 +29,6 @@ export {
 
 // Site Actions DTOs
 export { updateSiteActionStatusDtoSchema, type UpdateSiteActionStatusDto } from "./site-actions";
+
+// Reconversion Projects DTOs
+export { type GetReconversionProjectFeaturesResponseDto } from "./reconversion-projects";

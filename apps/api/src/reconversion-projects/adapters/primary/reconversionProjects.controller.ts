@@ -18,6 +18,7 @@ import {
   httpUpdateReconversionProjectPropsSchema,
   getUrbanSprawlImpactsComparisonDtoSchema,
   httpSaveReconversionProjectPropsSchema,
+  type GetReconversionProjectFeaturesResponseDto,
 } from "shared";
 import { z } from "zod";
 
@@ -288,7 +289,7 @@ export class ReconversionProjectController {
   @Get(":reconversionProjectId/features")
   async getReconversionProjectFeatures(
     @Param("reconversionProjectId") reconversionProjectId: string,
-  ) {
+  ): Promise<GetReconversionProjectFeaturesResponseDto> {
     const result = await this.getReconversionProjectFeaturesUseCase.execute({
       reconversionProjectId,
     });
@@ -303,7 +304,7 @@ export class ReconversionProjectController {
       }
     }
 
-    return result.getData();
+    return result.getData() as GetReconversionProjectFeaturesResponseDto;
   }
 
   @Get("quick-compute-urban-project-impacts-on-friche")
