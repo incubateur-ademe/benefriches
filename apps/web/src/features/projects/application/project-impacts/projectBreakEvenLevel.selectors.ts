@@ -75,6 +75,48 @@ export const selectBreakEvenLevelByEvaluationPeriod = createSelector(
 type Bearer = "local_authority" | "local_people_or_company" | "humanity";
 const isLocalAuthority = (structureType?: string) => structureType === "local_authority";
 
+type OwnerRelatedCategory =
+  | "avoidedFricheMaintenanceAndSecuringCostsForOwner"
+  | "oldRentalIncomeLoss"
+  | "projectedRentalIncome"
+  | "projectedRentalIncomeIncrease"
+  | "avoidedFricheMaintenanceAndSecuringCostsForTenant"
+  | "previousSiteOperationBenefitLoss"
+  | "projectOperatingEconomicBalance";
+
+export type LocalAuthorityCategory =
+  | OwnerRelatedCategory
+  | "propertyTransferDutiesIncome"
+  | "localTransferDutiesIncrease"
+  | "waterRegulation"
+  | "projectNewHousesTaxesIncome"
+  | "projectNewCompanyTaxationIncome"
+  | "projectPhotovoltaicTaxesIncome";
+
+export type LocalPeopleOrCompanyCategory =
+  | OwnerRelatedCategory
+  | "localPropertyValueIncrease"
+  | "avoidedCarRelatedExpenses"
+  | "travelTimeSavedPerTravelerExpenses"
+  | "avoidedPropertyDamageExpenses";
+
+export type HumanityCategory =
+  | "avoidedCo2eqWithEnergyProduction"
+  | "avoidedAirConditioningCo2eqEmissions"
+  | "avoidedTrafficCo2EqEmissions"
+  | "storedCo2Eq"
+  | "natureRelatedWelnessAndLeisure"
+  | "forestRelatedProduct"
+  | "pollination"
+  | "invasiveSpeciesRegulation"
+  | "waterCycle"
+  | "nitrogenCycle"
+  | "soilErosion"
+  | "avoidedAirPollutionHealthExpenses"
+  | "avoidedAccidentsMinorInjuriesExpenses"
+  | "avoidedAccidentsSevereInjuriesExpenses"
+  | "avoidedAccidentsDeathsExpenses";
+
 const getBearerForImpact = (
   name: ReconversionProjectImpactsBreakEvenLevel["indirectEconomicImpacts"]["details"][number]["name"],
   stakeholders: ReconversionProjectImpactsBreakEvenLevel["stakeholders"],
@@ -114,13 +156,13 @@ const getBearerForImpact = (
     case "localPropertyValueIncrease":
     case "avoidedCarRelatedExpenses":
     case "travelTimeSavedPerTravelerExpenses":
+    case "avoidedPropertyDamageExpenses":
+    case "avoidedAirConditioningExpenses":
       return "local_people_or_company";
 
     case "avoidedCo2eqWithEnergyProduction":
     case "avoidedAirConditioningCo2eqEmissions":
     case "avoidedTrafficCo2EqEmissions":
-    case "avoidedAirConditioningExpenses":
-    case "avoidedTrafficCO2Emissions":
     case "storedCo2Eq":
     case "natureRelatedWelnessAndLeisure":
     case "forestRelatedProduct":
@@ -129,7 +171,6 @@ const getBearerForImpact = (
     case "waterCycle":
     case "nitrogenCycle":
     case "soilErosion":
-    case "avoidedPropertyDamageExpenses":
     case "avoidedAirPollutionHealthExpenses":
     case "avoidedAccidentsMinorInjuriesExpenses":
     case "avoidedAccidentsSevereInjuriesExpenses":
@@ -139,24 +180,46 @@ const getBearerForImpact = (
 };
 
 export type IndirectEconomicImpactsByBearer = {
-  local_authority: number;
-  local_people_or_company: number;
-  humanity: number;
+  local_authority: { total: number; details: { name: LocalAuthorityCategory; amount: number }[] };
+  local_people_or_company: {
+    total: number;
+    details: {
+      name: LocalPeopleOrCompanyCategory;
+      amount: number;
+    }[];
+  };
+  humanity: {
+    total: number;
+    details: {
+      name: HumanityCategory;
+      amount: number;
+    }[];
+  };
 };
 
+const EMPTY_BEARER_STATE: IndirectEconomicImpactsByBearer = {
+  local_authority: { total: 0, details: [] },
+  local_people_or_company: { total: 0, details: [] },
+  humanity: { total: 0, details: [] },
+};
 export const selectIndirectEconomicImpactsByBearer = createSelector(
   selectBreakEvenLevelByEvaluationPeriod,
   (impacts): IndirectEconomicImpactsByBearer => {
     if (!impacts) {
-      return { local_authority: 0, local_people_or_company: 0, humanity: 0 };
+      return EMPTY_BEARER_STATE;
     }
-    return impacts.indirectEconomicImpacts.details.reduce<Record<Bearer, number>>(
-      (acc, { name, total }) => {
+    return impacts.indirectEconomicImpacts.details.reduce<IndirectEconomicImpactsByBearer>(
+      (result, { name, total }) => {
         const bearer = getBearerForImpact(name, impacts.stakeholders);
-        acc[bearer] = (acc[bearer] ?? 0) + total;
-        return acc;
+        return {
+          ...result,
+          [bearer]: {
+            details: [...result[bearer].details, { amount: total, name }],
+            total: result[bearer].total + total,
+          },
+        };
       },
-      { local_authority: 0, local_people_or_company: 0, humanity: 0 },
+      structuredClone(EMPTY_BEARER_STATE),
     );
   },
 );

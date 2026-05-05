@@ -152,7 +152,7 @@ export const getUrbanProjectImpacts = ({
   );
   // Les émissions CO2 du trafic nécessitent un facteur supplémentaire
   pushImpact(
-    "avoidedTrafficCO2Emissions",
+    "avoidedTrafficCo2EqEmissions",
     travelRelatedImpactsService.getAvoidedTrafficCO2EmissionsInTonsPerYear(),
     ["co2_emitted_per_vehicule", "co2_value", "discount"],
   );

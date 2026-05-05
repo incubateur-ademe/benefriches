@@ -1,17 +1,18 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
-import { getPositiveNegativeTextClassesFromValue } from "@/shared/views/classes/positiveNegativeTextClasses";
-import classNames from "@/shared/views/clsx";
 
 import { evaluationPeriodUpdated } from "../../application/project-impacts/actions";
 import { BreakEvenLevelTabDataView } from "../../application/project-impacts/projectBreakEvenLevel.selectors";
 import { selectImpactsPageViewData } from "../../core/projectImpacts.selectors";
 import ProjectPageHeader from "../project-page/header/";
-import { formatMonetaryImpact } from "../shared/formatImpactValue";
 import BreakEvenLevalImpactsActionBar from "./ProjectBreakEvenLevelActionBar";
+import ProjectBreakEvenLevelSection from "./ProjectBreakEvenLevelSection";
 import ProjectBreakEvenLevelSummary from "./ProjectBreakEvenLevelSummary";
 import BreakEvenLevelChart from "./charts/BreakEvenLevelChart";
 import EconomicBalanceChart from "./charts/EconomicBalanceChart";
+import HumanityIndirectEconomicImpactsCharts from "./charts/HumanityIndirectEconomicImpactsCharts";
 import IndirectEconomicImpactsChart from "./charts/IndirectEconomicImpactsChart";
+import LocalAuthorityIndirectEconomicImpactsCharts from "./charts/LocalAuthorityIndirectEconomicImpactsCharts";
+import LocalPeopleOrCompanyIndirectEconomicImpactsCharts from "./charts/LocalPeopleOrCompanyIndirectEconomicImpactsCharts";
 
 type Props = BreakEvenLevelTabDataView & { projectId: string };
 
@@ -59,59 +60,56 @@ export default function ProjectBreakEvenLevelTab({
           />
         </div>
       </div>
-      <div className="grid grid-cols-8 gap-8">
-        <div className="col-span-2">
-          <span
-            className={classNames(
-              `fr-badge`,
-              "text-[32px]",
-              "px-3",
-              "py-4",
-              "mb-4",
-              getPositiveNegativeTextClassesFromValue(economicBalance.total),
-            )}
-          >
-            {formatMonetaryImpact(economicBalance.total)}
-          </span>
-          <h4 className="mb-4">
-            Bilan de l'opération {economicBalance.total > 0 ? "positif" : "négatif"}
-          </h4>
-          <p>Pour l'aménageur.</p>
-        </div>
+      <ProjectBreakEvenLevelSection
+        title={`Bilan de l'opération ${economicBalance.total > 0 ? "positif" : "négatif"}`}
+        subtitle="Pour l'aménageur."
+        total={economicBalance.total}
+        chart={<EconomicBalanceChart economicBalance={economicBalance} />}
+      />
 
-        <div className="col-start-3 col-span-6">
-          <EconomicBalanceChart economicBalance={economicBalance} />
-        </div>
-      </div>
-
-      <div className="grid grid-cols-8 gap-8">
-        <div className="col-span-2">
-          <span
-            className={classNames(
-              `fr-badge`,
-              "text-[32px]",
-              "px-3",
-              "py-4",
-              "mb-4",
-              getPositiveNegativeTextClassesFromValue(indirectEconomicImpacts.total),
-            )}
-          >
-            {formatMonetaryImpact(indirectEconomicImpacts.total)}
-          </span>
-
-          <h4 className="mb-4">
-            Impacts socio-économiques {indirectEconomicImpacts.total > 0 ? "positifs" : "négatifs"}
-          </h4>
-          <p>Pour la collectivité locale, les riverains, la société fançaise et mondiale.</p>
-        </div>
-
-        <div className="col-start-3 col-span-6">
+      <ProjectBreakEvenLevelSection
+        title={`Impacts socio-économiques ${indirectEconomicImpacts.total > 0 ? "positifs" : "négatifs"}`}
+        subtitle="Pour la collectivité locale, les riverains, la société fançaise et mondiale."
+        total={indirectEconomicImpacts.total}
+        chart={
           <IndirectEconomicImpactsChart
             indirectEconomicImpactsTotal={indirectEconomicImpacts.total}
             indirectEconomicImpactsByBearer={indirectEconomicImpactsByBearer}
           />
-        </div>
-      </div>
+        }
+      />
+
+      <ProjectBreakEvenLevelSection
+        title="pour la collectivité locale"
+        total={indirectEconomicImpactsByBearer.local_authority.total}
+        chart={
+          <LocalAuthorityIndirectEconomicImpactsCharts
+            localAuthorityIndirectEconomicImpacts={indirectEconomicImpactsByBearer.local_authority}
+          />
+        }
+      />
+
+      <ProjectBreakEvenLevelSection
+        title="pour les riverains"
+        total={indirectEconomicImpactsByBearer.local_people_or_company.total}
+        chart={
+          <LocalPeopleOrCompanyIndirectEconomicImpactsCharts
+            localAuthorityIndirectEconomicImpacts={
+              indirectEconomicImpactsByBearer.local_people_or_company
+            }
+          />
+        }
+      />
+
+      <ProjectBreakEvenLevelSection
+        title="pour la société française et mondiale"
+        total={indirectEconomicImpactsByBearer.humanity.total}
+        chart={
+          <HumanityIndirectEconomicImpactsCharts
+            localAuthorityIndirectEconomicImpacts={indirectEconomicImpactsByBearer.humanity}
+          />
+        }
+      />
     </div>
   );
 }
