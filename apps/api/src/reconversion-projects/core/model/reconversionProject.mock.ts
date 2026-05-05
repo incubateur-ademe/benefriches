@@ -1,4 +1,5 @@
 import {
+  BuildingsConstructionExpense,
   ReconversionProjectSoilsDistribution,
   RecurringExpense,
   RecurringRevenue,
@@ -304,7 +305,7 @@ export class UrbanProjectBuilder {
     existingBuildingsUsesFloorSurfaceArea?: Record<string, number>;
     newBuildingsUsesFloorSurfaceArea?: Record<string, number>;
     developerWillBeBuildingsConstructor?: boolean;
-    buildingsConstructionAndRehabilitationExpenses?: { purpose: string; amount: number }[];
+    buildingsConstructionAndRehabilitationExpenses?: BuildingsConstructionExpense[];
   }): this {
     this.props.buildingsFootprintToReuse = buildingsFootprintToReuse;
     this.props.existingBuildingsUsesFloorSurfaceArea = existingBuildingsUsesFloorSurfaceArea;

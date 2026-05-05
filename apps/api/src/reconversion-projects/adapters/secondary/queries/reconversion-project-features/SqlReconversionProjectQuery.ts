@@ -1,6 +1,7 @@
 import { Inject } from "@nestjs/common";
 import { Knex } from "knex";
 import {
+  BuildingsConstructionExpense,
   DevelopmentPlanInstallationExpenses,
   FinancialAssistanceRevenue,
   RecurringExpense,
@@ -225,7 +226,9 @@ export class SqlReconversionProjectQuery implements ReconversionProjectQueryGate
           developerWillBeBuildingsConstructor:
             sqlResult.development_plan.developer_will_be_buildings_constructor ?? undefined,
           buildingsConstructionAndRehabilitationExpenses:
-            sqlResult.development_plan.buildings_construction_costs ?? undefined,
+            (sqlResult.development_plan.buildings_construction_costs as
+              | BuildingsConstructionExpense[]
+              | null) ?? undefined,
         };
       }
       throw new Error("Unknown development plan type");

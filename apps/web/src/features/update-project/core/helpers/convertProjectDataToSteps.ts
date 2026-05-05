@@ -328,8 +328,7 @@ export const convertProjectDataToSteps = ({ projectData, siteData }: UpdateProje
             purpose,
             amount,
           } of projectData.buildingsConstructionAndRehabilitationExpenses) {
-            const field =
-              EXPENSE_PURPOSE_TO_FIELD[purpose as keyof typeof EXPENSE_PURPOSE_TO_FIELD];
+            const field = EXPENSE_PURPOSE_TO_FIELD[purpose];
             if (field) {
               expensesPayload[field] = amount;
             }

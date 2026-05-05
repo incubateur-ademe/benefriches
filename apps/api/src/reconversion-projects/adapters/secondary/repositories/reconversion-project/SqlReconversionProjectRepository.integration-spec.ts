@@ -1,4 +1,5 @@
 import knex, { Knex } from "knex";
+import { BuildingsConstructionExpense } from "shared";
 import { v4 as uuid } from "uuid";
 
 import {
@@ -529,8 +530,8 @@ describe("SqlReconversionProjectRepository integration", () => {
             newBuildingsUsesFloorSurfaceArea: { OFFICES: 400, SPORTS_FACILITIES: 200 },
             developerWillBeBuildingsConstructor: true,
             buildingsConstructionAndRehabilitationExpenses: [
-              { purpose: "construction", amount: 150000 },
-              { purpose: "rehabilitation", amount: 80000 },
+              { purpose: "buildings_construction_works", amount: 150000 },
+              { purpose: "buildings_rehabilitation_works", amount: 80000 },
             ],
           })
           .build();
@@ -551,8 +552,8 @@ describe("SqlReconversionProjectRepository integration", () => {
         });
         expect(result?.developerWillBeBuildingsConstructor).toEqual(true);
         expect(result?.buildingsConstructionAndRehabilitationExpenses).toEqual([
-          { purpose: "construction", amount: 150000 },
-          { purpose: "rehabilitation", amount: 80000 },
+          { purpose: "buildings_construction_works", amount: 150000 },
+          { purpose: "buildings_rehabilitation_works", amount: 80000 },
         ]);
       });
 
@@ -601,9 +602,9 @@ describe("SqlReconversionProjectRepository integration", () => {
 
       it("Saves right data in table reconversion_project_buildings_construction_costs", async () => {
         const siteId = await insertSiteInDb();
-        const buildingsConstructionAndRehabilitationExpenses = [
-          { purpose: "construction", amount: 150000 },
-          { purpose: "rehabilitation", amount: 80000 },
+        const buildingsConstructionAndRehabilitationExpenses: BuildingsConstructionExpense[] = [
+          { purpose: "buildings_construction_works", amount: 150000 },
+          { purpose: "buildings_rehabilitation_works", amount: 80000 },
         ];
         const reconversionProject = new UrbanProjectBuilder()
           .withCreatedBy("9b3a4906-1db2-441d-97d5-7be287add907")
@@ -1250,8 +1251,8 @@ describe("SqlReconversionProjectRepository integration", () => {
           newBuildingsUsesFloorSurfaceArea: { OFFICES: 500 },
           developerWillBeBuildingsConstructor: true,
           buildingsConstructionAndRehabilitationExpenses: [
-            { purpose: "construction", amount: 200000 },
-            { purpose: "rehabilitation", amount: 100000 },
+            { purpose: "buildings_construction_works", amount: 200000 },
+            { purpose: "buildings_rehabilitation_works", amount: 100000 },
           ],
           updatedAt,
         };
@@ -1268,8 +1269,8 @@ describe("SqlReconversionProjectRepository integration", () => {
         expect(result?.newBuildingsUsesFloorSurfaceArea).toEqual({ OFFICES: 500 });
         expect(result?.developerWillBeBuildingsConstructor).toEqual(true);
         expect(result?.buildingsConstructionAndRehabilitationExpenses).toEqual([
-          { purpose: "construction", amount: 200000 },
-          { purpose: "rehabilitation", amount: 100000 },
+          { purpose: "buildings_construction_works", amount: 200000 },
+          { purpose: "buildings_rehabilitation_works", amount: 100000 },
         ]);
       });
 
@@ -1280,7 +1281,7 @@ describe("SqlReconversionProjectRepository integration", () => {
           .withRelatedSiteId(siteId)
           .withBuildingsReuse({
             buildingsConstructionAndRehabilitationExpenses: [
-              { purpose: "construction", amount: 150000 },
+              { purpose: "buildings_construction_works", amount: 150000 },
             ],
           })
           .build();
@@ -1289,8 +1290,8 @@ describe("SqlReconversionProjectRepository integration", () => {
         const updatedProject: ReconversionProjectUpdateDto = {
           ...reconversionProject,
           buildingsConstructionAndRehabilitationExpenses: [
-            { purpose: "new_construction", amount: 250000 },
-            { purpose: "new_rehabilitation", amount: 120000 },
+            { purpose: "buildings_rehabilitation_works", amount: 250000 },
+            { purpose: "other_construction_expenses", amount: 120000 },
           ],
           updatedAt,
         };
@@ -1308,8 +1309,8 @@ describe("SqlReconversionProjectRepository integration", () => {
           .orderBy("amount");
 
         expect(costsResult).toEqual([
-          { amount: 120000, purpose: "new_rehabilitation" },
-          { amount: 250000, purpose: "new_construction" },
+          { amount: 120000, purpose: "other_construction_expenses" },
+          { amount: 250000, purpose: "buildings_rehabilitation_works" },
         ]);
       });
 
@@ -1320,7 +1321,7 @@ describe("SqlReconversionProjectRepository integration", () => {
           .withRelatedSiteId(siteId)
           .withBuildingsReuse({
             buildingsConstructionAndRehabilitationExpenses: [
-              { purpose: "construction", amount: 150000 },
+              { purpose: "buildings_construction_works", amount: 150000 },
             ],
           })
           .build();

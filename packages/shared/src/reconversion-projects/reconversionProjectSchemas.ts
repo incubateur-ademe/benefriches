@@ -5,7 +5,12 @@ import { soilTypeSchema } from "../soils";
 import { surfaceAreaSchema } from "../surface-area";
 import { FinancialAssistanceRevenue, ReinstatementExpense } from "./_common";
 import { RecurringExpense, RecurringRevenue } from "./renewable-energy";
-import { BuildingsUseDistribution, buildingsUseDistributionSchema } from "./urban-project";
+import {
+  BuildingsConstructionExpense,
+  buildingsConstructionExpensePurposeSchema,
+  BuildingsUseDistribution,
+  buildingsUseDistributionSchema,
+} from "./urban-project";
 
 export const photovoltaicPowerStationFeaturesSchema = z.object({
   surfaceArea: surfaceAreaSchema,
@@ -20,6 +25,11 @@ export const urbanProjectsFeaturesSchema = z.object({
 
 const expenseSchema = z.object({ purpose: z.string(), amount: z.number().nonnegative() });
 const revenueSchema = z.object({ source: z.string(), amount: z.number().nonnegative() });
+
+const buildingsConstructionExpenseSchema = z.object({
+  purpose: buildingsConstructionExpensePurposeSchema,
+  amount: z.number().nonnegative(),
+});
 
 const developmentPlanType = z.enum(["PHOTOVOLTAIC_POWER_PLANT", "URBAN_PROJECT"]);
 
@@ -92,7 +102,9 @@ export function createReconversionProjectSchema<T extends z.ZodTypeAny>(dateSche
     existingBuildingsUsesFloorSurfaceArea: buildingsUseDistributionSchema.optional(),
     newBuildingsUsesFloorSurfaceArea: buildingsUseDistributionSchema.optional(),
     developerWillBeBuildingsConstructor: z.boolean().optional(),
-    buildingsConstructionAndRehabilitationExpenses: z.array(expenseSchema).optional(),
+    buildingsConstructionAndRehabilitationExpenses: z
+      .array(buildingsConstructionExpenseSchema)
+      .optional(),
   });
 }
 
@@ -185,11 +197,7 @@ export type BaseReconversionProjectFeaturesView<T_Schedule = ScheduleString> = {
         existingBuildingsUsesFloorSurfaceArea?: BuildingsUseDistribution;
         newBuildingsUsesFloorSurfaceArea?: BuildingsUseDistribution;
         developerWillBeBuildingsConstructor?: boolean;
-        buildingsConstructionAndRehabilitationExpenses?: {
-          // todo-agent: use shared type BuildingsConstructionExpensePurpose
-          purpose: string;
-          amount: number;
-        }[];
+        buildingsConstructionAndRehabilitationExpenses?: BuildingsConstructionExpense[];
       };
   soilsDistribution: ReconversionProjectSoilsDistribution;
   futureOwner?: string;

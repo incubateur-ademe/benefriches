@@ -1,6 +1,11 @@
 import { Inject } from "@nestjs/common";
 import { Knex } from "knex";
-import { ReconversionProjectCreationMode, SoilType, SpaceCategory } from "shared";
+import {
+  BuildingsConstructionExpense,
+  ReconversionProjectCreationMode,
+  SoilType,
+  SpaceCategory,
+} from "shared";
 import { v4 as uuid } from "uuid";
 
 import { ReconversionProjectRepository } from "src/reconversion-projects/core/gateways/ReconversionProjectRepository";
@@ -507,7 +512,9 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
       developerWillBeBuildingsConstructor:
         sqlResult.development_plan.developer_will_be_buildings_constructor ?? undefined,
       buildingsConstructionAndRehabilitationExpenses:
-        sqlResult.development_plan.buildings_construction_costs ?? undefined,
+        (sqlResult.development_plan.buildings_construction_costs as
+          | BuildingsConstructionExpense[]
+          | null) ?? undefined,
       relatedSiteId: sqlResult.related_site_id,
       projectPhase: sqlResult.project_phase,
       createdBy: sqlResult.created_by,

@@ -57,7 +57,11 @@ describe("ProjectExpensesAndIncomesPdf", () => {
         { purpose: "buildings_construction_works", amount: 3000 },
         { purpose: "buildings_rehabilitation_works", amount: 4000 },
         { purpose: "other_construction_expenses", amount: 1000 },
-      ],
+      ] as NonNullable<
+        React.ComponentProps<
+          typeof ProjectExpensesAndIncomesPdf
+        >["buildingsConstructionAndRehabilitationExpenses"]
+      >,
     };
 
     const text = collectText(ProjectExpensesAndIncomesPdf(props)).join(" ");

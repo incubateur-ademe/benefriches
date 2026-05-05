@@ -1,4 +1,4 @@
-import { typedObjectEntries } from "shared";
+import { BuildingsConstructionExpense, typedObjectEntries } from "shared";
 
 import { DEFAULT_FUTURE_SITE_OWNER, getFutureOperator } from "../../../helpers/stakeholders";
 import type { ProjectFormState } from "../../../projectForm.reducer";
@@ -11,11 +11,11 @@ type Steps = ProjectFormState["urbanProject"]["steps"];
 
 function getBuildingsConstructionExpenses(
   steps: Steps,
-): { purpose: string; amount: number }[] | undefined {
+): BuildingsConstructionExpense[] | undefined {
   const payload = steps.URBAN_PROJECT_EXPENSES_BUILDINGS_CONSTRUCTION_AND_REHABILITATION?.payload;
   if (!payload) return undefined;
 
-  const expenses: { purpose: string; amount: number }[] = [];
+  const expenses: BuildingsConstructionExpense[] = [];
   for (const [key, purpose] of typedObjectEntries(EXPENSE_FIELD_TO_PURPOSE)) {
     const amount = payload[key];
     if (amount !== undefined) {

@@ -775,8 +775,8 @@ describe("ReconversionProjects controller", () => {
           newBuildingsUsesFloorSurfaceArea: { OFFICES: 400 },
           developerWillBeBuildingsConstructor: true,
           buildingsConstructionAndRehabilitationExpenses: [
-            { purpose: "construction", amount: 200000 },
-            { purpose: "rehabilitation", amount: 100000 },
+            { purpose: "buildings_construction_works", amount: 200000 },
+            { purpose: "buildings_rehabilitation_works", amount: 100000 },
           ],
         })
         .build();

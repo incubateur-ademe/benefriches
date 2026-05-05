@@ -17,10 +17,7 @@ import {
   getLabelForRecurringRevenueSource,
   getLabelForReinstatementExpensePurpose,
 } from "@/shared/core/reconversionProject";
-import {
-  BuildingsConstructionExpensePurpose,
-  getLabelForBuildingsConstructionExpenseFromApiPurpose,
-} from "@/shared/core/urbanProject";
+import { getLabelForBuildingsConstructionExpenseFromApiPurpose } from "@/shared/core/urbanProject";
 
 import DataLine from "../../components/DataLine";
 import FeaturesSection from "../../components/FeaturesSection";
@@ -94,9 +91,7 @@ export default function ProjectExpensesAndIncomesPdf({
           {buildingsConstructionAndRehabilitationExpenses.map(({ amount, purpose }) => {
             return (
               <DataLine
-                label={getLabelForBuildingsConstructionExpenseFromApiPurpose(
-                  purpose as BuildingsConstructionExpensePurpose,
-                )}
+                label={getLabelForBuildingsConstructionExpenseFromApiPurpose(purpose)}
                 value={formatMoneyPdf(amount)}
                 isDetails
                 key={purpose}
