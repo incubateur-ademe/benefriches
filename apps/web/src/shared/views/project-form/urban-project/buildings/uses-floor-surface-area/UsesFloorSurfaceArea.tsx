@@ -47,6 +47,10 @@ function UsesFloorSurfaceArea({
 
   const totalAllocatedSurfaceArea = sumObjectValues(watch());
 
+  const isTotalBelowBuildingsFootprint =
+    buildingsFootprintSurfaceArea !== undefined &&
+    totalAllocatedSurfaceArea < buildingsFootprintSurfaceArea;
+
   return (
     <WizardFormLayout
       title="Quelle surface de plancher feront les différents usages&nbsp;?"
@@ -86,9 +90,19 @@ function UsesFloorSurfaceArea({
           nativeInputProps={{
             value: totalAllocatedSurfaceArea,
           }}
+          state={isTotalBelowBuildingsFootprint ? "error" : "default"}
+          stateRelatedMessage={
+            isTotalBelowBuildingsFootprint
+              ? "La surface de plancher ne peut pas être inférieure à l'emprise au sol des bâtiments"
+              : undefined
+          }
           disabled
         />
-        <BackNextButtonsGroup onBack={onBack} nextLabel="Valider" disabled={!formState.isValid} />
+        <BackNextButtonsGroup
+          onBack={onBack}
+          nextLabel="Valider"
+          disabled={!formState.isValid || isTotalBelowBuildingsFootprint}
+        />
       </form>
     </WizardFormLayout>
   );
