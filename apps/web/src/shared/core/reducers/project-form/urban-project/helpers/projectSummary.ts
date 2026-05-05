@@ -221,7 +221,10 @@ export const getProjectSummary = (
       isAuto:
         steps.URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION?.payload?.decontaminationPlan ===
         "unknown",
-      shouldDisplay: stepsSequence.includes("URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA"),
+      shouldDisplay:
+        stepsSequence.includes("URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA") &&
+        !!steps.URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA?.payload
+          ?.decontaminatedSurfaceArea,
     },
     selectedUses: {
       value: steps.URBAN_PROJECT_USES_SELECTION?.payload?.usesSelection ?? [],

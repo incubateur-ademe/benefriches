@@ -232,11 +232,11 @@ function UrbanProjectFormSummary({
                       : "Non"
                   }
                 />
-                {projectSummary.decontaminatedSoilSurface.value && (
+                {projectSummary.decontaminatedSoilSurface.shouldDisplay && (
                   <DataLine
                     label="Surface à dépolluer"
                     value={formatSurfaceArea(
-                      roundToInteger(projectSummary.decontaminatedSoilSurface.value),
+                      roundToInteger(projectSummary.decontaminatedSoilSurface.value ?? 0),
                     )}
                     isDetails
                     valueTooltip={
