@@ -39,8 +39,8 @@ export interface SitesQuery {
 
 ```typescript
 // apps/api/src/sites/core/usecases/getSite.usecase.ts
-import { fail, success, type TResult } from "@/shared-kernel/result";
-import type { UseCase } from "@/shared-kernel/usecase";
+import { fail, success, type TResult } from "src/shared-kernel/result";
+import type { UseCase } from "src/shared-kernel/usecase";
 import type { GetSiteResponseDto } from "shared";
 import type { SitesQuery } from "../gateways/SitesQuery";
 
@@ -64,8 +64,9 @@ export class GetSiteUseCase implements UseCase<Request, Response> {
 
 ```typescript
 // apps/api/src/sites/core/usecases/getSite.usecase.spec.ts
-import { GetSiteUseCase } from "./getSite.usecase";
+import { FailureResult, SuccessResult } from "src/shared-kernel/result";
 import { InMemorySitesQuery } from "../../adapters/secondary/sites-query/InMemorySitesQuery";
+import { GetSiteUseCase } from "./getSite.usecase";
 
 describe("GetSiteUseCase", () => {
   it("should return site when found", async () => {
@@ -77,8 +78,8 @@ describe("GetSiteUseCase", () => {
     const useCase = new GetSiteUseCase(sitesQuery);
     const result = await useCase.execute({ id: "site-1" });
 
-    expect(result.isSuccess).toBe(true);
-    expect(result.value).toEqual({
+    expect(result.isSuccess()).toBe(true);
+    expect((result as SuccessResult<unknown>).getData()).toEqual({
       id: "site-1",
       name: "My Site",
       nature: "FRICHE",
@@ -92,8 +93,8 @@ describe("GetSiteUseCase", () => {
 
     const result = await useCase.execute({ id: "nonexistent" });
 
-    expect(result.isSuccess).toBe(false);
-    expect(result.error).toBe("SiteNotFound");
+    expect(result.isFailure()).toBe(true);
+    expect((result as FailureResult).getError()).toBe("SiteNotFound");
   });
 });
 ```
@@ -163,10 +164,10 @@ export class SitesController {
   @Get(":id")
   async getSite(@Param("id") id: string) {
     const result = await this.getSiteUseCase.execute({ id });
-    if (!result.isSuccess) {
+    if (result.isFailure()) {
       throw new NotFoundException("Site not found");
     }
-    return result.value;
+    return result.getData();
   }
 }
 ```
@@ -238,7 +239,7 @@ export class InMemorySitesService implements SitesGateway {
 ```typescript
 // apps/web/src/features/sites/core/actions/fetchSite.action.ts
 import type { GetSiteResponseDto } from "shared";
-import { createAppAsyncThunk } from "@/shared/core/store-config/store";
+import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
 
 // Action named in passive tense (event that happened)
 export const siteFetched = createAppAsyncThunk<
@@ -298,7 +299,7 @@ export const sitesReducer = createReducer(getInitialState(), (builder) => {
 ```typescript
 // apps/web/src/features/sites/core/sites.selectors.ts
 import { createSelector } from "@reduxjs/toolkit";
-import type { RootState } from "@/shared/core/store-config/store";
+import type { RootState } from "@/app/store/store";
 
 const selectSelf = (state: RootState) => state.sites;
 
@@ -318,7 +319,7 @@ export const selectSiteViewData = createSelector(selectSelf, (state) => ({
 ```typescript
 // apps/web/src/features/sites/views/index.tsx
 import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { siteFetched } from "../core/actions/fetchSite.action";
 import { selectSiteViewData } from "../core/sites.selectors";
 import { SitePage } from "./SitePage";
