@@ -67,7 +67,19 @@ const DevelopmentPlanFeatures = ({
         </>
       );
     case "URBAN_PROJECT": {
-      const { buildingsFloorAreaDistribution } = developmentPlan;
+      const {
+        buildingsFloorAreaDistribution,
+        buildingsFootprintToReuse,
+        existingBuildingsUsesFloorSurfaceArea,
+        newBuildingsUsesFloorSurfaceArea,
+        developerWillBeBuildingsConstructor,
+      } = developmentPlan;
+      const hasBuildingsData =
+        sumObjectValues(buildingsFloorAreaDistribution) > 0 ||
+        buildingsFootprintToReuse !== undefined ||
+        existingBuildingsUsesFloorSurfaceArea !== undefined ||
+        newBuildingsUsesFloorSurfaceArea !== undefined ||
+        developerWillBeBuildingsConstructor !== undefined;
 
       const livingAndActivitiesSpaces = soilsDistribution.filter(
         ({ spaceCategory }) => spaceCategory === "LIVING_AND_ACTIVITY_SPACE",
@@ -93,6 +105,8 @@ const DevelopmentPlanFeatures = ({
         livingAndActivitiesSpaces,
         "surfaceArea",
       );
+      const projectBuildingsFootprint =
+        soilsDistribution.find(({ soilType }) => soilType === "BUILDINGS")?.surfaceArea ?? 0;
       const totalPublicGreenSpacesAndPublicGrassSpaces =
         totalGrassPublicSpaces + totalPublicGreenSpaces;
       const totalOtherPublicSpaces = sumListWithKey(otherPublicSpaces, "surfaceArea");
@@ -300,9 +314,14 @@ const DevelopmentPlanFeatures = ({
             </div>
           </Section>
 
-          {sumObjectValues(buildingsFloorAreaDistribution) > 0 && (
+          {hasBuildingsData && (
             <UrbanProjectBuildingsSection
+              buildingsFootprintToReuse={buildingsFootprintToReuse}
+              existingBuildingsUsesFloorSurfaceArea={existingBuildingsUsesFloorSurfaceArea}
+              newBuildingsUsesFloorSurfaceArea={newBuildingsUsesFloorSurfaceArea}
+              developerWillBeBuildingsConstructor={developerWillBeBuildingsConstructor}
               isExpress={isExpress}
+              projectBuildingsFootprint={projectBuildingsFootprint}
               totalSurfaceArea={totalSurfaceArea}
               buildingsFloorAreaDistribution={buildingsFloorAreaDistribution}
               urbanProjectCategoryLabel={urbanProjectCategoryLabel}

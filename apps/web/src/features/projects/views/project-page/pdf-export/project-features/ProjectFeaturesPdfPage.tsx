@@ -54,6 +54,11 @@ export default function ProjectFeaturesPdfPage({ projectFeatures }: Props) {
         <ProjectExpensesAndIncomesPdf
           developmentPlanType={projectFeatures.developmentPlan.type}
           developmentPlanInstallationExpenses={projectFeatures.developmentPlan.installationCosts}
+          buildingsConstructionAndRehabilitationExpenses={
+            projectFeatures.developmentPlan.type === "URBAN_PROJECT"
+              ? projectFeatures.developmentPlan.buildingsConstructionAndRehabilitationExpenses
+              : undefined
+          }
           financialAssistanceRevenues={projectFeatures.financialAssistanceRevenues}
           yearlyProjectedExpenses={projectFeatures.yearlyProjectedExpenses}
           yearlyProjectedRevenues={projectFeatures.yearlyProjectedRevenues}

@@ -21,6 +21,11 @@ import { SqlReconversionProjectSoilsDistribution } from "src/shared-kernel/adapt
 
 import { ReconversionProjectQueryGateway } from "../../../../core/usecases/getReconversionProjectFeatures.usecase";
 
+type UrbanProjectFeaturesView = Extract<
+  ReconversionProjectFeaturesView["developmentPlan"],
+  { type: "URBAN_PROJECT" }
+>;
+
 const mapSqlSchedule = (startDate: string | null, endDate: string | null): Schedule | undefined => {
   return startDate && endDate
     ? {
@@ -28,6 +33,25 @@ const mapSqlSchedule = (startDate: string | null, endDate: string | null): Sched
         endDate: new Date(endDate),
       }
     : undefined;
+};
+
+const getBuildingsReuseFields = (
+  features: unknown,
+): Pick<
+  UrbanProjectFeaturesView,
+  | "buildingsFootprintToReuse"
+  | "existingBuildingsUsesFloorSurfaceArea"
+  | "newBuildingsUsesFloorSurfaceArea"
+> => {
+  const featuresRecord = features as Record<string, unknown> | undefined;
+  return {
+    buildingsFootprintToReuse: (featuresRecord?.buildingsFootprintToReuse as number) ?? undefined,
+    existingBuildingsUsesFloorSurfaceArea:
+      (featuresRecord?.existingBuildingsUsesFloorSurfaceArea as Record<string, number>) ??
+      undefined,
+    newBuildingsUsesFloorSurfaceArea:
+      (featuresRecord?.newBuildingsUsesFloorSurfaceArea as Record<string, number>) ?? undefined,
+  };
 };
 
 type ReconversionProjectSqlResult = {
@@ -57,6 +81,8 @@ type ReconversionProjectSqlResult = {
     developer_name: string;
     schedule_start_date: string | null;
     schedule_end_date: string | null;
+    developer_will_be_buildings_constructor: boolean | null;
+    buildings_construction_costs: { amount: number; purpose: string }[] | null;
     features: DevelopmentPlan["features"];
   };
 };
@@ -133,6 +159,7 @@ export class SqlReconversionProjectQuery implements ReconversionProjectQueryGate
               FROM (
                 SELECT
                   dp.developer_name, dp.schedule_start_date, dp.schedule_end_date, dp.type, dp.features,
+                  dp.developer_will_be_buildings_constructor,
                   (
                     SELECT json_agg(row_to_json(development_plan_costs_rows))
                     FROM (
@@ -140,7 +167,15 @@ export class SqlReconversionProjectQuery implements ReconversionProjectQueryGate
                       FROM reconversion_project_development_plan_costs
                       WHERE development_plan_id = dp.id
                     ) development_plan_costs_rows
-                  ) as costs
+                  ) as costs,
+                  (
+                    SELECT json_agg(row_to_json(buildings_construction_costs_rows))
+                    FROM (
+                      SELECT amount, purpose
+                      FROM reconversion_project_buildings_construction_costs
+                      WHERE development_plan_id = dp.id
+                    ) buildings_construction_costs_rows
+                  ) as buildings_construction_costs
                 FROM reconversion_project_development_plans dp
                 WHERE dp.reconversion_project_id = ?
                 LIMIT 1
@@ -186,6 +221,11 @@ export class SqlReconversionProjectQuery implements ReconversionProjectQueryGate
           ),
           type: "URBAN_PROJECT",
           buildingsFloorAreaDistribution: buildingsFloorAreaDistribution,
+          ...getBuildingsReuseFields(sqlResult.development_plan.features),
+          developerWillBeBuildingsConstructor:
+            sqlResult.development_plan.developer_will_be_buildings_constructor ?? undefined,
+          buildingsConstructionAndRehabilitationExpenses:
+            sqlResult.development_plan.buildings_construction_costs ?? undefined,
         };
       }
       throw new Error("Unknown development plan type");

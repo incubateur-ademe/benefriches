@@ -34,6 +34,14 @@ export const formatReconversionProjectInputToFeatures = (
             .costs as DevelopmentPlanInstallationExpenses[],
           ...reconversionProject.developmentPlan,
           ...reconversionProject.developmentPlan.features,
+          buildingsFootprintToReuse: reconversionProject.buildingsFootprintToReuse,
+          existingBuildingsUsesFloorSurfaceArea:
+            reconversionProject.existingBuildingsUsesFloorSurfaceArea,
+          newBuildingsUsesFloorSurfaceArea: reconversionProject.newBuildingsUsesFloorSurfaceArea,
+          developerWillBeBuildingsConstructor:
+            reconversionProject.developerWillBeBuildingsConstructor,
+          buildingsConstructionAndRehabilitationExpenses:
+            reconversionProject.buildingsConstructionAndRehabilitationExpenses,
         },
 
   futureOwner: reconversionProject.futureSiteOwner?.name,

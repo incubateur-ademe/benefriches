@@ -181,6 +181,15 @@ export type BaseReconversionProjectFeaturesView<T_Schedule = ScheduleString> = {
         buildingsFloorAreaDistribution: BuildingsUseDistribution;
         installationCosts: DevelopmentPlanInstallationExpenses[];
         installationSchedule?: T_Schedule;
+        buildingsFootprintToReuse?: number;
+        existingBuildingsUsesFloorSurfaceArea?: BuildingsUseDistribution;
+        newBuildingsUsesFloorSurfaceArea?: BuildingsUseDistribution;
+        developerWillBeBuildingsConstructor?: boolean;
+        buildingsConstructionAndRehabilitationExpenses?: {
+          // todo-agent: use shared type BuildingsConstructionExpensePurpose
+          purpose: string;
+          amount: number;
+        }[];
       };
   soilsDistribution: ReconversionProjectSoilsDistribution;
   futureOwner?: string;

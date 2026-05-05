@@ -464,6 +464,136 @@ describe("ReconversionProjects controller", () => {
     });
   });
 
+  describe("GET /reconversion-projects/:reconversionProjectId/features", () => {
+    // todo-agent: cover more cases here, this is currently only covering the urban project reuse and construction fields but we should also cover the other fields returned by this endpoint
+    it("returns persisted urban-project buildings reuse and construction fields", async () => {
+      const authenticatedUser = new UserBuilder().asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(authenticatedUser);
+      const siteId = uuid();
+      const reconversionProjectId = uuid();
+
+      await sqlConnection("sites").insert({
+        id: siteId,
+        created_by: authenticatedUser.id,
+        name: "Site name",
+        surface_area: 14000,
+        owner_structure_type: "company",
+        created_at: new Date(),
+      });
+
+      const urbanProject = new UrbanProjectBuilder()
+        .withId(reconversionProjectId)
+        .withCreatedBy(authenticatedUser.id)
+        .withRelatedSiteId(siteId)
+        .withBuildingsReuse({
+          buildingsFootprintToReuse: 1000,
+          existingBuildingsUsesFloorSurfaceArea: {
+            RESIDENTIAL: 4000,
+            OFFICES: 2000,
+          },
+          newBuildingsUsesFloorSurfaceArea: {
+            RESIDENTIAL: 2000,
+            OFFICES: 0,
+          },
+          developerWillBeBuildingsConstructor: true,
+          buildingsConstructionAndRehabilitationExpenses: [
+            { purpose: "technical_studies_and_fees", amount: 1 },
+            { purpose: "buildings_construction_works", amount: 2 },
+            { purpose: "buildings_rehabilitation_works", amount: 3 },
+            { purpose: "other_construction_expenses", amount: 4 },
+          ],
+        })
+        .build();
+      await app.get(SqlReconversionProjectRepository).save(urbanProject);
+
+      const response = await supertest(app.getHttpServer())
+        .get(`/api/reconversion-projects/${reconversionProjectId}/features`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send();
+
+      expect(response.status).toEqual(200);
+      expect(response.body).toEqual({
+        id: reconversionProjectId,
+        name: "Centrale photovoltaique",
+        description: "Description of reconversion project",
+        isExpress: false,
+        decontaminatedSoilSurface: 3000,
+        firstYearOfOperation: 2029,
+        developmentPlan: {
+          type: "URBAN_PROJECT",
+          developerName: "developer company name",
+          installationCosts: [
+            { amount: 130000, purpose: "development_works" },
+            { amount: 59999, purpose: "technical_studies" },
+          ],
+          installationSchedule: {
+            startDate: "2028-07-01T00:00:00.000Z",
+            endDate: "2029-03-01T00:00:00.000Z",
+          },
+          buildingsFloorAreaDistribution: {
+            RESIDENTIAL: 250,
+            LOCAL_STORE: 250,
+            ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES: 250,
+            MULTI_STORY_PARKING: 250,
+          },
+          buildingsFootprintToReuse: 1000,
+          existingBuildingsUsesFloorSurfaceArea: {
+            RESIDENTIAL: 4000,
+            OFFICES: 2000,
+          },
+          newBuildingsUsesFloorSurfaceArea: {
+            RESIDENTIAL: 2000,
+            OFFICES: 0,
+          },
+          developerWillBeBuildingsConstructor: true,
+          buildingsConstructionAndRehabilitationExpenses: [
+            { purpose: "technical_studies_and_fees", amount: 1 },
+            { purpose: "buildings_construction_works", amount: 2 },
+            { purpose: "buildings_rehabilitation_works", amount: 3 },
+            { purpose: "other_construction_expenses", amount: 4 },
+          ],
+        },
+        soilsDistribution: [
+          {
+            soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+            surfaceArea: 1000,
+            spaceCategory: "PUBLIC_SPACE",
+          },
+          {
+            soilType: "ARTIFICIAL_TREE_FILLED",
+            surfaceArea: 5000,
+            spaceCategory: "PUBLIC_GREEN_SPACE",
+          },
+          {
+            soilType: "BUILDINGS",
+            surfaceArea: 1500,
+            spaceCategory: "LIVING_AND_ACTIVITY_SPACE",
+          },
+        ],
+        yearlyProjectedExpenses: [{ purpose: "rent", amount: 12000 }],
+        yearlyProjectedRevenues: [{ source: "operations", amount: 13000 }],
+        reinstatementContractOwner: "Reinstatement company",
+        reinstatementSchedule: {
+          startDate: "2025-02-01T00:00:00.000Z",
+          endDate: "2028-06-30T00:00:00.000Z",
+        },
+        financialAssistanceRevenues: [
+          { amount: 14000, source: "public_subsidies" },
+          { amount: 999.99, source: "other" },
+        ],
+        reinstatementCosts: [
+          { amount: 120000, purpose: "waste_collection" },
+          { amount: 33333, purpose: "deimpermeabilization" },
+          { amount: 44444, purpose: "sustainable_soils_reinstatement" },
+          { amount: 1, purpose: "other_reinstatement_costs" },
+        ],
+        sitePurchaseTotalAmount: 162000,
+        siteResaleSellingPrice: 2000000,
+        buildingsResaleSellingPrice: 149000,
+      });
+    });
+  });
+
   describe("GET /reconversion-projects/:reconversionProjectId/impacts", () => {
     it("gets a 401 when not authenticated", async () => {
       const response = await supertest(app.getHttpServer())

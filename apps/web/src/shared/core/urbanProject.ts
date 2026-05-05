@@ -156,3 +156,25 @@ export const getLabelForBuildingsConstructionExpense = (
       return "Autres dépenses de construction ou de réhabilitation";
   }
 };
+
+// todo-agent: extract this union type to shared package and use it everywhere it's relevant in API and webapp
+export type BuildingsConstructionExpensePurpose =
+  | "technical_studies_and_fees"
+  | "buildings_construction_works"
+  | "buildings_rehabilitation_works"
+  | "other_construction_expenses";
+
+export const getLabelForBuildingsConstructionExpenseFromApiPurpose = (
+  purpose: BuildingsConstructionExpensePurpose,
+): string => {
+  switch (purpose) {
+    case "technical_studies_and_fees":
+      return getLabelForBuildingsConstructionExpense("technicalStudiesAndFees");
+    case "buildings_construction_works":
+      return getLabelForBuildingsConstructionExpense("buildingsConstructionWorks");
+    case "buildings_rehabilitation_works":
+      return getLabelForBuildingsConstructionExpense("buildingsRehabilitationWorks");
+    case "other_construction_expenses":
+      return getLabelForBuildingsConstructionExpense("otherConstructionExpenses");
+  }
+};

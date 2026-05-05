@@ -9,6 +9,7 @@ import {
 import {
   ProjectDevelopmentPlanType,
   ProjectFeatures,
+  UrbanProjectFeatures,
 } from "@/features/projects/domain/projects.types";
 import {
   getLabelForFinancialAssistanceRevenueSource,
@@ -16,6 +17,10 @@ import {
   getLabelForRecurringRevenueSource,
   getLabelForReinstatementExpensePurpose,
 } from "@/shared/core/reconversionProject";
+import {
+  BuildingsConstructionExpensePurpose,
+  getLabelForBuildingsConstructionExpenseFromApiPurpose,
+} from "@/shared/core/urbanProject";
 
 import DataLine from "../../components/DataLine";
 import FeaturesSection from "../../components/FeaturesSection";
@@ -25,6 +30,7 @@ import DevelopmentExpenses from "./DevelopmentExpenses";
 type Props = {
   sitePurchaseTotalAmount?: number;
   reinstatementCosts?: ReinstatementExpense[];
+  buildingsConstructionAndRehabilitationExpenses?: UrbanProjectFeatures["buildingsConstructionAndRehabilitationExpenses"];
   siteResaleSellingPrice?: number;
   buildingsResaleSellingPrice?: number;
   financialAssistanceRevenues?: FinancialAssistanceRevenue[];
@@ -37,6 +43,7 @@ type Props = {
 export default function ProjectExpensesAndIncomesPdf({
   sitePurchaseTotalAmount,
   reinstatementCosts,
+  buildingsConstructionAndRehabilitationExpenses,
   siteResaleSellingPrice,
   buildingsResaleSellingPrice,
   financialAssistanceRevenues,
@@ -74,6 +81,30 @@ export default function ProjectExpensesAndIncomesPdf({
           })}
         </>
       )}
+      {buildingsConstructionAndRehabilitationExpenses?.length ? (
+        <>
+          <DataLine
+            label="Construction / réhabilitation des bâtiments"
+            value={formatMoneyPdf(
+              sumListWithKey(buildingsConstructionAndRehabilitationExpenses, "amount"),
+            )}
+            noBorder
+            bold
+          />
+          {buildingsConstructionAndRehabilitationExpenses.map(({ amount, purpose }) => {
+            return (
+              <DataLine
+                label={getLabelForBuildingsConstructionExpenseFromApiPurpose(
+                  purpose as BuildingsConstructionExpensePurpose,
+                )}
+                value={formatMoneyPdf(amount)}
+                isDetails
+                key={purpose}
+              />
+            );
+          })}
+        </>
+      ) : undefined}
       {developmentPlanInstallationExpenses.length > 0 && (
         <DevelopmentExpenses
           developmentPlanType={developmentPlanType}

@@ -101,10 +101,20 @@ describe("SqlReconversionProjectQuery integration", () => {
           type: "URBAN_PROJECT",
           developer_name: "Promoteur immo",
           developer_structure_type: "company",
+          developer_will_be_buildings_constructor: true,
           features: {
             buildingsFloorAreaDistribution: {
               RESIDENTIAL: 5000,
               LOCAL_SERVICES: 2000,
+            },
+            buildingsFootprintToReuse: 1000,
+            existingBuildingsUsesFloorSurfaceArea: {
+              RESIDENTIAL: 4000,
+              OFFICES: 2000,
+            },
+            newBuildingsUsesFloorSurfaceArea: {
+              RESIDENTIAL: 2000,
+              OFFICES: 0,
             },
           },
         },
@@ -121,6 +131,32 @@ describe("SqlReconversionProjectQuery integration", () => {
           development_plan_id: developmentPlanId,
           amount: 125000,
           purpose: "development_works",
+        },
+      ]);
+      await sqlConnection("reconversion_project_buildings_construction_costs").insert([
+        {
+          id: uuid(),
+          development_plan_id: developmentPlanId,
+          amount: 1,
+          purpose: "technical_studies_and_fees",
+        },
+        {
+          id: uuid(),
+          development_plan_id: developmentPlanId,
+          amount: 2,
+          purpose: "buildings_construction_works",
+        },
+        {
+          id: uuid(),
+          development_plan_id: developmentPlanId,
+          amount: 3,
+          purpose: "buildings_rehabilitation_works",
+        },
+        {
+          id: uuid(),
+          development_plan_id: developmentPlanId,
+          amount: 4,
+          purpose: "other_construction_expenses",
         },
       ]);
 
@@ -149,7 +185,7 @@ describe("SqlReconversionProjectQuery integration", () => {
 
       const result = await repository.getFeaturesById(reconversionProjectId);
 
-      expect(result).toEqual<Required<ReconversionProjectFeaturesView>>({
+      expect(result).toEqual<ReconversionProjectFeaturesView>({
         id: reconversionProjectId,
         name: "Urban project",
         description: "A urban project description",
@@ -182,6 +218,22 @@ describe("SqlReconversionProjectQuery integration", () => {
             startDate: new Date("2025-01-01"),
             endDate: new Date("2025-05-15"),
           },
+          buildingsFootprintToReuse: 1000,
+          existingBuildingsUsesFloorSurfaceArea: {
+            RESIDENTIAL: 4000,
+            OFFICES: 2000,
+          },
+          newBuildingsUsesFloorSurfaceArea: {
+            RESIDENTIAL: 2000,
+            OFFICES: 0,
+          },
+          developerWillBeBuildingsConstructor: true,
+          buildingsConstructionAndRehabilitationExpenses: [
+            { amount: 1, purpose: "technical_studies_and_fees" },
+            { amount: 2, purpose: "buildings_construction_works" },
+            { amount: 3, purpose: "buildings_rehabilitation_works" },
+            { amount: 4, purpose: "other_construction_expenses" },
+          ],
         },
         reinstatementSchedule: {
           startDate: new Date("2024-07-01"),

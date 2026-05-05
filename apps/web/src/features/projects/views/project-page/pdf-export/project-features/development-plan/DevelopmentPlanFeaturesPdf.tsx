@@ -59,7 +59,13 @@ const DevelopmentPlanFeatures = ({
         </>
       );
     case "URBAN_PROJECT": {
-      const { buildingsFloorAreaDistribution } = developmentPlan;
+      const {
+        buildingsFloorAreaDistribution,
+        buildingsFootprintToReuse,
+        existingBuildingsUsesFloorSurfaceArea,
+        newBuildingsUsesFloorSurfaceArea,
+        developerWillBeBuildingsConstructor,
+      } = developmentPlan;
 
       const livingAndActivitiesSpaces = soilsDistribution.filter(
         ({ spaceCategory }) => spaceCategory === "LIVING_AND_ACTIVITY_SPACE",
@@ -85,6 +91,8 @@ const DevelopmentPlanFeatures = ({
         livingAndActivitiesSpaces,
         "surfaceArea",
       );
+      const projectBuildingsFootprint =
+        soilsDistribution.find(({ soilType }) => soilType === "BUILDINGS")?.surfaceArea ?? 0;
       const totalPublicGreenSpacesAndPublicGrassSpaces =
         totalGrassPublicSpaces + totalPublicGreenSpaces;
       const totalOtherPublicSpaces = sumListWithKey(otherPublicSpaces, "surfaceArea");
@@ -220,6 +228,73 @@ const DevelopmentPlanFeatures = ({
                   isDetails
                 />
               ) : undefined,
+            )}
+            {buildingsFootprintToReuse !== undefined && (
+              <DataLine
+                label="Emprise au sol des bâtiments à réemployer"
+                value={formatSurfaceAreaPdf(buildingsFootprintToReuse)}
+                noBorder
+                bold
+              />
+            )}
+            {buildingsFootprintToReuse !== undefined && (
+              <DataLine
+                label="Emprise au sol des nouveaux bâtiments"
+                value={formatSurfaceAreaPdf(
+                  Math.max(0, projectBuildingsFootprint - buildingsFootprintToReuse),
+                )}
+                noBorder
+                bold
+              />
+            )}
+            {existingBuildingsUsesFloorSurfaceArea && (
+              <>
+                <DataLine
+                  label="Bâtiments existants"
+                  value={formatSurfaceAreaPdf(
+                    sumObjectValues(existingBuildingsUsesFloorSurfaceArea),
+                  )}
+                  noBorder
+                  bold
+                />
+                {typedObjectEntries(existingBuildingsUsesFloorSurfaceArea).map(([use, value]) =>
+                  value ? (
+                    <DataLine
+                      key={use}
+                      label={getLabelForBuildingsUse(use)}
+                      value={formatSurfaceAreaPdf(value)}
+                      isDetails
+                    />
+                  ) : undefined,
+                )}
+              </>
+            )}
+            {newBuildingsUsesFloorSurfaceArea && (
+              <>
+                <DataLine
+                  label="Bâtiments neufs"
+                  value={formatSurfaceAreaPdf(sumObjectValues(newBuildingsUsesFloorSurfaceArea))}
+                  noBorder
+                  bold
+                />
+                {typedObjectEntries(newBuildingsUsesFloorSurfaceArea).map(([use, value]) =>
+                  value ? (
+                    <DataLine
+                      key={use}
+                      label={getLabelForBuildingsUse(use)}
+                      value={formatSurfaceAreaPdf(value)}
+                      isDetails
+                    />
+                  ) : undefined,
+                )}
+              </>
+            )}
+            {developerWillBeBuildingsConstructor !== undefined && (
+              <DataLine
+                label="L'aménageur sera constructeur des nouveaux bâtiments"
+                value={developerWillBeBuildingsConstructor ? "Oui" : "Non"}
+                noBorder
+              />
             )}
           </FeaturesSection>
         </>

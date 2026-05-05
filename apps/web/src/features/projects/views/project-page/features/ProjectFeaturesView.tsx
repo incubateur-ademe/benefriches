@@ -105,6 +105,11 @@ export default function ProjectFeaturesView({ projectData }: Props) {
         <ExpensesAndRevenuesSection
           developmentPlanType={projectData.developmentPlan.type}
           installationCosts={projectData.developmentPlan.installationCosts}
+          buildingsConstructionAndRehabilitationExpenses={
+            projectData.developmentPlan.type === "URBAN_PROJECT"
+              ? projectData.developmentPlan.buildingsConstructionAndRehabilitationExpenses
+              : undefined
+          }
           yearlyProjectedExpenses={projectData.yearlyProjectedExpenses}
           yearlyProjectedRevenues={projectData.yearlyProjectedRevenues}
           sitePurchaseTotalAmount={projectData.sitePurchaseTotalAmount}

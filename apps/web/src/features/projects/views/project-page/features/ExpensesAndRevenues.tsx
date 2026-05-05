@@ -11,7 +11,7 @@ import {
   sumObjectValues,
 } from "shared";
 
-import { ProjectFeatures } from "@/features/projects/domain/projects.types";
+import { ProjectFeatures, UrbanProjectFeatures } from "@/features/projects/domain/projects.types";
 import { formatMoney } from "@/shared/core/format-number/formatNumber";
 import {
   getLabelForFinancialAssistanceRevenueSource,
@@ -19,6 +19,10 @@ import {
   getLabelForRecurringRevenueSource,
   getLabelForReinstatementExpensePurpose,
 } from "@/shared/core/reconversionProject";
+import {
+  BuildingsConstructionExpensePurpose,
+  getLabelForBuildingsConstructionExpenseFromApiPurpose,
+} from "@/shared/core/urbanProject";
 import DataLine from "@/shared/views/components/FeaturesList/FeaturesListDataLine";
 import Section from "@/shared/views/components/FeaturesList/FeaturesListSection";
 
@@ -29,6 +33,7 @@ type Props = {
   installationCosts: ProjectFeatures["developmentPlan"]["installationCosts"];
   developmentPlanType: DevelopmentPlanType;
   isExpress: boolean;
+  buildingsConstructionAndRehabilitationExpenses?: UrbanProjectFeatures["buildingsConstructionAndRehabilitationExpenses"];
 } & Pick<
   ProjectFeatures,
   | "yearlyProjectedExpenses"
@@ -52,11 +57,13 @@ export default function ExpensesAndRevenuesSection({
   financialAssistanceRevenues,
   reinstatementCosts,
   installationCosts,
+  buildingsConstructionAndRehabilitationExpenses,
 }: Props) {
   const hasExpensesOrRevenues =
     yearlyProjectedExpenses.length > 0 ||
     yearlyProjectedRevenues.length > 0 ||
     installationCosts.length > 0 ||
+    (buildingsConstructionAndRehabilitationExpenses?.length ?? 0) > 0 ||
     sitePurchaseTotalAmount ||
     siteResaleSellingPrice ||
     buildingsResaleSellingPrice ||
@@ -119,6 +126,34 @@ export default function ExpensesAndRevenuesSection({
           })}
         </>
       )}
+      {buildingsConstructionAndRehabilitationExpenses &&
+        buildingsConstructionAndRehabilitationExpenses.length > 0 && (
+          <>
+            <DataLine
+              noBorder
+              label={<strong>Construction / réhabilitation des bâtiments</strong>}
+              value={
+                <strong>
+                  {formatMoney(
+                    sumListWithKey(buildingsConstructionAndRehabilitationExpenses, "amount"),
+                  )}
+                </strong>
+              }
+            />
+            {buildingsConstructionAndRehabilitationExpenses.map(({ amount, purpose }) => {
+              return (
+                <DataLine
+                  label={getLabelForBuildingsConstructionExpenseFromApiPurpose(
+                    purpose as BuildingsConstructionExpensePurpose,
+                  )}
+                  value={formatMoney(amount)}
+                  isDetails
+                  key={purpose}
+                />
+              );
+            })}
+          </>
+        )}
       {installationCosts.length > 0 && (
         <DevelopmentPlanInstallationExpenses
           developmentPlanType={developmentPlanType}
