@@ -138,11 +138,11 @@ describe("ExpensesAndRevenuesSection", () => {
         text.indexOf("Dépenses d'aménagement du projet urbain"),
       );
 
-      expect(screen.getByText("Études et honoraires techniques")).toBeVisible();
-      expect(screen.getByText("Travaux de construction des bâtiments")).toBeVisible();
-      expect(screen.getByText("Travaux de réhabilitation des bâtiments")).toBeVisible();
+      expect(screen.getByText("📋 Études et honoraires techniques")).toBeVisible();
+      expect(screen.getByText("🧱 Travaux de construction des bâtiments")).toBeVisible();
+      expect(screen.getByText("🏚 Travaux de réhabilitation des bâtiments")).toBeVisible();
       expect(
-        screen.getByText("Autres dépenses de construction ou de réhabilitation"),
+        screen.getByText("🏗️ Autres dépenses de construction ou de réhabilitation"),
       ).toBeVisible();
     });
 

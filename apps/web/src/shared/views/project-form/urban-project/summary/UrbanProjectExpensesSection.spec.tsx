@@ -35,10 +35,12 @@ describe("UrbanProjectExpensesSection", () => {
     );
 
     expect(screen.getByText("Construction / réhabilitation des bâtiments")).toBeVisible();
-    expect(screen.getByText("Études et honoraires techniques")).toBeVisible();
-    expect(screen.getByText("Travaux de construction des bâtiments")).toBeVisible();
-    expect(screen.getByText("Travaux de réhabilitation des bâtiments")).toBeVisible();
-    expect(screen.getByText("Autres dépenses de construction ou de réhabilitation")).toBeVisible();
+    expect(screen.getByText("📋 Études et honoraires techniques")).toBeVisible();
+    expect(screen.getByText("🧱 Travaux de construction des bâtiments")).toBeVisible();
+    expect(screen.getByText("🏚 Travaux de réhabilitation des bâtiments")).toBeVisible();
+    expect(
+      screen.getByText("🏗️ Autres dépenses de construction ou de réhabilitation"),
+    ).toBeVisible();
 
     expect(screen.getByText(/10\s*000\s*€/)).toBeVisible();
     expect(screen.getByText(/20\s*000\s*€/)).toBeVisible();
