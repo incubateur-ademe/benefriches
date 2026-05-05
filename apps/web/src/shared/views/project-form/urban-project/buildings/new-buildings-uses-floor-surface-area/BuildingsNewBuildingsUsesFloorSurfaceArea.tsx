@@ -20,6 +20,8 @@ import { optionalNumericFieldRegisterOptions } from "@/shared/views/components/f
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
+import BuildingsFloorSurfaceAreaAllocation from "../components/BuildingsFloorSurfaceAreaAllocation";
+
 type Props = {
   initialValues: BuildingsUseDistribution | undefined;
   selectedUses: UrbanProjectUseWithBuilding[];
@@ -42,23 +44,31 @@ function BuildingsNewBuildingsUsesFloorSurfaceArea({
     mode: "onChange",
   });
 
-  const totalAllocatedSurfaceArea = sumObjectValues(watch());
+  const allocations = watch();
+  const totalAllocatedSurfaceArea = sumObjectValues(allocations);
 
   return (
     <WizardFormLayout
       title="Quels usages accueilleront les nouveaux bâtiments ?"
       instructions={
-        <FormInfo>
-          <p>Répartition globale prévue :</p>
-          <ul>
-            {selectedUses.map((use) => (
-              <li key={use}>
-                {getLabelForUrbanProjectUse(use)} :{" "}
-                <strong>{formatSurfaceArea(usesFloorSurfaceAreaDistribution[use] ?? 0)}</strong>
-              </li>
-            ))}
-          </ul>
-        </FormInfo>
+        <>
+          <FormInfo>
+            <p>Répartition globale prévue :</p>
+            <ul>
+              {selectedUses.map((use) => (
+                <li key={use}>
+                  {getLabelForUrbanProjectUse(use)} :{" "}
+                  <strong>{formatSurfaceArea(usesFloorSurfaceAreaDistribution[use] ?? 0)}</strong>
+                </li>
+              ))}
+            </ul>
+          </FormInfo>
+          <BuildingsFloorSurfaceAreaAllocation
+            allocations={allocations}
+            selectedUses={selectedUses}
+            caption="Nouveaux bâtiments"
+          />
+        </>
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>

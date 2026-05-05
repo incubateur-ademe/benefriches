@@ -31,8 +31,8 @@ describe("BuildingsNewBuildingsUsesFloorSurfaceArea", () => {
         name: "Quels usages accueilleront les nouveaux bâtiments ?",
       }),
     ).toBeInTheDocument();
-    expect(screen.getByText("Logements")).toBeInTheDocument();
-    expect(screen.getByText("Bureaux")).toBeInTheDocument();
+    expect(screen.getAllByText("Logements").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Bureaux").length).toBeGreaterThan(0);
     expect(screen.getByText("Répartition globale prévue :")).toBeInTheDocument();
     expect(screen.getAllByRole("textbox")).toHaveLength(3);
   });
