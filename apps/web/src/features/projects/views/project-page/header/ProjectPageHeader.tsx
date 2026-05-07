@@ -24,6 +24,8 @@ type HeaderProps = {
   className?: ClassValue;
   onDuplicateProject: () => void;
   onSuccessArchiveProject: () => void;
+  onToggleDevelopmentScoreView: () => void;
+  isBetaDevelopmentScoreViewActivated: boolean;
   projectId: string;
   updateProjectLinkProps: Link;
   createProjectLinkProps: Link;
@@ -39,8 +41,10 @@ const ProjectPageHeader = ({
   className,
   updateProjectLinkProps,
   createProjectLinkProps,
+  isBetaDevelopmentScoreViewActivated,
   onDuplicateProject,
   onSuccessArchiveProject,
+  onToggleDevelopmentScoreView,
   projectId,
 }: HeaderProps) => {
   const isSmallScreen = useIsSmallScreen();
@@ -130,6 +134,11 @@ const ProjectPageHeader = ({
               )}
               <MenuItemButton iconId="fr-icon-file-add-line" linkProps={createProjectLinkProps}>
                 Évaluer un nouveau projet
+              </MenuItemButton>
+
+              <MenuItemButton iconId="ri-a-b" onClick={onToggleDevelopmentScoreView}>
+                {isBetaDevelopmentScoreViewActivated ? "Désactiver" : "Activer"} la vue
+                Aménage’score
               </MenuItemButton>
 
               <MenuItemButton

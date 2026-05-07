@@ -1,6 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 import {
   IndirectEconomicImpact,
+  LOCAL_AUTHORITIES,
   ProjectOperatingEconomicBalanceItem,
   ReconversionProjectImpactsBreakEvenLevel,
   sumList,
@@ -73,7 +74,8 @@ export const selectBreakEvenLevelByEvaluationPeriod = createSelector(
 );
 
 type Bearer = "local_authority" | "local_people_or_company" | "humanity";
-const isLocalAuthority = (structureType?: string) => structureType === "local_authority";
+const isLocalAuthority = (structureType?: string) =>
+  structureType === "local_authority" || LOCAL_AUTHORITIES.some((item) => item === structureType);
 
 type OwnerRelatedCategory =
   | "avoidedFricheMaintenanceAndSecuringCostsForOwner"

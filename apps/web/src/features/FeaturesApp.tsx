@@ -117,6 +117,7 @@ function FeaturesApp() {
               case routes.urbanSprawlImpactsComparison.name:
               case routes.projectImpactsBreakEvenLevel.name:
               case routes.projectImpactsSummary.name:
+              case routes.projectImpactsDevelopmentScore.name:
                 return <ProjectPage projectId={route.params.projectId} />;
               case routes.projectImpactsOnboarding.name:
                 return (

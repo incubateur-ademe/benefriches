@@ -95,6 +95,12 @@
   --color-soils-orchard: #f97f05;
   --color-soils-vineyard: #f80338;
   --color-soils-water: #1243eb;
+
+  --color-development-score-grade-a: #038141;
+  --color-development-score-grade-b: #85bb2f;
+  --color-development-score-grade-c: #fecb02;
+  --color-development-score-grade-d: #ee8100;
+  --color-development-score-grade-e: #e63e11;
 }
 
 /*

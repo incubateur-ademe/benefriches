@@ -19,6 +19,7 @@ describe("App settings", () => {
       displayImpactsAccuracyDisclaimer: true,
       impactsOnboardingLastSeenAt: null,
       urbanSprawlComparisonOnboardingLastSeenAt: null,
+      useBetaAmenageScoreView: false,
     });
     const store = createStore(
       getTestAppDependencies({
@@ -32,6 +33,7 @@ describe("App settings", () => {
       displayImpactsAccuracyDisclaimer: true,
       impactsOnboardingLastSeenAt: null,
       urbanSprawlComparisonOnboardingLastSeenAt: null,
+      useBetaAmenageScoreView: false,
     });
   });
 

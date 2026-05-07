@@ -1,6 +1,5 @@
-import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
+import { useAppSelector } from "@/app/hooks/store.hooks";
 
-import { evaluationPeriodUpdated } from "../../application/project-impacts/actions";
 import { BreakEvenLevelTabDataView } from "../../application/project-impacts/projectBreakEvenLevel.selectors";
 import { selectImpactsPageViewData } from "../../core/projectImpacts.selectors";
 import ProjectPageHeader from "../project-page/header/";
@@ -14,7 +13,10 @@ import IndirectEconomicImpactsChart from "./charts/IndirectEconomicImpactsChart"
 import LocalAuthorityIndirectEconomicImpactsCharts from "./charts/LocalAuthorityIndirectEconomicImpactsCharts";
 import LocalPeopleOrCompanyIndirectEconomicImpactsCharts from "./charts/LocalPeopleOrCompanyIndirectEconomicImpactsCharts";
 
-type Props = BreakEvenLevelTabDataView & { projectId: string };
+type Props = BreakEvenLevelTabDataView & {
+  projectId: string;
+  onEvaluationPeriodChange: (value: number) => void;
+};
 
 export default function ProjectBreakEvenLevelTab({
   projectId,
@@ -24,8 +26,8 @@ export default function ProjectBreakEvenLevelTab({
   breakEvenYear,
   economicBalance,
   indirectEconomicImpactsByBearer,
+  onEvaluationPeriodChange,
 }: Props) {
-  const dispatch = useAppDispatch();
   const { evaluationPeriod = 50 } = useAppSelector(selectImpactsPageViewData);
 
   const breakEvenIndex = breakEvenYear ? projectionYears.indexOf(breakEvenYear) : undefined;
@@ -36,22 +38,20 @@ export default function ProjectBreakEvenLevelTab({
         <h3 className="text-2xl mb-0">Analyse coût-bénéfice</h3>
         <BreakEvenLevalImpactsActionBar
           evaluationPeriod={evaluationPeriod}
-          onEvaluationPeriodChange={(evaluationPeriodInYears: number) => {
-            void dispatch(evaluationPeriodUpdated({ evaluationPeriodInYears }));
-          }}
+          onEvaluationPeriodChange={onEvaluationPeriodChange}
           header={<ProjectPageHeader projectId={projectId} />}
         />
       </div>
 
-      <div className="grid grid-cols-8 gap-8">
-        <div className="col-span-2">
+      <div className="grid md:grid-cols-8 gap-8">
+        <div className="md:col-span-2">
           <ProjectBreakEvenLevelSummary
             breakEvenYear={breakEvenYear}
             projectionYears={projectionYears}
           />
         </div>
 
-        <div className="col-start-3 col-span-6 highcharts-no-xaxis">
+        <div className="md:col-start-3 md:col-span-6 highcharts-no-xaxis">
           <BreakEvenLevelChart
             values={cumulativeBalanceByYear}
             xValues={projectionYears}
@@ -60,6 +60,7 @@ export default function ProjectBreakEvenLevelTab({
           />
         </div>
       </div>
+
       <ProjectBreakEvenLevelSection
         title={`Bilan de l'opération ${economicBalance.total > 0 ? "positif" : "négatif"}`}
         subtitle="Pour l'aménageur."

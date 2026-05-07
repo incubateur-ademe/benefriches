@@ -1,5 +1,6 @@
-import { useAppSelector } from "@/app/hooks/store.hooks";
+import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { routes } from "@/app/router";
+import { appSettingUpdated, selectAppSettings } from "@/features/app-settings/core/appSettings";
 import useDuplicateProject from "@/shared/views/project/useDuplicateProject";
 
 import { selectProjectsImpactsViewData } from "../../../application/project-impacts/projectImpacts.reducer";
@@ -8,6 +9,9 @@ import ProjectPageHeader from "./ProjectPageHeader";
 const ProjectPageHeaderContainer = ({ projectId }: { projectId: string }) => {
   const projectContext = useAppSelector(selectProjectsImpactsViewData);
   const { onDuplicateProject } = useDuplicateProject(projectId, "impacts");
+
+  const dispatch = useAppDispatch();
+  const { useBetaAmenageScoreView } = useAppSelector(selectAppSettings);
 
   const headerProps = {
     projectType: projectContext.type,
@@ -18,6 +22,15 @@ const ProjectPageHeaderContainer = ({ projectId }: { projectId: string }) => {
     onDuplicateProject,
     onSuccessArchiveProject: () => {
       routes.myEvaluations().replace();
+    },
+    isBetaDevelopmentScoreViewActivated: useBetaAmenageScoreView,
+    onToggleDevelopmentScoreView: () => {
+      dispatch(
+        appSettingUpdated({
+          field: "useBetaAmenageScoreView",
+          value: !useBetaAmenageScoreView,
+        }),
+      );
     },
     projectId,
     updateProjectLinkProps: routes.updateProject({ projectId, from: "impacts" }).link,

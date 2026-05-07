@@ -6,7 +6,7 @@ import TabItem from "@/shared/views/components/TabItem/TabItem";
 
 import { ProjectRoute } from "../ProjectPage";
 
-const ProjectPageTabs = () => {
+const ProjectPageTabs = ({ useBetaAmenageScoreView }: { useBetaAmenageScoreView: boolean }) => {
   const route = useRoute() as ProjectRoute;
 
   return (
@@ -18,6 +18,14 @@ const ProjectPageTabs = () => {
           label="Aperçu"
           linkProps={routes.projectImpactsSummary(route.params).link}
         />
+        {useBetaAmenageScoreView && (
+          <TabItem
+            isActive={route.name === routes.projectImpactsDevelopmentScore.name}
+            iconId="fr-icon-award-line"
+            label="Aménage’score"
+            linkProps={routes.projectImpactsDevelopmentScore(route.params).link}
+          />
+        )}
         <TabItem
           isActive={route.name === routes.projectImpacts.name}
           iconId="fr-icon-bar-chart-box-line"

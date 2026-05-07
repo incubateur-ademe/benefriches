@@ -14,8 +14,8 @@ type Props = {
 
 export default function ProjectBreakEvenLevelSection({ total, chart, title, subtitle }: Props) {
   return (
-    <div className="grid grid-cols-8 gap-8">
-      <div className="col-span-2">
+    <div className="grid md:grid-cols-8 gap-8">
+      <div className="md:col-span-2">
         <span
           className={classNames(
             `fr-badge`,
@@ -33,7 +33,7 @@ export default function ProjectBreakEvenLevelSection({ total, chart, title, subt
         {subtitle && <p>{subtitle}</p>}
       </div>
 
-      <div className="col-start-3 col-span-6">{chart}</div>
+      <div className="md:col-start-3 md:col-span-6">{chart}</div>
     </div>
   );
 }

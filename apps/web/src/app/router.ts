@@ -4,6 +4,10 @@ import { ProjectSuggestion } from "@/features/create-project/core/project.types"
 import { OnboardingVariant } from "@/features/onboarding/views/pages/when-to-use/OnboardingWhenToUsePage";
 
 const onBoarding = defineRoute("/premiers-pas");
+const projectImpacts = defineRoute(
+  { projectId: param.path.string },
+  (params) => `/mes-projets/${params.projectId}`,
+);
 
 const getEnumValueSerializer = <T extends string>(values: T[]): ValueSerializer<T> => ({
   parse(raw): T | typeof noMatch {
@@ -93,35 +97,18 @@ const { RouteProvider, useRoute, routes, session } = createRouter({
     (params) => `/mes-projets/${params.projectId}/modifier`,
   ),
   // PROJECT IMPACTS
-  projectImpactsSummary: defineRoute(
-    { projectId: param.path.string },
-    (params) => `/mes-projets/${params.projectId}/apercu`,
-  ),
-  projectImpactsBreakEvenLevel: defineRoute(
-    { projectId: param.path.string },
-    (params) => `/mes-projets/${params.projectId}/analyse-couts-benefices`,
-  ),
-  projectImpacts: defineRoute(
-    { projectId: param.path.string },
-    (params) => `/mes-projets/${params.projectId}/impacts`,
-  ),
-  projectImpactsOnboarding: defineRoute(
+  projectImpactsSummary: projectImpacts.extend(`/apercu`),
+  projectImpactsDevelopmentScore: projectImpacts.extend(`/amenagescore`),
+  projectImpactsBreakEvenLevel: projectImpacts.extend(`/analyse-cout-benefice`),
+  projectImpacts: projectImpacts.extend(`/impacts`),
+  projectImpactsOnboarding: projectImpacts.extend(
     {
-      projectId: param.path.string,
       etape: param.query.optional.string,
     },
-    (params) => `/mes-projets/${params.projectId}/onboarding-impacts`,
+    () => `/onboarding-impacts`,
   ),
-  projectFeatures: defineRoute(
-    { projectId: param.path.string },
-    (params) => `/mes-projets/${params.projectId}/caracterisques`,
-  ),
-  urbanSprawlImpactsComparison: defineRoute(
-    {
-      projectId: param.path.string,
-    },
-    (params) => `/mes-projets/${params.projectId}/comparaison-extension-urbaine`,
-  ),
+  projectFeatures: projectImpacts.extend(`/caracterisques`),
+  urbanSprawlImpactsComparison: projectImpacts.extend(`/comparaison-extension-urbaine`),
   // MES EVALUATIONS
   myEvaluations: defineRoute("/mes-evaluations"),
   siteFeatures: defineRoute(
