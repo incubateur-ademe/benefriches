@@ -16,53 +16,82 @@ export const computeRentalIncomeImpacts = ({
   currentYearlyExpenses,
   hasSiteOwnerChange,
   sumOnEvolutionPeriodService,
-}: Props) => {
+}: Props): IndirectEconomicImpact[] => {
   const impacts: IndirectEconomicImpact[] = [];
 
   const projectedRentCost = yearlyProjectedExpenses.find(
     ({ purpose }) => purpose === RENT_PURPOSE_KEY,
   );
   const currentRentCost = currentYearlyExpenses.find(({ purpose }) => purpose === RENT_PURPOSE_KEY);
-  if (projectedRentCost) {
+
+  if (projectedRentCost && currentRentCost) {
     if (hasSiteOwnerChange) {
-      const detailsByYear = sumOnEvolutionPeriodService.getWeightedYearlyValues(
+      const projectedDetailsByYear = sumOnEvolutionPeriodService.getWeightedYearlyValues(
         projectedRentCost.amount,
         ["discount"],
       );
-      impacts.push({
-        detailsByYear: detailsByYear,
-        cumulativeByYear: computeCumulativeByYear(detailsByYear),
-        total: sumList(detailsByYear),
-        name: "projectedRentalIncome",
-      });
-    }
-    if (currentRentCost) {
+
+      const currentDetailsByYear = sumOnEvolutionPeriodService.getWeightedYearlyValues(
+        -currentRentCost.amount,
+        ["discount"],
+      );
+      return [
+        {
+          detailsByYear: currentDetailsByYear,
+          cumulativeByYear: computeCumulativeByYear(currentDetailsByYear),
+          total: sumList(currentDetailsByYear),
+          name: "oldRentalIncomeLoss",
+        },
+        {
+          detailsByYear: projectedDetailsByYear,
+          cumulativeByYear: computeCumulativeByYear(projectedDetailsByYear),
+          total: sumList(projectedDetailsByYear),
+          name: "projectedRentalIncome",
+        },
+      ];
+    } else {
       const detailsByYear = sumOnEvolutionPeriodService.getWeightedYearlyValues(
         projectedRentCost.amount - currentRentCost.amount,
         ["discount"],
       );
-      impacts.push({
+      return [
+        {
+          detailsByYear: detailsByYear,
+          cumulativeByYear: computeCumulativeByYear(detailsByYear),
+
+          total: sumList(detailsByYear),
+          name: "projectedRentalIncomeIncrease",
+        },
+      ];
+    }
+  } else if (projectedRentCost) {
+    const detailsByYear = sumOnEvolutionPeriodService.getWeightedYearlyValues(
+      projectedRentCost.amount,
+      ["discount"],
+    );
+    return [
+      {
         detailsByYear: detailsByYear,
         cumulativeByYear: computeCumulativeByYear(detailsByYear),
-
         total: sumList(detailsByYear),
-        name: "projectedRentalIncomeIncrease",
-      });
-    }
+        name: "projectedRentalIncome",
+      },
+    ];
   } else if (currentRentCost) {
     const detailsByYear = sumOnEvolutionPeriodService.getWeightedYearlyValues(
       -currentRentCost.amount,
       ["discount"],
     );
 
-    impacts.push({
-      detailsByYear: detailsByYear,
-
-      cumulativeByYear: computeCumulativeByYear(detailsByYear),
-
-      total: sumList(detailsByYear),
-      name: "oldRentalIncomeLoss",
-    });
+    return [
+      {
+        detailsByYear: detailsByYear,
+        cumulativeByYear: computeCumulativeByYear(detailsByYear),
+        total: sumList(detailsByYear),
+        name: "oldRentalIncomeLoss",
+      },
+    ];
   }
+
   return impacts;
 };

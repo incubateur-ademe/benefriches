@@ -1,4 +1,5 @@
 import {
+  AvoidedFricheCostsIndirectEconomicImpacts,
   IndirectEconomicImpact,
   SiteYearlyExpense,
   SiteYearlyIncome,
@@ -19,12 +20,12 @@ const FRICHE_COST_PURPOSES = [
   "maintenance",
 ] as const;
 
-type FricheCostPurpose = (typeof FRICHE_COST_PURPOSES)[number];
+export type FricheCostPurpose = (typeof FRICHE_COST_PURPOSES)[number];
 
 export const getAvoidedFricheMaintenanceAndSecuringCosts = (props: {
   sumOnEvolutionPeriodService: SumOnEvolutionPeriodService;
   yearlyExpenses: SiteYearlyExpense[];
-}): IndirectEconomicImpact[] => {
+}): AvoidedFricheCostsIndirectEconomicImpacts[] => {
   const currentFricheCosts = props.yearlyExpenses.filter(({ purpose }) =>
     FRICHE_COST_PURPOSES.includes(purpose as FricheCostPurpose),
   ) as { purpose: FricheCostPurpose; amount: number; bearer: string }[];

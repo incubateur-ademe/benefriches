@@ -87,17 +87,57 @@ export class ComputeReconversionProjectBreakEvenLevelUseCase implements UseCase<
     const operationsFirstYear =
       reconversionProject.operationsFirstYear ?? this.dateProvider.now().getFullYear();
 
+    // Build stakeholders
+    const stakeholders = {
+      current: {
+        owner: {
+          structureType: relatedSite.ownerStructureType,
+          structureName: relatedSite.ownerName,
+        },
+        operator: {
+          structureType: relatedSite.ownerStructureType,
+          structureName: relatedSite.ownerName,
+        },
+        tenant: {
+          structureType: relatedSite.tenantStructureType,
+          structureName: relatedSite.tenantName,
+        },
+      },
+      future: {
+        operator: {
+          structureType: reconversionProject.futureOperatorStructureType,
+          structureName: reconversionProject.futureOperatorName,
+        },
+        owner: {
+          structureType: reconversionProject.futureSiteOwnerStructureType,
+          structureName: reconversionProject.futureSiteOwnerName,
+        },
+      },
+      project: {
+        developer: {
+          structureType: reconversionProject.developmentPlan.developerStructureType,
+          structureName: reconversionProject.developmentPlan.developerName,
+        },
+        reinstatementContractOwner: {
+          structureType: reconversionProject.reinstatementContractOwnerStructureType,
+          structureName: reconversionProject.reinstatementContractOwnerName,
+        },
+      },
+    } as ReconversionProjectImpactsBreakEvenLevel["stakeholders"];
+
     const developmentEconomicBalance = getProjectDevelopmentEconomicBalance({
-      financialAssistanceRevenues: reconversionProject.financialAssistanceRevenues,
-      reinstatementCosts: reconversionProject.reinstatementExpenses,
-      developmentPlanInstallationCosts: reconversionProject.developmentPlan.installationCosts,
-      sitePurchaseTotalAmount: reconversionProject.sitePurchaseTotalAmount,
-      developmentPlanDeveloperName: reconversionProject.developmentPlan.developerName,
-      futureSiteOwnerName: reconversionProject.futureSiteOwnerName,
-      reinstatementContractOwnerName: reconversionProject.reinstatementContractOwnerName,
-      siteResaleSellingPrice: reconversionProject.siteResaleSellingPrice,
-      buildingsResaleSellingPrice: reconversionProject.buildingsResaleSellingPrice,
       developmentPlanType: reconversionProject.developmentPlan.type,
+      stakeholders,
+      costs: {
+        reinstatementCosts: reconversionProject.reinstatementExpenses,
+        developmentPlanInstallationCosts: reconversionProject.developmentPlan.installationCosts,
+        sitePurchaseTotalAmount: reconversionProject.sitePurchaseTotalAmount,
+      },
+      revenues: {
+        financialAssistanceRevenues: reconversionProject.financialAssistanceRevenues,
+        buildingsResaleSellingPrice: reconversionProject.buildingsResaleSellingPrice,
+        siteResaleSellingPrice: reconversionProject.siteResaleSellingPrice,
+      },
     });
 
     const sumOnEvolutionPeriodService = new SumOnEvolutionPeriodService({
@@ -149,44 +189,6 @@ export class ComputeReconversionProjectBreakEvenLevelUseCase implements UseCase<
     });
 
     const totalOperatingEconomicBalance = sumListWithKey(operatingEconomicBalance, "total");
-
-    // Build stakeholders
-    const stakeholders = {
-      current: {
-        owner: {
-          structureType: relatedSite.ownerStructureType,
-          structureName: relatedSite.ownerName,
-        },
-        operator: {
-          structureType: relatedSite.ownerStructureType,
-          structureName: relatedSite.ownerName,
-        },
-        tenant: {
-          structureType: relatedSite.tenantStructureType,
-          structureName: relatedSite.tenantName,
-        },
-      },
-      future: {
-        operator: {
-          structureType: reconversionProject.futureOperatorStructureType,
-          structureName: reconversionProject.futureOperatorName,
-        },
-        owner: {
-          structureType: reconversionProject.futureSiteOwnerStructureType,
-          structureName: reconversionProject.futureSiteOwnerName,
-        },
-      },
-      project: {
-        developer: {
-          structureType: reconversionProject.developmentPlan.developerStructureType,
-          structureName: reconversionProject.developmentPlan.developerName,
-        },
-        reinstatementContractOwner: {
-          structureType: reconversionProject.reinstatementContractOwnerStructureType,
-          structureName: reconversionProject.reinstatementContractOwnerName,
-        },
-      },
-    } as ReconversionProjectImpactsBreakEvenLevel["stakeholders"];
 
     // Compute break even year
     const isFutureOperatorLocalAuthority =

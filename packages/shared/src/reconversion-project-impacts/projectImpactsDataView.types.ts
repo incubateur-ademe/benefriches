@@ -98,12 +98,28 @@ type SocioEconomicMonetaryImpactName =
   | "oldRentalIncomeLoss"
   | "fricheRoadsAndUtilitiesExpenses";
 
-export type IndirectEconomicImpact = {
+export type AvoidedFricheCostsIndirectEconomicImpacts = {
   total: number;
   detailsByYear: number[];
   cumulativeByYear: number[];
-  name: SocioEconomicMonetaryImpactName;
+  details:
+    | "security"
+    | "illegalDumpingCost"
+    | "accidentsCost"
+    | "otherSecuringCosts"
+    | "maintenance";
+  name:
+    | "avoidedFricheMaintenanceAndSecuringCostsForOwner"
+    | "avoidedFricheMaintenanceAndSecuringCostsForTenant";
 };
+export type IndirectEconomicImpact =
+  | {
+      total: number;
+      detailsByYear: number[];
+      cumulativeByYear: number[];
+      name: SocioEconomicMonetaryImpactName;
+    }
+  | AvoidedFricheCostsIndirectEconomicImpacts;
 
 export type ProjectOperatingEconomicBalanceItem = {
   total: number;
@@ -145,6 +161,8 @@ export const isStakeholderLocalAuthority = (stakeholder: Stakeholder) =>
   LOCAL_AUTHORITIES.some((s) => stakeholder.structureType === s);
 export const isSameStakeholders = (stakeholder_A: Stakeholder, stakeholder_B: Stakeholder) =>
   stakeholder_A.structureType === stakeholder_B.structureType &&
+  stakeholder_A.structureName &&
+  stakeholder_B.structureName &&
   stakeholder_A.structureName === stakeholder_B.structureName;
 
 export type ReconversionProjectImpactsBreakEvenLevel = {
