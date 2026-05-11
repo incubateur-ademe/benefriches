@@ -46,7 +46,7 @@ pnpm --filter web test path/to/file.spec.ts
 | ViewData Selector                        | `src/features/create-project/core/createProject.selectors.ts`                                                                                           |
 | Async Thunk                              | `src/features/create-project/core/urban-project/fetchEstimatedSiteResalePrice.action.ts`                                                                |
 | Reducer (createReducer)                  | `src/features/create-site/core/createSite.reducer.ts`                                                                                                   |
-| Container Component                      | `src/features/create-project/views/photovoltaic-power-station/custom-form/stakeholders/site-purchased/index.tsx`                                        |
+| Container Component                      | `src/features/create-project/views/photovoltaic-power-station/stakeholders/site-purchased/index.tsx`                                                    |
 | Gateway Interface                        | `src/shared/core/gateways/RealEstateValuationGateway.ts`                                                                                                |
 | HTTP POST implementation                 | `src/features/onboarding/infrastructure/create-user-service/HttpCreateUserService.ts`                                                                   |
 | HTTP GET implementation                  | `src/features/onboarding/infrastructure/current-user-service/HttpCurrentUserService.ts`                                                                 |
@@ -173,10 +173,10 @@ When creating a new container component:
    - Handle actions with `useAppDispatch`
 
 3. **Reference examples** (simplest first):
-   - `src/features/create-project/core/createProject.selectors.ts` → `selectProjectSuggestionsViewData`
-   - `src/features/create-project/views/project-suggestions/index.tsx`
+   - `src/features/create-project/core/usecase-selection/useCaseSelection.selectors.ts` → `selectUseCaseCreateModeViewData`
+   - `src/features/create-project/views/usecase-selection/create-mode-selection/index.tsx`
    - `src/features/create-site/core/steps/spaces/spaces.selectors.ts` → `selectSiteSoilsSummaryViewData`
-   - `src/features/create-site/views/custom/spaces-and-soils/soils-summary/index.tsx`
+   - `src/features/create-site/views/common-views/spaces-and-soils/soils-summary/index.tsx`
    - Urban project form (factory pattern):
      - `src/shared/core/reducers/project-form/urban-project/urbanProject.selectors.ts` → `selectUsesFloorSurfaceAreaViewData`
      - `src/shared/views/project-form/urban-project/buildings/uses-floor-surface-area/index.tsx`
