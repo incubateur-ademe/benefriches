@@ -58,6 +58,8 @@ export type ReconversionProjectImpactsDataView<TSchedule> = {
   operationsFirstYear?: number;
   siteResaleSellingPrice?: number;
   buildingsResaleSellingPrice?: number;
+  siteResaleExpectedPropertyTransferDutiesAmount?: number;
+  buildingsResaleExpectedPropertyTransferDutiesAmount?: number;
   decontaminatedSoilSurface?: number;
 };
 

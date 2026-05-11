@@ -227,6 +227,8 @@ describe("SqlReconversionProjectImpactsQuery integration", () => {
         siteResaleSellingPrice: 125000,
         buildingsResaleSellingPrice: 140000,
         decontaminatedSoilSurface: 1000,
+        buildingsResaleExpectedPropertyTransferDutiesAmount: 5000,
+        siteResaleExpectedPropertyTransferDutiesAmount: 8715,
       });
     });
     it("gets reconversion project when optional data does not exist", async () => {

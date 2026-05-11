@@ -11,6 +11,7 @@ import {
   DevelopmentPlanFeatures,
   IndirectEconomicImpact,
   roundToInteger,
+  sumList,
 } from "shared";
 
 import { SoilsCarbonStorage } from "../../../gateways/SoilsCarbonStorageService";
@@ -42,6 +43,8 @@ export type InputSiteData = {
 export type InputReconversionProjectData = {
   operationsFirstYear: number;
   sitePurchasePropertyTransferDutiesAmount?: number;
+  siteResaleExpectedPropertyTransferDutiesAmount?: number;
+  buildingsResaleExpectedPropertyTransferDutiesAmount?: number;
   soilsDistribution: ReconversionProjectSoilsDistribution;
   decontaminatedSoilSurface?: number;
   soilsCarbonStorage?: SoilsCarbonStorage;
@@ -115,16 +118,21 @@ export const getProjectIndirectsEconomicImpacts = ({
     );
   }
 
-  // --- Droits de mutation liés à l'achat du foncier (année 0 uniquement) ---
-  if (reconversionProject.sitePurchasePropertyTransferDutiesAmount) {
+  const propertyTransferDutiesIncome = sumList([
+    reconversionProject.sitePurchasePropertyTransferDutiesAmount ?? 0,
+    reconversionProject.siteResaleExpectedPropertyTransferDutiesAmount ?? 0,
+    reconversionProject.buildingsResaleExpectedPropertyTransferDutiesAmount ?? 0,
+  ]);
+  // --- Droits de mutation liés à l'achat et la revente du foncier (année 0 uniquement) ---
+  if (propertyTransferDutiesIncome && propertyTransferDutiesIncome > 0) {
     const detailsByYear = sumOnEvolutionPeriodService.getWeightedYearlyValues(
-      reconversionProject.sitePurchasePropertyTransferDutiesAmount,
+      propertyTransferDutiesIncome,
       [],
-      { endYearIndex: 0 },
+      { endYearIndex: 1 },
     );
     impacts.push({
       name: "propertyTransferDutiesIncome",
-      total: reconversionProject.sitePurchasePropertyTransferDutiesAmount,
+      total: propertyTransferDutiesIncome,
       detailsByYear,
       cumulativeByYear: computeCumulativeByYear(detailsByYear),
     });

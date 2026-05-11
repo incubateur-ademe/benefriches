@@ -205,6 +205,10 @@ export class SqlReconversionProjectImpactsQuery implements ReconversionProjectIm
         reconversionProject.buildings_resale_expected_selling_price ?? undefined,
       decontaminatedSoilSurface:
         reconversionProject.friche_decontaminated_soil_surface_area ?? undefined,
+      buildingsResaleExpectedPropertyTransferDutiesAmount:
+        reconversionProject.buildings_resale_expected_property_transfer_duties ?? undefined,
+      siteResaleExpectedPropertyTransferDutiesAmount:
+        reconversionProject.site_resale_expected_property_transfer_duties ?? undefined,
     } as ReconversionProjectImpactsQueryResult;
   }
 }

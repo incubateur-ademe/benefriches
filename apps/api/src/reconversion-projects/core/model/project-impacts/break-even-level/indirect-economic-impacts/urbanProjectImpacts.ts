@@ -83,8 +83,6 @@ export const getUrbanProjectImpacts = ({
 }: UrbanProjectImpactsProps): IndirectEconomicImpact[] => {
   const impacts: IndirectEconomicImpact[] = [];
 
-  // Helper local : évite la répétition du pattern
-  // getter → guard → getWeightedYearlyValues → push
   const pushImpact = (
     name: IndirectEconomicImpact["name"],
     yearlyValue: number | undefined,

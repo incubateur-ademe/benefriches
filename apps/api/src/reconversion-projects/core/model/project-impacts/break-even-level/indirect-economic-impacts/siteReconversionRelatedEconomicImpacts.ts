@@ -128,7 +128,6 @@ export const getLocalPropertyIncreaseWithFricheRemovalImpacts = ({
       total: propertyValueIncrease,
       detailsByYear: propertyValueIncreaseDetailsByYear,
       cumulativeByYear: computeCumulativeByYear(propertyValueIncreaseDetailsByYear),
-
       name: "localPropertyValueIncrease",
     },
     {
