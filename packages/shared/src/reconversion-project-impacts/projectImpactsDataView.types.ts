@@ -137,6 +137,11 @@ export type ProjectDevelopmentEconomicBalanceItem =
     }
   | {
       total: number;
+      details: BuildingsConstructionExpense["purpose"];
+      name: "projectBuildingsInstallation";
+    }
+  | {
+      total: number;
       details: ReinstatementExpense["purpose"];
       name: "siteReinstatement";
     }

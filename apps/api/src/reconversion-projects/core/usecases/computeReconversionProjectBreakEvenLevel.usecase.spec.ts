@@ -160,6 +160,13 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
       developerStructureType: "municipality",
     },
     financialAssistanceRevenues: [{ amount: 150000, source: "public_subsidies" }],
+    buildingsConstructionAndRehabilitationExpenses: [
+      {
+        amount: 20000,
+        purpose: "buildings_construction_works",
+      },
+    ],
+    buildingsResaleExpectedPropertyTransferDutiesAmount: 2000,
     yearlyProjectedExpenses: [
       { amount: 1000, purpose: "taxes" },
       { amount: 10000, purpose: "maintenance" },
@@ -288,8 +295,8 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
 
       const data = (result as SuccessResult<ReconversionProjectImpactsBreakEvenLevel>).getData();
 
-      expect(data.economicBalance.total).toBe(-700000);
-      expect(data.indirectEconomicImpacts.total).toBe(34141237);
+      expect(data.economicBalance.total).toBe(-720000);
+      expect(data.indirectEconomicImpacts.total).toBe(34143237);
     });
 
     it("stakeholders reflect site and project data", async () => {
@@ -419,7 +426,7 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
 
       const data = (result as SuccessResult<ReconversionProjectImpactsBreakEvenLevel>).getData();
 
-      expect(data.economicBalance.total).toBe(-200000);
+      expect(data.economicBalance.total).toBe(-220000);
     });
 
     it("indirectEconomicImpacts does not include operating balance", async () => {

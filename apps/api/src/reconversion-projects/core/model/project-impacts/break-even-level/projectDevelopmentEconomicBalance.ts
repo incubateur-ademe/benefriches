@@ -1,4 +1,5 @@
 import {
+  BuildingsConstructionExpense,
   DevelopmentPlanInstallationExpenses,
   DevelopmentPlanType,
   FinancialAssistanceRevenue,
@@ -15,6 +16,7 @@ export type InputProjectDevelopmentEconomicBalanceProps = {
     reinstatementCosts: ReinstatementExpense[];
     developmentPlanInstallationCosts: DevelopmentPlanInstallationExpenses[];
     sitePurchaseTotalAmount?: number;
+    buildingsConstructionAndRehabilitationCosts?: BuildingsConstructionExpense[];
   };
   revenues: {
     financialAssistanceRevenues: FinancialAssistanceRevenue[];
@@ -50,6 +52,20 @@ export const getProjectDevelopmentEconomicBalance = ({
       })),
     );
   }
+
+  if (
+    costs.buildingsConstructionAndRehabilitationCosts &&
+    costs.buildingsConstructionAndRehabilitationCosts.length > 0
+  ) {
+    developmentEconomicBalance.push(
+      ...costs.buildingsConstructionAndRehabilitationCosts.map(({ amount, purpose }) => ({
+        name: "projectBuildingsInstallation" as const,
+        total: -amount,
+        details: purpose,
+      })),
+    );
+  }
+
   if (isDeveloperOwnerOfReinstatement && costs.reinstatementCosts.length > 0) {
     developmentEconomicBalance.push(
       ...costs.reinstatementCosts.map(({ amount, purpose }) => ({

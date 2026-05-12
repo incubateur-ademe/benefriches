@@ -132,6 +132,8 @@ export class ComputeReconversionProjectBreakEvenLevelUseCase implements UseCase<
         reinstatementCosts: reconversionProject.reinstatementExpenses,
         developmentPlanInstallationCosts: reconversionProject.developmentPlan.installationCosts,
         sitePurchaseTotalAmount: reconversionProject.sitePurchaseTotalAmount,
+        buildingsConstructionAndRehabilitationCosts:
+          reconversionProject.buildingsConstructionAndRehabilitationExpenses,
       },
       revenues: {
         financialAssistanceRevenues: reconversionProject.financialAssistanceRevenues,

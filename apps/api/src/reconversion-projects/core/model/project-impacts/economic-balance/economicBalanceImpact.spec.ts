@@ -1,17 +1,13 @@
 import { EconomicBalanceImpactResult } from "shared";
 
 import { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
-import {
-  computeEconomicBalanceImpact,
-  getEconomicResultsOfProjectExploitationForDuration,
-  getEconomicResultsOfProjectInstallation,
-} from "./economicBalanceImpact";
+import { computeEconomicBalanceImpact } from "./economicBalanceImpact";
 
 describe("EconomicBalance impact", () => {
-  describe("getEconomicResultsOfProjectInstallation", () => {
+  describe("project installation", () => {
     it("should return zero costs and revenues in balance when none", () => {
-      expect(
-        getEconomicResultsOfProjectInstallation({
+      const result = computeEconomicBalanceImpact(
+        {
           developmentPlanType: "URBAN_PROJECT",
           financialAssistanceRevenues: [],
           reinstatementCosts: [],
@@ -21,20 +17,23 @@ describe("EconomicBalance impact", () => {
           developmentPlanDeveloperName: "Mairie de Blajan",
           futureSiteOwnerName: "Mairie de Blajan",
           reinstatementContractOwnerName: "Mairie de Blajan",
+          yearlyProjectedCosts: [],
+          yearlyProjectedRevenues: [],
+        },
+        new SumOnEvolutionPeriodService({
+          evaluationPeriodInYears: 1,
+          operationsFirstYear: 2025,
         }),
-      ).toEqual({
-        total: 0,
-        costs: {
-          total: 0,
-        },
-        revenues: {
-          total: 0,
-        },
-      });
+      );
+
+      expect(result.total).toEqual(0);
+
+      expect(result.costs.total).toEqual(0);
+      expect(result.revenues.total).toEqual(0);
     });
     it("should return all costs and revenues in balance if developer is new site owner and reinstatement cost owner", () => {
-      expect(
-        getEconomicResultsOfProjectInstallation({
+      const result = computeEconomicBalanceImpact(
+        {
           developmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
           financialAssistanceRevenues: [
             { amount: 45000, source: "public_subsidies" },
@@ -53,43 +52,59 @@ describe("EconomicBalance impact", () => {
           developmentPlanDeveloperName: "Mairie de Blajan",
           futureSiteOwnerName: "Mairie de Blajan",
           reinstatementContractOwnerName: "Mairie de Blajan",
-        }),
-      ).toEqual({
-        total: 50000 - (49999 + 95000 + 100000),
-        costs: {
-          total: 49999 + 95000 + 100000,
-          siteReinstatement: {
-            total: 49999,
-            costs: [
-              { amount: 10000, purpose: "waste_collection" },
-              { amount: 39999, purpose: "deimpermeabilization" },
-            ],
-          },
-          developmentPlanInstallation: {
-            total: 95000,
-            costs: [
-              { amount: 50000, purpose: "installation_works" },
-              { amount: 45000, purpose: "technical_studies" },
-            ],
-          },
-          sitePurchase: 100000,
+          yearlyProjectedCosts: [],
+          yearlyProjectedRevenues: [],
         },
-        revenues: {
+        new SumOnEvolutionPeriodService({
+          evaluationPeriodInYears: 1,
+          operationsFirstYear: 2025,
+        }),
+      );
+      expect(result.total).toEqual(50000 - (49999 + 95000 + 100000));
+      expect(result.costs).toEqual({
+        total: 49999 + 95000 + 100000,
+        siteReinstatement: {
+          total: 49999,
+          costs: [
+            { amount: 10000, purpose: "waste_collection" },
+            { amount: 39999, purpose: "deimpermeabilization" },
+          ],
+        },
+        developmentPlanInstallation: {
+          total: 95000,
+          costs: [
+            { amount: 50000, purpose: "installation_works" },
+            { amount: 45000, purpose: "technical_studies" },
+          ],
+        },
+        operationsCosts: {
+          total: 0,
+          costs: [],
+        },
+        sitePurchase: 100000,
+      });
+
+      expect(result.revenues).toEqual({
+        total: 50000,
+        buildingsResale: undefined,
+        siteResale: undefined,
+        financialAssistance: {
           total: 50000,
-          financialAssistance: {
-            total: 50000,
-            revenues: [
-              { amount: 45000, source: "public_subsidies" },
-              { amount: 5000, source: "other" },
-            ],
-          },
+          revenues: [
+            { amount: 45000, source: "public_subsidies" },
+            { amount: 5000, source: "other" },
+          ],
+        },
+        operationsRevenues: {
+          total: 0,
+          revenues: [],
         },
       });
     });
 
     it("should return all costs and revenues in balance if developer is and reinstatement cost owner and is urban project", () => {
-      expect(
-        getEconomicResultsOfProjectInstallation({
+      const result = computeEconomicBalanceImpact(
+        {
           developmentPlanType: "URBAN_PROJECT",
           financialAssistanceRevenues: [
             { amount: 45000, source: "public_subsidies" },
@@ -107,43 +122,58 @@ describe("EconomicBalance impact", () => {
           futureOperatorName: "Mairie de Blajan",
           developmentPlanDeveloperName: "Mairie de Blajan",
           reinstatementContractOwnerName: "Mairie de Blajan",
-        }),
-      ).toEqual({
-        total: 50000 - (49999 + 95000 + 100000),
-        costs: {
-          total: 49999 + 95000 + 100000,
-          siteReinstatement: {
-            total: 49999,
-            costs: [
-              { amount: 10000, purpose: "waste_collection" },
-              { amount: 39999, purpose: "deimpermeabilization" },
-            ],
-          },
-          developmentPlanInstallation: {
-            total: 95000,
-            costs: [
-              { amount: 50000, purpose: "installation_works" },
-              { amount: 45000, purpose: "technical_studies" },
-            ],
-          },
-          sitePurchase: 100000,
+          yearlyProjectedCosts: [],
+          yearlyProjectedRevenues: [],
         },
-        revenues: {
+        new SumOnEvolutionPeriodService({
+          evaluationPeriodInYears: 1,
+          operationsFirstYear: 2025,
+        }),
+      );
+
+      expect(result.total).toEqual(50000 - (49999 + 95000 + 100000));
+      expect(result.costs).toEqual({
+        total: 49999 + 95000 + 100000,
+        siteReinstatement: {
+          total: 49999,
+          costs: [
+            { amount: 10000, purpose: "waste_collection" },
+            { amount: 39999, purpose: "deimpermeabilization" },
+          ],
+        },
+        developmentPlanInstallation: {
+          total: 95000,
+          costs: [
+            { amount: 50000, purpose: "installation_works" },
+            { amount: 45000, purpose: "technical_studies" },
+          ],
+        },
+        sitePurchase: 100000,
+        operationsCosts: {
+          total: 0,
+          costs: [],
+        },
+      });
+
+      expect(result.revenues).toEqual({
+        total: 50000,
+        financialAssistance: {
           total: 50000,
-          financialAssistance: {
-            total: 50000,
-            revenues: [
-              { amount: 45000, source: "public_subsidies" },
-              { amount: 5000, source: "other" },
-            ],
-          },
+          revenues: [
+            { amount: 45000, source: "public_subsidies" },
+            { amount: 5000, source: "other" },
+          ],
+        },
+        operationsRevenues: {
+          total: 0,
+          revenues: [],
         },
       });
     });
 
     it("should not use real estate transaction in balance if developer is not the new site owner", () => {
-      expect(
-        getEconomicResultsOfProjectInstallation({
+      const result = computeEconomicBalanceImpact(
+        {
           developmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
           financialAssistanceRevenues: [
             { amount: 45000, source: "public_subsidies" },
@@ -162,42 +192,57 @@ describe("EconomicBalance impact", () => {
           developmentPlanDeveloperName: "Mairie de Blajan",
           futureSiteOwnerName: "Acheteur",
           reinstatementContractOwnerName: "Mairie de Blajan",
-        }),
-      ).toEqual({
-        total: 50000 - (49999 + 95000),
-        costs: {
-          total: 49999 + 95000,
-          siteReinstatement: {
-            total: 49999,
-            costs: [
-              { amount: 10000, purpose: "waste_collection" },
-              { amount: 39999, purpose: "deimpermeabilization" },
-            ],
-          },
-          developmentPlanInstallation: {
-            total: 95000,
-            costs: [
-              { amount: 50000, purpose: "installation_works" },
-              { amount: 45000, purpose: "technical_studies" },
-            ],
-          },
+          yearlyProjectedCosts: [],
+          yearlyProjectedRevenues: [],
         },
-        revenues: {
+        new SumOnEvolutionPeriodService({
+          evaluationPeriodInYears: 1,
+          operationsFirstYear: 2025,
+        }),
+      );
+
+      expect(result.total).toEqual(50000 - (49999 + 95000));
+      expect(result.costs).toEqual({
+        total: 49999 + 95000,
+        siteReinstatement: {
+          total: 49999,
+          costs: [
+            { amount: 10000, purpose: "waste_collection" },
+            { amount: 39999, purpose: "deimpermeabilization" },
+          ],
+        },
+        operationsCosts: {
+          total: 0,
+          costs: [],
+        },
+        developmentPlanInstallation: {
+          total: 95000,
+          costs: [
+            { amount: 50000, purpose: "installation_works" },
+            { amount: 45000, purpose: "technical_studies" },
+          ],
+        },
+      });
+
+      expect(result.revenues).toEqual({
+        total: 50000,
+        operationsRevenues: {
+          total: 0,
+          revenues: [],
+        },
+        financialAssistance: {
           total: 50000,
-          financialAssistance: {
-            total: 50000,
-            revenues: [
-              { amount: 45000, source: "public_subsidies" },
-              { amount: 5000, source: "other" },
-            ],
-          },
+          revenues: [
+            { amount: 45000, source: "public_subsidies" },
+            { amount: 5000, source: "other" },
+          ],
         },
       });
     });
 
     it("should not use reinstatement cost and financial assistance revenues in balance if developer is not the reinstatement cost owner", () => {
-      expect(
-        getEconomicResultsOfProjectInstallation({
+      const result = computeEconomicBalanceImpact(
+        {
           developmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
           financialAssistanceRevenues: [
             { amount: 45000, source: "public_subsidies" },
@@ -216,108 +261,190 @@ describe("EconomicBalance impact", () => {
           developmentPlanDeveloperName: "Mairie de Blajan",
           futureSiteOwnerName: "Acheteur",
           reinstatementContractOwnerName: "Un autre acteur",
-        }),
-      ).toEqual({
-        total: -95000,
-        costs: {
-          total: 95000,
-          developmentPlanInstallation: {
-            total: 95000,
-            costs: [
-              { amount: 50000, purpose: "installation_works" },
-              { amount: 45000, purpose: "technical_studies" },
-            ],
-          },
+          yearlyProjectedCosts: [],
+          yearlyProjectedRevenues: [],
         },
-        revenues: {
+        new SumOnEvolutionPeriodService({
+          evaluationPeriodInYears: 1,
+          operationsFirstYear: 2025,
+        }),
+      );
+
+      expect(result.total).toEqual(-95000);
+      expect(result.costs).toEqual({
+        total: 95000,
+        operationsCosts: {
           total: 0,
+          costs: [],
+        },
+        developmentPlanInstallation: {
+          total: 95000,
+          costs: [
+            { amount: 50000, purpose: "installation_works" },
+            { amount: 45000, purpose: "technical_studies" },
+          ],
+        },
+      });
+
+      expect(result.revenues).toEqual({
+        total: 0,
+        operationsRevenues: {
+          total: 0,
+          revenues: [],
         },
       });
     });
   });
 
-  describe("getEconomicResultsOfProjectExploitationForDuration", () => {
+  describe("project exploitation", () => {
     it("should return 0 for a project with no costs", () => {
+      const result = computeEconomicBalanceImpact(
+        {
+          developmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
+          financialAssistanceRevenues: [
+            { amount: 45000, source: "public_subsidies" },
+            { amount: 5000, source: "other" },
+          ],
+          reinstatementCosts: [
+            { amount: 10000, purpose: "waste_collection" },
+            { amount: 39999, purpose: "deimpermeabilization" },
+          ],
+          developmentPlanInstallationCosts: [
+            { amount: 50000, purpose: "installation_works" },
+            { amount: 45000, purpose: "technical_studies" },
+          ],
+          sitePurchaseTotalAmount: 100000,
+          futureOperatorName: "Mairie de Blajan",
+          developmentPlanDeveloperName: "Mairie de Blajan",
+          futureSiteOwnerName: "Acheteur",
+          reinstatementContractOwnerName: "Un autre acteur",
+          yearlyProjectedCosts: [],
+          yearlyProjectedRevenues: [],
+        },
+        new SumOnEvolutionPeriodService({
+          evaluationPeriodInYears: 1,
+          operationsFirstYear: 2025,
+        }),
+      );
+
       expect(
-        getEconomicResultsOfProjectExploitationForDuration(
-          [],
-          [],
-          new SumOnEvolutionPeriodService({
-            evaluationPeriodInYears: 10,
-            operationsFirstYear: 2025,
-          }),
-        ),
-      ).toEqual({
+        (result.revenues.operationsRevenues?.total ?? 0) -
+          (result.costs.operationsCosts?.total ?? 0),
+      ).toEqual(0);
+      expect(result.costs.operationsCosts).toEqual({
         total: 0,
-        operationsCosts: {
-          total: 0,
-          costs: [],
-        },
-        operationsRevenues: {
-          total: 0,
-          revenues: [],
-        },
+        costs: [],
+      });
+
+      expect(result.revenues.operationsRevenues).toEqual({
+        total: 0,
+        revenues: [],
       });
     });
 
     it("should return the difference between costs and benefits actualized with discount factor", () => {
-      expect(
-        getEconomicResultsOfProjectExploitationForDuration(
-          [
+      const result = computeEconomicBalanceImpact(
+        {
+          developmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
+          financialAssistanceRevenues: [
+            { amount: 45000, source: "public_subsidies" },
+            { amount: 5000, source: "other" },
+          ],
+          reinstatementCosts: [
+            { amount: 10000, purpose: "waste_collection" },
+            { amount: 39999, purpose: "deimpermeabilization" },
+          ],
+          developmentPlanInstallationCosts: [
+            { amount: 50000, purpose: "installation_works" },
+            { amount: 45000, purpose: "technical_studies" },
+          ],
+          sitePurchaseTotalAmount: 100000,
+          futureOperatorName: "Mairie de Blajan",
+          developmentPlanDeveloperName: "Mairie de Blajan",
+          futureSiteOwnerName: "Acheteur",
+          reinstatementContractOwnerName: "Un autre acteur",
+          yearlyProjectedRevenues: [
             { amount: 1000, source: "rent" },
             { amount: 500, source: "other" },
           ],
-          [
+          yearlyProjectedCosts: [
             { amount: 6000, purpose: "taxes" },
             { amount: 50, purpose: "maintenance" },
           ],
-          new SumOnEvolutionPeriodService({
-            evaluationPeriodInYears: 10,
-            operationsFirstYear: 2025,
-          }),
-        ),
-      ).toEqual({
-        total: -37623,
-        operationsCosts: {
-          total: 50026,
-          costs: [
-            { amount: 49613, purpose: "taxes" },
-            { amount: 413, purpose: "maintenance" },
-          ],
         },
-        operationsRevenues: {
-          total: 12403,
-          revenues: [
-            { amount: 8269, source: "rent" },
-            { amount: 4134, source: "other" },
-          ],
-        },
-      });
+        new SumOnEvolutionPeriodService({
+          evaluationPeriodInYears: 10,
+          operationsFirstYear: 2025,
+        }),
+      );
+
       expect(
-        getEconomicResultsOfProjectExploitationForDuration(
-          [],
-          [
+        (result.revenues.operationsRevenues?.total ?? 0) -
+          (result.costs.operationsCosts?.total ?? 0),
+      ).toEqual(-37623);
+      expect(result.costs.operationsCosts).toEqual({
+        total: 50026,
+        costs: [
+          { amount: 49613, purpose: "taxes" },
+          { amount: 413, purpose: "maintenance" },
+        ],
+      });
+
+      expect(result.revenues.operationsRevenues).toEqual({
+        total: 12403,
+        revenues: [
+          { amount: 8269, source: "rent" },
+          { amount: 4134, source: "other" },
+        ],
+      });
+
+      const resultWithNoRevenues = computeEconomicBalanceImpact(
+        {
+          developmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
+          financialAssistanceRevenues: [
+            { amount: 45000, source: "public_subsidies" },
+            { amount: 5000, source: "other" },
+          ],
+          reinstatementCosts: [
+            { amount: 10000, purpose: "waste_collection" },
+            { amount: 39999, purpose: "deimpermeabilization" },
+          ],
+          developmentPlanInstallationCosts: [
+            { amount: 50000, purpose: "installation_works" },
+            { amount: 45000, purpose: "technical_studies" },
+          ],
+          sitePurchaseTotalAmount: 100000,
+          futureOperatorName: "Mairie de Blajan",
+          developmentPlanDeveloperName: "Mairie de Blajan",
+          futureSiteOwnerName: "Acheteur",
+          reinstatementContractOwnerName: "Un autre acteur",
+          yearlyProjectedRevenues: [],
+          yearlyProjectedCosts: [
             { amount: 6000, purpose: "taxes" },
             { amount: 50, purpose: "maintenance" },
           ],
-          new SumOnEvolutionPeriodService({
-            evaluationPeriodInYears: 30,
-            operationsFirstYear: 2025,
-          }),
-        ),
-      ).toEqual({
-        total: -102982,
-        operationsCosts: {
-          total: 102982,
-          costs: [
-            { amount: 102131, purpose: "taxes" },
-            { amount: 851, purpose: "maintenance" },
-          ],
         },
-        operationsRevenues: {
-          total: 0,
-          revenues: [],
-        },
+        new SumOnEvolutionPeriodService({
+          evaluationPeriodInYears: 30,
+          operationsFirstYear: 2025,
+        }),
+      );
+
+      expect(
+        (resultWithNoRevenues.revenues.operationsRevenues?.total ?? 0) -
+          (resultWithNoRevenues.costs.operationsCosts?.total ?? 0),
+      ).toEqual(-102982);
+      expect(resultWithNoRevenues.costs.operationsCosts).toEqual({
+        total: 102982,
+        costs: [
+          { amount: 102131, purpose: "taxes" },
+          { amount: 851, purpose: "maintenance" },
+        ],
+      });
+
+      expect(resultWithNoRevenues.revenues.operationsRevenues).toEqual({
+        total: 0,
+        revenues: [],
       });
     });
   });
@@ -419,12 +546,12 @@ describe("EconomicBalance impact", () => {
           }),
         ),
       ).toEqual({
-        total: 403899 - (822395 + 49999 + 150000),
+        total: 403899 - (822394 + 49999 + 150000),
         bearer: "Mairie de Blajan",
         costs: {
-          total: 822395 + 49999 + 150000,
+          total: 822394 + 49999 + 150000,
           operationsCosts: {
-            total: 822395,
+            total: 822394,
             costs: [
               { amount: 815598, purpose: "taxes" },
               { amount: 6797, purpose: "maintenance" },

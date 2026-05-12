@@ -1,17 +1,20 @@
-import { pipe } from "rxjs";
 import {
   BuildingsConstructionExpense,
   DevelopmentPlanInstallationExpenses,
   DevelopmentPlanType,
   EconomicBalanceImpactResult,
   FinancialAssistanceRevenue,
+  ProjectDevelopmentEconomicBalanceItem,
   RecurringExpense,
   RecurringRevenue,
   ReinstatementExpense,
+  roundToInteger,
   sumListWithKey,
 } from "shared";
 
 import { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
+import { getProjectDevelopmentEconomicBalance } from "../break-even-level/projectDevelopmentEconomicBalance";
+import { getProjectOperatingEconomicBalance } from "../break-even-level/projectOperatingEconomicBalance";
 
 type ProjectProps = {
   developmentPlanType: DevelopmentPlanType;
@@ -30,175 +33,10 @@ type ProjectProps = {
   buildingsResaleSellingPrice?: number;
 };
 
-type ReconversionProjectInstallationCostsInput = {
-  developmentPlanType: DevelopmentPlanType;
-  financialAssistanceRevenues?: FinancialAssistanceRevenue[];
-  reinstatementCosts: ReinstatementExpense[];
-  developmentPlanInstallationCosts: DevelopmentPlanInstallationExpenses[];
-  buildingsConstructionAndRehabilitationCosts?: BuildingsConstructionExpense[];
-  sitePurchaseTotalAmount: number;
-  developmentPlanDeveloperName?: string;
-  futureOperatorName?: string;
-  futureSiteOwnerName?: string;
-  reinstatementContractOwnerName?: string;
-};
-
-type ReconversionProjectInstallationEconomicResult = {
-  total: number;
-  costs: {
-    total: number;
-    developmentPlanInstallation?: { total: number; costs: DevelopmentPlanInstallationExpenses[] };
-    buildingsConstructionAndRehabilitation?: {
-      total: number;
-      costs: BuildingsConstructionExpense[];
-    };
-    siteReinstatement?: { total: number; costs: ReinstatementExpense[] };
-    sitePurchase?: number;
-  };
-  revenues: {
-    total: number;
-    financialAssistance?: { total: number; revenues: FinancialAssistanceRevenue[] };
-  };
-};
-
-const withSiteResaleRevenues =
-  (siteResaleSellingPrice?: number) =>
-  (economicBalance: EconomicBalanceImpactResult): EconomicBalanceImpactResult => {
-    if (!siteResaleSellingPrice) return economicBalance;
-    return {
-      ...economicBalance,
-      total: economicBalance.total + siteResaleSellingPrice,
-      revenues: {
-        ...economicBalance.revenues,
-        siteResale: siteResaleSellingPrice,
-        total: economicBalance.revenues.total + siteResaleSellingPrice,
-      },
-    };
-  };
-
-const withBuildingsResaleRevenues =
-  (buildingsResaleSellingPrice?: number) =>
-  (economicBalance: EconomicBalanceImpactResult): EconomicBalanceImpactResult => {
-    if (!buildingsResaleSellingPrice) return economicBalance;
-    return {
-      ...economicBalance,
-      total: economicBalance.total + buildingsResaleSellingPrice,
-      revenues: {
-        ...economicBalance.revenues,
-        buildingsResale: buildingsResaleSellingPrice,
-        total: economicBalance.revenues.total + buildingsResaleSellingPrice,
-      },
-    };
-  };
-
-export const getEconomicResultsOfProjectInstallation = ({
-  developmentPlanType,
-  financialAssistanceRevenues,
-  reinstatementCosts,
-  developmentPlanInstallationCosts,
-  buildingsConstructionAndRehabilitationCosts,
-  sitePurchaseTotalAmount,
-  developmentPlanDeveloperName,
-  futureSiteOwnerName,
-  reinstatementContractOwnerName,
-}: ReconversionProjectInstallationCostsInput): ReconversionProjectInstallationEconomicResult => {
-  const isDeveloperOwnerOfReinstatement =
-    developmentPlanDeveloperName === reinstatementContractOwnerName;
-  const isDeveloperFutureSiteOwner = futureSiteOwnerName === developmentPlanDeveloperName;
-
-  const costDetails: Omit<ReconversionProjectInstallationEconomicResult["costs"], "total"> = {};
-
-  if (developmentPlanInstallationCosts.length > 0) {
-    costDetails.developmentPlanInstallation = {
-      total: sumListWithKey(developmentPlanInstallationCosts, "amount"),
-      costs: developmentPlanInstallationCosts,
-    };
-  }
-  if (buildingsConstructionAndRehabilitationCosts?.length) {
-    costDetails.buildingsConstructionAndRehabilitation = {
-      total: sumListWithKey(buildingsConstructionAndRehabilitationCosts, "amount"),
-      costs: buildingsConstructionAndRehabilitationCosts,
-    };
-  }
-  if (isDeveloperOwnerOfReinstatement && reinstatementCosts.length > 0) {
-    costDetails.siteReinstatement = {
-      total: sumListWithKey(reinstatementCosts, "amount"),
-      costs: reinstatementCosts,
-    };
-  }
-
-  const shouldCountSitePurchase =
-    (developmentPlanType === "PHOTOVOLTAIC_POWER_PLANT" && isDeveloperFutureSiteOwner) ||
-    developmentPlanType === "URBAN_PROJECT";
-  if (shouldCountSitePurchase && sitePurchaseTotalAmount) {
-    costDetails.sitePurchase = sitePurchaseTotalAmount;
-  }
-  const costs = {
-    total:
-      (costDetails.developmentPlanInstallation?.total ?? 0) +
-      (costDetails.buildingsConstructionAndRehabilitation?.total ?? 0) +
-      (costDetails.sitePurchase ?? 0) +
-      (costDetails.siteReinstatement?.total ?? 0),
-    ...costDetails,
-  };
-
-  const revenues: ReconversionProjectInstallationEconomicResult["revenues"] = {
-    total: 0,
-  };
-
-  // financial assistance is given for reinstatement works
-  if (financialAssistanceRevenues?.length && isDeveloperOwnerOfReinstatement) {
-    const financialAssistanceRevenuesTotal = sumListWithKey(financialAssistanceRevenues, "amount");
-    revenues.total = financialAssistanceRevenuesTotal;
-    revenues.financialAssistance = {
-      total: financialAssistanceRevenuesTotal,
-      revenues: financialAssistanceRevenues,
-    };
-  }
-
-  const { total: projectInstallationTotalCost } = costs;
-  const { total: projectInstallationTotalRevenue } = revenues;
-
-  return {
-    total: projectInstallationTotalRevenue - projectInstallationTotalCost,
-    costs,
-    revenues,
-  };
-};
-
-export const getEconomicResultsOfProjectExploitationForDuration = (
-  yearlyProjectedRevenues: ProjectProps["yearlyProjectedRevenues"],
-  yearlyProjectedCosts: ProjectProps["yearlyProjectedCosts"],
-  sumOnEvolutionPeriodService: SumOnEvolutionPeriodService,
-) => {
-  const costsForDuration = yearlyProjectedCosts.map(({ amount, purpose }) => ({
-    purpose,
-    amount: sumOnEvolutionPeriodService.sumWithDiscountFactor(amount),
-  }));
-  const revenuesForDuration = yearlyProjectedRevenues.map(({ amount, source }) => ({
-    source,
-    amount: sumOnEvolutionPeriodService.sumWithDiscountFactor(amount),
-  }));
-
-  const totalCostsForDuration = sumListWithKey(costsForDuration, "amount");
-  const totalRevenuesForDuration = sumListWithKey(revenuesForDuration, "amount");
-  return {
-    total: totalRevenuesForDuration - totalCostsForDuration,
-    operationsCosts: {
-      total: totalCostsForDuration,
-      costs: costsForDuration,
-    },
-    operationsRevenues: {
-      total: totalRevenuesForDuration,
-      revenues: revenuesForDuration,
-    },
-  };
-};
-
 export const computeEconomicBalanceImpact = (
   {
     developmentPlanType,
-    financialAssistanceRevenues,
+    financialAssistanceRevenues = [],
     reinstatementCosts,
     developmentPlanInstallationCosts,
     buildingsConstructionAndRehabilitationCosts,
@@ -214,70 +52,236 @@ export const computeEconomicBalanceImpact = (
   }: ProjectProps,
   sumOnEvolutionPeriodService: SumOnEvolutionPeriodService,
 ): EconomicBalanceImpactResult => {
-  const {
-    total: totalInstallation,
-    costs,
-    revenues,
-  } = getEconomicResultsOfProjectInstallation({
+  const developmentEconomicBalance = getProjectDevelopmentEconomicBalance({
     developmentPlanType,
-    financialAssistanceRevenues,
-    reinstatementCosts,
-    developmentPlanInstallationCosts,
-    buildingsConstructionAndRehabilitationCosts,
-    sitePurchaseTotalAmount,
-    developmentPlanDeveloperName,
-    futureSiteOwnerName,
-    reinstatementContractOwnerName,
+    costs: {
+      reinstatementCosts,
+      developmentPlanInstallationCosts,
+      buildingsConstructionAndRehabilitationCosts,
+      sitePurchaseTotalAmount,
+    },
+    revenues: {
+      financialAssistanceRevenues,
+      siteResaleSellingPrice,
+      buildingsResaleSellingPrice,
+    },
+    stakeholders: {
+      current: { owner: { structureType: "unknown", structureName: undefined } },
+      project: {
+        developer: {
+          structureType: "unknown",
+          structureName: developmentPlanDeveloperName,
+        },
+        reinstatementContractOwner: {
+          structureType: "unknown",
+          structureName: reinstatementContractOwnerName,
+        },
+      },
+      future: {
+        owner: {
+          structureType: "unknown",
+          structureName: futureSiteOwnerName,
+        },
+        operator: {
+          structureType: "unknown",
+          structureName: futureOperatorName,
+        },
+      },
+    },
   });
 
   const isDeveloperFutureSiteOperator = futureOperatorName === developmentPlanDeveloperName;
 
-  const { total: totalInstallationCosts, ...installationCostsDetails } = costs;
-  const { total: totalInstallationRevenues, ...installationRevenuesDetails } = revenues;
+  const siteReinstatement = (
+    developmentEconomicBalance.details.filter(
+      ({ name }) => name === "siteReinstatement",
+    ) as Extract<ProjectDevelopmentEconomicBalanceItem, { name: "siteReinstatement" }>[]
+  ).map((item) => ({
+    amount: item.total * -1,
+    purpose: item.details,
+  }));
 
+  const developmentPlanInstallation = (
+    developmentEconomicBalance.details.filter(
+      ({ name }) => name === "projectInstallation",
+    ) as Extract<ProjectDevelopmentEconomicBalanceItem, { name: "projectInstallation" }>[]
+  ).map((item) => ({
+    amount: item.total * -1,
+    purpose: item.details,
+  }));
+
+  const buildingsConstructionAndRehabilitation = (
+    developmentEconomicBalance.details.filter(
+      ({ name }) => name === "projectBuildingsInstallation",
+    ) as Extract<ProjectDevelopmentEconomicBalanceItem, { name: "projectBuildingsInstallation" }>[]
+  ).map((item) => ({
+    amount: item.total * -1,
+    purpose: item.details,
+  }));
+
+  const financialAssistance = (
+    developmentEconomicBalance.details.filter(
+      ({ name }) => name === "financialAssistanceRevenues",
+    ) as Extract<ProjectDevelopmentEconomicBalanceItem, { name: "financialAssistanceRevenues" }>[]
+  ).map((item) => ({
+    amount: item.total,
+    source: item.details,
+  }));
+
+  const sitePurchase = developmentEconomicBalance.details.find(
+    ({ name }) => name === "sitePurchase",
+  )?.total;
+
+  const siteReinstatementTotal = sumListWithKey(siteReinstatement, "amount");
+  const developmentPlanInstallationTotal = sumListWithKey(developmentPlanInstallation, "amount");
+
+  const buildingsConstructionAndRehabilitationTotal = sumListWithKey(
+    buildingsConstructionAndRehabilitation,
+    "amount",
+  );
+
+  const siteResale = developmentEconomicBalance.details.find(
+    ({ name }) => name === "siteResaleRevenue",
+  )?.total;
+  const buildingsResale = developmentEconomicBalance.details.find(
+    ({ name }) => name === "buildingsResaleRevenue",
+  )?.total;
+
+  const financialAssistanceTotal = roundToInteger(sumListWithKey(financialAssistance, "amount"));
+
+  const sitePurchaseTotal = sitePurchase ? sitePurchase * -1 : undefined;
   if (isDeveloperFutureSiteOperator) {
-    const {
-      total: totalExploitation,
-      operationsCosts,
-      operationsRevenues,
-    } = getEconomicResultsOfProjectExploitationForDuration(
-      yearlyProjectedRevenues,
+    const operationEconomicBalance = getProjectOperatingEconomicBalance({
       yearlyProjectedCosts,
+      yearlyProjectedRevenues,
       sumOnEvolutionPeriodService,
-    );
+    });
 
-    return pipe(
-      withSiteResaleRevenues(siteResaleSellingPrice),
-      withBuildingsResaleRevenues(buildingsResaleSellingPrice),
-    )({
-      total: Math.round(totalInstallation + totalExploitation),
+    const costs = operationEconomicBalance.filter(({ total }) => total < 0);
+    const revenues = operationEconomicBalance.filter(({ total }) => total > 0);
+    const operationCostsTotal =
+      costs.length > 0 ? roundToInteger(sumListWithKey(costs, "total")) * -1 : 0;
+    const operationsRevenuesTotal = roundToInteger(sumListWithKey(revenues, "total"));
+
+    return {
+      total: roundToInteger(
+        sumListWithKey(operationEconomicBalance, "total") + developmentEconomicBalance.total,
+      ),
       bearer: developmentPlanDeveloperName,
       costs: {
-        total: totalInstallationCosts + operationsCosts.total,
-        ...installationCostsDetails,
-        operationsCosts,
+        total:
+          siteReinstatementTotal +
+          developmentPlanInstallationTotal +
+          operationCostsTotal +
+          buildingsConstructionAndRehabilitationTotal +
+          (sitePurchaseTotal ?? 0),
+        operationsCosts: {
+          total: operationCostsTotal,
+          costs: costs.map(({ details, total }) => ({
+            purpose: details,
+            amount: roundToInteger(total * -1),
+          })) as RecurringExpense[],
+        },
+        developmentPlanInstallation:
+          developmentPlanInstallation.length > 0
+            ? {
+                total: developmentPlanInstallationTotal,
+                costs: developmentPlanInstallation,
+              }
+            : undefined,
+        buildingsConstructionAndRehabilitation:
+          buildingsConstructionAndRehabilitation.length > 0
+            ? {
+                total: buildingsConstructionAndRehabilitationTotal,
+                costs: buildingsConstructionAndRehabilitation,
+              }
+            : undefined,
+        siteReinstatement:
+          siteReinstatement.length > 0
+            ? {
+                total: siteReinstatementTotal,
+                costs: siteReinstatement,
+              }
+            : undefined,
+        sitePurchase: sitePurchaseTotal,
       },
       revenues: {
-        total: totalInstallationRevenues + operationsRevenues.total,
-        ...installationRevenuesDetails,
-        operationsRevenues,
+        total:
+          (siteResale ?? 0) +
+          (buildingsResale ?? 0) +
+          operationsRevenuesTotal +
+          financialAssistanceTotal,
+        siteResale: developmentEconomicBalance.details.find(
+          ({ name }) => name === "siteResaleRevenue",
+        )?.total,
+        buildingsResale: developmentEconomicBalance.details.find(
+          ({ name }) => name === "buildingsResaleRevenue",
+        )?.total,
+        operationsRevenues: {
+          total: roundToInteger(sumListWithKey(revenues, "total")),
+          revenues: revenues.map((item) => ({
+            amount: roundToInteger(item.total),
+            source: item.details,
+          })) as RecurringRevenue[],
+        },
+        financialAssistance:
+          financialAssistance.length > 0
+            ? {
+                total: financialAssistanceTotal,
+                revenues: financialAssistance,
+              }
+            : undefined,
       },
-    });
+    };
   }
 
-  return pipe(
-    withSiteResaleRevenues(siteResaleSellingPrice),
-    withBuildingsResaleRevenues(buildingsResaleSellingPrice),
-  )({
-    total: Math.round(totalInstallation),
+  return {
+    total: developmentEconomicBalance.total,
     bearer: developmentPlanDeveloperName,
     costs: {
-      total: totalInstallationCosts,
-      ...installationCostsDetails,
+      total:
+        siteReinstatementTotal +
+        developmentPlanInstallationTotal +
+        (sitePurchaseTotal ?? 0) +
+        buildingsConstructionAndRehabilitationTotal,
+      developmentPlanInstallation:
+        developmentPlanInstallation.length > 0
+          ? {
+              total: sumListWithKey(developmentPlanInstallation, "amount"),
+              costs: developmentPlanInstallation,
+            }
+          : undefined,
+      buildingsConstructionAndRehabilitation:
+        buildingsConstructionAndRehabilitation.length > 0
+          ? {
+              total: sumListWithKey(buildingsConstructionAndRehabilitation, "amount"),
+              costs: buildingsConstructionAndRehabilitation,
+            }
+          : undefined,
+      siteReinstatement:
+        siteReinstatement.length > 0
+          ? {
+              total: sumListWithKey(siteReinstatement, "amount"),
+              costs: siteReinstatement,
+            }
+          : undefined,
+      sitePurchase: sitePurchase ? sitePurchase * -1 : undefined,
     },
     revenues: {
-      total: totalInstallationRevenues,
-      ...installationRevenuesDetails,
+      total: (siteResale ?? 0) + (buildingsResale ?? 0) + financialAssistanceTotal,
+      siteResale: developmentEconomicBalance.details.find(
+        ({ name }) => name === "siteResaleRevenue",
+      )?.total,
+      buildingsResale: developmentEconomicBalance.details.find(
+        ({ name }) => name === "buildingsResaleRevenue",
+      )?.total,
+      financialAssistance:
+        financialAssistance.length > 0
+          ? {
+              total: financialAssistanceTotal,
+              revenues: financialAssistance,
+            }
+          : undefined,
     },
-  });
+  };
 };
