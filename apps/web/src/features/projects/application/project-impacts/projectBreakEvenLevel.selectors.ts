@@ -78,11 +78,11 @@ const isLocalAuthority = (structureType?: string) =>
   structureType === "local_authority" || LOCAL_AUTHORITIES.some((item) => item === structureType);
 
 type OwnerRelatedCategory =
+  | "avoidedFricheMaintenanceAndSecuringCostsForTenant"
   | "avoidedFricheMaintenanceAndSecuringCostsForOwner"
   | "oldRentalIncomeLoss"
   | "projectedRentalIncome"
   | "projectedRentalIncomeIncrease"
-  | "avoidedFricheMaintenanceAndSecuringCostsForTenant"
   | "previousSiteOperationBenefitLoss"
   | "projectOperatingEconomicBalance";
 
@@ -101,7 +101,8 @@ export type LocalPeopleOrCompanyCategory =
   | "localPropertyValueIncrease"
   | "avoidedCarRelatedExpenses"
   | "travelTimeSavedPerTravelerExpenses"
-  | "avoidedPropertyDamageExpenses";
+  | "avoidedPropertyDamageExpenses"
+  | "avoidedAirConditioningExpenses";
 
 export type HumanityCategory =
   | "avoidedCo2eqWithEnergyProduction"
@@ -121,7 +122,7 @@ export type HumanityCategory =
   | "avoidedAccidentsDeathsExpenses";
 
 const getBearerForImpact = (
-  name: ReconversionProjectImpactsBreakEvenLevel["indirectEconomicImpacts"]["details"][number]["name"],
+  name: LocalAuthorityCategory | HumanityCategory | LocalPeopleOrCompanyCategory,
   stakeholders: ReconversionProjectImpactsBreakEvenLevel["stakeholders"],
 ): Bearer => {
   switch (name) {

@@ -28,6 +28,7 @@ const CATEGORIES: { label: string; color: string; impacts: LocalPeopleOrCompanyC
       "travelTimeSavedPerTravelerExpenses",
       "avoidedCarRelatedExpenses",
       "avoidedPropertyDamageExpenses",
+      "avoidedAirConditioningExpenses",
     ],
     color: "#F57CFD",
   },
