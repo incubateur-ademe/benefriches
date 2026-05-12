@@ -1,13 +1,13 @@
 import type { AnswerStepId, UrbanProjectCreationStep } from "../urbanProjectSteps";
 import { BuildingsDemolitionInfoHandler } from "./buildings/buildings-demolition-info/buildingsDemolitionInfo.handler";
-import { BuildingsExistingBuildingsUsesFloorSurfaceAreaHandler } from "./buildings/buildings-existing-buildings-uses-floor-surface-area/buildingsExistingBuildingsUsesFloorSurfaceArea.handler";
 import { BuildingsFootprintToReuseHandler } from "./buildings/buildings-footprint-to-reuse/buildingsFootprintToReuse.handler";
 import { BuildingsIntroductionHandler } from "./buildings/buildings-introduction/buildingsIntroduction.handler";
-import { BuildingsNewBuildingsUsesFloorSurfaceAreaHandler } from "./buildings/buildings-new-buildings-uses-floor-surface-area/buildingsNewBuildingsUsesFloorSurfaceArea.handler";
 import { BuildingsNewConstructionInfoHandler } from "./buildings/buildings-new-construction-info/buildingsNewConstructionInfo.handler";
 import { BuildingsNewConstructionIntroductionHandler } from "./buildings/buildings-new-construction-introduction/buildingsNewConstructionIntroduction.handler";
 import { BuildingsReuseIntroductionHandler } from "./buildings/buildings-reuse-introduction/buildingsReuseIntroduction.handler";
 import { BuildingsUsesFloorSurfaceAreaHandler } from "./buildings/buildings-uses-floor-surface-area/buildingsUsesFloorSurfaceArea.handler";
+import { ExistingBuildingsUsesFloorSurfaceAreaHandler } from "./buildings/existing-buildings-uses-floor-surface-area/existingBuildingsUsesFloorSurfaceArea.handler";
+import { NewBuildingsUsesFloorSurfaceAreaHandler } from "./buildings/new-buildings-uses-floor-surface-area/newBuildingsUsesFloorSurfaceArea.handler";
 import { ExpensesBuildingsConstructionAndRehabilitationHandler } from "./expenses/expenses-buildings-construction-and-rehabilitation/expensesBuildingsConstructionAndRehabilitation.handler";
 import { UrbanProjectInstallationExpensesHandler } from "./expenses/expenses-installation/expensesInstallation.handler";
 import { ExpensesIntroductionHandler } from "./expenses/expenses-introduction/expensesIntroduction.handler";
@@ -65,9 +65,9 @@ export const answerStepHandlers: AnswerStepHandlerMap = {
   URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA: BuildingsUsesFloorSurfaceAreaHandler,
   URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE: BuildingsFootprintToReuseHandler,
   URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA:
-    BuildingsExistingBuildingsUsesFloorSurfaceAreaHandler,
+    ExistingBuildingsUsesFloorSurfaceAreaHandler,
   URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA:
-    BuildingsNewBuildingsUsesFloorSurfaceAreaHandler,
+    NewBuildingsUsesFloorSurfaceAreaHandler,
   // custom - decontamination
   URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION: SoilsDecontaminationSelectionHandler,
   URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA: SoilsDecontaminationSurfaceAreaHandler,

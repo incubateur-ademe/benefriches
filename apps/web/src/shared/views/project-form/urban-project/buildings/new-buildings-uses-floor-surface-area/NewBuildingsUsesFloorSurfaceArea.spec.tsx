@@ -1,9 +1,9 @@
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { type BuildingsUseDistribution, type UrbanProjectUseWithBuilding } from "shared";
 
-import BuildingsNewBuildingsUsesFloorSurfaceArea from "./BuildingsNewBuildingsUsesFloorSurfaceArea";
+import NewBuildingsUsesFloorSurfaceArea from "./NewBuildingsUsesFloorSurfaceArea";
 
-describe("BuildingsNewBuildingsUsesFloorSurfaceArea", () => {
+describe("NewBuildingsUsesFloorSurfaceArea", () => {
   const defaultProps = {
     initialValues: {
       RESIDENTIAL: 800,
@@ -23,7 +23,7 @@ describe("BuildingsNewBuildingsUsesFloorSurfaceArea", () => {
 
   it("renders the selected building uses and overall floor surface recap", async () => {
     await act(async () => {
-      render(<BuildingsNewBuildingsUsesFloorSurfaceArea {...defaultProps} />);
+      render(<NewBuildingsUsesFloorSurfaceArea {...defaultProps} />);
     });
 
     expect(
@@ -41,7 +41,7 @@ describe("BuildingsNewBuildingsUsesFloorSurfaceArea", () => {
     const onSubmit = vi.fn();
 
     await act(async () => {
-      render(<BuildingsNewBuildingsUsesFloorSurfaceArea {...defaultProps} onSubmit={onSubmit} />);
+      render(<NewBuildingsUsesFloorSurfaceArea {...defaultProps} onSubmit={onSubmit} />);
     });
 
     const [residentialInput, officesInput] = screen.getAllByRole("textbox");
@@ -69,7 +69,7 @@ describe("BuildingsNewBuildingsUsesFloorSurfaceArea", () => {
     const onSubmit = vi.fn();
 
     await act(async () => {
-      render(<BuildingsNewBuildingsUsesFloorSurfaceArea {...defaultProps} onSubmit={onSubmit} />);
+      render(<NewBuildingsUsesFloorSurfaceArea {...defaultProps} onSubmit={onSubmit} />);
     });
 
     const [residentialInput] = screen.getAllByRole("textbox");
@@ -89,7 +89,7 @@ describe("BuildingsNewBuildingsUsesFloorSurfaceArea", () => {
 
     await act(async () => {
       render(
-        <BuildingsNewBuildingsUsesFloorSurfaceArea
+        <NewBuildingsUsesFloorSurfaceArea
           initialValues={{ RESIDENTIAL: 800 }}
           selectedUses={["RESIDENTIAL"]}
           usesFloorSurfaceAreaDistribution={{ RESIDENTIAL: 2400 }}

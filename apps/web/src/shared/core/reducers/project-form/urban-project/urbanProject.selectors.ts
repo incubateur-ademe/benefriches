@@ -11,12 +11,12 @@ import {
   getProjectSoilDistributionBySoilType,
 } from "./helpers/readers/soilsReaders";
 import { createSelectBuildingsDemolitionInfoViewData } from "./step-handlers/buildings/buildings-demolition-info/buildingsDemolitionInfo.selector";
-import { createSelectExistingBuildingsUsesFloorSurfaceAreaViewData } from "./step-handlers/buildings/buildings-existing-buildings-uses-floor-surface-area/buildingsExistingBuildingsUsesFloorSurfaceArea.selector";
 import { createSelectBuildingsFootprintToReuseViewData } from "./step-handlers/buildings/buildings-footprint-to-reuse/buildingsFootprintToReuse.selector";
-import { createSelectNewBuildingsUsesFloorSurfaceAreaViewData } from "./step-handlers/buildings/buildings-new-buildings-uses-floor-surface-area/buildingsNewBuildingsUsesFloorSurfaceArea.selector";
 import { createSelectBuildingsNewConstructionInfoViewData } from "./step-handlers/buildings/buildings-new-construction-info/buildingsNewConstructionInfo.selector";
 import { createSelectBuildingsNewConstructionIntroductionViewData } from "./step-handlers/buildings/buildings-new-construction-introduction/buildingsNewConstructionIntroduction.selector";
 import { createSelectUsesFloorSurfaceAreaViewData } from "./step-handlers/buildings/buildings-uses-floor-surface-area/buildingsUsesFloorSurfaceArea.selector";
+import { createSelectExistingBuildingsUsesFloorSurfaceAreaViewData } from "./step-handlers/buildings/existing-buildings-uses-floor-surface-area/existingBuildingsUsesFloorSurfaceArea.selector";
+import { createSelectNewBuildingsUsesFloorSurfaceAreaViewData } from "./step-handlers/buildings/new-buildings-uses-floor-surface-area/newBuildingsUsesFloorSurfaceArea.selector";
 import { createSelectExpensesBuildingsConstructionAndRehabilitationViewData } from "./step-handlers/expenses/expenses-buildings-construction-and-rehabilitation/expensesBuildingsConstructionAndRehabilitation.selector";
 import { createSelectReinstatementExpensesViewData } from "./step-handlers/expenses/expenses-reinstatement/expensesReinstatement.selector";
 import { createSelectSiteResaleRevenueViewData } from "./step-handlers/revenues/revenue-expected-site-resale/revenueExpectedSiteResale.selector";

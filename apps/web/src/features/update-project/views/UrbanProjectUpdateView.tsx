@@ -26,14 +26,14 @@ const BuildingsFootprintToReuse = lazy(
 const BuildingsDemolitionInfo = lazy(
   () => import("@/shared/views/project-form/urban-project/buildings/demolition-info"),
 );
-const BuildingsExistingBuildingsUsesFloorSurfaceArea = lazy(
+const ExistingBuildingsUsesFloorSurfaceArea = lazy(
   () =>
     import("@/shared/views/project-form/urban-project/buildings/existing-buildings-uses-floor-surface-area"),
 );
 const BuildingsNewConstructionInfo = lazy(
   () => import("@/shared/views/project-form/urban-project/buildings/new-construction-info"),
 );
-const BuildingsNewBuildingsUsesFloorSurfaceArea = lazy(
+const NewBuildingsUsesFloorSurfaceArea = lazy(
   () =>
     import("@/shared/views/project-form/urban-project/buildings/new-buildings-uses-floor-surface-area"),
 );
@@ -280,7 +280,7 @@ const getCurrentStepView = (step: UrbanProjectUpdateStep): Exclude<ReactNode, un
       return (
         <>
           <HtmlTitle>{`Usages des bâtiments existants - Bâtiments - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
-          <BuildingsExistingBuildingsUsesFloorSurfaceArea />
+          <ExistingBuildingsUsesFloorSurfaceArea />
         </>
       );
     case "URBAN_PROJECT_BUILDINGS_NEW_CONSTRUCTION_INFO":
@@ -294,7 +294,7 @@ const getCurrentStepView = (step: UrbanProjectUpdateStep): Exclude<ReactNode, un
       return (
         <>
           <HtmlTitle>{`Usages des nouveaux bâtiments - Bâtiments - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
-          <BuildingsNewBuildingsUsesFloorSurfaceArea />
+          <NewBuildingsUsesFloorSurfaceArea />
         </>
       );
     case "URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER":

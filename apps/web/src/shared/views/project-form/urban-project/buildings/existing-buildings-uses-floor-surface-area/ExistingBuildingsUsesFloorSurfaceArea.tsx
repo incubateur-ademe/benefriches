@@ -26,16 +26,14 @@ type Props = {
   initialValues: BuildingsUseDistribution | undefined;
   selectedUses: UrbanProjectUseWithBuilding[];
   usesFloorSurfaceAreaDistribution: BuildingsUseDistribution;
-  remainingUsesFloorSurfaceAreaDistribution: BuildingsUseDistribution;
   onSubmit: (data: BuildingsUseDistribution) => void;
   onBack: () => void;
 };
 
-function BuildingsNewBuildingsUsesFloorSurfaceArea({
+function ExistingBuildingsUsesFloorSurfaceArea({
   initialValues,
   selectedUses,
   usesFloorSurfaceAreaDistribution,
-  remainingUsesFloorSurfaceAreaDistribution,
   onSubmit,
   onBack,
 }: Props) {
@@ -49,7 +47,7 @@ function BuildingsNewBuildingsUsesFloorSurfaceArea({
 
   return (
     <WizardFormLayout
-      title="Quels usages accueilleront les nouveaux bâtiments ?"
+      title="Quels usages accueilleront les bâtiments existants ?"
       instructions={
         <>
           <FormInfo>
@@ -66,14 +64,14 @@ function BuildingsNewBuildingsUsesFloorSurfaceArea({
           <BuildingsFloorSurfaceAreaAllocation
             allocations={allocations}
             selectedUses={selectedUses}
-            caption="Nouveaux bâtiments"
+            caption="Bâtiments existants"
           />
         </>
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>
         {selectedUses.map((use) => {
-          const maxSurfaceArea = remainingUsesFloorSurfaceAreaDistribution[use] ?? 0;
+          const maxSurfaceArea = usesFloorSurfaceAreaDistribution[use] ?? 0;
 
           return (
             <RowDecimalsNumericInput
@@ -88,7 +86,7 @@ function BuildingsNewBuildingsUsesFloorSurfaceArea({
                 ...optionalNumericFieldRegisterOptions,
                 max: {
                   value: maxSurfaceArea,
-                  message: `La surface ne peut pas dépasser celle restant à affecter pour cet usage (${formatSurfaceArea(maxSurfaceArea)})`,
+                  message: `La surface ne peut pas dépasser celle prévue pour cet usage (${formatSurfaceArea(maxSurfaceArea)})`,
                 },
               })}
             />
@@ -108,4 +106,4 @@ function BuildingsNewBuildingsUsesFloorSurfaceArea({
   );
 }
 
-export default BuildingsNewBuildingsUsesFloorSurfaceArea;
+export default ExistingBuildingsUsesFloorSurfaceArea;

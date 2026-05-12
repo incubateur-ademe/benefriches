@@ -1,9 +1,9 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { type UrbanProjectUseWithBuilding } from "shared";
 
-import BuildingsExistingBuildingsUsesFloorSurfaceArea from "./BuildingsExistingBuildingsUsesFloorSurfaceArea";
+import ExistingBuildingsUsesFloorSurfaceArea from "./ExistingBuildingsUsesFloorSurfaceArea";
 
-describe("BuildingsExistingBuildingsUsesFloorSurfaceArea", () => {
+describe("ExistingBuildingsUsesFloorSurfaceArea", () => {
   const defaultProps = {
     initialValues: {
       RESIDENTIAL: 1800,
@@ -18,7 +18,7 @@ describe("BuildingsExistingBuildingsUsesFloorSurfaceArea", () => {
   };
 
   it("renders the selected building uses and overall floor surface recap", async () => {
-    render(<BuildingsExistingBuildingsUsesFloorSurfaceArea {...defaultProps} />);
+    render(<ExistingBuildingsUsesFloorSurfaceArea {...defaultProps} />);
 
     await waitFor(() => {
       // oxlint-disable-next-line no-standalone-expect
@@ -36,9 +36,7 @@ describe("BuildingsExistingBuildingsUsesFloorSurfaceArea", () => {
 
   it("submits the existing buildings uses distribution", async () => {
     const onSubmit = vi.fn();
-    render(
-      <BuildingsExistingBuildingsUsesFloorSurfaceArea {...defaultProps} onSubmit={onSubmit} />,
-    );
+    render(<ExistingBuildingsUsesFloorSurfaceArea {...defaultProps} onSubmit={onSubmit} />);
 
     const [residentialInput, officesInput] = screen.getAllByRole("textbox");
     fireEvent.change(residentialInput!, { target: { value: "2000" } });
@@ -63,9 +61,7 @@ describe("BuildingsExistingBuildingsUsesFloorSurfaceArea", () => {
 
   it("does not submit when a use exceeds the overall floor surface distribution", async () => {
     const onSubmit = vi.fn();
-    render(
-      <BuildingsExistingBuildingsUsesFloorSurfaceArea {...defaultProps} onSubmit={onSubmit} />,
-    );
+    render(<ExistingBuildingsUsesFloorSurfaceArea {...defaultProps} onSubmit={onSubmit} />);
 
     const [residentialInput] = screen.getAllByRole("textbox");
     fireEvent.change(residentialInput!, { target: { value: "2500" } });

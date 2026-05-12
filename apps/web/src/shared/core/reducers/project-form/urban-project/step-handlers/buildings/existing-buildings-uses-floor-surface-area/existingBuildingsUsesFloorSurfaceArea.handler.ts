@@ -5,9 +5,7 @@ import { willDemolishBuildings } from "../buildingsReaders";
 
 const STEP_ID = "URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA";
 
-export const BuildingsExistingBuildingsUsesFloorSurfaceAreaHandler: AnswerStepHandler<
-  typeof STEP_ID
-> = {
+export const ExistingBuildingsUsesFloorSurfaceAreaHandler: AnswerStepHandler<typeof STEP_ID> = {
   stepId: STEP_ID,
   getPreviousStepId(context) {
     if (context.siteData && willDemolishBuildings(context.siteData, context.stepsState)) {

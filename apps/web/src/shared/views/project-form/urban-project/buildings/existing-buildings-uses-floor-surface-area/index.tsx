@@ -1,9 +1,9 @@
 import { useAppSelector } from "@/app/hooks/store.hooks";
 import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 
-import BuildingsExistingBuildingsUsesFloorSurfaceArea from "./BuildingsExistingBuildingsUsesFloorSurfaceArea";
+import ExistingBuildingsUsesFloorSurfaceArea from "./ExistingBuildingsUsesFloorSurfaceArea";
 
-export default function BuildingsExistingBuildingsUsesFloorSurfaceAreaContainer() {
+export default function ExistingBuildingsUsesFloorSurfaceAreaContainer() {
   const { onBack, onRequestStepCompletion, selectExistingBuildingsUsesFloorSurfaceAreaViewData } =
     useProjectForm();
 
@@ -11,7 +11,7 @@ export default function BuildingsExistingBuildingsUsesFloorSurfaceAreaContainer(
     useAppSelector(selectExistingBuildingsUsesFloorSurfaceAreaViewData);
 
   return (
-    <BuildingsExistingBuildingsUsesFloorSurfaceArea
+    <ExistingBuildingsUsesFloorSurfaceArea
       initialValues={existingBuildingsUsesFloorSurfaceArea}
       selectedUses={selectedUses}
       usesFloorSurfaceAreaDistribution={usesFloorSurfaceAreaDistribution}
