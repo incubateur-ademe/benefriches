@@ -62,7 +62,7 @@ export const getPreviousSiteOperationBenefitLoss = ({
     sumListWithKey(previousYearlyExpenses, "amount");
 
   const detailsByYear = sumOnEvolutionPeriodService.getWeightedYearlyValues(
-    yearlySiteEconomicBalance,
+    yearlySiteEconomicBalance * -1,
     ["discount"],
   );
   return {

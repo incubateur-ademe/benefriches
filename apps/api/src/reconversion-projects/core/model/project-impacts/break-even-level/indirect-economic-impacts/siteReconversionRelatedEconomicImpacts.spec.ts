@@ -131,11 +131,11 @@ describe("getPreviousSiteOperationBenefitLoss", () => {
     });
 
     // balance = 7000 - 3000 = 4000 ; total = 4000 * 3 = 12000
-    expect(getWeightedYearlyValuesSpy).toHaveBeenCalledWith(4_000, ["discount"]);
-    expect(result.total).toBe(12_000);
+    expect(getWeightedYearlyValuesSpy).toHaveBeenCalledWith(-4_000, ["discount"]);
+    expect(result.total).toBe(-12_000);
   });
 
-  it("returns negative value if incomes are lower than expenses", () => {
+  it("returns positive value if incomes are lower than expenses", () => {
     const result = getPreviousSiteOperationBenefitLoss({
       previousYearlyIncomes: [{ amount: 1_000, source: "operations" }],
       previousYearlyExpenses: [{ amount: 4_000, purpose: "maintenance", bearer: "tenant" }],
@@ -143,7 +143,7 @@ describe("getPreviousSiteOperationBenefitLoss", () => {
     });
 
     // balance = 1000 - 4000 = -3000 ; total = -3000 * 3 = -9000
-    expect(result.total).toBe(-9_000);
+    expect(result.total).toBe(9_000);
   });
 
   it("returns 0 if expenses === incomes ", () => {
