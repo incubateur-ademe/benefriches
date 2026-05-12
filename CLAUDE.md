@@ -2,8 +2,6 @@
 
 > **Purpose**: Context for AI assistants and developers. For app-specific patterns, see individual CLAUDE.md files.
 
----
-
 ## Quick Lookup
 
 | I need to...                 | Go to...                                               |
@@ -14,9 +12,6 @@
 | Add shared type/DTO          | [packages/shared/CLAUDE.md](packages/shared/CLAUDE.md) |
 | See complete feature example | [docs/feature-example.md](docs/feature-example.md)     |
 | Run quality checks           | [Standard Commands](#standard-commands)                |
-| Decide where code goes       | [Decision Trees](#decision-trees)                      |
-
----
 
 ## Critical DON'Ts
 
@@ -27,11 +22,8 @@
 5. **Don't commit without quality checks** - Husky pre-commit hooks enforce lint + format (tests must be run manually)
 6. **Don't use relative imports across apps** - Use workspace protocol: `import from "shared"`
 7. **Don't modify database without migration** - Create a Knex migration for all schema changes
-8. **Don't skip tests** - Tests are required before commit and merge
-9. **Don't add an env var without updating env files** - Add to the relevant app's `.env.example` (empty/off), `.env.e2e` at the repo root (with the value needed for e2e tests), AND `docker-compose.e2e.yml` under the relevant service's `environment:` block
-10. **Don't duplicate Zod schemas** - Before writing a new Zod schema, check `packages/shared` for reusable ones (e.g., `surfaceAreaSchema`, `soilsDistributionSchema`)
-
----
+8. **Don't add an env var without updating env files** - Add to the relevant app's `.env.example` (empty/off), `.env.e2e` at the repo root (with the value needed for e2e tests), AND `docker-compose.e2e.yml` under the relevant service's `environment:` block
+9. **Don't duplicate Zod schemas** - Before writing a new Zod schema, check `packages/shared` for reusable ones (e.g., `surfaceAreaSchema`, `soilsDistributionSchema`)
 
 ## Monorepo Structure
 
@@ -47,8 +39,6 @@ benefriches/
 **Getting Started**: See [README.md](README.md) for installation and setup.
 
 **Required**: Node 24 (`"engines": { "node": "24" }` in package.json).
-
----
 
 ## Essential pnpm Commands
 
@@ -67,8 +57,6 @@ pnpm --filter web dev           # Start web dev server
 pnpm --filter shared build      # Build shared package (required after changes!)
 ```
 
----
-
 ## Shared Package Workflow
 
 **CRITICAL**: Changes to `shared` types can break both `api` and `web`. Always reinstall and verify both apps after modifying shared.
@@ -85,14 +73,10 @@ pnpm --filter shared dev
 
 Note: We don't use monorepo dependency solutions (nx, turborepo). You must manually run `pnpm --filter shared build` after modifying the shared package, or use `pnpm --filter shared dev` for watch mode.
 
----
-
 ## Database Migrations
 
 - Always use the `/create-database-migration` skill when creating database migrations. Never create migration files manually.
 - Use the project's `pnpm` commands for migration generation, not raw SQL files.
-
----
 
 ## Testing Strategy
 
@@ -114,8 +98,8 @@ Each test should verify a **distinct behavior** not covered by other tests:
 | Change                        | Required Tests                                                                    |
 | ----------------------------- | --------------------------------------------------------------------------------- |
 | **Modified `shared` package** | `pnpm --filter shared test` + `pnpm --filter api test` + `pnpm --filter web test` + `pnpm --filter e2e-tests typecheck` (page objects import shared types) |
-| **Modified `api` code**       | `pnpm --filter api test` (unit + integration)                                     |
-| **Modified `web` code**       | `pnpm --filter web test`                                                          |
+| **Modified `api` code`**      | `pnpm --filter api test` (unit + integration)                                     |
+| **Modified `web` code`**      | `pnpm --filter web test`                                                          |
 
 ### Running Tests
 
@@ -130,8 +114,6 @@ docker compose --env-file .env.e2e -f docker-compose.e2e.yml up # Start full sta
 pnpm --filter e2e-tests test:headless                 # Run all E2E tests in headless mode
 pnpm --filter e2e-tests test:headed              # Run with browser visible
 ```
-
----
 
 ## Code Quality Standards
 
@@ -201,8 +183,6 @@ pnpm test          # Run all tests (required before commit)
 pnpm build         # Build for production
 ```
 
----
-
 ## Git Workflow
 
 ### Branch Naming
@@ -217,50 +197,3 @@ git checkout -b chore/update-deps        # Chores, config updates
 ### CI/CD
 
 Trunk-based development: every push to `main` triggers CI checks and auto-deploys to staging. Production deploy is manual.
-
----
-
-## Decision Trees
-
-### Where Should This Code Go?
-
-```
-Is it used by both API and Web?
-├── YES → Is it a DTO for an API endpoint?
-│         ├── YES → packages/shared/src/api-dtos/
-│         └── NO → Is it a domain value object (SoilType, SiteNature)?
-│                  ├── YES → packages/shared/src/[domain]/
-│                  └── NO → Is it a pure utility function?
-│                           ├── YES → packages/shared/src/
-│                           └── NO → Keep in respective app
-└── NO → Which app uses it?
-         ├── API → apps/api/src/
-         └── Web → apps/web/src/
-```
-
-### New Module vs. Existing Module?
-
-```
-Is this a new domain concept?
-├── YES → Create new module: apps/api/src/[new-module]/
-└── NO → Does an existing module own this concept?
-         ├── YES → Add to existing module
-         └── UNCLEAR → Ask: "Which module should own [feature]?"
-```
-
----
-
-## For AI Assistants
-
-1. **Follow patterns** from app-specific CLAUDE.md files:
-   - Backend: @apps/api/CLAUDE.md
-   - Frontend: @apps/web/CLAUDE.md
-   - E2E Tests: @apps/e2e-tests/CLAUDE.md
-   - Shared: @packages/shared/CLAUDE.md
-2. **Reference real examples** in the codebase (use file links in responses)
-3. **Run checks after coding**: `typecheck` -> `lint` -> `format` -> `test`
-4. **For `shared` changes**: Reinstall in dependent apps, then verify both `api` and `web` pass checks
-
----
-
-**END OF MONOREPO GUIDE** - For implementation details, refer to app-specific CLAUDE.md files.
