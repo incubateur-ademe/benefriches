@@ -194,6 +194,7 @@ describe("SqlReconversionProjectImpactsQuery integration", () => {
         sitePurchasePropertyTransferDutiesAmount: 8000,
         developmentPlan: {
           developerName: "Terre cuite d’occitanie",
+          developerStructureType: "company",
           type: "PHOTOVOLTAIC_POWER_PLANT",
           features: {
             expectedAnnualProduction: 10,
@@ -269,6 +270,7 @@ describe("SqlReconversionProjectImpactsQuery integration", () => {
           id: uuid(),
           reconversion_project_id: reconversionProjectId,
           type: "PHOTOVOLTAIC_POWER_PLANT",
+          developer_structure_type: "company",
           features: {},
         },
       ]);
@@ -295,6 +297,7 @@ describe("SqlReconversionProjectImpactsQuery integration", () => {
         conversionSchedule: undefined,
         developmentPlan: {
           developerName: undefined,
+          developerStructureType: "company",
           features: undefined,
           installationCosts: [],
           installationSchedule: undefined,

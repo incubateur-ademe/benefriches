@@ -190,6 +190,7 @@ export class SqlReconversionProjectImpactsQuery implements ReconversionProjectIm
             type: sqlDevelopmentPlan.type,
             features: sqlDevelopmentPlanFeatures ?? undefined,
             developerName: sqlDevelopmentPlan.developer_name ?? undefined,
+            developerStructureType: sqlDevelopmentPlan.developer_structure_type,
             installationCosts: sqlDevelopmentPlan.costs,
             installationSchedule: sqlDevelopmentPlan.schedule_start_date
               ? {
