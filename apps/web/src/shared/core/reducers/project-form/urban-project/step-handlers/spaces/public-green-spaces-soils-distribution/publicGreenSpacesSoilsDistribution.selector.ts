@@ -12,6 +12,23 @@ type SpaceConstraint = {
   maxSurfaceArea: number;
 };
 
+// Overrides ORDERED_SOIL_TYPES for the public green spaces form
+const PUBLIC_GREEN_SPACES_DISPLAY_ORDER: readonly SoilType[] = [
+  "ARTIFICIAL_TREE_FILLED",
+  "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+  "MINERAL_SOIL",
+  "IMPERMEABLE_SOILS",
+  ...ORDERED_SOIL_TYPES.filter(
+    (soilType) =>
+      ![
+        "ARTIFICIAL_TREE_FILLED",
+        "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+        "MINERAL_SOIL",
+        "IMPERMEABLE_SOILS",
+      ].includes(soilType),
+  ),
+];
+
 type PublicGreenSpacesSoilsDistributionViewData = {
   availableSoilTypes: SoilType[];
   publicGreenSpacesSoilsDistribution: Partial<Record<SoilType, number>> | undefined;
@@ -46,7 +63,7 @@ export const createSelectPublicGreenSpacesSoilsDistributionViewData = (
       );
 
       // All soil types except BUILDINGS, with constrained soils filtered to only those on site or already in project
-      const availableSoilTypes = ORDERED_SOIL_TYPES.filter((soilType) => {
+      const availableSoilTypes = PUBLIC_GREEN_SPACES_DISPLAY_ORDER.filter((soilType) => {
         if (soilType === "BUILDINGS") return false;
         if (!isConstrainedSoilType(soilType)) return true;
         return siteSoils.includes(soilType) || existingProjectSoils.includes(soilType);

@@ -264,6 +264,36 @@ describe("urbanProject.selectors", () => {
         WATER: 4500,
       });
     });
+
+    it("should order soil types with trees and vegetated spaces before paths", () => {
+      const store = new StoreBuilder()
+        .withSiteData({
+          ...mockSiteData,
+          soilsDistribution: {
+            BUILDINGS: 1000,
+            IMPERMEABLE_SOILS: 1000,
+            MINERAL_SOIL: 1000,
+          },
+        })
+        .withSteps({
+          URBAN_PROJECT_PUBLIC_GREEN_SPACES_SURFACE_AREA: {
+            completed: true,
+            payload: { publicGreenSpacesSurfaceArea: 3000 },
+          },
+        })
+        .build();
+
+      const result = creationProjectFormSelectors.selectPublicGreenSpacesSoilsDistributionViewData(
+        store.getState(),
+      );
+
+      expect(result.availableSoilTypes.slice(0, 4)).toEqual([
+        "ARTIFICIAL_TREE_FILLED",
+        "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+        "MINERAL_SOIL",
+        "IMPERMEABLE_SOILS",
+      ]);
+    });
   });
 
   describe("selectReinstatementExpensesViewData", () => {
