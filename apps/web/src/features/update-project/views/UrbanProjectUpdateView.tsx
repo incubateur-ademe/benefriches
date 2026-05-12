@@ -20,6 +20,12 @@ const AnswerCascadingUpdateDialog = lazy(
 const BuildingsIntroduction = lazy(
   () => import("@/shared/views/project-form/urban-project/buildings/introduction"),
 );
+const BuildingsReuseIntroduction = lazy(
+  () => import("@/shared/views/project-form/urban-project/buildings/reuse-introduction"),
+);
+const BuildingsNewConstructionIntroduction = lazy(
+  () => import("@/shared/views/project-form/urban-project/buildings/new-construction-introduction"),
+);
 const BuildingsFootprintToReuse = lazy(
   () => import("@/shared/views/project-form/urban-project/buildings/footprint-to-reuse"),
 );
@@ -259,9 +265,19 @@ const getCurrentStepView = (step: UrbanProjectUpdateStep): Exclude<ReactNode, un
         </>
       );
     case "URBAN_PROJECT_BUILDINGS_REUSE_INTRODUCTION":
-      return <div>TODO: Buildings reuse introduction</div>;
+      return (
+        <>
+          <HtmlTitle>{`Introduction - Réutilisation des bâtiments - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
+          <BuildingsReuseIntroduction />
+        </>
+      );
     case "URBAN_PROJECT_BUILDINGS_NEW_CONSTRUCTION_INTRODUCTION":
-      return <div>TODO: Buildings new construction introduction</div>;
+      return (
+        <>
+          <HtmlTitle>{`Introduction - Construction de nouveaux bâtiments - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
+          <BuildingsNewConstructionIntroduction />
+        </>
+      );
     case "URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE":
       return (
         <>
