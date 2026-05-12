@@ -83,4 +83,34 @@ describe("BuildingsNewBuildingsUsesFloorSurfaceArea", () => {
     ).toBeInTheDocument();
     expect(onSubmit).not.toHaveBeenCalled();
   });
+
+  it("pre-fills the input with remaining surface area when there is only one use", async () => {
+    const onSubmit = vi.fn();
+
+    await act(async () => {
+      render(
+        <BuildingsNewBuildingsUsesFloorSurfaceArea
+          initialValues={{ RESIDENTIAL: 800 }}
+          selectedUses={["RESIDENTIAL"]}
+          usesFloorSurfaceAreaDistribution={{ RESIDENTIAL: 2400 }}
+          remainingUsesFloorSurfaceAreaDistribution={{ RESIDENTIAL: 800 }}
+          onBack={vi.fn()}
+          onSubmit={onSubmit}
+        />,
+      );
+    });
+
+    const [residentialInput] = screen.getAllByRole("textbox");
+    expect(residentialInput).toHaveValue("800");
+
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: /valider/i })).not.toBeDisabled();
+    });
+
+    fireEvent.submit(screen.getByRole("button", { name: /valider/i }));
+
+    await waitFor(() => {
+      expect(onSubmit).toHaveBeenCalledWith({ RESIDENTIAL: 800 }, expect.anything());
+    });
+  });
 });

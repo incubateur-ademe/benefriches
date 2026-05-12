@@ -49,19 +49,29 @@ export const createSelectNewBuildingsUsesFloorSurfaceAreaViewData = (
     const existingBuildingsUsesFloorSurfaceArea =
       existingUsesAnswers?.existingBuildingsUsesFloorSurfaceArea ?? {};
 
+    const remainingUsesFloorSurfaceAreaDistribution = selectedUses.reduce<BuildingsUseDistribution>(
+      (acc, use) => {
+        const totalFloorSurfaceArea = usesFloorSurfaceAreaDistribution[use] ?? 0;
+        const existingFloorSurfaceArea = existingBuildingsUsesFloorSurfaceArea[use] ?? 0;
+
+        acc[use] = Math.max(0, totalFloorSurfaceArea - existingFloorSurfaceArea);
+        return acc;
+      },
+      {},
+    );
+
+    const savedAnswers = newUsesAnswers?.newBuildingsUsesFloorSurfaceArea;
+    const preFilledAnswers =
+      selectedUses.length === 1
+        ? ({
+            [selectedUses[0]!]: remainingUsesFloorSurfaceAreaDistribution[selectedUses[0]!] ?? 0,
+          } as BuildingsUseDistribution)
+        : undefined;
+
     return {
-      newBuildingsUsesFloorSurfaceArea: newUsesAnswers?.newBuildingsUsesFloorSurfaceArea,
+      newBuildingsUsesFloorSurfaceArea: savedAnswers ?? preFilledAnswers,
       selectedUses,
       usesFloorSurfaceAreaDistribution,
-      remainingUsesFloorSurfaceAreaDistribution: selectedUses.reduce<BuildingsUseDistribution>(
-        (acc, use) => {
-          const totalFloorSurfaceArea = usesFloorSurfaceAreaDistribution[use] ?? 0;
-          const existingFloorSurfaceArea = existingBuildingsUsesFloorSurfaceArea[use] ?? 0;
-
-          acc[use] = Math.max(0, totalFloorSurfaceArea - existingFloorSurfaceArea);
-          return acc;
-        },
-        {},
-      ),
+      remainingUsesFloorSurfaceAreaDistribution,
     };
   });
