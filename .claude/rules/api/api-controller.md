@@ -1,3 +1,9 @@
+---
+paths:
+  - "apps/api/src/**/*.controller.ts"
+  - "apps/api/src/**/*.controller.integration-spec.ts"
+---
+
 # Controller Pattern
 
 > **HTTP layer pattern** for handling requests, validating input, and mapping Result to HTTP responses.
@@ -327,7 +333,7 @@ async getById(@Param("id") id: string): Promise<Example> {
 
 ## Related Patterns
 
-- **UseCases**: [01-usecase-pattern.md](01-usecase-pattern.md) (Result pattern)
-- **Integration Tests**: [06-integration-testing-pattern.md](06-integration-testing-pattern.md)
-- **NestJS Modules**: [08-dependency-injection.md](08-dependency-injection.md)
-- **Domain Events** (rare): [10-domain-events-pattern.md](10-domain-events-pattern.md#in-controllers-rare-cases-only)
+- **UseCases**: [api-usecase.md](api-usecase.md) (Result pattern)
+- **Integration Tests**: [api-integration-testing.md](api-integration-testing.md)
+- **NestJS Modules**: [api-modules-and-di.md](api-modules-and-di.md)
+- **Domain Events** (rare): [api-domain-events.md](api-domain-events.md#in-controllers-rare-cases-only)

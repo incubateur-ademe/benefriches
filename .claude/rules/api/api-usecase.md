@@ -1,3 +1,8 @@
+---
+paths:
+  - "apps/api/src/**/core/usecases/**/*.ts"
+---
+
 # UseCase Pattern
 
 > **Core business logic pattern** with Result type for type-safe error handling.
@@ -135,7 +140,7 @@ UseCases can emit domain events when business-significant actions occur. This is
 - Audit logging, analytics are required
 - Side effects need to be triggered (emails, notifications)
 
-**See**: [10-domain-events-pattern.md](10-domain-events-pattern.md) for complete pattern.
+**See**: [api-domain-events.md](api-domain-events.md) for complete pattern.
 
 ## Real-World Examples
 
@@ -172,7 +177,7 @@ export class MyUseCase implements UseCase<Request, TResult<Response, Errors>> {
 
 ## Related Patterns
 
-- **Testing**: [05-unit-testing-pattern.md](05-unit-testing-pattern.md)
-- **Controllers**: [02-controller-pattern.md](02-controller-pattern.md) (handling Result in HTTP layer)
-- **Gateways**: [03-repository-pattern.md](03-repository-pattern.md), [04-query-pattern.md](04-query-pattern.md)
-- **Domain Events**: [10-domain-events-pattern.md](10-domain-events-pattern.md) (emitting events from UseCases)
+- **Testing**: [api-unit-testing.md](api-unit-testing.md)
+- **Controllers**: [api-controller.md](api-controller.md) (handling Result in HTTP layer)
+- **Gateways**: [api-repository.md](api-repository.md), [api-query.md](api-query.md)
+- **Domain Events**: [api-domain-events.md](api-domain-events.md) (emitting events from UseCases)

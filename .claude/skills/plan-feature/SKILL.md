@@ -21,7 +21,7 @@ Example: `specs/2026-01-30-user-authentication-refactoring.md`
 
 1. **Declare scope first** - Determine if this is API-only, Web-only, Full-stack, or Shared
 2. **Load only relevant context** based on scope:
-   - API: `<root>/.claude/context/api/00-overview.md` + specific patterns needed
+   - API: `<root>/apps/api/CLAUDE.md` (which routes to `<root>/.claude/rules/api/*.md` path-scoped rules — auto-load when Claude touches matching files)
    - Web: `<root>/apps/web/CLAUDE.md` + specific patterns needed
    - Full-stack: Both overviews + specific patterns as needed
    - Shared: `<root>/packages/shared/CLAUDE.md` + check both API and Web CLAUDE.md for impact

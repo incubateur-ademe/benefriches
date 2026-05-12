@@ -1,3 +1,9 @@
+---
+paths:
+  - "apps/api/src/migrations/**/*.ts"
+  - "apps/api/src/shared-kernel/adapters/sql-knex/**/*.ts"
+---
+
 # Database Patterns
 
 > **Database management** with Knex migrations, table types, and SQL patterns.
@@ -19,12 +25,16 @@ Database patterns ensure type-safe, maintainable database operations using Knex 
 
 ### Creating a Migration
 
+**Always use the `/create-database-migration` skill** — it generates the migration file, updates `tableTypes.d.ts`, and follows project conventions. Never create migration files manually.
+
+The skill invokes the underlying Knex command for reference:
+
 ```bash
-# Create new migration
-pnpm --filter api knex:migrate-make migration_name
+# Underlying command (use the skill instead of running this directly)
+pnpm --filter api knex:new-migration migration_name
 
 # Example: Create sites table
-pnpm --filter api knex:migrate-make create_table_sites
+pnpm --filter api knex:new-migration create_table_sites
 ```
 
 ### Migration Structure
@@ -613,7 +623,7 @@ await knex.transaction(async (trx) => {
 
 ## Related Patterns
 
-- **Repository**: [03-repository-pattern.md](03-repository-pattern.md) (using table types)
-- **Query**: [04-query-pattern.md](04-query-pattern.md) (JSON aggregation, queries)
-- **Integration Testing**: [06-integration-testing-pattern.md](06-integration-testing-pattern.md) (testing SQL)
-- **Naming Conventions**: [09-naming-conventions.md](09-naming-conventions.md) (snake_case ↔ camelCase)
+- **Repository**: [api-repository.md](api-repository.md) (using table types)
+- **Query**: [api-query.md](api-query.md) (JSON aggregation, queries)
+- **Integration Testing**: [api-integration-testing.md](api-integration-testing.md) (testing SQL)
+- **Naming Conventions**: [api-naming.md](api-naming.md) (snake_case ↔ camelCase)

@@ -1,456 +1,169 @@
 # AI Coding Guide - Benefriches API
 
-> **Purpose**: Quick reference for AI code generation. Focus on patterns, not explanations.
+> **Quick reference** for AI code generation. Detailed patterns auto-load from `.claude/rules/api/` based on the files Claude touches (see [Rules Router](#-rules-router) below).
 
 ---
 
-## ✅ Code Quality Standards
+## 🏗️ Architecture (1-liner)
 
-**For complete TypeScript rules, linting, formatting, and pre-commit hooks, see [root CLAUDE.md → Code Quality Standards](../../CLAUDE.md#-code-quality-standards).**
+**Clean/Hexagonal Architecture + CQS** — business logic in `core/`, infrastructure in `adapters/`. **`core/` NEVER imports from `adapters/`.**
 
-All code must pass these checks:
+- **`core/`**: domain layer (models, gateway interfaces, usecases, events) — pure TypeScript
+- **`adapters/primary/`**: inbound (controllers, NestJS modules) — drives the domain
+- **`adapters/secondary/`**: outbound (SQL, InMemory, HTTP clients) — driven by the domain
 
-- `pnpm typecheck` - TypeScript strict mode
-- `pnpm lint` - oxlint with type checking
-- `pnpm format` - Prettier formatting
-- Pre-commit hooks enforce these automatically
-
----
-
-## 🏗️ Architecture Pattern: Clean/Hexagonal + CQS
-
-The API uses **Clean/Hexagonal Architecture + Command-Query Separation (CQS)** to maintain strict separation between business logic (`core/`) and infrastructure (`adapters/`).
-
-**CRITICAL**: `core/` NEVER imports from `adapters/`
-
-**For detailed architecture guidance, examples, and implementation patterns**, see [Architecture Overview](../../.claude/context/api/00-overview.md).
+**Run locally**: `pnpm --filter api dev` (NestJS watch mode, port 3000)
 
 ---
 
-## 🎯 Naming & File Conventions
+## ✅ ALWAYS / ❌ NEVER (Critical Rules)
 
-Quick reference - **For complete naming guide with examples, see [09-naming-conventions.md](../../.claude/context/api/09-naming-conventions.md).**
+### ALWAYS:
 
-### Code Element Naming
+1. **Result Pattern** — UseCases return `TResult<Data, Error, Issues?>`; use `fail("ErrorType")` / `success(data)`
+2. **CQS separation** — Repository for writes, Query for reads; never combine in one interface
+3. **Implement `UseCase<Request, TResult<...>>`** interface
+4. **Gateway interfaces** (not concrete classes) in UseCase constructor types
+5. **InMemory implementations** for every gateway (required for unit tests)
+6. **snake_case (DB) ↔ camelCase (app)** mapping in repositories/queries
+7. **Factory pattern** in NestJS modules (`useFactory` + `inject`)
+8. **Type imports** with `import type { }` for type-only imports
+9. **Validate domain models** in UseCases; controllers only validate HTTP shape (Zod DTOs)
+10. **Transactions** for multi-table writes (`sqlConnection.transaction(async (trx) => ...)`)
+
+### NEVER:
+
+1. ❌ Import `adapters/` code in `core/`
+2. ❌ Use concrete classes in UseCase constructor types — use interfaces
+3. ❌ Put business logic in controllers — controllers only map HTTP ↔ UseCase
+4. ❌ Use `any` — use `unknown`
+5. ❌ Combine reads + writes in same gateway interface
+6. ❌ Skip unit tests for UseCases
+7. ❌ Modify DB schema without a Knex migration (use `/create-database-migration` skill)
+8. ❌ Return domain entities from controllers — return ViewModels
+9. ❌ Use `console.*` for logging — use `AppLogger` in core, NestJS `Logger` in adapters (`no-console` lint rule enforced)
+
+---
+
+## 🎯 Naming & File Conventions (Quick Ref)
 
 - **Classes**: `PascalCase` → `CreateSiteUseCase`, `SqlSiteRepository`
-- **Variables/Functions**: `camelCase` → `siteRepository`, `getUserSites`
-- **Constants**: `UPPER_SNAKE_CASE` → `SITE_CREATED`, `SQL_CONNECTION`
-- **Error Types**: `PascalCase` (noun-based, no verbs) → `"UserNotFound"`, `"ValidationFailed"`
+- **Variables/Functions**: `camelCase`
+- **Constants**: `UPPER_SNAKE_CASE`
+- **Error Types**: `PascalCase` noun-based (no verbs) → `"UserNotFound"`, `"ValidationFailed"`
 
-### File Naming (Quick Ref)
+| File Type  | Pattern                   | Example                 |
+| ---------- | ------------------------- | ----------------------- |
+| UseCase    | `[verb][Noun].usecase.ts` | `createSite.usecase.ts` |
+| Repository | `Sql[Name]Repository.ts`  | `SqlSiteRepository.ts`  |
+| Query      | `Sql[Name]Query.ts`       | `SqlSitesQuery.ts`      |
+| Controller | `[module].controller.ts`  | `sites.controller.ts`   |
+| Module     | `[module].module.ts`      | `sites.module.ts`       |
 
-| Type       | Pattern                   | Example                                                     |
-| ---------- | ------------------------- | ----------------------------------------------------------- |
-| UseCase    | `[verb][Noun].usecase.ts` | `createSite.usecase.ts`                                     |
-| Repository | `Sql[Name]Repository.ts`  | `SqlSiteRepository.ts`                                      |
-| Query      | `Sql[Name]Query.ts`       | `SqlSitesQuery.ts`                                          |
-| Controller | `[module].controller.ts`  | `sites.controller.ts`, `reconversionProjects.controller.ts` |
-| Module     | `[module].module.ts`      | `sites.module.ts`, `reconversionProjects.module.ts`         |
+**DB**: snake_case columns (`site_id`, `created_at`) ↔ camelCase app properties (`siteId`, `createdAt`).
 
-### Database Naming
-
-**CRITICAL**: Snake_case (DB) ↔ camelCase (App)
-
-- DB columns: `site_id`, `created_at`, `surface_area`
-- App properties: `siteId`, `createdAt`, `surfaceArea`
+Full naming reference: [.claude/rules/api/api-naming.md](../../.claude/rules/api/api-naming.md) (auto-loads on any `apps/api/**/*.ts` edit).
 
 ---
 
 ## 🗺️ Path Aliases
 
-Use these consistently for clean, maintainable imports:
-
-### `src/` - Absolute imports within API
-
-Resolves to `apps/api/src/`. Use for any cross-module import.
-
-```typescript
-// ✅ CORRECT: Shared kernel imports
-import { UseCase } from "src/shared-kernel/usecase";
-import type { TResult } from "src/shared-kernel/result";
-
-// ✅ CORRECT: Other module imports
-import { CreateSiteUseCase } from "src/sites/core/usecases/createSite.usecase";
-import type { SitesRepository } from "src/sites/core/gateways/SitesRepository";
-
-// ❌ WRONG: Using relative paths for cross-module (use src/ instead)
-import { CreateSiteUseCase } from "../../../../sites/core/usecases/createSite.usecase";
-
-// ❌ WRONG: Using src/ for shared package (use "shared" instead)
-import type { Site } from "src/shared";
-```
-
-### `"shared"` - Shared package imports
-
-Resolves to `packages/shared`. Use for monorepo-wide types.
-
-```typescript
-// ✅ CORRECT: Shared package types
-// ❌ WRONG: Using src/ for shared package
-import type { Site } from "shared";
-import type { UserId } from "shared";
-import { validateEmail } from "shared";
-
-import type { Site } from "src/shared";
-
-// ❌ WRONG: Using relative paths to shared
-import type { Site } from "../../../packages/shared/src";
-```
-
-### Relative imports (`./` or `../`) - Same feature module only
-
-Use only for files within the same feature module:
-
-```typescript
-// File: apps/api/src/sites/core/usecases/createSite.usecase.ts
-// ✅ CORRECT: Within same feature (sites module)
-// ❌ WRONG: Cross-module relative import (use src/ instead)
-import { CreateProjectUseCase } from "../../../reconversion-projects/core/usecases/...";
-import type { SitesRepository } from "../gateways/SitesRepository";
-import type { Site } from "../models/site";
-```
-
-### Rules Summary
-
-- ✅ Use `src/` for any cross-module import within API
-- ✅ Use `"shared"` for types/utilities from shared package
-- ✅ Use relative `./` or `../` **only** within same feature module
-- ❌ Never use `../../../` chains (use `src/` instead)
-- ❌ Never use `"src/shared"` (use `"shared"` instead)
+- ✅ `src/` for cross-module imports within API (`import { ... } from "src/sites/core/..."`)
+- ✅ `"shared"` for shared package imports (`import type { Site } from "shared"`)
+- ✅ Relative `./` `../` **only** within same feature module
+- ❌ Never `../../../` chains (use `src/`)
+- ❌ Never `"src/shared"` (use `"shared"`)
 
 ---
 
-## ⬆️ Result Pattern (Core to API Design)
+## 🧪 Testing — Quality Guards
 
-**All usecases MUST implement `UseCase<Request, TResult<Data, Error, Issues?>>`** - Type-safe error handling.
-
-Every usecase returns `TResult<TData, TError, TIssues?>` (success or failure). The third param `TIssues` (defaults to `undefined`) carries additional error context. Use `fail("ErrorType")` for domain errors, `success(data)` for success:
-
-```typescript
-import { fail, success, type TResult } from "src/shared-kernel/result";
-
-// Basic (2 params — TIssues defaults to undefined)
-export class MyUseCase implements UseCase<Request, TResult<Response, Error>> {
-  async execute(request: Request): Promise<TResult<Response, Error>> {
-    if (errorCondition) return fail("ValidationFailed");
-    return success({ id: "123", name: "Example" });
-  }
-}
-
-// With issues (3 params — for validation errors with details)
-type Error = "ValidationError" | "SiteAlreadyExists";
-type Result = TResult<void, Error, unknown>;
+```bash
+pnpm --filter api typecheck         # Required before commit
+pnpm --filter api lint              # Required before commit (oxlint --type-aware)
+pnpm --filter api format            # Auto-fixes Prettier formatting
+pnpm --filter api test:unit         # After UseCase / core changes
+pnpm --filter api test:integration  # After SQL / controller changes
 ```
 
-**For detailed patterns, advanced usage, and test examples, see [01-usecase-pattern.md](../../.claude/context/api/01-usecase-pattern.md).**
+Run after each logical change, not batched at the end.
+
+**Object assertions**: Prefer a single `expect().toEqual({...})` validating the complete shape over multiple targeted assertions — forces thinking about full data shape, catches missing properties. Exceptions: partial validation, non-deterministic values (`expect.any(String)`).
+
+**Test isolation**: Integration tests auto-clear all 21 SQL tables via a global hook in [`test/integration-tests-global-hooks.ts`](./test/integration-tests-global-hooks.ts). Don't add manual `afterEach()` cleanup.
 
 ---
 
-## ✅ Critical Rules
+## 📦 Tech Stack
 
-### ALWAYS:
-
-1. **Use Result Pattern** - See [01-usecase-pattern.md](../../.claude/context/api/01-usecase-pattern.md)
-2. **Separate CQS** - See [03-repository-pattern.md](../../.claude/context/api/03-repository-pattern.md) & [04-query-pattern.md](../../.claude/context/api/04-query-pattern.md)
-3. **Implement UseCase interface** - See [01-usecase-pattern.md](../../.claude/context/api/01-usecase-pattern.md)
-4. **Gateway interfaces** (not concrete classes) - See [08-dependency-injection.md](../../.claude/context/api/08-dependency-injection.md)
-5. **InMemory implementations** for all gateways - See [05-unit-testing-pattern.md](../../.claude/context/api/05-unit-testing-pattern.md)
-6. **Map naming**: snake_case (DB) ↔ camelCase (app) - See [09-naming-conventions.md](../../.claude/context/api/09-naming-conventions.md)
-7. **Factory pattern** in NestJS modules - See [08-dependency-injection.md](../../.claude/context/api/08-dependency-injection.md)
-8. **Type imports** with `import type { }` - See [00-overview.md](../../.claude/context/api/00-overview.md#code-quality-standards)
-9. **Validate domain models** - See [02-controller-pattern.md](../../.claude/context/api/02-controller-pattern.md) for controller validation
-10. **Transactions** for multi-table operations - See [03-repository-pattern.md](../../.claude/context/api/03-repository-pattern.md)
-
-### NEVER:
-
-1. ❌ Import `adapters/` code in `core/` - See [00-overview.md](../../.claude/context/api/00-overview.md)
-2. ❌ Use concrete classes in UseCase constructor types - Use interfaces instead
-3. ❌ Mix business logic in controllers - Controllers only map HTTP ↔ UseCase, see [02-controller-pattern.md](../../.claude/context/api/02-controller-pattern.md)
-4. ❌ Use `any` type - Use `unknown` instead
-5. ❌ Combine reads + writes in same interface - Separate Repository ≠ Query
-6. ❌ Skip unit tests - See [05-unit-testing-pattern.md](../../.claude/context/api/05-unit-testing-pattern.md)
-7. ❌ Modify DB without migration - See [07-database-patterns.md](../../.claude/context/api/07-database-patterns.md)
-8. ❌ Return domain entities from controllers - Use ViewModels instead, see [02-controller-pattern.md](../../.claude/context/api/02-controller-pattern.md)
-9. ❌ Use `console.*` for logging — use `AppLogger` in core, NestJS `Logger` in adapters (`no-console` lint rule enforced)
-
----
-
-## 🚀 TDD Development Workflow
-
-**CRITICAL**: Always follow Test-Driven Development (TDD) - write tests BEFORE implementation.
-
-### Phase 1: UseCase Core (Red-Green-Refactor Cycle)
-
-**Setup**:
-
-1. ✅ **Gateway interfaces**: `core/gateways/[Name]Repository.ts` + `[Name]Query.ts` (minimal signatures)
-2. ✅ **UseCase skeleton**: `core/usecases/[verb][Noun].usecase.ts` (empty `execute()` method)
-3. ✅ **InMemory implementations**: `adapters/secondary/*/InMemory*.ts` (for testing)
-
-**TDD Cycle** (repeat for each behavior):
-
-```
-🔴 RED → 🟢 GREEN → 🔵 REFACTOR
-```
-
-4. ✅ **Write ONE failing unit test** → 🔴 **RED**
-   - Start with happy path test
-   - Test should fail (UseCase not implemented yet)
-   - Example: `it("should create site and return id")`
-
-5. ✅ **Make test pass with minimal code** → 🟢 **GREEN**
-   - Implement just enough to make THIS test pass
-   - Don't implement features not tested yet
-   - Run: `pnpm --filter api test:unit path/to/usecase.spec.ts`
-
-6. ✅ **Refactor if needed** → 🔵 **REFACTOR**
-   - Clean up code while keeping test green
-   - Extract helper functions, improve naming
-   - Tests must still pass
-
-7. ✅ **Repeat cycle for next behavior**
-   - Write test for failure case (e.g., "site already exists")
-   - Make it pass
-   - Refactor
-   - Continue until all business logic is covered
-
-**Result**: Fully tested UseCase with InMemory implementations, no database yet.
-
-### Phase 2: SQL Layer (Test-First)
-
-8. ✅ **Migration FIRST**: `migrations/[timestamp]_*.ts`
-   - Create database schema
-   - Run: `pnpm --filter api knex:migrate-latest`
-
-9. ✅ **Table types**: Update `shared-kernel/adapters/sql-knex/tableTypes.d.ts`
-
-10. ✅ **Write SQL integration test** → 🔴 **RED**
-    - Test SQL Repository/Query against real DB
-    - Test should fail (SQL implementation doesn't exist)
-    - Example: `SqlSiteRepository.integration-spec.ts`
-
-11. ✅ **Implement SQL Repository/Query** → 🟢 **GREEN**
-    - Make integration test pass
-    - Run: `pnpm --filter api test:integration path/to/Sql*.integration-spec.ts`
-
-12. ✅ **Refactor SQL implementation** → 🔵 **REFACTOR**
-
-### Phase 3: HTTP Layer (Test-First)
-
-13. ✅ **Write controller integration test** → 🔴 **RED**
-    - Test full HTTP → Controller → UseCase → DB flow
-    - Test authentication, validation, error cases
-    - Example: `sites.controller.integration-spec.ts`
-
-14. ✅ **Implement controller** → 🟢 **GREEN**
-    - Handle Result → HTTP mapping
-    - Add authentication guards
-    - Make integration test pass
-
-15. ✅ **Wire dependencies in NestJS module**
-    - Create `adapters/primary/[module].module.ts` with factory pattern
-    - Register all providers (UseCases, Repositories, Queries)
-
-16. ✅ **Update AppModule**: Add new module to `app.module.ts` imports
-
-17. ✅ **Run full test suite**:
-    - `pnpm --filter api typecheck`
-    - `pnpm --filter api lint`
-    - `pnpm --filter api test:unit`
-    - `pnpm --filter api test:integration`
-
-### TDD Principles
-
-- **Write test BEFORE code**: Every piece of functionality starts with a failing test
-- **Smallest step possible**: Make test pass with minimal implementation
-- **One test at a time (ALL test types)**: Don't write multiple tests before making first one pass
-  - Applies to **all** unit and integration tests: queries, usecases, repositories, controllers
-  - Example: For a query with multiple scenarios, write test for "0 projects" → make pass → test "multiple projects" → make pass → test "not found"
-  - Benefit: Ensures each scenario is properly tested before moving forward; prevents skipping untested cases
-- **Refactor with confidence**: Tests ensure refactoring doesn't break behavior
-- **Red-Green-Refactor rhythm**: Never skip a step in the cycle
-
-**See also**: [05-unit-testing-pattern.md](../../.claude/context/api/05-unit-testing-pattern.md), [06-integration-testing-pattern.md](../../.claude/context/api/06-integration-testing-pattern.md)
-
----
-
-## 🧪 Testing Infrastructure & Best Practices
-
-### Automatic Database Cleanup
-
-All SQL tables are automatically cleared after each integration test by a global hook configured in [`test/integration-tests-global-hooks.ts`](./test/integration-tests-global-hooks.ts). This ensures complete test isolation without manual cleanup in individual test files.
-
-**Tables cleared**: The hook clears all 21 API tables including `sites`, `reconversion_projects`, `domain_events`, etc.
-
-### Object Assertions: Prefer Single expect()
-
-When asserting object shapes (DTOs, ViewModels, API responses, database results):
-
-**PREFERRED**: Single `expect()` with complete object validation
-
-- Forces thinking about the complete data shape upfront
-- Catches missing properties that multi-assertion approaches can accidentally skip
-- More readable intent: "function returns exactly this structure"
-- Easier to review what's being validated at a glance
-
-```typescript
-// PREFERRED: Single expect for complete validation
-expect(result).toEqual({
-  id: siteId,
-  features: {
-    id: siteId,
-    name: "Site Name",
-    nature: "FRICHE",
-    // ... all properties
-  },
-  reconversionProjects: [
-    {
-      id: project1Id,
-      name: "Project 1",
-      type: "PHOTOVOLTAIC_POWER_PLANT",
-    },
-    // ... all projects
-  ],
-});
-```
-
-**EXCEPTION**: Use targeted assertions when:
-
-- You only care about specific properties (partial validation)
-- Properties are non-deterministic (timestamps, UUIDs that vary)
-- Object structure is very large (break into multiple assertions for readability)
-
-```typescript
-// EXCEPTION: Partial assertion when only specific properties matter
-expect(result.id).toEqual(siteId);
-expect(result.reconversionProjects).toHaveLength(2);
-
-// EXCEPTION: When properties are non-deterministic
-expect(result).toEqual({
-  id: expect.any(String), // UUID varies
-  createdAt: expect.any(Date), // Timestamp varies
-  name: "Site Name", // But name must be exact
-});
-```
-
-**CRITICAL**: Never skip validating the critical shape of response objects - always assert the essential structure.
-
----
-
-## 🛠️ Shared Services & Dependency Injection
-
-**For comprehensive reference on injectable services, factory pattern, and testing**, see [11-shared-services.md](../../.claude/context/api/11-shared-services.md).
-
-**Quick summary**:
-
-- **ID Generation**: `RandomUuidGenerator` (prod), `DeterministicIdGenerator` (tests)
-- **Date/Time**: `RealDateProvider` (prod), `DeterministicDateProvider` (tests)
-- **Logging**: `NestJsAppLogger` (prod), `SilentLogger` (tests) — implements `AppLogger` from `src/shared-kernel/logger`
-- **Database**: Inject `SqlConnection` into SQL repositories/queries (from `src/shared-kernel/adapters/sql-knex/sqlConnection.module`)
-- **Events**: `DOMAIN_EVENT_PUBLISHER_INJECTION_TOKEN` for cross-module events
-
-Use **factory pattern** in NestJS modules to wire dependencies (see [08-dependency-injection.md](../../.claude/context/api/08-dependency-injection.md)).
-
----
-
-## 🗄️ Database Table Types
-
-**For complete guidance on table types, migrations, and SQL patterns**, see [07-database-patterns.md](../../.claude/context/api/07-database-patterns.md#table-types).
-
-**Critical rules**:
-
-1. Define types in `src/shared-kernel/adapters/sql-knex/tableTypes.d.ts` (central registry)
-2. Use `snake_case` for columns (matching database)
-3. Use `Date` for timestamps (Knex auto-converts)
-4. Mark nullable columns with `| null` (not optional `?:`)
-5. Add type **immediately after creating migration**
-
-**Example**:
-
-```typescript
-// Database migration
-table.string("name").notNullable();
-table.timestamp("created_at").notNullable();
-
-// Type definition
-export type SqlExample = {
-  name: string;
-  created_at: Date; // Knex converts timestamp → Date
-};
-```
-
----
-
-## 📦 Tech Stack Quick Ref
-
-See [root CLAUDE.md](../../CLAUDE.md) for full monorepo tech stack.
-
-**Backend-specific additions:**
-
+- **Framework**: NestJS
+- **Database**: PostgreSQL + Knex
 - **Validation**: Zod + nestjs-zod (runtime validation)
 - **Auth**: JWT + OpenID Connect
-- **Events**: @nestjs/event-emitter (domain event publishing)
-- **Testing**: Vitest + testcontainers (isolated DB testing)
+- **Events**: @nestjs/event-emitter
+- **Testing**: Vitest + testcontainers (isolated PostgreSQL per test run)
+
+Full monorepo tech stack: [root CLAUDE.md](../../CLAUDE.md).
 
 ---
 
-## 🤖 AI Assistant Workflow
+## 🤖 Rules Router
 
-**See also**: [root CLAUDE.md → For AI Assistants](../../CLAUDE.md#-for-ai-assistants) for high-level guidance on code generation across the monorepo
+Detailed patterns live in [`.claude/rules/api/`](../../.claude/rules/api/) as **path-scoped rules**. They **auto-load** when Claude reads, edits, or creates a file matching the rule's `paths:` front-matter (defined in each rule's YAML header). No manual lookup needed during edits.
 
-### Context Discovery: Granular Pattern Files
+| Task                                 | Auto-loaded rule                                                                                                            |
+| ------------------------------------ | --------------------------------------------------------------------------------------------------------------------------- |
+| Any API file edit                    | [api-architecture.md](../../.claude/rules/api/api-architecture.md) + [api-naming.md](../../.claude/rules/api/api-naming.md) |
+| Create / edit UseCase                | [api-usecase.md](../../.claude/rules/api/api-usecase.md)                                                                    |
+| Create / edit Controller             | [api-controller.md](../../.claude/rules/api/api-controller.md)                                                              |
+| Create / edit Repository             | [api-repository.md](../../.claude/rules/api/api-repository.md)                                                              |
+| Create / edit Query                  | [api-query.md](../../.claude/rules/api/api-query.md)                                                                        |
+| Write unit test                      | [api-unit-testing.md](../../.claude/rules/api/api-unit-testing.md)                                                          |
+| Write integration test               | [api-integration-testing.md](../../.claude/rules/api/api-integration-testing.md)                                            |
+| DB migration / table types           | [api-migrations.md](../../.claude/rules/api/api-migrations.md)                                                              |
+| NestJS module / DI / shared services | [api-modules-and-di.md](../../.claude/rules/api/api-modules-and-di.md)                                                      |
+| Domain event                         | [api-domain-events.md](../../.claude/rules/api/api-domain-events.md)                                                        |
 
-**NEW**: Detailed patterns are now in [`.claude/context/api/`](../../.claude/context/api/) for granular, on-demand loading.
+### Cold-start: creating new files
 
-#### Always Load First
+For new files that don't exist yet, the trigger fires when Claude **reads an existing similar file** as a reference — which is the recommended first step anyway. Example: creating a new UseCase → read an existing `*.usecase.ts` first (loads `api-usecase.md`), then write the new one.
 
-- **[00-overview.md](../../.claude/context/api/00-overview.md)** - Architecture overview + naming conventions (always applicable)
+### DTO Best Practice
 
-#### Load Task-Specific Patterns
-
-| Task                   | Load These Patterns                                                                                                                                                              |
-| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Create UseCase**     | [01-usecase-pattern.md](../../.claude/context/api/01-usecase-pattern.md), [05-unit-testing-pattern.md](../../.claude/context/api/05-unit-testing-pattern.md)                     |
-| **Add Controller**     | [02-controller-pattern.md](../../.claude/context/api/02-controller-pattern.md), [06-integration-testing-pattern.md](../../.claude/context/api/06-integration-testing-pattern.md) |
-| **Write Repository**   | [03-repository-pattern.md](../../.claude/context/api/03-repository-pattern.md), [05-unit-testing-pattern.md](../../.claude/context/api/05-unit-testing-pattern.md)               |
-| **Write Query**        | [04-query-pattern.md](../../.claude/context/api/04-query-pattern.md), [06-integration-testing-pattern.md](../../.claude/context/api/06-integration-testing-pattern.md)           |
-| **Database Migration** | [07-database-patterns.md](../../.claude/context/api/07-database-patterns.md)                                                                                                     |
-| **Wire Dependencies**  | [08-dependency-injection.md](../../.claude/context/api/08-dependency-injection.md)                                                                                               |
-| **Domain Events**      | [10-domain-events-pattern.md](../../.claude/context/api/10-domain-events-pattern.md)                                                                                             |
-| **Complete Feature**   | Load `00-overview.md` + relevant patterns above                                                                                                                                  |
-
-**Pattern files cross-reference each other** - follow links to related patterns when needed.
-
-### DTO Best Practice: Shared Package Only
-
-**CRITICAL**: All controller route DTOs go in `/packages/shared/src/api-dtos/`.
-
-**Quick pattern**: Create `[feature]/[operation].dto.ts` with both schema and type, import in controller from `"shared"`, validate with `ZodValidationPipe`.
-
-**See also**: [packages/shared/CLAUDE.md](../../packages/shared/CLAUDE.md) for DTO naming conventions and shared package guidelines.
-
-For complete organization structure, naming patterns, and detailed examples, see [02-controller-pattern.md → DTO Pattern](../../.claude/context/api/02-controller-pattern.md#dto-pattern).
-
-### After Code Generation - ALWAYS RUN:
-
-Follow the **API Testing Workflow** below.
-
-**Quick checklist**:
-
-1. ✅ `pnpm --filter api typecheck` (must pass)
-2. ✅ `pnpm --filter api lint` (must pass)
-3. ✅ `pnpm --filter api test:unit` (must pass)
-4. ✅ `pnpm --filter api test:integration` (run conditionally based on what changed)
-
-**Never skip tests** or batch checks at the end - run after each logical change.
+All controller route DTOs go in [`/packages/shared/src/api-dtos/`](../../packages/shared/src/api-dtos/). Create `[feature]/[operation].dto.ts` exporting both Zod schema + type, import in controller from `"shared"`, validate with `ZodValidationPipe`. See [packages/shared/CLAUDE.md](../../packages/shared/CLAUDE.md) and [api-controller.md → DTO Pattern](../../.claude/rules/api/api-controller.md#dto-pattern).
 
 ---
 
-## 📎 APPENDIX: Advanced Topics
+## 🚀 TDD Workflow (one-screen summary)
 
-For monorepo-wide TypeScript and Node.js compatibility rules (enums, namespaces, class properties), see [root CLAUDE.md → Code Quality Standards → Node.js Compatibility](../../CLAUDE.md#nodejs-compatibility).
+**Phase 1 — UseCase core** (Red-Green-Refactor per behavior):
+
+1. Define gateway interfaces in `core/gateways/`
+2. Skeleton UseCase + InMemory implementations
+3. **Write ONE failing test** → make it pass with minimal code → refactor
+4. Repeat for each behavior (happy path, failure paths, edge cases)
+
+**Phase 2 — SQL layer** (Test-First): 5. Migration + table type in `tableTypes.d.ts` (use `/create-database-migration` skill) 6. Write SQL integration test (red) → implement SQL Repository/Query (green) → refactor
+
+**Phase 3 — HTTP layer** (Test-First): 7. Write controller integration test (red) → implement controller (green) 8. Wire dependencies in NestJS module with factory pattern, register in `AppModule` 9. Run full suite:
+
+```bash
+pnpm --filter api typecheck
+pnpm --filter api lint
+pnpm --filter api test:unit
+pnpm --filter api test:integration
+```
+
+**One test at a time** — never write multiple failing tests before making the first one pass. Applies to unit AND integration tests.
+
+Full TDD detail (including event-publishing testing patterns): [api-unit-testing.md](../../.claude/rules/api/api-unit-testing.md), [api-integration-testing.md](../../.claude/rules/api/api-integration-testing.md).
 
 ---
 
-**END OF GUIDE** - Use this as primary reference when generating code for this project.
+## 📎 Cross-cutting references
+
+- **TypeScript strict mode, no-`any`, erasable types** (no enums, no namespaces, no class parameter properties): [root CLAUDE.md → Code Quality Standards](../../CLAUDE.md#code-quality-standards)
+- **pnpm commands across monorepo**: [root CLAUDE.md](../../CLAUDE.md)
+- **After modifying `shared`**: rebuild + reinstall here or types won't update → `pnpm --filter shared build && pnpm --filter api install`
+- **Web app patterns**: [apps/web/CLAUDE.md](../web/CLAUDE.md)
+- **Shared package** (DTOs, types): [packages/shared/CLAUDE.md](../../packages/shared/CLAUDE.md)

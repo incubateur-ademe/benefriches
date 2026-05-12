@@ -1,3 +1,10 @@
+---
+paths:
+  - "apps/api/src/**/core/events/**/*.ts"
+  - "apps/api/src/**/*.event.ts"
+  - "apps/api/src/shared-kernel/adapters/events/**/*.ts"
+---
+
 # Domain Events Pattern
 
 > **Event-driven communication** for cross-module interactions and side effects.
@@ -235,7 +242,7 @@ export class MarketingModule {}
 **Why this pattern?**
 - **DateProvider**: Use `RealDateProvider` in production, `DeterministicDateProvider` in tests for predictable behavior
 - **CRMGateway**: Interface injected, concrete implementation provided via `ConnectCrm`
-- **Testability**: Override providers in test with fakes/deterministic implementations (see [06-integration-testing-pattern.md](06-integration-testing-pattern.md))
+- **Testability**: Override providers in test with fakes/deterministic implementations (see [api-integration-testing.md](api-integration-testing.md))
 
 **Real Example**: [marketing/adapters/primary/loginSucceeded.handler.ts](../../../apps/api/src/marketing/adapters/primary/loginSucceeded.handler.ts)
 
@@ -335,7 +342,7 @@ export class ExampleController {
 | **DOMAIN_EVENT_PUBLISHER_INJECTION_TOKEN** | `src/shared-kernel/adapters/events/eventPublisher.module` | Injection token (ONLY for controllers publishing HTTP-layer events) |
 | **EventPublisherModule** | `src/shared-kernel/adapters/events/eventPublisher.module` | Module import (required in all modules using events) |
 
-**For event listeners needing side effects** (see [11-shared-services.md](11-shared-services.md)):
+**For event listeners needing side effects** (see [api-modules-and-di.md](api-modules-and-di.md)):
 
 | Service | Import | When to Use |
 |---------|--------|-------------|
@@ -364,7 +371,6 @@ export class ExampleController {
 
 ## Related Patterns
 
-- **UseCases**: [01-usecase-pattern.md](01-usecase-pattern.md) (emitting events from business logic)
-- **Dependency Injection**: [08-dependency-injection.md](08-dependency-injection.md) (wiring event publishers and listeners)
-- **Shared Services**: [11-shared-services.md](11-shared-services.md) (DateProvider, ID generators for testability)
-- **Integration Testing**: [06-integration-testing-pattern.md](06-integration-testing-pattern.md) (testing listeners with overridden providers)
+- **UseCases**: [api-usecase.md](api-usecase.md) (emitting events from business logic)
+- **Dependency Injection**: [api-modules-and-di.md](api-modules-and-di.md) (wiring event publishers and listeners)
+- **Integration Testing**: [api-integration-testing.md](api-integration-testing.md) (testing listeners with overridden providers)

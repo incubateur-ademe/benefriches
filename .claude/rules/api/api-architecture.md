@@ -1,3 +1,8 @@
+---
+paths:
+  - "apps/api/**/*.ts"
+---
+
 # API Architecture Overview
 
 > **Quick reference** for understanding the Benefriches API architecture.
@@ -32,13 +37,13 @@ module/
 2. **Result Pattern**:
    - All UseCases return `TResult<Data, Error>`
    - Type-safe error handling at compile-time
-   - See [01-usecase-pattern.md](01-usecase-pattern.md)
+   - See [api-usecase.md](api-usecase.md)
 
 3. **Dependency Injection**:
    - Gateway interfaces defined in core
    - Concrete implementations in adapters
    - NestJS modules wire dependencies with factory pattern
-   - See [08-dependency-injection.md](08-dependency-injection.md)
+   - See [api-modules-and-di.md](api-modules-and-di.md)
 
 4. **Testing Strategy**:
    - Unit tests with InMemory implementations (no database)
@@ -49,17 +54,18 @@ module/
 
 | Pattern | File Reference |
 |---------|---------------|
-| UseCase + Result Pattern | [01-usecase-pattern.md](01-usecase-pattern.md) |
-| Controllers + DTOs | [02-controller-pattern.md](02-controller-pattern.md) |
-| SQL Repositories (Write) | [03-repository-pattern.md](03-repository-pattern.md) |
-| SQL Queries (Read) | [04-query-pattern.md](04-query-pattern.md) |
-| Unit Testing | [05-unit-testing-pattern.md](05-unit-testing-pattern.md) |
-| Integration Testing | [06-integration-testing-pattern.md](06-integration-testing-pattern.md) |
-| Database (Migrations, Types) | [07-database-patterns.md](07-database-patterns.md) |
-| NestJS Modules | [08-dependency-injection.md](08-dependency-injection.md) |
-| Naming Conventions | [09-naming-conventions.md](09-naming-conventions.md) |
+| UseCase + Result Pattern | [api-usecase.md](api-usecase.md) |
+| Controllers + DTOs | [api-controller.md](api-controller.md) |
+| SQL Repositories (Write) | [api-repository.md](api-repository.md) |
+| SQL Queries (Read) | [api-query.md](api-query.md) |
+| Unit Testing | [api-unit-testing.md](api-unit-testing.md) |
+| Integration Testing | [api-integration-testing.md](api-integration-testing.md) |
+| Database (Migrations, Types) | [api-migrations.md](api-migrations.md) |
+| NestJS Modules + DI | [api-modules-and-di.md](api-modules-and-di.md) |
+| Naming Conventions | [api-naming.md](api-naming.md) |
+| Domain Events | [api-domain-events.md](api-domain-events.md) |
 
 ## Related Documentation
 
-- [Root CLAUDE.md](../../CLAUDE.md) - Monorepo setup, pnpm commands
-- [Web CLAUDE.md](../web/00-overview.md) - Frontend patterns
+- [Root CLAUDE.md](../../../CLAUDE.md) - Monorepo setup, pnpm commands
+- [API CLAUDE.md](../../../apps/api/CLAUDE.md) - API quick reference

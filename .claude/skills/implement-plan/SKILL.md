@@ -28,7 +28,7 @@ Before writing any code:
 1. **Read the ENTIRE plan** from start to finish
 2. **Determine scope** from the plan's Scope section (API-only / Web-only / Full-stack / Shared)
 3. **Load relevant context** based on scope — this is critical to implementing patterns correctly:
-   - API scope: read `<root>/.claude/context/api/00-overview.md` + any specific pattern files the plan references
+   - API scope: read `<root>/apps/api/CLAUDE.md` — detailed patterns live in `<root>/.claude/rules/api/*.md` and auto-load when Claude touches matching files (e.g., reading an existing `*.usecase.ts` loads `api-usecase.md`). Read those rules explicitly when the plan references a specific pattern.
    - Web scope: read `<root>/apps/web/CLAUDE.md`
    - Full-stack: read both
    - Shared: read `<root>/packages/shared/CLAUDE.md`

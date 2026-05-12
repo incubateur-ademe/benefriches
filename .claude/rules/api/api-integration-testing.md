@@ -1,3 +1,9 @@
+---
+paths:
+  - "apps/api/src/**/*.integration-spec.ts"
+  - "apps/api/test/**/*.ts"
+---
+
 # Integration Testing Pattern
 
 > **Testing with real database** for SQL implementations and full HTTP flows.
@@ -549,8 +555,8 @@ pnpm --filter api test:integration -- --watch
 
 ## Related Patterns
 
-- **Unit Testing**: [05-unit-testing-pattern.md](05-unit-testing-pattern.md) (testing with InMemory)
-- **Controller**: [02-controller-pattern.md](02-controller-pattern.md) (HTTP layer)
-- **Repository**: [03-repository-pattern.md](03-repository-pattern.md) (SQL implementation)
-- **Query**: [04-query-pattern.md](04-query-pattern.md) (SQL queries)
-- **Domain Events**: [10-domain-events-pattern.md](10-domain-events-pattern.md) (publishing and listening to events)
+- **Unit Testing**: [api-unit-testing.md](api-unit-testing.md) (testing with InMemory)
+- **Controller**: [api-controller.md](api-controller.md) (HTTP layer)
+- **Repository**: [api-repository.md](api-repository.md) (SQL implementation)
+- **Query**: [api-query.md](api-query.md) (SQL queries)
+- **Domain Events**: [api-domain-events.md](api-domain-events.md) (publishing and listening to events)

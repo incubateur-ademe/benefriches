@@ -1,3 +1,8 @@
+---
+paths:
+  - "apps/api/src/**/*.spec.ts"
+---
+
 # Unit Testing Pattern
 
 > **UseCase unit testing** with InMemory implementations and Result pattern assertions.
@@ -86,7 +91,7 @@ it("should return success with example id", async () => {
 
 ## Exhaustive Assertions
 
-Prefer `toEqual()` over `toMatchObject()` for exhaustive assertions. See [API CLAUDE.md → Object Assertions](../../apps/api/CLAUDE.md#object-assertions-prefer-single-expect) for rationale and examples.
+Prefer `toEqual()` over `toMatchObject()` for exhaustive assertions. See [API CLAUDE.md → Object Assertions](../../../apps/api/CLAUDE.md#object-assertions-prefer-single-expect) for rationale and examples.
 
 ## Testing Success Paths
 
@@ -500,6 +505,6 @@ pnpm --filter api test:unit -- --coverage
 
 ## Related Patterns
 
-- **UseCase**: [01-usecase-pattern.md](01-usecase-pattern.md) (Result pattern)
-- **Repository**: [03-repository-pattern.md](03-repository-pattern.md) (InMemory implementations)
-- **Integration Tests**: [06-integration-testing-pattern.md](06-integration-testing-pattern.md) (SQL testing)
+- **UseCase**: [api-usecase.md](api-usecase.md) (Result pattern)
+- **Repository**: [api-repository.md](api-repository.md) (InMemory implementations)
+- **Integration Tests**: [api-integration-testing.md](api-integration-testing.md) (SQL testing)

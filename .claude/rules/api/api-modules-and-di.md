@@ -1,10 +1,19 @@
-# Dependency Injection Pattern
+---
+paths:
+  - "apps/api/src/**/*.module.ts"
+  - "apps/api/src/shared-kernel/adapters/**/*.ts"
+  - "apps/api/src/shared-kernel/logger/**/*.ts"
+---
 
-> **NestJS modules** with factory pattern for wiring dependencies.
+# NestJS Modules, Dependency Injection & Shared Services
+
+> **NestJS modules with factory pattern** for wiring dependencies, plus reference for all injectable shared services.
 
 ## Overview
 
 Dependency injection in NestJS modules uses the factory pattern to explicitly wire dependencies, making the dependency graph visible and type-safe. All UseCases, repositories, queries, and shared services are registered as providers with explicit `useFactory` functions that show exactly what gets injected where.
+
+The `shared-kernel` module provides standardized, injectable services (ID generation, date/time, logging, database, events). Inject these — do not instantiate them directly. Test with deterministic implementations and inject real implementations in production.
 
 ## Core Principles
 
@@ -110,7 +119,17 @@ export class ExampleModule {}
 }
 ```
 
-## Shared Services
+## Shared Services Reference
+
+### Quick Reference Table
+
+| Need | Production | Testing | Module Location |
+|------|-----------|---------|-----------------|
+| Generate IDs | `RandomUuidGenerator` | `DeterministicIdGenerator` | `src/shared-kernel/adapters/id-generator/` |
+| Get current time | `RealDateProvider` | `DeterministicDateProvider` | `src/shared-kernel/adapters/date/` |
+| Database queries | `SQL_CONNECTION` (Knex) | `InMemory*Repository` | `src/shared-kernel/adapters/sql-knex/` |
+| Publish events | `RealEventPublisher` (UseCases) / `DOMAIN_EVENT_PUBLISHER_INJECTION_TOKEN` (controllers) | `InMemoryEventPublisher` | `src/shared-kernel/adapters/events/` |
+| Logging | `NestJsAppLogger` (`AppLogger` in core) | `SilentLogger` | `src/shared-kernel/logger/` |
 
 ### Common Shared Services
 
@@ -124,7 +143,71 @@ export class ExampleModule {}
 | **DomainEventPublisher** | `src/shared-kernel/domainEventPublisher` | Publish domain events | Event-driven usecases |
 | **DOMAIN_EVENT_PUBLISHER_INJECTION_TOKEN** | `src/shared-kernel/adapters/events/eventPublisher.module` | Event publisher token | For controller injection |
 
-### SQL Connection
+### ID Generation
+
+**Production**:
+
+```typescript
+import { RandomUuidGenerator } from "src/shared-kernel/adapters/id-generator/RandomUuidGenerator";
+
+export class MyUseCase {
+  constructor(private readonly idGenerator: RandomUuidGenerator) {}
+
+  async execute(request: Request): Promise<TResult<Response, Error>> {
+    const newId = this.idGenerator.generate(); // Random UUID
+    // ...
+  }
+}
+```
+
+**Testing**:
+
+```typescript
+import { DeterministicIdGenerator } from "src/shared-kernel/adapters/id-generator/DeterministicIdGenerator";
+
+it("should create item with id", async () => {
+  const idGenerator = new DeterministicIdGenerator();
+  const usecase = new MyUseCase(idGenerator);
+
+  const result = await usecase.execute({ name: "Test" });
+
+  expect((result as SuccessResult).getData().id).toBe("1"); // Predictable ID
+});
+```
+
+### Date/Time Providers
+
+**Production**:
+
+```typescript
+import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
+
+export class MyUseCase {
+  constructor(private readonly dateProvider: RealDateProvider) {}
+
+  async execute(request: Request): Promise<TResult<Response, Error>> {
+    const now = this.dateProvider.now(); // Current Date
+    // ...
+  }
+}
+```
+
+**Testing**:
+
+```typescript
+import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
+
+it("should create item with timestamp", async () => {
+  const dateProvider = new DeterministicDateProvider(new Date("2024-01-01"));
+  const usecase = new MyUseCase(dateProvider);
+
+  const result = await usecase.execute({ name: "Test" });
+
+  expect((result as SuccessResult).getData().createdAt).toEqual(new Date("2024-01-01"));
+});
+```
+
+### SQL Connection (Knex)
 
 ```typescript
 import { SqlConnectionModule, SQL_CONNECTION } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
@@ -143,41 +226,17 @@ import type { Knex } from "knex";
 })
 ```
 
-### ID Generator
+**Where to Use**:
+- SQL Repositories (write operations)
+- SQL Queries (read operations)
+- **NOT** in UseCases (they depend on Repository/Query interfaces, not the connection directly)
 
-```typescript
-import { RandomUuidGenerator } from "src/shared-kernel/adapters/id-generator/RandomUuidGenerator";
+### Logging
 
-@Module({
-  providers: [
-    {
-      provide: CreateExampleUseCase,
-      useFactory: (repository: SqlExampleRepository, idGenerator: RandomUuidGenerator) =>
-        new CreateExampleUseCase(repository, idGenerator),
-      inject: [SqlExampleRepository, RandomUuidGenerator],
-    },
-    RandomUuidGenerator,  // Provide service
-  ],
-})
-```
-
-### Date Provider
-
-```typescript
-import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
-
-@Module({
-  providers: [
-    {
-      provide: CreateExampleUseCase,
-      useFactory: (repository: SqlExampleRepository, dateProvider: RealDateProvider) =>
-        new CreateExampleUseCase(repository, dateProvider),
-      inject: [SqlExampleRepository, RealDateProvider],
-    },
-    RealDateProvider,  // Provide service
-  ],
-})
-```
+- **Core**: depend on the `AppLogger` interface from `src/shared-kernel/logger`. Never use `console.*` (`no-console` lint rule enforced).
+- **Adapters**: use NestJS `Logger` directly when outside the core.
+- **Production wiring**: `NestJsAppLogger` provides `AppLogger`.
+- **Tests**: `SilentLogger` for tests that must not emit noise.
 
 ### Domain Event Publisher
 
@@ -453,6 +512,41 @@ import { ExamplesModule } from "src/examples/adapters/primary/examples.module";
 export class AppModule {}
 ```
 
+## Testing with InMemory Services
+
+For unit tests, instantiate services directly without NestJS:
+
+```typescript
+import { DeterministicIdGenerator } from "src/shared-kernel/adapters/id-generator/DeterministicIdGenerator";
+import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
+import { InMemoryMyRepository } from "src/my-module/adapters/secondary/my-repository/InMemoryMyRepository";
+
+describe("MyUseCase", () => {
+  it("should create item", async () => {
+    // Arrange: Instantiate services directly for unit test
+    const idGenerator = new DeterministicIdGenerator();
+    const dateProvider = new DeterministicDateProvider(new Date("2024-01-01"));
+    const repository = new InMemoryMyRepository();
+    const usecase = new MyUseCase(repository, idGenerator, dateProvider);
+
+    // Act
+    const result = await usecase.execute({ name: "Test Item" });
+
+    // Assert
+    expect(result.isSuccess()).toBe(true);
+    expect((result as SuccessResult).getData()).toEqual({
+      itemId: "1", // Deterministic ID
+    });
+  });
+});
+```
+
+**Key points**:
+- ✅ Use `DeterministicIdGenerator` and `DeterministicDateProvider` in tests
+- ✅ Use `InMemory*` implementations for repositories and queries
+- ✅ No NestJS `@Module` needed for unit tests
+- ✅ Tests run fast with in-memory data (no database)
+
 ## Best Practices
 
 ### DO:
@@ -462,17 +556,23 @@ export class AppModule {}
 - ✅ Use shared services (RandomUuidGenerator, RealDateProvider)
 - ✅ Export UseCases if needed by other modules
 - ✅ Type factory parameters
+- ✅ Inject services into UseCase constructors
+- ✅ Use deterministic services in unit tests
 
 ### DON'T:
 - ❌ Don't use class-based providers for UseCases
 - ❌ Don't forget to import required modules
 - ❌ Don't inject concrete classes in UseCases (use interfaces)
 - ❌ Don't skip `inject` array in factories
+- ❌ Don't instantiate `RandomUuidGenerator` or `RealDateProvider` in code (inject instead)
+- ❌ Don't bypass dependency injection by importing concrete classes directly
+- ❌ Don't access database connection directly in UseCases (use Repository/Query instead)
 
 ## Related Patterns
 
-- **UseCase**: [01-usecase-pattern.md](01-usecase-pattern.md) (what gets injected)
-- **Repository**: [03-repository-pattern.md](03-repository-pattern.md) (injectable implementations)
-- **Query**: [04-query-pattern.md](04-query-pattern.md) (injectable implementations)
-- **Controller**: [02-controller-pattern.md](02-controller-pattern.md) (receives injected UseCases)
-- **Domain Events**: [10-domain-events-pattern.md](10-domain-events-pattern.md) (event publisher injection)
+- **UseCase**: [api-usecase.md](api-usecase.md) (what gets injected)
+- **Repository**: [api-repository.md](api-repository.md) (injectable implementations)
+- **Query**: [api-query.md](api-query.md) (injectable implementations)
+- **Controller**: [api-controller.md](api-controller.md) (receives injected UseCases)
+- **Domain Events**: [api-domain-events.md](api-domain-events.md) (event publisher injection)
+- **Unit Testing**: [api-unit-testing.md](api-unit-testing.md) (deterministic services in tests)

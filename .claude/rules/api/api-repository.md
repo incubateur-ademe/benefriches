@@ -1,3 +1,11 @@
+---
+paths:
+  - "apps/api/src/**/core/gateways/*Repository.ts"
+  - "apps/api/src/**/adapters/**/Sql*Repository.ts"
+  - "apps/api/src/**/adapters/**/InMemory*Repository.ts"
+  - "apps/api/src/**/adapters/**/Sql*Repository.integration-spec.ts"
+---
+
 # Repository Pattern (Write Operations)
 
 > **Write-focused pattern** following Command-Query Separation (CQS).
@@ -214,7 +222,7 @@ await this.sqlConnection("examples").insert({
 });
 ```
 
-**See**: [07-database-patterns.md](07-database-patterns.md#table-types) for table type definitions.
+**See**: [api-migrations.md](api-migrations.md#table-types) for table type definitions.
 
 ## InMemory Implementation (Testing)
 
@@ -279,12 +287,12 @@ module/
 
 ## Testing
 
-- **Unit tests**: Use InMemory implementation (see [05-unit-testing-pattern.md](05-unit-testing-pattern.md))
-- **Integration tests**: Test SQL implementation against real database (see [06-integration-testing-pattern.md](06-integration-testing-pattern.md#sql-repository-integration-tests))
+- **Unit tests**: Use InMemory implementation (see [api-unit-testing.md](api-unit-testing.md))
+- **Integration tests**: Test SQL implementation against real database (see [api-integration-testing.md](api-integration-testing.md#sql-repository-integration-tests))
 
 ## Related Patterns
 
-- **Query Pattern**: [04-query-pattern.md](04-query-pattern.md) (read-only operations for views)
-- **Database**: [07-database-patterns.md](07-database-patterns.md) (migrations, table types, transactions)
-- **Unit Testing**: [05-unit-testing-pattern.md](05-unit-testing-pattern.md) (testing with InMemory)
-- **Integration Testing**: [06-integration-testing-pattern.md](06-integration-testing-pattern.md) (testing SQL repositories)
+- **Query Pattern**: [api-query.md](api-query.md) (read-only operations for views)
+- **Database**: [api-migrations.md](api-migrations.md) (migrations, table types, transactions)
+- **Unit Testing**: [api-unit-testing.md](api-unit-testing.md) (testing with InMemory)
+- **Integration Testing**: [api-integration-testing.md](api-integration-testing.md) (testing SQL repositories)

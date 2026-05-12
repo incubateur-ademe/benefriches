@@ -1,3 +1,11 @@
+---
+paths:
+  - "apps/api/src/**/core/gateways/*Query.ts"
+  - "apps/api/src/**/adapters/**/Sql*Query.ts"
+  - "apps/api/src/**/adapters/**/InMemory*Query.ts"
+  - "apps/api/src/**/adapters/**/Sql*Query.integration-spec.ts"
+---
+
 # Query Pattern (Read Operations)
 
 > **Read-only operations pattern** for returning ViewModels to clients.
@@ -284,12 +292,12 @@ module/
 
 ## Testing
 
-- **Unit tests**: Use InMemory implementation (see [05-unit-testing-pattern.md](05-unit-testing-pattern.md))
-- **Integration tests**: Test SQL implementation against real database (see [06-integration-testing-pattern.md](06-integration-testing-pattern.md#sql-query-integration-tests))
+- **Unit tests**: Use InMemory implementation (see [api-unit-testing.md](api-unit-testing.md))
+- **Integration tests**: Test SQL implementation against real database (see [api-integration-testing.md](api-integration-testing.md#sql-query-integration-tests))
 
 ## Related Patterns
 
-- **Repository Pattern**: [03-repository-pattern.md](03-repository-pattern.md) (write operations)
-- **UseCase**: [01-usecase-pattern.md](01-usecase-pattern.md) (using queries in read-only UseCases)
-- **Database**: [07-database-patterns.md](07-database-patterns.md) (table types, SQL patterns)
-- **Integration Testing**: [06-integration-testing-pattern.md](06-integration-testing-pattern.md) (testing SQL queries)
+- **Repository Pattern**: [api-repository.md](api-repository.md) (write operations)
+- **UseCase**: [api-usecase.md](api-usecase.md) (using queries in read-only UseCases)
+- **Database**: [api-migrations.md](api-migrations.md) (table types, SQL patterns)
+- **Integration Testing**: [api-integration-testing.md](api-integration-testing.md) (testing SQL queries)
