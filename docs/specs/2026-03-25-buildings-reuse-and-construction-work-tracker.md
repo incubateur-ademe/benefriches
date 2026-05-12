@@ -281,12 +281,13 @@ Constraints:
     - `pnpm --filter api test`
     - `pnpm --filter web test src/features/projects/`
 
-- [ ] **S14** Release and enablement.
+- [x] **S14** Release and enablement.
   - Depends on: S15, S16, S17, S18 (feature must be 100% functional — data persisted, update flow working, display views complete, impacts complete)
   - Includes:
     - remove feature flag (enable by default)
     - QA in staging
     - deploy to production
+  - Done note: Removed `urbanProjectBuildingsReuseChapterEnabled` flag from envVars + env files + docker-compose, simplified flag-gated branches in `buildingsReaders.ts` and `buildingsUsesFloorSurfaceArea.handler.ts` to the always-on path, pruned redundant flag mocks across 13 test files, and extended the urban-project smoke test through the new buildings chapter steps. QA/staging/prod deploy remain operational.
 
 ## Recommended Loop Order
 `HIST-1 -> HIST-2 -> S1 -> S2 -> S3 -> S4 -> S5 -> S6 -> S7 -> S8 -> S9 -> S10 -> S11 -> S12 -> S13 -> S13b -> S15 -> S16 -> S17 -> S18 -> S14`

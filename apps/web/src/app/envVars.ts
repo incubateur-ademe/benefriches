@@ -25,8 +25,5 @@ export const BENEFRICHES_ENV = {
     allowedDevelopmentPlanCategories:
       windowEnv.WEBAPP_FF_ALLOWED_DEVELOPMENT_PLAN_CATEGORIES?.split(",") ?? [],
     urbanZoneEnabled: parseBooleanFlag(windowEnv.WEBAPP_FF_SITE_URBAN_ZONE_ENABLED),
-    urbanProjectBuildingsReuseChapterEnabled: parseBooleanFlag(
-      windowEnv.WEBAPP_FF_URBAN_PROJECT_BUILDINGS_REUSE_CHAPTER_ENABLED,
-    ),
   },
 };

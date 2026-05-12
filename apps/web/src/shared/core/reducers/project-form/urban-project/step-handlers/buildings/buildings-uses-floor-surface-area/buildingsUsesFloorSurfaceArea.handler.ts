@@ -1,5 +1,3 @@
-import { BENEFRICHES_ENV } from "@/app/envVars";
-
 import type { AnswerStepHandler } from "../../stepHandler.type";
 import { siteHasBuildings } from "../buildingsReaders";
 
@@ -13,17 +11,9 @@ export const BuildingsUsesFloorSurfaceAreaHandler = {
   },
 
   getNextStepId(context) {
-    if (BENEFRICHES_ENV.featureFlags.urbanProjectBuildingsReuseChapterEnabled) {
-      if (context.siteData && siteHasBuildings(context.siteData)) {
-        return "URBAN_PROJECT_BUILDINGS_REUSE_INTRODUCTION";
-      }
-      return "URBAN_PROJECT_BUILDINGS_NEW_CONSTRUCTION_INTRODUCTION";
+    if (context.siteData && siteHasBuildings(context.siteData)) {
+      return "URBAN_PROJECT_BUILDINGS_REUSE_INTRODUCTION";
     }
-
-    if (context.siteData?.hasContaminatedSoils) {
-      return "URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION";
-    }
-
-    return "URBAN_PROJECT_SITE_RESALE_INTRODUCTION";
+    return "URBAN_PROJECT_BUILDINGS_NEW_CONSTRUCTION_INTRODUCTION";
   },
 } satisfies AnswerStepHandler<typeof STEP_ID>;

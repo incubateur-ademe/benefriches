@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 
 import { mockSiteData } from "@/features/create-project/core/urban-project/__tests__/_siteData.mock";
 import {
@@ -7,21 +7,7 @@ import {
 } from "@/features/create-project/core/urban-project/__tests__/_testStoreHelpers";
 import { creationProjectFormUrbanActions } from "@/features/create-project/core/urban-project/urbanProject.actions";
 
-const mockedEnvVarsModule = vi.hoisted(() => ({
-  BENEFRICHES_ENV: {
-    featureFlags: {
-      urbanProjectBuildingsReuseChapterEnabled: true,
-    },
-  },
-}));
-
-vi.mock("@/app/envVars", () => mockedEnvVarsModule);
-
 describe("Urban project buildings sequencing - full reuse with new construction", () => {
-  beforeEach(() => {
-    mockedEnvVarsModule.BENEFRICHES_ENV.featureFlags.urbanProjectBuildingsReuseChapterEnabled = true;
-  });
-
   describe("forward navigation", () => {
     it("includes existing and new buildings uses after fully reusing the existing footprint, then exits to site resale", () => {
       // INTRO -> FLOOR_AREA -> REUSE_INTRO -> REUSE_FOOTPRINT -> EXISTING_USES -> NEW_CONSTRUCTION_INFO -> NEW_USES -> SITE_RESALE_INTRO

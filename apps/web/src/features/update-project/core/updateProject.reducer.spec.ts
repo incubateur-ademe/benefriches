@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 
 import { mockSiteData } from "@/features/create-project/core/urban-project/__tests__/_siteData.mock";
 import { ProjectFormState } from "@/shared/core/reducers/project-form/projectForm.reducer";
@@ -7,21 +7,7 @@ import { computeProjectStepsSequence } from "@/shared/core/reducers/project-form
 import { updateProjectFormUrbanActions } from "./updateProject.actions";
 import updateProjectReducer from "./updateProject.reducer";
 
-const mockedEnvVarsModule = vi.hoisted(() => ({
-  BENEFRICHES_ENV: {
-    featureFlags: {
-      urbanProjectBuildingsReuseChapterEnabled: false,
-    },
-  },
-}));
-
-vi.mock("@/app/envVars", () => mockedEnvVarsModule);
-
 describe("update project reducer", () => {
-  beforeEach(() => {
-    mockedEnvVarsModule.BENEFRICHES_ENV.featureFlags.urbanProjectBuildingsReuseChapterEnabled = true;
-  });
-
   it("redirects to buildings footprint to reuse when project building footprint changes", () => {
     const initialState = updateProjectReducer(undefined, { type: "@@INIT" });
     const steps: ProjectFormState["urbanProject"]["steps"] = {

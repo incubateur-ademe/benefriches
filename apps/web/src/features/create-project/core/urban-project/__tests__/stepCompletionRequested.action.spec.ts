@@ -1,17 +1,7 @@
-import { describe, it, expect, beforeEach, vi } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 
 import { creationProjectFormUrbanActions } from "../urbanProject.actions";
 import { getCurrentStep, StoreBuilder } from "./_testStoreHelpers";
-
-const mockedEnvVarsModule = vi.hoisted(() => ({
-  BENEFRICHES_ENV: {
-    featureFlags: {
-      urbanProjectBuildingsReuseChapterEnabled: false,
-    },
-  },
-}));
-
-vi.mock("@/app/envVars", () => mockedEnvVarsModule);
 
 const { nextStepRequested, stepCompletionRequested } = creationProjectFormUrbanActions;
 
@@ -123,6 +113,20 @@ describe("urbanProject.reducer - stepCompletionRequested without validation", ()
         }),
       );
 
+      // Étape ---- (site has buildings → reuse intro)
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_REUSE_INTRODUCTION");
+      store.dispatch(nextStepRequested());
+
+      // Étape ---- (footprint to reuse, full reuse to skip demolition / new construction)
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE");
+      store.dispatch(
+        stepCompletionRequested({
+          stepId: "URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE",
+          answers: { buildingsFootprintToReuse: 2000 },
+        }),
+      );
+      store.dispatch(creationProjectFormUrbanActions.stepCompletionConfirmed());
+
       // Étape ---- (hasContaminatedSoils → decontamination)
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION");
       store.dispatch(nextStepRequested());
@@ -191,18 +195,7 @@ describe("urbanProject.reducer - stepCompletionRequested without validation", ()
         }),
       );
 
-      // Étape ----
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER");
-      store.dispatch(
-        stepCompletionRequested({
-          stepId: "URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER",
-          answers: {
-            developerWillBeBuildingsConstructor: true,
-          },
-        }),
-      );
-
-      // Étape ----
+      // Étape ---- (no new construction → skips BUILDINGS_DEVELOPER)
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER");
       store.dispatch(
         stepCompletionRequested({
@@ -352,7 +345,7 @@ describe("urbanProject.reducer - stepCompletionRequested without validation", ()
       // Étape ----
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_CREATION_RESULT");
 
-      expect(Object.keys(store.getState().projectCreation.urbanProject.steps).length).toEqual(34);
+      expect(Object.keys(store.getState().projectCreation.urbanProject.steps).length).toEqual(35);
     });
 
     it('should handle decontamination plan "none" correctly', () => {
@@ -400,6 +393,19 @@ describe("urbanProject.reducer - stepCompletionRequested without validation", ()
         }),
       );
 
+      // site has buildings → reuse intro → footprint to reuse (full reuse skips demo/new construction)
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_REUSE_INTRODUCTION");
+      store.dispatch(nextStepRequested());
+
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE");
+      store.dispatch(
+        stepCompletionRequested({
+          stepId: "URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE",
+          answers: { buildingsFootprintToReuse: 2000 },
+        }),
+      );
+      store.dispatch(creationProjectFormUrbanActions.stepCompletionConfirmed());
+
       // hasContaminatedSoils → decontamination intro
       store.dispatch(nextStepRequested()); // decontamination intro → selection
 
@@ -429,10 +435,6 @@ describe("urbanProject.reducer - stepCompletionRequested without validation", ()
   });
 
   describe("stakeholders adjacent navigation", () => {
-    beforeEach(() => {
-      mockedEnvVarsModule.BENEFRICHES_ENV.featureFlags.urbanProjectBuildingsReuseChapterEnabled = true;
-    });
-
     it("routes from project developer to buildings developer when new buildings will be constructed", () => {
       const store = new StoreBuilder()
         .withSiteData({
@@ -474,10 +476,6 @@ describe("urbanProject.reducer - stepCompletionRequested without validation", ()
   });
 
   describe("buildings chapter exit routing", () => {
-    beforeEach(() => {
-      mockedEnvVarsModule.BENEFRICHES_ENV.featureFlags.urbanProjectBuildingsReuseChapterEnabled = true;
-    });
-
     it("routes from the last buildings step to site resale when the site is not contaminated", () => {
       const store = new StoreBuilder()
         .withSiteData({

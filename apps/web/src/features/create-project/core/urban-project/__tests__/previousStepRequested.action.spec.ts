@@ -1,19 +1,9 @@
 import { SiteNature } from "shared";
-import { beforeEach, describe, it, expect, vi } from "vitest";
+import { describe, it, expect } from "vitest";
 
 import { creationProjectFormUrbanActions } from "../urbanProject.actions";
 import { mockSiteData } from "./_siteData.mock";
 import { StoreBuilder } from "./_testStoreHelpers";
-
-const mockedEnvVarsModule = vi.hoisted(() => ({
-  BENEFRICHES_ENV: {
-    featureFlags: {
-      urbanProjectBuildingsReuseChapterEnabled: false,
-    },
-  },
-}));
-
-vi.mock("@/app/envVars", () => mockedEnvVarsModule);
 
 const { nextStepRequested, previousStepRequested, stepCompletionRequested } =
   creationProjectFormUrbanActions;
@@ -36,10 +26,6 @@ const testScenarios = {
 };
 
 describe("urbanProject.reducer - Navigation Consistency Tests", () => {
-  beforeEach(() => {
-    mockedEnvVarsModule.BENEFRICHES_ENV.featureFlags.urbanProjectBuildingsReuseChapterEnabled = false;
-  });
-
   describe("Previous/Next consistency for each step", () => {
     it("should navigate from buildings introduction to soils carbon summary when uses include buildings", () => {
       const storeWithBuildings = new StoreBuilder()
@@ -341,8 +327,7 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
       );
     });
 
-    it("should go back from site resale introduction to the last buildings step before resale (flag ON)", () => {
-      mockedEnvVarsModule.BENEFRICHES_ENV.featureFlags.urbanProjectBuildingsReuseChapterEnabled = true;
+    it("should go back from site resale introduction to the last buildings step before resale", () => {
       const store = new StoreBuilder()
         .withSiteData(testScenarios.withoutContamination)
         .withSteps({
@@ -383,8 +368,7 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
       );
     });
 
-    it("should go back from decontamination introduction to the last buildings step before decontamination (flag ON)", () => {
-      mockedEnvVarsModule.BENEFRICHES_ENV.featureFlags.urbanProjectBuildingsReuseChapterEnabled = true;
+    it("should go back from decontamination introduction to the last buildings step before decontamination", () => {
       const store = new StoreBuilder()
         .withSiteData(testScenarios.withBuildingsAndContamination)
         .withSteps({
