@@ -21,8 +21,6 @@ import { getPhotovoltaicPowerPlantProjectImpacts } from "./indirect-economic-imp
 import { computeRentalIncomeImpacts } from "./indirect-economic-impacts/rentalIncomeImpacts";
 import {
   getAvoidedFricheMaintenanceAndSecuringCosts,
-  getLocalPropertyIncreaseWithFricheRemovalImpacts,
-  getFricheRoadsAndUtilitiesExpensesImpact,
   getPreviousSiteOperationBenefitLoss,
 } from "./indirect-economic-impacts/siteReconversionRelatedEconomicImpacts";
 import { getUrbanProjectImpacts } from "./indirect-economic-impacts/urbanProjectImpacts";
@@ -82,8 +80,6 @@ export const getProjectIndirectsEconomicImpacts = ({
 
   const impacts: IndirectEconomicImpact[] = [];
 
-  const isUrbanProject = reconversionProject.developmentPlan.type === "URBAN_PROJECT";
-
   // --- Impacts liés à la nature du site existant ---
   if (relatedSite.nature === "FRICHE") {
     impacts.push(
@@ -92,22 +88,6 @@ export const getProjectIndirectsEconomicImpacts = ({
         sumOnEvolutionPeriodService,
       }),
     );
-
-    if (isUrbanProject) {
-      impacts.push(
-        getFricheRoadsAndUtilitiesExpensesImpact({
-          siteSurfaceArea: relatedSite.surfaceArea,
-          sumOnEvolutionPeriodService,
-        }),
-      );
-      impacts.push(
-        ...getLocalPropertyIncreaseWithFricheRemovalImpacts({
-          siteSurfaceArea: relatedSite.surfaceArea,
-          siteCityData,
-          sumOnEvolutionPeriodService,
-        }),
-      );
-    }
   } else if (relatedSite.isSiteOperated && relatedSite.nature === "AGRICULTURAL_OPERATION") {
     impacts.push(
       getPreviousSiteOperationBenefitLoss({

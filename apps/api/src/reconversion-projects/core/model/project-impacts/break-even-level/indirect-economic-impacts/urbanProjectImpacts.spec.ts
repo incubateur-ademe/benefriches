@@ -16,13 +16,22 @@ const baseRelatedSite: InputSiteData = {
   yearlyExpenses: [],
   yearlyIncomes: [],
   ownerName: "Mairie de Blajan",
-  soilsDistribution: {},
+  soilsDistribution: {
+    IMPERMEABLE_SOILS: 20_000,
+  },
   surfaceArea: 20_000,
 };
 
 const buildUrbanProject = (
-  buildingsFloorAreaDistribution: BuildingsUseDistribution = {},
-  soilsDistribution: InputReconversionProjectData["soilsDistribution"] = [],
+  buildingsFloorAreaDistribution: BuildingsUseDistribution = { RESIDENTIAL: 20_000 },
+  soilsDistribution: InputReconversionProjectData["soilsDistribution"] = [
+    { soilType: "BUILDINGS", surfaceArea: 2_000, spaceCategory: "LIVING_AND_ACTIVITY_SPACE" },
+    {
+      soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+      surfaceArea: 18_000,
+      spaceCategory: "PUBLIC_GREEN_SPACE",
+    },
+  ],
 ): InputReconversionProjectData & {
   developmentPlan: Extract<DevelopmentPlanFeatures, { type: "URBAN_PROJECT" }>;
 } => ({
@@ -135,24 +144,81 @@ describe("getUrbanProjectImpacts", () => {
   describe("UrbanFreshnessRelatedImpacts", () => {
     it("adds avoidedAirConditioningExpenses if has urban freshness effect", () => {
       const result = getUrbanProjectImpacts({
-        reconversionProject: buildUrbanProject({ RESIDENTIAL: 5_000 }),
-        relatedSite: { ...baseRelatedSite, surfaceArea: 10_000 },
-        siteCityData: baseSiteCityData,
+        reconversionProject: buildUrbanProject({
+          RESIDENTIAL: 500,
+          LOCAL_STORE: 100,
+        }),
+        relatedSite: { ...baseRelatedSite, surfaceArea: 15_000 },
+        siteCityData: {
+          cityPropertyValuePerSquareMeter: 2000,
+          citySquareMetersSurfaceArea: 15000000,
+          cityPopulation: 18000,
+        },
         sumOnEvolutionPeriodService: mockService,
       });
 
       const acImpact = result.find((r) => r.name === "avoidedAirConditioningExpenses");
+      expect(acImpact).toBeDefined();
+      expect(result.find((r) => r.name === "avoidedAirConditioningCo2eqEmissions")).toBeDefined();
       if (acImpact) {
         expect(acImpact.total).toBeDefined();
       }
+    });
+
+    it("excludes avoidedAirConditioningExpenses if site is not friche has urban freshness effect", () => {
+      const result = getUrbanProjectImpacts({
+        reconversionProject: buildUrbanProject({ RESIDENTIAL: 5_000 }),
+        relatedSite: { ...baseRelatedSite, nature: "AGRICULTURAL_OPERATION", surfaceArea: 10_000 },
+        siteCityData: baseSiteCityData,
+        sumOnEvolutionPeriodService: mockService,
+      });
+      expect(result.find((r) => r.name === "avoidedAirConditioningExpenses")).toBeUndefined();
+      expect(result.find((r) => r.name === "avoidedAirConditioningCo2eqEmissions")).toBeUndefined();
     });
   });
 
   describe("TravelRelatedImpacts", () => {
     it("returns travel related impacts for urban project on friche", () => {
       const result = getUrbanProjectImpacts({
-        reconversionProject: buildUrbanProject({ RESIDENTIAL: 10_000 }),
+        reconversionProject: buildUrbanProject({
+          RESIDENTIAL: 160000000,
+          OFFICES: 1500,
+          LOCAL_STORE: 500,
+          ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES: 200,
+        }),
         relatedSite: { ...baseRelatedSite, surfaceArea: 10_000 },
+        siteCityData: {
+          citySquareMetersSurfaceArea: 6000000000,
+          cityPopulation: 300000,
+          cityPropertyValuePerSquareMeter: 2000,
+        },
+        sumOnEvolutionPeriodService: mockService,
+      });
+
+      const travelImpactNames = [
+        "avoidedPropertyDamageExpenses",
+        "avoidedCarRelatedExpenses",
+        "travelTimeSavedPerTravelerExpenses",
+        "avoidedTrafficCo2EqEmissions",
+        "avoidedAirPollutionHealthExpenses",
+        "avoidedAccidentsMinorInjuriesExpenses",
+        "avoidedAccidentsSevereInjuriesExpenses",
+        "avoidedAccidentsDeathsExpenses",
+      ] as const;
+
+      travelImpactNames.forEach((name) => {
+        expect(result.find((r) => r.name === name)).toBeDefined();
+      });
+
+      const resultNames = new Set(result.map((r) => r.name));
+      const found = travelImpactNames.filter((n) => resultNames.has(n));
+      expect(found.length).toBeGreaterThanOrEqual(0);
+    });
+
+    it("doesn't return travel related impacts for urban project on non friche site", () => {
+      const result = getUrbanProjectImpacts({
+        reconversionProject: buildUrbanProject({ RESIDENTIAL: 10_000 }),
+        relatedSite: { ...baseRelatedSite, nature: "AGRICULTURAL_OPERATION", surfaceArea: 10_000 },
         siteCityData: baseSiteCityData,
         sumOnEvolutionPeriodService: mockService,
       });
@@ -168,9 +234,9 @@ describe("getUrbanProjectImpacts", () => {
         "avoidedAccidentsDeathsExpenses",
       ] as const;
 
-      const resultNames = new Set(result.map((r) => r.name));
-      const found = travelImpactNames.filter((n) => resultNames.has(n));
-      expect(found.length).toBeGreaterThanOrEqual(0);
+      travelImpactNames.forEach((name) => {
+        expect(result.find((r) => r.name === name)).toBeUndefined();
+      });
     });
   });
 
