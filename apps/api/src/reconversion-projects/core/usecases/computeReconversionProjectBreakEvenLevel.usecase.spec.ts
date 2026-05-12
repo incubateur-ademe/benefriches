@@ -296,7 +296,7 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
       const data = (result as SuccessResult<ReconversionProjectImpactsBreakEvenLevel>).getData();
 
       expect(data.economicBalance.total).toBe(-720000);
-      expect(data.indirectEconomicImpacts.total).toBe(34143237);
+      expect(data.indirectEconomicImpacts.total).toBe(32940924);
     });
 
     it("stakeholders reflect site and project data", async () => {

@@ -235,7 +235,6 @@ export class NatureConservationImpactsService {
 
   getAll() {
     return {
-      storedCo2Eq: this.storedCo2Eq,
       natureRelatedWelnessAndLeisure: this.natureRelatedWelnessAndLeisure,
       forestRelatedProduct: this.forestRelatedProduct,
       pollination: this.pollination,

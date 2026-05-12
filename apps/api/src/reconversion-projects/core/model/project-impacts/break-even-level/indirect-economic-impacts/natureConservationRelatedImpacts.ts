@@ -24,36 +24,51 @@ export const getNatureConservationRelatedImpacts = ({
   projectDecontaminatedSoilSurface,
   sumOnEvolutionPeriodService,
 }: Props): IndirectEconomicImpact[] => {
+  const impacts: IndirectEconomicImpact[] = [];
+
   const soilsCo2eqStorage = computeSoilsCo2eqStorageImpact(
     baseSoilsCarbonStorage?.total,
     projectSoilsCarbonStorage?.total,
   );
+
+  if (soilsCo2eqStorage && soilsCo2eqStorage?.difference !== 0) {
+    const co2eqDetailsByYear = sumOnEvolutionPeriodService.getWeightedYearlyValues(
+      soilsCo2eqStorage?.difference ?? 0,
+      ["co2_value"],
+      { endYearIndex: 1 },
+    );
+    impacts.push({
+      detailsByYear: co2eqDetailsByYear,
+      cumulativeByYear: computeCumulativeByYear(co2eqDetailsByYear),
+      total: sumList(co2eqDetailsByYear),
+      name: "storedCo2Eq",
+    });
+  }
+
   const natureConservationImpactsService = new NatureConservationImpactsService({
     baseSoilsDistribution: siteSoilsDistribution,
     forecastSoilsDistribution: projectSoilsDistributionByType,
     baseDecontaminatedSurfaceArea: 0,
     forecastDecontaminedSurfaceArea: projectDecontaminatedSoilSurface,
-    baseSoilsCo2eqStorage: soilsCo2eqStorage?.base,
-    forecastSoilsCo2eqStorage: soilsCo2eqStorage?.forecast,
     sumOnEvolutionPeriodService,
   });
 
-  return typedObjectEntries(natureConservationImpactsService.getAll())
-    .filter(([, value]) => value?.difference)
-    .map(([key, value]) => {
+  const natureConservationImpactList = typedObjectEntries(
+    natureConservationImpactsService.getAll(),
+  ).filter(([, value]) => value?.difference);
+
+  return impacts.concat(
+    natureConservationImpactList.map(([key, value]) => {
       const detailsByYear = sumOnEvolutionPeriodService.getWeightedYearlyValues(
         value?.difference ?? 0,
         ["discount", "gdp_evolution"],
-        { endYearIndex: key === "storedCo2Eq" ? 1 : undefined },
       );
-
-      const total = sumList(detailsByYear);
-
       return {
         detailsByYear,
         cumulativeByYear: computeCumulativeByYear(detailsByYear),
-        total,
+        total: sumList(detailsByYear),
         name: key,
       };
-    });
+    }),
+  );
 };
