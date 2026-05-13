@@ -10,13 +10,10 @@
 
 ```bash
 pnpm --filter web typecheck && pnpm --filter web lint && pnpm --filter web test && pnpm --filter web format:check
-```
 
 # Run a single test file
-
 pnpm --filter web test path/to/file.spec.ts
-
-````
+```
 
 **If modifying `shared` package**: Run `pnpm --filter shared build` first, then `pnpm --filter web install`, then web checks.
 
@@ -84,7 +81,7 @@ Container components access state through a **single selector** returning a comp
 const dispatch = useAppDispatch();
 const viewData = useAppSelector(selectFeatureViewData);
 return <FeaturePage viewData={viewData} onAction={(data) => dispatch(actionCompleted(data))} />;
-````
+```
 
 ### Gateway Pattern
 
