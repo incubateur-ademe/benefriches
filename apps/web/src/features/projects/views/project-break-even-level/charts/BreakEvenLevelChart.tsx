@@ -32,7 +32,11 @@ const BreakEvenLevelChart = ({ values, xValues, breakEvenIndex, breakEvenYear }:
         chart: {
           type: "area",
           styledMode: true,
-          height: 500,
+          spacingBottom: 0,
+          spacingLeft: 0,
+          spacingRight: 0,
+          spacingTop: 10,
+          height: 374,
         },
         yAxis: {
           lineWidth: 1,
