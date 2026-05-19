@@ -126,11 +126,11 @@ export default function ProjectSummaryComparisonCard({ mainImpactIndicator, proj
         <span
           className={classNames(
             "bg-success-ultralight",
-            "fr-badge",
             "text-[32px]",
-            "px-3",
-            "py-4",
+            "p-2",
             "mb-4",
+            "inline-flex",
+            "text-[32px]/tight font-bold rounded-lg",
           )}
         >
           {value}

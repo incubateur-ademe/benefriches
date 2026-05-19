@@ -65,6 +65,7 @@ export default function ProjectSummaryTab({
               classes={{ title: "text-[32px]" }}
               breakEvenYear={breakEvenYear}
               projectionYears={projectionYears}
+              compact
             />
           </div>
 
