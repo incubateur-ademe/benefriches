@@ -6,6 +6,10 @@
   border-radius: 24px;
 }
 
+.leaflet-container a.btn-secondary {
+  color: var(--text-action-high-blue-france);
+}
+
 .leaflet-pane {
   z-index: 25;
 }

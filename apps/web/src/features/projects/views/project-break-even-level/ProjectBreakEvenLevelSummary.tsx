@@ -18,7 +18,7 @@ export default function ProjectBreakEvenLevelSummary({
 
   const breakEvenIndex = breakEvenYear ? projectionYears.indexOf(breakEvenYear) : undefined;
 
-  if (breakEvenIndex && breakEvenIndex !== -1) {
+  if (breakEvenIndex !== undefined && breakEvenIndex !== -1) {
     return (
       <>
         <span

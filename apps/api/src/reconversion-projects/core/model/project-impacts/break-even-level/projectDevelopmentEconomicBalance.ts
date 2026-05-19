@@ -58,11 +58,13 @@ export const getProjectDevelopmentEconomicBalance = ({
     costs.buildingsConstructionAndRehabilitationCosts.length > 0
   ) {
     developmentEconomicBalance.push(
-      ...costs.buildingsConstructionAndRehabilitationCosts.map(({ amount, purpose }) => ({
-        name: "projectBuildingsInstallation" as const,
-        total: -amount,
-        details: purpose,
-      })),
+      ...costs.buildingsConstructionAndRehabilitationCosts
+        .filter(({ amount }) => amount)
+        .map(({ amount, purpose }) => ({
+          name: "projectBuildingsInstallation" as const,
+          total: -amount,
+          details: purpose,
+        })),
     );
   }
 

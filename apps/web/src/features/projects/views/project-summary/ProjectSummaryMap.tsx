@@ -26,7 +26,7 @@ const customIcon = L.divIcon({
 
 export function ProjectSummaryMap({ lat, long, addressLabel, siteName, siteId }: Props) {
   return (
-    <MapContainer center={[lat, long]} zoom={25} className="z-0 h-full w-full">
+    <MapContainer center={[lat, long]} zoom={13} className="z-0 h-full w-full">
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
       <Marker icon={customIcon} position={[lat, long]}>
         <Popup>
