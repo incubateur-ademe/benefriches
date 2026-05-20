@@ -7,9 +7,9 @@ import { SqlCarbonStorageQuery } from "src/carbon-storage/adapters/secondary/car
 import { GetCarbonStorageFromSoilDistributionService } from "src/carbon-storage/core/services/getCarbonStorageFromSoilDistribution";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
+import { SqlReconversionProjectAndSiteImpactsQuery } from "src/stats/adapters/secondary/SqlStatsQuery";
+import { ComputeEvaluatedProjectStatsUseCase } from "src/stats/core/usecases/computeEvaluatedProjectStats.usecase";
 
-import { SqlReconversionProjectAndSiteImpactsQuery } from "../secondary/SqlStatsQuery";
-import { ComputeEvaluatedProjectStatsUseCase } from "../usecases/computeEvaluatedProjectStats.usecase";
 import { StatsController } from "./stats.controller";
 
 @Module({

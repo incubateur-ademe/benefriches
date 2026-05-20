@@ -23,8 +23,7 @@ import {
   SqlReconversionProject,
   SqlSite,
 } from "src/shared-kernel/adapters/sql-knex/tableTypes";
-
-import { EvaluatedProjectsImpactsStatsResult } from "../usecases/computeEvaluatedProjectStats.usecase";
+import { EvaluatedProjectsImpactsStatsResult } from "src/stats/core/usecases/computeEvaluatedProjectStats.usecase";
 
 type CoreRow = Pick<
   SqlReconversionProject,
@@ -64,8 +63,7 @@ type CoreRow = Pick<
     | "tenant_structure_type"
   > & { s_id: SqlSite["id"] } & { s_nature: SqlSite["nature"] } & {
     s_creation_mode: SqlSite["creation_mode"];
-  } & // address columns (nullable since LEFT JOIN)
-  { site_city_code: SqlAddress["city_code"] | null };
+  } & { site_city_code: SqlAddress["city_code"] | null }; // address columns (nullable since LEFT JOIN)
 
 const sumIfNotNullish = (
   a: number | null | undefined,

@@ -4,7 +4,7 @@ import { Throttle } from "@nestjs/throttler";
 import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
 
-import { ComputeEvaluatedProjectStatsUseCase } from "../usecases/computeEvaluatedProjectStats.usecase";
+import { ComputeEvaluatedProjectStatsUseCase } from "src/stats/core/usecases/computeEvaluatedProjectStats.usecase";
 
 class getEvaluatedProjectStatsDto extends createZodDto(
   z.object({

@@ -19,7 +19,7 @@ import { DomainEvent } from "./shared-kernel/domainEvent";
 import { SiteActionsModule } from "./site-actions/adapters/primary/siteActions.module";
 import { SiteEvaluationsModule } from "./site-evaluations/adapters/primary/siteEvaluations.module";
 import { SitesModule } from "./sites/adapters/primary/sites.module";
-import { StatistiquesModule } from "./stats/primary/stats.module";
+import { StatistiquesModule } from "./stats/adapters/primary/stats.module";
 import { UsersModule } from "./users/adapters/primary/users.module";
 
 class DomainEventsHandler {
