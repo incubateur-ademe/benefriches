@@ -20,6 +20,7 @@ function SiteNameAndDescriptionFormContainer() {
             nature: siteData.nature!,
             fricheActivity: siteData.fricheActivity,
             naturalAreaType: siteData.naturalAreaType,
+            urbanZone: siteData.urbanZoneType,
           }),
         description: siteData.description ?? "",
       }}

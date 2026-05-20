@@ -25,6 +25,7 @@ export const selectUrbanZoneNamingViewData = createSelector(
       generateSiteName({
         cityName: siteData.address?.city ?? "",
         nature: "URBAN_ZONE",
+        urbanZone: siteData.urbanZoneType,
       });
     return {
       siteId: siteData.id,
