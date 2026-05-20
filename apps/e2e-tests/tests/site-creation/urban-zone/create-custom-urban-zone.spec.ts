@@ -103,7 +103,7 @@ test.describe("site creation - urban zone - custom mode", () => {
     await siteCreationPage.expectStepperCurrentStep("Dénomination");
     await siteCreationPage.goToNextStep(); // naming introduction
     await siteCreationPage.expectStepTitle("Dénomination du site");
-    await siteCreationPage.expectGeneratedSiteName("Zone urbaine de Chartres");
+    await siteCreationPage.expectGeneratedSiteName("Zone d'activités économiques de Chartres");
     await urbanZoneSiteCreationPage.fillSiteNameAndDescription(
       "ZAE Chartres",
       "Zone d'activités économiques sur la commune de Chartres.",
