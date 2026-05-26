@@ -179,6 +179,8 @@ export class ComputeEvaluatedProjectStatsUseCase implements UseCase<
       totalProjects: 0,
       totalFricheProject: 0,
       totalInactionCosts: 0,
+      totalIndirectEconomicImpacts: 0,
+      totalEconomicBalance: 0,
     };
 
     for (const [
@@ -190,70 +192,71 @@ export class ComputeEvaluatedProjectStatsUseCase implements UseCase<
       const operationsFirstYear =
         projectDevelopment.operationsFirstYear ?? defaultOperationFirstYear;
 
-      const { breakEvenIndex, indirectEconomicImpacts } = computeProjectImpactsWithBreakEvenLevel({
-        reconversionProject: {
-          name: "",
-          relatedSiteId: relatedSite.id,
-          soilsDistribution: projectDevelopment.projectedSoilsDistribution,
-          isExpressProject: isExpressProject,
-          conversionSchedule: projectDevelopment.schedules.installation,
-          reinstatementSchedule: projectDevelopment.schedules.reinstatement,
-          futureOperatorStructureType: stakeholders.futureOperator?.structureType,
-          futureOperatorName: stakeholders.futureOperator?.name,
-          futureSiteOwnerName: stakeholders.futureSiteOwner?.name,
-          futureSiteOwnerStructureType: stakeholders.futureSiteOwner?.structureType,
-          reinstatementContractOwnerName: stakeholders.reinstatementContractOwner?.name,
-          reinstatementContractOwnerStructureType:
-            stakeholders.reinstatementContractOwner?.structureType,
-          sitePurchaseTotalAmount: projectDevelopment.expenses.sitePurchase?.totalAmount,
-          sitePurchasePropertyTransferDutiesAmount:
-            projectDevelopment.expenses.sitePurchase?.propertyTransferDutiesAmount,
-          reinstatementExpenses: projectDevelopment.expenses.reinstatement,
-          buildingsConstructionAndRehabilitationExpenses:
-            projectDevelopment.expenses.buildingConstructionCosts,
-          financialAssistanceRevenues: projectDevelopment.revenues.financialAssistanceRevenues,
-          yearlyProjectedExpenses: projectDevelopment.expenses.recurringYearly,
-          yearlyProjectedRevenues: projectDevelopment.revenues.recurringYearly,
-          developmentPlan: {
-            installationCosts: projectDevelopment.expenses.installationCosts,
-            installationSchedule: projectDevelopment.schedules.installation,
-            developerName: stakeholders.developer?.name,
-            developerStructureType: stakeholders.developer?.structureType,
-            type: projectDevelopment.developmentPlan?.type,
-            features: projectDevelopment.developmentPlan?.features,
+      const { breakEvenIndex, indirectEconomicImpacts, economicBalance } =
+        computeProjectImpactsWithBreakEvenLevel({
+          reconversionProject: {
+            name: "",
+            relatedSiteId: relatedSite.id,
+            soilsDistribution: projectDevelopment.projectedSoilsDistribution,
+            isExpressProject: isExpressProject,
+            conversionSchedule: projectDevelopment.schedules.installation,
+            reinstatementSchedule: projectDevelopment.schedules.reinstatement,
+            futureOperatorStructureType: stakeholders.futureOperator?.structureType,
+            futureOperatorName: stakeholders.futureOperator?.name,
+            futureSiteOwnerName: stakeholders.futureSiteOwner?.name,
+            futureSiteOwnerStructureType: stakeholders.futureSiteOwner?.structureType,
+            reinstatementContractOwnerName: stakeholders.reinstatementContractOwner?.name,
+            reinstatementContractOwnerStructureType:
+              stakeholders.reinstatementContractOwner?.structureType,
+            sitePurchaseTotalAmount: projectDevelopment.expenses.sitePurchase?.totalAmount,
+            sitePurchasePropertyTransferDutiesAmount:
+              projectDevelopment.expenses.sitePurchase?.propertyTransferDutiesAmount,
+            reinstatementExpenses: projectDevelopment.expenses.reinstatement,
+            buildingsConstructionAndRehabilitationExpenses:
+              projectDevelopment.expenses.buildingConstructionCosts,
+            financialAssistanceRevenues: projectDevelopment.revenues.financialAssistanceRevenues,
+            yearlyProjectedExpenses: projectDevelopment.expenses.recurringYearly,
+            yearlyProjectedRevenues: projectDevelopment.revenues.recurringYearly,
+            developmentPlan: {
+              installationCosts: projectDevelopment.expenses.installationCosts,
+              installationSchedule: projectDevelopment.schedules.installation,
+              developerName: stakeholders.developer?.name,
+              developerStructureType: stakeholders.developer?.structureType,
+              type: projectDevelopment.developmentPlan?.type,
+              features: projectDevelopment.developmentPlan?.features,
+            },
+            operationsFirstYear,
+            siteResaleSellingPrice: projectDevelopment.revenues.siteResaleSellingPrice,
+            buildingsResaleSellingPrice: projectDevelopment.revenues.buildingsResaleSellingPrice,
+            siteResaleExpectedPropertyTransferDutiesAmount:
+              projectDevelopment.revenues.siteResaleExpectedPropertyTransferDutiesAmount,
+            buildingsResaleExpectedPropertyTransferDutiesAmount:
+              projectDevelopment.revenues.buildingsResaleExpectedPropertyTransferDutiesAmount,
+            decontaminatedSoilSurface: projectDevelopment.decontaminatedSoilSurface,
+            projectSoilsCarbonStorage,
+          } as ReconversionProjectImpactsWithBreakEvenLevelInput,
+          relatedSite: {
+            ...relatedSite,
+            name: "",
+            ownerStructureType: stakeholders.siteOwner.structureType,
+            ownerName: stakeholders.siteOwner.name ?? "",
+            tenantName: stakeholders.siteTenant?.name,
+            tenantStructureType: stakeholders.siteTenant?.structureType,
+            siteSoilsCarbonStorage,
+            yearlyExpenses: relatedSite.currentYearlyExpenses,
+            yearlyIncomes: relatedSite.currentYearlyIncomes,
+            soilsDistribution: relatedSite.currentSoilsDistribution,
           },
-          operationsFirstYear,
-          siteResaleSellingPrice: projectDevelopment.revenues.siteResaleSellingPrice,
-          buildingsResaleSellingPrice: projectDevelopment.revenues.buildingsResaleSellingPrice,
-          siteResaleExpectedPropertyTransferDutiesAmount:
-            projectDevelopment.revenues.siteResaleExpectedPropertyTransferDutiesAmount,
-          buildingsResaleExpectedPropertyTransferDutiesAmount:
-            projectDevelopment.revenues.buildingsResaleExpectedPropertyTransferDutiesAmount,
-          decontaminatedSoilSurface: projectDevelopment.decontaminatedSoilSurface,
-          projectSoilsCarbonStorage,
-        } as ReconversionProjectImpactsWithBreakEvenLevelInput,
-        relatedSite: {
-          ...relatedSite,
-          name: "",
-          ownerStructureType: stakeholders.siteOwner.structureType,
-          ownerName: stakeholders.siteOwner.name ?? "",
-          tenantName: stakeholders.siteTenant?.name,
-          tenantStructureType: stakeholders.siteTenant?.structureType,
-          siteSoilsCarbonStorage,
-          yearlyExpenses: relatedSite.currentYearlyExpenses,
-          yearlyIncomes: relatedSite.currentYearlyIncomes,
-          soilsDistribution: relatedSite.currentSoilsDistribution,
-        },
-        evaluationPeriodInYears: DEFAULT_EVALUATION_PERIOD_IN_YEARS,
-        cityStats: {
-          population: relatedSite.cityStats?.population ?? 0,
-          surfaceAreaSquareMeters: relatedSite.cityStats?.surfaceAreaSquareMeters ?? 0,
-          propertyValueMedianPricePerSquareMeters:
-            relatedSite.cityStats?.propertyValueMedianPricePerSquareMeters ?? 0,
-          name: "",
-          accuracy: "city",
-        },
-      });
+          evaluationPeriodInYears: DEFAULT_EVALUATION_PERIOD_IN_YEARS,
+          cityStats: {
+            population: relatedSite.cityStats?.population ?? 0,
+            surfaceAreaSquareMeters: relatedSite.cityStats?.surfaceAreaSquareMeters ?? 0,
+            propertyValueMedianPricePerSquareMeters:
+              relatedSite.cityStats?.propertyValueMedianPricePerSquareMeters ?? 0,
+            name: "",
+            accuracy: "city",
+          },
+        });
 
       if (breakEvenIndex !== undefined) {
         stats.projectWithBreakEvenIndex += 1;
@@ -262,6 +265,8 @@ export class ComputeEvaluatedProjectStatsUseCase implements UseCase<
         stats.projectWithoutBreakEvenIndex += 1;
       }
       stats.totalProjects += 1;
+      stats.totalEconomicBalance += economicBalance.total;
+      stats.totalIndirectEconomicImpacts += indirectEconomicImpacts.total;
 
       if (relatedSite.nature === "FRICHE") {
         const avoidedFricheCosts = sumListWithKey(

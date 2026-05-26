@@ -212,7 +212,7 @@ export class SqlReconversionProjectAndSiteImpactsQuery {
         .leftJoin(
           "reconversion_project_buildings_construction_costs as building_cost",
           "dp.id",
-          "cost.development_plan_id",
+          "building_cost.development_plan_id",
         )
         .select<
           {
