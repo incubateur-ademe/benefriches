@@ -225,7 +225,7 @@ export class SqlReconversionProjectAndSiteImpactsQuery {
             schedule_end_date: Date | null;
             features: DevelopmentPlan["features"] | null;
             costs: { amount: number; purpose: string }[];
-            buildingsConstructionCosts: { amount: number; purpose: string }[];
+            building_costs: { amount: number; purpose: string }[];
           }[]
         >(
           "dp.reconversion_project_id",
@@ -347,8 +347,7 @@ export class SqlReconversionProjectAndSiteImpactsQuery {
             reinstatement: (reinstatementCostsByProjectId.get(rpId) ??
               []) as ReinstatementExpense[],
             installationCosts: (dp?.costs ?? []) as DevelopmentPlanInstallationExpenses[],
-            buildingConstructionCosts: (dp?.buildingsConstructionCosts ??
-              []) as BuildingsConstructionExpense[],
+            buildingConstructionCosts: (dp?.building_costs ?? []) as BuildingsConstructionExpense[],
             sitePurchase:
               sitePurchaseTotalAmount != null
                 ? {
@@ -422,7 +421,7 @@ export class SqlReconversionProjectAndSiteImpactsQuery {
           >((acc, { soil_type, surface_area }) => ({ ...acc, [soil_type]: surface_area }), {}),
           currentYearlyExpenses: (siteExpensesBySiteId.get(siteId) ?? []) as SiteYearlyExpense[],
           currentYearlyIncomes: (siteIncomesBySiteId.get(siteId) ?? []) as SiteYearlyIncome[],
-          cityStats: core.site_city_code?.[0]
+          cityStats: core.site_city_code
             ? toCityStats(cityStatsByCityCode.get(core.site_city_code)?.[0])
             : undefined,
         },

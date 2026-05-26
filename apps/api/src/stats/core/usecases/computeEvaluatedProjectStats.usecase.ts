@@ -201,7 +201,7 @@ export class ComputeEvaluatedProjectStatsUseCase implements UseCase<
           futureOperatorStructureType: stakeholders.futureOperator?.structureType,
           futureOperatorName: stakeholders.futureOperator?.name,
           futureSiteOwnerName: stakeholders.futureSiteOwner?.name,
-          futureSiteOwnerStructureType: stakeholders.siteOwner.structureType,
+          futureSiteOwnerStructureType: stakeholders.futureSiteOwner?.structureType,
           reinstatementContractOwnerName: stakeholders.reinstatementContractOwner?.name,
           reinstatementContractOwnerStructureType:
             stakeholders.reinstatementContractOwner?.structureType,
