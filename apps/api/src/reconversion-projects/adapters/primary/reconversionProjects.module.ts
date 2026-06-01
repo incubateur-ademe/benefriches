@@ -45,11 +45,11 @@ import { FricheGenerator } from "src/sites/core/models/fricheGenerator";
 import { SqlUserQuery } from "src/users/adapters/secondary/user-query/SqlUserQuery";
 import { UserQuery } from "src/users/core/gateways/UserQuery";
 
+import { SqlSiteImpactsQuery } from "../../../sites/adapters/secondary/site-impacts/SqlSiteImpactsQuery";
 import { SqlCityStatsQuery } from "../secondary/queries/city-stats/SqlCityStatsQuery";
 import { SqlReconversionProjectQuery } from "../secondary/queries/reconversion-project-features/SqlReconversionProjectQuery";
 import { SqlReconversionProjectImpactsQuery } from "../secondary/queries/reconversion-project-impacts/SqlReconversionProjectImpactsQuery";
 import { SqlReconversionProjectsListQuery } from "../secondary/queries/reconversion-project-list/SqlReconversionProjectsListQuery";
-import { SqlSiteImpactsQuery } from "../secondary/queries/site-impacts/SqlSiteImpactsQuery";
 import { SqlReconversionProjectRepository } from "../secondary/repositories/reconversion-project/SqlReconversionProjectRepository";
 import { ReconversionProjectController } from "./reconversionProjects.controller";
 

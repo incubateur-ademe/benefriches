@@ -4,6 +4,7 @@ import {
   CreateCustomSiteDto,
   CreateExpressSiteDto,
   GetFricheInactionCostDto,
+  GetSiteImpactsDto,
   GetSiteRealEstateValuationResponseDto,
   GetSiteViewResponseDto,
 } from "shared";
@@ -1498,6 +1499,64 @@ describe("Sites controller", () => {
       expect(response.status).toEqual(200);
       expect(response.body.cout_annuel_securisation).toBeGreaterThan(0);
       expect(response.body.cout_annuel_debarras_depot_illegal).toBeGreaterThan(0);
+    });
+  });
+
+  describe("GET /sites/:id/impacts", () => {
+    it("gets a 401 when not authenticated", async () => {
+      const response = await supertest(app.getHttpServer())
+        .get(`/api/sites/${uuid()}/impacts`)
+        .send();
+
+      expect(response.status).toEqual(401);
+    });
+
+    it("gets a 200 with sites impacts", async () => {
+      const userId = "71eeda1d-9688-455a-981a-1aca18fe00b0";
+      const siteInDb = {
+        id: uuid(),
+        created_by: userId,
+        nature: "FRICHE",
+        name: "Site A",
+        description: "Description of site",
+        surface_area: 14000,
+        owner_name: "Owner name",
+        owner_structure_type: "company",
+        tenant_name: "Tenant name",
+        tenant_structure_type: "company",
+        created_at: new Date("2024-02-10"),
+        creation_mode: "express",
+      };
+
+      const address = {
+        id: uuid(),
+        ban_id: "40192",
+        value: "Mont-de-Marsan",
+        city: "Mont-de-Marsan",
+        city_code: "40192",
+        post_code: "40000",
+        lat: 43.891274,
+        long: -0.50031,
+        site_id: siteInDb.id,
+      };
+
+      await sqlConnection("sites").insert(siteInDb);
+      await sqlConnection("addresses").insert(address);
+
+      const user = new UserBuilder().withId(userId).asLocalAuthority().build();
+      const { accessToken } = await authenticateUser(app)(user);
+      const response = await supertest(app.getHttpServer())
+        .get(`/api/sites/${siteInDb.id}/impacts`)
+        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+        .send();
+
+      expect(response.status).toEqual(200);
+      expect(response.body).toBeDefined();
+      const result = response.body as GetSiteImpactsDto;
+      expect(result.indirectEconomicImpacts).toBeDefined();
+      expect(result.operatingEconomicBalance).toBeDefined();
+      expect(result.projectionYears).toBeDefined();
+      expect(result.stakeholders).toBeDefined();
     });
   });
 });

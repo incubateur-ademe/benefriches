@@ -16,7 +16,20 @@ import {
   EcosystemServicesImpact,
   WaterRegulationImpact,
 } from "../reconversion-project-impacts";
-import { SiteFricheCostsImpact } from "../site";
+
+type BaseEconomicImpact = { actor: string; amount: number };
+
+export type SiteFricheCostsImpact = BaseEconomicImpact & {
+  details: {
+    amount: number;
+    impact:
+      | "site_statu_quo_security_costs"
+      | "site_statu_quo_illegal_dumping_costs"
+      | "site_statu_quo_accidents_costs"
+      | "site_statu_quo_other_securing_costs"
+      | "site_statu_quo_maintenance_costs";
+  }[];
+};
 
 export type ComparisonRentalIncomeImpact = RentalIncomeImpact & {
   details: {

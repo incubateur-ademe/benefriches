@@ -3,7 +3,6 @@ import { v4 as uuid } from "uuid";
 
 import { InMemoryCityStatsQuery } from "src/reconversion-projects/adapters/secondary/queries/city-stats/InMemoryCityStatsQuery";
 import { InMemoryReconversionProjectImpactsQuery } from "src/reconversion-projects/adapters/secondary/queries/reconversion-project-impacts/InMemoryReconversionProjectImpactsQuery";
-import { InMemorySiteImpactsQuery } from "src/reconversion-projects/adapters/secondary/queries/site-impacts/InMemorySiteImpactsQuery";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { SuccessResult, FailureResult } from "src/shared-kernel/result";
@@ -15,6 +14,7 @@ import {
   type ApiUrbanSprawlImpactsComparisonResultDto,
 } from "./computeProjectUrbanSprawlImpactsComparison.usecase";
 import { ApiReconversionProjectImpactsDataView } from "./computeReconversionProjectImpacts.usecase";
+import { InMemorySiteImpactsQuery } from "src/sites/adapters/secondary/site-impacts/InMemorySiteImpactsQuery";
 
 const projectData: ReconversionProjectImpactsDataView<Schedule> = {
   id: "bf8a7d1d-a9d2-4a66-b2bc-3b8d682f9932",

@@ -19,12 +19,15 @@ export {
   getSiteRealEstateValuationResponseDtoSchema,
   type GetSiteRealEstateValuationResponseDto,
   type GetFricheInactionCostDto,
+  type GetSiteImpactsDto,
 } from "./sites";
 
 // Urban Sprawl Impacts Comparison DTOs
 export {
   getUrbanSprawlImpactsComparisonDtoSchema,
   type UrbanSprawlImpactsComparisonResultDto,
+  type StatuQuoSiteImpacts,
+  type SiteTaxesIncomeImpact,
 } from "./urban-sprawl-impacts-comparison";
 
 // Site Actions DTOs

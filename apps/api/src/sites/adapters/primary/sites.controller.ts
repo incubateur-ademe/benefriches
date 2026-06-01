@@ -26,11 +26,13 @@ import {
   type GetSiteRealEstateValuationResponseDto,
   type GetSiteViewResponseDto,
   type GetFricheInactionCostDto,
+  type GetSiteImpactsDto,
 } from "shared";
 
 import { JwtAuthGuard, RequestWithAuthenticatedUser } from "src/auth/adapters/JwtAuthGuard";
 import { ArchiveSiteUseCase } from "src/sites/core/usecases/archiveSite.usecase";
 import { ComputeFricheInactionCostUseCase } from "src/sites/core/usecases/computeFricheInactionCost.usecase";
+import { ComputeSiteImpactsUseCase } from "src/sites/core/usecases/computeSiteImpacts.usecase";
 import {
   CreateNewExpressSiteUseCase,
   ExpressSiteProps,
@@ -50,6 +52,7 @@ export class SitesController {
     private readonly getSiteRealEstateValuationUseCase: GetSiteRealEstateValuationUseCase,
     private readonly archiveSiteUseCase: ArchiveSiteUseCase,
     private readonly computeFricheInactionCostUseCase: ComputeFricheInactionCostUseCase,
+    private readonly getSiteImpactsUseCase: ComputeSiteImpactsUseCase,
   ) {}
 
   @Post("/sites/create-custom")
@@ -224,5 +227,23 @@ export class SitesController {
             }
           : undefined,
     };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get("sites/:siteId/impacts")
+  async getSiteImpacts(@Param("siteId") siteId: string): Promise<GetSiteImpactsDto> {
+    const result = await this.getSiteImpactsUseCase.execute({ siteId });
+
+    if (result.isFailure()) {
+      switch (result.getError()) {
+        case "SiteNotFound":
+          throw new NotFoundException({
+            error: "SITE_NOT_FOUND",
+            message: `Site with ID ${siteId} not found`,
+          });
+      }
+    }
+
+    return result.getData();
   }
 }

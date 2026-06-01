@@ -12,7 +12,7 @@ import { computePropertyValueImpact } from "../../property-value/propertyValueIm
 import { computeYearlyRoadsAndUtilitiesMaintenanceExpenses } from "../../roads-and-utilities-expenses/roadsAndUtilitiesExpensesImpact";
 import { computeCumulativeByYear } from "../projectIndirectEconomicImpacts";
 
-const FRICHE_COST_PURPOSES = [
+export const FRICHE_COST_PURPOSES = [
   "security",
   "illegalDumpingCost",
   "accidentsCost",

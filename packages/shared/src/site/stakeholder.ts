@@ -2,7 +2,7 @@ import z from "zod";
 
 import { LOCAL_AUTHORITIES } from "../local-authority";
 
-const siteStakeholdersStructureTypeSchema = z.enum([
+export const siteStakeholdersStructureTypeSchema = z.enum([
   "company",
   "private_individual",
   ...LOCAL_AUTHORITIES,

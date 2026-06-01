@@ -3,6 +3,9 @@ import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 
 import { AuthModule } from "src/auth/adapters/auth.module";
+import { CarbonStorageModule } from "src/carbon-storage/adapters/primary/carbonStorage.module";
+import { SqlCarbonStorageQuery } from "src/carbon-storage/adapters/secondary/carbon-storage-query/SqlCarbonStorageQuery";
+import { GetCarbonStorageFromSoilDistributionService } from "src/carbon-storage/core/services/getCarbonStorageFromSoilDistribution";
 import { SqlCityStatsQuery } from "src/reconversion-projects/adapters/secondary/queries/city-stats/SqlCityStatsQuery";
 import { CityStatsProvider } from "src/reconversion-projects/core/gateways/CityStatsProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
@@ -15,10 +18,12 @@ import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
 import { SiteEvaluationsModule } from "src/site-evaluations/adapters/primary/siteEvaluations.module";
 import { MutafrichesEvaluationQuery } from "src/site-evaluations/adapters/secondary/queries/MutafrichesEvaluationQuery";
 import type { MutabilityEvaluationQuery } from "src/site-evaluations/core/gateways/MutabilityEvaluationQuery";
+import { SqlSiteImpactsQuery } from "src/sites/adapters/secondary/site-impacts/SqlSiteImpactsQuery";
 import { SitesQuery } from "src/sites/core/gateways/SitesQuery";
 import { SitesRepository } from "src/sites/core/gateways/SitesRepository";
 import { ArchiveSiteUseCase } from "src/sites/core/usecases/archiveSite.usecase";
 import { ComputeFricheInactionCostUseCase } from "src/sites/core/usecases/computeFricheInactionCost.usecase";
+import { ComputeSiteImpactsUseCase } from "src/sites/core/usecases/computeSiteImpacts.usecase";
 import { CreateNewExpressSiteUseCase } from "src/sites/core/usecases/createNewExpressSite.usecase";
 import { CreateNewCustomSiteUseCase } from "src/sites/core/usecases/createNewSite.usecase";
 import { GetSiteByIdUseCase } from "src/sites/core/usecases/getSiteById.usecase";
@@ -30,7 +35,7 @@ import { SqlSiteRepository } from "../secondary/site-repository/SqlSiteRepositor
 import { SitesController } from "./sites.controller";
 
 @Module({
-  imports: [HttpModule, AuthModule, ConfigModule, SiteEvaluationsModule],
+  imports: [HttpModule, AuthModule, ConfigModule, SiteEvaluationsModule, CarbonStorageModule],
   controllers: [SitesController],
   providers: [
     {
@@ -101,6 +106,21 @@ import { SitesController } from "./sites.controller";
         new ComputeFricheInactionCostUseCase(cityStatsProvider),
       inject: [SqlCityStatsQuery],
     },
+    {
+      provide: ComputeSiteImpactsUseCase,
+      useFactory(
+        siteRepo: SqlSiteImpactsQuery,
+        getCarbonStorageFromSoilDistribution: GetCarbonStorageFromSoilDistributionService,
+        dateProvider: DateProvider,
+      ) {
+        return new ComputeSiteImpactsUseCase(
+          siteRepo,
+          getCarbonStorageFromSoilDistribution,
+          dateProvider,
+        );
+      },
+      inject: [SqlSiteImpactsQuery, GetCarbonStorageFromSoilDistributionService, RealDateProvider],
+    },
     SqlSiteRepository,
     SqlSitesQuery,
     RealDateProvider,
@@ -108,6 +128,8 @@ import { SitesController } from "./sites.controller";
     RandomUuidGenerator,
     RealEventPublisher,
     MutafrichesEvaluationQuery,
+    SqlSiteImpactsQuery,
+    SqlCarbonStorageQuery,
   ],
 })
 export class SitesModule {}
