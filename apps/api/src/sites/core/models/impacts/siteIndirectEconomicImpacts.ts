@@ -92,6 +92,7 @@ export const getSiteStatuQuoIndirectsEconomicImpacts = ({
       (expense): TaxesIncomeIndirectEconomicImpacts => {
         const detailsByYear = sumOnEvolutionPeriodService.getWeightedYearlyValues(expense.amount, [
           "discount",
+          "gdp_evolution",
         ]);
         return {
           name: "taxesIncome",
