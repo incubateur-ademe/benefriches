@@ -21,7 +21,7 @@ describe("SoilsCarbonSummaryHandler", () => {
       expect(nextStep).toBe("URBAN_PROJECT_BUILDINGS_INTRODUCTION");
     });
 
-    it("routes to BUILDINGS_INTRODUCTION when site has existing buildings even if willHaveBuildings is false", () => {
+    it("routes to BUILDINGS_DEMOLITION_INFO when site has existing buildings but willHaveBuildings is false (OTHER_PUBLIC_SPACES use) on non-contaminated site", () => {
       const nextStep = SoilsCarbonSummaryHandler.getNextStepId({
         stepsState: {
           URBAN_PROJECT_USES_SELECTION: {
@@ -31,11 +31,28 @@ describe("SoilsCarbonSummaryHandler", () => {
         },
         siteData: {
           soilsDistribution: { BUILDINGS: 1200 },
-          hasContaminatedSoils: true,
+          hasContaminatedSoils: false,
         } as never,
       });
 
-      expect(nextStep).toBe("URBAN_PROJECT_BUILDINGS_INTRODUCTION");
+      expect(nextStep).toBe("URBAN_PROJECT_BUILDINGS_DEMOLITION_INFO");
+    });
+
+    it("routes to BUILDINGS_DEMOLITION_INFO when site has existing buildings but willHaveBuildings is false (PUBLIC_GREEN_SPACES use) on non-contaminated site", () => {
+      const nextStep = SoilsCarbonSummaryHandler.getNextStepId({
+        stepsState: {
+          URBAN_PROJECT_USES_SELECTION: {
+            completed: true,
+            payload: { usesSelection: ["PUBLIC_GREEN_SPACES"] },
+          },
+        },
+        siteData: {
+          soilsDistribution: { BUILDINGS: 1200 },
+          hasContaminatedSoils: false,
+        } as never,
+      });
+
+      expect(nextStep).toBe("URBAN_PROJECT_BUILDINGS_DEMOLITION_INFO");
     });
 
     it("skips buildings chapter and routes to SOILS_DECONTAMINATION_INTRODUCTION when site has no buildings and willHaveBuildings is false on contaminated site", () => {

@@ -280,6 +280,103 @@ test.describe("urban project creation - custom mode", () => {
     });
   });
 
+  test.describe("friche with buildings but no buildings in project uses", () => {
+    test("allows creating a custom urban project with only public green spaces on a friche with buildings", async ({
+      authenticatedApiClient,
+      testUser,
+      urbanProjectCreationPage,
+    }) => {
+      const testSite = await createCustomSiteViaApi(authenticatedApiClient)({
+        ...createFricheSiteData("Friche avec bâtiments sans construction neuve - espaces verts", {
+          BUILDINGS: 2000,
+          IMPERMEABLE_SOILS: 1000,
+        }),
+        createdBy: testUser.id,
+      });
+
+      await urbanProjectCreationPage.goto(testSite.id);
+
+      // --- avancement du projet ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Avancement du projet");
+      await urbanProjectCreationPage.expectStepTitle("A quelle phase du projet êtes-vous");
+      await urbanProjectCreationPage.selectProjectPhase("Montage / Développement");
+
+      // --- connaissance du projet ---
+      await urbanProjectCreationPage.selectCreateMode("custom");
+      await urbanProjectCreationPage.selectProjectType("URBAN_PROJECT");
+
+      // --- usages ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Usages");
+      await urbanProjectCreationPage.goToNextStep(); // uses introduction
+      await urbanProjectCreationPage.expectStepTitle("Quels usages offrira le projet urbain");
+      await urbanProjectCreationPage.selectUrbanProjectUse("Espaces verts");
+
+      // --- sols et espaces ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Sols et espaces");
+      await urbanProjectCreationPage.goToNextStep(); // spaces introduction
+      await urbanProjectCreationPage.fillProjectSpacesSurfaceArea({
+        "Espace végétalisé": 3000,
+      });
+      await urbanProjectCreationPage.expectStepTitle("Récapitulatif de l'occupation des sols");
+      await urbanProjectCreationPage.goToNextStep(); // soils summary
+      await urbanProjectCreationPage.expectStepTitle(
+        "Stockage du carbone par les sols après aménagement",
+      );
+      await urbanProjectCreationPage.goToNextStep(); // carbon storage
+
+      // --- bâtiments ---
+      // the intro step is skipped — lands directly on demolition info
+      await urbanProjectCreationPage.expectBuildingsDemolitionInfo("2 000 ㎡");
+      await urbanProjectCreationPage.goToNextStep(); // demolition info
+
+      // --- cession foncière ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Cession foncière");
+      await urbanProjectCreationPage.goToNextStep(); // site resale introduction
+      await urbanProjectCreationPage.expectStepTitle(
+        "Y aura-t-il une cession foncière suite à l'aménagement du site",
+      );
+      await urbanProjectCreationPage.selectSiteResale(false);
+
+      // --- acteurs ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Acteurs");
+      await urbanProjectCreationPage.goToNextStep(); // stakeholders introduction
+      await urbanProjectCreationPage.expectStepTitle("Qui sera l'aménageur du site");
+      await urbanProjectCreationPage.selectStakeholder(/Ma structure/);
+      await urbanProjectCreationPage.selectStakeholder(/Ma structure/); // reinstatement contract owner
+
+      // --- dépenses ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Dépenses");
+      await urbanProjectCreationPage.goToNextStep(); // expenses introduction
+      await urbanProjectCreationPage.submitOrSkipStep(); // site purchase amounts
+      await urbanProjectCreationPage.submitOrSkipStep(); // reinstatement
+      await urbanProjectCreationPage.submitOrSkipStep(); // installation
+
+      // --- recettes ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Recettes");
+      await urbanProjectCreationPage.goToNextStep(); // revenue introduction
+      await urbanProjectCreationPage.submitOrSkipStep(); // financial assistance
+
+      // --- calendrier ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Calendrier");
+      await urbanProjectCreationPage.expectStepTitle("Calendrier");
+      await urbanProjectCreationPage.fillSchedule("09/2027", "03/2029", 2029);
+
+      // --- dénomination ---
+      await urbanProjectCreationPage.expectStepperCurrentStep("Dénomination");
+      await urbanProjectCreationPage.expectStepTitle("Dénomination du projet");
+      await urbanProjectCreationPage.fillNameAndDescription(
+        "Parc public sur friche avec bâtiments à démolir",
+      );
+
+      // --- récapitulatif ---
+      await urbanProjectCreationPage.expectFinalSummary();
+      await urbanProjectCreationPage.submitFinalSummary();
+      await urbanProjectCreationPage.expectCreationSuccess(
+        "Parc public sur friche avec bâtiments à démolir",
+      );
+    });
+  });
+
   test.describe("friche with existing buildings", () => {
     test("allows creating a custom urban project on a friche with full demolition and new construction", async ({
       authenticatedApiClient,

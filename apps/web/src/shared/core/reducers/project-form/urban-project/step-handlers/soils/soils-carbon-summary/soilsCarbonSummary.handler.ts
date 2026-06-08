@@ -1,4 +1,5 @@
-import { shouldEnterBuildingsChapter } from "../../buildings/buildingsReaders";
+import { willHaveBuildings } from "../../../helpers/readers/buildingsReaders";
+import { siteHasBuildings } from "../../buildings/buildingsReaders";
 import type { InfoStepHandler } from "../../stepHandler.type";
 
 export const SoilsCarbonSummaryHandler = {
@@ -9,8 +10,12 @@ export const SoilsCarbonSummaryHandler = {
   },
 
   getNextStepId(context) {
-    if (shouldEnterBuildingsChapter(context)) {
+    if (willHaveBuildings(context.stepsState)) {
       return "URBAN_PROJECT_BUILDINGS_INTRODUCTION";
+    }
+
+    if (context.siteData && siteHasBuildings(context.siteData)) {
+      return "URBAN_PROJECT_BUILDINGS_DEMOLITION_INFO";
     }
 
     if (context.siteData?.hasContaminatedSoils) {

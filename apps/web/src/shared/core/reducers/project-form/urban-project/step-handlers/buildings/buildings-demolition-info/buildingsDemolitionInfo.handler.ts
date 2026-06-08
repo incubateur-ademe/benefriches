@@ -1,3 +1,5 @@
+import { willHaveBuildings } from "@/shared/core/reducers/project-form/urban-project/helpers/readers/buildingsReaders";
+
 import type { InfoStepHandler } from "../../stepHandler.type";
 import {
   getNextStepAfterBuildings,
@@ -7,7 +9,10 @@ import {
 
 export const BuildingsDemolitionInfoHandler: InfoStepHandler = {
   stepId: "URBAN_PROJECT_BUILDINGS_DEMOLITION_INFO",
-  getPreviousStepId() {
+  getPreviousStepId(context) {
+    if (!willHaveBuildings(context.stepsState)) {
+      return "URBAN_PROJECT_SOILS_CARBON_SUMMARY";
+    }
     return "URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE";
   },
   getNextStepId(context) {
