@@ -41,9 +41,9 @@ export class ReconversionProjectCreatedHandler {
     });
 
     if (result.isFailure()) {
-      this.logger.error(
-        `Failed to update site action status for action EVALUATE_RECONVERSION_SOCIOECONOMIC_IMPACTS ${action.id}: ${result.getError()}`,
-      );
+      const message = `Failed to update site action status for action EVALUATE_RECONVERSION_SOCIOECONOMIC_IMPACTS ${action.id}: ${result.getError()}`;
+      this.logger.error(message);
+      throw new Error(message);
     }
   }
 }
