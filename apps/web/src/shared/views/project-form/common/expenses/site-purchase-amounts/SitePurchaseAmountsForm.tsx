@@ -39,9 +39,13 @@ const SitePurchaseAmountsForm = ({ initialValues, onSubmit, onBack }: Props) => 
       title="Montant de l'acquisition foncière"
       instructions={
         <FormInfo>
-          <ExternalLink href="https://explore.data.gouv.fr/fr/immobilier?onglet=carte&filtre=tous">
-            Explorateur de données de valeurs foncières
-          </ExternalLink>
+          <p>
+            <strong>Vous ne savez pas estimer la valeur foncière de ce site ?</strong>
+            <br /> Consultez l'
+            <ExternalLink href="https://explore.data.gouv.fr/fr/immobilier?onglet=carte&filtre=tous">
+              explorateur de données de valeurs foncières
+            </ExternalLink>
+          </p>
         </FormInfo>
       }
     >

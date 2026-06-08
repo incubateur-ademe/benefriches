@@ -40,9 +40,9 @@ const BuildingsResaleRevenueForm = ({ initialValues, onSubmit, onBack }: Props) 
       title="Montant de la vente des bâtiments"
       instructions={
         <FormInfo emoji="auto">
-          <span className="title">D’où viennent les montants préremplis ?</span>
+          <span className="title">D'où viennent les montants préremplis ?</span>
           <p>
-            Montants calculés d’après le prix moyen / hectare d’une friche dans cette zone
+            Montants calculés d'après le prix moyen / hectare d'une friche dans cette zone
             géographique (consulter la grille des prix)
           </p>
           <ExternalLink href="https://explore.data.gouv.fr/fr/immobilier?onglet=carte&filtre=tous">
