@@ -37,9 +37,9 @@ export class SiteCreatedFromEvaluationHandler {
     });
 
     if (result.isFailure()) {
-      this.logger.error(
-        `Failed to update site action status for action EVALUATE_COMPATIBILITY ${action.id}: ${result.getError()}`,
-      );
+      const message = `Failed to update site action status for action EVALUATE_COMPATIBILITY ${action.id}: ${result.getError()}`;
+      this.logger.error(message);
+      throw new Error(message);
     }
   }
 }

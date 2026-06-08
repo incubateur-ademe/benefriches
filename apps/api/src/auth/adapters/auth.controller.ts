@@ -17,6 +17,7 @@ import {
   UseGuards,
 } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
+import { Throttle } from "@nestjs/throttler";
 import { Request, Response } from "express";
 import { createZodDto } from "nestjs-zod";
 import { randomUUID } from "node:crypto";
@@ -249,6 +250,7 @@ export class AuthController {
     res.redirect(redirectTo);
   }
 
+  @Throttle({ default: { limit: 5, ttl: 60000 } })
   @Post("send-auth-link")
   async sendAuthLink(
     @Body() body: { email: string; postLoginRedirectTo: string | undefined },
@@ -284,6 +286,7 @@ export class AuthController {
     }
   }
 
+  @Throttle({ default: { limit: 5, ttl: 60000 } })
   @Get("login/token")
   async loginWithToken(@Query("token") token: string, @Res() response: Response) {
     const authenticationResult = await this.authenticateWithTokenUseCase.execute({ token });

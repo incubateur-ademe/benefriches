@@ -1,8 +1,8 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
-import { APP_PIPE } from "@nestjs/core";
+import { APP_GUARD, APP_PIPE } from "@nestjs/core";
 import { EventEmitterModule, OnEvent } from "@nestjs/event-emitter";
-import { ThrottlerModule } from "@nestjs/throttler";
+import { ThrottlerGuard, ThrottlerModule } from "@nestjs/throttler";
 import { ZodValidationPipe } from "nestjs-zod";
 
 import { AuthModule } from "./auth/adapters/auth.module";
@@ -50,16 +50,22 @@ class DomainEventsHandler {
     ReconversionCompatibilityModule,
     SiteEvaluationsModule,
     SiteActionsModule,
-    ThrottlerModule.forRoot([
-      {
-        ttl: 60000,
-        limit: 10,
-      },
-    ]),
+    ThrottlerModule.forRoot({
+      throttlers: [
+        {
+          ttl: 60000,
+          limit: 10,
+        },
+      ],
+      // Disable rate limiting in tests so suites firing many requests from the
+      // same IP within one window aren't throttled.
+      skipIf: () => process.env.NODE_ENV === "test",
+    }),
     StatistiquesModule,
   ],
   providers: [
     { provide: APP_PIPE, useClass: ZodValidationPipe },
+    { provide: APP_GUARD, useClass: ThrottlerGuard },
     {
       provide: DomainEventsHandler,
       useFactory: (domainEventRepository: DomainEventsRepository) =>
