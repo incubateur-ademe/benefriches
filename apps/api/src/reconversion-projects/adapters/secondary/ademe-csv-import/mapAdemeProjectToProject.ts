@@ -4,7 +4,7 @@ import {
   computePropertyTransferDutiesFromSellingPrice,
   getSoilTypeForUrbanGreenSpace,
   ReconversionProjectSaveDto,
-  saveReconversionProjectPropsSchema,
+  httpSaveReconversionProjectPropsSchema as saveReconversionProjectPropsSchema,
   type SoilType,
   SurfaceAreaDistribution,
   typedObjectEntries,
@@ -121,7 +121,7 @@ export function mapAdemeProjectToProject(
     ? computePropertyTransferDutiesFromSellingPrice(siteResaleExpectedSellingPrice)
     : undefined;
 
-  const data: z.infer<typeof saveReconversionProjectPropsSchema> = {
+  const data: z.input<typeof saveReconversionProjectPropsSchema> = {
     id: uuidv4(),
     relatedSiteId,
     createdBy: createdByUserId,
@@ -152,8 +152,8 @@ export function mapAdemeProjectToProject(
         : [],
       developer,
       installationSchedule: {
-        startDate: installationScheduledStartDate,
-        endDate: installationScheduledEndDate,
+        startDate: installationScheduledStartDate.toISOString(),
+        endDate: installationScheduledEndDate.toISOString(),
       },
     },
   };
