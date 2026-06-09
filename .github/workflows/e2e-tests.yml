@@ -17,8 +17,15 @@ jobs:
       - name: Build shared package
         run: pnpm --filter shared build
 
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ hashFiles('apps/e2e-tests/package.json') }}
+
       - name: Install Playwright Browsers
-        run: pnpm --filter e2e-tests exec playwright install --with-deps
+        run: pnpm --filter e2e-tests exec playwright install --with-deps chromium
 
       - name: Build Docker images
         run: docker compose --env-file .env.e2e -f docker-compose.e2e.yml build
