@@ -25,6 +25,9 @@ jobs:
           key: playwright-${{ hashFiles('apps/e2e-tests/package.json') }}
 
       - name: Install Playwright Browsers
+        timeout-minutes: 5
+        env:
+          DEBUG: pw:install
         run: pnpm --filter e2e-tests exec playwright install --with-deps chromium
 
       - name: Build Docker images
