@@ -6,7 +6,7 @@ runs:
   steps:
     - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320
       with:
-        version: 10.31.0
+        version: 11.5.2
     - uses: actions/setup-node@v6
       with:
         node-version-file: package.json

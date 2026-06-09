@@ -2,19 +2,7 @@ packages:
   - apps/*
   - packages/*
 
-ignoredBuiltDependencies:
-  - cpu-features
-  - ssh2
-
 minimumReleaseAge: 10080
-
-onlyBuiltDependencies:
-  - '@nestjs/core'
-  - '@swc/core'
-  - '@tailwindcss/oxide'
-  - bcrypt
-  - esbuild
-  - protobufjs
 
 savePrefix: '~'
 
@@ -25,3 +13,13 @@ trustPolicyExclude:
   - react-redux@9.2.0
   - reselect@5.1.1
   - semver@6.3.1
+allowBuilds:
+  '@nestjs/core': true
+  '@swc/core': true
+  '@tailwindcss/oxide': true
+  bcrypt: true
+  esbuild: true
+  protobufjs: true
+  cpu-features: false
+  ssh2: false
+  '@scarf/scarf': false
