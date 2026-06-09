@@ -1,1 +1,7 @@
+if ! command -v talisman &> /dev/null; then
+  echo "❌ Talisman is required. See https://github.com/thoughtworks/talisman"
+  exit 1
+fi
+talisman --githook pre-commit
+
 pnpm lint-staged

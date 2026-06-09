@@ -1,0 +1,9 @@
+threshold: medium
+
+scopeconfig:
+  - scope: node
+
+# fileignoreconfig entries added on demand:
+# - filename: path/to/safe-file.ts
+#   checksum: <generated with: talisman --checksum="path/to/safe-file.ts">
+#   ignore_detectors: []
