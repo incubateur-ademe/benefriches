@@ -13,7 +13,7 @@ import {
 } from "./ReconversionProjectImpactsService";
 import { ImpactsServiceInterface } from "./ReconversionProjectImpactsServiceInterface";
 import { computePropertyValueImpact } from "./property-value/propertyValueImpact";
-import { getRoadsAndUtilitiesExpensesImpacts } from "./roads-and-utilities-expenses/roadsAndUtilitiesExpensesImpact";
+import { computeFricheRoadsAndUtilitiesExpensesImpacts } from "./roads-and-utilities-expenses/roadsAndUtilitiesExpensesImpact";
 import { TravelRelatedImpactsService } from "./travel-related-impacts-service/TravelRelatedImpactsService";
 import { UrbanFreshnessRelatedImpactsService } from "./urban-freshness-related-impacts-service/UrbanFreshnessRelatedImpactsService";
 
@@ -75,7 +75,7 @@ export class UrbanProjectImpactsService
   }
 
   protected get roadsAndUtilitiesExpensesImpacts(): SocioEconomicImpact[] {
-    const amount = getRoadsAndUtilitiesExpensesImpacts({
+    const amount = computeFricheRoadsAndUtilitiesExpensesImpacts({
       isFriche: this.relatedSite.nature === "FRICHE",
       surfaceArea: this.relatedSite.surfaceArea,
       sumOnEvolutionPeriodService: this.sumOnEvolutionPeriodService,

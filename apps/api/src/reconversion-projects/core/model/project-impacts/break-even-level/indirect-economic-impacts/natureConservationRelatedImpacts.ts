@@ -1,4 +1,9 @@
-import { IndirectEconomicImpact, SoilsDistribution, sumList, typedObjectEntries } from "shared";
+import {
+  ReconversionProjectOnSiteIndirectEconomicImpact,
+  SoilsDistribution,
+  sumList,
+  typedObjectEntries,
+} from "shared";
 
 import { SoilsCarbonStorage } from "src/reconversion-projects/core/gateways/SoilsCarbonStorageService";
 
@@ -23,8 +28,8 @@ export const getNatureConservationRelatedImpacts = ({
   projectSoilsCarbonStorage,
   projectDecontaminatedSoilSurface,
   sumOnEvolutionPeriodService,
-}: Props): IndirectEconomicImpact[] => {
-  const impacts: IndirectEconomicImpact[] = [];
+}: Props): ReconversionProjectOnSiteIndirectEconomicImpact[] => {
+  const impacts: ReconversionProjectOnSiteIndirectEconomicImpact[] = [];
 
   const soilsCo2eqStorage = computeSoilsCo2eqStorageImpact(
     baseSoilsCarbonStorage?.total,

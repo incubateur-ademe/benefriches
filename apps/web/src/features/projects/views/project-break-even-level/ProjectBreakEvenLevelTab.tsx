@@ -20,15 +20,15 @@ type Props = BreakEvenLevelTabDataView & {
 
 export default function ProjectBreakEvenLevelTab({
   projectId,
-  indirectEconomicImpacts,
-  cumulativeBalanceByYear,
   projectionYears,
-  breakEvenYear,
-  economicBalance,
+  projectEconomicBalance,
+  aggregatedReconversionImpacts,
   indirectEconomicImpactsByBearer,
   onEvaluationPeriodChange,
 }: Props) {
   const { evaluationPeriod = 50 } = useAppSelector(selectImpactsPageViewData);
+  const { breakEvenYear, cumulativeBalanceByYear, indirectEconomicImpacts } =
+    aggregatedReconversionImpacts;
 
   const breakEvenIndex = breakEvenYear ? projectionYears.indexOf(breakEvenYear) : undefined;
 
@@ -62,10 +62,10 @@ export default function ProjectBreakEvenLevelTab({
       </div>
 
       <ProjectBreakEvenLevelSection
-        title={`Bilan de l'opération ${economicBalance.total > 0 ? "positif" : "négatif"}`}
+        title={`Bilan de l'opération ${projectEconomicBalance.total > 0 ? "positif" : "négatif"}`}
         subtitle="Pour l'aménageur."
-        total={economicBalance.total}
-        chart={<EconomicBalanceChart economicBalance={economicBalance} />}
+        total={projectEconomicBalance.total}
+        chart={<EconomicBalanceChart projectEconomicBalance={projectEconomicBalance} />}
       />
 
       <ProjectBreakEvenLevelSection

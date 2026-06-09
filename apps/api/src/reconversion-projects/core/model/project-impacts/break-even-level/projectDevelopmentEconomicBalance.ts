@@ -3,9 +3,9 @@ import {
   DevelopmentPlanInstallationExpenses,
   DevelopmentPlanType,
   FinancialAssistanceRevenue,
+  GetReconversionProjectImpactsResultDto,
   isSameStakeholders,
   ProjectDevelopmentEconomicBalanceItem,
-  ReconversionProjectImpactsBreakEvenLevel,
   ReinstatementExpense,
   sumListWithKey,
 } from "shared";
@@ -23,7 +23,7 @@ export type InputProjectDevelopmentEconomicBalanceProps = {
     siteResaleSellingPrice?: number;
     buildingsResaleSellingPrice?: number;
   };
-  stakeholders: ReconversionProjectImpactsBreakEvenLevel["stakeholders"];
+  stakeholders: GetReconversionProjectImpactsResultDto["stakeholders"];
 };
 
 export const getProjectDevelopmentEconomicBalance = ({

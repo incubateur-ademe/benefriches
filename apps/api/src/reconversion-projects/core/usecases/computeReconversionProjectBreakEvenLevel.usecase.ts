@@ -1,5 +1,5 @@
 import {
-  ReconversionProjectImpactsBreakEvenLevel,
+  GetReconversionProjectImpactsResultDto,
   ReconversionProjectImpactsDataView,
   SiteImpactsDataView,
   getProjectSoilDistributionByType,
@@ -46,7 +46,7 @@ type Request = {
 };
 
 type ComputeReconversionProjectImpactsResult = TResult<
-  ReconversionProjectImpactsBreakEvenLevel,
+  GetReconversionProjectImpactsResultDto,
   "ReconversionProjectNotFound" | "SiteNotFound" | "NoDevelopmentPlanType"
 >;
 

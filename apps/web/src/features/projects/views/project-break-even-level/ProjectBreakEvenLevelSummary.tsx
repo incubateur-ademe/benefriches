@@ -1,12 +1,14 @@
 import { ReactNode } from "react";
-import { ReconversionProjectImpactsBreakEvenLevel } from "shared";
+import { GetReconversionProjectImpactsResultDto } from "shared";
 
 import { useAppSelector } from "@/app/hooks/store.hooks";
 import classNames, { ClassValue } from "@/shared/views/clsx";
 
 import { selectImpactsPageViewData } from "../../core/projectImpacts.selectors";
 
-type Props = Pick<ReconversionProjectImpactsBreakEvenLevel, "breakEvenYear" | "projectionYears"> & {
+type Props = {
+  breakEvenYear: GetReconversionProjectImpactsResultDto["aggregatedReconversionImpacts"]["breakEvenYear"];
+  projectionYears: GetReconversionProjectImpactsResultDto["projectionYears"];
   classes?: { title?: ClassValue };
   compact?: boolean;
 };

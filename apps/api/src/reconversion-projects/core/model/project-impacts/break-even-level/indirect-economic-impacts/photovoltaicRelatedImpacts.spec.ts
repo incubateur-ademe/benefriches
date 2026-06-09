@@ -25,7 +25,6 @@ const baseProject: InputReconversionProjectData & {
   decontaminatedSoilSurface: 0,
   developmentPlan: basePvDevelopmentPlan,
   yearlyProjectedExpenses: [],
-  hasSiteOwnerChange: false,
 };
 
 describe("getPhotovoltaicPowerPlantProjectImpacts", () => {

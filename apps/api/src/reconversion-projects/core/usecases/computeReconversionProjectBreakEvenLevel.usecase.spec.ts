@@ -1,5 +1,4 @@
-import { SiteImpactsDataView } from "shared";
-import { ReconversionProjectImpactsBreakEvenLevel } from "shared";
+import { GetReconversionProjectImpactsResultDto, SiteImpactsDataView } from "shared";
 import { v4 as uuid } from "uuid";
 
 import { InMemoryCityStatsQuery } from "src/reconversion-projects/adapters/secondary/queries/city-stats/InMemoryCityStatsQuery";
@@ -265,9 +264,11 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
         evaluationPeriodInYears,
       });
 
-      const data = (result as SuccessResult<ReconversionProjectImpactsBreakEvenLevel>).getData();
+      const data = (result as SuccessResult<GetReconversionProjectImpactsResultDto>).getData();
       expect(data.projectionYears).toHaveLength(evaluationPeriodInYears);
-      expect(data.cumulativeBalanceByYear).toHaveLength(evaluationPeriodInYears);
+      expect(data.aggregatedReconversionImpacts.cumulativeBalanceByYear).toHaveLength(
+        evaluationPeriodInYears,
+      );
     });
 
     it("projectionYears starts at operationsFirstYear", async () => {
@@ -277,7 +278,7 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
         evaluationPeriodInYears: 10,
       });
 
-      const data = (result as SuccessResult<ReconversionProjectImpactsBreakEvenLevel>).getData();
+      const data = (result as SuccessResult<GetReconversionProjectImpactsResultDto>).getData();
       expect(data.projectionYears[0]).toBe(String(fricheProjectData.operationsFirstYear));
     });
 
@@ -293,10 +294,13 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
         evaluationPeriodInYears: 10,
       });
 
-      const data = (result as SuccessResult<ReconversionProjectImpactsBreakEvenLevel>).getData();
+      const data = (result as SuccessResult<GetReconversionProjectImpactsResultDto>).getData();
 
-      expect(data.economicBalance.total).toBe(-720000);
-      expect(data.indirectEconomicImpacts.total).toBe(32940924);
+      expect(data.projectEconomicBalance.total).toBe(-720000);
+      expect(data.aggregatedReconversionImpacts.indirectEconomicImpacts.total).toBeCloseTo(
+        32940923,
+        0,
+      );
     });
 
     it("stakeholders reflect site and project data", async () => {
@@ -306,7 +310,7 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
         evaluationPeriodInYears: 10,
       });
 
-      const data = (result as SuccessResult<ReconversionProjectImpactsBreakEvenLevel>).getData();
+      const data = (result as SuccessResult<GetReconversionProjectImpactsResultDto>).getData();
       expect(data.stakeholders.current.owner.structureType).toBe(fricheSite.ownerStructureType);
       expect(data.stakeholders.project.developer.structureType).toBe(
         fricheProjectData.developmentPlan.developerStructureType,
@@ -322,7 +326,7 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
         reconversionProjectId: fricheProjectData.id,
       });
 
-      const data = (result as SuccessResult<ReconversionProjectImpactsBreakEvenLevel>).getData();
+      const data = (result as SuccessResult<GetReconversionProjectImpactsResultDto>).getData();
       expect(data.projectionYears).toHaveLength(50);
     });
   });
@@ -360,11 +364,11 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
       });
 
       expect(result.isSuccess()).toBe(true);
-      const data = (result as SuccessResult<ReconversionProjectImpactsBreakEvenLevel>).getData();
+      const data = (result as SuccessResult<GetReconversionProjectImpactsResultDto>).getData();
 
       // economicBalance must be larger than development-only balance (-700000)
       // because operating revenues/costs are now folded in
-      expect(data.economicBalance.total).toBeGreaterThan(-700000);
+      expect(data.projectEconomicBalance.total).toBeGreaterThan(-700000);
     });
 
     it("indirectEconomicImpacts does NOT include operating balance", async () => {
@@ -383,15 +387,15 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
       });
 
       const dataPrivate = (
-        resultPrivate as SuccessResult<ReconversionProjectImpactsBreakEvenLevel>
+        resultPrivate as SuccessResult<GetReconversionProjectImpactsResultDto>
       ).getData();
       const dataLocalAuth = (
-        resultLocalAuth as SuccessResult<ReconversionProjectImpactsBreakEvenLevel>
+        resultLocalAuth as SuccessResult<GetReconversionProjectImpactsResultDto>
       ).getData();
 
       // Indirect impacts should be smaller when operating balance is NOT merged into it
-      expect(dataPrivate.indirectEconomicImpacts.total).toBeLessThan(
-        dataLocalAuth.indirectEconomicImpacts.total,
+      expect(dataPrivate.aggregatedReconversionImpacts.indirectEconomicImpacts.total).toBeLessThan(
+        dataLocalAuth.aggregatedReconversionImpacts.indirectEconomicImpacts.total,
       );
     });
   });
@@ -424,9 +428,9 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
         evaluationPeriodInYears,
       });
 
-      const data = (result as SuccessResult<ReconversionProjectImpactsBreakEvenLevel>).getData();
+      const data = (result as SuccessResult<GetReconversionProjectImpactsResultDto>).getData();
 
-      expect(data.economicBalance.total).toBe(-220000);
+      expect(data.projectEconomicBalance.total).toBe(-220000);
     });
 
     it("indirectEconomicImpacts does not include operating balance", async () => {
@@ -443,13 +447,13 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
         evaluationPeriodInYears,
       });
 
-      const data = (result as SuccessResult<ReconversionProjectImpactsBreakEvenLevel>).getData();
+      const data = (result as SuccessResult<GetReconversionProjectImpactsResultDto>).getData();
       const dataLocalAuth = (
-        resultLocalAuth as SuccessResult<ReconversionProjectImpactsBreakEvenLevel>
+        resultLocalAuth as SuccessResult<GetReconversionProjectImpactsResultDto>
       ).getData();
 
-      expect(data.indirectEconomicImpacts.total).toBeLessThan(
-        dataLocalAuth.indirectEconomicImpacts.total,
+      expect(data.aggregatedReconversionImpacts.indirectEconomicImpacts.total).toBeLessThan(
+        dataLocalAuth.aggregatedReconversionImpacts.indirectEconomicImpacts.total,
       );
     });
 
@@ -472,9 +476,9 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
         reconversionProjectId: fricheProjectData.id,
       });
 
-      const data = (result as SuccessResult<ReconversionProjectImpactsBreakEvenLevel>).getData();
+      const data = (result as SuccessResult<GetReconversionProjectImpactsResultDto>).getData();
       // cumulativeBalanceByYear[0] is very negative (development costs dominate)
-      expect(data.breakEvenYear).toBeUndefined();
+      expect(data.aggregatedReconversionImpacts.breakEvenYear).toBeUndefined();
     });
   });
 
@@ -496,12 +500,8 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
         evaluationPeriodInYears: 30,
       });
 
-      const data10 = (
-        result10 as SuccessResult<ReconversionProjectImpactsBreakEvenLevel>
-      ).getData();
-      const data30 = (
-        result30 as SuccessResult<ReconversionProjectImpactsBreakEvenLevel>
-      ).getData();
+      const data10 = (result10 as SuccessResult<GetReconversionProjectImpactsResultDto>).getData();
+      const data30 = (result30 as SuccessResult<GetReconversionProjectImpactsResultDto>).getData();
 
       expect(data10.projectionYears).toHaveLength(10);
       expect(data30.projectionYears).toHaveLength(30);
@@ -520,13 +520,11 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
         evaluationPeriodInYears: 30,
       });
 
-      const total10 = (
-        result10 as SuccessResult<ReconversionProjectImpactsBreakEvenLevel>
-      ).getData().indirectEconomicImpacts.total;
+      const total10 = (result10 as SuccessResult<GetReconversionProjectImpactsResultDto>).getData()
+        .aggregatedReconversionImpacts.indirectEconomicImpacts.total;
 
-      const total30 = (
-        result30 as SuccessResult<ReconversionProjectImpactsBreakEvenLevel>
-      ).getData().indirectEconomicImpacts.total;
+      const total30 = (result30 as SuccessResult<GetReconversionProjectImpactsResultDto>).getData()
+        .aggregatedReconversionImpacts.indirectEconomicImpacts.total;
 
       expect(total30).toBeGreaterThan(total10);
     });
@@ -551,9 +549,9 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
         evaluationPeriodInYears: 1,
       });
 
-      const data = (result as SuccessResult<ReconversionProjectImpactsBreakEvenLevel>).getData();
+      const data = (result as SuccessResult<GetReconversionProjectImpactsResultDto>).getData();
       // cumulativeBalanceByYear[0] is very negative (development costs dominate)
-      expect(data.breakEvenYear).toBeUndefined();
+      expect(data.aggregatedReconversionImpacts.breakEvenYear).toBeUndefined();
     });
   });
 
@@ -575,7 +573,7 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
         evaluationPeriodInYears: 10,
       });
 
-      const data = (result as SuccessResult<ReconversionProjectImpactsBreakEvenLevel>).getData();
+      const data = (result as SuccessResult<GetReconversionProjectImpactsResultDto>).getData();
       // fakeNow is 2024, so the first projection year must be "2024"
       expect(data.projectionYears[0]).toBe("2024");
     });

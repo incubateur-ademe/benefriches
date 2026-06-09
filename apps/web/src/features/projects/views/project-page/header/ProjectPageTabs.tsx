@@ -36,14 +36,14 @@ const ProjectPageTabs = ({ useBetaAmenageScoreView }: { useBetaAmenageScoreView:
           isActive={route.name === routes.projectImpactsBreakEvenLevel.name}
           iconId="fr-icon-money-euro-box-line"
           label="Analyse coût-bénéfice"
-          beta
           linkProps={routes.projectImpactsBreakEvenLevel(route.params).link}
         />
         <TabItem
-          isActive={route.name === routes.urbanSprawlImpactsComparison.name}
-          iconId="fr-icon-scales-3-line"
-          label="Comparaison des impacts"
-          linkProps={routes.urbanSprawlImpactsComparison(route.params).link}
+          isActive={route.name === routes.projectAvoidedCostsAnalysis.name}
+          iconId="fr-icon-money-euro-box-line"
+          label="Analyse des coûts évités"
+          beta
+          linkProps={routes.projectAvoidedCostsAnalysis(route.params).link}
         />
         <TabItem
           isActive={route.name === routes.projectFeatures.name}

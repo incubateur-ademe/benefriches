@@ -6,7 +6,11 @@ import { selectSocialProjectImpacts } from "./projectImpactsSocial.selectors";
 
 const MOCK_STATES = {
   projectImpacts: {
-    dataLoadingState: "success",
+    dataLoadingState: {
+      oldProjectImpacts: "success",
+      impacts: "idle",
+      urbanSprawlSimulation: "idle",
+    },
     evaluationPeriod: 10,
     currentViewMode: "list",
     impactsData: projectImpactMock.impacts,

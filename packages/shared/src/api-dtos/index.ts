@@ -26,12 +26,13 @@ export {
 export {
   getUrbanSprawlImpactsComparisonDtoSchema,
   type UrbanSprawlImpactsComparisonResultDto,
-  type StatuQuoSiteImpacts,
-  type SiteTaxesIncomeImpact,
 } from "./urban-sprawl-impacts-comparison";
 
 // Site Actions DTOs
 export { updateSiteActionStatusDtoSchema, type UpdateSiteActionStatusDto } from "./site-actions";
 
 // Reconversion Projects DTOs
-export { type GetReconversionProjectFeaturesResponseDto } from "./reconversion-projects";
+export {
+  type GetReconversionProjectFeaturesResponseDto,
+  type GetReconversionProjectImpactsResultDto,
+} from "./reconversion-projects";

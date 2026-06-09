@@ -1,7 +1,7 @@
 import {
   UrbanSprawlImpactsComparisonGateway,
   UrbanSprawlImpactsComparisonObj,
-} from "../../application/project-impacts-urban-sprawl-comparison/fetchUrbanSprawlImpactsComparison.action";
+} from "../../application/project-impacts/actions/urbanSprawlImpactsComparisonRequested.action";
 
 export class MockUrbanSprawlImpactsComparisonService implements UrbanSprawlImpactsComparisonGateway {
   data: UrbanSprawlImpactsComparisonObj | undefined = undefined;

@@ -1,13 +1,13 @@
 import { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import {
-  computeYearlyRoadsAndUtilitiesMaintenanceExpenses,
-  getRoadsAndUtilitiesExpensesImpacts,
+  computeFricheRoadsAndUtilitiesExpensesImpacts,
+  computeFricheYearlyRoadsAndUtilitiesMaintenanceExpenses,
 } from "./roadsAndUtilitiesExpensesImpact";
 
 describe("roadsAndUtilitiesExpensesImpact impact", () => {
   describe("computeYearlyRoadsAndUtilitiesMaintenanceExpenses impact", () => {
     it("compute roads and utilities maintenance expenses", () => {
-      const result = computeYearlyRoadsAndUtilitiesMaintenanceExpenses(40000);
+      const result = computeFricheYearlyRoadsAndUtilitiesMaintenanceExpenses(40000);
       expect(result).toEqual(35980);
     });
   });
@@ -21,7 +21,7 @@ describe("roadsAndUtilitiesExpensesImpact impact", () => {
       });
     });
     it("returns roads and utilities maintenance expenses with friche removal", () => {
-      const result = getRoadsAndUtilitiesExpensesImpacts({
+      const result = computeFricheRoadsAndUtilitiesExpensesImpacts({
         isFriche: true,
         surfaceArea: 40000,
         sumOnEvolutionPeriodService,
@@ -30,7 +30,7 @@ describe("roadsAndUtilitiesExpensesImpact impact", () => {
     });
 
     it("returns empty array for non friche site", () => {
-      const result = getRoadsAndUtilitiesExpensesImpacts({
+      const result = computeFricheRoadsAndUtilitiesExpensesImpacts({
         isFriche: false,
         surfaceArea: 40000,
         sumOnEvolutionPeriodService,

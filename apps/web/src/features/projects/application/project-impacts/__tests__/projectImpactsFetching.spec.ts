@@ -20,13 +20,17 @@ describe("Project impacts fetching", () => {
       .build();
     const initialState = store.getState();
 
-    expect(initialState.projectImpacts.dataLoadingState).toEqual("idle");
+    expect(initialState.projectImpacts.dataLoadingState.oldProjectImpacts).toEqual("idle");
 
     await store.dispatch(reconversionProjectImpactsRequested({ projectId }));
 
     const state = store.getState();
     expect(state.projectImpacts).toEqual<ProjectImpactsState>({
-      dataLoadingState: "success",
+      dataLoadingState: {
+        oldProjectImpacts: "success",
+        impacts: "idle",
+        urbanSprawlSimulation: "idle",
+      },
       projectData: {
         id: urbanProjectImpactMock.id,
         name: urbanProjectImpactMock.name,
@@ -62,14 +66,18 @@ describe("Project impacts fetching", () => {
       .build();
     const initialState = store.getState();
 
-    expect(initialState.projectImpacts.dataLoadingState).toEqual("idle");
+    expect(initialState.projectImpacts.dataLoadingState.oldProjectImpacts).toEqual("idle");
 
     // update evaluation period
     await store.dispatch(evaluationPeriodUpdated({ evaluationPeriodInYears: newEvaluationPeriod }));
 
     const state = store.getState();
     expect(state.projectImpacts).toEqual<ProjectImpactsState>({
-      dataLoadingState: "success",
+      dataLoadingState: {
+        oldProjectImpacts: "success",
+        impacts: "idle",
+        urbanSprawlSimulation: "idle",
+      },
       projectData: {
         id: urbanProjectImpactMock.id,
         name: urbanProjectImpactMock.name,

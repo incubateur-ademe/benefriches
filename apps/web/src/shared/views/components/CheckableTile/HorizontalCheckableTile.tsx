@@ -13,15 +13,21 @@ type Props = {
   onChange: () => void;
   disabled?: boolean;
   checkType?: "checkbox" | "radio";
+  noIcon?: boolean;
+  small?: boolean;
+  dsfrDialogProps?: { "data-fr-opened": boolean; "aria-controls": string };
 };
 
 type CheckIconProps = {
   checked: boolean;
   disabled?: boolean;
-  checkType: "checkbox" | "radio";
+  checkType: "checkbox" | "radio" | "none";
 };
 
 function CheckIcon({ checkType, checked, disabled = false }: CheckIconProps) {
+  if (checkType === "none") {
+    return null;
+  }
   return (
     <div
       className={classNames("min-w-6 h-6 mr-4", disabled && "filter grayscale opacity-50")}
@@ -40,6 +46,9 @@ export default function HorizontalCheckableTile({
   onChange,
   disabled = false,
   checkType = "radio",
+  noIcon = false,
+  small = false,
+  dsfrDialogProps,
 }: Props) {
   const id = useId();
   return (
@@ -58,33 +67,45 @@ export default function HorizontalCheckableTile({
         checked={checked}
         disabled={disabled}
         onChange={onChange}
+        {...dsfrDialogProps}
       />
-      <label htmlFor={id} className="w-full">
-        <div className="p-4 flex items-center">
-          <CheckIcon checkType={checkType} checked={checked} disabled={disabled} />
-          {imgSrc && (
-            <img
-              src={imgSrc}
-              width="80px"
-              height="80px"
-              alt=""
-              aria-hidden="true"
-              className={classNames("mr-4", disabled && "filter grayscale opacity-50")}
-            />
-          )}
-          <div>
-            <div
-              className={classNames(
-                description ? "mb-1" : "mb-0",
-                fr.cx("fr-text--lg", "fr-text--bold"),
-              )}
-            >
-              {title}
-            </div>
-            {description && (
-              <legend className={fr.cx("fr-text--sm", "fr-mb-0")}>{description}</legend>
+      <label
+        htmlFor={id}
+        className={classNames("flex items-center w-full", small ? "px-3 py-4" : "p-4")}
+      >
+        <CheckIcon checkType={noIcon ? "none" : checkType} checked={checked} disabled={disabled} />
+        {imgSrc && (
+          <img
+            src={imgSrc}
+            {...(small
+              ? {
+                  width: "56px",
+                  height: "56px",
+                }
+              : {
+                  width: "80px",
+                  height: "80px",
+                })}
+            alt=""
+            aria-hidden="true"
+            className={classNames(
+              small ? "mr-3" : "mr-4",
+              disabled && "filter grayscale opacity-50",
             )}
+          />
+        )}
+        <div>
+          <div
+            className={classNames(
+              description ? "mb-1" : "mb-0",
+              fr.cx("fr-text--lg", "fr-text--bold"),
+            )}
+          >
+            {title}
           </div>
+          {description && (
+            <legend className={fr.cx("fr-text--sm", "fr-mb-0")}>{description}</legend>
+          )}
         </div>
       </label>
     </div>

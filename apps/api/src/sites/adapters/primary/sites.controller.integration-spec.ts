@@ -1553,8 +1553,7 @@ describe("Sites controller", () => {
       expect(response.status).toEqual(200);
       expect(response.body).toBeDefined();
       const result = response.body as GetSiteImpactsDto;
-      expect(result.indirectEconomicImpacts).toBeDefined();
-      expect(result.operatingEconomicBalance).toBeDefined();
+      expect(result.economicImpacts).toBeDefined();
       expect(result.projectionYears).toBeDefined();
       expect(result.stakeholders).toBeDefined();
     });

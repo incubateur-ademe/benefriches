@@ -9,20 +9,15 @@ import {
   sumListWithKey,
   RecurringExpense,
   DevelopmentPlanFeatures,
-  IndirectEconomicImpact,
   roundToInteger,
   sumList,
+  ReconversionProjectOnSiteIndirectEconomicImpact,
 } from "shared";
 
 import { SoilsCarbonStorage } from "../../../gateways/SoilsCarbonStorageService";
 import { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import { getNatureConservationRelatedImpacts } from "./indirect-economic-impacts/natureConservationRelatedImpacts";
 import { getPhotovoltaicPowerPlantProjectImpacts } from "./indirect-economic-impacts/photovoltaicRelatedImpacts";
-import { computeRentalIncomeImpacts } from "./indirect-economic-impacts/rentalIncomeImpacts";
-import {
-  getAvoidedFricheMaintenanceAndSecuringCosts,
-  getPreviousSiteOperationBenefitLoss,
-} from "./indirect-economic-impacts/siteReconversionRelatedEconomicImpacts";
 import { getUrbanProjectImpacts } from "./indirect-economic-impacts/urbanProjectImpacts";
 
 export type InputSiteData = {
@@ -48,7 +43,6 @@ export type InputReconversionProjectData = {
   soilsCarbonStorage?: SoilsCarbonStorage;
   developmentPlan: DevelopmentPlanFeatures;
   yearlyProjectedExpenses: RecurringExpense[];
-  hasSiteOwnerChange: boolean;
 };
 
 type Props = {
@@ -78,25 +72,7 @@ export const getProjectIndirectsEconomicImpacts = ({
     reconversionProject.soilsDistribution,
   );
 
-  const impacts: IndirectEconomicImpact[] = [];
-
-  // --- Impacts liés à la nature du site existant ---
-  if (relatedSite.nature === "FRICHE") {
-    impacts.push(
-      ...getAvoidedFricheMaintenanceAndSecuringCosts({
-        yearlyExpenses: relatedSite.yearlyExpenses,
-        sumOnEvolutionPeriodService,
-      }),
-    );
-  } else if (relatedSite.isSiteOperated && relatedSite.nature === "AGRICULTURAL_OPERATION") {
-    impacts.push(
-      getPreviousSiteOperationBenefitLoss({
-        previousYearlyExpenses: relatedSite.yearlyExpenses,
-        previousYearlyIncomes: relatedSite.yearlyIncomes,
-        sumOnEvolutionPeriodService,
-      }),
-    );
-  }
+  const impacts: ReconversionProjectOnSiteIndirectEconomicImpact[] = [];
 
   const propertyTransferDutiesIncome = sumList([
     reconversionProject.sitePurchasePropertyTransferDutiesAmount ?? 0,
@@ -131,14 +107,21 @@ export const getProjectIndirectsEconomicImpacts = ({
   );
 
   // -- Revenus liés à la location du site
-  impacts.push(
-    ...computeRentalIncomeImpacts({
-      yearlyProjectedExpenses: reconversionProject.yearlyProjectedExpenses,
-      currentYearlyExpenses: relatedSite.yearlyExpenses,
-      hasSiteOwnerChange: reconversionProject.hasSiteOwnerChange,
-      sumOnEvolutionPeriodService,
-    }),
+  const projectedRentCost = reconversionProject.yearlyProjectedExpenses.find(
+    ({ purpose }) => purpose === "rent",
   );
+  if (projectedRentCost) {
+    const projectedDetailsByYear = sumOnEvolutionPeriodService.getWeightedYearlyValues(
+      projectedRentCost.amount,
+      ["discount"],
+    );
+    impacts.push({
+      detailsByYear: projectedDetailsByYear,
+      cumulativeByYear: computeCumulativeByYear(projectedDetailsByYear),
+      total: sumList(projectedDetailsByYear),
+      name: "projectedRentalIncome",
+    });
+  }
 
   // --- Impacts spécifiques au type de projet ---
   if (reconversionProject.developmentPlan.type === "URBAN_PROJECT") {

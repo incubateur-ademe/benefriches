@@ -131,6 +131,20 @@ describe("SumOnEvolutionPeriodService", () => {
     expect(values.toSorted((a, b) => b - a)).toEqual(values);
   });
 
+  it("returns array of non values actualised values", () => {
+    const service = new SumOnEvolutionPeriodService({
+      evaluationPeriodInYears: 5,
+      operationsFirstYear: 2025,
+    });
+    const values = service.getWeightedYearlyValues(190000, [], {
+      startYearIndex: 0,
+      endYearIndex: 1,
+    });
+    expect(values[0]).toEqual(190000);
+    expect(values.length).toEqual(5);
+    expect(values).toEqual([190000, 0, 0, 0, 0]);
+  });
+
   it("should replace evaluationPeriodInYears by max or min value if wrong value is passed to service", () => {
     expect(
       new SumOnEvolutionPeriodService({

@@ -4,7 +4,7 @@ import { sumListWithKey } from "shared";
 import {
   HumanityCategory,
   IndirectEconomicImpactsByBearer,
-} from "@/features/projects/application/project-impacts/projectBreakEvenLevel.selectors";
+} from "@/features/projects/domain/groupIndirectImpactsByBearer";
 
 import EconomicColumnChart from "./EconomicColumnChart";
 

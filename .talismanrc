@@ -7,3 +7,8 @@ scopeconfig:
 # - filename: path/to/safe-file.ts
 #   checksum: <generated with: talisman --checksum="path/to/safe-file.ts">
 #   ignore_detectors: []
+
+fileignoreconfig:
+- filename: apps/web/src/features/projects/views/project-avoided-costs-analysis/layout/ComparisionDetailsMonetaryRow.tsx
+  checksum: 3981be20e51e99dde27d9bbb94d37cc21a2a4adc9e58365f5e1e9088c48e8bcd
+

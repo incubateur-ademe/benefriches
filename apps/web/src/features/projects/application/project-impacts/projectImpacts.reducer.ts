@@ -1,9 +1,10 @@
 import { createReducer, createSelector, isAnyOf, PayloadAction } from "@reduxjs/toolkit";
 import {
   FricheActivity,
-  ReconversionProjectImpactsBreakEvenLevel,
+  GetReconversionProjectImpactsResultDto,
   SiteNature,
   SoilsDistribution,
+  UrbanSprawlImpactsComparisonResultDto,
 } from "shared";
 
 import { RootState } from "@/app/store/store";
@@ -17,6 +18,7 @@ import {
   reconversionProjectImpactsRequested,
   ReconversionProjectImpactsResult,
 } from "./actions";
+import { urbanSprawlImpactsComparisonRequested } from "./actions/urbanSprawlImpactsComparisonRequested.action";
 import { fetchQuickImpactsForUrbanProjectOnFriche } from "./fetchQuickImpactsForUrbanProjectOnFriche.action";
 
 type LoadingState = "idle" | "loading" | "success" | "error";
@@ -26,7 +28,11 @@ const DEFAULT_VIEW_MODE = "summary";
 export type ViewMode = "charts" | "list" | "summary";
 
 export type ProjectImpactsState = {
-  dataLoadingState: LoadingState;
+  dataLoadingState: {
+    oldProjectImpacts: LoadingState;
+    impacts: LoadingState;
+    urbanSprawlSimulation: LoadingState;
+  };
   projectData?: {
     id: string;
     name: string;
@@ -64,10 +70,13 @@ export type ProjectImpactsState = {
       name: string;
     };
   };
+  // old impacts data
   impactsData?: ReconversionProjectImpactsResult["impacts"];
-  betaImpactsData?: ReconversionProjectImpactsBreakEvenLevel;
-  evaluationPeriod: number | undefined;
   currentViewMode: ViewMode;
+  // new impacts data format
+  impacts?: GetReconversionProjectImpactsResultDto;
+  urbanSprawlSimulation?: UrbanSprawlImpactsComparisonResultDto;
+  evaluationPeriod: number | undefined;
 };
 
 export const getInitialState = (): ProjectImpactsState => {
@@ -75,7 +84,11 @@ export const getInitialState = (): ProjectImpactsState => {
     impactsData: undefined,
     projectData: undefined,
     relatedSiteData: undefined,
-    dataLoadingState: "idle",
+    dataLoadingState: {
+      oldProjectImpacts: "idle",
+      impacts: "idle",
+      urbanSprawlSimulation: "idle",
+    },
     evaluationPeriod: undefined,
     currentViewMode: DEFAULT_VIEW_MODE,
   };
@@ -87,34 +100,45 @@ export const projectImpactsReducer = createReducer(getInitialState(), (builder) 
   });
   builder.addCase(evaluationPeriodUpdated.pending, (state, action) => {
     state.evaluationPeriod = action.meta.arg.evaluationPeriodInYears;
-    state.dataLoadingState = "loading";
+    state.dataLoadingState.oldProjectImpacts = "loading";
   });
   /* fetch reconversion project impacts */
   builder.addCase(reconversionProjectImpactsRequested.pending, (state) => {
-    state.dataLoadingState = "loading";
+    state.dataLoadingState.oldProjectImpacts = "loading";
   });
   builder.addCase(reconversionProjectImpactsRequested.rejected, (state) => {
-    state.dataLoadingState = "error";
+    state.dataLoadingState.oldProjectImpacts = "error";
   });
 
   /* fetch reconversion project impacts break even level */
   builder.addCase(reconversionProjectImpactsBreakEvenLevelRequested.pending, (state) => {
-    state.dataLoadingState = "loading";
+    state.dataLoadingState.impacts = "loading";
   });
   builder.addCase(reconversionProjectImpactsBreakEvenLevelRequested.rejected, (state) => {
-    state.dataLoadingState = "error";
+    state.dataLoadingState.impacts = "error";
   });
   builder.addCase(reconversionProjectImpactsBreakEvenLevelRequested.fulfilled, (state, action) => {
-    state.dataLoadingState = "success";
-    state.betaImpactsData = action.payload;
+    state.dataLoadingState.impacts = "success";
+    state.impacts = action.payload;
+  });
+
+  builder.addCase(urbanSprawlImpactsComparisonRequested.pending, (state) => {
+    state.dataLoadingState.urbanSprawlSimulation = "loading";
+  });
+  builder.addCase(urbanSprawlImpactsComparisonRequested.fulfilled, (state, action) => {
+    state.dataLoadingState.urbanSprawlSimulation = "success";
+    state.urbanSprawlSimulation = action.payload;
+  });
+  builder.addCase(urbanSprawlImpactsComparisonRequested.rejected, (state) => {
+    state.dataLoadingState.urbanSprawlSimulation = "error";
   });
 
   /* fetch quick impacts for urban project on friche */
   builder.addCase(fetchQuickImpactsForUrbanProjectOnFriche.pending, (state) => {
-    state.dataLoadingState = "loading";
+    state.dataLoadingState.oldProjectImpacts = "loading";
   });
   builder.addCase(fetchQuickImpactsForUrbanProjectOnFriche.fulfilled, (state, action) => {
-    state.dataLoadingState = "success";
+    state.dataLoadingState.oldProjectImpacts = "success";
     state.impactsData = action.payload.impacts;
     state.projectData = {
       id: action.payload.id,
@@ -129,12 +153,12 @@ export const projectImpactsReducer = createReducer(getInitialState(), (builder) 
     };
   });
   builder.addCase(fetchQuickImpactsForUrbanProjectOnFriche.rejected, (state) => {
-    state.dataLoadingState = "error";
+    state.dataLoadingState.oldProjectImpacts = "error";
   });
   builder.addMatcher(
     isAnyOf(evaluationPeriodUpdated.fulfilled, reconversionProjectImpactsRequested.fulfilled),
     (state, action) => {
-      state.dataLoadingState = "success";
+      state.dataLoadingState.oldProjectImpacts = "success";
       state.impactsData = action.payload.impacts;
       state.evaluationPeriod = action.payload.evaluationPeriodInYears;
       state.projectData = {

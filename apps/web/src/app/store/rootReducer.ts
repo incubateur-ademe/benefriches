@@ -9,7 +9,6 @@ import evaluationsList from "@/features/my-evaluations/application/evaluationsLi
 import { authReducer as auth } from "@/features/onboarding/core/auth.reducer";
 import { currentUserReducer } from "@/features/onboarding/core/user.reducer";
 import { projectFeaturesReducer } from "@/features/projects/application/project-features/projectFeatures.reducer";
-import urbanSprawlComparison from "@/features/projects/application/project-impacts-urban-sprawl-comparison/urbanSprawlComparison.reducer";
 import { projectImpactsReducer } from "@/features/projects/application/project-impacts/projectImpacts.reducer";
 import { reconversionCompatibilityEvaluationReducer } from "@/features/reconversion-compatibility/core/reconversionCompatibilityEvaluation.reducer";
 import siteFeatures from "@/features/sites/core/siteFeatures.reducer";
@@ -29,7 +28,6 @@ export const rootReducer = combineReducers({
   evaluationsList,
   currentUser: currentUserReducer,
   userFeatureAlert,
-  urbanSprawlComparison,
   projectImpacts: projectImpactsReducer,
   projectFeatures: projectFeaturesReducer,
   siteMunicipalityData,

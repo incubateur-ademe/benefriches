@@ -1,8 +1,8 @@
 import { createAction } from "@reduxjs/toolkit";
 import {
   FricheActivity,
+  GetReconversionProjectImpactsResultDto,
   ReconversionProjectImpacts,
-  ReconversionProjectImpactsBreakEvenLevel,
   SiteNature,
   SoilsDistribution,
 } from "shared";
@@ -28,7 +28,7 @@ export interface ReconversionProjectImpactsGateway {
   ): Promise<ReconversionProjectImpactsResult>;
   getReconversionProjectImpactsBreakEvenLevel(
     reconversionProjectId: string,
-  ): Promise<ReconversionProjectImpactsBreakEvenLevel>;
+  ): Promise<GetReconversionProjectImpactsResultDto>;
 }
 
 export type ReconversionProjectImpactsResult = {
@@ -99,7 +99,7 @@ export const evaluationPeriodUpdated = createAppAsyncThunk<
 );
 
 export const reconversionProjectImpactsBreakEvenLevelRequested = createAppAsyncThunk<
-  ReconversionProjectImpactsBreakEvenLevel,
+  GetReconversionProjectImpactsResultDto,
   { projectId: string }
 >(
   createProjectImpactsActionName("reconversionProjectImpactsBreakEvenLevelRequested"),

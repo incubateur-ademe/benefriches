@@ -76,15 +76,14 @@ export type TaxesIncomeIndirectEconomicImpacts = z.infer<typeof taxesIncomeImpac
 export type FricheCostsIndirectEconomicImpacts = z.infer<
   typeof fricheCostsIndirectEconomicImpactsSchema
 >;
-export type SiteIndirectEconomicImpact = z.infer<typeof siteIndirectEconomicImpactSchema>;
+export type SiteStatuQuoEconomicImpact =
+  | z.infer<typeof siteIndirectEconomicImpactSchema>
+  | OperatingEconomicBalanceItem;
+export type SiteStatuQuoImpacts = z.infer<typeof siteStatuQuoImpactsSchema>;
 
 export const siteStatuQuoImpactsSchema = z.object({
   projectionYears: z.array(z.string()),
-  operatingEconomicBalance: z.object({
-    total: z.number(),
-    details: z.array(siteOperationEconomicBalanceItemSchema),
-  }),
-  indirectEconomicImpacts: z.object({
+  economicImpacts: z.object({
     total: z.number(),
     details: z.array(
       z.union([siteIndirectEconomicImpactSchema, siteOperationEconomicBalanceItemSchema]),

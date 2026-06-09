@@ -63,16 +63,9 @@ export type ReconversionProjectImpactsDataView<TSchedule> = {
   decontaminatedSoilSurface?: number;
 };
 
-type SocioEconomicMonetaryImpactName =
-  | "avoidedFricheMaintenanceAndSecuringCostsForOwner"
-  | "avoidedFricheMaintenanceAndSecuringCostsForTenant"
-  | "avoidedAirConditioningExpenses"
-  | "previousSiteOperationBenefitLoss"
-  | "propertyTransferDutiesIncome"
-  | "localPropertyValueIncrease"
-  | "localTransferDutiesIncrease"
-  | "avoidedCo2eqWithEnergyProduction"
-  | "avoidedAirConditioningCo2eqEmissions"
+// IMPACTS
+
+type SoilsRelatedIndirectEconomicImpactName =
   | "storedCo2Eq"
   | "natureRelatedWelnessAndLeisure"
   | "forestRelatedProduct"
@@ -81,22 +74,41 @@ type SocioEconomicMonetaryImpactName =
   | "waterCycle"
   | "nitrogenCycle"
   | "soilErosion"
-  | "waterRegulation"
-  | "projectNewHousesTaxesIncome"
-  | "projectNewCompanyTaxationIncome"
-  | "projectPhotovoltaicTaxesIncome"
+  | "waterRegulation";
+
+type ProjectIndirectEconomicImpactName =
+  | "avoidedAirConditioningExpenses"
+  | "avoidedCo2eqWithEnergyProduction"
+  | "avoidedAirConditioningCo2eqEmissions"
   | "avoidedPropertyDamageExpenses"
   | "avoidedCarRelatedExpenses"
-  | "travelTimeSavedPerTravelerExpenses"
   | "avoidedTrafficCo2EqEmissions"
   | "avoidedAirPollutionHealthExpenses"
   | "avoidedAccidentsMinorInjuriesExpenses"
   | "avoidedAccidentsSevereInjuriesExpenses"
   | "avoidedAccidentsDeathsExpenses"
+  | "travelTimeSavedPerTravelerExpenses"
+  | "propertyTransferDutiesIncome"
+  | "localPropertyValueIncrease"
+  | "localTransferDutiesIncrease"
+  | "projectNewHousesTaxesIncome"
+  | "projectNewCompanyTaxationIncome"
+  | "projectPhotovoltaicTaxesIncome"
   | "projectedRentalIncome"
-  | "projectedRentalIncomeIncrease"
-  | "oldRentalIncomeLoss"
   | "fricheRoadsAndUtilitiesExpenses";
+
+type SiteReconversionIndirectEconomicImpactName =
+  | "avoidedFricheMaintenanceAndSecuringCostsForOwner"
+  | "avoidedFricheMaintenanceAndSecuringCostsForTenant"
+  | "previousSiteOperationBenefitLoss"
+  | "oldRentalIncomeLoss";
+
+// Situation --> impacts du projet sur le site
+type AggregatedReconversionProjectOnSiteImpactName =
+  | SoilsRelatedIndirectEconomicImpactName
+  | ProjectIndirectEconomicImpactName
+  | UrbanSprawlComparisonIndirectEconomicImpactName
+  | SiteReconversionIndirectEconomicImpactName;
 
 export type AvoidedFricheCostsIndirectEconomicImpacts = {
   total: number;
@@ -108,19 +120,55 @@ export type AvoidedFricheCostsIndirectEconomicImpacts = {
     | "accidentsCost"
     | "otherSecuringCosts"
     | "maintenance";
-  name:
+  name: Extract<
+    SiteReconversionIndirectEconomicImpactName,
     | "avoidedFricheMaintenanceAndSecuringCostsForOwner"
-    | "avoidedFricheMaintenanceAndSecuringCostsForTenant";
+    | "avoidedFricheMaintenanceAndSecuringCostsForTenant"
+  >;
 };
-export type IndirectEconomicImpact =
-  | {
-      total: number;
-      detailsByYear: number[];
-      cumulativeByYear: number[];
-      name: SocioEconomicMonetaryImpactName;
-    }
+export type AggregatedReconversionIndirectEconomicImpact =
+  | ImpactDataView
   | AvoidedFricheCostsIndirectEconomicImpacts;
 
+// Situation --> comparaison coût de l'inaction, impacts seuls du projet
+type ReconversionProjectOnSiteImpactName =
+  | SoilsRelatedIndirectEconomicImpactName
+  | ProjectIndirectEconomicImpactName;
+
+export type ImpactDataView<
+  T extends
+    | ReconversionProjectOnSiteImpactName
+    | UrbanSprawlComparisonIndirectEconomicImpactName
+    | AggregatedReconversionProjectOnSiteImpactName =
+    | ReconversionProjectOnSiteImpactName
+    | UrbanSprawlComparisonIndirectEconomicImpactName
+    | AggregatedReconversionProjectOnSiteImpactName,
+> = {
+  total: number;
+  detailsByYear: number[];
+  cumulativeByYear: number[];
+  name: T;
+};
+
+export type ReconversionProjectOnSiteIndirectEconomicImpact =
+  ImpactDataView<ReconversionProjectOnSiteImpactName>;
+
+// Situation --> comparaison extension urbaine
+type UrbanSprawlComparisonIndirectEconomicImpactName =
+  | SoilsRelatedIndirectEconomicImpactName
+  | ProjectIndirectEconomicImpactName
+  | "avoidedRoadsAndUtilitiesMaintenanceExpenses"
+  | "avoidedRoadsAndUtilitiesConstructionExpenses";
+
+export type UrbanSprawlComparisonIndirectEconomicImpact =
+  ImpactDataView<UrbanSprawlComparisonIndirectEconomicImpactName>;
+
+export type IndirectEconomicImpactName =
+  | AggregatedReconversionProjectOnSiteImpactName
+  | UrbanSprawlComparisonIndirectEconomicImpactName
+  | ReconversionProjectOnSiteImpactName;
+
+// ECONOMIC BALANCES
 export type ProjectOperatingEconomicBalanceItem = {
   total: number;
   detailsByYear: number[];
@@ -155,6 +203,7 @@ export type ProjectDevelopmentEconomicBalanceItem =
       name: "sitePurchase" | "siteResaleRevenue" | "buildingsResaleRevenue";
     };
 
+// STAKEHOLDERS
 type UserStructureType = "local_authority" | "company";
 type StakeholderStructure = SiteStakeholderStructureType | UserStructureType | "unknown";
 type Stakeholder = {
@@ -164,27 +213,43 @@ type Stakeholder = {
 
 export const isStakeholderLocalAuthority = (stakeholder: Stakeholder) =>
   LOCAL_AUTHORITIES.some((s) => stakeholder.structureType === s);
+
 export const isSameStakeholders = (stakeholder_A: Stakeholder, stakeholder_B: Stakeholder) =>
   stakeholder_A.structureType === stakeholder_B.structureType &&
   stakeholder_A.structureName &&
   stakeholder_B.structureName &&
   stakeholder_A.structureName === stakeholder_B.structureName;
 
-export type ReconversionProjectImpactsBreakEvenLevel = {
-  breakEvenYear?: string;
-  projectionYears: string[];
-  cumulativeBalanceByYear: number[];
-  economicBalance: {
-    total: number;
-    details: (ProjectDevelopmentEconomicBalanceItem | ProjectOperatingEconomicBalanceItem)[];
-  };
-  indirectEconomicImpacts: {
-    total: number;
-    details: (IndirectEconomicImpact | ProjectOperatingEconomicBalanceItem)[];
-  };
-  stakeholders: {
-    current: { operator?: Stakeholder; tenant?: Stakeholder; owner: Stakeholder };
-    future: { owner?: Stakeholder; operator?: Stakeholder };
-    project: { developer: Stakeholder; reinstatementContractOwner: Stakeholder };
-  };
+export type ReconversionStakeholders = {
+  current: { operator?: Stakeholder; tenant?: Stakeholder; owner: Stakeholder };
+  future: { owner?: Stakeholder; operator?: Stakeholder };
+  project: { developer: Stakeholder; reinstatementContractOwner: Stakeholder };
 };
+
+// IMPACTS DATA VIEWS
+
+export type ProjectEconomicBalance = {
+  total: number;
+  details: (ProjectDevelopmentEconomicBalanceItem | ProjectOperatingEconomicBalanceItem)[];
+};
+
+export type IndirectEconomicImpacts<
+  T extends
+    | ReconversionProjectOnSiteIndirectEconomicImpact
+    | AggregatedReconversionIndirectEconomicImpact
+    | UrbanSprawlComparisonIndirectEconomicImpact =
+    | ReconversionProjectOnSiteIndirectEconomicImpact
+    | AggregatedReconversionIndirectEconomicImpact
+    | UrbanSprawlComparisonIndirectEconomicImpact,
+> = {
+  total: number;
+  details: (T | ProjectOperatingEconomicBalanceItem)[];
+};
+
+export type AggregatedReconversionIndirectEconomicImpacts = IndirectEconomicImpacts;
+
+export type ReconversionProjectOnSiteIndirectEconomicImpacts =
+  IndirectEconomicImpacts<ReconversionProjectOnSiteIndirectEconomicImpact>;
+
+export type UrbanSprawlComparisonProjectImpacts =
+  IndirectEconomicImpacts<UrbanSprawlComparisonIndirectEconomicImpact>;

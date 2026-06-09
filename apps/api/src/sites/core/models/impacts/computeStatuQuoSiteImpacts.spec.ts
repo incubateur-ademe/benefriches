@@ -71,24 +71,26 @@ describe("computeStatuQuoSiteImpacts", () => {
       });
 
       expect(result).toMatchObject({
-        cumulativeBalanceByYear: expect.any(Array<number>) as number[],
         projectionYears: expect.any(Array) as string[],
-        operatingEconomicBalance: expect.any(
-          Object,
-        ) as GetSiteImpactsDto["operatingEconomicBalance"],
-        indirectEconomicImpacts: expect.any(Object) as GetSiteImpactsDto["indirectEconomicImpacts"],
-        operationsFirstYear: BASE_PARAMS.operationsFirstYear,
+        economicImpacts: expect.any(Object) as GetSiteImpactsDto["economicImpacts"],
         stakeholders: expect.any(Object) as GetSiteImpactsDto["stakeholders"],
       });
     });
 
-    it("projectionYears has same length as cumulativeBalanceByYear", () => {
+    it("projectionYears has same length as cumulativeByYear", () => {
       const result = computeStatuQuoSiteImpacts({
         ...BASE_PARAMS,
         site: { ...fricheSite, isSiteOperated: false },
       });
 
-      expect(result.projectionYears.length).toBe(result.cumulativeBalanceByYear.length);
+      for (let i = 1; i < result.economicImpacts.details.length; i++) {
+        expect(result.economicImpacts.details[i]?.detailsByYear).toHaveLength(
+          result.projectionYears.length,
+        );
+        expect(result.economicImpacts.details[i]?.cumulativeByYear).toHaveLength(
+          result.projectionYears.length,
+        );
+      }
     });
 
     it("projectionYears starts with operationsFirstYear", () => {
@@ -156,33 +158,30 @@ describe("computeStatuQuoSiteImpacts", () => {
   });
 
   describe("operator is local authority", () => {
-    it("includes operatingEconomicBalance in indirectEconomicImpacts", () => {
+    it("includes operatingEconomicBalance in economicImpacts", () => {
       const result = computeStatuQuoSiteImpacts({
         ...BASE_PARAMS,
         site: localAuthoritySite,
       });
 
-      expect(result.indirectEconomicImpacts.total).not.toBe(0);
+      expect(result.economicImpacts.total).not.toBe(0);
 
-      const hasOperating = result.indirectEconomicImpacts.details.some(
+      const hasOperating = result.economicImpacts.details.some(
         (d) => d.name === "operatingEconomicBalance",
       );
       expect(hasOperating).toBe(true);
     });
 
-    it("cumulativeBalanceByYear includes operatingEconomicBalance only if operator is local authority", () => {
-      const resultLocalAuthority = computeStatuQuoSiteImpacts({
-        ...BASE_PARAMS,
-        site: localAuthoritySite,
-      });
+    it("cumulativeBalanceByYear includes operatingEconomicBalance only if operator is company", () => {
       const resultCompany = computeStatuQuoSiteImpacts({
         ...BASE_PARAMS,
         site: { ...fricheSite, isSiteOperated: true },
       });
 
-      expect(resultLocalAuthority.cumulativeBalanceByYear).not.toEqual(
-        resultCompany.cumulativeBalanceByYear,
+      const hasOperating = resultCompany.economicImpacts.details.some(
+        (d) => d.name === "operatingEconomicBalance",
       );
+      expect(hasOperating).toBe(true);
     });
   });
 
@@ -195,7 +194,7 @@ describe("computeStatuQuoSiteImpacts", () => {
         siteSoilsCarbonStorage: { total: 5000 },
       });
 
-      const carbon = result.indirectEconomicImpacts.details.find((d) => d.name === "storedCo2Eq");
+      const carbon = result.economicImpacts.details.find((d) => d.name === "storedCo2Eq");
       expect(carbon?.total).toBeCloseTo(2750000.0000000005);
       expect(carbon?.detailsByYear).toEqual([carbon?.total, 0, 0, 0, 0]);
       expect(carbon?.cumulativeByYear).toEqual([
@@ -213,9 +212,7 @@ describe("computeStatuQuoSiteImpacts", () => {
         site: { ...fricheSite, isSiteOperated: false },
       });
 
-      const hasCarbon = result.indirectEconomicImpacts.details.some(
-        (d) => d.name === "storedCo2Eq",
-      );
+      const hasCarbon = result.economicImpacts.details.some((d) => d.name === "storedCo2Eq");
       expect(hasCarbon).toBe(false);
     });
   });

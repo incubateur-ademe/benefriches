@@ -93,6 +93,12 @@ export class SumOnEvolutionPeriodService {
     return 1 / Math.pow(1.045, nbYears);
   }
 
+  getProjectionYears() {
+    return Array(this.evaluationPeriodInYears)
+      .fill(0)
+      .map((_, index) => `${this.operationsFirstYear + index}`);
+  }
+
   sum(firstYearValue: number, options?: { roundFn: (_: number) => number }) {
     const roundFn = options?.roundFn ?? roundTo2Digits;
     return roundFn(firstYearValue * this.evaluationPeriodInYears);

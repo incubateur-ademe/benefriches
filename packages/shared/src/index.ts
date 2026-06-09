@@ -10,6 +10,5 @@ export * from "./financial";
 export * from "./local-authority";
 export * from "./co2eq";
 export * from "./api-dtos";
-export * from "./urban-sprawl-impacts-comparison";
 export * from "./siteActions";
 export { type IDateProvider } from "./adapters/IDateProvider";

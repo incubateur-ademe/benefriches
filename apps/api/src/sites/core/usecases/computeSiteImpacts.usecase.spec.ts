@@ -169,8 +169,7 @@ describe("ComputeSiteImpactsUseCase", () => {
 
       expect(result.isSuccess()).toBe(true);
       const data = (result as SuccessResult<GetSiteImpactsDto>).getData();
-      expect(data.operatingEconomicBalance.total).toBeGreaterThan(-700000);
-      expect(data.indirectEconomicImpacts.total).toBeGreaterThan(-700000);
+      expect(data.economicImpacts.total).toBeGreaterThan(-700000);
     });
   });
 });

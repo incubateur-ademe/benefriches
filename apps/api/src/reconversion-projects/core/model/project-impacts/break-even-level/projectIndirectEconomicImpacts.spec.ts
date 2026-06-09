@@ -13,7 +13,6 @@ const baseProject: InputReconversionProjectData = {
   operationsFirstYear: 2025,
   soilsDistribution: [],
   decontaminatedSoilSurface: 0,
-  hasSiteOwnerChange: false,
   yearlyProjectedExpenses: [],
   developmentPlan: {
     type: "PHOTOVOLTAIC_POWER_PLANT",
@@ -98,103 +97,6 @@ describe("getProjectIndirectsEconomicImpacts", () => {
       expect(result).toHaveProperty("total");
       expect(result).toHaveProperty("details");
       expect(Array.isArray(result.details)).toBe(true);
-    });
-  });
-
-  describe("site_nature is FRICHE", () => {
-    const fricheSite: InputSiteData = {
-      ...baseSite,
-      nature: "FRICHE" as const,
-      yearlyExpenses: [
-        { amount: 5_000, purpose: "security", bearer: "owner" },
-        { amount: 2_000, purpose: "maintenance", bearer: "tenant" },
-      ],
-    };
-
-    it("adds avoidedFricheMaintenanceAndSecuringCosts", () => {
-      const result = getProjectIndirectsEconomicImpacts({
-        reconversionProject: baseProject,
-        relatedSite: fricheSite,
-        siteCityData,
-        sumOnEvolutionPeriodService: mockService,
-      });
-
-      const avoidedCosts = result.details.filter((d) =>
-        d.name.startsWith("avoidedFricheMaintenanceAndSecuringCosts"),
-      );
-      expect(avoidedCosts.length).toBeGreaterThan(0);
-    });
-
-    it("doesn't add specific impacts for friche reconverted with URBAN_PROJECT if project is not urban", () => {
-      const result = getProjectIndirectsEconomicImpacts({
-        reconversionProject: baseProject, // PHOTOVOLTAIC_POWER_PLANT
-        relatedSite: fricheSite,
-        siteCityData,
-        sumOnEvolutionPeriodService: mockService,
-      });
-
-      expect(
-        result.details.find((d) => d.name === "fricheRoadsAndUtilitiesExpenses"),
-      ).toBeUndefined();
-      expect(result.details.find((d) => d.name === "localPropertyValueIncrease")).toBeUndefined();
-    });
-
-    it("add fricheRoadsAndUtilitiesExpenses for urban project on friche", () => {
-      const result = getProjectIndirectsEconomicImpacts({
-        reconversionProject: {
-          ...baseProject,
-          developmentPlan: {
-            type: "URBAN_PROJECT" as const,
-            features: { buildingsFloorAreaDistribution: {} },
-          },
-        },
-        relatedSite: fricheSite,
-        siteCityData,
-        sumOnEvolutionPeriodService: mockService,
-      });
-
-      expect(
-        result.details.find((d) => d.name === "fricheRoadsAndUtilitiesExpenses"),
-      ).toBeDefined();
-    });
-  });
-
-  // ── Site agricole exploité ───────────────────────────────────────────────────
-  describe("with agricultural operation", () => {
-    it("adds previousSiteOperationBenefitLoss for AGRICULTURAL_OPERATION and siteIsOperated", () => {
-      const result = getProjectIndirectsEconomicImpacts({
-        reconversionProject: baseProject,
-        relatedSite: {
-          ...baseSite,
-          nature: "AGRICULTURAL_OPERATION" as const,
-          isSiteOperated: true,
-          yearlyIncomes: [{ amount: 10_000, source: "operations" }],
-          yearlyExpenses: [{ amount: 4_000, purpose: "operationsTaxes", bearer: "tenant" }],
-        },
-        siteCityData,
-        sumOnEvolutionPeriodService: mockService,
-      });
-
-      expect(
-        result.details.find((d) => d.name === "previousSiteOperationBenefitLoss"),
-      ).toBeDefined();
-    });
-
-    it("excludes previousSiteOperationBenefitLoss for AGRICULTURAL_OPERATION and site is not operated", () => {
-      const result = getProjectIndirectsEconomicImpacts({
-        reconversionProject: baseProject,
-        relatedSite: {
-          ...baseSite,
-          nature: "AGRICULTURAL_OPERATION" as const,
-          isSiteOperated: false,
-        },
-        siteCityData,
-        sumOnEvolutionPeriodService: mockService,
-      });
-
-      expect(
-        result.details.find((d) => d.name === "previousSiteOperationBenefitLoss"),
-      ).toBeUndefined();
     });
   });
 

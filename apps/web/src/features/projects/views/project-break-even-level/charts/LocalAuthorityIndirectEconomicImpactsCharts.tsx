@@ -4,7 +4,7 @@ import { sumListWithKey } from "shared";
 import {
   IndirectEconomicImpactsByBearer,
   LocalAuthorityCategory,
-} from "@/features/projects/application/project-impacts/projectBreakEvenLevel.selectors";
+} from "@/features/projects/domain/groupIndirectImpactsByBearer";
 
 import EconomicColumnChart from "./EconomicColumnChart";
 
@@ -39,7 +39,7 @@ const CATEGORIES: { label: string; color: string; impacts: LocalAuthorityCategor
   },
   {
     label: "🔑 Revenus locatifs communaux",
-    impacts: ["oldRentalIncomeLoss", "projectedRentalIncome", "projectedRentalIncomeIncrease"],
+    impacts: ["oldRentalIncomeLoss", "projectedRentalIncome"],
     color: "#B4D21E",
   },
   {

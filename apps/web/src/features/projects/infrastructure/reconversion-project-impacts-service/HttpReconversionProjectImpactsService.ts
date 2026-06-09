@@ -1,4 +1,4 @@
-import { ReconversionProjectImpactsBreakEvenLevel } from "shared";
+import { GetReconversionProjectImpactsResultDto } from "shared";
 
 import {
   ReconversionProjectImpactsGateway,
@@ -25,7 +25,7 @@ export class HttpReconversionProjectImpactsApi implements ReconversionProjectImp
 
   async getReconversionProjectImpactsBreakEvenLevel(
     reconversionProjectId: string,
-  ): Promise<ReconversionProjectImpactsBreakEvenLevel> {
+  ): Promise<GetReconversionProjectImpactsResultDto> {
     const response = await fetch(
       `/api/reconversion-projects/${reconversionProjectId}/impacts/break-even-level`,
     );
@@ -33,7 +33,7 @@ export class HttpReconversionProjectImpactsApi implements ReconversionProjectImp
     if (!response.ok)
       throw new Error(`Error while fetching reconversion projects break even level`);
 
-    const jsonResponse = (await response.json()) as ReconversionProjectImpactsBreakEvenLevel;
+    const jsonResponse = (await response.json()) as GetReconversionProjectImpactsResultDto;
     return jsonResponse;
   }
 }

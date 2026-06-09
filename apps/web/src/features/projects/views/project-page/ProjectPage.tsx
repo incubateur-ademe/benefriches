@@ -6,9 +6,9 @@ import { selectAppSettings } from "@/features/app-settings/core/appSettings";
 import classNames from "@/shared/views/clsx";
 import NotFoundScreen from "@/shared/views/components/NotFound/NotFound";
 
+import ProjectAvoidedCostsAnalysis from "../project-avoided-costs-analysis";
 import ProjectBreakEvenLevelTabContainer from "../project-break-even-level";
 import ProjectDevelopmentScore from "../project-development-score";
-import ProjectImpactsUrbanSprawlImpactsComparisonView from "../project-impacts-urban-sprawl-comparison";
 import ProjectSummaryTab from "../project-summary/";
 import ProjectFeaturesView from "./features/index";
 import ProjectPageHeader from "./header/";
@@ -24,8 +24,8 @@ export type ProjectRoute =
   | Route<typeof routes.projectImpacts>
   | Route<typeof routes.projectFeatures>
   | Route<typeof routes.projectImpactsBreakEvenLevel>
-  | Route<typeof routes.urbanSprawlImpactsComparison>
-  | Route<typeof routes.projectImpactsDevelopmentScore>;
+  | Route<typeof routes.projectImpactsDevelopmentScore>
+  | Route<typeof routes.projectAvoidedCostsAnalysis>;
 
 function ProjectPage({ projectId }: Props) {
   const route = useRoute() as ProjectRoute;
@@ -47,8 +47,6 @@ function ProjectPage({ projectId }: Props) {
               return <ProjectFeaturesView projectId={projectId} />;
             case "projectImpacts":
               return <ProjectImpactsView projectId={projectId} />;
-            case "urbanSprawlImpactsComparison":
-              return <ProjectImpactsUrbanSprawlImpactsComparisonView projectId={projectId} />;
             case "projectImpactsBreakEvenLevel":
               return <ProjectBreakEvenLevelTabContainer projectId={projectId} />;
             case "projectImpactsSummary":
@@ -59,6 +57,8 @@ function ProjectPage({ projectId }: Props) {
               ) : (
                 <NotFoundScreen />
               );
+            case "projectAvoidedCostsAnalysis":
+              return <ProjectAvoidedCostsAnalysis projectId={projectId} />;
           }
         })()}
       </div>

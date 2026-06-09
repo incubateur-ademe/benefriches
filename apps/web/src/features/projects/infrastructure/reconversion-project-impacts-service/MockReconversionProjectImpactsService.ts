@@ -1,4 +1,4 @@
-import { ReconversionProjectImpactsBreakEvenLevel } from "shared";
+import { GetReconversionProjectImpactsResultDto } from "shared";
 
 import {
   ReconversionProjectImpactsGateway,
@@ -7,14 +7,14 @@ import {
 
 export class MockReconversionProjectImpactsApi implements ReconversionProjectImpactsGateway {
   data: ReconversionProjectImpactsResult | undefined = undefined;
-  dataBreakEvenLevel: ReconversionProjectImpactsBreakEvenLevel | undefined = undefined;
+  dataBreakEvenLevel: GetReconversionProjectImpactsResultDto | undefined = undefined;
 
   async getReconversionProjectImpacts(): Promise<ReconversionProjectImpactsResult> {
     if (!this.data) throw new Error("MockReconversionProjectImpactsApi error: no data");
     return Promise.resolve(this.data);
   }
 
-  async getReconversionProjectImpactsBreakEvenLevel(): Promise<ReconversionProjectImpactsBreakEvenLevel> {
+  async getReconversionProjectImpactsBreakEvenLevel(): Promise<GetReconversionProjectImpactsResultDto> {
     if (!this.dataBreakEvenLevel)
       throw new Error("MockReconversionProjectImpactsApi error: no dataBreakEvenLevel");
     return Promise.resolve(this.dataBreakEvenLevel);

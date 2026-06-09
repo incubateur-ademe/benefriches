@@ -1,7 +1,7 @@
 import {
   DevelopmentPlanFeatures,
   Impact,
-  IndirectEconomicImpact,
+  ReconversionProjectOnSiteIndirectEconomicImpact,
   RecurringExpense,
   sumList,
 } from "shared";
@@ -18,7 +18,7 @@ const getPhotovoltaicProductionRelatedImpacts = (props: {
   expectedAnnualProduction: number;
   sumOnEvolutionPeriodService: SumOnEvolutionPeriodService;
 }): {
-  monetaryImpact: IndirectEconomicImpact;
+  monetaryImpact: ReconversionProjectOnSiteIndirectEconomicImpact;
   impactsMetrics: {
     avoidedCO2TonsWithEnergyProduction: number;
     householdsPoweredByRenewableEnergy: Impact;
@@ -60,7 +60,7 @@ const getNewPhotovoltaicTaxesIncomeImpact = ({
 }: {
   yearlyProjectedExpenses: RecurringExpense[];
   sumOnEvolutionPeriodService: SumOnEvolutionPeriodService;
-}): IndirectEconomicImpact | undefined => {
+}): ReconversionProjectOnSiteIndirectEconomicImpact | undefined => {
   const projectedTaxesAmount =
     yearlyProjectedExpenses.find(({ purpose }) => purpose === "taxes")?.amount ?? 0;
 
@@ -90,8 +90,8 @@ type PhotovoltaicImpactsProps = {
 export const getPhotovoltaicPowerPlantProjectImpacts = ({
   reconversionProject,
   sumOnEvolutionPeriodService,
-}: PhotovoltaicImpactsProps): IndirectEconomicImpact[] => {
-  const impacts: IndirectEconomicImpact[] = [];
+}: PhotovoltaicImpactsProps): ReconversionProjectOnSiteIndirectEconomicImpact[] => {
+  const impacts: ReconversionProjectOnSiteIndirectEconomicImpact[] = [];
 
   if (!reconversionProject.developmentPlan.features.expectedAnnualProduction) {
     return impacts;

@@ -1,4 +1,4 @@
-if ! command -v talisman &> /dev/null; then
+if ! command -v talisman > /dev/null 2>&1; then
   echo "❌ Talisman is required. See https://github.com/thoughtworks/talisman"
   exit 1
 fi

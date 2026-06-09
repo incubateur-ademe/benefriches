@@ -1,4 +1,8 @@
-import { ReconversionProjectImpactsDataView, SiteImpactsDataView } from "shared";
+import {
+  ReconversionProjectImpactsDataView,
+  SiteImpactsDataView,
+  UrbanSprawlImpactsComparisonResultDto,
+} from "shared";
 import { v4 as uuid } from "uuid";
 
 import { InMemoryCityStatsQuery } from "src/reconversion-projects/adapters/secondary/queries/city-stats/InMemoryCityStatsQuery";
@@ -6,15 +10,12 @@ import { InMemoryReconversionProjectImpactsQuery } from "src/reconversion-projec
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { SuccessResult, FailureResult } from "src/shared-kernel/result";
+import { InMemorySiteImpactsQuery } from "src/sites/adapters/secondary/site-impacts/InMemorySiteImpactsQuery";
 
 import { FakeGetSoilsCarbonStorageService } from "../gateways/FakeGetSoilsCarbonStorageService";
 import { Schedule } from "../model/reconversionProject";
-import {
-  ComputeProjectUrbanSprawlImpactsComparisonUseCase,
-  type ApiUrbanSprawlImpactsComparisonResultDto,
-} from "./computeProjectUrbanSprawlImpactsComparison.usecase";
+import { ComputeProjectUrbanSprawlImpactsComparisonUseCase } from "./computeProjectUrbanSprawlImpactsComparison.usecase";
 import { ApiReconversionProjectImpactsDataView } from "./computeReconversionProjectImpacts.usecase";
-import { InMemorySiteImpactsQuery } from "src/sites/adapters/secondary/site-impacts/InMemorySiteImpactsQuery";
 
 const projectData: ReconversionProjectImpactsDataView<Schedule> = {
   id: "bf8a7d1d-a9d2-4a66-b2bc-3b8d682f9932",
@@ -92,6 +93,8 @@ const projectData: ReconversionProjectImpactsDataView<Schedule> = {
   reinstatementExpenses: [{ purpose: "asbestos_removal", amount: 10000 }],
   financialAssistanceRevenues: [],
   reinstatementContractOwnerName: "Mairie de Blajan",
+  futureSiteOwnerStructureType: "company",
+  futureSiteOwnerName: "Futur proprio",
 };
 
 const friche = {
@@ -273,411 +276,96 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
     });
 
     expect(result.isSuccess()).toBe(true);
-    const data = (result as SuccessResult<ApiUrbanSprawlImpactsComparisonResultDto>).getData();
+    const data = (result as SuccessResult<UrbanSprawlImpactsComparisonResultDto>).getData();
 
-    expect(data.baseCase.projectImpacts).toBeDefined();
-    expect(data.baseCase.statuQuoSiteImpacts).toBeDefined();
-    expect(data.comparisonCase.projectImpacts).toBeDefined();
-    expect(data.comparisonCase.statuQuoSiteImpacts).toBeDefined();
-    expect(data.projectData).toEqual(projectData);
+    expect(data.cumulativeBalanceByYear).toBeDefined();
+    expect(data.operationsFirstYear).toBeDefined();
+    expect(data.projectEconomicBalance).toBeDefined();
+    expect(data.projectOnSimulationSiteImpactsData).toBeDefined();
+    expect(data.projectionYears).toBeDefined();
+    expect(data.simulationSiteData).toBeDefined();
+    expect(data.simulationSiteStatuQuoImpactsData).toBeDefined();
+    expect(data.stakeholders).toBeDefined();
 
-    expect(data.baseCase.comparisonImpacts.economicBalance).toEqual(
-      data.baseCase.projectImpacts.economicBalance,
-    );
-    expect(data.comparisonCase.comparisonImpacts.economicBalance).toEqual(
-      data.comparisonCase.projectImpacts.economicBalance,
-    );
-
-    expect(data.baseCase.comparisonImpacts.economicBalance.costs.siteReinstatement).toBeDefined();
     expect(
-      data.comparisonCase.comparisonImpacts.economicBalance.costs.siteReinstatement,
+      data.simulationSiteStatuQuoImpactsData.details.find(
+        ({ name }) => name === "fricheMaintenanceAndSecuringCostsForOwner",
+      ),
     ).toBeUndefined();
 
-    // SOCIAL
-    expect(data.baseCase.comparisonImpacts.social.accidents).toEqual(
-      data.baseCase.projectImpacts.social.accidents,
-    );
-    expect(data.baseCase.comparisonImpacts.social.avoidedVehiculeKilometers).toEqual(
-      data.baseCase.projectImpacts.social.avoidedVehiculeKilometers,
-    );
-    expect(data.baseCase.comparisonImpacts.social.avoidedTrafficAccidents).toEqual(
-      data.baseCase.projectImpacts.social.avoidedTrafficAccidents,
-    );
-    expect(data.baseCase.comparisonImpacts.social.householdsPoweredByRenewableEnergy).toEqual(
-      data.baseCase.projectImpacts.social.householdsPoweredByRenewableEnergy,
-    );
-    expect(data.baseCase.comparisonImpacts.social.travelTimeSaved).toEqual(
-      data.baseCase.projectImpacts.social.travelTimeSaved,
-    );
-    expect(data.comparisonCase.comparisonImpacts.social.avoidedVehiculeKilometers).toEqual(
-      data.comparisonCase.projectImpacts.social.avoidedVehiculeKilometers,
-    );
-    expect(data.comparisonCase.comparisonImpacts.social.avoidedTrafficAccidents).toEqual(
-      data.comparisonCase.projectImpacts.social.avoidedTrafficAccidents,
-    );
-    expect(data.comparisonCase.comparisonImpacts.social.householdsPoweredByRenewableEnergy).toEqual(
-      data.comparisonCase.projectImpacts.social.householdsPoweredByRenewableEnergy,
-    );
-    expect(data.comparisonCase.comparisonImpacts.social.travelTimeSaved).toEqual(
-      data.comparisonCase.projectImpacts.social.travelTimeSaved,
-    );
-    expect(data.comparisonCase.comparisonImpacts.social.accidents).toEqual({
-      base: 3,
-      forecast: 3,
-      difference: 0,
-      deaths: {
-        base: 0,
-        difference: 0,
-        forecast: 0,
-      },
-      minorInjuries: {
-        base: 1,
-        forecast: 1,
-        difference: 0,
-      },
-      severeInjuries: {
-        base: 2,
-        forecast: 2,
-        difference: 0,
-      },
-    });
-
-    expect(data.comparisonCase.comparisonImpacts.social.fullTimeJobs).toEqual(
-      data.comparisonCase.projectImpacts.social.fullTimeJobs,
-    );
-    // ENVIRONMENTAL
-    expect(data.baseCase.comparisonImpacts.environmental.nonContaminatedSurfaceArea).toEqual(
-      data.baseCase.projectImpacts.environmental.nonContaminatedSurfaceArea,
-    );
-    expect(data.baseCase.comparisonImpacts.environmental.avoidedCo2eqEmissions).toEqual(
-      data.baseCase.projectImpacts.environmental.avoidedCo2eqEmissions,
-    );
-    expect(data.baseCase.comparisonImpacts.environmental.permeableSurfaceArea).toEqual({
-      base:
-        2000 + 1000 + data.baseCase.statuQuoSiteImpacts.environmental.permeableSurfaceArea.total,
-      forecast: 8000 + data.baseCase.statuQuoSiteImpacts.environmental.permeableSurfaceArea.total,
-      difference: data.baseCase.projectImpacts.environmental.permeableSurfaceArea.difference,
-      mineralSoil: {
-        base:
-          1000 + data.baseCase.statuQuoSiteImpacts.environmental.permeableSurfaceArea.mineralSoil,
-        forecast:
-          1000 + data.baseCase.statuQuoSiteImpacts.environmental.permeableSurfaceArea.mineralSoil,
-        difference:
-          data.baseCase.projectImpacts.environmental.permeableSurfaceArea.mineralSoil.difference,
-      },
-      greenSoil: {
-        base: 2000 + data.baseCase.statuQuoSiteImpacts.environmental.permeableSurfaceArea.greenSoil,
-        forecast:
-          7000 + data.baseCase.statuQuoSiteImpacts.environmental.permeableSurfaceArea.greenSoil,
-        difference:
-          data.baseCase.projectImpacts.environmental.permeableSurfaceArea.greenSoil.difference,
-      },
-    });
     expect(
-      data.baseCase.comparisonImpacts.environmental.soilsCarbonStorage?.forecast,
-    ).toBeGreaterThan(data.baseCase.projectImpacts.environmental.soilsCarbonStorage?.forecast ?? 0);
-    expect(
-      data.baseCase.comparisonImpacts.environmental.soilsCo2eqStorage?.forecast,
-    ).toBeGreaterThan(data.baseCase.projectImpacts.environmental.soilsCo2eqStorage?.forecast ?? 0);
+      data.simulationSiteStatuQuoImpactsData.details.find(({ name }) => name === "rentalIncome")
+        ?.total,
+    ).toBeCloseTo(1505, 0);
 
     expect(
-      data.comparisonCase.comparisonImpacts.environmental.nonContaminatedSurfaceArea?.forecast,
+      data.projectOnSimulationSiteImpactsData.details.find(
+        ({ name }) => name === "projectedRentalIncome",
+      )?.total,
+    ).toBeCloseTo(124032, 0);
+
+    expect(data.stakeholders.current.owner).toEqual({
+      structureType: "municipality",
+      structureName: "Mairie de Blajan",
+    });
+
+    expect(data.stakeholders.future.owner).toEqual({
+      structureType: "company",
+      structureName: "Futur proprio",
+    });
+
+    expect(
+      data.projectOnSimulationSiteImpactsData.details.find(
+        ({ name }) => name === "projectNewHousesTaxesIncome",
+      )?.total,
+    ).toBeCloseTo(194032, 0);
+
+    expect(
+      data.projectOnSimulationSiteImpactsData.details.find(
+        ({ name }) => name === "projectNewCompanyTaxationIncome",
+      )?.total,
+    ).toBeCloseTo(595807, 0);
+
+    expect(
+      data.simulationSiteStatuQuoImpactsData.details.find(({ name }) => name === "taxesIncome")
+        ?.total,
+    ).toBeCloseTo(258, 0);
+
+    expect(
+      data.projectOnSimulationSiteImpactsData.details.find(({ name }) => name === "waterRegulation")
+        ?.total,
     ).toBeLessThan(
-      data.comparisonCase.projectImpacts.environmental.nonContaminatedSurfaceArea?.forecast ?? 0,
-    );
-
-    expect(data.comparisonCase.comparisonImpacts.environmental.avoidedCo2eqEmissions).toEqual(
-      data.comparisonCase.projectImpacts.environmental.avoidedCo2eqEmissions,
-    );
-    expect(data.comparisonCase.comparisonImpacts.environmental.permeableSurfaceArea).toEqual({
-      base:
-        2000 + 1000 + data.baseCase.statuQuoSiteImpacts.environmental.permeableSurfaceArea.total,
-      forecast:
-        8000 + data.comparisonCase.statuQuoSiteImpacts.environmental.permeableSurfaceArea.total,
-      difference: data.comparisonCase.projectImpacts.environmental.permeableSurfaceArea.difference,
-      mineralSoil: {
-        base:
-          1000 + data.baseCase.statuQuoSiteImpacts.environmental.permeableSurfaceArea.mineralSoil,
-        forecast:
-          1000 +
-          data.comparisonCase.statuQuoSiteImpacts.environmental.permeableSurfaceArea.mineralSoil,
-        difference:
-          data.comparisonCase.projectImpacts.environmental.permeableSurfaceArea.mineralSoil
-            .difference,
-      },
-      greenSoil: {
-        base: 2000 + data.baseCase.statuQuoSiteImpacts.environmental.permeableSurfaceArea.greenSoil,
-        forecast:
-          7000 +
-          data.comparisonCase.statuQuoSiteImpacts.environmental.permeableSurfaceArea.greenSoil,
-        difference:
-          data.comparisonCase.projectImpacts.environmental.permeableSurfaceArea.greenSoil
-            .difference,
-      },
-    });
-    expect(
-      data.comparisonCase.comparisonImpacts.environmental.soilsCarbonStorage?.forecast,
-    ).toBeGreaterThan(
-      data.comparisonCase.projectImpacts.environmental.soilsCarbonStorage?.forecast ?? 0,
-    );
-    expect(
-      data.comparisonCase.comparisonImpacts.environmental.soilsCo2eqStorage?.forecast,
-    ).toBeGreaterThan(
-      data.comparisonCase.projectImpacts.environmental.soilsCo2eqStorage?.forecast ?? 0,
-    );
-    // SOCIO ECONOMIC
-    expect(data.baseCase.comparisonImpacts.socioeconomic.impacts.length).toBeGreaterThanOrEqual(
-      data.comparisonCase.projectImpacts.socioeconomic.impacts.length,
-    );
-    expect(
-      data.baseCase.comparisonImpacts.socioeconomic.impacts.find(
-        ({ impact }) => impact === "avoided_friche_costs",
-      ),
-    ).toEqual(
-      data.baseCase.projectImpacts.socioeconomic.impacts.find(
-        ({ impact }) => impact === "avoided_friche_costs",
-      ),
-    );
-    expect(
-      data.comparisonCase.comparisonImpacts.socioeconomic.impacts.find(
-        ({ impact }) => impact === "avoided_friche_costs",
-      ),
-    ).toEqual(
-      data.comparisonCase.projectImpacts.socioeconomic.impacts.find(
-        ({ impact }) => impact === "avoided_friche_costs",
-      ),
+      data.simulationSiteStatuQuoImpactsData.details.find(({ name }) => name === "waterRegulation")
+        ?.total ?? 0,
     );
 
     expect(
-      data.comparisonCase.comparisonImpacts.socioeconomic.impacts.find(
-        ({ impact }) => impact === "statu_quo_friche_costs",
-      ),
-    ).toBeDefined();
-
-    expect(
-      data.baseCase.comparisonImpacts.socioeconomic.impacts.filter(
-        ({ impact }) => impact === "rental_income",
-      ),
-    ).toEqual([
-      {
-        actor: "Current owner",
-        amount: 74419,
-        details: [
-          {
-            amount: 74419,
-            impact: "project_rental_income",
-          },
-        ],
-        impact: "rental_income",
-        impactCategory: "economic_direct",
-      },
-      {
-        actor: "Mairie de Blajan",
-        amount: 1505,
-        details: [
-          {
-            amount: 1505,
-            impact: "site_statu_quo_rental_income",
-          },
-        ],
-        impact: "rental_income",
-        impactCategory: "economic_direct",
-      },
-    ]);
-    expect(
-      data.comparisonCase.comparisonImpacts.socioeconomic.impacts.filter(
-        ({ impact }) => impact === "rental_income",
-      ),
-    ).toEqual([
-      {
-        actor: "Mairie de Blajan",
-        amount: 122527,
-        details: [
-          {
-            amount: 122527,
-            impact: "project_rental_income",
-          },
-        ],
-        impact: "rental_income",
-        impactCategory: "economic_direct",
-      },
-      {
-        actor: "Current owner",
-        amount: 49613,
-        details: [
-          {
-            amount: 49613,
-            impact: "site_statu_quo_rental_income",
-          },
-        ],
-        impact: "rental_income",
-        impactCategory: "economic_direct",
-      },
-    ]);
-
-    expect(
-      data.baseCase.comparisonImpacts.socioeconomic.impacts.find(
-        ({ impact }) => impact === "taxes_income",
-      ),
-    ).toEqual({
-      actor: "community",
-      amount: 790088,
-      details: [
-        {
-          amount: 194032,
-          impact: "project_new_houses_taxes_income",
-        },
-        {
-          amount: 595807,
-          impact: "project_new_company_taxation_income",
-        },
-        {
-          amount: 249,
-          impact: "site_statu_quo_taxes",
-        },
-      ],
-      impact: "taxes_income",
-      impactCategory: "economic_indirect",
-    });
-
-    expect(
-      data.comparisonCase.comparisonImpacts.socioeconomic.impacts.find(
-        ({ impact }) => impact === "taxes_income",
-      ),
-    ).toEqual({
-      actor: "community",
-      amount: 794290,
-      details: [
-        {
-          amount: 194032,
-          impact: "project_new_houses_taxes_income",
-        },
-        {
-          amount: 595807,
-          impact: "project_new_company_taxation_income",
-        },
-        {
-          amount: 4451,
-          impact: "site_statu_quo_property_taxes",
-        },
-      ],
-      impact: "taxes_income",
-      impactCategory: "economic_indirect",
-    });
-
-    expect(
-      data.baseCase.comparisonImpacts.socioeconomic.impacts.find(
-        ({ impact }) => impact === "water_regulation",
-      )?.amount,
-    ).toEqual(
-      data.baseCase.projectImpacts.socioeconomic.impacts.find(
-        ({ impact }) => impact === "water_regulation",
-      )?.amount ?? 0,
-    );
-
-    expect(
-      data.comparisonCase.comparisonImpacts.socioeconomic.impacts.find(
-        ({ impact }) => impact === "water_regulation",
-      )?.amount,
+      data.projectOnSimulationSiteImpactsData.details.find(
+        ({ name }) => name === "invasiveSpeciesRegulation",
+      )?.total ?? 0,
     ).toBeLessThan(
-      data.comparisonCase.projectImpacts.socioeconomic.impacts.find(
-        ({ impact }) => impact === "water_regulation",
-      )?.amount ?? 0,
+      data.simulationSiteStatuQuoImpactsData.details.find(
+        ({ name }) => name === "invasiveSpeciesRegulation",
+      )?.total ?? 0,
     );
 
     expect(
-      data.baseCase.comparisonImpacts.socioeconomic.impacts.find(
-        ({ impact }) => impact === "ecosystem_services",
-      )?.amount,
-    ).toBeGreaterThan(
-      data.baseCase.projectImpacts.socioeconomic.impacts.find(
-        ({ impact }) => impact === "ecosystem_services",
-      )?.amount ?? 0,
-    );
+      data.projectOnSimulationSiteImpactsData.details.find(
+        ({ name }) => name === "avoidedRoadsAndUtilitiesConstructionExpenses",
+      )?.total,
+    ).toBeCloseTo(-120805, 0);
 
     expect(
-      data.comparisonCase.comparisonImpacts.socioeconomic.impacts.find(
-        ({ impact }) => impact === "ecosystem_services",
-      )?.amount,
-    ).toBeGreaterThan(
-      data.comparisonCase.projectImpacts.socioeconomic.impacts.find(
-        ({ impact }) => impact === "ecosystem_services",
-      )?.amount ?? 0,
-    );
+      data.projectOnSimulationSiteImpactsData.details.find(
+        ({ name }) => name === "avoidedRoadsAndUtilitiesMaintenanceExpenses",
+      )?.total,
+    ).toBeCloseTo(-203038, 0);
 
     expect(
-      data.baseCase.comparisonImpacts.socioeconomic.impacts.filter(
-        ({ impact }) => impact === "avoided_roads_and_utilities_construction_expenses",
+      data.projectOnSimulationSiteImpactsData.details.find(
+        ({ name }) => name === "fricheRoadsAndUtilitiesExpenses",
       ),
-    ).toEqual([
-      {
-        actor: "Mairie de Blajan",
-        amount: 120805,
-        impact: "avoided_roads_and_utilities_construction_expenses",
-        impactCategory: "economic_direct",
-      },
-    ]);
-
-    expect(
-      data.baseCase.comparisonImpacts.socioeconomic.impacts.filter(
-        ({ impact }) => impact === "avoided_roads_and_utilities_maintenance_expenses",
-      ),
-    ).toEqual([
-      {
-        actor: "community",
-        amount: 203038,
-        impact: "avoided_roads_and_utilities_maintenance_expenses",
-        impactCategory: "economic_indirect",
-      },
-    ]);
-
-    expect(
-      data.baseCase.comparisonImpacts.socioeconomic.impacts.filter(
-        ({ impact }) => impact === "roads_and_utilities_construction_expenses",
-      ),
-    ).toEqual([]);
-    expect(
-      data.baseCase.comparisonImpacts.socioeconomic.impacts.filter(
-        ({ impact }) => impact === "roads_and_utilities_maintenance_expenses",
-      ),
-    ).toEqual([]);
-
-    expect(
-      data.comparisonCase.comparisonImpacts.socioeconomic.impacts.filter(
-        ({ impact }) => impact === "roads_and_utilities_construction_expenses",
-      ),
-    ).toEqual([
-      {
-        actor: "Mairie de Blajan",
-        amount: -120805,
-        impact: "roads_and_utilities_construction_expenses",
-        impactCategory: "economic_direct",
-      },
-    ]);
-
-    expect(
-      data.comparisonCase.comparisonImpacts.socioeconomic.impacts.filter(
-        ({ impact }) => impact === "roads_and_utilities_maintenance_expenses",
-      ),
-    ).toEqual([
-      {
-        actor: "community",
-        amount: -203038,
-        impact: "roads_and_utilities_maintenance_expenses",
-        impactCategory: "economic_indirect",
-      },
-    ]);
-
-    expect(
-      data.comparisonCase.comparisonImpacts.socioeconomic.impacts.filter(
-        ({ impact }) => impact === "avoided_roads_and_utilities_construction_expenses",
-      ),
-    ).toEqual([]);
-    expect(
-      data.comparisonCase.comparisonImpacts.socioeconomic.impacts.filter(
-        ({ impact }) => impact === "avoided_roads_and_utilities_maintenance_expenses",
-      ),
-    ).toEqual([]);
+    ).toBeUndefined();
   });
 
   it("returns impacts with no errors when soils carbon storage cannot be computed", async () => {
@@ -704,16 +392,13 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
     });
 
     expect(result.isSuccess()).toBe(true);
-    const data = (result as SuccessResult<ApiUrbanSprawlImpactsComparisonResultDto>).getData();
+    const data = (result as SuccessResult<UrbanSprawlImpactsComparisonResultDto>).getData();
 
-    expect(data.projectData.id).toEqual(projectData.id);
-    expect(data.baseCase.projectImpacts.environmental.soilsCo2eqStorage).toEqual(undefined);
-    expect(data.baseCase.comparisonImpacts.environmental.soilsCo2eqStorage).toEqual(undefined);
-    expect(data.comparisonCase.projectImpacts.environmental.soilsCo2eqStorage).toEqual(undefined);
-    expect(data.comparisonCase.comparisonImpacts.environmental.soilsCo2eqStorage).toEqual(
-      undefined,
-    );
-    expect(data.comparisonCase.comparisonImpacts.socioeconomic.impacts.length > 0).toBeTruthy();
+    expect(data.projectOnSimulationSiteImpactsData.details.length > 0).toBeTruthy();
+    expect(
+      data.projectOnSimulationSiteImpactsData.details.find(({ name }) => name === "storedCo2Eq"),
+    ).toEqual(undefined);
+    expect(data.simulationSiteStatuQuoImpactsData).toBeDefined();
   });
 
   it("compares photovoltaic project on agricultural site with project on friche", async () => {
@@ -830,86 +515,34 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
     });
 
     expect(result.isSuccess()).toBe(true);
-    const data = (result as SuccessResult<ApiUrbanSprawlImpactsComparisonResultDto>).getData();
+    const data = (result as SuccessResult<UrbanSprawlImpactsComparisonResultDto>).getData();
 
-    expect(data.baseCase.comparisonImpacts.economicBalance.costs.siteReinstatement).toBeUndefined();
     expect(
-      data.comparisonCase.comparisonImpacts.economicBalance.costs.siteReinstatement,
+      data.projectEconomicBalance.details.find(({ name }) => name === "siteReinstatement"),
     ).toBeDefined();
 
     expect(
-      data.baseCase.comparisonImpacts.socioeconomic.impacts.filter(
-        ({ impact }) => impact === "roads_and_utilities_construction_expenses",
-      ),
-    ).toEqual([
-      {
-        actor: "Mairie de Blajan",
-        amount: -431445,
-        impact: "roads_and_utilities_construction_expenses",
-        impactCategory: "economic_direct",
-      },
-    ]);
+      data.projectOnSimulationSiteImpactsData.details.find(
+        ({ name }) => name === "avoidedRoadsAndUtilitiesConstructionExpenses",
+      )?.total,
+    ).toBeGreaterThan(0);
 
     expect(
-      data.baseCase.comparisonImpacts.socioeconomic.impacts.filter(
-        ({ impact }) => impact === "roads_and_utilities_maintenance_expenses",
-      ),
-    ).toEqual([
-      {
-        actor: "community",
-        amount: -725135,
-        impact: "roads_and_utilities_maintenance_expenses",
-        impactCategory: "economic_indirect",
-      },
-    ]);
+      data.projectOnSimulationSiteImpactsData.details.find(
+        ({ name }) => name === "avoidedRoadsAndUtilitiesMaintenanceExpenses",
+      )?.total,
+    ).toBeGreaterThan(0);
 
     expect(
-      data.baseCase.comparisonImpacts.socioeconomic.impacts.filter(
-        ({ impact }) => impact === "avoided_roads_and_utilities_construction_expenses",
+      data.projectOnSimulationSiteImpactsData.details.find(
+        ({ name }) => name === "fricheRoadsAndUtilitiesExpenses",
       ),
-    ).toEqual([]);
-    expect(
-      data.baseCase.comparisonImpacts.socioeconomic.impacts.filter(
-        ({ impact }) => impact === "avoided_roads_and_utilities_maintenance_expenses",
-      ),
-    ).toEqual([]);
+    ).toBeUndefined();
 
     expect(
-      data.baseCase.comparisonImpacts.socioeconomic.impacts.filter(
-        ({ impact }) => impact === "rental_income",
-      ),
-    ).toEqual([
-      {
-        actor: "Mairie de Blajan",
-        amount: -363827,
-        details: [
-          {
-            amount: -363827,
-            impact: "project_rental_income",
-          },
-        ],
-        impact: "rental_income",
-        impactCategory: "economic_direct",
-      },
-    ]);
-
-    expect(
-      data.comparisonCase.comparisonImpacts.socioeconomic.impacts.filter(
-        ({ impact }) => impact === "rental_income",
-      ),
-    ).toEqual([
-      {
-        actor: "Mairie de Blajan",
-        amount: 446515,
-        details: [
-          {
-            amount: 446515,
-            impact: "site_statu_quo_rental_income",
-          },
-        ],
-        impact: "rental_income",
-        impactCategory: "economic_direct",
-      },
-    ]);
+      data.projectOnSimulationSiteImpactsData.details.find(
+        ({ name }) => name === "projectedRentalIncome",
+      )?.total,
+    ).toBeCloseTo(82688, 0);
   });
 });

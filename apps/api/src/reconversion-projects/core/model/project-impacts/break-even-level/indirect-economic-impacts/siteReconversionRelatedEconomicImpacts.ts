@@ -1,78 +1,9 @@
-import {
-  AvoidedFricheCostsIndirectEconomicImpacts,
-  IndirectEconomicImpact,
-  SiteYearlyExpense,
-  SiteYearlyIncome,
-  sumList,
-  sumListWithKey,
-} from "shared";
+import { ReconversionProjectOnSiteIndirectEconomicImpact, sumList } from "shared";
 
 import { SumOnEvolutionPeriodService } from "../../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import { computePropertyValueImpact } from "../../property-value/propertyValueImpact";
-import { computeYearlyRoadsAndUtilitiesMaintenanceExpenses } from "../../roads-and-utilities-expenses/roadsAndUtilitiesExpensesImpact";
+import { computeFricheYearlyRoadsAndUtilitiesMaintenanceExpenses } from "../../roads-and-utilities-expenses/roadsAndUtilitiesExpensesImpact";
 import { computeCumulativeByYear } from "../projectIndirectEconomicImpacts";
-
-export const FRICHE_COST_PURPOSES = [
-  "security",
-  "illegalDumpingCost",
-  "accidentsCost",
-  "otherSecuringCosts",
-  "maintenance",
-] as const;
-
-export type FricheCostPurpose = (typeof FRICHE_COST_PURPOSES)[number];
-
-export const getAvoidedFricheMaintenanceAndSecuringCosts = (props: {
-  sumOnEvolutionPeriodService: SumOnEvolutionPeriodService;
-  yearlyExpenses: SiteYearlyExpense[];
-}): AvoidedFricheCostsIndirectEconomicImpacts[] => {
-  const currentFricheCosts = props.yearlyExpenses.filter(({ purpose }) =>
-    FRICHE_COST_PURPOSES.includes(purpose as FricheCostPurpose),
-  ) as { purpose: FricheCostPurpose; amount: number; bearer: string }[];
-
-  return currentFricheCosts.map(({ bearer, amount, purpose }) => {
-    const detailsByYear = props.sumOnEvolutionPeriodService.getWeightedYearlyValues(amount, [
-      "discount",
-    ]);
-    const name =
-      bearer === "tenant"
-        ? "avoidedFricheMaintenanceAndSecuringCostsForTenant"
-        : "avoidedFricheMaintenanceAndSecuringCostsForOwner";
-    return {
-      total: sumList(detailsByYear),
-      detailsByYear,
-      cumulativeByYear: computeCumulativeByYear(detailsByYear),
-      details: purpose,
-      name,
-    };
-  });
-};
-
-export const getPreviousSiteOperationBenefitLoss = ({
-  previousYearlyIncomes,
-  previousYearlyExpenses,
-  sumOnEvolutionPeriodService,
-}: {
-  sumOnEvolutionPeriodService: SumOnEvolutionPeriodService;
-  previousYearlyIncomes: SiteYearlyIncome[];
-  previousYearlyExpenses: SiteYearlyExpense[];
-}): IndirectEconomicImpact => {
-  const yearlySiteEconomicBalance =
-    sumListWithKey(previousYearlyIncomes, "amount") -
-    sumListWithKey(previousYearlyExpenses, "amount");
-
-  const detailsByYear = sumOnEvolutionPeriodService.getWeightedYearlyValues(
-    yearlySiteEconomicBalance * -1,
-    ["discount"],
-  );
-  return {
-    total: sumList(detailsByYear),
-    detailsByYear: detailsByYear,
-    cumulativeByYear: computeCumulativeByYear(detailsByYear),
-
-    name: "previousSiteOperationBenefitLoss",
-  };
-};
 
 export const getFricheRoadsAndUtilitiesExpensesImpact = ({
   siteSurfaceArea,
@@ -80,9 +11,9 @@ export const getFricheRoadsAndUtilitiesExpensesImpact = ({
 }: {
   siteSurfaceArea: number;
   sumOnEvolutionPeriodService: SumOnEvolutionPeriodService;
-}): IndirectEconomicImpact => {
+}): ReconversionProjectOnSiteIndirectEconomicImpact => {
   const yearlyMaintenanceAmount =
-    computeYearlyRoadsAndUtilitiesMaintenanceExpenses(siteSurfaceArea);
+    computeFricheYearlyRoadsAndUtilitiesMaintenanceExpenses(siteSurfaceArea);
   const detailsByYear = sumOnEvolutionPeriodService.getWeightedYearlyValues(
     -1 * yearlyMaintenanceAmount,
     ["discount"],
@@ -110,7 +41,7 @@ export const getLocalPropertyIncreaseWithFricheRemovalImpacts = ({
     cityPropertyValuePerSquareMeter: number;
   };
   sumOnEvolutionPeriodService: SumOnEvolutionPeriodService;
-}): IndirectEconomicImpact[] => {
+}): ReconversionProjectOnSiteIndirectEconomicImpact[] => {
   const {
     propertyValueIncrease,
     propertyTransferDutiesIncrease,

@@ -140,8 +140,8 @@ export default function ProjectSummaryComparisonCard({ mainImpactIndicator, proj
       </div>
 
       <div>
-        <a className="fr-link" {...routes.urbanSprawlImpactsComparison({ projectId }).link}>
-          Voir l'analyse comparative
+        <a className="fr-link" {...routes.projectAvoidedCostsAnalysis({ projectId }).link}>
+          Voir l'analyse des coûts évités
         </a>
       </div>
     </div>

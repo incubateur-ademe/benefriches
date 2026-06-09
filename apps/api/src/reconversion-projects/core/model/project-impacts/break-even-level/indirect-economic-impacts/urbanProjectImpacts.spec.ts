@@ -38,7 +38,6 @@ const buildUrbanProject = (
   operationsFirstYear: 2025,
   soilsDistribution,
   decontaminatedSoilSurface: 0,
-  hasSiteOwnerChange: false,
   yearlyProjectedExpenses: [],
   developmentPlan: {
     type: "URBAN_PROJECT" as const,
@@ -261,6 +260,54 @@ describe("getUrbanProjectImpacts", () => {
       });
 
       expect(result.find((r) => r.name === "projectNewCompanyTaxationIncome")).toBeDefined();
+    });
+  });
+
+  describe("localPropertyValueIncrease", () => {
+    it("doesn't add localPropertyValueIncrease impacts if site is not friche", () => {
+      const result = getUrbanProjectImpacts({
+        reconversionProject: buildUrbanProject({ OFFICES: 2_000 }),
+        relatedSite: { ...baseRelatedSite, nature: "AGRICULTURAL_OPERATION" },
+        siteCityData: baseSiteCityData,
+        sumOnEvolutionPeriodService: mockService,
+      });
+
+      expect(result.find((d) => d.name === "localPropertyValueIncrease")).toBeUndefined();
+    });
+
+    it("add localPropertyValueIncrease for urban project on friche", () => {
+      const result = getUrbanProjectImpacts({
+        reconversionProject: buildUrbanProject({ OFFICES: 2_000 }),
+        relatedSite: baseRelatedSite,
+        siteCityData: baseSiteCityData,
+        sumOnEvolutionPeriodService: mockService,
+      });
+
+      expect(result.find((d) => d.name === "localPropertyValueIncrease")).toBeDefined();
+    });
+  });
+
+  describe("fricheRoadsAndUtilitiesExpenses", () => {
+    it("doesn't add fricheRoadsAndUtilitiesExpenses impacts if site is not friche", () => {
+      const result = getUrbanProjectImpacts({
+        reconversionProject: buildUrbanProject({ OFFICES: 2_000 }),
+        relatedSite: { ...baseRelatedSite, nature: "AGRICULTURAL_OPERATION" },
+        siteCityData: baseSiteCityData,
+        sumOnEvolutionPeriodService: mockService,
+      });
+
+      expect(result.find((d) => d.name === "fricheRoadsAndUtilitiesExpenses")).toBeUndefined();
+    });
+
+    it("add fricheRoadsAndUtilitiesExpenses for urban project on friche", () => {
+      const result = getUrbanProjectImpacts({
+        reconversionProject: buildUrbanProject({ OFFICES: 2_000 }),
+        relatedSite: baseRelatedSite,
+        siteCityData: baseSiteCityData,
+        sumOnEvolutionPeriodService: mockService,
+      });
+
+      expect(result.find((d) => d.name === "fricheRoadsAndUtilitiesExpenses")).toBeDefined();
     });
   });
 });

@@ -22,7 +22,7 @@ function MetricCard({ emoji, title, isPositive, badge, description }: MetricCard
         <span
           className={classNames(
             "font-bold text-white rounded-md text-sm py-0.5 px-1.5",
-            isPositive ? "bg-[#038141]" : "bg-[#E63E11]",
+            isPositive ? "bg-development-score-grade-a" : "bg-[#E63E11]",
           )}
         >
           {badge ?? (isPositive ? "Amélioré" : "Dégradé")}

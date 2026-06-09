@@ -12,7 +12,11 @@ import {
 
 const MOCK_STATES = {
   projectImpacts: {
-    dataLoadingState: "success",
+    dataLoadingState: {
+      oldProjectImpacts: "success",
+      impacts: "idle",
+      urbanSprawlSimulation: "idle",
+    },
     evaluationPeriod: 10,
     currentViewMode: "list",
     impactsData: photovoltaicProjectImpactMock.impacts,
@@ -125,7 +129,11 @@ describe("projectImpacts ViewData selectors", () => {
       const viewData = selectImpactsPageViewData(rootState);
 
       expect(viewData).toEqual({
-        dataLoadingState: "success",
+        dataLoadingState: {
+          oldProjectImpacts: "success",
+          impacts: "idle",
+          urbanSprawlSimulation: "idle",
+        },
         evaluationPeriod: 10,
         currentViewMode: "list",
         projectName: "Project photovoltaïque",

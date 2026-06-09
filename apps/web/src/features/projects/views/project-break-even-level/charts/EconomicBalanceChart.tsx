@@ -1,6 +1,6 @@
 import { Options } from "highcharts";
 import { useId, useMemo } from "react";
-import { ReconversionProjectImpactsBreakEvenLevel, sumListWithKey } from "shared";
+import { GetReconversionProjectImpactsResultDto, sumListWithKey } from "shared";
 
 import { withDefaultBarChartOptions } from "@/shared/views/charts";
 import { useChartCustomPointColors } from "@/shared/views/charts/useChartCustomColors";
@@ -9,7 +9,7 @@ import { getPositiveNegativeTextClassesFromValue } from "@/shared/views/classes/
 import ImpactChartCard from "../../project-page/impacts/charts-view/ImpactChartCard/ImpactChartCard";
 import { formatMonetaryImpact } from "../../shared/formatImpactValue";
 
-type Props = Pick<ReconversionProjectImpactsBreakEvenLevel, "economicBalance">;
+type Props = Pick<GetReconversionProjectImpactsResultDto, "projectEconomicBalance">;
 
 const barChartOptions: Options = withDefaultBarChartOptions({
   tooltip: {
@@ -36,7 +36,7 @@ const barChartOptions: Options = withDefaultBarChartOptions({
   },
 });
 
-const getLabelForName = (name: Props["economicBalance"]["details"][number]["name"]) => {
+const getLabelForName = (name: Props["projectEconomicBalance"]["details"][number]["name"]) => {
   switch (name) {
     case "projectInstallation":
       return "Aménagement du site";
@@ -55,7 +55,9 @@ const getLabelForName = (name: Props["economicBalance"]["details"][number]["name
   }
 };
 
-export const getColorForName = (name: Props["economicBalance"]["details"][number]["name"]) => {
+export const getColorForName = (
+  name: Props["projectEconomicBalance"]["details"][number]["name"],
+) => {
   switch (name) {
     case "projectInstallation":
       return "#E02727";
@@ -74,8 +76,8 @@ export const getColorForName = (name: Props["economicBalance"]["details"][number
   }
 };
 const sumForCategory = (
-  data: Props["economicBalance"]["details"],
-  name: Props["economicBalance"]["details"][number]["name"],
+  data: Props["projectEconomicBalance"]["details"],
+  name: Props["projectEconomicBalance"]["details"][number]["name"],
 ) => {
   return sumListWithKey(
     data.filter((item) => item.name === name),
@@ -83,20 +85,20 @@ const sumForCategory = (
   );
 };
 
-export default function EconomicBalanceChart({ economicBalance }: Props) {
+export default function EconomicBalanceChart({ projectEconomicBalance }: Props) {
   const categories = useMemo(
-    () => Array.from(new Set(economicBalance.details.map(({ name }) => name))),
-    [economicBalance],
+    () => Array.from(new Set(projectEconomicBalance.details.map(({ name }) => name))),
+    [projectEconomicBalance],
   );
 
   const data = useMemo(
     () =>
       categories.map((category) => ({
         name: getLabelForName(category),
-        y: sumForCategory(economicBalance.details, category),
+        y: sumForCategory(projectEconomicBalance.details, category),
         color: getColorForName(category),
       })),
-    [categories, economicBalance],
+    [categories, projectEconomicBalance],
   );
   const chartContainerId = useId();
 
@@ -116,7 +118,7 @@ export default function EconomicBalanceChart({ economicBalance }: Props) {
           ...barChartOptions,
           subtitle: {
             useHTML: true,
-            text: `<span class='text-sm py-4'>Bilan total de l’opération : <span class='font-bold ${getPositiveNegativeTextClassesFromValue(economicBalance.total)}'>${formatMonetaryImpact(economicBalance.total)}</span>`,
+            text: `<span class='text-sm py-4'>Bilan total de l’opération : <span class='font-bold ${getPositiveNegativeTextClassesFromValue(projectEconomicBalance.total)}'>${formatMonetaryImpact(projectEconomicBalance.total)}</span>`,
             verticalAlign: "bottom",
             align: "left",
           },

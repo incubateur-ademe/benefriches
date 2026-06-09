@@ -3,22 +3,19 @@ import { SiteNature } from "shared";
 import {
   UrbanSprawlImpactsComparisonGateway,
   UrbanSprawlImpactsComparisonObj,
-} from "../../application/project-impacts-urban-sprawl-comparison/fetchUrbanSprawlImpactsComparison.action";
+} from "../../application/project-impacts/actions/urbanSprawlImpactsComparisonRequested.action";
 
 type Props = {
   reconversionProjectId: string;
-  evaluationPeriodInYears: number;
   comparisonSiteNature: SiteNature;
 };
 
 export class HttpUrbanSprawlImpactsComparisonService implements UrbanSprawlImpactsComparisonGateway {
   async getImpactsUrbanSprawlComparison({
     reconversionProjectId,
-    evaluationPeriodInYears,
     comparisonSiteNature,
   }: Props): Promise<UrbanSprawlImpactsComparisonObj> {
     const queryParams = new URLSearchParams();
-    queryParams.append("evaluationPeriodInYears", evaluationPeriodInYears.toString());
     queryParams.append("comparisonSiteNature", comparisonSiteNature);
 
     const response = await fetch(

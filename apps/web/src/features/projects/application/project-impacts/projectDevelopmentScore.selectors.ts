@@ -3,6 +3,7 @@ import { sumListWithKey } from "shared";
 
 import { RootState } from "@/app/store/store";
 
+import { IndirectEconomicImpactsByBearer } from "../../domain/groupIndirectImpactsByBearer";
 import {
   EnvironmentalAreaChartImpactsData,
   getEnvironmentalAreaChartImpactsData,
@@ -10,8 +11,7 @@ import {
   SocialAreaChartImpactsData,
 } from "../../domain/projectImpactsAreaChartsData";
 import {
-  IndirectEconomicImpactsByBearer,
-  selectBreakEvenLevelByEvaluationPeriod,
+  selectImpactsCroppedByEvaluationPeriod,
   selectIndirectEconomicImpactsByBearer,
 } from "./projectBreakEvenLevel.selectors";
 
@@ -123,7 +123,7 @@ const getDecontaminationState = (props: {
 };
 
 export const selectDevelopmentScoreDataView = createSelector(
-  [selectSelf, selectBreakEvenLevelByEvaluationPeriod, selectIndirectEconomicImpactsByBearer],
+  [selectSelf, selectImpactsCroppedByEvaluationPeriod, selectIndirectEconomicImpactsByBearer],
   (
     state,
     breakEvenLevelForEvaluationPeriod,
@@ -134,21 +134,30 @@ export const selectDevelopmentScoreDataView = createSelector(
     }
 
     const localPeopleAndCompanyIndirectImpacts = sumListWithKey(
-      (breakEvenLevelForEvaluationPeriod.indirectEconomicImpacts.details ?? []).filter(({ name }) =>
+      (
+        breakEvenLevelForEvaluationPeriod.aggregatedReconversionImpacts.indirectEconomicImpacts
+          .details ?? []
+      ).filter(({ name }) =>
         INDIRECT_ECONOMIC_IMPACTS_SCORE.localPeopleOrCompany.some((item) => item === name),
       ),
       "total",
     );
 
     const environmentalIndirectImpacts = sumListWithKey(
-      (breakEvenLevelForEvaluationPeriod.indirectEconomicImpacts.details ?? []).filter(({ name }) =>
+      (
+        breakEvenLevelForEvaluationPeriod.aggregatedReconversionImpacts.indirectEconomicImpacts
+          .details ?? []
+      ).filter(({ name }) =>
         INDIRECT_ECONOMIC_IMPACTS_SCORE.environmental.some((item) => item === name),
       ),
       "total",
     );
 
     const macroEconomicIndirectImpacts = sumListWithKey(
-      (breakEvenLevelForEvaluationPeriod.indirectEconomicImpacts.details ?? []).filter(({ name }) =>
+      (
+        breakEvenLevelForEvaluationPeriod.aggregatedReconversionImpacts.indirectEconomicImpacts
+          .details ?? []
+      ).filter(({ name }) =>
         INDIRECT_ECONOMIC_IMPACTS_SCORE.macroEconomy.some((item) => item === name),
       ),
       "total",
@@ -192,17 +201,20 @@ export const selectDevelopmentScoreDataView = createSelector(
           hasDecontamination:
             decontaminationState === "partial" || decontaminationState === "total",
           avoidedVehiculeKilometers: state.impactsData?.social.avoidedVehiculeKilometers,
-          waterRegulation: breakEvenLevelForEvaluationPeriod.indirectEconomicImpacts.details.find(
-            ({ name }) => name === "waterRegulation",
-          )?.total,
+          waterRegulation:
+            breakEvenLevelForEvaluationPeriod.aggregatedReconversionImpacts.indirectEconomicImpacts.details.find(
+              ({ name }) => name === "waterRegulation",
+            )?.total,
           zanCompliance:
             state.relatedSiteData?.nature === "FRICHE" &&
             state.relatedSiteData?.fricheActivity !== "AGRICULTURE",
 
           ecosystemicServices: sumListWithKey(
-            (breakEvenLevelForEvaluationPeriod.indirectEconomicImpacts.details ?? []).filter(
-              ({ name }) =>
-                INDIRECT_ECONOMIC_IMPACTS_SCORE.ecosystemicServices.some((item) => item === name),
+            (
+              breakEvenLevelForEvaluationPeriod.aggregatedReconversionImpacts
+                .indirectEconomicImpacts.details ?? []
+            ).filter(({ name }) =>
+              INDIRECT_ECONOMIC_IMPACTS_SCORE.ecosystemicServices.some((item) => item === name),
             ),
             "total",
           ),
@@ -218,11 +230,11 @@ export const selectDevelopmentScoreDataView = createSelector(
         value: localPeopleAndCompanyIndirectImpacts,
         metrics: {
           localPropertyValueIncrease:
-            breakEvenLevelForEvaluationPeriod.indirectEconomicImpacts.details.find(
+            breakEvenLevelForEvaluationPeriod.aggregatedReconversionImpacts.indirectEconomicImpacts.details.find(
               ({ name }) => name === "localPropertyValueIncrease",
             )?.total,
           avoidedAirPollutionHealthExpenses:
-            breakEvenLevelForEvaluationPeriod.indirectEconomicImpacts.details.find(
+            breakEvenLevelForEvaluationPeriod.aggregatedReconversionImpacts.indirectEconomicImpacts.details.find(
               ({ name }) => name === "avoidedAirPollutionHealthExpenses",
             )?.total,
           hasDecontamination:

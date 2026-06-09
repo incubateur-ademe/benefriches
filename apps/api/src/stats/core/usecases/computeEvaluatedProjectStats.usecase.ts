@@ -192,7 +192,7 @@ export class ComputeEvaluatedProjectStatsUseCase implements UseCase<
       const operationsFirstYear =
         projectDevelopment.operationsFirstYear ?? defaultOperationFirstYear;
 
-      const { breakEvenIndex, indirectEconomicImpacts, economicBalance } =
+      const { projectEconomicBalance, aggregatedReconversionImpacts } =
         computeProjectImpactsWithBreakEvenLevel({
           reconversionProject: {
             name: "",
@@ -258,19 +258,20 @@ export class ComputeEvaluatedProjectStatsUseCase implements UseCase<
           },
         });
 
-      if (breakEvenIndex !== undefined) {
+      if (aggregatedReconversionImpacts.breakEvenIndex !== undefined) {
         stats.projectWithBreakEvenIndex += 1;
-        breakEvenIndexes.push(breakEvenIndex);
+        breakEvenIndexes.push(aggregatedReconversionImpacts.breakEvenIndex);
       } else {
         stats.projectWithoutBreakEvenIndex += 1;
       }
       stats.totalProjects += 1;
-      stats.totalEconomicBalance += economicBalance.total;
-      stats.totalIndirectEconomicImpacts += indirectEconomicImpacts.total;
+      stats.totalEconomicBalance += projectEconomicBalance.total;
+      stats.totalIndirectEconomicImpacts +=
+        aggregatedReconversionImpacts.indirectEconomicImpacts.total;
 
       if (relatedSite.nature === "FRICHE") {
         const avoidedFricheCosts = sumListWithKey(
-          indirectEconomicImpacts.details.filter(
+          aggregatedReconversionImpacts.indirectEconomicImpacts.details.filter(
             ({ name }) =>
               name === "avoidedFricheMaintenanceAndSecuringCostsForOwner" ||
               name === "avoidedFricheMaintenanceAndSecuringCostsForTenant",

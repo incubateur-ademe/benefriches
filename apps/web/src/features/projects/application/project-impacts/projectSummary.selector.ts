@@ -4,7 +4,7 @@ import { RootState } from "@/app/store/store";
 
 import { KeyImpactIndicatorData } from "../../domain/projectKeyImpactIndicators";
 import { PRIORITY_ORDER } from "../../views/shared/impacts/summary";
-import { selectBreakEvenLevelByEvaluationPeriod } from "./projectBreakEvenLevel.selectors";
+import { selectImpactsCroppedByEvaluationPeriod } from "./projectBreakEvenLevel.selectors";
 import { ProjectImpactsState } from "./projectImpacts.reducer";
 import { getKeyImpactIndicatorsListSelector } from "./projectKeyImpactIndicators.selectors";
 
@@ -44,7 +44,7 @@ export const selectProjectSummaryDataView = createSelector(
     selectProjectData,
     selectSiteData,
     getKeyImpactIndicatorsListSelector,
-    selectBreakEvenLevelByEvaluationPeriod,
+    selectImpactsCroppedByEvaluationPeriod,
   ],
   (
     projectData,
@@ -67,7 +67,7 @@ export const selectProjectSummaryDataView = createSelector(
       .find(({ name }) => name !== "zanCompliance" && name !== "projectImpactBalance");
 
     return {
-      breakEvenYear: breakEvenLevel.breakEvenYear,
+      breakEvenYear: breakEvenLevel.aggregatedReconversionImpacts.breakEvenYear,
       projectionYears: breakEvenLevel.projectionYears,
       zanCompliance,
       mainImpactIndicator,

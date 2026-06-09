@@ -2,9 +2,9 @@ import {
   sumList,
   SiteYearlyExpense,
   SiteYearlyIncome,
-  GetSiteImpactsDto,
   sumListWithKey,
   roundToInteger,
+  OperatingEconomicBalanceItem,
 } from "shared";
 
 import { computeCumulativeByYear } from "src/reconversion-projects/core/model/project-impacts/break-even-level/projectIndirectEconomicImpacts";
@@ -19,8 +19,8 @@ export const getSiteStatuQuoOperatingEconomicBalance = ({
   yearlyIncomes,
   yearlyExpenses,
   sumOnEvolutionPeriodService,
-}: Props): GetSiteImpactsDto["operatingEconomicBalance"] => {
-  const details: GetSiteImpactsDto["operatingEconomicBalance"]["details"] = [
+}: Props): { total: number; details: OperatingEconomicBalanceItem[] } => {
+  const details: OperatingEconomicBalanceItem[] = [
     ...yearlyExpenses.map(({ amount, purpose }) => {
       const detailsByYear = sumOnEvolutionPeriodService.getWeightedYearlyValues(-amount, [
         "discount",

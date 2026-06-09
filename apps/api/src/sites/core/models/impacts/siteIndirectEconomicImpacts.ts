@@ -17,7 +17,7 @@ import {
   isPermeableSurfaceWithoutPermanentVegetation,
   FricheCostsIndirectEconomicImpacts,
   TaxesIncomeIndirectEconomicImpacts,
-  SiteIndirectEconomicImpact,
+  SiteStatuQuoEconomicImpact,
 } from "shared";
 
 import { computeCumulativeByYear } from "src/reconversion-projects/core/model/project-impacts/break-even-level/projectIndirectEconomicImpacts";
@@ -33,8 +33,15 @@ import {
 } from "src/reconversion-projects/core/model/project-impacts/nature-conservation/natureConservationYearlyMonetaryValue";
 
 import { SoilsCarbonStorage } from "../../../../reconversion-projects/core/gateways/SoilsCarbonStorageService";
-import { FRICHE_COST_PURPOSES } from "../../../../reconversion-projects/core/model/project-impacts/break-even-level/indirect-economic-impacts/siteReconversionRelatedEconomicImpacts";
 import { SumOnEvolutionPeriodService } from "../../../../reconversion-projects/core/model/sum-on-evolution-period/SumOnEvolutionPeriodService";
+
+const FRICHE_COST_PURPOSES = [
+  "security",
+  "illegalDumpingCost",
+  "accidentsCost",
+  "otherSecuringCosts",
+  "maintenance",
+] as const;
 
 type Props = {
   sumOnEvolutionPeriodService: SumOnEvolutionPeriodService;
@@ -51,8 +58,8 @@ type Props = {
 export const getSiteStatuQuoIndirectsEconomicImpacts = ({
   siteData,
   sumOnEvolutionPeriodService,
-}: Props): GetSiteImpactsDto["indirectEconomicImpacts"] => {
-  const impacts: SiteIndirectEconomicImpact[] = [];
+}: Props): GetSiteImpactsDto["economicImpacts"] => {
+  const impacts: SiteStatuQuoEconomicImpact[] = [];
 
   // --- Impacts liés à la nature du site ---
   if (siteData.nature === "FRICHE") {
@@ -86,7 +93,6 @@ export const getSiteStatuQuoIndirectsEconomicImpacts = ({
     ({ purpose }) =>
       purpose === "taxes" || purpose === "operationsTaxes" || purpose === "propertyTaxes",
   );
-
   if (taxes.length !== 0) {
     const taxesImpacts: TaxesIncomeIndirectEconomicImpacts[] = taxes.map(
       (expense): TaxesIncomeIndirectEconomicImpacts => {

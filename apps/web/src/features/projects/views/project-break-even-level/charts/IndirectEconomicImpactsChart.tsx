@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { typedObjectEntries } from "shared";
 
-import { IndirectEconomicImpactsByBearer } from "@/features/projects/application/project-impacts/projectBreakEvenLevel.selectors";
+import { IndirectEconomicImpactsByBearer } from "@/features/projects/domain/groupIndirectImpactsByBearer";
 
 import EconomicColumnChart from "./EconomicColumnChart";
 

@@ -1,8 +1,8 @@
 import {
   GetSiteImpactsDto,
-  isStakeholderLocalAuthority,
   roundToInteger,
   SiteImpactsDataView,
+  SiteStatuQuoImpacts,
 } from "shared";
 
 import { SoilsCarbonStorage } from "src/reconversion-projects/core/gateways/SoilsCarbonStorageService";
@@ -19,9 +19,9 @@ export const computeStatuQuoSiteImpacts = ({
 }: {
   evaluationPeriodInYears: number;
   operationsFirstYear: number;
-  site: SiteImpactsDataView;
+  site: Omit<SiteImpactsDataView, "address">;
   siteSoilsCarbonStorage?: SoilsCarbonStorage;
-}) => {
+}): SiteStatuQuoImpacts => {
   const stakeholders = {
     owner: {
       structureType: site.ownerStructureType,
@@ -49,7 +49,7 @@ export const computeStatuQuoSiteImpacts = ({
     operationsFirstYear,
   });
 
-  const indirectEconomicImpacts: GetSiteImpactsDto["indirectEconomicImpacts"] =
+  const indirectEconomicImpacts: GetSiteImpactsDto["economicImpacts"] =
     getSiteStatuQuoIndirectsEconomicImpacts({
       siteData: { ...site, soilsCarbonStorage: siteSoilsCarbonStorage },
       sumOnEvolutionPeriodService,
@@ -61,39 +61,18 @@ export const computeStatuQuoSiteImpacts = ({
     sumOnEvolutionPeriodService,
   });
 
-  const isOperatorLocalAuthority =
-    !!stakeholders.operator && isStakeholderLocalAuthority(stakeholders.operator);
+  const shouldCountOperatingEconomicBalance = site.isSiteOperated;
 
-  const shouldCountOperatingEconomicBalance = isOperatorLocalAuthority;
-
-  const monetaryImpactsList = shouldCountOperatingEconomicBalance
-    ? [...indirectEconomicImpacts.details, ...operatingEconomicBalance.details]
-    : indirectEconomicImpacts.details;
-
-  const cumulativeBalanceByYear = monetaryImpactsList.reduce<number[]>((total, impact) => {
-    impact.cumulativeByYear.forEach((value, index) => {
-      total[index] = (total[index] ?? 0) + value;
-    });
-    return total;
-  }, []);
-
-  const projectionYears = cumulativeBalanceByYear.map(
-    (_, index) => `${operationsFirstYear + index}`,
-  );
-
-  const indirectImpacts = isOperatorLocalAuthority
+  const economicImpacts = shouldCountOperatingEconomicBalance
     ? {
-        total: roundToInteger(indirectEconomicImpacts.total + operatingEconomicBalance.total),
         details: [...indirectEconomicImpacts.details, ...operatingEconomicBalance.details],
+        total: roundToInteger(indirectEconomicImpacts.total + operatingEconomicBalance.total),
       }
     : indirectEconomicImpacts;
 
   return {
-    cumulativeBalanceByYear,
-    projectionYears,
-    operatingEconomicBalance,
-    indirectEconomicImpacts: indirectImpacts,
-    operationsFirstYear,
+    projectionYears: sumOnEvolutionPeriodService.getProjectionYears(),
+    economicImpacts,
     stakeholders,
   };
 };

@@ -100,6 +100,7 @@ const { RouteProvider, useRoute, routes, session } = createRouter({
   projectImpactsSummary: projectImpacts.extend(`/apercu`),
   projectImpactsDevelopmentScore: projectImpacts.extend(`/amenagescore`),
   projectImpactsBreakEvenLevel: projectImpacts.extend(`/analyse-cout-benefice`),
+  projectAvoidedCostsAnalysis: projectImpacts.extend(`/analyse-couts-evites`),
   projectImpacts: projectImpacts.extend(`/impacts`),
   projectImpactsOnboarding: projectImpacts.extend(
     {
@@ -108,7 +109,6 @@ const { RouteProvider, useRoute, routes, session } = createRouter({
     () => `/onboarding-impacts`,
   ),
   projectFeatures: projectImpacts.extend(`/caracterisques`),
-  urbanSprawlImpactsComparison: projectImpacts.extend(`/comparaison-extension-urbaine`),
   // MES EVALUATIONS
   myEvaluations: defineRoute("/mes-evaluations"),
   siteFeatures: defineRoute(

@@ -27,11 +27,11 @@ export default function EmbedImpactsViewContainer({ siteCityCode, siteSurfaceAre
     void dispatch(fetchQuickImpactsForUrbanProjectOnFriche({ siteCityCode, siteSurfaceArea }));
   }, [siteCityCode, siteSurfaceArea, dispatch]);
 
-  if (dataLoadingState === "loading") {
+  if (dataLoadingState.oldProjectImpacts === "loading") {
     return <LoadingSpinner />;
   }
 
-  if (dataLoadingState === "success" && relatedSiteData) {
+  if (dataLoadingState.oldProjectImpacts === "success" && relatedSiteData) {
     return (
       <EmbedImpactsView
         evaluationPeriod={evaluationPeriod}
@@ -43,7 +43,7 @@ export default function EmbedImpactsViewContainer({ siteCityCode, siteSurfaceAre
     );
   }
 
-  if (dataLoadingState === "error") {
+  if (dataLoadingState.oldProjectImpacts === "error") {
     return (
       <Alert
         description="Une erreur s'est produite lors du calcul des données, veuillez réessayer."
