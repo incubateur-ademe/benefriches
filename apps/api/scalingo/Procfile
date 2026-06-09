@@ -1,2 +1,2 @@
 web: cd apps/api && node ./dist/src/main.js
-postdeploy: cd apps/api && pnpm knex:migrate-latest:js
+postdeploy: cd apps/api && CI=true pnpm knex:migrate-latest:js
