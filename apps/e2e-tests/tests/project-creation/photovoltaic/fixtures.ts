@@ -7,6 +7,20 @@ import {
 } from "../../../fixtures/helpers/site-creation.helpers";
 import { PhotovoltaicProjectCreationPage } from "../../../pages/PhotovoltaicProjectCreationPage";
 
+const PHOTOVOLTAIC_PERFORMANCE_MOCK = {
+  expectedPerformance: {
+    kwhPerDay: 9.43,
+    kwhPerMonth: 286.91,
+    kwhPerYear: 3442.92,
+    lossPercents: {
+      angleIncidence: -2.98,
+      spectralIncidence: 1.65,
+      tempAndIrradiance: -5.73,
+      total: -20.05,
+    },
+  },
+};
+
 type AgriculturalCustomSiteDto = Extract<CreateCustomSiteDto, { nature: "AGRICULTURAL_OPERATION" }>;
 
 const SITE_DATA: Omit<AgriculturalCustomSiteDto, "id" | "createdBy"> = {
@@ -54,6 +68,11 @@ export const test = authTest.extend<PhotovoltaicProjectCreationFixtures>({
   },
 
   pvProjectCreationPage: async ({ authenticatedPage }, use) => {
+    // Stub the photovoltaic performance endpoint so tests don't depend on the external
+    // re.jrc.ec.europa.eu API.
+    await authenticatedPage.route("**/api/photovoltaic-performance**", (route) =>
+      route.fulfill({ json: PHOTOVOLTAIC_PERFORMANCE_MOCK }),
+    );
     const pvProjectCreationPage = new PhotovoltaicProjectCreationPage(authenticatedPage);
     await use(pvProjectCreationPage);
   },
