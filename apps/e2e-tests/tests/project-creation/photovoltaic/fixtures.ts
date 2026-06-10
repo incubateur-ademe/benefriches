@@ -73,31 +73,6 @@ export const test = authTest.extend<PhotovoltaicProjectCreationFixtures>({
     await authenticatedPage.route("**/api/photovoltaic-performance**", (route) =>
       route.fulfill({ json: PHOTOVOLTAIC_PERFORMANCE_MOCK }),
     );
-    // Log create-from-template request timing and full error body to diagnose CI slowness
-    authenticatedPage.on("request", (request) => {
-      if (request.url().includes("create-from-template")) {
-        console.log(
-          `[network] ${request.method()} create-from-template sent at ${request.timing().requestStart}ms`,
-        );
-      }
-    });
-    authenticatedPage.on("response", async (response) => {
-      if (response.url().includes("create-from-template")) {
-        const timing = response.request().timing();
-        const elapsed = timing.responseEnd - timing.requestStart;
-        console.log(
-          `[network] ${response.request().method()} create-from-template → ${response.status()} (${Math.round(elapsed)}ms)`,
-        );
-        if (!response.ok()) {
-          try {
-            const body = await response.text();
-            console.log(`[network] error body: ${body.substring(0, 500)}`);
-          } catch {
-            console.log(`[network] could not read error body`);
-          }
-        }
-      }
-    });
     const pvProjectCreationPage = new PhotovoltaicProjectCreationPage(authenticatedPage);
     await use(pvProjectCreationPage);
   },
