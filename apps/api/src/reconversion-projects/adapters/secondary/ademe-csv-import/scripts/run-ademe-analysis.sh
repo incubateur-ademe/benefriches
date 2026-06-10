@@ -23,22 +23,22 @@ USER_ID="$2"
 OUTPUT_CSV="${3:-$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/ademe-impacts-export.csv}"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-API_DIR="$(cd "$SCRIPT_DIR/../../../../.." && pwd)"
+API_DIR="$(cd "$SCRIPT_DIR/../../../../../../.." && pwd)"
 
 cd "$API_DIR"
 
-IMPORT_DIR="src/reconversion-projects/adapters/secondary/ademe-csv-import"
+SCRIPTS_DIR="src/reconversion-projects/adapters/secondary/ademe-csv-import/scripts"
 
 echo "▶️  Step 1/4 — Cleanup existing data for user $USER_ID"
-pnpm exec tsx "$IMPORT_DIR/delete-ademe-user-data.ts" "$USER_ID"
+pnpm exec tsx "$SCRIPTS_DIR/delete-ademe-user-data.ts" "$USER_ID"
 
 echo "▶️  Step 2/4 — Strip trailing empty rows from $CSV_PATH"
-pnpm exec tsx "$IMPORT_DIR/stripTrailingEmptyCsvRows.ts" "$CSV_PATH"
+pnpm exec tsx "$SCRIPTS_DIR/strip-trailing-empty-csv-rows.ts" "$CSV_PATH"
 
 echo "▶️  Step 3/4 — Import CSV (sites + projects + impacts)"
-pnpm exec tsx "$IMPORT_DIR/import-ademe-csv.ts" "$CSV_PATH" "$USER_ID"
+pnpm exec tsx "$SCRIPTS_DIR/import-ademe-csv.ts" "$CSV_PATH" "$USER_ID"
 
 echo "▶️  Step 4/4 — Export impacts CSV to $OUTPUT_CSV"
-pnpm exec tsx "$IMPORT_DIR/export-ademe-impacts-csv.ts" "$USER_ID" "$OUTPUT_CSV"
+pnpm exec tsx "$SCRIPTS_DIR/export-ademe-impacts-csv.ts" "$USER_ID" "$OUTPUT_CSV"
 
 echo "✅ Done. Impacts exported to: $OUTPUT_CSV"

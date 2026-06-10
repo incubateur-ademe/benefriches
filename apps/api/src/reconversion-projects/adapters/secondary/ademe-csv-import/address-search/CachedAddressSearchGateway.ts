@@ -5,7 +5,7 @@ import type { Address } from "shared";
 import { success } from "src/shared-kernel/result";
 import type { TResult } from "src/shared-kernel/result";
 
-import type { AddressSearchGateway, SearchAddressOptions } from "./mapAdemeProjectToFriche";
+import type { AddressSearchGateway, SearchAddressOptions } from "./AddressSearchGateway";
 
 type CacheStore = Record<string, Address[]>;
 

@@ -5,10 +5,10 @@ import { GetCarbonStorageFromSoilDistributionService } from "src/carbon-storage/
 import { ComputeReconversionProjectImpactsUseCase } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
 import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
 import { SilentLogger } from "src/shared-kernel/adapters/logger/SilentLogger";
+import { SqlSiteImpactsQuery } from "src/sites/adapters/secondary/site-impacts/SqlSiteImpactsQuery";
 
 import { SqlCityStatsQuery } from "../queries/city-stats/SqlCityStatsQuery";
 import { SqlReconversionProjectImpactsQuery } from "../queries/reconversion-project-impacts/SqlReconversionProjectImpactsQuery";
-import { SqlSiteImpactsQuery } from "../queries/site-impacts/SqlSiteImpactsQuery";
 
 export function buildAdemeScriptComputeImpactsUseCase(
   db: Knex,

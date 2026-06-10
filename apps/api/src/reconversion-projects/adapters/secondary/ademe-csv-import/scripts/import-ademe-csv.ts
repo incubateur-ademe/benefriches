@@ -7,11 +7,11 @@ import path from "node:path";
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
 import { SqlSiteRepository } from "src/sites/adapters/secondary/site-repository/SqlSiteRepository";
 
-import { SqlReconversionProjectRepository } from "../repositories/reconversion-project/SqlReconversionProjectRepository";
-import { BanAddressSearchGateway } from "./BaseAdresseNationaleClient";
-import { CachedAddressSearchGateway } from "./CachedAddressSearchGateway";
-import { buildAdemeScriptComputeImpactsUseCase } from "./ademeScriptDeps";
-import { importAdemeProjects } from "./importAdemeProjects";
+import { SqlReconversionProjectRepository } from "../../repositories/reconversion-project/SqlReconversionProjectRepository";
+import { BanAddressSearchGateway } from "../address-search/BanAddressSearchGateway";
+import { CachedAddressSearchGateway } from "../address-search/CachedAddressSearchGateway";
+import { buildAdemeScriptComputeImpactsUseCase } from "../ademeScriptDeps";
+import { importAdemeProjects } from "../import/importAdemeProjects";
 
 const dotEnvPath = path.resolve(process.cwd(), ".env");
 if (fs.existsSync(dotEnvPath)) {
@@ -41,7 +41,7 @@ if (!csvPath || !userId) {
   try {
     const sitesRepository = new SqlSiteRepository(db);
     const reconversionProjectRepository = new SqlReconversionProjectRepository(db);
-    const cacheFilePath = path.resolve(__dirname, "address-cache.json");
+    const cacheFilePath = path.resolve(__dirname, "../address-cache.json");
     const addressApi = new CachedAddressSearchGateway(new BanAddressSearchGateway(), cacheFilePath);
 
     const computeImpactsUseCase = buildAdemeScriptComputeImpactsUseCase(db);

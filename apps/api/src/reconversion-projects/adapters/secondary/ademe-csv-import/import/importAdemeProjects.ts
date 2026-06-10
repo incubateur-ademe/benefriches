@@ -10,8 +10,8 @@ import type { TResult } from "src/shared-kernel/result";
 import type { SitesRepository } from "src/sites/core/gateways/SitesRepository";
 import type { SiteEntity } from "src/sites/core/models/siteEntity";
 
+import type { AddressSearchGateway } from "../address-search/AddressSearchGateway";
 import { mapAdemeProjectToFriche } from "./mapAdemeProjectToFriche";
-import type { AddressSearchGateway } from "./mapAdemeProjectToFriche";
 import { mapAdemeProjectToProject } from "./mapAdemeProjectToProject";
 import { parseAdemeProjectsCsv } from "./parseAdemeProjectsCsv";
 

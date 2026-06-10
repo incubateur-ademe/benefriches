@@ -1,5 +1,5 @@
 // oxlint-disable no-console
-import type { Address, SoilType } from "shared";
+import type { SoilType } from "shared";
 import { SurfaceAreaDistribution } from "shared";
 import type { FricheActivity } from "shared";
 import { v4 as uuidv4 } from "uuid";
@@ -8,17 +8,8 @@ import { fail, success } from "src/shared-kernel/result";
 import type { TResult } from "src/shared-kernel/result";
 import { createFriche, Friche } from "src/sites/core/models/site";
 
+import type { AddressSearchGateway } from "../address-search/AddressSearchGateway";
 import type { RawCsvProjectRow } from "./parseAdemeProjectsCsv";
-
-export type SearchAddressOptions = {
-  type?: "municipality" | "street" | "housenumber" | "locality";
-};
-export interface AddressSearchGateway {
-  search(
-    searchText: string,
-    options?: SearchAddressOptions,
-  ): Promise<TResult<Address[], "ServiceError" | "NoAddressFound">>;
-}
 
 // Map CSV activity names to FricheActivity enum
 const mapActivityToFricheActivity = (csvActivity: string | undefined): FricheActivity => {

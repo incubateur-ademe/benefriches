@@ -3,7 +3,7 @@ import type { Address } from "shared";
 import { fail, success } from "src/shared-kernel/result";
 import type { TResult } from "src/shared-kernel/result";
 
-import type { AddressSearchGateway, SearchAddressOptions } from "./mapAdemeProjectToFriche";
+import type { AddressSearchGateway, SearchAddressOptions } from "./AddressSearchGateway";
 
 export class FakeAddressSearchGateway implements AddressSearchGateway {
   private addressesResults: Address[][] = [];

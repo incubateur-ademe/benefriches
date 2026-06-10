@@ -6,12 +6,12 @@ import path from "node:path";
 
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
 
+import { buildAdemeScriptComputeImpactsUseCase } from "../ademeScriptDeps";
 import {
   ADEME_IMPACTS_CSV_HEADERS,
   buildAdemeImpactsCsvRow,
   escapeCsvValue,
-} from "./ademeImpactsCsvRow";
-import { buildAdemeScriptComputeImpactsUseCase } from "./ademeScriptDeps";
+} from "../export/ademeImpactsCsvRow";
 
 const dotEnvPath = path.resolve(process.cwd(), ".env");
 if (fs.existsSync(dotEnvPath)) {
@@ -19,7 +19,7 @@ if (fs.existsSync(dotEnvPath)) {
 }
 
 const userId = process.argv[2];
-const outputPath = process.argv[3] ?? path.resolve(__dirname, "ademe-impacts-export.csv");
+const outputPath = process.argv[3] ?? path.resolve(__dirname, "../ademe-impacts-export.csv");
 
 if (!userId) {
   console.error(
