@@ -7,7 +7,7 @@ import {
 } from "shared";
 import { v4 as uuid } from "uuid";
 
-import { MockPhotovoltaicGeoInfoSystemApi } from "src/photovoltaic-performance/adapters/secondary/photovoltaic-data-provider/PhotovoltaicGeoInfoSystemApi.mock";
+import { FakePhotovoltaicDataProvider } from "src/photovoltaic-performance/adapters/secondary/photovoltaic-data-provider/FakePhotovoltaicDataProvider";
 import { PhotovoltaicDataProvider } from "src/photovoltaic-performance/core/gateways/PhotovoltaicDataProvider";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
@@ -34,7 +34,7 @@ describe("GenerateAndSaveReconversionProjectFromTemplateUseCase Use Case", () =>
   beforeEach(() => {
     dateProvider = new DeterministicDateProvider(fakeNow);
     sitesQuery = new InMemorySitesQuery();
-    photovoltaicPerformanceService = new MockPhotovoltaicGeoInfoSystemApi();
+    photovoltaicPerformanceService = new FakePhotovoltaicDataProvider();
     userQuery = new InMemoryUserQuery();
   });
 

@@ -13,8 +13,8 @@ import { User } from "src/auth/core/user";
 import { configureServer } from "src/httpServer";
 import { ConnectCrm } from "src/marketing/adapters/secondary/ConnectCrm";
 import { FakeCrm } from "src/marketing/adapters/secondary/FakeCrm";
+import { FakePhotovoltaicDataProvider } from "src/photovoltaic-performance/adapters/secondary/photovoltaic-data-provider/FakePhotovoltaicDataProvider";
 import { PhotovoltaicGeoInfoSystemApi } from "src/photovoltaic-performance/adapters/secondary/photovoltaic-data-provider/PhotovoltaicGeoInfoSystemApi";
-import { MockPhotovoltaicGeoInfoSystemApi } from "src/photovoltaic-performance/adapters/secondary/photovoltaic-data-provider/PhotovoltaicGeoInfoSystemApi.mock";
 import { InMemoryMutabilityEvaluationQuery } from "src/site-evaluations/adapters/secondary/queries/InMemoryMutabilityEvaluationQuery";
 import { MutafrichesEvaluationQuery } from "src/site-evaluations/adapters/secondary/queries/MutafrichesEvaluationQuery";
 
@@ -66,7 +66,7 @@ export async function createTestApp({ providerOverrides }: CreateTestAppInput = 
     .overrideProvider(HttpService)
     .useValue(ERROR_HTTP_SERVICE)
     .overrideProvider(PhotovoltaicGeoInfoSystemApi)
-    .useClass(MockPhotovoltaicGeoInfoSystemApi)
+    .useClass(FakePhotovoltaicDataProvider)
     .overrideProvider(ConnectCrm)
     .useClass(FakeCrm)
     .overrideProvider(MutafrichesEvaluationQuery)

@@ -1,13 +1,13 @@
-import { MockPhotovoltaicGeoInfoSystemApi } from "src/photovoltaic-performance/adapters/secondary/photovoltaic-data-provider/PhotovoltaicGeoInfoSystemApi.mock";
+import { FakePhotovoltaicDataProvider } from "src/photovoltaic-performance/adapters/secondary/photovoltaic-data-provider/FakePhotovoltaicDataProvider";
 import { SuccessResult } from "src/shared-kernel/result";
 
 import { GetPhotovoltaicExpectedPerformanceUseCase } from "./getPhotovoltaicExpectedPerformanceUseCase";
 
 describe("GetPhotovoltaicExpectedPerformanceUseCase use case", () => {
-  let dataProvider: MockPhotovoltaicGeoInfoSystemApi;
+  let dataProvider: FakePhotovoltaicDataProvider;
 
   beforeEach(() => {
-    dataProvider = new MockPhotovoltaicGeoInfoSystemApi();
+    dataProvider = new FakePhotovoltaicDataProvider();
   });
 
   test("it should format the service result", async () => {

@@ -1,6 +1,6 @@
-import { HttpModule } from "@nestjs/axios";
+import { HttpModule, HttpService } from "@nestjs/axios";
 import { Module } from "@nestjs/common";
-import { ConfigModule } from "@nestjs/config";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 import { Knex } from "knex";
 
 import { CRMGateway } from "src/marketing/core/CRMGateway";
@@ -13,6 +13,7 @@ import { NestJsAppLogger } from "src/shared-kernel/adapters/logger/NestJsAppLogg
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 
 import { ConnectCrm } from "../secondary/ConnectCrm";
+import { FakeCrm } from "../secondary/FakeCrm";
 import { SqlMarketingUsersQuery } from "../secondary/users-query/SqlMarketingUsersQuery";
 import { SqlMarketingUsersRepository } from "../secondary/users-repository/SqlMarketingUsersRepository";
 import { LoginSucceededHandler } from "./loginSucceeded.handler";
@@ -58,7 +59,14 @@ import { UserAccountCreatedHandler } from "./userAccountCreated.handler";
       inject: [SqlMarketingUsersQuery, SqlMarketingUsersRepository, ConnectCrm],
     },
     RealDateProvider,
-    ConnectCrm,
+    {
+      provide: ConnectCrm,
+      useFactory: (httpService: HttpService, configService: ConfigService): CRMGateway =>
+        configService.get("MOCK_CRM_API") === "true"
+          ? new FakeCrm()
+          : new ConnectCrm(httpService, configService),
+      inject: [HttpService, ConfigService],
+    },
   ],
   exports: [SyncNewsletterSubscriptionsUseCase],
 })

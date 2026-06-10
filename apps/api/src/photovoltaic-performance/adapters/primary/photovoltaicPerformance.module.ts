@@ -1,10 +1,11 @@
-import { HttpModule } from "@nestjs/axios";
+import { HttpModule, HttpService } from "@nestjs/axios";
 import { Module } from "@nestjs/common";
-import { ConfigModule } from "@nestjs/config";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 
 import { PhotovoltaicDataProvider } from "src/photovoltaic-performance/core/gateways/PhotovoltaicDataProvider";
 import { GetPhotovoltaicExpectedPerformanceUseCase } from "src/photovoltaic-performance/core/usecases/getPhotovoltaicExpectedPerformanceUseCase";
 
+import { FakePhotovoltaicDataProvider } from "../secondary/photovoltaic-data-provider/FakePhotovoltaicDataProvider";
 import { PhotovoltaicGeoInfoSystemApi } from "../secondary/photovoltaic-data-provider/PhotovoltaicGeoInfoSystemApi";
 import { PhotovoltaicPerformanceController } from "./photovoltaicPerformance.controller";
 
@@ -18,7 +19,17 @@ import { PhotovoltaicPerformanceController } from "./photovoltaicPerformance.con
         new GetPhotovoltaicExpectedPerformanceUseCase(photovoltaicDataProvider),
       inject: [PhotovoltaicGeoInfoSystemApi],
     },
-    PhotovoltaicGeoInfoSystemApi,
+    {
+      provide: PhotovoltaicGeoInfoSystemApi,
+      useFactory: (
+        httpService: HttpService,
+        configService: ConfigService,
+      ): PhotovoltaicDataProvider =>
+        configService.get("MOCK_PHOTOVOLTAIC_PERFORMANCE_API") === "true"
+          ? new FakePhotovoltaicDataProvider()
+          : new PhotovoltaicGeoInfoSystemApi(httpService),
+      inject: [HttpService, ConfigService],
+    },
   ],
 })
 export class PhotovoltaicPerformanceModule {}

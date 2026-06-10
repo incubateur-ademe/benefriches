@@ -6,7 +6,7 @@ import { AppModule } from "src/app.module";
 import { configureServer } from "src/httpServer";
 import { GetPhotovoltaicExpectedPerformanceUseCase } from "src/photovoltaic-performance/core/usecases/getPhotovoltaicExpectedPerformanceUseCase";
 
-import { MockPhotovoltaicGeoInfoSystemApi } from "../secondary/photovoltaic-data-provider/PhotovoltaicGeoInfoSystemApi.mock";
+import { FakePhotovoltaicDataProvider } from "../secondary/photovoltaic-data-provider/FakePhotovoltaicDataProvider";
 import { PhotovoltaicPerformanceController } from "./photovoltaicPerformance.controller";
 
 describe("PhotovoltaicPerformance controller", () => {
@@ -20,11 +20,11 @@ describe("PhotovoltaicPerformance controller", () => {
       providers: [
         {
           provide: "PhotovoltaicDataProvider",
-          useClass: MockPhotovoltaicGeoInfoSystemApi,
+          useClass: FakePhotovoltaicDataProvider,
         },
         {
           provide: GetPhotovoltaicExpectedPerformanceUseCase,
-          useFactory: (dataProvider: MockPhotovoltaicGeoInfoSystemApi) =>
+          useFactory: (dataProvider: FakePhotovoltaicDataProvider) =>
             new GetPhotovoltaicExpectedPerformanceUseCase(dataProvider),
           inject: ["PhotovoltaicDataProvider"],
         },
