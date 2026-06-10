@@ -30,6 +30,6 @@ export class LoginModal {
   async expectUnknownEmailError(): Promise<void> {
     await expect(
       this.page.getByRole("heading", { name: "Aucun compte n'existe pour cette adresse e-mail" }),
-    ).toBeVisible({ timeout: 10000 });
+    ).toBeVisible();
   }
 }

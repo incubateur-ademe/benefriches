@@ -190,7 +190,7 @@ export class PhotovoltaicProjectCreationPage {
   async expectCreationSuccess(projectName: string): Promise<void> {
     await expect(
       this.page.getByRole("heading", { name: `Le projet « ${projectName} » est créé !` }),
-    ).toBeVisible({ timeout: 10000 });
+    ).toBeVisible();
   }
 
   // --- Private helpers ---
