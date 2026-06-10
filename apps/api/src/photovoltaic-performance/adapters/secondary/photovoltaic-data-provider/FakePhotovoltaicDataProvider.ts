@@ -3,7 +3,7 @@ import {
   PhotovoltaicDataProvider,
 } from "src/photovoltaic-performance/core/gateways/PhotovoltaicDataProvider";
 
-export class MockPhotovoltaicGeoInfoSystemApi implements PhotovoltaicDataProvider {
+export class FakePhotovoltaicDataProvider implements PhotovoltaicDataProvider {
   getPhotovoltaicPerformance(): Promise<PerformanceResult> {
     return Promise.resolve({
       context: {

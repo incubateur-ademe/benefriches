@@ -1,12 +1,13 @@
-import { HttpModule } from "@nestjs/axios";
+import { HttpModule, HttpService } from "@nestjs/axios";
 import { Module } from "@nestjs/common";
-import { ConfigModule } from "@nestjs/config";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 
 import { AuthModule } from "src/auth/adapters/auth.module";
 import { CarbonStorageModule } from "src/carbon-storage/adapters/primary/carbonStorage.module";
 import { SqlCarbonStorageQuery } from "src/carbon-storage/adapters/secondary/carbon-storage-query/SqlCarbonStorageQuery";
 import { GetCarbonStorageFromSoilDistributionService } from "src/carbon-storage/core/services/getCarbonStorageFromSoilDistribution";
 import { PhotovoltaicPerformanceModule } from "src/photovoltaic-performance/adapters/primary/photovoltaicPerformance.module";
+import { FakePhotovoltaicDataProvider } from "src/photovoltaic-performance/adapters/secondary/photovoltaic-data-provider/FakePhotovoltaicDataProvider";
 import { PhotovoltaicGeoInfoSystemApi } from "src/photovoltaic-performance/adapters/secondary/photovoltaic-data-provider/PhotovoltaicGeoInfoSystemApi";
 import { PhotovoltaicDataProvider } from "src/photovoltaic-performance/core/gateways/PhotovoltaicDataProvider";
 import { ReconversionProjectRepository } from "src/reconversion-projects/core/gateways/ReconversionProjectRepository";
@@ -284,7 +285,17 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
     RealDateProvider,
     SqlCarbonStorageQuery,
     SqlCityStatsQuery,
-    PhotovoltaicGeoInfoSystemApi,
+    {
+      provide: PhotovoltaicGeoInfoSystemApi,
+      useFactory: (
+        httpService: HttpService,
+        configService: ConfigService,
+      ): PhotovoltaicDataProvider =>
+        configService.get("MOCK_PHOTOVOLTAIC_PERFORMANCE_API") === "true"
+          ? new FakePhotovoltaicDataProvider()
+          : new PhotovoltaicGeoInfoSystemApi(httpService),
+      inject: [HttpService, ConfigService],
+    },
     RandomUuidGenerator,
     RealEventPublisher,
   ],
