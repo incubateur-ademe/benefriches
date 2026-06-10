@@ -25,7 +25,7 @@ Le code commun au front-end et au back-end (types, fonctions de calculs, etc.) e
 - node (version 24 ou supérieure)
 - pnpm (version 10.31.0 ou supérieure)
 - docker (optionnel)
-- postgresql (si docker non installé)
+- PostgreSQL v17 (si docker non installé)
 - [talisman](https://github.com/thoughtworks/talisman) (protection contre les secrets dans les commits)
 
 ### Installation des dépendances
