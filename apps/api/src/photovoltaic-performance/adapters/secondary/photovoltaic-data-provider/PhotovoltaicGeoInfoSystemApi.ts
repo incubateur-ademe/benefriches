@@ -68,7 +68,12 @@ export class PhotovoltaicGeoInfoSystemApi implements PhotovoltaicDataProvider {
   }) {
     return lastValueFrom(
       this.httpService
-        .get(`${API_URL}&lat=${lat}&lon=${long}&peakpower=${peakPower}&loss=${loss}&angle=${angle}`)
+        .get(
+          `${API_URL}&lat=${lat}&lon=${long}&peakpower=${peakPower}&loss=${loss}&angle=${angle}`,
+          {
+            timeout: 10_000,
+          },
+        )
         .pipe(
           map(({ data }: { data: PVGISResult }) => {
             const { outputs, inputs } = data;
