@@ -73,6 +73,14 @@ export const test = authTest.extend<PhotovoltaicProjectCreationFixtures>({
     await authenticatedPage.route("**/api/photovoltaic-performance**", (route) =>
       route.fulfill({ json: PHOTOVOLTAIC_PERFORMANCE_MOCK }),
     );
+    // Log create-from-template responses to help diagnose timing issues in CI
+    authenticatedPage.on("response", (response) => {
+      if (response.url().includes("create-from-template")) {
+        console.log(
+          `[network] ${response.request().method()} create-from-template → ${response.status()}`,
+        );
+      }
+    });
     const pvProjectCreationPage = new PhotovoltaicProjectCreationPage(authenticatedPage);
     await use(pvProjectCreationPage);
   },
