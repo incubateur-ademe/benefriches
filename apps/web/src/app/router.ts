@@ -5,7 +5,7 @@ import { OnboardingVariant } from "@/features/onboarding/views/pages/when-to-use
 
 const onBoarding = defineRoute("/premiers-pas");
 const projectImpacts = defineRoute(
-  { projectId: param.path.string },
+  { projectId: param.path.string, documentation: param.query.optional.boolean },
   (params) => `/mes-projets/${params.projectId}`,
 );
 

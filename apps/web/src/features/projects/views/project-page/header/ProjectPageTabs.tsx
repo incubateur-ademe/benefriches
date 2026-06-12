@@ -34,7 +34,7 @@ const ProjectPageTabs = ({ useBetaAmenageScoreView }: { useBetaAmenageScoreView:
         />
         <TabItem
           isActive={route.name === routes.projectImpactsBreakEvenLevel.name}
-          iconId="fr-icon-money-euro-box-line"
+          iconId="fr-icon-line-chart-line"
           label="Analyse coût-bénéfice"
           linkProps={routes.projectImpactsBreakEvenLevel(route.params).link}
         />
