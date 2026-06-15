@@ -50,7 +50,7 @@ export default function ProjectDevelopmentEnvironmentScore({ environmentScore }:
       </div>
 
       <div className="md:col-start-5 md:col-span-8 grid md:grid-cols-2 gap-4">
-        {environmentScore.metrics.avoidedCo2eqEmissions && (
+        {environmentScore.metrics.avoidedCo2eqEmissions ? (
           <div className="col-span-2">
             <ImpactChartCard
               title="☁️ CO2 eq stocké ou évité"
@@ -62,7 +62,7 @@ export default function ProjectDevelopmentEnvironmentScore({ environmentScore }:
               classes={{ title: "text-xl" }}
             />
           </div>
-        )}
+        ) : null}
 
         {environmentScore.metrics.zanCompliance !== undefined && (
           <MetricCard
@@ -98,7 +98,7 @@ export default function ProjectDevelopmentEnvironmentScore({ environmentScore }:
           />
         )}
 
-        {environmentScore.metrics.avoidedVehiculeKilometers && (
+        {environmentScore.metrics.avoidedVehiculeKilometers ? (
           <MetricCard
             emoji="💨"
             title="Qualité de l'air"
@@ -106,9 +106,9 @@ export default function ProjectDevelopmentEnvironmentScore({ environmentScore }:
             isPositive={true}
             description="Grâce aux déplacements en voiture évités."
           />
-        )}
+        ) : null}
 
-        {environmentScore.metrics.ecosystemicServices && (
+        {environmentScore.metrics.ecosystemicServices ? (
           <MetricCard
             emoji="🐸"
             title="Services écosystémiques"
@@ -120,7 +120,7 @@ export default function ProjectDevelopmentEnvironmentScore({ environmentScore }:
                 : "Le projet a des impacts négatifs sur les services écosystémiques."
             }
           />
-        )}
+        ) : null}
       </div>
     </div>
   );

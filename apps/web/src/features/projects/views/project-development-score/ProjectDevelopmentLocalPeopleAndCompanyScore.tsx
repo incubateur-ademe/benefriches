@@ -26,7 +26,7 @@ export default function ProjectDevelopmentLocalPeopleAndCompanyScore({
             Le projet n'apporte pas d'impacts positifs sur le quotidien des riverains
           </p>
         )}
-        {localPeopleAndCompanyScore.metrics.localPropertyValueIncrease && (
+        {localPeopleAndCompanyScore.metrics.localPropertyValueIncrease ? (
           <MetricCard
             title="Cadre de vie"
             emoji="🌳"
@@ -34,10 +34,10 @@ export default function ProjectDevelopmentLocalPeopleAndCompanyScore({
             description="Grâce à la reconversion de la friche."
             isPositive={localPeopleAndCompanyScore.metrics.localPropertyValueIncrease > 0}
           />
-        )}
+        ) : null}
 
-        {(localPeopleAndCompanyScore.metrics.avoidedAirPollutionHealthExpenses ||
-          localPeopleAndCompanyScore.metrics.hasDecontamination) && (
+        {localPeopleAndCompanyScore.metrics.avoidedAirPollutionHealthExpenses ||
+        localPeopleAndCompanyScore.metrics.hasDecontamination ? (
           <MetricCard
             title="Santé"
             emoji="🫀"
@@ -64,8 +64,8 @@ export default function ProjectDevelopmentLocalPeopleAndCompanyScore({
               </>
             }
           />
-        )}
-        {localPeopleAndCompanyScore.metrics.travelTimeSaved && (
+        ) : null}
+        {localPeopleAndCompanyScore.metrics.travelTimeSaved ? (
           <MetricCard
             title="Temps libre"
             emoji="⏱"
@@ -73,9 +73,9 @@ export default function ProjectDevelopmentLocalPeopleAndCompanyScore({
             badge="En hausse"
             description="Grâce au temps passé en moins dans les déplacements."
           />
-        )}
+        ) : null}
 
-        {localPeopleAndCompanyScore.metrics.avoidedTrafficAccidents && (
+        {localPeopleAndCompanyScore.metrics.avoidedTrafficAccidents ? (
           <MetricCard
             title="Sécurité routière"
             emoji="🚙"
@@ -83,9 +83,9 @@ export default function ProjectDevelopmentLocalPeopleAndCompanyScore({
             badge="Améliorée"
             description="Grâce à la réduction de la distance entre les habitations et l’établissement éducatif."
           />
-        )}
+        ) : null}
 
-        {localPeopleAndCompanyScore.metrics.avoidedFrichesAccidents && (
+        {localPeopleAndCompanyScore.metrics.avoidedFrichesAccidents ? (
           <MetricCard
             title="Sécurité des riverains"
             emoji="💥"
@@ -93,7 +93,7 @@ export default function ProjectDevelopmentLocalPeopleAndCompanyScore({
             isPositive={true}
             description="Grâce à la reconversion et la sécurisation de la friche."
           />
-        )}
+        ) : null}
       </div>
     </div>
   );

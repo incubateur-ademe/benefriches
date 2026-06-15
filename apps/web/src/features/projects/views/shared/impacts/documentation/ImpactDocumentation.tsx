@@ -171,7 +171,7 @@ const TOC_GROUPS = [
   {
     label: "Présentation des résultats",
     items: [
-      { id: "analyse-cout-benefice", emoji: "⚖️", label: "Analyse coûts-bénéfices" },
+      { id: "analyse-cout-benefice", emoji: "⚖️", label: "Analyse coût-bénéfice" },
       { id: "beneficiaires", emoji: "👥", label: "Répartition par bénéficiaires" },
       { id: "analyse-couts-evites", emoji: "📉", label: "Analyse des coûts évités" },
       { id: "amenagescore", emoji: "🏆", label: "AménageScore" },
@@ -275,7 +275,7 @@ export default function ImpactsEconomiquesDocumentation({
           Lorsqu'un projet de reconversion de site est analysé, le calcul se déroule en{" "}
           <strong>trois grandes étapes</strong> : on évalue d'abord ce que le site génère
           aujourd'hui (statu quo), puis ce que le nouveau projet produira, et enfin on agrège les
-          deux pour obtenir l'analyse coûts-bénéfices différentielle présentée dans l'outil.
+          deux pour obtenir l'analyse coût-bénéfice différentielle présentée dans l'outil.
         </p>
       </div>
 
@@ -309,7 +309,7 @@ export default function ImpactsEconomiquesDocumentation({
                   emoji: "🔀",
                   step: "Étape 3",
                   title: "Agrégation",
-                  desc: "Différentiel projet - statu quo = analyse coûts-bénéfices",
+                  desc: "Différentiel projet - statu quo = analyse coût-bénéfice",
                   color: "border-indigo-200 bg-indigo-50 dark:bg-indigo-900",
                 },
               ].map(({ id, emoji, step, title, desc, color }) => (
@@ -332,16 +332,18 @@ export default function ImpactsEconomiquesDocumentation({
               séparément dans des vues dédiées.
               <ul className="pl-4">
                 <li>
-                  Les onglets « Analyse coûts-bénéfices » et « Aménag'score » présentent une analyse
-                  différentielle des deux scénarios
+                  Les onglets « analyse coût-bénéfice » et « aménag'score » présentent une analyse
+                  différentielle des deux scénarios « statu quo » et « projet » (aggrégation)
                 </li>
                 <li>
-                  La partie « coût de l'inaction » de l'onglet « Analyse des coûts évités » présente
-                  une comparaison de ces deux scénarios
+                  La partie « coût de l'inaction » de l'onglet « analyse des coûts évités » présente
+                  une comparaison des deux scénarios « statu quo » et « projet »
                 </li>
                 <li>
-                  La partie « coût de l'extension urbaine » de l'onglet « Analyse des coûts évités »
-                  présente une comparaison des deux scénarios
+                  La partie « coût de l'extension urbaine » de l'onglet « analyse des coûts évités »
+                  présente une comparaison des deux scénarios « projet sur site » + « statu quo sur
+                  site fictif » d'un côté et « projet sur site fictif » + « statu quo sur site » de
+                  l'autre
                 </li>
               </ul>
             </InfoBox>
@@ -836,7 +838,7 @@ export default function ImpactsEconomiquesDocumentation({
             <SectionTitle
               emoji="🔀"
               title="Agrégation : la vue différentielle"
-              subtitle="Les impacts statu quo et les impacts projet sont combinés pour produire les valeurs affichées dans l'analyse coûts-bénéfices. La logique est celle d'une comparaison : qu'est-ce que la reconversion change, en mieux ou en pire ?"
+              subtitle="Les impacts statu quo et les impacts projet sont combinés pour produire les valeurs affichées dans l'analyse coût-bénéfice. La logique est celle d'une comparaison : qu'est-ce que la reconversion change, en mieux ou en pire ?"
             />
 
             <div className="space-y-4">
@@ -895,7 +897,7 @@ export default function ImpactsEconomiquesDocumentation({
 
               <InfoBox variant="neutral">
                 <strong>Résultat :</strong> l'agrégat final est la liste complète utilisée par
-                l'analyse coûts-bénéfices et l'AménageScore. C'est sur cet agrégat que sont calculés
+                l'analyse coût-bénéfice et l'AménageScore. C'est sur cet agrégat que sont calculés
                 les totaux par bénéficiaire (collectivité, riverains, société).
               </InfoBox>
             </div>
@@ -906,7 +908,7 @@ export default function ImpactsEconomiquesDocumentation({
           <section id="analyse-cout-benefice" className="scroll-mt-20">
             <SectionTitle
               emoji="⚖️"
-              title="Analyse coûts-bénéfices"
+              title="Analyse coût-bénéfice"
               subtitle="Cette vue synthétise l'ensemble des impacts agrégés en un graphique d'équilibre et détaille les effets par bénéficiaire."
             />
 
