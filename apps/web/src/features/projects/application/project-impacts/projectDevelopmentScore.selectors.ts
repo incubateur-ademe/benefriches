@@ -65,7 +65,7 @@ const INDIRECT_ECONOMIC_IMPACTS_SCORE = {
     "avoidedAirPollutionHealthExpenses",
   ],
   localPeopleOrCompany: [
-    "avoidedCarAccidents",
+    "localPropertyValueIncrease",
     "travelTimeSavedPerTravelerExpenses",
     "avoidedPropertyDamageExpenses",
     "avoidedAccidentsDeathsExpenses",
