@@ -71,6 +71,8 @@ pnpm --filter api knex:migrate-latest # lancement des migrations
 pnpm --filter api knex:seed-run # chargement des données nécessaires à l'application
 ```
 
+Les jeux de données de référence chargés par les seeds sont documentés dans [`apps/api/data/`](./apps/api/data/README.md).
+
 ### Lancement de l'application en mode développement
 
 La commande `setup-env-vars` génère le fichier `public/js/env-vars.js` à partir des variables `WEBAPP_*` du `.env`, afin de les exposer au navigateur au runtime.

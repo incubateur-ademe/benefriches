@@ -167,3 +167,4 @@ Full TDD detail (including event-publishing testing patterns): [api-unit-testing
 - **After modifying `shared`**: rebuild + reinstall here or types won't update → `pnpm --filter shared build && pnpm --filter api install`
 - **Web app patterns**: [apps/web/CLAUDE.md](../web/CLAUDE.md)
 - **Shared package** (DTOs, types): [packages/shared/CLAUDE.md](../../packages/shared/CLAUDE.md)
+- **Reference datasets** (seeds): [data/README.md](./data/README.md) — ALDO carbon storage, DVF commune stats, France Ruralités zoning
