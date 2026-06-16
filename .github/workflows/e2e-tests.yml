@@ -27,18 +27,35 @@ jobs:
       - name: Install Playwright Browsers
         run: pnpm --filter e2e-tests exec playwright install --with-deps chromium
 
-      # Required for type=gha cache backend support in the build step below
+      # docker/bake-action (below) needs a buildx builder. Being an official Docker
+      # action it also exposes the GitHub Actions cache runtime to BuildKit
+      # automatically, so type=gha caching works without a third-party helper —
+      # unlike a bare `docker buildx bake` invoked from a `run:` step.
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      # bake parses docker-compose.e2e.yml, which interpolates ${VARS} (ports, etc.);
+      # without them compose parsing fails (e.g. "no port specified: :<empty>"). Export
+      # the KEY=value lines of .env.e2e (skipping comments/blanks) into the job env.
+      - name: Load .env.e2e into the job environment
+        run: grep -E '^[A-Za-z_][A-Za-z0-9_]*=' .env.e2e >> "$GITHUB_ENV"
+
       - name: Build Docker images
-        run: |
-          set -a && source .env.e2e && set +a
-          docker buildx bake \
-            --file docker-compose.e2e.yml \
-            --load \
-            --set "*.cache-from=type=gha" \
-            --set "*.cache-to=type=gha,mode=max"
+        uses: docker/bake-action@v6
+        with:
+          # Build from the checked-out workspace (v6+ otherwise defaults to a Git context).
+          source: .
+          files: docker-compose.e2e.yml
+          load: true
+          # Plain docker images for `compose up`; no attestation manifests to load.
+          provenance: false
+          # Per-image cache scopes: a shared scope (the "buildkit" default) would make
+          # web and api overwrite each other's cache, leaving only the last built.
+          set: |
+            web.cache-from=type=gha,scope=e2e-web
+            web.cache-to=type=gha,scope=e2e-web,mode=max
+            api.cache-from=type=gha,scope=e2e-api
+            api.cache-to=type=gha,scope=e2e-api,mode=max
 
       - name: Start E2E stack
         run: docker compose --env-file .env.e2e -f docker-compose.e2e.yml up -d --wait

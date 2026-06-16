@@ -7,6 +7,10 @@ Dockerfile.*
 **/*.md
 **/dist
 **/node_modules
+# Generated DSFR assets (recreated by the web `copy-dsfr-to-public` postinstall in
+# the deps stage); excluded so the web install layer's cache key depends only on
+# tracked inputs and stays identical between local and CI builds.
+apps/web/public/dsfr
 **/scalingo
 # Allow nginx config from scalingo directory for Docker builds
 !apps/web/scalingo/nginx.conf.erb
