@@ -234,6 +234,12 @@ type SqlDomainEvent = {
   created_at: Date;
 };
 
+// Communes classified as rural in the official "France Ruralités Revitalisation"
+// list. A city_code present in this table means the commune is rural.
+export type SqlFranceRuralite = {
+  city_code: string;
+};
+
 declare module "knex/types/tables" {
   interface Tables {
     // reconversion projects
@@ -261,6 +267,7 @@ declare module "knex/types/tables" {
     users_feature_alerts: SqlUserFeatureAlert;
 
     city_stats: CityStats;
+    france_ruralites: SqlFranceRuralite;
     // auth
     auth_external_user_identities: {
       id: string;

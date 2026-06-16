@@ -31,6 +31,14 @@ export {
 // Site Actions DTOs
 export { updateSiteActionStatusDtoSchema, type UpdateSiteActionStatusDto } from "./site-actions";
 
+// City Rurality DTOs
+export {
+  getCityRuralityRequestDtoSchema,
+  type GetCityRuralityRequestDto,
+  getCityRuralityResponseDtoSchema,
+  type GetCityRuralityResponseDto,
+} from "./city-rurality";
+
 // Reconversion Projects DTOs
 export {
   type GetReconversionProjectFeaturesResponseDto,

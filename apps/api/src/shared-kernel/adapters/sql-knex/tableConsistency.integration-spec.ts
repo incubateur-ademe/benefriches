@@ -16,6 +16,7 @@ const TABLES_EXCLUDED_FROM_CONSISTENCY_CHECKS = new Set([
   "carbon_storage",
   "cities",
   "city_stats",
+  "france_ruralites",
   "users_deprecated",
 ]);
 

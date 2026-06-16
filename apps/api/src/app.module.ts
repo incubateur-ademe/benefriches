@@ -20,6 +20,7 @@ import { SiteActionsModule } from "./site-actions/adapters/primary/siteActions.m
 import { SiteEvaluationsModule } from "./site-evaluations/adapters/primary/siteEvaluations.module";
 import { SitesModule } from "./sites/adapters/primary/sites.module";
 import { StatistiquesModule } from "./stats/adapters/primary/stats.module";
+import { TerritoryModule } from "./territory/adapters/primary/territory.module";
 import { UsersModule } from "./users/adapters/primary/users.module";
 
 class DomainEventsHandler {
@@ -50,6 +51,7 @@ class DomainEventsHandler {
     ReconversionCompatibilityModule,
     SiteEvaluationsModule,
     SiteActionsModule,
+    TerritoryModule,
     ThrottlerModule.forRoot({
       throttlers: [
         {
