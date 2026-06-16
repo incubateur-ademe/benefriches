@@ -1,7 +1,6 @@
 /* oxlint-disable typescript-eslint/no-unsafe-assignment */
 import { Address, createSoilSurfaceAreaDistribution } from "shared";
 
-import { InMemoryCityStatsQuery } from "src/reconversion-projects/adapters/secondary/queries/city-stats/InMemoryCityStatsQuery";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { InMemoryEventPublisher } from "src/shared-kernel/adapters/events/publisher/InMemoryEventPublisher";
@@ -10,6 +9,7 @@ import { SilentLogger } from "src/shared-kernel/adapters/logger/SilentLogger";
 import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
 import { FailureResult } from "src/shared-kernel/result";
 import { InMemorySitesRepository } from "src/sites/adapters/secondary/site-repository/InMemorySiteRepository";
+import { InMemoryCityStatsQuery } from "src/territory/adapters/secondary/city-stats-query/InMemoryCityStatsQuery";
 
 import { SITE_CREATED, SiteCreatedEvent } from "../events/siteCreated.event";
 import { buildFriche, buildFricheProps } from "../models/site.mock";

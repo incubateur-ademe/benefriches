@@ -8,8 +8,8 @@ import {
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { TResult, fail, success } from "src/shared-kernel/result";
 import { UseCase } from "src/shared-kernel/usecase";
+import { CityStatsProvider } from "src/territory/core/gateways/CityStatsProvider";
 
-import { CityStatsProvider } from "../gateways/CityStatsProvider";
 import { GetCarbonStorageFromSoilDistributionService } from "../gateways/SoilsCarbonStorageService";
 import {
   computeProjectImpactsWithBreakEvenLevel,

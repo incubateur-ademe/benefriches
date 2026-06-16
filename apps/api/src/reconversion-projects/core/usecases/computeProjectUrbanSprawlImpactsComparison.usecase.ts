@@ -16,8 +16,8 @@ import { UseCase } from "src/shared-kernel/usecase";
 import { AgriculturalOperationGenerator } from "src/sites/core/models/agriculturalOperationGenerator";
 import { FricheGenerator } from "src/sites/core/models/fricheGenerator";
 import { NaturalAreaGenerator } from "src/sites/core/models/naturalAreaGenerator";
+import { CityStatsProvider } from "src/territory/core/gateways/CityStatsProvider";
 
-import { CityStatsProvider } from "../gateways/CityStatsProvider";
 import { GetCarbonStorageFromSoilDistributionService } from "../gateways/SoilsCarbonStorageService";
 import {
   computeAggregatedReconversionImpacts,

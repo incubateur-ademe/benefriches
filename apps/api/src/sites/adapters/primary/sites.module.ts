@@ -6,8 +6,6 @@ import { AuthModule } from "src/auth/adapters/auth.module";
 import { CarbonStorageModule } from "src/carbon-storage/adapters/primary/carbonStorage.module";
 import { SqlCarbonStorageQuery } from "src/carbon-storage/adapters/secondary/carbon-storage-query/SqlCarbonStorageQuery";
 import { GetCarbonStorageFromSoilDistributionService } from "src/carbon-storage/core/services/getCarbonStorageFromSoilDistribution";
-import { SqlCityStatsQuery } from "src/reconversion-projects/adapters/secondary/queries/city-stats/SqlCityStatsQuery";
-import { CityStatsProvider } from "src/reconversion-projects/core/gateways/CityStatsProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
 import { RealEventPublisher } from "src/shared-kernel/adapters/events/publisher/RealEventPublisher";
@@ -29,13 +27,23 @@ import { CreateNewCustomSiteUseCase } from "src/sites/core/usecases/createNewSit
 import { GetSiteByIdUseCase } from "src/sites/core/usecases/getSiteById.usecase";
 import { GetSiteRealEstateValuationUseCase } from "src/sites/core/usecases/getSiteRealEstateValuation.usecase";
 import { GetSiteViewByIdUseCase } from "src/sites/core/usecases/getSiteViewById.usecase";
+import { TerritoryModule } from "src/territory/adapters/primary/territory.module";
+import { SqlCityStatsQuery } from "src/territory/adapters/secondary/city-stats-query/SqlCityStatsQuery";
+import { CityStatsProvider } from "src/territory/core/gateways/CityStatsProvider";
 
 import { SqlSitesQuery } from "../secondary/site-query/SqlSitesQuery";
 import { SqlSiteRepository } from "../secondary/site-repository/SqlSiteRepository";
 import { SitesController } from "./sites.controller";
 
 @Module({
-  imports: [HttpModule, AuthModule, ConfigModule, SiteEvaluationsModule, CarbonStorageModule],
+  imports: [
+    HttpModule,
+    AuthModule,
+    ConfigModule,
+    SiteEvaluationsModule,
+    CarbonStorageModule,
+    TerritoryModule,
+  ],
   controllers: [SitesController],
   providers: [
     {
@@ -124,7 +132,6 @@ import { SitesController } from "./sites.controller";
     SqlSiteRepository,
     SqlSitesQuery,
     RealDateProvider,
-    SqlCityStatsQuery,
     RandomUuidGenerator,
     RealEventPublisher,
     MutafrichesEvaluationQuery,

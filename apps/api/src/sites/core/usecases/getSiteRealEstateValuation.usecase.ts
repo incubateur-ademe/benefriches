@@ -1,9 +1,9 @@
 import { computePropertyTransferDutiesFromSellingPrice } from "shared";
 import type { GetSiteRealEstateValuationResponseDto } from "shared";
 
-import type { CityStatsProvider } from "src/reconversion-projects/core/gateways/CityStatsProvider";
 import { fail, success, type TResult } from "src/shared-kernel/result";
 import type { UseCase } from "src/shared-kernel/usecase";
+import type { CityStatsProvider } from "src/territory/core/gateways/CityStatsProvider";
 
 import type { SitesQuery } from "../gateways/SitesQuery";
 

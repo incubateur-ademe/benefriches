@@ -1,7 +1,4 @@
-import {
-  CityStats,
-  CityStatsProvider,
-} from "src/reconversion-projects/core/gateways/CityStatsProvider";
+import { CityStats, CityStatsProvider } from "src/territory/core/gateways/CityStatsProvider";
 
 const SAMPLES = [
   {

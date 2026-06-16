@@ -17,10 +17,10 @@ import {
   UrbanSprawlComparisonProjectImpacts,
 } from "shared";
 
-import { CityStats } from "src/reconversion-projects/core/gateways/CityStatsProvider";
 import { SoilsCarbonStorage } from "src/reconversion-projects/core/gateways/SoilsCarbonStorageService";
 import { ApiReconversionProjectImpactsDataView } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
 import { computeStatuQuoSiteImpacts } from "src/sites/core/models/impacts/computeStatuQuoSiteImpacts";
+import { CityStats } from "src/territory/core/gateways/CityStatsProvider";
 
 import { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import { computeAvoidedRoadsAndUtilitiesConstructionExpensesWithFriche } from "../roads-and-utilities-expenses/roadsAndUtilitiesContruction";

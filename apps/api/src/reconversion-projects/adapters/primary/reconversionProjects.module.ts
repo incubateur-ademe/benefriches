@@ -43,11 +43,12 @@ import { SqlSitesQuery } from "src/sites/adapters/secondary/site-query/SqlSitesQ
 import { SqlSiteRepository } from "src/sites/adapters/secondary/site-repository/SqlSiteRepository";
 import { SitesQuery } from "src/sites/core/gateways/SitesQuery";
 import { FricheGenerator } from "src/sites/core/models/fricheGenerator";
+import { TerritoryModule } from "src/territory/adapters/primary/territory.module";
+import { SqlCityStatsQuery } from "src/territory/adapters/secondary/city-stats-query/SqlCityStatsQuery";
 import { SqlUserQuery } from "src/users/adapters/secondary/user-query/SqlUserQuery";
 import { UserQuery } from "src/users/core/gateways/UserQuery";
 
 import { SqlSiteImpactsQuery } from "../../../sites/adapters/secondary/site-impacts/SqlSiteImpactsQuery";
-import { SqlCityStatsQuery } from "../secondary/queries/city-stats/SqlCityStatsQuery";
 import { SqlReconversionProjectQuery } from "../secondary/queries/reconversion-project-features/SqlReconversionProjectQuery";
 import { SqlReconversionProjectImpactsQuery } from "../secondary/queries/reconversion-project-impacts/SqlReconversionProjectImpactsQuery";
 import { SqlReconversionProjectsListQuery } from "../secondary/queries/reconversion-project-list/SqlReconversionProjectsListQuery";
@@ -61,6 +62,7 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
     HttpModule,
     PhotovoltaicPerformanceModule,
     AuthModule,
+    TerritoryModule,
   ],
   controllers: [ReconversionProjectController],
   providers: [
@@ -284,7 +286,6 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
     SqlUserQuery,
     RealDateProvider,
     SqlCarbonStorageQuery,
-    SqlCityStatsQuery,
     {
       provide: PhotovoltaicGeoInfoSystemApi,
       useFactory: (

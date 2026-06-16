@@ -6,8 +6,8 @@ import { ComputeReconversionProjectImpactsUseCase } from "src/reconversion-proje
 import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
 import { SilentLogger } from "src/shared-kernel/adapters/logger/SilentLogger";
 import { SqlSiteImpactsQuery } from "src/sites/adapters/secondary/site-impacts/SqlSiteImpactsQuery";
+import { SqlCityStatsQuery } from "src/territory/adapters/secondary/city-stats-query/SqlCityStatsQuery";
 
-import { SqlCityStatsQuery } from "../queries/city-stats/SqlCityStatsQuery";
 import { SqlReconversionProjectImpactsQuery } from "../queries/reconversion-project-impacts/SqlReconversionProjectImpactsQuery";
 
 export function buildAdemeScriptComputeImpactsUseCase(
