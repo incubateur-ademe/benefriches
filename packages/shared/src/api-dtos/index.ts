@@ -18,6 +18,7 @@ export {
   type GetSiteViewResponseDto,
   getSiteRealEstateValuationResponseDtoSchema,
   type GetSiteRealEstateValuationResponseDto,
+  getFricheInactionCostResponseDtoSchema,
   type GetFricheInactionCostDto,
   type GetSiteImpactsDto,
 } from "./sites";

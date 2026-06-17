@@ -14,6 +14,9 @@ export {
   type GetSiteRealEstateValuationResponseDto,
 } from "./getSiteRealEstateValuation.dto";
 
-export { type GetFricheInactionCostDto } from "./getFricheInactionCost";
+export {
+  getFricheInactionCostResponseDtoSchema,
+  type GetFricheInactionCostDto,
+} from "./getFricheInactionCost";
 
 export { getSiteImpactsResponseDtoSchema, type GetSiteImpactsDto } from "./getSiteImpacts.dto";
