@@ -31,6 +31,7 @@ type SiteMunicipalityDataState = {
   loadingState: LoadingState;
   localAuthorities?: SiteLocalAuthorities;
   population?: number;
+  isRural?: boolean;
 };
 
 const initialState: SiteMunicipalityDataState = {
@@ -117,6 +118,7 @@ const siteMunicipalityData = createSlice({
       state.loadingState = "success";
       state.localAuthorities = action.payload.localAuthorities;
       state.population = action.payload.population;
+      state.isRural = action.payload.isRural;
     });
     builder.addCase(fetchSiteMunicipalityData.rejected, (state) => {
       state.loadingState = "error";

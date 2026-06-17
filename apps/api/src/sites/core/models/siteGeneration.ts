@@ -13,6 +13,7 @@ export type SiteGenerationProps = {
   surfaceArea: number;
   address: Address;
   cityPopulation: number;
+  isCityInRuralZone: boolean;
 };
 
 export interface SiteGenerator<TProps extends SiteGenerationProps> {

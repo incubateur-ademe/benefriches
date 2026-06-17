@@ -130,10 +130,15 @@ const selectSitePopulation = createSelector(
   (state): number | undefined => state.population,
 );
 
+export const selectSiteIsRural = createSelector(
+  (state: RootState) => state.siteMunicipalityData,
+  (state): boolean | undefined => state.isRural,
+);
+
 type EstimatedSiteYearlyExpensesAmounts = Partial<Record<SiteYearlyExpensePurpose, number>>;
 const selectEstimatedYearlyExpensesForSite = createSelector(
-  [selectSiteData, selectSitePopulation],
-  (siteData, population): EstimatedSiteYearlyExpensesAmounts => {
+  [selectSiteData, selectSitePopulation, selectSiteIsRural],
+  (siteData, population, isRural): EstimatedSiteYearlyExpensesAmounts => {
     const {
       soilsDistribution = {},
       surfaceArea,
@@ -154,8 +159,9 @@ const selectEstimatedYearlyExpensesForSite = createSelector(
       case "FRICHE": {
         const expenses = computeFricheDefaultYearlyExpenses({
           surfaceArea: surfaceArea ?? 0,
-          population: population ?? 0,
+          cityPopulation: population ?? 0,
           buildingsSurface,
+          isCityInRuralZone: isRural ?? false,
         });
 
         return Object.fromEntries(expenses.map(({ purpose, amount }) => [purpose, amount]));

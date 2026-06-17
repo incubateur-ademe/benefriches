@@ -31,6 +31,7 @@ export class FricheGenerator implements SiteGenerator<FricheGenerationProps> {
       surfaceArea,
       address,
       cityPopulation,
+      isCityInRuralZone,
       fricheActivity,
       builtSurfaceArea,
       hasContaminatedSoils,
@@ -45,8 +46,9 @@ export class FricheGenerator implements SiteGenerator<FricheGenerationProps> {
 
     const yearlyExpenses = computeFricheDefaultYearlyExpenses({
       surfaceArea,
-      population: cityPopulation,
+      cityPopulation,
       buildingsSurface: soilsDistribution.BUILDINGS,
+      isCityInRuralZone,
     });
 
     // assume contaminated soil surface area based on friche activity if not specified
@@ -80,6 +82,7 @@ export class FricheGenerator implements SiteGenerator<FricheGenerationProps> {
       id: uuid(),
       surfaceArea,
       cityPopulation: city.population,
+      isCityInRuralZone: false,
       fricheActivity: "OTHER",
       address: {
         city: city.name,

@@ -63,15 +63,15 @@ export const computeSecurityDefaultCost = (surfaceArea: number) => {
 
 export const computeFricheDefaultYearlyExpenses = (input: {
   surfaceArea: number;
-  population: number;
+  cityPopulation: number;
   buildingsSurface?: number;
-  isCityInRuralZone?: boolean;
+  isCityInRuralZone: boolean;
 }): SiteYearlyExpense[] => {
-  const { surfaceArea, population, buildingsSurface, isCityInRuralZone = false } = input;
+  const { surfaceArea, cityPopulation, buildingsSurface, isCityInRuralZone } = input;
 
   const expenses: SiteYearlyExpense[] = [
     {
-      amount: computeIllegalDumpingDefaultCost(population),
+      amount: computeIllegalDumpingDefaultCost(cityPopulation),
       purpose: "illegalDumpingCost",
       bearer: "owner",
     },

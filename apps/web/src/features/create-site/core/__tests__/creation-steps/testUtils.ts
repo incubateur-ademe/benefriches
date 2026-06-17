@@ -56,8 +56,18 @@ export class StoreBuilder {
 
   withCityPopulation(population: number) {
     this.preloadedRootState.siteMunicipalityData = {
+      ...this.preloadedRootState.siteMunicipalityData,
       loadingState: "success",
       population,
+    };
+    return this;
+  }
+
+  withCityIsRural(isRural: boolean) {
+    this.preloadedRootState.siteMunicipalityData = {
+      ...this.preloadedRootState.siteMunicipalityData,
+      loadingState: "success",
+      isRural,
     };
     return this;
   }

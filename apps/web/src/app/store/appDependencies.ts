@@ -21,7 +21,7 @@ import { CrispSupportChatService } from "@/features/support/infrastructure/suppo
 import { NoopSupportChatService } from "@/features/support/infrastructure/support-chat-service/NoopSupportChatService";
 import { HttpUpdateReconversionProjectService } from "@/features/update-project/infrastructure/update-project-service/HttpUpdateReconversionProjectService";
 import { CreateFeatureAlertService } from "@/features/user-feature-alerts/infrastructure/create-feature-alert-service/CreateFeatureAlertService";
-import { AdministrativeDivisionGeoApi } from "@/shared/infrastructure/administrative-division-service/administrativeDivisionGeoApi";
+import { MunicipalityDataService } from "@/shared/infrastructure/administrative-division-service/municipalityDataService";
 import { DisabledRealEstateValuationService } from "@/shared/infrastructure/real-estate-valuation-service/DisabledRealEstateValuationService";
 import { SoilsCarbonStorageApi } from "@/shared/infrastructure/soils-carbon-storage-service/soilsCarbonStorageApi";
 
@@ -38,7 +38,7 @@ export const appDependencies: AppDependencies = {
   createExpressReconversionProjectService: new HttpCreateExpressReconversionProjectService(),
   reconversionProjectImpacts: new HttpReconversionProjectImpactsApi(),
   photovoltaicPerformanceService: new ExpectedPhotovoltaicPerformanceApi(),
-  municipalityDataService: new AdministrativeDivisionGeoApi(),
+  municipalityDataService: new MunicipalityDataService(),
   currentUserService: new HttpCurrentUserService(),
   createUserService: new HttpCreateUserService(),
   createUserFeatureAlertService: new CreateFeatureAlertService(),

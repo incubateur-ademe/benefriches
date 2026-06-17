@@ -1,4 +1,4 @@
-import { LocalAuthority } from "shared";
+import { GetCityRuralityResponseDto, LocalAuthority } from "shared";
 
 type Response = {
   nom: string;
@@ -36,13 +36,29 @@ type SearchMunicipalityResult = {
   }[];
 };
 
-export class AdministrativeDivisionGeoApi {
+async function fetchMunicipalityGeoData(cityCode: string): Promise<Response> {
+  const response = await fetch(`${GEO_API_HOSTNAME}${MUNICIPALITY_URL}/${cityCode}?${FIELDS}`);
+  if (!response.ok) throw new Error("Error while fetching geo api gouv");
+  return response.json() as Promise<Response>;
+}
+
+async function fetchCityRurality(cityCode: string): Promise<boolean | undefined> {
+  try {
+    const response = await fetch(`/api/territory/city-rurality?cityCode=${cityCode}`);
+    if (!response.ok) return undefined;
+    const json = (await response.json()) as GetCityRuralityResponseDto;
+    return json.isRural;
+  } catch {
+    return undefined;
+  }
+}
+
+export class MunicipalityDataService {
   async getMunicipalityData(cityCode: string) {
-    const response = await fetch(`${GEO_API_HOSTNAME}${MUNICIPALITY_URL}/${cityCode}?${FIELDS}`);
-
-    if (!response.ok) throw new Error("Error while fetching geo api gouv");
-
-    const jsonResult = (await response.json()) as Response;
+    const [jsonResult, isRural] = await Promise.all([
+      fetchMunicipalityGeoData(cityCode),
+      fetchCityRurality(cityCode),
+    ]);
 
     return {
       localAuthorities: {
@@ -66,6 +82,7 @@ export class AdministrativeDivisionGeoApi {
         },
       },
       population: jsonResult.population,
+      isRural,
     };
   }
 

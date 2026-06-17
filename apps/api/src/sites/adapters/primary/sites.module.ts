@@ -28,6 +28,7 @@ import { GetSiteByIdUseCase } from "src/sites/core/usecases/getSiteById.usecase"
 import { GetSiteRealEstateValuationUseCase } from "src/sites/core/usecases/getSiteRealEstateValuation.usecase";
 import { GetSiteViewByIdUseCase } from "src/sites/core/usecases/getSiteViewById.usecase";
 import { TerritoryModule } from "src/territory/adapters/primary/territory.module";
+import { SqlCityRuralityQuery } from "src/territory/adapters/secondary/city-rurality-query/SqlCityRuralityQuery";
 import { SqlCityStatsQuery } from "src/territory/adapters/secondary/city-stats-query/SqlCityStatsQuery";
 import { CityStatsProvider } from "src/territory/core/gateways/CityStatsProvider";
 
@@ -63,6 +64,7 @@ import { SitesController } from "./sites.controller";
         siteRepository: SitesRepository,
         dateProvider: DateProvider,
         cityStatsQuery: CityStatsProvider,
+        cityRuralityQuery: SqlCityRuralityQuery,
         uuidGenerator: UidGenerator,
         eventPublisher: DomainEventPublisher,
       ) =>
@@ -70,6 +72,7 @@ import { SitesController } from "./sites.controller";
           siteRepository,
           dateProvider,
           cityStatsQuery,
+          cityRuralityQuery,
           uuidGenerator,
           eventPublisher,
           new NestJsAppLogger(CreateNewExpressSiteUseCase.name),
@@ -78,6 +81,7 @@ import { SitesController } from "./sites.controller";
         SqlSiteRepository,
         RealDateProvider,
         SqlCityStatsQuery,
+        SqlCityRuralityQuery,
         RandomUuidGenerator,
         RealEventPublisher,
       ],
@@ -110,9 +114,9 @@ import { SitesController } from "./sites.controller";
     },
     {
       provide: ComputeFricheInactionCostUseCase,
-      useFactory: (cityStatsProvider: CityStatsProvider) =>
-        new ComputeFricheInactionCostUseCase(cityStatsProvider),
-      inject: [SqlCityStatsQuery],
+      useFactory: (cityStatsProvider: CityStatsProvider, cityRuralityQuery: SqlCityRuralityQuery) =>
+        new ComputeFricheInactionCostUseCase(cityStatsProvider, cityRuralityQuery),
+      inject: [SqlCityStatsQuery, SqlCityRuralityQuery],
     },
     {
       provide: ComputeSiteImpactsUseCase,

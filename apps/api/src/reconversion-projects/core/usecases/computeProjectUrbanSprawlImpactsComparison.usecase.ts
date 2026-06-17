@@ -16,6 +16,7 @@ import { UseCase } from "src/shared-kernel/usecase";
 import { AgriculturalOperationGenerator } from "src/sites/core/models/agriculturalOperationGenerator";
 import { FricheGenerator } from "src/sites/core/models/fricheGenerator";
 import { NaturalAreaGenerator } from "src/sites/core/models/naturalAreaGenerator";
+import { CityRuralityQuery } from "src/territory/core/gateways/CityRuralityQuery";
 import { CityStatsProvider } from "src/territory/core/gateways/CityStatsProvider";
 
 import { GetCarbonStorageFromSoilDistributionService } from "../gateways/SoilsCarbonStorageService";
@@ -68,6 +69,7 @@ export class ComputeProjectUrbanSprawlImpactsComparisonUseCase implements UseCas
     private readonly reconversionProjectQuery: ReconversionProjectImpactsQuery,
     private readonly siteRepository: SiteImpactsQuery,
     private readonly cityStatsQuery: CityStatsProvider,
+    private readonly cityRuralityQuery: CityRuralityQuery,
     private readonly getCarbonStorageFromSoilDistributionService: GetCarbonStorageFromSoilDistributionService,
     private readonly dateProvider: DateProvider,
   ) {}
@@ -92,7 +94,10 @@ export class ComputeProjectUrbanSprawlImpactsComparisonUseCase implements UseCas
 
     if (!relatedSite) return fail("SiteNotFound");
 
-    const cityStats = await this.cityStatsQuery.getCityStats(relatedSite.address.cityCode);
+    const [cityStats, isCityInRuralZone] = await Promise.all([
+      this.cityStatsQuery.getCityStats(relatedSite.address.cityCode),
+      this.cityRuralityQuery.isCityRural(relatedSite.address.cityCode),
+    ]);
 
     const comparisonSite = (() => {
       switch (comparisonSiteNature) {
@@ -102,6 +107,7 @@ export class ComputeProjectUrbanSprawlImpactsComparisonUseCase implements UseCas
             id: uuid(),
             address: relatedSite.address,
             cityPopulation: cityStats.population,
+            isCityInRuralZone,
             fricheActivity: "INDUSTRY",
           });
         case "AGRICULTURAL_OPERATION":
@@ -110,6 +116,7 @@ export class ComputeProjectUrbanSprawlImpactsComparisonUseCase implements UseCas
             id: uuid(),
             address: relatedSite.address,
             cityPopulation: cityStats.population,
+            isCityInRuralZone,
             operationActivity: "POLYCULTURE_AND_LIVESTOCK",
           });
         case "NATURAL_AREA":
@@ -118,6 +125,7 @@ export class ComputeProjectUrbanSprawlImpactsComparisonUseCase implements UseCas
             id: uuid(),
             address: relatedSite.address,
             cityPopulation: cityStats.population,
+            isCityInRuralZone,
             naturalAreaType: "PRAIRIE",
           });
         case "URBAN_ZONE":

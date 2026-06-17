@@ -28,6 +28,6 @@ import { TerritoryController } from "./territory.controller";
       inject: [SqlConnection],
     },
   ],
-  exports: [GetCityRuralityUseCase, SqlCityStatsQuery],
+  exports: [GetCityRuralityUseCase, SqlCityStatsQuery, SqlCityRuralityQuery],
 })
 export class TerritoryModule {}

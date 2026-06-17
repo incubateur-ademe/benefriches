@@ -2,6 +2,7 @@ import { computeFricheDefaultYearlyExpenses } from "shared";
 
 import { fail, success, TResult } from "src/shared-kernel/result";
 import { UseCase } from "src/shared-kernel/usecase";
+import { CityRuralityQuery } from "src/territory/core/gateways/CityRuralityQuery";
 import { CityStatsProvider } from "src/territory/core/gateways/CityStatsProvider";
 
 type Request = {
@@ -27,19 +28,26 @@ export class ComputeFricheInactionCostUseCase implements UseCase<
   Request,
   ComputeFricheInactionCostResult
 > {
-  constructor(private readonly cityStatsQuery: CityStatsProvider) {}
+  constructor(
+    private readonly cityStatsQuery: CityStatsProvider,
+    private readonly cityRuralityQuery: CityRuralityQuery,
+  ) {}
 
   async execute({
     siteCityCode,
     siteSurfaceArea,
   }: Request): Promise<ComputeFricheInactionCostResult> {
     try {
-      const { surfaceAreaSquareMeters, population, name, accuracy } =
-        await this.cityStatsQuery.getCityStats(siteCityCode);
+      const [{ surfaceAreaSquareMeters, population, name, accuracy }, isCityInRuralZone] =
+        await Promise.all([
+          this.cityStatsQuery.getCityStats(siteCityCode),
+          this.cityRuralityQuery.isCityRural(siteCityCode),
+        ]);
 
       const expenses = computeFricheDefaultYearlyExpenses({
         surfaceArea: siteSurfaceArea,
-        population,
+        cityPopulation: population,
+        isCityInRuralZone,
       });
       const amountByPurpose = new Map(expenses.map(({ purpose, amount }) => [purpose, amount]));
 

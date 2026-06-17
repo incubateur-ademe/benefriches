@@ -44,6 +44,7 @@ import { SqlSiteRepository } from "src/sites/adapters/secondary/site-repository/
 import { SitesQuery } from "src/sites/core/gateways/SitesQuery";
 import { FricheGenerator } from "src/sites/core/models/fricheGenerator";
 import { TerritoryModule } from "src/territory/adapters/primary/territory.module";
+import { SqlCityRuralityQuery } from "src/territory/adapters/secondary/city-rurality-query/SqlCityRuralityQuery";
 import { SqlCityStatsQuery } from "src/territory/adapters/secondary/city-stats-query/SqlCityStatsQuery";
 import { SqlUserQuery } from "src/users/adapters/secondary/user-query/SqlUserQuery";
 import { UserQuery } from "src/users/core/gateways/UserQuery";
@@ -228,6 +229,7 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
         reconversionProjectRepo: SqlReconversionProjectImpactsQuery,
         siteRepo: SqlSiteImpactsQuery,
         cityStatsRepo: SqlCityStatsQuery,
+        cityRuralityQuery: SqlCityRuralityQuery,
         getCarbonStorageFromSoilDistribution: GetCarbonStorageFromSoilDistributionService,
         dateProvider: DateProvider,
       ) {
@@ -235,6 +237,7 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
           reconversionProjectRepo,
           siteRepo,
           cityStatsRepo,
+          cityRuralityQuery,
           getCarbonStorageFromSoilDistribution,
           dateProvider,
         );
@@ -243,6 +246,7 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
         SqlReconversionProjectImpactsQuery,
         SqlSiteImpactsQuery,
         SqlCityStatsQuery,
+        SqlCityRuralityQuery,
         GetCarbonStorageFromSoilDistributionService,
         RealDateProvider,
       ],

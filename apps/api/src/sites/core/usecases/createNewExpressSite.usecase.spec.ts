@@ -9,6 +9,7 @@ import { SilentLogger } from "src/shared-kernel/adapters/logger/SilentLogger";
 import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
 import { FailureResult } from "src/shared-kernel/result";
 import { InMemorySitesRepository } from "src/sites/adapters/secondary/site-repository/InMemorySiteRepository";
+import { InMemoryCityRuralityQuery } from "src/territory/adapters/secondary/city-rurality-query/InMemoryCityRuralityQuery";
 import { InMemoryCityStatsQuery } from "src/territory/adapters/secondary/city-stats-query/InMemoryCityStatsQuery";
 
 import { SITE_CREATED, SiteCreatedEvent } from "../events/siteCreated.event";
@@ -35,6 +36,7 @@ describe("CreateNewExpressSite Use case", () => {
   let siteRepository: InMemorySitesRepository;
   let dateProvider: DateProvider;
   let cityStatsQuery: InMemoryCityStatsQuery;
+  let cityRuralityQuery: InMemoryCityRuralityQuery;
   let uuidGenerator: DeterministicUuidGenerator;
   let eventPublisher: DomainEventPublisher;
   const fakeNow = new Date("2024-01-03T13:50:45");
@@ -43,6 +45,7 @@ describe("CreateNewExpressSite Use case", () => {
     siteRepository = new InMemorySitesRepository();
     dateProvider = new DeterministicDateProvider(fakeNow);
     cityStatsQuery = new InMemoryCityStatsQuery();
+    cityRuralityQuery = new InMemoryCityRuralityQuery();
     uuidGenerator = new DeterministicUuidGenerator();
     uuidGenerator.nextUuids("event-id-1");
     eventPublisher = new InMemoryEventPublisher();
@@ -65,6 +68,7 @@ describe("CreateNewExpressSite Use case", () => {
       siteRepository,
       dateProvider,
       cityStatsQuery,
+      cityRuralityQuery,
       uuidGenerator,
       eventPublisher,
       new SilentLogger(),
@@ -92,6 +96,7 @@ describe("CreateNewExpressSite Use case", () => {
       siteRepository,
       dateProvider,
       failingCityDataProvider,
+      cityRuralityQuery,
       uuidGenerator,
       eventPublisher,
       new SilentLogger(),
@@ -127,6 +132,7 @@ describe("CreateNewExpressSite Use case", () => {
         siteRepository,
         dateProvider,
         cityStatsQuery,
+        cityRuralityQuery,
         uuidGenerator,
         eventPublisher,
         new SilentLogger(),
@@ -215,6 +221,7 @@ describe("CreateNewExpressSite Use case", () => {
         siteRepository,
         dateProvider,
         cityStatsQuery,
+        cityRuralityQuery,
         uuidGenerator,
         eventPublisher,
         new SilentLogger(),
@@ -267,11 +274,43 @@ describe("CreateNewExpressSite Use case", () => {
   });
 
   describe("Friche", () => {
+    it("creates a rural friche without security expense", async () => {
+      cityRuralityQuery._setRuralCityCodes(["92049"]);
+      const usecase = new CreateNewExpressSiteUseCase(
+        siteRepository,
+        dateProvider,
+        cityStatsQuery,
+        cityRuralityQuery,
+        uuidGenerator,
+        eventPublisher,
+        new SilentLogger(),
+      );
+
+      await usecase.execute({
+        createdBy: "user-id-123",
+        siteProps: {
+          id: "e869d8db-3d63-4fd5-93ab-7728c1c19a1e",
+          surfaceArea: 2540,
+          address: buildAddress({ cityCode: "92049" }),
+          nature: "FRICHE",
+          fricheActivity: "OTHER",
+        },
+      });
+
+      // oxlint-disable-next-line no-non-null-assertion
+      const savedSite = siteRepository._getSites()[0]!;
+      expect(savedSite.yearlyExpenses.find((e) => e.purpose === "security")).toBeUndefined();
+      expect(
+        savedSite.yearlyExpenses.find((e) => e.purpose === "illegalDumpingCost"),
+      ).toBeDefined();
+    });
+
     it("creates a new express friche from given props", async () => {
       const usecase = new CreateNewExpressSiteUseCase(
         siteRepository,
         dateProvider,
         cityStatsQuery,
+        cityRuralityQuery,
         uuidGenerator,
         eventPublisher,
         new SilentLogger(),
@@ -341,6 +380,7 @@ describe("CreateNewExpressSite Use case", () => {
         siteRepository,
         dateProvider,
         cityStatsQuery,
+        cityRuralityQuery,
         uuidGenerator,
         eventPublisher,
         new SilentLogger(),
@@ -409,6 +449,7 @@ describe("CreateNewExpressSite Use case", () => {
         siteRepository,
         dateProvider,
         cityStatsQuery,
+        cityRuralityQuery,
         uuidGenerator,
         eventPublisher,
         new SilentLogger(),

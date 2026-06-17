@@ -52,6 +52,24 @@ describe("expenses ViewData selectors", () => {
         security: computeSecurityDefaultCost(surfaceArea),
       });
     });
+
+    it("omits security cost for a friche in a rural city", () => {
+      const surfaceArea = 10000;
+      const population = 15000;
+
+      const state = new StoreBuilder()
+        .withCreationData({ nature: "FRICHE", surfaceArea, soilsDistribution: {} })
+        .withCityPopulation(population)
+        .withCityIsRural(true)
+        .build()
+        .getState();
+
+      const { estimatedAmounts } = selectSiteYearlyExpensesViewData(state);
+
+      expect(estimatedAmounts).toEqual({
+        illegalDumpingCost: computeIllegalDumpingDefaultCost(population),
+      });
+    });
   });
 
   describe("selectSiteYearlyExpensesViewData", () => {

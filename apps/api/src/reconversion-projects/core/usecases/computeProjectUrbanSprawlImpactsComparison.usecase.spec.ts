@@ -10,6 +10,7 @@ import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/Deter
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { SuccessResult, FailureResult } from "src/shared-kernel/result";
 import { InMemorySiteImpactsQuery } from "src/sites/adapters/secondary/site-impacts/InMemorySiteImpactsQuery";
+import { InMemoryCityRuralityQuery } from "src/territory/adapters/secondary/city-rurality-query/InMemoryCityRuralityQuery";
 import { InMemoryCityStatsQuery } from "src/territory/adapters/secondary/city-stats-query/InMemoryCityStatsQuery";
 
 import { FakeGetSoilsCarbonStorageService } from "../gateways/FakeGetSoilsCarbonStorageService";
@@ -156,6 +157,7 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
         projectQuery,
         siteQuery,
         new InMemoryCityStatsQuery(),
+        new InMemoryCityRuralityQuery(),
         new FakeGetSoilsCarbonStorageService(),
         dateProvider,
       );
@@ -194,6 +196,7 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
         projectQuery,
         siteQuery,
         new InMemoryCityStatsQuery(),
+        new InMemoryCityRuralityQuery(),
         new FakeGetSoilsCarbonStorageService(),
         dateProvider,
       );
@@ -239,6 +242,7 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
         projectQuery,
         siteQuery,
         new InMemoryCityStatsQuery(),
+        new InMemoryCityRuralityQuery(),
         new FakeGetSoilsCarbonStorageService(),
         dateProvider,
       );
@@ -266,6 +270,7 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
       projectQuery,
       siteQuery,
       new InMemoryCityStatsQuery(),
+      new InMemoryCityRuralityQuery(),
       new FakeGetSoilsCarbonStorageService(),
       dateProvider,
     );
@@ -382,6 +387,7 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
       projectQuery,
       siteQuery,
       new InMemoryCityStatsQuery(),
+      new InMemoryCityRuralityQuery(),
       soilsCarbonStorageService,
       dateProvider,
     );
@@ -505,6 +511,7 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
       projectQuery,
       siteQuery,
       new InMemoryCityStatsQuery(),
+      new InMemoryCityRuralityQuery(),
       new FakeGetSoilsCarbonStorageService(),
       dateProvider,
     );

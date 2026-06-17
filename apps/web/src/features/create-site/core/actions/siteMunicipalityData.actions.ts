@@ -20,6 +20,7 @@ export type GetMunicipalityDataResult = {
     };
   };
   population: number;
+  isRural?: boolean;
 };
 
 export interface SiteMunicipalityDataGateway {

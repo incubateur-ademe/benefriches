@@ -6,6 +6,7 @@ import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
 import type { AppLogger } from "src/shared-kernel/logger";
 import { TResult, fail, success } from "src/shared-kernel/result";
 import { UseCase } from "src/shared-kernel/usecase";
+import { CityRuralityQuery } from "src/territory/core/gateways/CityRuralityQuery";
 import { CityStatsProvider } from "src/territory/core/gateways/CityStatsProvider";
 
 import { createSiteCreatedEvent } from "../events/siteCreated.event";
@@ -38,7 +39,9 @@ type Request = {
 
 type CreateNewExpressSiteResult = TResult<void, "SiteAlreadyExists">;
 
-function createSite(props: ExpressSiteProps & { cityPopulation: number }): Site {
+function createSite(
+  props: ExpressSiteProps & { cityPopulation: number; isCityInRuralZone: boolean },
+): Site {
   switch (props.nature) {
     case "FRICHE":
       return new FricheGenerator().fromSurfaceAreaAndLocalInformation(props);
@@ -60,6 +63,7 @@ export class CreateNewExpressSiteUseCase implements UseCase<Request, CreateNewEx
     private readonly sitesRepository: SitesRepository,
     private readonly dateProvider: DateProvider,
     private readonly cityStatsQuery: CityStatsProvider,
+    private readonly cityRuralityQuery: CityRuralityQuery,
     private readonly uuidGenerator: UidGenerator,
     private readonly eventPublisher: DomainEventPublisher,
     private readonly logger: AppLogger,
@@ -67,14 +71,23 @@ export class CreateNewExpressSiteUseCase implements UseCase<Request, CreateNewEx
 
   async execute({ siteProps, createdBy }: Request): Promise<CreateNewExpressSiteResult> {
     let siteCityPopulation = 0;
+    let isCityInRuralZone = false;
     try {
-      const { population } = await this.cityStatsQuery.getCityStats(siteProps.address.cityCode);
+      const [{ population }, isRural] = await Promise.all([
+        this.cityStatsQuery.getCityStats(siteProps.address.cityCode),
+        this.cityRuralityQuery.isCityRural(siteProps.address.cityCode),
+      ]);
       siteCityPopulation = population;
+      isCityInRuralZone = isRural;
     } catch (error) {
       this.logger.error("Failed to get city population", error);
     }
 
-    const site = createSite({ ...siteProps, cityPopulation: siteCityPopulation });
+    const site = createSite({
+      ...siteProps,
+      cityPopulation: siteCityPopulation,
+      isCityInRuralZone,
+    });
 
     if (await this.sitesRepository.existsWithId(site.id)) {
       return fail("SiteAlreadyExists");

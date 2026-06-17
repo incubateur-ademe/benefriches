@@ -4,7 +4,7 @@ import { LocalAuthority } from "shared";
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { routes, useRoute } from "@/app/router";
 import { createUser } from "@/features/onboarding/core/createUser.action";
-import { AdministrativeDivisionGeoApi } from "@/shared/infrastructure/administrative-division-service/administrativeDivisionGeoApi";
+import { MunicipalityDataService } from "@/shared/infrastructure/administrative-division-service/municipalityDataService";
 
 import CreateUserForm, { FormValues } from "./CreateUserForm";
 
@@ -32,7 +32,7 @@ function CreateUserFormContainer({ onSuccess }: Props) {
   const { createUserState, createUserError } = useAppSelector((state) => state.currentUser);
 
   const administrativeDivisionService: AdministrativeDivisionService = useMemo(
-    () => new AdministrativeDivisionGeoApi(),
+    () => new MunicipalityDataService(),
     [],
   );
 
