@@ -1453,7 +1453,7 @@ describe("Sites controller", () => {
       expect(response.status).toEqual(400);
     });
 
-    it("gets a 200 response with city data when city code exists in database", async () => {
+    it("gets a 200 response with city data when city code exists in database (rural city — no security cost)", async () => {
       const response = await supertest(app.getHttpServer())
         .get(`/api/friches/cout-inaction`)
         .query({ code_insee: "31070", superficie_m2: 5000 })
@@ -1469,7 +1469,7 @@ describe("Sites controller", () => {
         description:
           "Bénéfriches a calculé le coût de l'inaction à partir de données moyennes, de la superficie et des données communales de votre friche",
         cout_annuel_debarras_depot_illegal: 18,
-        cout_annuel_securisation: 11000,
+        cout_annuel_securisation: undefined,
       });
     });
 
@@ -1490,14 +1490,14 @@ describe("Sites controller", () => {
       });
     });
 
-    it("gets a 200 response with correct costs for known city and surface", async () => {
+    it("gets a 200 response with correct illegal dumping cost for known rural city and surface", async () => {
       const response = await supertest(app.getHttpServer())
         .get(`/api/friches/cout-inaction`)
         .query({ code_insee: "31070", superficie_m2: 1000 })
         .send();
 
       expect(response.status).toEqual(200);
-      expect(response.body.cout_annuel_securisation).toBeGreaterThan(0);
+      expect(response.body.cout_annuel_securisation).toBeUndefined();
       expect(response.body.cout_annuel_debarras_depot_illegal).toBeGreaterThan(0);
     });
   });
