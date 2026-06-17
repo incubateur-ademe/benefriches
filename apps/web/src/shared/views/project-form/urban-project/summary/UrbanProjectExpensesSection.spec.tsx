@@ -31,6 +31,7 @@ describe("UrbanProjectExpensesSection", () => {
         yearlyProjectedCosts={{ value: [], isAuto: false }}
         developerName="La SPL"
         reinstatementContractOwnerName={undefined}
+        buildingsContractorName="Le Constructeur"
       />,
     );
 
@@ -46,5 +47,40 @@ describe("UrbanProjectExpensesSection", () => {
     expect(screen.getByText(/20\s*000\s*€/)).toBeVisible();
     expect(screen.getByText(/30\s*000\s*€/)).toBeVisible();
     expect(screen.getByText(/40\s*000\s*€/)).toBeVisible();
+  });
+
+  it("attributes buildings construction costs to the buildings contractor name", () => {
+    render(
+      <UrbanProjectExpensesSection
+        sitePurchaseTotalAmount={{ shouldDisplay: false, value: undefined, isAuto: false }}
+        sitePurchasePropertyTransferDuties={{
+          shouldDisplay: false,
+          value: undefined,
+          isAuto: false,
+        }}
+        reinstatementCosts={{
+          shouldDisplay: false,
+          value: undefined,
+          isAuto: false,
+          autoValues: undefined,
+        }}
+        buildingsConstructionAndRehabilitationCosts={{
+          shouldDisplay: true,
+          value: {
+            technicalStudiesAndFees: 10000,
+            buildingsConstructionWorks: undefined,
+            buildingsRehabilitationWorks: undefined,
+            otherConstructionExpenses: undefined,
+          },
+        }}
+        installationCosts={{ value: [], isAuto: false, autoValues: undefined }}
+        yearlyProjectedCosts={{ value: [], isAuto: false }}
+        developerName="La SPL"
+        reinstatementContractOwnerName={undefined}
+        buildingsContractorName="Mon Entreprise BTP"
+      />,
+    );
+
+    expect(screen.getByText(/Mon Entreprise BTP/)).toBeVisible();
   });
 });

@@ -85,6 +85,7 @@ function UrbanProjectFormSummary({
 
   const developerName = projectSummary.developer.value?.name;
   const reinstatementContractOwnerName = projectSummary.reinstatementContractOwner.value?.name;
+  const buildingsContractorName = projectSummary.buildingsContractorName;
 
   return (
     <WizardFormLayout
@@ -285,6 +286,12 @@ function UrbanProjectFormSummary({
               value={reinstatementContractOwnerName ?? "Non renseigné"}
             />
           )}
+          {buildingsContractorName.shouldDisplay && (
+            <DataLine
+              label={<strong>Constructeur des bâtiments</strong>}
+              value={buildingsContractorName.value ?? "Non renseigné"}
+            />
+          )}
         </Section>
 
         {/* 💸 Dépenses */}
@@ -299,6 +306,7 @@ function UrbanProjectFormSummary({
           yearlyProjectedCosts={projectSummary.yearlyProjectedCosts}
           developerName={developerName}
           reinstatementContractOwnerName={reinstatementContractOwnerName}
+          buildingsContractorName={buildingsContractorName.value}
           {...getSectionProps(stepsGroupedBySections.EXPENSES)}
         />
 

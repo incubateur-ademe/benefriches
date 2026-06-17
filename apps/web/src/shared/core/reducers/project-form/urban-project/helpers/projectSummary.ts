@@ -165,6 +165,14 @@ export const getProjectSummary = (
         steps.URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER?.payload?.projectDeveloper ===
         steps.URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER?.defaultValues?.projectDeveloper,
     },
+    buildingsContractorName: {
+      value:
+        steps.URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER?.payload
+          ?.developerWillBeBuildingsConstructor === true
+          ? steps.URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER?.payload?.projectDeveloper?.name
+          : undefined,
+      shouldDisplay: stepsSequence.includes("URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER"),
+    },
     installationCosts: {
       value: steps.URBAN_PROJECT_EXPENSES_INSTALLATION?.payload?.installationExpenses ?? [],
       isAuto: autoInstallationCostsValues?.length !== 0,

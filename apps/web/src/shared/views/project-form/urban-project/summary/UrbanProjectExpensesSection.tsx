@@ -37,6 +37,7 @@ type Props = {
   yearlyProjectedCosts: ProjectSummary["yearlyProjectedCosts"];
   developerName: string | undefined;
   reinstatementContractOwnerName: string | undefined;
+  buildingsContractorName: string | undefined;
 };
 
 export default function UrbanProjectExpensesSection({
@@ -50,6 +51,7 @@ export default function UrbanProjectExpensesSection({
   yearlyProjectedCosts,
   developerName,
   reinstatementContractOwnerName,
+  buildingsContractorName,
 }: Props) {
   const hasExpenses =
     (sitePurchaseTotalAmount.shouldDisplay && sitePurchaseTotalAmount.value !== undefined) ||
@@ -161,7 +163,7 @@ export default function UrbanProjectExpensesSection({
               label={
                 <>
                   <strong>Construction / réhabilitation des bâtiments</strong> (à la charge de{" "}
-                  {developerName})
+                  {buildingsContractorName})
                 </>
               }
               value={<strong>{formatMoney(totalBuildingsConstructionCosts ?? 0)}</strong>}
