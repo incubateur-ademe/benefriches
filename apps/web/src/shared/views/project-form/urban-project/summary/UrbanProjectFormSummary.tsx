@@ -12,6 +12,7 @@ import { getLabelForSpace } from "@/features/create-project/core/urban-project/u
 import { getLabelForDevelopmentPlanCategory } from "@/features/create-project/views/projectTypeLabelMapping";
 import { formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 import { getLabelForSoilType } from "@/shared/core/label-mapping/soilTypeLabelMapping";
+import { getLabelForProjectPhase } from "@/shared/core/projectPhase";
 import { getProjectSummary } from "@/shared/core/reducers/project-form/urban-project/helpers/projectSummary";
 import { UrbanProjectCreationStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 import { getLabelForBuildingsUse } from "@/shared/core/urbanProject";
@@ -437,6 +438,18 @@ function UrbanProjectFormSummary({
               projectSummary.operationsFirstYear.isAuto
                 ? "Bénéfriches considère que la mise en service du site intervient l'année suivant la fin de l'aménagement."
                 : undefined
+            }
+          />
+        </Section>
+
+        {/* 📈 Avancement */}
+        <Section title="📈 Avancement">
+          <DataLine
+            label={<strong>Phase du projet</strong>}
+            value={
+              projectSummary.projectPhase.value
+                ? getLabelForProjectPhase(projectSummary.projectPhase.value)
+                : "Non renseigné"
             }
           />
         </Section>

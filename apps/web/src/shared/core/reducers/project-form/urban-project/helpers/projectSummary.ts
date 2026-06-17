@@ -1,4 +1,5 @@
 import {
+  ProjectPhase,
   ReinstatementExpensePurpose,
   sumObjectValues,
   UrbanProjectDevelopmentExpense,
@@ -12,6 +13,7 @@ import { isSiteResalePlannedAfterDevelopment } from "./readers/siteResaleReaders
 export const getProjectSummary = (
   steps: ProjectFormState["urbanProject"]["steps"],
   stepsSequence: UrbanProjectCreationStep[],
+  projectPhase?: ProjectPhase,
 ) => {
   const autoReinstatementCostsValues =
     steps.URBAN_PROJECT_EXPENSES_REINSTATEMENT?.payload?.reinstatementExpenses?.reduce<
@@ -258,6 +260,9 @@ export const getProjectSummary = (
       value:
         steps.URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA?.payload
           ?.newBuildingsUsesFloorSurfaceArea,
+    },
+    projectPhase: {
+      value: projectPhase,
     },
   };
 };
