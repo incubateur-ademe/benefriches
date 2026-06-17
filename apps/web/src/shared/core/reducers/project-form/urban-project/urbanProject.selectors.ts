@@ -94,11 +94,10 @@ export const createUrbanProjectFormSelectors = (
     [
       selectStepState,
       selectProjectStepsSequence,
-      selectProjectSoilsDistribution,
       selectProjectPhase,
+      selectProjectSoilsDistribution,
     ],
-    (steps, stepsSequence, _soilsDistribution, projectPhase) =>
-      getProjectSummary(steps, stepsSequence, projectPhase),
+    getProjectSummary,
   );
 
   const selectProjectStepsSequenceWithStatus = createSelector(

@@ -1,5 +1,6 @@
 import {
   ProjectPhase,
+  ReconversionProjectSoilsDistribution,
   ReinstatementExpensePurpose,
   sumObjectValues,
   UrbanProjectDevelopmentExpense,
@@ -14,7 +15,12 @@ export const getProjectSummary = (
   steps: ProjectFormState["urbanProject"]["steps"],
   stepsSequence: UrbanProjectCreationStep[],
   projectPhase?: ProjectPhase,
+  soilsDistribution: ReconversionProjectSoilsDistribution = [],
 ) => {
+  const totalBuildingsFootprint =
+    soilsDistribution.find(({ soilType }) => soilType === "BUILDINGS")?.surfaceArea ?? 0;
+  const buildingsFootprintToReuse =
+    steps.URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE?.payload?.buildingsFootprintToReuse;
   const autoReinstatementCostsValues =
     steps.URBAN_PROJECT_EXPENSES_REINSTATEMENT?.payload?.reinstatementExpenses?.reduce<
       ReinstatementExpensePurpose[]
@@ -249,7 +255,13 @@ export const getProjectSummary = (
       shouldDisplay: stepsSequence.includes("URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION"),
     },
     buildingsFootprintToReuse: {
-      value: steps.URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE?.payload?.buildingsFootprintToReuse,
+      value: buildingsFootprintToReuse,
+    },
+    newBuildingsFootprint: {
+      value:
+        totalBuildingsFootprint > 0
+          ? totalBuildingsFootprint - (buildingsFootprintToReuse ?? 0)
+          : undefined,
     },
     existingBuildingsUsesFloorSurfaceArea: {
       value:

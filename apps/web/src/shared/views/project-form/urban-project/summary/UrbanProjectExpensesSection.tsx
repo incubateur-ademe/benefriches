@@ -162,8 +162,11 @@ export default function UrbanProjectExpensesSection({
               noBorder
               label={
                 <>
-                  <strong>Construction / réhabilitation des bâtiments</strong> (à la charge de{" "}
-                  {buildingsContractorName ?? "Non renseigné"})
+                  <strong>Construction / réhabilitation des bâtiments</strong> (à la charge{" "}
+                  {buildingsContractorName
+                    ? buildingsContractorName
+                    : "du constructeur des bâtiments"}
+                  )
                 </>
               }
               value={<strong>{formatMoney(totalBuildingsConstructionCosts ?? 0)}</strong>}

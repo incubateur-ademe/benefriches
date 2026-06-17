@@ -209,8 +209,7 @@ function UrbanProjectFormSummary({
                 ) : undefined,
             )}
 
-            {(projectSummary.buildingsFootprintToReuse.value !== undefined ||
-              projectSummary.existingBuildingsUsesFloorSurfaceArea.value !== undefined) && (
+            {!!projectSummary.buildingsFootprintToReuse.value && (
               <>
                 <DataLine noBorder label={<strong>Utilisation du bâti existant</strong>} value="" />
                 {projectSummary.buildingsFootprintToReuse.value !== undefined && (
@@ -251,28 +250,35 @@ function UrbanProjectFormSummary({
               </>
             )}
 
-            {projectSummary.newBuildingsUsesFloorSurfaceArea.value !== undefined && (
+            {!!projectSummary.newBuildingsFootprint.value && (
               <>
                 <DataLine noBorder label={<strong>Nouveaux bâtiments</strong>} value="" />
+                <DataLine
+                  label="Surface au sol des nouveaux bâtiments"
+                  value={formatSurfaceArea(
+                    roundToInteger(projectSummary.newBuildingsFootprint.value ?? 0),
+                  )}
+                />
                 <DataLine
                   noBorder
                   label="Surface de plancher des nouveaux bâtiments"
                   value={formatSurfaceArea(
                     roundToInteger(
-                      sumObjectValues(projectSummary.newBuildingsUsesFloorSurfaceArea.value),
+                      sumObjectValues(projectSummary.newBuildingsUsesFloorSurfaceArea.value ?? {}),
                     ),
                   )}
                 />
-                {typedObjectEntries(projectSummary.newBuildingsUsesFloorSurfaceArea.value).map(
-                  ([use, value]) =>
-                    value ? (
-                      <DataLine
-                        key={`new-${use}`}
-                        label={getLabelForBuildingsUse(use)}
-                        value={formatSurfaceArea(roundToInteger(value))}
-                        isDetails
-                      />
-                    ) : undefined,
+                {typedObjectEntries(
+                  projectSummary.newBuildingsUsesFloorSurfaceArea.value ?? {},
+                ).map(([use, value]) =>
+                  value ? (
+                    <DataLine
+                      key={`new-${use}`}
+                      label={getLabelForBuildingsUse(use)}
+                      value={formatSurfaceArea(roundToInteger(value))}
+                      isDetails
+                    />
+                  ) : undefined,
                 )}
               </>
             )}
