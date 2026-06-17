@@ -238,5 +238,18 @@ export const getProjectSummary = (
       value: steps.URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION?.payload?.decontaminationPlan,
       shouldDisplay: stepsSequence.includes("URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION"),
     },
+    buildingsFootprintToReuse: {
+      value: steps.URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE?.payload?.buildingsFootprintToReuse,
+    },
+    existingBuildingsUsesFloorSurfaceArea: {
+      value:
+        steps.URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA?.payload
+          ?.existingBuildingsUsesFloorSurfaceArea,
+    },
+    newBuildingsUsesFloorSurfaceArea: {
+      value:
+        steps.URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA?.payload
+          ?.newBuildingsUsesFloorSurfaceArea,
+    },
   };
 };

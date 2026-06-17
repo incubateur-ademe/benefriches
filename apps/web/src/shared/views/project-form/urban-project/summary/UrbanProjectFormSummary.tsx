@@ -3,6 +3,7 @@ import {
   ReconversionProjectSoilsDistribution,
   roundToInteger,
   sumListWithKey,
+  sumObjectValues,
   typedObjectEntries,
 } from "shared";
 
@@ -204,6 +205,74 @@ function UrbanProjectFormSummary({
                     isDetails
                   />
                 ) : undefined,
+            )}
+
+            {(projectSummary.buildingsFootprintToReuse.value !== undefined ||
+              projectSummary.existingBuildingsUsesFloorSurfaceArea.value !== undefined) && (
+              <>
+                <DataLine noBorder label={<strong>Utilisation du bâti existant</strong>} value="" />
+                {projectSummary.buildingsFootprintToReuse.value !== undefined && (
+                  <DataLine
+                    label="Surface au sol du bâti existant utilisé"
+                    value={formatSurfaceArea(
+                      roundToInteger(projectSummary.buildingsFootprintToReuse.value),
+                    )}
+                  />
+                )}
+                {projectSummary.existingBuildingsUsesFloorSurfaceArea.value !== undefined && (
+                  <>
+                    <DataLine
+                      noBorder
+                      label="Surface de plancher du bâti existant utilisé"
+                      value={formatSurfaceArea(
+                        roundToInteger(
+                          sumObjectValues(
+                            projectSummary.existingBuildingsUsesFloorSurfaceArea.value,
+                          ),
+                        ),
+                      )}
+                    />
+                    {typedObjectEntries(
+                      projectSummary.existingBuildingsUsesFloorSurfaceArea.value,
+                    ).map(([use, value]) =>
+                      value ? (
+                        <DataLine
+                          key={`existing-${use}`}
+                          label={getLabelForBuildingsUse(use)}
+                          value={formatSurfaceArea(roundToInteger(value))}
+                          isDetails
+                        />
+                      ) : undefined,
+                    )}
+                  </>
+                )}
+              </>
+            )}
+
+            {projectSummary.newBuildingsUsesFloorSurfaceArea.value !== undefined && (
+              <>
+                <DataLine noBorder label={<strong>Nouveaux bâtiments</strong>} value="" />
+                <DataLine
+                  noBorder
+                  label="Surface de plancher des nouveaux bâtiments"
+                  value={formatSurfaceArea(
+                    roundToInteger(
+                      sumObjectValues(projectSummary.newBuildingsUsesFloorSurfaceArea.value),
+                    ),
+                  )}
+                />
+                {typedObjectEntries(projectSummary.newBuildingsUsesFloorSurfaceArea.value).map(
+                  ([use, value]) =>
+                    value ? (
+                      <DataLine
+                        key={`new-${use}`}
+                        label={getLabelForBuildingsUse(use)}
+                        value={formatSurfaceArea(roundToInteger(value))}
+                        isDetails
+                      />
+                    ) : undefined,
+                )}
+              </>
             )}
           </Section>
         )}
