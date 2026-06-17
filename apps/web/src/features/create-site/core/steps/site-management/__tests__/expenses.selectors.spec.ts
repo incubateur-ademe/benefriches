@@ -1,7 +1,59 @@
+import {
+  computeEstimatedPropertyTaxesAmount,
+  computeIllegalDumpingDefaultCost,
+  computeMaintenanceDefaultCost,
+  computeSecurityDefaultCost,
+} from "shared";
+
 import { StoreBuilder } from "../../../__tests__/creation-steps/testUtils";
 import { selectSiteYearlyExpensesViewData } from "../siteManagement.selectors";
 
 describe("expenses ViewData selectors", () => {
+  describe("selectSiteYearlyExpensesViewData estimated amounts", () => {
+    it("estimates illegal dumping, security, maintenance and property taxes for a friche with buildings", () => {
+      const surfaceArea = 10000;
+      const buildingsSurface = 2000;
+      const population = 15000;
+
+      const state = new StoreBuilder()
+        .withCreationData({
+          nature: "FRICHE",
+          surfaceArea,
+          soilsDistribution: { BUILDINGS: buildingsSurface, IMPERMEABLE_SOILS: 8000 },
+        })
+        .withCityPopulation(population)
+        .build()
+        .getState();
+
+      const { estimatedAmounts } = selectSiteYearlyExpensesViewData(state);
+
+      expect(estimatedAmounts).toEqual({
+        illegalDumpingCost: computeIllegalDumpingDefaultCost(population),
+        security: computeSecurityDefaultCost(surfaceArea),
+        maintenance: computeMaintenanceDefaultCost(buildingsSurface),
+        propertyTaxes: computeEstimatedPropertyTaxesAmount(buildingsSurface),
+      });
+    });
+
+    it("omits maintenance and property taxes for a friche without buildings", () => {
+      const surfaceArea = 10000;
+      const population = 15000;
+
+      const state = new StoreBuilder()
+        .withCreationData({ nature: "FRICHE", surfaceArea, soilsDistribution: {} })
+        .withCityPopulation(population)
+        .build()
+        .getState();
+
+      const { estimatedAmounts } = selectSiteYearlyExpensesViewData(state);
+
+      expect(estimatedAmounts).toEqual({
+        illegalDumpingCost: computeIllegalDumpingDefaultCost(population),
+        security: computeSecurityDefaultCost(surfaceArea),
+      });
+    });
+  });
+
   describe("selectSiteYearlyExpensesViewData", () => {
     it("returns view data with expenses in store for friche", () => {
       const state = new StoreBuilder()

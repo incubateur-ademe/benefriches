@@ -6,9 +6,7 @@ import {
   computeAgriculturalOperationYearlyExpenses,
   computeAgriculturalOperationYearlyIncomes,
   computeEstimatedPropertyTaxesAmount,
-  computeIllegalDumpingDefaultCost,
-  computeMaintenanceDefaultCost,
-  computeSecurityDefaultCost,
+  computeFricheDefaultYearlyExpenses,
 } from "shared";
 
 import { RootState } from "@/app/store/store";
@@ -146,32 +144,25 @@ const selectEstimatedYearlyExpensesForSite = createSelector(
     } = siteData;
 
     const buildingsSurface = soilsDistribution.BUILDINGS;
-    const propertyTaxesAmount = buildingsSurface
-      ? computeEstimatedPropertyTaxesAmount(buildingsSurface)
-      : undefined;
+    const propertyTaxesOnlyAmounts: EstimatedSiteYearlyExpensesAmounts = {
+      propertyTaxes: buildingsSurface
+        ? computeEstimatedPropertyTaxesAmount(buildingsSurface)
+        : undefined,
+    };
 
     switch (nature) {
       case "FRICHE": {
-        const maintenanceAmount = buildingsSurface
-          ? computeMaintenanceDefaultCost(buildingsSurface)
-          : undefined;
-        const illegalDumpingCostAmount = population
-          ? computeIllegalDumpingDefaultCost(population)
-          : undefined;
-        const securityAmount = surfaceArea ? computeSecurityDefaultCost(surfaceArea) : undefined;
+        const expenses = computeFricheDefaultYearlyExpenses({
+          surfaceArea: surfaceArea ?? 0,
+          population: population ?? 0,
+          buildingsSurface,
+        });
 
-        return {
-          maintenance: maintenanceAmount,
-          propertyTaxes: propertyTaxesAmount,
-          illegalDumpingCost: illegalDumpingCostAmount,
-          security: securityAmount,
-        };
+        return Object.fromEntries(expenses.map(({ purpose, amount }) => [purpose, amount]));
       }
       case "AGRICULTURAL_OPERATION": {
         if (!agriculturalOperationActivity || !surfaceArea || !isSiteOperated) {
-          return {
-            propertyTaxes: propertyTaxesAmount,
-          };
+          return propertyTaxesOnlyAmounts;
         }
         const operationsExpenses = computeAgriculturalOperationYearlyExpenses(
           agriculturalOperationActivity,
@@ -188,9 +179,7 @@ const selectEstimatedYearlyExpensesForSite = createSelector(
         };
       }
       default:
-        return {
-          propertyTaxes: propertyTaxesAmount,
-        };
+        return propertyTaxesOnlyAmounts;
     }
   },
 );

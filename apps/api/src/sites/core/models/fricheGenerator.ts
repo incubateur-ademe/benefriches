@@ -1,14 +1,10 @@
 import {
-  computeEstimatedPropertyTaxesAmount,
-  computeIllegalDumpingDefaultCost,
-  computeMaintenanceDefaultCost,
-  computeSecurityDefaultCost,
+  computeFricheDefaultYearlyExpenses,
   FricheActivity,
   formatMunicipalityName,
   generateSiteName,
   getContaminatedPercentageFromFricheActivity,
   getSoilsDistributionForFricheActivity,
-  SiteYearlyExpense,
 } from "shared";
 import { v4 as uuid } from "uuid";
 
@@ -47,33 +43,11 @@ export class FricheGenerator implements SiteGenerator<FricheGenerationProps> {
       soilsDistributionOptions,
     );
 
-    const yearlyExpenses: SiteYearlyExpense[] = [
-      {
-        amount: computeIllegalDumpingDefaultCost(cityPopulation),
-        purpose: "illegalDumpingCost",
-        bearer: "owner",
-      },
-      {
-        amount: computeSecurityDefaultCost(surfaceArea),
-        purpose: "security",
-        bearer: "owner",
-      },
-    ];
-
-    if (soilsDistribution.BUILDINGS) {
-      yearlyExpenses.push(
-        {
-          amount: computeMaintenanceDefaultCost(soilsDistribution.BUILDINGS),
-          purpose: "maintenance",
-          bearer: "owner",
-        },
-        {
-          amount: computeEstimatedPropertyTaxesAmount(soilsDistribution.BUILDINGS),
-          purpose: "propertyTaxes",
-          bearer: "owner",
-        },
-      );
-    }
+    const yearlyExpenses = computeFricheDefaultYearlyExpenses({
+      surfaceArea,
+      population: cityPopulation,
+      buildingsSurface: soilsDistribution.BUILDINGS,
+    });
 
     // assume contaminated soil surface area based on friche activity if not specified
     const contaminatedSoilSurface =

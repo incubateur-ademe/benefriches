@@ -1,4 +1,4 @@
-import { computeIllegalDumpingDefaultCost, computeSecurityDefaultCost } from "shared";
+import { computeFricheDefaultYearlyExpenses } from "shared";
 
 import { fail, success, TResult } from "src/shared-kernel/result";
 import { UseCase } from "src/shared-kernel/usecase";
@@ -12,7 +12,7 @@ type Request = {
 type ComputeFricheInactionCostResult = TResult<
   {
     illegalDumpingCost: number;
-    security: number;
+    security?: number;
     siteCityData: {
       accuracy: "city" | "france";
       surfaceAreaSquareMeters: number;
@@ -36,9 +36,16 @@ export class ComputeFricheInactionCostUseCase implements UseCase<
     try {
       const { surfaceAreaSquareMeters, population, name, accuracy } =
         await this.cityStatsQuery.getCityStats(siteCityCode);
+
+      const expenses = computeFricheDefaultYearlyExpenses({
+        surfaceArea: siteSurfaceArea,
+        population,
+      });
+      const amountByPurpose = new Map(expenses.map(({ purpose, amount }) => [purpose, amount]));
+
       return success({
-        illegalDumpingCost: computeIllegalDumpingDefaultCost(population),
-        security: computeSecurityDefaultCost(siteSurfaceArea),
+        illegalDumpingCost: amountByPurpose.get("illegalDumpingCost") ?? 0,
+        security: amountByPurpose.get("security"),
         siteCityData: {
           accuracy,
           surfaceAreaSquareMeters,

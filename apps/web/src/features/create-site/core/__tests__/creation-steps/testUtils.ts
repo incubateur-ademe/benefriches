@@ -46,12 +46,21 @@ export const expectSiteDataUnchanged = (initialState: RootState, newState: RootS
 };
 
 export class StoreBuilder {
-  preloadedRootState: Pick<RootState, "siteCreation" | "currentUser" | "appSettings"> = {
+  preloadedRootState: Pick<RootState, "siteCreation" | "currentUser" | "appSettings"> &
+    Partial<Pick<RootState, "siteMunicipalityData">> = {
     siteCreation: getInitialState(),
     currentUser: initialState,
     appSettings: { ...DEFAULT_APP_SETTINGS, askForConfirmationOnStepRevert: false },
   };
   _appDependencies: AppDependencies = getTestAppDependencies();
+
+  withCityPopulation(population: number) {
+    this.preloadedRootState.siteMunicipalityData = {
+      loadingState: "success",
+      population,
+    };
+    return this;
+  }
 
   withStepsHistory(stepsHistory: SiteCreationStep[]) {
     // we have to use destructuring here otherwise a TypeError will occur because the original state

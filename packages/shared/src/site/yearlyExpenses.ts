@@ -1,5 +1,7 @@
 import z from "zod";
 
+import { computeEstimatedPropertyTaxesAmount } from "../financial/propertyTaxes";
+
 const siteManagementYearlyExpensePurpose = z.enum([
   "rent",
   "propertyTaxes",
@@ -57,4 +59,46 @@ export const computeMaintenanceDefaultCost = (buildingsSurface: number) => {
 
 export const computeSecurityDefaultCost = (surfaceArea: number) => {
   return Math.round(SECURITY_COST_BY_HECTARE_PER_YEAR * (surfaceArea / 10000));
+};
+
+export const computeFricheDefaultYearlyExpenses = (input: {
+  surfaceArea: number;
+  population: number;
+  buildingsSurface?: number;
+  isCityInRuralZone?: boolean;
+}): SiteYearlyExpense[] => {
+  const { surfaceArea, population, buildingsSurface, isCityInRuralZone = false } = input;
+
+  const expenses: SiteYearlyExpense[] = [
+    {
+      amount: computeIllegalDumpingDefaultCost(population),
+      purpose: "illegalDumpingCost",
+      bearer: "owner",
+    },
+  ];
+
+  if (!isCityInRuralZone) {
+    expenses.push({
+      amount: computeSecurityDefaultCost(surfaceArea),
+      purpose: "security",
+      bearer: "owner",
+    });
+  }
+
+  if (buildingsSurface) {
+    expenses.push(
+      {
+        amount: computeMaintenanceDefaultCost(buildingsSurface),
+        purpose: "maintenance",
+        bearer: "owner",
+      },
+      {
+        amount: computeEstimatedPropertyTaxesAmount(buildingsSurface),
+        purpose: "propertyTaxes",
+        bearer: "owner",
+      },
+    );
+  }
+
+  return expenses;
 };
