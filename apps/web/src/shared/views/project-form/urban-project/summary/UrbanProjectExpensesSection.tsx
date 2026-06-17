@@ -163,7 +163,7 @@ export default function UrbanProjectExpensesSection({
               label={
                 <>
                   <strong>Construction / réhabilitation des bâtiments</strong> (à la charge de{" "}
-                  {buildingsContractorName})
+                  {buildingsContractorName ?? "Non renseigné"})
                 </>
               }
               value={<strong>{formatMoney(totalBuildingsConstructionCosts ?? 0)}</strong>}
