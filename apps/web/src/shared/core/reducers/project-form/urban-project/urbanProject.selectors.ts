@@ -80,9 +80,25 @@ export const createUrbanProjectFormSelectors = (
     (state) => state.urbanProject.stepsSequence,
   );
 
+  const selectProjectPhase = createSelector(selectSelf, (state) => {
+    if ("useCaseSelection" in state) {
+      return state.useCaseSelection.projectPhase;
+    }
+    if ("projectData" in state) {
+      return state.projectData.projectPhase;
+    }
+    return undefined;
+  });
+
   const selectProjectSummary = createSelector(
-    [selectStepState, selectProjectStepsSequence, selectProjectSoilsDistribution],
-    (steps, stepsSequence) => getProjectSummary(steps, stepsSequence),
+    [
+      selectStepState,
+      selectProjectStepsSequence,
+      selectProjectSoilsDistribution,
+      selectProjectPhase,
+    ],
+    (steps, stepsSequence, _soilsDistribution, projectPhase) =>
+      getProjectSummary(steps, stepsSequence, projectPhase),
   );
 
   const selectProjectStepsSequenceWithStatus = createSelector(
