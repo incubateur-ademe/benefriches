@@ -58,11 +58,19 @@
         "src/shared-kernel/adapters/sql-knex/scripts/**/*.ts",
         "src/shared-kernel/adapters/sql-knex/seeds/**/*.ts",
         "test/integration-tests-setup.ts",
-        "test/integration-tests-global-hooks.ts"
+        "test/integration-tests-global-hooks.ts",
+        "test/integration-global-setup.ts",
+        "test/integration-per-test-hooks.ts"
       ],
       "rules": {
         "no-console": "off",
         "typescript/no-unsafe-assignment": "off"
+      }
+    },
+    {
+      "files": ["*.node-spec.ts"],
+      "rules": {
+        "typescript/no-floating-promises": "off"
       }
     },
     {
