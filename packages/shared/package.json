@@ -16,7 +16,7 @@
   "scripts": {
     "build": "tsdown",
     "dev": "tsdown --watch",
-    "test": "vitest --globals=true",
+    "test": "node --experimental-strip-types --test 'src/**/*.spec.ts'",
     "typecheck": "tsc --noEmit",
     "lint": "oxlint --type-aware",
     "format": "prettier --write --cache \"./**/*.{js,ts,md,json}\" src/",
@@ -32,7 +32,7 @@
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "~6.0.2",
-    "tsdown": "^0.21.8",
-    "vitest": "~4.1.4"
+    "@types/node": "^24",
+    "tsdown": "^0.21.8"
   }
 }
