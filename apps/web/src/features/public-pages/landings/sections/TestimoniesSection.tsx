@@ -64,7 +64,7 @@ type TestimonyCardProps = {
 function TestimonyCard({ testimony, className }: TestimonyCardProps) {
   return (
     <div
-      className={`bg-white dark:bg-grey-dark rounded-2xl p-8 md:flex gap-8 min-w-[700px] h-auto ${className || ""}`}
+      className={`bg-white dark:bg-grey-dark rounded-2xl p-8 md:flex gap-8 min-w-175 h-auto ${className || ""}`}
     >
       <div className="shrink-0 my-auto w-32">
         <img src={testimony.imgSrc} alt="" className="max-w-full object-contain" />
@@ -72,7 +72,7 @@ function TestimonyCard({ testimony, className }: TestimonyCardProps) {
 
       <div className="hidden md:block w-px bg-blue-ultradark shrink-0" />
 
-      <div className="flex flex-col flex-1 min-h-[200px]">
+      <div className="flex flex-col flex-1 min-h-50">
         <div className="mb-6">
           <Badge style="blue">{testimony.projectType}</Badge>
         </div>
@@ -129,7 +129,7 @@ export default function TestimoniesSection() {
 
   return (
     <section className="bg-blue-light dark:bg-blue-ultradark py-20">
-      <div className="fr-container flex items-center justify-between mb-[60px]">
+      <div className="fr-container flex items-center justify-between mb-15">
         <SectionTitle className="m-0">Ils sont convaincus par Bénéfriches</SectionTitle>
         <div>
           <Button
@@ -153,8 +153,16 @@ export default function TestimoniesSection() {
 
       <div
         ref={scrollContainerRef}
-        className="flex px-6 gap-6 overflow-x-auto scrollbar-hide scroll-smooth"
-        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        className="flex gap-6 overflow-x-auto scrollbar-hide scroll-smooth"
+        style={{
+          scrollbarWidth: "none",
+          msOverflowStyle: "none",
+          // Mirrors fr-container's left edge: fixed 1.5rem on narrow viewports,
+          // (100vw - 78rem) / 2 + 1.5rem once the container starts centering itself.
+          // 78rem = fr-container max-width (1248px at 16px root font size).
+          paddingLeft: "max(1.5rem, calc((100vw - 78rem) / 2 + 1.5rem))",
+          paddingRight: "1.5rem",
+        }}
       >
         {testimonies.map((testimony, index) => (
           <TestimonyCard
@@ -165,7 +173,7 @@ export default function TestimoniesSection() {
         ))}
       </div>
 
-      <div className="flex mt-[60px] gap-2 fr-container">
+      <div className="flex mt-15 gap-2 fr-container">
         {testimonies.map(({ imgSrc }, index) => (
           <button
             key={imgSrc}
