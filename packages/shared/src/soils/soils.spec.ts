@@ -1,31 +1,37 @@
-import { describe, expect, it } from "vitest";
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
 
-import { isNaturalSoil } from ".";
+import { isNaturalSoil } from "./index.js";
 
 describe("isNaturalSoil", () => {
-  it.each(["FOREST_DECIDUOUS", "FOREST_CONIFER", "FOREST_POPLAR", "FOREST_MIXED"] as const)(
-    "returns true for forest soil %s",
-    (soilType) => {
-      expect(isNaturalSoil(soilType)).toBe(true);
-    },
-  );
+  const forestSoils = [
+    "FOREST_DECIDUOUS",
+    "FOREST_CONIFER",
+    "FOREST_POPLAR",
+    "FOREST_MIXED",
+  ] as const;
+  for (const soilType of forestSoils) {
+    it(`returns true for forest soil ${soilType}`, () => {
+      assert.strictEqual(isNaturalSoil(soilType), true);
+    });
+  }
 
-  it.each(["PRAIRIE_GRASS", "PRAIRIE_BUSHES", "PRAIRIE_TREES"] as const)(
-    "returns true for prairie soil %s",
-    (soilType) => {
-      expect(isNaturalSoil(soilType)).toBe(true);
-    },
-  );
+  const prairieSoils = ["PRAIRIE_GRASS", "PRAIRIE_BUSHES", "PRAIRIE_TREES"] as const;
+  for (const soilType of prairieSoils) {
+    it(`returns true for prairie soil ${soilType}`, () => {
+      assert.strictEqual(isNaturalSoil(soilType), true);
+    });
+  }
 
   it("returns true for WET_LAND", () => {
-    expect(isNaturalSoil("WET_LAND")).toBe(true);
+    assert.strictEqual(isNaturalSoil("WET_LAND"), true);
   });
 
   it("returns true for WATER", () => {
-    expect(isNaturalSoil("WATER")).toBe(true);
+    assert.strictEqual(isNaturalSoil("WATER"), true);
   });
 
-  it.each([
+  const nonNaturalSoils = [
     "BUILDINGS",
     "IMPERMEABLE_SOILS",
     "MINERAL_SOIL",
@@ -34,7 +40,10 @@ describe("isNaturalSoil", () => {
     "CULTIVATION",
     "VINEYARD",
     "ORCHARD",
-  ] as const)("returns false for non-natural soil %s", (soilType) => {
-    expect(isNaturalSoil(soilType)).toBe(false);
-  });
+  ] as const;
+  for (const soilType of nonNaturalSoils) {
+    it(`returns false for non-natural soil ${soilType}`, () => {
+      assert.strictEqual(isNaturalSoil(soilType), false);
+    });
+  }
 });

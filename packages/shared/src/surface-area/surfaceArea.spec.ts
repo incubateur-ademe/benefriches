@@ -1,15 +1,18 @@
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+
 import {
   convertHectaresToSquareMeters,
   convertSquareMetersToHectares,
   surfaceAreaSchema,
-} from "./surfaceArea";
+} from "./surfaceArea.js";
 
 describe("Surface area conversion", () => {
   it("converts square meters to hectares", () => {
-    expect(convertSquareMetersToHectares(13000)).toEqual(1.3);
+    assert.strictEqual(convertSquareMetersToHectares(13000), 1.3);
   });
   it("converts hectares to square meters", () => {
-    expect(convertHectaresToSquareMeters(15)).toEqual(150000);
+    assert.strictEqual(convertHectaresToSquareMeters(15), 150000);
   });
 });
 
@@ -22,8 +25,8 @@ describe("surfaceAreaSchema", () => {
     const result = surfaceAreaSchema.safeParse(input);
 
     // Assert
-    expect(result.success).toBe(true);
-    expect(result.data).toBe(0);
+    assert.strictEqual(result.success, true);
+    assert.strictEqual(result.data, 0);
   });
 
   it("accepts positive numbers", () => {
@@ -34,8 +37,8 @@ describe("surfaceAreaSchema", () => {
     const result = surfaceAreaSchema.safeParse(input);
 
     // Assert
-    expect(result.success).toBe(true);
-    expect(result.data).toBe(1500.5);
+    assert.strictEqual(result.success, true);
+    assert.strictEqual(result.data, 1500.5);
   });
 
   it("rejects negative numbers", () => {
@@ -46,7 +49,7 @@ describe("surfaceAreaSchema", () => {
     const result = surfaceAreaSchema.safeParse(input);
 
     // Assert
-    expect(result.success).toBe(false);
+    assert.strictEqual(result.success, false);
   });
 
   it("rejects non-number values", () => {
@@ -57,6 +60,6 @@ describe("surfaceAreaSchema", () => {
     const result = surfaceAreaSchema.safeParse(input);
 
     // Assert
-    expect(result.success).toBe(false);
+    assert.strictEqual(result.success, false);
   });
 });

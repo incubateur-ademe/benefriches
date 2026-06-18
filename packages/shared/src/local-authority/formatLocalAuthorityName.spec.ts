@@ -1,61 +1,68 @@
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+
 import {
   formatEpciName,
   formatLocalAuthorityName,
   formatMunicipalityName,
-} from "./formatLocalAuthorityName";
+} from "./formatLocalAuthorityName.js";
 
 describe("strings: format mairies name", () => {
   it("should format municipality name with « élision »", () => {
-    expect(formatMunicipalityName("Ornon")).toEqual("Mairie d'Ornon");
-    expect(formatMunicipalityName("ornon")).toEqual("Mairie d'Ornon");
+    assert.strictEqual(formatMunicipalityName("Ornon"), "Mairie d'Ornon");
+    assert.strictEqual(formatMunicipalityName("ornon"), "Mairie d'Ornon");
   });
   it("should format municipality name without « élision »", () => {
-    expect(formatMunicipalityName("Lens")).toEqual("Mairie de Lens");
-    expect(formatMunicipalityName("lens")).toEqual("Mairie de Lens");
+    assert.strictEqual(formatMunicipalityName("Lens"), "Mairie de Lens");
+    assert.strictEqual(formatMunicipalityName("lens"), "Mairie de Lens");
   });
   it("should format municipality name with « élision » for city that starts with « H »", () => {
-    expect(formatMunicipalityName("Hesdin")).toEqual("Mairie d'Hesdin");
-    expect(formatMunicipalityName("hesdin")).toEqual("Mairie d'Hesdin");
+    assert.strictEqual(formatMunicipalityName("Hesdin"), "Mairie d'Hesdin");
+    assert.strictEqual(formatMunicipalityName("hesdin"), "Mairie d'Hesdin");
   });
 });
 
 describe("strings: format epcis name", () => {
   it("should format epci name with « Communauté de Communes »", () => {
-    expect(formatEpciName("CC de l'Oisans")).toEqual("Communauté de Communes de l'Oisans");
+    assert.strictEqual(formatEpciName("CC de l'Oisans"), "Communauté de Communes de l'Oisans");
   });
   it("should format epci name with « Communauté d'Agglomération »", () => {
-    expect(formatEpciName("CA Villefranche Beaujolais Saône")).toEqual(
+    assert.strictEqual(
+      formatEpciName("CA Villefranche Beaujolais Saône"),
       "Communauté d'Agglomération Villefranche Beaujolais Saône",
     );
   });
   it("should format epci name with « Communauté Urbaine »", () => {
-    expect(formatEpciName("CU Angers Loire Métropole")).toEqual(
+    assert.strictEqual(
+      formatEpciName("CU Angers Loire Métropole"),
       "Communauté Urbaine Angers Loire Métropole",
     );
   });
   it("should not format epci name with no CA nor CC", () => {
-    expect(formatEpciName("Grenoble-Alpes-Métropole")).toEqual("Grenoble-Alpes-Métropole");
+    assert.strictEqual(formatEpciName("Grenoble-Alpes-Métropole"), "Grenoble-Alpes-Métropole");
   });
 });
 
 describe("strings: format local authority name", () => {
   it("should format epci name", () => {
-    expect(formatLocalAuthorityName("epci", "Grenoble-Alpes-Métropole")).toEqual(
+    assert.strictEqual(
+      formatLocalAuthorityName("epci", "Grenoble-Alpes-Métropole"),
       "Grenoble-Alpes-Métropole",
     );
   });
 
   it("should format municipality name", () => {
-    expect(formatLocalAuthorityName("municipality", "Grenoble")).toEqual("Mairie de Grenoble");
+    assert.strictEqual(formatLocalAuthorityName("municipality", "Grenoble"), "Mairie de Grenoble");
   });
 
   it("should format region name", () => {
-    expect(formatLocalAuthorityName("region", "Auvergne-Rhône-Alpes")).toEqual(
+    assert.strictEqual(
+      formatLocalAuthorityName("region", "Auvergne-Rhône-Alpes"),
       "Région Auvergne-Rhône-Alpes",
     );
   });
 
   it("should format department name", () => {
-    expect(formatLocalAuthorityName("department", "Isère")).toEqual("Département Isère");
+    assert.strictEqual(formatLocalAuthorityName("department", "Isère"), "Département Isère");
   });
 });

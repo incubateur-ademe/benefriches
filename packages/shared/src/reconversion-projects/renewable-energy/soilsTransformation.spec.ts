@@ -1,4 +1,11 @@
-import { createSoilSurfaceAreaDistribution, SoilsDistribution, SoilType } from "../../soils";
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+
+import {
+  createSoilSurfaceAreaDistribution,
+  SoilsDistribution,
+  SoilType,
+} from "../../soils/index.js";
 import {
   allocateRecommendedSoilSurfaceArea,
   canSiteAccomodatePhotovoltaicPanels,
@@ -7,13 +14,14 @@ import {
   transformNonSuitableSoils,
   transformSoilsForRenaturation,
   willTransformationNoticeablyImpactBiodiversityAndClimate,
-} from "./soilsTransformation";
+} from "./soilsTransformation.js";
 
 const assertSurfaceAreasEqual = (
   soilsDistribution1: SoilsDistribution,
   soilsDistribution2: SoilsDistribution,
 ) => {
-  expect(createSoilSurfaceAreaDistribution(soilsDistribution1).getTotalSurfaceArea()).toEqual(
+  assert.strictEqual(
+    createSoilSurfaceAreaDistribution(soilsDistribution1).getTotalSurfaceArea(),
     createSoilSurfaceAreaDistribution(soilsDistribution2).getTotalSurfaceArea(),
   );
 };
@@ -27,7 +35,7 @@ describe("Soils transformation", () => {
         PRAIRIE_GRASS: 100,
         ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 100,
       };
-      expect(getNonSuitableSoilsForPhotovoltaicPanels(soilsDistribution)).toEqual({});
+      assert.deepStrictEqual(getNonSuitableSoilsForPhotovoltaicPanels(soilsDistribution), {});
     });
 
     it("should return non-suitable soils for site with buildings, water, forest, mineral soil and prairie", () => {
@@ -38,7 +46,7 @@ describe("Soils transformation", () => {
         MINERAL_SOIL: 100,
         PRAIRIE_GRASS: 100,
       };
-      expect(getNonSuitableSoilsForPhotovoltaicPanels(soilsDistribution)).toEqual({
+      assert.deepStrictEqual(getNonSuitableSoilsForPhotovoltaicPanels(soilsDistribution), {
         BUILDINGS: 100,
         WATER: 100,
         FOREST_MIXED: 100,
@@ -55,9 +63,10 @@ describe("Soils transformation", () => {
         MINERAL_SOIL: 100,
       };
       const photovoltaicPanelsSurfaceArea = 300;
-      expect(
+      assert.strictEqual(
         canSiteAccomodatePhotovoltaicPanels(soilsDistribution, photovoltaicPanelsSurfaceArea),
-      ).toBe(false);
+        false,
+      );
     });
 
     it("should return false when enough flat soils but some of it is water", () => {
@@ -68,9 +77,10 @@ describe("Soils transformation", () => {
         WATER: 400,
       };
       const photovoltaicPanelsSurfaceArea = 300;
-      expect(
+      assert.strictEqual(
         canSiteAccomodatePhotovoltaicPanels(soilsDistribution, photovoltaicPanelsSurfaceArea),
-      ).toBe(false);
+        false,
+      );
     });
 
     it("should return true when enough suitable soils", () => {
@@ -83,9 +93,10 @@ describe("Soils transformation", () => {
       };
       const photovoltaicPanelsSurfaceArea = 250;
 
-      expect(
+      assert.strictEqual(
         canSiteAccomodatePhotovoltaicPanels(soilsDistribution, photovoltaicPanelsSurfaceArea),
-      ).toBe(true);
+        true,
+      );
     });
 
     it("should return true when there is the exact suitable soils surface area", () => {
@@ -98,9 +109,10 @@ describe("Soils transformation", () => {
       };
       const photovoltaicPanelsSurfaceArea = 400;
 
-      expect(
+      assert.strictEqual(
         canSiteAccomodatePhotovoltaicPanels(soilsDistribution, photovoltaicPanelsSurfaceArea),
-      ).toBe(true);
+        true,
+      );
     });
   });
 
@@ -115,9 +127,10 @@ describe("Soils transformation", () => {
       };
       const nonSuitableSoilsToTransform: SoilsDistribution = {};
 
-      expect(
+      assert.deepStrictEqual(
         transformNonSuitableSoils(currentSoilsDistribution, nonSuitableSoilsToTransform),
-      ).toEqual(currentSoilsDistribution);
+        currentSoilsDistribution,
+      );
     });
 
     it("should return same soils distribution when suitable soils passed", () => {
@@ -138,7 +151,7 @@ describe("Soils transformation", () => {
         currentSoilsDistribution,
         nonSuitableSoilsToTransform,
       );
-      expect(transformedSoils).toEqual(currentSoilsDistribution);
+      assert.deepStrictEqual(transformedSoils, currentSoilsDistribution);
     });
 
     it("should remove buildings soils and transform it to mineral soil", () => {
@@ -157,10 +170,11 @@ describe("Soils transformation", () => {
         currentSoilsDistribution,
         nonSuitableSoilsToTransform,
       );
-      expect(transformedSoils).toEqual({
-        ...currentSoilsDistribution,
-        BUILDINGS: undefined,
+      assert.deepStrictEqual(transformedSoils, {
+        IMPERMEABLE_SOILS: 100,
         MINERAL_SOIL: 200,
+        PRAIRIE_GRASS: 200,
+        WATER: 200,
       });
       assertSurfaceAreasEqual(transformedSoils, currentSoilsDistribution);
     });
@@ -181,7 +195,7 @@ describe("Soils transformation", () => {
         currentSoilsDistribution,
         nonSuitableSoilsToTransform,
       );
-      expect(transformedSoils).toEqual({
+      assert.deepStrictEqual(transformedSoils, {
         ...currentSoilsDistribution,
         BUILDINGS: 50,
         MINERAL_SOIL: 150,
@@ -203,7 +217,7 @@ describe("Soils transformation", () => {
         currentSoilsDistribution,
         nonSuitableSoilsToTransform,
       );
-      expect(transformedSoils).toEqual({
+      assert.deepStrictEqual(transformedSoils, {
         ...currentSoilsDistribution,
         ARTIFICIAL_TREE_FILLED: 50,
         ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 50,
@@ -227,10 +241,9 @@ describe("Soils transformation", () => {
         currentSoilsDistribution,
         nonSuitableSoilsToTransform,
       );
-      expect(transformedSoils).toEqual({
-        ...currentSoilsDistribution,
-        WATER: undefined,
-        WET_LAND: undefined,
+      assert.deepStrictEqual(transformedSoils, {
+        ARTIFICIAL_TREE_FILLED: 100,
+        PRAIRIE_GRASS: 200,
         MINERAL_SOIL: 400,
       });
       assertSurfaceAreasEqual(transformedSoils, currentSoilsDistribution);
@@ -256,11 +269,10 @@ describe("Soils transformation", () => {
         currentSoilsDistribution,
         nonSuitableSoilsToTransform,
       );
-      expect(transformedSoils).toEqual({
-        ...currentSoilsDistribution,
-        FOREST_CONIFER: undefined,
-        FOREST_DECIDUOUS: undefined,
-        FOREST_MIXED: undefined,
+      assert.deepStrictEqual(transformedSoils, {
+        BUILDINGS: 100,
+        IMPERMEABLE_SOILS: 100,
+        MINERAL_SOIL: 100,
         PRAIRIE_GRASS: 400,
       });
       assertSurfaceAreasEqual(transformedSoils, currentSoilsDistribution);
@@ -279,7 +291,7 @@ describe("Soils transformation", () => {
           currentSoilsDistribution,
           100,
         );
-        expect(transformedSoils).toEqual({
+        assert.deepStrictEqual(transformedSoils, {
           PRAIRIE_BUSHES: 100,
           MINERAL_SOIL: 100,
         });
@@ -296,7 +308,7 @@ describe("Soils transformation", () => {
           currentSoilsDistribution,
           200,
         );
-        expect(transformedSoils).toEqual({
+        assert.deepStrictEqual(transformedSoils, {
           ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 0,
           MINERAL_SOIL: 200,
         });
@@ -313,7 +325,7 @@ describe("Soils transformation", () => {
           currentSoilsDistribution,
           500,
         );
-        expect(transformedSoils).toEqual({
+        assert.deepStrictEqual(transformedSoils, {
           ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 0,
           MINERAL_SOIL: 200,
         });
@@ -331,7 +343,7 @@ describe("Soils transformation", () => {
           currentSoilsDistribution,
           250,
         );
-        expect(transformedSoils).toEqual({
+        assert.deepStrictEqual(transformedSoils, {
           ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 0,
           PRAIRIE_GRASS: 50,
           MINERAL_SOIL: 250,
@@ -352,7 +364,7 @@ describe("Soils transformation", () => {
           currentSoilsDistribution,
           400,
         );
-        expect(transformedSoils).toEqual({
+        assert.deepStrictEqual(transformedSoils, {
           FOREST_CONIFER: 200,
           ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 0,
           PRAIRIE_GRASS: 0,
@@ -377,7 +389,7 @@ describe("Soils transformation", () => {
           currentSoilsDistribution,
           400,
         );
-        expect(transformedSoils).toEqual(currentSoilsDistribution);
+        assert.deepStrictEqual(transformedSoils, currentSoilsDistribution);
       });
     });
 
@@ -395,7 +407,7 @@ describe("Soils transformation", () => {
           recommendedImpermeableSurfaceArea: 0,
           recommendedMineralSurfaceArea: 0,
         });
-        expect(renaturedSoils).toEqual({
+        assert.deepStrictEqual(renaturedSoils, {
           PRAIRIE_BUSHES: 100,
           ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 570,
         });
@@ -414,7 +426,7 @@ describe("Soils transformation", () => {
           recommendedImpermeableSurfaceArea: 0,
           recommendedMineralSurfaceArea: 0,
         });
-        expect(renaturedSoils).toEqual({
+        assert.deepStrictEqual(renaturedSoils, {
           PRAIRIE_BUSHES: 100,
           ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 600,
         });
@@ -433,7 +445,7 @@ describe("Soils transformation", () => {
           recommendedImpermeableSurfaceArea: 20,
           recommendedMineralSurfaceArea: 50,
         });
-        expect(renaturedSoils).toEqual({
+        assert.deepStrictEqual(renaturedSoils, {
           PRAIRIE_BUSHES: 100,
           ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 230,
           IMPERMEABLE_SOILS: 20,
@@ -454,7 +466,7 @@ describe("Soils transformation", () => {
           recommendedImpermeableSurfaceArea: 20,
           recommendedMineralSurfaceArea: 50,
         });
-        expect(renaturedSoils).toEqual({
+        assert.deepStrictEqual(renaturedSoils, {
           WATER: 222,
           ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 2130,
           PRAIRIE_TREES: 300,
@@ -475,7 +487,7 @@ describe("Soils transformation", () => {
         "WET_LAND",
         "CULTIVATION",
       ];
-      expect(getSuitableSoilsForTransformation(currentSoils)).toEqual([
+      assert.deepStrictEqual(getSuitableSoilsForTransformation(currentSoils), [
         "BUILDINGS",
         "IMPERMEABLE_SOILS",
         "MINERAL_SOIL",
@@ -492,7 +504,7 @@ describe("Soils transformation", () => {
 
     it("should include artifical soils with current soils when does not exist", () => {
       const currentSoils: SoilType[] = ["BUILDINGS", "MINERAL_SOIL", "IMPERMEABLE_SOILS"];
-      expect(getSuitableSoilsForTransformation(currentSoils)).toEqual([
+      assert.deepStrictEqual(getSuitableSoilsForTransformation(currentSoils), [
         "BUILDINGS",
         "IMPERMEABLE_SOILS",
         "MINERAL_SOIL",
@@ -507,7 +519,7 @@ describe("Soils transformation", () => {
         "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
         "ARTIFICIAL_TREE_FILLED",
       ];
-      expect(getSuitableSoilsForTransformation(currentSoils)).toEqual([
+      assert.deepStrictEqual(getSuitableSoilsForTransformation(currentSoils), [
         "BUILDINGS",
         "IMPERMEABLE_SOILS",
         "MINERAL_SOIL",
@@ -524,7 +536,7 @@ describe("Soils transformation", () => {
         "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
         "ARTIFICIAL_TREE_FILLED",
       ];
-      expect(getSuitableSoilsForTransformation(currentSoils)).toEqual(currentSoils);
+      assert.deepStrictEqual(getSuitableSoilsForTransformation(currentSoils), currentSoils);
     });
   });
 
@@ -538,12 +550,13 @@ describe("Soils transformation", () => {
         MINERAL_SOIL: 100,
         ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 100,
       };
-      expect(
+      assert.strictEqual(
         willTransformationNoticeablyImpactBiodiversityAndClimate(
           currentSoilsDistribution,
           futureSoilsDistribution,
         ),
-      ).toBe(false);
+        false,
+      );
     });
     it("should return true when 20% of forest will be destroyed", () => {
       const currentSoilsDistribution: SoilsDistribution = {
@@ -555,12 +568,13 @@ describe("Soils transformation", () => {
         MINERAL_SOIL: 50,
         PRAIRIE_GRASS: 20,
       };
-      expect(
+      assert.strictEqual(
         willTransformationNoticeablyImpactBiodiversityAndClimate(
           currentSoilsDistribution,
           futureSoilsDistribution,
         ),
-      ).toBe(true);
+        true,
+      );
     });
     it("should return false when less than 10% of forest will be destroyed", () => {
       const currentSoilsDistribution: SoilsDistribution = {
@@ -572,12 +586,13 @@ describe("Soils transformation", () => {
         MINERAL_SOIL: 50,
         PRAIRIE_GRASS: 9,
       };
-      expect(
+      assert.strictEqual(
         willTransformationNoticeablyImpactBiodiversityAndClimate(
           currentSoilsDistribution,
           futureSoilsDistribution,
         ),
-      ).toBe(false);
+        false,
+      );
     });
     it("should return false when less than 10% of wet land will be destroyed", () => {
       const currentSoilsDistribution: SoilsDistribution = {
@@ -588,12 +603,13 @@ describe("Soils transformation", () => {
         WET_LAND: 95,
         MINERAL_SOIL: 55,
       };
-      expect(
+      assert.strictEqual(
         willTransformationNoticeablyImpactBiodiversityAndClimate(
           currentSoilsDistribution,
           futureSoilsDistribution,
         ),
-      ).toBe(false);
+        false,
+      );
     });
     it("should return true when more than 10% of wet land will be destroyed", () => {
       const currentSoilsDistribution: SoilsDistribution = {
@@ -604,12 +620,13 @@ describe("Soils transformation", () => {
         WET_LAND: 50,
         MINERAL_SOIL: 100,
       };
-      expect(
+      assert.strictEqual(
         willTransformationNoticeablyImpactBiodiversityAndClimate(
           currentSoilsDistribution,
           futureSoilsDistribution,
         ),
-      ).toBe(true);
+        true,
+      );
     });
     it("should return true when more than 10% of cumulated forest and wet land will be destroyed", () => {
       const currentSoilsDistribution: SoilsDistribution = {
@@ -621,12 +638,13 @@ describe("Soils transformation", () => {
         FOREST_DECIDUOUS: 100,
         MINERAL_SOIL: 150,
       };
-      expect(
+      assert.strictEqual(
         willTransformationNoticeablyImpactBiodiversityAndClimate(
           currentSoilsDistribution,
           futureSoilsDistribution,
         ),
-      ).toBe(true);
+        true,
+      );
     });
     it("should return false when less than 10% of cumulated forest and wet land will be destroyed", () => {
       const currentSoilsDistribution: SoilsDistribution = {
@@ -640,12 +658,13 @@ describe("Soils transformation", () => {
         MINERAL_SOIL: 50,
         PRAIRIE_GRASS: 25,
       };
-      expect(
+      assert.strictEqual(
         willTransformationNoticeablyImpactBiodiversityAndClimate(
           currentSoilsDistribution,
           futureSoilsDistribution,
         ),
-      ).toBe(false);
+        false,
+      );
     });
   });
 });

@@ -1,6 +1,7 @@
-import { describe, it, expect } from "vitest";
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
 
-import { isConstrainedSoilType, CONSTRAINED_SOIL_TYPES } from "./index";
+import { isConstrainedSoilType, CONSTRAINED_SOIL_TYPES } from "./index.js";
 
 describe("isConstrainedSoilType", () => {
   it("should return true for all 12 constrained soil types", () => {
@@ -22,13 +23,13 @@ describe("isConstrainedSoilType", () => {
     ] as const;
 
     for (const soil of constrainedSoils) {
-      expect(isConstrainedSoilType(soil)).toBe(true);
+      assert.strictEqual(isConstrainedSoilType(soil), true);
     }
 
     // Also verify CONSTRAINED_SOIL_TYPES array has exactly these 12 values
-    expect(CONSTRAINED_SOIL_TYPES).toHaveLength(12);
+    assert.strictEqual(CONSTRAINED_SOIL_TYPES.size, 12);
     for (const soil of constrainedSoils) {
-      expect(CONSTRAINED_SOIL_TYPES).toContain(soil);
+      assert.ok(CONSTRAINED_SOIL_TYPES.has(soil));
     }
   });
 
@@ -43,7 +44,7 @@ describe("isConstrainedSoilType", () => {
     ] as const;
 
     for (const soil of nonConstrainedSoils) {
-      expect(isConstrainedSoilType(soil)).toBe(false);
+      assert.strictEqual(isConstrainedSoilType(soil), false);
     }
   });
 });

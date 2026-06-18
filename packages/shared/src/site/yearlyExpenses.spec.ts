@@ -1,10 +1,13 @@
-import { computeEstimatedPropertyTaxesAmount } from "../financial/propertyTaxes";
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+
+import { computeEstimatedPropertyTaxesAmount } from "../financial/propertyTaxes.js";
 import {
   computeFricheDefaultYearlyExpenses,
   computeIllegalDumpingDefaultCost,
   computeMaintenanceDefaultCost,
   computeSecurityDefaultCost,
-} from "./yearlyExpenses";
+} from "./yearlyExpenses.js";
 
 describe("computeFricheDefaultYearlyExpenses", () => {
   const surfaceArea = 5000;
@@ -18,7 +21,7 @@ describe("computeFricheDefaultYearlyExpenses", () => {
       isCityInRuralZone: false,
     });
 
-    expect(expenses).toEqual([
+    assert.deepStrictEqual(expenses, [
       {
         amount: computeIllegalDumpingDefaultCost(cityPopulation),
         purpose: "illegalDumpingCost",
@@ -36,7 +39,7 @@ describe("computeFricheDefaultYearlyExpenses", () => {
       isCityInRuralZone: false,
     });
 
-    expect(expenses).toEqual([
+    assert.deepStrictEqual(expenses, [
       {
         amount: computeIllegalDumpingDefaultCost(cityPopulation),
         purpose: "illegalDumpingCost",
@@ -64,10 +67,9 @@ describe("computeFricheDefaultYearlyExpenses", () => {
       isCityInRuralZone: true,
     });
 
-    expect(expenses.map(({ purpose }) => purpose)).toEqual([
-      "illegalDumpingCost",
-      "maintenance",
-      "propertyTaxes",
-    ]);
+    assert.deepStrictEqual(
+      expenses.map(({ purpose }) => purpose),
+      ["illegalDumpingCost", "maintenance", "propertyTaxes"],
+    );
   });
 });

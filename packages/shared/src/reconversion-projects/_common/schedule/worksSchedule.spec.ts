@@ -1,11 +1,12 @@
-import { describe, expect, it } from "vitest";
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
 
-import type { IDateProvider } from "../../../adapters/IDateProvider";
+import type { IDateProvider } from "../../../adapters/IDateProvider.js";
 import {
   computeDefaultInstallationSchedule,
   computeDefaultReinstatementSchedule,
   getDefaultScheduleForProject,
-} from "./worksSchedule";
+} from "./worksSchedule.js";
 
 const getDateProvider = (now: Date): IDateProvider => ({
   now: () => now,
@@ -17,7 +18,7 @@ describe("computeDefaultReinstatementSchedule", () => {
 
     const result = computeDefaultReinstatementSchedule(dateProvider);
 
-    expect(result).toEqual({
+    assert.deepStrictEqual(result, {
       startDate: new Date("2026-07-01T13:00:00"),
       endDate: new Date("2028-01-01T13:00:00"),
     });
@@ -31,7 +32,7 @@ describe("computeDefaultInstallationSchedule", () => {
 
     const result = computeDefaultInstallationSchedule(dateProvider)(startFrom);
 
-    expect(result).toEqual({
+    assert.deepStrictEqual(result, {
       startDate: new Date("2028-01-02T13:00:00"),
       endDate: new Date("2029-01-02T13:00:00"),
     });
@@ -42,7 +43,7 @@ describe("computeDefaultInstallationSchedule", () => {
 
     const result = computeDefaultInstallationSchedule(dateProvider)();
 
-    expect(result).toEqual({
+    assert.deepStrictEqual(result, {
       startDate: new Date("2025-01-01T13:00:00"),
       endDate: new Date("2026-01-01T13:00:00"),
     });
@@ -55,7 +56,7 @@ describe("getDefaultScheduleForProject", () => {
 
     const result = getDefaultScheduleForProject(dateProvider)({ hasReinstatement: true });
 
-    expect(result).toEqual({
+    assert.deepStrictEqual(result, {
       reinstatement: {
         startDate: new Date("2026-07-01T13:00:00"),
         endDate: new Date("2028-01-01T13:00:00"),
@@ -73,7 +74,7 @@ describe("getDefaultScheduleForProject", () => {
 
     const result = getDefaultScheduleForProject(dateProvider)({ hasReinstatement: false });
 
-    expect(result).toEqual({
+    assert.deepStrictEqual(result, {
       reinstatement: undefined,
       installation: {
         startDate: new Date("2025-01-01T13:00:00"),

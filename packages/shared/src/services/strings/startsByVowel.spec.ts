@@ -1,25 +1,28 @@
-import { startsByVowel } from "./startsByVowel";
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+
+import { startsByVowel } from "./startsByVowel.js";
 
 describe("Strings: startsByVowel service", () => {
   it("return true for simple vowel", () => {
-    expect(startsByVowel("accent")).toEqual(true);
+    assert.strictEqual(startsByVowel("accent"), true);
   });
   it("return true for accentuated vowel", () => {
-    expect(startsByVowel("éléphant")).toEqual(true);
+    assert.strictEqual(startsByVowel("éléphant"), true);
   });
   it("return true for uppercase vowel", () => {
-    expect(startsByVowel("Instant")).toEqual(true);
+    assert.strictEqual(startsByVowel("Instant"), true);
   });
   it("return true for accentuated uppercase vowel", () => {
-    expect(startsByVowel("Éléphant")).toEqual(true);
+    assert.strictEqual(startsByVowel("Éléphant"), true);
   });
   it("return false for common consonant", () => {
-    expect(startsByVowel("cheminée")).toEqual(false);
+    assert.strictEqual(startsByVowel("cheminée"), false);
   });
   it("return false for uppercase consonant", () => {
-    expect(startsByVowel("Test")).toEqual(false);
+    assert.strictEqual(startsByVowel("Test"), false);
   });
   it("return false for number", () => {
-    expect(startsByVowel("15")).toEqual(false);
+    assert.strictEqual(startsByVowel("15"), false);
   });
 });

@@ -1,90 +1,102 @@
-import { generateSiteName } from "./name";
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+
+import { generateSiteName } from "./name.js";
 
 describe("Site name generation", () => {
   it("should generate 'Exploitation agricole de Blajan'", () => {
-    expect(
+    assert.strictEqual(
       generateSiteName({
         nature: "AGRICULTURAL_OPERATION",
         cityName: "Blajan",
       }),
-    ).toEqual("Exploitation agricole de Blajan");
+      "Exploitation agricole de Blajan",
+    );
   });
 
   it("should generate 'Espace naturel de Fontainebleau'", () => {
-    expect(
+    assert.strictEqual(
       generateSiteName({
         nature: "NATURAL_AREA",
         cityName: "Fontainebleau",
       }),
-    ).toEqual("Espace naturel de Fontainebleau");
+      "Espace naturel de Fontainebleau",
+    );
   });
 
   it("should generate 'Forêt de Fontainebleau'", () => {
-    expect(
+    assert.strictEqual(
       generateSiteName({
         nature: "NATURAL_AREA",
         naturalAreaType: "FOREST",
         cityName: "Fontainebleau",
       }),
-    ).toEqual("Forêt de Fontainebleau");
+      "Forêt de Fontainebleau",
+    );
   });
 
   it("should generate 'Friche industrielle de Blajan'", () => {
-    expect(
+    assert.strictEqual(
       generateSiteName({
         fricheActivity: "INDUSTRY",
         nature: "FRICHE",
         cityName: "Blajan",
       }),
-    ).toEqual("Friche industrielle de Blajan");
+      "Friche industrielle de Blajan",
+    );
   });
 
   it("should generate 'Friche industrielle d'Angers'", () => {
-    expect(
+    assert.strictEqual(
       generateSiteName({
         nature: "FRICHE",
         fricheActivity: "INDUSTRY",
         cityName: "Angers",
       }),
-    ).toEqual("Friche industrielle d'Angers");
+      "Friche industrielle d'Angers",
+    );
   });
 
   it("should generate 'Friche du Mans'", () => {
-    expect(
+    assert.strictEqual(
       generateSiteName({
         fricheActivity: "OTHER",
         nature: "FRICHE",
         cityName: "Le Mans",
       }),
-    ).toEqual("Friche du Mans");
+      "Friche du Mans",
+    );
   });
 
   it("should generate 'Zone urbaine de Chartres' when no urban zone type provided", () => {
-    expect(
+    assert.strictEqual(
       generateSiteName({
         nature: "URBAN_ZONE",
         cityName: "Chartres",
       }),
-    ).toEqual("Zone urbaine de Chartres");
+      "Zone urbaine de Chartres",
+    );
   });
 
   it("should generate 'Zone d'activités économiques de Chartres' for economic activity zone", () => {
-    expect(
+    assert.strictEqual(
       generateSiteName({
         nature: "URBAN_ZONE",
         urbanZone: "ECONOMIC_ACTIVITY_ZONE",
         cityName: "Chartres",
       }),
-    ).toEqual("Zone d'activités économiques de Chartres");
+      "Zone d'activités économiques de Chartres",
+    );
   });
 
   it("should generate 'Zone d'habitation d'Angers' for residential zone", () => {
-    expect(
+    assert.strictEqual(
       generateSiteName({
         nature: "URBAN_ZONE",
         urbanZone: "RESIDENTIAL_ZONE",
         cityName: "Angers",
       }),
-    ).toEqual("Zone d'habitation d'Angers");
+      "Zone d'habitation d'Angers",
+    );
   });
 });

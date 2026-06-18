@@ -1,6 +1,9 @@
-import { sumListWithKey } from "../../services";
-import { computeAgriculturalOperationYearlyExpenses } from "./yearlyExpenses";
-import { computeAgriculturalOperationYearlyIncomes } from "./yearlyIncomes";
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+
+import { sumListWithKey } from "../../services/index.js";
+import { computeAgriculturalOperationYearlyExpenses } from "./yearlyExpenses.js";
+import { computeAgriculturalOperationYearlyIncomes } from "./yearlyIncomes.js";
 
 const AgriculturalOperationActivity = [
   "CEREALS_AND_OILSEEDS_CULTIVATION",
@@ -19,18 +22,16 @@ const AgriculturalOperationActivity = [
 const SURFACE_AREA = 15000;
 
 describe("computeAgriculturalOperationYearlyExpenses and computeAgriculturalOperationYearlyIncomes", () => {
-  it.each(AgriculturalOperationActivity)(
-    "should generate coherent expenses and incomes for agricultural operation: %s",
-    (type) => {
+  for (const type of AgriculturalOperationActivity) {
+    it(`should generate coherent expenses and incomes for agricultural operation: ${type}`, () => {
       const expenses = computeAgriculturalOperationYearlyExpenses(type, SURFACE_AREA, "owner");
       const incomes = computeAgriculturalOperationYearlyIncomes(type, SURFACE_AREA);
 
       const totalExpenses = sumListWithKey(expenses, "amount");
       const totalIncomes = sumListWithKey(incomes, "amount");
 
-      expect(totalIncomes).toBeGreaterThan(totalExpenses);
-
-      expect(totalIncomes - totalExpenses < 50000).toEqual(true);
-    },
-  );
+      assert.ok(totalIncomes > totalExpenses);
+      assert.strictEqual(totalIncomes - totalExpenses < 50000, true);
+    });
+  }
 });

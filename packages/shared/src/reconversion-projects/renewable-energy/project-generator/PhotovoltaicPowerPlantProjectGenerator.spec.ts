@@ -1,9 +1,11 @@
+import assert from "node:assert/strict";
+import { describe, it, beforeEach } from "node:test";
 import { v4 as uuid } from "uuid";
 
-import { IDateProvider } from "../../../adapters/IDateProvider";
-import { DeterministicDateProvider } from "../../_common/project-generator/DateProvider.mock";
-import { MockPhotovoltaicPerformanceService } from "./PhotovoltaicPerformanceService.mock";
-import { PhotovoltaicPowerPlantProjectGenerator } from "./PhotovoltaicPowerPlantProjectGenerator";
+import type { IDateProvider } from "../../../adapters/IDateProvider.js";
+import { DeterministicDateProvider } from "../../_common/project-generator/DateProvider.mock.js";
+import { MockPhotovoltaicPerformanceService } from "./PhotovoltaicPerformanceService.mock.js";
+import { PhotovoltaicPowerPlantProjectGenerator } from "./PhotovoltaicPowerPlantProjectGenerator.js";
 
 const siteData = {
   id: uuid(),
@@ -50,7 +52,7 @@ describe("PhotovoltaicPowerPlantProjectGenerator", () => {
         siteData,
         userData,
       });
-      expect(generator.soilsDistributionForTransformation).toEqual({
+      assert.deepStrictEqual(generator.soilsDistributionForTransformation, {
         PRAIRIE_GRASS: 5000,
         IMPERMEABLE_SOILS: 2500,
         MINERAL_SOIL: 2500,
@@ -73,7 +75,7 @@ describe("PhotovoltaicPowerPlantProjectGenerator", () => {
         },
         userData,
       });
-      expect(generator.soilsDistributionForTransformation).toEqual({
+      assert.deepStrictEqual(generator.soilsDistributionForTransformation, {
         PRAIRIE_GRASS: 10000,
         ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 5000,
       });
@@ -101,7 +103,7 @@ describe("PhotovoltaicPowerPlantProjectGenerator", () => {
         },
         userData,
       });
-      expect(generator.soilsDistributionForTransformation).toEqual({
+      assert.deepStrictEqual(generator.soilsDistributionForTransformation, {
         IMPERMEABLE_SOILS: 1000,
         MINERAL_SOIL: 3000,
         ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 2000,
@@ -120,7 +122,7 @@ describe("PhotovoltaicPowerPlantProjectGenerator", () => {
         siteData,
         userData,
       });
-      expect(await generator.getReconversionProject()).toEqual({
+      assert.deepStrictEqual(await generator.getReconversionProject(), {
         id: projectId,
         createdBy: userData.id,
         createdAt: fakeNow,
@@ -256,7 +258,7 @@ describe("PhotovoltaicPowerPlantProjectGenerator", () => {
         },
         userData,
       });
-      expect(await generator.getReconversionProject()).toEqual({
+      assert.deepStrictEqual(await generator.getReconversionProject(), {
         id: projectId,
         createdBy: userData.id,
         createdAt: fakeNow,
@@ -363,15 +365,15 @@ describe("PhotovoltaicPowerPlantProjectGenerator", () => {
         userData,
       });
       const result = await generator.getReconversionProject();
-      expect(result).toBeDefined();
+      assert.ok(result !== undefined);
       const { expectedAnnualProduction } = result.developmentPlan.features as {
         surfaceArea: number;
         electricalPowerKWc: number;
         expectedAnnualProduction: number;
         contractDuration: number;
       };
-      expect(result.developmentPlan.type).toEqual("PHOTOVOLTAIC_POWER_PLANT");
-      expect(expectedAnnualProduction).toEqual(1800);
+      assert.strictEqual(result.developmentPlan.type, "PHOTOVOLTAIC_POWER_PLANT");
+      assert.strictEqual(expectedAnnualProduction, 1800);
     });
   });
 });

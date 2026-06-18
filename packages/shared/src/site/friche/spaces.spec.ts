@@ -1,4 +1,7 @@
-import { getSoilsDistributionForFricheActivity } from "./spaces";
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+
+import { getSoilsDistributionForFricheActivity } from "./spaces.js";
 
 describe("getSoilsDistributionForFricheActivity", () => {
   const surfaceArea = 100000; // 10 hectares
@@ -7,7 +10,7 @@ describe("getSoilsDistributionForFricheActivity", () => {
     it("should return equal distribution between prairie grass and cultivation for AGRICULTURE", () => {
       const result = getSoilsDistributionForFricheActivity(surfaceArea, "AGRICULTURE");
 
-      expect(result).toEqual({
+      assert.deepStrictEqual(result, {
         PRAIRIE_GRASS: 50000,
         CULTIVATION: 50000,
       });
@@ -16,7 +19,7 @@ describe("getSoilsDistributionForFricheActivity", () => {
     it("should return distribution with buildings, impermeable soils and artificial grass for INDUSTRY", () => {
       const result = getSoilsDistributionForFricheActivity(surfaceArea, "INDUSTRY");
 
-      expect(result).toEqual({
+      assert.deepStrictEqual(result, {
         BUILDINGS: 40000,
         IMPERMEABLE_SOILS: 40000,
         ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 20000,
@@ -26,7 +29,7 @@ describe("getSoilsDistributionForFricheActivity", () => {
     it("should return mixed distribution for OTHER activity", () => {
       const result = getSoilsDistributionForFricheActivity(surfaceArea, "OTHER");
 
-      expect(result).toEqual({
+      assert.deepStrictEqual(result, {
         BUILDINGS: 30000,
         IMPERMEABLE_SOILS: 20000,
         MINERAL_SOIL: 15000,
@@ -46,7 +49,7 @@ describe("getSoilsDistributionForFricheActivity", () => {
       // Original non-building area: 60 000 (40 000 + 20 000)
       // Remaining area: 75 000
       // Adjustment factor: 75 000 / 60 000 = 1.25
-      expect(result).toEqual({
+      assert.deepStrictEqual(result, {
         BUILDINGS: 25000,
         IMPERMEABLE_SOILS: 50000, // 1.25 * 0.4 * 100000
         ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 25000, // 1.25 * 0.2 * 100000
@@ -62,7 +65,7 @@ describe("getSoilsDistributionForFricheActivity", () => {
       // Original non-building area: 60 000
       // Remaining area: 100 000
       // Adjustment factor: 100 000 / 60 000 = 1.666... (5/3)
-      expect(result).toEqual({
+      assert.deepStrictEqual(result, {
         IMPERMEABLE_SOILS: 66666.66666666667, // 40000 * (5/3)
         ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 33333.333333333336, // 20000 * (5/3)
       });
@@ -77,7 +80,7 @@ describe("getSoilsDistributionForFricheActivity", () => {
       // Original non-building area: 100 000 (no buildings originally)
       // Remaining area: 70 000
       // Adjustment factor: 70 000 / 100 000 = 0.7
-      expect(result).toEqual({
+      assert.deepStrictEqual(result, {
         BUILDINGS: 30000,
         PRAIRIE_GRASS: 35000, // 50000 * 0.7
         CULTIVATION: 35000, // 50000 * 0.7
@@ -93,7 +96,7 @@ describe("getSoilsDistributionForFricheActivity", () => {
       // Original non-building area: 70000 (20000 + 15000 + 25000 + 10000)
       // Remaining area: 70000
       // Adjustment factor: 70000 / 70000 = 1
-      expect(result).toEqual({
+      assert.deepStrictEqual(result, {
         BUILDINGS: 30000,
         IMPERMEABLE_SOILS: 20000, // 20000 * 1
         MINERAL_SOIL: 15000, // 15000 * 1
@@ -108,7 +111,7 @@ describe("getSoilsDistributionForFricheActivity", () => {
         builtSurfaceArea,
       });
 
-      expect(result).toEqual({
+      assert.deepStrictEqual(result, {
         BUILDINGS: 100000,
       });
     });
@@ -120,7 +123,7 @@ describe("getSoilsDistributionForFricheActivity", () => {
       });
 
       // Should be clamped to total surface area
-      expect(result).toEqual({
+      assert.deepStrictEqual(result, {
         BUILDINGS: 100000,
       });
     });
@@ -136,7 +139,7 @@ describe("getSoilsDistributionForFricheActivity", () => {
       // Original non-building area: 100000 (no buildings originally)
       // Remaining area: 90 000
       // Adjustment factor: 90 000 / 100 000 = 0.9
-      expect(result).toEqual({
+      assert.deepStrictEqual(result, {
         BUILDINGS: 15000,
         IMPERMEABLE_SOILS: 38250, // 45 000 * 0.9
         MINERAL_SOIL: 4250, // 5 000 * 0.9
@@ -149,7 +152,7 @@ describe("getSoilsDistributionForFricheActivity", () => {
     it("should handle zero total surface area", () => {
       const result = getSoilsDistributionForFricheActivity(0, "INDUSTRY", { builtSurfaceArea: 0 });
 
-      expect(result).toEqual({});
+      assert.deepStrictEqual(result, {});
     });
   });
 });

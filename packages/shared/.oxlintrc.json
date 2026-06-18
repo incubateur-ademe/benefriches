@@ -1,6 +1,6 @@
 {
   "$schema": "../../node_modules/oxlint/configuration_schema.json",
-  "plugins": ["typescript", "oxc", "unicorn", "vitest", "import"],
+  "plugins": ["typescript", "oxc", "unicorn", "import"],
   "categories": {
     "correctness": "error",
     "nursery": "error",
@@ -41,28 +41,7 @@
       "files": ["*.spec.ts"],
       "rules": {
         "typescript/no-unsafe-type-assertion": "off",
-        "vitest/expect-expect": "error",
-        "vitest/no-identical-title": "error",
-        "vitest/no-commented-out-tests": "error",
-        "vitest/valid-expect": "error",
-        "vitest/valid-describe-callback": "error",
-        "vitest/require-local-test-context-for-concurrent-snapshots": "error",
-        "vitest/no-import-node-test": "error",
-        "vitest/no-conditional-tests": "error"
-      },
-      "globals": {
-        "suite": "writeable",
-        "test": "writeable",
-        "describe": "writeable",
-        "it": "writeable",
-        "expect": "writeable",
-        "assert": "writeable",
-        "vitest": "writeable",
-        "vi": "writeable",
-        "beforeAll": "writeable",
-        "afterAll": "writeable",
-        "beforeEach": "writeable",
-        "afterEach": "writeable"
+        "typescript/no-floating-promises": "off"
       }
     }
   ]
