@@ -134,7 +134,7 @@ pnpm --filter e2e-tests test:headed              # Run with browser visible
 
 ### Node.js Compatibility (CRITICAL)
 
-All code must be erasable (valid when type annotations are stripped with `--strip-types`).
+All code must be erasable (valid when type annotations are stripped). Note: on Node 24.4.1 the flag is `--experimental-strip-types`, not `--strip-types` (the shorter form doesn't exist yet).
 
 **Forbidden patterns**:
 - TypeScript enums: `enum Color { Red = "red" }`

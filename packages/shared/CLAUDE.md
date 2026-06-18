@@ -195,6 +195,17 @@ pnpm --filter shared test         # Run tests
 pnpm --filter shared lint         # Lint code
 ```
 
+## Testing (node:test)
+
+Tests use `node:test` + `node:assert/strict` (not Vitest). Runner: `node --import=tsx --test 'src/**/*.spec.ts'` (run from `packages/shared`).
+
+**Gotchas:**
+
+- `assert.deepStrictEqual` treats `{key: undefined}` ≠ `{}` — unlike Vitest's `toEqual`. Tests that spread `{...obj, KEY: undefined}` must explicitly omit removed keys instead.
+- `describe`/`it` return Promises in node:test (unlike Vitest) — `no-floating-promises` is disabled for spec files in `.oxlintrc.json`.
+- No `.each()` — replace `it.each(arr)` with a plain `for...of` loop.
+- `tsx` loader is required (`--import=tsx`) because `--experimental-strip-types` alone doesn't handle extensionless or directory imports.
+
 ---
 
 ## Decision: Shared vs. App-Specific
