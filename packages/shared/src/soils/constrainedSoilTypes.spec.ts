@@ -26,7 +26,7 @@ describe("isConstrainedSoilType", () => {
       assert.strictEqual(isConstrainedSoilType(soil), true);
     }
 
-    // Also verify CONSTRAINED_SOIL_TYPES array has exactly these 12 values
+    // Also verify CONSTRAINED_SOIL_TYPES set has exactly these 12 values
     assert.strictEqual(CONSTRAINED_SOIL_TYPES.size, 12);
     for (const soil of constrainedSoils) {
       assert.ok(CONSTRAINED_SOIL_TYPES.has(soil));

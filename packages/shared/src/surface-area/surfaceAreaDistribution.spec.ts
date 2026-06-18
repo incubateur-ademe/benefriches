@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
-import { SurfaceAreaDistribution } from "./surfaceAreaDistribution";
+import { SurfaceAreaDistribution } from "./surfaceAreaDistribution.js";
 
 describe("SurfaceAreaDistribution", () => {
   it("should ignore empty surfaces", () => {
@@ -44,7 +44,7 @@ describe("SurfaceAreaDistribution", () => {
         totalSurfaceArea: 500,
         percentageDistribution: {},
       });
-      assert.deepStrictEqual(emptySurfaceAreaDistribution.getTotalSurfaceArea(), 0);
+      assert.strictEqual(emptySurfaceAreaDistribution.getTotalSurfaceArea(), 0);
       assert.deepStrictEqual(emptySurfaceAreaDistribution.toJSON(), {});
     });
 
@@ -82,14 +82,14 @@ describe("SurfaceAreaDistribution", () => {
   describe("getTotalSurfaceArea", () => {
     it("should return 0 for empty surface area distribution", () => {
       const emptySurfaceAreaDistribution = new SurfaceAreaDistribution();
-      assert.deepStrictEqual(emptySurfaceAreaDistribution.getTotalSurfaceArea(), 0);
+      assert.strictEqual(emptySurfaceAreaDistribution.getTotalSurfaceArea(), 0);
     });
 
     it("should return total surface area", () => {
       const simpleSurfaceAreaDistribution = new SurfaceAreaDistribution();
       simpleSurfaceAreaDistribution.addSurface("ARTIFICIAL_GRASS_OR_BUSHES_FILLED", 200);
       simpleSurfaceAreaDistribution.addSurface("ARTIFICIAL_TREE_FILLED", 200);
-      assert.deepStrictEqual(simpleSurfaceAreaDistribution.getTotalSurfaceArea(), 400);
+      assert.strictEqual(simpleSurfaceAreaDistribution.getTotalSurfaceArea(), 400);
     });
   });
 

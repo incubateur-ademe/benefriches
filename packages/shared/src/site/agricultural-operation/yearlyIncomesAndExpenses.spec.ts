@@ -31,7 +31,7 @@ describe("computeAgriculturalOperationYearlyExpenses and computeAgriculturalOper
       const totalIncomes = sumListWithKey(incomes, "amount");
 
       assert.ok(totalIncomes > totalExpenses);
-      assert.strictEqual(totalIncomes - totalExpenses < 50000, true);
+      assert.ok(totalIncomes - totalExpenses < 50000);
     });
   }
 });
