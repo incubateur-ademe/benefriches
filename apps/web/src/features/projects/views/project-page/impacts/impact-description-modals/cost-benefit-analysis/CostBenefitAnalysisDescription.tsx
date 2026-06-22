@@ -1,5 +1,5 @@
 import * as Highcharts from "highcharts";
-import HighchartsReact from "highcharts-react-official";
+import { HighchartsReact } from "highcharts-react-official";
 import { useContext } from "react";
 
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";

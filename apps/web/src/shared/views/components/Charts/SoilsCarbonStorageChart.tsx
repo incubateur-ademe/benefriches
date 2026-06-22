@@ -1,5 +1,5 @@
 import * as Highcharts from "highcharts";
-import HighchartsReact from "highcharts-react-official";
+import { HighchartsReact } from "highcharts-react-official";
 // oxlint-disable-next-line no-unassigned-import
 import "highcharts/modules/variable-pie";
 import { useId, useRef } from "react";

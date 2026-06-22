@@ -1,4 +1,4 @@
-import HighchartsReact from "highcharts-react-official";
+import { HighchartsReact } from "highcharts-react-official";
 import { MouseEvent, useCallback, useState } from "react";
 
 type TooltipConfig =

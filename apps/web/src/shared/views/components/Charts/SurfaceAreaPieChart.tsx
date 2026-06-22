@@ -1,5 +1,5 @@
 import { fr } from "@codegouvfr/react-dsfr";
-import HighchartsReact from "highcharts-react-official";
+import { HighchartsReact } from "highcharts-react-official";
 import { useId, useRef } from "react";
 import { SoilsDistribution, typedObjectEntries } from "shared";
 

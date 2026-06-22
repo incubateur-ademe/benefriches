@@ -26,14 +26,14 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "date-fns": "~4.1.0",
+    "date-fns": "~4.4.0",
     "uuid": "~14.0.0",
-    "zod": "~4.3.6"
+    "zod": "~4.4.3"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "~6.0.2",
     "@types/node": "^24",
-    "tsdown": "^0.21.8",
+    "tsdown": "^0.22.2",
     "tsx": "~4.22.4"
   }
 }

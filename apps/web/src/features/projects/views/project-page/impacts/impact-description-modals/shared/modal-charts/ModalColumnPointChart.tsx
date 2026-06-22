@@ -1,4 +1,4 @@
-import HighchartsReact from "highcharts-react-official";
+import { HighchartsReact } from "highcharts-react-official";
 import { HTMLAttributes, useId, useRef } from "react";
 
 import { useChartCustomPointColors } from "@/shared/views/charts/useChartCustomColors";

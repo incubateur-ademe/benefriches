@@ -1,6 +1,6 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import * as Highcharts from "highcharts";
-import HighchartsReact from "highcharts-react-official";
+import { HighchartsReact } from "highcharts-react-official";
 import { useId, useRef } from "react";
 
 import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/core/format-number/formatNumber";

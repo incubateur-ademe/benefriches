@@ -1,6 +1,6 @@
 import { MenuSection } from "@headlessui/react";
 import * as Highcharts from "highcharts";
-import HighchartsReact from "highcharts-react-official";
+import { HighchartsReact } from "highcharts-react-official";
 
 import MenuItemButton from "../Menu/MenuItemButton";
 

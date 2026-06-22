@@ -237,13 +237,6 @@ text.highcharts-data-label {
   mask-image: url("/img/icons/demo.svg");
 }
 
-@media screen and (min-width: 0\0) and (min-resolution: 72dpi) {
-  .fr-icon-mode-demo::before,
-  .fr-icon-mode-demo::after {
-    background-image: url("/img/icons/demo.svg");
-  }
-}
-
 /* Page Impacts: couleurs par type de projet */
 
 #project-impacts-page {
