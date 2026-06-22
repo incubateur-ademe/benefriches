@@ -1,4 +1,5 @@
-import { describe, expect, it } from "vitest";
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
 
 import { type TResult, success, fail, SuccessResult } from "./result";
 import { type UseCase } from "./usecase";
@@ -23,10 +24,10 @@ describe("UseCase interface type safety", () => {
       const useCase = new ValidUseCase();
       const result = await useCase.execute();
 
-      expect(result.isSuccess()).toBe(true);
+      assert.strictEqual(result.isSuccess(), true);
       const resultData = (result as SuccessResult<TestData>).getData();
-      expect(resultData.userId).toBe("123");
-      expect(resultData.email).toBe("test@example.com");
+      assert.strictEqual(resultData.userId, "123");
+      assert.strictEqual(resultData.email, "test@example.com");
     });
 
     it("should reject use case that returns success() without data", () => {
@@ -37,7 +38,7 @@ describe("UseCase interface type safety", () => {
         }
       }
       const useCase = new InvalidUseCase();
-      expect(useCase).toBeDefined();
+      assert.ok(useCase !== undefined);
     });
 
     it("should allow use case that returns failure", async () => {
@@ -50,7 +51,7 @@ describe("UseCase interface type safety", () => {
       const useCase = new FailureUseCase();
       const result = await useCase.execute();
 
-      expect(result.isFailure()).toBe(true);
+      assert.strictEqual(result.isFailure(), true);
     });
   });
 
@@ -68,7 +69,7 @@ describe("UseCase interface type safety", () => {
       const useCase = new VoidUseCase();
       const result = await useCase.execute();
 
-      expect(result.isSuccess()).toBe(true);
+      assert.strictEqual(result.isSuccess(), true);
     });
   });
 
@@ -82,6 +83,6 @@ describe("UseCase interface type safety", () => {
       }
     }
     const useCase = new IncorrectDataUseCase();
-    expect(useCase).toBeDefined();
+    assert.ok(useCase !== undefined);
   });
 });

@@ -1,4 +1,6 @@
 /* oxlint-disable typescript-eslint/no-unsafe-assignment */
+import assert from "node:assert/strict";
+import { describe, it, beforeEach } from "node:test";
 import { Address, createSoilSurfaceAreaDistribution } from "shared";
 
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
@@ -12,7 +14,7 @@ import { InMemorySitesRepository } from "src/sites/adapters/secondary/site-repos
 import { InMemoryCityRuralityQuery } from "src/territory/adapters/secondary/city-rurality-query/InMemoryCityRuralityQuery";
 import { InMemoryCityStatsQuery } from "src/territory/adapters/secondary/city-stats-query/InMemoryCityStatsQuery";
 
-import { SITE_CREATED, SiteCreatedEvent } from "../events/siteCreated.event";
+import { SITE_CREATED } from "../events/siteCreated.event";
 import { buildFriche, buildFricheProps } from "../models/site.mock";
 import { SiteEntity } from "../models/siteEntity";
 import { CreateNewExpressSiteUseCase, ExpressSiteProps } from "./createNewExpressSite.usecase";
@@ -84,9 +86,9 @@ describe("CreateNewExpressSite Use case", () => {
       createdBy: "blabla",
     });
 
-    expect(result.isFailure()).toBe(true);
-    expect((result as FailureResult).getError()).toBe("SiteAlreadyExists");
-    expect(siteRepository._getSites().length).toEqual(1);
+    assert.strictEqual(result.isFailure(), true);
+    assert.strictEqual((result as FailureResult).getError(), "SiteAlreadyExists");
+    assert.strictEqual(siteRepository._getSites().length, 1);
   });
 
   it("Can create a site when CityDataService fails to get city population", async () => {
@@ -112,12 +114,15 @@ describe("CreateNewExpressSite Use case", () => {
     await usecase.execute({ createdBy: "user-id-123", siteProps });
 
     const savedSites = siteRepository._getSites();
-    expect(savedSites).toHaveLength(1);
+    assert.strictEqual(savedSites.length, 1);
     // oxlint-disable-next-line no-non-null-assertion
     const siteId = savedSites[0]!.id;
-    expect((eventPublisher as InMemoryEventPublisher).events).toHaveLength(1);
-    expect((eventPublisher as InMemoryEventPublisher).events[0]).toEqual<SiteCreatedEvent>({
-      id: expect.any(String),
+    assert.strictEqual((eventPublisher as InMemoryEventPublisher).events.length, 1);
+    // oxlint-disable-next-line no-non-null-assertion
+    assert.ok(typeof (eventPublisher as InMemoryEventPublisher).events[0]!.id === "string");
+    assert.deepStrictEqual((eventPublisher as InMemoryEventPublisher).events[0], {
+      // oxlint-disable-next-line no-non-null-assertion
+      id: (eventPublisher as InMemoryEventPublisher).events[0]!.id,
       name: SITE_CREATED,
       payload: {
         siteId,
@@ -149,7 +154,7 @@ describe("CreateNewExpressSite Use case", () => {
 
       const savedSites = siteRepository._getSites();
 
-      expect(savedSites).toEqual<SiteEntity[]>([
+      assert.deepStrictEqual(savedSites satisfies SiteEntity[], [
         {
           id: siteProps.id,
           address: siteProps.address,
@@ -199,13 +204,17 @@ describe("CreateNewExpressSite Use case", () => {
               source: "other",
             },
           ],
+          tenant: undefined,
         },
       ]);
       // oxlint-disable-next-line no-non-null-assertion
       const siteId = savedSites[0]!.id;
-      expect((eventPublisher as InMemoryEventPublisher).events).toHaveLength(1);
-      expect((eventPublisher as InMemoryEventPublisher).events[0]).toEqual<SiteCreatedEvent>({
-        id: expect.any(String),
+      assert.strictEqual((eventPublisher as InMemoryEventPublisher).events.length, 1);
+      // oxlint-disable-next-line no-non-null-assertion
+      assert.ok(typeof (eventPublisher as InMemoryEventPublisher).events[0]!.id === "string");
+      assert.deepStrictEqual((eventPublisher as InMemoryEventPublisher).events[0], {
+        // oxlint-disable-next-line no-non-null-assertion
+        id: (eventPublisher as InMemoryEventPublisher).events[0]!.id,
         name: SITE_CREATED,
         payload: {
           siteId,
@@ -238,7 +247,7 @@ describe("CreateNewExpressSite Use case", () => {
 
       const savedSites = siteRepository._getSites();
 
-      expect(savedSites).toEqual<SiteEntity[]>([
+      assert.deepStrictEqual(savedSites satisfies SiteEntity[], [
         {
           id: siteProps.id,
           address: siteProps.address,
@@ -257,13 +266,17 @@ describe("CreateNewExpressSite Use case", () => {
           owner: { structureType: "municipality", name: "Mairie de Montrouge" },
           yearlyExpenses: [],
           yearlyIncomes: [],
+          tenant: undefined,
         },
       ]);
       // oxlint-disable-next-line no-non-null-assertion
       const siteId = savedSites[0]!.id;
-      expect((eventPublisher as InMemoryEventPublisher).events).toHaveLength(1);
-      expect((eventPublisher as InMemoryEventPublisher).events[0]).toEqual<SiteCreatedEvent>({
-        id: expect.any(String),
+      assert.strictEqual((eventPublisher as InMemoryEventPublisher).events.length, 1);
+      // oxlint-disable-next-line no-non-null-assertion
+      assert.ok(typeof (eventPublisher as InMemoryEventPublisher).events[0]!.id === "string");
+      assert.deepStrictEqual((eventPublisher as InMemoryEventPublisher).events[0], {
+        // oxlint-disable-next-line no-non-null-assertion
+        id: (eventPublisher as InMemoryEventPublisher).events[0]!.id,
         name: SITE_CREATED,
         payload: {
           siteId,
@@ -299,10 +312,13 @@ describe("CreateNewExpressSite Use case", () => {
 
       // oxlint-disable-next-line no-non-null-assertion
       const savedSite = siteRepository._getSites()[0]!;
-      expect(savedSite.yearlyExpenses.find((e) => e.purpose === "security")).toBeUndefined();
-      expect(
-        savedSite.yearlyExpenses.find((e) => e.purpose === "illegalDumpingCost"),
-      ).toBeDefined();
+      assert.strictEqual(
+        savedSite.yearlyExpenses.find((e) => e.purpose === "security"),
+        undefined,
+      );
+      assert.ok(
+        savedSite.yearlyExpenses.find((e) => e.purpose === "illegalDumpingCost") !== undefined,
+      );
     });
 
     it("creates a new express friche from given props", async () => {
@@ -327,7 +343,7 @@ describe("CreateNewExpressSite Use case", () => {
 
       const savedSites = siteRepository._getSites();
 
-      expect(savedSites).toEqual<SiteEntity[]>([
+      assert.deepStrictEqual(savedSites satisfies SiteEntity[], [
         {
           id: fricheProps.id,
           address: fricheProps.address,
@@ -360,13 +376,17 @@ describe("CreateNewExpressSite Use case", () => {
           accidentsMinorInjuries: undefined,
           accidentsSevereInjuries: undefined,
           accidentsDeaths: undefined,
+          tenant: undefined,
         },
       ]);
       // oxlint-disable-next-line no-non-null-assertion
       const siteId = savedSites[0]!.id;
-      expect((eventPublisher as InMemoryEventPublisher).events).toHaveLength(1);
-      expect((eventPublisher as InMemoryEventPublisher).events[0]).toEqual<SiteCreatedEvent>({
-        id: expect.any(String),
+      assert.strictEqual((eventPublisher as InMemoryEventPublisher).events.length, 1);
+      // oxlint-disable-next-line no-non-null-assertion
+      assert.ok(typeof (eventPublisher as InMemoryEventPublisher).events[0]!.id === "string");
+      assert.deepStrictEqual((eventPublisher as InMemoryEventPublisher).events[0], {
+        // oxlint-disable-next-line no-non-null-assertion
+        id: (eventPublisher as InMemoryEventPublisher).events[0]!.id,
         name: SITE_CREATED,
         payload: {
           siteId,
@@ -398,7 +418,7 @@ describe("CreateNewExpressSite Use case", () => {
 
       const savedSites = siteRepository._getSites();
 
-      expect(savedSites).toEqual<SiteEntity[]>([
+      assert.deepStrictEqual(savedSites satisfies SiteEntity[], [
         {
           id: fricheProps.id,
           address: fricheProps.address,
@@ -429,13 +449,17 @@ describe("CreateNewExpressSite Use case", () => {
           accidentsMinorInjuries: undefined,
           accidentsSevereInjuries: undefined,
           accidentsDeaths: undefined,
+          tenant: undefined,
         },
       ]);
       // oxlint-disable-next-line no-non-null-assertion
       const siteId = savedSites[0]!.id;
-      expect((eventPublisher as InMemoryEventPublisher).events).toHaveLength(1);
-      expect((eventPublisher as InMemoryEventPublisher).events[0]).toEqual<SiteCreatedEvent>({
-        id: expect.any(String),
+      assert.strictEqual((eventPublisher as InMemoryEventPublisher).events.length, 1);
+      // oxlint-disable-next-line no-non-null-assertion
+      assert.ok(typeof (eventPublisher as InMemoryEventPublisher).events[0]!.id === "string");
+      assert.deepStrictEqual((eventPublisher as InMemoryEventPublisher).events[0], {
+        // oxlint-disable-next-line no-non-null-assertion
+        id: (eventPublisher as InMemoryEventPublisher).events[0]!.id,
         name: SITE_CREATED,
         payload: {
           siteId,
@@ -468,7 +492,7 @@ describe("CreateNewExpressSite Use case", () => {
 
       const savedSites = siteRepository._getSites();
 
-      expect(savedSites).toEqual<SiteEntity[]>([
+      assert.deepStrictEqual(savedSites satisfies SiteEntity[], [
         {
           id: fricheProps.id,
           address: fricheProps.address,
@@ -495,16 +519,21 @@ describe("CreateNewExpressSite Use case", () => {
           yearlyIncomes: [],
           fricheActivity: "INDUSTRY",
           hasContaminatedSoils: false,
+          contaminatedSoilSurface: undefined,
           accidentsMinorInjuries: undefined,
           accidentsSevereInjuries: undefined,
           accidentsDeaths: undefined,
+          tenant: undefined,
         },
       ]);
       // oxlint-disable-next-line no-non-null-assertion
       const siteId = savedSites[0]!.id;
-      expect((eventPublisher as InMemoryEventPublisher).events).toHaveLength(1);
-      expect((eventPublisher as InMemoryEventPublisher).events[0]).toEqual<SiteCreatedEvent>({
-        id: expect.any(String),
+      assert.strictEqual((eventPublisher as InMemoryEventPublisher).events.length, 1);
+      // oxlint-disable-next-line no-non-null-assertion
+      assert.ok(typeof (eventPublisher as InMemoryEventPublisher).events[0]!.id === "string");
+      assert.deepStrictEqual((eventPublisher as InMemoryEventPublisher).events[0], {
+        // oxlint-disable-next-line no-non-null-assertion
+        id: (eventPublisher as InMemoryEventPublisher).events[0]!.id,
         name: SITE_CREATED,
         payload: {
           siteId,

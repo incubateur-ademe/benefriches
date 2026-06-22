@@ -1,4 +1,5 @@
-import { describe, it, expect } from "vitest";
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
 
 import {
   getProjectDevelopmentEconomicBalance,
@@ -30,8 +31,8 @@ describe("getProjectDevelopmentEconomicBalance", () => {
   describe("without costs nor revenues", () => {
     it("returns empty economic balance", () => {
       const result = getProjectDevelopmentEconomicBalance(baseProps);
-      expect(result.details).toHaveLength(0);
-      expect(result.total).toBe(0);
+      assert.strictEqual(result.details.length, 0);
+      assert.strictEqual(result.total, 0);
     });
   });
 
@@ -50,10 +51,10 @@ describe("getProjectDevelopmentEconomicBalance", () => {
       });
 
       const items = result.details.filter((d) => d.name === "projectInstallation");
-      expect(items).toHaveLength(2);
-      expect(items[0]).toMatchObject({ total: -10_000, details: "technical_studies" });
-      expect(items[1]).toMatchObject({ total: -50_000, details: "installation_works" });
-      expect(result.total).toBe(-60_000);
+      assert.strictEqual(items.length, 2);
+      assert.partialDeepStrictEqual(items[0], { total: -10_000, details: "technical_studies" });
+      assert.partialDeepStrictEqual(items[1], { total: -50_000, details: "installation_works" });
+      assert.strictEqual(result.total, -60_000);
     });
 
     it("ignore empty installation costs", () => {
@@ -64,7 +65,7 @@ describe("getProjectDevelopmentEconomicBalance", () => {
           developmentPlanInstallationCosts: [],
         },
       });
-      expect(result.details.filter((d) => d.name === "projectInstallation")).toHaveLength(0);
+      assert.strictEqual(result.details.filter((d) => d.name === "projectInstallation").length, 0);
     });
   });
 
@@ -80,8 +81,8 @@ describe("getProjectDevelopmentEconomicBalance", () => {
       });
 
       const items = result.details.filter((d) => d.name === "siteReinstatement");
-      expect(items).toHaveLength(1);
-      expect(items[0]).toMatchObject({ total: -20_000, details: "deimpermeabilization" });
+      assert.strictEqual(items.length, 1);
+      assert.partialDeepStrictEqual(items[0], { total: -20_000, details: "deimpermeabilization" });
     });
 
     it("excludes reinstatement costs if projectDeveloper is not reinstatementContractOwner", () => {
@@ -100,7 +101,7 @@ describe("getProjectDevelopmentEconomicBalance", () => {
         },
       });
 
-      expect(result.details.filter((d) => d.name === "siteReinstatement")).toHaveLength(0);
+      assert.strictEqual(result.details.filter((d) => d.name === "siteReinstatement").length, 0);
     });
 
     it("excludes reinstatement costs if projectDeveloper and reinstatementContractOwner are not defined", () => {
@@ -118,7 +119,7 @@ describe("getProjectDevelopmentEconomicBalance", () => {
           reinstatementCosts: [{ amount: 20_000, purpose: "deimpermeabilization" }],
         },
       });
-      expect(result.details.filter((d) => d.name === "siteReinstatement")).toHaveLength(0);
+      assert.strictEqual(result.details.filter((d) => d.name === "siteReinstatement").length, 0);
     });
   });
 
@@ -147,8 +148,8 @@ describe("getProjectDevelopmentEconomicBalance", () => {
           },
         });
         const item = result.details.find((d) => d.name === "sitePurchase");
-        expect(item).toBeDefined();
-        expect(item?.total).toBe(-100_000);
+        assert.ok(item !== undefined);
+        assert.strictEqual(item?.total, -100_000);
       });
 
       it("excludes sitePurchaseTotalAmount if projectDeveloper i not futureSiteOwner", () => {
@@ -172,7 +173,10 @@ describe("getProjectDevelopmentEconomicBalance", () => {
             sitePurchaseTotalAmount: 100_000,
           },
         });
-        expect(result.details.find((d) => d.name === "sitePurchase")).toBeUndefined();
+        assert.strictEqual(
+          result.details.find((d) => d.name === "sitePurchase"),
+          undefined,
+        );
       });
     });
 
@@ -201,8 +205,8 @@ describe("getProjectDevelopmentEconomicBalance", () => {
           },
         });
         const item = result.details.find((d) => d.name === "sitePurchase");
-        expect(item).toBeDefined();
-        expect(item?.total).toBe(-200_000);
+        assert.ok(item !== undefined);
+        assert.strictEqual(item?.total, -200_000);
       });
 
       it("do not add sitePurchaseTotalAmount if it is not defined", () => {
@@ -214,7 +218,10 @@ describe("getProjectDevelopmentEconomicBalance", () => {
             sitePurchaseTotalAmount: undefined,
           },
         });
-        expect(result.details.find((d) => d.name === "sitePurchase")).toBeUndefined();
+        assert.strictEqual(
+          result.details.find((d) => d.name === "sitePurchase"),
+          undefined,
+        );
       });
     });
   });
@@ -229,8 +236,8 @@ describe("getProjectDevelopmentEconomicBalance", () => {
         },
       });
       const item = result.details.find((d) => d.name === "siteResaleRevenue");
-      expect(item).toBeDefined();
-      expect(item?.total).toBe(80_000);
+      assert.ok(item !== undefined);
+      assert.strictEqual(item?.total, 80_000);
     });
 
     it("adds buildingsResaleSellingPrice if exists with positive value", () => {
@@ -242,8 +249,8 @@ describe("getProjectDevelopmentEconomicBalance", () => {
         },
       });
       const item = result.details.find((d) => d.name === "buildingsResaleRevenue");
-      expect(item).toBeDefined();
-      expect(item?.total).toBe(300_000);
+      assert.ok(item !== undefined);
+      assert.strictEqual(item?.total, 300_000);
     });
 
     it("excludes buildingsResaleSellingPrice and siteResaleSellingPrice if not defined or 0", () => {
@@ -255,8 +262,14 @@ describe("getProjectDevelopmentEconomicBalance", () => {
           buildingsResaleSellingPrice: 0,
         },
       });
-      expect(result.details.find((d) => d.name === "siteResaleRevenue")).toBeUndefined();
-      expect(result.details.find((d) => d.name === "buildingsResaleRevenue")).toBeUndefined();
+      assert.strictEqual(
+        result.details.find((d) => d.name === "siteResaleRevenue"),
+        undefined,
+      );
+      assert.strictEqual(
+        result.details.find((d) => d.name === "buildingsResaleRevenue"),
+        undefined,
+      );
     });
   });
 
@@ -292,12 +305,12 @@ describe("getProjectDevelopmentEconomicBalance", () => {
       });
 
       const items = result.details.filter((d) => d.name === "financialAssistanceRevenues");
-      expect(items).toHaveLength(2);
-      expect(items[0]).toMatchObject({
+      assert.strictEqual(items.length, 2);
+      assert.partialDeepStrictEqual(items[0], {
         total: 5_000,
         details: "local_or_regional_authority_participation",
       });
-      expect(items[1]).toMatchObject({ total: 2_000, details: "public_subsidies" });
+      assert.partialDeepStrictEqual(items[1], { total: 2_000, details: "public_subsidies" });
     });
 
     it("excludes financialAssistanceRevenues if projectDeveloper is reinstatementContractOwner", () => {
@@ -323,7 +336,8 @@ describe("getProjectDevelopmentEconomicBalance", () => {
           ],
         },
       });
-      expect(result.details.filter((d) => d.name === "financialAssistanceRevenues")).toHaveLength(
+      assert.strictEqual(
+        result.details.filter((d) => d.name === "financialAssistanceRevenues").length,
         0,
       );
     });
@@ -361,8 +375,8 @@ describe("getProjectDevelopmentEconomicBalance", () => {
         },
       });
 
-      expect(result.total).toBe(-77_000);
-      expect(result.details).toHaveLength(5);
+      assert.strictEqual(result.total, -77_000);
+      assert.strictEqual(result.details.length, 5);
     });
   });
 });

@@ -1,3 +1,6 @@
+import assert from "node:assert/strict";
+import { describe, it, beforeEach } from "node:test";
+
 import { FakePhotovoltaicDataProvider } from "src/photovoltaic-performance/adapters/secondary/photovoltaic-data-provider/FakePhotovoltaicDataProvider";
 import { SuccessResult } from "src/shared-kernel/result";
 
@@ -10,15 +13,15 @@ describe("GetPhotovoltaicExpectedPerformanceUseCase use case", () => {
     dataProvider = new FakePhotovoltaicDataProvider();
   });
 
-  test("it should format the service result", async () => {
+  it("it should format the service result", async () => {
     const usecase = new GetPhotovoltaicExpectedPerformanceUseCase(dataProvider);
     const result = await usecase.execute({ lat: 48.859, long: 2.347, peakPower: 3.1 });
 
-    expect(result.isSuccess()).toBe(true);
+    assert.strictEqual(result.isSuccess(), true);
     const successResult = result as SuccessResult;
     // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
     const data = successResult.getData();
-    expect(data).toEqual({
+    assert.deepStrictEqual(data, {
       expectedPerformance: {
         kwhPerDay: 9.43,
         kwhPerMonth: 286.91,

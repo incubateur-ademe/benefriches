@@ -1,5 +1,5 @@
-/* oxlint-disable typescript-eslint/no-confusing-void-expression */
-import { describe, expect, it } from "vitest";
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
 
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import type { FailureResult, SuccessResult } from "src/shared-kernel/result";
@@ -32,8 +32,9 @@ describe("UpdateSiteActionStatus UseCase", () => {
       status: "done",
     });
 
-    expect(result.isSuccess()).toBe(true);
-    expect((result as SuccessResult).getData()).toBeUndefined();
+    assert.strictEqual(result.isSuccess(), true);
+    // oxlint-disable-next-line typescript/no-confusing-void-expression
+    assert.strictEqual((result as SuccessResult).getData(), undefined);
   });
 
   it("should update action status to skipped and set completedAt", async () => {
@@ -58,7 +59,7 @@ describe("UpdateSiteActionStatus UseCase", () => {
       status: "skipped",
     });
 
-    expect(result.isSuccess()).toBe(true);
+    assert.strictEqual(result.isSuccess(), true);
   });
 
   it("should fail when action not found", async () => {
@@ -74,8 +75,8 @@ describe("UpdateSiteActionStatus UseCase", () => {
       status: "done",
     });
 
-    expect(result.isFailure()).toBe(true);
-    expect((result as FailureResult<"ActionNotFound">).getError()).toBe("ActionNotFound");
+    assert.strictEqual(result.isFailure(), true);
+    assert.strictEqual((result as FailureResult<"ActionNotFound">).getError(), "ActionNotFound");
   });
 
   it("should be idempotent - return success without updating when action already done", async () => {
@@ -101,8 +102,8 @@ describe("UpdateSiteActionStatus UseCase", () => {
       status: "done",
     });
 
-    expect(result.isSuccess()).toBe(true);
+    assert.strictEqual(result.isSuccess(), true);
     const updatedActions = await query.getBySiteId("site-123");
-    expect(updatedActions[0]?.completedAt).toEqual(new Date("2024-01-01T15:00:00.000Z"));
+    assert.deepStrictEqual(updatedActions[0]?.completedAt, new Date("2024-01-01T15:00:00.000Z"));
   });
 });

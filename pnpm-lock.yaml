@@ -177,12 +177,6 @@ importers:
       tsx:
         specifier: ~4.22.4
         version: 4.22.4
-      unplugin-swc:
-        specifier: ^1.5.9
-        version: 1.5.9(@swc/core@1.15.41(@swc/helpers@0.5.23))(rollup@4.61.1)
-      vite-tsconfig-paths:
-        specifier: ^6.1.1
-        version: 6.1.1(typescript@5.9.3)(vite@8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4)(yaml@2.9.0))
 
   apps/e2e-tests:
     dependencies:
@@ -3517,9 +3511,6 @@ packages:
     resolution: {integrity: sha512-sepffkT8stwnIYbsMBpoCHJuJM5l98FUF2AnE07hfvE0m/qp3R586hw4jF4uadbhvg1ooIdzuu7CsfD2jzCaNA==}
     engines: {node: '>=18'}
 
-  globrex@0.1.2:
-    resolution: {integrity: sha512-uHJgbwAMwNFf5mLst7IWLNg14x1CkeqglJb/K3doi4dw6q2IvAAmM/Y81kevy83wP+Sst+nutFTYOGg3d1lsxg==}
-
   gopd@1.2.0:
     resolution: {integrity: sha512-ZUKRh6/kUFoAiTAtTYPZJ3hw9wNxx+BIBOijnlG9PnrJsCcSjs1wyyD6vJpaYtgnzDrKYRSqf3OO6Rfa93xsRg==}
     engines: {node: '>= 0.4'}
@@ -3978,10 +3969,6 @@ packages:
   load-esm@1.0.3:
     resolution: {integrity: sha512-v5xlu8eHD1+6r8EHTg6hfmO97LN8ugKtiXcy5e6oN72iD2r6u0RPfLl6fxM+7Wnh2ZRq15o0russMst44WauPA==}
     engines: {node: '>=13.2.0'}
-
-  load-tsconfig@0.2.5:
-    resolution: {integrity: sha512-IXO6OCs9yg8tMKzfPZ1YmheJbZCiEsnBdcB03l0OcfK9prKnJb96siuHCr5Fl37/yo9DnKU+TLpxzTUspw9shg==}
-    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
 
   loader-runner@4.3.2:
     resolution: {integrity: sha512-DFEqQ3ihfS9blba08cLfYf1NRAIEm+dDjic073DRDc3/JspI/8wYmtDsHwd3+4hwvdxSK7PGaElfTmm0awWJ4w==}
@@ -5204,17 +5191,6 @@ packages:
   tsafe@1.8.12:
     resolution: {integrity: sha512-nFRqW0ttu/2o6XTXsHiVZWJBCOaxhVqZLg7dgs3coZNsCMPXPfwz+zPHAQA+70fNnVJLAPg1EgGIqK9Q84tvAw==}
 
-  tsconfck@3.1.6:
-    resolution: {integrity: sha512-ks6Vjr/jEw0P1gmOVwutM3B7fWxoWBL2KRDb1JfqGVawBmO5UsvmWOQFGHBPl5yxYz4eERr19E6L7NMv+Fej4w==}
-    engines: {node: ^18 || >=20}
-    deprecated: unmaintained
-    hasBin: true
-    peerDependencies:
-      typescript: ^5.0.0
-    peerDependenciesMeta:
-      typescript:
-        optional: true
-
   tsconfig-paths-webpack-plugin@4.2.0:
     resolution: {integrity: sha512-zbem3rfRS8BgeNK50Zz5SIQgXzLafiHjOwUAvk/38/o1jHn/V5QAgVUcz884or7WYcPaH3N2CIfUc2u0ul7UcA==}
     engines: {node: '>=10.13.0'}
@@ -5344,15 +5320,6 @@ packages:
     resolution: {integrity: sha512-pjy2bYhSsufwWlKwPc+l3cN7+wuJlK6uz0YdJEOlQDbl6jo/YlPi4mb8agUkVC8BF7V8NuzeyPNqRksA3hztKQ==}
     engines: {node: '>= 0.8'}
 
-  unplugin-swc@1.5.9:
-    resolution: {integrity: sha512-RKwK3yf0M+MN17xZfF14bdKqfx0zMXYdtOdxLiE6jHAoidupKq3jGdJYANyIM1X/VmABhh1WpdO+/f4+Ol89+g==}
-    peerDependencies:
-      '@swc/core': ^1.2.108
-
-  unplugin@2.3.11:
-    resolution: {integrity: sha512-5uKD0nqiYVzlmCRs01Fhs2BdkEgBS3SAVP6ndrBsuK42iC2+JHyxM05Rm9G8+5mkmRtzMZGY8Ct5+mliZxU/Ww==}
-    engines: {node: '>=18.12.0'}
-
   unrun@0.2.39:
     resolution: {integrity: sha512-h9FxYVpztY/wwq+bauLOh6Y3CWu2IVeRLq5lxzneBiIU9Tn86OGp9xiQrGhnYspAmg5dzdY0Cc8+Y70kuTARCg==}
     engines: {node: '>=20.19.0'}
@@ -5406,11 +5373,6 @@ packages:
     resolution: {integrity: sha512-NXct/ci2ef4fRyCfTb8fk2HmR80Rv7icLd+cRH41TnUugDzdKMFKqFPpZYCFUInZMMem9bkLv5pkq02+7Xu7+w==}
     peerDependencies:
       vite: ^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0
-
-  vite-tsconfig-paths@6.1.1:
-    resolution: {integrity: sha512-2cihq7zliibCCZ8P9cKJrQBkfgdvcFkOOc3Y02o3GWUDLgqjWsZudaoiuOwO/gzTzy17cS5F7ZPo4bsnS4DGkg==}
-    peerDependencies:
-      vite: '*'
 
   vite@8.0.16:
     resolution: {integrity: sha512-h9bXPmJichP5fLmVQo3PyaGSDE2n3aPuomeAlVRm0JLmt4rY6zmPKd59HYI4LNW8oTK7tlTsuC7l/m7awx9Jcw==}
@@ -5521,9 +5483,6 @@ packages:
   webpack-sources@3.5.0:
     resolution: {integrity: sha512-HPuy+uuoTCaaoEoI1LQ3JN9+vrPBvEesnnX1jADHy728cHSMlq4wUc4afYqahq2B1mhQVZxCXOkNTnXltr+2vQ==}
     engines: {node: '>=10.13.0'}
-
-  webpack-virtual-modules@0.6.2:
-    resolution: {integrity: sha512-66/V2i5hQanC51vBQKPH4aI8NMAcBW59FVBs+rC7eGHupMyfn34q7rZIE+ETlJ+XTevqfUhVVBgSUNSW2flEUQ==}
 
   webpack@5.106.2:
     resolution: {integrity: sha512-wGN3qcrBQIFmQ/c0AiOAQBvrZ5lmY8vbbMv4Mxfgzqd/B6+9pXtLo73WuS1dSGXM5QYY3hZnIbvx+K1xxe6FyA==}
@@ -8675,8 +8634,6 @@ snapshots:
 
   globals@17.6.0: {}
 
-  globrex@0.1.2: {}
-
   gopd@1.2.0: {}
 
   graceful-fs@4.2.11: {}
@@ -9095,8 +9052,6 @@ snapshots:
       wrap-ansi: 9.0.2
 
   load-esm@1.0.3: {}
-
-  load-tsconfig@0.2.5: {}
 
   loader-runner@4.3.2: {}
 
@@ -10453,10 +10408,6 @@ snapshots:
 
   tsafe@1.8.12: {}
 
-  tsconfck@3.1.6(typescript@5.9.3):
-    optionalDependencies:
-      typescript: 5.9.3
-
   tsconfig-paths-webpack-plugin@4.2.0:
     dependencies:
       chalk: 4.1.2
@@ -10577,22 +10528,6 @@ snapshots:
 
   unpipe@1.0.0: {}
 
-  unplugin-swc@1.5.9(@swc/core@1.15.41(@swc/helpers@0.5.23))(rollup@4.61.1):
-    dependencies:
-      '@rollup/pluginutils': 5.4.0(rollup@4.61.1)
-      '@swc/core': 1.15.41(@swc/helpers@0.5.23)
-      load-tsconfig: 0.2.5
-      unplugin: 2.3.11
-    transitivePeerDependencies:
-      - rollup
-
-  unplugin@2.3.11:
-    dependencies:
-      '@jridgewell/remapping': 2.3.5
-      acorn: 8.17.0
-      picomatch: 4.0.4
-      webpack-virtual-modules: 0.6.2
-
   unrun@0.2.39:
     dependencies:
       rolldown: 1.0.0-rc.17
@@ -10646,16 +10581,6 @@ snapshots:
       vite: 8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4)(yaml@2.9.0)
     transitivePeerDependencies:
       - rollup
-
-  vite-tsconfig-paths@6.1.1(typescript@5.9.3)(vite@8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4)(yaml@2.9.0)):
-    dependencies:
-      debug: 4.4.3
-      globrex: 0.1.2
-      tsconfck: 3.1.6(typescript@5.9.3)
-      vite: 8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4)(yaml@2.9.0)
-    transitivePeerDependencies:
-      - supports-color
-      - typescript
 
   vite@8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4)(yaml@2.9.0):
     dependencies:
@@ -10721,8 +10646,6 @@ snapshots:
   webpack-node-externals@3.0.0: {}
 
   webpack-sources@3.5.0: {}
-
-  webpack-virtual-modules@0.6.2: {}
 
   webpack@5.106.2(@swc/core@1.15.41(@swc/helpers@0.5.23))(esbuild@0.28.1):
     dependencies:

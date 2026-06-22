@@ -1,10 +1,11 @@
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
 import {
   AvoidedFricheCostsIndirectEconomicImpacts,
   ReconversionProjectImpactsDataView,
   SiteImpactsDataView,
   sumList,
 } from "shared";
-import { describe, it, expect } from "vitest";
 
 import { Schedule } from "../../reconversionProject";
 import {
@@ -149,11 +150,11 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
         evaluationPeriodInYears: 50,
       });
 
-      expect(
+      assert.ok(
         result.aggregatedReconversionImpacts.indirectEconomicImpacts.details.find(
           (d) => d.name === "previousSiteOperationBenefitLoss",
-        ),
-      ).toBeDefined();
+        ) !== undefined,
+      );
     });
 
     it("excludes previousSiteOperationBenefitLoss for AGRICULTURAL_OPERATION and site is not operated", () => {
@@ -168,11 +169,12 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
         evaluationPeriodInYears: 50,
       });
 
-      expect(
+      assert.strictEqual(
         result.aggregatedReconversionImpacts.indirectEconomicImpacts.details.find(
           (d) => d.name === "previousSiteOperationBenefitLoss",
         ),
-      ).toBeUndefined();
+        undefined,
+      );
     });
 
     it("adds oldOperationsFullTimeJobsLoss for AGRICULTURAL_OPERATION and site is operated", () => {
@@ -235,26 +237,30 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
         evaluationPeriodInYears: 50,
       });
 
-      expect(
+      assert.strictEqual(
         result.aggregatedReconversionImpacts.indirectEconomicImpacts.details.find(
           ({ name }) => name === "projectedRentalIncome",
         ),
-      ).toBeUndefined();
-      expect(
+        undefined,
+      );
+      assert.strictEqual(
         result.aggregatedReconversionImpacts.indirectEconomicImpacts.details.find(
           ({ name }) => name === "oldRentalIncomeLoss",
         ),
-      ).toBeUndefined();
-      expect(
+        undefined,
+      );
+      assert.strictEqual(
         result.reconversionImpactsBreakdown.projectOnSiteIndirectEconomicImpactsData.details.find(
           ({ name }) => name === "projectedRentalIncome",
         ),
-      ).toBeUndefined();
-      expect(
+        undefined,
+      );
+      assert.strictEqual(
         result.reconversionImpactsBreakdown.siteStatuQuoIndirectEconomicImpactsData.details.find(
           ({ name }) => name === "rentalIncome",
         ),
-      ).toBeUndefined();
+        undefined,
+      );
     });
 
     // ── Loyer projeté uniquement (sans loyer actuel) ──────────────────────────
@@ -275,26 +281,30 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
         evaluationPeriodInYears: 3,
       });
 
-      expect(
+      assert.deepStrictEqual(
         result.aggregatedReconversionImpacts.indirectEconomicImpacts.details.find(
           ({ name }) => name === "projectedRentalIncome",
         )?.detailsByYear[0],
-      ).toEqual(2_000);
-      expect(
+        2_000,
+      );
+      assert.strictEqual(
         result.aggregatedReconversionImpacts.indirectEconomicImpacts.details.find(
           ({ name }) => name === "oldRentalIncomeLoss",
         ),
-      ).toBeUndefined();
-      expect(
+        undefined,
+      );
+      assert.deepStrictEqual(
         result.reconversionImpactsBreakdown.projectOnSiteIndirectEconomicImpactsData.details.find(
           ({ name }) => name === "projectedRentalIncome",
         )?.detailsByYear[0],
-      ).toEqual(2_000);
-      expect(
+        2_000,
+      );
+      assert.strictEqual(
         result.reconversionImpactsBreakdown.siteStatuQuoIndirectEconomicImpactsData.details.find(
           ({ name }) => name === "rentalIncome",
         ),
-      ).toBeUndefined();
+        undefined,
+      );
     });
 
     // ── Loyer projeté + loyer actuel ─────────────────────────────────────────
@@ -322,26 +332,30 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
         evaluationPeriodInYears: 3,
       });
 
-      expect(
+      assert.deepStrictEqual(
         result.aggregatedReconversionImpacts.indirectEconomicImpacts.details.find(
           ({ name }) => name === "projectedRentalIncome",
         )?.detailsByYear[0],
-      ).toEqual(3_000);
-      expect(
+        3_000,
+      );
+      assert.deepStrictEqual(
         result.aggregatedReconversionImpacts.indirectEconomicImpacts.details.find(
           ({ name }) => name === "oldRentalIncomeLoss",
         )?.detailsByYear[0],
-      ).toEqual(-1_000);
-      expect(
+        -1_000,
+      );
+      assert.deepStrictEqual(
         result.reconversionImpactsBreakdown.projectOnSiteIndirectEconomicImpactsData.details.find(
           ({ name }) => name === "projectedRentalIncome",
         )?.detailsByYear[0],
-      ).toEqual(3_000);
-      expect(
+        3_000,
+      );
+      assert.deepStrictEqual(
         result.reconversionImpactsBreakdown.siteStatuQuoIndirectEconomicImpactsData.details.find(
           ({ name }) => name === "rentalIncome",
         )?.detailsByYear[0],
-      ).toEqual(1_000);
+        1_000,
+      );
     });
 
     // ── Loyer actuel uniquement ───────────────────────────────────────────────
@@ -362,26 +376,30 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
         evaluationPeriodInYears: 3,
       });
 
-      expect(
+      assert.strictEqual(
         result.aggregatedReconversionImpacts.indirectEconomicImpacts.details.find(
           ({ name }) => name === "projectedRentalIncome",
         ),
-      ).toBeUndefined();
-      expect(
+        undefined,
+      );
+      assert.deepStrictEqual(
         result.aggregatedReconversionImpacts.indirectEconomicImpacts.details.find(
           ({ name }) => name === "oldRentalIncomeLoss",
         )?.detailsByYear[0],
-      ).toEqual(-1_500);
-      expect(
+        -1_500,
+      );
+      assert.strictEqual(
         result.reconversionImpactsBreakdown.projectOnSiteIndirectEconomicImpactsData.details.find(
           ({ name }) => name === "projectedRentalIncome",
         ),
-      ).toBeUndefined();
-      expect(
+        undefined,
+      );
+      assert.deepStrictEqual(
         result.reconversionImpactsBreakdown.siteStatuQuoIndirectEconomicImpactsData.details.find(
           ({ name }) => name === "rentalIncome",
         )?.detailsByYear[0],
-      ).toEqual(1_500);
+        1_500,
+      );
     });
   });
 
@@ -400,26 +418,30 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
         evaluationPeriodInYears: 10,
       });
 
-      expect(
+      assert.strictEqual(
         result.aggregatedReconversionImpacts.indirectEconomicImpacts.details.find(
           ({ name }) => name === "avoidedFricheMaintenanceAndSecuringCostsForOwner",
         ),
-      ).toBeUndefined();
-      expect(
+        undefined,
+      );
+      assert.strictEqual(
         result.aggregatedReconversionImpacts.indirectEconomicImpacts.details.find(
           ({ name }) => name === "avoidedFricheMaintenanceAndSecuringCostsForTenant",
         ),
-      ).toBeUndefined();
-      expect(
+        undefined,
+      );
+      assert.strictEqual(
         result.reconversionImpactsBreakdown.siteStatuQuoIndirectEconomicImpactsData.details.find(
           ({ name }) => name === "fricheMaintenanceAndSecuringCostsForOwner",
         ),
-      ).toBeUndefined();
-      expect(
+        undefined,
+      );
+      assert.strictEqual(
         result.reconversionImpactsBreakdown.siteStatuQuoIndirectEconomicImpactsData.details.find(
           ({ name }) => name === "fricheMaintenanceAndSecuringCostsForTenant",
         ),
-      ).toBeUndefined();
+        undefined,
+      );
     });
 
     it("returns only friche related costs", () => {
@@ -446,13 +468,16 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
           (item): item is AvoidedFricheCostsIndirectEconomicImpacts =>
             item.name === "avoidedFricheMaintenanceAndSecuringCostsForOwner",
         );
-      expect(ownerInAggregateResult).toHaveLength(2);
-      expect(tenantInAggregateResult).toHaveLength(0);
-      expect(ownerInAggregateResult.map((r) => r.details)).toEqual(["security", "maintenance"]);
+      assert.strictEqual(ownerInAggregateResult.length, 2);
+      assert.strictEqual(tenantInAggregateResult.length, 0);
+      assert.deepStrictEqual(
+        ownerInAggregateResult.map((r) => r.details),
+        ["security", "maintenance"],
+      );
 
-      expect(ownerInAggregateResult[0]?.detailsByYear).toBeDefined();
-      expect(ownerInAggregateResult[0]?.cumulativeByYear).toBeDefined();
-      expect(ownerInAggregateResult[0]?.cumulativeByYear[0]).toEqual(1_000);
+      assert.ok(ownerInAggregateResult[0]?.detailsByYear !== undefined);
+      assert.ok(ownerInAggregateResult[0]?.cumulativeByYear !== undefined);
+      assert.deepStrictEqual(ownerInAggregateResult[0]?.cumulativeByYear[0], 1_000);
     });
 
     it("returns 'avoidedFricheMaintenanceAndSecuringCostsForTenant' for tenant costs", () => {
@@ -476,9 +501,12 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
           (item): item is AvoidedFricheCostsIndirectEconomicImpacts =>
             item.name === "avoidedFricheMaintenanceAndSecuringCostsForOwner",
         );
-      expect(ownerInAggregateResult).toHaveLength(0);
-      expect(tenantInAggregateResult).toHaveLength(1);
-      expect(tenantInAggregateResult.map((r) => r.details)).toEqual(["illegalDumpingCost"]);
+      assert.strictEqual(ownerInAggregateResult.length, 0);
+      assert.strictEqual(tenantInAggregateResult.length, 1);
+      assert.deepStrictEqual(
+        tenantInAggregateResult.map((r) => r.details),
+        ["illegalDumpingCost"],
+      );
     });
   });
 
@@ -497,16 +525,18 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
         evaluationPeriodInYears: 10,
       });
 
-      expect(
+      assert.strictEqual(
         result.aggregatedReconversionImpacts.indirectEconomicImpacts.details.find(
           ({ name }) => name === "previousSiteOperationBenefitLoss",
         ),
-      ).toBeUndefined();
-      expect(
+        undefined,
+      );
+      assert.strictEqual(
         result.reconversionImpactsBreakdown.siteStatuQuoIndirectEconomicImpactsData.details.find(
           ({ name }) => name === "operatingEconomicBalance",
         ),
-      ).toBeUndefined();
+        undefined,
+      );
     });
 
     it("computes benefit loss amount total for evaluation period", () => {
@@ -526,16 +556,18 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
         evaluationPeriodInYears: 3,
       });
 
-      expect(
+      assert.strictEqual(
         result.aggregatedReconversionImpacts.indirectEconomicImpacts.details.find(
           (item) => item.name === "previousSiteOperationBenefitLoss",
         )?.detailsByYear[0],
-      ).toBe(-4_000);
-      expect(
+        -4_000,
+      );
+      assert.strictEqual(
         result.reconversionImpactsBreakdown.siteStatuQuoIndirectEconomicImpactsData.details.filter(
           (item) => item.name === "operatingEconomicBalance",
-        ),
-      ).toHaveLength(3);
+        ).length,
+        3,
+      );
     });
 
     it("returns positive value if incomes are lower than expenses", () => {
@@ -552,18 +584,20 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
         evaluationPeriodInYears: 3,
       });
 
-      expect(
+      assert.strictEqual(
         result.aggregatedReconversionImpacts.indirectEconomicImpacts.details.find(
           (item) => item.name === "previousSiteOperationBenefitLoss",
         )?.detailsByYear[0],
-      ).toBe(3_000);
-      expect(
+        3_000,
+      );
+      assert.strictEqual(
         sumList(
           result.reconversionImpactsBreakdown.siteStatuQuoIndirectEconomicImpactsData.details
             .filter((item) => item.name === "operatingEconomicBalance")
             .map((item) => item.detailsByYear[0] ?? 0),
         ),
-      ).toBe(-3_000);
+        -3_000,
+      );
     });
   });
   describe("avoidedFricheCosts", () => {
@@ -586,7 +620,7 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
           result.aggregatedReconversionImpacts.indirectEconomicImpacts.details.filter((d) =>
             d.name.startsWith("avoidedFricheMaintenanceAndSecuringCosts"),
           );
-        expect(avoidedCosts.length).toBeGreaterThan(0);
+        assert.ok(avoidedCosts.length > 0);
       });
     });
 
@@ -606,7 +640,7 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
           result.aggregatedReconversionImpacts.indirectEconomicImpacts.details.filter((d) =>
             d.name.startsWith("avoidedFricheMaintenanceAndSecuringCosts"),
           );
-        expect(avoidedCosts.length).toEqual(0);
+        assert.deepStrictEqual(avoidedCosts.length, 0);
       });
     });
   });
@@ -670,22 +704,23 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
         evaluationPeriodInYears: 10,
       });
 
-      expect(
+      assert.strictEqual(
         result.projectOnSiteIndirectEconomicImpactsData.details.find(
           (d) => d.name === "fricheRoadsAndUtilitiesExpenses",
         ),
-      ).toBeUndefined();
-      expect(
+        undefined,
+      );
+      assert.deepStrictEqual(
         result.projectOnSiteIndirectEconomicImpactsData.details.find(
           (d) => d.name === "avoidedRoadsAndUtilitiesConstructionExpenses",
         )?.total,
-      ).toEqual(-120805);
+        -120805,
+      );
 
-      expect(
-        result.projectOnSiteIndirectEconomicImpactsData.details.find(
-          (d) => d.name === "avoidedRoadsAndUtilitiesMaintenanceExpenses",
-        )?.total,
-      ).toBeCloseTo(-203038, 0);
+      const maintenanceTotal = result.projectOnSiteIndirectEconomicImpactsData.details.find(
+        (d) => d.name === "avoidedRoadsAndUtilitiesMaintenanceExpenses",
+      )?.total;
+      assert.ok(maintenanceTotal !== undefined && Math.abs(maintenanceTotal - -203038) < 0.5);
     });
 
     it("add positive avoidedRoadsAndUtilitiesConstruction and avoidedRoadsAndUtilitiesMaintenance impacts for friche with urban_sprawl_comparison mode", () => {
@@ -696,17 +731,17 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
         evaluationPeriodInYears: 10,
       });
 
-      expect(
+      assert.deepStrictEqual(
         result.projectOnSiteIndirectEconomicImpactsData.details.find(
           (d) => d.name === "avoidedRoadsAndUtilitiesConstructionExpenses",
         )?.total,
-      ).toEqual(120805);
+        120805,
+      );
 
-      expect(
-        result.projectOnSiteIndirectEconomicImpactsData.details.find(
-          (d) => d.name === "avoidedRoadsAndUtilitiesMaintenanceExpenses",
-        )?.total,
-      ).toBeCloseTo(203038, 0);
+      const maintenanceTotal = result.projectOnSiteIndirectEconomicImpactsData.details.find(
+        (d) => d.name === "avoidedRoadsAndUtilitiesMaintenanceExpenses",
+      )?.total;
+      assert.ok(maintenanceTotal !== undefined && Math.abs(maintenanceTotal - 203038) < 0.5);
     });
   });
 });

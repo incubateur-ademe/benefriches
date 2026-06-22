@@ -1,5 +1,6 @@
+import assert from "node:assert/strict";
+import { describe, it, beforeEach, mock } from "node:test";
 import { BuildingsUseDistribution, DevelopmentPlanFeatures } from "shared";
-import { describe, it, expect, vi, beforeEach } from "vitest";
 
 import type { SumOnEvolutionPeriodService } from "../../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import { InputReconversionProjectData, InputSiteData } from "../projectIndirectImpacts";
@@ -49,11 +50,11 @@ const buildUrbanProject = (
 });
 
 describe("getNewUsagesTaxesIncomeImpact", () => {
-  let getWeightedYearlyValuesSpy: ReturnType<typeof vi.fn>;
+  let getWeightedYearlyValuesSpy: ReturnType<typeof mock.fn>;
   let mockService: SumOnEvolutionPeriodService;
 
   beforeEach(() => {
-    getWeightedYearlyValuesSpy = vi.fn((value: number) => [value, value, value]);
+    getWeightedYearlyValuesSpy = mock.fn((value: number) => [value, value, value]);
     mockService = {
       getWeightedYearlyValues: getWeightedYearlyValuesSpy,
     } as unknown as SumOnEvolutionPeriodService;
@@ -64,7 +65,7 @@ describe("getNewUsagesTaxesIncomeImpact", () => {
       buildingsFloorAreaDistribution: { RECREATIONAL_FACILITY: 500 },
       sumOnEvolutionPeriodService: mockService,
     });
-    expect(result).toHaveLength(0);
+    assert.strictEqual(result.length, 0);
   });
 
   it("returns projectNewHousesTaxesIncome > 0 if no RESIDENTIAL > 0", () => {
@@ -74,8 +75,8 @@ describe("getNewUsagesTaxesIncomeImpact", () => {
     });
 
     const housesImpact = result.find((r) => r.name === "projectNewHousesTaxesIncome");
-    expect(housesImpact).toBeDefined();
-    expect(housesImpact?.total).toBeGreaterThan(0);
+    assert.ok(housesImpact !== undefined);
+    assert.ok(housesImpact.total > 0);
   });
 
   it("excludes projectNewHousesTaxesIncome if no RESIDENTIAL === 0", () => {
@@ -83,7 +84,10 @@ describe("getNewUsagesTaxesIncomeImpact", () => {
       buildingsFloorAreaDistribution: { RESIDENTIAL: 0 },
       sumOnEvolutionPeriodService: mockService,
     });
-    expect(result.find((r) => r.name === "projectNewHousesTaxesIncome")).toBeUndefined();
+    assert.strictEqual(
+      result.find((r) => r.name === "projectNewHousesTaxesIncome"),
+      undefined,
+    );
   });
 
   it("returns projectNewCompanyTaxationIncome if OFFICES > 0", () => {
@@ -93,8 +97,8 @@ describe("getNewUsagesTaxesIncomeImpact", () => {
     });
 
     const officeImpact = result.find((r) => r.name === "projectNewCompanyTaxationIncome");
-    expect(officeImpact).toBeDefined();
-    expect(officeImpact?.total).toBeGreaterThan(0);
+    assert.ok(officeImpact !== undefined);
+    assert.ok(officeImpact.total > 0);
   });
 
   it("computes right taxes for new offices surfaces", () => {
@@ -103,10 +107,10 @@ describe("getNewUsagesTaxesIncomeImpact", () => {
       sumOnEvolutionPeriodService: mockService,
     });
 
-    expect(getWeightedYearlyValuesSpy).toHaveBeenCalledWith(expect.closeTo(2_018, 0), [
-      "gdp_evolution",
-      "discount",
-    ]);
+    const firstArg = getWeightedYearlyValuesSpy.mock.calls[0]?.arguments[0] as number;
+    const secondArg = getWeightedYearlyValuesSpy.mock.calls[0]?.arguments[1];
+    assert.ok(Math.abs(firstArg - 2_018) < 0.5);
+    assert.deepStrictEqual(secondArg, ["gdp_evolution", "discount"]);
   });
 
   it("returns two entries if RESIDENTIAL > 0 and OFFICES > 0", () => {
@@ -114,7 +118,7 @@ describe("getNewUsagesTaxesIncomeImpact", () => {
       buildingsFloorAreaDistribution: { RESIDENTIAL: 1_000, OFFICES: 500 },
       sumOnEvolutionPeriodService: mockService,
     });
-    expect(result).toHaveLength(2);
+    assert.strictEqual(result.length, 2);
   });
 
   it("computes coherent values for cumulativeByYear", () => {
@@ -123,19 +127,20 @@ describe("getNewUsagesTaxesIncomeImpact", () => {
       sumOnEvolutionPeriodService: mockService,
     });
     const [item] = result;
-    expect(item?.cumulativeByYear[0]).toBeLessThan(item?.cumulativeByYear[1] ?? 0);
-    expect(item?.cumulativeByYear[1]).toBeLessThan(item?.cumulativeByYear[2] ?? 0);
+    assert.ok(item !== undefined);
+    assert.ok((item.cumulativeByYear[0] ?? 0) < (item.cumulativeByYear[1] ?? 0));
+    assert.ok((item.cumulativeByYear[1] ?? 0) < (item.cumulativeByYear[2] ?? 0));
   });
 });
 
 // ---------------------------------------------------------------------------
 
 describe("getUrbanProjectImpacts", () => {
-  let getWeightedYearlyValuesSpy: ReturnType<typeof vi.fn>;
+  let getWeightedYearlyValuesSpy: ReturnType<typeof mock.fn>;
   let mockService: SumOnEvolutionPeriodService;
 
   beforeEach(() => {
-    getWeightedYearlyValuesSpy = vi.fn((value: number) => [value, value, value]);
+    getWeightedYearlyValuesSpy = mock.fn((value: number) => [value, value, value]);
     mockService = {
       getWeightedYearlyValues: getWeightedYearlyValuesSpy,
     } as unknown as SumOnEvolutionPeriodService;
@@ -160,15 +165,17 @@ describe("getUrbanProjectImpacts", () => {
       const acImpact = result.economicImpacts.find(
         (r) => r.name === "avoidedAirConditioningExpenses",
       );
-      expect(acImpact).toBeDefined();
-      expect(
-        result.impactMetrics.find((r) => r.name === "avoidedAirConditioningCo2eqEmissions"),
-      ).toBeDefined();
-      expect(
-        result.economicImpacts.find((r) => r.name === "avoidedAirConditioningCo2eqEmissions"),
-      ).toBeDefined();
+      assert.ok(acImpact !== undefined);
+      assert.ok(
+        result.impactMetrics.find((r) => r.name === "avoidedAirConditioningCo2eqEmissions") !==
+          undefined,
+      );
+      assert.ok(
+        result.economicImpacts.find((r) => r.name === "avoidedAirConditioningCo2eqEmissions") !==
+          undefined,
+      );
       if (acImpact) {
-        expect(acImpact.total).toBeDefined();
+        assert.ok(acImpact.total !== undefined);
       }
     });
 
@@ -179,15 +186,18 @@ describe("getUrbanProjectImpacts", () => {
         siteCityData: baseSiteCityData,
         sumOnEvolutionPeriodService: mockService,
       });
-      expect(
+      assert.strictEqual(
         result.economicImpacts.find((r) => r.name === "avoidedAirConditioningExpenses"),
-      ).toBeUndefined();
-      expect(
+        undefined,
+      );
+      assert.strictEqual(
         result.economicImpacts.find((r) => r.name === "avoidedAirConditioningCo2eqEmissions"),
-      ).toBeUndefined();
-      expect(
+        undefined,
+      );
+      assert.strictEqual(
         result.impactMetrics.find((r) => r.name === "avoidedAirConditioningCo2eqEmissions"),
-      ).toBeUndefined();
+        undefined,
+      );
     });
   });
 
@@ -221,7 +231,7 @@ describe("getUrbanProjectImpacts", () => {
       ] as const;
 
       travelImpactNames.forEach((name) => {
-        expect(result.economicImpacts.find((r) => r.name === name)).toBeDefined();
+        assert.ok(result.economicImpacts.find((r) => r.name === name) !== undefined);
       });
 
       [
@@ -230,12 +240,12 @@ describe("getUrbanProjectImpacts", () => {
         "avoidedVehiculeKilometers",
         "timeTravelSavedInHours",
       ].forEach((name) => {
-        expect(result.impactMetrics.find((r) => r.name === name)).toBeDefined();
+        assert.ok(result.impactMetrics.find((r) => r.name === name) !== undefined);
       });
 
       const resultNames = new Set(result.economicImpacts.map((r) => r.name));
       const found = travelImpactNames.filter((n) => resultNames.has(n));
-      expect(found.length).toBeGreaterThanOrEqual(0);
+      assert.ok(found.length >= 0);
     });
 
     it("doesn't return travel related impacts for urban project on non friche site", () => {
@@ -258,7 +268,10 @@ describe("getUrbanProjectImpacts", () => {
       ] as const;
 
       travelImpactNames.forEach((name) => {
-        expect(result.economicImpacts.find((r) => r.name === name)).toBeUndefined();
+        assert.strictEqual(
+          result.economicImpacts.find((r) => r.name === name),
+          undefined,
+        );
       });
 
       [
@@ -267,7 +280,10 @@ describe("getUrbanProjectImpacts", () => {
         "avoidedVehiculeKilometers",
         "timeTravelSavedInHours",
       ].forEach((name) => {
-        expect(result.impactMetrics.find((r) => r.name === name)).toBeUndefined();
+        assert.strictEqual(
+          result.impactMetrics.find((r) => r.name === name),
+          undefined,
+        );
       });
     });
   });
@@ -281,9 +297,9 @@ describe("getUrbanProjectImpacts", () => {
         sumOnEvolutionPeriodService: mockService,
       });
 
-      expect(
-        result.economicImpacts.find((r) => r.name === "projectNewHousesTaxesIncome"),
-      ).toBeDefined();
+      assert.ok(
+        result.economicImpacts.find((r) => r.name === "projectNewHousesTaxesIncome") !== undefined,
+      );
     });
 
     it("adds taxes on new OFFICES surfaces", () => {
@@ -294,9 +310,10 @@ describe("getUrbanProjectImpacts", () => {
         sumOnEvolutionPeriodService: mockService,
       });
 
-      expect(
-        result.economicImpacts.find((r) => r.name === "projectNewCompanyTaxationIncome"),
-      ).toBeDefined();
+      assert.ok(
+        result.economicImpacts.find((r) => r.name === "projectNewCompanyTaxationIncome") !==
+          undefined,
+      );
     });
   });
 
@@ -309,9 +326,10 @@ describe("getUrbanProjectImpacts", () => {
         sumOnEvolutionPeriodService: mockService,
       });
 
-      expect(
+      assert.strictEqual(
         result.economicImpacts.find((d) => d.name === "localPropertyValueIncrease"),
-      ).toBeUndefined();
+        undefined,
+      );
     });
 
     it("add localPropertyValueIncrease for urban project on friche", () => {
@@ -322,9 +340,9 @@ describe("getUrbanProjectImpacts", () => {
         sumOnEvolutionPeriodService: mockService,
       });
 
-      expect(
-        result.economicImpacts.find((d) => d.name === "localPropertyValueIncrease"),
-      ).toBeDefined();
+      assert.ok(
+        result.economicImpacts.find((d) => d.name === "localPropertyValueIncrease") !== undefined,
+      );
     });
   });
 
@@ -337,9 +355,10 @@ describe("getUrbanProjectImpacts", () => {
         sumOnEvolutionPeriodService: mockService,
       });
 
-      expect(
+      assert.strictEqual(
         result.economicImpacts.find((d) => d.name === "fricheRoadsAndUtilitiesExpenses"),
-      ).toBeUndefined();
+        undefined,
+      );
     });
 
     it("add fricheRoadsAndUtilitiesExpenses for urban project on friche", () => {
@@ -350,9 +369,10 @@ describe("getUrbanProjectImpacts", () => {
         sumOnEvolutionPeriodService: mockService,
       });
 
-      expect(
-        result.economicImpacts.find((d) => d.name === "fricheRoadsAndUtilitiesExpenses"),
-      ).toBeDefined();
+      assert.ok(
+        result.economicImpacts.find((d) => d.name === "fricheRoadsAndUtilitiesExpenses") !==
+          undefined,
+      );
     });
   });
 
@@ -374,11 +394,13 @@ describe("getUrbanProjectImpacts", () => {
         sumOnEvolutionPeriodService: mockService,
       });
 
-      expect(
+      assert.strictEqual(
         result.impactMetrics.find((d) => d.name === "conversionFullTimeJobs")?.total,
-      ).toBeUndefined();
+        undefined,
+      );
 
-      expect(result.impactMetrics.find((d) => d.name === "operationsFullTimeJobs")?.total).toEqual(
+      assert.deepStrictEqual(
+        result.impactMetrics.find((d) => d.name === "operationsFullTimeJobs")?.total,
         880,
       );
     });

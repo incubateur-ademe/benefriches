@@ -1,3 +1,5 @@
+import assert from "node:assert/strict";
+import { describe, it, beforeEach } from "node:test";
 import { v4 as uuid } from "uuid";
 
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
@@ -42,12 +44,15 @@ describe("ArchiveSite use case", () => {
       userId: uuid(),
     });
 
-    expect(result.isFailure()).toBe(true);
-    expect((result as FailureResult<"UserNotAuthorized">).getError()).toBe("UserNotAuthorized");
+    assert.strictEqual(result.isFailure(), true);
+    assert.strictEqual(
+      (result as FailureResult<"UserNotAuthorized">).getError(),
+      "UserNotAuthorized",
+    );
 
     const sites = siteRepository._getSites();
-    expect(sites[0]?.status).toEqual("active");
-    expect(sites[0]?.updatedAt).toEqual(undefined);
+    assert.deepStrictEqual(sites[0]?.status, "active");
+    assert.strictEqual(sites[0]?.updatedAt, undefined);
   });
 
   it("fails when site does not exist", async () => {
@@ -58,8 +63,8 @@ describe("ArchiveSite use case", () => {
       userId: uuid(),
     });
 
-    expect(result.isFailure()).toBe(true);
-    expect((result as FailureResult<"SiteNotFound">).getError()).toBe("SiteNotFound");
+    assert.strictEqual(result.isFailure(), true);
+    assert.strictEqual((result as FailureResult<"SiteNotFound">).getError(), "SiteNotFound");
   });
 
   it("archive a site successfully", async () => {
@@ -85,11 +90,11 @@ describe("ArchiveSite use case", () => {
       siteId,
       userId,
     });
-    expect(result.isSuccess()).toBe(true);
+    assert.strictEqual(result.isSuccess(), true);
 
     const sites = siteRepository._getSites();
 
-    expect(sites[0]).toEqual({
+    assert.deepStrictEqual(sites[0], {
       ...site,
       createdAt,
       creationMode: "express",

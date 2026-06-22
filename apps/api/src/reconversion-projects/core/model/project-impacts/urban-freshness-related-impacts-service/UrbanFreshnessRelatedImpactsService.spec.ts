@@ -1,3 +1,6 @@
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+
 import { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import { UrbanFreshnessRelatedImpactsService } from "./UrbanFreshnessRelatedImpactsService";
 
@@ -15,8 +18,9 @@ describe("UrbanFreshnessRelatedImpactsService", () => {
       }),
     });
 
-    expect(urbanFreshnessRelatedImpactsService.getSocioEconomicList()).toEqual([]);
-    expect(urbanFreshnessRelatedImpactsService.getAvoidedAirConditioningCo2Emissions()).toEqual(
+    assert.deepStrictEqual(urbanFreshnessRelatedImpactsService.getSocioEconomicList(), []);
+    assert.deepStrictEqual(
+      urbanFreshnessRelatedImpactsService.getAvoidedAirConditioningCo2Emissions(),
       undefined,
     );
   });
@@ -37,8 +41,9 @@ describe("UrbanFreshnessRelatedImpactsService", () => {
       }),
     });
 
-    expect(urbanFreshnessRelatedImpactsService.getSocioEconomicList()).toEqual([]);
-    expect(urbanFreshnessRelatedImpactsService.getAvoidedAirConditioningCo2Emissions()).toEqual(
+    assert.deepStrictEqual(urbanFreshnessRelatedImpactsService.getSocioEconomicList(), []);
+    assert.deepStrictEqual(
+      urbanFreshnessRelatedImpactsService.getAvoidedAirConditioningCo2Emissions(),
       undefined,
     );
   });
@@ -60,7 +65,7 @@ describe("UrbanFreshnessRelatedImpactsService", () => {
       }),
     });
 
-    expect(urbanFreshnessRelatedImpactsService.getSocioEconomicList()).toEqual([
+    assert.deepStrictEqual(urbanFreshnessRelatedImpactsService.getSocioEconomicList(), [
       {
         actor: "local_people",
         amount: 2052,
@@ -74,9 +79,12 @@ describe("UrbanFreshnessRelatedImpactsService", () => {
         impactCategory: "economic_indirect",
       },
     ]);
-    expect(urbanFreshnessRelatedImpactsService.getAvoidedAirConditioningCo2Emissions()).toEqual({
-      inTons: 4.06,
-      monetaryValue: 771,
-    });
+    assert.deepStrictEqual(
+      urbanFreshnessRelatedImpactsService.getAvoidedAirConditioningCo2Emissions(),
+      {
+        inTons: 4.06,
+        monetaryValue: 771,
+      },
+    );
   });
 });

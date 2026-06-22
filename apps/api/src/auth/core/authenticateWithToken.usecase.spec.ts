@@ -1,4 +1,6 @@
 import { addMinutes } from "date-fns";
+import assert from "node:assert/strict";
+import { describe, it, beforeEach } from "node:test";
 
 import { InMemoryTokenAuthenticationAttemptRepository } from "src/auth/adapters/auth-token-repository/InMemoryTokenAuthenticationAttemptRepository";
 import { InMemoryUserRepository } from "src/auth/adapters/user-repository/InMemoryAuthUserRepository";
@@ -65,15 +67,15 @@ describe("AuthenticateWithToken Use Case", () => {
 
       const result = await usecase.execute({ token: "non-existent-token" });
 
-      expect(result.isFailure()).toBe(true);
-      expect((result as FailureResult).getError()).toBe("TokenNotFound");
+      assert.strictEqual(result.isFailure(), true);
+      assert.strictEqual((result as FailureResult).getError(), "TokenNotFound");
 
-      expect(eventPublisher.events).toHaveLength(1);
-      expect(eventPublisher.events[0]).toEqual<LoginWithTokenFailedEvent>({
+      assert.strictEqual(eventPublisher.events.length, 1);
+      assert.deepStrictEqual(eventPublisher.events[0], {
         id: "event-id-1",
         name: LOGIN_WITH_TOKEN_FAILED,
         payload: { errorType: "TokenNotFound" },
-      });
+      } satisfies LoginWithTokenFailedEvent);
     });
 
     it("Cannot authenticate with expired token", async () => {
@@ -97,15 +99,15 @@ describe("AuthenticateWithToken Use Case", () => {
 
       const result = await usecase.execute({ token: fakeToken });
 
-      expect(result.isFailure()).toBe(true);
-      expect((result as FailureResult).getError()).toBe("AuthenticationAttemptExpired");
+      assert.strictEqual(result.isFailure(), true);
+      assert.strictEqual((result as FailureResult).getError(), "AuthenticationAttemptExpired");
 
-      expect(eventPublisher.events).toHaveLength(1);
-      expect(eventPublisher.events[0]).toEqual<LoginWithTokenFailedEvent>({
+      assert.strictEqual(eventPublisher.events.length, 1);
+      assert.deepStrictEqual(eventPublisher.events[0], {
         id: "event-id-1",
         name: LOGIN_WITH_TOKEN_FAILED,
         payload: { errorType: "AuthenticationAttemptExpired" },
-      });
+      } satisfies LoginWithTokenFailedEvent);
     });
 
     it("Cannot authenticate with already used token", async () => {
@@ -127,15 +129,15 @@ describe("AuthenticateWithToken Use Case", () => {
 
       const result = await usecase.execute({ token: fakeToken });
 
-      expect(result.isFailure()).toBe(true);
-      expect((result as FailureResult).getError()).toBe("TokenAlreadyUsed");
+      assert.strictEqual(result.isFailure(), true);
+      assert.strictEqual((result as FailureResult).getError(), "TokenAlreadyUsed");
 
-      expect(eventPublisher.events).toHaveLength(1);
-      expect(eventPublisher.events[0]).toEqual<LoginWithTokenFailedEvent>({
+      assert.strictEqual(eventPublisher.events.length, 1);
+      assert.deepStrictEqual(eventPublisher.events[0], {
         id: "event-id-1",
         name: LOGIN_WITH_TOKEN_FAILED,
         payload: { errorType: "TokenAlreadyUsed" },
-      });
+      } satisfies LoginWithTokenFailedEvent);
     });
   });
 
@@ -160,9 +162,9 @@ describe("AuthenticateWithToken Use Case", () => {
 
       const result = await usecase.execute({ token: fakeToken });
 
-      expect(result.isSuccess()).toBe(true);
+      assert.strictEqual(result.isSuccess(), true);
       const data = (result as SuccessResult<{ user: { id: string; email: string } }>).getData();
-      expect(data.user).toEqual({
+      assert.deepStrictEqual(data.user, {
         id: user.id,
         email: user.email,
       });
@@ -171,10 +173,10 @@ describe("AuthenticateWithToken Use Case", () => {
       const updatedToken = tokenAuthAttemptRepository.tokens.find(
         (t) => t.token === validTokenAuthAttempt.token,
       );
-      expect(updatedToken?.completedAt).toEqual(fakeNow);
+      assert.deepStrictEqual(updatedToken?.completedAt, fakeNow);
 
       // No failure event on success
-      expect(eventPublisher.events).toHaveLength(0);
+      assert.strictEqual(eventPublisher.events.length, 0);
     });
   });
 });

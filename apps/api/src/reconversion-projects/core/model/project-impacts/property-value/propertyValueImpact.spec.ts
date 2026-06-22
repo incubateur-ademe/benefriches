@@ -1,9 +1,12 @@
+import assert from "node:assert/strict";
+import { before, describe, it } from "node:test";
+
 import { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import { computePropertyValueImpact } from "./propertyValueImpact";
 
 describe("LocalPropertyValueIncrease impact", () => {
   let sumOnEvolutionPeriodService: SumOnEvolutionPeriodService;
-  beforeAll(() => {
+  before(() => {
     sumOnEvolutionPeriodService = new SumOnEvolutionPeriodService({
       operationsFirstYear: 2025,
       evaluationPeriodInYears: 10,
@@ -18,8 +21,8 @@ describe("LocalPropertyValueIncrease impact", () => {
       sumOnEvolutionPeriodService,
       false,
     );
-    expect(propertyValueIncrease).toEqual(455339);
-    expect(propertyTransferDutiesIncrease).toEqual(6637);
+    assert.deepStrictEqual(propertyValueIncrease, 455339);
+    assert.deepStrictEqual(propertyTransferDutiesIncrease, 6637);
   });
 
   it("compute property value increase with friche removal + renaturation", () => {
@@ -31,8 +34,8 @@ describe("LocalPropertyValueIncrease impact", () => {
       sumOnEvolutionPeriodService,
       true,
     );
-    expect(propertyValueIncrease).toEqual(2286071);
-    expect(propertyTransferDutiesIncrease).toEqual(33321);
+    assert.deepStrictEqual(propertyValueIncrease, 2286071);
+    assert.deepStrictEqual(propertyTransferDutiesIncrease, 33321);
   });
 
   it("compute property value increase for evalution period < 5", () => {
@@ -44,8 +47,8 @@ describe("LocalPropertyValueIncrease impact", () => {
       new SumOnEvolutionPeriodService({ operationsFirstYear: 2025, evaluationPeriodInYears: 3 }),
       true,
     );
-    expect(propertyValueIncrease).toEqual(975188);
-    expect(propertyTransferDutiesIncrease).toEqual(8585);
+    assert.deepStrictEqual(propertyValueIncrease, 975188);
+    assert.deepStrictEqual(propertyTransferDutiesIncrease, 8585);
   });
 
   it("compute property value increase for evalution period of 50 years", () => {
@@ -57,7 +60,7 @@ describe("LocalPropertyValueIncrease impact", () => {
       new SumOnEvolutionPeriodService({ operationsFirstYear: 2025, evaluationPeriodInYears: 50 }),
       true,
     );
-    expect(propertyValueIncrease).toEqual(2286071);
-    expect(propertyTransferDutiesIncrease).toEqual(78036);
+    assert.deepStrictEqual(propertyValueIncrease, 2286071);
+    assert.deepStrictEqual(propertyTransferDutiesIncrease, 78036);
   });
 });

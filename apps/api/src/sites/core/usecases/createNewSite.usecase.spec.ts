@@ -1,4 +1,7 @@
 /* oxlint-disable typescript-eslint/no-unsafe-assignment */
+import assert from "node:assert/strict";
+import { describe, it, beforeEach } from "node:test";
+
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { InMemoryEventPublisher } from "src/shared-kernel/adapters/events/publisher/InMemoryEventPublisher";
@@ -48,14 +51,15 @@ describe("CreateNewSite Use Case", () => {
       createdBy: "user-123",
     });
 
-    expect(result.isFailure()).toBe(true);
-    expect((result as FailureResult<"ValidationError", unknown>).getError()).toBe(
+    assert.strictEqual(result.isFailure(), true);
+    assert.strictEqual(
+      (result as FailureResult<"ValidationError", unknown>).getError(),
       "ValidationError",
     );
-    expect((result as FailureResult<"ValidationError", unknown>).getIssues()).toEqual({
+    assert.deepStrictEqual((result as FailureResult<"ValidationError", unknown>).getIssues(), {
       name: ["Invalid input: expected string, received number"],
     });
-    expect(eventPublisher.events).toHaveLength(0);
+    assert.strictEqual(eventPublisher.events.length, 0);
   });
 
   it("Cannot create a site when already exists", async () => {
@@ -83,11 +87,12 @@ describe("CreateNewSite Use Case", () => {
       createdBy: "blabla",
     });
 
-    expect(result.isFailure()).toBe(true);
-    expect((result as FailureResult).getError()).toBe("SiteAlreadyExists");
-    expect(siteRepository._getSites().length).toEqual(1);
-    expect(eventPublisher.events).toHaveLength(0);
+    assert.strictEqual(result.isFailure(), true);
+    assert.strictEqual((result as FailureResult).getError(), "SiteAlreadyExists");
+    assert.strictEqual(siteRepository._getSites().length, 1);
+    assert.strictEqual(eventPublisher.events.length, 0);
   });
+
   describe("Agricultural or natura site", () => {
     it("Can create a new agricultural site with minimal data", async () => {
       const agriculturalOperationProps = buildAgriculturalOperationSiteProps();
@@ -105,7 +110,7 @@ describe("CreateNewSite Use Case", () => {
 
       const savedSites = siteRepository._getSites();
 
-      expect(savedSites).toEqual<SiteEntity[]>([
+      assert.deepStrictEqual(savedSites, [
         {
           ...buildAgriculturalOrNaturalSite(agriculturalOperationProps),
           createdAt: fakeNow,
@@ -113,19 +118,22 @@ describe("CreateNewSite Use Case", () => {
           creationMode: "custom",
           status: "active",
         },
-      ]);
+      ] satisfies SiteEntity[]);
 
       // oxlint-disable-next-line no-non-null-assertion
       const siteId = savedSites[0]!.id;
-      expect(eventPublisher.events).toHaveLength(1);
-      expect(eventPublisher.events[0]).toEqual<SiteCreatedEvent>({
-        id: expect.any(String),
+      assert.strictEqual(eventPublisher.events.length, 1);
+      // oxlint-disable-next-line no-non-null-assertion
+      assert.ok(typeof eventPublisher.events[0]!.id === "string");
+      assert.deepStrictEqual(eventPublisher.events[0], {
+        // oxlint-disable-next-line no-non-null-assertion
+        id: eventPublisher.events[0]!.id,
         name: SITE_CREATED,
         payload: {
           siteId,
           createdBy: "user-id-123",
         },
-      });
+      } satisfies SiteCreatedEvent);
     });
 
     it("Can create a new agricultural site with complete data", async () => {
@@ -156,7 +164,7 @@ describe("CreateNewSite Use Case", () => {
 
       const savedSites = siteRepository._getSites();
 
-      expect(savedSites).toEqual<SiteEntity[]>([
+      assert.deepStrictEqual(savedSites, [
         {
           ...buildAgriculturalOrNaturalSite(siteProps),
           createdAt: fakeNow,
@@ -164,19 +172,22 @@ describe("CreateNewSite Use Case", () => {
           creationMode: "custom",
           status: "active",
         },
-      ]);
+      ] satisfies SiteEntity[]);
 
       // oxlint-disable-next-line no-non-null-assertion
       const siteId = savedSites[0]!.id;
-      expect(eventPublisher.events).toHaveLength(1);
-      expect(eventPublisher.events[0]).toEqual<SiteCreatedEvent>({
-        id: expect.any(String),
+      assert.strictEqual(eventPublisher.events.length, 1);
+      // oxlint-disable-next-line no-non-null-assertion
+      assert.ok(typeof eventPublisher.events[0]!.id === "string");
+      assert.deepStrictEqual(eventPublisher.events[0], {
+        // oxlint-disable-next-line no-non-null-assertion
+        id: eventPublisher.events[0]!.id,
         name: SITE_CREATED,
         payload: {
           siteId,
           createdBy: "user-id-123",
         },
-      });
+      } satisfies SiteCreatedEvent);
     });
   });
 
@@ -199,7 +210,7 @@ describe("CreateNewSite Use Case", () => {
 
       const savedSites = siteRepository._getSites();
 
-      expect(savedSites).toEqual<SiteEntity[]>([
+      assert.deepStrictEqual(savedSites, [
         {
           ...buildFriche(fricheProps),
           createdAt: fakeNow,
@@ -207,19 +218,22 @@ describe("CreateNewSite Use Case", () => {
           creationMode: "custom",
           status: "active",
         },
-      ]);
+      ] satisfies SiteEntity[]);
 
       // oxlint-disable-next-line no-non-null-assertion
       const siteId = savedSites[0]!.id;
-      expect(eventPublisher.events).toHaveLength(1);
-      expect(eventPublisher.events[0]).toEqual<SiteCreatedEvent>({
-        id: expect.any(String),
+      assert.strictEqual(eventPublisher.events.length, 1);
+      // oxlint-disable-next-line no-non-null-assertion
+      assert.ok(typeof eventPublisher.events[0]!.id === "string");
+      assert.deepStrictEqual(eventPublisher.events[0], {
+        // oxlint-disable-next-line no-non-null-assertion
+        id: eventPublisher.events[0]!.id,
         name: SITE_CREATED,
         payload: {
           siteId,
           createdBy: "user-id-123",
         },
-      });
+      } satisfies SiteCreatedEvent);
     });
 
     it("Can create a new friche with complete data", async () => {
@@ -252,7 +266,7 @@ describe("CreateNewSite Use Case", () => {
 
       const savedSites = siteRepository._getSites();
 
-      expect(savedSites).toEqual<SiteEntity[]>([
+      assert.deepStrictEqual(savedSites, [
         {
           ...buildFriche(fricheProps),
           createdAt: fakeNow,
@@ -260,19 +274,22 @@ describe("CreateNewSite Use Case", () => {
           creationMode: "custom",
           status: "active",
         },
-      ]);
+      ] satisfies SiteEntity[]);
 
       // oxlint-disable-next-line no-non-null-assertion
       const siteId = savedSites[0]!.id;
-      expect(eventPublisher.events).toHaveLength(1);
-      expect(eventPublisher.events[0]).toEqual<SiteCreatedEvent>({
-        id: expect.any(String),
+      assert.strictEqual(eventPublisher.events.length, 1);
+      // oxlint-disable-next-line no-non-null-assertion
+      assert.ok(typeof eventPublisher.events[0]!.id === "string");
+      assert.deepStrictEqual(eventPublisher.events[0], {
+        // oxlint-disable-next-line no-non-null-assertion
+        id: eventPublisher.events[0]!.id,
         name: SITE_CREATED,
         payload: {
           siteId,
           createdBy: "user-id-123",
         },
-      });
+      } satisfies SiteCreatedEvent);
     });
   });
 
@@ -295,7 +312,7 @@ describe("CreateNewSite Use Case", () => {
 
       const savedSites = siteRepository._getSites();
 
-      expect(savedSites).toEqual<SiteEntity[]>([
+      assert.deepStrictEqual(savedSites, [
         {
           ...buildUrbanZoneSite(urbanZoneProps),
           createdAt: fakeNow,
@@ -303,19 +320,22 @@ describe("CreateNewSite Use Case", () => {
           creationMode: "custom",
           status: "active",
         },
-      ]);
+      ] satisfies SiteEntity[]);
 
       // oxlint-disable-next-line no-non-null-assertion
       const siteId = savedSites[0]!.id;
-      expect(eventPublisher.events).toHaveLength(1);
-      expect(eventPublisher.events[0]).toEqual<SiteCreatedEvent>({
-        id: expect.any(String),
+      assert.strictEqual(eventPublisher.events.length, 1);
+      // oxlint-disable-next-line no-non-null-assertion
+      assert.ok(typeof eventPublisher.events[0]!.id === "string");
+      assert.deepStrictEqual(eventPublisher.events[0], {
+        // oxlint-disable-next-line no-non-null-assertion
+        id: eventPublisher.events[0]!.id,
         name: SITE_CREATED,
         payload: {
           siteId,
           createdBy: "user-id-123",
         },
-      });
+      } satisfies SiteCreatedEvent);
     });
 
     it("Cannot create an urban zone site with invalid props", async () => {
@@ -333,11 +353,12 @@ describe("CreateNewSite Use Case", () => {
         createdBy: "user-123",
       });
 
-      expect(result.isFailure()).toBe(true);
-      expect((result as FailureResult<"ValidationError", unknown>).getError()).toBe(
+      assert.strictEqual(result.isFailure(), true);
+      assert.strictEqual(
+        (result as FailureResult<"ValidationError", unknown>).getError(),
         "ValidationError",
       );
-      expect(eventPublisher.events).toHaveLength(0);
+      assert.strictEqual(eventPublisher.events.length, 0);
     });
   });
 });

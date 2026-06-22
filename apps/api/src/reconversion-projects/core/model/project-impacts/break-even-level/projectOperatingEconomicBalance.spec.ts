@@ -1,14 +1,15 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import assert from "node:assert/strict";
+import { describe, it, beforeEach, mock } from "node:test";
 
 import type { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import { getProjectOperatingEconomicBalance } from "./projectOperatingEconomicBalance";
 
 describe("getProjectOperatingEconomicBalance", () => {
-  let getWeightedYearlyValuesSpy: ReturnType<typeof vi.fn>;
+  let getWeightedYearlyValuesSpy: ReturnType<typeof mock.fn>;
   let mockService: SumOnEvolutionPeriodService;
 
   beforeEach(() => {
-    getWeightedYearlyValuesSpy = vi.fn((value: number) => [value, value, value]);
+    getWeightedYearlyValuesSpy = mock.fn((value: number) => [value, value, value]);
     mockService = {
       getWeightedYearlyValues: getWeightedYearlyValuesSpy,
     } as unknown as SumOnEvolutionPeriodService;
@@ -21,7 +22,7 @@ describe("getProjectOperatingEconomicBalance", () => {
         yearlyProjectedCosts: [],
         sumOnEvolutionPeriodService: mockService,
       });
-      expect(result).toHaveLength(0);
+      assert.strictEqual(result.length, 0);
     });
   });
 
@@ -36,11 +37,11 @@ describe("getProjectOperatingEconomicBalance", () => {
         sumOnEvolutionPeriodService: mockService,
       });
 
-      expect(result).toHaveLength(2);
-      expect(result[0]?.details).toBe("maintenance");
-      expect(result[1]?.details).toBe("taxes");
-      expect(result[0]?.total).toBe(-1_500);
-      expect(result[1]?.total).toBe(-600);
+      assert.strictEqual(result.length, 2);
+      assert.strictEqual(result[0]?.details, "maintenance");
+      assert.strictEqual(result[1]?.details, "taxes");
+      assert.strictEqual(result[0]?.total, -1_500);
+      assert.strictEqual(result[1]?.total, -600);
     });
 
     it("computes cumulativeByYear array", () => {
@@ -49,8 +50,8 @@ describe("getProjectOperatingEconomicBalance", () => {
         yearlyProjectedCosts: [{ amount: 100, purpose: "taxes" }],
         sumOnEvolutionPeriodService: mockService,
       });
-      expect(result[0]?.detailsByYear).toEqual([-100, -100, -100]);
-      expect(result[0]?.cumulativeByYear).toEqual([-100, -200, -300]);
+      assert.deepStrictEqual(result[0]?.detailsByYear, [-100, -100, -100]);
+      assert.deepStrictEqual(result[0]?.cumulativeByYear, [-100, -200, -300]);
     });
   });
 
@@ -65,9 +66,9 @@ describe("getProjectOperatingEconomicBalance", () => {
         sumOnEvolutionPeriodService: mockService,
       });
 
-      expect(result).toHaveLength(2);
-      expect(result[0]?.details).toBe("operations");
-      expect(result[1]?.details).toBe("other");
+      assert.strictEqual(result.length, 2);
+      assert.strictEqual(result[0]?.details, "operations");
+      assert.strictEqual(result[1]?.details, "other");
     });
 
     it("computes cumulativeByYear array", () => {
@@ -77,8 +78,8 @@ describe("getProjectOperatingEconomicBalance", () => {
         sumOnEvolutionPeriodService: mockService,
       });
 
-      expect(result[0]?.detailsByYear).toEqual([100, 100, 100]);
-      expect(result[0]?.cumulativeByYear).toEqual([100, 200, 300]);
+      assert.deepStrictEqual(result[0]?.detailsByYear, [100, 100, 100]);
+      assert.deepStrictEqual(result[0]?.cumulativeByYear, [100, 200, 300]);
     });
   });
 
@@ -96,11 +97,11 @@ describe("getProjectOperatingEconomicBalance", () => {
         sumOnEvolutionPeriodService: mockService,
       });
 
-      expect(result).toHaveLength(4);
-      expect(result[0]?.details).toBe("maintenance");
-      expect(result[1]?.details).toBe("taxes");
-      expect(result[0]?.total).toBe(-1_500);
-      expect(result[1]?.total).toBe(-600);
+      assert.strictEqual(result.length, 4);
+      assert.strictEqual(result[0]?.details, "maintenance");
+      assert.strictEqual(result[1]?.details, "taxes");
+      assert.strictEqual(result[0]?.total, -1_500);
+      assert.strictEqual(result[1]?.total, -600);
     });
 
     it("computes cumulativeByYear array", () => {
@@ -109,9 +110,10 @@ describe("getProjectOperatingEconomicBalance", () => {
         yearlyProjectedCosts: [{ amount: 100, purpose: "taxes" }],
         sumOnEvolutionPeriodService: mockService,
       });
-      expect(result[0]?.detailsByYear).toEqual([-100, -100, -100]);
-      expect(result[0]?.cumulativeByYear).toEqual([-100, -200, -300]);
+      assert.deepStrictEqual(result[0]?.detailsByYear, [-100, -100, -100]);
+      assert.deepStrictEqual(result[0]?.cumulativeByYear, [-100, -200, -300]);
     });
+
     it("calls sumOnEvolutionPeriodService with 'discount' factor", () => {
       getProjectOperatingEconomicBalance({
         yearlyProjectedRevenues: [{ amount: 100, source: "rent" }],
@@ -119,8 +121,9 @@ describe("getProjectOperatingEconomicBalance", () => {
         sumOnEvolutionPeriodService: mockService,
       });
 
-      getWeightedYearlyValuesSpy.mock.calls.forEach(([_value, weights]) => {
-        expect(weights).toEqual(["discount"]);
+      getWeightedYearlyValuesSpy.mock.calls.forEach((call) => {
+        const [_value, weights] = call.arguments as [number, string[]];
+        assert.deepStrictEqual(weights, ["discount"]);
       });
     });
   });

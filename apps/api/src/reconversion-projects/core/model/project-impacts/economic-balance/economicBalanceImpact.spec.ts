@@ -1,3 +1,5 @@
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
 import { EconomicBalanceImpactResult } from "shared";
 
 import { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
@@ -26,10 +28,10 @@ describe("EconomicBalance impact", () => {
         }),
       );
 
-      expect(result.total).toEqual(0);
+      assert.deepStrictEqual(result.total, 0);
 
-      expect(result.costs.total).toEqual(0);
-      expect(result.revenues.total).toEqual(0);
+      assert.deepStrictEqual(result.costs.total, 0);
+      assert.deepStrictEqual(result.revenues.total, 0);
     });
     it("should return all costs and revenues in balance if developer is new site owner and reinstatement cost owner", () => {
       const result = computeEconomicBalanceImpact(
@@ -60,9 +62,10 @@ describe("EconomicBalance impact", () => {
           operationsFirstYear: 2025,
         }),
       );
-      expect(result.total).toEqual(50000 - (49999 + 95000 + 100000));
-      expect(result.costs).toEqual({
+      assert.deepStrictEqual(result.total, 50000 - (49999 + 95000 + 100000));
+      assert.deepStrictEqual(result.costs, {
         total: 49999 + 95000 + 100000,
+        buildingsConstructionAndRehabilitation: undefined,
         siteReinstatement: {
           total: 49999,
           costs: [
@@ -84,7 +87,7 @@ describe("EconomicBalance impact", () => {
         sitePurchase: 100000,
       });
 
-      expect(result.revenues).toEqual({
+      assert.deepStrictEqual(result.revenues, {
         total: 50000,
         buildingsResale: undefined,
         siteResale: undefined,
@@ -131,9 +134,10 @@ describe("EconomicBalance impact", () => {
         }),
       );
 
-      expect(result.total).toEqual(50000 - (49999 + 95000 + 100000));
-      expect(result.costs).toEqual({
+      assert.deepStrictEqual(result.total, 50000 - (49999 + 95000 + 100000));
+      assert.deepStrictEqual(result.costs, {
         total: 49999 + 95000 + 100000,
+        buildingsConstructionAndRehabilitation: undefined,
         siteReinstatement: {
           total: 49999,
           costs: [
@@ -155,8 +159,10 @@ describe("EconomicBalance impact", () => {
         },
       });
 
-      expect(result.revenues).toEqual({
+      assert.deepStrictEqual(result.revenues, {
         total: 50000,
+        buildingsResale: undefined,
+        siteResale: undefined,
         financialAssistance: {
           total: 50000,
           revenues: [
@@ -201,9 +207,11 @@ describe("EconomicBalance impact", () => {
         }),
       );
 
-      expect(result.total).toEqual(50000 - (49999 + 95000));
-      expect(result.costs).toEqual({
+      assert.deepStrictEqual(result.total, 50000 - (49999 + 95000));
+      assert.deepStrictEqual(result.costs, {
         total: 49999 + 95000,
+        buildingsConstructionAndRehabilitation: undefined,
+        sitePurchase: undefined,
         siteReinstatement: {
           total: 49999,
           costs: [
@@ -224,8 +232,10 @@ describe("EconomicBalance impact", () => {
         },
       });
 
-      expect(result.revenues).toEqual({
+      assert.deepStrictEqual(result.revenues, {
         total: 50000,
+        buildingsResale: undefined,
+        siteResale: undefined,
         operationsRevenues: {
           total: 0,
           revenues: [],
@@ -270,9 +280,12 @@ describe("EconomicBalance impact", () => {
         }),
       );
 
-      expect(result.total).toEqual(-95000);
-      expect(result.costs).toEqual({
+      assert.deepStrictEqual(result.total, -95000);
+      assert.deepStrictEqual(result.costs, {
         total: 95000,
+        buildingsConstructionAndRehabilitation: undefined,
+        siteReinstatement: undefined,
+        sitePurchase: undefined,
         operationsCosts: {
           total: 0,
           costs: [],
@@ -286,8 +299,11 @@ describe("EconomicBalance impact", () => {
         },
       });
 
-      expect(result.revenues).toEqual({
+      assert.deepStrictEqual(result.revenues, {
         total: 0,
+        buildingsResale: undefined,
+        siteResale: undefined,
+        financialAssistance: undefined,
         operationsRevenues: {
           total: 0,
           revenues: [],
@@ -327,16 +343,17 @@ describe("EconomicBalance impact", () => {
         }),
       );
 
-      expect(
+      assert.deepStrictEqual(
         (result.revenues.operationsRevenues?.total ?? 0) -
           (result.costs.operationsCosts?.total ?? 0),
-      ).toEqual(0);
-      expect(result.costs.operationsCosts).toEqual({
+        0,
+      );
+      assert.deepStrictEqual(result.costs.operationsCosts, {
         total: 0,
         costs: [],
       });
 
-      expect(result.revenues.operationsRevenues).toEqual({
+      assert.deepStrictEqual(result.revenues.operationsRevenues, {
         total: 0,
         revenues: [],
       });
@@ -378,11 +395,12 @@ describe("EconomicBalance impact", () => {
         }),
       );
 
-      expect(
+      assert.deepStrictEqual(
         (result.revenues.operationsRevenues?.total ?? 0) -
           (result.costs.operationsCosts?.total ?? 0),
-      ).toEqual(-37623);
-      expect(result.costs.operationsCosts).toEqual({
+        -37623,
+      );
+      assert.deepStrictEqual(result.costs.operationsCosts, {
         total: 50026,
         costs: [
           { amount: 49613, purpose: "taxes" },
@@ -390,7 +408,7 @@ describe("EconomicBalance impact", () => {
         ],
       });
 
-      expect(result.revenues.operationsRevenues).toEqual({
+      assert.deepStrictEqual(result.revenues.operationsRevenues, {
         total: 12403,
         revenues: [
           { amount: 8269, source: "rent" },
@@ -430,11 +448,12 @@ describe("EconomicBalance impact", () => {
         }),
       );
 
-      expect(
+      assert.deepStrictEqual(
         (resultWithNoRevenues.revenues.operationsRevenues?.total ?? 0) -
           (resultWithNoRevenues.costs.operationsCosts?.total ?? 0),
-      ).toEqual(-102982);
-      expect(resultWithNoRevenues.costs.operationsCosts).toEqual({
+        -102982,
+      );
+      assert.deepStrictEqual(resultWithNoRevenues.costs.operationsCosts, {
         total: 102982,
         costs: [
           { amount: 102131, purpose: "taxes" },
@@ -442,7 +461,7 @@ describe("EconomicBalance impact", () => {
         ],
       });
 
-      expect(resultWithNoRevenues.revenues.operationsRevenues).toEqual({
+      assert.deepStrictEqual(resultWithNoRevenues.revenues.operationsRevenues, {
         total: 0,
         revenues: [],
       });
@@ -451,7 +470,7 @@ describe("EconomicBalance impact", () => {
 
   describe("computeEconomicBalanceImpact", () => {
     it("should sum installation result and operation result if projectDeveloper is futureOperator", () => {
-      expect(
+      assert.deepStrictEqual(
         computeEconomicBalanceImpact(
           {
             developmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
@@ -479,35 +498,40 @@ describe("EconomicBalance impact", () => {
             operationsFirstYear: 2025,
           }),
         ),
-      ).toEqual<EconomicBalanceImpactResult>({
-        total: 254000,
-        bearer: "Mairie de Blajan",
-        costs: {
-          total: 95000,
-          operationsCosts: {
-            total: 0,
-            costs: [],
-          },
-          developmentPlanInstallation: {
+        {
+          total: 254000,
+          bearer: "Mairie de Blajan",
+          costs: {
             total: 95000,
-            costs: [
-              { amount: 50000, purpose: "installation_works" },
-              { amount: 45000, purpose: "technical_studies" },
-            ],
+            buildingsConstructionAndRehabilitation: undefined,
+            siteReinstatement: undefined,
+            sitePurchase: undefined,
+            operationsCosts: {
+              total: 0,
+              costs: [],
+            },
+            developmentPlanInstallation: {
+              total: 95000,
+              costs: [
+                { amount: 50000, purpose: "installation_works" },
+                { amount: 45000, purpose: "technical_studies" },
+              ],
+            },
           },
-        },
-        revenues: {
-          total: 349000,
-          siteResale: 150000,
-          buildingsResale: 199000,
-          operationsRevenues: {
-            total: 0,
-            revenues: [],
+          revenues: {
+            total: 349000,
+            siteResale: 150000,
+            buildingsResale: 199000,
+            financialAssistance: undefined,
+            operationsRevenues: {
+              total: 0,
+              revenues: [],
+            },
           },
-        },
-      });
+        } satisfies EconomicBalanceImpactResult,
+      );
 
-      expect<EconomicBalanceImpactResult>(
+      assert.deepStrictEqual(
         computeEconomicBalanceImpact(
           {
             developmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
@@ -545,52 +569,56 @@ describe("EconomicBalance impact", () => {
             operationsFirstYear: 2025,
           }),
         ),
-      ).toEqual({
-        total: 403899 - (822394 + 49999 + 150000),
-        bearer: "Mairie de Blajan",
-        costs: {
-          total: 822394 + 49999 + 150000,
-          operationsCosts: {
-            total: 822394,
-            costs: [
-              { amount: 815598, purpose: "taxes" },
-              { amount: 6797, purpose: "maintenance" },
-            ],
+        {
+          total: 403899 - (822394 + 49999 + 150000),
+          bearer: "Mairie de Blajan",
+          costs: {
+            total: 822394 + 49999 + 150000,
+            buildingsConstructionAndRehabilitation: undefined,
+            sitePurchase: undefined,
+            operationsCosts: {
+              total: 822394,
+              costs: [
+                { amount: 815598, purpose: "taxes" },
+                { amount: 6797, purpose: "maintenance" },
+              ],
+            },
+            siteReinstatement: {
+              total: 49999,
+              costs: [
+                { amount: 10000, purpose: "waste_collection" },
+                { amount: 39999, purpose: "deimpermeabilization" },
+              ],
+            },
+            developmentPlanInstallation: {
+              total: 150000,
+              costs: [
+                { amount: 50000, purpose: "installation_works" },
+                { amount: 100000, purpose: "technical_studies" },
+              ],
+            },
           },
-          siteReinstatement: {
-            total: 49999,
-            costs: [
-              { amount: 10000, purpose: "waste_collection" },
-              { amount: 39999, purpose: "deimpermeabilization" },
-            ],
-          },
-          developmentPlanInstallation: {
-            total: 150000,
-            costs: [
-              { amount: 50000, purpose: "installation_works" },
-              { amount: 100000, purpose: "technical_studies" },
-            ],
+          revenues: {
+            total: 403899,
+            siteResale: 150000,
+            buildingsResale: undefined,
+            operationsRevenues: {
+              total: 203899,
+              revenues: [
+                { amount: 135933, source: "rent" },
+                { amount: 67966, source: "other" },
+              ],
+            },
+            financialAssistance: {
+              total: 50000,
+              revenues: [
+                { amount: 45000, source: "public_subsidies" },
+                { amount: 5000, source: "other" },
+              ],
+            },
           },
         },
-        revenues: {
-          total: 403899,
-          siteResale: 150000,
-          operationsRevenues: {
-            total: 203899,
-            revenues: [
-              { amount: 135933, source: "rent" },
-              { amount: 67966, source: "other" },
-            ],
-          },
-          financialAssistance: {
-            total: 50000,
-            revenues: [
-              { amount: 45000, source: "public_subsidies" },
-              { amount: 5000, source: "other" },
-            ],
-          },
-        },
-      });
+      );
     });
 
     it("should expose buildings construction and rehabilitation costs as a dedicated cost group for urban projects", () => {
@@ -619,7 +647,7 @@ describe("EconomicBalance impact", () => {
         }),
       );
 
-      expect(result.costs.buildingsConstructionAndRehabilitation).toEqual({
+      assert.deepStrictEqual(result.costs.buildingsConstructionAndRehabilitation, {
         total: 365000,
         costs: [
           { amount: 30000, purpose: "technical_studies_and_fees" },
@@ -628,12 +656,12 @@ describe("EconomicBalance impact", () => {
           { amount: 5000, purpose: "other_construction_expenses" },
         ],
       });
-      expect(result.costs.total).toEqual(50000 + 365000 + 100000);
-      expect(result.total).toEqual(-(50000 + 365000 + 100000));
+      assert.deepStrictEqual(result.costs.total, 50000 + 365000 + 100000);
+      assert.deepStrictEqual(result.total, -(50000 + 365000 + 100000));
     });
 
     it("should sum installation and reinstatement result only if projectDeveloper is not futureOperator", () => {
-      expect(
+      assert.deepStrictEqual(
         computeEconomicBalanceImpact(
           {
             developmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
@@ -658,25 +686,32 @@ describe("EconomicBalance impact", () => {
             operationsFirstYear: 2025,
           }),
         ),
-      ).toEqual({
-        total: -150000,
-        bearer: "Mairie de Blajan",
-        costs: {
-          total: 150000,
-          developmentPlanInstallation: {
+        {
+          total: -150000,
+          bearer: "Mairie de Blajan",
+          costs: {
             total: 150000,
-            costs: [
-              { amount: 50000, purpose: "installation_works" },
-              { amount: 100000, purpose: "technical_studies" },
-            ],
+            buildingsConstructionAndRehabilitation: undefined,
+            siteReinstatement: undefined,
+            sitePurchase: undefined,
+            developmentPlanInstallation: {
+              total: 150000,
+              costs: [
+                { amount: 50000, purpose: "installation_works" },
+                { amount: 100000, purpose: "technical_studies" },
+              ],
+            },
+          },
+          revenues: {
+            total: 0,
+            buildingsResale: undefined,
+            siteResale: undefined,
+            financialAssistance: undefined,
           },
         },
-        revenues: {
-          total: 0,
-        },
-      });
+      );
 
-      expect(
+      assert.deepStrictEqual(
         computeEconomicBalanceImpact(
           {
             developmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
@@ -712,37 +747,42 @@ describe("EconomicBalance impact", () => {
             operationsFirstYear: 2025,
           }),
         ),
-      ).toEqual({
-        total: 50000 - (49999 + 95000),
-        bearer: "Mairie de Blajan",
-        costs: {
-          total: 49999 + 95000,
-          siteReinstatement: {
-            total: 49999,
-            costs: [
-              { amount: 10000, purpose: "waste_collection" },
-              { amount: 39999, purpose: "deimpermeabilization" },
-            ],
+        {
+          total: 50000 - (49999 + 95000),
+          bearer: "Mairie de Blajan",
+          costs: {
+            total: 49999 + 95000,
+            buildingsConstructionAndRehabilitation: undefined,
+            sitePurchase: undefined,
+            siteReinstatement: {
+              total: 49999,
+              costs: [
+                { amount: 10000, purpose: "waste_collection" },
+                { amount: 39999, purpose: "deimpermeabilization" },
+              ],
+            },
+            developmentPlanInstallation: {
+              total: 95000,
+              costs: [
+                { amount: 50000, purpose: "installation_works" },
+                { amount: 45000, purpose: "technical_studies" },
+              ],
+            },
           },
-          developmentPlanInstallation: {
-            total: 95000,
-            costs: [
-              { amount: 50000, purpose: "installation_works" },
-              { amount: 45000, purpose: "technical_studies" },
-            ],
-          },
-        },
-        revenues: {
-          total: 50000,
-          financialAssistance: {
+          revenues: {
             total: 50000,
-            revenues: [
-              { amount: 45000, source: "public_subsidies" },
-              { amount: 5000, source: "other" },
-            ],
+            buildingsResale: undefined,
+            siteResale: undefined,
+            financialAssistance: {
+              total: 50000,
+              revenues: [
+                { amount: 45000, source: "public_subsidies" },
+                { amount: 5000, source: "other" },
+              ],
+            },
           },
         },
-      });
+      );
     });
   });
 });

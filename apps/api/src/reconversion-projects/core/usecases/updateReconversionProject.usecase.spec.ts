@@ -1,3 +1,6 @@
+import assert from "node:assert/strict";
+import { describe, it, beforeEach } from "node:test";
+
 import { InMemoryReconversionProjectRepository } from "src/reconversion-projects/adapters/secondary/repositories/reconversion-project/InMemoryReconversionProjectRepository";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
@@ -18,7 +21,7 @@ const baseUpdateReconversionProjectProps = {
     costs: [{ amount: 130000, purpose: "installation_works" }],
     developer: {
       structureType: "company",
-      name: "Terre cuite d’occitanie",
+      name: "Terre cuite d'occitanie",
     },
     features: {
       surfaceArea: 1200,
@@ -67,41 +70,43 @@ describe("UpdateReconversionProject Use Case", () => {
 
   describe("Error cases", () => {
     describe("Mandatory input data", () => {
-      it.each([
+      for (const mandatoryField of [
         "name",
         "developmentPlan",
         "soilsDistribution",
         "yearlyProjectedCosts",
         "yearlyProjectedRevenues",
         "projectPhase",
-      ])("Cannot update a reconversion project without providing %s", async (mandatoryField) => {
-        const reconversionProject = new UrbanProjectBuilder().build();
-        reconversionProjectRepository._setReconversionProjects([reconversionProject]);
+      ]) {
+        it(`Cannot update a reconversion project without providing ${mandatoryField}`, async () => {
+          const reconversionProject = new UrbanProjectBuilder().build();
+          reconversionProjectRepository._setReconversionProjects([reconversionProject]);
 
-        const reconversionProjectProps = { ...baseUpdateReconversionProjectProps }; // @ts-expect-error dynamic delete
-        // oxlint-disable-next-line typescript/no-dynamic-delete
-        delete reconversionProjectProps[mandatoryField];
+          const reconversionProjectProps = { ...baseUpdateReconversionProjectProps }; // @ts-expect-error dynamic delete
+          // oxlint-disable-next-line typescript/no-dynamic-delete
+          delete reconversionProjectProps[mandatoryField];
 
-        const usecase = new UpdateReconversionProjectUseCase(
-          dateProvider,
-          reconversionProjectRepository,
-        );
+          const usecase = new UpdateReconversionProjectUseCase(
+            dateProvider,
+            reconversionProjectRepository,
+          );
 
-        const result = await usecase.execute({
-          reconversionProjectId: reconversionProject.id,
-          reconversionProjectProps,
-          userId: reconversionProject.createdBy,
+          const result = await usecase.execute({
+            reconversionProjectId: reconversionProject.id,
+            reconversionProjectProps,
+            userId: reconversionProject.createdBy,
+          });
+          assert.strictEqual(result.isFailure(), true);
+          const failureResult = result as FailureResult<
+            "ValidationError",
+            { fieldErrors: Record<string, string[]> }
+          >;
+          assert.strictEqual(failureResult.getError(), "ValidationError");
+          const issues = failureResult.getIssues();
+          assert.ok(issues !== undefined);
+          assert.ok(issues?.fieldErrors !== undefined);
         });
-        expect(result.isFailure()).toBe(true);
-        const failureResult = result as FailureResult<
-          "ValidationError",
-          { fieldErrors: Record<string, string[]> }
-        >;
-        expect(failureResult.getError()).toBe("ValidationError");
-        const issues = failureResult.getIssues();
-        expect(issues).toBeDefined();
-        expect(issues?.fieldErrors).toBeDefined();
-      });
+      }
     });
 
     it("Cannot update a non-existing reconversion project", async () => {
@@ -116,9 +121,9 @@ describe("UpdateReconversionProject Use Case", () => {
         reconversionProjectProps,
         userId: reconversionProjectProps.createdBy,
       });
-      expect(result.isFailure()).toBe(true);
+      assert.strictEqual(result.isFailure(), true);
       const failureResult = result as FailureResult<"ReconversionProjectNotFound">;
-      expect(failureResult.getError()).toBe("ReconversionProjectNotFound");
+      assert.strictEqual(failureResult.getError(), "ReconversionProjectNotFound");
     });
 
     it("Cannot update a reconversion project not created by user", async () => {
@@ -136,9 +141,9 @@ describe("UpdateReconversionProject Use Case", () => {
         reconversionProjectProps,
         userId: "wrong user",
       });
-      expect(result.isFailure()).toBe(true);
+      assert.strictEqual(result.isFailure(), true);
       const failureResult = result as FailureResult<"UserNotAuthorized">;
-      expect(failureResult.getError()).toBe("UserNotAuthorized");
+      assert.strictEqual(failureResult.getError(), "UserNotAuthorized");
     });
   });
 
@@ -170,12 +175,12 @@ describe("UpdateReconversionProject Use Case", () => {
           userId: reconversionProject.createdBy,
         });
 
-        expect(result.isSuccess()).toBe(true);
+        assert.strictEqual(result.isSuccess(), true);
         const updatedReconversionProject = await reconversionProjectRepository.getById(
           reconversionProject.id,
         );
 
-        expect(updatedReconversionProject).toEqual({
+        assert.deepStrictEqual(updatedReconversionProject, {
           ...reconversionProject,
           updatedAt: fakeNow,
           name: "UpdatedName",

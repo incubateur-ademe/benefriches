@@ -1,4 +1,5 @@
-import { vi } from "vitest";
+import assert from "node:assert/strict";
+import { describe, it, mock } from "node:test";
 
 import { SilentLogger } from "src/shared-kernel/adapters/logger/SilentLogger";
 import { FailureResult, SuccessResult } from "src/shared-kernel/result";
@@ -21,8 +22,8 @@ describe("GetUserSiteEvaluationsUseCase", () => {
 
     // @ts-expect-error userId is required
     const result = await usecase.execute({ userId: undefined });
-    expect(result.isFailure()).toBe(true);
-    expect((result as FailureResult<"UserIdRequired">).getError()).toBe("UserIdRequired");
+    assert.strictEqual(result.isFailure(), true);
+    assert.strictEqual((result as FailureResult<"UserIdRequired">).getError(), "UserIdRequired");
   });
 
   it("gets list of user sites with last projects and compatibility evaluation", async () => {
@@ -67,8 +68,8 @@ describe("GetUserSiteEvaluationsUseCase", () => {
     const mutabilityQuery = new InMemoryMutabilityEvaluationQuery();
     mutabilityQuery.withDefaultDataForId("24ffc957-6a91-4309-b176-3699d70f1bf3");
 
-    vi.spyOn(evalutionQuery, "getUserSiteEvaluations");
-    vi.spyOn(mutabilityQuery, "getEvaluation");
+    const evaluationSpy = mock.method(evalutionQuery, "getUserSiteEvaluations");
+    const mutabilitySpy = mock.method(mutabilityQuery, "getEvaluation");
 
     const usecase = new GetUserSiteEvaluationsUseCase(
       evalutionQuery,
@@ -76,8 +77,8 @@ describe("GetUserSiteEvaluationsUseCase", () => {
       new SilentLogger(),
     );
     const result = await usecase.execute({ userId });
-    expect(result.isSuccess()).toBe(true);
-    expect((result as SuccessResult<UserSiteEvaluation[]>).getData()).toEqual([
+    assert.strictEqual(result.isSuccess(), true);
+    assert.deepStrictEqual((result as SuccessResult<UserSiteEvaluation[]>).getData(), [
       siteEvaluations[0],
       {
         ...siteEvaluations[1],
@@ -103,11 +104,10 @@ describe("GetUserSiteEvaluationsUseCase", () => {
         },
       },
     ]);
-    /* oxlint-disable-next-line typescript/unbound-method */
-    expect(evalutionQuery.getUserSiteEvaluations).toHaveBeenCalledWith(userId);
-    /* oxlint-disable-next-line typescript/unbound-method */
-    expect(mutabilityQuery.getEvaluation).toHaveBeenCalledExactlyOnceWith(
+    assert.deepStrictEqual(evaluationSpy.mock.calls[0]?.arguments, [userId]);
+    assert.strictEqual(mutabilitySpy.mock.callCount(), 1);
+    assert.deepStrictEqual(mutabilitySpy.mock.calls[0]?.arguments, [
       "24ffc957-6a91-4309-b176-3699d70f1bf3",
-    );
+    ]);
   });
 });

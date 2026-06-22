@@ -1,3 +1,5 @@
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
 import { createSoilSurfaceAreaDistribution } from "shared";
 
 import {
@@ -42,9 +44,9 @@ describe("Site core logic", () => {
         // @ts-expect-error wrong friche activity
         fricheActivity: "incorrect",
       }) as FricheErrorResult;
-      expect(result.success).toBe(false);
-      expect(result.error.fieldErrors.fricheActivity).toHaveLength(1);
-      expect(result.error.fieldErrors.fricheActivity?.[0]).toContain("Invalid option");
+      assert.strictEqual(result.success, false);
+      assert.strictEqual(result.error.fieldErrors.fricheActivity?.length, 1);
+      assert.ok(result.error.fieldErrors.fricheActivity?.[0]?.includes("Invalid option"));
     });
 
     it("cannot create a friche with empty soils distribution", () => {
@@ -52,18 +54,21 @@ describe("Site core logic", () => {
         ...minimalProps,
         soilsDistribution: {},
       });
-      expect(result.success).toBe(false);
+      assert.strictEqual(result.success, false);
+      // oxlint-disable-next-line typescript/no-unnecessary-type-assertion
       const errorResult = result as FricheErrorResult;
-      expect(errorResult.error.fieldErrors.soilsDistribution).toHaveLength(1);
-      expect(errorResult.error.fieldErrors.soilsDistribution?.[0]).toContain(
-        "Total surface area must be greater than 0",
+      assert.strictEqual(errorResult.error.fieldErrors.soilsDistribution?.length, 1);
+      assert.ok(
+        errorResult.error.fieldErrors.soilsDistribution?.[0]?.includes(
+          "Total surface area must be greater than 0",
+        ),
       );
     });
 
     it("will assign 'OTHER' activity when none provided", () => {
       const result = createFriche(minimalProps) as FricheSuccessResult;
-      expect(result.success).toBe(true);
-      expect(result.site.fricheActivity).toBe("OTHER");
+      assert.strictEqual(result.success, true);
+      assert.strictEqual(result.site.fricheActivity, "OTHER");
     });
 
     it("should set surface area from soils distribution", () => {
@@ -72,14 +77,17 @@ describe("Site core logic", () => {
         ARTIFICIAL_TREE_FILLED: 10000,
       };
       const result = createFriche({ ...minimalProps, soilsDistribution }) as FricheSuccessResult;
-      expect(result.success).toBe(true);
-      expect(result.site.surfaceArea).toBe(11200);
+      assert.strictEqual(result.success, true);
+      assert.strictEqual(result.site.surfaceArea, 11200);
     });
 
     it("should set default owner when none provided", () => {
       const result = createFriche({ ...minimalProps, owner: undefined }) as FricheSuccessResult;
-      expect(result.success).toBe(true);
-      expect(result.site.owner).toEqual({ name: "Propriétaire inconnu", structureType: "unknown" });
+      assert.strictEqual(result.success, true);
+      assert.deepStrictEqual(result.site.owner, {
+        name: "Propriétaire inconnu",
+        structureType: "unknown",
+      });
     });
 
     it("should set hasContaminatedSoils to false when no contaminated soil surface", () => {
@@ -87,8 +95,8 @@ describe("Site core logic", () => {
         ...minimalProps,
         contaminatedSoilSurface: undefined,
       }) as FricheSuccessResult;
-      expect(result.success).toBe(true);
-      expect(result.site.hasContaminatedSoils).toBe(false);
+      assert.strictEqual(result.success, true);
+      assert.strictEqual(result.site.hasContaminatedSoils, false);
     });
 
     it("should set hasContaminatedSoils to true when no contaminated soil surface", () => {
@@ -96,15 +104,15 @@ describe("Site core logic", () => {
         ...minimalProps,
         contaminatedSoilSurface: 1200,
       }) as FricheSuccessResult;
-      expect(result.success).toBe(true);
-      expect(result.site.hasContaminatedSoils).toBe(true);
+      assert.strictEqual(result.success, true);
+      assert.strictEqual(result.site.hasContaminatedSoils, true);
     });
 
     it("cannot create friche with non-uuid id", () => {
       const result = createFriche({ ...minimalProps, id: "not-a-uuid" }) as FricheErrorResult;
-      expect(result.success).toBe(false);
-      expect(result.error.fieldErrors.id).toHaveLength(1);
-      expect(result.error.fieldErrors.id?.[0]).toContain("Invalid UUID");
+      assert.strictEqual(result.success, false);
+      assert.strictEqual(result.error.fieldErrors.id?.length, 1);
+      assert.ok(result.error.fieldErrors.id?.[0]?.includes("Invalid UUID"));
     });
 
     it("cannot create friche with negative expenses amount", () => {
@@ -112,15 +120,17 @@ describe("Site core logic", () => {
         ...minimalProps,
         yearlyExpenses: [{ purpose: "maintenance", bearer: "owner", amount: -1 }],
       }) as FricheErrorResult;
-      expect(result.success).toBe(false);
-      expect(result.error.fieldErrors.yearlyExpenses).toHaveLength(1);
-      expect(result.error.fieldErrors.yearlyExpenses?.[0]).toContain("expected number to be >=0");
+      assert.strictEqual(result.success, false);
+      assert.strictEqual(result.error.fieldErrors.yearlyExpenses?.length, 1);
+      assert.ok(
+        result.error.fieldErrors.yearlyExpenses?.[0]?.includes("expected number to be >=0"),
+      );
     });
 
     it("set empty yearly incomes", () => {
       const result = createFriche(minimalProps) as FricheSuccessResult;
-      expect(result.success).toBe(true);
-      expect(result.site.yearlyIncomes).toEqual([]);
+      assert.strictEqual(result.success, true);
+      assert.deepStrictEqual(result.site.yearlyIncomes, []);
     });
 
     it("creates friche with complete data", () => {
@@ -155,8 +165,8 @@ describe("Site core logic", () => {
         },
       };
       const result = createFriche(completeFricheData) as FricheSuccessResult;
-      expect(result.success).toBe(true);
-      expect(result.site).toEqual<Friche>({
+      assert.strictEqual(result.success, true);
+      assert.deepStrictEqual(result.site satisfies Friche, {
         name: "My friche",
         nature: "FRICHE",
         description: "Description of the site",
@@ -231,8 +241,8 @@ describe("Site core logic", () => {
         ...minimalProps,
         soilsDistribution,
       }) as AgriculturalOperationSuccessResult;
-      expect(result.success).toBe(true);
-      expect(result.site.surfaceArea).toBe(11200);
+      assert.strictEqual(result.success, true);
+      assert.strictEqual(result.site.surfaceArea, 11200);
     });
 
     it("should set default owner when none provided", () => {
@@ -240,8 +250,11 @@ describe("Site core logic", () => {
         ...minimalProps,
         owner: undefined,
       }) as AgriculturalOperationSuccessResult;
-      expect(result.success).toBe(true);
-      expect(result.site.owner).toEqual({ name: "Propriétaire inconnu", structureType: "unknown" });
+      assert.strictEqual(result.success, true);
+      assert.deepStrictEqual(result.site.owner, {
+        name: "Propriétaire inconnu",
+        structureType: "unknown",
+      });
     });
 
     it("cannot create agricultural operation with non-uuid id", () => {
@@ -249,9 +262,9 @@ describe("Site core logic", () => {
         ...minimalProps,
         id: "not-a-uuid",
       }) as AgriculturalOperationErrorResult;
-      expect(result.success).toBe(false);
-      expect(result.error.fieldErrors.id).toHaveLength(1);
-      expect(result.error.fieldErrors.id?.[0]).toContain("Invalid UUID");
+      assert.strictEqual(result.success, false);
+      assert.strictEqual(result.error.fieldErrors.id?.length, 1);
+      assert.ok(result.error.fieldErrors.id?.[0]?.includes("Invalid UUID"));
     });
 
     it("cannot create agricultural operation with negative expenses amount", () => {
@@ -259,9 +272,11 @@ describe("Site core logic", () => {
         ...minimalProps,
         yearlyExpenses: [{ purpose: "maintenance", bearer: "owner", amount: -1 }],
       }) as AgriculturalOperationErrorResult;
-      expect(result.success).toBe(false);
-      expect(result.error.fieldErrors.yearlyExpenses).toHaveLength(1);
-      expect(result.error.fieldErrors.yearlyExpenses?.[0]).toContain("expected number to be >=0");
+      assert.strictEqual(result.success, false);
+      assert.strictEqual(result.error.fieldErrors.yearlyExpenses?.length, 1);
+      assert.ok(
+        result.error.fieldErrors.yearlyExpenses?.[0]?.includes("expected number to be >=0"),
+      );
     });
 
     it("cannot create agricultural operation with negative income amount", () => {
@@ -269,9 +284,9 @@ describe("Site core logic", () => {
         ...minimalProps,
         yearlyIncomes: [{ source: "other", amount: -1 }],
       }) as AgriculturalOperationErrorResult;
-      expect(result.success).toBe(false);
-      expect(result.error.fieldErrors.yearlyIncomes).toHaveLength(1);
-      expect(result.error.fieldErrors.yearlyIncomes?.[0]).toContain("expected number to be >=0");
+      assert.strictEqual(result.success, false);
+      assert.strictEqual(result.error.fieldErrors.yearlyIncomes?.length, 1);
+      assert.ok(result.error.fieldErrors.yearlyIncomes?.[0]?.includes("expected number to be >=0"));
     });
 
     it("creates agricultural operation with complete data", () => {
@@ -306,8 +321,8 @@ describe("Site core logic", () => {
       const result = createAgriculturalOrNaturalSite(
         completeAgriculturalOperation,
       ) as AgriculturalOperationSuccessResult;
-      expect(result.success).toBe(true);
-      expect(result.site).toEqual<AgriculturalOrNaturalSite>({
+      assert.strictEqual(result.success, true);
+      assert.deepStrictEqual(result.site satisfies AgriculturalOrNaturalSite, {
         name: "My agricultural operation",
         nature: "AGRICULTURAL_OPERATION",
         agriculturalOperationActivity: "LARGE_VEGETABLE_CULTIVATION",
@@ -379,11 +394,12 @@ describe("Site core logic", () => {
 
     it("creates urban zone site with minimal data", () => {
       const result = createUrbanZoneSite(minimalProps) as UrbanZoneSuccessResult;
-      expect(result.success).toBe(true);
-      expect(result.site.nature).toBe("URBAN_ZONE");
-      expect(result.site.urbanZoneType).toBe("ECONOMIC_ACTIVITY_ZONE");
-      expect(result.site.landParcels).toHaveLength(2);
-      expect(result.site.soilsDistribution).toEqual(
+      assert.strictEqual(result.success, true);
+      assert.strictEqual(result.site.nature, "URBAN_ZONE");
+      assert.strictEqual(result.site.urbanZoneType, "ECONOMIC_ACTIVITY_ZONE");
+      assert.strictEqual(result.site.landParcels.length, 2);
+      assert.deepStrictEqual(
+        result.site.soilsDistribution,
         createSoilSurfaceAreaDistribution({
           BUILDINGS: 3000,
           IMPERMEABLE_SOILS: 2000,
@@ -391,7 +407,7 @@ describe("Site core logic", () => {
           ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 1000,
         }),
       );
-      expect(result.site.surfaceArea).toBe(7000);
+      assert.strictEqual(result.site.surfaceArea, 7000);
     });
 
     it("cannot create urban zone site with non-uuid id", () => {
@@ -399,8 +415,8 @@ describe("Site core logic", () => {
         ...minimalProps,
         id: "not-a-uuid",
       }) as UrbanZoneErrorResult;
-      expect(result.success).toBe(false);
-      expect(result.error.fieldErrors.id).toHaveLength(1);
+      assert.strictEqual(result.success, false);
+      assert.strictEqual(result.error.fieldErrors.id?.length, 1);
     });
 
     it("cannot create urban zone site with empty land parcels", () => {
@@ -408,8 +424,8 @@ describe("Site core logic", () => {
         ...minimalProps,
         landParcels: [],
       }) as UrbanZoneErrorResult;
-      expect(result.success).toBe(false);
-      expect(result.error.fieldErrors.landParcels).toHaveLength(1);
+      assert.strictEqual(result.success, false);
+      assert.strictEqual(result.error.fieldErrors.landParcels?.length, 1);
     });
 
     it("should set default owner when none provided", () => {
@@ -417,8 +433,11 @@ describe("Site core logic", () => {
         ...minimalProps,
         owner: undefined,
       }) as UrbanZoneSuccessResult;
-      expect(result.success).toBe(true);
-      expect(result.site.owner).toEqual({ name: "Propriétaire inconnu", structureType: "unknown" });
+      assert.strictEqual(result.success, true);
+      assert.deepStrictEqual(result.site.owner, {
+        name: "Propriétaire inconnu",
+        structureType: "unknown",
+      });
     });
 
     it("creates urban zone site with complete data", () => {
@@ -434,8 +453,8 @@ describe("Site core logic", () => {
         fullTimeJobsEquivalent: 42.5,
       };
       const result = createUrbanZoneSite(completeProps) as UrbanZoneSuccessResult;
-      expect(result.success).toBe(true);
-      expect(result.site).toEqual<UrbanZoneSite>({
+      assert.strictEqual(result.success, true);
+      assert.deepStrictEqual(result.site satisfies UrbanZoneSite, {
         id: "e869d8db-3d63-4fd5-93ab-7728c1c19a1e",
         name: "Urban zone test",
         nature: "URBAN_ZONE",

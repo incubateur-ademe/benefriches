@@ -1,4 +1,7 @@
 /* oxlint-disable typescript/dot-notation */
+import assert from "node:assert/strict";
+import { describe, it, beforeEach } from "node:test";
+
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 
@@ -111,7 +114,7 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
       });
-      expect(projectImpactsService["rentImpacts"]).toEqual([]);
+      assert.deepStrictEqual(projectImpactsService["rentImpacts"], []);
     });
 
     it("returns rental income impact over 10 years for future site owner when the site is not currently rented but will be", () => {
@@ -131,7 +134,7 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
       });
-      expect(projectImpactsService["rentImpacts"]).toEqual([
+      assert.deepStrictEqual(projectImpactsService["rentImpacts"], [
         {
           actor: "Mairie de Paris",
           amount: 248064,
@@ -154,7 +157,7 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
       });
-      expect(projectImpactsService["rentImpacts"]).toEqual([
+      assert.deepStrictEqual(projectImpactsService["rentImpacts"], [
         {
           actor: "Current owner",
           amount: -165376,
@@ -163,6 +166,7 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
         },
       ]);
     });
+
     it("returns cumulated rental income positive impact over 10 years for site owner when the site is currently rented and will be rented for a higher rent", () => {
       const projectImpactsService = new ReconversionProjectImpactsService({
         reconversionProject: {
@@ -179,7 +183,7 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
       });
-      expect(projectImpactsService["rentImpacts"]).toEqual([
+      assert.deepStrictEqual(projectImpactsService["rentImpacts"], [
         {
           actor: "Current owner",
           amount: 41344,
@@ -206,7 +210,7 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
       });
-      expect(projectImpactsService["rentImpacts"]).toEqual([
+      assert.deepStrictEqual(projectImpactsService["rentImpacts"], [
         {
           actor: "New owner",
           amount: 82688,
@@ -237,7 +241,7 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
       });
-      expect(projectImpactsService["avoidedFricheCosts"]).toEqual([]);
+      assert.deepStrictEqual(projectImpactsService["avoidedFricheCosts"], []);
     });
 
     it("returns avoided friche costs for current tenant over 10 years when friche costs", () => {
@@ -284,7 +288,7 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
       });
-      expect(projectImpactsService["avoidedFricheCosts"]).toEqual([
+      assert.deepStrictEqual(projectImpactsService["avoidedFricheCosts"], [
         {
           actor: "Current tenant",
           amount: 190182,
@@ -330,7 +334,7 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
       });
-      expect(projectImpactsService["avoidedFricheCosts"]).toEqual([
+      assert.deepStrictEqual(projectImpactsService["avoidedFricheCosts"], [
         {
           actor: "Current owner",
           amount: 128166,
@@ -364,7 +368,7 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
       });
-      expect(projectImpactsService["avoidedFricheCosts"]).toEqual([]);
+      assert.deepStrictEqual(projectImpactsService["avoidedFricheCosts"], []);
     });
 
     it("returns avoided friche costs with different owners", () => {
@@ -405,7 +409,7 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
       });
-      expect(projectImpactsService["avoidedFricheCosts"]).toEqual([
+      assert.deepStrictEqual(projectImpactsService["avoidedFricheCosts"], [
         {
           actor: "Current owner",
           amount: 128166,
@@ -448,7 +452,7 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
       });
-      expect(projectImpactsService["propertyTransferDutiesIncome"]).toEqual([]);
+      assert.deepStrictEqual(projectImpactsService["propertyTransferDutiesIncome"], []);
     });
 
     it("returns property transfer duties income impact for community", () => {
@@ -466,12 +470,14 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
       });
-      expect(projectImpactsService["propertyTransferDutiesIncome"]).toContainEqual({
-        actor: "community",
-        amount: 5000,
-        impact: "property_transfer_duties_income",
-        impactCategory: "economic_direct",
-      });
+      const found = projectImpactsService["propertyTransferDutiesIncome"].find(
+        (i) =>
+          i.actor === "community" &&
+          i.amount === 5000 &&
+          i.impact === "property_transfer_duties_income" &&
+          i.impactCategory === "economic_direct",
+      );
+      assert.ok(found !== undefined);
     });
   });
 
@@ -489,7 +495,7 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
       });
-      expect(projectImpactsService["soilsCarbonStorage"]).toEqual(undefined);
+      assert.deepStrictEqual(projectImpactsService["soilsCarbonStorage"], undefined);
     });
 
     it("returns soilsCarbonStorage impact", () => {
@@ -499,7 +505,7 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
       });
-      expect(projectImpactsService["soilsCarbonStorage"]).toEqual({
+      assert.deepStrictEqual(projectImpactsService["soilsCarbonStorage"], {
         base: 25,
         forecast: 21,
         difference: -4,
@@ -517,7 +523,7 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
       });
-      expect(projectImpactsService["operationBenefitLoss"]).toBeUndefined();
+      assert.strictEqual(projectImpactsService["operationBenefitLoss"], undefined);
     });
 
     it("returns no impact when site is natural area", () => {
@@ -532,7 +538,7 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
       });
-      expect(projectImpactsService["operationBenefitLoss"]).toBeUndefined();
+      assert.strictEqual(projectImpactsService["operationBenefitLoss"], undefined);
     });
 
     it("returns benefit loss for agricultural operated site for current tenant", () => {
@@ -554,7 +560,7 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
       });
-      expect(projectImpactsService["operationBenefitLoss"]).toEqual({
+      assert.deepStrictEqual(projectImpactsService["operationBenefitLoss"], {
         actor: "Current tenant",
         amount: -41344,
         impact: "site_operation_benefits_loss",
@@ -581,7 +587,7 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
       });
-      expect(projectImpactsService["operationBenefitLoss"]).toEqual({
+      assert.deepStrictEqual(projectImpactsService["operationBenefitLoss"], {
         actor: "Current owner",
         amount: -41344,
         impact: "site_operation_benefits_loss",
@@ -604,7 +610,7 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
       });
-      expect(projectImpactsService["operationBenefitLoss"]).toBeUndefined();
+      assert.strictEqual(projectImpactsService["operationBenefitLoss"], undefined);
     });
 
     it("computes accidents impact", () => {
@@ -615,7 +621,7 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
         dateProvider: dateProvider,
       });
 
-      expect(projectImpactsService["accidentsImpact"]).toEqual({
+      assert.deepStrictEqual(projectImpactsService["accidentsImpact"], {
         base: 3,
         forecast: 0,
         difference: -3,
@@ -647,23 +653,23 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
 
       const result = projectImpactsService.formatImpacts();
 
-      expect(result.socioeconomic.impacts).toEqual([
+      assert.deepStrictEqual(result.socioeconomic.impacts, [
         ...projectImpactsService["rentImpacts"],
         ...projectImpactsService["avoidedFricheCosts"],
         ...projectImpactsService["propertyTransferDutiesIncome"],
         ...projectImpactsService["natureConservationSocioEconomicImpacts"],
       ]);
-      expect(result.social).toEqual({
+      assert.deepStrictEqual(result.social, {
         fullTimeJobs: projectImpactsService["fullTimeJobsImpact"],
         accidents: projectImpactsService["accidentsImpact"],
       });
-      expect(result.environmental).toEqual({
+      assert.deepStrictEqual(result.environmental, {
         nonContaminatedSurfaceArea: projectImpactsService["nonContaminatedSurfaceArea"],
         permeableSurfaceArea: projectImpactsService["permeableSurfaceArea"],
         soilsCo2eqStorage: projectImpactsService["soilsCo2eqStorage"],
         soilsCarbonStorage: projectImpactsService["soilsCarbonStorage"],
       });
-      expect(result.economicBalance).toEqual(projectImpactsService["economicBalance"]);
+      assert.deepStrictEqual(result.economicBalance, projectImpactsService["economicBalance"]);
     });
   });
 });

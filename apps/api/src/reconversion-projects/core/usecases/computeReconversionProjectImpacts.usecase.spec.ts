@@ -1,3 +1,5 @@
+import assert from "node:assert/strict";
+import { describe, it, beforeEach } from "node:test";
 import { SiteImpactsDataView } from "shared";
 import { v4 as uuid } from "uuid";
 
@@ -40,8 +42,9 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       const evaluationPeriodInYears = 10;
       const result = await usecase.execute({ reconversionProjectId, evaluationPeriodInYears });
 
-      expect(result.isFailure()).toBe(true);
-      expect((result as FailureResult<"ReconversionProjectNotFound">).getError()).toBe(
+      assert.strictEqual(result.isFailure(), true);
+      assert.strictEqual(
+        (result as FailureResult<"ReconversionProjectNotFound">).getError(),
         "ReconversionProjectNotFound",
       );
     });
@@ -74,8 +77,9 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       const evaluationPeriodInYears = 10;
       const result = await usecase.execute({ reconversionProjectId, evaluationPeriodInYears });
 
-      expect(result.isFailure()).toBe(true);
-      expect((result as FailureResult<"NoDevelopmentPlanType">).getError()).toBe(
+      assert.strictEqual(result.isFailure(), true);
+      assert.strictEqual(
+        (result as FailureResult<"NoDevelopmentPlanType">).getError(),
         "NoDevelopmentPlanType",
       );
     });
@@ -118,8 +122,8 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       const evaluationPeriodInYears = 10;
       const result = await usecase.execute({ reconversionProjectId, evaluationPeriodInYears });
 
-      expect(result.isFailure()).toBe(true);
-      expect((result as FailureResult<"SiteNotFound">).getError()).toBe("SiteNotFound");
+      assert.strictEqual(result.isFailure(), true);
+      assert.strictEqual((result as FailureResult<"SiteNotFound">).getError(), "SiteNotFound");
     });
   });
 
@@ -243,9 +247,8 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         reconversionProjectId: reconversionProjectImpactDataView.id,
         evaluationPeriodInYears,
       });
-      expect(result.isSuccess()).toBe(true);
-      // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
-      expect((result as SuccessResult<ComputedImpacts>).getData()).toEqual<ComputedImpacts>({
+      assert.strictEqual(result.isSuccess(), true);
+      assert.deepStrictEqual((result as SuccessResult<ComputedImpacts>).getData(), {
         id: reconversionProjectImpactDataView.id,
         name: reconversionProjectImpactDataView.name,
         evaluationPeriodInYears: 10,
@@ -400,6 +403,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
                 costs: [{ amount: 200000, purpose: "installation_works" }],
               },
               sitePurchase: 150000,
+              buildingsConstructionAndRehabilitation: undefined,
             },
             revenues: {
               total: 240957,
@@ -414,6 +418,8 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
                 total: 150000,
                 revenues: [{ amount: 150000, source: "public_subsidies" }],
               },
+              buildingsResale: undefined,
+              siteResale: undefined,
             },
           },
           environmental: {
@@ -519,7 +525,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
             },
           },
         },
-      });
+      } satisfies ComputedImpacts);
     });
 
     it("returns impacts with contract duration as evaluation period when not provided", async () => {
@@ -538,10 +544,11 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       const result = await usecase.execute({
         reconversionProjectId: reconversionProjectImpactDataView.id,
       });
-      expect(result.isSuccess()).toBe(true);
+      assert.strictEqual(result.isSuccess(), true);
       const data = (result as SuccessResult<ComputedImpacts>).getData();
-      expect(data.id).toEqual(reconversionProjectImpactDataView.id);
-      expect(data.evaluationPeriodInYears).toEqual(
+      assert.deepStrictEqual(data.id, reconversionProjectImpactDataView.id);
+      assert.deepStrictEqual(
+        data.evaluationPeriodInYears,
         reconversionProjectImpactDataView.developmentPlan.features.contractDuration,
       );
     });
@@ -566,10 +573,10 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         reconversionProjectId: reconversionProjectImpactDataView.id,
         evaluationPeriodInYears,
       });
-      expect(result.isSuccess()).toBe(true);
+      assert.strictEqual(result.isSuccess(), true);
       const data = (result as SuccessResult<ComputedImpacts>).getData();
-      expect(data.id).toEqual(reconversionProjectImpactDataView.id);
-      expect(data.impacts.environmental.soilsCo2eqStorage).toEqual(undefined);
+      assert.deepStrictEqual(data.id, reconversionProjectImpactDataView.id);
+      assert.strictEqual(data.impacts.environmental.soilsCo2eqStorage, undefined);
     });
   });
 
@@ -687,18 +694,20 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         reconversionProjectId: reconversionProjectImpactDataView.id,
         evaluationPeriodInYears,
       });
-      expect(result.isSuccess()).toBe(true);
+      assert.strictEqual(result.isSuccess(), true);
       const data = (result as SuccessResult<ComputedImpacts>).getData();
-      expect(data.impacts.social.fullTimeJobs?.operations.base).not.toEqual(0);
-      expect(data.impacts.environmental.nonContaminatedSurfaceArea).toEqual(undefined);
-      expect(data.impacts.social.accidents).toEqual(undefined);
-      expect(data.impacts.socioeconomic.impacts.length).not.toEqual(0);
-      expect(
+      assert.notDeepStrictEqual(data.impacts.social.fullTimeJobs?.operations.base, 0);
+      assert.strictEqual(data.impacts.environmental.nonContaminatedSurfaceArea, undefined);
+      assert.strictEqual(data.impacts.social.accidents, undefined);
+      assert.notDeepStrictEqual(data.impacts.socioeconomic.impacts.length, 0);
+      assert.strictEqual(
         data.impacts.socioeconomic.impacts.find(
           ({ impact }: { impact: string }) => impact === "avoided_friche_costs",
         ),
-      ).toEqual(undefined);
+        undefined,
+      );
     });
+
     it("returns no base operation fullTimeJobs over 10 years for a reconversion project on site not operated", async () => {
       const evaluationPeriodInYears = 10;
       const projectQuery = new InMemoryReconversionProjectImpactsQuery();
@@ -717,9 +726,9 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         reconversionProjectId: reconversionProjectImpactDataView.id,
         evaluationPeriodInYears,
       });
-      expect(result.isSuccess()).toBe(true);
+      assert.strictEqual(result.isSuccess(), true);
       const data = (result as SuccessResult<ComputedImpacts>).getData();
-      expect(data.impacts.social.fullTimeJobs?.operations.base).toEqual(0);
+      assert.deepStrictEqual(data.impacts.social.fullTimeJobs?.operations.base, 0);
     });
   });
 });

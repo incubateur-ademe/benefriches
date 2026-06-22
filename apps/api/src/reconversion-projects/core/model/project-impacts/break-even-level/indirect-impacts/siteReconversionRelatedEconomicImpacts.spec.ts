@@ -1,6 +1,7 @@
 // oxlint-disable jest/no-commented-out-tests
+import assert from "node:assert/strict";
+import { describe, it, beforeEach, mock } from "node:test";
 import { roundToInteger, sumList } from "shared";
-import { describe, it, expect, vi, beforeEach } from "vitest";
 
 import type { SumOnEvolutionPeriodService } from "../../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import {
@@ -12,11 +13,11 @@ import {
 // ---------------------------------------------------------------------------
 
 describe("getFricheRoadsAndUtilitiesExpensesImpact", () => {
-  let getWeightedYearlyValuesSpy: ReturnType<typeof vi.fn>;
+  let getWeightedYearlyValuesSpy: ReturnType<typeof mock.fn>;
   let mockService: SumOnEvolutionPeriodService;
 
   beforeEach(() => {
-    getWeightedYearlyValuesSpy = vi.fn((value: number) => [value, value, value]);
+    getWeightedYearlyValuesSpy = mock.fn((value: number) => [value, value, value]);
     mockService = {
       getWeightedYearlyValues: getWeightedYearlyValuesSpy,
     } as unknown as SumOnEvolutionPeriodService;
@@ -27,7 +28,7 @@ describe("getFricheRoadsAndUtilitiesExpensesImpact", () => {
       siteSurfaceArea: 10_000,
       sumOnEvolutionPeriodService: mockService,
     });
-    expect(result.name).toBe("fricheRoadsAndUtilitiesExpenses");
+    assert.strictEqual(result.name, "fricheRoadsAndUtilitiesExpenses");
   });
 
   it("calls getWeightedYearlyValues with negative value", () => {
@@ -35,8 +36,8 @@ describe("getFricheRoadsAndUtilitiesExpensesImpact", () => {
       siteSurfaceArea: 5_000,
       sumOnEvolutionPeriodService: mockService,
     });
-    const value = getWeightedYearlyValuesSpy.mock.calls[0];
-    expect(value?.[0]).toBeLessThan(0);
+    const value = getWeightedYearlyValuesSpy.mock.calls[0]?.arguments[0] as number;
+    assert.ok(value < 0);
   });
 
   it("calls getWeightedYearlyValues with startYearIndex = 1", () => {
@@ -45,7 +46,12 @@ describe("getFricheRoadsAndUtilitiesExpensesImpact", () => {
       sumOnEvolutionPeriodService: mockService,
     });
 
-    expect(getWeightedYearlyValuesSpy.mock.calls[0]?.[2]).toMatchObject({ startYearIndex: 1 });
+    assert.strictEqual(getWeightedYearlyValuesSpy.mock.callCount(), 1);
+    // oxlint-disable-next-line no-non-null-assertion
+    const opts = getWeightedYearlyValuesSpy.mock.calls[0]!.arguments[2] as {
+      startYearIndex?: number;
+    };
+    assert.strictEqual(opts.startYearIndex, 1);
   });
 
   it("has detailsByYear et cumulativeByYear in result", () => {
@@ -53,9 +59,9 @@ describe("getFricheRoadsAndUtilitiesExpensesImpact", () => {
       siteSurfaceArea: 1_000,
       sumOnEvolutionPeriodService: mockService,
     });
-    expect(Array.isArray(result.detailsByYear)).toBe(true);
-    expect(result.total).toEqual(sumList(result.detailsByYear));
-    expect(Array.isArray(result.cumulativeByYear)).toBe(true);
+    assert.strictEqual(Array.isArray(result.detailsByYear), true);
+    assert.deepStrictEqual(result.total, sumList(result.detailsByYear));
+    assert.strictEqual(Array.isArray(result.cumulativeByYear), true);
   });
 });
 
@@ -65,11 +71,11 @@ describe("getLocalPropertyIncreaseWithFricheRemovalImpacts", () => {
     cityPopulation: 50_000,
     cityPropertyValuePerSquareMeter: 2_500,
   };
-  let getWeightedYearlyValuesSpy: ReturnType<typeof vi.fn>;
+  let getWeightedYearlyValuesSpy: ReturnType<typeof mock.fn>;
   let mockService: SumOnEvolutionPeriodService;
 
   beforeEach(() => {
-    getWeightedYearlyValuesSpy = vi.fn((value: number) => [value, value, value]);
+    getWeightedYearlyValuesSpy = mock.fn((value: number) => [value, value, value]);
     mockService = {
       getWeightedYearlyValues: getWeightedYearlyValuesSpy,
     } as unknown as SumOnEvolutionPeriodService;
@@ -82,10 +88,10 @@ describe("getLocalPropertyIncreaseWithFricheRemovalImpacts", () => {
       sumOnEvolutionPeriodService: mockService,
     });
 
-    expect(result).toHaveLength(2);
-    const names = result.map((r) => r.name);
-    expect(names).toContain("localPropertyValueIncrease");
-    expect(names).toContain("localTransferDutiesIncrease");
+    assert.strictEqual(result.length, 2);
+    const names = new Set(result.map((r) => r.name));
+    assert.ok(names.has("localPropertyValueIncrease"));
+    assert.ok(names.has("localTransferDutiesIncrease"));
   });
 
   it("has detailsByYear et cumulativeByYear in result", () => {
@@ -96,9 +102,9 @@ describe("getLocalPropertyIncreaseWithFricheRemovalImpacts", () => {
     });
 
     result.forEach((item) => {
-      expect(Array.isArray(item.detailsByYear)).toBe(true);
-      expect(item.total).toEqual(roundToInteger(sumList(item.detailsByYear)));
-      expect(Array.isArray(item.cumulativeByYear)).toBe(true);
+      assert.strictEqual(Array.isArray(item.detailsByYear), true);
+      assert.deepStrictEqual(item.total, roundToInteger(sumList(item.detailsByYear)));
+      assert.strictEqual(Array.isArray(item.cumulativeByYear), true);
     });
   });
 

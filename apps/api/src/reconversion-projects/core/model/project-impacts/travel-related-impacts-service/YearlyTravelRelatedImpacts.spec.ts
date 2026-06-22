@@ -1,4 +1,7 @@
 /* oxlint-disable typescript/dot-notation */
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+
 import { YearlyTravelRelatedImpacts } from "./YearlyTravelRelatedImpacts";
 
 describe("YearlyTravelRelatedImpacts", () => {
@@ -22,7 +25,7 @@ describe("YearlyTravelRelatedImpacts", () => {
           ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES: 200,
         },
       });
-      expect(yearlyTravelRelatedImpacts["influenceRadius"]).toEqual(500);
+      assert.strictEqual(yearlyTravelRelatedImpacts["influenceRadius"], 500);
     });
     it("returns influence radius of 100 meters", () => {
       const yearlyTravelRelatedImpacts = new YearlyTravelRelatedImpacts({
@@ -33,7 +36,7 @@ describe("YearlyTravelRelatedImpacts", () => {
           LOCAL_STORE: 45,
         },
       });
-      expect(yearlyTravelRelatedImpacts["influenceRadius"]).toEqual(100);
+      assert.strictEqual(yearlyTravelRelatedImpacts["influenceRadius"], 100);
     });
     it("returns no influence radius", () => {
       const yearlyTravelRelatedImpacts = new YearlyTravelRelatedImpacts({
@@ -42,7 +45,7 @@ describe("YearlyTravelRelatedImpacts", () => {
           RESIDENTIAL: 10000,
         },
       });
-      expect(yearlyTravelRelatedImpacts["influenceRadius"]).toEqual(0);
+      assert.strictEqual(yearlyTravelRelatedImpacts["influenceRadius"], 0);
     });
     it("returns influence radius of 200 meters", () => {
       const yearlyTravelRelatedImpacts = new YearlyTravelRelatedImpacts({
@@ -54,7 +57,7 @@ describe("YearlyTravelRelatedImpacts", () => {
           ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES: 100,
         },
       });
-      expect(yearlyTravelRelatedImpacts["influenceRadius"]).toEqual(200);
+      assert.strictEqual(yearlyTravelRelatedImpacts["influenceRadius"], 200);
     });
     it("returns influence radius of 500 meters with OTHER_CULTURAL_PLACE", () => {
       const yearlyTravelRelatedImpacts = new YearlyTravelRelatedImpacts({
@@ -67,7 +70,7 @@ describe("YearlyTravelRelatedImpacts", () => {
           OTHER_CULTURAL_PLACE: 30,
         },
       });
-      expect(yearlyTravelRelatedImpacts["influenceRadius"]).toEqual(500);
+      assert.strictEqual(yearlyTravelRelatedImpacts["influenceRadius"], 500);
     });
     it("returns influence radius of 500 meters with THEATER AND SPORTS_FACILITIES", () => {
       const yearlyTravelRelatedImpacts = new YearlyTravelRelatedImpacts({
@@ -81,7 +84,7 @@ describe("YearlyTravelRelatedImpacts", () => {
           SPORTS_FACILITIES: 30,
         },
       });
-      expect(yearlyTravelRelatedImpacts["influenceRadius"]).toEqual(500);
+      assert.strictEqual(yearlyTravelRelatedImpacts["influenceRadius"], 500);
     });
   });
   it("computes avoided accidents injuries and deaths and their costs for a year", () => {
@@ -96,21 +99,30 @@ describe("YearlyTravelRelatedImpacts", () => {
         ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES: 200,
       },
     });
-    expect(yearlyTravelRelatedImpacts["avoidedMinorInjuriesPerYear"]).toBeCloseTo(44.4, 1);
-    expect(yearlyTravelRelatedImpacts["avoidedSevereInjuriesPerYear"]).toBeCloseTo(2.8, 1);
-    expect(yearlyTravelRelatedImpacts["avoidedDeathsPerYear"]).toBeCloseTo(0.8, 1);
+    assert.ok(
+      Math.abs(yearlyTravelRelatedImpacts["avoidedMinorInjuriesPerYear"] - 44.4) <
+        Math.pow(10, -1) / 2,
+    );
+    assert.ok(
+      Math.abs(yearlyTravelRelatedImpacts["avoidedSevereInjuriesPerYear"] - 2.8) <
+        Math.pow(10, -1) / 2,
+    );
+    assert.ok(
+      Math.abs(yearlyTravelRelatedImpacts["avoidedDeathsPerYear"] - 0.8) < Math.pow(10, -1) / 2,
+    );
 
-    expect(yearlyTravelRelatedImpacts["avoidedAccidentsMinorInjuriesExpensesPerYear"]).toBeCloseTo(
-      860302,
-      0,
+    assert.ok(
+      Math.abs(
+        yearlyTravelRelatedImpacts["avoidedAccidentsMinorInjuriesExpensesPerYear"] - 860302,
+      ) < 0.5,
     );
-    expect(yearlyTravelRelatedImpacts["avoidedAccidentsSevereInjuriesExpensesPerYear"]).toBeCloseTo(
-      1344244,
-      0,
+    assert.ok(
+      Math.abs(
+        yearlyTravelRelatedImpacts["avoidedAccidentsSevereInjuriesExpensesPerYear"] - 1344244,
+      ) < 0.5,
     );
-    expect(yearlyTravelRelatedImpacts["avoidedAccidentsDeathsExpensesPerYear"]).toBeCloseTo(
-      3212221,
-      0,
+    assert.ok(
+      Math.abs(yearlyTravelRelatedImpacts["avoidedAccidentsDeathsExpensesPerYear"] - 3212221) < 0.5,
     );
   });
 
@@ -128,17 +140,25 @@ describe("YearlyTravelRelatedImpacts", () => {
       },
     });
 
-    expect(yearlyTravelRelatedImpacts["avoidedPropertyDamageExpensesPerYear"]).toBeCloseTo(58.6, 1);
-    expect(yearlyTravelRelatedImpacts["avoidedAirPollutionHealthExpensesPerYear"]).toBeCloseTo(
-      3099,
-      1,
+    assert.ok(
+      Math.abs(yearlyTravelRelatedImpacts["avoidedPropertyDamageExpensesPerYear"] - 58.6) <
+        Math.pow(10, -1) / 2,
     );
-    expect(yearlyTravelRelatedImpacts["avoidedKilometersPerVehiculeExpensesPerYear"]).toBeCloseTo(
-      23536.78,
+    assert.ok(
+      Math.abs(yearlyTravelRelatedImpacts["avoidedAirPollutionHealthExpensesPerYear"] - 3099) <
+        Math.pow(10, -1) / 2,
     );
-    expect(yearlyTravelRelatedImpacts["travelTimeSavedPerTravelerPerYear"]).toBeCloseTo(7900.07);
-    expect(yearlyTravelRelatedImpacts["travelTimeAvoidedCostsPerTravelerPerYear"]).toBeCloseTo(
-      78763.75,
+    assert.ok(
+      Math.abs(
+        yearlyTravelRelatedImpacts["avoidedKilometersPerVehiculeExpensesPerYear"] - 23536.78,
+      ) < 0.005,
+    );
+    assert.ok(
+      Math.abs(yearlyTravelRelatedImpacts["travelTimeSavedPerTravelerPerYear"] - 7900.07) < 0.005,
+    );
+    assert.ok(
+      Math.abs(yearlyTravelRelatedImpacts["travelTimeAvoidedCostsPerTravelerPerYear"] - 78763.75) <
+        0.005,
     );
   });
 });

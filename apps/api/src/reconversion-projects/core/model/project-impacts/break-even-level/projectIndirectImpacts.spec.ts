@@ -1,5 +1,6 @@
+import assert from "node:assert/strict";
+import { describe, it, beforeEach, mock } from "node:test";
 import { sumList } from "shared";
-import { describe, it, expect, vi, beforeEach } from "vitest";
 
 import { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import {
@@ -44,32 +45,32 @@ const siteCityData = {
 
 describe("computeCumulativeByYear", () => {
   it("returns empty array", () => {
-    expect(computeCumulativeByYear([])).toEqual([]);
+    assert.deepStrictEqual(computeCumulativeByYear([]), []);
   });
 
   it("computes cumulative impacts by year", () => {
-    expect(computeCumulativeByYear([10, 20, 30])).toEqual([10, 30, 60]);
+    assert.deepStrictEqual(computeCumulativeByYear([10, 20, 30]), [10, 30, 60]);
   });
 
   it("computes cumulative impacts by year with negative values", () => {
-    expect(computeCumulativeByYear([-100, -100, -100])).toEqual([-100, -200, -300]);
+    assert.deepStrictEqual(computeCumulativeByYear([-100, -100, -100]), [-100, -200, -300]);
   });
 
   it("computes cumulative impacts by year with only 1 element in array", () => {
-    expect(computeCumulativeByYear([42])).toEqual([42]);
+    assert.deepStrictEqual(computeCumulativeByYear([42]), [42]);
   });
 
   it("computes cumulative impacts by year with negative and positive values", () => {
-    expect(computeCumulativeByYear([100, -50, 30])).toEqual([100, 50, 80]);
+    assert.deepStrictEqual(computeCumulativeByYear([100, -50, 30]), [100, 50, 80]);
   });
 });
 
 describe("getProjectMetricsAndEconomicImpacts", () => {
-  let getWeightedYearlyValuesSpy: ReturnType<typeof vi.fn>;
+  let getWeightedYearlyValuesSpy: ReturnType<typeof mock.fn>;
   let mockService: SumOnEvolutionPeriodService;
 
   beforeEach(() => {
-    getWeightedYearlyValuesSpy = vi.fn((value: number) => [value, value, value]);
+    getWeightedYearlyValuesSpy = mock.fn((value: number) => [value, value, value]);
     mockService = {
       getWeightedYearlyValues: getWeightedYearlyValuesSpy,
     } as unknown as SumOnEvolutionPeriodService;
@@ -84,7 +85,7 @@ describe("getProjectMetricsAndEconomicImpacts", () => {
         sumOnEvolutionPeriodService: mockService,
       });
 
-      expect(Number.isInteger(result.economicImpacts.total)).toBe(true);
+      assert.ok(Number.isInteger(result.economicImpacts.total));
     });
 
     it("returns total and details array", () => {
@@ -95,9 +96,9 @@ describe("getProjectMetricsAndEconomicImpacts", () => {
         sumOnEvolutionPeriodService: mockService,
       });
 
-      expect(result.economicImpacts).toHaveProperty("total");
-      expect(result.economicImpacts).toHaveProperty("details");
-      expect(Array.isArray(result.economicImpacts.details)).toBe(true);
+      assert.ok("total" in result.economicImpacts);
+      assert.ok("details" in result.economicImpacts);
+      assert.ok(Array.isArray(result.economicImpacts.details));
     });
   });
 
@@ -114,11 +115,12 @@ describe("getProjectMetricsAndEconomicImpacts", () => {
         sumOnEvolutionPeriodService: mockService,
       });
 
-      expect(
-        result.economicImpacts.details.find((d) => d.name === "propertyTransferDutiesIncome"),
-      ).toBeDefined();
+      assert.ok(
+        result.economicImpacts.details.find((d) => d.name === "propertyTransferDutiesIncome") !==
+          undefined,
+      );
 
-      expect(
+      assert.ok(
         getProjectMetricsAndEconomicImpacts({
           reconversionProject: {
             ...baseProject,
@@ -127,10 +129,11 @@ describe("getProjectMetricsAndEconomicImpacts", () => {
           relatedSite: baseSite,
           siteCityData,
           sumOnEvolutionPeriodService: mockService,
-        }).economicImpacts.details.find((d) => d.name === "propertyTransferDutiesIncome"),
-      ).toBeDefined();
+        }).economicImpacts.details.find((d) => d.name === "propertyTransferDutiesIncome") !==
+          undefined,
+      );
 
-      expect(
+      assert.ok(
         getProjectMetricsAndEconomicImpacts({
           reconversionProject: {
             ...baseProject,
@@ -139,8 +142,9 @@ describe("getProjectMetricsAndEconomicImpacts", () => {
           relatedSite: baseSite,
           siteCityData,
           sumOnEvolutionPeriodService: mockService,
-        }).economicImpacts.details.find((d) => d.name === "propertyTransferDutiesIncome"),
-      ).toBeDefined();
+        }).economicImpacts.details.find((d) => d.name === "propertyTransferDutiesIncome") !==
+          undefined,
+      );
     });
 
     it("excludes propertyTransferDutiesIncome if there is no site purchase nor site or buildings resales", () => {
@@ -155,9 +159,10 @@ describe("getProjectMetricsAndEconomicImpacts", () => {
         sumOnEvolutionPeriodService: mockService,
       });
 
-      expect(
+      assert.strictEqual(
         result.economicImpacts.details.find((d) => d.name === "propertyTransferDutiesIncome"),
-      ).toBeUndefined();
+        undefined,
+      );
     });
 
     it("sums purchase and resale transfer duties income", () => {
@@ -173,14 +178,16 @@ describe("getProjectMetricsAndEconomicImpacts", () => {
         sumOnEvolutionPeriodService: mockService,
       });
 
-      const dutyCall = getWeightedYearlyValuesSpy.mock.calls.find(
-        ([value, _w, opts]) => value === 10_000 && opts?.endYearIndex === 1,
-      );
-      expect(dutyCall).toBeDefined();
-      expect(
+      const dutyCall = getWeightedYearlyValuesSpy.mock.calls.find((call) => {
+        const [value, _w, opts] = call.arguments as [number, unknown, { endYearIndex?: number }?];
+        return value === 10_000 && opts?.endYearIndex === 1;
+      });
+      assert.ok(dutyCall !== undefined);
+      assert.deepStrictEqual(
         result.economicImpacts.details.find(({ name }) => name === "propertyTransferDutiesIncome")
           ?.total,
-      ).toEqual(10_000);
+        10_000,
+      );
     });
   });
 
@@ -194,13 +201,16 @@ describe("getProjectMetricsAndEconomicImpacts", () => {
         sumOnEvolutionPeriodService: mockService,
       });
 
-      expect(
-        result.economicImpacts.details.find((d) => d.name === "avoidedCo2eqWithEnergyProduction"),
-      ).toBeDefined();
+      assert.ok(
+        result.economicImpacts.details.find(
+          (d) => d.name === "avoidedCo2eqWithEnergyProduction",
+        ) !== undefined,
+      );
 
-      expect(
-        result.impactMetrics.find((d) => d.name === "avoidedCO2TonsWithEnergyProduction"),
-      ).toBeDefined();
+      assert.ok(
+        result.impactMetrics.find((d) => d.name === "avoidedCO2TonsWithEnergyProduction") !==
+          undefined,
+      );
     });
   });
 
@@ -220,9 +230,10 @@ describe("getProjectMetricsAndEconomicImpacts", () => {
         sumOnEvolutionPeriodService: mockService,
       });
 
-      expect(
-        result.economicImpacts.details.find((d) => d.name === "projectNewHousesTaxesIncome"),
-      ).toBeDefined();
+      assert.ok(
+        result.economicImpacts.details.find((d) => d.name === "projectNewHousesTaxesIncome") !==
+          undefined,
+      );
     });
   });
 
@@ -247,15 +258,18 @@ describe("getProjectMetricsAndEconomicImpacts", () => {
           siteCityData,
           sumOnEvolutionPeriodService: mockService,
         });
-        expect(
+        assert.strictEqual(
           result.impactMetrics.find((item) => item.name === "conversionFullTimeJobs")?.total,
-        ).toBeUndefined();
-        expect(
+          undefined,
+        );
+        assert.deepStrictEqual(
           result.impactMetrics.find((item) => item.name === "operationsFullTimeJobs")?.total,
-        ).toEqual(880);
-        expect(
+          880,
+        );
+        assert.strictEqual(
           result.impactMetrics.find((item) => item.name === "reinstatementFullTimeJobs")?.total,
-        ).toBeUndefined();
+          undefined,
+        );
       });
 
       it("returns only operationsFullTimeJobs if no schedules are provided", () => {
@@ -283,15 +297,18 @@ describe("getProjectMetricsAndEconomicImpacts", () => {
           siteCityData,
           sumOnEvolutionPeriodService: mockService,
         });
-        expect(
+        assert.strictEqual(
           result.impactMetrics.find((item) => item.name === "conversionFullTimeJobs")?.total,
-        ).toBeUndefined();
-        expect(
+          undefined,
+        );
+        assert.deepStrictEqual(
           result.impactMetrics.find((item) => item.name === "operationsFullTimeJobs")?.total,
-        ).toEqual(2);
-        expect(
+          2,
+        );
+        assert.strictEqual(
           result.impactMetrics.find((item) => item.name === "reinstatementFullTimeJobs")?.total,
-        ).toBeUndefined();
+          undefined,
+        );
       });
 
       it("returns impact computed from default values with schedules", () => {
@@ -333,15 +350,24 @@ describe("getProjectMetricsAndEconomicImpacts", () => {
             operationsFirstYear: 2025,
           }),
         });
-        expect(
-          result.impactMetrics.find((item) => item.name === "conversionFullTimeJobs")?.total,
-        ).toBeCloseTo(0.7, 0);
-        expect(
-          result.impactMetrics.find((item) => item.name === "operationsFullTimeJobs")?.total,
-        ).toBeCloseTo(2, 0);
-        expect(
-          result.impactMetrics.find((item) => item.name === "reinstatementFullTimeJobs")?.total,
-        ).toBeCloseTo(2, 0);
+        assert.ok(
+          Math.abs(
+            (result.impactMetrics.find((item) => item.name === "conversionFullTimeJobs")?.total ??
+              0) - 0.7,
+          ) < 0.5,
+        );
+        assert.ok(
+          Math.abs(
+            (result.impactMetrics.find((item) => item.name === "operationsFullTimeJobs")?.total ??
+              0) - 2,
+          ) < 0.5,
+        );
+        assert.ok(
+          Math.abs(
+            (result.impactMetrics.find((item) => item.name === "reinstatementFullTimeJobs")
+              ?.total ?? 0) - 2,
+          ) < 0.5,
+        );
       });
     });
   });
@@ -362,14 +388,14 @@ describe("getProjectMetricsAndEconomicImpacts", () => {
       });
 
       result.economicImpacts.details.forEach((item) => {
-        expect(item).toHaveProperty("name");
-        expect(item).toHaveProperty("total");
-        expect(item).toHaveProperty("detailsByYear");
-        expect(item).toHaveProperty("cumulativeByYear");
-        expect(Array.isArray(item.detailsByYear)).toBe(true);
-        expect(Array.isArray(item.cumulativeByYear)).toBe(true);
+        assert.ok("name" in item);
+        assert.ok("total" in item);
+        assert.ok("detailsByYear" in item);
+        assert.ok("cumulativeByYear" in item);
+        assert.ok(Array.isArray(item.detailsByYear));
+        assert.ok(Array.isArray(item.cumulativeByYear));
 
-        expect(item.total).toEqual(sumList(item.detailsByYear));
+        assert.deepStrictEqual(item.total, sumList(item.detailsByYear));
       });
     });
   });

@@ -1,3 +1,6 @@
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+
 import { FakeCrm } from "src/marketing/adapters/secondary/FakeCrm";
 import { InMemoryMarketingUsersQuery } from "src/marketing/adapters/secondary/users-query/InMemoryMarketingUsersQuery";
 import { InMemoryMarketingUsersRepository } from "src/marketing/adapters/secondary/users-repository/InMemoryMarketingUsersRepository";
@@ -29,7 +32,7 @@ describe("SyncNewsletterSubscriptions Use case", () => {
 
     const result = await usecase.execute();
 
-    expect(getSuccessData(result)).toEqual({
+    assert.deepStrictEqual(getSuccessData(result), {
       totalUsers: 1,
       updated: 1,
       unchanged: 0,
@@ -37,7 +40,7 @@ describe("SyncNewsletterSubscriptions Use case", () => {
       errored: 0,
       dryRun: false,
     });
-    expect(usersRepository._updates).toEqual([{ userId: "u1", subscribed: true }]);
+    assert.deepStrictEqual(usersRepository._updates, [{ userId: "u1", subscribed: true }]);
   });
 
   // Scenario 9: zero users in DB → no CRM calls, all-zero summary
@@ -46,8 +49,8 @@ describe("SyncNewsletterSubscriptions Use case", () => {
 
     const result = await usecase.execute();
 
-    expect(result.isSuccess()).toBe(true);
-    expect(getSuccessData(result)).toEqual({
+    assert.strictEqual(result.isSuccess(), true);
+    assert.deepStrictEqual(getSuccessData(result), {
       totalUsers: 0,
       updated: 0,
       unchanged: 0,
@@ -55,7 +58,7 @@ describe("SyncNewsletterSubscriptions Use case", () => {
       errored: 0,
       dryRun: false,
     });
-    expect(crm._contacts.size).toBe(0);
+    assert.strictEqual(crm._contacts.size, 0);
   });
 
   // Scenario 1: DB=false, CRM found, CRM subscribed=true → updated to true
@@ -66,7 +69,7 @@ describe("SyncNewsletterSubscriptions Use case", () => {
 
     const result = await usecase.execute();
 
-    expect(getSuccessData(result)).toEqual({
+    assert.deepStrictEqual(getSuccessData(result), {
       totalUsers: 1,
       updated: 1,
       unchanged: 0,
@@ -74,7 +77,7 @@ describe("SyncNewsletterSubscriptions Use case", () => {
       errored: 0,
       dryRun: false,
     });
-    expect(usersRepository._updates).toEqual([{ userId: "u1", subscribed: true }]);
+    assert.deepStrictEqual(usersRepository._updates, [{ userId: "u1", subscribed: true }]);
   });
 
   // Scenario 2: DB=true, CRM found, CRM subscribed=false → updated to false
@@ -85,7 +88,7 @@ describe("SyncNewsletterSubscriptions Use case", () => {
 
     const result = await usecase.execute();
 
-    expect(getSuccessData(result)).toEqual({
+    assert.deepStrictEqual(getSuccessData(result), {
       totalUsers: 1,
       updated: 1,
       unchanged: 0,
@@ -93,7 +96,7 @@ describe("SyncNewsletterSubscriptions Use case", () => {
       errored: 0,
       dryRun: false,
     });
-    expect(usersRepository._updates).toEqual([{ userId: "u1", subscribed: false }]);
+    assert.deepStrictEqual(usersRepository._updates, [{ userId: "u1", subscribed: false }]);
   });
 
   // Scenario 3: DB=true, CRM found, CRM subscribed=true → unchanged, no write
@@ -104,7 +107,7 @@ describe("SyncNewsletterSubscriptions Use case", () => {
 
     const result = await usecase.execute();
 
-    expect(getSuccessData(result)).toEqual({
+    assert.deepStrictEqual(getSuccessData(result), {
       totalUsers: 1,
       updated: 0,
       unchanged: 1,
@@ -112,7 +115,7 @@ describe("SyncNewsletterSubscriptions Use case", () => {
       errored: 0,
       dryRun: false,
     });
-    expect(usersRepository._updates).toEqual([]);
+    assert.deepStrictEqual(usersRepository._updates, []);
   });
 
   // Scenario 4: DB=false, CRM found, CRM subscribed=false → unchanged, no write
@@ -123,7 +126,7 @@ describe("SyncNewsletterSubscriptions Use case", () => {
 
     const result = await usecase.execute();
 
-    expect(getSuccessData(result)).toEqual({
+    assert.deepStrictEqual(getSuccessData(result), {
       totalUsers: 1,
       updated: 0,
       unchanged: 1,
@@ -131,7 +134,7 @@ describe("SyncNewsletterSubscriptions Use case", () => {
       errored: 0,
       dryRun: false,
     });
-    expect(usersRepository._updates).toEqual([]);
+    assert.deepStrictEqual(usersRepository._updates, []);
   });
 
   // Scenario 5: DB=true, contact missing in CRM → set false + warn (missingInCrm)
@@ -141,7 +144,7 @@ describe("SyncNewsletterSubscriptions Use case", () => {
 
     const result = await usecase.execute();
 
-    expect(getSuccessData(result)).toEqual({
+    assert.deepStrictEqual(getSuccessData(result), {
       totalUsers: 1,
       updated: 0,
       unchanged: 0,
@@ -149,10 +152,10 @@ describe("SyncNewsletterSubscriptions Use case", () => {
       errored: 0,
       dryRun: false,
     });
-    expect(usersRepository._updates).toEqual([{ userId: "u1", subscribed: false }]);
-    expect(logger._warn).toHaveLength(1);
-    expect(logger._warn[0]?.message).toContain("a@b.fr");
-    expect(logger._warn[0]?.message).toContain("u1");
+    assert.deepStrictEqual(usersRepository._updates, [{ userId: "u1", subscribed: false }]);
+    assert.strictEqual(logger._warn.length, 1);
+    assert.ok(logger._warn[0]?.message.includes("a@b.fr"));
+    assert.ok(logger._warn[0]?.message.includes("u1"));
   });
 
   // Scenario 6: DB=false, contact missing in CRM → no write + warn (missingInCrm)
@@ -162,7 +165,7 @@ describe("SyncNewsletterSubscriptions Use case", () => {
 
     const result = await usecase.execute();
 
-    expect(getSuccessData(result)).toEqual({
+    assert.deepStrictEqual(getSuccessData(result), {
       totalUsers: 1,
       updated: 0,
       unchanged: 0,
@@ -170,10 +173,10 @@ describe("SyncNewsletterSubscriptions Use case", () => {
       errored: 0,
       dryRun: false,
     });
-    expect(usersRepository._updates).toEqual([]);
-    expect(logger._warn).toHaveLength(1);
-    expect(logger._warn[0]?.message).toContain("a@b.fr");
-    expect(logger._warn[0]?.message).toContain("u1");
+    assert.deepStrictEqual(usersRepository._updates, []);
+    assert.strictEqual(logger._warn.length, 1);
+    assert.ok(logger._warn[0]?.message.includes("a@b.fr"));
+    assert.ok(logger._warn[0]?.message.includes("u1"));
   });
 
   // Scenario 7: CRM call fails for a user → no write, errored++, error log with email + userId
@@ -185,7 +188,7 @@ describe("SyncNewsletterSubscriptions Use case", () => {
 
     const result = await usecase.execute();
 
-    expect(getSuccessData(result)).toEqual({
+    assert.deepStrictEqual(getSuccessData(result), {
       totalUsers: 1,
       updated: 0,
       unchanged: 0,
@@ -193,11 +196,11 @@ describe("SyncNewsletterSubscriptions Use case", () => {
       errored: 1,
       dryRun: false,
     });
-    expect(usersRepository._updates).toEqual([]);
-    expect(logger._error).toHaveLength(1);
-    expect(logger._error[0]?.message).toContain("a@b.fr");
-    expect(logger._error[0]?.message).toContain("u1");
-    expect(logger._error[0]?.error).toBe(crmError);
+    assert.deepStrictEqual(usersRepository._updates, []);
+    assert.strictEqual(logger._error.length, 1);
+    assert.ok(logger._error[0]?.message.includes("a@b.fr"));
+    assert.ok(logger._error[0]?.message.includes("u1"));
+    assert.strictEqual(logger._error[0]?.error, crmError);
   });
 
   // Scenario 10: one user errors, others succeed → run completes, errored counted, others processed
@@ -214,7 +217,7 @@ describe("SyncNewsletterSubscriptions Use case", () => {
 
     const result = await usecase.execute();
 
-    expect(getSuccessData(result)).toEqual({
+    assert.deepStrictEqual(getSuccessData(result), {
       totalUsers: 3,
       updated: 1,
       unchanged: 1,
@@ -222,7 +225,7 @@ describe("SyncNewsletterSubscriptions Use case", () => {
       errored: 1,
       dryRun: false,
     });
-    expect(usersRepository._updates).toEqual([{ userId: "u1", subscribed: true }]);
+    assert.deepStrictEqual(usersRepository._updates, [{ userId: "u1", subscribed: true }]);
   });
 
   // Scenario 8: end of run → final info log line summarizing all counters
@@ -238,13 +241,13 @@ describe("SyncNewsletterSubscriptions Use case", () => {
     await usecase.execute();
 
     const summaryLine = logger._info.find((line) => line.includes("sync summary")) ?? "";
-    expect(summaryLine).toContain("total=2");
-    expect(summaryLine).toContain("updated=1");
-    expect(summaryLine).toContain("unchanged=1");
-    expect(summaryLine).toContain("missingInCrm=0");
-    expect(summaryLine).toContain("errored=0");
-    expect(summaryLine).toMatch(/durationMs=\d+/);
-    expect(summaryLine).not.toContain("[DRY RUN]");
+    assert.ok(summaryLine.includes("total=2"));
+    assert.ok(summaryLine.includes("updated=1"));
+    assert.ok(summaryLine.includes("unchanged=1"));
+    assert.ok(summaryLine.includes("missingInCrm=0"));
+    assert.ok(summaryLine.includes("errored=0"));
+    assert.match(summaryLine, /durationMs=\d+/);
+    assert.ok(!summaryLine.includes("[DRY RUN]"));
   });
 
   // Logs the start of the run with a single info line
@@ -254,8 +257,8 @@ describe("SyncNewsletterSubscriptions Use case", () => {
     await usecase.execute();
 
     const startLine = logger._info.find((line) => line.includes("sync started")) ?? "";
-    expect(startLine).toContain("Newsletter subscription sync started");
-    expect(startLine).not.toContain("[DRY RUN]");
+    assert.ok(startLine.includes("Newsletter subscription sync started"));
+    assert.ok(!startLine.includes("[DRY RUN]"));
   });
 
   // Logs every drifted email with both the DB value and the CRM value
@@ -273,13 +276,9 @@ describe("SyncNewsletterSubscriptions Use case", () => {
     await usecase.execute();
 
     const driftLines = logger._info.filter((line) => line.includes("Drift detected"));
-    expect(driftLines).toHaveLength(2);
-    expect(driftLines).toEqual(
-      expect.arrayContaining([
-        expect.stringContaining("email=a@b.fr, db=false, crm=true"),
-        expect.stringContaining("email=c@b.fr, db=true, crm=false"),
-      ]),
-    );
+    assert.strictEqual(driftLines.length, 2);
+    assert.ok(driftLines.some((l) => l.includes("email=a@b.fr, db=false, crm=true")));
+    assert.ok(driftLines.some((l) => l.includes("email=c@b.fr, db=true, crm=false")));
   });
 
   // Scenario 11: dry-run with drift → counters as if real, no writes, summary prefixed [DRY RUN]
@@ -290,7 +289,7 @@ describe("SyncNewsletterSubscriptions Use case", () => {
 
     const result = await usecase.execute({ dryRun: true });
 
-    expect(getSuccessData(result)).toEqual({
+    assert.deepStrictEqual(getSuccessData(result), {
       totalUsers: 1,
       updated: 1,
       unchanged: 0,
@@ -298,9 +297,15 @@ describe("SyncNewsletterSubscriptions Use case", () => {
       errored: 0,
       dryRun: true,
     });
-    expect(usersRepository._updates).toEqual([]);
-    expect(logger._info.every((line) => line.includes("[DRY RUN]"))).toBe(true);
-    expect(logger._info.some((line) => line.includes("sync summary"))).toBe(true);
+    assert.deepStrictEqual(usersRepository._updates, []);
+    assert.strictEqual(
+      logger._info.every((line) => line.includes("[DRY RUN]")),
+      true,
+    );
+    assert.strictEqual(
+      logger._info.some((line) => line.includes("sync summary")),
+      true,
+    );
   });
 
   // Scenario 11 (missing-in-CRM variant): dry-run, DB=true, contact missing → no write, [DRY RUN] summary
@@ -310,7 +315,7 @@ describe("SyncNewsletterSubscriptions Use case", () => {
 
     const result = await usecase.execute({ dryRun: true });
 
-    expect(getSuccessData(result)).toEqual({
+    assert.deepStrictEqual(getSuccessData(result), {
       totalUsers: 1,
       updated: 0,
       unchanged: 0,
@@ -318,8 +323,14 @@ describe("SyncNewsletterSubscriptions Use case", () => {
       errored: 0,
       dryRun: true,
     });
-    expect(usersRepository._updates).toEqual([]);
-    expect(logger._info.every((line) => line.includes("[DRY RUN]"))).toBe(true);
-    expect(logger._info.some((line) => line.includes("sync summary"))).toBe(true);
+    assert.deepStrictEqual(usersRepository._updates, []);
+    assert.strictEqual(
+      logger._info.every((line) => line.includes("[DRY RUN]")),
+      true,
+    );
+    assert.strictEqual(
+      logger._info.some((line) => line.includes("sync summary")),
+      true,
+    );
   });
 });

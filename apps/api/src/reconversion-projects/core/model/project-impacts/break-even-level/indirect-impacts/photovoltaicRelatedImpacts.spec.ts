@@ -1,5 +1,6 @@
+import assert from "node:assert/strict";
+import { describe, it, beforeEach, mock } from "node:test";
 import { DevelopmentPlanFeatures, sumList } from "shared";
-import { describe, it, expect, vi, beforeEach } from "vitest";
 
 import { SumOnEvolutionPeriodService } from "../../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import { InputReconversionProjectData } from "../projectIndirectImpacts";
@@ -30,11 +31,11 @@ const baseProject: InputReconversionProjectData & {
 };
 
 describe("getPhotovoltaicPowerPlantProjectImpacts", () => {
-  let getWeightedYearlyValuesSpy: ReturnType<typeof vi.fn>;
+  let getWeightedYearlyValuesSpy: ReturnType<typeof mock.fn>;
   let mockService: SumOnEvolutionPeriodService;
 
   beforeEach(() => {
-    getWeightedYearlyValuesSpy = vi.fn((value: number, _?: string[]) => [value, value, value]);
+    getWeightedYearlyValuesSpy = mock.fn((value: number, _?: string[]) => [value, value, value]);
     mockService = {
       getWeightedYearlyValues: getWeightedYearlyValuesSpy,
     } as unknown as SumOnEvolutionPeriodService;
@@ -52,8 +53,8 @@ describe("getPhotovoltaicPowerPlantProjectImpacts", () => {
         },
         sumOnEvolutionPeriodService: mockService,
       });
-      expect(result.economicImpacts).toHaveLength(0);
-      expect(result.impactMetrics).toHaveLength(0);
+      assert.strictEqual(result.economicImpacts.length, 0);
+      assert.strictEqual(result.impactMetrics.length, 0);
     });
   });
 
@@ -68,10 +69,11 @@ describe("getPhotovoltaicPowerPlantProjectImpacts", () => {
       const co2Impact = result.economicImpacts.find(
         (r) => r.name === "avoidedCo2eqWithEnergyProduction",
       );
-      expect(co2Impact).toBeDefined();
-      expect(
-        result.impactMetrics.find((r) => r.name === "avoidedCO2TonsWithEnergyProduction"),
-      ).toBeDefined();
+      assert.ok(co2Impact !== undefined);
+      assert.ok(
+        result.impactMetrics.find((r) => r.name === "avoidedCO2TonsWithEnergyProduction") !==
+          undefined,
+      );
     });
 
     it("computes avoided CO2eq with co2_value and discount factor", () => {
@@ -80,11 +82,12 @@ describe("getPhotovoltaicPowerPlantProjectImpacts", () => {
         sumOnEvolutionPeriodService: mockService,
       });
 
-      const co2Call = (getWeightedYearlyValuesSpy.mock.calls as ServiceCall[]).find(
-        ([_v, weights]) => weights.includes("co2_value") && weights.includes("discount"),
-      );
+      const co2Call = getWeightedYearlyValuesSpy.mock.calls.find((call) => {
+        const [_v, weights] = call.arguments as ServiceCall;
+        return weights?.includes("co2_value") && weights?.includes("discount");
+      });
 
-      expect(co2Call).toBeDefined();
+      assert.ok(co2Call !== undefined);
     });
 
     it("computes positive avoided co2eq impact", () => {
@@ -96,10 +99,11 @@ describe("getPhotovoltaicPowerPlantProjectImpacts", () => {
       const co2Impact = result.economicImpacts.find(
         (r) => r.name === "avoidedCo2eqWithEnergyProduction",
       );
-      expect(co2Impact?.total).toBeGreaterThan(0);
-      expect(
-        result.impactMetrics.find((r) => r.name === "avoidedCO2TonsWithEnergyProduction")?.total,
-      ).toBeGreaterThan(0);
+      assert.ok((co2Impact?.total ?? 0) > 0);
+      assert.ok(
+        (result.impactMetrics.find((r) => r.name === "avoidedCO2TonsWithEnergyProduction")?.total ??
+          0) > 0,
+      );
     });
 
     it("computes householdsPoweredByRenewableEnergy metric impact", () => {
@@ -108,9 +112,10 @@ describe("getPhotovoltaicPowerPlantProjectImpacts", () => {
         sumOnEvolutionPeriodService: mockService,
       });
 
-      expect(
-        result.impactMetrics.find((r) => r.name === "householdsPoweredByRenewableEnergy")?.total,
-      ).toBeGreaterThan(0);
+      assert.ok(
+        (result.impactMetrics.find((r) => r.name === "householdsPoweredByRenewableEnergy")?.total ??
+          0) > 0,
+      );
     });
 
     it("computes detailsByYear and cumulativeByYear for each impact", () => {
@@ -120,9 +125,9 @@ describe("getPhotovoltaicPowerPlantProjectImpacts", () => {
       });
 
       result.economicImpacts.forEach((item) => {
-        expect(Array.isArray(item.detailsByYear)).toBe(true);
-        expect(item.total).toEqual(sumList(item.detailsByYear));
-        expect(Array.isArray(item.cumulativeByYear)).toBe(true);
+        assert.ok(Array.isArray(item.detailsByYear));
+        assert.deepStrictEqual(item.total, sumList(item.detailsByYear));
+        assert.ok(Array.isArray(item.cumulativeByYear));
       });
     });
   });
@@ -141,7 +146,7 @@ describe("getPhotovoltaicPowerPlantProjectImpacts", () => {
       const taxesImpact = result.economicImpacts.find(
         (r) => r.name === "projectPhotovoltaicTaxesIncome",
       );
-      expect(taxesImpact).toBeDefined();
+      assert.ok(taxesImpact !== undefined);
     });
 
     it("do not add projectPhotovoltaicTaxesIncome if no taxes are projected in expenses", () => {
@@ -153,9 +158,10 @@ describe("getPhotovoltaicPowerPlantProjectImpacts", () => {
         sumOnEvolutionPeriodService: mockService,
       });
 
-      expect(
+      assert.strictEqual(
         result.economicImpacts.find((r) => r.name === "projectPhotovoltaicTaxesIncome"),
-      ).toBeUndefined();
+        undefined,
+      );
     });
 
     it("annualize taxes with gdp_evolution and discount", () => {
@@ -167,11 +173,12 @@ describe("getPhotovoltaicPowerPlantProjectImpacts", () => {
         sumOnEvolutionPeriodService: mockService,
       });
 
-      const taxesCall = (getWeightedYearlyValuesSpy.mock.calls as ServiceCall[]).find(
-        ([_v, weights]) => weights.includes("gdp_evolution") && weights.includes("discount"),
-      );
+      const taxesCall = getWeightedYearlyValuesSpy.mock.calls.find((call) => {
+        const [_v, weights] = call.arguments as ServiceCall;
+        return weights?.includes("gdp_evolution") && weights?.includes("discount");
+      });
 
-      expect(taxesCall).toBeDefined();
+      assert.ok(taxesCall !== undefined);
     });
 
     it("computes a positive amount of taxes", () => {
@@ -186,7 +193,7 @@ describe("getPhotovoltaicPowerPlantProjectImpacts", () => {
       const taxesImpact = result.economicImpacts.find(
         (r) => r.name === "projectPhotovoltaicTaxesIncome",
       );
-      expect(taxesImpact?.total).toBeGreaterThan(0);
+      assert.ok((taxesImpact?.total ?? 0) > 0);
     });
   });
 
@@ -196,8 +203,8 @@ describe("getPhotovoltaicPowerPlantProjectImpacts", () => {
         reconversionProject: baseProject,
         sumOnEvolutionPeriodService: mockService,
       });
-      expect(result.economicImpacts).toHaveLength(1);
-      expect(result.impactMetrics).toHaveLength(2);
+      assert.strictEqual(result.economicImpacts.length, 1);
+      assert.strictEqual(result.impactMetrics.length, 2);
     });
 
     it("returs 2 impacts (CO2 + taxes)", () => {
@@ -209,8 +216,8 @@ describe("getPhotovoltaicPowerPlantProjectImpacts", () => {
         sumOnEvolutionPeriodService: mockService,
       });
 
-      expect(result.economicImpacts).toHaveLength(2);
-      expect(result.impactMetrics).toHaveLength(2);
+      assert.strictEqual(result.economicImpacts.length, 2);
+      assert.strictEqual(result.impactMetrics.length, 2);
     });
   });
 
@@ -234,11 +241,14 @@ describe("getPhotovoltaicPowerPlantProjectImpacts", () => {
         }),
       });
 
-      expect(
-        result.impactMetrics.find((d) => d.name === "conversionFullTimeJobs")?.total,
-      ).toBeCloseTo(1, 0);
+      assert.ok(
+        Math.abs(
+          (result.impactMetrics.find((d) => d.name === "conversionFullTimeJobs")?.total ?? 0) - 1,
+        ) < 0.5,
+      );
 
-      expect(result.impactMetrics.find((d) => d.name === "operationsFullTimeJobs")?.total).toEqual(
+      assert.deepStrictEqual(
+        result.impactMetrics.find((d) => d.name === "operationsFullTimeJobs")?.total,
         2,
       );
     });
@@ -259,9 +269,13 @@ describe("getPhotovoltaicPowerPlantProjectImpacts", () => {
         }),
       });
 
-      expect(result.impactMetrics.find((d) => d.name === "conversionFullTimeJobs")).toBeUndefined();
+      assert.strictEqual(
+        result.impactMetrics.find((d) => d.name === "conversionFullTimeJobs"),
+        undefined,
+      );
 
-      expect(result.impactMetrics.find((d) => d.name === "operationsFullTimeJobs")?.total).toEqual(
+      assert.deepStrictEqual(
+        result.impactMetrics.find((d) => d.name === "operationsFullTimeJobs")?.total,
         2,
       );
     });
@@ -296,13 +310,17 @@ describe("getPhotovoltaicPowerPlantProjectImpacts", () => {
         }),
       });
 
-      expect(
-        result.impactMetrics.find((d) => d.name === "conversionFullTimeJobs")?.total,
-      ).toBeCloseTo(0.7, 0);
+      assert.ok(
+        Math.abs(
+          (result.impactMetrics.find((d) => d.name === "conversionFullTimeJobs")?.total ?? 0) - 0.7,
+        ) < 0.5,
+      );
 
-      expect(
-        result.impactMetrics.find((d) => d.name === "operationsFullTimeJobs")?.total,
-      ).toBeCloseTo(2, 0);
+      assert.ok(
+        Math.abs(
+          (result.impactMetrics.find((d) => d.name === "operationsFullTimeJobs")?.total ?? 0) - 2,
+        ) < 0.5,
+      );
     });
   });
 });

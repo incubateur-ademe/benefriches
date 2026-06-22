@@ -1,4 +1,6 @@
 /* oxlint-disable typescript/dot-notation */
+import assert from "node:assert/strict";
+import { before, beforeEach, describe, it } from "node:test";
 import { AvoidedCO2EqEmissions } from "shared";
 
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
@@ -133,18 +135,41 @@ describe("UrbanProjectImpactsService", () => {
 
     const result = urbanProjectImpactsService.formatImpacts();
 
-    expect(result.socioeconomic.impacts).toContainEqual({
-      actor: "local_people",
-      amount: expect.any(Number) as number,
-      impact: "local_property_value_increase",
-      impactCategory: "economic_indirect",
-    });
-    expect(result.socioeconomic.impacts).toContainEqual({
-      actor: "community",
-      amount: expect.any(Number) as number,
-      impact: "local_transfer_duties_increase",
-      impactCategory: "economic_indirect",
-    });
+    {
+      const found = result.socioeconomic.impacts.find((i) => {
+        try {
+          assert.deepStrictEqual(i, {
+            actor: "local_people",
+            amount: i.amount,
+            impact: "local_property_value_increase",
+            impactCategory: "economic_indirect",
+          });
+          return true;
+        } catch {
+          return false;
+        }
+      });
+      assert.ok(found !== undefined, "expected local_property_value_increase impact");
+      assert.ok(typeof found.amount === "number", "amount should be a number");
+    }
+
+    {
+      const found = result.socioeconomic.impacts.find((i) => {
+        try {
+          assert.deepStrictEqual(i, {
+            actor: "community",
+            amount: i.amount,
+            impact: "local_transfer_duties_increase",
+            impactCategory: "economic_indirect",
+          });
+          return true;
+        } catch {
+          return false;
+        }
+      });
+      assert.ok(found !== undefined, "expected local_transfer_duties_increase impact");
+      assert.ok(typeof found.amount === "number", "amount should be a number");
+    }
   });
 
   it("returns no impacts related to local property value increase for non friche", () => {
@@ -166,15 +191,18 @@ describe("UrbanProjectImpactsService", () => {
 
     const result = urbanProjectImpactsService.formatImpacts();
 
-    expect(
+    assert.strictEqual(
       result.socioeconomic.impacts.some(({ impact }) => impact === "local_property_value_increase"),
-    ).toBe(false);
-    expect(
+      false,
+    );
+    assert.strictEqual(
       result.socioeconomic.impacts.some(
         ({ impact }) => impact === "local_transfer_duties_increase",
       ),
-    ).toBe(false);
+      false,
+    );
   });
+
   describe("TaxesIncomeImpact", () => {
     it("returns taxes income impact when new houses planned in project", () => {
       const projectImpactsService = new UrbanProjectImpactsService({
@@ -189,7 +217,7 @@ describe("UrbanProjectImpactsService", () => {
           cityPropertyValuePerSquareMeter: 2500,
         },
       });
-      expect(projectImpactsService["taxesIncomeImpact"]).toEqual([
+      assert.deepStrictEqual(projectImpactsService["taxesIncomeImpact"], [
         {
           actor: "community",
           amount: 280115,
@@ -223,7 +251,7 @@ describe("UrbanProjectImpactsService", () => {
           cityPropertyValuePerSquareMeter: 2500,
         },
       });
-      expect(projectImpactsService["taxesIncomeImpact"]).toEqual([
+      assert.deepStrictEqual(projectImpactsService["taxesIncomeImpact"], [
         {
           actor: "community",
           amount: 606001,
@@ -242,7 +270,7 @@ describe("UrbanProjectImpactsService", () => {
 
   describe("urban project impacts", () => {
     let urbanProjectImpactsService: UrbanProjectImpactsService;
-    beforeAll(() => {
+    before(() => {
       urbanProjectImpactsService = new UrbanProjectImpactsService({
         reconversionProject: {
           ...reconversionProjectImpactDataView,
@@ -258,7 +286,7 @@ describe("UrbanProjectImpactsService", () => {
         },
         relatedSite: site,
         evaluationPeriodInYears: 10,
-        dateProvider: dateProvider,
+        dateProvider: new DeterministicDateProvider(new Date("2024-01-05T13:00:00")),
         siteCityData: {
           siteIsFriche: true,
           cityPopulation: 300000,
@@ -268,23 +296,25 @@ describe("UrbanProjectImpactsService", () => {
       });
     });
 
-    it.each(commonSocioEconomicImpacts)(
-      "inherit common socio economic impact : %s",
-      (impactName) => {
+    for (const impactName of commonSocioEconomicImpacts) {
+      it(`inherit common socio economic impact : ${impactName}`, () => {
         const result = urbanProjectImpactsService.formatImpacts();
+        assert.strictEqual(
+          result.socioeconomic.impacts.some(({ impact }) => impact === impactName),
+          true,
+        );
+      });
+    }
 
-        expect(result.socioeconomic.impacts.some(({ impact }) => impact === impactName)).toBe(true);
-      },
-    );
-
-    it.each(urbanProjectSocioEconomicImpacts)(
-      "has urban project socio economic impact : %s",
-      (impactName) => {
+    for (const impactName of urbanProjectSocioEconomicImpacts) {
+      it(`has urban project socio economic impact : ${impactName}`, () => {
         const result = urbanProjectImpactsService.formatImpacts();
-
-        expect(result.socioeconomic.impacts.some(({ impact }) => impact === impactName)).toBe(true);
-      },
-    );
+        assert.strictEqual(
+          result.socioeconomic.impacts.some(({ impact }) => impact === impactName),
+          true,
+        );
+      });
+    }
 
     it("has urban project avoided_co2_eq_emissions socio economic impact with traffic and air conditioning", () => {
       const result = urbanProjectImpactsService.formatImpacts();
@@ -293,20 +323,43 @@ describe("UrbanProjectImpactsService", () => {
         ({ impact }) => impact === "avoided_co2_eq_emissions",
       ) as AvoidedCO2EqEmissions | undefined;
 
-      expect(avoidedCo2Emissions?.details).toContainEqual({
-        amount: expect.any(Number) as number,
-        impact: "avoided_traffic_co2_eq_emissions",
-      });
-      expect(avoidedCo2Emissions?.details).toContainEqual({
-        amount: expect.any(Number) as number,
-        impact: "avoided_air_conditioning_co2_eq_emissions",
-      });
+      {
+        const found = avoidedCo2Emissions?.details?.find((d) => {
+          try {
+            assert.deepStrictEqual(d, {
+              amount: d.amount,
+              impact: "avoided_traffic_co2_eq_emissions",
+            });
+            return true;
+          } catch {
+            return false;
+          }
+        });
+        assert.ok(found !== undefined, "expected avoided_traffic_co2_eq_emissions detail");
+        assert.ok(typeof found.amount === "number", "amount should be a number");
+      }
+
+      {
+        const found = avoidedCo2Emissions?.details?.find((d) => {
+          try {
+            assert.deepStrictEqual(d, {
+              amount: d.amount,
+              impact: "avoided_air_conditioning_co2_eq_emissions",
+            });
+            return true;
+          } catch {
+            return false;
+          }
+        });
+        assert.ok(found !== undefined, "expected avoided_air_conditioning_co2_eq_emissions detail");
+        assert.ok(typeof found.amount === "number", "amount should be a number");
+      }
     });
 
     it("returns urban project social impacts", () => {
       const result = urbanProjectImpactsService.formatImpacts();
 
-      expect(result.social).toEqual({
+      assert.deepStrictEqual(result.social, {
         accidents: urbanProjectImpactsService["accidentsImpact"],
         fullTimeJobs: urbanProjectImpactsService["fullTimeJobsImpact"],
         avoidedVehiculeKilometers:
@@ -323,15 +376,17 @@ describe("UrbanProjectImpactsService", () => {
     it("returns urban project environmental impacts on friche", () => {
       const result = urbanProjectImpactsService.formatImpacts();
 
-      expect(result.environmental.nonContaminatedSurfaceArea).toBeDefined();
-      expect(result.environmental.permeableSurfaceArea).toBeDefined();
-      expect(result.environmental.soilsCo2eqStorage).toBeDefined();
-      expect(result.environmental.soilsCarbonStorage).toBeDefined();
-      expect(result.environmental.avoidedCo2eqEmissions?.withCarTrafficDiminution).toEqual(
+      assert.ok(result.environmental.nonContaminatedSurfaceArea !== undefined);
+      assert.ok(result.environmental.permeableSurfaceArea !== undefined);
+      assert.ok(result.environmental.soilsCo2eqStorage !== undefined);
+      assert.ok(result.environmental.soilsCarbonStorage !== undefined);
+      assert.strictEqual(
+        result.environmental.avoidedCo2eqEmissions?.withCarTrafficDiminution,
         urbanProjectImpactsService["travelRelatedImpactsService"].getAvoidedTrafficCO2Emissions()
           ?.inTons,
       );
-      expect(result.environmental.avoidedCo2eqEmissions?.withAirConditioningDiminution).toEqual(
+      assert.strictEqual(
+        result.environmental.avoidedCo2eqEmissions?.withAirConditioningDiminution,
         urbanProjectImpactsService[
           "urbanFreshnessImpactsService"
         ].getAvoidedAirConditioningCo2Emissions()?.inTons,
@@ -358,7 +413,7 @@ describe("UrbanProjectImpactsService", () => {
           yearlyIncomes: [{ source: "operations", amount: 10000 }],
         },
         evaluationPeriodInYears: 10,
-        dateProvider: dateProvider,
+        dateProvider: new DeterministicDateProvider(new Date("2024-01-05T13:00:00")),
         siteCityData: {
           siteIsFriche: false,
           cityPopulation: 300000,
@@ -366,11 +421,11 @@ describe("UrbanProjectImpactsService", () => {
         },
       }).formatImpacts();
 
-      expect(result.environmental.nonContaminatedSurfaceArea).toBeUndefined();
-      expect(result.environmental.permeableSurfaceArea).toBeDefined();
-      expect(result.environmental.soilsCo2eqStorage).toBeDefined();
-      expect(result.environmental.soilsCarbonStorage).toBeDefined();
-      expect(result.environmental.avoidedCo2eqEmissions).toBeUndefined();
+      assert.strictEqual(result.environmental.nonContaminatedSurfaceArea, undefined);
+      assert.ok(result.environmental.permeableSurfaceArea !== undefined);
+      assert.ok(result.environmental.soilsCo2eqStorage !== undefined);
+      assert.ok(result.environmental.soilsCarbonStorage !== undefined);
+      assert.strictEqual(result.environmental.avoidedCo2eqEmissions, undefined);
     });
   });
 });

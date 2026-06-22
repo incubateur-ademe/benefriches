@@ -1,6 +1,8 @@
 import { HttpService } from "@nestjs/axios";
 import { ConfigService } from "@nestjs/config";
 import { AxiosError, AxiosHeaders, AxiosResponse, InternalAxiosRequestConfig } from "axios";
+import assert from "node:assert/strict";
+import { describe, it, beforeEach, mock } from "node:test";
 import { of, throwError } from "rxjs";
 
 import { ConnectCrm } from "./ConnectCrm";
@@ -38,14 +40,14 @@ const expectedAuthHeaders = {
 
 describe("ConnectCrm", () => {
   let httpService: {
-    get: ReturnType<typeof vi.fn>;
-    post: ReturnType<typeof vi.fn>;
-    put: ReturnType<typeof vi.fn>;
+    get: ReturnType<typeof mock.fn>;
+    post: ReturnType<typeof mock.fn>;
+    put: ReturnType<typeof mock.fn>;
   };
   let crm: ConnectCrm;
 
   beforeEach(() => {
-    httpService = { get: vi.fn(), post: vi.fn(), put: vi.fn() };
+    httpService = { get: mock.fn(), post: mock.fn(), put: mock.fn() };
     const configService = new ConfigService({
       CONNECT_CRM_HOST: "https://crm.example.com",
       CONNECT_CRM_CLIENT_ID: "client-id",
@@ -56,7 +58,7 @@ describe("ConnectCrm", () => {
 
   describe("findContactByEmail", () => {
     it("returns subscribedToNewsletter=true when listeAbonnementNewsletter contains 'Bénéfriches'", async () => {
-      httpService.get.mockReturnValue(
+      httpService.get.mock.mockImplementation(() =>
         of(
           buildAxiosResponse({
             success: true,
@@ -67,11 +69,11 @@ describe("ConnectCrm", () => {
 
       const result = await crm.findContactByEmail("user@example.com");
 
-      expect(result).toEqual({ subscribedToNewsletter: true });
+      assert.deepStrictEqual(result, { subscribedToNewsletter: true });
     });
 
     it("returns subscribedToNewsletter=false when listeAbonnementNewsletter is empty", async () => {
-      httpService.get.mockReturnValue(
+      httpService.get.mock.mockImplementation(() =>
         of(
           buildAxiosResponse({
             success: true,
@@ -82,11 +84,11 @@ describe("ConnectCrm", () => {
 
       const result = await crm.findContactByEmail("user@example.com");
 
-      expect(result).toEqual({ subscribedToNewsletter: false });
+      assert.deepStrictEqual(result, { subscribedToNewsletter: false });
     });
 
     it("returns subscribedToNewsletter=false when subscribed to other newsletters but not Bénéfriches", async () => {
-      httpService.get.mockReturnValue(
+      httpService.get.mock.mockImplementation(() =>
         of(
           buildAxiosResponse({
             success: true,
@@ -97,11 +99,11 @@ describe("ConnectCrm", () => {
 
       const result = await crm.findContactByEmail("user@example.com");
 
-      expect(result).toEqual({ subscribedToNewsletter: false });
+      assert.deepStrictEqual(result, { subscribedToNewsletter: false });
     });
 
     it("returns subscribedToNewsletter=false when listeAbonnementNewsletter is null/missing", async () => {
-      httpService.get.mockReturnValue(
+      httpService.get.mock.mockImplementation(() =>
         of(
           buildAxiosResponse({
             success: true,
@@ -112,11 +114,11 @@ describe("ConnectCrm", () => {
 
       const result = await crm.findContactByEmail("user@example.com");
 
-      expect(result).toEqual({ subscribedToNewsletter: false });
+      assert.deepStrictEqual(result, { subscribedToNewsletter: false });
     });
 
     it("returns null when envelope success is false", async () => {
-      httpService.get.mockReturnValue(
+      httpService.get.mock.mockImplementation(() =>
         of(
           buildAxiosResponse({
             success: false,
@@ -126,40 +128,40 @@ describe("ConnectCrm", () => {
 
       const result = await crm.findContactByEmail("user@example.com");
 
-      expect(result).toBeNull();
+      assert.strictEqual(result, null);
     });
 
     it("returns null on 404 not-found", async () => {
-      httpService.get.mockReturnValue(throwError(() => buildAxiosError(404)));
+      httpService.get.mock.mockImplementation(() => throwError(() => buildAxiosError(404)));
 
       const result = await crm.findContactByEmail("user@example.com");
 
-      expect(result).toBeNull();
+      assert.strictEqual(result, null);
     });
 
     it("throws on 500 server error", async () => {
-      httpService.get.mockReturnValue(throwError(() => buildAxiosError(500)));
+      httpService.get.mock.mockImplementation(() => throwError(() => buildAxiosError(500)));
 
-      await expect(crm.findContactByEmail("user@example.com")).rejects.toThrow();
+      await assert.rejects(() => crm.findContactByEmail("user@example.com"));
     });
 
     it("URL-encodes the email so addresses with '+' or '@' are not misinterpreted", async () => {
-      httpService.get.mockReturnValue(
+      httpService.get.mock.mockImplementation(() =>
         of(buildAxiosResponse({ success: true, contact: { listeAbonnementNewsletter: [] } })),
       );
 
       await crm.findContactByEmail("foo+bar@example.com");
 
-      expect(httpService.get).toHaveBeenCalledWith(
+      assert.deepStrictEqual(httpService.get.mock.calls[0]?.arguments, [
         "https://crm.example.com/api/v1/personnes/mail/foo%2Bbar%40example.com",
         { headers: expectedAuthHeaders },
-      );
+      ]);
     });
   });
 
   describe("createContact", () => {
     beforeEach(() => {
-      httpService.post.mockReturnValue(of(buildAxiosResponse({ success: true })));
+      httpService.post.mock.mockImplementation(() => of(buildAxiosResponse({ success: true })));
     });
 
     it("POSTs the contact without newsletter fields when subscribedToNewsletter is false", async () => {
@@ -170,7 +172,7 @@ describe("ConnectCrm", () => {
         subscribedToNewsletter: false,
       });
 
-      expect(httpService.post).toHaveBeenCalledWith(
+      assert.deepStrictEqual(httpService.post.mock.calls[0]?.arguments, [
         "https://crm.example.com/api/v1/personnes",
         {
           email: "user@example.com",
@@ -180,12 +182,11 @@ describe("ConnectCrm", () => {
           acceptationRGPD: true,
         },
         { headers: expectedAuthHeaders },
-      );
+      ]);
     });
 
     it("POSTs with abonnementNewsletter=true and today's dateNewsletter when subscribedToNewsletter is true", async () => {
-      vi.useFakeTimers();
-      vi.setSystemTime(new Date("2026-05-04T10:30:00Z"));
+      mock.timers.enable({ apis: ["Date"], now: new Date("2026-05-04T10:30:00Z") });
 
       try {
         await crm.createContact({
@@ -195,7 +196,7 @@ describe("ConnectCrm", () => {
           subscribedToNewsletter: true,
         });
 
-        expect(httpService.post).toHaveBeenCalledWith(
+        assert.deepStrictEqual(httpService.post.mock.calls[0]?.arguments, [
           "https://crm.example.com/api/v1/personnes",
           {
             email: "user@example.com",
@@ -207,16 +208,16 @@ describe("ConnectCrm", () => {
             dateNewsletter: "2026-05-04",
           },
           { headers: expectedAuthHeaders },
-        );
+        ]);
       } finally {
-        vi.useRealTimers();
+        mock.timers.reset();
       }
     });
   });
 
   describe("updateContactLastLoginDate", () => {
     beforeEach(() => {
-      httpService.put.mockReturnValue(of(buildAxiosResponse({ success: true })));
+      httpService.put.mock.mockImplementation(() => of(buildAxiosResponse({ success: true })));
     });
 
     it("PUTs the login date formatted as yyyy-MM-dd'T'HH:mm:ss with source and email", async () => {
@@ -225,15 +226,18 @@ describe("ConnectCrm", () => {
         new Date("2026-05-04T14:23:45.000Z"),
       );
 
-      expect(httpService.put).toHaveBeenCalledWith(
-        "https://crm.example.com/api/v1/personnes/mail/user@example.com",
-        {
-          source: "Bénéfriches",
-          dateConnexion: expect.stringMatching(/^2026-05-04T\d{2}:23:45$/) as string,
-          email: "user@example.com",
-        },
-        { headers: expectedAuthHeaders },
-      );
+      const args = httpService.put.mock.calls[0]?.arguments;
+      assert.ok(args !== undefined);
+      const body = args[1] as { dateConnexion: string; source: string; email: string };
+      // Test the regex-matched field separately
+      assert.ok(/^2026-05-04T\d{2}:23:45$/.test(body.dateConnexion));
+      // Then assert the rest without the dynamic field
+      const { dateConnexion: _dateConnexion, ...rest } = body;
+      assert.deepStrictEqual(rest, {
+        source: "Bénéfriches",
+        email: "user@example.com",
+      });
+      assert.deepStrictEqual(args[2], { headers: expectedAuthHeaders });
     });
   });
 });

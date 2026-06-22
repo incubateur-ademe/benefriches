@@ -1,4 +1,7 @@
 /* oxlint-disable typescript/dot-notation */
+import assert from "node:assert/strict";
+import { describe, it, beforeEach } from "node:test";
+
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 
@@ -104,46 +107,54 @@ describe("Photovoltaic power plant specific impacts: Avoided CO2 eq emissions wi
 
     const result = photovoltaicProjectImpactsService.formatImpacts();
 
-    expect(result.socioeconomic.impacts).toContainEqual({
-      amount: expect.any(Number) as number,
-      impact: "avoided_co2_eq_emissions",
-      impactCategory: "environmental_monetary",
-      actor: "human_society",
-      details: [
-        {
-          impact: "avoided_co2_eq_with_enr",
-          amount: expect.any(Number) as number,
-        },
-      ],
-    });
-    expect(result.environmental.avoidedCo2eqEmissions.withRenewableEnergyProduction).toEqual(
-      expect.any(Number) as number,
+    const avoidedCo2Impact = result.socioeconomic.impacts.find(
+      (i) => i.impact === "avoided_co2_eq_emissions",
     );
-    expect(result.social.householdsPoweredByRenewableEnergy).toMatchObject({
-      base: 0,
-      forecast: expect.any(Number) as number,
-    });
+    assert.ok(avoidedCo2Impact !== undefined);
+    assert.ok(typeof avoidedCo2Impact.amount === "number");
+    assert.deepStrictEqual(avoidedCo2Impact.impactCategory, "environmental_monetary");
+    assert.deepStrictEqual(avoidedCo2Impact.actor, "human_society");
+    assert.ok(Array.isArray((avoidedCo2Impact as { details?: unknown[] }).details));
+    const details = (avoidedCo2Impact as { details: { impact: string; amount: unknown }[] })
+      .details;
+    assert.strictEqual(details.length, 1);
+    assert.ok(details.some((d) => d.impact === "avoided_co2_eq_with_enr"));
+    assert.ok(details.every((d) => typeof d.amount === "number"));
+
+    assert.ok(
+      typeof result.environmental.avoidedCo2eqEmissions.withRenewableEnergyProduction === "number",
+    );
+    const households = result.social.householdsPoweredByRenewableEnergy;
+    assert.ok(households !== undefined);
+    assert.ok(typeof households.base === "number");
+    assert.deepStrictEqual(households.base, 0);
+    assert.ok(typeof households.forecast === "number");
   });
 
-  it.each([
+  for (const impactName of [
     "rental_income",
     "avoided_friche_costs",
     "taxes_income",
     "property_transfer_duties_income",
     "ecosystem_services",
     "water_regulation",
-  ])("inherit common socio economic impact : %s", (impactName) => {
-    const photovoltaicProjectImpactsService = new PhotovoltaicProjectImpactsService({
-      reconversionProject: reconversionProjectImpactDataView,
-      relatedSite: site,
-      evaluationPeriodInYears: 10,
-      dateProvider: dateProvider,
+  ] as const) {
+    it(`inherit common socio economic impact : ${impactName}`, () => {
+      const photovoltaicProjectImpactsService = new PhotovoltaicProjectImpactsService({
+        reconversionProject: reconversionProjectImpactDataView,
+        relatedSite: site,
+        evaluationPeriodInYears: 10,
+        dateProvider: dateProvider,
+      });
+
+      const result = photovoltaicProjectImpactsService.formatImpacts();
+
+      assert.strictEqual(
+        result.socioeconomic.impacts.some(({ impact }) => impact === impactName),
+        true,
+      );
     });
-
-    const result = photovoltaicProjectImpactsService.formatImpacts();
-
-    expect(result.socioeconomic.impacts.some(({ impact }) => impact === impactName)).toBe(true);
-  });
+  }
 
   it("format impacts as ReconversionProjectImpacts object", () => {
     const photovoltaicProjectImpactsService = new PhotovoltaicProjectImpactsService({
@@ -155,7 +166,7 @@ describe("Photovoltaic power plant specific impacts: Avoided CO2 eq emissions wi
 
     const result = photovoltaicProjectImpactsService.formatImpacts();
 
-    expect(result.socioeconomic.impacts).toEqual([
+    assert.deepStrictEqual(result.socioeconomic.impacts, [
       ...photovoltaicProjectImpactsService["rentImpacts"],
       ...photovoltaicProjectImpactsService["avoidedFricheCosts"],
       ...photovoltaicProjectImpactsService["propertyTransferDutiesIncome"],
@@ -163,24 +174,35 @@ describe("Photovoltaic power plant specific impacts: Avoided CO2 eq emissions wi
       ...photovoltaicProjectImpactsService["taxesIncomeImpact"],
       ...photovoltaicProjectImpactsService["avoidedCo2EqEmissionsMonetaryValue"],
     ]);
-    expect(result.social).toEqual({
+    assert.deepStrictEqual(result.social, {
       fullTimeJobs: photovoltaicProjectImpactsService["fullTimeJobsImpact"],
       accidents: photovoltaicProjectImpactsService["accidentsImpact"],
       householdsPoweredByRenewableEnergy:
         photovoltaicProjectImpactsService["householdsPoweredByRenewableEnergy"],
     });
-    expect(result.environmental).toEqual({
-      nonContaminatedSurfaceArea: photovoltaicProjectImpactsService["nonContaminatedSurfaceArea"],
-      permeableSurfaceArea: photovoltaicProjectImpactsService["permeableSurfaceArea"],
-      soilsCo2eqStorage: photovoltaicProjectImpactsService["soilsCo2eqStorage"],
-      soilsCarbonStorage: photovoltaicProjectImpactsService["soilsCarbonStorage"],
-      avoidedCo2eqEmissions: {
-        withRenewableEnergyProduction: expect.closeTo(
-          photovoltaicProjectImpactsService["avoidedCO2TonsWithEnergyProduction"] ?? 0,
-          1,
-        ) as number,
-      },
-    });
-    expect(result.economicBalance).toEqual(photovoltaicProjectImpactsService["economicBalance"]);
+    assert.deepStrictEqual(
+      result.environmental.nonContaminatedSurfaceArea,
+      photovoltaicProjectImpactsService["nonContaminatedSurfaceArea"],
+    );
+    assert.deepStrictEqual(
+      result.environmental.permeableSurfaceArea,
+      photovoltaicProjectImpactsService["permeableSurfaceArea"],
+    );
+    assert.deepStrictEqual(
+      result.environmental.soilsCo2eqStorage,
+      photovoltaicProjectImpactsService["soilsCo2eqStorage"],
+    );
+    assert.deepStrictEqual(
+      result.environmental.soilsCarbonStorage,
+      photovoltaicProjectImpactsService["soilsCarbonStorage"],
+    );
+    // avoidedCo2eqEmissions.withRenewableEnergyProduction uses closeTo (precision 1)
+    const actual = result.environmental.avoidedCo2eqEmissions.withRenewableEnergyProduction ?? 0;
+    const expected = photovoltaicProjectImpactsService["avoidedCO2TonsWithEnergyProduction"] ?? 0;
+    assert.ok(Math.abs(actual - expected) < Math.pow(10, -1) / 2);
+    assert.deepStrictEqual(
+      result.economicBalance,
+      photovoltaicProjectImpactsService["economicBalance"],
+    );
   });
 });

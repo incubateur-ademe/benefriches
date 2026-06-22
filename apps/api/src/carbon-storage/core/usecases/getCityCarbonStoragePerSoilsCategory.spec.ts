@@ -1,3 +1,5 @@
+import assert from "node:assert/strict";
+import { describe, it, beforeEach } from "node:test";
 import { roundTo2Digits } from "shared";
 
 import { LocalCarbonStorageQuery } from "src/carbon-storage/adapters/secondary/carbon-storage-query/LocalCarbonStorageQuery.mock";
@@ -13,7 +15,7 @@ describe("GetCityCarbonStocksPerSoilsCategoryUseCase", () => {
     carbonStorageQuery = new LocalCarbonStorageQuery();
   });
 
-  test("it should compute the right total: simple example without forest", async () => {
+  it("it should compute the right total: simple example without forest", async () => {
     const usecase = new GetCityCarbonStoragePerSoilsCategoryUseCase(carbonStorageQuery);
     const result = await usecase.execute({
       cityCode: "01026",
@@ -33,13 +35,14 @@ describe("GetCityCarbonStocksPerSoilsCategoryUseCase", () => {
     const prairieBushesCultivation = 4 * 69;
     const biomass = 4 * 7;
 
-    expect(result.isSuccess()).toBe(true);
-    expect(
+    assert.strictEqual(result.isSuccess(), true);
+    assert.deepStrictEqual(
       (result as SuccessResult<{ totalCarbonStorage: number }>).getData().totalCarbonStorage,
-    ).toEqual(soilCultivation + prairieBushesCultivation + biomass);
+      soilCultivation + prairieBushesCultivation + biomass,
+    );
   });
 
-  test("it should compute the right total: example with forest", async () => {
+  it("it should compute the right total: example with forest", async () => {
     const usecase = new GetCityCarbonStoragePerSoilsCategoryUseCase(carbonStorageQuery);
     const result = await usecase.execute({
       cityCode: "01027",
@@ -77,12 +80,13 @@ describe("GetCityCarbonStocksPerSoilsCategoryUseCase", () => {
       biomassArtificialNonForest +
       litterForest;
 
-    expect(
+    assert.deepStrictEqual(
       (result as SuccessResult<{ totalCarbonStorage: number }>).getData().totalCarbonStorage,
-    ).toEqual(roundTo2Digits(total));
+      roundTo2Digits(total),
+    );
   });
 
-  test("it should return the right object format with forest value", async () => {
+  it("it should return the right object format with forest value", async () => {
     const usecase = new GetCityCarbonStoragePerSoilsCategoryUseCase(carbonStorageQuery);
     const result = await usecase.execute({
       cityCode: "01027",
@@ -98,11 +102,11 @@ describe("GetCityCarbonStocksPerSoilsCategoryUseCase", () => {
       ],
     });
 
-    expect(result.isSuccess()).toBe(true);
+    assert.strictEqual(result.isSuccess(), true);
     const successResult = result as SuccessResult;
-    // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
+    // oxlint-disable-next-line typescript/no-confusing-void-expression
     const data = successResult.getData();
-    expect(data).toEqual({
+    assert.deepStrictEqual(data, {
       totalCarbonStorage: 632.61,
       soilsCarbonStorage: [
         {
@@ -121,7 +125,7 @@ describe("GetCityCarbonStocksPerSoilsCategoryUseCase", () => {
     });
   });
 
-  test("it should return the right total for all kinds of impermeable soils", async () => {
+  it("it should return the right total for all kinds of impermeable soils", async () => {
     const usecase = new GetCityCarbonStoragePerSoilsCategoryUseCase(carbonStorageQuery);
     const result = await usecase.execute({
       cityCode: "01027",
@@ -143,11 +147,11 @@ describe("GetCityCarbonStocksPerSoilsCategoryUseCase", () => {
 
     const CARBON_STORAGE_BY_HECTARE_FOR_IMPERMEABLE_SOILS = 30;
 
-    expect(result.isSuccess()).toBe(true);
+    assert.strictEqual(result.isSuccess(), true);
     const successResult = result as SuccessResult;
-    // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
+    // oxlint-disable-next-line typescript/no-confusing-void-expression
     const data = successResult.getData();
-    expect(data).toEqual({
+    assert.deepStrictEqual(data, {
       totalCarbonStorage: CARBON_STORAGE_BY_HECTARE_FOR_IMPERMEABLE_SOILS * (1.5 + 3 + 2),
       soilsCarbonStorage: [
         {
@@ -172,7 +176,7 @@ describe("GetCityCarbonStocksPerSoilsCategoryUseCase", () => {
     });
   });
 
-  test("it should find no carbon for soils water", async () => {
+  it("it should find no carbon for soils water", async () => {
     const usecase = new GetCityCarbonStoragePerSoilsCategoryUseCase(carbonStorageQuery);
     const result = await usecase.execute({
       cityCode: "01027",
@@ -184,11 +188,11 @@ describe("GetCityCarbonStocksPerSoilsCategoryUseCase", () => {
       ],
     });
 
-    expect(result.isSuccess()).toBe(true);
+    assert.strictEqual(result.isSuccess(), true);
     const successResult = result as SuccessResult;
-    // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
+    // oxlint-disable-next-line typescript/no-confusing-void-expression
     const data = successResult.getData();
-    expect(data).toEqual({
+    assert.deepStrictEqual(data, {
       totalCarbonStorage: 0,
       soilsCarbonStorage: [
         {

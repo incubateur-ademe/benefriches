@@ -1,3 +1,5 @@
+import assert from "node:assert/strict";
+import { describe, it, beforeEach } from "node:test";
 import {
   ReconversionProjectImpactsDataView,
   SiteImpactsDataView,
@@ -170,8 +172,8 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
         comparisonSiteNature: "AGRICULTURAL_OPERATION",
       });
 
-      expect(result.isFailure()).toBe(true);
-      expect((result as FailureResult).getError()).toBe("ReconversionProjectNotFound");
+      assert.strictEqual(result.isFailure(), true);
+      assert.strictEqual((result as FailureResult).getError(), "ReconversionProjectNotFound");
     });
 
     it("throws error when reconversion project development plan does not exist", async () => {
@@ -207,8 +209,8 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
         comparisonSiteNature: "AGRICULTURAL_OPERATION",
       });
 
-      expect(result.isFailure()).toBe(true);
-      expect((result as FailureResult).getError()).toBe("NoDevelopmentPlanType");
+      assert.strictEqual(result.isFailure(), true);
+      assert.strictEqual((result as FailureResult).getError(), "NoDevelopmentPlanType");
     });
 
     it("throws error when reconversion project related site does not exist", async () => {
@@ -254,8 +256,8 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
         comparisonSiteNature: "AGRICULTURAL_OPERATION",
       });
 
-      expect(result.isFailure()).toBe(true);
-      expect((result as FailureResult).getError()).toBe("SiteNotFound");
+      assert.strictEqual(result.isFailure(), true);
+      assert.strictEqual((result as FailureResult).getError(), "SiteNotFound");
     });
   });
 
@@ -280,97 +282,112 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
       comparisonSiteNature: "AGRICULTURAL_OPERATION",
     });
 
-    expect(result.isSuccess()).toBe(true);
+    assert.strictEqual(result.isSuccess(), true);
     const data = (result as SuccessResult<UrbanSprawlImpactsComparisonResultDto>).getData();
 
-    expect(data.cumulativeBalanceByYear).toBeDefined();
-    expect(data.operationsFirstYear).toBeDefined();
-    expect(data.projectEconomicBalance).toBeDefined();
-    expect(data.projectOnSimulationSiteImpactsData).toBeDefined();
-    expect(data.projectionYears).toBeDefined();
-    expect(data.simulationSiteData).toBeDefined();
-    expect(data.simulationSiteStatuQuoImpactsData).toBeDefined();
-    expect(data.stakeholders).toBeDefined();
+    assert.ok(data.cumulativeBalanceByYear !== undefined);
+    assert.ok(data.operationsFirstYear !== undefined);
+    assert.ok(data.projectEconomicBalance !== undefined);
+    assert.ok(data.projectOnSimulationSiteImpactsData !== undefined);
+    assert.ok(data.projectionYears !== undefined);
+    assert.ok(data.simulationSiteData !== undefined);
+    assert.ok(data.simulationSiteStatuQuoImpactsData !== undefined);
+    assert.ok(data.stakeholders !== undefined);
 
-    expect(
+    assert.strictEqual(
       data.simulationSiteStatuQuoImpactsData.details.find(
         ({ name }) => name === "fricheMaintenanceAndSecuringCostsForOwner",
       ),
-    ).toBeUndefined();
+      undefined,
+    );
 
-    expect(
-      data.simulationSiteStatuQuoImpactsData.details.find(({ name }) => name === "rentalIncome")
-        ?.total,
-    ).toBeCloseTo(1505, 0);
+    const rentalIncomeTotal = data.simulationSiteStatuQuoImpactsData.details.find(
+      ({ name }) => name === "rentalIncome",
+    )?.total;
+    assert.ok(rentalIncomeTotal !== undefined && Math.abs(rentalIncomeTotal - 1505) < 0.5);
 
-    expect(
-      data.projectOnSimulationSiteImpactsData.details.find(
-        ({ name }) => name === "projectedRentalIncome",
-      )?.total,
-    ).toBeCloseTo(124032, 0);
+    const projectedRentalIncomeTotal = data.projectOnSimulationSiteImpactsData.details.find(
+      ({ name }) => name === "projectedRentalIncome",
+    )?.total;
+    assert.ok(
+      projectedRentalIncomeTotal !== undefined &&
+        Math.abs(projectedRentalIncomeTotal - 124032) < 0.5,
+    );
 
-    expect(data.stakeholders.current.owner).toEqual({
+    assert.deepStrictEqual(data.stakeholders.current.owner, {
       structureType: "municipality",
       structureName: "Mairie de Blajan",
     });
 
-    expect(data.stakeholders.future.owner).toEqual({
+    assert.deepStrictEqual(data.stakeholders.future.owner, {
       structureType: "company",
       structureName: "Futur proprio",
     });
 
-    expect(
-      data.projectOnSimulationSiteImpactsData.details.find(
-        ({ name }) => name === "projectNewHousesTaxesIncome",
-      )?.total,
-    ).toBeCloseTo(194032, 0);
+    const projectNewHousesTaxesIncomeTotal = data.projectOnSimulationSiteImpactsData.details.find(
+      ({ name }) => name === "projectNewHousesTaxesIncome",
+    )?.total;
+    assert.ok(
+      projectNewHousesTaxesIncomeTotal !== undefined &&
+        Math.abs(projectNewHousesTaxesIncomeTotal - 194032) < 0.5,
+    );
 
-    expect(
+    const projectNewCompanyTaxationIncomeTotal =
       data.projectOnSimulationSiteImpactsData.details.find(
         ({ name }) => name === "projectNewCompanyTaxationIncome",
-      )?.total,
-    ).toBeCloseTo(595807, 0);
-
-    expect(
-      data.simulationSiteStatuQuoImpactsData.details.find(({ name }) => name === "taxesIncome")
-        ?.total,
-    ).toBeCloseTo(258, 0);
-
-    expect(
-      data.projectOnSimulationSiteImpactsData.details.find(({ name }) => name === "waterRegulation")
-        ?.total,
-    ).toBeLessThan(
-      data.simulationSiteStatuQuoImpactsData.details.find(({ name }) => name === "waterRegulation")
-        ?.total ?? 0,
+      )?.total;
+    assert.ok(
+      projectNewCompanyTaxationIncomeTotal !== undefined &&
+        Math.abs(projectNewCompanyTaxationIncomeTotal - 595807) < 0.5,
     );
 
-    expect(
+    const taxesIncomeTotal = data.simulationSiteStatuQuoImpactsData.details.find(
+      ({ name }) => name === "taxesIncome",
+    )?.total;
+    assert.ok(taxesIncomeTotal !== undefined && Math.abs(taxesIncomeTotal - 258) < 0.5);
+
+    const waterRegulationProject = data.projectOnSimulationSiteImpactsData.details.find(
+      ({ name }) => name === "waterRegulation",
+    )?.total;
+    const waterRegulationStatuQuo =
+      data.simulationSiteStatuQuoImpactsData.details.find(({ name }) => name === "waterRegulation")
+        ?.total ?? 0;
+    assert.ok(
+      waterRegulationProject !== undefined && waterRegulationProject < waterRegulationStatuQuo,
+    );
+
+    const invasiveSpeciesProject =
       data.projectOnSimulationSiteImpactsData.details.find(
         ({ name }) => name === "invasiveSpeciesRegulation",
-      )?.total ?? 0,
-    ).toBeLessThan(
+      )?.total ?? 0;
+    const invasiveSpeciesStatuQuo =
       data.simulationSiteStatuQuoImpactsData.details.find(
         ({ name }) => name === "invasiveSpeciesRegulation",
-      )?.total ?? 0,
+      )?.total ?? 0;
+    assert.ok(invasiveSpeciesProject < invasiveSpeciesStatuQuo);
+
+    const avoidedRoadsConstructionTotal = data.projectOnSimulationSiteImpactsData.details.find(
+      ({ name }) => name === "avoidedRoadsAndUtilitiesConstructionExpenses",
+    )?.total;
+    assert.ok(
+      avoidedRoadsConstructionTotal !== undefined &&
+        Math.abs(avoidedRoadsConstructionTotal - -120805) < 0.5,
     );
 
-    expect(
-      data.projectOnSimulationSiteImpactsData.details.find(
-        ({ name }) => name === "avoidedRoadsAndUtilitiesConstructionExpenses",
-      )?.total,
-    ).toBeCloseTo(-120805, 0);
+    const avoidedRoadsMaintenanceTotal = data.projectOnSimulationSiteImpactsData.details.find(
+      ({ name }) => name === "avoidedRoadsAndUtilitiesMaintenanceExpenses",
+    )?.total;
+    assert.ok(
+      avoidedRoadsMaintenanceTotal !== undefined &&
+        Math.abs(avoidedRoadsMaintenanceTotal - -203038) < 0.5,
+    );
 
-    expect(
-      data.projectOnSimulationSiteImpactsData.details.find(
-        ({ name }) => name === "avoidedRoadsAndUtilitiesMaintenanceExpenses",
-      )?.total,
-    ).toBeCloseTo(-203038, 0);
-
-    expect(
+    assert.strictEqual(
       data.projectOnSimulationSiteImpactsData.details.find(
         ({ name }) => name === "fricheRoadsAndUtilitiesExpenses",
       ),
-    ).toBeUndefined();
+      undefined,
+    );
   });
 
   it("returns impacts with no errors when soils carbon storage cannot be computed", async () => {
@@ -397,14 +414,15 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
       comparisonSiteNature: "NATURAL_AREA",
     });
 
-    expect(result.isSuccess()).toBe(true);
+    assert.strictEqual(result.isSuccess(), true);
     const data = (result as SuccessResult<UrbanSprawlImpactsComparisonResultDto>).getData();
 
-    expect(data.projectOnSimulationSiteImpactsData.details.length > 0).toBeTruthy();
-    expect(
+    assert.ok(data.projectOnSimulationSiteImpactsData.details.length > 0);
+    assert.strictEqual(
       data.projectOnSimulationSiteImpactsData.details.find(({ name }) => name === "newStoredCo2Eq"),
-    ).toEqual(undefined);
-    expect(data.simulationSiteStatuQuoImpactsData).toBeDefined();
+      undefined,
+    );
+    assert.ok(data.simulationSiteStatuQuoImpactsData);
   });
 
   it("compares photovoltaic project on agricultural site with project on friche", async () => {
@@ -521,35 +539,37 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
       comparisonSiteNature: "FRICHE",
     });
 
-    expect(result.isSuccess()).toBe(true);
+    assert.strictEqual(result.isSuccess(), true);
     const data = (result as SuccessResult<UrbanSprawlImpactsComparisonResultDto>).getData();
 
-    expect(
-      data.projectEconomicBalance.details.find(({ name }) => name === "siteReinstatement"),
-    ).toBeDefined();
+    assert.ok(
+      data.projectEconomicBalance.details.find(({ name }) => name === "siteReinstatement") !==
+        undefined,
+    );
 
-    expect(
-      data.projectOnSimulationSiteImpactsData.details.find(
-        ({ name }) => name === "avoidedRoadsAndUtilitiesConstructionExpenses",
-      )?.total,
-    ).toBeGreaterThan(0);
+    const avoidedRoadsConstructionTotal = data.projectOnSimulationSiteImpactsData.details.find(
+      ({ name }) => name === "avoidedRoadsAndUtilitiesConstructionExpenses",
+    )?.total;
+    assert.ok(avoidedRoadsConstructionTotal !== undefined && avoidedRoadsConstructionTotal > 0);
 
-    expect(
-      data.projectOnSimulationSiteImpactsData.details.find(
-        ({ name }) => name === "avoidedRoadsAndUtilitiesMaintenanceExpenses",
-      )?.total,
-    ).toBeGreaterThan(0);
+    const avoidedRoadsMaintenanceTotal = data.projectOnSimulationSiteImpactsData.details.find(
+      ({ name }) => name === "avoidedRoadsAndUtilitiesMaintenanceExpenses",
+    )?.total;
+    assert.ok(avoidedRoadsMaintenanceTotal !== undefined && avoidedRoadsMaintenanceTotal > 0);
 
-    expect(
+    assert.strictEqual(
       data.projectOnSimulationSiteImpactsData.details.find(
         ({ name }) => name === "fricheRoadsAndUtilitiesExpenses",
       ),
-    ).toBeUndefined();
+      undefined,
+    );
 
-    expect(
-      data.projectOnSimulationSiteImpactsData.details.find(
-        ({ name }) => name === "projectedRentalIncome",
-      )?.total,
-    ).toBeCloseTo(82688, 0);
+    const projectedRentalIncomeTotal = data.projectOnSimulationSiteImpactsData.details.find(
+      ({ name }) => name === "projectedRentalIncome",
+    )?.total;
+    assert.ok(
+      projectedRentalIncomeTotal !== undefined &&
+        Math.abs(projectedRentalIncomeTotal - 82688) < 0.5,
+    );
   });
 });

@@ -1,3 +1,6 @@
+import assert from "node:assert/strict";
+import { describe, it, beforeEach } from "node:test";
+
 import { InMemoryReconversionCompatibilityEvaluationRepository } from "src/reconversion-compatibility/adapters/secondary/reconversion-compatibility-evaluation/InMemoryReconversionCompatibilityEvaluationRepository";
 import { InMemoryEventPublisher } from "src/shared-kernel/adapters/events/publisher/InMemoryEventPublisher";
 import { DeterministicUuidGenerator } from "src/shared-kernel/adapters/id-generator/DeterministicIdGenerator";
@@ -44,7 +47,7 @@ describe("AddRelatedSiteToReconversionCompatibilityEvaluationUseCase", () => {
       relatedSiteId: "site-123",
     });
 
-    expect(repository.evaluations).toEqual<ReconversionCompatibilityEvaluation[]>([
+    assert.deepStrictEqual(repository.evaluations, [
       {
         id: "bdea66f3-e911-4a32-a829-cab382bc34ea",
         createdBy: "58090ca1-7680-4193-a3e8-89b7ed2bd6b8",
@@ -54,9 +57,9 @@ describe("AddRelatedSiteToReconversionCompatibilityEvaluationUseCase", () => {
         completedAt: completedAt,
         relatedSiteId: "site-123",
       },
-    ]);
+    ] satisfies ReconversionCompatibilityEvaluation[]);
 
-    expect(eventPublisher.events).toEqual([
+    assert.deepStrictEqual(eventPublisher.events, [
       {
         id: "event-id-1",
         name: "reconversion-compatibility-evaluation.site-created",
@@ -92,8 +95,9 @@ describe("AddRelatedSiteToReconversionCompatibilityEvaluationUseCase", () => {
       relatedSiteId: "site-456",
     });
 
-    expect(result.isFailure()).toBe(true);
-    expect((result as FailureResult<"RelatedSiteAlreadyExists">).getError()).toBe(
+    assert.strictEqual(result.isFailure(), true);
+    assert.strictEqual(
+      (result as FailureResult<"RelatedSiteAlreadyExists">).getError(),
       "RelatedSiteAlreadyExists",
     );
   });
@@ -110,7 +114,10 @@ describe("AddRelatedSiteToReconversionCompatibilityEvaluationUseCase", () => {
       relatedSiteId: "site-123",
     });
 
-    expect(result.isFailure()).toBe(true);
-    expect((result as FailureResult<"EvaluationNotFound">).getError()).toBe("EvaluationNotFound");
+    assert.strictEqual(result.isFailure(), true);
+    assert.strictEqual(
+      (result as FailureResult<"EvaluationNotFound">).getError(),
+      "EvaluationNotFound",
+    );
   });
 });

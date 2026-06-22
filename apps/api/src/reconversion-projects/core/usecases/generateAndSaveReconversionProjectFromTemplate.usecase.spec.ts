@@ -1,3 +1,5 @@
+import assert from "node:assert/strict";
+import { describe, it, beforeEach } from "node:test";
 import { reconversionProjectTemplateSchema } from "shared";
 import { v4 as uuid } from "uuid";
 
@@ -72,9 +74,8 @@ describe("GenerateAndSaveReconversionProjectFromTemplateUseCase Use Case", () =>
   });
 
   describe("Error cases", () => {
-    it.each(reconversionProjectTemplateSchema.options)(
-      "cannot create a template %s reconversion project with a non-existing site",
-      async (template) => {
+    for (const template of reconversionProjectTemplateSchema.options) {
+      it(`cannot create a template ${template} reconversion project with a non-existing site`, async () => {
         const usecase = new GenerateAndSaveReconversionProjectFromTemplateUseCase(
           generateReconversionProjectFromTemplateUseCase,
           reconversionProjectRepository,
@@ -89,15 +90,14 @@ describe("GenerateAndSaveReconversionProjectFromTemplateUseCase Use Case", () =>
           createdBy: uuid(),
           template: template,
         });
-        expect(result.isFailure()).toBe(true);
-        expect((result as FailureResult).getError()).toBe("SiteNotFound");
-      },
-    );
+        assert.strictEqual(result.isFailure(), true);
+        assert.strictEqual((result as FailureResult).getError(), "SiteNotFound");
+      });
+    }
   });
 
-  it.each(reconversionProjectTemplateSchema.options)(
-    "should generate and save a %s project with default name, given related site id, createdBy, createdAt and creationMode",
-    async (template) => {
+  for (const template of reconversionProjectTemplateSchema.options) {
+    it(`should generate and save a ${template} project with default name, given related site id, createdBy, createdAt and creationMode`, async () => {
       const usecase = new GenerateAndSaveReconversionProjectFromTemplateUseCase(
         generateReconversionProjectFromTemplateUseCase,
         reconversionProjectRepository,
@@ -113,26 +113,26 @@ describe("GenerateAndSaveReconversionProjectFromTemplateUseCase Use Case", () =>
         createdBy: creatorId,
         template: template,
       });
-      expect(result.isSuccess()).toBe(true);
+      assert.strictEqual(result.isSuccess(), true);
 
       const createdReconversionProjects: ReconversionProjectSaveDto[] =
         reconversionProjectRepository._getReconversionProjects();
-      expect(createdReconversionProjects).toHaveLength(1);
+      assert.strictEqual(createdReconversionProjects.length, 1);
       const createdReconversionProject = createdReconversionProjects[0];
-      expect(createdReconversionProject?.id).toEqual(reconversionProjectId);
-      expect(createdReconversionProject?.relatedSiteId).toEqual(site.id);
-      expect(createdReconversionProject?.createdBy).toEqual(creatorId);
-      expect(createdReconversionProject?.creationMode).toEqual("express");
+      assert.deepStrictEqual(createdReconversionProject?.id, reconversionProjectId);
+      assert.deepStrictEqual(createdReconversionProject?.relatedSiteId, site.id);
+      assert.deepStrictEqual(createdReconversionProject?.createdBy, creatorId);
+      assert.deepStrictEqual(createdReconversionProject?.creationMode, "express");
 
       // success published event
-      expect(eventPublisher.events).toHaveLength(1);
+      assert.strictEqual(eventPublisher.events.length, 1);
       const event = eventPublisher.events[0];
-      expect(event?.name).toEqual(RECONVERSION_PROJECT_CREATED);
-      expect(event?.payload).toEqual({
+      assert.deepStrictEqual(event?.name, RECONVERSION_PROJECT_CREATED);
+      assert.deepStrictEqual(event?.payload, {
         reconversionProjectId,
         siteId: site.id,
         createdBy: creatorId,
       });
-    },
-  );
+    });
+  }
 });

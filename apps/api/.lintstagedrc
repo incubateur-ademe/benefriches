@@ -1,4 +1,4 @@
 {
-  "*.(ts|js)": "pnpm lint",
-  "*.(js|ts|md|json)": "pnpm format:check"
+  "*.(ts|js)": "bash -c 'pnpm exec oxlint --type-aware'",
+  "*.(js|ts|md|json)": "bash -c 'pnpm format:check'"
 }

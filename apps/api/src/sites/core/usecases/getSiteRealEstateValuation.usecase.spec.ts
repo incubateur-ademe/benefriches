@@ -1,3 +1,6 @@
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+
 import { FailureResult, SuccessResult } from "src/shared-kernel/result";
 import { InMemorySitesQuery } from "src/sites/adapters/secondary/site-query/InMemorySitesQuery";
 import { InMemoryCityStatsQuery } from "src/territory/adapters/secondary/city-stats-query/InMemoryCityStatsQuery";
@@ -18,8 +21,8 @@ describe("GetSiteRealEstateValuationUseCase", () => {
     const useCase = new GetSiteRealEstateValuationUseCase(sitesQuery, cityStatsQuery);
     const result = await useCase.execute({ siteId });
 
-    expect(result.isSuccess()).toBe(true);
-    expect((result as SuccessResult<unknown>).getData()).toEqual({
+    assert.strictEqual(result.isSuccess(), true);
+    assert.deepStrictEqual((result as SuccessResult<unknown>).getData(), {
       sellingPrice: 8_000_000, // 1000 * 8000
       propertyTransferDuties: 464_800, // 8_000_000 * 0.0581 (TRANSFER_TAX_PERCENT_PER_TRANSACTION)
     });
@@ -32,7 +35,7 @@ describe("GetSiteRealEstateValuationUseCase", () => {
     const useCase = new GetSiteRealEstateValuationUseCase(sitesQuery, cityStatsQuery);
     const result = await useCase.execute({ siteId: "nonexistent" });
 
-    expect(result.isFailure()).toBe(true);
-    expect((result as FailureResult).getError()).toBe("SiteNotFound");
+    assert.strictEqual(result.isFailure(), true);
+    assert.strictEqual((result as FailureResult).getError(), "SiteNotFound");
   });
 });

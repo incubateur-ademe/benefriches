@@ -1,3 +1,5 @@
+import assert from "node:assert/strict";
+import { describe, it, beforeEach } from "node:test";
 import { v4 as uuid } from "uuid";
 
 import { InMemoryReconversionProjectRepository } from "src/reconversion-projects/adapters/secondary/repositories/reconversion-project/InMemoryReconversionProjectRepository";
@@ -54,11 +56,14 @@ describe("DuplicateReconversionProject use case", () => {
       userId,
     });
 
-    expect(result.isFailure()).toBe(true);
-    expect((result as FailureResult<"UserNotAuthorized">).getError()).toBe("UserNotAuthorized");
+    assert.strictEqual(result.isFailure(), true);
+    assert.strictEqual(
+      (result as FailureResult<"UserNotAuthorized">).getError(),
+      "UserNotAuthorized",
+    );
 
     const savedProjects = reconversionProjectRepository._getReconversionProjects();
-    expect(savedProjects).toHaveLength(1);
+    assert.strictEqual(savedProjects.length, 1);
   });
 
   it("fails when source project does not exist", async () => {
@@ -75,8 +80,9 @@ describe("DuplicateReconversionProject use case", () => {
       userId: uuid(),
     });
 
-    expect(result.isFailure()).toBe(true);
-    expect((result as FailureResult<"SourceReconversionProjectNotFound">).getError()).toBe(
+    assert.strictEqual(result.isFailure(), true);
+    assert.strictEqual(
+      (result as FailureResult<"SourceReconversionProjectNotFound">).getError(),
       "SourceReconversionProjectNotFound",
     );
   });
@@ -107,13 +113,13 @@ describe("DuplicateReconversionProject use case", () => {
       newProjectId,
       userId,
     });
-    expect(result.isSuccess()).toBe(true);
+    assert.strictEqual(result.isSuccess(), true);
 
     const savedProjects = reconversionProjectRepository._getReconversionProjects();
-    expect(savedProjects).toHaveLength(2);
+    assert.strictEqual(savedProjects.length, 2);
 
     const duplicatedProject = savedProjects[1];
-    expect(duplicatedProject).toEqual({
+    assert.deepStrictEqual(duplicatedProject, {
       ...sourceProject,
       id: newProjectId,
       name: "Copie de Projet 1",
@@ -122,7 +128,7 @@ describe("DuplicateReconversionProject use case", () => {
       creationMode: "duplicated",
     });
 
-    expect(eventPublisher.events).toEqual([
+    assert.deepStrictEqual(eventPublisher.events, [
       {
         id: "event-id-1",
         name: "reconversion-project.duplicated",

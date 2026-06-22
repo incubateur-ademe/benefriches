@@ -1,3 +1,6 @@
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+
 import type { SuccessResult } from "src/shared-kernel/result";
 import { InMemoryCityRuralityQuery } from "src/territory/adapters/secondary/city-rurality-query/InMemoryCityRuralityQuery";
 
@@ -13,8 +16,8 @@ describe("GetCityRurality UseCase", () => {
 
     const result = await usecase.execute({ cityCode: "01029" });
 
-    expect(result.isSuccess()).toBe(true);
-    expect((result as SuccessResult<CityRuralityData>).getData()).toEqual({
+    assert.strictEqual(result.isSuccess(), true);
+    assert.deepStrictEqual((result as SuccessResult<CityRuralityData>).getData(), {
       cityCode: "01029",
       isRural: true,
     });
@@ -27,8 +30,8 @@ describe("GetCityRurality UseCase", () => {
 
     const result = await usecase.execute({ cityCode: "01001" });
 
-    expect(result.isSuccess()).toBe(true);
-    expect((result as SuccessResult<CityRuralityData>).getData()).toEqual({
+    assert.strictEqual(result.isSuccess(), true);
+    assert.deepStrictEqual((result as SuccessResult<CityRuralityData>).getData(), {
       cityCode: "01001",
       isRural: false,
     });

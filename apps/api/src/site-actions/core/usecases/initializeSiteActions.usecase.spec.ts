@@ -1,5 +1,5 @@
-/* oxlint-disable typescript-eslint/no-confusing-void-expression, typescript-eslint/no-unsafe-assignment */
-import { describe, expect, it } from "vitest";
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
 
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DeterministicUuidGenerator } from "src/shared-kernel/adapters/id-generator/DeterministicIdGenerator";
@@ -28,56 +28,63 @@ describe("InitializeSiteActions UseCase", () => {
       siteId: "site-123",
     });
 
-    expect(result.isSuccess()).toBe(true);
-    expect((result as SuccessResult).getData()).toBeUndefined();
+    assert.strictEqual(result.isSuccess(), true);
+    // oxlint-disable-next-line typescript/no-confusing-void-expression
+    assert.strictEqual((result as SuccessResult).getData(), undefined);
 
     const savedActions = repository._getSiteActions();
-    expect(savedActions).toHaveLength(6);
+    assert.strictEqual(savedActions.length, 6);
 
     const actionsByType = new Map(savedActions.map((a) => [a.actionType, a]));
 
-    expect(actionsByType.get("EVALUATE_COMPATIBILITY")).toEqual({
-      id: expect.any(String),
+    assert.deepStrictEqual(actionsByType.get("EVALUATE_COMPATIBILITY"), {
+      // oxlint-disable-next-line no-non-null-assertion
+      id: actionsByType.get("EVALUATE_COMPATIBILITY")!.id,
       siteId: "site-123",
       actionType: "EVALUATE_COMPATIBILITY",
       status: "todo",
       createdAt: new Date("2024-01-01T10:00:00.000Z"),
     });
 
-    expect(actionsByType.get("EVALUATE_RECONVERSION_SOCIOECONOMIC_IMPACTS")).toEqual({
-      id: expect.any(String),
+    assert.deepStrictEqual(actionsByType.get("EVALUATE_RECONVERSION_SOCIOECONOMIC_IMPACTS"), {
+      // oxlint-disable-next-line no-non-null-assertion
+      id: actionsByType.get("EVALUATE_RECONVERSION_SOCIOECONOMIC_IMPACTS")!.id,
       siteId: "site-123",
       actionType: "EVALUATE_RECONVERSION_SOCIOECONOMIC_IMPACTS",
       status: "todo",
       createdAt: new Date("2024-01-01T10:00:00.000Z"),
     });
 
-    expect(actionsByType.get("REQUEST_URBAN_VITALIZ_SUPPORT")).toEqual({
-      id: expect.any(String),
+    assert.deepStrictEqual(actionsByType.get("REQUEST_URBAN_VITALIZ_SUPPORT"), {
+      // oxlint-disable-next-line no-non-null-assertion
+      id: actionsByType.get("REQUEST_URBAN_VITALIZ_SUPPORT")!.id,
       siteId: "site-123",
       actionType: "REQUEST_URBAN_VITALIZ_SUPPORT",
       status: "todo",
       createdAt: new Date("2024-01-01T10:00:00.000Z"),
     });
 
-    expect(actionsByType.get("REQUEST_INFORMATION_ABOUT_REMEDIATION")).toEqual({
-      id: expect.any(String),
+    assert.deepStrictEqual(actionsByType.get("REQUEST_INFORMATION_ABOUT_REMEDIATION"), {
+      // oxlint-disable-next-line no-non-null-assertion
+      id: actionsByType.get("REQUEST_INFORMATION_ABOUT_REMEDIATION")!.id,
       siteId: "site-123",
       actionType: "REQUEST_INFORMATION_ABOUT_REMEDIATION",
       status: "todo",
       createdAt: new Date("2024-01-01T10:00:00.000Z"),
     });
 
-    expect(actionsByType.get("REQUEST_FUNDING_INFORMATION")).toEqual({
-      id: expect.any(String),
+    assert.deepStrictEqual(actionsByType.get("REQUEST_FUNDING_INFORMATION"), {
+      // oxlint-disable-next-line no-non-null-assertion
+      id: actionsByType.get("REQUEST_FUNDING_INFORMATION")!.id,
       siteId: "site-123",
       actionType: "REQUEST_FUNDING_INFORMATION",
       status: "todo",
       createdAt: new Date("2024-01-01T10:00:00.000Z"),
     });
 
-    expect(actionsByType.get("REFERENCE_SITE_ON_CARTOFRICHES")).toEqual({
-      id: expect.any(String),
+    assert.deepStrictEqual(actionsByType.get("REFERENCE_SITE_ON_CARTOFRICHES"), {
+      // oxlint-disable-next-line no-non-null-assertion
+      id: actionsByType.get("REFERENCE_SITE_ON_CARTOFRICHES")!.id,
       siteId: "site-123",
       actionType: "REFERENCE_SITE_ON_CARTOFRICHES",
       status: "todo",
@@ -110,12 +117,13 @@ describe("InitializeSiteActions UseCase", () => {
       siteId: "site-123",
     });
 
-    expect(result.isFailure()).toBe(true);
-    expect((result as FailureResult<"SiteAlreadyInitialized">).getError()).toBe(
+    assert.strictEqual(result.isFailure(), true);
+    assert.strictEqual(
+      (result as FailureResult<"SiteAlreadyInitialized">).getError(),
       "SiteAlreadyInitialized",
     );
 
     // Verify no actions were saved
-    expect(repository._getSiteActions()).toHaveLength(0);
+    assert.strictEqual(repository._getSiteActions().length, 0);
   });
 });

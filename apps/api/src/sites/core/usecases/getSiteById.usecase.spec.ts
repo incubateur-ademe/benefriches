@@ -1,3 +1,6 @@
+import assert from "node:assert/strict";
+import { describe, it, beforeEach } from "node:test";
+
 import { FailureResult, SuccessResult } from "src/shared-kernel/result";
 import { InMemorySitesQuery } from "src/sites/adapters/secondary/site-query/InMemorySitesQuery";
 
@@ -15,8 +18,8 @@ describe("GetSiteById Use Case", () => {
     const siteId = "fdc94bb2-ec2c-49f8-92ea-19bd91160027";
     const usecase = new GetSiteByIdUseCase(sitesQuery);
     const result = await usecase.execute({ siteId });
-    expect(result.isFailure()).toBe(true);
-    expect((result as FailureResult).getError()).toBe("SiteNotFound");
+    assert.strictEqual(result.isFailure(), true);
+    assert.strictEqual((result as FailureResult).getError(), "SiteNotFound");
   });
 
   it("Can get an existing site", async () => {
@@ -66,8 +69,8 @@ describe("GetSiteById Use Case", () => {
 
     const result = await usecase.execute({ siteId: site.id });
 
-    expect(result.isSuccess()).toBe(true);
-    expect((result as SuccessResult<unknown>).getData()).toEqual({
+    assert.strictEqual(result.isSuccess(), true);
+    assert.deepStrictEqual((result as SuccessResult<unknown>).getData(), {
       site: {
         id: site.id,
         name: site.name,

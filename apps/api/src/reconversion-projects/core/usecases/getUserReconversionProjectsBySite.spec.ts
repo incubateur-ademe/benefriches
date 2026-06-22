@@ -1,4 +1,5 @@
-import { vi } from "vitest";
+import assert from "node:assert/strict";
+import { describe, it, mock } from "node:test";
 
 import { InMemoryReconversionProjectsListQuery } from "src/reconversion-projects/adapters/secondary/queries/reconversion-project-list/InMemoryReconversionProjectsListQuery";
 import { FailureResult, SuccessResult } from "src/shared-kernel/result";
@@ -16,8 +17,8 @@ describe("GetUserReconversionProjectsBySite Use Case", () => {
 
     // @ts-expect-error userId is required
     const result = await usecase.execute({ userId: undefined });
-    expect(result.isFailure()).toBe(true);
-    expect((result as FailureResult<"UserIdRequired">).getError()).toBe("UserIdRequired");
+    assert.strictEqual(result.isFailure(), true);
+    assert.strictEqual((result as FailureResult<"UserIdRequired">).getError(), "UserIdRequired");
   });
 
   it("gets list of reconversion projects grouped by site for a user", async () => {
@@ -53,15 +54,15 @@ describe("GetUserReconversionProjectsBySite Use Case", () => {
     ];
     const userId = "0918223a-4d05-43a3-ad15-ccac704f7998";
     const query = new InMemoryReconversionProjectsListQuery(reconversionProjects);
-    vi.spyOn(query, "getGroupedBySite");
+    const spy = mock.method(query, "getGroupedBySite");
 
     const usecase = new GetUserReconversionProjectsBySiteUseCase(query);
     const result = await usecase.execute({ userId });
-    expect(result.isSuccess()).toBe(true);
-    expect((result as SuccessResult<ReconversionProjectsGroupedBySite>).getData()).toEqual(
+    assert.strictEqual(result.isSuccess(), true);
+    assert.deepStrictEqual(
+      (result as SuccessResult<ReconversionProjectsGroupedBySite>).getData(),
       reconversionProjects,
     );
-    /* oxlint-disable-next-line typescript/unbound-method */
-    expect(query.getGroupedBySite).toHaveBeenCalledWith({ userId });
+    assert.deepStrictEqual(spy.mock.calls[0]?.arguments, [{ userId }]);
   });
 });

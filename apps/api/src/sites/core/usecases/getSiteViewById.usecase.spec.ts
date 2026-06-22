@@ -1,3 +1,6 @@
+import assert from "node:assert/strict";
+import { describe, it, beforeEach } from "node:test";
+
 import { FailureResult, SuccessResult } from "src/shared-kernel/result";
 import { InMemoryMutabilityEvaluationQuery } from "src/site-evaluations/adapters/secondary/queries/InMemoryMutabilityEvaluationQuery";
 import { InMemorySitesQuery } from "src/sites/adapters/secondary/site-query/InMemorySitesQuery";
@@ -77,8 +80,8 @@ describe("GetSiteViewById Use Case", () => {
     const usecase = new GetSiteViewByIdUseCase(sitesQuery, mutabilityEvaluationQuery);
     const result = await usecase.execute({ siteId: site.id });
 
-    expect(result.isSuccess()).toBe(true);
-    expect((result as SuccessResult<{ site: SiteView }>).getData()).toEqual({
+    assert.strictEqual(result.isSuccess(), true);
+    assert.deepStrictEqual((result as SuccessResult<{ site: SiteView }>).getData(), {
       site,
     });
   });
@@ -90,8 +93,8 @@ describe("GetSiteViewById Use Case", () => {
     const usecase = new GetSiteViewByIdUseCase(sitesQuery, mutabilityEvaluationQuery);
     const result = await usecase.execute({ siteId: nonExistentSiteId });
 
-    expect(result.isFailure()).toBe(true);
-    expect((result as FailureResult).getError()).toBe("SiteNotFound");
+    assert.strictEqual(result.isFailure(), true);
+    assert.strictEqual((result as FailureResult).getError(), "SiteNotFound");
   });
 
   it("returns site with compatibility evaluation when evaluation exists", async () => {
@@ -140,10 +143,10 @@ describe("GetSiteViewById Use Case", () => {
     const usecase = new GetSiteViewByIdUseCase(sitesQuery, mutabilityEvaluationQuery);
     const result = await usecase.execute({ siteId });
 
-    expect(result.isSuccess()).toBe(true);
+    assert.strictEqual(result.isSuccess(), true);
     const successResult = result as SuccessResult<{ site: SiteView }>;
     const returnedSite = successResult.getData().site;
-    expect(returnedSite.compatibilityEvaluation).toEqual({
+    assert.deepStrictEqual(returnedSite.compatibilityEvaluation, {
       results: [
         { usage: "equipements", score: 0.7 },
         { usage: "culture", score: 0.65 },
@@ -197,9 +200,9 @@ describe("GetSiteViewById Use Case", () => {
     const usecase = new GetSiteViewByIdUseCase(sitesQuery, mutabilityEvaluationQuery);
     const result = await usecase.execute({ siteId: "site-without-eval-456" });
 
-    expect(result.isSuccess()).toBe(true);
+    assert.strictEqual(result.isSuccess(), true);
     const successResult = result as SuccessResult<{ site: SiteView }>;
     const returnedSite = successResult.getData().site;
-    expect(returnedSite.compatibilityEvaluation).toBeNull();
+    assert.strictEqual(returnedSite.compatibilityEvaluation, null);
   });
 });

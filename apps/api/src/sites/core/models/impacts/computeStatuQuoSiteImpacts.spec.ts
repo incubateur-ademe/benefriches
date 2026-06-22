@@ -1,4 +1,6 @@
-import { GetSiteImpactsDto, SiteImpactsDataView } from "shared";
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+import type { SiteImpactsDataView } from "shared";
 import { v4 as uuid } from "uuid";
 
 import { computeStatuQuoSiteImpacts } from "./computeStatuQuoSiteImpacts";
@@ -70,12 +72,10 @@ describe("computeStatuQuoSiteImpacts", () => {
         site: { ...fricheSite, isSiteOperated: false },
       });
 
-      expect(result).toMatchObject({
-        projectionYears: expect.any(Array) as string[],
-        economicImpacts: expect.any(Object) as GetSiteImpactsDto["economicImpacts"],
-        impactMetrics: expect.any(Array) as GetSiteImpactsDto["impactMetrics"],
-        stakeholders: expect.any(Object) as GetSiteImpactsDto["stakeholders"],
-      });
+      assert.ok(Array.isArray(result.projectionYears));
+      assert.ok(typeof result.economicImpacts === "object" && result.economicImpacts !== null);
+      assert.ok(typeof result.impactMetrics === "object" && result.impactMetrics !== null);
+      assert.ok(typeof result.stakeholders === "object" && result.stakeholders !== null);
     });
 
     it("projectionYears has same length as cumulativeByYear", () => {
@@ -85,10 +85,12 @@ describe("computeStatuQuoSiteImpacts", () => {
       });
 
       for (let i = 1; i < result.economicImpacts.details.length; i++) {
-        expect(result.economicImpacts.details[i]?.detailsByYear).toHaveLength(
+        assert.strictEqual(
+          result.economicImpacts.details[i]?.detailsByYear.length,
           result.projectionYears.length,
         );
-        expect(result.economicImpacts.details[i]?.cumulativeByYear).toHaveLength(
+        assert.strictEqual(
+          result.economicImpacts.details[i]?.cumulativeByYear.length,
           result.projectionYears.length,
         );
       }
@@ -100,7 +102,7 @@ describe("computeStatuQuoSiteImpacts", () => {
         site: { ...fricheSite, isSiteOperated: false },
       });
 
-      expect(result.projectionYears[0]).toBe(String(BASE_PARAMS.operationsFirstYear));
+      assert.strictEqual(result.projectionYears[0], String(BASE_PARAMS.operationsFirstYear));
     });
   });
 
@@ -111,7 +113,7 @@ describe("computeStatuQuoSiteImpacts", () => {
         site: { ...fricheSite, isSiteOperated: false },
       });
 
-      expect(result.stakeholders.owner).toMatchObject({
+      assert.partialDeepStrictEqual(result.stakeholders.owner, {
         structureType: fricheSite.ownerStructureType,
         structureName: fricheSite.ownerName,
       });
@@ -123,7 +125,7 @@ describe("computeStatuQuoSiteImpacts", () => {
         site: { ...fricheSite, isSiteOperated: false },
       });
 
-      expect(result.stakeholders.operator).toBeUndefined();
+      assert.strictEqual(result.stakeholders.operator, undefined);
     });
 
     it("operator is tenant when isSiteOperated and tenantStructureType is defined", () => {
@@ -132,7 +134,7 @@ describe("computeStatuQuoSiteImpacts", () => {
         site: { ...fricheSite, isSiteOperated: true },
       });
 
-      expect(result.stakeholders.operator).toMatchObject({
+      assert.partialDeepStrictEqual(result.stakeholders.operator, {
         structureType: fricheSite.tenantStructureType,
         structureName: fricheSite.tenantName,
       });
@@ -151,7 +153,7 @@ describe("computeStatuQuoSiteImpacts", () => {
         site: siteWithoutTenant,
       });
 
-      expect(result.stakeholders.operator).toMatchObject({
+      assert.partialDeepStrictEqual(result.stakeholders.operator, {
         structureType: fricheSite.ownerStructureType,
         structureName: fricheSite.ownerName,
       });
@@ -165,12 +167,12 @@ describe("computeStatuQuoSiteImpacts", () => {
         site: localAuthoritySite,
       });
 
-      expect(result.economicImpacts.total).not.toBe(0);
+      assert.notStrictEqual(result.economicImpacts.total, 0);
 
       const hasOperating = result.economicImpacts.details.some(
         (d) => d.name === "operatingEconomicBalance",
       );
-      expect(hasOperating).toBe(true);
+      assert.strictEqual(hasOperating, true);
     });
 
     it("cumulativeBalanceByYear includes operatingEconomicBalance only if operator is company", () => {
@@ -182,7 +184,7 @@ describe("computeStatuQuoSiteImpacts", () => {
       const hasOperating = resultCompany.economicImpacts.details.some(
         (d) => d.name === "operatingEconomicBalance",
       );
-      expect(hasOperating).toBe(true);
+      assert.strictEqual(hasOperating, true);
     });
   });
 
@@ -196,9 +198,9 @@ describe("computeStatuQuoSiteImpacts", () => {
       });
 
       const carbon = result.economicImpacts.details.find((d) => d.name === "storedCo2Eq");
-      expect(carbon?.total).toBeCloseTo(2750000.0000000005);
-      expect(carbon?.detailsByYear).toEqual([carbon?.total, 0, 0, 0, 0]);
-      expect(carbon?.cumulativeByYear).toEqual([
+      assert.ok(Math.abs((carbon?.total ?? 0) - 2750000.0000000005) < 0.005);
+      assert.deepStrictEqual(carbon?.detailsByYear, [carbon?.total, 0, 0, 0, 0]);
+      assert.deepStrictEqual(carbon?.cumulativeByYear, [
         carbon?.total,
         carbon?.total,
         carbon?.total,
@@ -218,8 +220,11 @@ describe("computeStatuQuoSiteImpacts", () => {
       });
 
       const hasCarbon = result.economicImpacts.details.some((d) => d.name === "storedCo2Eq");
-      expect(hasCarbon).toBe(false);
-      expect(result.impactMetrics.some((d) => d.name === "storedCo2Eq")).toBe(false);
+      assert.strictEqual(hasCarbon, false);
+      assert.strictEqual(
+        result.impactMetrics.some((d) => d.name === "storedCo2Eq"),
+        false,
+      );
     });
   });
 });

@@ -1,3 +1,6 @@
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+
 import { SumOnEvolutionPeriodService } from "src/reconversion-projects/core/model/sum-on-evolution-period/SumOnEvolutionPeriodService";
 
 import { getSiteStatuQuoOperatingEconomicBalance } from "./siteOperatingEconomicBalance";
@@ -19,8 +22,8 @@ describe("getSiteStatuQuoOperatingEconomicBalance", () => {
       sumOnEvolutionPeriodService: makeSumService(),
     });
 
-    expect(result.total).toBe(0);
-    expect(result.details).toHaveLength(0);
+    assert.strictEqual(result.total, 0);
+    assert.strictEqual(result.details.length, 0);
   });
 
   describe("expenses", () => {
@@ -32,8 +35,8 @@ describe("getSiteStatuQuoOperatingEconomicBalance", () => {
       });
 
       const expenseEntry = result.details.find((d) => d.details === "maintenance");
-      expect(expenseEntry).toBeDefined();
-      expect(expenseEntry?.total).toBeLessThan(0);
+      assert.ok(expenseEntry !== undefined);
+      assert.ok((expenseEntry?.total ?? 0) < 0);
     });
 
     it("adds each expenses to details array result", () => {
@@ -46,7 +49,7 @@ describe("getSiteStatuQuoOperatingEconomicBalance", () => {
         sumOnEvolutionPeriodService: makeSumService(),
       });
 
-      expect(result.details).toHaveLength(2);
+      assert.strictEqual(result.details.length, 2);
     });
   });
 
@@ -59,8 +62,8 @@ describe("getSiteStatuQuoOperatingEconomicBalance", () => {
       });
 
       const incomeEntry = result.details.find((d) => d.details === "operations");
-      expect(incomeEntry).toBeDefined();
-      expect(incomeEntry?.total).toBeGreaterThan(0);
+      assert.ok(incomeEntry !== undefined);
+      assert.ok((incomeEntry?.total ?? 0) > 0);
     });
   });
 
@@ -72,7 +75,7 @@ describe("getSiteStatuQuoOperatingEconomicBalance", () => {
         sumOnEvolutionPeriodService: makeSumService(),
       });
 
-      expect(result.total).toBeGreaterThan(0);
+      assert.ok(result.total > 0);
     });
 
     it("rounds total in result", () => {
@@ -83,7 +86,7 @@ describe("getSiteStatuQuoOperatingEconomicBalance", () => {
       });
 
       const manualSum = result.details.reduce((acc, d) => acc + d.total, 0);
-      expect(result.total).toBe(Math.round(manualSum));
+      assert.strictEqual(result.total, Math.round(manualSum));
     });
   });
 
@@ -95,11 +98,11 @@ describe("getSiteStatuQuoOperatingEconomicBalance", () => {
         sumOnEvolutionPeriodService: makeSumService(),
       });
 
-      expect(result.details[0]?.cumulativeByYear).toBeDefined();
+      assert.ok(result.details[0]?.cumulativeByYear !== undefined);
       const cumulative = result.details[0]?.cumulativeByYear ?? [];
 
       for (let i = 1; i < cumulative.length; i++) {
-        expect(cumulative[i]).toBeGreaterThanOrEqual(cumulative[i - 1] ?? 0);
+        assert.ok((cumulative[i] ?? 0) >= (cumulative[i - 1] ?? 0));
       }
     });
 
@@ -115,7 +118,7 @@ describe("getSiteStatuQuoOperatingEconomicBalance", () => {
       });
 
       result.details.forEach((d) => {
-        expect(d.cumulativeByYear).toHaveLength(evaluationPeriodInYears);
+        assert.strictEqual(d.cumulativeByYear.length, evaluationPeriodInYears);
       });
     });
   });
@@ -128,7 +131,7 @@ describe("getSiteStatuQuoOperatingEconomicBalance", () => {
     });
 
     result.details.forEach((d) => {
-      expect(d.name).toBe("operatingEconomicBalance");
+      assert.strictEqual(d.name, "operatingEconomicBalance");
     });
   });
 });

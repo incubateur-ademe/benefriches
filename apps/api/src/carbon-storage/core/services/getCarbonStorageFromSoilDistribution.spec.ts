@@ -1,3 +1,5 @@
+import assert from "node:assert/strict";
+import { describe, it, beforeEach } from "node:test";
 import { roundTo2Digits } from "shared";
 
 import { LocalCarbonStorageQuery } from "src/carbon-storage/adapters/secondary/carbon-storage-query/LocalCarbonStorageQuery.mock";
@@ -13,7 +15,7 @@ describe("GetCarbonStorageFromSoilDistributionService", () => {
     carbonStorageQuery = new LocalCarbonStorageQuery();
   });
 
-  test("it should return undefined if city is not found", async () => {
+  it("it should return undefined if city is not found", async () => {
     const service = new GetCarbonStorageFromSoilDistributionService(
       carbonStorageQuery,
       new SilentLogger(),
@@ -26,10 +28,10 @@ describe("GetCarbonStorageFromSoilDistributionService", () => {
       },
     });
 
-    expect(result).toEqual(undefined);
+    assert.deepStrictEqual(result, undefined);
   });
 
-  test("it should compute the right total: simple example without forest", async () => {
+  it("it should compute the right total: simple example without forest", async () => {
     const service = new GetCarbonStorageFromSoilDistributionService(
       carbonStorageQuery,
       new SilentLogger(),
@@ -46,14 +48,15 @@ describe("GetCarbonStorageFromSoilDistributionService", () => {
     const prairieBushesCultivation = 4 * 69;
     const biomass = 4 * 7;
 
-    expect(result).toEqual({
-      total: soilCultivation + prairieBushesCultivation + biomass,
-      CULTIVATION: expect.closeTo(soilCultivation) as number,
-      PRAIRIE_BUSHES: expect.closeTo(prairieBushesCultivation + biomass) as number,
-    });
+    assert.ok(result !== undefined);
+    assert.strictEqual(result.total, soilCultivation + prairieBushesCultivation + biomass);
+    assert.ok(Math.abs((result.CULTIVATION ?? 0) - soilCultivation) < 0.005);
+    assert.ok(
+      Math.abs((result.PRAIRIE_BUSHES ?? 0) - (prairieBushesCultivation + biomass)) < 0.005,
+    );
   });
 
-  test("it should compute the right total: example with forest", async () => {
+  it("it should compute the right total: example with forest", async () => {
     const service = new GetCarbonStorageFromSoilDistributionService(
       carbonStorageQuery,
       new SilentLogger(),
@@ -85,13 +88,23 @@ describe("GetCarbonStorageFromSoilDistributionService", () => {
       biomassArtificialNonForest +
       litterForest;
 
-    expect(result).toEqual({
-      total: roundTo2Digits(total),
-      ARTIFICIAL_TREE_FILLED: expect.closeTo(artificialSoil + biomassArtificialNonForest) as number,
-      PRAIRIE_BUSHES: expect.closeTo(prairieBushesCultivation + biomassPrairieNonForest) as number,
-      FOREST_DECIDUOUS: expect.closeTo(
-        forestSoil + biomassForestLive + biomassForestDead + litterForest,
-      ) as number,
-    });
+    assert.ok(result !== undefined);
+    assert.strictEqual(result.total, roundTo2Digits(total));
+    assert.ok(
+      Math.abs(
+        (result.ARTIFICIAL_TREE_FILLED ?? 0) - (artificialSoil + biomassArtificialNonForest),
+      ) < 0.005,
+    );
+    assert.ok(
+      Math.abs(
+        (result.PRAIRIE_BUSHES ?? 0) - (prairieBushesCultivation + biomassPrairieNonForest),
+      ) < 0.005,
+    );
+    assert.ok(
+      Math.abs(
+        (result.FOREST_DECIDUOUS ?? 0) -
+          (forestSoil + biomassForestLive + biomassForestDead + litterForest),
+      ) < 0.005,
+    );
   });
 });

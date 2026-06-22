@@ -1,4 +1,7 @@
 /* oxlint-disable typescript/dot-notation */
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+
 import { YearlyUrbanFreshnessRelatedImpacts } from "./YearlyUrbanFreshnessRelatedImpacts";
 
 describe("YearlyUrbanFreshnessRelatedImpacts", () => {
@@ -12,7 +15,7 @@ describe("YearlyUrbanFreshnessRelatedImpacts", () => {
         projectPublicGreenSpaceSurface: 0,
       });
 
-      expect(urbanFreshnessRelatedImpactsService.hasUrbanFreshnessImpact).toEqual(false);
+      assert.deepStrictEqual(urbanFreshnessRelatedImpactsService.hasUrbanFreshnessImpact, false);
     });
 
     it("returns no urban freshness impacts if there is not enough public green spaces in project for public green space < 5000 m²", () => {
@@ -27,7 +30,7 @@ describe("YearlyUrbanFreshnessRelatedImpacts", () => {
         projectPublicGreenSpaceSurface: 400,
       });
 
-      expect(urbanFreshnessRelatedImpactsService.hasUrbanFreshnessImpact).toEqual(false);
+      assert.deepStrictEqual(urbanFreshnessRelatedImpactsService.hasUrbanFreshnessImpact, false);
     });
 
     it("returns no urban freshness impacts if there is not enough public green spaces in project for 5000 < public green space < 10000 m²", () => {
@@ -42,7 +45,7 @@ describe("YearlyUrbanFreshnessRelatedImpacts", () => {
         projectPublicGreenSpaceSurface: 400,
       });
 
-      expect(urbanFreshnessRelatedImpactsService.hasUrbanFreshnessImpact).toEqual(false);
+      assert.deepStrictEqual(urbanFreshnessRelatedImpactsService.hasUrbanFreshnessImpact, false);
     });
   });
 
@@ -73,13 +76,17 @@ describe("YearlyUrbanFreshnessRelatedImpacts", () => {
           projectPublicGreenSpaceSurface: 3995,
         });
 
-      expect(withOnlyNewResidentsEffectService.hasUrbanFreshnessImpact).toEqual(true);
-      expect(withOnlyNewResidentsEffectService["influenceRadius"]).toEqual(0);
+      assert.deepStrictEqual(withOnlyNewResidentsEffectService.hasUrbanFreshnessImpact, true);
+      assert.deepStrictEqual(withOnlyNewResidentsEffectService["influenceRadius"], 0);
 
-      expect(newResidentsEffectAndInfluenceRadiusEffectService.hasUrbanFreshnessImpact).toEqual(
+      assert.deepStrictEqual(
+        newResidentsEffectAndInfluenceRadiusEffectService.hasUrbanFreshnessImpact,
         true,
       );
-      expect(newResidentsEffectAndInfluenceRadiusEffectService["influenceRadius"]).toEqual(25);
+      assert.deepStrictEqual(
+        newResidentsEffectAndInfluenceRadiusEffectService["influenceRadius"],
+        25,
+      );
     });
 
     it("returns influence radius of 25 or 50 for public green space surface > 5000m² and < 10000m²", () => {
@@ -89,7 +96,7 @@ describe("YearlyUrbanFreshnessRelatedImpacts", () => {
         cityPopulation: 18000,
       };
 
-      expect(
+      assert.deepStrictEqual(
         new YearlyUrbanFreshnessRelatedImpacts({
           ...params,
           buildingsFloorAreaDistribution: {
@@ -98,8 +105,9 @@ describe("YearlyUrbanFreshnessRelatedImpacts", () => {
           },
           projectPublicGreenSpaceSurface: 5100,
         })["influenceRadius"],
-      ).toEqual(25);
-      expect(
+        25,
+      );
+      assert.deepStrictEqual(
         new YearlyUrbanFreshnessRelatedImpacts({
           ...params,
           siteSquareMetersSurfaceArea: 10000,
@@ -109,7 +117,8 @@ describe("YearlyUrbanFreshnessRelatedImpacts", () => {
           },
           projectPublicGreenSpaceSurface: 9990,
         })["influenceRadius"],
-      ).toEqual(50);
+        50,
+      );
     });
 
     it("returns influence radius for public green space surface > 10000m²", () => {
@@ -119,7 +128,7 @@ describe("YearlyUrbanFreshnessRelatedImpacts", () => {
         siteSquareMetersSurfaceArea: 120000,
       };
 
-      expect(
+      assert.deepStrictEqual(
         new YearlyUrbanFreshnessRelatedImpacts({
           ...params,
           buildingsFloorAreaDistribution: {
@@ -128,9 +137,10 @@ describe("YearlyUrbanFreshnessRelatedImpacts", () => {
           },
           projectPublicGreenSpaceSurface: 11111,
         })["influenceRadius"],
-      ).toEqual(0);
+        0,
+      );
 
-      expect(
+      assert.deepStrictEqual(
         new YearlyUrbanFreshnessRelatedImpacts({
           ...params,
           buildingsFloorAreaDistribution: {
@@ -139,9 +149,10 @@ describe("YearlyUrbanFreshnessRelatedImpacts", () => {
           },
           projectPublicGreenSpaceSurface: 65600,
         })["influenceRadius"],
-      ).toEqual(50);
+        50,
+      );
 
-      expect(
+      assert.deepStrictEqual(
         new YearlyUrbanFreshnessRelatedImpacts({
           ...params,
           buildingsFloorAreaDistribution: {
@@ -150,7 +161,8 @@ describe("YearlyUrbanFreshnessRelatedImpacts", () => {
           },
           projectPublicGreenSpaceSurface: 119000,
         })["influenceRadius"],
-      ).toEqual(75);
+        75,
+      );
     });
   });
 });

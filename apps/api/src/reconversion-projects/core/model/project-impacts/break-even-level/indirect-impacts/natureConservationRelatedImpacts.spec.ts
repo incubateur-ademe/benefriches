@@ -1,3 +1,6 @@
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+
 import { SumOnEvolutionPeriodService } from "../../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import { getNatureConservationRelatedImpacts } from "./natureConservationRelatedImpacts";
 
@@ -19,8 +22,8 @@ describe("natureConservationRelatedImpacts", () => {
       }),
     });
 
-    expect(result.economicImpacts.length).toEqual(0);
-    expect(result.impactMetrics.length).toEqual(0);
+    assert.strictEqual(result.economicImpacts.length, 0);
+    assert.strictEqual(result.impactMetrics.length, 0);
   });
 
   it("returns no carbon storage impact if no base and forecast provided", () => {
@@ -39,8 +42,14 @@ describe("natureConservationRelatedImpacts", () => {
       }),
     });
 
-    expect(result.economicImpacts.find(({ name }) => name === "newStoredCo2Eq")).toBeUndefined();
-    expect(result.impactMetrics.find(({ name }) => name === "newStoredCo2Eq")).toBeUndefined();
+    assert.strictEqual(
+      result.economicImpacts.find(({ name }) => name === "newStoredCo2Eq"),
+      undefined,
+    );
+    assert.strictEqual(
+      result.impactMetrics.find(({ name }) => name === "newStoredCo2Eq"),
+      undefined,
+    );
   });
 
   it("compute newStoredCo2Eq positive monetary value", () => {
@@ -60,13 +69,15 @@ describe("natureConservationRelatedImpacts", () => {
         operationsFirstYear: 2025,
       }),
     });
-    expect(result.economicImpacts.find(({ name }) => name === "newStoredCo2Eq")?.total).toBeCloseTo(
-      27499,
-      0,
+    assert.ok(
+      Math.abs(
+        (result.economicImpacts.find(({ name }) => name === "newStoredCo2Eq")?.total ?? 0) - 27499,
+      ) < 0.5,
     );
-    expect(result.impactMetrics.find(({ name }) => name === "newStoredCo2Eq")?.total).toBeCloseTo(
-      183,
-      0,
+    assert.ok(
+      Math.abs(
+        (result.impactMetrics.find(({ name }) => name === "newStoredCo2Eq")?.total ?? 0) - 183,
+      ) < 0.5,
     );
   });
 
@@ -86,13 +97,15 @@ describe("natureConservationRelatedImpacts", () => {
         operationsFirstYear: 2025,
       }),
     });
-    expect(result.economicImpacts.find(({ name }) => name === "newStoredCo2Eq")?.total).toBeCloseTo(
-      -27499,
-      0,
+    assert.ok(
+      Math.abs(
+        (result.economicImpacts.find(({ name }) => name === "newStoredCo2Eq")?.total ?? 0) - -27499,
+      ) < 0.5,
     );
-    expect(result.impactMetrics.find(({ name }) => name === "newStoredCo2Eq")?.total).toBeCloseTo(
-      -183,
-      0,
+    assert.ok(
+      Math.abs(
+        (result.impactMetrics.find(({ name }) => name === "newStoredCo2Eq")?.total ?? 0) - -183,
+      ) < 0.5,
     );
   });
 
@@ -123,45 +136,64 @@ describe("natureConservationRelatedImpacts", () => {
       }),
     });
 
-    expect(
-      result.economicImpacts.find(({ name }) => name === "waterRegulation")?.total,
-    ).toBeCloseTo(146, 0);
-    expect(result.economicImpacts.find(({ name }) => name === "newStoredCo2Eq")?.total).toBeCloseTo(
-      27499,
-      0,
+    assert.ok(
+      Math.abs(
+        (result.economicImpacts.find(({ name }) => name === "waterRegulation")?.total ?? 0) - 146,
+      ) < 0.5,
     );
-    expect(
-      result.economicImpacts.find(({ name }) => name === "natureRelatedWelnessAndLeisure")?.total,
-    ).toBeCloseTo(11, 0);
-    expect(
+    assert.ok(
+      Math.abs(
+        (result.economicImpacts.find(({ name }) => name === "newStoredCo2Eq")?.total ?? 0) - 27499,
+      ) < 0.5,
+    );
+    assert.ok(
+      Math.abs(
+        (result.economicImpacts.find(({ name }) => name === "natureRelatedWelnessAndLeisure")
+          ?.total ?? 0) - 11,
+      ) < 0.5,
+    );
+    assert.strictEqual(
       result.economicImpacts.find(({ name }) => name === "forestRelatedProduct"),
-    ).toBeUndefined();
-    expect(result.economicImpacts.find(({ name }) => name === "pollination")?.total).toBeCloseTo(
-      37,
-      0,
+      undefined,
     );
-    expect(
-      result.economicImpacts.find(({ name }) => name === "invasiveSpeciesRegulation")?.total,
-    ).toBeCloseTo(14, 0);
-    expect(result.economicImpacts.find(({ name }) => name === "waterCycle")?.total).toBeCloseTo(
-      485,
-      0,
+    assert.ok(
+      Math.abs(
+        (result.economicImpacts.find(({ name }) => name === "pollination")?.total ?? 0) - 37,
+      ) < 0.5,
     );
-    expect(result.economicImpacts.find(({ name }) => name === "nitrogenCycle")?.total).toBeCloseTo(
-      9,
-      0,
+    assert.ok(
+      Math.abs(
+        (result.economicImpacts.find(({ name }) => name === "invasiveSpeciesRegulation")?.total ??
+          0) - 14,
+      ) < 0.5,
     );
-    expect(result.economicImpacts.find(({ name }) => name === "soilErosion")?.total).toBeCloseTo(
-      101,
-      0,
+    assert.ok(
+      Math.abs(
+        (result.economicImpacts.find(({ name }) => name === "waterCycle")?.total ?? 0) - 485,
+      ) < 0.5,
+    );
+    assert.ok(
+      Math.abs(
+        (result.economicImpacts.find(({ name }) => name === "nitrogenCycle")?.total ?? 0) - 9,
+      ) < 0.5,
+    );
+    assert.ok(
+      Math.abs(
+        (result.economicImpacts.find(({ name }) => name === "soilErosion")?.total ?? 0) - 101,
+      ) < 0.5,
     );
 
-    expect(
-      result.impactMetrics.find(({ name }) => name === "newPermeableSurface")?.total,
-    ).toBeCloseTo(165, 0);
-    expect(
-      result.impactMetrics.find(({ name }) => name === "decontaminatedSurface")?.total,
-    ).toBeCloseTo(1000, 0);
+    assert.ok(
+      Math.abs(
+        (result.impactMetrics.find(({ name }) => name === "newPermeableSurface")?.total ?? 0) - 165,
+      ) < 0.5,
+    );
+    assert.ok(
+      Math.abs(
+        (result.impactMetrics.find(({ name }) => name === "decontaminatedSurface")?.total ?? 0) -
+          1000,
+      ) < 0.5,
+    );
   });
 
   it("returns negative difference for water regulation and ecosystem services monetary values", () => {
@@ -184,35 +216,57 @@ describe("natureConservationRelatedImpacts", () => {
         operationsFirstYear: 2025,
       }),
     });
-    expect(
-      result.economicImpacts.find(({ name }) => name === "waterRegulation")?.total,
-    ).toBeCloseTo(-59, 0);
-    expect(result.economicImpacts.find(({ name }) => name === "newStoredCo2Eq")?.total).toBeCloseTo(
-      -55000,
-      0,
+    assert.ok(
+      Math.abs(
+        (result.economicImpacts.find(({ name }) => name === "waterRegulation")?.total ?? 0) - -59,
+      ) < 0.5,
     );
-    expect(
-      result.economicImpacts.find(({ name }) => name === "natureRelatedWelnessAndLeisure")?.total,
-    ).toBeCloseTo(-46, 0);
-    expect(
+    assert.ok(
+      Math.abs(
+        (result.economicImpacts.find(({ name }) => name === "newStoredCo2Eq")?.total ?? 0) - -55000,
+      ) < 0.5,
+    );
+    assert.ok(
+      Math.abs(
+        (result.economicImpacts.find(({ name }) => name === "natureRelatedWelnessAndLeisure")
+          ?.total ?? 0) - -46,
+      ) < 0.5,
+    );
+    assert.strictEqual(
       result.economicImpacts.find(({ name }) => name === "forestRelatedProduct"),
-    ).toBeUndefined();
-    expect(result.economicImpacts.find(({ name }) => name === "pollination")).toBeUndefined();
-    expect(
-      result.economicImpacts.find(({ name }) => name === "invasiveSpeciesRegulation"),
-    ).toBeUndefined();
-    expect(result.economicImpacts.find(({ name }) => name === "waterCycle")?.total).toBeCloseTo(
-      -672,
-      0,
+      undefined,
     );
-    expect(result.economicImpacts.find(({ name }) => name === "nitrogenCycle")).toBeUndefined();
-    expect(result.economicImpacts.find(({ name }) => name === "soilErosion")).toBeUndefined();
+    assert.strictEqual(
+      result.economicImpacts.find(({ name }) => name === "pollination"),
+      undefined,
+    );
+    assert.strictEqual(
+      result.economicImpacts.find(({ name }) => name === "invasiveSpeciesRegulation"),
+      undefined,
+    );
+    assert.ok(
+      Math.abs(
+        (result.economicImpacts.find(({ name }) => name === "waterCycle")?.total ?? 0) - -672,
+      ) < 0.5,
+    );
+    assert.strictEqual(
+      result.economicImpacts.find(({ name }) => name === "nitrogenCycle"),
+      undefined,
+    );
+    assert.strictEqual(
+      result.economicImpacts.find(({ name }) => name === "soilErosion"),
+      undefined,
+    );
 
-    expect(
-      result.impactMetrics.find(({ name }) => name === "newPermeableSurface")?.total,
-    ).toBeCloseTo(-550, 0);
-    expect(
+    assert.ok(
+      Math.abs(
+        (result.impactMetrics.find(({ name }) => name === "newPermeableSurface")?.total ?? 0) -
+          -550,
+      ) < 0.5,
+    );
+    assert.strictEqual(
       result.impactMetrics.find(({ name }) => name === "decontaminatedSurface"),
-    ).toBeUndefined();
+      undefined,
+    );
   });
 });

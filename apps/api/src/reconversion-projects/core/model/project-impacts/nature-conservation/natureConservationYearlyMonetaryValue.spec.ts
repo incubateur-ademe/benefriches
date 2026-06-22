@@ -1,3 +1,6 @@
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+
 import {
   computeNitrogenCycleMonetaryValue,
   computeSoilErosionMonetaryValue,
@@ -11,86 +14,104 @@ import {
 
 describe("Nature conservation yearly monetary values", () => {
   it("computeNatureRelatedWellnessAndLeisureMonetaryValue", () => {
-    expect(
-      computeNatureRelatedWellnessAndLeisureMonetaryValue({
-        prairieSurfaceArea: 1000,
-        forestSurfaceArea: 200,
-      }),
-    ).toBeCloseTo(13, 0);
-    expect(computeNatureRelatedWellnessAndLeisureMonetaryValue({})).toEqual(0);
-    expect(
-      computeNatureRelatedWellnessAndLeisureMonetaryValue({
-        prairieSurfaceArea: 1000,
-        forestSurfaceArea: 200,
-        wetLandSurfaceArea: 8000,
-      }),
-    ).toBeCloseTo(201, 0);
-    expect(
-      computeNatureRelatedWellnessAndLeisureMonetaryValue({
-        prairieSurfaceArea: -1000,
-        forestSurfaceArea: 200,
-        wetLandSurfaceArea: 200,
-      }),
-    ).toBeCloseTo(4, 0);
+    assert.ok(
+      Math.abs(
+        computeNatureRelatedWellnessAndLeisureMonetaryValue({
+          prairieSurfaceArea: 1000,
+          forestSurfaceArea: 200,
+        }) - 13,
+      ) < 0.5,
+    );
+    assert.deepStrictEqual(computeNatureRelatedWellnessAndLeisureMonetaryValue({}), 0);
+    assert.ok(
+      Math.abs(
+        computeNatureRelatedWellnessAndLeisureMonetaryValue({
+          prairieSurfaceArea: 1000,
+          forestSurfaceArea: 200,
+          wetLandSurfaceArea: 8000,
+        }) - 201,
+      ) < 0.5,
+    );
+    assert.ok(
+      Math.abs(
+        computeNatureRelatedWellnessAndLeisureMonetaryValue({
+          prairieSurfaceArea: -1000,
+          forestSurfaceArea: 200,
+          wetLandSurfaceArea: 200,
+        }) - 4,
+      ) < 0.5,
+    );
   });
 
   it("computeForestRelatedProductMonetaryValue", () => {
-    expect(computeForestRelatedProductMonetaryValue(200)).toBeCloseTo(3, 0);
-    expect(computeForestRelatedProductMonetaryValue(0)).toEqual(0);
-    expect(computeForestRelatedProductMonetaryValue(-550)).toBeCloseTo(-9, 0);
+    assert.ok(Math.abs(computeForestRelatedProductMonetaryValue(200) - 3) < 0.5);
+    assert.deepStrictEqual(computeForestRelatedProductMonetaryValue(0), 0);
+    assert.ok(Math.abs(computeForestRelatedProductMonetaryValue(-550) - -9) < 0.5);
   });
 
   it("computePollinisationMonetaryValue", () => {
-    expect(computePollinisationMonetaryValue(1000)).toBeCloseTo(9, 0);
-    expect(computePollinisationMonetaryValue(0)).toEqual(0);
-    expect(computePollinisationMonetaryValue(-500)).toBeCloseTo(-5, 0);
+    assert.ok(Math.abs(computePollinisationMonetaryValue(1000) - 9) < 0.5);
+    assert.deepStrictEqual(computePollinisationMonetaryValue(0), 0);
+    assert.ok(Math.abs(computePollinisationMonetaryValue(-500) - -5) < 0.5);
   });
 
   it("computeInvasiveSpeciesRegulationMonetaryValue", () => {
-    expect(computeInvasiveSpeciesRegulationMonetaryValue(1000)).toBeCloseTo(3, 0);
-    expect(computeInvasiveSpeciesRegulationMonetaryValue(0)).toEqual(0);
-    expect(computeInvasiveSpeciesRegulationMonetaryValue(-250)).toBeCloseTo(-1, 0);
+    assert.ok(Math.abs(computeInvasiveSpeciesRegulationMonetaryValue(1000) - 3) < 0.5);
+    assert.deepStrictEqual(computeInvasiveSpeciesRegulationMonetaryValue(0), 0);
+    assert.ok(Math.abs(computeInvasiveSpeciesRegulationMonetaryValue(-250) - -1) < 0.5);
   });
 
   it("computeWaterCycleMonetaryValue", () => {
-    expect(computeWaterCycleMonetaryValue(100, 200)).toBeCloseTo(19, 0);
-    expect(computeWaterCycleMonetaryValue(100, 0)).toBeCloseTo(14, 0);
-    expect(computeWaterCycleMonetaryValue(0, 0)).toEqual(0);
-    expect(computeWaterCycleMonetaryValue(-250, 100)).toBeCloseTo(-31, 0);
+    assert.ok(Math.abs(computeWaterCycleMonetaryValue(100, 200) - 19) < 0.5);
+    assert.ok(Math.abs(computeWaterCycleMonetaryValue(100, 0) - 14) < 0.5);
+    assert.deepStrictEqual(computeWaterCycleMonetaryValue(0, 0), 0);
+    assert.ok(Math.abs(computeWaterCycleMonetaryValue(-250, 100) - -31) < 0.5);
   });
 
   it("computeNitrogenCycleMonetaryValue", () => {
-    expect(
-      computeNitrogenCycleMonetaryValue({ prairieSurfaceArea: 1000, wetLandSurfaceArea: 200 }),
-    ).toBeCloseTo(11, 0);
-    expect(computeNitrogenCycleMonetaryValue({})).toEqual(0);
-    expect(
-      computeNitrogenCycleMonetaryValue({ prairieSurfaceArea: 1000, wetLandSurfaceArea: -8000 }),
-    ).toBeCloseTo(-152, 0);
+    assert.ok(
+      Math.abs(
+        computeNitrogenCycleMonetaryValue({ prairieSurfaceArea: 1000, wetLandSurfaceArea: 200 }) -
+          11,
+      ) < 0.5,
+    );
+    assert.deepStrictEqual(computeNitrogenCycleMonetaryValue({}), 0);
+    assert.ok(
+      Math.abs(
+        computeNitrogenCycleMonetaryValue({
+          prairieSurfaceArea: 1000,
+          wetLandSurfaceArea: -8000,
+        }) - -152,
+      ) < 0.5,
+    );
   });
 
   it("computeSoilErosionMonetaryValue", () => {
-    expect(computeSoilErosionMonetaryValue(250)).toBeCloseTo(6, 0);
-    expect(computeSoilErosionMonetaryValue(0)).toEqual(0);
-    expect(computeSoilErosionMonetaryValue(-250)).toBeCloseTo(-6, 0);
+    assert.ok(Math.abs(computeSoilErosionMonetaryValue(250) - 6) < 0.5);
+    assert.deepStrictEqual(computeSoilErosionMonetaryValue(0), 0);
+    assert.ok(Math.abs(computeSoilErosionMonetaryValue(-250) - -6) < 0.5);
   });
 
   it("computeWaterRegulationMonetaryValue", () => {
-    expect(
-      computeWaterRegulationMonetaryValue({
-        prairieSurfaceArea: 1000,
-        forestSurfaceArea: 200,
-        decontaminatedSurfaceArea: 250,
-      }),
-    ).toBeCloseTo(17, 0);
-    expect(computeWaterRegulationMonetaryValue({})).toEqual(0);
-    expect(
-      computeWaterRegulationMonetaryValue({
-        prairieSurfaceArea: 1000,
-        forestSurfaceArea: 200,
-        wetLandSurfaceArea: -4000,
-        decontaminatedSurfaceArea: 150,
-      }),
-    ).toBeCloseTo(-336.54);
+    assert.ok(
+      Math.abs(
+        computeWaterRegulationMonetaryValue({
+          prairieSurfaceArea: 1000,
+          forestSurfaceArea: 200,
+          decontaminatedSurfaceArea: 250,
+        }) - 17,
+      ) < 0.5,
+    );
+    assert.deepStrictEqual(computeWaterRegulationMonetaryValue({}), 0);
+    assert.ok(
+      Math.abs(
+        computeWaterRegulationMonetaryValue({
+          prairieSurfaceArea: 1000,
+          forestSurfaceArea: 200,
+          wetLandSurfaceArea: -4000,
+          decontaminatedSurfaceArea: 150,
+        }) - -336.54,
+      ) < 0.005,
+    );
   });
 });

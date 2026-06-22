@@ -1,3 +1,5 @@
+import assert from "node:assert/strict";
+import { describe, it, beforeEach } from "node:test";
 import { v4 as uuid } from "uuid";
 
 import { InMemoryReconversionProjectRepository } from "src/reconversion-projects/adapters/secondary/repositories/reconversion-project/InMemoryReconversionProjectRepository";
@@ -43,12 +45,15 @@ describe("ArchiveReconversionProject use case", () => {
       userId,
     });
 
-    expect(result.isFailure()).toBe(true);
-    expect((result as FailureResult<"UserNotAuthorized">).getError()).toBe("UserNotAuthorized");
+    assert.strictEqual(result.isFailure(), true);
+    assert.strictEqual(
+      (result as FailureResult<"UserNotAuthorized">).getError(),
+      "UserNotAuthorized",
+    );
 
     const projects = reconversionProjectRepository._getReconversionProjects();
-    expect(projects[0]?.status).toEqual("active");
-    expect(projects[0]?.updatedAt).toEqual(undefined);
+    assert.deepStrictEqual(projects[0]?.status, "active");
+    assert.deepStrictEqual(projects[0]?.updatedAt, undefined);
   });
 
   it("fails when project does not exist", async () => {
@@ -62,8 +67,9 @@ describe("ArchiveReconversionProject use case", () => {
       userId: uuid(),
     });
 
-    expect(result.isFailure()).toBe(true);
-    expect((result as FailureResult<"ReconversionProjectNotFound">).getError()).toBe(
+    assert.strictEqual(result.isFailure(), true);
+    assert.strictEqual(
+      (result as FailureResult<"ReconversionProjectNotFound">).getError(),
       "ReconversionProjectNotFound",
     );
   });
@@ -90,11 +96,11 @@ describe("ArchiveReconversionProject use case", () => {
       projectId,
       userId,
     });
-    expect(result.isSuccess()).toBe(true);
+    assert.strictEqual(result.isSuccess(), true);
 
     const projects = reconversionProjectRepository._getReconversionProjects();
 
-    expect(projects[0]).toEqual({
+    assert.deepStrictEqual(projects[0], {
       ...sourceProject,
       status: "archived",
       updatedAt: fakeNow,

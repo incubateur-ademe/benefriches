@@ -15,8 +15,7 @@
     "start:prod": "node dist/src/main",
     "typecheck": "tsc --noEmit",
     "test": "pnpm test:unit && pnpm test:integration",
-    "test:unit": "vitest --config test/vitest.config.ts",
-    "test:unit:node": "node --require @swc-node/register --test 'src/**/*.unit.node-spec.ts' 'test/**/*.unit.node-spec.ts'",
+    "test:unit": "node --require @swc-node/register --test 'src/**/*.spec.ts'",
     "test:integration": "node --require @swc-node/register --import tsx/esm --import ./test/integration-per-test-hooks.ts --test-global-setup=./test/integration-global-setup.ts --test-concurrency=1 --test 'src/**/*.integration-spec.ts'",
     "lint": "oxlint --type-aware",
     "format": "prettier --write --cache \"./**/*.{js,jsx,ts,tsx,css,md,json}\" src/ test/",
@@ -49,9 +48,7 @@
     "supertest": "~7.2.2",
     "testcontainers": "~12.0.2",
     "ts-node": "~10.9.2",
-    "tsx": "~4.22.4",
-    "unplugin-swc": "^1.5.9",
-    "vite-tsconfig-paths": "^6.1.1"
+    "tsx": "~4.22.4"
   },
   "dependencies": {
     "@nestjs/axios": "~4.0.1",

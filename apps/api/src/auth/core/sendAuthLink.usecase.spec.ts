@@ -1,5 +1,7 @@
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { Test } from "@nestjs/testing";
+import assert from "node:assert/strict";
+import { describe, it, beforeEach } from "node:test";
 
 import { FakeAuthLinkMailer } from "src/auth/adapters/auth-link-mailer/FakeAuthLinkMailer";
 import { InMemoryTokenAuthenticationAttemptRepository } from "src/auth/adapters/auth-token-repository/InMemoryTokenAuthenticationAttemptRepository";
@@ -76,22 +78,25 @@ describe("SendAuthLink Use Case", () => {
 
     const result = await usecase.execute({ email: "nonexistent@example.com" });
 
-    expect(result.isFailure()).toBe(true);
-    expect((result as FailureResult).getError()).toBe("UserDoesNotExist");
+    assert.strictEqual(result.isFailure(), true);
+    assert.strictEqual((result as FailureResult).getError(), "UserDoesNotExist");
 
     // no token was saved
-    expect(tokenAuthAttemptRepository.tokens).toHaveLength(0);
+    assert.strictEqual(tokenAuthAttemptRepository.tokens.length, 0);
     // no email sent
-    expect(authLinkMailer.sentEmails).toHaveLength(0);
+    assert.strictEqual(authLinkMailer.sentEmails.length, 0);
     // failure event was published
-    expect(eventPublisher.events).toContainEqual({
-      id: "failure-event-id",
-      name: "auth.link-send-failed",
-      payload: {
-        userEmail: "nonexistent@example.com",
-        error: "UserDoesNotExist",
-      },
-    });
+    const found =
+      authLinkMailer.sentEmails.length === 0 &&
+      eventPublisher.events.find(
+        (e) =>
+          e.id === "failure-event-id" &&
+          e.name === "auth.link-send-failed" &&
+          (e.payload as { userEmail: string; error: string }).userEmail ===
+            "nonexistent@example.com" &&
+          (e.payload as { userEmail: string; error: string }).error === "UserDoesNotExist",
+      );
+    assert.ok(found !== undefined && found !== false);
   });
 
   it("prevents requesting new token within 1 minute", async () => {
@@ -114,10 +119,10 @@ describe("SendAuthLink Use Case", () => {
     );
 
     const firstResult = await firstUsecase.execute({ email: user.email });
-    expect(firstResult.isSuccess()).toBe(true);
-    expect(tokenAuthAttemptRepository.tokens).toHaveLength(1);
+    assert.strictEqual(firstResult.isSuccess(), true);
+    assert.strictEqual(tokenAuthAttemptRepository.tokens.length, 1);
     const firstRequestToken = tokenAuthAttemptRepository.tokens[0];
-    expect(authLinkMailer.sentEmails).toHaveLength(1);
+    assert.strictEqual(authLinkMailer.sentEmails.length, 1);
 
     // Second request 30 seconds later
     const secondDate = new Date("2025-01-01T14:00:30Z");
@@ -134,21 +139,21 @@ describe("SendAuthLink Use Case", () => {
     );
 
     const secondResult = await secondUsecase.execute({ email: user.email });
-    expect(secondResult.isFailure()).toBe(true);
-    expect((secondResult as FailureResult).getError()).toBe("TooManyRequests");
+    assert.strictEqual(secondResult.isFailure(), true);
+    assert.strictEqual((secondResult as FailureResult).getError(), "TooManyRequests");
 
-    expect(tokenAuthAttemptRepository.tokens).toEqual([firstRequestToken]);
-    expect(authLinkMailer.sentEmails).toHaveLength(1);
+    assert.deepStrictEqual(tokenAuthAttemptRepository.tokens, [firstRequestToken]);
+    assert.strictEqual(authLinkMailer.sentEmails.length, 1);
 
     // failure event was published
-    expect(eventPublisher.events).toContainEqual({
-      id: "failure-event-id",
-      name: "auth.link-send-failed",
-      payload: {
-        userEmail: user.email,
-        error: "TooManyRequests",
-      },
-    });
+    const failureEvent = eventPublisher.events.find(
+      (e) =>
+        e.id === "failure-event-id" &&
+        e.name === "auth.link-send-failed" &&
+        (e.payload as { userEmail: string; error: string }).userEmail === user.email &&
+        (e.payload as { userEmail: string; error: string }).error === "TooManyRequests",
+    );
+    assert.ok(failureEvent !== undefined);
   });
 
   it("Allows new token after 1 minute", async () => {
@@ -187,10 +192,10 @@ describe("SendAuthLink Use Case", () => {
     );
 
     const secondResult = await secondUsecase.execute({ email: user.email });
-    expect(secondResult.isSuccess()).toBe(true);
+    assert.strictEqual(secondResult.isSuccess(), true);
 
-    expect(tokenAuthAttemptRepository.tokens).toHaveLength(2);
-    expect(authLinkMailer.sentEmails).toHaveLength(2);
+    assert.strictEqual(tokenAuthAttemptRepository.tokens.length, 2);
+    assert.strictEqual(authLinkMailer.sentEmails.length, 2);
   });
 
   it("Sends auth link to existing user with expiration time of 1 minute (set from test env)", async () => {
@@ -213,10 +218,10 @@ describe("SendAuthLink Use Case", () => {
 
     const result = await usecase.execute({ email: "user@example.com" });
 
-    expect(result.isSuccess()).toBe(true);
+    assert.strictEqual(result.isSuccess(), true);
 
     // auth token was saved
-    expect(tokenAuthAttemptRepository.tokens).toEqual<TokenAuthenticationAttempt[]>([
+    assert.deepStrictEqual(tokenAuthAttemptRepository.tokens, [
       {
         userId: user.id,
         token: fakeToken + "-hashed",
@@ -225,15 +230,14 @@ describe("SendAuthLink Use Case", () => {
         expiresAt: new Date(new Date("2025-01-01T14:01:00Z")),
         completedAt: null,
       },
-    ]);
+    ] satisfies TokenAuthenticationAttempt[]);
     // auth link email was sent
-    expect(authLinkMailer.sentEmails).toEqual([
-      {
-        email: user.email,
-        authLinkUrl: `http://app.test.benefriches.fr/authentification/token?token=${fakeToken}`,
-        // oxlint-disable-next-line typescript/no-unsafe-assignment
-        sentAt: expect.any(Date),
-      },
-    ]);
+    assert.strictEqual(authLinkMailer.sentEmails.length, 1);
+    assert.strictEqual(authLinkMailer.sentEmails[0]?.email, user.email);
+    assert.strictEqual(
+      authLinkMailer.sentEmails[0]?.authLinkUrl,
+      `http://app.test.benefriches.fr/authentification/token?token=${fakeToken}`,
+    );
+    assert.ok(authLinkMailer.sentEmails[0]?.sentAt instanceof Date);
   });
 });

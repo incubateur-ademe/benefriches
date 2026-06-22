@@ -1,4 +1,7 @@
 /* oxlint-disable typescript-eslint/no-unsafe-assignment */
+import assert from "node:assert/strict";
+import { describe, it, beforeEach } from "node:test";
+
 import { InMemoryReconversionProjectRepository } from "src/reconversion-projects/adapters/secondary/repositories/reconversion-project/InMemoryReconversionProjectRepository";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
@@ -41,7 +44,7 @@ describe("CreateReconversionProject Use Case", () => {
 
   describe("Error cases", () => {
     describe("Mandatory input data", () => {
-      it.each([
+      for (const mandatoryField of [
         "id",
         "name",
         "createdBy",
@@ -51,31 +54,33 @@ describe("CreateReconversionProject Use Case", () => {
         "yearlyProjectedCosts",
         "yearlyProjectedRevenues",
         "projectPhase",
-      ])("Cannot create a reconversion project without providing %s", async (mandatoryField) => {
-        const reconversionProjectProps = buildMinimalReconversionProjectProps(); // @ts-expect-error dynamic delete
-        // oxlint-disable-next-line typescript/no-dynamic-delete
-        delete reconversionProjectProps[mandatoryField];
+      ]) {
+        it(`Cannot create a reconversion project without providing ${mandatoryField}`, async () => {
+          const reconversionProjectProps = buildMinimalReconversionProjectProps(); // @ts-expect-error dynamic delete
+          // oxlint-disable-next-line typescript/no-dynamic-delete
+          delete reconversionProjectProps[mandatoryField];
 
-        const usecase = new CreateReconversionProjectUseCase(
-          dateProvider,
-          siteRepository,
-          reconversionProjectRepository,
-          uuidGenerator,
-          eventPublisher,
-        );
+          const usecase = new CreateReconversionProjectUseCase(
+            dateProvider,
+            siteRepository,
+            reconversionProjectRepository,
+            uuidGenerator,
+            eventPublisher,
+          );
 
-        const result = await usecase.execute({ reconversionProjectProps });
-        expect(result.isFailure()).toBe(true);
-        const failureResult = result as FailureResult<
-          "ValidationError",
-          { fieldErrors: Record<string, string[]> }
-        >;
-        expect(failureResult.getError()).toBe("ValidationError");
-        const issues = failureResult.getIssues();
-        expect(issues).toBeDefined();
-        expect(issues?.fieldErrors).toBeDefined();
-        expect(eventPublisher.events).toHaveLength(0);
-      });
+          const result = await usecase.execute({ reconversionProjectProps });
+          assert.strictEqual(result.isFailure(), true);
+          const failureResult = result as FailureResult<
+            "ValidationError",
+            { fieldErrors: Record<string, string[]> }
+          >;
+          assert.strictEqual(failureResult.getError(), "ValidationError");
+          const issues = failureResult.getIssues();
+          assert.ok(issues !== undefined);
+          assert.ok(issues?.fieldErrors !== undefined);
+          assert.strictEqual(eventPublisher.events.length, 0);
+        });
+      }
     });
 
     it("Cannot create a reconversion project on a non-existing site", async () => {
@@ -89,10 +94,10 @@ describe("CreateReconversionProject Use Case", () => {
         eventPublisher,
       );
       const result = await usecase.execute({ reconversionProjectProps });
-      expect(result.isFailure()).toBe(true);
+      assert.strictEqual(result.isFailure(), true);
       const failureResult = result as FailureResult<"ValidationError">;
-      expect(failureResult.getError()).toBe("SiteNotFound");
-      expect(eventPublisher.events).toHaveLength(0);
+      assert.strictEqual(failureResult.getError(), "SiteNotFound");
+      assert.strictEqual(eventPublisher.events.length, 0);
     });
 
     it("Cannot create a reconversion project with existing id", async () => {
@@ -118,16 +123,16 @@ describe("CreateReconversionProject Use Case", () => {
         eventPublisher,
       );
       const result = await usecase.execute({ reconversionProjectProps });
-      expect(result.isFailure()).toBe(true);
+      assert.strictEqual(result.isFailure(), true);
       const failureResult = result as FailureResult<"ReconversionProjectAlreadyExists">;
-      expect(failureResult.getError()).toBe("ReconversionProjectAlreadyExists");
-      expect(eventPublisher.events).toHaveLength(0);
+      assert.strictEqual(failureResult.getError(), "ReconversionProjectAlreadyExists");
+      assert.strictEqual(eventPublisher.events.length, 0);
     });
   });
 
   describe("Success cases", () => {
     describe("Photovoltaic power station", () => {
-      it.each([
+      for (const { case: caseName, props } of [
         { case: "with minimal data", props: buildMinimalReconversionProjectProps() },
         {
           case: "with no costs and no revenues",
@@ -137,91 +142,100 @@ describe("CreateReconversionProject Use Case", () => {
           }),
         },
         { case: "with exhaustive data", props: buildExhaustiveReconversionProjectProps() },
-      ])("Can create a reconversion project $case", async ({ props }) => {
-        const siteEntity: SiteEntity = {
-          ...buildFriche({ id: props.relatedSiteId }),
-          createdAt: fakeNow,
-          createdBy: "user-123",
-          creationMode: "custom",
-          status: "active",
-        };
-        siteRepository._setSites([siteEntity]);
+      ]) {
+        it(`Can create a reconversion project ${caseName}`, async () => {
+          const siteEntity: SiteEntity = {
+            ...buildFriche({ id: props.relatedSiteId }),
+            createdAt: fakeNow,
+            createdBy: "user-123",
+            creationMode: "custom",
+            status: "active",
+          };
+          siteRepository._setSites([siteEntity]);
 
-        const usecase = new CreateReconversionProjectUseCase(
-          dateProvider,
-          siteRepository,
-          reconversionProjectRepository,
-          uuidGenerator,
-          eventPublisher,
-        );
-        const result = await usecase.execute({ reconversionProjectProps: props });
+          const usecase = new CreateReconversionProjectUseCase(
+            dateProvider,
+            siteRepository,
+            reconversionProjectRepository,
+            uuidGenerator,
+            eventPublisher,
+          );
+          const result = await usecase.execute({ reconversionProjectProps: props });
 
-        expect(result.isSuccess()).toBe(true);
-        const savedReconversionProjects = reconversionProjectRepository._getReconversionProjects();
+          assert.strictEqual(result.isSuccess(), true);
+          const savedReconversionProjects =
+            reconversionProjectRepository._getReconversionProjects();
 
-        expect(savedReconversionProjects).toEqual<ReconversionProjectSaveDto[]>([
-          { ...props, createdAt: fakeNow, creationMode: "custom", status: "active" },
-        ]);
+          assert.deepStrictEqual(savedReconversionProjects, [
+            { ...props, createdAt: fakeNow, creationMode: "custom", status: "active" },
+          ] satisfies ReconversionProjectSaveDto[]);
 
-        // oxlint-disable-next-line no-non-null-assertion
-        const projectId = savedReconversionProjects[0]!.id;
-        expect(eventPublisher.events).toHaveLength(1);
-        expect(eventPublisher.events[0]).toEqual<ReconversionProjectCreatedEvent>({
-          id: expect.any(String),
-          name: RECONVERSION_PROJECT_CREATED,
-          payload: {
-            reconversionProjectId: projectId,
-            siteId: props.relatedSiteId,
-            createdBy: props.createdBy,
-          },
+          // oxlint-disable-next-line no-non-null-assertion
+          const projectId = savedReconversionProjects[0]!.id;
+          assert.strictEqual(eventPublisher.events.length, 1);
+          assert.deepStrictEqual(eventPublisher.events[0], {
+            // oxlint-disable-next-line no-non-null-assertion
+            id: eventPublisher.events[0]!.id,
+            name: RECONVERSION_PROJECT_CREATED,
+            payload: {
+              reconversionProjectId: projectId,
+              siteId: props.relatedSiteId,
+              createdBy: props.createdBy,
+            },
+          } satisfies ReconversionProjectCreatedEvent);
         });
-      });
+      }
     });
+
     describe("Urban project", () => {
-      it.each([
+      for (const { case: caseName, props } of [
         {
           case: "nominal case",
           props: buildUrbanProjectReconversionProjectProps(),
         },
-      ])("Can create an urban reconversion project $case", async ({ props }) => {
-        const siteEntity: SiteEntity = {
-          ...buildFriche({ id: props.relatedSiteId }),
-          createdAt: fakeNow,
-          createdBy: "user-123",
-          creationMode: "custom",
-          status: "active",
-        };
-        siteRepository._setSites([siteEntity]);
+      ]) {
+        it(`Can create an urban reconversion project ${caseName}`, async () => {
+          const siteEntity: SiteEntity = {
+            ...buildFriche({ id: props.relatedSiteId }),
+            createdAt: fakeNow,
+            createdBy: "user-123",
+            creationMode: "custom",
+            status: "active",
+          };
+          siteRepository._setSites([siteEntity]);
 
-        const usecase = new CreateReconversionProjectUseCase(
-          dateProvider,
-          siteRepository,
-          reconversionProjectRepository,
-          uuidGenerator,
-          eventPublisher,
-        );
-        const result = await usecase.execute({ reconversionProjectProps: props });
+          const usecase = new CreateReconversionProjectUseCase(
+            dateProvider,
+            siteRepository,
+            reconversionProjectRepository,
+            uuidGenerator,
+            eventPublisher,
+          );
+          const result = await usecase.execute({ reconversionProjectProps: props });
 
-        expect(result.isSuccess()).toBe(true);
-        const savedReconversionProjects = reconversionProjectRepository._getReconversionProjects();
+          assert.strictEqual(result.isSuccess(), true);
+          const savedReconversionProjects =
+            reconversionProjectRepository._getReconversionProjects();
 
-        expect(savedReconversionProjects).toEqual<ReconversionProjectSaveDto[]>([
-          { ...props, createdAt: fakeNow, creationMode: "custom", status: "active" },
-        ]);
+          assert.deepStrictEqual(savedReconversionProjects, [
+            { ...props, createdAt: fakeNow, creationMode: "custom", status: "active" },
+          ] satisfies ReconversionProjectSaveDto[]);
 
-        // oxlint-disable-next-line no-non-null-assertion
-        const projectId = savedReconversionProjects[0]!.id;
-        expect(eventPublisher.events).toHaveLength(1);
-        expect(eventPublisher.events[0]).toEqual<ReconversionProjectCreatedEvent>({
-          id: expect.any(String),
-          name: RECONVERSION_PROJECT_CREATED,
-          payload: {
-            reconversionProjectId: projectId,
-            siteId: props.relatedSiteId,
-            createdBy: props.createdBy,
-          },
+          // oxlint-disable-next-line no-non-null-assertion
+          const projectId = savedReconversionProjects[0]!.id;
+          assert.strictEqual(eventPublisher.events.length, 1);
+          assert.deepStrictEqual(eventPublisher.events[0], {
+            // oxlint-disable-next-line no-non-null-assertion
+            id: eventPublisher.events[0]!.id,
+            name: RECONVERSION_PROJECT_CREATED,
+            payload: {
+              reconversionProjectId: projectId,
+              siteId: props.relatedSiteId,
+              createdBy: props.createdBy,
+            },
+          } satisfies ReconversionProjectCreatedEvent);
         });
-      });
+      }
     });
   });
 });

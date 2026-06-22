@@ -1,3 +1,5 @@
+import assert from "node:assert/strict";
+import { describe, it, beforeEach } from "node:test";
 import {
   BuildingsUseDistribution,
   ReconversionProjectTemplate,
@@ -39,9 +41,8 @@ describe("GenerateAndSaveReconversionProjectFromTemplateUseCase Use Case", () =>
   });
 
   describe("Error cases", () => {
-    test.each(reconversionProjectTemplateSchema.options)(
-      "cannot create a template %s reconversion project with a non-existing site",
-      async (template) => {
+    for (const template of reconversionProjectTemplateSchema.options) {
+      it(`cannot create a template ${template} reconversion project with a non-existing site`, async () => {
         const usecase = new GenerateReconversionProjectFromTemplateUseCase(
           dateProvider,
           sitesQuery,
@@ -56,10 +57,10 @@ describe("GenerateAndSaveReconversionProjectFromTemplateUseCase Use Case", () =>
           template: template,
         });
 
-        expect(result.isFailure()).toBe(true);
-        expect((result as FailureResult).getError()).toBe("SiteNotFound");
-      },
-    );
+        assert.strictEqual(result.isFailure(), true);
+        assert.strictEqual((result as FailureResult).getError(), "SiteNotFound");
+      });
+    }
   });
 
   describe("On friche site", () => {
@@ -98,9 +99,8 @@ describe("GenerateAndSaveReconversionProjectFromTemplateUseCase Use Case", () =>
       sitesQuery._setSites([site]);
     });
 
-    test.each(reconversionProjectTemplateSchema.options)(
-      "should create a %s project with default name, given related site id, createdBy, createdAt and creationMode",
-      async (template) => {
+    for (const template of reconversionProjectTemplateSchema.options) {
+      it(`should create a ${template} project with default name, given related site id, createdBy, createdAt and creationMode`, async () => {
         const usecase = new GenerateReconversionProjectFromTemplateUseCase(
           dateProvider,
           sitesQuery,
@@ -129,19 +129,18 @@ describe("GenerateAndSaveReconversionProjectFromTemplateUseCase Use Case", () =>
 
         const expectedName = templateNameMap[template];
 
-        expect(result.isSuccess()).toBe(true);
+        assert.strictEqual(result.isSuccess(), true);
         const data = (result as SuccessResult<ReconversionProjectSaveDto>).getData();
-        expect(data.relatedSiteId).toEqual(site.id);
-        expect(data.createdBy).toEqual(creatorId);
-        expect(data.createdAt).toEqual(dateProvider.now());
-        expect(data.creationMode).toEqual("express");
-        expect(data.name).toEqual(expectedName);
-      },
-    );
+        assert.deepStrictEqual(data.relatedSiteId, site.id);
+        assert.deepStrictEqual(data.createdBy, creatorId);
+        assert.deepStrictEqual(data.createdAt, dateProvider.now());
+        assert.deepStrictEqual(data.creationMode, "express");
+        assert.deepStrictEqual(data.name, expectedName);
+      });
+    }
 
-    test.each(reconversionProjectTemplateSchema.options)(
-      "should create a %s project with reinstatement scheduled 1.5 years after current date, installation works 1.5 years after reinstatement and first operations 1 year after",
-      async (template) => {
+    for (const template of reconversionProjectTemplateSchema.options) {
+      it(`should create a ${template} project with reinstatement scheduled 1.5 years after current date, installation works 1.5 years after reinstatement and first operations 1 year after`, async () => {
         dateProvider = new DeterministicDateProvider(new Date("2024-09-01T13:00:00"));
 
         const usecase = new GenerateReconversionProjectFromTemplateUseCase(
@@ -158,24 +157,23 @@ describe("GenerateAndSaveReconversionProjectFromTemplateUseCase Use Case", () =>
           template: template,
         });
 
-        expect(result.isSuccess()).toBe(true);
+        assert.strictEqual(result.isSuccess(), true);
         const data = (result as SuccessResult<ReconversionProjectSaveDto>).getData();
-        expect(data.reinstatementSchedule).toEqual({
+        assert.deepStrictEqual(data.reinstatementSchedule, {
           startDate: new Date("2026-03-01T13:00:00"),
           endDate: new Date("2027-09-01T13:00:00"),
         });
-        expect(data.developmentPlan.installationSchedule).toEqual({
+        assert.deepStrictEqual(data.developmentPlan.installationSchedule, {
           startDate: new Date("2027-09-02T13:00:00"),
           endDate: new Date("2028-09-02T13:00:00"),
         });
-        expect(data.operationsFirstYear).toEqual(2029);
-      },
-    );
+        assert.deepStrictEqual(data.operationsFirstYear, 2029);
+      });
+    }
 
     describe("Urban projects", () => {
-      test.each(URBAN_PROJECT_TEMPLATES)(
-        "should create a %s project with site city as developer, reinstatement contract owner and no site owner",
-        async (template) => {
+      for (const template of URBAN_PROJECT_TEMPLATES) {
+        it(`should create a ${template} project with site city as developer, reinstatement contract owner and no site owner`, async () => {
           const usecase = new GenerateReconversionProjectFromTemplateUseCase(
             dateProvider,
             sitesQuery,
@@ -190,22 +188,22 @@ describe("GenerateAndSaveReconversionProjectFromTemplateUseCase Use Case", () =>
             template: template,
           });
 
-          expect(result.isSuccess()).toBe(true);
+          assert.strictEqual(result.isSuccess(), true);
           const data = (result as SuccessResult<ReconversionProjectSaveDto>).getData();
-          expect(data.futureSiteOwner).toEqual(undefined);
-          expect(data.developmentPlan.developer).toEqual({
+          assert.strictEqual(data.futureSiteOwner, undefined);
+          assert.deepStrictEqual(data.developmentPlan.developer, {
             structureType: "municipality",
             name: "Mairie de Montrouge",
           });
-          expect(data.reinstatementContractOwner).toEqual({
+          assert.deepStrictEqual(data.reinstatementContractOwner, {
             structureType: "municipality",
             name: "Mairie de Montrouge",
           });
-        },
-      );
-      test.each(URBAN_PROJECT_TEMPLATES)(
-        "should create a %s project with expected sale after development relative to buildings floor surface area",
-        async (template) => {
+        });
+      }
+
+      for (const template of URBAN_PROJECT_TEMPLATES) {
+        it(`should create a ${template} project with expected sale after development relative to buildings floor surface area`, async () => {
           const usecase = new GenerateReconversionProjectFromTemplateUseCase(
             dateProvider,
             sitesQuery,
@@ -248,18 +246,18 @@ describe("GenerateAndSaveReconversionProjectFromTemplateUseCase Use Case", () =>
               expectedResalePrice = 570_000;
           }
 
-          expect(result.isSuccess()).toBe(true);
+          assert.strictEqual(result.isSuccess(), true);
           const data = (result as SuccessResult<ReconversionProjectSaveDto>).getData();
-          expect(data.siteResaleExpectedSellingPrice).toEqual(expectedResalePrice);
-          expect(Math.round(data.siteResaleExpectedPropertyTransferDuties ?? 0)).toEqual(
+          assert.deepStrictEqual(data.siteResaleExpectedSellingPrice, expectedResalePrice);
+          assert.deepStrictEqual(
+            Math.round(data.siteResaleExpectedPropertyTransferDuties ?? 0),
             Math.round(expectedResalePrice * 0.0581),
           );
-        },
-      );
+        });
+      }
 
-      test.each(URBAN_PROJECT_TEMPLATES)(
-        "should create a %s project with right spaces, buildings floor area and soils distribution",
-        async (template) => {
+      for (const template of URBAN_PROJECT_TEMPLATES) {
+        it(`should create a ${template} project with right spaces, buildings floor area and soils distribution`, async () => {
           const usecase = new GenerateReconversionProjectFromTemplateUseCase(
             dateProvider,
             sitesQuery,
@@ -494,22 +492,32 @@ describe("GenerateAndSaveReconversionProjectFromTemplateUseCase Use Case", () =>
             };
           }
 
-          expect(result.isSuccess()).toBe(true);
+          assert.strictEqual(result.isSuccess(), true);
           const data = (result as SuccessResult<ReconversionProjectSaveDto>).getData();
           const { developmentPlan, soilsDistribution = [] } = data;
           const { buildingsFloorAreaDistribution } =
             developmentPlan.features as UrbanProjectFeatures;
 
-          expect(developmentPlan.type).toEqual("URBAN_PROJECT");
+          assert.deepStrictEqual(developmentPlan.type, "URBAN_PROJECT");
 
-          expect(sumListWithKey(soilsDistribution, "surfaceArea")).toEqual(site.surfaceArea);
-          expect(buildingsFloorAreaDistribution).toEqual(expectedBuildingsFloorAreaDistribution);
+          assert.deepStrictEqual(
+            sumListWithKey(soilsDistribution, "surfaceArea"),
+            site.surfaceArea,
+          );
+          assert.deepStrictEqual(
+            buildingsFloorAreaDistribution,
+            expectedBuildingsFloorAreaDistribution,
+          );
 
-          expect(soilsDistribution).toEqual(expectedSoilsDistribution);
-          expect(sumListWithKey(soilsDistribution, "surfaceArea")).toEqual(site.surfaceArea);
-        },
-      );
+          assert.deepStrictEqual(soilsDistribution, expectedSoilsDistribution);
+          assert.deepStrictEqual(
+            sumListWithKey(soilsDistribution, "surfaceArea"),
+            site.surfaceArea,
+          );
+        });
+      }
     });
+
     describe("PHOTOVOLTAIC_POWER_PLANT", () => {
       it("should create a PHOTOVOLTAIC_POWER_PLANT project with user company as developer, reinstatement contract owner and site operator", async () => {
         const creatorId = uuid();
@@ -536,22 +544,23 @@ describe("GenerateAndSaveReconversionProjectFromTemplateUseCase Use Case", () =>
           template: "PHOTOVOLTAIC_POWER_PLANT",
         });
 
-        expect(result.isSuccess()).toBe(true);
+        assert.strictEqual(result.isSuccess(), true);
         const data = (result as SuccessResult<ReconversionProjectSaveDto>).getData();
-        expect(data.futureSiteOwner).toEqual(undefined);
-        expect(data.futureOperator).toEqual({
+        assert.strictEqual(data.futureSiteOwner, undefined);
+        assert.deepStrictEqual(data.futureOperator, {
           structureType: "company",
           name: "My company",
         });
-        expect(data.developmentPlan.developer).toEqual({
+        assert.deepStrictEqual(data.developmentPlan.developer, {
           structureType: "company",
           name: "My company",
         });
-        expect(data.reinstatementContractOwner).toEqual({
+        assert.deepStrictEqual(data.reinstatementContractOwner, {
           structureType: "company",
           name: "My company",
         });
       });
+
       it("should create a PHOTOVOLTAIC_POWER_PLANT project with user municipality as developer, reinstatement contract owner and site operator", async () => {
         const creatorId = uuid();
         userQuery._setUsers([
@@ -577,22 +586,23 @@ describe("GenerateAndSaveReconversionProjectFromTemplateUseCase Use Case", () =>
           template: "PHOTOVOLTAIC_POWER_PLANT",
         });
 
-        expect(result.isSuccess()).toBe(true);
+        assert.strictEqual(result.isSuccess(), true);
         const data = (result as SuccessResult<ReconversionProjectSaveDto>).getData();
-        expect(data.futureSiteOwner).toEqual(undefined);
-        expect(data.futureOperator).toEqual({
+        assert.strictEqual(data.futureSiteOwner, undefined);
+        assert.deepStrictEqual(data.futureOperator, {
           structureType: "municipality",
           name: "Mairie de Blajan",
         });
-        expect(data.developmentPlan.developer).toEqual({
+        assert.deepStrictEqual(data.developmentPlan.developer, {
           structureType: "municipality",
           name: "Mairie de Blajan",
         });
-        expect(data.reinstatementContractOwner).toEqual({
+        assert.deepStrictEqual(data.reinstatementContractOwner, {
           structureType: "municipality",
           name: "Mairie de Blajan",
         });
       });
+
       it("should create a PHOTOVOLTAIC_POWER_PLANT project with site owner as developer, reinstatement contract owner and site operator", async () => {
         const usecase = new GenerateReconversionProjectFromTemplateUseCase(
           dateProvider,
@@ -608,18 +618,18 @@ describe("GenerateAndSaveReconversionProjectFromTemplateUseCase Use Case", () =>
           template: "PHOTOVOLTAIC_POWER_PLANT",
         });
 
-        expect(result.isSuccess()).toBe(true);
+        assert.strictEqual(result.isSuccess(), true);
         const data = (result as SuccessResult<ReconversionProjectSaveDto>).getData();
-        expect(data.futureSiteOwner).toEqual(undefined);
-        expect(data.futureOperator).toEqual({
+        assert.strictEqual(data.futureSiteOwner, undefined);
+        assert.deepStrictEqual(data.futureOperator, {
           structureType: "municipality",
           name: "Mairie de Montrouge",
         });
-        expect(data.developmentPlan.developer).toEqual({
+        assert.deepStrictEqual(data.developmentPlan.developer, {
           structureType: "municipality",
           name: "Mairie de Montrouge",
         });
-        expect(data.reinstatementContractOwner).toEqual({
+        assert.deepStrictEqual(data.reinstatementContractOwner, {
           structureType: "municipality",
           name: "Mairie de Montrouge",
         });
@@ -635,6 +645,7 @@ describe("GenerateAndSaveReconversionProjectFromTemplateUseCase Use Case", () =>
         },
         contaminatedSoilSurface: 0,
       };
+
       it("should create a RESIDENTIAL_NORMAL_AREA with reinstatement costs, real estate sale transaction and development installation costs", async () => {
         sitesQuery._setSites([nonPollutedFricheWithNoBuildings]);
 
@@ -652,19 +663,19 @@ describe("GenerateAndSaveReconversionProjectFromTemplateUseCase Use Case", () =>
           template: "RESIDENTIAL_NORMAL_AREA",
         });
 
-        expect(result.isSuccess()).toBe(true);
+        assert.strictEqual(result.isSuccess(), true);
         const data = (result as SuccessResult<ReconversionProjectSaveDto>).getData();
         // real estate sale transaction
-        expect(data.sitePurchaseSellingPrice).toEqual(720000);
-        expect(data.sitePurchasePropertyTransferDuties).toEqual(41832);
+        assert.deepStrictEqual(data.sitePurchaseSellingPrice, 720000);
+        assert.deepStrictEqual(data.sitePurchasePropertyTransferDuties, 41832);
         // development installation cost
-        expect(data.developmentPlan.costs).toEqual([
+        assert.deepStrictEqual(data.developmentPlan.costs, [
           { purpose: "technical_studies", amount: 60000 },
           { purpose: "development_works", amount: 540000 },
           { purpose: "other", amount: 54000 },
         ]);
         // reinstatement costs
-        expect(data.reinstatementCosts).toEqual([]);
+        assert.deepStrictEqual(data.reinstatementCosts, []);
       });
     });
 
@@ -684,7 +695,8 @@ describe("GenerateAndSaveReconversionProjectFromTemplateUseCase Use Case", () =>
         },
         contaminatedSoilSurface: 50000,
       };
-      it("should create a RESIDENTIAL_NORMAL_AREA should create a %s with reinstatement costs, real estate sale transaction and development installation costs based on site data", async () => {
+
+      it("should create a RESIDENTIAL_NORMAL_AREA with reinstatement costs, real estate sale transaction and development installation costs based on site data", async () => {
         sitesQuery._setSites([pollutedFricheWithBuildings]);
 
         const usecase = new GenerateReconversionProjectFromTemplateUseCase(
@@ -701,31 +713,52 @@ describe("GenerateAndSaveReconversionProjectFromTemplateUseCase Use Case", () =>
           template: "RESIDENTIAL_NORMAL_AREA",
         });
 
-        expect(result.isSuccess()).toBe(true);
+        assert.strictEqual(result.isSuccess(), true);
         const data = (result as SuccessResult<ReconversionProjectSaveDto>).getData();
         // real estate sale transaction
-        expect(data.sitePurchaseSellingPrice).toEqual(7200000);
-        expect(data.sitePurchasePropertyTransferDuties).toEqual(418320);
+        assert.deepStrictEqual(data.sitePurchaseSellingPrice, 7200000);
+        assert.deepStrictEqual(data.sitePurchasePropertyTransferDuties, 418320);
         // development installation cost
-        expect(data.developmentPlan.costs).toEqual([
+        assert.deepStrictEqual(data.developmentPlan.costs, [
           { purpose: "technical_studies", amount: 600000 },
           { purpose: "development_works", amount: 5400000 },
           { purpose: "other", amount: 540000 },
         ]);
         // reinstatement costs
-        expect(data.reinstatementCosts).toHaveLength(3);
-        expect(data.reinstatementCosts).toContainEqual({
-          purpose: "asbestos_removal",
-          amount: 75000,
-        });
-        expect(data.reinstatementCosts).toContainEqual({
-          purpose: "demolition",
-          amount: 75000,
-        });
-        expect(data.reinstatementCosts).toContainEqual({
-          purpose: "remediation",
-          amount: 2475000,
-        });
+        assert.strictEqual((data.reinstatementCosts ?? []).length, 3);
+        {
+          const found = (data.reinstatementCosts ?? []).find((i) => {
+            try {
+              assert.deepStrictEqual(i, { purpose: "asbestos_removal", amount: 75000 });
+              return true;
+            } catch {
+              return false;
+            }
+          });
+          assert.ok(found !== undefined);
+        }
+        {
+          const found = (data.reinstatementCosts ?? []).find((i) => {
+            try {
+              assert.deepStrictEqual(i, { purpose: "demolition", amount: 75000 });
+              return true;
+            } catch {
+              return false;
+            }
+          });
+          assert.ok(found !== undefined);
+        }
+        {
+          const found = (data.reinstatementCosts ?? []).find((i) => {
+            try {
+              assert.deepStrictEqual(i, { purpose: "remediation", amount: 2475000 });
+              return true;
+            } catch {
+              return false;
+            }
+          });
+          assert.ok(found !== undefined);
+        }
       });
     });
 
@@ -755,20 +788,20 @@ describe("GenerateAndSaveReconversionProjectFromTemplateUseCase Use Case", () =>
           template: "RESIDENTIAL_NORMAL_AREA",
         });
 
-        expect(result.isSuccess()).toBe(true);
+        assert.strictEqual(result.isSuccess(), true);
         const data = (result as SuccessResult<ReconversionProjectSaveDto>).getData();
         // reinstatement costs
-        expect(data.reinstatementCosts).toHaveLength(4);
-        expect(data.reinstatementCosts?.at(0)).toEqual({
+        assert.strictEqual((data.reinstatementCosts ?? []).length, 4);
+        assert.deepStrictEqual(data.reinstatementCosts?.at(0), {
           purpose: "deimpermeabilization",
           amount: 64000,
         });
-        expect(data.reinstatementCosts?.at(1)).toEqual({
+        assert.deepStrictEqual(data.reinstatementCosts?.at(1), {
           purpose: "sustainable_soils_reinstatement",
           amount: 270000,
         });
-        expect(data.reinstatementCosts?.at(2)?.purpose).toEqual("demolition");
-        expect(data.reinstatementCosts?.at(3)?.purpose).toEqual("asbestos_removal");
+        assert.deepStrictEqual(data.reinstatementCosts?.at(2)?.purpose, "demolition");
+        assert.deepStrictEqual(data.reinstatementCosts?.at(3)?.purpose, "asbestos_removal");
       });
     });
   });
@@ -805,10 +838,10 @@ describe("GenerateAndSaveReconversionProjectFromTemplateUseCase Use Case", () =>
         structureType: "private_individual",
       },
     } as const satisfies SiteFeaturesView;
+
     describe("with site purchase", () => {
-      test.each(URBAN_PROJECT_TEMPLATES)(
-        "should create a %s with real estate sale transaction and development installation costs based on site",
-        async (template) => {
+      for (const template of URBAN_PROJECT_TEMPLATES) {
+        it(`should create a ${template} with real estate sale transaction and development installation costs based on site`, async () => {
           sitesQuery._setSites([site]);
           const usecase = new GenerateReconversionProjectFromTemplateUseCase(
             dateProvider,
@@ -824,31 +857,30 @@ describe("GenerateAndSaveReconversionProjectFromTemplateUseCase Use Case", () =>
             template: template,
           });
 
-          expect(result.isSuccess()).toBe(true);
+          assert.strictEqual(result.isSuccess(), true);
           const data = (result as SuccessResult<ReconversionProjectSaveDto>).getData();
           // real estate sale transaction
-          expect(data.sitePurchaseSellingPrice).toEqual(3600000);
-          expect(data.sitePurchasePropertyTransferDuties).toEqual(209160);
+          assert.deepStrictEqual(data.sitePurchaseSellingPrice, 3600000);
+          assert.deepStrictEqual(data.sitePurchasePropertyTransferDuties, 209160);
           // development installation cost
-          expect(data.developmentPlan.costs).toEqual([
+          assert.deepStrictEqual(data.developmentPlan.costs, [
             { purpose: "technical_studies", amount: 300000 },
             { purpose: "development_works", amount: 2700000 },
             { purpose: "other", amount: 270000 },
           ]);
           // reinstatement costs
-          expect(data.reinstatementCosts).toEqual(undefined);
-          expect(data.futureSiteOwner).toEqual({
+          assert.strictEqual(data.reinstatementCosts, undefined);
+          assert.deepStrictEqual(data.futureSiteOwner, {
             structureType: "municipality",
             name: "Mairie de Montrouge",
           });
-        },
-      );
+        });
+      }
     });
 
     describe("without site purchase", () => {
-      test.each(URBAN_PROJECT_TEMPLATES)(
-        "should create a %s without real estate sale transaction and future site owner",
-        async (template) => {
+      for (const template of URBAN_PROJECT_TEMPLATES) {
+        it(`should create a ${template} without real estate sale transaction and future site owner`, async () => {
           const siteOwner = {
             name: "Mairie de Montrouge",
             structureType: "municipality",
@@ -868,14 +900,14 @@ describe("GenerateAndSaveReconversionProjectFromTemplateUseCase Use Case", () =>
             template: template,
           });
 
-          expect(result.isSuccess()).toBe(true);
+          assert.strictEqual(result.isSuccess(), true);
           const data = (result as SuccessResult<ReconversionProjectSaveDto>).getData();
           // real estate sale transaction
-          expect(data.sitePurchaseSellingPrice).toEqual(undefined);
-          expect(data.sitePurchasePropertyTransferDuties).toEqual(undefined);
-          expect(data.futureSiteOwner).toEqual(undefined);
-        },
-      );
+          assert.strictEqual(data.sitePurchaseSellingPrice, undefined);
+          assert.strictEqual(data.sitePurchasePropertyTransferDuties, undefined);
+          assert.strictEqual(data.futureSiteOwner, undefined);
+        });
+      }
     });
   });
 });

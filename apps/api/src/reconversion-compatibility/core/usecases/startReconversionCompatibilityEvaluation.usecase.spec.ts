@@ -1,3 +1,6 @@
+import assert from "node:assert/strict";
+import { describe, it, beforeEach } from "node:test";
+
 import { InMemoryReconversionCompatibilityEvaluationRepository } from "src/reconversion-compatibility/adapters/secondary/reconversion-compatibility-evaluation/InMemoryReconversionCompatibilityEvaluationRepository";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { InMemoryEventPublisher } from "src/shared-kernel/adapters/events/publisher/InMemoryEventPublisher";
@@ -34,7 +37,7 @@ describe("StartReconversionCompatibilityEvaluationUseCase", () => {
       createdById: "58090ca1-7680-4193-a3e8-89b7ed2bd6b8",
     });
 
-    expect(repository.evaluations).toEqual<ReconversionCompatibilityEvaluation[]>([
+    assert.deepStrictEqual(repository.evaluations, [
       {
         id: "bdea66f3-e911-4a32-a829-cab382bc34ea",
         createdBy: "58090ca1-7680-4193-a3e8-89b7ed2bd6b8",
@@ -44,9 +47,9 @@ describe("StartReconversionCompatibilityEvaluationUseCase", () => {
         completedAt: null,
         relatedSiteId: null,
       },
-    ]);
+    ] satisfies ReconversionCompatibilityEvaluation[]);
 
-    expect(eventPublisher.events).toEqual([
+    assert.deepStrictEqual(eventPublisher.events, [
       {
         id: "event-id-1",
         name: "reconversion-compatibility-evaluation.started",

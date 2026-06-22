@@ -1,3 +1,6 @@
+import assert from "node:assert/strict";
+import { describe, it, beforeEach } from "node:test";
+
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { InMemoryUserFeatureAlertsRepository } from "src/users/adapters/secondary/user-feature-alert-repository/InMemoryUserFeatureAlertRepository";
@@ -26,10 +29,10 @@ describe("CreateUserFeatureAlert Use Case", () => {
       },
     });
 
-    expect(result.isSuccess()).toBe(true);
+    assert.strictEqual(result.isSuccess(), true);
     const savedAlerts = repository._getUsersFeatureAlerts();
 
-    expect(savedAlerts).toEqual<UserFeatureAlert[]>([
+    assert.deepStrictEqual(savedAlerts, [
       {
         id: "2096a04d-4876-4e1e-b071-d5355fd0ee4c",
         userId: "ecf6d4b1-d394-48c8-8208-fad936afe6ca",
@@ -42,8 +45,9 @@ describe("CreateUserFeatureAlert Use Case", () => {
           statu_quo_scenario: false,
         },
       },
-    ]);
+    ] satisfies UserFeatureAlert[]);
   });
+
   it("create a feature alert for 'export_impacts' type with right options", async () => {
     const usecase = new CreateUserFeatureAlertUseCase(repository, dateProvider);
     const result = await usecase.execute({
@@ -56,10 +60,10 @@ describe("CreateUserFeatureAlert Use Case", () => {
       },
     });
 
-    expect(result.isSuccess()).toBe(true);
+    assert.strictEqual(result.isSuccess(), true);
     const savedAlerts = repository._getUsersFeatureAlerts();
 
-    expect(savedAlerts).toEqual<UserFeatureAlert[]>([
+    assert.deepStrictEqual(savedAlerts, [
       {
         id: "2096a04d-4876-4e1e-b071-d5355fd0ee4c",
         userId: "ecf6d4b1-d394-48c8-8208-fad936afe6ca",
@@ -72,7 +76,7 @@ describe("CreateUserFeatureAlert Use Case", () => {
           sharing_link: true,
         },
       },
-    ]);
+    ] satisfies UserFeatureAlert[]);
   });
 
   it("create a feature alert for 'export_impacts' type with no options", async () => {
@@ -86,10 +90,10 @@ describe("CreateUserFeatureAlert Use Case", () => {
       },
     });
 
-    expect(result.isSuccess()).toBe(true);
+    assert.strictEqual(result.isSuccess(), true);
     const savedAlerts = repository._getUsersFeatureAlerts();
 
-    expect(savedAlerts).toEqual<UserFeatureAlert[]>([
+    assert.deepStrictEqual(savedAlerts, [
       {
         id: "2096a04d-4876-4e1e-b071-d5355fd0ee4c",
         userId: "ecf6d4b1-d394-48c8-8208-fad936afe6ca",
@@ -102,7 +106,7 @@ describe("CreateUserFeatureAlert Use Case", () => {
           sharing_link: false,
         },
       },
-    ]);
+    ] satisfies UserFeatureAlert[]);
   });
 
   it("create a feature alert for 'duplicate_project' type with no options", async () => {
@@ -116,10 +120,10 @@ describe("CreateUserFeatureAlert Use Case", () => {
       },
     });
 
-    expect(result.isSuccess()).toBe(true);
+    assert.strictEqual(result.isSuccess(), true);
     const savedAlerts = repository._getUsersFeatureAlerts();
 
-    expect(savedAlerts).toEqual<UserFeatureAlert[]>([
+    assert.deepStrictEqual(savedAlerts, [
       {
         id: "2096a04d-4876-4e1e-b071-d5355fd0ee4c",
         userId: "ecf6d4b1-d394-48c8-8208-fad936afe6ca",
@@ -127,7 +131,7 @@ describe("CreateUserFeatureAlert Use Case", () => {
         createdAt: fakeNow,
         featureType: "duplicate_project",
       },
-    ]);
+    ] satisfies UserFeatureAlert[]);
   });
 
   it("creates a feature alert for 'mutafriches_availability' without user id", async () => {
@@ -140,10 +144,10 @@ describe("CreateUserFeatureAlert Use Case", () => {
       },
     });
 
-    expect(result.isSuccess()).toBe(true);
+    assert.strictEqual(result.isSuccess(), true);
     const savedAlerts = repository._getUsersFeatureAlerts();
 
-    expect(savedAlerts).toEqual<UserFeatureAlert[]>([
+    assert.deepStrictEqual(savedAlerts, [
       {
         id: "2096a04d-4876-4e1e-b071-d5355fd0ee4c",
         userId: undefined,
@@ -151,6 +155,6 @@ describe("CreateUserFeatureAlert Use Case", () => {
         createdAt: fakeNow,
         featureType: "mutafriches_availability",
       },
-    ]);
+    ] satisfies UserFeatureAlert[]);
   });
 });

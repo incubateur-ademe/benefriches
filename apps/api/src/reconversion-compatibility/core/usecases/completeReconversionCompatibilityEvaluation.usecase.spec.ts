@@ -1,3 +1,6 @@
+import assert from "node:assert/strict";
+import { describe, it, beforeEach } from "node:test";
+
 import { InMemoryReconversionCompatibilityEvaluationRepository } from "src/reconversion-compatibility/adapters/secondary/reconversion-compatibility-evaluation/InMemoryReconversionCompatibilityEvaluationRepository";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { InMemoryEventPublisher } from "src/shared-kernel/adapters/events/publisher/InMemoryEventPublisher";
@@ -47,7 +50,7 @@ describe("CompleteReconversionCompatibilityEvaluationUseCase", () => {
       mutafrichesId: "mutafriches-123",
     });
 
-    expect(repository.evaluations).toEqual<ReconversionCompatibilityEvaluation[]>([
+    assert.deepStrictEqual(repository.evaluations, [
       {
         id: existingEvaluation.id,
         createdBy: existingEvaluation.createdBy,
@@ -57,9 +60,9 @@ describe("CompleteReconversionCompatibilityEvaluationUseCase", () => {
         completedAt: fakeNow,
         relatedSiteId: null,
       },
-    ]);
+    ] satisfies ReconversionCompatibilityEvaluation[]);
 
-    expect(eventPublisher.events).toEqual([
+    assert.deepStrictEqual(eventPublisher.events, [
       {
         id: "event-id-1",
         name: "reconversion-compatibility-evaluation.completed",
@@ -84,8 +87,11 @@ describe("CompleteReconversionCompatibilityEvaluationUseCase", () => {
       mutafrichesId: "mutafriches-123",
     });
 
-    expect(result.isFailure()).toBe(true);
-    expect((result as FailureResult<"EvaluationNotFound">).getError()).toBe("EvaluationNotFound");
+    assert.strictEqual(result.isFailure(), true);
+    assert.strictEqual(
+      (result as FailureResult<"EvaluationNotFound">).getError(),
+      "EvaluationNotFound",
+    );
   });
 
   it("throws an error when evaluation is already completed", async () => {
@@ -113,8 +119,9 @@ describe("CompleteReconversionCompatibilityEvaluationUseCase", () => {
       mutafrichesId: "mutafriches-123",
     });
 
-    expect(result.isFailure()).toBe(true);
-    expect((result as FailureResult<"EvaluationCannotBeCompleted">).getError()).toBe(
+    assert.strictEqual(result.isFailure(), true);
+    assert.strictEqual(
+      (result as FailureResult<"EvaluationCannotBeCompleted">).getError(),
       "EvaluationCannotBeCompleted",
     );
   });
@@ -144,8 +151,9 @@ describe("CompleteReconversionCompatibilityEvaluationUseCase", () => {
       mutafrichesId: "mutafriches-123",
     });
 
-    expect(result.isFailure()).toBe(true);
-    expect((result as FailureResult<"EvaluationCannotBeCompleted">).getError()).toBe(
+    assert.strictEqual(result.isFailure(), true);
+    assert.strictEqual(
+      (result as FailureResult<"EvaluationCannotBeCompleted">).getError(),
       "EvaluationCannotBeCompleted",
     );
   });

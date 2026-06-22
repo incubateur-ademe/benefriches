@@ -1,3 +1,5 @@
+import assert from "node:assert/strict";
+import { describe, it, beforeEach } from "node:test";
 import { GetSiteImpactsDto, SiteImpactsDataView } from "shared";
 import { v4 as uuid } from "uuid";
 
@@ -30,8 +32,8 @@ describe("ComputeSiteImpactsUseCase", () => {
         operationsFirstYear: 2026,
       });
 
-      expect(result.isFailure()).toBe(true);
-      expect((result as FailureResult<"SiteNotFound">).getError()).toBe("SiteNotFound");
+      assert.strictEqual(result.isFailure(), true);
+      assert.strictEqual((result as FailureResult<"SiteNotFound">).getError(), "SiteNotFound");
     });
   });
 
@@ -98,10 +100,10 @@ describe("ComputeSiteImpactsUseCase", () => {
         siteId: fricheSite.id,
       });
 
-      expect(result.isSuccess()).toBe(true);
+      assert.strictEqual(result.isSuccess(), true);
       const data = (result as SuccessResult<GetSiteImpactsDto>).getData();
-      expect(data.projectionYears[0]).toEqual("2026");
-      expect(data.projectionYears).toHaveLength(50);
+      assert.deepStrictEqual(data.projectionYears[0], "2026");
+      assert.strictEqual(data.projectionYears.length, 50);
     });
 
     it("projectionYears has exactly evaluationPeriodInYears entries", async () => {
@@ -113,8 +115,8 @@ describe("ComputeSiteImpactsUseCase", () => {
       });
 
       const data = (result as SuccessResult<GetSiteImpactsDto>).getData();
-      expect(data.projectionYears).toHaveLength(evaluationPeriodInYears);
-      expect(data.projectionYears).toEqual([
+      assert.strictEqual(data.projectionYears.length, evaluationPeriodInYears);
+      assert.deepStrictEqual(data.projectionYears, [
         "2026",
         "2027",
         "2028",
@@ -137,7 +139,7 @@ describe("ComputeSiteImpactsUseCase", () => {
       });
 
       const data = (result as SuccessResult<GetSiteImpactsDto>).getData();
-      expect(data.projectionYears[0]).toBe("2028");
+      assert.strictEqual(data.projectionYears[0], "2028");
     });
 
     it("stakeholders reflect site data", async () => {
@@ -151,12 +153,12 @@ describe("ComputeSiteImpactsUseCase", () => {
       });
 
       const data = (result as SuccessResult<GetSiteImpactsDto>).getData();
-      expect(data.stakeholders.owner?.structureType).toBe(fricheSite.ownerStructureType);
-      expect(data.stakeholders.owner?.structureName).toBe(fricheSite.ownerName);
-      expect(data.stakeholders.operator?.structureType).toBe(fricheSite.tenantStructureType);
-      expect(data.stakeholders.operator?.structureName).toBe(fricheSite.tenantName);
-      expect(data.stakeholders.tenant?.structureType).toBe(fricheSite.tenantStructureType);
-      expect(data.stakeholders.tenant?.structureName).toBe(fricheSite.tenantName);
+      assert.strictEqual(data.stakeholders.owner?.structureType, fricheSite.ownerStructureType);
+      assert.strictEqual(data.stakeholders.owner?.structureName, fricheSite.ownerName);
+      assert.strictEqual(data.stakeholders.operator?.structureType, fricheSite.tenantStructureType);
+      assert.strictEqual(data.stakeholders.operator?.structureName, fricheSite.tenantName);
+      assert.strictEqual(data.stakeholders.tenant?.structureType, fricheSite.tenantStructureType);
+      assert.strictEqual(data.stakeholders.tenant?.structureName, fricheSite.tenantName);
     });
 
     it("computes operatingEconomicBalance and indirectEconomicImpacts", async () => {
@@ -167,9 +169,9 @@ describe("ComputeSiteImpactsUseCase", () => {
         evaluationPeriodInYears,
       });
 
-      expect(result.isSuccess()).toBe(true);
+      assert.strictEqual(result.isSuccess(), true);
       const data = (result as SuccessResult<GetSiteImpactsDto>).getData();
-      expect(data.economicImpacts.total).toBeGreaterThan(-700000);
+      assert.ok(data.economicImpacts.total > -700000);
     });
   });
 });

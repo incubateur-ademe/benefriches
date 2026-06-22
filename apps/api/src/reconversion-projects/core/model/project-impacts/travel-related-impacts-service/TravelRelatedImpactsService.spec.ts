@@ -1,9 +1,12 @@
+import assert from "node:assert/strict";
+import { describe, it, before } from "node:test";
+
 import { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import { TravelRelatedImpactsService } from "./TravelRelatedImpactsService";
 
 describe("TravelRelatedImpactsService", () => {
   let travelRelatedImpactsService: TravelRelatedImpactsService;
-  beforeAll(() => {
+  before(() => {
     travelRelatedImpactsService = new TravelRelatedImpactsService({
       siteSquareMetersSurfaceArea: 10000,
       citySquareMetersSurfaceArea: 6000000000,
@@ -22,13 +25,13 @@ describe("TravelRelatedImpactsService", () => {
   });
 
   it("computes avoided accidents injuries and deaths for duration with low avoided kilometers", () => {
-    expect(travelRelatedImpactsService.getAvoidedAccidentsMinorInjuries()).toEqual(0);
-    expect(travelRelatedImpactsService.getAvoidedAccidentsSevereInjuries()).toEqual(0);
-    expect(travelRelatedImpactsService.getAvoidedAccidentsDeaths()).toEqual(0);
+    assert.strictEqual(travelRelatedImpactsService.getAvoidedAccidentsMinorInjuries(), 0);
+    assert.strictEqual(travelRelatedImpactsService.getAvoidedAccidentsSevereInjuries(), 0);
+    assert.strictEqual(travelRelatedImpactsService.getAvoidedAccidentsDeaths(), 0);
 
-    expect(travelRelatedImpactsService.getAvoidedAccidentsMinorInjuriesExpenses()).toEqual(0);
-    expect(travelRelatedImpactsService.getAvoidedAccidentsSevereInjuriesExpenses()).toEqual(0);
-    expect(travelRelatedImpactsService.getAvoidedAccidentsSevereInjuriesExpenses()).toEqual(0);
+    assert.strictEqual(travelRelatedImpactsService.getAvoidedAccidentsMinorInjuriesExpenses(), 0);
+    assert.strictEqual(travelRelatedImpactsService.getAvoidedAccidentsSevereInjuriesExpenses(), 0);
+    assert.strictEqual(travelRelatedImpactsService.getAvoidedAccidentsSevereInjuriesExpenses(), 0);
   });
 
   it("computes avoided accidents injuries and deaths for duration with high avoided kilometers", () => {
@@ -47,15 +50,19 @@ describe("TravelRelatedImpactsService", () => {
         operationsFirstYear: 2025,
       }),
     });
-    expect(travelRelatedImpactsService.getAvoidedAccidentsMinorInjuries()).toEqual(444);
-    expect(travelRelatedImpactsService.getAvoidedAccidentsSevereInjuries()).toEqual(28);
-    expect(travelRelatedImpactsService.getAvoidedAccidentsDeaths()).toEqual(8);
+    assert.strictEqual(travelRelatedImpactsService.getAvoidedAccidentsMinorInjuries(), 444);
+    assert.strictEqual(travelRelatedImpactsService.getAvoidedAccidentsSevereInjuries(), 28);
+    assert.strictEqual(travelRelatedImpactsService.getAvoidedAccidentsDeaths(), 8);
 
-    expect(travelRelatedImpactsService.getAvoidedAccidentsMinorInjuriesExpenses()).toEqual(7750407);
-    expect(travelRelatedImpactsService.getAvoidedAccidentsSevereInjuriesExpenses()).toEqual(
+    assert.strictEqual(
+      travelRelatedImpactsService.getAvoidedAccidentsMinorInjuriesExpenses(),
+      7750407,
+    );
+    assert.strictEqual(
+      travelRelatedImpactsService.getAvoidedAccidentsSevereInjuriesExpenses(),
       12110210,
     );
-    expect(travelRelatedImpactsService.getAvoidedAccidentsDeathsExpenses()).toEqual(28938699);
+    assert.strictEqual(travelRelatedImpactsService.getAvoidedAccidentsDeathsExpenses(), 28938699);
   });
 
   it("returns socioeconomic, social and environment impacts related to travel", () => {
@@ -76,7 +83,7 @@ describe("TravelRelatedImpactsService", () => {
       }),
     });
 
-    expect(travelRelatedImpactsService.getSocioEconomicList()).toEqual([
+    assert.deepStrictEqual(travelRelatedImpactsService.getSocioEconomicList(), [
       {
         actor: "french_society",
         amount: 27919,
@@ -102,11 +109,11 @@ describe("TravelRelatedImpactsService", () => {
         impactCategory: "social_monetary",
       },
     ]);
-    expect(travelRelatedImpactsService.getAvoidedTrafficCO2Emissions()).toEqual({
+    assert.deepStrictEqual(travelRelatedImpactsService.getAvoidedTrafficCO2Emissions(), {
       inTons: 240,
       monetaryValue: 45308,
     });
-    expect(travelRelatedImpactsService.getTravelTimeSavedPerTraveler()).toEqual(79000.75);
-    expect(travelRelatedImpactsService.getAvoidedTrafficAccidents()).toEqual(undefined);
+    assert.deepStrictEqual(travelRelatedImpactsService.getTravelTimeSavedPerTraveler(), 79000.75);
+    assert.deepStrictEqual(travelRelatedImpactsService.getAvoidedTrafficAccidents(), undefined);
   });
 });

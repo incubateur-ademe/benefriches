@@ -1,3 +1,6 @@
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+
 import { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import { NatureConservationImpactsService } from "./NatureConservationImpactsService";
 
@@ -30,14 +33,14 @@ describe("NatureConservationImpactsService", () => {
       soilErosion,
     } = natureConservationImpactsService.getEcosystemServicesMonetaryImpact();
 
-    expect(storedCo2Eq.difference).toEqual(0);
-    expect(natureRelatedWelnessAndLeisure.difference).toEqual(0);
-    expect(waterCycle.difference).toEqual(0);
-    expect(forestRelatedProduct).toEqual(undefined);
-    expect(pollination).toEqual(undefined);
-    expect(invasiveSpeciesRegulation).toEqual(undefined);
-    expect(nitrogenCycle).toEqual(undefined);
-    expect(soilErosion).toEqual(undefined);
+    assert.deepStrictEqual(storedCo2Eq.difference, 0);
+    assert.deepStrictEqual(natureRelatedWelnessAndLeisure.difference, 0);
+    assert.deepStrictEqual(waterCycle.difference, 0);
+    assert.deepStrictEqual(forestRelatedProduct, undefined);
+    assert.deepStrictEqual(pollination, undefined);
+    assert.deepStrictEqual(invasiveSpeciesRegulation, undefined);
+    assert.deepStrictEqual(nitrogenCycle, undefined);
+    assert.deepStrictEqual(soilErosion, undefined);
   });
 
   it("returns no carbon storage impact if no base and forecast provided", () => {
@@ -58,7 +61,7 @@ describe("NatureConservationImpactsService", () => {
     });
     const { storedCo2Eq } = natureConservationImpactsService.getEcosystemServicesMonetaryImpact();
 
-    expect(storedCo2Eq).toEqual({ base: 0, forecast: 0, difference: 0 });
+    assert.deepStrictEqual(storedCo2Eq, { base: 0, forecast: 0, difference: 0 });
   });
 
   it("compute storedCo2Eq positive monetary value", () => {
@@ -78,9 +81,10 @@ describe("NatureConservationImpactsService", () => {
         operationsFirstYear: 2025,
       }),
     });
-    expect(
+    assert.deepStrictEqual(
       natureConservationImpactsService.getEcosystemServicesMonetaryImpact().storedCo2Eq,
-    ).toEqual({ base: 55001, forecast: 82500, difference: 27499 });
+      { base: 55001, forecast: 82500, difference: 27499 },
+    );
   });
 
   it("compute storedCo2Eq negative monetary value", () => {
@@ -100,9 +104,10 @@ describe("NatureConservationImpactsService", () => {
         operationsFirstYear: 2025,
       }),
     });
-    expect(
+    assert.deepStrictEqual(
       natureConservationImpactsService.getEcosystemServicesMonetaryImpact().storedCo2Eq,
-    ).toEqual({ forecast: 55001, base: 82500, difference: -27499 });
+      { forecast: 55001, base: 82500, difference: -27499 },
+    );
   });
 
   it("returns positive difference for water regulation and ecosystem services monetary values", () => {
@@ -143,19 +148,23 @@ describe("NatureConservationImpactsService", () => {
     } = natureConservationImpactsService.getEcosystemServicesMonetaryImpact();
     const waterRegulation = natureConservationImpactsService.getWaterRegulationMonetaryImpact();
 
-    expect(waterRegulation).toEqual({
+    assert.deepStrictEqual(waterRegulation, {
       base: 326,
       forecast: 574,
       difference: 248,
     });
-    expect(storedCo2Eq).toEqual({ base: 55000, difference: 27500, forecast: 82500 });
-    expect(natureRelatedWelnessAndLeisure).toEqual({ base: 173, difference: 61, forecast: 234 });
-    expect(forestRelatedProduct).toEqual(undefined);
-    expect(pollination).toEqual({ base: 120, difference: 108, forecast: 228 });
-    expect(invasiveSpeciesRegulation).toEqual({ base: 44, difference: 40, forecast: 84 });
-    expect(waterCycle).toEqual({ base: 1837, difference: 1522, forecast: 3359 });
-    expect(nitrogenCycle).toEqual({ base: 107, difference: 71, forecast: 178 });
-    expect(soilErosion).toEqual({ base: 327, difference: 292, forecast: 619 });
+    assert.deepStrictEqual(storedCo2Eq, { base: 55000, difference: 27500, forecast: 82500 });
+    assert.deepStrictEqual(natureRelatedWelnessAndLeisure, {
+      base: 173,
+      difference: 61,
+      forecast: 234,
+    });
+    assert.deepStrictEqual(forestRelatedProduct, undefined);
+    assert.deepStrictEqual(pollination, { base: 120, difference: 108, forecast: 228 });
+    assert.deepStrictEqual(invasiveSpeciesRegulation, { base: 44, difference: 40, forecast: 84 });
+    assert.deepStrictEqual(waterCycle, { base: 1837, difference: 1522, forecast: 3359 });
+    assert.deepStrictEqual(nitrogenCycle, { base: 107, difference: 71, forecast: 178 });
+    assert.deepStrictEqual(soilErosion, { base: 327, difference: 292, forecast: 619 });
   });
 
   it("returns negative difference for water regulation and ecosystem services monetary values", () => {
@@ -190,18 +199,22 @@ describe("NatureConservationImpactsService", () => {
     } = natureConservationImpactsService.getEcosystemServicesMonetaryImpact();
     const waterRegulation = natureConservationImpactsService.getWaterRegulationMonetaryImpact();
 
-    expect(waterRegulation).toEqual({
+    assert.deepStrictEqual(waterRegulation, {
       base: 326,
       forecast: 268,
       difference: -58,
     });
-    expect(storedCo2Eq).toEqual({ base: 137500, difference: -55000, forecast: 82500 });
-    expect(natureRelatedWelnessAndLeisure).toEqual({ base: 173, difference: -46, forecast: 127 });
-    expect(waterCycle).toEqual({ base: 1771, difference: -672, forecast: 1099 });
-    expect(forestRelatedProduct).toEqual(undefined);
-    expect(pollination).toEqual(undefined);
-    expect(invasiveSpeciesRegulation).toEqual(undefined);
-    expect(nitrogenCycle).toEqual(undefined);
-    expect(soilErosion).toEqual(undefined);
+    assert.deepStrictEqual(storedCo2Eq, { base: 137500, difference: -55000, forecast: 82500 });
+    assert.deepStrictEqual(natureRelatedWelnessAndLeisure, {
+      base: 173,
+      difference: -46,
+      forecast: 127,
+    });
+    assert.deepStrictEqual(waterCycle, { base: 1771, difference: -672, forecast: 1099 });
+    assert.deepStrictEqual(forestRelatedProduct, undefined);
+    assert.deepStrictEqual(pollination, undefined);
+    assert.deepStrictEqual(invasiveSpeciesRegulation, undefined);
+    assert.deepStrictEqual(nitrogenCycle, undefined);
+    assert.deepStrictEqual(soilErosion, undefined);
   });
 });
