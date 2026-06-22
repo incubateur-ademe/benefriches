@@ -12,12 +12,12 @@ paths:
 
 Integration tests verify that SQL implementations (repositories, queries) and HTTP flows (controllers) work correctly with real infrastructure. They use TestContainers for isolated PostgreSQL instances and supertest for HTTP assertions, ensuring database queries, transactions, and full request-response cycles function as expected in production-like environments.
 
-**IMPORTANT**: All SQL tables are automatically cleared after each integration test by a global hook configured in [`apps/api/test/integration-tests-global-hooks.ts`](../../../apps/api/test/integration-tests-global-hooks.ts). This ensures complete test isolation without manual cleanup in every test file.
+**IMPORTANT**: All SQL tables are automatically cleared after each integration test by a preloaded hook in [`apps/api/test/integration-per-test-hooks.ts`](../../../apps/api/test/integration-per-test-hooks.ts). Mock state is also restored after each test by that same hook. Do NOT add manual table cleanup or `mock.restoreAll()` calls in your spec files.
 
 ## Core Principles
 
 1. **Real Infrastructure**: Use actual PostgreSQL database via TestContainers, not mocks
-2. **Isolated Tests**: Each test automatically clears database state (via global `afterEach()` hook)
+2. **Isolated Tests**: Each test automatically clears database state and restores mocks (via the per-test preload hook)
 3. **Full Stack Testing**: Controllers test complete HTTP → UseCase → Database flow
 4. **Authentication Required**: Test both authenticated and unauthenticated scenarios
 5. **Exhaustive Validation**: Verify database state after mutations, test all error cases
@@ -45,33 +45,28 @@ Test repository write operations against real database.
 
 ```typescript
 // adapters/secondary/example-repository/SqlExampleRepository.integration-spec.ts
-import { Knex } from "knex";
-import { beforeAll, afterAll, beforeEach, describe, it, expect } from "vitest";
-import { createTestApp } from "test/testApp";
-import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
-import type { NestExpressApplication } from "@nestjs/platform-express";
+import knex, { Knex } from "knex";
+import assert from "node:assert/strict";
+import { after, before, beforeEach, describe, it } from "node:test";
+import { assertShapeEquals, isDate } from "test/assertShapeEquals";
+
+import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
 
 import { SqlExampleRepository } from "./SqlExampleRepository";
 
 describe("SqlExampleRepository integration", () => {
-  let app: NestExpressApplication;
   let sqlConnection: Knex;
   let repository: SqlExampleRepository;
 
-  beforeAll(async () => {
-    app = await createTestApp();
-    await app.init();
-    sqlConnection = app.get(SqlConnection);
+  before(() => {
+    sqlConnection = knex(knexConfig);
   });
 
-  afterAll(async () => {
-    await app.close();
+  after(async () => {
     await sqlConnection.destroy();
   });
 
-  beforeEach(async () => {
-    // Clean database before each test
-    await sqlConnection("examples").delete();
+  beforeEach(() => {
     repository = new SqlExampleRepository(sqlConnection);
   });
 
@@ -84,17 +79,59 @@ describe("SqlExampleRepository integration", () => {
 
     await repository.save(example);
 
-    const saved = await sqlConnection("examples")
-      .where("id", "test-id")
-      .first();
-
-    expect(saved).toEqual({
-      id: "test-id",
-      name: "Test Example",
-      created_at: new Date("2024-01-01"),
-    });
+    const rows = await sqlConnection("examples").select().where("id", "test-id");
+    assert.strictEqual(rows.length, 1);
+    const [row] = rows;
+    assert.ok(row);
+    // `created_at` is DB-generated — verified by type; every other column is exact.
+    // assertShapeEquals preserves exhaustive-shape guarantees: extra/missing keys fail.
+    assertShapeEquals(
+      row,
+      {
+        id: "test-id",
+        name: "Test Example",
+      },
+      { created_at: isDate },
+    );
   });
 });
+```
+
+### Asserting rows with non-deterministic fields (`assertShapeEquals`)
+
+When a DB row contains a field whose value is non-deterministic at test time (e.g. a server-generated `created_at` timestamp or a computed numeric field), use `assertShapeEquals` from `test/assertShapeEquals`:
+
+```typescript
+import { assertShapeEquals, isDate, isNumber } from "test/assertShapeEquals";
+
+assertShapeEquals(
+  row,
+  { id: "test-id", name: "Test Example" },  // static fields — checked by value
+  { created_at: isDate },                    // dynamic fields — checked by predicate
+);
+```
+
+`assertShapeEquals` keeps the **exhaustive-shape guarantee**: an extra or missing key makes the assertion fail — the native equivalent of Vitest's `toEqual({ ..., created_at: expect.any(Date) })`. Do NOT use `assert.partialDeepStrictEqual` for shape checks; it silently allows extra keys.
+
+For static rows where all fields are deterministic, use plain `assert.deepStrictEqual`:
+
+```typescript
+assert.deepStrictEqual(row, {
+  id: "test-id",
+  name: "Test Example",
+  created_at: new Date("2024-01-01"),
+});
+```
+
+**Asserting an array of rows**: assert the length first, then destructure and call `assertShapeEquals` per element:
+
+```typescript
+assert.strictEqual(rows.length, 2);
+const [first, second] = rows;
+assert.ok(first);
+assert.ok(second);
+assertShapeEquals(first, { id: "a", name: "First" }, { created_at: isDate });
+assertShapeEquals(second, { id: "b", name: "Second" }, { created_at: isDate });
 ```
 
 ## SQL Query Integration Tests
@@ -108,33 +145,25 @@ Test query read operations against real database.
 
 ```typescript
 // adapters/secondary/examples-query/SqlExamplesQuery.integration-spec.ts
-import { Knex } from "knex";
-import { beforeAll, afterAll, beforeEach, describe, it, expect } from "vitest";
-import { createTestApp } from "test/testApp";
-import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
-import type { NestExpressApplication } from "@nestjs/platform-express";
+import knex, { Knex } from "knex";
+import assert from "node:assert/strict";
+import { after, before, describe, it } from "node:test";
+
+import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
 
 import { SqlExamplesQuery } from "./SqlExamplesQuery";
 
 describe("SqlExamplesQuery integration", () => {
-  let app: NestExpressApplication;
   let sqlConnection: Knex;
   let query: SqlExamplesQuery;
 
-  beforeAll(async () => {
-    app = await createTestApp();
-    await app.init();
-    sqlConnection = app.get(SqlConnection);
-  });
-
-  afterAll(async () => {
-    await app.close();
-    await sqlConnection.destroy();
-  });
-
-  beforeEach(async () => {
-    await sqlConnection("examples").delete();
+  before(() => {
+    sqlConnection = knex(knexConfig);
     query = new SqlExamplesQuery(sqlConnection);
+  });
+
+  after(async () => {
+    await sqlConnection.destroy();
   });
 
   it("should return example by id", async () => {
@@ -146,7 +175,7 @@ describe("SqlExamplesQuery integration", () => {
 
     const result = await query.getById("test-id");
 
-    expect(result).toEqual({
+    assert.deepStrictEqual(result, {
       id: "test-id",
       name: "Test Example",
       createdAt: "2024-01-01T00:00:00.000Z",
@@ -156,7 +185,11 @@ describe("SqlExamplesQuery integration", () => {
   it("should return undefined when not found", async () => {
     const result = await query.getById("non-existent");
 
-    expect(result).toBeUndefined();
+    assert.strictEqual(result, undefined);
+  });
+
+  it("throws error when city code is invalid", async () => {
+    await assert.rejects(() => query.getCarbonStorageForCity("1234", []));
   });
 });
 ```
@@ -178,7 +211,10 @@ Test full HTTP → Controller → UseCase → DB flow.
 // adapters/primary/examples.controller.integration-spec.ts
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { Knex } from "knex";
+import assert from "node:assert/strict";
+import { after, before, describe, it } from "node:test";
 import supertest from "supertest";
+import { assertShapeEquals, isDate } from "test/assertShapeEquals";
 import { authenticateUser, createTestApp } from "test/testApp";
 import { v4 as uuid } from "uuid";
 
@@ -194,13 +230,13 @@ describe("Examples controller", () => {
   let app: NestExpressApplication;
   let sqlConnection: Knex;
 
-  beforeAll(async () => {
+  before(async () => {
     app = await createTestApp();
     await app.init();
     sqlConnection = app.get(SqlConnection);
   });
 
-  afterAll(async () => {
+  after(async () => {
     await app.close();
     await sqlConnection.destroy();
   });
@@ -211,7 +247,7 @@ describe("Examples controller", () => {
         .post("/api/examples")
         .send({ name: "Test" });
 
-      expect(response.status).toEqual(401);
+      assert.strictEqual(response.status, 401);
     });
 
     it("can't create example without mandatory field 'name'", async () => {
@@ -223,12 +259,12 @@ describe("Examples controller", () => {
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send({});
 
-      expect(response.status).toEqual(400);
-      expect(response.body).toHaveProperty("errors");
+      assert.strictEqual(response.status, 400);
+      assert.ok("errors" in (response.body as BadRequestResponseBody));
 
       const responseErrors = (response.body as BadRequestResponseBody).errors;
-      expect(responseErrors).toHaveLength(1);
-      expect(responseErrors[0]?.path).toContain("name");
+      assert.strictEqual(responseErrors.length, 1);
+      assert.ok(responseErrors[0]?.path.includes("name"));
     });
 
     it("creates example and saves it to database", async () => {
@@ -240,22 +276,24 @@ describe("Examples controller", () => {
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send({ name: "Test Example" });
 
-      expect(response.status).toEqual(201);
-      expect(response.body).toEqual({
-        exampleId: expect.any(String),
-      });
+      assert.strictEqual(response.status, 201);
+      assert.ok(typeof (response.body as { exampleId: string }).exampleId === "string");
 
       const examplesInDb = await sqlConnection("examples")
         .select("*")
-        .where("id", response.body.exampleId);
+        .where("id", (response.body as { exampleId: string }).exampleId);
 
-      expect(examplesInDb).toHaveLength(1);
-      expect(examplesInDb[0]).toEqual({
-        id: response.body.exampleId,
-        name: "Test Example",
-        // oxlint-disable-next-line typescript/no-unsafe-assignment
-        created_at: expect.any(Date),
-      });
+      assert.strictEqual(examplesInDb.length, 1);
+      const [row] = examplesInDb;
+      assert.ok(row);
+      assertShapeEquals(
+        row,
+        {
+          id: (response.body as { exampleId: string }).exampleId,
+          name: "Test Example",
+        },
+        { created_at: isDate },
+      );
     });
 
     it("returns conflict error when example name already exists", async () => {
@@ -273,7 +311,7 @@ describe("Examples controller", () => {
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send({ name: "Test" });
 
-      expect(response.status).toEqual(409);
+      assert.strictEqual(response.status, 409);
     });
   });
 
@@ -282,7 +320,7 @@ describe("Examples controller", () => {
       const response = await supertest(app.getHttpServer())
         .get("/api/examples/test-id");
 
-      expect(response.status).toEqual(401);
+      assert.strictEqual(response.status, 401);
     });
 
     it("returns example from database", async () => {
@@ -300,8 +338,8 @@ describe("Examples controller", () => {
         .get(`/api/examples/${exampleId}`)
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`);
 
-      expect(response.status).toEqual(200);
-      expect(response.body).toEqual({
+      assert.strictEqual(response.status, 200);
+      assert.deepStrictEqual(response.body, {
         id: exampleId,
         name: "Test Example",
         createdAt: "2024-01-01T00:00:00.000Z",
@@ -316,7 +354,7 @@ describe("Examples controller", () => {
         .get("/api/examples/non-existent")
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`);
 
-      expect(response.status).toEqual(404);
+      assert.strictEqual(response.status, 404);
     });
   });
 });
@@ -324,12 +362,11 @@ describe("Examples controller", () => {
 
 ### Testing Multiple Required Fields
 
-Use `it.each()` for testing multiple required fields:
+`node:test` has no `it.each`. Use a `for..of` loop instead:
 
 ```typescript
-it.each(["name", "email"] as const)(
-  "can't create example without mandatory field '%s'",
-  async (mandatoryField) => {
+for (const mandatoryField of ["name", "email"] as const) {
+  it(`can't create example without mandatory field '${mandatoryField}'`, async () => {
     const user = new UserBuilder().build();
     const { accessToken } = await authenticateUser(app)(user);
 
@@ -344,14 +381,14 @@ it.each(["name", "email"] as const)(
       .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
       .send(body);
 
-    expect(response.status).toEqual(400);
-    expect(response.body).toHaveProperty("errors");
+    assert.strictEqual(response.status, 400);
+    assert.ok("errors" in (response.body as BadRequestResponseBody));
 
     const responseErrors = (response.body as BadRequestResponseBody).errors;
-    expect(responseErrors).toHaveLength(1);
-    expect(responseErrors[0]?.path).toContain(mandatoryField);
-  }
-);
+    assert.strictEqual(responseErrors.length, 1);
+    assert.ok(responseErrors[0]?.path.includes(mandatoryField));
+  });
+}
 ```
 
 ### Testing JSONB Arrays
@@ -377,17 +414,16 @@ it("updates jsonb array in database", async () => {
     .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
     .send({ itemId: "item-1" });
 
-  expect(response.status).toEqual(201);
+  assert.strictEqual(response.status, 201);
 
   const examplesInDb = await sqlConnection("examples")
     .select("*")
     .where({ id: exampleId });
 
-  expect(examplesInDb[0]?.items).toEqual([
+  assert.deepStrictEqual(examplesInDb[0]?.items, [
     {
       itemId: "item-1",
-      // oxlint-disable-next-line typescript/no-unsafe-assignment
-      createdAt: expect.any(String), // stored as ISO string in JSONB
+      createdAt: examplesInDb[0]?.items[0]?.createdAt, // stored as ISO string in JSONB
     },
   ]);
 });
@@ -419,6 +455,8 @@ Event listeners are tested by:
 ```typescript
 // marketing/adapters/primary/loginSucceeded.handler.integration-spec.ts
 import { NestExpressApplication } from "@nestjs/platform-express";
+import assert from "node:assert/strict";
+import { after, beforeEach, describe, it } from "node:test";
 import { createTestApp } from "test/testApp";
 import { createLoginSucceededEvent } from "src/auth/core/events/loginSucceeded.event";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
@@ -451,7 +489,7 @@ describe("LoginSucceededHandler integration test", () => {
     eventPublisher = app.get(RealEventPublisher);
   });
 
-  afterEach(async () => {
+  after(async () => {
     await app.close();
   });
 
@@ -465,8 +503,8 @@ describe("LoginSucceededHandler integration test", () => {
     await eventPublisher.publish(event);
 
     // Assert the gateway was called with correct data
-    expect(fakeCrm._loginUpdates).toHaveLength(1);
-    expect(fakeCrm._loginUpdates[0]).toEqual({
+    assert.strictEqual(fakeCrm._loginUpdates.length, 1);
+    assert.deepStrictEqual(fakeCrm._loginUpdates[0], {
       email: "user@example.com",
       loginDate: fakeNow,  // Deterministic date from provider
     });
@@ -481,6 +519,26 @@ describe("LoginSucceededHandler integration test", () => {
 - **No database needed**: Event listener tests don't require database setup (use event publisher only)
 
 **Real Example**: See [loginSucceeded.handler.integration-spec.ts](../../../apps/api/src/marketing/adapters/primary/loginSucceeded.handler.integration-spec.ts) for complete implementation with both login methods tested.
+
+## Mocks
+
+When a test needs to spy on or stub a method, use the `mock` API from `node:test`:
+
+```typescript
+import { after, before, describe, it, mock } from "node:test";
+
+// Spy on an existing method
+const spy = mock.method(obj, "methodName");
+
+// Assert on calls
+assert.strictEqual(spy.mock.calls.length, 1);
+assert.deepStrictEqual(spy.mock.calls[0]?.arguments[0], expectedArg);
+
+// Stub a standalone function
+const fn = mock.fn(() => Promise.resolve("stubbed"));
+```
+
+Do NOT call `mock.restoreAll()` manually — the preloaded hook in `test/integration-per-test-hooks.ts` calls it after every test.
 
 ## Test Utilities
 
@@ -508,44 +566,46 @@ const response = await supertest(app.getHttpServer())
 ## Running Integration Tests
 
 ```bash
-# Run all integration tests
+# Run all integration tests (boots testcontainers)
 pnpm --filter api test:integration
 
 # Run specific test file
 pnpm --filter api test:integration path/to/file.integration-spec.ts
-
-# Watch mode
-pnpm --filter api test:integration -- --watch
 ```
 
 ## Best Practices
 
 ### DO:
-- ✅ Use `createTestApp()` from `test/testApp`
-- ✅ Get `sqlConnection` via `app.get(SqlConnection)`
-- ✅ Close app and destroy connection in `afterAll`
-- ✅ Trust the global `afterEach()` hook to clean all tables (configured in [`integration-tests-global-hooks.ts`](../../../apps/api/test/integration-tests-global-hooks.ts))
+- ✅ Use `createTestApp()` from `test/testApp` for controller/event-listener tests
+- ✅ For repository/query tests, create a Knex connection directly from `knexConfig` (no NestJS app needed)
+- ✅ Get `sqlConnection` via `app.get(SqlConnection)` in controller tests
+- ✅ Close app and destroy connection in `after`
+- ✅ Trust the preloaded `afterEach()` hook in [`integration-per-test-hooks.ts`](../../../apps/api/test/integration-per-test-hooks.ts) to clear all tables and restore mocks
 - ✅ Test authentication (401 responses)
 - ✅ Test validation errors (400 responses with field paths)
-- ✅ Use `it.each()` for testing multiple required fields
+- ✅ Use a `for..of` loop for testing multiple required fields (no `it.each` in node:test)
 - ✅ Use raw SQL for JSONB array inserts
 - ✅ Verify data in database after mutations
-- ✅ Use `expect.any(Date)` for date comparisons
-- ✅ Use `toEqual()` for exhaustive assertions
+- ✅ Use `assertShapeEquals` with `isDate`/`isNumber` predicates for non-deterministic fields
+- ✅ Use `assert.deepStrictEqual` for exhaustive static-value assertions
+- ✅ Import `assert` from `"node:assert/strict"` and lifecycle hooks from `"node:test"`
 
 ### DON'T:
-- ❌ Don't share state between tests (global hook prevents this)
+- ❌ Don't share state between tests (the per-test hook prevents this)
 - ❌ Don't forget to test authentication
 - ❌ Don't skip error cases (404, 409, 400)
 - ❌ Don't leave connections open
-- ❌ Don't manually cleanup tables in `afterEach()` (the global hook handles it)
+- ❌ Don't manually cleanup tables in `afterEach()` (the preloaded hook handles it)
+- ❌ Don't call `mock.restoreAll()` in spec files (the preloaded hook handles it)
+- ❌ Don't use `assert.partialDeepStrictEqual` for shape checks (silently allows extra keys)
+- ❌ Don't import from `"vitest"` — use `"node:test"` and `"node:assert/strict"`
 
 ## Common HTTP Status Codes
 
-| Status | When to Use | Example Test |
-|--------|-------------|--------------|
-| **200** | Successful GET | `expect(response.status).toEqual(200)` |
-| **201** | Successful POST/creation | `expect(response.status).toEqual(201)` |
+| Status | When to Use | Example Assertion |
+|--------|-------------|-------------------|
+| **200** | Successful GET | `assert.strictEqual(response.status, 200)` |
+| **201** | Successful POST/creation | `assert.strictEqual(response.status, 201)` |
 | **400** | Validation error | Test missing required fields |
 | **401** | Not authenticated | Test without access token |
 | **403** | Not authorized | Test accessing other user's resource |

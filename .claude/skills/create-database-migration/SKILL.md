@@ -16,7 +16,7 @@ Generate timestamped Knex migrations following project conventions.
    - Creates timestamped file in `apps/api/src/shared-kernel/adapters/sql-knex/migrations/`
 2. Implement `up()` and `down()` functions in the generated file
 3. Update `apps/api/src/shared-kernel/adapters/sql-knex/tableTypes.d.ts` if schema changes
-4. If **new table created**: add table name to `tablesToDelete` in `apps/api/test/integration-tests-global-hooks.ts` (child tables before parent tables)
+4. If **new table created**: add table name to `tablesToCleanUp` in `apps/api/test/tablesToCleanUp.ts` (child tables before parent tables)
 5. Run: `pnpm --filter api knex:migrate-latest`
 
 ## Transaction Handling
@@ -223,6 +223,6 @@ declare module "knex/types/tables" {
 2. [ ] `up()` implements forward migration
 3. [ ] `down()` reverses migration (or returns void if not possible)
 4. [ ] `tableTypes.d.ts` updated for schema changes (new table → add `SqlXxx` type + register in `Tables` interface)
-5. [ ] If **new table created**: add table name to `tablesToDelete` array in `apps/api/test/integration-tests-global-hooks.ts` (respecting deletion order: child tables before parent tables)
+5. [ ] If **new table created**: add table name to `tablesToCleanUp` array in `apps/api/test/tablesToCleanUp.ts` (respecting deletion order: child tables before parent tables)
 6. [ ] Migration tested: `pnpm --filter api knex:migrate-latest`
 7. [ ] Rollback tested: `pnpm --filter api knex:migrate-rollback`
