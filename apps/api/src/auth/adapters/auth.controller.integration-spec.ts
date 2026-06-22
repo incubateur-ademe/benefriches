@@ -1,11 +1,13 @@
 import { JwtService } from "@nestjs/jwt";
 import { NestExpressApplication } from "@nestjs/platform-express";
-import cookie from "cookie";
+import * as cookie from "cookie";
 import { Knex } from "knex";
+import assert from "node:assert/strict";
+import { after, before, describe, it, mock } from "node:test";
 import { RegisterUserRequestDto } from "shared";
 import request from "supertest";
+import { assertShapeEquals, isDate } from "test/assertShapeEquals";
 import { createTestApp } from "test/testApp";
-import { vi } from "vitest";
 
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import type { AppLogger } from "src/shared-kernel/logger";
@@ -46,7 +48,7 @@ describe("Auth integration tests", () => {
   let app: NestExpressApplication;
   let sqlConnection: Knex;
 
-  beforeAll(async () => {
+  before(async () => {
     app = await createTestApp({
       providerOverrides: [
         { token: PRO_CONNECT_CLIENT_INJECTION_TOKEN, useClass: FakeProConnectClient },
@@ -56,7 +58,7 @@ describe("Auth integration tests", () => {
     sqlConnection = app.get(SqlConnection);
   });
 
-  afterAll(async () => {
+  after(async () => {
     await app.close();
     await sqlConnection.destroy();
   });
@@ -75,7 +77,7 @@ describe("Auth integration tests", () => {
       subscribedToNewsletter: true,
     });
 
-    it.each([
+    for (const mandatoryField of [
       "id",
       "email",
       "structureType",
@@ -83,9 +85,8 @@ describe("Auth integration tests", () => {
       "personalDataStorageConsented",
       "personalDataAnalyticsUseConsented",
       "subscribedToNewsletter",
-    ] as (keyof RegisterUserRequestDto)[])(
-      "cannot register a user without field '%s'",
-      async (mandatoryField) => {
+    ] as (keyof RegisterUserRequestDto)[]) {
+      it(`cannot register a user without field '${mandatoryField}'`, async () => {
         const requestBody = buildRegisterUserPayload();
         // oxlint-disable-next-line typescript/no-dynamic-delete
         delete (requestBody as unknown as Record<string, unknown>)[mandatoryField];
@@ -94,14 +95,14 @@ describe("Auth integration tests", () => {
           .post("/api/auth/register")
           .send(requestBody);
 
-        expect(response.status).toEqual(400);
-        expect(response.body).toHaveProperty("errors");
+        assert.strictEqual(response.status, 400);
+        assert.ok("errors" in (response.body as BadRequestResponseBody));
 
         const responseErrors = (response.body as BadRequestResponseBody).errors;
-        expect(responseErrors).toHaveLength(1);
-        expect(responseErrors[0]?.path).toContain(mandatoryField);
-      },
-    );
+        assert.strictEqual(responseErrors.length, 1);
+        assert.ok(responseErrors[0]?.path.includes(mandatoryField));
+      });
+    }
 
     it("cannot register a user when email is already taken", async () => {
       const registerUserPayload = buildRegisterUserPayload();
@@ -124,8 +125,8 @@ describe("Auth integration tests", () => {
         .post("/api/auth/register")
         .send(registerUserPayload);
 
-      expect(response.status).toBe(409);
-      expect(response.body).toEqual({
+      assert.strictEqual(response.status, 409);
+      assert.deepStrictEqual(response.body, {
         message: "Email already taken",
         error: "EMAIL_ALREADY_EXISTS",
       });
@@ -138,14 +139,14 @@ describe("Auth integration tests", () => {
         .post("/api/auth/register")
         .send(registerUserPayload);
 
-      expect(response.status).toBe(201);
+      assert.strictEqual(response.status, 201);
 
       const usersInDb = await sqlConnection("users")
         .select("id", "email", "firstname", "lastname", "subscribed_to_newsletter")
         .where({ email: registerUserPayload.email });
 
-      expect(usersInDb).toHaveLength(1);
-      expect(usersInDb[0]).toEqual({
+      assert.strictEqual(usersInDb.length, 1);
+      assert.deepStrictEqual(usersInDb[0], {
         id: registerUserPayload.id,
         email: registerUserPayload.email,
         firstname: registerUserPayload.firstName,
@@ -157,15 +158,15 @@ describe("Auth integration tests", () => {
         response.headers,
         ACCESS_TOKEN_COOKIE_KEY,
       );
-      expect(accessTokenCookie).toBeDefined();
+      assert.ok(accessTokenCookie !== undefined);
 
       const jwtValue = accessTokenCookie?.access_token ?? "";
-      expect(jwtValue).toBeDefined();
+      assert.ok(jwtValue !== undefined);
       const jwtPayload = app.get(JwtService).verify<AccessTokenPayload>(jwtValue);
-      expect(jwtPayload).toBeDefined();
-      expect(jwtPayload.sub).toBe(registerUserPayload.id);
-      expect(jwtPayload.email).toBe(registerUserPayload.email);
-      expect(jwtPayload.authProvider).toBe("benefriches");
+      assert.ok(jwtPayload !== undefined);
+      assert.strictEqual(jwtPayload.sub, registerUserPayload.id);
+      assert.strictEqual(jwtPayload.email, registerUserPayload.email);
+      assert.strictEqual(jwtPayload.authProvider, "benefriches");
     });
   });
 
@@ -175,8 +176,8 @@ describe("Auth integration tests", () => {
       const agent = request.agent(app.getHttpServer());
       const response = await agent.get("/api/auth/login-callback/pro-connect");
 
-      expect(response.status).toBe(400);
-      expect(response.body).toEqual({
+      assert.strictEqual(response.status, 400);
+      assert.deepStrictEqual(response.body, {
         error: "Bad Request",
         statusCode: 400,
         message: "Missing expected state or nonce",
@@ -203,43 +204,48 @@ describe("Auth integration tests", () => {
 
       // Assertions
       // is user redirected to given URL?
-      expect(loginCallbackResponse.status).toBe(302);
-      expect(loginCallbackResponse.headers.location).toBe(redirectTo);
+      assert.strictEqual(loginCallbackResponse.status, 302);
+      assert.strictEqual(loginCallbackResponse.headers.location, redirectTo);
 
       // valid access token in response cookie?
       const accessTokenCookie = extractCookieFromResponseHeaders(
         loginCallbackResponse.headers,
         ACCESS_TOKEN_COOKIE_KEY,
       );
-      expect(accessTokenCookie).toBeDefined();
+      assert.ok(accessTokenCookie !== undefined);
       const jwtValue = accessTokenCookie?.access_token ?? "";
-      expect(jwtValue).toBeDefined();
+      assert.ok(jwtValue !== undefined);
       const jwtPayload = app.get(JwtService).verify<AccessTokenPayload>(jwtValue);
-      expect(jwtPayload).toBeDefined();
-      expect(jwtPayload.sub).toBe(user.id);
-      expect(jwtPayload.email).toBe(userEmail);
-      expect(jwtPayload.authProvider).toBe("pro-connect");
+      assert.ok(jwtPayload !== undefined);
+      assert.strictEqual(jwtPayload.sub, user.id);
+      assert.strictEqual(jwtPayload.email, userEmail);
+      assert.strictEqual(jwtPayload.authProvider, "pro-connect");
 
       // is email set as verified?
       const verifiedEmails = await sqlConnection("verified_emails").select("*");
-      // oxlint-disable-next-line typescript/no-unsafe-assignment
-      expect(verifiedEmails).toEqual([{ email: userEmail, verified_at: expect.any(Date) }]);
+      assert.strictEqual(verifiedEmails.length, 1);
+      const [verifiedEmailRow] = verifiedEmails;
+      assert.ok(verifiedEmailRow);
+      assertShapeEquals(verifiedEmailRow, { email: userEmail }, { verified_at: isDate });
 
       // is Pro Connect identity saved?
       const externalUserIdentities = await sqlConnection("auth_external_user_identities").select(
         "*",
       );
-      expect(externalUserIdentities).toEqual([
+      assert.strictEqual(externalUserIdentities.length, 1);
+      const [identityRow] = externalUserIdentities;
+      assert.ok(identityRow);
+      assertShapeEquals(
+        identityRow,
         {
           id: proConnectClient.mockUserIdentity.id,
           user_id: user.id,
           provider: "pro-connect",
           provider_user_id: proConnectClient.mockUserIdentity.id,
-          // oxlint-disable-next-line typescript/no-unsafe-assignment
-          created_at: expect.any(Date),
           provider_info: proConnectClient.mockUserIdentity,
         },
-      ]);
+        { created_at: isDate },
+      );
     });
 
     it("redirects to account creation URL with email, first name and last name as hints when Pro Connect authentication is successful but returned email does not match any user", async () => {
@@ -259,16 +265,19 @@ describe("Auth integration tests", () => {
 
       // Assertions
       // is user redirected to account creation URL?
-      expect(loginCallbackResponse.status).toBe(302);
+      assert.strictEqual(loginCallbackResponse.status, 302);
       const redirectedUrl = new URL(loginCallbackResponse.headers.location ?? "");
-      expect(redirectedUrl.origin + redirectedUrl.pathname).toBe(
+      assert.strictEqual(
+        redirectedUrl.origin + redirectedUrl.pathname,
         "http://app.test.benefriches.fr/premiers-pas/identite",
       );
-      expect(redirectedUrl.searchParams.get("hintEmail")).toBe(userEmail);
-      expect(redirectedUrl.searchParams.get("hintFirstName")).toBe(
+      assert.strictEqual(redirectedUrl.searchParams.get("hintEmail"), userEmail);
+      assert.strictEqual(
+        redirectedUrl.searchParams.get("hintFirstName"),
         proConnectClient.mockUserIdentity.firstName,
       );
-      expect(redirectedUrl.searchParams.get("hintLastName")).toBe(
+      assert.strictEqual(
+        redirectedUrl.searchParams.get("hintLastName"),
         proConnectClient.mockUserIdentity.lastName,
       );
 
@@ -277,7 +286,7 @@ describe("Auth integration tests", () => {
         loginCallbackResponse.headers,
         ACCESS_TOKEN_COOKIE_KEY,
       );
-      expect(accessTokenCookie).toBeUndefined();
+      assert.strictEqual(accessTokenCookie, undefined);
     });
   });
 
@@ -289,28 +298,28 @@ describe("Auth integration tests", () => {
       await sqlConnection("users").insert(mapUserToSqlRow(user));
 
       const mailer = app.get(SmtpAuthLinkMailer);
-      const mailerSpy = vi.spyOn(mailer, "sendAuthLink");
+      const mailerSpy = mock.method(mailer, "sendAuthLink");
 
       const agent = request.agent(app.getHttpServer());
       const response = await agent.post("/api/auth/send-auth-link").send({ email: userEmail });
 
-      expect(response.status).toBe(200);
+      assert.strictEqual(response.status, 200);
 
       const authTokenAttemptsInDb = await sqlConnection("token_authentication_attempts").select(
         "*",
       );
-      expect(authTokenAttemptsInDb).toHaveLength(1);
+      assert.strictEqual(authTokenAttemptsInDb.length, 1);
       const hashedTokenInDb = (authTokenAttemptsInDb as unknown as [TokenAuthenticationAttempt])[0]
         .token;
 
-      const mailSentTo = mailerSpy.mock.calls[0]?.[0];
-      expect(mailSentTo).toBe(userEmail);
-      const authLinkSent = mailerSpy.mock.calls[0]?.[1] ?? "";
+      const mailSentTo = mailerSpy.mock.calls[0]?.arguments[0];
+      assert.strictEqual(mailSentTo, userEmail);
+      const authLinkSent = mailerSpy.mock.calls[0]?.arguments[1] ?? "";
       const tokenFromEmailLink = new URL(authLinkSent).searchParams.get("token") ?? "";
       const hashTokenFromEmailLink = app
         .get<TokenGenerator>(RandomTokenGenerator)
         .hash(tokenFromEmailLink);
-      expect(hashTokenFromEmailLink).toEqual(hashedTokenInDb);
+      assert.deepStrictEqual(hashTokenFromEmailLink, hashedTokenInDb);
     });
 
     it("handles postLoginRedirectTo url", async () => {
@@ -322,30 +331,30 @@ describe("Auth integration tests", () => {
       const postLoginRedirectTo = "/some-protected-page";
 
       const mailer = app.get(SmtpAuthLinkMailer);
-      const mailerSpy = vi.spyOn(mailer, "sendAuthLink");
+      const mailerSpy = mock.method(mailer, "sendAuthLink");
       const agent = request.agent(app.getHttpServer());
       const response = await agent
         .post("/api/auth/send-auth-link")
         .send({ email: userEmail, postLoginRedirectTo });
 
-      expect(response.status).toBe(200);
+      assert.strictEqual(response.status, 200);
 
       const authTokenAttemptsInDb = await sqlConnection("token_authentication_attempts").select(
         "*",
       );
-      expect(authTokenAttemptsInDb).toHaveLength(1);
+      assert.strictEqual(authTokenAttemptsInDb.length, 1);
       const hashedTokenInDb = (authTokenAttemptsInDb as unknown as [TokenAuthenticationAttempt])[0]
         .token;
 
-      const mailSentTo = mailerSpy.mock.calls[0]?.[0];
-      expect(mailSentTo).toBe(userEmail);
-      const authLinkSent = mailerSpy.mock.calls[0]?.[1] ?? "";
+      const mailSentTo = mailerSpy.mock.calls[0]?.arguments[0];
+      assert.strictEqual(mailSentTo, userEmail);
+      const authLinkSent = mailerSpy.mock.calls[0]?.arguments[1] ?? "";
       const tokenFromEmailLink = new URL(authLinkSent).searchParams.get("token") ?? "";
       const hashTokenFromEmailLink = app
         .get<TokenGenerator>(RandomTokenGenerator)
         .hash(tokenFromEmailLink);
-      expect(hashTokenFromEmailLink).toEqual(hashedTokenInDb);
-      expect(authLinkSent).toContain(`redirectTo=${encodeURIComponent(postLoginRedirectTo)}`);
+      assert.deepStrictEqual(hashTokenFromEmailLink, hashedTokenInDb);
+      assert.ok(authLinkSent.includes(`redirectTo=${encodeURIComponent(postLoginRedirectTo)}`));
     });
 
     it("responds with 404 when user does not exist", async () => {
@@ -354,11 +363,11 @@ describe("Auth integration tests", () => {
         .post("/api/auth/send-auth-link")
         .send({ email: "non.existant@example.fr" });
 
-      expect(response.status).toBe(404);
-      expect((response.body as { code: string }).code).toEqual("UserDoesNotExist");
+      assert.strictEqual(response.status, 404);
+      assert.strictEqual((response.body as { code: string }).code, "UserDoesNotExist");
 
       const authTokens = await sqlConnection("token_authentication_attempts").select("*");
-      expect(authTokens).toHaveLength(0);
+      assert.strictEqual(authTokens.length, 0);
     });
 
     it("responds with 429 when too many attempts", async () => {
@@ -371,8 +380,8 @@ describe("Auth integration tests", () => {
       await agent.post("/api/auth/send-auth-link").send({ email: userEmail });
       const response2 = await agent.post("/api/auth/send-auth-link").send({ email: userEmail });
 
-      expect(response2.status).toBe(429);
-      expect((response2.body as { code: string }).code).toEqual("TooManyRequests");
+      assert.strictEqual(response2.status, 429);
+      assert.strictEqual((response2.body as { code: string }).code, "TooManyRequests");
     });
   });
 
@@ -404,16 +413,16 @@ describe("Auth integration tests", () => {
       const response = await agent.get("/api/auth/login/token").query({ token });
 
       // valid access token in response cookie?
-      expect(response.status).toBe(200);
+      assert.strictEqual(response.status, 200);
       const accessTokenCookie = extractCookieFromResponseHeaders(
         response.headers,
         ACCESS_TOKEN_COOKIE_KEY,
       );
       const jwtValue = accessTokenCookie?.access_token ?? "";
       const jwtPayload = app.get(JwtService).verify<AccessTokenPayload>(jwtValue);
-      expect(jwtPayload.sub).toBe(user.id);
-      expect(jwtPayload.email).toBe(user.email);
-      expect(jwtPayload.authProvider).toBe("benefriches");
+      assert.strictEqual(jwtPayload.sub, user.id);
+      assert.strictEqual(jwtPayload.email, user.email);
+      assert.strictEqual(jwtPayload.authProvider, "benefriches");
     });
 
     it("verifies user email when provided with auth token", async () => {
@@ -442,10 +451,12 @@ describe("Auth integration tests", () => {
       const agent = request.agent(app.getHttpServer());
       const response = await agent.get("/api/auth/login/token").query({ token });
 
-      expect(response.status).toBe(200);
+      assert.strictEqual(response.status, 200);
       const verifiedEmails = await sqlConnection("verified_emails").select("*");
-      // oxlint-disable-next-line typescript/no-unsafe-assignment
-      expect(verifiedEmails).toEqual([{ email: user.email, verified_at: expect.any(Date) }]);
+      assert.strictEqual(verifiedEmails.length, 1);
+      const [verifiedEmailRow] = verifiedEmails;
+      assert.ok(verifiedEmailRow);
+      assertShapeEquals(verifiedEmailRow, { email: user.email }, { verified_at: isDate });
     });
 
     it("responds with 400 and TOKEN_NOT_FOUND code when token does not exist", async () => {

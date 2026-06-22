@@ -1,6 +1,7 @@
-/* oxlint-disable typescript/no-non-null-assertion */
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { Knex } from "knex";
+import assert from "node:assert/strict";
+import { after, before, describe, it } from "node:test";
 import supertest from "supertest";
 import { authenticateUser, createTestApp } from "test/testApp";
 import { v4 as uuid } from "uuid";
@@ -17,7 +18,7 @@ describe("SiteEvaluations controller", () => {
   let sqlConnection: Knex;
   let mutafrichesEvaluationId: string;
 
-  beforeAll(async () => {
+  before(async () => {
     mutafrichesEvaluationId = uuid();
     const inMemoryMutafrichesQuery = new InMemoryMutabilityEvaluationQuery();
     inMemoryMutafrichesQuery.withDefaultDataForId(mutafrichesEvaluationId);
@@ -31,7 +32,7 @@ describe("SiteEvaluations controller", () => {
     sqlConnection = app.get(SqlConnection);
   });
 
-  afterAll(async () => {
+  after(async () => {
     await app.close();
     await sqlConnection.destroy();
   });
@@ -40,7 +41,7 @@ describe("SiteEvaluations controller", () => {
     it("gets a 401 response when no access token is provided", async () => {
       const response = await supertest(app.getHttpServer()).get("/api/site-evaluations").send();
 
-      expect(response.status).toEqual(401);
+      assert.strictEqual(response.status, 401);
     });
 
     it("gets a 200 with list of site evaluations for given user", async () => {
@@ -138,8 +139,8 @@ describe("SiteEvaluations controller", () => {
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send();
 
-      expect(response.status).toEqual(200);
-      expect(response.body).toEqual([
+      assert.strictEqual(response.status, 200);
+      assert.deepStrictEqual(response.body, [
         {
           siteName: siteInDb1.name,
           siteId: siteInDb1.id,

@@ -1,5 +1,7 @@
 import knex, { Knex } from "knex";
-import { SiteImpactsDataView } from "shared";
+import assert from "node:assert/strict";
+import { after, before, beforeEach, describe, it } from "node:test";
+import { type SiteImpactsDataView } from "shared";
 import { v4 as uuid } from "uuid";
 
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
@@ -10,11 +12,11 @@ describe("SqlSiteImpactsQuery integration", () => {
   let sqlConnection: Knex;
   let siteQuery: SqlSiteImpactsQuery;
 
-  beforeAll(() => {
+  before(() => {
     sqlConnection = knex(knexConfig);
   });
 
-  afterAll(async () => {
+  after(async () => {
     await sqlConnection.destroy();
   });
 
@@ -72,14 +74,9 @@ describe("SqlSiteImpactsQuery integration", () => {
 
       const result = await siteQuery.getById(siteId);
 
-      expect(result).toEqual<
-        Required<
-          Omit<
-            SiteImpactsDataView,
-            "agriculturalOperationActivity" | "isSiteOperated" | "naturalAreaType"
-          >
-        >
-      >({
+      // The satisfies annotation below enforces at compile-time that the non-optional
+      // fields of SiteImpactsDataView are all present and correctly typed.
+      const expected = {
         id: siteId,
         name: "Site 123",
         nature: "FRICHE",
@@ -110,8 +107,20 @@ describe("SqlSiteImpactsQuery integration", () => {
         yearlyExpenses: [{ amount: 100, bearer: "tenant", purpose: "rent" }],
         yearlyIncomes: [],
         isExpressSite: false,
+      } satisfies Required<
+        Omit<
+          SiteImpactsDataView,
+          "agriculturalOperationActivity" | "isSiteOperated" | "naturalAreaType"
+        >
+      >;
+      assert.deepStrictEqual(result, {
+        ...expected,
+        agriculturalOperationActivity: undefined,
+        isSiteOperated: undefined,
+        naturalAreaType: undefined,
       });
     });
+
     it("gets site with data needed for impact computation when no accidents and no contaminated surface", async () => {
       const siteId = uuid();
       await sqlConnection("sites").insert({
@@ -145,11 +154,13 @@ describe("SqlSiteImpactsQuery integration", () => {
 
       const result = await siteQuery.getById(siteId);
 
-      expect(result).toEqual<SiteImpactsDataView>({
+      assert.deepStrictEqual(result, {
         id: siteId,
         name: "Site 123",
         nature: "AGRICULTURAL_OPERATION",
         description: "Description of site",
+        fricheActivity: undefined,
+        naturalAreaType: undefined,
         address: {
           cityCode: "01234",
           value: "1 rue de la paix",
@@ -165,13 +176,19 @@ describe("SqlSiteImpactsQuery integration", () => {
           FOREST_MIXED: 1200,
           PRAIRIE_GRASS: 12800,
         },
+        contaminatedSoilSurface: undefined,
+        accidentsDeaths: undefined,
+        accidentsSevereInjuries: undefined,
+        accidentsMinorInjuries: undefined,
         ownerName: "Owner name",
         ownerStructureType: "company",
+        tenantStructureType: undefined,
+        tenantName: undefined,
         yearlyExpenses: [],
         yearlyIncomes: [],
         agriculturalOperationActivity: "CATTLE_FARMING",
         isSiteOperated: true,
-      });
+      } satisfies SiteImpactsDataView);
     });
   });
 });

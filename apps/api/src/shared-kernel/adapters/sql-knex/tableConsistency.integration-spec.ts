@@ -1,6 +1,8 @@
 import knex, { Knex } from "knex";
+import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
+import { after, before, describe, it } from "node:test";
 
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
 
@@ -24,7 +26,7 @@ describe("Database table consistency", () => {
   let sqlConnection: Knex;
   let dbTables: string[];
 
-  beforeAll(async () => {
+  before(async () => {
     sqlConnection = knex(knexConfig);
     const result = await sqlConnection
       .select("table_name")
@@ -36,7 +38,7 @@ describe("Database table consistency", () => {
       .toSorted();
   });
 
-  afterAll(async () => {
+  after(async () => {
     await sqlConnection.destroy();
   });
 
@@ -44,10 +46,11 @@ describe("Database table consistency", () => {
     const missing = dbTables.filter(
       (table) => !tablesToCleanUp.includes(table as (typeof tablesToCleanUp)[number]),
     );
-    expect(
+    assert.deepStrictEqual(
       missing,
+      [],
       `Tables missing from test/tablesToCleanUp.ts — add them to ensure test isolation: ${missing.join(", ")}`,
-    ).toEqual([]);
+    );
   });
 
   it("all tables should have type declarations in tableTypes.d.ts", () => {
@@ -69,9 +72,10 @@ describe("Database table consistency", () => {
     );
 
     const missing = dbTables.filter((table) => !declaredTables.has(table));
-    expect(
+    assert.deepStrictEqual(
       missing,
+      [],
       `Tables missing from tableTypes.d.ts Tables interface — add type declarations: ${missing.join(", ")}`,
-    ).toEqual([]);
+    );
   });
 });

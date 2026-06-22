@@ -1,4 +1,6 @@
 import knex, { Knex } from "knex";
+import assert from "node:assert/strict";
+import { after, before, beforeEach, describe, it } from "node:test";
 
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
 import { UserFeatureAlert } from "src/users/core/usecases/createUserFeatureAlert.usecase";
@@ -9,11 +11,11 @@ describe("SqlUserFeatureAlertRepository integration", () => {
   let sqlConnection: Knex;
   let repository: SqlUserFeatureAlertRepository;
 
-  beforeAll(() => {
+  before(() => {
     sqlConnection = knex(knexConfig);
   });
 
-  afterAll(async () => {
+  after(async () => {
     await sqlConnection.destroy();
   });
 
@@ -40,12 +42,12 @@ describe("SqlUserFeatureAlertRepository integration", () => {
     const result = await sqlConnection("users_feature_alerts")
       .select()
       .where({ id: featureAlert.id });
-    expect(result).toHaveLength(1);
-    expect(result[0]?.id).toEqual(featureAlert.id);
-    expect(result[0]?.email).toEqual(featureAlert.email);
-    expect(result[0]?.user_id).toEqual(featureAlert.userId);
-    expect(result[0]?.feature_type).toEqual("duplicate_project");
-    expect(result[0]?.feature_options).toEqual(null);
+    assert.strictEqual(result.length, 1);
+    assert.strictEqual(result[0]?.id, featureAlert.id);
+    assert.strictEqual(result[0]?.email, featureAlert.email);
+    assert.strictEqual(result[0]?.user_id, featureAlert.userId);
+    assert.strictEqual(result[0]?.feature_type, "duplicate_project");
+    assert.strictEqual(result[0]?.feature_options, null);
   });
 
   it("Saves 'compare_impacts' user feature alert", async () => {
@@ -72,12 +74,12 @@ describe("SqlUserFeatureAlertRepository integration", () => {
     const result = await sqlConnection("users_feature_alerts")
       .select()
       .where({ id: featureAlert.id });
-    expect(result).toHaveLength(1);
-    expect(result[0]?.id).toEqual(featureAlert.id);
-    expect(result[0]?.email).toEqual(featureAlert.email);
-    expect(result[0]?.user_id).toEqual(featureAlert.userId);
-    expect(result[0]?.feature_type).toEqual("compare_impacts");
-    expect(result[0]?.feature_options).toEqual(featureAlert.featureOptions);
+    assert.strictEqual(result.length, 1);
+    assert.strictEqual(result[0]?.id, featureAlert.id);
+    assert.strictEqual(result[0]?.email, featureAlert.email);
+    assert.strictEqual(result[0]?.user_id, featureAlert.userId);
+    assert.strictEqual(result[0]?.feature_type, "compare_impacts");
+    assert.deepStrictEqual(result[0]?.feature_options, featureAlert.featureOptions);
   });
 
   it("Saves 'export_impacts' user feature alert", async () => {
@@ -100,11 +102,11 @@ describe("SqlUserFeatureAlertRepository integration", () => {
     const result = await sqlConnection("users_feature_alerts")
       .select()
       .where({ id: featureAlert.id });
-    expect(result).toHaveLength(1);
-    expect(result[0]?.id).toEqual(featureAlert.id);
-    expect(result[0]?.email).toEqual(featureAlert.email);
-    expect(result[0]?.user_id).toEqual(featureAlert.userId);
-    expect(result[0]?.feature_type).toEqual("export_impacts");
-    expect(result[0]?.feature_options).toEqual(featureAlert.featureOptions);
+    assert.strictEqual(result.length, 1);
+    assert.strictEqual(result[0]?.id, featureAlert.id);
+    assert.strictEqual(result[0]?.email, featureAlert.email);
+    assert.strictEqual(result[0]?.user_id, featureAlert.userId);
+    assert.strictEqual(result[0]?.feature_type, "export_impacts");
+    assert.deepStrictEqual(result[0]?.feature_options, featureAlert.featureOptions);
   });
 });

@@ -1,5 +1,7 @@
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { Test as NestTest } from "@nestjs/testing";
+import assert from "node:assert/strict";
+import { after, before, describe, it } from "node:test";
 import supertest from "supertest";
 
 import { AppModule } from "src/app.module";
@@ -12,7 +14,7 @@ import { PhotovoltaicPerformanceController } from "./photovoltaicPerformance.con
 describe("PhotovoltaicPerformance controller", () => {
   let app: NestExpressApplication;
 
-  beforeAll(async () => {
+  before(async () => {
     const moduleRef = await NestTest.createTestingModule({
       imports: [AppModule],
 
@@ -36,7 +38,7 @@ describe("PhotovoltaicPerformance controller", () => {
     await app.init();
   });
 
-  afterAll(async () => {
+  after(async () => {
     await app.close();
   });
 
@@ -44,7 +46,7 @@ describe("PhotovoltaicPerformance controller", () => {
     it("can't return information if there is no required parameters", async () => {
       const response = await supertest(app.getHttpServer()).get("/api/photovoltaic-performance");
 
-      expect(response.status).toEqual(400);
+      assert.strictEqual(response.status, 400);
     });
 
     it("must return error if latitude or longitude parameters are wrong", async () => {
@@ -52,7 +54,7 @@ describe("PhotovoltaicPerformance controller", () => {
         "/api/photovoltaic-performance?long=200&lat=2000&peakPower=3",
       );
 
-      expect(wrongLat.status).toEqual(400);
+      assert.strictEqual(wrongLat.status, 400);
     });
 
     it("must return error if peakPower is the wrong format", async () => {
@@ -60,13 +62,13 @@ describe("PhotovoltaicPerformance controller", () => {
         "/api/photovoltaic-performance?long=2.347&lat=48.859&peakPower=test",
       );
 
-      expect(wrongPeakPower.status).toEqual(400);
+      assert.strictEqual(wrongPeakPower.status, 400);
 
       const wrongFormat = await supertest(app.getHttpServer()).get(
         "/api/photovoltaic-performance?long=2.347&lat=48.859&peakPower=-15",
       );
 
-      expect(wrongFormat.status).toEqual(400);
+      assert.strictEqual(wrongFormat.status, 400);
     });
 
     it("returns the expected power performance for a location and a peak power", async () => {
@@ -74,8 +76,8 @@ describe("PhotovoltaicPerformance controller", () => {
         "/api/photovoltaic-performance?long=2.347&lat=48.859&peakPower=3.0",
       );
 
-      expect(response.status).toEqual(200);
-      expect(response.body).toEqual({
+      assert.strictEqual(response.status, 200);
+      assert.deepStrictEqual(response.body, {
         expectedPerformance: {
           kwhPerDay: 9.43,
           kwhPerMonth: 286.91,

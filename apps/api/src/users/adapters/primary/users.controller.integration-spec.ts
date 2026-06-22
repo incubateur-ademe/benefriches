@@ -1,5 +1,7 @@
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { Knex } from "knex";
+import assert from "node:assert/strict";
+import { after, before, describe, it } from "node:test";
 import supertest from "supertest";
 import { authenticateUser, createTestApp, saveUser } from "test/testApp";
 
@@ -15,13 +17,13 @@ describe("Users controller", () => {
   let app: NestExpressApplication;
   let sqlConnection: Knex;
 
-  beforeAll(async () => {
+  before(async () => {
     app = await createTestApp();
     await app.init();
     sqlConnection = app.get(SqlConnection);
   });
 
-  afterAll(async () => {
+  after(async () => {
     await app.close();
     await sqlConnection.destroy();
   });
@@ -39,12 +41,11 @@ describe("Users controller", () => {
           },
         });
 
-      expect(response.status).toEqual(401);
+      assert.strictEqual(response.status, 401);
     });
 
-    it.each(["id", "email", "feature"] as const)(
-      "can't create a feature alert without mandatory field %s",
-      async (mandatoryField) => {
+    for (const mandatoryField of ["id", "email", "feature"] as const) {
+      it(`can't create a feature alert without mandatory field ${mandatoryField}`, async () => {
         const user = new UserBuilder().asLocalAuthority().build();
         const { accessToken } = await authenticateUser(app)(user);
 
@@ -62,58 +63,61 @@ describe("Users controller", () => {
           .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
           .send(props);
 
-        expect(response.status).toEqual(400);
-        expect(response.body).toHaveProperty("errors");
+        assert.strictEqual(response.status, 400);
+        assert.ok("errors" in (response.body as BadRequestResponseBody));
 
         const responseErrors = (response.body as BadRequestResponseBody).errors;
-        expect(responseErrors).toHaveLength(1);
-        expect(responseErrors[0]?.path).toContain(mandatoryField);
-      },
-    );
+        assert.strictEqual(responseErrors.length, 1);
+        assert.ok(responseErrors[0]?.path.includes(mandatoryField));
+      });
+    }
 
-    it.each([
+    for (const { type, options } of [
       { type: "export_impacts", options: ["pdf", "excel", "sharing_link"] },
-      { type: "update_project" },
-      { type: "update_site" },
-      { type: "duplicate_project" },
-      { type: "mutafriches_availability" },
+      { type: "update_project", options: undefined },
+      { type: "update_site", options: undefined },
+      { type: "duplicate_project", options: undefined },
+      { type: "mutafriches_availability", options: undefined },
       { type: "compare_impacts", options: ["same_project_on_prairie"] },
-    ])("get a 201 response and user is created $type", async ({ type, options }) => {
-      const user = new UserBuilder().asLocalAuthority().build();
-      await saveUser(app)(user);
-      const { accessToken } = await authenticateUser(app)(user);
+    ] as const) {
+      it(`get a 201 response and user is created ${type}`, async () => {
+        const user = new UserBuilder().asLocalAuthority().build();
+        await saveUser(app)(user);
+        const { accessToken } = await authenticateUser(app)(user);
 
-      const response = await supertest(app.getHttpServer())
-        .post("/api/users/feature-alert")
-        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
-        .send({
-          id: "2096a04d-4876-4e1e-b071-d5355fd0ee4c",
-          userId: user.id,
-          email: user.email,
-          feature: {
-            type,
-            options,
-          },
-        });
+        const response = await supertest(app.getHttpServer())
+          .post("/api/users/feature-alert")
+          .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+          .send({
+            id: "2096a04d-4876-4e1e-b071-d5355fd0ee4c",
+            userId: user.id,
+            email: user.email,
+            feature: {
+              type,
+              options,
+            },
+          });
 
-      expect(response.status).toEqual(201);
+        assert.strictEqual(response.status, 201);
 
-      const result = await sqlConnection("users_feature_alerts").select(
-        "id",
-        "email",
-        "feature_type",
-        "feature_options",
-      );
-      expect(result.length).toEqual(1);
-      expect(result[0]?.id).toEqual("2096a04d-4876-4e1e-b071-d5355fd0ee4c");
-      expect(result[0]?.email).toEqual(user.email);
-      expect(result[0]?.feature_type).toEqual(type);
-      expect(result[0]?.feature_options === null).toBe(
-        type === "duplicate_project" ||
-          type === "mutafriches_availability" ||
-          type === "update_site" ||
-          type === "update_project",
-      );
-    });
+        const result = await sqlConnection("users_feature_alerts").select(
+          "id",
+          "email",
+          "feature_type",
+          "feature_options",
+        );
+        assert.strictEqual(result.length, 1);
+        assert.strictEqual(result[0]?.id, "2096a04d-4876-4e1e-b071-d5355fd0ee4c");
+        assert.strictEqual(result[0]?.email, user.email);
+        assert.strictEqual(result[0]?.feature_type, type);
+        assert.strictEqual(
+          result[0]?.feature_options === null,
+          type === "duplicate_project" ||
+            type === "mutafriches_availability" ||
+            type === "update_site" ||
+            type === "update_project",
+        );
+      });
+    }
   });
 });

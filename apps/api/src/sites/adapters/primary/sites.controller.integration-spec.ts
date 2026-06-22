@@ -1,20 +1,15 @@
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { Knex } from "knex";
-import {
-  CreateCustomSiteDto,
-  CreateExpressSiteDto,
-  GetFricheInactionCostDto,
-  GetSiteImpactsDto,
-  GetSiteRealEstateValuationResponseDto,
-  GetSiteViewResponseDto,
-} from "shared";
+import assert from "node:assert/strict";
+import { after, before, describe, it } from "node:test";
+import { CreateCustomSiteDto, CreateExpressSiteDto, GetSiteImpactsDto } from "shared";
 import supertest from "supertest";
+import { assertShapeEquals, isDate, isNumber } from "test/assertShapeEquals";
 import { authenticateUser, createTestApp } from "test/testApp";
 import { v4 as uuid } from "uuid";
 
 import { ACCESS_TOKEN_COOKIE_KEY } from "src/auth/adapters/access-token/accessTokenCookie";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
-import { SqlSite } from "src/shared-kernel/adapters/sql-knex/tableTypes";
 import { InMemoryMutabilityEvaluationQuery } from "src/site-evaluations/adapters/secondary/queries/InMemoryMutabilityEvaluationQuery";
 import { MutafrichesEvaluationQuery } from "src/site-evaluations/adapters/secondary/queries/MutafrichesEvaluationQuery";
 import { UserBuilder } from "src/users/core/model/user.mock";
@@ -23,38 +18,36 @@ type BadRequestResponseBody = {
   errors: { path: string[] }[];
 };
 
-function expectBadRequestWithMissingField(
+function assertBadRequestWithMissingField(
   response: supertest.Response,
   missingField: string,
 ): void {
-  expect(response.status).toEqual(400);
-  expect(response.body).toHaveProperty("errors");
+  assert.strictEqual(response.status, 400);
+  assert.ok("errors" in (response.body as BadRequestResponseBody));
 
   const responseErrors = (response.body as BadRequestResponseBody).errors;
-  expect(responseErrors).toHaveLength(1);
-  expect(responseErrors[0]?.path).toContain(missingField);
+  assert.strictEqual(responseErrors.length, 1);
+  assert.ok(responseErrors[0]?.path.includes(missingField));
 }
 
 describe("Sites controller", () => {
   let app: NestExpressApplication;
   let sqlConnection: Knex;
 
-  beforeAll(async () => {
+  before(async () => {
     app = await createTestApp();
     await app.init();
     sqlConnection = app.get(SqlConnection);
   });
 
-  afterAll(async () => {
+  after(async () => {
     await app.close();
     await sqlConnection.destroy();
   });
 
   describe("POST /sites/create-express", () => {
-    // oxlint-disable-next-line vitest/expect-expect
-    it.each(["id", "nature", "createdBy", "address"] satisfies (keyof CreateExpressSiteDto)[])(
-      "can't create a site without mandatory field %s",
-      async (mandatoryField) => {
+    for (const mandatoryField of ["id", "nature", "createdBy", "address"] as const) {
+      it(`can't create a site without mandatory field ${mandatoryField}`, async () => {
         const requestBody: CreateExpressSiteDto = {
           id: "03a53ffd-4f71-419e-8d04-041311eefa23",
           createdBy: "dadf207d-f0c1-4e38-8fe9-9ae5b0e123c4",
@@ -78,11 +71,10 @@ describe("Sites controller", () => {
           .post("/api/sites/create-express")
           .send(requestBody);
 
-        expectBadRequestWithMissingField(response, mandatoryField);
-      },
-    );
+        assertBadRequestWithMissingField(response, mandatoryField);
+      });
+    }
 
-    // oxlint-disable-next-line vitest/expect-expect
     it("can't create an express friche without friche activity", async () => {
       const requestBody: Omit<CreateExpressSiteDto, "fricheActivity"> = {
         id: "03a53ffd-4f71-419e-8d04-041311eefa23",
@@ -104,10 +96,9 @@ describe("Sites controller", () => {
         .post("/api/sites/create-express")
         .send(requestBody);
 
-      expectBadRequestWithMissingField(response, "fricheActivity");
+      assertBadRequestWithMissingField(response, "fricheActivity");
     });
 
-    // oxlint-disable-next-line vitest/expect-expect
     it("can't create an express agricultral operation without activity", async () => {
       const requestBody: Omit<CreateExpressSiteDto, "activity"> = {
         id: "03a53ffd-4f71-419e-8d04-041311eefa23",
@@ -129,10 +120,9 @@ describe("Sites controller", () => {
         .post("/api/sites/create-express")
         .send(requestBody);
 
-      expectBadRequestWithMissingField(response, "activity");
+      assertBadRequestWithMissingField(response, "activity");
     });
 
-    // oxlint-disable-next-line vitest/expect-expect
     it("can't create an express natural area without activity", async () => {
       const requestBody: Omit<CreateExpressSiteDto, "type"> = {
         id: "03a53ffd-4f71-419e-8d04-041311eefa23",
@@ -154,7 +144,7 @@ describe("Sites controller", () => {
         .post("/api/sites/create-express")
         .send(requestBody);
 
-      expectBadRequestWithMissingField(response, "type");
+      assertBadRequestWithMissingField(response, "type");
     });
 
     it("can create an agricultural operation from express props", async () => {
@@ -179,7 +169,7 @@ describe("Sites controller", () => {
         .post("/api/sites/create-express")
         .send(agriculturalOperationDto);
 
-      expect(response.status).toEqual(201);
+      assert.strictEqual(response.status, 201);
 
       const sitesInDb = await sqlConnection("sites").select(
         "id",
@@ -187,8 +177,8 @@ describe("Sites controller", () => {
         "nature",
         "surface_area",
       );
-      expect(sitesInDb.length).toEqual(1);
-      expect(sitesInDb[0]).toEqual({
+      assert.strictEqual(sitesInDb.length, 1);
+      assert.deepStrictEqual(sitesInDb[0], {
         id: agriculturalOperationDto.id,
         nature: "AGRICULTURAL_OPERATION",
         created_by: agriculturalOperationDto.createdBy,
@@ -218,7 +208,7 @@ describe("Sites controller", () => {
         .post("/api/sites/create-express")
         .send(frichDto);
 
-      expect(response.status).toEqual(201);
+      assert.strictEqual(response.status, 201);
 
       const sitesInDb = await sqlConnection("sites").select(
         "id",
@@ -227,8 +217,8 @@ describe("Sites controller", () => {
         "surface_area",
         "friche_activity",
       );
-      expect(sitesInDb.length).toEqual(1);
-      expect(sitesInDb[0]).toEqual({
+      assert.strictEqual(sitesInDb.length, 1);
+      assert.deepStrictEqual(sitesInDb[0], {
         id: frichDto.id,
         nature: "FRICHE",
         created_by: frichDto.createdBy,
@@ -239,7 +229,7 @@ describe("Sites controller", () => {
   });
 
   describe("POST /sites/create-custom", () => {
-    it.each([
+    for (const mandatoryField of [
       "id",
       "nature",
       "createdBy",
@@ -248,9 +238,8 @@ describe("Sites controller", () => {
       "soilsDistribution",
       "yearlyExpenses",
       "yearlyIncomes",
-    ] satisfies (keyof Extract<CreateCustomSiteDto, { nature: "AGRICULTURAL_OPERATION" }>)[])(
-      "can't create a site without mandatory field %s",
-      async (mandatoryField) => {
+    ] as const) {
+      it(`can't create a site without mandatory field ${mandatoryField}`, async () => {
         const requestBody = {
           id: "03a53ffd-4f71-419e-8d04-041311eefa23",
           createdBy: "dadf207d-f0c1-4e38-8fe9-9ae5b0e123c4",
@@ -282,14 +271,14 @@ describe("Sites controller", () => {
           .post("/api/sites/create-custom")
           .send(requestBody);
 
-        expect(response.status).toEqual(400);
-        expect(response.body).toHaveProperty("errors");
+        assert.strictEqual(response.status, 400);
+        assert.ok("errors" in (response.body as BadRequestResponseBody));
 
         const responseErrors = (response.body as BadRequestResponseBody).errors;
-        expect(responseErrors).toHaveLength(1);
-        expect(responseErrors[0]?.path).toContain(mandatoryField);
-      },
-    );
+        assert.strictEqual(responseErrors.length, 1);
+        assert.ok(responseErrors[0]?.path.includes(mandatoryField));
+      });
+    }
 
     it("can create an agricultural operation", async () => {
       const agriculturalOperationDto: CreateCustomSiteDto = {
@@ -333,39 +322,42 @@ describe("Sites controller", () => {
         .post("/api/sites/create-custom")
         .send(agriculturalOperationDto);
 
-      expect(response.status).toEqual(201);
+      assert.strictEqual(response.status, 201);
 
       const sitesInDb = await sqlConnection("sites").select("*");
-      expect(sitesInDb.length).toEqual(1);
-      expect(sitesInDb[0]).toEqual<SqlSite>({
-        id: "03a53ffd-4f71-419e-8d04-041311eefa23",
-        created_by: "74ac340f-0654-4887-9449-3dbb43ce35b5",
-        // oxlint-disable-next-line typescript/no-unsafe-assignment
-        created_at: expect.any(Date),
-        description: "Description of site",
-        name: "Exploitation agricole",
-        nature: "AGRICULTURAL_OPERATION",
-        agricultural_operation_activity: "CATTLE_FARMING",
-        natural_area_type: null,
-        surface_area: 2900.0,
-        creation_mode: "custom",
-        owner_name: "Owner name",
-        owner_structure_type: "company",
-        is_operated: true,
-        tenant_name: "Tenant name",
-        tenant_structure_type: "private_individual",
-        friche_accidents_deaths: null,
-        friche_accidents_severe_injuries: null,
-        friche_accidents_minor_injuries: null,
-        friche_activity: null,
-        friche_contaminated_soil_surface_area: null,
-        friche_has_contaminated_soils: null,
-        status: "active",
-        updated_at: null,
-      });
+      assert.strictEqual(sitesInDb.length, 1);
+      assert.ok(sitesInDb[0]);
+      assertShapeEquals(
+        sitesInDb[0],
+        {
+          id: "03a53ffd-4f71-419e-8d04-041311eefa23",
+          created_by: "74ac340f-0654-4887-9449-3dbb43ce35b5",
+          description: "Description of site",
+          name: "Exploitation agricole",
+          nature: "AGRICULTURAL_OPERATION",
+          agricultural_operation_activity: "CATTLE_FARMING",
+          natural_area_type: null,
+          surface_area: 2900.0,
+          creation_mode: "custom",
+          owner_name: "Owner name",
+          owner_structure_type: "company",
+          is_operated: true,
+          tenant_name: "Tenant name",
+          tenant_structure_type: "private_individual",
+          friche_accidents_deaths: null,
+          friche_accidents_severe_injuries: null,
+          friche_accidents_minor_injuries: null,
+          friche_activity: null,
+          friche_contaminated_soil_surface_area: null,
+          friche_has_contaminated_soils: null,
+          status: "active",
+          updated_at: null,
+        },
+        { created_at: isDate },
+      );
 
       const siteAddressInDb = await sqlConnection("addresses").select("value", "site_id");
-      expect(siteAddressInDb).toEqual([
+      assert.deepStrictEqual(siteAddressInDb, [
         { value: agriculturalOperationDto.address.value, site_id: agriculturalOperationDto.id },
       ]);
 
@@ -374,7 +366,7 @@ describe("Sites controller", () => {
         "soil_type",
         "site_id",
       );
-      expect(soilsDistributionInDb).toEqual([
+      assert.deepStrictEqual(soilsDistributionInDb, [
         { soil_type: "PRAIRIE_GRASS", surface_area: 1400.0, site_id: agriculturalOperationDto.id },
         { soil_type: "MINERAL_SOIL", surface_area: 1500.0, site_id: agriculturalOperationDto.id },
       ]);
@@ -385,7 +377,7 @@ describe("Sites controller", () => {
         "bearer",
         "site_id",
       );
-      expect(expensesInDb).toEqual([
+      assert.deepStrictEqual(expensesInDb, [
         {
           amount: 1000.0,
           purpose: "security",
@@ -395,7 +387,7 @@ describe("Sites controller", () => {
       ]);
 
       const incomesInDb = await sqlConnection("site_incomes").select("amount", "source", "site_id");
-      expect(incomesInDb).toEqual([
+      assert.deepStrictEqual(incomesInDb, [
         { amount: 200.0, source: "other", site_id: agriculturalOperationDto.id },
       ]);
     });
@@ -429,39 +421,42 @@ describe("Sites controller", () => {
         .post("/api/sites/create-custom")
         .send(naturalAreaDto);
 
-      expect(response.status).toEqual(201);
+      assert.strictEqual(response.status, 201);
 
       const sitesInDb = await sqlConnection("sites").select("*");
-      expect(sitesInDb.length).toEqual(1);
-      expect(sitesInDb[0]).toEqual<SqlSite>({
-        id: "03a53ffd-4f71-419e-8d04-041311eefa23",
-        created_by: "74ac340f-0654-4887-9449-3dbb43ce35b5",
-        // oxlint-disable-next-line typescript/no-unsafe-assignment
-        created_at: expect.any(Date),
-        description: "Description of site",
-        name: "Forêt",
-        nature: "NATURAL_AREA",
-        agricultural_operation_activity: null,
-        natural_area_type: "FOREST",
-        surface_area: 2900.0,
-        creation_mode: "custom",
-        owner_name: "Owner name",
-        owner_structure_type: "company",
-        tenant_name: null,
-        tenant_structure_type: null,
-        friche_accidents_deaths: null,
-        friche_accidents_severe_injuries: null,
-        friche_accidents_minor_injuries: null,
-        friche_activity: null,
-        friche_contaminated_soil_surface_area: null,
-        friche_has_contaminated_soils: null,
-        is_operated: null,
-        status: "active",
-        updated_at: null,
-      });
+      assert.strictEqual(sitesInDb.length, 1);
+      assert.ok(sitesInDb[0]);
+      assertShapeEquals(
+        sitesInDb[0],
+        {
+          id: "03a53ffd-4f71-419e-8d04-041311eefa23",
+          created_by: "74ac340f-0654-4887-9449-3dbb43ce35b5",
+          description: "Description of site",
+          name: "Forêt",
+          nature: "NATURAL_AREA",
+          agricultural_operation_activity: null,
+          natural_area_type: "FOREST",
+          surface_area: 2900.0,
+          creation_mode: "custom",
+          owner_name: "Owner name",
+          owner_structure_type: "company",
+          tenant_name: null,
+          tenant_structure_type: null,
+          friche_accidents_deaths: null,
+          friche_accidents_severe_injuries: null,
+          friche_accidents_minor_injuries: null,
+          friche_activity: null,
+          friche_contaminated_soil_surface_area: null,
+          friche_has_contaminated_soils: null,
+          is_operated: null,
+          status: "active",
+          updated_at: null,
+        },
+        { created_at: isDate },
+      );
 
       const siteAddressInDb = await sqlConnection("addresses").select("value", "site_id");
-      expect(siteAddressInDb).toEqual([
+      assert.deepStrictEqual(siteAddressInDb, [
         { value: naturalAreaDto.address.value, site_id: naturalAreaDto.id },
       ]);
 
@@ -470,7 +465,7 @@ describe("Sites controller", () => {
         "soil_type",
         "site_id",
       );
-      expect(soilsDistributionInDb).toEqual([
+      assert.deepStrictEqual(soilsDistributionInDb, [
         { soil_type: "PRAIRIE_GRASS", surface_area: 1400.0, site_id: naturalAreaDto.id },
         { soil_type: "FOREST_POPLAR", surface_area: 1500.0, site_id: naturalAreaDto.id },
       ]);
@@ -518,46 +513,51 @@ describe("Sites controller", () => {
         .post("/api/sites/create-custom")
         .send(fricheDto);
 
-      expect(response.status).toEqual(201);
+      assert.strictEqual(response.status, 201);
 
       const sitesInDb = await sqlConnection("sites").select("*");
-      expect(sitesInDb.length).toEqual(1);
-      expect(sitesInDb[0]).toEqual<SqlSite>({
-        id: "28b53918-a6f6-43f2-9554-7b5434428f8b",
-        created_by: "74ac340f-0654-4887-9449-3dbb43ce35b5",
-        creation_mode: "custom",
-        name: "Ancienne gare de Bercy",
-        owner_structure_type: "department",
-        owner_name: "Le département Paris",
-        tenant_structure_type: "company",
-        tenant_name: "Tenant SARL",
-        friche_contaminated_soil_surface_area: 1400.3,
-        friche_has_contaminated_soils: true,
-        surface_area: 74300,
-        // oxlint-disable-next-line typescript/no-unsafe-assignment
-        created_at: expect.any(Date),
-        description: "Description of site",
-        friche_activity: "RAILWAY",
-        nature: "FRICHE",
-        friche_accidents_deaths: 0,
-        friche_accidents_severe_injuries: 2,
-        friche_accidents_minor_injuries: 1,
-        agricultural_operation_activity: null,
-        natural_area_type: null,
-        is_operated: null,
-        status: "active",
-        updated_at: null,
-      });
+      assert.strictEqual(sitesInDb.length, 1);
+      assert.ok(sitesInDb[0]);
+      assertShapeEquals(
+        sitesInDb[0],
+        {
+          id: "28b53918-a6f6-43f2-9554-7b5434428f8b",
+          created_by: "74ac340f-0654-4887-9449-3dbb43ce35b5",
+          creation_mode: "custom",
+          name: "Ancienne gare de Bercy",
+          owner_structure_type: "department",
+          owner_name: "Le département Paris",
+          tenant_structure_type: "company",
+          tenant_name: "Tenant SARL",
+          friche_contaminated_soil_surface_area: 1400.3,
+          friche_has_contaminated_soils: true,
+          surface_area: 74300,
+          description: "Description of site",
+          friche_activity: "RAILWAY",
+          nature: "FRICHE",
+          friche_accidents_deaths: 0,
+          friche_accidents_severe_injuries: 2,
+          friche_accidents_minor_injuries: 1,
+          agricultural_operation_activity: null,
+          natural_area_type: null,
+          is_operated: null,
+          status: "active",
+          updated_at: null,
+        },
+        { created_at: isDate },
+      );
 
       const siteAddressInDb = await sqlConnection("addresses").select("value", "site_id");
-      expect(siteAddressInDb).toEqual([{ value: fricheDto.address.value, site_id: fricheDto.id }]);
+      assert.deepStrictEqual(siteAddressInDb, [
+        { value: fricheDto.address.value, site_id: fricheDto.id },
+      ]);
 
       const soilsDistributionInDb = await sqlConnection("site_soils_distributions").select(
         "surface_area",
         "soil_type",
         "site_id",
       );
-      expect(soilsDistributionInDb).toEqual([
+      assert.deepStrictEqual(soilsDistributionInDb, [
         { soil_type: "BUILDINGS", surface_area: 12300.0, site_id: fricheDto.id },
         { soil_type: "MINERAL_SOIL", surface_area: 12000.0, site_id: fricheDto.id },
         { soil_type: "PRAIRIE_GRASS", surface_area: 50000.0, site_id: fricheDto.id },
@@ -569,12 +569,12 @@ describe("Sites controller", () => {
         "bearer",
         "site_id",
       );
-      expect(expensesInDb).toEqual([
+      assert.deepStrictEqual(expensesInDb, [
         { amount: 45000.0, purpose: "maintenance", site_id: fricheDto.id, bearer: "owner" },
       ]);
 
       const incomesInDb = await sqlConnection("site_incomes").select("amount", "source");
-      expect(incomesInDb).toEqual([]);
+      assert.deepStrictEqual(incomesInDb, []);
     });
 
     it("can create an urban zone site", async () => {
@@ -641,10 +641,13 @@ describe("Sites controller", () => {
         .post("/api/sites/create-custom")
         .send(urbanZoneDto);
 
-      expect(response.status).toEqual(201);
+      assert.strictEqual(response.status, 201);
 
       const sitesInDb = await sqlConnection("sites").select("*");
-      expect(sitesInDb).toEqual<SqlSite[]>([
+      assert.strictEqual(sitesInDb.length, 1);
+      assert.ok(sitesInDb[0]);
+      assertShapeEquals(
+        sitesInDb[0],
         {
           id: urbanZoneDto.id,
           created_by: urbanZoneDto.createdBy,
@@ -655,8 +658,6 @@ describe("Sites controller", () => {
           tenant_structure_type: null,
           tenant_name: null,
           surface_area: 7000,
-          // oxlint-disable-next-line typescript/no-unsafe-assignment
-          created_at: expect.any(Date),
           description: "Zone urbaine avec ilots d'activite et espaces publics",
           nature: "URBAN_ZONE",
           friche_contaminated_soil_surface_area: null,
@@ -671,7 +672,8 @@ describe("Sites controller", () => {
           status: "active",
           updated_at: null,
         },
-      ]);
+        { created_at: isDate },
+      );
 
       const urbanZoneFeaturesInDb = await sqlConnection("site_urban_zone_features").select(
         "site_id",
@@ -685,7 +687,7 @@ describe("Sites controller", () => {
         "vacant_commercial_premises_floor_area",
         "full_time_jobs_equivalent",
       );
-      expect(urbanZoneFeaturesInDb).toEqual([
+      assert.deepStrictEqual(urbanZoneFeaturesInDb, [
         {
           site_id: urbanZoneDto.id,
           urban_zone_type: "ECONOMIC_ACTIVITY_ZONE",
@@ -701,12 +703,12 @@ describe("Sites controller", () => {
       ]);
 
       const siteAddressInDb = await sqlConnection("addresses").select("value", "site_id");
-      expect(siteAddressInDb).toEqual([
+      assert.deepStrictEqual(siteAddressInDb, [
         { value: urbanZoneDto.address.value, site_id: urbanZoneDto.id },
       ]);
 
       const soilsDistributionInDb = await sqlConnection("site_soils_distributions").select("*");
-      expect(soilsDistributionInDb).toEqual([]);
+      assert.deepStrictEqual(soilsDistributionInDb, []);
     });
   });
 
@@ -718,7 +720,7 @@ describe("Sites controller", () => {
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=nope`)
         .send();
 
-      expect(response.status).toEqual(401);
+      assert.strictEqual(response.status, 401);
     });
 
     it("gets a 404 error when site does not exist", async () => {
@@ -731,7 +733,7 @@ describe("Sites controller", () => {
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send();
 
-      expect(response.status).toEqual(404);
+      assert.strictEqual(response.status, 404);
     });
 
     it("gets a 200 response when site exists", async () => {
@@ -791,8 +793,8 @@ describe("Sites controller", () => {
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send();
 
-      expect(response.status).toEqual(200);
-      expect(response.body).toEqual({
+      assert.strictEqual(response.status, 200);
+      assert.deepStrictEqual(response.body, {
         id: siteId,
         name: "Friche Amiens",
         nature: "FRICHE",
@@ -890,8 +892,8 @@ describe("Sites controller", () => {
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send();
 
-      expect(response.status).toEqual(200);
-      expect(response.body).toEqual({
+      assert.strictEqual(response.status, 200);
+      assert.deepStrictEqual(response.body, {
         id: siteId,
         name: "Viticulture Amiens",
         nature: "AGRICULTURAL_OPERATION",
@@ -963,8 +965,8 @@ describe("Sites controller", () => {
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send();
 
-      expect(response.status).toEqual(200);
-      expect(response.body).toEqual({
+      assert.strictEqual(response.status, 200);
+      assert.deepStrictEqual(response.body, {
         id: siteId,
         nature: "NATURAL_AREA",
         name: "Prairie Amiens",
@@ -1001,7 +1003,7 @@ describe("Sites controller", () => {
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=nope`)
         .send();
 
-      expect(response.status).toEqual(401);
+      assert.strictEqual(response.status, 401);
     });
 
     it("gets a 404 error when site does not exist", async () => {
@@ -1014,7 +1016,7 @@ describe("Sites controller", () => {
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send();
 
-      expect(response.status).toEqual(404);
+      assert.strictEqual(response.status, 404);
     });
 
     it("gets a 200 response with site features, actions and reconversion projects", async () => {
@@ -1110,8 +1112,8 @@ describe("Sites controller", () => {
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send();
 
-      expect(response.status).toEqual(200);
-      expect(response.body).toEqual<GetSiteViewResponseDto>({
+      assert.strictEqual(response.status, 200);
+      assert.deepStrictEqual(response.body, {
         id: siteId,
         features: {
           id: siteId,
@@ -1169,15 +1171,19 @@ describe("Sites controller", () => {
         reliabilityScore: 3,
       });
 
-      const app = await createTestApp({
+      // Note: appWithOverride shares the same Knex pool singleton (SqlConnectionModule uses
+      // useValue: knex(knexConfig) evaluated once at module load). Closing appWithOverride would
+      // destroy that pool and break the outer app. We intentionally skip close() here; the outer
+      // app's after() hook handles the shared connection teardown.
+      const appWithOverride = await createTestApp({
         providerOverrides: [
           { token: MutafrichesEvaluationQuery, useValue: inMemoryMutafrichesQuery },
         ],
       });
-      await app.init();
+      await appWithOverride.init();
 
       const user = new UserBuilder().asLocalAuthority().build();
-      const { accessToken } = await authenticateUser(app)(user);
+      const { accessToken } = await authenticateUser(appWithOverride)(user);
 
       const siteId = uuid();
 
@@ -1229,13 +1235,13 @@ describe("Sites controller", () => {
         created_at: new Date(),
       });
 
-      const response = await supertest(app.getHttpServer())
+      const response = await supertest(appWithOverride.getHttpServer())
         .get(`/api/sites/${siteId}`)
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send();
 
-      expect(response.status).toEqual(200);
-      expect(response.body).toEqual<GetSiteViewResponseDto>({
+      assert.strictEqual(response.status, 200);
+      assert.deepStrictEqual(response.body, {
         id: siteId,
         features: {
           id: siteId,
@@ -1284,7 +1290,7 @@ describe("Sites controller", () => {
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=nope`)
         .send();
 
-      expect(response.status).toEqual(401);
+      assert.strictEqual(response.status, 401);
     });
 
     it("gets a 404 error when site does not exist", async () => {
@@ -1297,7 +1303,7 @@ describe("Sites controller", () => {
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send();
 
-      expect(response.status).toEqual(404);
+      assert.strictEqual(response.status, 404);
     });
 
     it("gets a 200 response with correct valuation for existing site", async () => {
@@ -1334,10 +1340,10 @@ describe("Sites controller", () => {
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send();
 
-      expect(response.status).toEqual(200);
+      assert.strictEqual(response.status, 200);
       // sellingPrice = 1000 * 10540 = 10_540_000
       // propertyTransferDuties = 10_540_000 * 0.0581 (TRANSFER_TAX_PERCENT_PER_TRANSACTION) = 612_374
-      expect(response.body).toEqual<GetSiteRealEstateValuationResponseDto>({
+      assert.deepStrictEqual(response.body, {
         sellingPrice: 10_540_000,
         propertyTransferDuties: 612_374,
       });
@@ -1350,7 +1356,7 @@ describe("Sites controller", () => {
         .post(`/api/sites/${uuid()}/archive`)
         .send();
 
-      expect(response.status).toEqual(401);
+      assert.strictEqual(response.status, 401);
     });
 
     it("gets a 404 when site does not exist", async () => {
@@ -1363,7 +1369,7 @@ describe("Sites controller", () => {
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send();
 
-      expect(response.status).toEqual(404);
+      assert.strictEqual(response.status, 404);
     });
 
     it("gets a 403 when user is not the creator of the site", async () => {
@@ -1387,7 +1393,7 @@ describe("Sites controller", () => {
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send();
 
-      expect(response.status).toEqual(403);
+      assert.strictEqual(response.status, 403);
     });
 
     it("successfully archive a site", async () => {
@@ -1411,22 +1417,23 @@ describe("Sites controller", () => {
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send();
 
-      expect(response.status).toEqual(201);
+      assert.strictEqual(response.status, 201);
 
       const sites = await sqlConnection("sites").where({ id: siteId }).select("*");
 
-      expect(sites).toHaveLength(1);
-      expect(sites[0]?.status).toEqual("archived");
-      expect(sites[0]?.updated_at).toBeDefined();
+      assert.strictEqual(sites.length, 1);
+      assert.strictEqual(sites[0]?.status, "archived");
+      assert.ok(sites[0]?.updated_at !== undefined);
     });
   });
+
   describe("GET /friches/cout-inaction", () => {
     it("gets a 400 error when code_insee is missing", async () => {
       const response = await supertest(app.getHttpServer())
         .get(`/api/friches/cout-inaction`)
         .query({ superficie_m2: 5000 })
         .send();
-      expect(response.status).toEqual(400);
+      assert.strictEqual(response.status, 400);
     });
 
     it("gets a 400 error when code_insee has wrong format", async () => {
@@ -1434,7 +1441,7 @@ describe("Sites controller", () => {
         .get(`/api/friches/cout-inaction`)
         .query({ code_insee: "750", superficie_m2: 5000 })
         .send();
-      expect(response.status).toEqual(400);
+      assert.strictEqual(response.status, 400);
     });
 
     it("gets a 400 error when superficie_m2 is missing", async () => {
@@ -1442,7 +1449,7 @@ describe("Sites controller", () => {
         .get(`/api/friches/cout-inaction`)
         .query({ code_insee: "31070" })
         .send();
-      expect(response.status).toEqual(400);
+      assert.strictEqual(response.status, 400);
     });
 
     it("gets a 400 error when superficie_m2 is negative", async () => {
@@ -1450,7 +1457,7 @@ describe("Sites controller", () => {
         .get(`/api/friches/cout-inaction`)
         .query({ code_insee: "31070", superficie_m2: -100 })
         .send();
-      expect(response.status).toEqual(400);
+      assert.strictEqual(response.status, 400);
     });
 
     it("gets a 200 response with city data when city code exists in database (rural city — no security cost)", async () => {
@@ -1459,8 +1466,8 @@ describe("Sites controller", () => {
         .query({ code_insee: "31070", superficie_m2: 5000 })
         .send();
 
-      expect(response.status).toEqual(200);
-      expect(response.body).toEqual<GetFricheInactionCostDto>({
+      assert.strictEqual(response.status, 200);
+      assert.deepStrictEqual(response.body, {
         commune_data: {
           nom: "Blajan",
           population: 433,
@@ -1469,7 +1476,6 @@ describe("Sites controller", () => {
         description:
           "Bénéfriches a calculé le coût de l'inaction à partir de données moyennes, de la superficie et des données communales de votre friche",
         cout_annuel_debarras_depot_illegal: 18,
-        cout_annuel_securisation: undefined,
       });
     });
 
@@ -1480,14 +1486,18 @@ describe("Sites controller", () => {
         .query({ code_insee: "00000", superficie_m2: 5000 })
         .send();
 
-      expect(response.status).toEqual(200);
-      expect(response.body).toEqual<GetFricheInactionCostDto>({
-        cout_annuel_securisation: expect.any(Number) as number,
-        cout_annuel_debarras_depot_illegal: expect.any(Number) as number,
-        description:
-          "Bénéfriches a calculé le coût de l'inaction à partir de données moyennes françaises et de la superficie de votre friche",
-        commune_data: undefined,
-      });
+      assert.strictEqual(response.status, 200);
+      assertShapeEquals(
+        response.body as Record<string, unknown>,
+        {
+          description:
+            "Bénéfriches a calculé le coût de l'inaction à partir de données moyennes françaises et de la superficie de votre friche",
+        },
+        {
+          cout_annuel_securisation: isNumber,
+          cout_annuel_debarras_depot_illegal: isNumber,
+        },
+      );
     });
 
     it("gets a 200 response with correct illegal dumping cost for known rural city and surface", async () => {
@@ -1496,9 +1506,9 @@ describe("Sites controller", () => {
         .query({ code_insee: "31070", superficie_m2: 1000 })
         .send();
 
-      expect(response.status).toEqual(200);
-      expect(response.body.cout_annuel_securisation).toBeUndefined();
-      expect(response.body.cout_annuel_debarras_depot_illegal).toBeGreaterThan(0);
+      assert.strictEqual(response.status, 200);
+      assert.strictEqual(response.body.cout_annuel_securisation, undefined);
+      assert.ok((response.body.cout_annuel_debarras_depot_illegal as number) > 0);
     });
   });
 
@@ -1508,7 +1518,7 @@ describe("Sites controller", () => {
         .get(`/api/sites/${uuid()}/impacts`)
         .send();
 
-      expect(response.status).toEqual(401);
+      assert.strictEqual(response.status, 401);
     });
 
     it("gets a 200 with sites impacts", async () => {
@@ -1550,12 +1560,12 @@ describe("Sites controller", () => {
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send();
 
-      expect(response.status).toEqual(200);
-      expect(response.body).toBeDefined();
+      assert.strictEqual(response.status, 200);
+      assert.ok(response.body !== undefined);
       const result = response.body as GetSiteImpactsDto;
-      expect(result.economicImpacts).toBeDefined();
-      expect(result.projectionYears).toBeDefined();
-      expect(result.stakeholders).toBeDefined();
+      assert.ok(result.economicImpacts !== undefined);
+      assert.ok(result.projectionYears !== undefined);
+      assert.ok(result.stakeholders !== undefined);
     });
   });
 });

@@ -1,4 +1,6 @@
 import knex, { Knex } from "knex";
+import assert from "node:assert/strict";
+import { after, before, beforeEach, describe, it } from "node:test";
 
 import { SqlUserRepository } from "src/auth/adapters/user-repository/SqlUsersRepository";
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
@@ -11,11 +13,11 @@ describe("SqlMarketingUsersQuery integration", () => {
   let query: SqlMarketingUsersQuery;
   let userRepository: SqlUserRepository;
 
-  beforeAll(() => {
+  before(() => {
     sqlConnection = knex(knexConfig);
   });
 
-  afterAll(async () => {
+  after(async () => {
     await sqlConnection.destroy();
   });
 
@@ -26,7 +28,7 @@ describe("SqlMarketingUsersQuery integration", () => {
 
   it("returns an empty array when there are no users", async () => {
     const result = await query.listAll();
-    expect(result).toEqual([]);
+    assert.deepStrictEqual(result, []);
   });
 
   it("returns id, email, and subscribedToNewsletter for every user", async () => {
@@ -41,8 +43,8 @@ describe("SqlMarketingUsersQuery integration", () => {
 
     const result = await query.listAll();
 
-    expect(result).toHaveLength(2);
-    expect(result).toEqual([
+    assert.strictEqual(result.length, 2);
+    assert.deepStrictEqual(result, [
       { id: subscribed.id, email: subscribed.email, subscribedToNewsletter: true },
       { id: unsubscribed.id, email: unsubscribed.email, subscribedToNewsletter: false },
     ]);

@@ -57,8 +57,6 @@
         "src/shared-kernel/adapters/sql-knex/migrations/**/*.ts",
         "src/shared-kernel/adapters/sql-knex/scripts/**/*.ts",
         "src/shared-kernel/adapters/sql-knex/seeds/**/*.ts",
-        "test/integration-tests-setup.ts",
-        "test/integration-tests-global-hooks.ts",
         "test/integration-global-setup.ts",
         "test/integration-per-test-hooks.ts"
       ],
@@ -68,13 +66,13 @@
       }
     },
     {
-      "files": ["*.node-spec.ts"],
+      "files": ["*.integration-spec.ts", "*.node-spec.ts"],
       "rules": {
         "typescript/no-floating-promises": "off"
       }
     },
     {
-      "files": ["*.spec.ts", "*.integration-spec.ts", "test/integration-tests-global-hooks.ts"],
+      "files": ["*.spec.ts"],
       "rules": {
         "vitest/expect-expect": "error",
         "vitest/no-identical-title": "error",

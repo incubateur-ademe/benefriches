@@ -1,5 +1,7 @@
 import { NestExpressApplication } from "@nestjs/platform-express/interfaces/nest-express-application.interface";
 import { Knex } from "knex";
+import assert from "node:assert/strict";
+import { after, before, describe, it } from "node:test";
 import supertest from "supertest";
 import { createTestApp } from "test/testApp";
 
@@ -9,13 +11,13 @@ describe("CarbonStorage controller", () => {
   let app: NestExpressApplication;
   let sqlConnection: Knex;
 
-  beforeAll(async () => {
+  before(async () => {
     app = await createTestApp();
     await app.init();
     sqlConnection = app.get(SqlConnection);
   });
 
-  afterAll(async () => {
+  after(async () => {
     await app.close();
     await sqlConnection.destroy();
   });
@@ -24,7 +26,7 @@ describe("CarbonStorage controller", () => {
     it("can't return information if there is no cityCode indication", async () => {
       const response = await supertest(app.getHttpServer()).get("/api/carbon-storage/site-soils");
 
-      expect(response.status).toEqual(400);
+      assert.strictEqual(response.status, 400);
     });
 
     it("can't return information if there is no soils indication", async () => {
@@ -32,7 +34,7 @@ describe("CarbonStorage controller", () => {
         "/api/carbon-storage/site-soils?cityCode=01081",
       );
 
-      expect(response.status).toEqual(400);
+      assert.strictEqual(response.status, 400);
     });
 
     describe("it returns 400 error if soils parameter format is incorrect", () => {
@@ -42,16 +44,15 @@ describe("CarbonStorage controller", () => {
         "soils[0][surfaceArea]=-2354&soils[0][type]=CULTIVATION",
       ];
 
-      test.each(WRONG_SOILS_PARAMS)(
-        "given %p and %p as arguments, returns %p",
-        async (soilsParam) => {
+      for (const soilsParam of WRONG_SOILS_PARAMS) {
+        it(`given ${soilsParam} as arguments, returns 400`, async () => {
           const response = await supertest(app.getHttpServer()).get(
             `/api/carbon-storage/site-soils?cityCode=01081&${soilsParam}`,
           );
 
-          expect(response.status).toEqual(400);
-        },
-      );
+          assert.strictEqual(response.status, 400);
+        });
+      }
     });
 
     it("returns an object with totalCarbonStorage and soilsCarbonStorage", async () => {
@@ -59,8 +60,8 @@ describe("CarbonStorage controller", () => {
         "/api/carbon-storage/site-soils?cityCode=01081&soils[0][surfaceArea]=1500&soils[0][type]=CULTIVATION&soils[1][surfaceArea]=3000&soils[1][type]=FOREST_DECIDUOUS",
       );
 
-      expect(response.status).toEqual(200);
-      expect(response.body).toEqual({
+      assert.strictEqual(response.status, 200);
+      assert.deepStrictEqual(response.body, {
         totalCarbonStorage: 73.91,
         soilsStorage: [
           {

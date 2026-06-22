@@ -1,12 +1,15 @@
 /* oxlint-disable typescript/no-non-null-assertion */
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { Knex } from "knex";
+import assert from "node:assert/strict";
+import { after, before, beforeEach, describe, it } from "node:test";
 import {
   reconversionProjectTemplateSchema,
   httpSaveReconversionProjectPropsSchema,
   domainSaveReconversionProjectPropsSchema,
 } from "shared";
 import supertest from "supertest";
+import { assertShapeEquals, isDate } from "test/assertShapeEquals";
 import { authenticateUser, createTestApp } from "test/testApp";
 import { v4 as uuid } from "uuid";
 import { z, ZodError } from "zod";
@@ -42,13 +45,13 @@ describe("ReconversionProjects controller", () => {
   let app: NestExpressApplication;
   let sqlConnection: Knex;
 
-  beforeAll(async () => {
+  before(async () => {
     app = await createTestApp();
     await app.init();
     sqlConnection = app.get(SqlConnection);
   });
 
-  afterAll(async () => {
+  after(async () => {
     await app.close();
     await sqlConnection.destroy();
   });
@@ -60,10 +63,10 @@ describe("ReconversionProjects controller", () => {
           .post("/api/reconversion-projects")
           .send(buildMinimalReconversionProjectProps());
 
-        expect(response.status).toEqual(401);
+        assert.strictEqual(response.status, 401);
       });
 
-      it.each([
+      for (const mandatoryField of [
         "id",
         "name",
         "createdBy",
@@ -73,9 +76,8 @@ describe("ReconversionProjects controller", () => {
         "yearlyProjectedCosts",
         "yearlyProjectedRevenues",
         "projectPhase",
-      ] satisfies (keyof z.infer<typeof httpSaveReconversionProjectPropsSchema>)[])(
-        "can't create a reconversion project without mandatory field %s",
-        async (mandatoryField) => {
+      ] satisfies (keyof z.infer<typeof httpSaveReconversionProjectPropsSchema>)[]) {
+        it(`can't create a reconversion project without mandatory field ${mandatoryField}`, async () => {
           const requestBody = buildMinimalReconversionProjectProps();
           const user = new UserBuilder().withId(requestBody.createdBy).asLocalAuthority().build();
           const { accessToken } = await authenticateUser(app)(user);
@@ -87,53 +89,55 @@ describe("ReconversionProjects controller", () => {
             .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
             .send(requestBody);
 
-          expect(response.status).toEqual(400);
-          expect(response.body).toHaveProperty("errors");
+          assert.strictEqual(response.status, 400);
+          assert.ok("errors" in (response.body as BadRequestResponseBody));
 
           const responseErrors = (response.body as BadRequestResponseBody).errors;
-          expect(responseErrors).toHaveLength(1);
-          expect(responseErrors[0]?.path).toContain(mandatoryField);
-        },
-      );
+          assert.strictEqual(responseErrors.length, 1);
+          assert.ok(responseErrors[0]?.path.includes(mandatoryField));
+        });
+      }
     });
 
-    it.each([
+    for (const { case: testCase, requestBody } of [
       { case: "with minimal data", requestBody: buildMinimalReconversionProjectProps() },
       { case: "with exhaustive data", requestBody: buildExhaustiveReconversionProjectProps() },
       { case: "with urban project data", requestBody: buildUrbanProjectReconversionProjectProps() },
-    ])("get a 201 response and reconversion project is created $case", async ({ requestBody }) => {
-      const user = new UserBuilder().withId(requestBody.createdBy).asLocalAuthority().build();
-      const { accessToken } = await authenticateUser(app)(user);
+    ]) {
+      it(`get a 201 response and reconversion project is created ${testCase}`, async () => {
+        const user = new UserBuilder().withId(requestBody.createdBy).asLocalAuthority().build();
+        const { accessToken } = await authenticateUser(app)(user);
 
-      await sqlConnection("sites").insert({
-        id: requestBody.relatedSiteId,
-        created_by: user.id,
-        name: "Site name",
-        surface_area: 14000,
-        owner_structure_type: "company",
-        created_at: new Date(),
+        await sqlConnection("sites").insert({
+          id: requestBody.relatedSiteId,
+          created_by: user.id,
+          name: "Site name",
+          surface_area: 14000,
+          owner_structure_type: "company",
+          created_at: new Date(),
+        });
+        const response = await supertest(app.getHttpServer())
+          .post("/api/reconversion-projects")
+          .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
+          .send(requestBody);
+
+        assert.strictEqual(response.status, 201);
+
+        const reconversionProjectsInDb = await sqlConnection("reconversion_projects").select(
+          "id",
+          "name",
+          "project_phase",
+          "creation_mode",
+        );
+        assert.strictEqual(reconversionProjectsInDb.length, 1);
+        assert.deepStrictEqual(reconversionProjectsInDb[0], {
+          id: requestBody.id,
+          name: requestBody.name,
+          project_phase: requestBody.projectPhase,
+          creation_mode: "custom",
+        });
       });
-      const response = await supertest(app.getHttpServer())
-        .post("/api/reconversion-projects")
-        .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
-        .send(requestBody);
-
-      expect(response.status).toEqual(201);
-
-      const reconversionProjectsInDb = await sqlConnection("reconversion_projects").select(
-        "id",
-        "name",
-        "project_phase",
-        "creation_mode",
-      );
-      expect(reconversionProjectsInDb.length).toEqual(1);
-      expect(reconversionProjectsInDb[0]).toEqual({
-        id: requestBody.id,
-        name: requestBody.name,
-        project_phase: requestBody.projectPhase,
-        creation_mode: "custom",
-      });
-    });
+    }
   });
 
   describe("GET /create-from-template", () => {
@@ -176,7 +180,7 @@ describe("ReconversionProjects controller", () => {
           template: "PUBLIC_FACILITIES",
         });
 
-      expect(response.status).toEqual(401);
+      assert.strictEqual(response.status, 401);
     });
 
     it("can't generate a reconversion project without template", async () => {
@@ -193,17 +197,16 @@ describe("ReconversionProjects controller", () => {
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send(requestBody);
 
-      expect(response.status).toEqual(400);
-      expect(response.body).toHaveProperty("errors");
+      assert.strictEqual(response.status, 400);
+      assert.ok("errors" in (response.body as BadRequestResponseBody));
 
       const responseErrors = (response.body as BadRequestResponseBody).errors;
-      expect(responseErrors).toHaveLength(1);
-      expect(responseErrors[0]?.path).toContain("template");
+      assert.strictEqual(responseErrors.length, 1);
+      assert.ok(responseErrors[0]?.path.includes("template"));
     });
 
-    it.each(reconversionProjectTemplateSchema.options)(
-      "get a 201 response and reconversion project is returned with template %s",
-      async (template) => {
+    for (const template of reconversionProjectTemplateSchema.options) {
+      it(`get a 201 response and reconversion project is returned with template ${template}`, async () => {
         const createdBy = "612d16c7-b6e4-4e2c-88a8-0512cc51946c";
         const user = new UserBuilder().withId(createdBy).asLocalAuthority().build();
         const { accessToken } = await authenticateUser(app)(user);
@@ -214,12 +217,12 @@ describe("ReconversionProjects controller", () => {
           )
           .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
           .send();
-        expect(response.status).toEqual(200);
+        assert.strictEqual(response.status, 200);
         const result = response.body as ReconversionProjectFeaturesView;
-        expect(result.isExpress).toEqual(true);
-        expect(result.name).toBeDefined();
-      },
-    );
+        assert.strictEqual(result.isExpress, true);
+        assert.ok(result.name !== undefined);
+      });
+    }
   });
 
   describe("POST /create-from-template", () => {
@@ -262,7 +265,7 @@ describe("ReconversionProjects controller", () => {
           template: "PUBLIC_FACILITIES",
         });
 
-      expect(response.status).toEqual(401);
+      assert.strictEqual(response.status, 401);
     });
 
     it("can't create a reconversion project without template", async () => {
@@ -279,17 +282,16 @@ describe("ReconversionProjects controller", () => {
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send(requestBody);
 
-      expect(response.status).toEqual(400);
-      expect(response.body).toHaveProperty("errors");
+      assert.strictEqual(response.status, 400);
+      assert.ok("errors" in (response.body as BadRequestResponseBody));
 
       const responseErrors = (response.body as BadRequestResponseBody).errors;
-      expect(responseErrors).toHaveLength(1);
-      expect(responseErrors[0]?.path).toContain("template");
+      assert.strictEqual(responseErrors.length, 1);
+      assert.ok(responseErrors[0]?.path.includes("template"));
     });
 
-    it.each(reconversionProjectTemplateSchema.options)(
-      "get a 201 response and reconversion project is created with template %s",
-      async (template) => {
+    for (const template of reconversionProjectTemplateSchema.options) {
+      it(`get a 201 response and reconversion project is created with template ${template}`, async () => {
         const requestBody = {
           reconversionProjectId: "64789135-afad-46ea-97a2-f14ba460d485",
           createdBy: "612d16c7-b6e4-4e2c-88a8-0512cc51946c",
@@ -303,7 +305,7 @@ describe("ReconversionProjects controller", () => {
           .post("/api/reconversion-projects/create-from-template")
           .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
           .send(requestBody);
-        expect(response.status).toEqual(201);
+        assert.strictEqual(response.status, 201);
 
         const reconversionProjectsInDb = await sqlConnection("reconversion_projects").select(
           "id",
@@ -311,15 +313,15 @@ describe("ReconversionProjects controller", () => {
           "related_site_id",
           "creation_mode",
         );
-        expect(reconversionProjectsInDb.length).toEqual(1);
-        expect(reconversionProjectsInDb[0]).toEqual({
+        assert.strictEqual(reconversionProjectsInDb.length, 1);
+        assert.deepStrictEqual(reconversionProjectsInDb[0], {
           id: requestBody.reconversionProjectId,
           created_by: requestBody.createdBy,
           related_site_id: requestBody.siteId,
           creation_mode: "express",
         });
-      },
-    );
+      });
+    }
   });
 
   describe("GET /reconversion-projects/list-by-site", () => {
@@ -328,7 +330,7 @@ describe("ReconversionProjects controller", () => {
         .get("/api/reconversion-projects/list-by-site?userId=" + uuid())
         .send();
 
-      expect(response.status).toEqual(401);
+      assert.strictEqual(response.status, 401);
     });
 
     it("gets a 400 response when no userId provided", async () => {
@@ -340,14 +342,16 @@ describe("ReconversionProjects controller", () => {
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send();
 
-      expect(response.status).toEqual(400);
+      assert.strictEqual(response.status, 400);
       // oxlint-disable-next-line typescript/no-unsafe-member-access
       const validationErrors = response.body.errors as ZodError[];
-      expect(validationErrors).toHaveLength(1);
-      expect(validationErrors[0]).toMatchObject({
-        path: ["userId"],
-        message: "Invalid input: expected string, received undefined",
-      });
+      assert.strictEqual(validationErrors.length, 1);
+      assert.ok(validationErrors[0] !== undefined);
+      // toMatchObject: check only the expected fields
+      const firstError = validationErrors[0] as unknown as Record<string, unknown>;
+      assert.ok("path" in firstError);
+      assert.deepStrictEqual(firstError.path, ["userId"]);
+      assert.strictEqual(firstError.message, "Invalid input: expected string, received undefined");
     });
 
     it("gets a 200 with list of reconversion projects grouped by site for given user", async () => {
@@ -432,8 +436,8 @@ describe("ReconversionProjects controller", () => {
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send();
 
-      expect(response.status).toEqual(200);
-      expect(response.body).toEqual([
+      assert.strictEqual(response.status, 200);
+      assert.deepStrictEqual(response.body, [
         {
           siteName: siteInDb1.name,
           siteId: siteInDb1.id,
@@ -471,7 +475,7 @@ describe("ReconversionProjects controller", () => {
         .get(`/api/reconversion-projects/${uuid()}/features`)
         .send();
 
-      expect(response.status).toEqual(401);
+      assert.strictEqual(response.status, 401);
     });
 
     it("responds with a 404 when reconversion project does not exist", async () => {
@@ -483,7 +487,7 @@ describe("ReconversionProjects controller", () => {
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send();
 
-      expect(response.status).toEqual(404);
+      assert.strictEqual(response.status, 404);
     });
 
     it("returns urban project features with mixed buildings reuse and new construction", async () => {
@@ -531,8 +535,8 @@ describe("ReconversionProjects controller", () => {
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send();
 
-      expect(response.status).toEqual(200);
-      expect(response.body).toEqual({
+      assert.strictEqual(response.status, 200);
+      assert.deepStrictEqual(response.body, {
         id: reconversionProjectId,
         name: "Centrale photovoltaique",
         description: "Description of reconversion project",
@@ -648,26 +652,29 @@ describe("ReconversionProjects controller", () => {
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send();
 
-      expect(response.status).toEqual(200);
+      assert.strictEqual(response.status, 200);
       const body = response.body as ReconversionProjectFeaturesView;
-      expect(body.developmentPlan).toMatchObject({
-        type: "URBAN_PROJECT",
-        developerName: "developer company name",
-        installationCosts: [
-          { amount: 130000, purpose: "development_works" },
-          { amount: 59999, purpose: "technical_studies" },
-        ],
-        installationSchedule: {
-          startDate: "2028-07-01T00:00:00.000Z",
-          endDate: "2029-03-01T00:00:00.000Z",
-        },
-        buildingsFootprintToReuse: 1500,
-        existingBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 3000, OFFICES: 1000 },
-        developerWillBeBuildingsConstructor: false,
-        buildingsConstructionAndRehabilitationExpenses: [
-          { purpose: "buildings_rehabilitation_works", amount: 50000 },
-        ],
+      // toMatchObject → assert only the expected partial fields
+      assert.ok(body.developmentPlan !== undefined);
+      assert.strictEqual(body.developmentPlan.type, "URBAN_PROJECT");
+      assert.strictEqual(body.developmentPlan.developerName, "developer company name");
+      assert.deepStrictEqual(body.developmentPlan.installationCosts, [
+        { amount: 130000, purpose: "development_works" },
+        { amount: 59999, purpose: "technical_studies" },
+      ]);
+      assert.deepStrictEqual(body.developmentPlan.installationSchedule, {
+        startDate: "2028-07-01T00:00:00.000Z",
+        endDate: "2029-03-01T00:00:00.000Z",
       });
+      assert.strictEqual(body.developmentPlan.buildingsFootprintToReuse, 1500);
+      assert.deepStrictEqual(body.developmentPlan.existingBuildingsUsesFloorSurfaceArea, {
+        RESIDENTIAL: 3000,
+        OFFICES: 1000,
+      });
+      assert.strictEqual(body.developmentPlan.developerWillBeBuildingsConstructor, false);
+      assert.deepStrictEqual(body.developmentPlan.buildingsConstructionAndRehabilitationExpenses, [
+        { purpose: "buildings_rehabilitation_works", amount: 50000 },
+      ]);
     });
 
     it("returns urban project features with no buildings reuse data", async () => {
@@ -697,9 +704,9 @@ describe("ReconversionProjects controller", () => {
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send();
 
-      expect(response.status).toEqual(200);
+      assert.strictEqual(response.status, 200);
       const body = response.body as ReconversionProjectFeaturesView;
-      expect(body.developmentPlan).toEqual({
+      assert.deepStrictEqual(body.developmentPlan, {
         type: "URBAN_PROJECT",
         developerName: "developer company name",
         installationCosts: [
@@ -747,9 +754,9 @@ describe("ReconversionProjects controller", () => {
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send();
 
-      expect(response.status).toEqual(200);
+      assert.strictEqual(response.status, 200);
       const body = response.body as ReconversionProjectFeaturesView;
-      expect(body.developmentPlan).toEqual({
+      assert.deepStrictEqual(body.developmentPlan, {
         type: "PHOTOVOLTAIC_POWER_PLANT",
         developerName: "developer company name",
         electricalPowerKWc: 10000,
@@ -774,7 +781,7 @@ describe("ReconversionProjects controller", () => {
         .get(`/api/reconversion-projects/${uuid()}/impacts`)
         .send();
 
-      expect(response.status).toEqual(401);
+      assert.strictEqual(response.status, 401);
     });
 
     it("gets a 200 with list of reconversion project impacts", async () => {
@@ -833,12 +840,12 @@ describe("ReconversionProjects controller", () => {
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send();
 
-      expect(response.status).toEqual(200);
-      expect(response.body).toBeDefined();
+      assert.strictEqual(response.status, 200);
+      assert.ok(response.body !== undefined);
       const result = response.body as ComputedImpacts;
-      expect(result.impacts).toBeDefined();
-      expect(result.projectData).toBeDefined();
-      expect(result.siteData.cityStats).toEqual({
+      assert.ok(result.impacts !== undefined);
+      assert.ok(result.projectData !== undefined);
+      assert.deepStrictEqual(result.siteData.cityStats, {
         accuracy: "city",
         name: "Mont-de-Marsan",
         population: 31455,
@@ -854,7 +861,7 @@ describe("ReconversionProjects controller", () => {
         .post(`/api/reconversion-projects/${uuid()}/duplicate`)
         .send({ newProjectId: uuid() });
 
-      expect(response.status).toEqual(401);
+      assert.strictEqual(response.status, 401);
     });
 
     it("gets a 404 when project does not exist", async () => {
@@ -867,7 +874,7 @@ describe("ReconversionProjects controller", () => {
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send({ newProjectId: uuid() });
 
-      expect(response.status).toEqual(404);
+      assert.strictEqual(response.status, 404);
     });
 
     it("gets a 403 when user is not the creator of the project", async () => {
@@ -898,7 +905,7 @@ describe("ReconversionProjects controller", () => {
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send({ newProjectId: uuid() });
 
-      expect(response.status).toEqual(403);
+      assert.strictEqual(response.status, 403);
     });
 
     it("successfully duplicates a urban project", async () => {
@@ -961,51 +968,54 @@ describe("ReconversionProjects controller", () => {
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send({ newProjectId });
 
-      expect(response.status).toEqual(201);
+      assert.strictEqual(response.status, 201);
 
       const duplicatedProjects = await sqlConnection("reconversion_projects")
         .where({ id: newProjectId })
         .select("*");
 
-      expect(duplicatedProjects).toHaveLength(1);
-      expect(duplicatedProjects[0]).toEqual<SqlReconversionProject>({
-        id: newProjectId,
-        name: "Copie de " + sourceUrbanProject.name,
-        creation_mode: "duplicated",
-        status: "active",
-        involves_reinstatement: true,
-        // oxlint-disable-next-line typescript/no-unsafe-assignment
-        created_at: expect.any(Date),
-        updated_at: sourceUrbanProject.updatedAt ?? null,
-        description: sourceUrbanProject.description!,
-        created_by: authenticatedUser.id,
-        related_site_id: siteId,
-        project_phase: sourceUrbanProject.projectPhase,
-        // stakeholders
-        future_operator_name: sourceUrbanProject.futureOperator!.name,
-        future_operator_structure_type: sourceUrbanProject.futureOperator!.structureType,
-        future_site_owner_name: sourceUrbanProject.futureSiteOwner!.name,
-        future_site_owner_structure_type: sourceUrbanProject.futureSiteOwner!.structureType,
-        // reinstatement
-        reinstatement_contract_owner_name: sourceUrbanProject.reinstatementContractOwner!.name,
-        reinstatement_contract_owner_structure_type:
-          sourceUrbanProject.reinstatementContractOwner!.structureType,
-        reinstatement_schedule_end_date: sourceUrbanProject.reinstatementSchedule!.endDate,
-        reinstatement_schedule_start_date: sourceUrbanProject.reinstatementSchedule!.startDate,
-        friche_decontaminated_soil_surface_area: sourceUrbanProject.decontaminatedSoilSurface!,
-        operations_first_year: sourceUrbanProject.operationsFirstYear!,
-        // buildings and site resale
-        buildings_resale_expected_property_transfer_duties:
-          sourceUrbanProject.buildingsResaleExpectedPropertyTransferDuties!,
-        buildings_resale_expected_selling_price:
-          sourceUrbanProject.buildingsResaleExpectedSellingPrice!,
-        site_resale_expected_selling_price: sourceUrbanProject.siteResaleExpectedSellingPrice!,
-        site_resale_expected_property_transfer_duties:
-          sourceUrbanProject.siteResaleExpectedPropertyTransferDuties!,
-        site_purchase_selling_price: sourceUrbanProject.sitePurchaseSellingPrice!,
-        site_purchase_property_transfer_duties:
-          sourceUrbanProject.sitePurchasePropertyTransferDuties!,
-      });
+      assert.strictEqual(duplicatedProjects.length, 1);
+      assert.ok(duplicatedProjects[0]);
+      assertShapeEquals(
+        duplicatedProjects[0] as Record<string, unknown>,
+        {
+          id: newProjectId,
+          name: "Copie de " + sourceUrbanProject.name,
+          creation_mode: "duplicated",
+          status: "active",
+          updated_at: sourceUrbanProject.updatedAt ?? null,
+          description: sourceUrbanProject.description!,
+          created_by: authenticatedUser.id,
+          related_site_id: siteId,
+          project_phase: sourceUrbanProject.projectPhase,
+          // stakeholders
+          future_operator_name: sourceUrbanProject.futureOperator!.name,
+          future_operator_structure_type: sourceUrbanProject.futureOperator!.structureType,
+          future_site_owner_name: sourceUrbanProject.futureSiteOwner!.name,
+          future_site_owner_structure_type: sourceUrbanProject.futureSiteOwner!.structureType,
+          // reinstatement
+          involves_reinstatement: true,
+          reinstatement_contract_owner_name: sourceUrbanProject.reinstatementContractOwner!.name,
+          reinstatement_contract_owner_structure_type:
+            sourceUrbanProject.reinstatementContractOwner!.structureType,
+          reinstatement_schedule_end_date: sourceUrbanProject.reinstatementSchedule!.endDate,
+          reinstatement_schedule_start_date: sourceUrbanProject.reinstatementSchedule!.startDate,
+          friche_decontaminated_soil_surface_area: sourceUrbanProject.decontaminatedSoilSurface!,
+          operations_first_year: sourceUrbanProject.operationsFirstYear!,
+          // buildings and site resale
+          buildings_resale_expected_property_transfer_duties:
+            sourceUrbanProject.buildingsResaleExpectedPropertyTransferDuties!,
+          buildings_resale_expected_selling_price:
+            sourceUrbanProject.buildingsResaleExpectedSellingPrice!,
+          site_resale_expected_selling_price: sourceUrbanProject.siteResaleExpectedSellingPrice!,
+          site_resale_expected_property_transfer_duties:
+            sourceUrbanProject.siteResaleExpectedPropertyTransferDuties!,
+          site_purchase_selling_price: sourceUrbanProject.sitePurchaseSellingPrice!,
+          site_purchase_property_transfer_duties:
+            sourceUrbanProject.sitePurchasePropertyTransferDuties!,
+        } satisfies Omit<SqlReconversionProject, "created_at">,
+        { created_at: isDate },
+      );
 
       // development plan
       const duplicatedDevelopmentPlans = await sqlConnection(
@@ -1013,10 +1023,11 @@ describe("ReconversionProjects controller", () => {
       )
         .where({ reconversion_project_id: newProjectId })
         .select("*");
-      expect(duplicatedDevelopmentPlans).toEqual<SqlDevelopmentPlan[]>([
+      assert.strictEqual(duplicatedDevelopmentPlans.length, 1);
+      assert.ok(duplicatedDevelopmentPlans[0]);
+      assertShapeEquals(
+        duplicatedDevelopmentPlans[0] as Record<string, unknown>,
         {
-          // oxlint-disable-next-line typescript/no-unsafe-assignment
-          id: expect.any(String),
           type: "URBAN_PROJECT",
           developer_name: sourceUrbanProject.developmentPlan.developer.name,
           developer_structure_type: sourceUrbanProject.developmentPlan.developer.structureType,
@@ -1032,22 +1043,27 @@ describe("ReconversionProjects controller", () => {
           schedule_start_date: sourceUrbanProject.developmentPlan.installationSchedule!.startDate,
           developer_will_be_buildings_constructor:
             sourceUrbanProject.developerWillBeBuildingsConstructor ?? null,
-        },
-      ]);
+        } satisfies Omit<SqlDevelopmentPlan, "id">,
+        { id: (v) => typeof v === "string" },
+      );
       // development plan costs
       const duplicatedDevelopmentPlanCosts = await sqlConnection(
         "reconversion_project_development_plan_costs",
       )
         .where("development_plan_id", duplicatedDevelopmentPlans[0]?.id)
         .select("amount", "purpose");
-      expect(duplicatedDevelopmentPlanCosts).toEqual(sourceUrbanProject.developmentPlan.costs);
+      assert.deepStrictEqual(
+        duplicatedDevelopmentPlanCosts,
+        sourceUrbanProject.developmentPlan.costs,
+      );
       // buildings construction costs
       const duplicatedBuildingsConstructionCosts = await sqlConnection(
         "reconversion_project_buildings_construction_costs",
       )
         .where("development_plan_id", duplicatedDevelopmentPlans[0]?.id)
         .select("amount", "purpose");
-      expect(duplicatedBuildingsConstructionCosts).toEqual(
+      assert.deepStrictEqual(
+        duplicatedBuildingsConstructionCosts,
         sourceUrbanProject.buildingsConstructionAndRehabilitationExpenses,
       );
       // reinstatement costs
@@ -1056,17 +1072,17 @@ describe("ReconversionProjects controller", () => {
       )
         .where({ reconversion_project_id: newProjectId })
         .select("amount", "purpose");
-      expect(duplicatedReinstatementCosts).toEqual(sourceUrbanProject.reinstatementCosts);
+      assert.deepStrictEqual(duplicatedReinstatementCosts, sourceUrbanProject.reinstatementCosts);
       // yearly expenses
       const duplicatedYearlyExpenses = await sqlConnection("reconversion_project_yearly_expenses")
         .where({ reconversion_project_id: newProjectId })
         .select("amount", "purpose");
-      expect(duplicatedYearlyExpenses).toEqual([{ amount: 34000, purpose: "maintenance" }]);
+      assert.deepStrictEqual(duplicatedYearlyExpenses, [{ amount: 34000, purpose: "maintenance" }]);
       // yearly revenues
       const duplicatedYearlyRevenues = await sqlConnection("reconversion_project_yearly_revenues")
         .where({ reconversion_project_id: newProjectId })
         .select("amount", "source");
-      expect(duplicatedYearlyRevenues).toEqual([{ amount: 50000, source: "rent" }]);
+      assert.deepStrictEqual(duplicatedYearlyRevenues, [{ amount: 50000, source: "rent" }]);
       // soil distributions
       const duplicatedSoilDistributions = await sqlConnection(
         "reconversion_project_soils_distributions",
@@ -1077,7 +1093,7 @@ describe("ReconversionProjects controller", () => {
           "surface_area as surfaceArea",
           "space_category as spaceCategory",
         );
-      expect(duplicatedSoilDistributions).toEqual(sourceUrbanProject.soilsDistribution);
+      assert.deepStrictEqual(duplicatedSoilDistributions, sourceUrbanProject.soilsDistribution);
     });
 
     it("successfully duplicates a urban project with very little information", async () => {
@@ -1144,45 +1160,48 @@ describe("ReconversionProjects controller", () => {
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send({ newProjectId });
 
-      expect(response.status).toEqual(201);
+      assert.strictEqual(response.status, 201);
 
       const duplicatedProjects = await sqlConnection("reconversion_projects")
         .where({ id: newProjectId })
         .select("*");
 
-      expect(duplicatedProjects).toHaveLength(1);
-      expect(duplicatedProjects[0]).toEqual({
-        id: newProjectId,
-        name: "Copie de " + sourceUrbanProject.name,
-        creation_mode: "duplicated",
-        status: "active",
-        // oxlint-disable-next-line typescript/no-unsafe-assignment
-        created_at: expect.any(Date),
-        updated_at: sourceUrbanProject.updatedAt ?? null,
-        description: null,
-        created_by: authenticatedUser.id,
-        related_site_id: siteId,
-        project_phase: sourceUrbanProject.projectPhase,
-        // stakeholders
-        future_operator_name: null,
-        future_operator_structure_type: null,
-        future_site_owner_name: null,
-        future_site_owner_structure_type: null,
-        // reinstatement
-        reinstatement_contract_owner_name: null,
-        reinstatement_contract_owner_structure_type: null,
-        reinstatement_schedule_end_date: null,
-        reinstatement_schedule_start_date: null,
-        friche_decontaminated_soil_surface_area: 0,
-        operations_first_year: sourceUrbanProject.operationsFirstYear,
-        // buildings and site resale
-        buildings_resale_expected_property_transfer_duties: null,
-        buildings_resale_expected_selling_price: null,
-        site_resale_expected_selling_price: null,
-        site_resale_expected_property_transfer_duties: null,
-        site_purchase_selling_price: null,
-        site_purchase_property_transfer_duties: null,
-      });
+      assert.strictEqual(duplicatedProjects.length, 1);
+      assert.ok(duplicatedProjects[0]);
+      assertShapeEquals(
+        duplicatedProjects[0] as Record<string, unknown>,
+        {
+          id: newProjectId,
+          name: "Copie de " + sourceUrbanProject.name,
+          creation_mode: "duplicated",
+          status: "active",
+          updated_at: sourceUrbanProject.updatedAt ?? null,
+          description: null,
+          created_by: authenticatedUser.id,
+          related_site_id: siteId,
+          project_phase: sourceUrbanProject.projectPhase,
+          // stakeholders
+          future_operator_name: null,
+          future_operator_structure_type: null,
+          future_site_owner_name: null,
+          future_site_owner_structure_type: null,
+          // reinstatement
+          reinstatement_contract_owner_name: null,
+          reinstatement_contract_owner_structure_type: null,
+          reinstatement_schedule_end_date: null,
+          reinstatement_schedule_start_date: null,
+          friche_decontaminated_soil_surface_area: 0,
+          operations_first_year: sourceUrbanProject.operationsFirstYear,
+          // buildings and site resale
+          buildings_resale_expected_property_transfer_duties: null,
+          buildings_resale_expected_selling_price: null,
+          site_resale_expected_selling_price: null,
+          site_resale_expected_property_transfer_duties: null,
+          site_purchase_selling_price: null,
+          site_purchase_property_transfer_duties: null,
+        },
+        { created_at: isDate },
+      );
 
       // development plan
       const duplicatedDevelopmentPlans = await sqlConnection(
@@ -1190,10 +1209,11 @@ describe("ReconversionProjects controller", () => {
       )
         .where({ reconversion_project_id: newProjectId })
         .select("*");
-      expect(duplicatedDevelopmentPlans).toEqual<SqlDevelopmentPlan[]>([
+      assert.strictEqual(duplicatedDevelopmentPlans.length, 1);
+      assert.ok(duplicatedDevelopmentPlans[0]);
+      assertShapeEquals(
+        duplicatedDevelopmentPlans[0] as Record<string, unknown>,
         {
-          // oxlint-disable-next-line typescript/no-unsafe-assignment
-          id: expect.any(String),
           type: "URBAN_PROJECT",
           developer_name: sourceUrbanProject.developmentPlan.developer.name,
           developer_structure_type: sourceUrbanProject.developmentPlan.developer.structureType,
@@ -1204,39 +1224,43 @@ describe("ReconversionProjects controller", () => {
           schedule_start_date:
             sourceUrbanProject.developmentPlan.installationSchedule?.startDate ?? null,
           developer_will_be_buildings_constructor: null,
-        },
-      ]);
+        } satisfies Omit<SqlDevelopmentPlan, "id">,
+        { id: (v) => typeof v === "string" },
+      );
       // development plan costs
       const duplicatedDevelopmentPlanCosts = await sqlConnection(
         "reconversion_project_development_plan_costs",
       )
         .where("development_plan_id", duplicatedDevelopmentPlans[0]?.id)
         .select("amount", "purpose");
-      expect(duplicatedDevelopmentPlanCosts).toEqual(sourceUrbanProject.developmentPlan.costs);
+      assert.deepStrictEqual(
+        duplicatedDevelopmentPlanCosts,
+        sourceUrbanProject.developmentPlan.costs,
+      );
       // buildings construction costs (none for minimal project)
       const duplicatedBuildingsConstructionCosts = await sqlConnection(
         "reconversion_project_buildings_construction_costs",
       )
         .where("development_plan_id", duplicatedDevelopmentPlans[0]?.id)
         .select("amount", "purpose");
-      expect(duplicatedBuildingsConstructionCosts).toEqual([]);
+      assert.deepStrictEqual(duplicatedBuildingsConstructionCosts, []);
       // reinstatement costs
       const duplicatedReinstatementCosts = await sqlConnection(
         "reconversion_project_reinstatement_costs",
       )
         .where({ reconversion_project_id: newProjectId })
         .select("amount", "purpose");
-      expect(duplicatedReinstatementCosts).toEqual([]);
+      assert.deepStrictEqual(duplicatedReinstatementCosts, []);
       // yearly expenses
       const duplicatedYearlyExpenses = await sqlConnection("reconversion_project_yearly_expenses")
         .where({ reconversion_project_id: newProjectId })
         .select("amount", "purpose");
-      expect(duplicatedYearlyExpenses).toEqual([]);
+      assert.deepStrictEqual(duplicatedYearlyExpenses, []);
       // yearly revenues
       const duplicatedYearlyRevenues = await sqlConnection("reconversion_project_yearly_revenues")
         .where({ reconversion_project_id: newProjectId })
         .select("*");
-      expect(duplicatedYearlyRevenues).toEqual([]);
+      assert.deepStrictEqual(duplicatedYearlyRevenues, []);
       // soil distributions
       const duplicatedSoilDistributions = await sqlConnection(
         "reconversion_project_soils_distributions",
@@ -1247,7 +1271,7 @@ describe("ReconversionProjects controller", () => {
           "surface_area as surfaceArea",
           "space_category as spaceCategory",
         );
-      expect(duplicatedSoilDistributions).toEqual(sourceUrbanProject.soilsDistribution);
+      assert.deepStrictEqual(duplicatedSoilDistributions, sourceUrbanProject.soilsDistribution);
     });
   });
 
@@ -1260,7 +1284,7 @@ describe("ReconversionProjects controller", () => {
         costs: [{ amount: 130000, purpose: "installation_works" }],
         developer: {
           structureType: "company",
-          name: "Terre cuite d’occitanie",
+          name: "Terre cuite d'occitanie",
         },
         features: {
           surfaceArea: 1200,
@@ -1302,7 +1326,7 @@ describe("ReconversionProjects controller", () => {
           .put(`/api/reconversion-projects/${uuid()}`)
           .send(baseUpdateReconversionProjectProps);
 
-        expect(response.status).toEqual(401);
+        assert.strictEqual(response.status, 401);
       });
 
       it("gets a 404 when project does not exist", async () => {
@@ -1315,7 +1339,7 @@ describe("ReconversionProjects controller", () => {
           .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
           .send(baseUpdateReconversionProjectProps);
 
-        expect(response.status).toEqual(404);
+        assert.strictEqual(response.status, 404);
       });
 
       it("gets a 403 when user is not the creator of the project", async () => {
@@ -1346,7 +1370,7 @@ describe("ReconversionProjects controller", () => {
           .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
           .send(baseUpdateReconversionProjectProps);
 
-        expect(response.status).toEqual(403);
+        assert.strictEqual(response.status, 403);
       });
     });
 
@@ -1398,7 +1422,7 @@ describe("ReconversionProjects controller", () => {
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send({ ...sourceUrbanProject, name: "New project name" });
 
-      expect(response.status).toEqual(200);
+      assert.strictEqual(response.status, 200);
 
       const reconversionProjectsInDb = await sqlConnection("reconversion_projects").select(
         "id",
@@ -1406,8 +1430,8 @@ describe("ReconversionProjects controller", () => {
         "project_phase",
         "creation_mode",
       );
-      expect(reconversionProjectsInDb.length).toEqual(1);
-      expect(reconversionProjectsInDb[0]).toEqual({
+      assert.strictEqual(reconversionProjectsInDb.length, 1);
+      assert.deepStrictEqual(reconversionProjectsInDb[0], {
         id: sourceUrbanProject.id,
         name: "New project name",
         project_phase: sourceUrbanProject.projectPhase,
@@ -1468,16 +1492,26 @@ describe("ReconversionProjects controller", () => {
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send(updateProps);
 
-      expect(response.status).toEqual(200);
+      assert.strictEqual(response.status, 200);
 
       const reconversionProjectUpdated = await app
         .get(SqlReconversionProjectRepository)
         .getById(sourceUrbanProject.id);
 
-      expect(reconversionProjectUpdated).toBeDefined();
-      expect(
-        domainSaveReconversionProjectPropsSchema.parseAsync(reconversionProjectUpdated),
-      ).toEqual(httpSaveReconversionProjectPropsSchema.parseAsync(updateProps));
+      assert.ok(reconversionProjectUpdated !== undefined);
+      // Note: the original Vitest assertion was a latent no-op — it compared two un-awaited Promises,
+      // so it always passed. This port awaits both schemas before comparing, making the round-trip load-bearing.
+      // Use JSON round-trip to strip undefined-valued keys before comparing
+      // (Vitest toEqual ignores undefined values; deepStrictEqual does not)
+      const actualParsed = JSON.parse(
+        JSON.stringify(
+          await domainSaveReconversionProjectPropsSchema.parseAsync(reconversionProjectUpdated),
+        ),
+      ) as unknown;
+      const expectedParsed = JSON.parse(
+        JSON.stringify(await httpSaveReconversionProjectPropsSchema.parseAsync(updateProps)),
+      ) as unknown;
+      assert.deepStrictEqual(actualParsed, expectedParsed);
     });
   });
 
@@ -1487,7 +1521,7 @@ describe("ReconversionProjects controller", () => {
         .post(`/api/reconversion-projects/${uuid()}/archive`)
         .send();
 
-      expect(response.status).toEqual(401);
+      assert.strictEqual(response.status, 401);
     });
 
     it("gets a 404 when project does not exist", async () => {
@@ -1500,7 +1534,7 @@ describe("ReconversionProjects controller", () => {
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send();
 
-      expect(response.status).toEqual(404);
+      assert.strictEqual(response.status, 404);
     });
 
     it("gets a 403 when user is not the creator of the project", async () => {
@@ -1531,7 +1565,7 @@ describe("ReconversionProjects controller", () => {
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send();
 
-      expect(response.status).toEqual(403);
+      assert.strictEqual(response.status, 403);
     });
 
     it("successfully archive a project", async () => {
@@ -1583,14 +1617,14 @@ describe("ReconversionProjects controller", () => {
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send();
 
-      expect(response.status).toEqual(201);
+      assert.strictEqual(response.status, 201);
 
       const projects = await sqlConnection("reconversion_projects")
         .where({ id: urbanProject.id })
         .select("*");
 
-      expect(projects).toHaveLength(1);
-      expect(projects[0]?.status).toEqual("archived");
+      assert.strictEqual(projects.length, 1);
+      assert.strictEqual(projects[0]?.status, "archived");
     });
   });
 });

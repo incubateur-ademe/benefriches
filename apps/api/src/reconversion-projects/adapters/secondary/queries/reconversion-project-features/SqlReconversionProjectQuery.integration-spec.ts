@@ -1,4 +1,6 @@
 import knex, { Knex } from "knex";
+import assert from "node:assert/strict";
+import { after, before, beforeEach, describe, it } from "node:test";
 import { v4 as uuid } from "uuid";
 
 import { ReconversionProjectFeaturesView } from "src/reconversion-projects/core/model/reconversionProject";
@@ -10,11 +12,11 @@ describe("SqlReconversionProjectQuery integration", () => {
   let sqlConnection: Knex;
   let repository: SqlReconversionProjectQuery;
 
-  beforeAll(() => {
+  before(() => {
     sqlConnection = knex(knexConfig);
   });
 
-  afterAll(async () => {
+  after(async () => {
     await sqlConnection.destroy();
   });
 
@@ -185,7 +187,7 @@ describe("SqlReconversionProjectQuery integration", () => {
 
       const result = await repository.getFeaturesById(reconversionProjectId);
 
-      expect(result).toEqual<ReconversionProjectFeaturesView>({
+      assert.deepStrictEqual(result, {
         id: reconversionProjectId,
         name: "Urban project",
         description: "A urban project description",
@@ -254,7 +256,7 @@ describe("SqlReconversionProjectQuery integration", () => {
         siteResaleSellingPrice: 125000,
         buildingsResaleSellingPrice: 140000,
         decontaminatedSoilSurface: 1000,
-      });
+      } satisfies ReconversionProjectFeaturesView);
     });
 
     it("gets features for photovoltaic power station", async () => {
@@ -365,7 +367,7 @@ describe("SqlReconversionProjectQuery integration", () => {
 
       const result = await repository.getFeaturesById(reconversionProjectId);
 
-      expect(result).toEqual<ReconversionProjectFeaturesView>({
+      assert.deepStrictEqual(result, {
         id: reconversionProjectId,
         name: "Photovoltaic power station",
         description: "A description of a photovoltaic power station",
@@ -373,9 +375,10 @@ describe("SqlReconversionProjectQuery integration", () => {
         soilsDistribution: [
           {
             soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+            spaceCategory: undefined,
             surfaceArea: 18000,
           },
-          { soilType: "MINERAL_SOIL", surfaceArea: 2000 },
+          { soilType: "MINERAL_SOIL", spaceCategory: undefined, surfaceArea: 2000 },
         ],
         developmentPlan: {
           type: "PHOTOVOLTAIC_POWER_PLANT",
@@ -402,7 +405,11 @@ describe("SqlReconversionProjectQuery integration", () => {
         yearlyProjectedExpenses: [{ amount: 10000, purpose: "maintenance" }],
         yearlyProjectedRevenues: [{ amount: 12000, source: "operations" }],
         firstYearOfOperation: 2025,
-      });
+        sitePurchaseTotalAmount: undefined,
+        siteResaleSellingPrice: undefined,
+        buildingsResaleSellingPrice: undefined,
+        decontaminatedSoilSurface: undefined,
+      } satisfies ReconversionProjectFeaturesView);
     });
 
     it("gets features for photovoltaic power station with minimal values", async () => {
@@ -464,16 +471,18 @@ describe("SqlReconversionProjectQuery integration", () => {
 
       const result = await repository.getFeaturesById(reconversionProjectId);
 
-      expect(result).toEqual<ReconversionProjectFeaturesView>({
+      assert.deepStrictEqual(result, {
         id: reconversionProjectId,
         name: "Photovoltaic power station",
+        description: undefined,
         isExpress: false,
         soilsDistribution: [
           {
             soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+            spaceCategory: undefined,
             surfaceArea: 18000,
           },
-          { soilType: "MINERAL_SOIL", surfaceArea: 2000 },
+          { soilType: "MINERAL_SOIL", spaceCategory: undefined, surfaceArea: 2000 },
         ],
         developmentPlan: {
           type: "PHOTOVOLTAIC_POWER_PLANT",
@@ -490,10 +499,18 @@ describe("SqlReconversionProjectQuery integration", () => {
         },
         futureOperator: "Solar Power Co.",
         futureOwner: "Mairie de Blajan",
+        reinstatementContractOwner: undefined,
+        reinstatementSchedule: undefined,
+        reinstatementCosts: undefined,
+        sitePurchaseTotalAmount: undefined,
+        financialAssistanceRevenues: undefined,
+        siteResaleSellingPrice: undefined,
+        buildingsResaleSellingPrice: undefined,
+        decontaminatedSoilSurface: undefined,
         yearlyProjectedExpenses: [],
         yearlyProjectedRevenues: [],
         firstYearOfOperation: 2025,
-      });
+      } satisfies ReconversionProjectFeaturesView);
     });
   });
 });

@@ -1,4 +1,6 @@
 import knex, { Knex } from "knex";
+import assert from "node:assert/strict";
+import { after, before, beforeEach, describe, it } from "node:test";
 
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
 
@@ -8,11 +10,11 @@ describe("SqlCityStatsQuery", () => {
   let sqlConnection: Knex;
   let repository: SqlCityStatsQuery;
 
-  beforeAll(() => {
+  before(() => {
     sqlConnection = knex(knexConfig);
   });
 
-  afterAll(async () => {
+  after(async () => {
     await sqlConnection.destroy();
   });
 
@@ -21,43 +23,43 @@ describe("SqlCityStatsQuery", () => {
   });
 
   describe("getCityStats propertyValueMedianPricePerSquareMeters", () => {
-    test("it should return default value if city is not found", async () => {
+    it("it should return default value if city is not found", async () => {
       const result = await repository.getCityStats("wrong");
 
-      expect(result.propertyValueMedianPricePerSquareMeters).toEqual(2185);
+      assert.strictEqual(result.propertyValueMedianPricePerSquareMeters, 2185);
     });
 
-    test("it should return the right value for propertyValueMedianPricePerSquareMeters", async () => {
+    it("it should return the right value for propertyValueMedianPricePerSquareMeters", async () => {
       const result = await repository.getCityStats("54321");
 
-      expect(result.propertyValueMedianPricePerSquareMeters).toEqual(2339);
+      assert.strictEqual(result.propertyValueMedianPricePerSquareMeters, 2339);
     });
 
-    test("it should return default value for city of less than 150 inhabitants for city in department 57", async () => {
+    it("it should return default value for city of less than 150 inhabitants for city in department 57", async () => {
       const result = await repository.getCityStats("57691");
 
-      expect(result.propertyValueMedianPricePerSquareMeters).toEqual(1513);
+      assert.strictEqual(result.propertyValueMedianPricePerSquareMeters, 1513);
     });
 
-    test("it should return default value for city of less than 1500 inhabitants for city in department 57", async () => {
+    it("it should return default value for city of less than 1500 inhabitants for city in department 57", async () => {
       const result = await repository.getCityStats("57680");
-      expect(result.propertyValueMedianPricePerSquareMeters).toEqual(1826);
+      assert.strictEqual(result.propertyValueMedianPricePerSquareMeters, 1826);
     });
   });
 
   describe("getCityStats squareMetersSurfaceArea & population", () => {
-    test("it should return default value if error occured", async () => {
+    it("it should return default value if error occured", async () => {
       const result = await repository.getCityStats("inconnu");
 
-      expect(result.surfaceAreaSquareMeters).toEqual(14900000);
-      expect(result.population).toEqual(1800);
+      assert.strictEqual(result.surfaceAreaSquareMeters, 14900000);
+      assert.strictEqual(result.population, 1800);
     });
 
-    test("it should return population and surface area in square meters", async () => {
+    it("it should return population and surface area in square meters", async () => {
       const result = await repository.getCityStats("54321");
 
-      expect(result.surfaceAreaSquareMeters).toEqual(3152100);
-      expect(result.population).toEqual(2373);
+      assert.strictEqual(result.surfaceAreaSquareMeters, 3152100);
+      assert.strictEqual(result.population, 2373);
     });
   });
 });

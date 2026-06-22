@@ -88,9 +88,9 @@ pnpm --filter api test:integration  # After SQL / controller changes
 
 Run after each logical change, not batched at the end.
 
-**Object assertions**: Prefer a single `expect().toEqual({...})` validating the complete shape over multiple targeted assertions — forces thinking about full data shape, catches missing properties. Exceptions: partial validation, non-deterministic values (`expect.any(String)`).
+**Object assertions**: Prefer a single exhaustive assertion validating the complete shape — `assert.deepStrictEqual(actual, {...})`, or `assertShapeEquals(row, {...}, { created_at: isDate })` for rows/bodies with non-deterministic fields (the native equivalent of `toEqual({ ..., created_at: expect.any(Date) })`) — over multiple targeted assertions. Forces thinking about full data shape, catches missing properties. Never use `assert.partialDeepStrictEqual` for shape checks (it silently allows extra keys). Exceptions: partial validation, non-deterministic values.
 
-**Test isolation**: Integration tests auto-clear all 21 SQL tables via a global hook in [`test/integration-tests-global-hooks.ts`](./test/integration-tests-global-hooks.ts). Don't add manual `afterEach()` cleanup.
+**Test isolation**: Integration tests auto-clear all 21 SQL tables via a global hook in [`test/integration-per-test-hooks.ts`](./test/integration-per-test-hooks.ts). Don't add manual `afterEach()` cleanup.
 
 ---
 
@@ -101,7 +101,7 @@ Run after each logical change, not batched at the end.
 - **Validation**: Zod + nestjs-zod (runtime validation)
 - **Auth**: JWT + OpenID Connect
 - **Events**: @nestjs/event-emitter
-- **Testing**: Vitest + testcontainers (isolated PostgreSQL per test run)
+- **Testing**: `node:test` + `node:assert/strict` for integration tests (`*.integration-spec.ts`); Vitest for unit tests (`*.spec.ts`); testcontainers (isolated PostgreSQL per integration run)
 
 Full monorepo tech stack: [root CLAUDE.md](../../CLAUDE.md).
 

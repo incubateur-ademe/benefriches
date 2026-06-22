@@ -1,4 +1,6 @@
 import { NestExpressApplication } from "@nestjs/platform-express";
+import assert from "node:assert/strict";
+import { afterEach, beforeEach, describe, it } from "node:test";
 import { createTestApp } from "test/testApp";
 
 import { createLoginSucceededEvent } from "src/auth/core/events/loginSucceeded.event";
@@ -46,9 +48,9 @@ describe("LoginSucceededHandler integration test", () => {
 
     await eventPublisher.publish(event);
 
-    expect(fakeCrm._loginUpdates).toHaveLength(1);
+    assert.strictEqual(fakeCrm._loginUpdates.length, 1);
     const loginUpdate = fakeCrm._loginUpdates[0];
-    expect(loginUpdate).toEqual({
+    assert.deepStrictEqual(loginUpdate, {
       email: "john.doe@example.com",
       loginDate: fakeNow,
     });
@@ -63,9 +65,9 @@ describe("LoginSucceededHandler integration test", () => {
 
     await eventPublisher.publish(event);
 
-    expect(fakeCrm._loginUpdates).toHaveLength(1);
+    assert.strictEqual(fakeCrm._loginUpdates.length, 1);
     const loginUpdate = fakeCrm._loginUpdates[0];
-    expect(loginUpdate).toEqual({
+    assert.deepStrictEqual(loginUpdate, {
       email: "jane.smith@example.com",
       loginDate: fakeNow,
     });

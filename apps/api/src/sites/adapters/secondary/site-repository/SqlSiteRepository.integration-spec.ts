@@ -1,4 +1,6 @@
 import knex, { Knex } from "knex";
+import assert from "node:assert/strict";
+import { after, before, beforeEach, describe, it } from "node:test";
 import { v4 as uuid } from "uuid";
 
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
@@ -54,11 +56,11 @@ describe("SqlSiteRepository integration", () => {
     };
   }
 
-  beforeAll(() => {
+  before(() => {
     sqlConnection = knex(knexConfig);
   });
 
-  afterAll(async () => {
+  after(async () => {
     await sqlConnection.destroy();
   });
 
@@ -78,13 +80,13 @@ describe("SqlSiteRepository integration", () => {
         created_at: now,
       });
       const result = await siteRepository.existsWithId(siteId);
-      expect(result).toEqual(true);
+      assert.strictEqual(result, true);
     });
 
     it("Tells when site does not exist with id", async () => {
       const siteId = uuid();
       const result = await siteRepository.existsWithId(siteId);
-      expect(result).toEqual(false);
+      assert.strictEqual(result, false);
     });
   });
 
@@ -108,7 +110,7 @@ describe("SqlSiteRepository integration", () => {
       await siteRepository.save(site);
 
       const sitesResult = await sqlConnection("sites").select("*");
-      expect(sitesResult).toEqual([
+      assert.deepStrictEqual(sitesResult, [
         {
           id: site.id,
           nature: "AGRICULTURAL_OPERATION",
@@ -157,7 +159,7 @@ describe("SqlSiteRepository integration", () => {
       await siteRepository.save(site);
 
       const sitesResult = await sqlConnection("sites").select("*");
-      expect(sitesResult).toEqual<SqlSite[]>([
+      assert.deepStrictEqual(sitesResult, [
         {
           id: site.id,
           created_by: site.createdBy,
@@ -183,7 +185,7 @@ describe("SqlSiteRepository integration", () => {
           status: "active",
           updated_at: null,
         },
-      ]);
+      ] satisfies SqlSite[]);
     });
 
     it("Saves given friche in sites table", async () => {
@@ -209,7 +211,7 @@ describe("SqlSiteRepository integration", () => {
       await siteRepository.save(site);
 
       const sitesResult = await sqlConnection("sites").select("*");
-      expect(sitesResult).toEqual<SqlSite[]>([
+      assert.deepStrictEqual(sitesResult, [
         {
           id: site.id,
           created_by: site.createdBy,
@@ -235,7 +237,7 @@ describe("SqlSiteRepository integration", () => {
           status: "active",
           updated_at: null,
         },
-      ]);
+      ] satisfies SqlSite[]);
     });
 
     it("Saves given agricultural operation with minimal data in sites, soils distribution, address tables", async () => {
@@ -252,10 +254,10 @@ describe("SqlSiteRepository integration", () => {
       await siteRepository.save(site);
 
       const sitesResult = await sqlConnection("sites").select("id");
-      expect(sitesResult).toEqual([{ id: site.id }]);
+      assert.deepStrictEqual(sitesResult, [{ id: site.id }]);
 
       const addressResult = await sqlConnection("addresses").select("value", "site_id");
-      expect(addressResult).toEqual([{ value: site.address.value, site_id: site.id }]);
+      assert.deepStrictEqual(addressResult, [{ value: site.address.value, site_id: site.id }]);
 
       const soilsDistributionResult = await sqlConnection("site_soils_distributions").select(
         "surface_area",
@@ -263,7 +265,7 @@ describe("SqlSiteRepository integration", () => {
         "site_id",
       );
 
-      expect(soilsDistributionResult).toEqual([
+      assert.deepStrictEqual(soilsDistributionResult, [
         { soil_type: "BUILDINGS", surface_area: 3000.0, site_id: site.id },
         { soil_type: "ARTIFICIAL_TREE_FILLED", surface_area: 5000.0, site_id: site.id },
         { soil_type: "FOREST_MIXED", surface_area: 60000.0, site_id: site.id },
@@ -284,13 +286,13 @@ describe("SqlSiteRepository integration", () => {
       await siteRepository.save(site);
 
       const sitesResult = await sqlConnection("sites").select("id");
-      expect(sitesResult).toEqual([{ id: site.id }]);
+      assert.deepStrictEqual(sitesResult, [{ id: site.id }]);
 
       const expensesResult = await sqlConnection("site_expenses").select("amount", "purpose");
-      expect(expensesResult).toEqual([{ amount: 45000.0, purpose: "security" }]);
+      assert.deepStrictEqual(expensesResult, [{ amount: 45000.0, purpose: "security" }]);
 
       const incomesResult = await sqlConnection("site_incomes").select("amount", "source");
-      expect(incomesResult).toEqual([
+      assert.deepStrictEqual(incomesResult, [
         { amount: 20000.0, source: "operations" },
         { amount: 32740.3, source: "other" },
       ]);
@@ -331,7 +333,7 @@ describe("SqlSiteRepository integration", () => {
       await siteRepository.save(site);
 
       const sitesResult = await sqlConnection("sites").select("*");
-      expect(sitesResult).toEqual<SqlSite[]>([
+      assert.deepStrictEqual(sitesResult, [
         {
           id: site.id,
           created_by: site.createdBy,
@@ -357,10 +359,10 @@ describe("SqlSiteRepository integration", () => {
           status: "active",
           updated_at: null,
         },
-      ]);
+      ] satisfies SqlSite[]);
 
       const addressResult = await sqlConnection("addresses").select("value", "site_id");
-      expect(addressResult).toEqual([{ value: site.address.value, site_id: site.id }]);
+      assert.deepStrictEqual(addressResult, [{ value: site.address.value, site_id: site.id }]);
 
       const urbanZoneResult = await sqlConnection("site_urban_zone_features")
         .select(
@@ -377,7 +379,7 @@ describe("SqlSiteRepository integration", () => {
         )
         .where({ site_id: site.id });
 
-      expect(urbanZoneResult).toEqual([
+      assert.deepStrictEqual(urbanZoneResult, [
         {
           site_id: site.id,
           urban_zone_type: "ECONOMIC_ACTIVITY_ZONE",
@@ -414,7 +416,7 @@ describe("SqlSiteRepository integration", () => {
       const soilsDistributionResult = await sqlConnection("site_soils_distributions")
         .select("site_id")
         .where({ site_id: site.id });
-      expect(soilsDistributionResult).toEqual([]);
+      assert.deepStrictEqual(soilsDistributionResult, []);
 
       const expensesResult = await sqlConnection("site_expenses").select(
         "amount",
@@ -422,7 +424,7 @@ describe("SqlSiteRepository integration", () => {
         "bearer",
         "site_id",
       );
-      expect(expensesResult).toEqual([
+      assert.deepStrictEqual(expensesResult, [
         {
           amount: 45000.0,
           purpose: "maintenance",
@@ -436,7 +438,7 @@ describe("SqlSiteRepository integration", () => {
         "source",
         "site_id",
       );
-      expect(incomesResult).toEqual([
+      assert.deepStrictEqual(incomesResult, [
         {
           amount: 12000.0,
           source: "other",
@@ -467,11 +469,10 @@ describe("SqlSiteRepository integration", () => {
 
       const result = await sqlConnection("sites").select("*").where({ id: site.id }).first();
 
-      expect(result).toMatchObject({
-        id: site.id,
-        status: "archived",
-        updated_at: updatedAt,
-      });
+      assert.ok(result !== undefined);
+      assert.strictEqual(result.id, site.id);
+      assert.strictEqual(result.status, "archived");
+      assert.deepStrictEqual(result.updated_at, updatedAt);
     });
   });
 });

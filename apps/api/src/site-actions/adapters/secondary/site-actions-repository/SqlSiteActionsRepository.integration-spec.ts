@@ -1,5 +1,7 @@
 // oxlint-disable no-non-null-assertion
 import knex, { Knex } from "knex";
+import assert from "node:assert/strict";
+import { after, before, beforeEach, describe, it } from "node:test";
 import { v4 as uuid } from "uuid";
 
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
@@ -12,11 +14,11 @@ describe("SqlSiteActionsRepository integration", () => {
   let repository: SqlSiteActionsRepository;
   const now = new Date();
 
-  beforeAll(() => {
+  before(() => {
     sqlConnection = knex(knexConfig);
   });
 
-  afterAll(async () => {
+  after(async () => {
     await sqlConnection.destroy();
   });
 
@@ -64,8 +66,8 @@ describe("SqlSiteActionsRepository integration", () => {
       await repository.save(actions);
 
       const savedActions = await sqlConnection("site_actions").select("*");
-      expect(savedActions).toHaveLength(2);
-      expect(savedActions).toEqual([
+      assert.strictEqual(savedActions.length, 2);
+      assert.deepStrictEqual(savedActions, [
         {
           id: actions[0]!.id,
           site_id: siteId,
@@ -101,7 +103,7 @@ describe("SqlSiteActionsRepository integration", () => {
       await repository.save([action]);
 
       const savedAction = await sqlConnection("site_actions").select("*").first();
-      expect(savedAction).toEqual({
+      assert.deepStrictEqual(savedAction, {
         id: action.id,
         site_id: siteId,
         action_type: "EVALUATE_COMPATIBILITY",
@@ -135,7 +137,7 @@ describe("SqlSiteActionsRepository integration", () => {
       });
 
       const updatedAction = (await sqlConnection("site_actions").select("*").first())!;
-      expect(updatedAction).toEqual({
+      assert.deepStrictEqual(updatedAction, {
         id: actionId,
         site_id: siteId,
         action_type: "EVALUATE_COMPATIBILITY",
@@ -165,8 +167,8 @@ describe("SqlSiteActionsRepository integration", () => {
       });
 
       const updatedAction = (await sqlConnection("site_actions").select("*").first())!;
-      expect(updatedAction.status).toEqual("skipped");
-      expect(updatedAction.completed_at).toBeNull();
+      assert.strictEqual(updatedAction.status, "skipped");
+      assert.strictEqual(updatedAction.completed_at, null);
     });
   });
 });

@@ -1,5 +1,8 @@
 import knex, { Knex } from "knex";
+import assert from "node:assert/strict";
+import { after, before, beforeEach, describe, it } from "node:test";
 import { BuildingsConstructionExpense } from "shared";
+import { assertShapeEquals } from "test/assertShapeEquals";
 import { v4 as uuid } from "uuid";
 
 import {
@@ -22,11 +25,11 @@ describe("SqlReconversionProjectRepository integration", () => {
   const now = new Date();
   const updatedAt = new Date(now.getTime() + 1000);
 
-  beforeAll(() => {
+  before(() => {
     sqlConnection = knex(knexConfig);
   });
 
-  afterAll(async () => {
+  after(async () => {
     await sqlConnection.destroy();
   });
 
@@ -58,13 +61,13 @@ describe("SqlReconversionProjectRepository integration", () => {
         created_at: now,
       });
       const result = await reconversionProjectRepository.existsWithId(reconversionProjectId);
-      expect(result).toEqual(true);
+      assert.strictEqual(result, true);
     });
 
     it("Tells when reconversion project does not exist with id", async () => {
       const reconversionProjectId = uuid();
       const result = await reconversionProjectRepository.existsWithId(reconversionProjectId);
-      expect(result).toEqual(false);
+      assert.strictEqual(result, false);
     });
   });
 
@@ -80,7 +83,7 @@ describe("SqlReconversionProjectRepository integration", () => {
         await reconversionProjectRepository.save(reconversionProject);
 
         const result = await sqlConnection("reconversion_projects").select("*");
-        expect(result).toEqual([
+        assert.deepStrictEqual(result, [
           {
             id: reconversionProject.id,
             created_by: reconversionProject.createdBy,
@@ -123,7 +126,7 @@ describe("SqlReconversionProjectRepository integration", () => {
           await reconversionProjectRepository.save(reconversionProject);
 
           const result = await sqlConnection("reconversion_projects").select("*");
-          expect(result).toEqual([
+          assert.deepStrictEqual(result, [
             {
               id: reconversionProject.id,
               created_by: reconversionProject.createdBy,
@@ -177,7 +180,7 @@ describe("SqlReconversionProjectRepository integration", () => {
             "reconversion_project_soils_distributions",
           ).select("surface_area", "soil_type", "reconversion_project_id");
 
-          expect(soilsDistributionResult).toEqual([
+          assert.deepStrictEqual(soilsDistributionResult, [
             {
               soil_type: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
               surface_area: 1200.0,
@@ -216,7 +219,7 @@ describe("SqlReconversionProjectRepository integration", () => {
             "reconversion_project_soils_distributions",
           ).select("surface_area", "soil_type", "reconversion_project_id", "space_category");
 
-          expect(soilsDistributionResult).toEqual([
+          assert.deepStrictEqual(soilsDistributionResult, [
             {
               soil_type: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
               surface_area: 5000.0,
@@ -231,6 +234,7 @@ describe("SqlReconversionProjectRepository integration", () => {
             },
           ]);
         });
+
         it("Saves right data in table reconversion_projects_development_plans and reconversion_project_development_plan_costs", async () => {
           const siteId = await insertSiteInDb();
           const reconversionProject = buildReconversionProject({
@@ -256,14 +260,14 @@ describe("SqlReconversionProjectRepository integration", () => {
               "dp.schedule_end_date",
               "dp.reconversion_project_id",
               sqlConnection.raw(`
-              CASE 
+              CASE
                 WHEN count(cost.id) = 0 THEN '[]'::json
-                ELSE json_agg(json_build_object('amount', cost.amount, 'purpose', cost.purpose)) 
+                ELSE json_agg(json_build_object('amount', cost.amount, 'purpose', cost.purpose))
               END as "costs"
             `),
             )
             .groupBy("dp.id");
-          expect(result).toEqual([
+          assert.deepStrictEqual(result, [
             {
               type: reconversionProject.developmentPlan.type,
               features: reconversionProject.developmentPlan.features,
@@ -294,7 +298,7 @@ describe("SqlReconversionProjectRepository integration", () => {
           const yearlyExpensesResult = await sqlConnection(
             "reconversion_project_yearly_expenses",
           ).select("amount", "purpose", "reconversion_project_id");
-          expect(yearlyExpensesResult).toEqual([
+          assert.deepStrictEqual(yearlyExpensesResult, [
             {
               purpose: "rent",
               amount: 12000.0,
@@ -302,6 +306,7 @@ describe("SqlReconversionProjectRepository integration", () => {
             },
           ]);
         });
+
         it("Saves right data in table reconversion_project_yearly_revenues", async () => {
           const siteId = await insertSiteInDb();
           const reconversionProject = buildReconversionProject({
@@ -314,7 +319,7 @@ describe("SqlReconversionProjectRepository integration", () => {
           const yearlyRevenuesResult = await sqlConnection(
             "reconversion_project_yearly_revenues",
           ).select("amount", "source", "reconversion_project_id");
-          expect(yearlyRevenuesResult).toEqual([
+          assert.deepStrictEqual(yearlyRevenuesResult, [
             {
               source: "operations",
               amount: 13000.0,
@@ -322,6 +327,7 @@ describe("SqlReconversionProjectRepository integration", () => {
             },
           ]);
         });
+
         it("Saves right data in table reconversion_project_reinstatement_costs", async () => {
           const siteId = await insertSiteInDb();
           const reinstatementCosts: ReconversionProjectSaveDto["reinstatementCosts"] = [
@@ -339,7 +345,8 @@ describe("SqlReconversionProjectRepository integration", () => {
           const reinstatementCostsResult = await sqlConnection(
             "reconversion_project_reinstatement_costs",
           ).select("amount", "purpose", "reconversion_project_id");
-          expect(reinstatementCostsResult).toEqual(
+          assert.deepStrictEqual(
+            reinstatementCostsResult,
             reinstatementCosts.map(({ amount, purpose }) => ({
               amount,
               purpose,
@@ -366,7 +373,8 @@ describe("SqlReconversionProjectRepository integration", () => {
           const financialAssistanceRevenuesResult = await sqlConnection(
             "reconversion_project_financial_assistance_revenues",
           ).select("amount", "source", "reconversion_project_id");
-          expect(financialAssistanceRevenuesResult).toEqual(
+          assert.deepStrictEqual(
+            financialAssistanceRevenuesResult,
             financialAssistanceRevenues.map(({ amount, source }) => ({
               amount,
               source,
@@ -376,6 +384,7 @@ describe("SqlReconversionProjectRepository integration", () => {
         });
       });
     });
+
     describe("Urban project development plan", () => {
       let reconversionProject: ReconversionProjectSaveDto;
 
@@ -460,8 +469,8 @@ describe("SqlReconversionProjectRepository integration", () => {
         await reconversionProjectRepository.save(reconversionProject);
 
         const result = await sqlConnection("reconversion_projects").select("*");
-        expect(result).toHaveLength(1);
-        expect(result).toEqual([
+        assert.strictEqual(result.length, 1);
+        assert.deepStrictEqual(result, [
           {
             id: reconversionProject.id,
             created_by: reconversionProject.createdBy,
@@ -496,15 +505,18 @@ describe("SqlReconversionProjectRepository integration", () => {
           },
         ]);
       });
+
       it("Saves in table reconversion_project_development_plans", async () => {
         await reconversionProjectRepository.save(reconversionProject);
 
         const result = await sqlConnection("reconversion_project_development_plans").select("*");
-        expect(result).toHaveLength(1);
-        expect(result).toEqual([
+        assert.strictEqual(result.length, 1);
+        const [dpRow] = result;
+        assert.ok(dpRow);
+        // oxlint-disable-next-line typescript/no-unsafe-assignment
+        assertShapeEquals(
+          dpRow,
           {
-            // oxlint-disable-next-line typescript/no-unsafe-assignment
-            id: expect.any(String),
             type: reconversionProject.developmentPlan.type,
             features: reconversionProject.developmentPlan.features,
             developer_name: reconversionProject.developmentPlan.developer.name,
@@ -515,7 +527,8 @@ describe("SqlReconversionProjectRepository integration", () => {
             schedule_end_date: reconversionProject.developmentPlan.installationSchedule?.endDate,
             developer_will_be_buildings_constructor: null,
           },
-        ]);
+          { id: (v) => typeof v === "string" },
+        );
       });
     });
 
@@ -541,18 +554,18 @@ describe("SqlReconversionProjectRepository integration", () => {
 
         const result = await reconversionProjectRepository.getById(reconversionProject.id);
 
-        expect(result).toBeDefined();
-        expect(result?.buildingsFootprintToReuse).toEqual(800);
-        expect(result?.existingBuildingsUsesFloorSurfaceArea).toEqual({
+        assert.ok(result !== undefined);
+        assert.deepStrictEqual(result?.buildingsFootprintToReuse, 800);
+        assert.deepStrictEqual(result?.existingBuildingsUsesFloorSurfaceArea, {
           RESIDENTIAL: 500,
           LOCAL_STORE: 300,
         });
-        expect(result?.newBuildingsUsesFloorSurfaceArea).toEqual({
+        assert.deepStrictEqual(result?.newBuildingsUsesFloorSurfaceArea, {
           OFFICES: 400,
           SPORTS_FACILITIES: 200,
         });
-        expect(result?.developerWillBeBuildingsConstructor).toEqual(true);
-        expect(result?.buildingsConstructionAndRehabilitationExpenses).toEqual([
+        assert.strictEqual(result?.developerWillBeBuildingsConstructor, true);
+        assert.deepStrictEqual(result?.buildingsConstructionAndRehabilitationExpenses, [
           { purpose: "buildings_construction_works", amount: 150000 },
           { purpose: "buildings_rehabilitation_works", amount: 80000 },
         ]);
@@ -574,7 +587,7 @@ describe("SqlReconversionProjectRepository integration", () => {
           .select("developer_will_be_buildings_constructor")
           .where({ reconversion_project_id: reconversionProject.id })
           .first();
-        expect(result?.developer_will_be_buildings_constructor).toEqual(false);
+        assert.strictEqual(result?.developer_will_be_buildings_constructor, false);
       });
 
       it("Saves buildings reuse fields in features JSON column", async () => {
@@ -596,9 +609,11 @@ describe("SqlReconversionProjectRepository integration", () => {
           .where({ reconversion_project_id: reconversionProject.id })
           .first();
         const features = result?.features as Record<string, unknown>;
-        expect(features.buildingsFootprintToReuse).toEqual(800);
-        expect(features.existingBuildingsUsesFloorSurfaceArea).toEqual({ RESIDENTIAL: 500 });
-        expect(features.newBuildingsUsesFloorSurfaceArea).toEqual({ OFFICES: 400 });
+        assert.deepStrictEqual(features.buildingsFootprintToReuse, 800);
+        assert.deepStrictEqual(features.existingBuildingsUsesFloorSurfaceArea, {
+          RESIDENTIAL: 500,
+        });
+        assert.deepStrictEqual(features.newBuildingsUsesFloorSurfaceArea, { OFFICES: 400 });
       });
 
       it("Saves right data in table reconversion_project_buildings_construction_costs", async () => {
@@ -626,7 +641,8 @@ describe("SqlReconversionProjectRepository integration", () => {
           .select("purpose", "amount", "development_plan_id")
           .where({ development_plan_id: developmentPlan?.id });
 
-        expect(result).toEqual(
+        assert.deepStrictEqual(
+          result,
           buildingsConstructionAndRehabilitationExpenses.map(({ purpose, amount }) => ({
             purpose,
             amount,
@@ -647,7 +663,7 @@ describe("SqlReconversionProjectRepository integration", () => {
         const result = await sqlConnection(
           "reconversion_project_buildings_construction_costs",
         ).select("*");
-        expect(result).toEqual([]);
+        assert.deepStrictEqual(result, []);
       });
 
       it("Returns undefined for buildings reuse fields when not set via getById", async () => {
@@ -661,12 +677,12 @@ describe("SqlReconversionProjectRepository integration", () => {
 
         const result = await reconversionProjectRepository.getById(reconversionProject.id);
 
-        expect(result).toBeDefined();
-        expect(result?.buildingsFootprintToReuse).toBeUndefined();
-        expect(result?.existingBuildingsUsesFloorSurfaceArea).toBeUndefined();
-        expect(result?.newBuildingsUsesFloorSurfaceArea).toBeUndefined();
-        expect(result?.developerWillBeBuildingsConstructor).toBeUndefined();
-        expect(result?.buildingsConstructionAndRehabilitationExpenses).toBeUndefined();
+        assert.ok(result !== undefined);
+        assert.strictEqual(result?.buildingsFootprintToReuse, undefined);
+        assert.strictEqual(result?.existingBuildingsUsesFloorSurfaceArea, undefined);
+        assert.strictEqual(result?.newBuildingsUsesFloorSurfaceArea, undefined);
+        assert.strictEqual(result?.developerWillBeBuildingsConstructor, undefined);
+        assert.strictEqual(result?.buildingsConstructionAndRehabilitationExpenses, undefined);
       });
     });
   });
@@ -696,13 +712,12 @@ describe("SqlReconversionProjectRepository integration", () => {
           .where({ id: reconversionProject.id })
           .first();
 
-        expect(result).toMatchObject({
-          id: reconversionProject.id,
-          name: "Updated name",
-          description: "Updated description",
-          operations_first_year: 2030,
-          updated_at: updatedAt,
-        });
+        assert.ok(result);
+        assert.strictEqual(result.id, reconversionProject.id);
+        assert.strictEqual(result.name, "Updated name");
+        assert.strictEqual(result.description, "Updated description");
+        assert.strictEqual(result.operations_first_year, 2030);
+        assert.deepStrictEqual(result.updated_at, updatedAt);
       });
 
       it("Updates future operator and site owner", async () => {
@@ -727,12 +742,11 @@ describe("SqlReconversionProjectRepository integration", () => {
           .where({ id: reconversionProject.id })
           .first();
 
-        expect(result).toMatchObject({
-          future_operator_name: "New Operator",
-          future_operator_structure_type: "company",
-          future_site_owner_name: "New Owner",
-          future_site_owner_structure_type: "local_or_regional_authority",
-        });
+        assert.ok(result);
+        assert.strictEqual(result.future_operator_name, "New Operator");
+        assert.strictEqual(result.future_operator_structure_type, "company");
+        assert.strictEqual(result.future_site_owner_name, "New Owner");
+        assert.strictEqual(result.future_site_owner_structure_type, "local_or_regional_authority");
       });
 
       it("Updates soils distribution by deleting old and inserting new", async () => {
@@ -766,7 +780,7 @@ describe("SqlReconversionProjectRepository integration", () => {
           .where({ reconversion_project_id: reconversionProject.id })
           .orderBy("soil_type");
 
-        expect(soilsDistributionResult).toEqual([
+        assert.deepStrictEqual(soilsDistributionResult, [
           {
             soil_type: "BUILDINGS",
             surface_area: 3000.0,
@@ -822,7 +836,7 @@ describe("SqlReconversionProjectRepository integration", () => {
           .where({ reconversion_project_id: reconversionProject.id })
           .orderBy("soil_type");
 
-        expect(soilsDistributionResult).toEqual([
+        assert.deepStrictEqual(soilsDistributionResult, [
           {
             soil_type: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
             surface_area: 4000.0,
@@ -872,13 +886,12 @@ describe("SqlReconversionProjectRepository integration", () => {
           .where({ reconversion_project_id: reconversionProject.id })
           .first();
 
-        expect(result).toMatchObject({
-          developer_name: "New Developer",
-          developer_structure_type: "company",
-          schedule_start_date: new Date("2027-01-01"),
-          schedule_end_date: new Date("2028-01-01"),
-        });
-        expect(result?.features).toEqual({
+        assert.ok(result);
+        assert.strictEqual(result.developer_name, "New Developer");
+        assert.strictEqual(result.developer_structure_type, "company");
+        assert.deepStrictEqual(result.schedule_start_date, new Date("2027-01-01"));
+        assert.deepStrictEqual(result.schedule_end_date, new Date("2028-01-01"));
+        assert.deepStrictEqual(result.features, {
           buildingsFloorAreaDistribution: {
             SPORTS_FACILITIES: 1500,
           },
@@ -922,7 +935,7 @@ describe("SqlReconversionProjectRepository integration", () => {
           .where({ development_plan_id: developmentPlan?.id })
           .orderBy("amount");
 
-        expect(costsResult).toEqual([
+        assert.deepStrictEqual(costsResult, [
           { amount: 3000, purpose: "new_cost1" },
           { amount: 4000, purpose: "new_cost2" },
           { amount: 5000, purpose: "new_cost3" },
@@ -957,7 +970,7 @@ describe("SqlReconversionProjectRepository integration", () => {
           .where({ reconversion_project_id: reconversionProject.id })
           .orderBy("amount");
 
-        expect(expensesResult).toEqual([
+        assert.deepStrictEqual(expensesResult, [
           { amount: 2000, purpose: "maintenance" },
           { amount: 3000, purpose: "other" },
         ]);
@@ -988,7 +1001,7 @@ describe("SqlReconversionProjectRepository integration", () => {
           .where({ reconversion_project_id: reconversionProject.id })
           .orderBy("amount");
 
-        expect(revenuesResult).toEqual([
+        assert.deepStrictEqual(revenuesResult, [
           { amount: 15000, source: "operations" },
           { amount: 20000, source: "rent" },
         ]);
@@ -1023,7 +1036,7 @@ describe("SqlReconversionProjectRepository integration", () => {
           .where({ reconversion_project_id: reconversionProject.id })
           .orderBy("amount");
 
-        expect(costsResult).toEqual([
+        assert.deepStrictEqual(costsResult, [
           { amount: 6000, purpose: "waste_collection" },
           { amount: 7000, purpose: "asbestos_removal" },
         ]);
@@ -1054,7 +1067,7 @@ describe("SqlReconversionProjectRepository integration", () => {
           .select("*")
           .where({ reconversion_project_id: reconversionProject.id });
 
-        expect(costsResult).toEqual([]);
+        assert.deepStrictEqual(costsResult, []);
       });
 
       it("Updates financial assistance revenues", async () => {
@@ -1084,7 +1097,7 @@ describe("SqlReconversionProjectRepository integration", () => {
           .where({ reconversion_project_id: reconversionProject.id })
           .orderBy("amount");
 
-        expect(revenuesResult).toEqual([
+        assert.deepStrictEqual(revenuesResult, [
           { amount: 9000, source: "public_subsidies" },
           { amount: 10000, source: "other" },
         ]);
@@ -1116,14 +1129,13 @@ describe("SqlReconversionProjectRepository integration", () => {
           .where({ id: reconversionProject.id })
           .first();
 
-        expect(result).toMatchObject({
-          site_purchase_selling_price: 500000,
-          site_purchase_property_transfer_duties: 30000,
-          site_resale_expected_selling_price: 600000,
-          site_resale_expected_property_transfer_duties: 35000,
-          buildings_resale_expected_selling_price: 700000,
-          buildings_resale_expected_property_transfer_duties: 40000,
-        });
+        assert.ok(result);
+        assert.strictEqual(result.site_purchase_selling_price, 500000);
+        assert.strictEqual(result.site_purchase_property_transfer_duties, 30000);
+        assert.strictEqual(result.site_resale_expected_selling_price, 600000);
+        assert.strictEqual(result.site_resale_expected_property_transfer_duties, 35000);
+        assert.strictEqual(result.buildings_resale_expected_selling_price, 700000);
+        assert.strictEqual(result.buildings_resale_expected_property_transfer_duties, 40000);
       });
 
       it("Updates reinstatement schedule", async () => {
@@ -1154,12 +1166,11 @@ describe("SqlReconversionProjectRepository integration", () => {
           .where({ id: reconversionProject.id })
           .first();
 
-        expect(result).toMatchObject({
-          reinstatement_schedule_start_date: new Date("2026-06-01"),
-          reinstatement_schedule_end_date: new Date("2027-06-01"),
-          reinstatement_contract_owner_name: "New Contractor",
-          reinstatement_contract_owner_structure_type: "company",
-        });
+        assert.ok(result);
+        assert.deepStrictEqual(result.reinstatement_schedule_start_date, new Date("2026-06-01"));
+        assert.deepStrictEqual(result.reinstatement_schedule_end_date, new Date("2027-06-01"));
+        assert.strictEqual(result.reinstatement_contract_owner_name, "New Contractor");
+        assert.strictEqual(result.reinstatement_contract_owner_structure_type, "company");
       });
     });
 
@@ -1222,20 +1233,25 @@ describe("SqlReconversionProjectRepository integration", () => {
 
         const developmentPlanFeatures = result?.developmentPlan.features as UrbanProjectFeatures;
 
-        expect(result?.developmentPlan.developer.name).toEqual("Paris");
-        expect(result?.developmentPlan.type).toEqual("URBAN_PROJECT");
-        expect(result?.name).toEqual("Updated urban project");
-        expect(result?.relatedSiteId).toEqual(siteId);
-        expect(result?.projectPhase).toEqual("planning");
-        expect(
+        assert.deepStrictEqual(result?.developmentPlan.developer.name, "Paris");
+        assert.deepStrictEqual(result?.developmentPlan.type, "URBAN_PROJECT");
+        assert.deepStrictEqual(result?.name, "Updated urban project");
+        assert.deepStrictEqual(result?.relatedSiteId, siteId);
+        assert.deepStrictEqual(result?.projectPhase, "planning");
+        assert.strictEqual(
           result?.soilsDistribution.find((elem) => elem.soilType === "BUILDINGS")?.surfaceArea,
-        ).toBe(3000);
-        expect(
+          3000,
+        );
+        assert.strictEqual(
           result?.soilsDistribution.find((elem) => elem.spaceCategory === "PUBLIC_GREEN_SPACE")
             ?.surfaceArea,
-        ).toBe(1500);
-        expect(developmentPlanFeatures.buildingsFloorAreaDistribution.RESIDENTIAL).toBe(2500);
-        expect(developmentPlanFeatures.buildingsFloorAreaDistribution.LOCAL_STORE).toBe(500);
+          1500,
+        );
+        assert.strictEqual(
+          developmentPlanFeatures.buildingsFloorAreaDistribution.RESIDENTIAL,
+          2500,
+        );
+        assert.strictEqual(developmentPlanFeatures.buildingsFloorAreaDistribution.LOCAL_STORE, 500);
       });
 
       it("Updates buildings reuse fields", async () => {
@@ -1263,14 +1279,14 @@ describe("SqlReconversionProjectRepository integration", () => {
 
         const result = await reconversionProjectRepository.getById(reconversionProject.id);
 
-        expect(result?.buildingsFootprintToReuse).toEqual(1200);
-        expect(result?.existingBuildingsUsesFloorSurfaceArea).toEqual({
+        assert.deepStrictEqual(result?.buildingsFootprintToReuse, 1200);
+        assert.deepStrictEqual(result?.existingBuildingsUsesFloorSurfaceArea, {
           RESIDENTIAL: 600,
           LOCAL_STORE: 400,
         });
-        expect(result?.newBuildingsUsesFloorSurfaceArea).toEqual({ OFFICES: 500 });
-        expect(result?.developerWillBeBuildingsConstructor).toEqual(true);
-        expect(result?.buildingsConstructionAndRehabilitationExpenses).toEqual([
+        assert.deepStrictEqual(result?.newBuildingsUsesFloorSurfaceArea, { OFFICES: 500 });
+        assert.deepStrictEqual(result?.developerWillBeBuildingsConstructor, true);
+        assert.deepStrictEqual(result?.buildingsConstructionAndRehabilitationExpenses, [
           { purpose: "buildings_construction_works", amount: 200000 },
           { purpose: "buildings_rehabilitation_works", amount: 100000 },
         ]);
@@ -1310,7 +1326,7 @@ describe("SqlReconversionProjectRepository integration", () => {
           .where({ development_plan_id: developmentPlan?.id })
           .orderBy("amount");
 
-        expect(costsResult).toEqual([
+        assert.deepStrictEqual(costsResult, [
           { amount: 120000, purpose: "other_construction_expenses" },
           { amount: 250000, purpose: "buildings_rehabilitation_works" },
         ]);
@@ -1346,7 +1362,7 @@ describe("SqlReconversionProjectRepository integration", () => {
           .select("*")
           .where({ development_plan_id: developmentPlan?.id });
 
-        expect(costsResult).toEqual([]);
+        assert.deepStrictEqual(costsResult, []);
       });
     });
   });
@@ -1370,11 +1386,10 @@ describe("SqlReconversionProjectRepository integration", () => {
         .where({ id: reconversionProject.id })
         .first();
 
-      expect(result).toMatchObject({
-        id: reconversionProject.id,
-        status: "archived",
-        updated_at: updatedAt,
-      });
+      assert.ok(result);
+      assert.strictEqual(result.id, reconversionProject.id);
+      assert.strictEqual(result.status, "archived");
+      assert.deepStrictEqual(result.updated_at, updatedAt);
     });
   });
 });

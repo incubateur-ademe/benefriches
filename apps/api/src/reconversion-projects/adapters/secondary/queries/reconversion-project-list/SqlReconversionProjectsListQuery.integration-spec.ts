@@ -1,4 +1,6 @@
 import knex, { Knex } from "knex";
+import assert from "node:assert/strict";
+import { after, before, beforeEach, describe, it } from "node:test";
 import { v4 as uuid } from "uuid";
 
 import { ReconversionProjectsGroupedBySite } from "src/reconversion-projects/core/usecases/getUserReconversionProjectsBySite.usecase";
@@ -10,11 +12,11 @@ describe("ReconversionProjectsListQuery integration", () => {
   let sqlConnection: Knex;
   let reconversionProjectsListQuery: SqlReconversionProjectsListQuery;
 
-  beforeAll(() => {
+  before(() => {
     sqlConnection = knex(knexConfig);
   });
 
-  afterAll(async () => {
+  after(async () => {
     await sqlConnection.destroy();
   });
 
@@ -27,7 +29,7 @@ describe("ReconversionProjectsListQuery integration", () => {
       const result = await reconversionProjectsListQuery.getGroupedBySite({
         userId: uuid(),
       });
-      expect(result).toEqual<ReconversionProjectsGroupedBySite>([]);
+      assert.deepStrictEqual(result, [] satisfies ReconversionProjectsGroupedBySite);
     });
 
     it("returns empty list when no sites for given user", async () => {
@@ -52,7 +54,7 @@ describe("ReconversionProjectsListQuery integration", () => {
       const result = await reconversionProjectsListQuery.getGroupedBySite({
         userId: uuid(),
       });
-      expect(result).toEqual<ReconversionProjectsGroupedBySite>([]);
+      assert.deepStrictEqual(result, [] satisfies ReconversionProjectsGroupedBySite);
     });
 
     it("returns sites with no projects", async () => {
@@ -77,7 +79,7 @@ describe("ReconversionProjectsListQuery integration", () => {
 
       const result = await reconversionProjectsListQuery.getGroupedBySite({ userId });
 
-      expect(result).toEqual<ReconversionProjectsGroupedBySite>([
+      assert.deepStrictEqual(result, [
         {
           siteName: siteInDb.name,
           siteId: siteInDb.id,
@@ -86,7 +88,7 @@ describe("ReconversionProjectsListQuery integration", () => {
           fricheActivity: "BUILDING",
           reconversionProjects: [],
         },
-      ]);
+      ] satisfies ReconversionProjectsGroupedBySite);
     });
 
     it("returns reconversion projects grouped by sites", async () => {
@@ -173,13 +175,14 @@ describe("ReconversionProjectsListQuery integration", () => {
 
       const result = await reconversionProjectsListQuery.getGroupedBySite({ userId });
 
-      expect(result).toHaveLength(2);
-      expect(result).toEqual<ReconversionProjectsGroupedBySite>([
+      assert.strictEqual(result.length, 2);
+      assert.deepStrictEqual(result, [
         {
           siteName: siteInDb2.name,
           siteId: siteInDb2.id,
           siteNature: siteInDb2.nature,
           isExpressSite: true,
+          fricheActivity: undefined,
           reconversionProjects: [
             {
               id: projectInDb2.id,
@@ -199,6 +202,7 @@ describe("ReconversionProjectsListQuery integration", () => {
           siteName: siteInDb1.name,
           siteId: siteInDb1.id,
           isExpressSite: false,
+          fricheActivity: undefined,
           siteNature: siteInDb1.nature,
           reconversionProjects: [
             {
@@ -209,7 +213,7 @@ describe("ReconversionProjectsListQuery integration", () => {
             },
           ],
         },
-      ]);
+      ] satisfies ReconversionProjectsGroupedBySite);
     });
   });
 });

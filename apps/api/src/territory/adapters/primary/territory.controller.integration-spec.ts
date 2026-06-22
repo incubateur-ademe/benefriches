@@ -1,5 +1,7 @@
 import { NestExpressApplication } from "@nestjs/platform-express/interfaces/nest-express-application.interface";
 import { Knex } from "knex";
+import assert from "node:assert/strict";
+import { after, before, describe, it } from "node:test";
 import supertest from "supertest";
 import { createTestApp } from "test/testApp";
 
@@ -9,13 +11,13 @@ describe("Territory controller", () => {
   let app: NestExpressApplication;
   let sqlConnection: Knex;
 
-  beforeAll(async () => {
+  before(async () => {
     app = await createTestApp();
     await app.init();
     sqlConnection = app.get(SqlConnection);
   });
 
-  afterAll(async () => {
+  after(async () => {
     await app.close();
     await sqlConnection.destroy();
   });
@@ -24,7 +26,7 @@ describe("Territory controller", () => {
     it("returns 400 when cityCode is missing", async () => {
       const response = await supertest(app.getHttpServer()).get("/api/territory/city-rurality");
 
-      expect(response.status).toEqual(400);
+      assert.strictEqual(response.status, 400);
     });
 
     it("returns isRural true for a commune in the FRR rural list", async () => {
@@ -33,8 +35,8 @@ describe("Territory controller", () => {
         "/api/territory/city-rurality?cityCode=01029",
       );
 
-      expect(response.status).toEqual(200);
-      expect(response.body).toEqual({ cityCode: "01029", isRural: true });
+      assert.strictEqual(response.status, 200);
+      assert.deepStrictEqual(response.body, { cityCode: "01029", isRural: true });
     });
 
     it("returns isRural false for a commune that is 'Non classée'", async () => {
@@ -43,8 +45,8 @@ describe("Territory controller", () => {
         "/api/territory/city-rurality?cityCode=01001",
       );
 
-      expect(response.status).toEqual(200);
-      expect(response.body).toEqual({ cityCode: "01001", isRural: false });
+      assert.strictEqual(response.status, 200);
+      assert.deepStrictEqual(response.body, { cityCode: "01001", isRural: false });
     });
   });
 });

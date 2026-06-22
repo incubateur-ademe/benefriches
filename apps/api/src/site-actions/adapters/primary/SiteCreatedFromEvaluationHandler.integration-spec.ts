@@ -1,8 +1,9 @@
 import { NestExpressApplication } from "@nestjs/platform-express";
 import type { Knex } from "knex";
+import assert from "node:assert/strict";
+import { after, before, describe, it } from "node:test";
 import { createTestApp } from "test/testApp";
 import { v4 as uuid } from "uuid";
-import { describe, it, expect } from "vitest";
 
 import { createSiteCreatedFromEvaluationEvent } from "src/reconversion-compatibility/core/events/siteCreatedFromEvaluation.event";
 import { RealEventPublisher } from "src/shared-kernel/adapters/events/publisher/RealEventPublisher";
@@ -13,14 +14,14 @@ describe("SiteCreatedFromEvaluationHandler integration test", () => {
   let sqlConnection: Knex;
   let eventPublisher: RealEventPublisher;
 
-  beforeAll(async () => {
+  before(async () => {
     app = await createTestApp();
     await app.init();
     sqlConnection = app.get(SqlConnection);
     eventPublisher = app.get(RealEventPublisher);
   });
 
-  afterAll(async () => {
+  after(async () => {
     await app.close();
     await sqlConnection.destroy();
   });
@@ -60,8 +61,8 @@ describe("SiteCreatedFromEvaluationHandler integration test", () => {
 
     const updatedAction = await sqlConnection("site_actions").where("id", actionId).first();
 
-    expect(updatedAction?.status).toEqual("done");
-    expect(updatedAction?.completed_at).toBeInstanceOf(Date);
+    assert.strictEqual(updatedAction?.status, "done");
+    assert.ok(updatedAction?.completed_at instanceof Date);
   });
 
   it("should gracefully handle missing action (no error thrown)", async () => {
@@ -87,6 +88,6 @@ describe("SiteCreatedFromEvaluationHandler integration test", () => {
 
     const actions = await sqlConnection("site_actions").where("site_id", siteId);
 
-    expect(actions).toHaveLength(0);
+    assert.strictEqual(actions.length, 0);
   });
 });

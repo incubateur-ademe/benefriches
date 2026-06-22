@@ -1,4 +1,6 @@
 import knex, { Knex } from "knex";
+import assert from "node:assert/strict";
+import { after, before, beforeEach, describe, it } from "node:test";
 import { v4 as uuid } from "uuid";
 
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
@@ -10,11 +12,11 @@ describe("SqlSiteEvaluationQuery integration", () => {
   let sqlConnection: Knex;
   let sqlSiteEvaluationQuery: SqlSiteEvaluationQuery;
 
-  beforeAll(() => {
+  before(() => {
     sqlConnection = knex(knexConfig);
   });
 
-  afterAll(async () => {
+  after(async () => {
     await sqlConnection.destroy();
   });
 
@@ -25,7 +27,7 @@ describe("SqlSiteEvaluationQuery integration", () => {
   describe("getUserSiteEvaluations", () => {
     it("returns empty list when no sites", async () => {
       const result = await sqlSiteEvaluationQuery.getUserSiteEvaluations(uuid());
-      expect(result).toEqual<SiteEvaluationDataView[]>([]);
+      assert.deepStrictEqual(result, [] satisfies SiteEvaluationDataView[]);
     });
 
     it("returns empty list when no sites for given user", async () => {
@@ -48,7 +50,7 @@ describe("SqlSiteEvaluationQuery integration", () => {
       };
       await sqlConnection("sites").insert(siteInDb);
       const result = await sqlSiteEvaluationQuery.getUserSiteEvaluations(uuid());
-      expect(result).toEqual<SiteEvaluationDataView[]>([]);
+      assert.deepStrictEqual(result, [] satisfies SiteEvaluationDataView[]);
     });
 
     it("returns sites with no projects nor compability evaluation", async () => {
@@ -74,7 +76,7 @@ describe("SqlSiteEvaluationQuery integration", () => {
 
       const result = await sqlSiteEvaluationQuery.getUserSiteEvaluations(userId);
 
-      expect(result).toEqual<SiteEvaluationDataView[]>([
+      assert.deepStrictEqual(result, [
         {
           siteName: siteInDb.name,
           siteId: siteInDb.id,
@@ -82,7 +84,7 @@ describe("SqlSiteEvaluationQuery integration", () => {
           isExpressSite: false,
           reconversionProjects: { total: 0, lastProjects: [] },
         },
-      ]);
+      ] satisfies SiteEvaluationDataView[]);
     });
 
     it("returns sites with for each the 2 last projects and compatibility evaluation id if exists", async () => {
@@ -251,8 +253,8 @@ describe("SqlSiteEvaluationQuery integration", () => {
 
       const result = await sqlSiteEvaluationQuery.getUserSiteEvaluations(userId);
 
-      expect(result).toHaveLength(3);
-      expect(result).toEqual<SiteEvaluationDataView[]>([
+      assert.strictEqual(result.length, 3);
+      assert.deepStrictEqual(result, [
         {
           siteName: siteInDb2.name,
           siteId: siteInDb2.id,
@@ -336,7 +338,7 @@ describe("SqlSiteEvaluationQuery integration", () => {
             ],
           },
         },
-      ]);
+      ] satisfies SiteEvaluationDataView[]);
     });
   });
 });

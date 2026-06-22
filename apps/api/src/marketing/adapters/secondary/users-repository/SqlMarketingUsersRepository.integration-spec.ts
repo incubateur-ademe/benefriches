@@ -1,4 +1,6 @@
 import knex, { Knex } from "knex";
+import assert from "node:assert/strict";
+import { after, before, beforeEach, describe, it } from "node:test";
 
 import { SqlUserRepository } from "src/auth/adapters/user-repository/SqlUsersRepository";
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
@@ -11,11 +13,11 @@ describe("SqlMarketingUsersRepository integration", () => {
   let repository: SqlMarketingUsersRepository;
   let userRepository: SqlUserRepository;
 
-  beforeAll(() => {
+  before(() => {
     sqlConnection = knex(knexConfig);
   });
 
-  afterAll(async () => {
+  after(async () => {
     await sqlConnection.destroy();
   });
 
@@ -33,7 +35,7 @@ describe("SqlMarketingUsersRepository integration", () => {
     const [row] = await sqlConnection("users").select("subscribed_to_newsletter").where({
       id: user.id,
     });
-    expect(row?.subscribed_to_newsletter).toBe(true);
+    assert.strictEqual(row?.subscribed_to_newsletter, true);
   });
 
   it("flips subscribed_to_newsletter to false", async () => {
@@ -45,12 +47,11 @@ describe("SqlMarketingUsersRepository integration", () => {
     const [row] = await sqlConnection("users").select("subscribed_to_newsletter").where({
       id: user.id,
     });
-    expect(row?.subscribed_to_newsletter).toBe(false);
+    assert.strictEqual(row?.subscribed_to_newsletter, false);
   });
 
   it("does not throw when the user id does not exist (no-op)", async () => {
-    await expect(
-      repository.updateSubscriptionStatus("00000000-0000-0000-0000-000000000000", true),
-    ).resolves.toBeUndefined();
+    // resolves.toBeUndefined() equivalent: just await — no throw is the assertion
+    await repository.updateSubscriptionStatus("00000000-0000-0000-0000-000000000000", true);
   });
 });

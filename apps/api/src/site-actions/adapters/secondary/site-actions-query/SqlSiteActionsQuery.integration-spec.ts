@@ -1,4 +1,6 @@
 import knex, { Knex } from "knex";
+import assert from "node:assert/strict";
+import { after, before, beforeEach, describe, it } from "node:test";
 import { v4 as uuid } from "uuid";
 
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
@@ -11,18 +13,16 @@ describe("SqlSiteActionsQuery integration", () => {
   let query: SqlSiteActionsQuery;
   const now = new Date();
 
-  beforeAll(() => {
+  before(() => {
     sqlConnection = knex(knexConfig);
   });
 
-  afterAll(async () => {
+  after(async () => {
     await sqlConnection.destroy();
   });
 
-  beforeEach(async () => {
+  beforeEach(() => {
     query = new SqlSiteActionsQuery(sqlConnection);
-    // Clear tables in reverse order of foreign key dependencies
-    await sqlConnection("site_actions").del();
   });
 
   const insertSiteInDb = async (): Promise<string> => {
@@ -81,14 +81,15 @@ describe("SqlSiteActionsQuery integration", () => {
 
       const result = await query.getBySiteId(siteId);
 
-      expect(result).toHaveLength(3);
-      expect(result).toEqual<SiteAction[]>([
+      assert.strictEqual(result.length, 3);
+      const expected = [
         {
           id: actionId1,
           siteId,
           actionType: "EVALUATE_COMPATIBILITY",
           status: "todo",
           createdAt: createdAt1,
+          completedAt: undefined,
         },
         {
           id: actionId2,
@@ -96,6 +97,7 @@ describe("SqlSiteActionsQuery integration", () => {
           actionType: "REQUEST_FUNDING_INFORMATION",
           status: "todo",
           createdAt: createdAt2,
+          completedAt: undefined,
         },
         {
           id: actionId3,
@@ -105,7 +107,8 @@ describe("SqlSiteActionsQuery integration", () => {
           createdAt: createdAt3,
           completedAt: new Date(createdAt3.getTime() + 1000),
         },
-      ]);
+      ] satisfies SiteAction[];
+      assert.deepStrictEqual(result, expected);
     });
 
     it("should return empty array when no actions exist for site", async () => {
@@ -113,7 +116,7 @@ describe("SqlSiteActionsQuery integration", () => {
 
       const result = await query.getBySiteId(siteId);
 
-      expect(result).toEqual([]);
+      assert.deepStrictEqual(result, []);
     });
 
     it("should not return actions from other sites", async () => {
@@ -131,7 +134,7 @@ describe("SqlSiteActionsQuery integration", () => {
 
       const result = await query.getBySiteId(siteId1);
 
-      expect(result).toEqual([]);
+      assert.deepStrictEqual(result, []);
     });
   });
 });

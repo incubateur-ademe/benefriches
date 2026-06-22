@@ -1,5 +1,7 @@
 import type { NestExpressApplication } from "@nestjs/platform-express";
 import type { Knex } from "knex";
+import assert from "node:assert/strict";
+import { after, before, describe, it } from "node:test";
 import supertest from "supertest";
 import { createTestApp } from "test/testApp";
 
@@ -17,13 +19,13 @@ describe("Healthcheck controller", () => {
   let app: NestExpressApplication;
   let sqlConnection: Knex;
 
-  beforeAll(async () => {
+  before(async () => {
     app = await createTestApp();
     await app.init();
     sqlConnection = app.get(SqlConnection);
   });
 
-  afterAll(async () => {
+  after(async () => {
     await app.close();
     await sqlConnection.destroy();
   });
@@ -33,19 +35,19 @@ describe("Healthcheck controller", () => {
       const response = await supertest(app.getHttpServer()).get("/api/healthcheck");
       const body = response.body as HealthCheckResponse;
 
-      expect(response.status).toEqual(200);
-      expect(body.status).toEqual("healthy");
-      expect(body.checks.database).toEqual("connected");
-      expect(typeof body.timestamp).toBe("string");
+      assert.strictEqual(response.status, 200);
+      assert.strictEqual(body.status, "healthy");
+      assert.strictEqual(body.checks.database, "connected");
+      assert.strictEqual(typeof body.timestamp, "string");
     });
 
     it("returns a valid ISO 8601 timestamp", async () => {
       const response = await supertest(app.getHttpServer()).get("/api/healthcheck");
       const body = response.body as HealthCheckResponse;
 
-      expect(response.status).toEqual(200);
-      expect(typeof body.timestamp).toBe("string");
-      expect(new Date(body.timestamp).toISOString()).toEqual(body.timestamp);
+      assert.strictEqual(response.status, 200);
+      assert.strictEqual(typeof body.timestamp, "string");
+      assert.strictEqual(new Date(body.timestamp).toISOString(), body.timestamp);
     });
   });
 });

@@ -1,4 +1,6 @@
 import knex, { Knex } from "knex";
+import assert from "node:assert/strict";
+import { after, before, beforeEach, describe, it } from "node:test";
 import { v4 as uuid } from "uuid";
 
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
@@ -9,11 +11,11 @@ describe("SqlUserQuery integration", () => {
   let sqlConnection: Knex;
   let userQuery: SqlUserQuery;
 
-  beforeAll(() => {
+  before(() => {
     sqlConnection = knex(knexConfig);
   });
 
-  afterAll(async () => {
+  after(async () => {
     await sqlConnection.destroy();
   });
 
@@ -37,7 +39,7 @@ describe("SqlUserQuery integration", () => {
       });
       const result = await userQuery.getById(id);
 
-      expect(result).toEqual({
+      assert.deepStrictEqual(result, {
         id,
         structure: {
           activity: "municipality",
@@ -46,11 +48,12 @@ describe("SqlUserQuery integration", () => {
         },
       });
     });
+
     it("returns undefined if user doesn't exist", async () => {
       const id = uuid();
       const result = await userQuery.getById(id);
 
-      expect(result).toEqual(undefined);
+      assert.strictEqual(result, undefined);
     });
   });
 });

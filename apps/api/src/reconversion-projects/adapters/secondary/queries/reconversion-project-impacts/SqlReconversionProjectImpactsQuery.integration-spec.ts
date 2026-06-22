@@ -1,4 +1,6 @@
 import knex, { Knex } from "knex";
+import assert from "node:assert/strict";
+import { after, before, beforeEach, describe, it } from "node:test";
 import { v4 as uuid } from "uuid";
 
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
@@ -12,11 +14,11 @@ describe("SqlReconversionProjectImpactsQuery integration", () => {
   let sqlConnection: Knex;
   let repository: SqlReconversionProjectImpactsQuery;
 
-  beforeAll(() => {
+  before(() => {
     sqlConnection = knex(knexConfig);
   });
 
-  afterAll(async () => {
+  after(async () => {
     await sqlConnection.destroy();
   });
 
@@ -83,7 +85,7 @@ describe("SqlReconversionProjectImpactsQuery integration", () => {
           schedule_start_date: new Date("2025-01-01"),
           schedule_end_date: new Date("2025-05-15"),
           type: "PHOTOVOLTAIC_POWER_PLANT",
-          developer_name: "Terre cuite d’occitanie",
+          developer_name: "Terre cuite d'occitanie",
           developer_structure_type: "company",
           features: {
             expectedAnnualProduction: 10,
@@ -153,7 +155,7 @@ describe("SqlReconversionProjectImpactsQuery integration", () => {
 
       const result = await repository.getById(reconversionProjectId);
 
-      expect(result).toEqual<Required<ReconversionProjectImpactsQueryResult>>({
+      assert.deepStrictEqual(result, {
         id: reconversionProjectId,
         name: "Big project",
         isExpressProject: true,
@@ -162,10 +164,12 @@ describe("SqlReconversionProjectImpactsQuery integration", () => {
           {
             soilType: "BUILDINGS",
             surfaceArea: 1200,
+            spaceCategory: undefined,
           },
           {
             soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
             surfaceArea: 30000,
+            spaceCategory: undefined,
           },
         ],
         conversionSchedule: {
@@ -193,7 +197,7 @@ describe("SqlReconversionProjectImpactsQuery integration", () => {
         sitePurchaseTotalAmount: 108000,
         sitePurchasePropertyTransferDutiesAmount: 8000,
         developmentPlan: {
-          developerName: "Terre cuite d’occitanie",
+          developerName: "Terre cuite d'occitanie",
           developerStructureType: "company",
           type: "PHOTOVOLTAIC_POWER_PLANT",
           features: {
@@ -230,8 +234,9 @@ describe("SqlReconversionProjectImpactsQuery integration", () => {
         decontaminatedSoilSurface: 1000,
         buildingsResaleExpectedPropertyTransferDutiesAmount: 5000,
         siteResaleExpectedPropertyTransferDutiesAmount: 8715,
-      });
+      } satisfies Required<ReconversionProjectImpactsQueryResult>);
     });
+
     it("gets reconversion project when optional data does not exist", async () => {
       const reconversionProjectId = uuid();
       const siteId = uuid();
@@ -277,7 +282,7 @@ describe("SqlReconversionProjectImpactsQuery integration", () => {
 
       const result = await repository.getById(reconversionProjectId);
 
-      expect(result).toEqual<ReconversionProjectImpactsQueryResult>({
+      assert.deepStrictEqual(result, {
         id: reconversionProjectId,
         name: "Big project",
         isExpressProject: false,
@@ -286,34 +291,43 @@ describe("SqlReconversionProjectImpactsQuery integration", () => {
           {
             soilType: "BUILDINGS",
             surfaceArea: 1200,
+            spaceCategory: undefined,
           },
           {
             soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
             surfaceArea: 30000,
+            spaceCategory: undefined,
           },
         ],
         yearlyProjectedExpenses: [],
         yearlyProjectedRevenues: [],
         conversionSchedule: undefined,
+        reinstatementSchedule: undefined,
+        futureOperatorName: undefined,
+        futureOperatorStructureType: undefined,
+        futureSiteOwnerName: undefined,
+        futureSiteOwnerStructureType: undefined,
+        reinstatementContractOwnerStructureType: undefined,
+        reinstatementContractOwnerName: undefined,
+        sitePurchaseTotalAmount: undefined,
+        sitePurchasePropertyTransferDutiesAmount: undefined,
+        reinstatementExpenses: [],
+        buildingsConstructionAndRehabilitationExpenses: undefined,
+        financialAssistanceRevenues: [],
         developmentPlan: {
+          type: "PHOTOVOLTAIC_POWER_PLANT",
+          features: undefined,
           developerName: undefined,
           developerStructureType: "company",
-          features: undefined,
           installationCosts: [],
           installationSchedule: undefined,
-          type: "PHOTOVOLTAIC_POWER_PLANT",
         },
-        futureOperatorStructureType: undefined,
-        futureSiteOwnerStructureType: undefined,
-        futureOperatorName: undefined,
-        futureSiteOwnerName: undefined,
-        reinstatementContractOwnerStructureType: undefined,
-        sitePurchaseTotalAmount: undefined,
+        operationsFirstYear: undefined,
+        siteResaleSellingPrice: undefined,
         buildingsResaleSellingPrice: undefined,
-        reinstatementContractOwnerName: undefined,
-        reinstatementExpenses: [],
-        financialAssistanceRevenues: [],
-        reinstatementSchedule: undefined,
+        decontaminatedSoilSurface: undefined,
+        buildingsResaleExpectedPropertyTransferDutiesAmount: undefined,
+        siteResaleExpectedPropertyTransferDutiesAmount: undefined,
       });
     });
   });

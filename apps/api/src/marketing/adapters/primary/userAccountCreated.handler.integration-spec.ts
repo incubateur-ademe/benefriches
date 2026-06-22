@@ -1,4 +1,6 @@
 import { NestExpressApplication } from "@nestjs/platform-express";
+import assert from "node:assert/strict";
+import { afterEach, beforeEach, describe, it } from "node:test";
 import { createTestApp } from "test/testApp";
 
 import { createUserAccountCreatedEvent } from "src/auth/core/events/userAccountCreated.event";
@@ -39,7 +41,7 @@ describe("UserAccountCreatedHandler integration test", () => {
 
     await eventPublisher.publish(event);
 
-    expect(fakeCrm._newContacts).toEqual([
+    assert.deepStrictEqual(fakeCrm._newContacts, [
       {
         email: "john.doe@example.com",
         firstName: "John",

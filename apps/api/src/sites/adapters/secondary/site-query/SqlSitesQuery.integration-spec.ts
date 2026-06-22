@@ -1,4 +1,6 @@
 import knex, { Knex } from "knex";
+import assert from "node:assert/strict";
+import { after, before, beforeEach, describe, it } from "node:test";
 import { v4 as uuid } from "uuid";
 
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
@@ -15,11 +17,11 @@ describe("SqlSitesQuery integration", () => {
   let siteRepository: SqlSiteRepository;
   const now = new Date();
 
-  beforeAll(() => {
+  before(() => {
     sqlConnection = knex(knexConfig);
   });
 
-  afterAll(async () => {
+  after(async () => {
     await sqlConnection.destroy();
   });
 
@@ -126,7 +128,7 @@ describe("SqlSitesQuery integration", () => {
         fricheActivity: "INDUSTRIAL",
       };
 
-      expect(result).toEqual(expectedResult);
+      assert.deepStrictEqual(result, expectedResult);
     });
 
     it("gets agricultural operation with only required data", async () => {
@@ -187,7 +189,8 @@ describe("SqlSitesQuery integration", () => {
         nature: "AGRICULTURAL_OPERATION",
         surfaceArea: 14000,
         isExpressSite: true,
-        owner: { structureType: "company" },
+        owner: { name: undefined, structureType: "company" },
+        tenant: undefined,
         yearlyExpenses: [{ amount: 3300, purpose: "security" }],
         yearlyIncomes: [{ amount: 5000, source: "product-sales" }],
         address: {
@@ -198,15 +201,18 @@ describe("SqlSitesQuery integration", () => {
           lat: 48.876517,
           long: 2.330785,
           value: "1 rue de Londres, 75009 Paris",
+          streetName: undefined,
+          streetNumber: undefined,
         },
         soilsDistribution: {
           FOREST_MIXED: 1200,
           PRAIRIE_GRASS: 12800,
         },
+        description: undefined,
         agriculturalOperationActivity: "CATTLE_FARMING",
       };
 
-      expect(result).toEqual(expectedResult);
+      assert.deepStrictEqual(result, expectedResult);
     });
 
     it("gets natural area site with required data", async () => {
@@ -248,7 +254,8 @@ describe("SqlSitesQuery integration", () => {
         isExpressSite: false,
         description: "A natural forest area",
         surfaceArea: 50000,
-        owner: { structureType: "municipality" },
+        owner: { name: undefined, structureType: "municipality" },
+        tenant: undefined,
         yearlyExpenses: [],
         yearlyIncomes: [],
         address: {
@@ -259,6 +266,8 @@ describe("SqlSitesQuery integration", () => {
           lat: 48.4,
           long: 2.7,
           value: "Fontainebleau",
+          streetName: undefined,
+          streetNumber: undefined,
         },
         soilsDistribution: {
           FOREST_DECIDUOUS: 50000,
@@ -266,7 +275,7 @@ describe("SqlSitesQuery integration", () => {
         naturalAreaType: "FOREST",
       };
 
-      expect(result).toEqual(expectedResult);
+      assert.deepStrictEqual(result, expectedResult);
     });
 
     it("gets site when no expenses, no soils_distribution, no address", async () => {
@@ -283,10 +292,10 @@ describe("SqlSitesQuery integration", () => {
 
       const result = await sitesQuery.getSiteFeaturesById(siteId);
 
-      expect(result?.id).toEqual(siteId);
-      expect(result?.yearlyExpenses).toEqual([]);
-      expect(result?.soilsDistribution).toEqual({});
-      expect(result?.address.banId).toBeUndefined();
+      assert.strictEqual(result?.id, siteId);
+      assert.deepStrictEqual(result?.yearlyExpenses, []);
+      assert.deepStrictEqual(result?.soilsDistribution, {});
+      assert.strictEqual(result?.address.banId, undefined);
     });
 
     it("returns undefined when site does not exist", async () => {
@@ -310,7 +319,7 @@ describe("SqlSitesQuery integration", () => {
 
       const result = await sitesQuery.getSiteFeaturesById(nonExistingSiteId);
 
-      expect(result).toEqual(undefined);
+      assert.strictEqual(result, undefined);
     });
 
     it("gets urban zone with aggregated soils distribution and urban zone fields", async () => {
@@ -363,6 +372,7 @@ describe("SqlSitesQuery integration", () => {
         description: "Zone d'activites economiques",
         surfaceArea: 7000,
         owner: { structureType: "municipality", name: "Ville de Lyon" },
+        tenant: undefined,
         yearlyExpenses: [],
         yearlyIncomes: [],
         address: {
@@ -392,7 +402,7 @@ describe("SqlSitesQuery integration", () => {
         fullTimeJobsEquivalent: 42,
       };
 
-      expect(result).toEqual(expectedResult);
+      assert.deepStrictEqual(result, expectedResult);
     });
   });
 
@@ -436,6 +446,7 @@ describe("SqlSitesQuery integration", () => {
         isExpressSite: false,
         surfaceArea: 14000,
         owner: { name: "Owner name", structureType: "company" },
+        tenant: undefined,
         yearlyExpenses: [],
         yearlyIncomes: [],
         address: {
@@ -446,11 +457,19 @@ describe("SqlSitesQuery integration", () => {
           lat: 48.876517,
           long: 2.330785,
           value: "1 rue de Londres, 75009 Paris",
+          streetName: undefined,
+          streetNumber: undefined,
         },
         soilsDistribution: {
           BUILDINGS: 14000,
         },
+        description: undefined,
         fricheActivity: "INDUSTRY",
+        hasContaminatedSoils: undefined,
+        contaminatedSoilSurface: undefined,
+        accidentsMinorInjuries: undefined,
+        accidentsSevereInjuries: undefined,
+        accidentsDeaths: undefined,
       };
 
       const expectedResult: SiteView = {
@@ -461,7 +480,7 @@ describe("SqlSitesQuery integration", () => {
         compatibilityEvaluation: null,
       };
 
-      expect(result).toEqual(expectedResult);
+      assert.deepStrictEqual(result, expectedResult);
     });
 
     it("should return site with projects array containing all related projects", async () => {
@@ -558,7 +577,8 @@ describe("SqlSitesQuery integration", () => {
         nature: "FRICHE",
         isExpressSite: false,
         surfaceArea: 20000,
-        owner: { structureType: "company" },
+        owner: { name: undefined, structureType: "company" },
+        tenant: undefined,
         yearlyExpenses: [],
         yearlyIncomes: [],
         address: {
@@ -569,11 +589,19 @@ describe("SqlSitesQuery integration", () => {
           lat: 45.764043,
           long: 4.835659,
           value: "Lyon Centre",
+          streetName: undefined,
+          streetNumber: undefined,
         },
         soilsDistribution: {
           BUILDINGS: 20000,
         },
+        description: undefined,
         fricheActivity: "INDUSTRY",
+        hasContaminatedSoils: undefined,
+        contaminatedSoilSurface: undefined,
+        accidentsMinorInjuries: undefined,
+        accidentsSevereInjuries: undefined,
+        accidentsDeaths: undefined,
       };
 
       const expectedResult: SiteView = {
@@ -597,7 +625,7 @@ describe("SqlSitesQuery integration", () => {
         compatibilityEvaluation: null,
       };
 
-      expect(result).toEqual(expectedResult);
+      assert.deepStrictEqual(result, expectedResult);
     });
 
     it("should return site with actions array when site has multiple actions", async () => {
@@ -650,7 +678,7 @@ describe("SqlSitesQuery integration", () => {
 
       const result = await sitesQuery.getViewById(siteId);
 
-      expect(result?.actions).toEqual([
+      assert.deepStrictEqual(result?.actions, [
         { action: "EVALUATE_COMPATIBILITY", status: "todo" },
         { action: "REQUEST_FUNDING_INFORMATION", status: "done" },
       ]);
@@ -688,14 +716,14 @@ describe("SqlSitesQuery integration", () => {
 
       const result = await sitesQuery.getViewById(siteId);
 
-      expect(result?.actions).toEqual([]);
+      assert.deepStrictEqual(result?.actions, []);
     });
 
     it("should return undefined for non-existent siteId", async () => {
       const nonExistentSiteId = uuid();
       const result = await sitesQuery.getViewById(nonExistentSiteId);
 
-      expect(result).toEqual(undefined);
+      assert.strictEqual(result, undefined);
     });
 
     describe("getMutafrichesIdBySiteId", () => {
@@ -726,7 +754,7 @@ describe("SqlSitesQuery integration", () => {
 
         const result = await sitesQuery.getMutafrichesIdBySiteId(siteId);
 
-        expect(result).toEqual(evaluationId);
+        assert.deepStrictEqual(result, evaluationId);
       });
 
       it("should return null when no compatibility evaluation exists for site", async () => {
@@ -734,7 +762,7 @@ describe("SqlSitesQuery integration", () => {
 
         const result = await sitesQuery.getMutafrichesIdBySiteId(siteId);
 
-        expect(result).toEqual(null);
+        assert.strictEqual(result, null);
       });
     });
   });
@@ -767,7 +795,7 @@ describe("SqlSitesQuery integration", () => {
 
       const result = await sitesQuery.getSiteSurfaceAreaAndCityCode(siteId);
 
-      expect(result).toEqual({
+      assert.deepStrictEqual(result, {
         surfaceArea: 14000,
         cityCode: "75109",
       });
@@ -778,7 +806,7 @@ describe("SqlSitesQuery integration", () => {
 
       const result = await sitesQuery.getSiteSurfaceAreaAndCityCode(nonExistentSiteId);
 
-      expect(result).toEqual(undefined);
+      assert.strictEqual(result, undefined);
     });
   });
 });

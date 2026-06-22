@@ -1,6 +1,7 @@
-/* oxlint-disable typescript/no-non-null-assertion */
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { Knex } from "knex";
+import assert from "node:assert/strict";
+import { after, before, beforeEach, describe, it } from "node:test";
 import supertest from "supertest";
 import { authenticateUser, createTestApp } from "test/testApp";
 import { v4 as uuid } from "uuid";
@@ -18,13 +19,13 @@ describe("SiteActions controller", () => {
   let sqlConnection: Knex;
   const siteId = "f590f643-cd9a-4187-8973-f90e9f1998c8";
 
-  beforeAll(async () => {
+  before(async () => {
     app = await createTestApp();
     await app.init();
     sqlConnection = app.get(SqlConnection);
   });
 
-  afterAll(async () => {
+  after(async () => {
     await app.close();
     await sqlConnection.destroy();
   });
@@ -59,7 +60,7 @@ describe("SiteActions controller", () => {
         .patch(`/api/sites/${siteId}/actions/${actionId}/status`)
         .send({ status: "done" });
 
-      expect(response.status).toEqual(401);
+      assert.strictEqual(response.status, 401);
     });
 
     it("responds with 400 when status is invalid", async () => {
@@ -71,11 +72,11 @@ describe("SiteActions controller", () => {
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send({ status: "invalid-status" });
 
-      expect(response.status).toEqual(400);
-      expect(response.body).toHaveProperty("errors");
+      assert.strictEqual(response.status, 400);
+      assert.ok("errors" in (response.body as BadRequestResponseBody));
       const responseErrors = (response.body as BadRequestResponseBody).errors;
-      expect(responseErrors).toHaveLength(1);
-      expect(responseErrors[0]?.path).toContain("status");
+      assert.strictEqual(responseErrors.length, 1);
+      assert.ok(responseErrors[0]?.path.includes("status"));
     });
 
     it("responds with 404 when action not found", async () => {
@@ -88,8 +89,9 @@ describe("SiteActions controller", () => {
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send({ status: "done" });
 
-      expect(response.status).toEqual(404);
-      expect(response.body).toHaveProperty("error", "ACTION_NOT_FOUND");
+      assert.strictEqual(response.status, 404);
+      assert.ok("error" in (response.body as Record<string, unknown>));
+      assert.strictEqual((response.body as Record<string, unknown>).error, "ACTION_NOT_FOUND");
     });
 
     it("updates action status to done and sets completedAt", async () => {
@@ -101,14 +103,14 @@ describe("SiteActions controller", () => {
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send({ status: "done" });
 
-      expect(response.status).toEqual(200);
+      assert.strictEqual(response.status, 200);
 
       // Verify action was updated in database
       const updatedAction = await sqlConnection("site_actions").where({ id: actionId }).first();
 
-      expect(updatedAction).toBeDefined();
-      expect(updatedAction!.status).toEqual("done");
-      expect(updatedAction!.completed_at).toBeDefined();
+      assert.ok(updatedAction !== undefined);
+      assert.strictEqual(updatedAction.status, "done");
+      assert.ok(updatedAction.completed_at !== undefined);
     });
 
     it("updates action status to skipped and sets completedAt", async () => {
@@ -120,14 +122,14 @@ describe("SiteActions controller", () => {
         .set("Cookie", `${ACCESS_TOKEN_COOKIE_KEY}=${accessToken}`)
         .send({ status: "skipped" });
 
-      expect(response.status).toEqual(200);
+      assert.strictEqual(response.status, 200);
 
       // Verify action was updated in database
       const updatedAction = await sqlConnection("site_actions").where({ id: actionId }).first();
 
-      expect(updatedAction).toBeDefined();
-      expect(updatedAction!.status).toEqual("skipped");
-      expect(updatedAction!.completed_at).toBeDefined();
+      assert.ok(updatedAction !== undefined);
+      assert.strictEqual(updatedAction.status, "skipped");
+      assert.ok(updatedAction.completed_at !== undefined);
     });
   });
 });
