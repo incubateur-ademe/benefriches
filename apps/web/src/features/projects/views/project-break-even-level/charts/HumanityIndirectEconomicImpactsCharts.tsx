@@ -29,6 +29,7 @@ const CATEGORIES: { label: string; color: string; impacts: HumanityCategory[] }[
       "avoidedAirConditioningCo2eqEmissions",
       "avoidedCo2eqWithEnergyProduction",
       "avoidedTrafficCo2EqEmissions",
+      "newStoredCo2Eq",
       "storedCo2Eq",
       "forestRelatedProduct",
       "invasiveSpeciesRegulation",

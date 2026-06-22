@@ -8,7 +8,7 @@ import {
 import { SoilsCarbonStorage } from "src/reconversion-projects/core/gateways/SoilsCarbonStorageService";
 import { SumOnEvolutionPeriodService } from "src/reconversion-projects/core/model/sum-on-evolution-period/SumOnEvolutionPeriodService";
 
-import { getSiteStatuQuoIndirectsEconomicImpacts } from "./siteIndirectEconomicImpacts";
+import { getSiteStatuQuoIndirectsImpacts } from "./siteIndirectImpacts";
 import { getSiteStatuQuoOperatingEconomicBalance } from "./siteOperatingEconomicBalance";
 
 export const computeStatuQuoSiteImpacts = ({
@@ -49,8 +49,8 @@ export const computeStatuQuoSiteImpacts = ({
     operationsFirstYear,
   });
 
-  const indirectEconomicImpacts: GetSiteImpactsDto["economicImpacts"] =
-    getSiteStatuQuoIndirectsEconomicImpacts({
+  const { economicImpacts: indirectEconomicImpacts, impactMetrics } =
+    getSiteStatuQuoIndirectsImpacts({
       siteData: { ...site, soilsCarbonStorage: siteSoilsCarbonStorage },
       sumOnEvolutionPeriodService,
     });
@@ -73,6 +73,7 @@ export const computeStatuQuoSiteImpacts = ({
   return {
     projectionYears: sumOnEvolutionPeriodService.getProjectionYears(),
     economicImpacts,
+    impactMetrics,
     stakeholders,
   };
 };

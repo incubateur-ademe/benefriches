@@ -1,9 +1,21 @@
-import { ReconversionProjectOnSiteIndirectEconomicImpact, sumList } from "shared";
+import {
+  computeReinstatementFullTimeJobs,
+  ProjectOnSiteImpactMetric,
+  ReconversionProjectOnSiteIndirectEconomicImpact,
+  ReinstatementExpense,
+  roundTo2Digits,
+  sumList,
+} from "shared";
 
+import { Schedule } from "../../../reconversionProject";
 import { SumOnEvolutionPeriodService } from "../../../sum-on-evolution-period/SumOnEvolutionPeriodService";
+import {
+  getDurationFromScheduleInYears,
+  spreadTemporaryFullTimeJobsOver,
+} from "../../full-time-jobs/fullTimeJobsImpactService";
 import { computePropertyValueImpact } from "../../property-value/propertyValueImpact";
 import { computeFricheYearlyRoadsAndUtilitiesMaintenanceExpenses } from "../../roads-and-utilities-expenses/roadsAndUtilitiesExpensesImpact";
-import { computeCumulativeByYear } from "../projectIndirectEconomicImpacts";
+import { computeCumulativeByYear } from "../projectIndirectImpacts";
 
 export const getFricheRoadsAndUtilitiesExpensesImpact = ({
   siteSurfaceArea,
@@ -69,4 +81,32 @@ export const getLocalPropertyIncreaseWithFricheRemovalImpacts = ({
       cumulativeByYear: computeCumulativeByYear(propertyTransferDutiesIncreaseDetailsByYear),
     },
   ];
+};
+
+export const getReinstatementFullTimeJobs = ({
+  reinstatementSchedule,
+  reinstatementExpenses,
+  evaluationPeriodInYears,
+}: {
+  reinstatementSchedule: Schedule;
+  reinstatementExpenses: ReinstatementExpense[];
+  evaluationPeriodInYears: number;
+}): ProjectOnSiteImpactMetric | undefined => {
+  const reinstatementFullTimeJobs = computeReinstatementFullTimeJobs(reinstatementExpenses);
+  const reinstatementDurationInYears = roundTo2Digits(
+    getDurationFromScheduleInYears(reinstatementSchedule),
+  );
+  const reinstatementJobsSpreadOverEvaluationPeriod = spreadTemporaryFullTimeJobsOver({
+    targetDurationInYears: evaluationPeriodInYears,
+    currentDurationInYears: reinstatementDurationInYears,
+    temporaryFullTimeJobs: reinstatementFullTimeJobs,
+  });
+
+  if (reinstatementJobsSpreadOverEvaluationPeriod) {
+    return {
+      name: "reinstatementFullTimeJobs",
+      total: reinstatementJobsSpreadOverEvaluationPeriod,
+    };
+  }
+  return undefined;
 };

@@ -2,7 +2,7 @@ import { BuildingsUseDistribution, DevelopmentPlanFeatures } from "shared";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
 import type { SumOnEvolutionPeriodService } from "../../../sum-on-evolution-period/SumOnEvolutionPeriodService";
-import { InputReconversionProjectData, InputSiteData } from "../projectIndirectEconomicImpacts";
+import { InputReconversionProjectData, InputSiteData } from "../projectIndirectImpacts";
 import { getUrbanProjectImpacts, getNewUsagesTaxesIncomeImpact } from "./urbanProjectImpacts";
 
 const baseSiteCityData = {
@@ -45,6 +45,7 @@ const buildUrbanProject = (
       buildingsFloorAreaDistribution,
     },
   },
+  reinstatementExpenses: [],
 });
 
 describe("getNewUsagesTaxesIncomeImpact", () => {
@@ -141,7 +142,7 @@ describe("getUrbanProjectImpacts", () => {
   });
 
   describe("UrbanFreshnessRelatedImpacts", () => {
-    it("adds avoidedAirConditioningExpenses if has urban freshness effect", () => {
+    it("adds avoided air conditioning impacts if has urban freshness effect", () => {
       const result = getUrbanProjectImpacts({
         reconversionProject: buildUrbanProject({
           RESIDENTIAL: 500,
@@ -156,23 +157,37 @@ describe("getUrbanProjectImpacts", () => {
         sumOnEvolutionPeriodService: mockService,
       });
 
-      const acImpact = result.find((r) => r.name === "avoidedAirConditioningExpenses");
+      const acImpact = result.economicImpacts.find(
+        (r) => r.name === "avoidedAirConditioningExpenses",
+      );
       expect(acImpact).toBeDefined();
-      expect(result.find((r) => r.name === "avoidedAirConditioningCo2eqEmissions")).toBeDefined();
+      expect(
+        result.impactMetrics.find((r) => r.name === "avoidedAirConditioningCo2eqEmissions"),
+      ).toBeDefined();
+      expect(
+        result.economicImpacts.find((r) => r.name === "avoidedAirConditioningCo2eqEmissions"),
+      ).toBeDefined();
       if (acImpact) {
         expect(acImpact.total).toBeDefined();
       }
     });
 
-    it("excludes avoidedAirConditioningExpenses if site is not friche has urban freshness effect", () => {
+    it("excludes avoided air conditioning impacts if site is not friche has urban freshness effect", () => {
       const result = getUrbanProjectImpacts({
         reconversionProject: buildUrbanProject({ RESIDENTIAL: 5_000 }),
         relatedSite: { ...baseRelatedSite, nature: "AGRICULTURAL_OPERATION", surfaceArea: 10_000 },
         siteCityData: baseSiteCityData,
         sumOnEvolutionPeriodService: mockService,
       });
-      expect(result.find((r) => r.name === "avoidedAirConditioningExpenses")).toBeUndefined();
-      expect(result.find((r) => r.name === "avoidedAirConditioningCo2eqEmissions")).toBeUndefined();
+      expect(
+        result.economicImpacts.find((r) => r.name === "avoidedAirConditioningExpenses"),
+      ).toBeUndefined();
+      expect(
+        result.economicImpacts.find((r) => r.name === "avoidedAirConditioningCo2eqEmissions"),
+      ).toBeUndefined();
+      expect(
+        result.impactMetrics.find((r) => r.name === "avoidedAirConditioningCo2eqEmissions"),
+      ).toBeUndefined();
     });
   });
 
@@ -206,10 +221,19 @@ describe("getUrbanProjectImpacts", () => {
       ] as const;
 
       travelImpactNames.forEach((name) => {
-        expect(result.find((r) => r.name === name)).toBeDefined();
+        expect(result.economicImpacts.find((r) => r.name === name)).toBeDefined();
       });
 
-      const resultNames = new Set(result.map((r) => r.name));
+      [
+        "avoidedVehiculeKilometers",
+        "avoidedTrafficAccidents",
+        "avoidedVehiculeKilometers",
+        "timeTravelSavedInHours",
+      ].forEach((name) => {
+        expect(result.impactMetrics.find((r) => r.name === name)).toBeDefined();
+      });
+
+      const resultNames = new Set(result.economicImpacts.map((r) => r.name));
       const found = travelImpactNames.filter((n) => resultNames.has(n));
       expect(found.length).toBeGreaterThanOrEqual(0);
     });
@@ -234,7 +258,16 @@ describe("getUrbanProjectImpacts", () => {
       ] as const;
 
       travelImpactNames.forEach((name) => {
-        expect(result.find((r) => r.name === name)).toBeUndefined();
+        expect(result.economicImpacts.find((r) => r.name === name)).toBeUndefined();
+      });
+
+      [
+        "avoidedVehiculeKilometers",
+        "avoidedTrafficAccidents",
+        "avoidedVehiculeKilometers",
+        "timeTravelSavedInHours",
+      ].forEach((name) => {
+        expect(result.impactMetrics.find((r) => r.name === name)).toBeUndefined();
       });
     });
   });
@@ -248,7 +281,9 @@ describe("getUrbanProjectImpacts", () => {
         sumOnEvolutionPeriodService: mockService,
       });
 
-      expect(result.find((r) => r.name === "projectNewHousesTaxesIncome")).toBeDefined();
+      expect(
+        result.economicImpacts.find((r) => r.name === "projectNewHousesTaxesIncome"),
+      ).toBeDefined();
     });
 
     it("adds taxes on new OFFICES surfaces", () => {
@@ -259,7 +294,9 @@ describe("getUrbanProjectImpacts", () => {
         sumOnEvolutionPeriodService: mockService,
       });
 
-      expect(result.find((r) => r.name === "projectNewCompanyTaxationIncome")).toBeDefined();
+      expect(
+        result.economicImpacts.find((r) => r.name === "projectNewCompanyTaxationIncome"),
+      ).toBeDefined();
     });
   });
 
@@ -272,7 +309,9 @@ describe("getUrbanProjectImpacts", () => {
         sumOnEvolutionPeriodService: mockService,
       });
 
-      expect(result.find((d) => d.name === "localPropertyValueIncrease")).toBeUndefined();
+      expect(
+        result.economicImpacts.find((d) => d.name === "localPropertyValueIncrease"),
+      ).toBeUndefined();
     });
 
     it("add localPropertyValueIncrease for urban project on friche", () => {
@@ -283,7 +322,9 @@ describe("getUrbanProjectImpacts", () => {
         sumOnEvolutionPeriodService: mockService,
       });
 
-      expect(result.find((d) => d.name === "localPropertyValueIncrease")).toBeDefined();
+      expect(
+        result.economicImpacts.find((d) => d.name === "localPropertyValueIncrease"),
+      ).toBeDefined();
     });
   });
 
@@ -296,7 +337,9 @@ describe("getUrbanProjectImpacts", () => {
         sumOnEvolutionPeriodService: mockService,
       });
 
-      expect(result.find((d) => d.name === "fricheRoadsAndUtilitiesExpenses")).toBeUndefined();
+      expect(
+        result.economicImpacts.find((d) => d.name === "fricheRoadsAndUtilitiesExpenses"),
+      ).toBeUndefined();
     });
 
     it("add fricheRoadsAndUtilitiesExpenses for urban project on friche", () => {
@@ -307,7 +350,37 @@ describe("getUrbanProjectImpacts", () => {
         sumOnEvolutionPeriodService: mockService,
       });
 
-      expect(result.find((d) => d.name === "fricheRoadsAndUtilitiesExpenses")).toBeDefined();
+      expect(
+        result.economicImpacts.find((d) => d.name === "fricheRoadsAndUtilitiesExpenses"),
+      ).toBeDefined();
+    });
+  });
+
+  describe("fullTimeJobs impact metrics", () => {
+    it("returns impact over 10 years for full-time jobs in operations over 9 months", () => {
+      const result = getUrbanProjectImpacts({
+        reconversionProject: {
+          ...buildUrbanProject({
+            RESIDENTIAL: 10000,
+            LOCAL_STORE: 20000,
+          }),
+          conversionSchedule: {
+            startDate: new Date("2024-01-01"),
+            endDate: new Date("2024-09-31"),
+          },
+        },
+        relatedSite: baseRelatedSite,
+        siteCityData: baseSiteCityData,
+        sumOnEvolutionPeriodService: mockService,
+      });
+
+      expect(
+        result.impactMetrics.find((d) => d.name === "conversionFullTimeJobs")?.total,
+      ).toBeUndefined();
+
+      expect(result.impactMetrics.find((d) => d.name === "operationsFullTimeJobs")?.total).toEqual(
+        880,
+      );
     });
   });
 });

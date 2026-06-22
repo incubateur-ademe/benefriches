@@ -5,12 +5,6 @@ import { RootState } from "@/app/store/store";
 
 import { IndirectEconomicImpactsByBearer } from "../../domain/groupIndirectImpactsByBearer";
 import {
-  EnvironmentalAreaChartImpactsData,
-  getEnvironmentalAreaChartImpactsData,
-  getSocialAreaChartImpactsData,
-  SocialAreaChartImpactsData,
-} from "../../domain/projectImpactsAreaChartsData";
-import {
   selectImpactsCroppedByEvaluationPeriod,
   selectIndirectEconomicImpactsByBearer,
 } from "./projectBreakEvenLevel.selectors";
@@ -23,10 +17,14 @@ export type DevelopmentScoreDataView = {
   localAuthorityEconomicScore: Score & {
     metrics: IndirectEconomicImpactsByBearer["local_authority"]["details"];
   };
-  fullTimeJobsScore: Score & { metrics: SocialAreaChartImpactsData["fullTimeJobs"] };
+  fullTimeJobsScore: Score & { metrics: { base: number; forecast: number; difference: number } };
   environmentScore: Score & {
     metrics: {
-      avoidedCo2eqEmissions: EnvironmentalAreaChartImpactsData["avoidedCo2eqEmissions"];
+      avoidedCo2eqEmissions: {
+        base: number;
+        forecast: number;
+        difference: number;
+      };
       permeableSurfaceAreaDifference?: number;
       hasDecontamination: boolean;
       waterRegulation?: number;
@@ -53,7 +51,7 @@ const INDIRECT_ECONOMIC_IMPACTS_SCORE = {
     "avoidedAirConditioningCo2eqEmissions",
     "avoidedCo2eqWithEnergyProduction",
     "avoidedTrafficCo2EqEmissions",
-    "storedCo2Eq",
+    "newStoredCo2Eq",
     "forestRelatedProduct",
     "invasiveSpeciesRegulation",
     "natureRelatedWelnessAndLeisure",
@@ -81,7 +79,7 @@ const INDIRECT_ECONOMIC_IMPACTS_SCORE = {
     "avoidedCo2eqWithEnergyProduction",
     "avoidedAirConditioningCo2eqEmissions",
     "avoidedTrafficCo2EqEmissions",
-    "storedCo2Eq",
+    "newStoredCo2Eq",
     "natureRelatedWelnessAndLeisure",
     "forestRelatedProduct",
     "pollination",
@@ -95,7 +93,7 @@ const INDIRECT_ECONOMIC_IMPACTS_SCORE = {
     "avoidedAccidentsDeathsExpenses",
   ],
   ecosystemicServices: [
-    "storedCo2Eq",
+    "newStoredCo2Eq",
     "forestRelatedProduct",
     "invasiveSpeciesRegulation",
     "natureRelatedWelnessAndLeisure",
@@ -105,22 +103,6 @@ const INDIRECT_ECONOMIC_IMPACTS_SCORE = {
     "waterCycle",
   ],
 } as const;
-
-const getDecontaminationState = (props: {
-  contaminatedSoilSurface?: number;
-  decontaminatedSoilSurface?: number;
-}) => {
-  if (!props.contaminatedSoilSurface) {
-    return "useless";
-  }
-  if (props.decontaminatedSoilSurface === props.contaminatedSoilSurface) {
-    return "total";
-  }
-  if (props.decontaminatedSoilSurface) {
-    return "partial";
-  }
-  return "none";
-};
 
 export const selectDevelopmentScoreDataView = createSelector(
   [selectSelf, selectImpactsCroppedByEvaluationPeriod, selectIndirectEconomicImpactsByBearer],
@@ -166,20 +148,43 @@ export const selectDevelopmentScoreDataView = createSelector(
     const localAuthorityEconomicImpacts =
       indirectEconomicImpactsByBearer.local_authority.total ?? 0;
 
-    const { avoidedCo2eqEmissions, permeableSurfaceArea, nonContaminatedSurfaceArea } =
-      getEnvironmentalAreaChartImpactsData({
-        projectContaminatedSurfaceArea: state.projectData?.contaminatedSoilSurface,
-        siteContaminatedSurfaceArea: state.relatedSiteData?.contaminatedSoilSurface,
-        impactsData: state.impactsData,
-      });
+    const avoidedCo2eqEmissions = sumListWithKey(
+      breakEvenLevelForEvaluationPeriod.aggregatedReconversionImpacts.impactsMetrics.filter(
+        ({ name }) =>
+          name === "avoidedAirConditioningCo2eqEmissions" ||
+          name === "avoidedCO2TonsWithEnergyProduction" ||
+          name === "avoidedTrafficCo2EqEmissions" ||
+          name === "newStoredCo2Eq",
+      ),
+      "total",
+    );
 
-    const { fullTimeJobs } = getSocialAreaChartImpactsData(state.impactsData);
+    const newDecontaminatedSurface =
+      breakEvenLevelForEvaluationPeriod.aggregatedReconversionImpacts.impactsMetrics.find(
+        ({ name }) => name === "decontaminatedSurface",
+      )?.total ?? 0;
 
-    const decontaminationState = getDecontaminationState({
-      contaminatedSoilSurface: state.relatedSiteData?.contaminatedSoilSurface,
-      decontaminatedSoilSurface: nonContaminatedSurfaceArea?.difference,
-    });
+    const hasDecontamination = newDecontaminatedSurface > 0;
 
+    const newFullTimeJobs = sumListWithKey(
+      breakEvenLevelForEvaluationPeriod.aggregatedReconversionImpacts.impactsMetrics.filter(
+        ({ name }) =>
+          name === "conversionFullTimeJobs" ||
+          name === "operationsFullTimeJobs" ||
+          name === "oldOperationsFullTimeJobsLoss" ||
+          name === "reinstatementFullTimeJobs",
+      ),
+      "total",
+    );
+    const oldFullTimeJobs =
+      breakEvenLevelForEvaluationPeriod.aggregatedReconversionImpacts.impactsMetrics.find(
+        ({ name }) => name === "oldOperationsFullTimeJobsLoss",
+      )?.total;
+
+    const siteStatuQuoStoredCo2Eq =
+      breakEvenLevelForEvaluationPeriod.reconversionImpactsBreakdown.siteStatuQuoImpactMetrics.find(
+        ({ name }) => name === "storedCo2Eq",
+      )?.total ?? 0;
     return {
       evaluationPeriodInYears: state.evaluationPeriod ?? 50,
       localAuthorityEconomicScore: {
@@ -188,19 +193,32 @@ export const selectDevelopmentScoreDataView = createSelector(
         metrics: indirectEconomicImpactsByBearer.local_authority.details,
       },
       fullTimeJobsScore: {
-        isSuccess: Boolean(fullTimeJobs && fullTimeJobs?.difference > 0),
-        value: fullTimeJobs?.difference ?? 0,
-        metrics: fullTimeJobs,
+        isSuccess: Boolean(newFullTimeJobs && newFullTimeJobs > 0),
+        value: newFullTimeJobs,
+        metrics: {
+          base: oldFullTimeJobs ?? 0,
+          forecast: newFullTimeJobs,
+          difference: newFullTimeJobs,
+        },
       },
       environmentScore: {
         isSuccess: environmentalIndirectImpacts > 0,
         value: environmentalIndirectImpacts,
         metrics: {
-          avoidedCo2eqEmissions,
-          permeableSurfaceAreaDifference: permeableSurfaceArea?.difference,
-          hasDecontamination:
-            decontaminationState === "partial" || decontaminationState === "total",
-          avoidedVehiculeKilometers: state.impactsData?.social.avoidedVehiculeKilometers,
+          avoidedCo2eqEmissions: {
+            base: siteStatuQuoStoredCo2Eq,
+            forecast: avoidedCo2eqEmissions + siteStatuQuoStoredCo2Eq,
+            difference: avoidedCo2eqEmissions,
+          },
+          permeableSurfaceAreaDifference:
+            breakEvenLevelForEvaluationPeriod.aggregatedReconversionImpacts.impactsMetrics.find(
+              ({ name }) => name === "newPermeableSurface",
+            )?.total,
+          hasDecontamination,
+          avoidedVehiculeKilometers:
+            breakEvenLevelForEvaluationPeriod.aggregatedReconversionImpacts.impactsMetrics.find(
+              ({ name }) => name === "avoidedVehiculeKilometers",
+            )?.total,
           waterRegulation:
             breakEvenLevelForEvaluationPeriod.aggregatedReconversionImpacts.indirectEconomicImpacts.details.find(
               ({ name }) => name === "waterRegulation",
@@ -237,11 +255,24 @@ export const selectDevelopmentScoreDataView = createSelector(
             breakEvenLevelForEvaluationPeriod.aggregatedReconversionImpacts.indirectEconomicImpacts.details.find(
               ({ name }) => name === "avoidedAirPollutionHealthExpenses",
             )?.total,
-          hasDecontamination:
-            decontaminationState === "partial" || decontaminationState === "total",
-          travelTimeSaved: state.impactsData?.social.travelTimeSaved,
-          avoidedTrafficAccidents: state.impactsData?.social.avoidedTrafficAccidents?.total,
-          avoidedFrichesAccidents: state.impactsData?.social.accidents?.difference,
+          hasDecontamination,
+          travelTimeSaved:
+            breakEvenLevelForEvaluationPeriod.aggregatedReconversionImpacts.impactsMetrics.find(
+              ({ name }) => name === "timeTravelSavedInHours",
+            )?.total,
+          avoidedTrafficAccidents:
+            breakEvenLevelForEvaluationPeriod.aggregatedReconversionImpacts.impactsMetrics.find(
+              ({ name }) => name === "avoidedTrafficAccidents",
+            )?.total,
+          avoidedFrichesAccidents: sumListWithKey(
+            breakEvenLevelForEvaluationPeriod.aggregatedReconversionImpacts.impactsMetrics.filter(
+              ({ name }) =>
+                name === "avoidedFricheAccidentsDeaths" ||
+                name === "avoidedFricheAccidentsSevereInjuries" ||
+                name === "avoidedFricheAccidentsMinorInjuries",
+            ),
+            "total",
+          ),
         },
       },
     };

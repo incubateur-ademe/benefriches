@@ -7,5 +7,5 @@ export const computeDefaultPhotovoltaicOperationsFullTimeJobs = (electricalPower
 
 const PHOTOVOLTAIC_INSTALLATION_FULL_TIME_JOBS_JOB_PER_KWC = 0.0013;
 export const computeDefaultPhotovoltaicConversionFullTimeJobs = (electricalPowerKWc: number) => {
-  return roundTo1Digit(electricalPowerKWc * PHOTOVOLTAIC_INSTALLATION_FULL_TIME_JOBS_JOB_PER_KWC);
+  return electricalPowerKWc * PHOTOVOLTAIC_INSTALLATION_FULL_TIME_JOBS_JOB_PER_KWC;
 };

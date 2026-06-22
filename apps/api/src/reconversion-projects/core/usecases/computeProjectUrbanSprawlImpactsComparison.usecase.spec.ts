@@ -402,7 +402,7 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
 
     expect(data.projectOnSimulationSiteImpactsData.details.length > 0).toBeTruthy();
     expect(
-      data.projectOnSimulationSiteImpactsData.details.find(({ name }) => name === "storedCo2Eq"),
+      data.projectOnSimulationSiteImpactsData.details.find(({ name }) => name === "newStoredCo2Eq"),
     ).toEqual(undefined);
     expect(data.simulationSiteStatuQuoImpactsData).toBeDefined();
   });

@@ -48,6 +48,7 @@ export const ECOSYSTEM_SERVICE_NAMES = [
   "pollination",
   "soilErosion",
   "storedCo2Eq",
+  "newStoredCo2Eq",
   "waterCycle",
 ] as const;
 

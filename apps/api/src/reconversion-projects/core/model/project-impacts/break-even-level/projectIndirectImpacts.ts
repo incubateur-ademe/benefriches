@@ -12,13 +12,17 @@ import {
   roundToInteger,
   sumList,
   ReconversionProjectOnSiteIndirectEconomicImpact,
+  ProjectOnSiteImpactMetric,
+  ReinstatementExpense,
 } from "shared";
 
 import { SoilsCarbonStorage } from "../../../gateways/SoilsCarbonStorageService";
+import { Schedule } from "../../reconversionProject";
 import { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
-import { getNatureConservationRelatedImpacts } from "./indirect-economic-impacts/natureConservationRelatedImpacts";
-import { getPhotovoltaicPowerPlantProjectImpacts } from "./indirect-economic-impacts/photovoltaicRelatedImpacts";
-import { getUrbanProjectImpacts } from "./indirect-economic-impacts/urbanProjectImpacts";
+import { getNatureConservationRelatedImpacts } from "./indirect-impacts/natureConservationRelatedImpacts";
+import { getPhotovoltaicPowerPlantProjectImpacts } from "./indirect-impacts/photovoltaicRelatedImpacts";
+import { getReinstatementFullTimeJobs } from "./indirect-impacts/siteReconversionRelatedEconomicImpacts";
+import { getUrbanProjectImpacts } from "./indirect-impacts/urbanProjectImpacts";
 
 export type InputSiteData = {
   nature: SiteNature;
@@ -43,6 +47,9 @@ export type InputReconversionProjectData = {
   soilsCarbonStorage?: SoilsCarbonStorage;
   developmentPlan: DevelopmentPlanFeatures;
   yearlyProjectedExpenses: RecurringExpense[];
+  conversionSchedule?: Schedule;
+  reinstatementExpenses: ReinstatementExpense[];
+  reinstatementSchedule?: Schedule;
 };
 
 type Props = {
@@ -62,7 +69,7 @@ export const computeCumulativeByYear = (impacts: number[]): number[] =>
     return acc;
   }, []);
 
-export const getProjectIndirectsEconomicImpacts = ({
+export const getProjectMetricsAndEconomicImpacts = ({
   reconversionProject,
   relatedSite,
   siteCityData,
@@ -72,7 +79,8 @@ export const getProjectIndirectsEconomicImpacts = ({
     reconversionProject.soilsDistribution,
   );
 
-  const impacts: ReconversionProjectOnSiteIndirectEconomicImpact[] = [];
+  const economicImpacts: ReconversionProjectOnSiteIndirectEconomicImpact[] = [];
+  const impactMetrics: ProjectOnSiteImpactMetric[] = [];
 
   const propertyTransferDutiesIncome = sumList([
     reconversionProject.sitePurchasePropertyTransferDutiesAmount ?? 0,
@@ -86,7 +94,7 @@ export const getProjectIndirectsEconomicImpacts = ({
       [],
       { endYearIndex: 1 },
     );
-    impacts.push({
+    economicImpacts.push({
       name: "propertyTransferDutiesIncome",
       total: propertyTransferDutiesIncome,
       detailsByYear,
@@ -95,16 +103,17 @@ export const getProjectIndirectsEconomicImpacts = ({
   }
 
   // --- Conservation des sols (commun à tous les types de projet) ---
-  impacts.push(
-    ...getNatureConservationRelatedImpacts({
+  const { economicImpacts: ncEconomicImpacts, impactMetrics: ncImpactMetrics } =
+    getNatureConservationRelatedImpacts({
       projectSoilsDistributionByType: soilsDistributionByType,
       siteSoilsDistribution: relatedSite.soilsDistribution,
       baseSoilsCarbonStorage: relatedSite.soilsCarbonStorage,
       projectSoilsCarbonStorage: reconversionProject.soilsCarbonStorage,
       projectDecontaminatedSoilSurface: reconversionProject.decontaminatedSoilSurface,
       sumOnEvolutionPeriodService,
-    }),
-  );
+    });
+  economicImpacts.push(...ncEconomicImpacts);
+  impactMetrics.push(...ncImpactMetrics);
 
   // -- Revenus liés à la location du site
   const projectedRentCost = reconversionProject.yearlyProjectedExpenses.find(
@@ -115,7 +124,7 @@ export const getProjectIndirectsEconomicImpacts = ({
       projectedRentCost.amount,
       ["discount"],
     );
-    impacts.push({
+    economicImpacts.push({
       detailsByYear: projectedDetailsByYear,
       cumulativeByYear: computeCumulativeByYear(projectedDetailsByYear),
       total: sumList(projectedDetailsByYear),
@@ -123,10 +132,21 @@ export const getProjectIndirectsEconomicImpacts = ({
     });
   }
 
+  if (reconversionProject.reinstatementSchedule) {
+    const reinstatementFullTimeJobs = getReinstatementFullTimeJobs({
+      reinstatementExpenses: reconversionProject.reinstatementExpenses,
+      evaluationPeriodInYears: sumOnEvolutionPeriodService.evaluationPeriodInYears,
+      reinstatementSchedule: reconversionProject.reinstatementSchedule,
+    });
+    if (reinstatementFullTimeJobs) {
+      impactMetrics.push(reinstatementFullTimeJobs);
+    }
+  }
+
   // --- Impacts spécifiques au type de projet ---
   if (reconversionProject.developmentPlan.type === "URBAN_PROJECT") {
-    impacts.push(
-      ...getUrbanProjectImpacts({
+    const { impactMetrics: indirectImpactsMetrics, economicImpacts: indirectEconomicImpacts } =
+      getUrbanProjectImpacts({
         reconversionProject: {
           ...reconversionProject,
           developmentPlan: reconversionProject.developmentPlan,
@@ -134,21 +154,29 @@ export const getProjectIndirectsEconomicImpacts = ({
         relatedSite,
         siteCityData,
         sumOnEvolutionPeriodService,
-      }),
-    );
+      });
+    impactMetrics.push(...indirectImpactsMetrics);
+    economicImpacts.push(...indirectEconomicImpacts);
   }
 
   if (reconversionProject.developmentPlan.type === "PHOTOVOLTAIC_POWER_PLANT") {
-    impacts.push(
-      ...getPhotovoltaicPowerPlantProjectImpacts({
+    const { impactMetrics: indirectImpactsMetrics, economicImpacts: indirectEconomicImpacts } =
+      getPhotovoltaicPowerPlantProjectImpacts({
         reconversionProject: {
           ...reconversionProject,
           developmentPlan: reconversionProject.developmentPlan,
         },
         sumOnEvolutionPeriodService,
-      }),
-    );
+      });
+    impactMetrics.push(...indirectImpactsMetrics);
+    economicImpacts.push(...indirectEconomicImpacts);
   }
 
-  return { total: roundToInteger(sumListWithKey(impacts, "total")), details: impacts };
+  return {
+    impactMetrics,
+    economicImpacts: {
+      total: roundToInteger(sumListWithKey(economicImpacts, "total")),
+      details: economicImpacts,
+    },
+  };
 };

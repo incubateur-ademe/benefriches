@@ -22,13 +22,11 @@ type SpreadTemporaryFullTimeJobsOverInput = {
   targetDurationInYears: number;
 };
 
-const spreadTemporaryFullTimeJobsOver = (input: SpreadTemporaryFullTimeJobsOverInput) => {
-  return roundTo1Digit(
-    (input.temporaryFullTimeJobs * input.currentDurationInYears) / input.targetDurationInYears,
-  );
+export const spreadTemporaryFullTimeJobsOver = (input: SpreadTemporaryFullTimeJobsOverInput) => {
+  return (input.temporaryFullTimeJobs * input.currentDurationInYears) / input.targetDurationInYears;
 };
 
-const getDurationFromScheduleInYears = ({ startDate, endDate }: Schedule) => {
+export const getDurationFromScheduleInYears = ({ startDate, endDate }: Schedule) => {
   const durationInDays = differenceInDays(endDate, startDate);
 
   return durationInDays / 365;
@@ -97,14 +95,16 @@ export class FullTimeJobsImpactService {
   }
 
   private get reinstatementFullTimeJobs() {
-    return computeReinstatementFullTimeJobs(this.reinstatementExpenses);
+    return roundTo1Digit(computeReinstatementFullTimeJobs(this.reinstatementExpenses));
   }
 
   private get conversionFullTimeJobs() {
     switch (this.developmentPlan.type) {
       case "PHOTOVOLTAIC_POWER_PLANT":
-        return computeDefaultPhotovoltaicConversionFullTimeJobs(
-          this.developmentPlan.features.electricalPowerKWc,
+        return roundTo1Digit(
+          computeDefaultPhotovoltaicConversionFullTimeJobs(
+            this.developmentPlan.features.electricalPowerKWc,
+          ),
         );
       default:
         return 0;
@@ -146,22 +146,26 @@ export class FullTimeJobsImpactService {
     if (!this.conversionDurationInYears) {
       return 0;
     }
-    return spreadTemporaryFullTimeJobsOver({
-      targetDurationInYears: this.evaluationPeriodInYears,
-      currentDurationInYears: this.conversionDurationInYears,
-      temporaryFullTimeJobs: this.conversionFullTimeJobs,
-    });
+    return roundTo1Digit(
+      spreadTemporaryFullTimeJobsOver({
+        targetDurationInYears: this.evaluationPeriodInYears,
+        currentDurationInYears: this.conversionDurationInYears,
+        temporaryFullTimeJobs: this.conversionFullTimeJobs,
+      }),
+    );
   }
 
   private get reinstatementJobsSpreadOverEvaluationPeriod() {
     if (!this.reinstatementDurationInYears) {
       return 0;
     }
-    return spreadTemporaryFullTimeJobsOver({
-      targetDurationInYears: this.evaluationPeriodInYears,
-      currentDurationInYears: this.reinstatementDurationInYears,
-      temporaryFullTimeJobs: this.reinstatementFullTimeJobs,
-    });
+    return roundTo1Digit(
+      spreadTemporaryFullTimeJobsOver({
+        targetDurationInYears: this.evaluationPeriodInYears,
+        currentDurationInYears: this.reinstatementDurationInYears,
+        temporaryFullTimeJobs: this.reinstatementFullTimeJobs,
+      }),
+    );
   }
 
   private get totalCurrentFullTimeJobs() {

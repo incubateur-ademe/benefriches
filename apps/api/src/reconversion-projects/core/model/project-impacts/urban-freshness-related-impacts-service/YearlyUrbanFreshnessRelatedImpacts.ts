@@ -159,6 +159,13 @@ export class YearlyUrbanFreshnessRelatedImpacts extends InfluenceAreaService {
     return this.avoidedAirConditioningCo2EmissionsPerYear / 1000000;
   }
 
+  getAvoidedAirConditioningCo2EmissionsPerYear() {
+    if (!this.hasUrbanFreshnessImpact) {
+      return undefined;
+    }
+    return this.avoidedAirConditioningCo2EmissionsPerYear;
+  }
+
   getAvoidedAirConditioningExpensesPerYear() {
     if (!this.hasUrbanFreshnessImpact) {
       return undefined;

@@ -6,7 +6,7 @@ import {
 } from "shared";
 
 import { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
-import { computeCumulativeByYear } from "./projectIndirectEconomicImpacts";
+import { computeCumulativeByYear } from "./projectIndirectImpacts";
 
 type Props = {
   yearlyProjectedRevenues: RecurringRevenue[];

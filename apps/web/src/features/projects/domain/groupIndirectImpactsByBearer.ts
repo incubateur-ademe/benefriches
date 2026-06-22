@@ -74,6 +74,7 @@ export type HumanityCategory = Extract<
   | "avoidedAccidentsDeathsExpenses"
   // statu quo or project related impacts
   | "storedCo2Eq"
+  | "newStoredCo2Eq"
   | "natureRelatedWelnessAndLeisure"
   | "forestRelatedProduct"
   | "pollination"
@@ -136,6 +137,7 @@ export const getBearerForImpact = (
     case "avoidedCo2eqWithEnergyProduction":
     case "avoidedAirConditioningCo2eqEmissions":
     case "avoidedTrafficCo2EqEmissions":
+    case "newStoredCo2Eq":
     case "storedCo2Eq":
     case "natureRelatedWelnessAndLeisure":
     case "forestRelatedProduct":

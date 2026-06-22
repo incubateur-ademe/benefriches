@@ -174,6 +174,47 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
         ),
       ).toBeUndefined();
     });
+
+    it("adds oldOperationsFullTimeJobsLoss for AGRICULTURAL_OPERATION and site is operated", () => {
+      const result = computeProjectImpactsWithBreakEvenLevel({
+        reconversionProject: baseProject,
+        relatedSite: {
+          ...baseSite,
+          nature: "AGRICULTURAL_OPERATION" as const,
+          agriculturalOperationActivity: "CATTLE_FARMING",
+          isSiteOperated: true,
+        },
+        cityStats: siteCityData,
+        evaluationPeriodInYears: 50,
+      });
+
+      expect(
+        result.aggregatedReconversionImpacts.impactsMetrics.find(
+          (d) => d.name === "oldOperationsFullTimeJobsLoss",
+        )?.total,
+      ).toEqual(-1.5);
+    });
+
+    it("doesn't add oldOperationsFullTimeJobsLoss for AGRICULTURAL_OPERATION and site is not operated", () => {
+      const result = computeProjectImpactsWithBreakEvenLevel({
+        reconversionProject: baseProject,
+        relatedSite: {
+          ...baseSite,
+          nature: "AGRICULTURAL_OPERATION" as const,
+          agriculturalOperationActivity: "CATTLE_FARMING",
+
+          isSiteOperated: false,
+        },
+        cityStats: siteCityData,
+        evaluationPeriodInYears: 50,
+      });
+
+      expect(
+        result.aggregatedReconversionImpacts.impactsMetrics.find(
+          (d) => d.name === "oldOperationsFullTimeJobsLoss",
+        ),
+      ).toBeUndefined();
+    });
   });
 
   describe("with project or site rental incomes", () => {
@@ -546,6 +587,56 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
             d.name.startsWith("avoidedFricheMaintenanceAndSecuringCosts"),
           );
         expect(avoidedCosts.length).toBeGreaterThan(0);
+      });
+    });
+
+    describe("site_nature is not FRICHE and mode is 'urban_sprawl_comparison'", () => {
+      it("doesn't add avoidedFricheMaintenanceAndSecuringCosts", () => {
+        const result = computeProjectImpactsWithBreakEvenLevel({
+          reconversionProject: baseProject,
+          relatedSite: {
+            ...baseSite,
+            nature: "AGRICULTURAL_OPERATION",
+          },
+          cityStats: siteCityData,
+          evaluationPeriodInYears: 3,
+        });
+
+        const avoidedCosts =
+          result.aggregatedReconversionImpacts.indirectEconomicImpacts.details.filter((d) =>
+            d.name.startsWith("avoidedFricheMaintenanceAndSecuringCosts"),
+          );
+        expect(avoidedCosts.length).toEqual(0);
+      });
+    });
+  });
+
+  describe("avoidedFricheAccidents", () => {
+    describe("site_nature is FRICHE", () => {
+      it("adds avoidedFricheAccidentsSevereInjuries and avoidedFricheAccidentsMinorInjuries", () => {
+        const result = computeProjectImpactsWithBreakEvenLevel({
+          reconversionProject: baseProject,
+          relatedSite: baseSite,
+          cityStats: siteCityData,
+          evaluationPeriodInYears: 3,
+        });
+
+        expect(
+          result.aggregatedReconversionImpacts.impactsMetrics.find(
+            (d) => d.name === "avoidedFricheAccidentsMinorInjuries",
+          )?.total,
+        ).toEqual(1);
+        expect(
+          result.aggregatedReconversionImpacts.impactsMetrics.find(
+            (d) => d.name === "avoidedFricheAccidentsSevereInjuries",
+          )?.total,
+        ).toEqual(2);
+
+        expect(
+          result.aggregatedReconversionImpacts.impactsMetrics.find(
+            (d) => d.name === "avoidedFricheAccidentsDeaths",
+          ),
+        ).toBeUndefined();
       });
     });
 

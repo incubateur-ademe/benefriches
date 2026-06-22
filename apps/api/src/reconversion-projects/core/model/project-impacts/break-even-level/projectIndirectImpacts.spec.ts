@@ -1,19 +1,20 @@
 import { sumList } from "shared";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
-import type { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
+import { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import {
-  getProjectIndirectsEconomicImpacts,
+  getProjectMetricsAndEconomicImpacts,
   computeCumulativeByYear,
   InputReconversionProjectData,
   InputSiteData,
-} from "./projectIndirectEconomicImpacts";
+} from "./projectIndirectImpacts";
 
 const baseProject: InputReconversionProjectData = {
   operationsFirstYear: 2025,
   soilsDistribution: [],
   decontaminatedSoilSurface: 0,
   yearlyProjectedExpenses: [],
+  reinstatementExpenses: [],
   developmentPlan: {
     type: "PHOTOVOLTAIC_POWER_PLANT",
     features: {
@@ -63,7 +64,7 @@ describe("computeCumulativeByYear", () => {
   });
 });
 
-describe("getProjectIndirectsEconomicImpacts", () => {
+describe("getProjectMetricsAndEconomicImpacts", () => {
   let getWeightedYearlyValuesSpy: ReturnType<typeof vi.fn>;
   let mockService: SumOnEvolutionPeriodService;
 
@@ -75,35 +76,35 @@ describe("getProjectIndirectsEconomicImpacts", () => {
   });
 
   describe("minimal project", () => {
-    it("returns total rounded as integer", () => {
-      const result = getProjectIndirectsEconomicImpacts({
+    it("returns economicImpacts total rounded as integer", () => {
+      const result = getProjectMetricsAndEconomicImpacts({
         reconversionProject: baseProject,
         relatedSite: baseSite,
         siteCityData,
         sumOnEvolutionPeriodService: mockService,
       });
 
-      expect(Number.isInteger(result.total)).toBe(true);
+      expect(Number.isInteger(result.economicImpacts.total)).toBe(true);
     });
 
     it("returns total and details array", () => {
-      const result = getProjectIndirectsEconomicImpacts({
+      const result = getProjectMetricsAndEconomicImpacts({
         reconversionProject: baseProject,
         relatedSite: baseSite,
         siteCityData,
         sumOnEvolutionPeriodService: mockService,
       });
 
-      expect(result).toHaveProperty("total");
-      expect(result).toHaveProperty("details");
-      expect(Array.isArray(result.details)).toBe(true);
+      expect(result.economicImpacts).toHaveProperty("total");
+      expect(result.economicImpacts).toHaveProperty("details");
+      expect(Array.isArray(result.economicImpacts.details)).toBe(true);
     });
   });
 
   // ── Droits de mutation ────────────────────────────────────────────────────
   describe("with propertyTransferDutiesIncome", () => {
     it("adds propertyTransferDutiesIncome if there is site purchase or site or buildings resales", () => {
-      const result = getProjectIndirectsEconomicImpacts({
+      const result = getProjectMetricsAndEconomicImpacts({
         reconversionProject: {
           ...baseProject,
           sitePurchasePropertyTransferDutiesAmount: 10_000,
@@ -113,10 +114,12 @@ describe("getProjectIndirectsEconomicImpacts", () => {
         sumOnEvolutionPeriodService: mockService,
       });
 
-      expect(result.details.find((d) => d.name === "propertyTransferDutiesIncome")).toBeDefined();
+      expect(
+        result.economicImpacts.details.find((d) => d.name === "propertyTransferDutiesIncome"),
+      ).toBeDefined();
 
       expect(
-        getProjectIndirectsEconomicImpacts({
+        getProjectMetricsAndEconomicImpacts({
           reconversionProject: {
             ...baseProject,
             siteResaleExpectedPropertyTransferDutiesAmount: 10_000,
@@ -124,11 +127,11 @@ describe("getProjectIndirectsEconomicImpacts", () => {
           relatedSite: baseSite,
           siteCityData,
           sumOnEvolutionPeriodService: mockService,
-        }).details.find((d) => d.name === "propertyTransferDutiesIncome"),
+        }).economicImpacts.details.find((d) => d.name === "propertyTransferDutiesIncome"),
       ).toBeDefined();
 
       expect(
-        getProjectIndirectsEconomicImpacts({
+        getProjectMetricsAndEconomicImpacts({
           reconversionProject: {
             ...baseProject,
             buildingsResaleExpectedPropertyTransferDutiesAmount: 10_000,
@@ -136,12 +139,12 @@ describe("getProjectIndirectsEconomicImpacts", () => {
           relatedSite: baseSite,
           siteCityData,
           sumOnEvolutionPeriodService: mockService,
-        }).details.find((d) => d.name === "propertyTransferDutiesIncome"),
+        }).economicImpacts.details.find((d) => d.name === "propertyTransferDutiesIncome"),
       ).toBeDefined();
     });
 
     it("excludes propertyTransferDutiesIncome if there is no site purchase nor site or buildings resales", () => {
-      const result = getProjectIndirectsEconomicImpacts({
+      const result = getProjectMetricsAndEconomicImpacts({
         reconversionProject: {
           ...baseProject,
           sitePurchasePropertyTransferDutiesAmount: 0,
@@ -152,11 +155,13 @@ describe("getProjectIndirectsEconomicImpacts", () => {
         sumOnEvolutionPeriodService: mockService,
       });
 
-      expect(result.details.find((d) => d.name === "propertyTransferDutiesIncome")).toBeUndefined();
+      expect(
+        result.economicImpacts.details.find((d) => d.name === "propertyTransferDutiesIncome"),
+      ).toBeUndefined();
     });
 
     it("sums purchase and resale transfer duties income", () => {
-      const result = getProjectIndirectsEconomicImpacts({
+      const result = getProjectMetricsAndEconomicImpacts({
         reconversionProject: {
           ...baseProject,
           sitePurchasePropertyTransferDutiesAmount: 5_000,
@@ -173,7 +178,8 @@ describe("getProjectIndirectsEconomicImpacts", () => {
       );
       expect(dutyCall).toBeDefined();
       expect(
-        result.details.find(({ name }) => name === "propertyTransferDutiesIncome")?.total,
+        result.economicImpacts.details.find(({ name }) => name === "propertyTransferDutiesIncome")
+          ?.total,
       ).toEqual(10_000);
     });
   });
@@ -181,7 +187,7 @@ describe("getProjectIndirectsEconomicImpacts", () => {
   // ── Projet photovoltaïque ─────────────────────────────────────────────────
   describe("PHOTOVOLTAIC_POWER_PLANT project", () => {
     it("adds avoidedCo2eqWithEnergyProduction if expectedAnnualProduction > 0", () => {
-      const result = getProjectIndirectsEconomicImpacts({
+      const result = getProjectMetricsAndEconomicImpacts({
         reconversionProject: baseProject,
         relatedSite: baseSite,
         siteCityData,
@@ -189,7 +195,11 @@ describe("getProjectIndirectsEconomicImpacts", () => {
       });
 
       expect(
-        result.details.find((d) => d.name === "avoidedCo2eqWithEnergyProduction"),
+        result.economicImpacts.details.find((d) => d.name === "avoidedCo2eqWithEnergyProduction"),
+      ).toBeDefined();
+
+      expect(
+        result.impactMetrics.find((d) => d.name === "avoidedCO2TonsWithEnergyProduction"),
       ).toBeDefined();
     });
   });
@@ -197,7 +207,7 @@ describe("getProjectIndirectsEconomicImpacts", () => {
   // ── Projet urbain ──────────────────────────────────────────────────────────
   describe("URBAN_PROJECT project", () => {
     it("adds projectNewHousesTaxesIncome if buildingsFloorAreaDistribution.RESIDENTIAL > 0", () => {
-      const result = getProjectIndirectsEconomicImpacts({
+      const result = getProjectMetricsAndEconomicImpacts({
         reconversionProject: {
           ...baseProject,
           developmentPlan: {
@@ -210,13 +220,135 @@ describe("getProjectIndirectsEconomicImpacts", () => {
         sumOnEvolutionPeriodService: mockService,
       });
 
-      expect(result.details.find((d) => d.name === "projectNewHousesTaxesIncome")).toBeDefined();
+      expect(
+        result.economicImpacts.details.find((d) => d.name === "projectNewHousesTaxesIncome"),
+      ).toBeDefined();
+    });
+  });
+
+  describe("fullTimeJobs impact metrics", () => {
+    describe("project of friche", () => {
+      it("returns impact over 10 years for full-time jobs in operations and full-time jobs for conversion over 9 months", () => {
+        const result = getProjectMetricsAndEconomicImpacts({
+          reconversionProject: {
+            ...baseProject,
+            conversionSchedule: {
+              startDate: new Date("2024-01-01"),
+              endDate: new Date("2024-09-31"),
+            },
+            developmentPlan: {
+              type: "URBAN_PROJECT" as const,
+              features: {
+                buildingsFloorAreaDistribution: { RESIDENTIAL: 5_000, LOCAL_STORE: 20000 },
+              },
+            },
+          },
+          relatedSite: baseSite,
+          siteCityData,
+          sumOnEvolutionPeriodService: mockService,
+        });
+        expect(
+          result.impactMetrics.find((item) => item.name === "conversionFullTimeJobs")?.total,
+        ).toBeUndefined();
+        expect(
+          result.impactMetrics.find((item) => item.name === "operationsFullTimeJobs")?.total,
+        ).toEqual(880);
+        expect(
+          result.impactMetrics.find((item) => item.name === "reinstatementFullTimeJobs")?.total,
+        ).toBeUndefined();
+      });
+
+      it("returns only operationsFullTimeJobs if no schedules are provided", () => {
+        const result = getProjectMetricsAndEconomicImpacts({
+          reconversionProject: {
+            ...baseProject,
+            reinstatementExpenses: [
+              { amount: 2250000, purpose: "asbestos_removal" },
+              { purpose: "remediation", amount: 3300000 },
+              { purpose: "demolition", amount: 2250000 },
+              { purpose: "deimpermeabilization", amount: 498000 },
+              { purpose: "sustainable_soils_reinstatement", amount: 2520000 },
+            ],
+            developmentPlan: {
+              type: "PHOTOVOLTAIC_POWER_PLANT" as const,
+              features: {
+                expectedAnnualProduction: 100,
+                contractDuration: 20,
+                electricalPowerKWc: 10000,
+                surfaceArea: 10000,
+              },
+            },
+          },
+          relatedSite: baseSite,
+          siteCityData,
+          sumOnEvolutionPeriodService: mockService,
+        });
+        expect(
+          result.impactMetrics.find((item) => item.name === "conversionFullTimeJobs")?.total,
+        ).toBeUndefined();
+        expect(
+          result.impactMetrics.find((item) => item.name === "operationsFullTimeJobs")?.total,
+        ).toEqual(2);
+        expect(
+          result.impactMetrics.find((item) => item.name === "reinstatementFullTimeJobs")?.total,
+        ).toBeUndefined();
+      });
+
+      it("returns impact computed from default values with schedules", () => {
+        const result = getProjectMetricsAndEconomicImpacts({
+          reconversionProject: {
+            ...baseProject,
+            conversionSchedule: {
+              startDate: new Date("2024-01-01"),
+              endDate: new Date("2025-01-01"),
+            },
+            reinstatementSchedule: {
+              startDate: new Date("2024-01-01"),
+              endDate: new Date("2024-06-30"),
+            },
+            reinstatementExpenses: [
+              { amount: 2250000, purpose: "asbestos_removal" },
+              { purpose: "remediation", amount: 3300000 },
+              { purpose: "demolition", amount: 2250000 },
+              { purpose: "deimpermeabilization", amount: 498000 },
+              { purpose: "sustainable_soils_reinstatement", amount: 2520000 },
+            ],
+            developmentPlan: {
+              type: "PHOTOVOLTAIC_POWER_PLANT" as const,
+              features: {
+                expectedAnnualProduction: 10000,
+                contractDuration: 20,
+                electricalPowerKWc: 10000,
+                surfaceArea: 10000,
+              },
+            },
+          },
+          relatedSite: {
+            ...baseSite,
+            surfaceArea: 10000,
+          },
+          siteCityData,
+          sumOnEvolutionPeriodService: new SumOnEvolutionPeriodService({
+            evaluationPeriodInYears: 20,
+            operationsFirstYear: 2025,
+          }),
+        });
+        expect(
+          result.impactMetrics.find((item) => item.name === "conversionFullTimeJobs")?.total,
+        ).toBeCloseTo(0.7, 0);
+        expect(
+          result.impactMetrics.find((item) => item.name === "operationsFullTimeJobs")?.total,
+        ).toBeCloseTo(2, 0);
+        expect(
+          result.impactMetrics.find((item) => item.name === "reinstatementFullTimeJobs")?.total,
+        ).toBeCloseTo(2, 0);
+      });
     });
   });
 
   describe("impacts structure and consistency", () => {
     it("chaque impact contient les propriétés requises", () => {
-      const result = getProjectIndirectsEconomicImpacts({
+      const result = getProjectMetricsAndEconomicImpacts({
         reconversionProject: {
           ...baseProject,
           developmentPlan: {
@@ -229,7 +361,7 @@ describe("getProjectIndirectsEconomicImpacts", () => {
         sumOnEvolutionPeriodService: mockService,
       });
 
-      result.details.forEach((item) => {
+      result.economicImpacts.details.forEach((item) => {
         expect(item).toHaveProperty("name");
         expect(item).toHaveProperty("total");
         expect(item).toHaveProperty("detailsByYear");

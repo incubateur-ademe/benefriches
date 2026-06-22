@@ -1,5 +1,4 @@
 import { ReinstatementExpense } from "..";
-import { roundTo1Digit } from "../../../services";
 
 export const REINSTATEMENT_JOBS_RATIOS_PER_EURO_PER_YEAR: Partial<
   Record<ReinstatementExpense["purpose"], number>
@@ -19,5 +18,5 @@ export const computeReinstatementFullTimeJobs = (
     const ratio = REINSTATEMENT_JOBS_RATIOS_PER_EURO_PER_YEAR[purpose];
     return ratio ? amount * ratio : 0;
   }, 0);
-  return roundTo1Digit(reinstatementFullTimeJobs.reduce((total, jobs) => total + jobs, 0));
+  return reinstatementFullTimeJobs.reduce((total, jobs) => total + jobs, 0);
 };

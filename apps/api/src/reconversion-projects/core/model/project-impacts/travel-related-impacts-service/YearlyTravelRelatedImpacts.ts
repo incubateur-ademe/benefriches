@@ -183,7 +183,7 @@ export class YearlyTravelRelatedImpacts extends InfluenceAreaService {
     );
   }
 
-  protected get travelTimeSavedPerOtherActivityEmployeeTraveler() {
+  protected get travelTimeSavedPerTertiaryActivityEmployeeTraveler() {
     return (
       AVERAGE_TIME_SAVED_IN_HOURS *
       this.impactedTertiaryActivityEmployees *
@@ -192,7 +192,7 @@ export class YearlyTravelRelatedImpacts extends InfluenceAreaService {
     );
   }
 
-  protected get travelTimeSavedPerTertiaryActivityEmployeeTraveler() {
+  protected get travelTimeSavedPerOtherActivityEmployeeTraveler() {
     return (
       AVERAGE_TIME_SAVED_IN_HOURS *
       this.impactedOtherActivityEmployees *
@@ -334,6 +334,18 @@ export class YearlyTravelRelatedImpacts extends InfluenceAreaService {
     );
   }
 
+  getTravelTimeSavedPerTravelerPerYear() {
+    return this.travelTimeSavedPerTravelerPerYear;
+  }
+
+  getTrafficAccidentsPerYear() {
+    return (
+      this.avoidedMinorInjuriesPerYear +
+      this.avoidedSevereInjuriesPerYear +
+      this.avoidedDeathsPerYear
+    );
+  }
+
   getAvoidedPropertyDamageExpensesPerYear() {
     return this.avoidedPropertyDamageExpensesPerYear;
   }
@@ -346,7 +358,7 @@ export class YearlyTravelRelatedImpacts extends InfluenceAreaService {
     return this.travelTimeAvoidedCostsPerTravelerPerYear;
   }
 
-  getAvoidedTrafficCO2EmissionsInTonsPerYear() {
+  getAvoidedKilometersPerVehiculePerYear() {
     return this.avoidedKilometersPerVehiculePerYear;
   }
 

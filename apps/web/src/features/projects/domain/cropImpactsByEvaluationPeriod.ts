@@ -1,6 +1,8 @@
 import {
+  AggregatedProjectImpactMetric,
   GetReconversionProjectImpactsResultDto,
   ImpactDataView,
+  ProjectOnSiteImpactMetric,
   ProjectOperatingEconomicBalanceItem,
   SiteStatuQuoEconomicImpact,
   sumList,
@@ -8,7 +10,7 @@ import {
   UrbanSprawlImpactsComparisonResultDto,
 } from "shared";
 
-const cropAndSum = <
+const cropAndSumEconomicImpact = <
   T extends ProjectOperatingEconomicBalanceItem | SiteStatuQuoEconomicImpact | ImpactDataView,
 >(
   item: T,
@@ -18,7 +20,32 @@ const cropAndSum = <
   return {
     ...item,
     total: sumList(croppedDetailsByYear),
+    detailsByYear: croppedDetailsByYear,
     cumulativeByYear: item.cumulativeByYear.slice(0, evaluationPeriodInYears),
+  };
+};
+
+const cropAndSumImpactMetric = <
+  T extends ProjectOnSiteImpactMetric | AggregatedProjectImpactMetric,
+>(
+  item: T,
+  newEvaluationPeriodInYears: number,
+  oldEvaluationPeriodInYears: number,
+) => {
+  if (item.name === "conversionFullTimeJobs" || item.name === "reinstatementFullTimeJobs") {
+    return {
+      ...item,
+      total: (item.total * oldEvaluationPeriodInYears) / newEvaluationPeriodInYears,
+    };
+  }
+  if (!item.detailsByYear) {
+    return item;
+  }
+  const croppedDetailsByYear = item.detailsByYear.slice(0, newEvaluationPeriodInYears);
+  return {
+    ...item,
+    total: sumList(croppedDetailsByYear),
+    detailsByYear: croppedDetailsByYear,
   };
 };
 
@@ -33,23 +60,23 @@ export const cropImpactsByEvaluationPeriod = (
 
   const croppedEconomicBalance = impacts.projectEconomicBalance.details.map((item) => {
     return item.name === "projectOperatingEconomicBalance"
-      ? cropAndSum(item, evaluationPeriodInYears)
+      ? cropAndSumEconomicImpact(item, evaluationPeriodInYears)
       : item;
   });
 
   const croppedAggegratedIndirectEconomicImpactsDetails =
     impacts.aggregatedReconversionImpacts.indirectEconomicImpacts.details.map((item) =>
-      cropAndSum(item, evaluationPeriodInYears),
+      cropAndSumEconomicImpact(item, evaluationPeriodInYears),
     );
 
   const croppedProjectOnSiteIndirectEconomicImpactsData =
     impacts.reconversionImpactsBreakdown.projectOnSiteIndirectEconomicImpactsData.details.map(
-      (item) => cropAndSum(item, evaluationPeriodInYears),
+      (item) => cropAndSumEconomicImpact(item, evaluationPeriodInYears),
     );
 
   const croppedSiteStatuQuoIndirectEconomicImpactsData =
     impacts.reconversionImpactsBreakdown.siteStatuQuoIndirectEconomicImpactsData.details.map(
-      (item) => cropAndSum(item, evaluationPeriodInYears),
+      (item) => cropAndSumEconomicImpact(item, evaluationPeriodInYears),
     );
 
   return {
@@ -57,6 +84,9 @@ export const cropImpactsByEvaluationPeriod = (
     projectionYears: croppedProjectionYears,
     aggregatedReconversionImpacts: {
       ...impacts.aggregatedReconversionImpacts,
+      impactsMetrics: impacts.aggregatedReconversionImpacts.impactsMetrics.map((item) =>
+        cropAndSumImpactMetric(item, evaluationPeriodInYears, impacts.projectionYears.length),
+      ),
       cumulativeBalanceByYear: croppedCumulativeBalanceByYear,
       indirectEconomicImpacts: {
         details: croppedAggegratedIndirectEconomicImpactsDetails,
@@ -68,6 +98,11 @@ export const cropImpactsByEvaluationPeriod = (
       total: sumListWithKey(croppedEconomicBalance, "total"),
     },
     reconversionImpactsBreakdown: {
+      ...impacts.reconversionImpactsBreakdown,
+      projectIndirectImpactMetrics:
+        impacts.reconversionImpactsBreakdown.projectIndirectImpactMetrics.map((item) =>
+          cropAndSumImpactMetric(item, evaluationPeriodInYears, impacts.projectionYears.length),
+        ),
       siteStatuQuoIndirectEconomicImpactsData: {
         details: croppedSiteStatuQuoIndirectEconomicImpactsData,
         total: sumListWithKey(croppedSiteStatuQuoIndirectEconomicImpactsData, "total"),
@@ -97,19 +132,19 @@ export const cropUrbanSprawlSimulationByEvaluationPeriod = (
   const croppedEconomicBalance = urbanSprawlSimulation.projectEconomicBalance.details.map(
     (item) => {
       return item.name === "projectOperatingEconomicBalance"
-        ? cropAndSum(item, evaluationPeriodInYears)
+        ? cropAndSumEconomicImpact(item, evaluationPeriodInYears)
         : item;
     },
   );
 
   const croppedSimulationSiteStatuQuoImpactsData =
     urbanSprawlSimulation.simulationSiteStatuQuoImpactsData.details.map((item) =>
-      cropAndSum(item, evaluationPeriodInYears),
+      cropAndSumEconomicImpact(item, evaluationPeriodInYears),
     );
 
   const croppedProjectOnSimulationSiteImpactsData =
     urbanSprawlSimulation.projectOnSimulationSiteImpactsData.details.map((item) =>
-      cropAndSum(item, evaluationPeriodInYears),
+      cropAndSumEconomicImpact(item, evaluationPeriodInYears),
     );
 
   return {

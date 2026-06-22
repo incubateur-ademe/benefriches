@@ -15,6 +15,9 @@ import {
   SiteStatuQuoImpacts,
   ReconversionProjectOnSiteIndirectEconomicImpacts,
   UrbanSprawlComparisonProjectImpacts,
+  ProjectOnSiteImpactMetric,
+  AggregatedProjectImpactMetric,
+  SiteStatuQuoImpactMetric,
 } from "shared";
 
 import { SoilsCarbonStorage } from "src/reconversion-projects/core/gateways/SoilsCarbonStorageService";
@@ -28,8 +31,8 @@ import { computeAvoidedWithFricheYearlyRoadsAndUtilitiesMaintenanceExpenses } fr
 import { getProjectDevelopmentEconomicBalance } from "./projectDevelopmentEconomicBalance";
 import {
   computeCumulativeByYear,
-  getProjectIndirectsEconomicImpacts,
-} from "./projectIndirectEconomicImpacts";
+  getProjectMetricsAndEconomicImpacts,
+} from "./projectIndirectImpacts";
 import { getProjectOperatingEconomicBalance } from "./projectOperatingEconomicBalance";
 
 export type ReconversionProjectImpactsWithBreakEvenLevelInput =
@@ -202,7 +205,9 @@ export const computeProjectImpactsBreakdownAndEconomicBalance = ({
   evaluationPeriodInYears: number;
 }): {
   projectEconomicBalance: ProjectEconomicBalance;
+  projectIndirectImpactMetrics: ProjectOnSiteImpactMetric[];
   siteStatuQuoIndirectEconomicImpactsData: SiteStatuQuoImpacts["economicImpacts"];
+  siteStatuQuoImpactMetrics: SiteStatuQuoImpacts["impactMetrics"];
   projectOnSiteIndirectEconomicImpactsData: ReconversionProjectOnSiteIndirectEconomicImpacts;
   sumOnEvolutionPeriodService: SumOnEvolutionPeriodService;
 } => {
@@ -241,10 +246,14 @@ export const computeProjectImpactsBreakdownAndEconomicBalance = ({
 
   const totalOperatingEconomicBalance = sumListWithKey(operatingEconomicBalance, "total");
 
-  // Compute indirect economic impacts
-  const projectIndirectSocioEconomicImpacts = getProjectIndirectsEconomicImpacts({
+  // Compute indirect impacts
+  const {
+    impactMetrics: projectIndirectImpactMetrics,
+    economicImpacts: projectIndirectSocioEconomicImpacts,
+  } = getProjectMetricsAndEconomicImpacts({
     reconversionProject: {
       ...reconversionProject,
+      conversionSchedule: reconversionProject.developmentPlan.installationSchedule,
       developmentPlan: {
         type: reconversionProject.developmentPlan.type,
         features: reconversionProject.developmentPlan.features,
@@ -261,12 +270,15 @@ export const computeProjectImpactsBreakdownAndEconomicBalance = ({
     },
   });
 
-  const siteStatuQuoIndirectEconomicImpactsData = computeStatuQuoSiteImpacts({
+  const {
+    economicImpacts: siteStatuQuoIndirectEconomicImpactsData,
+    impactMetrics: siteStatuQuoImpactMetrics,
+  } = computeStatuQuoSiteImpacts({
     site: relatedSite,
     siteSoilsCarbonStorage: relatedSite.siteSoilsCarbonStorage,
     operationsFirstYear,
     evaluationPeriodInYears,
-  }).economicImpacts;
+  });
 
   const isFutureOperatorLocalAuthority =
     !!stakeholders.future.operator && isStakeholderLocalAuthority(stakeholders.future.operator);
@@ -292,10 +304,12 @@ export const computeProjectImpactsBreakdownAndEconomicBalance = ({
   return {
     projectEconomicBalance: economicBalance,
     siteStatuQuoIndirectEconomicImpactsData,
+    siteStatuQuoImpactMetrics,
     projectOnSiteIndirectEconomicImpactsData: {
       total: sumListWithKey(projectIndirectEconomicImpacts, "total"),
       details: projectIndirectEconomicImpacts,
     },
+    projectIndirectImpactMetrics,
     sumOnEvolutionPeriodService,
   };
 };
@@ -314,12 +328,16 @@ export const computeProjectUrbanSprawlComparisonImpactsBreakdownAndEconomicBalan
   projectEconomicBalance: ProjectEconomicBalance;
   siteStatuQuoIndirectEconomicImpactsData: SiteStatuQuoImpacts["economicImpacts"];
   projectOnSiteIndirectEconomicImpactsData: UrbanSprawlComparisonProjectImpacts;
+  siteStatuQuoImpactMetrics: SiteStatuQuoImpactMetric[];
+  projectIndirectImpactMetrics: ProjectOnSiteImpactMetric[];
 } => {
   const {
     sumOnEvolutionPeriodService,
     projectOnSiteIndirectEconomicImpactsData,
     projectEconomicBalance,
     siteStatuQuoIndirectEconomicImpactsData,
+    siteStatuQuoImpactMetrics,
+    projectIndirectImpactMetrics,
   } = computeProjectImpactsBreakdownAndEconomicBalance({
     reconversionProject,
     relatedSite,
@@ -335,6 +353,8 @@ export const computeProjectUrbanSprawlComparisonImpactsBreakdownAndEconomicBalan
   });
   return {
     projectEconomicBalance,
+    siteStatuQuoImpactMetrics,
+    projectIndirectImpactMetrics,
     siteStatuQuoIndirectEconomicImpactsData,
     projectOnSiteIndirectEconomicImpactsData: {
       total: sumListWithKey(urbanSprawlProjectIndirectEconomicImpactsData, "total"),
@@ -346,14 +366,23 @@ export const computeProjectUrbanSprawlComparisonImpactsBreakdownAndEconomicBalan
 export const computeAggregatedReconversionImpacts = ({
   siteStatuQuoIndirectEconomicImpactsData,
   projectOnSiteIndirectEconomicImpactsData,
+  projectIndirectImpactMetrics,
+  siteStatuQuoImpactMetrics,
 }: {
   siteStatuQuoIndirectEconomicImpactsData: SiteStatuQuoImpacts["economicImpacts"];
   projectOnSiteIndirectEconomicImpactsData:
     | UrbanSprawlComparisonProjectImpacts
     | ReconversionProjectOnSiteIndirectEconomicImpacts;
-}): AggregatedReconversionIndirectEconomicImpacts["details"] => {
+  projectIndirectImpactMetrics: ProjectOnSiteImpactMetric[];
+  siteStatuQuoImpactMetrics: SiteStatuQuoImpacts["impactMetrics"];
+}): {
+  economicImpacts: AggregatedReconversionIndirectEconomicImpacts["details"];
+  impactMetrics: AggregatedProjectImpactMetric[];
+} => {
   const siteReconversionIndirectEconomicImpacts: AggregatedReconversionIndirectEconomicImpacts["details"] =
     [];
+  const siteReconversionIndirectImpactMetrics: AggregatedProjectImpactMetric[] = [];
+
   const operatingEconomicBalance = siteStatuQuoIndirectEconomicImpactsData.details.filter(
     ({ name }) => name === "operatingEconomicBalance",
   );
@@ -418,10 +447,50 @@ export const computeAggregatedReconversionImpacts = ({
     }, []),
   );
 
-  return [
-    ...siteReconversionIndirectEconomicImpacts,
-    ...projectOnSiteIndirectEconomicImpactsData.details,
-  ];
+  siteReconversionIndirectImpactMetrics.push(
+    ...siteStatuQuoImpactMetrics.reduce<AggregatedProjectImpactMetric[]>(
+      (siteReconversionImpactMetrics, item) => {
+        if (item.name === "fricheAccidentsDeaths") {
+          return siteReconversionImpactMetrics.concat({
+            name: "avoidedFricheAccidentsDeaths",
+            total: item.total,
+          });
+        }
+
+        if (item.name === "fricheAccidentsMinorInjuries") {
+          return siteReconversionImpactMetrics.concat({
+            name: "avoidedFricheAccidentsMinorInjuries",
+            total: item.total,
+          });
+        }
+
+        if (item.name === "fricheAccidentsSevereInjuries") {
+          return siteReconversionImpactMetrics.concat({
+            name: "avoidedFricheAccidentsSevereInjuries",
+            total: item.total,
+          });
+        }
+
+        if (item.name === "operationsFullTimeJobs") {
+          return siteReconversionImpactMetrics.concat({
+            name: "oldOperationsFullTimeJobsLoss",
+            total: -item.total,
+          });
+        }
+
+        return siteReconversionImpactMetrics;
+      },
+      [],
+    ),
+  );
+
+  return {
+    economicImpacts: [
+      ...siteReconversionIndirectEconomicImpacts,
+      ...projectOnSiteIndirectEconomicImpactsData.details,
+    ],
+    impactMetrics: [...siteReconversionIndirectImpactMetrics, ...projectIndirectImpactMetrics],
+  };
 };
 
 export const computeProjectImpactsWithBreakEvenLevel = ({
@@ -443,6 +512,8 @@ export const computeProjectImpactsWithBreakEvenLevel = ({
     projectOnSiteIndirectEconomicImpactsData,
     siteStatuQuoIndirectEconomicImpactsData,
     projectEconomicBalance,
+    projectIndirectImpactMetrics,
+    siteStatuQuoImpactMetrics,
   } = computeProjectImpactsBreakdownAndEconomicBalance({
     reconversionProject,
     relatedSite,
@@ -453,11 +524,14 @@ export const computeProjectImpactsWithBreakEvenLevel = ({
   const reconversionImpactsBreakdown = {
     siteStatuQuoIndirectEconomicImpactsData,
     projectOnSiteIndirectEconomicImpactsData,
+    projectIndirectImpactMetrics,
+    siteStatuQuoImpactMetrics,
   };
 
-  const aggregatedIndirectEconomicImpacts = computeAggregatedReconversionImpacts(
-    reconversionImpactsBreakdown,
-  );
+  const {
+    economicImpacts: aggregatedIndirectEconomicImpacts,
+    impactMetrics: aggregatedImpactMetrics,
+  } = computeAggregatedReconversionImpacts(reconversionImpactsBreakdown);
 
   const { breakEvenYear, projectionYears, breakEvenIndex, cumulativeBalanceByYear } =
     computeBreakEvenLevel({
@@ -481,7 +555,8 @@ export const computeProjectImpactsWithBreakEvenLevel = ({
         total: sumListWithKey(aggregatedIndirectEconomicImpacts, "total"),
         details: aggregatedIndirectEconomicImpacts,
       },
+      impactsMetrics: aggregatedImpactMetrics,
     },
-    reconversionImpactsBreakdown,
+    reconversionImpactsBreakdown: reconversionImpactsBreakdown,
   };
 };

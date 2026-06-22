@@ -220,6 +220,8 @@ export class ComputeProjectUrbanSprawlImpactsComparisonUseCase implements UseCas
       projectOnSiteIndirectEconomicImpactsData,
       siteStatuQuoIndirectEconomicImpactsData,
       projectEconomicBalance,
+      siteStatuQuoImpactMetrics,
+      projectIndirectImpactMetrics,
     } = computeProjectUrbanSprawlComparisonImpactsBreakdownAndEconomicBalance({
       reconversionProject: comparisonInputReconversionProjectData,
       relatedSite: {
@@ -230,10 +232,13 @@ export class ComputeProjectUrbanSprawlImpactsComparisonUseCase implements UseCas
       evaluationPeriodInYears,
     });
 
-    const aggregatedIndirectEconomicImpacts = computeAggregatedReconversionImpacts({
-      siteStatuQuoIndirectEconomicImpactsData,
-      projectOnSiteIndirectEconomicImpactsData: projectOnSiteIndirectEconomicImpactsData,
-    });
+    const { economicImpacts: aggregatedIndirectEconomicImpacts } =
+      computeAggregatedReconversionImpacts({
+        siteStatuQuoIndirectEconomicImpactsData,
+        projectOnSiteIndirectEconomicImpactsData: projectOnSiteIndirectEconomicImpactsData,
+        siteStatuQuoImpactMetrics,
+        projectIndirectImpactMetrics,
+      });
 
     const { breakEvenYear, projectionYears, breakEvenIndex, cumulativeBalanceByYear } =
       computeBreakEvenLevel({

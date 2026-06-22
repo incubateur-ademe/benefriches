@@ -7,7 +7,7 @@ import {
   OperatingEconomicBalanceItem,
 } from "shared";
 
-import { computeCumulativeByYear } from "src/reconversion-projects/core/model/project-impacts/break-even-level/projectIndirectEconomicImpacts";
+import { computeCumulativeByYear } from "src/reconversion-projects/core/model/project-impacts/break-even-level/projectIndirectImpacts";
 import { SumOnEvolutionPeriodService } from "src/reconversion-projects/core/model/sum-on-evolution-period/SumOnEvolutionPeriodService";
 
 type Props = {

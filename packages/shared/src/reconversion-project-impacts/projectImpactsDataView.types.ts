@@ -67,6 +67,7 @@ export type ReconversionProjectImpactsDataView<TSchedule> = {
 
 type SoilsRelatedIndirectEconomicImpactName =
   | "storedCo2Eq"
+  | "newStoredCo2Eq"
   | "natureRelatedWelnessAndLeisure"
   | "forestRelatedProduct"
   | "pollination"
@@ -253,3 +254,33 @@ export type ReconversionProjectOnSiteIndirectEconomicImpacts =
 
 export type UrbanSprawlComparisonProjectImpacts =
   IndirectEconomicImpacts<UrbanSprawlComparisonIndirectEconomicImpact>;
+
+export type ProjectOnSiteImpactMetric = {
+  total: number;
+  detailsByYear?: number[];
+  name:
+    | "avoidedAirConditioningCo2eqEmissions"
+    | "avoidedVehiculeKilometers"
+    | "timeTravelSavedInHours"
+    | "avoidedTrafficCo2EqEmissions"
+    | "avoidedTrafficAccidents"
+    | "avoidedCO2TonsWithEnergyProduction"
+    | "householdsPoweredByRenewableEnergy"
+    | "newStoredCo2Eq"
+    | "newPermeableSurface"
+    | "decontaminatedSurface"
+    | "operationsFullTimeJobs"
+    | "conversionFullTimeJobs"
+    | "reinstatementFullTimeJobs";
+};
+
+export type AggregatedProjectImpactMetric = {
+  total: number;
+  detailsByYear?: number[];
+  name:
+    | ProjectOnSiteImpactMetric["name"]
+    | "oldOperationsFullTimeJobsLoss"
+    | "avoidedFricheAccidentsDeaths"
+    | "avoidedFricheAccidentsSevereInjuries"
+    | "avoidedFricheAccidentsMinorInjuries";
+};

@@ -1,9 +1,9 @@
 import { DevelopmentPlanFeatures, sumList } from "shared";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
-import type { SumOnEvolutionPeriodService } from "../../../sum-on-evolution-period/SumOnEvolutionPeriodService";
-import { getPhotovoltaicPowerPlantProjectImpacts } from "../indirect-economic-impacts/photovoltaicRelatedImpacts";
-import { InputReconversionProjectData } from "../projectIndirectEconomicImpacts";
+import { SumOnEvolutionPeriodService } from "../../../sum-on-evolution-period/SumOnEvolutionPeriodService";
+import { InputReconversionProjectData } from "../projectIndirectImpacts";
+import { getPhotovoltaicPowerPlantProjectImpacts } from "./photovoltaicRelatedImpacts";
 
 type ServiceCall = Parameters<SumOnEvolutionPeriodService["getWeightedYearlyValues"]>;
 
@@ -25,6 +25,8 @@ const baseProject: InputReconversionProjectData & {
   decontaminatedSoilSurface: 0,
   developmentPlan: basePvDevelopmentPlan,
   yearlyProjectedExpenses: [],
+  conversionSchedule: undefined,
+  reinstatementExpenses: [],
 };
 
 describe("getPhotovoltaicPowerPlantProjectImpacts", () => {
@@ -50,7 +52,8 @@ describe("getPhotovoltaicPowerPlantProjectImpacts", () => {
         },
         sumOnEvolutionPeriodService: mockService,
       });
-      expect(result).toHaveLength(0);
+      expect(result.economicImpacts).toHaveLength(0);
+      expect(result.impactMetrics).toHaveLength(0);
     });
   });
 
@@ -62,8 +65,13 @@ describe("getPhotovoltaicPowerPlantProjectImpacts", () => {
         sumOnEvolutionPeriodService: mockService,
       });
 
-      const co2Impact = result.find((r) => r.name === "avoidedCo2eqWithEnergyProduction");
+      const co2Impact = result.economicImpacts.find(
+        (r) => r.name === "avoidedCo2eqWithEnergyProduction",
+      );
       expect(co2Impact).toBeDefined();
+      expect(
+        result.impactMetrics.find((r) => r.name === "avoidedCO2TonsWithEnergyProduction"),
+      ).toBeDefined();
     });
 
     it("computes avoided CO2eq with co2_value and discount factor", () => {
@@ -85,8 +93,24 @@ describe("getPhotovoltaicPowerPlantProjectImpacts", () => {
         sumOnEvolutionPeriodService: mockService,
       });
 
-      const co2Impact = result.find((r) => r.name === "avoidedCo2eqWithEnergyProduction");
+      const co2Impact = result.economicImpacts.find(
+        (r) => r.name === "avoidedCo2eqWithEnergyProduction",
+      );
       expect(co2Impact?.total).toBeGreaterThan(0);
+      expect(
+        result.impactMetrics.find((r) => r.name === "avoidedCO2TonsWithEnergyProduction")?.total,
+      ).toBeGreaterThan(0);
+    });
+
+    it("computes householdsPoweredByRenewableEnergy metric impact", () => {
+      const result = getPhotovoltaicPowerPlantProjectImpacts({
+        reconversionProject: baseProject,
+        sumOnEvolutionPeriodService: mockService,
+      });
+
+      expect(
+        result.impactMetrics.find((r) => r.name === "householdsPoweredByRenewableEnergy")?.total,
+      ).toBeGreaterThan(0);
     });
 
     it("computes detailsByYear and cumulativeByYear for each impact", () => {
@@ -95,7 +119,7 @@ describe("getPhotovoltaicPowerPlantProjectImpacts", () => {
         sumOnEvolutionPeriodService: mockService,
       });
 
-      result.forEach((item) => {
+      result.economicImpacts.forEach((item) => {
         expect(Array.isArray(item.detailsByYear)).toBe(true);
         expect(item.total).toEqual(sumList(item.detailsByYear));
         expect(Array.isArray(item.cumulativeByYear)).toBe(true);
@@ -114,7 +138,9 @@ describe("getPhotovoltaicPowerPlantProjectImpacts", () => {
         sumOnEvolutionPeriodService: mockService,
       });
 
-      const taxesImpact = result.find((r) => r.name === "projectPhotovoltaicTaxesIncome");
+      const taxesImpact = result.economicImpacts.find(
+        (r) => r.name === "projectPhotovoltaicTaxesIncome",
+      );
       expect(taxesImpact).toBeDefined();
     });
 
@@ -127,7 +153,9 @@ describe("getPhotovoltaicPowerPlantProjectImpacts", () => {
         sumOnEvolutionPeriodService: mockService,
       });
 
-      expect(result.find((r) => r.name === "projectPhotovoltaicTaxesIncome")).toBeUndefined();
+      expect(
+        result.economicImpacts.find((r) => r.name === "projectPhotovoltaicTaxesIncome"),
+      ).toBeUndefined();
     });
 
     it("annualize taxes with gdp_evolution and discount", () => {
@@ -155,7 +183,9 @@ describe("getPhotovoltaicPowerPlantProjectImpacts", () => {
         sumOnEvolutionPeriodService: mockService,
       });
 
-      const taxesImpact = result.find((r) => r.name === "projectPhotovoltaicTaxesIncome");
+      const taxesImpact = result.economicImpacts.find(
+        (r) => r.name === "projectPhotovoltaicTaxesIncome",
+      );
       expect(taxesImpact?.total).toBeGreaterThan(0);
     });
   });
@@ -166,7 +196,8 @@ describe("getPhotovoltaicPowerPlantProjectImpacts", () => {
         reconversionProject: baseProject,
         sumOnEvolutionPeriodService: mockService,
       });
-      expect(result).toHaveLength(1);
+      expect(result.economicImpacts).toHaveLength(1);
+      expect(result.impactMetrics).toHaveLength(2);
     });
 
     it("returs 2 impacts (CO2 + taxes)", () => {
@@ -177,7 +208,101 @@ describe("getPhotovoltaicPowerPlantProjectImpacts", () => {
         },
         sumOnEvolutionPeriodService: mockService,
       });
-      expect(result).toHaveLength(2);
+
+      expect(result.economicImpacts).toHaveLength(2);
+      expect(result.impactMetrics).toHaveLength(2);
+    });
+  });
+
+  describe("fullTimeJobs impact metrics", () => {
+    it("returns impact over 10 years for full-time jobs in operations over 9 months", () => {
+      const result = getPhotovoltaicPowerPlantProjectImpacts({
+        reconversionProject: {
+          ...baseProject,
+          conversionSchedule: {
+            startDate: new Date("2024-01-01"),
+            endDate: new Date("2024-09-31"),
+          },
+          developmentPlan: {
+            ...baseProject.developmentPlan,
+            features: { ...baseProject.developmentPlan.features, electricalPowerKWc: 10000 },
+          },
+        },
+        sumOnEvolutionPeriodService: new SumOnEvolutionPeriodService({
+          evaluationPeriodInYears: 10,
+          operationsFirstYear: 2025,
+        }),
+      });
+
+      expect(
+        result.impactMetrics.find((d) => d.name === "conversionFullTimeJobs")?.total,
+      ).toBeCloseTo(1, 0);
+
+      expect(result.impactMetrics.find((d) => d.name === "operationsFullTimeJobs")?.total).toEqual(
+        2,
+      );
+    });
+
+    it("returns no jobs impacts if no schedules are provided", () => {
+      const result = getPhotovoltaicPowerPlantProjectImpacts({
+        reconversionProject: {
+          ...baseProject,
+          conversionSchedule: undefined,
+          developmentPlan: {
+            ...baseProject.developmentPlan,
+            features: { ...baseProject.developmentPlan.features, electricalPowerKWc: 10000 },
+          },
+        },
+        sumOnEvolutionPeriodService: new SumOnEvolutionPeriodService({
+          evaluationPeriodInYears: 10,
+          operationsFirstYear: 2025,
+        }),
+      });
+
+      expect(result.impactMetrics.find((d) => d.name === "conversionFullTimeJobs")).toBeUndefined();
+
+      expect(result.impactMetrics.find((d) => d.name === "operationsFullTimeJobs")?.total).toEqual(
+        2,
+      );
+    });
+
+    it("returns impact computed from default values with schedules", () => {
+      const result = getPhotovoltaicPowerPlantProjectImpacts({
+        reconversionProject: {
+          ...baseProject,
+          reinstatementExpenses: [
+            { amount: 2250000, purpose: "asbestos_removal" },
+            { purpose: "remediation", amount: 3300000 },
+            { purpose: "demolition", amount: 2250000 },
+            { purpose: "deimpermeabilization", amount: 498000 },
+            { purpose: "sustainable_soils_reinstatement", amount: 2520000 },
+          ],
+          conversionSchedule: {
+            startDate: new Date("2024-01-01"),
+            endDate: new Date("2025-01-01"),
+          },
+          reinstatementSchedule: {
+            startDate: new Date("2024-01-01"),
+            endDate: new Date("2024-06-30"),
+          },
+          developmentPlan: {
+            ...baseProject.developmentPlan,
+            features: { ...baseProject.developmentPlan.features, electricalPowerKWc: 10000 },
+          },
+        },
+        sumOnEvolutionPeriodService: new SumOnEvolutionPeriodService({
+          evaluationPeriodInYears: 20,
+          operationsFirstYear: 2025,
+        }),
+      });
+
+      expect(
+        result.impactMetrics.find((d) => d.name === "conversionFullTimeJobs")?.total,
+      ).toBeCloseTo(0.7, 0);
+
+      expect(
+        result.impactMetrics.find((d) => d.name === "operationsFullTimeJobs")?.total,
+      ).toBeCloseTo(2, 0);
     });
   });
 });

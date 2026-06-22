@@ -18,9 +18,13 @@ import {
   FricheCostsIndirectEconomicImpacts,
   TaxesIncomeIndirectEconomicImpacts,
   SiteStatuQuoEconomicImpact,
+  SiteStatuQuoImpactMetric,
+  computeAgriculturalOperationEtpFromSurface,
+  isPermeableSoil,
+  AgriculturalOperationActivity,
 } from "shared";
 
-import { computeCumulativeByYear } from "src/reconversion-projects/core/model/project-impacts/break-even-level/projectIndirectEconomicImpacts";
+import { computeCumulativeByYear } from "src/reconversion-projects/core/model/project-impacts/break-even-level/projectIndirectImpacts";
 import {
   computeForestRelatedProductMonetaryValue,
   computeInvasiveSpeciesRegulationMonetaryValue,
@@ -52,14 +56,24 @@ type Props = {
     soilsDistribution: SoilsDistribution;
     soilsCarbonStorage?: SoilsCarbonStorage;
     contaminatedSoilSurface?: number;
+    accidentsDeaths?: number;
+    accidentsSevereInjuries?: number;
+    accidentsMinorInjuries?: number;
+    agriculturalOperationActivity?: AgriculturalOperationActivity;
+    isSiteOperated?: boolean;
+    surfaceArea: number;
   };
 };
 
-export const getSiteStatuQuoIndirectsEconomicImpacts = ({
+export const getSiteStatuQuoIndirectsImpacts = ({
   siteData,
   sumOnEvolutionPeriodService,
-}: Props): GetSiteImpactsDto["economicImpacts"] => {
-  const impacts: SiteStatuQuoEconomicImpact[] = [];
+}: Props): {
+  impactMetrics: SiteStatuQuoImpactMetric[];
+  economicImpacts: GetSiteImpactsDto["economicImpacts"];
+} => {
+  const economicImpacts: SiteStatuQuoEconomicImpact[] = [];
+  const impactMetrics: SiteStatuQuoImpactMetric[] = [];
 
   // --- Impacts liés à la nature du site ---
   if (siteData.nature === "FRICHE") {
@@ -85,7 +99,38 @@ export const getSiteStatuQuoIndirectsEconomicImpacts = ({
           cumulativeByYear: computeCumulativeByYear(detailsByYear),
         };
       });
-    impacts.push(...fricheCostsImpacts);
+    economicImpacts.push(...fricheCostsImpacts);
+
+    if (siteData.accidentsDeaths) {
+      impactMetrics.push({
+        name: "fricheAccidentsDeaths",
+        total: siteData.accidentsDeaths,
+      });
+    }
+
+    if (siteData.accidentsSevereInjuries) {
+      impactMetrics.push({
+        name: "fricheAccidentsSevereInjuries",
+        total: siteData.accidentsSevereInjuries,
+      });
+    }
+
+    if (siteData.accidentsMinorInjuries) {
+      impactMetrics.push({
+        name: "fricheAccidentsMinorInjuries",
+        total: siteData.accidentsMinorInjuries,
+      });
+    }
+  }
+
+  if (siteData.agriculturalOperationActivity && siteData.isSiteOperated) {
+    impactMetrics.push({
+      name: "operationsFullTimeJobs",
+      total: computeAgriculturalOperationEtpFromSurface({
+        operationActivity: siteData.agriculturalOperationActivity,
+        surfaceArea: siteData.surfaceArea,
+      }),
+    });
   }
 
   // taxes
@@ -109,7 +154,7 @@ export const getSiteStatuQuoIndirectsEconomicImpacts = ({
         };
       },
     );
-    impacts.push(...taxesImpacts);
+    economicImpacts.push(...taxesImpacts);
   }
 
   if (siteData.contaminatedSoilSurface) {
@@ -122,26 +167,37 @@ export const getSiteStatuQuoIndirectsEconomicImpacts = ({
         waterRegulationMonetaryImpact,
         ["discount", "gdp_evolution"],
       );
-      impacts.push({
+      economicImpacts.push({
         detailsByYear,
         cumulativeByYear: computeCumulativeByYear(detailsByYear),
         total: sumList(detailsByYear),
         name: "waterRegulation",
       });
     }
+
+    impactMetrics.push({
+      name: "contaminatedSurface",
+      total: siteData.contaminatedSoilSurface,
+    });
   }
 
   if (siteData.soilsCarbonStorage) {
+    const storedCo2Eq = convertCarbonToCO2eq(siteData.soilsCarbonStorage.total);
     const co2eqDetailsByYear = sumOnEvolutionPeriodService.getWeightedYearlyValues(
-      convertCarbonToCO2eq(siteData.soilsCarbonStorage.total),
+      storedCo2Eq,
       ["co2_value"],
       { endYearIndex: 1 },
     );
-    impacts.push({
+    economicImpacts.push({
       detailsByYear: co2eqDetailsByYear,
       cumulativeByYear: computeCumulativeByYear(co2eqDetailsByYear),
       total: sumList(co2eqDetailsByYear),
       name: "storedCo2Eq",
+    });
+
+    impactMetrics.push({
+      name: "storedCo2Eq",
+      total: storedCo2Eq,
     });
   }
 
@@ -153,6 +209,14 @@ export const getSiteStatuQuoIndirectsEconomicImpacts = ({
   const forestSurface = sumSoilsSurfaceAreasWhere(siteData.soilsDistribution, isForest);
   const wetLandSurface = sumSoilsSurfaceAreasWhere(siteData.soilsDistribution, isWetLand);
 
+  const permeableSurface = sumSoilsSurfaceAreasWhere(siteData.soilsDistribution, isPermeableSoil);
+  if (permeableSurface) {
+    impactMetrics.push({
+      name: "permeableSurface",
+      total: permeableSurface,
+    });
+  }
+
   const natureRelatedWelnessAndLeisure = computeNatureRelatedWellnessAndLeisureMonetaryValue({
     prairieSurfaceArea: prairieSurface,
     forestSurfaceArea: forestSurface,
@@ -163,7 +227,7 @@ export const getSiteStatuQuoIndirectsEconomicImpacts = ({
       natureRelatedWelnessAndLeisure,
       ["discount", "gdp_evolution"],
     );
-    impacts.push({
+    economicImpacts.push({
       detailsByYear: detailsByYear,
       cumulativeByYear: computeCumulativeByYear(detailsByYear),
       total: sumList(detailsByYear),
@@ -177,7 +241,7 @@ export const getSiteStatuQuoIndirectsEconomicImpacts = ({
       forestRelatedProduct,
       ["discount", "gdp_evolution"],
     );
-    impacts.push({
+    economicImpacts.push({
       detailsByYear: detailsByYear,
       cumulativeByYear: computeCumulativeByYear(detailsByYear),
       total: sumList(detailsByYear),
@@ -191,7 +255,7 @@ export const getSiteStatuQuoIndirectsEconomicImpacts = ({
       "discount",
       "gdp_evolution",
     ]);
-    impacts.push({
+    economicImpacts.push({
       detailsByYear: detailsByYear,
       cumulativeByYear: computeCumulativeByYear(detailsByYear),
       total: sumList(detailsByYear),
@@ -207,7 +271,7 @@ export const getSiteStatuQuoIndirectsEconomicImpacts = ({
       invasiveSpeciesRegulation,
       ["discount", "gdp_evolution"],
     );
-    impacts.push({
+    economicImpacts.push({
       detailsByYear: detailsByYear,
       cumulativeByYear: computeCumulativeByYear(detailsByYear),
       total: sumList(detailsByYear),
@@ -227,7 +291,7 @@ export const getSiteStatuQuoIndirectsEconomicImpacts = ({
       "discount",
       "gdp_evolution",
     ]);
-    impacts.push({
+    economicImpacts.push({
       detailsByYear: detailsByYear,
       cumulativeByYear: computeCumulativeByYear(detailsByYear),
       total: sumList(detailsByYear),
@@ -244,7 +308,7 @@ export const getSiteStatuQuoIndirectsEconomicImpacts = ({
       "discount",
       "gdp_evolution",
     ]);
-    impacts.push({
+    economicImpacts.push({
       detailsByYear: detailsByYear,
       cumulativeByYear: computeCumulativeByYear(detailsByYear),
       total: sumList(detailsByYear),
@@ -258,7 +322,7 @@ export const getSiteStatuQuoIndirectsEconomicImpacts = ({
       "discount",
       "gdp_evolution",
     ]);
-    impacts.push({
+    economicImpacts.push({
       detailsByYear: detailsByYear,
       cumulativeByYear: computeCumulativeByYear(detailsByYear),
       total: sumList(detailsByYear),
@@ -274,7 +338,7 @@ export const getSiteStatuQuoIndirectsEconomicImpacts = ({
       currentRentCost.amount,
       ["discount"],
     );
-    impacts.push({
+    economicImpacts.push({
       detailsByYear: detailsByYear,
       cumulativeByYear: computeCumulativeByYear(detailsByYear),
       total: sumList(detailsByYear),
@@ -282,5 +346,11 @@ export const getSiteStatuQuoIndirectsEconomicImpacts = ({
     });
   }
 
-  return { total: roundToInteger(sumListWithKey(impacts, "total")), details: impacts };
+  return {
+    impactMetrics,
+    economicImpacts: {
+      total: roundToInteger(sumListWithKey(economicImpacts, "total")),
+      details: economicImpacts,
+    },
+  };
 };

@@ -6,6 +6,7 @@ import type { SumOnEvolutionPeriodService } from "../../../sum-on-evolution-peri
 import {
   getFricheRoadsAndUtilitiesExpensesImpact,
   getLocalPropertyIncreaseWithFricheRemovalImpacts,
+  getReinstatementFullTimeJobs,
 } from "./siteReconversionRelatedEconomicImpacts";
 
 // ---------------------------------------------------------------------------
@@ -98,6 +99,28 @@ describe("getLocalPropertyIncreaseWithFricheRemovalImpacts", () => {
       expect(Array.isArray(item.detailsByYear)).toBe(true);
       expect(item.total).toEqual(roundToInteger(sumList(item.detailsByYear)));
       expect(Array.isArray(item.cumulativeByYear)).toBe(true);
+    });
+  });
+
+  describe("fullTimeJobs impact metrics", () => {
+    it("returns 2 reinstatement ETP", () => {
+      const result = getReinstatementFullTimeJobs({
+        evaluationPeriodInYears: 20,
+        reinstatementExpenses: [
+          { amount: 2250000, purpose: "asbestos_removal" },
+          { purpose: "remediation", amount: 3300000 },
+          { purpose: "demolition", amount: 2250000 },
+          { purpose: "deimpermeabilization", amount: 498000 },
+          { purpose: "sustainable_soils_reinstatement", amount: 2520000 },
+        ],
+        reinstatementSchedule: {
+          startDate: new Date("2024-01-01"),
+          endDate: new Date("2024-06-30"),
+        },
+      });
+
+      expect(result?.name).toEqual("reinstatementFullTimeJobs");
+      expect(result?.total).toBeCloseTo(2, 0);
     });
   });
 });

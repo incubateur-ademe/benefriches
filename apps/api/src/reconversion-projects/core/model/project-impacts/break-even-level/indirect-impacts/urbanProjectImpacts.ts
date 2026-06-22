@@ -1,7 +1,9 @@
 import {
   BuildingsUseDistribution,
+  computeDefaultOperationsFullTimeJobsFromBuildingsAreaDistribution,
   computeEstimatedPropertyTaxesAmount,
   DevelopmentPlanFeatures,
+  ProjectOnSiteImpactMetric,
   ReconversionProjectOnSiteIndirectEconomicImpact,
   sumList,
   sumListWithKey,
@@ -14,7 +16,7 @@ import {
   computeCumulativeByYear,
   InputReconversionProjectData,
   InputSiteData,
-} from "../projectIndirectEconomicImpacts";
+} from "../projectIndirectImpacts";
 import {
   getFricheRoadsAndUtilitiesExpensesImpact,
   getLocalPropertyIncreaseWithFricheRemovalImpacts,
@@ -84,17 +86,21 @@ export const getUrbanProjectImpacts = ({
   relatedSite,
   siteCityData,
   sumOnEvolutionPeriodService,
-}: UrbanProjectImpactsProps): ReconversionProjectOnSiteIndirectEconomicImpact[] => {
-  const impacts: ReconversionProjectOnSiteIndirectEconomicImpact[] = [];
+}: UrbanProjectImpactsProps): {
+  economicImpacts: ReconversionProjectOnSiteIndirectEconomicImpact[];
+  impactMetrics: ProjectOnSiteImpactMetric[];
+} => {
+  const economicImpacts: ReconversionProjectOnSiteIndirectEconomicImpact[] = [];
+  const impactsMetrics: ProjectOnSiteImpactMetric[] = [];
 
-  const pushImpact = (
+  const pushEconomicImpact = (
     name: ReconversionProjectOnSiteIndirectEconomicImpact["name"],
     yearlyValue: number | undefined,
     weights: ("discount" | "gdp_evolution" | "co2_value" | "co2_emitted_per_vehicule")[],
   ) => {
     if (!yearlyValue) return;
     const detailsByYear = sumOnEvolutionPeriodService.getWeightedYearlyValues(yearlyValue, weights);
-    impacts.push({
+    economicImpacts.push({
       name,
       total: sumList(detailsByYear),
       detailsByYear,
@@ -102,14 +108,48 @@ export const getUrbanProjectImpacts = ({
     });
   };
 
+  const pushImpactMetrics = (
+    name: ProjectOnSiteImpactMetric["name"],
+    yearlyValue: number | undefined,
+    weights: ("co2_value" | "co2_emitted_per_vehicule")[],
+  ) => {
+    if (!yearlyValue) return;
+    const detailsByYear = sumOnEvolutionPeriodService.getWeightedYearlyValues(yearlyValue, weights);
+    impactsMetrics.push({
+      name,
+      total: sumList(detailsByYear),
+      detailsByYear,
+    });
+  };
+
+  // --- Taxes liées aux nouveaux usages ---
+  economicImpacts.push(
+    ...getNewUsagesTaxesIncomeImpact({
+      buildingsFloorAreaDistribution:
+        reconversionProject.developmentPlan.features.buildingsFloorAreaDistribution,
+      sumOnEvolutionPeriodService,
+    }),
+  );
+
+  // ETP
+  const operationsFullTimeJobs = computeDefaultOperationsFullTimeJobsFromBuildingsAreaDistribution(
+    reconversionProject.developmentPlan.features.buildingsFloorAreaDistribution,
+  );
+  if (operationsFullTimeJobs) {
+    impactsMetrics.push({
+      name: "operationsFullTimeJobs",
+      total: operationsFullTimeJobs,
+    });
+  }
+
   if (relatedSite.nature === "FRICHE") {
-    impacts.push(
+    economicImpacts.push(
       getFricheRoadsAndUtilitiesExpensesImpact({
         siteSurfaceArea: relatedSite.surfaceArea,
         sumOnEvolutionPeriodService,
       }),
     );
-    impacts.push(
+    economicImpacts.push(
       ...getLocalPropertyIncreaseWithFricheRemovalImpacts({
         siteSurfaceArea: relatedSite.surfaceArea,
         siteCityData,
@@ -132,12 +172,19 @@ export const getUrbanProjectImpacts = ({
       cityPopulation: siteCityData.cityPopulation,
     });
 
-    pushImpact(
+    pushEconomicImpact(
       "avoidedAirConditioningCo2eqEmissions",
       urbanFreshnessImpactsService.getAvoidedAirConditioningCo2EmissionsInTonsPerYear(),
       ["discount", "co2_value"],
     );
-    pushImpact(
+
+    pushImpactMetrics(
+      "avoidedAirConditioningCo2eqEmissions",
+      urbanFreshnessImpactsService.getAvoidedAirConditioningCo2EmissionsInTonsPerYear(),
+      [],
+    );
+
+    pushEconomicImpact(
       "avoidedAirConditioningExpenses",
       urbanFreshnessImpactsService.getAvoidedAirConditioningExpensesPerYear(),
       ["discount"],
@@ -152,57 +199,77 @@ export const getUrbanProjectImpacts = ({
       cityPopulation: siteCityData.cityPopulation,
     });
 
-    pushImpact(
-      "avoidedPropertyDamageExpenses",
-      travelRelatedImpactsService.getAvoidedPropertyDamageExpensesPerYear(),
-      ["discount", "gdp_evolution"],
+    pushImpactMetrics(
+      "avoidedVehiculeKilometers",
+      travelRelatedImpactsService.getAvoidedKilometersPerVehiculePerYear(),
+      [],
     );
-    pushImpact(
+
+    pushImpactMetrics(
+      "timeTravelSavedInHours",
+      travelRelatedImpactsService.getTravelTimeSavedPerTravelerPerYear(),
+      [],
+    );
+
+    pushEconomicImpact(
       "avoidedCarRelatedExpenses",
       travelRelatedImpactsService.getAvoidedCarRelatedExpensesPerYear(),
       ["discount", "gdp_evolution"],
     );
-    pushImpact(
+    pushEconomicImpact(
       "travelTimeSavedPerTravelerExpenses",
       travelRelatedImpactsService.getTravelTimeSavedPerTravelerExpensesPerYear(),
       ["discount", "gdp_evolution"],
     );
-    // Les émissions CO2 du trafic nécessitent un facteur supplémentaire
-    pushImpact(
+
+    pushImpactMetrics(
       "avoidedTrafficCo2EqEmissions",
-      travelRelatedImpactsService.getAvoidedTrafficCO2EmissionsInTonsPerYear(),
+      travelRelatedImpactsService.getAvoidedKilometersPerVehiculePerYear(),
+      ["co2_emitted_per_vehicule"],
+    );
+
+    pushEconomicImpact(
+      "avoidedTrafficCo2EqEmissions",
+      travelRelatedImpactsService.getAvoidedKilometersPerVehiculePerYear(),
       ["co2_emitted_per_vehicule", "co2_value", "discount"],
     );
-    pushImpact(
+    pushEconomicImpact(
       "avoidedAirPollutionHealthExpenses",
       travelRelatedImpactsService.getAvoidedAirPollutionHealthExpensesPerYear(),
       ["discount", "gdp_evolution"],
     );
-    pushImpact(
+
+    pushImpactMetrics(
+      "avoidedTrafficAccidents",
+      travelRelatedImpactsService.getTrafficAccidentsPerYear(),
+      [],
+    );
+
+    pushEconomicImpact(
+      "avoidedPropertyDamageExpenses",
+      travelRelatedImpactsService.getAvoidedPropertyDamageExpensesPerYear(),
+      ["discount", "gdp_evolution"],
+    );
+
+    pushEconomicImpact(
       "avoidedAccidentsMinorInjuriesExpenses",
       travelRelatedImpactsService.getAvoidedAccidentsMinorInjuriesExpensesPerYear(),
       ["discount", "gdp_evolution"],
     );
-    pushImpact(
+    pushEconomicImpact(
       "avoidedAccidentsSevereInjuriesExpenses",
       travelRelatedImpactsService.getAvoidedAccidentsSevereInjuriesExpensesPerYear(),
       ["discount", "gdp_evolution"],
     );
-    pushImpact(
+    pushEconomicImpact(
       "avoidedAccidentsDeathsExpenses",
       travelRelatedImpactsService.getAvoidedAccidentsDeathsExpensesPerYear(),
       ["discount", "gdp_evolution"],
     );
   }
 
-  // --- Taxes liées aux nouveaux usages ---
-  impacts.push(
-    ...getNewUsagesTaxesIncomeImpact({
-      buildingsFloorAreaDistribution:
-        reconversionProject.developmentPlan.features.buildingsFloorAreaDistribution,
-      sumOnEvolutionPeriodService,
-    }),
-  );
-
-  return impacts;
+  return {
+    economicImpacts: economicImpacts,
+    impactMetrics: impactsMetrics,
+  };
 };

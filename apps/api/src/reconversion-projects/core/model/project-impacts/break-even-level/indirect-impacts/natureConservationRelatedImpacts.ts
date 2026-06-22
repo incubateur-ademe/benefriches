@@ -1,4 +1,5 @@
 import {
+  ProjectOnSiteImpactMetric,
   ReconversionProjectOnSiteIndirectEconomicImpact,
   SoilsDistribution,
   sumList,
@@ -9,8 +10,9 @@ import { SoilsCarbonStorage } from "src/reconversion-projects/core/gateways/Soil
 
 import { SumOnEvolutionPeriodService } from "../../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import { NatureConservationImpactsService } from "../../nature-conservation/NatureConservationImpactsService";
+import { getPermeableSurfaceImpact } from "../../nature-conservation/permeableSurfaceAreaImpact";
 import { computeSoilsCo2eqStorageImpact } from "../../soils-co2eq-storage/soilsCo2eqStorage";
-import { computeCumulativeByYear } from "../projectIndirectEconomicImpacts";
+import { computeCumulativeByYear } from "../projectIndirectImpacts";
 
 type Props = {
   siteSoilsDistribution: SoilsDistribution;
@@ -28,8 +30,12 @@ export const getNatureConservationRelatedImpacts = ({
   projectSoilsCarbonStorage,
   projectDecontaminatedSoilSurface,
   sumOnEvolutionPeriodService,
-}: Props): ReconversionProjectOnSiteIndirectEconomicImpact[] => {
-  const impacts: ReconversionProjectOnSiteIndirectEconomicImpact[] = [];
+}: Props): {
+  impactMetrics: ProjectOnSiteImpactMetric[];
+  economicImpacts: ReconversionProjectOnSiteIndirectEconomicImpact[];
+} => {
+  const economicImpacts: ReconversionProjectOnSiteIndirectEconomicImpact[] = [];
+  const impactMetrics: ProjectOnSiteImpactMetric[] = [];
 
   const soilsCo2eqStorage = computeSoilsCo2eqStorageImpact(
     baseSoilsCarbonStorage?.total,
@@ -38,15 +44,19 @@ export const getNatureConservationRelatedImpacts = ({
 
   if (soilsCo2eqStorage && soilsCo2eqStorage?.difference !== 0) {
     const co2eqDetailsByYear = sumOnEvolutionPeriodService.getWeightedYearlyValues(
-      soilsCo2eqStorage?.difference ?? 0,
+      soilsCo2eqStorage?.difference,
       ["co2_value"],
       { endYearIndex: 1 },
     );
-    impacts.push({
+    economicImpacts.push({
       detailsByYear: co2eqDetailsByYear,
       cumulativeByYear: computeCumulativeByYear(co2eqDetailsByYear),
       total: sumList(co2eqDetailsByYear),
-      name: "storedCo2Eq",
+      name: "newStoredCo2Eq",
+    });
+    impactMetrics.push({
+      total: soilsCo2eqStorage?.difference,
+      name: "newStoredCo2Eq",
     });
   }
 
@@ -62,18 +72,40 @@ export const getNatureConservationRelatedImpacts = ({
     natureConservationImpactsService.getAll(),
   ).filter(([, value]) => value?.difference);
 
-  return impacts.concat(
-    natureConservationImpactList.map(([key, value]) => {
-      const detailsByYear = sumOnEvolutionPeriodService.getWeightedYearlyValues(
-        value?.difference ?? 0,
-        ["discount", "gdp_evolution"],
-      );
-      return {
-        detailsByYear,
-        cumulativeByYear: computeCumulativeByYear(detailsByYear),
-        total: sumList(detailsByYear),
-        name: key,
-      };
-    }),
-  );
+  const newPermeableSurface = getPermeableSurfaceImpact(
+    siteSoilsDistribution,
+    projectSoilsDistributionByType,
+  ).difference;
+  if (newPermeableSurface) {
+    impactMetrics.push({
+      name: "newPermeableSurface",
+      total: getPermeableSurfaceImpact(siteSoilsDistribution, projectSoilsDistributionByType)
+        .difference,
+    });
+  }
+
+  if (projectDecontaminatedSoilSurface) {
+    impactMetrics.push({
+      name: "decontaminatedSurface",
+      total: projectDecontaminatedSoilSurface,
+    });
+  }
+
+  return {
+    impactMetrics: impactMetrics,
+    economicImpacts: economicImpacts.concat(
+      natureConservationImpactList.map(([key, value]) => {
+        const detailsByYear = sumOnEvolutionPeriodService.getWeightedYearlyValues(
+          value?.difference ?? 0,
+          ["discount", "gdp_evolution"],
+        );
+        return {
+          detailsByYear,
+          cumulativeByYear: computeCumulativeByYear(detailsByYear),
+          total: sumList(detailsByYear),
+          name: key,
+        };
+      }),
+    ),
+  };
 };

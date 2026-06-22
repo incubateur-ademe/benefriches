@@ -36,6 +36,16 @@ const socioEconomicMonetaryImpactNameSchema = z.enum([
   "rentalIncome",
 ]);
 
+const impactMetricNameSchema = z.enum([
+  "storedCo2Eq",
+  "permeableSurface",
+  "contaminatedSurface",
+  "operationsFullTimeJobs",
+  "fricheAccidentsDeaths",
+  "fricheAccidentsSevereInjuries",
+  "fricheAccidentsMinorInjuries",
+]);
+
 const fricheCostsIndirectEconomicImpactsSchema = z.object({
   total: z.number(),
   detailsByYear: z.array(z.number()),
@@ -81,6 +91,11 @@ export type SiteStatuQuoEconomicImpact =
   | OperatingEconomicBalanceItem;
 export type SiteStatuQuoImpacts = z.infer<typeof siteStatuQuoImpactsSchema>;
 
+export type SiteStatuQuoImpactMetric = z.infer<typeof siteStatuQuoImpactMetricSchema>;
+export const siteStatuQuoImpactMetricSchema = z.object({
+  total: z.number(),
+  name: impactMetricNameSchema,
+});
 export const siteStatuQuoImpactsSchema = z.object({
   projectionYears: z.array(z.string()),
   economicImpacts: z.object({
@@ -89,6 +104,7 @@ export const siteStatuQuoImpactsSchema = z.object({
       z.union([siteIndirectEconomicImpactSchema, siteOperationEconomicBalanceItemSchema]),
     ),
   }),
+  impactMetrics: z.array(siteStatuQuoImpactMetricSchema),
   stakeholders: z.object({
     operator: siteStakeholdersImpactsSchema.optional(),
     tenant: siteStakeholdersImpactsSchema.optional(),

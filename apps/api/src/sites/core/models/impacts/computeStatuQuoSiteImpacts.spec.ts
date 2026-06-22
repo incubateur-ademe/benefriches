@@ -63,8 +63,8 @@ const BASE_PARAMS = {
 } as const;
 
 describe("computeStatuQuoSiteImpacts", () => {
-  describe("structure de retour", () => {
-    it("retourne les clés attendues", () => {
+  describe("GetSiteImpactsDto", () => {
+    it("returns GetSiteImpactsDto format", () => {
       const result = computeStatuQuoSiteImpacts({
         ...BASE_PARAMS,
         site: { ...fricheSite, isSiteOperated: false },
@@ -73,6 +73,7 @@ describe("computeStatuQuoSiteImpacts", () => {
       expect(result).toMatchObject({
         projectionYears: expect.any(Array) as string[],
         economicImpacts: expect.any(Object) as GetSiteImpactsDto["economicImpacts"],
+        impactMetrics: expect.any(Array) as GetSiteImpactsDto["impactMetrics"],
         stakeholders: expect.any(Object) as GetSiteImpactsDto["stakeholders"],
       });
     });
@@ -204,6 +205,10 @@ describe("computeStatuQuoSiteImpacts", () => {
         carbon?.total,
         carbon?.total,
       ]);
+      expect(result.impactMetrics.find((d) => d.name === "storedCo2Eq")?.total).toBeCloseTo(
+        18333,
+        0,
+      );
     });
 
     it("without soilsCarbonStorage, storedCo2Eq is not included", () => {
@@ -214,6 +219,7 @@ describe("computeStatuQuoSiteImpacts", () => {
 
       const hasCarbon = result.economicImpacts.details.some((d) => d.name === "storedCo2Eq");
       expect(hasCarbon).toBe(false);
+      expect(result.impactMetrics.some((d) => d.name === "storedCo2Eq")).toBe(false);
     });
   });
 });
