@@ -3,7 +3,7 @@ import { SiteNature } from "shared";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { urbanSprawlImpactsComparisonRequested } from "@/features/projects/application/project-impacts/actions/urbanSprawlImpactsComparisonRequested.action";
-import { selectAvoidedUrbanSprawlCostsAnalysisDataView } from "@/features/projects/application/project-impacts/projectAvoidedCostsAnalysis.selectors";
+import { selectAvoidedUrbanSprawlCostsAnalysisDataView } from "@/features/projects/application/project-impacts/selectors/projectAvoidedCostsAnalysis.selectors";
 import { ProjectDevelopmentPlanType } from "@/features/projects/domain/projects.types";
 
 import ProjectAvoidedUrbanSprawlCosts from "./ProjectAvoidedUrbanSprawlCosts";

@@ -22,7 +22,7 @@ function ImpactsActionBar({
   selectedViewMode,
   evaluationPeriod,
   onEvaluationPeriodChange,
-  segments = ["summary", "charts", "list"],
+  segments = ["summary", "list"],
   className,
   ref,
 }: ActionBarProps) {
@@ -43,18 +43,6 @@ function ImpactsActionBar({
         segments={
           segments.map((viewMode) => {
             switch (viewMode) {
-              case "charts":
-                return {
-                  label: "Graphique",
-                  iconId: "fr-icon-line-chart-fill",
-
-                  nativeInputProps: {
-                    checked: selectedViewMode === "charts",
-                    onChange: () => {
-                      onViewModeClick("charts");
-                    },
-                  },
-                };
               case "list":
                 return {
                   label: "Liste",

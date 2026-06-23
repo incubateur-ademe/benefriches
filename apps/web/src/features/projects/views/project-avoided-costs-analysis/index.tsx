@@ -1,8 +1,8 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 
 import { evaluationPeriodUpdated } from "../../application/project-impacts/actions";
-import { selectAvoidedCostsAnalysisDataView } from "../../application/project-impacts/projectAvoidedCostsAnalysis.selectors";
-import { selectDisplayOnboarding } from "../../application/project-impacts/projectUrbanSprawlComparisonOnboardingSkip.selector";
+import { selectAvoidedCostsAnalysisDataView } from "../../application/project-impacts/selectors/projectAvoidedCostsAnalysis.selectors";
+import { selectDisplayOnboarding } from "../../application/project-impacts/selectors/projectUrbanSprawlComparisonOnboardingSkip.selector";
 import ProjectAvoidedCostsAnalysisPage from "./ProjectAvoidedCostsAnalysisPage";
 
 type Props = {

@@ -1,4 +1,4 @@
-import { DevelopmentScoreDataView } from "../../application/project-impacts/projectDevelopmentScore.selectors";
+import { DevelopmentScoreDataView } from "../../application/project-impacts/selectors/projectDevelopmentScore.selectors";
 import IconFail from "./ProjectDevelopmentIconFail";
 import IconSuccess from "./ProjectDevelopmentIconSuccess";
 import MetricCard from "./ProjectDevelopmentMetricCard";

@@ -3,7 +3,7 @@ import { sumListWithKey } from "shared";
 
 import { RootState } from "@/app/store/store";
 
-import { IndirectEconomicImpactsByBearer } from "../../domain/groupIndirectImpactsByBearer";
+import { IndirectEconomicImpactsByBearer } from "../../../domain/groupIndirectImpactsByBearer";
 import {
   selectImpactsCroppedByEvaluationPeriod,
   selectIndirectEconomicImpactsByBearer,

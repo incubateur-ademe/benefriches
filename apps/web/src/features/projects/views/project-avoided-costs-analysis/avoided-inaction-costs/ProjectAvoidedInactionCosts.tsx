@@ -1,6 +1,6 @@
 import { SiteNature } from "shared";
 
-import { AvoidedInactionCostsAnalysisDataView } from "@/features/projects/application/project-impacts/projectAvoidedCostsAnalysis.selectors";
+import { AvoidedInactionCostsAnalysisDataView } from "@/features/projects/application/project-impacts/selectors/projectAvoidedCostsAnalysis.selectors";
 import { groupIndirectEconomicImpactsByBearer } from "@/features/projects/domain/groupIndirectImpactsByBearer";
 import { ProjectDevelopmentPlanType } from "@/features/projects/domain/projects.types";
 import Badge from "@/shared/views/components/Badge/Badge";

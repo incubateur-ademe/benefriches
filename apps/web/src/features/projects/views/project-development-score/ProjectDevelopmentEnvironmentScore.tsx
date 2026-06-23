@@ -1,5 +1,5 @@
-import { DevelopmentScoreDataView } from "../../application/project-impacts/projectDevelopmentScore.selectors";
-import ImpactChartCard from "../project-page/impacts/charts-view/ImpactChartCard/ImpactChartCard";
+import { DevelopmentScoreDataView } from "../../application/project-impacts/selectors/projectDevelopmentScore.selectors";
+import ImpactChartCard from "../shared/charts/ImpactChartCard";
 import useImpactAreaChartProps from "../shared/charts/useImpactAreaChartProps";
 import IconFail from "./ProjectDevelopmentIconFail";
 import IconSuccess from "./ProjectDevelopmentIconSuccess";

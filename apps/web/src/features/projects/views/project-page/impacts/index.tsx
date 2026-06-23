@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { impactsExportModalOpened } from "@/features/analytics/core/analyticsEvents";
 import { eventTracked } from "@/features/analytics/core/eventTracked.action";
-import { selectImpactsPageViewData } from "@/features/projects/core/projectImpacts.selectors";
+import { selectImpactsPageViewData } from "@/features/projects/application/project-impacts/selectors/projectImpacts.selectors";
 import { loadFeatureAlerts } from "@/features/user-feature-alerts/core/loadFeatureAlerts.action";
 
 import {

@@ -5,8 +5,8 @@ import { RootState } from "@/app/store/store";
 import {
   getDetailedSocioEconomicProjectImpacts,
   getSocioEconomicProjectImpactsByActor,
-} from "../../domain/projectImpactsSocioEconomic";
-import { ProjectImpactsState } from "./projectImpacts.reducer";
+} from "../../../domain/projectImpactsSocioEconomic";
+import { ProjectImpactsState } from "../projectImpacts.reducer";
 
 const selectSelf = (state: RootState) => state.projectImpacts;
 

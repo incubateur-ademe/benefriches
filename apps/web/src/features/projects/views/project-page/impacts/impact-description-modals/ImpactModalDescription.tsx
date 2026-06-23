@@ -1,5 +1,5 @@
 import { useIsModalOpen } from "@codegouvfr/react-dsfr/Modal/useIsModalOpen";
-import { lazy, Suspense, useLayoutEffect, useState } from "react";
+import { Suspense, useLayoutEffect, useState } from "react";
 import { BuildingsUseDistribution, ReconversionProjectImpacts, SoilsDistribution } from "shared";
 
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
@@ -15,13 +15,6 @@ import { EconomicBalanceModalWizard } from "./economic-balance/EconomicBalanceMo
 import { EnvironmentalModalWizard } from "./environmental/EnvironmentalModalWizard";
 import { SocialModalWizard } from "./social/SocialModalWizard";
 import { SocioEconomicModalWizard } from "./socio-economic/SocioEconomicModalWizard";
-
-const SoilsCarbonStorageDescription = lazy(
-  () => import("./soils-carbon-storage/SoilsCarbonStorageDescription"),
-);
-const CostBenefitAnalysisDescription = lazy(
-  () => import("./cost-benefit-analysis/CostBenefitAnalysisDescription"),
-);
 
 export type ModalDataProps = {
   projectData: {
@@ -152,20 +145,6 @@ function ImpactModalDescription({
                 );
               case "summary":
                 return <SummaryModalWizard impactData={contentState.impactData} />;
-              case "charts":
-                switch (contentState.impactName) {
-                  case "cost_benefit_analysis":
-                    return <CostBenefitAnalysisDescription impactsData={impactsData} />;
-                  case "soils_carbon_storage":
-                    return (
-                      <SoilsCarbonStorageDescription
-                        impactData={impactsData.environmental.soilsCarbonStorage!}
-                        baseSoilsDistribution={siteData.soilsDistribution}
-                        forecastSoilsDistribution={projectData.soilsDistribution}
-                      />
-                    );
-                }
-                break;
               default:
                 return undefined;
             }

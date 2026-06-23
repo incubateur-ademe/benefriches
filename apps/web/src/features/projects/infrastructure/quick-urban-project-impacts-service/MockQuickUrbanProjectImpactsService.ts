@@ -1,7 +1,7 @@
 import {
   QuickUrbanProjectImpactsGateway,
   ReconversionProjectImpactsResult,
-} from "../../application/project-impacts/fetchQuickImpactsForUrbanProjectOnFriche.action";
+} from "../../application/project-impacts/actions/fetchQuickImpactsForUrbanProjectOnFriche.action";
 
 export class MockQuickUrbanProjectImpactsService implements QuickUrbanProjectImpactsGateway {
   data: ReconversionProjectImpactsResult | undefined = undefined;

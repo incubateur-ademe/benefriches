@@ -1,10 +1,10 @@
 import { createSelector } from "@reduxjs/toolkit";
 
+import type { ProjectFeatures } from "../../domain/projects.types";
 import {
   selectProjectFeatures,
   selectProjectFeaturesLoadingState,
-} from "../application/project-features/projectFeatures.reducer";
-import type { ProjectFeatures } from "../domain/projects.types";
+} from "./projectFeatures.reducer";
 
 type LoadingState = "idle" | "loading" | "success" | "error";
 

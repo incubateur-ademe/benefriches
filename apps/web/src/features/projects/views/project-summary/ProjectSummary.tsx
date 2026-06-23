@@ -4,8 +4,8 @@ import { impactsExportModalOpened } from "@/features/analytics/core/analyticsEve
 import { eventTracked } from "@/features/analytics/core/eventTracked.action";
 
 import { evaluationPeriodUpdated } from "../../application/project-impacts/actions";
-import { ProjectSummaryDataView } from "../../application/project-impacts/projectSummary.selector";
-import { selectImpactsPageViewData } from "../../core/projectImpacts.selectors";
+import { selectImpactsPageViewData } from "../../application/project-impacts/selectors/projectImpacts.selectors";
+import { ProjectSummaryDataView } from "../../application/project-impacts/selectors/projectSummary.selector";
 import BreakEvenLevalImpactsActionBar from "../project-break-even-level/ProjectBreakEvenLevelActionBar";
 import ProjectBreakEvenLevelSummary from "../project-break-even-level/ProjectBreakEvenLevelSummary";
 import ExportImpactsModal from "../project-page/export-impacts/ExportModal";

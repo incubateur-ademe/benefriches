@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
 import { viewModeUpdated } from "../../application/project-impacts/actions";
-import { fetchQuickImpactsForUrbanProjectOnFriche } from "../../application/project-impacts/fetchQuickImpactsForUrbanProjectOnFriche.action";
+import { fetchQuickImpactsForUrbanProjectOnFriche } from "../../application/project-impacts/actions/fetchQuickImpactsForUrbanProjectOnFriche.action";
 import { ViewMode } from "../../application/project-impacts/projectImpacts.reducer";
 import EmbedImpactsView from "./EmbedImpactsView";
 

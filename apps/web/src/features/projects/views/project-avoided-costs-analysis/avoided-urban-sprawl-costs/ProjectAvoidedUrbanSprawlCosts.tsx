@@ -1,6 +1,6 @@
 import { SiteNature } from "shared";
 
-import { AvoidedCostsUrbanSprawlAnalysisDataView } from "@/features/projects/application/project-impacts/projectAvoidedCostsAnalysis.selectors";
+import { AvoidedCostsUrbanSprawlAnalysisDataView } from "@/features/projects/application/project-impacts/selectors/projectAvoidedCostsAnalysis.selectors";
 import classNames from "@/shared/views/clsx";
 import Badge from "@/shared/views/components/Badge/Badge";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";

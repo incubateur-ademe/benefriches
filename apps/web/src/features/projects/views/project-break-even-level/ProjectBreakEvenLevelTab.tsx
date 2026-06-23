@@ -1,7 +1,7 @@
 import { useAppSelector } from "@/app/hooks/store.hooks";
 
-import { BreakEvenLevelTabDataView } from "../../application/project-impacts/projectBreakEvenLevel.selectors";
-import { selectImpactsPageViewData } from "../../core/projectImpacts.selectors";
+import { BreakEvenLevelTabDataView } from "../../application/project-impacts/selectors/projectBreakEvenLevel.selectors";
+import { selectImpactsPageViewData } from "../../application/project-impacts/selectors/projectImpacts.selectors";
 import ProjectPageHeader from "../project-page/header/";
 import BreakEvenLevalImpactsActionBar from "./ProjectBreakEvenLevelActionBar";
 import ProjectBreakEvenLevelSection from "./ProjectBreakEvenLevelSection";

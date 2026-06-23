@@ -3,7 +3,7 @@ import { renderToString } from "react-dom/server";
 
 import classNames from "@/shared/views/clsx";
 
-import { DevelopmentScoreDataView } from "../../application/project-impacts/projectDevelopmentScore.selectors";
+import { DevelopmentScoreDataView } from "../../application/project-impacts/selectors/projectDevelopmentScore.selectors";
 import BreakEvenLevelImpactsActionBar from "../project-break-even-level/ProjectBreakEvenLevelActionBar";
 import EconomicColumnChart from "../project-break-even-level/charts/EconomicColumnChart";
 import LocalAuthorityIndirectEconomicImpactsCharts from "../project-break-even-level/charts/LocalAuthorityIndirectEconomicImpactsCharts";

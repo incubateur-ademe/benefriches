@@ -2,7 +2,7 @@ import { createSelector } from "@reduxjs/toolkit";
 import { getDefaultScheduleForProject, ProjectSchedule } from "shared";
 
 import { RootState } from "@/app/store/store";
-import { selectShouldGoThroughOnboarding } from "@/features/projects/application/project-impacts/impactsOnboardingSkip.selectors";
+import { selectShouldGoThroughOnboarding } from "@/features/projects/application/project-impacts/selectors/impactsOnboardingSkip.selectors";
 
 import { ProjectCreationState } from "./createProject.reducer";
 import {

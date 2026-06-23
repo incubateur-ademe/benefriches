@@ -17,7 +17,6 @@ import ProjectImpactFooter from "../footer/ProjectImpactFooter";
 import ProjectPageHeader from "../header";
 import ImpactsAccuracyDisclaimer from "../impacts-accuracy-disclaimer/ImpactsAccuracyDisclaimer";
 import AboutImpactsModalButton from "./about-impacts-modal/AboutImpactsModalButton";
-import ImpactsChartsView from "./charts-view";
 import ImpactsListViewContainer from "./list-view";
 import ImpactsSummaryViewContainer from "./summary-view";
 
@@ -100,12 +99,6 @@ const ProjectImpactsView = ({
             <>
               <HtmlTitle>{`Liste - ${projectName} - Impacts`}</HtmlTitle>
               <ImpactsListViewContainer />
-            </>
-          )}
-          {currentViewMode === "charts" && (
-            <>
-              <HtmlTitle>{`Graphique - ${projectName} - Impacts`}</HtmlTitle>
-              <ImpactsChartsView />
             </>
           )}
           <ProjectImpactFooter

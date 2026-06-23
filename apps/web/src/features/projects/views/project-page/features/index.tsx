@@ -3,7 +3,7 @@ import { useEffect } from "react";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { fetchProjectFeatures } from "@/features/projects/application/project-features/projectFeatures.actions";
-import { selectProjectFeaturesViewData } from "@/features/projects/core/projectFeatures.selectors";
+import { selectProjectFeaturesViewData } from "@/features/projects/application/project-features/projectFeatures.selectors";
 import HtmlTitle from "@/shared/views/components/HtmlTitle/HtmlTitle";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 

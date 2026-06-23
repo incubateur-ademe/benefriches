@@ -4,11 +4,10 @@ import { photovoltaicProjectImpactMock } from "@/features/projects/application/p
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import {
-  selectImpactsChartsViewData,
   selectImpactsListViewData,
   selectImpactsPageViewData,
   selectImpactsSummaryViewData,
-} from "../projectImpacts.selectors";
+} from "../selectors/projectImpacts.selectors";
 
 const MOCK_STATES = {
   projectImpacts: {
@@ -36,38 +35,6 @@ const MOCK_STATES = {
 };
 
 describe("projectImpacts ViewData selectors", () => {
-  describe("selectImpactsChartsViewData", () => {
-    it("returns composed view data from state", () => {
-      const store = createStore(getTestAppDependencies(), MOCK_STATES);
-      const rootState = store.getState();
-
-      const viewData = selectImpactsChartsViewData(rootState);
-
-      expect(viewData).toEqual({
-        projectName: "Project photovoltaïque",
-        economicBalance: expect.objectContaining({
-          total: -500000,
-          bearer: "Mairie de Blajan",
-        }),
-        socioEconomicTotalImpact: expect.any(Number),
-        socioEconomicImpactsByActor: expect.any(Array),
-        socialAreaChartImpactsData: expect.objectContaining({
-          fullTimeJobs: expect.any(Object),
-          householdsPoweredByRenewableEnergy: expect.any(Object),
-        }),
-        environmentalAreaChartImpactsData: expect.objectContaining({
-          permeableSurfaceArea: expect.any(Object),
-          nonContaminatedSurfaceArea: expect.any(Object),
-        }),
-        modalData: expect.objectContaining({
-          projectData: expect.any(Object),
-          siteData: expect.any(Object),
-          impactsData: expect.any(Object),
-        }),
-      });
-    });
-  });
-
   describe("selectImpactsListViewData", () => {
     it("returns composed view data from state", () => {
       const store = createStore(getTestAppDependencies(), MOCK_STATES);

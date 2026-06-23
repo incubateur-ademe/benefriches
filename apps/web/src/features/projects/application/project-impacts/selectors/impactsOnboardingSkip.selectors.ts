@@ -1,7 +1,7 @@
 import type { RootState } from "@/app/store/store";
 import { selectAppSettings } from "@/features/app-settings/core/appSettings";
 
-import { canSkipImpactsOnboarding, hasSeenOnboardingToday } from "./impactsOnboardingSkip";
+import { canSkipImpactsOnboarding, hasSeenOnboardingToday } from "../impactsOnboardingSkip";
 
 export const selectCanSkipImpactsOnboarding = (state: RootState): boolean => {
   const { impactsOnboardingLastSeenAt } = selectAppSettings(state);

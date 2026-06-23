@@ -1,7 +1,7 @@
 import { createStore, RootState } from "@/app/store/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
-import { photovoltaicProjectImpactMock as projectImpactMock } from "./projectImpacts.mock";
+import { photovoltaicProjectImpactMock as projectImpactMock } from "../projectImpacts.mock";
 import {
   selectDetailedSocioEconomicProjectImpacts,
   selectSocioEconomicProjectImpactsByActor,

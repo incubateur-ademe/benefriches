@@ -3,8 +3,8 @@ import { Route } from "type-route";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { routes } from "@/app/router";
-import { impactsOnboardingCompleted } from "@/features/projects/application/project-impacts/impactsOnboardingSkip.actions";
-import { selectCanSkipImpactsOnboarding } from "@/features/projects/application/project-impacts/impactsOnboardingSkip.selectors";
+import { impactsOnboardingCompleted } from "@/features/projects/application/project-impacts/actions/impactsOnboardingSkip.actions";
+import { selectCanSkipImpactsOnboarding } from "@/features/projects/application/project-impacts/selectors/impactsOnboardingSkip.selectors";
 
 import ProjectImpactsOnboardingPage from "./ProjectImpactsOnboardingPage";
 import { DEFAULT_STEP } from "./steps";

@@ -2,10 +2,10 @@ import { createSelector } from "@reduxjs/toolkit";
 
 import { RootState } from "@/app/store/store";
 
-import { KeyImpactIndicatorData } from "../../domain/projectKeyImpactIndicators";
-import { PRIORITY_ORDER } from "../../views/shared/impacts/summary";
+import { KeyImpactIndicatorData } from "../../../domain/projectKeyImpactIndicators";
+import { PRIORITY_ORDER } from "../../../views/shared/impacts/summary";
+import { ProjectImpactsState } from "../projectImpacts.reducer";
 import { selectImpactsCroppedByEvaluationPeriod } from "./projectBreakEvenLevel.selectors";
-import { ProjectImpactsState } from "./projectImpacts.reducer";
 import { getKeyImpactIndicatorsListSelector } from "./projectKeyImpactIndicators.selectors";
 
 type ZanCompliance = Extract<KeyImpactIndicatorData, { name: "zanCompliance" }>;

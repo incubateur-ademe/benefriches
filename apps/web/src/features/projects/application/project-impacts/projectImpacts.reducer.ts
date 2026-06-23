@@ -18,14 +18,14 @@ import {
   reconversionProjectImpactsRequested,
   ReconversionProjectImpactsResult,
 } from "./actions";
+import { fetchQuickImpactsForUrbanProjectOnFriche } from "./actions/fetchQuickImpactsForUrbanProjectOnFriche.action";
 import { urbanSprawlImpactsComparisonRequested } from "./actions/urbanSprawlImpactsComparisonRequested.action";
-import { fetchQuickImpactsForUrbanProjectOnFriche } from "./fetchQuickImpactsForUrbanProjectOnFriche.action";
 
 type LoadingState = "idle" | "loading" | "success" | "error";
 
 const DEFAULT_VIEW_MODE = "summary";
 
-export type ViewMode = "charts" | "list" | "summary";
+export type ViewMode = "list" | "summary";
 
 export type ProjectImpactsState = {
   dataLoadingState: {

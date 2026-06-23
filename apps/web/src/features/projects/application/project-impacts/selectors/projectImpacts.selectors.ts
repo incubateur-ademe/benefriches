@@ -1,80 +1,24 @@
 import { createSelector } from "@reduxjs/toolkit";
 
 import type { RootState } from "@/app/store/store";
-import {
-  selectEnvironmentalAreaChartImpactsData,
-  selectSocialAreaChartImpactsData,
-} from "@/features/projects/application/project-impacts/projectImpactsAreaChartsData";
-import { selectEconomicBalanceProjectImpacts } from "@/features/projects/application/project-impacts/projectImpactsEconomicBalance.selectors";
-import { selectEnvironmentalProjectImpacts } from "@/features/projects/application/project-impacts/projectImpactsEnvironmental.selectors";
-import { selectSocialProjectImpacts } from "@/features/projects/application/project-impacts/projectImpactsSocial.selectors";
-import {
-  selectDetailedSocioEconomicProjectImpacts,
-  selectSocioEconomicProjectImpactsByActor,
-  selectTotalSocioEconomicImpact,
-} from "@/features/projects/application/project-impacts/projectImpactsSocioEconomic.selectors";
-import { getKeyImpactIndicatorsListSelector } from "@/features/projects/application/project-impacts/projectKeyImpactIndicators.selectors";
-import type {
-  EnvironmentalAreaChartImpactsData,
-  SocialAreaChartImpactsData,
-} from "@/features/projects/domain/projectImpactsAreaChartsData";
+import { selectEconomicBalanceProjectImpacts } from "@/features/projects/application/project-impacts/selectors/projectImpactsEconomicBalance.selectors";
+import { selectEnvironmentalProjectImpacts } from "@/features/projects/application/project-impacts/selectors/projectImpactsEnvironmental.selectors";
+import { selectSocialProjectImpacts } from "@/features/projects/application/project-impacts/selectors/projectImpactsSocial.selectors";
+import { selectDetailedSocioEconomicProjectImpacts } from "@/features/projects/application/project-impacts/selectors/projectImpactsSocioEconomic.selectors";
+import { getKeyImpactIndicatorsListSelector } from "@/features/projects/application/project-impacts/selectors/projectKeyImpactIndicators.selectors";
 import type { EconomicBalance } from "@/features/projects/domain/projectImpactsEconomicBalance";
 import type { EnvironmentalImpact } from "@/features/projects/domain/projectImpactsEnvironmental";
 import type { SocialImpact } from "@/features/projects/domain/projectImpactsSocial";
-import type {
-  SocioEconomicDetailedImpact,
-  SocioEconomicImpactByActor,
-} from "@/features/projects/domain/projectImpactsSocioEconomic";
+import type { SocioEconomicDetailedImpact } from "@/features/projects/domain/projectImpactsSocioEconomic";
 import type { KeyImpactIndicatorData } from "@/features/projects/domain/projectKeyImpactIndicators";
+import { ModalDataProps } from "@/features/projects/views/project-page/impacts/impact-description-modals/ImpactModalDescription";
 
 import {
   selectModalData,
-  selectProjectName,
   selectProjectsImpactsViewData,
   type ProjectImpactsState,
   type ViewMode,
-} from "../application/project-impacts/projectImpacts.reducer";
-import type { ModalDataProps } from "../views/project-page/impacts/impact-description-modals/ImpactModalDescription";
-
-// Charts View
-type ImpactsChartsViewData = {
-  projectName: string;
-  economicBalance: EconomicBalance;
-  socioEconomicTotalImpact: number;
-  socioEconomicImpactsByActor: SocioEconomicImpactByActor;
-  socialAreaChartImpactsData: SocialAreaChartImpactsData;
-  environmentalAreaChartImpactsData: EnvironmentalAreaChartImpactsData;
-  modalData: ModalDataProps;
-};
-
-export const selectImpactsChartsViewData = createSelector(
-  [
-    selectProjectName,
-    selectEconomicBalanceProjectImpacts,
-    selectTotalSocioEconomicImpact,
-    selectSocioEconomicProjectImpactsByActor,
-    selectSocialAreaChartImpactsData,
-    selectEnvironmentalAreaChartImpactsData,
-    selectModalData,
-  ],
-  (
-    projectName,
-    economicBalance,
-    socioEconomicTotalImpact,
-    socioEconomicImpactsByActor,
-    socialAreaChartImpactsData,
-    environmentalAreaChartImpactsData,
-    modalData,
-  ): ImpactsChartsViewData => ({
-    projectName,
-    economicBalance,
-    socioEconomicTotalImpact,
-    socioEconomicImpactsByActor,
-    socialAreaChartImpactsData,
-    environmentalAreaChartImpactsData,
-    modalData,
-  }),
-);
+} from "../projectImpacts.reducer";
 
 // List View
 type ImpactsListViewData = {

@@ -5,7 +5,7 @@ import { withDefaultBarChartOptions } from "@/shared/views/charts";
 import { useChartCustomPointColors } from "@/shared/views/charts/useChartCustomColors";
 import { getPositiveNegativeTextClassesFromValue } from "@/shared/views/classes/positiveNegativeTextClasses";
 
-import ImpactChartCard from "../../project-page/impacts/charts-view/ImpactChartCard/ImpactChartCard";
+import ImpactChartCard from "../../shared/charts/ImpactChartCard";
 import { formatMonetaryImpact } from "../../shared/formatImpactValue";
 
 type Props = {

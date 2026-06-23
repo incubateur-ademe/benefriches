@@ -2,7 +2,7 @@ import { createSelector } from "@reduxjs/toolkit";
 
 import { RootState } from "@/app/store/store";
 
-import { getKeyImpactIndicatorsList } from "../../domain/projectKeyImpactIndicators";
+import { getKeyImpactIndicatorsList } from "../../../domain/projectKeyImpactIndicators";
 
 const selectSelf = (state: RootState) => state.projectImpacts;
 

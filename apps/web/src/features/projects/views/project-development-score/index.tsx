@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 
 import { evaluationPeriodUpdated } from "../../application/project-impacts/actions";
-import { selectDevelopmentScoreDataView } from "../../application/project-impacts/projectDevelopmentScore.selectors";
+import { selectDevelopmentScoreDataView } from "../../application/project-impacts/selectors/projectDevelopmentScore.selectors";
 import ProjectDevelopmentScore from "./ProjectDevelopmentScorePage";
 
 type Props = {

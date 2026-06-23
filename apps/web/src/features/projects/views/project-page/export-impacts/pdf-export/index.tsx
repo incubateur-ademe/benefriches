@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { impactsExportDownloaded } from "@/features/analytics/core/analyticsEvents";
 import { eventTracked } from "@/features/analytics/core/eventTracked.action";
 import { fetchProjectFeatures } from "@/features/projects/application/project-features/projectFeatures.actions";
-import { selectExportImpactsView } from "@/features/projects/application/project-impacts/exportImpacts.selectors";
+import { selectExportImpactsView } from "@/features/projects/application/project-impacts/selectors/exportImpacts.selectors";
 import { fetchSiteFeatures } from "@/features/sites/core/fetchSiteFeatures.action";
 import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
 

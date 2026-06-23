@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { urbanSprawlComparisonOnboardingCompleted } from "@/features/projects/application/project-impacts/actions/urbanSprawlComparisonOnboardingSkip.action";
-import { selectAvoidedUrbanSprawlCostsAnalysisDataView } from "@/features/projects/application/project-impacts/projectAvoidedCostsAnalysis.selectors";
+import { selectAvoidedUrbanSprawlCostsAnalysisDataView } from "@/features/projects/application/project-impacts/selectors/projectAvoidedCostsAnalysis.selectors";
 import { ProjectDevelopmentPlanType } from "@/features/projects/domain/projects.types";
 
 import UrbanSprawlImpactsComparisonIntroductionModal from "./IntroModal";

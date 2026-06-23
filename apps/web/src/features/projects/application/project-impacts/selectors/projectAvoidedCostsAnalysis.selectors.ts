@@ -3,14 +3,14 @@ import { GetReconversionProjectImpactsResultDto, SiteNature } from "shared";
 
 import { RootState } from "@/app/store/store";
 
-import { cropUrbanSprawlSimulationByEvaluationPeriod } from "../../domain/cropImpactsByEvaluationPeriod";
+import { cropUrbanSprawlSimulationByEvaluationPeriod } from "../../../domain/cropImpactsByEvaluationPeriod";
 import {
   groupIndirectEconomicImpactsByBearer,
   IndirectEconomicImpactsByBearer,
-} from "../../domain/groupIndirectImpactsByBearer";
-import { ProjectDevelopmentPlanType } from "../../domain/projects.types";
+} from "../../../domain/groupIndirectImpactsByBearer";
+import { ProjectDevelopmentPlanType } from "../../../domain/projects.types";
+import { ProjectImpactsState } from "../projectImpacts.reducer";
 import { selectImpactsCroppedByEvaluationPeriod } from "./projectBreakEvenLevel.selectors";
-import { ProjectImpactsState } from "./projectImpacts.reducer";
 import { selectDisplayOnboarding } from "./projectUrbanSprawlComparisonOnboardingSkip.selector";
 
 const selectSelf = (state: RootState) => state.projectImpacts;

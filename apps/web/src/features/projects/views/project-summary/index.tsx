@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 
-import { selectProjectSummaryDataView } from "../../application/project-impacts/projectSummary.selector";
+import { selectProjectSummaryDataView } from "../../application/project-impacts/selectors/projectSummary.selector";
 import ProjectSummaryTab from "./ProjectSummary";
 
 type Props = {
