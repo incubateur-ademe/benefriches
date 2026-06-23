@@ -68,7 +68,8 @@
     {
       "files": ["*.spec.ts", "*.integration-spec.ts"],
       "rules": {
-        "typescript/no-floating-promises": "off"
+        "typescript/no-floating-promises": "off",
+        "typescript/no-non-null-assertion": "off"
       }
     }
   ]

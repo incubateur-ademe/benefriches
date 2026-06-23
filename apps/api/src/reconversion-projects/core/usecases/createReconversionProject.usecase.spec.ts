@@ -170,11 +170,9 @@ describe("CreateReconversionProject Use Case", () => {
             { ...props, createdAt: fakeNow, creationMode: "custom", status: "active" },
           ] satisfies ReconversionProjectSaveDto[]);
 
-          // oxlint-disable-next-line no-non-null-assertion
           const projectId = savedReconversionProjects[0]!.id;
           assert.strictEqual(eventPublisher.events.length, 1);
           assert.deepStrictEqual(eventPublisher.events[0], {
-            // oxlint-disable-next-line no-non-null-assertion
             id: eventPublisher.events[0]!.id,
             name: RECONVERSION_PROJECT_CREATED,
             payload: {
@@ -221,11 +219,9 @@ describe("CreateReconversionProject Use Case", () => {
             { ...props, createdAt: fakeNow, creationMode: "custom", status: "active" },
           ] satisfies ReconversionProjectSaveDto[]);
 
-          // oxlint-disable-next-line no-non-null-assertion
           const projectId = savedReconversionProjects[0]!.id;
           assert.strictEqual(eventPublisher.events.length, 1);
           assert.deepStrictEqual(eventPublisher.events[0], {
-            // oxlint-disable-next-line no-non-null-assertion
             id: eventPublisher.events[0]!.id,
             name: RECONVERSION_PROJECT_CREATED,
             payload: {

@@ -115,13 +115,10 @@ describe("CreateNewExpressSite Use case", () => {
 
     const savedSites = siteRepository._getSites();
     assert.strictEqual(savedSites.length, 1);
-    // oxlint-disable-next-line no-non-null-assertion
     const siteId = savedSites[0]!.id;
     assert.strictEqual((eventPublisher as InMemoryEventPublisher).events.length, 1);
-    // oxlint-disable-next-line no-non-null-assertion
     assert.ok(typeof (eventPublisher as InMemoryEventPublisher).events[0]!.id === "string");
     assert.deepStrictEqual((eventPublisher as InMemoryEventPublisher).events[0], {
-      // oxlint-disable-next-line no-non-null-assertion
       id: (eventPublisher as InMemoryEventPublisher).events[0]!.id,
       name: SITE_CREATED,
       payload: {
@@ -207,13 +204,10 @@ describe("CreateNewExpressSite Use case", () => {
           tenant: undefined,
         },
       ]);
-      // oxlint-disable-next-line no-non-null-assertion
       const siteId = savedSites[0]!.id;
       assert.strictEqual((eventPublisher as InMemoryEventPublisher).events.length, 1);
-      // oxlint-disable-next-line no-non-null-assertion
       assert.ok(typeof (eventPublisher as InMemoryEventPublisher).events[0]!.id === "string");
       assert.deepStrictEqual((eventPublisher as InMemoryEventPublisher).events[0], {
-        // oxlint-disable-next-line no-non-null-assertion
         id: (eventPublisher as InMemoryEventPublisher).events[0]!.id,
         name: SITE_CREATED,
         payload: {
@@ -269,13 +263,10 @@ describe("CreateNewExpressSite Use case", () => {
           tenant: undefined,
         },
       ]);
-      // oxlint-disable-next-line no-non-null-assertion
       const siteId = savedSites[0]!.id;
       assert.strictEqual((eventPublisher as InMemoryEventPublisher).events.length, 1);
-      // oxlint-disable-next-line no-non-null-assertion
       assert.ok(typeof (eventPublisher as InMemoryEventPublisher).events[0]!.id === "string");
       assert.deepStrictEqual((eventPublisher as InMemoryEventPublisher).events[0], {
-        // oxlint-disable-next-line no-non-null-assertion
         id: (eventPublisher as InMemoryEventPublisher).events[0]!.id,
         name: SITE_CREATED,
         payload: {
@@ -310,7 +301,6 @@ describe("CreateNewExpressSite Use case", () => {
         },
       });
 
-      // oxlint-disable-next-line no-non-null-assertion
       const savedSite = siteRepository._getSites()[0]!;
       assert.strictEqual(
         savedSite.yearlyExpenses.find((e) => e.purpose === "security"),
@@ -379,13 +369,10 @@ describe("CreateNewExpressSite Use case", () => {
           tenant: undefined,
         },
       ]);
-      // oxlint-disable-next-line no-non-null-assertion
       const siteId = savedSites[0]!.id;
       assert.strictEqual((eventPublisher as InMemoryEventPublisher).events.length, 1);
-      // oxlint-disable-next-line no-non-null-assertion
       assert.ok(typeof (eventPublisher as InMemoryEventPublisher).events[0]!.id === "string");
       assert.deepStrictEqual((eventPublisher as InMemoryEventPublisher).events[0], {
-        // oxlint-disable-next-line no-non-null-assertion
         id: (eventPublisher as InMemoryEventPublisher).events[0]!.id,
         name: SITE_CREATED,
         payload: {
@@ -452,13 +439,10 @@ describe("CreateNewExpressSite Use case", () => {
           tenant: undefined,
         },
       ]);
-      // oxlint-disable-next-line no-non-null-assertion
       const siteId = savedSites[0]!.id;
       assert.strictEqual((eventPublisher as InMemoryEventPublisher).events.length, 1);
-      // oxlint-disable-next-line no-non-null-assertion
       assert.ok(typeof (eventPublisher as InMemoryEventPublisher).events[0]!.id === "string");
       assert.deepStrictEqual((eventPublisher as InMemoryEventPublisher).events[0], {
-        // oxlint-disable-next-line no-non-null-assertion
         id: (eventPublisher as InMemoryEventPublisher).events[0]!.id,
         name: SITE_CREATED,
         payload: {
@@ -526,13 +510,10 @@ describe("CreateNewExpressSite Use case", () => {
           tenant: undefined,
         },
       ]);
-      // oxlint-disable-next-line no-non-null-assertion
       const siteId = savedSites[0]!.id;
       assert.strictEqual((eventPublisher as InMemoryEventPublisher).events.length, 1);
-      // oxlint-disable-next-line no-non-null-assertion
       assert.ok(typeof (eventPublisher as InMemoryEventPublisher).events[0]!.id === "string");
       assert.deepStrictEqual((eventPublisher as InMemoryEventPublisher).events[0], {
-        // oxlint-disable-next-line no-non-null-assertion
         id: (eventPublisher as InMemoryEventPublisher).events[0]!.id,
         name: SITE_CREATED,
         payload: {

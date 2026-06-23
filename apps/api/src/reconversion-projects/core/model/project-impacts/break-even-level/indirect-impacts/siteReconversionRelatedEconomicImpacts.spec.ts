@@ -47,7 +47,6 @@ describe("getFricheRoadsAndUtilitiesExpensesImpact", () => {
     });
 
     assert.strictEqual(getWeightedYearlyValuesSpy.mock.callCount(), 1);
-    // oxlint-disable-next-line no-non-null-assertion
     const opts = getWeightedYearlyValuesSpy.mock.calls[0]!.arguments[2] as {
       startYearIndex?: number;
     };

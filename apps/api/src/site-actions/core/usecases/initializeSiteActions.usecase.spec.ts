@@ -38,7 +38,6 @@ describe("InitializeSiteActions UseCase", () => {
     const actionsByType = new Map(savedActions.map((a) => [a.actionType, a]));
 
     assert.deepStrictEqual(actionsByType.get("EVALUATE_COMPATIBILITY"), {
-      // oxlint-disable-next-line no-non-null-assertion
       id: actionsByType.get("EVALUATE_COMPATIBILITY")!.id,
       siteId: "site-123",
       actionType: "EVALUATE_COMPATIBILITY",
@@ -47,7 +46,6 @@ describe("InitializeSiteActions UseCase", () => {
     });
 
     assert.deepStrictEqual(actionsByType.get("EVALUATE_RECONVERSION_SOCIOECONOMIC_IMPACTS"), {
-      // oxlint-disable-next-line no-non-null-assertion
       id: actionsByType.get("EVALUATE_RECONVERSION_SOCIOECONOMIC_IMPACTS")!.id,
       siteId: "site-123",
       actionType: "EVALUATE_RECONVERSION_SOCIOECONOMIC_IMPACTS",
@@ -56,7 +54,6 @@ describe("InitializeSiteActions UseCase", () => {
     });
 
     assert.deepStrictEqual(actionsByType.get("REQUEST_URBAN_VITALIZ_SUPPORT"), {
-      // oxlint-disable-next-line no-non-null-assertion
       id: actionsByType.get("REQUEST_URBAN_VITALIZ_SUPPORT")!.id,
       siteId: "site-123",
       actionType: "REQUEST_URBAN_VITALIZ_SUPPORT",
@@ -65,7 +62,6 @@ describe("InitializeSiteActions UseCase", () => {
     });
 
     assert.deepStrictEqual(actionsByType.get("REQUEST_INFORMATION_ABOUT_REMEDIATION"), {
-      // oxlint-disable-next-line no-non-null-assertion
       id: actionsByType.get("REQUEST_INFORMATION_ABOUT_REMEDIATION")!.id,
       siteId: "site-123",
       actionType: "REQUEST_INFORMATION_ABOUT_REMEDIATION",
@@ -74,7 +70,6 @@ describe("InitializeSiteActions UseCase", () => {
     });
 
     assert.deepStrictEqual(actionsByType.get("REQUEST_FUNDING_INFORMATION"), {
-      // oxlint-disable-next-line no-non-null-assertion
       id: actionsByType.get("REQUEST_FUNDING_INFORMATION")!.id,
       siteId: "site-123",
       actionType: "REQUEST_FUNDING_INFORMATION",
@@ -83,7 +78,6 @@ describe("InitializeSiteActions UseCase", () => {
     });
 
     assert.deepStrictEqual(actionsByType.get("REFERENCE_SITE_ON_CARTOFRICHES"), {
-      // oxlint-disable-next-line no-non-null-assertion
       id: actionsByType.get("REFERENCE_SITE_ON_CARTOFRICHES")!.id,
       siteId: "site-123",
       actionType: "REFERENCE_SITE_ON_CARTOFRICHES",
