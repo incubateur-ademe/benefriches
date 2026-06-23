@@ -11,427 +11,250 @@ paths:
 
 Unit tests verify UseCase business logic in isolation without external dependencies (database, HTTP, filesystem). They use InMemory implementations of repositories and queries, providing fast feedback on core domain logic. Tests validate both success and failure paths through the Result pattern.
 
+**Runner**: `node:test` + `node:assert/strict`. Run with:
+```bash
+pnpm --filter api test:unit                              # all unit tests
+node --require @swc-node/register --test src/path/to/file.spec.ts  # specific file (from apps/api/)
+```
+
 ## Core Principles
 
 1. **Isolation**: Test business logic without database, HTTP, or external services
 2. **Fast Execution**: Tests run in milliseconds with InMemory implementations
 3. **Explicit Setup**: Instantiate UseCase in each test, not in `beforeEach()`
-4. **Exhaustive Assertions**: Use `toEqual()` for complete object matching, not partial
+4. **Exhaustive Assertions**: Use `assert.deepStrictEqual` for complete object matching
 5. **Both Paths**: Test success cases AND all failure scenarios
 6. **Deterministic Services**: Use fixed IDs, dates for predictable, reproducible tests
 
+## Imports
+
+```typescript
+import assert from "node:assert/strict";
+import { describe, it, beforeEach } from "node:test"; // add before/after/afterEach as needed
+import type { SuccessResult, FailureResult } from "src/shared-kernel/result";
+```
+
 ## Test Structure
 
-**IMPORTANT**: Instantiate UseCase in each `it()`, not in `beforeEach()`. This makes tests more explicit and easier to understand.
+**IMPORTANT**: Instantiate UseCase in each `it()`, not in `beforeEach()`.
 
 ```typescript
 // core/usecases/createExample.usecase.spec.ts
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
 import { InMemoryExampleRepository } from "src/examples/adapters/secondary/example-repository/InMemoryExampleRepository";
 import { DeterministicIdGenerator } from "src/shared-kernel/adapters/id-generator/DeterministicIdGenerator";
 import type { SuccessResult, FailureResult } from "src/shared-kernel/result";
-import { describe, it, expect } from "vitest";
 
 import { CreateExampleUseCase } from "./createExample.usecase";
 
 describe("CreateExample UseCase", () => {
   it("should create example and return id", async () => {
-    // Arrange
     const repository = new InMemoryExampleRepository();
     const idGenerator = new DeterministicIdGenerator();
     const usecase = new CreateExampleUseCase(repository, idGenerator);
 
-    // Act
     const result = await usecase.execute({ name: "Test Example" });
 
-    // Assert - multiple assertions in same test
-    expect(result.isSuccess()).toBe(true);
-    expect((result as SuccessResult).getData()).toEqual({
-      exampleId: "1",
-    });
-    expect(repository._getExamples()).toHaveLength(1);
-    expect(repository._getExamples()).toEqual([
-      {
-        id: "1",
-        name: "Test Example",
-        createdAt: expect.any(Date),
-      },
+    assert.strictEqual(result.isSuccess(), true);
+    assert.deepStrictEqual((result as SuccessResult).getData(), { exampleId: "1" });
+    assert.strictEqual(repository._getExamples().length, 1);
+    assert.deepStrictEqual(repository._getExamples(), [
+      { id: "1", name: "Test Example", createdAt: new Date("2024-01-01") },
     ]);
   });
 });
 ```
+
+## Assertion Reference
+
+| Vitest | node:assert equivalent |
+|--------|----------------------|
+| `expect(a).toEqual(b)` | `assert.deepStrictEqual(a, b)` |
+| `expect(a).toBe(b)` | `assert.strictEqual(a, b)` |
+| `expect(arr).toHaveLength(n)` | `assert.strictEqual(arr.length, n)` |
+| `expect(v).toBeDefined()` | `assert.ok(v !== undefined)` |
+| `expect(v).toBeUndefined()` | `assert.strictEqual(v, undefined)` |
+| `expect(v).toBeNull()` | `assert.strictEqual(v, null)` |
+| `expect(v).toBeTruthy()` | `assert.ok(v)` |
+| `expect(v).toBeGreaterThan(n)` | `assert.ok(v > n)` |
+| `expect(v).toBeCloseTo(n)` | `assert.ok(Math.abs(v - n) < 0.005)` |
+| `expect(arr).toContain(x)` | `assert.ok(arr.includes(x))` |
+| `expect(obj).toMatchObject(p)` | `assert.partialDeepStrictEqual(obj, p)` |
+| `await expect(fn()).rejects.toThrow()` | `await assert.rejects(() => fn())` |
+| `expect<T>(x).toEqual(y)` | `assert.deepStrictEqual(x, y satisfies T)` |
+
+### toContainEqual
+
+```typescript
+const found = arr.find((item) => {
+  try { assert.deepStrictEqual(item, expected); return true; }
+  catch { return false; }
+});
+assert.ok(found !== undefined);
+```
+
+### {k: undefined} quirk
+
+`assert.deepStrictEqual` treats `{k: undefined} ≠ {}` (missing key); Vitest `toEqual` treated them equal. Two cases:
+- **Zod strips absent optional field** → omit from expected: `...(v !== undefined ? { k: v } : {})`
+- **Code explicitly assigns undefined** (e.g. `cond ? fakeNow : undefined`) → include `k: undefined` in expected
+
+Port naively, run tests, fix each diff the runner surfaces.
 
 ## Result Pattern Testing
 
-### Type Assertion Pattern (Recommended)
-
-Use type assertions for cleaner test code after checking success/failure:
-
 ```typescript
-it("should return success with example id", async () => {
+it("should fail when already exists", async () => {
   const repository = new InMemoryExampleRepository();
-  const idGenerator = new DeterministicIdGenerator();
-  const usecase = new CreateExampleUseCase(repository, idGenerator);
+  repository._setExamples([{ id: "existing", name: "Test", createdAt: new Date() }]);
+  const usecase = new CreateExampleUseCase(repository);
 
-  const result = await usecase.execute({ name: "Test Example" });
+  const result = await usecase.execute({ name: "Test" });
 
-  // Check result type first
-  expect(result.isSuccess()).toBe(true);
-
-  // Then use type assertion for direct access
-  expect((result as SuccessResult).getData()).toEqual({
-    exampleId: "1",
-  });
+  assert.strictEqual(result.isFailure(), true);
+  assert.strictEqual(
+    (result as FailureResult<"ExampleAlreadyExists">).getError(),
+    "ExampleAlreadyExists",
+  );
+  assert.strictEqual(repository._getExamples().length, 1); // no side effects
 });
 ```
 
-**Why type assertions**:
-- ✅ Cleaner, more direct code
-- ✅ Less boilerplate after already asserting with `expect(result.isSuccess())`
-- ✅ Full type safety - TypeScript knows exact method signatures
+## Testing Event Publishing
 
-## Exhaustive Assertions
-
-Prefer `toEqual()` over `toMatchObject()` for exhaustive assertions. See [API CLAUDE.md → Object Assertions](../../../apps/api/CLAUDE.md#object-assertions-prefer-single-expect) for rationale and examples.
-
-## Testing Success Paths
-
-```typescript
-describe("CreateExample UseCase - Success", () => {
-  it("should create example with correct data", async () => {
-    const repository = new InMemoryExampleRepository();
-    const dateProvider = new DeterministicDateProvider(new Date("2024-01-01"));
-    const usecase = new CreateExampleUseCase(repository, dateProvider);
-
-    const result = await usecase.execute({
-      name: "Test",
-      description: "Description",
-    });
-
-    expect(result.isSuccess()).toBe(true);
-    expect((result as SuccessResult).getData()).toEqual({
-      exampleId: expect.any(String),
-    });
-    expect(repository._getExamples()).toEqual([
-      {
-        id: expect.any(String),
-        name: "Test",
-        description: "Description",
-        createdAt: new Date("2024-01-01"),
-      },
-    ]);
-  });
-});
-```
-
-## Testing Failure Paths
-
-```typescript
-describe("CreateExample UseCase - Failures", () => {
-  it("should fail when example name already exists", async () => {
-    const repository = new InMemoryExampleRepository();
-    repository._setExamples([
-      {
-        id: "existing",
-        name: "Test",
-        createdAt: new Date(),
-      },
-    ]);
-    const usecase = new CreateExampleUseCase(repository);
-
-    const result = await usecase.execute({ name: "Test" });
-
-    expect(result.isFailure()).toBe(true);
-    expect((result as FailureResult<"ExampleAlreadyExists">).getError()).toBe(
-      "ExampleAlreadyExists"
-    );
-
-    // Verify no side effects (still only 1 example)
-    expect(repository._getExamples()).toHaveLength(1);
-  });
-
-  it("should fail with validation error for empty name", async () => {
-    const repository = new InMemoryExampleRepository();
-    const usecase = new CreateExampleUseCase(repository);
-
-    const result = await usecase.execute({ name: "" });
-
-    expect(result.isFailure()).toBe(true);
-    expect((result as FailureResult<"ValidationFailed">).getError()).toBe("ValidationFailed");
-    expect(repository._getExamples()).toHaveLength(0);
-  });
-});
-```
-
-## Testing Event Publishing in UseCases
-
-When a UseCase publishes domain events (via `DomainEventPublisher`), test both success and failure paths to ensure events are published only when appropriate.
-
-### Error Paths Must Assert No Events Published
-
-**CRITICAL**: Any error path that could publish events must have a test verifying `eventPublisher.events` is empty. This ensures side effects don't occur when business logic fails.
+### Error paths — assert NO events published
 
 ```typescript
 /* oxlint-disable typescript-eslint/no-unsafe-assignment */
 import { InMemoryEventPublisher } from "src/shared-kernel/adapters/events/publisher/InMemoryEventPublisher";
-import { FailureResult } from "src/shared-kernel/result";
 
-it("should fail validation and NOT publish event", async () => {
+it("should fail and NOT publish event", async () => {
   const repository = new InMemoryExampleRepository();
   const eventPublisher = new InMemoryEventPublisher();
   const usecase = new CreateExampleUseCase(repository, eventPublisher);
 
-  const result = await usecase.execute({ name: "" }); // Invalid input
+  const result = await usecase.execute({ name: "" });
 
-  expect(result.isFailure()).toBe(true);
-  expect((result as FailureResult<"ValidationError">).getError()).toBe("ValidationError");
-
-  // CRITICAL: Verify NO events were published on error
-  expect(eventPublisher.events).toHaveLength(0);
-});
-
-it("should fail with business error and NOT publish event", async () => {
-  const repository = new InMemoryExampleRepository();
-  repository._setExamples([
-    { id: "existing", name: "Test", createdAt: new Date() },
-  ]);
-  const eventPublisher = new InMemoryEventPublisher();
-  const usecase = new CreateExampleUseCase(repository, eventPublisher);
-
-  const result = await usecase.execute({ name: "Test" }); // Already exists
-
-  expect(result.isFailure()).toBe(true);
-  expect((result as FailureResult<"ExampleAlreadyExists">).getError()).toBe(
-    "ExampleAlreadyExists",
-  );
-
-  // CRITICAL: Verify NO events were published on error
-  expect(eventPublisher.events).toHaveLength(0);
+  assert.strictEqual(result.isFailure(), true);
+  assert.strictEqual(eventPublisher.events.length, 0); // CRITICAL
 });
 ```
 
-### Success Paths Must Type Event Assertions
+### Success paths — verify event shape
 
-**Use the pattern from `createNewSite.usecase.spec.ts` as the gold standard**:
+For non-deterministic event IDs (RandomUuidGenerator), assert the id is a string before the full shape check:
 
 ```typescript
 /* oxlint-disable typescript-eslint/no-unsafe-assignment */
 import { InMemoryEventPublisher } from "src/shared-kernel/adapters/events/publisher/InMemoryEventPublisher";
 import { RandomUuidGenerator } from "src/shared-kernel/adapters/id-generator/RandomUuidGenerator";
-import { EXAMPLE_CREATED, ExampleCreatedEvent } from "../events/exampleCreated.event";
+import { EXAMPLE_CREATED, type ExampleCreatedEvent } from "../events/exampleCreated.event";
 
-it("should create example and publish typed event", async () => {
+it("should create and publish typed event", async () => {
   const repository = new InMemoryExampleRepository();
   const eventPublisher = new InMemoryEventPublisher();
   const uuidGenerator = new RandomUuidGenerator();
-  const usecase = new CreateExampleUseCase(
-    repository,
-    eventPublisher,
-    uuidGenerator,
-  );
+  const usecase = new CreateExampleUseCase(repository, eventPublisher, uuidGenerator);
 
-  const result = await usecase.execute({ name: "Test", createdBy: "user-123" });
+  await usecase.execute({ name: "Test", createdBy: "user-123" });
 
-  expect(result.isSuccess()).toBe(true);
+  const exampleId = repository._getExamples()[0]!.id;
 
-  // Save the entity and extract ID
-  const savedExamples = repository._getExamples();
-  expect(savedExamples).toEqual<ExampleEntity[]>([
-    {
-      id: expect.any(String),
-      name: "Test",
-      createdBy: "user-123",
-      createdAt: expect.any(Date),
-    },
-  ]);
-
-  // oxlint-disable-next-line no-non-null-assertion
-  const exampleId = savedExamples[0]!.id;
-
-  // Type the event expectation completely
-  expect(eventPublisher.events).toHaveLength(1);
-  expect(eventPublisher.events[0]).toEqual<ExampleCreatedEvent>({
-    id: expect.any(String), // Non-deterministic UUID from uuidGenerator
-    name: EXAMPLE_CREATED,  // Event constant
-    payload: {
-      exampleId,            // From saved entity
-      createdBy: "user-123", // From request
-    },
-  });
+  assert.strictEqual(eventPublisher.events.length, 1);
+  assert.ok(typeof eventPublisher.events[0]!.id === "string"); // non-deterministic UUID
+  assert.deepStrictEqual(eventPublisher.events[0], {
+    id: eventPublisher.events[0]!.id,
+    name: EXAMPLE_CREATED,
+    payload: { exampleId, createdBy: "user-123" },
+  } satisfies ExampleCreatedEvent);
 });
 ```
 
-**Key practices**:
-- ✅ Use `InMemoryEventPublisher` in unit tests
-- ✅ Inject `UidGenerator` to generate event IDs (use `RandomUuidGenerator` in tests)
-- ✅ Type complete event expectation with `expect().toEqual<EventType>(...)`
-- ✅ Extract ID from saved entity using non-null assertion + oxlint comment
-- ✅ Use `expect.any(String)` for event ID (non-deterministic UUID)
-- ✅ Use event constant (e.g., `EXAMPLE_CREATED`) not string literal
-- ✅ Assert `eventPublisher.events` has exact length (not just > 0)
-
-**Why these patterns**:
-- **Error path assertions** prevent accidental side effects on failure
-- **Type assertions** ensure event shape matches expectations exactly
-- **Saving entity first** allows extracting stable IDs instead of hardcoding
-- **Constant usage** prevents mismatches between listener and publisher
-
-**Real examples**:
-- [createNewSite.usecase.spec.ts](../../../apps/api/src/sites/core/usecases/createNewSite.usecase.spec.ts) (Success + failure patterns with events)
-- [createReconversionProject.usecase.spec.ts](../../../apps/api/src/reconversion-projects/core/usecases/createReconversionProject.usecase.spec.ts) (Multiple event test cases)
-
-## Testing Validation with Structured Issues
-
-For validation errors with field-level details:
+For deterministic IDs (DeterministicUuidGenerator), use the known value directly:
 
 ```typescript
-it("should return validation error with field-level details", async () => {
-  const repository = new InMemoryExampleRepository();
-  const usecase = new CreateExampleUseCase(repository);
+uuidGenerator.nextUuids("event-id-1"); // set in beforeEach
+// ...
+assert.deepStrictEqual(eventPublisher.events[0], {
+  id: "event-id-1",
+  name: EXAMPLE_CREATED,
+  payload: { ... },
+} satisfies ExampleCreatedEvent);
+```
 
-  const result = await usecase.execute({
-    name: "ab",
-    email: "invalid",
-  });
+**Key practices**:
+- ✅ Always assert `eventPublisher.events.length` before accessing `events[0]`
+- ✅ Use event type constant (`EXAMPLE_CREATED`), not string literal
+- ✅ On error paths: assert `eventPublisher.events.length === 0`
 
-  expect(result.isFailure()).toBe(true);
+## it.each → for..of
 
-  const failureResult = result as FailureResult<
-    "ValidationFailed",
-    { fieldErrors: Record<string, string[]> }
-  >;
+```typescript
+// BEFORE (Vitest)
+it.each(["id", "email"])("cannot create without %s", (field) => { ... });
 
-  expect(failureResult.getError()).toBe("ValidationFailed");
-  expect(failureResult.getIssues()?.fieldErrors).toEqual({
+// AFTER (node:test)
+for (const field of ["id", "email"] as const) {
+  it(`cannot create without ${field}`, async () => { ... });
+}
+```
+
+## Mocking (HTTP adapter tests)
+
+When testing adapters that call external HTTP services, use `mock.fn()` from `node:test`:
+
+```typescript
+import { mock } from "node:test";
+
+let httpService: { get: ReturnType<typeof mock.fn> };
+
+beforeEach(() => {
+  httpService = { get: mock.fn() };
+});
+
+// Set return value
+httpService.get.mock.mockImplementation(() => of(buildAxiosResponse({ ... })));
+
+// Assert call arguments — note: node:test uses .arguments, NOT array index
+assert.deepStrictEqual(httpService.get.mock.calls[0]?.arguments, [
+  "https://api.example.com/resource",
+  { headers: expectedHeaders },
+]);
+assert.strictEqual(httpService.get.mock.callCount(), 1);
+```
+
+**Vitest → node:test mock translation**:
+- `vi.fn()` → `mock.fn()`
+- `fn.mockReturnValue(v)` → `fn.mock.mockImplementation(() => v)`
+- `fn.mock.calls[i][j]` → `fn.mock.calls[i].arguments[j]`
+- `expect(fn).toHaveBeenCalledWith(a, b)` → `assert.deepStrictEqual(fn.mock.calls[0]?.arguments, [a, b])`
+- `expect(fn).toHaveBeenCalledTimes(n)` → `assert.strictEqual(fn.mock.callCount(), n)`
+
+## Validation Errors
+
+```typescript
+it("should return validation error with field details", async () => {
+  const usecase = new CreateExampleUseCase(new InMemoryExampleRepository());
+
+  const result = await usecase.execute({ name: "ab", email: "invalid" });
+
+  assert.strictEqual(result.isFailure(), true);
+  const failure = result as FailureResult<"ValidationFailed", { fieldErrors: Record<string, string[]> }>;
+  assert.strictEqual(failure.getError(), "ValidationFailed");
+  assert.deepStrictEqual(failure.getIssues()?.fieldErrors, {
     name: ["Name must be at least 3 characters"],
     email: ["Invalid email format"],
   });
 });
 ```
 
-## Testing Authorization
-
-```typescript
-it("should fail when user is not authorized", async () => {
-  const repository = new InMemoryExampleRepository();
-  repository._setExamples([
-    {
-      id: "example-1",
-      name: "Test",
-      ownerId: "user-1",
-      createdAt: new Date(),
-    },
-  ]);
-  const usecase = new UpdateExampleUseCase(repository);
-
-  const result = await usecase.execute({
-    exampleId: "example-1",
-    userId: "unauthorized-user",
-    name: "Updated",
-  });
-
-  expect(result.isFailure()).toBe(true);
-  expect((result as FailureResult<"UserNotAuthorized">).getError()).toBe(
-    "UserNotAuthorized"
-  );
-
-  // Verify example was not modified
-  const examples = repository._getExamples();
-  expect(examples[0].name).toBe("Test");
-});
-```
-
-## Testing Multiple Gateways
-
-When UseCases depend on multiple gateways:
-
-```typescript
-describe("CreateReconversionProject UseCase", () => {
-  it("should fail when site does not exist", async () => {
-    const siteRepository = new InMemorySiteRepository();
-    const projectRepository = new InMemoryProjectRepository();
-    const usecase = new CreateReconversionProjectUseCase(
-      siteRepository,
-      projectRepository
-    );
-
-    const result = await usecase.execute({
-      siteId: "non-existent",
-      projectName: "Test",
-    });
-
-    expect(result.isFailure()).toBe(true);
-    expect((result as FailureResult<"SiteNotFound">).getError()).toBe("SiteNotFound");
-    expect(projectRepository._getProjects()).toHaveLength(0);
-  });
-
-  it("should create project and associate with site", async () => {
-    const siteRepository = new InMemorySiteRepository();
-    siteRepository._setSites([
-      {
-        id: "site-1",
-        name: "Test Site",
-        createdAt: new Date("2024-01-01"),
-      },
-    ]);
-    const projectRepository = new InMemoryProjectRepository();
-    const idGenerator = new DeterministicIdGenerator();
-    const dateProvider = new DeterministicDateProvider(new Date("2024-01-01"));
-    const usecase = new CreateReconversionProjectUseCase(
-      siteRepository,
-      projectRepository,
-      idGenerator,
-      dateProvider
-    );
-
-    const result = await usecase.execute({
-      siteId: "site-1",
-      projectName: "Test Project",
-    });
-
-    expect(result.isSuccess()).toBe(true);
-    expect((result as SuccessResult).getData()).toEqual({
-      projectId: "1",
-    });
-    expect(projectRepository._getProjects()).toEqual([
-      {
-        id: "1",
-        siteId: "site-1",
-        name: "Test Project",
-        createdAt: new Date("2024-01-01"),
-      },
-    ]);
-  });
-});
-```
-
 ## InMemory Implementations
-
-### Shared Test Services
-
-Use deterministic services for predictable tests:
-
-```typescript
-import { DeterministicIdGenerator } from "src/shared-kernel/adapters/id-generator/DeterministicIdGenerator";
-import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
-
-it("should use deterministic services", async () => {
-  const idGenerator = new DeterministicIdGenerator();
-  const dateProvider = new DeterministicDateProvider(new Date("2024-01-01"));
-
-  // IDs will be: "1", "2", "3"...
-  // Dates will be: fixed date from constructor
-});
-```
-
-### Repository Test Helpers
-
-InMemory repositories should provide test helpers (prefix with `_`):
 
 ```typescript
 export class InMemoryExampleRepository implements ExampleRepository {
   private examples = new Map<string, Example>();
 
-  // Test helpers
   _setExamples(examples: Example[]): void {
     this.examples = new Map(examples.map((e) => [e.id, e]));
   }
@@ -440,68 +263,36 @@ export class InMemoryExampleRepository implements ExampleRepository {
     return Array.from(this.examples.values());
   }
 
-  _clear(): void {
-    this.examples.clear();
-  }
-
-  // Interface implementation
   async save(example: Example): Promise<void> {
     this.examples.set(example.id, example);
   }
 }
 ```
 
-## Test Organization
-
-```
-module/
-└── core/
-    └── usecases/
-        ├── createExample.usecase.ts
-        └── createExample.usecase.spec.ts    # Co-located with UseCase
-```
-
-## Running Tests
-
-```bash
-# Run all unit tests
-pnpm --filter api test:unit
-
-# Run specific test file
-pnpm --filter api test:unit path/to/file.spec.ts
-
-# Watch mode
-pnpm --filter api test:unit -- --watch
-
-# Coverage
-pnpm --filter api test:unit -- --coverage
-```
-
 ## Best Practices
 
 ### DO:
 - ✅ Instantiate UseCase in each `it()`, not `beforeEach()`
-- ✅ Use `toEqual()` for exhaustive assertions (not `toMatchObject()`)
+- ✅ Use `assert.deepStrictEqual` for exhaustive shape assertions
 - ✅ Test both success and failure paths
 - ✅ Verify side effects (data saved, not saved on failure)
-- ✅ Use InMemory implementations for all gateways
-- ✅ Use deterministic services (ID generator, date provider)
-- ✅ Use type assertions after checking `isSuccess()` / `isFailure()`
+- ✅ Use `assert.partialDeepStrictEqual` for intentional partial checks (`toMatchObject` equivalent)
+- ✅ Assert `callCount()` before accessing `mock.calls[0]` to get a useful failure message
 
 ### DON'T:
 - ❌ Don't use `beforeEach()` for UseCase instantiation
-- ❌ Don't use `toMatchObject()` when `toEqual()` is possible
+- ❌ Don't skip exhaustive shape checks — catching extra/missing fields is the point
 - ❌ Don't access database in unit tests
-- ❌ Don't skip failure path tests
-- ❌ Don't forget to verify side effects
-- ❌ Don't use real services (random IDs, current dates)
+- ❌ Don't add `afterEach(() => mock.restoreAll())` — Vitest auto-restored, node:test unit tests don't need it
+- ❌ Don't use `void` prefix on `describe`/`it` (lint rule disabled for `*.spec.ts`)
 
 ## Real-World Examples
 
-| Test File | UseCase | Patterns Demonstrated |
-|-----------|---------|----------------------|
-| [createUser.usecase.spec.ts](../../../apps/api/src/auth/core/createUser.usecase.spec.ts) | CreateUserUseCase | Basic Result pattern testing |
-| [authenticateWithToken.usecase.spec.ts](../../../apps/api/src/auth/core/authenticateWithToken.usecase.spec.ts) | AuthenticateWithTokenUseCase | Authorization failures |
+| Test File | Patterns Demonstrated |
+|-----------|----------------------|
+| [createUser.usecase.spec.ts](../../../apps/api/src/auth/core/createUser.usecase.spec.ts) | {k:undefined} quirk, assert.rejects for Zod validation |
+| [createNewSite.usecase.spec.ts](../../../apps/api/src/sites/core/usecases/createNewSite.usecase.spec.ts) | Event publishing, satisfies EventType |
+| [ConnectCrm.spec.ts](../../../apps/api/src/marketing/adapters/secondary/ConnectCrm.spec.ts) | mock.fn, mock.timers, mock.calls[i].arguments |
 
 ## Related Patterns
 

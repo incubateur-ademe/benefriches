@@ -92,6 +92,12 @@ Run after each logical change, not batched at the end.
 
 **Test isolation**: Integration tests auto-clear all 21 SQL tables via a global hook in [`test/integration-per-test-hooks.ts`](./test/integration-per-test-hooks.ts). Don't add manual `afterEach()` cleanup.
 
+**node:test gotchas**:
+
+- `{k: undefined} ≠ {}` in `assert.deepStrictEqual` (unlike Vitest `toEqual`). When Zod strips an absent optional field, use `...(v !== undefined ? { k: v } : {})` on the expected side.
+- Mock call access: `spy.mock.calls[i].arguments[j]` not `spy.mock.calls[i][j]`.
+- `assert.partialDeepStrictEqual(actual, partial)` is the correct replacement for `toMatchObject`. The "never use partialDeepStrictEqual" rule applies only when replacing exact-shape `toEqual`, not intentional partial matches.
+
 ---
 
 ## 📦 Tech Stack

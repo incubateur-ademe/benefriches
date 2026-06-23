@@ -83,7 +83,7 @@ Note: We don't use monorepo dependency solutions (nx, turborepo). You must manua
 
 ### Test Types
 
-- **Unit tests** (`.spec.ts`): No real I/O. Lives next to the code under test, in `core/` or `adapters/`. HTTP adapter tests with mocked transport (e.g., `vi.fn()` on `HttpService`) belong here — they verify request/response mapping without booting testcontainers.
+- **Unit tests** (`.spec.ts`): No real I/O. Lives next to the code under test, in `core/` or `adapters/`. HTTP adapter tests with mocked transport (e.g., `mock.fn()` from `node:test` on `HttpService`) belong here — they verify request/response mapping without booting testcontainers.
 - **Integration tests** (`.integration-spec.ts` in `adapters/`): Real database or real network calls. Boots testcontainers.
 - **E2E tests** (`.spec.ts` in `e2e-tests/tests/`): Full user flows with Playwright against running stack
 
@@ -106,7 +106,8 @@ Each test should verify a **distinct behavior** not covered by other tests:
 
 ```bash
 # Test specific file
-pnpm --filter api test:unit path/to/file.spec.ts # for unit tests
+# API unit: node:test doesn't accept extra args via pnpm script — run directly from apps/api/
+node --require @swc-node/register --test src/path/to/file.spec.ts  # from apps/api/
 pnpm --filter api test:integration path/to/file.integration-spec.ts # for integration tests
 pnpm --filter web test path/to/file.spec.ts
 
