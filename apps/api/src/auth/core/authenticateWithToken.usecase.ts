@@ -1,7 +1,10 @@
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerator";
+import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
 import { TResult, fail, success } from "src/shared-kernel/result";
 import { UseCase } from "src/shared-kernel/usecase";
 
+import { createLoginWithTokenFailedEvent } from "./events/loginWithTokenFailed.event";
 import { TokenAuthenticationAttemptRepository } from "./gateways/TokenAuthenticationAttemptRepository";
 import { UserRepository } from "./gateways/UsersRepository";
 import { TokenGenerator } from "./sendAuthLink.usecase";
@@ -15,9 +18,14 @@ type AuthenticatedUserInfo = {
   email: string;
 };
 
+type AuthenticateWithTokenErrorType =
+  | "TokenNotFound"
+  | "AuthenticationAttemptExpired"
+  | "TokenAlreadyUsed";
+
 type AuthenticateWithTokenResult = TResult<
   { user: AuthenticatedUserInfo },
-  "TokenNotFound" | "AuthenticationAttemptExpired" | "TokenAlreadyUsed"
+  AuthenticateWithTokenErrorType
 >;
 
 export class AuthenticateWithTokenUseCase implements UseCase<Request, AuthenticateWithTokenResult> {
@@ -26,6 +34,8 @@ export class AuthenticateWithTokenUseCase implements UseCase<Request, Authentica
     private readonly userRepository: UserRepository,
     private readonly dateProvider: DateProvider,
     private readonly tokenGenerator: TokenGenerator,
+    private readonly eventPublisher: DomainEventPublisher,
+    private readonly uuidGenerator: UidGenerator,
   ) {}
 
   async execute(request: Request): Promise<AuthenticateWithTokenResult> {
@@ -34,15 +44,15 @@ export class AuthenticateWithTokenUseCase implements UseCase<Request, Authentica
     const hashedToken = this.tokenGenerator.hash(inputToken);
     const existingToken = await this.tokenAuthenticationAttemptRepository.findByToken(hashedToken);
 
-    if (!existingToken) return fail("TokenNotFound");
-    if (existingToken.completedAt) return fail("TokenAlreadyUsed");
+    if (!existingToken) return this.failWithEvent("TokenNotFound");
+    if (existingToken.completedAt) return this.failWithEvent("TokenAlreadyUsed");
     if (existingToken.expiresAt < this.dateProvider.now())
-      return fail("AuthenticationAttemptExpired");
+      return this.failWithEvent("AuthenticationAttemptExpired");
 
     const authenticatedUser = await this.userRepository.getWithId(existingToken.userId);
 
     if (!authenticatedUser) {
-      return fail("TokenNotFound");
+      return this.failWithEvent("TokenNotFound");
     }
 
     await this.tokenAuthenticationAttemptRepository.markAsComplete(
@@ -51,5 +61,14 @@ export class AuthenticateWithTokenUseCase implements UseCase<Request, Authentica
     );
 
     return success({ user: { id: authenticatedUser.id, email: authenticatedUser.email } });
+  }
+
+  private async failWithEvent(
+    errorType: AuthenticateWithTokenErrorType,
+  ): Promise<AuthenticateWithTokenResult> {
+    await this.eventPublisher.publish(
+      createLoginWithTokenFailedEvent(this.uuidGenerator.generate(), { errorType }),
+    );
+    return fail(errorType);
   }
 }
