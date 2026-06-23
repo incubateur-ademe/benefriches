@@ -101,7 +101,7 @@ Run after each logical change, not batched at the end.
 - **Validation**: Zod + nestjs-zod (runtime validation)
 - **Auth**: JWT + OpenID Connect
 - **Events**: @nestjs/event-emitter
-- **Testing**: `node:test` + `node:assert/strict` for integration tests (`*.integration-spec.ts`); Vitest for unit tests (`*.spec.ts`); testcontainers (isolated PostgreSQL per integration run)
+- **Testing**: `node:test` + `node:assert/strict` for all tests; unit tests in `*.spec.ts`, integration tests in `*.integration-spec.ts`; testcontainers (isolated PostgreSQL per integration run)
 
 Full monorepo tech stack: [root CLAUDE.md](../../CLAUDE.md).
 
