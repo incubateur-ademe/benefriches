@@ -32,6 +32,7 @@ import {
   DOMAIN_EVENT_PUBLISHER_INJECTION_TOKEN,
   DomainEventPublisher,
 } from "src/shared-kernel/domainEventPublisher";
+import type { AppLogger } from "src/shared-kernel/logger";
 
 import { AuthenticateWithTokenUseCase } from "../core/authenticateWithToken.usecase";
 import { createLoginAttemptedEvent } from "../core/events/loginAttempted.event";
@@ -59,6 +60,8 @@ import {
   VERIFIED_EMAIL_REPOSITORY_INJECTION_TOKEN,
   VerifiedEmailRepository,
 } from "./verified-email-repository/VerifiedEmailRepository";
+
+export const AUTH_CONTROLLER_LOGGER_TOKEN = "AUTH_CONTROLLER_LOGGER";
 
 declare module "express-session" {
   interface SessionData {
@@ -91,6 +94,8 @@ export class AuthController {
     private readonly eventPublisher: DomainEventPublisher,
     @Inject(UUID_GENERATOR_INJECTION_TOKEN)
     private readonly uidGenerator: UidGenerator,
+    @Inject(AUTH_CONTROLLER_LOGGER_TOKEN)
+    private readonly logger: AppLogger,
   ) {}
 
   @Post("/register")
@@ -294,10 +299,13 @@ export class AuthController {
     if (authenticationResult.isFailure()) {
       switch (authenticationResult.getError()) {
         case "TokenNotFound":
+          this.logger.warn("Token authentication failed", { errorType: "TOKEN_NOT_FOUND" });
           throw new BadRequestException({ code: "TOKEN_NOT_FOUND" });
         case "AuthenticationAttemptExpired":
+          this.logger.warn("Token authentication failed", { errorType: "TOKEN_EXPIRED" });
           throw new UnauthorizedException({ code: "TOKEN_EXPIRED" });
         case "TokenAlreadyUsed":
+          this.logger.warn("Token authentication failed", { errorType: "TOKEN_ALREADY_USED" });
           throw new UnauthorizedException({ code: "TOKEN_ALREADY_USED" });
       }
     }

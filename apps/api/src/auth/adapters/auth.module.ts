@@ -12,6 +12,7 @@ import {
   UidGenerator,
   UUID_GENERATOR_INJECTION_TOKEN,
 } from "src/shared-kernel/adapters/id-generator/UidGenerator";
+import { NestJsAppLogger } from "src/shared-kernel/adapters/logger/NestJsAppLogger";
 import {
   DOMAIN_EVENT_PUBLISHER_INJECTION_TOKEN,
   DomainEventPublisher,
@@ -28,7 +29,7 @@ import { SendAuthLinkUseCase, TokenGenerator, AuthLinkMailer } from "../core/sen
 import { ACCESS_TOKEN_SERVICE_INJECTION_TOKEN } from "./access-token/AccessTokenService";
 import { SmtpAuthLinkMailer } from "./auth-link-mailer/SmtpAuthLinkMailer";
 import { SqlTokenAuthenticationAttemptRepository } from "./auth-token-repository/SqlTokenAuthenticationAttemptRepository";
-import { AuthController } from "./auth.controller";
+import { AUTH_CONTROLLER_LOGGER_TOKEN, AuthController } from "./auth.controller";
 import { EXTERNAL_USER_IDENTITIES_REPOSITORY_INJECTION_TOKEN } from "./external-user-identities-repository/ExternalUserIdentitiesRepository";
 import { SqlExternalUserIdentitiesRepository } from "./external-user-identities-repository/SqlExternalUserIdentitiesRepository";
 import { HttpProConnectClient } from "./pro-connect/HttpProConnectClient";
@@ -175,6 +176,10 @@ import { VERIFIED_EMAIL_REPOSITORY_INJECTION_TOKEN } from "./verified-email-repo
     RealDateProvider,
     RandomTokenGenerator,
     RandomUuidGenerator,
+    {
+      provide: AUTH_CONTROLLER_LOGGER_TOKEN,
+      useValue: new NestJsAppLogger(AuthController.name),
+    },
   ],
   // Guards are not providers and cannot be exported as is, they need all their dependencies to be exported to be used in other modules
   // see https://github.com/nestjs/nest/issues/3856
