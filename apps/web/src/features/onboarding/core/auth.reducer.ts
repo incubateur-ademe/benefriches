@@ -8,12 +8,14 @@ type State = {
   authLinkRequestState: "idle" | "loading" | "success" | "error";
   authLinkRequestError?: string;
   authenticationWithTokenState: "idle" | "loading" | "success" | "error";
+  authenticationWithTokenError?: string;
 };
 
 const initialState: State = {
   authLinkRequestState: "idle",
   authLinkRequestError: undefined,
   authenticationWithTokenState: "idle",
+  authenticationWithTokenError: undefined,
 };
 
 export const authReducer = createReducer(initialState, (builder) => {
@@ -38,7 +40,8 @@ export const authReducer = createReducer(initialState, (builder) => {
   builder.addCase(authenticateWithToken.pending, (state) => {
     state.authenticationWithTokenState = "loading";
   });
-  builder.addCase(authenticateWithToken.rejected, (state) => {
+  builder.addCase(authenticateWithToken.rejected, (state, action) => {
     state.authenticationWithTokenState = "error";
+    state.authenticationWithTokenError = action.error.message;
   });
 });

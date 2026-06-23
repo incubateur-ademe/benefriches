@@ -11,6 +11,19 @@ import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
 const DELAY_BEFORE_AUTHENTICATION = 1000; // 1 second
 
+function getAuthErrorMessage(errorCode: string | undefined): string {
+  switch (errorCode) {
+    case "TOKEN_EXPIRED":
+      return "Votre lien a expiré. Demandez un nouveau lien.";
+    case "TOKEN_ALREADY_USED":
+      return "Ce lien a déjà été utilisé. Demandez un nouveau lien.";
+    case "TOKEN_NOT_FOUND":
+      return "Lien invalide. Demandez un nouveau lien.";
+    default:
+      return "Erreur lors de l'authentification.";
+  }
+}
+
 function AuthErrorHelp() {
   const dispatch = useAppDispatch();
 
@@ -57,6 +70,9 @@ export default function AuthWithToken() {
   const authenticationWithTokenState = useAppSelector(
     (state) => state.auth.authenticationWithTokenState,
   );
+  const authenticationWithTokenError = useAppSelector(
+    (state) => state.auth.authenticationWithTokenError,
+  );
 
   useEffect(() => {
     const token = new URLSearchParams(window.location.search).get("token");
@@ -79,7 +95,7 @@ export default function AuthWithToken() {
       <h1>Authentification</h1>
       {authenticationWithTokenState === "error" ? (
         <>
-          <p>Erreur lors de l'authentification.</p>
+          <p>{getAuthErrorMessage(authenticationWithTokenError)}</p>
           <AuthErrorHelp />
         </>
       ) : (

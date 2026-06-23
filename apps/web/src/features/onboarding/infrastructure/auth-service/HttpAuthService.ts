@@ -23,11 +23,7 @@ export class HttpAuthService implements AuthenticationGateway {
 
     if (!response.ok) {
       const resp = (await response.json()) as { code?: string; message: string };
-      const errorMessage =
-        resp.code === "TOKEN_EXPIRED"
-          ? "Le lien d'authentification a expiré, veuillez en demander un nouveau."
-          : "Une erreur est survenue, veuillez réessayer plus tard.";
-      throw new Error(errorMessage);
+      throw new Error(resp.code ?? "UNKNOWN_ERROR");
     }
   }
 }
