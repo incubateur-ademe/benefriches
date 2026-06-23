@@ -445,5 +445,73 @@ describe("Auth integration tests", () => {
       // oxlint-disable-next-line typescript/no-unsafe-assignment
       expect(verifiedEmails).toEqual([{ email: user.email, verified_at: expect.any(Date) }]);
     });
+
+    it("responds with 400 and TOKEN_NOT_FOUND code when token does not exist", async () => {
+      const agent = request.agent(app.getHttpServer());
+      const response = await agent.get("/api/auth/login/token").query({ token: "unknown-token" });
+
+      expect(response.status).toBe(400);
+      expect((response.body as { code: string }).code).toEqual("TOKEN_NOT_FOUND");
+    });
+
+    it("responds with 401 and TOKEN_EXPIRED code when token authentication attempt has expired", async () => {
+      const user = new UserBuilder().asUrbanPlanner().withEmail("magic.john@example.fr").build();
+      await sqlConnection("users").insert(mapUserToSqlRow(user));
+
+      const token = "random-token";
+      const hashedToken = app.get<TokenGenerator>(RandomTokenGenerator).hash(token);
+      const tokenAuthenticationAttempt: TokenAuthenticationAttempt = {
+        token: hashedToken,
+        userId: user.id,
+        email: user.email,
+        createdAt: new Date(Date.now() - 1000 * 60 * 20), // 20 minutes ago
+        expiresAt: new Date(Date.now() - 1000 * 60 * 10), // expired 10 minutes ago
+        completedAt: null,
+      };
+      await sqlConnection("token_authentication_attempts").insert({
+        token: tokenAuthenticationAttempt.token,
+        user_id: tokenAuthenticationAttempt.userId,
+        email: tokenAuthenticationAttempt.email,
+        created_at: tokenAuthenticationAttempt.createdAt,
+        expires_at: tokenAuthenticationAttempt.expiresAt,
+        used_at: tokenAuthenticationAttempt.completedAt,
+      });
+
+      const agent = request.agent(app.getHttpServer());
+      const response = await agent.get("/api/auth/login/token").query({ token });
+
+      expect(response.status).toBe(401);
+      expect((response.body as { code: string }).code).toEqual("TOKEN_EXPIRED");
+    });
+
+    it("responds with 401 and TOKEN_ALREADY_USED code when token has already been used", async () => {
+      const user = new UserBuilder().asUrbanPlanner().withEmail("magic.john@example.fr").build();
+      await sqlConnection("users").insert(mapUserToSqlRow(user));
+
+      const token = "random-token";
+      const hashedToken = app.get<TokenGenerator>(RandomTokenGenerator).hash(token);
+      const tokenAuthenticationAttempt: TokenAuthenticationAttempt = {
+        token: hashedToken,
+        userId: user.id,
+        email: user.email,
+        createdAt: new Date(Date.now() - 1000 * 60 * 5), // 5 minutes ago
+        expiresAt: new Date(Date.now() + 1000 * 60 * 5), // expires in 5 minutes
+        completedAt: new Date(Date.now() - 1000 * 60 * 1), // completed 1 minute ago
+      };
+      await sqlConnection("token_authentication_attempts").insert({
+        token: tokenAuthenticationAttempt.token,
+        user_id: tokenAuthenticationAttempt.userId,
+        email: tokenAuthenticationAttempt.email,
+        created_at: tokenAuthenticationAttempt.createdAt,
+        expires_at: tokenAuthenticationAttempt.expiresAt,
+        used_at: tokenAuthenticationAttempt.completedAt,
+      });
+
+      const agent = request.agent(app.getHttpServer());
+      const response = await agent.get("/api/auth/login/token").query({ token });
+
+      expect(response.status).toBe(401);
+      expect((response.body as { code: string }).code).toEqual("TOKEN_ALREADY_USED");
+    });
   });
 });

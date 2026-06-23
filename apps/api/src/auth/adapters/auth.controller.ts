@@ -294,10 +294,11 @@ export class AuthController {
     if (authenticationResult.isFailure()) {
       switch (authenticationResult.getError()) {
         case "TokenNotFound":
-          throw new BadRequestException("Invalid token");
+          throw new BadRequestException({ code: "TOKEN_NOT_FOUND" });
         case "AuthenticationAttemptExpired":
+          throw new UnauthorizedException({ code: "TOKEN_EXPIRED" });
         case "TokenAlreadyUsed":
-          throw new UnauthorizedException();
+          throw new UnauthorizedException({ code: "TOKEN_ALREADY_USED" });
       }
     }
 
