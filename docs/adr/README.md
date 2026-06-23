@@ -36,3 +36,5 @@ An ADR is a short document that captures an important architectural decision mad
 | 0009 | [Align urban project engine typing with urban zone patterns](0009-align-urban-project-engine-typing-with-urban-zone-patterns.md) | Accepted | 2026-03-23 |
 | 0010 | [Scheduled tasks as primary adapters within their owning module](0010-scheduled-tasks-as-primary-adapters.md) | Accepted | 2026-05-04 |
 | 0011 | [Use node:test for shared package unit tests](0011-use-node-test-for-shared-package-unit-tests.md) | Accepted | 2026-06-18 |
+| 0012 | [Loader stack for API integration tests under node:test](0012-node-test-loader-stack-for-api-integration-tests.md) | Accepted | 2026-06-23 |
+| 0013 | [Migrate apps/api test suite from Vitest to node:test](0013-migrate-api-test-suite-from-vitest-to-node-test.md) | Accepted | 2026-06-23 |

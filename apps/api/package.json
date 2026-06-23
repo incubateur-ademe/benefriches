@@ -16,7 +16,7 @@
     "typecheck": "tsc --noEmit",
     "test": "pnpm test:unit && pnpm test:integration",
     "test:unit": "node --require @swc-node/register --test 'src/**/*.spec.ts'",
-    "test:integration": "node --require @swc-node/register --import tsx/esm --import ./test/integration-per-test-hooks.ts --test-global-setup=./test/integration-global-setup.ts --test-concurrency=1 --test 'src/**/*.integration-spec.ts'",
+    "test:integration": "node --require @swc-node/register --import ./test/force-ts-commonjs.mjs --import ./test/integration-per-test-hooks.ts --test-global-setup=./test/integration-global-setup.mts --test-concurrency=1 --test 'src/**/*.integration-spec.ts'",
     "lint": "oxlint --type-aware",
     "format": "prettier --write --cache \"./**/*.{js,jsx,ts,tsx,css,md,json}\" src/ test/",
     "format:check": "prettier --check --cache  \"./**/*.{js,jsx,ts,tsx,css,md,json}\" src/ test/",

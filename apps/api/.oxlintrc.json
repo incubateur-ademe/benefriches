@@ -57,7 +57,7 @@
         "src/shared-kernel/adapters/sql-knex/migrations/**/*.ts",
         "src/shared-kernel/adapters/sql-knex/scripts/**/*.ts",
         "src/shared-kernel/adapters/sql-knex/seeds/**/*.ts",
-        "test/integration-global-setup.ts",
+        "test/integration-global-setup.mts",
         "test/integration-per-test-hooks.ts"
       ],
       "rules": {
