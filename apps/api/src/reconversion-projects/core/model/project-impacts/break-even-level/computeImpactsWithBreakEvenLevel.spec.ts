@@ -190,11 +190,12 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
         evaluationPeriodInYears: 50,
       });
 
-      expect(
+      assert.deepStrictEqual(
         result.aggregatedReconversionImpacts.impactsMetrics.find(
           (d) => d.name === "oldOperationsFullTimeJobsLoss",
         )?.total,
-      ).toEqual(-1.5);
+        -1.5,
+      );
     });
 
     it("doesn't add oldOperationsFullTimeJobsLoss for AGRICULTURAL_OPERATION and site is not operated", () => {
@@ -211,11 +212,12 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
         evaluationPeriodInYears: 50,
       });
 
-      expect(
+      assert.strictEqual(
         result.aggregatedReconversionImpacts.impactsMetrics.find(
           (d) => d.name === "oldOperationsFullTimeJobsLoss",
         ),
-      ).toBeUndefined();
+        undefined,
+      );
     });
   });
 
@@ -655,22 +657,25 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
           evaluationPeriodInYears: 3,
         });
 
-        expect(
+        assert.deepStrictEqual(
           result.aggregatedReconversionImpacts.impactsMetrics.find(
             (d) => d.name === "avoidedFricheAccidentsMinorInjuries",
           )?.total,
-        ).toEqual(1);
-        expect(
+          1,
+        );
+        assert.deepStrictEqual(
           result.aggregatedReconversionImpacts.impactsMetrics.find(
             (d) => d.name === "avoidedFricheAccidentsSevereInjuries",
           )?.total,
-        ).toEqual(2);
+          2,
+        );
 
-        expect(
+        assert.strictEqual(
           result.aggregatedReconversionImpacts.impactsMetrics.find(
             (d) => d.name === "avoidedFricheAccidentsDeaths",
           ),
-        ).toBeUndefined();
+          undefined,
+        );
       });
     });
 
@@ -690,7 +695,7 @@ describe("computeProjectImpactsWithBreakEvenLevel", () => {
           result.aggregatedReconversionImpacts.indirectEconomicImpacts.details.filter((d) =>
             d.name.startsWith("avoidedFricheMaintenanceAndSecuringCosts"),
           );
-        expect(avoidedCosts.length).toEqual(0);
+        assert.deepStrictEqual(avoidedCosts.length, 0);
       });
     });
   });

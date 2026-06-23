@@ -1,3 +1,5 @@
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
 import { FricheCostsIndirectEconomicImpacts } from "shared";
 
 import { SumOnEvolutionPeriodService } from "src/reconversion-projects/core/model/sum-on-evolution-period/SumOnEvolutionPeriodService";
@@ -36,19 +38,17 @@ describe("getSiteStatuQuoIndirectsImpacts", () => {
         (d): d is FricheCostsIndirectEconomicImpacts =>
           d.name === "fricheMaintenanceAndSecuringCostsForTenant",
       );
-      expect(impact?.details).toEqual("security");
-      expect(impact?.total).toBeLessThan(0);
-      expect(impact?.detailsByYear[0]).toEqual(-11600);
+      assert.deepStrictEqual(impact?.details, "security");
+      assert.ok((impact?.total ?? 0) < 0);
+      assert.deepStrictEqual(impact?.detailsByYear[0], -11600);
       const detailsByYear = impact?.detailsByYear ?? [];
       for (let i = 1; i < detailsByYear.length; i++) {
-        expect(Math.abs(detailsByYear[i] ?? 0)).toBeLessThan(Math.abs(detailsByYear[i - 1] ?? 0));
+        assert.ok(Math.abs(detailsByYear[i] ?? 0) < Math.abs(detailsByYear[i - 1] ?? 0));
       }
 
       const cumulativeByYear = impact?.cumulativeByYear ?? [];
       for (let i = 1; i < cumulativeByYear.length; i++) {
-        expect(Math.abs(cumulativeByYear[i] ?? 0)).toBeGreaterThan(
-          Math.abs(cumulativeByYear[i - 1] ?? 0),
-        );
+        assert.ok(Math.abs(cumulativeByYear[i] ?? 0) > Math.abs(cumulativeByYear[i - 1] ?? 0));
       }
     });
 
@@ -73,19 +73,17 @@ describe("getSiteStatuQuoIndirectsImpacts", () => {
         (d): d is FricheCostsIndirectEconomicImpacts =>
           d.name === "fricheMaintenanceAndSecuringCostsForOwner",
       );
-      expect(impact?.details).toEqual("illegalDumpingCost");
-      expect(impact?.total).toBeLessThan(0);
-      expect(impact?.detailsByYear[0]).toEqual(-500);
+      assert.deepStrictEqual(impact?.details, "illegalDumpingCost");
+      assert.ok((impact?.total ?? 0) < 0);
+      assert.deepStrictEqual(impact?.detailsByYear[0], -500);
       const detailsByYear = impact?.detailsByYear ?? [];
       for (let i = 1; i < detailsByYear.length; i++) {
-        expect(Math.abs(detailsByYear[i] ?? 0)).toBeLessThan(Math.abs(detailsByYear[i - 1] ?? 0));
+        assert.ok(Math.abs(detailsByYear[i] ?? 0) < Math.abs(detailsByYear[i - 1] ?? 0));
       }
 
       const cumulativeByYear = impact?.cumulativeByYear ?? [];
       for (let i = 1; i < cumulativeByYear.length; i++) {
-        expect(Math.abs(cumulativeByYear[i] ?? 0)).toBeGreaterThan(
-          Math.abs(cumulativeByYear[i - 1] ?? 0),
-        );
+        assert.ok(Math.abs(cumulativeByYear[i] ?? 0) > Math.abs(cumulativeByYear[i - 1] ?? 0));
       }
     });
 
@@ -106,7 +104,7 @@ describe("getSiteStatuQuoIndirectsImpacts", () => {
         sumOnEvolutionPeriodService: makeSumService(),
       });
 
-      expect(result.economicImpacts.details).toHaveLength(0);
+      assert.strictEqual(result.economicImpacts.details.length, 0);
     });
   });
 
@@ -128,7 +126,10 @@ describe("getSiteStatuQuoIndirectsImpacts", () => {
       sumOnEvolutionPeriodService: makeSumService(),
     });
 
-    expect(result.impactMetrics.find((d) => d.name === "contaminatedSurface")?.total).toEqual(5000);
+    assert.deepStrictEqual(
+      result.impactMetrics.find((d) => d.name === "contaminatedSurface")?.total,
+      5000,
+    );
   });
 
   it("does not includes contaminatedSurface metric impact", () => {
@@ -148,7 +149,10 @@ describe("getSiteStatuQuoIndirectsImpacts", () => {
       sumOnEvolutionPeriodService: makeSumService(),
     });
 
-    expect(result.impactMetrics.find((d) => d.name === "contaminatedSurface")).toBeUndefined();
+    assert.strictEqual(
+      result.impactMetrics.find((d) => d.name === "contaminatedSurface"),
+      undefined,
+    );
   });
 
   describe("friche accidents", () => {
@@ -169,15 +173,18 @@ describe("getSiteStatuQuoIndirectsImpacts", () => {
         sumOnEvolutionPeriodService: makeSumService(),
       });
 
-      expect(result.impactMetrics.find((d) => d.name === "fricheAccidentsDeaths")?.total).toEqual(
+      assert.deepStrictEqual(
+        result.impactMetrics.find((d) => d.name === "fricheAccidentsDeaths")?.total,
         1,
       );
-      expect(
+      assert.deepStrictEqual(
         result.impactMetrics.find((d) => d.name === "fricheAccidentsMinorInjuries")?.total,
-      ).toEqual(3);
-      expect(
+        3,
+      );
+      assert.deepStrictEqual(
         result.impactMetrics.find((d) => d.name === "fricheAccidentsSevereInjuries")?.total,
-      ).toEqual(2);
+        2,
+      );
     });
 
     it("does not add friche accidents impacts metrics", () => {
@@ -197,13 +204,18 @@ describe("getSiteStatuQuoIndirectsImpacts", () => {
         sumOnEvolutionPeriodService: makeSumService(),
       });
 
-      expect(result.impactMetrics.find((d) => d.name === "fricheAccidentsDeaths")).toBeUndefined();
-      expect(
+      assert.strictEqual(
+        result.impactMetrics.find((d) => d.name === "fricheAccidentsDeaths"),
+        undefined,
+      );
+      assert.strictEqual(
         result.impactMetrics.find((d) => d.name === "fricheAccidentsMinorInjuries"),
-      ).toBeUndefined();
-      expect(
+        undefined,
+      );
+      assert.strictEqual(
         result.impactMetrics.find((d) => d.name === "fricheAccidentsSevereInjuries"),
-      ).toBeUndefined();
+        undefined,
+      );
     });
   });
 
@@ -225,7 +237,8 @@ describe("getSiteStatuQuoIndirectsImpacts", () => {
         sumOnEvolutionPeriodService: makeSumService(),
       });
 
-      expect(result.impactMetrics.find((d) => d.name === "operationsFullTimeJobs")?.total).toEqual(
+      assert.deepStrictEqual(
+        result.impactMetrics.find((d) => d.name === "operationsFullTimeJobs")?.total,
         2.5,
       );
     });
@@ -246,7 +259,10 @@ describe("getSiteStatuQuoIndirectsImpacts", () => {
         sumOnEvolutionPeriodService: makeSumService(),
       });
 
-      expect(result.impactMetrics.find((d) => d.name === "operationsFullTimeJobs")).toBeUndefined();
+      assert.strictEqual(
+        result.impactMetrics.find((d) => d.name === "operationsFullTimeJobs"),
+        undefined,
+      );
     });
   });
 
@@ -268,21 +284,22 @@ describe("getSiteStatuQuoIndirectsImpacts", () => {
         sumOnEvolutionPeriodService: makeSumService(),
       });
 
-      expect(result.economicImpacts.details.filter((d) => d.name === "taxesIncome")).toHaveLength(
+      assert.strictEqual(
+        result.economicImpacts.details.filter((d) => d.name === "taxesIncome").length,
         1,
       );
       const impact = result.economicImpacts.details.find((d) => d.name === "taxesIncome");
-      expect(impact?.details).toEqual("taxes");
-      expect(impact?.total).toBeGreaterThan(0);
-      expect(impact?.detailsByYear[0]).toBeGreaterThan(1200);
+      assert.deepStrictEqual(impact?.details, "taxes");
+      assert.ok((impact?.total ?? 0) > 0);
+      assert.ok((impact?.detailsByYear[0] ?? 0) > 1200);
       const detailsByYear = impact?.detailsByYear ?? [];
       for (let i = 1; i < detailsByYear.length; i++) {
-        expect(detailsByYear[i]).toBeLessThan(detailsByYear[i - 1] ?? 0);
+        assert.ok((detailsByYear[i] ?? 0) < (detailsByYear[i - 1] ?? 0));
       }
 
       const cumulativeByYear = impact?.cumulativeByYear ?? [];
       for (let i = 1; i < cumulativeByYear.length; i++) {
-        expect(cumulativeByYear[i] ?? 0).toBeGreaterThan(cumulativeByYear[i - 1] ?? 0);
+        assert.ok((cumulativeByYear[i] ?? 0) > (cumulativeByYear[i - 1] ?? 0));
       }
     });
 
@@ -308,9 +325,9 @@ describe("getSiteStatuQuoIndirectsImpacts", () => {
 
       const taxeImpacts = result.economicImpacts.details.filter((d) => d.name === "taxesIncome");
 
-      expect(taxeImpacts).toHaveLength(2);
-      expect(taxeImpacts[0]?.details).toEqual("taxes");
-      expect(taxeImpacts[1]?.details).toEqual("operationsTaxes");
+      assert.strictEqual(taxeImpacts.length, 2);
+      assert.deepStrictEqual(taxeImpacts[0]?.details, "taxes");
+      assert.deepStrictEqual(taxeImpacts[1]?.details, "operationsTaxes");
     });
   });
 
@@ -334,18 +351,16 @@ describe("getSiteStatuQuoIndirectsImpacts", () => {
       });
 
       const impact = result.economicImpacts.details.find((d) => d.name === "waterRegulation");
-      expect(impact?.total).toBeLessThan(0);
-      expect(impact?.detailsByYear[0]).toEqual(impact?.cumulativeByYear[0]);
+      assert.ok((impact?.total ?? 0) < 0);
+      assert.deepStrictEqual(impact?.detailsByYear[0], impact?.cumulativeByYear[0]);
       const detailsByYear = impact?.detailsByYear ?? [];
       for (let i = 1; i < detailsByYear.length; i++) {
-        expect(Math.abs(detailsByYear[i] ?? 0)).toBeLessThan(Math.abs(detailsByYear[i - 1] ?? 0));
+        assert.ok(Math.abs(detailsByYear[i] ?? 0) < Math.abs(detailsByYear[i - 1] ?? 0));
       }
 
       const cumulativeByYear = impact?.cumulativeByYear ?? [];
       for (let i = 1; i < cumulativeByYear.length; i++) {
-        expect(Math.abs(cumulativeByYear[i] ?? 0)).toBeGreaterThan(
-          Math.abs(cumulativeByYear[i - 1] ?? 0),
-        );
+        assert.ok(Math.abs(cumulativeByYear[i] ?? 0) > Math.abs(cumulativeByYear[i - 1] ?? 0));
       }
     });
 
@@ -366,9 +381,10 @@ describe("getSiteStatuQuoIndirectsImpacts", () => {
         sumOnEvolutionPeriodService: makeSumService(),
       });
 
-      expect(
+      assert.strictEqual(
         result.economicImpacts.details.find((d) => d.name === "waterRegulation"),
-      ).toBeUndefined();
+        undefined,
+      );
     });
   });
 
@@ -392,13 +408,16 @@ describe("getSiteStatuQuoIndirectsImpacts", () => {
       });
 
       const storedCo2Eq = result.economicImpacts.details.find((d) => d.name === "storedCo2Eq");
-      expect(storedCo2Eq?.total).toEqual(550000);
-      expect(storedCo2Eq?.detailsByYear).toEqual([550000, 0, 0, 0, 0]);
-      expect(storedCo2Eq?.cumulativeByYear).toEqual([550000, 550000, 550000, 550000, 550000]);
+      assert.deepStrictEqual(storedCo2Eq?.total, 550000);
+      assert.deepStrictEqual(storedCo2Eq?.detailsByYear, [550000, 0, 0, 0, 0]);
+      assert.deepStrictEqual(
+        storedCo2Eq?.cumulativeByYear,
+        [550000, 550000, 550000, 550000, 550000],
+      );
 
-      expect(result.impactMetrics.find((d) => d.name === "storedCo2Eq")?.total).toBeCloseTo(
-        3667,
-        0,
+      assert.ok(
+        Math.abs((result.impactMetrics.find((d) => d.name === "storedCo2Eq")?.total ?? 0) - 3667) <
+          0.5,
       );
     });
   });
@@ -429,20 +448,19 @@ describe("getSiteStatuQuoIndirectsImpacts", () => {
       const natureRelatedWelnessAndLeisure = result.economicImpacts.details.find(
         (d) => d.name === "natureRelatedWelnessAndLeisure",
       );
-      expect(natureRelatedWelnessAndLeisure?.total).toBeGreaterThan(0);
-      expect(natureRelatedWelnessAndLeisure?.detailsByYear[0]).toEqual(
+      assert.ok((natureRelatedWelnessAndLeisure?.total ?? 0) > 0);
+      assert.deepStrictEqual(
+        natureRelatedWelnessAndLeisure?.detailsByYear[0],
         natureRelatedWelnessAndLeisure?.cumulativeByYear[0],
       );
       const detailsByYear = natureRelatedWelnessAndLeisure?.detailsByYear ?? [];
       for (let i = 1; i < detailsByYear.length; i++) {
-        expect(Math.abs(detailsByYear[i] ?? 0)).toBeLessThan(Math.abs(detailsByYear[i - 1] ?? 0));
+        assert.ok(Math.abs(detailsByYear[i] ?? 0) < Math.abs(detailsByYear[i - 1] ?? 0));
       }
 
       const cumulativeByYear = natureRelatedWelnessAndLeisure?.cumulativeByYear ?? [];
       for (let i = 1; i < cumulativeByYear.length; i++) {
-        expect(Math.abs(cumulativeByYear[i] ?? 0)).toBeGreaterThan(
-          Math.abs(cumulativeByYear[i - 1] ?? 0),
-        );
+        assert.ok(Math.abs(cumulativeByYear[i] ?? 0) > Math.abs(cumulativeByYear[i - 1] ?? 0));
       }
     });
 
@@ -455,20 +473,19 @@ describe("getSiteStatuQuoIndirectsImpacts", () => {
         (d) => d.name === "forestRelatedProduct",
       );
 
-      expect(forestRelatedProduct?.total).toBeGreaterThan(0);
-      expect(forestRelatedProduct?.detailsByYear[0]).toEqual(
+      assert.ok((forestRelatedProduct?.total ?? 0) > 0);
+      assert.deepStrictEqual(
+        forestRelatedProduct?.detailsByYear[0],
         forestRelatedProduct?.cumulativeByYear[0],
       );
       const detailsByYear = forestRelatedProduct?.detailsByYear ?? [];
       for (let i = 1; i < detailsByYear.length; i++) {
-        expect(Math.abs(detailsByYear[i] ?? 0)).toBeLessThan(Math.abs(detailsByYear[i - 1] ?? 0));
+        assert.ok(Math.abs(detailsByYear[i] ?? 0) < Math.abs(detailsByYear[i - 1] ?? 0));
       }
 
       const cumulativeByYear = forestRelatedProduct?.cumulativeByYear ?? [];
       for (let i = 1; i < cumulativeByYear.length; i++) {
-        expect(Math.abs(cumulativeByYear[i] ?? 0)).toBeGreaterThan(
-          Math.abs(cumulativeByYear[i - 1] ?? 0),
-        );
+        assert.ok(Math.abs(cumulativeByYear[i] ?? 0) > Math.abs(cumulativeByYear[i - 1] ?? 0));
       }
     });
 
@@ -480,18 +497,16 @@ describe("getSiteStatuQuoIndirectsImpacts", () => {
 
       const pollination = result.economicImpacts.details.find((d) => d.name === "pollination");
 
-      expect(pollination?.total).toBeGreaterThan(0);
-      expect(pollination?.detailsByYear[0]).toEqual(pollination?.cumulativeByYear[0]);
+      assert.ok((pollination?.total ?? 0) > 0);
+      assert.deepStrictEqual(pollination?.detailsByYear[0], pollination?.cumulativeByYear[0]);
       const detailsByYear = pollination?.detailsByYear ?? [];
       for (let i = 1; i < detailsByYear.length; i++) {
-        expect(Math.abs(detailsByYear[i] ?? 0)).toBeLessThan(Math.abs(detailsByYear[i - 1] ?? 0));
+        assert.ok(Math.abs(detailsByYear[i] ?? 0) < Math.abs(detailsByYear[i - 1] ?? 0));
       }
 
       const cumulativeByYear = pollination?.cumulativeByYear ?? [];
       for (let i = 1; i < cumulativeByYear.length; i++) {
-        expect(Math.abs(cumulativeByYear[i] ?? 0)).toBeGreaterThan(
-          Math.abs(cumulativeByYear[i - 1] ?? 0),
-        );
+        assert.ok(Math.abs(cumulativeByYear[i] ?? 0) > Math.abs(cumulativeByYear[i - 1] ?? 0));
       }
     });
 
@@ -512,10 +527,14 @@ describe("getSiteStatuQuoIndirectsImpacts", () => {
         sumOnEvolutionPeriodService: makeSumService(),
       });
 
-      expect(result.economicImpacts.details.find((d) => d.name === "pollination")).toBeUndefined();
-      expect(
+      assert.strictEqual(
+        result.economicImpacts.details.find((d) => d.name === "pollination"),
+        undefined,
+      );
+      assert.strictEqual(
         result.economicImpacts.details.find((d) => d.name === "forestRelatedProduct"),
-      ).toBeUndefined();
+        undefined,
+      );
     });
 
     it("includes permeableSurface metrics impacts", () => {
@@ -535,7 +554,10 @@ describe("getSiteStatuQuoIndirectsImpacts", () => {
         sumOnEvolutionPeriodService: makeSumService(),
       });
 
-      expect(result.impactMetrics.find((d) => d.name === "permeableSurface")?.total).toEqual(5000);
+      assert.deepStrictEqual(
+        result.impactMetrics.find((d) => d.name === "permeableSurface")?.total,
+        5000,
+      );
     });
 
     it("does not includes permeableSurface metrics impacts", () => {
@@ -555,7 +577,10 @@ describe("getSiteStatuQuoIndirectsImpacts", () => {
         sumOnEvolutionPeriodService: makeSumService(),
       });
 
-      expect(result.impactMetrics.find((d) => d.name === "permeableSurface")).toBeUndefined();
+      assert.strictEqual(
+        result.impactMetrics.find((d) => d.name === "permeableSurface"),
+        undefined,
+      );
     });
   });
 
@@ -579,19 +604,17 @@ describe("getSiteStatuQuoIndirectsImpacts", () => {
 
       const impact = result.economicImpacts.details.find((d) => d.name === "rentalIncome");
 
-      expect(impact?.total).toBeGreaterThan(0);
-      expect(impact?.detailsByYear[0]).toEqual(54000);
-      expect(impact?.cumulativeByYear[0]).toEqual(54000);
+      assert.ok((impact?.total ?? 0) > 0);
+      assert.deepStrictEqual(impact?.detailsByYear[0], 54000);
+      assert.deepStrictEqual(impact?.cumulativeByYear[0], 54000);
       const detailsByYear = impact?.detailsByYear ?? [];
       for (let i = 1; i < detailsByYear.length; i++) {
-        expect(Math.abs(detailsByYear[i] ?? 0)).toBeLessThan(Math.abs(detailsByYear[i - 1] ?? 0));
+        assert.ok(Math.abs(detailsByYear[i] ?? 0) < Math.abs(detailsByYear[i - 1] ?? 0));
       }
 
       const cumulativeByYear = impact?.cumulativeByYear ?? [];
       for (let i = 1; i < cumulativeByYear.length; i++) {
-        expect(Math.abs(cumulativeByYear[i] ?? 0)).toBeGreaterThan(
-          Math.abs(cumulativeByYear[i - 1] ?? 0),
-        );
+        assert.ok(Math.abs(cumulativeByYear[i] ?? 0) > Math.abs(cumulativeByYear[i - 1] ?? 0));
       }
     });
   });
@@ -617,7 +640,7 @@ describe("getSiteStatuQuoIndirectsImpacts", () => {
     });
 
     const manualSum = result.economicImpacts.details.reduce((acc, d) => acc + d.total, 0);
-    expect(result.economicImpacts.total).toBe(Math.round(manualSum));
+    assert.strictEqual(result.economicImpacts.total, Math.round(manualSum));
   });
 
   it("returns empty total and details for a site without expenses nor ecological surfaces", () => {
@@ -637,9 +660,9 @@ describe("getSiteStatuQuoIndirectsImpacts", () => {
       sumOnEvolutionPeriodService: makeSumService(),
     });
 
-    expect(result.economicImpacts.total).toBe(0);
-    expect(result.economicImpacts.details).toHaveLength(0);
-    expect(result.impactMetrics).toHaveLength(0);
+    assert.strictEqual(result.economicImpacts.total, 0);
+    assert.strictEqual(result.economicImpacts.details.length, 0);
+    assert.strictEqual(result.impactMetrics.length, 0);
   });
 });
 
@@ -665,6 +688,6 @@ it("each impact has a cumulativeByYear with evaluationPeriodInYears length", () 
   });
 
   result.economicImpacts.details.forEach((d) => {
-    expect(d.cumulativeByYear).toHaveLength(evaluationPeriodInYears);
+    assert.strictEqual(d.cumulativeByYear.length, evaluationPeriodInYears);
   });
 });

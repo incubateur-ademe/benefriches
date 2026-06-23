@@ -461,21 +461,25 @@ describe("Auth integration tests", () => {
 
     it("responds with 400 and TOKEN_NOT_FOUND code when token does not exist", async () => {
       const logger = app.get<AppLogger>(AUTH_CONTROLLER_LOGGER_TOKEN);
-      const warnSpy = vi.spyOn(logger, "warn");
+      const warnSpy = mock.method(logger, "warn");
 
       const agent = request.agent(app.getHttpServer());
       const response = await agent.get("/api/auth/login/token").query({ token: "unknown-token" });
 
-      expect(response.status).toBe(400);
-      expect((response.body as { code: string }).code).toEqual("TOKEN_NOT_FOUND");
-      expect(warnSpy).toHaveBeenCalledWith("Token authentication failed", {
-        errorType: "TOKEN_NOT_FOUND",
-      });
+      assert.ok(
+        warnSpy.mock.calls.some(
+          (call) =>
+            call.arguments[0] === "Token authentication failed" &&
+            (call.arguments[1] as { errorType: string }).errorType === "TOKEN_NOT_FOUND",
+        ),
+      );
+      assert.strictEqual(response.status, 400);
+      assert.strictEqual((response.body as { code: string }).code, "TOKEN_NOT_FOUND");
     });
 
     it("responds with 401 and TOKEN_EXPIRED code when token authentication attempt has expired", async () => {
       const logger = app.get<AppLogger>(AUTH_CONTROLLER_LOGGER_TOKEN);
-      const warnSpy = vi.spyOn(logger, "warn");
+      const warnSpy = mock.method(logger, "warn");
 
       const user = new UserBuilder().asUrbanPlanner().withEmail("magic.john@example.fr").build();
       await sqlConnection("users").insert(mapUserToSqlRow(user));
@@ -502,16 +506,20 @@ describe("Auth integration tests", () => {
       const agent = request.agent(app.getHttpServer());
       const response = await agent.get("/api/auth/login/token").query({ token });
 
-      expect(response.status).toBe(401);
-      expect((response.body as { code: string }).code).toEqual("TOKEN_EXPIRED");
-      expect(warnSpy).toHaveBeenCalledWith("Token authentication failed", {
-        errorType: "TOKEN_EXPIRED",
-      });
+      assert.ok(
+        warnSpy.mock.calls.some(
+          (call) =>
+            call.arguments[0] === "Token authentication failed" &&
+            (call.arguments[1] as { errorType: string }).errorType === "TOKEN_EXPIRED",
+        ),
+      );
+      assert.strictEqual(response.status, 401);
+      assert.strictEqual((response.body as { code: string }).code, "TOKEN_EXPIRED");
     });
 
     it("responds with 401 and TOKEN_ALREADY_USED code when token has already been used", async () => {
       const logger = app.get<AppLogger>(AUTH_CONTROLLER_LOGGER_TOKEN);
-      const warnSpy = vi.spyOn(logger, "warn");
+      const warnSpy = mock.method(logger, "warn");
 
       const user = new UserBuilder().asUrbanPlanner().withEmail("magic.john@example.fr").build();
       await sqlConnection("users").insert(mapUserToSqlRow(user));
@@ -538,11 +546,15 @@ describe("Auth integration tests", () => {
       const agent = request.agent(app.getHttpServer());
       const response = await agent.get("/api/auth/login/token").query({ token });
 
-      expect(response.status).toBe(401);
-      expect((response.body as { code: string }).code).toEqual("TOKEN_ALREADY_USED");
-      expect(warnSpy).toHaveBeenCalledWith("Token authentication failed", {
-        errorType: "TOKEN_ALREADY_USED",
-      });
+      assert.ok(
+        warnSpy.mock.calls.some(
+          (call) =>
+            call.arguments[0] === "Token authentication failed" &&
+            (call.arguments[1] as { errorType: string }).errorType === "TOKEN_ALREADY_USED",
+        ),
+      );
+      assert.strictEqual(response.status, 401);
+      assert.strictEqual((response.body as { code: string }).code, "TOKEN_ALREADY_USED");
     });
   });
 });

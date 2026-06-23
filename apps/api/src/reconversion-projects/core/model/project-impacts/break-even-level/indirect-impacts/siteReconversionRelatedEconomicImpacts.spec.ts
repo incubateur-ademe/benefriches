@@ -124,8 +124,8 @@ describe("getLocalPropertyIncreaseWithFricheRemovalImpacts", () => {
         },
       });
 
-      expect(result?.name).toEqual("reinstatementFullTimeJobs");
-      expect(result?.total).toBeCloseTo(2, 0);
+      assert.deepStrictEqual(result?.name, "reinstatementFullTimeJobs");
+      assert.ok(Math.abs((result?.total ?? 0) - 2) < 0.5);
     });
   });
 });

@@ -228,6 +228,7 @@ describe("ConnectCrm", () => {
 
       const args = httpService.put.mock.calls[0]?.arguments;
       assert.ok(args !== undefined);
+      assert.strictEqual(args[0], "https://crm.example.com/api/v1/personnes/mail/user@example.com");
       const body = args[1] as { dateConnexion: string; source: string; email: string };
       // Test the regex-matched field separately
       assert.ok(/^2026-05-04T\d{2}:23:45$/.test(body.dateConnexion));

@@ -207,9 +207,9 @@ describe("computeStatuQuoSiteImpacts", () => {
         carbon?.total,
         carbon?.total,
       ]);
-      expect(result.impactMetrics.find((d) => d.name === "storedCo2Eq")?.total).toBeCloseTo(
-        18333,
-        0,
+      assert.ok(
+        Math.abs((result.impactMetrics.find((d) => d.name === "storedCo2Eq")?.total ?? 0) - 18333) <
+          0.5,
       );
     });
 
