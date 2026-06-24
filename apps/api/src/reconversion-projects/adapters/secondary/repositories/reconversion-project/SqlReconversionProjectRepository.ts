@@ -329,6 +329,7 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
         "buildings_resale_expected_property_transfer_duties",
         // project phase
         "project_phase",
+        "involves_reinstatement",
         "created_at",
         "updated_at",
         "friche_decontaminated_soil_surface_area",

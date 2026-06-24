@@ -1186,6 +1186,7 @@ describe("ReconversionProjects controller", () => {
           future_site_owner_name: null,
           future_site_owner_structure_type: null,
           // reinstatement
+          involves_reinstatement: sourceUrbanProject.involvesReinstatement,
           reinstatement_contract_owner_name: null,
           reinstatement_contract_owner_structure_type: null,
           reinstatement_schedule_end_date: null,

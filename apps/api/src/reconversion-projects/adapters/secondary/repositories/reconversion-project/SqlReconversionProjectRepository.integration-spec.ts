@@ -106,6 +106,7 @@ describe("SqlReconversionProjectRepository integration", () => {
             reinstatement_schedule_end_date: null,
             operations_first_year: null,
             project_phase: reconversionProject.projectPhase,
+            involves_reinstatement: true,
             site_resale_expected_selling_price: null,
             site_resale_expected_property_transfer_duties: null,
             buildings_resale_expected_selling_price: null,
@@ -155,6 +156,7 @@ describe("SqlReconversionProjectRepository integration", () => {
               reinstatement_schedule_end_date: reconversionProject.reinstatementSchedule?.endDate,
               operations_first_year: reconversionProject.operationsFirstYear,
               project_phase: reconversionProject.projectPhase,
+              involves_reinstatement: reconversionProject.involvesReinstatement,
               site_resale_expected_selling_price: null,
               site_resale_expected_property_transfer_duties: null,
               buildings_resale_expected_selling_price: null,
@@ -495,6 +497,7 @@ describe("SqlReconversionProjectRepository integration", () => {
             reinstatement_schedule_end_date: reconversionProject.reinstatementSchedule?.endDate,
             operations_first_year: reconversionProject.operationsFirstYear,
             project_phase: reconversionProject.projectPhase,
+            involves_reinstatement: reconversionProject.involvesReinstatement,
             site_resale_expected_selling_price: reconversionProject.siteResaleExpectedSellingPrice,
             site_resale_expected_property_transfer_duties:
               reconversionProject.siteResaleExpectedPropertyTransferDuties,
@@ -684,6 +687,21 @@ describe("SqlReconversionProjectRepository integration", () => {
         assert.strictEqual(result?.developerWillBeBuildingsConstructor, undefined);
         assert.strictEqual(result?.buildingsConstructionAndRehabilitationExpenses, undefined);
       });
+    });
+
+    it("Persists involvesReinstatement: false and retrieves it via getById", async () => {
+      const siteId = await insertSiteInDb();
+      const reconversionProject = buildReconversionProject({
+        createdAt: now,
+        relatedSiteId: siteId,
+        involvesReinstatement: false,
+      });
+
+      await reconversionProjectRepository.save(reconversionProject);
+
+      const result = await reconversionProjectRepository.getById(reconversionProject.id);
+
+      assert.strictEqual(result?.involvesReinstatement, false);
     });
   });
 

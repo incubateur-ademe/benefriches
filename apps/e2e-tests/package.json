@@ -12,6 +12,7 @@
     "format": "prettier --write --cache \"./**/*.{js,ts,json}\" ."
   },
   "dependencies": {
+    "@axe-core/playwright": "~4.11.3",
     "shared": "workspace:*"
   },
   "devDependencies": {
