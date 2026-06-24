@@ -1,4 +1,5 @@
-import knex, { Knex } from "knex";
+import type { Knex } from "knex";
+import knex from "knex";
 import assert from "node:assert/strict";
 import { after, before, beforeEach, describe, it } from "node:test";
 import { type SiteImpactsDataView } from "shared";

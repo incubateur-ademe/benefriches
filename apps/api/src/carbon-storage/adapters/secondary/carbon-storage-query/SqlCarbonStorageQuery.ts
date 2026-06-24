@@ -1,15 +1,18 @@
 import { Inject } from "@nestjs/common";
-import { Knex } from "knex";
+import type { Knex } from "knex";
 
-import { CarbonStorageQuery } from "src/carbon-storage/core/gateways/CarbonStorageQuery";
+import type { CarbonStorageQuery } from "src/carbon-storage/core/gateways/CarbonStorageQuery";
+import type {
+  CarbonStorageProps,
+  RepositorySoilCategoryType,
+} from "src/carbon-storage/core/models/carbonStorage";
 import {
   CarbonStorage,
-  CarbonStorageProps,
   LocalisationCategoryType,
-  RepositorySoilCategoryType,
   ReservoirType,
 } from "src/carbon-storage/core/models/carbonStorage";
-import { City, CityProps } from "src/carbon-storage/core/models/city";
+import type { CityProps } from "src/carbon-storage/core/models/city";
+import { City } from "src/carbon-storage/core/models/city";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 
 const FOREST_CATEGORIES = [

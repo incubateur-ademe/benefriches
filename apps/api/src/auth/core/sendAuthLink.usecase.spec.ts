@@ -8,14 +8,14 @@ import { InMemoryTokenAuthenticationAttemptRepository } from "src/auth/adapters/
 import { DeterministicTokenGenerator } from "src/auth/adapters/token-generator/DeterministicTokenGenerator";
 import { InMemoryUserRepository } from "src/auth/adapters/user-repository/InMemoryAuthUserRepository";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
-import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import type { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { InMemoryEventPublisher } from "src/shared-kernel/adapters/events/publisher/InMemoryEventPublisher";
 import { DeterministicUuidGenerator } from "src/shared-kernel/adapters/id-generator/DeterministicIdGenerator";
-import { FailureResult } from "src/shared-kernel/result";
+import type { FailureResult } from "src/shared-kernel/result";
 
 import { SendAuthLinkUseCase } from "./sendAuthLink.usecase";
-import { TokenAuthenticationAttempt } from "./tokenAuthenticationAttempt";
-import { User } from "./user";
+import type { TokenAuthenticationAttempt } from "./tokenAuthenticationAttempt";
+import type { User } from "./user";
 
 describe("SendAuthLink Use Case", () => {
   let dateProvider: DateProvider;

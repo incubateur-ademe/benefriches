@@ -1,6 +1,6 @@
 import { createHash, randomBytes } from "node:crypto";
 
-import { TokenGenerator } from "src/auth/core/sendAuthLink.usecase";
+import type { TokenGenerator } from "src/auth/core/sendAuthLink.usecase";
 
 export class RandomTokenGenerator implements TokenGenerator {
   generatePair(): { raw: string; hashed: string } {

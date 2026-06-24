@@ -1,12 +1,10 @@
-import { Knex } from "knex";
+import type { Knex } from "knex";
 import fs from "node:fs";
 import path from "node:path";
 import readline from "node:readline";
 
-import {
-  CarbonStorage,
-  CarbonStorageProps,
-} from "./../../../../carbon-storage/core/models/carbonStorage";
+import type { CarbonStorageProps } from "./../../../../carbon-storage/core/models/carbonStorage";
+import { CarbonStorage } from "./../../../../carbon-storage/core/models/carbonStorage";
 
 const dataPath = path.resolve(__dirname, "./../../../../../data/aldo/carbonStorage.csv");
 const HEADER = "reservoir,soil_category,stock_tC_by_ha,localisation_category,localisation_code";

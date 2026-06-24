@@ -1,6 +1,6 @@
 import { Inject } from "@nestjs/common";
-import { Knex } from "knex";
-import {
+import type { Knex } from "knex";
+import type {
   BuildingsConstructionExpense,
   ReconversionProjectCreationMode,
   SoilType,
@@ -8,17 +8,17 @@ import {
 } from "shared";
 import { v4 as uuid } from "uuid";
 
-import { ReconversionProjectRepository } from "src/reconversion-projects/core/gateways/ReconversionProjectRepository";
-import {
+import type { ReconversionProjectRepository } from "src/reconversion-projects/core/gateways/ReconversionProjectRepository";
+import type {
   PhotovoltaicPowerStationFeatures,
   ReconversionProjectSaveDto,
   ReconversionProjectUpdateDto,
   ReconversionProjectDataView,
   Schedule,
 } from "src/reconversion-projects/core/model/reconversionProject";
-import { UrbanProjectFeatures } from "src/reconversion-projects/core/model/urbanProjects";
+import type { UrbanProjectFeatures } from "src/reconversion-projects/core/model/urbanProjects";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
-import {
+import type {
   SqlBuildingsConstructionCost,
   SqlDevelopmentPlan,
   SqlDevelopmentPlanCost,

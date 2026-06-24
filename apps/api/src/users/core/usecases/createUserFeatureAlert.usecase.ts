@@ -1,8 +1,9 @@
-import { IDateProvider } from "shared";
+import type { IDateProvider } from "shared";
 import { z } from "zod";
 
-import { TResult, fail, success } from "src/shared-kernel/result";
-import { UseCase } from "src/shared-kernel/usecase";
+import type { TResult } from "src/shared-kernel/result";
+import { fail, success } from "src/shared-kernel/result";
+import type { UseCase } from "src/shared-kernel/usecase";
 
 export interface UserFeatureAlertRepository {
   save(props: UserFeatureAlert): Promise<void>;

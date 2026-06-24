@@ -2,7 +2,7 @@ import { Controller, Get, Query } from "@nestjs/common";
 import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
 
-import { GetPhotovoltaicExpectedPerformanceUseCase } from "src/photovoltaic-performance/core/usecases/getPhotovoltaicExpectedPerformanceUseCase";
+import type { GetPhotovoltaicExpectedPerformanceUseCase } from "src/photovoltaic-performance/core/usecases/getPhotovoltaicExpectedPerformanceUseCase";
 
 const GetPhotovoltaicExpectedPerformanceDtoSchema = z.object({
   lat: z.coerce.number().min(-90).max(90),

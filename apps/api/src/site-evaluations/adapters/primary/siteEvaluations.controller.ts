@@ -1,7 +1,8 @@
 import { Controller, Get, NotFoundException, Req, UseGuards } from "@nestjs/common";
 
-import { JwtAuthGuard, RequestWithAuthenticatedUser } from "src/auth/adapters/JwtAuthGuard";
-import { GetUserSiteEvaluationsUseCase } from "src/site-evaluations/core/usecases/getUserSiteEvaluations.usecase";
+import type { RequestWithAuthenticatedUser } from "src/auth/adapters/JwtAuthGuard";
+import { JwtAuthGuard } from "src/auth/adapters/JwtAuthGuard";
+import type { GetUserSiteEvaluationsUseCase } from "src/site-evaluations/core/usecases/getUserSiteEvaluations.usecase";
 
 @Controller("site-evaluations")
 export class SiteEvaluationController {

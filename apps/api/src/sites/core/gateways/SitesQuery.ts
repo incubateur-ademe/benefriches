@@ -1,4 +1,4 @@
-import { SiteFeaturesView, SiteView } from "../models/views";
+import type { SiteFeaturesView, SiteView } from "../models/views";
 
 export type SiteSurfaceAreaAndCityCode = {
   surfaceArea: number;

@@ -3,11 +3,10 @@ import { describe, it, beforeEach, mock } from "node:test";
 import { sumList } from "shared";
 
 import { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
+import type { InputReconversionProjectData, InputSiteData } from "./projectIndirectImpacts";
 import {
   getProjectMetricsAndEconomicImpacts,
   computeCumulativeByYear,
-  InputReconversionProjectData,
-  InputSiteData,
 } from "./projectIndirectImpacts";
 
 const baseProject: InputReconversionProjectData = {

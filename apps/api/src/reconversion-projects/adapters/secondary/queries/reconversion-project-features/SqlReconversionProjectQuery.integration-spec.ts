@@ -1,9 +1,10 @@
-import knex, { Knex } from "knex";
+import type { Knex } from "knex";
+import knex from "knex";
 import assert from "node:assert/strict";
 import { after, before, beforeEach, describe, it } from "node:test";
 import { v4 as uuid } from "uuid";
 
-import { ReconversionProjectFeaturesView } from "src/reconversion-projects/core/model/reconversionProject";
+import type { ReconversionProjectFeaturesView } from "src/reconversion-projects/core/model/reconversionProject";
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
 
 import { SqlReconversionProjectQuery } from "./SqlReconversionProjectQuery";

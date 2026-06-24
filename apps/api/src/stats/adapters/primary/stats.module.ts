@@ -5,7 +5,7 @@ import { ConfigModule } from "@nestjs/config";
 import { CarbonStorageModule } from "src/carbon-storage/adapters/primary/carbonStorage.module";
 import { SqlCarbonStorageQuery } from "src/carbon-storage/adapters/secondary/carbon-storage-query/SqlCarbonStorageQuery";
 import { GetCarbonStorageFromSoilDistributionService } from "src/carbon-storage/core/services/getCarbonStorageFromSoilDistribution";
-import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import type { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
 import { SqlReconversionProjectAndSiteImpactsQuery } from "src/stats/adapters/secondary/SqlStatsQuery";
 import { ComputeEvaluatedProjectStatsUseCase } from "src/stats/core/usecases/computeEvaluatedProjectStats.usecase";

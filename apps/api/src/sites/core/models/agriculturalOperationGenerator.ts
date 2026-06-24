@@ -1,5 +1,5 @@
+import type { AgriculturalOperationActivity } from "shared";
 import {
-  AgriculturalOperationActivity,
   computeAgriculturalOperationYearlyExpenses,
   computeAgriculturalOperationYearlyIncomes,
   formatMunicipalityName,

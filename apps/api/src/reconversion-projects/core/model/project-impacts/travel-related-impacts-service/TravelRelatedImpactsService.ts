@@ -1,12 +1,7 @@
-import {
-  BuildingsUseDistribution,
-  roundTo2Digits,
-  roundToInteger,
-  SocioEconomicImpact,
-  sumList,
-} from "shared";
+import type { BuildingsUseDistribution, SocioEconomicImpact } from "shared";
+import { roundTo2Digits, roundToInteger, sumList } from "shared";
 
-import { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
+import type { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import { YearlyTravelRelatedImpacts } from "./YearlyTravelRelatedImpacts";
 
 type Props = {

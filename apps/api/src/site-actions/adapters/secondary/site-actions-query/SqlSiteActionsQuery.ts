@@ -1,9 +1,9 @@
 import { Inject } from "@nestjs/common";
-import { Knex } from "knex";
+import type { Knex } from "knex";
 
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import type { SqlSiteAction } from "src/shared-kernel/adapters/sql-knex/tableTypes";
-import { SiteActionsQuery } from "src/site-actions/core/gateways/SiteActionsQuery";
+import type { SiteActionsQuery } from "src/site-actions/core/gateways/SiteActionsQuery";
 import type { SiteAction } from "src/site-actions/core/models/siteAction";
 
 const mapSqlRowToSiteAction = (row: SqlSiteAction): SiteAction => ({

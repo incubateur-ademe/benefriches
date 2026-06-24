@@ -1,4 +1,4 @@
-import { DomainEvent } from "src/shared-kernel/domainEvent";
+import type { DomainEvent } from "src/shared-kernel/domainEvent";
 
 export const LOGIN_SUCCEEDED = "user.login-succeeded";
 

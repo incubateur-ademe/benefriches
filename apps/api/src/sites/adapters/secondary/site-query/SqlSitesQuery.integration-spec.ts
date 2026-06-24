@@ -1,12 +1,13 @@
-import knex, { Knex } from "knex";
+import type { Knex } from "knex";
+import knex from "knex";
 import assert from "node:assert/strict";
 import { after, before, beforeEach, describe, it } from "node:test";
 import { v4 as uuid } from "uuid";
 
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
 import { buildUrbanZoneSite } from "src/sites/core/models/site.mock";
-import { SiteEntity } from "src/sites/core/models/siteEntity";
-import { SiteFeaturesView, SiteView } from "src/sites/core/models/views";
+import type { SiteEntity } from "src/sites/core/models/siteEntity";
+import type { SiteFeaturesView, SiteView } from "src/sites/core/models/views";
 
 import { SqlSiteRepository } from "../site-repository/SqlSiteRepository";
 import { SqlSitesQuery } from "./SqlSitesQuery";

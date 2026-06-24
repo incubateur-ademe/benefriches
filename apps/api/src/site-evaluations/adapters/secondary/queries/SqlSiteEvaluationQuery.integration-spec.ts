@@ -1,10 +1,11 @@
-import knex, { Knex } from "knex";
+import type { Knex } from "knex";
+import knex from "knex";
 import assert from "node:assert/strict";
 import { after, before, beforeEach, describe, it } from "node:test";
 import { v4 as uuid } from "uuid";
 
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
-import { SiteEvaluationDataView } from "src/site-evaluations/core/gateways/SiteEvaluationQuery";
+import type { SiteEvaluationDataView } from "src/site-evaluations/core/gateways/SiteEvaluationQuery";
 
 import { SqlSiteEvaluationQuery } from "./SqlSiteEvaluationQuery";
 

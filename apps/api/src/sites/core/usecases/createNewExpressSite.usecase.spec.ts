@@ -1,23 +1,25 @@
 /* oxlint-disable typescript-eslint/no-unsafe-assignment */
 import assert from "node:assert/strict";
 import { describe, it, beforeEach } from "node:test";
-import { Address, createSoilSurfaceAreaDistribution } from "shared";
+import type { Address } from "shared";
+import { createSoilSurfaceAreaDistribution } from "shared";
 
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
-import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import type { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { InMemoryEventPublisher } from "src/shared-kernel/adapters/events/publisher/InMemoryEventPublisher";
 import { DeterministicUuidGenerator } from "src/shared-kernel/adapters/id-generator/DeterministicIdGenerator";
 import { SilentLogger } from "src/shared-kernel/adapters/logger/SilentLogger";
-import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
-import { FailureResult } from "src/shared-kernel/result";
+import type { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
+import type { FailureResult } from "src/shared-kernel/result";
 import { InMemorySitesRepository } from "src/sites/adapters/secondary/site-repository/InMemorySiteRepository";
 import { InMemoryCityRuralityQuery } from "src/territory/adapters/secondary/city-rurality-query/InMemoryCityRuralityQuery";
 import { InMemoryCityStatsQuery } from "src/territory/adapters/secondary/city-stats-query/InMemoryCityStatsQuery";
 
 import { SITE_CREATED } from "../events/siteCreated.event";
 import { buildFriche, buildFricheProps } from "../models/site.mock";
-import { SiteEntity } from "../models/siteEntity";
-import { CreateNewExpressSiteUseCase, ExpressSiteProps } from "./createNewExpressSite.usecase";
+import type { SiteEntity } from "../models/siteEntity";
+import type { ExpressSiteProps } from "./createNewExpressSite.usecase";
+import { CreateNewExpressSiteUseCase } from "./createNewExpressSite.usecase";
 
 const buildAddress = (propsOverride?: Partial<Address>): Address => {
   return {

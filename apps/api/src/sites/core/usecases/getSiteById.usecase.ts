@@ -1,8 +1,9 @@
-import { TResult, fail, success } from "src/shared-kernel/result";
-import { UseCase } from "src/shared-kernel/usecase";
+import type { TResult } from "src/shared-kernel/result";
+import { fail, success } from "src/shared-kernel/result";
+import type { UseCase } from "src/shared-kernel/usecase";
 
-import { SitesQuery } from "../gateways/SitesQuery";
-import { SiteFeaturesView } from "../models/views";
+import type { SitesQuery } from "../gateways/SitesQuery";
+import type { SiteFeaturesView } from "../models/views";
 
 type Request = {
   siteId: string;

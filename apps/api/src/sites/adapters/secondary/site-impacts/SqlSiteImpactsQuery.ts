@@ -1,6 +1,6 @@
 import { Inject } from "@nestjs/common";
-import { Knex } from "knex";
-import {
+import type { Knex } from "knex";
+import type {
   AgriculturalOperationActivity,
   FricheActivity,
   NaturalAreaType,
@@ -10,7 +10,7 @@ import {
   SiteYearlyIncome,
 } from "shared";
 
-import { SiteImpactsQuery } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
+import type { SiteImpactsQuery } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 
 export class SqlSiteImpactsQuery implements SiteImpactsQuery {

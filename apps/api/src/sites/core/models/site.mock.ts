@@ -1,14 +1,12 @@
-import {
+import type {
   AgriculturalOrNaturalSite,
-  createAgriculturalOrNaturalSite,
   CreateAgriculturalOrNaturalSiteProps,
-  createFriche,
   CreateFricheProps,
-  createUrbanZoneSite,
   CreateUrbanZoneSiteProps,
   Friche,
   UrbanZoneSite,
 } from "./site";
+import { createAgriculturalOrNaturalSite, createFriche, createUrbanZoneSite } from "./site";
 
 export const buildAgriculturalOperationSiteProps = (
   propsOverride?: Partial<CreateAgriculturalOrNaturalSiteProps>,

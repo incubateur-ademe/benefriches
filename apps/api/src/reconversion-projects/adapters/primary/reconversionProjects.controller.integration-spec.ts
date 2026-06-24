@@ -1,6 +1,6 @@
 /* oxlint-disable typescript/no-non-null-assertion */
-import { NestExpressApplication } from "@nestjs/platform-express";
-import { Knex } from "knex";
+import type { NestExpressApplication } from "@nestjs/platform-express";
+import type { Knex } from "knex";
 import assert from "node:assert/strict";
 import { after, before, beforeEach, describe, it } from "node:test";
 import {
@@ -12,10 +12,10 @@ import supertest from "supertest";
 import { assertShapeEquals, isDate } from "test/assertShapeEquals";
 import { authenticateUser, createTestApp } from "test/testApp";
 import { v4 as uuid } from "uuid";
-import { z, ZodError } from "zod";
+import type { z, ZodError } from "zod";
 
 import { ACCESS_TOKEN_COOKIE_KEY } from "src/auth/adapters/access-token/accessTokenCookie";
-import {
+import type {
   ReconversionProjectFeaturesView,
   ReconversionProjectUpdatePropsDto,
   ReconversionProjectSaveDto,
@@ -27,9 +27,9 @@ import {
   buildUrbanProjectReconversionProjectProps,
   UrbanProjectBuilder,
 } from "src/reconversion-projects/core/model/reconversionProject.mock";
-import { ComputedImpacts } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
+import type { ComputedImpacts } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
-import {
+import type {
   SqlDevelopmentPlan,
   SqlReconversionProject,
 } from "src/shared-kernel/adapters/sql-knex/tableTypes";

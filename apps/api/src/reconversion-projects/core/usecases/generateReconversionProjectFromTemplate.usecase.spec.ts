@@ -1,25 +1,24 @@
 import assert from "node:assert/strict";
 import { describe, it, beforeEach } from "node:test";
-import {
+import type {
   BuildingsUseDistribution,
   ReconversionProjectTemplate,
-  reconversionProjectTemplateSchema,
-  sumListWithKey,
   ReconversionProjectSoilsDistribution,
 } from "shared";
+import { reconversionProjectTemplateSchema, sumListWithKey } from "shared";
 import { v4 as uuid } from "uuid";
 
 import { FakePhotovoltaicDataProvider } from "src/photovoltaic-performance/adapters/secondary/photovoltaic-data-provider/FakePhotovoltaicDataProvider";
-import { PhotovoltaicDataProvider } from "src/photovoltaic-performance/core/gateways/PhotovoltaicDataProvider";
+import type { PhotovoltaicDataProvider } from "src/photovoltaic-performance/core/gateways/PhotovoltaicDataProvider";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
-import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
-import { FailureResult, SuccessResult } from "src/shared-kernel/result";
+import type { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import type { FailureResult, SuccessResult } from "src/shared-kernel/result";
 import { InMemorySitesQuery } from "src/sites/adapters/secondary/site-query/InMemorySitesQuery";
-import { SiteFeaturesView } from "src/sites/core/models/views";
+import type { SiteFeaturesView } from "src/sites/core/models/views";
 import { InMemoryUserQuery } from "src/users/adapters/secondary/user-query/InMemoryUserQuery";
 
-import { ReconversionProjectSaveDto } from "../model/reconversionProject";
-import { UrbanProjectFeatures } from "../model/urbanProjects";
+import type { ReconversionProjectSaveDto } from "../model/reconversionProject";
+import type { UrbanProjectFeatures } from "../model/urbanProjects";
 import { GenerateReconversionProjectFromTemplateUseCase } from "./generateReconversionProjectFromTemplate.usecase";
 
 const URBAN_PROJECT_TEMPLATES = reconversionProjectTemplateSchema.exclude([

@@ -1,9 +1,10 @@
-import { SiteImpactsDataView, GetSiteImpactsDto } from "shared";
+import type { SiteImpactsDataView, GetSiteImpactsDto } from "shared";
 
-import { GetCarbonStorageFromSoilDistributionService } from "src/reconversion-projects/core/gateways/SoilsCarbonStorageService";
-import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
-import { TResult, fail, success } from "src/shared-kernel/result";
-import { UseCase } from "src/shared-kernel/usecase";
+import type { GetCarbonStorageFromSoilDistributionService } from "src/reconversion-projects/core/gateways/SoilsCarbonStorageService";
+import type { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import type { TResult } from "src/shared-kernel/result";
+import { fail, success } from "src/shared-kernel/result";
+import type { UseCase } from "src/shared-kernel/usecase";
 
 import { computeStatuQuoSiteImpacts } from "../models/impacts/computeStatuQuoSiteImpacts";
 

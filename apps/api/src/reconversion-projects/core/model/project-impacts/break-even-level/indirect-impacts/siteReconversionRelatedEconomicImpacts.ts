@@ -1,14 +1,12 @@
-import {
-  computeReinstatementFullTimeJobs,
+import type {
   ProjectOnSiteImpactMetric,
   ReconversionProjectOnSiteIndirectEconomicImpact,
   ReinstatementExpense,
-  roundTo2Digits,
-  sumList,
 } from "shared";
+import { computeReinstatementFullTimeJobs, roundTo2Digits, sumList } from "shared";
 
-import { Schedule } from "../../../reconversionProject";
-import { SumOnEvolutionPeriodService } from "../../../sum-on-evolution-period/SumOnEvolutionPeriodService";
+import type { Schedule } from "../../../reconversionProject";
+import type { SumOnEvolutionPeriodService } from "../../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import {
   getDurationFromScheduleInYears,
   spreadTemporaryFullTimeJobsOver,

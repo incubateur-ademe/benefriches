@@ -1,9 +1,9 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { AgriculturalOperationActivity, SiteNature } from "shared";
+import type { AgriculturalOperationActivity, SiteNature } from "shared";
 
-import { PhotovoltaicPowerStationFeatures } from "../../reconversionProject";
-import { UrbanProjectFeatures } from "../../urbanProjects";
+import type { PhotovoltaicPowerStationFeatures } from "../../reconversionProject";
+import type { UrbanProjectFeatures } from "../../urbanProjects";
 import { FullTimeJobsImpactService } from "./fullTimeJobsImpactService";
 
 type Case =

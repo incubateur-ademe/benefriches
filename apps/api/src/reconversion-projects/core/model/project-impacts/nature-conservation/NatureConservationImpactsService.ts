@@ -1,3 +1,4 @@
+import type { SoilsDistribution } from "shared";
 import {
   isForest,
   isPermeableSurfaceWithoutPermanentVegetation,
@@ -5,7 +6,6 @@ import {
   isSurfaceWithEcosystemBenefits,
   isSurfaceWithPermanentVegetation,
   isWetLand,
-  SoilsDistribution,
   sumSoilsSurfaceAreasWhere,
 } from "shared";
 

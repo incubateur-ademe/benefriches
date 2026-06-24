@@ -5,8 +5,8 @@ import {
   RECONVERSION_PROJECT_CREATED,
   type ReconversionProjectCreatedEvent,
 } from "src/reconversion-projects/core/events/reconversionProjectCreated.event";
-import { SiteActionsQuery } from "src/site-actions/core/gateways/SiteActionsQuery";
-import { UpdateSiteActionStatusUseCase } from "src/site-actions/core/usecases/updateSiteActionStatus.usecase";
+import type { SiteActionsQuery } from "src/site-actions/core/gateways/SiteActionsQuery";
+import type { UpdateSiteActionStatusUseCase } from "src/site-actions/core/usecases/updateSiteActionStatus.usecase";
 
 @Injectable()
 export class ReconversionProjectCreatedHandler {

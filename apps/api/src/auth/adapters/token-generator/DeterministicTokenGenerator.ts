@@ -1,4 +1,4 @@
-import { TokenGenerator } from "src/auth/core/sendAuthLink.usecase";
+import type { TokenGenerator } from "src/auth/core/sendAuthLink.usecase";
 
 export class DeterministicTokenGenerator implements TokenGenerator {
   private callCount = 0;

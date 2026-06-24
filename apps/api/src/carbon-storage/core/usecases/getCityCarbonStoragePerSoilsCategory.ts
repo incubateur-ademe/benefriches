@@ -1,9 +1,10 @@
-import { roundTo2Digits, SoilType } from "shared";
+import type { SoilType } from "shared";
+import { roundTo2Digits } from "shared";
 
 import { success } from "../../../shared-kernel/result";
 import type { TResult } from "../../../shared-kernel/result";
-import { UseCase } from "../../../shared-kernel/usecase";
-import { CarbonStorageQuery } from "../gateways/CarbonStorageQuery";
+import type { UseCase } from "../../../shared-kernel/usecase";
+import type { CarbonStorageQuery } from "../gateways/CarbonStorageQuery";
 import { mapSoilTypeToRepositorySoilCategory } from "../models/soilCategory";
 
 type Request = {

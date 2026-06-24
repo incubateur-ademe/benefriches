@@ -1,4 +1,4 @@
-import { DomainEvent } from "src/shared-kernel/domainEvent";
+import type { DomainEvent } from "src/shared-kernel/domainEvent";
 
 export const USER_ACCOUNT_CREATED = "user.account-created";
 

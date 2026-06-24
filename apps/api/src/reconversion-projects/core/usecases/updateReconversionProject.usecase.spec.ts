@@ -3,10 +3,10 @@ import { describe, it, beforeEach } from "node:test";
 
 import { InMemoryReconversionProjectRepository } from "src/reconversion-projects/adapters/secondary/repositories/reconversion-project/InMemoryReconversionProjectRepository";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
-import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
-import { FailureResult } from "src/shared-kernel/result";
+import type { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import type { FailureResult } from "src/shared-kernel/result";
 
-import { ReconversionProjectUpdatePropsDto } from "../model/reconversionProject";
+import type { ReconversionProjectUpdatePropsDto } from "../model/reconversionProject";
 import {
   buildMinimalReconversionProjectProps,
   UrbanProjectBuilder,

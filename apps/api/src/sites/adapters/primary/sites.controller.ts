@@ -29,18 +29,19 @@ import {
   type GetSiteImpactsDto,
 } from "shared";
 
-import { JwtAuthGuard, RequestWithAuthenticatedUser } from "src/auth/adapters/JwtAuthGuard";
-import { ArchiveSiteUseCase } from "src/sites/core/usecases/archiveSite.usecase";
-import { ComputeFricheInactionCostUseCase } from "src/sites/core/usecases/computeFricheInactionCost.usecase";
-import { ComputeSiteImpactsUseCase } from "src/sites/core/usecases/computeSiteImpacts.usecase";
-import {
+import type { RequestWithAuthenticatedUser } from "src/auth/adapters/JwtAuthGuard";
+import { JwtAuthGuard } from "src/auth/adapters/JwtAuthGuard";
+import type { ArchiveSiteUseCase } from "src/sites/core/usecases/archiveSite.usecase";
+import type { ComputeFricheInactionCostUseCase } from "src/sites/core/usecases/computeFricheInactionCost.usecase";
+import type { ComputeSiteImpactsUseCase } from "src/sites/core/usecases/computeSiteImpacts.usecase";
+import type {
   CreateNewExpressSiteUseCase,
   ExpressSiteProps,
 } from "src/sites/core/usecases/createNewExpressSite.usecase";
-import { CreateNewCustomSiteUseCase } from "src/sites/core/usecases/createNewSite.usecase";
-import { GetSiteByIdUseCase } from "src/sites/core/usecases/getSiteById.usecase";
-import { GetSiteRealEstateValuationUseCase } from "src/sites/core/usecases/getSiteRealEstateValuation.usecase";
-import { GetSiteViewByIdUseCase } from "src/sites/core/usecases/getSiteViewById.usecase";
+import type { CreateNewCustomSiteUseCase } from "src/sites/core/usecases/createNewSite.usecase";
+import type { GetSiteByIdUseCase } from "src/sites/core/usecases/getSiteById.usecase";
+import type { GetSiteRealEstateValuationUseCase } from "src/sites/core/usecases/getSiteRealEstateValuation.usecase";
+import type { GetSiteViewByIdUseCase } from "src/sites/core/usecases/getSiteViewById.usecase";
 
 @Controller()
 export class SitesController {

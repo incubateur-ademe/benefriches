@@ -1,11 +1,11 @@
-import { HttpService } from "@nestjs/axios";
+import type { HttpService } from "@nestjs/axios";
 import { Inject, Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { AxiosError } from "axios";
+import type { AxiosError } from "axios";
 import { catchError, lastValueFrom, map } from "rxjs";
-import { MutabilityUsage } from "shared";
+import type { MutabilityUsage } from "shared";
 
-import {
+import type {
   MutabilityEvaluationQuery,
   MutabilityEvaluationResult,
 } from "src/site-evaluations/core/gateways/MutabilityEvaluationQuery";

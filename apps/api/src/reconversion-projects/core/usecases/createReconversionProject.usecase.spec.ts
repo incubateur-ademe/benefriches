@@ -4,20 +4,18 @@ import { describe, it, beforeEach } from "node:test";
 
 import { InMemoryReconversionProjectRepository } from "src/reconversion-projects/adapters/secondary/repositories/reconversion-project/InMemoryReconversionProjectRepository";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
-import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import type { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { InMemoryEventPublisher } from "src/shared-kernel/adapters/events/publisher/InMemoryEventPublisher";
 import { RandomUuidGenerator } from "src/shared-kernel/adapters/id-generator/RandomUuidGenerator";
-import { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerator";
-import { FailureResult } from "src/shared-kernel/result";
+import type { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerator";
+import type { FailureResult } from "src/shared-kernel/result";
 import { InMemorySitesRepository } from "src/sites/adapters/secondary/site-repository/InMemorySiteRepository";
 import { buildFriche } from "src/sites/core/models/site.mock";
-import { SiteEntity } from "src/sites/core/models/siteEntity";
+import type { SiteEntity } from "src/sites/core/models/siteEntity";
 
-import {
-  RECONVERSION_PROJECT_CREATED,
-  ReconversionProjectCreatedEvent,
-} from "../events/reconversionProjectCreated.event";
-import { ReconversionProjectSaveDto } from "../model/reconversionProject";
+import type { ReconversionProjectCreatedEvent } from "../events/reconversionProjectCreated.event";
+import { RECONVERSION_PROJECT_CREATED } from "../events/reconversionProjectCreated.event";
+import type { ReconversionProjectSaveDto } from "../model/reconversionProject";
 import {
   buildExhaustiveReconversionProjectProps,
   buildMinimalReconversionProjectProps,

@@ -1,7 +1,7 @@
 import type { Knex } from "knex";
-import { UrbanProjectUseWithBuilding } from "shared";
+import type { UrbanProjectUseWithBuilding } from "shared";
 
-import { UrbanProjectFeatures } from "src/reconversion-projects/core/model/urbanProjects";
+import type { UrbanProjectFeatures } from "src/reconversion-projects/core/model/urbanProjects";
 
 type LegacyBuildingsUse =
   | "GROUND_FLOOR_RETAIL"

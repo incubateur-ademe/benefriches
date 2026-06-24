@@ -1,17 +1,10 @@
-import {
-  CanActivate,
-  ExecutionContext,
-  Injectable,
-  UnauthorizedException,
-  Inject,
-} from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
-import { Request } from "express";
+import type { CanActivate, ExecutionContext } from "@nestjs/common";
+import { Injectable, UnauthorizedException, Inject } from "@nestjs/common";
+import type { ConfigService } from "@nestjs/config";
+import type { Request } from "express";
 
-import {
-  ACCESS_TOKEN_SERVICE_INJECTION_TOKEN,
-  AccessTokenService,
-} from "./access-token/AccessTokenService";
+import type { AccessTokenService } from "./access-token/AccessTokenService";
+import { ACCESS_TOKEN_SERVICE_INJECTION_TOKEN } from "./access-token/AccessTokenService";
 import { ACCESS_TOKEN_COOKIE_KEY } from "./access-token/accessTokenCookie";
 
 export type AccessTokenPayload = {

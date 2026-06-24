@@ -1,21 +1,20 @@
-import {
+import type {
   GetReconversionProjectImpactsResultDto,
   ReconversionProjectImpactsDataView,
   SiteImpactsDataView,
-  getProjectSoilDistributionByType,
 } from "shared";
+import { getProjectSoilDistributionByType } from "shared";
 
-import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
-import { TResult, fail, success } from "src/shared-kernel/result";
-import { UseCase } from "src/shared-kernel/usecase";
-import { CityStatsProvider } from "src/territory/core/gateways/CityStatsProvider";
+import type { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import type { TResult } from "src/shared-kernel/result";
+import { fail, success } from "src/shared-kernel/result";
+import type { UseCase } from "src/shared-kernel/usecase";
+import type { CityStatsProvider } from "src/territory/core/gateways/CityStatsProvider";
 
-import { GetCarbonStorageFromSoilDistributionService } from "../gateways/SoilsCarbonStorageService";
-import {
-  computeProjectImpactsWithBreakEvenLevel,
-  ReconversionProjectImpactsWithBreakEvenLevelInput,
-} from "../model/project-impacts/break-even-level/computeImpactsWithBreakEvenLevel";
-import { Schedule } from "../model/reconversionProject";
+import type { GetCarbonStorageFromSoilDistributionService } from "../gateways/SoilsCarbonStorageService";
+import type { ReconversionProjectImpactsWithBreakEvenLevelInput } from "../model/project-impacts/break-even-level/computeImpactsWithBreakEvenLevel";
+import { computeProjectImpactsWithBreakEvenLevel } from "../model/project-impacts/break-even-level/computeImpactsWithBreakEvenLevel";
+import type { Schedule } from "../model/reconversionProject";
 
 const DEFAULT_EVALUATION_PERIOD_IN_YEARS = 50;
 

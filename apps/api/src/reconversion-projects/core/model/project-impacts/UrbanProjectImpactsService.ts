@@ -1,17 +1,10 @@
-import {
-  AvoidedCO2EqEmissions,
-  computeEstimatedPropertyTaxesAmount,
-  SocioEconomicImpact,
-  sumListWithKey,
-  TaxesIncomeImpact,
-} from "shared";
+import type { AvoidedCO2EqEmissions, SocioEconomicImpact, TaxesIncomeImpact } from "shared";
+import { computeEstimatedPropertyTaxesAmount, sumListWithKey } from "shared";
 
-import { UrbanProjectFeatures } from "../urbanProjects";
-import {
-  ReconversionProjectImpactsService,
-  ReconversionProjectImpactsServiceProps,
-} from "./ReconversionProjectImpactsService";
-import { ImpactsServiceInterface } from "./ReconversionProjectImpactsServiceInterface";
+import type { UrbanProjectFeatures } from "../urbanProjects";
+import type { ReconversionProjectImpactsServiceProps } from "./ReconversionProjectImpactsService";
+import { ReconversionProjectImpactsService } from "./ReconversionProjectImpactsService";
+import type { ImpactsServiceInterface } from "./ReconversionProjectImpactsServiceInterface";
 import { computePropertyValueImpact } from "./property-value/propertyValueImpact";
 import { computeFricheRoadsAndUtilitiesExpensesImpacts } from "./roads-and-utilities-expenses/roadsAndUtilitiesExpensesImpact";
 import { TravelRelatedImpactsService } from "./travel-related-impacts-service/TravelRelatedImpactsService";

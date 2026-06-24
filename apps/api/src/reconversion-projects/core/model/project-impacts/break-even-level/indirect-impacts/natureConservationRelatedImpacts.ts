@@ -1,14 +1,13 @@
-import {
+import type {
   ProjectOnSiteImpactMetric,
   ReconversionProjectOnSiteIndirectEconomicImpact,
   SoilsDistribution,
-  sumList,
-  typedObjectEntries,
 } from "shared";
+import { sumList, typedObjectEntries } from "shared";
 
-import { SoilsCarbonStorage } from "src/reconversion-projects/core/gateways/SoilsCarbonStorageService";
+import type { SoilsCarbonStorage } from "src/reconversion-projects/core/gateways/SoilsCarbonStorageService";
 
-import { SumOnEvolutionPeriodService } from "../../../sum-on-evolution-period/SumOnEvolutionPeriodService";
+import type { SumOnEvolutionPeriodService } from "../../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import { NatureConservationImpactsService } from "../../nature-conservation/NatureConservationImpactsService";
 import { getPermeableSurfaceImpact } from "../../nature-conservation/permeableSurfaceAreaImpact";
 import { computeSoilsCo2eqStorageImpact } from "../../soils-co2eq-storage/soilsCo2eqStorage";

@@ -1,24 +1,25 @@
-import {
+import type {
   DevelopmentPlanInstallationExpenses,
   FinancialAssistanceRevenue,
-  NewUrbanCenterProjectGenerator,
   RecurringExpense,
   RecurringRevenue,
   ReinstatementExpense,
 } from "shared";
+import { NewUrbanCenterProjectGenerator } from "shared";
 import { v4 as uuid } from "uuid";
 
-import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
-import { TResult, success } from "src/shared-kernel/result";
-import { UseCase } from "src/shared-kernel/usecase";
+import type { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import type { TResult } from "src/shared-kernel/result";
+import { success } from "src/shared-kernel/result";
+import type { UseCase } from "src/shared-kernel/usecase";
 import type { Friche, Site } from "src/sites/core/models/site";
-import { CityStatsProvider } from "src/territory/core/gateways/CityStatsProvider";
+import type { CityStatsProvider } from "src/territory/core/gateways/CityStatsProvider";
 
-import { GetCarbonStorageFromSoilDistributionService } from "../gateways/SoilsCarbonStorageService";
-import { InputSiteData } from "../model/project-impacts/ReconversionProjectImpactsService";
+import type { GetCarbonStorageFromSoilDistributionService } from "../gateways/SoilsCarbonStorageService";
+import type { InputSiteData } from "../model/project-impacts/ReconversionProjectImpactsService";
 import { UrbanProjectImpactsService } from "../model/project-impacts/UrbanProjectImpactsService";
 import { getDefaultImpactsEvaluationPeriod } from "../model/project-impacts/impactsEvaluationPeriod";
-import { ComputedImpacts } from "./computeReconversionProjectImpacts.usecase";
+import type { ComputedImpacts } from "./computeReconversionProjectImpacts.usecase";
 
 type City = {
   name: string;

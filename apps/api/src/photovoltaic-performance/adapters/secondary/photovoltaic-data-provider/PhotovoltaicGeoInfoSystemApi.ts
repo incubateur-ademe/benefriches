@@ -1,9 +1,9 @@
-import { HttpService } from "@nestjs/axios";
+import type { HttpService } from "@nestjs/axios";
 import { Injectable } from "@nestjs/common";
-import { AxiosError } from "axios";
+import type { AxiosError } from "axios";
 import { catchError, lastValueFrom, map } from "rxjs";
 
-import { PhotovoltaicDataProvider } from "src/photovoltaic-performance/core/gateways/PhotovoltaicDataProvider";
+import type { PhotovoltaicDataProvider } from "src/photovoltaic-performance/core/gateways/PhotovoltaicDataProvider";
 
 const API_VERSION = "v5_3";
 const TOOL_NAME = "PVcalc";

@@ -1,5 +1,6 @@
 import { configDotenv } from "dotenv";
-import knex, { Knex } from "knex";
+import type { Knex } from "knex";
+import knex from "knex";
 import path from "node:path";
 
 import knexConfig from "../../sql-knex/knexConfig";

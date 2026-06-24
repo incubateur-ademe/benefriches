@@ -1,5 +1,5 @@
-import { CarbonStorageQuery } from "src/carbon-storage/core/gateways/CarbonStorageQuery";
-import {
+import type { CarbonStorageQuery } from "src/carbon-storage/core/gateways/CarbonStorageQuery";
+import type {
   CarbonStorage,
   RepositorySoilCategoryType,
 } from "src/carbon-storage/core/models/carbonStorage";

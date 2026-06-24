@@ -1,4 +1,4 @@
-import { DateProvider } from "./IDateProvider";
+import type { DateProvider } from "./IDateProvider";
 
 export class DeterministicDateProvider implements DateProvider {
   constructor(private readonly fakeNow: Date) {}

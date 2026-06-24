@@ -1,4 +1,4 @@
-import {
+import type {
   PerformanceResult,
   PhotovoltaicDataProvider,
 } from "src/photovoltaic-performance/core/gateways/PhotovoltaicDataProvider";

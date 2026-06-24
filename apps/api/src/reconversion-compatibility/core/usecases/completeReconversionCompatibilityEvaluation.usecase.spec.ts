@@ -5,9 +5,9 @@ import { InMemoryReconversionCompatibilityEvaluationRepository } from "src/recon
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { InMemoryEventPublisher } from "src/shared-kernel/adapters/events/publisher/InMemoryEventPublisher";
 import { DeterministicUuidGenerator } from "src/shared-kernel/adapters/id-generator/DeterministicIdGenerator";
-import { FailureResult } from "src/shared-kernel/result";
+import type { FailureResult } from "src/shared-kernel/result";
 
-import { ReconversionCompatibilityEvaluation } from "../reconversionCompatibilityEvaluation";
+import type { ReconversionCompatibilityEvaluation } from "../reconversionCompatibilityEvaluation";
 import { CompleteReconversionCompatibilityEvaluationUseCase } from "./completeReconversionCompatibilityEvaluation.usecase";
 
 describe("CompleteReconversionCompatibilityEvaluationUseCase", () => {

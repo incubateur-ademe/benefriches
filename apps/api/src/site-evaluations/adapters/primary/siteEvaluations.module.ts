@@ -4,8 +4,8 @@ import { ConfigModule } from "@nestjs/config";
 
 import { AuthModule } from "src/auth/adapters/auth.module";
 import { NestJsAppLogger } from "src/shared-kernel/adapters/logger/NestJsAppLogger";
-import { MutabilityEvaluationQuery } from "src/site-evaluations/core/gateways/MutabilityEvaluationQuery";
-import { SiteEvaluationQuery } from "src/site-evaluations/core/gateways/SiteEvaluationQuery";
+import type { MutabilityEvaluationQuery } from "src/site-evaluations/core/gateways/MutabilityEvaluationQuery";
+import type { SiteEvaluationQuery } from "src/site-evaluations/core/gateways/SiteEvaluationQuery";
 import { GetUserSiteEvaluationsUseCase } from "src/site-evaluations/core/usecases/getUserSiteEvaluations.usecase";
 
 import { MutafrichesEvaluationQuery } from "../secondary/queries/MutafrichesEvaluationQuery";

@@ -1,4 +1,4 @@
-import { CityRuralityQuery } from "src/territory/core/gateways/CityRuralityQuery";
+import type { CityRuralityQuery } from "src/territory/core/gateways/CityRuralityQuery";
 
 export class InMemoryCityRuralityQuery implements CityRuralityQuery {
   private ruralCityCodes = new Set<string>();

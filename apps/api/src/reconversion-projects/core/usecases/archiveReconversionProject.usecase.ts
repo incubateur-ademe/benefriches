@@ -1,8 +1,9 @@
-import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
-import { TResult, fail, success } from "src/shared-kernel/result";
-import { UseCase } from "src/shared-kernel/usecase";
+import type { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import type { TResult } from "src/shared-kernel/result";
+import { fail, success } from "src/shared-kernel/result";
+import type { UseCase } from "src/shared-kernel/usecase";
 
-import { ReconversionProjectRepository } from "../gateways/ReconversionProjectRepository";
+import type { ReconversionProjectRepository } from "../gateways/ReconversionProjectRepository";
 
 type Request = {
   projectId: string;

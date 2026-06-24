@@ -1,5 +1,6 @@
 import { configDotenv } from "dotenv";
-import knex, { Knex } from "knex";
+import type { Knex } from "knex";
+import knex from "knex";
 import path from "node:path";
 
 import { SqlSiteActionsQuery } from "../../../../site-actions/adapters/secondary/site-actions-query/SqlSiteActionsQuery";
@@ -9,7 +10,7 @@ import { UpdateSiteActionStatusUseCase } from "../../../../site-actions/core/use
 import { RealDateProvider } from "../../date/RealDateProvider";
 import { RandomUuidGenerator } from "../../id-generator/RandomUuidGenerator";
 import knexConfig from "../knexConfig";
-import { SqlSite } from "../tableTypes";
+import type { SqlSite } from "../tableTypes";
 
 const dotEnvPath = path.resolve(process.cwd(), ".env");
 configDotenv({ path: dotEnvPath });

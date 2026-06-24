@@ -1,4 +1,4 @@
-import { DevelopmentPlan, PhotovoltaicPowerStationFeatures } from "../reconversionProject";
+import type { DevelopmentPlan, PhotovoltaicPowerStationFeatures } from "../reconversionProject";
 
 export const getDefaultImpactsEvaluationPeriod = (
   developmentPlanType: DevelopmentPlan["type"],

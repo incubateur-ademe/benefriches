@@ -1,13 +1,13 @@
-import {
+import type {
   DevelopmentPlanInstallationExpenses,
   FinancialAssistanceRevenue,
   RecurringExpense,
   RecurringRevenue,
   ReinstatementExpense,
-  sumIfNotNil,
 } from "shared";
+import { sumIfNotNil } from "shared";
 
-import {
+import type {
   ReconversionProjectFeaturesView,
   ReconversionProjectDataView,
 } from "./reconversionProject";

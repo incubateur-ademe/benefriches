@@ -1,4 +1,4 @@
-import { AuthLinkMailer } from "src/auth/core/sendAuthLink.usecase";
+import type { AuthLinkMailer } from "src/auth/core/sendAuthLink.usecase";
 
 interface SentAuthLinkEmail {
   email: string;

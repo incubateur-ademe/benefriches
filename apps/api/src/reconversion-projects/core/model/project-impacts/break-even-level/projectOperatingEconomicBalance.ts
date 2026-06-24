@@ -1,11 +1,11 @@
-import {
+import type {
   RecurringRevenue,
   RecurringExpense,
-  sumList,
   ProjectOperatingEconomicBalanceItem,
 } from "shared";
+import { sumList } from "shared";
 
-import { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
+import type { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import { computeCumulativeByYear } from "./projectIndirectImpacts";
 
 type Props = {

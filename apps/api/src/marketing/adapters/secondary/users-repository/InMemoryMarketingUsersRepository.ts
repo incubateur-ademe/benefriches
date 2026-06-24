@@ -1,4 +1,4 @@
-import { MarketingUsersRepository } from "src/marketing/core/gateways/MarketingUsersRepository";
+import type { MarketingUsersRepository } from "src/marketing/core/gateways/MarketingUsersRepository";
 
 export type SubscriptionUpdate = {
   userId: string;

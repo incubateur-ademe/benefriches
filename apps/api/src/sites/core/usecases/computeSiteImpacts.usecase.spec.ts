@@ -1,12 +1,12 @@
 import assert from "node:assert/strict";
 import { describe, it, beforeEach } from "node:test";
-import { GetSiteImpactsDto, SiteImpactsDataView } from "shared";
+import type { GetSiteImpactsDto, SiteImpactsDataView } from "shared";
 import { v4 as uuid } from "uuid";
 
 import { FakeGetSoilsCarbonStorageService } from "src/reconversion-projects/core/gateways/FakeGetSoilsCarbonStorageService";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
-import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
-import { FailureResult, SuccessResult } from "src/shared-kernel/result";
+import type { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import type { FailureResult, SuccessResult } from "src/shared-kernel/result";
 import { InMemorySiteImpactsQuery } from "src/sites/adapters/secondary/site-impacts/InMemorySiteImpactsQuery";
 
 import { ComputeSiteImpactsUseCase } from "./computeSiteImpacts.usecase";

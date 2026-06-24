@@ -1,11 +1,10 @@
-import { roundTo1Digit, SocioEconomicImpact, sumListWithKey, TaxesIncomeImpact } from "shared";
+import type { SocioEconomicImpact, TaxesIncomeImpact } from "shared";
+import { roundTo1Digit, sumListWithKey } from "shared";
 
-import { PhotovoltaicPowerStationFeatures } from "../reconversionProject";
-import {
-  ReconversionProjectImpactsService,
-  ReconversionProjectImpactsServiceProps,
-} from "./ReconversionProjectImpactsService";
-import { ImpactsServiceInterface } from "./ReconversionProjectImpactsServiceInterface";
+import type { PhotovoltaicPowerStationFeatures } from "../reconversionProject";
+import type { ReconversionProjectImpactsServiceProps } from "./ReconversionProjectImpactsService";
+import { ReconversionProjectImpactsService } from "./ReconversionProjectImpactsService";
+import type { ImpactsServiceInterface } from "./ReconversionProjectImpactsServiceInterface";
 import { computeAvoidedCO2TonsWithEnergyProductionImpact } from "./renewable-energy/avoided-CO2-with-energy-production/avoidedCO2WithEnergyProductionImpact";
 import { computeHouseholdsPoweredByRenewableEnergyImpact } from "./renewable-energy/households-powered-by-renewable-energy/householdsPoweredByRenewableEnergyImpact";
 

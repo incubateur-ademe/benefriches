@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { FricheCostsIndirectEconomicImpacts } from "shared";
+import type { FricheCostsIndirectEconomicImpacts } from "shared";
 
 import { SumOnEvolutionPeriodService } from "src/reconversion-projects/core/model/sum-on-evolution-period/SumOnEvolutionPeriodService";
 

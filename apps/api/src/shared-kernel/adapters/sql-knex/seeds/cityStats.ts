@@ -1,4 +1,4 @@
-import { Knex } from "knex";
+import type { Knex } from "knex";
 
 import { readCityStatsCsvData } from "../scripts/read-city-stats-csv";
 

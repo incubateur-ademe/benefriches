@@ -1,9 +1,10 @@
-import { TResult, fail, success } from "src/shared-kernel/result";
-import { UseCase } from "src/shared-kernel/usecase";
-import { MutabilityEvaluationQuery } from "src/site-evaluations/core/gateways/MutabilityEvaluationQuery";
+import type { TResult } from "src/shared-kernel/result";
+import { fail, success } from "src/shared-kernel/result";
+import type { UseCase } from "src/shared-kernel/usecase";
+import type { MutabilityEvaluationQuery } from "src/site-evaluations/core/gateways/MutabilityEvaluationQuery";
 
-import { SitesQuery } from "../gateways/SitesQuery";
-import { SiteView } from "../models/views";
+import type { SitesQuery } from "../gateways/SitesQuery";
+import type { SiteView } from "../models/views";
 
 type Request = {
   siteId: string;

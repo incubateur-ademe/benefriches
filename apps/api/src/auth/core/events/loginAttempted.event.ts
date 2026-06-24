@@ -1,4 +1,4 @@
-import { DomainEvent } from "src/shared-kernel/domainEvent";
+import type { DomainEvent } from "src/shared-kernel/domainEvent";
 
 const LOGIN_ATTEMPTED = "user.login-attempted";
 

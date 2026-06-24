@@ -1,26 +1,27 @@
-import {
+import type {
   ReconversionProjectImpacts,
   SiteNature,
   SoilsDistribution,
   ReconversionProjectImpactsDataView,
   SiteImpactsDataView,
-  getProjectSoilDistributionByType,
 } from "shared";
+import { getProjectSoilDistributionByType } from "shared";
 
-import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
-import { TResult, fail, success } from "src/shared-kernel/result";
-import { UseCase } from "src/shared-kernel/usecase";
-import { CityStats, CityStatsProvider } from "src/territory/core/gateways/CityStatsProvider";
+import type { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import type { TResult } from "src/shared-kernel/result";
+import { fail, success } from "src/shared-kernel/result";
+import type { UseCase } from "src/shared-kernel/usecase";
+import type { CityStats, CityStatsProvider } from "src/territory/core/gateways/CityStatsProvider";
 
-import { GetCarbonStorageFromSoilDistributionService } from "../gateways/SoilsCarbonStorageService";
+import type { GetCarbonStorageFromSoilDistributionService } from "../gateways/SoilsCarbonStorageService";
 import { PhotovoltaicProjectImpactsService } from "../model/project-impacts/PhotovoltaicProjectImpactsService";
-import {
+import type {
   InputReconversionProjectData,
   InputSiteData,
 } from "../model/project-impacts/ReconversionProjectImpactsService";
 import { UrbanProjectImpactsService } from "../model/project-impacts/UrbanProjectImpactsService";
 import { getDefaultImpactsEvaluationPeriod } from "../model/project-impacts/impactsEvaluationPeriod";
-import { DevelopmentPlan, Schedule } from "../model/reconversionProject";
+import type { DevelopmentPlan, Schedule } from "../model/reconversionProject";
 
 export interface SiteImpactsQuery {
   getById(siteId: string): Promise<SiteImpactsDataView | undefined>;

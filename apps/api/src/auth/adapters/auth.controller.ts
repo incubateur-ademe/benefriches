@@ -16,50 +16,37 @@ import {
   UnauthorizedException,
   UseGuards,
 } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
+import type { ConfigService } from "@nestjs/config";
 import { Throttle } from "@nestjs/throttler";
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import { createZodDto } from "nestjs-zod";
 import { randomUUID } from "node:crypto";
 import { registerUserRequestDtoSchema, type GetCurrentUserResponseDto } from "shared";
 
-import { CreateUserUseCase, UserProps } from "src/auth/core/createUser.usecase";
-import {
-  UidGenerator,
-  UUID_GENERATOR_INJECTION_TOKEN,
-} from "src/shared-kernel/adapters/id-generator/UidGenerator";
-import {
-  DOMAIN_EVENT_PUBLISHER_INJECTION_TOKEN,
-  DomainEventPublisher,
-} from "src/shared-kernel/domainEventPublisher";
+import type { CreateUserUseCase, UserProps } from "src/auth/core/createUser.usecase";
+import type { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerator";
+import { UUID_GENERATOR_INJECTION_TOKEN } from "src/shared-kernel/adapters/id-generator/UidGenerator";
+import type { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
+import { DOMAIN_EVENT_PUBLISHER_INJECTION_TOKEN } from "src/shared-kernel/domainEventPublisher";
 import type { AppLogger } from "src/shared-kernel/logger";
 
-import { AuthenticateWithTokenUseCase } from "../core/authenticateWithToken.usecase";
+import type { AuthenticateWithTokenUseCase } from "../core/authenticateWithToken.usecase";
 import { createLoginAttemptedEvent } from "../core/events/loginAttempted.event";
 import { createLoginSucceededEvent } from "../core/events/loginSucceeded.event";
-import {
-  AUTH_USER_REPOSITORY_INJECTION_TOKEN,
-  UserRepository,
-} from "../core/gateways/UsersRepository";
-import { SendAuthLinkUseCase } from "../core/sendAuthLink.usecase";
-import { JwtAuthGuard, RequestWithAuthenticatedUser } from "./JwtAuthGuard";
-import {
-  ACCESS_TOKEN_SERVICE_INJECTION_TOKEN,
-  AccessTokenService,
-} from "./access-token/AccessTokenService";
+import type { UserRepository } from "../core/gateways/UsersRepository";
+import { AUTH_USER_REPOSITORY_INJECTION_TOKEN } from "../core/gateways/UsersRepository";
+import type { SendAuthLinkUseCase } from "../core/sendAuthLink.usecase";
+import type { RequestWithAuthenticatedUser } from "./JwtAuthGuard";
+import { JwtAuthGuard } from "./JwtAuthGuard";
+import type { AccessTokenService } from "./access-token/AccessTokenService";
+import { ACCESS_TOKEN_SERVICE_INJECTION_TOKEN } from "./access-token/AccessTokenService";
 import { ACCESS_TOKEN_COOKIE_KEY } from "./access-token/accessTokenCookie";
-import {
-  EXTERNAL_USER_IDENTITIES_REPOSITORY_INJECTION_TOKEN,
-  ExternalUserIdentityRepository,
-} from "./external-user-identities-repository/ExternalUserIdentitiesRepository";
-import {
-  PRO_CONNECT_CLIENT_INJECTION_TOKEN,
-  ProConnectClient,
-} from "./pro-connect/ProConnectClient";
-import {
-  VERIFIED_EMAIL_REPOSITORY_INJECTION_TOKEN,
-  VerifiedEmailRepository,
-} from "./verified-email-repository/VerifiedEmailRepository";
+import type { ExternalUserIdentityRepository } from "./external-user-identities-repository/ExternalUserIdentitiesRepository";
+import { EXTERNAL_USER_IDENTITIES_REPOSITORY_INJECTION_TOKEN } from "./external-user-identities-repository/ExternalUserIdentitiesRepository";
+import type { ProConnectClient } from "./pro-connect/ProConnectClient";
+import { PRO_CONNECT_CLIENT_INJECTION_TOKEN } from "./pro-connect/ProConnectClient";
+import type { VerifiedEmailRepository } from "./verified-email-repository/VerifiedEmailRepository";
+import { VERIFIED_EMAIL_REPOSITORY_INJECTION_TOKEN } from "./verified-email-repository/VerifiedEmailRepository";
 
 export const AUTH_CONTROLLER_LOGGER_TOKEN = "AUTH_CONTROLLER_LOGGER";
 

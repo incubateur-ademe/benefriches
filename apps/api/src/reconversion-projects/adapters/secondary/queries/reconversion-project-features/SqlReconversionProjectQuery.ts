@@ -1,26 +1,26 @@
 import { Inject } from "@nestjs/common";
-import { Knex } from "knex";
-import {
+import type { Knex } from "knex";
+import type {
   BuildingsConstructionExpense,
   DevelopmentPlanInstallationExpenses,
   FinancialAssistanceRevenue,
   RecurringExpense,
   RecurringRevenue,
   ReinstatementExpense,
-  sumIfNotNil,
 } from "shared";
+import { sumIfNotNil } from "shared";
 
-import {
+import type {
   Schedule,
   DevelopmentPlan,
   PhotovoltaicPowerStationFeatures,
   ReconversionProjectFeaturesView,
 } from "src/reconversion-projects/core/model/reconversionProject";
-import { UrbanProjectFeatures } from "src/reconversion-projects/core/model/urbanProjects";
+import type { UrbanProjectFeatures } from "src/reconversion-projects/core/model/urbanProjects";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
-import { SqlReconversionProjectSoilsDistribution } from "src/shared-kernel/adapters/sql-knex/tableTypes";
+import type { SqlReconversionProjectSoilsDistribution } from "src/shared-kernel/adapters/sql-knex/tableTypes";
 
-import { ReconversionProjectQueryGateway } from "../../../../core/usecases/getReconversionProjectFeatures.usecase";
+import type { ReconversionProjectQueryGateway } from "../../../../core/usecases/getReconversionProjectFeatures.usecase";
 
 type UrbanProjectFeaturesView = Extract<
   ReconversionProjectFeaturesView["developmentPlan"],

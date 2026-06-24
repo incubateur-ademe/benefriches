@@ -1,8 +1,9 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { Transporter, createTransport } from "nodemailer";
+import type { Transporter } from "nodemailer";
+import { createTransport } from "nodemailer";
 
-import { AuthLinkMailer } from "src/auth/core/sendAuthLink.usecase";
+import type { AuthLinkMailer } from "src/auth/core/sendAuthLink.usecase";
 
 @Injectable()
 export class SmtpAuthLinkMailer implements AuthLinkMailer {

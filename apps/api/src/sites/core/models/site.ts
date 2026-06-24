@@ -1,25 +1,29 @@
 import {
-  Address,
   addressSchema,
-  AgriculturalOperationActivity,
   createSoilSurfaceAreaDistribution,
-  FricheActivity,
   fricheActivitySchema,
-  NaturalAreaType,
   siteNatureSchema,
-  SiteYearlyExpense,
   siteYearlyExpenseSchema,
-  SiteYearlyIncome,
-  SoilType,
   surfaceAreaSchema,
   SurfaceAreaDistribution,
   typedObjectEntries,
   urbanZoneLandParcelSchema,
   urbanZoneTypeSchema,
 } from "shared";
-import type { SoilsDistribution, UrbanZoneLandParcel, UrbanZoneType } from "shared";
+import type {
+  SoilsDistribution,
+  UrbanZoneLandParcel,
+  UrbanZoneType,
+  Address,
+  AgriculturalOperationActivity,
+  FricheActivity,
+  NaturalAreaType,
+  SiteYearlyExpense,
+  SiteYearlyIncome,
+  SoilType,
+} from "shared";
 import { z } from "zod";
-import { $ZodFlattenedError } from "zod/v4/core";
+import type { $ZodFlattenedError } from "zod/v4/core";
 
 const incomeSchema = z.object({
   source: z.string(),

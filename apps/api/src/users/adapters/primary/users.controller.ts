@@ -2,10 +2,8 @@ import { Body, Controller, Post, UseGuards } from "@nestjs/common";
 import { createZodDto } from "nestjs-zod";
 
 import { JwtAuthGuard } from "src/auth/adapters/JwtAuthGuard";
-import {
-  createFeatureAlertProps,
-  CreateUserFeatureAlertUseCase,
-} from "src/users/core/usecases/createUserFeatureAlert.usecase";
+import type { CreateUserFeatureAlertUseCase } from "src/users/core/usecases/createUserFeatureAlert.usecase";
+import { createFeatureAlertProps } from "src/users/core/usecases/createUserFeatureAlert.usecase";
 
 class CreateFeatureAlertBodyDto extends createZodDto(createFeatureAlertProps) {}
 

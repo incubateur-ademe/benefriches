@@ -1,13 +1,13 @@
 import { HttpModule, HttpService } from "@nestjs/axios";
 import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
-import { Knex } from "knex";
+import type { Knex } from "knex";
 
-import { CRMGateway } from "src/marketing/core/CRMGateway";
-import { MarketingUsersQuery } from "src/marketing/core/gateways/MarketingUsersQuery";
-import { MarketingUsersRepository } from "src/marketing/core/gateways/MarketingUsersRepository";
+import type { CRMGateway } from "src/marketing/core/CRMGateway";
+import type { MarketingUsersQuery } from "src/marketing/core/gateways/MarketingUsersQuery";
+import type { MarketingUsersRepository } from "src/marketing/core/gateways/MarketingUsersRepository";
 import { SyncNewsletterSubscriptionsUseCase } from "src/marketing/core/usecases/syncNewsletterSubscriptions.usecase";
-import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import type { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
 import { NestJsAppLogger } from "src/shared-kernel/adapters/logger/NestJsAppLogger";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";

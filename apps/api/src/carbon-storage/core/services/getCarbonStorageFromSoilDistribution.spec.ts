@@ -5,7 +5,7 @@ import { roundTo2Digits } from "shared";
 import { LocalCarbonStorageQuery } from "src/carbon-storage/adapters/secondary/carbon-storage-query/LocalCarbonStorageQuery.mock";
 import { SilentLogger } from "src/shared-kernel/adapters/logger/SilentLogger";
 
-import { CarbonStorageQuery } from "../gateways/CarbonStorageQuery";
+import type { CarbonStorageQuery } from "../gateways/CarbonStorageQuery";
 import { GetCarbonStorageFromSoilDistributionService } from "./getCarbonStorageFromSoilDistribution";
 
 describe("GetCarbonStorageFromSoilDistributionService", () => {

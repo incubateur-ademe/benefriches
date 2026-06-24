@@ -3,9 +3,9 @@ import { describe, it, beforeEach } from "node:test";
 import { roundTo2Digits } from "shared";
 
 import { LocalCarbonStorageQuery } from "src/carbon-storage/adapters/secondary/carbon-storage-query/LocalCarbonStorageQuery.mock";
-import { SuccessResult } from "src/shared-kernel/result";
+import type { SuccessResult } from "src/shared-kernel/result";
 
-import { CarbonStorageQuery } from "../gateways/CarbonStorageQuery";
+import type { CarbonStorageQuery } from "../gateways/CarbonStorageQuery";
 import { GetCityCarbonStoragePerSoilsCategoryUseCase } from "./getCityCarbonStoragePerSoilsCategory";
 
 describe("GetCityCarbonStocksPerSoilsCategoryUseCase", () => {

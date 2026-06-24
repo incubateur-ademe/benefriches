@@ -1,8 +1,9 @@
-import { roundTo2Digits, SoilsDistribution, SoilType, sumObjectValues } from "shared";
+import type { SoilsDistribution, SoilType } from "shared";
+import { roundTo2Digits, sumObjectValues } from "shared";
 
 import type { AppLogger } from "src/shared-kernel/logger";
 
-import { CarbonStorageQuery } from "../gateways/CarbonStorageQuery";
+import type { CarbonStorageQuery } from "../gateways/CarbonStorageQuery";
 import { mapSoilTypeToRepositorySoilCategory } from "../models/soilCategory";
 
 type Request = {

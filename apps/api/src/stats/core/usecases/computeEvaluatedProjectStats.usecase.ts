@@ -1,5 +1,4 @@
-import {
-  getProjectSoilDistributionByType,
+import type {
   AgriculturalOperationActivity,
   DevelopmentPlanInstallationExpenses,
   FinancialAssistanceRevenue,
@@ -14,21 +13,23 @@ import {
   SoilType,
   SpaceCategory,
   BuildingsConstructionExpense,
+} from "shared";
+import {
+  getProjectSoilDistributionByType,
   sumListWithKey,
   sumList,
   roundToInteger,
   roundTo2Digits,
 } from "shared";
 
-import { GetCarbonStorageFromSoilDistributionService } from "src/carbon-storage/core/services/getCarbonStorageFromSoilDistribution";
-import {
-  computeProjectImpactsWithBreakEvenLevel,
-  ReconversionProjectImpactsWithBreakEvenLevelInput,
-} from "src/reconversion-projects/core/model/project-impacts/break-even-level/computeImpactsWithBreakEvenLevel";
-import { DevelopmentPlan } from "src/reconversion-projects/core/model/reconversionProject";
-import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
-import { fail, success, TResult } from "src/shared-kernel/result";
-import { UseCase } from "src/shared-kernel/usecase";
+import type { GetCarbonStorageFromSoilDistributionService } from "src/carbon-storage/core/services/getCarbonStorageFromSoilDistribution";
+import type { ReconversionProjectImpactsWithBreakEvenLevelInput } from "src/reconversion-projects/core/model/project-impacts/break-even-level/computeImpactsWithBreakEvenLevel";
+import { computeProjectImpactsWithBreakEvenLevel } from "src/reconversion-projects/core/model/project-impacts/break-even-level/computeImpactsWithBreakEvenLevel";
+import type { DevelopmentPlan } from "src/reconversion-projects/core/model/reconversionProject";
+import type { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import type { TResult } from "src/shared-kernel/result";
+import { fail, success } from "src/shared-kernel/result";
+import type { UseCase } from "src/shared-kernel/usecase";
 
 const DEFAULT_EVALUATION_PERIOD_IN_YEARS = 50;
 

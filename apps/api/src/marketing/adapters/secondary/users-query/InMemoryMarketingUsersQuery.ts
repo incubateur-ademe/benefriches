@@ -1,4 +1,4 @@
-import {
+import type {
   MarketingUser,
   MarketingUsersQuery,
 } from "src/marketing/core/gateways/MarketingUsersQuery";

@@ -1,12 +1,19 @@
-import {
+import type {
   SiteYearlyExpense,
   SoilsDistribution,
   SiteYearlyIncome,
   SiteNature,
+  GetSiteImpactsDto,
+  FricheCostsIndirectEconomicImpacts,
+  TaxesIncomeIndirectEconomicImpacts,
+  SiteStatuQuoEconomicImpact,
+  SiteStatuQuoImpactMetric,
+  AgriculturalOperationActivity,
+} from "shared";
+import {
   sumListWithKey,
   roundToInteger,
   sumList,
-  GetSiteImpactsDto,
   sumSoilsSurfaceAreasWhere,
   isSurfaceWithEcosystemBenefits,
   isPrairie,
@@ -15,13 +22,8 @@ import {
   convertCarbonToCO2eq,
   isSurfaceWithPermanentVegetation,
   isPermeableSurfaceWithoutPermanentVegetation,
-  FricheCostsIndirectEconomicImpacts,
-  TaxesIncomeIndirectEconomicImpacts,
-  SiteStatuQuoEconomicImpact,
-  SiteStatuQuoImpactMetric,
   computeAgriculturalOperationEtpFromSurface,
   isPermeableSoil,
-  AgriculturalOperationActivity,
 } from "shared";
 
 import { computeCumulativeByYear } from "src/reconversion-projects/core/model/project-impacts/break-even-level/projectIndirectImpacts";
@@ -36,8 +38,8 @@ import {
   computeWaterRegulationMonetaryValue,
 } from "src/reconversion-projects/core/model/project-impacts/nature-conservation/natureConservationYearlyMonetaryValue";
 
-import { SoilsCarbonStorage } from "../../../../reconversion-projects/core/gateways/SoilsCarbonStorageService";
-import { SumOnEvolutionPeriodService } from "../../../../reconversion-projects/core/model/sum-on-evolution-period/SumOnEvolutionPeriodService";
+import type { SoilsCarbonStorage } from "../../../../reconversion-projects/core/gateways/SoilsCarbonStorageService";
+import type { SumOnEvolutionPeriodService } from "../../../../reconversion-projects/core/model/sum-on-evolution-period/SumOnEvolutionPeriodService";
 
 const FRICHE_COST_PURPOSES = [
   "security",

@@ -1,14 +1,14 @@
 import { Inject } from "@nestjs/common";
-import { Knex } from "knex";
-import { SiteNature, ReconversionProjectCreationMode } from "shared";
+import type { Knex } from "knex";
+import type { SiteNature, ReconversionProjectCreationMode } from "shared";
 
-import { DevelopmentPlan } from "src/reconversion-projects/core/model/reconversionProject";
-import {
+import type { DevelopmentPlan } from "src/reconversion-projects/core/model/reconversionProject";
+import type {
   ReconversionProjectsGroupedBySite,
   ReconversionProjectsListQuery,
 } from "src/reconversion-projects/core/usecases/getUserReconversionProjectsBySite.usecase";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
-import { SqlSite } from "src/shared-kernel/adapters/sql-knex/tableTypes";
+import type { SqlSite } from "src/shared-kernel/adapters/sql-knex/tableTypes";
 
 export class SqlReconversionProjectsListQuery implements ReconversionProjectsListQuery {
   constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}

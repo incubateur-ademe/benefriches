@@ -22,22 +22,23 @@ import {
 } from "shared";
 import { z } from "zod";
 
-import { JwtAuthGuard, RequestWithAuthenticatedUser } from "src/auth/adapters/JwtAuthGuard";
+import type { RequestWithAuthenticatedUser } from "src/auth/adapters/JwtAuthGuard";
+import { JwtAuthGuard } from "src/auth/adapters/JwtAuthGuard";
 import { formatReconversionProjectInputToFeatures } from "src/reconversion-projects/core/model/formatProjectInputToFeatures";
-import { ReconversionProjectFeaturesView } from "src/reconversion-projects/core/model/reconversionProject";
-import { ArchiveReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/archiveReconversionProject.usecase";
-import { ComputeProjectUrbanSprawlImpactsComparisonUseCase } from "src/reconversion-projects/core/usecases/computeProjectUrbanSprawlImpactsComparison.usecase";
-import { ComputeReconversionProjectBreakEvenLevelUseCase } from "src/reconversion-projects/core/usecases/computeReconversionProjectBreakEvenLevel.usecase";
-import { ComputeReconversionProjectImpactsUseCase } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
-import { CreateReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/createReconversionProject.usecase";
-import { DuplicateReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/duplicateReconversionProject.usecase";
-import { GenerateAndSaveReconversionProjectFromTemplateUseCase } from "src/reconversion-projects/core/usecases/generateAndSaveReconversionProjectFromTemplate.usecase";
-import { GenerateReconversionProjectFromTemplateUseCase } from "src/reconversion-projects/core/usecases/generateReconversionProjectFromTemplate.usecase";
-import { GetReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/getReconversionProject.usecase";
-import { GetReconversionProjectFeaturesUseCase } from "src/reconversion-projects/core/usecases/getReconversionProjectFeatures.usecase";
-import { GetUserReconversionProjectsBySiteUseCase } from "src/reconversion-projects/core/usecases/getUserReconversionProjectsBySite.usecase";
-import { QuickComputeUrbanProjectImpactsOnFricheUseCase } from "src/reconversion-projects/core/usecases/quickComputeUrbanProjectImpactsOnFricheUseCase.usecase";
-import { UpdateReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/updateReconversionProject.usecase";
+import type { ReconversionProjectFeaturesView } from "src/reconversion-projects/core/model/reconversionProject";
+import type { ArchiveReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/archiveReconversionProject.usecase";
+import type { ComputeProjectUrbanSprawlImpactsComparisonUseCase } from "src/reconversion-projects/core/usecases/computeProjectUrbanSprawlImpactsComparison.usecase";
+import type { ComputeReconversionProjectBreakEvenLevelUseCase } from "src/reconversion-projects/core/usecases/computeReconversionProjectBreakEvenLevel.usecase";
+import type { ComputeReconversionProjectImpactsUseCase } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
+import type { CreateReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/createReconversionProject.usecase";
+import type { DuplicateReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/duplicateReconversionProject.usecase";
+import type { GenerateAndSaveReconversionProjectFromTemplateUseCase } from "src/reconversion-projects/core/usecases/generateAndSaveReconversionProjectFromTemplate.usecase";
+import type { GenerateReconversionProjectFromTemplateUseCase } from "src/reconversion-projects/core/usecases/generateReconversionProjectFromTemplate.usecase";
+import type { GetReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/getReconversionProject.usecase";
+import type { GetReconversionProjectFeaturesUseCase } from "src/reconversion-projects/core/usecases/getReconversionProjectFeatures.usecase";
+import type { GetUserReconversionProjectsBySiteUseCase } from "src/reconversion-projects/core/usecases/getUserReconversionProjectsBySite.usecase";
+import type { QuickComputeUrbanProjectImpactsOnFricheUseCase } from "src/reconversion-projects/core/usecases/quickComputeUrbanProjectImpactsOnFricheUseCase.usecase";
+import type { UpdateReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/updateReconversionProject.usecase";
 
 class CreateReconversionProjectBodyDto extends createZodDto(
   httpSaveReconversionProjectPropsSchema,

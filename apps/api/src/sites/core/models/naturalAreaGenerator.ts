@@ -1,9 +1,9 @@
+import type { NaturalAreaType } from "shared";
 import {
   formatMunicipalityName,
   generateSiteName,
   getLabelForNaturalAreaType,
   getSoilsDistributionForNaturalAreaType,
-  NaturalAreaType,
 } from "shared";
 
 import { type AgriculturalOrNaturalSite, createAgriculturalOrNaturalSite } from "./site";

@@ -1,11 +1,11 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { Knex } from "knex";
+import type { Knex } from "knex";
 
-import { User } from "src/auth/core/user";
+import type { User } from "src/auth/core/user";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
-import { SqlUser } from "src/shared-kernel/adapters/sql-knex/tableTypes";
+import type { SqlUser } from "src/shared-kernel/adapters/sql-knex/tableTypes";
 
-import { UserRepository } from "../../core/gateways/UsersRepository";
+import type { UserRepository } from "../../core/gateways/UsersRepository";
 
 const mapSqlUserToAuthenticatedUser = (userRow: SqlUser): User => ({
   id: userRow.id,

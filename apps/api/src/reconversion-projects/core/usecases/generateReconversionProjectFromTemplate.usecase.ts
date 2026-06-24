@@ -1,7 +1,5 @@
+import type { Address, SiteNature, SoilsDistribution, ReconversionProjectTemplate } from "shared";
 import {
-  Address,
-  SiteNature,
-  SoilsDistribution,
   NewUrbanCenterProjectGenerator,
   ResidentialTenseAreaProjectGenerator,
   ResidentialProjectGenerator,
@@ -10,17 +8,17 @@ import {
   ManufacturingProjectGenerator,
   TourismAndCultureProjectGenerator,
   OfficesProjectGenerator,
-  ReconversionProjectTemplate,
   RenaturationProjectGenerator,
 } from "shared";
 import { v4 as uuid } from "uuid";
 
-import { PhotovoltaicDataProvider } from "src/photovoltaic-performance/core/gateways/PhotovoltaicDataProvider";
-import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
-import { TResult, fail, success } from "src/shared-kernel/result";
-import { UseCase } from "src/shared-kernel/usecase";
+import type { PhotovoltaicDataProvider } from "src/photovoltaic-performance/core/gateways/PhotovoltaicDataProvider";
+import type { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import type { TResult } from "src/shared-kernel/result";
+import { fail, success } from "src/shared-kernel/result";
+import type { UseCase } from "src/shared-kernel/usecase";
 
-import { ReconversionProjectSaveDto } from "../model/reconversionProject";
+import type { ReconversionProjectSaveDto } from "../model/reconversionProject";
 
 type SiteFeaturesView = {
   id: string;

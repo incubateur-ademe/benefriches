@@ -1,9 +1,9 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { Knex } from "knex";
+import type { Knex } from "knex";
 
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 
-import { VerifiedEmailRepository } from "./VerifiedEmailRepository";
+import type { VerifiedEmailRepository } from "./VerifiedEmailRepository";
 
 @Injectable()
 export class SqlVerifiedEmailRepository implements VerifiedEmailRepository {

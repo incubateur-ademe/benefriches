@@ -1,6 +1,6 @@
-import { User } from "src/auth/core/user";
+import type { User } from "src/auth/core/user";
 
-import { UserRepository } from "../../core/gateways/UsersRepository";
+import type { UserRepository } from "../../core/gateways/UsersRepository";
 
 export class InMemoryUserRepository implements UserRepository {
   private users: User[] = [];

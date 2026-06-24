@@ -1,10 +1,11 @@
-import { TResult, fail, success } from "src/shared-kernel/result";
-import { UseCase } from "src/shared-kernel/usecase";
-import { SitesQuery } from "src/sites/core/gateways/SitesQuery";
-import { SiteFeaturesView } from "src/sites/core/models/views";
+import type { TResult } from "src/shared-kernel/result";
+import { fail, success } from "src/shared-kernel/result";
+import type { UseCase } from "src/shared-kernel/usecase";
+import type { SitesQuery } from "src/sites/core/gateways/SitesQuery";
+import type { SiteFeaturesView } from "src/sites/core/models/views";
 
-import { ReconversionProjectRepository } from "../gateways/ReconversionProjectRepository";
-import { ReconversionProjectDataView } from "../model/reconversionProject";
+import type { ReconversionProjectRepository } from "../gateways/ReconversionProjectRepository";
+import type { ReconversionProjectDataView } from "../model/reconversionProject";
 
 type Request = {
   reconversionProjectId: string;

@@ -1,11 +1,12 @@
-import knex, { Knex } from "knex";
+import type { Knex } from "knex";
+import knex from "knex";
 import assert from "node:assert/strict";
 import { after, before, beforeEach, describe, it } from "node:test";
-import { BuildingsConstructionExpense } from "shared";
+import type { BuildingsConstructionExpense } from "shared";
 import { assertShapeEquals } from "test/assertShapeEquals";
 import { v4 as uuid } from "uuid";
 
-import {
+import type {
   ReconversionProjectSaveDto,
   ReconversionProjectUpdateDto,
 } from "src/reconversion-projects/core/model/reconversionProject";
@@ -14,7 +15,7 @@ import {
   buildReconversionProject,
   UrbanProjectBuilder,
 } from "src/reconversion-projects/core/model/reconversionProject.mock";
-import { UrbanProjectFeatures } from "src/reconversion-projects/core/model/urbanProjects";
+import type { UrbanProjectFeatures } from "src/reconversion-projects/core/model/urbanProjects";
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
 
 import { SqlReconversionProjectRepository } from "./SqlReconversionProjectRepository";

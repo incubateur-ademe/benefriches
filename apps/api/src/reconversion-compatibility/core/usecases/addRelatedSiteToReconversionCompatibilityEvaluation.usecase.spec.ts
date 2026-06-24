@@ -4,9 +4,9 @@ import { describe, it, beforeEach } from "node:test";
 import { InMemoryReconversionCompatibilityEvaluationRepository } from "src/reconversion-compatibility/adapters/secondary/reconversion-compatibility-evaluation/InMemoryReconversionCompatibilityEvaluationRepository";
 import { InMemoryEventPublisher } from "src/shared-kernel/adapters/events/publisher/InMemoryEventPublisher";
 import { DeterministicUuidGenerator } from "src/shared-kernel/adapters/id-generator/DeterministicIdGenerator";
-import { FailureResult } from "src/shared-kernel/result";
+import type { FailureResult } from "src/shared-kernel/result";
 
-import { ReconversionCompatibilityEvaluation } from "../reconversionCompatibilityEvaluation";
+import type { ReconversionCompatibilityEvaluation } from "../reconversionCompatibilityEvaluation";
 import { AddRelatedSiteToReconversionCompatibilityEvaluationUseCase } from "./addRelatedSiteToReconversionCompatibilityEvaluation.usecase";
 
 describe("AddRelatedSiteToReconversionCompatibilityEvaluationUseCase", () => {

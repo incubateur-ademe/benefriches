@@ -1,9 +1,10 @@
-import { SiteNature } from "shared";
+import type { SiteNature } from "shared";
 
-import { TResult, fail, success } from "src/shared-kernel/result";
-import { UseCase } from "src/shared-kernel/usecase";
+import type { TResult } from "src/shared-kernel/result";
+import { fail, success } from "src/shared-kernel/result";
+import type { UseCase } from "src/shared-kernel/usecase";
 
-import { DevelopmentPlan } from "../model/reconversionProject";
+import type { DevelopmentPlan } from "../model/reconversionProject";
 
 export type ReconversionProjectsGroupedBySite = {
   siteName: string;

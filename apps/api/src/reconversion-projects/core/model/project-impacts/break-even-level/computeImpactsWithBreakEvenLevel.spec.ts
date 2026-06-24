@@ -1,13 +1,13 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import {
+import type {
   AvoidedFricheCostsIndirectEconomicImpacts,
   ReconversionProjectImpactsDataView,
   SiteImpactsDataView,
-  sumList,
 } from "shared";
+import { sumList } from "shared";
 
-import { Schedule } from "../../reconversionProject";
+import type { Schedule } from "../../reconversionProject";
 import {
   computeProjectImpactsWithBreakEvenLevel,
   computeProjectUrbanSprawlComparisonImpactsBreakdownAndEconomicBalance,

@@ -6,7 +6,8 @@ import { v4 as uuidv4 } from "uuid";
 
 import { fail, success } from "src/shared-kernel/result";
 import type { TResult } from "src/shared-kernel/result";
-import { createFriche, Friche } from "src/sites/core/models/site";
+import type { Friche } from "src/sites/core/models/site";
+import { createFriche } from "src/sites/core/models/site";
 
 import type { AddressSearchGateway } from "../address-search/AddressSearchGateway";
 import type { RawCsvProjectRow } from "./parseAdemeProjectsCsv";

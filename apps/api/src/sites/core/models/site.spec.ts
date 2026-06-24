@@ -2,17 +2,15 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { createSoilSurfaceAreaDistribution } from "shared";
 
-import {
+import type {
   AgriculturalOrNaturalSite,
-  createAgriculturalOrNaturalSite,
   CreateAgriculturalOrNaturalSiteProps,
-  createFriche,
   CreateFricheProps,
-  createUrbanZoneSite,
   CreateUrbanZoneSiteProps,
   Friche,
   UrbanZoneSite,
 } from "./site";
+import { createAgriculturalOrNaturalSite, createFriche, createUrbanZoneSite } from "./site";
 
 describe("Site core logic", () => {
   describe("createFriche", () => {
@@ -56,7 +54,7 @@ describe("Site core logic", () => {
       });
       assert.strictEqual(result.success, false);
       // oxlint-disable-next-line typescript/no-unnecessary-type-assertion
-      const errorResult = result as FricheErrorResult;
+      const errorResult = result;
       assert.strictEqual(errorResult.error.fieldErrors.soilsDistribution?.length, 1);
       assert.ok(
         errorResult.error.fieldErrors.soilsDistribution?.[0]?.includes(

@@ -1,22 +1,25 @@
-import {
-  computeDefaultPhotovoltaicConversionFullTimeJobs,
-  computeDefaultPhotovoltaicOperationsFullTimeJobs,
+import type {
   DevelopmentPlanFeatures,
   ProjectOnSiteImpactMetric,
   ReconversionProjectOnSiteIndirectEconomicImpact,
   RecurringExpense,
+} from "shared";
+import {
+  computeDefaultPhotovoltaicConversionFullTimeJobs,
+  computeDefaultPhotovoltaicOperationsFullTimeJobs,
   roundTo2Digits,
   sumList,
 } from "shared";
 
-import { SumOnEvolutionPeriodService } from "../../../sum-on-evolution-period/SumOnEvolutionPeriodService";
+import type { SumOnEvolutionPeriodService } from "../../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import {
   getDurationFromScheduleInYears,
   spreadTemporaryFullTimeJobsOver,
 } from "../../full-time-jobs/fullTimeJobsImpactService";
 import { computeAvoidedCO2TonsWithEnergyProductionImpact } from "../../renewable-energy/avoided-CO2-with-energy-production/avoidedCO2WithEnergyProductionImpact";
 import { computeHouseholdsPoweredByRenewableEnergyImpact } from "../../renewable-energy/households-powered-by-renewable-energy/householdsPoweredByRenewableEnergyImpact";
-import { computeCumulativeByYear, InputReconversionProjectData } from "../projectIndirectImpacts";
+import type { InputReconversionProjectData } from "../projectIndirectImpacts";
+import { computeCumulativeByYear } from "../projectIndirectImpacts";
 
 const getPhotovoltaicProductionRelatedImpacts = (props: {
   expectedAnnualProduction: number;

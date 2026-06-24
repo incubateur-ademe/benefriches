@@ -1,6 +1,6 @@
-import { SiteImpactsDataView } from "shared";
+import type { SiteImpactsDataView } from "shared";
 
-import { SiteImpactsQuery } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
+import type { SiteImpactsQuery } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
 
 export class InMemorySiteImpactsQuery implements SiteImpactsQuery {
   data?: SiteImpactsDataView;

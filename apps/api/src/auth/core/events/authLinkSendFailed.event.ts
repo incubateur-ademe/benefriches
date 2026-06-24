@@ -1,4 +1,4 @@
-import { DomainEvent } from "src/shared-kernel/domainEvent";
+import type { DomainEvent } from "src/shared-kernel/domainEvent";
 
 const AUTH_LINK_SEND_FAILED = "auth.link-send-failed";
 

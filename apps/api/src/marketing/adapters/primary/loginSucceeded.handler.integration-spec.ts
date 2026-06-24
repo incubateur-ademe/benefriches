@@ -1,14 +1,14 @@
-import { NestExpressApplication } from "@nestjs/platform-express";
+import type { NestExpressApplication } from "@nestjs/platform-express";
 import assert from "node:assert/strict";
 import { afterEach, beforeEach, describe, it } from "node:test";
 import { createTestApp } from "test/testApp";
 
 import { createLoginSucceededEvent } from "src/auth/core/events/loginSucceeded.event";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
-import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import type { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
 import { RealEventPublisher } from "src/shared-kernel/adapters/events/publisher/RealEventPublisher";
-import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
+import type { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
 
 import { ConnectCrm } from "../secondary/ConnectCrm";
 import { FakeCrm } from "../secondary/FakeCrm";

@@ -1,8 +1,7 @@
-import {
+import type {
   AvoidedFricheCostsImpact,
   BuildingsConstructionExpense,
   SocioEconomicImpact,
-  sumListWithKey,
   SiteYearlyExpense,
   SoilsDistribution,
   ReinstatementExpense,
@@ -11,7 +10,6 @@ import {
   RecurringExpense,
   RecurringRevenue,
   DevelopmentPlanInstallationExpenses,
-  typedObjectEntries,
   EcosystemServicesImpact,
   SoilType,
   SoilsCarbonStorageImpact,
@@ -19,15 +17,15 @@ import {
   SiteYearlyIncome,
   SiteOperationBenefitsLoss,
   ReconversionProjectSoilsDistribution,
-  getProjectSoilDistributionByType,
 } from "shared";
+import { sumListWithKey, typedObjectEntries, getProjectSoilDistributionByType } from "shared";
 
-import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import type { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 
-import { SoilsCarbonStorage } from "../../gateways/SoilsCarbonStorageService";
-import { DevelopmentPlan, Schedule } from "../../model/reconversionProject";
+import type { SoilsCarbonStorage } from "../../gateways/SoilsCarbonStorageService";
+import type { DevelopmentPlan, Schedule } from "../../model/reconversionProject";
 import { SumOnEvolutionPeriodService } from "../sum-on-evolution-period/SumOnEvolutionPeriodService";
-import { ImpactsServiceInterface } from "./ReconversionProjectImpactsServiceInterface";
+import type { ImpactsServiceInterface } from "./ReconversionProjectImpactsServiceInterface";
 import { computeEconomicBalanceImpact } from "./economic-balance/economicBalanceImpact";
 import { FullTimeJobsImpactService } from "./full-time-jobs/fullTimeJobsImpactService";
 import { Impact } from "./impact";

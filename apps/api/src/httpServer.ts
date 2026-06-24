@@ -1,5 +1,5 @@
 import { ConfigService } from "@nestjs/config";
-import { NestExpressApplication } from "@nestjs/platform-express";
+import type { NestExpressApplication } from "@nestjs/platform-express";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 

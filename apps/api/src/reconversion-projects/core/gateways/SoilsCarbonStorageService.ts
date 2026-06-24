@@ -1,4 +1,4 @@
-import { SoilsDistribution, SoilType } from "shared";
+import type { SoilsDistribution, SoilType } from "shared";
 
 export type SoilsCarbonStorage = {
   total: number;

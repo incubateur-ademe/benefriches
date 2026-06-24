@@ -3,9 +3,9 @@ import { beforeEach, describe, it } from "node:test";
 import { ZodError } from "zod";
 
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
-import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import type { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { InMemoryEventPublisher } from "src/shared-kernel/adapters/events/publisher/InMemoryEventPublisher";
-import { FailureResult } from "src/shared-kernel/result";
+import type { FailureResult } from "src/shared-kernel/result";
 
 import { DeterministicUuidGenerator } from "../../shared-kernel/adapters/id-generator/DeterministicIdGenerator";
 import {
@@ -15,7 +15,7 @@ import {
 } from "../../users/core/model/user.mock";
 import { InMemoryUserRepository } from "../adapters/user-repository/InMemoryAuthUserRepository";
 import { CreateUserUseCase } from "./createUser.usecase";
-import { User } from "./user";
+import type { User } from "./user";
 
 describe("CreateUser Use Case", () => {
   let dateProvider: DateProvider;

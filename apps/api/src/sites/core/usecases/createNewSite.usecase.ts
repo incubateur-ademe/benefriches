@@ -1,20 +1,19 @@
-import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
-import { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerator";
-import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
-import { TResult, fail, success } from "src/shared-kernel/result";
-import { UseCase } from "src/shared-kernel/usecase";
+import type { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import type { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerator";
+import type { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
+import type { TResult } from "src/shared-kernel/result";
+import { fail, success } from "src/shared-kernel/result";
+import type { UseCase } from "src/shared-kernel/usecase";
 
 import { createSiteCreatedEvent } from "../events/siteCreated.event";
-import { SitesRepository } from "../gateways/SitesRepository";
-import {
-  createAgriculturalOrNaturalSite,
+import type { SitesRepository } from "../gateways/SitesRepository";
+import type {
   CreateAgriculturalOrNaturalSiteProps,
-  createFriche,
   CreateFricheProps,
-  createUrbanZoneSite,
   CreateUrbanZoneSiteProps,
 } from "../models/site";
-import { SiteEntity } from "../models/siteEntity";
+import { createAgriculturalOrNaturalSite, createFriche, createUrbanZoneSite } from "../models/site";
+import type { SiteEntity } from "../models/siteEntity";
 
 type Request = {
   siteProps:

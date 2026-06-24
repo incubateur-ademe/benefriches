@@ -1,11 +1,12 @@
-import knex, { Knex } from "knex";
+import type { Knex } from "knex";
+import knex from "knex";
 import assert from "node:assert/strict";
 import { after, before, beforeEach, describe, it } from "node:test";
 import { v4 as uuid } from "uuid";
 
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
-import { SqlSite } from "src/shared-kernel/adapters/sql-knex/tableTypes";
-import {
+import type { SqlSite } from "src/shared-kernel/adapters/sql-knex/tableTypes";
+import type {
   CreateAgriculturalOrNaturalSiteProps,
   CreateFricheProps,
   CreateUrbanZoneSiteProps,
@@ -15,7 +16,7 @@ import {
   buildFriche,
   buildUrbanZoneSite,
 } from "src/sites/core/models/site.mock";
-import { SiteEntity } from "src/sites/core/models/siteEntity";
+import type { SiteEntity } from "src/sites/core/models/siteEntity";
 
 import { SqlSiteRepository } from "./SqlSiteRepository";
 

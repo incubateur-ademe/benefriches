@@ -6,7 +6,7 @@ import {
   type GetCityRuralityResponseDto,
 } from "shared";
 
-import { GetCityRuralityUseCase } from "src/territory/core/usecases/getCityRurality.usecase";
+import type { GetCityRuralityUseCase } from "src/territory/core/usecases/getCityRurality.usecase";
 
 @Controller("territory")
 export class TerritoryController {

@@ -1,9 +1,9 @@
 import { Inject, Logger } from "@nestjs/common";
-import { Knex } from "knex";
+import type { Knex } from "knex";
 import { convertHectaresToSquareMeters } from "shared";
 
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
-import { CityStats, CityStatsProvider } from "src/territory/core/gateways/CityStatsProvider";
+import type { CityStats, CityStatsProvider } from "src/territory/core/gateways/CityStatsProvider";
 
 const FRANCE_AVERAGE_CITY_POPULATION = 1800;
 const FRANCE_AVERAGE_CITY_SQUARE_METERS_AREA = 14900000;
