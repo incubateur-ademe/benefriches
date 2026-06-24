@@ -32,6 +32,7 @@ export type ReconversionProjectImpactsDataView<TSchedule> = {
   id: string;
   name: string;
   relatedSiteId: string;
+  involvesReinstatement: boolean;
   soilsDistribution: ReconversionProjectSoilsDistribution;
   isExpressProject: boolean;
   conversionSchedule?: TSchedule;

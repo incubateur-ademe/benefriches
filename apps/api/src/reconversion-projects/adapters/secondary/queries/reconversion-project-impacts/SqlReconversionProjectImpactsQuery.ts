@@ -47,6 +47,7 @@ export class SqlReconversionProjectImpactsQuery implements ReconversionProjectIm
         "reinstatement_contract_owner_structure_type",
         "site_purchase_selling_price",
         "site_purchase_property_transfer_duties",
+        "involves_reinstatement",
         "operations_first_year",
         "site_resale_expected_selling_price",
         "site_resale_expected_property_transfer_duties",
@@ -157,6 +158,7 @@ export class SqlReconversionProjectImpactsQuery implements ReconversionProjectIm
     return {
       id: reconversionProject.id,
       name: reconversionProject.name,
+      involvesReinstatement: reconversionProject.involves_reinstatement,
       isExpressProject: reconversionProject.creation_mode === "express",
       relatedSiteId: reconversionProject.related_site_id,
       soilsDistribution: sqlSoilDistributions.map((sd) => ({

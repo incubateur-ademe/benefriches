@@ -6,15 +6,16 @@
 
 ## Status
 
-**Current step: Step 2 — API wiring**
+**Current step: Step 4 — Urban project creation wizard**
 
 | Step | Status |
 |---|---|
 | Step 1 — Data model | ✅ done |
 | Step 2 — API wiring | ✅ done |
-| Step 3 — Impacts audit | 🔲 todo |
+| Step 3 — Impacts audit | ✅ done |
 | Step 4 — Urban project creation wizard | 🔲 todo |
 | Step 5 — PV project creation wizard | 🔲 todo |
+| Step 6 — Domain invariant enforcement | 🔲 todo |
 
 ---
 
@@ -24,10 +25,11 @@
 
 **After completing each step**:
 1. Run the step's validation commands and confirm they all pass.
-2. Update the status table above to mark the step done.
-3. Append a log entry (see below).
-4. **Ask the user**: "The step is done. Can you confirm it works as expected and that a code review has been done?" Wait for explicit confirmation before continuing.
-5. Once confirmed, run `/generate-commit-message` and present the result. Do not commit — let the user do it.
+2. Run code review skill in a sub-agent
+3. Ask for approval that the task is completed.
+4. Update the status table above to mark the step done.
+5. Append a log entry (see below).
+6. Run `/generate-commit-message` and present the result. Do not commit — let the user do it.
 
 When implementing any step, maintain a running log at the bottom of this file under a `## Log` section. For every iteration, append an entry with:
 
@@ -202,6 +204,36 @@ pnpm -r test
 
 ---
 
+## Step 6 — Domain invariant enforcement
+
+**Objective**: Make `involvesReinstatement` the authoritative source of truth at the domain boundary. If `involvesReinstatement: false`, the domain rejects (not silently strips) any project that also carries reinstatement expenses, a reinstatement schedule, or a reinstatement contract owner. This catches bugs in callers early rather than relying on the computation-time gate added in Step 3.
+
+### Changes
+
+**Domain factory / validation** (wherever `ReconversionProject` is constructed or validated before save):
+- In the create and update UseCases (or a shared domain factory), assert: if `involvesReinstatement === false` then `reinstatementCosts`, `reinstatementSchedule`, and `reinstatementContractOwner` must all be absent/empty.
+- Return a new failure type (e.g. `"InvalidReinstatementData"`) when the invariant is violated.
+
+**Unit tests** (create and update UseCase specs):
+- `involvesReinstatement: false` + no reinstatement data → success (existing happy path, unchanged).
+- `involvesReinstatement: false` + reinstatement expenses present → `"InvalidReinstatementData"` failure.
+- `involvesReinstatement: true` + reinstatement data present → success (unchanged).
+
+### Notes
+
+- The computation-time gate in `ReconversionProjectImpactsService` (Step 3) stays as defense-in-depth against stale pre-Step-6 data.
+- The ADEME CSV importer already derives `involvesReinstatement` from whether costs are present, so it naturally satisfies the invariant.
+
+### Validation
+
+```bash
+pnpm --filter api typecheck
+pnpm --filter api lint
+pnpm --filter api test:unit src/reconversion-projects
+```
+
+---
+
 ## Log
 
 ### 2026-06-23 — Step 1: Data model
@@ -233,17 +265,40 @@ pnpm -r test
 
 **What I did:**
 - Added `"involves_reinstatement"` to the SELECT clause in `SqlReconversionProjectRepository.getById()` — the column was mapped in the result type but not actually fetched from the DB.
-- Added `.default(true)` to `involvesReinstatement: z.boolean()` in `packages/shared/src/reconversion-projects/reconversionProjectSchemas.ts` so existing HTTP clients that omit the field default to `true`.
-- Fixed 3 existing integration test expectations that do `SELECT *` on `reconversion_projects` and use `.toEqual()` — they were missing `involves_reinstatement` in expected rows (would have failed against the new DB column): minimal PV save, exhaustive PV save, and urban project save in the controller duplicate test.
-- Added 2 new round-trip integration tests: `involvesReinstatement: false` and `involvesReinstatement: true` saved via `save()` and asserted via `getById()`.
+- Fixed 3 existing integration test expectations that do `SELECT *` on `reconversion_projects` and use full-equality assertions — they were missing `involves_reinstatement` in expected rows: minimal PV save, exhaustive PV save, and urban project save in the controller duplicate test.
+- Added 1 new integration test: `involvesReinstatement: false` round-trip (save → getById).
 
 **Difficulties:**
 - The Step 1 log claimed `getById` mapping was done; it was — the `ReconversionProjectSqlResult` type included `involves_reinstatement` and the result mapping referenced it — but the SELECT clause was never updated, so the column was always `undefined` at runtime. Caught by the failing test.
 - RTK proxy was filtering grep output, requiring `rtk proxy grep` to see match details.
+- The integration test runner changed from Vitest to `node:test` between Step 1 and Step 2; the path-filter argument syntax no longer works — must run `pnpm test:integration` without a path argument.
 
 **Decisions:**
-- Added `.default(true)` at the schema factory level (affects both HTTP and domain schemas). Harmless for the domain schema since the controller always provides the field after HTTP validation.
-- Fixed all 3 broken `SELECT *` / `toEqual` tests rather than narrowing them to `toMatchObject` — keeping exhaustive assertions is the documented project preference.
+- Kept `involvesReinstatement: z.boolean()` (required, no default) — all callers already set the value explicitly.
+- Single `false`-case test only; the `true` case is already covered by the existing exhaustive save tests.
 
 **Revisions:**
-- None.
+- Removed `.default(true)` after code review: silently masks missing-field bugs.
+- Replaced a `describe` block with two tests by a single flat test for the `false` case only.
+
+---
+
+### 2026-06-24 — Step 3: Impacts audit
+
+**What I did:**
+- Added a new describe block "when involvesReinstatement is false" in `ReconversionProjectImpactsService.spec.ts`.
+- Test creates two services: one WITH reinstatement (expenses + schedule) and one WITHOUT (empty expenses, no schedule), both using a 10 000 KWc PV project to guarantee non-zero forecast jobs.
+- Asserts: (1) operations are unaffected, (2) conversion.forecast is strictly lower without reinstatement (no reinstatement job contribution), (3) `economicBalance.costs.siteReinstatement` is `undefined` when no reinstatement costs.
+
+**Difficulties:**
+- Initial fixture used `electricalPowerKWc: 53` which rounds to 0 FTJ for operations AND conversion over 10 years. With no reinstatement, `totalForecastFullTimeJobs === 0` → service returns `undefined` → impossible to assert job values. Fixed by using a 10 000 KWc plant in the test.
+- `!` non-null assertions flagged by `no-unnecessary-type-assertion` after `assert.ok(x !== undefined)` — TypeScript narrows the type, making `!` redundant. Removed.
+
+**Decisions:**
+- Used a comparison approach (with vs without reinstatement) rather than hardcoding expected job values, since the exact numbers depend on rounding and are tested elsewhere.
+- No implementation changes needed: the impacts engine already produces zero reinstatement outputs when `reinstatementExpenses: []` and `reinstatementSchedule: undefined`.
+
+**Revisions:**
+- Dropped the full-time jobs test after code review: `FullTimeJobsImpactService.spec.ts` already covers this at lower level; testing it again through `ReconversionProjectImpactsService` added noise without new coverage. Kept only the economic balance assertion.
+- Added `involvesReinstatement: boolean` to `InputReconversionProjectData` (raised during Step 3 review). Cascaded through: `ReconversionProjectImpactsDataView` in shared, `SqlReconversionProjectImpactsQuery` SELECT + mapping, `quickComputeUrbanProjectImpactsOnFricheUseCase` explicit mapping, and `involvesReinstatement: true` fixtures in 9 spec files.
+- WITHOUT scenario keeps `reinstatementContractOwnerName` (developer = owner) so `siteReinstatement: undefined` is driven by the empty expenses guard, not the ownership guard.

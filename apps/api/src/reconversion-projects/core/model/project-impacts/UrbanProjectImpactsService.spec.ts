@@ -13,6 +13,7 @@ import type {
 import { UrbanProjectImpactsService } from "./UrbanProjectImpactsService";
 
 const reconversionProjectImpactDataView = {
+  involvesReinstatement: true,
   soilsDistribution: [
     {
       soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",

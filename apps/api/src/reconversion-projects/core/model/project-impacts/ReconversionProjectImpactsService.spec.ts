@@ -12,6 +12,7 @@ import type {
 import { ReconversionProjectImpactsService } from "./ReconversionProjectImpactsService";
 
 const reconversionProjectImpactDataView = {
+  involvesReinstatement: true,
   soilsDistribution: [
     {
       soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
@@ -512,6 +513,51 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
         ARTIFICIAL_GRASS_OR_BUSHES_FILLED: { base: 21, forecast: 21, difference: 0 },
         ARTIFICIAL_TREE_FILLED: { base: 4, forecast: 0, difference: -4 },
       });
+    });
+  });
+
+  describe("when involvesReinstatement is false", () => {
+    // Base fixture already has reinstatementExpenses, reinstatementSchedule, and
+    // reinstatementContractOwnerName populated — so the gate must be driven by the
+    // boolean alone, not by the data being absent.
+    const noReinstatementProject = {
+      ...reconversionProjectImpactDataView,
+      involvesReinstatement: false,
+    };
+
+    it("has no siteReinstatement cost line in economic balance even when reinstatement expenses are present", () => {
+      const service = new ReconversionProjectImpactsService({
+        reconversionProject: noReinstatementProject,
+        relatedSite: site,
+        evaluationPeriodInYears: 10,
+        dateProvider: dateProvider,
+      });
+
+      assert.strictEqual(service["economicBalance"].costs.siteReinstatement, undefined);
+    });
+
+    it("has no reinstatement job contribution in full-time jobs even when reinstatement expenses and schedule are present", () => {
+      const withReinstatement = new ReconversionProjectImpactsService({
+        reconversionProject: reconversionProjectImpactDataView,
+        relatedSite: site,
+        evaluationPeriodInYears: 10,
+        dateProvider: dateProvider,
+      });
+      const withoutReinstatement = new ReconversionProjectImpactsService({
+        reconversionProject: noReinstatementProject,
+        relatedSite: site,
+        evaluationPeriodInYears: 10,
+        dateProvider: dateProvider,
+      });
+
+      const jobsWith = withReinstatement["fullTimeJobsImpact"];
+      const jobsWithout = withoutReinstatement["fullTimeJobsImpact"];
+
+      // With reinstatement: expenses + schedule produce conversion jobs
+      assert.ok(jobsWith !== undefined);
+      // Without reinstatement: the boolean suppresses reinstatement jobs; with the 53 KWc
+      // fixture the total forecast drops to 0 so the service returns undefined
+      assert.strictEqual(jobsWithout, undefined);
     });
   });
 

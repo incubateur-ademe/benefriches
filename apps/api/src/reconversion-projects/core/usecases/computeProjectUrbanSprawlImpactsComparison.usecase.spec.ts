@@ -23,6 +23,7 @@ import type { ApiReconversionProjectImpactsDataView } from "./computeReconversio
 const projectData: ReconversionProjectImpactsDataView<Schedule> = {
   id: "bf8a7d1d-a9d2-4a66-b2bc-3b8d682f9932",
   name: "Centralité urbaine",
+  involvesReinstatement: true,
   isExpressProject: true,
   decontaminatedSoilSurface: 10000,
   operationsFirstYear: 2027,
@@ -182,6 +183,7 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
       const projectQuery = new InMemoryReconversionProjectImpactsQuery();
       projectQuery._setData({
         id: reconversionProjectId,
+        involvesReinstatement: true,
         isExpressProject: false,
         name: "Test reconversion project",
         relatedSiteId: siteId,
@@ -219,6 +221,7 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
       const projectQuery = new InMemoryReconversionProjectImpactsQuery();
       projectQuery._setData({
         id: reconversionProjectId,
+        involvesReinstatement: true,
         isExpressProject: false,
         name: "Test reconversion project",
         developmentPlan: {
@@ -431,6 +434,7 @@ describe("ComputeProjectUrbanSprawlImpactsComparisonUseCase", () => {
       id: uuid(),
       name: "Project with big impacts",
       relatedSiteId: uuid(),
+      involvesReinstatement: true,
       isExpressProject: false,
       soilsDistribution: [
         {

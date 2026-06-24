@@ -16,6 +16,7 @@ import {
 const baseProject = {
   id: "bf8a7d1d-a9d2-4a66-b2bc-3b8d682f9932",
   name: "Centralité urbaine",
+  involvesReinstatement: true,
   isExpressProject: true,
   decontaminatedSoilSurface: 10000,
   operationsFirstYear: 2027,

@@ -55,6 +55,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       const projectQuery = new InMemoryReconversionProjectImpactsQuery();
       projectQuery._setData({
         id: reconversionProjectId,
+        involvesReinstatement: true,
         isExpressProject: false,
         name: "Test reconversion project",
         relatedSiteId: siteId,
@@ -90,6 +91,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       const projectQuery = new InMemoryReconversionProjectImpactsQuery();
       projectQuery._setData({
         id: reconversionProjectId,
+        involvesReinstatement: true,
         isExpressProject: false,
         name: "Test reconversion project",
         developmentPlan: {
@@ -132,6 +134,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       id: uuid(),
       name: "Project with big impacts",
       relatedSiteId: uuid(),
+      involvesReinstatement: true,
       isExpressProject: false,
       soilsDistribution: [
         {
@@ -585,6 +588,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       id: uuid(),
       name: "Project with big impacts",
       relatedSiteId: uuid(),
+      involvesReinstatement: true,
       isExpressProject: false,
       soilsDistribution: [
         {

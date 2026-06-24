@@ -95,6 +95,7 @@ type InputNaturalAreaData = {
 };
 
 export type InputReconversionProjectData = {
+  involvesReinstatement: boolean;
   operationsFirstYear?: number;
   developmentPlanDeveloperName?: string;
   futureOperatorName?: string;
@@ -139,8 +140,17 @@ export class ReconversionProjectImpactsService implements ImpactsServiceInterfac
     evaluationPeriodInYears,
     dateProvider,
   }: ReconversionProjectImpactsServiceProps) {
+    const withNormalizedReinstatement = reconversionProject.involvesReinstatement
+      ? reconversionProject
+      : {
+          ...reconversionProject,
+          reinstatementExpenses: [],
+          reinstatementSchedule: undefined,
+          reinstatementContractOwnerName: undefined,
+          decontaminatedSoilSurface: undefined,
+        };
     this.reconversionProject = {
-      ...reconversionProject,
+      ...withNormalizedReinstatement,
       soilsDistributionByType: getProjectSoilDistributionByType(
         reconversionProject.soilsDistribution,
       ),

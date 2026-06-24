@@ -150,6 +150,7 @@ export class QuickComputeUrbanProjectImpactsOnFricheUseCase implements UseCase<
           reconversionProject.sitePurchasePropertyTransferDuties,
         siteResaleSellingPrice: reconversionProject.siteResaleExpectedSellingPrice,
         reinstatementSchedule: reconversionProject.reinstatementSchedule,
+        involvesReinstatement: reconversionProject.involvesReinstatement,
         reinstatementExpenses: (reconversionProject.reinstatementCosts ??
           []) as ReinstatementExpense[],
         soilsCarbonStorage: projectSoilsCarbonStorage,

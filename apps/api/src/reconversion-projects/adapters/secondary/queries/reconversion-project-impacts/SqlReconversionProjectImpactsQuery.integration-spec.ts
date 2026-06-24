@@ -157,6 +157,7 @@ describe("SqlReconversionProjectImpactsQuery integration", () => {
       assert.deepStrictEqual(result, {
         id: reconversionProjectId,
         name: "Big project",
+        involvesReinstatement: true,
         isExpressProject: true,
         relatedSiteId: siteId,
         soilsDistribution: [
@@ -284,6 +285,7 @@ describe("SqlReconversionProjectImpactsQuery integration", () => {
       assert.deepStrictEqual(result, {
         id: reconversionProjectId,
         name: "Big project",
+        involvesReinstatement: true,
         isExpressProject: false,
         relatedSiteId: siteId,
         soilsDistribution: [

@@ -49,6 +49,7 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
       const projectQuery = new InMemoryReconversionProjectImpactsQuery();
       projectQuery._setData({
         id: reconversionProjectId,
+        involvesReinstatement: true,
         isExpressProject: false,
         name: "No dev plan",
         relatedSiteId: uuid(),
@@ -83,6 +84,7 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
       const projectQuery = new InMemoryReconversionProjectImpactsQuery();
       projectQuery._setData({
         id: reconversionProjectId,
+        involvesReinstatement: true,
         isExpressProject: false,
         name: "Missing site",
         relatedSiteId: uuid(),
@@ -123,6 +125,7 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
     id: uuid(),
     name: "Project with big impacts",
     relatedSiteId: uuid(),
+    involvesReinstatement: true,
     isExpressProject: false,
     soilsDistribution: [
       { soilType: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED", surfaceArea: 10000 },
