@@ -101,6 +101,8 @@ type ReconversionProjectSqlResult = {
   buildings_resale_expected_property_transfer_duties: number | null;
   // project phase
   project_phase: string;
+  // reinstatement flag
+  involves_reinstatement: boolean;
   // dates
   created_at: Date;
   updated_at: Date;
@@ -167,6 +169,7 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
           buildings_resale_expected_property_transfer_duties:
             reconversionProject.buildingsResaleExpectedPropertyTransferDuties,
           friche_decontaminated_soil_surface_area: reconversionProject.decontaminatedSoilSurface,
+          involves_reinstatement: reconversionProject.involvesReinstatement,
         },
         "id",
       );
@@ -456,6 +459,7 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
     return {
       id: sqlResult.id,
       name: sqlResult.name,
+      involvesReinstatement: sqlResult.involves_reinstatement,
       description: sqlResult.description ?? undefined,
       decontaminatedSoilSurface: sqlResult.friche_decontaminated_soil_surface_area ?? undefined,
       operationsFirstYear: sqlResult.operations_first_year ?? undefined,
@@ -552,6 +556,7 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
         buildings_resale_expected_property_transfer_duties:
           reconversionProject.buildingsResaleExpectedPropertyTransferDuties,
         friche_decontaminated_soil_surface_area: reconversionProject.decontaminatedSoilSurface,
+        involves_reinstatement: reconversionProject.involvesReinstatement,
       });
 
       // Delete and recreate soils distribution

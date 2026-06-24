@@ -72,6 +72,7 @@ export function createReconversionProjectSchema<T extends z.ZodTypeAny>(dateSche
     description: z.string().optional(),
     relatedSiteId: z.uuid(),
     developmentPlan: developmentPlanSchema,
+    involvesReinstatement: z.boolean(),
     decontaminatedSoilSurface: surfaceAreaSchema.optional(),
     futureOperator: z.object({ name: z.string(), structureType: z.string() }).optional(),
     futureSiteOwner: z.object({ name: z.string(), structureType: z.string() }).optional(),

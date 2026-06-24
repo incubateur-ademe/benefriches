@@ -126,6 +126,7 @@ export function mapAdemeProjectToProject(
     relatedSiteId,
     createdBy: createdByUserId,
     name: csvRow["Nom du projet"],
+    involvesReinstatement: hasReinstatement,
     projectPhase: "inconnu",
     yearlyProjectedCosts: [],
     yearlyProjectedRevenues: [],

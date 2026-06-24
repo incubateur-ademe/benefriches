@@ -51,6 +51,7 @@ const baseReconversionProjectProps = {
       surfaceArea: 1300,
     },
   ],
+  involvesReinstatement: true,
   yearlyProjectedCosts: [{ purpose: "rent", amount: 12000 }],
   yearlyProjectedRevenues: [{ source: "operations", amount: 13000 }],
   projectPhase: "planning",

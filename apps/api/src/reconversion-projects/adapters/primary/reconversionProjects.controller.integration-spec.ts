@@ -973,6 +973,7 @@ describe("ReconversionProjects controller", () => {
         name: "Copie de " + sourceUrbanProject.name,
         creation_mode: "duplicated",
         status: "active",
+        involves_reinstatement: true,
         // oxlint-disable-next-line typescript/no-unsafe-assignment
         created_at: expect.any(Date),
         updated_at: sourceUrbanProject.updatedAt ?? null,
@@ -1103,6 +1104,7 @@ describe("ReconversionProjects controller", () => {
         status: "active",
         creationMode: "custom",
         name: "ébauche projet urbain",
+        involvesReinstatement: false,
         createdBy: authenticatedUser.id,
         developmentPlan: {
           type: "URBAN_PROJECT",
@@ -1252,6 +1254,7 @@ describe("ReconversionProjects controller", () => {
   describe("PUT /reconversion-projects", () => {
     const baseUpdateReconversionProjectProps = {
       name: "Centrale photovoltaique",
+      involvesReinstatement: true,
       developmentPlan: {
         type: "PHOTOVOLTAIC_POWER_PLANT",
         costs: [{ amount: 130000, purpose: "installation_works" }],

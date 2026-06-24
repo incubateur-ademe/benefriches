@@ -116,6 +116,7 @@ export const saveReconversionProject = createAppAsyncThunk(
           contractDuration: contract?.photovoltaicContractDuration,
         },
       },
+      involvesReinstatement: true,
       projectPhase: phase,
       decontaminatedSoilSurface:
         decontaminationSurface?.decontaminatedSurfaceArea ??

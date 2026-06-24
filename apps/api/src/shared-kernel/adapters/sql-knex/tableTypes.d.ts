@@ -148,6 +148,8 @@ export type SqlReconversionProject = {
   buildings_resale_expected_property_transfer_duties: number | null;
   // project phase
   project_phase: string;
+  // reinstatement flag
+  involves_reinstatement: boolean;
   // dates
   created_at: Date;
   updated_at: Date | null;

@@ -92,6 +92,7 @@ export class UrbanProjectGenerator extends DefaultProjectGenerator {
       createdAt: this.dateProvider.now(),
       status: "active",
       creationMode: "express",
+      involvesReinstatement: true,
       projectPhase: "planning",
       soilsDistribution: this.projectSoilsDistribution,
       decontaminatedSoilSurface: this.decontaminatedSoilSurface,

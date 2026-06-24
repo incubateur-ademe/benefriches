@@ -12,6 +12,7 @@ import { UpdateReconversionProjectUseCase } from "./updateReconversionProject.us
 
 const baseUpdateReconversionProjectProps = {
   name: "Centrale photovoltaique",
+  involvesReinstatement: true,
   developmentPlan: {
     type: "PHOTOVOLTAIC_POWER_PLANT",
     costs: [{ amount: 130000, purpose: "installation_works" }],

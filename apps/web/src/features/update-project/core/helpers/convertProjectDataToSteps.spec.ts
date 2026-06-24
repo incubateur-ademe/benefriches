@@ -10,6 +10,7 @@ const BASE_PROJECT_DATA: UpdateProjectView["projectData"] = {
   creationMode: "custom",
   name: "Test Project",
   relatedSiteId: "site-1",
+  involvesReinstatement: true,
   projectPhase: "planning",
   developmentPlan: {
     type: "URBAN_PROJECT",

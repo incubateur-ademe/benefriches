@@ -387,6 +387,7 @@ describe("SqlReconversionProjectRepository integration", () => {
           creationMode: "express",
           status: "active",
           name: "Projet urbain",
+          involvesReinstatement: true,
           developmentPlan: {
             type: "URBAN_PROJECT",
             developer: { name: "Montrouge", structureType: "municipality" },
@@ -1171,6 +1172,7 @@ describe("SqlReconversionProjectRepository integration", () => {
           status: "active" as const,
           creationMode: "express" as const,
           name: "Projet urbain",
+          involvesReinstatement: true,
           developmentPlan: {
             type: "URBAN_PROJECT" as const,
             developer: { name: "Montrouge", structureType: "municipality" },
