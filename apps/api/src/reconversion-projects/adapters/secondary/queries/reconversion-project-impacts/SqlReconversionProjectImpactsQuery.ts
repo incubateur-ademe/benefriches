@@ -1,8 +1,8 @@
 import { Inject } from "@nestjs/common";
-import type { Knex } from "knex";
+import { Knex } from "knex";
 
-import type { DevelopmentPlan } from "src/reconversion-projects/core/model/reconversionProject";
-import type {
+import { DevelopmentPlan } from "src/reconversion-projects/core/model/reconversionProject";
+import {
   ApiReconversionProjectImpactsDataView,
   ReconversionProjectImpactsQuery,
 } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";

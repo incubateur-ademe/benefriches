@@ -1,7 +1,7 @@
 import { v4 as uuid } from "uuid";
 
-import type { UserProps } from "../../../auth/core/createUser.usecase";
-import type { User } from "../../../auth/core/user";
+import { UserProps } from "../../../auth/core/createUser.usecase";
+import { User } from "../../../auth/core/user";
 
 export const buildMinimalUserProps = (): UserProps => {
   return {

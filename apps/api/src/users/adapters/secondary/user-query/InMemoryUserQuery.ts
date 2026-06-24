@@ -1,6 +1,6 @@
-import type { UserQuery } from "src/users/core/gateways/UserQuery";
+import { UserQuery } from "src/users/core/gateways/UserQuery";
 
-import type { UserViewModel } from "./SqlUserQuery";
+import { UserViewModel } from "./SqlUserQuery";
 
 export class InMemoryUserQuery implements UserQuery {
   users: UserViewModel[] = [];

@@ -1,10 +1,10 @@
 import { JwtService } from "@nestjs/jwt";
-import type { NestExpressApplication } from "@nestjs/platform-express";
+import { NestExpressApplication } from "@nestjs/platform-express";
 import * as cookie from "cookie";
-import type { Knex } from "knex";
+import { Knex } from "knex";
 import assert from "node:assert/strict";
 import { after, before, describe, it, mock } from "node:test";
-import type { RegisterUserRequestDto } from "shared";
+import { RegisterUserRequestDto } from "shared";
 import request from "supertest";
 import { assertShapeEquals, isDate } from "test/assertShapeEquals";
 import { createTestApp } from "test/testApp";
@@ -13,9 +13,9 @@ import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection
 import type { AppLogger } from "src/shared-kernel/logger";
 import { UserBuilder } from "src/users/core/model/user.mock";
 
-import type { TokenGenerator } from "../core/sendAuthLink.usecase";
-import type { TokenAuthenticationAttempt } from "../core/tokenAuthenticationAttempt";
-import type { AccessTokenPayload } from "./JwtAuthGuard";
+import { TokenGenerator } from "../core/sendAuthLink.usecase";
+import { TokenAuthenticationAttempt } from "../core/tokenAuthenticationAttempt";
+import { AccessTokenPayload } from "./JwtAuthGuard";
 import { ACCESS_TOKEN_COOKIE_KEY } from "./access-token/accessTokenCookie";
 import { SmtpAuthLinkMailer } from "./auth-link-mailer/SmtpAuthLinkMailer";
 import { AUTH_CONTROLLER_LOGGER_TOKEN } from "./auth.controller";

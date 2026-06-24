@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import type { EconomicBalanceImpactResult } from "shared";
+import { EconomicBalanceImpactResult } from "shared";
 
 import { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import { computeEconomicBalanceImpact } from "./economicBalanceImpact";

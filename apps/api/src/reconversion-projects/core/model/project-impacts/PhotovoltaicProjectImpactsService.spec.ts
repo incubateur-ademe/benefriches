@@ -3,13 +3,10 @@ import assert from "node:assert/strict";
 import { describe, it, beforeEach } from "node:test";
 
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
-import type { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 
 import { PhotovoltaicProjectImpactsService } from "./PhotovoltaicProjectImpactsService";
-import type {
-  InputFricheData,
-  InputReconversionProjectData,
-} from "./ReconversionProjectImpactsService";
+import { InputFricheData, InputReconversionProjectData } from "./ReconversionProjectImpactsService";
 
 const reconversionProjectImpactDataView: InputReconversionProjectData = {
   involvesReinstatement: true,

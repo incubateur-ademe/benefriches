@@ -1,5 +1,5 @@
-import type { SitesQuery, SiteSurfaceAreaAndCityCode } from "src/sites/core/gateways/SitesQuery";
-import type { SiteFeaturesView, SiteView } from "src/sites/core/models/views";
+import { SitesQuery, SiteSurfaceAreaAndCityCode } from "src/sites/core/gateways/SitesQuery";
+import { SiteFeaturesView, SiteView } from "src/sites/core/models/views";
 
 export class InMemorySitesQuery implements SitesQuery {
   sites: SiteFeaturesView[] = [];

@@ -1,10 +1,9 @@
 import { computeFricheDefaultYearlyExpenses } from "shared";
 
-import type { TResult } from "src/shared-kernel/result";
-import { fail, success } from "src/shared-kernel/result";
-import type { UseCase } from "src/shared-kernel/usecase";
-import type { CityRuralityQuery } from "src/territory/core/gateways/CityRuralityQuery";
-import type { CityStatsProvider } from "src/territory/core/gateways/CityStatsProvider";
+import { fail, success, TResult } from "src/shared-kernel/result";
+import { UseCase } from "src/shared-kernel/usecase";
+import { CityRuralityQuery } from "src/territory/core/gateways/CityRuralityQuery";
+import { CityStatsProvider } from "src/territory/core/gateways/CityStatsProvider";
 
 type Request = {
   siteCityCode: string;

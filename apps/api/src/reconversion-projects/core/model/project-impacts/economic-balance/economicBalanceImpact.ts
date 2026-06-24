@@ -1,4 +1,4 @@
-import type {
+import {
   BuildingsConstructionExpense,
   DevelopmentPlanInstallationExpenses,
   DevelopmentPlanType,
@@ -8,10 +8,11 @@ import type {
   RecurringExpense,
   RecurringRevenue,
   ReinstatementExpense,
+  roundToInteger,
+  sumListWithKey,
 } from "shared";
-import { roundToInteger, sumListWithKey } from "shared";
 
-import type { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
+import { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import { getProjectDevelopmentEconomicBalance } from "../break-even-level/projectDevelopmentEconomicBalance";
 import { getProjectOperatingEconomicBalance } from "../break-even-level/projectOperatingEconomicBalance";
 

@@ -1,8 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
-import type { SuccessResult } from "./result";
-import { type TResult, success, fail } from "./result";
+import { type TResult, success, fail, SuccessResult } from "./result";
 import { type UseCase } from "./usecase";
 
 describe("UseCase interface type safety", () => {

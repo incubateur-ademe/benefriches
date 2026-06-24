@@ -1,4 +1,4 @@
-import type { Knex } from "knex";
+import { Knex } from "knex";
 
 import { readFranceRuralitesCsvData } from "../scripts/read-france-ruralites-csv";
 

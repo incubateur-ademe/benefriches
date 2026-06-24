@@ -1,4 +1,4 @@
-import type {
+import {
   ReconversionProjectsGroupedBySite,
   ReconversionProjectsListQuery,
 } from "src/reconversion-projects/core/usecases/getUserReconversionProjectsBySite.usecase";

@@ -9,39 +9,45 @@ import { GetCarbonStorageFromSoilDistributionService } from "src/carbon-storage/
 import { PhotovoltaicPerformanceModule } from "src/photovoltaic-performance/adapters/primary/photovoltaicPerformance.module";
 import { FakePhotovoltaicDataProvider } from "src/photovoltaic-performance/adapters/secondary/photovoltaic-data-provider/FakePhotovoltaicDataProvider";
 import { PhotovoltaicGeoInfoSystemApi } from "src/photovoltaic-performance/adapters/secondary/photovoltaic-data-provider/PhotovoltaicGeoInfoSystemApi";
-import type { PhotovoltaicDataProvider } from "src/photovoltaic-performance/core/gateways/PhotovoltaicDataProvider";
-import type { ReconversionProjectRepository } from "src/reconversion-projects/core/gateways/ReconversionProjectRepository";
+import { PhotovoltaicDataProvider } from "src/photovoltaic-performance/core/gateways/PhotovoltaicDataProvider";
+import { ReconversionProjectRepository } from "src/reconversion-projects/core/gateways/ReconversionProjectRepository";
 import { ArchiveReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/archiveReconversionProject.usecase";
 import { ComputeProjectUrbanSprawlImpactsComparisonUseCase } from "src/reconversion-projects/core/usecases/computeProjectUrbanSprawlImpactsComparison.usecase";
 import { ComputeReconversionProjectBreakEvenLevelUseCase } from "src/reconversion-projects/core/usecases/computeReconversionProjectBreakEvenLevel.usecase";
 import { ComputeReconversionProjectImpactsUseCase } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
-import type { SiteRepository } from "src/reconversion-projects/core/usecases/createReconversionProject.usecase";
-import { CreateReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/createReconversionProject.usecase";
+import {
+  CreateReconversionProjectUseCase,
+  SiteRepository,
+} from "src/reconversion-projects/core/usecases/createReconversionProject.usecase";
 import { DuplicateReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/duplicateReconversionProject.usecase";
 import { GenerateAndSaveReconversionProjectFromTemplateUseCase } from "src/reconversion-projects/core/usecases/generateAndSaveReconversionProjectFromTemplate.usecase";
-import type { SiteQuery } from "src/reconversion-projects/core/usecases/generateReconversionProjectFromTemplate.usecase";
-import { GenerateReconversionProjectFromTemplateUseCase } from "src/reconversion-projects/core/usecases/generateReconversionProjectFromTemplate.usecase";
+import {
+  GenerateReconversionProjectFromTemplateUseCase,
+  SiteQuery,
+} from "src/reconversion-projects/core/usecases/generateReconversionProjectFromTemplate.usecase";
 import { GetReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/getReconversionProject.usecase";
 import { GetReconversionProjectFeaturesUseCase } from "src/reconversion-projects/core/usecases/getReconversionProjectFeatures.usecase";
-import type { ReconversionProjectsListQuery } from "src/reconversion-projects/core/usecases/getUserReconversionProjectsBySite.usecase";
-import { GetUserReconversionProjectsBySiteUseCase } from "src/reconversion-projects/core/usecases/getUserReconversionProjectsBySite.usecase";
+import {
+  GetUserReconversionProjectsBySiteUseCase,
+  ReconversionProjectsListQuery,
+} from "src/reconversion-projects/core/usecases/getUserReconversionProjectsBySite.usecase";
 import { QuickComputeUrbanProjectImpactsOnFricheUseCase } from "src/reconversion-projects/core/usecases/quickComputeUrbanProjectImpactsOnFricheUseCase.usecase";
 import { UpdateReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/updateReconversionProject.usecase";
-import type { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
 import { RealEventPublisher } from "src/shared-kernel/adapters/events/publisher/RealEventPublisher";
 import { RandomUuidGenerator } from "src/shared-kernel/adapters/id-generator/RandomUuidGenerator";
-import type { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerator";
-import type { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
+import { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerator";
+import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
 import { SqlSitesQuery } from "src/sites/adapters/secondary/site-query/SqlSitesQuery";
 import { SqlSiteRepository } from "src/sites/adapters/secondary/site-repository/SqlSiteRepository";
-import type { SitesQuery } from "src/sites/core/gateways/SitesQuery";
+import { SitesQuery } from "src/sites/core/gateways/SitesQuery";
 import { FricheGenerator } from "src/sites/core/models/fricheGenerator";
 import { TerritoryModule } from "src/territory/adapters/primary/territory.module";
 import { SqlCityRuralityQuery } from "src/territory/adapters/secondary/city-rurality-query/SqlCityRuralityQuery";
 import { SqlCityStatsQuery } from "src/territory/adapters/secondary/city-stats-query/SqlCityStatsQuery";
 import { SqlUserQuery } from "src/users/adapters/secondary/user-query/SqlUserQuery";
-import type { UserQuery } from "src/users/core/gateways/UserQuery";
+import { UserQuery } from "src/users/core/gateways/UserQuery";
 
 import { SqlSiteImpactsQuery } from "../../../sites/adapters/secondary/site-impacts/SqlSiteImpactsQuery";
 import { SqlReconversionProjectQuery } from "../secondary/queries/reconversion-project-features/SqlReconversionProjectQuery";

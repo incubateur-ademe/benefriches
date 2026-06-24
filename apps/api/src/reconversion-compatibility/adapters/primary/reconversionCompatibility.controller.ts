@@ -11,11 +11,10 @@ import {
 import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
 
-import type { RequestWithAuthenticatedUser } from "src/auth/adapters/JwtAuthGuard";
-import { JwtAuthGuard } from "src/auth/adapters/JwtAuthGuard";
-import type { AddRelatedSiteToReconversionCompatibilityEvaluationUseCase } from "src/reconversion-compatibility/core/usecases/addRelatedSiteToReconversionCompatibilityEvaluation.usecase";
-import type { CompleteReconversionCompatibilityEvaluationUseCase } from "src/reconversion-compatibility/core/usecases/completeReconversionCompatibilityEvaluation.usecase";
-import type { StartReconversionCompatibilityEvaluationUseCase } from "src/reconversion-compatibility/core/usecases/startReconversionCompatibilityEvaluation.usecase";
+import { JwtAuthGuard, RequestWithAuthenticatedUser } from "src/auth/adapters/JwtAuthGuard";
+import { AddRelatedSiteToReconversionCompatibilityEvaluationUseCase } from "src/reconversion-compatibility/core/usecases/addRelatedSiteToReconversionCompatibilityEvaluation.usecase";
+import { CompleteReconversionCompatibilityEvaluationUseCase } from "src/reconversion-compatibility/core/usecases/completeReconversionCompatibilityEvaluation.usecase";
+import { StartReconversionCompatibilityEvaluationUseCase } from "src/reconversion-compatibility/core/usecases/startReconversionCompatibilityEvaluation.usecase";
 
 const startReconversionCompatibilityEvaluationBodySchema = z.object({
   id: z.uuid(),

@@ -1,6 +1,6 @@
-import type { DevelopmentPlanType, SiteNature } from "shared";
+import { DevelopmentPlanType, SiteNature } from "shared";
 
-import type { ReconversionCompatibilityEvaluation } from "src/reconversion-compatibility/core/reconversionCompatibilityEvaluation";
+import { ReconversionCompatibilityEvaluation } from "src/reconversion-compatibility/core/reconversionCompatibilityEvaluation";
 
 export type SiteEvaluationDataView = {
   siteId: string;

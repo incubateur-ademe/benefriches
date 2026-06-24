@@ -1,4 +1,4 @@
-import type { DomainEvent } from "src/shared-kernel/domainEvent";
+import { DomainEvent } from "src/shared-kernel/domainEvent";
 
 type ReconversionProjectDuplicatedEventPayload = {
   sourceProjectId: string;

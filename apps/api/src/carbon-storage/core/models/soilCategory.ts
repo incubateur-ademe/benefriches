@@ -1,6 +1,6 @@
-import type { SoilType } from "shared";
+import { SoilType } from "shared";
 
-import type { RepositorySoilCategoryType } from "./carbonStorage";
+import { RepositorySoilCategoryType } from "./carbonStorage";
 
 export const mapSoilTypeToRepositorySoilCategory = (
   soilType: SoilType,

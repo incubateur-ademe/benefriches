@@ -1,4 +1,4 @@
-import type { FetchUserIdentityResult, ProConnectClient } from "./ProConnectClient";
+import { FetchUserIdentityResult, ProConnectClient } from "./ProConnectClient";
 
 export class FakeProConnectClient implements ProConnectClient {
   shouldThrowError = false;

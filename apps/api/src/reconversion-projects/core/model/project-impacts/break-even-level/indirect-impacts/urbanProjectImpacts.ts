@@ -1,21 +1,22 @@
-import type {
+import {
   BuildingsUseDistribution,
+  computeDefaultOperationsFullTimeJobsFromBuildingsAreaDistribution,
+  computeEstimatedPropertyTaxesAmount,
   DevelopmentPlanFeatures,
   ProjectOnSiteImpactMetric,
   ReconversionProjectOnSiteIndirectEconomicImpact,
-} from "shared";
-import {
-  computeDefaultOperationsFullTimeJobsFromBuildingsAreaDistribution,
-  computeEstimatedPropertyTaxesAmount,
   sumList,
   sumListWithKey,
 } from "shared";
 
-import type { SumOnEvolutionPeriodService } from "../../../sum-on-evolution-period/SumOnEvolutionPeriodService";
+import { SumOnEvolutionPeriodService } from "../../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import { YearlyTravelRelatedImpacts } from "../../travel-related-impacts-service/YearlyTravelRelatedImpacts";
 import { YearlyUrbanFreshnessRelatedImpacts } from "../../urban-freshness-related-impacts-service/YearlyUrbanFreshnessRelatedImpacts";
-import type { InputReconversionProjectData, InputSiteData } from "../projectIndirectImpacts";
-import { computeCumulativeByYear } from "../projectIndirectImpacts";
+import {
+  computeCumulativeByYear,
+  InputReconversionProjectData,
+  InputSiteData,
+} from "../projectIndirectImpacts";
 import {
   getFricheRoadsAndUtilitiesExpensesImpact,
   getLocalPropertyIncreaseWithFricheRemovalImpacts,

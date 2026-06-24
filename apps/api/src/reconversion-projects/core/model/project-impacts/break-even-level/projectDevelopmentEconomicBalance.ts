@@ -1,13 +1,14 @@
-import type {
+import {
   BuildingsConstructionExpense,
   DevelopmentPlanInstallationExpenses,
   DevelopmentPlanType,
   FinancialAssistanceRevenue,
   GetReconversionProjectImpactsResultDto,
+  isSameStakeholders,
   ProjectDevelopmentEconomicBalanceItem,
   ReinstatementExpense,
+  sumListWithKey,
 } from "shared";
-import { isSameStakeholders, sumListWithKey } from "shared";
 
 export type InputProjectDevelopmentEconomicBalanceProps = {
   developmentPlanType: DevelopmentPlanType;

@@ -1,4 +1,4 @@
-import type {
+import {
   BuildingsConstructionExpense,
   ReconversionProjectSoilsDistribution,
   RecurringExpense,
@@ -6,11 +6,8 @@ import type {
   ReinstatementExpensePurpose,
 } from "shared";
 
-import type {
-  ReconversionProjectSavePropsDto,
-  ReconversionProjectSaveDto,
-} from "./reconversionProject";
-import type { UrbanProjectFeatures } from "./urbanProjects";
+import { ReconversionProjectSavePropsDto, ReconversionProjectSaveDto } from "./reconversionProject";
+import { UrbanProjectFeatures } from "./urbanProjects";
 
 const baseReconversionProjectProps = {
   id: "64789135-afad-46ea-97a2-f14ba460d485",

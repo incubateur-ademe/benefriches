@@ -1,10 +1,10 @@
 import { Inject } from "@nestjs/common";
-import type { Knex } from "knex";
-import type { SoilType } from "shared";
+import { Knex } from "knex";
+import { SoilType } from "shared";
 import { v4 as uuid } from "uuid";
 
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
-import type {
+import {
   SqlAddress,
   SqlSite,
   SqlSiteExpense,
@@ -12,8 +12,8 @@ import type {
   SqlSiteSoilsDistribution,
   SqlSiteUrbanZoneFeatures,
 } from "src/shared-kernel/adapters/sql-knex/tableTypes";
-import type { SitesRepository } from "src/sites/core/gateways/SitesRepository";
-import type { SiteEntity } from "src/sites/core/models/siteEntity";
+import { SitesRepository } from "src/sites/core/gateways/SitesRepository";
+import { SiteEntity } from "src/sites/core/models/siteEntity";
 
 export class SqlSiteRepository implements SitesRepository {
   constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}

@@ -1,4 +1,4 @@
-import type { DomainEvent } from "./domainEvent";
+import { DomainEvent } from "./domainEvent";
 
 export const DOMAIN_EVENT_PUBLISHER_INJECTION_TOKEN = "DomainEventPublisher";
 

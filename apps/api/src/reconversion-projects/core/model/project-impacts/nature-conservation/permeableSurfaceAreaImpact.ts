@@ -1,5 +1,10 @@
-import type { SoilsDistribution } from "shared";
-import { isGreenSoil, isMineralSoil, isPermeableSoil, sumSoilsSurfaceAreasWhere } from "shared";
+import {
+  isGreenSoil,
+  isMineralSoil,
+  isPermeableSoil,
+  SoilsDistribution,
+  sumSoilsSurfaceAreasWhere,
+} from "shared";
 
 import { Impact } from "../impact";
 

@@ -1,36 +1,33 @@
-import type {
+import {
+  computeProjectReinstatementExpenses,
+  getProjectSoilDistributionByType,
   ReconversionProjectImpactsDataView,
   ReinstatementExpensePurpose,
   SiteImpactsDataView,
   SiteNature,
-  UrbanSprawlImpactsComparisonResultDto,
-} from "shared";
-import {
-  computeProjectReinstatementExpenses,
-  getProjectSoilDistributionByType,
   typedObjectEntries,
+  UrbanSprawlImpactsComparisonResultDto,
 } from "shared";
 import { v4 as uuid } from "uuid";
 
-import type { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
-import type { TResult } from "src/shared-kernel/result";
-import { fail, success } from "src/shared-kernel/result";
-import type { UseCase } from "src/shared-kernel/usecase";
+import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { TResult, fail, success } from "src/shared-kernel/result";
+import { UseCase } from "src/shared-kernel/usecase";
 import { AgriculturalOperationGenerator } from "src/sites/core/models/agriculturalOperationGenerator";
 import { FricheGenerator } from "src/sites/core/models/fricheGenerator";
 import { NaturalAreaGenerator } from "src/sites/core/models/naturalAreaGenerator";
-import type { CityRuralityQuery } from "src/territory/core/gateways/CityRuralityQuery";
-import type { CityStatsProvider } from "src/territory/core/gateways/CityStatsProvider";
+import { CityRuralityQuery } from "src/territory/core/gateways/CityRuralityQuery";
+import { CityStatsProvider } from "src/territory/core/gateways/CityStatsProvider";
 
-import type { GetCarbonStorageFromSoilDistributionService } from "../gateways/SoilsCarbonStorageService";
-import type { ReconversionProjectImpactsWithBreakEvenLevelInput } from "../model/project-impacts/break-even-level/computeImpactsWithBreakEvenLevel";
+import { GetCarbonStorageFromSoilDistributionService } from "../gateways/SoilsCarbonStorageService";
 import {
   computeAggregatedReconversionImpacts,
   computeBreakEvenLevel,
   computeProjectUrbanSprawlComparisonImpactsBreakdownAndEconomicBalance,
   formatStakeholders,
+  ReconversionProjectImpactsWithBreakEvenLevelInput,
 } from "../model/project-impacts/break-even-level/computeImpactsWithBreakEvenLevel";
-import type { Schedule } from "../model/reconversionProject";
+import { Schedule } from "../model/reconversionProject";
 
 interface SiteImpactsQuery {
   getById(siteId: string): Promise<SiteImpactsDataView | undefined>;

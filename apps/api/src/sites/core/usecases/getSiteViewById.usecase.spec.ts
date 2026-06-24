@@ -1,11 +1,11 @@
 import assert from "node:assert/strict";
 import { describe, it, beforeEach } from "node:test";
 
-import type { FailureResult, SuccessResult } from "src/shared-kernel/result";
+import { FailureResult, SuccessResult } from "src/shared-kernel/result";
 import { InMemoryMutabilityEvaluationQuery } from "src/site-evaluations/adapters/secondary/queries/InMemoryMutabilityEvaluationQuery";
 import { InMemorySitesQuery } from "src/sites/adapters/secondary/site-query/InMemorySitesQuery";
 
-import type { SiteFeaturesView, SiteView } from "../models/views";
+import { SiteFeaturesView, SiteView } from "../models/views";
 import { GetSiteViewByIdUseCase } from "./getSiteViewById.usecase";
 
 describe("GetSiteViewById Use Case", () => {

@@ -1,8 +1,7 @@
 import dotenv from "dotenv";
 import { spawn } from "node:child_process";
 import path from "node:path";
-import type { StartedDockerComposeEnvironment } from "testcontainers";
-import { DockerComposeEnvironment, Wait } from "testcontainers";
+import { DockerComposeEnvironment, StartedDockerComposeEnvironment, Wait } from "testcontainers";
 
 const composeFilePath = path.resolve(process.cwd(), "../..");
 const composeFile = "docker-compose.db.yml";

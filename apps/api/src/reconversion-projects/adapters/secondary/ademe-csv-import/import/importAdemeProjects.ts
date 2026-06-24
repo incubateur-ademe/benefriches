@@ -1,11 +1,10 @@
 // oxlint-disable no-console
 import * as path from "node:path";
 import { setTimeout } from "node:timers/promises";
-import type { ReconversionProjectSaveDto } from "shared";
-import { sumListWithKey } from "shared";
+import { ReconversionProjectSaveDto, sumListWithKey } from "shared";
 
-import type { ReconversionProjectRepository } from "src/reconversion-projects/core/gateways/ReconversionProjectRepository";
-import type { ComputeReconversionProjectImpactsUseCase } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
+import { ReconversionProjectRepository } from "src/reconversion-projects/core/gateways/ReconversionProjectRepository";
+import { ComputeReconversionProjectImpactsUseCase } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
 import { fail, success } from "src/shared-kernel/result";
 import type { TResult } from "src/shared-kernel/result";
 import type { SitesRepository } from "src/sites/core/gateways/SitesRepository";

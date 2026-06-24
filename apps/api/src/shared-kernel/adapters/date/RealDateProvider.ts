@@ -1,4 +1,4 @@
-import type { DateProvider } from "./IDateProvider";
+import { DateProvider } from "./IDateProvider";
 
 export class RealDateProvider implements DateProvider {
   now(): Date {

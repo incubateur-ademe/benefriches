@@ -1,6 +1,6 @@
 import * as oidcHttpClient from "openid-client";
 
-import type {
+import {
   FetchUserIdentityParams,
   FetchUserIdentityResult,
   GetLogoutUrlParams,

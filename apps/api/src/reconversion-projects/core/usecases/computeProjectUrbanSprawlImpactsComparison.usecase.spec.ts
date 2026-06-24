@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it, beforeEach } from "node:test";
-import type {
+import {
   ReconversionProjectImpactsDataView,
   SiteImpactsDataView,
   UrbanSprawlImpactsComparisonResultDto,
@@ -9,16 +9,16 @@ import { v4 as uuid } from "uuid";
 
 import { InMemoryReconversionProjectImpactsQuery } from "src/reconversion-projects/adapters/secondary/queries/reconversion-project-impacts/InMemoryReconversionProjectImpactsQuery";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
-import type { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
-import type { SuccessResult, FailureResult } from "src/shared-kernel/result";
+import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { SuccessResult, FailureResult } from "src/shared-kernel/result";
 import { InMemorySiteImpactsQuery } from "src/sites/adapters/secondary/site-impacts/InMemorySiteImpactsQuery";
 import { InMemoryCityRuralityQuery } from "src/territory/adapters/secondary/city-rurality-query/InMemoryCityRuralityQuery";
 import { InMemoryCityStatsQuery } from "src/territory/adapters/secondary/city-stats-query/InMemoryCityStatsQuery";
 
 import { FakeGetSoilsCarbonStorageService } from "../gateways/FakeGetSoilsCarbonStorageService";
-import type { Schedule } from "../model/reconversionProject";
+import { Schedule } from "../model/reconversionProject";
 import { ComputeProjectUrbanSprawlImpactsComparisonUseCase } from "./computeProjectUrbanSprawlImpactsComparison.usecase";
-import type { ApiReconversionProjectImpactsDataView } from "./computeReconversionProjectImpacts.usecase";
+import { ApiReconversionProjectImpactsDataView } from "./computeReconversionProjectImpacts.usecase";
 
 const projectData: ReconversionProjectImpactsDataView<Schedule> = {
   id: "bf8a7d1d-a9d2-4a66-b2bc-3b8d682f9932",

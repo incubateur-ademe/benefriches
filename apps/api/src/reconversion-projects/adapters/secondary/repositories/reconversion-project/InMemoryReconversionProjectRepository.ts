@@ -1,5 +1,5 @@
-import type { ReconversionProjectRepository } from "src/reconversion-projects/core/gateways/ReconversionProjectRepository";
-import type {
+import { ReconversionProjectRepository } from "src/reconversion-projects/core/gateways/ReconversionProjectRepository";
+import {
   ReconversionProjectSaveDto,
   ReconversionProjectUpdateDto,
   ReconversionProjectDataView,

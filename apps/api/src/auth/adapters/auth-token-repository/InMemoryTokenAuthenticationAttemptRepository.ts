@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 
-import type { TokenAuthenticationAttemptRepository } from "src/auth/core/gateways/TokenAuthenticationAttemptRepository";
-import type { TokenAuthenticationAttempt } from "src/auth/core/tokenAuthenticationAttempt";
+import { TokenAuthenticationAttemptRepository } from "src/auth/core/gateways/TokenAuthenticationAttemptRepository";
+import { TokenAuthenticationAttempt } from "src/auth/core/tokenAuthenticationAttempt";
 
 @Injectable()
 export class InMemoryTokenAuthenticationAttemptRepository implements TokenAuthenticationAttemptRepository {

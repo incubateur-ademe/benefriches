@@ -1,15 +1,16 @@
 import { z } from "zod";
 
-import type { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
-import type { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerator";
-import type { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
-import type { TResult } from "src/shared-kernel/result";
-import { fail, success } from "src/shared-kernel/result";
-import type { UseCase } from "src/shared-kernel/usecase";
+import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerator";
+import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
+import { TResult, fail, success } from "src/shared-kernel/result";
+import { UseCase } from "src/shared-kernel/usecase";
 
-import type { UserAccountCreatedEvent } from "./events/userAccountCreated.event";
-import { createUserAccountCreatedEvent } from "./events/userAccountCreated.event";
-import type { UserRepository } from "./gateways/UsersRepository";
+import {
+  createUserAccountCreatedEvent,
+  UserAccountCreatedEvent,
+} from "./events/userAccountCreated.event";
+import { UserRepository } from "./gateways/UsersRepository";
 import { userSchema } from "./user";
 
 type CreateUserResult = TResult<void, "UserEmailAlreadyExists" | "PersonalDataStorageNotConsented">;

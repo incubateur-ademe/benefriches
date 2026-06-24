@@ -2,11 +2,10 @@ import assert from "node:assert/strict";
 import { describe, it, beforeEach } from "node:test";
 
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
-import type { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { InMemoryUserFeatureAlertsRepository } from "src/users/adapters/secondary/user-feature-alert-repository/InMemoryUserFeatureAlertRepository";
 
-import type { UserFeatureAlert } from "./createUserFeatureAlert.usecase";
-import { CreateUserFeatureAlertUseCase } from "./createUserFeatureAlert.usecase";
+import { CreateUserFeatureAlertUseCase, UserFeatureAlert } from "./createUserFeatureAlert.usecase";
 
 describe("CreateUserFeatureAlert Use Case", () => {
   let dateProvider: DateProvider;

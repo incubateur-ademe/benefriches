@@ -1,13 +1,11 @@
 import { Inject } from "@nestjs/common";
-import type { Knex } from "knex";
-import type {
+import { Knex } from "knex";
+import {
   DevelopmentPlanType,
   ReconversionProjectCreationMode,
   SiteActionStatus,
   SiteActionType,
   SiteNature,
-} from "shared";
-import {
   SurfaceAreaDistribution,
   type SoilType,
   type UrbanZoneLandParcel,
@@ -15,7 +13,7 @@ import {
 } from "shared";
 
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
-import type {
+import {
   SqlAddress,
   SqlSite,
   SqlSiteExpense,
@@ -23,9 +21,9 @@ import type {
   SqlSiteSoilsDistribution,
   SqlSiteUrbanZoneFeatures,
 } from "src/shared-kernel/adapters/sql-knex/tableTypes";
-import type { SitesQuery, SiteSurfaceAreaAndCityCode } from "src/sites/core/gateways/SitesQuery";
+import { SitesQuery, SiteSurfaceAreaAndCityCode } from "src/sites/core/gateways/SitesQuery";
 import { aggregateSoilsFromParcels } from "src/sites/core/models/site";
-import type { SiteFeaturesView, SiteView } from "src/sites/core/models/views";
+import { SiteFeaturesView, SiteView } from "src/sites/core/models/views";
 
 export class SqlSitesQuery implements SitesQuery {
   constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}

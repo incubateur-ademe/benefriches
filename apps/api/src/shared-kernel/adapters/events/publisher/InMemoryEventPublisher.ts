@@ -1,5 +1,5 @@
-import type { DomainEvent } from "src/shared-kernel/domainEvent";
-import type { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
+import { DomainEvent } from "src/shared-kernel/domainEvent";
+import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
 
 export class InMemoryEventPublisher implements DomainEventPublisher {
   readonly events: DomainEvent[] = [];

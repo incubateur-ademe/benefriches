@@ -1,10 +1,10 @@
 import { Inject, Injectable } from "@nestjs/common";
-import type { Knex } from "knex";
+import { Knex } from "knex";
 
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
-import type { DomainEvent } from "src/shared-kernel/domainEvent";
+import { DomainEvent } from "src/shared-kernel/domainEvent";
 
-import type { DomainEventsRepository } from "./DomainEventsRepository";
+import { DomainEventsRepository } from "./DomainEventsRepository";
 
 @Injectable()
 export class SqlDomainEventsRepository implements DomainEventsRepository {

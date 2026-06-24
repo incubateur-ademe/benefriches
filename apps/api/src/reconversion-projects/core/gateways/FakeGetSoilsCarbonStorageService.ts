@@ -1,6 +1,6 @@
 import { roundTo2Digits, sumObjectValues, typedObjectEntries } from "shared";
 
-import type {
+import {
   GetCarbonStorageFromSoilDistributionService,
   SoilsCarbonStorage,
   SoilsCarbonStorageInput,

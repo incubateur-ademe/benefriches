@@ -1,5 +1,4 @@
-import type { Knex } from "knex";
-import knex from "knex";
+import knex, { Knex } from "knex";
 import { afterEach, mock } from "node:test";
 
 import knexConfig from "../src/shared-kernel/adapters/sql-knex/knexConfig";

@@ -1,21 +1,21 @@
 import { addMonths, parse } from "date-fns";
-import type { BuildingsUseDistribution, ReconversionProjectSaveDto } from "shared";
 import {
+  BuildingsUseDistribution,
   computePropertyTransferDutiesFromSellingPrice,
   getSoilTypeForUrbanGreenSpace,
+  ReconversionProjectSaveDto,
   httpSaveReconversionProjectPropsSchema as saveReconversionProjectPropsSchema,
   type SoilType,
   SurfaceAreaDistribution,
   typedObjectEntries,
 } from "shared";
 import { v4 as uuidv4 } from "uuid";
-import type z from "zod";
+import z from "zod";
 
 import { fail, success } from "src/shared-kernel/result";
 import type { TResult } from "src/shared-kernel/result";
 
-import type { CsvStructureType } from "./mapAdemeProjectToFriche";
-import { mapStructureType } from "./mapAdemeProjectToFriche";
+import { CsvStructureType, mapStructureType } from "./mapAdemeProjectToFriche";
 import type { RawCsvProjectRow } from "./parseAdemeProjectsCsv";
 
 export function mapAdemeProjectToProject(

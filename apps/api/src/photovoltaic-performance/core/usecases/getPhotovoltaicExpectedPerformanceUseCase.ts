@@ -1,7 +1,7 @@
 import { success } from "../../../shared-kernel/result";
 import type { TResult } from "../../../shared-kernel/result";
-import type { UseCase } from "../../../shared-kernel/usecase";
-import type { PhotovoltaicDataProvider } from "../gateways/PhotovoltaicDataProvider";
+import { UseCase } from "../../../shared-kernel/usecase";
+import { PhotovoltaicDataProvider } from "../gateways/PhotovoltaicDataProvider";
 
 type Request = {
   lat: number;

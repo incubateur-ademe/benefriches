@@ -1,18 +1,20 @@
 import assert from "node:assert/strict";
 import { beforeEach, describe, it } from "node:test";
-import type { GetReconversionProjectImpactsResultDto, SiteImpactsDataView } from "shared";
+import { GetReconversionProjectImpactsResultDto, SiteImpactsDataView } from "shared";
 import { v4 as uuid } from "uuid";
 
 import { InMemoryReconversionProjectImpactsQuery } from "src/reconversion-projects/adapters/secondary/queries/reconversion-project-impacts/InMemoryReconversionProjectImpactsQuery";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
-import type { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
-import type { FailureResult, SuccessResult } from "src/shared-kernel/result";
+import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { FailureResult, SuccessResult } from "src/shared-kernel/result";
 import { InMemorySiteImpactsQuery } from "src/sites/adapters/secondary/site-impacts/InMemorySiteImpactsQuery";
 import { InMemoryCityStatsQuery } from "src/territory/adapters/secondary/city-stats-query/InMemoryCityStatsQuery";
 
 import { FakeGetSoilsCarbonStorageService } from "../gateways/FakeGetSoilsCarbonStorageService";
-import type { ReconversionProjectImpactsQueryResult } from "./computeReconversionProjectBreakEvenLevel.usecase";
-import { ComputeReconversionProjectBreakEvenLevelUseCase } from "./computeReconversionProjectBreakEvenLevel.usecase";
+import {
+  ComputeReconversionProjectBreakEvenLevelUseCase,
+  ReconversionProjectImpactsQueryResult,
+} from "./computeReconversionProjectBreakEvenLevel.usecase";
 
 describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
   let dateProvider: DateProvider;

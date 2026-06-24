@@ -3,15 +3,14 @@ import assert from "node:assert/strict";
 import { describe, it, beforeEach } from "node:test";
 
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
-import type { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { InMemoryEventPublisher } from "src/shared-kernel/adapters/events/publisher/InMemoryEventPublisher";
 import { RandomUuidGenerator } from "src/shared-kernel/adapters/id-generator/RandomUuidGenerator";
-import type { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerator";
-import type { FailureResult } from "src/shared-kernel/result";
+import { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerator";
+import { FailureResult } from "src/shared-kernel/result";
 import { InMemorySitesRepository } from "src/sites/adapters/secondary/site-repository/InMemorySiteRepository";
 
-import type { SiteCreatedEvent } from "../events/siteCreated.event";
-import { SITE_CREATED } from "../events/siteCreated.event";
+import { SITE_CREATED, SiteCreatedEvent } from "../events/siteCreated.event";
 import {
   buildAgriculturalOrNaturalSite,
   buildAgriculturalOperationSiteProps,
@@ -20,7 +19,7 @@ import {
   buildUrbanZoneSite,
   buildUrbanZoneSiteProps,
 } from "../models/site.mock";
-import type { SiteEntity } from "../models/siteEntity";
+import { SiteEntity } from "../models/siteEntity";
 import { CreateNewCustomSiteUseCase } from "./createNewSite.usecase";
 
 describe("CreateNewSite Use Case", () => {

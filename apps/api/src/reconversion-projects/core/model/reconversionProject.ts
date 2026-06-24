@@ -1,18 +1,16 @@
-import type {
-  photovoltaicPowerStationFeaturesSchema,
-  BaseReconversionProjectFeaturesView,
-} from "shared";
 import {
   httpSaveReconversionProjectSchema,
   httpSaveReconversionProjectPropsSchema,
   domainSaveReconversionProjectPropsSchema,
+  photovoltaicPowerStationFeaturesSchema,
+  BaseReconversionProjectFeaturesView,
   ReconversionProjectSaveDto,
   ReconversionProjectSavePropsDto,
   ReconversionProjectUpdateDto,
   ReconversionProjectUpdatePropsDto,
   ReconversionProjectDataView,
 } from "shared";
-import type { z } from "zod";
+import { z } from "zod";
 
 export type PhotovoltaicPowerStationFeatures = z.infer<
   typeof photovoltaicPowerStationFeaturesSchema

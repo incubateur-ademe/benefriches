@@ -1,21 +1,21 @@
 import assert from "node:assert/strict";
 import { describe, it, beforeEach } from "node:test";
-import type { SiteImpactsDataView } from "shared";
+import { SiteImpactsDataView } from "shared";
 import { v4 as uuid } from "uuid";
 
 import { InMemoryReconversionProjectImpactsQuery } from "src/reconversion-projects/adapters/secondary/queries/reconversion-project-impacts/InMemoryReconversionProjectImpactsQuery";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
-import type { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
-import type { FailureResult, SuccessResult } from "src/shared-kernel/result";
+import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { FailureResult, SuccessResult } from "src/shared-kernel/result";
 import { InMemorySiteImpactsQuery } from "src/sites/adapters/secondary/site-impacts/InMemorySiteImpactsQuery";
 import { InMemoryCityStatsQuery } from "src/territory/adapters/secondary/city-stats-query/InMemoryCityStatsQuery";
 
 import { FakeGetSoilsCarbonStorageService } from "../gateways/FakeGetSoilsCarbonStorageService";
-import type {
+import {
   ApiReconversionProjectImpactsDataView,
+  ComputeReconversionProjectImpactsUseCase,
   ComputedImpacts,
 } from "./computeReconversionProjectImpacts.usecase";
-import { ComputeReconversionProjectImpactsUseCase } from "./computeReconversionProjectImpacts.usecase";
 
 describe("ComputeReconversionProjectImpactsUseCase", () => {
   let dateProvider: DateProvider;

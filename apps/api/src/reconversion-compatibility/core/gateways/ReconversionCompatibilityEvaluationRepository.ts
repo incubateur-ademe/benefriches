@@ -1,4 +1,4 @@
-import type { ReconversionCompatibilityEvaluation } from "../reconversionCompatibilityEvaluation";
+import { ReconversionCompatibilityEvaluation } from "../reconversionCompatibilityEvaluation";
 
 export interface ReconversionCompatibilityEvaluationRepository {
   existsWithId(id: string): Promise<boolean>;

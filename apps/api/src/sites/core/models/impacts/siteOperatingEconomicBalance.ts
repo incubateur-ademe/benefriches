@@ -1,8 +1,14 @@
-import type { SiteYearlyExpense, SiteYearlyIncome, OperatingEconomicBalanceItem } from "shared";
-import { sumList, sumListWithKey, roundToInteger } from "shared";
+import {
+  sumList,
+  SiteYearlyExpense,
+  SiteYearlyIncome,
+  sumListWithKey,
+  roundToInteger,
+  OperatingEconomicBalanceItem,
+} from "shared";
 
 import { computeCumulativeByYear } from "src/reconversion-projects/core/model/project-impacts/break-even-level/projectIndirectImpacts";
-import type { SumOnEvolutionPeriodService } from "src/reconversion-projects/core/model/sum-on-evolution-period/SumOnEvolutionPeriodService";
+import { SumOnEvolutionPeriodService } from "src/reconversion-projects/core/model/sum-on-evolution-period/SumOnEvolutionPeriodService";
 
 type Props = {
   yearlyIncomes: SiteYearlyIncome[];

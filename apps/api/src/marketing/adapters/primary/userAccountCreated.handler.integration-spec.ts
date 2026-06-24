@@ -1,11 +1,11 @@
-import type { NestExpressApplication } from "@nestjs/platform-express";
+import { NestExpressApplication } from "@nestjs/platform-express";
 import assert from "node:assert/strict";
 import { afterEach, beforeEach, describe, it } from "node:test";
 import { createTestApp } from "test/testApp";
 
 import { createUserAccountCreatedEvent } from "src/auth/core/events/userAccountCreated.event";
 import { RealEventPublisher } from "src/shared-kernel/adapters/events/publisher/RealEventPublisher";
-import type { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
+import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
 
 import { ConnectCrm } from "../secondary/ConnectCrm";
 import { FakeCrm } from "../secondary/FakeCrm";

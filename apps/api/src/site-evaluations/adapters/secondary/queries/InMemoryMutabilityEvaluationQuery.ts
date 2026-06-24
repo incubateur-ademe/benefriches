@@ -1,4 +1,4 @@
-import type {
+import {
   MutabilityEvaluationQuery,
   MutabilityEvaluationResult,
 } from "src/site-evaluations/core/gateways/MutabilityEvaluationQuery";

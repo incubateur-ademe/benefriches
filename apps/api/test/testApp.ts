@@ -1,13 +1,15 @@
 import { HttpService } from "@nestjs/axios";
 import { ConfigModule } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
-import type { NestExpressApplication } from "@nestjs/platform-express";
+import { NestExpressApplication } from "@nestjs/platform-express";
 import { Test } from "@nestjs/testing";
 
 import { AppModule } from "src/app.module";
-import type { UserRepository } from "src/auth/core/gateways/UsersRepository";
-import { AUTH_USER_REPOSITORY_INJECTION_TOKEN } from "src/auth/core/gateways/UsersRepository";
-import type { User } from "src/auth/core/user";
+import {
+  AUTH_USER_REPOSITORY_INJECTION_TOKEN,
+  UserRepository,
+} from "src/auth/core/gateways/UsersRepository";
+import { User } from "src/auth/core/user";
 import { configureServer } from "src/httpServer";
 import { ConnectCrm } from "src/marketing/adapters/secondary/ConnectCrm";
 import { FakeCrm } from "src/marketing/adapters/secondary/FakeCrm";

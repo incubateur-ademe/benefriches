@@ -6,7 +6,7 @@ import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/Deter
 import { InMemoryEventPublisher } from "src/shared-kernel/adapters/events/publisher/InMemoryEventPublisher";
 import { DeterministicUuidGenerator } from "src/shared-kernel/adapters/id-generator/DeterministicIdGenerator";
 
-import type { ReconversionCompatibilityEvaluation } from "../reconversionCompatibilityEvaluation";
+import { ReconversionCompatibilityEvaluation } from "../reconversionCompatibilityEvaluation";
 import { StartReconversionCompatibilityEvaluationUseCase } from "./startReconversionCompatibilityEvaluation.usecase";
 
 describe("StartReconversionCompatibilityEvaluationUseCase", () => {

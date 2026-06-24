@@ -1,5 +1,5 @@
-import type { ReconversionCompatibilityEvaluationRepository } from "src/reconversion-compatibility/core/gateways/ReconversionCompatibilityEvaluationRepository";
-import type { ReconversionCompatibilityEvaluation } from "src/reconversion-compatibility/core/reconversionCompatibilityEvaluation";
+import { ReconversionCompatibilityEvaluationRepository } from "src/reconversion-compatibility/core/gateways/ReconversionCompatibilityEvaluationRepository";
+import { ReconversionCompatibilityEvaluation } from "src/reconversion-compatibility/core/reconversionCompatibilityEvaluation";
 
 export class InMemoryReconversionCompatibilityEvaluationRepository implements ReconversionCompatibilityEvaluationRepository {
   evaluations: ReconversionCompatibilityEvaluation[] = [];

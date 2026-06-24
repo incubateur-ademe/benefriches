@@ -1,4 +1,4 @@
-import type { CarbonStorage, RepositorySoilCategoryType } from "../models/carbonStorage";
+import { CarbonStorage, RepositorySoilCategoryType } from "../models/carbonStorage";
 
 export interface CarbonStorageQuery {
   getCarbonStorageForCity(

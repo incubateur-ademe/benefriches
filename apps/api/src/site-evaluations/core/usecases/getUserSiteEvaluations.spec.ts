@@ -2,13 +2,15 @@ import assert from "node:assert/strict";
 import { describe, it, mock } from "node:test";
 
 import { SilentLogger } from "src/shared-kernel/adapters/logger/SilentLogger";
-import type { FailureResult, SuccessResult } from "src/shared-kernel/result";
+import { FailureResult, SuccessResult } from "src/shared-kernel/result";
 import { InMemoryMutabilityEvaluationQuery } from "src/site-evaluations/adapters/secondary/queries/InMemoryMutabilityEvaluationQuery";
 import { InMemorySiteEvaluationQuery } from "src/site-evaluations/adapters/secondary/queries/InMemorySiteEvaluationQuery";
 
-import type { SiteEvaluationDataView } from "../gateways/SiteEvaluationQuery";
-import type { UserSiteEvaluation } from "./getUserSiteEvaluations.usecase";
-import { GetUserSiteEvaluationsUseCase } from "./getUserSiteEvaluations.usecase";
+import { SiteEvaluationDataView } from "../gateways/SiteEvaluationQuery";
+import {
+  GetUserSiteEvaluationsUseCase,
+  UserSiteEvaluation,
+} from "./getUserSiteEvaluations.usecase";
 
 describe("GetUserSiteEvaluationsUseCase", () => {
   it("Fails when userId is not provided", async () => {

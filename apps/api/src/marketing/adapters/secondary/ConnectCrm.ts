@@ -1,12 +1,12 @@
-import type { HttpService } from "@nestjs/axios";
+import { HttpService } from "@nestjs/axios";
 import { Injectable } from "@nestjs/common";
-import type { ConfigService } from "@nestjs/config";
+import { ConfigService } from "@nestjs/config";
 import { isAxiosError } from "axios";
 import { format } from "date-fns";
 import { lastValueFrom } from "rxjs";
 import { z, ZodError } from "zod";
 
-import type { CRMGateway, CrmContact, NewContactProps } from "src/marketing/core/CRMGateway";
+import { CRMGateway, CrmContact, NewContactProps } from "src/marketing/core/CRMGateway";
 
 const CONNECT_DATE_FORMAT = "yyyy-MM-dd";
 const CONNECT_DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";

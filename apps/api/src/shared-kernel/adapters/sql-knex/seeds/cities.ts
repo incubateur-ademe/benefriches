@@ -1,10 +1,9 @@
-import type { Knex } from "knex";
+import { Knex } from "knex";
 import fs from "node:fs";
 import path from "node:path";
 import readline from "node:readline";
 
-import type { CityProps } from "./../../../../carbon-storage/core/models/city";
-import { City } from "./../../../../carbon-storage/core/models/city";
+import { City, CityProps } from "./../../../../carbon-storage/core/models/city";
 
 /**
  * @param { import("knex").Knex } knex

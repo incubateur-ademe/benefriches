@@ -5,18 +5,20 @@ import { describe, it, beforeEach } from "node:test";
 import { InMemoryTokenAuthenticationAttemptRepository } from "src/auth/adapters/auth-token-repository/InMemoryTokenAuthenticationAttemptRepository";
 import { InMemoryUserRepository } from "src/auth/adapters/user-repository/InMemoryAuthUserRepository";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
-import type { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { InMemoryEventPublisher } from "src/shared-kernel/adapters/events/publisher/InMemoryEventPublisher";
 import { DeterministicUuidGenerator } from "src/shared-kernel/adapters/id-generator/DeterministicIdGenerator";
-import type { FailureResult, SuccessResult } from "src/shared-kernel/result";
+import { FailureResult, SuccessResult } from "src/shared-kernel/result";
 import { UserBuilder } from "src/users/core/model/user.mock";
 
 import { DeterministicTokenGenerator } from "../adapters/token-generator/DeterministicTokenGenerator";
 import { AuthenticateWithTokenUseCase } from "./authenticateWithToken.usecase";
-import type { LoginWithTokenFailedEvent } from "./events/loginWithTokenFailed.event";
-import { LOGIN_WITH_TOKEN_FAILED } from "./events/loginWithTokenFailed.event";
-import type { TokenGenerator } from "./sendAuthLink.usecase";
-import type { TokenAuthenticationAttempt } from "./tokenAuthenticationAttempt";
+import {
+  LOGIN_WITH_TOKEN_FAILED,
+  LoginWithTokenFailedEvent,
+} from "./events/loginWithTokenFailed.event";
+import { TokenGenerator } from "./sendAuthLink.usecase";
+import { TokenAuthenticationAttempt } from "./tokenAuthenticationAttempt";
 
 describe("AuthenticateWithToken Use Case", () => {
   let dateProvider: DateProvider;

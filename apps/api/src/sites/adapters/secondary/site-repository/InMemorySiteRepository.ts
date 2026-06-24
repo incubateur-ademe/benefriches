@@ -1,5 +1,5 @@
-import type { SitesRepository } from "src/sites/core/gateways/SitesRepository";
-import type { SiteEntity } from "src/sites/core/models/siteEntity";
+import { SitesRepository } from "src/sites/core/gateways/SitesRepository";
+import { SiteEntity } from "src/sites/core/models/siteEntity";
 
 export class InMemorySitesRepository implements SitesRepository {
   private sites: SiteEntity[] = [];

@@ -1,4 +1,4 @@
-import type { User } from "../user";
+import { User } from "../user";
 
 export const AUTH_USER_REPOSITORY_INJECTION_TOKEN = Symbol("AuthUserRepository");
 

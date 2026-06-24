@@ -4,8 +4,8 @@ import { v4 as uuid } from "uuid";
 
 import { InMemoryReconversionProjectRepository } from "src/reconversion-projects/adapters/secondary/repositories/reconversion-project/InMemoryReconversionProjectRepository";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
-import type { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
-import type { FailureResult } from "src/shared-kernel/result";
+import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { FailureResult } from "src/shared-kernel/result";
 
 import {
   buildMinimalReconversionProjectProps,

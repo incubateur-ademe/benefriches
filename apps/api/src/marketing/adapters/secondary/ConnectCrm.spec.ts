@@ -1,7 +1,6 @@
-import type { HttpService } from "@nestjs/axios";
+import { HttpService } from "@nestjs/axios";
 import { ConfigService } from "@nestjs/config";
-import type { AxiosResponse, InternalAxiosRequestConfig } from "axios";
-import { AxiosError, AxiosHeaders } from "axios";
+import { AxiosError, AxiosHeaders, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import assert from "node:assert/strict";
 import { describe, it, beforeEach, mock } from "node:test";
 import { of, throwError } from "rxjs";

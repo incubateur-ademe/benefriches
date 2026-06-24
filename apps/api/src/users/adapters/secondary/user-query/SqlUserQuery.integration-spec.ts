@@ -1,5 +1,4 @@
-import type { Knex } from "knex";
-import knex from "knex";
+import knex, { Knex } from "knex";
 import assert from "node:assert/strict";
 import { after, before, beforeEach, describe, it } from "node:test";
 import { v4 as uuid } from "uuid";

@@ -1,8 +1,8 @@
 import { Inject } from "@nestjs/common";
-import type { Knex } from "knex";
+import { Knex } from "knex";
 
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
-import type {
+import {
   UserFeatureAlertRepository,
   UserFeatureAlert,
 } from "src/users/core/usecases/createUserFeatureAlert.usecase";

@@ -1,10 +1,10 @@
-import type {
+import {
   DevelopmentPlanType,
   SiteActionType,
   SiteActionStatus,
   MutabilityUsage,
+  type GetSiteFeaturesResponseDto,
 } from "shared";
-import { type GetSiteFeaturesResponseDto } from "shared";
 
 export type SiteFeaturesView = GetSiteFeaturesResponseDto;
 

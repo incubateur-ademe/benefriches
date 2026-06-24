@@ -1,7 +1,11 @@
-import type { GetSiteImpactsDto, SiteImpactsDataView, SiteStatuQuoImpacts } from "shared";
-import { roundToInteger } from "shared";
+import {
+  GetSiteImpactsDto,
+  roundToInteger,
+  SiteImpactsDataView,
+  SiteStatuQuoImpacts,
+} from "shared";
 
-import type { SoilsCarbonStorage } from "src/reconversion-projects/core/gateways/SoilsCarbonStorageService";
+import { SoilsCarbonStorage } from "src/reconversion-projects/core/gateways/SoilsCarbonStorageService";
 import { SumOnEvolutionPeriodService } from "src/reconversion-projects/core/model/sum-on-evolution-period/SumOnEvolutionPeriodService";
 
 import { getSiteStatuQuoIndirectsImpacts } from "./siteIndirectImpacts";

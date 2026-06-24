@@ -1,9 +1,14 @@
-import type {
+import {
   DevelopmentPlanFeatures,
+  isSameStakeholders,
+  isStakeholderLocalAuthority,
+  roundToInteger,
   SiteImpactsDataView,
+  sumListWithKey,
   GetReconversionProjectImpactsResultDto,
   AggregatedReconversionIndirectEconomicImpact,
   AggregatedReconversionIndirectEconomicImpacts,
+  sumList,
   UrbanSprawlComparisonIndirectEconomicImpact,
   ProjectOperatingEconomicBalanceItem,
   ProjectEconomicBalance,
@@ -14,18 +19,11 @@ import type {
   AggregatedProjectImpactMetric,
   SiteStatuQuoImpactMetric,
 } from "shared";
-import {
-  isSameStakeholders,
-  isStakeholderLocalAuthority,
-  roundToInteger,
-  sumListWithKey,
-  sumList,
-} from "shared";
 
-import type { SoilsCarbonStorage } from "src/reconversion-projects/core/gateways/SoilsCarbonStorageService";
-import type { ApiReconversionProjectImpactsDataView } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
+import { SoilsCarbonStorage } from "src/reconversion-projects/core/gateways/SoilsCarbonStorageService";
+import { ApiReconversionProjectImpactsDataView } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
 import { computeStatuQuoSiteImpacts } from "src/sites/core/models/impacts/computeStatuQuoSiteImpacts";
-import type { CityStats } from "src/territory/core/gateways/CityStatsProvider";
+import { CityStats } from "src/territory/core/gateways/CityStatsProvider";
 
 import { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import { computeAvoidedRoadsAndUtilitiesConstructionExpensesWithFriche } from "../roads-and-utilities-expenses/roadsAndUtilitiesContruction";

@@ -1,4 +1,4 @@
-import type { CityStats, CityStatsProvider } from "src/territory/core/gateways/CityStatsProvider";
+import { CityStats, CityStatsProvider } from "src/territory/core/gateways/CityStatsProvider";
 
 const SAMPLES = [
   {

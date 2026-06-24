@@ -3,7 +3,7 @@ import { ZodValidationPipe } from "nestjs-zod";
 import { type UpdateSiteActionStatusDto, updateSiteActionStatusDtoSchema } from "shared";
 
 import { JwtAuthGuard } from "src/auth/adapters/JwtAuthGuard";
-import type { UpdateSiteActionStatusUseCase } from "src/site-actions/core/usecases/updateSiteActionStatus.usecase";
+import { UpdateSiteActionStatusUseCase } from "src/site-actions/core/usecases/updateSiteActionStatus.usecase";
 
 @Controller()
 export class SiteActionsController {

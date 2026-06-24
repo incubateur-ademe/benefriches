@@ -1,9 +1,9 @@
 // oxlint-disable no-console
 import { ConfigService } from "@nestjs/config";
 import { NestFactory } from "@nestjs/core";
-import type { NestExpressApplication } from "@nestjs/platform-express";
+import { NestExpressApplication } from "@nestjs/platform-express";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
-import type { Knex } from "knex";
+import { Knex } from "knex";
 
 import { AppModule } from "./app.module";
 import { configureServer } from "./httpServer";

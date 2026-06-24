@@ -1,8 +1,8 @@
 import { success } from "src/shared-kernel/result";
 import type { TResult } from "src/shared-kernel/result";
-import type { UseCase } from "src/shared-kernel/usecase";
+import { UseCase } from "src/shared-kernel/usecase";
 
-import type { CityRuralityQuery } from "../gateways/CityRuralityQuery";
+import { CityRuralityQuery } from "../gateways/CityRuralityQuery";
 
 type Request = {
   cityCode: string;

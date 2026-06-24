@@ -1,12 +1,11 @@
-import type { MutabilityUsage } from "shared";
+import { MutabilityUsage } from "shared";
 
 import type { AppLogger } from "src/shared-kernel/logger";
-import type { TResult } from "src/shared-kernel/result";
-import { fail, success } from "src/shared-kernel/result";
-import type { UseCase } from "src/shared-kernel/usecase";
+import { TResult, fail, success } from "src/shared-kernel/result";
+import { UseCase } from "src/shared-kernel/usecase";
 
-import type { MutabilityEvaluationQuery } from "../gateways/MutabilityEvaluationQuery";
-import type { SiteEvaluationDataView, SiteEvaluationQuery } from "../gateways/SiteEvaluationQuery";
+import { MutabilityEvaluationQuery } from "../gateways/MutabilityEvaluationQuery";
+import { SiteEvaluationDataView, SiteEvaluationQuery } from "../gateways/SiteEvaluationQuery";
 
 export type UserSiteEvaluation = Pick<
   SiteEvaluationDataView,

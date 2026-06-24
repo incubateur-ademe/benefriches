@@ -1,10 +1,10 @@
 import assert from "node:assert/strict";
 import { describe, it, beforeEach } from "node:test";
 
-import type { FailureResult, SuccessResult } from "src/shared-kernel/result";
+import { FailureResult, SuccessResult } from "src/shared-kernel/result";
 import { InMemorySitesQuery } from "src/sites/adapters/secondary/site-query/InMemorySitesQuery";
 
-import type { SiteFeaturesView } from "../models/views";
+import { SiteFeaturesView } from "../models/views";
 import { GetSiteByIdUseCase } from "./getSiteById.usecase";
 
 describe("GetSiteById Use Case", () => {

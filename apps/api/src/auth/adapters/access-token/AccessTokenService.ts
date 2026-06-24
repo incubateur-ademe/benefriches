@@ -1,4 +1,4 @@
-import type { JwtSignOptions } from "@nestjs/jwt";
+import { JwtSignOptions } from "@nestjs/jwt";
 
 export const ACCESS_TOKEN_SERVICE_INJECTION_TOKEN = Symbol("AccessTokenService");
 

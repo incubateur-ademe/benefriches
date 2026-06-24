@@ -2,10 +2,12 @@ import assert from "node:assert/strict";
 import { describe, it, mock } from "node:test";
 
 import { InMemoryReconversionProjectsListQuery } from "src/reconversion-projects/adapters/secondary/queries/reconversion-project-list/InMemoryReconversionProjectsListQuery";
-import type { FailureResult, SuccessResult } from "src/shared-kernel/result";
+import { FailureResult, SuccessResult } from "src/shared-kernel/result";
 
-import type { ReconversionProjectsGroupedBySite } from "./getUserReconversionProjectsBySite.usecase";
-import { GetUserReconversionProjectsBySiteUseCase } from "./getUserReconversionProjectsBySite.usecase";
+import {
+  GetUserReconversionProjectsBySiteUseCase,
+  ReconversionProjectsGroupedBySite,
+} from "./getUserReconversionProjectsBySite.usecase";
 
 describe("GetUserReconversionProjectsBySite Use Case", () => {
   it("Fails when userId is not provided", async () => {

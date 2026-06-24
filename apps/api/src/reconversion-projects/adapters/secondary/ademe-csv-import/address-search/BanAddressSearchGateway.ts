@@ -1,11 +1,11 @@
 // oxlint-disable no-console
-import type { Feature, FeatureCollection, Point } from "geojson";
+import { Feature, FeatureCollection, Point } from "geojson";
 import type { Address } from "shared";
 
 import { fail, success } from "src/shared-kernel/result";
 import type { TResult } from "src/shared-kernel/result";
 
-import type { AddressSearchGateway, SearchAddressOptions } from "./AddressSearchGateway";
+import { AddressSearchGateway, SearchAddressOptions } from "./AddressSearchGateway";
 
 const BAN_API_URL = "https://api-adresse.data.gouv.fr/search/?";
 

@@ -1,4 +1,4 @@
-import type { urbanProjectsFeaturesSchema } from "shared";
-import type { z } from "zod";
+import { urbanProjectsFeaturesSchema } from "shared";
+import { z } from "zod";
 
 export type UrbanProjectFeatures = z.infer<typeof urbanProjectsFeaturesSchema>;

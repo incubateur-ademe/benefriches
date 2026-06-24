@@ -1,12 +1,11 @@
 import { configDotenv } from "dotenv";
-import type { Knex } from "knex";
-import knex from "knex";
+import knex, { Knex } from "knex";
 import fs from "node:fs";
 import path from "node:path";
 import readline from "node:readline";
 
 import knexConfig from "../../sql-knex/knexConfig";
-import type { CityStats } from "../tableTypes";
+import { CityStats } from "../tableTypes";
 import { readCityStatsCsvData } from "./read-city-stats-csv";
 
 const dotEnvPath = path.resolve(process.cwd(), ".env");

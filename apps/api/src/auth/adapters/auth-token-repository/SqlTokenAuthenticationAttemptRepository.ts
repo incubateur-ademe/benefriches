@@ -1,8 +1,8 @@
 import { Inject, Injectable } from "@nestjs/common";
-import type { Knex } from "knex";
+import { Knex } from "knex";
 
-import type { TokenAuthenticationAttemptRepository } from "src/auth/core/gateways/TokenAuthenticationAttemptRepository";
-import type { TokenAuthenticationAttempt } from "src/auth/core/tokenAuthenticationAttempt";
+import { TokenAuthenticationAttemptRepository } from "src/auth/core/gateways/TokenAuthenticationAttemptRepository";
+import { TokenAuthenticationAttempt } from "src/auth/core/tokenAuthenticationAttempt";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 
 @Injectable()

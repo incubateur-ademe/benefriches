@@ -1,4 +1,4 @@
-import type {
+import {
   UserFeatureAlert,
   UserFeatureAlertRepository,
 } from "src/users/core/usecases/createUserFeatureAlert.usecase";

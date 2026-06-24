@@ -1,8 +1,9 @@
 import { Inject } from "@nestjs/common";
-import type { Knex } from "knex";
-import type {
+import { Knex } from "knex";
+import {
   AgriculturalOperationActivity,
   BuildingsConstructionExpense,
+  convertHectaresToSquareMeters,
   DevelopmentPlanInstallationExpenses,
   FinancialAssistanceRevenue,
   FricheActivity,
@@ -14,16 +15,15 @@ import type {
   SiteYearlyExpense,
   SiteYearlyIncome,
 } from "shared";
-import { convertHectaresToSquareMeters } from "shared";
 
-import type { DevelopmentPlan } from "src/reconversion-projects/core/model/reconversionProject";
+import { DevelopmentPlan } from "src/reconversion-projects/core/model/reconversionProject";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
-import type {
+import {
   SqlAddress,
   SqlReconversionProject,
   SqlSite,
 } from "src/shared-kernel/adapters/sql-knex/tableTypes";
-import type { EvaluatedProjectsImpactsStatsResult } from "src/stats/core/usecases/computeEvaluatedProjectStats.usecase";
+import { EvaluatedProjectsImpactsStatsResult } from "src/stats/core/usecases/computeEvaluatedProjectStats.usecase";
 
 type CoreRow = Pick<
   SqlReconversionProject,

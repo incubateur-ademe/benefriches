@@ -1,4 +1,4 @@
-import type { TokenAuthenticationAttempt } from "../tokenAuthenticationAttempt";
+import { TokenAuthenticationAttempt } from "../tokenAuthenticationAttempt";
 
 export interface TokenAuthenticationAttemptRepository {
   markAsComplete(tokenHash: string, completedDate: Date): Promise<void>;

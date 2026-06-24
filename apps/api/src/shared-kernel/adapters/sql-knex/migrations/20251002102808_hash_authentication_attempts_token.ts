@@ -1,4 +1,4 @@
-import type { Knex } from "knex";
+import { Knex } from "knex";
 
 import { RandomTokenGenerator } from "../../../../auth/adapters/token-generator/RandomTokenGenerator";
 

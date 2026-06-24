@@ -1,4 +1,4 @@
-import type { SoilType, SpaceCategory } from "shared";
+import { SoilType, SpaceCategory } from "shared";
 
 export type SqlUser = {
   id: string;

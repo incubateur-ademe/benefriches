@@ -1,4 +1,4 @@
-import type { CRMGateway, CrmContact, NewContactProps } from "src/marketing/core/CRMGateway";
+import { CRMGateway, CrmContact, NewContactProps } from "src/marketing/core/CRMGateway";
 
 export type LoginUpdate = {
   email: string;

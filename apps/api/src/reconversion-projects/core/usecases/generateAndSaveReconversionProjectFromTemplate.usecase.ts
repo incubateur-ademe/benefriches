@@ -1,13 +1,12 @@
-import type { ReconversionProjectTemplate } from "shared";
+import { ReconversionProjectTemplate } from "shared";
 
 import type { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerator";
 import type { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
-import type { TResult } from "src/shared-kernel/result";
-import { fail, success } from "src/shared-kernel/result";
-import type { UseCase } from "src/shared-kernel/usecase";
+import { TResult, fail, success } from "src/shared-kernel/result";
+import { UseCase } from "src/shared-kernel/usecase";
 
 import { createReconversionProjectCreatedEvent } from "../events/reconversionProjectCreated.event";
-import type { ReconversionProjectSaveDto } from "../model/reconversionProject";
+import { ReconversionProjectSaveDto } from "../model/reconversionProject";
 
 interface GenerateReconversionProjectFromTemplateUseCase {
   execute(id: Request): Promise<TResult<ReconversionProjectSaveDto, "SiteNotFound">>;

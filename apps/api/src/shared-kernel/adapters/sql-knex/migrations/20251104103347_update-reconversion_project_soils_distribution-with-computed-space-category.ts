@@ -1,10 +1,10 @@
-import type { Knex } from "knex";
+import { Knex } from "knex";
 import { roundTo2Digits, sumListWithKey, typedObjectEntries } from "shared";
 import { v4 as uuid } from "uuid";
 
-import type { UrbanProjectFeatures } from "src/reconversion-projects/core/model/urbanProjects";
+import { UrbanProjectFeatures } from "src/reconversion-projects/core/model/urbanProjects";
 
-import type { SqlReconversionProjectSoilsDistribution } from "../tableTypes";
+import { SqlReconversionProjectSoilsDistribution } from "../tableTypes";
 
 type MigrationResult = {
   migratedSoils: Pick<

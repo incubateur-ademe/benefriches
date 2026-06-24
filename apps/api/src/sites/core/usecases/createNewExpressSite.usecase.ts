@@ -1,27 +1,21 @@
-import type {
-  Address,
-  AgriculturalOperationActivity,
-  FricheActivity,
-  NaturalAreaType,
-} from "shared";
+import { Address, AgriculturalOperationActivity, FricheActivity, NaturalAreaType } from "shared";
 
-import type { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
-import type { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerator";
-import type { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
+import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerator";
+import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
 import type { AppLogger } from "src/shared-kernel/logger";
-import type { TResult } from "src/shared-kernel/result";
-import { fail, success } from "src/shared-kernel/result";
-import type { UseCase } from "src/shared-kernel/usecase";
-import type { CityRuralityQuery } from "src/territory/core/gateways/CityRuralityQuery";
-import type { CityStatsProvider } from "src/territory/core/gateways/CityStatsProvider";
+import { TResult, fail, success } from "src/shared-kernel/result";
+import { UseCase } from "src/shared-kernel/usecase";
+import { CityRuralityQuery } from "src/territory/core/gateways/CityRuralityQuery";
+import { CityStatsProvider } from "src/territory/core/gateways/CityStatsProvider";
 
 import { createSiteCreatedEvent } from "../events/siteCreated.event";
-import type { SitesRepository } from "../gateways/SitesRepository";
+import { SitesRepository } from "../gateways/SitesRepository";
 import { AgriculturalOperationGenerator } from "../models/agriculturalOperationGenerator";
 import { FricheGenerator } from "../models/fricheGenerator";
 import { NaturalAreaGenerator } from "../models/naturalAreaGenerator";
 import type { Site } from "../models/site";
-import type { SiteEntity } from "../models/siteEntity";
+import { SiteEntity } from "../models/siteEntity";
 
 export type ExpressSiteProps = {
   id: string;

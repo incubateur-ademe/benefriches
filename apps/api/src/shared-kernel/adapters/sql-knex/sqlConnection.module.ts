@@ -1,7 +1,5 @@
-import type { OnModuleDestroy } from "@nestjs/common";
-import { Global, Inject, Module } from "@nestjs/common";
-import type { Knex } from "knex";
-import knex from "knex";
+import { Global, Inject, Module, OnModuleDestroy } from "@nestjs/common";
+import knex, { Knex } from "knex";
 
 import knexConfig from "./knexConfig";
 

@@ -1,6 +1,6 @@
 import type { Knex } from "knex";
 
-import type { UrbanProjectFeatures } from "src/reconversion-projects/core/model/urbanProjects";
+import { UrbanProjectFeatures } from "src/reconversion-projects/core/model/urbanProjects";
 
 type LEGACY_SpacesDistribution = {
   BUILDINGS_FOOTPRINT?: number | undefined;

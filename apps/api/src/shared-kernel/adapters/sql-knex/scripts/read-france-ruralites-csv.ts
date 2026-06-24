@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import readline from "node:readline";
 
-import type { SqlFranceRuralite } from "../tableTypes";
+import { SqlFranceRuralite } from "../tableTypes";
 
 // A commune is considered rural when its FRR classification is anything other
 // than "Non classée" (e.g. "FRR socle", "FRR+", "FRR bénéficiaire"...).

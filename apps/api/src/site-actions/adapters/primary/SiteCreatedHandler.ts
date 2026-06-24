@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { OnEvent } from "@nestjs/event-emitter";
 
-import type { InitializeSiteActionsUseCase } from "src/site-actions/core/usecases/initializeSiteActions.usecase";
+import { InitializeSiteActionsUseCase } from "src/site-actions/core/usecases/initializeSiteActions.usecase";
 import { SITE_CREATED, type SiteCreatedEvent } from "src/sites/core/events/siteCreated.event";
 
 @Injectable()

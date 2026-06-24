@@ -3,7 +3,7 @@ import { createZodDto } from "nestjs-zod";
 import { soilTypeSchema } from "shared";
 import { z } from "zod";
 
-import type { GetCityCarbonStoragePerSoilsCategoryUseCase } from "src/carbon-storage/core/usecases/getCityCarbonStoragePerSoilsCategory";
+import { GetCityCarbonStoragePerSoilsCategoryUseCase } from "src/carbon-storage/core/usecases/getCityCarbonStoragePerSoilsCategory";
 
 const GetSoilsCarbonStorageDtoSchema = z.object({
   cityCode: z.string(),

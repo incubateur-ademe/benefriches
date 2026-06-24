@@ -1,10 +1,9 @@
-import type { Knex } from "knex";
-import knex from "knex";
+import knex, { Knex } from "knex";
 import assert from "node:assert/strict";
 import { after, before, beforeEach, describe, it } from "node:test";
 
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
-import type { UserFeatureAlert } from "src/users/core/usecases/createUserFeatureAlert.usecase";
+import { UserFeatureAlert } from "src/users/core/usecases/createUserFeatureAlert.usecase";
 
 import { SqlUserFeatureAlertRepository } from "./SqlUserFeatureAlertRepository";
 

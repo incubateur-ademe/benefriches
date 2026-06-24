@@ -1,6 +1,6 @@
-import type { ReconversionProjectImpactsQuery } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
+import { ReconversionProjectImpactsQuery } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
 
-import type { ReconversionProjectImpactsQueryResult } from "./SqlReconversionProjectImpactsQuery";
+import { ReconversionProjectImpactsQueryResult } from "./SqlReconversionProjectImpactsQuery";
 
 export class InMemoryReconversionProjectImpactsQuery implements ReconversionProjectImpactsQuery {
   data?: ReconversionProjectImpactsQueryResult = undefined;

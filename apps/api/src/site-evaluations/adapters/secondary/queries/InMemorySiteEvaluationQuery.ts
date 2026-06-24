@@ -1,4 +1,4 @@
-import type {
+import {
   SiteEvaluationDataView,
   SiteEvaluationQuery,
 } from "src/site-evaluations/core/gateways/SiteEvaluationQuery";

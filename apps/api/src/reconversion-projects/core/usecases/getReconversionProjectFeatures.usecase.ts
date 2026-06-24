@@ -1,8 +1,7 @@
-import type { TResult } from "src/shared-kernel/result";
-import { fail, success } from "src/shared-kernel/result";
-import type { UseCase } from "src/shared-kernel/usecase";
+import { TResult, fail, success } from "src/shared-kernel/result";
+import { UseCase } from "src/shared-kernel/usecase";
 
-import type { ReconversionProjectFeaturesView } from "../model/reconversionProject";
+import { ReconversionProjectFeaturesView } from "../model/reconversionProject";
 
 export interface ReconversionProjectQueryGateway {
   getFeaturesById(

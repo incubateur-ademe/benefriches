@@ -1,27 +1,31 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { EventEmitter2 } from "@nestjs/event-emitter";
-import type { JwtSignOptions } from "@nestjs/jwt";
-import { JwtModule, JwtService } from "@nestjs/jwt";
+import { JwtModule, JwtService, JwtSignOptions } from "@nestjs/jwt";
 
 import { CreateUserUseCase } from "src/auth/core/createUser.usecase";
-import type { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
 import { RealEventPublisher } from "src/shared-kernel/adapters/events/publisher/RealEventPublisher";
 import { RandomUuidGenerator } from "src/shared-kernel/adapters/id-generator/RandomUuidGenerator";
-import type { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerator";
-import { UUID_GENERATOR_INJECTION_TOKEN } from "src/shared-kernel/adapters/id-generator/UidGenerator";
+import {
+  UidGenerator,
+  UUID_GENERATOR_INJECTION_TOKEN,
+} from "src/shared-kernel/adapters/id-generator/UidGenerator";
 import { NestJsAppLogger } from "src/shared-kernel/adapters/logger/NestJsAppLogger";
-import type { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
-import { DOMAIN_EVENT_PUBLISHER_INJECTION_TOKEN } from "src/shared-kernel/domainEventPublisher";
+import {
+  DOMAIN_EVENT_PUBLISHER_INJECTION_TOKEN,
+  DomainEventPublisher,
+} from "src/shared-kernel/domainEventPublisher";
 import { SqlUserFeatureAlertRepository } from "src/users/adapters/secondary/user-feature-alert-repository/SqlUserFeatureAlertRepository";
 
 import { AuthenticateWithTokenUseCase } from "../core/authenticateWithToken.usecase";
-import type { TokenAuthenticationAttemptRepository } from "../core/gateways/TokenAuthenticationAttemptRepository";
-import type { UserRepository } from "../core/gateways/UsersRepository";
-import { AUTH_USER_REPOSITORY_INJECTION_TOKEN } from "../core/gateways/UsersRepository";
-import type { TokenGenerator, AuthLinkMailer } from "../core/sendAuthLink.usecase";
-import { SendAuthLinkUseCase } from "../core/sendAuthLink.usecase";
+import { TokenAuthenticationAttemptRepository } from "../core/gateways/TokenAuthenticationAttemptRepository";
+import {
+  AUTH_USER_REPOSITORY_INJECTION_TOKEN,
+  UserRepository,
+} from "../core/gateways/UsersRepository";
+import { SendAuthLinkUseCase, TokenGenerator, AuthLinkMailer } from "../core/sendAuthLink.usecase";
 import { ACCESS_TOKEN_SERVICE_INJECTION_TOKEN } from "./access-token/AccessTokenService";
 import { SmtpAuthLinkMailer } from "./auth-link-mailer/SmtpAuthLinkMailer";
 import { SqlTokenAuthenticationAttemptRepository } from "./auth-token-repository/SqlTokenAuthenticationAttemptRepository";

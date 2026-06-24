@@ -1,11 +1,16 @@
 import type { Knex } from "knex";
-import type { SoilsDistribution } from "shared";
-import { roundTo2Digits, sumListWithKey, sumObjectValues, typedObjectEntries } from "shared";
+import {
+  roundTo2Digits,
+  SoilsDistribution,
+  sumListWithKey,
+  sumObjectValues,
+  typedObjectEntries,
+} from "shared";
 import { v4 as uuid } from "uuid";
 
-import type { UrbanProjectFeatures } from "src/reconversion-projects/core/model/urbanProjects";
+import { UrbanProjectFeatures } from "src/reconversion-projects/core/model/urbanProjects";
 
-import type { SqlReconversionProjectSoilsDistribution } from "../tableTypes";
+import { SqlReconversionProjectSoilsDistribution } from "../tableTypes";
 
 type LEGACY_SpacesDistribution = {
   BUILDINGS_FOOTPRINT?: number | undefined;

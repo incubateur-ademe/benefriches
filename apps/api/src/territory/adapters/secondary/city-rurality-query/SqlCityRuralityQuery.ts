@@ -1,8 +1,8 @@
 import { Inject } from "@nestjs/common";
-import type { Knex } from "knex";
+import { Knex } from "knex";
 
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
-import type { CityRuralityQuery } from "src/territory/core/gateways/CityRuralityQuery";
+import { CityRuralityQuery } from "src/territory/core/gateways/CityRuralityQuery";
 
 export class SqlCityRuralityQuery implements CityRuralityQuery {
   constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}

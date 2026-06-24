@@ -1,17 +1,19 @@
 import { differenceInDays } from "date-fns";
-import type { AgriculturalOperationActivity, ReinstatementExpense, SiteNature } from "shared";
 import {
+  AgriculturalOperationActivity,
   computeAgriculturalOperationEtpFromSurface,
   computeDefaultOperationsFullTimeJobsFromBuildingsAreaDistribution,
   computeDefaultPhotovoltaicConversionFullTimeJobs,
   computeDefaultPhotovoltaicOperationsFullTimeJobs,
   computeReinstatementFullTimeJobs,
+  ReinstatementExpense,
   roundTo1Digit,
   roundTo2Digits,
+  SiteNature,
 } from "shared";
 
-import type { PhotovoltaicPowerStationFeatures, Schedule } from "../../reconversionProject";
-import type { UrbanProjectFeatures } from "../../urbanProjects";
+import { PhotovoltaicPowerStationFeatures, Schedule } from "../../reconversionProject";
+import { UrbanProjectFeatures } from "../../urbanProjects";
 import { Impact } from "../impact";
 
 type SpreadTemporaryFullTimeJobsOverInput = {

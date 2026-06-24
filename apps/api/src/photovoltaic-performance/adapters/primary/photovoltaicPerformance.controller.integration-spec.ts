@@ -1,4 +1,4 @@
-import type { NestExpressApplication } from "@nestjs/platform-express";
+import { NestExpressApplication } from "@nestjs/platform-express";
 import { Test as NestTest } from "@nestjs/testing";
 import assert from "node:assert/strict";
 import { after, before, describe, it } from "node:test";

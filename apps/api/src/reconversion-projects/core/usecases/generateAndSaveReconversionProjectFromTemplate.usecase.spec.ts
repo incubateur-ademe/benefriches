@@ -8,14 +8,14 @@ import { InMemoryReconversionProjectRepository } from "src/reconversion-projects
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { InMemoryEventPublisher } from "src/shared-kernel/adapters/events/publisher/InMemoryEventPublisher";
 import { RandomUuidGenerator } from "src/shared-kernel/adapters/id-generator/RandomUuidGenerator";
-import type { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerator";
-import type { FailureResult } from "src/shared-kernel/result";
+import { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGenerator";
+import { FailureResult } from "src/shared-kernel/result";
 import { InMemorySitesQuery } from "src/sites/adapters/secondary/site-query/InMemorySitesQuery";
-import type { SiteFeaturesView } from "src/sites/core/models/views";
+import { SiteFeaturesView } from "src/sites/core/models/views";
 import { InMemoryUserQuery } from "src/users/adapters/secondary/user-query/InMemoryUserQuery";
 
 import { RECONVERSION_PROJECT_CREATED } from "../events/reconversionProjectCreated.event";
-import type { ReconversionProjectSaveDto } from "../model/reconversionProject";
+import { ReconversionProjectSaveDto } from "../model/reconversionProject";
 import { GenerateAndSaveReconversionProjectFromTemplateUseCase } from "./generateAndSaveReconversionProjectFromTemplate.usecase";
 import { GenerateReconversionProjectFromTemplateUseCase } from "./generateReconversionProjectFromTemplate.usecase";
 

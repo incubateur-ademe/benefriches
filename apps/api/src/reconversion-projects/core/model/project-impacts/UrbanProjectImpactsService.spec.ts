@@ -1,15 +1,12 @@
 /* oxlint-disable typescript/dot-notation */
 import assert from "node:assert/strict";
 import { before, beforeEach, describe, it } from "node:test";
-import type { AvoidedCO2EqEmissions } from "shared";
+import { AvoidedCO2EqEmissions } from "shared";
 
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
-import type { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 
-import type {
-  InputFricheData,
-  InputReconversionProjectData,
-} from "./ReconversionProjectImpactsService";
+import { InputFricheData, InputReconversionProjectData } from "./ReconversionProjectImpactsService";
 import { UrbanProjectImpactsService } from "./UrbanProjectImpactsService";
 
 const reconversionProjectImpactDataView = {

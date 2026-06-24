@@ -1,4 +1,4 @@
-import type { ReconversionProjectImpacts } from "shared";
+import { ReconversionProjectImpacts } from "shared";
 
 export interface ImpactsServiceInterface {
   formatImpacts(): ReconversionProjectImpacts;

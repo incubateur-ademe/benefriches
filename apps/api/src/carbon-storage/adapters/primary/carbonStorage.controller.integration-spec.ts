@@ -1,5 +1,5 @@
-import type { NestExpressApplication } from "@nestjs/platform-express/interfaces/nest-express-application.interface";
-import type { Knex } from "knex";
+import { NestExpressApplication } from "@nestjs/platform-express/interfaces/nest-express-application.interface";
+import { Knex } from "knex";
 import assert from "node:assert/strict";
 import { after, before, describe, it } from "node:test";
 import supertest from "supertest";

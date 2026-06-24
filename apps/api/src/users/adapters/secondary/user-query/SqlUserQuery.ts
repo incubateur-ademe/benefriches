@@ -1,8 +1,8 @@
 import { Inject } from "@nestjs/common";
-import type { Knex } from "knex";
+import { Knex } from "knex";
 
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
-import type { UserQuery } from "src/users/core/gateways/UserQuery";
+import { UserQuery } from "src/users/core/gateways/UserQuery";
 
 export type UserViewModel = {
   id: string;

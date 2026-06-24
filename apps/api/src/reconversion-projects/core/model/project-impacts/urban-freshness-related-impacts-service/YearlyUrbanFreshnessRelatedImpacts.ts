@@ -1,5 +1,9 @@
-import type { BuildingsUseDistribution } from "shared";
-import { BUILDINGS_ECONOMIC_ACTIVITY_USE, filterObjectWithKeys, sumObjectValues } from "shared";
+import {
+  BuildingsUseDistribution,
+  BUILDINGS_ECONOMIC_ACTIVITY_USE,
+  filterObjectWithKeys,
+  sumObjectValues,
+} from "shared";
 
 import { InfluenceAreaService } from "../influence-area-service/InfluenceAreaService";
 

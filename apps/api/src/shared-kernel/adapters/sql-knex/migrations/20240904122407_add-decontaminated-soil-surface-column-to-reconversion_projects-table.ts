@@ -1,5 +1,5 @@
 import type { Knex } from "knex";
-import type { ReconversionProjectCreationMode } from "shared";
+import { ReconversionProjectCreationMode } from "shared";
 
 export async function up(knex: Knex): Promise<void> {
   await knex.transaction(async (trx) => {

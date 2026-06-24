@@ -1,8 +1,10 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
-import type { InputProjectDevelopmentEconomicBalanceProps } from "./projectDevelopmentEconomicBalance";
-import { getProjectDevelopmentEconomicBalance } from "./projectDevelopmentEconomicBalance";
+import {
+  getProjectDevelopmentEconomicBalance,
+  InputProjectDevelopmentEconomicBalanceProps,
+} from "./projectDevelopmentEconomicBalance";
 
 const baseProps: InputProjectDevelopmentEconomicBalanceProps = {
   stakeholders: {

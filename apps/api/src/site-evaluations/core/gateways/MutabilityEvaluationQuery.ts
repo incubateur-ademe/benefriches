@@ -1,4 +1,4 @@
-import type { MutabilityUsage } from "shared";
+import { MutabilityUsage } from "shared";
 
 export type MutabilityEvaluationResult = {
   mutafrichesId: string;

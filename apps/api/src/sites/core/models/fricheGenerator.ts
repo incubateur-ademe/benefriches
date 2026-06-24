@@ -1,6 +1,6 @@
-import type { FricheActivity } from "shared";
 import {
   computeFricheDefaultYearlyExpenses,
+  FricheActivity,
   formatMunicipalityName,
   generateSiteName,
   getContaminatedPercentageFromFricheActivity,

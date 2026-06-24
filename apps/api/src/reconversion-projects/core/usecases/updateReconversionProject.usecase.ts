@@ -1,13 +1,12 @@
 import { domainUpdateReconversionProjectPropsSchema } from "shared";
 import { z } from "zod";
 
-import type { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
-import type { TResult } from "src/shared-kernel/result";
-import { fail, success } from "src/shared-kernel/result";
-import type { UseCase } from "src/shared-kernel/usecase";
+import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { TResult, fail, success } from "src/shared-kernel/result";
+import { UseCase } from "src/shared-kernel/usecase";
 
-import type { ReconversionProjectRepository } from "../gateways/ReconversionProjectRepository";
-import type { ReconversionProjectUpdatePropsDto } from "../model/reconversionProject";
+import { ReconversionProjectRepository } from "../gateways/ReconversionProjectRepository";
+import { ReconversionProjectUpdatePropsDto } from "../model/reconversionProject";
 
 type Request = {
   reconversionProjectId: string;

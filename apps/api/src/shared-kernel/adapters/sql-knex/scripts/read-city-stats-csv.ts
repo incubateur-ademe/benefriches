@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import readline from "node:readline";
 
-import type { CityStats } from "../tableTypes";
+import { CityStats } from "../tableTypes";
 
 export const readCityStatsCsvData = () => {
   const dataPath = path.resolve(__dirname, "./../../../../../data/dvf/cityStats.csv");
