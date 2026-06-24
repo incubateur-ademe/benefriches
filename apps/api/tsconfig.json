@@ -10,18 +10,29 @@
     "experimentalDecorators": true /* Enable experimental support for legacy experimental decorators. */,
     "emitDecoratorMetadata": true /* Emit design-type metadata for decorated declarations in source files. */,
 
-    /* Modules */
-    "module": "NodeNext" /* Specify what module code is generated. */,
+    /* Modules — tsc is type-check ONLY here (noEmit); the real compiler is SWC
+       (see .swcrc + test/swc-esm-loader.mjs). So this must type-check the SOURCE
+       as authored: extensionless relative imports + "src/*"/"test/*" aliases.
+
+       moduleResolution is "bundler" (NOT "nodenext") on purpose. SWC owns module
+       resolution: it rewrites aliases -> relative and appends ".js" (resolveFully)
+       BEFORE Node ever sees a specifier. "bundler" models exactly that — "paths"
+       aliases resolve and relative imports need no explicit ".js". "nodenext" would
+       instead check the source specifiers against raw Node-ESM rules they never
+       take (Node runs SWC's output, not this source), erroring on every
+       extensionless/aliased import (~1800 errors) — i.e. it would be misleading.
+       The real Node-ESM output is validated by running the suite (real ESM) +
+       booting the app, not by tsc. */
+    "module": "esnext" /* required by moduleResolution "bundler"; emit is SWC's job */,
+    "moduleResolution": "bundler",
+    "isolatedModules": true /* each file must transpile standalone (per-file SWC compilation) */,
     "rootDir": "./" /* Specify the root folder within your source files. */,
     "paths": {
       "src/*": ["./src/*"],
       "test/*": ["./test/*"]
     },
-    /* Emit */
-    "declaration": true /* Generate .d.ts files from TypeScript and JavaScript files in your project. */,
-    "sourceMap": true /* Create source map files for emitted JavaScript files. */,
-    "outDir": "dist" /* Specify an output folder for all emitted files. */,
-    "removeComments": true /* Disable emitting comments. */,
+    /* Emit (type-check only — SWC handles real emit) */
+    "noEmit": true /* tsc never emits; SWC is the compiler. */,
     "allowSyntheticDefaultImports": true /* Allow 'import x from y' when a module doesn't have a default export. */,
     "esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */,
     "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */

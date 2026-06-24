@@ -8,7 +8,7 @@ import {
   CarbonStorageProps,
 } from "./../../../../carbon-storage/core/models/carbonStorage";
 
-const dataPath = path.resolve(__dirname, "./../../../../../data/aldo/carbonStorage.csv");
+const dataPath = path.resolve(import.meta.dirname, "./../../../../../data/aldo/carbonStorage.csv");
 const HEADER = "reservoir,soil_category,stock_tC_by_ha,localisation_category,localisation_code";
 
 const readCsvData = () => {
@@ -48,8 +48,7 @@ const readCsvData = () => {
   });
 };
 
-// oxlint-disable-next-line typescript/no-unsafe-member-access
-exports.seed = async function (knex: Knex): Promise<void> {
+export async function seed(knex: Knex): Promise<void> {
   await knex("carbon_storage").del();
   try {
     const data = (await readCsvData()) as CarbonStorage[];
@@ -68,4 +67,4 @@ exports.seed = async function (knex: Knex): Promise<void> {
     console.warn(`Error while reading CSV:`);
     console.error(error);
   }
-};
+}

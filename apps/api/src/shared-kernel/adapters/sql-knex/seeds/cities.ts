@@ -9,7 +9,7 @@ import { City, CityProps } from "./../../../../carbon-storage/core/models/city";
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-const dataPath = path.resolve(__dirname, "./../../../../../data/aldo/cities.csv");
+const dataPath = path.resolve(import.meta.dirname, "./../../../../../data/aldo/cities.csv");
 
 const HEADER =
   "city_code;name;department;region;epci;zpc;code_greco;code_groupeser;code_ser;code_bassin_populicole";
@@ -71,8 +71,7 @@ const readCsvData = () => {
   });
 };
 
-// oxlint-disable-next-line typescript/no-unsafe-member-access
-exports.seed = async function (knex: Knex): Promise<void> {
+export async function seed(knex: Knex): Promise<void> {
   await knex("cities").del();
   try {
     const data = (await readCsvData()) as CityProps[];
@@ -91,4 +90,4 @@ exports.seed = async function (knex: Knex): Promise<void> {
     console.warn(`Error while reading CSV:`);
     console.error(error);
   }
-};
+}

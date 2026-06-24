@@ -35,7 +35,7 @@ import { ComputeFricheInactionCostUseCase } from "src/sites/core/usecases/comput
 import { ComputeSiteImpactsUseCase } from "src/sites/core/usecases/computeSiteImpacts.usecase";
 import {
   CreateNewExpressSiteUseCase,
-  ExpressSiteProps,
+  type ExpressSiteProps,
 } from "src/sites/core/usecases/createNewExpressSite.usecase";
 import { CreateNewCustomSiteUseCase } from "src/sites/core/usecases/createNewSite.usecase";
 import { GetSiteByIdUseCase } from "src/sites/core/usecases/getSiteById.usecase";

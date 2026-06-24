@@ -14,6 +14,7 @@
   "ignorePatterns": ["node_modules/", "dist/"],
   "rules": {
     "typescript/ban-types": "error",
+    "typescript/consistent-type-imports": "off",
     "no-await-in-loop": "off",
     "no-accumulating-spread": "off",
     "unicorn/prefer-node-protocol": "error",

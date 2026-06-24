@@ -23,18 +23,19 @@ An ADR is a short document that captures an important architectural decision mad
 
 ## Index
 
-| #    | Title                                      | Status   | Date       |
-| ---- | ------------------------------------------ | -------- | ---------- |
-| 0001 | [Clean/Hexagonal Architecture](0001-clean-hexagonal-architecture.md) | Accepted | 2026-02-23 |
-| 0002 | [Redux event-based state management](0002-redux-event-based-state-management.md) | Accepted | 2026-02-23 |
-| 0003 | [Shared package for cross-app types](0003-shared-package-for-cross-app-types.md) | Accepted | 2026-02-23 |
-| 0004 | [Colocate urban project step definitions](0004-colocate-urban-project-step-definitions.md) | Accepted | 2026-02-23 |
-| 0005 | [Use gateway pattern for third-party browser SDKs](0005-gateway-pattern-for-third-party-browser-sdks.md) | Accepted | 2026-02-26 |
-| 0006 | [Use step handler pattern for renewable energy wizard](0006-step-handler-pattern-for-renewable-energy-wizard.md) | Accepted | 2026-03-03 |
-| 0007 | [Keep `shared` lean: move API-only domain code to `api`](0007-move-api-only-domain-code-out-of-shared.md) | Accepted | 2026-03-05 |
-| 0008 | [Static per-parcel-type step IDs for urban zone](0008-static-per-parcel-type-step-ids-for-urban-zone.md) | Accepted | 2026-03-09 |
-| 0009 | [Align urban project engine typing with urban zone patterns](0009-align-urban-project-engine-typing-with-urban-zone-patterns.md) | Accepted | 2026-03-23 |
-| 0010 | [Scheduled tasks as primary adapters within their owning module](0010-scheduled-tasks-as-primary-adapters.md) | Accepted | 2026-05-04 |
-| 0011 | [Use node:test for shared package unit tests](0011-use-node-test-for-shared-package-unit-tests.md) | Accepted | 2026-06-18 |
-| 0012 | [Loader stack for API integration tests under node:test](0012-node-test-loader-stack-for-api-integration-tests.md) | Accepted | 2026-06-23 |
-| 0013 | [Migrate apps/api test suite from Vitest to node:test](0013-migrate-api-test-suite-from-vitest-to-node-test.md) | Accepted | 2026-06-23 |
+| #    | Title                                                                                                                            | Status                                           | Date       |
+| ---- | -------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ | ---------- |
+| 0001 | [Clean/Hexagonal Architecture](0001-clean-hexagonal-architecture.md)                                                             | Accepted                                         | 2026-02-23 |
+| 0002 | [Redux event-based state management](0002-redux-event-based-state-management.md)                                                 | Accepted                                         | 2026-02-23 |
+| 0003 | [Shared package for cross-app types](0003-shared-package-for-cross-app-types.md)                                                 | Accepted                                         | 2026-02-23 |
+| 0004 | [Colocate urban project step definitions](0004-colocate-urban-project-step-definitions.md)                                       | Accepted                                         | 2026-02-23 |
+| 0005 | [Use gateway pattern for third-party browser SDKs](0005-gateway-pattern-for-third-party-browser-sdks.md)                         | Accepted                                         | 2026-02-26 |
+| 0006 | [Use step handler pattern for renewable energy wizard](0006-step-handler-pattern-for-renewable-energy-wizard.md)                 | Accepted                                         | 2026-03-03 |
+| 0007 | [Keep `shared` lean: move API-only domain code to `api`](0007-move-api-only-domain-code-out-of-shared.md)                        | Accepted                                         | 2026-03-05 |
+| 0008 | [Static per-parcel-type step IDs for urban zone](0008-static-per-parcel-type-step-ids-for-urban-zone.md)                         | Accepted                                         | 2026-03-09 |
+| 0009 | [Align urban project engine typing with urban zone patterns](0009-align-urban-project-engine-typing-with-urban-zone-patterns.md) | Accepted                                         | 2026-03-23 |
+| 0010 | [Scheduled tasks as primary adapters within their owning module](0010-scheduled-tasks-as-primary-adapters.md)                    | Accepted                                         | 2026-05-04 |
+| 0011 | [Use node:test for shared package unit tests](0011-use-node-test-for-shared-package-unit-tests.md)                               | Accepted                                         | 2026-06-18 |
+| 0012 | [Loader stack for API integration tests under node:test](0012-node-test-loader-stack-for-api-integration-tests.md)               | Superseded by [0014](0014-migrate-api-to-esm.md) | 2026-06-23 |
+| 0013 | [Migrate apps/api test suite from Vitest to node:test](0013-migrate-api-test-suite-from-vitest-to-node-test.md)                  | Accepted                                         | 2026-06-23 |
+| 0014 | [Migrate apps/api to ESM](0014-migrate-api-to-esm.md)                                                                            | Accepted                                         | 2026-06-24 |

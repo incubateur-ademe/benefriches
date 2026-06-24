@@ -12,7 +12,7 @@ const NON_RURAL_CLASSIFICATION = "Non classée";
 
 export const readFranceRuralitesCsvData = () => {
   const dataPath = path.resolve(
-    __dirname,
+    import.meta.dirname,
     "./../../../../../data/france-ruralites/liste-communes-FRR-juillet2025.csv",
   );
   const HEADER = "Code_insee;Departement;Commune;Classement FRR et FRR+ au 10 juillet 2025;";

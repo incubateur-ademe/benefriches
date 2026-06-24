@@ -1,7 +1,17 @@
 # [ADR-0012] Loader stack for API integration tests under node:test
 
 - **Date**: 2026-06-24
-- **Status**: Accepted
+- **Status**: Superseded by [ADR-0014](0014-migrate-api-to-esm.md)
+
+> **Superseded (2026-06-24)**: When `apps/api` migrated to native ESM
+> ([ADR-0014](0014-migrate-api-to-esm.md)), `"type": "module"` made `.ts` files
+> load as ESM, bypassing the `@swc-node/register` CommonJS hook this stack relies
+> on. Tests now run through a custom SWC **ESM** loader (`test/swc-esm-loader.mjs`)
+> that emits ESM with decorator metadata and resolves the path aliases.
+> `@swc-node/register` and `force-ts-commonjs.mjs` are removed. The analysis below
+> (why native type-stripping loses metadata + aliases, the `--require`-vs-`--import`
+> ordering constraint, and why `esm-register` is unusable) remains the rationale for
+> needing SWC compilation in the first place.
 
 > **Revision note (2026-06-24)**: This ADR replaces an earlier version that
 > documented a `tsx/esm` + `esm-path-aliases.mjs` loader stack. That stack never
@@ -21,7 +31,7 @@ node --require @swc-node/register --test 'src/**/*.spec.ts'
 Integration tests are harder because they add three constraints that unit tests do not have:
 
 1. **NestJS DI needs `emitDecoratorMetadata`** — `testApp.ts` boots the full `AppModule`. NestJS resolves constructor dependencies via `Reflect.getMetadata('design:paramtypes', …)`, which is only populated when TypeScript is transpiled with `emitDecoratorMetadata`. SWC (via `@swc-node/register`, reading `.swcrc`) emits it; Node's native type-stripping and esbuild (tsx) do **not**.
-2. **TypeScript path aliases** — specs import `src/*` and `test/*` (defined in `tsconfig.json` and `.swcrc`). `@swc-node/register` rewrites these to relative paths **at compile time** (it reads `jsc.baseUrl`/`jsc.paths` and emits resolved relative specifiers). It does *not* patch Node's runtime resolver. Any TypeScript that is **not** transpiled by SWC therefore loses alias resolution.
+2. **TypeScript path aliases** — specs import `src/*` and `test/*` (defined in `tsconfig.json` and `.swcrc`). `@swc-node/register` rewrites these to relative paths **at compile time** (it reads `jsc.baseUrl`/`jsc.paths` and emits resolved relative specifiers). It does _not_ patch Node's runtime resolver. Any TypeScript that is **not** transpiled by SWC therefore loses alias resolution.
 3. **Per-test DB isolation + global Docker setup** — a PostgreSQL testcontainer must start, migrate and seed once before any test (`--test-global-setup`), and every table must be truncated after each test (a global `afterEach`).
 
 The difficulty is that these constraints interact badly with how `node:test` chooses between the CommonJS and ESM loaders. Settling the command required reproducing several failures on Node 24.16.
@@ -30,7 +40,7 @@ The difficulty is that these constraints interact badly with how `node:test` cho
 
 `@swc-node/register@1.11.1` resolves aliases purely at compile time — it does **not** monkey-patch `Module._resolveFilename`. The unit-test command works because every `.ts` it touches is compiled by SWC, so alias imports are already rewritten to relative paths before Node resolves anything.
 
-The previous integration command layered `--import tsx/esm` on top. tsx forces `.ts` spec files onto the CommonJS loader but transpiles them **itself** (esbuild), without alias rewriting and without decorator metadata. The bare `src/*`/`test/*` specifiers then reached Node's stock CJS resolver and failed. The `--import ./test/esm-path-aliases.mjs` hook that was supposed to fix this never ran: **a module that only `export`s a `resolve` function and is loaded via `--import` does not install a loader hook** — `--import` merely *executes* the module. Hooks must be registered explicitly (`module.register()` / `module.registerHooks()`) or supplied via `--loader`.
+The previous integration command layered `--import tsx/esm` on top. tsx forces `.ts` spec files onto the CommonJS loader but transpiles them **itself** (esbuild), without alias rewriting and without decorator metadata. The bare `src/*`/`test/*` specifiers then reached Node's stock CJS resolver and failed. The `--import ./test/esm-path-aliases.mjs` hook that was supposed to fix this never ran: **a module that only `export`s a `resolve` function and is loaded via `--import` does not install a loader hook** — `--import` merely _executes_ the module. Hooks must be registered explicitly (`module.register()` / `module.registerHooks()`) or supplied via `--loader`.
 
 Node 24.12.0 ([nodejs/node#60380](https://github.com/nodejs/node/pull/60380)) made main-thread ESM resolution fully synchronous, removing incidental fallbacks that had previously masked this gap — which is why the breakage surfaced specifically on Node ≥ 24.12.
 
@@ -53,8 +63,8 @@ node
 ### The constraints, established empirically (Node 24.16)
 
 - **(A) Specs must load as CommonJS via swc-node.** That is the only path that gives both decorator metadata and alias resolution. Node 24's native type-stripping (default) gives neither.
-- **(B) The per-test `afterEach` hook must be an `--import` preload.** When the hook is a `--require` preload, registering `node:test` hooks at module-load time makes the runner begin executing tests *before* `--test-global-setup` resolves (reproduced with one and with multiple spec files; independent of the hook's file type).
-- **(C) The mere presence of any `--import` preload flips `node:test` to load `.ts` test files via the ESM loader** (native strip) — off the swc-node CJS path, breaking (A). Reproduced with a no-op `.mjs` *and* a `.cjs` preload, so it is not specific to TypeScript or to a particular loader.
+- **(B) The per-test `afterEach` hook must be an `--import` preload.** When the hook is a `--require` preload, registering `node:test` hooks at module-load time makes the runner begin executing tests _before_ `--test-global-setup` resolves (reproduced with one and with multiple spec files; independent of the hook's file type).
+- **(C) The mere presence of any `--import` preload flips `node:test` to load `.ts` test files via the ESM loader** (native strip) — off the swc-node CJS path, breaking (A). Reproduced with a no-op `.mjs` _and_ a `.cjs` preload, so it is not specific to TypeScript or to a particular loader.
 
 (A) and (C) directly conflict: the hook forces an `--import`, which forces specs to ESM, which loses aliases + metadata. `force-ts-commonjs.mjs` resolves the conflict by forcing `.ts` back onto the CJS loader.
 
@@ -71,7 +81,7 @@ node
 
 ### Option 3 — `@swc-node/register/esm-register` as the ESM loader
 
-- **Cons**: empirically broken for this use case on Node 24.16 — it cannot resolve a relative `--import ./path.ts` entrypoint, throws `ERR_REQUIRE_CYCLE_MODULE` for an absolute `.ts` entrypoint, and forces imported `.ts` modules to `commonjs` so ESM named imports fail with *"does not provide an export named …"*.
+- **Cons**: empirically broken for this use case on Node 24.16 — it cannot resolve a relative `--import ./path.ts` entrypoint, throws `ERR_REQUIRE_CYCLE_MODULE` for an absolute `.ts` entrypoint, and forces imported `.ts` modules to `commonjs` so ESM named imports fail with _"does not provide an export named …"_.
 
 ### Option 4 — `ts-node/esm`
 
@@ -80,7 +90,7 @@ node
 ### Option 5 — write the per-test hook and/or global setup in plain JS
 
 - The **per-test hook** in JS does not help: it must still be `--import` (constraint B), which still flips specs to ESM (constraint C), so `force-ts-commonjs.mjs` is still required; and as `.ts` it stays type-checked and is compiled by swc-node anyway.
-- The **global setup** in JS *is* viable (it has no alias imports), but it loses type-safety on the testcontainers/Docker orchestration and trips a type-aware lint rule (`no-unsafe-call`) on the untyped instance. Keeping it as TypeScript-but-ESM-explicit (`.mts`) achieves the same goal (no `MODULE_TYPELESS_PACKAGE_JSON` warning) with no downside — so the global setup is `.mts`, not `.mjs`.
+- The **global setup** in JS _is_ viable (it has no alias imports), but it loses type-safety on the testcontainers/Docker orchestration and trips a type-aware lint rule (`no-unsafe-call`) on the untyped instance. Keeping it as TypeScript-but-ESM-explicit (`.mts`) achieves the same goal (no `MODULE_TYPELESS_PACKAGE_JSON` warning) with no downside — so the global setup is `.mts`, not `.mjs`.
 
 ### Option 6 — `--require @swc-node/register` + `--import ./test/force-ts-commonjs.mjs` + `--import` hook (chosen)
 

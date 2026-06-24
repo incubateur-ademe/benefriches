@@ -107,7 +107,7 @@ Each test should verify a **distinct behavior** not covered by other tests:
 ```bash
 # Test specific file
 # API unit: node:test doesn't accept extra args via pnpm script — run directly from apps/api/
-node --require @swc-node/register --test src/path/to/file.spec.ts  # from apps/api/
+node --import ./test/swc-esm-loader.mjs --test src/path/to/file.spec.ts  # from apps/api/
 pnpm --filter api test:integration path/to/file.integration-spec.ts # for integration tests
 pnpm --filter web test path/to/file.spec.ts
 

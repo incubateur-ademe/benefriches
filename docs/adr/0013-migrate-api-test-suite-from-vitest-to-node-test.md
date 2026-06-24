@@ -3,6 +3,13 @@
 - **Date**: 2026-06-23
 - **Status**: Accepted
 
+> **Update (2026-06-24)**: The decision to use `node:test` stands, but the exact
+> commands below changed when `apps/api` migrated to native ESM
+> ([ADR-0014](0014-migrate-api-to-esm.md)). Tests now run through a custom SWC ESM
+> loader instead of `@swc-node/register` + `force-ts-commonjs.mjs`. See
+> [`package.json`](../../apps/api/package.json) for the current `test:unit` /
+> `test:integration` scripts.
+
 ## Context
 
 The `apps/api` test suite was running under Vitest across two scripts:
@@ -48,13 +55,13 @@ The integration test command is deliberately more involved; its full rationale i
 
 The assertion API maps mechanically but has two notable differences:
 
-| Vitest | node:assert/strict |
-|---|---|
-| `expect(a).toEqual(b)` | `assert.deepStrictEqual(a, b)` |
-| `expect(a).toMatchObject(p)` | `assert.partialDeepStrictEqual(a, p)` |
-| `expect(a).toBe(b)` | `assert.strictEqual(a, b)` |
+| Vitest                               | node:assert/strict                                         |
+| ------------------------------------ | ---------------------------------------------------------- |
+| `expect(a).toEqual(b)`               | `assert.deepStrictEqual(a, b)`                             |
+| `expect(a).toMatchObject(p)`         | `assert.partialDeepStrictEqual(a, p)`                      |
+| `expect(a).toBe(b)`                  | `assert.strictEqual(a, b)`                                 |
 | `expect(fn).toHaveBeenCalledWith(a)` | `assert.deepStrictEqual(fn.mock.calls[0]?.arguments, [a])` |
-| `vi.fn()` | `mock.fn()` (from `node:test`) |
+| `vi.fn()`                            | `mock.fn()` (from `node:test`)                             |
 
 **`{k: undefined}` strictness**: `assert.deepStrictEqual` treats `{k: undefined}` as distinct from `{}`, unlike Vitest's `toEqual`. Tests that spread objects with omitted optional fields required explicit conditional spreading: `...(v !== undefined ? { k: v } : {})`.
 

@@ -19,7 +19,8 @@ if (fs.existsSync(dotEnvPath)) {
 }
 
 const userId = process.argv[2];
-const outputPath = process.argv[3] ?? path.resolve(__dirname, "../ademe-impacts-export.csv");
+const outputPath =
+  process.argv[3] ?? path.resolve(import.meta.dirname, "../ademe-impacts-export.csv");
 
 if (!userId) {
   console.error(

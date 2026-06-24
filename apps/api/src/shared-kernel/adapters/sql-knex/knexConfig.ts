@@ -20,10 +20,10 @@ const config: Knex.Config = {
   },
   migrations: {
     tableName: "knex_migrations",
-    directory: __dirname + "/migrations/",
+    directory: import.meta.dirname + "/migrations/",
   },
   seeds: {
-    directory: __dirname + "/seeds/",
+    directory: import.meta.dirname + "/seeds/",
   },
 };
 

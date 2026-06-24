@@ -41,7 +41,7 @@ if (!csvPath || !userId) {
   try {
     const sitesRepository = new SqlSiteRepository(db);
     const reconversionProjectRepository = new SqlReconversionProjectRepository(db);
-    const cacheFilePath = path.resolve(__dirname, "../address-cache.json");
+    const cacheFilePath = path.resolve(import.meta.dirname, "../address-cache.json");
     const addressApi = new CachedAddressSearchGateway(new BanAddressSearchGateway(), cacheFilePath);
 
     const computeImpactsUseCase = buildAdemeScriptComputeImpactsUseCase(db);
