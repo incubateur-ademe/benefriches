@@ -4,7 +4,7 @@ import {
   getLastBuildingsChapterStep,
   shouldEnterBuildingsChapter,
 } from "../../buildings/buildingsReaders";
-import type { AnswerStepHandler } from "../../stepHandler.type";
+import type { AnswerStepHandler, StepInvalidationRule } from "../../stepHandler.type";
 
 export const InvolvesReinstatementHandler = {
   stepId: "URBAN_PROJECT_INVOLVES_REINSTATEMENT",
@@ -29,50 +29,28 @@ export const InvolvesReinstatementHandler = {
   },
 
   getDependencyRules(context, answers) {
+    // oxlint-disable-next-line @typescript-eslint/unbound-method
+    const getStep = ReadStateHelper.getStep;
     const previousAnswer = ReadStateHelper.getStepAnswers(
       context.stepsState,
       "URBAN_PROJECT_INVOLVES_REINSTATEMENT",
     )?.involvesReinstatement;
 
-    // Switching from true (or undefined) to false: delete all reinstatement-dependent steps
+    // Switching from true (or undefined) to false: delete reinstatement-specific steps only.
     if (answers.involvesReinstatement === false && previousAnswer !== false) {
-      const rules = [];
+      const rules: StepInvalidationRule[] = [];
 
-      if (
-        ReadStateHelper.getStep(context.stepsState, "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION")
-      ) {
-        rules.push({
-          stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
-          action: "delete",
-        } as const);
+      if (getStep(context.stepsState, "URBAN_PROJECT_EXPENSES_REINSTATEMENT")) {
+        rules.push({ stepId: "URBAN_PROJECT_EXPENSES_REINSTATEMENT", action: "delete" });
       }
-      if (
-        ReadStateHelper.getStep(
-          context.stepsState,
-          "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA",
-        )
-      ) {
-        rules.push({
-          stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA",
-          action: "delete",
-        } as const);
-      }
-      if (ReadStateHelper.getStep(context.stepsState, "URBAN_PROJECT_EXPENSES_REINSTATEMENT")) {
-        rules.push({ stepId: "URBAN_PROJECT_EXPENSES_REINSTATEMENT", action: "delete" } as const);
-      }
-      if (
-        ReadStateHelper.getStep(
-          context.stepsState,
-          "URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER",
-        )
-      ) {
+      if (getStep(context.stepsState, "URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER")) {
         rules.push({
           stepId: "URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER",
           action: "delete",
-        } as const);
+        });
       }
-      if (ReadStateHelper.getStep(context.stepsState, "URBAN_PROJECT_SCHEDULE_PROJECTION")) {
-        rules.push({ stepId: "URBAN_PROJECT_SCHEDULE_PROJECTION", action: "invalidate" } as const);
+      if (getStep(context.stepsState, "URBAN_PROJECT_SCHEDULE_PROJECTION")) {
+        rules.push({ stepId: "URBAN_PROJECT_SCHEDULE_PROJECTION", action: "invalidate" });
       }
       return rules;
     }

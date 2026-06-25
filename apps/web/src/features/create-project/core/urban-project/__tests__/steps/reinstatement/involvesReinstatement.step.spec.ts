@@ -32,7 +32,7 @@ describe("Urban project creation - Steps - Involves reinstatement", () => {
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
   });
 
-  it("should delete reinstatement-related steps when switching from true to false", () => {
+  it("should delete only reinstatement-specific steps when switching from true to false", () => {
     const store = new StoreBuilder()
       .withSteps({
         URBAN_PROJECT_INVOLVES_REINSTATEMENT: {
@@ -70,8 +70,7 @@ describe("Urban project creation - Steps - Involves reinstatement", () => {
 
     const steps = store.getState().projectCreation.urbanProject.steps;
 
-    expect(steps.URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION).toBeUndefined();
-    expect(steps.URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA).toBeUndefined();
+    // Reinstatement-specific steps must be deleted
     expect(steps.URBAN_PROJECT_EXPENSES_REINSTATEMENT).toBeUndefined();
     expect(steps.URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER).toBeUndefined();
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");

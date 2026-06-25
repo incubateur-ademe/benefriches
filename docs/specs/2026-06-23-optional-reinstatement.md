@@ -136,7 +136,7 @@ pnpm --filter api test:unit src/reconversion-projects/core/model/project-impacts
 **New step handler** (`apps/web/src/shared/core/reducers/project-form/urban-project/step-handlers/reinstatement/involves-reinstatement/`):
 - `involvesReinstatement.handler.ts` — `AnswerStepHandler<{ involvesReinstatement: boolean }>`.
   - `getNextStepId()`: if `true` → `SOILS_DECONTAMINATION_INTRODUCTION`; if `false` → first non-reinstatement step after the reinstatement block (expenses or stakeholders, whichever comes first in the non-reinstatement path).
-  - `getDependencyRules()`: when answer changes to `false`, delete answers for all reinstatement steps (`SOILS_DECONTAMINATION_INTRODUCTION`, `SOILS_DECONTAMINATION_SELECTION`, `SOILS_DECONTAMINATION_SURFACE_AREA`, `EXPENSES_REINSTATEMENT`, `STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER`).
+  - `getDependencyRules()`: when answer changes to `false`, delete only reinstatement-specific steps (`EXPENSES_REINSTATEMENT`, `STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER`) and invalidate `SCHEDULE_PROJECTION`. Decontamination steps (`SOILS_DECONTAMINATION_SELECTION`, `SOILS_DECONTAMINATION_SURFACE_AREA`) are **not** deleted — decontamination is independent from reinstatement.
 - `involvesReinstatement.schema.ts`
 - `involvesReinstatement.selectors.ts`
 - `involvesReinstatement.stepperConfig.ts`
@@ -151,7 +151,7 @@ pnpm --filter api test:unit src/reconversion-projects/core/model/project-impacts
 - When `involvesReinstatement: false`, set installation start default to `createdAt + 1 year` instead of `reinstatementSchedule.endDate + 1 day`.
 
 **Project generator** (`UrbanProjectGenerator.getReconversionProject()`):
-- When `involvesReinstatement: false`, omit `reinstatementCosts`, `reinstatementSchedule`, `reinstatementContractOwner`, `decontaminatedSoilSurface`.
+- When `involvesReinstatement: false`, omit `reinstatementCosts`, `reinstatementSchedule`, `reinstatementContractOwner`. `decontaminatedSoilSurface` is independent from reinstatement and must NOT be omitted.
 - Always include `involvesReinstatement` in the output (sent to API).
 
 **Tests** (`urban-project/__tests__/steps/reinstatement/involvesReinstatement.step.spec.ts`):
