@@ -66,10 +66,10 @@ if [[ ! -d "$WORKTREE_PATH" ]]; then
 fi
 
 # Stop any running Docker containers in the worktree
-if [[ -f "$WORKTREE_PATH/docker-compose.db.yml" ]]; then
+if [[ -f "$WORKTREE_PATH/docker-compose.dev.yml" ]]; then
     echo "Stopping Docker containers..."
     cd "$WORKTREE_PATH"
-    docker compose --env-file apps/api/.env -f docker-compose.db.yml down 2>/dev/null || true
+    make -C "$WORKTREE_PATH" dev-down 2>/dev/null || true
 fi
 
 # Remove the worktree

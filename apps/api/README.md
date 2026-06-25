@@ -1,5 +1,5 @@
 ### Database install
 
-- `docker compose --env-file apps/api/.env.test -f docker-compose.db.yml up`
+- `make dev-up`
 - `pnpm knex:migrate-latest`
 - `pnpm knex:seed-run`

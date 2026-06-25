@@ -52,7 +52,7 @@ cp apps/api/.env.example apps/api/.env
 
 ```sh
 # à la racine du projet
-$ docker compose --env-file apps/api/.env -f docker-compose.db.yml up -d
+$ make dev-up
 ```
 
 #### avec PostgreSQL
@@ -88,11 +88,8 @@ pnpm --filter web dev
 La stack complète peut être lancée via Docker Compose dans un environnement similaire à la production (tests manuels, debugging, etc.).
 
 ```sh
-# Démarrer la stack (postgres, api, web, mailcatcher)
-docker compose --env-file .env.e2e -f docker-compose.e2e.yml up -d
-
-# Arrêter la stack
-docker compose --env-file .env.e2e -f docker-compose.e2e.yml down
+make e2e-up
+make e2e-down
 ```
 
 Services disponibles (configuration par défaut dans `.env.e2e`) :
@@ -114,17 +111,10 @@ pnpm run -r test
 Les tests E2E utilisent la stack Docker production-like.
 
 ```sh
-# Démarrer la stack Docker
-docker compose --env-file .env.e2e -f docker-compose.e2e.yml up -d
-
 # Installer les navigateurs Playwright (première fois uniquement)
 pnpm --filter e2e-tests exec playwright install --with-deps
 
-# Lancer les tests
-pnpm --filter e2e-tests test:headed
-
-# Arrêter la stack
-docker compose --env-file .env.e2e -f docker-compose.e2e.yml down
+make e2e-test-headed
 ```
 
 ## Build, lint et formattage
