@@ -13,7 +13,7 @@ cp -rv packages/shared/src packages/shared/package.json packages/shared/tsconfig
 
 # Copy api app sources (buildpack will build it)
 mkdir -p .tmp-build/apps/api
-cp -rv apps/api/src apps/api/package.json apps/api/tsconfig.json apps/api/tsconfig.build.json apps/api/nest-cli.json .tmp-build/apps/api/
+cp -rv apps/api/src apps/api/package.json apps/api/tsconfig.json apps/api/tsconfig.build.json apps/api/nest-cli.json apps/api/swc.config.json .tmp-build/apps/api/
 
 # Copy data files needed for seed
 cp -rv apps/api/data .tmp-build/apps/api/
