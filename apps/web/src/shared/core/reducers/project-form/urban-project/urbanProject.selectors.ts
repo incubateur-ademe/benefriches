@@ -252,10 +252,7 @@ export const createUrbanProjectFormSelectors = (
     selectStepsGroupedBySections,
   );
 
-  const selectScheduleProjectionViewData = createSelectScheduleProjectionViewData(
-    selectStepState,
-    selectors.selectIsSiteFriche,
-  );
+  const selectScheduleProjectionViewData = createSelectScheduleProjectionViewData(selectStepState);
 
   const selectSoilsDecontaminationSurfaceAreaViewData =
     createSelectSoilsDecontaminationSurfaceAreaViewData(

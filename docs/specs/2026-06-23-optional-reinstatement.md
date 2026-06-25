@@ -6,14 +6,14 @@
 
 ## Status
 
-**Current step: Step 4 — Urban project creation wizard**
+**Current step: Step 5 — PV project creation wizard**
 
 | Step | Status |
 |---|---|
 | Step 1 — Data model | ✅ done |
 | Step 2 — API wiring | ✅ done |
 | Step 3 — Impacts audit | ✅ done |
-| Step 4 — Urban project creation wizard | 🔲 todo |
+| Step 4 — Urban project creation wizard | ✅ done |
 | Step 5 — PV project creation wizard | 🔲 todo |
 | Step 6 — Domain invariant enforcement | 🔲 todo |
 
@@ -304,3 +304,59 @@ pnpm --filter api test:unit src/reconversion-projects
 - Dropped the full-time jobs test after code review: `FullTimeJobsImpactService.spec.ts` already covers this at lower level; testing it again through `ReconversionProjectImpactsService` added noise without new coverage. Kept only the economic balance assertion.
 - Added `involvesReinstatement: boolean` to `InputReconversionProjectData` (raised during Step 3 review). Cascaded through: `ReconversionProjectImpactsDataView` in shared, `SqlReconversionProjectImpactsQuery` SELECT + mapping, `quickComputeUrbanProjectImpactsOnFricheUseCase` explicit mapping, and `involvesReinstatement: true` fixtures in 9 spec files.
 - WITHOUT scenario keeps `reinstatementContractOwnerName` (developer = owner) so `siteReinstatement: undefined` is driven by the empty expenses guard, not the ownership guard.
+
+---
+
+### 2026-06-25 — Step 4: Urban project creation wizard
+
+**What I did:**
+- Found that Step 4 was already fully implemented across commits `92383ea7a` and `f1c1dc71c`.
+- Verified all spec requirements are met: handler at `soils/involves-reinstatement/`, registered in `stepHandlerRegistry.ts`, step ID in `urbanProjectSteps.ts`, dependency rules delete only reinstatement-specific steps, decontamination steps preserved, schedule handler anchors installation to `createdAt + 1 year` when `involvesReinstatement: false` on FRICHE, `projectDataReaders.ts` always includes `involvesReinstatement` in output.
+- Confirmed 4 tests cover all scenarios from spec: `true` → `SOILS_DECONTAMINATION_INTRODUCTION`, `false` → `SITE_RESALE_INTRODUCTION`, dependency rules delete reinstatement steps only, schedule default when `false`.
+- E2E tests updated: `selectInvolvesReinstatement(false)` called in 3 FRICHE scenarios in `create-custom-urban-project.spec.ts`.
+- All validation passes: 201 test files / 1073 tests, 0 typecheck errors, 0 lint warnings.
+
+**Difficulties:**
+- None — implementation was already complete.
+
+**Decisions:**
+- Handler placed at `soils/involves-reinstatement/` rather than spec's `reinstatement/involves-reinstatement/` — the step naturally lives in the soils chapter (it appears after soils carbon summary, before decontamination). This is a sensible deviation from the spec's suggested path.
+
+**Revisions:**
+- None needed.
+
+---
+
+### 2026-06-25 — Bug fix: decontamination skipped when involvesReinstatement is false
+
+**What I did:**
+- Updated spec doc Step 4 to correct the `getNextStepId()` description: both `true` and `false` navigate to `SOILS_DECONTAMINATION_INTRODUCTION`.
+- Updated the wrong test `should navigate to SITE_RESALE_INTRODUCTION when involvesReinstatement is false` → now expects `URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION`.
+- Updated the third test (delete dependency rules) which also asserted the wrong final step.
+- Fixed `InvolvesReinstatementHandler.getNextStepId()` to always return `URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION` (removed the conditional branch).
+- Updated 3 e2e friche tests in `create-custom-urban-project.spec.ts` to include the decontamination introduction and selection (skipped) steps after selecting no reinstatement.
+
+**Difficulties:**
+- The shared package was not built in the worktree, causing a test resolution error during agent run.
+
+**Decisions:**
+- `getNextStepId()` no longer reads `involvesReinstatement` from context or answers — the return value is unconditional.
+
+**Revisions:**
+- None.
+
+---
+
+### 2026-06-25 — Bug fix: schedule projection shows reinstatement dates when involvesReinstatement is false
+
+**What I did:**
+- Added `hasReinstatement: boolean` to `ScheduleProjectionViewData` in `scheduleProjection.selector.ts`, computed as `isSiteFriche && involvesReinstatement !== false`.
+- Updated the schedule container to destructure `hasReinstatement` instead of `isSiteFriche` and pass it to `ScheduleProjectionForm`.
+- Added two failing tests to `urbanProject.selectors.spec.ts` before writing the fix (TDD).
+
+**Decisions:**
+- Used `involvesReinstatement !== false` (not `=== true`) so FRICHE sites where the step hasn't been answered yet still show reinstatement fields by default.
+- Kept `isSiteFriche` in the view data type — existing tests assert on it.
+
+**Revisions:**
+- None.

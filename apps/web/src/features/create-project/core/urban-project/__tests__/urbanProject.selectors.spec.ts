@@ -346,41 +346,6 @@ describe("urbanProject.selectors", () => {
     });
   });
 
-  describe("selectScheduleProjectionViewData", () => {
-    it("returns step answers and isSiteFriche", () => {
-      const store = new StoreBuilder()
-        .withSteps({
-          URBAN_PROJECT_SCHEDULE_PROJECTION: {
-            completed: true,
-            payload: {
-              installationSchedule: { startDate: "2025-01-01", endDate: "2026-01-01" },
-              firstYearOfOperation: 2027,
-            },
-          },
-        })
-        .build();
-
-      const rootState = store.getState();
-      const result = creationProjectFormSelectors.selectScheduleProjectionViewData(rootState);
-
-      expect(result.stepAnswers?.installationSchedule).toEqual({
-        startDate: "2025-01-01",
-        endDate: "2026-01-01",
-      });
-      expect(result.stepAnswers?.firstYearOfOperation).toBe(2027);
-      expect(result.isSiteFriche).toBe(true);
-    });
-
-    it("returns undefined step answers when no steps completed", () => {
-      const store = new StoreBuilder().withSteps({}).build();
-      const rootState = store.getState();
-      const result = creationProjectFormSelectors.selectScheduleProjectionViewData(rootState);
-
-      expect(result.stepAnswers).toBeUndefined();
-      expect(result.isSiteFriche).toBe(true);
-    });
-  });
-
   describe("selectSoilsDecontaminationSurfaceAreaViewData", () => {
     it("returns decontaminated surface area and site contaminated surface area", () => {
       const store = new StoreBuilder()

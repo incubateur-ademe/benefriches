@@ -4,12 +4,12 @@ import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
 
 function ScheduleProjectionFormContainer() {
   const { onBack, onRequestStepCompletion, selectScheduleProjectionViewData } = useProjectForm();
-  const { stepAnswers, isSiteFriche } = useAppSelector(selectScheduleProjectionViewData);
+  const { stepAnswers, hasReinstatement } = useAppSelector(selectScheduleProjectionViewData);
 
   return (
     <ScheduleProjectionForm
       installationScheduleLabel="🏘️️ Aménagement du site"
-      hasReinstatement={isSiteFriche}
+      hasReinstatement={hasReinstatement}
       onSubmit={(formData) => {
         onRequestStepCompletion({
           stepId: "URBAN_PROJECT_SCHEDULE_PROJECTION",

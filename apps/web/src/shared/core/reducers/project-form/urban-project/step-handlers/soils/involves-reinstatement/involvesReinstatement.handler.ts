@@ -16,15 +16,7 @@ export const InvolvesReinstatementHandler = {
     return "URBAN_PROJECT_SOILS_CARBON_SUMMARY";
   },
 
-  getNextStepId(context, answers) {
-    const involvesReinstatement =
-      answers?.involvesReinstatement ??
-      ReadStateHelper.getStepAnswers(context.stepsState, "URBAN_PROJECT_INVOLVES_REINSTATEMENT")
-        ?.involvesReinstatement;
-
-    if (involvesReinstatement === false) {
-      return "URBAN_PROJECT_SITE_RESALE_INTRODUCTION";
-    }
+  getNextStepId() {
     return "URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION";
   },
 

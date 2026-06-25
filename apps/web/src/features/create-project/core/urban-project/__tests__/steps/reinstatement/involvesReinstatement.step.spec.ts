@@ -19,7 +19,7 @@ describe("Urban project creation - Steps - Involves reinstatement", () => {
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION");
   });
 
-  it("should navigate to SITE_RESALE_INTRODUCTION when involvesReinstatement is false", () => {
+  it("should navigate to SOILS_DECONTAMINATION_INTRODUCTION when involvesReinstatement is false", () => {
     const store = new StoreBuilder().build();
 
     store.dispatch(
@@ -29,7 +29,7 @@ describe("Urban project creation - Steps - Involves reinstatement", () => {
       }),
     );
 
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION");
   });
 
   it("should delete only reinstatement-specific steps when switching from true to false", () => {
@@ -73,7 +73,7 @@ describe("Urban project creation - Steps - Involves reinstatement", () => {
     // Reinstatement-specific steps must be deleted
     expect(steps.URBAN_PROJECT_EXPENSES_REINSTATEMENT).toBeUndefined();
     expect(steps.URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER).toBeUndefined();
-    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION");
   });
 
   it("should compute installationSchedule without reinstatement when involvesReinstatement is false on a FRICHE", () => {

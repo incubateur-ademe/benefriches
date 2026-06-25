@@ -332,6 +332,11 @@ test.describe("urban project creation - custom mode", () => {
       // --- remise en état ---
       await urbanProjectCreationPage.selectInvolvesReinstatement(false);
 
+      // --- dépollution des sols ---
+      await urbanProjectCreationPage.expectStepTitle("Et si on dépolluait les sols ?");
+      await urbanProjectCreationPage.goToNextStep(); // decontamination introduction
+      await urbanProjectCreationPage.submitOrSkipStep(); // decontamination selection (skip)
+
       // --- cession foncière ---
       await urbanProjectCreationPage.expectStepperCurrentStep("Cession foncière");
       await urbanProjectCreationPage.goToNextStep(); // site resale introduction
@@ -448,6 +453,11 @@ test.describe("urban project creation - custom mode", () => {
 
       // --- remise en état ---
       await urbanProjectCreationPage.selectInvolvesReinstatement(false);
+
+      // --- dépollution des sols ---
+      await urbanProjectCreationPage.expectStepTitle("Et si on dépolluait les sols ?");
+      await urbanProjectCreationPage.goToNextStep(); // decontamination introduction
+      await urbanProjectCreationPage.submitOrSkipStep(); // decontamination selection (skip)
 
       // --- cession foncière ---
       await urbanProjectCreationPage.expectStepperCurrentStep("Cession foncière");
@@ -571,6 +581,11 @@ test.describe("urban project creation - custom mode", () => {
 
       // --- remise en état ---
       await urbanProjectCreationPage.selectInvolvesReinstatement(false);
+
+      // --- dépollution des sols ---
+      await urbanProjectCreationPage.expectStepTitle("Et si on dépolluait les sols ?");
+      await urbanProjectCreationPage.goToNextStep(); // decontamination introduction
+      await urbanProjectCreationPage.submitOrSkipStep(); // decontamination selection (skip)
 
       // --- cession foncière ---
       await urbanProjectCreationPage.expectStepperCurrentStep("Cession foncière");
