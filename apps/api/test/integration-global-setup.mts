@@ -4,7 +4,7 @@ import path from "node:path";
 import { DockerComposeEnvironment, StartedDockerComposeEnvironment, Wait } from "testcontainers";
 
 const composeFilePath = path.resolve(process.cwd(), "../..");
-const composeFile = "docker-compose.db.yml";
+const composeFile = "docker-compose.dev.yml";
 const envFilePath = path.resolve(process.cwd(), ".env.test");
 
 let dockerComposeInstance: StartedDockerComposeEnvironment;
