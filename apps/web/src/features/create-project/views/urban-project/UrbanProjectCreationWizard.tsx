@@ -235,6 +235,8 @@ const getCurrentStepView = (step: UrbanProjectCreationStep): Exclude<ReactNode, 
           <UrbanProjectSoilsCarbonStorage />
         </>
       );
+    case "URBAN_PROJECT_INVOLVES_REINSTATEMENT":
+      return null;
     case "URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION":
       return (
         <>

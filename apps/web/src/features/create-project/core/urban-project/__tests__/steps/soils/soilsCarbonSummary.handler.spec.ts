@@ -55,7 +55,7 @@ describe("SoilsCarbonSummaryHandler", () => {
       expect(nextStep).toBe("URBAN_PROJECT_BUILDINGS_DEMOLITION_INFO");
     });
 
-    it("skips buildings chapter and routes to SOILS_DECONTAMINATION_INTRODUCTION when site has no buildings and willHaveBuildings is false on contaminated site", () => {
+    it("skips buildings chapter and routes to INVOLVES_REINSTATEMENT when site is a FRICHE with no buildings", () => {
       const nextStep = SoilsCarbonSummaryHandler.getNextStepId({
         stepsState: {
           URBAN_PROJECT_USES_SELECTION: {
@@ -65,11 +65,11 @@ describe("SoilsCarbonSummaryHandler", () => {
         },
         siteData: {
           soilsDistribution: { BUILDINGS: 0 },
-          hasContaminatedSoils: true,
+          nature: "FRICHE",
         } as never,
       });
 
-      expect(nextStep).toBe("URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION");
+      expect(nextStep).toBe("URBAN_PROJECT_INVOLVES_REINSTATEMENT");
     });
 
     it("skips buildings chapter and routes to SITE_RESALE_INTRODUCTION when site has no buildings and willHaveBuildings is false on non-contaminated site", () => {

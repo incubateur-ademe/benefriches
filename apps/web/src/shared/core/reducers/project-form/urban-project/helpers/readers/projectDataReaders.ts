@@ -29,6 +29,8 @@ export function getProjectData(steps: Steps): Partial<UrbanProjectFormData> {
   return {
     name: steps.URBAN_PROJECT_NAMING?.payload?.name,
     description: steps.URBAN_PROJECT_NAMING?.payload?.description,
+    involvesReinstatement:
+      steps.URBAN_PROJECT_INVOLVES_REINSTATEMENT?.payload?.involvesReinstatement,
     reinstatementContractOwner:
       steps.URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER?.payload
         ?.reinstatementContractOwner,

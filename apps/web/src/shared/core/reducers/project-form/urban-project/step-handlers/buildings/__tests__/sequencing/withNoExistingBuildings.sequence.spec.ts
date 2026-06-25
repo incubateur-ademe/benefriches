@@ -37,7 +37,7 @@ describe("Urban project buildings sequencing - without buildings", () => {
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_NEW_CONSTRUCTION_INTRODUCTION");
 
       store.dispatch(creationProjectFormUrbanActions.nextStepRequested());
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_INVOLVES_REINSTATEMENT");
     });
 
     it("exits to decontamination instead of resale when site has contaminated soils", () => {
@@ -68,7 +68,7 @@ describe("Urban project buildings sequencing - without buildings", () => {
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_NEW_CONSTRUCTION_INTRODUCTION");
 
       store.dispatch(creationProjectFormUrbanActions.nextStepRequested());
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION");
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_INVOLVES_REINSTATEMENT");
     });
   });
 
@@ -115,6 +115,8 @@ describe("Urban project buildings sequencing - without buildings", () => {
         })
         .build();
 
+      store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_INVOLVES_REINSTATEMENT");
       store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_NEW_CONSTRUCTION_INTRODUCTION");
 

@@ -18,7 +18,6 @@ export const customUrbanProjectSaved = createAppAsyncThunk(
       createdBy: currentUser.currentUser?.id,
       relatedSiteId: siteData?.id,
       projectPhase: useCaseSelection.projectPhase,
-      involvesReinstatement: true,
       ...creationData,
     };
 

@@ -14,6 +14,7 @@ export const URBAN_PROJECT_CREATION_STEP_QUERY_STRING_MAP = {
   URBAN_PROJECT_SPACES_SURFACE_AREA: "nouveaux-espaces-surfaces",
   URBAN_PROJECT_SPACES_SOILS_SUMMARY: "recapitulatif-sols-amenagement-des-espaces",
   URBAN_PROJECT_SOILS_CARBON_SUMMARY: "recapitulatif-stockage-carbone-sols",
+  URBAN_PROJECT_INVOLVES_REINSTATEMENT: "remise-en-etat",
   URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION: "introduction-depollution-sols",
   URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION: "selection-depollution-sols",
   URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA: "surface-depollution-sols",

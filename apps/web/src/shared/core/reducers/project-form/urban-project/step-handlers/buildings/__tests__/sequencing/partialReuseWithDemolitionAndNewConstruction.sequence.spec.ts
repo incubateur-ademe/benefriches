@@ -84,7 +84,7 @@ describe("Urban project buildings sequencing - partial reuse with demolition and
       ).toEqual({
         newBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 1400, OFFICES: 100 },
       });
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_INVOLVES_REINSTATEMENT");
     });
 
     it("exits to decontamination instead of resale when the site is contaminated", () => {
@@ -156,7 +156,7 @@ describe("Urban project buildings sequencing - partial reuse with demolition and
           answers: { newBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 1400, OFFICES: 100 } },
         }),
       );
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION");
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_INVOLVES_REINSTATEMENT");
     });
   });
 
@@ -262,6 +262,8 @@ describe("Urban project buildings sequencing - partial reuse with demolition and
         })
         .build();
 
+      store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_INVOLVES_REINSTATEMENT");
       store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
       expect(getCurrentStep(store)).toBe(
         "URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA",

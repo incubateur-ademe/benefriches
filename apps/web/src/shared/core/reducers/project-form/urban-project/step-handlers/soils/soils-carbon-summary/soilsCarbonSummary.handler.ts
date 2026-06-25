@@ -18,8 +18,8 @@ export const SoilsCarbonSummaryHandler = {
       return "URBAN_PROJECT_BUILDINGS_DEMOLITION_INFO";
     }
 
-    if (context.siteData?.hasContaminatedSoils) {
-      return "URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION";
+    if (context.siteData?.nature === "FRICHE") {
+      return "URBAN_PROJECT_INVOLVES_REINSTATEMENT";
     }
 
     return "URBAN_PROJECT_SITE_RESALE_INTRODUCTION";

@@ -106,12 +106,12 @@ describe("URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE handler", () => {
       );
       store.dispatch(creationProjectFormUrbanActions.stepCompletionConfirmed());
 
-      // hasContaminatedSoils=false → SITE_RESALE_INTRODUCTION
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
+      // FRICHE site → INVOLVES_REINSTATEMENT
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_INVOLVES_REINSTATEMENT");
     });
 
-    it("navigates to decontamination when hasContaminatedSoils and exit routing", () => {
-      // site=2000, project=2000, reuse=2000 → exit → contaminated → decontamination
+    it("navigates to involves reinstatement when FRICHE and exit routing (regardless of contamination)", () => {
+      // site=2000, project=2000, reuse=2000 → exit → FRICHE → involves reinstatement
       const steps = makeBaseSteps(2000);
       const store = new StoreBuilder()
         .withSiteData(makeSiteData({ hasContaminatedSoils: true }))
@@ -127,7 +127,7 @@ describe("URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE handler", () => {
       );
       store.dispatch(creationProjectFormUrbanActions.stepCompletionConfirmed());
 
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION");
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_INVOLVES_REINSTATEMENT");
     });
   });
 

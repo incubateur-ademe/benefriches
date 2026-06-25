@@ -18,6 +18,7 @@ import { revenueFinancialAssistanceSchema } from "./step-handlers/revenues/reven
 import { scheduleProjectionSchema } from "./step-handlers/schedule/schedule-projection/scheduleProjection.schema";
 import { buildingsResaleSelectionSchema } from "./step-handlers/site-and-buildings-resale/buildings-resale-selection/buildingsResaleSelection.schema";
 import { siteResaleSelectionSchema } from "./step-handlers/site-and-buildings-resale/site-resale-selection/siteResaleSelection.schema";
+import { involvesReinstatementSchema } from "./step-handlers/soils/involves-reinstatement/involvesReinstatement.schema";
 import { soilsDecontaminationSelectionSchema } from "./step-handlers/soils/soils-decontamination-selection/soilsDecontaminationSelection.schema";
 import { soilsDecontaminationSurfaceAreaSchema } from "./step-handlers/soils/soils-decontamination-surface-area/soilsDecontaminationSurfaceArea.schema";
 import { publicGreenSpacesSoilsDistributionSchema } from "./step-handlers/spaces/public-green-spaces-soils-distribution/publicGreenSpacesSoilsDistribution.schema";
@@ -86,6 +87,8 @@ export const answersByStepSchemas = {
   URBAN_PROJECT_SPACES_SELECTION: spacesSelectionSchema,
 
   URBAN_PROJECT_SPACES_SURFACE_AREA: spacesSurfaceAreaSchema,
+
+  URBAN_PROJECT_INVOLVES_REINSTATEMENT: involvesReinstatementSchema,
 
   URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION: soilsDecontaminationSelectionSchema,
 

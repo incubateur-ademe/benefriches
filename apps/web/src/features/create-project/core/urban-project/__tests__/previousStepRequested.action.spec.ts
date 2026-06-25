@@ -327,7 +327,7 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
       );
     });
 
-    it("should go back from site resale introduction to the last buildings step before resale", () => {
+    it("should go back from site resale introduction to involves reinstatement step when involvesReinstatement is false", () => {
       const store = new StoreBuilder()
         .withSiteData(testScenarios.withoutContamination)
         .withSteps({
@@ -357,6 +357,10 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
               newBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 800, OFFICES: 200 },
             },
           },
+          URBAN_PROJECT_INVOLVES_REINSTATEMENT: {
+            completed: true,
+            payload: { involvesReinstatement: false },
+          },
         })
         .withCurrentStep("URBAN_PROJECT_SITE_RESALE_INTRODUCTION")
         .build();
@@ -364,11 +368,11 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
       store.dispatch(previousStepRequested());
 
       expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
-        "URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA",
+        "URBAN_PROJECT_INVOLVES_REINSTATEMENT",
       );
     });
 
-    it("should go back from decontamination introduction to the last buildings step before decontamination", () => {
+    it("should go back from decontamination introduction to involves reinstatement step", () => {
       const store = new StoreBuilder()
         .withSiteData(testScenarios.withBuildingsAndContamination)
         .withSteps({
@@ -393,7 +397,7 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
       store.dispatch(previousStepRequested());
 
       expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
-        "URBAN_PROJECT_BUILDINGS_DEMOLITION_INFO",
+        "URBAN_PROJECT_INVOLVES_REINSTATEMENT",
       );
     });
   });

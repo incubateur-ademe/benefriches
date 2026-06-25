@@ -127,7 +127,16 @@ describe("urbanProject.reducer - stepCompletionRequested without validation", ()
       );
       store.dispatch(creationProjectFormUrbanActions.stepCompletionConfirmed());
 
-      // Étape ---- (hasContaminatedSoils → decontamination)
+      // Étape ---- (FRICHE → involves reinstatement)
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_INVOLVES_REINSTATEMENT");
+      store.dispatch(
+        stepCompletionRequested({
+          stepId: "URBAN_PROJECT_INVOLVES_REINSTATEMENT",
+          answers: { involvesReinstatement: true },
+        }),
+      );
+
+      // Étape ---- (involvesReinstatement: true → decontamination)
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION");
       store.dispatch(nextStepRequested());
 
@@ -345,7 +354,7 @@ describe("urbanProject.reducer - stepCompletionRequested without validation", ()
       // Étape ----
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_CREATION_RESULT");
 
-      expect(Object.keys(store.getState().projectCreation.urbanProject.steps).length).toEqual(35);
+      expect(Object.keys(store.getState().projectCreation.urbanProject.steps).length).toEqual(36);
     });
 
     it('should handle decontamination plan "none" correctly', () => {
@@ -406,7 +415,16 @@ describe("urbanProject.reducer - stepCompletionRequested without validation", ()
       );
       store.dispatch(creationProjectFormUrbanActions.stepCompletionConfirmed());
 
-      // hasContaminatedSoils → decontamination intro
+      // FRICHE → involves reinstatement
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_INVOLVES_REINSTATEMENT");
+      store.dispatch(
+        stepCompletionRequested({
+          stepId: "URBAN_PROJECT_INVOLVES_REINSTATEMENT",
+          answers: { involvesReinstatement: true },
+        }),
+      );
+
+      // involvesReinstatement: true → decontamination intro
       store.dispatch(nextStepRequested()); // decontamination intro → selection
 
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION");
@@ -476,10 +494,10 @@ describe("urbanProject.reducer - stepCompletionRequested without validation", ()
   });
 
   describe("buildings chapter exit routing", () => {
-    it("routes from the last buildings step to site resale when the site is not contaminated", () => {
+    it("routes from the last buildings step to involves reinstatement when the site is a FRICHE", () => {
       const store = new StoreBuilder()
         .withSiteData({
-          hasContaminatedSoils: false,
+          nature: "FRICHE",
         } as never)
         .withCurrentStep("URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA")
         .withSteps({
@@ -513,13 +531,13 @@ describe("urbanProject.reducer - stepCompletionRequested without validation", ()
         }),
       );
 
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_INVOLVES_REINSTATEMENT");
     });
 
-    it("routes from the last buildings step to decontamination when the site is contaminated", () => {
+    it("routes from the last buildings step to site resale when the site is not a FRICHE", () => {
       const store = new StoreBuilder()
         .withSiteData({
-          hasContaminatedSoils: true,
+          nature: "AGRICULTURAL_OPERATION",
         } as never)
         .withCurrentStep("URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA")
         .withSteps({
@@ -553,7 +571,7 @@ describe("urbanProject.reducer - stepCompletionRequested without validation", ()
         }),
       );
 
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION");
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
     });
   });
 });

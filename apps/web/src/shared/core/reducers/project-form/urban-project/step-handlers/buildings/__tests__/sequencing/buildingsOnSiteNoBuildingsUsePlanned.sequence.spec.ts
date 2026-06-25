@@ -61,8 +61,8 @@ describe("Urban project buildings sequencing - buildings on site, no building us
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_DEMOLITION_INFO");
     });
 
-    it("skips buildings chapter entirely and goes to site resale when site has no buildings and uses are PUBLIC_GREEN_SPACES (non-contaminated)", () => {
-      // SOILS_CARBON_SUMMARY -> SITE_RESALE_INTRODUCTION (skips buildings chapter)
+    it("skips buildings chapter entirely and goes to involves reinstatement when site is FRICHE with no buildings", () => {
+      // SOILS_CARBON_SUMMARY -> INVOLVES_REINSTATEMENT (skips buildings chapter, FRICHE)
       const store = new StoreBuilder()
         .withCurrentStep("URBAN_PROJECT_SOILS_CARBON_SUMMARY")
         .withSiteData({
@@ -84,7 +84,7 @@ describe("Urban project buildings sequencing - buildings on site, no building us
         .build();
 
       store.dispatch(creationProjectFormUrbanActions.nextStepRequested());
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_INVOLVES_REINSTATEMENT");
     });
   });
 });

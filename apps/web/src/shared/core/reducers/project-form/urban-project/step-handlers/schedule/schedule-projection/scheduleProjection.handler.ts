@@ -1,15 +1,27 @@
 import { getDefaultScheduleForProject } from "shared";
 
+import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
+
 import type { AnswerStepHandler } from "../../stepHandler.type";
 
 export const UrbanProjectScheduleProjectionHandler = {
   stepId: "URBAN_PROJECT_SCHEDULE_PROJECTION",
 
   getDefaultAnswers(context) {
+    const involvesReinstatement = ReadStateHelper.getStepAnswers(
+      context.stepsState,
+      "URBAN_PROJECT_INVOLVES_REINSTATEMENT",
+    )?.involvesReinstatement;
+
+    const hasReinstatement =
+      involvesReinstatement !== undefined
+        ? involvesReinstatement
+        : context.siteData?.nature === "FRICHE";
+
     const { installation, reinstatement, firstYearOfOperations } = getDefaultScheduleForProject({
       now: () => new Date(),
     })({
-      hasReinstatement: context.siteData?.nature === "FRICHE",
+      hasReinstatement,
     });
 
     return {

@@ -56,7 +56,7 @@ describe("Urban project buildings sequencing - reuse only with demolition", () =
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_DEMOLITION_INFO");
 
       store.dispatch(creationProjectFormUrbanActions.nextStepRequested());
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_INVOLVES_REINSTATEMENT");
     });
 
     it("exits to decontamination instead of resale when site has contaminated soils", () => {
@@ -105,7 +105,7 @@ describe("Urban project buildings sequencing - reuse only with demolition", () =
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_DEMOLITION_INFO");
 
       store.dispatch(creationProjectFormUrbanActions.nextStepRequested());
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION");
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_INVOLVES_REINSTATEMENT");
     });
   });
 
@@ -208,6 +208,8 @@ describe("Urban project buildings sequencing - reuse only with demolition", () =
         })
         .build();
 
+      store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_INVOLVES_REINSTATEMENT");
       store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_DEMOLITION_INFO");
 

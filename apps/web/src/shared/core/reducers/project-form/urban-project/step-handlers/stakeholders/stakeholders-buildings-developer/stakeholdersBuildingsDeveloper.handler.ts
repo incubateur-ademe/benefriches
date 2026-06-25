@@ -1,3 +1,5 @@
+import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
+
 import type { AnswerStepHandler } from "../../stepHandler.type";
 
 const STEP_ID = "URBAN_PROJECT_STAKEHOLDERS_BUILDINGS_DEVELOPER";
@@ -8,7 +10,12 @@ export const StakeholdersBuildingsDeveloperHandler: AnswerStepHandler<typeof STE
     return "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER";
   },
   getNextStepId(context) {
-    if (context.siteData?.nature === "FRICHE") {
+    const involvesReinstatement = ReadStateHelper.getStepAnswers(
+      context.stepsState,
+      "URBAN_PROJECT_INVOLVES_REINSTATEMENT",
+    )?.involvesReinstatement;
+
+    if (involvesReinstatement !== false && context.siteData?.nature === "FRICHE") {
       return "URBAN_PROJECT_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER";
     }
     return "URBAN_PROJECT_EXPENSES_INTRODUCTION";

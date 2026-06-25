@@ -24,6 +24,7 @@ import { scheduleProjectionStepperConfig } from "@/shared/core/reducers/project-
 import { buildingsResaleSelectionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/site-and-buildings-resale/buildings-resale-selection/buildingsResaleSelection.stepperConfig";
 import { siteResaleIntroductionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/site-and-buildings-resale/site-resale-introduction/siteResaleIntroduction.stepperConfig";
 import { siteResaleSelectionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/site-and-buildings-resale/site-resale-selection/siteResaleSelection.stepperConfig";
+import { involvesReinstatementStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/soils/involves-reinstatement/involvesReinstatement.stepperConfig";
 import { soilsCarbonSummaryStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/soils/soils-carbon-summary/soilsCarbonSummary.stepperConfig";
 import { soilsDecontaminationIntroductionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/soils/soils-decontamination-introduction/soilsDecontaminationIntroduction.stepperConfig";
 import { soilsDecontaminationSelectionStepperConfig } from "@/shared/core/reducers/project-form/urban-project/step-handlers/soils/soils-decontamination-selection/soilsDecontaminationSelection.stepperConfig";
@@ -70,6 +71,7 @@ export type StepSubGroupId =
   | "SPACES_GREEN_SPACES_SOILS"
   | "SPACES_SURFACES"
   | "SOILS_SUMMARY"
+  | "INVOLVES_REINSTATEMENT"
   | "DECONTAMINATION_SELECTION"
   | "DECONTAMINATION_SURFACE"
   | "CARBON_STORAGE"
@@ -110,6 +112,7 @@ export const STEP_GROUP_LABELS: Record<StepGroupId | StepSubGroupId, string> = {
   SOILS_SUMMARY: "Récapitulatif des sols",
   CARBON_STORAGE: "Stockage de carbone",
   SOILS_DECONTAMINATION: "Travaux",
+  INVOLVES_REINSTATEMENT: "Remise en état",
   DECONTAMINATION_SELECTION: "Choix de dépolluer",
   DECONTAMINATION_SURFACE: "Surface à dépolluer",
   BUILDINGS: "Bâtiments",
@@ -166,6 +169,7 @@ export const STEP_TO_GROUP_MAPPING: StepToGroupMapping = {
   URBAN_PROJECT_SOILS_CARBON_SUMMARY: soilsCarbonSummaryStepperConfig,
 
   // Dépollution des sols
+  URBAN_PROJECT_INVOLVES_REINSTATEMENT: involvesReinstatementStepperConfig,
   URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION: soilsDecontaminationIntroductionStepperConfig,
   URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION: soilsDecontaminationSelectionStepperConfig,
   URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA: soilsDecontaminationSurfaceAreaStepperConfig,

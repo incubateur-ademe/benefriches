@@ -56,11 +56,11 @@ describe("Urban project buildings sequencing - buildings on site, no buildings p
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_DEMOLITION_INFO");
 
       store.dispatch(creationProjectFormUrbanActions.nextStepRequested());
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_INVOLVES_REINSTATEMENT");
     });
 
-    it("exits to decontamination instead of resale when site has contaminated soils", () => {
-      // INTRO -> FLOOR_AREA -> REUSE_INTRO -> REUSE_FOOTPRINT -> DEMOLITION_INFO -> SOILS_DECONTAMINATION_INTRO
+    it("exits to involves reinstatement when site is FRICHE (regardless of contamination)", () => {
+      // INTRO -> FLOOR_AREA -> REUSE_INTRO -> REUSE_FOOTPRINT -> DEMOLITION_INFO -> INVOLVES_REINSTATEMENT
       const store = new StoreBuilder()
         .withCurrentStep("URBAN_PROJECT_BUILDINGS_INTRODUCTION")
         .withSiteData({
@@ -106,13 +106,13 @@ describe("Urban project buildings sequencing - buildings on site, no buildings p
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_DEMOLITION_INFO");
 
       store.dispatch(creationProjectFormUrbanActions.nextStepRequested());
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION");
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_INVOLVES_REINSTATEMENT");
     });
   });
 
   describe("backward navigation", () => {
-    it("goes back from site resale to introduction (non-contaminated)", () => {
-      // SITE_RESALE_INTRO -> DEMOLITION_INFO -> REUSE_FOOTPRINT -> REUSE_INTRO -> FLOOR_AREA -> INTRO
+    it("goes back from site resale to introduction (involvesReinstatement=false)", () => {
+      // SITE_RESALE_INTRO -> INVOLVES_REINSTATEMENT -> DEMOLITION_INFO -> REUSE_FOOTPRINT -> REUSE_INTRO -> FLOOR_AREA -> INTRO
       const store = new StoreBuilder()
         .withCurrentStep("URBAN_PROJECT_SITE_RESALE_INTRODUCTION")
         .withSiteData({
@@ -134,8 +134,15 @@ describe("Urban project buildings sequencing - buildings on site, no buildings p
             completed: true,
             payload: { buildingsFootprintToReuse: 0 },
           },
+          URBAN_PROJECT_INVOLVES_REINSTATEMENT: {
+            completed: true,
+            payload: { involvesReinstatement: false },
+          },
         })
         .build();
+
+      store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_INVOLVES_REINSTATEMENT");
 
       store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_DEMOLITION_INFO");
@@ -153,8 +160,8 @@ describe("Urban project buildings sequencing - buildings on site, no buildings p
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_INTRODUCTION");
     });
 
-    it("goes back from decontamination to introduction (contaminated)", () => {
-      // SOILS_DECONTAMINATION_INTRO -> DEMOLITION_INFO -> REUSE_FOOTPRINT -> REUSE_INTRO -> FLOOR_AREA -> INTRO
+    it("goes back from decontamination to involves reinstatement step", () => {
+      // SOILS_DECONTAMINATION_INTRO -> INVOLVES_REINSTATEMENT
       const store = new StoreBuilder()
         .withCurrentStep("URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION")
         .withSiteData({
@@ -180,19 +187,7 @@ describe("Urban project buildings sequencing - buildings on site, no buildings p
         .build();
 
       store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_DEMOLITION_INFO");
-
-      store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE");
-
-      store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_REUSE_INTRODUCTION");
-
-      store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_USES_FLOOR_SURFACE_AREA");
-
-      store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
-      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_INTRODUCTION");
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_INVOLVES_REINSTATEMENT");
     });
   });
 });
