@@ -90,11 +90,11 @@ describe("Urban project creation - Steps - Involves reinstatement", () => {
 
     expect(defaults?.reinstatementSchedule).toBeUndefined();
 
-    // When involvesReinstatement is false, installation starts immediately (current year)
-    const currentYear = new Date().getFullYear();
+    // When involvesReinstatement is false on a FRICHE, installation starts 1 year from now
+    const expectedYear = new Date().getFullYear() + 1;
     const installationStartYear = new Date(
       defaults?.installationSchedule?.startDate ?? "",
     ).getFullYear();
-    expect(installationStartYear).toBe(currentYear);
+    expect(installationStartYear).toBe(expectedYear);
   });
 });

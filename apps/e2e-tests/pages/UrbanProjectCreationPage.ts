@@ -191,6 +191,15 @@ export class UrbanProjectCreationPage {
   }
 
   // oxlint-disable-next-line playwright/no-force-option -- DSFR labels overlay radio inputs
+  async selectInvolvesReinstatement(involves: boolean): Promise<void> {
+    const label = involves
+      ? "Oui, le projet inclut des travaux de remise en état"
+      : "Non, le projet ne prévoit pas de remise en état";
+    await this.page.getByRole("radio", { name: label }).check({ force: true });
+    await this.submit();
+  }
+
+  // oxlint-disable-next-line playwright/no-force-option -- DSFR labels overlay radio inputs
   async selectBuildingsDeveloper(developerBuilds: boolean): Promise<void> {
     await this.page
       .getByRole("radio", { name: developerBuilds ? "Oui" : "Non" })

@@ -94,6 +94,9 @@ const SiteResaleIntroduction = lazy(
 const SiteResaleForm = lazy(
   () => import("@/shared/views/project-form/urban-project/site-and-buildings-resale/selection"),
 );
+const InvolvesReinstatement = lazy(
+  () => import("@/shared/views/project-form/urban-project/soils/involves-reinstatement"),
+);
 const SoilsDecontaminationIntroduction = lazy(
   () => import("@/shared/views/project-form/urban-project/soils/decontamination-introduction"),
 );
@@ -236,7 +239,12 @@ const getCurrentStepView = (step: UrbanProjectCreationStep): Exclude<ReactNode, 
         </>
       );
     case "URBAN_PROJECT_INVOLVES_REINSTATEMENT":
-      return null;
+      return (
+        <>
+          <HtmlTitle>{`Remise en état - Travaux - ${HTML_URBAN_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
+          <InvolvesReinstatement />
+        </>
+      );
     case "URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION":
       return (
         <>

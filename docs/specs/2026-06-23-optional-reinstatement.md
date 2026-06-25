@@ -167,6 +167,8 @@ pnpm --filter web lint
 pnpm --filter web test
 ```
 
+Any change to wizard step sequencing on a FRICHE site must also update the e2e tests in `apps/e2e-tests/tests/project-creation/urban-project/create-custom-urban-project.spec.ts` and run them via the `/run-e2e-tests` skill. Check that the friche test scenarios still include the new step and that the page object (`UrbanProjectCreationPage.ts`) has a method to interact with it.
+
 ---
 
 ## Step 5 — PV project creation wizard
