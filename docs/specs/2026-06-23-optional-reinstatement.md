@@ -6,7 +6,7 @@
 
 ## Status
 
-**Current step: Step 5 — PV project creation wizard**
+**Current step: Step 6 — Domain invariant enforcement**
 
 | Step | Status |
 |---|---|
@@ -14,7 +14,7 @@
 | Step 2 — API wiring | ✅ done |
 | Step 3 — Impacts audit | ✅ done |
 | Step 4 — Urban project creation wizard | ✅ done |
-| Step 5 — PV project creation wizard | 🔲 todo |
+| Step 5 — PV project creation wizard | ✅ done |
 | Step 6 — Domain invariant enforcement | 🔲 todo |
 
 ---
@@ -135,7 +135,7 @@ pnpm --filter api test:unit src/reconversion-projects/core/model/project-impacts
 
 **New step handler** (`apps/web/src/shared/core/reducers/project-form/urban-project/step-handlers/reinstatement/involves-reinstatement/`):
 - `involvesReinstatement.handler.ts` — `AnswerStepHandler<{ involvesReinstatement: boolean }>`.
-  - `getNextStepId()`: if `true` → `SOILS_DECONTAMINATION_INTRODUCTION`; if `false` → first non-reinstatement step after the reinstatement block (expenses or stakeholders, whichever comes first in the non-reinstatement path).
+  - `getNextStepId()`: always → `SOILS_DECONTAMINATION_INTRODUCTION` regardless of the answer. Reinstatement and decontamination are independent concerns.
   - `getDependencyRules()`: when answer changes to `false`, delete only reinstatement-specific steps (`EXPENSES_REINSTATEMENT`, `STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER`) and invalidate `SCHEDULE_PROJECTION`. Decontamination steps (`SOILS_DECONTAMINATION_SELECTION`, `SOILS_DECONTAMINATION_SURFACE_AREA`) are **not** deleted — decontamination is independent from reinstatement.
 - `involvesReinstatement.schema.ts`
 - `involvesReinstatement.selectors.ts`
@@ -177,10 +177,18 @@ Any change to wizard step sequencing on a FRICHE site must also update the e2e t
 
 ### Changes
 
-Mirror Step 4 in the renewable energy wizard:
+Mirror Step 4 in the renewable energy wizard.
 
-**New step handler** (`apps/web/src/features/create-project/core/renewable-energy/step-handlers/reinstatement/involves-reinstatement/`):
-- Same logic as the urban handler (same answer type, same dependency rules, same schedule fallback).
+> **Lessons from Step 4 bugs — read before implementing:**
+> 1. `getNextStepId()` must **always** return `SOILS_DECONTAMINATION_INTRODUCTION` regardless of the answer. Do NOT branch on `involvesReinstatement`. Decontamination and reinstatement are independent.
+> 2. The schedule selector must expose `hasReinstatement: involvesReinstatement === true`, **not** `siteIsFriche`. The PV schedule container at `apps/web/src/features/create-project/views/photovoltaic-power-station/schedule/projection/index.tsx` currently passes `hasReinstatement={siteIsFriche}` — this is wrong and must be fixed as part of this step. The selector at `apps/web/src/features/create-project/core/renewable-energy/step-handlers/schedule/schedule-projection/scheduleProjection.selector.ts` currently returns `siteIsFriche` — replace it with `involvesReinstatement === true` read from the `RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT` step answers.
+
+**New step handler** (`apps/web/src/features/create-project/core/renewable-energy/step-handlers/soils-decontamination/involves-reinstatement/`):
+- `involvesReinstatement.handler.ts` — `AnswerStepHandler<{ involvesReinstatement: boolean }>`.
+  - `getNextStepId()`: always → `SOILS_DECONTAMINATION_INTRODUCTION` (unconditional — see lesson 1 above).
+  - `getDependencyRules()`: when answer changes to `false`, delete `RENEWABLE_ENERGY_EXPENSES_REINSTATEMENT` and `RENEWABLE_ENERGY_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER` (if they exist), and invalidate `RENEWABLE_ENERGY_SCHEDULE_PROJECTION`. Do **not** touch decontamination steps.
+- `involvesReinstatement.schema.ts`
+- `involvesReinstatement.stepperConfig.ts`
 
 **Step registry** (`step-handlers/stepHandlerRegistry.ts` for renewable energy):
 - Register before `SOILS_DECONTAMINATION_INTRODUCTION`.
@@ -188,11 +196,20 @@ Mirror Step 4 in the renewable energy wizard:
 **Step enum / stepper**:
 - Add `INVOLVES_REINSTATEMENT` to the renewable energy steps union.
 
+**Schedule selector** (`step-handlers/schedule/schedule-projection/scheduleProjection.selector.ts`):
+- Replace `siteIsFriche: boolean` with `hasReinstatement: boolean`, computed as `involvesReinstatement === true` from step state. Drop `selectIsSiteFriche` as a selector input.
+
+**Schedule container** (`apps/web/src/features/create-project/views/photovoltaic-power-station/schedule/projection/index.tsx`):
+- Destructure `hasReinstatement` (not `siteIsFriche`) and pass it to `ScheduleProjectionForm`.
+
 **Project generator** (renewable energy equivalent of `UrbanProjectGenerator`):
 - Same omission logic as Step 4 when `involvesReinstatement: false`.
 
-**Tests** (`renewable-energy/__tests__/steps/involvesReinstatement.step.spec.ts`):
-- Same scenarios as the urban test.
+**Tests** (`renewable-energy/step-handlers/soils-decontamination/involves-reinstatement/involvesReinstatement.step.spec.ts`):
+- Answer `true` → next step is `SOILS_DECONTAMINATION_INTRODUCTION`.
+- Answer `false` → next step is still `SOILS_DECONTAMINATION_INTRODUCTION` (not skipped).
+- Switch from `true` to `false` → `EXPENSES_REINSTATEMENT` and `STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER` are deleted; decontamination steps are preserved.
+- `hasReinstatement` in schedule view data is `false` when `involvesReinstatement: false`, even on a FRICHE.
 
 ### Validation
 
@@ -312,7 +329,7 @@ pnpm --filter api test:unit src/reconversion-projects
 **What I did:**
 - Found that Step 4 was already fully implemented across commits `92383ea7a` and `f1c1dc71c`.
 - Verified all spec requirements are met: handler at `soils/involves-reinstatement/`, registered in `stepHandlerRegistry.ts`, step ID in `urbanProjectSteps.ts`, dependency rules delete only reinstatement-specific steps, decontamination steps preserved, schedule handler anchors installation to `createdAt + 1 year` when `involvesReinstatement: false` on FRICHE, `projectDataReaders.ts` always includes `involvesReinstatement` in output.
-- Confirmed 4 tests cover all scenarios from spec: `true` → `SOILS_DECONTAMINATION_INTRODUCTION`, `false` → `SITE_RESALE_INTRODUCTION`, dependency rules delete reinstatement steps only, schedule default when `false`.
+- Confirmed 4 tests cover all scenarios from spec: both `true` and `false` → `SOILS_DECONTAMINATION_INTRODUCTION`, dependency rules delete reinstatement steps only, schedule default when `false`.
 - E2E tests updated: `selectInvolvesReinstatement(false)` called in 3 FRICHE scenarios in `create-custom-urban-project.spec.ts`.
 - All validation passes: 201 test files / 1073 tests, 0 typecheck errors, 0 lint warnings.
 
@@ -350,13 +367,44 @@ pnpm --filter api test:unit src/reconversion-projects
 ### 2026-06-25 — Bug fix: schedule projection shows reinstatement dates when involvesReinstatement is false
 
 **What I did:**
-- Added `hasReinstatement: boolean` to `ScheduleProjectionViewData` in `scheduleProjection.selector.ts`, computed as `isSiteFriche && involvesReinstatement !== false`.
-- Updated the schedule container to destructure `hasReinstatement` instead of `isSiteFriche` and pass it to `ScheduleProjectionForm`.
-- Added two failing tests to `urbanProject.selectors.spec.ts` before writing the fix (TDD).
+- Replaced `isSiteFriche: boolean` with `hasReinstatement: boolean` in `ScheduleProjectionViewData`, computed as `involvesReinstatement === true`.
+- Dropped `selectIsSiteFriche` as a selector dependency — `involvesReinstatement` from the step state is sufficient since the step is only reachable on FRICHE sites.
+- Updated the schedule container to pass `hasReinstatement` directly to `ScheduleProjectionForm`.
+- Moved selector tests to a dedicated file `__tests__/steps/schedule/scheduleProjection.selectors.spec.ts`.
 
 **Decisions:**
-- Used `involvesReinstatement !== false` (not `=== true`) so FRICHE sites where the step hasn't been answered yet still show reinstatement fields by default.
-- Kept `isSiteFriche` in the view data type — existing tests assert on it.
+- Used `involvesReinstatement === true` (not `!== false`) — FRICHE sites where the step hasn't been answered yet show no reinstatement fields, which is fine because the step is always answered before reaching the schedule step.
 
 **Revisions:**
-- None.
+- Initial implementation used `isSiteFriche && involvesReinstatement !== false`; simplified to `involvesReinstatement === true` after realising `isSiteFriche` is redundant.
+
+---
+
+### 2026-06-25 — Step 5: PV project creation wizard
+
+**What I did:**
+- Created `RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT` step handler, schema, stepper config, and selector in `soils-decontamination/involves-reinstatement/`.
+- Registered the step in `stepHandlerRegistry.ts`, `renewableEnergySteps.ts`, `renewableEnergyStepperConfig.ts`, and `creationStepQueryStringMap.ts`.
+- Updated `ContractDurationHandler.getNextStepId` to navigate to `INVOLVES_REINSTATEMENT` for FRICHE sites (instead of directly to decontamination).
+- Replaced `siteData?.nature === "FRICHE"` guards in `FutureOperatorHandler`, `ExpensesIntroductionHandler`, `SitePurchaseAmountsHandler`, `InstallationExpensesHandler`, and `SitePurchaseHandler` with `involvesReinstatement === true` read from step state.
+- Updated `scheduleProjection.selector.ts` to expose `hasReinstatement` (from step state) instead of `siteIsFriche`.
+- Updated the schedule container to destructure `hasReinstatement` instead of `siteIsFriche`.
+- Updated `customProjectSaved.action.ts` to read `involvesReinstatement` from step state and gate reinstatement fields (`reinstatementContractOwner`, `reinstatementCosts`, `reinstatementSchedule`) behind it.
+- Created a container view at `views/photovoltaic-power-station/soils-decontamination/involves-reinstatement/index.tsx` reusing `InvolvesReinstatementForm` from shared.
+- Added the new step case to `PhotovoltaicPowerStationCreationWizard.tsx`.
+- Updated 9 existing test files (renamed FRICHE-based assertions to involvesReinstatement-based, removed stale `relatedSiteData` imports).
+- Added 7 new tests covering forward navigation, sequence exclusion/inclusion, decontamination preservation, and schedule selector.
+
+**Difficulties:**
+- Code review caught 3 correctness bugs: `SitePurchaseAmountsHandler`, `InstallationExpensesHandler.getPreviousStepId`, and `SitePurchaseHandler.getPreviousStepId` still used `siteData?.nature === "FRICHE"` — all three were fixed.
+- Code review also caught duplicate import lines in `scheduleProjection.selector.ts` and a `as` cast instead of `as const satisfies` in the stepper config.
+- The container initially violated the CLAUDE.md ViewData pattern (inline `ReadStateHelper` call) — extracted a proper `selectInvolvesReinstatementViewData` selector.
+
+**Decisions:**
+- `getNextStepId()` is unconditional: always returns `SOILS_DECONTAMINATION_INTRODUCTION` (per lessons from Step 4).
+- Non-FRICHE sites never answer `INVOLVES_REINSTATEMENT`; all reinstatement-related handlers treat `undefined === true` as false, correctly skipping those steps.
+- `customProjectSaved.action.ts` fallback is `?? false` — no backward compatibility with old implicit `true`; unanswered = no reinstatement.
+
+**Revisions:**
+- Initial implementation missed 3 handlers that still used site-nature checks; fixed after code review.
+- Initial fallback was `?? true`; corrected to `?? false` — no reason to assume reinstatement when the step was never answered.

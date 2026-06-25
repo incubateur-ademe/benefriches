@@ -24,7 +24,11 @@ export const ExpensesIntroductionHandler: InfoStepHandler = {
     if (willSiteBePurchased) {
       return "RENEWABLE_ENERGY_EXPENSES_SITE_PURCHASE_AMOUNTS";
     }
-    if (context.siteData?.nature === "FRICHE") {
+    const involvesReinstatement = ReadStateHelper.getStepAnswers(
+      context.stepsState,
+      "RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT",
+    )?.involvesReinstatement;
+    if (involvesReinstatement === true) {
       return "RENEWABLE_ENERGY_EXPENSES_REINSTATEMENT";
     }
     return "RENEWABLE_ENERGY_EXPENSES_PHOTOVOLTAIC_PANELS_INSTALLATION";

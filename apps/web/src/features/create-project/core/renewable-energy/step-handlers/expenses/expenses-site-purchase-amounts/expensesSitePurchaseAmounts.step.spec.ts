@@ -1,4 +1,3 @@
-import { relatedSiteData } from "@/features/create-project/core/__tests__/siteData.mock";
 import {
   getCurrentStep,
   StoreBuilder,
@@ -10,9 +9,15 @@ import {
 
 describe("Renewable energy creation - Steps - expenses site purchase amounts", () => {
   describe("completion", () => {
-    it("should navigate to reinstatement when site is FRICHE", () => {
-      // relatedSiteData is FRICHE by default
-      const store = new StoreBuilder().build();
+    it("should navigate to reinstatement when involvesReinstatement is true", () => {
+      const store = new StoreBuilder()
+        .withSteps({
+          RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT: {
+            completed: true,
+            payload: { involvesReinstatement: true },
+          },
+        })
+        .build();
       store.dispatch(
         stepCompletionRequested({
           stepId: "RENEWABLE_ENERGY_EXPENSES_SITE_PURCHASE_AMOUNTS",
@@ -30,9 +35,14 @@ describe("Renewable energy creation - Steps - expenses site purchase amounts", (
       expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_EXPENSES_REINSTATEMENT");
     });
 
-    it("should navigate to photovoltaic panels installation when site is not FRICHE", () => {
+    it("should navigate to photovoltaic panels installation when involvesReinstatement is false", () => {
       const store = new StoreBuilder()
-        .withSiteData({ ...relatedSiteData, nature: "AGRICULTURAL_OPERATION" })
+        .withSteps({
+          RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT: {
+            completed: true,
+            payload: { involvesReinstatement: false },
+          },
+        })
         .build();
       store.dispatch(
         stepCompletionRequested({

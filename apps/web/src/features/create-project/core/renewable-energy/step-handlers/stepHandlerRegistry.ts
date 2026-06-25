@@ -14,6 +14,7 @@ import { FinancialAssistanceHandler } from "./revenue/revenue-financial-assistan
 import { RevenueIntroductionHandler } from "./revenue/revenue-introduction/revenueIntroduction.handler";
 import { YearlyProjectedRevenueHandler } from "./revenue/revenue-yearly-projected/revenueYearlyProjected.handler";
 import { ScheduleProjectionHandler } from "./schedule/schedule-projection/scheduleProjection.handler";
+import { InvolvesReinstatementHandler } from "./soils-decontamination/involves-reinstatement/involvesReinstatement.handler";
 import { SoilsDecontaminationIntroductionHandler } from "./soils-decontamination/soils-decontamination-introduction/soilsDecontaminationIntroduction.handler";
 import { SoilsDecontaminationSelectionHandler } from "./soils-decontamination/soils-decontamination-selection/soilsDecontaminationSelection.handler";
 import { SoilsDecontaminationSurfaceAreaHandler } from "./soils-decontamination/soils-decontamination-surface-area/soilsDecontaminationSurfaceArea.handler";
@@ -46,6 +47,7 @@ export const stepHandlerRegistry = {
   RENEWABLE_ENERGY_PHOTOVOLTAIC_CONTRACT_DURATION: ContractDurationHandler,
 
   // Soils decontamination
+  RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT: InvolvesReinstatementHandler,
   RENEWABLE_ENERGY_SOILS_DECONTAMINATION_INTRODUCTION: SoilsDecontaminationIntroductionHandler,
   RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION: SoilsDecontaminationSelectionHandler,
   RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SURFACE_AREA: SoilsDecontaminationSurfaceAreaHandler,

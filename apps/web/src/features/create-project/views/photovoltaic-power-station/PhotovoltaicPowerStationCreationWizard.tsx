@@ -26,6 +26,9 @@ const ProjectFinancialAssistanceRevenueForm = lazy(() => import("./revenue/finan
 const ProjectRevenueIntroduction = lazy(() => import("./revenue/introduction"));
 const ProjectYearlyProjectedRevenueForm = lazy(() => import("./revenue/yearly-projected-revenue"));
 const ProjectScheduleProjectionFormContainer = lazy(() => import("./schedule/projection"));
+const InvolvesReinstatementContainer = lazy(
+  () => import("./soils-decontamination/involves-reinstatement"),
+);
 const SoilsDecontaminationIntroduction = lazy(() => import("./soils-decontamination/introduction"));
 const SoilsDecontaminationSelection = lazy(() => import("./soils-decontamination/selection"));
 const SoilsDecontaminationSurfaceArea = lazy(() => import("./soils-decontamination/surface-area"));
@@ -242,6 +245,13 @@ function PhotovoltaicPowerStationCustomCreationWizard({ currentStep }: Props) {
               <>
                 <HtmlTitle>{`Surfaces - Alerte - Sols - ${HTML_PV_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
                 <NonSuitableSoilsSurfaceToTransformForm />
+              </>
+            );
+          case "RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT":
+            return (
+              <>
+                <HtmlTitle>{`Remise en état - ${HTML_PV_PROJECT_FORM_MAIN_TITLE}`}</HtmlTitle>
+                <InvolvesReinstatementContainer />
               </>
             );
           case "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_INTRODUCTION":

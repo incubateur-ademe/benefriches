@@ -1,17 +1,22 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import { selectIsSiteFriche } from "../../../../createProject.selectors";
-import { selectPhotovoltaicPowerStationScheduleInitialValues } from "../../../selectors/renewableEnergy.selector";
+import { ReadStateHelper } from "../../../helpers/readState";
+import {
+  selectPhotovoltaicPowerStationScheduleInitialValues,
+  selectSteps,
+} from "../../../selectors/renewableEnergy.selector";
 
 type PVScheduleProjectionViewData = {
   initialValues: ReturnType<typeof selectPhotovoltaicPowerStationScheduleInitialValues>;
-  siteIsFriche: boolean;
+  hasReinstatement: boolean;
 };
 
 export const selectPVScheduleProjectionViewData = createSelector(
-  [selectPhotovoltaicPowerStationScheduleInitialValues, selectIsSiteFriche],
-  (initialValues, siteIsFriche): PVScheduleProjectionViewData => ({
+  [selectPhotovoltaicPowerStationScheduleInitialValues, selectSteps],
+  (initialValues, steps): PVScheduleProjectionViewData => ({
     initialValues,
-    siteIsFriche,
+    hasReinstatement:
+      ReadStateHelper.getStepAnswers(steps, "RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT")
+        ?.involvesReinstatement === true,
   }),
 );

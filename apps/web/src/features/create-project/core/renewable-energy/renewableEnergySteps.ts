@@ -14,6 +14,7 @@ import { photovoltaicSurfaceSchema } from "./step-handlers/photovoltaic/photovol
 import { revenueFinancialAssistanceSchema } from "./step-handlers/revenue/revenue-financial-assistance/revenueFinancialAssistance.schema";
 import { revenueYearlyProjectedRevenueSchema } from "./step-handlers/revenue/revenue-yearly-projected/revenueYearlyProjected.schema";
 import { scheduleProjectionSchema } from "./step-handlers/schedule/schedule-projection/scheduleProjection.schema";
+import { involvesReinstatementSchema } from "./step-handlers/soils-decontamination/involves-reinstatement/involvesReinstatement.schema";
 import { soilsDecontaminationSelectionSchema } from "./step-handlers/soils-decontamination/soils-decontamination-selection/soilsDecontaminationSelection.schema";
 import { soilsDecontaminationSurfaceAreaSchema } from "./step-handlers/soils-decontamination/soils-decontamination-surface-area/soilsDecontaminationSurfaceArea.schema";
 import { customSoilsSelectionSchema } from "./step-handlers/soils-transformation/soils-transformation-custom-soils-selection/soilsTransformationCustomSoilsSelection.schema";
@@ -54,6 +55,7 @@ export const answersByStepSchemas = {
   RENEWABLE_ENERGY_PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION:
     photovoltaicExpectedAnnualProductionSchema,
   RENEWABLE_ENERGY_PHOTOVOLTAIC_CONTRACT_DURATION: photovoltaicContractDurationSchema,
+  RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT: involvesReinstatementSchema,
   RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION: soilsDecontaminationSelectionSchema,
   RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SURFACE_AREA: soilsDecontaminationSurfaceAreaSchema,
   RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SELECTION: nonSuitableSoilsSelectionSchema,

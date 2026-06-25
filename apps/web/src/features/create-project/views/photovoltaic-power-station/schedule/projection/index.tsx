@@ -8,13 +8,13 @@ import ScheduleProjectionForm from "@/shared/views/project-form/common/schedule/
 
 function ScheduleProjectionFormContainer() {
   const dispatch = useAppDispatch();
-  const { initialValues, siteIsFriche } = useAppSelector(selectPVScheduleProjectionViewData);
+  const { initialValues, hasReinstatement } = useAppSelector(selectPVScheduleProjectionViewData);
 
   return (
     <ScheduleProjectionForm
       initialValues={initialValues}
       installationScheduleLabel="⚡️ Installation de la centrale photovoltaïque"
-      hasReinstatement={siteIsFriche}
+      hasReinstatement={hasReinstatement}
       onBack={() => {
         dispatch(previousStepRequested());
       }}

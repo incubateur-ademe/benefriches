@@ -1,3 +1,4 @@
+import { ReadStateHelper } from "../../../helpers/readState";
 import type { AnswerStepHandler } from "../../stepHandler.type";
 
 export const SitePurchaseAmountsHandler: AnswerStepHandler<"RENEWABLE_ENERGY_EXPENSES_SITE_PURCHASE_AMOUNTS"> =
@@ -5,9 +6,12 @@ export const SitePurchaseAmountsHandler: AnswerStepHandler<"RENEWABLE_ENERGY_EXP
     stepId: "RENEWABLE_ENERGY_EXPENSES_SITE_PURCHASE_AMOUNTS",
 
     getNextStepId(context) {
-      if (context.siteData?.nature === "FRICHE") {
-        return "RENEWABLE_ENERGY_EXPENSES_REINSTATEMENT";
-      }
-      return "RENEWABLE_ENERGY_EXPENSES_PHOTOVOLTAIC_PANELS_INSTALLATION";
+      const involvesReinstatement = ReadStateHelper.getStepAnswers(
+        context.stepsState,
+        "RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT",
+      )?.involvesReinstatement;
+      return involvesReinstatement === true
+        ? "RENEWABLE_ENERGY_EXPENSES_REINSTATEMENT"
+        : "RENEWABLE_ENERGY_EXPENSES_PHOTOVOLTAIC_PANELS_INSTALLATION";
     },
   };

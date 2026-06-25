@@ -73,6 +73,10 @@ export const saveReconversionProject = createAppAsyncThunk(
       steps,
       "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SURFACE_AREA",
     );
+    const involvesReinstatementStep = ReadStateHelper.getStepAnswers(
+      steps,
+      "RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT",
+    );
 
     // Get soils distribution from project selection or custom allocation
     const customAllocation = ReadStateHelper.getStepAnswers(
@@ -86,6 +90,8 @@ export const saveReconversionProject = createAppAsyncThunk(
     const soilsDistribution =
       customAllocation?.soilsDistribution ?? projectSelection?.soilsDistribution ?? {};
 
+    const involvesReinstatement = involvesReinstatementStep?.involvesReinstatement ?? false;
+
     const mappedProjectData = {
       id: projectId,
       name: naming?.name,
@@ -94,15 +100,19 @@ export const saveReconversionProject = createAppAsyncThunk(
       relatedSiteId: siteData?.id,
       futureOperator: operator?.futureOperator,
       futureSiteOwner: siteOwner?.futureSiteOwner,
-      reinstatementContractOwner: reinstatementOwner?.reinstatementContractOwner,
-      reinstatementCosts: reinstatementExpenses?.reinstatementExpenses,
+      reinstatementContractOwner: involvesReinstatement
+        ? reinstatementOwner?.reinstatementContractOwner
+        : undefined,
+      reinstatementCosts: involvesReinstatement
+        ? reinstatementExpenses?.reinstatementExpenses
+        : undefined,
       sitePurchaseSellingPrice: sitePurchase?.sellingPrice,
       sitePurchasePropertyTransferDuties: sitePurchase?.propertyTransferDuties,
       financialAssistanceRevenues: financialAssistance?.financialAssistanceRevenues,
       yearlyProjectedCosts: yearlyExpenses?.yearlyProjectedExpenses,
       yearlyProjectedRevenues: yearlyRevenues?.yearlyProjectedRevenues,
       soilsDistribution: soilsDistributionObjToArray(soilsDistribution),
-      reinstatementSchedule: schedule?.reinstatementSchedule,
+      reinstatementSchedule: involvesReinstatement ? schedule?.reinstatementSchedule : undefined,
       operationsFirstYear: schedule?.firstYearOfOperation,
       developmentPlan: {
         type: "PHOTOVOLTAIC_POWER_PLANT",
@@ -116,7 +126,7 @@ export const saveReconversionProject = createAppAsyncThunk(
           contractDuration: contract?.photovoltaicContractDuration,
         },
       },
-      involvesReinstatement: true,
+      involvesReinstatement,
       projectPhase: phase,
       decontaminatedSoilSurface:
         decontaminationSurface?.decontaminatedSurfaceArea ??

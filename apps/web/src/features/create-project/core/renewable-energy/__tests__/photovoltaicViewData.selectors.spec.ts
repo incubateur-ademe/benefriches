@@ -147,11 +147,11 @@ describe("Photovoltaic ViewData selectors", () => {
   });
 
   describe("selectPVScheduleProjectionViewData", () => {
-    it("returns schedule initial values and whether site is friche", () => {
+    it("returns schedule initial values and hasReinstatement based on step state", () => {
       const viewData = selectPVScheduleProjectionViewData(MOCK_STATE);
       expect(viewData).toEqual({
         initialValues: expect.any(Object),
-        siteIsFriche: true,
+        hasReinstatement: false,
       });
     });
   });

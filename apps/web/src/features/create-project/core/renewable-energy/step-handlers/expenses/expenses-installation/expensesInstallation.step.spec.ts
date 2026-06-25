@@ -1,4 +1,3 @@
-import { relatedSiteData } from "@/features/create-project/core/__tests__/siteData.mock";
 import {
   getCurrentStep,
   StoreBuilder,
@@ -34,8 +33,14 @@ describe("Renewable energy creation - Steps - expenses photovoltaic panels insta
     expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_EXPENSES_PROJECTED_YEARLY_EXPENSES");
   });
 
-  it("should navigate back to reinstatement when site is FRICHE", () => {
+  it("should navigate back to reinstatement when involvesReinstatement is true", () => {
     const store = new StoreBuilder()
+      .withSteps({
+        RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT: {
+          completed: true,
+          payload: { involvesReinstatement: true },
+        },
+      })
       .withStepsSequence([
         "RENEWABLE_ENERGY_EXPENSES_REINSTATEMENT",
         "RENEWABLE_ENERGY_EXPENSES_PHOTOVOLTAIC_PANELS_INSTALLATION",
@@ -45,13 +50,18 @@ describe("Renewable energy creation - Steps - expenses photovoltaic panels insta
     expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_EXPENSES_REINSTATEMENT");
   });
 
-  it("should navigate back to expenses introduction when site is not FRICHE and not purchased", () => {
+  it("should navigate back to expenses introduction when involvesReinstatement is false and not purchased", () => {
     const store = new StoreBuilder()
+      .withSteps({
+        RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT: {
+          completed: true,
+          payload: { involvesReinstatement: false },
+        },
+      })
       .withStepsSequence([
         "RENEWABLE_ENERGY_EXPENSES_INTRODUCTION",
         "RENEWABLE_ENERGY_EXPENSES_PHOTOVOLTAIC_PANELS_INSTALLATION",
       ])
-      .withSiteData({ ...relatedSiteData, nature: "AGRICULTURAL_OPERATION" })
       .build();
     store.dispatch(previousStepRequested());
     expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_EXPENSES_INTRODUCTION");

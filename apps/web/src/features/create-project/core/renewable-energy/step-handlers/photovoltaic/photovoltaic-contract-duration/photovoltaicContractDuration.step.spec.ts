@@ -10,32 +10,8 @@ import {
 
 describe("Renewable energy creation - Steps - photovoltaic contract duration", () => {
   describe("completion", () => {
-    it("should navigate to soils decontamination introduction when site has contaminated soil", () => {
-      const store = new StoreBuilder()
-        .withSiteData({
-          ...relatedSiteData,
-          hasContaminatedSoils: true,
-          contaminatedSoilSurface: 2000,
-        })
-        .build();
-      store.dispatch(
-        stepCompletionRequested({
-          stepId: "RENEWABLE_ENERGY_PHOTOVOLTAIC_CONTRACT_DURATION",
-          answers: { photovoltaicContractDuration: 20 },
-        }),
-      );
-      expect(
-        store.getState().projectCreation.renewableEnergyProject.steps[
-          "RENEWABLE_ENERGY_PHOTOVOLTAIC_CONTRACT_DURATION"
-        ],
-      ).toEqual({
-        completed: true,
-        payload: { photovoltaicContractDuration: 20 },
-      });
-      expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_DECONTAMINATION_INTRODUCTION");
-    });
-
-    it("should navigate to soils transformation introduction when site has no contaminated soil", () => {
+    it("should navigate to involves reinstatement when site is FRICHE", () => {
+      // relatedSiteData.nature is "FRICHE" by default
       const store = new StoreBuilder().build();
       store.dispatch(
         stepCompletionRequested({
@@ -51,6 +27,37 @@ describe("Renewable energy creation - Steps - photovoltaic contract duration", (
         completed: true,
         payload: { photovoltaicContractDuration: 20 },
       });
+      expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT");
+    });
+
+    it("should navigate to soils decontamination introduction when site is not FRICHE and has contaminated soil", () => {
+      const store = new StoreBuilder()
+        .withSiteData({
+          ...relatedSiteData,
+          nature: "AGRICULTURAL_OPERATION",
+          hasContaminatedSoils: true,
+          contaminatedSoilSurface: 2000,
+        })
+        .build();
+      store.dispatch(
+        stepCompletionRequested({
+          stepId: "RENEWABLE_ENERGY_PHOTOVOLTAIC_CONTRACT_DURATION",
+          answers: { photovoltaicContractDuration: 20 },
+        }),
+      );
+      expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_DECONTAMINATION_INTRODUCTION");
+    });
+
+    it("should navigate to soils transformation introduction when site is not FRICHE and has no contaminated soil", () => {
+      const store = new StoreBuilder()
+        .withSiteData({ ...relatedSiteData, nature: "AGRICULTURAL_OPERATION" })
+        .build();
+      store.dispatch(
+        stepCompletionRequested({
+          stepId: "RENEWABLE_ENERGY_PHOTOVOLTAIC_CONTRACT_DURATION",
+          answers: { photovoltaicContractDuration: 20 },
+        }),
+      );
       expect(getCurrentStep(store)).toBe("RENEWABLE_ENERGY_SOILS_TRANSFORMATION_INTRODUCTION");
     });
   });

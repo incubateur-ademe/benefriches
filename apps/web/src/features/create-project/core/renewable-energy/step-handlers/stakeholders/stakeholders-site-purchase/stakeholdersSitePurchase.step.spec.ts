@@ -1,4 +1,3 @@
-import { relatedSiteData } from "@/features/create-project/core/__tests__/siteData.mock";
 import {
   getCurrentStep,
   StoreBuilder,
@@ -50,8 +49,14 @@ describe("Renewable energy creation - Steps - stakeholders site purchase", () =>
   });
 
   describe("back navigation", () => {
-    it("should navigate back to reinstatement contract owner when site is FRICHE", () => {
+    it("should navigate back to reinstatement contract owner when involvesReinstatement is true", () => {
       const store = new StoreBuilder()
+        .withSteps({
+          RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT: {
+            completed: true,
+            payload: { involvesReinstatement: true },
+          },
+        })
         .withStepsSequence([
           "RENEWABLE_ENERGY_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER",
           "RENEWABLE_ENERGY_STAKEHOLDERS_SITE_PURCHASE",
@@ -63,9 +68,14 @@ describe("Renewable energy creation - Steps - stakeholders site purchase", () =>
       );
     });
 
-    it("should navigate back to future operator when site is not FRICHE", () => {
+    it("should navigate back to future operator when involvesReinstatement is false", () => {
       const store = new StoreBuilder()
-        .withSiteData({ ...relatedSiteData, nature: "AGRICULTURAL_OPERATION" })
+        .withSteps({
+          RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT: {
+            completed: true,
+            payload: { involvesReinstatement: false },
+          },
+        })
         .withStepsSequence([
           "RENEWABLE_ENERGY_STAKEHOLDERS_FUTURE_OPERATOR",
           "RENEWABLE_ENERGY_STAKEHOLDERS_SITE_PURCHASE",

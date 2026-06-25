@@ -6,7 +6,11 @@ export const InstallationExpensesHandler: AnswerStepHandler<"RENEWABLE_ENERGY_EX
     stepId: "RENEWABLE_ENERGY_EXPENSES_PHOTOVOLTAIC_PANELS_INSTALLATION",
 
     getPreviousStepId(context) {
-      if (context.siteData?.nature === "FRICHE") {
+      const involvesReinstatement = ReadStateHelper.getStepAnswers(
+        context.stepsState,
+        "RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT",
+      )?.involvesReinstatement;
+      if (involvesReinstatement === true) {
         return "RENEWABLE_ENERGY_EXPENSES_REINSTATEMENT";
       }
       const willSiteBePurchased = ReadStateHelper.getStepAnswers(

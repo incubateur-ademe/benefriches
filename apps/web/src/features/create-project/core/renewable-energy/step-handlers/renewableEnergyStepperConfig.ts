@@ -14,6 +14,7 @@ import { revenueFinancialAssistanceStepperConfig } from "./revenue/revenue-finan
 import { revenueIntroductionStepperConfig } from "./revenue/revenue-introduction/revenueIntroduction.stepperConfig";
 import { revenueYearlyProjectedStepperConfig } from "./revenue/revenue-yearly-projected/revenueYearlyProjected.stepperConfig";
 import { scheduleProjectionStepperConfig } from "./schedule/schedule-projection/scheduleProjection.stepperConfig";
+import { involvesReinstatementStepperConfig } from "./soils-decontamination/involves-reinstatement/involvesReinstatement.stepperConfig";
 import { soilsDecontaminationIntroductionStepperConfig } from "./soils-decontamination/soils-decontamination-introduction/soilsDecontaminationIntroduction.stepperConfig";
 import { soilsDecontaminationSelectionStepperConfig } from "./soils-decontamination/soils-decontamination-selection/soilsDecontaminationSelection.stepperConfig";
 import { soilsDecontaminationSurfaceAreaStepperConfig } from "./soils-decontamination/soils-decontamination-surface-area/soilsDecontaminationSurfaceArea.stepperConfig";
@@ -78,6 +79,7 @@ export const RENEWABLE_ENERGY_STEP_TO_GROUP: Record<
   RENEWABLE_ENERGY_PHOTOVOLTAIC_CONTRACT_DURATION: photovoltaicContractDurationStepperConfig,
 
   // Soils decontamination
+  RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT: involvesReinstatementStepperConfig,
   RENEWABLE_ENERGY_SOILS_DECONTAMINATION_INTRODUCTION:
     soilsDecontaminationIntroductionStepperConfig,
   RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION: soilsDecontaminationSelectionStepperConfig,

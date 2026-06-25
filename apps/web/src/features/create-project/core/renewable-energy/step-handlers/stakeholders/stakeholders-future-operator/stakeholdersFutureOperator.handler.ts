@@ -1,3 +1,4 @@
+import { ReadStateHelper } from "../../../helpers/readState";
 import type { AnswerStepHandler } from "../../stepHandler.type";
 
 export const FutureOperatorHandler: AnswerStepHandler<"RENEWABLE_ENERGY_STAKEHOLDERS_FUTURE_OPERATOR"> =
@@ -5,7 +6,11 @@ export const FutureOperatorHandler: AnswerStepHandler<"RENEWABLE_ENERGY_STAKEHOL
     stepId: "RENEWABLE_ENERGY_STAKEHOLDERS_FUTURE_OPERATOR",
 
     getNextStepId(context) {
-      return context.siteData?.nature === "FRICHE"
+      const involvesReinstatement = ReadStateHelper.getStepAnswers(
+        context.stepsState,
+        "RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT",
+      )?.involvesReinstatement;
+      return involvesReinstatement === true
         ? "RENEWABLE_ENERGY_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER"
         : "RENEWABLE_ENERGY_STAKEHOLDERS_SITE_PURCHASE";
     },
