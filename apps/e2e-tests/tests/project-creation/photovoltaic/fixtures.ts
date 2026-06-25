@@ -8,8 +8,9 @@ import {
 import { PhotovoltaicProjectCreationPage } from "../../../pages/PhotovoltaicProjectCreationPage";
 
 type AgriculturalCustomSiteDto = Extract<CreateCustomSiteDto, { nature: "AGRICULTURAL_OPERATION" }>;
+type FricheCustomSiteDto = Extract<CreateCustomSiteDto, { nature: "FRICHE" }>;
 
-const SITE_DATA: Omit<AgriculturalCustomSiteDto, "id" | "createdBy"> = {
+const AGRICULTURAL_SITE_DATA: Omit<AgriculturalCustomSiteDto, "id" | "createdBy"> = {
   nature: "AGRICULTURAL_OPERATION",
   name: "Terrain agricole de Meylan",
   agriculturalOperationActivity: "CEREALS_AND_OILSEEDS_CULTIVATION",
@@ -39,15 +40,46 @@ const SITE_DATA: Omit<AgriculturalCustomSiteDto, "id" | "createdBy"> = {
   tenant: { structureType: "company", name: "Société agricole" },
 };
 
+const FRICHE_SITE_DATA: Omit<FricheCustomSiteDto, "id" | "createdBy"> = {
+  nature: "FRICHE",
+  name: "Friche industrielle de Meylan",
+  address: {
+    banId: "38229",
+    value: "Meylan",
+    city: "Meylan",
+    cityCode: "38229",
+    postCode: "38240",
+    long: 5.7826,
+    lat: 45.2116,
+  },
+  soilsDistribution: {
+    BUILDINGS: 1000,
+    IMPERMEABLE_SOILS: 2000,
+    MINERAL_SOIL: 1500,
+  },
+  yearlyExpenses: [],
+  yearlyIncomes: [],
+  owner: { structureType: "municipality", name: "Mairie de Meylan" },
+};
+
 type PhotovoltaicProjectCreationFixtures = {
   pvProjectCreationPage: PhotovoltaicProjectCreationPage;
-  testSite: TestSite;
+  agriculturalSite: TestSite;
+  fricheSite: TestSite;
 };
 
 export const test = authTest.extend<PhotovoltaicProjectCreationFixtures>({
-  testSite: async ({ authenticatedApiClient, testUser }, use) => {
+  agriculturalSite: async ({ authenticatedApiClient, testUser }, use) => {
     const site = await createCustomSiteViaApi(authenticatedApiClient)({
-      ...SITE_DATA,
+      ...AGRICULTURAL_SITE_DATA,
+      createdBy: testUser.id,
+    });
+    await use(site);
+  },
+
+  fricheSite: async ({ authenticatedApiClient, testUser }, use) => {
+    const site = await createCustomSiteViaApi(authenticatedApiClient)({
+      ...FRICHE_SITE_DATA,
       createdBy: testUser.id,
     });
     await use(site);

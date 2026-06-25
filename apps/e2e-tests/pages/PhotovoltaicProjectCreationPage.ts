@@ -84,6 +84,28 @@ export class PhotovoltaicProjectCreationPage {
     await this.submit();
   }
 
+  // --- Soils decontamination ---
+
+  // oxlint-disable-next-line playwright/no-force-option -- DSFR labels overlay radio inputs
+  async selectInvolvesReinstatement(involves: boolean): Promise<void> {
+    const label = involves
+      ? "Oui, le projet inclut des travaux de remise en état"
+      : "Non, le projet ne prévoit pas de remise en état";
+    await this.page.getByRole("radio", { name: label }).check({ force: true });
+    await this.submit();
+  }
+
+  // oxlint-disable-next-line playwright/no-force-option -- DSFR labels overlay radio inputs
+  async selectDecontaminationOption(option: "partial" | "none" | "unknown"): Promise<void> {
+    const labels: Record<"partial" | "none" | "unknown", string> = {
+      partial: "Oui",
+      none: "Non",
+      unknown: "Ne sait pas",
+    };
+    await this.page.getByRole("radio", { name: labels[option] }).check({ force: true });
+    await this.submit();
+  }
+
   // --- Soils transformation ---
 
   async goToNextStep(): Promise<void> {

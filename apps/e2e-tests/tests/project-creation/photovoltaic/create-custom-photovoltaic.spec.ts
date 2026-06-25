@@ -5,10 +5,10 @@ const PROJECT_NAME = "Centrale photovoltaïque de Meylan";
 test.describe("photovoltaic project creation - custom mode", () => {
   test("allows authenticated user to create a photovoltaic power station via custom mode", async ({
     pvProjectCreationPage,
-    testSite,
+    agriculturalSite,
   }) => {
     // Navigate to project creation
-    await pvProjectCreationPage.goto(testSite.id);
+    await pvProjectCreationPage.goto(agriculturalSite.id);
 
     // --- Project phase ---
     await pvProjectCreationPage.selectProjectPhase("Montage / Développement");
@@ -113,13 +113,125 @@ test.describe("photovoltaic project creation - custom mode", () => {
   });
 });
 
+test.describe("photovoltaic project creation - friche site", () => {
+  const FRICHE_PROJECT_NAME = "Centrale photovoltaïque sur friche de Meylan";
+
+  test("allows authenticated user to create a PV project on a friche site", async ({
+    pvProjectCreationPage,
+    fricheSite,
+  }) => {
+    // Navigate to project creation
+    await pvProjectCreationPage.goto(fricheSite.id);
+
+    // --- Project phase ---
+    await pvProjectCreationPage.selectProjectPhase("Montage / Développement");
+
+    // Create mode selection
+    await pvProjectCreationPage.selectCreateMode("custom");
+
+    // Project type selection
+    await pvProjectCreationPage.selectProjectType();
+
+    // Renewable energy type selection
+    await pvProjectCreationPage.selectRenewableEnergyType();
+
+    // --- Photovoltaic parameters ---
+
+    await pvProjectCreationPage.selectKeyParameter("POWER");
+    await pvProjectCreationPage.fillPower(296);
+    await pvProjectCreationPage.fillSurface(2700);
+    await pvProjectCreationPage.fillExpectedAnnualProduction(374);
+    await pvProjectCreationPage.fillContractDuration(20);
+
+    // --- Soils decontamination ---
+
+    // Involves reinstatement: no
+    await pvProjectCreationPage.selectInvolvesReinstatement(false);
+
+    // Decontamination introduction
+    await pvProjectCreationPage.goToNextStep();
+
+    // Decontamination selection: no decontamination
+    await pvProjectCreationPage.selectDecontaminationOption("none");
+
+    // --- Soils transformation ---
+
+    // Soils transformation introduction
+    await pvProjectCreationPage.goToNextStep();
+
+    // Soils transformation project selection: keep current soils
+    await pvProjectCreationPage.selectSoilsTransformationProject("keepCurrentSoils");
+
+    // Soils summary
+    await pvProjectCreationPage.expectSoilsSummaryStep();
+    await pvProjectCreationPage.goToNextStep();
+
+    // Soils carbon storage
+    await pvProjectCreationPage.expectSoilsCarbonStorageStep();
+    await pvProjectCreationPage.goToNextStep();
+
+    // --- Stakeholders ---
+
+    // Stakeholders introduction
+    await pvProjectCreationPage.goToNextStep();
+
+    // Developer: select user's own structure
+    await pvProjectCreationPage.selectStakeholder(/Ma structure/);
+
+    // Future operator: select user's own structure
+    await pvProjectCreationPage.selectStakeholder(/Ma structure/);
+
+    // Site purchase: no
+    await pvProjectCreationPage.selectSitePurchase(false);
+
+    // --- Expenses ---
+
+    // Expenses introduction
+    await pvProjectCreationPage.goToNextStep();
+
+    // PV installation expenses: accept pre-filled defaults
+    await pvProjectCreationPage.submitOrSkipStep();
+
+    // Yearly projected expenses: accept pre-filled defaults
+    await pvProjectCreationPage.submitOrSkipStep();
+
+    // --- Revenue ---
+
+    // Revenue introduction
+    await pvProjectCreationPage.goToNextStep();
+
+    // Yearly projected revenue: accept pre-filled defaults
+    await pvProjectCreationPage.submitOrSkipStep();
+
+    // Financial assistance: skip or accept defaults
+    await pvProjectCreationPage.submitOrSkipStep();
+
+    // --- Schedule ---
+
+    await pvProjectCreationPage.fillSchedule("09/2027", "03/2029", 2029);
+
+    // --- Name and description ---
+
+    await pvProjectCreationPage.fillNameAndDescription(FRICHE_PROJECT_NAME);
+
+    // --- Final summary ---
+
+    await pvProjectCreationPage.expectFinalSummary();
+    await pvProjectCreationPage.submitFinalSummary();
+
+    // --- Creation result ---
+
+    await pvProjectCreationPage.expectCreationSuccess(FRICHE_PROJECT_NAME);
+  });
+});
+
 test.describe("photovoltaic project creation - demo mode", () => {
   test("allows authenticated user to create an urban project via express mode", async ({
     pvProjectCreationPage,
-    testSite,
+    agriculturalSite,
   }) => {
     // Navigate to project creation with the test site
-    await pvProjectCreationPage.goto(testSite.id);
+    await pvProjectCreationPage.goto(agriculturalSite.id);
 
     // --- Project phase ---
     await pvProjectCreationPage.selectProjectPhase("Montage / Développement");
@@ -147,10 +259,10 @@ test.describe("photovoltaic project creation - demo mode", () => {
 test.describe("photovoltaic project creation - automatic custom mode", () => {
   test("allows authenticated user to create an urban project via express mode", async ({
     pvProjectCreationPage,
-    testSite,
+    agriculturalSite,
   }) => {
     // Navigate to project creation with the test site
-    await pvProjectCreationPage.goto(testSite.id);
+    await pvProjectCreationPage.goto(agriculturalSite.id);
 
     // --- Project phase ---
     await pvProjectCreationPage.selectProjectPhase("Programmation");
