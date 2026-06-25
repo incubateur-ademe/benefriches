@@ -1,9 +1,12 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { OnEvent } from "@nestjs/event-emitter";
 
-import { LOGIN_SUCCEEDED, LoginSucceededEvent } from "src/auth/core/events/loginSucceeded.event";
-import { CRMGateway } from "src/marketing/core/CRMGateway";
-import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import {
+  LOGIN_SUCCEEDED,
+  type LoginSucceededEvent,
+} from "src/auth/core/events/loginSucceeded.event";
+import type { CRMGateway } from "src/marketing/core/CRMGateway";
+import type { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 
 @Injectable()
 export class LoginSucceededHandler {

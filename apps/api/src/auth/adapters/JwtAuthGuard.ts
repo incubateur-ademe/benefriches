@@ -10,7 +10,7 @@ import { Request } from "express";
 
 import {
   ACCESS_TOKEN_SERVICE_INJECTION_TOKEN,
-  AccessTokenService,
+  type AccessTokenService,
 } from "./access-token/AccessTokenService";
 import { ACCESS_TOKEN_COOKIE_KEY } from "./access-token/accessTokenCookie";
 

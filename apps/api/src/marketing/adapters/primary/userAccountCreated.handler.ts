@@ -3,9 +3,9 @@ import { OnEvent } from "@nestjs/event-emitter";
 
 import {
   USER_ACCOUNT_CREATED,
-  UserAccountCreatedEvent,
+  type UserAccountCreatedEvent,
 } from "src/auth/core/events/userAccountCreated.event";
-import { CRMGateway } from "src/marketing/core/CRMGateway";
+import type { CRMGateway } from "src/marketing/core/CRMGateway";
 
 @Injectable()
 export class UserAccountCreatedHandler {

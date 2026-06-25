@@ -15,7 +15,7 @@ import { ReconversionProjectsModule } from "./reconversion-projects/adapters/pri
 import { DomainEventsRepository } from "./shared-kernel/adapters/events/repository/DomainEventsRepository";
 import { SqlDomainEventsRepository } from "./shared-kernel/adapters/events/repository/SqlDomainEventsRepository";
 import { SqlConnectionModule } from "./shared-kernel/adapters/sql-knex/sqlConnection.module";
-import { DomainEvent } from "./shared-kernel/domainEvent";
+import type { DomainEvent } from "./shared-kernel/domainEvent";
 import { SiteActionsModule } from "./site-actions/adapters/primary/siteActions.module";
 import { SiteEvaluationsModule } from "./site-evaluations/adapters/primary/siteEvaluations.module";
 import { SitesModule } from "./sites/adapters/primary/sites.module";

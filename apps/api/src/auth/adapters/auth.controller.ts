@@ -18,19 +18,19 @@ import {
 } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { Throttle } from "@nestjs/throttler";
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import { createZodDto } from "nestjs-zod";
 import { randomUUID } from "node:crypto";
 import { registerUserRequestDtoSchema, type GetCurrentUserResponseDto } from "shared";
 
-import { CreateUserUseCase, UserProps } from "src/auth/core/createUser.usecase";
+import { CreateUserUseCase, type UserProps } from "src/auth/core/createUser.usecase";
 import {
-  UidGenerator,
+  type UidGenerator,
   UUID_GENERATOR_INJECTION_TOKEN,
 } from "src/shared-kernel/adapters/id-generator/UidGenerator";
 import {
   DOMAIN_EVENT_PUBLISHER_INJECTION_TOKEN,
-  DomainEventPublisher,
+  type DomainEventPublisher,
 } from "src/shared-kernel/domainEventPublisher";
 import type { AppLogger } from "src/shared-kernel/logger";
 
@@ -39,26 +39,26 @@ import { createLoginAttemptedEvent } from "../core/events/loginAttempted.event";
 import { createLoginSucceededEvent } from "../core/events/loginSucceeded.event";
 import {
   AUTH_USER_REPOSITORY_INJECTION_TOKEN,
-  UserRepository,
+  type UserRepository,
 } from "../core/gateways/UsersRepository";
 import { SendAuthLinkUseCase } from "../core/sendAuthLink.usecase";
-import { JwtAuthGuard, RequestWithAuthenticatedUser } from "./JwtAuthGuard";
+import { JwtAuthGuard, type RequestWithAuthenticatedUser } from "./JwtAuthGuard";
 import {
   ACCESS_TOKEN_SERVICE_INJECTION_TOKEN,
-  AccessTokenService,
+  type AccessTokenService,
 } from "./access-token/AccessTokenService";
 import { ACCESS_TOKEN_COOKIE_KEY } from "./access-token/accessTokenCookie";
 import {
   EXTERNAL_USER_IDENTITIES_REPOSITORY_INJECTION_TOKEN,
-  ExternalUserIdentityRepository,
+  type ExternalUserIdentityRepository,
 } from "./external-user-identities-repository/ExternalUserIdentitiesRepository";
 import {
   PRO_CONNECT_CLIENT_INJECTION_TOKEN,
-  ProConnectClient,
+  type ProConnectClient,
 } from "./pro-connect/ProConnectClient";
 import {
   VERIFIED_EMAIL_REPOSITORY_INJECTION_TOKEN,
-  VerifiedEmailRepository,
+  type VerifiedEmailRepository,
 } from "./verified-email-repository/VerifiedEmailRepository";
 
 export const AUTH_CONTROLLER_LOGGER_TOKEN = "AUTH_CONTROLLER_LOGGER";

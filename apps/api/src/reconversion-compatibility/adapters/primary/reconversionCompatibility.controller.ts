@@ -11,7 +11,7 @@ import {
 import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
 
-import { JwtAuthGuard, RequestWithAuthenticatedUser } from "src/auth/adapters/JwtAuthGuard";
+import { JwtAuthGuard, type RequestWithAuthenticatedUser } from "src/auth/adapters/JwtAuthGuard";
 import { AddRelatedSiteToReconversionCompatibilityEvaluationUseCase } from "src/reconversion-compatibility/core/usecases/addRelatedSiteToReconversionCompatibilityEvaluation.usecase";
 import { CompleteReconversionCompatibilityEvaluationUseCase } from "src/reconversion-compatibility/core/usecases/completeReconversionCompatibilityEvaluation.usecase";
 import { StartReconversionCompatibilityEvaluationUseCase } from "src/reconversion-compatibility/core/usecases/startReconversionCompatibilityEvaluation.usecase";

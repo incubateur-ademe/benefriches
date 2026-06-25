@@ -5,7 +5,7 @@ import {
   SITE_CREATED_FROM_EVALUATION,
   type SiteCreatedFromEvaluationEvent,
 } from "src/reconversion-compatibility/core/events/siteCreatedFromEvaluation.event";
-import { SiteActionsQuery } from "src/site-actions/core/gateways/SiteActionsQuery";
+import type { SiteActionsQuery } from "src/site-actions/core/gateways/SiteActionsQuery";
 import { UpdateSiteActionStatusUseCase } from "src/site-actions/core/usecases/updateSiteActionStatus.usecase";
 
 @Injectable()

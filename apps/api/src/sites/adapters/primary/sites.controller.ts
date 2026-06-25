@@ -29,7 +29,7 @@ import {
   type GetSiteImpactsDto,
 } from "shared";
 
-import { JwtAuthGuard, RequestWithAuthenticatedUser } from "src/auth/adapters/JwtAuthGuard";
+import { JwtAuthGuard, type RequestWithAuthenticatedUser } from "src/auth/adapters/JwtAuthGuard";
 import { ArchiveSiteUseCase } from "src/sites/core/usecases/archiveSite.usecase";
 import { ComputeFricheInactionCostUseCase } from "src/sites/core/usecases/computeFricheInactionCost.usecase";
 import { ComputeSiteImpactsUseCase } from "src/sites/core/usecases/computeSiteImpacts.usecase";

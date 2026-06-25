@@ -22,9 +22,9 @@ import {
 } from "shared";
 import { z } from "zod";
 
-import { JwtAuthGuard, RequestWithAuthenticatedUser } from "src/auth/adapters/JwtAuthGuard";
+import { JwtAuthGuard, type RequestWithAuthenticatedUser } from "src/auth/adapters/JwtAuthGuard";
 import { formatReconversionProjectInputToFeatures } from "src/reconversion-projects/core/model/formatProjectInputToFeatures";
-import { ReconversionProjectFeaturesView } from "src/reconversion-projects/core/model/reconversionProject";
+import type { ReconversionProjectFeaturesView } from "src/reconversion-projects/core/model/reconversionProject";
 import { ArchiveReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/archiveReconversionProject.usecase";
 import { ComputeProjectUrbanSprawlImpactsComparisonUseCase } from "src/reconversion-projects/core/usecases/computeProjectUrbanSprawlImpactsComparison.usecase";
 import { ComputeReconversionProjectBreakEvenLevelUseCase } from "src/reconversion-projects/core/usecases/computeReconversionProjectBreakEvenLevel.usecase";
