@@ -1,5 +1,5 @@
 import { Inject } from "@nestjs/common";
-import { Knex } from "knex";
+import type { Knex } from "knex";
 import {
   BuildingsConstructionExpense,
   ReconversionProjectCreationMode,

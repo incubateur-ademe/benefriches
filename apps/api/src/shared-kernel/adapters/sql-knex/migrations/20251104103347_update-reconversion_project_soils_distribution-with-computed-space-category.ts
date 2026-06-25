@@ -1,4 +1,4 @@
-import { Knex } from "knex";
+import type { Knex } from "knex";
 import { roundTo2Digits, sumListWithKey, typedObjectEntries } from "shared";
 import { v4 as uuid } from "uuid";
 

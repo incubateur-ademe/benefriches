@@ -1,5 +1,5 @@
 import { Inject } from "@nestjs/common";
-import { Knex } from "knex";
+import type { Knex } from "knex";
 import { SiteNature, ReconversionProjectCreationMode } from "shared";
 
 import { DevelopmentPlan } from "src/reconversion-projects/core/model/reconversionProject";

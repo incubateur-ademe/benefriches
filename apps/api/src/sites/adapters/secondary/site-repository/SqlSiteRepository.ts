@@ -1,5 +1,5 @@
 import { Inject } from "@nestjs/common";
-import { Knex } from "knex";
+import type { Knex } from "knex";
 import { SoilType } from "shared";
 import { v4 as uuid } from "uuid";
 

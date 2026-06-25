@@ -1,7 +1,7 @@
 import { HttpModule, HttpService } from "@nestjs/axios";
 import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
-import { Knex } from "knex";
+import type { Knex } from "knex";
 
 import { CRMGateway } from "src/marketing/core/CRMGateway";
 import { MarketingUsersQuery } from "src/marketing/core/gateways/MarketingUsersQuery";

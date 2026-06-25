@@ -3,7 +3,7 @@ import { ConfigService } from "@nestjs/config";
 import { NestFactory } from "@nestjs/core";
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
-import { Knex } from "knex";
+import type { Knex } from "knex";
 
 import { AppModule } from "./app.module";
 import { configureServer } from "./httpServer";

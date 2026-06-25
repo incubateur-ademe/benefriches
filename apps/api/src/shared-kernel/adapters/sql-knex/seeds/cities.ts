@@ -1,4 +1,4 @@
-import { Knex } from "knex";
+import type { Knex } from "knex";
 import fs from "node:fs";
 import path from "node:path";
 import readline from "node:readline";

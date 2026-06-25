@@ -1,7 +1,7 @@
 import { JwtService } from "@nestjs/jwt";
 import { NestExpressApplication } from "@nestjs/platform-express";
 import * as cookie from "cookie";
-import { Knex } from "knex";
+import type { Knex } from "knex";
 import assert from "node:assert/strict";
 import { after, before, describe, it, mock } from "node:test";
 import { RegisterUserRequestDto } from "shared";

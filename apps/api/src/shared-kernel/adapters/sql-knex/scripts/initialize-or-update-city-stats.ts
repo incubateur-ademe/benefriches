@@ -1,5 +1,5 @@
 import { configDotenv } from "dotenv";
-import knex, { Knex } from "knex";
+import knex, { type Knex } from "knex";
 import fs from "node:fs";
 import path from "node:path";
 import readline from "node:readline";
