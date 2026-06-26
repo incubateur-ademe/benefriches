@@ -15,7 +15,7 @@ type BaseEconomicImpact = { actor: string; amount: number };
 
 /* ECONOMIC DIRECT */
 export type RentalIncomeImpact = BaseEconomicImpact & {
-  impact: "rental_income";
+  impact: "rental_income" | "site_rental_income_loss";
   impactCategory: "economic_direct";
 };
 export type AvoidedFricheCostsImpact = BaseEconomicImpact & {

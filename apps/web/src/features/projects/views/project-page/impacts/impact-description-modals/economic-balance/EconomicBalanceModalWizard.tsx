@@ -1,4 +1,5 @@
 import { lazy, Suspense } from "react";
+import { ProjectDevelopmentEconomicBalanceItem } from "shared";
 
 import {
   EconomicBalanceDetailsName,
@@ -48,15 +49,26 @@ export function EconomicBalanceModalWizard({
           case "site_reinstatement":
             return (
               <SiteReinstatementDescription
-                impactData={impactsData.economicBalance.costs.siteReinstatement}
-                bearer={impactsData.economicBalance.bearer}
+                impactData={impactsData.projectEconomicBalance.details.filter(
+                  (
+                    item,
+                  ): item is Extract<
+                    ProjectDevelopmentEconomicBalanceItem,
+                    { name: "siteReinstatement" }
+                  > => item.name === "siteReinstatement",
+                )}
+                bearer={impactsData.stakeholders.project.reinstatementContractOwner.structureName}
               />
             );
 
           case "site_purchase":
             return (
               <RealEstateAcquisitionDescription
-                impactData={impactsData.economicBalance.costs.sitePurchase}
+                impactData={
+                  impactsData.projectEconomicBalance.details.find(
+                    ({ name }) => name === "sitePurchase",
+                  )?.total
+                }
               />
             );
 

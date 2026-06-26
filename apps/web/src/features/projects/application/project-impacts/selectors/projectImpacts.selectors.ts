@@ -1,16 +1,27 @@
 import { createSelector } from "@reduxjs/toolkit";
 
 import type { RootState } from "@/app/store/store";
-import { selectEconomicBalanceProjectImpacts } from "@/features/projects/application/project-impacts/selectors/projectImpactsEconomicBalance.selectors";
-import { selectEnvironmentalProjectImpacts } from "@/features/projects/application/project-impacts/selectors/projectImpactsEnvironmental.selectors";
-import { selectSocialProjectImpacts } from "@/features/projects/application/project-impacts/selectors/projectImpactsSocial.selectors";
-import { selectDetailedSocioEconomicProjectImpacts } from "@/features/projects/application/project-impacts/selectors/projectImpactsSocioEconomic.selectors";
-import { getKeyImpactIndicatorsListSelector } from "@/features/projects/application/project-impacts/selectors/projectKeyImpactIndicators.selectors";
-import type { EconomicBalance } from "@/features/projects/domain/projectImpactsEconomicBalance";
-import type { EnvironmentalImpact } from "@/features/projects/domain/projectImpactsEnvironmental";
-import type { SocialImpact } from "@/features/projects/domain/projectImpactsSocial";
-import type { SocioEconomicDetailedImpact } from "@/features/projects/domain/projectImpactsSocioEconomic";
-import type { KeyImpactIndicatorData } from "@/features/projects/domain/projectKeyImpactIndicators";
+import {
+  getEconomicBalanceProjectImpacts,
+  type EconomicBalance,
+} from "@/features/projects/domain/projectImpactsEconomicBalance";
+import {
+  getEnvironmentalProjectImpacts,
+  type EnvironmentalImpact,
+} from "@/features/projects/domain/projectImpactsEnvironmental";
+import {
+  getSocialProjectImpacts,
+  type SocialImpact,
+} from "@/features/projects/domain/projectImpactsSocial";
+import {
+  getSocioEconomicProjectImpactsGroupedByCategory,
+  type SocioEconomicDetailedImpact,
+} from "@/features/projects/domain/projectImpactsSocioEconomic";
+import {
+  getKeyImpactIndicatorsList,
+  type KeyImpactIndicatorData,
+} from "@/features/projects/domain/projectKeyImpactIndicators";
+import { ProjectDevelopmentPlanType } from "@/features/projects/domain/projects.types";
 import { ModalDataProps } from "@/features/projects/views/project-page/impacts/impact-description-modals/ImpactModalDescription";
 
 import {
@@ -28,6 +39,51 @@ type ImpactsListViewData = {
   socialImpacts: SocialImpact[];
   modalData: ModalDataProps;
 };
+
+const selectProjectImpactsState = (state: RootState) => state.projectImpacts;
+
+const selectImpactsData = createSelector(
+  selectProjectImpactsState,
+  (state): ProjectImpactsState["impacts"] => state.impacts,
+);
+
+export const selectSocialProjectImpacts = createSelector(
+  selectImpactsData,
+  getSocialProjectImpacts,
+);
+
+export const selectEnvironmentalProjectImpacts = createSelector(
+  selectProjectImpactsState,
+  (state) => {
+    if (!state.impacts) {
+      return [];
+    }
+    return getEnvironmentalProjectImpacts(state.impacts, state.relatedSiteData?.surfaceArea ?? 0);
+  },
+);
+
+export const selectDetailedSocioEconomicProjectImpacts = createSelector(
+  selectImpactsData,
+  getSocioEconomicProjectImpactsGroupedByCategory,
+);
+
+const selectProjectDevelopmentType = createSelector(
+  selectProjectImpactsState,
+  (state): ProjectDevelopmentPlanType =>
+    state.projectData?.developmentPlan.type ?? "PHOTOVOLTAIC_POWER_PLANT",
+);
+
+export const selectEconomicBalanceProjectImpacts = createSelector(
+  selectProjectDevelopmentType,
+  selectImpactsData,
+  getEconomicBalanceProjectImpacts,
+);
+
+export const selectKeyImpactIndicatorsList = createSelector(selectProjectImpactsState, (state) =>
+  state.impacts && state.relatedSiteData
+    ? getKeyImpactIndicatorsList(state.impacts, state.relatedSiteData)
+    : [],
+);
 
 export const selectImpactsListViewData = createSelector(
   [
@@ -59,7 +115,7 @@ type ImpactsSummaryViewData = {
 };
 
 export const selectImpactsSummaryViewData = createSelector(
-  [getKeyImpactIndicatorsListSelector, selectModalData],
+  [selectKeyImpactIndicatorsList, selectModalData],
   (keyImpactIndicatorsList, modalData): ImpactsSummaryViewData => ({
     keyImpactIndicatorsList,
     modalData,
@@ -79,8 +135,6 @@ type ImpactsPageViewData = {
   isExpressProject: boolean;
   displayImpactsAccuracyDisclaimer: boolean;
 };
-
-const selectProjectImpactsState = (state: RootState) => state.projectImpacts;
 
 export const selectImpactsPageViewData = createSelector(
   [selectProjectImpactsState, selectProjectsImpactsViewData],

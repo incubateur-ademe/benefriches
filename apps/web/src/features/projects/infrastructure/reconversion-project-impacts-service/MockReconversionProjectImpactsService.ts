@@ -23,4 +23,8 @@ export class MockReconversionProjectImpactsApi implements ReconversionProjectImp
   _setReconversionProjectImpacts(data: ReconversionProjectImpactsResult) {
     this.data = data;
   }
+
+  _setReconversionProjectImpactsBreakEvenLevel(data: GetReconversionProjectImpactsResultDto) {
+    this.dataBreakEvenLevel = data;
+  }
 }

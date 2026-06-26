@@ -1,6 +1,10 @@
 import { useIsModalOpen } from "@codegouvfr/react-dsfr/Modal/useIsModalOpen";
 import { Suspense, useLayoutEffect, useState } from "react";
-import { BuildingsUseDistribution, ReconversionProjectImpacts, SoilsDistribution } from "shared";
+import {
+  BuildingsUseDistribution,
+  GetReconversionProjectImpactsResultDto,
+  SoilsDistribution,
+} from "shared";
 
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
@@ -37,7 +41,7 @@ export type ModalDataProps = {
     addressLabel: string;
     surfaceArea: number;
   };
-  impactsData: ReconversionProjectImpacts;
+  impactsData: GetReconversionProjectImpactsResultDto;
 };
 
 type ModalDescriptionProviderProps = ModalDataProps & {

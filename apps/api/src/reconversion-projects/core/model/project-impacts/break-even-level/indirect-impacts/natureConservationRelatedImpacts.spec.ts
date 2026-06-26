@@ -185,9 +185,18 @@ describe("natureConservationRelatedImpacts", () => {
 
     assert.ok(
       Math.abs(
-        (result.impactMetrics.find(({ name }) => name === "newPermeableSurface")?.total ?? 0) - 165,
+        (result.impactMetrics.find(({ name }) => name === "newPermeableMineralSurface")?.total ??
+          0) - -85,
       ) < 0.5,
     );
+
+    assert.ok(
+      Math.abs(
+        (result.impactMetrics.find(({ name }) => name === "newPermeableGreenSurface")?.total ?? 0) -
+          250,
+      ) < 0.5,
+    );
+
     assert.ok(
       Math.abs(
         (result.impactMetrics.find(({ name }) => name === "decontaminatedSurface")?.total ?? 0) -
@@ -260,10 +269,16 @@ describe("natureConservationRelatedImpacts", () => {
 
     assert.ok(
       Math.abs(
-        (result.impactMetrics.find(({ name }) => name === "newPermeableSurface")?.total ?? 0) -
+        (result.impactMetrics.find(({ name }) => name === "newPermeableGreenSurface")?.total ?? 0) -
           -550,
       ) < 0.5,
     );
+
+    assert.strictEqual(
+      result.impactMetrics.find(({ name }) => name === "newPermeableMineralSurface"),
+      undefined,
+    );
+
     assert.strictEqual(
       result.impactMetrics.find(({ name }) => name === "decontaminatedSurface"),
       undefined,

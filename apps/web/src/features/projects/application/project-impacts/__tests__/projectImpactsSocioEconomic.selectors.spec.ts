@@ -1,11 +1,8 @@
 import { createStore, RootState } from "@/app/store/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
-import { photovoltaicProjectImpactMock as projectImpactMock } from "../projectImpacts.mock";
-import {
-  selectDetailedSocioEconomicProjectImpacts,
-  selectSocioEconomicProjectImpactsByActor,
-} from "./projectImpactsSocioEconomic.selectors";
+import { selectDetailedSocioEconomicProjectImpacts } from "../selectors/projectImpacts.selectors";
+import { photovoltaicProjectImpactsResultDto as projectImpactMock } from "./projectImpacts.mock";
 
 const MOCK_STATES = {
   projectImpacts: {
@@ -16,23 +13,12 @@ const MOCK_STATES = {
     },
     evaluationPeriod: 10,
     currentViewMode: "list",
-    impactsData: projectImpactMock.impacts,
-    projectData: {
-      id: projectImpactMock.id,
-      name: projectImpactMock.name,
-      ...projectImpactMock.projectData,
-    },
-    relatedSiteData: {
-      id: projectImpactMock.relatedSiteId,
-      name: projectImpactMock.relatedSiteName,
-      isExpressSite: projectImpactMock.isExpressSite,
-      ...projectImpactMock.siteData,
-    },
+    impacts: projectImpactMock,
   } satisfies RootState["projectImpacts"],
 };
 
 describe("projectImpactsSocioEconomic selectors", () => {
-  describe("getDetailedSocioEconomicProjectImpacts", () => {
+  describe("getSocioEconomicProjectImpactsGroupedByCategory", () => {
     it("should return socio economic impacts formatted with details and total", () => {
       const store = createStore(getTestAppDependencies(), MOCK_STATES);
       const rootState = store.getState();
@@ -68,8 +54,8 @@ describe("projectImpactsSocioEconomic selectors", () => {
 
       expect(economicDirect.impacts).toContainEqual(
         expect.objectContaining({
-          name: "rental_income",
-          actors: [{ name: "Current owner", value: -540000 }],
+          name: "site_rental_income_loss",
+          actors: [{ name: "Mairie de Blajan", value: -540000 }],
         }),
       );
 
@@ -152,55 +138,6 @@ describe("projectImpactsSocioEconomic selectors", () => {
                 },
               ],
             },
-          ],
-        }),
-      );
-    });
-  });
-
-  describe("getSocioEconomicProjectImpactsByActor", () => {
-    it("should return socio economic impacts formatted by actor", () => {
-      const store = createStore(getTestAppDependencies(), MOCK_STATES);
-      const rootState = store.getState();
-      const byActor = selectSocioEconomicProjectImpactsByActor(rootState);
-
-      expect(byActor.length).toEqual(4);
-
-      expect(byActor).toContainEqual(
-        expect.objectContaining({
-          name: "Current owner",
-          total: -540000,
-          impacts: [{ name: "rental_income", value: -540000 }],
-        }),
-      );
-
-      expect(byActor).toContainEqual(
-        expect.objectContaining({
-          name: "Current tenant",
-          total: 131000,
-          impacts: [{ name: "avoided_friche_costs", value: 131000 }],
-        }),
-      );
-
-      expect(byActor).toContainEqual(
-        expect.objectContaining({
-          name: "human_society",
-          total: 198264,
-          impacts: [
-            { name: "ecosystem_services", value: 29820 },
-            { name: "avoided_co2_eq_emissions", value: 168444 },
-          ],
-        }),
-      );
-
-      expect(byActor).toContainEqual(
-        expect.objectContaining({
-          name: "community",
-          total: 15152,
-          impacts: [
-            { name: "property_transfer_duties_income", value: 5432 },
-            { name: "water_regulation", value: 4720 },
-            { name: "taxes_income", value: 5000 },
           ],
         }),
       );

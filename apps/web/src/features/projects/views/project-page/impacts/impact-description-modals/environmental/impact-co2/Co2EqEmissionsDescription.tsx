@@ -2,7 +2,7 @@ import { useContext } from "react";
 
 import {
   CO2BenefitDetails,
-  getEnvironmentalProjectImpacts,
+  EnvironmentalImpact,
 } from "@/features/projects/domain/projectImpactsEnvironmental";
 import { formatCO2Impact } from "@/features/projects/views/shared/formatImpactValue";
 import { ImpactModalDescriptionContext } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
@@ -14,20 +14,15 @@ import ModalHeader from "@/features/projects/views/shared/impacts/modals/ModalHe
 
 import { getAvoidedCo2eqEmissionsDetailsColor } from "../../../getImpactColor";
 import { getEnvironmentalDetailsImpactLabel } from "../../../getImpactLabel";
-import { ModalDataProps } from "../../ImpactModalDescription";
 import ModalTable from "../../shared/ModalTable";
 import ModalAreaChart from "../../shared/modal-charts/ModalAreaChart";
 import { co2BreadcrumbSection, mainBreadcrumbSection } from "../breadcrumbSections";
 
 type Props = {
-  impactsData: ModalDataProps["impactsData"];
+  impactsData?: EnvironmentalImpact;
 };
 
-const Co2BenefitDescription = ({ impactsData }: Props) => {
-  const environmentalImpacts = getEnvironmentalProjectImpacts(impactsData);
-
-  const co2Benefit = environmentalImpacts.find(({ name }) => "co2_benefit" === name);
-
+const Co2BenefitDescription = ({ impactsData: co2Benefit }: Props) => {
   const { updateModalContent } = useContext(ImpactModalDescriptionContext);
 
   const total = co2Benefit?.impact.difference ?? 0;

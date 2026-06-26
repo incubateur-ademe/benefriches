@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import { sumListWithKey } from "shared";
 
 import { formatDefaultImpact } from "@/features/projects/views/shared/formatImpactValue";
 import {
@@ -20,32 +21,47 @@ import { breadcrumbSegments } from "./breadcrumbSegments";
 const TITLE = "Personnes préservées des accidents de la route";
 
 type Props = {
-  impactData?: ModalDataProps["impactsData"]["social"]["avoidedTrafficAccidents"];
+  impactData?: ModalDataProps["impactsData"]["aggregatedReconversionImpacts"]["impactsMetrics"];
 };
 
-const AvoidedTrafficAccidentsDescription = ({ impactData }: Props) => {
+const AvoidedTrafficAccidentsDescription = ({ impactData = [] }: Props) => {
   const { updateModalContent } = useContext(ImpactModalDescriptionContext);
 
-  const data = [
+  const data = impactData?.reduce<
     {
-      label: "🤕 Blessés légers évités",
-      color: "#F6DB1F",
-      value: impactData?.minorInjuries ?? 0,
-      name: "avoided_traffic_minor_injuries",
-    },
-    {
-      label: "🚑 Blessés graves évités",
-      color: "#E73518",
-      value: impactData?.severeInjuries ?? 0,
-      name: "avoided_traffic_severe_injuries",
-    },
-    {
-      label: "🪦 Décès évités",
-      color: "#2D163C",
-      value: impactData?.deaths ?? 0,
-      name: "avoided_traffic_deaths",
-    },
-  ];
+      name: string;
+      label: string;
+      value: number;
+      color?: string | undefined;
+    }[]
+  >((result, item) => {
+    switch (item.name) {
+      case "avoidedTrafficAccidentsSevereInjuries":
+        return result.concat({
+          label: "🚑 Blessés graves évités",
+          color: "#E73518",
+          value: item.total,
+          name: "avoided_traffic_severe_injuries",
+        });
+      case "avoidedTrafficAccidentsMinorInjuries":
+        return result.concat({
+          label: "🤕 Blessés légers évités",
+          color: "#F6DB1F",
+          value: item.total,
+          name: "avoided_traffic_minor_injuries",
+        });
+      case "avoidedTrafficAccidentsDeaths":
+        return result.concat({
+          label: "🪦 Décès évités",
+          color: "#2D163C",
+          value: item.total,
+          name: "avoided_traffic_deaths",
+        });
+      default:
+        return result;
+    }
+  }, []);
+
   return (
     <ModalBody size="large">
       <ModalHeader
@@ -55,7 +71,7 @@ const AvoidedTrafficAccidentsDescription = ({ impactData }: Props) => {
           impactData
             ? {
                 state: "success",
-                text: formatDefaultImpact(impactData.total),
+                text: formatDefaultImpact(sumListWithKey(data, "value")),
               }
             : undefined
         }

@@ -38,7 +38,8 @@ const socioEconomicMonetaryImpactNameSchema = z.enum([
 
 const impactMetricNameSchema = z.enum([
   "storedCo2Eq",
-  "permeableSurface",
+  "permeableGreenSurface",
+  "permeableMineralSurface",
   "contaminatedSurface",
   "operationsFullTimeJobs",
   "fricheAccidentsDeaths",

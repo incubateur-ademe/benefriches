@@ -1,7 +1,7 @@
 import {
   FricheActivity,
+  GetReconversionProjectImpactsResultDto,
   isLocalAuthority,
-  ReconversionProjectImpacts,
   SiteNature,
   sumListWithKey,
 } from "shared";
@@ -30,94 +30,121 @@ const getProjectImpactBalance = ({
 };
 
 const getAvoidedFricheCostsForLocalAuthority = (
-  socioEconomicList: ReconversionProjectImpacts["socioeconomic"]["impacts"],
+  socioEconomicList: GetReconversionProjectImpactsResultDto["aggregatedReconversionImpacts"]["indirectEconomicImpacts"]["details"],
   siteOwner: SiteData["owner"],
 ) => {
-  const avoidedFricheCosts = socioEconomicList.find(
-    ({ impact }) => impact === "avoided_friche_costs",
+  const avoidedFricheCosts = sumListWithKey(
+    socioEconomicList.filter(
+      ({ name }) => name === "avoidedFricheMaintenanceAndSecuringCostsForOwner",
+    ),
+    "total",
   );
 
   const siteOwnerStructureType = siteOwner?.structureType ?? "";
   const isOwnerLocalAuthority = isLocalAuthority(siteOwnerStructureType);
 
-  if (!avoidedFricheCosts?.amount || !isOwnerLocalAuthority) {
+  if (!avoidedFricheCosts || !isOwnerLocalAuthority) {
     return undefined;
   }
 
   return {
     actorName: siteOwner?.name ?? "",
-    amount: avoidedFricheCosts.amount,
+    amount: avoidedFricheCosts,
   };
 };
 
 const getTaxesIncomeImpact = (
-  socioEconomicList: ReconversionProjectImpacts["socioeconomic"]["impacts"],
+  socioEconomicList: GetReconversionProjectImpactsResultDto["aggregatedReconversionImpacts"]["indirectEconomicImpacts"]["details"],
 ) => {
   const taxesIncomes = socioEconomicList.filter(
-    ({ impact }) =>
-      impact === "taxes_income" ||
-      impact === "property_transfer_duties_income" ||
-      impact === "local_transfer_duties_increase",
+    ({ name }) =>
+      name === "projectNewHousesTaxesIncome" ||
+      name === "projectNewCompanyTaxationIncome" ||
+      name === "projectPhotovoltaicTaxesIncome" ||
+      name === "propertyTransferDutiesIncome" ||
+      name === "localTransferDutiesIncrease",
   );
 
   if (taxesIncomes.length === 0) {
     return undefined;
   }
 
-  return sumListWithKey(taxesIncomes, "amount");
+  return sumListWithKey(taxesIncomes, "total");
 };
 
 const getFullTimeJobsImpact = (
-  impactsData?: ReconversionProjectImpacts["social"]["fullTimeJobs"],
+  impactMetrics: GetReconversionProjectImpactsResultDto["aggregatedReconversionImpacts"]["impactsMetrics"],
 ) => {
-  if (!impactsData) {
+  const fullTimeJobs = impactMetrics.filter(
+    ({ name }) =>
+      name === "conversionFullTimeJobs" ||
+      name === "operationsFullTimeJobs" ||
+      name === "oldOperationsFullTimeJobsLoss" ||
+      name === "reinstatementFullTimeJobs",
+  );
+
+  const oldOperationsFullTimeJobsLoss =
+    impactMetrics.find(({ name }) => name === "oldOperationsFullTimeJobsLoss")?.total ?? 0;
+
+  if (fullTimeJobs.length === 0) {
     return undefined;
   }
-  const { difference, base, forecast } = impactsData;
 
+  const difference = sumListWithKey(fullTimeJobs, "total");
   return {
-    percentageEvolution: getPercentageDifference(base, forecast),
-    difference,
+    percentageEvolution: getPercentageDifference(
+      oldOperationsFullTimeJobsLoss * -1,
+      difference + oldOperationsFullTimeJobsLoss,
+    ),
+    difference: difference,
   };
 };
 
 const getHouseholdsPoweredByRenewableEnergy = (
-  impactsData?: ReconversionProjectImpacts["social"],
+  impactMetrics: GetReconversionProjectImpactsResultDto["aggregatedReconversionImpacts"]["impactsMetrics"],
 ) => {
-  if (!impactsData?.householdsPoweredByRenewableEnergy) {
+  return impactMetrics.find(({ name }) => name === "householdsPoweredByRenewableEnergy")?.total;
+};
+
+const getAvoidedCo2eqEmissions = (
+  impactMetrics: GetReconversionProjectImpactsResultDto["aggregatedReconversionImpacts"]["impactsMetrics"],
+) => {
+  const co2EqEmissions = impactMetrics.filter(
+    ({ name }) =>
+      name === "avoidedCO2TonsWithEnergyProduction" ||
+      name === "avoidedAirConditioningCo2eqEmissions" ||
+      name === "avoidedTrafficCo2EqEmissions" ||
+      name === "newStoredCo2Eq",
+  );
+  if (co2EqEmissions.length === 0) {
     return undefined;
   }
 
-  return impactsData.householdsPoweredByRenewableEnergy.difference;
+  return sumListWithKey(co2EqEmissions, "total");
 };
 
-const getAvoidedCo2eqEmissions = (impactsData?: ReconversionProjectImpacts["environmental"]) => {
-  if (!impactsData) {
-    return 0;
-  }
-
-  const { avoidedCo2eqEmissions } = impactsData;
-  const total =
-    (avoidedCo2eqEmissions?.withAirConditioningDiminution ?? 0) +
-    (avoidedCo2eqEmissions?.withCarTrafficDiminution ?? 0) +
-    (avoidedCo2eqEmissions?.withRenewableEnergyProduction ?? 0);
-
-  if (impactsData.soilsCo2eqStorage) {
-    return total + impactsData.soilsCo2eqStorage.difference;
-  }
-
-  return total;
-};
-
-const getPermeableSurfaceArea = (impactsData?: ReconversionProjectImpacts["environmental"]) => {
-  if (!impactsData?.permeableSurfaceArea) {
+const getPermeableSurfaceArea = (
+  impactMetrics: GetReconversionProjectImpactsResultDto["aggregatedReconversionImpacts"]["impactsMetrics"],
+  statuQuoImpactMetrics: GetReconversionProjectImpactsResultDto["reconversionImpactsBreakdown"]["siteStatuQuoImpactMetrics"],
+) => {
+  const newPermeableSurface = sumListWithKey(
+    impactMetrics.filter(
+      ({ name }) => name === "newPermeableMineralSurface" || name === "newPermeableGreenSurface",
+    ),
+    "total",
+  );
+  if (!newPermeableSurface) {
     return undefined;
   }
-  const { forecast, base, difference } = impactsData.permeableSurfaceArea;
+  const base =
+    statuQuoImpactMetrics.find(
+      ({ name }) => name === "permeableMineralSurface" || name === "permeableGreenSurface",
+    )?.total ?? 0;
+  const forecast = base + newPermeableSurface;
 
   return {
     percentageEvolution: getPercentageDifference(base, forecast),
-    difference,
+    difference: newPermeableSurface,
   };
 };
 
@@ -130,33 +157,35 @@ const getArtificializedSurfaceArea = (permeableSurfaceAreaDifference?: number): 
 };
 
 const getNonContaminatedSurfaceArea = (
-  impactsData: ReconversionProjectImpacts["environmental"],
-  relatedSiteData: SiteData,
+  impactsData: GetReconversionProjectImpactsResultDto["reconversionImpactsBreakdown"],
+  siteSurfaceArea: number,
 ) => {
-  const siteContaminatedSurfaceArea = relatedSiteData.contaminatedSoilSurface ?? 0;
-  const siteSurfaceArea = relatedSiteData.surfaceArea;
-  const nonContaminatedSurfaceAreaImpact = impactsData.nonContaminatedSurfaceArea;
+  const siteContaminatedSurfaceArea = impactsData.siteStatuQuoImpactMetrics.find(
+    ({ name }) => name === "contaminatedSurface",
+  )?.total;
+  const decontaminatedSurface = impactsData.projectIndirectImpactMetrics.find(
+    ({ name }) => name === "decontaminatedSurface",
+  )?.total;
 
-  if (!nonContaminatedSurfaceAreaImpact || !siteContaminatedSurfaceArea) {
+  if (!decontaminatedSurface || !siteContaminatedSurfaceArea) {
     return undefined;
   }
 
-  const { forecast, base, difference } = nonContaminatedSurfaceAreaImpact;
+  const base = siteSurfaceArea - siteContaminatedSurfaceArea;
+  const forecast = base - decontaminatedSurface;
 
   return {
     percentageEvolution: getPercentageDifference(base, forecast),
     forecastContaminatedSurfaceArea: siteSurfaceArea - forecast,
-    decontaminatedSurfaceArea: difference,
+    decontaminatedSurfaceArea: decontaminatedSurface,
   };
 };
 
 const getLocalPropertyValueIncrease = (
-  impactsData: ReconversionProjectImpacts["socioeconomic"]["impacts"],
+  indirectEconomicImpactsList: GetReconversionProjectImpactsResultDto["aggregatedReconversionImpacts"]["indirectEconomicImpacts"]["details"],
 ) => {
-  const localPropertyValueIncrease = impactsData.find(
-    ({ impact }) => impact === "local_property_value_increase",
-  );
-  return localPropertyValueIncrease?.amount;
+  return indirectEconomicImpactsList.find(({ name }) => name === "localPropertyValueIncrease")
+    ?.total;
 };
 
 export type KeyImpactIndicatorData =
@@ -254,31 +283,46 @@ type SiteData = {
 };
 
 export const getKeyImpactIndicatorsList = (
-  impactsData: ReconversionProjectImpacts,
-  relatedSiteData: SiteData,
+  impactsData: GetReconversionProjectImpactsResultDto,
+  relatedSiteData: {
+    nature: SiteNature;
+    fricheActivity?: FricheActivity;
+    surfaceArea: number;
+  },
 ) => {
   const { isFriche, isAgriculturalFriche } = getRelatedSiteInfos(relatedSiteData);
+
   const projectImpactBalance = getProjectImpactBalance({
-    economicBalanceTotal: impactsData.economicBalance.total,
-    socioEconomicMonetaryImpactsTotal: impactsData.socioeconomic.total,
+    economicBalanceTotal: impactsData.projectEconomicBalance.total,
+    socioEconomicMonetaryImpactsTotal:
+      impactsData.aggregatedReconversionImpacts.indirectEconomicImpacts.total,
   });
   const avoidedFricheCostsForLocalAuthority = getAvoidedFricheCostsForLocalAuthority(
-    impactsData.socioeconomic.impacts,
-    relatedSiteData.owner,
+    impactsData?.aggregatedReconversionImpacts.indirectEconomicImpacts.details ?? [],
+    impactsData?.stakeholders.current.owner,
   );
-  const taxesIncomesImpact = getTaxesIncomeImpact(impactsData.socioeconomic.impacts);
-  const fullTimeJobs = getFullTimeJobsImpact(impactsData.social.fullTimeJobs);
+  const taxesIncomesImpact = getTaxesIncomeImpact(
+    impactsData.aggregatedReconversionImpacts.indirectEconomicImpacts.details,
+  );
+  const fullTimeJobs = getFullTimeJobsImpact(
+    impactsData.aggregatedReconversionImpacts.impactsMetrics,
+  );
   const householdsPoweredByRenewableEnergy = getHouseholdsPoweredByRenewableEnergy(
-    impactsData.social,
+    impactsData.aggregatedReconversionImpacts.impactsMetrics,
   );
-  const avoidedCo2eqEmissions = getAvoidedCo2eqEmissions(impactsData.environmental);
-  const permeableSurfaceArea = getPermeableSurfaceArea(impactsData.environmental);
+  const avoidedCo2eqEmissions = getAvoidedCo2eqEmissions(
+    impactsData.aggregatedReconversionImpacts.impactsMetrics,
+  );
+  const permeableSurfaceArea = getPermeableSurfaceArea(
+    impactsData.aggregatedReconversionImpacts.impactsMetrics,
+    impactsData.reconversionImpactsBreakdown.siteStatuQuoImpactMetrics,
+  );
   const nonContaminatedSurfaceArea = getNonContaminatedSurfaceArea(
-    impactsData.environmental,
-    relatedSiteData,
+    impactsData?.reconversionImpactsBreakdown,
+    relatedSiteData.surfaceArea,
   );
   const localPropertyValueIncrease = getLocalPropertyValueIncrease(
-    impactsData.socioeconomic.impacts,
+    impactsData.aggregatedReconversionImpacts.indirectEconomicImpacts.details,
   );
   const permeableSurfaceAreaDifference = permeableSurfaceArea?.difference;
   const artificializedSurfaceArea = getArtificializedSurfaceArea(permeableSurfaceAreaDifference);

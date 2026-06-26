@@ -8,10 +8,12 @@ import { EnvironmentalImpact } from "../../../domain/projectImpactsEnvironmental
 import { SocialImpact } from "../../../domain/projectImpactsSocial";
 import { SocioEconomicDetailedImpact } from "../../../domain/projectImpactsSocioEconomic";
 import { ProjectFeatures } from "../../../domain/projects.types";
-import { selectEconomicBalanceProjectImpacts } from "./projectImpactsEconomicBalance.selectors";
-import { selectEnvironmentalProjectImpacts } from "./projectImpactsEnvironmental.selectors";
-import { selectSocialProjectImpacts } from "./projectImpactsSocial.selectors";
-import { selectDetailedSocioEconomicProjectImpacts } from "./projectImpactsSocioEconomic.selectors";
+import {
+  selectDetailedSocioEconomicProjectImpacts,
+  selectEconomicBalanceProjectImpacts,
+  selectEnvironmentalProjectImpacts,
+  selectSocialProjectImpacts,
+} from "./projectImpacts.selectors";
 
 type LoadingState = "idle" | "loading" | "success" | "error";
 

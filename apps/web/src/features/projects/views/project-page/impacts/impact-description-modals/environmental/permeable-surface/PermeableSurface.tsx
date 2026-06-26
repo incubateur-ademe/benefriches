@@ -1,7 +1,10 @@
 import Button from "@codegouvfr/react-dsfr/Button";
 import { useContext } from "react";
 
-import { EnvironmentalImpactDetailsName } from "@/features/projects/domain/projectImpactsEnvironmental";
+import {
+  EnvironmentalImpact,
+  EnvironmentalImpactDetailsName,
+} from "@/features/projects/domain/projectImpactsEnvironmental";
 import { ImpactModalDescriptionContext } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
 import ModalBody from "@/features/projects/views/shared/impacts/modals/ModalBody";
 import ModalContent from "@/features/projects/views/shared/impacts/modals/ModalContent";
@@ -11,32 +14,46 @@ import ModalHeader from "@/features/projects/views/shared/impacts/modals/ModalHe
 import { formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 
 import { getPermeableSurfaceDetailsColor } from "../../../getImpactColor";
-import { ModalDataProps } from "../../ImpactModalDescription";
 import ModalTable from "../../shared/ModalTable";
 import ModalAreaChart from "../../shared/modal-charts/ModalAreaChart";
 import { mainBreadcrumbSection, soilsBreadcrumbSection } from "../breadcrumbSections";
 
 type Props = {
-  impactData: ModalDataProps["impactsData"]["environmental"]["permeableSurfaceArea"];
+  impactData?: EnvironmentalImpact;
 };
 
 const PermeableSurfaceDescription = ({ impactData }: Props) => {
   const { updateModalContent } = useContext(ImpactModalDescriptionContext);
 
-  const data = [
+  const data = (impactData?.impact.details ?? []).reduce<
     {
-      ...impactData.greenSoil,
-      label: "Surface perméable végétalisée",
-      color: getPermeableSurfaceDetailsColor("green_soil"),
-      name: "green_soil" as EnvironmentalImpactDetailsName,
-    },
-    {
-      ...impactData.mineralSoil,
-      label: "Surface perméable minérale",
-      color: getPermeableSurfaceDetailsColor("mineral_soil"),
-      name: "mineral_soil" as EnvironmentalImpactDetailsName,
-    },
-  ].filter(({ difference }) => difference !== 0);
+      name: EnvironmentalImpactDetailsName;
+      label: string;
+      base: number;
+      forecast: number;
+      difference: number;
+      color?: string | undefined;
+    }[]
+  >((result, item) => {
+    switch (item.name) {
+      case "mineral_soil":
+        return result.concat({
+          ...item.impact,
+          label: "Surface perméable végétalisée",
+          color: getPermeableSurfaceDetailsColor("green_soil"),
+          name: "green_soil",
+        });
+      case "green_soil":
+        return result.concat({
+          ...item.impact,
+          label: "Surface perméable végétalisée",
+          color: getPermeableSurfaceDetailsColor("green_soil"),
+          name: "green_soil",
+        });
+      default:
+        return result;
+    }
+  }, []);
 
   return (
     <ModalBody size="large">
@@ -53,9 +70,9 @@ const PermeableSurfaceDescription = ({ impactData }: Props) => {
         <ModalData>
           <ModalAreaChart
             type="surface_area"
-            base={impactData.base}
-            forecast={impactData.forecast}
-            difference={impactData.difference}
+            base={impactData?.impact?.base ?? 0}
+            forecast={impactData?.impact?.forecast ?? 0}
+            difference={impactData?.impact?.difference ?? 0}
             title="🌧️ Surface perméable"
             details={data}
           />

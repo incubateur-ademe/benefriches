@@ -339,11 +339,11 @@ export class YearlyTravelRelatedImpacts extends InfluenceAreaService {
   }
 
   getTrafficAccidentsPerYear() {
-    return (
-      this.avoidedMinorInjuriesPerYear +
-      this.avoidedSevereInjuriesPerYear +
-      this.avoidedDeathsPerYear
-    );
+    return {
+      minor: this.avoidedMinorInjuriesPerYear,
+      severe: this.avoidedSevereInjuriesPerYear,
+      deaths: this.avoidedDeathsPerYear,
+    };
   }
 
   getAvoidedPropertyDamageExpensesPerYear() {

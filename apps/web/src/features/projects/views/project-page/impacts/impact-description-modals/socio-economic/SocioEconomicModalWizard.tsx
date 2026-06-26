@@ -2,6 +2,7 @@ import { lazy, Suspense, useMemo } from "react";
 import { sumListWithKey } from "shared";
 
 import {
+  getSocioEconomicProjectImpacts,
   SocioEconomicDetailsName,
   SocioEconomicImpactName,
   SocioEconomicMainImpactName,
@@ -164,9 +165,10 @@ export function SocioEconomicModalWizard({
   siteData,
   impactsData,
 }: Props) {
+  const socioEconomicImpacts = getSocioEconomicProjectImpacts(impactsData);
   const impactsGroupedByName = useMemo(
-    () => groupByImpactName(impactsData.socioeconomic.impacts),
-    [impactsData.socioeconomic.impacts],
+    () => groupByImpactName(socioEconomicImpacts.impacts),
+    [socioEconomicImpacts],
   );
 
   return (
@@ -177,7 +179,7 @@ export function SocioEconomicModalWizard({
             case "economic_direct":
               return (
                 <EconomicDirectDescription
-                  impactsData={impactsData.socioeconomic.impacts.filter(
+                  impactsData={socioEconomicImpacts.impacts.filter(
                     ({ impactCategory }) => impactCategory === "economic_direct",
                   )}
                 />
@@ -185,7 +187,7 @@ export function SocioEconomicModalWizard({
             case "economic_indirect":
               return (
                 <EconomicIndirectDescription
-                  impactsData={impactsData.socioeconomic.impacts.filter(
+                  impactsData={socioEconomicImpacts.impacts.filter(
                     ({ impactCategory }) => impactCategory === "economic_indirect",
                   )}
                 />
@@ -193,7 +195,7 @@ export function SocioEconomicModalWizard({
             case "social_monetary":
               return (
                 <SocialMonetaryDescription
-                  impactsData={impactsData.socioeconomic.impacts.filter(
+                  impactsData={socioEconomicImpacts.impacts.filter(
                     ({ impactCategory }) => impactCategory === "social_monetary",
                   )}
                 />
@@ -201,13 +203,13 @@ export function SocioEconomicModalWizard({
             case "environmental_monetary":
               return (
                 <EnvironmentalMonetaryDescription
-                  impactsData={impactsData.socioeconomic.impacts.filter(
+                  impactsData={socioEconomicImpacts.impacts.filter(
                     ({ impactCategory }) => impactCategory === "environmental_monetary",
                   )}
                 />
               );
             case undefined:
-              return <SocioEconomicDescription impactsData={impactsData} />;
+              return <SocioEconomicDescription impactsData={socioEconomicImpacts} />;
           }
         }
 
@@ -224,7 +226,7 @@ export function SocioEconomicModalWizard({
             return (
               <TaxesIncomeDescription
                 developmentPlan={projectData.developmentPlan}
-                impactData={impactsData["socioeconomic"]["impacts"].find(
+                impactData={socioEconomicImpacts.impacts.find(
                   (impact) => impact.impact === "taxes_income",
                 )}
               />
@@ -242,7 +244,7 @@ export function SocioEconomicModalWizard({
           case "avoided_friche_costs":
             return (
               <AvoidedFricheCostsDescription
-                impactData={impactsData["socioeconomic"].impacts.filter(
+                impactData={socioEconomicImpacts.impacts.filter(
                   (impact) => impact.impact === "avoided_friche_costs",
                 )}
               />
@@ -302,7 +304,9 @@ export function SocioEconomicModalWizard({
             );
 
           case "avoided_co2_eq_emissions":
-            return <AvoidedCo2MonetaryValueDescription impactsData={impactsData} />;
+            return (
+              <AvoidedCo2MonetaryValueDescription impactsData={socioEconomicImpacts.impacts} />
+            );
 
           case "avoided_co2_eq_with_enr":
             return (
@@ -345,9 +349,7 @@ export function SocioEconomicModalWizard({
             );
 
           case "ecosystem_services":
-            return (
-              <EcosystemServicesDescription impactsData={impactsData["socioeconomic"]["impacts"]} />
-            );
+            return <EcosystemServicesDescription impactsData={socioEconomicImpacts["impacts"]} />;
 
           case "soils_co2_eq_storage":
             return (
@@ -440,7 +442,7 @@ export function SocioEconomicModalWizard({
           case "avoided_traffic_accidents":
             return (
               <AvoidedTrafficAccidentsMonetaryValueDescription
-                impactData={impactsData["socioeconomic"]["impacts"].find(
+                impactData={socioEconomicImpacts["impacts"].find(
                   (impact) => impact.impact === "avoided_traffic_accidents",
                 )}
               />

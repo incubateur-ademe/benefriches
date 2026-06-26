@@ -75,12 +75,17 @@ export const getNatureConservationRelatedImpacts = ({
   const newPermeableSurface = getPermeableSurfaceImpact(
     siteSoilsDistribution,
     projectSoilsDistributionByType,
-  ).difference;
-  if (newPermeableSurface) {
+  );
+  if (newPermeableSurface.greenSoil.difference) {
     impactMetrics.push({
-      name: "newPermeableSurface",
-      total: getPermeableSurfaceImpact(siteSoilsDistribution, projectSoilsDistributionByType)
-        .difference,
+      name: "newPermeableGreenSurface",
+      total: newPermeableSurface.greenSoil.difference,
+    });
+  }
+  if (newPermeableSurface.mineralSoil.difference) {
+    impactMetrics.push({
+      name: "newPermeableMineralSurface",
+      total: newPermeableSurface.mineralSoil.difference,
     });
   }
 

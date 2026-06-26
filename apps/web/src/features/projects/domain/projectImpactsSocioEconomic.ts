@@ -7,9 +7,11 @@ import {
   SocioEconomicImpact,
   AvoidedCO2EqEmissions,
   TaxesIncomeImpact,
+  AvoidedFricheCostsIndirectEconomicImpacts,
 } from "shared";
 
 import { ReconversionProjectImpactsResult } from "../application/project-impacts/actions";
+import { ProjectImpactsState } from "../application/project-impacts/projectImpacts.reducer";
 
 export type SocioEconomicImpactByCategory = {
   total: number;
@@ -78,13 +80,439 @@ const formatImpactsWithActors = (impacts: Impact[]) => {
   });
 };
 
-export const getDetailedSocioEconomicProjectImpacts = (
-  impactsData?: ReconversionProjectImpactsResult["impacts"],
-): SocioEconomicDetailedImpact => {
-  const { impacts: socioEconomicImpacts } = impactsData?.socioeconomic ?? {
-    total: 0,
-    impacts: [],
+export const getSocioEconomicProjectImpacts = (
+  impactsData?: ProjectImpactsState["impacts"],
+): ReconversionProjectImpacts["socioeconomic"] => {
+  if (!impactsData) {
+    return {
+      total: 0,
+      impacts: [],
+    };
+  }
+  const socioEconomicImpacts: SocioEconomicImpact[] = [];
+
+  const accidents =
+    impactsData?.aggregatedReconversionImpacts.indirectEconomicImpacts.details.filter(
+      (item) =>
+        item.name === "avoidedAccidentsDeathsExpenses" ||
+        item.name === "avoidedAccidentsMinorInjuriesExpenses" ||
+        item.name === "avoidedAccidentsSevereInjuriesExpenses",
+    );
+  if (accidents && accidents?.length > 0) {
+    socioEconomicImpacts.push({
+      impact: "avoided_traffic_accidents",
+      impactCategory: "social_monetary",
+      amount: sumListWithKey(accidents, "total"),
+      actor: "french_society",
+      details: accidents.reduce<
+        {
+          amount: number;
+          impact: AvoidedTrafficAccidentsImpact["details"][number]["impact"];
+        }[]
+      >((result, item) => {
+        switch (item.name) {
+          case "avoidedAccidentsDeathsExpenses":
+            return result.concat({
+              impact: "avoided_traffic_deaths",
+              amount: item.total,
+            });
+          case "avoidedAccidentsMinorInjuriesExpenses":
+            return result.concat({
+              impact: "avoided_traffic_minor_injuries",
+              amount: item.total,
+            });
+
+          case "avoidedAccidentsSevereInjuriesExpenses":
+            return result.concat({ impact: "avoided_traffic_severe_injuries", amount: item.total });
+          default:
+            return result;
+        }
+      }, []),
+    });
+  }
+
+  const co2 = impactsData?.aggregatedReconversionImpacts.indirectEconomicImpacts.details.filter(
+    (item) =>
+      [
+        "avoidedAirConditioningCo2eqEmissions",
+        "avoidedCo2eqWithEnergyProduction",
+        "avoidedTrafficCo2EqEmissions",
+      ].some((name) => name === item.name),
+  );
+  if (co2 && co2?.length > 0) {
+    socioEconomicImpacts.push({
+      impact: "avoided_co2_eq_emissions",
+      impactCategory: "environmental_monetary",
+      actor: "human_society",
+      amount: sumListWithKey(co2, "total"),
+      details: co2.reduce<
+        {
+          amount: number;
+          impact: AvoidedCO2EqEmissions["details"][number]["impact"];
+        }[]
+      >((result, item) => {
+        switch (item.name) {
+          case "avoidedAirConditioningCo2eqEmissions":
+            return result.concat({
+              impact: "avoided_air_conditioning_co2_eq_emissions",
+              amount: item.total,
+            });
+          case "avoidedCo2eqWithEnergyProduction":
+            return result.concat({
+              impact: "avoided_co2_eq_with_enr",
+              amount: item.total,
+            });
+
+          case "avoidedTrafficCo2EqEmissions":
+            return result.concat({
+              impact: "avoided_traffic_co2_eq_emissions",
+              amount: item.total,
+            });
+          default:
+            return result;
+        }
+      }, []),
+    });
+  }
+
+  const ecosystemServices =
+    impactsData?.aggregatedReconversionImpacts.indirectEconomicImpacts.details.filter((item) =>
+      [
+        "forestRelatedProduct",
+        "invasiveSpeciesRegulation",
+        "natureRelatedWelnessAndLeisure",
+        "newStoredCo2Eq",
+        "nitrogenCycle",
+        "pollination",
+        "waterCycle",
+        "soilErosion",
+        "storedCo2Eq",
+      ].some((name) => name === item.name),
+    );
+  if (ecosystemServices && ecosystemServices?.length > 0) {
+    socioEconomicImpacts.push({
+      impact: "ecosystem_services",
+      impactCategory: "environmental_monetary",
+      actor: "human_society",
+      amount: sumListWithKey(ecosystemServices, "total"),
+      details: ecosystemServices.reduce<
+        {
+          amount: number;
+          impact: EcosystemServicesImpact["details"][number]["impact"];
+        }[]
+      >((result, item) => {
+        switch (item.name) {
+          case "forestRelatedProduct":
+            return result.concat({
+              impact: "forest_related_product",
+              amount: item.total,
+            });
+          case "invasiveSpeciesRegulation":
+            return result.concat({
+              impact: "invasive_species_regulation",
+              amount: item.total,
+            });
+
+          case "natureRelatedWelnessAndLeisure":
+            return result.concat({
+              impact: "nature_related_wellness_and_leisure",
+              amount: item.total,
+            });
+          case "newStoredCo2Eq":
+            return result.concat({ impact: "soils_co2_eq_storage", amount: item.total });
+          case "nitrogenCycle":
+            return result.concat({ impact: "nitrogen_cycle", amount: item.total });
+          case "pollination":
+            return result.concat({ impact: "pollination", amount: item.total });
+
+          case "waterCycle":
+            return result.concat({ impact: "water_cycle", amount: item.total });
+          case "soilErosion":
+            return result.concat({ impact: "soil_erosion", amount: item.total });
+          default:
+            return result;
+        }
+      }, []),
+    });
+  }
+
+  const taxes = impactsData?.aggregatedReconversionImpacts.indirectEconomicImpacts.details.filter(
+    (item) =>
+      [
+        "projectNewCompanyTaxationIncome",
+        "projectNewHousesTaxesIncome",
+        "projectPhotovoltaicTaxesIncome",
+      ].some((name) => name === item.name),
+  );
+  if (taxes && taxes?.length > 0) {
+    socioEconomicImpacts.push({
+      impact: "taxes_income",
+      impactCategory: "economic_indirect",
+      actor: "community",
+      amount: sumListWithKey(taxes, "total"),
+      details: taxes.reduce<
+        {
+          amount: number;
+          impact: TaxesIncomeImpact["details"][number]["impact"];
+        }[]
+      >((result, item) => {
+        switch (item.name) {
+          case "projectNewCompanyTaxationIncome":
+            return result.concat({
+              impact: "project_new_company_taxation_income",
+              amount: item.total,
+            });
+          case "projectNewHousesTaxesIncome":
+            return result.concat({
+              impact: "project_new_houses_taxes_income",
+              amount: item.total,
+            });
+
+          case "projectPhotovoltaicTaxesIncome":
+            return result.concat({
+              impact: "project_photovoltaic_taxes_income",
+              amount: item.total,
+            });
+          default:
+            return result;
+        }
+      }, []),
+    });
+  }
+
+  const frichesCostsForOwner =
+    impactsData?.aggregatedReconversionImpacts.indirectEconomicImpacts.details.filter(
+      (item): item is AvoidedFricheCostsIndirectEconomicImpacts =>
+        "avoidedFricheMaintenanceAndSecuringCostsForOwner" === item.name,
+    );
+  if (frichesCostsForOwner && frichesCostsForOwner?.length > 0) {
+    socioEconomicImpacts.push({
+      impact: "avoided_friche_costs",
+      impactCategory: "economic_direct",
+      actor: impactsData?.stakeholders.current.owner.structureName ?? "Propriétaire",
+      amount: sumListWithKey(frichesCostsForOwner, "total"),
+      details: frichesCostsForOwner.reduce<
+        {
+          amount: number;
+          impact: AvoidedFricheCostsImpact["details"][number]["impact"];
+        }[]
+      >((result, item) => {
+        switch (item.details) {
+          case "accidentsCost":
+            return result.concat({
+              impact: "avoided_accidents_costs",
+              amount: item.total,
+            });
+          case "illegalDumpingCost":
+            return result.concat({
+              impact: "avoided_illegal_dumping_costs",
+              amount: item.total,
+            });
+
+          case "maintenance":
+            return result.concat({
+              impact: "avoided_maintenance_costs",
+              amount: item.total,
+            });
+          case "otherSecuringCosts":
+            return result.concat({
+              impact: "avoided_other_securing_costs",
+              amount: item.total,
+            });
+          case "security":
+            return result.concat({
+              impact: "avoided_security_costs",
+              amount: item.total,
+            });
+          default:
+            return result;
+        }
+      }, []),
+    });
+  }
+
+  const frichesCostsForTenant =
+    impactsData?.aggregatedReconversionImpacts.indirectEconomicImpacts.details.filter(
+      (item): item is AvoidedFricheCostsIndirectEconomicImpacts =>
+        "avoidedFricheMaintenanceAndSecuringCostsForTenant" === item.name,
+    );
+  if (frichesCostsForTenant && frichesCostsForTenant?.length > 0) {
+    socioEconomicImpacts.push({
+      impact: "avoided_friche_costs",
+      impactCategory: "economic_direct",
+      actor: impactsData?.stakeholders.current.tenant?.structureName ?? "Locataire",
+      amount: sumListWithKey(frichesCostsForTenant, "total"),
+      details: frichesCostsForTenant.reduce<
+        {
+          amount: number;
+          impact: AvoidedFricheCostsImpact["details"][number]["impact"];
+        }[]
+      >((result, item) => {
+        switch (item.details) {
+          case "accidentsCost":
+            return result.concat({
+              impact: "avoided_accidents_costs",
+              amount: item.total,
+            });
+          case "illegalDumpingCost":
+            return result.concat({
+              impact: "avoided_illegal_dumping_costs",
+              amount: item.total,
+            });
+
+          case "maintenance":
+            return result.concat({
+              impact: "avoided_maintenance_costs",
+              amount: item.total,
+            });
+          case "otherSecuringCosts":
+            return result.concat({
+              impact: "avoided_other_securing_costs",
+              amount: item.total,
+            });
+          case "security":
+            return result.concat({
+              impact: "avoided_security_costs",
+              amount: item.total,
+            });
+          default:
+            return result;
+        }
+      }, []),
+    });
+  }
+
+  socioEconomicImpacts.push(
+    ...impactsData?.aggregatedReconversionImpacts.indirectEconomicImpacts.details.reduce<
+      SocioEconomicImpact[]
+    >((result, item) => {
+      switch (item.name) {
+        case "avoidedAirConditioningExpenses":
+          return result.concat({
+            impact: "avoided_air_conditioning_expenses",
+            impactCategory: "economic_indirect",
+            actor: "local_people",
+            amount: item.total,
+          });
+
+        case "avoidedAirPollutionHealthExpenses":
+          return result.concat({
+            impact: "avoided_air_pollution",
+            impactCategory: "social_monetary",
+            actor: "french_society",
+            amount: item.total,
+          });
+
+        case "avoidedCarRelatedExpenses":
+          return result.concat({
+            impact: "avoided_car_related_expenses",
+            impactCategory: "economic_indirect",
+            actor: "local_people",
+            amount: item.total,
+          });
+
+        case "avoidedPropertyDamageExpenses":
+          return result.concat({
+            impact: "avoided_property_damages_expenses",
+            impactCategory: "economic_indirect",
+            actor: "french_society",
+            amount: item.total,
+          });
+
+        case "fricheRoadsAndUtilitiesExpenses":
+          return result.concat({
+            impact: "roads_and_utilities_maintenance_expenses",
+            impactCategory: "economic_direct",
+            actor: "community",
+            amount: item.total,
+          });
+
+        case "localPropertyValueIncrease":
+          return result.concat({
+            amount: item.total,
+            impact: "local_property_value_increase",
+            impactCategory: "economic_indirect",
+            actor: "local_people",
+          });
+
+        case "localTransferDutiesIncrease":
+          return result.concat({
+            impact: "local_transfer_duties_increase",
+            impactCategory: "economic_indirect",
+            actor: "community",
+            amount: item.total,
+          });
+
+        case "oldRentalIncomeLoss":
+          return result.concat({
+            impact: "site_rental_income_loss",
+            impactCategory: "economic_direct",
+            amount: item.total,
+            actor: impactsData.stakeholders.current.owner?.structureName ?? "Ancien Propriétaire",
+          });
+
+        case "previousSiteOperationBenefitLoss":
+          return result.concat({
+            impact: "site_operation_benefits_loss",
+            impactCategory: "economic_indirect",
+            amount: item.total,
+            actor: impactsData.stakeholders.current.operator?.structureName ?? "Ancien exploitant",
+          });
+
+        case "projectedRentalIncome":
+          return result.concat({
+            impact: "rental_income",
+            impactCategory: "economic_direct",
+            amount: item.total,
+            actor: impactsData.stakeholders.future.owner?.structureName ?? "Nouveau Propriétaire",
+          });
+
+        // case "projectOperatingEconomicBalance":
+        //   return result.concat({
+        //     impact: "project_operation_benefits",
+        //     impactCategory: "economic_indirect",
+        //     amount: item.total,
+        //     actor: impactsData.stakeholders.future.operator?.structureName ?? "Futur exploitant",
+        //   });
+
+        case "propertyTransferDutiesIncome":
+          return result.concat({
+            impact: "property_transfer_duties_income",
+            impactCategory: "economic_direct",
+            actor: "community",
+            amount: item.total,
+          });
+
+        case "travelTimeSavedPerTravelerExpenses":
+          return result.concat({
+            impact: "travel_time_saved",
+            impactCategory: "social_monetary",
+            actor: "local_people",
+            amount: item.total,
+          });
+
+        case "waterRegulation":
+          return result.concat({
+            amount: item.total,
+            actor: "community",
+            impactCategory: "environmental_monetary",
+            impact: "water_regulation",
+          });
+        default:
+          return result;
+      }
+    }, []),
+  );
+  return {
+    impacts: socioEconomicImpacts,
+    total: impactsData.aggregatedReconversionImpacts.indirectEconomicImpacts.total,
   };
+};
+
+export const getSocioEconomicProjectImpactsGroupedByCategory = (
+  impactsData?: ProjectImpactsState["impacts"],
+): SocioEconomicDetailedImpact => {
+  const { impacts: socioEconomicImpacts } = getSocioEconomicProjectImpacts(impactsData);
 
   const economicDirectImpacts = socioEconomicImpacts.filter(
     (impact) => impact.impactCategory === "economic_direct",

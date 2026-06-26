@@ -1,14 +1,9 @@
-import { ReconversionProjectImpactsResult } from "../application/project-impacts/actions";
+import { GetReconversionProjectImpactsResultDto } from "shared";
 
 type ImpactValue = {
   base: number;
   forecast: number;
   difference: number;
-};
-
-type ImpactDetails = {
-  name: EnvironmentalImpactDetailsName;
-  impact: ImpactValue;
 };
 
 export type EnvironmentalMainImpactName =
@@ -37,122 +32,150 @@ export type EnvironmentalImpact = {
   };
 };
 
-export const getEnvironmentalProjectImpacts = (
-  impactsData?: ReconversionProjectImpactsResult["impacts"],
-): EnvironmentalImpact[] => {
-  if (!impactsData) return [];
-  const {
-    nonContaminatedSurfaceArea,
-    avoidedCo2eqEmissions,
-    soilsCo2eqStorage,
-    permeableSurfaceArea,
-  } = impactsData.environmental;
-
-  const impacts: EnvironmentalImpact[] = [];
-
-  if (nonContaminatedSurfaceArea && nonContaminatedSurfaceArea.difference !== 0) {
-    impacts.push({
-      name: "non_contaminated_surface_area",
-      type: "surface_area",
-      impact: {
-        base: nonContaminatedSurfaceArea.base,
-        forecast: nonContaminatedSurfaceArea.forecast,
-        difference: nonContaminatedSurfaceArea.difference,
-      },
-    });
+const getOrCreateCo2Benefit = (result: EnvironmentalImpact[]): EnvironmentalImpact => {
+  let co2Benefit = result.find((item) => item.name === "co2_benefit");
+  if (!co2Benefit) {
+    co2Benefit = {
+      name: "co2_benefit",
+      type: "co2",
+      impact: { base: 0, forecast: 0, difference: 0, details: [] },
+    };
+    result.push(co2Benefit);
   }
+  return co2Benefit;
+};
 
-  if (avoidedCo2eqEmissions || soilsCo2eqStorage) {
-    const details: ImpactDetails[] = [];
+const addCo2Detail = (
+  result: EnvironmentalImpact[],
+  detailName: CO2BenefitDetails,
+  base: number,
+  forecast: number,
+  difference: number,
+): void => {
+  const co2Benefit = getOrCreateCo2Benefit(result);
 
-    if (soilsCo2eqStorage) {
-      details.push({
-        name: "stored_co2_eq",
-        impact: soilsCo2eqStorage,
-      });
-    }
-
-    if (avoidedCo2eqEmissions?.withRenewableEnergyProduction) {
-      details.push({
-        name: "avoided_co2_eq_emissions_with_production",
-        impact: {
-          base: 0,
-          forecast: avoidedCo2eqEmissions.withRenewableEnergyProduction,
-          difference: avoidedCo2eqEmissions.withRenewableEnergyProduction,
-        },
-      });
-    }
-
-    if (avoidedCo2eqEmissions?.withAirConditioningDiminution) {
-      details.push({
-        name: "avoided_air_conditioning_co2_eq_emissions",
-        impact: {
-          base: 0,
-          forecast: avoidedCo2eqEmissions.withAirConditioningDiminution,
-          difference: avoidedCo2eqEmissions.withAirConditioningDiminution,
-        },
-      });
-    }
-
-    if (avoidedCo2eqEmissions?.withCarTrafficDiminution) {
-      details.push({
-        name: "avoided_car_traffic_co2_eq_emissions",
-        impact: {
-          base: 0,
-          forecast: avoidedCo2eqEmissions.withCarTrafficDiminution,
-          difference: avoidedCo2eqEmissions.withCarTrafficDiminution,
-        },
-      });
-    }
-
-    if (details.length > 0) {
-      impacts.push({
-        name: "co2_benefit",
-        type: "co2",
-        impact: {
-          ...details.reduce(
-            (result, { impact }) => ({
-              base: result.base + impact.base,
-              forecast: result.forecast + impact.forecast,
-              difference: result.difference + impact.difference,
-            }),
-            { base: 0, forecast: 0, difference: 0 },
-          ),
-          details,
-        },
-      });
-    }
-  }
-
-  const { base, forecast, difference, mineralSoil, greenSoil } = permeableSurfaceArea;
-
-  impacts.push({
-    name: "permeable_surface_area",
-    type: "surface_area",
-    impact: {
-      base,
-      forecast,
-      difference,
-      details: [
-        {
-          name: "mineral_soil",
-          impact: {
-            base: mineralSoil.base,
-            forecast: mineralSoil.forecast,
-            difference: mineralSoil.difference,
-          },
-        },
-        {
-          name: "green_soil",
-          impact: {
-            base: greenSoil.base,
-            forecast: greenSoil.forecast,
-            difference: greenSoil.difference,
-          },
-        },
-      ],
-    },
+  co2Benefit.impact.details?.push({
+    name: detailName,
+    impact: { base, forecast, difference },
   });
 
-  return impacts;
+  co2Benefit.impact.base += base;
+  co2Benefit.impact.forecast += forecast;
+  co2Benefit.impact.difference += difference;
+};
+
+export const getEnvironmentalProjectImpacts = (
+  impactsData: GetReconversionProjectImpactsResultDto,
+  siteSurfaceArea: number,
+): EnvironmentalImpact[] => {
+  if (!impactsData) return [];
+
+  const { impactsMetrics } = impactsData.aggregatedReconversionImpacts;
+  const { siteStatuQuoImpactMetrics } = impactsData.reconversionImpactsBreakdown;
+
+  return impactsMetrics.reduce<EnvironmentalImpact[]>((result, impact) => {
+    switch (impact.name) {
+      case "newPermeableGreenSurface":
+      case "newPermeableMineralSurface": {
+        if (result.find(({ name }) => name === "permeable_surface_area")) {
+          return result;
+        }
+        const baseGreen =
+          siteStatuQuoImpactMetrics.find((item) => item.name === "permeableGreenSurface")?.total ??
+          0;
+        const baseMineral =
+          siteStatuQuoImpactMetrics.find((item) => item.name === "permeableMineralSurface")
+            ?.total ?? 0;
+
+        const newPermeableGreenSurface =
+          impact.name === "newPermeableGreenSurface"
+            ? impact.total
+            : (impactsMetrics.find((it) => it.name === "newPermeableGreenSurface")?.total ?? 0);
+        const newPermeableMineralSurface =
+          impact.name === "newPermeableMineralSurface"
+            ? impact.total
+            : (impactsMetrics.find((it) => it.name === "newPermeableMineralSurface")?.total ?? 0);
+
+        result.push({
+          name: "permeable_surface_area",
+          type: "surface_area",
+          impact: {
+            base: baseMineral + baseGreen,
+            forecast:
+              baseMineral + newPermeableMineralSurface + baseGreen + newPermeableGreenSurface,
+            difference: newPermeableGreenSurface + newPermeableMineralSurface,
+            details: [
+              {
+                name: "mineral_soil",
+
+                impact: {
+                  base: baseMineral,
+                  forecast: baseMineral + newPermeableMineralSurface,
+                  difference: newPermeableMineralSurface,
+                },
+              },
+              {
+                name: "green_soil",
+                impact: {
+                  base: baseGreen,
+                  forecast: baseGreen + newPermeableGreenSurface,
+                  difference: newPermeableGreenSurface,
+                },
+              },
+            ],
+          },
+        });
+        return result;
+      }
+
+      case "newStoredCo2Eq": {
+        const base =
+          siteStatuQuoImpactMetrics.find((item) => item.name === "storedCo2Eq")?.total ?? 0;
+        addCo2Detail(result, "stored_co2_eq", base, base + impact.total, impact.total);
+        return result;
+      }
+
+      case "avoidedAirConditioningCo2eqEmissions":
+        addCo2Detail(
+          result,
+          "avoided_air_conditioning_co2_eq_emissions",
+          0,
+          impact.total,
+          impact.total,
+        );
+        return result;
+
+      case "avoidedCO2TonsWithEnergyProduction":
+        addCo2Detail(
+          result,
+          "avoided_co2_eq_emissions_with_production",
+          0,
+          impact.total,
+          impact.total,
+        );
+        return result;
+
+      case "avoidedTrafficCo2EqEmissions":
+        addCo2Detail(result, "avoided_car_traffic_co2_eq_emissions", 0, impact.total, impact.total);
+        return result;
+
+      case "decontaminatedSurface": {
+        const contaminated =
+          siteStatuQuoImpactMetrics.find((item) => item.name === "contaminatedSurface")?.total ?? 0;
+        result.push({
+          name: "non_contaminated_surface_area",
+          type: "surface_area",
+          impact: {
+            base: siteSurfaceArea - contaminated,
+            forecast: siteSurfaceArea - contaminated + impact.total,
+            difference: impact.total,
+          },
+        });
+        return result;
+      }
+
+      default:
+        return result;
+    }
+  }, []);
 };

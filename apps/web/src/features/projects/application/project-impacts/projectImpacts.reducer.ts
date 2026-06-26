@@ -13,11 +13,7 @@ import { selectAppSettings } from "@/features/app-settings/core/appSettings";
 import { ProjectDevelopmentPlanType } from "../../domain/projects.types";
 import { ModalDataProps } from "../../views/project-page/impacts/impact-description-modals/ImpactModalDescription";
 import { reconversionProjectImpactsBreakEvenLevelRequested, viewModeUpdated } from "./actions";
-import {
-  evaluationPeriodUpdated,
-  reconversionProjectImpactsRequested,
-  ReconversionProjectImpactsResult,
-} from "./actions";
+import { evaluationPeriodUpdated, reconversionProjectImpactsRequested } from "./actions";
 import { fetchQuickImpactsForUrbanProjectOnFriche } from "./actions/fetchQuickImpactsForUrbanProjectOnFriche.action";
 import { urbanSprawlImpactsComparisonRequested } from "./actions/urbanSprawlImpactsComparisonRequested.action";
 
@@ -70,18 +66,15 @@ export type ProjectImpactsState = {
       name: string;
     };
   };
-  // old impacts data
-  impactsData?: ReconversionProjectImpactsResult["impacts"];
   currentViewMode: ViewMode;
-  // new impacts data format
+  evaluationPeriod: number | undefined;
+
   impacts?: GetReconversionProjectImpactsResultDto;
   urbanSprawlSimulation?: UrbanSprawlImpactsComparisonResultDto;
-  evaluationPeriod: number | undefined;
 };
 
 export const getInitialState = (): ProjectImpactsState => {
   return {
-    impactsData: undefined,
     projectData: undefined,
     relatedSiteData: undefined,
     dataLoadingState: {
@@ -139,7 +132,6 @@ export const projectImpactsReducer = createReducer(getInitialState(), (builder) 
   });
   builder.addCase(fetchQuickImpactsForUrbanProjectOnFriche.fulfilled, (state, action) => {
     state.dataLoadingState.oldProjectImpacts = "success";
-    state.impactsData = action.payload.impacts;
     state.projectData = {
       id: action.payload.id,
       name: action.payload.name,
@@ -159,7 +151,6 @@ export const projectImpactsReducer = createReducer(getInitialState(), (builder) 
     isAnyOf(evaluationPeriodUpdated.fulfilled, reconversionProjectImpactsRequested.fulfilled),
     (state, action) => {
       state.dataLoadingState.oldProjectImpacts = "success";
-      state.impactsData = action.payload.impacts;
       state.evaluationPeriod = action.payload.evaluationPeriodInYears;
       state.projectData = {
         id: action.payload.id,
@@ -217,6 +208,6 @@ export const selectModalData = createSelector(
   (state): ModalDataProps => ({
     projectData: state.projectData!,
     siteData: state.relatedSiteData!,
-    impactsData: state.impactsData!,
+    impactsData: state.impacts!,
   }),
 );

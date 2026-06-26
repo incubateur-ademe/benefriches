@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react";
 
 import {
+  getSocialProjectImpacts,
   SocialImpactDetailsName,
   SocialMainImpactName,
 } from "@/features/projects/domain/projectImpactsSocial";
@@ -70,6 +71,8 @@ export function SocialModalWizard({
   siteData,
   impactsData,
 }: Props) {
+  const socialImpacts = getSocialProjectImpacts(impactsData);
+
   return (
     <Suspense fallback={<LoadingSpinner classes={{ text: "text-grey-light" }} />}>
       {(() => {
@@ -102,7 +105,11 @@ export function SocialModalWizard({
 
         switch (impactDetailsName ?? impactName) {
           case "full_time_jobs":
-            return <FullTimeJobsDescription impactData={impactsData.social.fullTimeJobs} />;
+            return (
+              <FullTimeJobsDescription
+                impactData={socialImpacts.find((item) => item.name === "full_time_jobs")}
+              />
+            );
           case "conversion_full_time_jobs":
             return (
               <ReconversionFullTimeJobsDescription
@@ -135,41 +142,74 @@ export function SocialModalWizard({
                     ? projectData.developmentPlan.surfaceArea
                     : undefined
                 }
-                impactData={impactsData.social.householdsPoweredByRenewableEnergy!}
+                impactData={
+                  impactsData.aggregatedReconversionImpacts.impactsMetrics.find(
+                    (item) => item.name === "householdsPoweredByRenewableEnergy",
+                  )?.total ?? 0
+                }
               />
             );
 
           case "avoided_vehicule_kilometers":
             return (
               <AvoidedVehiculeKilometersDescription
-                impactData={impactsData.social.avoidedVehiculeKilometers}
+                impactData={
+                  impactsData.aggregatedReconversionImpacts.impactsMetrics.find(
+                    (item) => item.name === "avoidedVehiculeKilometers",
+                  )?.total ?? 0
+                }
               />
             );
           case "travel_time_saved":
-            return <TimeTravelSavedDescription impactData={impactsData.social.travelTimeSaved} />;
+            return (
+              <TimeTravelSavedDescription
+                impactData={
+                  impactsData.aggregatedReconversionImpacts.impactsMetrics.find(
+                    (item) => item.name === "timeTravelSavedInHours",
+                  )?.total ?? 0
+                }
+              />
+            );
 
           case "avoided_traffic_accidents":
             return (
               <AvoidedTrafficAccidentsDescription
-                impactData={impactsData.social.avoidedTrafficAccidents}
+                impactData={impactsData?.aggregatedReconversionImpacts.impactsMetrics.filter(
+                  (item) =>
+                    item.name === "avoidedTrafficAccidentsDeaths" ||
+                    item.name === "avoidedTrafficAccidentsSevereInjuries" ||
+                    item.name === "avoidedTrafficAccidentsMinorInjuries",
+                )}
               />
             );
           case "avoided_traffic_severe_injuries":
             return (
               <AvoidedTrafficAccidentsSevereInjuriesDescription
-                impactData={impactsData.social.avoidedTrafficAccidents?.severeInjuries}
+                impactData={
+                  impactsData.aggregatedReconversionImpacts.impactsMetrics.find(
+                    (item) => item.name === "avoidedTrafficAccidentsSevereInjuries",
+                  )?.total ?? 0
+                }
               />
             );
           case "avoided_traffic_minor_injuries":
             return (
               <AvoidedTrafficAccidentsMinorInjuriesDescription
-                impactData={impactsData.social.avoidedTrafficAccidents?.minorInjuries}
+                impactData={
+                  impactsData.aggregatedReconversionImpacts.impactsMetrics.find(
+                    (item) => item.name === "avoidedTrafficAccidentsMinorInjuries",
+                  )?.total ?? 0
+                }
               />
             );
           case "avoided_traffic_deaths":
             return (
               <AvoidedTrafficAccidentsDeathsDescription
-                impactData={impactsData.social.avoidedTrafficAccidents?.deaths}
+                impactData={
+                  impactsData.aggregatedReconversionImpacts.impactsMetrics.find(
+                    (item) => item.name === "avoidedTrafficAccidentsDeaths",
+                  )?.total ?? 0
+                }
               />
             );
 

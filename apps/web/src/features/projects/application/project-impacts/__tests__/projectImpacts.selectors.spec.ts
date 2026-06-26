@@ -1,6 +1,9 @@
 import { createStore, type RootState } from "@/app/store/store";
 import { DEFAULT_APP_SETTINGS } from "@/features/app-settings/core/appSettings";
-import { photovoltaicProjectImpactMock } from "@/features/projects/application/project-impacts/projectImpacts.mock";
+import {
+  photovoltaicProjectImpactsResultDto as photovoltaicProjectImpactMock,
+  photovoltaicProjectImpactMockMeta,
+} from "@/features/projects/application/project-impacts/__tests__/projectImpacts.mock";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import {
@@ -18,17 +21,17 @@ const MOCK_STATES = {
     },
     evaluationPeriod: 10,
     currentViewMode: "list",
-    impactsData: photovoltaicProjectImpactMock.impacts,
+    impacts: photovoltaicProjectImpactMock,
     projectData: {
-      id: photovoltaicProjectImpactMock.id,
-      name: photovoltaicProjectImpactMock.name,
-      ...photovoltaicProjectImpactMock.projectData,
+      id: photovoltaicProjectImpactMockMeta.id,
+      name: photovoltaicProjectImpactMockMeta.name,
+      ...photovoltaicProjectImpactMockMeta.projectData,
     },
     relatedSiteData: {
-      id: photovoltaicProjectImpactMock.relatedSiteId,
-      name: photovoltaicProjectImpactMock.relatedSiteName,
-      isExpressSite: photovoltaicProjectImpactMock.isExpressSite,
-      ...photovoltaicProjectImpactMock.siteData,
+      id: photovoltaicProjectImpactMockMeta.relatedSiteId,
+      name: photovoltaicProjectImpactMockMeta.relatedSiteName,
+      isExpressSite: photovoltaicProjectImpactMockMeta.isExpressSite,
+      ...photovoltaicProjectImpactMockMeta.siteData,
     },
   } satisfies RootState["projectImpacts"],
   appSettings: DEFAULT_APP_SETTINGS,
@@ -44,7 +47,7 @@ describe("projectImpacts ViewData selectors", () => {
 
       expect(viewData).toEqual({
         economicBalance: expect.objectContaining({
-          total: -500000,
+          total: -700000,
           bearer: "Mairie de Blajan",
           economicBalance: expect.any(Array),
         }),
@@ -105,7 +108,7 @@ describe("projectImpacts ViewData selectors", () => {
         currentViewMode: "list",
         projectName: "Project photovoltaïque",
         siteName: "Friche agricole de Blajan",
-        siteId: photovoltaicProjectImpactMock.relatedSiteId,
+        siteId: photovoltaicProjectImpactMockMeta.relatedSiteId,
         siteNature: "FRICHE",
         type: "PHOTOVOLTAIC_POWER_PLANT",
         isExpressProject: false,

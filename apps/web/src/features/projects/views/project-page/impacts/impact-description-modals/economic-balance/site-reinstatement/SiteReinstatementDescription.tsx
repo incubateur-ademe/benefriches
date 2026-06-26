@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { EconomicBalanceImpactResult } from "shared";
+import { ProjectDevelopmentEconomicBalanceItem, sumListWithKey } from "shared";
 
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { ImpactModalDescriptionContext } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
@@ -18,7 +18,7 @@ import ModalColumnPointChart from "../../shared/modal-charts/ModalColumnPointCha
 import { breadcrumbSection } from "../breadcrumbSection";
 
 type Props = {
-  impactData?: EconomicBalanceImpactResult["costs"]["siteReinstatement"];
+  impactData?: Extract<ProjectDevelopmentEconomicBalanceItem, { name: "siteReinstatement" }>[];
   bearer?: string;
 };
 
@@ -26,11 +26,11 @@ const SiteReinstatementDescription = ({ impactData, bearer = "l'aménageur" }: P
   const { updateModalContent } = useContext(ImpactModalDescriptionContext);
 
   const impactList =
-    impactData?.costs.map(({ amount, purpose }) => ({
-      label: getEconomicBalanceDetailsImpactLabel("site_reinstatement", purpose),
-      color: getSiteReinstatementDetailsColor(purpose),
-      value: -amount,
-      name: purpose,
+    impactData?.map(({ details, total }) => ({
+      label: getEconomicBalanceDetailsImpactLabel("site_reinstatement", details),
+      color: getSiteReinstatementDetailsColor(details),
+      value: total,
+      name: details,
     })) ?? [];
 
   return (
@@ -42,7 +42,7 @@ const SiteReinstatementDescription = ({ impactData, bearer = "l'aménageur" }: P
           impactData
             ? {
                 state: "error",
-                text: formatMonetaryImpact(-impactData.total),
+                text: formatMonetaryImpact(sumListWithKey(impactData, "total")),
                 description: `pour ${bearer}`,
               }
             : undefined

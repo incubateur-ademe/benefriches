@@ -210,10 +210,13 @@ export const selectDevelopmentScoreDataView = createSelector(
             forecast: avoidedCo2eqEmissions + siteStatuQuoStoredCo2Eq,
             difference: avoidedCo2eqEmissions,
           },
-          permeableSurfaceAreaDifference:
-            breakEvenLevelForEvaluationPeriod.aggregatedReconversionImpacts.impactsMetrics.find(
-              ({ name }) => name === "newPermeableSurface",
-            )?.total,
+          permeableSurfaceAreaDifference: sumListWithKey(
+            breakEvenLevelForEvaluationPeriod.aggregatedReconversionImpacts.impactsMetrics.filter(
+              ({ name }) =>
+                name === "newPermeableMineralSurface" || name === "newPermeableGreenSurface",
+            ),
+            "total",
+          ),
           hasDecontamination,
           avoidedVehiculeKilometers:
             breakEvenLevelForEvaluationPeriod.aggregatedReconversionImpacts.impactsMetrics.find(
@@ -260,10 +263,15 @@ export const selectDevelopmentScoreDataView = createSelector(
             breakEvenLevelForEvaluationPeriod.aggregatedReconversionImpacts.impactsMetrics.find(
               ({ name }) => name === "timeTravelSavedInHours",
             )?.total,
-          avoidedTrafficAccidents:
-            breakEvenLevelForEvaluationPeriod.aggregatedReconversionImpacts.impactsMetrics.find(
-              ({ name }) => name === "avoidedTrafficAccidents",
-            )?.total,
+          avoidedTrafficAccidents: sumListWithKey(
+            breakEvenLevelForEvaluationPeriod.aggregatedReconversionImpacts.impactsMetrics.filter(
+              ({ name }) =>
+                name === "avoidedTrafficAccidentsDeaths" ||
+                name === "avoidedTrafficAccidentsSevereInjuries" ||
+                name === "avoidedTrafficAccidentsMinorInjuries",
+            ),
+            "total",
+          ),
           avoidedFrichesAccidents: sumListWithKey(
             breakEvenLevelForEvaluationPeriod.aggregatedReconversionImpacts.impactsMetrics.filter(
               ({ name }) =>

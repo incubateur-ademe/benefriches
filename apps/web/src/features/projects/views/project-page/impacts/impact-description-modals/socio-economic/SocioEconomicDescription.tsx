@@ -1,5 +1,6 @@
 import Button from "@codegouvfr/react-dsfr/Button";
 import { useContext } from "react";
+import { SocioEconomicImpact } from "shared";
 
 import { getSocioEconomicProjectImpactsByActor } from "@/features/projects/domain/projectImpactsSocioEconomic";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
@@ -15,16 +16,15 @@ import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
 import { getSocioEconomicImpactColor } from "../../getImpactColor";
 import { getSocioEconomicImpactLabel } from "../../getImpactLabel";
-import { ModalDataProps } from "../ImpactModalDescription";
 import ModalTable from "../shared/ModalTable";
 import ModalColumnSeriesChart from "../shared/modal-charts/ModalColumnSeriesChart";
 
 type Props = {
-  impactsData: ModalDataProps["impactsData"];
+  impactsData: { impacts: SocioEconomicImpact[]; total: number };
 };
 
 const SocioEconomicDescription = ({ impactsData }: Props) => {
-  const impactsByActor = getSocioEconomicProjectImpactsByActor(impactsData.socioeconomic.impacts);
+  const impactsByActor = getSocioEconomicProjectImpactsByActor(impactsData.impacts);
   const { updateModalContent } = useContext(ImpactModalDescriptionContext);
 
   const impactList = impactsByActor.map(({ name, impacts }) => ({
@@ -42,8 +42,8 @@ const SocioEconomicDescription = ({ impactsData }: Props) => {
       <ModalHeader
         title="🌍 Impacts socio-économiques"
         value={{
-          state: impactsData.socioeconomic.total > 0 ? "success" : "error",
-          text: formatMonetaryImpact(impactsData.socioeconomic.total),
+          state: impactsData.total > 0 ? "success" : "error",
+          text: formatMonetaryImpact(impactsData.total),
           description: "répartis entre plusieurs bénéficiaires",
         }}
         breadcrumbSegments={[{ label: "Impacts socio-économiques" }]}

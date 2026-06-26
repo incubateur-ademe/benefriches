@@ -236,7 +236,9 @@ describe("getUrbanProjectImpacts", () => {
 
       [
         "avoidedVehiculeKilometers",
-        "avoidedTrafficAccidents",
+        "avoidedTrafficAccidentsMinorInjuries",
+        "avoidedTrafficAccidentsSevereInjuries",
+        "avoidedTrafficAccidentsDeaths",
         "avoidedVehiculeKilometers",
         "timeTravelSavedInHours",
       ].forEach((name) => {
@@ -276,7 +278,9 @@ describe("getUrbanProjectImpacts", () => {
 
       [
         "avoidedVehiculeKilometers",
-        "avoidedTrafficAccidents",
+        "avoidedTrafficAccidentsMinorInjuries",
+        "avoidedTrafficAccidentsSevereInjuries",
+        "avoidedTrafficAccidentsDeathsInjuries",
         "avoidedVehiculeKilometers",
         "timeTravelSavedInHours",
       ].forEach((name) => {

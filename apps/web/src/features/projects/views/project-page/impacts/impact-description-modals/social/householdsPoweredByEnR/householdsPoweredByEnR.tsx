@@ -8,7 +8,6 @@ import ModalTitleTwo from "@/features/projects/views/shared/impacts/modals/Modal
 import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
-import { ModalDataProps } from "../../ImpactModalDescription";
 import ModalAreaChart from "../../shared/modal-charts/ModalAreaChart";
 import { mainBreadcrumbSection, frenchSocietyBreadcrumbSection } from "../breadcrumbSections";
 
@@ -16,10 +15,7 @@ type Props = {
   address: string;
   developmentPlanSurfaceArea?: number;
   developmentPlanElectricalPowerKWc?: number;
-  impactData: Exclude<
-    ModalDataProps["impactsData"]["social"]["householdsPoweredByRenewableEnergy"],
-    undefined
-  >;
+  impactData: number;
 };
 
 const HouseholdsPoweredByRenewableEnergyDescription = ({
@@ -42,9 +38,9 @@ const HouseholdsPoweredByRenewableEnergyDescription = ({
         <ModalData>
           <ModalAreaChart
             type="default"
-            base={impactData.base}
-            forecast={impactData.forecast}
-            difference={impactData.difference}
+            base={0}
+            forecast={impactData}
+            difference={impactData}
             title="Foyers alimentés par les EnR"
             color="#E3CFA9"
           />

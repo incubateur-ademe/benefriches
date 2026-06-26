@@ -25,8 +25,6 @@ const title = "Analyse coûts bénéfices";
 const CostBenefitAnalysisDescription = ({ impactsData }: Props) => {
   const { updateModalContent } = useContext(ImpactModalDescriptionContext);
 
-  const { economicBalance, socioeconomic } = impactsData;
-
   return (
     <ModalBody size="large">
       <ModalHeader title={`⚖️ ${title}`} breadcrumbSegments={[{ label: title }]} />
@@ -40,8 +38,8 @@ const CostBenefitAnalysisDescription = ({ impactsData }: Props) => {
               options={withDefaultBarChartOptions({
                 xAxis: {
                   categories: [
-                    `<strong>Bilan de l'opération</strong><br>${formatMonetaryImpact(economicBalance.total)}`,
-                    `<strong>Impacts socio-économiques</strong><br>${formatMonetaryImpact(socioeconomic.total)}`,
+                    `<strong>Bilan de l'opération</strong><br>${formatMonetaryImpact(impactsData.projectEconomicBalance.total)}`,
+                    `<strong>Impacts socio-économiques</strong><br>${formatMonetaryImpact(impactsData.aggregatedReconversionImpacts.indirectEconomicImpacts.total)}`,
                   ],
                 },
                 tooltip: {
@@ -54,7 +52,10 @@ const CostBenefitAnalysisDescription = ({ impactsData }: Props) => {
                   {
                     name: "Analyse coûts/bénéfices",
                     type: "column",
-                    data: [economicBalance.total, socioeconomic.total],
+                    data: [
+                      impactsData.projectEconomicBalance.total,
+                      impactsData.aggregatedReconversionImpacts.indirectEconomicImpacts.total,
+                    ],
                   },
                 ],
               })}
@@ -66,7 +67,7 @@ const CostBenefitAnalysisDescription = ({ impactsData }: Props) => {
             data={[
               {
                 label: "📉 Bilan de l'opération",
-                value: economicBalance.total,
+                value: impactsData.projectEconomicBalance.total,
                 onClick: () => {
                   updateModalContent({
                     sectionName: "economic_balance",
@@ -75,7 +76,7 @@ const CostBenefitAnalysisDescription = ({ impactsData }: Props) => {
               },
               {
                 label: "🌍 Impacts socio-économiques",
-                value: socioeconomic.total,
+                value: impactsData.aggregatedReconversionImpacts.indirectEconomicImpacts.total,
                 onClick: () => {
                   updateModalContent({
                     sectionName: "socio_economic",

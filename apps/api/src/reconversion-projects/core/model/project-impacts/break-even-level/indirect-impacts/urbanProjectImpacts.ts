@@ -240,8 +240,20 @@ export const getUrbanProjectImpacts = ({
     );
 
     pushImpactMetrics(
-      "avoidedTrafficAccidents",
-      travelRelatedImpactsService.getTrafficAccidentsPerYear(),
+      "avoidedTrafficAccidentsSevereInjuries",
+      travelRelatedImpactsService.getTrafficAccidentsPerYear().severe,
+      [],
+    );
+
+    pushImpactMetrics(
+      "avoidedTrafficAccidentsMinorInjuries",
+      travelRelatedImpactsService.getTrafficAccidentsPerYear().minor,
+      [],
+    );
+
+    pushImpactMetrics(
+      "avoidedTrafficAccidentsDeaths",
+      travelRelatedImpactsService.getTrafficAccidentsPerYear().deaths,
       [],
     );
 

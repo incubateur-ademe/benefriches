@@ -2,12 +2,14 @@ import {
   BuildingsConstructionExpensePurpose,
   DevelopmentPlanInstallationExpenses,
   FinancialAssistanceRevenue,
+  ProjectOperatingEconomicBalanceItem,
   RecurringExpense,
   RecurringRevenue,
   ReinstatementExpensePurpose,
+  sumListWithKey,
 } from "shared";
 
-import { ReconversionProjectImpactsResult } from "../application/project-impacts/actions";
+import { ProjectImpactsState } from "../application/project-impacts/projectImpacts.reducer";
 import { ProjectDevelopmentPlanType } from "../domain/projects.types";
 
 export type EconomicBalanceName = EconomicBalanceMainName | EconomicBalanceDetailsName;
@@ -88,7 +90,7 @@ const getDevelopmentPlanDetailsName = (
 
 export const getEconomicBalanceProjectImpacts = (
   projectType: ProjectDevelopmentPlanType,
-  impactsData?: ReconversionProjectImpactsResult["impacts"],
+  impactsData?: ProjectImpactsState["impacts"],
 ): EconomicBalance => {
   if (!impactsData)
     return {
@@ -96,106 +98,134 @@ export const getEconomicBalanceProjectImpacts = (
       economicBalance: [],
     };
 
-  const { economicBalance } = impactsData;
+  const economicBalance = impactsData.projectEconomicBalance;
   const impacts: EconomicBalance["economicBalance"] = [];
 
-  if (economicBalance.costs.siteReinstatement?.total) {
+  const siteReinstatement = economicBalance.details.filter(
+    (item) => item.name === "siteReinstatement",
+  );
+
+  if (siteReinstatement.length > 0) {
     impacts.push({
       name: "site_reinstatement",
-      value: -economicBalance.costs.siteReinstatement.total,
-      details: economicBalance.costs.siteReinstatement.costs.map(({ purpose, amount }) => ({
-        value: -amount,
-        name: purpose,
+      value: sumListWithKey(siteReinstatement, "total"),
+      details: siteReinstatement.map(({ details, total }) => ({
+        value: total,
+        name: details,
       })),
     });
   }
 
-  if (economicBalance.costs.sitePurchase) {
+  const sitePurchase = economicBalance.details.find((item) => item.name === "sitePurchase")?.total;
+
+  if (sitePurchase) {
     impacts.push({
       name: "site_purchase",
-      value: -economicBalance.costs.sitePurchase,
+      value: sitePurchase,
     });
   }
 
-  if (economicBalance.costs.developmentPlanInstallation?.total) {
+  const developmentPlanInstallation = economicBalance.details.filter(
+    (item) => item.name === "projectInstallation",
+  );
+
+  if (developmentPlanInstallation.length > 0) {
     const namePrefix = getInstallationCostNamePrefix(projectType);
     impacts.push({
       name: namePrefix
         ? `${namePrefix}_development_plan_installation`
         : "development_plan_installation",
-      value: -economicBalance.costs.developmentPlanInstallation.total,
-      details: economicBalance.costs.developmentPlanInstallation.costs.map(
-        ({ purpose, amount }) => ({
-          value: -amount,
-          name: getDevelopmentPlanDetailsName(purpose, projectType) as EconomicBalanceDetailsName,
-        }),
-      ),
+      value: sumListWithKey(developmentPlanInstallation, "total"),
+      details: developmentPlanInstallation.map(({ details, total }) => ({
+        value: total,
+        name: getDevelopmentPlanDetailsName(details, projectType) as EconomicBalanceDetailsName,
+      })),
     });
   }
 
-  if (economicBalance.costs.buildingsConstructionAndRehabilitation?.total) {
+  const buildingsConstructionAndRehabilitation = economicBalance.details.filter(
+    (item) => item.name === "projectBuildingsInstallation",
+  );
+
+  if (buildingsConstructionAndRehabilitation.length > 0) {
     impacts.push({
       name: "urban_project_buildings_construction_and_rehabilitation",
-      value: -economicBalance.costs.buildingsConstructionAndRehabilitation.total,
-      details: economicBalance.costs.buildingsConstructionAndRehabilitation.costs.map(
-        ({ purpose, amount }) => ({
-          value: -amount,
-          name: purpose,
-        }),
-      ),
+      value: sumListWithKey(buildingsConstructionAndRehabilitation, "total"),
+      details: buildingsConstructionAndRehabilitation.map(({ details, total }) => ({
+        value: total,
+        name: details,
+      })),
     });
   }
+  const financialAssistance = economicBalance.details.filter(
+    (item) => item.name === "financialAssistanceRevenues",
+  );
 
-  if (economicBalance.revenues.financialAssistance) {
+  if (financialAssistance.length > 0) {
     impacts.push({
       name: "financial_assistance",
-      value: economicBalance.revenues.financialAssistance.total,
-      details: economicBalance.revenues.financialAssistance.revenues.map(({ source, amount }) => ({
-        value: amount,
-        name: source,
+      value: sumListWithKey(financialAssistance, "total"),
+      details: financialAssistance.map(({ details, total }) => ({
+        value: total,
+        name: details,
       })),
     });
   }
 
-  if (economicBalance.costs.operationsCosts?.total) {
+  const operationsCosts = economicBalance.details.filter(
+    (item): item is ProjectOperatingEconomicBalanceItem =>
+      item.name === "projectOperatingEconomicBalance" && item.total < 0,
+  );
+
+  if (operationsCosts.length > 0) {
     impacts.push({
       name: "operations_costs",
-      value: -economicBalance.costs.operationsCosts.total,
-      details: economicBalance.costs.operationsCosts.costs.map(({ purpose, amount }) => ({
-        value: -amount,
-        name: purpose,
+      value: sumListWithKey(operationsCosts, "total"),
+      details: operationsCosts.map(({ details, total }) => ({
+        value: total,
+        name: details,
       })),
     });
   }
+  const operationsRevenues = economicBalance.details.filter(
+    (item): item is ProjectOperatingEconomicBalanceItem =>
+      item.name === "projectOperatingEconomicBalance" && item.total > 0,
+  );
 
-  if (economicBalance.revenues.operationsRevenues?.total) {
+  if (operationsRevenues.length > 0) {
     impacts.push({
       name: "operations_revenues",
-      value: economicBalance.revenues.operationsRevenues.total,
-      details: economicBalance.revenues.operationsRevenues.revenues.map(({ source, amount }) => ({
-        value: amount,
-        name: source,
+      value: sumListWithKey(operationsRevenues, "total"),
+      details: operationsRevenues.map(({ details, total }) => ({
+        value: total,
+        name: details,
       })),
     });
   }
+  const siteResale = economicBalance.details.find(
+    (item) => item.name === "siteResaleRevenue",
+  )?.total;
 
-  if (economicBalance.revenues.siteResale) {
+  if (siteResale) {
     impacts.push({
       name: "site_resale",
-      value: economicBalance.revenues.siteResale,
+      value: siteResale,
     });
   }
+  const buildingsResale = economicBalance.details.find(
+    (item) => item.name === "buildingsResaleRevenue",
+  )?.total;
 
-  if (economicBalance.revenues.buildingsResale) {
+  if (buildingsResale) {
     impacts.push({
       name: "buildings_resale",
-      value: economicBalance.revenues.buildingsResale,
+      value: buildingsResale,
     });
   }
 
   return {
     total: economicBalance.total,
-    bearer: economicBalance.bearer,
+    bearer: impactsData.stakeholders.project.developer.structureName,
     economicBalance: impacts,
   };
 };

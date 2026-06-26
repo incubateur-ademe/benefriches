@@ -22,8 +22,8 @@ export class StoreBuilder {
     return this;
   }
 
-  withImpactsData(impactsData: RootState["projectImpacts"]["impactsData"]) {
-    this.preloadedRootState.projectImpacts.impactsData = impactsData;
+  withImpactsData(impactsData: RootState["projectImpacts"]["impacts"]) {
+    this.preloadedRootState.projectImpacts.impacts = impactsData;
     return this;
   }
 

@@ -54,6 +54,7 @@ const GREEN_SOILS: readonly SoilType[] = [
   "CULTIVATION",
   "VINEYARD",
   "ORCHARD",
+  "WET_LAND",
 ];
 
 const FOREST_SOILS: readonly SoilType[] = [

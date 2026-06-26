@@ -3,6 +3,7 @@ import { lazy, Suspense } from "react";
 import {
   EnvironmentalImpactDetailsName,
   EnvironmentalMainImpactName,
+  getEnvironmentalProjectImpacts,
 } from "@/features/projects/domain/projectImpactsEnvironmental";
 import { EnvironmentSubSectionName } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
@@ -59,6 +60,7 @@ export function EnvironmentalModalWizard({
   siteData,
   impactsData,
 }: Props) {
+  const environmentalImpacts = getEnvironmentalProjectImpacts(impactsData, siteData.surfaceArea);
   return (
     <Suspense fallback={<LoadingSpinner classes={{ text: "text-grey-light" }} />}>
       {(() => {
@@ -75,12 +77,18 @@ export function EnvironmentalModalWizard({
 
         switch (impactDetailsName ?? impactName) {
           case "co2_benefit":
-            return <Co2EqEmissionsDescription impactsData={impactsData} />;
+            return (
+              <Co2EqEmissionsDescription
+                impactsData={environmentalImpacts.find((item) => item.name === "co2_benefit")}
+              />
+            );
           case "avoided_car_traffic_co2_eq_emissions":
             return (
               <TravelRelatedCo2Description
                 impactData={
-                  impactsData.environmental.avoidedCo2eqEmissions?.withCarTrafficDiminution
+                  impactsData.aggregatedReconversionImpacts.impactsMetrics.find(
+                    (item) => item.name === "avoidedTrafficCo2EqEmissions",
+                  )?.total
                 }
               />
             );
@@ -89,7 +97,9 @@ export function EnvironmentalModalWizard({
               <RenewableEnergyRelatedCo2Description
                 siteData={{ address: siteData.addressLabel }}
                 impactData={
-                  impactsData.environmental.avoidedCo2eqEmissions?.withRenewableEnergyProduction
+                  impactsData.aggregatedReconversionImpacts.impactsMetrics.find(
+                    (item) => item.name === "avoidedCO2TonsWithEnergyProduction",
+                  )?.total
                 }
                 projectData={
                   projectData.developmentPlan.type === "PHOTOVOLTAIC_POWER_PLANT"
@@ -104,7 +114,11 @@ export function EnvironmentalModalWizard({
               <SoilsStorageRelatedCo2Description
                 baseSoilsDistribution={siteData.soilsDistribution}
                 forecastSoilsDistribution={projectData.soilsDistribution}
-                impactData={impactsData.environmental.soilsCo2eqStorage}
+                impactData={
+                  impactsData.aggregatedReconversionImpacts.impactsMetrics.find(
+                    (item) => item.name === "newStoredCo2Eq",
+                  )?.total
+                }
               />
             );
 
@@ -112,21 +126,28 @@ export function EnvironmentalModalWizard({
             return (
               <AirConditionningRelatedCo2Description
                 impactData={
-                  impactsData.environmental.avoidedCo2eqEmissions?.withAirConditioningDiminution
+                  impactsData.aggregatedReconversionImpacts.impactsMetrics.find(
+                    (item) => item.name === "avoidedAirConditioningCo2eqEmissions",
+                  )?.total
                 }
               />
             );
           case "non_contaminated_surface_area":
             return (
               <NonContaminatedSurfaceDescription
-                impactData={impactsData.environmental.nonContaminatedSurfaceArea!}
+                impactData={
+                  environmentalImpacts.find((item) => item.name === "non_contaminated_surface_area")
+                    ?.impact
+                }
               />
             );
 
           case "permeable_surface_area":
             return (
               <PermeableSurfaceDescription
-                impactData={impactsData.environmental.permeableSurfaceArea}
+                impactData={environmentalImpacts.find(
+                  (item) => item.name === "permeable_surface_area",
+                )}
               />
             );
 

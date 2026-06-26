@@ -105,6 +105,9 @@ export const getSocioEconomicImpactLabel = (name: SocioEconomicImpactName) => {
     // Économique directs
     case "rental_income":
       return "🔑 Revenu locatif";
+    case "site_rental_income_loss":
+      return "🔑 Perte de revenu locatif";
+
     // Arrêt de la sécurisation de la friche
     case "avoided_friche_costs":
       return "🏚️ Dépenses de gestion et sécurisation de la friche évitées";

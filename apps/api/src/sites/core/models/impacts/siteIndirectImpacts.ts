@@ -20,8 +20,9 @@ import {
   SiteStatuQuoEconomicImpact,
   SiteStatuQuoImpactMetric,
   computeAgriculturalOperationEtpFromSurface,
-  isPermeableSoil,
   AgriculturalOperationActivity,
+  isGreenSoil,
+  isMineralSoil,
 } from "shared";
 
 import { computeCumulativeByYear } from "src/reconversion-projects/core/model/project-impacts/break-even-level/projectIndirectImpacts";
@@ -209,11 +210,22 @@ export const getSiteStatuQuoIndirectsImpacts = ({
   const forestSurface = sumSoilsSurfaceAreasWhere(siteData.soilsDistribution, isForest);
   const wetLandSurface = sumSoilsSurfaceAreasWhere(siteData.soilsDistribution, isWetLand);
 
-  const permeableSurface = sumSoilsSurfaceAreasWhere(siteData.soilsDistribution, isPermeableSoil);
-  if (permeableSurface) {
+  const permeableGreenSurface = sumSoilsSurfaceAreasWhere(siteData.soilsDistribution, isGreenSoil);
+  if (permeableGreenSurface) {
     impactMetrics.push({
-      name: "permeableSurface",
-      total: permeableSurface,
+      name: "permeableGreenSurface",
+      total: permeableGreenSurface,
+    });
+  }
+
+  const permeableMineralSurface = sumSoilsSurfaceAreasWhere(
+    siteData.soilsDistribution,
+    isMineralSoil,
+  );
+  if (permeableMineralSurface) {
+    impactMetrics.push({
+      name: "permeableMineralSurface",
+      total: permeableMineralSurface,
     });
   }
 

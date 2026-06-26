@@ -10,12 +10,10 @@ import { breadcrumbSegments } from "./breadcrumbSegments";
 type Props = {
   baseSoilsDistribution: ModalDataProps["siteData"]["soilsDistribution"];
   forecastSoilsDistribution: ModalDataProps["projectData"]["soilsDistribution"];
-  impactData: ModalDataProps["impactsData"]["environmental"]["soilsCo2eqStorage"];
+  impactData?: number;
 };
 
-const SoilsStorageRelatedCo2Description = ({ impactData, ...props }: Props) => {
-  const value = impactData ? impactData.difference : undefined;
-
+const SoilsStorageRelatedCo2Description = ({ impactData: value, ...props }: Props) => {
   return (
     <ModalBody size="large">
       <ModalHeader

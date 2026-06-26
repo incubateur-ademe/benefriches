@@ -1,18 +1,15 @@
+import { EnvironmentalImpact } from "@/features/projects/domain/projectImpactsEnvironmental";
 import ModalBody from "@/features/projects/views/shared/impacts/modals/ModalBody";
 import ModalContent from "@/features/projects/views/shared/impacts/modals/ModalContent";
 import ModalData from "@/features/projects/views/shared/impacts/modals/ModalData";
 import ModalGrid from "@/features/projects/views/shared/impacts/modals/ModalGrid";
 import ModalHeader from "@/features/projects/views/shared/impacts/modals/ModalHeader";
 
-import { ModalDataProps } from "../../ImpactModalDescription";
 import ModalAreaChart from "../../shared/modal-charts/ModalAreaChart";
 import { mainBreadcrumbSection, soilsBreadcrumbSection } from "../breadcrumbSections";
 
 type Props = {
-  impactData: Exclude<
-    ModalDataProps["impactsData"]["environmental"]["nonContaminatedSurfaceArea"],
-    undefined
-  >;
+  impactData?: EnvironmentalImpact["impact"];
 };
 
 const NonContaminatedSurfaceDescription = ({ impactData }: Props) => {
@@ -27,16 +24,18 @@ const NonContaminatedSurfaceDescription = ({ impactData }: Props) => {
         ]}
       />
       <ModalGrid>
-        <ModalData>
-          <ModalAreaChart
-            type="surface_area"
-            color="#FCDF3B"
-            base={impactData.base}
-            forecast={impactData.forecast}
-            difference={impactData.difference}
-            title="Surface non polluée"
-          />
-        </ModalData>
+        {impactData && (
+          <ModalData>
+            <ModalAreaChart
+              type="surface_area"
+              color="#FCDF3B"
+              base={impactData.base}
+              forecast={impactData.forecast}
+              difference={impactData.difference}
+              title="Surface non polluée"
+            />
+          </ModalData>
+        )}
 
         <ModalContent>
           <p>

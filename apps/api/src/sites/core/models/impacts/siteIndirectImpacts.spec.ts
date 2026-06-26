@@ -543,7 +543,7 @@ describe("getSiteStatuQuoIndirectsImpacts", () => {
           nature: "FRICHE",
           yearlyExpenses: [],
           yearlyIncomes: [],
-          soilsDistribution: { BUILDINGS: 5000, FOREST_CONIFER: 5000 },
+          soilsDistribution: { BUILDINGS: 5000, FOREST_CONIFER: 4000, MINERAL_SOIL: 1000 },
           accidentsDeaths: undefined,
           accidentsSevereInjuries: undefined,
           accidentsMinorInjuries: undefined,
@@ -553,10 +553,14 @@ describe("getSiteStatuQuoIndirectsImpacts", () => {
         },
         sumOnEvolutionPeriodService: makeSumService(),
       });
+      assert.deepStrictEqual(
+        result.impactMetrics.find((d) => d.name === "permeableGreenSurface")?.total,
+        4000,
+      );
 
       assert.deepStrictEqual(
-        result.impactMetrics.find((d) => d.name === "permeableSurface")?.total,
-        5000,
+        result.impactMetrics.find((d) => d.name === "permeableMineralSurface")?.total,
+        1000,
       );
     });
 
@@ -578,7 +582,11 @@ describe("getSiteStatuQuoIndirectsImpacts", () => {
       });
 
       assert.strictEqual(
-        result.impactMetrics.find((d) => d.name === "permeableSurface"),
+        result.impactMetrics.find((d) => d.name === "permeableGreenSurface"),
+        undefined,
+      );
+      assert.strictEqual(
+        result.impactMetrics.find((d) => d.name === "permeableMineralSurface"),
         undefined,
       );
     });

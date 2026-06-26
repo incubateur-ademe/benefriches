@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { AvoidedCO2EqEmissions } from "shared";
+import { AvoidedCO2EqEmissions, SocioEconomicImpact } from "shared";
 
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { ImpactModalDescriptionContext } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
@@ -10,7 +10,6 @@ import ModalGrid from "@/features/projects/views/shared/impacts/modals/ModalGrid
 import ModalHeader from "@/features/projects/views/shared/impacts/modals/ModalHeader";
 
 import { getSocioEconomicImpactLabel } from "../../../getImpactLabel";
-import { ModalDataProps } from "../../ImpactModalDescription";
 import ModalTable from "../../shared/ModalTable";
 import ModalColumnPointChart from "../../shared/modal-charts/ModalColumnPointChart";
 import {
@@ -19,7 +18,7 @@ import {
 } from "../breadcrumbSections";
 
 type Props = {
-  impactsData: ModalDataProps["impactsData"];
+  impactsData: SocioEconomicImpact[];
 };
 
 const getChartColor = (impactName: AvoidedCO2EqEmissions["details"][number]["impact"]) => {
@@ -34,7 +33,7 @@ const getChartColor = (impactName: AvoidedCO2EqEmissions["details"][number]["imp
 };
 
 const AvoidedCo2MonetaryValueDescription = ({ impactsData }: Props) => {
-  const impactData = impactsData.socioeconomic.impacts.find(
+  const impactData = impactsData.find(
     (impact): impact is AvoidedCO2EqEmissions => impact.impact === "avoided_co2_eq_emissions",
   );
   const { updateModalContent } = useContext(ImpactModalDescriptionContext);

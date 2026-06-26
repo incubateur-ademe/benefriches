@@ -1,30 +1,23 @@
 import { createStore, RootState } from "@/app/store/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
-import { photovoltaicProjectImpactMock, urbanProjectImpactMock } from "../projectImpacts.mock";
-import { selectEconomicBalanceProjectImpacts } from "./projectImpactsEconomicBalance.selectors";
+import { selectEconomicBalanceProjectImpacts } from "../selectors/projectImpacts.selectors";
+import {
+  photovoltaicProjectImpactsResultDto,
+  urbanProjectImpactMockMeta,
+  urbanProjectImpactsResultDto,
+} from "./projectImpacts.mock";
 
 const MOCK_STATES = {
   projectImpacts: {
     dataLoadingState: {
       oldProjectImpacts: "success",
-      impacts: "idle",
+      impacts: "success",
       urbanSprawlSimulation: "idle",
     },
     evaluationPeriod: 10,
     currentViewMode: "list",
-    impactsData: photovoltaicProjectImpactMock.impacts,
-    projectData: {
-      id: photovoltaicProjectImpactMock.id,
-      name: photovoltaicProjectImpactMock.name,
-      ...photovoltaicProjectImpactMock.projectData,
-    },
-    relatedSiteData: {
-      id: photovoltaicProjectImpactMock.relatedSiteId,
-      name: photovoltaicProjectImpactMock.relatedSiteName,
-      isExpressSite: photovoltaicProjectImpactMock.isExpressSite,
-      ...photovoltaicProjectImpactMock.siteData,
-    },
+    impacts: photovoltaicProjectImpactsResultDto,
   } satisfies RootState["projectImpacts"],
 };
 
@@ -36,7 +29,7 @@ describe("projectImpactsEconomicBalance selectors", () => {
       const economicBalance = selectEconomicBalanceProjectImpacts(rootState);
 
       expect(economicBalance.bearer).toEqual("Mairie de Blajan");
-      expect(economicBalance.total).toEqual(-500000);
+      expect(economicBalance.total).toEqual(-700000);
       expect(economicBalance.economicBalance).toContainEqual(
         expect.objectContaining({
           name: "operations_costs",
@@ -74,7 +67,7 @@ describe("projectImpactsEconomicBalance selectors", () => {
       expect(economicBalance.economicBalance).toContainEqual(
         expect.objectContaining({
           name: "operations_revenues",
-          value: 310000,
+          value: 110000,
           details: [
             { value: 100000, name: "rent" },
             { value: 10000, name: "other" },
@@ -98,7 +91,7 @@ describe("projectImpactsEconomicBalance selectors", () => {
           projectData: {
             name: "Urban project 1",
             id: "aaa-bbb-111",
-            ...urbanProjectImpactMock.projectData,
+            ...urbanProjectImpactMockMeta.projectData,
           },
         },
       });
@@ -118,28 +111,39 @@ describe("projectImpactsEconomicBalance selectors", () => {
       const store = createStore(getTestAppDependencies(), {
         projectImpacts: {
           ...MOCK_STATES.projectImpacts,
-          impactsData: {
-            ...urbanProjectImpactMock.impacts,
-            economicBalance: {
-              ...urbanProjectImpactMock.impacts.economicBalance,
-              costs: {
-                ...urbanProjectImpactMock.impacts.economicBalance.costs,
-                buildingsConstructionAndRehabilitation: {
-                  total: 365000,
-                  costs: [
-                    { amount: 30000, purpose: "technical_studies_and_fees" },
-                    { amount: 250000, purpose: "buildings_construction_works" },
-                    { amount: 80000, purpose: "buildings_rehabilitation_works" },
-                    { amount: 5000, purpose: "other_construction_expenses" },
-                  ],
+          impacts: {
+            ...urbanProjectImpactsResultDto,
+            projectEconomicBalance: {
+              total: urbanProjectImpactsResultDto.projectEconomicBalance.total - 365000,
+              details: [
+                ...urbanProjectImpactsResultDto.projectEconomicBalance.details,
+                {
+                  total: -30000,
+                  name: "projectBuildingsInstallation",
+                  details: "technical_studies_and_fees",
                 },
-              },
+                {
+                  total: -250000,
+                  name: "projectBuildingsInstallation",
+                  details: "buildings_construction_works",
+                },
+                {
+                  total: -80000,
+                  name: "projectBuildingsInstallation",
+                  details: "buildings_rehabilitation_works",
+                },
+                {
+                  total: -5000,
+                  name: "projectBuildingsInstallation",
+                  details: "other_construction_expenses",
+                },
+              ],
             },
           },
           projectData: {
             name: "Urban project 1",
             id: "aaa-bbb-111",
-            ...urbanProjectImpactMock.projectData,
+            ...urbanProjectImpactMockMeta.projectData,
           },
         },
       });

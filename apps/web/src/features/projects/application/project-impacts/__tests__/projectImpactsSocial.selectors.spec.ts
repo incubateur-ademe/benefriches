@@ -1,30 +1,19 @@
 import { createStore, RootState } from "@/app/store/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
-import { photovoltaicProjectImpactMock as projectImpactMock } from "../projectImpacts.mock";
-import { selectSocialProjectImpacts } from "./projectImpactsSocial.selectors";
+import { selectSocialProjectImpacts } from "../selectors/projectImpacts.selectors";
+import { photovoltaicProjectImpactsResultDto as projectImpactMock } from "./projectImpacts.mock";
 
 const MOCK_STATES = {
   projectImpacts: {
     dataLoadingState: {
-      oldProjectImpacts: "success",
-      impacts: "idle",
+      oldProjectImpacts: "idle",
+      impacts: "success",
       urbanSprawlSimulation: "idle",
     },
     evaluationPeriod: 10,
     currentViewMode: "list",
-    impactsData: projectImpactMock.impacts,
-    projectData: {
-      id: projectImpactMock.id,
-      name: projectImpactMock.name,
-      ...projectImpactMock.projectData,
-    },
-    relatedSiteData: {
-      id: projectImpactMock.relatedSiteId,
-      name: projectImpactMock.relatedSiteName,
-      isExpressSite: projectImpactMock.isExpressSite,
-      ...projectImpactMock.siteData,
-    },
+    impacts: projectImpactMock,
   } satisfies RootState["projectImpacts"],
 };
 
@@ -65,15 +54,15 @@ describe("projectImpactsSocial selectors", () => {
             base: 0,
             difference: 3,
             forecast: 3,
-            details: [
+            details: [  {
+                impact: { base: 0, difference: 2, forecast: 2 },
+                name: "avoided_friche_severe_accidents",
+              },
               {
                 impact: { base: 0, difference: 1, forecast: 1 },
                 name: "avoided_friche_minor_accidents",
               },
-              {
-                impact: { base: 0, difference: 2, forecast: 2 },
-                name: "avoided_friche_severe_accidents",
-              },
+            
             ],
           },
         }),

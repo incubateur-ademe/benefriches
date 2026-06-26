@@ -1,29 +1,27 @@
 import { createStore, RootState } from "@/app/store/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
-import { photovoltaicProjectImpactMock as projectImpactMock } from "../projectImpacts.mock";
-import { selectEnvironmentalProjectImpacts } from "./projectImpactsEnvironmental.selectors";
+import { selectEnvironmentalProjectImpacts } from "../selectors/projectImpacts.selectors";
+import {
+  photovoltaicProjectImpactMockMeta,
+  photovoltaicProjectImpactsResultDto as projectImpactMock,
+} from "./projectImpacts.mock";
 
 const MOCK_STATES = {
   projectImpacts: {
     dataLoadingState: {
-      oldProjectImpacts: "success",
-      impacts: "idle",
+      oldProjectImpacts: "idle",
+      impacts: "success",
       urbanSprawlSimulation: "idle",
     },
     evaluationPeriod: 10,
     currentViewMode: "list",
-    impactsData: projectImpactMock.impacts,
-    projectData: {
-      id: projectImpactMock.id,
-      name: projectImpactMock.name,
-      ...projectImpactMock.projectData,
-    },
+    impacts: projectImpactMock,
     relatedSiteData: {
-      id: projectImpactMock.relatedSiteId,
-      name: projectImpactMock.relatedSiteName,
-      isExpressSite: projectImpactMock.isExpressSite,
-      ...projectImpactMock.siteData,
+      id: "",
+      name: "mon site",
+      isExpressSite: false,
+      ...photovoltaicProjectImpactMockMeta.siteData,
     },
   } satisfies RootState["projectImpacts"],
 };
@@ -40,8 +38,8 @@ describe("projectImpactsEnvironmental selectors", () => {
           name: "non_contaminated_surface_area",
           type: "surface_area",
           impact: {
-            base: 30000,
-            forecast: 50000,
+            base: 70000,
+            forecast: 90000,
             difference: 20000,
           },
         }),
@@ -55,12 +53,12 @@ describe("projectImpactsEnvironmental selectors", () => {
             base: 59,
             details: [
               {
-                impact: { base: 59, difference: 0, forecast: 59 },
-                name: "stored_co2_eq",
-              },
-              {
                 impact: { base: 0, difference: 112.3, forecast: 112.3 },
                 name: "avoided_co2_eq_emissions_with_production",
+              },
+              {
+                impact: { base: 59, difference: 0, forecast: 59 },
+                name: "stored_co2_eq",
               },
             ],
             difference: 112.3,

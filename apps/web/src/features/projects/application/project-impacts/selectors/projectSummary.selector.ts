@@ -6,7 +6,7 @@ import { KeyImpactIndicatorData } from "../../../domain/projectKeyImpactIndicato
 import { PRIORITY_ORDER } from "../../../views/shared/impacts/summary";
 import { ProjectImpactsState } from "../projectImpacts.reducer";
 import { selectImpactsCroppedByEvaluationPeriod } from "./projectBreakEvenLevel.selectors";
-import { getKeyImpactIndicatorsListSelector } from "./projectKeyImpactIndicators.selectors";
+import { selectKeyImpactIndicatorsList } from "./projectImpacts.selectors";
 
 type ZanCompliance = Extract<KeyImpactIndicatorData, { name: "zanCompliance" }>;
 export type ProjectSummaryDataView = {
@@ -43,7 +43,7 @@ export const selectProjectSummaryDataView = createSelector(
   [
     selectProjectData,
     selectSiteData,
-    getKeyImpactIndicatorsListSelector,
+    selectKeyImpactIndicatorsList,
     selectImpactsCroppedByEvaluationPeriod,
   ],
   (

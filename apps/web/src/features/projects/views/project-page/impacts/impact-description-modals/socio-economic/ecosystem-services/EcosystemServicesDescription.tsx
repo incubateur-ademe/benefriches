@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { EcosystemServicesImpact } from "shared";
+import { EcosystemServicesImpact, SocioEconomicImpact } from "shared";
 
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { ImpactModalDescriptionContext } from "@/features/projects/views/shared/impacts/modals/ImpactModalDescriptionContext";
@@ -13,7 +13,6 @@ import ModalTitleTwo from "@/features/projects/views/shared/impacts/modals/Modal
 import { getActorLabel } from "@/features/projects/views/shared/socioEconomicLabels";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
-import { ModalDataProps } from "../../ImpactModalDescription";
 import ModalTable from "../../shared/ModalTable";
 import ModalColumnPointChart from "../../shared/modal-charts/ModalColumnPointChart";
 import {
@@ -22,7 +21,7 @@ import {
 } from "../breadcrumbSections";
 
 type Props = {
-  impactsData: ModalDataProps["impactsData"]["socioeconomic"]["impacts"];
+  impactsData: SocioEconomicImpact[];
 };
 
 const getEcosystemServiceDetailsTitle = (
