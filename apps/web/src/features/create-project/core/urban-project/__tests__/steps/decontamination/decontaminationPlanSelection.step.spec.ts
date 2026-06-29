@@ -198,4 +198,85 @@ describe("Urban project creation - Steps - Decontamination plan selection", () =
     });
     expect(getCurrentStep(store)).not.toBe("URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA");
   });
+
+  describe("Cascading to reinstatement expenses on plan change", () => {
+    it("should recompute system-generated reinstatement expenses when changing decontamination settings", () => {
+      const initialSteps = {
+        URBAN_PROJECT_EXPENSES_REINSTATEMENT: {
+          completed: true,
+          payload: {
+            reinstatementExpenses: [{ purpose: "remediation", amount: 100000 }],
+          },
+          defaultValues: {
+            reinstatementExpenses: [{ purpose: "remediation", amount: 100000 }],
+          },
+        },
+        URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION: {
+          completed: true,
+          payload: {
+            decontaminationPlan: "partial",
+          },
+        },
+      } satisfies ProjectFormState["urbanProject"]["steps"];
+
+      const store = new StoreBuilder().withSteps(initialSteps).build();
+
+      store.dispatch(
+        creationProjectFormUrbanActions.stepCompletionRequested({
+          stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
+          answers: { decontaminationPlan: "none" },
+        }),
+      );
+      store.dispatch(creationProjectFormUrbanActions.stepCompletionConfirmed());
+
+      const stepsState = store.getState().projectCreation.urbanProject.steps;
+
+      expect(stepsState.URBAN_PROJECT_EXPENSES_REINSTATEMENT?.completed).toEqual(true);
+      expect(stepsState.URBAN_PROJECT_EXPENSES_REINSTATEMENT?.payload).toEqual(
+        stepsState.URBAN_PROJECT_EXPENSES_REINSTATEMENT?.defaultValues,
+      );
+      expect(
+        stepsState.URBAN_PROJECT_EXPENSES_REINSTATEMENT?.payload?.reinstatementExpenses?.find(
+          (expense) => expense.purpose === "remediation",
+        )?.amount,
+      ).toEqual(0);
+    });
+
+    it("should not recompute user-entered reinstatement expenses when changing decontamination settings", () => {
+      const initialSteps = {
+        URBAN_PROJECT_EXPENSES_REINSTATEMENT: {
+          completed: true,
+          payload: {
+            reinstatementExpenses: [{ purpose: "remediation", amount: 100000 }],
+          },
+          defaultValues: {
+            reinstatementExpenses: [{ purpose: "remediation", amount: 50000 }],
+          },
+        },
+        URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION: {
+          completed: true,
+          payload: {
+            decontaminationPlan: "partial",
+          },
+        },
+      } satisfies ProjectFormState["urbanProject"]["steps"];
+
+      const store = new StoreBuilder().withSteps(initialSteps).build();
+
+      store.dispatch(
+        creationProjectFormUrbanActions.stepCompletionRequested({
+          stepId: "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
+          answers: { decontaminationPlan: "none" },
+        }),
+      );
+      store.dispatch(creationProjectFormUrbanActions.stepCompletionConfirmed());
+
+      const stepsState = store.getState().projectCreation.urbanProject.steps;
+
+      expect(stepsState.URBAN_PROJECT_EXPENSES_REINSTATEMENT?.completed).toEqual(true);
+      expect(stepsState.URBAN_PROJECT_EXPENSES_REINSTATEMENT?.payload).toEqual(
+        initialSteps.URBAN_PROJECT_EXPENSES_REINSTATEMENT.payload,
+      );
+    });
+  });
 });
