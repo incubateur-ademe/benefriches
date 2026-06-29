@@ -67,9 +67,20 @@ describe("stepNavigationRequested action", () => {
     });
 
     it("should generate default schedule when loading schedule projection", () => {
-      store.dispatch(stepNavigationRequested({ stepId: "URBAN_PROJECT_SCHEDULE_PROJECTION" }));
+      const storeWithReinstatement = new StoreBuilder()
+        .withSteps({
+          URBAN_PROJECT_INVOLVES_REINSTATEMENT: {
+            completed: true,
+            payload: { involvesReinstatement: true },
+          },
+        })
+        .build();
 
-      const steps = store.getState().projectCreation.urbanProject.steps;
+      storeWithReinstatement.dispatch(
+        stepNavigationRequested({ stepId: "URBAN_PROJECT_SCHEDULE_PROJECTION" }),
+      );
+
+      const steps = storeWithReinstatement.getState().projectCreation.urbanProject.steps;
       expect(steps.URBAN_PROJECT_SCHEDULE_PROJECTION).toEqual({
         completed: false,
         payload: undefined,
@@ -79,7 +90,7 @@ describe("stepNavigationRequested action", () => {
             endDate: expect.any(String) as string,
           }) as Schedule,
           firstYearOfOperation: expect.any(Number) as number,
-          // site is FRICHE
+          // reinstatement was opted into
           reinstatementSchedule: expect.objectContaining({
             startDate: expect.any(String) as string,
             endDate: expect.any(String) as string,

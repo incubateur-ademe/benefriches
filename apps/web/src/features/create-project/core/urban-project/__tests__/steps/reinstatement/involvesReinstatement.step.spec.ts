@@ -123,8 +123,8 @@ describe("Urban project creation - Steps - Involves reinstatement", () => {
 
     expect(defaults?.reinstatementSchedule).toBeUndefined();
 
-    // When involvesReinstatement is false on a FRICHE, installation starts 1 year from now
-    const expectedYear = new Date().getFullYear() + 1;
+    // No reinstatement phase: installation starts now
+    const expectedYear = new Date().getFullYear();
     const installationStartYear = new Date(
       defaults?.installationSchedule?.startDate ?? "",
     ).getFullYear();

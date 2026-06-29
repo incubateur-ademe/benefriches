@@ -1,5 +1,4 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { getDefaultScheduleForProject, ProjectSchedule } from "shared";
 
 import { RootState } from "@/app/store/store";
 import { selectShouldGoThroughOnboarding } from "@/features/projects/application/project-impacts/selectors/impactsOnboardingSkip.selectors";
@@ -26,17 +25,6 @@ export const selectProjectId = createSelector(selectSelf, (state): string => {
 export const selectSiteData = createSelector(
   selectSelf,
   (state): ProjectCreationState["siteData"] => state.siteData,
-);
-export const selectIsSiteFriche = createSelector(
-  selectSiteData,
-  (siteData): boolean => siteData?.nature === "FRICHE",
-);
-
-export const selectDefaultSchedule = createSelector(
-  selectIsSiteFriche,
-  (isFriche): ProjectSchedule => {
-    return getDefaultScheduleForProject({ now: () => new Date() })({ hasReinstatement: isFriche });
-  },
 );
 
 export const {

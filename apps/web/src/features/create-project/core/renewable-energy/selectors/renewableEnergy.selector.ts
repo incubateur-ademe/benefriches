@@ -1,10 +1,14 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { ProjectSchedule, ProjectScheduleBuilder, SoilsDistribution } from "shared";
+import {
+  getDefaultScheduleForProject,
+  ProjectSchedule,
+  ProjectScheduleBuilder,
+  SoilsDistribution,
+} from "shared";
 
 import { RootState } from "@/app/store/store";
 
 import { ProjectCreationState } from "../../createProject.reducer";
-import { selectDefaultSchedule } from "../../createProject.selectors";
 import { ReadStateHelper } from "../helpers/readState";
 import type { RenewableEnergyStepsState } from "../step-handlers/stepHandler.type";
 
@@ -41,8 +45,8 @@ export const selectProjectSoilsDistribution = createSelector(
 );
 
 export const selectPhotovoltaicPowerStationScheduleInitialValues = createSelector(
-  [selectSteps, selectDefaultSchedule],
-  (steps, defaultSchedule): ProjectSchedule => {
+  [selectSteps],
+  (steps): ProjectSchedule => {
     const schedule = ReadStateHelper.getStepAnswers(steps, "RENEWABLE_ENERGY_SCHEDULE_PROJECTION");
     if (schedule?.photovoltaicInstallationSchedule && schedule?.firstYearOfOperation) {
       return new ProjectScheduleBuilder()
@@ -52,6 +56,13 @@ export const selectPhotovoltaicPowerStationScheduleInitialValues = createSelecto
         .build();
     }
 
-    return defaultSchedule;
+    const involvesReinstatement = ReadStateHelper.getStepAnswers(
+      steps,
+      "RENEWABLE_ENERGY_INVOLVES_REINSTATEMENT",
+    )?.involvesReinstatement;
+
+    return getDefaultScheduleForProject({ now: () => new Date() })({
+      hasReinstatement: involvesReinstatement === true,
+    });
   },
 );

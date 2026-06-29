@@ -1,4 +1,3 @@
-import { addYears } from "date-fns";
 import { getDefaultScheduleForProject } from "shared";
 
 import { ReadStateHelper } from "@/shared/core/reducers/project-form/urban-project/helpers/readState";
@@ -14,24 +13,9 @@ export const UrbanProjectScheduleProjectionHandler = {
       "URBAN_PROJECT_INVOLVES_REINSTATEMENT",
     )?.involvesReinstatement;
 
-    const isFriche = context.siteData?.nature === "FRICHE";
-    const hasReinstatement = involvesReinstatement !== undefined ? involvesReinstatement : isFriche;
-
     const { installation, reinstatement, firstYearOfOperations } = getDefaultScheduleForProject({
       now: () => new Date(),
-    })({
-      hasReinstatement,
-    });
-
-    // FRICHE with no reinstatement: installation starts 1 year from now instead of today,
-    // since some preparation time is needed even without formal reinstatement
-    const installationSchedule =
-      isFriche && involvesReinstatement === false
-        ? (() => {
-            const startDate = addYears(new Date(), 1);
-            return { startDate, endDate: addYears(startDate, 1) };
-          })()
-        : installation;
+    })({ hasReinstatement: involvesReinstatement === true });
 
     return {
       reinstatementSchedule: reinstatement
@@ -41,13 +25,10 @@ export const UrbanProjectScheduleProjectionHandler = {
           }
         : undefined,
       installationSchedule: {
-        startDate: installationSchedule.startDate.toDateString(),
-        endDate: installationSchedule.endDate.toDateString(),
+        startDate: installation.startDate.toDateString(),
+        endDate: installation.endDate.toDateString(),
       },
-      firstYearOfOperation:
-        isFriche && involvesReinstatement === false
-          ? installationSchedule.endDate.getFullYear()
-          : firstYearOfOperations,
+      firstYearOfOperation: firstYearOfOperations,
     };
   },
 
