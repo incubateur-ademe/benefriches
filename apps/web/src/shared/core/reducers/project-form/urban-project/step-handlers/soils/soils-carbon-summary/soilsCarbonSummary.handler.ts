@@ -22,6 +22,10 @@ export const SoilsCarbonSummaryHandler = {
       return "URBAN_PROJECT_INVOLVES_REINSTATEMENT";
     }
 
+    if (context.siteData?.hasContaminatedSoils) {
+      return "URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION";
+    }
+
     return "URBAN_PROJECT_SITE_RESALE_INTRODUCTION";
   },
 } satisfies InfoStepHandler;

@@ -400,5 +400,87 @@ describe("urbanProject.reducer - Navigation Consistency Tests", () => {
         "URBAN_PROJECT_INVOLVES_REINSTATEMENT",
       );
     });
+
+    it("should go back from decontamination introduction to soils carbon summary on a non-friche contaminated site without buildings", () => {
+      const store = new StoreBuilder()
+        .withSiteData({
+          nature: "AGRICULTURAL_OPERATION",
+          hasContaminatedSoils: true,
+          contaminatedSoilSurface: 2000,
+          soilsDistribution: { MINERAL_SOIL: 5000, PRAIRIE_GRASS: 5000 },
+        })
+        .withSteps({
+          URBAN_PROJECT_USES_SELECTION: {
+            completed: true,
+            payload: { usesSelection: ["OTHER_PUBLIC_SPACES"] },
+          },
+        })
+        .withCurrentStep("URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION")
+        .build();
+
+      store.dispatch(previousStepRequested());
+
+      expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
+        "URBAN_PROJECT_SOILS_CARBON_SUMMARY",
+      );
+    });
+
+    it("should go back from decontamination introduction to the last buildings step on a non-friche contaminated site with buildings", () => {
+      const store = new StoreBuilder()
+        .withSiteData(testScenarios.nonFriche)
+        .withSteps({
+          URBAN_PROJECT_USES_SELECTION: {
+            completed: true,
+            payload: { usesSelection: ["RESIDENTIAL"] },
+          },
+          URBAN_PROJECT_SPACES_SURFACE_AREA: {
+            completed: true,
+            payload: { spacesSurfaceAreaDistribution: { BUILDINGS: 2000 } },
+          },
+          URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE: {
+            completed: true,
+            payload: { buildingsFootprintToReuse: 2000 },
+          },
+        })
+        .withCurrentStep("URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION")
+        .build();
+
+      store.dispatch(previousStepRequested());
+
+      expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
+        "URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE",
+      );
+    });
+
+    it("should go back from site resale introduction to decontamination surface area on a contaminated friche even when involvesReinstatement is false", () => {
+      const store = new StoreBuilder()
+        .withSiteData(testScenarios.withBuildingsAndContamination)
+        .withSteps({
+          URBAN_PROJECT_USES_SELECTION: {
+            completed: true,
+            payload: { usesSelection: ["RESIDENTIAL"] },
+          },
+          URBAN_PROJECT_INVOLVES_REINSTATEMENT: {
+            completed: true,
+            payload: { involvesReinstatement: false },
+          },
+          URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION: {
+            completed: true,
+            payload: { decontaminationPlan: "partial" },
+          },
+          URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA: {
+            completed: true,
+            payload: { decontaminatedSurfaceArea: 1500 },
+          },
+        })
+        .withCurrentStep("URBAN_PROJECT_SITE_RESALE_INTRODUCTION")
+        .build();
+
+      store.dispatch(previousStepRequested());
+
+      expect(store.getState().projectCreation.urbanProject.currentStep).toBe(
+        "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA",
+      );
+    });
   });
 });

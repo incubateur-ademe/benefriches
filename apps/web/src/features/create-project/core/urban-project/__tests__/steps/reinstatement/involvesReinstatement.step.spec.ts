@@ -6,8 +6,10 @@ import { creationProjectFormUrbanActions } from "../../../urbanProject.actions";
 import { getCurrentStep, StoreBuilder } from "../../_testStoreHelpers";
 
 describe("Urban project creation - Steps - Involves reinstatement", () => {
-  it("should navigate to SOILS_DECONTAMINATION_INTRODUCTION when involvesReinstatement is true", () => {
-    const store = new StoreBuilder().build();
+  it("should navigate to SOILS_DECONTAMINATION_INTRODUCTION when involvesReinstatement is true on a contaminated friche", () => {
+    const store = new StoreBuilder()
+      .withSiteData({ hasContaminatedSoils: true, contaminatedSoilSurface: 2000 })
+      .build();
 
     store.dispatch(
       creationProjectFormUrbanActions.stepCompletionRequested({
@@ -19,8 +21,10 @@ describe("Urban project creation - Steps - Involves reinstatement", () => {
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION");
   });
 
-  it("should navigate to SOILS_DECONTAMINATION_INTRODUCTION when involvesReinstatement is false", () => {
-    const store = new StoreBuilder().build();
+  it("should navigate to SOILS_DECONTAMINATION_INTRODUCTION when involvesReinstatement is false on a contaminated friche", () => {
+    const store = new StoreBuilder()
+      .withSiteData({ hasContaminatedSoils: true, contaminatedSoilSurface: 2000 })
+      .build();
 
     store.dispatch(
       creationProjectFormUrbanActions.stepCompletionRequested({
@@ -30,6 +34,36 @@ describe("Urban project creation - Steps - Involves reinstatement", () => {
     );
 
     expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION");
+  });
+
+  it("should navigate to SITE_RESALE_INTRODUCTION when involvesReinstatement is true on a non-contaminated friche", () => {
+    const store = new StoreBuilder()
+      .withSiteData({ hasContaminatedSoils: false, contaminatedSoilSurface: 0 })
+      .build();
+
+    store.dispatch(
+      creationProjectFormUrbanActions.stepCompletionRequested({
+        stepId: "URBAN_PROJECT_INVOLVES_REINSTATEMENT",
+        answers: { involvesReinstatement: true },
+      }),
+    );
+
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
+  });
+
+  it("should navigate to SITE_RESALE_INTRODUCTION when involvesReinstatement is false on a non-contaminated friche", () => {
+    const store = new StoreBuilder()
+      .withSiteData({ hasContaminatedSoils: false, contaminatedSoilSurface: 0 })
+      .build();
+
+    store.dispatch(
+      creationProjectFormUrbanActions.stepCompletionRequested({
+        stepId: "URBAN_PROJECT_INVOLVES_REINSTATEMENT",
+        answers: { involvesReinstatement: false },
+      }),
+    );
+
+    expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
   });
 
   it("should delete only reinstatement-specific steps when switching from true to false", () => {

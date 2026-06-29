@@ -162,7 +162,7 @@ describe("Urban project buildings sequencing - partial reuse with demolition and
 
   describe("backward navigation", () => {
     it("goes back from site resale to introduction", () => {
-      // SITE_RESALE_INTRO -> NEW_USES -> NEW_CONSTRUCTION_INFO -> EXISTING_USES -> DEMOLITION_INFO -> REUSE_FOOTPRINT -> REUSE_INTRO -> FLOOR_AREA -> INTRO
+      // SITE_RESALE_INTRO -> INVOLVES_REINSTATEMENT -> NEW_USES -> NEW_CONSTRUCTION_INFO -> EXISTING_USES -> DEMOLITION_INFO -> REUSE_FOOTPRINT -> REUSE_INTRO -> FLOOR_AREA -> INTRO
       const store = new StoreBuilder()
         .withCurrentStep("URBAN_PROJECT_SITE_RESALE_INTRODUCTION")
         .withSiteData({
@@ -196,6 +196,9 @@ describe("Urban project buildings sequencing - partial reuse with demolition and
           },
         })
         .build();
+
+      store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_INVOLVES_REINSTATEMENT");
 
       store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
       expect(getCurrentStep(store)).toBe(

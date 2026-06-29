@@ -75,9 +75,13 @@ export function shouldRouteToNewBuildingsUsesFloorSurfaceArea(stepsState: StepsS
 }
 
 export function getNextStepAfterBuildings(context: StepContext): UrbanProjectCreationStep {
-  return context.siteData?.nature === "FRICHE"
-    ? "URBAN_PROJECT_INVOLVES_REINSTATEMENT"
-    : "URBAN_PROJECT_SITE_RESALE_INTRODUCTION";
+  if (context.siteData?.nature === "FRICHE") {
+    return "URBAN_PROJECT_INVOLVES_REINSTATEMENT";
+  }
+  if (context.siteData?.hasContaminatedSoils) {
+    return "URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION";
+  }
+  return "URBAN_PROJECT_SITE_RESALE_INTRODUCTION";
 }
 
 export function shouldEnterBuildingsChapter(context: StepContext): boolean {

@@ -10,15 +10,6 @@ export const SiteResaleIntroductionHandler = {
   stepId: "URBAN_PROJECT_SITE_RESALE_INTRODUCTION",
 
   getPreviousStepId(context) {
-    const involvesReinstatement = ReadStateHelper.getStepAnswers(
-      context.stepsState,
-      "URBAN_PROJECT_INVOLVES_REINSTATEMENT",
-    )?.involvesReinstatement;
-
-    if (involvesReinstatement === false) {
-      return "URBAN_PROJECT_INVOLVES_REINSTATEMENT";
-    }
-
     const decontaminationPlan = ReadStateHelper.getStepAnswers(
       context.stepsState,
       "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
@@ -32,12 +23,12 @@ export const SiteResaleIntroductionHandler = {
       return "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION";
     }
 
-    if (shouldEnterBuildingsChapter(context)) {
-      return getLastBuildingsChapterStep(context);
-    }
-
     if (context.siteData?.nature === "FRICHE") {
       return "URBAN_PROJECT_INVOLVES_REINSTATEMENT";
+    }
+
+    if (shouldEnterBuildingsChapter(context)) {
+      return getLastBuildingsChapterStep(context);
     }
 
     return "URBAN_PROJECT_SOILS_CARBON_SUMMARY";

@@ -141,7 +141,7 @@ describe("Urban project buildings sequencing - reuse only with demolition", () =
     });
 
     it("goes back from site resale to introduction (non-contaminated)", () => {
-      // SITE_RESALE_INTRO -> DEMOLITION_INFO -> REUSE_FOOTPRINT -> REUSE_INTRO -> FLOOR_AREA -> INTRO
+      // SITE_RESALE_INTRO -> INVOLVES_REINSTATEMENT -> DEMOLITION_INFO -> REUSE_FOOTPRINT -> REUSE_INTRO -> FLOOR_AREA -> INTRO
       const store = new StoreBuilder()
         .withCurrentStep("URBAN_PROJECT_SITE_RESALE_INTRODUCTION")
         .withSiteData({
@@ -165,6 +165,9 @@ describe("Urban project buildings sequencing - reuse only with demolition", () =
           },
         })
         .build();
+
+      store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_INVOLVES_REINSTATEMENT");
 
       store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_DEMOLITION_INFO");

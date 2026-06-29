@@ -332,10 +332,7 @@ test.describe("urban project creation - custom mode", () => {
       // --- remise en état ---
       await urbanProjectCreationPage.selectInvolvesReinstatement(false);
 
-      // --- dépollution des sols ---
-      await urbanProjectCreationPage.expectStepTitle("Et si on dépolluait les sols ?");
-      await urbanProjectCreationPage.goToNextStep(); // decontamination introduction
-      await urbanProjectCreationPage.submitOrSkipStep(); // decontamination selection (skip)
+      // --- dépollution des sols : ignorée car le site n'est pas pollué ---
 
       // --- cession foncière ---
       await urbanProjectCreationPage.expectStepperCurrentStep("Cession foncière");
@@ -390,11 +387,14 @@ test.describe("urban project creation - custom mode", () => {
       urbanProjectCreationPage,
     }) => {
       const testSite = await createCustomSiteViaApi(authenticatedApiClient)({
-        ...createFricheSiteData("Friche ferroviaire avec bâtiments à démolir", {
-          BUILDINGS: 2000,
-          IMPERMEABLE_SOILS: 1000,
-          MINERAL_SOIL: 2000,
-        }),
+        ...({
+          ...createFricheSiteData("Friche ferroviaire avec bâtiments à démolir", {
+            BUILDINGS: 2000,
+            IMPERMEABLE_SOILS: 1000,
+            MINERAL_SOIL: 2000,
+          }),
+          contaminatedSoilSurface: 2000,
+        } satisfies Omit<FricheCustomSiteDto, "id" | "createdBy">),
         createdBy: testUser.id,
       });
 
@@ -582,10 +582,7 @@ test.describe("urban project creation - custom mode", () => {
       // --- remise en état ---
       await urbanProjectCreationPage.selectInvolvesReinstatement(false);
 
-      // --- dépollution des sols ---
-      await urbanProjectCreationPage.expectStepTitle("Et si on dépolluait les sols ?");
-      await urbanProjectCreationPage.goToNextStep(); // decontamination introduction
-      await urbanProjectCreationPage.submitOrSkipStep(); // decontamination selection (skip)
+      // --- dépollution des sols : ignorée car le site n'est pas pollué ---
 
       // --- cession foncière ---
       await urbanProjectCreationPage.expectStepperCurrentStep("Cession foncière");

@@ -72,6 +72,24 @@ describe("SoilsCarbonSummaryHandler", () => {
       expect(nextStep).toBe("URBAN_PROJECT_INVOLVES_REINSTATEMENT");
     });
 
+    it("skips buildings chapter and routes to SOILS_DECONTAMINATION_INTRODUCTION when a non-friche site has contaminated soils and no buildings", () => {
+      const nextStep = SoilsCarbonSummaryHandler.getNextStepId({
+        stepsState: {
+          URBAN_PROJECT_USES_SELECTION: {
+            completed: true,
+            payload: { usesSelection: ["OTHER_PUBLIC_SPACES"] },
+          },
+        },
+        siteData: {
+          soilsDistribution: { BUILDINGS: 0 },
+          nature: "AGRICULTURAL_OPERATION",
+          hasContaminatedSoils: true,
+        } as never,
+      });
+
+      expect(nextStep).toBe("URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION");
+    });
+
     it("skips buildings chapter and routes to SITE_RESALE_INTRODUCTION when site has no buildings and willHaveBuildings is false on non-contaminated site", () => {
       const nextStep = SoilsCarbonSummaryHandler.getNextStepId({
         stepsState: {

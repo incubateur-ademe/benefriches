@@ -117,7 +117,7 @@ describe("Urban project buildings sequencing - new construction only with demoli
 
   describe("backward navigation", () => {
     it("goes back from site resale to introduction (non-contaminated)", () => {
-      // SITE_RESALE_INTRO -> NEW_CONSTRUCTION_INFO -> DEMOLITION_INFO -> REUSE_FOOTPRINT -> REUSE_INTRO -> FLOOR_AREA -> INTRO
+      // SITE_RESALE_INTRO -> INVOLVES_REINSTATEMENT -> NEW_CONSTRUCTION_INFO -> DEMOLITION_INFO -> REUSE_FOOTPRINT -> REUSE_INTRO -> FLOOR_AREA -> INTRO
       const store = new StoreBuilder()
         .withCurrentStep("URBAN_PROJECT_SITE_RESALE_INTRODUCTION")
         .withSiteData({
@@ -141,6 +141,9 @@ describe("Urban project buildings sequencing - new construction only with demoli
           },
         })
         .build();
+
+      store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_INVOLVES_REINSTATEMENT");
 
       store.dispatch(creationProjectFormUrbanActions.previousStepRequested());
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_BUILDINGS_NEW_CONSTRUCTION_INFO");

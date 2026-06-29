@@ -534,11 +534,13 @@ describe("urbanProject.reducer - stepCompletionRequested without validation", ()
       expect(getCurrentStep(store)).toBe("URBAN_PROJECT_INVOLVES_REINSTATEMENT");
     });
 
-    it("routes from the last buildings step to site resale when the site is not a FRICHE", () => {
+    it("routes from the last buildings step to site resale when the site is not a FRICHE and has no contaminated soils", () => {
       const store = new StoreBuilder()
         .withSiteData({
           nature: "AGRICULTURAL_OPERATION",
-        } as never)
+          hasContaminatedSoils: false,
+          contaminatedSoilSurface: 0,
+        })
         .withCurrentStep("URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA")
         .withSteps({
           URBAN_PROJECT_USES_SELECTION: {
@@ -568,6 +570,76 @@ describe("urbanProject.reducer - stepCompletionRequested without validation", ()
         stepCompletionRequested({
           stepId: "URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA",
           answers: { newBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 1400, OFFICES: 100 } },
+        }),
+      );
+
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION");
+    });
+
+    it("routes from the last buildings step to decontamination when the site is not a FRICHE but has contaminated soils", () => {
+      const store = new StoreBuilder()
+        .withSiteData({
+          nature: "AGRICULTURAL_OPERATION",
+          hasContaminatedSoils: true,
+          contaminatedSoilSurface: 2000,
+        })
+        .withCurrentStep("URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA")
+        .withSteps({
+          URBAN_PROJECT_USES_SELECTION: {
+            completed: true,
+            payload: { usesSelection: ["RESIDENTIAL", "OFFICES"] },
+          },
+          URBAN_PROJECT_SPACES_SURFACE_AREA: {
+            completed: true,
+            payload: {
+              spacesSurfaceAreaDistribution: { BUILDINGS: 3000, IMPERMEABLE_SOILS: 7000 },
+            },
+          },
+          URBAN_PROJECT_BUILDINGS_FOOTPRINT_TO_REUSE: {
+            completed: true,
+            payload: { buildingsFootprintToReuse: 1500 },
+          },
+          URBAN_PROJECT_BUILDINGS_EXISTING_BUILDINGS_USES_FLOOR_SURFACE_AREA: {
+            completed: true,
+            payload: {
+              existingBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 1000, OFFICES: 500 },
+            },
+          },
+        })
+        .build();
+
+      store.dispatch(
+        stepCompletionRequested({
+          stepId: "URBAN_PROJECT_BUILDINGS_NEW_BUILDINGS_USES_FLOOR_SURFACE_AREA",
+          answers: { newBuildingsUsesFloorSurfaceArea: { RESIDENTIAL: 1400, OFFICES: 100 } },
+        }),
+      );
+
+      expect(getCurrentStep(store)).toBe("URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION");
+    });
+  });
+
+  describe("clean friche skips decontamination", () => {
+    it("routes from involves reinstatement straight to site resale on a non-contaminated friche", () => {
+      const store = new StoreBuilder()
+        .withSiteData({
+          nature: "FRICHE",
+          hasContaminatedSoils: false,
+          contaminatedSoilSurface: 0,
+        })
+        .withCurrentStep("URBAN_PROJECT_INVOLVES_REINSTATEMENT")
+        .withSteps({
+          URBAN_PROJECT_USES_SELECTION: {
+            completed: true,
+            payload: { usesSelection: ["OTHER_PUBLIC_SPACES"] },
+          },
+        })
+        .build();
+
+      store.dispatch(
+        stepCompletionRequested({
+          stepId: "URBAN_PROJECT_INVOLVES_REINSTATEMENT",
+          answers: { involvesReinstatement: true },
         }),
       );
 
