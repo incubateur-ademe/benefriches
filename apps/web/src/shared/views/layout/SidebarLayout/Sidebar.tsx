@@ -1,60 +1,64 @@
 import Button from "@codegouvfr/react-dsfr/Button";
-import { ReactNode, useContext } from "react";
+import { ReactNode, useState } from "react";
 
 import { routes } from "@/app/router";
 import classNames from "@/shared/views/clsx";
 
-import { SidebarLayoutContext } from "./SidebarLayoutContext";
+import { SidebarCurrentStepContext } from "./SidebarCurrentStepContext";
 
 type SidebarProps = {
   children: ReactNode;
-  mode: "compact" | "normal";
-  onToggleOpen: () => void;
 };
 
-function Sidebar({ children, mode, onToggleOpen }: SidebarProps) {
-  const { isOpen } = useContext(SidebarLayoutContext);
+function Sidebar({ children }: SidebarProps) {
+  const [isExpandedOnSmallScreen, setExpandedOnSmallScreen] = useState(false);
+  const [currentStepLabel, setCurrentStepLabel] = useState("");
 
   return (
     <aside
       id="barre-laterale"
       className={classNames(
         "bg-grey-light dark:bg-dsfr-contrast-grey",
-        "border-r",
+        "border-b lg:border-b-0 lg:border-r",
         "z-10",
         "flex flex-col",
-        mode === "normal" && "transition-[width]",
-        isOpen ? "w-80 lg:relative absolute" : "w-20",
-        isOpen && mode === "compact" && "drop-shadow-[0_3px_9px_var(--shadow-color)]",
-        "h-full",
+        "w-full lg:w-80",
+        "lg:h-full",
       )}
     >
-      <div
-        className={classNames(
-          "flex",
-          "py-6",
-          "items-center",
-          isOpen ? "px-6 justify-between" : "justify-center",
-        )}
-      >
-        {isOpen && (
-          <a
-            {...routes.myEvaluations().link}
-            className="bg-none"
-            aria-description="Retour à mes évaluations"
-          >
-            <img src="/img/logos/logo-benefriches-simple.svg" alt="Bénéfriches" />
-          </a>
+      <div className={classNames("flex", "py-6", "items-center", "px-6", "justify-between gap-4")}>
+        <a
+          {...routes.myEvaluations().link}
+          className="bg-none shrink-0"
+          aria-description="Retour à mes évaluations"
+        >
+          <img src="/img/logos/logo-benefriches-simple.svg" alt="Bénéfriches" />
+        </a>
+        {!isExpandedOnSmallScreen && currentStepLabel && (
+          <span className="truncate text-sm font-bold text-blue-ultradark dark:text-blue-ultralight lg:hidden">
+            {currentStepLabel}
+          </span>
         )}
         <Button
-          className="text-grey-dark"
-          iconId={isOpen ? "fr-icon-arrow-left-s-line-double" : "fr-icon-arrow-right-s-line-double"}
-          onClick={onToggleOpen}
+          className="text-grey-dark lg:hidden shrink-0"
+          iconId={isExpandedOnSmallScreen ? "fr-icon-arrow-up-s-line" : "fr-icon-arrow-down-s-line"}
+          onClick={() => {
+            setExpandedOnSmallScreen((current) => !current);
+          }}
           priority="tertiary no outline"
-          title={isOpen ? "Réduire le menu" : "Ouvrir le menu"}
+          title={isExpandedOnSmallScreen ? "Réduire le menu" : "Ouvrir le menu"}
+          aria-expanded={isExpandedOnSmallScreen}
+          aria-controls="barre-laterale-contenu"
         />
       </div>
-      {children}
+      <div
+        id="barre-laterale-contenu"
+        className={classNames(isExpandedOnSmallScreen ? "block" : "hidden", "lg:block")}
+      >
+        <SidebarCurrentStepContext.Provider value={{ setCurrentStepLabel }}>
+          {children}
+        </SidebarCurrentStepContext.Provider>
+      </div>
     </aside>
   );
 }

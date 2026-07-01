@@ -1,9 +1,9 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 import { useAppSelector } from "@/app/hooks/store.hooks";
 import { UrbanProjectCreationStep } from "@/shared/core/reducers/project-form/urban-project/urbanProjectSteps";
 import classNames from "@/shared/views/clsx";
-import { SidebarLayoutContext } from "@/shared/views/layout/SidebarLayout/SidebarLayoutContext";
+import { SidebarCurrentStepContext } from "@/shared/views/layout/SidebarLayout/SidebarCurrentStepContext";
 import FormStepperWrapper from "@/shared/views/layout/WizardFormLayout/FormStepperWrapper";
 import { useBuildStepperNavigationItems } from "@/shared/views/project-form/stepper/useBuildStepperNavigationItems";
 import { useProjectForm } from "@/shared/views/project-form/useProjectForm";
@@ -14,17 +14,24 @@ type Props = {
   step: UrbanProjectCreationStep;
 };
 
+const SUMMARY_LABEL = "Récapitulatif du projet";
+
 type SummaryButtonProps = {
   isSelected: boolean;
+  isCurrent: boolean;
   onClick: () => void;
 };
 
-const SummaryButton = ({ onClick, isSelected }: SummaryButtonProps) => {
-  const { isOpen: isExtended } = useContext(SidebarLayoutContext);
+const SummaryButton = ({ onClick, isSelected, isCurrent }: SummaryButtonProps) => {
+  const { setCurrentStepLabel } = useContext(SidebarCurrentStepContext);
+  useEffect(() => {
+    if (isCurrent) {
+      setCurrentStepLabel(SUMMARY_LABEL);
+    }
+  }, [isCurrent, setCurrentStepLabel]);
 
   return (
     <button
-      title={!isExtended ? "Récapitulatif du projet" : undefined}
       onClick={onClick}
       className={classNames(
         "flex",
@@ -41,7 +48,7 @@ const SummaryButton = ({ onClick, isSelected }: SummaryButtonProps) => {
         "text-left font-bold w-full py-3",
       )}
     >
-      {isExtended && "Récapitulatif du projet"}
+      {SUMMARY_LABEL}
     </button>
   );
 };
@@ -69,6 +76,7 @@ function UrbanProjectUpdateStepper({ step: currentStep }: Props) {
           isSelected={
             summary.variant.activity === "current" || summary.variant.activity === "groupActive"
           }
+          isCurrent={summary.variant.activity === "current"}
         />
       )}
 

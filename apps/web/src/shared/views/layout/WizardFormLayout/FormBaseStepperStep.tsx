@@ -1,7 +1,7 @@
-import { HTMLAttributes, useContext, useMemo } from "react";
+import { HTMLAttributes, useContext, useEffect, useMemo } from "react";
 
 import classNames, { ClassValue } from "@/shared/views/clsx";
-import { SidebarLayoutContext } from "@/shared/views/layout/SidebarLayout/SidebarLayoutContext";
+import { SidebarCurrentStepContext } from "@/shared/views/layout/SidebarLayout/SidebarCurrentStepContext";
 
 export type StepActivity = "current" | "groupActive" | "inactive";
 export type StepValidation = "completed" | "empty";
@@ -62,8 +62,6 @@ const BaseStepperStep = ({
   as: HtmlTag = "li",
   ...props
 }: BaseStepperStepProps) => {
-  const { isOpen: isExtended } = useContext(SidebarLayoutContext);
-
   const computedClasses = useMemo(() => {
     const variantKey = getVariantKey(variant);
     return classNames(
@@ -75,18 +73,23 @@ const BaseStepperStep = ({
   }, [variant, variantStyles, className, HtmlTag]);
 
   const isCurrent = variant.activity === "current";
-  const showArrow = isCurrent && isExtended;
+
+  const { setCurrentStepLabel } = useContext(SidebarCurrentStepContext);
+  useEffect(() => {
+    if (isCurrent) {
+      setCurrentStepLabel(title);
+    }
+  }, [isCurrent, title, setCurrentStepLabel]);
 
   const commonProps = {
-    title: !isExtended ? title : undefined,
     "aria-current": isCurrent ? ("step" as const) : undefined,
     className: computedClasses,
   };
 
-  const content = isExtended && (
+  const content = (
     <>
       {title}
-      {showArrow && <CurrentStepArrow />}
+      {isCurrent && <CurrentStepArrow />}
     </>
   );
 
