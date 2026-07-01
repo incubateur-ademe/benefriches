@@ -18,13 +18,11 @@ import {
   sumList,
   roundToInteger,
   roundTo2Digits,
+  computeProjectImpactsWithBreakEvenLevel,
+  ReconversionProjectImpactsWithBreakEvenLevelInput,
 } from "shared";
 
 import { GetCarbonStorageFromSoilDistributionService } from "src/carbon-storage/core/services/getCarbonStorageFromSoilDistribution";
-import {
-  computeProjectImpactsWithBreakEvenLevel,
-  ReconversionProjectImpactsWithBreakEvenLevelInput,
-} from "src/reconversion-projects/core/model/project-impacts/break-even-level/computeImpactsWithBreakEvenLevel";
 import { DevelopmentPlan } from "src/reconversion-projects/core/model/reconversionProject";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { fail, success, TResult } from "src/shared-kernel/result";
@@ -253,8 +251,6 @@ export class ComputeEvaluatedProjectStatsUseCase implements UseCase<
             surfaceAreaSquareMeters: relatedSite.cityStats?.surfaceAreaSquareMeters ?? 0,
             propertyValueMedianPricePerSquareMeters:
               relatedSite.cityStats?.propertyValueMedianPricePerSquareMeters ?? 0,
-            name: "",
-            accuracy: "city",
           },
         });
 

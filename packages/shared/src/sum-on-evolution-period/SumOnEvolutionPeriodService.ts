@@ -1,0 +1,171 @@
+import { roundTo2Digits, roundToInteger, sumList } from "../services";
+
+type SumOnEvolutionPeriodServiceProps = {
+  evaluationPeriodInYears: number;
+  operationsFirstYear: number;
+};
+
+type Co2EqMonetaryYearValue = keyof typeof CO2_EQ_MONETARY_VALUE_EURO;
+const CO2_EQ_MONETARY_VALUE_EURO = {
+  2020: 90,
+  2030: 250,
+  2040: 500,
+  2050: 775,
+};
+
+type Co2EqEmittedPerVehiculeKilometerYearValue = keyof typeof CO2_EQ_EMITTED_PER_VEHICULE_KILOMETER;
+const CO2_EQ_EMITTED_PER_VEHICULE_KILOMETER = {
+  2015: 157.2,
+  2030: 120.9,
+  2050: 87.2,
+};
+
+const MIN_EVALUATION_PERIOD_IN_YEARS = 1;
+const MAX_EVALUATION_PERIOD_IN_YEARS = 50;
+
+export class SumOnEvolutionPeriodService {
+  readonly evaluationPeriodInYears: number;
+  readonly operationsFirstYear: number;
+
+  constructor(props: SumOnEvolutionPeriodServiceProps) {
+    this.evaluationPeriodInYears = Math.min(
+      Math.max(props.evaluationPeriodInYears, MIN_EVALUATION_PERIOD_IN_YEARS),
+      MAX_EVALUATION_PERIOD_IN_YEARS,
+    );
+    this.operationsFirstYear = props.operationsFirstYear;
+  }
+
+  static getYearGrossDomesticProductPerCapitaEvolution(year: number) {
+    return Math.pow(1.012, year - 2022);
+  }
+
+  static getYearCO2MonetaryValue(year: number) {
+    if (year >= 2050) {
+      return CO2_EQ_MONETARY_VALUE_EURO[2050];
+    }
+
+    if (year === 2020 || year === 2030 || year === 2040) {
+      return CO2_EQ_MONETARY_VALUE_EURO[year];
+    }
+
+    const [interpolationYear1, interpolationYear2]: [
+      Co2EqMonetaryYearValue,
+      Co2EqMonetaryYearValue,
+    ] = year < 2030 ? [2020, 2030] : year < 2040 ? [2030, 2040] : [2040, 2050];
+
+    const interpolationValue1 = CO2_EQ_MONETARY_VALUE_EURO[interpolationYear1];
+    const interpolationValue2 = CO2_EQ_MONETARY_VALUE_EURO[interpolationYear2];
+
+    const coefficient = (year - interpolationYear1) / (interpolationYear2 - interpolationYear1);
+
+    return (
+      CO2_EQ_MONETARY_VALUE_EURO[interpolationYear1] *
+      Math.pow(interpolationValue2 / interpolationValue1, coefficient)
+    );
+  }
+
+  static getYearCO2EqEmittedPerVehiculeKilometerValue(year: number) {
+    if (year >= 2050) {
+      return CO2_EQ_EMITTED_PER_VEHICULE_KILOMETER[2050];
+    }
+
+    if (year === 2015 || year === 2030 || year === 2050) {
+      return CO2_EQ_EMITTED_PER_VEHICULE_KILOMETER[year];
+    }
+
+    const [interpolationYear1, interpolationYear2]: [
+      Co2EqEmittedPerVehiculeKilometerYearValue,
+      Co2EqEmittedPerVehiculeKilometerYearValue,
+    ] = year < 2030 ? [2015, 2030] : [2030, 2050];
+
+    const interpolationValue1 = CO2_EQ_EMITTED_PER_VEHICULE_KILOMETER[interpolationYear1];
+    const interpolationValue2 = CO2_EQ_EMITTED_PER_VEHICULE_KILOMETER[interpolationYear2];
+
+    const coefficient = (year - interpolationYear1) / (interpolationYear2 - interpolationYear1);
+
+    return (
+      CO2_EQ_EMITTED_PER_VEHICULE_KILOMETER[interpolationYear1] *
+      Math.pow(interpolationValue2 / interpolationValue1, coefficient)
+    );
+  }
+
+  static getDiscountFactor(nbYears: number) {
+    return 1 / Math.pow(1.045, nbYears);
+  }
+
+  getProjectionYears() {
+    return Array(this.evaluationPeriodInYears)
+      .fill(0)
+      .map((_, index) => `${this.operationsFirstYear + index}`);
+  }
+
+  sum(firstYearValue: number, options?: { roundFn: (_: number) => number }) {
+    const roundFn = options?.roundFn ?? roundTo2Digits;
+    return roundFn(firstYearValue * this.evaluationPeriodInYears);
+  }
+
+  sumWithDiscountFactor(
+    firstYearValue: number,
+    options?: { startYearIndex?: number; endYearIndex?: number },
+  ) {
+    return roundToInteger(
+      sumList(this.getWeightedYearlyValues(firstYearValue, ["discount"], options)),
+    );
+  }
+
+  sumWithDiscountFactorAndGDPEvolution(firstYearValue: number) {
+    return roundToInteger(
+      sumList(this.getWeightedYearlyValues(firstYearValue, ["discount", "gdp_evolution"])),
+    );
+  }
+
+  sumWithDiscountFactorAndCO2ValueEvolution(firstYearValue: number) {
+    return roundToInteger(
+      sumList(this.getWeightedYearlyValues(firstYearValue, ["discount", "co2_value"])),
+    );
+  }
+
+  sumWithCO2EqEmittedPerVehiculeKilometerEvolution(firstYearValue: number) {
+    return roundToInteger(
+      sumList(this.getWeightedYearlyValues(firstYearValue, ["co2_emitted_per_vehicule"])),
+    );
+  }
+
+  getWeightedYearlyValues(
+    firstYearValue: number,
+    factors: ("discount" | "gdp_evolution" | "co2_value" | "co2_emitted_per_vehicule")[],
+    options?: { startYearIndex?: number; endYearIndex?: number },
+  ) {
+    return Array(this.evaluationPeriodInYears)
+      .fill(0)
+      .fill(firstYearValue, options?.startYearIndex, options?.endYearIndex)
+      .map((value: number, yearIndex: number) => {
+        const absoluteYear = this.operationsFirstYear + yearIndex;
+        const coefficient = factors.reduce((tmpCoeff, factor) => {
+          switch (factor) {
+            case "discount":
+              return tmpCoeff * SumOnEvolutionPeriodService.getDiscountFactor(yearIndex);
+            case "co2_value":
+              return tmpCoeff * SumOnEvolutionPeriodService.getYearCO2MonetaryValue(absoluteYear);
+            case "gdp_evolution":
+              return (
+                tmpCoeff *
+                SumOnEvolutionPeriodService.getYearGrossDomesticProductPerCapitaEvolution(
+                  absoluteYear,
+                )
+              );
+
+            case "co2_emitted_per_vehicule":
+              return (
+                (tmpCoeff *
+                  SumOnEvolutionPeriodService.getYearCO2EqEmittedPerVehiculeKilometerValue(
+                    absoluteYear,
+                  )) /
+                1000000
+              );
+          }
+        }, 1);
+        return value * coefficient;
+      });
+  }
+}

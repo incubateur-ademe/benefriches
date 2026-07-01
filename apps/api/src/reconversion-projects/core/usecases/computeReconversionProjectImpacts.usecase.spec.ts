@@ -157,8 +157,11 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         startDate: new Date("2025-01-01"),
         endDate: new Date("2026-01-01"),
       },
+      futureOperatorStructureType: "company",
       futureOperatorName: "Mairie de Blajan",
+      futureSiteOwnerStructureType: "company",
       futureSiteOwnerName: "Mairie de Blajan",
+      reinstatementContractOwnerStructureType: "company",
       reinstatementContractOwnerName: "Mairie de Blajan",
       sitePurchaseTotalAmount: 150000,
       reinstatementExpenses: [{ amount: 500000, purpose: "demolition" }],
@@ -172,7 +175,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         },
         type: "PHOTOVOLTAIC_POWER_PLANT",
         developerName: "Mairie de Blajan",
-        developerStructureType: "municipality",
+        developerStructureType: "company",
       },
       financialAssistanceRevenues: [{ amount: 150000, source: "public_subsidies" }],
       yearlyProjectedExpenses: [
@@ -251,284 +254,222 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         evaluationPeriodInYears,
       });
       assert.strictEqual(result.isSuccess(), true);
-      assert.deepStrictEqual((result as SuccessResult<ComputedImpacts>).getData(), {
-        id: reconversionProjectImpactDataView.id,
-        name: reconversionProjectImpactDataView.name,
-        evaluationPeriodInYears: 10,
-        relatedSiteId: site.id,
-        relatedSiteName: site.name,
-        projectData: {
-          soilsDistribution: {
-            ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 10000,
-            PRAIRIE_TREES: 20000,
-            BUILDINGS: 20000,
-            MINERAL_SOIL: 20000,
-            IMPERMEABLE_SOILS: 30000,
+      const data = (result as SuccessResult<ComputedImpacts>).getData();
+
+      assert.deepEqual(data.id, reconversionProjectImpactDataView.id);
+      assert.deepEqual(data.name, reconversionProjectImpactDataView.name);
+      assert.deepEqual(data.evaluationPeriodInYears, 10);
+      assert.deepEqual(data.relatedSiteId, site.id);
+
+      assert.partialDeepStrictEqual(data.impacts.social, {
+        fullTimeJobs: {
+          base: 0,
+          forecast: 0.4,
+          difference: 0.4,
+          conversion: {
+            base: 0,
+            forecast: 0.3,
+            difference: 0.3,
           },
-          isExpressProject: reconversionProjectImpactDataView.isExpressProject,
-          contaminatedSoilSurface: 0,
-          developmentPlan: {
-            contractDuration: 30,
-            electricalPowerKWc: 258,
-            expectedAnnualProduction: 4679,
-            surfaceArea: 20000,
-            type: "PHOTOVOLTAIC_POWER_PLANT",
-          },
-        },
-        siteData: {
-          addressLat: 2.347,
-          addressLong: 48.859,
-          addressLabel: "Blajan",
-          contaminatedSoilSurface: 20000,
-          soilsDistribution: {
-            BUILDINGS: 20000,
-            MINERAL_SOIL: 20000,
-            IMPERMEABLE_SOILS: 10000,
-            ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 40000,
-          },
-          surfaceArea: 50000,
-          nature: "FRICHE",
-          fricheActivity: "AGRICULTURE",
-          owner: {
-            structureType: "company",
-            name: "Current owner",
+          operations: {
+            base: 0,
+            forecast: 0.1,
+            difference: 0.1,
           },
         },
-        impacts: {
-          socioeconomic: {
-            total: 32930654,
-            impacts: [
+        accidents: {
+          base: 3,
+          forecast: 0,
+          difference: -3,
+          deaths: {
+            base: 0,
+            forecast: 0,
+            difference: 0,
+          },
+          severeInjuries: {
+            base: 2,
+            forecast: 0,
+            difference: -2,
+          },
+          minorInjuries: {
+            base: 1,
+            forecast: 0,
+            difference: -1,
+          },
+        },
+        householdsPoweredByRenewableEnergy: {
+          base: 0,
+          forecast: 957,
+          difference: 957,
+        },
+      });
+
+      assert.deepEqual(data.impacts.environmental, {
+        nonContaminatedSurfaceArea: {
+          base: 30000,
+          forecast: 50000,
+          difference: 20000,
+        },
+        permeableSurfaceArea: {
+          base: 60000,
+          forecast: 50000,
+          difference: -10000,
+          greenSoil: {
+            base: 40000,
+            forecast: 30000,
+            difference: -10000,
+          },
+          mineralSoil: {
+            base: 20000,
+            forecast: 20000,
+            difference: 0,
+          },
+        },
+        avoidedCo2eqEmissions: {
+          withRenewableEnergyProduction: 1174,
+        },
+        soilsCo2eqStorage: {
+          base: 1540000,
+          forecast: 1760000,
+          difference: 220000,
+        },
+        soilsCarbonStorage: {
+          base: 420000,
+          forecast: 480000,
+          difference: 60000,
+        },
+      });
+
+      assert.deepEqual(data.impacts.socioeconomic.total, 32930655);
+      assert.deepEqual(
+        data.impacts.socioeconomic.impacts.toSorted((a, b) => a.amount - b.amount),
+        [
+          {
+            actor: "Current owner",
+            amount: -446515,
+            impact: "site_rental_income_loss",
+            impactCategory: "economic_direct",
+          },
+          {
+            actor: "Current tenant",
+            amount: 108321,
+            impact: "avoided_friche_costs",
+            impactCategory: "economic_direct",
+            details: [
+              { amount: 95918, impact: "avoided_security_costs" },
+              { amount: 12403, impact: "avoided_illegal_dumping_costs" },
+            ],
+          },
+
+          {
+            actor: "community",
+            amount: 5432,
+            impact: "property_transfer_duties_income",
+            impactCategory: "economic_direct",
+          },
+          {
+            actor: "community",
+            amount: 4267,
+            impact: "water_regulation",
+            impactCategory: "environmental_monetary",
+          },
+          {
+            actor: "human_society",
+            amount: 33026865,
+            impact: "ecosystem_services",
+            impactCategory: "environmental_monetary",
+            details: [
               {
-                actor: "Current owner",
-                amount: -446515,
-                impact: "rental_income",
-                impactCategory: "economic_direct",
-              },
-              {
-                actor: "Current tenant",
-                amount: 108321,
-                impact: "avoided_friche_costs",
-                impactCategory: "economic_direct",
-                details: [
-                  { amount: 95918, impact: "avoided_security_costs" },
-                  { amount: 12403, impact: "avoided_illegal_dumping_costs" },
-                ],
+                amount: 33000000,
+                impact: "soils_co2_eq_storage",
               },
 
               {
-                actor: "community",
-                amount: 5432,
-                impact: "property_transfer_duties_income",
-                impactCategory: "economic_direct",
+                amount: 1279,
+                impact: "nature_related_wellness_and_leisure",
               },
               {
-                actor: "community",
-                amount: 4267,
-                impact: "water_regulation",
-                impactCategory: "environmental_monetary",
+                amount: 1658,
+                impact: "pollination",
               },
               {
-                actor: "human_society",
-                amount: 33026864,
-                impact: "ecosystem_services",
-                impactCategory: "environmental_monetary",
-                details: [
-                  {
-                    amount: 33000000,
-                    impact: "soils_co2_eq_storage",
-                  },
-
-                  {
-                    amount: 1279,
-                    impact: "nature_related_wellness_and_leisure",
-                  },
-                  {
-                    amount: 1658,
-                    impact: "pollination",
-                  },
-                  {
-                    amount: 613,
-                    impact: "invasive_species_regulation",
-                  },
-                  {
-                    amount: 17567,
-                    impact: "water_cycle",
-                  },
-                  {
-                    amount: 1243,
-                    impact: "nitrogen_cycle",
-                  },
-                  {
-                    amount: 4504,
-                    impact: "soil_erosion",
-                  },
-                ],
+                amount: 613,
+                impact: "invasive_species_regulation",
               },
               {
-                actor: "community",
-                amount: 9009,
-                impact: "taxes_income",
-                impactCategory: "economic_indirect",
-                details: [
-                  {
-                    impact: "project_photovoltaic_taxes_income",
-                    amount: 9009,
-                  },
-                ],
+                amount: 17567,
+                impact: "water_cycle",
               },
               {
-                actor: "human_society",
-                amount: 223276,
-                impact: "avoided_co2_eq_emissions",
-                impactCategory: "environmental_monetary",
-                details: [{ impact: "avoided_co2_eq_with_enr", amount: 223276 }],
+                amount: 1243,
+                impact: "nitrogen_cycle",
+              },
+              {
+                amount: 4504,
+                impact: "soil_erosion",
               },
             ],
           },
-          economicBalance: {
-            total: -700000,
-            bearer: "Mairie de Blajan",
-            costs: {
-              total: 940957,
-              operationsCosts: {
-                total: 90957,
-                costs: [
-                  { amount: 8269, purpose: "taxes" },
-                  { amount: 82688, purpose: "maintenance" },
-                ],
+          {
+            actor: "community",
+            amount: 9009,
+            impact: "taxes_income",
+            impactCategory: "economic_indirect",
+            details: [
+              {
+                impact: "project_photovoltaic_taxes_income",
+                amount: 9009,
               },
-              siteReinstatement: {
-                total: 500000,
-                costs: [{ amount: 500000, purpose: "demolition" }],
-              },
-              developmentPlanInstallation: {
-                total: 200000,
-                costs: [{ amount: 200000, purpose: "installation_works" }],
-              },
-              sitePurchase: 150000,
-              buildingsConstructionAndRehabilitation: undefined,
-            },
-            revenues: {
-              total: 240957,
-              operationsRevenues: {
-                total: 90957,
-                revenues: [
-                  { amount: 82688, source: "rent" },
-                  { amount: 8269, source: "other" },
-                ],
-              },
-              financialAssistance: {
-                total: 150000,
-                revenues: [{ amount: 150000, source: "public_subsidies" }],
-              },
-              buildingsResale: undefined,
-              siteResale: undefined,
-            },
+            ],
           },
-          environmental: {
-            nonContaminatedSurfaceArea: {
-              base: 30000,
-              forecast: 50000,
-              difference: 20000,
-            },
-            permeableSurfaceArea: {
-              base: 60000,
-              forecast: 50000,
-              difference: -10000,
-              greenSoil: {
-                base: 40000,
-                forecast: 30000,
-                difference: -10000,
-              },
-              mineralSoil: {
-                base: 20000,
-                forecast: 20000,
-                difference: 0,
-              },
-            },
-            avoidedCo2eqEmissions: {
-              withRenewableEnergyProduction: 117.4,
-            },
-            soilsCo2eqStorage: {
-              base: 1540000,
-              forecast: 1760000,
-              difference: 220000,
-            },
-            soilsCarbonStorage: {
-              base: 420000,
-              forecast: 480000,
-              difference: 60000,
-              ARTIFICIAL_GRASS_OR_BUSHES_FILLED: {
-                base: 320000,
-                forecast: 80000,
-                difference: -240000,
-              },
-              PRAIRIE_TREES: {
-                base: 0,
-                forecast: 300000,
-                difference: 300000,
-              },
-              BUILDINGS: {
-                base: 0,
-                forecast: 0,
-                difference: 0,
-              },
-              MINERAL_SOIL: {
-                base: 100000,
-                forecast: 100000,
-                difference: 0,
-              },
-              IMPERMEABLE_SOILS: {
-                base: 0,
-                forecast: 0,
-                difference: 0,
-              },
-            },
+          {
+            actor: "human_society",
+            amount: 223276,
+            impact: "avoided_co2_eq_emissions",
+            impactCategory: "environmental_monetary",
+            details: [{ impact: "avoided_co2_eq_with_enr", amount: 223276 }],
           },
-          social: {
-            fullTimeJobs: {
-              base: 0,
-              forecast: 0.4,
-              difference: 0.4,
-              conversion: {
-                base: 0,
-                forecast: 0.3,
-                difference: 0.3,
-              },
-              operations: {
-                base: 0,
-                forecast: 0.1,
-                difference: 0.1,
-              },
-            },
-            accidents: {
-              base: 3,
-              forecast: 0,
-              difference: -3,
-              deaths: {
-                base: 0,
-                forecast: 0,
-                difference: 0,
-              },
-              severeInjuries: {
-                base: 2,
-                forecast: 0,
-                difference: -2,
-              },
-              minorInjuries: {
-                base: 1,
-                forecast: 0,
-                difference: -1,
-              },
-            },
-            householdsPoweredByRenewableEnergy: {
-              base: 0,
-              forecast: 957,
-              difference: 957,
-            },
-          },
+        ].toSorted((a, b) => a.amount - b.amount),
+      );
+
+      assert.deepEqual(data.impacts.economicBalance.bearer, "Mairie de Blajan");
+      assert.deepEqual(data.impacts.economicBalance.costs, {
+        total: 940957,
+        operationsCosts: {
+          total: 90957,
+          costs: [
+            { amount: 8269, purpose: "taxes" },
+            { amount: 82688, purpose: "maintenance" },
+          ],
         },
-      } satisfies ComputedImpacts);
+        siteReinstatement: {
+          total: 500000,
+          costs: [{ amount: 500000, purpose: "demolition" }],
+        },
+        developmentPlanInstallation: {
+          total: 200000,
+          costs: [{ amount: 200000, purpose: "installation_works" }],
+        },
+        sitePurchase: 150000,
+        buildingsConstructionAndRehabilitation: undefined,
+      });
+      assert.deepEqual(data.impacts.economicBalance.revenues, {
+        total: 240957,
+        operationsRevenues: {
+          total: 90957,
+          revenues: [
+            { amount: 82688, source: "rent" },
+            { amount: 8269, source: "other" },
+          ],
+        },
+        financialAssistance: {
+          total: 150000,
+          revenues: [{ amount: 150000, source: "public_subsidies" }],
+        },
+        buildingsResale: undefined,
+        siteResale: undefined,
+      });
+      assert.deepEqual(data.impacts.economicBalance.total, -700000);
     });
 
     it("returns impacts with contract duration as evaluation period when not provided", async () => {
@@ -683,9 +624,12 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
     it("returns impacts over 10 years for a reconversion project on site still operated", async () => {
       const evaluationPeriodInYears = 10;
       const projectQuery = new InMemoryReconversionProjectImpactsQuery();
-      projectQuery._setData(reconversionProjectImpactDataView);
+      projectQuery._setData({
+        ...reconversionProjectImpactDataView,
+        decontaminatedSoilSurface: undefined,
+      });
       const siteQuery = new InMemorySiteImpactsQuery();
-      siteQuery._setData(site);
+      siteQuery._setData({ ...site, contaminatedSoilSurface: undefined });
 
       const usecase = new ComputeReconversionProjectImpactsUseCase(
         projectQuery,

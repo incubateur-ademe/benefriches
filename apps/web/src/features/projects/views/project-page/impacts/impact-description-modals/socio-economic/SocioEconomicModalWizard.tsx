@@ -1,8 +1,7 @@
 import { lazy, Suspense, useMemo } from "react";
-import { sumListWithKey } from "shared";
+import { formatAsSocioEconomicImpacts, sumListWithKey } from "shared";
 
 import {
-  getSocioEconomicProjectImpacts,
   SocioEconomicDetailsName,
   SocioEconomicImpactName,
   SocioEconomicMainImpactName,
@@ -163,7 +162,7 @@ export function SocioEconomicModalWizard({
   contextData,
   impactsData,
 }: Props) {
-  const socioEconomicImpacts = getSocioEconomicProjectImpacts(impactsData);
+  const socioEconomicImpacts = formatAsSocioEconomicImpacts(impactsData);
   const impactsGroupedByName = useMemo(
     () => groupByImpactName(socioEconomicImpacts.impacts),
     [socioEconomicImpacts],

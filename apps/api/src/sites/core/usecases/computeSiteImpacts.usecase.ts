@@ -1,11 +1,9 @@
-import { SiteImpactsDataView, GetSiteImpactsDto } from "shared";
+import { SiteImpactsDataView, GetSiteImpactsDto, computeStatuQuoSiteImpacts } from "shared";
 
 import { GetCarbonStorageFromSoilDistributionService } from "src/reconversion-projects/core/gateways/SoilsCarbonStorageService";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { TResult, fail, success } from "src/shared-kernel/result";
 import { UseCase } from "src/shared-kernel/usecase";
-
-import { computeStatuQuoSiteImpacts } from "../models/impacts/computeStatuQuoSiteImpacts";
 
 const DEFAULT_EVALUATION_PERIOD_IN_YEARS = 50;
 

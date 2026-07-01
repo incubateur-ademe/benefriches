@@ -1,0 +1,220 @@
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+
+import { SumOnEvolutionPeriodService } from "../../../sum-on-evolution-period/SumOnEvolutionPeriodService";
+import { NatureConservationImpactsService } from "./NatureConservationImpactsService";
+
+describe("NatureConservationImpactsService", () => {
+  it("returns no impact difference when no soils differential", () => {
+    const natureConservationImpactsService = new NatureConservationImpactsService({
+      baseSoilsDistribution: {
+        PRAIRIE_BUSHES: 1000,
+        FOREST_CONIFER: 200,
+      },
+      forecastSoilsDistribution: {
+        PRAIRIE_BUSHES: 1000,
+        FOREST_CONIFER: 200,
+      },
+      baseDecontaminatedSurfaceArea: 0,
+      forecastDecontaminedSurfaceArea: 0,
+      sumOnEvolutionPeriodService: new SumOnEvolutionPeriodService({
+        evaluationPeriodInYears: 10,
+        operationsFirstYear: 2024,
+      }),
+    });
+    const {
+      storedCo2Eq,
+      natureRelatedWelnessAndLeisure,
+      forestRelatedProduct,
+      pollination,
+      invasiveSpeciesRegulation,
+      waterCycle,
+      nitrogenCycle,
+      soilErosion,
+    } = natureConservationImpactsService.getEcosystemServicesMonetaryImpact();
+
+    assert.deepStrictEqual(storedCo2Eq.difference, 0);
+    assert.deepStrictEqual(natureRelatedWelnessAndLeisure.difference, 0);
+    assert.deepStrictEqual(waterCycle.difference, 0);
+    assert.deepStrictEqual(forestRelatedProduct, undefined);
+    assert.deepStrictEqual(pollination, undefined);
+    assert.deepStrictEqual(invasiveSpeciesRegulation, undefined);
+    assert.deepStrictEqual(nitrogenCycle, undefined);
+    assert.deepStrictEqual(soilErosion, undefined);
+  });
+
+  it("returns no carbon storage impact if no base and forecast provided", () => {
+    const natureConservationImpactsService = new NatureConservationImpactsService({
+      baseSoilsDistribution: {
+        PRAIRIE_BUSHES: 1000,
+        FOREST_CONIFER: 200,
+      },
+      forecastSoilsDistribution: {
+        PRAIRIE_BUSHES: 1200,
+      },
+      baseDecontaminatedSurfaceArea: 0,
+      forecastDecontaminedSurfaceArea: 0,
+      sumOnEvolutionPeriodService: new SumOnEvolutionPeriodService({
+        evaluationPeriodInYears: 10,
+        operationsFirstYear: 2025,
+      }),
+    });
+    const { storedCo2Eq } = natureConservationImpactsService.getEcosystemServicesMonetaryImpact();
+
+    assert.deepStrictEqual(storedCo2Eq, { base: 0, forecast: 0, difference: 0 });
+  });
+
+  it("compute storedCo2Eq positive monetary value", () => {
+    const natureConservationImpactsService = new NatureConservationImpactsService({
+      baseSoilsDistribution: {
+        PRAIRIE_BUSHES: 1000,
+        FOREST_CONIFER: 200,
+      },
+      forecastSoilsDistribution: {
+        PRAIRIE_BUSHES: 1200,
+      },
+
+      baseSoilsCo2eqStorage: 366.67,
+      forecastSoilsCo2eqStorage: 550,
+      sumOnEvolutionPeriodService: new SumOnEvolutionPeriodService({
+        evaluationPeriodInYears: 10,
+        operationsFirstYear: 2025,
+      }),
+    });
+    assert.deepStrictEqual(
+      natureConservationImpactsService.getEcosystemServicesMonetaryImpact().storedCo2Eq,
+      { base: 55001, forecast: 82500, difference: 27499 },
+    );
+  });
+
+  it("compute storedCo2Eq negative monetary value", () => {
+    const natureConservationImpactsService = new NatureConservationImpactsService({
+      baseSoilsDistribution: {
+        PRAIRIE_BUSHES: 1000,
+        FOREST_CONIFER: 200,
+      },
+      forecastSoilsDistribution: {
+        PRAIRIE_BUSHES: 1200,
+      },
+
+      baseSoilsCo2eqStorage: 550,
+      forecastSoilsCo2eqStorage: 366.67,
+      sumOnEvolutionPeriodService: new SumOnEvolutionPeriodService({
+        evaluationPeriodInYears: 10,
+        operationsFirstYear: 2025,
+      }),
+    });
+    assert.deepStrictEqual(
+      natureConservationImpactsService.getEcosystemServicesMonetaryImpact().storedCo2Eq,
+      { forecast: 55001, base: 82500, difference: -27499 },
+    );
+  });
+
+  it("returns positive difference for water regulation and ecosystem services monetary values", () => {
+    const natureConservationImpactsService = new NatureConservationImpactsService({
+      baseSoilsDistribution: {
+        PRAIRIE_BUSHES: 1000,
+        FOREST_CONIFER: 200,
+        WET_LAND: 250,
+        CULTIVATION: 100,
+        VINEYARD: 50,
+        ORCHARD: 50,
+        MINERAL_SOIL: 85,
+      },
+      forecastSoilsDistribution: {
+        PRAIRIE_BUSHES: 2000,
+        FOREST_CONIFER: 150,
+        WET_LAND: 300,
+        ARTIFICIAL_TREE_FILLED: 300,
+      },
+      baseSoilsCo2eqStorage: 366.666,
+      forecastSoilsCo2eqStorage: 550,
+      baseDecontaminatedSurfaceArea: 0,
+      forecastDecontaminedSurfaceArea: 1000,
+      sumOnEvolutionPeriodService: new SumOnEvolutionPeriodService({
+        evaluationPeriodInYears: 10,
+        operationsFirstYear: 2025,
+      }),
+    });
+    const {
+      storedCo2Eq,
+      natureRelatedWelnessAndLeisure,
+      forestRelatedProduct,
+      pollination,
+      invasiveSpeciesRegulation,
+      waterCycle,
+      nitrogenCycle,
+      soilErosion,
+    } = natureConservationImpactsService.getEcosystemServicesMonetaryImpact();
+    const waterRegulation = natureConservationImpactsService.getWaterRegulationMonetaryImpact();
+
+    assert.deepStrictEqual(waterRegulation, {
+      base: 326,
+      forecast: 574,
+      difference: 248,
+    });
+    assert.deepStrictEqual(storedCo2Eq, { base: 55000, difference: 27500, forecast: 82500 });
+    assert.deepStrictEqual(natureRelatedWelnessAndLeisure, {
+      base: 173,
+      difference: 61,
+      forecast: 234,
+    });
+    assert.deepStrictEqual(forestRelatedProduct, undefined);
+    assert.deepStrictEqual(pollination, { base: 120, difference: 108, forecast: 228 });
+    assert.deepStrictEqual(invasiveSpeciesRegulation, { base: 44, difference: 40, forecast: 84 });
+    assert.deepStrictEqual(waterCycle, { base: 1837, difference: 1522, forecast: 3359 });
+    assert.deepStrictEqual(nitrogenCycle, { base: 107, difference: 71, forecast: 178 });
+    assert.deepStrictEqual(soilErosion, { base: 327, difference: 292, forecast: 619 });
+  });
+
+  it("returns negative difference for water regulation and ecosystem services monetary values", () => {
+    const natureConservationImpactsService = new NatureConservationImpactsService({
+      baseSoilsDistribution: {
+        PRAIRIE_BUSHES: 1000,
+        FOREST_CONIFER: 200,
+        WET_LAND: 250,
+      },
+      forecastSoilsDistribution: {
+        PRAIRIE_BUSHES: 500,
+        FOREST_CONIFER: 150,
+        WET_LAND: 250,
+        IMPERMEABLE_SOILS: 500,
+      },
+      baseSoilsCo2eqStorage: 916.666,
+      forecastSoilsCo2eqStorage: 550,
+      sumOnEvolutionPeriodService: new SumOnEvolutionPeriodService({
+        evaluationPeriodInYears: 10,
+        operationsFirstYear: 2025,
+      }),
+    });
+    const {
+      storedCo2Eq,
+      natureRelatedWelnessAndLeisure,
+      forestRelatedProduct,
+      pollination,
+      invasiveSpeciesRegulation,
+      waterCycle,
+      nitrogenCycle,
+      soilErosion,
+    } = natureConservationImpactsService.getEcosystemServicesMonetaryImpact();
+    const waterRegulation = natureConservationImpactsService.getWaterRegulationMonetaryImpact();
+
+    assert.deepStrictEqual(waterRegulation, {
+      base: 326,
+      forecast: 268,
+      difference: -58,
+    });
+    assert.deepStrictEqual(storedCo2Eq, { base: 137500, difference: -55000, forecast: 82500 });
+    assert.deepStrictEqual(natureRelatedWelnessAndLeisure, {
+      base: 173,
+      difference: -46,
+      forecast: 127,
+    });
+    assert.deepStrictEqual(waterCycle, { base: 1771, difference: -672, forecast: 1099 });
+    assert.deepStrictEqual(forestRelatedProduct, undefined);
+    assert.deepStrictEqual(pollination, undefined);
+    assert.deepStrictEqual(invasiveSpeciesRegulation, undefined);
+    assert.deepStrictEqual(nitrogenCycle, undefined);
+    assert.deepStrictEqual(soilErosion, undefined);
+  });
+});

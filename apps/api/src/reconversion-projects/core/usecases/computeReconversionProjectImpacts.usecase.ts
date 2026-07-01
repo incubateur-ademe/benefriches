@@ -1,26 +1,25 @@
 import {
   ReconversionProjectImpacts,
-  SiteNature,
-  SoilsDistribution,
   ReconversionProjectImpactsDataView,
   SiteImpactsDataView,
   getProjectSoilDistributionByType,
+  ReconversionProjectImpactsWithBreakEvenLevelInput,
+  computeProjectImpactsWithBreakEvenLevel,
+  formatAsSocioEconomicImpacts,
+  sumListWithKey,
+  formatEconomicBalanceImpact,
+  roundTo1Digit,
+  roundToInteger,
 } from "shared";
 
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { TResult, fail, success } from "src/shared-kernel/result";
 import { UseCase } from "src/shared-kernel/usecase";
-import { CityStats, CityStatsProvider } from "src/territory/core/gateways/CityStatsProvider";
+import { CityStatsProvider } from "src/territory/core/gateways/CityStatsProvider";
 
 import { GetCarbonStorageFromSoilDistributionService } from "../gateways/SoilsCarbonStorageService";
-import { PhotovoltaicProjectImpactsService } from "../model/project-impacts/PhotovoltaicProjectImpactsService";
-import {
-  InputReconversionProjectData,
-  InputSiteData,
-} from "../model/project-impacts/ReconversionProjectImpactsService";
-import { UrbanProjectImpactsService } from "../model/project-impacts/UrbanProjectImpactsService";
-import { getDefaultImpactsEvaluationPeriod } from "../model/project-impacts/impactsEvaluationPeriod";
-import { DevelopmentPlan, Schedule } from "../model/reconversionProject";
+import { getDefaultImpactsEvaluationPeriod } from "../model/impactsEvaluationPeriod";
+import { Schedule } from "../model/reconversionProject";
 
 export interface SiteImpactsQuery {
   getById(siteId: string): Promise<SiteImpactsDataView | undefined>;
@@ -54,29 +53,6 @@ export type ComputedImpacts = {
   evaluationPeriodInYears: number;
   relatedSiteId: string;
   relatedSiteName: string;
-  projectData: {
-    soilsDistribution: SoilsDistribution;
-    contaminatedSoilSurface: number;
-    isExpressProject: boolean;
-    developmentPlan: {
-      type?: DevelopmentPlan["type"];
-    } & Partial<DevelopmentPlan["features"]>;
-  };
-  siteData: {
-    addressLabel: string;
-    addressLat?: number;
-    addressLong?: number;
-    contaminatedSoilSurface: number;
-    soilsDistribution: SoilsDistribution;
-    surfaceArea: number;
-    nature: SiteNature;
-    fricheActivity?: string;
-    owner: {
-      structureType: string;
-      name: string;
-    };
-    cityStats?: CityStats;
-  };
   impacts: ReconversionProjectImpacts;
 };
 
@@ -122,43 +98,12 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<
 
     if (!relatedSite) return fail("SiteNotFound");
 
+    const operationsFirstYear =
+      reconversionProject.operationsFirstYear ?? this.dateProvider.now().getFullYear();
+
     const soilsDistributionByType = getProjectSoilDistributionByType(
       reconversionProject.soilsDistribution,
     );
-
-    const result = {
-      id: reconversionProjectId,
-      name: reconversionProject.name,
-      relatedSiteId: reconversionProject.relatedSiteId,
-      relatedSiteName: relatedSite.name,
-      evaluationPeriodInYears,
-      projectData: {
-        soilsDistribution: soilsDistributionByType,
-        contaminatedSoilSurface:
-          (relatedSite.contaminatedSoilSurface ?? 0) -
-          (reconversionProject.decontaminatedSoilSurface ?? 0),
-        isExpressProject: reconversionProject.isExpressProject,
-        developmentPlan: {
-          ...reconversionProject.developmentPlan.features,
-          type: reconversionProject.developmentPlan.type,
-        },
-      },
-      siteData: {
-        addressLabel: relatedSite.address.value,
-        addressLat: relatedSite.address.lat,
-        addressLong: relatedSite.address.long,
-        contaminatedSoilSurface: relatedSite.contaminatedSoilSurface ?? 0,
-        soilsDistribution: relatedSite.soilsDistribution,
-        surfaceArea: relatedSite.surfaceArea,
-        nature: relatedSite.nature,
-        fricheActivity: relatedSite.fricheActivity,
-        owner: {
-          name: relatedSite.ownerName,
-          structureType: relatedSite.ownerStructureType,
-        },
-      },
-    };
-
     const siteSoilsCarbonStorage = await this.getCarbonStorageFromSoilDistributionService.execute({
       cityCode: relatedSite.address.cityCode,
       soilsDistribution: relatedSite.soilsDistribution,
@@ -169,100 +114,276 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<
         soilsDistribution: soilsDistributionByType,
       });
 
-    const siteData: InputSiteData = (() => {
-      const commonData = {
-        addressCityCode: relatedSite.address.cityCode,
-        soilsDistribution: relatedSite.soilsDistribution,
-        surfaceArea: relatedSite.surfaceArea,
-        ownerName: relatedSite.ownerName,
-        yearlyExpenses: relatedSite.yearlyExpenses,
-        yearlyIncomes: relatedSite.yearlyIncomes,
-        tenantName: relatedSite.tenantName,
-        soilsCarbonStorage: siteSoilsCarbonStorage,
-      };
-      switch (relatedSite.nature) {
-        case "AGRICULTURAL_OPERATION":
-          return {
-            ...commonData,
-            nature: "AGRICULTURAL_OPERATION",
-            agriculturalOperationActivity: relatedSite.agriculturalOperationActivity,
-            isSiteOperated: relatedSite.isSiteOperated,
-          };
-        case "FRICHE":
-          return {
-            ...commonData,
-            nature: "FRICHE",
-            contaminatedSoilSurface: relatedSite.contaminatedSoilSurface,
-            accidentsDeaths: relatedSite.accidentsDeaths,
-            accidentsMinorInjuries: relatedSite.accidentsMinorInjuries,
-            accidentsSevereInjuries: relatedSite.accidentsSevereInjuries,
-          };
-        case "NATURAL_AREA":
-          return {
-            ...commonData,
-            nature: "NATURAL_AREA",
-          };
-        case "URBAN_ZONE":
-          throw new Error("Impact calculations are not supported for urban zone sites");
-      }
-    })();
+    const cityStats = await this.cityStatsQuery.getCityStats(relatedSite.address.cityCode);
+    const impacts = computeProjectImpactsWithBreakEvenLevel({
+      reconversionProject: {
+        ...reconversionProject,
+        projectSoilsCarbonStorage,
+        operationsFirstYear,
+      } as ReconversionProjectImpactsWithBreakEvenLevelInput,
+      relatedSite: { ...relatedSite, siteSoilsCarbonStorage },
+      evaluationPeriodInYears,
+      cityStats,
+    });
 
-    const reconversionProjectData: InputReconversionProjectData = {
-      ...reconversionProject,
-      developmentPlanInstallationExpenses: reconversionProject.developmentPlan.installationCosts,
-      developmentPlanType: reconversionProject.developmentPlan.type,
-      developmentPlanDeveloperName: reconversionProject.developmentPlan.developerName,
-      developmentPlanFeatures: reconversionProject.developmentPlan.features,
-      soilsCarbonStorage: projectSoilsCarbonStorage,
-    };
+    const contaminatedSurface =
+      impacts.reconversionImpactsBreakdown.siteStatuQuoImpactMetrics.find(
+        (item) => item.name === "contaminatedSurface",
+      )?.total ?? 0;
+    const decontaminatedSurface =
+      impacts.reconversionImpactsBreakdown.projectIndirectImpactMetrics.find(
+        (item) => item.name === "decontaminatedSurface",
+      )?.total ?? 0;
 
-    switch (reconversionProject.developmentPlan.type) {
-      case "PHOTOVOLTAIC_POWER_PLANT": {
-        const photovoltaicProjectImpactsService = new PhotovoltaicProjectImpactsService({
-          reconversionProject: reconversionProjectData,
-          relatedSite: siteData,
-          evaluationPeriodInYears,
-          dateProvider: this.dateProvider,
-        });
+    const baseSoilsCo2eqStorage =
+      impacts.reconversionImpactsBreakdown.siteStatuQuoImpactMetrics.find(
+        (item) => item.name === "storedCo2Eq",
+      )?.total;
+    const forecastSoilsCo2eqStorage = impacts.aggregatedReconversionImpacts.impactsMetrics.find(
+      (item) => item.name === "newStoredCo2Eq",
+    )?.total;
 
-        return success({
-          ...result,
-          impacts: photovoltaicProjectImpactsService.formatImpacts(),
-        });
-      }
-      case "URBAN_PROJECT": {
-        const cityStats = await this.cityStatsQuery.getCityStats(relatedSite.address.cityCode);
+    const baseOperation = roundTo1Digit(
+      impacts.reconversionImpactsBreakdown.siteStatuQuoImpactMetrics.find(
+        (item) => item.name === "operationsFullTimeJobs",
+      )?.total ?? 0,
+    );
+    const forecastOperation = roundTo1Digit(
+      impacts.aggregatedReconversionImpacts.impactsMetrics.find(
+        (item) => item.name === "operationsFullTimeJobs",
+      )?.total ?? 0,
+    );
 
-        const urbanProjectImpactsService = new UrbanProjectImpactsService({
-          reconversionProject: reconversionProjectData,
-          relatedSite: siteData,
-          evaluationPeriodInYears,
-          dateProvider: this.dateProvider,
-          siteCityData:
-            relatedSite.nature === "FRICHE"
+    const fullTimeJobsDifference = roundTo1Digit(
+      sumListWithKey(
+        impacts.aggregatedReconversionImpacts.impactsMetrics.filter(
+          (item) =>
+            item.name === "conversionFullTimeJobs" ||
+            item.name === "operationsFullTimeJobs" ||
+            item.name === "oldOperationsFullTimeJobsLoss" ||
+            item.name === "reinstatementFullTimeJobs",
+        ),
+        "total",
+      ),
+    );
+
+    const accidents = impacts.aggregatedReconversionImpacts.impactsMetrics.filter(
+      (item) =>
+        item.name === "avoidedFricheAccidentsDeaths" ||
+        item.name === "avoidedFricheAccidentsSevereInjuries" ||
+        item.name === "avoidedFricheAccidentsMinorInjuries",
+    );
+
+    const totalAccidents = sumListWithKey(accidents, "total");
+
+    const avoidedTrafficAccidents = impacts.aggregatedReconversionImpacts.impactsMetrics.filter(
+      (item) =>
+        item.name === "avoidedTrafficAccidentsDeaths" ||
+        item.name === "avoidedTrafficAccidentsSevereInjuries" ||
+        item.name === "avoidedTrafficAccidentsMinorInjuries",
+    );
+
+    const avoidedTrafficAccidentsTotal = sumListWithKey(avoidedTrafficAccidents, "total");
+
+    const baseGreen =
+      impacts.reconversionImpactsBreakdown.siteStatuQuoImpactMetrics.find(
+        (item) => item.name === "permeableGreenSurface",
+      )?.total ?? 0;
+
+    const baseMineral =
+      impacts.reconversionImpactsBreakdown.siteStatuQuoImpactMetrics.find(
+        (item) => item.name === "permeableMineralSurface",
+      )?.total ?? 0;
+
+    const newPermeableGreenSurface =
+      impacts.reconversionImpactsBreakdown.projectIndirectImpactMetrics.find(
+        (it) => it.name === "newPermeableGreenSurface",
+      )?.total ?? 0;
+
+    const newPermeableMineralSurface =
+      impacts.reconversionImpactsBreakdown.projectIndirectImpactMetrics.find(
+        (it) => it.name === "newPermeableMineralSurface",
+      )?.total ?? 0;
+
+    const avoidedCO2TonsWithEnergyProduction =
+      impacts.aggregatedReconversionImpacts.impactsMetrics.find(
+        (item) => item.name === "avoidedCO2TonsWithEnergyProduction",
+      )?.total;
+
+    const avoidedTrafficCo2EqEmissions = impacts.aggregatedReconversionImpacts.impactsMetrics.find(
+      (item) => item.name === "avoidedTrafficCo2EqEmissions",
+    )?.total;
+
+    const avoidedAirConditioningCo2eqEmissions =
+      impacts.aggregatedReconversionImpacts.impactsMetrics.find(
+        (item) => item.name === "avoidedAirConditioningCo2eqEmissions",
+      )?.total;
+    return success({
+      id: reconversionProject.id,
+      name: reconversionProject.name,
+      evaluationPeriodInYears,
+      relatedSiteId: relatedSite.id,
+      relatedSiteName: relatedSite.name,
+      impacts: {
+        economicBalance: formatEconomicBalanceImpact(
+          impacts.projectEconomicBalance,
+          impacts.stakeholders.project.developer.structureName ?? "Aménageur",
+        ),
+        social: {
+          fullTimeJobs: {
+            base: baseOperation,
+            forecast: roundTo1Digit(fullTimeJobsDifference + baseOperation),
+            difference: roundTo1Digit(fullTimeJobsDifference),
+            operations: {
+              base: baseOperation,
+              forecast: forecastOperation,
+              difference: roundTo1Digit(forecastOperation - baseOperation),
+            },
+            conversion: {
+              base: 0,
+              forecast: roundTo1Digit(fullTimeJobsDifference + baseOperation - forecastOperation),
+              difference: roundTo1Digit(fullTimeJobsDifference + baseOperation - forecastOperation),
+            },
+          },
+          accidents:
+            accidents.length > 0
               ? {
-                  siteIsFriche: true,
-                  citySquareMetersSurfaceArea: cityStats.surfaceAreaSquareMeters,
-                  cityPopulation: cityStats.population,
-                  cityPropertyValuePerSquareMeter:
-                    cityStats.propertyValueMedianPricePerSquareMeters,
+                  base: totalAccidents,
+                  forecast: 0,
+                  difference: -totalAccidents,
+                  severeInjuries: {
+                    forecast: 0,
+                    base:
+                      impacts.aggregatedReconversionImpacts.impactsMetrics.find(
+                        (item) => item.name === "avoidedFricheAccidentsSevereInjuries",
+                      )?.total ?? 0,
+                    difference: -(
+                      impacts.aggregatedReconversionImpacts.impactsMetrics.find(
+                        (item) => item.name === "avoidedFricheAccidentsSevereInjuries",
+                      )?.total ?? 0
+                    ),
+                  },
+                  minorInjuries: {
+                    forecast: 0,
+                    base:
+                      impacts.aggregatedReconversionImpacts.impactsMetrics.find(
+                        (item) => item.name === "avoidedFricheAccidentsMinorInjuries",
+                      )?.total ?? 0,
+                    difference: -(
+                      impacts.aggregatedReconversionImpacts.impactsMetrics.find(
+                        (item) => item.name === "avoidedFricheAccidentsMinorInjuries",
+                      )?.total ?? 0
+                    ),
+                  },
+                  deaths: {
+                    base: 0,
+                    forecast:
+                      impacts.aggregatedReconversionImpacts.impactsMetrics.find(
+                        (item) => item.name === "avoidedFricheAccidentsDeaths",
+                      )?.total ?? 0,
+                    difference:
+                      impacts.aggregatedReconversionImpacts.impactsMetrics.find(
+                        (item) => item.name === "avoidedFricheAccidentsDeaths",
+                      )?.total ?? 0,
+                  },
+                }
+              : undefined,
+          avoidedVehiculeKilometers: impacts.aggregatedReconversionImpacts.impactsMetrics.find(
+            (item) => item.name === "avoidedVehiculeKilometers",
+          )?.total,
+          travelTimeSaved: impacts.aggregatedReconversionImpacts.impactsMetrics.find(
+            (item) => item.name === "timeTravelSavedInHours",
+          )?.total,
+          avoidedTrafficAccidents:
+            avoidedTrafficAccidentsTotal !== 0
+              ? {
+                  total: avoidedTrafficAccidentsTotal,
+                  severeInjuries:
+                    impacts.aggregatedReconversionImpacts.impactsMetrics.find(
+                      (item) => item.name === "avoidedTrafficAccidentsSevereInjuries",
+                    )?.total ?? 0,
+                  minorInjuries:
+                    impacts.aggregatedReconversionImpacts.impactsMetrics.find(
+                      (item) => item.name === "avoidedTrafficAccidentsMinorInjuries",
+                    )?.total ?? 0,
+                  deaths:
+                    impacts.aggregatedReconversionImpacts.impactsMetrics.find(
+                      (item) => item.name === "avoidedTrafficAccidentsDeaths",
+                    )?.total ?? 0,
+                }
+              : undefined,
+          householdsPoweredByRenewableEnergy: {
+            base: 0,
+            forecast:
+              impacts.aggregatedReconversionImpacts.impactsMetrics.find(
+                (item) => item.name === "householdsPoweredByRenewableEnergy",
+              )?.total ?? 0,
+            difference:
+              impacts.aggregatedReconversionImpacts.impactsMetrics.find(
+                (item) => item.name === "householdsPoweredByRenewableEnergy",
+              )?.total ?? 0,
+          },
+        },
+        environmental: {
+          nonContaminatedSurfaceArea:
+            contaminatedSurface || decontaminatedSurface
+              ? {
+                  base: relatedSite.surfaceArea - contaminatedSurface,
+                  forecast: relatedSite.surfaceArea - contaminatedSurface + decontaminatedSurface,
+                  difference: decontaminatedSurface,
+                }
+              : undefined,
+          permeableSurfaceArea: {
+            base: baseMineral + baseGreen,
+            forecast:
+              baseMineral + newPermeableMineralSurface + baseGreen + newPermeableGreenSurface,
+            difference: newPermeableGreenSurface + newPermeableMineralSurface,
+            mineralSoil: {
+              base: baseMineral,
+              forecast: baseMineral + newPermeableMineralSurface,
+              difference: newPermeableMineralSurface,
+            },
+            greenSoil: {
+              base: baseGreen,
+              forecast: baseGreen + newPermeableGreenSurface,
+              difference: newPermeableGreenSurface,
+            },
+          },
+          soilsCo2eqStorage:
+            baseSoilsCo2eqStorage && forecastSoilsCo2eqStorage
+              ? {
+                  base: roundToInteger(baseSoilsCo2eqStorage),
+                  forecast: roundToInteger(baseSoilsCo2eqStorage + forecastSoilsCo2eqStorage),
+                  difference: roundToInteger(forecastSoilsCo2eqStorage),
+                }
+              : undefined,
+          soilsCarbonStorage:
+            siteSoilsCarbonStorage && projectSoilsCarbonStorage
+              ? {
+                  base: siteSoilsCarbonStorage?.total ?? 0,
+                  forecast: projectSoilsCarbonStorage?.total ?? 0,
+                  difference:
+                    (projectSoilsCarbonStorage?.total ?? 0) - (siteSoilsCarbonStorage?.total ?? 0),
+                }
+              : undefined,
+          avoidedCo2eqEmissions:
+            reconversionProject.developmentPlan.type === "PHOTOVOLTAIC_POWER_PLANT"
+              ? {
+                  withRenewableEnergyProduction: avoidedCO2TonsWithEnergyProduction
+                    ? roundToInteger(avoidedCO2TonsWithEnergyProduction)
+                    : undefined,
                 }
               : {
-                  siteIsFriche: false,
-                  citySquareMetersSurfaceArea: cityStats.surfaceAreaSquareMeters,
-                  cityPopulation: cityStats.population,
+                  withCarTrafficDiminution: avoidedTrafficCo2EqEmissions
+                    ? roundToInteger(avoidedTrafficCo2EqEmissions)
+                    : undefined,
+                  withAirConditioningDiminution: avoidedAirConditioningCo2eqEmissions
+                    ? roundToInteger(avoidedAirConditioningCo2eqEmissions)
+                    : undefined,
                 },
-        });
-
-        return success({
-          ...result,
-          siteData: {
-            ...result.siteData,
-            cityStats,
-          },
-          impacts: urbanProjectImpactsService.formatImpacts(),
-        });
-      }
-    }
+        },
+        socioeconomic: formatAsSocioEconomicImpacts(impacts),
+      },
+    });
   }
 }

@@ -7,6 +7,11 @@ import {
   SiteNature,
   typedObjectEntries,
   UrbanSprawlImpactsComparisonResultDto,
+  computeAggregatedReconversionImpacts,
+  computeBreakEvenLevel,
+  computeProjectUrbanSprawlComparisonImpactsBreakdownAndEconomicBalance,
+  formatStakeholders,
+  ReconversionProjectImpactsWithBreakEvenLevelInput,
 } from "shared";
 import { v4 as uuid } from "uuid";
 
@@ -20,13 +25,6 @@ import { CityRuralityQuery } from "src/territory/core/gateways/CityRuralityQuery
 import { CityStatsProvider } from "src/territory/core/gateways/CityStatsProvider";
 
 import { GetCarbonStorageFromSoilDistributionService } from "../gateways/SoilsCarbonStorageService";
-import {
-  computeAggregatedReconversionImpacts,
-  computeBreakEvenLevel,
-  computeProjectUrbanSprawlComparisonImpactsBreakdownAndEconomicBalance,
-  formatStakeholders,
-  ReconversionProjectImpactsWithBreakEvenLevelInput,
-} from "../model/project-impacts/break-even-level/computeImpactsWithBreakEvenLevel";
 import { Schedule } from "../model/reconversionProject";
 
 interface SiteImpactsQuery {

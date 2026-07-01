@@ -1,0 +1,119 @@
+import assert from "node:assert/strict";
+import { describe, it, before } from "node:test";
+
+import { SumOnEvolutionPeriodService } from "../../../sum-on-evolution-period/SumOnEvolutionPeriodService";
+import { TravelRelatedImpactsService } from "./TravelRelatedImpactsService";
+
+describe("TravelRelatedImpactsService", () => {
+  let travelRelatedImpactsService: TravelRelatedImpactsService;
+  before(() => {
+    travelRelatedImpactsService = new TravelRelatedImpactsService({
+      siteSquareMetersSurfaceArea: 10000,
+      citySquareMetersSurfaceArea: 6000000000,
+      cityPopulation: 300000,
+      buildingsFloorAreaDistribution: {
+        RESIDENTIAL: 10000,
+        OFFICES: 1500,
+        LOCAL_STORE: 500,
+        ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES: 200,
+      },
+      sumOnEvolutionPeriodService: new SumOnEvolutionPeriodService({
+        evaluationPeriodInYears: 10,
+        operationsFirstYear: 2025,
+      }),
+    });
+  });
+
+  it("computes avoided accidents injuries and deaths for duration with low avoided kilometers", () => {
+    assert.strictEqual(travelRelatedImpactsService.getAvoidedAccidentsMinorInjuries(), 0);
+    assert.strictEqual(travelRelatedImpactsService.getAvoidedAccidentsSevereInjuries(), 0);
+    assert.strictEqual(travelRelatedImpactsService.getAvoidedAccidentsDeaths(), 0);
+
+    assert.strictEqual(travelRelatedImpactsService.getAvoidedAccidentsMinorInjuriesExpenses(), 0);
+    assert.strictEqual(travelRelatedImpactsService.getAvoidedAccidentsSevereInjuriesExpenses(), 0);
+    assert.strictEqual(travelRelatedImpactsService.getAvoidedAccidentsSevereInjuriesExpenses(), 0);
+  });
+
+  it("computes avoided accidents injuries and deaths for duration with high avoided kilometers", () => {
+    travelRelatedImpactsService = new TravelRelatedImpactsService({
+      siteSquareMetersSurfaceArea: 10000,
+      citySquareMetersSurfaceArea: 6000000000,
+      cityPopulation: 300000,
+      buildingsFloorAreaDistribution: {
+        RESIDENTIAL: 160000000,
+        OFFICES: 1500,
+        LOCAL_STORE: 500,
+        ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES: 200,
+      },
+      sumOnEvolutionPeriodService: new SumOnEvolutionPeriodService({
+        evaluationPeriodInYears: 10,
+        operationsFirstYear: 2025,
+      }),
+    });
+    assert.strictEqual(travelRelatedImpactsService.getAvoidedAccidentsMinorInjuries(), 444);
+    assert.strictEqual(travelRelatedImpactsService.getAvoidedAccidentsSevereInjuries(), 28);
+    assert.strictEqual(travelRelatedImpactsService.getAvoidedAccidentsDeaths(), 8);
+
+    assert.strictEqual(
+      travelRelatedImpactsService.getAvoidedAccidentsMinorInjuriesExpenses(),
+      7750407,
+    );
+    assert.strictEqual(
+      travelRelatedImpactsService.getAvoidedAccidentsSevereInjuriesExpenses(),
+      12110210,
+    );
+    assert.strictEqual(travelRelatedImpactsService.getAvoidedAccidentsDeathsExpenses(), 28938699);
+  });
+
+  it("returns socioeconomic, social and environment impacts related to travel", () => {
+    const travelRelatedImpactsService = new TravelRelatedImpactsService({
+      siteSquareMetersSurfaceArea: 15000,
+      citySquareMetersSurfaceArea: 15000000,
+      cityPopulation: 18000,
+      buildingsFloorAreaDistribution: {
+        RESIDENTIAL: 1500,
+        LOCAL_STORE: 1000,
+        OFFICES: 1000,
+        OTHER_CULTURAL_PLACE: 500,
+        SPORTS_FACILITIES: 1000,
+      },
+      sumOnEvolutionPeriodService: new SumOnEvolutionPeriodService({
+        evaluationPeriodInYears: 10,
+        operationsFirstYear: 2025,
+      }),
+    });
+
+    assert.deepStrictEqual(travelRelatedImpactsService.getSocioEconomicList(), [
+      {
+        actor: "french_society",
+        amount: 27919,
+        impact: "avoided_air_pollution",
+        impactCategory: "social_monetary",
+      },
+      {
+        actor: "local_people",
+        amount: 212041,
+        impact: "avoided_car_related_expenses",
+        impactCategory: "economic_indirect",
+      },
+      {
+        actor: "french_society",
+        amount: 528,
+        impact: "avoided_property_damages_expenses",
+        impactCategory: "economic_indirect",
+      },
+      {
+        actor: "local_people",
+        amount: 709578,
+        impact: "travel_time_saved",
+        impactCategory: "social_monetary",
+      },
+    ]);
+    assert.deepStrictEqual(travelRelatedImpactsService.getAvoidedTrafficCO2Emissions(), {
+      inTons: 240,
+      monetaryValue: 45308,
+    });
+    assert.deepStrictEqual(travelRelatedImpactsService.getTravelTimeSavedPerTraveler(), 79000.75);
+    assert.deepStrictEqual(travelRelatedImpactsService.getAvoidedTrafficAccidents(), undefined);
+  });
+});

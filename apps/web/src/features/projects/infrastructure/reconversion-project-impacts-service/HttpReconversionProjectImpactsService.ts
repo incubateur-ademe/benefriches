@@ -6,9 +6,7 @@ export class HttpReconversionProjectImpactsApi implements ReconversionProjectImp
   async getReconversionProjectImpacts(
     reconversionProjectId: string,
   ): Promise<GetReconversionProjectImpactsResultDto> {
-    const response = await fetch(
-      `/api/reconversion-projects/${reconversionProjectId}/impacts/break-even-level`,
-    );
+    const response = await fetch(`/api/reconversion-projects/${reconversionProjectId}/impacts`);
 
     if (!response.ok)
       throw new Error(`Error while fetching reconversion projects break even level`);

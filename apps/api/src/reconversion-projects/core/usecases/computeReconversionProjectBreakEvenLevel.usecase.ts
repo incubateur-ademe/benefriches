@@ -4,6 +4,8 @@ import {
   ReconversionProjectImpactsDataView,
   SiteImpactsDataView,
   getProjectSoilDistributionByType,
+  computeProjectImpactsWithBreakEvenLevel,
+  ReconversionProjectImpactsWithBreakEvenLevelInput,
 } from "shared";
 
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
@@ -12,10 +14,6 @@ import { UseCase } from "src/shared-kernel/usecase";
 import { CityStatsProvider } from "src/territory/core/gateways/CityStatsProvider";
 
 import { GetCarbonStorageFromSoilDistributionService } from "../gateways/SoilsCarbonStorageService";
-import {
-  computeProjectImpactsWithBreakEvenLevel,
-  ReconversionProjectImpactsWithBreakEvenLevelInput,
-} from "../model/project-impacts/break-even-level/computeImpactsWithBreakEvenLevel";
 import { Schedule } from "../model/reconversionProject";
 
 const DEFAULT_EVALUATION_PERIOD_IN_YEARS = 50;
@@ -119,8 +117,8 @@ export class ComputeReconversionProjectBreakEvenLevelUseCase implements UseCase<
         projectName: reconversionProject.name,
         relatedSiteId: reconversionProject.relatedSiteId,
         relatedSiteName: relatedSite.name,
-        isExpressSite: true,
-        isExpressProject: true,
+        isExpressSite: relatedSite.isExpressSite,
+        isExpressProject: reconversionProject.isExpressProject,
         projectDevelopmentPlan: extractProjectDevelopmentPlan(
           reconversionProject.developmentPlan as DevelopmentPlanFeatures,
         ),

@@ -138,3 +138,4 @@ export const isConstrainedSoilType = (soilType: SoilType): boolean => {
 export * from "./soilDistribution";
 export * from "./soilsDistributionObjToArray";
 export * from "./soilDistributionByType";
+export * from "./soilsCarbonStorage.types";

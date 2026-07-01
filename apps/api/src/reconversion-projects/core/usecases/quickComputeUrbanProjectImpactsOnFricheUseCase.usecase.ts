@@ -1,4 +1,9 @@
-import { GetReconversionProjectImpactsResultDto, NewUrbanCenterProjectGenerator } from "shared";
+import {
+  GetReconversionProjectImpactsResultDto,
+  NewUrbanCenterProjectGenerator,
+  computeProjectImpactsWithBreakEvenLevel,
+  ReconversionProjectImpactsWithBreakEvenLevelInput,
+} from "shared";
 import { v4 as uuid } from "uuid";
 
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
@@ -8,11 +13,7 @@ import type { Friche, Site } from "src/sites/core/models/site";
 import { CityStatsProvider } from "src/territory/core/gateways/CityStatsProvider";
 
 import { GetCarbonStorageFromSoilDistributionService } from "../gateways/SoilsCarbonStorageService";
-import {
-  computeProjectImpactsWithBreakEvenLevel,
-  ReconversionProjectImpactsWithBreakEvenLevelInput,
-} from "../model/project-impacts/break-even-level/computeImpactsWithBreakEvenLevel";
-import { getDefaultImpactsEvaluationPeriod } from "../model/project-impacts/impactsEvaluationPeriod";
+import { getDefaultImpactsEvaluationPeriod } from "../model/impactsEvaluationPeriod";
 
 type City = {
   name: string;
@@ -50,13 +51,8 @@ export class QuickComputeUrbanProjectImpactsOnFricheUseCase implements UseCase<
     siteCityCode,
     siteSurfaceArea,
   }: Request): Promise<QuickComputeUrbanProjectImpactsOnFricheResult> {
-    const {
-      name,
-      surfaceAreaSquareMeters,
-      population,
-      propertyValueMedianPricePerSquareMeters,
-      accuracy,
-    } = await this.cityStatsQuery.getCityStats(siteCityCode);
+    const { name, surfaceAreaSquareMeters, population, propertyValueMedianPricePerSquareMeters } =
+      await this.cityStatsQuery.getCityStats(siteCityCode);
 
     const city = {
       name: name,
@@ -158,11 +154,9 @@ export class QuickComputeUrbanProjectImpactsOnFricheUseCase implements UseCase<
       },
       evaluationPeriodInYears,
       cityStats: {
-        name,
         surfaceAreaSquareMeters,
         population,
         propertyValueMedianPricePerSquareMeters,
-        accuracy,
       },
     });
 

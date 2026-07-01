@@ -1,8 +1,4 @@
-import { SoilsDistribution, SoilType } from "shared";
-
-export type SoilsCarbonStorage = {
-  total: number;
-} & Partial<Record<SoilType, number>>;
+import { SoilsDistribution, SoilsCarbonStorage as SharedSoilsCarbonStorage } from "shared";
 
 export type SoilsCarbonStorageInput = {
   cityCode: string;
@@ -12,3 +8,5 @@ export type SoilsCarbonStorageInput = {
 export interface GetCarbonStorageFromSoilDistributionService {
   execute(input: SoilsCarbonStorageInput): Promise<SoilsCarbonStorage | undefined>;
 }
+
+export type SoilsCarbonStorage = SharedSoilsCarbonStorage;

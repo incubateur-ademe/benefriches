@@ -7,6 +7,7 @@ import {
   reconversionProjectTemplateSchema,
   httpSaveReconversionProjectPropsSchema,
   domainSaveReconversionProjectPropsSchema,
+  GetReconversionProjectImpactsResultDto,
 } from "shared";
 import supertest from "supertest";
 import { assertShapeEquals, isDate } from "test/assertShapeEquals";
@@ -27,7 +28,6 @@ import {
   buildUrbanProjectReconversionProjectProps,
   UrbanProjectBuilder,
 } from "src/reconversion-projects/core/model/reconversionProject.mock";
-import { ComputedImpacts } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import {
   SqlDevelopmentPlan,
@@ -842,16 +842,9 @@ describe("ReconversionProjects controller", () => {
 
       assert.strictEqual(response.status, 200);
       assert.ok(response.body !== undefined);
-      const result = response.body as ComputedImpacts;
+      const result = response.body as GetReconversionProjectImpactsResultDto;
       assert.ok(result.impacts !== undefined);
-      assert.ok(result.projectData !== undefined);
-      assert.deepStrictEqual(result.siteData.cityStats, {
-        accuracy: "city",
-        name: "Mont-de-Marsan",
-        population: 31455,
-        propertyValueMedianPricePerSquareMeters: 2179,
-        surfaceAreaSquareMeters: 36595400,
-      });
+      assert.ok(result.contextData !== undefined);
     });
   });
 

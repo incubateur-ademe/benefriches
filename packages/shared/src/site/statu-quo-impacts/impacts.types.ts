@@ -69,7 +69,7 @@ const taxesIncomeImpactsSchema = z.object({
   total: z.number(),
   detailsByYear: z.array(z.number()),
   cumulativeByYear: z.array(z.number()),
-  details: z.enum(["taxes", "operationsTaxesIncome", "propertyTaxesIncome"]),
+  details: z.enum(["taxes", "operationsTaxes", "propertyTaxes"]),
   name: z.literal("taxesIncome"),
 });
 

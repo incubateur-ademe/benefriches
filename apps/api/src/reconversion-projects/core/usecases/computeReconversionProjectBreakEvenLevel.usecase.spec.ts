@@ -352,6 +352,72 @@ describe("ComputeReconversionProjectBreakEvenLevelUseCase", () => {
       ).getData();
       assert.strictEqual(data.projectionYears.length, 50);
     });
+
+    it("returns context data", async () => {
+      const usecase = buildUseCase(fricheProjectData, fricheSite);
+      const result = await usecase.execute({
+        reconversionProjectId: fricheProjectData.id,
+      });
+
+      const { contextData: data } = (
+        result as SuccessResult<GetReconversionProjectImpactsResultDto>
+      ).getData();
+      // fakeNow is 2024, so the first projection year must be "2024"
+      assert.deepEqual(data, {
+        projectId: fricheProjectData.id,
+        projectName: fricheProjectData.name,
+        relatedSiteId: fricheSite.id,
+        relatedSiteName: fricheSite.name,
+        isExpressSite: fricheSite.isExpressSite,
+        isExpressProject: fricheProjectData.isExpressProject,
+        projectDevelopmentPlan: {
+          type: fricheProjectData.developmentPlan.type,
+          installationElectricalPowerKWc:
+            fricheProjectData.developmentPlan.features.electricalPowerKWc,
+          installationSurfaceArea: fricheProjectData.developmentPlan.features.surfaceArea,
+        },
+        siteAddress: {
+          lat: fricheSite.address.lat,
+          long: fricheSite.address.long,
+          label: fricheSite.address.value,
+        },
+        siteNature: fricheSite.nature,
+        siteSurfaceArea: fricheSite.surfaceArea,
+
+        fricheActivity: fricheSite.fricheActivity,
+      });
+    });
+
+    it("returns soilsDistribution in impact metrics", async () => {
+      const usecase = buildUseCase(fricheProjectData, fricheSite);
+      const result = await usecase.execute({
+        reconversionProjectId: fricheProjectData.id,
+      });
+
+      const { impacts: data } = (
+        result as SuccessResult<GetReconversionProjectImpactsResultDto>
+      ).getData();
+      assert.strictEqual(
+        data.aggregatedReconversionImpacts.impactsMetrics.filter(
+          (item) => item.name === "soilsDistribution",
+        ).length,
+        5,
+      );
+
+      assert.strictEqual(
+        data.reconversionImpactsBreakdown.projectIndirectImpactMetrics.filter(
+          (item) => item.name === "soilsDistribution",
+        ).length,
+        5,
+      );
+
+      assert.strictEqual(
+        data.reconversionImpactsBreakdown.siteStatuQuoImpactMetrics.filter(
+          (item) => item.name === "soilsDistribution",
+        ).length,
+        4,
+      );
+    });
   });
 
   // ---------------------------------------------------------------------------

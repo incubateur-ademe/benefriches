@@ -1,11 +1,9 @@
 import { Inject } from "@nestjs/common";
 import type { Knex } from "knex";
+import { ApiReconversionProjectImpactsDataView } from "shared";
 
 import { DevelopmentPlan } from "src/reconversion-projects/core/model/reconversionProject";
-import {
-  ApiReconversionProjectImpactsDataView,
-  ReconversionProjectImpactsQuery,
-} from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
+import { ReconversionProjectImpactsQuery } from "src/reconversion-projects/core/usecases/computeReconversionProjectBreakEvenLevel.usecase";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 
 const sumIfNotNullish = (
