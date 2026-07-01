@@ -284,7 +284,7 @@ React 19+, Redux Toolkit 2+, Vite 7+, TypeScript 5+ (strict), Tailwind CSS v4 (u
 
 ## Related Documentation
 
-- **Monorepo Guide**: @CLAUDE.md
-- **API Guide**: @apps/api/CLAUDE.md
-- **Feature Example**: @docs/feature-example.md
-- **React Best Practices**: @.claude/skills/react-best-practices/SKILL.md
+- **Monorepo Guide**: [CLAUDE.md](../../CLAUDE.md)
+- **API Guide**: [apps/api/CLAUDE.md](../api/CLAUDE.md)
+- **Feature Example**: [docs/feature-example.md](../../docs/feature-example.md)
+- **React Best Practices**: [.claude/skills/react-best-practices/SKILL.md](../../.claude/skills/react-best-practices/SKILL.md)
