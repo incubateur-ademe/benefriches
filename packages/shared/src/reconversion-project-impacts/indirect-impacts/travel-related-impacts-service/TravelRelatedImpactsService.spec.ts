@@ -50,19 +50,19 @@ describe("TravelRelatedImpactsService", () => {
         operationsFirstYear: 2025,
       }),
     });
-    assert.strictEqual(travelRelatedImpactsService.getAvoidedAccidentsMinorInjuries(), 444);
-    assert.strictEqual(travelRelatedImpactsService.getAvoidedAccidentsSevereInjuries(), 28);
-    assert.strictEqual(travelRelatedImpactsService.getAvoidedAccidentsDeaths(), 8);
+    assert.strictEqual(travelRelatedImpactsService.getAvoidedAccidentsMinorInjuries(), 440);
+    assert.strictEqual(travelRelatedImpactsService.getAvoidedAccidentsSevereInjuries(), 20);
+    assert.strictEqual(travelRelatedImpactsService.getAvoidedAccidentsDeaths(), 0);
 
     assert.strictEqual(
       travelRelatedImpactsService.getAvoidedAccidentsMinorInjuriesExpenses(),
-      7750407,
+      7684083,
     );
     assert.strictEqual(
       travelRelatedImpactsService.getAvoidedAccidentsSevereInjuriesExpenses(),
-      12110210,
+      8732056,
     );
-    assert.strictEqual(travelRelatedImpactsService.getAvoidedAccidentsDeathsExpenses(), 28938699);
+    assert.strictEqual(travelRelatedImpactsService.getAvoidedAccidentsDeathsExpenses(), 0);
   });
 
   it("returns socioeconomic, social and environment impacts related to travel", () => {

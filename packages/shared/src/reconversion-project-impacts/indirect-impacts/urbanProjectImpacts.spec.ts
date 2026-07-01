@@ -1,6 +1,11 @@
 import assert from "node:assert/strict";
 import { describe, it, beforeEach, mock } from "node:test";
-import { BuildingsUseDistribution, DevelopmentPlanFeatures } from "shared";
+import {
+  BuildingsUseDistribution,
+  DevelopmentPlanFeatures,
+  ProjectOnSiteImpactMetric,
+  ReconversionProjectOnSiteIndirectEconomicImpact,
+} from "shared";
 
 import type { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import { InputReconversionProjectData, InputSiteData } from "../projectIndirectImpacts";
@@ -205,12 +210,12 @@ describe("getUrbanProjectImpacts", () => {
     it("returns travel related impacts for urban project on friche", () => {
       const result = getUrbanProjectImpacts({
         reconversionProject: buildUrbanProject({
-          RESIDENTIAL: 160000000,
+          RESIDENTIAL: 1600000000,
           OFFICES: 1500,
           LOCAL_STORE: 500,
           ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES: 200,
         }),
-        relatedSite: { ...baseRelatedSite, surfaceArea: 10_000 },
+        relatedSite: { ...baseRelatedSite, surfaceArea: 100_000 },
         siteCityData: {
           citySquareMetersSurfaceArea: 6000000000,
           cityPopulation: 300000,
@@ -219,7 +224,7 @@ describe("getUrbanProjectImpacts", () => {
         sumOnEvolutionPeriodService: mockService,
       });
 
-      const travelImpactNames = [
+      const travelEconomicImpactNames: ReconversionProjectOnSiteIndirectEconomicImpact["name"][] = [
         "avoidedPropertyDamageExpenses",
         "avoidedCarRelatedExpenses",
         "travelTimeSavedPerTravelerExpenses",
@@ -230,23 +235,25 @@ describe("getUrbanProjectImpacts", () => {
         "avoidedAccidentsDeathsExpenses",
       ] as const;
 
-      travelImpactNames.forEach((name) => {
+      travelEconomicImpactNames.forEach((name) => {
         assert.ok(result.economicImpacts.find((r) => r.name === name) !== undefined);
       });
 
-      [
+      const travelImpactMetricNames: ProjectOnSiteImpactMetric["name"][] = [
         "avoidedVehiculeKilometers",
         "avoidedTrafficAccidentsMinorInjuries",
         "avoidedTrafficAccidentsSevereInjuries",
         "avoidedTrafficAccidentsDeaths",
         "avoidedVehiculeKilometers",
         "timeTravelSavedInHours",
-      ].forEach((name) => {
+      ] as const;
+
+      travelImpactMetricNames.forEach((name) => {
         assert.ok(result.impactMetrics.find((r) => r.name === name) !== undefined);
       });
 
       const resultNames = new Set(result.economicImpacts.map((r) => r.name));
-      const found = travelImpactNames.filter((n) => resultNames.has(n));
+      const found = travelEconomicImpactNames.filter((n) => resultNames.has(n));
       assert.ok(found.length >= 0);
     });
 

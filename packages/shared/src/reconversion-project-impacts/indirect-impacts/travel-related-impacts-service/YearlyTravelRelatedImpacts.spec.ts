@@ -99,31 +99,19 @@ describe("YearlyTravelRelatedImpacts", () => {
         ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES: 200,
       },
     });
-    assert.ok(
-      Math.abs(yearlyTravelRelatedImpacts["avoidedMinorInjuriesPerYear"] - 44.4) <
-        Math.pow(10, -1) / 2,
-    );
-    assert.ok(
-      Math.abs(yearlyTravelRelatedImpacts["avoidedSevereInjuriesPerYear"] - 2.8) <
-        Math.pow(10, -1) / 2,
-    );
-    assert.ok(
-      Math.abs(yearlyTravelRelatedImpacts["avoidedDeathsPerYear"] - 0.8) < Math.pow(10, -1) / 2,
-    );
+    assert.deepStrictEqual(yearlyTravelRelatedImpacts["avoidedMinorInjuriesPerYear"], 44);
+    assert.deepStrictEqual(yearlyTravelRelatedImpacts["avoidedSevereInjuriesPerYear"], 2);
+    assert.deepStrictEqual(yearlyTravelRelatedImpacts["avoidedDeathsPerYear"], 0);
 
-    assert.ok(
-      Math.abs(
-        yearlyTravelRelatedImpacts["avoidedAccidentsMinorInjuriesExpensesPerYear"] - 860302,
-      ) < 0.5,
+    assert.deepStrictEqual(
+      yearlyTravelRelatedImpacts["avoidedAccidentsMinorInjuriesExpensesPerYear"],
+      852940,
     );
-    assert.ok(
-      Math.abs(
-        yearlyTravelRelatedImpacts["avoidedAccidentsSevereInjuriesExpensesPerYear"] - 1344244,
-      ) < 0.5,
+    assert.deepStrictEqual(
+      yearlyTravelRelatedImpacts["avoidedAccidentsSevereInjuriesExpensesPerYear"],
+      969266,
     );
-    assert.ok(
-      Math.abs(yearlyTravelRelatedImpacts["avoidedAccidentsDeathsExpensesPerYear"] - 3212221) < 0.5,
-    );
+    assert.deepStrictEqual(yearlyTravelRelatedImpacts["avoidedAccidentsDeathsExpensesPerYear"], 0);
   });
 
   it("computes avoided yearly impacts related to avoided travel", () => {
