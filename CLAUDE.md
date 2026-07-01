@@ -81,18 +81,13 @@ Note: We don't use monorepo dependency solutions (nx, turborepo). You must manua
 
 ## Testing Strategy
 
+> **How we design tests** (what to test, structure, where it lives): [.claude/rules/testing.md](.claude/rules/testing.md) — AAA planning, one behavior per test, self-contained setup, testing the real path, colocation, e2e scope. Read it when **writing or brainstorming** tests, not only when editing `*.spec.ts` files.
+
 ### Test Types
 
 - **Unit tests** (`.spec.ts`): No real I/O. Lives next to the code under test, in `core/` or `adapters/`. HTTP adapter tests with mocked transport (e.g., `mock.fn()` from `node:test` on `HttpService`) belong here — they verify request/response mapping without booting testcontainers.
 - **Integration tests** (`.integration-spec.ts` in `adapters/`): Real database or real network calls. Boots testcontainers.
 - **E2E tests** (`.spec.ts` in `e2e-tests/tests/`): Full user flows with Playwright against running stack
-
-### Testing Principles
-
-Each test should verify a **distinct behavior** not covered by other tests:
-- Ask: "If test A passes, would test B always pass?" - If yes, test B is redundant
-- Ask: "What unique failure mode does this test catch?"
-- Avoid redundant tests (e.g., "response validation" covered by happy path)
 
 ### Required Tests by Change Type
 
