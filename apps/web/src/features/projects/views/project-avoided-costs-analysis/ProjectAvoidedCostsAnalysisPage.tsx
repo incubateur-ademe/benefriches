@@ -87,9 +87,7 @@ export default function ProjectAvoidedCostsAnalysisPage({
           }
         />
 
-        {shouldDisplayOnBoarding && (
-          <UrbanSprawlImpactsComparisonIntroductionModalContainer projectType={projectType} />
-        )}
+        {shouldDisplayOnBoarding && <UrbanSprawlImpactsComparisonIntroductionModalContainer />}
       </div>
 
       {avoidedCostsView === "inaction" ? (

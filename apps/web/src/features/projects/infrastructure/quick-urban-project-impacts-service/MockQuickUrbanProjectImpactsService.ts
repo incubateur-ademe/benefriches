@@ -1,17 +1,16 @@
-import {
-  QuickUrbanProjectImpactsGateway,
-  ReconversionProjectImpactsResult,
-} from "../../application/project-impacts/actions/fetchQuickImpactsForUrbanProjectOnFriche.action";
+import { GetReconversionProjectImpactsResultDto } from "shared";
+
+import { QuickUrbanProjectImpactsGateway } from "../../application/project-impacts/actions/fetchQuickImpactsForUrbanProjectOnFriche.action";
 
 export class MockQuickUrbanProjectImpactsService implements QuickUrbanProjectImpactsGateway {
-  data: ReconversionProjectImpactsResult | undefined = undefined;
+  data: GetReconversionProjectImpactsResultDto | undefined = undefined;
 
-  async getImpacts(): Promise<ReconversionProjectImpactsResult> {
+  async getImpacts(): Promise<GetReconversionProjectImpactsResultDto> {
     if (!this.data) throw new Error("MockQuickUrbanProjectImpactsService error: no data");
     return Promise.resolve(this.data);
   }
 
-  _setImpacts(data: ReconversionProjectImpactsResult) {
+  _setImpacts(data: GetReconversionProjectImpactsResultDto) {
     this.data = data;
   }
 }

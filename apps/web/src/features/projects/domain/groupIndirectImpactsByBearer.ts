@@ -86,7 +86,7 @@ export type HumanityCategory = Extract<
 
 export const getBearerForImpact = (
   name: LocalAuthorityCategory | HumanityCategory | LocalPeopleOrCompanyCategory,
-  stakeholders: GetReconversionProjectImpactsResultDto["stakeholders"],
+  stakeholders: GetReconversionProjectImpactsResultDto["impacts"]["stakeholders"],
 ): Bearer => {
   switch (name) {
     case "avoidedFricheMaintenanceAndSecuringCostsForOwner":
@@ -183,7 +183,7 @@ export const groupIndirectEconomicImpactsByBearer = (
     | ProjectOperatingEconomicBalanceItem
     | SiteStatuQuoEconomicImpact
   )[],
-  stakeholders: GetReconversionProjectImpactsResultDto["stakeholders"],
+  stakeholders: GetReconversionProjectImpactsResultDto["impacts"]["stakeholders"],
 ): IndirectEconomicImpactsByBearer => {
   return indirectEconomicImpacts.reduce<IndirectEconomicImpactsByBearer>(
     (result, { name, total }) => {

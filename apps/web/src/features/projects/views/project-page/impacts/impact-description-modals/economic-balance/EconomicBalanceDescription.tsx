@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { roundTo2Digits } from "shared";
+import { DevelopmentPlanType, roundTo2Digits } from "shared";
 
 import { getEconomicBalanceProjectImpacts } from "@/features/projects/domain/projectImpactsEconomicBalance";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
@@ -20,12 +20,12 @@ import ModalColumnSeriesChart from "../shared/modal-charts/ModalColumnSeriesChar
 
 type Props = {
   impactsData: ModalDataProps["impactsData"];
-  projectData: ModalDataProps["projectData"];
+  projectType: DevelopmentPlanType;
 };
 
-const EconomicBalanceDescription = ({ impactsData, projectData }: Props) => {
+const EconomicBalanceDescription = ({ impactsData, projectType }: Props) => {
   const { economicBalance, total, bearer } = getEconomicBalanceProjectImpacts(
-    projectData.developmentPlan.type,
+    projectType,
     impactsData,
   );
   const { updateModalContent } = useContext(ImpactModalDescriptionContext);

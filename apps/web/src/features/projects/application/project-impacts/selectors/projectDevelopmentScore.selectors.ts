@@ -227,8 +227,8 @@ export const selectDevelopmentScoreDataView = createSelector(
               ({ name }) => name === "waterRegulation",
             )?.total,
           zanCompliance:
-            state.relatedSiteData?.nature === "FRICHE" &&
-            state.relatedSiteData?.fricheActivity !== "AGRICULTURE",
+            state.contextData?.siteNature === "FRICHE" &&
+            state.contextData?.fricheActivity !== "AGRICULTURE",
 
           ecosystemicServices: sumListWithKey(
             (

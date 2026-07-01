@@ -30,6 +30,7 @@ import {
   type ProjectImpactsState,
   type ViewMode,
 } from "../projectImpacts.reducer";
+import { selectImpactsCroppedByEvaluationPeriod } from "./projectBreakEvenLevel.selectors";
 
 // List View
 type ImpactsListViewData = {
@@ -42,47 +43,47 @@ type ImpactsListViewData = {
 
 const selectProjectImpactsState = (state: RootState) => state.projectImpacts;
 
-const selectImpactsData = createSelector(
+const selectImpactsContextData = createSelector(
   selectProjectImpactsState,
-  (state): ProjectImpactsState["impacts"] => state.impacts,
+  (state): ProjectImpactsState["contextData"] => state.contextData,
 );
 
 export const selectSocialProjectImpacts = createSelector(
-  selectImpactsData,
+  selectImpactsCroppedByEvaluationPeriod,
   getSocialProjectImpacts,
 );
 
 export const selectEnvironmentalProjectImpacts = createSelector(
-  selectProjectImpactsState,
-  (state) => {
-    if (!state.impacts) {
+  [selectImpactsCroppedByEvaluationPeriod, selectImpactsContextData],
+  (impacts, contextData) => {
+    if (!impacts) {
       return [];
     }
-    return getEnvironmentalProjectImpacts(state.impacts, state.relatedSiteData?.surfaceArea ?? 0);
+    return getEnvironmentalProjectImpacts(impacts, contextData?.siteSurfaceArea ?? 0);
   },
 );
 
 export const selectDetailedSocioEconomicProjectImpacts = createSelector(
-  selectImpactsData,
+  selectImpactsCroppedByEvaluationPeriod,
   getSocioEconomicProjectImpactsGroupedByCategory,
 );
 
 const selectProjectDevelopmentType = createSelector(
   selectProjectImpactsState,
   (state): ProjectDevelopmentPlanType =>
-    state.projectData?.developmentPlan.type ?? "PHOTOVOLTAIC_POWER_PLANT",
+    state.contextData?.projectDevelopmentPlan.type ?? "PHOTOVOLTAIC_POWER_PLANT",
 );
 
 export const selectEconomicBalanceProjectImpacts = createSelector(
   selectProjectDevelopmentType,
-  selectImpactsData,
+  selectImpactsCroppedByEvaluationPeriod,
   getEconomicBalanceProjectImpacts,
 );
 
-export const selectKeyImpactIndicatorsList = createSelector(selectProjectImpactsState, (state) =>
-  state.impacts && state.relatedSiteData
-    ? getKeyImpactIndicatorsList(state.impacts, state.relatedSiteData)
-    : [],
+export const selectKeyImpactIndicatorsList = createSelector(
+  [selectImpactsCroppedByEvaluationPeriod, selectImpactsContextData],
+  (impacts, contextData) =>
+    impacts && contextData ? getKeyImpactIndicatorsList(impacts, contextData) : [],
 );
 
 export const selectImpactsListViewData = createSelector(

@@ -32,6 +32,9 @@ const cropAndSumImpactMetric = <
   newEvaluationPeriodInYears: number,
   oldEvaluationPeriodInYears: number,
 ) => {
+  if (item.name === "soilsDistribution") {
+    return item;
+  }
   if (item.name === "conversionFullTimeJobs" || item.name === "reinstatementFullTimeJobs") {
     return {
       ...item,
@@ -50,9 +53,9 @@ const cropAndSumImpactMetric = <
 };
 
 export const cropImpactsByEvaluationPeriod = (
-  impacts: GetReconversionProjectImpactsResultDto,
+  impacts: GetReconversionProjectImpactsResultDto["impacts"],
   evaluationPeriodInYears: number,
-): GetReconversionProjectImpactsResultDto => {
+): GetReconversionProjectImpactsResultDto["impacts"] => {
   const croppedProjectionYears = impacts.projectionYears.slice(0, evaluationPeriodInYears);
 
   const croppedCumulativeBalanceByYear =

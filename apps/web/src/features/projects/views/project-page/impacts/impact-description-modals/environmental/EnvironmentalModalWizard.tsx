@@ -47,8 +47,7 @@ type Props = {
   impactName?: EnvironmentalMainImpactName;
   impactDetailsName?: EnvironmentalImpactDetailsName;
   impactSubSectionName?: EnvironmentSubSectionName;
-  projectData: ModalDataProps["projectData"];
-  siteData: ModalDataProps["siteData"];
+  contextData: ModalDataProps["contextData"];
   impactsData: ModalDataProps["impactsData"];
 };
 
@@ -56,11 +55,13 @@ export function EnvironmentalModalWizard({
   impactName,
   impactDetailsName,
   impactSubSectionName,
-  projectData,
-  siteData,
+  contextData,
   impactsData,
 }: Props) {
-  const environmentalImpacts = getEnvironmentalProjectImpacts(impactsData, siteData.surfaceArea);
+  const environmentalImpacts = getEnvironmentalProjectImpacts(
+    impactsData,
+    contextData.siteSurfaceArea,
+  );
   return (
     <Suspense fallback={<LoadingSpinner classes={{ text: "text-grey-light" }} />}>
       {(() => {
@@ -95,15 +96,15 @@ export function EnvironmentalModalWizard({
           case "avoided_co2_eq_emissions_with_production":
             return (
               <RenewableEnergyRelatedCo2Description
-                siteData={{ address: siteData.addressLabel }}
+                siteAddress={contextData.siteAddress.label}
                 impactData={
                   impactsData.aggregatedReconversionImpacts.impactsMetrics.find(
                     (item) => item.name === "avoidedCO2TonsWithEnergyProduction",
                   )?.total
                 }
-                projectData={
-                  projectData.developmentPlan.type === "PHOTOVOLTAIC_POWER_PLANT"
-                    ? projectData.developmentPlan
+                projectDevelopmentPlan={
+                  contextData.projectDevelopmentPlan.type === "PHOTOVOLTAIC_POWER_PLANT"
+                    ? contextData.projectDevelopmentPlan
                     : undefined
                 }
               />
@@ -112,8 +113,12 @@ export function EnvironmentalModalWizard({
           case "stored_co2_eq":
             return (
               <SoilsStorageRelatedCo2Description
-                baseSoilsDistribution={siteData.soilsDistribution}
-                forecastSoilsDistribution={projectData.soilsDistribution}
+                baseSoilsDistribution={impactsData.reconversionImpactsBreakdown.siteStatuQuoImpactMetrics.filter(
+                  (item) => item.name === "soilsDistribution",
+                )}
+                forecastSoilsDistribution={impactsData.reconversionImpactsBreakdown.projectIndirectImpactMetrics.filter(
+                  (item) => item.name === "soilsDistribution",
+                )}
                 impactData={
                   impactsData.aggregatedReconversionImpacts.impactsMetrics.find(
                     (item) => item.name === "newStoredCo2Eq",

@@ -1,10 +1,4 @@
-import {
-  convertSquareMetersToHectares,
-  isPrairie,
-  isWetLand,
-  SoilsDistribution,
-  typedObjectEntries,
-} from "shared";
+import { convertSquareMetersToHectares, isPrairie, isWetLand, SoilType } from "shared";
 
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import ModalBody from "@/features/projects/views/shared/impacts/modals/ModalBody";
@@ -19,8 +13,8 @@ import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import { breadcrumbSegments } from "./breadcrumbSegments";
 
 type Props = {
-  baseSoilsDistribution: SoilsDistribution;
-  forecastSoilsDistribution: SoilsDistribution;
+  baseSoilsDistribution: { soilType: SoilType; total: number }[];
+  forecastSoilsDistribution: { soilType: SoilType; total: number }[];
   impactData?: number;
 };
 
@@ -33,12 +27,12 @@ const NitrogenCycleDescription = ({
   forecastSoilsDistribution,
   impactData,
 }: Props) => {
-  const baseSoilsWithNitrogenCycleBenefitsDistributionEntries = typedObjectEntries(
-    baseSoilsDistribution,
-  ).filter(([key]) => isPrairie(key) || isWetLand(key));
-  const forecastSoilsWithNitrogenCycleBenefitsDistributionEntries = typedObjectEntries(
-    forecastSoilsDistribution,
-  ).filter(([key]) => isPrairie(key) || isWetLand(key));
+  const baseSoilsWithNitrogenCycleBenefitsDistribution = baseSoilsDistribution.filter(
+    ({ soilType }) => isPrairie(soilType) || isWetLand(soilType),
+  );
+  const forecastSoilsWithNitrogenCycleBenefitsDistribution = forecastSoilsDistribution.filter(
+    ({ soilType }) => isPrairie(soilType) || isWetLand(soilType),
+  );
 
   return (
     <ModalBody size="large">
@@ -85,11 +79,11 @@ const NitrogenCycleDescription = ({
           surfaces du site occupées par des prairies ou des zones humides (exprimées en hectare).
         </p>
         <ul>
-          {baseSoilsWithNitrogenCycleBenefitsDistributionEntries.length > 0 ? (
-            baseSoilsWithNitrogenCycleBenefitsDistributionEntries.map(([type, surfaceArea]) => {
+          {baseSoilsWithNitrogenCycleBenefitsDistribution.length > 0 ? (
+            baseSoilsWithNitrogenCycleBenefitsDistribution.map(({ soilType, total }) => {
               return (
-                <li key={type}>
-                  {getLabelForSoilType(type)} : {formatSoilSurfaceArea(surfaceArea as number)}
+                <li key={soilType}>
+                  {getLabelForSoilType(soilType)} : {formatSoilSurfaceArea(total)}
                 </li>
               );
             })
@@ -106,11 +100,11 @@ const NitrogenCycleDescription = ({
           en hectare).
         </p>
         <ul>
-          {forecastSoilsWithNitrogenCycleBenefitsDistributionEntries.length > 0 ? (
-            forecastSoilsWithNitrogenCycleBenefitsDistributionEntries.map(([type, surfaceArea]) => {
+          {forecastSoilsWithNitrogenCycleBenefitsDistribution.length > 0 ? (
+            forecastSoilsWithNitrogenCycleBenefitsDistribution.map(({ total, soilType }) => {
               return (
-                <li key={type}>
-                  {getLabelForSoilType(type)} : {formatSoilSurfaceArea(surfaceArea as number)}
+                <li key={soilType}>
+                  {getLabelForSoilType(soilType)} : {formatSoilSurfaceArea(total)}
                 </li>
               );
             })

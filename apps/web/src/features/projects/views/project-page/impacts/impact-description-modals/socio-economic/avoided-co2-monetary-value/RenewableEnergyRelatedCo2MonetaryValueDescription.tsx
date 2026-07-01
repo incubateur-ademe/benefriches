@@ -11,9 +11,9 @@ import {
 
 type Props = {
   impactData?: number;
-  projectData?: {
-    surfaceArea: number;
-    electricalPowerKWc: number;
+  projectDevelopmentPlan?: {
+    installationSurfaceArea: number;
+    installationElectricalPowerKWc: number;
   };
   siteData: {
     address: string;
@@ -23,7 +23,7 @@ type Props = {
 const AvoidedCO2WithEnRMonetaryValueDescription = ({
   impactData,
   siteData,
-  projectData,
+  projectDevelopmentPlan,
 }: Props) => {
   return (
     <ModalBody size="large">
@@ -50,8 +50,8 @@ const AvoidedCO2WithEnRMonetaryValueDescription = ({
         <RenewableEnergyRelatedCo2Content
           withMonetarisation={true}
           address={siteData.address}
-          developmentPlanSurfaceArea={projectData?.surfaceArea}
-          developmentPlanElectricalPowerKWc={projectData?.electricalPowerKWc}
+          developmentPlanSurfaceArea={projectDevelopmentPlan?.installationSurfaceArea}
+          developmentPlanElectricalPowerKWc={projectDevelopmentPlan?.installationElectricalPowerKWc}
         />
         ;
       </ModalContent>

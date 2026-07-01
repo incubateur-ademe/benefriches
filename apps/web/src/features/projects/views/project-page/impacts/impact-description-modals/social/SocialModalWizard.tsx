@@ -58,8 +58,7 @@ type Props = {
   impactName?: SocialMainImpactName;
   impactDetailsName?: SocialImpactDetailsName;
   impactSubSectionName?: SocialSubSectionName;
-  projectData: ModalDataProps["projectData"];
-  siteData: ModalDataProps["siteData"];
+  contextData: ModalDataProps["contextData"];
   impactsData: ModalDataProps["impactsData"];
 };
 
@@ -67,8 +66,7 @@ export function SocialModalWizard({
   impactName,
   impactDetailsName,
   impactSubSectionName,
-  projectData,
-  siteData,
+  contextData,
   impactsData,
 }: Props) {
   const socialImpacts = getSocialProjectImpacts(impactsData);
@@ -113,33 +111,37 @@ export function SocialModalWizard({
           case "conversion_full_time_jobs":
             return (
               <ReconversionFullTimeJobsDescription
-                isPhotovoltaic={projectData.developmentPlan.type === "PHOTOVOLTAIC_POWER_PLANT"}
+                isPhotovoltaic={
+                  contextData.projectDevelopmentPlan.type === "PHOTOVOLTAIC_POWER_PLANT"
+                }
               />
             );
           case "operations_full_time_jobs":
-            return projectData.developmentPlan.type === "PHOTOVOLTAIC_POWER_PLANT" ? (
+            return contextData.projectDevelopmentPlan.type === "PHOTOVOLTAIC_POWER_PLANT" ? (
               <PhotovoltaicOperationFullTimeJobsDescription
-                electricalPowerKWc={projectData.developmentPlan.electricalPowerKWc}
+                electricalPowerKWc={
+                  contextData.projectDevelopmentPlan.installationElectricalPowerKWc
+                }
               />
             ) : (
               <UrbanProjectOperationFullTimeJobsDescription
                 groundFloorRetailSurface={
-                  projectData.developmentPlan.buildingsFloorAreaDistribution.LOCAL_STORE ?? 0
+                  contextData.projectDevelopmentPlan.buildingsFloorAreaDistribution.LOCAL_STORE ?? 0
                 }
               />
             );
           case "households_powered_by_renewable_energy":
             return (
               <HouseholdsPoweredByRenewableEnergyDescription
-                address={siteData.addressLabel}
+                address={contextData.siteAddress.label}
                 developmentPlanElectricalPowerKWc={
-                  projectData.developmentPlan.type === "PHOTOVOLTAIC_POWER_PLANT"
-                    ? projectData.developmentPlan.electricalPowerKWc
+                  contextData.projectDevelopmentPlan.type === "PHOTOVOLTAIC_POWER_PLANT"
+                    ? contextData.projectDevelopmentPlan.installationElectricalPowerKWc
                     : undefined
                 }
                 developmentPlanSurfaceArea={
-                  projectData.developmentPlan.type === "PHOTOVOLTAIC_POWER_PLANT"
-                    ? projectData.developmentPlan.surfaceArea
+                  contextData.projectDevelopmentPlan.type === "PHOTOVOLTAIC_POWER_PLANT"
+                    ? contextData.projectDevelopmentPlan.installationSurfaceArea
                     : undefined
                 }
                 impactData={

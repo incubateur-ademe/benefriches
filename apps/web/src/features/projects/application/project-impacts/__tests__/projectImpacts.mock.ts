@@ -25,7 +25,7 @@ const buildProjectionYears = (startYear: number, count: number): string[] =>
 
 const buildSiteStatuQuoEconomicImpacts = (
   years: number,
-): GetReconversionProjectImpactsResultDto["reconversionImpactsBreakdown"]["siteStatuQuoIndirectEconomicImpactsData"] => {
+): GetReconversionProjectImpactsResultDto["impacts"]["reconversionImpactsBreakdown"]["siteStatuQuoIndirectEconomicImpactsData"] => {
   const details = [
     { name: "rentalIncome" as const, total: 540000, ...buildYearlySeries(540000, years) },
 
@@ -91,7 +91,7 @@ const siteStatuQuoImpactMetrics: SiteStatuQuoImpactMetric[] = [
   { name: "storedCo2Eq", total: 59 },
 ];
 
-const aggregatedSiteStatuQuoImpactMetrics: GetReconversionProjectImpactsResultDto["aggregatedReconversionImpacts"]["impactsMetrics"] =
+const aggregatedSiteStatuQuoImpactMetrics: GetReconversionProjectImpactsResultDto["impacts"]["aggregatedReconversionImpacts"]["impactsMetrics"] =
   [
     { name: "avoidedFricheAccidentsDeaths", total: 0 },
     { name: "avoidedFricheAccidentsSevereInjuries", total: 2 },
@@ -162,7 +162,7 @@ const buildPropertyTransferDutiesIncomeImpact = (years: number) => ({
   ...buildYearlySeries(5432, years),
 });
 
-const stakeholders: GetReconversionProjectImpactsResultDto["stakeholders"] = {
+const stakeholders: GetReconversionProjectImpactsResultDto["impacts"]["stakeholders"] = {
   current: {
     owner: { structureType: "municipality", structureName: "Mairie de Blajan" },
     tenant: { structureType: "unknown", structureName: "Current tenant" },
@@ -174,37 +174,9 @@ const stakeholders: GetReconversionProjectImpactsResultDto["stakeholders"] = {
   },
 };
 
-const siteData = {
-  owner: { name: "Mairie de Blajan", structureType: "municipality" },
-  surfaceArea: 90000,
-  fricheActivity: "INDUSTRY",
-  nature: "FRICHE",
-  addressLabel: "Blajan",
-  contaminatedSoilSurface: 20000,
-  soilsDistribution: {
-    BUILDINGS: 20000,
-    MINERAL_SOIL: 20000,
-    PRAIRIE_TREES: 0,
-    IMPERMEABLE_SOILS: 10000,
-    ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 40000,
-  },
-} as const;
-
-const projectData = {
-  contaminatedSoilSurface: 0,
-  isExpressProject: false,
-  soilsDistribution: {
-    ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 10000,
-    PRAIRIE_TREES: 20000,
-    BUILDINGS: 20000,
-    MINERAL_SOIL: 20000,
-    IMPERMEABLE_SOILS: 30000,
-  },
-} as const;
-
 const photovoltaicYears = 20;
 
-const photovoltaicEconomicBalance: GetReconversionProjectImpactsResultDto["projectEconomicBalance"] =
+const photovoltaicEconomicBalance: GetReconversionProjectImpactsResultDto["impacts"]["projectEconomicBalance"] =
   (() => {
     const details = [
       {
@@ -247,7 +219,7 @@ const photovoltaicEconomicBalance: GetReconversionProjectImpactsResultDto["proje
     return { total: sumListWithKey(details, "total"), details };
   })();
 
-const photovoltaicProjectOnSiteIndirectEconomicImpacts: GetReconversionProjectImpactsResultDto["reconversionImpactsBreakdown"]["projectOnSiteIndirectEconomicImpactsData"] =
+const photovoltaicProjectOnSiteIndirectEconomicImpacts: GetReconversionProjectImpactsResultDto["impacts"]["reconversionImpactsBreakdown"]["projectOnSiteIndirectEconomicImpactsData"] =
   (() => {
     const details = [
       buildPropertyTransferDutiesIncomeImpact(photovoltaicYears),
@@ -265,7 +237,7 @@ const photovoltaicProjectOnSiteIndirectEconomicImpacts: GetReconversionProjectIm
     return { total: sumListWithKey(details, "total"), details };
   })();
 
-const photovoltaicProjectIndirectImpactMetrics: GetReconversionProjectImpactsResultDto["reconversionImpactsBreakdown"]["projectIndirectImpactMetrics"] =
+const photovoltaicProjectIndirectImpactMetrics: GetReconversionProjectImpactsResultDto["impacts"]["reconversionImpactsBreakdown"]["projectIndirectImpactMetrics"] =
   [
     { name: "householdsPoweredByRenewableEnergy", total: 1000 },
     { name: "avoidedCO2TonsWithEnergyProduction", total: 112.3 },
@@ -279,7 +251,7 @@ const photovoltaicProjectIndirectImpactMetrics: GetReconversionProjectImpactsRes
 export const photovoltaicProjectImpactsResultDto = {
   projectionYears: buildProjectionYears(2024, photovoltaicYears),
   projectEconomicBalance: photovoltaicEconomicBalance,
-  operationsFirstYear: 0,
+  operationsFirstYear: 2024,
   stakeholders,
   aggregatedReconversionImpacts: {
     cumulativeBalanceByYear: buildYearlySeries(photovoltaicEconomicBalance.total, photovoltaicYears)
@@ -304,29 +276,34 @@ export const photovoltaicProjectImpactsResultDto = {
     projectIndirectImpactMetrics: photovoltaicProjectIndirectImpactMetrics,
     siteStatuQuoImpactMetrics,
   },
-} satisfies GetReconversionProjectImpactsResultDto;
+} satisfies GetReconversionProjectImpactsResultDto["impacts"];
 
-export const photovoltaicProjectImpactMockMeta = {
-  name: "Project photovoltaïque",
-  id: "1b521325-ee61-40fb-8462-e01669ac767b",
-  evaluationPeriodInYears: photovoltaicYears,
-  relatedSiteId: "68382abb-3a81-45e6-8af4-913767a28141",
-  relatedSiteName: "Friche agricole de Blajan",
-  siteData,
-  isExpressSite: false,
-  projectData: {
-    ...projectData,
-    developmentPlan: {
-      type: "PHOTOVOLTAIC_POWER_PLANT" as const,
-      electricalPowerKWc: 1000,
-      surfaceArea: 2300,
+export const photovoltaicProjectImpactMockMeta: GetReconversionProjectImpactsResultDto["contextData"] =
+  {
+    projectName: "Project photovoltaïque",
+    projectId: "1b521325-ee61-40fb-8462-e01669ac767b",
+    relatedSiteId: "68382abb-3a81-45e6-8af4-913767a28141",
+    relatedSiteName: "Friche agricole de Blajan",
+    isExpressSite: false,
+    isExpressProject: false,
+    siteAddress: {
+      label: "Blajan",
+      lat: 2.45,
+      long: 45.26,
     },
-  },
-};
+    siteNature: "FRICHE",
+    siteSurfaceArea: 90000,
+    fricheActivity: "INDUSTRY",
+    projectDevelopmentPlan: {
+      type: "PHOTOVOLTAIC_POWER_PLANT" as const,
+      installationElectricalPowerKWc: 1000,
+      installationSurfaceArea: 2300,
+    },
+  };
 
 const urbanYears = 50;
 
-const urbanEconomicBalance: GetReconversionProjectImpactsResultDto["projectEconomicBalance"] =
+const urbanEconomicBalance: GetReconversionProjectImpactsResultDto["impacts"]["projectEconomicBalance"] =
   (() => {
     const details = [
       {
@@ -353,7 +330,7 @@ const urbanEconomicBalance: GetReconversionProjectImpactsResultDto["projectEcono
     return { total: sumListWithKey(details, "total"), details };
   })();
 
-const urbanProjectOnSiteIndirectEconomicImpacts: GetReconversionProjectImpactsResultDto["reconversionImpactsBreakdown"]["projectOnSiteIndirectEconomicImpactsData"] =
+const urbanProjectOnSiteIndirectEconomicImpacts: GetReconversionProjectImpactsResultDto["impacts"]["reconversionImpactsBreakdown"]["projectOnSiteIndirectEconomicImpactsData"] =
   (() => {
     const details = [
       buildPropertyTransferDutiesIncomeImpact(urbanYears),
@@ -436,7 +413,7 @@ const urbanProjectOnSiteIndirectEconomicImpacts: GetReconversionProjectImpactsRe
     return { total: sumListWithKey(details, "total"), details };
   })();
 
-const urbanProjectIndirectImpactMetrics: GetReconversionProjectImpactsResultDto["reconversionImpactsBreakdown"]["projectIndirectImpactMetrics"] =
+const urbanProjectIndirectImpactMetrics: GetReconversionProjectImpactsResultDto["impacts"]["reconversionImpactsBreakdown"]["projectIndirectImpactMetrics"] =
   [
     { name: "avoidedVehiculeKilometers", total: 150000 },
     { name: "timeTravelSavedInHours", total: 555555 },
@@ -480,24 +457,28 @@ export const urbanProjectImpactsResultDto = {
     projectIndirectImpactMetrics: urbanProjectIndirectImpactMetrics,
     siteStatuQuoImpactMetrics,
   },
-} satisfies GetReconversionProjectImpactsResultDto;
+} satisfies GetReconversionProjectImpactsResultDto["impacts"];
 
 export const urbanProjectImpactMockMeta = {
-  name: "Projet urbain",
-  id: "5bd1c7cd-22e6-4c1c-8d50-41bca284ce05",
-  evaluationPeriodInYears: urbanYears,
+  projectName: "Projet urbain",
+  projectId: "5bd1c7cd-22e6-4c1c-8d50-41bca284ce05",
   relatedSiteId: "13958ec7-0468-4ecb-8217-0cc80a82b633",
   relatedSiteName: "Friche agricole de Blajan",
-  siteData,
   isExpressSite: false,
-  projectData: {
-    ...projectData,
-    developmentPlan: {
-      type: "URBAN_PROJECT" as const,
-      buildingsFloorAreaDistribution: {
-        LOCAL_STORE: 20000,
-        RESIDENTIAL: 70000,
-      },
+  isExpressProject: false,
+  siteAddress: {
+    label: "Blajan",
+    lat: 2.45,
+    long: 45.26,
+  },
+  siteNature: "FRICHE" as const,
+  siteSurfaceArea: 90000,
+  fricheActivity: "INDUSTRY" as const,
+  projectDevelopmentPlan: {
+    type: "URBAN_PROJECT" as const,
+    buildingsFloorAreaDistribution: {
+      LOCAL_STORE: 20000,
+      RESIDENTIAL: 70000,
     },
   },
 };

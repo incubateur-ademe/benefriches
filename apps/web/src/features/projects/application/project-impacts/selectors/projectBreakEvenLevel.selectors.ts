@@ -36,7 +36,7 @@ export const selectIndirectEconomicImpactsByBearer = createSelector(
 );
 
 export type BreakEvenLevelTabDataView =
-  | (GetReconversionProjectImpactsResultDto & {
+  | (GetReconversionProjectImpactsResultDto["impacts"] & {
       indirectEconomicImpactsByBearer: IndirectEconomicImpactsByBearer;
     })
   | undefined;

@@ -1,9 +1,7 @@
 import { createReducer, createSelector, isAnyOf, PayloadAction } from "@reduxjs/toolkit";
 import {
-  FricheActivity,
   GetReconversionProjectImpactsResultDto,
   SiteNature,
-  SoilsDistribution,
   UrbanSprawlImpactsComparisonResultDto,
 } from "shared";
 
@@ -12,8 +10,11 @@ import { selectAppSettings } from "@/features/app-settings/core/appSettings";
 
 import { ProjectDevelopmentPlanType } from "../../domain/projects.types";
 import { ModalDataProps } from "../../views/project-page/impacts/impact-description-modals/ImpactModalDescription";
-import { reconversionProjectImpactsBreakEvenLevelRequested, viewModeUpdated } from "./actions";
-import { evaluationPeriodUpdated, reconversionProjectImpactsRequested } from "./actions";
+import {
+  evaluationPeriodUpdated,
+  reconversionProjectImpactsBreakEvenLevelRequested,
+  viewModeUpdated,
+} from "./actions";
 import { fetchQuickImpactsForUrbanProjectOnFriche } from "./actions/fetchQuickImpactsForUrbanProjectOnFriche.action";
 import { urbanSprawlImpactsComparisonRequested } from "./actions/urbanSprawlImpactsComparisonRequested.action";
 
@@ -25,60 +26,22 @@ export type ViewMode = "list" | "summary";
 
 export type ProjectImpactsState = {
   dataLoadingState: {
-    oldProjectImpacts: LoadingState;
     impacts: LoadingState;
     urbanSprawlSimulation: LoadingState;
   };
-  projectData?: {
-    id: string;
-    name: string;
-    soilsDistribution: SoilsDistribution;
-    contaminatedSoilSurface: number;
-    isExpressProject: boolean;
-    developmentPlan:
-      | {
-          type: "PHOTOVOLTAIC_POWER_PLANT";
-          electricalPowerKWc: number;
-          surfaceArea: number;
-        }
-      | {
-          type: "URBAN_PROJECT";
-          buildingsFloorAreaDistribution: {
-            LOCAL_STORE?: number;
-            RESIDENTIAL?: number;
-          };
-        };
-  };
-  relatedSiteData?: {
-    id: string;
-    name: string;
-    isExpressSite: boolean;
-    addressLabel: string;
-    addressLat?: number;
-    addressLong?: number;
-    contaminatedSoilSurface: number;
-    soilsDistribution: SoilsDistribution;
-    surfaceArea: number;
-    nature: SiteNature;
-    fricheActivity: FricheActivity;
-    owner: {
-      structureType: string;
-      name: string;
-    };
-  };
+  contextData?: GetReconversionProjectImpactsResultDto["contextData"];
+
   currentViewMode: ViewMode;
   evaluationPeriod: number | undefined;
 
-  impacts?: GetReconversionProjectImpactsResultDto;
+  impacts?: GetReconversionProjectImpactsResultDto["impacts"];
   urbanSprawlSimulation?: UrbanSprawlImpactsComparisonResultDto;
 };
 
 export const getInitialState = (): ProjectImpactsState => {
   return {
-    projectData: undefined,
-    relatedSiteData: undefined,
+    contextData: undefined,
     dataLoadingState: {
-      oldProjectImpacts: "idle",
       impacts: "idle",
       urbanSprawlSimulation: "idle",
     },
@@ -91,28 +54,9 @@ export const projectImpactsReducer = createReducer(getInitialState(), (builder) 
   builder.addCase(viewModeUpdated, (state, action: PayloadAction<ViewMode>) => {
     state.currentViewMode = action.payload;
   });
-  builder.addCase(evaluationPeriodUpdated.pending, (state, action) => {
-    state.evaluationPeriod = action.meta.arg.evaluationPeriodInYears;
-    state.dataLoadingState.oldProjectImpacts = "loading";
-  });
-  /* fetch reconversion project impacts */
-  builder.addCase(reconversionProjectImpactsRequested.pending, (state) => {
-    state.dataLoadingState.oldProjectImpacts = "loading";
-  });
-  builder.addCase(reconversionProjectImpactsRequested.rejected, (state) => {
-    state.dataLoadingState.oldProjectImpacts = "error";
-  });
 
-  /* fetch reconversion project impacts break even level */
-  builder.addCase(reconversionProjectImpactsBreakEvenLevelRequested.pending, (state) => {
-    state.dataLoadingState.impacts = "loading";
-  });
-  builder.addCase(reconversionProjectImpactsBreakEvenLevelRequested.rejected, (state) => {
-    state.dataLoadingState.impacts = "error";
-  });
-  builder.addCase(reconversionProjectImpactsBreakEvenLevelRequested.fulfilled, (state, action) => {
-    state.dataLoadingState.impacts = "success";
-    state.impacts = action.payload;
+  builder.addCase(evaluationPeriodUpdated, (state, action: PayloadAction<number>) => {
+    state.evaluationPeriod = action.payload;
   });
 
   builder.addCase(urbanSprawlImpactsComparisonRequested.pending, (state) => {
@@ -126,43 +70,38 @@ export const projectImpactsReducer = createReducer(getInitialState(), (builder) 
     state.dataLoadingState.urbanSprawlSimulation = "error";
   });
 
-  /* fetch quick impacts for urban project on friche */
-  builder.addCase(fetchQuickImpactsForUrbanProjectOnFriche.pending, (state) => {
-    state.dataLoadingState.oldProjectImpacts = "loading";
-  });
-  builder.addCase(fetchQuickImpactsForUrbanProjectOnFriche.fulfilled, (state, action) => {
-    state.dataLoadingState.oldProjectImpacts = "success";
-    state.projectData = {
-      id: action.payload.id,
-      name: action.payload.name,
-      ...action.payload.projectData,
-    };
-    state.relatedSiteData = {
-      id: action.payload.relatedSiteId,
-      name: action.payload.relatedSiteName,
-      isExpressSite: action.payload.isExpressSite,
-      ...action.payload.siteData,
-    };
-  });
-  builder.addCase(fetchQuickImpactsForUrbanProjectOnFriche.rejected, (state) => {
-    state.dataLoadingState.oldProjectImpacts = "error";
-  });
+  /* fetch reconversion project impacts */
   builder.addMatcher(
-    isAnyOf(evaluationPeriodUpdated.fulfilled, reconversionProjectImpactsRequested.fulfilled),
+    isAnyOf(
+      reconversionProjectImpactsBreakEvenLevelRequested.pending,
+      fetchQuickImpactsForUrbanProjectOnFriche.pending,
+    ),
+    (state) => {
+      state.dataLoadingState.impacts = "loading";
+    },
+  );
+  builder.addMatcher(
+    isAnyOf(
+      reconversionProjectImpactsBreakEvenLevelRequested.rejected,
+      fetchQuickImpactsForUrbanProjectOnFriche.rejected,
+    ),
+    (state) => {
+      state.dataLoadingState.impacts = "error";
+    },
+  );
+  builder.addMatcher(
+    isAnyOf(
+      reconversionProjectImpactsBreakEvenLevelRequested.fulfilled,
+      fetchQuickImpactsForUrbanProjectOnFriche.fulfilled,
+    ),
     (state, action) => {
-      state.dataLoadingState.oldProjectImpacts = "success";
-      state.evaluationPeriod = action.payload.evaluationPeriodInYears;
-      state.projectData = {
-        id: action.payload.id,
-        name: action.payload.name,
-        ...action.payload.projectData,
-      };
-      state.relatedSiteData = {
-        id: action.payload.relatedSiteId,
-        name: action.payload.relatedSiteName,
-        isExpressSite: action.payload.isExpressSite,
-        ...action.payload.siteData,
-      };
+      state.dataLoadingState.impacts = "success";
+      state.impacts = action.payload.impacts;
+      state.contextData = action.payload.contextData;
+      if (!state.evaluationPeriod) {
+        state.evaluationPeriod =
+          state.contextData.projectDevelopmentPlan.type === "PHOTOVOLTAIC_POWER_PLANT" ? 30 : 50;
+      }
     },
   );
 });
@@ -171,7 +110,7 @@ const selectSelf = (state: RootState) => state.projectImpacts;
 
 export const selectProjectName = createSelector(
   selectSelf,
-  (state): string => state.projectData?.name ?? "Projet",
+  (state): string => state.contextData?.projectName ?? "Projet",
 );
 
 type ProjectsImpactsViewData = {
@@ -186,17 +125,17 @@ type ProjectsImpactsViewData = {
 export const selectProjectsImpactsViewData = createSelector(
   [selectSelf, selectAppSettings],
   (state, appSettings): ProjectsImpactsViewData => {
-    const isExpressProject = !!state.projectData?.isExpressProject;
-    const isExpressSite = !!state.relatedSiteData?.isExpressSite;
+    const isExpressProject = !!state.contextData?.isExpressProject;
+    const isExpressSite = !!state.contextData?.isExpressSite;
     const displayImpactsAccuracyDisclaimer =
       (isExpressProject || isExpressSite) && appSettings.displayImpactsAccuracyDisclaimer;
 
     return {
-      name: state.projectData?.name ?? "Projet",
-      siteNature: state.relatedSiteData?.nature,
-      siteName: state.relatedSiteData?.name ?? "",
-      siteId: state.relatedSiteData?.id ?? "",
-      type: state.projectData?.developmentPlan.type,
+      name: state.contextData?.projectName ?? "Projet",
+      siteNature: state.contextData?.siteNature,
+      siteName: state.contextData?.relatedSiteName ?? "",
+      siteId: state.contextData?.relatedSiteId ?? "",
+      type: state.contextData?.projectDevelopmentPlan.type,
       isExpressProject,
       displayImpactsAccuracyDisclaimer,
     };
@@ -206,8 +145,7 @@ export const selectProjectsImpactsViewData = createSelector(
 export const selectModalData = createSelector(
   selectSelf,
   (state): ModalDataProps => ({
-    projectData: state.projectData!,
-    siteData: state.relatedSiteData!,
+    contextData: state.contextData!,
     impactsData: state.impacts!,
   }),
 );

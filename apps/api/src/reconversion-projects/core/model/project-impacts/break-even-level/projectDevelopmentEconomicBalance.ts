@@ -23,7 +23,7 @@ export type InputProjectDevelopmentEconomicBalanceProps = {
     siteResaleSellingPrice?: number;
     buildingsResaleSellingPrice?: number;
   };
-  stakeholders: GetReconversionProjectImpactsResultDto["stakeholders"];
+  stakeholders: GetReconversionProjectImpactsResultDto["impacts"]["stakeholders"];
 };
 
 export const getProjectDevelopmentEconomicBalance = ({

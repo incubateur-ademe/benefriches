@@ -13,6 +13,7 @@ type Props = {
   evaluationPeriod: number;
   currentViewMode: ViewMode;
   onCurrentViewModeChange: (v: ViewMode) => void;
+  onEvaluationPeriodChange: (ep: number) => void;
   siteCity: string;
   siteSurfaceArea: number;
 };
@@ -21,6 +22,7 @@ export default function QuickImpactsEmbedView({
   currentViewMode,
   evaluationPeriod,
   onCurrentViewModeChange,
+  onEvaluationPeriodChange,
   siteCity,
   siteSurfaceArea,
 }: Props) {
@@ -46,7 +48,7 @@ export default function QuickImpactsEmbedView({
       <ImpactsActionBar
         small
         evaluationPeriod={evaluationPeriod}
-        onEvaluationPeriodChange={() => null}
+        onEvaluationPeriodChange={onEvaluationPeriodChange}
         onViewModeClick={onCurrentViewModeChange}
         selectedViewMode={currentViewMode}
       />

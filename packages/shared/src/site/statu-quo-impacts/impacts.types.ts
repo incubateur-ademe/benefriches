@@ -1,5 +1,6 @@
 import z from "zod";
 
+import { soilTypes } from "../../soils";
 import { siteStakeholdersStructureTypeSchema } from "../stakeholder";
 import { siteYearlyExpenseSchema } from "../yearlyExpenses";
 import { siteYearlyIncomeSchema } from "../yearlyIncome";
@@ -93,10 +94,17 @@ export type SiteStatuQuoEconomicImpact =
 export type SiteStatuQuoImpacts = z.infer<typeof siteStatuQuoImpactsSchema>;
 
 export type SiteStatuQuoImpactMetric = z.infer<typeof siteStatuQuoImpactMetricSchema>;
-export const siteStatuQuoImpactMetricSchema = z.object({
-  total: z.number(),
-  name: impactMetricNameSchema,
-});
+export const siteStatuQuoImpactMetricSchema = z.discriminatedUnion("name", [
+  z.object({
+    total: z.number(),
+    name: impactMetricNameSchema,
+  }),
+  z.object({
+    total: z.number(),
+    name: z.literal("soilsDistribution"),
+    soilType: z.literal(soilTypes),
+  }),
+]);
 export const siteStatuQuoImpactsSchema = z.object({
   projectionYears: z.array(z.string()),
   economicImpacts: z.object({

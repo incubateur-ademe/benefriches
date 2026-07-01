@@ -4,7 +4,10 @@ import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
-import { viewModeUpdated } from "../../application/project-impacts/actions";
+import {
+  evaluationPeriodUpdated,
+  viewModeUpdated,
+} from "../../application/project-impacts/actions";
 import { fetchQuickImpactsForUrbanProjectOnFriche } from "../../application/project-impacts/actions/fetchQuickImpactsForUrbanProjectOnFriche.action";
 import { ViewMode } from "../../application/project-impacts/projectImpacts.reducer";
 import EmbedImpactsView from "./EmbedImpactsView";
@@ -14,10 +17,10 @@ type Props = {
   siteSurfaceArea: number;
 };
 
-const evaluationPeriod = 30;
+const DEFAULT_EVALUATION_PERIOD = 30;
 
 export default function EmbedImpactsViewContainer({ siteCityCode, siteSurfaceArea }: Props) {
-  const { dataLoadingState, currentViewMode, relatedSiteData } = useAppSelector(
+  const { dataLoadingState, currentViewMode, evaluationPeriod, contextData } = useAppSelector(
     (state) => state.projectImpacts,
   );
 
@@ -27,23 +30,24 @@ export default function EmbedImpactsViewContainer({ siteCityCode, siteSurfaceAre
     void dispatch(fetchQuickImpactsForUrbanProjectOnFriche({ siteCityCode, siteSurfaceArea }));
   }, [siteCityCode, siteSurfaceArea, dispatch]);
 
-  if (dataLoadingState.oldProjectImpacts === "loading") {
+  if (dataLoadingState.impacts === "loading") {
     return <LoadingSpinner />;
   }
 
-  if (dataLoadingState.oldProjectImpacts === "success" && relatedSiteData) {
+  if (dataLoadingState.impacts === "success" && contextData) {
     return (
       <EmbedImpactsView
-        evaluationPeriod={evaluationPeriod}
+        evaluationPeriod={evaluationPeriod ?? DEFAULT_EVALUATION_PERIOD}
         currentViewMode={currentViewMode}
         onCurrentViewModeChange={(viewMode: ViewMode) => dispatch(viewModeUpdated(viewMode))}
-        siteCity={relatedSiteData.addressLabel}
-        siteSurfaceArea={relatedSiteData.surfaceArea}
+        onEvaluationPeriodChange={(ev: number) => dispatch(evaluationPeriodUpdated(ev))}
+        siteCity={contextData.siteAddress.label}
+        siteSurfaceArea={contextData.siteSurfaceArea}
       />
     );
   }
 
-  if (dataLoadingState.oldProjectImpacts === "error") {
+  if (dataLoadingState.impacts === "error") {
     return (
       <Alert
         description="Une erreur s'est produite lors du calcul des données, veuillez réessayer."

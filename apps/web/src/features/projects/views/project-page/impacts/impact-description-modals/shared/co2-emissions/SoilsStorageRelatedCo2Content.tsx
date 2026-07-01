@@ -1,6 +1,5 @@
 import { convertSquareMetersToHectares, SoilType } from "shared";
 
-import { ReconversionProjectImpactsResult } from "@/features/projects/application/project-impacts/actions";
 import ModalTitleThree from "@/features/projects/views/shared/impacts/modals/ModalTitleThree";
 import ModalTitleTwo from "@/features/projects/views/shared/impacts/modals/ModalTitleTwo";
 import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
@@ -8,8 +7,8 @@ import { getLabelForSoilType } from "@/shared/core/label-mapping/soilTypeLabelMa
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
 type Props = {
-  baseSoilsDistribution: ReconversionProjectImpactsResult["siteData"]["soilsDistribution"];
-  forecastSoilsDistribution: ReconversionProjectImpactsResult["projectData"]["soilsDistribution"];
+  baseSoilsDistribution: { soilType: SoilType; total: number }[];
+  forecastSoilsDistribution: { soilType: SoilType; total: number }[];
   withMonetarisation: boolean;
 };
 
@@ -55,10 +54,10 @@ const SoilsStorageRelatedCo2Description = ({
         occupée par chaque type de sol du site (exprimée en hectare).
       </p>
       <ul>
-        {Object.entries(baseSoilsDistribution).map(([type, surfaceArea]) => {
+        {baseSoilsDistribution.map(({ soilType: type, total }) => {
           return (
             <li key={type}>
-              {getLabelForSoilType(type as SoilType)} : {formatSoilSurfaceArea(surfaceArea)}
+              {getLabelForSoilType(type)} : {formatSoilSurfaceArea(total)}
             </li>
           );
         })}
@@ -70,10 +69,10 @@ const SoilsStorageRelatedCo2Description = ({
         occupée par chaque type de sol du projet (exprimée en hectare).
       </p>
       <ul>
-        {Object.entries(forecastSoilsDistribution).map(([type, surfaceArea]) => {
+        {forecastSoilsDistribution.map(({ soilType: type, total }) => {
           return (
             <li key={type}>
-              {getLabelForSoilType(type as SoilType)} : {formatSoilSurfaceArea(surfaceArea)}
+              {getLabelForSoilType(type)} : {formatSoilSurfaceArea(total)}
             </li>
           );
         })}

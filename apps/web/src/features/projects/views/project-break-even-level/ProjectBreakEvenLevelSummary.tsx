@@ -7,8 +7,8 @@ import classNames, { ClassValue } from "@/shared/views/clsx";
 import { selectImpactsPageViewData } from "../../application/project-impacts/selectors/projectImpacts.selectors";
 
 type Props = {
-  breakEvenYear: GetReconversionProjectImpactsResultDto["aggregatedReconversionImpacts"]["breakEvenYear"];
-  projectionYears: GetReconversionProjectImpactsResultDto["projectionYears"];
+  breakEvenYear: GetReconversionProjectImpactsResultDto["impacts"]["aggregatedReconversionImpacts"]["breakEvenYear"];
+  projectionYears: GetReconversionProjectImpactsResultDto["impacts"]["projectionYears"];
   classes?: { title?: ClassValue };
   compact?: boolean;
 };

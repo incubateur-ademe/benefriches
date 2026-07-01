@@ -1,4 +1,4 @@
-import { SoilsDistribution } from "shared";
+import { SoilType } from "shared";
 
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import ModalBody from "@/features/projects/views/shared/impacts/modals/ModalBody";
@@ -9,8 +9,8 @@ import SoilsStorageRelatedCo2Content from "../../shared/co2-emissions/SoilsStora
 import { breadcrumbSegments } from "./breadcrumbSegments";
 
 type Props = {
-  baseSoilsDistribution: SoilsDistribution;
-  forecastSoilsDistribution: SoilsDistribution;
+  baseSoilsDistribution: { soilType: SoilType; total: number }[];
+  forecastSoilsDistribution: { soilType: SoilType; total: number }[];
   impactData?: number;
 };
 

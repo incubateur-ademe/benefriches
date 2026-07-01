@@ -43,7 +43,7 @@ function ProjectPageContainer({ projectId }: Props) {
       currentViewMode={currentViewMode}
       displayImpactsAccuracyDisclaimer={displayImpactsAccuracyDisclaimer}
       onEvaluationPeriodChange={(evaluationPeriodInYears: number) =>
-        dispatch(evaluationPeriodUpdated({ evaluationPeriodInYears }))
+        dispatch(evaluationPeriodUpdated(evaluationPeriodInYears))
       }
       onCurrentViewModeChange={(viewMode: ViewMode) => dispatch(viewModeUpdated(viewMode))}
       onExportModalOpened={() => void dispatch(eventTracked(impactsExportModalOpened()))}

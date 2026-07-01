@@ -1,6 +1,5 @@
-import { SiteImpactsDataView, SiteNature } from "shared";
+import { SiteNature } from "shared";
 
-import { ProjectImpactsState } from "@/features/projects/application/project-impacts/projectImpacts.reducer";
 import { ProjectDevelopmentPlanType } from "@/features/projects/domain/projects.types";
 import DsfrDialogTitle from "@/shared/views/components/Dialog/DsfrDialogTitle";
 import { getPictogramUrlForSiteNature } from "@/shared/views/siteNature";
@@ -10,8 +9,8 @@ import { getScenarioPictoUrl } from "../../../shared/scenarioType";
 import "./IntroModalSecondStepContent.css";
 
 type Props = {
-  baseSiteData: Exclude<ProjectImpactsState["relatedSiteData"], undefined>;
-  comparisonSiteData: SiteImpactsDataView;
+  baseSiteNature: SiteNature;
+  comparisonSiteNature: SiteNature;
   projectType: ProjectDevelopmentPlanType;
 };
 
@@ -44,7 +43,7 @@ const getTextFromSiteNature = (nature: SiteNature) => {
   }
 };
 
-export default function Step1({ baseSiteData, comparisonSiteData, projectType }: Props) {
+export default function Step1({ baseSiteNature, comparisonSiteNature, projectType }: Props) {
   return (
     <>
       <DsfrDialogTitle>
@@ -68,7 +67,7 @@ export default function Step1({ baseSiteData, comparisonSiteData, projectType }:
               />
               +
               <img
-                src={getPictogramUrlForSiteNature(baseSiteData.nature)}
+                src={getPictogramUrlForSiteNature(baseSiteNature)}
                 aria-hidden={true}
                 alt=""
                 width="92"
@@ -77,10 +76,10 @@ export default function Step1({ baseSiteData, comparisonSiteData, projectType }:
               />
             </span>
             <strong className="text-xl">
-              La situation «&nbsp;{getTextFromSiteNature(baseSiteData.nature).projectText}&nbsp;»
+              La situation «&nbsp;{getTextFromSiteNature(baseSiteNature).projectText}&nbsp;»
             </strong>
-            {getTextFromSiteNature(baseSiteData.nature).conversion} et{" "}
-            {getTextFromSiteNature(comparisonSiteData.nature).statuQuo}
+            {getTextFromSiteNature(baseSiteNature).conversion} et{" "}
+            {getTextFromSiteNature(comparisonSiteNature).statuQuo}
           </span>
         </li>
 
@@ -100,7 +99,7 @@ export default function Step1({ baseSiteData, comparisonSiteData, projectType }:
               />
               +
               <img
-                src={getPictogramUrlForSiteNature(comparisonSiteData.nature)}
+                src={getPictogramUrlForSiteNature(comparisonSiteNature)}
                 aria-hidden={true}
                 alt=""
                 width="92"
@@ -109,11 +108,11 @@ export default function Step1({ baseSiteData, comparisonSiteData, projectType }:
               />
             </span>
             <strong className="text-xl">
-              La situation «&nbsp;{getTextFromSiteNature(comparisonSiteData.nature).projectText}
+              La situation «&nbsp;{getTextFromSiteNature(comparisonSiteNature).projectText}
               &nbsp;»
             </strong>
-            {getTextFromSiteNature(comparisonSiteData.nature).conversion} et{" "}
-            {getTextFromSiteNature(baseSiteData.nature).statuQuo}
+            {getTextFromSiteNature(comparisonSiteNature).conversion} et{" "}
+            {getTextFromSiteNature(baseSiteNature).statuQuo}
           </span>
         </li>
       </ul>

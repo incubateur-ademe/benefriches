@@ -37,6 +37,14 @@ export const getNatureConservationRelatedImpacts = ({
   const economicImpacts: ReconversionProjectOnSiteIndirectEconomicImpact[] = [];
   const impactMetrics: ProjectOnSiteImpactMetric[] = [];
 
+  impactMetrics.push(
+    ...typedObjectEntries(projectSoilsDistributionByType).map(([soilType, surface]) => ({
+      soilType,
+      total: surface ?? 0,
+      name: "soilsDistribution" as const,
+    })),
+  );
+
   const soilsCo2eqStorage = computeSoilsCo2eqStorageImpact(
     baseSoilsCarbonStorage?.total,
     projectSoilsCarbonStorage?.total,

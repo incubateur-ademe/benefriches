@@ -8,16 +8,18 @@ import { breadcrumbSegments } from "./breadcrumbSegments";
 
 type Props = {
   impactData?: number;
-  projectData?: {
-    surfaceArea: number;
-    electricalPowerKWc: number;
+  projectDevelopmentPlan?: {
+    installationSurfaceArea: number;
+    installationElectricalPowerKWc: number;
   };
-  siteData: {
-    address: string;
-  };
+  siteAddress: string;
 };
 
-const RenewableEnergyRelatedCo2Description = ({ impactData, siteData, projectData }: Props) => {
+const RenewableEnergyRelatedCo2Description = ({
+  impactData,
+  siteAddress,
+  projectDevelopmentPlan,
+}: Props) => {
   return (
     <ModalBody size="large">
       <ModalHeader
@@ -40,9 +42,9 @@ const RenewableEnergyRelatedCo2Description = ({ impactData, siteData, projectDat
       <ModalContent fullWidth>
         <RenewableEnergyRelatedCo2Content
           withMonetarisation={false}
-          address={siteData.address}
-          developmentPlanSurfaceArea={projectData?.surfaceArea}
-          developmentPlanElectricalPowerKWc={projectData?.electricalPowerKWc}
+          address={siteAddress}
+          developmentPlanSurfaceArea={projectDevelopmentPlan?.installationSurfaceArea}
+          developmentPlanElectricalPowerKWc={projectDevelopmentPlan?.installationElectricalPowerKWc}
         />
       </ModalContent>
     </ModalBody>

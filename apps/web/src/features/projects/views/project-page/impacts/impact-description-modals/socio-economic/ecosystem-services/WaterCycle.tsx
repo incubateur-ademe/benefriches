@@ -1,8 +1,7 @@
-import { convertSquareMetersToHectares, typedObjectEntries } from "shared";
+import { convertSquareMetersToHectares, SoilType } from "shared";
 import {
   isPermeableSurfaceWithoutPermanentVegetation,
   isSurfaceWithPermanentVegetation,
-  SoilsDistribution,
 } from "shared";
 
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
@@ -18,8 +17,8 @@ import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import { breadcrumbSegments } from "./breadcrumbSegments";
 
 type Props = {
-  baseSoilsDistribution: SoilsDistribution;
-  forecastSoilsDistribution: SoilsDistribution;
+  baseSoilsDistribution: { soilType: SoilType; total: number }[];
+  forecastSoilsDistribution: { soilType: SoilType; total: number }[];
   impactData?: number;
 };
 
@@ -28,17 +27,15 @@ const formatSoilSurfaceArea = (surfaceArea: number) => {
 };
 
 const WaterCycle = ({ baseSoilsDistribution, forecastSoilsDistribution, impactData }: Props) => {
-  const baseSoilsWithWaterCycleBenefitsDistributionEntries = typedObjectEntries(
-    baseSoilsDistribution,
-  ).filter(
-    ([key]) =>
-      isSurfaceWithPermanentVegetation(key) || isPermeableSurfaceWithoutPermanentVegetation(key),
+  const baseSoilsWithWaterCycleBenefitsDistribution = baseSoilsDistribution.filter(
+    ({ soilType }) =>
+      isSurfaceWithPermanentVegetation(soilType) ||
+      isPermeableSurfaceWithoutPermanentVegetation(soilType),
   );
-  const forecastSoilsWithWaterCycleBenefitsDistributionEntries = typedObjectEntries(
-    forecastSoilsDistribution,
-  ).filter(
-    ([key]) =>
-      isSurfaceWithPermanentVegetation(key) || isPermeableSurfaceWithoutPermanentVegetation(key),
+  const forecastSoilsWithWaterCycleBenefitsDistribution = forecastSoilsDistribution.filter(
+    ({ soilType }) =>
+      isSurfaceWithPermanentVegetation(soilType) ||
+      isPermeableSurfaceWithoutPermanentVegetation(soilType),
   );
 
   return (
@@ -89,11 +86,11 @@ const WaterCycle = ({ baseSoilsDistribution, forecastSoilsDistribution, impactDa
           hectare).
         </p>
         <ul>
-          {baseSoilsWithWaterCycleBenefitsDistributionEntries.length > 0 ? (
-            baseSoilsWithWaterCycleBenefitsDistributionEntries.map(([type, surfaceArea]) => {
+          {baseSoilsWithWaterCycleBenefitsDistribution.length > 0 ? (
+            baseSoilsWithWaterCycleBenefitsDistribution.map(({ soilType, total }) => {
               return (
-                <li key={type}>
-                  {getLabelForSoilType(type)} : {formatSoilSurfaceArea(surfaceArea as number)}
+                <li key={soilType}>
+                  {getLabelForSoilType(soilType)} : {formatSoilSurfaceArea(total)}
                 </li>
               );
             })
@@ -111,11 +108,11 @@ const WaterCycle = ({ baseSoilsDistribution, forecastSoilsDistribution, impactDa
           (exprimées en hectare).
         </p>
         <ul>
-          {forecastSoilsWithWaterCycleBenefitsDistributionEntries.length > 0 ? (
-            forecastSoilsWithWaterCycleBenefitsDistributionEntries.map(([type, surfaceArea]) => {
+          {forecastSoilsWithWaterCycleBenefitsDistribution.length > 0 ? (
+            forecastSoilsWithWaterCycleBenefitsDistribution.map(({ soilType, total }) => {
               return (
-                <li key={type}>
-                  {getLabelForSoilType(type)} : {formatSoilSurfaceArea(surfaceArea as number)}
+                <li key={soilType}>
+                  {getLabelForSoilType(soilType)} : {formatSoilSurfaceArea(total)}
                 </li>
               );
             })

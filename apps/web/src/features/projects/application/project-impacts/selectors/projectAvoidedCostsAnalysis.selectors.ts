@@ -23,21 +23,21 @@ export type AvoidedCostsAnalysisDataView = {
 export const selectAvoidedCostsAnalysisDataView = createSelector(
   [selectSelf],
   (state): AvoidedCostsAnalysisDataView | undefined =>
-    state.relatedSiteData?.nature && state.projectData?.developmentPlan.type
+    state.contextData?.siteNature && state.contextData.projectDevelopmentPlan.type
       ? {
           evaluationPeriodInYears: state.evaluationPeriod ?? 50,
-          siteNature: state.relatedSiteData?.nature,
-          projectType: state.projectData?.developmentPlan.type,
+          siteNature: state.contextData?.siteNature,
+          projectType: state.contextData.projectDevelopmentPlan.type,
         }
       : undefined,
 );
 
 export type AvoidedInactionCostsAnalysisDataView = {
-  siteStatuQuoIndirectEconomicImpactsData?: GetReconversionProjectImpactsResultDto["reconversionImpactsBreakdown"]["siteStatuQuoIndirectEconomicImpactsData"];
-  projectOnSiteIndirectEconomicImpactsData?: GetReconversionProjectImpactsResultDto["reconversionImpactsBreakdown"]["projectOnSiteIndirectEconomicImpactsData"];
+  siteStatuQuoIndirectEconomicImpactsData?: GetReconversionProjectImpactsResultDto["impacts"]["reconversionImpactsBreakdown"]["siteStatuQuoIndirectEconomicImpactsData"];
+  projectOnSiteIndirectEconomicImpactsData?: GetReconversionProjectImpactsResultDto["impacts"]["reconversionImpactsBreakdown"]["projectOnSiteIndirectEconomicImpactsData"];
   siteId?: string;
-  stakeholders?: GetReconversionProjectImpactsResultDto["stakeholders"];
-  projectEconomicBalance?: GetReconversionProjectImpactsResultDto["projectEconomicBalance"];
+  stakeholders?: GetReconversionProjectImpactsResultDto["impacts"]["stakeholders"];
+  projectEconomicBalance?: GetReconversionProjectImpactsResultDto["impacts"]["projectEconomicBalance"];
 };
 export const selectAvoidedInactionCostsAnalysisDataView = createSelector(
   [selectSelf, selectImpactsCroppedByEvaluationPeriod],
@@ -47,7 +47,7 @@ export const selectAvoidedInactionCostsAnalysisDataView = createSelector(
       impacts?.reconversionImpactsBreakdown.siteStatuQuoIndirectEconomicImpactsData,
     projectOnSiteIndirectEconomicImpactsData:
       impacts?.reconversionImpactsBreakdown.projectOnSiteIndirectEconomicImpactsData,
-    siteId: state.relatedSiteData?.id,
+    siteId: state.contextData?.relatedSiteId,
     projectEconomicBalance: impacts?.projectEconomicBalance,
   }),
 );
@@ -68,9 +68,7 @@ export type AvoidedCostsUrbanSprawlAnalysisDataView =
       projectImpacts: undefined;
       urbanSprawlSimulation: undefined;
       dataLoadingState: "loading" | "error" | "idle";
-
-      projectName: undefined;
-      conversionSiteData: undefined;
+      contextData: undefined;
       shouldDisplayOnBoarding: boolean;
     }
   | {
@@ -83,8 +81,7 @@ export type AvoidedCostsUrbanSprawlAnalysisDataView =
         projectOnSimulationSiteImpactsbyBearer: IndirectEconomicImpactsByBearer;
       };
       dataLoadingState: "success";
-      projectName: string;
-      conversionSiteData: ProjectImpactsState["relatedSiteData"];
+      contextData: ProjectImpactsState["contextData"];
       shouldDisplayOnBoarding: boolean;
     };
 export const selectAvoidedUrbanSprawlCostsAnalysisDataView = createSelector(
@@ -108,9 +105,8 @@ export const selectAvoidedUrbanSprawlCostsAnalysisDataView = createSelector(
         projectImpacts: undefined,
         urbanSprawlSimulation: undefined,
         dataLoadingState: "loading",
-        projectName: undefined,
         shouldDisplayOnBoarding,
-        conversionSiteData: undefined,
+        contextData: undefined,
       };
     }
 
@@ -122,9 +118,8 @@ export const selectAvoidedUrbanSprawlCostsAnalysisDataView = createSelector(
         projectImpacts: undefined,
         urbanSprawlSimulation: undefined,
         dataLoadingState: "error",
-        projectName: undefined,
         shouldDisplayOnBoarding,
-        conversionSiteData: undefined,
+        contextData: undefined,
       };
     }
     if (
@@ -161,18 +156,16 @@ export const selectAvoidedUrbanSprawlCostsAnalysisDataView = createSelector(
           ),
         },
         dataLoadingState: "success",
-        projectName: state.projectData?.name ?? "",
         shouldDisplayOnBoarding,
-        conversionSiteData: state.relatedSiteData!,
+        contextData: state.contextData!,
       };
     }
     return {
       projectImpacts: undefined,
       urbanSprawlSimulation: undefined,
       dataLoadingState: "idle",
-      projectName: undefined,
       shouldDisplayOnBoarding,
-      conversionSiteData: undefined,
+      contextData: undefined,
     };
   },
 );

@@ -1,11 +1,5 @@
 import { createAction } from "@reduxjs/toolkit";
-import {
-  FricheActivity,
-  GetReconversionProjectImpactsResultDto,
-  ReconversionProjectImpacts,
-  SiteNature,
-  SoilsDistribution,
-} from "shared";
+import { GetReconversionProjectImpactsResultDto } from "shared";
 
 import { createAppAsyncThunk } from "@/app/store/appAsyncThunk";
 
@@ -20,83 +14,14 @@ const createProjectImpactsAction = <TPayload = void>(actionName: string) =>
   createAction<TPayload>(createProjectImpactsActionName(actionName));
 
 export const viewModeUpdated = createProjectImpactsAction<ViewMode>("impactsViewModeUpdated");
+export const evaluationPeriodUpdated =
+  createProjectImpactsAction<number>("evaluationPeriodUpdated");
 
 export interface ReconversionProjectImpactsGateway {
   getReconversionProjectImpacts(
     reconversionProjectId: string,
-    evaluationPeriodInYears?: number,
-  ): Promise<ReconversionProjectImpactsResult>;
-  getReconversionProjectImpactsBreakEvenLevel(
-    reconversionProjectId: string,
   ): Promise<GetReconversionProjectImpactsResultDto>;
 }
-
-export type ReconversionProjectImpactsResult = {
-  id: string;
-  name: string;
-  evaluationPeriodInYears: number;
-  relatedSiteId: string;
-  relatedSiteName: string;
-  isExpressSite: boolean;
-  projectData: {
-    isExpressProject: boolean;
-    soilsDistribution: SoilsDistribution;
-    contaminatedSoilSurface: number;
-    developmentPlan:
-      | {
-          type: "PHOTOVOLTAIC_POWER_PLANT";
-          electricalPowerKWc: number;
-          surfaceArea: number;
-        }
-      | {
-          type: "URBAN_PROJECT";
-          buildingsFloorAreaDistribution: {
-            LOCAL_STORE?: number;
-            RESIDENTIAL?: number;
-          };
-        };
-  };
-  siteData: {
-    addressLabel: string;
-    contaminatedSoilSurface: number;
-    soilsDistribution: SoilsDistribution;
-    surfaceArea: number;
-    nature: SiteNature;
-    fricheActivity: FricheActivity;
-    owner: {
-      structureType: string;
-      name: string;
-    };
-  };
-  impacts: ReconversionProjectImpacts;
-};
-
-export const reconversionProjectImpactsRequested = createAppAsyncThunk<
-  ReconversionProjectImpactsResult,
-  { projectId: string }
->(
-  createProjectImpactsActionName("reconversionProjectImpactsRequested"),
-  async ({ projectId }, { extra }) => {
-    const data = await extra.reconversionProjectImpacts.getReconversionProjectImpacts(projectId);
-    return data;
-  },
-);
-
-export const evaluationPeriodUpdated = createAppAsyncThunk<
-  ReconversionProjectImpactsResult,
-  { evaluationPeriodInYears: number }
->(
-  createProjectImpactsActionName("impactsEvaluationPeriodUpdated"),
-  async ({ evaluationPeriodInYears }, { extra, getState }) => {
-    const { projectImpacts } = getState();
-
-    const data = await extra.reconversionProjectImpacts.getReconversionProjectImpacts(
-      projectImpacts.projectData?.id ?? "",
-      evaluationPeriodInYears,
-    );
-    return data;
-  },
-);
 
 export const reconversionProjectImpactsBreakEvenLevelRequested = createAppAsyncThunk<
   GetReconversionProjectImpactsResultDto,
@@ -104,8 +29,7 @@ export const reconversionProjectImpactsBreakEvenLevelRequested = createAppAsyncT
 >(
   createProjectImpactsActionName("reconversionProjectImpactsBreakEvenLevelRequested"),
   async ({ projectId }, { extra }) => {
-    const data =
-      await extra.reconversionProjectImpacts.getReconversionProjectImpactsBreakEvenLevel(projectId);
+    const data = await extra.reconversionProjectImpacts.getReconversionProjectImpacts(projectId);
     return data;
   },
 );

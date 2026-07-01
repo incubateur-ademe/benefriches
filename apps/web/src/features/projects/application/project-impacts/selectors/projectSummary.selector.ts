@@ -29,30 +29,15 @@ export type ProjectSummaryDataView = {
 
 const selectSelf = (state: RootState) => state.projectImpacts;
 
-const selectSiteData = createSelector(
+const selectContextData = createSelector(
   selectSelf,
-  (state): ProjectImpactsState["relatedSiteData"] => state.relatedSiteData,
-);
-
-const selectProjectData = createSelector(
-  selectSelf,
-  (state): ProjectImpactsState["projectData"] => state.projectData,
+  (state): ProjectImpactsState["contextData"] => state.contextData,
 );
 
 export const selectProjectSummaryDataView = createSelector(
-  [
-    selectProjectData,
-    selectSiteData,
-    selectKeyImpactIndicatorsList,
-    selectImpactsCroppedByEvaluationPeriod,
-  ],
-  (
-    projectData,
-    siteData,
-    keyImpactIndicatorList,
-    breakEvenLevel,
-  ): ProjectSummaryDataView | undefined => {
-    if (!breakEvenLevel || !siteData) {
+  [selectContextData, selectKeyImpactIndicatorsList, selectImpactsCroppedByEvaluationPeriod],
+  (contextData, keyImpactIndicatorList, breakEvenLevel): ProjectSummaryDataView | undefined => {
+    if (!breakEvenLevel || !contextData) {
       return undefined;
     }
     const zanCompliance = keyImpactIndicatorList.find(
@@ -71,16 +56,12 @@ export const selectProjectSummaryDataView = createSelector(
       projectionYears: breakEvenLevel.projectionYears,
       zanCompliance,
       mainImpactIndicator,
-      siteId: siteData.id,
-      siteName: siteData.name,
-      siteAddress: {
-        label: siteData.addressLabel,
-        lat: siteData.addressLat,
-        long: siteData.addressLong,
-      },
+      siteId: contextData.relatedSiteId,
+      siteName: contextData.relatedSiteName,
+      siteAddress: contextData.siteAddress,
       projectContext: {
-        isDemo: projectData?.isExpressProject ?? false,
-        isUrban: projectData?.developmentPlan.type === "URBAN_PROJECT",
+        isDemo: contextData?.isExpressProject ?? false,
+        isUrban: contextData?.projectDevelopmentPlan.type === "URBAN_PROJECT",
       },
     };
   },

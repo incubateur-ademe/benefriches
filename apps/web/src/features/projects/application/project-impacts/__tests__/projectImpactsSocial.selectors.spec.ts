@@ -2,18 +2,21 @@ import { createStore, RootState } from "@/app/store/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import { selectSocialProjectImpacts } from "../selectors/projectImpacts.selectors";
-import { photovoltaicProjectImpactsResultDto as projectImpactMock } from "./projectImpacts.mock";
+import {
+  photovoltaicProjectImpactMockMeta,
+  photovoltaicProjectImpactsResultDto as projectImpactMock,
+} from "./projectImpacts.mock";
 
 const MOCK_STATES = {
   projectImpacts: {
     dataLoadingState: {
-      oldProjectImpacts: "idle",
       impacts: "success",
       urbanSprawlSimulation: "idle",
     },
-    evaluationPeriod: 10,
+    evaluationPeriod: projectImpactMock.projectionYears.length,
     currentViewMode: "list",
     impacts: projectImpactMock,
+    contextData: photovoltaicProjectImpactMockMeta,
   } satisfies RootState["projectImpacts"],
 };
 
@@ -54,7 +57,8 @@ describe("projectImpactsSocial selectors", () => {
             base: 0,
             difference: 3,
             forecast: 3,
-            details: [  {
+            details: [
+              {
                 impact: { base: 0, difference: 2, forecast: 2 },
                 name: "avoided_friche_severe_accidents",
               },
@@ -62,7 +66,6 @@ describe("projectImpactsSocial selectors", () => {
                 impact: { base: 0, difference: 1, forecast: 1 },
                 name: "avoided_friche_minor_accidents",
               },
-            
             ],
           },
         }),

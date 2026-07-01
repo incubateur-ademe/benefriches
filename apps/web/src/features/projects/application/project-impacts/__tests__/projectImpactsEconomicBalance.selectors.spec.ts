@@ -4,6 +4,7 @@ import { getTestAppDependencies } from "@/test/testAppDependencies";
 import { selectEconomicBalanceProjectImpacts } from "../selectors/projectImpacts.selectors";
 import {
   photovoltaicProjectImpactsResultDto,
+  photovoltaicProjectImpactMockMeta,
   urbanProjectImpactMockMeta,
   urbanProjectImpactsResultDto,
 } from "./projectImpacts.mock";
@@ -11,13 +12,13 @@ import {
 const MOCK_STATES = {
   projectImpacts: {
     dataLoadingState: {
-      oldProjectImpacts: "success",
       impacts: "success",
       urbanSprawlSimulation: "idle",
     },
-    evaluationPeriod: 10,
+    evaluationPeriod: photovoltaicProjectImpactsResultDto.projectionYears.length,
     currentViewMode: "list",
     impacts: photovoltaicProjectImpactsResultDto,
+    contextData: photovoltaicProjectImpactMockMeta,
   } satisfies RootState["projectImpacts"],
 };
 
@@ -88,11 +89,9 @@ describe("projectImpactsEconomicBalance selectors", () => {
       const store = createStore(getTestAppDependencies(), {
         projectImpacts: {
           ...MOCK_STATES.projectImpacts,
-          projectData: {
-            name: "Urban project 1",
-            id: "aaa-bbb-111",
-            ...urbanProjectImpactMockMeta.projectData,
-          },
+          evaluationPeriod: urbanProjectImpactsResultDto.projectionYears.length,
+          impacts: urbanProjectImpactsResultDto,
+          contextData: urbanProjectImpactMockMeta,
         },
       });
       const rootState = store.getState();
@@ -111,6 +110,7 @@ describe("projectImpactsEconomicBalance selectors", () => {
       const store = createStore(getTestAppDependencies(), {
         projectImpacts: {
           ...MOCK_STATES.projectImpacts,
+          evaluationPeriod: urbanProjectImpactsResultDto.projectionYears.length,
           impacts: {
             ...urbanProjectImpactsResultDto,
             projectEconomicBalance: {
@@ -139,11 +139,6 @@ describe("projectImpactsEconomicBalance selectors", () => {
                 },
               ],
             },
-          },
-          projectData: {
-            name: "Urban project 1",
-            id: "aaa-bbb-111",
-            ...urbanProjectImpactMockMeta.projectData,
           },
         },
       });

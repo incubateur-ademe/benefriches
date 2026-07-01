@@ -23,7 +23,23 @@ describe("natureConservationRelatedImpacts", () => {
     });
 
     assert.strictEqual(result.economicImpacts.length, 0);
-    assert.strictEqual(result.impactMetrics.length, 0);
+    assert.strictEqual(result.impactMetrics.length, 2);
+    assert.strictEqual(
+      result.impactMetrics.find((item) => item.name === "soilsDistribution")?.soilType,
+      "PRAIRIE_BUSHES",
+    );
+    assert.strictEqual(
+      result.impactMetrics.find((item) => item.name === "soilsDistribution")?.total,
+      1000,
+    );
+    assert.strictEqual(
+      result.impactMetrics.findLast((item) => item.name === "soilsDistribution")?.soilType,
+      "FOREST_CONIFER",
+    );
+    assert.strictEqual(
+      result.impactMetrics.findLast((item) => item.name === "soilsDistribution")?.total,
+      200,
+    );
   });
 
   it("returns no carbon storage impact if no base and forecast provided", () => {

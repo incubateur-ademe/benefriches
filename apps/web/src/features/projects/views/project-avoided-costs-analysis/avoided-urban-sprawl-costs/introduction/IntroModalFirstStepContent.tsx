@@ -66,8 +66,7 @@ const formatSiteDataAsFeatures = (siteData: SiteImpactsDataView): SiteFeatures =
 };
 
 type Props = {
-  projectName: string;
-  baseSiteData: Exclude<ProjectImpactsState["relatedSiteData"], undefined>;
+  contextData: Exclude<ProjectImpactsState["contextData"], undefined>;
   comparisonSiteData: SiteImpactsDataView;
 };
 
@@ -91,11 +90,7 @@ const formatCityWithPlacePreposition = (name: string): string => {
   return `à ${capitalize(name)}`;
 };
 
-export default function IntroModalFirstStepContent({
-  projectName,
-  baseSiteData,
-  comparisonSiteData,
-}: Props) {
+export default function IntroModalFirstStepContent({ contextData, comparisonSiteData }: Props) {
   const emojiClassName = {
     root: "flex gap-2",
     emoji: STYLES_BY_SITE_NATURE.background[comparisonSiteData.nature],
@@ -180,10 +175,12 @@ export default function IntroModalFirstStepContent({
 
         <EmojiListItem emoji="📍" size="large" classes={emojiClassName}>
           <span className="flex flex-col">
-            <strong>Implanté {formatCityWithPlacePreposition(baseSiteData.addressLabel)}</strong>
+            <strong>
+              Implanté {formatCityWithPlacePreposition(contextData.siteAddress.label)}
+            </strong>
             <span>
               {(() => {
-                switch (baseSiteData.nature) {
+                switch (contextData.siteNature) {
                   case "AGRICULTURAL_OPERATION":
                     return "Même commune que l'exploitation agricole";
                   case "FRICHE":
@@ -200,13 +197,13 @@ export default function IntroModalFirstStepContent({
         <EmojiListItem emoji="📏" size="large" classes={emojiClassName}>
           <span className="flex flex-col">
             <strong>
-              {formatNumberFr(convertSquareMetersToHectares(baseSiteData.surfaceArea))} ha de
+              {formatNumberFr(convertSquareMetersToHectares(contextData.siteSurfaceArea))} ha de
               superficie
             </strong>
 
             <span>
               {(() => {
-                switch (baseSiteData.nature) {
+                switch (contextData.siteNature) {
                   case "AGRICULTURAL_OPERATION":
                     return "Même superficie que l'exploitation agricole";
                   case "FRICHE":
@@ -223,8 +220,8 @@ export default function IntroModalFirstStepContent({
       </ul>
       <p>
         Vous allez ainsi comparer les impacts de votre projet{" "}
-        <strong>«&nbsp;{projectName}&nbsp;»</strong> sur le site «&nbsp;{baseSiteData.name}&nbsp;»
-        avec le même projet sur{" "}
+        <strong>«&nbsp;{contextData.projectName}&nbsp;»</strong> sur le site «&nbsp;
+        {contextData.relatedSiteName}&nbsp;» avec le même projet sur{" "}
         {(() => {
           switch (comparisonSiteData.nature) {
             case "AGRICULTURAL_OPERATION":

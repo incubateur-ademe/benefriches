@@ -9,7 +9,7 @@ import { getPositiveNegativeTextClassesFromValue } from "@/shared/views/classes/
 import ImpactChartCard from "../../shared/charts/ImpactChartCard";
 import { formatMonetaryImpact } from "../../shared/formatImpactValue";
 
-type Props = Pick<GetReconversionProjectImpactsResultDto, "projectEconomicBalance">;
+type Props = Pick<GetReconversionProjectImpactsResultDto["impacts"], "projectEconomicBalance">;
 
 const barChartOptions: Options = withDefaultBarChartOptions({
   tooltip: {

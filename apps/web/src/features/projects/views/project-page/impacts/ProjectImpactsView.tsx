@@ -78,7 +78,7 @@ const ProjectImpactsView = ({
         header={<ProjectPageHeader projectId={projectId} />}
       />
 
-      {dataLoadingState.oldProjectImpacts === "error" && (
+      {dataLoadingState.impacts === "error" && (
         <Alert
           description="Une erreur s'est produite lors du chargement des données, veuillez réessayer."
           severity="error"
@@ -86,8 +86,8 @@ const ProjectImpactsView = ({
           className="my-7"
         />
       )}
-      {dataLoadingState.oldProjectImpacts === "loading" && <LoadingSpinner />}
-      {dataLoadingState.oldProjectImpacts === "success" && (
+      {dataLoadingState.impacts === "loading" && <LoadingSpinner />}
+      {dataLoadingState.impacts === "success" && (
         <>
           {currentViewMode === "summary" && (
             <>

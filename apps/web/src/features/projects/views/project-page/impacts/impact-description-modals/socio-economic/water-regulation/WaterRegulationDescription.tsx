@@ -1,5 +1,5 @@
-import { convertSquareMetersToHectares, typedObjectEntries } from "shared";
-import { isForest, isPrairie, isWetLand, SoilsDistribution } from "shared";
+import { convertSquareMetersToHectares } from "shared";
+import { isForest, isPrairie, isWetLand, SoilType } from "shared";
 
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import ModalBody from "@/features/projects/views/shared/impacts/modals/ModalBody";
@@ -17,8 +17,8 @@ import {
 } from "../breadcrumbSections";
 
 type Props = {
-  baseSoilsDistribution: SoilsDistribution;
-  forecastSoilsDistribution: SoilsDistribution;
+  baseSoilsDistribution: { soilType: SoilType; total: number }[];
+  forecastSoilsDistribution: { soilType: SoilType; total: number }[];
   baseContaminatedSurface: number;
   forecastContaminatedSurface: number;
   impactData?: number;
@@ -35,13 +35,13 @@ const WaterRegulationDescription = ({
   forecastContaminatedSurface,
   impactData,
 }: Props) => {
-  const baseSoilsWithBenefitsDistributionEntries = typedObjectEntries(baseSoilsDistribution).filter(
-    ([key]) => isPrairie(key) || isForest(key) || isWetLand(key),
+  const baseSoilsWithBenefitsDistribution = baseSoilsDistribution.filter(
+    ({ soilType }) => isPrairie(soilType) || isForest(soilType) || isWetLand(soilType),
   );
 
-  const forecastSoilsWithBenefitsDistributionEntries = typedObjectEntries(
-    forecastSoilsDistribution,
-  ).filter(([key]) => isPrairie(key) || isForest(key) || isWetLand(key));
+  const forecastSoilsWithBenefitsDistribution = forecastSoilsDistribution.filter(
+    ({ soilType }) => isPrairie(soilType) || isForest(soilType) || isWetLand(soilType),
+  );
 
   return (
     <ModalBody size="large">
@@ -86,11 +86,11 @@ const WaterRegulationDescription = ({
           des prairies, (ii) par des forêts et (iii) par des zones humides (exprimées en hectare).
         </p>
         <ul>
-          {baseSoilsWithBenefitsDistributionEntries.length > 0 ? (
-            baseSoilsWithBenefitsDistributionEntries.map(([type, surfaceArea]) => {
+          {baseSoilsWithBenefitsDistribution.length > 0 ? (
+            baseSoilsWithBenefitsDistribution.map(({ soilType, total }) => {
               return (
-                <li key={type}>
-                  {getLabelForSoilType(type)} : {formatSoilSurfaceArea(surfaceArea as number)}
+                <li key={soilType}>
+                  {getLabelForSoilType(soilType)} : {formatSoilSurfaceArea(total)}
                 </li>
               );
             })
@@ -108,11 +108,11 @@ const WaterRegulationDescription = ({
           humides (exprimées en hectare).
         </p>
         <ul>
-          {forecastSoilsWithBenefitsDistributionEntries.length > 0 ? (
-            forecastSoilsWithBenefitsDistributionEntries.map(([type, surfaceArea]) => {
+          {forecastSoilsWithBenefitsDistribution.length > 0 ? (
+            forecastSoilsWithBenefitsDistribution.map(({ soilType, total }) => {
               return (
-                <li key={type}>
-                  {getLabelForSoilType(type)} : {formatSoilSurfaceArea(surfaceArea as number)}
+                <li key={soilType}>
+                  {getLabelForSoilType(soilType)} : {formatSoilSurfaceArea(total)}
                 </li>
               );
             })

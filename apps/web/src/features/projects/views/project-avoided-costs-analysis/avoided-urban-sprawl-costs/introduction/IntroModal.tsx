@@ -3,7 +3,6 @@ import { useState } from "react";
 import { SiteImpactsDataView } from "shared";
 
 import { ProjectImpactsState } from "@/features/projects/application/project-impacts/projectImpacts.reducer";
-import { ProjectDevelopmentPlanType } from "@/features/projects/domain/projects.types";
 import DsfrDialogContent from "@/shared/views/components/Dialog/DsfrDialogContent";
 import DsfrDialogFooter from "@/shared/views/components/Dialog/DsfrDialogFooter";
 import DsfrDialogHeader from "@/shared/views/components/Dialog/DsfrDialogHeader";
@@ -17,9 +16,7 @@ import Step2 from "./IntroModalSecondStepContent";
 type Props = {
   onFinalNext: () => void;
   dataLoadingState: ProjectImpactsState["dataLoadingState"]["urbanSprawlSimulation"];
-  projectName?: string;
-  projectType?: ProjectDevelopmentPlanType;
-  baseSiteData: ProjectImpactsState["relatedSiteData"];
+  contextData: ProjectImpactsState["contextData"];
   comparisonSiteData?: SiteImpactsDataView;
 };
 
@@ -27,10 +24,8 @@ export const ONBOARDING_DIALOG_ID = "fr-dialog-urban-sprawl-comparison-onboardin
 
 export default function UrbanSprawlImpactsComparisonIntroductionModal({
   onFinalNext,
-  projectName,
-  projectType,
   dataLoadingState,
-  baseSiteData,
+  contextData,
   comparisonSiteData,
 }: Props) {
   const [currentStep, setCurrentStep] = useState<0 | 1>(0);
@@ -62,11 +57,7 @@ export default function UrbanSprawlImpactsComparisonIntroductionModal({
           return (
             <>
               <DsfrDialogContent>
-                <Step1
-                  projectName={projectName!}
-                  baseSiteData={baseSiteData!}
-                  comparisonSiteData={comparisonSiteData!}
-                />
+                <Step1 contextData={contextData!} comparisonSiteData={comparisonSiteData!} />
               </DsfrDialogContent>
               <DsfrDialogFooter
                 buttons={[
@@ -87,9 +78,9 @@ export default function UrbanSprawlImpactsComparisonIntroductionModal({
             <>
               <DsfrDialogContent>
                 <Step2
-                  projectType={projectType!}
-                  baseSiteData={baseSiteData!}
-                  comparisonSiteData={comparisonSiteData!}
+                  projectType={contextData?.projectDevelopmentPlan.type ?? "URBAN_PROJECT"}
+                  baseSiteNature={contextData?.siteNature ?? "FRICHE"}
+                  comparisonSiteNature={comparisonSiteData?.nature ?? "AGRICULTURAL_OPERATION"}
                 />
               </DsfrDialogContent>
               <DsfrDialogFooter

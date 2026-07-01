@@ -1,4 +1,5 @@
 import {
+  DevelopmentPlanFeatures,
   GetReconversionProjectImpactsResultDto,
   ReconversionProjectImpactsDataView,
   SiteImpactsDataView,
@@ -50,6 +51,21 @@ type ComputeReconversionProjectImpactsResult = TResult<
   "ReconversionProjectNotFound" | "SiteNotFound" | "NoDevelopmentPlanType"
 >;
 
+const extractProjectDevelopmentPlan = (developmentPlan: DevelopmentPlanFeatures) => {
+  if (developmentPlan.type === "PHOTOVOLTAIC_POWER_PLANT") {
+    return {
+      type: developmentPlan.type,
+      installationElectricalPowerKWc: developmentPlan.features?.electricalPowerKWc,
+      installationSurfaceArea: developmentPlan.features.surfaceArea,
+    };
+  }
+
+  return {
+    type: developmentPlan.type,
+    buildingsFloorAreaDistribution: developmentPlan.features?.buildingsFloorAreaDistribution,
+  };
+};
+
 export class ComputeReconversionProjectBreakEvenLevelUseCase implements UseCase<
   Request,
   ComputeReconversionProjectImpactsResult
@@ -97,8 +113,27 @@ export class ComputeReconversionProjectBreakEvenLevelUseCase implements UseCase<
 
     const cityStats = await this.cityStatsQuery.getCityStats(relatedSite.address.cityCode);
 
-    return success(
-      computeProjectImpactsWithBreakEvenLevel({
+    return success({
+      contextData: {
+        projectId: reconversionProject.id,
+        projectName: reconversionProject.name,
+        relatedSiteId: reconversionProject.relatedSiteId,
+        relatedSiteName: relatedSite.name,
+        isExpressSite: true,
+        isExpressProject: true,
+        projectDevelopmentPlan: extractProjectDevelopmentPlan(
+          reconversionProject.developmentPlan as DevelopmentPlanFeatures,
+        ),
+        siteAddress: {
+          lat: relatedSite.address.lat,
+          long: relatedSite.address.long,
+          label: relatedSite.address.value,
+        },
+        siteNature: relatedSite.nature,
+        siteSurfaceArea: relatedSite.surfaceArea,
+        fricheActivity: relatedSite.fricheActivity,
+      },
+      impacts: computeProjectImpactsWithBreakEvenLevel({
         reconversionProject: {
           ...reconversionProject,
           projectSoilsCarbonStorage,
@@ -108,6 +143,6 @@ export class ComputeReconversionProjectBreakEvenLevelUseCase implements UseCase<
         evaluationPeriodInYears,
         cityStats,
       }),
-    );
+    });
   }
 }

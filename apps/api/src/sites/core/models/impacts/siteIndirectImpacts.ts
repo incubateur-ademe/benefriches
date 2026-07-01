@@ -23,6 +23,7 @@ import {
   AgriculturalOperationActivity,
   isGreenSoil,
   isMineralSoil,
+  typedObjectEntries,
 } from "shared";
 
 import { computeCumulativeByYear } from "src/reconversion-projects/core/model/project-impacts/break-even-level/projectIndirectImpacts";
@@ -157,6 +158,14 @@ export const getSiteStatuQuoIndirectsImpacts = ({
     );
     economicImpacts.push(...taxesImpacts);
   }
+
+  impactMetrics.push(
+    ...typedObjectEntries(siteData.soilsDistribution).map(([soilType, surface]) => ({
+      soilType,
+      total: surface ?? 0,
+      name: "soilsDistribution" as const,
+    })),
+  );
 
   if (siteData.contaminatedSoilSurface) {
     const waterRegulationMonetaryImpact = computeWaterRegulationMonetaryValue({

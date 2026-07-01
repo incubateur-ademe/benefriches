@@ -30,7 +30,7 @@ const getProjectImpactBalance = ({
 };
 
 const getAvoidedFricheCostsForLocalAuthority = (
-  socioEconomicList: GetReconversionProjectImpactsResultDto["aggregatedReconversionImpacts"]["indirectEconomicImpacts"]["details"],
+  socioEconomicList: GetReconversionProjectImpactsResultDto["impacts"]["aggregatedReconversionImpacts"]["indirectEconomicImpacts"]["details"],
   siteOwner: SiteData["owner"],
 ) => {
   const avoidedFricheCosts = sumListWithKey(
@@ -54,7 +54,7 @@ const getAvoidedFricheCostsForLocalAuthority = (
 };
 
 const getTaxesIncomeImpact = (
-  socioEconomicList: GetReconversionProjectImpactsResultDto["aggregatedReconversionImpacts"]["indirectEconomicImpacts"]["details"],
+  socioEconomicList: GetReconversionProjectImpactsResultDto["impacts"]["aggregatedReconversionImpacts"]["indirectEconomicImpacts"]["details"],
 ) => {
   const taxesIncomes = socioEconomicList.filter(
     ({ name }) =>
@@ -73,7 +73,7 @@ const getTaxesIncomeImpact = (
 };
 
 const getFullTimeJobsImpact = (
-  impactMetrics: GetReconversionProjectImpactsResultDto["aggregatedReconversionImpacts"]["impactsMetrics"],
+  impactMetrics: GetReconversionProjectImpactsResultDto["impacts"]["aggregatedReconversionImpacts"]["impactsMetrics"],
 ) => {
   const fullTimeJobs = impactMetrics.filter(
     ({ name }) =>
@@ -101,13 +101,13 @@ const getFullTimeJobsImpact = (
 };
 
 const getHouseholdsPoweredByRenewableEnergy = (
-  impactMetrics: GetReconversionProjectImpactsResultDto["aggregatedReconversionImpacts"]["impactsMetrics"],
+  impactMetrics: GetReconversionProjectImpactsResultDto["impacts"]["aggregatedReconversionImpacts"]["impactsMetrics"],
 ) => {
   return impactMetrics.find(({ name }) => name === "householdsPoweredByRenewableEnergy")?.total;
 };
 
 const getAvoidedCo2eqEmissions = (
-  impactMetrics: GetReconversionProjectImpactsResultDto["aggregatedReconversionImpacts"]["impactsMetrics"],
+  impactMetrics: GetReconversionProjectImpactsResultDto["impacts"]["aggregatedReconversionImpacts"]["impactsMetrics"],
 ) => {
   const co2EqEmissions = impactMetrics.filter(
     ({ name }) =>
@@ -124,8 +124,8 @@ const getAvoidedCo2eqEmissions = (
 };
 
 const getPermeableSurfaceArea = (
-  impactMetrics: GetReconversionProjectImpactsResultDto["aggregatedReconversionImpacts"]["impactsMetrics"],
-  statuQuoImpactMetrics: GetReconversionProjectImpactsResultDto["reconversionImpactsBreakdown"]["siteStatuQuoImpactMetrics"],
+  impactMetrics: GetReconversionProjectImpactsResultDto["impacts"]["aggregatedReconversionImpacts"]["impactsMetrics"],
+  statuQuoImpactMetrics: GetReconversionProjectImpactsResultDto["impacts"]["reconversionImpactsBreakdown"]["siteStatuQuoImpactMetrics"],
 ) => {
   const newPermeableSurface = sumListWithKey(
     impactMetrics.filter(
@@ -157,7 +157,7 @@ const getArtificializedSurfaceArea = (permeableSurfaceAreaDifference?: number): 
 };
 
 const getNonContaminatedSurfaceArea = (
-  impactsData: GetReconversionProjectImpactsResultDto["reconversionImpactsBreakdown"],
+  impactsData: GetReconversionProjectImpactsResultDto["impacts"]["reconversionImpactsBreakdown"],
   siteSurfaceArea: number,
 ) => {
   const siteContaminatedSurfaceArea = impactsData.siteStatuQuoImpactMetrics.find(
@@ -182,7 +182,7 @@ const getNonContaminatedSurfaceArea = (
 };
 
 const getLocalPropertyValueIncrease = (
-  indirectEconomicImpactsList: GetReconversionProjectImpactsResultDto["aggregatedReconversionImpacts"]["indirectEconomicImpacts"]["details"],
+  indirectEconomicImpactsList: GetReconversionProjectImpactsResultDto["impacts"]["aggregatedReconversionImpacts"]["indirectEconomicImpacts"]["details"],
 ) => {
   return indirectEconomicImpactsList.find(({ name }) => name === "localPropertyValueIncrease")
     ?.total;
@@ -283,14 +283,18 @@ type SiteData = {
 };
 
 export const getKeyImpactIndicatorsList = (
-  impactsData: GetReconversionProjectImpactsResultDto,
-  relatedSiteData: {
-    nature: SiteNature;
-    fricheActivity?: FricheActivity;
-    surfaceArea: number;
-  },
+  impactsData: GetReconversionProjectImpactsResultDto["impacts"],
+  contextData: GetReconversionProjectImpactsResultDto["contextData"],
 ) => {
-  const { isFriche, isAgriculturalFriche } = getRelatedSiteInfos(relatedSiteData);
+  const { isFriche, isAgriculturalFriche } = getRelatedSiteInfos({
+    surfaceArea: contextData.siteSurfaceArea,
+    contaminatedSoilSurface:
+      impactsData.reconversionImpactsBreakdown.siteStatuQuoImpactMetrics.find(
+        (item) => item.name === "contaminatedSurface",
+      )?.total ?? 0,
+    fricheActivity: contextData.fricheActivity,
+    nature: contextData.siteNature,
+  });
 
   const projectImpactBalance = getProjectImpactBalance({
     economicBalanceTotal: impactsData.projectEconomicBalance.total,
@@ -319,7 +323,7 @@ export const getKeyImpactIndicatorsList = (
   );
   const nonContaminatedSurfaceArea = getNonContaminatedSurfaceArea(
     impactsData?.reconversionImpactsBreakdown,
-    relatedSiteData.surfaceArea,
+    contextData.siteSurfaceArea,
   );
   const localPropertyValueIncrease = getLocalPropertyValueIncrease(
     impactsData.aggregatedReconversionImpacts.indirectEconomicImpacts.details,

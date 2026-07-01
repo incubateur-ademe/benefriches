@@ -7,11 +7,10 @@ import { photovoltaicProjectImpactsResultDto as projectImpactMock } from "./proj
 const MOCK_STATES = {
   projectImpacts: {
     dataLoadingState: {
-      oldProjectImpacts: "success",
       impacts: "idle",
       urbanSprawlSimulation: "idle",
     },
-    evaluationPeriod: 10,
+    evaluationPeriod: projectImpactMock.projectionYears.length,
     currentViewMode: "list",
     impacts: projectImpactMock,
   } satisfies RootState["projectImpacts"],

@@ -1,17 +1,10 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/store.hooks";
 import { urbanSprawlComparisonOnboardingCompleted } from "@/features/projects/application/project-impacts/actions/urbanSprawlComparisonOnboardingSkip.action";
 import { selectAvoidedUrbanSprawlCostsAnalysisDataView } from "@/features/projects/application/project-impacts/selectors/projectAvoidedCostsAnalysis.selectors";
-import { ProjectDevelopmentPlanType } from "@/features/projects/domain/projects.types";
 
 import UrbanSprawlImpactsComparisonIntroductionModal from "./IntroModal";
 
-type Props = {
-  projectType: ProjectDevelopmentPlanType;
-};
-
-export default function UrbanSprawlImpactsComparisonIntroductionModalContainer({
-  projectType,
-}: Props) {
+export default function UrbanSprawlImpactsComparisonIntroductionModalContainer() {
   const dispatch = useAppDispatch();
 
   const avoidedUrbanSprawlCostsAnalysisDataView = useAppSelector(
@@ -28,9 +21,7 @@ export default function UrbanSprawlImpactsComparisonIntroductionModalContainer({
         onCompleteOnBoarding();
       }}
       dataLoadingState={avoidedUrbanSprawlCostsAnalysisDataView?.dataLoadingState}
-      projectName={avoidedUrbanSprawlCostsAnalysisDataView?.projectName}
-      projectType={projectType}
-      baseSiteData={avoidedUrbanSprawlCostsAnalysisDataView?.conversionSiteData}
+      contextData={avoidedUrbanSprawlCostsAnalysisDataView?.contextData}
       comparisonSiteData={
         avoidedUrbanSprawlCostsAnalysisDataView?.urbanSprawlSimulation?.simulationSiteData
       }

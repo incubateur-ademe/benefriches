@@ -18,7 +18,7 @@ export default function ProjectDevelopmentScoreContainer({ projectId }: Props) {
   return (
     <ProjectDevelopmentScore
       onEvaluationPeriodChange={(evaluationPeriodInYears: number) => {
-        void dispatch(evaluationPeriodUpdated({ evaluationPeriodInYears }));
+        void dispatch(evaluationPeriodUpdated(evaluationPeriodInYears));
       }}
       projectId={projectId}
       {...developmentScoreDataView}

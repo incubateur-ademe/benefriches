@@ -1,10 +1,6 @@
 import { useIsModalOpen } from "@codegouvfr/react-dsfr/Modal/useIsModalOpen";
 import { Suspense, useLayoutEffect, useState } from "react";
-import {
-  BuildingsUseDistribution,
-  GetReconversionProjectImpactsResultDto,
-  SoilsDistribution,
-} from "shared";
+import { GetReconversionProjectImpactsResultDto } from "shared";
 
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
@@ -21,27 +17,8 @@ import { SocialModalWizard } from "./social/SocialModalWizard";
 import { SocioEconomicModalWizard } from "./socio-economic/SocioEconomicModalWizard";
 
 export type ModalDataProps = {
-  projectData: {
-    soilsDistribution: SoilsDistribution;
-    contaminatedSoilSurface: number;
-    developmentPlan:
-      | {
-          type: "PHOTOVOLTAIC_POWER_PLANT";
-          electricalPowerKWc: number;
-          surfaceArea: number;
-        }
-      | {
-          type: "URBAN_PROJECT";
-          buildingsFloorAreaDistribution: BuildingsUseDistribution;
-        };
-  };
-  siteData: {
-    soilsDistribution: SoilsDistribution;
-    contaminatedSoilSurface: number;
-    addressLabel: string;
-    surfaceArea: number;
-  };
-  impactsData: GetReconversionProjectImpactsResultDto;
+  contextData: GetReconversionProjectImpactsResultDto["contextData"];
+  impactsData: GetReconversionProjectImpactsResultDto["impacts"];
 };
 
 type ModalDescriptionProviderProps = ModalDataProps & {
@@ -50,8 +27,7 @@ type ModalDescriptionProviderProps = ModalDataProps & {
 };
 
 function ImpactModalDescription({
-  projectData,
-  siteData,
+  contextData,
   impactsData,
   dialogId,
   initialState = INITIAL_CONTENT_STATE,
@@ -107,7 +83,7 @@ function ImpactModalDescription({
               case "economic_balance":
                 return (
                   <EconomicBalanceModalWizard
-                    projectData={projectData}
+                    contextData={contextData}
                     impactsData={impactsData}
                     impactName={contentState.impactName}
                     impactDetailsName={contentState.impactDetailsName}
@@ -116,8 +92,7 @@ function ImpactModalDescription({
               case "socio_economic":
                 return (
                   <SocioEconomicModalWizard
-                    projectData={projectData}
-                    siteData={siteData}
+                    contextData={contextData}
                     impactsData={impactsData}
                     impactSubSectionName={contentState.subSectionName}
                     impactName={contentState.impactName}
@@ -128,8 +103,7 @@ function ImpactModalDescription({
               case "social":
                 return (
                   <SocialModalWizard
-                    projectData={projectData}
-                    siteData={siteData}
+                    contextData={contextData}
                     impactsData={impactsData}
                     impactSubSectionName={contentState.subSectionName}
                     impactName={contentState.impactName}
@@ -139,8 +113,7 @@ function ImpactModalDescription({
               case "environmental":
                 return (
                   <EnvironmentalModalWizard
-                    projectData={projectData}
-                    siteData={siteData}
+                    contextData={contextData}
                     impactsData={impactsData}
                     impactSubSectionName={contentState.subSectionName}
                     impactName={contentState.impactName}

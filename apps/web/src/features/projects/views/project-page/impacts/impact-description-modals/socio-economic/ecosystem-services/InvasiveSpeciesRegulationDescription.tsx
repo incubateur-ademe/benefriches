@@ -1,9 +1,4 @@
-import {
-  convertSquareMetersToHectares,
-  isSurfaceWithEcosystemBenefits,
-  typedObjectEntries,
-} from "shared";
-import { SoilsDistribution } from "shared";
+import { convertSquareMetersToHectares, isSurfaceWithEcosystemBenefits, SoilType } from "shared";
 
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import ModalBody from "@/features/projects/views/shared/impacts/modals/ModalBody";
@@ -18,8 +13,8 @@ import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import { breadcrumbSegments } from "./breadcrumbSegments";
 
 type Props = {
-  baseSoilsDistribution: SoilsDistribution;
-  forecastSoilsDistribution: SoilsDistribution;
+  baseSoilsDistribution: { soilType: SoilType; total: number }[];
+  forecastSoilsDistribution: { soilType: SoilType; total: number }[];
   impactData?: number;
 };
 
@@ -32,12 +27,12 @@ const InvasiveSpeciesRegulationDescription = ({
   forecastSoilsDistribution,
   impactData,
 }: Props) => {
-  const baseSoilsWithBenefitsDistributionEntries = typedObjectEntries(baseSoilsDistribution).filter(
-    ([key]) => isSurfaceWithEcosystemBenefits(key),
+  const baseSoilsWithBenefitsDistribution = baseSoilsDistribution.filter(({ soilType }) =>
+    isSurfaceWithEcosystemBenefits(soilType),
   );
-  const forecastSoilsWithBenefitsDistributionEntries = typedObjectEntries(
-    forecastSoilsDistribution,
-  ).filter(([key]) => isSurfaceWithEcosystemBenefits(key));
+  const forecastSoilsWithBenefitsDistribution = forecastSoilsDistribution.filter(({ soilType }) =>
+    isSurfaceWithEcosystemBenefits(soilType),
+  );
   return (
     <ModalBody size="large">
       <ModalHeader
@@ -81,11 +76,11 @@ const InvasiveSpeciesRegulationDescription = ({
           arborés (exprimées en hectare).
         </p>
         <ul>
-          {baseSoilsWithBenefitsDistributionEntries.length > 0 ? (
-            baseSoilsWithBenefitsDistributionEntries.map(([type, surfaceArea]) => {
+          {baseSoilsDistribution.length > 0 ? (
+            baseSoilsWithBenefitsDistribution.map(({ soilType, total }) => {
               return (
-                <li key={type}>
-                  {getLabelForSoilType(type)} : {formatSoilSurfaceArea(surfaceArea as number)}
+                <li key={soilType}>
+                  {getLabelForSoilType(soilType)} : {formatSoilSurfaceArea(total)}
                 </li>
               );
             })
@@ -102,11 +97,11 @@ const InvasiveSpeciesRegulationDescription = ({
           artificiels arborés (exprimées en hectare).
         </p>
         <ul>
-          {forecastSoilsWithBenefitsDistributionEntries.length > 0 ? (
-            forecastSoilsWithBenefitsDistributionEntries.map(([type, surfaceArea]) => {
+          {forecastSoilsWithBenefitsDistribution.length > 0 ? (
+            forecastSoilsWithBenefitsDistribution.map(({ soilType, total }) => {
               return (
-                <li key={type}>
-                  {getLabelForSoilType(type)} : {formatSoilSurfaceArea(surfaceArea as number)}
+                <li key={soilType}>
+                  {getLabelForSoilType(soilType)} : {formatSoilSurfaceArea(total)}
                 </li>
               );
             })

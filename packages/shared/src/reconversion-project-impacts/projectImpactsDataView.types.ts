@@ -9,6 +9,7 @@ import {
 } from "../reconversion-projects";
 import { BuildingsConstructionExpense } from "../reconversion-projects/urban-project/buildingsConstructionExpenses";
 import { SiteStakeholderStructureType } from "../site";
+import { SoilType } from "../soils";
 import { DevelopmentPlanInstallationExpenses } from "./types";
 
 export type DevelopmentPlanFeatures =
@@ -256,27 +257,33 @@ export type ReconversionProjectOnSiteIndirectEconomicImpacts =
 export type UrbanSprawlComparisonProjectImpacts =
   IndirectEconomicImpacts<UrbanSprawlComparisonIndirectEconomicImpact>;
 
-export type ProjectOnSiteImpactMetric = {
-  total: number;
-  detailsByYear?: number[];
-  name:
-    | "avoidedAirConditioningCo2eqEmissions"
-    | "avoidedVehiculeKilometers"
-    | "timeTravelSavedInHours"
-    | "avoidedTrafficCo2EqEmissions"
-    | "avoidedTrafficAccidentsDeaths"
-    | "avoidedTrafficAccidentsSevereInjuries"
-    | "avoidedTrafficAccidentsMinorInjuries"
-    | "avoidedCO2TonsWithEnergyProduction"
-    | "householdsPoweredByRenewableEnergy"
-    | "newStoredCo2Eq"
-    | "newPermeableMineralSurface"
-    | "newPermeableGreenSurface"
-    | "decontaminatedSurface"
-    | "operationsFullTimeJobs"
-    | "conversionFullTimeJobs"
-    | "reinstatementFullTimeJobs";
-};
+export type ProjectOnSiteImpactMetric =
+  | {
+      total: number;
+      detailsByYear?: number[];
+      name:
+        | "avoidedAirConditioningCo2eqEmissions"
+        | "avoidedVehiculeKilometers"
+        | "timeTravelSavedInHours"
+        | "avoidedTrafficCo2EqEmissions"
+        | "avoidedTrafficAccidentsDeaths"
+        | "avoidedTrafficAccidentsSevereInjuries"
+        | "avoidedTrafficAccidentsMinorInjuries"
+        | "avoidedCO2TonsWithEnergyProduction"
+        | "householdsPoweredByRenewableEnergy"
+        | "newStoredCo2Eq"
+        | "newPermeableMineralSurface"
+        | "newPermeableGreenSurface"
+        | "decontaminatedSurface"
+        | "operationsFullTimeJobs"
+        | "conversionFullTimeJobs"
+        | "reinstatementFullTimeJobs";
+    }
+  | {
+      total: number;
+      soilType: SoilType;
+      name: "soilsDistribution";
+    };
 
 export type AggregatedProjectImpactMetric = {
   total: number;

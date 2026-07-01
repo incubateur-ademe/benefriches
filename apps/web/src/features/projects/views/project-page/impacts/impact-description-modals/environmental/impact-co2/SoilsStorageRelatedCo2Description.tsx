@@ -1,15 +1,16 @@
+import { SoilType } from "shared";
+
 import { formatCO2Impact } from "@/features/projects/views/shared/formatImpactValue";
 import ModalBody from "@/features/projects/views/shared/impacts/modals/ModalBody";
 import ModalContent from "@/features/projects/views/shared/impacts/modals/ModalContent";
 import ModalHeader from "@/features/projects/views/shared/impacts/modals/ModalHeader";
 
-import { ModalDataProps } from "../../ImpactModalDescription";
 import SoilsStorageRelatedCo2Content from "../../shared/co2-emissions/SoilsStorageRelatedCo2Content";
 import { breadcrumbSegments } from "./breadcrumbSegments";
 
 type Props = {
-  baseSoilsDistribution: ModalDataProps["siteData"]["soilsDistribution"];
-  forecastSoilsDistribution: ModalDataProps["projectData"]["soilsDistribution"];
+  baseSoilsDistribution: { soilType: SoilType; total: number }[];
+  forecastSoilsDistribution: { soilType: SoilType; total: number }[];
   impactData?: number;
 };
 

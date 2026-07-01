@@ -10,19 +10,13 @@ import {
 const MOCK_STATES = {
   projectImpacts: {
     dataLoadingState: {
-      oldProjectImpacts: "idle",
       impacts: "success",
       urbanSprawlSimulation: "idle",
     },
-    evaluationPeriod: 10,
+    evaluationPeriod: projectImpactMock.projectionYears.length,
     currentViewMode: "list",
     impacts: projectImpactMock,
-    relatedSiteData: {
-      id: "",
-      name: "mon site",
-      isExpressSite: false,
-      ...photovoltaicProjectImpactMockMeta.siteData,
-    },
+    contextData: photovoltaicProjectImpactMockMeta,
   } satisfies RootState["projectImpacts"],
 };
 

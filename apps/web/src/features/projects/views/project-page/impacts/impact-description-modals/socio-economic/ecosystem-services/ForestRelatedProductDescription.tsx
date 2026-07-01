@@ -1,5 +1,5 @@
-import { convertSquareMetersToHectares, typedObjectEntries } from "shared";
-import { isForest, SoilsDistribution } from "shared";
+import { convertSquareMetersToHectares, SoilType } from "shared";
+import { isForest } from "shared";
 
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import ModalBody from "@/features/projects/views/shared/impacts/modals/ModalBody";
@@ -14,8 +14,8 @@ import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import { breadcrumbSegments } from "./breadcrumbSegments";
 
 type Props = {
-  baseSoilsDistribution: SoilsDistribution;
-  forecastSoilsDistribution: SoilsDistribution;
+  baseSoilsDistribution: { soilType: SoilType; total: number }[];
+  forecastSoilsDistribution: { soilType: SoilType; total: number }[];
   impactData?: number;
 };
 
@@ -28,12 +28,12 @@ const ForestRelatedProductDescription = ({
   forecastSoilsDistribution,
   impactData,
 }: Props) => {
-  const baseForestSoilsDistributionEntries = typedObjectEntries(baseSoilsDistribution).filter(
-    ([key]) => isForest(key),
+  const baseForestSoilsDistribution = baseSoilsDistribution.filter(({ soilType }) =>
+    isForest(soilType),
   );
-  const forecastForestSoilsDistributionEntries = typedObjectEntries(
-    forecastSoilsDistribution,
-  ).filter(([key]) => isForest(key));
+  const forecastForestSoilsDistribution = forecastSoilsDistribution.filter(({ soilType }) =>
+    isForest(soilType),
+  );
   return (
     <ModalBody size="large">
       <ModalHeader
@@ -73,11 +73,11 @@ const ForestRelatedProductDescription = ({
           surfaces du site occupées par des forêts (exprimées en hectare).
         </p>
         <ul>
-          {baseForestSoilsDistributionEntries.length > 0 ? (
-            baseForestSoilsDistributionEntries.map(([type, surfaceArea]) => {
+          {baseForestSoilsDistribution.length > 0 ? (
+            baseForestSoilsDistribution.map(({ soilType, total }) => {
               return (
-                <li key={type}>
-                  {getLabelForSoilType(type)} : {formatSoilSurfaceArea(surfaceArea as number)}
+                <li key={soilType}>
+                  {getLabelForSoilType(soilType)} : {formatSoilSurfaceArea(total)}
                 </li>
               );
             })
@@ -93,11 +93,11 @@ const ForestRelatedProductDescription = ({
           éventuelles surfaces du projet occupées par des forêts (exprimées en hectare).
         </p>
         <ul>
-          {forecastForestSoilsDistributionEntries.length > 0 ? (
-            forecastForestSoilsDistributionEntries.map(([type, surfaceArea]) => {
+          {forecastForestSoilsDistribution.length > 0 ? (
+            forecastForestSoilsDistribution.map(({ soilType, total }) => {
               return (
-                <li key={type}>
-                  {getLabelForSoilType(type)} : {formatSoilSurfaceArea(surfaceArea as number)}
+                <li key={soilType}>
+                  {getLabelForSoilType(soilType)} : {formatSoilSurfaceArea(total)}
                 </li>
               );
             })

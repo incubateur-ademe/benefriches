@@ -21,7 +21,7 @@ export default function ProjectAvoidedCostsAnalysisContainer({ projectId }: Prop
   return (
     <ProjectAvoidedCostsAnalysisPage
       onEvaluationPeriodChange={(evaluationPeriodInYears: number) => {
-        void dispatch(evaluationPeriodUpdated({ evaluationPeriodInYears }));
+        void dispatch(evaluationPeriodUpdated(evaluationPeriodInYears));
       }}
       projectId={projectId}
       shouldDisplayOnBoarding={shouldDisplayOnBoarding}

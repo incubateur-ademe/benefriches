@@ -21,7 +21,7 @@ import ModalColumnPointChart from "../../shared/modal-charts/ModalColumnPointCha
 import { mainBreadcrumbSection, economicDirectBreadcrumbSection } from "../breadcrumbSections";
 
 type Props = {
-  developmentPlan: ModalDataProps["projectData"]["developmentPlan"];
+  developmentPlan: ModalDataProps["contextData"]["projectDevelopmentPlan"];
   impactData?: TaxesIncomeImpact;
 };
 
@@ -143,10 +143,10 @@ const TaxesIncomeDescription = ({ developmentPlan, impactData }: Props) => {
           )}
           {developmentPlan.type === "PHOTOVOLTAIC_POWER_PLANT" && (
             <ul>
-              {developmentPlan.electricalPowerKWc && (
+              {developmentPlan.installationElectricalPowerKWc && (
                 <li>
                   Puissance photovoltaïque installée le cas échéant (exprimée en kWc) :{" "}
-                  {formatNumberFr(developmentPlan.electricalPowerKWc)} kWc
+                  {formatNumberFr(developmentPlan.installationElectricalPowerKWc)} kWc
                 </li>
               )}
             </ul>

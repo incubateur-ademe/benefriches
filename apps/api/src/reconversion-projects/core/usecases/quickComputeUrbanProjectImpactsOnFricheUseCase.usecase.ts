@@ -1,11 +1,4 @@
-import {
-  DevelopmentPlanInstallationExpenses,
-  FinancialAssistanceRevenue,
-  NewUrbanCenterProjectGenerator,
-  RecurringExpense,
-  RecurringRevenue,
-  ReinstatementExpense,
-} from "shared";
+import { GetReconversionProjectImpactsResultDto, NewUrbanCenterProjectGenerator } from "shared";
 import { v4 as uuid } from "uuid";
 
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
@@ -15,10 +8,11 @@ import type { Friche, Site } from "src/sites/core/models/site";
 import { CityStatsProvider } from "src/territory/core/gateways/CityStatsProvider";
 
 import { GetCarbonStorageFromSoilDistributionService } from "../gateways/SoilsCarbonStorageService";
-import { InputSiteData } from "../model/project-impacts/ReconversionProjectImpactsService";
-import { UrbanProjectImpactsService } from "../model/project-impacts/UrbanProjectImpactsService";
+import {
+  computeProjectImpactsWithBreakEvenLevel,
+  ReconversionProjectImpactsWithBreakEvenLevelInput,
+} from "../model/project-impacts/break-even-level/computeImpactsWithBreakEvenLevel";
 import { getDefaultImpactsEvaluationPeriod } from "../model/project-impacts/impactsEvaluationPeriod";
-import { ComputedImpacts } from "./computeReconversionProjectImpacts.usecase";
 
 type City = {
   name: string;
@@ -36,7 +30,10 @@ type Request = {
   siteCityCode: string;
 };
 
-type QuickComputeUrbanProjectImpactsOnFricheResult = TResult<ComputedImpacts, never>;
+type QuickComputeUrbanProjectImpactsOnFricheResult = TResult<
+  GetReconversionProjectImpactsResultDto,
+  never
+>;
 
 export class QuickComputeUrbanProjectImpactsOnFricheUseCase implements UseCase<
   Request,
@@ -53,8 +50,13 @@ export class QuickComputeUrbanProjectImpactsOnFricheUseCase implements UseCase<
     siteCityCode,
     siteSurfaceArea,
   }: Request): Promise<QuickComputeUrbanProjectImpactsOnFricheResult> {
-    const { name, surfaceAreaSquareMeters, population, propertyValueMedianPricePerSquareMeters } =
-      await this.cityStatsQuery.getCityStats(siteCityCode);
+    const {
+      name,
+      surfaceAreaSquareMeters,
+      population,
+      propertyValueMedianPricePerSquareMeters,
+      accuracy,
+    } = await this.cityStatsQuery.getCityStats(siteCityCode);
 
     const city = {
       name: name,
@@ -69,21 +71,6 @@ export class QuickComputeUrbanProjectImpactsOnFricheUseCase implements UseCase<
       cityCode: site.address.cityCode,
       soilsDistribution: site.soilsDistribution.toJSON(),
     });
-
-    const siteData: InputSiteData = {
-      nature: site.nature,
-      addressCityCode: site.address.cityCode,
-      tenantName: site.tenant?.name,
-      ownerName: site.owner.name,
-      surfaceArea: site.surfaceArea,
-      soilsDistribution: site.soilsDistribution.toJSON(),
-      contaminatedSoilSurface: site.contaminatedSoilSurface,
-      yearlyExpenses: site.yearlyExpenses,
-      accidentsDeaths: site.accidentsDeaths,
-      accidentsMinorInjuries: site.accidentsMinorInjuries,
-      accidentsSevereInjuries: site.accidentsSevereInjuries,
-      soilsCarbonStorage: siteSoilsCarbonStorage,
-    };
 
     // we don't care for reconversion project and creator id since it won't be saved in DB
     const projectId = uuid();
@@ -115,77 +102,101 @@ export class QuickComputeUrbanProjectImpactsOnFricheUseCase implements UseCase<
       reconversionProject.developmentPlan.features,
     );
 
-    const impacts = new UrbanProjectImpactsService({
-      siteCityData: {
-        siteIsFriche: true,
-        citySquareMetersSurfaceArea: city.surfaceArea,
-        cityPopulation: city.population,
-        cityPropertyValuePerSquareMeter: propertyValueMedianPricePerSquareMeters,
-      },
-      relatedSite: siteData,
-      evaluationPeriodInYears,
-      dateProvider: this.dateProvider,
+    const operationsFirstYear =
+      reconversionProject.operationsFirstYear ?? this.dateProvider.now().getFullYear();
+
+    const impacts = computeProjectImpactsWithBreakEvenLevel({
       reconversionProject: {
-        developmentPlanInstallationExpenses: reconversionProject.developmentPlan
-          .costs as DevelopmentPlanInstallationExpenses[],
-        developmentPlanType: reconversionProject.developmentPlan.type,
-        developmentPlanFeatures: reconversionProject.developmentPlan.features,
-        developmentPlanDeveloperName: reconversionProject.developmentPlan.developer.name,
-        soilsDistribution: reconversionProjectCreationService.projectSoilsDistribution,
-        financialAssistanceRevenues:
-          reconversionProject.financialAssistanceRevenues as FinancialAssistanceRevenue[],
-        futureSiteOwnerName: reconversionProject.futureSiteOwner?.name,
+        ...reconversionProject,
+        involvesReinstatement: reconversionProject.involvesReinstatement,
+        isExpressProject: true,
+        conversionSchedule: reconversionProject.developmentPlan.installationSchedule,
+        futureOperatorStructureType: reconversionProject.futureOperator?.structureType,
         futureOperatorName: reconversionProject.futureOperator?.name,
+        futureSiteOwnerName: reconversionProject.futureSiteOwner?.name,
+        futureSiteOwnerStructureType: reconversionProject.futureSiteOwner?.structureType,
         reinstatementContractOwnerName: reconversionProject.reinstatementContractOwner?.name,
-        yearlyProjectedExpenses: reconversionProject.yearlyProjectedCosts as RecurringExpense[],
-        yearlyProjectedRevenues: reconversionProject.yearlyProjectedRevenues as RecurringRevenue[],
-        decontaminatedSoilSurface: reconversionProject.decontaminatedSoilSurface,
-        operationsFirstYear: reconversionProject.operationsFirstYear,
-        sitePurchaseTotalAmount: reconversionProject.sitePurchaseSellingPrice
-          ? reconversionProject.sitePurchaseSellingPrice +
-            (reconversionProject.sitePurchasePropertyTransferDuties ?? 0)
-          : 0,
+        reinstatementContractOwnerStructureType:
+          reconversionProject.reinstatementContractOwner?.structureType,
+        sitePurchaseTotalAmount:
+          (reconversionProject.sitePurchaseSellingPrice ?? 0) +
+          (reconversionProject.sitePurchasePropertyTransferDuties ?? 0),
         sitePurchasePropertyTransferDutiesAmount:
           reconversionProject.sitePurchasePropertyTransferDuties,
+        reinstatementExpenses: reconversionProject.reinstatementCosts,
+        buildingsConstructionAndRehabilitationExpenses:
+          reconversionProject.buildingsConstructionAndRehabilitationExpenses,
+        financialAssistanceRevenues: reconversionProject.financialAssistanceRevenues,
+        yearlyProjectedExpenses: reconversionProject.yearlyProjectedCosts,
+        yearlyProjectedRevenues: reconversionProject.yearlyProjectedRevenues,
+        developmentPlan: {
+          installationCosts: reconversionProject.developmentPlan.costs,
+          installationSchedule: reconversionProject.developmentPlan.installationSchedule,
+          developerName: reconversionProject.developmentPlan.developer.name,
+          developerStructureType: reconversionProject.developmentPlan.developer.structureType,
+          type: reconversionProject.developmentPlan.type,
+          features: reconversionProject.developmentPlan.features,
+        },
+        operationsFirstYear,
         siteResaleSellingPrice: reconversionProject.siteResaleExpectedSellingPrice,
-        reinstatementSchedule: reconversionProject.reinstatementSchedule,
-        involvesReinstatement: reconversionProject.involvesReinstatement,
-        reinstatementExpenses: (reconversionProject.reinstatementCosts ??
-          []) as ReinstatementExpense[],
-        soilsCarbonStorage: projectSoilsCarbonStorage,
+        buildingsResaleSellingPrice: reconversionProject.buildingsResaleExpectedSellingPrice,
+        siteResaleExpectedPropertyTransferDutiesAmount:
+          reconversionProject.siteResaleExpectedPropertyTransferDuties,
+        buildingsResaleExpectedPropertyTransferDutiesAmount:
+          reconversionProject.buildingsResaleExpectedPropertyTransferDuties,
+        projectSoilsCarbonStorage,
+      } as ReconversionProjectImpactsWithBreakEvenLevelInput,
+      relatedSite: {
+        ...site,
+        soilsDistribution: site.soilsDistribution.toJSON(),
+        isExpressSite: true,
+        ownerStructureType: site.owner.structureType,
+        ownerName: site.owner.name,
+        tenantStructureType: site.tenant?.structureType,
+        tenantName: site.tenant?.name,
+        siteSoilsCarbonStorage,
+      },
+      evaluationPeriodInYears,
+      cityStats: {
+        name,
+        surfaceAreaSquareMeters,
+        population,
+        propertyValueMedianPricePerSquareMeters,
+        accuracy,
       },
     });
 
     return success({
-      id: projectId,
-      name: reconversionProject.name,
-      relatedSiteId: site.id,
-      relatedSiteName: site.name,
-      evaluationPeriodInYears,
-      projectData: {
-        soilsDistribution: reconversionProjectCreationService.projectSoilsDistributionByType,
-        contaminatedSoilSurface:
-          (site.contaminatedSoilSurface ?? 0) -
-          (reconversionProject.decontaminatedSoilSurface ?? 0),
+      impacts,
+      contextData: {
+        projectId: reconversionProject.id,
+        projectName: reconversionProject.name,
+        relatedSiteId: reconversionProject.relatedSiteId,
+        relatedSiteName: site.name,
+        isExpressSite: true,
         isExpressProject: true,
-        developmentPlan: {
-          ...reconversionProject.developmentPlan.features,
-          type: reconversionProject.developmentPlan.type,
+        projectDevelopmentPlan:
+          reconversionProject.developmentPlan.type === "PHOTOVOLTAIC_POWER_PLANT"
+            ? {
+                type: reconversionProject.developmentPlan.type,
+                installationElectricalPowerKWc:
+                  reconversionProject.developmentPlan.features.electricalPowerKWc,
+                installationSurfaceArea: reconversionProject.developmentPlan.features.surfaceArea,
+              }
+            : {
+                type: reconversionProject.developmentPlan.type,
+                buildingsFloorAreaDistribution:
+                  reconversionProject.developmentPlan.features.buildingsFloorAreaDistribution,
+              },
+        siteAddress: {
+          lat: site.address.lat,
+          long: site.address.long,
+          label: site.address.value,
         },
-      },
-      siteData: {
-        addressLabel: city.name,
-        contaminatedSoilSurface: site.contaminatedSoilSurface ?? 0,
-        soilsDistribution: site.soilsDistribution.toJSON(),
-        surfaceArea: site.surfaceArea,
-        nature: site.nature,
+        siteNature: site.nature,
+        siteSurfaceArea: site.surfaceArea,
         fricheActivity: site.fricheActivity,
-        owner: {
-          name: site.owner.name,
-          structureType: site.owner.structureType,
-        },
       },
-      impacts: impacts.formatImpacts(),
     });
   }
 }

@@ -29,20 +29,25 @@ type Props = {
   impactName?: EconomicBalanceMainName;
   impactDetailsName?: EconomicBalanceDetailsName;
   impactsData: ModalDataProps["impactsData"];
-  projectData: ModalDataProps["projectData"];
+  contextData: ModalDataProps["contextData"];
 };
 
 export function EconomicBalanceModalWizard({
   impactName,
   impactDetailsName,
   impactsData,
-  projectData,
+  contextData,
 }: Props) {
   return (
     <Suspense fallback={<LoadingSpinner classes={{ text: "text-grey-light" }} />}>
       {(() => {
         if (!impactName) {
-          return <EconomicBalanceDescription impactsData={impactsData} projectData={projectData} />;
+          return (
+            <EconomicBalanceDescription
+              impactsData={impactsData}
+              projectType={contextData.projectDevelopmentPlan.type}
+            />
+          );
         }
 
         switch (impactDetailsName ?? impactName) {

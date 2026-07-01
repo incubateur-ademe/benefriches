@@ -38,7 +38,7 @@ export default function ProjectSummaryTab({
         <BreakEvenLevalImpactsActionBar
           evaluationPeriod={evaluationPeriod}
           onEvaluationPeriodChange={(evaluationPeriodInYears: number) => {
-            void dispatch(evaluationPeriodUpdated({ evaluationPeriodInYears }));
+            void dispatch(evaluationPeriodUpdated(evaluationPeriodInYears));
           }}
           header={<ProjectPageHeader projectId={projectId} />}
         />

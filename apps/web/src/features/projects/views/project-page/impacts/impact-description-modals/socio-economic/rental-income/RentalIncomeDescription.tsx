@@ -11,19 +11,11 @@ import { ModalDataProps } from "../../ImpactModalDescription";
 import { mainBreadcrumbSection, economicDirectBreadcrumbSection } from "../breadcrumbSections";
 
 type Props = {
-  developmentPlan: ModalDataProps["projectData"]["developmentPlan"];
+  developmentPlan: ModalDataProps["contextData"]["projectDevelopmentPlan"];
   impactData?: number;
 };
 
 const RentalIncomeDescription = ({ developmentPlan, impactData }: Props) => {
-  const { surfaceArea, electricalPowerKWc } =
-    developmentPlan.type === "PHOTOVOLTAIC_POWER_PLANT"
-      ? {
-          surfaceArea: developmentPlan.surfaceArea,
-          electricalPowerKWc: developmentPlan.electricalPowerKWc,
-        }
-      : { surfaceArea: undefined, electricalPowerKWc: undefined };
-
   return (
     <ModalBody size="large">
       <ModalHeader
@@ -69,15 +61,19 @@ const RentalIncomeDescription = ({ developmentPlan, impactData }: Props) => {
           Les données du projet peuvent avoir été saisies par l’utilisateur·ice ou avoir été
           suggérées par Bénéfriches sur la base d’une moyenne ou d’une hypothèse.
         </p>
-        {(surfaceArea || electricalPowerKWc) && (
+        {developmentPlan.type === "PHOTOVOLTAIC_POWER_PLANT" && (
           <ul>
-            {surfaceArea && (
-              <li>Surface au sol occupée par les panneaux : {formatSurfaceArea(surfaceArea)}</li>
+            {developmentPlan.installationSurfaceArea && (
+              <li>
+                Surface au sol occupée par les panneaux :{" "}
+                {formatSurfaceArea(developmentPlan.installationSurfaceArea)}
+              </li>
             )}
 
-            {electricalPowerKWc && (
+            {developmentPlan.installationElectricalPowerKWc && (
               <li>
-                Puissance installée exprimée en kWc : {formatNumberFr(electricalPowerKWc)} KWc
+                Puissance installée exprimée en kWc :{" "}
+                {formatNumberFr(developmentPlan.installationElectricalPowerKWc)} KWc
               </li>
             )}
           </ul>

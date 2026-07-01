@@ -65,7 +65,7 @@ const addCo2Detail = (
 };
 
 export const getEnvironmentalProjectImpacts = (
-  impactsData: GetReconversionProjectImpactsResultDto,
+  impactsData: GetReconversionProjectImpactsResultDto["impacts"],
   siteSurfaceArea: number,
 ): EnvironmentalImpact[] => {
   if (!impactsData) return [];

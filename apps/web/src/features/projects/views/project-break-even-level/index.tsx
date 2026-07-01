@@ -19,7 +19,7 @@ export default function ProjectBreakEvenLevelTabContainer({ projectId }: Props) 
     <ProjectBreakEvenLevelTab
       projectId={projectId}
       onEvaluationPeriodChange={(evaluationPeriodInYears: number) => {
-        void dispatch(evaluationPeriodUpdated({ evaluationPeriodInYears }));
+        void dispatch(evaluationPeriodUpdated(evaluationPeriodInYears));
       }}
       {...breakEvenLevelView}
     />

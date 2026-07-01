@@ -113,7 +113,7 @@ export const getUrbanProjectImpacts = ({
     yearlyValue: number | undefined,
     weights: ("co2_value" | "co2_emitted_per_vehicule")[],
   ) => {
-    if (!yearlyValue) return;
+    if (!yearlyValue || name === "soilsDistribution") return;
     const detailsByYear = sumOnEvolutionPeriodService.getWeightedYearlyValues(yearlyValue, weights);
     impactsMetrics.push({
       name,

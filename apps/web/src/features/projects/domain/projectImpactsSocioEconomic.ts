@@ -10,7 +10,6 @@ import {
   AvoidedFricheCostsIndirectEconomicImpacts,
 } from "shared";
 
-import { ReconversionProjectImpactsResult } from "../application/project-impacts/actions";
 import { ProjectImpactsState } from "../application/project-impacts/projectImpacts.reducer";
 
 export type SocioEconomicImpactByCategory = {
@@ -585,7 +584,7 @@ export type SocioEconomicImpactByActor = {
   impacts: { name: SocioEconomicMainImpactName; value: number }[];
 }[];
 export const getSocioEconomicProjectImpactsByActor = (
-  socioEconomicImpacts: ReconversionProjectImpactsResult["impacts"]["socioeconomic"]["impacts"] = [],
+  socioEconomicImpacts: ReconversionProjectImpacts["socioeconomic"]["impacts"] = [],
 ): SocioEconomicImpactByActor => {
   const mergedActors = socioEconomicImpacts.map((impact) => ({
     ...impact,

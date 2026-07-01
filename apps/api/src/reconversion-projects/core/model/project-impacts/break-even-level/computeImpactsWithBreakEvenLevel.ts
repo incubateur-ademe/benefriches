@@ -50,7 +50,7 @@ export const formatStakeholders = ({
 }: {
   reconversionProject: ReconversionProjectImpactsWithBreakEvenLevelInput;
   relatedSite: SiteInputData;
-}): GetReconversionProjectImpactsResultDto["stakeholders"] =>
+}): GetReconversionProjectImpactsResultDto["impacts"]["stakeholders"] =>
   ({
     current: {
       owner: {
@@ -93,7 +93,7 @@ export const formatStakeholders = ({
         structureName: reconversionProject.reinstatementContractOwnerName,
       },
     },
-  }) as GetReconversionProjectImpactsResultDto["stakeholders"];
+  }) as GetReconversionProjectImpactsResultDto["impacts"]["stakeholders"];
 
 export const computeBreakEvenLevel = ({
   operationsFirstYear,
@@ -101,11 +101,11 @@ export const computeBreakEvenLevel = ({
   aggregatedIndirectEconomicImpacts,
   projectEconomicBalance,
 }: {
-  stakeholders: GetReconversionProjectImpactsResultDto["stakeholders"];
+  stakeholders: GetReconversionProjectImpactsResultDto["impacts"]["stakeholders"];
   operationsFirstYear: number;
   evaluationPeriodInYears: number;
   aggregatedIndirectEconomicImpacts: AggregatedReconversionIndirectEconomicImpacts["details"];
-  projectEconomicBalance: GetReconversionProjectImpactsResultDto["projectEconomicBalance"];
+  projectEconomicBalance: GetReconversionProjectImpactsResultDto["impacts"]["projectEconomicBalance"];
 }) => {
   const cumulativeBalanceByYear = [
     ...aggregatedIndirectEconomicImpacts,
@@ -143,7 +143,7 @@ const handleRoadsAndUtilitiesExpenses = ({
   projectOnSiteIndirectEconomicImpactsData,
   sumOnEvolutionPeriodService,
 }: {
-  projectOnSiteIndirectEconomicImpactsData: GetReconversionProjectImpactsResultDto["reconversionImpactsBreakdown"]["projectOnSiteIndirectEconomicImpactsData"]["details"];
+  projectOnSiteIndirectEconomicImpactsData: GetReconversionProjectImpactsResultDto["impacts"]["reconversionImpactsBreakdown"]["projectOnSiteIndirectEconomicImpactsData"]["details"];
   sumOnEvolutionPeriodService: SumOnEvolutionPeriodService;
   isFriche: boolean;
   siteSurfaceArea: number;
@@ -503,7 +503,7 @@ export const computeProjectImpactsWithBreakEvenLevel = ({
   relatedSite: SiteInputData;
   cityStats: CityStats;
   evaluationPeriodInYears: number;
-}): GetReconversionProjectImpactsResultDto => {
+}): GetReconversionProjectImpactsResultDto["impacts"] => {
   const { operationsFirstYear } = reconversionProject;
 
   const stakeholders = formatStakeholders({ reconversionProject, relatedSite });

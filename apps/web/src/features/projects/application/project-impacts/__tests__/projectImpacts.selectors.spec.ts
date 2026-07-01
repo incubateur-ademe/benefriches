@@ -15,24 +15,13 @@ import {
 const MOCK_STATES = {
   projectImpacts: {
     dataLoadingState: {
-      oldProjectImpacts: "success",
       impacts: "idle",
       urbanSprawlSimulation: "idle",
     },
-    evaluationPeriod: 10,
+    evaluationPeriod: photovoltaicProjectImpactMock.projectionYears.length,
     currentViewMode: "list",
     impacts: photovoltaicProjectImpactMock,
-    projectData: {
-      id: photovoltaicProjectImpactMockMeta.id,
-      name: photovoltaicProjectImpactMockMeta.name,
-      ...photovoltaicProjectImpactMockMeta.projectData,
-    },
-    relatedSiteData: {
-      id: photovoltaicProjectImpactMockMeta.relatedSiteId,
-      name: photovoltaicProjectImpactMockMeta.relatedSiteName,
-      isExpressSite: photovoltaicProjectImpactMockMeta.isExpressSite,
-      ...photovoltaicProjectImpactMockMeta.siteData,
-    },
+    contextData: photovoltaicProjectImpactMockMeta,
   } satisfies RootState["projectImpacts"],
   appSettings: DEFAULT_APP_SETTINGS,
 };
@@ -61,8 +50,7 @@ describe("projectImpacts ViewData selectors", () => {
         environmentImpacts: expect.any(Array),
         socialImpacts: expect.any(Array),
         modalData: expect.objectContaining({
-          projectData: expect.any(Object),
-          siteData: expect.any(Object),
+          contextData: expect.any(Object),
           impactsData: expect.any(Object),
         }),
       });
@@ -79,8 +67,7 @@ describe("projectImpacts ViewData selectors", () => {
       expect(viewData).toEqual({
         keyImpactIndicatorsList: expect.any(Array),
         modalData: expect.objectContaining({
-          projectData: expect.any(Object),
-          siteData: expect.any(Object),
+          contextData: expect.any(Object),
           impactsData: expect.any(Object),
         }),
       });
@@ -100,11 +87,10 @@ describe("projectImpacts ViewData selectors", () => {
 
       expect(viewData).toEqual({
         dataLoadingState: {
-          oldProjectImpacts: "success",
           impacts: "idle",
           urbanSprawlSimulation: "idle",
         },
-        evaluationPeriod: 10,
+        evaluationPeriod: 20,
         currentViewMode: "list",
         projectName: "Project photovoltaïque",
         siteName: "Friche agricole de Blajan",
@@ -121,8 +107,8 @@ describe("projectImpacts ViewData selectors", () => {
         ...MOCK_STATES,
         projectImpacts: {
           ...MOCK_STATES.projectImpacts,
-          projectData: {
-            ...MOCK_STATES.projectImpacts.projectData,
+          contextData: {
+            ...MOCK_STATES.projectImpacts.contextData,
             isExpressProject: true,
           },
         },
