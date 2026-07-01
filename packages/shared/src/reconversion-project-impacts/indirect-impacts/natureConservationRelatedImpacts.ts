@@ -7,7 +7,7 @@ import { computeCumulativeByYear } from "../../sum-on-evolution-period/computeCu
 import {
   ProjectOnSiteImpactMetric,
   ReconversionProjectOnSiteIndirectEconomicImpact,
-} from "../projectImpactsDataView.types";
+} from "../projectImpacts.types";
 import { NatureConservationImpactsService } from "./nature-conservation/NatureConservationImpactsService";
 import { getPermeableSurfaceImpact } from "./nature-conservation/permeableSurfaceAreaImpact";
 

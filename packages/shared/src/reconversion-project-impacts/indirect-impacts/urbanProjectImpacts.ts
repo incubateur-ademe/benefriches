@@ -7,11 +7,11 @@ import { sumList, sumListWithKey } from "../../services";
 import { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import { computeCumulativeByYear } from "../../sum-on-evolution-period/computeCumulativeByYear";
 import {
-  DevelopmentPlanFeatures,
   ProjectOnSiteImpactMetric,
   ReconversionProjectOnSiteIndirectEconomicImpact,
-} from "../projectImpactsDataView.types";
-import { InputReconversionProjectData, InputSiteData } from "../projectIndirectImpacts";
+} from "../projectImpacts.types";
+import { DevelopmentPlanFeatures } from "../projectImpactsDataView.types";
+import { InputReconversionProjectData, InputSiteData } from "./projectIndirectImpacts";
 import {
   getFricheRoadsAndUtilitiesExpensesImpact,
   getLocalPropertyIncreaseWithFricheRemovalImpacts,

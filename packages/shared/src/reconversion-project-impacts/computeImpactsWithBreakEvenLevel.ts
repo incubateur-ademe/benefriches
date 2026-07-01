@@ -5,10 +5,12 @@ import { computeStatuQuoSiteImpacts } from "../site/statu-quo-impacts/computeSta
 import { SoilsCarbonStorage } from "../soils";
 import { SumOnEvolutionPeriodService } from "../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import { computeCumulativeByYear } from "../sum-on-evolution-period/computeCumulativeByYear";
-import { Schedule } from "./helpers/fullTimeJobs.helper";
+import { getProjectDevelopmentEconomicBalance } from "./economic-balance/projectDevelopmentEconomicBalance";
+import { getProjectOperatingEconomicBalance } from "./economic-balance/projectOperatingEconomicBalance";
+import { Schedule } from "./indirect-impacts/fullTimeJobs.helper";
+import { getProjectMetricsAndEconomicImpacts } from "./indirect-impacts/projectIndirectImpacts";
 import { computeAvoidedRoadsAndUtilitiesConstructionExpensesWithFriche } from "./indirect-impacts/roads-and-utilities-expenses/roadsAndUtilitiesContruction";
 import { computeAvoidedWithFricheYearlyRoadsAndUtilitiesMaintenanceExpenses } from "./indirect-impacts/roads-and-utilities-expenses/roadsAndUtilitiesExpensesImpact";
-import { getProjectDevelopmentEconomicBalance } from "./projectDevelopmentEconomicBalance";
 import {
   AggregatedProjectImpactMetric,
   AggregatedReconversionIndirectEconomicImpact,
@@ -18,13 +20,11 @@ import {
   ProjectEconomicBalance,
   ProjectOnSiteImpactMetric,
   ProjectOperatingEconomicBalanceItem,
-  ReconversionProjectImpactsDataView,
   ReconversionProjectOnSiteIndirectEconomicImpacts,
   UrbanSprawlComparisonIndirectEconomicImpact,
   UrbanSprawlComparisonProjectImpacts,
-} from "./projectImpactsDataView.types";
-import { getProjectMetricsAndEconomicImpacts } from "./projectIndirectImpacts";
-import { getProjectOperatingEconomicBalance } from "./projectOperatingEconomicBalance";
+} from "./projectImpacts.types";
+import { ReconversionProjectImpactsDataView } from "./projectImpactsDataView.types";
 import { SiteImpactsDataView } from "./siteImpactsDataView.types";
 
 export type ApiReconversionProjectImpactsDataView = ReconversionProjectImpactsDataView<Schedule>;

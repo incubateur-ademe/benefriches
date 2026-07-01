@@ -2,8 +2,8 @@ import assert from "node:assert/strict";
 import { describe, it, beforeEach, mock } from "node:test";
 import { sumList } from "shared";
 
-import { SumOnEvolutionPeriodService } from "../sum-on-evolution-period/SumOnEvolutionPeriodService";
-import { computeCumulativeByYear } from "../sum-on-evolution-period/computeCumulativeByYear";
+import { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
+import { computeCumulativeByYear } from "../../sum-on-evolution-period/computeCumulativeByYear";
 import {
   getProjectMetricsAndEconomicImpacts,
   InputReconversionProjectData,

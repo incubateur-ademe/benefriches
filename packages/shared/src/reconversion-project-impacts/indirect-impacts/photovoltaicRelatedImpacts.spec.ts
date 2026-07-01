@@ -3,8 +3,8 @@ import { describe, it, beforeEach, mock } from "node:test";
 import { DevelopmentPlanFeatures, sumList } from "shared";
 
 import { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
-import { InputReconversionProjectData } from "../projectIndirectImpacts";
 import { getPhotovoltaicPowerPlantProjectImpacts } from "./photovoltaicRelatedImpacts";
+import { InputReconversionProjectData } from "./projectIndirectImpacts";
 
 type ServiceCall = Parameters<SumOnEvolutionPeriodService["getWeightedYearlyValues"]>;
 

@@ -11,7 +11,7 @@ import {
   computeProjectImpactsWithBreakEvenLevel,
   computeProjectUrbanSprawlComparisonImpactsBreakdownAndEconomicBalance,
 } from "./computeImpactsWithBreakEvenLevel";
-import { Schedule } from "./helpers/fullTimeJobs.helper";
+import { Schedule } from "./indirect-impacts/fullTimeJobs.helper";
 
 const baseProject = {
   id: "bf8a7d1d-a9d2-4a66-b2bc-3b8d682f9932",

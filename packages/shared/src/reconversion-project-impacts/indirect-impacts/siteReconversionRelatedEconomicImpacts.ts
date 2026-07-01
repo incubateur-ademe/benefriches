@@ -6,14 +6,14 @@ import { roundTo2Digits, sumList } from "../../services";
 import { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import { computeCumulativeByYear } from "../../sum-on-evolution-period/computeCumulativeByYear";
 import {
+  ProjectOnSiteImpactMetric,
+  ReconversionProjectOnSiteIndirectEconomicImpact,
+} from "../projectImpacts.types";
+import {
   getDurationFromScheduleInYears,
   Schedule,
   spreadTemporaryFullTimeJobsOver,
-} from "../helpers/fullTimeJobs.helper";
-import {
-  ProjectOnSiteImpactMetric,
-  ReconversionProjectOnSiteIndirectEconomicImpact,
-} from "../projectImpactsDataView.types";
+} from "./fullTimeJobs.helper";
 import { computePropertyValueImpact } from "./property-value/propertyValueImpact";
 import { computeFricheYearlyRoadsAndUtilitiesMaintenanceExpenses } from "./roads-and-utilities-expenses/roadsAndUtilitiesExpensesImpact";
 

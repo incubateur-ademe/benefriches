@@ -5,7 +5,7 @@ import {
   AvoidedFricheCostsIndirectEconomicImpacts,
   ProjectDevelopmentEconomicBalanceItem,
   ProjectOperatingEconomicBalanceItem,
-} from "../projectImpactsDataView.types";
+} from "../projectImpacts.types";
 import {
   AvoidedCO2EqEmissions,
   AvoidedFricheCostsImpact,
@@ -13,8 +13,8 @@ import {
   EcosystemServicesImpact,
   SocioEconomicImpact,
   TaxesIncomeImpact,
-} from "../socioEconomic.types";
-import { EconomicBalanceImpactResult, ReconversionProjectImpacts } from "../types";
+} from "./socioEconomic.types";
+import { EconomicBalanceImpactResult, ReconversionProjectImpacts } from "./types";
 
 type ProjectOperatingEconomicBalanceItemWithDetails<
   D extends ProjectOperatingEconomicBalanceItem["details"],

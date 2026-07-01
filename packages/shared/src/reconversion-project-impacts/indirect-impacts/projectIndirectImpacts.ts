@@ -2,27 +2,31 @@ import {
   ReconversionProjectSoilsDistribution,
   RecurringExpense,
   ReinstatementExpense,
-} from "../reconversion-projects";
-import { roundToInteger, sumList, sumListWithKey } from "../services";
+} from "../../reconversion-projects";
+import { roundToInteger, sumList, sumListWithKey } from "../../services";
 import {
   AgriculturalOperationActivity,
   SiteNature,
   SiteYearlyExpense,
   SiteYearlyIncome,
-} from "../site";
-import { getProjectSoilDistributionByType, SoilsCarbonStorage, SoilsDistribution } from "../soils";
-import { SumOnEvolutionPeriodService } from "../sum-on-evolution-period/SumOnEvolutionPeriodService";
-import { computeCumulativeByYear } from "../sum-on-evolution-period/computeCumulativeByYear";
-import { Schedule } from "./helpers/fullTimeJobs.helper";
-import { getNatureConservationRelatedImpacts } from "./indirect-impacts/natureConservationRelatedImpacts";
-import { getPhotovoltaicPowerPlantProjectImpacts } from "./indirect-impacts/photovoltaicRelatedImpacts";
-import { getReinstatementFullTimeJobs } from "./indirect-impacts/siteReconversionRelatedEconomicImpacts";
-import { getUrbanProjectImpacts } from "./indirect-impacts/urbanProjectImpacts";
+} from "../../site";
 import {
-  DevelopmentPlanFeatures,
+  getProjectSoilDistributionByType,
+  SoilsCarbonStorage,
+  SoilsDistribution,
+} from "../../soils";
+import { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
+import { computeCumulativeByYear } from "../../sum-on-evolution-period/computeCumulativeByYear";
+import {
   ProjectOnSiteImpactMetric,
   ReconversionProjectOnSiteIndirectEconomicImpact,
-} from "./projectImpactsDataView.types";
+} from "../projectImpacts.types";
+import { DevelopmentPlanFeatures } from "../projectImpactsDataView.types";
+import { Schedule } from "./fullTimeJobs.helper";
+import { getNatureConservationRelatedImpacts } from "./natureConservationRelatedImpacts";
+import { getPhotovoltaicPowerPlantProjectImpacts } from "./photovoltaicRelatedImpacts";
+import { getReinstatementFullTimeJobs } from "./siteReconversionRelatedEconomicImpacts";
+import { getUrbanProjectImpacts } from "./urbanProjectImpacts";
 
 export type InputSiteData = {
   nature: SiteNature;

@@ -8,7 +8,7 @@ import {
 } from "shared";
 
 import type { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
-import { InputReconversionProjectData, InputSiteData } from "../projectIndirectImpacts";
+import { InputReconversionProjectData, InputSiteData } from "./projectIndirectImpacts";
 import { getUrbanProjectImpacts, getNewUsagesTaxesIncomeImpact } from "./urbanProjectImpacts";
 
 const baseSiteCityData = {

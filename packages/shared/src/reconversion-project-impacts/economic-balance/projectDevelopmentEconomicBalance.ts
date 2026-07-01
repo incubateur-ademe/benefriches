@@ -1,16 +1,13 @@
-import { GetReconversionProjectImpactsResultDto } from "../api-dtos";
+import { GetReconversionProjectImpactsResultDto } from "../../api-dtos";
 import {
   BuildingsConstructionExpense,
   DevelopmentPlanType,
   FinancialAssistanceRevenue,
   ReinstatementExpense,
-} from "../reconversion-projects";
-import { sumListWithKey } from "../services";
-import {
-  isSameStakeholders,
-  ProjectDevelopmentEconomicBalanceItem,
-} from "./projectImpactsDataView.types";
-import { DevelopmentPlanInstallationExpenses } from "./types";
+} from "../../reconversion-projects";
+import { sumListWithKey } from "../../services";
+import { DevelopmentPlanInstallationExpenses } from "../format-impacts/types";
+import { isSameStakeholders, ProjectDevelopmentEconomicBalanceItem } from "../projectImpacts.types";
 
 export type InputProjectDevelopmentEconomicBalanceProps = {
   developmentPlanType: DevelopmentPlanType;

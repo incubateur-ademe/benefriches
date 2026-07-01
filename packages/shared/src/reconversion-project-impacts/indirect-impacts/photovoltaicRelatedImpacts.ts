@@ -7,15 +7,15 @@ import { roundTo2Digits, sumList } from "../../services";
 import { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import { computeCumulativeByYear } from "../../sum-on-evolution-period/computeCumulativeByYear";
 import {
-  getDurationFromScheduleInYears,
-  spreadTemporaryFullTimeJobsOver,
-} from "../helpers/fullTimeJobs.helper";
-import {
-  DevelopmentPlanFeatures,
   ProjectOnSiteImpactMetric,
   ReconversionProjectOnSiteIndirectEconomicImpact,
-} from "../projectImpactsDataView.types";
-import { InputReconversionProjectData } from "../projectIndirectImpacts";
+} from "../projectImpacts.types";
+import { DevelopmentPlanFeatures } from "../projectImpactsDataView.types";
+import {
+  getDurationFromScheduleInYears,
+  spreadTemporaryFullTimeJobsOver,
+} from "./fullTimeJobs.helper";
+import { InputReconversionProjectData } from "./projectIndirectImpacts";
 import { computeAvoidedCO2TonsWithEnergyProductionImpact } from "./renewable-energy/avoided-CO2-with-energy-production/avoidedCO2WithEnergyProductionImpact";
 import { computeHouseholdsPoweredByRenewableEnergyImpact } from "./renewable-energy/households-powered-by-renewable-energy/householdsPoweredByRenewableEnergyImpact";
 
