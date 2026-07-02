@@ -1,21 +1,21 @@
 import {
   computeReinstatementFullTimeJobs,
   ReinstatementExpense,
-} from "../../reconversion-projects";
-import { roundTo2Digits, sumList } from "../../services";
-import { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
-import { computeCumulativeByYear } from "../../sum-on-evolution-period/computeCumulativeByYear";
+} from "../../../reconversion-projects";
+import { roundTo2Digits, sumList } from "../../../services";
+import { SumOnEvolutionPeriodService } from "../../../sum-on-evolution-period/SumOnEvolutionPeriodService";
+import { computeCumulativeByYear } from "../../../sum-on-evolution-period/computeCumulativeByYear";
 import {
   ProjectOnSiteImpactMetric,
   ReconversionProjectOnSiteIndirectEconomicImpact,
-} from "../projectImpacts.types";
+} from "../../projectImpacts.types";
 import {
   getDurationFromScheduleInYears,
   Schedule,
   spreadTemporaryFullTimeJobsOver,
-} from "./fullTimeJobs.helper";
-import { computePropertyValueImpact } from "./property-value/propertyValueImpact";
-import { computeFricheYearlyRoadsAndUtilitiesMaintenanceExpenses } from "./roads-and-utilities-expenses/roadsAndUtilitiesExpensesImpact";
+} from "../fullTimeJobs.helper";
+import { computePropertyValueImpact } from "../urban-project/property-value/propertyValueImpact";
+import { computeFricheYearlyRoadsAndUtilitiesMaintenanceExpenses } from "../urban-project/roads-and-utilities-expenses/roadsAndUtilitiesExpensesImpact";
 
 export const getFricheRoadsAndUtilitiesExpensesImpact = ({
   siteSurfaceArea,

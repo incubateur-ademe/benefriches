@@ -23,10 +23,10 @@ import {
 } from "../projectImpacts.types";
 import { DevelopmentPlanFeatures } from "../projectImpactsDataView.types";
 import { Schedule } from "./fullTimeJobs.helper";
-import { getNatureConservationRelatedImpacts } from "./natureConservationRelatedImpacts";
-import { getPhotovoltaicPowerPlantProjectImpacts } from "./photovoltaicRelatedImpacts";
-import { getReinstatementFullTimeJobs } from "./siteReconversionRelatedEconomicImpacts";
-import { getUrbanProjectImpacts } from "./urbanProjectImpacts";
+import { getPhotovoltaicPowerPlantProjectImpacts } from "./renewable-energy/photovoltaicRelatedImpacts";
+import { getReinstatementFullTimeJobs } from "./site-reconversion/siteReconversionRelatedEconomicImpacts";
+import { SoilsTransformationImpactsService } from "./soils-tranformation/SoilsTransformationImpactsService";
+import { getUrbanProjectImpacts } from "./urban-project/urbanProjectImpacts";
 
 export type InputSiteData = {
   nature: SiteNature;
@@ -101,17 +101,16 @@ export const getProjectMetricsAndEconomicImpacts = ({
   }
 
   // --- Conservation des sols (commun à tous les types de projet) ---
-  const { economicImpacts: ncEconomicImpacts, impactMetrics: ncImpactMetrics } =
-    getNatureConservationRelatedImpacts({
-      projectSoilsDistributionByType: soilsDistributionByType,
-      siteSoilsDistribution: relatedSite.soilsDistribution,
-      baseSoilsCarbonStorage: relatedSite.soilsCarbonStorage,
-      projectSoilsCarbonStorage: reconversionProject.soilsCarbonStorage,
-      projectDecontaminatedSoilSurface: reconversionProject.decontaminatedSoilSurface,
-      sumOnEvolutionPeriodService,
-    });
-  economicImpacts.push(...ncEconomicImpacts);
-  impactMetrics.push(...ncImpactMetrics);
+  const soilTransformationImpatsService = new SoilsTransformationImpactsService({
+    projectSoilsDistribution: soilsDistributionByType,
+    siteSoilsDistribution: relatedSite.soilsDistribution,
+    siteSoilsCarbonStorage: relatedSite.soilsCarbonStorage?.total,
+    projectSoilsCarbonStorage: reconversionProject.soilsCarbonStorage?.total,
+    projectDecontaminedSurfaceArea: reconversionProject.decontaminatedSoilSurface,
+    sumOnEvolutionPeriodService,
+  });
+  economicImpacts.push(...soilTransformationImpatsService.getEconomicImpacts());
+  impactMetrics.push(...soilTransformationImpatsService.getImpactMetrics());
 
   // -- Revenus liés à la location du site
   const projectedRentCost = reconversionProject.yearlyProjectedExpenses.find(

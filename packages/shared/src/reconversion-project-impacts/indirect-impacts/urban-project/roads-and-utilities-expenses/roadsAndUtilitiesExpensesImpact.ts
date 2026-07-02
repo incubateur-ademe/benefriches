@@ -1,4 +1,4 @@
-import { SumOnEvolutionPeriodService } from "../../../sum-on-evolution-period/SumOnEvolutionPeriodService";
+import { SumOnEvolutionPeriodService } from "../../../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 
 const FRICHE_ROAD_AND_UTILITIES_MAINTENANCE_EURO_PER_HECTARE_PER_YEAR = 8995;
 export const computeFricheYearlyRoadsAndUtilitiesMaintenanceExpenses = (surfaceArea: number) => {

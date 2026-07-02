@@ -6,8 +6,8 @@ import {
   SiteNature,
   SiteYearlyExpense,
   SiteYearlyIncome,
-} from "../site";
-import { SoilsDistribution } from "../soils";
+} from "..";
+import { SoilsDistribution } from "../../soils";
 
 export type SiteImpactsDataView = {
   id: string;

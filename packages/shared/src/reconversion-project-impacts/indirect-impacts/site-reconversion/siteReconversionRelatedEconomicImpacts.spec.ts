@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { describe, it, beforeEach, mock } from "node:test";
 import { roundToInteger, sumList } from "shared";
 
-import type { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
+import type { SumOnEvolutionPeriodService } from "../../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import {
   getFricheRoadsAndUtilitiesExpensesImpact,
   getLocalPropertyIncreaseWithFricheRemovalImpacts,

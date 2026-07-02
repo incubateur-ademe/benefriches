@@ -2,6 +2,7 @@ import { GetReconversionProjectImpactsResultDto } from "../api-dtos";
 import { roundToInteger, sumList, sumListWithKey } from "../services";
 import { SiteStatuQuoImpactMetric, SiteStatuQuoImpacts } from "../site";
 import { computeStatuQuoSiteImpacts } from "../site/statu-quo-impacts/computeStatuQuoSiteImpacts";
+import { SiteImpactsDataView } from "../site/statu-quo-impacts/siteImpactsDataView.types";
 import { SoilsCarbonStorage } from "../soils";
 import { SumOnEvolutionPeriodService } from "../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import { computeCumulativeByYear } from "../sum-on-evolution-period/computeCumulativeByYear";
@@ -9,8 +10,8 @@ import { getProjectDevelopmentEconomicBalance } from "./economic-balance/project
 import { getProjectOperatingEconomicBalance } from "./economic-balance/projectOperatingEconomicBalance";
 import { Schedule } from "./indirect-impacts/fullTimeJobs.helper";
 import { getProjectMetricsAndEconomicImpacts } from "./indirect-impacts/projectIndirectImpacts";
-import { computeAvoidedRoadsAndUtilitiesConstructionExpensesWithFriche } from "./indirect-impacts/roads-and-utilities-expenses/roadsAndUtilitiesContruction";
-import { computeAvoidedWithFricheYearlyRoadsAndUtilitiesMaintenanceExpenses } from "./indirect-impacts/roads-and-utilities-expenses/roadsAndUtilitiesExpensesImpact";
+import { computeAvoidedRoadsAndUtilitiesConstructionExpensesWithFriche } from "./indirect-impacts/urban-project/roads-and-utilities-expenses/roadsAndUtilitiesContruction";
+import { computeAvoidedWithFricheYearlyRoadsAndUtilitiesMaintenanceExpenses } from "./indirect-impacts/urban-project/roads-and-utilities-expenses/roadsAndUtilitiesExpensesImpact";
 import {
   AggregatedProjectImpactMetric,
   AggregatedReconversionIndirectEconomicImpact,
@@ -25,7 +26,6 @@ import {
   UrbanSprawlComparisonProjectImpacts,
 } from "./projectImpacts.types";
 import { ReconversionProjectImpactsDataView } from "./projectImpactsDataView.types";
-import { SiteImpactsDataView } from "./siteImpactsDataView.types";
 
 export type ApiReconversionProjectImpactsDataView = ReconversionProjectImpactsDataView<Schedule>;
 

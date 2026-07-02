@@ -7,5 +7,6 @@ export * from "./agricultural-operation";
 export * from "./natural-area";
 export * from "./urban-zone";
 export * from "./statu-quo-impacts/impacts.types";
+export * from "./statu-quo-impacts/siteImpactsDataView.types";
 export * from "./statu-quo-impacts/computeStatuQuoSiteImpacts";
 export * from "./stakeholder";

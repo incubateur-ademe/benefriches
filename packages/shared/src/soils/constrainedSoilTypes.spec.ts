@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
-import { isConstrainedSoilType, CONSTRAINED_SOIL_TYPES } from "./index.js";
+import { isConstrainedSoilType, CONSTRAINED_SOIL_TYPES } from "./constrainedSoilTypes";
 
 describe("isConstrainedSoilType", () => {
   it("should return true for all 12 constrained soil types", () => {

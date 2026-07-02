@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
-import { SumOnEvolutionPeriodService } from "../../../sum-on-evolution-period/SumOnEvolutionPeriodService";
+import { SumOnEvolutionPeriodService } from "../../../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import { UrbanFreshnessRelatedImpactsService } from "./UrbanFreshnessRelatedImpactsService";
 
 describe("UrbanFreshnessRelatedImpactsService", () => {

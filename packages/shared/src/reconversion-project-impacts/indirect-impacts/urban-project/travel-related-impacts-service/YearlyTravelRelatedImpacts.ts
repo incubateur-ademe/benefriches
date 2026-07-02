@@ -2,9 +2,9 @@ import {
   BUILDINGS_ECONOMIC_ACTIVITY_USE,
   BuildingsUseDistribution,
   UrbanProjectUseWithBuilding,
-} from "../../../reconversion-projects";
-import { filterObjectWithKeys, sumObjectValues } from "../../../services";
-import { InfluenceAreaService } from "../influence-area-service/InfluenceAreaService";
+} from "../../../../reconversion-projects";
+import { filterObjectWithKeys, sumObjectValues } from "../../../../services";
+import { InfluenceAreaService } from "../../influence-area-service/InfluenceAreaService";
 
 const AVOIDED_KILOMETER_FOR_TRAVELERS = 1.2;
 const PERCENT_OF_PEOPLE_IMPACTED = 0.5;

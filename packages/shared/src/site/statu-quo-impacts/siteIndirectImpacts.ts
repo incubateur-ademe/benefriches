@@ -1,16 +1,6 @@
 import { GetSiteImpactsDto } from "../../api-dtos";
 import { convertCarbonToCO2eq } from "../../co2eq";
 import { typedObjectEntries } from "../../object-entries";
-import {
-  computeForestRelatedProductMonetaryValue,
-  computeInvasiveSpeciesRegulationMonetaryValue,
-  computeNatureRelatedWellnessAndLeisureMonetaryValue,
-  computeNitrogenCycleMonetaryValue,
-  computePollinisationMonetaryValue,
-  computeSoilErosionMonetaryValue,
-  computeWaterCycleMonetaryValue,
-  computeWaterRegulationMonetaryValue,
-} from "../../reconversion-project-impacts/indirect-impacts/nature-conservation/natureConservationYearlyMonetaryValue";
 import { roundToInteger, sumList, sumListWithKey } from "../../services";
 import {
   isForest,
@@ -25,6 +15,16 @@ import {
   SoilsDistribution,
   sumSoilsSurfaceAreasWhere,
 } from "../../soils";
+import {
+  computeForestRelatedProductMonetaryValue,
+  computeInvasiveSpeciesRegulationMonetaryValue,
+  computeNatureRelatedWellnessAndLeisureMonetaryValue,
+  computeNitrogenCycleMonetaryValue,
+  computePollinisationMonetaryValue,
+  computeSoilErosionMonetaryValue,
+  computeWaterCycleMonetaryValue,
+  computeWaterRegulationMonetaryValue,
+} from "../../soils/impacts/natureConservationYearlyMonetaryValue";
 import { SumOnEvolutionPeriodService } from "../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import { computeCumulativeByYear } from "../../sum-on-evolution-period/computeCumulativeByYear";
 import {

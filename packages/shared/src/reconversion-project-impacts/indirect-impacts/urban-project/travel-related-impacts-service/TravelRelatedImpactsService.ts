@@ -1,6 +1,6 @@
-import { BuildingsUseDistribution } from "../../../reconversion-projects";
-import { roundTo2Digits, roundToInteger, sumList } from "../../../services";
-import { SumOnEvolutionPeriodService } from "../../../sum-on-evolution-period/SumOnEvolutionPeriodService";
+import { BuildingsUseDistribution } from "../../../../reconversion-projects";
+import { roundTo2Digits, roundToInteger, sumList } from "../../../../services";
+import { SumOnEvolutionPeriodService } from "../../../../sum-on-evolution-period/SumOnEvolutionPeriodService";
 import { YearlyTravelRelatedImpacts } from "./YearlyTravelRelatedImpacts";
 
 type Props = {

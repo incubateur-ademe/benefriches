@@ -1,9 +1,9 @@
 import {
   BUILDINGS_ECONOMIC_ACTIVITY_USE,
   BuildingsUseDistribution,
-} from "../../../reconversion-projects";
-import { filterObjectWithKeys, sumObjectValues } from "../../../services";
-import { InfluenceAreaService } from "../influence-area-service/InfluenceAreaService";
+} from "../../../../reconversion-projects";
+import { filterObjectWithKeys, sumObjectValues } from "../../../../services";
+import { InfluenceAreaService } from "../../influence-area-service/InfluenceAreaService";
 
 const CO2_BENEFIT_AMOUNT_GRAM_PER_HOUSING_SQUARE_METER_PER_YEAR = 15;
 const CO2_BENEFIT_AMOUNT_GRAM_PER_BUSINESS_SQUARE_METER_PER_YEAR = 26.4;
