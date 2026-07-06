@@ -80,10 +80,10 @@ export default defineConfig(({ mode }) => ({
       ],
       thresholds: {
         // Default/global fallback (e.g. a brand-new feature folder before its glob is added below).
-        lines: 79.16,
-        statements: 78.87,
-        functions: 77.42,
-        branches: 64.73,
+        lines: 80.11,
+        statements: 79.79,
+        functions: 77.96,
+        branches: 65.71,
         autoUpdate: true,
         "src/features/analytics/**": { lines: 100, statements: 100, functions: 100, branches: 100 },
         "src/features/app-settings/**": {
@@ -95,10 +95,10 @@ export default defineConfig(({ mode }) => ({
         "src/features/archive-project/**": { lines: 0, statements: 0, functions: 0, branches: 0 },
         "src/features/archive-site/**": { lines: 0, statements: 0, functions: 0, branches: 0 },
         "src/features/create-project/**": {
-          lines: 76.55,
-          statements: 76.02,
-          functions: 73.83,
-          branches: 54.61,
+          lines: 81.24,
+          statements: 80.62,
+          functions: 77.57,
+          branches: 62.22,
         },
         "src/features/create-site/**": {
           lines: 91,
@@ -150,7 +150,7 @@ export default defineConfig(({ mode }) => ({
           functions: 8.33,
           branches: 0,
         },
-        "src/shared/**": { lines: 79.36, statements: 79.1, functions: 80.55, branches: 68.95 },
+        "src/shared/**": { lines: 79.89, statements: 79.62, functions: 80.55, branches: 69.01 },
         "src/app/**": { lines: 90, statements: 90.24, functions: 91.66, branches: 0 },
         "src/libs/**": { lines: 100, statements: 100, functions: 100, branches: 100 },
       },
