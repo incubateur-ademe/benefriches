@@ -43,6 +43,7 @@ A test should read top-to-bottom as one story, with everything it depends on vis
 - Instantiate the subject under test inside each `it()`, not in `beforeEach()`.
 - Avoid deep `describe`/`beforeEach` nesting with mutable shared variables — the reader shouldn't have to trace state across scopes to understand a test.
 - No branching in tests (`if`/loops around assertions): a test should run the same way every time. Parameterise with a `for..of` over explicit cases instead.
+- When parameterising with `for..of`, loop at the `describe`/`it` level to generate one named `it` per case — never loop *inside* a single `it()` around the assertions. A loop-inside-`it()` fails rule 3's "obvious failure" guarantee: if one case breaks, the test name doesn't say which, and you have to read the diff to find out. Generate the test name from the case (e.g. `` it(`advances for ${phase} phase`, ...) ``) so a failure points straight at the input that broke.
 
 ## 5. Assert the full shape
 
