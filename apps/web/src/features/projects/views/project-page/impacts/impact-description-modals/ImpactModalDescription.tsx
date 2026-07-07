@@ -30,7 +30,7 @@ function ImpactModalDescription({
   contextData,
   impactsData,
   dialogId,
-  initialState = INITIAL_CONTENT_STATE,
+  initialState,
 }: ModalDescriptionProviderProps) {
   const dialogTitleId = `${dialogId}-title`;
 

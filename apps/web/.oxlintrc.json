@@ -47,7 +47,7 @@
     "typescript/consistent-return": "off",
     "typescript/no-unnecessary-condition": "off",
     "typescript/no-unnecessary-type-conversion": "error",
-    "typescript/no-useless-default-assignment": "off",
+    "typescript/no-useless-default-assignment": "error",
     "typescript/no-unnecessary-type-parameters": "off",
     "unicorn/no-array-sort": "off",
     "react/react-compiler": "off",

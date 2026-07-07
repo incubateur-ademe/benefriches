@@ -27,7 +27,7 @@ const SectionTitle = ({
 
 const InfoBox = ({
   children,
-  variant = "info",
+  variant,
 }: {
   children: ReactNode;
   variant: "info" | "warning" | "success" | "neutral" | "error";

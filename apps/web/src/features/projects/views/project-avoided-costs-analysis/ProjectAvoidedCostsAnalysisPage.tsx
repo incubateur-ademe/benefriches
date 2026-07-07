@@ -25,8 +25,8 @@ const AVOIDED_COSTS_OPTIONS = ["inaction", "urban_sprawl"] as const;
 
 export default function ProjectAvoidedCostsAnalysisPage({
   projectId,
-  projectType = "URBAN_PROJECT",
-  siteNature = "FRICHE",
+  projectType,
+  siteNature,
   evaluationPeriodInYears,
   onEvaluationPeriodChange,
   shouldDisplayOnBoarding,
