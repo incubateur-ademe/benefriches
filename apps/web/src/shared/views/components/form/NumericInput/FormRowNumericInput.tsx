@@ -41,7 +41,7 @@ const FormRowNumericInput = <TFieldValues extends FieldValues = FieldValues>({
             ...nativeInputProps,
             ...field,
             onChange: (e) => {
-              field.onChange(stringToNumber(e.target.value.toString().replace(/[^\d]/g, "")) ?? "");
+              field.onChange(stringToNumber(e.target.value.replace(/[^\d]/g, "")) ?? "");
             },
             value: formatNumber(field.value),
             pattern: "[\\d\\s]*",

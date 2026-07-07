@@ -136,7 +136,7 @@ const UrbanProjectBuildingsSection = ({
               {typedObjectEntries(existingBuildingsUsesFloorSurfaceArea).map(([use, value]) =>
                 value ? (
                   <DataLine
-                    key={String(use)}
+                    key={use}
                     label={getLabelForBuildingsUse(use)}
                     value={formatSurfaceArea(value)}
                     isDetails
@@ -155,7 +155,7 @@ const UrbanProjectBuildingsSection = ({
               {typedObjectEntries(newBuildingsUsesFloorSurfaceArea).map(([use, value]) =>
                 value ? (
                   <DataLine
-                    key={String(use)}
+                    key={use}
                     label={getLabelForBuildingsUse(use)}
                     value={formatSurfaceArea(value)}
                     isDetails

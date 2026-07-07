@@ -17,7 +17,7 @@ export function computeStepChanges<T extends SchematizedAnswerStepId>(
   payload: StepCompletionPayload<T>,
 ): StepUpdateResult<T> {
   const handler = answerStepHandlers[payload.stepId];
-  if (!handler) throw new Error(`No handler registered for step ${String(payload.stepId)}`);
+  if (!handler) throw new Error(`No handler registered for step ${payload.stepId}`);
 
   const context = {
     siteData: state.siteData,
