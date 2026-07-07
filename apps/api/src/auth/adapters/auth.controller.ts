@@ -75,28 +75,47 @@ export class RegisterUserBodyDto extends createZodDto(registerUserRequestDtoSche
 
 @Controller("auth")
 export class AuthController {
+  private readonly createUserUseCase: CreateUserUseCase;
+  private readonly sendAuthLinkUseCase: SendAuthLinkUseCase;
+  private readonly authenticateWithTokenUseCase: AuthenticateWithTokenUseCase;
+  private readonly accessTokenService: AccessTokenService;
+  private readonly configService: ConfigService;
+  private readonly usersRepository: UserRepository;
+  private readonly oidcLogin: ProConnectClient;
+  private readonly externalUserIdentitiesRepository: ExternalUserIdentityRepository;
+  private readonly verifiedEmailRepository: VerifiedEmailRepository;
+  private readonly eventPublisher: DomainEventPublisher;
+  private readonly uidGenerator: UidGenerator;
+  private readonly logger: AppLogger;
   constructor(
-    private readonly createUserUseCase: CreateUserUseCase,
-    private readonly sendAuthLinkUseCase: SendAuthLinkUseCase,
-    private readonly authenticateWithTokenUseCase: AuthenticateWithTokenUseCase,
-    @Inject(ACCESS_TOKEN_SERVICE_INJECTION_TOKEN)
-    private readonly accessTokenService: AccessTokenService,
-    private readonly configService: ConfigService,
-    @Inject(AUTH_USER_REPOSITORY_INJECTION_TOKEN)
-    private readonly usersRepository: UserRepository,
-    @Inject(PRO_CONNECT_CLIENT_INJECTION_TOKEN)
-    private readonly oidcLogin: ProConnectClient,
+    createUserUseCase: CreateUserUseCase,
+    sendAuthLinkUseCase: SendAuthLinkUseCase,
+    authenticateWithTokenUseCase: AuthenticateWithTokenUseCase,
+    @Inject(ACCESS_TOKEN_SERVICE_INJECTION_TOKEN) accessTokenService: AccessTokenService,
+    configService: ConfigService,
+    @Inject(AUTH_USER_REPOSITORY_INJECTION_TOKEN) usersRepository: UserRepository,
+    @Inject(PRO_CONNECT_CLIENT_INJECTION_TOKEN) oidcLogin: ProConnectClient,
     @Inject(EXTERNAL_USER_IDENTITIES_REPOSITORY_INJECTION_TOKEN)
-    private readonly externalUserIdentitiesRepository: ExternalUserIdentityRepository,
+    externalUserIdentitiesRepository: ExternalUserIdentityRepository,
     @Inject(VERIFIED_EMAIL_REPOSITORY_INJECTION_TOKEN)
-    private readonly verifiedEmailRepository: VerifiedEmailRepository,
-    @Inject(DOMAIN_EVENT_PUBLISHER_INJECTION_TOKEN)
-    private readonly eventPublisher: DomainEventPublisher,
-    @Inject(UUID_GENERATOR_INJECTION_TOKEN)
-    private readonly uidGenerator: UidGenerator,
-    @Inject(AUTH_CONTROLLER_LOGGER_TOKEN)
-    private readonly logger: AppLogger,
-  ) {}
+    verifiedEmailRepository: VerifiedEmailRepository,
+    @Inject(DOMAIN_EVENT_PUBLISHER_INJECTION_TOKEN) eventPublisher: DomainEventPublisher,
+    @Inject(UUID_GENERATOR_INJECTION_TOKEN) uidGenerator: UidGenerator,
+    @Inject(AUTH_CONTROLLER_LOGGER_TOKEN) logger: AppLogger,
+  ) {
+    this.createUserUseCase = createUserUseCase;
+    this.sendAuthLinkUseCase = sendAuthLinkUseCase;
+    this.authenticateWithTokenUseCase = authenticateWithTokenUseCase;
+    this.accessTokenService = accessTokenService;
+    this.configService = configService;
+    this.usersRepository = usersRepository;
+    this.oidcLogin = oidcLogin;
+    this.externalUserIdentitiesRepository = externalUserIdentitiesRepository;
+    this.verifiedEmailRepository = verifiedEmailRepository;
+    this.eventPublisher = eventPublisher;
+    this.uidGenerator = uidGenerator;
+    this.logger = logger;
+  }
 
   @Post("/register")
   async createUser(@Body() createUserDto: RegisterUserBodyDto, @Res() response: Response) {

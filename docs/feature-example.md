@@ -48,7 +48,11 @@ type Request = { id: string };
 type Response = TResult<GetSiteResponseDto, "SiteNotFound">;
 
 export class GetSiteUseCase implements UseCase<Request, Response> {
-  constructor(private readonly sitesQuery: SitesQuery) {}
+  private readonly sitesQuery: SitesQuery;
+
+  constructor(sitesQuery: SitesQuery) {
+    this.sitesQuery = sitesQuery;
+  }
 
   async execute({ id }: Request): Promise<Response> {
     const site = await this.sitesQuery.getById(id);
@@ -133,7 +137,11 @@ import type { GetSiteResponseDto } from "shared";
 import type { SitesQuery } from "../../../core/gateways/SitesQuery";
 
 export class SqlSitesQuery implements SitesQuery {
-  constructor(private readonly sqlConnection: Knex) {}
+  private readonly sqlConnection: Knex;
+
+  constructor(sqlConnection: Knex) {
+    this.sqlConnection = sqlConnection;
+  }
 
   async getById(id: string): Promise<GetSiteResponseDto | undefined> {
     const row = await this.sqlConnection("sites").where({ id }).first();
@@ -159,7 +167,11 @@ import { GetSiteUseCase } from "../../core/usecases/getSite.usecase";
 
 @Controller("sites")
 export class SitesController {
-  constructor(private readonly getSiteUseCase: GetSiteUseCase) {}
+  private readonly getSiteUseCase: GetSiteUseCase;
+
+  constructor(getSiteUseCase: GetSiteUseCase) {
+    this.getSiteUseCase = getSiteUseCase;
+  }
 
   @Get(":id")
   async getSite(@Param("id") id: string) {

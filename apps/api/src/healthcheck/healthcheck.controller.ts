@@ -17,7 +17,10 @@ type HealthCheckResponse = {
 
 @Controller("healthcheck")
 export class HealthCheckController {
-  constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}
+  private readonly sqlConnection: Knex;
+  constructor(@Inject(SqlConnection) sqlConnection: Knex) {
+    this.sqlConnection = sqlConnection;
+  }
 
   @Get()
   async getHealthcheck(@Res() res: Response): Promise<Response<HealthCheckResponse>> {

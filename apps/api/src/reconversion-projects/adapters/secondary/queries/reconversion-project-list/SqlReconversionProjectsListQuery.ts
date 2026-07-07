@@ -11,7 +11,10 @@ import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection
 import { SqlSite } from "src/shared-kernel/adapters/sql-knex/tableTypes";
 
 export class SqlReconversionProjectsListQuery implements ReconversionProjectsListQuery {
-  constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}
+  private readonly sqlConnection: Knex;
+  constructor(@Inject(SqlConnection) sqlConnection: Knex) {
+    this.sqlConnection = sqlConnection;
+  }
   async getGroupedBySite({
     userId,
   }: {

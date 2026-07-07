@@ -6,7 +6,10 @@ import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection
 
 @Injectable()
 export class SqlMarketingUsersRepository implements MarketingUsersRepository {
-  constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}
+  private readonly sqlConnection: Knex;
+  constructor(@Inject(SqlConnection) sqlConnection: Knex) {
+    this.sqlConnection = sqlConnection;
+  }
 
   async updateSubscriptionStatus(userId: string, subscribed: boolean): Promise<void> {
     await this.sqlConnection("users")

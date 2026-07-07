@@ -19,10 +19,12 @@ type MutafrichesEvaluationResultResponse = {
 };
 @Injectable()
 export class MutafrichesEvaluationQuery implements MutabilityEvaluationQuery {
-  constructor(
-    private readonly httpService: HttpService,
-    @Inject(ConfigService) private readonly configService: ConfigService,
-  ) {}
+  private readonly httpService: HttpService;
+  private readonly configService: ConfigService;
+  constructor(httpService: HttpService, @Inject(ConfigService) configService: ConfigService) {
+    this.httpService = httpService;
+    this.configService = configService;
+  }
 
   getEvaluation(mutafrichesId: string): Promise<MutabilityEvaluationResult | null> {
     return lastValueFrom(

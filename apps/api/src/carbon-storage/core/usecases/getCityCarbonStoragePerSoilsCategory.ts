@@ -28,7 +28,10 @@ export class GetCityCarbonStoragePerSoilsCategoryUseCase implements UseCase<
   Request,
   GetCityCarbonStoragePerSoilsCategoryResult
 > {
-  constructor(private readonly carbonStorageQuery: CarbonStorageQuery) {}
+  private readonly carbonStorageQuery: CarbonStorageQuery;
+  constructor(carbonStorageQuery: CarbonStorageQuery) {
+    this.carbonStorageQuery = carbonStorageQuery;
+  }
 
   async execute({ cityCode, soils }: Request): Promise<GetCityCarbonStoragePerSoilsCategoryResult> {
     const carbonStorage = await this.carbonStorageQuery.getCarbonStorageForCity(

@@ -32,11 +32,15 @@ export interface RequestWithAuthenticatedUser extends Request {
 
 @Injectable()
 export class JwtAuthGuard implements CanActivate {
+  private readonly accessTokenService: AccessTokenService;
+  private readonly configService: ConfigService;
   constructor(
-    @Inject(ACCESS_TOKEN_SERVICE_INJECTION_TOKEN)
-    private readonly accessTokenService: AccessTokenService,
-    private readonly configService: ConfigService,
-  ) {}
+    @Inject(ACCESS_TOKEN_SERVICE_INJECTION_TOKEN) accessTokenService: AccessTokenService,
+    configService: ConfigService,
+  ) {
+    this.accessTokenService = accessTokenService;
+    this.configService = configService;
+  }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request: Request = context.switchToHttp().getRequest();

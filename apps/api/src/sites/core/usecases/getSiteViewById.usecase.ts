@@ -12,10 +12,12 @@ type Request = {
 export type GetSiteViewByIdResult = TResult<{ site: SiteView }, "SiteNotFound">;
 
 export class GetSiteViewByIdUseCase implements UseCase<Request, GetSiteViewByIdResult> {
-  constructor(
-    private readonly sitesQuery: SitesQuery,
-    private readonly mutabilityEvaluationQuery: MutabilityEvaluationQuery,
-  ) {}
+  private readonly sitesQuery: SitesQuery;
+  private readonly mutabilityEvaluationQuery: MutabilityEvaluationQuery;
+  constructor(sitesQuery: SitesQuery, mutabilityEvaluationQuery: MutabilityEvaluationQuery) {
+    this.sitesQuery = sitesQuery;
+    this.mutabilityEvaluationQuery = mutabilityEvaluationQuery;
+  }
 
   async execute({ siteId }: Request): Promise<GetSiteViewByIdResult> {
     const site = await this.sitesQuery.getViewById(siteId);

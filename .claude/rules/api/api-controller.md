@@ -48,10 +48,16 @@ import { ZodValidationPipe } from "nestjs-zod";
 
 @Controller("examples")
 export class ExampleController {
+  private readonly createExampleUseCase: CreateExampleUseCase;
+  private readonly getExampleByIdUseCase: GetExampleByIdUseCase;
+
   constructor(
-    private readonly createExampleUseCase: CreateExampleUseCase,
-    private readonly getExampleByIdUseCase: GetExampleByIdUseCase,
-  ) {}
+    createExampleUseCase: CreateExampleUseCase,
+    getExampleByIdUseCase: GetExampleByIdUseCase,
+  ) {
+    this.createExampleUseCase = createExampleUseCase;
+    this.getExampleByIdUseCase = getExampleByIdUseCase;
+  }
 
   @Post()
   @UseGuards(JwtAuthGuard)  // ✅ Always protect routes unless explicitly public

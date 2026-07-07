@@ -10,7 +10,10 @@ import {
 
 @Injectable()
 export class SqlExternalUserIdentitiesRepository implements ExternalUserIdentityRepository {
-  constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}
+  private readonly sqlConnection: Knex;
+  constructor(@Inject(SqlConnection) sqlConnection: Knex) {
+    this.sqlConnection = sqlConnection;
+  }
 
   async save(userIdentity: ExternalUserIdentity): Promise<void> {
     await this.sqlConnection("auth_external_user_identities").insert({

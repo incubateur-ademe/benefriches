@@ -89,7 +89,10 @@ type ReconversionProjectSqlResult = {
 };
 
 export class SqlReconversionProjectQuery implements ReconversionProjectQueryGateway {
-  constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}
+  private readonly sqlConnection: Knex;
+  constructor(@Inject(SqlConnection) sqlConnection: Knex) {
+    this.sqlConnection = sqlConnection;
+  }
 
   async getFeaturesById(
     reconversionProjectId: string,

@@ -65,13 +65,24 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<
   Request,
   ComputeReconversionProjectImpactsResult
 > {
+  private readonly reconversionProjectQuery: ReconversionProjectImpactsQuery;
+  private readonly siteRepository: SiteImpactsQuery;
+  private readonly cityStatsQuery: CityStatsProvider;
+  private readonly getCarbonStorageFromSoilDistributionService: GetCarbonStorageFromSoilDistributionService;
+  private readonly dateProvider: DateProvider;
   constructor(
-    private readonly reconversionProjectQuery: ReconversionProjectImpactsQuery,
-    private readonly siteRepository: SiteImpactsQuery,
-    private readonly cityStatsQuery: CityStatsProvider,
-    private readonly getCarbonStorageFromSoilDistributionService: GetCarbonStorageFromSoilDistributionService,
-    private readonly dateProvider: DateProvider,
-  ) {}
+    reconversionProjectQuery: ReconversionProjectImpactsQuery,
+    siteRepository: SiteImpactsQuery,
+    cityStatsQuery: CityStatsProvider,
+    getCarbonStorageFromSoilDistributionService: GetCarbonStorageFromSoilDistributionService,
+    dateProvider: DateProvider,
+  ) {
+    this.reconversionProjectQuery = reconversionProjectQuery;
+    this.siteRepository = siteRepository;
+    this.cityStatsQuery = cityStatsQuery;
+    this.getCarbonStorageFromSoilDistributionService = getCarbonStorageFromSoilDistributionService;
+    this.dateProvider = dateProvider;
+  }
 
   async execute({
     reconversionProjectId,

@@ -17,10 +17,11 @@ type CacheStore = Record<string, Address[]>;
 export class CachedAddressSearchGateway implements AddressSearchGateway {
   private cache: CacheStore = {};
 
-  constructor(
-    private readonly delegate: AddressSearchGateway,
-    private readonly cacheFilePath: string,
-  ) {
+  private readonly delegate: AddressSearchGateway;
+  private readonly cacheFilePath: string;
+  constructor(delegate: AddressSearchGateway, cacheFilePath: string) {
+    this.delegate = delegate;
+    this.cacheFilePath = cacheFilePath;
     this.loadCache();
   }
 

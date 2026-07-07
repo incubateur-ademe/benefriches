@@ -44,16 +44,33 @@ import { GetSiteViewByIdUseCase } from "src/sites/core/usecases/getSiteViewById.
 
 @Controller()
 export class SitesController {
+  private readonly createNewSiteUseCase: CreateNewCustomSiteUseCase;
+  private readonly createNewExpressSiteUseCase: CreateNewExpressSiteUseCase;
+  private readonly getSiteByIdUseCase: GetSiteByIdUseCase;
+  private readonly getSiteViewByIdUseCase: GetSiteViewByIdUseCase;
+  private readonly getSiteRealEstateValuationUseCase: GetSiteRealEstateValuationUseCase;
+  private readonly archiveSiteUseCase: ArchiveSiteUseCase;
+  private readonly computeFricheInactionCostUseCase: ComputeFricheInactionCostUseCase;
+  private readonly getSiteImpactsUseCase: ComputeSiteImpactsUseCase;
   constructor(
-    private readonly createNewSiteUseCase: CreateNewCustomSiteUseCase,
-    private readonly createNewExpressSiteUseCase: CreateNewExpressSiteUseCase,
-    private readonly getSiteByIdUseCase: GetSiteByIdUseCase,
-    private readonly getSiteViewByIdUseCase: GetSiteViewByIdUseCase,
-    private readonly getSiteRealEstateValuationUseCase: GetSiteRealEstateValuationUseCase,
-    private readonly archiveSiteUseCase: ArchiveSiteUseCase,
-    private readonly computeFricheInactionCostUseCase: ComputeFricheInactionCostUseCase,
-    private readonly getSiteImpactsUseCase: ComputeSiteImpactsUseCase,
-  ) {}
+    createNewSiteUseCase: CreateNewCustomSiteUseCase,
+    createNewExpressSiteUseCase: CreateNewExpressSiteUseCase,
+    getSiteByIdUseCase: GetSiteByIdUseCase,
+    getSiteViewByIdUseCase: GetSiteViewByIdUseCase,
+    getSiteRealEstateValuationUseCase: GetSiteRealEstateValuationUseCase,
+    archiveSiteUseCase: ArchiveSiteUseCase,
+    computeFricheInactionCostUseCase: ComputeFricheInactionCostUseCase,
+    getSiteImpactsUseCase: ComputeSiteImpactsUseCase,
+  ) {
+    this.createNewSiteUseCase = createNewSiteUseCase;
+    this.createNewExpressSiteUseCase = createNewExpressSiteUseCase;
+    this.getSiteByIdUseCase = getSiteByIdUseCase;
+    this.getSiteViewByIdUseCase = getSiteViewByIdUseCase;
+    this.getSiteRealEstateValuationUseCase = getSiteRealEstateValuationUseCase;
+    this.archiveSiteUseCase = archiveSiteUseCase;
+    this.computeFricheInactionCostUseCase = computeFricheInactionCostUseCase;
+    this.getSiteImpactsUseCase = getSiteImpactsUseCase;
+  }
 
   @Post("/sites/create-custom")
   async createNewCustomSite(

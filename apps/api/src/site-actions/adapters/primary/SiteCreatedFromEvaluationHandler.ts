@@ -12,10 +12,15 @@ import { UpdateSiteActionStatusUseCase } from "src/site-actions/core/usecases/up
 export class SiteCreatedFromEvaluationHandler {
   private readonly logger = new Logger(SiteCreatedFromEvaluationHandler.name);
 
+  private readonly updateSiteActionStatusUseCase: UpdateSiteActionStatusUseCase;
+  private readonly siteActionsQuery: SiteActionsQuery;
   constructor(
-    private readonly updateSiteActionStatusUseCase: UpdateSiteActionStatusUseCase,
-    private readonly siteActionsQuery: SiteActionsQuery,
-  ) {}
+    updateSiteActionStatusUseCase: UpdateSiteActionStatusUseCase,
+    siteActionsQuery: SiteActionsQuery,
+  ) {
+    this.updateSiteActionStatusUseCase = updateSiteActionStatusUseCase;
+    this.siteActionsQuery = siteActionsQuery;
+  }
 
   @OnEvent(SITE_CREATED_FROM_EVALUATION)
   async handleSiteCreatedFromEvaluation(event: SiteCreatedFromEvaluationEvent): Promise<void> {

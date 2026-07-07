@@ -7,7 +7,10 @@ import { VerifiedEmailRepository } from "./VerifiedEmailRepository";
 
 @Injectable()
 export class SqlVerifiedEmailRepository implements VerifiedEmailRepository {
-  constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}
+  private readonly sqlConnection: Knex;
+  constructor(@Inject(SqlConnection) sqlConnection: Knex) {
+    this.sqlConnection = sqlConnection;
+  }
 
   async isVerified(email: string): Promise<boolean> {
     const verifiedEmail = await this.sqlConnection("verified_emails").where({ email }).first();

@@ -98,7 +98,11 @@ import type { SqlExample } from "src/shared-kernel/adapters/sql-knex/tableTypes"
 import type { Knex } from "knex";
 
 export class SqlExamplesQuery implements ExamplesQuery {
-  constructor(private readonly sqlConnection: Knex) {}
+  private readonly sqlConnection: Knex;
+
+  constructor(sqlConnection: Knex) {
+    this.sqlConnection = sqlConnection;
+  }
 
   async getById(id: string): Promise<ExampleViewModel | undefined> {
     const row = await this.sqlConnection<SqlExample>("examples")

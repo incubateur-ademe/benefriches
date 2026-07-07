@@ -5,7 +5,10 @@ import { GetUserSiteEvaluationsUseCase } from "src/site-evaluations/core/usecase
 
 @Controller("site-evaluations")
 export class SiteEvaluationController {
-  constructor(private readonly getUserSiteEvaluationsUseCase: GetUserSiteEvaluationsUseCase) {}
+  private readonly getUserSiteEvaluationsUseCase: GetUserSiteEvaluationsUseCase;
+  constructor(getUserSiteEvaluationsUseCase: GetUserSiteEvaluationsUseCase) {
+    this.getUserSiteEvaluationsUseCase = getUserSiteEvaluationsUseCase;
+  }
 
   @UseGuards(JwtAuthGuard)
   @Get()

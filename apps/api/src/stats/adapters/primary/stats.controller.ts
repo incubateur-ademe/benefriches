@@ -14,9 +14,10 @@ class getEvaluatedProjectStatsDto extends createZodDto(
 
 @Controller("stats")
 export class StatsController {
-  constructor(
-    private readonly computeEvaluatedProjectStatsUseCase: ComputeEvaluatedProjectStatsUseCase,
-  ) {}
+  private readonly computeEvaluatedProjectStatsUseCase: ComputeEvaluatedProjectStatsUseCase;
+  constructor(computeEvaluatedProjectStatsUseCase: ComputeEvaluatedProjectStatsUseCase) {
+    this.computeEvaluatedProjectStatsUseCase = computeEvaluatedProjectStatsUseCase;
+  }
 
   @Post("average-impacts/search")
   @Throttle({ default: { ttl: 60_000, limit: 10 } })

@@ -15,10 +15,12 @@ type Response = {
 } & Partial<Record<SoilType, number>>;
 
 export class GetCarbonStorageFromSoilDistributionService {
-  constructor(
-    private readonly carbonStorageQuery: CarbonStorageQuery,
-    private readonly logger: AppLogger,
-  ) {}
+  private readonly carbonStorageQuery: CarbonStorageQuery;
+  private readonly logger: AppLogger;
+  constructor(carbonStorageQuery: CarbonStorageQuery, logger: AppLogger) {
+    this.carbonStorageQuery = carbonStorageQuery;
+    this.logger = logger;
+  }
 
   async execute({ cityCode, soilsDistribution }: Request): Promise<Response | undefined> {
     try {

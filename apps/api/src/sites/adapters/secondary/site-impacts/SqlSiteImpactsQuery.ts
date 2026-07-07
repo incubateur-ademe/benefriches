@@ -14,7 +14,10 @@ import { SiteImpactsQuery } from "src/reconversion-projects/core/usecases/comput
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 
 export class SqlSiteImpactsQuery implements SiteImpactsQuery {
-  constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}
+  private readonly sqlConnection: Knex;
+  constructor(@Inject(SqlConnection) sqlConnection: Knex) {
+    this.sqlConnection = sqlConnection;
+  }
 
   async getById(siteId: string): Promise<SiteImpactsDataView | undefined> {
     const sqlSite = await this.sqlConnection("sites")

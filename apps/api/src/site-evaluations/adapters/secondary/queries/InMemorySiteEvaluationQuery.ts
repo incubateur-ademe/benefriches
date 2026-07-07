@@ -4,7 +4,10 @@ import {
 } from "src/site-evaluations/core/gateways/SiteEvaluationQuery";
 
 export class InMemorySiteEvaluationQuery implements SiteEvaluationQuery {
-  constructor(private readonly siteEvaluations: SiteEvaluationDataView[] = []) {}
+  private readonly siteEvaluations: SiteEvaluationDataView[];
+  constructor(siteEvaluations: SiteEvaluationDataView[] = []) {
+    this.siteEvaluations = siteEvaluations;
+  }
 
   getUserSiteEvaluations(): Promise<SiteEvaluationDataView[]> {
     return Promise.resolve(this.siteEvaluations);

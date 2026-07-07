@@ -16,7 +16,10 @@ export const SqlConnection = "SqlConnection";
   ],
 })
 export class SqlConnectionModule implements OnModuleDestroy {
-  constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}
+  private readonly sqlConnection: Knex;
+  constructor(@Inject(SqlConnection) sqlConnection: Knex) {
+    this.sqlConnection = sqlConnection;
+  }
 
   async onModuleDestroy(): Promise<void> {
     await this.sqlConnection.destroy();

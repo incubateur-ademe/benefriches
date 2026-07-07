@@ -29,14 +29,27 @@ type AuthenticateWithTokenResult = TResult<
 >;
 
 export class AuthenticateWithTokenUseCase implements UseCase<Request, AuthenticateWithTokenResult> {
+  private readonly tokenAuthenticationAttemptRepository: TokenAuthenticationAttemptRepository;
+  private readonly userRepository: UserRepository;
+  private readonly dateProvider: DateProvider;
+  private readonly tokenGenerator: TokenGenerator;
+  private readonly eventPublisher: DomainEventPublisher;
+  private readonly uuidGenerator: UidGenerator;
   constructor(
-    private readonly tokenAuthenticationAttemptRepository: TokenAuthenticationAttemptRepository,
-    private readonly userRepository: UserRepository,
-    private readonly dateProvider: DateProvider,
-    private readonly tokenGenerator: TokenGenerator,
-    private readonly eventPublisher: DomainEventPublisher,
-    private readonly uuidGenerator: UidGenerator,
-  ) {}
+    tokenAuthenticationAttemptRepository: TokenAuthenticationAttemptRepository,
+    userRepository: UserRepository,
+    dateProvider: DateProvider,
+    tokenGenerator: TokenGenerator,
+    eventPublisher: DomainEventPublisher,
+    uuidGenerator: UidGenerator,
+  ) {
+    this.tokenAuthenticationAttemptRepository = tokenAuthenticationAttemptRepository;
+    this.userRepository = userRepository;
+    this.dateProvider = dateProvider;
+    this.tokenGenerator = tokenGenerator;
+    this.eventPublisher = eventPublisher;
+    this.uuidGenerator = uuidGenerator;
+  }
 
   async execute(request: Request): Promise<AuthenticateWithTokenResult> {
     const inputToken = request.token;

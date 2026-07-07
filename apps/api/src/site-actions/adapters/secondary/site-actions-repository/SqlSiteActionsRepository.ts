@@ -17,7 +17,10 @@ const mapSiteActionToSqlRow = (action: SiteAction): SqlSiteAction => ({
 
 @Injectable()
 export class SqlSiteActionsRepository implements SiteActionsRepository {
-  constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}
+  private readonly sqlConnection: Knex;
+  constructor(@Inject(SqlConnection) sqlConnection: Knex) {
+    this.sqlConnection = sqlConnection;
+  }
 
   async save(actions: SiteAction[]): Promise<void> {
     const sqlRows = actions.map(mapSiteActionToSqlRow);

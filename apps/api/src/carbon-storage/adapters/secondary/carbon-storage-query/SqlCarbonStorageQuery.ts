@@ -70,7 +70,10 @@ const getForestLitterCarbonStorage = (soilCategories: RepositorySoilCategoryType
 };
 
 export class SqlCarbonStorageQuery implements CarbonStorageQuery {
-  constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}
+  private readonly sqlConnection: Knex;
+  constructor(@Inject(SqlConnection) sqlConnection: Knex) {
+    this.sqlConnection = sqlConnection;
+  }
 
   async getCarbonStorageForCity(
     cityCode: string,

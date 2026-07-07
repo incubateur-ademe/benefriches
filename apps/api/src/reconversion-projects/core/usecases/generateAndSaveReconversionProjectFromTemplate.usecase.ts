@@ -29,12 +29,22 @@ export class GenerateAndSaveReconversionProjectFromTemplateUseCase implements Us
   Request,
   GenerateAndSaveReconversionProjectFromTemplateResult
 > {
+  private readonly generateReconversionProjectFromTemplateUseCase: GenerateReconversionProjectFromTemplateUseCase;
+  private readonly reconversionProjectRepository: ReconversionProjectRepository;
+  private readonly eventPublisher: DomainEventPublisher;
+  private readonly uuidGenerator: UidGenerator;
   constructor(
-    private readonly generateReconversionProjectFromTemplateUseCase: GenerateReconversionProjectFromTemplateUseCase,
-    private readonly reconversionProjectRepository: ReconversionProjectRepository,
-    private readonly eventPublisher: DomainEventPublisher,
-    private readonly uuidGenerator: UidGenerator,
-  ) {}
+    generateReconversionProjectFromTemplateUseCase: GenerateReconversionProjectFromTemplateUseCase,
+    reconversionProjectRepository: ReconversionProjectRepository,
+    eventPublisher: DomainEventPublisher,
+    uuidGenerator: UidGenerator,
+  ) {
+    this.generateReconversionProjectFromTemplateUseCase =
+      generateReconversionProjectFromTemplateUseCase;
+    this.reconversionProjectRepository = reconversionProjectRepository;
+    this.eventPublisher = eventPublisher;
+    this.uuidGenerator = uuidGenerator;
+  }
 
   async execute(props: Request): Promise<GenerateAndSaveReconversionProjectFromTemplateResult> {
     const result = await this.generateReconversionProjectFromTemplateUseCase.execute(props);

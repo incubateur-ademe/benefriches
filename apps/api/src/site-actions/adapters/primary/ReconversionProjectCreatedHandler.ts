@@ -12,10 +12,15 @@ import { UpdateSiteActionStatusUseCase } from "src/site-actions/core/usecases/up
 export class ReconversionProjectCreatedHandler {
   private readonly logger = new Logger(ReconversionProjectCreatedHandler.name);
 
+  private readonly updateSiteActionStatusUseCase: UpdateSiteActionStatusUseCase;
+  private readonly siteActionsQuery: SiteActionsQuery;
   constructor(
-    private readonly updateSiteActionStatusUseCase: UpdateSiteActionStatusUseCase,
-    private readonly siteActionsQuery: SiteActionsQuery,
-  ) {}
+    updateSiteActionStatusUseCase: UpdateSiteActionStatusUseCase,
+    siteActionsQuery: SiteActionsQuery,
+  ) {
+    this.updateSiteActionStatusUseCase = updateSiteActionStatusUseCase;
+    this.siteActionsQuery = siteActionsQuery;
+  }
 
   @OnEvent(RECONVERSION_PROJECT_CREATED)
   async handleReconversionProjectCreation(event: ReconversionProjectCreatedEvent): Promise<void> {

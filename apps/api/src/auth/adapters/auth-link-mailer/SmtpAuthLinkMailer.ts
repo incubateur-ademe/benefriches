@@ -8,7 +8,9 @@ import { AuthLinkMailer } from "src/auth/core/sendAuthLink.usecase";
 export class SmtpAuthLinkMailer implements AuthLinkMailer {
   private readonly transporter: Transporter;
 
-  constructor(@Inject(ConfigService) private readonly configService: ConfigService) {
+  private readonly configService: ConfigService;
+  constructor(@Inject(ConfigService) configService: ConfigService) {
+    this.configService = configService;
     this.transporter = createTransport({
       host: this.configService.getOrThrow<string>("SMTP_HOST"),
       port: this.configService.getOrThrow<number>("SMTP_PORT"),

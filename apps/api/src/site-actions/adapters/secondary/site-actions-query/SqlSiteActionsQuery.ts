@@ -16,7 +16,10 @@ const mapSqlRowToSiteAction = (row: SqlSiteAction): SiteAction => ({
 });
 
 export class SqlSiteActionsQuery implements SiteActionsQuery {
-  constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}
+  private readonly sqlConnection: Knex;
+  constructor(@Inject(SqlConnection) sqlConnection: Knex) {
+    this.sqlConnection = sqlConnection;
+  }
 
   async getBySiteId(siteId: string): Promise<SiteAction[]> {
     const rows = await this.sqlConnection("site_actions")

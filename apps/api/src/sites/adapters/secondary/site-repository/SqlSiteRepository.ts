@@ -16,7 +16,10 @@ import { SitesRepository } from "src/sites/core/gateways/SitesRepository";
 import { SiteEntity } from "src/sites/core/models/siteEntity";
 
 export class SqlSiteRepository implements SitesRepository {
-  constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}
+  private readonly sqlConnection: Knex;
+  constructor(@Inject(SqlConnection) sqlConnection: Knex) {
+    this.sqlConnection = sqlConnection;
+  }
 
   async save(site: SiteEntity): Promise<void> {
     await this.sqlConnection.transaction(async (trx) => {

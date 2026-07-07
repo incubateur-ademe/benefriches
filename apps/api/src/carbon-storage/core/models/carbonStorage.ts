@@ -42,13 +42,24 @@ export type CarbonStorageProps = {
 };
 
 export class CarbonStorage {
+  readonly reservoir: ReservoirType;
+  readonly soilCategory: RepositorySoilCategoryType;
+  readonly carbonStorageInTonByHectare: number;
+  readonly localisationCategory: LocalisationCategoryType;
+  readonly localisationCode: string;
   private constructor(
-    readonly reservoir: ReservoirType,
-    readonly soilCategory: RepositorySoilCategoryType,
-    readonly carbonStorageInTonByHectare: number,
-    readonly localisationCategory: LocalisationCategoryType,
-    readonly localisationCode: string,
-  ) {}
+    reservoir: ReservoirType,
+    soilCategory: RepositorySoilCategoryType,
+    carbonStorageInTonByHectare: number,
+    localisationCategory: LocalisationCategoryType,
+    localisationCode: string,
+  ) {
+    this.reservoir = reservoir;
+    this.soilCategory = soilCategory;
+    this.carbonStorageInTonByHectare = carbonStorageInTonByHectare;
+    this.localisationCategory = localisationCategory;
+    this.localisationCode = localisationCode;
+  }
 
   static create({
     reservoir,

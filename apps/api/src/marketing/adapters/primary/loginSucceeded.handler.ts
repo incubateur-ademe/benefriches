@@ -12,10 +12,12 @@ import type { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider
 export class LoginSucceededHandler {
   private readonly logger = new Logger(LoginSucceededHandler.name);
 
-  constructor(
-    private readonly crm: CRMGateway,
-    private readonly dateProvider: DateProvider,
-  ) {}
+  private readonly crm: CRMGateway;
+  private readonly dateProvider: DateProvider;
+  constructor(crm: CRMGateway, dateProvider: DateProvider) {
+    this.crm = crm;
+    this.dateProvider = dateProvider;
+  }
 
   @OnEvent(LOGIN_SUCCEEDED)
   async handleLoginSucceeded(event: LoginSucceededEvent) {

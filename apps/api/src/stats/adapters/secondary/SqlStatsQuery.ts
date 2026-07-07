@@ -107,7 +107,10 @@ const toCityStats = (
 };
 
 export class SqlReconversionProjectAndSiteImpactsQuery {
-  constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}
+  private readonly sqlConnection: Knex;
+  constructor(@Inject(SqlConnection) sqlConnection: Knex) {
+    this.sqlConnection = sqlConnection;
+  }
 
   async getManyByReconversionProjectIds(
     reconversionProjectIds: string[],

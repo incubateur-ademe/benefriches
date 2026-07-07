@@ -90,11 +90,19 @@ import type { UidGenerator } from "src/shared-kernel/adapters/id-generator/UidGe
 import { createExampleCreatedEvent } from "../events/exampleCreated.event";
 
 export class CreateExampleUseCase implements UseCase<Request, TResult<Response, Errors>> {
+  private readonly repository: ExampleRepository;
+  private readonly eventPublisher: DomainEventPublisher;
+  private readonly uuidGenerator: UidGenerator;  // Generate event IDs
+
   constructor(
-    private readonly repository: ExampleRepository,
-    private readonly eventPublisher: DomainEventPublisher,
-    private readonly uuidGenerator: UidGenerator,  // Generate event IDs
-  ) {}
+    repository: ExampleRepository,
+    eventPublisher: DomainEventPublisher,
+    uuidGenerator: UidGenerator,
+  ) {
+    this.repository = repository;
+    this.eventPublisher = eventPublisher;
+    this.uuidGenerator = uuidGenerator;
+  }
 
   async execute(request: Request): Promise<TResult<Response, Errors>> {
     // Business logic
@@ -143,13 +151,21 @@ import { UUID_GENERATOR_INJECTION_TOKEN, type UidGenerator } from "src/shared-ke
 
 @Controller("auth")
 export class AuthController {
+  private readonly authenticateUseCase: AuthenticateUseCase;
+  private readonly eventPublisher: DomainEventPublisher;
+  private readonly uidGenerator: UidGenerator;
+
   constructor(
-    private readonly authenticateUseCase: AuthenticateUseCase,
+    authenticateUseCase: AuthenticateUseCase,
     @Inject(DOMAIN_EVENT_PUBLISHER_INJECTION_TOKEN)
-    private readonly eventPublisher: DomainEventPublisher,
+    eventPublisher: DomainEventPublisher,
     @Inject(UUID_GENERATOR_INJECTION_TOKEN)
-    private readonly uidGenerator: UidGenerator,
-  ) {}
+    uidGenerator: UidGenerator,
+  ) {
+    this.authenticateUseCase = authenticateUseCase;
+    this.eventPublisher = eventPublisher;
+    this.uidGenerator = uidGenerator;
+  }
 
   @Get("pro-connect/callback")
   async proConnectCallback(@Query() query: ProConnectCallbackQuery) {
@@ -203,10 +219,16 @@ import { CRMGateway } from "src/marketing/core/CRMGateway";
 
 @Injectable()
 export class LoginSucceededHandler {
+  private readonly crm: CRMGateway;
+  private readonly dateProvider: DateProvider;
+
   constructor(
-    private readonly crm: CRMGateway,
-    private readonly dateProvider: DateProvider,
-  ) {}
+    crm: CRMGateway,
+    dateProvider: DateProvider,
+  ) {
+    this.crm = crm;
+    this.dateProvider = dateProvider;
+  }
 
   @OnEvent(LOGIN_SUCCEEDED)
   async handleLoginSucceeded(event: LoginSucceededEvent) {
@@ -314,12 +336,18 @@ import { Inject } from "@nestjs/common";
 
 @Controller("examples")
 export class ExampleController {
+  private readonly eventPublisher: DomainEventPublisher;
+  private readonly uidGenerator: UidGenerator;
+
   constructor(
     @Inject(DOMAIN_EVENT_PUBLISHER_INJECTION_TOKEN)
-    private readonly eventPublisher: DomainEventPublisher,
+    eventPublisher: DomainEventPublisher,
     @Inject(UUID_GENERATOR_INJECTION_TOKEN)
-    private readonly uidGenerator: UidGenerator,
-  ) {}
+    uidGenerator: UidGenerator,
+  ) {
+    this.eventPublisher = eventPublisher;
+    this.uidGenerator = uidGenerator;
+  }
 }
 ```
 

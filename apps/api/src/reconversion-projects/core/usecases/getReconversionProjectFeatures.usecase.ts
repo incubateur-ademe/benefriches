@@ -22,7 +22,10 @@ export class GetReconversionProjectFeaturesUseCase implements UseCase<
   Request,
   GetReconversionProjectFeaturesResult
 > {
-  constructor(private readonly reconversionProjectQuery: ReconversionProjectQueryGateway) {}
+  private readonly reconversionProjectQuery: ReconversionProjectQueryGateway;
+  constructor(reconversionProjectQuery: ReconversionProjectQueryGateway) {
+    this.reconversionProjectQuery = reconversionProjectQuery;
+  }
 
   async execute({ reconversionProjectId }: Request): Promise<GetReconversionProjectFeaturesResult> {
     if (!reconversionProjectId) {

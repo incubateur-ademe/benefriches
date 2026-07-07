@@ -27,7 +27,10 @@ export class GetPhotovoltaicExpectedPerformanceUseCase implements UseCase<
   Request,
   GetPhotovoltaicExpectedPerformanceResult
 > {
-  constructor(private readonly photovoltaicDataProvider: PhotovoltaicDataProvider) {}
+  private readonly photovoltaicDataProvider: PhotovoltaicDataProvider;
+  constructor(photovoltaicDataProvider: PhotovoltaicDataProvider) {
+    this.photovoltaicDataProvider = photovoltaicDataProvider;
+  }
 
   async execute({
     lat,

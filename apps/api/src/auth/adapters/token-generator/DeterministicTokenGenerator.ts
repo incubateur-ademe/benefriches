@@ -3,7 +3,10 @@ import { TokenGenerator } from "src/auth/core/sendAuthLink.usecase";
 export class DeterministicTokenGenerator implements TokenGenerator {
   private callCount = 0;
 
-  constructor(private readonly token: string) {}
+  private readonly token: string;
+  constructor(token: string) {
+    this.token = token;
+  }
 
   generatePair(): { raw: string; hashed: string } {
     this.callCount++;

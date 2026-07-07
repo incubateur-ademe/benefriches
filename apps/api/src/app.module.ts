@@ -24,7 +24,10 @@ import { TerritoryModule } from "./territory/adapters/primary/territory.module";
 import { UsersModule } from "./users/adapters/primary/users.module";
 
 class DomainEventsHandler {
-  constructor(private readonly domainEventRepository: DomainEventsRepository) {}
+  private readonly domainEventRepository: DomainEventsRepository;
+  constructor(domainEventRepository: DomainEventsRepository) {
+    this.domainEventRepository = domainEventRepository;
+  }
 
   @OnEvent("**")
   async saveEvents(event: DomainEvent) {

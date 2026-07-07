@@ -28,10 +28,12 @@ export class ComputeFricheInactionCostUseCase implements UseCase<
   Request,
   ComputeFricheInactionCostResult
 > {
-  constructor(
-    private readonly cityStatsQuery: CityStatsProvider,
-    private readonly cityRuralityQuery: CityRuralityQuery,
-  ) {}
+  private readonly cityStatsQuery: CityStatsProvider;
+  private readonly cityRuralityQuery: CityRuralityQuery;
+  constructor(cityStatsQuery: CityStatsProvider, cityRuralityQuery: CityRuralityQuery) {
+    this.cityStatsQuery = cityStatsQuery;
+    this.cityRuralityQuery = cityRuralityQuery;
+  }
 
   async execute({
     siteCityCode,

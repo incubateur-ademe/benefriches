@@ -27,11 +27,18 @@ type Request = {
 type UserSiteEvaluationResult = TResult<UserSiteEvaluation[], "UserIdRequired">;
 
 export class GetUserSiteEvaluationsUseCase implements UseCase<Request, UserSiteEvaluationResult> {
+  private readonly siteEvaluationQuery: SiteEvaluationQuery;
+  private readonly mutafrichesEvaluationQuery: MutabilityEvaluationQuery;
+  private readonly logger: AppLogger;
   constructor(
-    private readonly siteEvaluationQuery: SiteEvaluationQuery,
-    private readonly mutafrichesEvaluationQuery: MutabilityEvaluationQuery,
-    private readonly logger: AppLogger,
-  ) {}
+    siteEvaluationQuery: SiteEvaluationQuery,
+    mutafrichesEvaluationQuery: MutabilityEvaluationQuery,
+    logger: AppLogger,
+  ) {
+    this.siteEvaluationQuery = siteEvaluationQuery;
+    this.mutafrichesEvaluationQuery = mutafrichesEvaluationQuery;
+    this.logger = logger;
+  }
 
   async execute({ userId }: Request): Promise<UserSiteEvaluationResult> {
     if (!userId) {

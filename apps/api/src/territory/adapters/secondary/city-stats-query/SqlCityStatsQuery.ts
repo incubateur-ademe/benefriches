@@ -33,7 +33,10 @@ const getDefaultMedianPriceFromPopulation = (population: number) => {
 export class SqlCityStatsQuery implements CityStatsProvider {
   private readonly logger = new Logger(SqlCityStatsQuery.name);
 
-  constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}
+  private readonly sqlConnection: Knex;
+  constructor(@Inject(SqlConnection) sqlConnection: Knex) {
+    this.sqlConnection = sqlConnection;
+  }
 
   async getCityStats(cityCode: string): Promise<CityStats> {
     try {

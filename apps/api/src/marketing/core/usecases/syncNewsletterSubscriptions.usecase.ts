@@ -19,12 +19,21 @@ export type SyncNewsletterSubscriptionsSummary = {
 type Result = TResult<SyncNewsletterSubscriptionsSummary, never>;
 
 export class SyncNewsletterSubscriptionsUseCase implements UseCase<Request, Result> {
+  private readonly usersQuery: MarketingUsersQuery;
+  private readonly usersRepository: MarketingUsersRepository;
+  private readonly crm: CRMGateway;
+  private readonly logger: AppLogger;
   constructor(
-    private readonly usersQuery: MarketingUsersQuery,
-    private readonly usersRepository: MarketingUsersRepository,
-    private readonly crm: CRMGateway,
-    private readonly logger: AppLogger,
-  ) {}
+    usersQuery: MarketingUsersQuery,
+    usersRepository: MarketingUsersRepository,
+    crm: CRMGateway,
+    logger: AppLogger,
+  ) {
+    this.usersQuery = usersQuery;
+    this.usersRepository = usersRepository;
+    this.crm = crm;
+    this.logger = logger;
+  }
 
   async execute(request: Request = { dryRun: false }): Promise<Result> {
     const dryRun = request.dryRun;

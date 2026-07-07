@@ -59,15 +59,30 @@ function createSite(
 }
 
 export class CreateNewExpressSiteUseCase implements UseCase<Request, CreateNewExpressSiteResult> {
+  private readonly sitesRepository: SitesRepository;
+  private readonly dateProvider: DateProvider;
+  private readonly cityStatsQuery: CityStatsProvider;
+  private readonly cityRuralityQuery: CityRuralityQuery;
+  private readonly uuidGenerator: UidGenerator;
+  private readonly eventPublisher: DomainEventPublisher;
+  private readonly logger: AppLogger;
   constructor(
-    private readonly sitesRepository: SitesRepository,
-    private readonly dateProvider: DateProvider,
-    private readonly cityStatsQuery: CityStatsProvider,
-    private readonly cityRuralityQuery: CityRuralityQuery,
-    private readonly uuidGenerator: UidGenerator,
-    private readonly eventPublisher: DomainEventPublisher,
-    private readonly logger: AppLogger,
-  ) {}
+    sitesRepository: SitesRepository,
+    dateProvider: DateProvider,
+    cityStatsQuery: CityStatsProvider,
+    cityRuralityQuery: CityRuralityQuery,
+    uuidGenerator: UidGenerator,
+    eventPublisher: DomainEventPublisher,
+    logger: AppLogger,
+  ) {
+    this.sitesRepository = sitesRepository;
+    this.dateProvider = dateProvider;
+    this.cityStatsQuery = cityStatsQuery;
+    this.cityRuralityQuery = cityRuralityQuery;
+    this.uuidGenerator = uuidGenerator;
+    this.eventPublisher = eventPublisher;
+    this.logger = logger;
+  }
 
   async execute({ siteProps, createdBy }: Request): Promise<CreateNewExpressSiteResult> {
     let siteCityPopulation = 0;

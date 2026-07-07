@@ -9,7 +9,10 @@ import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection
 
 @Injectable()
 export class SqlMarketingUsersQuery implements MarketingUsersQuery {
-  constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}
+  private readonly sqlConnection: Knex;
+  constructor(@Inject(SqlConnection) sqlConnection: Knex) {
+    this.sqlConnection = sqlConnection;
+  }
 
   // Unbounded scan: full users table loaded into memory. Acceptable today; revisit if sync runtime grows past minutes.
   async listAll(): Promise<MarketingUser[]> {

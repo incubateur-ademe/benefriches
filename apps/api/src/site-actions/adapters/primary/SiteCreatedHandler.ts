@@ -6,7 +6,10 @@ import { SITE_CREATED, type SiteCreatedEvent } from "src/sites/core/events/siteC
 
 @Injectable()
 export class SiteCreatedHandler {
-  constructor(private readonly initializeSiteActionsUseCase: InitializeSiteActionsUseCase) {}
+  private readonly initializeSiteActionsUseCase: InitializeSiteActionsUseCase;
+  constructor(initializeSiteActionsUseCase: InitializeSiteActionsUseCase) {
+    this.initializeSiteActionsUseCase = initializeSiteActionsUseCase;
+  }
 
   @OnEvent(SITE_CREATED)
   async handleSiteCreated(event: SiteCreatedEvent): Promise<void> {

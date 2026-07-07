@@ -27,12 +27,21 @@ type Request = {
 type CreateNewCustomSiteResult = TResult<void, "ValidationError" | "SiteAlreadyExists", unknown>;
 
 export class CreateNewCustomSiteUseCase implements UseCase<Request, CreateNewCustomSiteResult> {
+  private readonly sitesRepository: SitesRepository;
+  private readonly dateProvider: DateProvider;
+  private readonly uuidGenerator: UidGenerator;
+  private readonly eventPublisher: DomainEventPublisher;
   constructor(
-    private readonly sitesRepository: SitesRepository,
-    private readonly dateProvider: DateProvider,
-    private readonly uuidGenerator: UidGenerator,
-    private readonly eventPublisher: DomainEventPublisher,
-  ) {}
+    sitesRepository: SitesRepository,
+    dateProvider: DateProvider,
+    uuidGenerator: UidGenerator,
+    eventPublisher: DomainEventPublisher,
+  ) {
+    this.sitesRepository = sitesRepository;
+    this.dateProvider = dateProvider;
+    this.uuidGenerator = uuidGenerator;
+    this.eventPublisher = eventPublisher;
+  }
 
   async execute({ siteProps, createdBy }: Request): Promise<CreateNewCustomSiteResult> {
     const result = (() => {

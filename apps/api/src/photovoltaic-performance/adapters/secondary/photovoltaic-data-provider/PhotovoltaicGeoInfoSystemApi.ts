@@ -51,7 +51,10 @@ interface PVGISResult {
 
 @Injectable()
 export class PhotovoltaicGeoInfoSystemApi implements PhotovoltaicDataProvider {
-  constructor(private readonly httpService: HttpService) {}
+  private readonly httpService: HttpService;
+  constructor(httpService: HttpService) {
+    this.httpService = httpService;
+  }
 
   getPhotovoltaicPerformance({
     lat,

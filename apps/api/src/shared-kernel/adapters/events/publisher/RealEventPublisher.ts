@@ -6,7 +6,10 @@ import { DomainEventPublisher } from "src/shared-kernel/domainEventPublisher";
 
 @Injectable()
 export class RealEventPublisher implements DomainEventPublisher {
-  constructor(private readonly eventEmitter: EventEmitter2) {}
+  private readonly eventEmitter: EventEmitter2;
+  constructor(eventEmitter: EventEmitter2) {
+    this.eventEmitter = eventEmitter;
+  }
 
   async publish(event: DomainEvent): Promise<void> {
     await this.eventEmitter.emitAsync(event.name, event);

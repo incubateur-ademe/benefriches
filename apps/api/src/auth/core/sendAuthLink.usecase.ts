@@ -32,16 +32,33 @@ type SendAuthLinkFailureReason = "UserDoesNotExist" | "TooManyRequests";
 type SendAuthLinkResult = TResult<void, SendAuthLinkFailureReason>;
 
 export class SendAuthLinkUseCase implements UseCase<Request, SendAuthLinkResult> {
+  private readonly userRepository: UserRepository;
+  private readonly tokenGenerator: TokenGenerator;
+  private readonly tokenAuthenticationAttemptRepository: TokenAuthenticationAttemptRepository;
+  private readonly mailService: AuthLinkMailer;
+  private readonly dateProvider: DateProvider;
+  private readonly configService: ConfigService;
+  private readonly uuidGenerator: UidGenerator;
+  private readonly eventPublisher: DomainEventPublisher;
   constructor(
-    private readonly userRepository: UserRepository,
-    private readonly tokenGenerator: TokenGenerator,
-    private readonly tokenAuthenticationAttemptRepository: TokenAuthenticationAttemptRepository,
-    private readonly mailService: AuthLinkMailer,
-    private readonly dateProvider: DateProvider,
-    private readonly configService: ConfigService,
-    private readonly uuidGenerator: UidGenerator,
-    private readonly eventPublisher: DomainEventPublisher,
-  ) {}
+    userRepository: UserRepository,
+    tokenGenerator: TokenGenerator,
+    tokenAuthenticationAttemptRepository: TokenAuthenticationAttemptRepository,
+    mailService: AuthLinkMailer,
+    dateProvider: DateProvider,
+    configService: ConfigService,
+    uuidGenerator: UidGenerator,
+    eventPublisher: DomainEventPublisher,
+  ) {
+    this.userRepository = userRepository;
+    this.tokenGenerator = tokenGenerator;
+    this.tokenAuthenticationAttemptRepository = tokenAuthenticationAttemptRepository;
+    this.mailService = mailService;
+    this.dateProvider = dateProvider;
+    this.configService = configService;
+    this.uuidGenerator = uuidGenerator;
+    this.eventPublisher = eventPublisher;
+  }
 
   async execute({ email, postLoginRedirectTo }: Request): Promise<SendAuthLinkResult> {
     await this.publishAttemptEvent(email);

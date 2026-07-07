@@ -26,7 +26,7 @@ Read this file for **every** review — these lenses apply regardless of which a
 **Erasable types** (must be valid when annotations are stripped):
 - ❌ TypeScript `enum` (use Zod `z.enum()` or a const object)
 - ❌ `namespace` declarations
-- ⚠️ Class parameter properties in new code (legacy allowed, avoid in new)
+- ❌ Class parameter properties: `constructor(private x: T) {}` (lint-enforced by `typescript/parameter-properties`; hoist to explicit fields)
 - ✅ `type` over `interface` unless extending; Zod schemas for enum-like types
 
 **Type safety**:

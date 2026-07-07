@@ -135,7 +135,7 @@ All code must be erasable (valid when type annotations are stripped). Note: on N
 **Forbidden patterns**:
 - TypeScript enums: `enum Color { Red = "red" }`
 - Namespaces: `namespace User { }`
-- Class parameter properties in new code
+- Class parameter properties: `constructor(private readonly x: T) {}` (enforced by oxlint `typescript/parameter-properties`)
 
 **Use instead**:
 
@@ -153,12 +153,12 @@ export type SiteNature = z.infer<typeof siteNatureSchema>;
 ```
 
 ```typescript
-// AVOID - Class parameter properties
+// WRONG - Class parameter properties (not erasable; banned by lint)
 export class User {
   constructor(readonly id: string, readonly name: string) {}
 }
 
-// PREFER - Explicit properties
+// RIGHT - Explicit properties
 export class User {
   readonly id: string;
   readonly name: string;

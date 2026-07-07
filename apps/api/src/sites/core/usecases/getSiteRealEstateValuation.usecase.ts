@@ -20,10 +20,12 @@ export class GetSiteRealEstateValuationUseCase implements UseCase<
   Request,
   GetSiteRealEstateValuationResult
 > {
-  constructor(
-    private readonly sitesQuery: SitesQuery,
-    private readonly cityStatsProvider: CityStatsProvider,
-  ) {}
+  private readonly sitesQuery: SitesQuery;
+  private readonly cityStatsProvider: CityStatsProvider;
+  constructor(sitesQuery: SitesQuery, cityStatsProvider: CityStatsProvider) {
+    this.sitesQuery = sitesQuery;
+    this.cityStatsProvider = cityStatsProvider;
+  }
 
   async execute({ siteId }: Request): Promise<GetSiteRealEstateValuationResult> {
     const siteData = await this.sitesQuery.getSiteSurfaceAreaAndCityCode(siteId);

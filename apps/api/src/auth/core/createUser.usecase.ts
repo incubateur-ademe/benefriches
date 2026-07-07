@@ -35,12 +35,21 @@ type Request = {
 };
 
 export class CreateUserUseCase implements UseCase<Request, CreateUserResult> {
+  private readonly userRepository: UserRepository;
+  private readonly dateProvider: DateProvider;
+  private readonly uuidGenerator: UidGenerator;
+  private readonly eventPublisher: DomainEventPublisher;
   constructor(
-    private readonly userRepository: UserRepository,
-    private readonly dateProvider: DateProvider,
-    private readonly uuidGenerator: UidGenerator,
-    private readonly eventPublisher: DomainEventPublisher,
-  ) {}
+    userRepository: UserRepository,
+    dateProvider: DateProvider,
+    uuidGenerator: UidGenerator,
+    eventPublisher: DomainEventPublisher,
+  ) {
+    this.userRepository = userRepository;
+    this.dateProvider = dateProvider;
+    this.uuidGenerator = uuidGenerator;
+    this.eventPublisher = eventPublisher;
+  }
 
   async execute({ user: userProps }: Request): Promise<CreateUserResult> {
     const {

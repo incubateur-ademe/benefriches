@@ -40,12 +40,21 @@ export class QuickComputeUrbanProjectImpactsOnFricheUseCase implements UseCase<
   Request,
   QuickComputeUrbanProjectImpactsOnFricheResult
 > {
+  private readonly cityStatsQuery: CityStatsProvider;
+  private readonly siteGenerationService: SiteGenerationService;
+  private readonly dateProvider: DateProvider;
+  private readonly getCarbonStorageFromSoilDistributionService: GetCarbonStorageFromSoilDistributionService;
   constructor(
-    private readonly cityStatsQuery: CityStatsProvider,
-    private readonly siteGenerationService: SiteGenerationService,
-    private readonly dateProvider: DateProvider,
-    private readonly getCarbonStorageFromSoilDistributionService: GetCarbonStorageFromSoilDistributionService,
-  ) {}
+    cityStatsQuery: CityStatsProvider,
+    siteGenerationService: SiteGenerationService,
+    dateProvider: DateProvider,
+    getCarbonStorageFromSoilDistributionService: GetCarbonStorageFromSoilDistributionService,
+  ) {
+    this.cityStatsQuery = cityStatsQuery;
+    this.siteGenerationService = siteGenerationService;
+    this.dateProvider = dateProvider;
+    this.getCarbonStorageFromSoilDistributionService = getCarbonStorageFromSoilDistributionService;
+  }
 
   async execute({
     siteCityCode,

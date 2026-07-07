@@ -14,7 +14,10 @@ type Response = {
 };
 
 export class GetCityRuralityUseCase implements UseCase<Request, TResult<Response>> {
-  constructor(private readonly cityRuralityQuery: CityRuralityQuery) {}
+  private readonly cityRuralityQuery: CityRuralityQuery;
+  constructor(cityRuralityQuery: CityRuralityQuery) {
+    this.cityRuralityQuery = cityRuralityQuery;
+  }
 
   async execute({ cityCode }: Request): Promise<TResult<Response>> {
     const isRural = await this.cityRuralityQuery.isCityRural(cityCode);

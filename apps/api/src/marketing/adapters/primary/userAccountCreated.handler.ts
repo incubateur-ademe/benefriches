@@ -11,7 +11,10 @@ import type { CRMGateway } from "src/marketing/core/CRMGateway";
 export class UserAccountCreatedHandler {
   private readonly logger = new Logger(UserAccountCreatedHandler.name);
 
-  constructor(private readonly crm: CRMGateway) {}
+  private readonly crm: CRMGateway;
+  constructor(crm: CRMGateway) {
+    this.crm = crm;
+  }
 
   @OnEvent(USER_ACCOUNT_CREATED)
   async handleUserAccountCreated(event: UserAccountCreatedEvent) {

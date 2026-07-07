@@ -21,10 +21,12 @@ export class GetReconversionProjectUseCase implements UseCase<
   Request,
   GetReconversionProjectResult
 > {
-  constructor(
-    private readonly reconversionProjectRepository: ReconversionProjectRepository,
-    private readonly siteQuery: SitesQuery,
-  ) {}
+  private readonly reconversionProjectRepository: ReconversionProjectRepository;
+  private readonly siteQuery: SitesQuery;
+  constructor(reconversionProjectRepository: ReconversionProjectRepository, siteQuery: SitesQuery) {
+    this.reconversionProjectRepository = reconversionProjectRepository;
+    this.siteQuery = siteQuery;
+  }
 
   async execute({
     reconversionProjectId,

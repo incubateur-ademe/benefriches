@@ -86,12 +86,21 @@ export class GenerateReconversionProjectFromTemplateUseCase implements UseCase<
   Request,
   GenerateReconversionProjectFromTemplateResult
 > {
+  private readonly dateProvider: DateProvider;
+  private readonly siteQuery: SiteQuery;
+  private readonly photovoltaicPerformanceService: PhotovoltaicDataProvider;
+  private readonly userQuery: UserQuery;
   constructor(
-    private readonly dateProvider: DateProvider,
-    private readonly siteQuery: SiteQuery,
-    private readonly photovoltaicPerformanceService: PhotovoltaicDataProvider,
-    private readonly userQuery: UserQuery,
-  ) {}
+    dateProvider: DateProvider,
+    siteQuery: SiteQuery,
+    photovoltaicPerformanceService: PhotovoltaicDataProvider,
+    userQuery: UserQuery,
+  ) {
+    this.dateProvider = dateProvider;
+    this.siteQuery = siteQuery;
+    this.photovoltaicPerformanceService = photovoltaicPerformanceService;
+    this.userQuery = userQuery;
+  }
 
   async execute(props: Request): Promise<GenerateReconversionProjectFromTemplateResult> {
     const siteData = await this.siteQuery.getSiteFeaturesById(props.siteId);

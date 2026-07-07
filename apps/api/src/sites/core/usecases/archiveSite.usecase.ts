@@ -12,10 +12,12 @@ type Request = {
 type ArchiveSiteResult = TResult<void, "SiteNotFound" | "UserNotAuthorized">;
 
 export class ArchiveSiteUseCase implements UseCase<Request, ArchiveSiteResult> {
-  constructor(
-    private readonly repository: SitesRepository,
-    private readonly dateProvider: DateProvider,
-  ) {}
+  private readonly repository: SitesRepository;
+  private readonly dateProvider: DateProvider;
+  constructor(repository: SitesRepository, dateProvider: DateProvider) {
+    this.repository = repository;
+    this.dateProvider = dateProvider;
+  }
 
   async execute({ siteId, userId }: Request): Promise<ArchiveSiteResult> {
     const siteCreatedById = await this.repository.getCreatedById(siteId);

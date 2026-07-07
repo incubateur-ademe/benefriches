@@ -21,11 +21,18 @@ export class AddRelatedSiteToReconversionCompatibilityEvaluationUseCase implemen
   Request,
   AddRelatedSiteToReconversionCompatibilityEvaluationResult
 > {
+  private readonly repository: ReconversionCompatibilityEvaluationRepository;
+  private readonly uuidGenerator: UidGenerator;
+  private readonly eventPublisher: DomainEventPublisher;
   constructor(
-    private readonly repository: ReconversionCompatibilityEvaluationRepository,
-    private readonly uuidGenerator: UidGenerator,
-    private readonly eventPublisher: DomainEventPublisher,
-  ) {}
+    repository: ReconversionCompatibilityEvaluationRepository,
+    uuidGenerator: UidGenerator,
+    eventPublisher: DomainEventPublisher,
+  ) {
+    this.repository = repository;
+    this.uuidGenerator = uuidGenerator;
+    this.eventPublisher = eventPublisher;
+  }
 
   async execute({
     evaluationId,

@@ -10,7 +10,10 @@ import { GetCityRuralityUseCase } from "src/territory/core/usecases/getCityRural
 
 @Controller("territory")
 export class TerritoryController {
-  constructor(private readonly getCityRuralityUseCase: GetCityRuralityUseCase) {}
+  private readonly getCityRuralityUseCase: GetCityRuralityUseCase;
+  constructor(getCityRuralityUseCase: GetCityRuralityUseCase) {
+    this.getCityRuralityUseCase = getCityRuralityUseCase;
+  }
 
   @Get("city-rurality")
   async getCityRurality(

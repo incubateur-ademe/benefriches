@@ -11,7 +11,10 @@ type Request = {
 type GetSiteByIdResult = TResult<{ site: SiteFeaturesView }, "SiteNotFound">;
 
 export class GetSiteByIdUseCase implements UseCase<Request, GetSiteByIdResult> {
-  constructor(private readonly sitesQuery: SitesQuery) {}
+  private readonly sitesQuery: SitesQuery;
+  constructor(sitesQuery: SitesQuery) {
+    this.sitesQuery = sitesQuery;
+  }
 
   async execute({ siteId }: Request): Promise<GetSiteByIdResult> {
     const site = await this.sitesQuery.getSiteFeaturesById(siteId);

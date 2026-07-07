@@ -80,20 +80,50 @@ class DuplicateReconversionProjectBodyDto extends createZodDto(
 
 @Controller("reconversion-projects")
 export class ReconversionProjectController {
+  private readonly createReconversionProjectUseCase: CreateReconversionProjectUseCase;
+  private readonly updateReconversionProjectUseCase: UpdateReconversionProjectUseCase;
+  private readonly getReconversionProjectUseCase: GetReconversionProjectUseCase;
+  private readonly getReconversionProjectsBySite: GetUserReconversionProjectsBySiteUseCase;
+  private readonly getReconversionProjectImpactsBreakEvenLevelUseCase: ComputeReconversionProjectBreakEvenLevelUseCase;
+  private readonly generateReconversionProjectFromTemplateUseCase: GenerateReconversionProjectFromTemplateUseCase;
+  private readonly generateAndSaveReconversionProjectFromTemplateUseCase: GenerateAndSaveReconversionProjectFromTemplateUseCase;
+  private readonly getReconversionProjectFeaturesUseCase: GetReconversionProjectFeaturesUseCase;
+  private readonly quickComputeUrbanProjectImpactsOnFricheUseCase: QuickComputeUrbanProjectImpactsOnFricheUseCase;
+  private readonly getProjectUrbanSprawlImpactsComparisonUseCase: ComputeProjectUrbanSprawlImpactsComparisonUseCase;
+  private readonly duplicateReconversionProjectUseCase: DuplicateReconversionProjectUseCase;
+  private readonly archiveReconversionProjectUseCase: ArchiveReconversionProjectUseCase;
   constructor(
-    private readonly createReconversionProjectUseCase: CreateReconversionProjectUseCase,
-    private readonly updateReconversionProjectUseCase: UpdateReconversionProjectUseCase,
-    private readonly getReconversionProjectUseCase: GetReconversionProjectUseCase,
-    private readonly getReconversionProjectsBySite: GetUserReconversionProjectsBySiteUseCase,
-    private readonly getReconversionProjectImpactsBreakEvenLevelUseCase: ComputeReconversionProjectBreakEvenLevelUseCase,
-    private readonly generateReconversionProjectFromTemplateUseCase: GenerateReconversionProjectFromTemplateUseCase,
-    private readonly generateAndSaveReconversionProjectFromTemplateUseCase: GenerateAndSaveReconversionProjectFromTemplateUseCase,
-    private readonly getReconversionProjectFeaturesUseCase: GetReconversionProjectFeaturesUseCase,
-    private readonly quickComputeUrbanProjectImpactsOnFricheUseCase: QuickComputeUrbanProjectImpactsOnFricheUseCase,
-    private readonly getProjectUrbanSprawlImpactsComparisonUseCase: ComputeProjectUrbanSprawlImpactsComparisonUseCase,
-    private readonly duplicateReconversionProjectUseCase: DuplicateReconversionProjectUseCase,
-    private readonly archiveReconversionProjectUseCase: ArchiveReconversionProjectUseCase,
-  ) {}
+    createReconversionProjectUseCase: CreateReconversionProjectUseCase,
+    updateReconversionProjectUseCase: UpdateReconversionProjectUseCase,
+    getReconversionProjectUseCase: GetReconversionProjectUseCase,
+    getReconversionProjectsBySite: GetUserReconversionProjectsBySiteUseCase,
+    getReconversionProjectImpactsBreakEvenLevelUseCase: ComputeReconversionProjectBreakEvenLevelUseCase,
+    generateReconversionProjectFromTemplateUseCase: GenerateReconversionProjectFromTemplateUseCase,
+    generateAndSaveReconversionProjectFromTemplateUseCase: GenerateAndSaveReconversionProjectFromTemplateUseCase,
+    getReconversionProjectFeaturesUseCase: GetReconversionProjectFeaturesUseCase,
+    quickComputeUrbanProjectImpactsOnFricheUseCase: QuickComputeUrbanProjectImpactsOnFricheUseCase,
+    getProjectUrbanSprawlImpactsComparisonUseCase: ComputeProjectUrbanSprawlImpactsComparisonUseCase,
+    duplicateReconversionProjectUseCase: DuplicateReconversionProjectUseCase,
+    archiveReconversionProjectUseCase: ArchiveReconversionProjectUseCase,
+  ) {
+    this.createReconversionProjectUseCase = createReconversionProjectUseCase;
+    this.updateReconversionProjectUseCase = updateReconversionProjectUseCase;
+    this.getReconversionProjectUseCase = getReconversionProjectUseCase;
+    this.getReconversionProjectsBySite = getReconversionProjectsBySite;
+    this.getReconversionProjectImpactsBreakEvenLevelUseCase =
+      getReconversionProjectImpactsBreakEvenLevelUseCase;
+    this.generateReconversionProjectFromTemplateUseCase =
+      generateReconversionProjectFromTemplateUseCase;
+    this.generateAndSaveReconversionProjectFromTemplateUseCase =
+      generateAndSaveReconversionProjectFromTemplateUseCase;
+    this.getReconversionProjectFeaturesUseCase = getReconversionProjectFeaturesUseCase;
+    this.quickComputeUrbanProjectImpactsOnFricheUseCase =
+      quickComputeUrbanProjectImpactsOnFricheUseCase;
+    this.getProjectUrbanSprawlImpactsComparisonUseCase =
+      getProjectUrbanSprawlImpactsComparisonUseCase;
+    this.duplicateReconversionProjectUseCase = duplicateReconversionProjectUseCase;
+    this.archiveReconversionProjectUseCase = archiveReconversionProjectUseCase;
+  }
 
   @UseGuards(JwtAuthGuard)
   @Post()

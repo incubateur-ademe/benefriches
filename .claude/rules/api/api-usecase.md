@@ -39,10 +39,16 @@ type Response = {
 type Errors = "ErrorType1" | "ErrorType2";
 
 export class MyUseCase implements UseCase<Request, TResult<Response, Errors>> {
+  private readonly gateway1: Gateway1;
+  private readonly gateway2: Gateway2;
+
   constructor(
-    private readonly gateway1: Gateway1,
-    private readonly gateway2: Gateway2,
-  ) {}
+    gateway1: Gateway1,
+    gateway2: Gateway2,
+  ) {
+    this.gateway1 = gateway1;
+    this.gateway2 = gateway2;
+  }
 
   async execute(request: Request): Promise<TResult<Response, Errors>> {
     // Business logic here
@@ -159,17 +165,27 @@ UseCases depend on **gateway interfaces** (ports), not concrete implementations:
 ```typescript
 // ✅ CORRECT - Depend on interface
 export class MyUseCase implements UseCase<Request, TResult<Response, Errors>> {
+  private readonly repository: MyRepository;  // Interface type
+  private readonly query: MyQuery;             // Interface type
+
   constructor(
-    private readonly repository: MyRepository,  // Interface type
-    private readonly query: MyQuery,             // Interface type
-  ) {}
+    repository: MyRepository,
+    query: MyQuery,
+  ) {
+    this.repository = repository;
+    this.query = query;
+  }
 }
 
 // ❌ WRONG - Depend on concrete class
 export class MyUseCase implements UseCase<Request, TResult<Response, Errors>> {
+  private readonly repository: SqlMyRepository;  // Concrete class
+
   constructor(
-    private readonly repository: SqlMyRepository,  // Concrete class
-  ) {}
+    repository: SqlMyRepository,
+  ) {
+    this.repository = repository;
+  }
 }
 ```
 

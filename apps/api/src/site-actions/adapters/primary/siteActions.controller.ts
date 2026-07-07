@@ -7,7 +7,10 @@ import { UpdateSiteActionStatusUseCase } from "src/site-actions/core/usecases/up
 
 @Controller()
 export class SiteActionsController {
-  constructor(private readonly updateSiteActionStatusUseCase: UpdateSiteActionStatusUseCase) {}
+  private readonly updateSiteActionStatusUseCase: UpdateSiteActionStatusUseCase;
+  constructor(updateSiteActionStatusUseCase: UpdateSiteActionStatusUseCase) {
+    this.updateSiteActionStatusUseCase = updateSiteActionStatusUseCase;
+  }
 
   @UseGuards(JwtAuthGuard)
   @Patch("sites/:siteId/actions/:actionId/status")

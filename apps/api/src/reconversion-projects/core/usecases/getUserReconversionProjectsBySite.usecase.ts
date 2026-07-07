@@ -36,7 +36,10 @@ export class GetUserReconversionProjectsBySiteUseCase implements UseCase<
   Request,
   GetUserReconversionProjectsBySiteResult
 > {
-  constructor(private readonly reconversionProjectsQuery: ReconversionProjectsListQuery) {}
+  private readonly reconversionProjectsQuery: ReconversionProjectsListQuery;
+  constructor(reconversionProjectsQuery: ReconversionProjectsListQuery) {
+    this.reconversionProjectsQuery = reconversionProjectsQuery;
+  }
 
   async execute({ userId }: Request): Promise<GetUserReconversionProjectsBySiteResult> {
     if (!userId) {

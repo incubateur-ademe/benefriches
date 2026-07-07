@@ -23,12 +23,21 @@ export class DuplicateReconversionProjectUseCase implements UseCase<
   Request,
   DuplicateReconversionProjectResult
 > {
+  private readonly repository: ReconversionProjectRepository;
+  private readonly dateProvider: DateProvider;
+  private readonly uuidGenerator: UidGenerator;
+  private readonly eventPublisher: DomainEventPublisher;
   constructor(
-    private readonly repository: ReconversionProjectRepository,
-    private readonly dateProvider: DateProvider,
-    private readonly uuidGenerator: UidGenerator,
-    private readonly eventPublisher: DomainEventPublisher,
-  ) {}
+    repository: ReconversionProjectRepository,
+    dateProvider: DateProvider,
+    uuidGenerator: UidGenerator,
+    eventPublisher: DomainEventPublisher,
+  ) {
+    this.repository = repository;
+    this.dateProvider = dateProvider;
+    this.uuidGenerator = uuidGenerator;
+    this.eventPublisher = eventPublisher;
+  }
 
   async execute({
     sourceProjectId,

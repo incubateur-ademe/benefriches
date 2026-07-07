@@ -112,10 +112,12 @@ export class CreateUserFeatureAlertUseCase implements UseCase<
   Request,
   CreateUserFeatureAlertResult
 > {
-  constructor(
-    private readonly userFeatureAlertRepository: UserFeatureAlertRepository,
-    private readonly dateProvider: IDateProvider,
-  ) {}
+  private readonly userFeatureAlertRepository: UserFeatureAlertRepository;
+  private readonly dateProvider: IDateProvider;
+  constructor(userFeatureAlertRepository: UserFeatureAlertRepository, dateProvider: IDateProvider) {
+    this.userFeatureAlertRepository = userFeatureAlertRepository;
+    this.dateProvider = dateProvider;
+  }
 
   async execute(props: Request): Promise<CreateUserFeatureAlertResult> {
     const parseResult = await createFeatureAlertProps.safeParseAsync(props);

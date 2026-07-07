@@ -13,18 +13,39 @@ export type CityProps = {
 };
 
 export class City {
+  readonly cityCode: string;
+  readonly name: string;
+  readonly department: string;
+  readonly region: string;
+  readonly zpc: string;
+  readonly epci: string;
+  readonly codeGreco: string[];
+  readonly codeSer: string[];
+  readonly codeSerGroup: string[];
+  readonly codePoplarPool: string | undefined;
   private constructor(
-    readonly cityCode: string,
-    readonly name: string,
-    readonly department: string,
-    readonly region: string,
-    readonly zpc: string,
-    readonly epci: string,
-    readonly codeGreco: string[],
-    readonly codeSer: string[],
-    readonly codeSerGroup: string[],
-    readonly codePoplarPool: string | undefined,
-  ) {}
+    cityCode: string,
+    name: string,
+    department: string,
+    region: string,
+    zpc: string,
+    epci: string,
+    codeGreco: string[],
+    codeSer: string[],
+    codeSerGroup: string[],
+    codePoplarPool: string | undefined,
+  ) {
+    this.cityCode = cityCode;
+    this.name = name;
+    this.department = department;
+    this.region = region;
+    this.zpc = zpc;
+    this.epci = epci;
+    this.codeGreco = codeGreco;
+    this.codeSer = codeSer;
+    this.codeSerGroup = codeSerGroup;
+    this.codePoplarPool = codePoplarPool;
+  }
 
   static create({
     name,

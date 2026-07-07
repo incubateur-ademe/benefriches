@@ -16,9 +16,12 @@ class GetPhotovoltaicExpectedPerformanceDto extends createZodDto(
 
 @Controller("photovoltaic-performance")
 export class PhotovoltaicPerformanceController {
+  private readonly getPhotovoltaicExpectedPerformanceUseCase: GetPhotovoltaicExpectedPerformanceUseCase;
   constructor(
-    private readonly getPhotovoltaicExpectedPerformanceUseCase: GetPhotovoltaicExpectedPerformanceUseCase,
-  ) {}
+    getPhotovoltaicExpectedPerformanceUseCase: GetPhotovoltaicExpectedPerformanceUseCase,
+  ) {
+    this.getPhotovoltaicExpectedPerformanceUseCase = getPhotovoltaicExpectedPerformanceUseCase;
+  }
 
   @Get()
   async getPhotovoltaicExpectedPerformance(@Query() query: GetPhotovoltaicExpectedPerformanceDto) {

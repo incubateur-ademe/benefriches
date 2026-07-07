@@ -24,10 +24,15 @@ export class UpdateReconversionProjectUseCase implements UseCase<
   Request,
   UpdateReconversionProjectResult
 > {
+  private readonly dateProvider: DateProvider;
+  private readonly reconversionProjectRepository: ReconversionProjectRepository;
   constructor(
-    private readonly dateProvider: DateProvider,
-    private readonly reconversionProjectRepository: ReconversionProjectRepository,
-  ) {}
+    dateProvider: DateProvider,
+    reconversionProjectRepository: ReconversionProjectRepository,
+  ) {
+    this.dateProvider = dateProvider;
+    this.reconversionProjectRepository = reconversionProjectRepository;
+  }
 
   async execute({
     reconversionProjectProps,

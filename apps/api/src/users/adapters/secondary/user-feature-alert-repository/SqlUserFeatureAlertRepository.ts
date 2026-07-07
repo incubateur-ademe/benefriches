@@ -8,7 +8,10 @@ import {
 } from "src/users/core/usecases/createUserFeatureAlert.usecase";
 
 export class SqlUserFeatureAlertRepository implements UserFeatureAlertRepository {
-  constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}
+  private readonly sqlConnection: Knex;
+  constructor(@Inject(SqlConnection) sqlConnection: Knex) {
+    this.sqlConnection = sqlConnection;
+  }
 
   async save(props: UserFeatureAlert): Promise<void> {
     await this.sqlConnection.transaction(async (trx) => {

@@ -24,10 +24,12 @@ const getCrmContactResponseSchema = z.object({
 
 @Injectable()
 export class ConnectCrm implements CRMGateway {
-  constructor(
-    private readonly httpClient: HttpService,
-    private readonly config: ConfigService,
-  ) {}
+  private readonly httpClient: HttpService;
+  private readonly config: ConfigService;
+  constructor(httpClient: HttpService, config: ConfigService) {
+    this.httpClient = httpClient;
+    this.config = config;
+  }
 
   async createContact(props: NewContactProps): Promise<void> {
     const baseBody = {

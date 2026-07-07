@@ -11,7 +11,10 @@ class CreateFeatureAlertBodyDto extends createZodDto(createFeatureAlertProps) {}
 
 @Controller("users")
 export class UsersController {
-  constructor(private readonly createFeatureAlertUseCase: CreateUserFeatureAlertUseCase) {}
+  private readonly createFeatureAlertUseCase: CreateUserFeatureAlertUseCase;
+  constructor(createFeatureAlertUseCase: CreateUserFeatureAlertUseCase) {
+    this.createFeatureAlertUseCase = createFeatureAlertUseCase;
+  }
 
   @UseGuards(JwtAuthGuard)
   @Post("/feature-alert")

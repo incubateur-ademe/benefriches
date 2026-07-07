@@ -8,7 +8,10 @@ import { DomainEventsRepository } from "./DomainEventsRepository";
 
 @Injectable()
 export class SqlDomainEventsRepository implements DomainEventsRepository {
-  constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}
+  private readonly sqlConnection: Knex;
+  constructor(@Inject(SqlConnection) sqlConnection: Knex) {
+    this.sqlConnection = sqlConnection;
+  }
 
   async save(event: DomainEvent): Promise<void> {
     await this.sqlConnection("domain_events").insert({

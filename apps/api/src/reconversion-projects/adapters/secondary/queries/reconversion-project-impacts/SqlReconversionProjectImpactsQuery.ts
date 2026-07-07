@@ -24,7 +24,10 @@ export type ReconversionProjectImpactsQueryResult = Omit<
 };
 
 export class SqlReconversionProjectImpactsQuery implements ReconversionProjectImpactsQuery {
-  constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}
+  private readonly sqlConnection: Knex;
+  constructor(@Inject(SqlConnection) sqlConnection: Knex) {
+    this.sqlConnection = sqlConnection;
+  }
 
   async getById(
     reconversionProjectId: string,

@@ -41,11 +41,21 @@ class AddRelatedSiteBodyDto extends createZodDto(addRelatedSiteIdBodySchema) {}
 
 @Controller("reconversion-compatibility")
 export class ReconversionCompatibilityController {
+  private readonly startReconversionCompatibilityEvaluationUseCase: StartReconversionCompatibilityEvaluationUseCase;
+  private readonly completeReconversionCompatibilityEvaluationUseCase: CompleteReconversionCompatibilityEvaluationUseCase;
+  private readonly addRelatedSiteToReconversionCompatibilityEvaluationUseCase: AddRelatedSiteToReconversionCompatibilityEvaluationUseCase;
   constructor(
-    private readonly startReconversionCompatibilityEvaluationUseCase: StartReconversionCompatibilityEvaluationUseCase,
-    private readonly completeReconversionCompatibilityEvaluationUseCase: CompleteReconversionCompatibilityEvaluationUseCase,
-    private readonly addRelatedSiteToReconversionCompatibilityEvaluationUseCase: AddRelatedSiteToReconversionCompatibilityEvaluationUseCase,
-  ) {}
+    startReconversionCompatibilityEvaluationUseCase: StartReconversionCompatibilityEvaluationUseCase,
+    completeReconversionCompatibilityEvaluationUseCase: CompleteReconversionCompatibilityEvaluationUseCase,
+    addRelatedSiteToReconversionCompatibilityEvaluationUseCase: AddRelatedSiteToReconversionCompatibilityEvaluationUseCase,
+  ) {
+    this.startReconversionCompatibilityEvaluationUseCase =
+      startReconversionCompatibilityEvaluationUseCase;
+    this.completeReconversionCompatibilityEvaluationUseCase =
+      completeReconversionCompatibilityEvaluationUseCase;
+    this.addRelatedSiteToReconversionCompatibilityEvaluationUseCase =
+      addRelatedSiteToReconversionCompatibilityEvaluationUseCase;
+  }
 
   @UseGuards(JwtAuthGuard)
   @Post("start-evaluation")

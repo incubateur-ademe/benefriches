@@ -16,12 +16,21 @@ type Request = {
 type InitializeSiteActionsResult = TResult<void, "SiteAlreadyInitialized">;
 
 export class InitializeSiteActionsUseCase implements UseCase<Request, InitializeSiteActionsResult> {
+  private readonly siteActionsRepository: SiteActionsRepository;
+  private readonly siteActionsQuery: SiteActionsQuery;
+  private readonly dateProvider: DateProvider;
+  private readonly uuidGenerator: UidGenerator;
   constructor(
-    private readonly siteActionsRepository: SiteActionsRepository,
-    private readonly siteActionsQuery: SiteActionsQuery,
-    private readonly dateProvider: DateProvider,
-    private readonly uuidGenerator: UidGenerator,
-  ) {}
+    siteActionsRepository: SiteActionsRepository,
+    siteActionsQuery: SiteActionsQuery,
+    dateProvider: DateProvider,
+    uuidGenerator: UidGenerator,
+  ) {
+    this.siteActionsRepository = siteActionsRepository;
+    this.siteActionsQuery = siteActionsQuery;
+    this.dateProvider = dateProvider;
+    this.uuidGenerator = uuidGenerator;
+  }
 
   async execute({ siteId }: Request): Promise<InitializeSiteActionsResult> {
     const existingActions = await this.siteActionsQuery.getBySiteId(siteId);

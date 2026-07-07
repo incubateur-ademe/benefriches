@@ -8,7 +8,10 @@ import {
 } from "src/site-evaluations/core/gateways/SiteEvaluationQuery";
 
 export class SqlSiteEvaluationQuery implements SiteEvaluationQuery {
-  constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}
+  private readonly sqlConnection: Knex;
+  constructor(@Inject(SqlConnection) sqlConnection: Knex) {
+    this.sqlConnection = sqlConnection;
+  }
   async getUserSiteEvaluations(userId: string): Promise<SiteEvaluationDataView[]> {
     const result = await this.sqlConnection("sites")
       .where("sites.created_by", userId)

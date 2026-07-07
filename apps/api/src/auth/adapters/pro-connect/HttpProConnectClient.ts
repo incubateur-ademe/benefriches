@@ -8,11 +8,14 @@ import {
 } from "./ProConnectClient";
 
 export class HttpProConnectClient implements ProConnectClient {
-  constructor(
-    private readonly clientId: string,
-    private readonly clientSecret: string,
-    private readonly providerDomain: string,
-  ) {}
+  private readonly clientId: string;
+  private readonly clientSecret: string;
+  private readonly providerDomain: string;
+  constructor(clientId: string, clientSecret: string, providerDomain: string) {
+    this.clientId = clientId;
+    this.clientSecret = clientSecret;
+    this.providerDomain = providerDomain;
+  }
 
   async getAuthorizationUrl(
     loginCallbackUrl: string,

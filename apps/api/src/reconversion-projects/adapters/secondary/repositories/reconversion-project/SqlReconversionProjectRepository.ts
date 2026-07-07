@@ -134,7 +134,10 @@ type ReconversionProjectSqlResult = {
 };
 
 export class SqlReconversionProjectRepository implements ReconversionProjectRepository {
-  constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}
+  private readonly sqlConnection: Knex;
+  constructor(@Inject(SqlConnection) sqlConnection: Knex) {
+    this.sqlConnection = sqlConnection;
+  }
 
   async save(reconversionProject: ReconversionProjectSaveDto): Promise<void> {
     await this.sqlConnection.transaction(async (trx) => {

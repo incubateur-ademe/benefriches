@@ -68,13 +68,24 @@ export class ComputeReconversionProjectBreakEvenLevelUseCase implements UseCase<
   Request,
   ComputeReconversionProjectImpactsResult
 > {
+  private readonly reconversionProjectQuery: ReconversionProjectImpactsQuery;
+  private readonly siteRepository: SiteImpactsQuery;
+  private readonly getCarbonStorageFromSoilDistributionService: GetCarbonStorageFromSoilDistributionService;
+  private readonly cityStatsQuery: CityStatsProvider;
+  private readonly dateProvider: DateProvider;
   constructor(
-    private readonly reconversionProjectQuery: ReconversionProjectImpactsQuery,
-    private readonly siteRepository: SiteImpactsQuery,
-    private readonly getCarbonStorageFromSoilDistributionService: GetCarbonStorageFromSoilDistributionService,
-    private readonly cityStatsQuery: CityStatsProvider,
-    private readonly dateProvider: DateProvider,
-  ) {}
+    reconversionProjectQuery: ReconversionProjectImpactsQuery,
+    siteRepository: SiteImpactsQuery,
+    getCarbonStorageFromSoilDistributionService: GetCarbonStorageFromSoilDistributionService,
+    cityStatsQuery: CityStatsProvider,
+    dateProvider: DateProvider,
+  ) {
+    this.reconversionProjectQuery = reconversionProjectQuery;
+    this.siteRepository = siteRepository;
+    this.getCarbonStorageFromSoilDistributionService = getCarbonStorageFromSoilDistributionService;
+    this.cityStatsQuery = cityStatsQuery;
+    this.dateProvider = dateProvider;
+  }
 
   async execute({
     reconversionProjectId,

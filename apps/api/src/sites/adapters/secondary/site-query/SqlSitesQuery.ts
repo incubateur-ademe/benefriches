@@ -26,7 +26,10 @@ import { aggregateSoilsFromParcels } from "src/sites/core/models/site";
 import { SiteFeaturesView, SiteView } from "src/sites/core/models/views";
 
 export class SqlSitesQuery implements SitesQuery {
-  constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}
+  private readonly sqlConnection: Knex;
+  constructor(@Inject(SqlConnection) sqlConnection: Knex) {
+    this.sqlConnection = sqlConnection;
+  }
 
   private parseUrbanZoneLandParcels(
     landParcels: SqlSiteUrbanZoneFeatures["land_parcels"],

@@ -128,11 +128,18 @@ export class ComputeEvaluatedProjectStatsUseCase implements UseCase<
   Request,
   ComputeEvaluatedProjectStatsResult
 > {
+  private readonly evaluatedProjectsImpactsStatsQuery: EvaluatedProjectsImpactsStatsQuery;
+  private readonly getCarbonStorageFromSoilDistributionService: GetCarbonStorageFromSoilDistributionService;
+  private readonly dateProvider: DateProvider;
   constructor(
-    private readonly evaluatedProjectsImpactsStatsQuery: EvaluatedProjectsImpactsStatsQuery,
-    private readonly getCarbonStorageFromSoilDistributionService: GetCarbonStorageFromSoilDistributionService,
-    private readonly dateProvider: DateProvider,
-  ) {}
+    evaluatedProjectsImpactsStatsQuery: EvaluatedProjectsImpactsStatsQuery,
+    getCarbonStorageFromSoilDistributionService: GetCarbonStorageFromSoilDistributionService,
+    dateProvider: DateProvider,
+  ) {
+    this.evaluatedProjectsImpactsStatsQuery = evaluatedProjectsImpactsStatsQuery;
+    this.getCarbonStorageFromSoilDistributionService = getCarbonStorageFromSoilDistributionService;
+    this.dateProvider = dateProvider;
+  }
 
   async execute({ reconversionProjectIds }: Request): Promise<ComputeEvaluatedProjectStatsResult> {
     if (reconversionProjectIds.length === 0) {

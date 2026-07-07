@@ -9,7 +9,10 @@ export type UserViewModel = {
   structure: { activity?: string; name?: string; type?: string };
 };
 export class SqlUserQuery implements UserQuery {
-  constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}
+  private readonly sqlConnection: Knex;
+  constructor(@Inject(SqlConnection) sqlConnection: Knex) {
+    this.sqlConnection = sqlConnection;
+  }
 
   async getById(userId: string): Promise<UserViewModel | undefined> {
     const [result] = await this.sqlConnection("users")

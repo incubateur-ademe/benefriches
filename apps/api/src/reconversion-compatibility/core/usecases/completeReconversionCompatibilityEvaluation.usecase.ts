@@ -25,12 +25,21 @@ export class CompleteReconversionCompatibilityEvaluationUseCase implements UseCa
   Request,
   CompleteReconversionCompatibilityEvaluationResult
 > {
+  private readonly repository: ReconversionCompatibilityEvaluationRepository;
+  private readonly dateProvider: DateProvider;
+  private readonly uuidGenerator: UidGenerator;
+  private readonly eventPublisher: DomainEventPublisher;
   constructor(
-    private readonly repository: ReconversionCompatibilityEvaluationRepository,
-    private readonly dateProvider: DateProvider,
-    private readonly uuidGenerator: UidGenerator,
-    private readonly eventPublisher: DomainEventPublisher,
-  ) {}
+    repository: ReconversionCompatibilityEvaluationRepository,
+    dateProvider: DateProvider,
+    uuidGenerator: UidGenerator,
+    eventPublisher: DomainEventPublisher,
+  ) {
+    this.repository = repository;
+    this.dateProvider = dateProvider;
+    this.uuidGenerator = uuidGenerator;
+    this.eventPublisher = eventPublisher;
+  }
 
   async execute({
     id,

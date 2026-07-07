@@ -42,7 +42,10 @@ export const mapUserToSqlRow = (user: User): SqlUser => ({
 
 @Injectable()
 export class SqlUserRepository implements UserRepository {
-  constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}
+  private readonly sqlConnection: Knex;
+  constructor(@Inject(SqlConnection) sqlConnection: Knex) {
+    this.sqlConnection = sqlConnection;
+  }
 
   async save(user: User): Promise<void> {
     await this.sqlConnection("users").insert(mapUserToSqlRow(user)).onConflict("id").merge();

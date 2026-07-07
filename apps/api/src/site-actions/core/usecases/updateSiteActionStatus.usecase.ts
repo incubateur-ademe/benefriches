@@ -17,11 +17,18 @@ export class UpdateSiteActionStatusUseCase implements UseCase<
   Request,
   UpdateSiteActionStatusResult
 > {
+  private readonly siteActionsRepository: SiteActionsRepository;
+  private readonly siteActionsQuery: SiteActionsQuery;
+  private readonly dateProvider: DateProvider;
   constructor(
-    private readonly siteActionsRepository: SiteActionsRepository,
-    private readonly siteActionsQuery: SiteActionsQuery,
-    private readonly dateProvider: DateProvider,
-  ) {}
+    siteActionsRepository: SiteActionsRepository,
+    siteActionsQuery: SiteActionsQuery,
+    dateProvider: DateProvider,
+  ) {
+    this.siteActionsRepository = siteActionsRepository;
+    this.siteActionsQuery = siteActionsQuery;
+    this.dateProvider = dateProvider;
+  }
 
   async execute({ siteId, actionId, status }: Request): Promise<UpdateSiteActionStatusResult> {
     const actions = await this.siteActionsQuery.getBySiteId(siteId);

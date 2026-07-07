@@ -20,11 +20,18 @@ type Request = {
 type ComputeSiteImpactsResult = TResult<GetSiteImpactsDto, "SiteNotFound">;
 
 export class ComputeSiteImpactsUseCase implements UseCase<Request, ComputeSiteImpactsResult> {
+  private readonly siteRepository: SiteImpactsQuery;
+  private readonly getCarbonStorageFromSoilDistributionService: GetCarbonStorageFromSoilDistributionService;
+  private readonly dateProvider: DateProvider;
   constructor(
-    private readonly siteRepository: SiteImpactsQuery,
-    private readonly getCarbonStorageFromSoilDistributionService: GetCarbonStorageFromSoilDistributionService,
-    private readonly dateProvider: DateProvider,
-  ) {}
+    siteRepository: SiteImpactsQuery,
+    getCarbonStorageFromSoilDistributionService: GetCarbonStorageFromSoilDistributionService,
+    dateProvider: DateProvider,
+  ) {
+    this.siteRepository = siteRepository;
+    this.getCarbonStorageFromSoilDistributionService = getCarbonStorageFromSoilDistributionService;
+    this.dateProvider = dateProvider;
+  }
 
   async execute({
     siteId,

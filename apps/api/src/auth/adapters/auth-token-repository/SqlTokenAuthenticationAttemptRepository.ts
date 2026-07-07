@@ -7,7 +7,10 @@ import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection
 
 @Injectable()
 export class SqlTokenAuthenticationAttemptRepository implements TokenAuthenticationAttemptRepository {
-  constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}
+  private readonly sqlConnection: Knex;
+  constructor(@Inject(SqlConnection) sqlConnection: Knex) {
+    this.sqlConnection = sqlConnection;
+  }
 
   async save(authToken: TokenAuthenticationAttempt): Promise<void> {
     await this.sqlConnection("token_authentication_attempts").insert({

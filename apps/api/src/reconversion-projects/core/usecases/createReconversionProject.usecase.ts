@@ -31,13 +31,24 @@ export class CreateReconversionProjectUseCase implements UseCase<
   Request,
   CreateReconversionProjectResult
 > {
+  private readonly dateProvider: DateProvider;
+  private readonly siteRepository: SiteRepository;
+  private readonly reconversionProjectRepository: ReconversionProjectRepository;
+  private readonly uuidGenerator: UidGenerator;
+  private readonly eventPublisher: DomainEventPublisher;
   constructor(
-    private readonly dateProvider: DateProvider,
-    private readonly siteRepository: SiteRepository,
-    private readonly reconversionProjectRepository: ReconversionProjectRepository,
-    private readonly uuidGenerator: UidGenerator,
-    private readonly eventPublisher: DomainEventPublisher,
-  ) {}
+    dateProvider: DateProvider,
+    siteRepository: SiteRepository,
+    reconversionProjectRepository: ReconversionProjectRepository,
+    uuidGenerator: UidGenerator,
+    eventPublisher: DomainEventPublisher,
+  ) {
+    this.dateProvider = dateProvider;
+    this.siteRepository = siteRepository;
+    this.reconversionProjectRepository = reconversionProjectRepository;
+    this.uuidGenerator = uuidGenerator;
+    this.eventPublisher = eventPublisher;
+  }
 
   async execute({ reconversionProjectProps }: Request): Promise<CreateReconversionProjectResult> {
     const parseResult =

@@ -151,7 +151,11 @@ export class ExampleModule {}
 import { RandomUuidGenerator } from "src/shared-kernel/adapters/id-generator/RandomUuidGenerator";
 
 export class MyUseCase {
-  constructor(private readonly idGenerator: RandomUuidGenerator) {}
+  private readonly idGenerator: RandomUuidGenerator;
+
+  constructor(idGenerator: RandomUuidGenerator) {
+    this.idGenerator = idGenerator;
+  }
 
   async execute(request: Request): Promise<TResult<Response, Error>> {
     const newId = this.idGenerator.generate(); // Random UUID
@@ -183,7 +187,11 @@ it("should create item with id", async () => {
 import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
 
 export class MyUseCase {
-  constructor(private readonly dateProvider: RealDateProvider) {}
+  private readonly dateProvider: RealDateProvider;
+
+  constructor(dateProvider: RealDateProvider) {
+    this.dateProvider = dateProvider;
+  }
 
   async execute(request: Request): Promise<TResult<Response, Error>> {
     const now = this.dateProvider.now(); // Current Date
@@ -293,12 +301,18 @@ import { Inject } from "@nestjs/common";
 
 @Controller("auth")
 export class AuthController {
+  private readonly eventPublisher: DomainEventPublisher;
+  private readonly uidGenerator: UidGenerator;
+
   constructor(
     @Inject(DOMAIN_EVENT_PUBLISHER_INJECTION_TOKEN)
-    private readonly eventPublisher: DomainEventPublisher,
+    eventPublisher: DomainEventPublisher,
     @Inject(UUID_GENERATOR_INJECTION_TOKEN)
-    private readonly uidGenerator: UidGenerator,
-  ) {}
+    uidGenerator: UidGenerator,
+  ) {
+    this.eventPublisher = eventPublisher;
+    this.uidGenerator = uidGenerator;
+  }
 
   @Get("login")
   async login() {
@@ -328,10 +342,16 @@ Controllers receive UseCases via constructor injection:
 ```typescript
 @Controller("examples")
 export class ExampleController {
+  private readonly createExampleUseCase: CreateExampleUseCase;
+  private readonly getExampleByIdUseCase: GetExampleByIdUseCase;
+
   constructor(
-    private readonly createExampleUseCase: CreateExampleUseCase,
-    private readonly getExampleByIdUseCase: GetExampleByIdUseCase,
-  ) {}
+    createExampleUseCase: CreateExampleUseCase,
+    getExampleByIdUseCase: GetExampleByIdUseCase,
+  ) {
+    this.createExampleUseCase = createExampleUseCase;
+    this.getExampleByIdUseCase = getExampleByIdUseCase;
+  }
 
   @Post()
   async create(@Body() dto: CreateExampleDto) {
@@ -352,11 +372,17 @@ import { Inject } from "@nestjs/common";
 
 @Controller("examples")
 export class ExampleController {
+  private readonly createExampleUseCase: CreateExampleUseCase;
+  private readonly eventPublisher: DomainEventPublisher;
+
   constructor(
-    private readonly createExampleUseCase: CreateExampleUseCase,
+    createExampleUseCase: CreateExampleUseCase,
     @Inject(DOMAIN_EVENT_PUBLISHER_INJECTION_TOKEN)
-    private readonly eventPublisher: DomainEventPublisher,
-  ) {}
+    eventPublisher: DomainEventPublisher,
+  ) {
+    this.createExampleUseCase = createExampleUseCase;
+    this.eventPublisher = eventPublisher;
+  }
 }
 ```
 

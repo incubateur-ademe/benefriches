@@ -63,14 +63,27 @@ export class ComputeProjectUrbanSprawlImpactsComparisonUseCase implements UseCas
   Request,
   ComputeProjectUrbanSprawlImpactsComparisonResultDto
 > {
+  private readonly reconversionProjectQuery: ReconversionProjectImpactsQuery;
+  private readonly siteRepository: SiteImpactsQuery;
+  private readonly cityStatsQuery: CityStatsProvider;
+  private readonly cityRuralityQuery: CityRuralityQuery;
+  private readonly getCarbonStorageFromSoilDistributionService: GetCarbonStorageFromSoilDistributionService;
+  private readonly dateProvider: DateProvider;
   constructor(
-    private readonly reconversionProjectQuery: ReconversionProjectImpactsQuery,
-    private readonly siteRepository: SiteImpactsQuery,
-    private readonly cityStatsQuery: CityStatsProvider,
-    private readonly cityRuralityQuery: CityRuralityQuery,
-    private readonly getCarbonStorageFromSoilDistributionService: GetCarbonStorageFromSoilDistributionService,
-    private readonly dateProvider: DateProvider,
-  ) {}
+    reconversionProjectQuery: ReconversionProjectImpactsQuery,
+    siteRepository: SiteImpactsQuery,
+    cityStatsQuery: CityStatsProvider,
+    cityRuralityQuery: CityRuralityQuery,
+    getCarbonStorageFromSoilDistributionService: GetCarbonStorageFromSoilDistributionService,
+    dateProvider: DateProvider,
+  ) {
+    this.reconversionProjectQuery = reconversionProjectQuery;
+    this.siteRepository = siteRepository;
+    this.cityStatsQuery = cityStatsQuery;
+    this.cityRuralityQuery = cityRuralityQuery;
+    this.getCarbonStorageFromSoilDistributionService = getCarbonStorageFromSoilDistributionService;
+    this.dateProvider = dateProvider;
+  }
 
   async execute({
     reconversionProjectId,

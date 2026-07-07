@@ -82,7 +82,11 @@ import type { SqlExample } from "src/shared-kernel/adapters/sql-knex/tableTypes"
 import type { Knex } from "knex";
 
 export class SqlExampleRepository implements ExampleRepository {
-  constructor(private readonly sqlConnection: Knex) {}
+  private readonly sqlConnection: Knex;
+
+  constructor(sqlConnection: Knex) {
+    this.sqlConnection = sqlConnection;
+  }
 
   async save(example: Example): Promise<void> {
     // Map domain model → SQL row type

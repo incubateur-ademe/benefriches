@@ -18,10 +18,12 @@ export class ArchiveReconversionProjectUseCase implements UseCase<
   Request,
   ArchiveReconversionProjectResult
 > {
-  constructor(
-    private readonly repository: ReconversionProjectRepository,
-    private readonly dateProvider: DateProvider,
-  ) {}
+  private readonly repository: ReconversionProjectRepository;
+  private readonly dateProvider: DateProvider;
+  constructor(repository: ReconversionProjectRepository, dateProvider: DateProvider) {
+    this.repository = repository;
+    this.dateProvider = dateProvider;
+  }
 
   async execute({ projectId, userId }: Request): Promise<ArchiveReconversionProjectResult> {
     const project = await this.repository.getById(projectId);
